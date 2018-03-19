@@ -89,8 +89,8 @@ const defaultProps = {
 	monthFormat: 'MMMM YYYY',
 }
 /**
- * 
- * 
+ *
+ *
  * @class DayPickerRangeControllerWrapper
  * @extends {React.Component}
  * @description Hello World
@@ -101,8 +101,8 @@ class DayPickerRangeControllerWrapper extends React.Component {
 
 		this.state = {
 			focusedInput: props.autoFocusEndDate ? END_DATE : START_DATE,
-			startDate: props.initialStartDate,
-			endDate: props.initialEndDate,
+			startDate: props.initialStartDate ? props.initialStartDate : START_DATE,
+			endDate: props.initialEndDate ? props.initialEndDate : END_DATE,
 			openDatePicker: false
 		}
 
