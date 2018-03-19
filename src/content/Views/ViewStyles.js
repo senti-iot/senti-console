@@ -233,11 +233,14 @@ export const View = styled.div`
 export const CardListContainer = styled.div`
 	display:grid;
 	/* display:-ms-grid; */
-	grid-template-columns: ${p => 'repeat(' + Math.round(p.pageSize / 2) + ',1fr)'};
-	grid-template-rows: 1fr 1fr;
-	grid-auto-columns: auto;
+	/* grid-template-columns: ${p => 'repeat(' + Math.round(p.pageSize / 2) + ',1fr)'}; */
+	grid-template-columns: repeat( auto-fit,minmax(270px,1fr) );
 	/* grid-template-rows: 1fr 1fr; */
-	position: relative;
+	/* grid-auto-columns: max-content; */
+	grid-auto-rows: auto;
+	grid-gap:10px;
+	/* grid-template-rows: 1fr 1fr; */
+	/* position: relative; */
 	overflow-x: auto;
 `
 

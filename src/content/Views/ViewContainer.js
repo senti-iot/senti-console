@@ -19,24 +19,24 @@ import Pagination from '../Pagination/Pagination'
 export default class ViewContainer extends Component {
 	constructor(props) {
 		super(props)
-		var settings = JSON.parse(window.localStorage.getItem('visibleColumns')) || undefined
+		// var settings = JSON.parse(window.localStorage.getItem('visibleColumns')) || undefined
 		this.state = {
 			inputFocus: false,
-			view: 1,
+			view: 0,
 			pageSize: 10,
 			searchString: '',
 			sortOpen: false,
 			pageSizeOpen: false,
 			funcOpen: false,
-			sortColumn: settings ? settings[settings.findIndex(c => c.visible === true)].column : Object.keys(this.props.items[0])[0],
+			sortColumn: /* settings ? settings[settings.findIndex(c => c.visible === true)].column :  */Object.keys(this.props.items[0])[0],
 			sortDirection: false,
 			visibleColDropDown: false,
 			pageOfItems: [],
-			visibleColumns: settings || Object.keys(this.props.items[0]).map(c => c = { column: c, visible: true })
+			visibleColumns: /*  settings ||  */Object.keys(this.props.items[0]).map(c => c = { column: c, visible: true })
 
 		}
-		this.listPageSizes = [1, 10, 20, 30, 40, 50, 80, 100]
-		this.cardPageSizes = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+		this.listPageSizes = [10, 25, 50, 75, 100]
+		this.cardPageSizes = [10, 25, 50, 75, 100]
 	}
 	componentWillUpdate = (nextProps, nextState) => {
 	}

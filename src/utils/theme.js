@@ -45,17 +45,22 @@ const theme = {
 		button: {
 			background: '#216795',
 			unselected: '#E3E5E5',
-			color: '#FFF',
+			color: '#FFF'
+		},
+		menu: {
+			background: '#216795',
+			unselected: '#E3E5E5',
+			color: '#216795'
 		},
 		tab: {
 			selected: '#3B97D3',
-			unselected: '#000',
-		},
+			unselected: '#000'
+		}
 	},
 	logo: {
 		margin: '0px 10px',
 		height: '100%',
-	 	default: logo
+		default: logo
 	},
 	input: {
 		color: '#2C3E50',

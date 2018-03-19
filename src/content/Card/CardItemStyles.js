@@ -20,9 +20,13 @@ export const FormCardContainer = styled.div`
 	border-radius: 4px;
 	width: 250px;
 	height: 270px;
-	margin: 20px;
+	margin: 10px;
+	margin-bottom: 50px;
+	margin-right: 30px;
+
 `
 export const Shadow = FormCardContainer.extend`
+	margin:0;
 	z-index: 2;
 	min-height: 270px;
 	min-width: 250px;
@@ -150,6 +154,7 @@ export const HorizontalButton = styled.div`
 	transition: all 0.3s cubic-bezier(.87,-.41,.19,1.44);
 	user-select: none;
 	transform: perspective(40px) rotateX(-20deg);
+	${p => p.expand ? `margin-top: -1px;` : ''};
 `
 export const ControlButton = styled.div`
 	border-radius: 4px;
