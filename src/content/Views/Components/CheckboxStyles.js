@@ -32,7 +32,7 @@ border-radius: 4px;
 }
 
 &:hover{
-	background-color: #979898;
+	background-color: ${p => p.theme.tab.hover};
 }
 
 `
@@ -58,16 +58,16 @@ export const StyledCheckbox = styled.label`
      	left: 0;
  		width: ${({ size }) => sizes[size].width};
  		height: ${({ size }) => sizes[size].height};
-     	background-color: #D5D5D5;
+     	background-color: ${p => p.theme.tab.unselected};
      	border-radius: 4px;
  	}
 
  	> .checkmark:hover {
-     	background-color: #979898;
+     	background-color: ${p => p.theme.tab.hover};
  	}
 
  	> input:checked + .checkmark {
- 		background-color: #3B97D3;
+ 		background-color: ${p => p.theme.tab.selected};
  	}
 
  	> .checkmark:after {
@@ -81,8 +81,8 @@ export const StyledCheckbox = styled.label`
  }
 
  	> input + .checkmark:after {
-     	left: 5px;
- 		top: 5px;
+     	left: 6px;
+ 		top: 6px;
  		width: ${({ size }) => sizes[size].checkmarkWidth};
  		height: ${({ size }) => sizes[size].checkmarkHeight};
 		background: white;
@@ -97,13 +97,13 @@ const sizes = {
 	small: {
 		width: '25px',
 		height: '25px',
-		checkmarkWidth: '15px',
-		checkmarkHeight: '15px',
+		checkmarkWidth: '17px',
+		checkmarkHeight: '17px',
 	},
 	medium: {
 		width: '30px',
 		height: '30px',
-		checkmarkWidth: '20px',
-		checkmarkHeight: '20px',
+		checkmarkWidth: '18px',
+		checkmarkHeight: '18px',
 	},
 }

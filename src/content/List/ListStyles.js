@@ -42,7 +42,7 @@ export const ListItemContainer = styled.div`
 `
 
 export const Label = Cell.extend`
-	font-weight: 700;
+	/* font-weight: 700; */
 `
 
 export const Responsible = Cell.extend`

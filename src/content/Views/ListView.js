@@ -46,7 +46,7 @@ export default class ListView extends PureComponent {
 		return (
 			<React.Fragment>
 				<HeaderListContainer >
-					<Checkbox size={'small'} style={{ marginLeft: 4 }} />
+					<Checkbox size={'medium'} style={{ marginLeft: 4 }} />
 					<CellHeaderContainer columnCount={this.handleActiveColumnCount}>
 						{this.props.columns ? this.props.columns.map((c, i) =>
 							c.visible ? <LabelHeader key={i} onClick={this.handleSort(c.column)} active={this.activeColumnSorting(c.column)} sorting={this.props.sortDirection}>
