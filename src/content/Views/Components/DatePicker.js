@@ -127,6 +127,7 @@ class DayPickerRangeControllerWrapper extends React.Component {
 	// 	})
 	// }
 	handleDatePickerOpen = (openDatePicker) => e => {
+		e.stopPropagation()
 		e.preventDefault()
 		this.setState({
 			openDatePicker: openDatePicker
