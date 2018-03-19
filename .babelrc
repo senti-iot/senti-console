@@ -1,0 +1,25 @@
+{
+	"presets": [
+		"env",
+		"stage-2",
+		"react"
+	],
+	"plugins": [
+		"babel-plugin-styled-components"
+	],
+	"env": {
+		"production": {
+			"plugins": [
+				[
+					"transform-react-remove-prop-types",
+					{
+						"mode": "wrap",
+						"ignoreFilenames": [
+							"node_modules"
+						]
+					}
+				]
+			]
+		}
+	}
+}
