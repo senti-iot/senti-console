@@ -132,7 +132,7 @@ export const HorizontalControls = styled.div`
 	align-items:center;
 	/* justify-content:center; */
 	flex-flow:column;
-	height: ${p => p.expand ? '60px' : '20px'};
+	height: 60px;
 	width: 100%;
 	transition: all 0.3s cubic-bezier(.87,-.41,.19,1.44);
 	margin-top:1px;
