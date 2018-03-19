@@ -5,7 +5,7 @@ import momentPropTypes from 'react-moment-proptypes'
 import { forbidExtraProps } from 'airbnb-prop-types'
 import moment from 'moment'
 import omit from 'lodash/omit'
-import { SearchContainer } from '../ViewStyles'
+import { DatePickerInput } from '../ViewStyles'
 import { DayPickerRangeController } from 'react-dates'
 
 // import { ScrollableOrientationShape } from 'react-dates'
@@ -151,11 +151,11 @@ class DayPickerRangeControllerWrapper extends React.Component {
 		return (
 			<div style={{ display: 'flex', position: 'relative', flexFlow: 'column nowrap' }}>
 				{showInputs &&
-					<SearchContainer style={{ padding: '0px 10px' }} onClick={this.handleDatePickerOpen(true)}>
+					<DatePickerInput onClick={this.handleDatePickerOpen(true)}>
 						{startDateString}
 						&nbsp;{'-'}{'\u00A0'}
 						{endDateString}
-					</SearchContainer>
+					</DatePickerInput>
 				}
 
 				{openDatePicker && <div style={{ position: 'absolute', zIndex: 5, marginTop: 40 }}>

@@ -224,6 +224,9 @@ export const SearchContainer = styled.div`
 		box-shadow: ${(props) => `0 0 0 3px ` + props.theme.tab.selected};
     }
 `
+export const DatePickerInput = SearchContainer.extend`
+	padding: 0px 10px;
+`
 export const View = styled.div`
 	height:100%;
 	width:100%;
