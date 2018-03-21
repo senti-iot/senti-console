@@ -39,9 +39,6 @@ border-radius: 4px;
 export const StyledCheckbox = styled.label`
     display: flex;
     position: relative;
-    /* padding-left: 35px; */
-    /* margin-bottom: ${p => p.size === 'small' ? '30px' : '35px'}; */
-	/* padding:13px; */
 	width: ${({ size }) => sizes[size].width};
  	height: ${({ size }) => sizes[size].height};
     cursor: pointer;
@@ -89,7 +86,6 @@ export const StyledCheckbox = styled.label`
  		border: solid white;
 		border-radius:4px;
  		border-width: 0;
-		/* transform: rotate(45deg); */
 }
 `
 

@@ -25,7 +25,7 @@ class Pagination extends Component {
 		}
 	}
 	componentWillUpdate = (nextProps, nextState) => {
-		if (this.state.pager.currentPage > nextState.pager.endPage && nextState.pager.currentPage !== 1) {
+		if (nextState.pager.currentPage !== 1 && nextState.pager.currentPage > nextState.pager.endPage) {
 			this.setPage(nextState.pager.endPage)
 		}
 	}

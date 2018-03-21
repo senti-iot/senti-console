@@ -4,7 +4,7 @@ import { arrayMove } from 'react-sortable-hoc'
 // import 'react-dates/lib/css/_datepicker.css'
 
 //Components
-import DayPickerRangeControllerWrapper from './Components/DatePicker'
+import DayPickerRangeControllerWrapper from './Components/DatePicker/DatePicker'
 import CardView from './CardView'
 import ListView from './ListView'
 import MapView from './MapView'
@@ -92,7 +92,7 @@ export default class ViewContainer extends Component {
 			visibleColumns: arrayMove(this.state.visibleColumns, oldIndex, newIndex),
 		})
 	}
-	
+
 	handleVisibility = (visibleColDropDown) => e => {
 		e.preventDefault()
 		this.setState({ visibleColDropDown: visibleColDropDown })
@@ -149,6 +149,12 @@ export default class ViewContainer extends Component {
 		e.preventDefault()
 		this.setState({ funcOpen: funcOpen })
 	}
+
+	handlePageChange = (pageOfItems) => {
+		if (this.state.pageOfItems !== pageOfItems)
+			this.setState({ pageOfItems: pageOfItems })
+	}
+
 	renderPageSizes = (view, pageSize) => {
 		switch (view) {
 			case 0:
@@ -303,48 +309,14 @@ export default class ViewContainer extends Component {
 				<Icon icon={'visibility'} color={'#FFF'} active={true} iconSize={20} style={{ margin: 3 }} />
 			</DropDownButton>
 			<Margin />
-			{/* {sortOpen && <DropDown style={{ width: 200 }}>
-				{this.state.visibleColumns.map((c, i) =>
-					<DropDownSection key={i}>
-						<DropDownSubSection active={this.handleActiveColumn(c.column)}>
-							<DropDownIcon onClick={this.handleVisibleColumn(c.column)} >
-								<Icon icon={"visibility"} color={'#FFFFFF'} active={c.visible} />
-							</DropDownIcon>
-							<DropDownText onClick={c.visible ? this.handleSort(c.column) : undefined} active={this.handleActiveColumn(c.column)} sorting={sortDirection}>
-								<Text >{c.column.charAt(0).toUpperCase() + c.column.slice(1)}</Text>
-							</DropDownText>
-						</DropDownSubSection>
-						<DropDownSubItem active={this.handleActiveColumn(c.column)}>
-							<DropDownIcon onClick={this.handleVisibleColumn(c.column)} >
-								<Icon icon={"visibility"} color={'#FFFFFF'} active={c.visible} />
-							</DropDownIcon>
-							<DropDownText onClick={c.visible ? this.handleSort(c.column) : undefined} active={this.handleActiveColumn(c.column)} sorting={sortDirection}>
-								<Text >{c.column.charAt(0).toUpperCase() + c.column.slice(1)}</Text>
-							</DropDownText>
-						</DropDownSubItem>
-					</DropDownSection>
-				)}
-			</DropDown>
-			} */}
-			{sortOpen && <DropDown style={{ width: 150 }}>
 
-				{/* <DropDownItem>
-					<DropDownIcon>
-						<Icon icon={"visibility"} color={'#FFFFFF'}  />
-					</DropDownIcon>
-					<DropDownText>
-						<Text>
-							Gennemfort i %
-						</Text>
-					</DropDownText>
-				</DropDownItem> */}
+			{sortOpen && <DropDown style={{ width: 150 }}>
 				{this.renderDropDownSorting(sortDirection)}
 				{this.renderDropDownItem('Gennemfort i %', 'dashboard')}
 				{this.renderDropDownItem('Oprettet', 'visibility')}
 				{this.renderDropDownItem('Senest aktiv', 'info')}
 				{this.renderDropDownItem('Kontakt', 'people')}
 				{this.renderDropDownItem('Antal', 'menu')}
-
 			</DropDown>
 			}
 		</DropDownContainer>
@@ -370,10 +342,7 @@ export default class ViewContainer extends Component {
 			<Input innerRef={this.createInputRef} onChange={this.handleSearch} value={searchString} onBlur={() => this.state.inputFocus ? this.setState({ inputFocus: false }) : null} />
 		</SearchContainer>
 	}
-	onChangePage = (pageOfItems) => {
-		if (this.state.pageOfItems !== pageOfItems)
-			this.setState({ pageOfItems: pageOfItems })
-	}
+
 	render() {
 		const { view, searchString, pageSize, pageSizeOpen, sortOpen, sortDirection, sortColumn, funcOpen } = this.state
 		return <View>
@@ -386,7 +355,7 @@ export default class ViewContainer extends Component {
 				{this.renderChangeViewOptions(view)}
 			</FunctionBar>
 			{this.renderView(pageSize, view, sortColumn, sortDirection)}
-			<Pagination items={this.filterItems(this.props.items)} onChangePage={this.onChangePage} pageSize={pageSize} />
+			<Pagination items={this.filterItems(this.props.items)} onChangePage={this.handlePageChange} pageSize={pageSize} />
 		</View>
 
 	}

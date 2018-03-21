@@ -27,14 +27,6 @@ class Checkbox extends Component {
 
 	}
 
-	// componentWillReceiveProps(nextProps) {
-	// 	if (nextProps.checked !== this.props.checked) {
-	// 		this.setState({ isChecked: nextProps.checked })
-	// 	}
-	// 	this.setState({ isChecked: nextProps.checked })
-	// }
-
-
 	render() {
 		const { size } = this.props
 		return (

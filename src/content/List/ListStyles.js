@@ -86,9 +86,3 @@ export const Button = styled.div`
 	}
 	transition: opacity 0.1s cubic-bezier(.87,-.41,.19,1.44);
 `
-// export const VerticalButtonContainer = ExpandButtonContainer.extend`
-// 	/* max-height:200px; */
-// 	/* border-radius: ${p => p.vertOpen ? '0px 0px 10px 10px' : '0px 50px 50px 0px'}; */
-// 	width: 15px;
-// 	height: 80%;
-// `

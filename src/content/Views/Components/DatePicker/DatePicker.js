@@ -5,7 +5,7 @@ import momentPropTypes from 'react-moment-proptypes'
 import { forbidExtraProps } from 'airbnb-prop-types'
 import moment from 'moment'
 import omit from 'lodash/omit'
-import { DatePickerInput } from '../ViewStyles'
+import { DatePickerInput } from '../../ViewStyles'
 import { DayPickerRangeController } from 'react-dates'
 
 // import { ScrollableOrientationShape } from 'react-dates'

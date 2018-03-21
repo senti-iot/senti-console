@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react'
 import ListItem from '../List/ListItem'
 import { ListContainer, HeaderListContainer } from './ViewStyles'
-import Checkbox from './Components/CheckBox'
+import Checkbox from './Components/CheckBox/CheckBox'
 import SortableList from './Components/HeaderList/HeaderContainer'
+
 export default class ListView extends PureComponent {
 	constructor(props) {
 		super(props)
