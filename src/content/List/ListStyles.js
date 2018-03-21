@@ -1,5 +1,4 @@
 import styled from "styled-components"
-// import { transparentize } from 'polished'
 
 export const Cell = styled.div`
 	display:flex;
@@ -8,8 +7,8 @@ export const Cell = styled.div`
 	margin: 0px 4px;
 	padding-left: 4px;
 	height: 30px;
-
 `
+
 export const Text = styled.div`
 	display:inline-block;
 	text-overflow: ellipsis;
@@ -17,6 +16,7 @@ export const Text = styled.div`
 	overflow:hidden;
 	max-width: 200px;
 `
+
 export const ListCardItem = styled.div`
 	display:flex;
 	flex-flow:row nowrap;
@@ -27,7 +27,6 @@ export const ListCardItem = styled.div`
 export const ListItemContainer = styled.div`
 	display:grid;
 	grid-template-columns: repeat(${p => p.columnCount}, 1fr);
-	/* color: ${p => p.selected ? p.theme.tab.activeColor : p.theme.tab.color}; */
 	background: ${p => p.selected ? p.theme.tab.selected : p.theme.tab.unselected};
 	border-radius: 5px 0px 0px 5px;
 	margin: 3px 0px 3px 8px;
@@ -37,17 +36,9 @@ export const ListItemContainer = styled.div`
 	cursor: default;
 	&:hover {
 		background: #BDBDBD;
-		/* color: ${p => p.theme.tab.activeColor}; */
 	}
 `
 
-export const Label = Cell.extend`
-	/* font-weight: 700; */
-`
-
-export const Responsible = Cell.extend`
-	font-style: italic;
-`
 
 export const ExpandButtonContainer = styled.div`
 	cursor:pointer;
@@ -75,7 +66,6 @@ export const ButtonContainer = styled.div`
 	justify-content: space-around;
 	background: #d5d5d5;
 	height: 100%;
-	/* max-width: 200px; */
 	transition: all 250ms cubic-bezier(.87,-.41,.19,1.44);
 	border-radius: 3px;
 	overflow:hidden;

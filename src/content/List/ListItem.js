@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react'
-import { Label, /* Responsible, */ ListItemContainer, ExpandButtonContainer, /* Cell, */ Text, ListCardItem, Button, ButtonContainer, ControlsContainer } from './ListStyles'
+import { ListItemContainer, ExpandButtonContainer, Text, ListCardItem, Button, ButtonContainer, ControlsContainer, Cell } from './ListStyles'
 import Icon from 'odeum-ui/lib/components/Icon/Icon'
 import Checkbox from '../Views/Components/CheckBox'
-// import FormCard from '../Card/FormCard'
+
 export default class ListCard extends PureComponent {
 	constructor(props) {
 		super(props)
@@ -40,27 +40,18 @@ export default class ListCard extends PureComponent {
 		// const { cardExpand } = this.state
 		return (
 			<React.Fragment>
-				{/* {cardExpand ? <FormCard handleCardExpand={this.handleExpand} cardExpand={cardExpand} item={this.props.item} column={this.props.column}/> : null} */}
 				<ListCardItem>
 					<Checkbox size={'medium'} onChange={this.onChecked} />
 					<ListItemContainer selected={this.state.checked} columnCount={this.props.columnCount}>
-						{
-							this.props.column.map((c, cIndex) => {
-								return c.visible ? <Label key={cIndex}>
-									<Text title={this.props.item[c.column].toString()}>
-										{this.props.item[c.column] instanceof Date ? this.props.item[c.column].toLocaleDateString() : this.props.item[c.column].toString()}
+						{this.props.column.map((c, cIndex) => {
+							return c.visible ? <Cell key={cIndex}>
+								<Text title={this.props.item[c.column].toString()}>
+									{this.props.item[c.column] instanceof Date ? this.props.item[c.column].toLocaleDateString() : this.props.item[c.column].toString()}
 
-									</Text>
-								</Label> : null
-
-							})}
-						{/* {Object.keys(this.props.item).map((i, index) =>
-							this.props.column[index].visible ? <Label key={index}>
-								<Text title={this.props.item[i].toString()}>
-									{this.props.item[i] instanceof Date ? this.props.item[i].toLocaleDateString() : this.props.item[i].toString()}
 								</Text>
-							</Label> : null
-						)} */}
+							</Cell> : null
+
+						})}
 					</ListItemContainer>
 					<ControlsContainer>
 						<ButtonContainer horizOpen={this.state.expand} style={{ flexFlow: 'row nowrap', borderRadius: 0, height: 'inherit' }}>

@@ -1,21 +1,28 @@
 import React, { Component } from 'react'
 import { Icon } from 'odeum-ui'
-import 'react-dates/lib/css/_datepicker.css'
+import { arrayMove } from 'react-sortable-hoc'
+// import 'react-dates/lib/css/_datepicker.css'
 
+//Components
 import DayPickerRangeControllerWrapper from './Components/DatePicker'
 import CardView from './CardView'
 import ListView from './ListView'
 import MapView from './MapView'
-import { arrayMove } from 'react-sortable-hoc'
-
-import {
-	HeaderContainer, ChangeViewButtonCard,
-	ChangeViewButtonMap, ChangeViewButtonList,
-	ChangeViewButtonContainer,
-	DropDown, DropDownContainer, DropDownButton, Margin, DropDownItem, Input, SearchContainer, View, DropDownSection, DropDownIcon, DropDownText, DropDownSubSection, DropDownSubItem
-} from './ViewStyles'
-import { Text } from '../List/ListStyles'
 import Pagination from '../Pagination/Pagination'
+
+// Styles
+import { Text } from '../List/ListStyles'
+import {
+	DropDown, DropDownContainer,
+	DropDownButton, Margin, DropDownItem,
+	DropDownSection, DropDownIcon, DropDownText,
+	DropDownSubSection, DropDownSubItem
+} from './Components/DropDown/DropDown'
+import {
+	FunctionBar, ChangeViewButtonCard,
+	ChangeViewButtonMap, ChangeViewButtonList,
+	ChangeViewButtonContainer, Input, SearchContainer, View,
+} from './ViewStyles'
 
 export default class ViewContainer extends Component {
 	constructor(props) {
@@ -41,11 +48,7 @@ export default class ViewContainer extends Component {
 	}
 	componentWillUpdate = (nextProps, nextState) => {
 	}
-	onSortEnd = ({ oldIndex, newIndex }) => {
-		this.setState({
-			visibleColumns: arrayMove(this.state.visibleColumns, oldIndex, newIndex),
-		})
-	}
+
 	createInputRef = (node) => {
 		this.node = node
 	}
@@ -84,6 +87,12 @@ export default class ViewContainer extends Component {
 				: null
 	}
 
+	handleDragSort = ({ oldIndex, newIndex }) => {
+		this.setState({
+			visibleColumns: arrayMove(this.state.visibleColumns, oldIndex, newIndex),
+		})
+	}
+	
 	handleVisibility = (visibleColDropDown) => e => {
 		e.preventDefault()
 		this.setState({ visibleColDropDown: visibleColDropDown })
@@ -174,7 +183,7 @@ export default class ViewContainer extends Component {
 					handleSort={this.handleSort}
 					items={this.state.pageOfItems}
 					columns={this.state.visibleColumns}
-					onSortEnd={this.onSortEnd}
+					onSortEnd={this.handleDragSort}
 				/>
 			case 2:
 				return <MapView
@@ -368,14 +377,14 @@ export default class ViewContainer extends Component {
 	render() {
 		const { view, searchString, pageSize, pageSizeOpen, sortOpen, sortDirection, sortColumn, funcOpen } = this.state
 		return <View>
-			<HeaderContainer>
+			<FunctionBar>
 				{this.renderFunctions(funcOpen)}
 				<DayPickerRangeControllerWrapper />
 				{this.renderSearchOption(searchString)}
 				{this.renderPageSizeOption(view, pageSize, pageSizeOpen)}
 				{this.renderVisibleSortOption(sortOpen, sortDirection)}
 				{this.renderChangeViewOptions(view)}
-			</HeaderContainer>
+			</FunctionBar>
 			{this.renderView(pageSize, view, sortColumn, sortDirection)}
 			<Pagination items={this.filterItems(this.props.items)} onChangePage={this.onChangePage} pageSize={pageSize} />
 		</View>
