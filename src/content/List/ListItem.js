@@ -44,13 +44,23 @@ export default class ListCard extends PureComponent {
 				<ListCardItem>
 					<Checkbox size={'medium'} onChange={this.onChecked} />
 					<ListItemContainer selected={this.state.checked} columnCount={this.props.columnCount}>
-						{Object.keys(this.props.item).map((i, index) =>
+						{
+							this.props.column.map((c, cIndex) => {
+								return c.visible ? <Label key={cIndex}>
+									<Text title={this.props.item[c.column].toString()}>
+										{this.props.item[c.column] instanceof Date ? this.props.item[c.column].toLocaleDateString() : this.props.item[c.column].toString()}
+
+									</Text>
+								</Label> : null
+
+							})}
+						{/* {Object.keys(this.props.item).map((i, index) =>
 							this.props.column[index].visible ? <Label key={index}>
 								<Text title={this.props.item[i].toString()}>
 									{this.props.item[i] instanceof Date ? this.props.item[i].toLocaleDateString() : this.props.item[i].toString()}
 								</Text>
 							</Label> : null
-						)}
+						)} */}
 					</ListItemContainer>
 					<ControlsContainer>
 						<ButtonContainer horizOpen={this.state.expand} style={{ flexFlow: 'row nowrap', borderRadius: 0, height: 'inherit' }}>

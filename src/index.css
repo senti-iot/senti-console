@@ -1,6 +1,5 @@
 html {
 	font-size: 62.5%;
-	/* -webkit-font-smoothing: antialiased; */
 	box-sizing: border-box;
 }
 
@@ -11,36 +10,6 @@ body {
 	margin: 0;
 }
 
-/* .color {
-	background-color: #e2a31a
-} */
-/* .CalendarDay__highlighted_calendar {
-	background: #82E0AA;
-	color: #186A3B;
-  }
-
-.CalendarDay__highlighted_calendar:hover {
-	background: #58D68D;
-	color: #186A3B;
+.dragged {
+	background: #37a891;
 }
-
-.CalendarDay__highlighted_calendar:active {
-	background: #58D68D;
-	color: #186A3B;
-}
-.DateRangePicker_panel {
-    padding: '0 22px 11px 22px',
-  }
-
-.DateRangePicker_button {
-    position: relative;
-    height: 100%;
-    background: none;
-    border: 2px solid black;
-    padding: 4px 12px;
-    margin-right: 8;
-}
-
-.DateRangePicker_button__selected{
-	outline: 0;
-} */

@@ -6,6 +6,7 @@ import DayPickerRangeControllerWrapper from './Components/DatePicker'
 import CardView from './CardView'
 import ListView from './ListView'
 import MapView from './MapView'
+import { arrayMove } from 'react-sortable-hoc'
 
 import {
 	HeaderContainer, ChangeViewButtonCard,
@@ -40,7 +41,11 @@ export default class ViewContainer extends Component {
 	}
 	componentWillUpdate = (nextProps, nextState) => {
 	}
-
+	onSortEnd = ({ oldIndex, newIndex }) => {
+		this.setState({
+			visibleColumns: arrayMove(this.state.visibleColumns, oldIndex, newIndex),
+		})
+	}
 	createInputRef = (node) => {
 		this.node = node
 	}
@@ -111,6 +116,7 @@ export default class ViewContainer extends Component {
 	}
 
 	handleSort = (column) => e => {
+		e.stopPropagation()
 		e.preventDefault()
 		if (this.state.sortColumn !== column)
 			this.setState({
@@ -147,8 +153,9 @@ export default class ViewContainer extends Component {
 		}
 	}
 
+
 	renderView = (pageSize, view, sortColumn, sortDirection) => {
-		const { items } = this.props
+		const { pageOfItems } = this.state
 		switch (view) {
 			case 0:
 				return <CardView
@@ -167,14 +174,14 @@ export default class ViewContainer extends Component {
 					handleSort={this.handleSort}
 					items={this.state.pageOfItems}
 					columns={this.state.visibleColumns}
+					onSortEnd={this.onSortEnd}
 				/>
-
 			case 2:
 				return <MapView
 					pageSize={pageSize}
 					sortColumn={sortColumn}
 					handleSort={this.handleSort}
-					items={this.filterItems(items)}
+					items={this.filterItems(pageOfItems)}
 				/>
 			default:
 				break
@@ -223,6 +230,63 @@ export default class ViewContainer extends Component {
 			</DropDownText>
 		</DropDownItem>
 	}
+	renderDropDownSorting = (sortDirection) => {
+		const { visibleColumns } = this.state
+		return <DropDownSection>
+			<DropDownSubSection>
+				<DropDownIcon>
+					<Icon icon={"sort"} color={'#FFFFFF'} />
+				</DropDownIcon>
+				<DropDownText>
+					<Text>
+						Sortering:
+					</Text>
+				</DropDownText>
+			</DropDownSubSection>
+			<DropDownSubItem>
+				<DropDownIcon onClick={this.handleVisibleColumn('title')}>
+					<Icon icon={"visibility"}
+						color={'#FFFFFF'}
+						active={visibleColumns.find(c => c.column === 'title').visible ? true : false} />
+				</DropDownIcon>
+				<DropDownText onClick={this.handleSort('title')} active={this.handleActiveColumn('title')} sorting={sortDirection}>
+					<Text>
+						Alfabetisk
+					</Text>
+				</DropDownText>
+			</DropDownSubItem>
+			<DropDownSubItem>
+				<DropDownIcon onClick={this.handleVisibleColumn('open_date')}>
+					<Icon icon={"visibility"} color={'#FFFFFF'} active={visibleColumns.find(c => c.column === 'open_date').visible ? true : false} />
+				</DropDownIcon>
+				<DropDownText onClick={this.handleSort('open_date')} active={this.handleActiveColumn('open_date')} sorting={sortDirection}>
+					<Text>
+						Dato
+					</Text>
+				</DropDownText>
+			</DropDownSubItem>
+			<DropDownSubItem>
+				<DropDownIcon onClick={this.handleVisibleColumn('seneste_reg')}>
+					<Icon icon={"visibility"} color={'#FFFFFF'} active={visibleColumns.find(c => c.column === 'seneste_reg').visible ? true : false} />
+				</DropDownIcon>
+				<DropDownText onClick={this.handleSort('seneste_reg')} active={this.handleActiveColumn('seneste_reg')} sorting={sortDirection}>
+					<Text>
+						Senest aktiv
+					</Text>
+				</DropDownText>
+			</DropDownSubItem>
+			<DropDownSubItem>
+				<DropDownIcon onClick={this.handleVisibleColumn('progress')}>
+					<Icon icon={"visibility"} color={'#FFFFFF'} active={visibleColumns.find(c => c.column === 'progress').visible ? true : false} />
+				</DropDownIcon>
+				<DropDownText onClick={this.handleSort('progress')} active={this.handleActiveColumn('progress')} sorting={sortDirection}>
+					<Text>
+						Antal
+					</Text>
+				</DropDownText>
+			</DropDownSubItem>
+		</DropDownSection>
+	}
 	renderVisibleSortOption = (sortOpen, sortDirection) => {
 
 		return <DropDownContainer onMouseLeave={this.handleSortOpen(false)}>
@@ -254,58 +318,7 @@ export default class ViewContainer extends Component {
 			</DropDown>
 			} */}
 			{sortOpen && <DropDown style={{ width: 150 }}>
-				<DropDownSection>
-					<DropDownSubSection>
-						<DropDownIcon>
-							<Icon icon={"visibility"} color={'#FFFFFF'} /* active={c.visible} */ />
-						</DropDownIcon>
-						<DropDownText>
-							<Text>
-								Sortering:
-							</Text>
-						</DropDownText>
-					</DropDownSubSection>
-					<DropDownSubItem>
-						<DropDownIcon>
-							<Icon icon={"visibility"} color={'#FFFFFF'} /* active={c.visible} */ />
-						</DropDownIcon>
-						<DropDownText>
-							<Text>
-								Alfabetisk
-							</Text>
-						</DropDownText>
-					</DropDownSubItem>
-					<DropDownSubItem>
-						<DropDownIcon>
-							<Icon icon={"visibility"} color={'#FFFFFF'} /* active={c.visible} */ />
-						</DropDownIcon>
-						<DropDownText>
-							<Text>
-								Dato
-							</Text>
-						</DropDownText>
-					</DropDownSubItem>
-					<DropDownSubItem>
-						<DropDownIcon>
-							<Icon icon={"visibility"} color={'#FFFFFF'} /* active={c.visible} */ />
-						</DropDownIcon>
-						<DropDownText>
-							<Text>
-								Senest aktiv
-							</Text>
-						</DropDownText>
-					</DropDownSubItem>
-					<DropDownSubItem>
-						<DropDownIcon>
-							<Icon icon={"visibility"} color={'#FFFFFF'} /* active={c.visible} */ />
-						</DropDownIcon>
-						<DropDownText>
-							<Text>
-								Antal
-							</Text>
-						</DropDownText>
-					</DropDownSubItem>
-				</DropDownSection>
+
 				{/* <DropDownItem>
 					<DropDownIcon>
 						<Icon icon={"visibility"} color={'#FFFFFF'}  />
@@ -316,6 +329,7 @@ export default class ViewContainer extends Component {
 						</Text>
 					</DropDownText>
 				</DropDownItem> */}
+				{this.renderDropDownSorting(sortDirection)}
 				{this.renderDropDownItem('Gennemfort i %', 'dashboard')}
 				{this.renderDropDownItem('Oprettet', 'visibility')}
 				{this.renderDropDownItem('Senest aktiv', 'info')}

@@ -103,23 +103,34 @@ export const CellHeaderContainer = styled.div`
 	margin-right: 25px;
 	margin-left: 4px;
 `
-
-export const LabelHeader = Label.extend`
-	font-weight:${p => p.active ? 700 : 400};
+export const DraggableHeader = Label.extend`
+	color: #fff;
 	border-radius: 4px;
+	background: ${p => p.active ? p.theme.tab.hover : ''};
 	margin: 0px;
 	display:flex;
-	justify-content: space-between;
 	padding-left: 8px;
 	cursor: pointer;
 	&:hover {
 		background: ${p => p.theme.tab.hover};
 	}
+	user-select: none;
+`
+export const LabelHeader = Label.extend`
+	font-weight:${p => p.active ? 700 : 400};
+	width: 100%;
+	border-radius: 4px;
+	margin: 0px;
+	color: #fff;
+	display:flex;
+	justify-content: space-between;
+	padding-left: 8px;
 	&:after{
 		${p => p.active ? `
 		font-weight: 700;
 		content: "\u2191";
 		transform: ${p.sorting ? 'rotate(180deg)' : ''};
+		margin-left: auto;
 		margin-right: 4px;
 	` : null};
 	}
@@ -336,6 +347,7 @@ export const DropDownText = styled.div`
 	flex:1;
 	min-height: 30px;
 	margin-right:4px;
+	font-weight: ${p => p.active ? 700 : 300};
 	&:after {
 		${p => p.active ? `
 		font-weight: 700;
