@@ -46,10 +46,18 @@ export default class ListCard extends PureComponent {
 					<ListItemContainer selected={checked} columnCount={columnCount}>
 						{column.map((c, cIndex) => {
 							return c.visible ? <Cell key={cIndex}>
-								<Text title={item[c.column].toString()}>
-									{item[c.column] instanceof Date ? item[c.column].toLocaleDateString() : item[c.column].toString()}
 
-								</Text>
+								{item[c.column] instanceof Date ? <Text title={item[c.column].toLocaleDateString()}>
+									{item[c.column].toLocaleDateString()}
+								</Text> :
+									c.column === 'user' ?
+										<React.Fragment>
+											<img src={item[c.column].img} alt={'profilepic'} style={{ height: '26px', borderRadius: 20, marginRight: 4 }} />
+											<Text title={item[c.column].name}>
+												{item[c.column].name}
+											</Text>
+										</React.Fragment> :
+										<Text title={item[c.column].toString()}>{item[c.column].toString()}</Text>}
 							</Cell> : null
 
 						})}

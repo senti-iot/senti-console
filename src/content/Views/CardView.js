@@ -24,16 +24,14 @@ export default class CardView extends Component {
 		return (
 
 			this.props.items.length !== 0 ?
-				<React.Fragment>
-					<CardsContainer pageSize={this.props.pageSize}>
-						{this.props.items.map((c, i) =>
-							<CardItem
-								key={i}
-								item={c}
-								column={this.props.columns}
-							/>
-						)}</CardsContainer>
-				</React.Fragment>
+				<CardsContainer pageSize={this.props.pageSize}>
+					{this.props.items.map((c, i) =>
+						<CardItem
+							key={i}
+							item={c}
+							column={this.props.columns}
+						/>
+					)}</CardsContainer>
 				:
 				<div>No Items</div>
 

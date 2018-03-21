@@ -31,7 +31,7 @@ export default class ViewContainer extends Component {
 		this.state = {
 			inputFocus: false,
 			view: 1,
-			pageSize: 10,
+			pageSize: 25,
 			searchString: '',
 			sortOpen: false,
 			pageSizeOpen: false,
@@ -46,6 +46,7 @@ export default class ViewContainer extends Component {
 		this.listPageSizes = [10, 25, 50, 75, 100]
 		this.cardPageSizes = [10, 25, 50, 75, 100]
 	}
+
 	componentWillUpdate = (nextProps, nextState) => {
 	}
 
@@ -82,10 +83,12 @@ export default class ViewContainer extends Component {
 	changeView = (int) => (e) => {
 		e.preventDefault()
 		this.setState({ view: int })
-		return int === 0 ? this.setState({ pageSize: 8 }) :
-			int === 1 ? this.setState({ pageSize: 30 })
+		return int === 0 ? this.setState({ pageSize: 10 }) :
+			int === 1 ? this.setState({ pageSize: 25 })
 				: null
 	}
+
+	//#region Handlers
 
 	handleDragSort = ({ oldIndex, newIndex }) => {
 		this.setState({
@@ -155,6 +158,11 @@ export default class ViewContainer extends Component {
 			this.setState({ pageOfItems: pageOfItems })
 	}
 
+	//#endregion
+
+	//#region Rendering
+
+
 	renderPageSizes = (view, pageSize) => {
 		switch (view) {
 			case 0:
@@ -167,7 +175,6 @@ export default class ViewContainer extends Component {
 				return null
 		}
 	}
-
 
 	renderView = (pageSize, view, sortColumn, sortDirection) => {
 		const { pageOfItems } = this.state
@@ -232,7 +239,6 @@ export default class ViewContainer extends Component {
 		</DropDownContainer>
 	}
 
-
 	renderDropDownItem = (label, icon, column) => {
 		return <DropDownItem>
 			<DropDownIcon>
@@ -245,6 +251,7 @@ export default class ViewContainer extends Component {
 			</DropDownText>
 		</DropDownItem>
 	}
+
 	renderDropDownSorting = (sortDirection) => {
 		const { visibleColumns } = this.state
 		return <DropDownSection>
@@ -302,6 +309,7 @@ export default class ViewContainer extends Component {
 			</DropDownSubItem>
 		</DropDownSection>
 	}
+
 	renderVisibleSortOption = (sortOpen, sortDirection) => {
 
 		return <DropDownContainer onMouseLeave={this.handleSortOpen(false)}>
@@ -342,6 +350,8 @@ export default class ViewContainer extends Component {
 			<Input innerRef={this.createInputRef} onChange={this.handleSearch} value={searchString} onBlur={() => this.state.inputFocus ? this.setState({ inputFocus: false }) : null} />
 		</SearchContainer>
 	}
+
+	//#endregion
 
 	render() {
 		const { view, searchString, pageSize, pageSizeOpen, sortOpen, sortDirection, sortColumn, funcOpen } = this.state
