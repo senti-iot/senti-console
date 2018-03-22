@@ -7,7 +7,7 @@ export const HeaderColumnsContainer = styled.div`
 	display:grid;
 	grid-template-columns: repeat(${p => p.columnCount}, 1fr);
 	flex: 1;
-	margin-right: 25px;
+	margin-right: 35px;
 	margin-left: 4px;
 `
 export const DraggableHeader = Cell.extend`
@@ -31,7 +31,6 @@ export const LabelHeader = Cell.extend`
 	color: #fff;
 	display:flex;
 	justify-content: space-between;
-	padding-left: 8px;
 	&:after{
 		${p => p.active ? `
 		font-weight: 700;

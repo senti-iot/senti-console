@@ -9,7 +9,7 @@ export const HeaderListContainer = styled.div`
 	color: #FFFFFF;
 	padding: 5px;
 	border-radius: 4px;
-	margin: 10px 0px;
+	margin: 10px 5px;
 	min-height:30px;
 `
 
@@ -82,7 +82,7 @@ export const ChangeViewButtonContainer = styled.div`
 	justify-content:flex-end;
 	flex-flow: row nowrap;
 	align-items:center;
-	margin: 4px;
+	/* margin: 4px; */
 `
 
 export const ChangeViewButton = styled.div`

@@ -101,11 +101,11 @@ export default class MapContainer extends Component {
 	render() {
 		const { mapType, dataSet } = this.state
 		return (
-			<div style={{ width: '100%', height: '100%', position: 'relative' }}>
-				<div style={{ zIndex: 2, position: 'absolute', top: '10px', left: '70%' }}>
-					<button id={1} onClick={this.changeMapType}>Simple</button>
-					<button id={2} onClick={this.changeMapType}>Satellite</button>
-					<button id={3} onClick={this.changeMapType}>Hybrid</button>
+			<div style={{ height: '100%', position: 'relative', margin: 5 }}>
+				<div style={{ zIndex: 2, position: 'absolute', top: '10px', left: '75%' }}>
+					<button id={1} onClick={this.changeMapType} style={{ marginLeft: 4 }}>Simple</button>
+					<button id={2} onClick={this.changeMapType} style={{ marginLeft: 4 }}>Satellite</button>
+					<button id={3} onClick={this.changeMapType} style={{ marginLeft: 4 }}>Hybrid</button>
 				</div>
 				{/* <div style={{ 'zIndex': '0', 'paddingLeft': '800px', 'paddingTop': '100px', 'position': 'absolute' }}>
 					{dataSet ? dataSet.map((item, index) => {
@@ -128,9 +128,9 @@ export default class MapContainer extends Component {
 				<Map center={[57.043271, 9.921155]} zoom={13} attributionControl={false} style={{
 					height: '100%',
 					width: '100%',
-					margin: '0 auto',
+					// margin: ,
 					zIndex: '1',
-					borderRadius: '5px'
+					borderRadius: '4px'
 				}}>
 					<TileLayer
 						url={mapType === 1 ? "https://gc2.io/mapcache/baselayers/tms/1.0.0/geodk.bright/{z}/{x}/{-y}.png?{s}" ://"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" :

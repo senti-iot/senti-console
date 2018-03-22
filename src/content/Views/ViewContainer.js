@@ -365,7 +365,7 @@ export default class ViewContainer extends Component {
 				{this.renderChangeViewOptions(view)}
 			</FunctionBar>
 			{this.renderView(pageSize, view, sortColumn, sortDirection)}
-			<Pagination items={this.filterItems(this.props.items)} onChangePage={this.handlePageChange} pageSize={pageSize} />
+			{view !== 2 ? <Pagination items={this.filterItems(this.props.items)} onChangePage={this.handlePageChange} pageSize={pageSize} /> : null}
 		</View>
 
 	}

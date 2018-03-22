@@ -49,7 +49,7 @@ export default class ListView extends PureComponent {
 		return (
 			<React.Fragment>
 				<HeaderListContainer >
-					<Checkbox size={'medium'} style={{ marginLeft: 4 }} />
+					<Checkbox size={'medium'} />
 					<SortableList
 						lockAxis={'x'}
 						hideSortableGhost={true}
