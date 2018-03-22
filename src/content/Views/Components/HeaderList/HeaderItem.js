@@ -6,9 +6,8 @@ import { Text } from '../../../List/ListStyles'
 const HeaderItem = SortableElement(({ c, index, onClick, activeColumnSorting, sortDirection }) => {
 
 	var column = c.column.replace('_', ' ')
-	column = column.toLowerCase().replace(/(^| )(\w)/g, s => s.toUpperCase()) 
-	var str = 'some space'
-	console.log(str.indexOf(' '))
+	column = column.toLowerCase().replace(/(^| )(\w)/g, s => s.toUpperCase())
+
 	return <DraggableHeader>
 		<LabelHeader onClick={onClick} active={activeColumnSorting(c.column)} sorting={sortDirection}>
 			<Text title={column}>{column.charAt(0).toUpperCase() + column.slice(1)}</Text>

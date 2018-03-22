@@ -9,7 +9,6 @@ export default class ListCard extends PureComponent {
 
 		this.state = {
 			expand: false,
-			checked: false,
 			cardExpand: false
 		}
 	}
@@ -32,18 +31,18 @@ export default class ListCard extends PureComponent {
 	}
 
 	onChecked = (isChecked) => {
-		this.props.onChecked(this.props.id, isChecked)
-		this.setState({ checked: !this.state.checked })
+		this.props.onChecked(this.props.item.id, isChecked)
+		// this.setState({ checked: !this.state.checked })
 	}
 
 	render() {
-		const { checked, expand } = this.state
-		const { item, column, columnCount } = this.props
+		const { expand } = this.state
+		const { item, column, columnCount, isChecked } = this.props
 		return (
 			<React.Fragment>
 				<ListCardItem>
-					<Checkbox size={'medium'} onChange={this.onChecked} />
-					<ListItemContainer selected={checked} columnCount={columnCount}>
+					<Checkbox isChecked={isChecked} size={'medium'} onChange={this.onChecked} />
+					<ListItemContainer selected={isChecked} columnCount={columnCount}>
 						{column.map((c, cIndex) => {
 							return c.visible ? <Cell key={cIndex}>
 
@@ -74,8 +73,8 @@ export default class ListCard extends PureComponent {
 								<Icon color={'#5E5E5E'} icon={'library_add'} iconSize={23} />
 							</Button>
 						</ButtonContainer>
-						<ExpandButtonContainer selected={checked} onClick={this.onExpand}>
-							<Icon icon={'more_vert'} color={'#FFF'} active={checked} iconSize={23} />
+						<ExpandButtonContainer selected={isChecked} onClick={this.onExpand}>
+							<Icon icon={'more_vert'} color={'#FFF'} active={isChecked} iconSize={23} />
 						</ExpandButtonContainer>
 					</ControlsContainer>
 				</ListCardItem>

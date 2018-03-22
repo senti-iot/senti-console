@@ -22,7 +22,7 @@ class App extends Component {
 							Hello World
 						</Tab>
 					</Menu>
-					<Menu label={'Projekter'}>
+					<Menu label={'Projekter'} route={'/projekter'}>
 						<Tab label={'Projekter'} icon={'view_module'} route={''}>
 							<ViewContainer items={mockData}/>
 						</Tab>

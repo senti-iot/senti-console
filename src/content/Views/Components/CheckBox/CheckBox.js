@@ -4,25 +4,25 @@ import { StyledCheckbox, CheckMarkIco } from './CheckboxStyles'
 
 class Checkbox extends Component {
 
-	constructor(props) {
-		super(props)
+	// constructor(props) {
+	// 	super(props)
 
-		this.state = {
-			isChecked: false
-		}
-	}
-	shouldComponentUpdate = (nextProps, nextState) => {
-		if (nextState.isChecked !== this.state.isChecked)
-			return true
-		else
-			return false
-	}
+	// 	// this.state = {
+	// 	// 	isChecked: this.props.isChecked
+	// 	// }
+	// }
+	// shouldComponentUpdate = (nextProps, nextState) => {
+	// 	if (nextState.isChecked !== this.state.isChecked)
+	// 		return true
+	// 	else
+	// 		return false
+	// }
 
 	handleChange = () => {
 		if (this.props.onChange) {
-			this.props.onChange(!this.state.isChecked)
+			this.props.onChange(!this.props.isChecked)
 		}
-		this.setState({ isChecked: !this.state.isChecked })
+		// this.setState({ isChecked: !this.state.isChecked })
 
 
 	}
@@ -33,7 +33,7 @@ class Checkbox extends Component {
 			<StyledCheckbox size={size} style={{ ...this.props.style }}>
 				<input
 					type="checkbox"
-					checked={this.state.isChecked}
+					checked={this.props.isChecked}
 					onChange={this.handleChange}
 				/>
 				<CheckMarkIco className="checkmark" size={size}></CheckMarkIco>

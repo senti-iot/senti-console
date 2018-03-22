@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import ListItem from '../List/ListItem'
 import { ListContainer, HeaderListContainer } from './ViewStyles'
 import Checkbox from './Components/CheckBox/CheckBox'
 import SortableList from './Components/HeaderList/HeaderContainer'
 
-export default class ListView extends PureComponent {
+export default class ListView extends Component {
 	constructor(props) {
 		super(props)
 
@@ -73,6 +73,7 @@ export default class ListView extends PureComponent {
 								item={c}
 								key={i}
 								onChecked={this.onCheckedItem}
+								isChecked={this.state.checkedItems.findIndex(o => o === c.id) !== -1 ? true : false}
 							/>
 						) : <div>No Items</div>}
 				</ListContainer>
