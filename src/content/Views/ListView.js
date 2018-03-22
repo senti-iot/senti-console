@@ -11,13 +11,20 @@ export default class ListView extends Component {
 		this.state = {
 			// pageOfItems: [],
 			checkedItems: [],
-			dragging: false
+			dragging: false,
+			checkBox: false
 		}
 	}
 
 	handleSort = (column) => e => {
 		this.props.handleSort(column)(e)
 	}
+	
+	componentWillUpdate = (nextProps, nextState) => {
+		if (nextProps.items !== this.props.items)
+			this.setState({ checkBox: false })
+	}
+
 
 	onCheckedItem = (id, add) => {
 		var newArr = this.state.checkedItems
@@ -28,7 +35,15 @@ export default class ListView extends Component {
 		this.setState({ checkedItems: newArr })
 
 	}
-
+	onHeaderCheckBox = (add) => {
+		var newArr = this.state.checkedItems
+		var Items = this.props.items.map(c => c.id)
+		if (add)
+			newArr.push(...Items)
+		else
+			newArr = newArr.filter(c => !Items.includes(c))
+		this.setState({ checkedItems: newArr, checkBox: add })
+	}
 	activeColumnSorting = (col) => {
 		return col === this.props.sortColumn ? true : false
 	}
@@ -49,7 +64,7 @@ export default class ListView extends Component {
 		return (
 			<React.Fragment>
 				<HeaderListContainer >
-					<Checkbox size={'medium'} />
+					<Checkbox size={'medium'} isChecked={this.state.checkBox} onChange={this.onHeaderCheckBox} />
 					<SortableList
 						lockAxis={'x'}
 						hideSortableGhost={true}
