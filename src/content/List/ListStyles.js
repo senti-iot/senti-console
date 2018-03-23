@@ -66,7 +66,8 @@ export const ButtonContainer = styled.div`
 	justify-content: space-around;
 	background: #d5d5d5;
 	height: 100%;
-	transition: all 250ms cubic-bezier(.87,-.41,.19,1.44);
+	/* transition: all 250s cubic-bezier(.87,-.41,.19,1.44); */
+	transition: all 300ms ease;
 	border-radius: 3px;
 	overflow:hidden;
 `
@@ -75,6 +76,9 @@ export const ControlsContainer = styled.div`
 	flex-flow:row nowrap;
 	justify-self: end;
 	justify-content: right;
+	/* transition: all 250ms cubic-bezier(.87,-.41,.19,1.44); */
+	transition: all 300ms ease;
+	width: ${p => p.horizOpen ? '115px' : '15px'};
 `
 export const Button = styled.div`
 	opacity: ${p => p.horizOpen ? '1' : '0'};
@@ -84,5 +88,6 @@ export const Button = styled.div`
 		background: #E6E6E6;
 		border: 1px solid #E6E6E6;
 	}
-	transition: opacity 0.1s cubic-bezier(.87,-.41,.19,1.44);
+	/* transition: opacity 0.1s cubic-bezier(.87,-.41,.19,1.44); */
+	transition: all 300ms ease;
 `
