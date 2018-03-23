@@ -5,13 +5,16 @@ import { AppContainer, Header, MenuPanel, Menu, Tab, Footer } from 'odeum-app'
 import theme from './utils/theme'
 import Home from './content/Home/Homepage'
 import ViewContainer from 'content/Views/ViewContainer'
-
+import { Helmet } from 'react-helmet'
 import mockData from './utils/mockData'
 
 class App extends Component {
 	render() {
 		return (
 			<AppContainer theme={theme}>
+				<Helmet>
+					<title>Senti</title>
+				</Helmet>
 				<Header logo={theme.logo} />
 				<MenuPanel>
 					<Menu route={'/'}>
@@ -24,7 +27,7 @@ class App extends Component {
 					</Menu>
 					<Menu label={'Projekter'} route={'/projekter'}>
 						<Tab label={'Projekter'} icon={'view_module'} route={''}>
-							<ViewContainer items={mockData}/>
+							<ViewContainer items={mockData} />
 						</Tab>
 					</Menu>
 				</MenuPanel>

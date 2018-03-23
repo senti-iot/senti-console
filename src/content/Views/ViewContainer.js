@@ -70,14 +70,24 @@ export default class ViewContainer extends Component {
 			})
 			return contains.indexOf(true) !== -1 ? true : false
 		})
-		switch (sortDirection) {
-			case true:
-				return filtered.sort((a, b) => a[sortColumn] > b[sortColumn] ? -1 : a[sortColumn] < b[sortColumn] ? 1 : 0)
-			case false:
-				return filtered.sort((a, b) => a[sortColumn] < b[sortColumn] ? -1 : a[sortColumn] > b[sortColumn] ? 1 : 0)
-			default:
-				return filtered
-		}
+		if (sortColumn === 'user')
+			switch (sortDirection) {
+				case true:
+					return filtered.sort((a, b) => a[sortColumn].name > b[sortColumn].name ? -1 : a[sortColumn].name < b[sortColumn].name ? 1 : 0)
+				case false:
+					return filtered.sort((a, b) => a[sortColumn].name < b[sortColumn].name ? -1 : a[sortColumn].name > b[sortColumn].name ? 1 : 0)
+				default:
+					return filtered
+			}
+		else
+			switch (sortDirection) {
+				case true:
+					return filtered.sort((a, b) => a[sortColumn] > b[sortColumn] ? -1 : a[sortColumn] < b[sortColumn] ? 1 : 0)
+				case false:
+					return filtered.sort((a, b) => a[sortColumn] < b[sortColumn] ? -1 : a[sortColumn] > b[sortColumn] ? 1 : 0)
+				default:
+					return filtered
+			}
 	}
 
 	changeView = (int) => (e) => {

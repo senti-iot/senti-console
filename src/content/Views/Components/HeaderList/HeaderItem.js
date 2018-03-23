@@ -7,7 +7,12 @@ const HeaderItem = SortableElement(({ c, index, onClick, activeColumnSorting, so
 
 	var column = c.column.replace('_', ' ')
 	column = column.toLowerCase().replace(/(^| )(\w)/g, s => s.toUpperCase())
-
+	if (column === 'user')
+		return <DraggableHeader>
+			<LabelHeader onClick={onClick} active={activeColumnSorting(c.column.name)} sorting={sortDirection}>
+				<Text title={column}>{column.charAt(0).toUpperCase() + column.slice(1)}</Text>
+			</LabelHeader>
+		</DraggableHeader>
 	return <DraggableHeader>
 		<LabelHeader onClick={onClick} active={activeColumnSorting(c.column)} sorting={sortDirection}>
 			<Text title={column}>{column.charAt(0).toUpperCase() + column.slice(1)}</Text>
