@@ -32,39 +32,48 @@ export default class ExpandedCardItem extends Component {
 							<FormImg img={item.img ? item.img : 'https://picsum.photos/1920/1404/?random=0'} style={{ height: '40%' }} />
 							<div style={{ display: 'flex', height: 50, fontSize: 26, width: '100%', justifyContent: 'flex-start', alignItems: 'flex-start', margin: 4, flexFlow: 'row nowrap' }}>
 								<Text style={{ marginLeft: 8, display: 'flex', flexFlow: 'column', maxHeight: '' }} title={item.title}>{item.title}
-									<Text style={{ fontSize: '12px' }}>{item.address}</Text>
+									<div style={{ fontSize: '12px', maxHeight: '', maxWidth: '' }}>{item.address}</div>
 								</Text>
 
 								<Text style={{ marginLeft: 'auto', position: 'relative', overflow: 'visible' }}>
-									<img style={{ borderRadius: '50%', position: 'absolute', top: '-30px', left: 'calc(100% - 60px)', zIndex: 8 }} src={item.user.img} height="30px" alt="" />
-									<Text style={{ marginRight: 8 }}>{item.user.name}</Text>
+									<Text style={{ /* position: 'absolute', top: '-30px', left: 'calc(100% - 60px)', zIndex: 8, */marginRight: 8 }}>{item.user.name}</Text>
+									<img style={{ borderRadius: '50%', /*  position: 'absolute', top: '-30px', left: 'calc(100% - 60px)', zIndex: 8 */ }} src={item.user.img} height="30px" alt="" />
 								</Text>
 							</div>
 							<ExpandedProjectInfoContainer>
 								<div style={{ width: '80%', height: '80%', display: 'flex', justifyContent: 'space-between' }}>
 
 									<ExpandedSection style={{ background: '#fbfbfb', height: '100%', flexFlow: 'column' }}>
-										<ExpandedSection>
-											<ProjectInfoTitle>
-												{'Seneste Registering'}
-											</ProjectInfoTitle>
-											<ProjectInfo>
+
+										<ProjectInfoTitle style={{ fontSize: 22, fontWeight: 700 }}>
+											{'Seneste Registering'}
+										</ProjectInfoTitle>
+										<ProjectInfo style={{ display: 'flex', flexFlow: 'column' }}>
+											<div style={{ background: '#dfdfdf', padding: 4, marginTop: 4, borderRadius: 4 }}>
 												{item.seneste_reg.toLocaleDateString()}
-											</ProjectInfo>
-										</ExpandedSection>
+											</div>
+											<div style={{ background: '#dfdfdf', padding: 4, marginTop: 4, borderRadius: 4 }}>
+												{item.seneste_reg.toLocaleDateString()}
+											</div>
+											<div style={{ background: '#dfdfdf', padding: 4, marginTop: 4, borderRadius: 4 }}>
+												{item.seneste_reg.toLocaleDateString()}
+											</div>
+
+										</ProjectInfo>
 									</ExpandedSection>
 
 									<ExpandedSection style={{ background: '#fbfbfb', height: '100%', flexFlow: 'column' }}>
-										<ExpandedSection>
-											<ProjectInfoCategory>
-												<ProjectInfoTitle>
-													{'Kontakt'}
-												</ProjectInfoTitle>
-												<ProjectInfo>
-													{item.user.name}
-												</ProjectInfo>
-											</ProjectInfoCategory>
-										</ExpandedSection>
+
+										<ProjectInfoCategory>
+											<ProjectInfoTitle style={{ fontSize: 22, fontWeight: 700 }}>
+												{'Enheder'}
+											</ProjectInfoTitle>
+											<ProjectInfo style={{ display: 'flex', flexFlow: 'column' }}>
+												<div style={{ background: '#dfdfdf', padding: 4, marginTop: 4, borderRadius: 4 }}>
+													{item.devices}
+												</div>
+											</ProjectInfo>
+										</ProjectInfoCategory>
 									</ExpandedSection>
 									<ExpandedSection style={{ background: '#fbfbfb', height: '100%', flexFlow: 'column' }}>
 										<ExpandedSection>
