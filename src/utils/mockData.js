@@ -15,6 +15,7 @@ _.range(0, 150).map(p => {
 
 	return Projekter.push({
 		id: p,
+		address: faker.address.city() + ' ' + faker.address.zipCode() + ' ' + faker.address.streetName(),
 		title: faker.name.lastName(),
 		description: faker.lorem.words(20),
 		open_date: faker.date.between("2015-01-01", "2015-01-31"),

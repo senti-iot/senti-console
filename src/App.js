@@ -7,7 +7,7 @@ import Home from './content/Home/Homepage'
 import ViewContainer from 'content/Views/ViewContainer'
 import { Helmet } from 'react-helmet'
 import mockData from './utils/mockData'
-
+import ExpandedCardItem from './content/Card/ExpandedCardItem'
 class App extends Component {
 	render() {
 		return (
@@ -29,6 +29,9 @@ class App extends Component {
 						<Tab label={'Projekter'} icon={'view_module'} route={''}>
 							<ViewContainer items={mockData} />
 						</Tab>
+					</Menu>
+					<Menu label={'Expanded'}>
+						<ExpandedCardItem item={mockData[0]} />
 					</Menu>
 				</MenuPanel>
 				<Footer />

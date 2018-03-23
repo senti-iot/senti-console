@@ -30,7 +30,7 @@ export default class ViewContainer extends Component {
 		// var settings = JSON.parse(window.localStorage.getItem('visibleColumns')) || undefined
 		this.state = {
 			inputFocus: false,
-			view: 1,
+			view: 0,
 			pageSize: 25,
 			searchString: '',
 			sortOpen: false,

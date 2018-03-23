@@ -32,6 +32,17 @@ export const Shadow = FormCardContainer.extend`
 	min-width: 250px;
 	box-shadow: 2px 2px 8px 0px rgba(0,0,0,0.3);
 `
+export const ExpandedShadow = Shadow.extend`
+	width:100%;
+	height: 100%;
+`
+export const ExpandedSection = styled.div`
+	padding: 5px 10px;
+	border-radius: 5px;
+	background: #e3e3e3;
+
+`
+
 export const FormImg = styled.div`
 	width: 100%;
 	height: 150px;
@@ -56,6 +67,10 @@ export const ProjectInfoContainer = styled.div`
     z-index: 3;
 	border-radius: 0px 0px 4px 4px;
 	width:100%;
+`
+
+export const ExpandedProjectInfoContainer = ProjectInfoContainer.extend`
+	margin-top: 30px;
 `
 
 export const ProjectInfoCategory = styled.div`
