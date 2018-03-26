@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { ListItemContainer, ExpandButtonContainer, Text, ListCardItem, Button, ButtonContainer, ControlsContainer, Cell } from './ListStyles'
 import Icon from 'odeum-ui/lib/components/Icon/Icon'
 import Checkbox from '../Views/Components/CheckBox/CheckBox'
-
+import ExpandedCardItem from '../Card/ExpandedCardItem'
 export default class ListCard extends PureComponent {
 	constructor(props) {
 		super(props)
@@ -26,6 +26,9 @@ export default class ListCard extends PureComponent {
 	// 	}
 	// }
 
+	expandCard = () => {
+		this.setState({ cardExpand: !this.state.cardExpand })
+	}
 	onExpand = () => {
 		this.setState({ expand: !this.state.expand })
 	}
@@ -36,10 +39,13 @@ export default class ListCard extends PureComponent {
 	}
 
 	render() {
-		const { expand } = this.state
+		const { expand, cardExpand } = this.state
 		const { item, column, columnCount, isChecked } = this.props
 		return (
 			<React.Fragment>
+				{cardExpand && <ExpandedCardItem {...this.props} handleVerticalExpand={this.expandCard} />
+
+				}
 				<ListCardItem>
 					<Checkbox isChecked={isChecked} size={'medium'} onChange={this.onChecked} />
 					<ListItemContainer selected={isChecked} columnCount={columnCount}>
@@ -61,9 +67,9 @@ export default class ListCard extends PureComponent {
 
 						})}
 					</ListItemContainer>
-					<ControlsContainer horizOpen={expand}>
+					<ControlsContainer horizOpen={expand} onMouseLeave={expand ? this.onExpand : null}>
 						<ButtonContainer horizOpen={expand} style={{ flexFlow: 'row nowrap', borderRadius: 0, height: 'inherit' }}>
-							<Button horizOpen={expand}>
+							<Button horizOpen={expand} onClick={this.expandCard}>
 								<Icon color={'#5E5E5E'} icon={'mode_edit'} iconSize={23} />
 							</Button>
 							<Button horizOpen={expand}>

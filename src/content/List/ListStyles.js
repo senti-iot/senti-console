@@ -102,14 +102,14 @@ export const ControlsContainer = styled.div`
 `
 export const Button = styled.div`
 	opacity: ${p => p.horizOpen ? '1' : '0'};
-	border-radius: 100px;
+	border-radius: 4px;
 	
 	/* transition: opacity 0.1s cubic-bezier(.87,-.41,.19,1.44); */
 	transition: all 300ms ease;
 	cursor: pointer;
 	
 	&:hover{
-		background: #E6E6E6;
-		border: 1px solid #E6E6E6;
+		background: ${p => p.theme.tab.hover};
+		/* border: 1px solid #E6E6E6; */
 	}
 `
