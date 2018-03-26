@@ -95,7 +95,7 @@ export const ControlsContainer = styled.div`
 	flex-flow:row nowrap;
 	justify-content: right;
 	
-	width: ${p => p.horizOpen ? '115px' : '15px'};
+	/* width: ${p => p.horizOpen ? '115px' : '15px'}; */
 
 	/* transition: all 250ms cubic-bezier(.87,-.41,.19,1.44); */
 	transition: all 300ms ease;

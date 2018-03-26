@@ -74,6 +74,7 @@ export const OverlayPreventPropagation = styled.div`
 	width: 80%;
 	height: 80%;
 	background: white;
+	border-radius: 4px;
 `
 
 export const ExpHeader = styled.div`
