@@ -9,6 +9,7 @@ import CardView from './CardView'
 import ListView from './ListView'
 import MapView from './MapView'
 import Pagination from '../Pagination/Pagination'
+import ExpandedCardItem from '../Card/EmptyExpandedCardItem'
 
 // Styles
 import { Text } from '../List/ListStyles'
@@ -36,6 +37,7 @@ export default class ViewContainer extends Component {
 			sortOpen: false,
 			pageSizeOpen: false,
 			funcOpen: false,
+			funcNewProject: false,
 			sortColumn: /* settings ? settings[settings.findIndex(c => c.visible === true)].column :  */Object.keys(this.props.items[0])[0],
 			sortDirection: false,
 			visibleColDropDown: false,
@@ -231,7 +233,12 @@ export default class ViewContainer extends Component {
 			</DropDown>
 		</DropDownContainer>
 	}
-
+	handleFunctionNewProject = () => {
+		this.setState({ funcNewProject: !this.state.funcNewProject })
+	}
+	renderFunctionNewProject = () => {
+		return <ExpandedCardItem handleVerticalExpand={this.handleFunctionNewProject} />
+	}
 	renderFunctions = (funcOpen) => {
 		return <DropDownContainer onMouseLeave={this.handleFunctionsOpen(false)} >
 			<DropDownButton onMouseEnter={this.handleFunctionsOpen(true)} style={{ width: 100 }}>
@@ -239,7 +246,7 @@ export default class ViewContainer extends Component {
 			</DropDownButton>
 			<Margin />
 			{funcOpen && <DropDown>
-				<DropDownItem>Nyt Projekt</DropDownItem>
+				<DropDownItem onClick={this.handleFunctionNewProject}>Nyt Projekt</DropDownItem>
 				<DropDownItem>Del en Projekt</DropDownItem>
 				<DropDownItem>Foj til favoritter</DropDownItem>
 				<DropDownItem>Foj til Dashboard</DropDownItem>
@@ -364,8 +371,10 @@ export default class ViewContainer extends Component {
 	//#endregion
 
 	render() {
-		const { view, searchString, pageSize, pageSizeOpen, sortOpen, sortDirection, sortColumn, funcOpen } = this.state
+		const { funcOpen, funcNewProject } = this.state
+		const { view, searchString, pageSize, pageSizeOpen, sortOpen, sortDirection, sortColumn } = this.state
 		return <View>
+			{funcNewProject && this.renderFunctionNewProject()}
 			<FunctionBar>
 				{this.renderFunctions(funcOpen)}
 				<DayPickerRangeControllerWrapper />
