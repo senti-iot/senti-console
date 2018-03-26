@@ -12,4 +12,13 @@ body {
 
 .dragged {
 	background: #37a891;
+	pointer-events: auto !important;
+	cursor: grabbing !important;
+	cursor: -moz-grabbing !important;
+	cursor: -webkit-grabbing !important;
 }
+/* .dragged:hover {
+    cursor: -webkit-grabbing;
+    cursor:    -moz-grabbing;
+    cursor:         grabbing;
+} */
