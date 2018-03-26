@@ -3,7 +3,9 @@ import { Icon } from 'odeum-ui'
 import {
 	Text, FormCardContainer, FormImg, ProjectInfoContainer, ProjectInfoCategory, ProjectInfo, ProjectInfoTitle, HorizontalControls,
 	VerticalControls, VerticalButton, HorizontalButton, HorizontalControlsDrawer, Shadow, ControlButton, ProjectBarContainer, ProjectBarLabel,
-	ProjectBar
+	ProjectBar,
+	VerticalControlsButtons,
+	HorizontalButtonText
 } from './CardItemStyles'
 import ExpandedCardItem from './ExpandedCardItem'
 
@@ -27,7 +29,7 @@ export default class FormCard extends Component {
 		const { item, /* column */ } = this.props
 		return (
 			<React.Fragment>
-				{expand ? <ExpandedCardItem {...this.props} handleVerticalExpand={this.handleVerticalExpand}/> : null}
+				{expand ? <ExpandedCardItem {...this.props} handleVerticalExpand={this.handleVerticalExpand} /> : null}
 				<FormCardContainer>
 					<Shadow>
 						<FormImg img={item.img ? item.img : 'https://picsum.photos/1920/1404/?random=0'} />
@@ -75,22 +77,17 @@ export default class FormCard extends Component {
 							<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
 						</HorizontalControlsDrawer>
 						<HorizontalButton expand={horizontalExpand} onClick={this.handleHorizontalExpand}>
-							<div style={{ transform: 'perspective(20px) rotateX(20deg)' }}>
+							<HorizontalButtonText>
 								{'\u2022 \u2022 \u2022'}
-							</div>
+							</HorizontalButtonText>
 						</HorizontalButton>
 					</HorizontalControls>
 					<VerticalControls onClick={this.handleVerticalExpand}>
-						<div
-							style={{
-								display: 'flex',
-								flexFlow: 'column nowrap',
-								transform: 'perspective(40px) rotateY(-20deg)'
-							}}>
+						<VerticalControlsButtons>
 							<VerticalButton>{'\u2022'}</VerticalButton>
 							<VerticalButton>{'\u2022'}</VerticalButton>
 							<VerticalButton>{'\u2022'}</VerticalButton>
-						</div>
+						</VerticalControlsButtons>
 					</VerticalControls>
 				</FormCardContainer>
 			</React.Fragment>

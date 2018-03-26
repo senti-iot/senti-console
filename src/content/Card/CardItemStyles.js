@@ -4,33 +4,49 @@ import styled from "styled-components"
 
 export const Text = styled.div`
 	display:inline-block;
+	
 	text-overflow: ellipsis;
 	white-space:nowrap;
-	overflow:hidden;
+	
 	max-width: 200px;
 	max-height: 30px;
+	
+	overflow:hidden;
 `
-
+export const VerticalControlsButtons = styled.div`
+	display:flex;
+	flex-flow: column nowrap;
+	transform: perspective(40px) rotateY(-20deg);
+`
+export const HorizontalButtonText = styled.div`
+	transform: perspective(40px) rotateX(20deg);
+`
 export const FormCardContainer = styled.div`
-	position:relative;
 	display:flex;
 	flex-flow: column nowrap;
 	justify-content: center;
 	align-items:center;
-	border-radius: 4px;
+	
 	width: 250px;
 	height: 270px;
+
 	margin: 10px;
+	border-radius: 4px;
 	margin-bottom: 50px;
 	margin-right: 30px;
+	
+	position:relative;
 
 `
 export const Shadow = FormCardContainer.extend`
-	margin:0;
-	z-index: 2;
+	box-shadow: 2px 2px 8px 0px rgba(0,0,0,0.3);
+	
 	min-height: 270px;
 	min-width: 250px;
-	box-shadow: 2px 2px 8px 0px rgba(0,0,0,0.3);
+	
+	margin:0;
+	
+	z-index: 2;
 `
 
 

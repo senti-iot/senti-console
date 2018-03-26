@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import {
 	HorizontalControls,
-	VerticalControls, VerticalButton, HorizontalButton, HorizontalControlsDrawer, ControlButton, ProjectBarContainer, ProjectBarLabel,
-	ProjectBar,
+	VerticalControls, VerticalButton, HorizontalButton, HorizontalControlsDrawer, ControlButton, VerticalControlsButtons, /* ProjectBarContainer, ProjectBarLabel,
+	ProjectBar, */
 } from './CardItemStyles'
 
-import { ExpandedShadow, ExpandedProjectInfoContainer, ExpSection, Overlay, OverlayPreventPropagation, ExpHeader, ExpFormImg, ExpTitle, ExpAddress, UserContainer, Username, Avatar, ExpProjectInfoTitle, ExpProjectInfo, ExpProjectInfoItem } from './ExpandedCardStyles'
+import { ExpandedShadow, Overlay, OverlayPreventPropagation/*  ExpHeader, ExpFormImg, ExpTitle, ExpandedProjectInfoContainer, ExpSection, ExpAddress, UserContainer, Username, Avatar, ExpProjectInfoTitle, ExpProjectInfo, ExpProjectInfoItem  */ } from './ExpandedCardStyles'
 
 import { Icon } from 'odeum-ui'
 
@@ -21,14 +21,14 @@ export default class ExpandedCardItem extends Component {
 		e.stopPropagation()
 	}
 	render() {
-		const { item } = this.props
+		// const { item } = this.props
 		const horizontalExpand = false
 		return (
 			<Overlay onClick={this.props.handleVerticalExpand}>
 				<OverlayPreventPropagation onClick={this.preventPropagation()}>
 					<ExpandedShadow>
 						<ExpandedShadow>
-							<ExpFormImg img={item.img ? item.img : 'https://picsum.photos/1920/1404/?random=0'} />
+							{/* <ExpFormImg img={item.img ? item.img : 'https://picsum.photos/1920/1404/?random=0'} />
 							<ExpHeader>
 								<ExpTitle title={item.title}>{item.title}
 									<ExpAddress>{item.address}</ExpAddress>
@@ -100,7 +100,7 @@ export default class ExpandedCardItem extends Component {
 							<ProjectBarContainer>
 								<ProjectBarLabel progress={item.progress}>{item.progress ? item.progress + '%' : '0%'}</ProjectBarLabel>
 								<ProjectBar progress={item.progress} />
-							</ProjectBarContainer>
+							</ProjectBarContainer> */}
 						</ExpandedShadow>
 						<HorizontalControls expand={horizontalExpand} >
 							<HorizontalControlsDrawer expand={horizontalExpand}>
@@ -115,16 +115,11 @@ export default class ExpandedCardItem extends Component {
 							</HorizontalButton>
 						</HorizontalControls>
 						<VerticalControls onClick={this.handleVerticalExpand}>
-							<div
-								style={{
-									display: 'flex',
-									flexFlow: 'column nowrap',
-									transform: 'perspective(40px) rotateY(-20deg)'
-								}}>
+							<VerticalControlsButtons>
 								<VerticalButton>{'\u2022'}</VerticalButton>
 								<VerticalButton>{'\u2022'}</VerticalButton>
 								<VerticalButton>{'\u2022'}</VerticalButton>
-							</div>
+							</VerticalControlsButtons>
 						</VerticalControls>
 
 					</ExpandedShadow>

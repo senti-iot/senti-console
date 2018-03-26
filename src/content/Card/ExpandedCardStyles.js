@@ -22,6 +22,7 @@ export const ExpProjectInfoTitle = ProjectInfoTitle.extend`
 	font-weight: 700;
 `
 
+
 export const ExpSection = styled.div`
 	flex: 1;
 	display:flex;
