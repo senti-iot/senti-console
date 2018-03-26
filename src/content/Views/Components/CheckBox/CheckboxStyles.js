@@ -2,39 +2,38 @@ import styled from 'styled-components'
 
 
 export const Input = styled.input`
-display:none;
-&:checked{
-	background-color: ${p => p.theme.tab.selected};
-	display:block;
-}
-&:after{
-	left: 9px;
-	top: 5px;
-	width: ${({ size }) => sizes[size].checkmarkWidth};
-	height: ${({ size }) => sizes[size].checkmarkHeight};
-	border: solid white;
-	border-width: 0 3px 3px 0;
-	transform: rotate(45deg);
-}
+	display:none;
+	&:checked{
+		background-color: ${p => p.theme.tab.selected};
+		display:block;
+	}
+	&:after{
+		left: 9px;
+		top: 5px;
+		width: ${({ size }) => sizes[size].checkmarkWidth};
+		height: ${({ size }) => sizes[size].checkmarkHeight};
+		border: solid white;
+		border-width: 0 3px 3px 0;
+		transform: rotate(45deg);
+	}
 `
 export const CheckMarkIco = styled.span`
-position:absolute;
-top: 0;
-left: 0;
-width: ${({ size }) => sizes[size].width};
-height:  ${({ size }) => sizes[size].height};
-background-color: #D5d5d5;
-border-radius: 4px;
-&:after{
-	content: "";
-    position: absolute;
-    display: none;
-}
+	position:absolute;
+	top: 0;
+	left: 0;
+	width: ${({ size }) => sizes[size].width};
+	height:  ${({ size }) => sizes[size].height};
+	background-color: #D5d5d5;
+	border-radius: 4px;
+	&:after{
+		content: "";
+	    position: absolute;
+	    display: none;
+	}
 
-&:hover{
-	background-color: ${p => p.theme.tab.hover};
-}
-
+	&:hover{
+		background-color: ${p => p.theme.tab.hover};
+	}
 `
 export const StyledCheckbox = styled.label`
     display: flex;

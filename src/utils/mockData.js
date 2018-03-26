@@ -23,6 +23,7 @@ _.range(0, 150).map(p => {
 		tags: [p, p, p],
 		devices: [p, p + 1, p + 2],
 		progress: faker.random.number({ min: 0, max: 100 }),
+		hits: faker.random.number({ min: 0, max: 100000 }),
 		img: "https://picsum.photos/1920/1080/?random" + p,
 		seneste_reg: faker.date.between("2015-01-01", "2017-12-31"),
 	})

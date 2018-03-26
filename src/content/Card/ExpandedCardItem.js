@@ -43,7 +43,7 @@ export default class ExpandedCardItem extends Component {
 								<div style={{ width: '80%', height: '80%', display: 'flex', justifyContent: 'space-between' }}>
 
 									<ExpandedSection style={{ background: '#fbfbfb', height: '100%', flexFlow: 'column', flex: 1, marginLeft: 20 }}>
-										<ProjectInfoTitle style={{ fontSize: 22, fontWeight: 700 }}>
+										<ProjectInfoTitle style={{ width: '100%', display: 'flex', justifyContent: 'center', fontSize: 22, fontWeight: 700 }}>
 											{'Enheder'} ({item.devices.length})
 										</ProjectInfoTitle>
 										<ProjectInfo style={{ display: 'flex', flexFlow: 'column' }}>
@@ -61,7 +61,7 @@ export default class ExpandedCardItem extends Component {
 
 									<ExpandedSection style={{ background: '#fbfbfb', height: '100%', flexFlow: 'column', flex: 1, marginLeft: 20 }}>
 
-										<ProjectInfoTitle style={{ fontSize: 22, fontWeight: 700 }}>
+										<ProjectInfoTitle style={{ width: '100%', display: 'flex', justifyContent: 'center', fontSize: 22, fontWeight: 700 }}>
 											{'Seneste Registering'}
 										</ProjectInfoTitle>
 										<ProjectInfo style={{ display: 'flex', flexFlow: 'column' }}>
@@ -81,12 +81,12 @@ export default class ExpandedCardItem extends Component {
 
 									<ExpandedSection style={{ background: '#fbfbfb', height: '100%', flexFlow: 'column', flex: 1, marginLeft: 20 }}>
 
-										<ProjectInfoTitle style={{ fontSize: 22, fontWeight: 700 }}>
+										<ProjectInfoTitle style={{ width: '100%', display: 'flex', justifyContent: 'center', fontSize: 22, fontWeight: 700 }}>
 											{'Nøgletal for projekt'}
 										</ProjectInfoTitle>
 										<ProjectInfo style={{ display: 'flex', flexFlow: 'column' }}>
 											<div style={{ background: '#dfdfdf', padding: 4, marginTop: 4, borderRadius: 4 }}>
-												{item.seneste_reg.toLocaleDateString()}
+												Total hits:	{item.hits}
 											</div>
 											<div style={{ background: '#dfdfdf', padding: 4, marginTop: 4, borderRadius: 4 }}>
 												{item.seneste_reg.toLocaleDateString()}
