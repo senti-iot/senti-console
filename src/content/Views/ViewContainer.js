@@ -10,6 +10,7 @@ import ListView from './ListView'
 import MapView from './MapView'
 import Pagination from '../Pagination/Pagination'
 import ExpandedCardItem from '../Card/EmptyExpandedCardItem'
+import NewProject from './Components/Functions/NewProject'
 
 // Styles
 import { Text } from '../List/ListStyles'
@@ -237,7 +238,9 @@ export default class ViewContainer extends Component {
 		this.setState({ funcNewProject: !this.state.funcNewProject })
 	}
 	renderFunctionNewProject = () => {
-		return <ExpandedCardItem handleVerticalExpand={this.handleFunctionNewProject} />
+		return <ExpandedCardItem handleVerticalExpand={this.handleFunctionNewProject} >
+			<NewProject/>
+		</ExpandedCardItem>
 	}
 	renderFunctions = (funcOpen) => {
 		return <DropDownContainer onMouseLeave={this.handleFunctionsOpen(false)} >

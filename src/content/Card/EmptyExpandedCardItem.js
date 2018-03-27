@@ -28,6 +28,7 @@ export default class ExpandedCardItem extends Component {
 				<OverlayPreventPropagation onClick={this.preventPropagation()}>
 					<ExpandedShadow>
 						<ExpandedShadow>
+							{this.props.children}
 							{/* <ExpFormImg img={item.img ? item.img : 'https://picsum.photos/1920/1404/?random=0'} />
 							<ExpHeader>
 								<ExpTitle title={item.title}>{item.title}
@@ -101,6 +102,7 @@ export default class ExpandedCardItem extends Component {
 								<ProjectBarLabel progress={item.progress}>{item.progress ? item.progress + '%' : '0%'}</ProjectBarLabel>
 								<ProjectBar progress={item.progress} />
 							</ProjectBarContainer> */}
+						
 						</ExpandedShadow>
 						<HorizontalControls expand={horizontalExpand} >
 							<HorizontalControlsDrawer expand={horizontalExpand}>

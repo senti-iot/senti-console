@@ -37,6 +37,11 @@ export const ExpSection = styled.div`
 `
 
 export const ExpandedShadow = Shadow.extend`
+	display:flex;
+	flex-flow:column nowrap;
+	/* align-items: flex-start; */
+	/* justify-content: flex-start; */
+
 	width:100%;
 	height: 100%;
 `
