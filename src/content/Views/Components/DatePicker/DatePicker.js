@@ -7,7 +7,8 @@ import moment from 'moment'
 import omit from 'lodash/omit'
 import { DatePickerInput } from '../../ViewStyles'
 import { DayPickerRangeController } from 'react-dates'
-
+import { Icon } from 'odeum-ui'
+import { withTheme } from 'styled-components'
 // import { ScrollableOrientationShape } from 'react-dates'
 
 import { START_DATE, END_DATE, HORIZONTAL_ORIENTATION } from 'react-dates/src/constants'
@@ -151,10 +152,15 @@ class DayPickerRangeControllerWrapper extends React.Component {
 		return (
 			<div style={{ display: 'flex', position: 'relative', flexFlow: 'column nowrap' }}>
 				{showInputs &&
-					<DatePickerInput onClick={this.handleDatePickerOpen(true)}>
-						{startDateString}
-						&nbsp;{'-'}{'\u00A0'}
-						{endDateString}
+					<DatePickerInput style={{ ...this.props.style }} onClick={this.handleDatePickerOpen(true)}>
+						<div style={{ width: '30%', height: '100%', background: this.props.theme.tab.selected, display: 'flex', alignItems: 'center', padding: '0px 4px' }}>
+							<Icon icon={'date_range'} color={'#fff'} iconSize={20} style={{ margin: 3 }} />
+						</div>
+						<div style={{ padding: '0px 4px' }}>
+							{startDateString}
+							&nbsp;{'-'}{'\u00A0'}
+							{endDateString}
+						</div>
 					</DatePickerInput>
 				}
 
@@ -176,4 +182,4 @@ class DayPickerRangeControllerWrapper extends React.Component {
 DayPickerRangeControllerWrapper.propTypes = propTypes
 DayPickerRangeControllerWrapper.defaultProps = defaultProps
 
-export default DayPickerRangeControllerWrapper
+export default withTheme(DayPickerRangeControllerWrapper)

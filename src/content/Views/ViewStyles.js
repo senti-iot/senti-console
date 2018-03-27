@@ -35,10 +35,10 @@ export const SearchContainer = styled.div`
 	color: ${(props) => props.color ? props.color : '#2C3E50'};
     background: #ECF0F1;
 	margin: 0px 5px;
-    padding: 5px;
+    /* padding: 5px; */
     border: none;
 	border-radius: 4px;
-    
+	overflow:hidden;
 	outline: none;
 	box-sizing: border-box;
 	box-shadow: ${(props) => props.active ? `0 0 0 3px ` + props.theme.tab.selected : ``};
@@ -54,7 +54,8 @@ export const SearchContainer = styled.div`
     }
 `
 export const DatePickerInput = SearchContainer.extend`
-	padding: 0px 10px;
+	/* padding: 0px 10px; */
+	overflow: hidden;
 `
 export const View = styled.div`
 	display:flex;
