@@ -1,4 +1,4 @@
-import logo from './senti-logo.svg'
+import logo from './senti-logo2.svg'
 
 const theme = {
 	app: {
@@ -69,11 +69,11 @@ const theme = {
 		borderRadius: '4px'
 	},
 	button: {
-		background: '#3B97D3',
+		background: '#37a891',
 		selected: '#216795',
 		color: '#FFFFFF',
 		height: '30px',
-		hover: '#81C1EA'
+		hover: '#37e1bf'
 	}
 }
 
