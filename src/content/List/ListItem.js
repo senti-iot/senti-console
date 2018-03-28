@@ -62,7 +62,9 @@ export default class ListCard extends PureComponent {
 												{item[c.column].name}
 											</Text>
 										</React.Fragment> :
-										<Text title={item[c.column].toString()}>{item[c.column].toString()}</Text>}
+										c.column === 'img' ?
+											<Text> <img src={item[c.column]} height={30} alt={'Projekt Img'} /></Text> :
+											<Text title={item[c.column].toString()}>{item[c.column].toString()}</Text>}
 							</Cell> : null
 
 						})}

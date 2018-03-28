@@ -239,7 +239,7 @@ export default class ViewContainer extends Component {
 	}
 	renderFunctionNewProject = () => {
 		return <ExpandedCardItem handleVerticalExpand={this.handleFunctionNewProject} >
-			<NewProject/>
+			<NewProject />
 		</ExpandedCardItem>
 	}
 	renderFunctions = (funcOpen) => {
@@ -259,10 +259,11 @@ export default class ViewContainer extends Component {
 		</DropDownContainer>
 	}
 
-	renderDropDownItem = (label, icon, column) => {
+	renderDropDownItem = (label, icon, columnFunc, columnName) => {
+		const { visibleColumns } = this.state
 		return <DropDownItem>
-			<DropDownIcon>
-				<Icon icon={icon ? icon : 'visibility'} color={'#FFFFFF'} /* active={c.visible} */ />
+			<DropDownIcon onClick={columnFunc}>
+				<Icon icon={icon ? icon : 'visibility'} color={'#FFFFFF'} active={visibleColumns.find(c => c.column === columnName).visible ? true : false} />
 			</DropDownIcon>
 			<DropDownText>
 				<Text>
@@ -273,7 +274,7 @@ export default class ViewContainer extends Component {
 	}
 
 	renderDropDownSorting = (sortDirection) => {
-		const { visibleColumns } = this.state
+		// const { visibleColumns } = this.state
 		return <DropDownSection>
 			<DropDownSubSection>
 				<DropDownIcon>
@@ -286,11 +287,11 @@ export default class ViewContainer extends Component {
 				</DropDownText>
 			</DropDownSubSection>
 			<DropDownSubItem>
-				<DropDownIcon onClick={this.handleVisibleColumn('title')}>
+				{/* <DropDownIcon onClick={this.handleVisibleColumn('title')}>
 					<Icon icon={"visibility"}
 						color={'#FFFFFF'}
 						active={visibleColumns.find(c => c.column === 'title').visible ? true : false} />
-				</DropDownIcon>
+				</DropDownIcon> */}
 				<DropDownText onClick={this.handleSort('title')} active={this.handleActiveColumn('title')} sorting={sortDirection}>
 					<Text>
 						Alfabetisk
@@ -298,9 +299,9 @@ export default class ViewContainer extends Component {
 				</DropDownText>
 			</DropDownSubItem>
 			<DropDownSubItem>
-				<DropDownIcon onClick={this.handleVisibleColumn('open_date')}>
+				{/* <DropDownIcon onClick={this.handleVisibleColumn('open_date')}>
 					<Icon icon={"visibility"} color={'#FFFFFF'} active={visibleColumns.find(c => c.column === 'open_date').visible ? true : false} />
-				</DropDownIcon>
+				</DropDownIcon> */}
 				<DropDownText onClick={this.handleSort('open_date')} active={this.handleActiveColumn('open_date')} sorting={sortDirection}>
 					<Text>
 						Dato
@@ -308,9 +309,9 @@ export default class ViewContainer extends Component {
 				</DropDownText>
 			</DropDownSubItem>
 			<DropDownSubItem>
-				<DropDownIcon onClick={this.handleVisibleColumn('seneste_reg')}>
+				{/* <DropDownIcon onClick={this.handleVisibleColumn('seneste_reg')}>
 					<Icon icon={"visibility"} color={'#FFFFFF'} active={visibleColumns.find(c => c.column === 'seneste_reg').visible ? true : false} />
-				</DropDownIcon>
+				</DropDownIcon> */}
 				<DropDownText onClick={this.handleSort('seneste_reg')} active={this.handleActiveColumn('seneste_reg')} sorting={sortDirection}>
 					<Text>
 						Senest aktiv
@@ -318,9 +319,9 @@ export default class ViewContainer extends Component {
 				</DropDownText>
 			</DropDownSubItem>
 			<DropDownSubItem>
-				<DropDownIcon onClick={this.handleVisibleColumn('progress')}>
+				{/* <DropDownIcon onClick={this.handleVisibleColumn('progress')}>
 					<Icon icon={"visibility"} color={'#FFFFFF'} active={visibleColumns.find(c => c.column === 'progress').visible ? true : false} />
-				</DropDownIcon>
+				</DropDownIcon> */}
 				<DropDownText onClick={this.handleSort('progress')} active={this.handleActiveColumn('progress')} sorting={sortDirection}>
 					<Text>
 						Antal
@@ -340,11 +341,11 @@ export default class ViewContainer extends Component {
 
 			{sortOpen && <DropDown style={{ width: 150 }}>
 				{this.renderDropDownSorting(sortDirection)}
-				{this.renderDropDownItem('Gennemfort i %', 'dashboard')}
-				{this.renderDropDownItem('Oprettet', 'visibility')}
-				{this.renderDropDownItem('Senest aktiv', 'info')}
-				{this.renderDropDownItem('Kontakt', 'people')}
-				{this.renderDropDownItem('Antal', 'menu')}
+				{this.renderDropDownItem('Gennemfort i %', 'visibility', this.handleVisibleColumn('progress'), 'progress')}
+				{this.renderDropDownItem('Oprettet', 'visibility', this.handleVisibleColumn('open_date'), 'open_date')}
+				{this.renderDropDownItem('Senest aktiv', 'visibility', this.handleVisibleColumn('seneste_reg'), 'seneste_reg')}
+				{this.renderDropDownItem('Kontakt', 'visibility', this.handleVisibleColumn('user'), 'user')}
+				{this.renderDropDownItem('Antal', 'visibility', this.handleVisibleColumn('hits'), 'hits')}
 			</DropDown>
 			}
 		</DropDownContainer>

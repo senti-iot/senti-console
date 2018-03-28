@@ -3,7 +3,7 @@ import ListItem from '../List/ListItem'
 import { ListContainer, HeaderListContainer } from './ViewStyles'
 import Checkbox from './Components/CheckBox/CheckBox'
 import SortableList from './Components/HeaderList/HeaderContainer'
-import ReactList from 'react-list'
+// import ReactList from 'react-list'
 export default class ListView extends Component {
 	constructor(props) {
 		super(props)
@@ -31,7 +31,6 @@ export default class ListView extends Component {
 
 
 	onCheckedItem = (id, add) => {
-		console.log(id, add)
 		var newArr = this.state.checkedItems
 		if (add)
 			newArr.push(id)
@@ -98,21 +97,15 @@ export default class ListView extends Component {
 				</HeaderListContainer>
 				<ListContainer >
 					{this.props.items.length !== 0 ?
-						<ReactList
-							length={this.props.items.length}
-							itemRenderer={this.renderListItem}
-						/>
-
-
-						/* 	this.props.items.map((c, i) =>
-								<ListItem
-									column={this.props.columns}
-									columnCount={this.handleActiveColumnCount}
-									item={c}
-									key={i}
-									onChecked={this.onCheckedItem}
-									isChecked={this.state.checkedItems.findIndex(o => o === c.id) !== -1 ? true : false}
-								/>)  */
+						this.props.items.map((c, i) =>
+							<ListItem
+								column={this.props.columns}
+								columnCount={this.handleActiveColumnCount}
+								item={c}
+								key={i}
+								onChecked={this.onCheckedItem}
+								isChecked={this.state.checkedItems.findIndex(o => o === c.id) !== -1 ? true : false}
+							/>)
 						: <div>No Items</div>}
 				</ListContainer>
 			</React.Fragment>
