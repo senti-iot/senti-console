@@ -15,6 +15,7 @@ import { START_DATE, END_DATE, HORIZONTAL_ORIENTATION } from 'react-dates/src/co
 // import isInclusivelyAfterDay from 'react-dates/src/utils/isInclusivelyAfterDay'
 
 const propTypes = forbidExtraProps({
+	theme: PropTypes.object,
 	// example props for the demo
 	autoFocusEndDate: PropTypes.bool,
 	initialStartDate: momentPropTypes.momentObj,
@@ -143,7 +144,8 @@ class DayPickerRangeControllerWrapper extends React.Component {
 			'autoFocusEndDate',
 			'initialStartDate',
 			'initialEndDate',
-			'showInputs'
+			'showInputs',
+			'theme'
 		])
 
 		const startDateString = startDate && startDate.format('DD.MM.YYYY')
