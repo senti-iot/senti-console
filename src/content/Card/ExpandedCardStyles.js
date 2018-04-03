@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { FormImg, Shadow, ProjectInfoContainer, Text, ProjectInfoTitle, ProjectInfo } from './CardItemStyles'
 import posed from "react-pose"
-import { tween, spring, easing } from 'popmotion'
+import { tween, easing } from 'popmotion'
 
 const expandedCardProps = {
 	open: {
