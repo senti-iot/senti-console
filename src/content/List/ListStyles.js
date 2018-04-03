@@ -77,19 +77,16 @@ export const ExpandButtonContainer = styled.div`
 	}
 `
 
-const poseProps = {
+const buttonContainerProps = {
 	open: {
 		x: '100px',
-		// opacity: '1'
-		// transition: (props) => tween({ ...props, duration: 1000 })
 	},
 	close: { x: '-15px' }
 }
-export const Poser = posed.div({ ...poseProps })
+export const buttonContainer = posed.div({ ...buttonContainerProps })
 
-export const ButtonContainer = styled(Poser) `
+export const ButtonContainer = styled(buttonContainer) `
 	position:absolute;
-	/* visibility: ${p => p.horizOpen ? 'visible' : 'hidden'}; */
 	align-self: bottom;
 	
 	display: flex;
@@ -98,37 +95,27 @@ export const ButtonContainer = styled(Poser) `
 	justify-content: space-around;
 	
 	min-height: 30px;
-	/* width: ${p => p.horizOpen ? '100px' : '0px'}; */
 	width: 100px;
+
 	background: #d5d5d5;
 	border-radius: 3px;
-	/* overflow:hidden; */
-	/* z-index: 3; */
-	/* transition: all 100ms ease; */
 `
 export const ControlsContainer = styled.div`
 	justify-self: end;
-	/* overflow:${p => !p.horizOpen ? 'hidden' : 'visible'}; */
+	position:relative;
+	
 	display:flex;
 	flex-flow:row nowrap;
 	justify-content: right;
-	position:relative;
-	/* width:100%; */
-	/* width: ${p => p.horizOpen ? '115px' : '15px'}; */
-
-	/* transition: all 250ms cubic-bezier(.87,-.41,.19,1.44); */
-	/* transition: all 300ms ease; */
 `
 export const Button = styled.div`
 	opacity: ${p => p.horizOpen ? '1' : '0'};
 	border-radius: 4px;
 	
-	/* transition: opacity 0.1s cubic-bezier(.87,-.41,.19,1.44); */
 	transition: all 300ms ease;
 	cursor: pointer;
 	
 	&:hover{
 		background: ${p => p.theme.tab.hover};
-		/* border: 1px solid #E6E6E6; */
 	}
 `

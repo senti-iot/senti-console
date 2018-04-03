@@ -154,7 +154,7 @@ class DayPickerRangeControllerWrapper extends React.Component {
 		return (
 			<div style={{ display: 'flex', position: 'relative', flexFlow: 'column nowrap' }}>
 				{showInputs &&
-					<DatePickerInput style={{ ...this.props.style }} onClick={this.handleDatePickerOpen(true)}>
+					<DatePickerInput style={{ ...this.props.style }} onClick={this.handleDatePickerOpen(true)} active={openDatePicker}>
 						<div style={{ width: '30%', height: '100%', background: this.props.theme.tab.selected, display: 'flex', alignItems: 'center', padding: '0px 4px' }}>
 							<Icon icon={'date_range'} color={'#fff'} iconSize={20} style={{ margin: 3 }} />
 						</div>

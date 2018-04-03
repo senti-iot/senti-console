@@ -29,7 +29,7 @@ export default class FormCard extends Component {
 		const { item, /* column */ } = this.props
 		return (
 			<React.Fragment>
-				{expand ? <ExpandedCardItem {...this.props} handleVerticalExpand={this.handleVerticalExpand} /> : null}
+				<ExpandedCardItem {...this.props} cardExpand={expand} handleVerticalExpand={this.handleVerticalExpand} />
 				<FormCardContainer>
 					<Shadow>
 						<FormImg img={item.img ? item.img : 'https://picsum.photos/1920/1404/?random=0'} />

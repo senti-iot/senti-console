@@ -5,7 +5,10 @@ import {
 	ProjectBar, */
 } from './CardItemStyles'
 
-import { ExpandedShadow, Overlay, OverlayPreventPropagation/*  ExpHeader, ExpFormImg, ExpTitle, ExpandedProjectInfoContainer, ExpSection, ExpAddress, UserContainer, Username, Avatar, ExpProjectInfoTitle, ExpProjectInfo, ExpProjectInfoItem  */ } from './ExpandedCardStyles'
+import {
+	ExpandedShadow, Overlay, OverlayPreventPropagation,
+	OpenSesame
+} from './ExpandedCardStyles'
 
 import { Icon } from 'odeum-ui'
 
@@ -24,110 +27,37 @@ export default class ExpandedCardItem extends Component {
 		// const { item } = this.props
 		const horizontalExpand = false
 		return (
-			<Overlay onClick={this.props.handleVerticalExpand}>
-				<OverlayPreventPropagation onClick={this.preventPropagation()}>
-					<ExpandedShadow>
+			<Overlay onClick={this.props.handleVerticalExpand} pose={this.props.cardExpand ? 'open' : 'close'}>
+				<OpenSesame pose={this.props.cardExpand ? 'open' : 'close'}>
+					<OverlayPreventPropagation onClick={this.preventPropagation()}>
 						<ExpandedShadow>
-							{this.props.children}
-							{/* <ExpFormImg img={item.img ? item.img : 'https://picsum.photos/1920/1404/?random=0'} />
-							<ExpHeader>
-								<ExpTitle title={item.title}>{item.title}
-									<ExpAddress>{item.address}</ExpAddress>
-								</ExpTitle>
+							<ExpandedShadow>
+								{this.props.children}
+							</ExpandedShadow>
+							<HorizontalControls expand={horizontalExpand} >
+								<HorizontalControlsDrawer expand={horizontalExpand}>
+									<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
+									<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
+									<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
+								</HorizontalControlsDrawer>
+								<HorizontalButton expand={horizontalExpand} onClick={this.handleHorizontalExpand}>
+									<div style={{ transform: 'perspective(20px) rotateX(20deg)' }}>
+										{'\u2022 \u2022 \u2022'}
+									</div>
+								</HorizontalButton>
+							</HorizontalControls>
+							<VerticalControls onClick={this.handleVerticalExpand}>
+								<VerticalControlsButtons>
+									<VerticalButton>{'\u2022'}</VerticalButton>
+									<VerticalButton>{'\u2022'}</VerticalButton>
+									<VerticalButton>{'\u2022'}</VerticalButton>
+								</VerticalControlsButtons>
+							</VerticalControls>
 
-								<UserContainer>
-									<Username>{item.user.name}</Username>
-									<Avatar src={item.user.img} alt="" />
-								</UserContainer>
-							</ExpHeader>
-							<ExpandedProjectInfoContainer>
-
-
-								<ExpSection>
-									<ExpProjectInfoTitle>
-										{'Enheder'} ({item.devices.length})
-									</ExpProjectInfoTitle>
-									<ExpProjectInfo>
-										<ExpProjectInfoItem>
-											{item.devices[0].toString()}
-										</ExpProjectInfoItem>
-										<ExpProjectInfoItem>
-											{item.devices[1].toString()}
-										</ExpProjectInfoItem>
-										<ExpProjectInfoItem>
-											{item.devices[2].toString()}
-										</ExpProjectInfoItem>
-									</ExpProjectInfo>
-								</ExpSection>
-
-								<ExpSection>
-
-									<ExpProjectInfoTitle>
-										{'Seneste Registering'}
-									</ExpProjectInfoTitle>
-									<ExpProjectInfo>
-										<ExpProjectInfoItem>
-											{item.seneste_reg.toLocaleDateString()}
-										</ExpProjectInfoItem>
-										<ExpProjectInfoItem>
-											{item.seneste_reg.toLocaleDateString()}
-										</ExpProjectInfoItem>
-										<ExpProjectInfoItem>
-											{item.seneste_reg.toLocaleDateString()}
-										</ExpProjectInfoItem>
-
-									</ExpProjectInfo>
-								</ExpSection>
-
-
-								<ExpSection>
-									<ExpProjectInfoTitle>
-										{'Nøgletal for projekt'}
-									</ExpProjectInfoTitle>
-									<ExpProjectInfo>
-										<ExpProjectInfoItem>
-											Total hits:	{item.hits}
-										</ExpProjectInfoItem>
-										<ExpProjectInfoItem>
-											{item.seneste_reg.toLocaleDateString()}
-										</ExpProjectInfoItem>
-										<ExpProjectInfoItem>
-											{item.seneste_reg.toLocaleDateString()}
-										</ExpProjectInfoItem>
-
-									</ExpProjectInfo>
-								</ExpSection>
-							</ExpandedProjectInfoContainer>
-							<ProjectBarContainer>
-								<ProjectBarLabel progress={item.progress}>{item.progress ? item.progress + '%' : '0%'}</ProjectBarLabel>
-								<ProjectBar progress={item.progress} />
-							</ProjectBarContainer> */}
-						
 						</ExpandedShadow>
-						<HorizontalControls expand={horizontalExpand} >
-							<HorizontalControlsDrawer expand={horizontalExpand}>
-								<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
-								<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
-								<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
-							</HorizontalControlsDrawer>
-							<HorizontalButton expand={horizontalExpand} onClick={this.handleHorizontalExpand}>
-								<div style={{ transform: 'perspective(20px) rotateX(20deg)' }}>
-									{'\u2022 \u2022 \u2022'}
-								</div>
-							</HorizontalButton>
-						</HorizontalControls>
-						<VerticalControls onClick={this.handleVerticalExpand}>
-							<VerticalControlsButtons>
-								<VerticalButton>{'\u2022'}</VerticalButton>
-								<VerticalButton>{'\u2022'}</VerticalButton>
-								<VerticalButton>{'\u2022'}</VerticalButton>
-							</VerticalControlsButtons>
-						</VerticalControls>
 
-					</ExpandedShadow>
-
-				</OverlayPreventPropagation>
-
+					</OverlayPreventPropagation>
+				</OpenSesame>
 			</Overlay>
 		)
 	}

@@ -183,7 +183,7 @@ export default class ViewContainer extends Component {
 					<DropDownItem style={{ minWidth: '45px' }} key={o} active={o === pageSize ? true : false} onClick={this.handlePageSize(o)}>{o}</DropDownItem>)
 			case 1:
 				return this.listPageSizes.map(o =>
-					<DropDownItem style={{ minWidth: '45px' }}key={o} active={o === pageSize ? true : false} onClick={this.handlePageSize(o)}>
+					<DropDownItem style={{ minWidth: '45px' }} key={o} active={o === pageSize ? true : false} onClick={this.handlePageSize(o)}>
 						{o}
 					</DropDownItem>)
 			default:
@@ -239,8 +239,8 @@ export default class ViewContainer extends Component {
 	handleFunctionNewProject = () => {
 		this.setState({ funcNewProject: !this.state.funcNewProject })
 	}
-	renderFunctionNewProject = () => {
-		return <ExpandedCardItem handleVerticalExpand={this.handleFunctionNewProject} >
+	renderFunctionNewProject = (exp) => {
+		return <ExpandedCardItem cardExpand={exp} handleVerticalExpand={this.handleFunctionNewProject} >
 			<NewProject />
 		</ExpandedCardItem>
 	}
@@ -265,7 +265,7 @@ export default class ViewContainer extends Component {
 		const { visibleColumns } = this.state
 		return <DropDownItem>
 			<DropDownIcon onClick={columnFunc}>
-				<Icon icon={icon ? icon : 'visibility'} color={'#FFFFFF'} active={visibleColumns.find(c => c.column === columnName).visible ? true : false} />
+				<Icon icon={visibleColumns.find(c => c.column === columnName).visible ? 'visibility' : 'visibility_off'} color={'#FFFFFF'} active={visibleColumns.find(c => c.column === columnName).visible ? true : false} />
 			</DropDownIcon>
 			<DropDownText>
 				<Text>
@@ -380,7 +380,7 @@ export default class ViewContainer extends Component {
 		const { funcOpen, funcNewProject } = this.state
 		const { view, searchString, pageSize, pageSizeOpen, sortOpen, sortDirection, sortColumn } = this.state
 		return <View>
-			{funcNewProject && this.renderFunctionNewProject()}
+			{this.renderFunctionNewProject(funcNewProject)}
 			<FunctionBar>
 				{this.renderFunctions(funcOpen)}
 				<DayPickerRangeControllerWrapper />
@@ -391,6 +391,7 @@ export default class ViewContainer extends Component {
 			</FunctionBar>
 			{this.renderView(pageSize, view, sortColumn, sortDirection)}
 			{view !== 2 ? <Pagination items={this.filterItems(this.props.items)} onChangePage={this.handlePageChange} pageSize={pageSize} /> : null}
+
 		</View>
 
 	}

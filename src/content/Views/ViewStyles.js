@@ -24,6 +24,7 @@ export const Input = styled.input`
 	
 	-moz-appearance: none;
 	-webkit-appearance: none;
+
 `
 
 export const SearchContainer = styled.div`
@@ -45,7 +46,7 @@ export const SearchContainer = styled.div`
     
 	&:hover {
         border-color: ${p => transparentize(0.7, p.theme.tab.hover)};
-		box-shadow: ${p => `0 0 0 3px ${transparentize(0.7, p.theme.tab.hover)}`};
+		box-shadow: ${p => `0 0 0 4px ${transparentize(0.7, p.theme.tab.hover)}`};
 		cursor: ${(props) => props.isDisabled ? 'not-allowed' : 'pointer'};
     }
 

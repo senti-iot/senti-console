@@ -13,21 +13,8 @@ export default class ListCard extends PureComponent {
 		}
 	}
 
-	// setExpandedCardRef = (node) => {
-	// 	this.node = node
-	// }
-
-	// handleExpand = (e) => {
-	// 	if (this.state.cardExpand) {
-	// 		this.setState({ cardExpand: false })
-	// 	}
-	// 	else {
-	// 		this.setState({ cardExpand: true })
-	// 	}
-	// }
-
-	expandCard = () => {
-		this.setState({ cardExpand: !this.state.cardExpand })
+	viewCard = () => {
+		this.setState({ cardExpand: !this.state.cardExpand, expand: false })
 	}
 	onExpand = () => {
 		this.setState({ expand: !this.state.expand })
@@ -43,9 +30,7 @@ export default class ListCard extends PureComponent {
 		const { item, column, columnCount, isChecked } = this.props
 		return (
 			<React.Fragment>
-				<ExpandedCardItem cardExpand={cardExpand} {...this.props} handleVerticalExpand={this.expandCard} />
-
-				
+				<ExpandedCardItem cardExpand={cardExpand} {...this.props} handleVerticalExpand={this.viewCard} />
 				<ListCardItem>
 					<Checkbox isChecked={isChecked} size={'medium'} onChange={this.onChecked} />
 					<ListItemContainer selected={isChecked} columnCount={columnCount}>
@@ -69,7 +54,7 @@ export default class ListCard extends PureComponent {
 
 						})}
 					</ListItemContainer>
-					<ControlsContainer horizOpen={expand} /* onMouseLeave={expand ? this.onExpand : null} */>
+					<ControlsContainer horizOpen={expand}>
 						<ButtonContainer pose={!this.state.expand ? 'open' : 'close'} horizOpen={expand} style={{ flexFlow: 'row nowrap', borderRadius: 0, height: 'inherit' }}>
 							<Button horizOpen={expand} onClick={this.expandCard}>
 								<Icon color={'#5E5E5E'} icon={'mode_edit'} iconSize={23} />
@@ -81,7 +66,7 @@ export default class ListCard extends PureComponent {
 								<Icon color={'#5E5E5E'} icon={'library_add'} iconSize={23} />
 							</Button>
 						</ButtonContainer>
-						<ExpandButtonContainer  selected={isChecked} onClick={this.onExpand}>
+						<ExpandButtonContainer selected={isChecked} onClick={this.onExpand}>
 							<Icon icon={'more_vert'} color={'#FFF'} active={isChecked} iconSize={23} />
 						</ExpandButtonContainer>
 					</ControlsContainer>

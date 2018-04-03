@@ -11,8 +11,15 @@ export default class NewProject extends Component {
 		super(props)
 
 		this.state = {
-			img: undefined
+			img: undefined,
+			titleFocus: false
 		}
+	}
+	handleTitleInputFocus = () => {
+		this.setState({ titleFocus: true })
+	}
+	titleInputOnBlur = () => {
+		this.setState({ titleFocus: false })
 	}
 	handleDrop = (acceptedFiles) => {
 		console.log(acceptedFiles)
@@ -27,13 +34,9 @@ export default class NewProject extends Component {
 				</StyledDropzone>
 				<ExpHeader>
 					<ExpTitle>
-						<TitleInput >
-							{/* <Icon icon={'search'} iconSize={20} style={{ margin: 3, paddingRight: 3, borderRight: '1px solid #cecece' }} /> */}
-							<div style={{ padding: '0px 4px' }}>
-								<Input placeholder={'Title'} style={{ fontSize: 18 }} innerRef={this.createInputRef} onChange={this.handleSearch} onBlur={() => this.state.inputFocus ? this.setState({ inputFocus: false }) : null} />
-							</div>
+						<TitleInput active={this.state.titleFocus} onClick={this.handleTitleInputFocus}>
+							<Input placeholder={'Title'} style={{ padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} onBlur={this.titleInputOnBlur} innerRef={this.createInputRef} onChange={this.handleSearch}/>
 						</TitleInput>
-						{/* <ExpAddress><TitleInput placeholder={'Address'} /></ExpAddress> */}
 					</ExpTitle>
 					<DatePicker style={{ fontSize: 16 }} />
 					<UserContainer>
