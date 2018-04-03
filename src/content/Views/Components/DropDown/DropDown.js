@@ -7,7 +7,7 @@ export const DropDownButton = styled.div`
 	justify-content:center;
 	
 	height: 25px;
-	width: 25px;
+	/* width: 25px; */
 	
 	background: ${p => p.theme.tab.selected};
 	color: ${p => p.theme.tab.activeColor};

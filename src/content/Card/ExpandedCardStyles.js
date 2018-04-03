@@ -1,6 +1,33 @@
 import styled from "styled-components"
 import { FormImg, Shadow, ProjectInfoContainer, Text, ProjectInfoTitle, ProjectInfo } from './CardItemStyles'
+import posed from "react-pose"
+import { tween, spring, easing } from 'popmotion'
 
+const expandedCardProps = {
+	open: {
+		opacity: 1,
+		scaleY: 1,
+		transition: (props) => tween({ ...props, duration: 200, ease: easing.backInOut })
+	},
+	close: {
+		opacity: 0,
+		scaleY: 0,
+		transition: (props) => tween({ ...props, duration: 200, ease: easing.anticipate })
+	}
+}
+const Pose = posed.div({ ...expandedCardProps })
+
+export const OpenSesame = styled(Pose) `
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width: 100%;
+	height:100%;
+
+	visibility: ${p => p.pose === 'open' ? 'visible' : 'hidden'};
+	transition: all 300ms ease; 
+`
 export const ExpProjectInfo = ProjectInfo.extend`
 	display:flex;
 	flex-flow:column;
@@ -60,9 +87,10 @@ export const ExpFormImg = FormImg.extend`
 `
 
 export const Overlay = styled.div`
-	display:flex;
-	align-items:center;
-	justify-content:center;
+	/* display:flex; */
+	visibility: ${p => p.pose === 'open' ? 'visible' : 'hidden'};
+	/* align-items:center; */
+	/* justify-content:center; */
 
 	width: 100%;
 	height: 100%;

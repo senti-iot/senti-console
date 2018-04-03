@@ -180,10 +180,12 @@ export default class ViewContainer extends Component {
 		switch (view) {
 			case 0:
 				return this.cardPageSizes.map(o =>
-					<DropDownItem key={o} active={o === pageSize ? true : false} onClick={this.handlePageSize(o)}>{o}</DropDownItem>)
+					<DropDownItem style={{ minWidth: '45px' }} key={o} active={o === pageSize ? true : false} onClick={this.handlePageSize(o)}>{o}</DropDownItem>)
 			case 1:
 				return this.listPageSizes.map(o =>
-					<DropDownItem key={o} active={o === pageSize ? true : false} onClick={this.handlePageSize(o)}>{o}</DropDownItem>)
+					<DropDownItem style={{ minWidth: '45px' }}key={o} active={o === pageSize ? true : false} onClick={this.handlePageSize(o)}>
+						{o}
+					</DropDownItem>)
 			default:
 				return null
 		}
@@ -226,10 +228,10 @@ export default class ViewContainer extends Component {
 	renderPageSizeOption = (view, pageSize, pageSizeOpen) => {
 		return <DropDownContainer onMouseLeave={this.handlePageSizeOpen(false)}>
 			<DropDownButton onMouseEnter={this.handlePageSizeOpen(true)}>
-				{pageSize}
+				<Icon icon={'filter_list'} iconSize={25} color={'#fff'} />{pageSize}{/*  per side */}
 			</DropDownButton>
 			<Margin />
-			<DropDown>
+			<DropDown style={{ width: '100%' }}>
 				{pageSizeOpen && this.renderPageSizes(view, pageSize)}
 			</DropDown>
 		</DropDownContainer>

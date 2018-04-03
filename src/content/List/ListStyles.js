@@ -1,4 +1,6 @@
 import styled from "styled-components"
+import posed from 'react-pose'
+// import tween from 'popmotion'
 
 export const Cell = styled.div`
 	display:flex;
@@ -26,7 +28,12 @@ export const ListCardItem = styled.div`
 	flex-flow:row nowrap;
 	align-items:center;
 
-	margin: 0px 4px;
+	margin: 4px;
+	overflow:hidden;
+	height:30px;
+	border: 1px solid transparent;
+	border-radius: 5px;
+
 `
 
 export const ListItemContainer = styled.div`
@@ -60,18 +67,29 @@ export const ExpandButtonContainer = styled.div`
 
 	width: 15px;
 	height:30px;
-
 	background: ${p => p.selected ? p.theme.tab.selected : p.theme.tab.unselected};
 	border-radius: 0px 5px 5px 0px;
-	
+	z-index: 1;
 	cursor:pointer;
 	
 	&:hover{
 		background: #BDBDBD;
 	}
 `
-export const ButtonContainer = styled.div`
-	visibility: ${p => p.horizOpen ? 'visible' : 'hidden'};
+
+const poseProps = {
+	open: {
+		x: '100px',
+		// opacity: '1'
+		// transition: (props) => tween({ ...props, duration: 1000 })
+	},
+	close: { x: '-15px' }
+}
+export const Poser = posed.div({ ...poseProps })
+
+export const ButtonContainer = styled(Poser) `
+	position:absolute;
+	/* visibility: ${p => p.horizOpen ? 'visible' : 'hidden'}; */
 	align-self: bottom;
 	
 	display: flex;
@@ -79,26 +97,27 @@ export const ButtonContainer = styled.div`
 	align-items: center;
 	justify-content: space-around;
 	
-	height: 100%;
-	width: ${p => p.horizOpen ? '100px' : '0px'};
-	
+	min-height: 30px;
+	/* width: ${p => p.horizOpen ? '100px' : '0px'}; */
+	width: 100px;
 	background: #d5d5d5;
 	border-radius: 3px;
-	overflow:hidden;
-	
-	transition: all 300ms ease;
+	/* overflow:hidden; */
+	/* z-index: 3; */
+	/* transition: all 100ms ease; */
 `
 export const ControlsContainer = styled.div`
 	justify-self: end;
-	
+	/* overflow:${p => !p.horizOpen ? 'hidden' : 'visible'}; */
 	display:flex;
 	flex-flow:row nowrap;
 	justify-content: right;
-	
+	position:relative;
+	/* width:100%; */
 	/* width: ${p => p.horizOpen ? '115px' : '15px'}; */
 
 	/* transition: all 250ms cubic-bezier(.87,-.41,.19,1.44); */
-	transition: all 300ms ease;
+	/* transition: all 300ms ease; */
 `
 export const Button = styled.div`
 	opacity: ${p => p.horizOpen ? '1' : '0'};
