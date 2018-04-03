@@ -16,6 +16,7 @@ import { START_DATE, END_DATE, HORIZONTAL_ORIENTATION } from 'react-dates/src/co
 
 const propTypes = forbidExtraProps({
 	theme: PropTypes.object,
+	style: PropTypes.object,
 	// example props for the demo
 	autoFocusEndDate: PropTypes.bool,
 	initialStartDate: momentPropTypes.momentObj,

@@ -54,9 +54,9 @@ export default class ListCard extends PureComponent {
 
 						})}
 					</ListItemContainer>
-					<ControlsContainer horizOpen={expand}>
-						<ButtonContainer pose={!this.state.expand ? 'open' : 'close'} horizOpen={expand} style={{ flexFlow: 'row nowrap', borderRadius: 0, height: 'inherit' }}>
-							<Button horizOpen={expand} onClick={this.expandCard}>
+					<ControlsContainer /* horizOpen={expand} */>
+						<ButtonContainer pose={!this.state.expand ? 'open' : 'close'} /* horizOpen={expand} */ style={{ flexFlow: 'row nowrap', borderRadius: 0, height: 'inherit' }}>
+							<Button horizOpen={expand} onClick={this.viewCard}>
 								<Icon color={'#5E5E5E'} icon={'mode_edit'} iconSize={23} />
 							</Button>
 							<Button horizOpen={expand}>
