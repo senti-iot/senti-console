@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
 	HorizontalControls,
-	VerticalControls, VerticalButton, HorizontalButton, HorizontalControlsDrawer, ControlButton, VerticalControlsButtons, /* ProjectBarContainer, ProjectBarLabel,
+	VerticalControls, VerticalButton, HorizontalButton, HorizontalControlsDrawer, ControlButton, VerticalControlsButtons, Wheels, /* ProjectBarContainer, ProjectBarLabel,
 	ProjectBar, */
 } from './CardItemStyles'
 
@@ -12,39 +12,51 @@ import {
 
 import { Icon } from 'odeum-ui'
 
-export default class ExpandedCardItem extends Component {
+export default class EmptyExpandedCardItem extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			expand: false
+			expand: false,
+			horizontalExpand: false
 		}
+	}
+	handleHorizontalExpand = () => {
+		// e.preventDefault()
+		this.setState({ horizontalExpand: !this.state.horizontalExpand })
 	}
 	preventPropagation = () => e => {
 		e.stopPropagation()
 	}
+	handleOverlay = () => e => {
+		if (this.props.handleVerticalExpand)
+			this.props.handleVerticalExpand(false)(e)
+		this.setState({ horizontalExpand: false })
+
+	}
 	render() {
-		// const { item } = this.props
-		const horizontalExpand = false
+		const { horizontalExpand } = this.state
 		return (
-			<Overlay onClick={this.props.handleVerticalExpand} pose={this.props.cardExpand ? 'open' : 'close'}>
+			<Overlay onClick={this.handleOverlay()} pose={this.props.cardExpand ? 'open' : 'close'}>
 				<OpenSesame pose={this.props.cardExpand ? 'open' : 'close'}>
 					<OverlayPreventPropagation onClick={this.preventPropagation()}>
 						<ExpandedShadow>
 							<ExpandedShadow>
 								{this.props.children}
 							</ExpandedShadow>
-							<HorizontalControls expand={horizontalExpand} >
-								<HorizontalControlsDrawer expand={horizontalExpand}>
-									<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
-									<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
-									<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
-								</HorizontalControlsDrawer>
-								<HorizontalButton expand={horizontalExpand} onClick={this.handleHorizontalExpand}>
-									<div style={{ transform: 'perspective(20px) rotateX(20deg)' }}>
-										{'\u2022 \u2022 \u2022'}
-									</div>
-								</HorizontalButton>
+							<HorizontalControls>
+								<Wheels pose={horizontalExpand ? 'drawerOpen' : 'drawerClosed'}>
+									<HorizontalControlsDrawer >
+										<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
+										<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
+										<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
+									</HorizontalControlsDrawer>
+									<HorizontalButton onClick={this.handleHorizontalExpand}>
+										<div style={{ transform: 'perspective(40px) rotateX(20deg)' }}>
+											{'\u2022 \u2022 \u2022'}
+										</div>
+									</HorizontalButton>
+								</Wheels>
 							</HorizontalControls>
 							<VerticalControls onClick={this.handleVerticalExpand}>
 								<VerticalControlsButtons>

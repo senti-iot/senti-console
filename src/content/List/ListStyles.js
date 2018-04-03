@@ -83,7 +83,7 @@ const buttonContainerProps = {
 	},
 	close: { x: '-15px' }
 }
-export const buttonContainer = posed.div({ ...buttonContainerProps })
+const buttonContainer = posed.div({ ...buttonContainerProps })
 
 export const ButtonContainer = styled(buttonContainer) `
 	position:absolute;

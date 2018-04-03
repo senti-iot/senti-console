@@ -32,7 +32,7 @@ export default class ViewContainer extends Component {
 		// var settings = JSON.parse(window.localStorage.getItem('visibleColumns')) || undefined
 		this.state = {
 			inputFocus: false,
-			view: 1,
+			view: 0,
 			pageSize: 25,
 			searchString: '',
 			sortOpen: false,
@@ -236,8 +236,9 @@ export default class ViewContainer extends Component {
 			</DropDown>
 		</DropDownContainer>
 	}
-	handleFunctionNewProject = () => {
-		this.setState({ funcNewProject: !this.state.funcNewProject })
+	handleFunctionNewProject = (open) => e => {
+		e.preventDefault()
+		this.setState({ funcNewProject: open })
 	}
 	renderFunctionNewProject = (exp) => {
 		return <ExpandedCardItem cardExpand={exp} handleVerticalExpand={this.handleFunctionNewProject} >
@@ -251,7 +252,7 @@ export default class ViewContainer extends Component {
 			</DropDownButton>
 			<Margin />
 			{funcOpen && <DropDown>
-				<DropDownItem onClick={this.handleFunctionNewProject}>Nyt Projekt</DropDownItem>
+				<DropDownItem onClick={this.handleFunctionNewProject(true)}>Nyt Projekt</DropDownItem>
 				<DropDownItem>Del en Projekt</DropDownItem>
 				<DropDownItem>Foj til favoritter</DropDownItem>
 				<DropDownItem>Foj til Dashboard</DropDownItem>

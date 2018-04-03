@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import posed from "react-pose"
 
 
 
@@ -177,30 +178,11 @@ export const HorizontalControls = styled.div`
 	transition: all 0.3s cubic-bezier(.87,-.41,.19,1.44);
 	position:absolute;
 	top: 100%;
-	z-index:${p => p.expand ? 5 : 1};
+	overflow:hidden;
+	/* z-index:${p => p.expand ? 3 : 1}; */
 `
 
-export const HorizontalButton = styled.div`
-	display:flex;
-	align-items:center;
-	justify-content:center;
-	
-	min-height:${p => p.expand ? '10px' : '20px'};
-	height:${p => p.expand ? '10px' : '20px'};
-	width: 40%;
-	
-	background:#D5D5D5;
-	color: #34495D;
-	
-	border-radius: 0px 0px 4px 4px;
-	${p => p.expand ? `margin-top: -1px;` : ''};
-	
-	transition: all 0.3s cubic-bezier(.87,-.41,.19,1.44);
-	transform: perspective(40px) rotateX(-20deg);
-	
-	user-select: none;
-	cursor: pointer;
-`
+
 export const ControlButton = styled.div`
 	border-radius: 4px;
 	
@@ -208,7 +190,27 @@ export const ControlButton = styled.div`
 		background: ${p => p.theme.tab.hover};
 	}
 `
-
+const horizontalControlsProps = {
+	drawerOpen: {
+		y: '0px'
+	},
+	drawerClosed: {
+		y: '-40px'
+	},
+	penis: {
+		y: '-40px'
+	}
+}
+const horizontalcontrolsDrawer = posed.div({ ...horizontalControlsProps })
+export const Wheels = styled(horizontalcontrolsDrawer) `
+	display:flex;
+	/* justify-content:center; */
+	flex-flow:column;
+	align-items:center;
+	width: 80%;
+	height:100%;
+	transform: translateY(-40px) translateZ(0);
+`
 export const HorizontalControlsDrawer = styled.div`
 	display:flex;
 	flex-flow:row nowrap;
@@ -216,12 +218,34 @@ export const HorizontalControlsDrawer = styled.div`
 	align-items:center;
 	
 	width: 90%;
-	height: ${p => p.expand ? '40px' : '0px'};
-	
+	/* height: ${p => p.expand ? '40px' : '0px'}; */
+	height: 40px;
 	background:#D5D5D5;
 	
 	border-radius: 0px 0px 4px 4px;
 	overflow:hidden;
 
-	transition: all 0.3s cubic-bezier(.87,-.41,.19,1.44);
+	/* transition: all 0.3s cubic-bezier(.87,-.41,.19,1.44); */
+`
+export const HorizontalButton = styled.div`
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	
+	/* min-height:${p => p.expand ? '10px' : '20px'};
+	height:${p => p.expand ? '10px' : '20px'}; */
+	height: 20px;
+	width: 40%;
+	
+	background:#D5D5D5;
+	color: #34495D;
+	
+	border-radius: 0px 0px 4px 4px;
+	/* ${p => p.expand ? `margin-top: -1px;` : ''}; */
+	
+	/* transition: all 0.3s cubic-bezier(.87,-.41,.19,1.44); */
+	transform: perspective(40px) rotateX(-20deg);
+	
+	user-select: none;
+	cursor: pointer;
 `

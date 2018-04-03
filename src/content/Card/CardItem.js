@@ -5,7 +5,8 @@ import {
 	VerticalControls, VerticalButton, HorizontalButton, HorizontalControlsDrawer, Shadow, ControlButton, ProjectBarContainer, ProjectBarLabel,
 	ProjectBar,
 	VerticalControlsButtons,
-	HorizontalButtonText
+	HorizontalButtonText,
+	Wheels
 } from './CardItemStyles'
 import ExpandedCardItem from './ExpandedCardItem'
 
@@ -21,8 +22,9 @@ export default class FormCard extends Component {
 	handleHorizontalExpand = () => {
 		this.setState({ horizontalExpand: !this.state.horizontalExpand })
 	}
-	handleVerticalExpand = () => {
-		this.setState({ expand: !this.state.expand })
+	handleVerticalExpand = (open) => e => {
+		e.preventDefault()
+		this.setState({ expand: open, horizontalExpand: false })
 	}
 	render() {
 		const { horizontalExpand, expand } = this.state
@@ -70,19 +72,21 @@ export default class FormCard extends Component {
 							<ProjectBar progress={item.progress} />
 						</ProjectBarContainer>
 					</Shadow>
-					<HorizontalControls expand={horizontalExpand} >
-						<HorizontalControlsDrawer expand={horizontalExpand}>
-							<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
-							<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
-							<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
-						</HorizontalControlsDrawer>
-						<HorizontalButton expand={horizontalExpand} onClick={this.handleHorizontalExpand}>
-							<HorizontalButtonText>
-								{'\u2022 \u2022 \u2022'}
-							</HorizontalButtonText>
-						</HorizontalButton>
+					<HorizontalControls >
+						<Wheels pose={horizontalExpand ? 'drawerOpen' : 'drawerClosed'}>
+							<HorizontalControlsDrawer>
+								<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
+								<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
+								<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
+							</HorizontalControlsDrawer>
+							<HorizontalButton onClick={this.handleHorizontalExpand}>
+								<HorizontalButtonText>
+									{'\u2022 \u2022 \u2022'}
+								</HorizontalButtonText>
+							</HorizontalButton>
+						</Wheels>
 					</HorizontalControls>
-					<VerticalControls onClick={this.handleVerticalExpand}>
+					<VerticalControls onClick={this.handleVerticalExpand(true)}>
 						<VerticalControlsButtons>
 							<VerticalButton>{'\u2022'}</VerticalButton>
 							<VerticalButton>{'\u2022'}</VerticalButton>
