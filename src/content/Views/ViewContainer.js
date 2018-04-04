@@ -12,7 +12,7 @@ import Pagination from '../Pagination/Pagination'
 import ExpandedCard from '../Card/ExpandedCard'
 import NewProject from './Components/Functions/NewProject'
 import { renderPageSizeOption } from './Components/PageSize/PageSize'
-import { renderSearchOption } from './Components/Search/Search'
+import SearchComponent from './Components/Search/Search'
 // Styles
 import { Text } from '../List/ListStyles'
 import {
@@ -32,7 +32,7 @@ export default class ViewContainer extends Component {
 		super(props)
 		// var settings = JSON.parse(window.localStorage.getItem('visibleColumns')) || undefined
 		this.state = {
-			inputFocus: false,
+			// inputFocus: false,
 			view: 0,
 			pageSize: 25,
 			searchString: '',
@@ -54,9 +54,9 @@ export default class ViewContainer extends Component {
 	componentWillUpdate = (nextProps, nextState) => {
 	}
 
-	createInputRef = (node) => {
-		this.node = node
-	}
+	// createInputRef = (node) => {
+	// 	this.node = node
+	// }
 
 	filterItems = (items) => {
 		const { searchString, sortDirection, sortColumn } = this.state
@@ -122,8 +122,8 @@ export default class ViewContainer extends Component {
 		window.localStorage.setItem('visibleColumns', JSON.stringify(newArr))
 	}
 
-	handleSearch = (e) => {
-		this.setState({ searchString: e.target.value })
+	handleSearch = (string) => {
+		this.setState({ searchString: string })
 	}
 
 	handlePageSize = (size) => e => {
@@ -155,11 +155,11 @@ export default class ViewContainer extends Component {
 			})
 	}
 
-	handleFocusInput = (focus) => e => {
-		e.preventDefault()
-		this.node.focus()
-		this.setState({ inputFocus: focus })
-	}
+	// handleFocusInput = (focus) => e => {
+	// 	e.preventDefault()
+	// 	this.node.focus()
+	// 	this.setState({ inputFocus: focus })
+	// }
 
 	handleActiveColumn = (col) => col === this.state.sortColumn ? true : false
 
@@ -380,14 +380,15 @@ export default class ViewContainer extends Component {
 	//#endregion
 
 	render() {
-		const { funcOpen, funcNewProject, inputFocus } = this.state
+		const { funcOpen, funcNewProject } = this.state
 		const { view, searchString, pageSize, pageSizeOpen, sortOpen, sortDirection, sortColumn } = this.state
 		return <View>
 			{this.renderFunctionNewProject(funcNewProject)}
 			<FunctionBar>
 				{this.renderFunctions(funcOpen)}
 				<DayPickerRangeControllerWrapper />
-				{renderSearchOption(searchString, this.handleFocusInput, inputFocus, this.createInputRef, this.handleSearch)}
+				<SearchComponent searchString={searchString} handleSearch={this.handleSearch} />
+				{/* {renderSearchOption(searchString, this.handleFocusInput, inputFocus, this.createInputRef, this.handleSearch)} */}
 				{renderPageSizeOption(view, pageSize, pageSizeOpen, this.handlePageSizeOpen, this.handlePageSize)}
 				{this.renderVisibleSortOption(sortOpen, sortDirection)}
 				{this.renderChangeViewOptions(view)}
