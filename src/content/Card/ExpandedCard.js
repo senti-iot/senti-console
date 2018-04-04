@@ -12,7 +12,7 @@ import {
 
 import { Icon } from 'odeum-ui'
 
-export default class EmptyExpandedCardItem extends Component {
+export default class ExpandedCard extends Component {
 	constructor(props) {
 		super(props)
 

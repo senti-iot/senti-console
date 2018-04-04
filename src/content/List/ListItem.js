@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { ListItemContainer, ExpandButtonContainer, Text, ListCardItem, Button, ButtonContainer, ControlsContainer, Cell } from './ListStyles'
 import Icon from 'odeum-ui/lib/components/Icon/Icon'
 import Checkbox from '../Views/Components/CheckBox/CheckBox'
-import ExpandedCardItem from '../Card/ExpandedCardItem'
+import ExpandedCardInfo from '../Card/ExpandedCardInfo'
 export default class ListCard extends PureComponent {
 	constructor(props) {
 		super(props)
@@ -31,7 +31,7 @@ export default class ListCard extends PureComponent {
 		const { item, column, columnCount, isChecked } = this.props
 		return (
 			<React.Fragment>
-				<ExpandedCardItem cardExpand={cardExpand} {...this.props} handleVerticalExpand={this.viewCard} />
+				<ExpandedCardInfo cardExpand={cardExpand} {...this.props} handleVerticalExpand={this.viewCard} />
 				<ListCardItem>
 					<Checkbox isChecked={isChecked} size={'medium'} onChange={this.onChecked} />
 					<ListItemContainer selected={isChecked} columnCount={columnCount}>

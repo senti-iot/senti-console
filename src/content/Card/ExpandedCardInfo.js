@@ -1,22 +1,17 @@
 import React, { Component } from 'react'
+import ExpandedCard from './ExpandedCard'
+
 import {
-/* 	HorizontalControls,
-	VerticalControls, VerticalButton, HorizontalButton, HorizontalControlsDrawer, ControlButton, */ ProjectBarContainer, ProjectBarLabel,
-	ProjectBar,
-	/* VerticalControlsButtons,
-	HorizontalButtonText */
+	ProjectBarContainer, ProjectBarLabel,
+	ProjectBar
 } from './CardItemStyles'
-
 import {
-	/* ExpandedShadow, Overlay, OverlayPreventPropagation, */
 	ExpandedProjectInfoContainer,
-	ExpSection, ExpHeader, ExpFormImg, ExpTitle, ExpAddress, UserContainer, Username, Avatar, ExpProjectInfoTitle, ExpProjectInfo, ExpProjectInfoItem,
-	/* 	OpenSesame */
+	ExpSection, ExpHeader, ExpFormImg, ExpTitle, ExpAddress, UserContainer, Username, Avatar, ExpProjectInfoTitle, ExpProjectInfo, ExpProjectInfoItem
 } from './ExpandedCardStyles'
-import EmptyExpandedCardItem from './EmptyExpandedCardItem'
-// import { Icon } from 'odeum-ui'
 
-export default class ExpandedCardItem extends Component {
+
+export default class ExpandedCardInfo extends Component {
 	constructor(props) {
 		super(props)
 
@@ -29,14 +24,8 @@ export default class ExpandedCardItem extends Component {
 	}
 	render() {
 		const { item } = this.props
-		// const horizontalExpand = false
 		return (
-			/* 	// <Overlay onClick={this.props.handleVerticalExpand(false)} pose={this.props.cardExpand ? 'open' : 'close'}>
-				// 	<OpenSesame pose={this.props.cardExpand ? 'open' : 'close'}>
-				// 		<OverlayPreventPropagation onClick={this.preventPropagation()}>
-				// 			<ExpandedShadow>
-				// 				<ExpandedShadow> */
-			<EmptyExpandedCardItem {...this.props}>
+			<ExpandedCard {...this.props}>
 				<ExpFormImg img={item.img ? item.img : 'https://picsum.photos/1920/1404/?random=0'} />
 				<ExpHeader>
 					<ExpTitle title={item.title}>{item.title}
@@ -110,34 +99,7 @@ export default class ExpandedCardItem extends Component {
 					<ProjectBarLabel progress={item.progress}>{item.progress ? item.progress + '%' : '0%'}</ProjectBarLabel>
 					<ProjectBar progress={item.progress} />
 				</ProjectBarContainer>
-			</EmptyExpandedCardItem>
-			/* 			// 				</ExpandedShadow>
-						// 				<HorizontalControls expand={horizontalExpand} >
-						// 					<HorizontalControlsDrawer expand={horizontalExpand}>
-						// 						<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
-						// 						<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
-						// 						<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
-						// 					</HorizontalControlsDrawer>
-						// 					<HorizontalButton expand={horizontalExpand} onClick={this.handleHorizontalExpand}>
-						// 						<HorizontalButtonText>
-						// 							{'\u2022 \u2022 \u2022'}
-						// 						</HorizontalButtonText>
-						// 					</HorizontalButton>
-						// 				</HorizontalControls>
-						// 				<VerticalControls onClick={this.handleVerticalExpand}>
-						// 					<VerticalControlsButtons>
-						// 						<VerticalButton>{'\u2022'}</VerticalButton>
-						// 						<VerticalButton>{'\u2022'}</VerticalButton>
-						// 						<VerticalButton>{'\u2022'}</VerticalButton>
-						// 					</VerticalControlsButtons>
-						// 				</VerticalControls>
-			
-						// 			</ExpandedShadow>
-			
-						// 		</OverlayPreventPropagation>
-			
-						// 	</OpenSesame>
-						// </Overlay> */
+			</ExpandedCard>
 		)
 	}
 }
