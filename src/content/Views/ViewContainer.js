@@ -9,9 +9,10 @@ import CardView from './CardView'
 import ListView from './ListView'
 import MapView from './MapView'
 import Pagination from '../Pagination/Pagination'
-import ExpandedCardItem from '../Card/EmptyExpandedCardItem'
+import ExpandedCard from '../Card/ExpandedCard'
 import NewProject from './Components/Functions/NewProject'
-
+import { renderPageSizeOption } from './Components/PageSize/PageSize'
+import { renderSearchOption } from './Components/Search/Search'
 // Styles
 import { Text } from '../List/ListStyles'
 import {
@@ -23,7 +24,7 @@ import {
 import {
 	FunctionBar, ChangeViewButtonCard,
 	ChangeViewButtonMap, ChangeViewButtonList,
-	ChangeViewButtonContainer, Input, SearchContainer, View,
+	ChangeViewButtonContainer, View,
 } from './ViewStyles'
 
 export default class ViewContainer extends Component {
@@ -46,8 +47,8 @@ export default class ViewContainer extends Component {
 			visibleColumns: /*  settings ||  */Object.keys(this.props.items[0]).map(c => c = { column: c, visible: true })
 
 		}
-		this.listPageSizes = [10, 25, 50, 75, 100]
-		this.cardPageSizes = [10, 25, 50, 75, 100]
+		// this.listPageSizes = [10, 25, 50, 75, 100]
+		// this.cardPageSizes = [10, 25, 50, 75, 100]
 	}
 
 	componentWillUpdate = (nextProps, nextState) => {
@@ -154,9 +155,10 @@ export default class ViewContainer extends Component {
 			})
 	}
 
-	handleFocusInput = () => {
+	handleFocusInput = (focus) => e => {
+		e.preventDefault()
 		this.node.focus()
-		this.setState({ inputFocus: true })
+		this.setState({ inputFocus: focus })
 	}
 
 	handleActiveColumn = (col) => col === this.state.sortColumn ? true : false
@@ -176,21 +178,31 @@ export default class ViewContainer extends Component {
 	//#region Rendering
 
 
-	renderPageSizes = (view, pageSize) => {
-		switch (view) {
-			case 0:
-				return this.cardPageSizes.map(o =>
-					<DropDownItem style={{ minWidth: '45px' }} key={o} active={o === pageSize ? true : false} onClick={this.handlePageSize(o)}>{o}</DropDownItem>)
-			case 1:
-				return this.listPageSizes.map(o =>
-					<DropDownItem style={{ minWidth: '45px' }} key={o} active={o === pageSize ? true : false} onClick={this.handlePageSize(o)}>
-						{o}
-					</DropDownItem>)
-			default:
-				return null
-		}
-	}
-
+	// renderPageSizes = (view, pageSize) => {
+	// 	switch (view) {
+	// 		case 0:
+	// 			return this.cardPageSizes.map(o =>
+	// 				<DropDownItem style={{ minWidth: '45px' }} key={o} active={o === pageSize ? true : false} onClick={this.handlePageSize(o)}>{o}</DropDownItem>)
+	// 		case 1:
+	// 			return this.listPageSizes.map(o =>
+	// 				<DropDownItem style={{ minWidth: '45px' }} key={o} active={o === pageSize ? true : false} onClick={this.handlePageSize(o)}>
+	// 					{o}
+	// 				</DropDownItem>)
+	// 		default:
+	// 			return null
+	// 	}
+	// }
+	// renderPageSizeOption = (view, pageSize, pageSizeOpen) => {
+	// 	return <DropDownContainer onMouseLeave={this.handlePageSizeOpen(false)}>
+	// 		<DropDownButton onMouseEnter={this.handlePageSizeOpen(true)}>
+	// 			<Icon icon={'filter_list'} iconSize={25} color={'#fff'} />{pageSize}{/*  per side */}
+	// 		</DropDownButton>
+	// 		<Margin />
+	// 		<DropDown style={{ width: '100%' }}>
+	// 			{pageSizeOpen && this.renderPageSizes(view, pageSize)}
+	// 		</DropDown>
+	// 	</DropDownContainer>
+	// }
 	renderView = (pageSize, view, sortColumn, sortDirection) => {
 		const { pageOfItems } = this.state
 		switch (view) {
@@ -225,25 +237,15 @@ export default class ViewContainer extends Component {
 		}
 	}
 
-	renderPageSizeOption = (view, pageSize, pageSizeOpen) => {
-		return <DropDownContainer onMouseLeave={this.handlePageSizeOpen(false)}>
-			<DropDownButton onMouseEnter={this.handlePageSizeOpen(true)}>
-				<Icon icon={'filter_list'} iconSize={25} color={'#fff'} />{pageSize}{/*  per side */}
-			</DropDownButton>
-			<Margin />
-			<DropDown style={{ width: '100%' }}>
-				{pageSizeOpen && this.renderPageSizes(view, pageSize)}
-			</DropDown>
-		</DropDownContainer>
-	}
+
 	handleFunctionNewProject = (open) => e => {
 		e.preventDefault()
 		this.setState({ funcNewProject: open })
 	}
 	renderFunctionNewProject = (exp) => {
-		return <ExpandedCardItem cardExpand={exp} handleVerticalExpand={this.handleFunctionNewProject} >
+		return <ExpandedCard cardExpand={exp} handleVerticalExpand={this.handleFunctionNewProject} >
 			<NewProject />
-		</ExpandedCardItem>
+		</ExpandedCard>
 	}
 	renderFunctions = (funcOpen) => {
 		return <DropDownContainer onMouseLeave={this.handleFunctionsOpen(false)} >
@@ -368,25 +370,25 @@ export default class ViewContainer extends Component {
 		</ChangeViewButtonContainer>
 	}
 
-	renderSearchOption = (searchString) => {
-		return <SearchContainer onClick={this.handleFocusInput} active={this.state.inputFocus}>
-			<Icon icon={'search'} iconSize={20} style={{ margin: 3, paddingRight: 3, borderRight: '1px solid #cecece' }} />
-			<Input innerRef={this.createInputRef} onChange={this.handleSearch} value={searchString} onBlur={() => this.state.inputFocus ? this.setState({ inputFocus: false }) : null} />
-		</SearchContainer>
-	}
+	// renderSearchOption = (searchString) => {
+	// 	return <SearchContainer onClick={this.handleFocusInput} active={this.state.inputFocus}>
+	// 		<Icon icon={'search'} iconSize={20} style={{ margin: 3, paddingRight: 3, borderRight: '1px solid #cecece' }} />
+	// 		<Input innerRef={this.createInputRef} onChange={this.handleSearch} value={searchString} onBlur={() => this.state.inputFocus ? this.setState({ inputFocus: false }) : null} />
+	// 	</SearchContainer>
+	// }
 
 	//#endregion
 
 	render() {
-		const { funcOpen, funcNewProject } = this.state
+		const { funcOpen, funcNewProject, inputFocus } = this.state
 		const { view, searchString, pageSize, pageSizeOpen, sortOpen, sortDirection, sortColumn } = this.state
 		return <View>
 			{this.renderFunctionNewProject(funcNewProject)}
 			<FunctionBar>
 				{this.renderFunctions(funcOpen)}
 				<DayPickerRangeControllerWrapper />
-				{this.renderSearchOption(searchString)}
-				{this.renderPageSizeOption(view, pageSize, pageSizeOpen)}
+				{renderSearchOption(searchString, this.handleFocusInput, inputFocus, this.createInputRef, this.handleSearch)}
+				{renderPageSizeOption(view, pageSize, pageSizeOpen, this.handlePageSizeOpen, this.handlePageSize)}
 				{this.renderVisibleSortOption(sortOpen, sortDirection)}
 				{this.renderChangeViewOptions(view)}
 			</FunctionBar>
