@@ -67,7 +67,7 @@ export const View = styled.div`
 `
 export const CardsContainer = styled.div`
 	display:grid;
-	grid-template-columns: repeat( auto-fit,minmax(270px,1fr) );
+	grid-template-columns: repeat( auto-fit, 300px );
 	grid-auto-rows: auto;
 	grid-gap:10px;
 	overflow-x: auto;
