@@ -11,10 +11,10 @@ export default class CardView extends Component {
 		}
 	}
 
-	handleSort = (column) => e => {
-		e.preventDefault()
-		this.props.handleSort(column)
-	}
+	// handleSort = (column) => e => {
+	// 	e.preventDefault()
+	// 	this.props.handleSort(column)
+	// }
 
 	activeColumnSorting = (col) => {
 		return col === this.props.sortColumn ? true : false

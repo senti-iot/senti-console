@@ -25,11 +25,14 @@ class App extends Component {
 					redirectTo={'/login'}
 					isLoggedIn={this.state.loggedIn}
 					quickNavigation={false}
-				>
+					onMenuClickClose={true}>
+
 					{LoginForm(this.state.loggedIn, this.handleLogin)}
+					
 					<Menu route={'/'}>
 						<Home />
 					</Menu>
+					
 					<Protected>
 						<Menu label={'Dashboard'}>
 							<Tab route={''}>

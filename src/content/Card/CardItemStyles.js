@@ -14,14 +14,17 @@ export const Text = styled.div`
 	
 	overflow:hidden;
 `
+
 export const VerticalControlsButtons = styled.div`
 	display:flex;
 	flex-flow: column nowrap;
 	transform: perspective(40px) rotateY(-20deg);
 `
+
 export const HorizontalButtonText = styled.div`
 	transform: perspective(40px) rotateX(20deg);
 `
+
 export const FormCardContainer = styled.div`
 	display:flex;
 	flex-flow: column nowrap;
@@ -31,6 +34,7 @@ export const FormCardContainer = styled.div`
 	width: 250px;
 	height: 270px;
 
+	background: white;
 	margin: 10px;
 	border-radius: 4px;
 	margin-bottom: 50px;
@@ -66,7 +70,6 @@ export const FormImg = styled.div`
 	overflow: hidden;
 	z-index: 2;
 	
-	/* box-shadow: 2px 2px 8px 0px rgba(0,0,0,0.3); */
 `
 
 export const ProjectInfoContainer = styled.div`
@@ -81,7 +84,6 @@ export const ProjectInfoContainer = styled.div`
 	border-radius: 0px 0px 4px 4px;
     z-index: 3;
 	
-	/* box-shadow: 2px 2px 8px 0px rgba(0,0,0,0.3); */
 `
 
 
@@ -93,12 +95,13 @@ export const ProjectInfoCategory = styled.div`
 	
 	margin: 4px;
 `
+
 export const ProjectInfoTitle = styled.div`
 `
 
 export const ProjectInfo = styled.div`
-
 `
+
 export const ProjectBarContainer = styled.div`
 	display:flex;
 	flex-flow:row;

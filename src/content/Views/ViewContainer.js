@@ -26,6 +26,7 @@ import {
 	ChangeViewButtonMap, ChangeViewButtonList,
 	ChangeViewButtonContainer, View,
 } from './ViewStyles'
+import moment from 'moment'
 
 export default class ViewContainer extends Component {
 	constructor(props) {
@@ -44,24 +45,47 @@ export default class ViewContainer extends Component {
 			sortDirection: false,
 			visibleColDropDown: false,
 			pageOfItems: [],
-			visibleColumns: /*  settings ||  */Object.keys(this.props.items[0]).map(c => c = { column: c, visible: true })
+			visibleColumns: /*  settings ||  */Object.keys(this.props.items[0]).map(c => c = { column: c, visible: true }),
+			dateFilter: {
+				active: false,
+				startDate: moment('2015-01-01'),
+				endDate: moment()
+			}
 
 		}
-		// this.listPageSizes = [10, 25, 50, 75, 100]
-		// this.cardPageSizes = [10, 25, 50, 75, 100]
 	}
 
-	componentWillUpdate = (nextProps, nextState) => {
+	filterByDate = (items) => {
+		const { startDate, endDate } = this.state.dateFilter
+		// console.log(startDate.getTime(), endDate.getTime())
+		var arr = items
+		var keys = Object.keys(arr[0])
+		var filteredByDate = arr.filter(c => {
+			var contains = keys.map(key => {
+				if (c[key] instanceof Date) {
+					// console.log(c[key])
+					var mm = moment(c[key])
+					// if (startDate.getTime() <= c[key].getTime() && c[key].getTime() <= endDate.getTime()) {
+					if (mm.isBetween(startDate, endDate)) {
+						return true
+					}
+					else
+						return false
+				}
+				else
+					return false
+			})
+			return contains.indexOf(true) !== -1 ? true : false
+		})
+		return filteredByDate
 	}
-
-	// createInputRef = (node) => {
-	// 	this.node = node
-	// }
-
 	filterItems = (items) => {
 		const { searchString, sortDirection, sortColumn } = this.state
+		const { active } = this.state.dateFilter
 		var searchStr = searchString.toLowerCase()
 		var arr = this.props.items
+		if (active)
+			arr = this.filterByDate(arr)
 		if (arr[0] === undefined)
 			return []
 		var keys = Object.keys(arr[0])
@@ -104,23 +128,46 @@ export default class ViewContainer extends Component {
 
 	//#region Handlers
 
+	/**
+	 * Date Filtering
+	 */
+	handleDateFilter = (startDate, endDate) => {
+		this.setState({ dateFilter: { active: true, startDate: startDate, endDate: endDate } })
+	}
+	handleDisableDateFilter = () => {
+		this.setState({ dateFilter: { ...this.state.dateFilter, active: false } })
+	}
+
+	/**
+	 * Dragging and sorting List Columns
+	 */
 	handleDragSort = ({ oldIndex, newIndex }) => {
 		this.setState({
 			visibleColumns: arrayMove(this.state.visibleColumns, oldIndex, newIndex),
 		})
 	}
 
-	handleVisibility = (visibleColDropDown) => e => {
-		e.preventDefault()
-		this.setState({ visibleColDropDown: visibleColDropDown })
-	}
+	/**
+	 * 'Eye' Button dropdown handler
+	 */
+	// handleVisibility = (visibleColDropDown) => e => {
+	// 	e.preventDefault()
+	// 	this.setState({ visibleColDropDown: visibleColDropDown })
+	// }
 
+	/**
+	 * Visible Columns handler
+	 */
 	handleVisibleColumn = (column) => e => {
 		e.preventDefault()
 		var newArr = this.state.visibleColumns.map(c => c.column === column ? { column: c.column, visible: !c.visible } : c)
 		this.setState({ visibleColumns: newArr })
-		window.localStorage.setItem('visibleColumns', JSON.stringify(newArr))
+		// window.localStorage.setItem('visibleColumns', JSON.stringify(newArr))
 	}
+
+	/**
+	 * Search string handler for the input inside ./Components/Search/Search.js
+	 */
 
 	handleSearch = (string) => {
 		this.setState({ searchString: string })
@@ -141,6 +188,9 @@ export default class ViewContainer extends Component {
 		this.setState({ sortOpen: sortOpen })
 	}
 
+	/**
+	 * Sort by @var column handler
+	 */
 	handleSort = (column) => e => {
 		e.stopPropagation()
 		e.preventDefault()
@@ -155,11 +205,6 @@ export default class ViewContainer extends Component {
 			})
 	}
 
-	// handleFocusInput = (focus) => e => {
-	// 	e.preventDefault()
-	// 	this.node.focus()
-	// 	this.setState({ inputFocus: focus })
-	// }
 
 	handleActiveColumn = (col) => col === this.state.sortColumn ? true : false
 
@@ -178,31 +223,6 @@ export default class ViewContainer extends Component {
 	//#region Rendering
 
 
-	// renderPageSizes = (view, pageSize) => {
-	// 	switch (view) {
-	// 		case 0:
-	// 			return this.cardPageSizes.map(o =>
-	// 				<DropDownItem style={{ minWidth: '45px' }} key={o} active={o === pageSize ? true : false} onClick={this.handlePageSize(o)}>{o}</DropDownItem>)
-	// 		case 1:
-	// 			return this.listPageSizes.map(o =>
-	// 				<DropDownItem style={{ minWidth: '45px' }} key={o} active={o === pageSize ? true : false} onClick={this.handlePageSize(o)}>
-	// 					{o}
-	// 				</DropDownItem>)
-	// 		default:
-	// 			return null
-	// 	}
-	// }
-	// renderPageSizeOption = (view, pageSize, pageSizeOpen) => {
-	// 	return <DropDownContainer onMouseLeave={this.handlePageSizeOpen(false)}>
-	// 		<DropDownButton onMouseEnter={this.handlePageSizeOpen(true)}>
-	// 			<Icon icon={'filter_list'} iconSize={25} color={'#fff'} />{pageSize}{/*  per side */}
-	// 		</DropDownButton>
-	// 		<Margin />
-	// 		<DropDown style={{ width: '100%' }}>
-	// 			{pageSizeOpen && this.renderPageSizes(view, pageSize)}
-	// 		</DropDown>
-	// 	</DropDownContainer>
-	// }
 	renderView = (pageSize, view, sortColumn, sortDirection) => {
 		const { pageOfItems } = this.state
 		switch (view) {
@@ -240,7 +260,7 @@ export default class ViewContainer extends Component {
 
 	handleFunctionNewProject = (open) => e => {
 		e.preventDefault()
-		this.setState({ funcNewProject: open })
+		this.setState({ funcNewProject: open, funcOpen: false })
 	}
 	renderFunctionNewProject = (exp) => {
 		return <ExpandedCard cardExpand={exp} handleVerticalExpand={this.handleFunctionNewProject} >
@@ -381,12 +401,19 @@ export default class ViewContainer extends Component {
 
 	render() {
 		const { funcOpen, funcNewProject } = this.state
-		const { view, searchString, pageSize, pageSizeOpen, sortOpen, sortDirection, sortColumn } = this.state
+		const { view, searchString, pageSize, pageSizeOpen, sortOpen, sortDirection, sortColumn, dateFilter } = this.state
+		// console.log(dateFilter.startDate, dateFilter.endDate )
 		return <View>
 			{this.renderFunctionNewProject(funcNewProject)}
 			<FunctionBar>
 				{this.renderFunctions(funcOpen)}
-				<DayPickerRangeControllerWrapper />
+				<DayPickerRangeControllerWrapper
+					handleDateFilter={this.handleDateFilter}
+					handleDisableDateFilter={this.handleDisableDateFilter}
+					startDate={dateFilter.startDate}
+					endDate={dateFilter.endDate}
+					activeFilter={dateFilter.active}
+				/>
 				<SearchComponent searchString={searchString} handleSearch={this.handleSearch} />
 				{/* {renderSearchOption(searchString, this.handleFocusInput, inputFocus, this.createInputRef, this.handleSearch)} */}
 				{renderPageSizeOption(view, pageSize, pageSizeOpen, this.handlePageSizeOpen, this.handlePageSize)}

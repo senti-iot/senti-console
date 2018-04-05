@@ -22,7 +22,7 @@ export default class NewProject extends Component {
 		this.setState({ titleFocus: false })
 	}
 	handleDrop = (acceptedFiles) => {
-		console.log(acceptedFiles)
+		// console.log(acceptedFiles)
 		this.setState({ img: acceptedFiles[0].preview })
 	}
 	render() {

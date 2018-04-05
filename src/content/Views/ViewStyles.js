@@ -19,9 +19,9 @@ export const Input = styled.input`
 	height:100%;
 	
 	border: none;
-	background: inherit;
+	background: #ECF0F1;
 	outline:none;
-	
+	color: #34495b;
 	-moz-appearance: none;
 	-webkit-appearance: none;
 
@@ -34,7 +34,7 @@ export const SearchContainer = styled.div`
 	height: 35px;
     
 	color: ${(props) => props.color ? props.color : '#2C3E50'};
-    background: #ECF0F1;
+    background: ${p => p.theme.tab.selected};
 	margin: 0px 5px;
     /* padding: 5px; */
     border: none;
@@ -55,8 +55,6 @@ export const SearchContainer = styled.div`
     }
 `
 export const DatePickerInput = SearchContainer.extend`
-	/* padding: 0px 10px; */
-	overflow: hidden;
 `
 export const View = styled.div`
 	display:flex;
@@ -71,6 +69,9 @@ export const CardsContainer = styled.div`
 	grid-auto-rows: auto;
 	grid-gap:10px;
 	overflow-x: auto;
+	height:100%;
+	background: #eee;
+	border-radius:4px;
 `
 
 export const ListContainer = styled.div`

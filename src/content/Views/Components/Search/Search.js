@@ -3,12 +3,12 @@ import { Icon } from 'odeum-ui'
 import { SearchContainer, Input } from './SearchStyles'
 
 
-export const renderSearchOption = (searchString, handleFocusInput, inputFocus, createInputRef, handleSearch) => {
-	return <SearchContainer onClick={handleFocusInput(true)} active={inputFocus}>
-		<Icon icon={'search'} iconSize={20} style={{ margin: 3, paddingRight: 3, borderRight: '1px solid #cecece' }} />
-		<Input innerRef={createInputRef} onChange={handleSearch} value={searchString} style={{ color: 'black' }} onBlur={() => inputFocus ? handleFocusInput(false) : null} />
-	</SearchContainer>
-}
+// export const renderSearchOption = (searchString, handleFocusInput, inputFocus, createInputRef, handleSearch) => {
+// 	return <SearchContainer onClick={handleFocusInput(true)} active={inputFocus}>
+// 		<Icon icon={'search'} iconSize={20} style={{ margin: 3, paddingRight: 3, borderRight: '1px solid #cecece' }} />
+// 		<Input innerRef={createInputRef} onChange={handleSearch} value={searchString} style={{ color: 'black' }} onBlur={() => inputFocus ? handleFocusInput(false) : null} />
+// 	</SearchContainer>
+// }
 
 
 export default class SearchComponent extends Component {
@@ -31,7 +31,7 @@ export default class SearchComponent extends Component {
 			this.props.handleSearch('')
 	}
 	handleKeyPress = e => {
-		console.log(e.key)
+		// console.log(e.key)
 		switch (e.key) {
 			case 'Enter':
 				this.props.handleSearch(this.state.searchString)
@@ -53,17 +53,21 @@ export default class SearchComponent extends Component {
 		this.node.focus()
 		this.setState({ inputFocus: focus })
 	}
+	handleBlurInput = () => {
+		if (this.state.searchString === '') {
+			this.setState({ inputFocus: false })
+		}
+	}
 	render() {
 		const { inputFocus, searchString } = this.state
-		const { handleFocusInput, createInputRef } = this
 		return (
-			<SearchContainer onClick={handleFocusInput(true)} active={inputFocus}>
+			<SearchContainer onClick={this.handleFocusInput(true)} active={inputFocus}>
 				<Icon icon={'search'} iconSize={20} style={{ margin: 3, paddingRight: 3, borderRight: '1px solid #cecece' }} />
-				<Input innerRef={createInputRef}
+				<Input innerRef={this.createInputRef}
 					style={{ color: 'black' }}
 					value={searchString}
 					onChange={this.handleInputChange}
-					onBlur={() => inputFocus ? handleFocusInput(false) : null}
+					onBlur={this.handleBlurInput}
 					onKeyDown={this.handleKeyPress} />
 			</SearchContainer>
 		)
