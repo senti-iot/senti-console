@@ -50,7 +50,7 @@ export const ListItemContainer = styled.div`
 	cursor: default;
 	
 	&:hover {
-		background: #BDBDBD;
+		background: #e9e9e9;
 	}
 `
 
@@ -67,12 +67,16 @@ export const ExpandButtonContainer = styled.div`
 	width: 15px;
 	height:30px;
 	background: ${p => p.selected ? p.theme.tab.selected : p.theme.tab.unselected};
+	color: ${p => p.selected ? '#fff' : '#000'};
 	border-radius: 0px 5px 5px 0px;
 	z-index: 1;
 	cursor:pointer;
 	
 	&:hover{
-		background: #BDBDBD;
+		/* background: #e9e9e9; */
+		background: ${p =>  p.theme.tab.selected};
+		color: white;
+
 	}
 `
 

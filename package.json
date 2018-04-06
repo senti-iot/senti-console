@@ -11,7 +11,6 @@
     "lodash": "^4.17.5",
     "moment": "^2.21.0",
     "odeum-app": "^0.2.89",
-    "odeum-ui": "^0.1.54",
     "polished": "^1.9.2",
     "prop-types": "^15.6.1",
     "react": "^16.3.0",

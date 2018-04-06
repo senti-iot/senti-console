@@ -12,7 +12,8 @@ export default class ListView extends Component {
 			// pageOfItems: [],
 			checkedItems: [],
 			dragging: false,
-			checkBox: false
+			checkBox: false,
+			open: -1
 		}
 	}
 
@@ -58,7 +59,9 @@ export default class ListView extends Component {
 		this.props.columns.map(c => c.visible === true ? x = x + 1 : null)
 		return x
 	}
-
+	handleActiveListDrawer = (id) => {
+		this.setState({ open: id })
+	}
 	handleSortStart = () => {
 		this.setState({ dragging: true })
 	}
@@ -105,6 +108,8 @@ export default class ListView extends Component {
 								key={i}
 								onChecked={this.onCheckedItem}
 								isChecked={this.state.checkedItems.findIndex(o => o === c.id) !== -1 ? true : false}
+								open={this.state.open}
+								handleActiveListDrawer={this.handleActiveListDrawer}
 							/>)
 						: <div>No Items</div>}
 				</ListContainer>

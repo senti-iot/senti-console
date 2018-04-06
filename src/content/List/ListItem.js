@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { ListItemContainer, ExpandButtonContainer, Text, ListCardItem, Button, ButtonContainer, ControlsContainer, Cell } from './ListStyles'
 import Icon from 'odeum-ui/lib/components/Icon/Icon'
 import Checkbox from '../Views/Components/CheckBox/CheckBox'
 import ExpandedCardInfo from '../Card/ExpandedCardInfo'
-export default class ListCard extends PureComponent {
+export default class ListCard extends Component {
 	constructor(props) {
 		super(props)
 
@@ -12,6 +12,26 @@ export default class ListCard extends PureComponent {
 			cardExpand: false
 		}
 	}
+	// shouldComponentUpdate = (nextProps, nextState) => {
+	// 	if (nextProps.isChecked !== this.props.isChecked)
+	// 		return true
+	// 	if (this.state.expand !== nextState.expand)
+	// 		return true
+	// 	if (this.state.cardExpand !== nextState.cardExpand)
+	// 		return true
+	// 	if (this.state.expand === true)
+	// 		if (this.props.item.id !== nextProps.open) {
+	// 			this.setState({ expand: false })
+	// 			return true
+	// 		}
+
+	// }
+
+	componentWillUpdate = (nextProps, nextState) => {
+		if (this.state.expand === true)
+			if (this.props.item.id !== nextProps.open)
+				this.setState({ expand: false })
+	}
 
 	viewCard = (open) => e => {
 		e.preventDefault()
@@ -19,6 +39,7 @@ export default class ListCard extends PureComponent {
 	}
 	onExpand = () => {
 		this.setState({ expand: !this.state.expand })
+		this.props.handleActiveListDrawer(this.props.item.id)
 	}
 
 	onChecked = (isChecked) => {
@@ -67,7 +88,7 @@ export default class ListCard extends PureComponent {
 							</Button>
 						</ButtonContainer>
 						<ExpandButtonContainer selected={isChecked} onClick={this.onExpand}>
-							<Icon icon={'more_vert'} color={'#FFF'} active={isChecked} iconSize={23} />
+							<Icon icon={'more_vert'} color={'inherit'} activeColor={'#fff'} active={isChecked} iconSize={23} />
 						</ExpandButtonContainer>
 					</ControlsContainer>
 				</ListCardItem>

@@ -288,7 +288,7 @@ export default class ViewContainer extends Component {
 		const { visibleColumns } = this.state
 		return <DropDownItem>
 			<DropDownIcon onClick={columnFunc}>
-				<Icon icon={visibleColumns.find(c => c.column === columnName).visible ? 'visibility' : 'visibility_off'} color={'#FFFFFF'} active={visibleColumns.find(c => c.column === columnName).visible ? true : false} />
+				<Icon icon={visibleColumns.find(c => c.column === columnName).visible ? 'visibility' : 'visibility_off'} activeColor={'#FFFFFF'} active={visibleColumns.find(c => c.column === columnName).visible ? true : false} />
 			</DropDownIcon>
 			<DropDownText>
 				<Text>
@@ -312,11 +312,6 @@ export default class ViewContainer extends Component {
 				</DropDownText>
 			</DropDownSubSection>
 			<DropDownSubItem>
-				{/* <DropDownIcon onClick={this.handleVisibleColumn('title')}>
-					<Icon icon={"visibility"}
-						color={'#FFFFFF'}
-						active={visibleColumns.find(c => c.column === 'title').visible ? true : false} />
-				</DropDownIcon> */}
 				<DropDownText onClick={this.handleSort('title')} active={this.handleActiveColumn('title')} sorting={sortDirection}>
 					<Text>
 						Alfabetisk
@@ -324,9 +319,6 @@ export default class ViewContainer extends Component {
 				</DropDownText>
 			</DropDownSubItem>
 			<DropDownSubItem>
-				{/* <DropDownIcon onClick={this.handleVisibleColumn('open_date')}>
-					<Icon icon={"visibility"} color={'#FFFFFF'} active={visibleColumns.find(c => c.column === 'open_date').visible ? true : false} />
-				</DropDownIcon> */}
 				<DropDownText onClick={this.handleSort('open_date')} active={this.handleActiveColumn('open_date')} sorting={sortDirection}>
 					<Text>
 						Dato
@@ -360,7 +352,7 @@ export default class ViewContainer extends Component {
 
 		return <DropDownContainer onMouseLeave={this.handleSortOpen(false)}>
 			<DropDownButton onMouseEnter={this.handleSortOpen(true)} >
-				<Icon icon={'visibility'} color={'#FFF'} active={true} iconSize={20} style={{ margin: 3 }} />
+				<Icon icon={'visibility'} color={'#FFF'} iconSize={20} style={{ margin: 3 }} />
 			</DropDownButton>
 			<Margin />
 
@@ -379,30 +371,22 @@ export default class ViewContainer extends Component {
 	renderChangeViewOptions = (view) => {
 		return <ChangeViewButtonContainer>
 			<ChangeViewButtonCard view={view} onClick={this.changeView(0)}>
-				<Icon iconSize={25} icon={'view_module'} color={'#FFFFFF'} active={view === 0 ? true : false} />
+				<Icon iconSize={25} icon={'view_module'} activeColor={'#FFFFFF'} active={view === 0 ? true : false} />
 			</ChangeViewButtonCard>
 			<ChangeViewButtonList view={view} onClick={this.changeView(1)}>
-				<Icon iconSize={25} icon={'list'} color={'#FFFFFF'} active={view === 1 ? true : false} />
+				<Icon iconSize={25} icon={'list'} activeColor={'#FFFFFF'} active={view === 1 ? true : false} />
 			</ChangeViewButtonList>
 			<ChangeViewButtonMap view={view} onClick={this.changeView(2)}>
-				<Icon iconSize={25} icon={'location'} color={'#FFFFFF'} active={view === 2 ? true : false} />
+				<Icon iconSize={25} icon={'location'} activeColor={'#FFFFFF'} active={view === 2 ? true : false} />
 			</ChangeViewButtonMap>
 		</ChangeViewButtonContainer>
 	}
-
-	// renderSearchOption = (searchString) => {
-	// 	return <SearchContainer onClick={this.handleFocusInput} active={this.state.inputFocus}>
-	// 		<Icon icon={'search'} iconSize={20} style={{ margin: 3, paddingRight: 3, borderRight: '1px solid #cecece' }} />
-	// 		<Input innerRef={this.createInputRef} onChange={this.handleSearch} value={searchString} onBlur={() => this.state.inputFocus ? this.setState({ inputFocus: false }) : null} />
-	// 	</SearchContainer>
-	// }
 
 	//#endregion
 
 	render() {
 		const { funcOpen, funcNewProject } = this.state
 		const { view, searchString, pageSize, pageSizeOpen, sortOpen, sortDirection, sortColumn, dateFilter } = this.state
-		// console.log(dateFilter.startDate, dateFilter.endDate )
 		return <View>
 			{this.renderFunctionNewProject(funcNewProject)}
 			<FunctionBar>

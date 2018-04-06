@@ -13,14 +13,14 @@ export const getTheme = (theme) => {
 		borderLighter: '#eceeee',
 		borderBright: '#f4f5f5',
 	
-		primary: theme.tab.selected, /* Active Day Selected */
+		primary: theme.tab.hover, /* Active Day Selected */
 		primaryShade_1: theme.tab.selected,	/* border Between Days */
-		primaryShade_2: theme.tab.hover, /* days between heads */
+		primaryShade_2: theme.tab.selected, /* days between heads */
 		primaryShade_3: theme.tab.selected, /* Border between days when selecting */
-		primaryShade_4: theme.tab.hover, /* unused */
-		primary_dark: '#008489', /* unused */
+		primaryShade_4: theme.tab.selected, /* Borders */
+		primary_dark: theme.tab.selected, /* MORE BORDERS */
 	
-		secondary: '#007a87', /* unused */
+		secondary: '#f2f2f2', /* Text Color on Hover when selecting a new date range */
 	
 		yellow: '#ffe8bc',
 		yellow_dark: '#ffce71'
@@ -50,13 +50,13 @@ export const getTheme = (theme) => {
 	
 				disabled: core.grayLightest,
 	
-				background: theme.header.background,
+				background: '#f2f2f2',
 				backgroundDark: '#f2f2f2',
 				backgroundFocused: core.white,
 				// text: core.gray,
-				text: core.white,
+				text: core.gray,
 				textDisabled: core.border,
-				textFocused: '#007a87',
+				textFocused: 'white',
 				placeholderText: '#757575',
 	
 				outside: {
