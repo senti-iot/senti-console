@@ -31,7 +31,6 @@ export default class ListCard extends PureComponent {
 		const { item, column, columnCount, isChecked } = this.props
 		return (
 			<React.Fragment>
-				<ExpandedCardInfo cardExpand={cardExpand} {...this.props} handleVerticalExpand={this.viewCard} />
 				<ListCardItem>
 					<Checkbox isChecked={isChecked} size={'medium'} onChange={this.onChecked} />
 					<ListItemContainer selected={isChecked} columnCount={columnCount}>
@@ -55,7 +54,7 @@ export default class ListCard extends PureComponent {
 
 						})}
 					</ListItemContainer>
-					<ControlsContainer /* horizOpen={expand} */>
+					<ControlsContainer>
 						<ButtonContainer pose={!this.state.expand ? 'open' : 'close'} /* horizOpen={expand} */ style={{ flexFlow: 'row nowrap', borderRadius: 0, height: 'inherit' }}>
 							<Button horizOpen={expand} onClick={this.viewCard(true)}>
 								<Icon color={'#5E5E5E'} icon={'mode_edit'} iconSize={23} />
@@ -72,6 +71,7 @@ export default class ListCard extends PureComponent {
 						</ExpandButtonContainer>
 					</ControlsContainer>
 				</ListCardItem>
+				<ExpandedCardInfo cardExpand={cardExpand} {...this.props} handleVerticalExpand={this.viewCard} />
 			</React.Fragment>
 		)
 	}

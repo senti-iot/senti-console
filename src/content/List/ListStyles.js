@@ -33,7 +33,6 @@ export const ListCardItem = styled.div`
 	height:30px;
 	border: 1px solid transparent;
 	border-radius: 5px;
-
 `
 
 export const ListItemContainer = styled.div`
@@ -79,16 +78,23 @@ export const ExpandButtonContainer = styled.div`
 
 const buttonContainerProps = {
 	open: {
-		x: '100px',
+		x: '115px',
+		// scaleX: 0
 	},
-	close: { x: '-15px' }
+	close: {
+		// scaleX: 1,
+		x: '15px'
+	}
 }
 const buttonContainer = posed.div({ ...buttonContainerProps })
 
 export const ButtonContainer = styled(buttonContainer) `
 	position:absolute;
+	top:0;
+	right:100%;
+	/* transform-origin:right; */
 	align-self: bottom;
-	
+	padding-right: 15px;
 	display: flex;
 	flex-flow: column nowrap;
 	align-items: center;
@@ -103,10 +109,12 @@ export const ButtonContainer = styled(buttonContainer) `
 export const ControlsContainer = styled.div`
 	justify-self: end;
 	position:relative;
-	
+	/* position:absolute; */
 	display:flex;
 	flex-flow:row nowrap;
 	justify-content: right;
+	width: 15px;
+	/* left:100%; */
 `
 export const Button = styled.div`
 	opacity: ${p => p.horizOpen ? '1' : '0'};

@@ -39,17 +39,6 @@ export default class FormCard extends Component {
 							<Text style={{ marginLeft: 8 }} title={item.title}>{item.title}</Text>
 						</div>
 						<ProjectInfoContainer>
-							{/* {Object.keys(item).map((i, index) =>
-							column[index].visible ?
-							<ProjectInfoCategory key={index}>
-							<ProjectInfoTitle title={item[i].toString()}>
-							{column[index].column.charAt(0).toUpperCase() + column[index].column.slice(1)}
-							</ProjectInfoTitle>
-							<ProjectInfo>
-							{item[i] instanceof Date ? item[i].toLocaleDateString() : item[i].toString()}
-							</ProjectInfo>
-							</ProjectInfoCategory> : null
-						)} */}
 							<ProjectInfoCategory>
 								<ProjectInfoTitle>
 									{'Seneste Registering'}
