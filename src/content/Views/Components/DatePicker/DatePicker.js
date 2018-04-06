@@ -15,30 +15,11 @@ import { START_DATE, END_DATE, HORIZONTAL_ORIENTATION } from 'react-dates/src/co
 // import isInclusivelyAfterDay from 'react-dates/src/utils/isInclusivelyAfterDay'
 import ThemedStyleSheet from 'react-with-styles/lib/ThemedStyleSheet'
 import aphroditeInterface from 'react-with-styles-interface-aphrodite'
-import DefaultTheme from 'react-dates/lib/theme/DefaultTheme'
+// import DefaultTheme from 'react-dates/lib/theme/DefaultTheme'
+import { getTheme } from './DatePickerTheme'
 
-ThemedStyleSheet.registerInterface(aphroditeInterface)
-ThemedStyleSheet.registerTheme(DefaultTheme)
+// ThemedStyleSheet.registerInterface(aphroditeInterface)
 
-
-
-ThemedStyleSheet.registerInterface(aphroditeInterface)
-ThemedStyleSheet.registerTheme({
-	reactDates: {
-		...DefaultTheme.reactDates,
-		color: {
-			...DefaultTheme.reactDates.color,
-			highlighted: {
-				backgroundColor: '#C4C4C4',
-				backgroundColor_active: '#C4C4C4',
-				backgroundColor_hover: '#58D68D',
-				color: '#186A3B',
-				color_active: '#186A3B',
-				color_hover: '#186A3B',
-			},
-		},
-	},
-})
 
 const propTypes = forbidExtraProps({
 	activeFilter: PropTypes.bool,
@@ -139,6 +120,26 @@ class DayPickerRangeControllerWrapper extends React.Component {
 			error: false,
 			inputValue: props.startDate ? props.startDate.format('DD.MM.YYYY') + ' - ' + props.endDate.format('DD.MM.YYYY') : ''
 		}
+	}
+	componentWillMount = () => {
+
+		ThemedStyleSheet.registerInterface(aphroditeInterface)
+		// ThemedStyleSheet.registerTheme({
+		// 	reactDates: {
+		// 		...DefaultTheme.reactDates,
+		// 		color: {
+		// 			...DefaultTheme.reactDates.color,
+		// 			core: {
+					
+		// 				primary: this.props.theme.tab.selected,
+		// 				primaryShade_2: this.props.theme.tab.selected,
+		// 				secondary: this.props.theme.header.background,
+		// 				...DefaultTheme.reactDates.core
+		// 			},
+		// 		},
+		// 	},
+		// })
+		ThemedStyleSheet.registerTheme(getTheme(this.props.theme))
 	}
 
 	componentWillUpdate = (nextProps, nextState) => {
