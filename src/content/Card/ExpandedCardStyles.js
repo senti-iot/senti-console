@@ -12,12 +12,12 @@ const expandedCardProps = {
 	close: {
 		opacity: 0,
 		scaleY: 0,
-		transition: (props) => tween({ ...props, duration: 200, ease: easing.anticipate })
+		transition: (props) => tween({ ...props, duration: 200, ease: easing.backInOut })
 	}
 }
-const Pose = posed.div({ ...expandedCardProps })
+const overlayAnim = posed.div({ ...expandedCardProps })
 
-export const OpenSesame = styled(Pose) `
+export const OpenSesame = styled(overlayAnim) `
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -101,6 +101,7 @@ export const Overlay = styled.div`
 	left:0;
 	position: fixed;
 	z-index:3;
+	transition: all 500ms ease;
 `
 
 export const OverlayPreventPropagation = styled.div`

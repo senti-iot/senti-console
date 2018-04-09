@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { ListItemContainer, ExpandButtonContainer, Text, ListCardItem, Button, ButtonContainer, ControlsContainer, Cell } from './ListStyles'
 import Icon from 'odeum-ui/lib/components/Icon/Icon'
 import Checkbox from '../Views/Components/CheckBox/CheckBox'
 import ExpandedCardInfo from '../Card/ExpandedCardInfo'
 
-export default class ListItem extends Component {
+export default class ListItem extends PureComponent {
 	constructor(props) {
 		super(props)
 
@@ -13,26 +13,6 @@ export default class ListItem extends Component {
 			cardExpand: false
 		}
 	}
-	// shouldComponentUpdate = (nextProps, nextState) => {
-	// 	if (nextProps.isChecked !== this.props.isChecked)
-	// 		return true
-	// 	if (this.state.expand !== nextState.expand)
-	// 		return true
-	// 	if (this.state.cardExpand !== nextState.cardExpand)
-	// 		return true
-	// 	if (this.state.expand === true)
-	// 		if (this.props.item.id !== nextProps.open) {
-	// 			this.setState({ expand: false })
-	// 			return true
-	// 		}
-
-	// }
-
-	// componentWillUpdate = (nextProps, nextState) => {
-	// 	if (this.state.expand === true)
-	// 		if (this.props.item.id !== nextProps.open)
-	// 			this.setState({ expand: false })
-	// }
 
 	viewCard = (open) => e => {
 		e.preventDefault()

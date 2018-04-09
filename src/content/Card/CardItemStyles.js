@@ -199,12 +199,10 @@ const horizontalControlsProps = {
 	},
 	drawerClosed: {
 		y: '-40px'
-	},
-	penis: {
-		y: '-40px'
 	}
 }
 const horizontalcontrolsDrawer = posed.div({ ...horizontalControlsProps })
+
 export const Wheels = styled(horizontalcontrolsDrawer) `
 	display:flex;
 	/* justify-content:center; */
@@ -212,8 +210,8 @@ export const Wheels = styled(horizontalcontrolsDrawer) `
 	align-items:center;
 	width: 80%;
 	height:100%;
-	transform: translateY(-40px) translateZ(0);
 `
+
 export const HorizontalControlsDrawer = styled.div`
 	display:flex;
 	flex-flow:row nowrap;
