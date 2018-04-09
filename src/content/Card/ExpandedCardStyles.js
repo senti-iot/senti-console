@@ -99,7 +99,7 @@ export const Overlay = styled.div`
 
 	top:0;
 	left:0;
-	position: absolute;
+	position: fixed;
 	z-index:3;
 `
 

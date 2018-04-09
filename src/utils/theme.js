@@ -58,8 +58,8 @@ const theme = {
 		}
 	},
 	logo: {
-		margin: '0px 10px',
-		height: '100%',
+		margin: '0px 40px',
+		height: '90%',
 		default: logo
 	},
 	input: {

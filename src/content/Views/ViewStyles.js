@@ -59,7 +59,6 @@ export const DatePickerInput = SearchContainer.extend`
 export const View = styled.div`
 	display:flex;
 	flex-flow:column nowrap;
-	
 	height:100%;
 	width:100%;
 `
@@ -68,15 +67,20 @@ export const CardsContainer = styled.div`
 	grid-template-columns: repeat( auto-fit, 300px );
 	grid-auto-rows: auto;
 	grid-gap:10px;
+	align-content: space-between;
+  	justify-content: space-around;
 	overflow-x: auto;
 	height:100%;
 	background: #eee;
 	border-radius:4px;
+	
 `
 
 export const ListContainer = styled.div`
-	display:grid;
-	grid-template-columns: 1fr;
+	/* display:grid; */
+	/* grid-template-columns: 1fr; */
+	height: 100%;
+	width: 100%;
 	margin: 5px;
 	overflow-y:auto;
 `

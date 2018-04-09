@@ -96,8 +96,8 @@ export default class ListItem extends Component {
 							<Icon icon={'more_vert'} color={'inherit'} activeColor={'#fff'} active={isChecked} iconSize={23} />
 						</ExpandButtonContainer>
 					</ControlsContainer>
+					<ExpandedCardInfo cardExpand={cardExpand} {...this.props} handleVerticalExpand={this.viewCard} />
 				</ListCardItem>
-				<ExpandedCardInfo cardExpand={cardExpand} {...this.props} handleVerticalExpand={this.viewCard} />
 			</React.Fragment>
 		)
 	}

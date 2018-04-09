@@ -5,6 +5,7 @@ import Home from './content/Home/Homepage'
 import ViewContainer from 'content/Views/ViewContainer'
 import mockData from './utils/mockData'
 import { CookiesProvider } from 'react-cookie'
+import User from './content/User/User'
 
 class App extends Component {
 	constructor(props) {
@@ -25,7 +26,7 @@ class App extends Component {
 		return (
 			<CookiesProvider>
 				<AppContainer theme={theme}>
-					<Header logo={theme.logo} />
+					<Header logo={theme.logo} userLogin={true} userComponent={User} />
 					<MenuPanel
 						login={true}
 						redirectTo={'/login'}
@@ -53,8 +54,10 @@ class App extends Component {
 							<Menu label={'Indstillinger'} route={'/settings'} icon={'settings'}>
 								<Tab label={'Projekter'} icon={'settings'} route={''}>
 									{/* <ViewContainer items={mockData} /> */}
-									<div>Automatisk lås menupanelet </div>
-									<div onClick={this.handleOnMenuClickClose}> {this.state.onMenuClickClose ? 'ON' : 'OFF'} </div>
+									<div style={{ display: 'inline-flex' }}>
+										<div style={{ marginRight: 10 }}>Automatisk lås menupanelet </div>
+										<button style={{ height: '23px', margin: 0, padding: 0, background: this.state.onMenuClickClose ? 'green' : 'red' }} onClick={this.handleOnMenuClickClose}> {this.state.onMenuClickClose ? 'ON' : 'OFF'} </button>
+									</div>
 								</Tab>
 							</Menu>
 						</Protected>
