@@ -3,7 +3,7 @@ import ListItem from '../List/ListItem'
 import { ListContainer, HeaderListContainer } from './ViewStyles'
 import Checkbox from './Components/CheckBox/CheckBox'
 import SortableList from './Components/HeaderList/HeaderContainer'
-// import ReactList from 'react-list'
+
 export default class ListView extends Component {
 	constructor(props) {
 		super(props)
@@ -13,7 +13,10 @@ export default class ListView extends Component {
 			checkedItems: [],
 			dragging: false,
 			checkBox: false,
-			open: -1
+			drawer: {
+				id: -1,
+				isOpen: false
+			}
 		}
 	}
 
@@ -59,8 +62,13 @@ export default class ListView extends Component {
 		this.props.columns.map(c => c.visible === true ? x = x + 1 : null)
 		return x
 	}
-	handleActiveListDrawer = (id) => {
-		this.setState({ open: id })
+	handleActiveListDrawer = (id, open) => {
+		this.setState({
+			drawer: {
+				id: id,
+				isOpen: open
+			}
+		})
 	}
 	handleSortStart = () => {
 		this.setState({ dragging: true })
@@ -68,16 +76,6 @@ export default class ListView extends Component {
 	handleSortEnd = ({ oldIndex, newIndex }) => {
 		this.props.onSortEnd({ oldIndex, newIndex })
 		this.setState({ dragging: false })
-	}
-	renderListItem = (index, key) => {
-		return <ListItem
-			column={this.props.columns}
-			columnCount={this.handleActiveColumnCount}
-			item={this.props.items[index]}
-			key={key}
-			onChecked={this.onCheckedItem}
-			isChecked={this.state.checkedItems.findIndex(o => o === this.props.items[index].id) !== -1 ? true : false}
-		/>
 	}
 	render() {
 		return (
@@ -108,7 +106,7 @@ export default class ListView extends Component {
 								key={i}
 								onChecked={this.onCheckedItem}
 								isChecked={this.state.checkedItems.findIndex(o => o === c.id) !== -1 ? true : false}
-								open={this.state.open}
+								drawer={this.state.drawer}
 								handleActiveListDrawer={this.handleActiveListDrawer}
 							/>)
 						: <div>No Items</div>}

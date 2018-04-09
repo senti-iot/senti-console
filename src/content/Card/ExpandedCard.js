@@ -31,7 +31,9 @@ export default class ExpandedCard extends Component {
 	handleOverlay = () => e => {
 		if (this.props.handleVerticalExpand)
 			this.props.handleVerticalExpand(false)(e)
-		this.setState({ horizontalExpand: false })
+		else {
+			this.setState({ horizontalExpand: false })
+		}
 
 	}
 	render() {

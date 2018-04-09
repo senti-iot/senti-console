@@ -3,7 +3,8 @@ import { ListItemContainer, ExpandButtonContainer, Text, ListCardItem, Button, B
 import Icon from 'odeum-ui/lib/components/Icon/Icon'
 import Checkbox from '../Views/Components/CheckBox/CheckBox'
 import ExpandedCardInfo from '../Card/ExpandedCardInfo'
-export default class ListCard extends Component {
+
+export default class ListItem extends Component {
 	constructor(props) {
 		super(props)
 
@@ -27,28 +28,33 @@ export default class ListCard extends Component {
 
 	// }
 
-	componentWillUpdate = (nextProps, nextState) => {
-		if (this.state.expand === true)
-			if (this.props.item.id !== nextProps.open)
-				this.setState({ expand: false })
-	}
+	// componentWillUpdate = (nextProps, nextState) => {
+	// 	if (this.state.expand === true)
+	// 		if (this.props.item.id !== nextProps.open)
+	// 			this.setState({ expand: false })
+	// }
 
 	viewCard = (open) => e => {
 		e.preventDefault()
 		this.setState({ cardExpand: open, expand: false })
+		if (this.props.handleActiveListDrawer)
+			this.props.handleActiveListDrawer(this.props.item.id, false)
 	}
 	onExpand = () => {
 		this.setState({ expand: !this.state.expand })
-		this.props.handleActiveListDrawer(this.props.item.id)
+		this.props.handleActiveListDrawer(this.props.item.id, !this.isOpen())
 	}
 
 	onChecked = (isChecked) => {
 		this.props.onChecked(this.props.item.id, isChecked)
 		// this.setState({ checked: !this.state.checked })
 	}
+	isOpen = () => {
+		return this.props.drawer.id === this.props.item.id ? this.props.drawer.isOpen : false
+	}
 
 	render() {
-		const { expand, cardExpand } = this.state
+		const { cardExpand } = this.state
 		const { item, column, columnCount, isChecked } = this.props
 		return (
 			<React.Fragment>
@@ -57,33 +63,32 @@ export default class ListCard extends Component {
 					<ListItemContainer selected={isChecked} columnCount={columnCount}>
 						{column.map((c, cIndex) => {
 							return c.visible ? <Cell key={cIndex}>
-
-								{item[c.column] instanceof Date ? <Text title={item[c.column].toLocaleDateString()}>
-									{item[c.column].toLocaleDateString()}
-								</Text> :
-									c.column === 'user' ?
-										<React.Fragment>
+								{
+									item[c.column] instanceof Date ?
+										<Text title={item[c.column].toLocaleDateString()}>
+											{item[c.column].toLocaleDateString()}
+										</Text>
+										: c.column === 'user' ? <React.Fragment>
 											<img src={item[c.column].img} alt={'profilepic'} style={{ height: '26px', borderRadius: 20, marginRight: 4 }} />
 											<Text title={item[c.column].name}>
 												{item[c.column].name}
 											</Text>
 										</React.Fragment> :
-										c.column === 'img' ?
-											<Text> <img src={item[c.column]} height={30} alt={'Projekt Img'} /></Text> :
-											<Text title={item[c.column].toString()}>{item[c.column].toString()}</Text>}
+											c.column === 'img' ? <Text> <img src={item[c.column]} height={30} alt={'Projekt Img'} /></Text>
+												: <Text title={item[c.column].toString()}>{item[c.column].toString()}</Text>
+								}
 							</Cell> : null
-
 						})}
 					</ListItemContainer>
 					<ControlsContainer>
-						<ButtonContainer pose={!this.state.expand ? 'open' : 'close'} /* horizOpen={expand} */ style={{ flexFlow: 'row nowrap', borderRadius: 0, height: 'inherit' }}>
-							<Button horizOpen={expand} onClick={this.viewCard(true)}>
+						<ButtonContainer pose={!this.isOpen() ? 'open' : 'close'} /* horizOpen={expand} */ style={{ flexFlow: 'row nowrap', borderRadius: 0, height: 'inherit' }}>
+							<Button horizOpen={this.isOpen()} onClick={this.viewCard(true)}>
 								<Icon color={'#5E5E5E'} icon={'mode_edit'} iconSize={23} />
 							</Button>
-							<Button horizOpen={expand}>
+							<Button horizOpen={this.isOpen()}>
 								<Icon color={'#5E5E5E'} icon={'share'} iconSize={23} />
 							</Button>
-							<Button horizOpen={expand}>
+							<Button horizOpen={this.isOpen()}>
 								<Icon color={'#5E5E5E'} icon={'library_add'} iconSize={23} />
 							</Button>
 						</ButtonContainer>

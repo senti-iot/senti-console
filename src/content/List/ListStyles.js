@@ -44,6 +44,7 @@ export const ListItemContainer = styled.div`
 	width: 100%;
 	
 	background: ${p => p.selected ? p.theme.tab.selected : p.theme.tab.unselected};
+	color: ${p => p.selected ? "#FFFFFF" : "#000000"};
 	
 	border-radius: 5px 0px 0px 5px;
 	margin: 3px 0px 3px 8px;
