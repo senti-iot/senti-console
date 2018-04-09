@@ -44,7 +44,7 @@ export default class FormCard extends Component {
 									{'Seneste Registering'}
 								</ProjectInfoTitle>
 								<ProjectInfo>
-									{item.seneste_reg.toLocaleDateString()}
+									{item.seneste_reg/* .toLocaleDateString() */}
 								</ProjectInfo>
 							</ProjectInfoCategory>
 							<ProjectInfoCategory>
@@ -52,7 +52,7 @@ export default class FormCard extends Component {
 									{'Kontakt'}
 								</ProjectInfoTitle>
 								<ProjectInfo>
-									{item.user.name}
+									{/* {item.user.name} */}
 								</ProjectInfo>
 							</ProjectInfoCategory>
 						</ProjectInfoContainer>

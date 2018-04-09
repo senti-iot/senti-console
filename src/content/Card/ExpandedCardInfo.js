@@ -7,7 +7,7 @@ import {
 } from './CardItemStyles'
 import {
 	ExpandedProjectInfoContainer,
-	ExpSection, ExpHeader, ExpFormImg, ExpTitle, ExpAddress, UserContainer, Username, Avatar, ExpProjectInfoTitle, ExpProjectInfo, ExpProjectInfoItem
+	ExpSection, ExpHeader, ExpFormImg, ExpTitle, ExpAddress, /* UserContainer, Username, Avatar, */ ExpProjectInfoTitle, ExpProjectInfo, ExpProjectInfoItem
 } from './ExpandedCardStyles'
 
 
@@ -33,21 +33,21 @@ export default class ExpandedCardInfo extends Component {
 							<ExpTitle title={item.title}>{item.title}
 								<ExpAddress>{item.address}</ExpAddress>
 							</ExpTitle>
-
+							{/* 
 							<UserContainer>
 								<Username>{item.user.name}</Username>
 								<Avatar src={item.user.img} alt="" />
-							</UserContainer>
+							</UserContainer> */}
 						</ExpHeader>
 						<ExpandedProjectInfoContainer>
 
 
 							<ExpSection>
 								<ExpProjectInfoTitle>
-									{'Enheder'} ({item.devices.length})
+									{'Enheder'} {/* ({item.devices}) */}
 								</ExpProjectInfoTitle>
 								<ExpProjectInfo>
-									<ExpProjectInfoItem>
+									{/* <ExpProjectInfoItem>
 										{item.devices[0].toString()}
 									</ExpProjectInfoItem>
 									<ExpProjectInfoItem>
@@ -55,7 +55,7 @@ export default class ExpandedCardInfo extends Component {
 									</ExpProjectInfoItem>
 									<ExpProjectInfoItem>
 										{item.devices[2].toString()}
-									</ExpProjectInfoItem>
+									</ExpProjectInfoItem> */}
 								</ExpProjectInfo>
 							</ExpSection>
 
@@ -66,13 +66,13 @@ export default class ExpandedCardInfo extends Component {
 								</ExpProjectInfoTitle>
 								<ExpProjectInfo>
 									<ExpProjectInfoItem>
-										{item.seneste_reg.toLocaleDateString()}
+										{item.seneste_reg /* .toLocaleDateString() */}
 									</ExpProjectInfoItem>
 									<ExpProjectInfoItem>
-										{item.seneste_reg.toLocaleDateString()}
+										{item.seneste_reg /* .toLocaleDateString() */ }
 									</ExpProjectInfoItem>
 									<ExpProjectInfoItem>
-										{item.seneste_reg.toLocaleDateString()}
+										{item.seneste_reg /* .toLocaleDateString() */ }
 									</ExpProjectInfoItem>
 
 								</ExpProjectInfo>
@@ -88,10 +88,10 @@ export default class ExpandedCardInfo extends Component {
 										Total hits:	{item.hits}
 									</ExpProjectInfoItem>
 									<ExpProjectInfoItem>
-										{item.seneste_reg.toLocaleDateString()}
+										{item.seneste_reg /* .toLocaleDateString() */}
 									</ExpProjectInfoItem>
 									<ExpProjectInfoItem>
-										{item.seneste_reg.toLocaleDateString()}
+										{item.seneste_reg /* .toLocaleDateString() */}
 									</ExpProjectInfoItem>
 
 								</ExpProjectInfo>

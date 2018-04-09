@@ -45,8 +45,8 @@ export default class ListItem extends PureComponent {
 							return c.visible ? <Cell key={cIndex}>
 								{
 									item[c.column] instanceof Date ?
-										<Text title={item[c.column].toLocaleDateString()}>
-											{item[c.column].toLocaleDateString()}
+										<Text title={item[c.column]/* .toLocaleDateString() */}>
+											{item[c.column]/* .toLocaleDateString() */}
 										</Text>
 										: c.column === 'user' ? <React.Fragment>
 											<img src={item[c.column].img} alt={'profilepic'} style={{ height: '26px', borderRadius: 20, marginRight: 4 }} />

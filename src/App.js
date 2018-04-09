@@ -3,9 +3,10 @@ import { AppContainer, Header, MenuPanel, Menu, Tab, Footer, LoginForm, Protecte
 import theme from './utils/theme'
 import Home from './content/Home/Homepage'
 import ViewContainer from 'content/Views/ViewContainer'
-import mockData from './utils/mockData'
+// import mockData from './utils/mockData'
 import { CookiesProvider } from 'react-cookie'
 import User from './content/User/User'
+import { getAllProjects /* createOneProject */ } from 'utils/data'
 
 class App extends Component {
 	constructor(props) {
@@ -16,6 +17,15 @@ class App extends Component {
 			onMenuClickClose: false
 		}
 	}
+	componentWillMount = async () => {
+		var data = await getAllProjects()
+		this.setState({ data: data })
+		// mockData.forEach(element => {
+		// 	createOneProject(element)
+		// })
+
+	}
+
 	handleLogin = () => {
 		this.setState({ loggedIn: true })
 	}
@@ -48,7 +58,7 @@ class App extends Component {
 							</Menu>
 							<Menu label={'Projekter'} route={'/projekter'} icon={'view_module'}>
 								<Tab label={'Projekter'} icon={'view_module'} route={''}>
-									<ViewContainer items={mockData} />
+									{this.state.data ? <ViewContainer items={this.state.data.projects} /> : null}
 								</Tab>
 							</Menu>
 							<Menu label={'Indstillinger'} route={'/settings'} icon={'settings'}>

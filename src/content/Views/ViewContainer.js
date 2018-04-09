@@ -92,7 +92,7 @@ export default class ViewContainer extends Component {
 		var filtered = arr.filter(c => {
 			var contains = keys.map(key => {
 				if (c[key] instanceof Date)
-					return c[key].toLocaleDateString().toLowerCase().includes(searchStr)
+					return c[key]/* .toLocaleDateString() */.toLowerCase().includes(searchStr)
 				else
 					return c[key].toString().toLowerCase().includes(searchStr)
 			})
