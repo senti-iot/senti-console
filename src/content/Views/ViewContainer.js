@@ -361,7 +361,7 @@ export default class ViewContainer extends Component {
 				{this.renderDropDownItem('Gennemfort i %', 'visibility', this.handleVisibleColumn('progress'), 'progress')}
 				{this.renderDropDownItem('Oprettet', 'visibility', this.handleVisibleColumn('open_date'), 'open_date')}
 				{this.renderDropDownItem('Senest aktiv', 'visibility', this.handleVisibleColumn('seneste_reg'), 'seneste_reg')}
-				{this.renderDropDownItem('Kontakt', 'visibility', this.handleVisibleColumn('user'), 'user')}
+				{/* {this.renderDropDownItem('Kontakt', 'visibility', this.handleVisibleColumn('user'), 'user')} */}
 				{this.renderDropDownItem('Antal', 'visibility', this.handleVisibleColumn('hits'), 'hits')}
 			</DropDown>
 			}

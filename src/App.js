@@ -6,7 +6,10 @@ import ViewContainer from 'content/Views/ViewContainer'
 // import mockData from './utils/mockData'
 import { CookiesProvider } from 'react-cookie'
 import User from './content/User/User'
-import { getAllProjects /* createOneProject */ } from 'utils/data'
+import {
+	getAllProjects, /* createOneProject */
+	getDeviceRegistrations
+} from 'utils/data'
 
 class App extends Component {
 	constructor(props) {
@@ -20,6 +23,7 @@ class App extends Component {
 	componentWillMount = async () => {
 		var data = await getAllProjects()
 		this.setState({ data: data })
+		// getDeviceRegistrations(1, [1, 2, 3])
 		// mockData.forEach(element => {
 		// 	createOneProject(element)
 		// })
@@ -58,7 +62,7 @@ class App extends Component {
 							</Menu>
 							<Menu label={'Projekter'} route={'/projekter'} icon={'view_module'}>
 								<Tab label={'Projekter'} icon={'view_module'} route={''}>
-									{this.state.data ? <ViewContainer items={this.state.data.projects} /> : null}
+									{this.state.data ? <ViewContainer items={this.state.data} /> : null}
 								</Tab>
 							</Menu>
 							<Menu label={'Indstillinger'} route={'/settings'} icon={'settings'}>

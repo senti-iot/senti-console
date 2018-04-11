@@ -32,8 +32,38 @@ export const ExpProjectInfo = ProjectInfo.extend`
 	display:flex;
 	flex-flow:column;
 `
-
+export const LEDDiv = styled.div`
+	border-radius: 5px;
+    width: 10px;
+    height: 10px;
+    box-shadow: 0px 0px 3px black;
+    margin: 5px;
+	margin-left: auto;
+    zoom: 5;
+	&:after {
+    	display: block;            
+    	content: '';
+    	margin-left: 1px;
+    	margin-right: 1px;
+    	width: 8px;
+    	height: 6px;
+    	-webkit-border-top-right-radius: 4px 3px;
+    	-webkit-border-top-left-radius: 4px 3px;
+    	-webkit-border-bottom-right-radius: 4px 3px;
+    	-webkit-border-bottom-left-radius: 4px 3px;
+    	background-image: -webkit-linear-gradient(top, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 100%);
+	}
+`
+export const GreenLED = styled(LEDDiv)`
+	background-image: -webkit-linear-gradient(top, #13fB04 0%, #58e343 50%, #ADED99 100%);
+`
+export const RedLED = styled(LEDDiv)`
+	background-image: -webkit-linear-gradient(top, #fb1304 0%, #e35843 50%, #edad99 100%);
+`
 export const ExpProjectInfoItem = styled.div`
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
 	background: #dfdfdf;
 	padding: 4px;
 	margin-top:4px;
@@ -78,7 +108,7 @@ export const ExpandedProjectInfoContainer = ProjectInfoContainer.extend`
 	justify-content:space-between;
 	margin-top: 30px;
 	width: 80%;
-	height: 80%;
+	height: 400px;
 
 `
 

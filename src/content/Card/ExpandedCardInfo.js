@@ -7,8 +7,9 @@ import {
 } from './CardItemStyles'
 import {
 	ExpandedProjectInfoContainer,
-	ExpSection, ExpHeader, ExpFormImg, ExpTitle, ExpAddress, /* UserContainer, Username, Avatar, */ ExpProjectInfoTitle, ExpProjectInfo, ExpProjectInfoItem
+	ExpSection, ExpHeader, ExpFormImg, ExpTitle, ExpAddress, /* UserContainer, Username, Avatar, */ ExpProjectInfoTitle, ExpProjectInfo, ExpProjectInfoItem, GreenLED, RedLED
 } from './ExpandedCardStyles'
+import { getDevicesForProject, getDeviceRegistrations } from 'utils/data'
 
 
 export default class ExpandedCardInfo extends Component {
@@ -16,9 +17,27 @@ export default class ExpandedCardInfo extends Component {
 		super(props)
 
 		this.state = {
-			expand: false
+			expand: false,
+			devices: []
+			// devices: getDevicesForProject(props.item.id)
 		}
 	}
+	componentWillUpdate = async (NextProps, NexState) => {
+		if (NextProps.cardExpand === true && NextProps.cardExpand !== this.props.cardExpand) {
+			var data = await getDevicesForProject(this.props.item.id)
+			var regIds = []
+			if (data !== null) {
+				data.forEach(async element => {
+					regIds.push(element.device_id)
+				})
+				var regs = await getDeviceRegistrations(this.props.item.id, regIds)
+			}
+			// console.log('regIds', regIds)
+			// console.log('regs', regs)
+			this.setState({ devices: data, registrations: regs })
+		}
+	}
+
 	preventPropagation = () => e => {
 		e.stopPropagation()
 	}
@@ -47,6 +66,17 @@ export default class ExpandedCardInfo extends Component {
 									{'Enheder'} {/* ({item.devices}) */}
 								</ExpProjectInfoTitle>
 								<ExpProjectInfo>
+									{this.state.devices.length > 0 ?
+										this.state.devices.map((d, i) => {
+											return <ExpProjectInfoItem key={i}>
+												{d.device_name} {' '} {d.online === '1' ? <GreenLED /> :
+													<RedLED />}
+											</ExpProjectInfoItem>
+										})
+										: null}
+
+
+
 									{/* <ExpProjectInfoItem>
 										{item.devices[0].toString()}
 									</ExpProjectInfoItem>
@@ -66,15 +96,8 @@ export default class ExpandedCardInfo extends Component {
 								</ExpProjectInfoTitle>
 								<ExpProjectInfo>
 									<ExpProjectInfoItem>
-										{item.seneste_reg /* .toLocaleDateString() */}
+										{item.seneste_reg}
 									</ExpProjectInfoItem>
-									<ExpProjectInfoItem>
-										{item.seneste_reg /* .toLocaleDateString() */ }
-									</ExpProjectInfoItem>
-									<ExpProjectInfoItem>
-										{item.seneste_reg /* .toLocaleDateString() */ }
-									</ExpProjectInfoItem>
-
 								</ExpProjectInfo>
 							</ExpSection>
 
@@ -88,11 +111,11 @@ export default class ExpandedCardInfo extends Component {
 										Total hits:	{item.hits}
 									</ExpProjectInfoItem>
 									<ExpProjectInfoItem>
-										{item.seneste_reg /* .toLocaleDateString() */}
+										{item.open_date /* .toLocaleDateString() */}
 									</ExpProjectInfoItem>
-									<ExpProjectInfoItem>
-										{item.seneste_reg /* .toLocaleDateString() */}
-									</ExpProjectInfoItem>
+									{/* <ExpProjectInfoItem>
+										{item.seneste_reg}
+									</ExpProjectInfoItem> */}
 
 								</ExpProjectInfo>
 							</ExpSection>

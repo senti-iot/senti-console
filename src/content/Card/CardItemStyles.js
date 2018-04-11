@@ -72,9 +72,7 @@ export const FormImg = styled.div`
 	
 `
 
-export const ProjectInfoContainer = styled.div`
-	flex: 1;
-	
+export const ProjectInfoContainer = styled.div`	
 	display:flex;
 	flex-flow:row wrap;
 	align-items: flex-start;
@@ -100,6 +98,8 @@ export const ProjectInfoTitle = styled.div`
 `
 
 export const ProjectInfo = styled.div`
+	overflow: hidden;
+	overflow-y:auto;
 `
 
 export const ProjectBarContainer = styled.div`
