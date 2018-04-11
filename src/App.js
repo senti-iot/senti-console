@@ -7,8 +7,7 @@ import ViewContainer from 'content/Views/ViewContainer'
 import { CookiesProvider } from 'react-cookie'
 import User from './content/User/User'
 import {
-	getAllProjects, /* createOneProject */
-	getDeviceRegistrations
+	getAllProjects
 } from 'utils/data'
 
 class App extends Component {
