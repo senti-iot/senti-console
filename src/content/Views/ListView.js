@@ -41,6 +41,7 @@ export default class ListView extends Component {
 		else
 			newArr = newArr.filter(c => c !== id)
 		this.setState({ checkedItems: newArr })
+		this.props.onCheckedItems(newArr)
 
 	}
 	onHeaderCheckBox = (add) => {
@@ -53,6 +54,7 @@ export default class ListView extends Component {
 		else
 			newArr = newArr.filter(c => !Items.includes(c))
 		this.setState({ checkedItems: newArr, checkBox: add })
+		this.props.onCheckedItems(newArr)
 	}
 	activeColumnSorting = (col) => {
 		return col === this.props.sortColumn ? true : false

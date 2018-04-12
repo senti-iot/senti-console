@@ -3,6 +3,7 @@ import { create } from 'apisauce'
 // Define the API
 const api = create({
 	baseURL: 'https://senti-mockup.herokuapp.com',
+	// baseURL: 'http://localhost:80',
 	timeout: 10000,
 	headers: {
 		'Content-Type': 'application/json',
@@ -44,4 +45,13 @@ export const getDeviceRegistrations = async (projectId, deviceIds) => {
 			data.push(...d)
 	})
 	console.log(data)
+}
+
+// Dekete a Project
+export const deleteProject = async (projectIds) => {
+	for (let i = 0; i < projectIds.length; i++) {
+		var res = await api.post('/project/delete.php', { id: projectIds[i] })
+	}
+	console.log(res)
+	return res
 }

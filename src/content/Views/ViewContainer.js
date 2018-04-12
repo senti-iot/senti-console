@@ -27,6 +27,7 @@ import {
 	ChangeViewButtonContainer, View,
 } from './ViewStyles'
 import moment from 'moment'
+import { getAllProjects, deleteProject } from 'utils/data'
 
 export default class ViewContainer extends Component {
 	constructor(props) {
@@ -41,20 +42,38 @@ export default class ViewContainer extends Component {
 			pageSizeOpen: false,
 			funcOpen: false,
 			funcNewProject: false,
-			sortColumn: /* settings ? settings[settings.findIndex(c => c.visible === true)].column :  */Object.keys(this.props.items[0])[0],
+			sortColumn: []/* settings ? settings[settings.findIndex(c => c.visible === true)].column :  */,
 			sortDirection: false,
 			visibleColDropDown: false,
 			pageOfItems: [],
-			visibleColumns: /*  settings ||  */Object.keys(this.props.items[0]).map(c => c = { column: c, visible: true }),
+			visibleColumns: [],
 			dateFilter: {
 				active: false,
 				startDate: moment('2015-01-01'),
 				endDate: moment()
-			}
-
+			},
+			items: undefined,
+			checkedItems: []
 		}
 	}
+	componentDidMount = async () => {
+		var data = await getAllProjects()
+		var visibleColumns = Object.keys(data[0]).map(c => c = { column: c, visible: true })
+		var sortColumn = Object.keys(data[0])[0]
+		this.setState({ items: data, visibleColumns: visibleColumns, sortColumn: sortColumn })
 
+	}
+
+	deleteProjects = (pIds) => async e => {
+		e.preventDefault()
+		await deleteProject(pIds)
+		var data = await getAllProjects()
+		this.setState({ items: data })
+	}
+
+	onCheckedItems = (checkedItems) => {
+		this.setState({ checkedItems: checkedItems })
+	}
 	filterByDate = (items) => {
 		const { startDate, endDate } = this.state.dateFilter
 		// console.log(startDate.getTime(), endDate.getTime())
@@ -83,7 +102,7 @@ export default class ViewContainer extends Component {
 		const { searchString, sortDirection, sortColumn } = this.state
 		const { active } = this.state.dateFilter
 		var searchStr = searchString.toLowerCase()
-		var arr = this.props.items
+		var arr = this.state.items
 		if (active)
 			arr = this.filterByDate(arr)
 		if (arr[0] === undefined)
@@ -244,6 +263,8 @@ export default class ViewContainer extends Component {
 					items={this.state.pageOfItems}
 					columns={this.state.visibleColumns}
 					onSortEnd={this.handleDragSort}
+					deleteProjects={this.deleteProjects}
+					onCheckedItems={this.onCheckedItems}
 				/>
 			case 2:
 				return <MapView
@@ -275,7 +296,7 @@ export default class ViewContainer extends Component {
 			<Margin />
 			{funcOpen && <DropDown>
 				<DropDownItem onClick={this.handleFunctionNewProject(true)}>Nyt Projekt</DropDownItem>
-				<DropDownItem>Del en Projekt</DropDownItem>
+				<DropDownItem onClick={this.deleteProjects(this.state.checkedItems)}>Del en Projekt</DropDownItem>
 				<DropDownItem>Foj til favoritter</DropDownItem>
 				<DropDownItem>Foj til Dashboard</DropDownItem>
 				<DropDownItem>Export og deling</DropDownItem>
@@ -387,7 +408,7 @@ export default class ViewContainer extends Component {
 	render() {
 		const { funcOpen, funcNewProject } = this.state
 		const { view, searchString, pageSize, pageSizeOpen, sortOpen, sortDirection, sortColumn, dateFilter } = this.state
-		return <View>
+		return this.state.items ? <View>
 			{this.renderFunctionNewProject(funcNewProject)}
 			<FunctionBar>
 				{this.renderFunctions(funcOpen)}
@@ -405,9 +426,9 @@ export default class ViewContainer extends Component {
 				{this.renderChangeViewOptions(view)}
 			</FunctionBar>
 			{this.renderView(pageSize, view, sortColumn, sortDirection)}
-			{view !== 2 ? <Pagination items={this.filterItems(this.props.items)} onChangePage={this.handlePageChange} pageSize={pageSize} /> : null}
+			{view !== 2 ? <Pagination items={this.filterItems(this.state.items)} onChangePage={this.handlePageChange} pageSize={pageSize} /> : null}
 
-		</View>
+		</View> : null
 
 	}
 }
