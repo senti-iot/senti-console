@@ -66,14 +66,14 @@ export default class ExpandedCardInfo extends Component {
 									{'Enheder'} {/* ({item.devices}) */}
 								</ExpProjectInfoTitle>
 								<ExpProjectInfo>
-									{this.state.devices.length > 0 ?
+									{this.state.devices ? this.state.devices.length > 0 ?
 										this.state.devices.map((d, i) => {
 											return <ExpProjectInfoItem key={i}>
 												{d.device_name} {' '} {d.online === '1' ? <GreenLED /> :
 													<RedLED />}
 											</ExpProjectInfoItem>
 										})
-										: null}
+										: null : null}
 
 
 
