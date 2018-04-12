@@ -1,20 +1,20 @@
 language: node_js
 node_js:
-    - stable
-
+- stable
 notifications:
-    email: true
-    slack: webhouseteam:82qu1PX5R5wkYNCW5x6fVlhu
-
+  email: true
+  slack: webhouseteam:82qu1PX5R5wkYNCW5x6fVlhu
 script:
-  - yarn
-  - yarn build
-  - cp ./build/index.html ./build/200.html
-
+- yarn
+- yarn build
+- cp ./build/index.html ./build/200.html
 deploy:
   provider: surge
-  project: ./build/
+  project: "./build/"
   domain: senti-dashboard.surge.sh
   skip_cleanup: true
   on:
     all_branches: true
+before_install:
+- openssl aes-256-cbc -K $encrypted_2c76d570a277_key -iv $encrypted_2c76d570a277_iv
+  -in deploy_rsa.enc -out ./deploy_rsa -d
