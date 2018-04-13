@@ -20,7 +20,7 @@ const Homepage = () => {
 				<HomepageHeader>Senti Project</HomepageHeader>
 				<HomepageTagLine>A NodeJS API and React components for building Help Indexes for ODEUM Code Apps</HomepageTagLine>
 				<HomepageButonsContainer>
-					<ButtonPanel wrap={'wrap'}>
+					{/* <ButtonPanel wrap={'wrap'}>
 
 						<LinkButton label={'Get Help'} icon={'help'} route={'/help/'} color={'#13A085'} />
 						<HomepageButtonSpacer />
@@ -28,7 +28,7 @@ const Homepage = () => {
 						<HomepageButtonSpacer />
 						<LinkButton label={'Tutorial'} icon={'code'} route={'/help/tutorial'} />
 
-					</ButtonPanel>
+					</ButtonPanel> */}
 				</HomepageButonsContainer>
 
 			</AlignCenter>
