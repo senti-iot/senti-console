@@ -2,7 +2,7 @@ import { create } from 'apisauce'
 
 // Define the API
 const api = create({
-	baseURL: 'https://senti-mockup.herokuapp.com',
+	baseURL: 'http://api.dashboard.senti.cloud/web/',
 	// baseURL: 'http://localhost:80',
 	timeout: 10000,
 	headers: {
