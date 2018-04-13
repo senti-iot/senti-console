@@ -1,12 +1,12 @@
 import React from 'react'
-import { ButtonPanel, LinkButton } from 'odeum-ui'
+// import { ButtonPanel, LinkButton } from 'odeum-ui'
 import {
 	AlignCenter,
 	HomepageHeader,
 	HomepageTagLine,
 	HomepageButonsContainer,
 	LinkTo,
-	HomepageButtonSpacer,
+	// HomepageButtonSpacer,
 	HomepageFlexContainer,
 	HomepageBox,
 	HomepageSectionHeader,
