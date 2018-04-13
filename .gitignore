@@ -25,3 +25,5 @@ yarn-debug.log*
 yarn-error.log*
 *.tgz
 yarn.lock*
+deploy_rsa
+deploy_rsa.pub
