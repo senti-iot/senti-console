@@ -52,11 +52,11 @@ class App extends Component {
 						</Menu>
 
 						<Protected>
-							<Menu label={'Dashboard'} icon={'dashboard'}>
+							{/* <Menu label={'Dashboard'} icon={'dashboard'}>
 								<Tab route={''}>
 									Hello World
 								</Tab>
-							</Menu>
+							</Menu> */}
 							<Menu label={'Projekter'} route={'/projekter'} icon={'view_module'}>
 								<Tab label={'Projekter'} icon={'view_module'} route={''}>
 									<ViewContainer items={this.state.data} />
