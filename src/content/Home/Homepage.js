@@ -17,8 +17,8 @@ const Homepage = () => {
 	return (
 		<div>
 			<AlignCenter>
-				<HomepageHeader>Senti Project</HomepageHeader>
-				<HomepageTagLine>A NodeJS API and React components for building Help Indexes for ODEUM Code Apps</HomepageTagLine>
+				<HomepageHeader>Senti Cloud</HomepageHeader>
+				<HomepageTagLine>API and React components for building Dashboard and tools for Senti-in-a-Box devices</HomepageTagLine>
 				<HomepageButonsContainer>
 					{/* <ButtonPanel wrap={'wrap'}>
 
