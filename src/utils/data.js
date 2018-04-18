@@ -18,15 +18,10 @@ export const createOneProject = async (project) => {
 }
 export const getAllProjects = async () => {
 	var data = await api.get('/project/read.php').then((response => { return response.data }))
-	console.log(data)
+	// console.log(data)
 	return data
 }
-// Post a Help Item
-export const postHelpItem = (helpItem) => {
-	var data = JSON.stringify(helpItem)
-	// console.log(helpItem)
-	api.post('/helpitems', data).then((response => console.log(response.status)))
-}
+
 // Get devices for Project
 export const getDevicesForProject = async (projectId) => {
 	var data = await api.get('/devices/read_projects.php?pid=' + projectId).then((response) => response.data)
@@ -40,18 +35,15 @@ export const getDeviceRegistrations = async (projectId, deviceIds) => {
 	var data = []
 	deviceIds.forEach(async dId => {
 		var d = await api.get('/devices/read_regs.php?pid=' + projectId + '&did=' + dId).then((response) => response.data)
-		console.log(d)
 		if (d !== null)
 			data.push(...d)
 	})
-	console.log(data)
 }
 
-// Dekete a Project
+// Delete projects
 export const deleteProject = async (projectIds) => {
 	for (let i = 0; i < projectIds.length; i++) {
 		var res = await api.post('/project/delete.php', { id: projectIds[i] })
 	}
-	console.log(res)
 	return res
 }

@@ -43,7 +43,6 @@ export default class ExpandedCardInfo extends Component {
 	}
 	render() {
 		const { item } = this.props
-		console.log(this.props.handleVerticalExpand)
 		return (
 			<ExpandedCard {...this.props} handleVerticalExpand={this.props.handleVerticalExpand}>
 				{this.props.cardExpand ?

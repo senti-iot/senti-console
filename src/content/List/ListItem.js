@@ -26,9 +26,7 @@ export default class ListItem extends PureComponent {
 	}
 
 	onChecked = (isChecked) => {
-		console.log(this.props.item.id, this.props.item.title)
 		this.props.onChecked(this.props.item.id, isChecked)
-		// this.setState({ checked: !this.state.checked })
 	}
 	isOpen = () => {
 		return this.props.drawer.id === this.props.item.id ? this.props.drawer.isOpen : false
