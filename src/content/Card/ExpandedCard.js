@@ -41,12 +41,12 @@ export default class ExpandedCard extends Component {
 		return (
 			<Overlay onClick={this.handleOverlay()} pose={this.props.cardExpand ? 'open' : 'close'}>
 				<OpenSesame pose={this.props.cardExpand ? 'open' : 'close'}>
-					<OverlayPreventPropagation onClick={this.preventPropagation()}>
-						<ExpandedShadow>
+					<OverlayPreventPropagation width={this.props.width} height={this.props.height} onClick={this.preventPropagation()}>
+						<ExpandedShadow width={this.props.width} height={this.props.height}>
 							<ExpandedShadow>
 								{this.props.children}
 							</ExpandedShadow>
-							<HorizontalControls>
+							{this.props.horizontalControls ? <HorizontalControls>
 								<Wheels pose={horizontalExpand ? 'drawerOpen' : 'drawerClosed'}>
 									<HorizontalControlsDrawer >
 										<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
@@ -59,14 +59,15 @@ export default class ExpandedCard extends Component {
 										</div>
 									</HorizontalButton>
 								</Wheels>
-							</HorizontalControls>
-							<VerticalControls onClick={this.handleVerticalExpand}>
+							</HorizontalControls> : null}
+							{this.props.verticalControls ? <VerticalControls onClick={this.handleVerticalExpand}>
 								<VerticalControlsButtons>
 									<VerticalButton>{'\u2022'}</VerticalButton>
 									<VerticalButton>{'\u2022'}</VerticalButton>
 									<VerticalButton>{'\u2022'}</VerticalButton>
 								</VerticalControlsButtons>
 							</VerticalControls>
+								: null}
 
 						</ExpandedShadow>
 
@@ -75,4 +76,10 @@ export default class ExpandedCard extends Component {
 			</Overlay>
 		)
 	}
+}
+ExpandedCard.defaultProps = {
+	verticalControls: true,
+	horizontalControls: true,
+	height: '80%',
+	width: '80%'
 }

@@ -54,10 +54,10 @@ export const LEDDiv = styled.div`
     	background-image: -webkit-linear-gradient(top, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 100%);
 	}
 `
-export const GreenLED = styled(LEDDiv)`
+export const GreenLED = styled(LEDDiv) `
 	background-image: -webkit-linear-gradient(top, #13fB04 0%, #58e343 50%, #ADED99 100%);
 `
-export const RedLED = styled(LEDDiv)`
+export const RedLED = styled(LEDDiv) `
 	background-image: -webkit-linear-gradient(top, #fb1304 0%, #e35843 50%, #edad99 100%);
 `
 export const ExpProjectInfoItem = styled.div`
@@ -99,7 +99,7 @@ export const ExpandedShadow = Shadow.extend`
 	/* align-items: flex-start; */
 	/* justify-content: flex-start; */
 
-	width:100%;
+	width: 100%;
 	height: 100%;
 `
 
@@ -135,8 +135,8 @@ export const Overlay = styled.div`
 `
 
 export const OverlayPreventPropagation = styled.div`
-	width: 80%;
-	height: 80%;
+	width: ${p => p.width};
+	height: ${p => p.height};
 	background: white;
 	border-radius: 4px;
 `

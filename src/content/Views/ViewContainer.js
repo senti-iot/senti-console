@@ -28,8 +28,10 @@ import {
 } from './ViewStyles'
 import moment from 'moment'
 import { getAllProjects, deleteProject } from 'utils/data'
+import { Button } from 'odeum-ui'
+import { withTheme } from 'styled-components'
 
-export default class ViewContainer extends Component {
+class ViewContainer extends Component {
 	constructor(props) {
 		super(props)
 		// var settings = JSON.parse(window.localStorage.getItem('visibleColumns')) || undefined
@@ -42,6 +44,7 @@ export default class ViewContainer extends Component {
 			pageSizeOpen: false,
 			funcOpen: false,
 			funcNewProject: false,
+			deleteOpen: false,
 			sortColumn: []/* settings ? settings[settings.findIndex(c => c.visible === true)].column :  */,
 			sortDirection: false,
 			visibleColDropDown: false,
@@ -64,16 +67,31 @@ export default class ViewContainer extends Component {
 
 	}
 
-	deleteProjects = (pIds) => async e => {
+	deleteProjectNames = (id) => {
+		var name = ""
+		this.state.pageOfItems.map(x => x.id === id ? name = x.title : null)
+		return name
+	}
+	projectNames = () => {
+		var names = []
+		this.state.checkedItems.map(p => {
+			return names.push(this.deleteProjectNames(p))
+		})
+		return names
+	}
+	deleteProjects = () => async e => {
 		e.preventDefault()
-		await deleteProject(pIds)
+
+		await deleteProject(this.state.checkedItems)
+
 		var data = await getAllProjects()
-		this.setState({ items: data })
+		this.setState({ items: data, deleteOpen: false })
 	}
 
 	onCheckedItems = (checkedItems) => {
 		this.setState({ checkedItems: checkedItems })
 	}
+
 	filterByDate = (items) => {
 		const { startDate, endDate } = this.state.dateFilter
 		// console.log(startDate.getTime(), endDate.getTime())
@@ -98,6 +116,7 @@ export default class ViewContainer extends Component {
 		})
 		return filteredByDate
 	}
+
 	filterItems = (items) => {
 		const { searchString, sortDirection, sortColumn } = this.state
 		const { active } = this.state.dateFilter
@@ -153,6 +172,7 @@ export default class ViewContainer extends Component {
 	handleDateFilter = (startDate, endDate) => {
 		this.setState({ dateFilter: { active: true, startDate: startDate, endDate: endDate } })
 	}
+
 	handleDisableDateFilter = () => {
 		this.setState({ dateFilter: { ...this.state.dateFilter, active: false } })
 	}
@@ -169,10 +189,10 @@ export default class ViewContainer extends Component {
 	/**
 	 * 'Eye' Button dropdown handler
 	 */
-	// handleVisibility = (visibleColDropDown) => e => {
-	// 	e.preventDefault()
-	// 	this.setState({ visibleColDropDown: visibleColDropDown })
-	// }
+	/* 	handleVisibility = (visibleColDropDown) => e => {
+			e.preventDefault()
+			this.setState({ visibleColDropDown: visibleColDropDown })
+		} */
 
 	/**
 	 * Visible Columns handler
@@ -207,9 +227,6 @@ export default class ViewContainer extends Component {
 		this.setState({ sortOpen: sortOpen })
 	}
 
-	/**
-	 * Sort by @var column handler
-	 */
 	handleSort = (column) => e => {
 		e.stopPropagation()
 		e.preventDefault()
@@ -223,7 +240,6 @@ export default class ViewContainer extends Component {
 				sortDirection: !this.state.sortDirection
 			})
 	}
-
 
 	handleActiveColumn = (col) => col === this.state.sortColumn ? true : false
 
@@ -242,47 +258,16 @@ export default class ViewContainer extends Component {
 	//#region Rendering
 
 
-	renderView = (pageSize, view, sortColumn, sortDirection) => {
-		const { pageOfItems } = this.state
-		switch (view) {
-			case 0:
-				return <CardView
-					pageSize={pageSize}
-					sortColumn={sortColumn}
-					sortDirection={sortDirection}
-					handleSort={this.handleSort}
-					items={this.state.pageOfItems}
-					columns={this.state.visibleColumns}
-				/>
-			case 1:
-				return <ListView
-					pageSize={pageSize}
-					sortColumn={sortColumn}
-					sortDirection={sortDirection}
-					handleSort={this.handleSort}
-					items={this.state.pageOfItems}
-					columns={this.state.visibleColumns}
-					onSortEnd={this.handleDragSort}
-					deleteProjects={this.deleteProjects}
-					onCheckedItems={this.onCheckedItems}
-				/>
-			case 2:
-				return <MapView
-					pageSize={pageSize}
-					sortColumn={sortColumn}
-					handleSort={this.handleSort}
-					items={this.filterItems(pageOfItems)}
-				/>
-			default:
-				break
-		}
-	}
 
+	handleDeleteOpen = () => {
+		this.setState({ deleteOpen: true })
+	}
 
 	handleFunctionNewProject = (open) => e => {
 		e.preventDefault()
 		this.setState({ funcNewProject: open, funcOpen: false })
 	}
+
 	renderFunctionNewProject = (exp) => {
 		return <ExpandedCard cardExpand={exp} handleVerticalExpand={this.handleFunctionNewProject} >
 			<NewProject />
@@ -296,7 +281,7 @@ export default class ViewContainer extends Component {
 			<Margin />
 			{funcOpen && <DropDown>
 				<DropDownItem onClick={this.handleFunctionNewProject(true)}>Nyt Projekt</DropDownItem>
-				<DropDownItem onClick={this.deleteProjects(this.state.checkedItems)}>Del en Projekt</DropDownItem>
+				<DropDownItem onClick={this.state.checkedItems.length > 0 ? this.handleDeleteOpen : null}>Del en Projekt</DropDownItem>
 				<DropDownItem>Foj til favoritter</DropDownItem>
 				<DropDownItem>Foj til Dashboard</DropDownItem>
 				<DropDownItem>Export og deling</DropDownItem>
@@ -404,11 +389,46 @@ export default class ViewContainer extends Component {
 	}
 
 	//#endregion
+	renderView = (pageSize, view, sortColumn, sortDirection) => {
+		const { pageOfItems } = this.state
+		switch (view) {
+			case 0:
+				return <CardView
+					pageSize={pageSize}
+					sortColumn={sortColumn}
+					sortDirection={sortDirection}
+					handleSort={this.handleSort}
+					items={this.state.pageOfItems}
+					columns={this.state.visibleColumns}
+				/>
+			case 1:
+				return <ListView
+					pageSize={pageSize}
+					sortColumn={sortColumn}
+					sortDirection={sortDirection}
+					handleSort={this.handleSort}
+					items={this.state.pageOfItems}
+					columns={this.state.visibleColumns}
+					onSortEnd={this.handleDragSort}
+					deleteProjects={this.deleteProjects}
+					onCheckedItems={this.onCheckedItems}
+				/>
+			case 2:
+				return <MapView
+					pageSize={pageSize}
+					sortColumn={sortColumn}
+					handleSort={this.handleSort}
+					items={this.filterItems(pageOfItems)}
+				/>
+			default:
+				break
+		}
+	}
 
 	render() {
 		const { funcOpen, funcNewProject } = this.state
 		const { view, searchString, pageSize, pageSizeOpen, sortOpen, sortDirection, sortColumn, dateFilter } = this.state
-		return this.state.items ? <View>
+		return this.state.items ? <View style={{ position: 'relative' }}>
 			{this.renderFunctionNewProject(funcNewProject)}
 			<FunctionBar>
 				{this.renderFunctions(funcOpen)}
@@ -424,11 +444,36 @@ export default class ViewContainer extends Component {
 				{renderPageSizeOption(view, pageSize, pageSizeOpen, this.handlePageSizeOpen, this.handlePageSize)}
 				{this.renderVisibleSortOption(sortOpen, sortDirection)}
 				{this.renderChangeViewOptions(view)}
+
+				<ExpandedCard
+					verticalControls={false}
+					horizontalControls={false}
+					width={400}
+					height={300}
+					cardExpand={this.state.deleteOpen}
+					handleVerticalExpand={() => e => { e.preventDefault(); this.setState({ deleteOpen: false }) }}>
+
+					<div style={{ margin: 10 }}>
+						<div>Er du sikker på, at du vil slette:
+							<ul>
+								{this.projectNames().map(e => {
+									return <li style={{ fontWeight: 700 }}> {e} </li>
+								})}
+							</ul>
+						</div>
+						<div style={{ display: 'flex', flexFlow: 'row nowrap', alignItems: 'center', justifyContent: 'center' }}>
+							<Button label={"Ja"} color={this.props.theme.button.background} onClick={this.deleteProjects()} />
+							<Button label={"Nej"} color={"crimson"} onClick={e => { e.preventDefault(); this.setState({ deleteOpen: false }) }} />
+						</div>
+					</div>
+				</ExpandedCard>
 			</FunctionBar>
 			{this.renderView(pageSize, view, sortColumn, sortDirection)}
 			{view !== 2 ? <Pagination items={this.filterItems(this.state.items)} onChangePage={this.handlePageChange} pageSize={pageSize} /> : null}
 
-		</View> : null
+		</View > : null
 
 	}
 }
+
+export default withTheme(ViewContainer)
