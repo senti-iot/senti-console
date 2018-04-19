@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 // import Dropzone from 'react-dropzone'
-import { ExpFormImg, ExpHeader, ExpTitle, /* ExpAddress */ UserContainer, Username, Avatar, ExpandedProjectInfoContainer, ExpSection } from '../../../Card/ExpandedCardStyles'
+import { ExpFormImg, ExpHeader, /* ExpAddress */ UserContainer, Username, Avatar, ExpandedProjectInfoContainer, ExpSection } from '../../../Card/ExpandedCardStyles'
 import { StyledDropzone, TitleInput } from './NewProjectStyles'
 import { ProjectBarContainer, ProjectBarLabel, ProjectBar } from '../../../Card/CardItemStyles'
 import { Input } from '../../ViewStyles'
@@ -33,14 +33,26 @@ export default class NewProject extends Component {
 					{img ? <ExpFormImg img={img} alt={''} /> : <p style={{ color: '#9e9e9e', fontSize: 30 }}>Click Here to upload a picture</p>}
 				</StyledDropzone>
 				<ExpHeader>
-					<ExpTitle>
-						<TitleInput active={this.state.titleFocus} onClick={this.handleTitleInputFocus}>
-							<Input placeholder={'Title'} style={{ padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} onBlur={this.titleInputOnBlur} innerRef={this.createInputRef} onChange={this.handleSearch}/>
-						</TitleInput>
-					</ExpTitle>
+					<TitleInput active={this.state.titleFocus} onClick={this.handleTitleInputFocus}>
+						<Input placeholder={'Title'} style={{ padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} onBlur={this.titleInputOnBlur} innerRef={this.createInputRef} onChange={this.handleSearch} />
+					</TitleInput>
+					<TitleInput active={this.state.titleFocus} onClick={this.handleTitleInputFocus}>
+						<Input placeholder={'Address'} style={{ padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} onBlur={this.titleInputOnBlur} innerRef={this.createInputRef} onChange={this.handleSearch} />
+					</TitleInput>
+					<TitleInput active={this.state.titleFocus} onClick={this.handleTitleInputFocus}>
+						<Input placeholder={'Progress'} style={{ padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} onBlur={this.titleInputOnBlur} innerRef={this.createInputRef} onChange={this.handleSearch} />
+					</TitleInput>
+					<TitleInput active={this.state.titleFocus} onClick={this.handleTitleInputFocus}>
+						<Input placeholder={'Tags'} style={{ width: '40px', padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} onBlur={this.titleInputOnBlur} innerRef={this.createInputRef} onChange={this.handleSearch} />
+					</TitleInput>
+					<TitleInput active={this.state.titleFocus} onClick={this.handleTitleInputFocus}>
+						<Input placeholder={'hits'} style={{ width: '40px', padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} onBlur={this.titleInputOnBlur} innerRef={this.createInputRef} onChange={this.handleSearch} />
+					</TitleInput>
 					<DatePicker style={{ fontSize: 16 }} />
+					<DatePicker style={{ fontSize: 16 }} />
+
 					<UserContainer>
-						<Username>'UNAME-REDUX'</Username>
+						<Username>UNAME</Username>
 						<Avatar src={''} alt={'AVATAR-REDUX'}></Avatar>
 					</UserContainer>
 				</ExpHeader>
