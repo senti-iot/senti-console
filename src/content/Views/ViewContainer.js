@@ -69,7 +69,7 @@ class ViewContainer extends Component {
 
 	deleteProjectNames = (id) => {
 		var name = ""
-		this.state.pageOfItems.map(x => x.id === id ? name = x.title : null)
+		this.state.items.map(x => x.id === id ? name = x.title : null)
 		return name
 	}
 	projectNames = () => {
@@ -85,7 +85,7 @@ class ViewContainer extends Component {
 		await deleteProject(this.state.checkedItems)
 
 		var data = await getAllProjects()
-		this.setState({ items: data, deleteOpen: false })
+		this.setState({ items: data, deleteOpen: false, checkedItems: [] })
 	}
 
 	onCheckedItems = (checkedItems) => {
@@ -412,6 +412,7 @@ class ViewContainer extends Component {
 					onSortEnd={this.handleDragSort}
 					deleteProjects={this.deleteProjects}
 					onCheckedItems={this.onCheckedItems}
+					checkedItems={this.state.checkedItems}
 				/>
 			case 2:
 				return <MapView
@@ -453,9 +454,9 @@ class ViewContainer extends Component {
 					cardExpand={this.state.deleteOpen}
 					handleVerticalExpand={() => e => { e.preventDefault(); this.setState({ deleteOpen: false }) }}>
 
-					<div style={{ margin: 10 }}>
-						<div>Er du sikker på, at du vil slette:
-							<ul>
+					<div>
+						<div style={{ margin: 10, overflow: 'hidden' }}>Er du sikker på, at du vil slette:
+							<ul style={{ height: '250px', width: '350px', overflowY: 'auto' }}>
 								{this.projectNames().map(e => {
 									return <li style={{ fontWeight: 700 }}> {e} </li>
 								})}

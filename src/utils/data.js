@@ -2,7 +2,8 @@ import { create } from 'apisauce'
 
 // Define the API
 const api = create({
-	baseURL: 'http://api.dashboard.senti.cloud/web/',
+	baseURL: 'http://senti.cloud/rest/senti/',
+	// baseURL: 'http://api.dashboard.senti.cloud/web/',
 	// baseURL: 'http://localhost:80',
 	timeout: 10000,
 	headers: {
@@ -13,18 +14,18 @@ const api = create({
 })
 
 export const createOneProject = async (project) => {
-	var data = await api.post('/project/create.php', JSON.stringify(project)).then(response => console.log(response.data))
+	var data = await api.post('/project', JSON.stringify(project)).then(response => console.log(response.data))
 	return data
 }
 export const getAllProjects = async () => {
-	var data = await api.get('/project/read.php').then((response => { return response.data }))
+	var data = await api.get('/projects').then((response => { return response.data }))
 	// console.log(data)
 	return data
 }
 
 // Get devices for Project
 export const getDevicesForProject = async (projectId) => {
-	var data = await api.get('/devices/read_projects.php?pid=' + projectId).then((response) => response.data)
+	var data = await api.get('/project/' + projectId).then((response) => response.data)
 	// console.log(data)
 	return data
 }
@@ -38,12 +39,13 @@ export const getDeviceRegistrations = async (projectId, deviceIds) => {
 		if (d !== null)
 			data.push(...d)
 	})
+	return data
 }
 
 // Delete projects
 export const deleteProject = async (projectIds) => {
 	for (let i = 0; i < projectIds.length; i++) {
-		var res = await api.post('/project/delete.php', { id: projectIds[i] })
+		var res = await api.delete('/project/' + projectIds[i])
 	}
 	return res
 }

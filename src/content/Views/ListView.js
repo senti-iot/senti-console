@@ -10,7 +10,7 @@ export default class ListView extends Component {
 
 		this.state = {
 			// pageOfItems: [],
-			checkedItems: [],
+			// checkedItems: [],
 			dragging: false,
 			checkBox: false,
 			drawer: {
@@ -26,7 +26,8 @@ export default class ListView extends Component {
 
 	componentWillUpdate = (nextProps, nextState) => {
 		if (nextProps.items !== this.props.items) {
-			if (nextProps.items.filter(c => nextState.checkedItems.includes(c.id)).length === nextProps.items.length)
+			if (nextProps.items.filter(c => nextProps.checkedItems.includes(c.id)).length === nextProps.items.length)
+				
 				this.setState({ checkBox: true })
 			else
 				this.setState({ checkBox: false })
@@ -36,17 +37,17 @@ export default class ListView extends Component {
 
 	onCheckedItem = (id, add) => {
 		console.log(id)
-		var newArr = this.state.checkedItems
+		var newArr = this.props.checkedItems
 		if (add)
 			newArr.push(id)
 		else
 			newArr = newArr.filter(c => c !== id)
-		this.setState({ checkedItems: newArr })
+		// this.setState({ checkedItems: newArr })
 		this.props.onCheckedItems(newArr)
 
 	}
 	onHeaderCheckBox = (add) => {
-		var newArr = this.state.checkedItems
+		var newArr = this.props.checkedItems
 		var Items = this.props.items.map(c => c.id)
 		if (add) {
 			Items = Items.filter(c => !newArr.includes(c))
@@ -54,7 +55,7 @@ export default class ListView extends Component {
 		}
 		else
 			newArr = newArr.filter(c => !Items.includes(c))
-		this.setState({ checkedItems: newArr, checkBox: add })
+		this.setState({ checkBox: add })
 		this.props.onCheckedItems(newArr)
 	}
 	activeColumnSorting = (col) => {
@@ -108,7 +109,7 @@ export default class ListView extends Component {
 								item={c}
 								key={i}
 								onChecked={this.onCheckedItem}
-								isChecked={this.state.checkedItems.findIndex(o => o === c.id) !== -1 ? true : false}
+								isChecked={this.props.checkedItems.findIndex(o => o === c.id) !== -1 ? true : false}
 								drawer={this.state.drawer}
 								handleActiveListDrawer={this.handleActiveListDrawer}
 							/>)
