@@ -26,9 +26,16 @@ export const getAllProjects = async () => {
 
 // Get devices for Project
 export const getDevicesForProject = async (projectId) => {
-	var data = await api.get('/project/' + projectId).then((response) => response.data)
+	var data = await api.get('/device/' + projectId).then((response) => response.data)
 	// console.log(data)
-	return data
+	if (data instanceof Array)
+		return data
+	else {
+		if (data === null)
+			return null
+		else
+			return [data]
+	}
 }
 
 //Get Device Registrations for Project

@@ -25,6 +25,7 @@ export default class ExpandedCardInfo extends Component {
 	componentWillUpdate = async (NextProps, NexState) => {
 		if (NextProps.cardExpand === true && NextProps.cardExpand !== this.props.cardExpand) {
 			var data = await getDevicesForProject(this.props.item.id)
+			console.log(data)
 			var regIds = []
 			if (data !== null) {
 				data.forEach(async element => {
@@ -32,6 +33,7 @@ export default class ExpandedCardInfo extends Component {
 				})
 				var regs = await getDeviceRegistrations(this.props.item.id, regIds)
 			}
+
 			// console.log('regIds', regIds)
 			// console.log('regs', regs)
 			this.setState({ devices: data, registrations: regs })
@@ -66,14 +68,14 @@ export default class ExpandedCardInfo extends Component {
 									{'Enheder'} {/* ({item.devices}) */}
 								</ExpProjectInfoTitle>
 								<ExpProjectInfo>
-									{this.state.devices ? this.state.devices.length > 0 ?
+									{this.state.devices ?
 										this.state.devices.map((d, i) => {
 											return <ExpProjectInfoItem key={i}>
 												{d.device_name} {' '} {d.online === '1' ? <GreenLED /> :
 													<RedLED />}
 											</ExpProjectInfoItem>
 										})
-										: null : null}
+										: <ExpProjectInfoItem> No Devices</ExpProjectInfoItem>}
 
 
 

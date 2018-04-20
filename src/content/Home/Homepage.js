@@ -5,7 +5,7 @@ import {
 	HomepageHeader,
 	HomepageTagLine,
 	HomepageButonsContainer,
-	LinkTo,
+	// LinkTo,
 	// HomepageButtonSpacer,
 	HomepageFlexContainer,
 	HomepageBox,
@@ -49,7 +49,7 @@ const Homepage = () => {
 
 				<HomepageBox width={1 / 3} ml={40} mr={40}>
 					<HomepageSectionHeader>Simple Form Setup</HomepageSectionHeader>
-					<HomepageSection>Using our simple Form component you'll be on track with creating forms in minutes. Check it out in this <LinkTo to={'/form/formdemo'}>Form Demo</LinkTo>. The Form component includes form field validation you configure very easily.</HomepageSection>
+					<HomepageSection>Using our simple Form component you'll be on track with creating forms in minutes.{/*  Check it out in this <LinkTo to={'/form/formdemo'}>Form Demo</LinkTo>. */} The Form component includes form field validation you configure very easily.</HomepageSection>
 					<HomepageSection>Creating fast and simple forms in React has never been easier.</HomepageSection>
 				</HomepageBox>
 

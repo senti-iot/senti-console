@@ -309,7 +309,7 @@ class ViewContainer extends Component {
 		const { visibleColumns } = this.state
 		return <DropDownItem>
 			<DropDownIcon onClick={columnFunc}>
-				<Icon icon={visibleColumns.find(c => c.column === columnName).visible ? 'visibility' : 'visibility_off'} activeColor={'#FFFFFF'} active={visibleColumns.find(c => c.column === columnName).visible ? true : false} />
+				{/* <Icon icon={visibleColumns.find(c => c.column === columnName).visible ? 'visibility' : 'visibility_off'} activeColor={'#FFFFFF'} active={visibleColumns.find(c => c.column === columnName).visible ? true : false} /> */}
 			</DropDownIcon>
 			<DropDownText>
 				<Text>
@@ -350,11 +350,11 @@ class ViewContainer extends Component {
 				{/* <DropDownIcon onClick={this.handleVisibleColumn('seneste_reg')}>
 					<Icon icon={"visibility"} color={'#FFFFFF'} active={visibleColumns.find(c => c.column === 'seneste_reg').visible ? true : false} />
 				</DropDownIcon> */}
-				<DropDownText onClick={this.handleSort('seneste_reg')} active={this.handleActiveColumn('seneste_reg')} sorting={sortDirection}>
+				{/* <DropDownText onClick={this.handleSort('seneste_reg')} active={this.handleActiveColumn('seneste_reg')} sorting={sortDirection}>
 					<Text>
 						Senest aktiv
 					</Text>
-				</DropDownText>
+				</DropDownText> */}
 			</DropDownSubItem>
 			<DropDownSubItem>
 				{/* <DropDownIcon onClick={this.handleVisibleColumn('progress')}>
