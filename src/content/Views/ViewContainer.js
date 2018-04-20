@@ -269,7 +269,11 @@ class ViewContainer extends Component {
 	}
 
 	renderFunctionNewProject = (exp) => {
-		return <ExpandedCard cardExpand={exp} handleVerticalExpand={this.handleFunctionNewProject} >
+		return <ExpandedCard 
+			horizontalControls={false}
+			verticalControls={false}
+			cardExpand={exp} 
+			handleVerticalExpand={this.handleFunctionNewProject} >
 			<NewProject />
 		</ExpandedCard>
 	}

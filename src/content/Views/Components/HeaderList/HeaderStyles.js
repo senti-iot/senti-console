@@ -5,7 +5,7 @@ import { Cell } from '../../../List/ListStyles'
 export const HeaderColumnsContainer = styled.div`
 	flex: 1;
 	display:grid;
-	grid-template-columns: repeat(${p => p.columnCount}, 1fr);
+	grid-template-columns: repeat(${p => p.columnCount}, 150px);
 	
 	height: 100%;
 	

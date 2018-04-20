@@ -37,7 +37,7 @@ export const ListCardItem = styled.div`
 
 export const ListItemContainer = styled.div`
 	display:grid;
-	grid-template-columns: repeat(${p => p.columnCount}, 1fr);
+	grid-template-columns: repeat(${p => p.columnCount}, 150px);
 	align-content: center;
 	
 	height: 30px;
