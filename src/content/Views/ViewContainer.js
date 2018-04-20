@@ -60,11 +60,17 @@ class ViewContainer extends Component {
 		}
 	}
 	componentDidMount = async () => {
+		// var data = await getAllProjects()
+		// var visibleColumns = Object.keys(data[0]).map(c => c = { column: c, visible: true })
+		// var sortColumn = Object.keys(data[0])[0]
+		// this.setState({ items: data, visibleColumns: visibleColumns, sortColumn: sortColumn })
+		await this.getProjects()
+	}
+	getProjects = async () => {
 		var data = await getAllProjects()
 		var visibleColumns = Object.keys(data[0]).map(c => c = { column: c, visible: true })
 		var sortColumn = Object.keys(data[0])[0]
 		this.setState({ items: data, visibleColumns: visibleColumns, sortColumn: sortColumn })
-
 	}
 
 	deleteProjectNames = (id) => {
@@ -263,18 +269,23 @@ class ViewContainer extends Component {
 		this.setState({ deleteOpen: true })
 	}
 
-	handleFunctionNewProject = (open) => e => {
+	handleFunctionNewProject = (open) => async e => {
 		e.preventDefault()
-		this.setState({ funcNewProject: open, funcOpen: false })
+		if (open)
+			this.setState({ funcNewProject: open, funcOpen: false })
+		else {
+			this.setState({ funcNewProject: open, funcOpen: false })
+			await this.getProjects()
+		}
 	}
 
 	renderFunctionNewProject = (exp) => {
-		return <ExpandedCard 
+		return <ExpandedCard
 			horizontalControls={false}
 			verticalControls={false}
-			cardExpand={exp} 
+			cardExpand={exp}
 			handleVerticalExpand={this.handleFunctionNewProject} >
-			<NewProject />
+			<NewProject close={this.handleFunctionNewProject} />
 		</ExpandedCard>
 	}
 	renderFunctions = (funcOpen) => {

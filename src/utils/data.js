@@ -14,6 +14,7 @@ const api = create({
 })
 
 export const createOneProject = async (project) => {
+	console.log(JSON.stringify(project))
 	var data = await api.post('/project', JSON.stringify(project)).then(response => console.log(response.data))
 	return data
 }
