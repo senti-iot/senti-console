@@ -306,7 +306,7 @@ class ViewContainer extends Component {
 	}
 
 	renderDropDownItem = (label, icon, columnFunc, columnName) => {
-		const { visibleColumns } = this.state
+		// const { visibleColumns } = this.state
 		return <DropDownItem>
 			<DropDownIcon onClick={columnFunc}>
 				{/* <Icon icon={visibleColumns.find(c => c.column === columnName).visible ? 'visibility' : 'visibility_off'} activeColor={'#FFFFFF'} active={visibleColumns.find(c => c.column === columnName).visible ? true : false} /> */}
