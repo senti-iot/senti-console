@@ -105,15 +105,10 @@ class ViewContainer extends Component {
 		var keys = Object.keys(arr[0])
 		var filteredByDate = arr.filter(c => {
 			var contains = keys.map(key => {
-				if (c[key] instanceof Date) {
-					// console.log(c[key])
-					var mm = moment(c[key])
-					// if (startDate.getTime() <= c[key].getTime() && c[key].getTime() <= endDate.getTime()) {
-					if (mm.isBetween(startDate, endDate)) {
-						return true
-					}
-					else
-						return false
+				var openDate = moment(c['open_date'])
+				var closeDate = moment(c['close_date'])
+				if (openDate.isBetween(startDate, endDate) || closeDate.isBetween(startDate, endDate)) {
+					return true
 				}
 				else
 					return false

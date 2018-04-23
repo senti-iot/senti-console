@@ -29,22 +29,23 @@ export default class SearchComponent extends Component {
 		this.setState({ searchString: e.target.value })
 		if (e.target.value === '')
 			this.props.handleSearch('')
+		this.props.handleSearch(e.target.value)
 	}
-	handleKeyPress = e => {
-		// console.log(e.key)
-		switch (e.key) {
-			case 'Enter':
-				this.props.handleSearch(this.state.searchString)
-				break
-			case 'Escape':
-				this.setState({ searchString: '' })
-				this.props.handleSearch('')
-				break
-			default:
-				break
-		}
+	// handleKeyPress = e => {
+	// 	// console.log(e.key)
+	// 	switch (e.key) {
+	// 		case 'Enter':
+	// 			this.props.handleSearch(this.state.searchString)
+	// 			break
+	// 		case 'Escape':
+	// 			this.setState({ searchString: '' })
+	// 			this.props.handleSearch('')
+	// 			break
+	// 		default:
+	// 			break
+	// 	}
 
-	}
+	// }
 	createInputRef = (node) => {
 		this.node = node
 	}
@@ -68,7 +69,8 @@ export default class SearchComponent extends Component {
 					value={searchString}
 					onChange={this.handleInputChange}
 					onBlur={this.handleBlurInput}
-					onKeyDown={this.handleKeyPress} />
+				/* onKeyDown={this.handleKeyPress}  */
+				/>
 			</SearchContainer>
 		)
 	}

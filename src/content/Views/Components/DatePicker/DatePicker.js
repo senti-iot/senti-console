@@ -130,7 +130,7 @@ class DayPickerRangeControllerWrapper extends React.Component {
 		// 		color: {
 		// 			...DefaultTheme.reactDates.color,
 		// 			core: {
-					
+
 		// 				primary: this.props.theme.tab.selected,
 		// 				primaryShade_2: this.props.theme.tab.selected,
 		// 				secondary: this.props.theme.header.background,
@@ -143,13 +143,14 @@ class DayPickerRangeControllerWrapper extends React.Component {
 	}
 
 	componentWillUpdate = (nextProps, nextState) => {
-		if (nextProps.startDate !== this.props.startDate && nextProps.endDate !== this.props.endDate && nextProps.endDate !== null)
-			this.setState({
-				inputValue: nextProps.startDate.format('DD.MM.YYYY') + ' - ' + nextProps.endDate.format('DD.MM.YYYY')
-			})
+		if (nextProps.startDate && nextProps.endDate)
+			if (nextProps.startDate !== this.props.startDate && nextProps.endDate !== this.props.endDate && nextProps.endDate !== null)
+				this.setState({
+					inputValue: nextProps.startDate.format('DD.MM.YYYY') + ' - ' + nextProps.endDate.format('DD.MM.YYYY')
+				})
 	}
 
-	onDatesChange = ({ startDate, endDate }) => {
+	onDatesChange = ({ startDate, endDate, close }) => {
 		this.props.handleDateFilter(startDate, endDate)
 		if (startDate && endDate)
 			this.setState({ inputValue: startDate.format('DD.MM.YYYY') + ' - ' + endDate.format('DD.MM.YYYY'), error: false })
@@ -176,6 +177,7 @@ class DayPickerRangeControllerWrapper extends React.Component {
 		try {
 			var startDate = moment(arr[0], 'DD.MM.YYYY')
 			var endDate = moment(arr[1], 'DD.MM.YYYY')
+			console.log(startDate, endDate)
 			if (!startDate.isValid() || !endDate.isValid())
 				throw new DOMException('Invalid Date')
 			else {
@@ -184,6 +186,7 @@ class DayPickerRangeControllerWrapper extends React.Component {
 					endDate: endDate,
 					error: false
 				})
+				// this.onDatesChange(startDate, endDate)
 			}
 		}
 		catch (error) {
@@ -198,6 +201,8 @@ class DayPickerRangeControllerWrapper extends React.Component {
 					startDate: this.state.startDate,
 					endDate: this.state.endDate
 				})
+				this.setState({ openDatePicker: false })
+				// console.log(this.state.openDatePicker)
 				break
 			case 'Escape':
 				this.props.handleDisableDateFilter()
