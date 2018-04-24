@@ -1,25 +1,31 @@
 import styled from "styled-components"
-import { Cell } from '../../../List/ListStyles'
+import { Cell, ListItemContainer } from '../../../List/ListStyles'
 
 
-export const HeaderColumnsContainer = styled.div`
-	flex: 1;
+export const HeaderColumnsContainer = styled(ListItemContainer) `
+	/* flex: 1;
 	display:grid;
-	grid-template-columns: repeat(${p => p.columnCount}, 150px);
+	grid-template-columns: repeat(${p => p.columnCount}, 1fr);
 	
 	height: 100%;
-	
-	margin-right: 35px;
-	margin-left: 4px;
+	border-radius: 5px 0px 0px 5px;
+	margin: 3px 0px 3px 8px;
+	margin-right: 20px; */
+	/* margin-left: 4px; */
+	margin-right: 30px;
+	background: none;
+	&:hover {
+		background:none;
+	}
 `
 export const DraggableHeader = Cell.extend`
 	display:flex;
 	
 	background: ${p => p.active ? p.theme.tab.hover : ''};
 	color: #fff;
-	margin: 0px;
-	padding-left: 8px;
-	border-radius: 4px;
+	/* margin: 0px;
+	padding-left: 8px; */
+	border-radius: 4px; 
 	
 	user-select: none;
 	cursor: pointer;
@@ -28,7 +34,7 @@ export const DraggableHeader = Cell.extend`
 		background: ${p => p.theme.tab.hover};
 	}
 `
-export const LabelHeader = Cell.extend`
+export const LabelHeader = styled.div`
 	display:flex;
 	justify-content: space-between;
 	
@@ -36,7 +42,7 @@ export const LabelHeader = Cell.extend`
 	
 	color: #fff;
 	font-weight:${p => p.active ? 700 : 400};
-	margin: 0px;
+	/* margin: 0px; */
 	border-radius: 4px;
 	
 	&:after{

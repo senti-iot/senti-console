@@ -59,18 +59,32 @@ class ViewContainer extends Component {
 			checkedItems: []
 		}
 	}
-	componentDidMount = async () => {
-		// var data = await getAllProjects()
-		// var visibleColumns = Object.keys(data[0]).map(c => c = { column: c, visible: true })
-		// var sortColumn = Object.keys(data[0])[0]
-		// this.setState({ items: data, visibleColumns: visibleColumns, sortColumn: sortColumn })
-		await this.getProjects()
+	async componentDidMount() {
+		this.data = await getAllProjects().then(
+			externalData => {
+				console.log(externalData)
+				this.data = null
+				var sortColumn = Object.keys(externalData[0])[0]
+				var visibleColumns = Object.keys(externalData[0]).map(c => c = { column: c, visible: true })
+				this.setState({ items: externalData, visibleColumns: visibleColumns, sortColumn: sortColumn })
+			}
+		)
+		// this.getProjects()
 	}
-	getProjects = async () => {
-		var data = await getAllProjects()
-		var visibleColumns = Object.keys(data[0]).map(c => c = { column: c, visible: true })
-		var sortColumn = Object.keys(data[0])[0]
-		this.setState({ items: data, visibleColumns: visibleColumns, sortColumn: sortColumn })
+	getProjects = () => {
+		this.data = getAllProjects().then(
+			externalData => {
+				console.log('externalData', externalData)
+				// var sortColumn = Object.keys(externalData[0])[0]
+				// var visibleColumns = Object.keys(externalData[0]).map(c => c = { column: c, visible: true })
+				// this.setState({ items: externalData, visibleColumns: visibleColumns, sortColumn: sortColumn })
+				// this.data = null
+			}
+		)
+		// var data = await getAllProjects()
+	}
+	componentWillUnmount() {
+
 	}
 
 	deleteProjectNames = (id) => {

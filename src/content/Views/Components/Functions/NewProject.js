@@ -8,6 +8,7 @@ import DatePicker from '../DatePicker/DatePicker'
 import { withTheme } from 'styled-components'
 import Button from 'odeum-ui/lib/components/Button/Button'
 import { createOneProject } from 'utils/data'
+// import moment from 'moment'
 
 class NewProject extends Component {
 	constructor(props) {
@@ -24,10 +25,7 @@ class NewProject extends Component {
 				description: "",
 				open_date: null,
 				close_date: null,
-				user_id: -1,
-				progress: 0,
 				img: "",
-				created: new Date()
 			}
 
 		}
@@ -52,6 +50,7 @@ class NewProject extends Component {
 				close_date: endDate
 			}
 		})
+
 	}
 	handleInput = (input) => e => {
 		e.preventDefault()
@@ -63,11 +62,26 @@ class NewProject extends Component {
 		})
 	}
 	createProject = () => async e => {
-		await createOneProject(this.state.form)
+		const { title, description, open_date, close_date } = this.state.form
+		await createOneProject({
+			title: title,
+			description: description,
+			open_date: open_date.toDate(),
+			close_date: close_date.toDate(),
+			user_id: -1,
+			progress: 0,
+			img: "",
+			created: new Date()
+
+
+		})
 		this.props.close(false)(e)
 	}
 	render() {
 		const { img } = this.state
+		const { open_date, close_date } = this.state.form
+		// var startDate = moment(this.state.form.open_date)
+		// var endDate = moment(this.state.form.close_date)
 		return (
 			<React.Fragment>
 				<StyledDropzone img={this.state.img} onDrop={this.handleDrop} accept="image/jpeg,image/jpg,image/png" multiple={false}>
@@ -80,7 +94,7 @@ class NewProject extends Component {
 					<TitleInput active={this.state.descriptionInput} onClick={this.inputOnFocus("descriptionInput")}>
 						<Input placeholder={'Description'} style={{ padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} onBlur={this.inputOnBlur("descriptionInput")} onChange={this.handleInput("description")} />
 					</TitleInput>
-					<DatePicker style={{ fontSize: 16 }} handleDateFilter={this.handleDateSet} startDate={this.state.form.open_date} endDate={this.state.form.close_date} />
+					<DatePicker style={{ fontSize: 16 }} handleDateFilter={this.handleDateSet} startDate={open_date} endDate={close_date} />
 
 					<UserContainer>
 						<Username>UNAME</Username>
@@ -103,7 +117,7 @@ class NewProject extends Component {
 					</ProjectBarLabel>
 				</ProjectBarContainer> */}
 				<div style={{ display: 'flex', flexFlow: 'row nowrap', alignItems: 'center', marginLeft: 'auto', marginRight: 30, marginBottom: 8 }}>
-					<Button label={"Gem"} color={this.props.theme.button.background} onClick={this.createProject()}/>
+					<Button label={"Gem"} color={this.props.theme.button.background} onClick={this.createProject()} />
 				</div>
 			</React.Fragment>
 

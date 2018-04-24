@@ -59,7 +59,7 @@ class App extends Component {
 							</Menu> */}
 							<Menu label={'Projekter'} route={'/projekter'} icon={'view_module'}>
 								<Tab label={'Projekter'} icon={'view_module'} route={''}>
-									<ViewContainer items={this.state.data} />
+									<ViewContainer />
 								</Tab>
 							</Menu>
 							<Menu label={'Indstillinger'} route={'/settings'} icon={'settings'}>
