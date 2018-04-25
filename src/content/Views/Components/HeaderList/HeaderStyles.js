@@ -12,7 +12,7 @@ export const HeaderColumnsContainer = styled(ListItemContainer) `
 	margin: 3px 0px 3px 8px;
 	margin-right: 20px; */
 	/* margin-left: 4px; */
-	margin-right: 30px;
+	margin-right: 20px;
 	background: none;
 	&:hover {
 		background:none;

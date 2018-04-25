@@ -39,7 +39,6 @@ export const LEDDiv = styled.div`
     box-shadow: 0px 0px 3px black;
     margin: 5px;
 	margin-left: auto;
-    zoom: 5;
 	&:after {
     	display: block;            
     	content: '';
