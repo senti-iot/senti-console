@@ -18,25 +18,29 @@ export default class ExpandedCardInfo extends Component {
 
 		this.state = {
 			expand: false,
-			devices: []
+			devices: [],
+			regs: []
 			// devices: getDevicesForProject(props.item.id)
 		}
 	}
 	componentWillUpdate = async (NextProps, NexState) => {
 		if (NextProps.cardExpand === true && NextProps.cardExpand !== this.props.cardExpand) {
 			var data = await getDevicesForProject(this.props.item.id)
-			console.log(data)
 			var regIds = []
+			var regs = []
 			if (data !== null) {
 				data.forEach(async element => {
 					regIds.push(element.device_id)
 				})
-				var regs = await getDeviceRegistrations(this.props.item.id, regIds)
+				regs = await getDeviceRegistrations(regIds, this.props.item.id)
+				var hits = 0
+				regs.forEach(element => {
+					hits = hits + element.hits
+				})
+				this.setState({ devices: data, regs: regs, totalhits: hits })
 			}
 
 			// console.log('regIds', regIds)
-			// console.log('regs', regs)
-			this.setState({ devices: data, registrations: regs })
 		}
 	}
 
@@ -54,40 +58,24 @@ export default class ExpandedCardInfo extends Component {
 							<ExpTitle title={item.title}>{item.title}
 								<ExpAddress>{item.address}</ExpAddress>
 							</ExpTitle>
-							{/* 
-							<UserContainer>
-								<Username>{item.user.name}</Username>
-								<Avatar src={item.user.img} alt="" />
-							</UserContainer> */}
+
 						</ExpHeader>
 						<ExpandedProjectInfoContainer>
 
 
 							<ExpSection>
 								<ExpProjectInfoTitle>
-									{'Enheder'} {/* ({item.devices}) */}
+									{'Enheder'}
 								</ExpProjectInfoTitle>
 								<ExpProjectInfo>
 									{this.state.devices ?
 										this.state.devices.map((d, i) => {
 											return <ExpProjectInfoItem key={i}>
-												{d.device_name} {' '} {d.online === '1' ? <GreenLED /> :
+												{d.device_name} {' '} {d.online ? <GreenLED /> :
 													<RedLED />}
 											</ExpProjectInfoItem>
 										})
 										: <ExpProjectInfoItem> No Devices</ExpProjectInfoItem>}
-
-
-
-									{/* <ExpProjectInfoItem>
-										{item.devices[0].toString()}
-									</ExpProjectInfoItem>
-									<ExpProjectInfoItem>
-										{item.devices[1].toString()}
-									</ExpProjectInfoItem>
-									<ExpProjectInfoItem>
-										{item.devices[2].toString()}
-									</ExpProjectInfoItem> */}
 								</ExpProjectInfo>
 							</ExpSection>
 
@@ -97,9 +85,13 @@ export default class ExpandedCardInfo extends Component {
 									{'Seneste Registering'}
 								</ExpProjectInfoTitle>
 								<ExpProjectInfo>
-									<ExpProjectInfoItem>
-										{item.seneste_reg}
-									</ExpProjectInfoItem>
+									{this.state.regs ?
+										this.state.regs.map(r => <ExpProjectInfoItem key={r.reg_id}>
+											<div>{r.reg_date}</div>
+											<div>&nbsp;-&nbsp;</div>
+											<div style={{ fontWeight: 700 }}>{this.state.devices.find(e => e.device_id === r.device_id) ? this.state.devices.find(e => e.device_id === r.device_id).device_name : ' '}</div>
+										</ExpProjectInfoItem>)
+										: null}
 								</ExpProjectInfo>
 							</ExpSection>
 
@@ -110,15 +102,14 @@ export default class ExpandedCardInfo extends Component {
 								</ExpProjectInfoTitle>
 								<ExpProjectInfo>
 									<ExpProjectInfoItem>
-										Total hits:	{item.hits}
+										<div style={{ fontWeight: 700 }}>Total hits:</div>	{this.state.totalhits}
 									</ExpProjectInfoItem>
 									<ExpProjectInfoItem>
-										{item.open_date /* .toLocaleDateString() */}
+										<div style={{ fontWeight: 700 }}>Start date:</div>{item.open_date}
 									</ExpProjectInfoItem>
-									{/* <ExpProjectInfoItem>
-										{item.seneste_reg}
-									</ExpProjectInfoItem> */}
-
+									<ExpProjectInfoItem>
+										<div style={{ fontWeight: 700 }}>End date:</div>{item.close_date}
+									</ExpProjectInfoItem>
 								</ExpProjectInfo>
 							</ExpSection>
 						</ExpandedProjectInfoContainer>

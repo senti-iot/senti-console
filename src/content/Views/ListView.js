@@ -3,7 +3,16 @@ import ListItem from '../List/ListItem'
 import { ListContainer, HeaderListContainer } from './ViewStyles'
 import Checkbox from './Components/CheckBox/CheckBox'
 import SortableList from './Components/HeaderList/HeaderContainer'
+// import styled from 'styled-components'
 
+// const Td = styled.td`
+// 	width: 100px;
+// 	max-width:100px;
+// 	overflow: hidden;
+// 	text-overflow: ellipsis;
+// 	max-height:30px;
+// 	white-space: nowrap;
+// `
 export default class ListView extends Component {
 	constructor(props) {
 		super(props)
@@ -27,7 +36,7 @@ export default class ListView extends Component {
 	componentWillUpdate = (nextProps, nextState) => {
 		if (nextProps.items !== this.props.items) {
 			if (nextProps.items.filter(c => nextProps.checkedItems.includes(c.id)).length === nextProps.items.length)
-				
+
 				this.setState({ checkBox: true })
 			else
 				this.setState({ checkBox: false })
@@ -116,6 +125,36 @@ export default class ListView extends Component {
 						: <div>No Items</div>}
 				</ListContainer>
 			</React.Fragment>
+			// items ?
+			// 	<table style={{ overflow: 'hidden', display: 'block' }}>
+			// 		<thead style={{ display: 'block' }}>
+			// 			<tr style={{ width: 'calc(100%	- 15px)' }}>
+			// 				<Td>
+			// 					<Checkbox size={'medium'} />
+			// 				</Td>
+			// 				{this.props.columns.map(vc => <Td>{vc.column}
+			// 				</Td>)}
+			// 				<Td style={{ maxWidth: '15px' }}>
+
+			// 				</Td>
+			// 			</tr>
+			// 		</thead>
+			// 		<tbody style={{ overflow: 'auto', display: 'block', height: 'calc(100% - 30px)' }}>
+			// 			{
+			// 				this.props.items.map(i =>
+			// 					<tr>
+			// 						<Td>
+			// 							<Checkbox size={'medium'} />
+			// 						</Td>
+			// 						{this.props.columns.map(vc => <Td>{i[vc.column]}</Td>)}
+			// 						<Td style={{ maxWidth: '15px' }}>
+			// 							CNTR
+			// 						</Td>
+			// 					</tr>)
+			// 			}
+
+			// 		</tbody>
+			// 	</table> : <div> No Items</div>
 		)
 	}
 }

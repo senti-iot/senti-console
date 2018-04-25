@@ -27,7 +27,7 @@ export const getAllProjects = async () => {
 // Get devices for Project
 export const getDevicesForProject = async (projectId) => {
 	var data = await api.get('/device/' + projectId).then((response) => response.data)
-	// console.log(data)
+	console.log(data)
 	if (data instanceof Array)
 		return data
 	else {
@@ -40,14 +40,11 @@ export const getDevicesForProject = async (projectId) => {
 
 //Get Device Registrations for Project
 
-export const getDeviceRegistrations = async (projectId, deviceIds) => {
-	var data = []
-	deviceIds.forEach(async dId => {
-		var d = await api.get('/devices/read_regs.php?pid=' + projectId + '&did=' + dId).then((response) => response.data)
-		if (d !== null)
-			data.push(...d)
-	})
-	return data
+export const getDeviceRegistrations = async (deviceIds, pId) => {
+	var data = await api.get('/devicereg/' + deviceIds + '/' + pId).then(rs => rs.data)
+	console.log('/devicereg/' + deviceIds + '/' + pId)
+	console.log('deviceregs', data)
+	return data ? data.sort((a, b) => a.reg_date > b.reg_date ? -1 : a.reg_date < b.reg_date ? 1 : 0) : []
 }
 
 // Delete projects

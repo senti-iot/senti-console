@@ -64,7 +64,8 @@ export const ExpProjectInfoItem = styled.div`
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: center;
-	background: #dfdfdf;
+	/* background: #dfdfdf; */
+	background:#E3E5E5;
 	padding: 4px;
 	margin-top:4px;
 	border-radius: 4px;

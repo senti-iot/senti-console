@@ -62,7 +62,6 @@ class ViewContainer extends Component {
 	async componentDidMount() {
 		this.data = await getAllProjects().then(
 			externalData => {
-				console.log(externalData)
 				this.data = null
 				var sortColumn = Object.keys(externalData[0])[0]
 				var visibleColumns = Object.keys(externalData[0]).map(c => c = { column: c, visible: true })
