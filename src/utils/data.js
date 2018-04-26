@@ -54,3 +54,8 @@ export const deleteProject = async (projectIds) => {
 	}
 	return res
 }
+
+export const loginUser = async (username, password) => {
+	var data = true //await api.post('/login', {username:username, password:password}).then(rs=> rs.data)
+	return data ? data : false
+}
