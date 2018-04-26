@@ -45,7 +45,6 @@ export default class ListView extends Component {
 
 
 	onCheckedItem = (id, add) => {
-		console.log(id)
 		var newArr = this.props.checkedItems
 		if (add)
 			newArr.push(id)

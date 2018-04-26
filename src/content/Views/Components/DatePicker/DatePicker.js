@@ -232,7 +232,8 @@ class DayPickerRangeControllerWrapper extends React.Component {
 			'initialStartDate',
 			'initialEndDate',
 			'showInputs',
-			'theme'
+			'theme',
+			'style'
 		])
 
 		return (

@@ -60,6 +60,9 @@ class ViewContainer extends Component {
 		}
 	}
 	async componentDidMount() {
+		this.getProjects()
+	}
+	getProjects = async () => {
 		this.data = await getAllProjects().then(
 			externalData => {
 				this.data = null
@@ -68,19 +71,6 @@ class ViewContainer extends Component {
 				this.setState({ items: externalData, visibleColumns: visibleColumns, sortColumn: sortColumn })
 			}
 		)
-		// this.getProjects()
-	}
-	getProjects = () => {
-		this.data = getAllProjects().then(
-			externalData => {
-				console.log('externalData', externalData)
-				// var sortColumn = Object.keys(externalData[0])[0]
-				// var visibleColumns = Object.keys(externalData[0]).map(c => c = { column: c, visible: true })
-				// this.setState({ items: externalData, visibleColumns: visibleColumns, sortColumn: sortColumn })
-				// this.data = null
-			}
-		)
-		// var data = await getAllProjects()
 	}
 	componentWillUnmount() {
 
@@ -286,14 +276,18 @@ class ViewContainer extends Component {
 			await this.getProjects()
 		}
 	}
+	handleFunctionNewProjectClose = async () => {
+		this.setState({ funcNewProject: false, funcOpen: false })
+		await this.getProjects()
 
+	}
 	renderFunctionNewProject = (exp) => {
 		return <ExpandedCard
 			horizontalControls={false}
 			verticalControls={false}
 			cardExpand={exp}
 			handleVerticalExpand={this.handleFunctionNewProject} >
-			<NewProject close={this.handleFunctionNewProject} />
+			<NewProject close={this.handleFunctionNewProjectClose} />
 		</ExpandedCard>
 	}
 	renderFunctions = (funcOpen) => {
@@ -480,8 +474,8 @@ class ViewContainer extends Component {
 					<div>
 						<div style={{ margin: 10, overflow: 'hidden' }}>Er du sikker på, at du vil slette:
 							<ul style={{ height: '250px', width: '350px', overflowY: 'auto' }}>
-								{this.projectNames().map(e => {
-									return <li style={{ fontWeight: 700 }}> {e} </li>
+								{this.projectNames().map((e, index) => {
+									return <li key={index} style={{ fontWeight: 700 }}> {e} </li>
 								})}
 							</ul>
 						</div>

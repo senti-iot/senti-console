@@ -14,20 +14,17 @@ const api = create({
 })
 
 export const createOneProject = async (project) => {
-	console.log(JSON.stringify(project))
-	var data = await api.post('/project', JSON.stringify(project)).then(response => console.log(response.data))
+	var data = await api.post('/project', JSON.stringify(project)).then(response => response.data)
 	return data
 }
 export const getAllProjects = async () => {
 	var data = await api.get('/projects').then((response => { return response.data }))
-	// console.log(data)
 	return data
 }
 
 // Get devices for Project
 export const getDevicesForProject = async (projectId) => {
 	var data = await api.get('/device/' + projectId).then((response) => response.data)
-	console.log(data)
 	if (data instanceof Array)
 		return data
 	else {
@@ -40,15 +37,12 @@ export const getDevicesForProject = async (projectId) => {
 // Get available devices
 export const getAvailableDevices = async () => {
 	var data = await api.get('/availabledevices').then(rs => rs.data)
-	console.log(data)
 	return data
 }
 //Get Device Registrations for Project
 
 export const getDeviceRegistrations = async (deviceIds, pId) => {
 	var data = await api.get('/devicereg/' + deviceIds + '/' + pId).then(rs => rs.data)
-	console.log('/devicereg/' + deviceIds + '/' + pId)
-	console.log('deviceregs', data)
 	return data ? data.sort((a, b) => a.reg_date > b.reg_date ? -1 : a.reg_date < b.reg_date ? 1 : 0) : []
 }
 

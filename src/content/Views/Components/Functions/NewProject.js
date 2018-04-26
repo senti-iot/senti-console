@@ -38,8 +38,18 @@ class NewProject extends Component {
 		var devices = await getAvailableDevices()
 		this.setState({ devices: devices })
 	}
-	onChecked = () => {
-
+	onCheckedItem = (id, add) => {
+		var newArr = this.state.form.devices
+		if (add)
+			newArr.push(id)
+		else
+			newArr = newArr.filter(c => c !== id)
+		this.setState({
+			form: {
+				...this.state.form,
+				devices: newArr
+			}
+		})
 	}
 	inputOnFocus = (input) => e => {
 		e.preventDefault()
@@ -56,8 +66,11 @@ class NewProject extends Component {
 		this.setState({
 			form: {
 				...this.state.form,
-				open_date: startDate,
-				close_date: endDate
+				project: {
+					...this.state.form.project,
+					open_date: startDate,
+					close_date: endDate
+				}
 			}
 		})
 
@@ -67,29 +80,39 @@ class NewProject extends Component {
 		this.setState({
 			form: {
 				...this.state.form,
-				[input]: e.target.value
+				project: {
+					...this.state.form.project,
+					[input]: e.target.value
+				}
 			}
 		})
 	}
-	createProject = () => async e => {
-		const { title, description, open_date, close_date } = this.state.form
-		await createOneProject({
-			title: title,
-			description: description,
-			open_date: open_date.toDate(),
-			close_date: close_date.toDate(),
-			user_id: -1,
-			progress: 0,
-			img: "",
-			created: new Date()
-
-
-		})
-		this.props.close(false)(e)
+	createProject = async () => {
+		// e.preventDefault()
+		const { title, description, open_date, close_date } = this.state.form.project
+		const { devices } = this.state.form
+		await createOneProject(
+			{
+				project: {
+					title: title,
+					description: description,
+					open_date: open_date.toDate(),
+					close_date: close_date.toDate(),
+					user_id: -1,
+					progress: 0,
+					img: "",
+					created: new Date()
+				},
+				devices: devices
+			})
+		this.props.close(false)
+	}
+	onChecked = (id, isChecked) => {
+		this.onCheckedItem(id, isChecked)
 	}
 	render() {
 		const { img, devices } = this.state
-		const { open_date, close_date } = this.state.form
+		const { open_date, close_date } = this.state.form.project
 		// var startDate = moment(this.state.form.open_date)
 		// var endDate = moment(this.state.form.close_date)
 		return (
@@ -104,7 +127,7 @@ class NewProject extends Component {
 					<TitleInput active={this.state.descriptionInput} onClick={this.inputOnFocus("descriptionInput")}>
 						<Input placeholder={'Description'} style={{ padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} onBlur={this.inputOnBlur("descriptionInput")} onChange={this.handleInput("description")} />
 					</TitleInput>
-					<DatePicker style={{ fontSize: 16 }} handleDateFilter={this.handleDateSet} startDate={open_date} endDate={close_date} />
+					<DatePicker handleDateFilter={this.handleDateSet} startDate={open_date} endDate={close_date} />
 
 					<UserContainer>
 						<Username>UNAME</Username>
@@ -115,7 +138,7 @@ class NewProject extends Component {
 					<ExpSection style={{ flex: 3 }}>
 						{devices ? devices.map((d, i) => {
 							return <ExpProjectInfoItem key={i}>
-								<Checkbox size={'medium'} />
+								<Checkbox size={'medium'}/*  isChecked={devices.indexOf(d.device_id) !== -1 ? true : false} onChange={this.onCheckedItem} */ />
 								<div style={{ marginLeft: 5, marginRight: 5, display: 'flex', width: '100%' }}>
 									{d.device_name} {' '}
 									{d.online ? <GreenLED /> : <RedLED />}
@@ -129,7 +152,7 @@ class NewProject extends Component {
 					</ExpSection>
 				</ExpandedProjectInfoContainer>
 				<div style={{ display: 'flex', flexFlow: 'row nowrap', alignItems: 'center', marginLeft: 'auto', marginRight: 30, marginBottom: 8 }}>
-					<Button label={"Gem"} color={this.props.theme.button.background} onClick={this.createProject()} />
+					<Button label={"Gem"} color={this.props.theme.button.background} onClick={this.createProject} />
 				</div>
 			</React.Fragment>
 

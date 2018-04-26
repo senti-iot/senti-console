@@ -29,7 +29,6 @@ class LoginForm extends Component {
 		this.setState({ [input]: e.target.value })
 	}
 	render() {
-		console.log(this.props)
 		return (
 			<div style={{ width: '100vw', height: '100vh', background: this.props.theme.header.background }}>
 				<ExpandedCard cardExpand={true} horizontalControls={false} verticalControls={false}>
