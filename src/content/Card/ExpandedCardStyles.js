@@ -64,7 +64,7 @@ export const ExpProjectInfoItem = styled.div`
 	flex-flow: row nowrap;
 	align-items: center;
 	/* background: #dfdfdf; */
-	background:#E3E5E5;
+	background:#fbfbfb;
 	padding: 4px;
 	margin-top:4px;
 	border-radius: 4px;
@@ -81,12 +81,13 @@ export const ExpProjectInfoTitle = ProjectInfoTitle.extend`
 
 
 export const ExpSection = styled.div`
+	overflow:auto;
 	flex: 1;
 	display:flex;
 	flex-flow:column;
 
 	height:90%;
-	background: #fbfbfb;
+	background: #E3E5E5;
 	
 	margin-left:20px;
 	padding: 5px 10px;

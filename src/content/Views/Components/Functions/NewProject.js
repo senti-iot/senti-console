@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 // import Dropzone from 'react-dropzone'
-import { ExpFormImg, ExpHeader, /* ExpAddress */ UserContainer, Username, Avatar, ExpandedProjectInfoContainer, ExpSection } from '../../../Card/ExpandedCardStyles'
+import { ExpFormImg, ExpHeader, /* ExpAddress */ UserContainer, Username, Avatar, ExpandedProjectInfoContainer, ExpSection, ExpProjectInfoItem, GreenLED, RedLED } from '../../../Card/ExpandedCardStyles'
 import { StyledDropzone, TitleInput } from './NewProjectStyles'
 // import { ProjectBarContainer, ProjectBarLabel, ProjectBar } from '../../../Card/CardItemStyles'
 import { Input } from '../../ViewStyles'
 import DatePicker from '../DatePicker/DatePicker'
 import { withTheme } from 'styled-components'
 import Button from 'odeum-ui/lib/components/Button/Button'
-import { createOneProject } from 'utils/data'
+import { createOneProject, getAvailableDevices } from 'utils/data'
+import Checkbox from '../CheckBox/CheckBox'
 // import moment from 'moment'
 
 class NewProject extends Component {
@@ -21,16 +22,25 @@ class NewProject extends Component {
 			startDate: false,
 			endDate: false,
 			form: {
-				title: "",
-				description: "",
-				open_date: null,
-				close_date: null,
-				img: "",
+				project: {
+					title: "",
+					description: "",
+					open_date: null,
+					close_date: null,
+					img: "",
+				},
+				devices: []
 			}
 
 		}
 	}
+	componentDidMount = async () => {
+		var devices = await getAvailableDevices()
+		this.setState({ devices: devices })
+	}
+	onChecked = () => {
 
+	}
 	inputOnFocus = (input) => e => {
 		e.preventDefault()
 		this.setState({ [input]: true })
@@ -78,7 +88,7 @@ class NewProject extends Component {
 		this.props.close(false)(e)
 	}
 	render() {
-		const { img } = this.state
+		const { img, devices } = this.state
 		const { open_date, close_date } = this.state.form
 		// var startDate = moment(this.state.form.open_date)
 		// var endDate = moment(this.state.form.close_date)
@@ -103,19 +113,21 @@ class NewProject extends Component {
 				</ExpHeader>
 				<ExpandedProjectInfoContainer>
 					<ExpSection style={{ flex: 3 }}>
-						List with Devices active in the selected openclosed dates (GET Function for devices)
+						{devices ? devices.map((d, i) => {
+							return <ExpProjectInfoItem key={i}>
+								<Checkbox size={'medium'} />
+								<div style={{ marginLeft: 5, marginRight: 5, display: 'flex', width: '100%' }}>
+									{d.device_name} {' '}
+									{d.online ? <GreenLED /> : <RedLED />}
+								</div>
+							</ExpProjectInfoItem>
+
+						}) : null}
 					</ExpSection>
 					<ExpSection style={{ flex: 1 }}>
 						Nogletal for project
 					</ExpSection>
 				</ExpandedProjectInfoContainer>
-				{/* <ProjectBarContainer>
-					<ProjectBarLabel progress={0}>
-						GennemFort
-						<ProjectBar progress={0} />
-
-					</ProjectBarLabel>
-				</ProjectBarContainer> */}
 				<div style={{ display: 'flex', flexFlow: 'row nowrap', alignItems: 'center', marginLeft: 'auto', marginRight: 30, marginBottom: 8 }}>
 					<Button label={"Gem"} color={this.props.theme.button.background} onClick={this.createProject()} />
 				</div>
