@@ -1,5 +1,14 @@
 import { create } from 'apisauce'
 
+var loginApi = create({
+	baseURL: 'http://senti.cloud/rest/odeum/',
+	timout: 10000,
+	headers: {
+		'Content-Type': 'application/json',
+		'Accept': 'application/json'
+	},
+	mode: 'no-cors'
+})
 // Define the API
 const api = create({
 	baseURL: 'http://senti.cloud/rest/senti/',
@@ -12,7 +21,11 @@ const api = create({
 	},
 	mode: 'no-cors'
 })
-
+// Login
+export const loginUser = async (username, password) => {
+	var data = await loginApi.post('/auth/basic', JSON.stringify({ username: username, password: password })).then(rs => rs.data)
+	return data
+}
 export const createOneProject = async (project) => {
 	var data = await api.post('/project', JSON.stringify(project)).then(response => response.data)
 	return data
@@ -52,9 +65,4 @@ export const deleteProject = async (projectIds) => {
 		var res = await api.delete('/project/' + projectIds[i])
 	}
 	return res
-}
-
-export const loginUser = async (username, password) => {
-	var data = true //await api.post('/login', {username:username, password:password}).then(rs=> rs.data)
-	return data ? data : false
 }

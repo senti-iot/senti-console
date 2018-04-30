@@ -4,9 +4,10 @@ import registerServiceWorker from './registerServiceWorker'
 import './index.css'
 import Login from 'Login'
 import 'react-dates/initialize'
+import { CookiesProvider } from 'react-cookie'
 
 ReactDOM.render(
-	<Login />,
+	<CookiesProvider><Login /></CookiesProvider>,
 	document.getElementById('root')
 )
 

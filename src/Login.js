@@ -3,22 +3,33 @@ import App from './App'
 import LoginForm from './LoginForm'
 import { ThemeProvider } from 'styled-components'
 import theme from 'utils/theme'
-
-export default class Login extends Component {
+import { loginUser } from 'utils/data'
+import { withCookies } from 'react-cookie'
+class Login extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			login: false
+			login: false,
+			loginData: null
 		}
 	}
-	login = () => {
-		this.setState({ login: true })
+
+	login = async (username, password) => {
+		var loginData = await loginUser(username, password)
+		if (loginData) {
+			this.props.cookies.set('loginData', loginData)
+			this.setState({ login: true, loginData: loginData })
+
+		}
+
+
 	}
 	render() {
 		const { login } = this.state
 		return <ThemeProvider theme={theme}>
-			{login ? <App /> : <LoginForm login={this.login} />}
+			{login ? <App user={this.state.loginData} /> : <LoginForm login={this.login} />}
 		</ThemeProvider>
 	}
 }
+export default withCookies(Login)
