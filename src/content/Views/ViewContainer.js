@@ -286,7 +286,7 @@ class ViewContainer extends Component {
 			verticalControls={false}
 			cardExpand={exp}
 			handleVerticalExpand={this.handleFunctionNewProject} >
-			<NewProject close={this.handleFunctionNewProjectClose} />
+			<NewProject close={this.handleFunctionNewProjectClose} reset={this.state.funcNewProject}/>
 		</ExpandedCard>
 	}
 	renderFunctions = (funcOpen) => {

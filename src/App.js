@@ -63,11 +63,11 @@ class App extends Component {
 								</Tab>
 							</Menu>
 							<Menu label={'Indstillinger'} route={'/settings'} icon={'settings'}>
-								<Tab label={'Projekter'} icon={'settings'} route={''}>
+								<Tab label={'Indstillinger'} icon={'settings'} route={''}>
 									{/* <ViewContainer items={mockData} /> */}
 									<div style={{ display: 'inline-flex' }}>
 										<div style={{ marginRight: 10 }}>Automatisk lås menupanelet </div>
-										<button style={{ height: '23px', margin: 0, padding: 0, background: this.state.onMenuClickClose ? 'green' : 'red' }} onClick={this.handleOnMenuClickClose}> {this.state.onMenuClickClose ? 'ON' : 'OFF'} </button>
+										<button style={{ height: '23px', margin: 0, padding: 0, background: this.state.onMenuClickClose ? 'green' : 'crimson' }} onClick={this.handleOnMenuClickClose}> {this.state.onMenuClickClose ? 'ON' : 'OFF'} </button>
 									</div>
 								</Tab>
 							</Menu>

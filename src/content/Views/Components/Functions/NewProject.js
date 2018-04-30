@@ -38,6 +38,31 @@ class NewProject extends Component {
 
 		}
 	}
+	refresh = async () => {
+		var devices = await getAvailableDevices()
+		this.setState({
+			img: undefined,
+			titleInput: false,
+			descriptionInput: false,
+			startDate: false,
+			endDate: false,
+			form: {
+				project: {
+					title: "",
+					description: "",
+					open_date: null,
+					close_date: null,
+					img: "",
+				},
+				devices: []
+			},
+			devices: devices
+		})
+	}
+	componentDidUpdate = () => {
+		if (!this.props.reset)
+			this.refresh()
+	}
 	componentDidMount = async () => {
 		var devices = await getAvailableDevices()
 		this.setState({ devices: devices })
@@ -120,7 +145,7 @@ class NewProject extends Component {
 		else {
 			this.setState({ dialog: true })
 		}
-		// this.props.close(false)
+		this.refresh()
 	}
 	onChecked = (id, isChecked) => {
 		this.onCheckedItem(id, isChecked)
