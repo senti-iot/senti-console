@@ -25,7 +25,7 @@ export default class ListItem extends PureComponent {
 		this.props.handleActiveListDrawer(this.props.item.id, !this.isOpen())
 	}
 
-	onChecked = (isChecked) => {
+	onChecked = () => (isChecked) => {
 		this.props.onChecked(this.props.item.id, isChecked)
 	}
 	isOpen = () => {

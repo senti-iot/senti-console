@@ -92,7 +92,6 @@ class ViewContainer extends Component {
 		e.preventDefault()
 
 		await deleteProject(this.state.checkedItems)
-
 		var data = await getAllProjects()
 		this.setState({ items: data, deleteOpen: false, checkedItems: [] })
 	}

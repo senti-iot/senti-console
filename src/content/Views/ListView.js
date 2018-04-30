@@ -54,7 +54,7 @@ export default class ListView extends Component {
 		this.props.onCheckedItems(newArr)
 
 	}
-	onHeaderCheckBox = (add) => {
+	onHeaderCheckBox = () => (add) => {
 		var newArr = this.props.checkedItems
 		var Items = this.props.items.map(c => c.id)
 		if (add) {

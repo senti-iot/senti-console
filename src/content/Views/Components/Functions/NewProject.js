@@ -9,6 +9,7 @@ import { withTheme } from 'styled-components'
 import Button from 'odeum-ui/lib/components/Button/Button'
 import { createOneProject, getAvailableDevices } from 'utils/data'
 import Checkbox from '../CheckBox/CheckBox'
+import ExpandedCard from '../../../Card/ExpandedCard'
 // import moment from 'moment'
 
 class NewProject extends Component {
@@ -30,7 +31,10 @@ class NewProject extends Component {
 					img: "",
 				},
 				devices: []
-			}
+			},
+			devices: [],
+			dialog: false,
+			success: false
 
 		}
 	}
@@ -38,9 +42,10 @@ class NewProject extends Component {
 		var devices = await getAvailableDevices()
 		this.setState({ devices: devices })
 	}
-	onCheckedItem = (id, add) => {
+	onCheckedItem = id => e => checked => {
+		if (e !== undefined) { if (e.preventDefault) { e.preventDefault() } }
 		var newArr = this.state.form.devices
-		if (add)
+		if (checked)
 			newArr.push(id)
 		else
 			newArr = newArr.filter(c => c !== id)
@@ -91,7 +96,7 @@ class NewProject extends Component {
 		// e.preventDefault()
 		const { title, description, open_date, close_date } = this.state.form.project
 		const { devices } = this.state.form
-		await createOneProject(
+		var data = await createOneProject(
 			{
 				project: {
 					title: title,
@@ -105,16 +110,26 @@ class NewProject extends Component {
 				},
 				devices: devices
 			})
-		this.props.close(false)
+		console.log(data)
+		this.onSuccess(data)
+	}
+	onSuccess = (success) => {
+		if (success) {
+			this.setState({ success: true, dialog: true })
+		}
+		else {
+			this.setState({ dialog: true })
+		}
+		// this.props.close(false)
 	}
 	onChecked = (id, isChecked) => {
 		this.onCheckedItem(id, isChecked)
 	}
 	render() {
-		const { img, devices } = this.state
+		const { img } = this.state
+		const { devices } = this.state
+		const formDevices = this.state.form.devices
 		const { open_date, close_date } = this.state.form.project
-		// var startDate = moment(this.state.form.open_date)
-		// var endDate = moment(this.state.form.close_date)
 		return (
 			<React.Fragment>
 				<StyledDropzone img={this.state.img} onDrop={this.handleDrop} accept="image/jpeg,image/jpg,image/png" multiple={false}>
@@ -138,7 +153,7 @@ class NewProject extends Component {
 					<ExpSection style={{ flex: 3 }}>
 						{devices ? devices.map((d, i) => {
 							return <ExpProjectInfoItem key={i}>
-								<Checkbox size={'medium'}/*  isChecked={devices.indexOf(d.device_id) !== -1 ? true : false} onChange={this.onCheckedItem} */ />
+								<Checkbox size={'medium'} onChange={this.onCheckedItem(d.device_id)} isChecked={formDevices.indexOf(d.device_id) !== -1 ? true : false} />
 								<div style={{ marginLeft: 5, marginRight: 5, display: 'flex', width: '100%' }}>
 									{d.device_name} {' '}
 									{d.online ? <GreenLED /> : <RedLED />}
@@ -154,6 +169,17 @@ class NewProject extends Component {
 				<div style={{ display: 'flex', flexFlow: 'row nowrap', alignItems: 'center', marginLeft: 'auto', marginRight: 30, marginBottom: 8 }}>
 					<Button label={"Gem"} color={this.props.theme.button.background} onClick={this.createProject} />
 				</div>
+
+				<ExpandedCard
+					horizontalControls={false}
+					verticalControls={false}
+					cardExpand={this.state.dialog}
+					handleVerticalExpand={() => e => { e.preventDefault(); this.setState({ dialog: false }) }}
+					width="200px"
+					height="100px">
+					<div>{this.state.success ? "Success" : "Error"}</div>
+					<Button label={"OK"} color={this.state.success ? this.props.theme.button.background : 'crimson'} onClick={() => { this.setState({ dialog: false }); this.props.close(false) }} />
+				</ExpandedCard>
 			</React.Fragment>
 
 
