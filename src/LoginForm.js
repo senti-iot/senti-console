@@ -3,7 +3,7 @@ import ExpandedCard from './content/Card/ExpandedCard'
 import { withTheme } from 'styled-components'
 import { Input } from 'content/Views/ViewStyles'
 import { TitleInput } from 'content/Views/Components/Functions/NewProjectStyles'
-import { Button } from 'odeum-ui'
+import { Button, Icon } from 'odeum-ui'
 class LoginForm extends Component {
 
 	constructor(props) {
@@ -18,11 +18,16 @@ class LoginForm extends Component {
 	}
 	componentDidMount = () => {
 		document.addEventListener("keypress", this.handleKeyPress, false)
+		this.node.focus()
+		this.setState({ userInput: true })
 	}
 	componentWillUnmount = () => {
 		document.removeEventListener("keypress", this.handleKeyPress, false)
 	}
-
+	createInputRef = (node) => {
+		console.log(node)
+		this.node = node
+	}
 	handleKeyPress = e => {
 		switch (e.key) {
 			case 'Enter':
@@ -57,12 +62,15 @@ class LoginForm extends Component {
 	render() {
 		return (
 			<div style={{ width: '100vw', height: '100vh', background: this.props.theme.header.background }}>
-				<ExpandedCard cardExpand={true} horizontalControls={false} verticalControls={false}>
-					<div style={{ width: '100%', height: '400px', display: 'flex', alignItems: 'center', flexFlow: 'column nowrap' }}>
-						<img src={this.props.theme.logo.default} alt={'logo'} width={300} style={{ background: this.props.theme.header.background, borderRadius: '4px', margin: 5, padding: 10 }} />
-						<div style={{ display: 'flex', height: '130px', flexFlow: 'column nowrap', margin: 5, justifyContent: 'space-between', alignItems: 'center' }}>
-							<TitleInput active={this.state.userInput} onClick={this.inputOnFocus("userInput")}>
-								<Input placeholder={'Username'}
+				<ExpandedCard cardExpand={true} horizontalControls={false} verticalControls={false} width={'50%'}>
+					<img src={this.props.theme.logo.default} alt={'logo'} width={300} style={{ background: this.props.theme.header.background, borderRadius: '4px', margin: 5, padding: 10, marginBottom: 100 }} />
+					<div style={{ width: '100%', display: 'flex', alignItems: 'center', flexFlow: 'column nowrap' }}>
+						<div style={{ display: 'flex', height: '150px', flexFlow: 'column nowrap', margin: 5, justifyContent: 'space-between', alignItems: 'center' }}>
+							<TitleInput active={this.state.userInput} onClick={this.inputOnFocus("userInput")} style={{ height: 40, margin: 4 }}>
+								<Icon icon={'person'} iconSize={25} style={{ color: 'white', margin: 3, padding: 3 }} />
+								<Input
+									innerRef={this.createInputRef}
+									placeholder={'Username'}
 									style={{ padding: '0px 4px', fontSize: 18, color: '#2C3E50' }}
 									onBlur={this.inputOnBlur("userInput")}
 									onChange={this.handleInput("username")}
@@ -70,8 +78,10 @@ class LoginForm extends Component {
 								// onKeyPress={this.handleKeyPress} 
 								/>
 							</TitleInput>
-							<TitleInput active={this.state.passInput} onClick={this.inputOnFocus("passInput")}>
-								<Input placeholder={'Password'}
+							<TitleInput active={this.state.passInput} onClick={this.inputOnFocus("passInput")} style={{ height: 40, margin: 4 }}>
+								<Icon icon={'lock_outline'} iconSize={25} style={{ color: 'white', margin: 3, padding: 3 }} />
+								<Input
+									placeholder={'Password'}
 									style={{ padding: '0px 4px', fontSize: 18, color: '#2C3E50' }}
 									onBlur={this.inputOnBlur("passInput")}
 									onChange={this.handleInput("password")}
@@ -79,7 +89,7 @@ class LoginForm extends Component {
 									// onKeyPress={this.handleKeyPress}
 									type={'password'} />
 							</TitleInput>
-							<Button color={this.props.theme.button.background} label={'Login'} onClick={this.handleLogin} />
+							<Button icon={'lock_open'} color={this.props.theme.button.background} label={'Login'} onClick={this.handleLogin} />
 						</div>
 					</div>
 				</ExpandedCard>
