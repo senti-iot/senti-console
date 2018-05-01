@@ -118,10 +118,6 @@ export const ExpFormImg = FormImg.extend`
 `
 
 export const Overlay = styled.div`
-	/* display:flex; */
-	visibility: ${p => p.pose === 'open' ? 'visible' : 'hidden'};
-	/* align-items:center; */
-	/* justify-content:center; */
 
 	width: 100%;
 	height: 100%;
@@ -133,6 +129,7 @@ export const Overlay = styled.div`
 	position: fixed;
 	z-index:3;
 	transition: all 500ms ease;
+	visibility: ${p => p.pose === 'open' ? 'visible' : 'hidden'};
 `
 
 export const OverlayPreventPropagation = styled.div`

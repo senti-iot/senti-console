@@ -25,13 +25,15 @@ class LoginForm extends Component {
 		document.removeEventListener("keypress", this.handleKeyPress, false)
 	}
 	createInputRef = (node) => {
-		console.log(node)
 		this.node = node
 	}
 	handleKeyPress = e => {
 		switch (e.key) {
 			case 'Enter':
-				this.handleLogin()
+				if (!this.props.error)
+					this.handleLogin()
+				else
+					this.props.reset()
 				break
 			case 'Escape':
 				this.setState({ username: '', password: '' })
@@ -92,6 +94,13 @@ class LoginForm extends Component {
 							<Button icon={'lock_open'} color={this.props.theme.button.background} label={'Login'} onClick={this.handleLogin} />
 						</div>
 					</div>
+					<ExpandedCard width={'20%'} height={'20%'} cardExpand={this.props.error} horizontalControls={false} verticalControls={false} >
+						<div style={{ display: 'flex', flexFlow: 'column nowrap', justifyContent: 'center', alignItems: 'center' }}><h3 style={{ margin: 3 }}>Error!</h3>
+							<div style={{ margin: 3 }}>Username or password wrong or <br />there is a problem with the server.</div>
+							<div style={{ margin: 3 }}> Please try again!</div>
+							<Button label={'Ok'} color={'crimson'} onClick={this.props.reset} />
+						</div>
+					</ExpandedCard>
 				</ExpandedCard>
 			</div>
 		)
