@@ -20,9 +20,9 @@ class Login extends Component {
 		if (loginData) {
 			this.props.cookies.set('loginData', loginData)
 			this.setState({ login: true, loginData: loginData })
-
 		}
-
+		
+		console.log(loginData)
 
 	}
 	render() {
