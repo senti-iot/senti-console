@@ -17,6 +17,11 @@ class Login extends Component {
 			error: false
 		}
 	}
+	componentDidMount = () => {
+		var getCookieLogin = this.props.cookies.get('loginData')
+		if (getCookieLogin)
+			this.setState({ loginData: getCookieLogin, login: true, error: false })
+	}
 
 	reset = () => {
 		this.setState({ error: false })
