@@ -14,7 +14,7 @@ import NewProject from './Components/Functions/NewProject/NewProject'
 import { renderPageSizeOption } from './Components/Functions/PageSize/PageSize'
 import SearchComponent from './Components/Functions/Search/Search'
 // Styles
-import { Text } from '../List/ListStyles'
+import { Text } from './Components/ListView/List/ListStyles'
 import {
 	DropDown, DropDownContainer,
 	DropDownButton, Margin, DropDownItem,
