@@ -32,7 +32,7 @@ import { Button } from 'odeum-ui'
 import { withTheme } from 'styled-components'
 
 class ViewContainer extends Component {
-	
+
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -59,7 +59,7 @@ class ViewContainer extends Component {
 			checkedItems: []
 		}
 	}
-	
+
 	//#region Lifecycle Functions
 
 	componentDidMount = async () => {
@@ -148,12 +148,28 @@ class ViewContainer extends Component {
 
 	//#region Visibility of columns
 
-	/*
+
 	handleVisibility = (visibleColDropDown) => e => {
-			e.preventDefault()
-			this.setState({ visibleColDropDown: visibleColDropDown })
-		} 
-	*/
+		e.preventDefault()
+		this.setState({ visibleColDropDown: visibleColDropDown })
+	}
+	handleColumnName = (column) => {
+		var col = column.replace('_', ' ')
+		return col.charAt(0).toUpperCase() + col.slice(1)
+	}
+	renderVisibilityOption = (label, icon, columnFunc, columnName, i) => {
+		const { visibleColumns } = this.state
+		return <DropDownItem key={i}>
+			<DropDownIcon onClick={columnFunc}>
+				<Icon icon={visibleColumns.find(c => c.column === columnName).visible ? 'visibility' : 'visibility_off'} activeColor={'#FFFFFF'} active={visibleColumns.find(c => c.column === columnName).visible ? true : false} />
+			</DropDownIcon>
+			<DropDownText>
+				<Text>
+					{label}
+				</Text>
+			</DropDownText>
+		</DropDownItem>
+	}
 	renderVisibleSortOption = (sortOpen, sortDirection) => {
 
 		return <DropDownContainer onMouseLeave={this.handleSortOpen(false)}>
@@ -164,11 +180,14 @@ class ViewContainer extends Component {
 
 			{sortOpen && <DropDown style={{ width: 150 }}>
 				{this.renderDropDownSorting(sortDirection)}
-				{this.renderDropDownItem('Gennemfort i %', 'visibility', this.handleVisibleColumn('progress'), 'progress')}
+				{/* {this.renderDropDownItem('Gennemfort i %', 'visibility', this.handleVisibleColumn('progress'), 'progress')}
 				{this.renderDropDownItem('Oprettet', 'visibility', this.handleVisibleColumn('open_date'), 'open_date')}
-				{this.renderDropDownItem('Senest aktiv', 'visibility', this.handleVisibleColumn('seneste_reg'), 'seneste_reg')}
-				{/* {this.renderDropDownItem('Kontakt', 'visibility', this.handleVisibleColumn('user'), 'user')} */}
-				{this.renderDropDownItem('Antal', 'visibility', this.handleVisibleColumn('hits'), 'hits')}
+				{this.renderDropDownItem('Senest aktiv', 'visibility', this.handleVisibleColumn('las'), 'seneste_reg')}
+				{this.renderDropDownItem('Kontakt', 'visibility', this.handleVisibleColumn('user'), 'user')}
+				{this.renderDropDownItem('Antal', 'visibility', this.handleVisibleColumn('hits'), 'hits')} */}
+				{this.state.visibleColumns.map((c, i) => {
+					return this.renderVisibilityOption(this.handleColumnName(c.column), 'visibility', this.handleVisibleColumn(c.column), c.column, i) 
+				})}
 			</DropDown>
 			}
 		</DropDownContainer>
@@ -183,7 +202,7 @@ class ViewContainer extends Component {
 	handleActiveColumn = (col) => col === this.state.sortColumn ? true : false
 
 	//#endregion
-	
+
 	//#region Paging
 
 	handlePageSize = (size) => e => {
@@ -300,19 +319,7 @@ class ViewContainer extends Component {
 		this.setState({ funcOpen: funcOpen })
 	}
 
-	renderDropDownItem = (label, icon, columnFunc, columnName) => {
-		// const { visibleColumns } = this.state
-		return <DropDownItem>
-			<DropDownIcon onClick={columnFunc}>
-				{/* <Icon icon={visibleColumns.find(c => c.column === columnName).visible ? 'visibility' : 'visibility_off'} activeColor={'#FFFFFF'} active={visibleColumns.find(c => c.column === columnName).visible ? true : false} /> */}
-			</DropDownIcon>
-			<DropDownText>
-				<Text>
-					{label}
-				</Text>
-			</DropDownText>
-		</DropDownItem>
-	}
+
 
 	renderFunctions = (funcOpen) => {
 		return <DropDownContainer onMouseLeave={this.handleFunctionsOpen(false)} >
