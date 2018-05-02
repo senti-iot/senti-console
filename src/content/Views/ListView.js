@@ -44,15 +44,13 @@ export default class ListView extends Component {
 	}
 
 
-	onCheckedItem = (id, add) => {
+	handleCheckedItems = (id, add) => {
 		var newArr = this.props.checkedItems
 		if (add)
 			newArr.push(id)
 		else
 			newArr = newArr.filter(c => c !== id)
-		// this.setState({ checkedItems: newArr })
-		this.props.onCheckedItems(newArr)
-
+		this.props.handleCheckedItems(newArr)
 	}
 	onHeaderCheckBox = () => (add) => {
 		var newArr = this.props.checkedItems
@@ -64,7 +62,7 @@ export default class ListView extends Component {
 		else
 			newArr = newArr.filter(c => !Items.includes(c))
 		this.setState({ checkBox: add })
-		this.props.onCheckedItems(newArr)
+		this.props.handleCheckedItems(newArr)
 	}
 	activeColumnSorting = (col) => {
 		return col === this.props.sortColumn ? true : false
@@ -116,7 +114,7 @@ export default class ListView extends Component {
 								columnCount={this.handleActiveColumnCount}
 								item={c}
 								key={i}
-								onChecked={this.onCheckedItem}
+								handleCheckedItem={this.handleCheckedItems}
 								isChecked={this.props.checkedItems.findIndex(o => o === c.id) !== -1 ? true : false}
 								drawer={this.state.drawer}
 								handleActiveListDrawer={this.handleActiveListDrawer}

@@ -22,8 +22,11 @@ export default class FormCard extends Component {
 	handleHorizontalExpand = () => {
 		this.setState({ horizontalExpand: !this.state.horizontalExpand })
 	}
-	handleVerticalExpand = (open) => e => {
-		e.preventDefault()
+	handleControlExpand = () => e => {
+		this.setState({ expand: true, horizontalExpand: false })
+	}
+	handleVerticalExpand = (open) => {
+		// e.preventDefault()
 		this.setState({ expand: open, horizontalExpand: false })
 	}
 	render() {
@@ -68,14 +71,14 @@ export default class FormCard extends Component {
 								<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
 								<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
 							</HorizontalControlsDrawer>
-							<HorizontalButton onClick={this.handleHorizontalExpand}>
+							<HorizontalButton onClick={this.handleControlExpand}>
 								<HorizontalButtonText>
 									{'\u2022 \u2022 \u2022'}
 								</HorizontalButtonText>
 							</HorizontalButton>
 						</Wheels>
 					</HorizontalControls>
-					<VerticalControls onClick={this.handleVerticalExpand(true)}>
+					<VerticalControls onClick={this.handleVerticalExpand}>
 						<VerticalControlsButtons>
 							<VerticalButton>{'\u2022'}</VerticalButton>
 							<VerticalButton>{'\u2022'}</VerticalButton>

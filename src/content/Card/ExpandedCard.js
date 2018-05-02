@@ -28,9 +28,9 @@ export default class ExpandedCard extends Component {
 	preventPropagation = () => e => {
 		e.stopPropagation()
 	}
-	handleOverlay = () => e => {
+	handleOverlay = () => {
 		if (this.props.handleVerticalExpand)
-			this.props.handleVerticalExpand(false)(e)
+			this.props.handleVerticalExpand(false)
 		else {
 			this.setState({ horizontalExpand: false })
 		}
@@ -39,7 +39,7 @@ export default class ExpandedCard extends Component {
 	render() {
 		const { horizontalExpand } = this.state
 		return (
-			<Overlay onClick={this.handleOverlay()} pose={this.props.cardExpand ? 'open' : 'close'}>
+			<Overlay onClick={this.handleOverlay} pose={this.props.cardExpand ? 'open' : 'close'}>
 				<OpenSesame pose={this.props.cardExpand ? 'open' : 'close'}>
 					<OverlayPreventPropagation width={this.props.width} height={this.props.height} onClick={this.preventPropagation()}>
 						<ExpandedShadow width={this.props.width} height={this.props.height}>

@@ -13,10 +13,14 @@ export default class ListItem extends PureComponent {
 			cardExpand: false
 		}
 	}
-
-	viewCard = (open) => e => {
-		e.preventDefault()
-		this.setState({ cardExpand: open, expand: false })
+	closeCard = () => {
+		this.setState({ cardExpand: false, expand: false })
+		if (this.props.handleActiveListDrawer)
+			this.props.handleActiveListDrawer(this.props.item.id, false)
+	}
+	openCard = () => {
+		// e.preventDefault()
+		this.setState({ cardExpand: true, expand: false })
 		if (this.props.handleActiveListDrawer)
 			this.props.handleActiveListDrawer(this.props.item.id, false)
 	}
@@ -25,8 +29,8 @@ export default class ListItem extends PureComponent {
 		this.props.handleActiveListDrawer(this.props.item.id, !this.isOpen())
 	}
 
-	onChecked = () => (isChecked) => {
-		this.props.onChecked(this.props.item.id, isChecked)
+	handleCheckedItem = () => (isChecked) => {
+		this.props.handleCheckedItem(this.props.item.id, isChecked)
 	}
 	isOpen = () => {
 		return this.props.drawer.id === this.props.item.id ? this.props.drawer.isOpen : false
@@ -38,7 +42,7 @@ export default class ListItem extends PureComponent {
 		return (
 			<React.Fragment>
 				<ListCardItem>
-					<Checkbox isChecked={isChecked} size={'medium'} onChange={this.onChecked} />
+					<Checkbox isChecked={isChecked} size={'medium'} onChange={this.handleCheckedItem} />
 					<ListItemContainer selected={isChecked} columnCount={columnCount}>
 						{column.map((c, cIndex) => {
 							return c.visible ? <Cell key={cIndex}>
@@ -63,7 +67,7 @@ export default class ListItem extends PureComponent {
 					</ListItemContainer>
 					<ControlsContainer>
 						<ButtonContainer pose={!this.isOpen() ? 'open' : 'close'} /* horizOpen={expand} */ style={{ flexFlow: 'row nowrap', borderRadius: 0, height: 'inherit' }}>
-							<Button horizOpen={this.isOpen()} onClick={this.viewCard(true)}>
+							<Button horizOpen={this.isOpen()} onClick={this.openCard}>
 								<Icon color={'#5E5E5E'} icon={'mode_edit'} iconSize={23} />
 							</Button>
 							<Button horizOpen={this.isOpen()}>
@@ -77,7 +81,7 @@ export default class ListItem extends PureComponent {
 							<Icon icon={'more_vert'} color={'inherit'} activeColor={'#fff'} active={isChecked} iconSize={23} />
 						</ExpandButtonContainer>
 					</ControlsContainer>
-					<ExpandedCardInfo cardExpand={cardExpand} {...this.props} handleVerticalExpand={this.viewCard} />
+					<ExpandedCardInfo cardExpand={cardExpand} {...this.props} handleVerticalExpand={this.closeCard} />
 				</ListCardItem>
 			</React.Fragment>
 		)
