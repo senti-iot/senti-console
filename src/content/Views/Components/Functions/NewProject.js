@@ -10,7 +10,7 @@ import Button from 'odeum-ui/lib/components/Button/Button'
 import { createOneProject, getAvailableDevices } from 'utils/data'
 import Checkbox from '../CheckBox/CheckBox'
 import ExpandedCard from '../../../Card/ExpandedCard'
-// import moment from 'moment'
+import moment from 'moment'
 
 class NewProject extends Component {
 	constructor(props) {
@@ -50,8 +50,8 @@ class NewProject extends Component {
 				project: {
 					title: "",
 					description: "",
-					open_date: null,
-					close_date: null,
+					open_date: moment(),
+					close_date: moment(),
 					img: "",
 				},
 				devices: []
@@ -59,10 +59,10 @@ class NewProject extends Component {
 			devices: devices
 		})
 	}
-	componentDidUpdate = () => {
-		if (!this.props.reset)
-			this.refresh()
-	}
+	// componentDidUpdate = () => {
+	// 	if (!this.props.reset)
+	// 		this.refresh()
+	// }
 	componentDidMount = async () => {
 		var devices = await getAvailableDevices()
 		this.setState({ devices: devices })
@@ -80,6 +80,10 @@ class NewProject extends Component {
 				devices: newArr
 			}
 		})
+	}
+	handleClose = async () => {
+		await this.refresh()
+		this.props.close()
 	}
 	inputOnFocus = (input) => e => {
 		e.preventDefault()
@@ -135,7 +139,6 @@ class NewProject extends Component {
 				},
 				devices: devices
 			})
-		console.log(data)
 		this.onSuccess(data)
 	}
 	onSuccess = (success) => {
@@ -151,21 +154,36 @@ class NewProject extends Component {
 		this.onCheckedItem(id, isChecked)
 	}
 	render() {
+		const { exp } = this.props
 		const { img } = this.state
 		const { devices } = this.state
 		const formDevices = this.state.form.devices
-		const { open_date, close_date } = this.state.form.project
+		const { open_date, close_date, title, description } = this.state.form.project
 		return (
-			<React.Fragment>
+			<ExpandedCard
+				horizontalControls={false}
+				verticalControls={false}
+				cardExpand={exp}
+				handleVerticalExpand={this.handleClose} >
 				<StyledDropzone img={this.state.img} onDrop={this.handleDrop} accept="image/jpeg,image/jpg,image/png" multiple={false}>
 					{img ? <ExpFormImg img={img} alt={''} /> : <p style={{ color: '#9e9e9e', fontSize: 30 }}>Klik her for at uploade et billede</p>}
 				</StyledDropzone>
 				<ExpHeader>
 					<TitleInput active={this.state.titleInput} onClick={this.inputOnFocus("titleInput")}>
-						<Input placeholder={'Title'} style={{ padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} onBlur={this.inputOnBlur("titleInput")} onChange={this.handleInput("title")} />
+						<Input
+							placeholder={'Title'}
+							style={{ padding: '0px 4px', fontSize: 18, color: '#2C3E50' }}
+							onBlur={this.inputOnBlur("titleInput")}
+							onChange={this.handleInput("title")}
+							value={title} />
 					</TitleInput>
 					<TitleInput active={this.state.descriptionInput} onClick={this.inputOnFocus("descriptionInput")}>
-						<Input placeholder={'Description'} style={{ padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} onBlur={this.inputOnBlur("descriptionInput")} onChange={this.handleInput("description")} />
+						<Input
+							placeholder={'Description'}
+							style={{ padding: '0px 4px', fontSize: 18, color: '#2C3E50' }}
+							onBlur={this.inputOnBlur("descriptionInput")}
+							onChange={this.handleInput("description")}
+							value={description} />
 					</TitleInput>
 					<DatePicker handleDateFilter={this.handleDateSet} startDate={open_date} endDate={close_date} />
 
@@ -203,10 +221,9 @@ class NewProject extends Component {
 					width="200px"
 					height="100px">
 					<div>{this.state.success ? "Success" : "Error"}</div>
-					<Button label={"OK"} color={this.state.success ? this.props.theme.button.background : 'crimson'} onClick={() => { this.setState({ dialog: false }); this.props.close(false) }} />
+					<Button label={"OK"} color={this.state.success ? this.props.theme.button.background : 'crimson'} onClick={() => { this.setState({ dialog: false }); this.handleClose() }} />
 				</ExpandedCard>
-			</React.Fragment>
-
+			</ExpandedCard>
 
 		)
 	}
