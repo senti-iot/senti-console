@@ -1,7 +1,7 @@
 import React from 'react'
 import { SortableElement } from 'react-sortable-hoc'
 import { DraggableHeader, LabelHeader } from './HeaderStyles'
-import { Text } from '../../../List/ListStyles'
+import { Text } from '../List/ListStyles'
 
 const HeaderItem = SortableElement(({ c, index, onClick, activeColumnSorting, sortDirection }) => {
 

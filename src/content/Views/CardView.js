@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { CardsContainer } from './ViewStyles'
-import CardItem from '../Card/CardItem'
+import CardItem from './Components/CardView/Card/CardItem'
 
 export default class CardView extends Component {
 	constructor(props) {
@@ -11,10 +11,6 @@ export default class CardView extends Component {
 		}
 	}
 
-	// handleSort = (column) => e => {
-	// 	e.preventDefault()
-	// 	this.props.handleSort(column)
-	// }
 
 	activeColumnSorting = (col) => {
 		return col === this.props.sortColumn ? true : false

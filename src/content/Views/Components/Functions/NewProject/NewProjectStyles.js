@@ -1,6 +1,6 @@
 import Dropzone from 'react-dropzone'
 import styled from 'styled-components'
-import { SearchContainer } from '../../ViewStyles'
+import { SearchContainer } from '../../../ViewStyles'
 export const StyledDropzone = styled(Dropzone) `
 	display: flex;
 	align-items: flex-start;

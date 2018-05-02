@@ -1,25 +1,14 @@
 import React, { Component } from 'react'
-import ListItem from '../List/ListItem'
+import ListItem from '../Views/Components/ListView/List/ListItem'
 import { ListContainer, HeaderListContainer } from './ViewStyles'
-import Checkbox from './Components/CheckBox/CheckBox'
-import SortableList from './Components/HeaderList/HeaderContainer'
-// import styled from 'styled-components'
+import Checkbox from '../Views/Aux/CheckBox/CheckBox'
+import SortableList from './Components/ListView/HeaderList/HeaderContainer'
 
-// const Td = styled.td`
-// 	width: 100px;
-// 	max-width:100px;
-// 	overflow: hidden;
-// 	text-overflow: ellipsis;
-// 	max-height:30px;
-// 	white-space: nowrap;
-// `
 export default class ListView extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			// pageOfItems: [],
-			// checkedItems: [],
 			dragging: false,
 			checkBox: false,
 			drawer: {

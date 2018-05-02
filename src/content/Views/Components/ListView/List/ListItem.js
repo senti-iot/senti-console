@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react'
 import { ListItemContainer, ExpandButtonContainer, Text, ListCardItem, Button, ButtonContainer, ControlsContainer, Cell } from './ListStyles'
-import Icon from 'odeum-ui/lib/components/Icon/Icon'
-import Checkbox from '../Views/Components/CheckBox/CheckBox'
-import ExpandedCardInfo from '../Card/ExpandedCardInfo'
+import { Icon } from 'odeum-ui'
+import Checkbox from '../../../Aux/CheckBox/CheckBox'
+import ExpandedCardInfo from '../../CardView/Card/ExpandedCardInfo'
 
 export default class ListItem extends PureComponent {
 	constructor(props) {

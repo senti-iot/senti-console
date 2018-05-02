@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { Cell, ListItemContainer } from '../../../List/ListStyles'
+import { Cell, ListItemContainer } from '../List/ListStyles'
 
 
 export const HeaderColumnsContainer = styled(ListItemContainer) `

@@ -4,26 +4,10 @@ import { StyledCheckbox, CheckMarkIco } from './CheckboxStyles'
 
 class Checkbox extends Component {
 
-	// constructor(props) {
-	// 	super(props)
-
-	// 	// this.state = {
-	// 	// 	isChecked: this.props.isChecked
-	// 	// }
-	// }
-	// shouldComponentUpdate = (nextProps, nextState) => {
-	// 	if (nextState.isChecked !== this.state.isChecked)
-	// 		return true
-	// 	else
-	// 		return false
-	// }
-
 	handleChange = () => {
 		if (this.props.onChange) {
 			this.props.onChange()(!this.props.isChecked)
 		}
-		// this.setState({ isChecked: !this.state.isChecked })
-
 
 	}
 

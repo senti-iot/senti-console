@@ -5,20 +5,15 @@ import momentPropTypes from 'react-moment-proptypes'
 import { forbidExtraProps } from 'airbnb-prop-types'
 import moment from 'moment'
 import omit from 'lodash/omit'
-import { DatePickerInput, Input } from '../../ViewStyles'
 import { DayPickerRangeController } from 'react-dates'
 import { Icon } from 'odeum-ui'
 import { withTheme } from 'styled-components'
-// import { ScrollableOrientationShape } from 'react-dates'
 
 import { START_DATE, END_DATE, HORIZONTAL_ORIENTATION } from 'react-dates/src/constants'
-// import isInclusivelyAfterDay from 'react-dates/src/utils/isInclusivelyAfterDay'
 import ThemedStyleSheet from 'react-with-styles/lib/ThemedStyleSheet'
 import aphroditeInterface from 'react-with-styles-interface-aphrodite'
-// import DefaultTheme from 'react-dates/lib/theme/DefaultTheme'
+import { DatePickerInput, Input } from '../../ViewStyles'
 import { getTheme } from './DatePickerTheme'
-
-// ThemedStyleSheet.registerInterface(aphroditeInterface)
 
 
 const propTypes = forbidExtraProps({

@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
-// import Dropzone from 'react-dropzone'
-import { ExpFormImg, ExpHeader, /* ExpAddress */ UserContainer, Username, Avatar, ExpandedProjectInfoContainer, ExpSection, ExpProjectInfoItem, GreenLED, RedLED } from '../../../Card/ExpandedCardStyles'
+import { ExpFormImg, ExpHeader, UserContainer, Username, Avatar, 
+	ExpandedProjectInfoContainer, ExpSection, ExpProjectInfoItem, GreenLED, RedLED } 
+	from '../../../Aux/Modal/ExpandedCardStyles'
 import { StyledDropzone, TitleInput } from './NewProjectStyles'
-// import { ProjectBarContainer, ProjectBarLabel, ProjectBar } from '../../../Card/CardItemStyles'
-import { Input } from '../../ViewStyles'
-import DatePicker from '../DatePicker/DatePicker'
+import { Input } from '../../../ViewStyles'
+import DatePicker from '../../../Aux/DatePicker/DatePicker'
 import { withTheme } from 'styled-components'
-import Button from 'odeum-ui/lib/components/Button/Button'
+import { Button } from 'odeum-ui'
 import { createOneProject, getAvailableDevices } from 'utils/data'
-import Checkbox from '../CheckBox/CheckBox'
-import ExpandedCard from '../../../Card/ExpandedCard'
+import Checkbox from '../../../Aux/CheckBox/CheckBox'
+import ExpandedCard from '../../../Aux/Modal/ExpandedCard'
 import moment from 'moment'
 
 class NewProject extends Component {
@@ -59,10 +59,7 @@ class NewProject extends Component {
 			devices: devices
 		})
 	}
-	// componentDidUpdate = () => {
-	// 	if (!this.props.reset)
-	// 		this.refresh()
-	// }
+
 	componentDidMount = async () => {
 		var devices = await getAvailableDevices()
 		this.setState({ devices: devices })

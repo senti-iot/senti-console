@@ -1,5 +1,5 @@
 import React from 'react'
-import { DropDown, DropDownButton, DropDownContainer, Margin, DropDownItem } from '../DropDown/DropDown'
+import { DropDown, DropDownButton, DropDownContainer, Margin, DropDownItem } from '../../../Aux/DropDown/DropDown'
 import { Icon } from 'odeum-ui'
 
 

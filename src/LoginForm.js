@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import ExpandedCard from './content/Card/ExpandedCard'
+import ExpandedCard from './content/Views/Aux/Modal/ExpandedCard'
 import { withTheme } from 'styled-components'
-import { Input } from 'content/Views/ViewStyles'
-import { TitleInput } from 'content/Views/Components/Functions/NewProjectStyles'
+import { Input } from './content/Views/ViewStyles'
+import { TitleInput } from 'content/Views/Components/Functions/NewProject/NewProjectStyles'
 import { Button, Icon } from 'odeum-ui'
 class LoginForm extends Component {
 

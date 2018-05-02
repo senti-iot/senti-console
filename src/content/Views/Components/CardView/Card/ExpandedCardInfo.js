@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ExpandedCard from './ExpandedCard'
+import ExpandedCard from '../../../Aux/Modal/ExpandedCard'
 
 import {
 	ProjectBarContainer, ProjectBarLabel,
@@ -7,9 +7,9 @@ import {
 } from './CardItemStyles'
 import {
 	ExpandedProjectInfoContainer,
-	ExpSection, ExpHeader, ExpFormImg, ExpTitle, ExpAddress, /* UserContainer, Username, Avatar, */ ExpProjectInfoTitle, ExpProjectInfo, ExpProjectInfoItem, GreenLED, RedLED
-} from './ExpandedCardStyles'
-import { getDevicesForProject, getDeviceRegistrations } from 'utils/data'
+	ExpSection, ExpHeader, ExpFormImg, ExpTitle, ExpAddress, ExpProjectInfoTitle, ExpProjectInfo, ExpProjectInfoItem, GreenLED, RedLED
+} from '../../../Aux/Modal/ExpandedCardStyles'
+import { getDevicesForProject, getDeviceRegistrations } from '../../../../../utils/data'
 
 
 export default class ExpandedCardInfo extends Component {

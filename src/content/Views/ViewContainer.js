@@ -4,15 +4,15 @@ import { arrayMove } from 'react-sortable-hoc'
 // import 'react-dates/lib/css/_datepicker.css'
 
 //Components
-import DayPickerRangeControllerWrapper from './Components/DatePicker/DatePicker'
+import DayPickerRangeControllerWrapper from '../Views/Aux/DatePicker/DatePicker'
 import CardView from './CardView'
 import ListView from './ListView'
 import MapView from './MapView'
 import Pagination from '../Pagination/Pagination'
-import ExpandedCard from '../Card/ExpandedCard'
-import NewProject from './Components/Functions/NewProject'
-import { renderPageSizeOption } from './Components/PageSize/PageSize'
-import SearchComponent from './Components/Search/Search'
+import ExpandedCard from '../Views/Aux/Modal/ExpandedCard'
+import NewProject from './Components/Functions/NewProject/NewProject'
+import { renderPageSizeOption } from './Components/Functions/PageSize/PageSize'
+import SearchComponent from './Components/Functions/Search/Search'
 // Styles
 import { Text } from '../List/ListStyles'
 import {
@@ -20,7 +20,7 @@ import {
 	DropDownButton, Margin, DropDownItem,
 	DropDownSection, DropDownIcon, DropDownText,
 	DropDownSubSection, DropDownSubItem
-} from './Components/DropDown/DropDown'
+} from './Aux/DropDown/DropDown'
 import {
 	FunctionBar, ChangeViewButtonCard,
 	ChangeViewButtonMap, ChangeViewButtonList,
