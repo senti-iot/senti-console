@@ -5,9 +5,9 @@ export const UserContainer = styled.div`
 	margin-right: 100px;
 	margin-left: auto;
 	
-	display: flex;
-	flex-flow: row nowrap;
-	align-items: center;
+	/* display: flex;
+	flex-flow: row nowrap; */
+	/* align-items: center; */
 `
 
 export const UserName = styled.div`

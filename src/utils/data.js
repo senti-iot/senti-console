@@ -1,11 +1,11 @@
 import { create } from 'apisauce'
-
+import cookie from 'react-cookies'
 var loginApi = create({
 	baseURL: 'http://senti.cloud/rest/odeum/',
 	timout: 10000,
 	headers: {
-		'Content-Type': 'application/json',
-		'Accept': 'application/json'
+		'Accept': 'application/json',
+		'Content-Type': 'application/json'
 	},
 	mode: 'no-cors'
 })
@@ -16,14 +16,25 @@ const api = create({
 	// baseURL: 'http://localhost:80',
 	timeout: 10000,
 	headers: {
-		'Content-Type': 'application/json',
-		'Accept': 'application/json'
+		'Accept': 'application/json',
+		'Content-Type': 'application/json'
 	},
 	mode: 'no-cors'
 })
 // Login
 export const loginUser = async (username, password) => {
-	var data = await loginApi.post('/auth/basic', JSON.stringify({ username: username, password: password })).then(rs => rs.data)
+	var session = await loginApi.post('/auth/basic', JSON.stringify({ username: username, password: password })).then(rs => rs.data)
+	// var user = await api.get('/user/' + session.userID).then(rs => rs.data)
+	return session
+}
+export const getUserInfo = async (userID) => {
+	var user = await api.get('/user/' + userID).then(rs => rs.data)
+	return user
+}
+export const logOut = async () => {
+	var session = cookie.load('loginData')
+	var data = await loginApi.delete('/auth/basic', JSON.stringify(session.sessionID))
+	cookie.remove('loginData')
 	return data
 }
 export const createOneProject = async (project) => {

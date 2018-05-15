@@ -186,7 +186,7 @@ class ViewContainer extends Component {
 				{this.renderDropDownItem('Kontakt', 'visibility', this.handleVisibleColumn('user'), 'user')}
 				{this.renderDropDownItem('Antal', 'visibility', this.handleVisibleColumn('hits'), 'hits')} */}
 				{this.state.visibleColumns.map((c, i) => {
-					return this.renderVisibilityOption(this.handleColumnName(c.column), 'visibility', this.handleVisibleColumn(c.column), c.column, i) 
+					return this.renderVisibilityOption(this.handleColumnName(c.column), 'visibility', this.handleVisibleColumn(c.column), c.column, i)
 				})}
 			</DropDown>
 			}

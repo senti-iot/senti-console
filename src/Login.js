@@ -3,10 +3,10 @@ import App from './App'
 import LoginForm from './LoginForm'
 import { ThemeProvider } from 'styled-components'
 import theme from 'utils/theme'
-import { loginUser } from 'utils/data'
-import { withCookies } from 'react-cookie'
+import { loginUser, getUserInfo } from 'utils/data'
+import cookie from 'react-cookies'
 
-
+export const AppContext = React.createContext()
 class Login extends Component {
 	constructor(props) {
 		super(props)
@@ -18,11 +18,25 @@ class Login extends Component {
 		}
 	}
 	componentDidMount = () => {
-		var getCookieLogin = this.props.cookies.get('loginData')
-		if (getCookieLogin)
+		var getCookieLogin = cookie.load('loginData')
+		if (getCookieLogin) {
+			this.getUser(getCookieLogin.userID)
 			this.setState({ loginData: getCookieLogin, login: true, error: false })
+		}
 	}
-
+	getUser = async (userID) => {
+		var user = await getUserInfo(userID)
+		this.setState({ user: user })
+	}
+	logOut = () => {
+		this.setState({
+			login: false,
+			loginData: false,
+			error: false,
+			user: null
+		})
+		cookie.remove('loginData')
+	}
 	reset = () => {
 		this.setState({ error: false })
 	}
@@ -30,11 +44,12 @@ class Login extends Component {
 	login = async (username, password) => {
 		var loginData = await loginUser(username, password)
 		if (loginData) {
-			this.props.cookies.set('loginData', loginData)
-			this.setState({ login: true, loginData: loginData, error: false })
+			cookie.save('loginData', loginData)
+			var user = await getUserInfo(loginData.userID)
+			this.setState({ login: true, loginData: loginData, error: false, user: user })
 		}
 		else {
-			this.setState({ error: true, login: false })
+			this.setState({ error: true, login: false, loginData: null, user: null })
 		}
 
 	}
@@ -42,8 +57,8 @@ class Login extends Component {
 	render() {
 		const { login } = this.state
 		return <ThemeProvider theme={theme}>
-			{login ? <App user={this.state.loginData} /> : <LoginForm reset={this.reset} error={this.state.error} login={this.login} />}
+			{login ? <AppContext.Provider value={{ logOut: this.logOut, loginData: this.state.loginData, user: this.state.user }}><App /></AppContext.Provider> : <LoginForm reset={this.reset} error={this.state.error} login={this.login} />}
 		</ThemeProvider>
 	}
 }
-export default withCookies(Login)
+export default Login

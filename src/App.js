@@ -3,12 +3,7 @@ import { AppContainer, Header, MenuPanel, Menu, Tab, Footer, LoginForm, Protecte
 import theme from './utils/theme'
 import Home from './content/Home/Homepage'
 import ViewContainer from 'content/Views/ViewContainer'
-// import mockData from './utils/mockData'
-import { CookiesProvider } from 'react-cookie'
 import User from './content/User/User'
-// import {
-// getAllProjects, deleteProject
-// } from 'utils/data'
 
 class App extends Component {
 	constructor(props) {
@@ -19,63 +14,46 @@ class App extends Component {
 			onMenuClickClose: false
 		}
 	}
-	componentWillMount = async () => {
-		// getDeviceRegistrations(1, [1, 2, 3])
-		// mockData.forEach(element => {
-		// 	createOneProject(element)
-		// })
 
-	}
-
-	handleLogin = () => {
-		this.setState({ loggedIn: true })
-	}
 	handleOnMenuClickClose = () => {
 		this.setState({ onMenuClickClose: !this.state.onMenuClickClose })
 	}
 	render() {
 		return (
-			<CookiesProvider>
-				<AppContainer theme={theme}>
-					<Header logo={theme.logo} userLogin={true} userComponent={User} />
-					<MenuPanel
-						login={true}
-						redirectTo={'/login'}
-						isLoggedIn={this.state.loggedIn}
-						quickNavigation={false}
-						onMenuClickClose={this.state.onMenuClickClose}>
+			<AppContainer theme={theme}>
+				<Header logo={theme.logo} userLogin={true} userComponent={User} />
+				<MenuPanel
+					login={true}
+					redirectTo={'/login'}
+					isLoggedIn={this.state.loggedIn}
+					quickNavigation={false}
+					onMenuClickClose={this.state.onMenuClickClose}>
 
-						{LoginForm(this.state.loggedIn, this.handleLogin)}
+					{LoginForm(this.state.loggedIn, this.handleLogin)}
 
-						<Menu route={'/'}>
-							<Home />
+					<Menu route={'/'}>
+						<Home />
+					</Menu>
+
+					<Protected>
+						<Menu label={'Projekter'} route={'/projekter'} icon={'view_module'}>
+							<Tab label={'Projekter'} icon={'view_module'} route={''}>
+								<ViewContainer />
+							</Tab>
 						</Menu>
+						<Menu label={'Indstillinger'} route={'/settings'} icon={'settings'}>
+							<Tab label={'Indstillinger'} icon={'settings'} route={''}>
+								<div style={{ display: 'inline-flex' }}>
+									<div style={{ marginRight: 10 }}>Automatisk lås menupanelet </div>
+									<button style={{ height: '23px', margin: 0, padding: 0, background: this.state.onMenuClickClose ? 'green' : 'crimson' }} onClick={this.handleOnMenuClickClose}> {this.state.onMenuClickClose ? 'ON' : 'OFF'} </button>
+								</div>
+							</Tab>
+						</Menu>
+					</Protected>
+				</MenuPanel>
+				<Footer />
+			</AppContainer>
 
-						<Protected>
-							{/* <Menu label={'Dashboard'} icon={'dashboard'}>
-								<Tab route={''}>
-									Hello World
-								</Tab>
-							</Menu> */}
-							<Menu label={'Projekter'} route={'/projekter'} icon={'view_module'}>
-								<Tab label={'Projekter'} icon={'view_module'} route={''}>
-									<ViewContainer />
-								</Tab>
-							</Menu>
-							<Menu label={'Indstillinger'} route={'/settings'} icon={'settings'}>
-								<Tab label={'Indstillinger'} icon={'settings'} route={''}>
-									{/* <ViewContainer items={mockData} /> */}
-									<div style={{ display: 'inline-flex' }}>
-										<div style={{ marginRight: 10 }}>Automatisk lås menupanelet </div>
-										<button style={{ height: '23px', margin: 0, padding: 0, background: this.state.onMenuClickClose ? 'green' : 'crimson' }} onClick={this.handleOnMenuClickClose}> {this.state.onMenuClickClose ? 'ON' : 'OFF'} </button>
-									</div>
-								</Tab>
-							</Menu>
-						</Protected>
-					</MenuPanel>
-					<Footer />
-				</AppContainer>
-			</CookiesProvider>
 		)
 	}
 }
