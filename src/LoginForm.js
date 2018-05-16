@@ -13,7 +13,16 @@ class LoginForm extends Component {
 			username: '',
 			password: '',
 			userInput: false,
-			passInput: false
+			passInput: false,
+			createUserModal: false,
+			createUserFields: {
+				Username: '',
+				Password: '',
+				FirstName: '',
+				LastName: '',
+				Email: '',
+				Phone: ''
+			}
 		}
 	}
 	componentDidMount = () => {
@@ -30,7 +39,7 @@ class LoginForm extends Component {
 	handleKeyPress = e => {
 		switch (e.key) {
 			case 'Enter':
-				if (!this.props.error)
+				if (!this.props.error && !this.state.createUserModal)
 					this.handleLogin()
 				else
 					this.props.reset()
@@ -56,18 +65,28 @@ class LoginForm extends Component {
 		e.preventDefault()
 		this.setState({ [input]: e.target.value })
 	}
-
+	handleCreateUserInput = (input) => e => {
+		e.preventDefault()
+		this.setState({
+			createUserFields: {
+				...this.state.createUserFields,
+				[input]: e.target.value
+			}
+		})
+	}
 	handleLogin = () => {
 		this.props.login(this.state.username, this.state.password)
 	}
-
+	handleCreateUser = () => {
+		this.setState({ createUserModal: true })
+	}
 	render() {
 		return (
 			<div style={{ width: '100vw', height: '100vh', background: this.props.theme.header.background }}>
 				<ExpandedCard cardExpand={true} horizontalControls={false} verticalControls={false} width={'50%'}>
-					<img src={this.props.theme.logo.default} alt={'logo'} width={300} style={{ background: this.props.theme.header.background, borderRadius: '4px', margin: 5, padding: 10, marginBottom: 100 }} />
-					<div style={{ width: '100%', display: 'flex', alignItems: 'center', flexFlow: 'column nowrap' }}>
-						<div style={{ display: 'flex', height: '150px', flexFlow: 'column nowrap', margin: 5, justifyContent: 'space-between', alignItems: 'center' }}>
+					<img src={this.props.theme.logo.default} alt={'logo'} width={300} style={{ background: this.props.theme.header.background, borderRadius: '4px', margin: 5, padding: 10, marginBottom: 'auto', marginTop: 'auto' }} />
+					<div style={{ width: '100%', display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', marginBottom: 'auto' }}>
+						<div style={{ display: 'flex', height: '250px', flexFlow: 'column nowrap', margin: 5, justifyContent: 'space-between', alignItems: 'center' }}>
 							<TitleInput active={this.state.userInput} onClick={this.inputOnFocus("userInput")} style={{ height: 40, margin: 4 }}>
 								<Icon icon={'person'} iconSize={25} style={{ color: 'white', margin: 3, padding: 3 }} />
 								<Input
@@ -88,10 +107,15 @@ class LoginForm extends Component {
 									onBlur={this.inputOnBlur("passInput")}
 									onChange={this.handleInput("password")}
 									value={this.state.password}
-									// onKeyPress={this.handleKeyPress}
 									type={'password'} />
 							</TitleInput>
+							<select style={{ margin: "8px 8px", background: this.props.theme.header.background, color: 'white', padding: '8px', border: 'none', borderRadius: '4px' }}>
+								{this.props.orgs ? this.props.orgs.map((org, i) => {
+									return <option key={i} value={org.iOrgID}> {org.vcName} </option>
+								}) : null}
+							</select>
 							<Button icon={'lock_open'} color={this.props.theme.button.background} label={'Login'} onClick={this.handleLogin} />
+							<Button icon={'person'} color={this.props.theme.button.background} label={'Create User'} onClick={this.handleCreateUser} />
 						</div>
 					</div>
 					<ExpandedCard width={'20%'} height={'20%'} cardExpand={this.props.error} horizontalControls={false} verticalControls={false} >
@@ -99,6 +123,23 @@ class LoginForm extends Component {
 							<div style={{ margin: 3 }}>Username or password wrong or <br />there is a problem with the server.</div>
 							<div style={{ margin: 3 }}> Please try again!</div>
 							<Button label={'Ok'} color={'crimson'} onClick={this.props.reset} />
+						</div>
+					</ExpandedCard>
+					<ExpandedCard width={'80%'} height={'80%'} cardExpand={this.state.createUserModal} horizontalControls={false} verticalControls={false}
+						handleVerticalExpand={() => this.setState({ createUserModal: false })}>
+						<div style={{ height: 'inherit', width: 'inherit', overflow: 'auto' }}>
+							<h3 style={{ margin: "8px 8px" }}>Create User Wizard</h3>
+							<TitleInput style={{ height: 35, margin: "8px 8px", maxWidth: '300px' }}><Input onChange={this.handleCreateUserInput("Username")} style={{ width: '100%', padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} placeholder={"Username"} value={this.state.Username} /></TitleInput>
+							<TitleInput style={{ height: 35, margin: "8px 8px", maxWidth: '300px' }}><Input onChange={this.handleCreateUserInput("Password")} style={{ width: '100%', padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} placeholder={"Password"} value={this.state.Password} type={'password'} /></TitleInput>
+							<TitleInput style={{ height: 35, margin: "8px 8px", maxWidth: '300px' }}><Input onChange={this.handleCreateUserInput("FirstName")} style={{ width: '100%', padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} placeholder={"FirstName"} value={this.state.FirstName} /></TitleInput>
+							<TitleInput style={{ height: 35, margin: "8px 8px", maxWidth: '300px' }}><Input onChange={this.handleCreateUserInput("LastName")} style={{ width: '100%', padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} placeholder={"LastName"} value={this.state.LastName} /></TitleInput>
+							<TitleInput style={{ height: 35, margin: "8px 8px", maxWidth: '300px' }}><Input onChange={this.handleCreateUserInput("Email")} style={{ width: '100%', padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} placeholder={"Email"} value={this.state.Email} /></TitleInput>
+							<TitleInput style={{ height: 35, margin: "8px 8px", maxWidth: '300px' }}><Input onChange={this.handleCreateUserInput("Phone")} style={{ width: '100%', padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} placeholder={"Phone"} value={this.state.Phone} /></TitleInput>
+							<select style={{ margin: "8px 8px", background: this.props.theme.header.background, color: 'white', padding: '8px', border: 'none', borderRadius: '4px' }}>
+								{this.props.orgs ? this.props.orgs.map((org, i) => {
+									return <option key={i} id={org.iOrgID}> {org.vcName} </option>
+								}) : null}
+							</select>
 						</div>
 					</ExpandedCard>
 				</ExpandedCard>

@@ -3,7 +3,7 @@ import App from './App'
 import LoginForm from './LoginForm'
 import { ThemeProvider } from 'styled-components'
 import theme from 'utils/theme'
-import { loginUser, getUserInfo } from 'utils/data'
+import { loginUser, getUserInfo, getOrgs } from 'utils/data'
 import cookie from 'react-cookies'
 
 export const AppContext = React.createContext()
@@ -22,7 +22,15 @@ class Login extends Component {
 		if (getCookieLogin) {
 			this.getUser(getCookieLogin.userID)
 			this.setState({ loginData: getCookieLogin, login: true, error: false })
+			this.getOrgs()
 		}
+		else {
+			this.getOrgs()
+		}
+	}
+	getOrgs = async () => {
+		var orgs = await getOrgs()
+		this.setState({ orgs: orgs })
 	}
 	getUser = async (userID) => {
 		var user = await getUserInfo(userID)
@@ -57,7 +65,7 @@ class Login extends Component {
 	render() {
 		const { login } = this.state
 		return <ThemeProvider theme={theme}>
-			{login ? <AppContext.Provider value={{ logOut: this.logOut, loginData: this.state.loginData, user: this.state.user }}><App /></AppContext.Provider> : <LoginForm reset={this.reset} error={this.state.error} login={this.login} />}
+			{login ? <AppContext.Provider value={{ logOut: this.logOut, loginData: this.state.loginData, user: this.state.user }}><App /></AppContext.Provider> : <LoginForm orgs={this.state.orgs} reset={this.reset} error={this.state.error} login={this.login} />}
 		</ThemeProvider>
 	}
 }
