@@ -65,7 +65,12 @@ class Login extends Component {
 	render() {
 		const { login } = this.state
 		return <ThemeProvider theme={theme}>
-			{login ? <AppContext.Provider value={{ logOut: this.logOut, loginData: this.state.loginData, user: this.state.user }}><App /></AppContext.Provider> : <LoginForm orgs={this.state.orgs} reset={this.reset} error={this.state.error} login={this.login} />}
+			{login ? <AppContext.Provider value={{
+				logOut: this.logOut,
+				loginData: this.state.loginData,
+				user: this.state.user,
+				orgs: this.state.orgs
+			}}><App /></AppContext.Provider> : <LoginForm orgs={this.state.orgs} reset={this.reset} error={this.state.error} login={this.login} />}
 		</ThemeProvider>
 	}
 }

@@ -125,23 +125,7 @@ class LoginForm extends Component {
 							<Button label={'Ok'} color={'crimson'} onClick={this.props.reset} />
 						</div>
 					</ExpandedCard>
-					<ExpandedCard width={'80%'} height={'80%'} cardExpand={this.state.createUserModal} horizontalControls={false} verticalControls={false}
-						handleVerticalExpand={() => this.setState({ createUserModal: false })}>
-						<div style={{ height: 'inherit', width: 'inherit', overflow: 'auto' }}>
-							<h3 style={{ margin: "8px 8px" }}>Create User Wizard</h3>
-							<TitleInput style={{ height: 35, margin: "8px 8px", maxWidth: '300px' }}><Input onChange={this.handleCreateUserInput("Username")} style={{ width: '100%', padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} placeholder={"Username"} value={this.state.Username} /></TitleInput>
-							<TitleInput style={{ height: 35, margin: "8px 8px", maxWidth: '300px' }}><Input onChange={this.handleCreateUserInput("Password")} style={{ width: '100%', padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} placeholder={"Password"} value={this.state.Password} type={'password'} /></TitleInput>
-							<TitleInput style={{ height: 35, margin: "8px 8px", maxWidth: '300px' }}><Input onChange={this.handleCreateUserInput("FirstName")} style={{ width: '100%', padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} placeholder={"FirstName"} value={this.state.FirstName} /></TitleInput>
-							<TitleInput style={{ height: 35, margin: "8px 8px", maxWidth: '300px' }}><Input onChange={this.handleCreateUserInput("LastName")} style={{ width: '100%', padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} placeholder={"LastName"} value={this.state.LastName} /></TitleInput>
-							<TitleInput style={{ height: 35, margin: "8px 8px", maxWidth: '300px' }}><Input onChange={this.handleCreateUserInput("Email")} style={{ width: '100%', padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} placeholder={"Email"} value={this.state.Email} /></TitleInput>
-							<TitleInput style={{ height: 35, margin: "8px 8px", maxWidth: '300px' }}><Input onChange={this.handleCreateUserInput("Phone")} style={{ width: '100%', padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} placeholder={"Phone"} value={this.state.Phone} /></TitleInput>
-							<select style={{ margin: "8px 8px", background: this.props.theme.header.background, color: 'white', padding: '8px', border: 'none', borderRadius: '4px' }}>
-								{this.props.orgs ? this.props.orgs.map((org, i) => {
-									return <option key={i} id={org.iOrgID}> {org.vcName} </option>
-								}) : null}
-							</select>
-						</div>
-					</ExpandedCard>
+
 				</ExpandedCard>
 			</div>
 		)

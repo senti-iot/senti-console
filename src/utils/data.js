@@ -31,7 +31,13 @@ export const getOrgs = async () => {
 }
 export const createUser = async (data) => {
 	var newUser = await api.put('core/user', JSON.stringify(data))
-	return newUser
+	console.log(data, newUser)
+	return newUser.ok
+}
+export const createOrg = async (data) => {
+	var newOrg = await api.put('core/org', JSON.stringify(data))
+	console.log(data, newOrg)
+	return newOrg
 }
 export const getUserInfo = async (userID) => {
 	var user = await api.get('core/user/' + userID).then(rs => rs.data)
