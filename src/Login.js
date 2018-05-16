@@ -10,11 +10,12 @@ export const AppContext = React.createContext()
 class Login extends Component {
 	constructor(props) {
 		super(props)
-
+		var getOrgName = cookie.load('orgName')
 		this.state = {
 			login: false,
 			loginData: null,
-			error: false
+			error: false,
+			orgName: getOrgName ? getOrgName : ''
 		}
 	}
 	componentDidMount = () => {
@@ -49,10 +50,14 @@ class Login extends Component {
 		this.setState({ error: false })
 	}
 
-	login = async (username, password) => {
+	login = async (username, password, orgStore, organisation) => {
+
 		var loginData = await loginUser(username, password)
 		if (loginData) {
 			cookie.save('loginData', loginData)
+			if (orgStore) {
+				cookie.save('orgName', organisation)
+			}
 			var user = await getUserInfo(loginData.userID)
 			this.setState({ login: true, loginData: loginData, error: false, user: user })
 		}
@@ -70,7 +75,7 @@ class Login extends Component {
 				loginData: this.state.loginData,
 				user: this.state.user,
 				orgs: this.state.orgs
-			}}><App /></AppContext.Provider> : <LoginForm orgs={this.state.orgs} reset={this.reset} error={this.state.error} login={this.login} />}
+			}}><App /></AppContext.Provider> : <LoginForm orgName={this.state.orgName} reset={this.reset} error={this.state.error} login={this.login} />}
 		</ThemeProvider>
 	}
 }

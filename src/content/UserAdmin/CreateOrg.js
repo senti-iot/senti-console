@@ -66,7 +66,7 @@ class CreateOrganisation extends Component {
 							<InputCont style={{ height: 35, margin: "0.3rem 0.4rem 0.3rem 0.4rem", maxWidth: '300px' }}><Input onChange={this.handleCreateUserInput("City")} style={{ width: '100%', padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} placeholder={"City"} value={this.state.createOrgFields.vcCity} /></InputCont>
 							<InputCont style={{ height: 35, margin: "0.3rem 0.4rem 0.3rem 0.4rem", maxWidth: '300px' }}><Input onChange={this.handleCreateUserInput("Country")} style={{ width: '100%', padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} placeholder={"Country"} value={this.state.createOrgFields.vcCountry} /></InputCont>
 							<InputCont style={{ height: 35, margin: "0.3rem 0.4rem 0.3rem 0.4rem", maxWidth: '300px' }}><Input onChange={this.handleCreateUserInput("URL")} style={{ width: '100%', padding: '0px 4px', fontSize: 18, color: '#2C3E50' }} placeholder={"Website"} value={this.state.createOrgFields.vcURL} /></InputCont>
-							<Button icon={this.state.success ? 'close' : 'globe'} color={this.props.theme.button.background} label={this.state.success ? 'Close' : 'Create Organisation'} onClick={this.state.success ? this.props.closeModal : this.handleCreateUser} />
+							<Button icon={this.state.success ? 'close' : 'group_add'} color={this.props.theme.button.background} label={this.state.success ? 'Close' : 'Create Organisation'} onClick={this.state.success ? this.props.closeModal : this.handleCreateUser} />
 
 						</div>}
 				</AppContext.Consumer>

@@ -4,6 +4,7 @@ import { withTheme } from 'styled-components'
 import { Input } from './content/Views/ViewStyles'
 import { TitleInput } from 'content/Views/Components/Functions/NewProject/NewProjectStyles'
 import { Button, Icon } from 'odeum-ui'
+import Checkbox from 'content/Views/Aux/CheckBox/CheckBox'
 class LoginForm extends Component {
 
 	constructor(props) {
@@ -12,17 +13,11 @@ class LoginForm extends Component {
 		this.state = {
 			username: '',
 			password: '',
+			organisation: this.props.orgName,
 			userInput: false,
 			passInput: false,
-			createUserModal: false,
-			createUserFields: {
-				Username: '',
-				Password: '',
-				FirstName: '',
-				LastName: '',
-				Email: '',
-				Phone: ''
-			}
+			orgInput: false,
+			orgStore: false
 		}
 	}
 	componentDidMount = () => {
@@ -75,7 +70,7 @@ class LoginForm extends Component {
 		})
 	}
 	handleLogin = () => {
-		this.props.login(this.state.username, this.state.password)
+		this.props.login(this.state.username, this.state.password, this.state.orgStore, this.state.organisation)
 	}
 	handleCreateUser = () => {
 		this.setState({ createUserModal: true })
@@ -87,6 +82,16 @@ class LoginForm extends Component {
 					<img src={this.props.theme.logo.default} alt={'logo'} width={300} style={{ background: this.props.theme.header.background, borderRadius: '4px', margin: 5, padding: 10, marginBottom: 'auto', marginTop: 'auto' }} />
 					<div style={{ width: '100%', display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', marginBottom: 'auto' }}>
 						<div style={{ display: 'flex', height: '250px', flexFlow: 'column nowrap', margin: 5, justifyContent: 'space-between', alignItems: 'center' }}>
+							<TitleInput active={this.state.orgInput} onClick={this.inputOnFocus("orgInput")} style={{ height: 40, margin: 4 }}>
+								<Icon icon={'group_add'} iconSize={25} style={{ color: 'white', margin: 3, padding: 3 }} />
+								<Input
+									placeholder={'Organisation'}
+									style={{ padding: '0px 4px', fontSize: 18, color: '#2C3E50' }}
+									onBlur={this.inputOnBlur("orgInput")}
+									onChange={this.handleInput("organisation")}
+									value={this.state.organisation}
+								/>
+							</TitleInput>
 							<TitleInput active={this.state.userInput} onClick={this.inputOnFocus("userInput")} style={{ height: 40, margin: 4 }}>
 								<Icon icon={'person'} iconSize={25} style={{ color: 'white', margin: 3, padding: 3 }} />
 								<Input
@@ -109,13 +114,13 @@ class LoginForm extends Component {
 									value={this.state.password}
 									type={'password'} />
 							</TitleInput>
-							<select style={{ margin: "8px 8px", background: this.props.theme.header.background, color: 'white', padding: '8px', border: 'none', borderRadius: '4px' }}>
-								{this.props.orgs ? this.props.orgs.map((org, i) => {
-									return <option key={i} value={org.iOrgID}> {org.vcName} </option>
-								}) : null}
-							</select>
-							<Button icon={'lock_open'} color={this.props.theme.button.background} label={'Login'} onClick={this.handleLogin} />
-							<Button icon={'person'} color={this.props.theme.button.background} label={'Create User'} onClick={this.handleCreateUser} />
+
+							<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+								<Checkbox size={'medium'} onChange={() => this.setState({ orgStore: !this.state.orgStore })} isChecked={this.state.orgStore} />
+								<p style={{ marginLeft: 5 }}>Save Organisation</p>
+							</div>
+							<Button icon={'lock_open'} iconColor={'#ffffff'} color={this.props.theme.button.background} label={'Login'} onClick={this.handleLogin} />
+
 						</div>
 					</div>
 					<ExpandedCard width={'20%'} height={'20%'} cardExpand={this.props.error} horizontalControls={false} verticalControls={false} >
