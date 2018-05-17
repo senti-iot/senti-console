@@ -5,8 +5,10 @@ import { StyledCheckbox, CheckMarkIco } from './CheckboxStyles'
 class Checkbox extends Component {
 
 	handleChange = () => {
+
+		console.log(this.props.onChange)
 		if (this.props.onChange) {
-			this.props.onChange()(!this.props.isChecked)
+			this.props.onChange(!this.props.isChecked)
 		}
 
 	}
@@ -18,7 +20,7 @@ class Checkbox extends Component {
 				<input
 					type="checkbox"
 					checked={this.props.isChecked}
-					onChange={this.handleChange}
+					onClick={this.handleChange}
 				/>
 				<CheckMarkIco className="checkmark" size={size}></CheckMarkIco>
 			</StyledCheckbox>

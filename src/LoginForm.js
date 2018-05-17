@@ -74,6 +74,11 @@ class LoginForm extends Component {
 	handleCreateUser = () => {
 		this.setState({ createUserModal: true })
 	}
+	handleCheckBox = (orgStore) => {
+		// e.preventDefault()
+		console.log('triggerred', orgStore)
+		this.setState({ orgStore: orgStore })
+	}
 	render() {
 		var logo = ''
 		if (this.props.theme) { logo = this.props.theme.logo.default }
@@ -112,7 +117,7 @@ class LoginForm extends Component {
 							</PassInput>
 
 							<CheckboxContainer>
-								<Checkbox size={'medium'} onChange={() => this.setState({ orgStore: !orgStore })} isChecked={orgStore} />
+								<Checkbox size={'medium'} onChange={this.handleCheckBox} isChecked={orgStore} />
 								<CheckBoxText>Save Organisation</CheckBoxText>
 							</CheckboxContainer>
 							<Button icon={'lock_open'} iconColor={'#ffffff'} color={this.props.theme.button.background} label={'Login'} onClick={this.handleLogin} />

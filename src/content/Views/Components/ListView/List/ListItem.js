@@ -29,7 +29,7 @@ export default class ListItem extends PureComponent {
 		this.props.handleActiveListDrawer(this.props.item.id, !this.isOpen())
 	}
 
-	handleCheckedItem = () => (isChecked) => {
+	handleCheckedItem = (isChecked) => {
 		this.props.handleCheckedItem(this.props.item.id, isChecked)
 	}
 	isOpen = () => {
