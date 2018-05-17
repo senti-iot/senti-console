@@ -16,16 +16,33 @@ const api = create({
 	timeout: 10000,
 	headers: {
 		'Accept': 'application/json',
-		'Content-Type': 'application/json'
+		'Content-Type': 'application/json',
+		'ODEUMAuthToken': ''
 	}
 })
+
+export const setToken = () => {
+	try {
+		var OAToken = cookie.load('loginData').sessionID
+		api.setHeader('ODEUMAuthToken', OAToken)
+		console.log(OAToken)
+		return true
+	}
+	catch (error) {
+		console.log('No token found')
+		return false
+	}
+
+}
+setToken()
 // Login
 export const loginUser = async (username, password) => {
 	var session = await loginApi.post('/auth/basic', JSON.stringify({ username: username, password: password })).then(rs => rs.data)
-	// var user = await api.get('/user/' + session.userID).then(rs => rs.data)
 	return session
 }
 export const getOrgs = async () => {
+	// var OAToken = cookie.load('loginData').sessionID
+	// api.setHeader('ODEUMAuthToken', OAToken)
 	var orgs = await api.get('core/orgs').then(rs => rs.data)
 	return orgs
 }
@@ -36,7 +53,6 @@ export const createUser = async (data) => {
 }
 export const createOrg = async (data) => {
 	var newOrg = await api.put('core/org', JSON.stringify(data))
-	console.log(data, newOrg)
 	return newOrg
 }
 export const getUserInfo = async (userID) => {

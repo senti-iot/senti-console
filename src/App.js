@@ -41,11 +41,11 @@ class App extends Component {
 								<ViewContainer />
 							</Tab>
 						</Menu>
-						<Menu label={'Management'} route={'/users'} icon={'people'}>
+						{this.props.management ? <Menu label={'Management'} route={'/users'} icon={'people'}>
 							<Tab label={'Users'} icon={'people'} route={''}>
 								<UserAdmin />
 							</Tab>
-						</Menu>
+						</Menu> : null}
 						<Menu label={'Indstillinger'} route={'/settings'} icon={'settings'}>
 							<Tab label={'Indstillinger'} icon={'settings'} route={''}>
 								<div style={{ display: 'inline-flex' }}>

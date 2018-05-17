@@ -111,36 +111,6 @@ export default class ListView extends Component {
 						: <div>No Items</div>}
 				</ListContainer>
 			</React.Fragment>
-			// items ?
-			// 	<table style={{ overflow: 'hidden', display: 'block' }}>
-			// 		<thead style={{ display: 'block' }}>
-			// 			<tr style={{ width: 'calc(100%	- 15px)' }}>
-			// 				<Td>
-			// 					<Checkbox size={'medium'} />
-			// 				</Td>
-			// 				{this.props.columns.map(vc => <Td>{vc.column}
-			// 				</Td>)}
-			// 				<Td style={{ maxWidth: '15px' }}>
-
-			// 				</Td>
-			// 			</tr>
-			// 		</thead>
-			// 		<tbody style={{ overflow: 'auto', display: 'block', height: 'calc(100% - 30px)' }}>
-			// 			{
-			// 				this.props.items.map(i =>
-			// 					<tr>
-			// 						<Td>
-			// 							<Checkbox size={'medium'} />
-			// 						</Td>
-			// 						{this.props.columns.map(vc => <Td>{i[vc.column]}</Td>)}
-			// 						<Td style={{ maxWidth: '15px' }}>
-			// 							CNTR
-			// 						</Td>
-			// 					</tr>)
-			// 			}
-
-			// 		</tbody>
-			// 	</table> : <div> No Items</div>
 		)
 	}
 }

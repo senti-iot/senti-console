@@ -22,6 +22,7 @@ class Login extends Component {
 		var getCookieLogin = cookie.load('loginData')
 		if (getCookieLogin) {
 			this.getUser(getCookieLogin.userID)
+
 			this.setState({ loginData: getCookieLogin, login: true, error: false })
 			this.getOrgs()
 		}
@@ -35,6 +36,7 @@ class Login extends Component {
 	}
 	getUser = async (userID) => {
 		var user = await getUserInfo(userID)
+		console.log(user)
 		this.setState({ user: user })
 	}
 	logOut = () => {
@@ -68,14 +70,14 @@ class Login extends Component {
 	}
 
 	render() {
-		const { login } = this.state
+		const { login, user } = this.state
 		return <ThemeProvider theme={theme}>
 			{login ? <AppContext.Provider value={{
 				logOut: this.logOut,
 				loginData: this.state.loginData,
 				user: this.state.user,
 				orgs: this.state.orgs
-			}}><App /></AppContext.Provider> : <LoginForm orgName={this.state.orgName} reset={this.reset} error={this.state.error} login={this.login} />}
+			}}>{user ? <App management={user.management} /> : <h3>Loading</h3>}</AppContext.Provider> : <LoginForm orgName={this.state.orgName} reset={this.reset} error={this.state.error} login={this.login} />}
 		</ThemeProvider>
 	}
 }
