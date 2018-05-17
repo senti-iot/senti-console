@@ -53,6 +53,7 @@ export const createOrg = async (data) => {
 	return newOrg
 }
 export const getUserInfo = async (userID) => {
+	setToken()
 	var user = await api.get('core/user/' + userID).then(rs => rs.data)
 	return user
 }
