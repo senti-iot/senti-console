@@ -25,11 +25,9 @@ export const setToken = () => {
 	try {
 		var OAToken = cookie.load('loginData').sessionID
 		api.setHeader('ODEUMAuthToken', OAToken)
-		console.log(OAToken)
 		return true
 	}
 	catch (error) {
-		console.log('No token found')
 		return false
 	}
 
@@ -48,7 +46,6 @@ export const getOrgs = async () => {
 }
 export const createUser = async (data) => {
 	var newUser = await api.put('core/user', JSON.stringify(data))
-	console.log(data, newUser)
 	return newUser.ok
 }
 export const createOrg = async (data) => {

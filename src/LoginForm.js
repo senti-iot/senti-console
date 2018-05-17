@@ -76,7 +76,6 @@ class LoginForm extends Component {
 	}
 	handleCheckBox = (orgStore) => {
 		// e.preventDefault()
-		console.log('triggerred', orgStore)
 		this.setState({ orgStore: orgStore })
 	}
 	render() {

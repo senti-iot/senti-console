@@ -37,7 +37,6 @@ class Login extends Component {
 	}
 	getUser = async (userID) => {
 		var user = await getUserInfo(userID)
-		console.log(user)
 		this.setState({ user: user })
 	}
 	logOut = () => {
