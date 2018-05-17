@@ -61,7 +61,7 @@ export const FormImg = styled.div`
 	justify-content:center;
 
 	width: 100%;
-	height: 150px;
+	height: 100%;
 	
 	background: url(${p => p.img});
 	background-size: cover;
