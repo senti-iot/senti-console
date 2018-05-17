@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
 import ExpandedCard from './content/Views/Aux/Modal/ExpandedCard'
 import { withTheme } from 'styled-components'
-import { Input } from './content/Views/ViewStyles'
-import { TitleInput } from 'content/Views/Components/Functions/NewProject/NewProjectStyles'
 import { Button, Icon } from 'odeum-ui'
 import Checkbox from 'content/Views/Aux/CheckBox/CheckBox'
+import { SentiLogo, LoginInputContainer, LoginFormContainer, OrgInput, UserInput, PassInput, FormInput, LoginContainer, CheckBoxText, CheckboxContainer, ErrorModalContainer, ErrorHeader, ErrorText } from './LoginStyles'
 class LoginForm extends Component {
 
 	constructor(props) {
 		super(props)
-
+		this.iconStyle = { color: 'white', height: "100%", background: this.props.theme.tab.selected, padding: 3 }
 		this.state = {
 			username: '',
 			password: '',
@@ -76,63 +75,65 @@ class LoginForm extends Component {
 		this.setState({ createUserModal: true })
 	}
 	render() {
+		var logo = ''
+		if (this.props.theme) { logo = this.props.theme.logo.default }
+		const { orgInput, userInput, passInput, organisation, orgStore, username, password } = this.state
 		return (
-			<div style={{ width: '100vw', height: '100vh', background: this.props.theme.header.background }}>
+			<LoginContainer>
 				<ExpandedCard cardExpand={true} horizontalControls={false} verticalControls={false} width={'50%'}>
-					<img src={this.props.theme.logo.default} alt={'logo'} width={300} style={{ background: this.props.theme.header.background, borderRadius: '4px', margin: 5, padding: 10, marginBottom: 'auto', marginTop: 'auto' }} />
-					<div style={{ width: '100%', display: 'flex', alignItems: 'center', flexFlow: 'column nowrap', marginBottom: 'auto' }}>
-						<div style={{ display: 'flex', height: '250px', flexFlow: 'column nowrap', margin: 5, justifyContent: 'space-between', alignItems: 'center' }}>
-							<TitleInput active={this.state.orgInput} onClick={this.inputOnFocus("orgInput")} style={{ height: 40, margin: 4 }}>
-								<Icon icon={'group_add'} iconSize={25} style={{ color: 'white', margin: 3, padding: 3 }} />
-								<Input
+					<SentiLogo src={logo} alt={'logo'} width={300} />
+					<LoginFormContainer>
+						<LoginInputContainer>
+							<OrgInput active={orgInput} onClick={this.inputOnFocus("orgInput")} >
+								<Icon icon={'group_add'} iconSize={25} style={this.iconStyle} />
+								<FormInput
 									placeholder={'Organisation'}
-									style={{ padding: '0px 4px', fontSize: 18, color: '#2C3E50' }}
 									onBlur={this.inputOnBlur("orgInput")}
 									onChange={this.handleInput("organisation")}
-									value={this.state.organisation}
-								/>
-							</TitleInput>
-							<TitleInput active={this.state.userInput} onClick={this.inputOnFocus("userInput")} style={{ height: 40, margin: 4 }}>
-								<Icon icon={'person'} iconSize={25} style={{ color: 'white', margin: 3, padding: 3 }} />
-								<Input
-									innerRef={this.createInputRef}
+									value={organisation} />
+							</OrgInput>
+							<UserInput active={userInput} onClick={this.inputOnFocus("userInput")}>
+								<Icon icon={'person'} iconSize={25} style={this.iconStyle} />
+								<FormInput
 									placeholder={'Username'}
-									style={{ padding: '0px 4px', fontSize: 18, color: '#2C3E50' }}
+									innerRef={this.createInputRef}
 									onBlur={this.inputOnBlur("userInput")}
 									onChange={this.handleInput("username")}
-									value={this.state.username}
-								// onKeyPress={this.handleKeyPress} 
-								/>
-							</TitleInput>
-							<TitleInput active={this.state.passInput} onClick={this.inputOnFocus("passInput")} style={{ height: 40, margin: 4 }}>
-								<Icon icon={'lock_outline'} iconSize={25} style={{ color: 'white', margin: 3, padding: 3 }} />
-								<Input
+									value={username} />
+							</UserInput>
+							<PassInput active={passInput} onClick={this.inputOnFocus("passInput")}>
+								<Icon icon={'lock_outline'} iconSize={25} style={this.iconStyle} />
+								<FormInput
 									placeholder={'Password'}
-									style={{ padding: '0px 4px', fontSize: 18, color: '#2C3E50' }}
 									onBlur={this.inputOnBlur("passInput")}
 									onChange={this.handleInput("password")}
-									value={this.state.password}
+									value={password}
 									type={'password'} />
-							</TitleInput>
+							</PassInput>
 
-							<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-								<Checkbox size={'medium'} onChange={() => this.setState({ orgStore: !this.state.orgStore })} isChecked={this.state.orgStore} />
-								<p style={{ marginLeft: 5 }}>Save Organisation</p>
-							</div>
+							<CheckboxContainer>
+								<Checkbox size={'medium'} onChange={() => this.setState({ orgStore: !orgStore })} isChecked={orgStore} />
+								<CheckBoxText>Save Organisation</CheckBoxText>
+							</CheckboxContainer>
 							<Button icon={'lock_open'} iconColor={'#ffffff'} color={this.props.theme.button.background} label={'Login'} onClick={this.handleLogin} />
 
-						</div>
-					</div>
-					<ExpandedCard width={'20%'} height={'20%'} cardExpand={this.props.error} horizontalControls={false} verticalControls={false} >
-						<div style={{ display: 'flex', flexFlow: 'column nowrap', justifyContent: 'center', alignItems: 'center' }}><h3 style={{ margin: 3 }}>Error!</h3>
-							<div style={{ margin: 3 }}>Username or password wrong or <br />there is a problem with the server.</div>
-							<div style={{ margin: 3 }}> Please try again!</div>
-							<Button label={'Ok'} color={'crimson'} onClick={this.props.reset} />
-						</div>
+						</LoginInputContainer>
+					</LoginFormContainer>
+					<ExpandedCard width={'20%'} height={'20%'}
+						cardExpand={this.props.error}
+						horizontalControls={false}
+						verticalControls={false}
+						handleVerticalExpand={this.props.reset}
+					>
+						<ErrorModalContainer>
+							<ErrorHeader >Error!</ErrorHeader>
+							<ErrorText>Username or password wrong or <br />there is a problem with the server.</ErrorText>
+							<ErrorText> Please try again!</ErrorText>
+							<Button label={'Luk'} color={'crimson'} onClick={this.props.reset} />
+						</ErrorModalContainer>
 					</ExpandedCard>
-
 				</ExpandedCard>
-			</div>
+			</LoginContainer>
 		)
 	}
 }

@@ -34,7 +34,7 @@ export const SearchContainer = styled.div`
 	height: 35px;
     
 	color: ${(props) => props.color ? props.color : '#2C3E50'};
-    background: ${p => p.theme.tab.selected};
+    /* background: ${p => p.theme.tab.selected}; */
 	margin: 0px 5px;
     /* padding: 5px; */
     border: none;
@@ -46,12 +46,14 @@ export const SearchContainer = styled.div`
     
 	&:hover {
         border-color: ${p => transparentize(0.7, p.theme.tab.hover)};
-		box-shadow: ${p => `0 0 0 4px ${transparentize(0.7, p.theme.tab.hover)}`};
+		box-shadow: ${p => `0 0 0 3px ${transparentize(0.7, p.theme.tab.hover)}`};
 		cursor: ${(props) => props.isDisabled ? 'not-allowed' : 'pointer'};
     }
 
     &:focus {
 		box-shadow: ${(props) => `0 0 0 3px ` + props.theme.tab.selected};
+		border-color: ${p => p.theme.tab.selected};
+
     }
 `
 export const DatePickerInput = SearchContainer.extend`
