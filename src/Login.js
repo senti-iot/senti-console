@@ -5,6 +5,7 @@ import { ThemeProvider } from 'styled-components'
 import theme from 'utils/theme'
 import { loginUser, getUserInfo, getOrgs } from 'utils/data'
 import cookie from 'react-cookies'
+import { LoaderSmall } from 'LoginStyles'
 
 export const AppContext = React.createContext()
 class Login extends Component {
@@ -77,7 +78,7 @@ class Login extends Component {
 				loginData: this.state.loginData,
 				user: this.state.user,
 				orgs: this.state.orgs
-			}}>{user ? <App management={user.management} /> : <h3>Loading</h3>}</AppContext.Provider> : <LoginForm orgName={this.state.orgName} reset={this.reset} error={this.state.error} login={this.login} />}
+			}}>{user ? <App management={user.management} /> : <div style={{ width: '100vw', height: '100vh' }}><LoaderSmall /></div>}</AppContext.Provider> : <LoginForm orgName={this.state.orgName} reset={this.reset} error={this.state.error} login={this.login} />}
 		</ThemeProvider>
 	}
 }

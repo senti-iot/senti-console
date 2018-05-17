@@ -30,6 +30,7 @@ import moment from 'moment'
 import { getAllProjects, deleteProject } from 'utils/data'
 import { Button } from 'odeum-ui'
 import { withTheme } from 'styled-components'
+import { LoaderSmall } from 'LoginStyles'
 
 class ViewContainer extends Component {
 
@@ -37,6 +38,7 @@ class ViewContainer extends Component {
 		super(props)
 		this.state = {
 			// inputFocus: false,
+			isLoading: true,
 			view: 1,
 			pageSize: 25,
 			searchString: '',
@@ -62,10 +64,14 @@ class ViewContainer extends Component {
 
 	//#region Lifecycle Functions
 
-	componentDidMount = async () => {
+	componentDidMount = () => {
+		this._ismounted = true
 		this.getProjects()
-	}
 
+	}
+	componentWillUnmount = () => {
+		this._ismounted = false
+	}
 	//#endregion
 
 	//#region Item manipulation
@@ -76,7 +82,9 @@ class ViewContainer extends Component {
 				this.data = null
 				var sortColumn = Object.keys(externalData[0])[0]
 				var visibleColumns = Object.keys(externalData[0]).map(c => c = { column: c, visible: true })
-				this.setState({ items: externalData, visibleColumns: visibleColumns, sortColumn: sortColumn })
+				if (this._ismounted) {
+					this.setState({ items: externalData, visibleColumns: visibleColumns, sortColumn: sortColumn, isLoading: false })
+				}
 			}
 		)
 	}
@@ -476,9 +484,9 @@ class ViewContainer extends Component {
 	//#endregion
 
 	render() {
-		const { funcOpen, funcNewProject } = this.state
+		const { funcOpen, funcNewProject, isLoading } = this.state
 		const { view, searchString, pageSize, pageSizeOpen, sortOpen, sortDirection, sortColumn, dateFilter } = this.state
-		return this.state.items ? <View style={{ position: 'relative' }}>
+		return <View style={{ position: 'relative' }}>
 			{this.renderFunctionNewProject(funcNewProject)}
 			<FunctionBar>
 				{this.renderFunctions(funcOpen)}
@@ -497,10 +505,14 @@ class ViewContainer extends Component {
 				{this.renderDeleteProject()}
 
 			</FunctionBar>
-			{this.renderView(pageSize, view, sortColumn, sortDirection)}
-			{view !== 2 ? <Pagination items={this.filterItems(this.state.items)} onChangePage={this.handlePageChange} pageSize={pageSize} /> : null}
+			{!isLoading ? <React.Fragment>
+				{this.renderView(pageSize, view, sortColumn, sortDirection)}
+				{view !== 2 ? <Pagination items={this.filterItems(this.state.items)} onChangePage={this.handlePageChange} pageSize={pageSize} /> : null}
+			</React.Fragment>
+				: <LoaderSmall />}
 
-		</View > : null
+
+		</View >
 
 	}
 }

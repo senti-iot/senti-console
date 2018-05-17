@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-import { ExpFormImg, ExpHeader, UserContainer, Username, Avatar, 
-	ExpandedProjectInfoContainer, ExpSection, ExpProjectInfoItem, GreenLED, RedLED } 
+import {
+	ExpFormImg, ExpHeader, UserContainer, Username, Avatar,
+	ExpandedProjectInfoContainer, ExpSection, ExpProjectInfoItem, GreenLED, RedLED
+}
 	from '../../../Aux/Modal/ExpandedCardStyles'
 import { StyledDropzone, TitleInput } from './NewProjectStyles'
 import { Input } from '../../../ViewStyles'
@@ -61,8 +63,13 @@ class NewProject extends Component {
 	}
 
 	componentDidMount = async () => {
+		this._mounted = 1
 		var devices = await getAvailableDevices()
-		this.setState({ devices: devices })
+		if (this._mounted)
+			this.setState({ devices: devices })
+	}
+	componentWillUnmount = () => {
+		this._mounted = 0
 	}
 	onCheckedItem = id => e => checked => {
 		if (e !== undefined) { if (e.preventDefault) { e.preventDefault() } }

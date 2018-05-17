@@ -1,6 +1,6 @@
 import { Input } from './content/Views/ViewStyles'
 import { TitleInput } from 'content/Views/Components/Functions/NewProject/NewProjectStyles'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 export const LoginContainer = styled.div`
 	width:100vw;
@@ -15,6 +15,19 @@ export const SentiLogo = styled.img`
 	padding:10px;
 	margin-bottom: auto;
 	margin-top:auto;
+`
+const spin = keyframes`
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+`
+export const LoaderSmall = styled.div`
+	border: 5px solid #f3f3f3;
+	animation: ${spin} 1s linear infinite;
+	border-top: 5px solid ${p => p.theme.tab.selected};
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	margin:auto;
 `
 
 export const LoginInputContainer = styled.div`
