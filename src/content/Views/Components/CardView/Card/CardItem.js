@@ -9,7 +9,7 @@ import {
 	Wheels
 } from './CardItemStyles'
 import ExpandedCardInfo from './ExpandedCardInfo'
-import { CardImg } from '../../../Aux/Modal/CardItemStyles'
+import { CardImg } from '../../../../Aux/Modal/CardItemStyles'
 import { LoaderSmall } from 'LoginStyles'
 import { SmallLoaderContainer } from '../../ListView/List/ListStyles'
 

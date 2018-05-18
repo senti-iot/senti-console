@@ -3,7 +3,7 @@ import {
 	ExpFormImg, ExpHeader, UserContainer, Username, Avatar,
 	ExpandedProjectInfoContainer, ExpSection, ExpProjectInfoItem, GreenLED, RedLED
 }
-	from '../../../Aux/Modal/ExpandedCardStyles'
+	from '../../../../Aux/Modal/ExpandedCardStyles'
 import { StyledDropzone, TitleInput } from './NewProjectStyles'
 import { Input } from '../../../ViewStyles'
 import DatePicker from '../../../../Aux/DatePicker/DatePicker'

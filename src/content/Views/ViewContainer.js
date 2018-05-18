@@ -188,11 +188,6 @@ class ViewContainer extends Component {
 
 			{sortOpen && <DropDown style={{ width: 150 }}>
 				{this.renderDropDownSorting(sortDirection)}
-				{/* {this.renderDropDownItem('Gennemfort i %', 'visibility', this.handleVisibleColumn('progress'), 'progress')}
-				{this.renderDropDownItem('Oprettet', 'visibility', this.handleVisibleColumn('open_date'), 'open_date')}
-				{this.renderDropDownItem('Senest aktiv', 'visibility', this.handleVisibleColumn('las'), 'seneste_reg')}
-				{this.renderDropDownItem('Kontakt', 'visibility', this.handleVisibleColumn('user'), 'user')}
-				{this.renderDropDownItem('Antal', 'visibility', this.handleVisibleColumn('hits'), 'hits')} */}
 				{this.state.visibleColumns.map((c, i) => {
 					return this.renderVisibilityOption(this.handleColumnName(c.column), 'visibility', this.handleVisibleColumn(c.column), c.column, i)
 				})}
@@ -257,7 +252,6 @@ class ViewContainer extends Component {
 	}
 
 	renderDropDownSorting = (sortDirection) => {
-		// const { visibleColumns } = this.state
 		return <DropDownSection>
 			<DropDownSubSection>
 				<DropDownIcon>
@@ -284,19 +278,6 @@ class ViewContainer extends Component {
 				</DropDownText>
 			</DropDownSubItem>
 			<DropDownSubItem>
-				{/* <DropDownIcon onClick={this.handleVisibleColumn('seneste_reg')}>
-					<Icon icon={"visibility"} color={'#FFFFFF'} active={visibleColumns.find(c => c.column === 'seneste_reg').visible ? true : false} />
-				</DropDownIcon> */}
-				{/* <DropDownText onClick={this.handleSort('seneste_reg')} active={this.handleActiveColumn('seneste_reg')} sorting={sortDirection}>
-					<Text>
-						Senest aktiv
-					</Text>
-				</DropDownText> */}
-			</DropDownSubItem>
-			<DropDownSubItem>
-				{/* <DropDownIcon onClick={this.handleVisibleColumn('progress')}>
-					<Icon icon={"visibility"} color={'#FFFFFF'} active={visibleColumns.find(c => c.column === 'progress').visible ? true : false} />
-				</DropDownIcon> */}
 				<DropDownText onClick={this.handleSort('progress')} active={this.handleActiveColumn('progress')} sorting={sortDirection}>
 					<Text>
 						Antal

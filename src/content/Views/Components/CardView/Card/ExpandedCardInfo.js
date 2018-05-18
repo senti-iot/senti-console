@@ -8,7 +8,7 @@ import {
 import {
 	ExpandedProjectInfoContainer,
 	ExpSection, ExpHeader, ExpFormImg, ExpTitle, ExpAddress, ExpProjectInfoTitle, ExpProjectInfo, ExpProjectInfoItem, GreenLED, RedLED
-} from '../../../Aux/Modal/ExpandedCardStyles'
+} from '../../../../Aux/Modal/ExpandedCardStyles'
 import { getDevicesForProject, getDeviceRegistrations } from '../../../../../utils/data'
 
 
