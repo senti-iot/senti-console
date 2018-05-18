@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ListItem from '../Views/Components/ListView/List/ListItem'
 import { ListContainer, HeaderListContainer } from './ViewStyles'
-import Checkbox from '../Views/Aux/CheckBox/CheckBox'
+import Checkbox from '../Aux/CheckBox/CheckBox'
 import SortableList from './Components/ListView/HeaderList/HeaderContainer'
 
 export default class ListView extends Component {

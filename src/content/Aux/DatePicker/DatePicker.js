@@ -12,7 +12,7 @@ import { withTheme } from 'styled-components'
 import { START_DATE, END_DATE, HORIZONTAL_ORIENTATION } from 'react-dates/src/constants'
 import ThemedStyleSheet from 'react-with-styles/lib/ThemedStyleSheet'
 import aphroditeInterface from 'react-with-styles-interface-aphrodite'
-import { DatePickerInput, Input } from '../../ViewStyles'
+import { DatePickerInput, Input } from '../../Views/ViewStyles'
 import { getTheme } from './DatePickerTheme'
 
 
@@ -172,7 +172,6 @@ class DayPickerRangeControllerWrapper extends React.Component {
 		try {
 			var startDate = moment(arr[0], 'DD.MM.YYYY')
 			var endDate = moment(arr[1], 'DD.MM.YYYY')
-			console.log(startDate, endDate)
 			if (!startDate.isValid() || !endDate.isValid())
 				throw new DOMException('Invalid Date')
 			else {

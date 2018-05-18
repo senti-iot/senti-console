@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import ExpandedCard from './content/Views/Aux/Modal/ExpandedCard'
+import ExpandedCard from './content/Aux/Modal/ExpandedCard'
 import { withTheme } from 'styled-components'
 import { Button, Icon } from 'odeum-ui'
-import Checkbox from 'content/Views/Aux/CheckBox/CheckBox'
+import Checkbox from './content/Aux/CheckBox/CheckBox'
 import { SentiLogo, LoginInputContainer, LoginFormContainer, OrgInput, UserInput, PassInput, FormInput, LoginContainer, CheckBoxText, CheckboxContainer, ErrorModalContainer, ErrorHeader, ErrorText } from './LoginStyles'
 class LoginForm extends Component {
 

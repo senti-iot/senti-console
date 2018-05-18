@@ -6,12 +6,12 @@ import {
 	from '../../../Aux/Modal/ExpandedCardStyles'
 import { StyledDropzone, TitleInput } from './NewProjectStyles'
 import { Input } from '../../../ViewStyles'
-import DatePicker from '../../../Aux/DatePicker/DatePicker'
+import DatePicker from '../../../../Aux/DatePicker/DatePicker'
 import { withTheme } from 'styled-components'
 import { Button } from 'odeum-ui'
 import { createOneProject, getAvailableDevices } from 'utils/data'
-import Checkbox from '../../../Aux/CheckBox/CheckBox'
-import ExpandedCard from '../../../Aux/Modal/ExpandedCard'
+import Checkbox from '../../../../Aux/CheckBox/CheckBox'
+import ExpandedCard from '../../../../Aux/Modal/ExpandedCard'
 import moment from 'moment'
 
 class NewProject extends Component {

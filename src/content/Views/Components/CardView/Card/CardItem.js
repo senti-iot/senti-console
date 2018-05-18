@@ -14,9 +14,9 @@ import { LoaderSmall } from 'LoginStyles'
 import { SmallLoaderContainer } from '../../ListView/List/ListStyles'
 
 export default class FormCard extends Component {
+
 	constructor(props) {
 		super(props)
-
 		this.state = {
 			horizontalExpand: false,
 			expand: false,
@@ -36,7 +36,7 @@ export default class FormCard extends Component {
 	}
 	render() {
 		const { horizontalExpand, expand, img } = this.state
-		const { item, /* column */ } = this.props
+		const { item } = this.props
 		return (
 			<React.Fragment>
 				<ExpandedCardInfo {...this.props} cardExpand={expand} handleVerticalExpand={this.handleVerticalExpand} />

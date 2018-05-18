@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { ListItemContainer, ExpandButtonContainer, Text, ListCardItem, Button, ButtonContainer, ControlsContainer, Cell, SmallLoaderContainer, ImgText } from './ListStyles'
 import { Icon } from 'odeum-ui'
-import Checkbox from '../../../Aux/CheckBox/CheckBox'
+import Checkbox from '../../../../Aux/CheckBox/CheckBox'
 import ExpandedCardInfo from '../../CardView/Card/ExpandedCardInfo'
 import { LoaderSmall } from 'LoginStyles'
 

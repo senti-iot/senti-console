@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ExpandedCard from '../../../Aux/Modal/ExpandedCard'
+import ExpandedCard from '../../../../Aux/Modal/ExpandedCard'
 
 import {
 	ProjectBarContainer, ProjectBarLabel,

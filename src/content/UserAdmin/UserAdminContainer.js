@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ExpandedCard from '../Views/Aux/Modal/ExpandedCard'
+import ExpandedCard from '../Aux/Modal/ExpandedCard'
 import { withTheme } from 'styled-components'
 import CreateUser from './CreateUser'
 import CreateOrg from './CreateOrg'

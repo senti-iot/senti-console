@@ -4,12 +4,12 @@ import { arrayMove } from 'react-sortable-hoc'
 // import 'react-dates/lib/css/_datepicker.css'
 
 //Components
-import DayPickerRangeControllerWrapper from '../Views/Aux/DatePicker/DatePicker'
+import DayPickerRangeControllerWrapper from '../Aux/DatePicker/DatePicker'
 import CardView from './CardView'
 import ListView from './ListView'
 import MapView from './MapView'
 import Pagination from '../Pagination/Pagination'
-import ExpandedCard from '../Views/Aux/Modal/ExpandedCard'
+import ExpandedCard from '../Aux/Modal/ExpandedCard'
 import NewProject from './Components/Functions/NewProject/NewProject'
 import { renderPageSizeOption } from './Components/Functions/PageSize/PageSize'
 import SearchComponent from './Components/Functions/Search/Search'
@@ -20,7 +20,7 @@ import {
 	DropDownButton, Margin, DropDownItem,
 	DropDownSection, DropDownIcon, DropDownText,
 	DropDownSubSection, DropDownSubItem
-} from './Aux/DropDown/DropDown'
+} from '../Aux/DropDown/DropDown'
 import {
 	FunctionBar, ChangeViewButtonCard,
 	ChangeViewButtonMap, ChangeViewButtonList,
@@ -82,7 +82,7 @@ class ViewContainer extends Component {
 			externalData => {
 				this.data = null
 				var sortColumn = Object.keys(externalData[0])[0]
-				var visibleColumns = Object.keys(externalData[0]).map(c => c = { column: c, visible: true })
+				var visibleColumns = Object.keys(externalData[0]).map(c => c = { column: c, visible: c === "id" ? false : true })
 				if (this._ismounted) {
 					this.setState({ items: externalData, visibleColumns: visibleColumns, sortColumn: sortColumn, isLoading: false })
 				}
@@ -92,7 +92,6 @@ class ViewContainer extends Component {
 
 	filterByDate = (items) => {
 		const { startDate, endDate } = this.state.dateFilter
-		// console.log(startDate.getTime(), endDate.getTime())
 		var arr = items
 		var keys = Object.keys(arr[0])
 		var filteredByDate = arr.filter(c => {

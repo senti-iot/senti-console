@@ -5,7 +5,7 @@ import { ThemeProvider } from 'styled-components'
 import theme from 'utils/theme'
 import { loginUser, getUserInfo, getOrgs } from 'utils/data'
 import cookie from 'react-cookies'
-import { LoaderSmall } from 'LoginStyles'
+import { LoaderSmall, LoaderContainer } from 'LoginStyles'
 
 export const AppContext = React.createContext()
 class Login extends Component {
@@ -16,7 +16,8 @@ class Login extends Component {
 			login: false,
 			loginData: null,
 			error: false,
-			orgName: getOrgName ? getOrgName : ''
+			orgName: getOrgName ? getOrgName : '',
+			orgs: []
 		}
 	}
 	componentDidMount = () => {
@@ -70,14 +71,21 @@ class Login extends Component {
 	}
 
 	render() {
-		const { login, user } = this.state
+		const { login, user, orgName, error, loginData, orgs } = this.state
 		return <ThemeProvider theme={theme}>
-			{login ? <AppContext.Provider value={{
-				logOut: this.logOut,
-				loginData: this.state.loginData,
-				user: this.state.user,
-				orgs: this.state.orgs
-			}}>{user ? <App management={user.management} /> : <div style={{ width: '100vw', height: '100vh' }}><LoaderSmall /></div>}</AppContext.Provider> : <LoginForm orgName={this.state.orgName} reset={this.reset} error={this.state.error} login={this.login} />}
+			{login ?
+				<AppContext.Provider
+					value={{
+						logOut: this.logOut,
+						loginData: loginData,
+						user: user,
+						orgs: orgs
+					}}>
+					{user ?
+						<App management={user.management} />
+						: <LoaderContainer> <LoaderSmall /> </LoaderContainer>}
+				</AppContext.Provider> :
+				<LoginForm orgName={orgName} reset={this.reset} error={error} login={this.login} />}
 		</ThemeProvider>
 	}
 }

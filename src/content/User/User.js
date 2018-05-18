@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { UserContainer, UserName, UserAvatar } from './UserStyles'
 import { AppContext } from 'Login'
-import { DropDownContainer, DropDownButton, Margin, DropDown, DropDownItem } from '../Views/Aux/DropDown/DropDown'
+import { DropDownContainer, DropDownButton, Margin, DropDown, DropDownItem } from '../Aux/DropDown/DropDown'
 
 // const userObj = {
 // 	name: 'Andrei',
