@@ -45,7 +45,7 @@ export const FormCardContainer = styled.div`
 `
 export const Shadow = FormCardContainer.extend`
 	box-shadow: 2px 2px 8px 0px rgba(0,0,0,0.3);
-	
+	justify-content:space-between;
 	min-height: 270px;
 	min-width: 250px;
 	
@@ -55,7 +55,7 @@ export const Shadow = FormCardContainer.extend`
 `
 
 
-export const FormImg = styled.div`
+export const FormImg = styled.img`
 	display: flex;
 	align-items: flex-start;
 	justify-content:center;
@@ -63,7 +63,7 @@ export const FormImg = styled.div`
 	width: 100%;
 	height: 100%;
 	
-	background: url(${p => p.img});
+	/* background: url(${p => p.img}); */
 	background-size: cover;
     border-radius: 4px 4px 0px 0px;
     

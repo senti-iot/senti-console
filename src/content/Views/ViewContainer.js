@@ -31,6 +31,7 @@ import { getAllProjects, deleteProject } from 'utils/data'
 import { Button } from 'odeum-ui'
 import { withTheme } from 'styled-components'
 import { LoaderSmall } from 'LoginStyles'
+import cookie from 'react-cookies'
 
 class ViewContainer extends Component {
 
@@ -39,7 +40,7 @@ class ViewContainer extends Component {
 		this.state = {
 			// inputFocus: false,
 			isLoading: true,
-			view: 1,
+			view: cookie.load('View') !== undefined ? parseInt(cookie.load('View'), 10) : 1,
 			pageSize: 25,
 			searchString: '',
 			sortOpen: false,
@@ -425,6 +426,7 @@ class ViewContainer extends Component {
 	handleChangeView = (int) => (e) => {
 		e.preventDefault()
 		this.setState({ view: int })
+		cookie.save('View', int)
 		return int === 0 ? this.setState({ pageSize: 10 }) :
 			int === 1 ? this.setState({ pageSize: 25 })
 				: null

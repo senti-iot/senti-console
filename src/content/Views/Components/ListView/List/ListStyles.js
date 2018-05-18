@@ -22,7 +22,23 @@ export const Text = styled.div`
 	white-space:nowrap;
 	overflow:hidden;
 `
+export const SmallLoaderContainer = styled.div`
+	position:absolute;
+	top:0;
+	left:0;
 
+	display:flex;
+	justify-content:center;
+	align-items:center;
+
+	background:#e3e5e5;
+
+	width:100%;
+	height:100%;
+	&:hover {
+		background: #e9e9e9;
+	}
+`
 export const ListCardItem = styled.div`
 	display:flex;
 	flex-flow:row nowrap;
@@ -33,6 +49,12 @@ export const ListCardItem = styled.div`
 	height:30px;
 	border: 1px solid transparent;
 	border-radius: 5px;
+`
+
+export const ImgText = styled(Text) `
+	position:relative;
+	height:100%;
+	width:100%;
 `
 
 export const ListItemContainer = styled.div`
@@ -75,7 +97,7 @@ export const ExpandButtonContainer = styled.div`
 	
 	&:hover{
 		/* background: #e9e9e9; */
-		background: ${p =>  p.theme.tab.selected};
+		background: ${p => p.theme.tab.selected};
 		color: white;
 
 	}

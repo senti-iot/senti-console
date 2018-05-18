@@ -185,6 +185,10 @@ export const HorizontalControls = styled.div`
 	/* z-index:${p => p.expand ? 3 : 1}; */
 `
 
+export const CardImg = styled(FormImg) `
+	position: relative;
+	background: "#FFF";
+`
 
 export const ControlButton = styled.div`
 	border-radius: 4px;

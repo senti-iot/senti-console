@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { ListItemContainer, ExpandButtonContainer, Text, ListCardItem, Button, ButtonContainer, ControlsContainer, Cell } from './ListStyles'
+import { ListItemContainer, ExpandButtonContainer, Text, ListCardItem, Button, ButtonContainer, ControlsContainer, Cell, SmallLoaderContainer, ImgText } from './ListStyles'
 import { Icon } from 'odeum-ui'
 import Checkbox from '../../../Aux/CheckBox/CheckBox'
 import ExpandedCardInfo from '../../CardView/Card/ExpandedCardInfo'
@@ -55,23 +55,23 @@ export default class ListItem extends PureComponent {
 										<Text title={item[c.column]/* .toLocaleDateString() */}>
 											{item[c.column]/* .toLocaleDateString() */}
 										</Text>
-										: c.column === 'user' ? <React.Fragment>
+										/*: c.column === 'user' ? <React.Fragment>
 											<img src={item[c.column].img} alt={'profilepic'} style={{ height: '26px', borderRadius: 20, marginRight: 4 }} />
 											<Text title={item[c.column].name}>
 												{item[c.column].name}
 											</Text>
-										</React.Fragment> :
-											c.column === 'img' ?
-												<Text style={{ position: 'relative' }}>
-													{this.state.img ?
-														<div style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, background: '#E3E5E5', display: 'flex' }}>
-															<LoaderSmall style={{ width: 15, height: 15 }} />
-														</div> : null}
-													<img src={item[c.column]} height={30} alt={'Projekt Img'} onLoad={() => this.setState({ img: false })} />
-												</Text>
-												:
+										</React.Fragment> */ :
+										c.column === 'img' ?
+											<ImgText>
+												{this.state.img ?
+													<SmallLoaderContainer>
+														<LoaderSmall style={{ width: 15, height: 15 }} />
+													</SmallLoaderContainer> : null}
+												<img src={item[c.column]} height={30} alt={'Projekt Img'} onLoad={() => this.setState({ img: false })} />
+											</ImgText>
+											:
 
-												<Text title={item[c.column].toString()}>{item[c.column].toString()}</Text>
+											<Text title={item[c.column].toString()}>{item[c.column].toString()}</Text>
 								}
 							</Cell> : null
 						})}
