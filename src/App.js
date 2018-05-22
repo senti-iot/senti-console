@@ -4,7 +4,9 @@ import theme from './utils/theme'
 import Home from './content/Home/Homepage'
 import ViewContainer from 'content/Views/ViewContainer'
 import User from './content/User/User'
-import UserAdmin from './content/UserAdmin/UserAdminContainer'
+import UserAdmin from './content/Management/UserAdminContainer'
+import OrgAdmin from './content/Management/OrgAdminContainer'
+
 class App extends Component {
 	constructor(props) {
 		super(props)
@@ -44,6 +46,9 @@ class App extends Component {
 						{this.props.management ? <Menu label={'Management'} route={'/users'} icon={'people'}>
 							<Tab label={'Users'} icon={'people'} route={''}>
 								<UserAdmin />
+							</Tab>
+							<Tab label={'Organisations'} icon={'language'} route={'/orgs'}>
+								<OrgAdmin />
 							</Tab>
 						</Menu> : null}
 						<Menu label={'Indstillinger'} route={'/settings'} icon={'settings'}>

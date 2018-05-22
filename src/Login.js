@@ -21,10 +21,10 @@ class Login extends Component {
 		}
 	}
 	componentDidMount = () => {
+		this._isMounted = 1
 		var getCookieLogin = cookie.load('loginData')
-		if (getCookieLogin) {
+		if (getCookieLogin && this._isMounted) {
 			this.getUser(getCookieLogin.userID)
-
 			this.setState({ loginData: getCookieLogin, login: true, error: false })
 			this.getOrgs()
 		}
@@ -32,13 +32,19 @@ class Login extends Component {
 			this.getOrgs()
 		}
 	}
+	componentWillUnmount = () => {
+		this._isMounted = 0
+	}
+
 	getOrgs = async () => {
 		var orgs = await getOrgs()
-		this.setState({ orgs: orgs })
+		if (this._isMounted)
+			this.setState({ orgs: orgs })
 	}
 	getUser = async (userID) => {
 		var user = await getUserInfo(userID)
-		this.setState({ user: user })
+		if (this._isMounted)
+			this.setState({ user: user })
 	}
 	logOut = () => {
 		this.setState({

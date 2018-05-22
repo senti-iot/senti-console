@@ -89,7 +89,7 @@ class LoginForm extends Component {
 					<LoginFormContainer>
 						<LoginInputContainer>
 							<OrgInput active={orgInput} onClick={this.inputOnFocus("orgInput")} >
-								<Icon icon={'group_add'} iconSize={25} style={this.iconStyle} />
+								<Icon icon={'language'} iconSize={25} style={this.iconStyle} />
 								<FormInput
 									placeholder={'Organisation'}
 									onBlur={this.inputOnBlur("orgInput")}

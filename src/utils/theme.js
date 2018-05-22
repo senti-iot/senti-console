@@ -32,7 +32,7 @@ const theme = {
 	},
 	tab: {
 		activeColor: '#ffffff',
-		color: '#ffffff',
+		color: '#000',
 		selected: '#37a891',
 		hover: '#37e1bf',
 		unselected: '#E3E5E5',
