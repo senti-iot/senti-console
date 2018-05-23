@@ -25,7 +25,6 @@ class UserAdmin extends Component {
 	getUsers = async () => {
 		var data = await getUsers()
 		if (this._isMounted) {
-			console.log(data)
 			this.setState({ users: data })
 		}
 	}

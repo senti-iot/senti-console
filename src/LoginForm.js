@@ -3,7 +3,7 @@ import ExpandedCard from './content/Aux/Modal/ExpandedCard'
 import { withTheme } from 'styled-components'
 import { Button, Icon } from 'odeum-ui'
 import Checkbox from './content/Aux/CheckBox/CheckBox'
-import { SentiLogo, LoginInputContainer, LoginFormContainer, OrgInput, UserInput, PassInput, FormInput, LoginContainer, CheckBoxText, CheckboxContainer, ErrorModalContainer, ErrorHeader, ErrorText } from './LoginStyles'
+import { SentiLogo, LoginInputContainer, LoginFormContainer, OrgInput, UserInput, PassInput, FormInput, LoginContainer, CheckBoxText, CheckboxContainer } from './LoginStyles'
 class LoginForm extends Component {
 
 	constructor(props) {
@@ -16,7 +16,8 @@ class LoginForm extends Component {
 			userInput: false,
 			passInput: false,
 			orgInput: false,
-			orgStore: false
+			orgStore: false,
+			error: this.props.error
 		}
 	}
 	componentDidMount = () => {
@@ -30,6 +31,11 @@ class LoginForm extends Component {
 	createInputRef = (node) => {
 		this.node = node
 	}
+	componentWillUpdate = (nextProps, nextState) => {
+		if (nextProps.error !== this.props.error)
+			this.setState({ error: nextProps.error })
+	}
+
 	handleKeyPress = e => {
 		switch (e.key) {
 			case 'Enter':
@@ -123,19 +129,6 @@ class LoginForm extends Component {
 
 						</LoginInputContainer>
 					</LoginFormContainer>
-					<ExpandedCard width={'20%'} height={'20%'}
-						cardExpand={this.props.error}
-						horizontalControls={false}
-						verticalControls={false}
-						handleVerticalExpand={this.props.reset}
-					>
-						<ErrorModalContainer>
-							<ErrorHeader >Error!</ErrorHeader>
-							<ErrorText>Username or password wrong or <br />there is a problem with the server.</ErrorText>
-							<ErrorText> Please try again!</ErrorText>
-							<Button label={'Luk'} color={'crimson'} onClick={this.props.reset} />
-						</ErrorModalContainer>
-					</ExpandedCard>
 				</ExpandedCard>
 			</LoginContainer>
 		)

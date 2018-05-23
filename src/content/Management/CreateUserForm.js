@@ -114,7 +114,7 @@ class CreateUser extends Component {
 									return <option key={i} value={org.iOrgID}> {org.vcName} </option>
 								}) : null}
 							</Select>
-							<CreateButtonContainer style={{ marginTop: '50px' }}>
+							<CreateButtonContainer style={{ marginTop: '30px' }}>
 								<Button
 									icon={this.state.success ? 'close' : 'person'}
 									iconSize={20}

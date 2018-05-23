@@ -5,8 +5,9 @@ import { ThemeProvider } from 'styled-components'
 import theme from 'utils/theme'
 import { loginUser, getUserInfo, getOrgs } from 'utils/data'
 import cookie from 'react-cookies'
-import { LoaderSmall, LoaderContainer } from 'LoginStyles'
-
+import { LoaderSmall, LoaderContainer, ErrorText, ErrorHeader, ErrorModalContainer } from 'LoginStyles'
+import ExpandedCard from 'content/Aux/Modal/ExpandedCard'
+import { Button } from 'odeum-ui'
 export const AppContext = React.createContext()
 class Login extends Component {
 	constructor(props) {
@@ -91,7 +92,22 @@ class Login extends Component {
 						<App management={user.management} />
 						: <LoaderContainer> <LoaderSmall /> </LoaderContainer>}
 				</AppContext.Provider> :
-				<LoginForm orgName={orgName} reset={this.reset} error={error} login={this.login} />}
+				<React.Fragment>
+					<LoginForm orgName={orgName} reset={this.reset} error={error} login={this.login} />
+					<ExpandedCard width={'20%'} height={'20%'}
+						cardExpand={error}
+						horizontalControls={false}
+						verticalControls={false}
+						handleVerticalExpand={this.reset}
+					>
+						<ErrorModalContainer>
+							<ErrorHeader >Error!</ErrorHeader>
+							<ErrorText>Username or password wrong or <br />there is a problem with the server.</ErrorText>
+							<ErrorText> Please try again!</ErrorText>
+							<Button label={'Luk'} color={'crimson'} onClick={this.reset} />
+						</ErrorModalContainer>
+					</ExpandedCard>
+				</React.Fragment>}
 		</ThemeProvider>
 	}
 }

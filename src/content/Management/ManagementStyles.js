@@ -41,11 +41,11 @@ export const FormInput = styled(Input) `
 `
 
 export const FormContainer = styled.div`
-	overflow: auto;
-	margin: 5;
+	/* margin: 5;
 	display:flex;
 	flex-flow: column nowrap;
-	justify-content:center;
+	justify-content:center; */
+	margin: 30px;
 `
 
 export const Header = styled.h3`
@@ -53,11 +53,12 @@ export const Header = styled.h3`
 `
 
 export const Container = styled.div`
-	width:80%;
-	height:80%;
+	width:100%;
+	height:100%;
+	overflow:auto;
 `
 export const SuccessContainer = styled.div`
-	margin: 5;
+	margin: 5px;
 	border: ${p => "1px solid" + p.theme.tab.selected};
 	padding: 2px;
 	border-radius: 5px;
