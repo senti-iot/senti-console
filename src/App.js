@@ -43,8 +43,8 @@ class App extends Component {
 								<ViewContainer />
 							</Tab>
 						</Menu>
-						{this.props.management ? <Menu label={'Management'} route={'/users'} icon={'people'}>
-							<Tab label={'Users'} icon={'people'} route={''}>
+						{this.props.management ? <Menu label={'Management'} route={'/management'} icon={'people'}>
+							<Tab label={'Users'} icon={'people'} route={'/users'}>
 								<UserAdmin />
 							</Tab>
 							<Tab label={'Organisations'} icon={'language'} route={'/orgs'}>
