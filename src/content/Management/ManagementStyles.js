@@ -16,17 +16,91 @@ export const CreateButtonContainer = styled.div`
 	justify-content:center;
 	margin-top: 100px;
 `
-export const Table = styled.div`
-	border : 1px solid ${p => p.theme.header.background};
+export const TableContainer = styled.div`
+	/* border : 1px solid ${p => p.theme.header.background}; */
 	border-radius: 4px;
 	overflow:hidden;
 	width:100%;
 `
+
+// table {
+// 	border - collapse: separate;
+// 	border - spacing: 0 10px;
+// 	margin - top: -10px; /* correct offset on first border spacing if desired */
+// }
+// td {
+// 	border: solid 1px #000;
+// 	border - style: solid none;
+// 	padding: 10px;
+// 	background - color: cyan;
+// }
+// td: first - child {
+// 	border - left - style: solid;
+// 	border - top - left - radius: 10px;
+// 	border - bottom - left - radius: 10px;
+// }
+
+// td: last - child {
+// 	border - right - style: solid;
+// 	border - bottom - right - radius: 10px;
+// 	border - top - right - radius: 10px;
+// }
+export const Tr = styled.tr`
+	&:hover{
+		> .child {
+			background:#e9e9e9;
+		}
+	}
+`
+export const Table = styled.table`
+ 	border-collapse: separate;
+ 	border-spacing: 0 4px;
+ 	margin-top: -4px; /* correct offset on first border spacing if desired */
+`
 export const Th = styled.th`
-	border: 1px solid ${p => p.theme.header.background};
+	text-align:left;
+	/* text-indent:10px; */
+	/* border: solid 1px #000; */
+	color:white;
+	/* border-style: solid none; */
+	padding: 2px 10px;
+	min-width: 100px;
+	height: 30px;
+	background-color: ${p => p.theme.header.background};
+	&:first-child {
+		/* border-left-style: solid; */
+		border-top-left-radius: 4px;
+		border-bottom-left-radius: 4px;
+	}
+	&:last-child {
+		/* border-right-style: solid; */
+		border-bottom-right-radius: 4px;
+		border-top-right-radius: 4px;
+	}
 `
 export const Td = styled.td`
-	border: 1px solid ${p => p.theme.header.background};
+	/* border: solid 1px #000; */
+	padding:0px 10px;
+	/* margin: 0px 10px; */
+	border-style: none;
+	/* text-indent:10px; */
+	line-height:14px;
+	height:30px;
+	background-color: #e3e5e5;
+	border-left: 1px solid lightgrey;
+
+	&:first-child {
+		/* border-left-style: solid; */
+		border-top-left-radius: 4px;
+		border-bottom-left-radius: 4px;
+		border-left:none;
+
+	}
+	&:last-child {
+		/* border-right-style: solid; */
+		border-bottom-right-radius: 4px;
+		border-top-right-radius: 4px;
+	}
 `
 export const FormInputCont = styled(InputCont) `
 	height:35px;

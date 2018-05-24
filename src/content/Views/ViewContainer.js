@@ -365,8 +365,8 @@ class ViewContainer extends Component {
 			horizontalControls={false}
 			width={400}
 			height={300}
-			cardExpand={this.state.deleteOpen}
-			handleVerticalExpand={this.handleDeleteClose}>
+			expand={this.state.deleteOpen}
+			handleOverlay={this.handleDeleteClose}>
 
 			<div>
 				<div style={{ margin: 10, overflow: 'hidden' }}>Er du sikker på, at du vil slette:

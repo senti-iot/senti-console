@@ -4,7 +4,8 @@ import CreateOrg from './CreateOrgForm'
 import { Button } from 'odeum-ui'
 import { withTheme } from 'styled-components'
 import { getOrgs } from 'utils/data'
-import { Table, Th, Td } from './ManagementStyles'
+import { Table, Th, Td, TableContainer, Tr } from './ManagementStyles'
+import { LoaderSmall } from 'LoginStyles'
 
 class OrgAdmin extends Component {
 	constructor(props) {
@@ -32,14 +33,19 @@ class OrgAdmin extends Component {
 		this.setState({ createOrgModal: false })
 		this.getOrgs()
 	}
+	openModal = () => {
+		this.setState({ createOrgModal: true })
+	}
 	render() {
+		const { theme } = this.props
+		const { orgs, createOrgModal } = this.state
 		return (
 			<div style={{ width: '100%', height: '100%' }}>
 				Administration of Organisations
-				<Button onClick={() => this.setState({ createOrgModal: true })} color={this.props.theme.button.background} label={'Create new Organisation'} />
-				{this.state.orgs ?
-					<Table>
-						<table style={{ borderCollapse: 'collapse', width: '100%' }}>
+				<Button icon={'group_add'} iconSize={20} onClick={this.openModal} color={theme.button.background} label={'Create new Organisation'} />
+				{orgs.length > 0 ?
+					<TableContainer>
+						<Table>
 							<tbody>
 								<tr>
 									<Th>Name</Th>
@@ -48,21 +54,21 @@ class OrgAdmin extends Component {
 									<Th>City</Th>
 									<Th>Website</Th>
 								</tr>
-								{this.state.orgs.map((org, i) =>
-									<tr key={i}>
-										<Td>{org.vcName}</Td>
-										<Td>{org.vcAddress}</Td>
-										<Td>{org.vcCountry}</Td>
-										<Td>{org.vcCity}</Td>
-										<Td><a href={org.vcURL ? org.vcURL : null} target='_blank'>{org.vcURL ? org.vcName : null}</a></Td>
-									</tr>
+								{orgs.map((org, i) =>
+									<Tr key={i}>
+										<Td className={'child'}>{org.vcName}</Td>
+										<Td className={'child'}>{org.vcAddress}</Td>
+										<Td className={'child'}>{org.vcCountry}</Td>
+										<Td className={'child'}>{org.vcCity}</Td>
+										<Td className={'child'}><a href={org.vcURL ? org.vcURL : null} target='_blank'>{org.vcURL ? org.vcName : null}</a></Td>
+									</Tr>
 								)}
 							</tbody>
-						</table>
-					</Table > : null
+						</Table>
+					</TableContainer > : <LoaderSmall />
 				}
-				<ExpandedCard width={'330px'} height={'50%'} cardExpand={this.state.createOrgModal} horizontalControls={false} verticalControls={false}
-					handleVerticalExpand={this.closeModal}>
+				<ExpandedCard width={'330px'} height={'50%'} expand={createOrgModal} horizontalControls={false} verticalControls={false}
+					handleOverlay={this.closeModal}>
 					<CreateOrg closeModal={this.closeModal} />
 				</ExpandedCard>
 			</div >

@@ -30,7 +30,7 @@ export default class FormCard extends Component {
 		this.setState({ expand: true, horizontalExpand: false })
 		// console.log(this.state)
 	}
-	handleVerticalExpand = (open) => {
+	handleOverlay = (open) => {
 		// e.preventDefault()
 		this.setState({ expand: open, horizontalExpand: false })
 	}
@@ -39,7 +39,7 @@ export default class FormCard extends Component {
 		const { item } = this.props
 		return (
 			<React.Fragment>
-				<ExpandedCardInfo {...this.props} cardExpand={expand} handleVerticalExpand={this.handleVerticalExpand} />
+				<ExpandedCardInfo {...this.props} expand={expand} handleOverlay={this.handleOverlay} />
 				<FormCardContainer>
 					<Shadow>
 						<CardImg>

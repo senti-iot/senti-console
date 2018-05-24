@@ -167,8 +167,8 @@ class NewProject extends Component {
 			<ExpandedCard
 				horizontalControls={false}
 				verticalControls={false}
-				cardExpand={exp}
-				handleVerticalExpand={this.handleClose} >
+				expand={exp}
+				handleOverlay={this.handleClose} >
 				<StyledDropzone img={this.state.img} onDrop={this.handleDrop} accept="image/jpeg,image/jpg,image/png" multiple={false}>
 					{img ? <ExpFormImg img={img} alt={''} /> : <p style={{ color: '#9e9e9e', fontSize: 30 }}>Klik her for at uploade et billede</p>}
 				</StyledDropzone>
@@ -220,8 +220,8 @@ class NewProject extends Component {
 				<ExpandedCard
 					horizontalControls={false}
 					verticalControls={false}
-					cardExpand={this.state.dialog}
-					handleVerticalExpand={() => e => { e.preventDefault(); this.setState({ dialog: false }) }}
+					expand={this.state.dialog}
+					handleOverlay={() => this.setState({ dialog: false })}
 					width="200px"
 					height="100px">
 					<div>{this.state.success ? "Success" : "Error"}</div>

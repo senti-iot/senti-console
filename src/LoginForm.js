@@ -90,7 +90,7 @@ class LoginForm extends Component {
 		const { orgInput, userInput, passInput, organisation, orgStore, username, password } = this.state
 		return (
 			<LoginContainer>
-				<ExpandedCard cardExpand={true} horizontalControls={false} verticalControls={false} width={'50%'}>
+				<ExpandedCard expand={true} horizontalControls={false} verticalControls={false} width={'50%'}>
 					<SentiLogo src={logo} alt={'logo'} width={300} />
 					<LoginFormContainer>
 						<LoginInputContainer>

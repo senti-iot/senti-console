@@ -95,10 +95,10 @@ class Login extends Component {
 				<React.Fragment>
 					<LoginForm orgName={orgName} reset={this.reset} error={error} login={this.login} />
 					<ExpandedCard width={'20%'} height={'20%'}
-						cardExpand={error}
+						expand={error}
 						horizontalControls={false}
 						verticalControls={false}
-						handleVerticalExpand={this.reset}
+						handleOverlay={this.reset}
 					>
 						<ErrorModalContainer>
 							<ErrorHeader >Error!</ErrorHeader>

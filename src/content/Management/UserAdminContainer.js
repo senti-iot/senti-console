@@ -3,8 +3,9 @@ import ExpandedCard from '../Aux/Modal/ExpandedCard'
 import { withTheme } from 'styled-components'
 import CreateUser from './CreateUserForm'
 import { Button } from 'odeum-ui'
-import { Table, Th, Td } from './ManagementStyles'
+import { Table, Th, Td, TableContainer } from './ManagementStyles'
 import { getUsers } from 'utils/data'
+import { LoaderSmall } from 'LoginStyles'
 
 class UserAdmin extends Component {
 	constructor(props) {
@@ -23,10 +24,11 @@ class UserAdmin extends Component {
 	}
 
 	getUsers = async () => {
-		var data = await getUsers()
-		if (this._isMounted) {
-			this.setState({ users: data })
-		}
+		await getUsers().then(data => {
+			if (this._isMounted) {
+				this.setState({ users: data })
+			}
+		})
 	}
 
 	closeModal = () => {
@@ -38,9 +40,10 @@ class UserAdmin extends Component {
 			<div style={{ width: '100%', height: '100%' }}>
 				Administration of Users
 				<Button onClick={() => this.setState({ createUserModal: true })} color={this.props.theme.button.background} label={'Create new User'} />
-				{this.state.users ?
-					<Table>
-						<table style={{ borderCollapse: 'collapse', width: '100%' }}>
+				{this.state.users.length > 0 ?
+
+					<TableContainer>
+						<Table>
 							<tbody>
 								<tr>
 									<Th>Name</Th>
@@ -57,11 +60,11 @@ class UserAdmin extends Component {
 									</tr>
 								)}
 							</tbody>
-						</table>
-					</Table > : null
+						</Table>
+					</TableContainer> : <LoaderSmall />
 				}
-				<ExpandedCard width={'330px'} height={'50%'} cardExpand={this.state.createUserModal} horizontalControls={false} verticalControls={false}
-					handleVerticalExpand={this.closeModal}>
+				<ExpandedCard width={'330px'} height={'50%'} expand={this.state.createUserModal} horizontalControls={false} verticalControls={false}
+					handleOverlay={this.closeModal}>
 					<CreateUser closeModal={this.closeModal} />
 				</ExpandedCard>
 
@@ -70,3 +73,4 @@ class UserAdmin extends Component {
 	}
 }
 export default withTheme(UserAdmin)
+/* 	 */

@@ -50,7 +50,7 @@ export default class ExpandedCardInfo extends Component {
 	render() {
 		const { item } = this.props
 		return (
-			<ExpandedCard {...this.props} handleVerticalExpand={this.props.handleVerticalExpand}>
+			<ExpandedCard {...this.props} handleOverlay={this.props.handleOverlay}>
 				<React.Fragment>
 					<ExpFormImg img={item.img ? item.img : 'https://picsum.photos/1920/1404/?random=0'} />
 					<ExpHeader>

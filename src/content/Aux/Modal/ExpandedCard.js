@@ -9,7 +9,7 @@ import {
 	ExpandedShadow, Overlay, OverlayPreventPropagation,
 	OpenSesame
 } from './ExpandedCardStyles'
-
+import PropTypes from 'prop-types'
 import { Icon } from 'odeum-ui'
 
 export default class ExpandedCard extends Component {
@@ -29,8 +29,8 @@ export default class ExpandedCard extends Component {
 		e.stopPropagation()
 	}
 	handleOverlay = () => {
-		if (this.props.handleVerticalExpand)
-			this.props.handleVerticalExpand(false)
+		if (this.props.handleOverlay)
+			this.props.handleOverlay(false)
 		else {
 			this.setState({ horizontalExpand: false })
 		}
@@ -39,8 +39,8 @@ export default class ExpandedCard extends Component {
 	render() {
 		const { horizontalExpand } = this.state
 		return (
-			<Overlay onClick={this.handleOverlay} pose={this.props.cardExpand ? 'open' : 'close'}>
-				<OpenSesame pose={this.props.cardExpand ? 'open' : 'close'}>
+			<Overlay onClick={this.handleOverlay} pose={this.props.expand ? 'open' : 'close'}>
+				<OpenSesame pose={this.props.expand ? 'open' : 'close'}>
 					<OverlayPreventPropagation width={this.props.width} height={this.props.height} onClick={this.preventPropagation()}>
 						<ExpandedShadow width={this.props.width} height={this.props.height}>
 							<ExpandedShadow>
@@ -60,7 +60,7 @@ export default class ExpandedCard extends Component {
 									</HorizontalButton>
 								</Wheels>
 							</HorizontalControls> : null}
-							{this.props.verticalControls ? <VerticalControls onClick={this.handleVerticalExpand}>
+							{this.props.verticalControls ? <VerticalControls onClick={this.handleOverlay}>
 								<VerticalControlsButtons>
 									<VerticalButton>{'\u2022'}</VerticalButton>
 									<VerticalButton>{'\u2022'}</VerticalButton>
@@ -82,4 +82,10 @@ ExpandedCard.defaultProps = {
 	horizontalControls: true,
 	height: '80%',
 	width: '80%'
+}
+ExpandedCard.propTypes = {
+	expand: PropTypes.bool.isRequired,
+	handleOverlay: PropTypes.func,
+	verticalControls: PropTypes.bool,
+	horizontalControls: PropTypes.bool
 }
