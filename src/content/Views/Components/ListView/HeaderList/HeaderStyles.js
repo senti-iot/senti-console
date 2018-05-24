@@ -26,9 +26,13 @@ export const DraggableHeader = Cell.extend`
 	/* margin: 0px;
 	padding-left: 8px; */
 	border-radius: 4px; 
-	
+	border-left: 1px solid ${p => p.theme.header.background};
 	user-select: none;
 	cursor: pointer;
+	
+	&:first-child:{
+		border-left:none;
+	}
 	
 	&:hover {
 		background: ${p => p.theme.tab.hover};

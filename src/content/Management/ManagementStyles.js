@@ -64,8 +64,10 @@ export const Th = styled.th`
 	min-width: 100px;
 	height: 30px;
 	background-color: ${p => p.theme.header.background};
+	border-left: 1px solid ${p => p.theme.header.background};
 	&:first-child {
 		/* border-left-style: solid; */
+		border-left:none;
 		border-top-left-radius: 4px;
 		border-bottom-left-radius: 4px;
 	}

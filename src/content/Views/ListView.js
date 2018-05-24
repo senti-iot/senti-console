@@ -110,6 +110,7 @@ export default class ListView extends Component {
 							/>)
 						: <div>No Items</div>}
 				</ListContainer>
+
 			</React.Fragment>
 		)
 	}

@@ -56,11 +56,11 @@ class OrgAdmin extends Component {
 								</tr>
 								{orgs.map((org, i) =>
 									<Tr key={i}>
-										<Td className={'child'}>{org.vcName}</Td>
-										<Td className={'child'}>{org.vcAddress}</Td>
-										<Td className={'child'}>{org.vcCountry}</Td>
-										<Td className={'child'}>{org.vcCity}</Td>
-										<Td className={'child'}><a href={org.vcURL ? org.vcURL : null} target='_blank'>{org.vcURL ? org.vcName : null}</a></Td>
+										<Td>{org.vcName}</Td>
+										<Td>{org.vcAddress}</Td>
+										<Td>{org.vcCountry}</Td>
+										<Td>{org.vcCity}</Td>
+										<Td><a href={org.vcURL ? org.vcURL : null} target='_blank'>{org.vcURL ? org.vcName : null}</a></Td>
 									</Tr>
 								)}
 							</tbody>

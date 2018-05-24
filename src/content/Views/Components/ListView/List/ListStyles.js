@@ -11,6 +11,10 @@ export const Cell = styled.div`
 	margin: 0px 4px;
 	padding-left: 4px;
 	overflow: hidden;
+	border-left:1px solid lightgray;
+	&:first-child{
+		border-left:none;
+	}
 `
 
 export const Text = styled.div`
