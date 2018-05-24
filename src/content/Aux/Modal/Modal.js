@@ -8,11 +8,11 @@ import {
 import {
 	ExpandedShadow, Overlay, OverlayPreventPropagation,
 	OpenSesame
-} from './ExpandedCardStyles'
+} from './ModalStyles'
 import PropTypes from 'prop-types'
 import { Icon } from 'odeum-ui'
 
-export default class ExpandedCard extends Component {
+export default class Modal extends Component {
 	constructor(props) {
 		super(props)
 
@@ -77,13 +77,13 @@ export default class ExpandedCard extends Component {
 		)
 	}
 }
-ExpandedCard.defaultProps = {
+Modal.defaultProps = {
 	verticalControls: true,
 	horizontalControls: true,
 	height: '80%',
 	width: '80%'
 }
-ExpandedCard.propTypes = {
+Modal.propTypes = {
 	expand: PropTypes.bool.isRequired,
 	handleOverlay: PropTypes.func,
 	verticalControls: PropTypes.bool,

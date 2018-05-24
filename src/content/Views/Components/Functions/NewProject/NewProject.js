@@ -3,7 +3,7 @@ import {
 	ExpFormImg, ExpHeader, UserContainer, Username, Avatar,
 	ExpandedProjectInfoContainer, ExpSection, ExpProjectInfoItem, GreenLED, RedLED
 }
-	from '../../../../Aux/Modal/ExpandedCardStyles'
+	from '../../../../Aux/Modal/ModalStyles'
 import { StyledDropzone, TitleInput } from './NewProjectStyles'
 import { Input } from '../../../ViewStyles'
 import DatePicker from '../../../../Aux/DatePicker/DatePicker'
@@ -11,7 +11,7 @@ import { withTheme } from 'styled-components'
 import { Button } from 'odeum-ui'
 import { createOneProject, getAvailableDevices } from 'utils/data'
 import Checkbox from '../../../../Aux/CheckBox/CheckBox'
-import ExpandedCard from '../../../../Aux/Modal/ExpandedCard'
+import Modal from '../../../../Aux/Modal/Modal'
 import moment from 'moment'
 
 class NewProject extends Component {
@@ -164,7 +164,7 @@ class NewProject extends Component {
 		const formDevices = this.state.form.devices
 		const { open_date, close_date, title, description } = this.state.form.project
 		return (
-			<ExpandedCard
+			<Modal
 				horizontalControls={false}
 				verticalControls={false}
 				expand={exp}
@@ -217,7 +217,7 @@ class NewProject extends Component {
 					<Button label={"Gem"} color={this.props.theme.button.background} onClick={this.createProject} />
 				</div>
 
-				<ExpandedCard
+				<Modal
 					horizontalControls={false}
 					verticalControls={false}
 					expand={this.state.dialog}
@@ -226,8 +226,8 @@ class NewProject extends Component {
 					height="100px">
 					<div>{this.state.success ? "Success" : "Error"}</div>
 					<Button label={"OK"} color={this.state.success ? this.props.theme.button.background : 'crimson'} onClick={() => { this.setState({ dialog: false }); this.handleClose() }} />
-				</ExpandedCard>
-			</ExpandedCard>
+				</Modal>
+			</Modal>
 
 		)
 	}

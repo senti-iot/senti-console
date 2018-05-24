@@ -6,7 +6,7 @@ import theme from 'utils/theme'
 import { loginUser, getUserInfo, getOrgs } from 'utils/data'
 import cookie from 'react-cookies'
 import { LoaderSmall, LoaderContainer, ErrorText, ErrorHeader, ErrorModalContainer } from 'LoginStyles'
-import ExpandedCard from 'content/Aux/Modal/ExpandedCard'
+import Modal from 'content/Aux/Modal/Modal'
 import { Button } from 'odeum-ui'
 export const AppContext = React.createContext()
 class Login extends Component {
@@ -94,7 +94,7 @@ class Login extends Component {
 				</AppContext.Provider> :
 				<React.Fragment>
 					<LoginForm orgName={orgName} reset={this.reset} error={error} login={this.login} />
-					<ExpandedCard width={'20%'} height={'20%'}
+					<Modal width={'20%'} height={'20%'}
 						expand={error}
 						horizontalControls={false}
 						verticalControls={false}
@@ -106,7 +106,7 @@ class Login extends Component {
 							<ErrorText> Please try again!</ErrorText>
 							<Button label={'Luk'} color={'crimson'} onClick={this.reset} />
 						</ErrorModalContainer>
-					</ExpandedCard>
+					</Modal>
 				</React.Fragment>}
 		</ThemeProvider>
 	}

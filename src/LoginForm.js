@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ExpandedCard from './content/Aux/Modal/ExpandedCard'
+import Modal from './content/Aux/Modal/Modal'
 import { withTheme } from 'styled-components'
 import { Button, Icon } from 'odeum-ui'
 import Checkbox from './content/Aux/CheckBox/CheckBox'
@@ -90,7 +90,7 @@ class LoginForm extends Component {
 		const { orgInput, userInput, passInput, organisation, orgStore, username, password } = this.state
 		return (
 			<LoginContainer>
-				<ExpandedCard expand={true} horizontalControls={false} verticalControls={false} width={'50%'}>
+				<Modal expand={true} horizontalControls={false} verticalControls={false} width={'50%'}>
 					<SentiLogo src={logo} alt={'logo'} width={300} />
 					<LoginFormContainer>
 						<LoginInputContainer>
@@ -129,7 +129,7 @@ class LoginForm extends Component {
 
 						</LoginInputContainer>
 					</LoginFormContainer>
-				</ExpandedCard>
+				</Modal>
 			</LoginContainer>
 		)
 	}

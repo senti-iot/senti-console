@@ -9,7 +9,7 @@ import CardView from './CardView'
 import ListView from './ListView'
 import MapView from './MapView'
 import Pagination from '../Pagination/Pagination'
-import ExpandedCard from '../Aux/Modal/ExpandedCard'
+import Modal from '../Aux/Modal/Modal'
 import NewProject from './Components/Functions/NewProject/NewProject'
 import { renderPageSizeOption } from './Components/Functions/PageSize/PageSize'
 import SearchComponent from './Components/Functions/Search/Search'
@@ -360,7 +360,7 @@ class ViewContainer extends Component {
 		return names
 	}
 	renderDeleteProject = () => {
-		return <ExpandedCard
+		return <Modal
 			verticalControls={false}
 			horizontalControls={false}
 			width={400}
@@ -381,7 +381,7 @@ class ViewContainer extends Component {
 					<Button label={"Nej"} color={"crimson"} onClick={this.handleDeleteClose} />
 				</div>
 			</div>
-		</ExpandedCard>
+		</Modal>
 	}
 	//#endregion
 

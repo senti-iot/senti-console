@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import ExpandedCard from '../Aux/Modal/ExpandedCard'
+import Modal from '../Aux/Modal/Modal'
 import { withTheme } from 'styled-components'
 import CreateUser from './CreateUserForm'
 import { Button } from 'odeum-ui'
-import { Table, Th, Td, TableContainer } from './ManagementStyles'
+import { Table, Th, Td, TableContainer, Tr } from './ManagementStyles'
 import { getUsers } from 'utils/data'
 import { LoaderSmall } from 'LoginStyles'
 
@@ -45,28 +45,28 @@ class UserAdmin extends Component {
 					<TableContainer>
 						<Table>
 							<tbody>
-								<tr>
+								<Tr>
 									<Th>Name</Th>
 									<Th>E-mail</Th>
 									<Th>Phone</Th>
 									<Th>Organisation</Th>
-								</tr>
+								</Tr>
 								{this.state.users.map((user, i) =>
-									<tr key={i}>
+									<Tr key={i}>
 										<Td>{user.vcFirstName + ' ' + user.vcLastName}</Td>
 										<Td><a href={'mailto:' + user.vcEmail}>{user.vcEmail}</a></Td>
 										<Td>{user.vcPhone}</Td>
 										<Td>{user.organisation.vcName}</Td>
-									</tr>
+									</Tr>
 								)}
 							</tbody>
 						</Table>
 					</TableContainer> : <LoaderSmall />
 				}
-				<ExpandedCard width={'330px'} height={'50%'} expand={this.state.createUserModal} horizontalControls={false} verticalControls={false}
+				<Modal width={'330px'} height={'50%'} expand={this.state.createUserModal} horizontalControls={false} verticalControls={false}
 					handleOverlay={this.closeModal}>
 					<CreateUser closeModal={this.closeModal} />
-				</ExpandedCard>
+				</Modal>
 
 			</div >
 		)

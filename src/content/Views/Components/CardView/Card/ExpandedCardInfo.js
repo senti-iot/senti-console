@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ExpandedCard from '../../../../Aux/Modal/ExpandedCard'
+import Modal from '../../../../Aux/Modal/Modal'
 
 import {
 	ProjectBarContainer, ProjectBarLabel,
@@ -8,7 +8,7 @@ import {
 import {
 	ExpandedProjectInfoContainer,
 	ExpSection, ExpHeader, ExpFormImg, ExpTitle, ExpAddress, ExpProjectInfoTitle, ExpProjectInfo, ExpProjectInfoItem, GreenLED, RedLED
-} from '../../../../Aux/Modal/ExpandedCardStyles'
+} from '../../../../Aux/Modal/ModalStyles'
 import { getDevicesForProject, getDeviceRegistrations } from '../../../../../utils/data'
 
 
@@ -50,7 +50,7 @@ export default class ExpandedCardInfo extends Component {
 	render() {
 		const { item } = this.props
 		return (
-			<ExpandedCard {...this.props} handleOverlay={this.props.handleOverlay}>
+			<Modal {...this.props} handleOverlay={this.props.handleOverlay}>
 				<React.Fragment>
 					<ExpFormImg img={item.img ? item.img : 'https://picsum.photos/1920/1404/?random=0'} />
 					<ExpHeader>
@@ -117,7 +117,7 @@ export default class ExpandedCardInfo extends Component {
 						<ProjectBar progress={item.progress} />
 					</ProjectBarContainer>
 				</React.Fragment>
-			</ExpandedCard>
+			</Modal>
 		)
 	}
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ExpandedCard from 'content/Aux/Modal/ExpandedCard'
+import Modal from 'content/Aux/Modal/Modal'
 import CreateOrg from './CreateOrgForm'
 import { Button } from 'odeum-ui'
 import { withTheme } from 'styled-components'
@@ -67,10 +67,10 @@ class OrgAdmin extends Component {
 						</Table>
 					</TableContainer > : <LoaderSmall />
 				}
-				<ExpandedCard width={'330px'} height={'50%'} expand={createOrgModal} horizontalControls={false} verticalControls={false}
+				<Modal width={'330px'} height={'50%'} expand={createOrgModal} horizontalControls={false} verticalControls={false}
 					handleOverlay={this.closeModal}>
 					<CreateOrg closeModal={this.closeModal} />
-				</ExpandedCard>
+				</Modal>
 			</div >
 		)
 	}

@@ -47,7 +47,7 @@ export const TableContainer = styled.div`
 // }
 export const Tr = styled.tr`
 	&:hover{
-		> .child {
+		> td {
 			background:#e9e9e9;
 		}
 	}
@@ -55,14 +55,11 @@ export const Tr = styled.tr`
 export const Table = styled.table`
  	border-collapse: separate;
  	border-spacing: 0 4px;
- 	margin-top: -4px; /* correct offset on first border spacing if desired */
+ 	margin-top: -4px; 
 `
 export const Th = styled.th`
 	text-align:left;
-	/* text-indent:10px; */
-	/* border: solid 1px #000; */
 	color:white;
-	/* border-style: solid none; */
 	padding: 2px 10px;
 	min-width: 100px;
 	height: 30px;
@@ -77,27 +74,25 @@ export const Th = styled.th`
 		border-bottom-right-radius: 4px;
 		border-top-right-radius: 4px;
 	}
+	cursor:default;
 `
 export const Td = styled.td`
-	/* border: solid 1px #000; */
 	padding:0px 10px;
-	/* margin: 0px 10px; */
+	
 	border-style: none;
-	/* text-indent:10px; */
+	
 	line-height:14px;
 	height:30px;
 	background-color: #e3e5e5;
 	border-left: 1px solid lightgrey;
-
+	cursor:default;
 	&:first-child {
-		/* border-left-style: solid; */
 		border-top-left-radius: 4px;
 		border-bottom-left-radius: 4px;
 		border-left:none;
 
 	}
 	&:last-child {
-		/* border-right-style: solid; */
 		border-bottom-right-radius: 4px;
 		border-top-right-radius: 4px;
 	}
