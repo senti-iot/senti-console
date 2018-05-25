@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import scriptLoader from 'react-async-script-loader'
 import Helmet from 'react-helmet'
 import $ from 'jquery'
-import { LoaderSmall } from 'LoginStyles';
+import { LoaderSmall } from 'LoginStyles'
 class MapCentia extends Component {
 	componentDidMount() {
 
