@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import MapContainer from './Components/MapView/MapContainer'
+import MapCentia from './Components/MapView/MapCentia'
 export default class MapView extends Component {
 	render() {
 		return (
 
-			<MapContainer />
+			<MapCentia />
 		)
 	}
 }
