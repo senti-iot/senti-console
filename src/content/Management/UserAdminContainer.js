@@ -3,7 +3,7 @@ import Modal from '../Aux/Modal/Modal'
 import { withTheme } from 'styled-components'
 import CreateUser from './CreateUserForm'
 import { Button } from 'odeum-ui'
-import { Table, Th, Td, TableContainer, Tr } from './ManagementStyles'
+import { Table, Th, Td, TableContainer, Tr, Trh } from './ManagementStyles'
 import { getUsers } from 'utils/data'
 import { LoaderSmall } from 'LoginStyles'
 
@@ -45,12 +45,12 @@ class UserAdmin extends Component {
 					<TableContainer>
 						<Table>
 							<tbody>
-								<Tr>
+								<Trh>
 									<Th>Name</Th>
 									<Th>E-mail</Th>
 									<Th>Phone</Th>
 									<Th>Organisation</Th>
-								</Tr>
+								</Trh>
 								{this.state.users.map((user, i) =>
 									<Tr key={i}>
 										<Td>{user.vcFirstName + ' ' + user.vcLastName}</Td>

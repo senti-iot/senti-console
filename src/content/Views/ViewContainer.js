@@ -119,7 +119,6 @@ class ViewContainer extends Component {
 		if (arr[0] === undefined)
 			return []
 		var keys = Object.keys(arr[0])
-		console.log(arr)
 		var filtered = arr.filter(c => {
 			var contains = keys.map(key => {
 				if (c[key] instanceof Date)

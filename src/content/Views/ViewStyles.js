@@ -11,7 +11,8 @@ export const HeaderListContainer = styled.div`
 	background: ${p => p.theme.header.background};
 	color: #FFFFFF;
 	padding: 5px;
-	margin: 10px 5px;
+	margin: 8px 5px;
+	margin-bottom: 0px;
 	border-radius: 4px;
 `
 
@@ -84,6 +85,7 @@ export const ListContainer = styled.div`
 	height: 100%;
 	width: 100%;
 	margin: 5px;
+	margin-top: 0px;
 	overflow-y:auto;
 `
 

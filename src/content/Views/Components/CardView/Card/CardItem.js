@@ -12,6 +12,7 @@ import ExpandedCardInfo from './ExpandedCardInfo'
 import { CardImg } from '../../../../Aux/Modal/CardItemStyles'
 import { LoaderSmall } from 'LoginStyles'
 import { SmallLoaderContainer } from '../../ListView/List/ListStyles'
+import PropTypes from 'prop-types'
 
 export default class FormCard extends Component {
 
@@ -98,4 +99,9 @@ export default class FormCard extends Component {
 			</React.Fragment>
 		)
 	}
+}
+
+FormCard.propTypes = {
+	item: PropTypes.object.isRequired,
+	column: PropTypes.array.isRequired
 }

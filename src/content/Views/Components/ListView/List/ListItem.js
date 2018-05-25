@@ -5,8 +5,7 @@ import Checkbox from '../../../../Aux/CheckBox/CheckBox'
 import ExpandedCardInfo from '../../CardView/Card/ExpandedCardInfo'
 import { LoaderSmall } from 'LoginStyles'
 import { getUserInfo } from 'utils/data'
-
-
+import PropTypes from 'prop-types'
 
 export default class ListItem extends PureComponent {
 	constructor(props) {
@@ -136,4 +135,11 @@ export default class ListItem extends PureComponent {
 			</React.Fragment>
 		)
 	}
+}
+
+ListItem.propTypes = {
+	item: PropTypes.object.isRequired,
+	column: PropTypes.array.isRequired,
+	columnCount: PropTypes.func.isRequired,
+	isChecked: PropTypes.bool.isRequired
 }

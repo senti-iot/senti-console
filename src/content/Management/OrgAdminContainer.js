@@ -4,7 +4,7 @@ import CreateOrg from './CreateOrgForm'
 import { Button } from 'odeum-ui'
 import { withTheme } from 'styled-components'
 import { getOrgs } from 'utils/data'
-import { Table, Th, Td, TableContainer, Tr } from './ManagementStyles'
+import { Table, Th, Td, TableContainer, Tr, TableScroll, HeaderSpan, Trh } from './ManagementStyles'
 import { LoaderSmall } from 'LoginStyles'
 
 class OrgAdmin extends Component {
@@ -36,6 +36,20 @@ class OrgAdmin extends Component {
 	openModal = () => {
 		this.setState({ createOrgModal: true })
 	}
+	renderFakeUsers = () => {
+		var arr = []
+		for (let index = 0; index < 100; index++) {
+			arr.push(<Tr key={index}>
+				<Td>{index}</Td>
+				<Td>{index}</Td>
+				<Td>{index}</Td>
+				<Td>{index}</Td>
+				<Td>{index}</Td>
+			</Tr>)
+		}
+		console.log(arr)
+		return arr
+	}
 	render() {
 		const { theme } = this.props
 		const { orgs, createOrgModal } = this.state
@@ -45,26 +59,31 @@ class OrgAdmin extends Component {
 				<Button icon={'group_add'} iconSize={20} onClick={this.openModal} color={theme.button.background} label={'Create new Organisation'} />
 				{orgs.length > 0 ?
 					<TableContainer>
-						<Table>
-							<tbody>
-								<tr>
-									<Th>Name</Th>
-									<Th>Address</Th>
-									<Th>Country</Th>
-									<Th>City</Th>
-									<Th>Website</Th>
-								</tr>
-								{orgs.map((org, i) =>
-									<Tr key={i}>
-										<Td>{org.vcName}</Td>
-										<Td>{org.vcAddress}</Td>
-										<Td>{org.vcCountry}</Td>
-										<Td>{org.vcCity}</Td>
-										<Td><a href={org.vcURL ? org.vcURL : null} target='_blank'>{org.vcURL ? org.vcName : null}</a></Td>
-									</Tr>
-								)}
-							</tbody>
-						</Table>
+						<TableScroll>
+							<Table>
+								<thead>
+									<Trh>
+										<Th><HeaderSpan>Name</HeaderSpan></Th>
+										<Th><HeaderSpan>Address</HeaderSpan></Th>
+										<Th><HeaderSpan>Country</HeaderSpan></Th>
+										<Th><HeaderSpan>City</HeaderSpan></Th>
+										<Th><HeaderSpan>Website</HeaderSpan></Th>
+									</Trh>
+								</thead>
+								<tbody>
+									{orgs.map((org, i) =>
+										<Tr key={i}>
+											<Td>{org.vcName}</Td>
+											<Td>{org.vcAddress}</Td>
+											<Td>{org.vcCountry}</Td>
+											<Td>{org.vcCity}</Td>
+											<Td><a href={org.vcURL ? org.vcURL : null} target='_blank'>{org.vcURL ? org.vcName : null}</a></Td>
+										</Tr>
+									)}
+									{/* {this.renderFakeUsers()} Overflow Testing*/}
+								</tbody>
+							</Table>
+						</TableScroll>
 					</TableContainer > : <LoaderSmall />
 				}
 				<Modal width={'330px'} height={'50%'} expand={createOrgModal} horizontalControls={false} verticalControls={false}

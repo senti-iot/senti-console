@@ -21,30 +21,22 @@ export const TableContainer = styled.div`
 	border-radius: 4px;
 	overflow:hidden;
 	width:100%;
+	height: 100%;
 `
 
-// table {
-// 	border - collapse: separate;
-// 	border - spacing: 0 10px;
-// 	margin - top: -10px; /* correct offset on first border spacing if desired */
-// }
-// td {
-// 	border: solid 1px #000;
-// 	border - style: solid none;
-// 	padding: 10px;
-// 	background - color: cyan;
-// }
-// td: first - child {
-// 	border - left - style: solid;
-// 	border - top - left - radius: 10px;
-// 	border - bottom - left - radius: 10px;
-// }
 
-// td: last - child {
-// 	border - right - style: solid;
-// 	border - bottom - right - radius: 10px;
-// 	border - top - right - radius: 10px;
-// }
+export const TableScroll = styled.div`
+    border-radius: 4px;
+    overflow: auto;
+    width: 100%;
+    height: calc(100% - 100px);
+`
+export const Table = styled.table`
+ 	border-collapse: separate;
+ 	border-spacing: 0 4px;
+ 	margin-top: -4px; 
+	width:100%;
+`
 export const Tr = styled.tr`
 	&:hover{
 		> td {
@@ -52,16 +44,22 @@ export const Tr = styled.tr`
 		}
 	}
 `
-export const Table = styled.table`
- 	border-collapse: separate;
- 	border-spacing: 0 4px;
- 	margin-top: -4px; 
+export const Trh = styled.tr`
+position: sticky;
+width: 100%;
+z-index: 1;
+top: 0px;
 `
+export const HeaderSpan = styled.span`
+	top:-7px;
+	z-index:2;
+	height:30px;
+`
+
 export const Th = styled.th`
 	text-align:left;
 	color:white;
 	padding: 2px 10px;
-	min-width: 100px;
 	height: 30px;
 	background-color: ${p => p.theme.header.background};
 	border-left: 1px solid ${p => p.theme.header.background};
