@@ -5,14 +5,14 @@ export const DropDownButton = styled.div`
 	display:flex;
 	align-items:center;
 	justify-content:center;
-	
-	height: 25px;
+	min-height:  35px;
+	height: 35px;
 	/* width: 25px; */
 	
 	background: ${p => p.theme.tab.selected};
 	color: ${p => p.theme.tab.activeColor};
 	
-	padding: 5px 10px;
+	padding: 0px 10px;
 	border-radius: 4px;
 	cursor:pointer;
 	
@@ -45,11 +45,12 @@ export const DropDown = styled.div`
 `
 
 export const DropDownContainer = styled.div`
-	height:100%;
+	height:35px;
+	max-height:35px;
 	min-width:30px;
 
 	margin:5px;
-	margin-top: 15px;
+	/* margin-top: 15px; */
 	
 	position:relative;
 `

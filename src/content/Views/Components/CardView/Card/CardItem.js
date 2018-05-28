@@ -31,8 +31,10 @@ export default class FormCard extends Component {
 		this.setState({ expand: true, horizontalExpand: false })
 		// console.log(this.state)
 	}
+	handleOpenCard = () => {
+		this.setState({ expand: true, horizontalExpand: false })
+	}
 	handleOverlay = (open) => {
-		// e.preventDefault()
 		this.setState({ expand: open, horizontalExpand: false })
 	}
 	render() {
@@ -77,7 +79,7 @@ export default class FormCard extends Component {
 					<HorizontalControls >
 						<Wheels pose={horizontalExpand ? 'drawerOpen' : 'drawerClosed'}>
 							<HorizontalControlsDrawer>
-								<ControlButton><Icon icon={'mode_edit'} iconSize={30} onClick={this.handleVerticalExpand} /></ControlButton>
+								<ControlButton><Icon icon={'mode_edit'} iconSize={30} onClick={this.handleOpenCard} /></ControlButton>
 								<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
 								<ControlButton><Icon icon={'mode_edit'} iconSize={30} /></ControlButton>
 							</HorizontalControlsDrawer>
@@ -88,7 +90,7 @@ export default class FormCard extends Component {
 							</HorizontalButton>
 						</Wheels>
 					</HorizontalControls>
-					<VerticalControls onClick={this.handleVerticalExpand}>
+					<VerticalControls onClick={this.handleOpenCard}>
 						<VerticalControlsButtons>
 							<VerticalButton>{'\u2022'}</VerticalButton>
 							<VerticalButton>{'\u2022'}</VerticalButton>
