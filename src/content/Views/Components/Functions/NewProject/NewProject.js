@@ -71,8 +71,7 @@ class NewProject extends Component {
 	componentWillUnmount = () => {
 		this._mounted = 0
 	}
-	onCheckedItem = id => e => checked => {
-		if (e !== undefined) { if (e.preventDefault) { e.preventDefault() } }
+	handleCheckedItem = (id, checked) => {
 		var newArr = this.state.form.devices
 		if (checked)
 			newArr.push(id)
@@ -154,9 +153,7 @@ class NewProject extends Component {
 		}
 		this.refresh()
 	}
-	onChecked = (id, isChecked) => {
-		this.onCheckedItem(id, isChecked)
-	}
+
 	render() {
 		const { exp } = this.props
 		const { img } = this.state
@@ -200,7 +197,7 @@ class NewProject extends Component {
 					<ExpSection style={{ flex: 3 }}>
 						{devices ? devices.map((d, i) => {
 							return <ExpProjectInfoItem key={i} style={{ height: 60 }}>
-								<Checkbox size={'medium'} onChange={this.onCheckedItem(d.device_id)} isChecked={formDevices.indexOf(d.device_id) !== -1 ? true : false} />
+								<Checkbox size={'medium'} value={d.device_id} onChange={this.handleCheckedItem} isChecked={formDevices.indexOf(d.device_id) !== -1 ? true : false} />
 								<div style={{ marginLeft: 5, marginRight: 5, display: 'flex', width: '100%' }}>
 									{d.device_name} {' '}
 									{d.online ? <GreenLED /> : <RedLED />}
