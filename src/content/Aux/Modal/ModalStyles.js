@@ -68,6 +68,7 @@ export const ExpProjectInfoItem = styled.div`
 	padding: 4px;
 	margin-top:4px;
 	border-radius: 4px;
+	max-height:30px;
 `
 
 export const ExpProjectInfoTitle = ProjectInfoTitle.extend`
@@ -75,7 +76,7 @@ export const ExpProjectInfoTitle = ProjectInfoTitle.extend`
 	justify-content:center;
 	
 	width: 100%;
-	font-size: 22px;
+	font-size: 18px;
 	font-weight: 700;
 `
 
@@ -87,7 +88,7 @@ export const ExpSection = styled.div`
 	flex-flow:column;
 
 	height:90%;
-	background: #E3E5E5;
+	background: #fbfbfb;
 	
 	margin-left:20px;
 	padding: 5px 10px;
@@ -108,7 +109,7 @@ export const ExpandedProjectInfoContainer = ProjectInfoContainer.extend`
 	display:flex;
 	justify-content:space-between;
 	margin-top: 30px;
-	width: 80%;
+	width: 90%;
 	height: 400px;
 
 `

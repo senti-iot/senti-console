@@ -43,6 +43,11 @@ export const FormCardContainer = styled.div`
 	position:relative;
 
 `
+export const ExpandedCardListItem = styled.div`
+overflow: hidden;
+white-space: nowrap;
+text-overflow: ellipsis;
+`
 export const Shadow = FormCardContainer.extend`
 	box-shadow: 2px 2px 8px 0px rgba(0,0,0,0.3);
 	justify-content:space-between;
