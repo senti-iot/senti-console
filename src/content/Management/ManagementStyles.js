@@ -39,7 +39,7 @@ export const Table = styled.table`
 `
 export const Tr = styled.tr`
 	&:hover{
-		> td {
+		> .tds {
 			background:#e9e9e9;
 		}
 	}
@@ -50,11 +50,11 @@ width: 100%;
 z-index: 1;
 top: 0px;
 `
-export const HeaderSpan = styled.span`
-	top:-7px;
-	z-index:2;
-	height:30px;
-`
+// export const HeaderSpan = styled.span`
+// 	top:-7px;
+// 	z-index:2;
+// 	height:30px;
+// `
 
 export const Th = styled.th`
 	text-align:left;
@@ -64,13 +64,11 @@ export const Th = styled.th`
 	background-color: ${p => p.theme.header.background};
 	border-left: 1px solid ${p => p.theme.header.background};
 	&:first-child {
-		/* border-left-style: solid; */
 		border-left:none;
 		border-top-left-radius: 4px;
 		border-bottom-left-radius: 4px;
 	}
 	&:last-child {
-		/* border-right-style: solid; */
 		border-bottom-right-radius: 4px;
 		border-top-right-radius: 4px;
 	}
@@ -86,7 +84,12 @@ export const Td = styled.td`
 	background-color: #e3e5e5;
 	border-left: 1px solid lightgrey;
 	cursor:default;
-	&:first-child {
+	&:first-child{
+		border-left:none;
+		border-top-left-radius: 4px;
+		border-bottom-left-radius: 4px;
+	}
+	&:nth-child(2) {
 		border-top-left-radius: 4px;
 		border-bottom-left-radius: 4px;
 		border-left:none;
@@ -96,6 +99,15 @@ export const Td = styled.td`
 		border-bottom-right-radius: 4px;
 		border-top-right-radius: 4px;
 	}
+`
+export const ClearTd = styled(Td) `
+	background: none;
+	max-width: 30px;
+	width:20px;
+`
+export const ClearTh = styled(Th) `
+	max-width: 30px;
+	width:20px;
 `
 export const FormInputCont = styled(InputCont) `
 	height:35px;

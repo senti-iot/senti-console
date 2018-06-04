@@ -4,8 +4,9 @@ import CreateOrg from './CreateOrgForm'
 import { Button } from 'odeum-ui'
 import { withTheme } from 'styled-components'
 import { getOrgs } from 'utils/data'
-import { Table, Th, Td, TableContainer, Tr, TableScroll, HeaderSpan, Trh } from './ManagementStyles'
+import { Table, Th, Td, TableContainer, Tr, TableScroll, Trh, ClearTh, ClearTd } from '../ManagementStyles'
 import { LoaderSmall } from 'LoginStyles'
+import Checkbox from '../../Aux/CheckBox/CheckBox'
 
 class OrgAdmin extends Component {
 	constructor(props) {
@@ -63,16 +64,18 @@ class OrgAdmin extends Component {
 							<Table>
 								<thead>
 									<Trh>
-										<Th><HeaderSpan>Name</HeaderSpan></Th>
-										<Th><HeaderSpan>Address</HeaderSpan></Th>
-										<Th><HeaderSpan>Country</HeaderSpan></Th>
-										<Th><HeaderSpan>City</HeaderSpan></Th>
-										<Th><HeaderSpan>Website</HeaderSpan></Th>
+										<ClearTh><Checkbox /></ClearTh>
+										<Th>Name</Th>
+										<Th>Address</Th>
+										<Th>Country</Th>
+										<Th>City</Th>
+										<Th>Website</Th>
 									</Trh>
 								</thead>
 								<tbody>
 									{orgs.map((org, i) =>
 										<Tr key={i}>
+											<ClearTd><Checkbox /> </ClearTd>
 											<Td>{org.vcName}</Td>
 											<Td>{org.vcAddress}</Td>
 											<Td>{org.vcCountry}</Td>

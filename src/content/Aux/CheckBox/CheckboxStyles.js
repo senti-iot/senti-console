@@ -77,8 +77,8 @@ export const StyledCheckbox = styled.label`
  }
 
  	> input + .checkmark:after {
-     	left: 6px;
- 		top: 6px;
+     	left: ${({ size }) => sizes[size].checkmarkPosLeft};
+ 		top: ${({ size }) => sizes[size].checkmarkPosTop};
  		width: ${({ size }) => sizes[size].checkmarkWidth};
  		height: ${({ size }) => sizes[size].checkmarkHeight};
 		background: white;
@@ -94,11 +94,15 @@ const sizes = {
 		height: '25px',
 		checkmarkWidth: '17px',
 		checkmarkHeight: '17px',
+		checkmarkPosLeft: '4px',
+		checkmarkPosTop: '4px'
 	},
 	medium: {
 		width: '30px',
 		height: '30px',
 		checkmarkWidth: '18px',
 		checkmarkHeight: '18px',
+		checkmarkPosTop: '6px',
+		checkmarkPosLeft: '6px',
 	},
 }

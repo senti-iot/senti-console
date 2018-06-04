@@ -8,7 +8,7 @@ import {
 	ErrorContainer, FormContainer,
 	Header, FormInputCont,
 	CreateButtonContainer, FormInput
-} from './ManagementStyles'
+} from '../ManagementStyles'
 
 class CreateOrganisation extends Component {
 	constructor(props) {

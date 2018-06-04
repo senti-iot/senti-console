@@ -8,9 +8,9 @@ import {
 	ErrorContainer, FormContainer,
 	Header, FormInputCont,
 	CreateButtonContainer, FormInput, Select
-} from './ManagementStyles'
+} from '../ManagementStyles'
 
-class CreateUser extends Component {
+class EditUser extends Component {
 	constructor(props) {
 		super(props)
 		this.defaultState = {
@@ -130,4 +130,4 @@ class CreateUser extends Component {
 	}
 }
 
-export default withTheme(CreateUser)
+export default withTheme(EditUser)

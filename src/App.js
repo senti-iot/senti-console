@@ -4,8 +4,8 @@ import theme from './utils/theme'
 import Home from './content/Home/Homepage'
 import ViewContainer from 'content/Views/ViewContainer'
 import User from './content/User/User'
-import UserAdmin from './content/Management/UserAdminContainer'
-import OrgAdmin from './content/Management/OrgAdminContainer'
+import UserAdmin from './content/Management/Users/UserAdminContainer'
+import OrgAdmin from './content/Management/Orgs/OrgAdminContainer'
 
 class App extends Component {
 	constructor(props) {
