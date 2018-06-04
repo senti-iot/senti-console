@@ -173,7 +173,7 @@ class NewProject extends Component {
 					<TitleInput active={this.state.titleInput} onClick={this.inputOnFocus("titleInput")}>
 						<Input
 							placeholder={'Title'}
-							style={{ padding: '0px 4px', fontSize: 18, color: '#2C3E50' }}
+							style={{ padding: '0px 4px', color: '#2C3E50' }}
 							onBlur={this.inputOnBlur("titleInput")}
 							onChange={this.handleInput("title")}
 							value={title} />
@@ -181,7 +181,7 @@ class NewProject extends Component {
 					<TitleInput active={this.state.descriptionInput} onClick={this.inputOnFocus("descriptionInput")}>
 						<Input
 							placeholder={'Description'}
-							style={{ padding: '0px 4px', fontSize: 18, color: '#2C3E50' }}
+							style={{ padding: '0px 4px', color: '#2C3E50' }}
 							onBlur={this.inputOnBlur("descriptionInput")}
 							onChange={this.handleInput("description")}
 							value={description} />

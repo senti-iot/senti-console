@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import {
 	HorizontalControls,
-	VerticalControls, VerticalButton, HorizontalButton, HorizontalControlsDrawer, ControlButton, VerticalControlsButtons, Wheels, /* ProjectBarContainer, ProjectBarLabel,
-	ProjectBar, */
+	VerticalControls, VerticalButton, HorizontalButton, HorizontalControlsDrawer, ControlButton, VerticalControlsButtons, Wheels
 } from './CardItemStyles'
 
 import {

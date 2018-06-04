@@ -6,10 +6,11 @@ import {
 	ProjectBar,
 	VerticalControlsButtons,
 	HorizontalButtonText,
-	Wheels
-} from './CardItemStyles'
+	Wheels,
+	CardImg
+} from '../../../../Aux/Modal/CardItemStyles'
 import ExpandedCardInfo from './ExpandedCardInfo'
-import { CardImg } from '../../../../Aux/Modal/CardItemStyles'
+// import {  } from '../../../../Aux/Modal/CardItemStyles'
 import { LoaderSmall } from 'LoginStyles'
 import { SmallLoaderContainer } from '../../ListView/List/ListStyles'
 import PropTypes from 'prop-types'

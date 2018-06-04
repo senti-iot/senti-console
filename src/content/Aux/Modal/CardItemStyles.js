@@ -55,15 +55,15 @@ export const Shadow = FormCardContainer.extend`
 `
 
 
-export const FormImg = styled.div`
+export const FormImg = styled.img`
 	display: flex;
 	align-items: flex-start;
 	justify-content:center;
 
 	width: 100%;
-	height: 150px;
-	
-	background: url(${p => p.img});
+	height: 100%;
+
+	/* background: url(${p => p.img}); */
 	background-size: cover;
     border-radius: 4px 4px 0px 0px;
     
@@ -185,7 +185,9 @@ export const HorizontalControls = styled.div`
 	/* z-index:${p => p.expand ? 3 : 1}; */
 `
 
-export const CardImg = styled(FormImg) `
+export const CardImg = styled.div`
+	height:100%;
+	width:100%;
 	position: relative;
 	background: "#FFF";
 `
