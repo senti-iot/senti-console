@@ -75,7 +75,7 @@ class UserAdmin extends Component {
 			<div style={{ width: '100%', height: '100%' }}>
 				<DropDownContainer onMouseLeave={this.handleDropDown(false)} style={{ width: 200 }}>
 					<DropDownButton onMouseEnter={this.handleDropDown(true)}>
-						Administration
+						Functions
 					</DropDownButton>
 					<Margin />
 					{this.state.dropDown && <DropDown style={{ width: '100%' }}>
@@ -111,7 +111,7 @@ class UserAdmin extends Component {
 					</TableContainer> : <LoaderSmall />
 				}
 				<Modal width={'330px'} height={'50%'} expand={this.state.createUserModal} horizontalControls={false} verticalControls={false}
-					handleOverlay={this.closeModal}>
+					handleOverlay={this.closeNewUserModal}>
 					<CreateUser closeModal={this.closeNewUserModal} />
 				</Modal>
 

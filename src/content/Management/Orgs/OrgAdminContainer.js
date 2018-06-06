@@ -1,19 +1,23 @@
 import React, { Component } from 'react'
 import Modal from 'content/Aux/Modal/Modal'
 import CreateOrg from './CreateOrgForm'
-import { Button } from 'odeum-ui'
 import { withTheme } from 'styled-components'
-import { getOrgs } from 'utils/data'
+import { getOrgs, deleteOrgs } from 'utils/data'
 import { Table, Th, Td, TableContainer, Tr, TableScroll, Trh, ClearTh, ClearTd } from '../ManagementStyles'
 import { LoaderSmall } from 'LoginStyles'
 import Checkbox from '../../Aux/CheckBox/CheckBox'
+import { DropDownContainer, DropDownButton, Margin, DropDown, DropDownItem } from '../../Aux/DropDown/DropDown'
 
 class OrgAdmin extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			createOrgModal: false,
-			orgs: []
+			editOrgModal: false,
+			deleteOrgModal: false,
+			dropDown: false,
+			orgs: [],
+			selectedOrgs: []
 		}
 	}
 	componentWillMount = () => {
@@ -30,34 +34,57 @@ class OrgAdmin extends Component {
 			this.setState({ orgs: data })
 		}
 	}
-	closeModal = () => {
+	deleteOrgs = async () => {
+		await deleteOrgs(this.state.selectedOrgs)
+		this.getOrgs()
+	}
+	createOrgModal = () => this.setState({ createOrgModal: true })
+	editOrgModal = () => this.setState({ editOrgModal: true })
+	deleteOrgModal = () => this.setState({ deleteOrgModal: true })
+	closeCreateOrgModal = () => {
 		this.setState({ createOrgModal: false })
 		this.getOrgs()
 	}
-	openModal = () => {
-		this.setState({ createOrgModal: true })
+	closeEditOrgModal = () => {
+		this.setState({ editOrgModal: false })
+		this.getOrgs()
 	}
-	renderFakeUsers = () => {
-		var arr = []
-		for (let index = 0; index < 100; index++) {
-			arr.push(<Tr key={index}>
-				<Td>{index}</Td>
-				<Td>{index}</Td>
-				<Td>{index}</Td>
-				<Td>{index}</Td>
-				<Td>{index}</Td>
-			</Tr>)
-		}
-		console.log(arr)
-		return arr
+	closeDeleteOrgModal = () => {
+		this.setState({ deleteOrgModal: false })
+		this.getOrgs()
+	}
+
+	handleCheck = (id, checked) => {
+		var newArr = this.state.selectedOrgs
+		if (checked)
+			newArr.push(id)
+		else
+			newArr = newArr.filter(c => c !== id)
+		this.setState({ selectedOrgs: newArr })
+	}
+	isChecked = (user) => this.state.selectedOrgs.indexOf(user.iUserID) !== -1 ? true : false
+	//#endregion
+	handleDropDown = (open) => e => {
+		e.preventDefault()
+		this.setState({ dropDown: open })
 	}
 	render() {
-		const { theme } = this.props
 		const { orgs, createOrgModal } = this.state
 		return (
 			<div style={{ width: '100%', height: '100%' }}>
-				Administration of Organisations
-				<Button icon={'group_add'} iconSize={20} onClick={this.openModal} color={theme.button.background} label={'Create new Organisation'} />
+				<DropDownContainer onMouseLeave={this.handleDropDown(false)} style={{ width: 200 }}>
+					<DropDownButton onMouseEnter={this.handleDropDown(true)}>
+						Functions
+					</DropDownButton>
+					<Margin />
+					{this.state.dropDown && <DropDown style={{ width: '100%' }}>
+						<DropDownItem style={{ width: '100%' }} onClick={this.createOrgModal}>Create New Organisation</DropDownItem>
+						<DropDownItem style={{ width: '100%' }} onClick={this.editOrgModal}>Edit Selected Organisation</DropDownItem>
+						<DropDownItem style={{ width: '100%' }} onClick={this.deleteOrgs}><span style={{ color: 'red' }}>Delete Organisations</span></DropDownItem>
+
+					</DropDown>}
+				</DropDownContainer>
+
 				{orgs.length > 0 ?
 					<TableContainer>
 						<TableScroll>
@@ -75,7 +102,7 @@ class OrgAdmin extends Component {
 								<tbody>
 									{orgs.map((org, i) =>
 										<Tr key={i}>
-											<ClearTd><Checkbox /> </ClearTd>
+											<ClearTd><Checkbox onChange={this.handleCheck} value={org.iOrgID} /> </ClearTd>
 											<Td>{org.vcName}</Td>
 											<Td>{org.vcAddress}</Td>
 											<Td>{org.vcCountry}</Td>
@@ -90,8 +117,8 @@ class OrgAdmin extends Component {
 					</TableContainer > : <LoaderSmall />
 				}
 				<Modal width={'330px'} height={'50%'} expand={createOrgModal} horizontalControls={false} verticalControls={false}
-					handleOverlay={this.closeModal}>
-					<CreateOrg closeModal={this.closeModal} />
+					handleOverlay={this.closeCreateOrgModal}>
+					<CreateOrg closeModal={this.closeCreateOrgModal} />
 				</Modal>
 			</div >
 		)

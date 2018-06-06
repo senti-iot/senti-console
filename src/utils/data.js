@@ -111,3 +111,12 @@ export const deleteProject = async (projectIds) => {
 	}
 	return res
 }
+
+//Delete Orgs
+export const deleteOrgs = async (orgIds) => {
+	var result = false
+	await orgIds.forEach(async orgId => {
+		result = await api.delete('core/org/' + orgId)
+	})
+	return result
+}
