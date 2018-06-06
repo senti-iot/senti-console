@@ -84,7 +84,7 @@ class EditOrganisation extends Component {
 	}
 	closeAndReset = () => {
 		this.props.closeModal()
-		this.setState({ success: false })
+		this.setState({ ...this.defaultState })
 
 	}
 	render() {

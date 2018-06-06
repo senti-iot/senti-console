@@ -32,15 +32,16 @@ class OrgAdmin extends Component {
 	}
 
 	getOrgs = async () => {
-		var data = await getOrgs()
 		if (this._isMounted === 1) {
+			this.setState({ orgs: [] })
+			var data = await getOrgs()
 			this.setState({ orgs: data })
 		}
 	}
 	deleteOrgs = () => async e => {
 		e.preventDefault()
 		await deleteOrgs(this.state.selectedOrgs).then(rs => {
-			this.setState({ orgs: [], selectedOrgs: [] })
+			this.setState({ selectedOrgs: [] })
 			this.getOrgs()
 			this.closeDeleteOrgModal()
 		})
