@@ -58,10 +58,7 @@ class CreateOrganisation extends Component {
 	render() {
 		return (
 			<Container>
-				{this.state.success ? <SuccessContainer>
-					Success !
-				</SuccessContainer> : null}
-				{this.state.error ? <ErrorContainer> Error! Please check your input and try again. </ErrorContainer> : null}
+
 				<AppContext.Consumer>
 					{(context) =>
 						<FormContainer>
@@ -101,13 +98,12 @@ class CreateOrganisation extends Component {
 									value={this.state.createOrgFields.vcURL}
 								/>
 							</FormInputCont>
-							{/* <FormInputCont>
-								<FormInput
-									onChange={this.handleCreateUserInput("Phone")}
-									placeholder={"Phone"}
-									value={this.state.createOrgFields.vcPhone}
-								/>
-							</FormInputCont> */}
+
+							{this.state.success ? <SuccessContainer>
+								Success !
+							</SuccessContainer> : null}
+							{this.state.error ? <ErrorContainer> Error! Please check your input and try again. </ErrorContainer> : null}
+
 							<CreateButtonContainer>
 								<Button
 									style={{ color: 'white' }}
@@ -119,6 +115,7 @@ class CreateOrganisation extends Component {
 									onClick={this.state.success ? this.props.closeModal : this.handleCreateUser}
 								/>
 							</CreateButtonContainer>
+
 						</FormContainer>}
 				</AppContext.Consumer>
 			</Container>

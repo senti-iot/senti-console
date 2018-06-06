@@ -27,33 +27,29 @@ class EditOrganisation extends Component {
 		}
 		this.state = this.defaultState
 	}
+	editDefaultForm = (org) => {
+		this.setState({
+			editOrgFields: {
+				iOrgID: org.iOrgID,
+				vcName: org.vcName,
+				vcAddress: org.vcAddress,
+				vcCity: org.vcCity,
+				vcCountry: org.vcCountry,
+				vcURL: org.vcURL,
+			}
+		})
+	}
 	componentDidUpdate = (prevProps, prevState) => {
 		if (prevProps.org) {
-			if (this.props.org)
-				if (this.props.org.iOrgID !== prevProps.org.iOrgID)
-					this.setState({
-						editOrgFields: {
-							iOrgID: this.props.org.iOrgID,
-							vcName: this.props.org.vcName,
-							vcAddress: this.props.org.vcAddress,
-							vcCity: this.props.org.vcCity,
-							vcCountry: this.props.org.vcCountry,
-							vcURL: this.props.org.vcURL,
-						}
-					})
+			if (this.props.org) {
+				if (this.props.org.iOrgID !== prevProps.org.iOrgID) {
+					this.editDefaultForm(this.props.org)
+				}
+			}
 		}
 		else {
 			if (!prevProps.org && this.props.org) {
-				this.setState({
-					editOrgFields: {
-						iOrgID: this.props.org.iOrgID,
-						vcName: this.props.org.vcName,
-						vcAddress: this.props.org.vcAddress,
-						vcCity: this.props.org.vcCity,
-						vcCountry: this.props.org.vcCountry,
-						vcURL: this.props.org.vcURL,
-					}
-				})
+				this.editDefaultForm(this.props.org)
 			}
 		}
 	}
@@ -87,20 +83,18 @@ class EditOrganisation extends Component {
 		}
 	}
 	closeAndReset = () => {
-		this.setState({ success: false })
 		this.props.closeModal()
+		this.setState({ success: false })
 
 	}
 	render() {
 		return (
 			<Container>
-				{this.state.success ? <SuccessContainer>
-					Success !
-				</SuccessContainer> : null}
-				{this.state.error ? <ErrorContainer> Error! Please check your input and try again. </ErrorContainer> : null}
+
 				<AppContext.Consumer>
 					{(context) =>
 						<FormContainer>
+
 							<Header>Edit Organisation:</Header>
 							<FormInputCont>
 								<FormInput
@@ -137,6 +131,8 @@ class EditOrganisation extends Component {
 									value={this.state.editOrgFields.vcURL}
 								/>
 							</FormInputCont>
+							{this.state.success ? <SuccessContainer>Success !</SuccessContainer> : null}
+							{this.state.error ? <ErrorContainer> Error! Please check your input and try again. </ErrorContainer> : null}
 							<CreateButtonContainer>
 								<Button
 									style={{ color: 'white' }}

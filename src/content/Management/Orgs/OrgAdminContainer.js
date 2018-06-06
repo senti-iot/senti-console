@@ -40,7 +40,7 @@ class OrgAdmin extends Component {
 	deleteOrgs = () => async e => {
 		e.preventDefault()
 		await deleteOrgs(this.state.selectedOrgs).then(rs => {
-			this.setState({ orgs: [] })
+			this.setState({ orgs: [], selectedOrgs: [] })
 			this.getOrgs()
 			this.closeDeleteOrgModal()
 		})
@@ -66,7 +66,6 @@ class OrgAdmin extends Component {
 		if (checked)
 			newArr.push(id)
 		else {
-			console.log(id)
 			newArr = newArr.filter(c => c !== id)
 		}
 		this.setState({ selectedOrgs: newArr, editOrg: this.state.orgs.find(i => i.iOrgID === newArr[0]) })
@@ -151,7 +150,7 @@ class OrgAdmin extends Component {
 											<Td>{org.vcAddress}</Td>
 											<Td>{org.vcCountry}</Td>
 											<Td>{org.vcCity}</Td>
-											<Td><a href={org.vcURL ? org.vcURL : null} target='_blank'>{org.vcURL ? org.vcName : null}</a></Td>
+											<Td><a href={org.vcURL ? org.vcURL : null} target='_blank' title={org.vcURL}>{org.vcURL ? org.vcName : null}</a></Td>
 										</Tr>
 									)}
 									{/* {this.renderFakeUsers()} Overflow Testing*/}
