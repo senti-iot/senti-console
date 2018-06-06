@@ -12,7 +12,7 @@ export const Select = styled.select`
 	border-radius: 4px;
 	max-width: 284px;
 `
-export const CreateButtonContainer = styled.div`
+export const ButtonContainer = styled.div`
 	display:flex;
 	justify-content:center;
 	margin-top: 100px;

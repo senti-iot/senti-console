@@ -7,10 +7,10 @@ import {
 	Container, SuccessContainer,
 	ErrorContainer, FormContainer,
 	Header, FormInputCont,
-	CreateButtonContainer, FormInput, Select
+	ButtonContainer, FormInput, Select
 } from '../ManagementStyles'
 
-class CreateUser extends Component {
+class CreateUserForm extends Component {
 	constructor(props) {
 		super(props)
 		this.defaultState = {
@@ -114,7 +114,7 @@ class CreateUser extends Component {
 									return <option key={i} value={org.iOrgID}> {org.vcName} </option>
 								}) : null}
 							</Select>
-							<CreateButtonContainer style={{ marginTop: '30px' }}>
+							<ButtonContainer style={{ marginTop: '30px' }}>
 								<Button
 									icon={this.state.success ? 'close' : 'person'}
 									iconSize={20}
@@ -122,7 +122,7 @@ class CreateUser extends Component {
 									color={this.props.theme.button.background}
 									label={this.state.success ? 'Close' : 'Create User'}
 									onClick={this.state.success ? this.props.closeModal : this.handleCreateUser} />
-							</CreateButtonContainer>
+							</ButtonContainer>
 						</FormContainer>}
 				</AppContext.Consumer>
 			</Container>
@@ -130,4 +130,4 @@ class CreateUser extends Component {
 	}
 }
 
-export default withTheme(CreateUser)
+export default withTheme(CreateUserForm)

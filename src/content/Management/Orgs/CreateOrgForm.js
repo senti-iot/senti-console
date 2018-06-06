@@ -7,7 +7,7 @@ import {
 	Container, SuccessContainer,
 	ErrorContainer, FormContainer,
 	Header, FormInputCont,
-	CreateButtonContainer, FormInput
+	ButtonContainer, FormInput
 } from '../ManagementStyles'
 
 class CreateOrganisation extends Component {
@@ -104,7 +104,7 @@ class CreateOrganisation extends Component {
 							</SuccessContainer> : null}
 							{this.state.error ? <ErrorContainer> Error! Please check your input and try again. </ErrorContainer> : null}
 
-							<CreateButtonContainer>
+							<ButtonContainer>
 								<Button
 									style={{ color: 'white' }}
 									icon={this.state.success ? 'close' : 'group_add'}
@@ -114,7 +114,7 @@ class CreateOrganisation extends Component {
 									label={this.state.success ? 'Close' : 'Create Organisation'}
 									onClick={this.state.success ? this.props.closeModal : this.handleCreateUser}
 								/>
-							</CreateButtonContainer>
+							</ButtonContainer>
 
 						</FormContainer>}
 				</AppContext.Consumer>

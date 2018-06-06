@@ -147,11 +147,11 @@ class OrgAdmin extends Component {
 									{orgs.map((org, i) =>
 										<Tr key={i}>
 											<ClearTd><Checkbox onChange={this.handleCheck} isChecked={this.isChecked(org)} value={org.iOrgID} /> </ClearTd>
-											<Td>{org.vcName}</Td>
-											<Td>{org.vcAddress}</Td>
-											<Td>{org.vcCountry}</Td>
-											<Td>{org.vcCity}</Td>
-											<Td><a href={org.vcURL ? org.vcURL : null} target='_blank' title={org.vcURL}>{org.vcURL ? org.vcName : null}</a></Td>
+											<Td className="tds">{org.vcName}</Td>
+											<Td className="tds">{org.vcAddress}</Td>
+											<Td className="tds">{org.vcCountry}</Td>
+											<Td className="tds">{org.vcCity}</Td>
+											<Td className="tds"><a href={org.vcURL ? org.vcURL : null} target='_blank' title={org.vcURL}>{org.vcURL ? org.vcName : null}</a></Td>
 										</Tr>
 									)}
 									{/* {this.renderFakeUsers()} Overflow Testing*/}

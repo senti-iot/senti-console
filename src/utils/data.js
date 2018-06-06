@@ -126,3 +126,17 @@ export const updateOrg = async (org) => {
 	var result = await api.post('core/org/', org)
 	return result
 }
+
+export const deleteUsers = async (userIds) => {
+	var result = false
+	await userIds.forEach(async uId => {
+		result = await api.delete('core/user/' + uId)
+	})
+	return result
+}
+
+export const updateUser = async (user) => {
+	console.log(user)
+	var result = await api.post('core/user', user)
+	return result
+}
