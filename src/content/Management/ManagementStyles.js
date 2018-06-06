@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { TitleInput as InputCont } from '../Views/Components/Functions/NewProject/NewProjectStyles'
 import { Input } from '../Views/ViewStyles'
+import { Button } from 'odeum-ui'
 
 export const Select = styled.select`
 	margin: 0.3rem 0.4rem 0.3rem 0.4rem;
@@ -50,12 +51,12 @@ width: 100%;
 z-index: 1;
 top: 0px;
 `
-// export const HeaderSpan = styled.span`
-// 	top:-7px;
-// 	z-index:2;
-// 	height:30px;
-// `
 
+export const RedButton = styled(Button) `
+	&:hover{
+		background:crimson;
+	}
+`
 export const Th = styled.th`
 	text-align:left;
 	color:white;

@@ -24,7 +24,8 @@ class Checkbox extends Component {
 				<input
 					type="checkbox"
 					checked={this.props.isChecked}
-					onClick={this.handleChange}
+					// onClick={this.handleChange}
+					onChange={this.handleChange}
 				/>
 				<CheckMarkIco className="checkmark" size={size}></CheckMarkIco>
 			</StyledCheckbox>

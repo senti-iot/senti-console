@@ -3,11 +3,12 @@ import Modal from 'content/Aux/Modal/Modal'
 import CreateOrg from './CreateOrgForm'
 import { withTheme } from 'styled-components'
 import { getOrgs, deleteOrgs } from 'utils/data'
-import { Table, Th, Td, TableContainer, Tr, TableScroll, Trh, ClearTh, ClearTd } from '../ManagementStyles'
+import { Table, Th, Td, TableContainer, Tr, TableScroll, Trh, ClearTh, ClearTd, RedButton } from '../ManagementStyles'
 import { LoaderSmall } from 'LoginStyles'
 import Checkbox from '../../Aux/CheckBox/CheckBox'
 import { DropDownContainer, DropDownButton, Margin, DropDown, DropDownItem } from '../../Aux/DropDown/DropDown'
 import EditOrgForm from './EditOrgForm'
+import { Button } from 'odeum-ui'
 
 class OrgAdmin extends Component {
 	constructor(props) {
@@ -36,9 +37,13 @@ class OrgAdmin extends Component {
 			this.setState({ orgs: data })
 		}
 	}
-	deleteOrgs = async () => {
-		await deleteOrgs(this.state.selectedOrgs)
-		this.getOrgs()
+	deleteOrgs = () => async e => {
+		e.preventDefault()
+		await deleteOrgs(this.state.selectedOrgs).then(rs => {
+			this.setState({ orgs: [] })
+			this.getOrgs()
+			this.closeDeleteOrgModal()
+		})
 	}
 	createOrgModal = () => this.setState({ createOrgModal: true })
 	editOrgModal = () => this.setState({ editOrgModal: true })
@@ -72,6 +77,41 @@ class OrgAdmin extends Component {
 		e.preventDefault()
 		this.setState({ dropDown: open })
 	}
+	renderOrgNames = () => {
+		var names = []
+		this.state.selectedOrgs.map(p => {
+			let org = this.state.orgs.find(o => o.iOrgID === p)
+			if (org)
+				return names.push(org.vcName)
+			else
+				return null
+		})
+		return names
+	}
+	renderDeleteOrg = () => {
+		return <Modal
+			verticalControls={false}
+			horizontalControls={false}
+			width={400}
+			height={300}
+			expand={this.state.deleteOrgModal}
+			handleOverlay={this.closeDeleteOrgModal}>
+
+			<div>
+				<div style={{ margin: 10, overflow: 'hidden' }}>Er du sikker på, at du vil slette:
+					<ul style={{ height: '250px', width: '350px', overflowY: 'auto' }}>
+						{this.renderOrgNames().map((e, index) => {
+							return <li key={index} style={{ fontWeight: 700 }}> {e} </li>
+						})}
+					</ul>
+				</div>
+				<div style={{ display: 'flex', flexFlow: 'row nowrap', alignItems: 'center', justifyContent: 'center' }}>
+					<RedButton label={"Ja"} color={this.props.theme.button.background} onClick={this.deleteOrgs()} />
+					<Button label={"Nej"} color={this.props.theme.button.background} onClick={this.closeDeleteOrgModal} />
+				</div>
+			</div>
+		</Modal>
+	}
 	render() {
 		const { orgs, createOrgModal, editOrgModal } = this.state
 		return (
@@ -84,7 +124,7 @@ class OrgAdmin extends Component {
 					{this.state.dropDown && <DropDown style={{ width: '100%' }}>
 						<DropDownItem style={{ width: '100%' }} onClick={this.createOrgModal}>Create New Organisation</DropDownItem>
 						<DropDownItem style={{ width: '100%' }} onClick={this.editOrgModal}>Edit Selected Organisation</DropDownItem>
-						<DropDownItem style={{ width: '100%' }} onClick={this.deleteOrgs}><span style={{ color: 'red' }}>Delete Organisations</span></DropDownItem>
+						<DropDownItem style={{ width: '100%' }} onClick={this.deleteOrgModal}><span style={{ color: 'red' }}>Delete Organisations</span></DropDownItem>
 
 					</DropDown>}
 				</DropDownContainer>
@@ -128,6 +168,7 @@ class OrgAdmin extends Component {
 					handleOverlay={this.closeEditOrgModal}>
 					<EditOrgForm closeModal={this.closeEditOrgModal} org={this.state.editOrg} />
 				</Modal>
+				{this.renderDeleteOrg()}
 			</div >
 		)
 	}
