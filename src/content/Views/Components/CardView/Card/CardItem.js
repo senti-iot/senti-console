@@ -30,7 +30,6 @@ export default class FormCard extends Component {
 	}
 	handleControlExpand = () => {
 		this.setState({ expand: true, horizontalExpand: false })
-		// console.log(this.state)
 	}
 	handleOpenCard = () => {
 		this.setState({ expand: true, horizontalExpand: false })

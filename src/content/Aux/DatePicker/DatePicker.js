@@ -196,7 +196,6 @@ class DayPickerRangeControllerWrapper extends React.Component {
 					endDate: this.state.endDate
 				})
 				this.setState({ openDatePicker: false })
-				// console.log(this.state.openDatePicker)
 				break
 			case 'Escape':
 				this.props.handleDisableDateFilter()

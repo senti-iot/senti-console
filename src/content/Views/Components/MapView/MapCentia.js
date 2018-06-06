@@ -66,7 +66,6 @@ class MapCentia extends Component {
 							}
 						})
 						e.addGeoJsonStore(store)
-						console.log(store)
 						store.load()
 					}
 				})

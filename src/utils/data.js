@@ -136,7 +136,6 @@ export const deleteUsers = async (userIds) => {
 }
 
 export const updateUser = async (user) => {
-	console.log(user)
 	var result = await api.post('core/user', user)
 	return result
 }
