@@ -22,7 +22,7 @@ class CreateOrganisation extends Component {
 				vcCity: '',
 				vcCountry: '',
 				vcURL: '',
-				vcPhone: ''
+				// vcPhone: ''
 			}
 		}
 		this.state = this.defaultState
@@ -101,13 +101,13 @@ class CreateOrganisation extends Component {
 									value={this.state.createOrgFields.vcURL}
 								/>
 							</FormInputCont>
-							<FormInputCont>
+							{/* <FormInputCont>
 								<FormInput
 									onChange={this.handleCreateUserInput("Phone")}
 									placeholder={"Phone"}
 									value={this.state.createOrgFields.vcPhone}
 								/>
-							</FormInputCont>
+							</FormInputCont> */}
 							<CreateButtonContainer>
 								<Button
 									style={{ color: 'white' }}

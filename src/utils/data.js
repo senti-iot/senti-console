@@ -120,3 +120,9 @@ export const deleteOrgs = async (orgIds) => {
 	})
 	return result
 }
+
+//Update Org
+export const updateOrg = async (org) => {
+	var result = await api.post('core/org/', org)
+	return result
+}

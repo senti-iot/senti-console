@@ -7,6 +7,7 @@ import { Table, Th, Td, TableContainer, Tr, TableScroll, Trh, ClearTh, ClearTd }
 import { LoaderSmall } from 'LoginStyles'
 import Checkbox from '../../Aux/CheckBox/CheckBox'
 import { DropDownContainer, DropDownButton, Margin, DropDown, DropDownItem } from '../../Aux/DropDown/DropDown'
+import EditOrgForm from './EditOrgForm'
 
 class OrgAdmin extends Component {
 	constructor(props) {
@@ -17,7 +18,8 @@ class OrgAdmin extends Component {
 			deleteOrgModal: false,
 			dropDown: false,
 			orgs: [],
-			selectedOrgs: []
+			selectedOrgs: [],
+			editOrg: null
 		}
 	}
 	componentWillMount = () => {
@@ -58,18 +60,20 @@ class OrgAdmin extends Component {
 		var newArr = this.state.selectedOrgs
 		if (checked)
 			newArr.push(id)
-		else
+		else {
+			console.log(id)
 			newArr = newArr.filter(c => c !== id)
-		this.setState({ selectedOrgs: newArr })
+		}
+		this.setState({ selectedOrgs: newArr, editOrg: this.state.orgs.find(i => i.iOrgID === newArr[0]) })
 	}
-	isChecked = (user) => this.state.selectedOrgs.indexOf(user.iUserID) !== -1 ? true : false
+	isChecked = (org) => this.state.selectedOrgs.indexOf(org.iOrgID) !== -1 ? true : false
 	//#endregion
 	handleDropDown = (open) => e => {
 		e.preventDefault()
 		this.setState({ dropDown: open })
 	}
 	render() {
-		const { orgs, createOrgModal } = this.state
+		const { orgs, createOrgModal, editOrgModal } = this.state
 		return (
 			<div style={{ width: '100%', height: '100%' }}>
 				<DropDownContainer onMouseLeave={this.handleDropDown(false)} style={{ width: 200 }}>
@@ -102,7 +106,7 @@ class OrgAdmin extends Component {
 								<tbody>
 									{orgs.map((org, i) =>
 										<Tr key={i}>
-											<ClearTd><Checkbox onChange={this.handleCheck} value={org.iOrgID} /> </ClearTd>
+											<ClearTd><Checkbox onChange={this.handleCheck} isChecked={this.isChecked(org)} value={org.iOrgID} /> </ClearTd>
 											<Td>{org.vcName}</Td>
 											<Td>{org.vcAddress}</Td>
 											<Td>{org.vcCountry}</Td>
@@ -119,6 +123,10 @@ class OrgAdmin extends Component {
 				<Modal width={'330px'} height={'50%'} expand={createOrgModal} horizontalControls={false} verticalControls={false}
 					handleOverlay={this.closeCreateOrgModal}>
 					<CreateOrg closeModal={this.closeCreateOrgModal} />
+				</Modal>
+				<Modal width={'330px'} height={'50%'} expand={editOrgModal} horizontalControls={false} verticalControls={false}
+					handleOverlay={this.closeEditOrgModal}>
+					<EditOrgForm closeModal={this.closeEditOrgModal} org={this.state.editOrg} />
 				</Modal>
 			</div >
 		)
