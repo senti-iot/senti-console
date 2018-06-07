@@ -43,18 +43,31 @@ class EditUserForm extends Component {
 			}
 		})
 	}
+
+	// componentWillReceiveProps = (nextProps) => {
+	// 	try {
+	// 		var uId = this.props.user.iUserID
+	// 		var prevuId = nextProps.user.iUserID
+	// 		if (uId !== prevuId) {
+	// 			this.editDefaultForm(nextProps.user)
+	// 		}
+	// 	}
+	// 	catch (e) {
+	// 		if (prevuId)
+	// 			this.editDefaultForm(nextProps.user)
+	// 	}
+	// }
 	componentDidUpdate = (prevProps, prevState) => {
-		if (prevProps.user) {
-			if (this.props.user) {
-				if (this.props.user.iUserID !== prevProps.user.iUserID) {
-					this.editDefaultForm(this.props.user)
-				}
-			}
-		}
-		else {
-			if (!prevProps.user && this.props.user) {
+		try {
+			var uId = this.props.user.iUserID
+			var prevuId = prevProps.user.iUserID
+			if (uId !== prevuId) {
 				this.editDefaultForm(this.props.user)
 			}
+		}
+		catch (e) {
+			if (uId)
+				this.editDefaultForm(this.props.user)
 		}
 	}
 	handleEditUserInput = (input) => e => {
@@ -79,7 +92,7 @@ class EditUserForm extends Component {
 	handleEditUser = async () => {
 		var success = await updateUser(this.state.EditUserFields)
 		if (success)
-			this.setState({ ...this.defaultState, success: true })
+			this.setState({ success: true })
 
 		else {
 			this.setState({ error: true })
@@ -87,7 +100,7 @@ class EditUserForm extends Component {
 	}
 	closeAndReset = () => {
 		this.props.closeModal()
-		this.setState({ ...this.defaultState })
+		this.setState({ success: false })
 
 	}
 	render() {

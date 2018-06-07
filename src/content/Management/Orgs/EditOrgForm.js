@@ -40,18 +40,27 @@ class EditOrganisation extends Component {
 		})
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		if (prevProps.org) {
-			if (this.props.org) {
-				if (this.props.org.iOrgID !== prevProps.org.iOrgID) {
-					this.editDefaultForm(this.props.org)
-				}
-			}
-		}
-		else {
-			if (!prevProps.org && this.props.org) {
+		try {
+			var uId = this.props.org.iOrgID
+			var prevuId = prevProps.org.iOrgID
+			if (uId !== prevuId)
 				this.editDefaultForm(this.props.org)
-			}
+		} catch (error) {
+			if (uId)
+				this.editDefaultForm(this.props.org)
 		}
+		// if (prevProps.org) {
+		// if (this.props.org) {
+		// if (this.props.org.iOrgID !== prevProps.org.iOrgID) {
+		// this.editDefaultForm(this.props.org)
+		// }
+		// }
+		// }
+		// else {
+		// if (!prevProps.org && this.props.org) {
+		// this.editDefaultForm(this.props.org)
+		// }
+		// }
 	}
 
 	handleEditOrgInput = (input) => e => {
@@ -84,7 +93,7 @@ class EditOrganisation extends Component {
 	}
 	closeAndReset = () => {
 		this.props.closeModal()
-		this.setState({ ...this.defaultState })
+		this.setState({ success: false })
 
 	}
 	render() {

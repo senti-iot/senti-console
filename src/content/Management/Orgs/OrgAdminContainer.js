@@ -23,7 +23,7 @@ class OrgAdmin extends Component {
 			editOrg: null
 		}
 	}
-	componentWillMount = () => {
+	componentDidMount = () => {
 		this._isMounted = 1
 		this.getOrgs()
 	}
@@ -54,7 +54,7 @@ class OrgAdmin extends Component {
 		this.getOrgs()
 	}
 	closeEditOrgModal = () => {
-		this.setState({ editOrgModal: false })
+		this.setState({ editOrgModal: false, selectedOrgs: [] })
 		this.getOrgs()
 	}
 	closeDeleteOrgModal = () => {

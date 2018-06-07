@@ -23,7 +23,7 @@ class UserAdmin extends Component {
 			editUser: null
 		}
 	}
-	componentWillMount = () => {
+	componentDidMount = () => {
 		this._isMounted = 1
 		this.getUsers()
 	}
@@ -173,4 +173,3 @@ class UserAdmin extends Component {
 	}
 }
 export default withTheme(UserAdmin)
-/* 	 */
