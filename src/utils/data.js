@@ -1,7 +1,7 @@
 import { create } from 'apisauce'
 import cookie from 'react-cookies'
 var loginApi = create({
-	baseURL: 'http://senti.cloud/rest/odeum/',
+	baseURL: 'https://senti.cloud/rest/odeum/',
 	timout: 10000,
 	headers: {
 		'Accept': 'application/json',
@@ -10,7 +10,7 @@ var loginApi = create({
 })
 // Define the API
 const api = create({
-	baseURL: 'http://senti.cloud/rest/',
+	baseURL: 'https://senti.cloud/rest/',
 	// baseURL: 'http://api.dashboard.senti.cloud/web/',
 	// baseURL: 'http://localhost:80',
 	timeout: 10000,
