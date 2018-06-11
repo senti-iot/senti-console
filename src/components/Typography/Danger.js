@@ -5,16 +5,16 @@ import { withStyles } from "material-ui";
 import typographyStyle from "assets/jss/material-dashboard-react/typographyStyle.js";
 
 function Danger({ ...props }) {
-  const { classes, children } = props;
-  return (
-    <div className={classes.defaultFontStyle + " " + classes.dangerText}>
-      {children}
-    </div>
-  );
+	const { classes, children } = props;
+	return (
+		<div className={classes.defaultFontStyle + " " + classes.dangerText}>
+			{children}
+		</div>
+	);
 }
 
 Danger.propTypes = {
-  classes: PropTypes.object.isRequired
+	classes: PropTypes.object.isRequired
 };
 
 export default withStyles(typographyStyle)(Danger);

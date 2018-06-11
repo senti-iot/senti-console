@@ -5,16 +5,16 @@ import PropTypes from "prop-types";
 import typographyStyle from "assets/jss/material-dashboard-react/typographyStyle.js";
 
 function P({ ...props }) {
-  const { classes, children } = props;
-  return (
-    <p className={classes.defaultFontStyle + " " + classes.pStyle}>
-      {children}
-    </p>
-  );
+	const { classes, children } = props;
+	return (
+		<p className={classes.defaultFontStyle + " " + classes.pStyle}>
+			{children}
+		</p>
+	);
 }
 
 P.propTypes = {
-  classes: PropTypes.object.isRequired
+	classes: PropTypes.object.isRequired
 };
 
 export default withStyles(typographyStyle)(P);
