@@ -1,6 +1,7 @@
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import UserProfile from "views/UserProfile/UserProfile.js";
 import Typography from "views/Typography/Typography.js";
+import Projects from "views/Projects/Projects";
 
 import {
 	Dashboard,
@@ -8,7 +9,6 @@ import {
 	LibraryBooks,
 	BubbleChart
 } from "@material-ui/icons";
-import Projekter from "../views/Projekter/Projekter";
 
 const dashboardRoutes = [
 	{
@@ -26,11 +26,11 @@ const dashboardRoutes = [
 		component: UserProfile
 	},
 	{
-		path: "/projekter",
-		sidebarName: "Projekter",
-		navbarName: "Projekter",
+		path: "/projects",
+		sidebarName: "Projects",
+		navbarName: "Projects",
 		icon: LibraryBooks,
-		component: Projekter
+		component: Projects
 	},
 	{
 		path: "/management",

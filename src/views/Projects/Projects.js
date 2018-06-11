@@ -5,7 +5,7 @@ import { Grid } from "@material-ui/core";
 import { RegularCard, /* Table, */ ItemGrid } from "components";
 import ProjectList from 'components/List/ProjectList';
 
-export default class Projekter extends Component {
+export default class Projects extends Component {
 	constructor(props) {
 		super(props)
 

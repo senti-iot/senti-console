@@ -1,5 +1,5 @@
 import Dashboard from "layouts/Dashboard/Dashboard.js";
-import LoginPage from "views/LoginPage/LoginPage";
+import LoginPage from "layouts/Login/LoginPage";
 
 const indexRoutes = [
 	{ path: "/login", component: LoginPage },

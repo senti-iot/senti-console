@@ -5,19 +5,38 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Checkbox } from '@material-ui/core';
+import { Checkbox, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Grid } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ItemGrid from '../Grid/ItemGrid';
+import { primaryColor } from 'assets/jss/material-dashboard-react';
 
 const styles = theme => ({
 	subheader: {
 		padding: 0,
 		backgroundColor: '#fff',
-		position: 'sticky'
 	},
 	Checkbox: {
-		color: 'red'
+		color: primaryColor,
+		'&$checked': {
+			color: primaryColor
+		},
 	},
+	checked: {
+	},
+	leftSecondaryAction: {
+		left: '-5px',
+		right: 0
+	},
+	heading: {
+		fontSize: theme.typography.pxToRem(15),
+		fontWeight: theme.typography.fontWeightRegular,
+	},
+	listItem: {
+		width: '100%'
+	},
+
 });
 
 class ProjectList extends React.Component {
@@ -25,7 +44,8 @@ class ProjectList extends React.Component {
 		checked: [],
 	};
 
-	handleToggle = value => () => {
+	handleToggle = value => e => {
+		e.stopPropagation()
 		const { checked } = this.state;
 		const currentIndex = checked.indexOf(value);
 		const newChecked = [...checked];
@@ -50,24 +70,54 @@ class ProjectList extends React.Component {
 					{items.map((i, value) => (
 						<ListItem
 							key={value}
-							role={undefined}
-							button
-
 							className={classes.listItem}
 						>
-							<Checkbox
-								checked={this.state.checked.indexOf(value) !== -1}
-								tabIndex={-1}
-								onClick={this.handleToggle(value)}
-								disableRipple
-								className={classes.Checkbox}
-							/>
-							<ListItemText className={classes.ListItemText} primary={i.title} secondary={i.description} />
-							<ListItemSecondaryAction>
-								<IconButton aria-label="Comments">
-									<EditIcon />
-								</IconButton>
-							</ListItemSecondaryAction>
+
+							<ExpansionPanel>
+								<ExpansionPanelSummary
+									expandIcon={<ExpandMoreIcon />}>
+									<Checkbox
+										checked={this.state.checked.indexOf(value) !== -1}
+										onClick={this.handleToggle(value)}
+										classes={{
+											root: classes.Checkbox,
+											checked: classes.checked,
+										}}
+									/>
+									<ListItemText className={classes.ListItemText} primary={i.title} secondary={i.description} />
+									<ListItemSecondaryAction>
+										<IconButton aria-label="Edit">
+											<EditIcon />
+										</IconButton>
+									</ListItemSecondaryAction>
+								</ExpansionPanelSummary>
+								<ExpansionPanelDetails>
+									<div>
+										<Grid container>
+											<ItemGrid xs>
+												<ListItemText className={classes.ListItemText} primary={i.open_date} secondary={"Start Date"} />
+											</ItemGrid>
+											<ItemGrid xs>
+												<ListItemText className={classes.ListItemText} primary={i.close_date} secondary={"End Date"} />
+											</ItemGrid>
+											<ItemGrid xs>
+												<ListItemText className={classes.ListItemText} primary={i.created} secondary={"Created"} />
+											</ItemGrid>
+										</Grid>
+										<Grid container>
+											<ItemGrid xs>
+												<ListItemText className={classes.ListItemText} primary={i.progress} secondary={"Progress"} />
+											</ItemGrid>
+											<ItemGrid xs>
+												<ListItemText className={classes.ListItemText} primary={i.user.vcFirstName + ' ' + i.user.vcLastName} secondary={"Contact Person"} />
+											</ItemGrid>
+										</Grid>
+									</div>
+
+								</ExpansionPanelDetails>
+							</ExpansionPanel>
+
+
 						</ListItem>
 					))}
 				</List>
