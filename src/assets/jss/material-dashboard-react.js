@@ -54,7 +54,7 @@ const defaultFont = {
 };
 
 const primaryColor = "#37a891";
-const secondaryColor = "";
+const secondaryColor = "#1a1b32";
 const warningColor = "#ff9800";
 const dangerColor = "#f44336";
 const successColor = "#4caf50";

@@ -3,11 +3,9 @@ import React from "react";
 import withStyles from "material-ui/styles/withStyles";
 import InputAdornment from "material-ui/Input/InputAdornment";
 // @material-ui/icons
-import Email from "@material-ui/icons/Email";
+import Person from "@material-ui/icons/Person";
 import LockOutline from "@material-ui/icons/LockOutline";
-import People from "@material-ui/icons/People";
 // core components
-import Footer from "components/Footer/Footer.js";
 import GridContainer from "components/Grid/GridContainer";
 import GridItem from "components/Grid/ItemGrid";
 import Button from "components/CustomButtons/Button.js";
@@ -18,6 +16,7 @@ import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 
 import loginPageStyle from "assets/jss/material-dashboard-react/loginPageStyle.js";
+import { loginUser } from "variables/data";
 
 // import image from "assets/img/bg7.jpg";
 
@@ -26,7 +25,9 @@ class LoginPage extends React.Component {
 		super(props);
 		// we use this to make the card to appear after the page has been rendered
 		this.state = {
-			cardAnimaton: "cardHidden"
+			cardAnimaton: "cardHidden",
+			user: '',
+			pass: ''
 		};
 	}
 	componentDidMount() {
@@ -38,6 +39,14 @@ class LoginPage extends React.Component {
 			700
 		);
 	}
+	handleInput = (e) => {
+		console.log(e.target.id, e.target.value)
+		this.setState({ [e.target.id]: e.target.value })
+	}
+	loginUser = async () => {
+		var data = await loginUser(this.state.user, this.state.pass)
+		console.log(data)
+	}
 	render() {
 		const { classes } = this.props;
 		return (
@@ -45,32 +54,33 @@ class LoginPage extends React.Component {
 				<div
 					className={classes.pageHeader}
 					style={{
-						backgroundColor: ,
+						backgroundColor: "#1a1b32",
 						backgroundSize: "cover",
 						backgroundPosition: "top center"
 					}}
 				>
 					<div className={classes.container}>
 						<GridContainer justify="center">
-							<GridItem xs={12} sm={12} md={4}>
+							<GridItem xs={12} sm={12} md={3}>
 								<Card className={classes[this.state.cardAnimaton]}>
 									<form className={classes.form}>
 										<CardHeader color="primary" className={classes.cardHeader}>
-											<h4>Login</h4>
+											<h4>Senti Cloud</h4>
 										</CardHeader>
-										<p className={classes.divider}>Senti Cloud</p>
+										{/* <p className={classes.divider}>Login</p> */}
 										<CardBody>
 											<CustomInput
-												labelText="Email..."
-												id="email"
+												labelText="Username..."
+												id="user"
 												formControlProps={{
 													fullWidth: true
 												}}
 												inputProps={{
 													type: "email",
+													onChange: this.handleInput,
 													endAdornment: (
 														<InputAdornment position="end">
-															<Email className={classes.inputIconsColor} />
+															<Person className={classes.inputIconsColor} />
 														</InputAdornment>
 													)
 												}}
@@ -83,6 +93,7 @@ class LoginPage extends React.Component {
 												}}
 												inputProps={{
 													type: "password",
+													onChange: this.handleInput,
 													endAdornment: (
 														<InputAdornment position="end">
 															<LockOutline className={classes.inputIconsColor} />
@@ -92,8 +103,8 @@ class LoginPage extends React.Component {
 											/>
 										</CardBody>
 										<CardFooter className={classes.cardFooter}>
-											<Button simple color="primary" size="lg">
-												Get started
+											<Button color="primary" size="large" onClick={this.loginUser}>
+												Login
                      						 </Button>
 										</CardFooter>
 									</form>
