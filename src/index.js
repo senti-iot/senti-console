@@ -5,7 +5,7 @@ import { Router, Route, Switch } from "react-router-dom";
 import registerServiceWorker from './registerServiceWorker';
 import "assets/css/material-dashboard-react.css?v=1.2.0";
 
-import indexRoutes from "routes/index.jsx";
+import indexRoutes from "routes/index.js";
 
 const hist = createBrowserHistory();
 
