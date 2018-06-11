@@ -6,7 +6,7 @@ import {
 	CardHeader,
 	CardActions,
 	Typography
-} from "material-ui";
+} from "@material-ui/core";
 import PropTypes from "prop-types";
 
 import statsCardStyle from "assets/jss/material-dashboard-react/statsCardStyle";

@@ -44,7 +44,8 @@ const card = {
 	boxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.14)",
 	borderRadius: "3px",
 	color: "rgba(0, 0, 0, 0.87)",
-	background: "#fff"
+	background: "#fff",
+	overflow: "visible"
 };
 
 const defaultFont = {
@@ -82,25 +83,25 @@ const dangerBoxShadow = {
 	boxShadow:
 		"0 12px 20px -10px rgba(244, 67, 54, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(244, 67, 54, 0.2)"
 };
-
-const orangeCardHeader = {
+const sentiCardHeader = {
 	// background: "linear-gradient(60deg, #ffa726, #fb8c00)",
-	background: "linear-gradient(60deg, #37a891, #37a891)",
+	background: "linear-gradient(60deg, #37a891, #278881)",
+	...primaryBoxShadow
+};
+const orangeCardHeader = {
+	background: "linear-gradient(60deg, #ffa726, #fb8c00)",
 	...warningBoxShadow
 };
 const greenCardHeader = {
-	// background: "linear-gradient(60deg, #66bb6a, #43a047)",
-	background: "linear-gradient(60deg, #37a891, #37a891)",
+	background: "linear-gradient(60deg, #66bb6a, #43a047)",
 	...successBoxShadow
 };
 const redCardHeader = {
-	// background: "linear-gradient(60deg, #ef5350, #e53935)",
-	background: "linear-gradient(60deg, #37a891, #37a891)",
+	background: "linear-gradient(60deg, #ef5350, #e53935)",
 	...dangerBoxShadow
 };
 const blueCardHeader = {
-	// background: "linear-gradient(60deg, #26c6da, #00acc1)",
-	background: "linear-gradient(60deg, #37a891, #37a891)",
+	background: "linear-gradient(60deg, #26c6da, #00acc1)",
 	...infoBoxShadow
 };
 const purpleCardHeader = {
@@ -188,5 +189,6 @@ export {
 	dangerCardHeader,
 	infoCardHeader,
 	primaryCardHeader,
-	secondaryColor
+	secondaryColor,
+	sentiCardHeader
 };

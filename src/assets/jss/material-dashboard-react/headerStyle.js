@@ -50,7 +50,7 @@ const headerStyle = theme => ({
 		}
 	},
 	appResponsive: {
-		top: "8px"
+		top: "8px",
 	},
 	primary: {
 		backgroundColor: primaryColor,

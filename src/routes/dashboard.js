@@ -27,13 +27,13 @@ const dashboardRoutes = [
 		icon: Person,
 		component: UserProfile
 	},
-	{
-		path: "/enheder",
-		sidebarName: "Enheder",
-		navbarName: "Enheder",
-		icon: ContentPaste,
-		component: TableList
-	},
+	// {
+	// 	path: "/enheder",
+	// 	sidebarName: "Enheder",
+	// 	navbarName: "Enheder",
+	// 	icon: ContentPaste,
+	// 	component: TableList
+	// },
 	{
 		path: "/projekter",
 		sidebarName: "Projekter",

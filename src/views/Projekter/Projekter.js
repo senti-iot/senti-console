@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { getAllProjects } from '../../variables/data';
-import { Grid } from "material-ui";
+import { Grid } from "@material-ui/core";
 
 import { RegularCard, Table, ItemGrid } from "components";
+import ProjectList from 'components/List/ProjectList';
 
 export default class Projekter extends Component {
 	constructor(props) {
@@ -21,7 +22,7 @@ export default class Projekter extends Component {
 			delete p.img
 			return Object.values(p)
 		})
-		this.setState({ projects: proje, projectHeader: ['Title', 'Description', 'Open Date', 'Close Date', 'Progress', 'Created', 'Last Modified'] })
+		this.setState({ projects: projects, projectHeader: ['Title', 'Description', 'Open Date', 'Close Date', 'Progress', 'Created', 'Last Modified'] })
 	}
 
 	render() {
@@ -32,12 +33,15 @@ export default class Projekter extends Component {
 						cardTitle="All projects"
 						cardSubtitle=""
 						content={
-							<Table
-								tableHeaderColor="primary"
-								tableHead={this.state.projectHeader}
-								tableData={this.state.projects
-								}
+							<ProjectList
+								items={this.state.projects}
 							/>
+							// <Table
+							// tableHeaderColor="primary"
+							// tableHead={this.state.projectHeader}
+							// tableData={this.state.projects
+							// }
+							// />
 						}
 					/>
 				</ItemGrid>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, InputLabel } from "material-ui";
+import { Grid, InputLabel } from "@material-ui/core";
 
 import {
 	ProfileCard,

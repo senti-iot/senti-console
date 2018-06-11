@@ -8,7 +8,7 @@ import {
 	Accessibility,
 	ViewModule
 } from "@material-ui/icons";
-import { withStyles, Grid } from "material-ui";
+import { withStyles, Grid } from "@material-ui/core";
 
 import {
 	StatsCard,
@@ -114,19 +114,6 @@ class Dashboard extends React.Component {
 					</ItemGrid>
 				</Grid>
 			</React.Fragment>
-			// <Paper>
-
-			// 	<Typography variant="headline" component="h2">
-			// 		Senti Cloud
-			// 	</Typography>
-			// 	<Typography variant="headline" component="h3">
-			// 		API and React components for building Dashboard and tools for Senti-in-a-Box devices
-			// 	 </Typography>
-			// 	<Grid container>
-			// 		<ItemGrid xs={12} sm={12} md={12}>
-			// 		</ItemGrid>
-			// 	</Grid>
-			// </Paper>
 		);
 	}
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { withStyles, SnackbarContent as Snack, IconButton } from "material-ui";
+import { withStyles, SnackbarContent as Snack, IconButton } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import PropTypes from "prop-types";
 import cx from "classnames";

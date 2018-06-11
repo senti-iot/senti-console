@@ -8,7 +8,7 @@ import {
 	IconButton,
 	Hidden,
 	Button
-} from "material-ui";
+} from "@material-ui/core";
 import cx from "classnames";
 
 import headerStyle from "assets/jss/material-dashboard-react/headerStyle.js";
@@ -19,11 +19,13 @@ function Header({ ...props }) {
 	function makeBrand() {
 		var name;
 		props.routes.map((prop, key) => {
-			if (prop.path === props.location.pathname) {
+			console.log(prop.path, props.location.pathname, prop.path === props.location.pathname)
+			if (props.location.pathname.includes(prop.path)) {
 				name = prop.navbarName;
 			}
 			return null;
 		});
+		console.log(name)
 		return name;
 	}
 	const { classes, color } = props;
@@ -34,7 +36,7 @@ function Header({ ...props }) {
 		<AppBar position={'absolute'} className={classes.appBar + appBarClasses}>
 			<Toolbar className={classes.container}>
 				<div className={classes.flex}>
-					<Button href="#" className={classes.title}>
+					<Button href="/" className={classes.title}>
 						{makeBrand()}
 					</Button>
 				</div>
@@ -44,7 +46,7 @@ function Header({ ...props }) {
 				<Hidden mdUp>
 					<IconButton
 						className={classes.appResponsive}
-						color="inherit"
+						color="primary"
 						aria-label="open drawer"
 						onClick={props.handleDrawerToggle}
 					>

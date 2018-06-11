@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
-import { withStyles } from "material-ui";
+import { withStyles } from "@material-ui/core";
 
 import { Header, /* Footer, */ Sidebar } from "components";
 
@@ -20,6 +20,7 @@ const switchRoutes = (
 	<Switch>
 		{cookie.load('SESSION') ? null : <Redirect from={window.location.pathname} to={'/login'} />}
 		{dashboardRoutes.map((prop, key) => {
+			console.log(prop)
 			if (prop.redirect)
 				return <Redirect from={prop.path} to={prop.to} key={key} />;
 			return <Route path={prop.path} component={prop.component} key={key} />;

@@ -1,7 +1,6 @@
 import React from "react";
 // material-ui components
-import withStyles from "material-ui/styles/withStyles";
-import InputAdornment from "material-ui/Input/InputAdornment";
+import { InputAdornment, withStyles } from "@material-ui/core";
 // @material-ui/icons
 import Person from "@material-ui/icons/Person";
 import LockOutline from "@material-ui/icons/LockOutline";
@@ -34,19 +33,18 @@ class LoginPage extends React.Component {
 		};
 	}
 	componentDidMount() {
-		// we add a hidden class to the card and after 700 ms we delete it and the transition appears
 		var loginData = cookie.load('SESSION')
-		if (loginData) {
+		if (loginData) { //check if loginData is still valid
 			this.setState({ isLoggedIn: true })
 			setToken()
 		}
 
-
+		// we add a hidden class to the card and after 700 ms we delete it and the transition appears
 		setTimeout(
 			function () {
 				this.setState({ cardAnimaton: "" });
 			}.bind(this),
-			700
+			300
 		);
 	}
 	handleInput = (e) => {
