@@ -19,8 +19,7 @@ function Header({ ...props }) {
 	function makeBrand() {
 		var name;
 		props.routes.map((prop, key) => {
-			console.log(prop.path, props.location.pathname, prop.path === props.location.pathname)
-			if (props.location.pathname.includes(prop.path)) {
+			if (props.location.pathname === prop.path) {
 				name = prop.navbarName;
 			}
 			return null;

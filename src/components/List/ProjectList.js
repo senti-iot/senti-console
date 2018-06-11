@@ -5,7 +5,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Checkbox, ListSubheader } from '@material-ui/core';
+import { Checkbox } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 
@@ -15,8 +15,8 @@ const styles = theme => ({
 		backgroundColor: '#fff',
 		position: 'sticky'
 	},
-	ListItemText: {
-
+	Checkbox: {
+		color: 'red'
 	},
 });
 
@@ -47,45 +47,22 @@ class ProjectList extends React.Component {
 		return (
 			<div>
 				<List className={classes.list}>
-					<ListSubheader
-						className={classes.subheader}>
-						<ListItem
-							role={undefined}
-							dense
-							button
-							onClick={this.handleToggle()}
-							className={classes.listItem}
-						>
-							<Checkbox
-								checked={this.state.checked.indexOf() !== -1}
-								tabIndex={-1}
-								disableRipple
-							/>
-							<ListItemText className={classes.ListItemText} primary={'Title'} />
-							<ListItemText className={classes.ListItemText} primary={'Description'} />
-						</ListItem>
-					</ListSubheader>
-
 					{items.map((i, value) => (
 						<ListItem
 							key={value}
 							role={undefined}
-							dense
 							button
-							onClick={this.handleToggle(value)}
+
 							className={classes.listItem}
 						>
 							<Checkbox
 								checked={this.state.checked.indexOf(value) !== -1}
 								tabIndex={-1}
+								onClick={this.handleToggle(value)}
 								disableRipple
+								className={classes.Checkbox}
 							/>
-							<ListItemText className={classes.ListItemText} primary={i.title} />
-							<ListItemText className={classes.ListItemText} primary={i.description} />
-
-
-
-							{/* <ListItemText primary={`Line item ${value + 1}`} /> */}
+							<ListItemText className={classes.ListItemText} primary={i.title} secondary={i.description} />
 							<ListItemSecondaryAction>
 								<IconButton aria-label="Comments">
 									<EditIcon />

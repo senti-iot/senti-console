@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { getAllProjects } from '../../variables/data';
 import { Grid } from "@material-ui/core";
 
-import { RegularCard, Table, ItemGrid } from "components";
+import { RegularCard, /* Table, */ ItemGrid } from "components";
 import ProjectList from 'components/List/ProjectList';
 
 export default class Projekter extends Component {
@@ -16,12 +16,12 @@ export default class Projekter extends Component {
 	}
 	componentDidMount = async () => {
 		var projects = await getAllProjects()
-		var proje = projects.map(p => {
-			delete p.user
-			delete p.id
-			delete p.img
-			return Object.values(p)
-		})
+		// var proje = projects.map(p => {
+		// 	delete p.user
+		// 	delete p.id
+		// 	delete p.img
+		// 	return Object.values(p)
+		// })
 		this.setState({ projects: projects, projectHeader: ['Title', 'Description', 'Open Date', 'Close Date', 'Progress', 'Created', 'Last Modified'] })
 	}
 

@@ -16,18 +16,6 @@ import appStyle from "assets/jss/material-dashboard-react/appStyle.js";
 import logo from "../../logo.svg";
 import cookie from "react-cookies";
 
-const switchRoutes = (
-	<Switch>
-		{cookie.load('SESSION') ? null : <Redirect from={window.location.pathname} to={'/login'} />}
-		{dashboardRoutes.map((prop, key) => {
-			console.log(prop)
-			if (prop.redirect)
-				return <Redirect from={prop.path} to={prop.to} key={key} />;
-			return <Route path={prop.path} component={prop.component} key={key} />;
-		})}
-	</Switch>
-);
-
 class App extends React.Component {
 	state = {
 		mobileOpen: false
@@ -35,9 +23,7 @@ class App extends React.Component {
 	handleDrawerToggle = () => {
 		this.setState({ mobileOpen: !this.state.mobileOpen });
 	};
-	getRoute() {
-		return this.props.location.pathname !== "/maps";
-	}
+
 	componentDidMount() {
 		if (navigator.platform.indexOf('Win') > -1) {
 			// eslint-disable-next-line
@@ -67,7 +53,13 @@ class App extends React.Component {
 						{...rest}
 					/>
 					<div className={classes.content}>
-						<div className={classes.container}>{switchRoutes}</div>
+						<div className={classes.container}><Switch>
+							{cookie.load('SESSION') ? dashboardRoutes.map((prop, key) => {
+								if (prop.redirect)
+									return <Redirect from={prop.path} to={prop.to} key={key} />;
+								return <Route path={prop.path} component={prop.component} key={key} />;
+							}) : <Redirect from={window.location.pathname} to={'/login'} />}
+						</Switch></div>
 					</div>
 
 				</div>

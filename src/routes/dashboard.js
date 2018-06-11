@@ -1,12 +1,10 @@
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import UserProfile from "views/UserProfile/UserProfile.js";
-import TableList from "views/TableList/TableList.js";
 import Typography from "views/Typography/Typography.js";
 
 import {
 	Dashboard,
 	Person,
-	ContentPaste,
 	LibraryBooks,
 	BubbleChart
 } from "@material-ui/icons";
@@ -27,13 +25,6 @@ const dashboardRoutes = [
 		icon: Person,
 		component: UserProfile
 	},
-	// {
-	// 	path: "/enheder",
-	// 	sidebarName: "Enheder",
-	// 	navbarName: "Enheder",
-	// 	icon: ContentPaste,
-	// 	component: TableList
-	// },
 	{
 		path: "/projekter",
 		sidebarName: "Projekter",

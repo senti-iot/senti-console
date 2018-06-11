@@ -13,7 +13,6 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
-import { Redirect } from "react-router-dom";
 
 import loginPageStyle from "assets/jss/material-dashboard-react/loginPageStyle.js";
 import { loginUser, setToken } from "variables/data";
@@ -29,14 +28,15 @@ class LoginPage extends React.Component {
 			cardAnimaton: "cardHidden",
 			user: '',
 			pass: '',
-			isLoggedIn: false
 		};
 	}
 	componentDidMount() {
 		var loginData = cookie.load('SESSION')
 		if (loginData) { //check if loginData is still valid
-			this.setState({ isLoggedIn: true })
-			setToken()
+			if (setToken()) {
+				this.props.history.push('/dashboard')
+				console.log(this.props.history)
+			}
 		}
 
 		// we add a hidden class to the card and after 700 ms we delete it and the transition appears
@@ -51,10 +51,14 @@ class LoginPage extends React.Component {
 		this.setState({ [e.target.id]: e.target.value })
 	}
 	loginUser = async () => {
-		var data = await loginUser(this.state.user, this.state.pass)
-		cookie.save('SESSION', data)
-		setToken()
-		if (data.isLoggedIn) { this.setState({ isLoggedIn: true }) }
+		await loginUser(this.state.user, this.state.pass).then(rs => {
+			cookie.save('SESSION', rs)
+			if (rs.isLoggedIn) {
+				if (setToken())
+					this.props.history.push('/')
+			}
+		})
+
 	}
 	render() {
 		const { classes } = this.props;
@@ -76,7 +80,6 @@ class LoginPage extends React.Component {
 										<CardHeader color="primary" className={classes.cardHeader}>
 											<h4>Senti Cloud</h4>
 										</CardHeader>
-										{/* <p className={classes.divider}>Login</p> */}
 										<CardBody>
 											<CustomInput
 												labelText="Username..."
@@ -122,7 +125,7 @@ class LoginPage extends React.Component {
 						</GridContainer>
 					</div>
 				</div>
-				{this.state.isLoggedIn ? <Redirect from={window.location.pathname} to={'/'} /> : null}
+
 			</div>
 		);
 	}
