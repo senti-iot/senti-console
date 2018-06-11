@@ -9,13 +9,13 @@ import indexRoutes from "routes/index.js";
 
 const hist = createBrowserHistory();
 
+
 registerServiceWorker();
 ReactDOM.render(
 	<Router history={hist}>
 		<Switch>
 			{indexRoutes.map((prop, key) => {
-				console.log(indexRoutes)
-				return <Route path={prop.path} component={prop.component} key={key} />;
+				return <Route path={prop.path} component={prop.component} key={key} exact={prop.exact ? true : false} />;
 			})}
 		</Switch>
 	</Router>,

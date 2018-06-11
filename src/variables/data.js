@@ -23,7 +23,7 @@ const api = create({
 
 export const setToken = () => {
 	try {
-		var OAToken = cookie.load('loginData').sessionID
+		var OAToken = cookie.load('SESSION').sessionID
 		api.setHeader('ODEUMAuthToken', OAToken)
 		return true
 	}

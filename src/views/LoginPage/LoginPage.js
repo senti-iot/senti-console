@@ -14,9 +14,11 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
+import { Redirect } from "react-router-dom";
 
 import loginPageStyle from "assets/jss/material-dashboard-react/loginPageStyle.js";
-import { loginUser } from "variables/data";
+import { loginUser, setToken } from "variables/data";
+import cookie from "react-cookies";
 
 // import image from "assets/img/bg7.jpg";
 
@@ -27,11 +29,19 @@ class LoginPage extends React.Component {
 		this.state = {
 			cardAnimaton: "cardHidden",
 			user: '',
-			pass: ''
+			pass: '',
+			isLoggedIn: false
 		};
 	}
 	componentDidMount() {
 		// we add a hidden class to the card and after 700 ms we delete it and the transition appears
+		var loginData = cookie.load('SESSION')
+		if (loginData) {
+			this.setState({ isLoggedIn: true })
+			setToken()
+		}
+
+
 		setTimeout(
 			function () {
 				this.setState({ cardAnimaton: "" });
@@ -40,12 +50,13 @@ class LoginPage extends React.Component {
 		);
 	}
 	handleInput = (e) => {
-		console.log(e.target.id, e.target.value)
 		this.setState({ [e.target.id]: e.target.value })
 	}
 	loginUser = async () => {
 		var data = await loginUser(this.state.user, this.state.pass)
-		console.log(data)
+		cookie.save('SESSION', data)
+		setToken()
+		if (data.isLoggedIn) { this.setState({ isLoggedIn: true }) }
 	}
 	render() {
 		const { classes } = this.props;
@@ -113,6 +124,7 @@ class LoginPage extends React.Component {
 						</GridContainer>
 					</div>
 				</div>
+				{this.state.isLoggedIn ? <Redirect from={window.location.pathname} to={'/'} /> : null}
 			</div>
 		);
 	}

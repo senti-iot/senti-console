@@ -14,9 +14,11 @@ import appStyle from "assets/jss/material-dashboard-react/appStyle.js";
 
 // import image from "assets/img/sidebar-2.jpg";
 import logo from "../../logo.svg";
+import cookie from "react-cookies";
 
 const switchRoutes = (
 	<Switch>
+		{cookie.load('SESSION') ? null : <Redirect from={window.location.pathname} to={'/login'} />}
 		{dashboardRoutes.map((prop, key) => {
 			if (prop.redirect)
 				return <Redirect from={prop.path} to={prop.to} key={key} />;
@@ -46,7 +48,6 @@ class App extends React.Component {
 	}
 	render() {
 		const { classes, ...rest } = this.props;
-		console.log(rest)
 		return (
 			<div className={classes.wrapper}>
 
