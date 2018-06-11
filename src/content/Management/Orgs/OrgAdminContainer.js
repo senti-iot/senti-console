@@ -160,14 +160,8 @@ class OrgAdmin extends Component {
 						</TableScroll>
 					</TableContainer > : <LoaderSmall />
 				}
-				<Modal width={'330px'} height={'50%'} expand={createOrgModal} horizontalControls={false} verticalControls={false}
-					handleOverlay={this.closeCreateOrgModal}>
-					<CreateOrg closeModal={this.closeCreateOrgModal} />
-				</Modal>
-				<Modal width={'330px'} height={'50%'} expand={editOrgModal} horizontalControls={false} verticalControls={false}
-					handleOverlay={this.closeEditOrgModal}>
-					<EditOrgForm closeModal={this.closeEditOrgModal} org={this.state.editOrg} />
-				</Modal>
+				<CreateOrg expand={createOrgModal} closeModal={this.closeCreateOrgModal} />
+				<EditOrgForm expand={editOrgModal} closeModal={this.closeEditOrgModal} org={this.state.editOrg} />
 				{this.renderDeleteOrg()}
 			</div >
 		)

@@ -15,7 +15,7 @@ export const Select = styled.select`
 export const ButtonContainer = styled.div`
 	display:flex;
 	justify-content:center;
-	margin-top: 100px;
+	margin-top: 30px;
 `
 export const TableContainer = styled.div`
 	/* border : 1px solid ${p => p.theme.header.background}; */
@@ -52,7 +52,7 @@ z-index: 1;
 top: 0px;
 `
 
-export const RedButton = styled(Button) `
+export const RedButton = styled(Button)`
 	&:hover{
 		background:crimson;
 	}
@@ -101,21 +101,21 @@ export const Td = styled.td`
 		border-top-right-radius: 4px;
 	}
 `
-export const ClearTd = styled(Td) `
+export const ClearTd = styled(Td)`
 	background: none;
 	max-width: 30px;
 	width:20px;
 `
-export const ClearTh = styled(Th) `
+export const ClearTh = styled(Th)`
 	max-width: 30px;
 	width:20px;
 `
-export const FormInputCont = styled(InputCont) `
+export const FormInputCont = styled(InputCont)`
 	height:35px;
 	margin: 0.3rem 0.4rem 0.3rem 0.4rem;
 	max-width: 300px;
 `
-export const FormInput = styled(Input) `
+export const FormInput = styled(Input)`
 	width: 100%;
 	padding: 0px 4px;
 	font-size: 18px;
@@ -140,13 +140,13 @@ export const Container = styled.div`
 	overflow:auto;
 `
 export const SuccessContainer = styled.div`
-	margin: 5px;
+	margin: 4px;
 	border: ${p => "1px solid" + p.theme.tab.selected};
-	padding: 2px;
-	border-radius: 5px;
+	padding: 4px;
+	border-radius: 4px;
 	color: ${p => p.theme.tab.selected}; 
 `
-export const ErrorContainer = styled(SuccessContainer) `
+export const ErrorContainer = styled(SuccessContainer)`
 	 border: 1px solid crimson;
 	 color: crimson
 `

@@ -59,7 +59,11 @@ class Login extends Component {
 	reset = () => {
 		this.setState({ error: false })
 	}
-
+	refreshUserEdit = async () => {
+		var user = await getUserInfo(this.state.loginData.userID)
+		console.log(user)
+		this.setState({ user: user })
+	}
 	login = async (username, password, orgStore, organisation) => {
 
 		var loginData = await loginUser(username, password)
@@ -86,7 +90,8 @@ class Login extends Component {
 						logOut: this.logOut,
 						loginData: loginData,
 						user: user,
-						orgs: orgs
+						orgs: orgs,
+						refreshUserEdit: this.refreshUserEdit
 					}}>
 					{user ?
 						<App management={user.management} />

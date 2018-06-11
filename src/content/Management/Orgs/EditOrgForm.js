@@ -9,6 +9,7 @@ import {
 	Header, FormInputCont,
 	ButtonContainer, FormInput
 } from '../ManagementStyles'
+import Modal from '../../Aux/Modal/Modal'
 
 class EditOrganisation extends Component {
 	constructor(props) {
@@ -49,18 +50,7 @@ class EditOrganisation extends Component {
 			if (uId)
 				this.editDefaultForm(this.props.org)
 		}
-		// if (prevProps.org) {
-		// if (this.props.org) {
-		// if (this.props.org.iOrgID !== prevProps.org.iOrgID) {
-		// this.editDefaultForm(this.props.org)
-		// }
-		// }
-		// }
-		// else {
-		// if (!prevProps.org && this.props.org) {
-		// this.editDefaultForm(this.props.org)
-		// }
-		// }
+
 	}
 
 	handleEditOrgInput = (input) => e => {
@@ -98,64 +88,67 @@ class EditOrganisation extends Component {
 	}
 	render() {
 		return (
-			<Container>
+			<Modal width={'330px'} height={'50%'} expand={this.props.expand} horizontalControls={false} verticalControls={false}
+				handleOverlay={this.closeAndReset}>
+				<Container>
 
-				<AppContext.Consumer>
-					{(context) =>
-						<FormContainer>
+					<AppContext.Consumer>
+						{(context) =>
+							<FormContainer>
 
-							<Header>Edit Organisation:</Header>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleEditOrgInput("Name")}
-									placeholder={"Name"}
-									value={this.state.editOrgFields.vcName}
-								/>
-							</FormInputCont>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleEditOrgInput("Address")}
-									placeholder={"Address"}
-									value={this.state.editOrgFields.vcAddress}
-								/>
-							</FormInputCont>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleEditOrgInput("City")}
-									placeholder={"City"}
-									value={this.state.editOrgFields.vcCity}
-								/>
-							</FormInputCont>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleEditOrgInput("Country")}
-									placeholder={"Country"}
-									value={this.state.editOrgFields.vcCountry}
-								/>
-							</FormInputCont>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleEditOrgInput("URL")}
-									placeholder={"Website"}
-									value={this.state.editOrgFields.vcURL}
-								/>
-							</FormInputCont>
-							{this.state.success ? <SuccessContainer>Success !</SuccessContainer> : null}
-							{this.state.error ? <ErrorContainer> Error! Please check your input and try again. </ErrorContainer> : null}
-							<ButtonContainer>
-								<Button
-									style={{ color: 'white' }}
-									icon={this.state.success ? 'close' : 'group_add'}
-									iconSize={20}
+								<Header>Edit Organisation:</Header>
+								<FormInputCont>
+									<FormInput
+										onChange={this.handleEditOrgInput("Name")}
+										placeholder={"Name"}
+										value={this.state.editOrgFields.vcName}
+									/>
+								</FormInputCont>
+								<FormInputCont>
+									<FormInput
+										onChange={this.handleEditOrgInput("Address")}
+										placeholder={"Address"}
+										value={this.state.editOrgFields.vcAddress}
+									/>
+								</FormInputCont>
+								<FormInputCont>
+									<FormInput
+										onChange={this.handleEditOrgInput("City")}
+										placeholder={"City"}
+										value={this.state.editOrgFields.vcCity}
+									/>
+								</FormInputCont>
+								<FormInputCont>
+									<FormInput
+										onChange={this.handleEditOrgInput("Country")}
+										placeholder={"Country"}
+										value={this.state.editOrgFields.vcCountry}
+									/>
+								</FormInputCont>
+								<FormInputCont>
+									<FormInput
+										onChange={this.handleEditOrgInput("URL")}
+										placeholder={"Website"}
+										value={this.state.editOrgFields.vcURL}
+									/>
+								</FormInputCont>
+								{this.state.success ? <SuccessContainer>Success !</SuccessContainer> : null}
+								{this.state.error ? <ErrorContainer> Error! Please check your input and try again. </ErrorContainer> : null}
+								<ButtonContainer>
+									<Button
+										style={{ color: 'white' }}
+										icon={this.state.success ? 'close' : 'group_add'}
+										iconSize={20}
 
-									color={this.props.theme.button.background}
-									label={this.state.success ? 'Close' : 'Update Organisation'}
-									onClick={this.state.success ? this.closeAndReset : this.handleUpdateOrg}
-								/>
-							</ButtonContainer>
-						</FormContainer>}
-				</AppContext.Consumer>
-			</Container>
+										color={this.props.theme.button.background}
+										label={this.state.success ? 'Close' : 'Update Organisation'}
+										onClick={this.state.success ? this.closeAndReset : this.handleUpdateOrg}
+									/>
+								</ButtonContainer>
+							</FormContainer>}
+					</AppContext.Consumer>
+				</Container>
+			</Modal>
 		)
 	}
 }

@@ -9,6 +9,7 @@ import {
 	Header, FormInputCont,
 	ButtonContainer, FormInput, Select
 } from '../ManagementStyles'
+import Modal from '../../Aux/Modal/Modal'
 
 class EditUserForm extends Component {
 	constructor(props) {
@@ -44,19 +45,6 @@ class EditUserForm extends Component {
 		})
 	}
 
-	// componentWillReceiveProps = (nextProps) => {
-	// 	try {
-	// 		var uId = this.props.user.iUserID
-	// 		var prevuId = nextProps.user.iUserID
-	// 		if (uId !== prevuId) {
-	// 			this.editDefaultForm(nextProps.user)
-	// 		}
-	// 	}
-	// 	catch (e) {
-	// 		if (prevuId)
-	// 			this.editDefaultForm(nextProps.user)
-	// 	}
-	// }
 	componentDidUpdate = (prevProps, prevState) => {
 		try {
 			var uId = this.props.user.iUserID
@@ -105,60 +93,63 @@ class EditUserForm extends Component {
 	}
 	render() {
 		return (
-			<Container>
+			<Modal width={'330px'} height={'50%'} expand={this.props.expand} horizontalControls={false} verticalControls={false}
+				handleOverlay={this.closeAndReset}>
+				<Container>
 
-				<AppContext.Consumer>
-					{(context) =>
-						<FormContainer>
-							<Header>Edit User</Header>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleEditUserInput("FirstName")}
-									placeholder={"FirstName"}
-									value={this.state.EditUserFields.vcFirstName}
-								/>
-							</FormInputCont>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleEditUserInput("LastName")}
-									placeholder={"LastName"}
-									value={this.state.EditUserFields.vcLastName}
-								/>
-							</FormInputCont>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleEditUserInput("Email")}
-									placeholder={"Email"}
-									value={this.state.EditUserFields.vcEmail}
-								/>
-							</FormInputCont>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleEditUserInput("Phone")}
-									placeholder={"Phone"}
-									value={this.state.EditUserFields.vcPhone}
-								/>
-							</FormInputCont>
-							<Select onChange={this.handleOrgSelect} value={this.state.EditUserFields.iOrgID} >
-								<option value={0}> No Organisation </option>
-								{context.orgs ? context.orgs.map((org, i) => {
-									return <option key={i} value={org.iOrgID}> {org.vcName} </option>
-								}) : null}
-							</Select>
-							{this.state.success ? <SuccessContainer> Success ! </SuccessContainer> : null}
-							{this.state.error ? <ErrorContainer> Error! Please check your input and try again. </ErrorContainer> : null}
-							<ButtonContainer style={{ marginTop: '30px' }}>
-								<Button
-									icon={this.state.success ? 'close' : 'person'}
-									iconSize={20}
-									style={{ color: "white" }}
-									color={this.props.theme.button.background}
-									label={this.state.success ? 'Close' : 'Edit User'}
-									onClick={this.state.success ? this.closeAndReset : this.handleEditUser} />
-							</ButtonContainer>
-						</FormContainer>}
-				</AppContext.Consumer>
-			</Container>
+					<AppContext.Consumer>
+						{(context) =>
+							<FormContainer>
+								<Header>Edit User</Header>
+								<FormInputCont>
+									<FormInput
+										onChange={this.handleEditUserInput("FirstName")}
+										placeholder={"FirstName"}
+										value={this.state.EditUserFields.vcFirstName}
+									/>
+								</FormInputCont>
+								<FormInputCont>
+									<FormInput
+										onChange={this.handleEditUserInput("LastName")}
+										placeholder={"LastName"}
+										value={this.state.EditUserFields.vcLastName}
+									/>
+								</FormInputCont>
+								<FormInputCont>
+									<FormInput
+										onChange={this.handleEditUserInput("Email")}
+										placeholder={"Email"}
+										value={this.state.EditUserFields.vcEmail}
+									/>
+								</FormInputCont>
+								<FormInputCont>
+									<FormInput
+										onChange={this.handleEditUserInput("Phone")}
+										placeholder={"Phone"}
+										value={this.state.EditUserFields.vcPhone}
+									/>
+								</FormInputCont>
+								<Select onChange={this.handleOrgSelect} value={this.state.EditUserFields.iOrgID} >
+									<option value={0}> No Organisation </option>
+									{context.orgs ? context.orgs.map((org, i) => {
+										return <option key={i} value={org.iOrgID}> {org.vcName} </option>
+									}) : null}
+								</Select>
+								{this.state.success ? <SuccessContainer> Success ! </SuccessContainer> : null}
+								{this.state.error ? <ErrorContainer> Error! Please check your input and try again. </ErrorContainer> : null}
+								<ButtonContainer style={{ marginTop: '30px' }}>
+									<Button
+										icon={this.state.success ? 'close' : 'person'}
+										iconSize={20}
+										style={{ color: "white" }}
+										color={this.state.success ? 'crimson' : this.props.theme.button.background}
+										label={this.state.success ? 'Close' : 'Edit User'}
+										onClick={this.state.success ? this.closeAndReset : this.handleEditUser} />
+								</ButtonContainer>
+							</FormContainer>}
+					</AppContext.Consumer>
+				</Container>
+			</Modal>
 		)
 	}
 }
