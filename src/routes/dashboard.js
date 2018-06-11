@@ -47,8 +47,8 @@ const dashboardRoutes = [
 		navbarName: "Manangement",
 		icon: BubbleChart,
 		component: Typography
-	},
-	{ redirect: true, path: "/", to: "/dashboard", navbarName: "Redirect" }
+	}
+	// { redirect: true, path: "/", to: "/dashboard", navbarName: "Redirect" }
 ];
 
 export default dashboardRoutes;

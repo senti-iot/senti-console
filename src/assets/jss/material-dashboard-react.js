@@ -54,6 +54,7 @@ const defaultFont = {
 };
 
 const primaryColor = "#37a891";
+const secondaryColor = "";
 const warningColor = "#ff9800";
 const dangerColor = "#f44336";
 const successColor = "#4caf50";
@@ -103,7 +104,7 @@ const blueCardHeader = {
 	...infoBoxShadow
 };
 const purpleCardHeader = {
-	background: "linear-gradient(60deg, #37a891, #37a891)",
+	background: "linear-gradient(60deg, #ab47bc, #8e24aa)",
 	...primaryBoxShadow
 };
 
@@ -114,7 +115,31 @@ const cardActions = {
 	height: "auto",
 	...defaultFont
 };
-
+const warningCardHeader = {
+	color: "#fff",
+	background: "linear-gradient(60deg, #ffa726, #fb8c00)",
+	...warningBoxShadow
+};
+const successCardHeader = {
+	color: "#fff",
+	background: "linear-gradient(60deg, #66bb6a, #43a047)",
+	...successBoxShadow
+};
+const dangerCardHeader = {
+	color: "#fff",
+	background: "linear-gradient(60deg, #ef5350, #e53935)",
+	...dangerBoxShadow
+};
+const infoCardHeader = {
+	color: "#fff",
+	background: "linear-gradient(60deg, #26c6da, #00acc1)",
+	...infoBoxShadow
+};
+const primaryCardHeader = {
+	color: "#fff",
+	background: "linear-gradient(60deg, #37a891, #278881)",
+	...primaryBoxShadow
+};
 const cardHeader = {
 	margin: "-20px 15px 0",
 	borderRadius: "3px",
@@ -157,5 +182,11 @@ export {
 	purpleCardHeader,
 	cardActions,
 	cardHeader,
-	defaultBoxShadow
+	defaultBoxShadow,
+	warningCardHeader,
+	successCardHeader,
+	dangerCardHeader,
+	infoCardHeader,
+	primaryCardHeader,
+	secondaryColor
 };

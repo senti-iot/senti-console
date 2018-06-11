@@ -7,13 +7,10 @@ import Email from "@material-ui/icons/Email";
 import LockOutline from "@material-ui/icons/LockOutline";
 import People from "@material-ui/icons/People";
 // core components
-import Header from "components/Header/Header.js";
-import HeaderLinks from "components/Header/HeaderLinks.js";
 import Footer from "components/Footer/Footer.js";
 import GridContainer from "components/Grid/GridContainer";
-import GridItem from "components/Grid/GridItem.js";
+import GridItem from "components/Grid/ItemGrid";
 import Button from "components/CustomButtons/Button.js";
-import IconButton from "components/CustomButtons/IconButton.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
@@ -42,20 +39,13 @@ class LoginPage extends React.Component {
 		);
 	}
 	render() {
-		const { classes, ...rest } = this.props;
+		const { classes } = this.props;
 		return (
 			<div>
-				<Header
-					absolute
-					color="transparent"
-					brand="Material Kit React"
-					rightLinks={<HeaderLinks />}
-					{...rest}
-				/>
 				<div
 					className={classes.pageHeader}
 					style={{
-						backgroundImage: "url()",
+						backgroundColor: ,
 						backgroundSize: "cover",
 						backgroundPosition: "top center"
 					}}
@@ -67,58 +57,9 @@ class LoginPage extends React.Component {
 									<form className={classes.form}>
 										<CardHeader color="primary" className={classes.cardHeader}>
 											<h4>Login</h4>
-											<div className={classes.socialLine}>
-												<IconButton
-													href="#pablo"
-													target="_blank"
-													color="transparent"
-													onClick={e => e.preventDefault()}
-												>
-													<i
-														className={classes.socialIcons + " fab fa-twitter"}
-													/>
-												</IconButton>
-												<IconButton
-													href="#pablo"
-													target="_blank"
-													color="transparent"
-													onClick={e => e.preventDefault()}
-												>
-													<i
-														className={classes.socialIcons + " fab fa-facebook"}
-													/>
-												</IconButton>
-												<IconButton
-													href="#pablo"
-													target="_blank"
-													color="transparent"
-													onClick={e => e.preventDefault()}
-												>
-													<i
-														className={
-															classes.socialIcons + " fab fa-google-plus-g"
-														}
-													/>
-												</IconButton>
-											</div>
 										</CardHeader>
-										<p className={classes.divider}>Or Be Classical</p>
+										<p className={classes.divider}>Senti Cloud</p>
 										<CardBody>
-											<CustomInput
-												labelText="First Name..."
-												id="first"
-												formControlProps={{
-													fullWidth: true
-												}}
-												inputProps={{
-													type: "text",
-													endAdornment: (
-														<InputAdornment position="end">
-															<People className={classes.inputIconsColor} />
-														</InputAdornment>
-													)
-												}}
-											/>
 											<CustomInput
 												labelText="Email..."
 												id="email"
@@ -160,7 +101,6 @@ class LoginPage extends React.Component {
 							</GridItem>
 						</GridContainer>
 					</div>
-					<Footer whiteFont />
 				</div>
 			</div>
 		);
