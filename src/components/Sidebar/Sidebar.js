@@ -39,7 +39,7 @@ const Sidebar = ({ ...props }) => {
 						activeClassName="active"
 						key={key}
 					>
-						<ListItem button className={classes.itemLink + listItemClasses}>
+						<ListItem button className={classes.itemLink + listItemClasses} onClick={props.handleDrawerToggle}>
 							<ListItemIcon className={classes.itemIcon + whiteFontClasses}>
 								<prop.icon />
 							</ListItemIcon>
