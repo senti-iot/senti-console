@@ -4,7 +4,7 @@
 
 import { primaryColor } from "assets/jss/material-dashboard-react.js";
 
-const projectStyles = theme => ({
+const projectStyles = ({
 	loader: {
 		marginRight: 'auto',
 		marginLeft: 'auto',

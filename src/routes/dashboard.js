@@ -9,6 +9,7 @@ import {
 	LibraryBooks,
 	BubbleChart
 } from "@material-ui/icons";
+import Project from "views/Projects/Project";
 
 const dashboardRoutes = [
 	{
@@ -26,9 +27,17 @@ const dashboardRoutes = [
 		component: UserProfile
 	},
 	{
+		path: "/project/:id",
+		sidebarName: "Project",
+		navbarName: "Project",
+		icon: LibraryBooks,
+		component: Project,
+		hideFromSideBar: true
+	},
+	{
 		path: "/projects",
-		sidebarName: "Projects",
-		navbarName: "Projects",
+		sidebarName: "Project",
+		navbarName: "Project",
 		icon: LibraryBooks,
 		component: Projects
 	},

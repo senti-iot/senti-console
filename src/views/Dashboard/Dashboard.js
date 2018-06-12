@@ -28,6 +28,7 @@ class Dashboard extends React.Component {
 	componentDidMount = async () => {
 		var projects = await getAllProjects()
 		this.setState({ projects: projects })
+		this.props.setHeader("Dashboard")
 	}
 
 	handleChange = (value) => {

@@ -21,11 +21,16 @@ const Sidebar = ({ ...props }) => {
 	function activeRoute(routeName) {
 		return props.location.pathname.indexOf(routeName) > -1 ? true : false;
 	}
+	// function strip(route) {
+	// 	let newRoute = route.substring(0, route.indexOf(':'))
+	// 	return newRoute
+	// }
 	const { classes, color, logo, image, logoText, routes } = props;
 	var links = (
 		<List className={classes.list}>
 			{routes.map((prop, key) => {
 				if (prop.redirect) return null;
+				if (prop.hideFromSideBar) return null;
 				const listItemClasses = cx({
 					[" " + classes[color]]: activeRoute(prop.path)
 				});

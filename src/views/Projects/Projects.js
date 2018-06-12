@@ -16,42 +16,47 @@ class Projects extends Component {
 			loading: true
 		}
 	}
-	getProjects = () => {
-		getAllProjects().then(rs => this.setState({
+	getProjects = async () => {
+		await getAllProjects().then(rs => this.setState({
 			projects: rs,
 			projectHeader: ['Title', 'Description', 'Open Date', 'Close Date', 'Progress', 'Created', 'Last Modified'],
 			loading: false
 		}))
 	}
-	componentDidMount = () => {
-		/* var projects =  */
-		this.getProjects()
-		// var proje = projects.map(p => {
-		// 	delete p.user
-		// 	delete p.id
-		// 	delete p.img
-		// 	return Object.values(p)
-		// })
-		// this.setState({ projects: projects, projectHeader: ['Title', 'Description', 'Open Date', 'Close Date', 'Progress', 'Created', 'Last Modified'] })
+	componentDidMount = async () => {
+		await this.getProjects()
+		this.props.setHeader("Projects")
+	}
+	renderLoader = () => {
+		const { classes } = this.props
+
+		return <Grid container><CircularProgress className={classes.loader} /></Grid>
+	}
+	renderAllProjects = () => {
+		const { loading } = this.state
+		return loading ? this.renderLoader() : <ProjectList
+			items={this.state.projects}
+			history={this.props.history}
+			match={this.props.match}
+		/>
 	}
 
 	render() {
-		const { loading } = this.state
-		const { classes } = this.props
 		return (
-			<Grid container>
-				<ItemGrid xs={12} sm={12} md={12}>
-					<RegularCard
-						cardTitle="All projects"
-						cardSubtitle=""
-						content={
-							loading ? <Grid container><CircularProgress className={classes.loader} /></Grid> : <ProjectList
-								items={this.state.projects}
-							/>
-						}
-					/>
-				</ItemGrid>
-			</Grid>
+			<React.Fragment>
+				<Grid container>
+					<ItemGrid xs={12} sm={12} md={12}>
+						<RegularCard
+							cardTitle="All projects"
+							cardSubtitle=""
+							content={
+								this.renderAllProjects()
+							}
+						/>
+					</ItemGrid>
+				</Grid>
+			</React.Fragment>
+
 		)
 	}
 }

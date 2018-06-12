@@ -15,18 +15,8 @@ import headerStyle from "assets/jss/material-dashboard-react/headerStyle.js";
 
 import HeaderLinks from "./HeaderLinks";
 
+
 function Header({ ...props }) {
-	function makeBrand() {
-		var name;
-		props.routes.map((prop, key) => {
-			if (props.location.pathname === prop.path) {
-				name = prop.navbarName;
-			}
-			return null;
-		});
-		console.log(name)
-		return name;
-	}
 	const { classes, color } = props;
 	const appBarClasses = cx({
 		[" " + classes[color]]: color
@@ -36,7 +26,7 @@ function Header({ ...props }) {
 			<Toolbar className={classes.container}>
 				<div className={classes.flex}>
 					<Button href="/" className={classes.title}>
-						{makeBrand()}
+						{props.headerTitle}
 					</Button>
 				</div>
 				<Hidden smDown implementation="css">

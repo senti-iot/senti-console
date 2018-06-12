@@ -18,12 +18,18 @@ import cookie from "react-cookies";
 
 class App extends React.Component {
 	state = {
-		mobileOpen: false
+		mobileOpen: false,
+		headerTitle: ''
 	};
 	handleDrawerToggle = () => {
 		this.setState({ mobileOpen: !this.state.mobileOpen });
 	};
-
+	handleSetHeaderTitle = (title) => {
+		if (title !== this.state.headerTitle)
+			this.setState({
+				headerTitle: title
+			})
+	};
 	componentDidMount() {
 		if (navigator.platform.indexOf('Win') > -1) {
 			// eslint-disable-next-line
@@ -37,12 +43,12 @@ class App extends React.Component {
 		const { classes, ...rest } = this.props;
 		return (
 			<div className={classes.wrapper}>
-
 				<div className={classes.mainPanel} ref="mainPanel">
 					<Header
 						routes={dashboardRoutes}
 						handleDrawerToggle={this.handleDrawerToggle}
 						{...rest}
+						headerTitle={this.state.headerTitle}
 					/>
 					<Sidebar
 						routes={dashboardRoutes}
@@ -57,13 +63,13 @@ class App extends React.Component {
 							{cookie.load('SESSION') ? dashboardRoutes.map((prop, key) => {
 								if (prop.redirect)
 									return <Redirect from={prop.path} to={prop.to} key={key} />;
-								return <Route path={prop.path} component={prop.component} key={key} />;
+								return <Route path={prop.path} render={(routeProps) => <prop.component {...routeProps} setHeader={this.handleSetHeaderTitle} />} key={key} />;
 							}) : <Redirect from={window.location.pathname} to={'/login'} />}
 						</Switch></div>
 					</div>
 
 				</div>
-			</div>
+			</div >
 		);
 	}
 }
