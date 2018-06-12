@@ -1,31 +1,43 @@
 import React, { Component } from 'react'
 import { getAllProjects } from '../../variables/data';
-import { Grid } from "@material-ui/core";
+import { Grid, CircularProgress, withStyles } from "@material-ui/core";
 
 import { RegularCard, /* Table, */ ItemGrid } from "components";
 import ProjectList from 'components/List/ProjectList';
+import projectStyles from 'assets/jss/views/projects';
 
-export default class Projects extends Component {
+class Projects extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
 			projects: [],
-			projectHeader: []
+			projectHeader: [],
+			loading: true
 		}
 	}
-	componentDidMount = async () => {
-		var projects = await getAllProjects()
+	getProjects = () => {
+		getAllProjects().then(rs => this.setState({
+			projects: rs,
+			projectHeader: ['Title', 'Description', 'Open Date', 'Close Date', 'Progress', 'Created', 'Last Modified'],
+			loading: false
+		}))
+	}
+	componentDidMount = () => {
+		/* var projects =  */
+		this.getProjects()
 		// var proje = projects.map(p => {
 		// 	delete p.user
 		// 	delete p.id
 		// 	delete p.img
 		// 	return Object.values(p)
 		// })
-		this.setState({ projects: projects, projectHeader: ['Title', 'Description', 'Open Date', 'Close Date', 'Progress', 'Created', 'Last Modified'] })
+		// this.setState({ projects: projects, projectHeader: ['Title', 'Description', 'Open Date', 'Close Date', 'Progress', 'Created', 'Last Modified'] })
 	}
 
 	render() {
+		const { loading } = this.state
+		const { classes } = this.props
 		return (
 			<Grid container>
 				<ItemGrid xs={12} sm={12} md={12}>
@@ -33,15 +45,9 @@ export default class Projects extends Component {
 						cardTitle="All projects"
 						cardSubtitle=""
 						content={
-							<ProjectList
+							loading ? <Grid container><CircularProgress className={classes.loader} /></Grid> : <ProjectList
 								items={this.state.projects}
 							/>
-							// <Table
-							// tableHeaderColor="primary"
-							// tableHead={this.state.projectHeader}
-							// tableData={this.state.projects
-							// }
-							// />
 						}
 					/>
 				</ItemGrid>
@@ -49,3 +55,5 @@ export default class Projects extends Component {
 		)
 	}
 }
+
+export default withStyles(projectStyles)(Projects)

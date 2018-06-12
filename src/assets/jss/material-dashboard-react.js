@@ -54,7 +54,8 @@ const defaultFont = {
 	lineHeight: "1.5em"
 };
 
-const primaryColor = "#37a891";
+const primaryColor = "#278881";
+const hoverColor = "#37a891";
 const secondaryColor = "#1a1b32";
 const warningColor = "#ff9800";
 const dangerColor = "#f44336";
@@ -190,5 +191,6 @@ export {
 	infoCardHeader,
 	primaryCardHeader,
 	secondaryColor,
-	sentiCardHeader
+	sentiCardHeader,
+	hoverColor
 };

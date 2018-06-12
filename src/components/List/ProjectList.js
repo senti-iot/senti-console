@@ -3,16 +3,23 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Checkbox, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Grid } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
+import { Checkbox, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Grid, Button, ExpansionPanelActions } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ItemGrid from '../Grid/ItemGrid';
-import { primaryColor } from 'assets/jss/material-dashboard-react';
+import { primaryColor, hoverColor } from 'assets/jss/material-dashboard-react';
 
 const styles = theme => ({
+	button: {
+		// margin: theme.spacing.unit,
+		// marginRight: '20px',
+		color: "#FFF",
+		backgroundColor: primaryColor,
+		'&:hover': {
+			backgroundColor: hoverColor
+		}
+	},
 	subheader: {
 		padding: 0,
 		backgroundColor: '#fff',
@@ -22,6 +29,16 @@ const styles = theme => ({
 		'&$checked': {
 			color: primaryColor
 		},
+	},
+	expSumContent: {
+		"&:last-child": {
+			padding: 0
+		}
+	},
+	expSumRoot: {
+		"&:last-child": {
+			padding: 0
+		}
 	},
 	checked: {
 	},
@@ -36,7 +53,12 @@ const styles = theme => ({
 	listItem: {
 		width: '100%'
 	},
-
+	ListItemText: {
+		margin: theme.spacing.unit
+	},
+	expSumAction: {
+		padding: 0
+	}
 });
 
 class ProjectList extends React.Component {
@@ -60,39 +82,41 @@ class ProjectList extends React.Component {
 			checked: newChecked,
 		});
 	};
-
+	handleEditButton = project => e => {
+		e.stopPropagation()
+		console.log(project)
+	}
 	render() {
 		const { classes, items } = this.props;
-
+		console.log(items)
 		return (
 			<div>
 				<List className={classes.list}>
-					{items.map((i, value) => (
+					{items.length > 0 ? items.map((i, value) => (
 						<ListItem
 							key={value}
 							className={classes.listItem}
 						>
 
-							<ExpansionPanel>
+							<ExpansionPanel className={classes.listItem}>
 								<ExpansionPanelSummary
-									expandIcon={<ExpandMoreIcon />}>
-									<Checkbox
-										checked={this.state.checked.indexOf(value) !== -1}
-										onClick={this.handleToggle(value)}
-										classes={{
-											root: classes.Checkbox,
-											checked: classes.checked,
-										}}
-									/>
+									classes={{
+										content: classes.expSumContent,
+										root: classes.expSumRoot
+									}}
+								>
+
 									<ListItemText className={classes.ListItemText} primary={i.title} secondary={i.description} />
-									<ListItemSecondaryAction>
-										<IconButton aria-label="Edit">
+									<ExpansionPanelActions className={classes.expSumContent} classes={{
+										root: classes.expSumAction
+									}}>
+										<Button mini variant="fab" aria-label="edit" className={classes.button} onClick={this.handleEditButton(i)}>
 											<EditIcon />
-										</IconButton>
-									</ListItemSecondaryAction>
+										</Button>
+									</ExpansionPanelActions>
 								</ExpansionPanelSummary>
 								<ExpansionPanelDetails>
-									<div>
+									<div className={classes.listItem}>
 										<Grid container>
 											<ItemGrid xs>
 												<ListItemText className={classes.ListItemText} primary={i.open_date} secondary={"Start Date"} />
@@ -119,7 +143,7 @@ class ProjectList extends React.Component {
 
 
 						</ListItem>
-					))}
+					)) : null}
 				</List>
 			</div>)
 	}

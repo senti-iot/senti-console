@@ -118,12 +118,12 @@ body, h1, h2, h3, h4, h5, h6 {
 }
 
 a {
-    color: #9c27b0;
+    color: #37a891;
     text-decoration: none;
 }
 
 a:hover, a:focus {
-    color: #89229b;
+    color: #37a891;
     text-decoration: none;
 }
 
