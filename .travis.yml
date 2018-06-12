@@ -14,12 +14,19 @@ script:
 - cp ./build/index.html ./build/200.html
 
 deploy:
+	- provider: surge
+		project: "./build"
+		domain: https://senti-mui.surge.sh
+		skip_cleanup: true
+		on:
+			branch: senti-mui
+		
   - provider: surge
     project: "./build/"
     domain: senti-dashboard.surge.sh
     skip_cleanup: true
     on:
-      all_branches: true
+      branch: master
 
   - provider: script
     skip_cleanup: true

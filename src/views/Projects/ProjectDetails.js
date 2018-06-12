@@ -1,6 +1,6 @@
 import React from 'react'
-import { CardMedia, Grid, ListItemText } from '@material-ui/core';
-import { ItemGrid } from 'components';
+import { CardMedia, Grid, /* ListItemText */ } from '@material-ui/core';
+import { /* ItemGrid */ } from 'components';
 
 const ProjectDetails = ({ ...props }) => {
 	console.log(props.project.img)
