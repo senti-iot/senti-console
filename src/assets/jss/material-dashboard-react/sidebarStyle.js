@@ -57,7 +57,7 @@ const sidebarStyle = theme => ({
 			position: "absolute",
 			bottom: "0",
 
-			height: "1px",
+			height: "0px",
 			right: "15px",
 			width: "calc(100% - 30px)",
 			backgroundColor: "rgba(180, 180, 180, 0.3)"
@@ -170,7 +170,7 @@ const sidebarStyle = theme => ({
 	},
 	sidebarWrapper: {
 		position: "relative",
-		height: "calc(100vh - 75px)",
+		height: "calc(100vh - 70px)",
 		overflow: "auto",
 		width: "260px",
 		zIndex: "4",
