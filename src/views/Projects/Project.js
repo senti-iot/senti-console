@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import { RegularCard, ItemGrid } from 'components';
-import { Grid, CircularProgress, withStyles } from '@material-ui/core';
+import { Grid, CircularProgress, withStyles, Typography } from '@material-ui/core';
 import ProjectDetails from './ProjectDetails';
 import { getProject } from 'variables/data';
 import projectStyles from 'assets/jss/views/projects';
+import Card from 'components/Card/Card';
+import ProjectCard from './ProjectCard';
+import CardBody from 'components/Card/CardBody';
 
 class Project extends Component {
 	constructor(props) {
@@ -49,9 +52,30 @@ class Project extends Component {
 							}
 
 						/>
+						<Card>
+							<CardBody>
+								<Typography>
+									{project ? project.title : ''}
+								</Typography>
+								<Typography>
+									{project ? project.description : ''}
+								</Typography>
+							</CardBody>
+						</Card>
 					</ItemGrid>
 				</Grid>
-			</React.Fragment>
+				<Grid container>
+					<ItemGrid xs={3}>
+						<ProjectCard />
+					</ItemGrid>
+					<ItemGrid xs={3}>
+						<ProjectCard />
+					</ItemGrid>
+					<ItemGrid xs={3}>
+						<ProjectCard />
+					</ItemGrid>
+				</Grid>
+			</React.Fragment >
 		)
 	}
 }
