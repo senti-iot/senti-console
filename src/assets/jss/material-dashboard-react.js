@@ -33,7 +33,7 @@ const container = {
 
 const boxShadow = {
 	boxShadow:
-		"0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)"
+		"0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12)"
 };
 
 const card = {
@@ -56,7 +56,8 @@ const defaultFont = {
 
 const primaryColor = "#278881";
 const hoverColor = "#37a891";
-const secondaryColor = "#1a1b32";
+const secondaryColor = "#4db6ac";
+const headerColor = "#1a1b32"
 const warningColor = "#ff9800";
 const dangerColor = "#f44336";
 const successColor = "#4caf50";
@@ -152,7 +153,7 @@ const defaultBoxShadow = {
 	border: "0",
 	borderRadius: "3px",
 	boxShadow:
-		"0 10px 20px -12px rgba(0, 0, 0, 0.42), 0 3px 20px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)",
+		"0 10px 20px -12px rgba(0, 0, 0, 0.12), 0 3px 20px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.12)",
 	padding: "10px 0",
 	transition: "all 150ms ease 0s"
 };
@@ -192,5 +193,6 @@ export {
 	primaryCardHeader,
 	secondaryColor,
 	sentiCardHeader,
-	hoverColor
+	hoverColor,
+	headerColor
 };

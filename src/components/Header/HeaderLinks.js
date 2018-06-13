@@ -102,31 +102,31 @@ class HeaderLinks extends React.Component {
 											className={classes.dropdownItem}
 										>
 											Mike John responded to your email
-                    </MenuItem>
+										</MenuItem>
 										<MenuItem
 											onClick={this.handleClose}
 											className={classes.dropdownItem}
 										>
 											You have 5 new tasks
-                    </MenuItem>
+										</MenuItem>
 										<MenuItem
 											onClick={this.handleClose}
 											className={classes.dropdownItem}
 										>
 											You're now friend with Andrew
-                    </MenuItem>
+										</MenuItem>
 										<MenuItem
 											onClick={this.handleClose}
 											className={classes.dropdownItem}
 										>
 											Another Notification
-                    </MenuItem>
+										</MenuItem>
 										<MenuItem
 											onClick={this.handleClose}
 											className={classes.dropdownItem}
 										>
 											Another One
-                    </MenuItem>
+										</MenuItem>
 									</MenuList>
 								</Paper>
 							</Grow>

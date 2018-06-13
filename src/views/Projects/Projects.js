@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { getAllProjects } from '../../variables/data';
 import { Grid, CircularProgress, withStyles } from "@material-ui/core";
 
-import { RegularCard, /* Table, */ ItemGrid } from "components";
-import ProjectList from 'components/List/ProjectList';
+import { /* RegularCard */ /* Table, */ ItemGrid } from "components";
+import ProjectList from 'components/List/ProjectTable';
 import projectStyles from 'assets/jss/views/projects';
 
 class Projects extends Component {
@@ -19,7 +19,15 @@ class Projects extends Component {
 	getProjects = async () => {
 		await getAllProjects().then(rs => this.setState({
 			projects: rs,
-			projectHeader: ['Title', 'Description', 'Open Date', 'Close Date', 'Progress', 'Created', 'Last Modified'],
+			projectHeader: [
+				{ id: 'title', label: 'Title', },
+				{ id: 'description', label: 'Description', },
+				{ id: 'open_date', label: 'Start Date', },
+				{ id: 'close_date', label: 'End Date', },
+				// { id: 'progress', label: 'Progress', },
+				{ id: 'created', label: 'Created', },
+				// { id: 'last_modified', label: 'Last Modified', },
+			],
 			loading: false
 		}))
 	}
@@ -35,26 +43,30 @@ class Projects extends Component {
 	renderAllProjects = () => {
 		const { loading } = this.state
 		return loading ? this.renderLoader() : <ProjectList
-			items={this.state.projects}
+			// items={this.state.projects}
 			history={this.props.history}
 			match={this.props.match}
+			data={this.state.projects}
+			tableHead={this.state.projectHeader}
 		/>
 	}
 
 	render() {
 		return (
 			<React.Fragment>
+				{/* <Paper> */}
 				<Grid container>
 					<ItemGrid xs={12} sm={12} md={12}>
-						<RegularCard
+						{/* <RegularCard
 							cardTitle="All projects"
 							cardSubtitle=""
-							content={
-								this.renderAllProjects()
-							}
-						/>
+							content={ */}
+						{this.renderAllProjects()}
+						{/* } */}
+						{/* /> */}
 					</ItemGrid>
 				</Grid>
+				{/* </Paper> */}
 			</React.Fragment>
 
 		)
