@@ -22,6 +22,7 @@ const toolbarStyles = theme => ({
 		marginLeft: theme.spacing.unit,
 		marginRight: theme.spacing.unit,
 		width: "100%",
+		paddingBottom: 16
 	},
 	root: {
 		paddingRight: theme.spacing.unit,
@@ -94,7 +95,7 @@ let EnhancedTableToolbar = props => {
 								style: {
 									// maxHeight: ITEM_HEIGHT * 4.5,
 									width: 200,
-									boxShadow: boxShadow.boxShadow
+									boxShadow: boxShadow
 								}
 							}}
 						>

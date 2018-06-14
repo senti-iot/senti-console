@@ -42,7 +42,7 @@ const styles = theme => ({
 	},
 	paper: {
 		padding: theme.spacing.unit,
-		boxShadow: boxShadow.boxShadow
+		boxShadow: boxShadow
 	},
 	popover: {
 		pointerEvents: 'none',
@@ -169,7 +169,7 @@ class ProjectList extends React.Component {
 													style: {
 														// maxHeight: ITEM_HEIGHT * 4.5,
 														width: 200,
-														boxShadow: boxShadow.boxShadow
+														boxShadow: boxShadow
 													}
 												}}
 												PopoverClasses={

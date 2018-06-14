@@ -1,6 +1,11 @@
-import { container } from "assets/jss/material-dashboard-react";
+import { container, primaryColor } from "assets/jss/material-dashboard-react";
 
 const signupPageStyle = {
+	loader: {
+		marginRight: 'auto',
+		marginLeft: 'auto',
+		color: primaryColor
+	},
 	container: {
 		...container,
 		zIndex: "2",

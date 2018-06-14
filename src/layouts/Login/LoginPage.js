@@ -1,6 +1,6 @@
 import React from "react";
 // material-ui components
-import { InputAdornment, withStyles } from "@material-ui/core";
+import { InputAdornment, withStyles, CardContent, Collapse, CircularProgress, Grid } from "@material-ui/core";
 // @material-ui/icons
 import Person from "@material-ui/icons/Person";
 import LockOutline from "@material-ui/icons/LockOutline";
@@ -28,9 +28,20 @@ class LoginPage extends React.Component {
 			cardAnimaton: "cardHidden",
 			user: '',
 			pass: '',
+			loggingIn: false
 		};
 	}
+	handleKeyPress = (event) => {
+		if (event.key === 'Enter') {
+			this.loginUser()
+		}
+	}
+	componentWillUnmount = () => {
+		window.removeEventListener('keypress', this.handleKeyPress, false)
+	}
+
 	componentDidMount() {
+		window.addEventListener('keypress', this.handleKeyPress, false)
 		var loginData = cookie.load('SESSION')
 		if (loginData) { //check if loginData is still valid
 			if (setToken()) {
@@ -51,13 +62,20 @@ class LoginPage extends React.Component {
 		this.setState({ [e.target.id]: e.target.value })
 	}
 	loginUser = async () => {
-		await loginUser(this.state.user, this.state.pass).then(rs => {
-			cookie.save('SESSION', rs)
-			if (rs.isLoggedIn) {
-				if (setToken())
-					this.props.history.push('/')
-			}
-		})
+		this.setState({ loggingIn: true })
+		setTimeout(
+			async function () {
+				await loginUser(this.state.user, this.state.pass).then(rs => {
+					cookie.save('SESSION', rs)
+					if (rs.isLoggedIn) {
+						if (setToken())
+							this.props.history.push('/')
+					}
+				})
+			}.bind(this),
+			1000
+		);
+
 
 	}
 	render() {
@@ -120,6 +138,11 @@ class LoginPage extends React.Component {
                      						 </Button>
 										</CardFooter>
 									</form>
+									<Collapse in={this.state.loggingIn} timeout="auto" unmountOnExit>
+										<CardContent>
+											<Grid container><CircularProgress className={classes.loader} /></Grid>
+										</CardContent>
+									</Collapse>
 								</Card>
 							</GridItem>
 						</GridContainer>
