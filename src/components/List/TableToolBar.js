@@ -19,13 +19,12 @@ const options = [
 ];
 const toolbarStyles = theme => ({
 	textField: {
-		marginLeft: theme.spacing.unit,
-		marginRight: theme.spacing.unit,
-		width: "calc( 100vw - 120px)",
-		paddingBottom: 16
+		paddingBottom: 8,
+		width: '100%'
 	},
 	root: {
 		paddingRight: theme.spacing.unit,
+		paddingLeft: "16px"
 	},
 	highlight:
 		theme.palette.type === 'light'
@@ -38,14 +37,17 @@ const toolbarStyles = theme => ({
 				backgroundColor: theme.palette.secondary.dark,
 			},
 	spacer: {
-		flex: '1 1 66%',
+		flex: '1 1 33%',
 	},
 	actions: {
 		color: theme.palette.text.secondary,
 	},
 	title: {
-		flex: '1 1 auto',
+		flex: '1 1 33%',
 	},
+	headerFilter: {
+		flex: '1 1 33%'
+	}
 });
 
 let EnhancedTableToolbar = props => {
@@ -72,7 +74,7 @@ let EnhancedTableToolbar = props => {
 					/>
 				}
 			</div>
-			<div className={classes.spacer} />
+			{/* <div className={classes.spacer} /> */}
 			<div className={classes.actions}>
 				{numSelected > 0 ? (
 					<React.Fragment>

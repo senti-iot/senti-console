@@ -64,7 +64,7 @@ class EnhancedTableHead extends Component {
 							);
 						}, this)}
 					</Hidden>
-					<Hidden mdUp>
+					<Hidden lgUp>
 						{
 							<TableCell
 								key={columnData[0].id}

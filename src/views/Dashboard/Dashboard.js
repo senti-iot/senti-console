@@ -42,7 +42,6 @@ class Dashboard extends React.Component {
 		return (
 			<React.Fragment>
 				<RegularCard
-
 					cardTitle={"Senti Cloud"}
 					cardSubtitle={"API and React components for building Dashboard and tools for Senti-in-a-Box devices"}
 					content={

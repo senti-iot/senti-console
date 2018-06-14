@@ -23,15 +23,16 @@ const appStyle = theme => ({
 		overflowScrolling: 'touch'
 	},
 	content: {
-		[theme.breakpoints.up("md")]: {
-			marginTop: "70px",
-			padding: "30px 15px",
-			minHeight: "calc(100% - 123px)"
-		},
+
+		marginTop: "70px",
+		padding: "30px 15px",
+		minHeight: "calc(100% - 123px)",
+
 		[theme.breakpoints.down("md")]: {
-			marginTop: "40px",
-			padding: "0px 0px 30px 0px",
-			minHeight: "calc(100% - 123px)"
+			padding: "10px 10px 30px 10px",
+		},
+		[theme.breakpoints.down("sm")]: {
+			padding: "8px 8px 30px 8px"
 		}
 	},
 	container: {
