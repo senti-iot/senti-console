@@ -64,14 +64,14 @@ class Project extends Component {
 						</Card>
 					</ItemGrid>
 				</Grid>
-				<Grid container>
-					<ItemGrid xs={3}>
+				<Grid container alignContent={'space-between'} spacing={8}>
+					<ItemGrid xs container alignContent={'space-between'}>
 						<ProjectCard />
-					</ItemGrid>
-					<ItemGrid xs={3}>
+					</ItemGrid >
+					<ItemGrid xs container alignContent={'space-between'}>
 						<ProjectCard />
-					</ItemGrid>
-					<ItemGrid xs={3}>
+					</ItemGrid >
+					<ItemGrid xs container alignContent={'space-between'}>
 						<ProjectCard />
 					</ItemGrid>
 				</Grid>

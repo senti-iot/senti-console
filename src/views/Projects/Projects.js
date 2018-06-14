@@ -55,7 +55,7 @@ class Projects extends Component {
 		return (
 			<React.Fragment>
 				{/* <Paper> */}
-				<Grid container>
+				<Grid container justify={'center'}>
 					<ItemGrid xs={12} sm={12} md={12}>
 						{/* <RegularCard
 							cardTitle="All projects"

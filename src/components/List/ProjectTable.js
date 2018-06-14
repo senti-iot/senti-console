@@ -5,7 +5,8 @@ import {
 	// TableHead,
 	TableRow,
 	TableBody,
-	TableCell
+	TableCell,
+	Hidden
 } from "@material-ui/core";
 import EnhancedTableHead from './TableHeader';
 import EnhancedTableToolbar from './TableToolBar'
@@ -50,6 +51,10 @@ const styles = theme => ({
 	},
 	tableCell: {
 		padding: 0
+	},
+	tablecellcheckbox: {
+		padding: 0,
+		width: '50px'
 	}
 });
 
@@ -173,31 +178,33 @@ class EnhancedTable extends React.Component {
 										selected={isSelected}
 										style={{ cursor: 'pointer' }}
 									>
-										<TableCell padding="checkbox" onClick={e => this.handleClick(e, n.id)}>
+										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 											<Checkbox checked={isSelected} />
 										</TableCell>
 										<TableCell className={classes.tableCell}>
 											{n.title}
 										</TableCell>
-										<TableCell className={classes.tableCell}>
-											{n.description}
-										</TableCell>
-										<TableCell className={classes.tableCell}>
-											{this.dateFormatter(n.open_date)}
-										</TableCell>
-										<TableCell className={classes.tableCell}>
-											{this.dateFormatter(n.close_date)}
-										</TableCell>
-										{/* <TableCell className={classes.tableCell}>
+										<Hidden mdDown>
+											<TableCell className={classes.tableCell}>
+												{n.description}
+											</TableCell>
+
+											<TableCell className={classes.tableCell}>
+												{this.dateFormatter(n.open_date)}
+											</TableCell>
+											<TableCell className={classes.tableCell}>
+												{this.dateFormatter(n.close_date)}
+											</TableCell>
+											{/* <TableCell className={classes.tableCell}>
 											{n.progress}
 										</TableCell> */}
-										<TableCell className={classes.tableCell}>
-											{this.dateFormatter(n.created)}
-										</TableCell>
-										{/* <TableCell className={classes.tableCell}>
+											<TableCell className={classes.tableCell}>
+												{this.dateFormatter(n.created)}
+											</TableCell>
+											{/* <TableCell className={classes.tableCell}>
 											{n.last_modified}
 										</TableCell> */}
-
+										</Hidden>
 									</TableRow>
 								);
 							})}

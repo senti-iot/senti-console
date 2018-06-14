@@ -12,7 +12,7 @@ import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { primaryColor, boxShadow } from 'assets/jss/material-dashboard-react';
 import { Menu, MenuItem, TextField } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-// import CustomInput from '../CustomInput/CustomInput';
+
 const options = [
 	'Export to PDF',
 	'Delete'
@@ -21,7 +21,7 @@ const toolbarStyles = theme => ({
 	textField: {
 		marginLeft: theme.spacing.unit,
 		marginRight: theme.spacing.unit,
-		width: "100%",
+		width: "calc( 100vw - 120px)",
 		paddingBottom: 16
 	},
 	root: {
@@ -44,7 +44,7 @@ const toolbarStyles = theme => ({
 		color: theme.palette.text.secondary,
 	},
 	title: {
-		flex: '1 1 33%',
+		flex: '1 1 auto',
 	},
 });
 
