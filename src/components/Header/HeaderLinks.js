@@ -19,7 +19,8 @@ import headerLinksStyle from "assets/jss/material-dashboard-react/headerLinksSty
 
 class HeaderLinks extends React.Component {
 	state = {
-		open: false
+		open: false,
+		openProfile: false
 	};
 	handleClick = () => {
 		this.setState({ open: !this.state.open });
@@ -28,9 +29,16 @@ class HeaderLinks extends React.Component {
 	handleClose = () => {
 		this.setState({ open: false });
 	};
+	handleProfileOpen = () => {
+		this.setState({ openProfile: !this.state.openProfile })
+	}
+	handleProfileClose = () => {
+		console.log("bing")
+		this.setState({ openProfile: false })
+	}
 	render() {
 		const { classes } = this.props;
-		const { open } = this.state;
+		const { open, openProfile } = this.state;
 		return (
 			<div>
 				<CustomInput
@@ -76,7 +84,7 @@ class HeaderLinks extends React.Component {
 							<Hidden mdUp>
 								<p onClick={this.handleClick} className={classes.linkText}>
 									Notification
-              			  </p>
+              			 		 </p>
 							</Hidden>
 						</IconButton>
 					</Target>
@@ -103,29 +111,47 @@ class HeaderLinks extends React.Component {
 										>
 											Mike John responded to your email
 										</MenuItem>
+									</MenuList>
+								</Paper>
+							</Grow>
+						</ClickAwayListener>
+					</Popper>
+				</Manager>
+				<Manager style={{ display: "inline-block" }}>
+					<Target>
+						<IconButton
+							color="inherit"
+							aria-label="Person"
+							aria-owns={openProfile ? "person-list" : null}
+							aria-haspopup="true"
+							onClick={this.handleProfileOpen}
+							className={classes.buttonLink}
+						>
+							<Person className={classes.links} />
+							<Hidden mdUp>
+								<p className={classes.linkText} onClick={this.handleProfileOpen}>Profile</p>
+							</Hidden>
+						</IconButton>
+					</Target>
+					<Popper
+						placement="bottom-start"
+						eventsEnabled={openProfile}
+						className={
+							classNames({ [classes.popperClose]: !openProfile }) +
+							" " +
+							classes.pooperResponsive
+						}>
+						<ClickAwayListener onClickAway={this.handleProfileClose}>
+							<Grow
+								in={openProfile}
+								id="person-list"
+								style={{ transformOrigin: "0 0 0" }}>
+								<Paper className={classes.dropdown}>
+									<MenuList role="menu">
 										<MenuItem
-											onClick={this.handleClose}
-											className={classes.dropdownItem}
-										>
-											You have 5 new tasks
-										</MenuItem>
-										<MenuItem
-											onClick={this.handleClose}
-											className={classes.dropdownItem}
-										>
-											You're now friend with Andrew
-										</MenuItem>
-										<MenuItem
-											onClick={this.handleClose}
-											className={classes.dropdownItem}
-										>
-											Another Notification
-										</MenuItem>
-										<MenuItem
-											onClick={this.handleClose}
-											className={classes.dropdownItem}
-										>
-											Another One
+											onClick={this.handleProfileClose}
+											className={classes.dropdownItem}>
+											Mike John responded to your email
 										</MenuItem>
 									</MenuList>
 								</Paper>
@@ -133,16 +159,6 @@ class HeaderLinks extends React.Component {
 						</ClickAwayListener>
 					</Popper>
 				</Manager>
-				<IconButton
-					color="inherit"
-					aria-label="Person"
-					className={classes.buttonLink}
-				>
-					<Person className={classes.links} />
-					<Hidden mdUp>
-						<p className={classes.linkText}>Profile</p>
-					</Hidden>
-				</IconButton>
 			</div>
 		);
 	}

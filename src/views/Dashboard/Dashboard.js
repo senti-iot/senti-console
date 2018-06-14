@@ -41,39 +41,41 @@ class Dashboard extends React.Component {
 	render() {
 		return (
 			<React.Fragment>
-				<RegularCard
-					cardTitle={"Senti Cloud"}
-					cardSubtitle={"API and React components for building Dashboard and tools for Senti-in-a-Box devices"}
-					content={
-						<div>
-							<Grid container>
-								<ItemGrid xs>
-									<div className={this.props.classes.typo}>
-										<h3>Declarative API</h3>
-										<div className={this.props.classes.section}>ODEUM Code Help exhibits a simple NodeJS API for CRUD based persistance of help items and help indexes for an ODEUM Code App.</div>
-										<div className={this.props.classes.section}>Create, Read, Update and Delete help items for a specific App ID and access the API through React components.</div>
-									</div>
-								</ItemGrid>
-								<ItemGrid xs>
-									<div className={this.props.classes.typo}>
-										<h3>React Components</h3>
-										<div className={this.props.classes.section}>ODEUM Code Help implements React components for creating, listing, editing and deleting help items for a designated ODEUM Web App.</div>
-										<div className={this.props.classes.section}>Get ODEUM Code Help before your neighbor calls for help somewhere else.</div>
-									</div>
-								</ItemGrid>
-								<ItemGrid xs>
-									<div className={this.props.classes.typo}>
-										<h3>Simple Form Setup</h3>
-										<div className={this.props.classes.section}>Using our simple Form component you'll be on track with creating forms in minutes.</div>
-										<div className={this.props.classes.section}>Creating fast and simple forms in React has never been easier.</div>
-									</div>
-								</ItemGrid>
-							</Grid>
-						</div>
-					}>
-				</RegularCard>
 				<Grid container>
-					<ItemGrid xs={12} sm={6} md={3}>
+					<ItemGrid xs={12}>
+						<RegularCard
+							cardTitle={"Senti Cloud"}
+							cardSubtitle={"API and React components for building Dashboard and tools for Senti-in-a-Box devices"}
+							content={
+								<div>
+									<Grid container>
+										<ItemGrid xs>
+											<div className={this.props.classes.typo}>
+												<h3>Declarative API</h3>
+												<div className={this.props.classes.section}>ODEUM Code Help exhibits a simple NodeJS API for CRUD based persistance of help items and help indexes for an ODEUM Code App.</div>
+												<div className={this.props.classes.section}>Create, Read, Update and Delete help items for a specific App ID and access the API through React components.</div>
+											</div>
+										</ItemGrid>
+										<ItemGrid xs>
+											<div className={this.props.classes.typo}>
+												<h3>React Components</h3>
+												<div className={this.props.classes.section}>ODEUM Code Help implements React components for creating, listing, editing and deleting help items for a designated ODEUM Web App.</div>
+												<div className={this.props.classes.section}>Get ODEUM Code Help before your neighbor calls for help somewhere else.</div>
+											</div>
+										</ItemGrid>
+										<ItemGrid xs>
+											<div className={this.props.classes.typo}>
+												<h3>Simple Form Setup</h3>
+												<div className={this.props.classes.section}>Using our simple Form component you'll be on track with creating forms in minutes.</div>
+												<div className={this.props.classes.section}>Creating fast and simple forms in React has never been easier.</div>
+											</div>
+										</ItemGrid>
+									</Grid>
+								</div>
+							}>
+						</RegularCard>
+					</ItemGrid>
+					<ItemGrid xs={4} >
 						<StatsCard
 							icon={ViewModule}
 							iconColor="green"
@@ -83,7 +85,7 @@ class Dashboard extends React.Component {
 							noStats
 						/>
 					</ItemGrid>
-					<ItemGrid xs={12} sm={6} md={3}>
+					<ItemGrid xs={4} >
 						<StatsCard
 							icon={Store}
 							iconColor="green"
@@ -92,7 +94,7 @@ class Dashboard extends React.Component {
 							noStats
 						/>
 					</ItemGrid>
-					<ItemGrid xs={12} sm={6} md={3}>
+					<ItemGrid xs={4} >
 						<StatsCard
 							icon={InfoOutline}
 							iconColor="red"
@@ -102,7 +104,7 @@ class Dashboard extends React.Component {
 							statText="Tracked from Github"
 						/>
 					</ItemGrid>
-					<ItemGrid xs={12} sm={6} md={3}>
+					<ItemGrid xs={4}>
 						<StatsCard
 							icon={Accessibility}
 							iconColor="blue"
