@@ -12,7 +12,7 @@ import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { primaryColor, boxShadow } from 'assets/jss/material-dashboard-react';
 import { Menu, MenuItem, TextField } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-
+import IntegrationAutosuggest from 'components/Search/Search'
 const options = [
 	'Export to PDF',
 	'Delete'
@@ -64,14 +64,18 @@ let EnhancedTableToolbar = props => {
 						{numSelected} selected
 					</Typography>
 				) :
-					<TextField
-						id="search"
-						label="Search ..."
-						className={classes.textField}
-						// value={this.state.name}
-						// onChange={this.handleChange('name')}
-						margin="none"
+					<IntegrationAutosuggest
+						suggestions={props.suggestions}
+						setSearch={props.setSearch}
 					/>
+					// <TextField
+					// 	id="search"
+					// 	label="Search ..."
+					// 	className={classes.textField}
+					// 	// value={this.state.name}
+					// 	// onChange={this.handleChange('name')}
+					// 	margin="none"
+					// />
 				}
 			</div>
 			{/* <div className={classes.spacer} /> */}
