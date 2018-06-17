@@ -1,4 +1,6 @@
 import React from "react";
+import EnhancedTableHead from '../TableHeader';
+import EnhancedTableToolbar from '../TableToolBar'
 import {
 	withStyles,
 	Table,
@@ -8,8 +10,6 @@ import {
 	TableCell,
 	Hidden
 } from "@material-ui/core";
-import EnhancedTableHead from './TableHeader';
-import EnhancedTableToolbar from './TableToolBar'
 import PropTypes from "prop-types";
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
@@ -20,7 +20,8 @@ var moment = require('moment')
 const styles = theme => ({
 	root: {
 		width: '100%',
-		marginTop: theme.spacing.unit * 3,
+		// marginTop: theme.spacing.unit * 3,
+		marginTop: "2px"
 	},
 	table: {
 		minWidth: 0,
@@ -58,7 +59,7 @@ const styles = theme => ({
 	}
 });
 
-class EnhancedTable extends React.Component {
+class RegSimpleList extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -144,7 +145,7 @@ class EnhancedTable extends React.Component {
 		const { classes, data } = this.props;
 		const { order, orderBy, selected, rowsPerPage, page } = this.state;
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-
+		const tableHead = [{ label: "Device Name" }, { label: "Interval" }, { label: "Registered" }, { label: "Count" }]
 		return (
 			<Paper className={classes.root}>
 				<EnhancedTableToolbar
@@ -161,20 +162,20 @@ class EnhancedTable extends React.Component {
 							onSelectAllClick={this.handleSelectAllClick}
 							onRequestSort={this.handleRequestSort}
 							rowCount={data.length}
-							columnData={this.props.tableHead}
+							columnData={tableHead}
 							classes={classes}
 						/>
 						<TableBody>
-							{data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
+							{data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((n, i) => {
 								const isSelected = this.isSelected(n.id);
 								return (
 									<TableRow
 										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push('/project/' + n.id) }}
+										onClick={e => { e.stopPropagation(); this.props.history.push('/device/reg/' + n.id) }}
 										role="checkbox"
 										aria-checked={isSelected}
 										tabIndex={-1}
-										key={n.id}
+										key={i}
 										selected={isSelected}
 										style={{ cursor: 'pointer' }}
 									>
@@ -182,28 +183,18 @@ class EnhancedTable extends React.Component {
 											<Checkbox checked={isSelected} />
 										</TableCell>
 										<TableCell className={classes.tableCell}>
-											{n.title}
+											{n.device_name}
 										</TableCell>
-										<Hidden mdDown>
+										<Hidden smDown>
 											<TableCell className={classes.tableCell}>
-												{n.description}
-											</TableCell>
-
-											<TableCell className={classes.tableCell}>
-												{this.dateFormatter(n.open_date)}
+												{n.interval}
 											</TableCell>
 											<TableCell className={classes.tableCell}>
-												{this.dateFormatter(n.close_date)}
+												{n.registered}
 											</TableCell>
-											{/* <TableCell className={classes.tableCell}>
-											{n.progress}
-										</TableCell> */}
 											<TableCell className={classes.tableCell}>
-												{this.dateFormatter(n.created)}
+												{n.count}
 											</TableCell>
-											{/* <TableCell className={classes.tableCell}>
-											{n.last_modified}
-										</TableCell> */}
 										</Hidden>
 									</TableRow>
 								);
@@ -230,15 +221,15 @@ class EnhancedTable extends React.Component {
 					onChangePage={this.handleChangePage}
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}
 					labelRowsPerPage={<Hidden mdDown>Rows per page</Hidden>}
-
 				/>
 			</Paper>
 		);
 	}
 }
 
-EnhancedTable.propTypes = {
+RegSimpleList.propTypes = {
 	classes: PropTypes.object.isRequired,
+	data: PropTypes.array.isRequired
 };
 
-export default withStyles(styles)(EnhancedTable);
+export default withStyles(styles)(RegSimpleList);

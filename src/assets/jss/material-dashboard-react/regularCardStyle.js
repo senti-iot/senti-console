@@ -14,9 +14,38 @@ import {
 	primaryCardHeader,
 	sentiCardHeader
 } from "assets/jss/material-dashboard-react.js";
+import teal from '@material-ui/core/colors/teal';
 
-const regularCardStyle = {
-	card,
+const regularCardStyle = theme => ({
+	root: {
+		paddingTop: 0,
+		marginTop: 0
+	},
+	media: {
+		height: 0,
+		paddingTop: '56.25%', // 16:9
+	},
+	actions: {
+		display: 'flex',
+		padding: "4px"
+	},
+	expand: {
+		transform: 'rotate(0deg)',
+		transition: theme.transitions.create('transform', {
+			duration: theme.transitions.duration.shortest,
+		}),
+		marginLeft: 'auto',
+	},
+	expandOpen: {
+		transform: 'rotate(180deg)',
+	},
+	avatar: {
+		backgroundColor: teal[600],
+	},
+	card: {
+		...card,
+		// display: 'flex'
+	},
 	cardPlain: {
 		background: "transparent",
 		boxShadow: "none"
@@ -54,6 +83,6 @@ const regularCardStyle = {
 		display: "block",
 		height: "auto"
 	}
-};
+});
 
 export default regularCardStyle;

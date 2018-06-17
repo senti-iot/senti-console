@@ -30,11 +30,10 @@ class EnhancedTableHead extends Component {
 						/>
 					</TableCell>
 					<Hidden mdDown>
-						{columnData.map(column => {
+						{columnData.map((column, i) => {
 							return (
 								<TableCell
-									key={column.id}
-
+									key={i}
 									// numeric={column.numeric}
 									padding={column.disablePadding ? 'none' : 'default'}
 									sortDirection={orderBy === column.id ? order : false}
