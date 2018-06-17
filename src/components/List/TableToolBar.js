@@ -10,7 +10,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { primaryColor, boxShadow } from 'assets/jss/material-dashboard-react';
-import { Menu, MenuItem, TextField } from '@material-ui/core';
+import { Menu, MenuItem } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IntegrationAutosuggest from 'components/Search/Search'
 const options = [
