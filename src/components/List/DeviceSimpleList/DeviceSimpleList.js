@@ -60,7 +60,7 @@ const styles = theme => ({
 	}
 });
 
-class RegSimpleList extends React.Component {
+class DeviceSimpleList extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -146,7 +146,7 @@ class RegSimpleList extends React.Component {
 		const { classes, data } = this.props;
 		const { order, orderBy, selected, rowsPerPage, page } = this.state;
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-		const tableHead = [{ label: "Device Name" }, { label: "Interval" }, { label: "Registered" }, { label: "Count" }]
+		const tableHead = [{ label: "Device Name" }, { label: "Address" }, { label: "Online" }, { label: "Total Count" }]
 		return (
 			<Paper className={classes.root}>
 				<EnhancedTableToolbar
@@ -172,7 +172,7 @@ class RegSimpleList extends React.Component {
 								return (
 									<TableRow
 										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push('/device/reg/' + n.id) }}
+										onClick={e => { e.stopPropagation(); this.props.history.push('/device/' + n.id) }}
 										role="checkbox"
 										aria-checked={isSelected}
 										tabIndex={-1}
@@ -188,13 +188,13 @@ class RegSimpleList extends React.Component {
 										</TableCell>
 										<Hidden smDown>
 											<TableCell className={classes.tableCell}>
-												{n.interval}
+												{n.address}
 											</TableCell>
 											<TableCell className={classes.tableCell}>
-												{n.registered}
+												{n.online}
 											</TableCell>
 											<TableCell className={classes.tableCell}>
-												{n.count}
+												{n.totalCount}
 											</TableCell>
 										</Hidden>
 									</TableRow>
@@ -228,9 +228,9 @@ class RegSimpleList extends React.Component {
 	}
 }
 
-RegSimpleList.propTypes = {
+DeviceSimpleList.propTypes = {
 	classes: PropTypes.object.isRequired,
 	data: PropTypes.array.isRequired
 };
 
-export default withRouter(withStyles(styles)(RegSimpleList));
+export default withRouter(withStyles(styles)(DeviceSimpleList));

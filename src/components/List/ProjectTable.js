@@ -15,6 +15,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import { headerColor, primaryColor } from "assets/jss/material-dashboard-react";
+import { withRouter } from 'react-router';
 var moment = require('moment')
 
 const styles = theme => ({
@@ -84,6 +85,11 @@ class EnhancedTable extends React.Component {
 		e.stopPropagation();
 		this.setState({ anchorElMenu: null })
 	}
+	handleSearch = value => {
+		this.setState({
+			searchFilter: value
+		})
+	}
 	handleRequestSort = (event, property) => {
 		const orderBy = property;
 		let order = 'desc';
@@ -151,7 +157,9 @@ class EnhancedTable extends React.Component {
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
-					numSelected={selected.length} />
+					numSelected={selected.length}
+					suggestions={data.map(p => ({ id: p.id, label: p.title }))}
+				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
 						<EnhancedTableHead
@@ -163,6 +171,7 @@ class EnhancedTable extends React.Component {
 							rowCount={data.length}
 							columnData={this.props.tableHead}
 							classes={classes}
+							setSearch={this.handleSearch}
 						/>
 						<TableBody>
 							{data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
@@ -241,4 +250,4 @@ EnhancedTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(EnhancedTable);
+export default withRouter(withStyles(styles)(EnhancedTable));
