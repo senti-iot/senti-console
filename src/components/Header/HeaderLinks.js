@@ -33,7 +33,6 @@ class HeaderLinks extends React.Component {
 		this.setState({ openProfile: !this.state.openProfile })
 	}
 	handleProfileClose = () => {
-		console.log("bing")
 		this.setState({ openProfile: false })
 	}
 	render() {

@@ -64,7 +64,7 @@ const dashboardRoutes = [
 
 	{
 		path: "*",
-		component: () => <Redirect push from={window.location.pathname} to={window.location.pathname === '/' ? '/dashboard' : '/404'} />,
+		component: () => <Redirect from={window.location.pathname} to={window.location.pathname === '/' ? '/dashboard' : '/404'} />,
 		hideFromSideBar: true
 	},
 

@@ -46,7 +46,6 @@ class LoginPage extends React.Component {
 		if (loginData) { //check if loginData is still valid
 			if (setToken()) {
 				this.props.history.push('/dashboard')
-				console.log(this.props.history)
 			}
 		}
 

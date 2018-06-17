@@ -14,7 +14,6 @@ import tableStyle from "assets/jss/material-dashboard-react/tableStyle";
 
 function CustomTable({ ...props }) {
 	const { classes, tableHead, tableData, tableHeaderColor } = props;
-	console.log(classes[tableHeaderColor + "TableHeader"])
 	return (
 		<div className={classes.tableResponsive}>
 			<Table className={classes.table}>
