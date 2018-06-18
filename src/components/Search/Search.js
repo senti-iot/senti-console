@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-import TextField from '@material-ui/core/TextField';
+import { TextField } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
+import teal from '@material-ui/core/colors/teal'
 
 
 function renderInput(inputProps) {
@@ -15,10 +16,16 @@ function renderInput(inputProps) {
 	return (
 		<TextField
 			fullWidth
+			label={"Search..."}
+			InputLabelProps={{ FormLabelClasses: {
+				root: classes.label,
+				focused: classes.focused,
+			} }}
 			InputProps={{
 				inputRef: ref,
 				classes: {
 					input: classes.input,
+					underline: classes.underline,
 				},
 				...other,
 			}}
@@ -83,10 +90,20 @@ function getSuggestions(value, suggestions) {
 }
 
 const styles = theme => ({
+	label: {
+		'&$focused': {
+			color: teal[500],
+		},
+	},
+	focused: {},
+	underline: {
+		'&:after': {
+			borderBottomColor: teal[500],
+		},
+	},
 	container: {
 		flexGrow: 1,
 		position: 'relative',
-		marginTop: "16px",
 	},
 	suggestionsContainerOpen: {
 		position: 'absolute',
@@ -104,7 +121,7 @@ const styles = theme => ({
 		listStyleType: 'none',
 	},
 	input: {
-		color: "#00000080"
+		color: "#000000"
 	}
 });
 
@@ -150,7 +167,7 @@ class IntegrationAutosuggest extends React.Component {
 				renderSuggestion={renderSuggestion}
 				inputProps={{
 					classes,
-					placeholder: 'Search',
+					// placeholder: 'Search',
 					value: this.props.searchValue,
 					onChange: this.handleChange,
 				}}

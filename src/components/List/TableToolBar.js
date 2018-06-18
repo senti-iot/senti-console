@@ -21,8 +21,9 @@ import { DatePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import ItemGrid from '../Grid/ItemGrid';
-
+import teal from '@material-ui/core/colors/teal'
 import { withRouter } from 'react-router-dom'
+
 const toolbarStyles = theme => ({
 	textField: {
 		paddingBottom: 8,
@@ -56,7 +57,18 @@ const toolbarStyles = theme => ({
 	},
 	froot: {
 		opacity: 0.42
-	}
+	},
+	label: {
+		'&$focused': {
+			color: teal[500],
+		},
+	},
+	focused: {},
+	underline: {
+		'&:after': {
+			borderBottomColor: teal[500],
+		},
+	},
 });
 
 let EnhancedTableToolbar = props => {
@@ -73,60 +85,78 @@ let EnhancedTableToolbar = props => {
 						{numSelected} selected
 					</Typography>
 				) :
-					<Grid container>
-						<ItemGrid>
-							<IntegrationAutosuggest
-								suggestions={props.suggestions}
-								handleFilterKeyword={props.handleFilterKeyword}
-								searchValue={props.filters.keyword}
-							/>
-						</ItemGrid>
-						{props.noDatePickers ? null :
-							<MuiPickersUtilsProvider utils={MomentUtils}>
-								<ItemGrid>
-									<DatePicker
-										autoOk
-										label="Start Date"
-										clearable
-										format="DD.MM.YYYY"
-										value={props.filters.startDate}
-										onChange={props.handleFilterStartDate}
-										animateYearScrolling={false}
-										color="primary"
-										rightArrowIcon={<KeyArrRight />}
-										leftArrowIcon={<KeyArrLeft />}
-										InputLabelProps={
-											{
-												style: {
-													opacity: 0.42
-												} }
-										}
-									/>
-								</ItemGrid>
-								<ItemGrid>
-									<DatePicker
-										color="primary"
-										autoOk
-										label="End Date"
-										clearable
-										format="DD.MM.YYYY"
-										value={props.filters.endDate}
-										onChange={props.handleFilterEndDate}
-										animateYearScrolling={false}
-										rightArrowIcon={<KeyArrRight />}
-										leftArrowIcon={<KeyArrLeft />}
-										InputLabelProps={
-											{
-												style: {
-													opacity: 0.42
+					<MuiPickersUtilsProvider utils={MomentUtils}>
+						<Grid container >
+							<ItemGrid xs={12} sm={6} >
+								<IntegrationAutosuggest
+									suggestions={props.suggestions}
+									handleFilterKeyword={props.handleFilterKeyword}
+									searchValue={props.filters.keyword}
+								/>
+							</ItemGrid>
+							{props.noDatePickers ? null :
+								<React.Fragment>
+									<ItemGrid xs>
+										<DatePicker
+											autoOk
+											label="Start Date"
+											clearable
+											fullWidth
+											format="DD.MM.YYYY"
+											value={props.filters.startDate}
+											onChange={props.handleFilterStartDate}
+											animateYearScrolling={false}
+											color="primary"
+											rightArrowIcon={<KeyArrRight />}
+											leftArrowIcon={<KeyArrLeft />}
+											InputLabelProps={
+												{
+													FormLabelClasses: {
+														root: classes.label,
+														focused: classes.focused,
+													},
 												}
 											}
-										}
+											InputProps={{
+												classes: {
+													underline: classes.underline,
+												}
+											}}
+										/>
+									</ItemGrid>
+									<ItemGrid xs>
+										<DatePicker
+											color="primary"
+											autoOk
+											label="End Date"
+											clearable
+											fullWidth
+											format="DD.MM.YYYY"
+											value={props.filters.endDate}
+											onChange={props.handleFilterEndDate}
+											animateYearScrolling={false}
+											rightArrowIcon={<KeyArrRight />}
+											leftArrowIcon={<KeyArrLeft />}
+											InputLabelProps={
+												{
+													FormLabelClasses: {
+														root: classes.label,
+														focused: classes.focused,
+													},
+												}
+											}
+											InputProps={{
+												classes: {
+													underline: classes.underline,
+												}
+											}}
 										
-									/>
-								</ItemGrid>
-							</MuiPickersUtilsProvider>}
-					</Grid>
+										/>
+									</ItemGrid>
+								</React.Fragment>
+							}
+						</Grid>
+					</MuiPickersUtilsProvider>
 				}
 			</div>
 			{/* <div className={classes.spacer} /> */}

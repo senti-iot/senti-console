@@ -7,7 +7,7 @@ import ProjectCard from './ProjectCard';
 import { dateFormatter } from 'variables/functions';
 import RegSimpleList from 'components/List/RegSimpleList/RegSimpleList';
 import DeviceSimpleList from 'components/List/DeviceSimpleList/DeviceSimpleList';
-
+var moment = require("moment");
 class Project extends Component {
 	constructor(props) {
 		super(props)
@@ -65,6 +65,64 @@ class Project extends Component {
 		}
 		return max;
 		// return regs.reduce((max, r) => r.count > max ? r.count : max, regs[0].count)
+	}
+	filterItems = (projects, keyword) => {
+		// const { keyword } = this.state.filters
+		// const { activeDateFilter } = this.state[]
+		var searchStr = keyword.toLowerCase()
+		var arr = projects
+		// if (activeDateFilter)
+		// arr = this.filterByDate(arr)
+		if (arr[0] === undefined)
+			return []
+		var keys = Object.keys(arr[0])
+		var filtered = arr.filter(c => {
+			var contains = keys.map(key => {
+				if (c[key] instanceof Date) {
+					let date = moment(c[key]).format("DD.MM.YYYY")
+					return date.toLowerCase().includes(searchStr)
+				}
+				else
+					return c[key].toString().toLowerCase().includes(searchStr)
+			})
+			return contains.indexOf(true) !== -1 ? true : false
+		})
+		return filtered
+	}
+	/* 	handleFilterRegStartDate = (value) => {
+		this.setState({
+			filters: {
+				...this.state.filters,
+				startDate: value,
+				activeDateFilter: value !== null ? true : false
+			}
+		})
+	}
+	handleFilterRegEndDate = (value) => {
+		this.setState({
+			filters: {
+				...this.state.filters,
+				endDate: value,
+				activeDateFilter: value !== null ? true : false
+			}
+		})
+	} */
+	
+	handleFilterRegKeyword = (value) => {
+		this.setState({
+			regFilters: {
+				...this.state.regFilters,
+				keyword: value
+			}
+		})
+	}
+	handleFilterDeviceKeyword = (value) => {
+		this.setState({
+			deviceFilters: {
+				...this.state.deviceFilters,
+				keyword: value
+			}
+		})
 	}
 	renderLoader = () => {
 		const { classes } = this.props
@@ -162,7 +220,7 @@ class Project extends Component {
 									</Grid>
 								}
 								hiddenContent={
-									<RegSimpleList filters={this.state.regFilters} data={project.registrations} />
+									<RegSimpleList handleFilterKeyword={this.handleFilterRegKeyword} filters={this.state.regFilters} data={this.filterItems(project.registrations, this.state.regFilters.keyword)} />
 								}
 							/>
 						</ItemGrid>

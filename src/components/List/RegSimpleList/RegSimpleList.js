@@ -74,7 +74,7 @@ class RegSimpleList extends React.Component {
 		};
 	}
 	dateFormatter = (date) => {
-		var a = moment(date).format("DD.MM.YYYY")
+		var a = moment(date).format("DD.MM.YYYY - HH:mm")
 		// console.log(a)
 		return a
 	}
@@ -153,6 +153,8 @@ class RegSimpleList extends React.Component {
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+					handleFilterKeyword={this.props.handleFilterKeyword}
+					suggestions={this.props.suggestions ? this.props.suggestions : []}
 					filters={this.props.filters}
 					noFilterIcon
 					noAdd
@@ -192,10 +194,10 @@ class RegSimpleList extends React.Component {
 										</TableCell>
 										<Hidden mdDown>
 											<TableCell className={classes.tableCell}>
-												{n.interval}
+												{this.dateFormatter(n.interval)}
 											</TableCell>
 											<TableCell className={classes.tableCell}>
-												{n.registered}
+												{this.dateFormatter(n.registered)}
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												{n.count}
