@@ -86,7 +86,7 @@ const styles = theme => ({
 	container: {
 		flexGrow: 1,
 		position: 'relative',
-		marginTop: "16px"
+		marginTop: "16px",
 	},
 	suggestionsContainerOpen: {
 		position: 'absolute',
@@ -103,6 +103,9 @@ const styles = theme => ({
 		padding: 0,
 		listStyleType: 'none',
 	},
+	input: {
+		color: "#00000080"
+	}
 });
 
 class IntegrationAutosuggest extends React.Component {

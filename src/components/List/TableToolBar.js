@@ -12,6 +12,9 @@ import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { primaryColor, boxShadow } from 'assets/jss/material-dashboard-react';
 import { Menu, MenuItem, Grid } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import KeyArrRight from '@material-ui/icons/KeyboardArrowRight';
+import KeyArrLeft from '@material-ui/icons/KeyboardArrowLeft';
+
 import Add from "@material-ui/icons/Add"
 import IntegrationAutosuggest from 'components/Search/Search'
 import { DatePicker } from 'material-ui-pickers';
@@ -49,6 +52,9 @@ const toolbarStyles = theme => ({
 	},
 	headerFilter: {
 		flex: '1 1 33%'
+	},
+	froot: {
+		opacity: 0.42
 	}
 });
 
@@ -86,6 +92,14 @@ let EnhancedTableToolbar = props => {
 										onChange={props.handleFilterStartDate}
 										animateYearScrolling={false}
 										color="primary"
+										rightArrowIcon={<KeyArrRight />}
+										leftArrowIcon={<KeyArrLeft />}
+										InputLabelProps={
+											{
+												style: {
+													opacity: 0.42
+												} }
+										}
 									/>
 								</ItemGrid>
 								<ItemGrid>
@@ -98,6 +112,16 @@ let EnhancedTableToolbar = props => {
 										value={props.filters.endDate}
 										onChange={props.handleFilterEndDate}
 										animateYearScrolling={false}
+										rightArrowIcon={<KeyArrRight />}
+										leftArrowIcon={<KeyArrLeft />}
+										InputLabelProps={
+											{
+												style: {
+													opacity: 0.42
+												}
+											}
+										}
+										
 									/>
 								</ItemGrid>
 							</MuiPickersUtilsProvider>}
