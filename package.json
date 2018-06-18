@@ -1,6 +1,6 @@
 {
 	"name": "senti-cloud",
-	"version": "0.2.5",
+	"version": "0.2.6",
 	"description": "Senti Cloud",
 	"private": true,
 	"main": "index.js",
@@ -32,6 +32,6 @@
 		"eject": "react-scripts eject"
 	},
 	"keywords": [],
-	"author": "",
+	"author": "Christian Broberg",
 	"license": "MIT"
 }
