@@ -19,8 +19,6 @@ import { loginUser, setToken } from "variables/data";
 import cookie from "react-cookies";
 import classNames from 'classnames';
 
-// import image from "assets/img/bg7.jpg";
-
 class LoginPage extends React.Component {
 	constructor(props) {
 		super(props);
@@ -70,9 +68,7 @@ class LoginPage extends React.Component {
 		setTimeout(
 			async function () {
 				await loginUser(this.state.user, this.state.pass).then(rs => {
-					// console.log(rs)
 					if (rs) {
-
 						cookie.save('SESSION', rs)
 						if (rs.isLoggedIn) {
 							if (setToken())
@@ -129,17 +125,10 @@ class LoginPage extends React.Component {
 												formControlProps={{
 													fullWidth: true
 												}}
-												labelProps={
-													{
-														FormLabelClasses: {
-															root: label,
-															focused: focused
-														}
-													}
-												}
-													
+												labelProps={{ FormLabelClasses: {
+													root: label,
+													focused: focused } }}
 												inputProps={{
-													
 													type: "email",
 													onChange: this.handleInput,
 													classes: { underline: underline },
@@ -157,14 +146,12 @@ class LoginPage extends React.Component {
 												formControlProps={{
 													fullWidth: true
 												}}
-												labelProps={
-													{
-														FormLabelClasses: {
-															root: classes.label,
-															focused: classes.focused
-														}
+												labelProps={{
+													FormLabelClasses: {
+														root: classes.label,
+														focused: classes.focused
 													}
-												}
+												}}
 												inputProps={{
 													type: "password",
 													onChange: this.handleInput,

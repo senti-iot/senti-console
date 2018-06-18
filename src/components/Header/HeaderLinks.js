@@ -12,10 +12,11 @@ import {
 	Hidden
 } from "@material-ui/core";
 import { Person, /* Notifications, */ Dashboard, /* Search */ } from "@material-ui/icons";
-
+import { withRouter } from 'react-router-dom'
 // import { CustomInput, IconButton as SearchButton } from "components";
 
 import headerLinksStyle from "assets/jss/material-dashboard-react/headerLinksStyle";
+import cookie from "react-cookies";
 
 class HeaderLinks extends React.Component {
 	state = {
@@ -34,6 +35,11 @@ class HeaderLinks extends React.Component {
 	}
 	handleProfileClose = () => {
 		this.setState({ openProfile: false })
+	}
+	logOut = () => {
+		cookie.remove("SESSION")
+		this.setState({ openProfile: false })
+		this.props.history.push('/login')
 	}
 	render() {
 		const { classes } = this.props;
@@ -130,7 +136,7 @@ class HeaderLinks extends React.Component {
 								<Paper className={classes.dropdown}>
 									<MenuList role="menu">
 										<MenuItem
-											onClick={this.handleProfileClose}
+											onClick={this.logOut}
 											className={classes.dropdownItem}>
 											Log out
 										</MenuItem>
@@ -145,4 +151,4 @@ class HeaderLinks extends React.Component {
 	}
 }
 
-export default withStyles(headerLinksStyle)(HeaderLinks);
+export default withRouter(withStyles(headerLinksStyle)(HeaderLinks));
