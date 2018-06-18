@@ -30,8 +30,8 @@ class Projects extends Component {
 				var openDate = moment(c['open_date'])
 				var closeDate = moment(c['close_date'])
 				console.log(openDate, closeDate)
-				if (openDate.isBetween(startDate, endDate ? endDate : moment())
-					|| closeDate.isBetween(startDate ? startDate : moment("01/01/2015"), endDate)) {
+				if (openDate > startDate
+			 		&& closeDate < (endDate ? endDate : moment())) {
 					return true
 				}
 				else
@@ -55,7 +55,10 @@ class Projects extends Component {
 		var filtered = arr.filter(c => {
 			var contains = keys.map(key => {
 				if (c[key] instanceof Date)
-					return c[key].toLowerCase().includes(searchStr)
+				{
+					let date = moment(c[key]).format("DD.MM.YYYY")
+					return date.toLowerCase().includes(searchStr)
+				}
 				else
 					return c[key].toString().toLowerCase().includes(searchStr)
 			})

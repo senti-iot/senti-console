@@ -51,7 +51,8 @@ const styles = theme => ({
 		}
 	},
 	tableCell: {
-		padding: 0
+		padding: 0,
+		minWidth: 130
 	},
 	tablecellcheckbox: {
 		padding: 0,
