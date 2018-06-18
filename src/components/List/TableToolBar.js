@@ -18,10 +18,7 @@ import { DatePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import ItemGrid from '../Grid/ItemGrid';
-const options = [
-	'Export to PDF',
-	'Delete'
-];
+
 const toolbarStyles = theme => ({
 	textField: {
 		paddingBottom: 8,
@@ -134,9 +131,9 @@ let EnhancedTableToolbar = props => {
 								}
 							}}
 						>
-							{options.map(option => (
-								<MenuItem key={option} onClick={props.handleToolbarMenuClose}>
-									{option}
+							{props.options.map((option, i) => (
+								<MenuItem key={i} onClick={option.func}>
+									{option.label}
 								</MenuItem>
 							))}
 						</Menu>

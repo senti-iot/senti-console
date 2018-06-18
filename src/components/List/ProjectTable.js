@@ -86,7 +86,7 @@ class EnhancedTable extends React.Component {
 		e.stopPropagation();
 		this.setState({ anchorElMenu: null })
 	}
-	handleFilterMenuOpen = e => { 
+	handleFilterMenuOpen = e => {
 		e.stopPropagation()
 		this.setState({ anchorFilterMenu: e.currentTarget })
 	}
@@ -155,9 +155,17 @@ class EnhancedTable extends React.Component {
 	handleChangeRowsPerPage = event => {
 		this.setState({ rowsPerPage: event.target.value });
 	};
-
+	handleDeleteProjects = async () => {
+		this.props.deleteProjects(this.state.selected)
+		this.setState({
+			selected: []
+		})
+	}
 	isSelected = id => this.state.selected.indexOf(id) !== -1;
-
+	options = [
+		{ label: 'Export to PDF', func: () => { } },
+		{ label: 'Delete', func: this.handleDeleteProjects }
+	];
 	render() {
 		const { classes, data } = this.props;
 		const { order, orderBy, selected, rowsPerPage, page } = this.state;
@@ -178,6 +186,7 @@ class EnhancedTable extends React.Component {
 					filters={this.props.filters}
 					filterOptions={this.props.tableHead}
 					numSelected={selected.length}
+					options={this.options}
 					suggestions={data.map(p => ({ id: p.id, label: p.title }))}
 				/>
 				<div className={classes.tableWrapper}>

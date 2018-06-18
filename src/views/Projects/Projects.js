@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getAllProjects } from '../../variables/data';
+import { getAllProjects, deleteProject } from '../../variables/data';
 import { Grid, CircularProgress, withStyles } from "@material-ui/core";
 
 import { /* RegularCard */ /* Table, */ ItemGrid } from "components";
@@ -111,6 +111,11 @@ class Projects extends Component {
 		await this.getProjects()
 		this.props.setHeader("Projects")
 	}
+	deleteProjects = async (projects) => {
+		await deleteProject(projects).then(() => {
+			this.getProjects()
+		})
+	}
 	renderLoader = () => {
 		const { classes } = this.props
 
@@ -125,6 +130,7 @@ class Projects extends Component {
 			handleFilterKeyword={this.handleFilterKeyword}
 			handleFilterStartDate={this.handleFilterStartDate}
 			filters={this.state.filters}
+			deleteProjects={this.deleteProjects}
 		/>
 	}
 
