@@ -51,29 +51,29 @@ class Dashboard extends React.Component {
 					<ItemGrid xs={12}>
 						<RegularCard
 							cardTitle={"Senti Cloud"}
-							cardSubtitle={"API and React components for building Dashboard and tools for Senti-in-a-Box devices"}
+							cardSubtitle={"Senti - an open source IoT project that will make cities smarter"}
 							content={
 								<div>
 									<Grid container>
 										<ItemGrid xs>
 											<div className={this.props.classes.typo}>
-												<h3>Declarative API</h3>
-												<div className={this.props.classes.section}>ODEUM Code Help exhibits a simple NodeJS API for CRUD based persistance of help items and help indexes for an ODEUM Code App.</div>
-												<div className={this.props.classes.section}>Create, Read, Update and Delete help items for a specific App ID and access the API through React components.</div>
+												<h3>Projects</h3>
+												<div className={this.props.classes.section}>Projects help you encapsulate Senti devices for at specific task and collection use case.</div>
+												<div className={this.props.classes.section}>You can create as many projects as you like, and you can bundle devices from all available locations.</div>
 											</div>
 										</ItemGrid>
 										<ItemGrid xs>
 											<div className={this.props.classes.typo}>
-												<h3>React Components</h3>
-												<div className={this.props.classes.section}>ODEUM Code Help implements React components for creating, listing, editing and deleting help items for a designated ODEUM Web App.</div>
-												<div className={this.props.classes.section}>Get ODEUM Code Help before your neighbor calls for help somewhere else.</div>
+												<h3>Devices</h3>
+												<div className={this.props.classes.section}>Devices are the actual physical device deployed into your environment. </div>
+												<div className={this.props.classes.section}>Here you can name, configure and calibrate the devices used in your projects.</div>
 											</div>
 										</ItemGrid>
 										<ItemGrid xs>
 											<div className={this.props.classes.typo}>
-												<h3>Simple Form Setup</h3>
-												<div className={this.props.classes.section}>Using our simple Form component you'll be on track with creating forms in minutes.</div>
-												<div className={this.props.classes.section}>Creating fast and simple forms in React has never been easier.</div>
+												<h3>Data</h3>
+												<div className={this.props.classes.section}>Viewing your data can be done through lists, cards and different types of graphs/diagrams.</div>
+												<div className={this.props.classes.section}>You can create reports and export data with very few clicks.</div>
 											</div>
 										</ItemGrid>
 									</Grid>
