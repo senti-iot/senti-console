@@ -15,6 +15,7 @@ import {
 	People
 } from "@material-ui/icons";
 import Project from "views/Projects/Project";
+import CreateProject from 'views/Projects/CreateProject';
 
 const dashboardRoutes = [
 	{
@@ -59,6 +60,13 @@ const dashboardRoutes = [
 		path: "/404",
 		sidebarName: "Error",
 		component: DashboardPage,
+		hideFromSideBar: true
+	},
+	{
+		path: "/newproject",
+		sidebarName: "Add new project",
+		icon: LibraryBooks,
+		component: CreateProject,
 		hideFromSideBar: true
 	},
 
