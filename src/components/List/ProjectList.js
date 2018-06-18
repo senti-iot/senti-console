@@ -127,7 +127,7 @@ class ProjectList extends React.Component {
 	render() {
 		const { classes, items } = this.props;
 		const { anchorElMenu } = this.state
-		console.log(items)
+		// console.log(items)
 		let open = !!this.state.anchorEl
 		return (
 			<div>

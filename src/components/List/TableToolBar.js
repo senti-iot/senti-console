@@ -22,6 +22,7 @@ import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import ItemGrid from '../Grid/ItemGrid';
 
+import { withRouter } from 'react-router-dom'
 const toolbarStyles = theme => ({
 	textField: {
 		paddingBottom: 8,
@@ -165,7 +166,7 @@ let EnhancedTableToolbar = props => {
 				) :
 					<React.Fragment>
 						{props.noAdd ? null : <Tooltip title="Add new project">
-							<IconButton aria-label="Add new project">
+							<IconButton aria-label="Add new project" onClick={() => props.history.push('/newproject')}>
 								<Add />
 							</IconButton>
 						</Tooltip>}
@@ -210,4 +211,4 @@ EnhancedTableToolbar.propTypes = {
 	numSelected: PropTypes.number.isRequired,
 };
 
-export default withStyles(toolbarStyles)(EnhancedTableToolbar);
+export default withRouter(withStyles(toolbarStyles)(EnhancedTableToolbar));

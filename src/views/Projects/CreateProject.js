@@ -6,7 +6,9 @@ import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import KeyArrRight from '@material-ui/icons/KeyboardArrowRight';
 import KeyArrLeft from '@material-ui/icons/KeyboardArrowLeft';
 import { Button } from 'components';
-const ITEM_HEIGHT = 48;
+import { getAvailableDevices } from 'variables/data';
+
+const ITEM_HEIGHT = 32;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
 	PaperProps: {
@@ -22,16 +24,16 @@ const styles = theme => ({
 		flexWrap: 'wrap',
 	},
 	formControl: {
-		margin: theme.spacing.unit,
+		margin: theme.spacing.unit * 2,
 		minWidth: 120,
-		maxWidth: 300,
+		// maxWidth: 300,
 	},
 	chips: {
 		display: 'flex',
 		flexWrap: 'wrap',
 	},
 	chip: {
-		margin: theme.spacing.unit / 4,
+		margin: theme.spacing.unit / 8,
 	},
 	datepicker: {
 		margin: theme.spacing.unit,
@@ -47,18 +49,7 @@ const styles = theme => ({
 		flexWrap: 'wrap',
 	}
 })
-const names = [
-	'Oliver Hansen',
-	'Van Henry',
-	'April Tucker',
-	'Ralph Hubbard',
-	'Omar Alexander',
-	'Carlos Abbott',
-	'Miriam Wagner',
-	'Bradley Wilkerson',
-	'Virginia Andrews',
-	'Kelly Snyder',
-];
+
 class CreateProject extends Component {
 	constructor(props) {
 	  super(props)
@@ -68,9 +59,21 @@ class CreateProject extends Component {
 		  description: '',
 		  open_date: null,
 		  close_date: null,
-		  devices: []
+		  devices: [],
+		  availableDevices: []
 	  }
 	}
+	componentDidMount = () => {
+		getAvailableDevices().then(rs => {
+		  this.setState({
+			  availableDevices: rs
+		  })
+	  })
+	}
+	handleDeviceChange = event => {
+		this.setState({ devices: event.target.value });
+	};
+
 	handleDateChange = id => value => {
 		this.setState({
 			[id]: value
@@ -84,6 +87,7 @@ class CreateProject extends Component {
 	}
 	render() {
 		const { classes, theme } = this.props
+		const { availableDevices } = this.state
 		return (
 		  <Paper>
 				<MuiPickersUtilsProvider utils={MomentUtils}>
@@ -151,28 +155,28 @@ class CreateProject extends Component {
 							<InputLabel htmlFor="select-multiple-chip">Devices</InputLabel>
 							<Select
 								multiple
-								value={this.state.name}
-								onChange={this.handleChange}
+								value={this.state.devices}
+								onChange={this.handleDeviceChange}
 								input={<Input id="select-multiple-chip" />}
 								renderValue={selected => (
 									<div className={classes.chips}>
-										{selected.map(value => <Chip key={value} label={value} className={classes.chip} />)}
+										{selected.map(value => <Chip key={value} label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_name} className={classes.chip} /> )}
 									</div>
 								)}
 								MenuProps={MenuProps}
 							>
-								{names.map(name => (
+								{availableDevices.map(name => (
 									<MenuItem
-										key={name}
-										value={name}
+										key={name.device_id}
+										value={name.device_id}
 										style={{
 											fontWeight:
-												this.state.name.indexOf(name) === -1
+												this.state.devices.indexOf(name.device_id) === -1
 													? theme.typography.fontWeightRegular
 													: theme.typography.fontWeightMedium,
 										}}
 									>
-										{name}
+										{name.device_name}
 									</MenuItem>
 								))}
 							</Select>
@@ -190,4 +194,4 @@ class CreateProject extends Component {
 	}
 }
 
-export default withStyles(styles)(CreateProject)
+export default withStyles(styles, { withTheme: true })(CreateProject)
