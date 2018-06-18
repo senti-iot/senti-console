@@ -5,7 +5,7 @@ import { Grid, CircularProgress, withStyles } from "@material-ui/core";
 import { /* RegularCard */ /* Table, */ ItemGrid } from "components";
 import ProjectTable from 'components/List/ProjectTable';
 import projectStyles from 'assets/jss/views/projects';
-
+var moment = require('moment');
 class Projects extends Component {
 	constructor(props) {
 		super(props)
@@ -17,25 +17,67 @@ class Projects extends Component {
 			filters: {
 				keyword: '',
 				startDate: null,
-				endDate: null
+				endDate: null,
+				activeDateFilter: false
 			}
 		}
+	} filterByDate = (items) => {
+		const { startDate, endDate } = this.state.filters
+		var arr = items
+		var keys = Object.keys(arr[0])
+		var filteredByDate = arr.filter(c => {
+			var contains = keys.map(key => {
+				var openDate = moment(c['open_date'])
+				var closeDate = moment(c['close_date'])
+				console.log(openDate, closeDate)
+				if (openDate.isBetween(startDate, endDate ? endDate : moment())
+					|| closeDate.isBetween(startDate ? startDate : moment("01/01/2015"), endDate)) {
+					return true
+				}
+				else
+					return false
+			})
+			return contains.indexOf(true) !== -1 ? true : false
+		})
+		return filteredByDate
 	}
-	filterItems = () => {
 
+	filterItems = (projects) => {
+		const { keyword } = this.state.filters
+		const { activeDateFilter } = this.state.filters
+		var searchStr = keyword.toLowerCase()
+		var arr = projects
+		if (activeDateFilter)
+			arr = this.filterByDate(arr)
+		if (arr[0] === undefined)
+			return []
+		var keys = Object.keys(arr[0])
+		var filtered = arr.filter(c => {
+			var contains = keys.map(key => {
+				if (c[key] instanceof Date)
+					return c[key].toLowerCase().includes(searchStr)
+				else
+					return c[key].toString().toLowerCase().includes(searchStr)
+			})
+			return contains.indexOf(true) !== -1 ? true : false
+		})
+		return filtered
 	}
+
 	handleFilterStartDate = (value) => {
 		this.setState({
 			filters: {
 				...this.state.filters,
-				startDate: value
+				startDate: value,
+				activeDateFilter: value !== null ? true : false
 			} })
 	}
 	handleFilterEndDate = (value) => { 
 		this.setState({
 			filters: {
 				...this.state.filters,
-				endDate: value
+				endDate: value,
+				activeDateFilter: value !== null ? true : false
 			}
 		})
 	}
@@ -74,7 +116,7 @@ class Projects extends Component {
 	renderAllProjects = () => {
 		const { loading } = this.state
 		return loading ? this.renderLoader() : <ProjectTable
-			data={this.state.projects}
+			data={this.filterItems(this.state.projects)}
 			tableHead={this.state.projectHeader}
 			handleFilterEndDate={this.handleFilterEndDate}
 			handleFilterKeyword={this.handleFilterKeyword}
