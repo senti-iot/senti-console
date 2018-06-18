@@ -22,6 +22,7 @@ const styles = theme => ({
 	root: {
 		width: '100%',
 		marginTop: theme.spacing.unit * 3,
+		borderRadius: "3px"
 	},
 	table: {
 		minWidth: 0,
@@ -158,7 +159,8 @@ class EnhancedTable extends React.Component {
 	handleDeleteProjects = async () => {
 		this.props.deleteProjects(this.state.selected)
 		this.setState({
-			selected: []
+			selected: [],
+			anchorElMenu: null
 		})
 	}
 	isSelected = id => this.state.selected.indexOf(id) !== -1;

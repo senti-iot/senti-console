@@ -68,7 +68,7 @@ export const logOut = async () => {
 	return data
 }
 export const createOneProject = async (project) => {
-	var data = await api.post('senti/project', JSON.stringify(project)).then(response => response.data)
+	var data = await api.post('senti/project', project).then(response => response.data)
 	return data
 }
 export const getAllProjects = async () => {

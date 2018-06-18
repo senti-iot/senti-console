@@ -9,7 +9,7 @@ import {
 	List,
 	ListItem,
 	ListItemIcon,
-	ListItemText
+	ListItemText,
 } from "@material-ui/core";
 
 import { HeaderLinks } from "components";

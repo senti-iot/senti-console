@@ -3,7 +3,6 @@
 // #############################
 
 import {
-	primaryColor,
 	dangerColor,
 	successColor,
 	defaultFont
@@ -21,7 +20,7 @@ const customInputStyle = {
 			height: "1px !important"
 		},
 		"&:after": {
-			backgroundColor: primaryColor
+			backgroundColor: "red"
 		}
 	},
 	underlineError: {

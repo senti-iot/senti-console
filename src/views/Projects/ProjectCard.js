@@ -81,6 +81,15 @@ class ProjectCard extends React.Component {
 					</Collapse>
 					{!this.props.noExpand ?
 						<React.Fragment>
+						
+							<Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+								<CardContent classes={{
+									root: classes.root
+								}
+								}>
+									{hiddenContent ? hiddenContent : null}
+								</CardContent>
+							</Collapse>
 							<CardActions className={classes.actions} disableActionSpacing>
 								<IconButton
 									className={classnames(classes.expand, {
@@ -93,14 +102,6 @@ class ProjectCard extends React.Component {
 									<ExpandMoreIcon />
 								</IconButton>
 							</CardActions>
-							<Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-								<CardContent classes={{
-									root: classes.root
-								}
-								}>
-									{hiddenContent ? hiddenContent : null}
-								</CardContent>
-							</Collapse>
 						</React.Fragment>
 						: null}
 				</Card>

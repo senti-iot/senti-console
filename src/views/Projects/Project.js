@@ -42,7 +42,7 @@ class Project extends Component {
 							regMostCounts: this.regMostCount(rs.registrations)
 						}
 					})
-					// console.log(rs)
+					console.log(rs)
 				})
 			else {
 				this.props.history.push('/projects')

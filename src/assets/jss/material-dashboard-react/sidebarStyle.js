@@ -52,6 +52,7 @@ const sidebarStyle = theme => ({
 		position: "relative",
 		padding: "15px 15px",
 		zIndex: "4",
+		display: 'flex',
 		"&:after": {
 			content: '""',
 			position: "absolute",
@@ -82,7 +83,7 @@ const sidebarStyle = theme => ({
 		// width: "50px",
 		display: "inline-block",
 		maxHeight: "50px",
-		marginLeft: "10px",
+		marginLeft: "50px",
 		marginRight: "15px"
 	},
 	img: {
