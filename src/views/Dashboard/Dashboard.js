@@ -23,11 +23,17 @@ import { getAllProjects } from "../../variables/data";
 class Dashboard extends React.Component {
 	state = {
 		value: 0,
-		projects: []
+		projects: [],
+		devices: 0
 	};
 	componentDidMount = async () => {
-		var projects = await getAllProjects()
-		this.setState({ projects: projects })
+		let projects = await getAllProjects()
+		let devices = 0;
+		projects.forEach(p => {
+			return p.devices ? devices = devices + p.devices.length : ''
+		});
+		this.setState({ projects: projects, devices: devices })
+
 		this.props.setHeader("Dashboard")
 	}
 
@@ -90,7 +96,7 @@ class Dashboard extends React.Component {
 							icon={Store}
 							iconColor="green"
 							title="Devices"
-							description="1"
+							description={this.state.devices}
 							noStats
 						/>
 					</ItemGrid>
