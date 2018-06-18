@@ -1,4 +1,5 @@
 import { container, primaryColor } from "assets/jss/material-dashboard-react";
+import teal from '@material-ui/core/colors/teal'
 
 const signupPageStyle = {
 	loader: {
@@ -6,6 +7,32 @@ const signupPageStyle = {
 		marginLeft: 'auto',
 		color: primaryColor
 	},
+	errorLabel: {
+		'&$errorFocused': {
+			color: "red"
+		}
+	},
+	errorFocused: {
+	},
+	errorUnderline: {
+		'&:after': {
+			borderBottomColor: "red",
+		},
+	},
+	label: {
+		'&$focused': {
+			color: teal[500]
+		},
+	},
+	focused: {
+	},
+	underline: {
+		'&:after': {
+			borderBottomColor: teal[500],
+		},
+	},
+
+
 	container: {
 		...container,
 		zIndex: "2",

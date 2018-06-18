@@ -17,6 +17,7 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import loginPageStyle from "assets/jss/material-dashboard-react/loginPageStyle.js";
 import { loginUser, setToken } from "variables/data";
 import cookie from "react-cookies";
+import classNames from 'classnames';
 
 // import image from "assets/img/bg7.jpg";
 
@@ -28,7 +29,8 @@ class LoginPage extends React.Component {
 			cardAnimaton: "cardHidden",
 			user: '',
 			pass: '',
-			loggingIn: false
+			loggingIn: false,
+			error: false
 		};
 	}
 	handleKeyPress = (event) => {
@@ -59,16 +61,26 @@ class LoginPage extends React.Component {
 	}
 	handleInput = (e) => {
 		this.setState({ [e.target.id]: e.target.value })
+		if (this.state.error) { 
+			this.setState({ error: false })
+		}
 	}
 	loginUser = async () => {
 		this.setState({ loggingIn: true })
 		setTimeout(
 			async function () {
 				await loginUser(this.state.user, this.state.pass).then(rs => {
-					cookie.save('SESSION', rs)
-					if (rs.isLoggedIn) {
-						if (setToken())
-							this.props.history.push('/')
+					// console.log(rs)
+					if (rs) {
+
+						cookie.save('SESSION', rs)
+						if (rs.isLoggedIn) {
+							if (setToken())
+								this.props.history.push('/')
+						}
+					}
+					else {
+						this.setState({ error: true, loggingIn: false })
 					}
 				})
 			}.bind(this),
@@ -79,6 +91,18 @@ class LoginPage extends React.Component {
 	}
 	render() {
 		const { classes } = this.props;
+		const label = classNames({ [classes.label]: !this.state.error,
+			[classes.errorLabel]: this.state.error
+		});
+		const underline = classNames({
+			[classes.underline]: !this.state.error,
+			[classes.errorUnderline]: this.state.error
+		});
+		const focused = classNames({
+			[classes.focused]: !this.state.error,
+			[classes.errorFocused]: this.state.error
+		
+		});
 		return (
 			<div>
 				<div
@@ -101,12 +125,24 @@ class LoginPage extends React.Component {
 											<CustomInput
 												labelText="Username..."
 												id="user"
+												error={this.state.error}
 												formControlProps={{
 													fullWidth: true
 												}}
+												labelProps={
+													{
+														FormLabelClasses: {
+															root: label,
+															focused: focused
+														}
+													}
+												}
+													
 												inputProps={{
+													
 													type: "email",
 													onChange: this.handleInput,
+													classes: { underline: underline },
 													endAdornment: (
 														<InputAdornment position="end">
 															<Person className={classes.inputIconsColor} />
@@ -117,12 +153,22 @@ class LoginPage extends React.Component {
 											<CustomInput
 												labelText="Password"
 												id="pass"
+												error={this.state.error}
 												formControlProps={{
 													fullWidth: true
 												}}
+												labelProps={
+													{
+														FormLabelClasses: {
+															root: classes.label,
+															focused: classes.focused
+														}
+													}
+												}
 												inputProps={{
 													type: "password",
 													onChange: this.handleInput,
+													classes: { underline: classes.underline },
 													endAdornment: (
 														<InputAdornment position="end">
 															<LockOutline className={classes.inputIconsColor} />
