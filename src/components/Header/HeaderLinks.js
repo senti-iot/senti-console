@@ -11,9 +11,9 @@ import {
 	ClickAwayListener,
 	Hidden
 } from "@material-ui/core";
-import { Person, Notifications, Dashboard, Search } from "@material-ui/icons";
+import { Person, /* Notifications, */ Dashboard, /* Search */ } from "@material-ui/icons";
 
-import { CustomInput, IconButton as SearchButton } from "components";
+// import { CustomInput, IconButton as SearchButton } from "components";
 
 import headerLinksStyle from "assets/jss/material-dashboard-react/headerLinksStyle";
 
@@ -37,27 +37,9 @@ class HeaderLinks extends React.Component {
 	}
 	render() {
 		const { classes } = this.props;
-		const { open, openProfile } = this.state;
+		const { openProfile } = this.state;
 		return (
 			<div>
-				<CustomInput
-					formControlProps={{
-						className: classes.margin + " " + classes.search
-					}}
-					inputProps={{
-						placeholder: "Search",
-						inputProps: {
-							"aria-label": "Search"
-						}
-					}}
-				/>
-				<SearchButton
-					color="white"
-					aria-label="edit"
-					customClass={classes.margin + " " + classes.searchButton}
-				>
-					<Search className={classes.searchIcon} />
-				</SearchButton>
 				<IconButton
 					color="inherit"
 					aria-label="Dashboard"
@@ -68,7 +50,7 @@ class HeaderLinks extends React.Component {
 						<p className={classes.linkText}>Dashboard</p>
 					</Hidden>
 				</IconButton>
-				<Manager style={{ display: "inline-block" }}>
+				{/* <Manager style={{ display: "inline-block" }}>
 					<Target>
 						<IconButton
 							color="inherit"
@@ -96,7 +78,7 @@ class HeaderLinks extends React.Component {
 							classes.pooperResponsive
 						}
 					>
-						<ClickAwayListener onClickAway={this.handleClose}>
+						<ClickAwayListener onClickAway={this.handleClose} >
 							<Grow
 								in={open}
 								id="menu-list"
@@ -115,7 +97,7 @@ class HeaderLinks extends React.Component {
 							</Grow>
 						</ClickAwayListener>
 					</Popper>
-				</Manager>
+				</Manager> */}
 				<Manager style={{ display: "inline-block" }}>
 					<Target>
 						<IconButton
@@ -150,7 +132,7 @@ class HeaderLinks extends React.Component {
 										<MenuItem
 											onClick={this.handleProfileClose}
 											className={classes.dropdownItem}>
-											Mike John responded to your email
+											Log out
 										</MenuItem>
 									</MenuList>
 								</Paper>

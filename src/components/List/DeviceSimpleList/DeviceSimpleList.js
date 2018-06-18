@@ -150,9 +150,13 @@ class DeviceSimpleList extends React.Component {
 		return (
 			<Paper className={classes.root}>
 				<EnhancedTableToolbar
+					noFilterIcon
+					noAdd
+					noDatePickers
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+					filters={this.props.filters}
 					numSelected={selected.length} />
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
@@ -186,7 +190,7 @@ class DeviceSimpleList extends React.Component {
 										<TableCell className={classes.tableCell}>
 											{n.device_name}
 										</TableCell>
-										<Hidden smDown>
+										<Hidden mdDown>
 											<TableCell className={classes.tableCell}>
 												{n.address}
 											</TableCell>

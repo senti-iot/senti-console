@@ -18,6 +18,16 @@ class Project extends Component {
 				deviceMostCounts: null,
 				regMostCounts: null
 			},
+			regFilters: {
+				keyword: '',
+				startDate: '',
+				endDate: ''
+			},
+			deviceFilters: {
+				keyword: '',
+				startDate: '',
+				endDate: ''
+			},
 			loading: true
 		}
 	}
@@ -70,7 +80,7 @@ class Project extends Component {
 					<Grid container justify={'center'} alignContent={'space-between'} spacing={8}>
 						<ItemGrid xs={12} sm={12} md={12}>
 							<ProjectCard title={project.title} subheader={project.description}
-
+								noExpand
 								content={
 									<Grid container>
 										<ItemGrid>
@@ -100,7 +110,7 @@ class Project extends Component {
 						</ItemGrid>
 						<ItemGrid xs={12} sm={12} md={12}>
 							<ProjectCard title={"Devices"} subheader={project.devices.length}
-								hideFacts
+								// hideFacts
 								content={
 									<Grid container>
 										<ItemGrid>
@@ -111,16 +121,24 @@ class Project extends Component {
 												{deviceMostCounts ? deviceMostCounts.device_name : "-"}
 											</Typography>
 										</ItemGrid>
+										<ItemGrid>
+											<Typography variant={'caption'}>
+												Hits by most active device:
+											</Typography>
+											<Typography variant={"title"}>
+												{deviceMostCounts ? deviceMostCounts.totalCount : "-"}
+											</Typography>
+										</ItemGrid>
 									</Grid>
 								}
 								hiddenContent={
-									<DeviceSimpleList data={project.devices} />
+									<DeviceSimpleList filters={this.state.deviceFilters} data={project.devices} />
 								}
 							/>
 						</ItemGrid >
 						<ItemGrid xs={12} sm={12} md={12}>
 							<ProjectCard title={"Registrations"} subheader={project.registrations.length}
-								hideFacts
+								// hideFacts
 								content={
 									<Grid container>
 										<ItemGrid>
@@ -144,7 +162,7 @@ class Project extends Component {
 									</Grid>
 								}
 								hiddenContent={
-									<RegSimpleList data={project.registrations} />
+									<RegSimpleList filters={this.state.regFilters} data={project.registrations} />
 								}
 							/>
 						</ItemGrid>

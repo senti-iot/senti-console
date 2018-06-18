@@ -10,9 +10,14 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { primaryColor, boxShadow } from 'assets/jss/material-dashboard-react';
-import { Menu, MenuItem } from '@material-ui/core';
+import { Menu, MenuItem, Grid } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Add from "@material-ui/icons/Add"
 import IntegrationAutosuggest from 'components/Search/Search'
+import { DatePicker } from 'material-ui-pickers';
+import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
+import ItemGrid from '../Grid/ItemGrid';
 const options = [
 	'Export to PDF',
 	'Delete'
@@ -51,7 +56,7 @@ const toolbarStyles = theme => ({
 });
 
 let EnhancedTableToolbar = props => {
-	const { numSelected, classes } = props;
+	const { numSelected, classes, filterOptions } = props;
 	return (
 		<Toolbar
 			className={classNames(classes.root, {
@@ -64,18 +69,42 @@ let EnhancedTableToolbar = props => {
 						{numSelected} selected
 					</Typography>
 				) :
-					<IntegrationAutosuggest
-						suggestions={props.suggestions}
-						setSearch={props.setSearch}
-					/>
-					// <TextField
-					// 	id="search"
-					// 	label="Search ..."
-					// 	className={classes.textField}
-					// 	// value={this.state.name}
-					// 	// onChange={this.handleChange('name')}
-					// 	margin="none"
-					// />
+					<Grid container>
+						<ItemGrid>
+							<IntegrationAutosuggest
+								suggestions={props.suggestions}
+								handleFilterKeyword={props.handleFilterKeyword}
+								searchValue={props.filters.keyword}
+							/>
+						</ItemGrid>
+						{props.noDatePickers ? null :
+							<MuiPickersUtilsProvider utils={MomentUtils}>
+								<ItemGrid>
+									<DatePicker
+										autoOk
+										label="Start Date"
+										clearable
+										format="DD.MM.YYYY"
+										value={props.filters.startDate}
+										onChange={props.handleFilterStartDate}
+										animateYearScrolling={false}
+										color="primary"
+									/>
+								</ItemGrid>
+								<ItemGrid>
+									<DatePicker
+										color="primary"
+										autoOk
+										label="End Date"
+										clearable
+										format="DD.MM.YYYY"
+										value={props.filters.endDate}
+										onChange={props.handleFilterEndDate}
+										animateYearScrolling={false}
+									/>
+								</ItemGrid>
+							</MuiPickersUtilsProvider>}
+					</Grid>
 				}
 			</div>
 			{/* <div className={classes.spacer} /> */}
@@ -113,11 +142,42 @@ let EnhancedTableToolbar = props => {
 						</Menu>
 					</React.Fragment>
 				) :
-					<Tooltip title="Filter list">
-						<IconButton aria-label="Filter list">
-							<FilterListIcon />
-						</IconButton>
-					</Tooltip>
+					<React.Fragment>
+						{props.noAdd ? null : <Tooltip title="Add new project">
+							<IconButton aria-label="Add new project">
+								<Add />
+							</IconButton>
+						</Tooltip>}
+						{props.noFilterIcon ? null :
+							<React.Fragment><Tooltip title="Filter list">
+								<IconButton
+									aria-label="Filter list"
+									aria-owns={props.anchorFilterMenu ? "filter-menu" : null}
+									onClick={props.handleFilterMenuOpen}>
+									<FilterListIcon />
+								</IconButton>
+							</Tooltip>
+							<Menu
+								id="filter-menu"
+								anchorEl={props.anchorFilterMenu}
+								open={Boolean(props.anchorFilterMenu)}
+								onClose={props.handleFilterMenuClose}
+								PaperProps={{
+									style: {
+										// maxHeight: ITEM_HEIGHT * 4.5,
+										width: 200,
+										boxShadow: boxShadow
+									}
+								}}
+							>
+								{filterOptions.map(option => (
+									<MenuItem key={option.id} onClick={props.handleFilter}>
+										{option.label}
+									</MenuItem>
+								))}
+							</Menu>
+							</React.Fragment>}
+					</React.Fragment>
 				}
 			</div>
 		</Toolbar>

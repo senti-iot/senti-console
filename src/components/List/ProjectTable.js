@@ -69,12 +69,12 @@ class EnhancedTable extends React.Component {
 			selected: [],
 			page: 0,
 			rowsPerPage: 5,
-			anchorElMenu: null
+			anchorElMenu: null,
+			anchorFilterMenu: null
 		};
 	}
 	dateFormatter = (date) => {
 		var a = moment(date).format("DD.MM.YYYY")
-		// console.log(a)
 		return a
 	}
 	handleToolbarMenuOpen = e => {
@@ -84,6 +84,17 @@ class EnhancedTable extends React.Component {
 	handleToolbarMenuClose = e => {
 		e.stopPropagation();
 		this.setState({ anchorElMenu: null })
+	}
+	handleFilterMenuOpen = e => { 
+		e.stopPropagation()
+		this.setState({ anchorFilterMenu: e.currentTarget })
+	}
+	handleFilterMenuClose = e => {
+		e.stopPropagation()
+		this.setState({ anchorFilterMenu: null })
+	}
+	handleFilter = e => {
+		console.log('not implemented')
 	}
 	handleSearch = value => {
 		this.setState({
@@ -155,8 +166,16 @@ class EnhancedTable extends React.Component {
 			<Paper className={classes.root}>
 				<EnhancedTableToolbar
 					anchorElMenu={this.state.anchorElMenu}
+					anchorFilterMenu={this.state.anchorFilterMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+					handleFilterMenuOpen={this.handleFilterMenuOpen}
+					handleFilterMenuClose={this.handleFilterMenuClose}
+					handleFilterKeyword={this.props.handleFilterKeyword}
+					handleFilterStartDate={this.props.handleFilterStartDate}
+					handleFilterEndDate={this.props.handleFilterEndDate}
+					filters={this.props.filters}
+					filterOptions={this.props.tableHead}
 					numSelected={selected.length}
 					suggestions={data.map(p => ({ id: p.id, label: p.title }))}
 				/>
@@ -171,7 +190,6 @@ class EnhancedTable extends React.Component {
 							rowCount={data.length}
 							columnData={this.props.tableHead}
 							classes={classes}
-							setSearch={this.handleSearch}
 						/>
 						<TableBody>
 							{data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {

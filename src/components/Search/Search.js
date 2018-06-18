@@ -86,6 +86,7 @@ const styles = theme => ({
 	container: {
 		flexGrow: 1,
 		position: 'relative',
+		marginTop: "16px"
 	},
 	suggestionsContainerOpen: {
 		position: 'absolute',
@@ -123,10 +124,7 @@ class IntegrationAutosuggest extends React.Component {
 	};
 
 	handleChange = (event, { newValue }) => {
-		this.setState({
-			value: newValue,
-		});
-		this.props.setSearch(newValue)
+		this.props.handleFilterKeyword(newValue)
 	};
 
 	render() {
@@ -150,7 +148,7 @@ class IntegrationAutosuggest extends React.Component {
 				inputProps={{
 					classes,
 					placeholder: 'Search',
-					value: this.state.value,
+					value: this.props.searchValue,
 					onChange: this.handleChange,
 				}}
 			/>

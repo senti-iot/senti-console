@@ -3,7 +3,7 @@ import { getAllProjects } from '../../variables/data';
 import { Grid, CircularProgress, withStyles } from "@material-ui/core";
 
 import { /* RegularCard */ /* Table, */ ItemGrid } from "components";
-import ProjectList from 'components/List/ProjectTable';
+import ProjectTable from 'components/List/ProjectTable';
 import projectStyles from 'assets/jss/views/projects';
 
 class Projects extends Component {
@@ -13,8 +13,39 @@ class Projects extends Component {
 		this.state = {
 			projects: [],
 			projectHeader: [],
-			loading: true
+			loading: true,
+			filters: {
+				keyword: '',
+				startDate: null,
+				endDate: null
+			}
 		}
+	}
+	filterItems = () => {
+
+	}
+	handleFilterStartDate = (value) => {
+		this.setState({
+			filters: {
+				...this.state.filters,
+				startDate: value
+			} })
+	}
+	handleFilterEndDate = (value) => { 
+		this.setState({
+			filters: {
+				...this.state.filters,
+				endDate: value
+			}
+		})
+	}
+	handleFilterKeyword = (value) => {
+		this.setState({
+			filters: {
+				...this.state.filters,
+				keyword: value
+			}
+		})
 	}
 	getProjects = async () => {
 		await getAllProjects().then(rs => this.setState({
@@ -42,12 +73,13 @@ class Projects extends Component {
 	}
 	renderAllProjects = () => {
 		const { loading } = this.state
-		return loading ? this.renderLoader() : <ProjectList
-			// items={this.state.projects}
-			history={this.props.history}
-			match={this.props.match}
+		return loading ? this.renderLoader() : <ProjectTable
 			data={this.state.projects}
 			tableHead={this.state.projectHeader}
+			handleFilterEndDate={this.handleFilterEndDate}
+			handleFilterKeyword={this.handleFilterKeyword}
+			handleFilterStartDate={this.handleFilterStartDate}
+			filters={this.state.filters}
 		/>
 	}
 

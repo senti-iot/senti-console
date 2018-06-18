@@ -153,6 +153,10 @@ class RegSimpleList extends React.Component {
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+					filters={this.props.filters}
+					noFilterIcon
+					noAdd
+					noDatePickers
 					numSelected={selected.length} />
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
@@ -186,7 +190,7 @@ class RegSimpleList extends React.Component {
 										<TableCell className={classes.tableCell}>
 											{n.device_name}
 										</TableCell>
-										<Hidden smDown>
+										<Hidden mdDown>
 											<TableCell className={classes.tableCell}>
 												{n.interval}
 											</TableCell>
