@@ -1,17 +1,17 @@
 import React from "react";
-import classNames from "classnames";
-import { Manager, Target, Popper } from "react-popper";
+// import classNames from "classnames";
+// import { Manager, Reference, Popper } from "react-popper";
 import {
 	withStyles,
 	IconButton,
-	MenuItem,
-	MenuList,
-	Grow,
-	Paper,
-	ClickAwayListener,
+	// MenuItem,
+	// MenuList,
+	// Grow,
+	// Paper,
+	// ClickAwayListener,
 	Hidden
 } from "@material-ui/core";
-import { Person, Dashboard } from "@material-ui/icons";
+import { /* Person, */ Dashboard } from "@material-ui/icons";
 import { withRouter } from 'react-router-dom'
 import headerLinksStyle from "assets/jss/material-dashboard-react/headerLinksStyle";
 import cookie from "react-cookies";
@@ -41,7 +41,7 @@ class HeaderLinks extends React.Component {
 	}
 	render() {
 		const { classes } = this.props;
-		const { openProfile } = this.state;
+		// const { openProfile } = this.state;
 		return (
 			<div>
 				<IconButton
@@ -55,7 +55,7 @@ class HeaderLinks extends React.Component {
 					</Hidden>
 				</IconButton>
 				{/* <Manager style={{ display: "inline-block" }}>
-					<Target>
+					<Reference>
 						<IconButton
 							color="inherit"
 							aria-label="Notifications"
@@ -72,7 +72,7 @@ class HeaderLinks extends React.Component {
               			 		 </p>
 							</Hidden>
 						</IconButton>
-					</Target>
+					</Reference>
 					<Popper
 						placement="bottom-start"
 						eventsEnabled={open}
@@ -102,8 +102,8 @@ class HeaderLinks extends React.Component {
 						</ClickAwayListener>
 					</Popper>
 				</Manager> */}
-				<Manager style={{ display: "inline-block" }}>
-					<Target>
+				{/* <Manager style={{ display: "inline-block" }}>
+					<Reference>
 						<IconButton
 							color="inherit"
 							aria-label="Person"
@@ -117,7 +117,7 @@ class HeaderLinks extends React.Component {
 								<p className={classes.linkText} onClick={this.handleProfileOpen}>Profile</p>
 							</Hidden>
 						</IconButton>
-					</Target>
+					</Reference>
 					<Popper
 						placement="bottom-start"
 						eventsEnabled={openProfile}
@@ -143,7 +143,7 @@ class HeaderLinks extends React.Component {
 							</Grow>
 						</ClickAwayListener>
 					</Popper>
-				</Manager>
+				</Manager> */}
 			</div>
 		);
 	}
