@@ -21,7 +21,9 @@ class Projects extends Component {
 				activeDateFilter: false
 			}
 		}
-	} filterByDate = (items) => {
+		props.setHeader("Projects")
+	}
+	filterByDate = (items) => {
 		const { startDate, endDate } = this.state.filters
 		var arr = items
 		var keys = Object.keys(arr[0])
@@ -109,7 +111,7 @@ class Projects extends Component {
 	}
 	componentDidMount = async () => {
 		await this.getProjects()
-		this.props.setHeader("Projects")
+		// this.props.setHeader("Projects")
 	}
 	deleteProjects = async (projects) => {
 		await deleteProject(projects).then(() => {

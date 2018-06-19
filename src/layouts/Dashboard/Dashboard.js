@@ -18,10 +18,15 @@ import cookie from "react-cookies";
 import GeoLocation from "components/Geolocation/Geolocation";
 
 class App extends React.Component {
-	state = {
-		mobileOpen: false,
-		headerTitle: ''
-	};
+	constructor(props) {
+	  super(props)
+	
+	  this.state = {
+		 	mobileOpen: false,
+			headerTitle: ''
+	  }
+	}
+	
 	handleDrawerToggle = () => {
 		this.setState({ mobileOpen: !this.state.mobileOpen });
 	};

@@ -213,7 +213,7 @@ let EnhancedTableToolbar = props => {
 									tooltip: classes.tooltip
 								}}
 							>
-								<IconButton aria-label="Add new project" onClick={() => props.history.push('/newproject')}>
+								<IconButton aria-label="Add new project" onClick={() => props.history.push('/projects/new')}>
 									<Add />
 								</IconButton>
 							</Tooltip>
