@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 
 class GeoLocation extends Component {
 
@@ -21,7 +21,8 @@ class GeoLocation extends Component {
 		if ("geolocation" in navigator) {
 			navigator.geolocation.getCurrentPosition(function (position) {
 				var lat = position.coords.latitude
-				_this.setState({ lat })
+				var long = position.coords.longitude
+				_this.setState({ lat, long })
 			})
 		}
 
@@ -50,13 +51,13 @@ class GeoLocation extends Component {
 	}
 
 	render() {
-
-		return (
-			<div>
-				<p>{this.state.lat} </p>
-				<p>{this.state.long} </p>
-			</div>
-		)
+		console.log(this.state)
+		return null
+		// <div>
+		// 	<p>{this.state.lat} </p>
+		// 	<p>{this.state.long} </p>
+		// </div>
+		
 	}
 }
 

@@ -15,6 +15,7 @@ import appStyle from "assets/jss/material-dashboard-react/appStyle.js";
 // import image from "assets/img/sidebar-2.jpg";
 import logo from "../../logo.svg";
 import cookie from "react-cookies";
+import GeoLocation from "components/Geolocation/Geolocation";
 
 class App extends React.Component {
 	state = {
@@ -43,6 +44,7 @@ class App extends React.Component {
 		const { classes, ...rest } = this.props;
 		return (
 			<div className={classes.wrapper}>
+				<GeoLocation/>
 				<div className={classes.mainPanel} ref="mainPanel">
 					<Header
 						routes={dashboardRoutes}
