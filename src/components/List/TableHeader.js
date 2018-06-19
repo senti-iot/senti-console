@@ -90,7 +90,7 @@ class EnhancedTableHead extends Component {
 											}
 										}
 									>
-										{columnData[0].label}
+										<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{columnData[0].label}</Typography>
 									</TableSortLabel>
 								</Tooltip>
 							</TableCell>

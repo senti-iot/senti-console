@@ -1,16 +1,15 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 // import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { primaryColor, boxShadow } from 'assets/jss/material-dashboard-react';
-import { Menu, MenuItem, Grid } from '@material-ui/core';
+import { Menu, MenuItem, Grid, Tooltip } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import KeyArrRight from '@material-ui/icons/KeyboardArrowRight';
 import KeyArrLeft from '@material-ui/icons/KeyboardArrowLeft';
@@ -25,6 +24,19 @@ import teal from '@material-ui/core/colors/teal'
 import { withRouter } from 'react-router-dom'
 
 const toolbarStyles = theme => ({
+	secondAction: {
+		[theme.breakpoints.down("sm")]: {
+			marginTop: theme.spacing.unit * 3
+		}
+	},
+	tooltip: {
+		margin: 0,
+		transition: "all 500ms ease"
+	},
+	open: {
+		marginTop: 24
+	},
+
 	textField: {
 		paddingBottom: 8,
 		width: '100%'
@@ -162,7 +174,7 @@ let EnhancedTableToolbar = props => {
 			{/* <div className={classes.spacer} /> */}
 			<div className={classes.actions}>
 				{numSelected > 0 ? (
-					<React.Fragment>
+					<Fragment>
 						<Tooltip title="Options">
 							<IconButton
 								aria-label="More"
@@ -172,7 +184,6 @@ let EnhancedTableToolbar = props => {
 								<MoreVertIcon />
 							</IconButton>
 						</Tooltip>
-
 						<Menu
 							id="long-menu"
 							anchorEl={props.anchorElMenu}
@@ -192,44 +203,57 @@ let EnhancedTableToolbar = props => {
 								</MenuItem>
 							))}
 						</Menu>
-					</React.Fragment>
+					</Fragment>
 				) :
-					<React.Fragment>
-						{props.noAdd ? null : <Tooltip title="Add new project">
-							<IconButton aria-label="Add new project" onClick={() => props.history.push('/newproject')}>
-								<Add />
-							</IconButton>
-						</Tooltip>}
-						{props.noFilterIcon ? null :
-							<React.Fragment><Tooltip title="Filter list">
-								<IconButton
-									aria-label="Filter list"
-									aria-owns={props.anchorFilterMenu ? "filter-menu" : null}
-									onClick={props.handleFilterMenuOpen}>
-									<FilterListIcon />
-								</IconButton>
-							</Tooltip>
-							<Menu
-								id="filter-menu"
-								anchorEl={props.anchorFilterMenu}
-								open={Boolean(props.anchorFilterMenu)}
-								onClose={props.handleFilterMenuClose}
-								PaperProps={{
-									style: {
-										// maxHeight: ITEM_HEIGHT * 4.5,
-										width: 200,
-										boxShadow: boxShadow
-									}
+					(<Fragment>
+						{props.noAdd ? null :
+							<Tooltip title={'Add New Project'} placement={'bottom'}
+								classes={{
+									open: classes.open,
+									tooltip: classes.tooltip
 								}}
 							>
-								{filterOptions.map(option => (
-									<MenuItem key={option.id} onClick={props.handleFilter}>
-										{option.label}
-									</MenuItem>
-								))}
-							</Menu>
-							</React.Fragment>}
-					</React.Fragment>
+								<IconButton aria-label="Add new project" onClick={() => props.history.push('/newproject')}>
+									<Add />
+								</IconButton>
+							</Tooltip>
+						}
+						{props.noFilterIcon ? null :
+							<Fragment>
+								<Tooltip title="Filter list"
+									classes={{
+										open: classes.open,
+										tooltip: classes.tooltip
+									}}>
+									<IconButton
+										className={classes.secondAction}
+										aria-label="Filter list"
+										aria-owns={props.anchorFilterMenu ? "filter-menu" : null}
+										onClick={props.handleFilterMenuOpen}>
+										<FilterListIcon />
+									</IconButton>
+								</Tooltip>
+								<Menu
+									id="filter-menu"
+									anchorEl={props.anchorFilterMenu}
+									open={Boolean(props.anchorFilterMenu)}
+									onClose={props.handleFilterMenuClose}
+									PaperProps={{
+										style: {
+										// maxHeight: ITEM_HEIGHT * 4.5,
+											width: 200,
+											boxShadow: boxShadow
+										}
+									}}
+								>
+									{filterOptions.map(option => (
+										<MenuItem key={option.id} onClick={props.handleFilter}>
+											{option.label}
+										</MenuItem>
+									))}
+								</Menu>
+							</Fragment>}		
+					</Fragment>)
 				}
 			</div>
 		</Toolbar>
