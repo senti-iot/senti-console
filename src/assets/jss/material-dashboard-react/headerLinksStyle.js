@@ -10,6 +10,9 @@ import {
 } from "assets/jss/material-dashboard-react.js";
 
 const headerLinksStyle = theme => ({
+	iconRoot: {
+		color: "#FFF"
+	},
 	menuItem: {
 		maxHeight: 20	
 	},

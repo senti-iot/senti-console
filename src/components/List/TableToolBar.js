@@ -99,7 +99,7 @@ let EnhancedTableToolbar = props => {
 				) :
 					<MuiPickersUtilsProvider utils={MomentUtils}>
 						<Grid container >
-							<ItemGrid xs={12} sm={6} >
+							<ItemGrid xs={12} sm={12} >
 								<IntegrationAutosuggest
 									suggestions={props.suggestions}
 									handleFilterKeyword={props.handleFilterKeyword}
@@ -108,7 +108,7 @@ let EnhancedTableToolbar = props => {
 							</ItemGrid>
 							{props.noDatePickers ? null :
 								<React.Fragment>
-									<ItemGrid xs>
+									<ItemGrid md={5} sm={12} >
 										<DatePicker
 											autoOk
 											label="Start Date"
@@ -136,7 +136,7 @@ let EnhancedTableToolbar = props => {
 											}}
 										/>
 									</ItemGrid>
-									<ItemGrid xs>
+									<ItemGrid md={5} sm={12}>
 										<DatePicker
 											color="primary"
 											autoOk
