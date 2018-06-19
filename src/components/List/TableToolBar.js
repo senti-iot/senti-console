@@ -24,15 +24,6 @@ import teal from '@material-ui/core/colors/teal'
 import { withRouter } from 'react-router-dom'
 
 const toolbarStyles = theme => ({
-	secondAction: {
-		[theme.breakpoints.down("sm")]: {
-			marginTop: theme.spacing.unit * 3
-		}
-	},
-	tooltip: {
-		margin: 0,
-		transition: "all 500ms ease"
-	},
 	open: {
 		marginTop: 24
 	},
@@ -43,7 +34,10 @@ const toolbarStyles = theme => ({
 	},
 	root: {
 		paddingRight: theme.spacing.unit,
-		paddingLeft: "16px"
+		paddingLeft: "16px",
+		[theme.breakpoints.down('sm')]: {
+			flexFlow: 'column nowrap'
+		}
 	},
 	highlight:
 		theme.palette.type === 'light'
@@ -207,12 +201,7 @@ let EnhancedTableToolbar = props => {
 				) :
 					(<Fragment>
 						{props.noAdd ? null :
-							<Tooltip title={'Add New Project'} placement={'bottom'}
-								classes={{
-									open: classes.open,
-									tooltip: classes.tooltip
-								}}
-							>
+							<Tooltip title={'Add New Project'}>
 								<IconButton aria-label="Add new project" onClick={() => props.history.push('/projects/new')}>
 									<Add />
 								</IconButton>
@@ -220,11 +209,7 @@ let EnhancedTableToolbar = props => {
 						}
 						{props.noFilterIcon ? null :
 							<Fragment>
-								<Tooltip title="Filter list"
-									classes={{
-										open: classes.open,
-										tooltip: classes.tooltip
-									}}>
+								<Tooltip title="Filter list">
 									<IconButton
 										className={classes.secondAction}
 										aria-label="Filter list"

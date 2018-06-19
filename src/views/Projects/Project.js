@@ -153,7 +153,7 @@ class Project extends Component {
 							/>
 						</ItemGrid>
 						<ItemGrid xs={12} sm={12} md={12}>
-							<ProjectCard title={"Devices"} subheader={project.devices.length}
+							<ProjectCard title={"Devices"} subheader={"Number of devices:" + project.devices.length}
 								// hideFacts
 								content={
 									<Grid container>
