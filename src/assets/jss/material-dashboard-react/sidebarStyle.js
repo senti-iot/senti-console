@@ -176,7 +176,11 @@ const sidebarStyle = theme => ({
 		width: "260px",
 		zIndex: "4",
 		overflowScrolling: 'touch',
-		backgroundColor: "#767684"
+		backgroundColor: "#434351"
+		// "#767684"
+	},
+	appBarWrapper: {
+		backgroundColor: "#767684"	
 	}
 });
 

@@ -1,13 +1,14 @@
-import React, { Component } from 'react'
-import { ItemGrid } from 'components';
-import { Grid, CircularProgress, withStyles, Typography } from '@material-ui/core';
-import { getProject } from 'variables/data';
+import { Button, CircularProgress, Grid, Typography, withStyles } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
-import ProjectCard from './ProjectCard';
-import { dateFormatter } from 'variables/functions';
-import RegSimpleList from 'components/List/RegSimpleList/RegSimpleList';
+import { ItemGrid } from 'components';
 import DeviceSimpleList from 'components/List/DeviceSimpleList/DeviceSimpleList';
-var moment = require("moment");
+import RegSimpleList from 'components/List/RegSimpleList/RegSimpleList';
+import moment from "moment";
+import React, { Component } from 'react';
+import { getProject } from 'variables/data';
+import { dateFormatter } from 'variables/functions';
+import ProjectCard from '../../components/Project/ProjectCard';
+
 class Project extends Component {
 	constructor(props) {
 		super(props)
@@ -35,6 +36,8 @@ class Project extends Component {
 		if (this.props.match)
 			if (this.props.match.params.id)
 				getProject(this.props.match.params.id).then(rs => {
+					if (rs === null)
+						this.props.history.push('/404')
 					this.props.setHeader(rs.title)
 					this.setState({
 						project: rs, loading: false, facts: {
@@ -64,15 +67,11 @@ class Project extends Component {
 			max = (v.count > max.count) ? v : max;
 		}
 		return max;
-		// return regs.reduce((max, r) => r.count > max ? r.count : max, regs[0].count)
 	}
 	filterItems = (projects, keyword) => {
-		// const { keyword } = this.state.filters
-		// const { activeDateFilter } = this.state[]
+
 		var searchStr = keyword.toLowerCase()
 		var arr = projects
-		// if (activeDateFilter)
-		// arr = this.filterByDate(arr)
 		if (arr[0] === undefined)
 			return []
 		var keys = Object.keys(arr[0])
@@ -89,24 +88,6 @@ class Project extends Component {
 		})
 		return filtered
 	}
-	/* 	handleFilterRegStartDate = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				startDate: value,
-				activeDateFilter: value !== null ? true : false
-			}
-		})
-	}
-	handleFilterRegEndDate = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				endDate: value,
-				activeDateFilter: value !== null ? true : false
-			}
-		})
-	} */
 	
 	handleFilterRegKeyword = (value) => {
 		this.setState({
@@ -161,13 +142,18 @@ class Project extends Component {
 												{dateFormatter(project.close_date)}
 											</Typography>
 										</ItemGrid>
+										<ItemGrid>
+											<Button onClick={() => this.props.history.push(this.props.match.url + '/edit')}>
+												Edit
+											</Button>
+										</ItemGrid>
 									</Grid>
 
 								}
 							/>
 						</ItemGrid>
 						<ItemGrid xs={12} sm={12} md={12}>
-							<ProjectCard title={"Devices"} subheader={project.devices.length}
+							<ProjectCard title={"Devices"} subheader={"Number of devices:" + project.devices.length}
 								// hideFacts
 								content={
 									<Grid container>

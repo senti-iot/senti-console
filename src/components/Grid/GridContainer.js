@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 
 // material-ui components
 import { withStyles, Grid } from "@material-ui/core";
-// import Grid from "@material-ui/core/Grid";
 
 const style = {
 	grid: {

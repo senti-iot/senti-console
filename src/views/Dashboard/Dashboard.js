@@ -21,11 +21,19 @@ import dashboardStyle from "assets/jss/material-dashboard-react/dashboardStyle";
 import { getAllProjects } from "../../variables/data";
 
 class Dashboard extends React.Component {
-	state = {
-		value: 0,
-		projects: [],
-		devices: 0
-	};
+	constructor(props) {
+	  super(props)
+	
+	  this.state = {
+			 value: 0,
+			projects: [],
+			devices: 0
+	  }
+		props.setHeader("Dashboard")
+
+	}
+	
+
 	componentDidMount = async () => {
 		let projects = await getAllProjects()
 		let devices = 0;
@@ -33,8 +41,6 @@ class Dashboard extends React.Component {
 			return p.devices ? devices = devices + p.devices.length : ''
 		});
 		this.setState({ projects: projects, devices: devices })
-
-		this.props.setHeader("Dashboard")
 	}
 
 	handleChange = (value) => {

@@ -1,16 +1,15 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 // import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { primaryColor, boxShadow } from 'assets/jss/material-dashboard-react';
-import { Menu, MenuItem, Grid } from '@material-ui/core';
+import { Menu, MenuItem, Grid, Tooltip } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import KeyArrRight from '@material-ui/icons/KeyboardArrowRight';
 import KeyArrLeft from '@material-ui/icons/KeyboardArrowLeft';
@@ -25,13 +24,20 @@ import teal from '@material-ui/core/colors/teal'
 import { withRouter } from 'react-router-dom'
 
 const toolbarStyles = theme => ({
+	open: {
+		marginTop: 24
+	},
+
 	textField: {
 		paddingBottom: 8,
 		width: '100%'
 	},
 	root: {
 		paddingRight: theme.spacing.unit,
-		paddingLeft: "16px"
+		paddingLeft: "16px",
+		[theme.breakpoints.down('sm')]: {
+			flexFlow: 'column nowrap'
+		}
 	},
 	highlight:
 		theme.palette.type === 'light'
@@ -87,7 +93,7 @@ let EnhancedTableToolbar = props => {
 				) :
 					<MuiPickersUtilsProvider utils={MomentUtils}>
 						<Grid container >
-							<ItemGrid xs={12} sm={6} >
+							<ItemGrid xs={12} sm={12} >
 								<IntegrationAutosuggest
 									suggestions={props.suggestions}
 									handleFilterKeyword={props.handleFilterKeyword}
@@ -96,7 +102,7 @@ let EnhancedTableToolbar = props => {
 							</ItemGrid>
 							{props.noDatePickers ? null :
 								<React.Fragment>
-									<ItemGrid xs>
+									<ItemGrid md={5} sm={12} >
 										<DatePicker
 											autoOk
 											label="Start Date"
@@ -124,7 +130,7 @@ let EnhancedTableToolbar = props => {
 											}}
 										/>
 									</ItemGrid>
-									<ItemGrid xs>
+									<ItemGrid md={5} sm={12}>
 										<DatePicker
 											color="primary"
 											autoOk
@@ -162,7 +168,7 @@ let EnhancedTableToolbar = props => {
 			{/* <div className={classes.spacer} /> */}
 			<div className={classes.actions}>
 				{numSelected > 0 ? (
-					<React.Fragment>
+					<Fragment>
 						<Tooltip title="Options">
 							<IconButton
 								aria-label="More"
@@ -172,7 +178,6 @@ let EnhancedTableToolbar = props => {
 								<MoreVertIcon />
 							</IconButton>
 						</Tooltip>
-
 						<Menu
 							id="long-menu"
 							anchorEl={props.anchorElMenu}
@@ -192,44 +197,48 @@ let EnhancedTableToolbar = props => {
 								</MenuItem>
 							))}
 						</Menu>
-					</React.Fragment>
+					</Fragment>
 				) :
-					<React.Fragment>
-						{props.noAdd ? null : <Tooltip title="Add new project">
-							<IconButton aria-label="Add new project" onClick={() => props.history.push('/newproject')}>
-								<Add />
-							</IconButton>
-						</Tooltip>}
-						{props.noFilterIcon ? null :
-							<React.Fragment><Tooltip title="Filter list">
-								<IconButton
-									aria-label="Filter list"
-									aria-owns={props.anchorFilterMenu ? "filter-menu" : null}
-									onClick={props.handleFilterMenuOpen}>
-									<FilterListIcon />
+					(<Fragment>
+						{props.noAdd ? null :
+							<Tooltip title={'Add New Project'}>
+								<IconButton aria-label="Add new project" onClick={() => props.history.push('/projects/new')}>
+									<Add />
 								</IconButton>
 							</Tooltip>
-							<Menu
-								id="filter-menu"
-								anchorEl={props.anchorFilterMenu}
-								open={Boolean(props.anchorFilterMenu)}
-								onClose={props.handleFilterMenuClose}
-								PaperProps={{
-									style: {
+						}
+						{props.noFilterIcon ? null :
+							<Fragment>
+								<Tooltip title="Filter list">
+									<IconButton
+										className={classes.secondAction}
+										aria-label="Filter list"
+										aria-owns={props.anchorFilterMenu ? "filter-menu" : null}
+										onClick={props.handleFilterMenuOpen}>
+										<FilterListIcon />
+									</IconButton>
+								</Tooltip>
+								<Menu
+									id="filter-menu"
+									anchorEl={props.anchorFilterMenu}
+									open={Boolean(props.anchorFilterMenu)}
+									onClose={props.handleFilterMenuClose}
+									PaperProps={{
+										style: {
 										// maxHeight: ITEM_HEIGHT * 4.5,
-										width: 200,
-										boxShadow: boxShadow
-									}
-								}}
-							>
-								{filterOptions.map(option => (
-									<MenuItem key={option.id} onClick={props.handleFilter}>
-										{option.label}
-									</MenuItem>
-								))}
-							</Menu>
-							</React.Fragment>}
-					</React.Fragment>
+											width: 200,
+											boxShadow: boxShadow
+										}
+									}}
+								>
+									{filterOptions.map(option => (
+										<MenuItem key={option.id} onClick={props.handleFilter}>
+											{option.label}
+										</MenuItem>
+									))}
+								</Menu>
+							</Fragment>}		
+					</Fragment>)
 				}
 			</div>
 		</Toolbar>

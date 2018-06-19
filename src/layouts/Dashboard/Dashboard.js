@@ -15,12 +15,18 @@ import appStyle from "assets/jss/material-dashboard-react/appStyle.js";
 // import image from "assets/img/sidebar-2.jpg";
 import logo from "../../logo.svg";
 import cookie from "react-cookies";
+// import GeoLocation from "components/Geolocation/Geolocation";
 
 class App extends React.Component {
-	state = {
-		mobileOpen: false,
-		headerTitle: ''
-	};
+	constructor(props) {
+	  super(props)
+	
+	  this.state = {
+		 	mobileOpen: false,
+			headerTitle: ''
+	  }
+	}
+	
 	handleDrawerToggle = () => {
 		this.setState({ mobileOpen: !this.state.mobileOpen });
 	};
@@ -43,6 +49,7 @@ class App extends React.Component {
 		const { classes, ...rest } = this.props;
 		return (
 			<div className={classes.wrapper}>
+				{/* <GeoLocation/> */}
 				<div className={classes.mainPanel} ref="mainPanel">
 					<Header
 						routes={dashboardRoutes}

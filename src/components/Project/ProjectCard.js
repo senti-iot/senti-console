@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
@@ -17,39 +17,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 // import MoreVertIcon from '@material-ui/icons/MoreVert';
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
-
-//#region old Styles
-
-/*
-const styles = theme => ({
-	card: {
-		// maxWidth: 900,
-		borderRadius: "4px"
-	},
-
-	media: {
-		height: 0,
-		paddingTop: '56.25%', // 16:9
-	},
-	actions: {
-		display: 'flex',
-	},
-	expand: {
-		transform: 'rotate(0deg)',
-		transition: theme.transitions.create('transform', {
-			duration: theme.transitions.duration.shortest,
-		}),
-		marginLeft: 'auto',
-	},
-	expandOpen: {
-		transform: 'rotate(180deg)',
-	},
-	avatar: {
-		backgroundColor: teal[600],
-	},
-});
-*/
-//#endregion
+import { Typography } from '@material-ui/core';
 
 
 class ProjectCard extends React.Component {
@@ -72,10 +40,23 @@ class ProjectCard extends React.Component {
 							</Avatar>
 						}
 						title={title}
-						subheader={subheader ? subheader : null}
-					/>
+						subheader={subheader.toString().length < 200 ? subheader ? subheader : null : null}
+					>
+					
+					</CardHeader>
+
 					<Collapse in={this.props.hideFacts ? !this.state.expanded : true} timeout="auto" unmountOnExit>
 						<CardContent>
+							{subheader.toString().length > 200 ?
+								<Fragment>
+									<Typography variant={'caption'}>
+										Description
+									</Typography>
+									<Typography paragraph>
+										{subheader ? subheader : null}
+									</Typography>
+								</Fragment>
+								 : null}
 							{content ? content : null}
 						</CardContent>
 					</Collapse>

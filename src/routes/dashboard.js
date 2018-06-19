@@ -3,19 +3,13 @@ import { Redirect } from 'react-router-dom'
 import DashboardPage from "views/Dashboard/Dashboard.js";
 // import UserProfile from "views/UserProfile/UserProfile.js";
 import Typography from "views/Typography/Typography.js";
-import Projects from "views/Projects/Projects";
+import Projects from "./projects";
+import ProjectRouting from './project'
+import Devices from './devices'
+import DeviceRouting from './device'
+import { Dashboard, LibraryBooks, Devices as DeviceIco, Settings, People } from "@material-ui/icons";
+import NotFound from "layouts/404/NotFound";
 
-import {
-	Dashboard,
-	// Person,
-	LibraryBooks,
-	// BubbleChart,
-	Devices,
-	Settings,
-	People
-} from "@material-ui/icons";
-import Project from "views/Projects/Project";
-import CreateProject from 'views/Projects/CreateProject';
 
 const dashboardRoutes = [
 	{
@@ -27,9 +21,7 @@ const dashboardRoutes = [
 	},
 	{
 		path: "/project/:id",
-		sidebarName: "Project",
-		icon: LibraryBooks,
-		component: Project,
+		component: ProjectRouting,
 		hideFromSideBar: true
 	},
 	{
@@ -39,10 +31,15 @@ const dashboardRoutes = [
 		component: Projects
 	},
 	{
+		path: "/device/:id",
+		component: DeviceRouting,
+		hideFromSideBar: true
+	},
+	{
 		path: "/devices",
 		sidebarName: "Devices",
-		icon: Devices,
-		component: DashboardPage
+		icon: DeviceIco,
+		component: Devices
 	},
 	{
 		path: "/users",
@@ -59,17 +56,9 @@ const dashboardRoutes = [
 	{
 		path: "/404",
 		sidebarName: "Error",
-		component: DashboardPage,
+		component: NotFound,
 		hideFromSideBar: true
 	},
-	{
-		path: "/newproject",
-		sidebarName: "Add new project",
-		icon: LibraryBooks,
-		component: CreateProject,
-		hideFromSideBar: true
-	},
-
 	{
 		path: "*",
 		component: () => <Redirect from={window.location.pathname} to={window.location.pathname === '/' ? '/dashboard' : '/404'} />,
