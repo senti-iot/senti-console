@@ -6,7 +6,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
-import { Hidden } from '@material-ui/core';
+import { Hidden, Typography } from '@material-ui/core';
 
 
 
@@ -56,7 +56,7 @@ class EnhancedTableHead extends Component {
 												}
 											}
 										>
-											{column.label}
+											<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{column.label}</Typography>
 										</TableSortLabel>
 									</Tooltip>
 								</TableCell>

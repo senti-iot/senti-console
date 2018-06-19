@@ -1,6 +1,6 @@
 {
 	"name": "senti-cloud",
-	"version": "0.2.6",
+	"version": "0.2.7",
 	"description": "Senti Cloud",
 	"private": true,
 	"main": "index.js",

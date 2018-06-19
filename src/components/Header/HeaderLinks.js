@@ -4,44 +4,41 @@ import React from "react";
 import {
 	withStyles,
 	IconButton,
-	// MenuItem,
+	MenuItem,
+	Menu,
 	// MenuList,
 	// Grow,
 	// Paper,
 	// ClickAwayListener,
-	Hidden
+	Hidden,
+	// ClickAwayListener
 } from "@material-ui/core";
 import { /* Person, */ Dashboard } from "@material-ui/icons";
 import { withRouter } from 'react-router-dom'
 import headerLinksStyle from "assets/jss/material-dashboard-react/headerLinksStyle";
 import cookie from "react-cookies";
+import AccountCircle from '@material-ui/icons/AccountCircle'
 
 class HeaderLinks extends React.Component {
 	state = {
-		open: false,
-		openProfile: false
-	};
-	handleClick = () => {
-		this.setState({ open: !this.state.open });
+		anchorProfile: null
 	};
 
-	handleClose = () => {
-		this.setState({ open: false });
-	};
-	handleProfileOpen = () => {
-		this.setState({ openProfile: !this.state.openProfile })
+	handleProfileOpen = e => {
+		this.setState({ anchorProfile: e.currentTarget })
 	}
 	handleProfileClose = () => {
-		this.setState({ openProfile: false })
+		this.setState({ anchorProfile: null })
 	}
 	logOut = () => {
 		cookie.remove("SESSION")
-		this.setState({ openProfile: false })
+		this.setState({ anchorProfile: null })
 		this.props.history.push('/login')
 	}
 	render() {
 		const { classes } = this.props;
-		// const { openProfile } = this.state;
+		const { anchorProfile } = this.state;
+		const openProfile = Boolean(anchorProfile)
 		return (
 			<div>
 				<IconButton
@@ -54,96 +51,38 @@ class HeaderLinks extends React.Component {
 						<p className={classes.linkText}>Dashboard</p>
 					</Hidden>
 				</IconButton>
-				{/* <Manager style={{ display: "inline-block" }}>
-					<Reference>
-						<IconButton
-							color="inherit"
-							aria-label="Notifications"
-							aria-owns={open ? "menu-list" : null}
-							aria-haspopup="true"
-							onClick={this.handleClick}
-							className={classes.buttonLink}
-						>
-							<Notifications className={classes.links} />
-							<span className={classes.notifications}>5</span>
-							<Hidden mdUp>
-								<p onClick={this.handleClick} className={classes.linkText}>
-									Notification
-              			 		 </p>
-							</Hidden>
-						</IconButton>
-					</Reference>
-					<Popper
-						placement="bottom-start"
-						eventsEnabled={open}
-						className={
-							classNames({ [classes.popperClose]: !open }) +
-							" " +
-							classes.pooperResponsive
+				<IconButton
+					aria-owns={openProfile ? 'menu-appbar' : null}
+					aria-haspopup="true"
+					onClick={this.handleProfileOpen}
+					color="inherit"
+				>
+					<AccountCircle />
+				</IconButton>
+				<Menu
+					id="menu-appbar"
+					anchorEl={anchorProfile}
+					anchorOrigin={{
+						vertical: 'top',
+						horizontal: 'right',
+					}}
+					transformOrigin={{
+						vertical: 'top',
+						horizontal: 'right',
+					}}
+					open={openProfile}
+					onClose={this.handleProfileClose}
+					className={classes.menuList}
+					MenuListProps={{
+						classes: {
+							padding: classes.menuList
 						}
-					>
-						<ClickAwayListener onClickAway={this.handleClose} >
-							<Grow
-								in={open}
-								id="menu-list"
-								style={{ transformOrigin: "0 0 0" }}
-							>
-								<Paper className={classes.dropdown}>
-									<MenuList role="menu">
-										<MenuItem
-											onClick={this.handleClose}
-											className={classes.dropdownItem}
-										>
-											Mike John responded to your email
-										</MenuItem>
-									</MenuList>
-								</Paper>
-							</Grow>
-						</ClickAwayListener>
-					</Popper>
-				</Manager> */}
-				{/* <Manager style={{ display: "inline-block" }}>
-					<Reference>
-						<IconButton
-							color="inherit"
-							aria-label="Person"
-							aria-owns={openProfile ? "person-list" : null}
-							aria-haspopup="true"
-							onClick={this.handleProfileOpen}
-							className={classes.buttonLink}
-						>
-							<Person className={classes.links} />
-							<Hidden mdUp>
-								<p className={classes.linkText} onClick={this.handleProfileOpen}>Profile</p>
-							</Hidden>
-						</IconButton>
-					</Reference>
-					<Popper
-						placement="bottom-start"
-						eventsEnabled={openProfile}
-						className={
-							classNames({ [classes.popperClose]: !openProfile }) +
-							" " +
-							classes.pooperResponsive
-						}>
-						<ClickAwayListener onClickAway={this.handleProfileClose}>
-							<Grow
-								in={openProfile}
-								id="person-list"
-								style={{ transformOrigin: "0 0 0" }}>
-								<Paper className={classes.dropdown}>
-									<MenuList role="menu">
-										<MenuItem
-											onClick={this.logOut}
-											className={classes.dropdownItem}>
-											Log out
-										</MenuItem>
-									</MenuList>
-								</Paper>
-							</Grow>
-						</ClickAwayListener>
-					</Popper>
-				</Manager> */}
+					}}
+				>
+					<MenuItem onClick={this.handleProfileClose}>Profile</MenuItem>
+					<MenuItem onClick={this.handleProfileClose}>My account</MenuItem>
+					<MenuItem onClick={this.logOut} className={classes.menuItem}>Log out</MenuItem>
+				</Menu>
 			</div>
 		);
 	}

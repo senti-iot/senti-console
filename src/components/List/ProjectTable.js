@@ -6,7 +6,8 @@ import {
 	TableRow,
 	TableBody,
 	TableCell,
-	Hidden
+	Hidden,
+	Typography
 } from "@material-ui/core";
 import EnhancedTableHead from './TableHeader';
 import EnhancedTableToolbar from './TableToolBar'
@@ -19,6 +20,15 @@ import { withRouter } from 'react-router';
 var moment = require('moment')
 
 const styles = theme => ({
+	headerCell: { 
+		color: "inherit",
+	},
+	paragraphCell: {
+		margin: 0,
+		overflow: "hidden",
+		whiteSpace: "nowrap",
+		textOverflow: "ellipsis"
+	},
 	root: {
 		width: '100%',
 		marginTop: theme.spacing.unit * 3,
@@ -52,8 +62,9 @@ const styles = theme => ({
 		}
 	},
 	tableCell: {
-		padding: 0,
-		minWidth: 130
+		padding: 4,
+		minWidth: 130,
+		maxWidth: 200
 	},
 	tablecellcheckbox: {
 		padding: 0,
@@ -221,28 +232,30 @@ class EnhancedTable extends React.Component {
 											<Checkbox checked={isSelected} />
 										</TableCell>
 										<TableCell className={classes.tableCell}>
-											{n.title}
+											<Typography paragraph classes={{ root: classes.paragraphCell }}>
+												{n.title}
+											</Typography>
 										</TableCell>
 										<Hidden mdDown>
 											<TableCell className={classes.tableCell}>
-												{n.description}
-											</TableCell>
-
-											<TableCell className={classes.tableCell}>
-												{this.dateFormatter(n.open_date)}
+												<Typography paragraph title={n.description} classes={{ root: classes.paragraphCell }}>
+													{n.description}
+												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCell}>
-												{this.dateFormatter(n.close_date)}
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{this.dateFormatter(n.open_date)}
+												</Typography>
 											</TableCell>
-											{/* <TableCell className={classes.tableCell}>
-											{n.progress}
-										</TableCell> */}
 											<TableCell className={classes.tableCell}>
-												{this.dateFormatter(n.created)}
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{this.dateFormatter(n.close_date)}
+												</Typography>
 											</TableCell>
-											{/* <TableCell className={classes.tableCell}>
-											{n.last_modified}
-										</TableCell> */}
+											<TableCell className={classes.tableCell}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{this.dateFormatter(n.created)}	</Typography>
+											</TableCell>
 										</Hidden>
 									</TableRow>
 								);

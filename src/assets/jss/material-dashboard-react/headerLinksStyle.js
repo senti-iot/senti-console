@@ -10,22 +10,11 @@ import {
 } from "assets/jss/material-dashboard-react.js";
 
 const headerLinksStyle = theme => ({
-	popperClose: {
-		pointerEvents: "none"
+	menuItem: {
+		maxHeight: 20	
 	},
-	search: {
-		"& > div": {
-			marginTop: "0"
-		},
-		[theme.breakpoints.down("sm")]: {
-			margin: "10px 15px",
-			float: "none !important",
-			paddingTop: "1px",
-			paddingBottom: "1px",
-			padding: "10px 15px",
-			width: "auto",
-			marginTop: "40px"
-		}
+	menuList: {
+		padding: 0
 	},
 	linkText: {
 		zIndex: "4",
