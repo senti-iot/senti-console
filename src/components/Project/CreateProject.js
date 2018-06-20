@@ -286,7 +286,7 @@ class CreateProject extends Component {
 															: theme.typography.fontWeightMedium,
 												}}
 											>
-												{name.device_name}
+												{name.device_id + "-" + name.device_name}
 											</MenuItem>
 										))}
 									</Select>

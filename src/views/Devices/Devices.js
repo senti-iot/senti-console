@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { getAllProjects, deleteProject } from '../../variables/data';
+import { getAllDevices, deleteProject } from '../../variables/data';
 import { Grid, CircularProgress, withStyles } from "@material-ui/core";
 
 import { /* RegularCard */ /* Table, */ ItemGrid } from "components";
 import projectStyles from 'assets/jss/views/projects';
-import DeviceTable from 'components/Project/ProjectTable';
+import DeviceTable from 'components/Devices/DeviceTable';
 var moment = require('moment');
 
 class Devices extends Component {
@@ -22,41 +22,43 @@ class Devices extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader("Projects")
+		props.setHeader("Devices")
 	}
-	filterByDate = (items) => {
-		const { startDate, endDate } = this.state.filters
-		var arr = items
-		var keys = Object.keys(arr[0])
-		var filteredByDate = arr.filter(c => {
-			var contains = keys.map(key => {
-				var openDate = moment(c['open_date'])
-				var closeDate = moment(c['close_date'])
-				// console.log(openDate, closeDate)
-				if (openDate > startDate
-					&& closeDate < (endDate ? endDate : moment())) {
-					return true
-				}
-				else
-					return false
-			})
-			return contains.indexOf(true) !== -1 ? true : false
-		})
-		return filteredByDate
-	}
+	// filterByDate = (items) => {
+	// 	const { startDate, endDate } = this.state.filters
+	// 	var arr = items
+	// 	var keys = Object.keys(arr[0])
+	// 	var filteredByDate = arr.filter(c => {
+	// 		var contains = keys.map(key => {
+	// 			var openDate = moment(c['open_date'])
+	// 			var closeDate = moment(c['close_date'])
+	// 			// console.log(openDate, closeDate)
+	// 			if (openDate > startDate
+	// 				&& closeDate < (endDate ? endDate : moment())) {
+	// 				return true
+	// 			}
+	// 			else
+	// 				return false
+	// 		})
+	// 		return contains.indexOf(true) !== -1 ? true : false
+	// 	})
+	// 	return filteredByDate
+	// }
 
 	filterItems = (projects) => {
 		const { keyword } = this.state.filters
-		const { activeDateFilter } = this.state.filters
+		// const { activeDateFilter } = this.state.filters
 		var searchStr = keyword.toLowerCase()
 		var arr = projects
-		if (activeDateFilter)
-			arr = this.filterByDate(arr)
+		// if (activeDateFilter)
+		// 	arr = this.filterByDate(arr)
 		if (arr[0] === undefined)
 			return []
 		var keys = Object.keys(arr[0])
 		var filtered = arr.filter(c => {
 			var contains = keys.map(key => {
+				if (c[key] === null || c[key] === undefined)
+					return false
 				if (c[key] instanceof Date) {
 					let date = moment(c[key]).format("DD.MM.YYYY")
 					return date.toLowerCase().includes(searchStr)
@@ -95,28 +97,38 @@ class Devices extends Component {
 			}
 		})
 	}
-	getProjects = async () => {
-		await getAllProjects().then(rs => this.setState({
-			projects: rs,
-			projectHeader: [
-				{ id: 'title', label: 'Title', },
-				{ id: 'description', label: 'Description', },
-				{ id: 'open_date', label: 'Start Date', },
-				{ id: 'close_date', label: 'End Date', },
-				// { id: 'progress', label: 'Progress', },
-				{ id: 'created', label: 'Created', },
-				// { id: 'last_modified', label: 'Last Modified', },
+
+	getDevices = async () => {
+		await getAllDevices().then(rs => this.setState({
+			devices: rs,
+			deviceHeader: [
+				{ id: "device_id", label: "Device ID" },
+				{ id: "device_name", label: "Device Name" },
+				{ id: "address", label: "Address" },
+				{ id: "wifiModule", label: "Wifi Module" },
+				{ id: "modemModel", label: "Modem model" },
+				{ id: "modemIMEI", label: "Modem IMEI" },
+				{ id: "RPImodel", label: "Raspberry Pi Model" },
+				{ id: "memory", label: "Memory" },
+				{ id: "memoryModel", label: "Memory Model" },
+				{ id: "adapter", label: "Adapter" },
+				{ id: "cellNumber", label: "Cell Number" },
+				{ id: "SIMID", label: "SIM-Card Number" },
+				{ id: "description", label: "Description" },
+				{ id: "liveStatus", label: "Status" },
+				{ id: "project_id", label: "Project" },
+				{ id: "iOrgID", label: "Organisation" }
 			],
 			loading: false
 		}))
 	}
 	componentDidMount = async () => {
-		await this.getProjects()
+		await this.getDevices()
 		// this.props.setHeader("Projects")
 	}
 	deleteProjects = async (projects) => {
 		await deleteProject(projects).then(() => {
-			this.getProjects()
+			this.getDevices()
 		})
 	}
 	renderLoader = () => {
@@ -124,11 +136,11 @@ class Devices extends Component {
 
 		return <Grid container><CircularProgress className={classes.loader} /></Grid>
 	}
-	renderAllProjects = () => {
+	renderAllDevices = () => {
 		const { loading } = this.state
 		return loading ? this.renderLoader() : <DeviceTable
-			data={this.filterItems(this.state.projects)}
-			tableHead={this.state.projectHeader}
+			data={this.filterItems(this.state.devices)}
+			tableHead={this.state.deviceHeader}
 			handleFilterEndDate={this.handleFilterEndDate}
 			handleFilterKeyword={this.handleFilterKeyword}
 			handleFilterStartDate={this.handleFilterStartDate}
@@ -143,13 +155,7 @@ class Devices extends Component {
 				{/* <Paper> */}
 				<Grid container justify={'center'}>
 					<ItemGrid xs={12} sm={12} md={12}>
-						{/* <RegularCard
-							cardTitle="All projects"
-							cardSubtitle=""
-							content={ */}
-						{this.renderAllProjects()}
-						{/* } */}
-						{/* /> */}
+						{this.renderAllDevices()}
 					</ItemGrid>
 				</Grid>
 				{/* </Paper> */}

@@ -9,7 +9,7 @@ import {
 	Hidden,
 	Typography
 } from "@material-ui/core";
-import EnhancedTableHead from './TableHeader';
+import EnhancedTableHead from './DeviceTableHeader';
 import EnhancedTableToolbar from './TableToolBar'
 import PropTypes from "prop-types";
 import TablePagination from '@material-ui/core/TablePagination';
@@ -179,6 +179,57 @@ class EnhancedTable extends React.Component {
 		{ label: 'Export to PDF', func: () => { } },
 		{ label: 'Delete', func: this.handleDeleteProjects }
 	];
+	suggestionSlicer = (obj) => {
+		var arr = [];
+
+		for (var prop in obj) {
+			if (obj.hasOwnProperty(prop)) {
+				var innerObj = {};
+				if (typeof obj[prop] === 'object') {
+					arr.push(...this.suggestionSlicer(obj[prop]))
+				}
+				else {
+					innerObj = {
+						id: prop.toString().toLowerCase(),
+						label: obj[prop] ? obj[prop].toString() : ''
+					};
+					arr.push(innerObj)
+				}
+			}
+		}
+		return arr;
+	}
+	suggestionGen = (arrayOfObjs) => {
+		let arr = [];
+		arrayOfObjs.map(obj => {
+			arr.push(...this.suggestionSlicer(obj))
+			// for (var prop in obj) {
+			// 	if (obj.hasOwnProperty(prop)) {
+			// 		var innerObj = null
+			// 		if (typeof obj[prop] === 'object') { 
+
+			// 			// var p = obj[prop];
+			// 			// for (var pr in p)
+			// 			// 	if (p.hasOwnProperty(pr)) { 
+			// 			// 		 innerObj = {
+			// 			// 			id: pr.toString().toLowerCase(),
+			// 			// 			label: p[pr].toString()
+			// 			// 		}
+			// 			// 	}
+			// 		}
+			// 		else {	
+						
+			// 		}
+			// 		if (innerObj)
+			// 			arr.push(innerObj) 
+			// 	}
+			// }
+			return ''
+		})
+		console.log(arr)
+
+		return arr;
+	}
 	render() {
 		const { classes, data } = this.props;
 		const { order, orderBy, selected, rowsPerPage, page } = this.state;
@@ -200,7 +251,7 @@ class EnhancedTable extends React.Component {
 					filterOptions={this.props.tableHead}
 					numSelected={selected.length}
 					options={this.options}
-					suggestions={data.map(p => ({ id: p.id, label: p.title }))}
+					suggestions={this.suggestionGen(data)}
 				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
@@ -216,27 +267,48 @@ class EnhancedTable extends React.Component {
 						/>
 						<TableBody>
 							{data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-								const isSelected = this.isSelected(n.id);
+								const isSelected = this.isSelected(n.device_id);
 								return (
 									<TableRow
 										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push('/project/' + n.id) }}
+										onClick={e => { e.stopPropagation(); this.props.history.push('/device/' + n.device_id) }}
 										role="checkbox"
 										aria-checked={isSelected}
 										tabIndex={-1}
-										key={n.id}
+										key={n.device_id}
 										selected={isSelected}
 										style={{ cursor: 'pointer' }}
 									>
-										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.device_id)}>
 											<Checkbox checked={isSelected} />
 										</TableCell>
-										<TableCell className={classes.tableCell}>
+										<Hidden mdDown>
+											{Object.keys(n).map((k, i) => {
+												return <TableCell key={i} className={classes.tableCell}>
+													<Typography paragraph classes={{ root: classes.paragraphCell }}>
+														{n[k] !== null ? (k === 'organisation' ? n[k].vcName : k === 'project' ? n[k].title : n[k]) : null} 
+													</Typography>
+												</TableCell>
+											})}
+										</Hidden>
+										<Hidden lgUp>
+											<TableCell className={classes.tableCell}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{n.device_id}
+												</Typography>
+											</TableCell>
+											<TableCell className={classes.tableCell}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{n.device_name}
+												</Typography>
+											</TableCell>
+										</Hidden>
+										{/* <TableCell className={classes.tableCell}>
 											<Typography paragraph classes={{ root: classes.paragraphCell }}>
 												{n.title}
 											</Typography>
-										</TableCell>
-										<Hidden mdDown>
+										</TableCell> */}
+										{/* <Hidden mdDown>
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph title={n.description} classes={{ root: classes.paragraphCell }}>
 													{n.description}
@@ -256,7 +328,7 @@ class EnhancedTable extends React.Component {
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
 													{this.dateFormatter(n.created)}	</Typography>
 											</TableCell>
-										</Hidden>
+										</Hidden> */}
 									</TableRow>
 								);
 							})}

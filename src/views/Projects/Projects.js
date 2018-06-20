@@ -52,8 +52,6 @@ class Projects extends Component {
 		if (activeDateFilter)
 			arr = this.filterByDate(arr)
 		if (arr) {
-			
-		
 			if (arr[0] === undefined)
 				return []
 			var keys = Object.keys(arr[0])
