@@ -4,9 +4,10 @@ import { Grid, CircularProgress, withStyles } from "@material-ui/core";
 
 import { /* RegularCard */ /* Table, */ ItemGrid } from "components";
 import projectStyles from 'assets/jss/views/projects';
-import ProjectTable from 'components/Project/ProjectTable';
+import DeviceTable from 'components/Project/ProjectTable';
 var moment = require('moment');
-class Projects extends Component {
+
+class Devices extends Component {
 	constructor(props) {
 		super(props)
 
@@ -33,7 +34,7 @@ class Projects extends Component {
 				var closeDate = moment(c['close_date'])
 				// console.log(openDate, closeDate)
 				if (openDate > startDate
-			 		&& closeDate < (endDate ? endDate : moment())) {
+					&& closeDate < (endDate ? endDate : moment())) {
 					return true
 				}
 				else
@@ -51,26 +52,21 @@ class Projects extends Component {
 		var arr = projects
 		if (activeDateFilter)
 			arr = this.filterByDate(arr)
-		if (arr) {
-			
-		
-			if (arr[0] === undefined)
-				return []
-			var keys = Object.keys(arr[0])
-			var filtered = arr.filter(c => {
-				var contains = keys.map(key => {
-					if (c[key] instanceof Date)
-					{
-						let date = moment(c[key]).format("DD.MM.YYYY")
-						return date.toLowerCase().includes(searchStr)
-					}
-					else
-						return c[key].toString().toLowerCase().includes(searchStr)
-				})
-				return contains.indexOf(true) !== -1 ? true : false
+		if (arr[0] === undefined)
+			return []
+		var keys = Object.keys(arr[0])
+		var filtered = arr.filter(c => {
+			var contains = keys.map(key => {
+				if (c[key] instanceof Date) {
+					let date = moment(c[key]).format("DD.MM.YYYY")
+					return date.toLowerCase().includes(searchStr)
+				}
+				else
+					return c[key].toString().toLowerCase().includes(searchStr)
 			})
-			return filtered
-		}
+			return contains.indexOf(true) !== -1 ? true : false
+		})
+		return filtered
 	}
 
 	handleFilterStartDate = (value) => {
@@ -79,9 +75,10 @@ class Projects extends Component {
 				...this.state.filters,
 				startDate: value,
 				activeDateFilter: value !== null ? true : false
-			} })
+			}
+		})
 	}
-	handleFilterEndDate = (value) => { 
+	handleFilterEndDate = (value) => {
 		this.setState({
 			filters: {
 				...this.state.filters,
@@ -129,7 +126,7 @@ class Projects extends Component {
 	}
 	renderAllProjects = () => {
 		const { loading } = this.state
-		return loading ? this.renderLoader() : <ProjectTable
+		return loading ? this.renderLoader() : <DeviceTable
 			data={this.filterItems(this.state.projects)}
 			tableHead={this.state.projectHeader}
 			handleFilterEndDate={this.handleFilterEndDate}
@@ -162,4 +159,4 @@ class Projects extends Component {
 	}
 }
 
-export default withStyles(projectStyles)(Projects)
+export default withStyles(projectStyles)(Devices)

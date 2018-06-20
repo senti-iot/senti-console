@@ -95,6 +95,7 @@ export const getDevicesForProject = async (projectId) => {
 // Get available devices
 export const getAvailableDevices = async () => {
 	var data = await api.get('senti/availabledevices').then(rs => rs.data)
+	console.log(data)
 	return data
 }
 //Get Device Registrations for Project

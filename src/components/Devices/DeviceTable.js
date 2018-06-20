@@ -1,6 +1,4 @@
 import React from "react";
-import EnhancedTableHead from '../../Project/TableHeader';
-import EnhancedTableToolbar from '../../Project/TableToolBar'
 import {
 	withStyles,
 	Table,
@@ -8,21 +6,33 @@ import {
 	TableRow,
 	TableBody,
 	TableCell,
-	Hidden
+	Hidden,
+	Typography
 } from "@material-ui/core";
+import EnhancedTableHead from './TableHeader';
+import EnhancedTableToolbar from './TableToolBar'
 import PropTypes from "prop-types";
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import { headerColor, primaryColor } from "assets/jss/material-dashboard-react";
-import { withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router';
 var moment = require('moment')
 
 const styles = theme => ({
+	headerCell: {
+		color: "inherit",
+	},
+	paragraphCell: {
+		margin: 0,
+		overflow: "hidden",
+		whiteSpace: "nowrap",
+		textOverflow: "ellipsis"
+	},
 	root: {
 		width: '100%',
-		// marginTop: theme.spacing.unit * 3,
-		marginTop: "2px"
+		marginTop: theme.spacing.unit * 3,
+		borderRadius: "3px"
 	},
 	table: {
 		minWidth: 0,
@@ -52,7 +62,9 @@ const styles = theme => ({
 		}
 	},
 	tableCell: {
-		padding: 0
+		padding: 4,
+		minWidth: 130,
+		maxWidth: 200
 	},
 	tablecellcheckbox: {
 		padding: 0,
@@ -60,7 +72,7 @@ const styles = theme => ({
 	}
 });
 
-class DeviceSimpleList extends React.Component {
+class EnhancedTable extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -70,12 +82,12 @@ class DeviceSimpleList extends React.Component {
 			selected: [],
 			page: 0,
 			rowsPerPage: 5,
-			anchorElMenu: null
+			anchorElMenu: null,
+			anchorFilterMenu: null
 		};
 	}
 	dateFormatter = (date) => {
 		var a = moment(date).format("DD.MM.YYYY")
-		// console.log(a)
 		return a
 	}
 	handleToolbarMenuOpen = e => {
@@ -85,6 +97,22 @@ class DeviceSimpleList extends React.Component {
 	handleToolbarMenuClose = e => {
 		e.stopPropagation();
 		this.setState({ anchorElMenu: null })
+	}
+	handleFilterMenuOpen = e => {
+		e.stopPropagation()
+		this.setState({ anchorFilterMenu: e.currentTarget })
+	}
+	handleFilterMenuClose = e => {
+		e.stopPropagation()
+		this.setState({ anchorFilterMenu: null })
+	}
+	handleFilter = e => {
+		console.log('not implemented')
+	}
+	handleSearch = value => {
+		this.setState({
+			searchFilter: value
+		})
 	}
 	handleRequestSort = (event, property) => {
 		const orderBy = property;
@@ -139,25 +167,41 @@ class DeviceSimpleList extends React.Component {
 	handleChangeRowsPerPage = event => {
 		this.setState({ rowsPerPage: event.target.value });
 	};
-
+	handleDeleteProjects = async () => {
+		this.props.deleteProjects(this.state.selected)
+		this.setState({
+			selected: [],
+			anchorElMenu: null
+		})
+	}
 	isSelected = id => this.state.selected.indexOf(id) !== -1;
-
+	options = [
+		{ label: 'Export to PDF', func: () => { } },
+		{ label: 'Delete', func: this.handleDeleteProjects }
+	];
 	render() {
 		const { classes, data } = this.props;
 		const { order, orderBy, selected, rowsPerPage, page } = this.state;
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-		const tableHead = [{ label: "Device Name" }, { label: "Address" }, { label: "Online" }, { label: "Total Count" }]
+
 		return (
 			<Paper className={classes.root}>
 				<EnhancedTableToolbar
-					noFilterIcon
-					noAdd
-					noDatePickers
 					anchorElMenu={this.state.anchorElMenu}
+					anchorFilterMenu={this.state.anchorFilterMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+					handleFilterMenuOpen={this.handleFilterMenuOpen}
+					handleFilterMenuClose={this.handleFilterMenuClose}
+					handleFilterKeyword={this.props.handleFilterKeyword}
+					handleFilterStartDate={this.props.handleFilterStartDate}
+					handleFilterEndDate={this.props.handleFilterEndDate}
 					filters={this.props.filters}
-					numSelected={selected.length} />
+					filterOptions={this.props.tableHead}
+					numSelected={selected.length}
+					options={this.options}
+					suggestions={data.map(p => ({ id: p.id, label: p.title }))}
+				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
 						<EnhancedTableHead
@@ -167,20 +211,20 @@ class DeviceSimpleList extends React.Component {
 							onSelectAllClick={this.handleSelectAllClick}
 							onRequestSort={this.handleRequestSort}
 							rowCount={data.length}
-							columnData={tableHead}
+							columnData={this.props.tableHead}
 							classes={classes}
 						/>
 						<TableBody>
-							{data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((n, i) => {
+							{data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
 								return (
 									<TableRow
 										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push('/device/' + n.id) }}
+										onClick={e => { e.stopPropagation(); this.props.history.push('/project/' + n.id) }}
 										role="checkbox"
 										aria-checked={isSelected}
 										tabIndex={-1}
-										key={i}
+										key={n.id}
 										selected={isSelected}
 										style={{ cursor: 'pointer' }}
 									>
@@ -188,17 +232,29 @@ class DeviceSimpleList extends React.Component {
 											<Checkbox checked={isSelected} />
 										</TableCell>
 										<TableCell className={classes.tableCell}>
-											{n.device_name}
+											<Typography paragraph classes={{ root: classes.paragraphCell }}>
+												{n.title}
+											</Typography>
 										</TableCell>
 										<Hidden mdDown>
 											<TableCell className={classes.tableCell}>
-												{n.address}
+												<Typography paragraph title={n.description} classes={{ root: classes.paragraphCell }}>
+													{n.description}
+												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCell}>
-												{n.online}
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{this.dateFormatter(n.open_date)}
+												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCell}>
-												{n.totalCount}
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{this.dateFormatter(n.close_date)}
+												</Typography>
+											</TableCell>
+											<TableCell className={classes.tableCell}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{this.dateFormatter(n.created)}	</Typography>
 											</TableCell>
 										</Hidden>
 									</TableRow>
@@ -226,15 +282,15 @@ class DeviceSimpleList extends React.Component {
 					onChangePage={this.handleChangePage}
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}
 					labelRowsPerPage={<Hidden mdDown>Rows per page</Hidden>}
+
 				/>
 			</Paper>
 		);
 	}
 }
 
-DeviceSimpleList.propTypes = {
+EnhancedTable.propTypes = {
 	classes: PropTypes.object.isRequired,
-	data: PropTypes.array.isRequired
 };
 
-export default withRouter(withStyles(styles)(DeviceSimpleList));
+export default withRouter(withStyles(styles)(EnhancedTable));

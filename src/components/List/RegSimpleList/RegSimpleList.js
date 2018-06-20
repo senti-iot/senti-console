@@ -1,6 +1,6 @@
 import React from "react";
-import EnhancedTableHead from '../TableHeader';
-import EnhancedTableToolbar from '../TableToolBar'
+import EnhancedTableHead from '../../Project/TableHeader';
+import EnhancedTableToolbar from '../../Project/TableToolBar'
 import {
 	withStyles,
 	Table,

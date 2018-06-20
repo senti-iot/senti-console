@@ -10,6 +10,7 @@ import { getAvailableDevices, createOneProject } from 'variables/data';
 import teal from '@material-ui/core/colors/teal'
 import Save from '@material-ui/icons/Check'
 import classNames from 'classnames';
+
 const ITEM_HEIGHT = 32;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -305,7 +306,6 @@ class CreateProject extends Component {
         					  </Button>
 									{this.state.creating && <CircularProgress size={24} className={classes.buttonProgress} />}
 									{this.state.created && <Icon
-										s
 										className={classes.buttonProgress}
 									>
 										 <Save /> 
