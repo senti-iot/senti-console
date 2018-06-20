@@ -56,15 +56,15 @@ class Dashboard extends React.Component {
 				<Grid container>
 					<ItemGrid xs={12}>
 						<RegularCard
-							cardTitle={"Senti Cloud"}
-							cardSubtitle={"Senti - an open source IoT project that will make cities smarter"}
+							cardTitle={"Senti Console"}
+							cardSubtitle={"Senti is an open source IoT project that will make cities smarter through intelligent data collection and open API's."}
 							content={
 								<div>
 									<Grid container>
 										<ItemGrid xs>
 											<div className={this.props.classes.typo}>
 												<h3>Projects</h3>
-												<div className={this.props.classes.section}>Projects help you encapsulate Senti devices for at specific task and collection use case.</div>
+												<div className={this.props.classes.section}>Projects help you encapsulate Senti devices for at specific task and data collection use case.</div>
 												<div className={this.props.classes.section}>You can create as many projects as you like, and you can bundle devices from all available locations.</div>
 											</div>
 										</ItemGrid>
@@ -72,13 +72,13 @@ class Dashboard extends React.Component {
 											<div className={this.props.classes.typo}>
 												<h3>Devices</h3>
 												<div className={this.props.classes.section}>Devices are the actual physical device deployed into your environment. </div>
-												<div className={this.props.classes.section}>Here you can name, configure and calibrate the devices used in your projects.</div>
+												<div className={this.props.classes.section}>Here you can name, configure and set up the devices used in your projects.</div>
 											</div>
 										</ItemGrid>
 										<ItemGrid xs>
 											<div className={this.props.classes.typo}>
 												<h3>Data</h3>
-												<div className={this.props.classes.section}>Viewing your data can be done through lists, cards and different types of graphs/diagrams.</div>
+												<div className={this.props.classes.section}>Viewing your data can be done through lists, cards and different types of graphs.</div>
 												<div className={this.props.classes.section}>You can create reports and export data with very few clicks.</div>
 											</div>
 										</ItemGrid>
