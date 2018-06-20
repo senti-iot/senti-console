@@ -77,6 +77,8 @@ class Project extends Component {
 		var keys = Object.keys(arr[0])
 		var filtered = arr.filter(c => {
 			var contains = keys.map(key => {
+				if (c[key] === null)
+					return searchStr === "null" ? true : false
 				if (c[key] instanceof Date) {
 					let date = moment(c[key]).format("DD.MM.YYYY")
 					return date.toLowerCase().includes(searchStr)

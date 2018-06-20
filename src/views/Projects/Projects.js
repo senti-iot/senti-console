@@ -3,8 +3,8 @@ import { getAllProjects, deleteProject } from '../../variables/data';
 import { Grid, CircularProgress, withStyles } from "@material-ui/core";
 
 import { /* RegularCard */ /* Table, */ ItemGrid } from "components";
-import ProjectTable from 'components/List/ProjectTable';
 import projectStyles from 'assets/jss/views/projects';
+import ProjectTable from 'components/Project/ProjectTable';
 var moment = require('moment');
 class Projects extends Component {
 	constructor(props) {
@@ -51,22 +51,24 @@ class Projects extends Component {
 		var arr = projects
 		if (activeDateFilter)
 			arr = this.filterByDate(arr)
-		if (arr[0] === undefined)
-			return []
-		var keys = Object.keys(arr[0])
-		var filtered = arr.filter(c => {
-			var contains = keys.map(key => {
-				if (c[key] instanceof Date)
-				{
-					let date = moment(c[key]).format("DD.MM.YYYY")
-					return date.toLowerCase().includes(searchStr)
-				}
-				else
-					return c[key].toString().toLowerCase().includes(searchStr)
+		if (arr) {
+			if (arr[0] === undefined)
+				return []
+			var keys = Object.keys(arr[0])
+			var filtered = arr.filter(c => {
+				var contains = keys.map(key => {
+					if (c[key] instanceof Date)
+					{
+						let date = moment(c[key]).format("DD.MM.YYYY")
+						return date.toLowerCase().includes(searchStr)
+					}
+					else
+						return c[key].toString().toLowerCase().includes(searchStr)
+				})
+				return contains.indexOf(true) !== -1 ? true : false
 			})
-			return contains.indexOf(true) !== -1 ? true : false
-		})
-		return filtered
+			return filtered
+		}
 	}
 
 	handleFilterStartDate = (value) => {
