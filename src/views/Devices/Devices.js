@@ -102,22 +102,10 @@ class Devices extends Component {
 		await getAllDevices().then(rs => this.setState({
 			devices: rs,
 			deviceHeader: [
-				{ id: "device_id", label: "Device ID" },
 				{ id: "device_name", label: "Device Name" },
-				{ id: "address", label: "Address" },
-				{ id: "wifiModule", label: "Wifi Module" },
-				{ id: "modemModel", label: "Modem model" },
-				{ id: "modemIMEI", label: "Modem IMEI" },
-				{ id: "RPImodel", label: "Raspberry Pi Model" },
-				{ id: "memory", label: "Memory" },
-				{ id: "memoryModel", label: "Memory Model" },
-				{ id: "adapter", label: "Adapter" },
-				{ id: "cellNumber", label: "Cell Number" },
-				{ id: "SIMID", label: "SIM-Card Number" },
-				{ id: "description", label: "Description" },
+				{ id: "device_id", label: "Device ID" },
 				{ id: "liveStatus", label: "Status" },
-				{ id: "project_id", label: "Project" },
-				{ id: "iOrgID", label: "Organisation" }
+				{ id: "org", label: "Organisation" }
 			],
 			loading: false
 		}))

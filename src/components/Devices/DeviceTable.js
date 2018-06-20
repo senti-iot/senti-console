@@ -286,7 +286,7 @@ class EnhancedTable extends React.Component {
 											{Object.keys(n).map((k, i) => {
 												return <TableCell key={i} className={classes.tableCell}>
 													<Typography paragraph classes={{ root: classes.paragraphCell }}>
-														{n[k] !== null ? (k === 'organisation' ? n[k].vcName : k === 'project' ? n[k].title : n[k]) : null} 
+														{n[k] !== null ? (k === 'organisation' ? n[k].vcName ? n[k].vcName : "Unnasigned" : k === 'project' ? n[k].title : n[k]) : "No Name"} 
 													</Typography>
 												</TableCell>
 											})}
