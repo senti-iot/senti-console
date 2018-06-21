@@ -69,36 +69,6 @@ class EnhancedTableHead extends Component {
 							key={columnData[0].id}
 
 							// numeric={columnData[0].numeric}
-							padding={columnData[0].disablePadding ? 'none' : 'default'}
-							sortDirection={orderBy === columnData[0].id ? order : false}
-							className={classes.header + " " + classes.tableCell}
-						>
-							<Tooltip
-								title="Sort"
-								placement={columnData[0].numeric ? 'bottom-end' : 'bottom-start'}
-								enterDelay={300}
-							>
-								<TableSortLabel
-									active={orderBy === columnData[0].id}
-									direction={order}
-									onClick={this.createSortHandler(columnData[0].id)}
-									classes={
-										{
-											root: classes.HeaderLabelActive,
-											active: classes.HeaderLabelActive
-
-										}
-									}
-								>
-									<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{columnData[0].label}</Typography>
-								</TableSortLabel>
-							</Tooltip>
-						</TableCell>
-
-						<TableCell
-							key={columnData[1].id}
-
-							// numeric={columnData[0].numeric}
 							padding={columnData[1].disablePadding ? 'none' : 'default'}
 							sortDirection={orderBy === columnData[1].id ? order : false}
 							className={classes.header + " " + classes.tableCell}
@@ -121,6 +91,36 @@ class EnhancedTableHead extends Component {
 									}
 								>
 									<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{columnData[1].label}</Typography>
+								</TableSortLabel>
+							</Tooltip>
+						</TableCell>
+
+						<TableCell
+							key={columnData[3].id}
+
+							// numeric={columnData[0].numeric}
+							padding={columnData[3].disablePadding ? 'none' : 'default'}
+							sortDirection={orderBy === columnData[2].id ? order : false}
+							className={classes.header + " " + classes.tableCell}
+						>
+							<Tooltip
+								title="Sort"
+								placement={columnData[2].numeric ? 'bottom-end' : 'bottom-start'}
+								enterDelay={300}
+							>
+								<TableSortLabel
+									active={orderBy === columnData[2].id}
+									direction={order}
+									onClick={this.createSortHandler(columnData[2].id)}
+									classes={
+										{
+											root: classes.HeaderLabelActive,
+											active: classes.HeaderLabelActive
+
+										}
+									}
+								>
+									<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{columnData[2].label}</Typography>
 								</TableSortLabel>
 							</Tooltip>
 						</TableCell>

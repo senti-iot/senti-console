@@ -82,7 +82,7 @@ export const getProject = async (projectId) => {
 }
 // Get devices for Project
 export const getDevicesForProject = async (projectId) => {
-	var data = await api.get('senti/device/' + projectId).then((response) => response.data)
+	var data = await api.get('senti/projectdevices/' + projectId).then((response) => response.data)
 	if (data instanceof Array)
 		return data
 	else {
@@ -98,7 +98,11 @@ export const getAvailableDevices = async () => {
 	return data
 }
 export const getAllDevices = async () => {
-	var data = await api.get("senti/devices").then(rs =>	{ console.log(rs); return rs.data})
+	var data = await api.get("senti/devices").then(rs => rs.data)
+	return data
+}
+export const getDevice = async (id) => {
+	var data = await api.get('senti/device/' + id).then(rs => rs.data)
 	console.log(data)
 	return data
 }

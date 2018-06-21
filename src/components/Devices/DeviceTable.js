@@ -1,25 +1,31 @@
-import React from "react";
 import {
-	withStyles,
-	Table,
+	Hidden, Table, TableBody, TableCell,
 	// TableHead,
-	TableRow,
-	TableBody,
-	TableCell,
-	Hidden,
-	Typography
+	TableRow, Typography, withStyles
 } from "@material-ui/core";
-import EnhancedTableHead from './DeviceTableHeader';
-import EnhancedTableToolbar from './TableToolBar'
-import PropTypes from "prop-types";
-import TablePagination from '@material-ui/core/TablePagination';
-import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import { headerColor, primaryColor } from "assets/jss/material-dashboard-react";
+import { grey, red, yellow, green } from "@material-ui/core/colors";
+import Paper from '@material-ui/core/Paper';
+import TablePagination from '@material-ui/core/TablePagination';
+import { primaryColor } from "assets/jss/material-dashboard-react";
+import PropTypes from "prop-types";
+import React from "react";
 import { withRouter } from 'react-router';
+import EnhancedTableHead from './DeviceTableHeader';
+import EnhancedTableToolbar from './TableToolBar';
+import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons'
 var moment = require('moment')
 
 const styles = theme => ({
+	redSignal: {
+		color: red[700]
+	},
+	greenSignal: {
+		color: green[700]
+	},
+	yellowSignal: {
+		color: yellow[600]
+	},
 	headerCell: {
 		color: "inherit",
 	},
@@ -41,24 +47,23 @@ const styles = theme => ({
 		overflowX: 'auto',
 	},
 	header: {
-		// padding: 0,
-		backgroundColor: headerColor,
-		color: '#fff'
+		backgroundColor: grey[400],
+		// color: grey[200]
 	},
 	checkbox: {
-		color: 'white',
+		color: grey[800],
 		'&$checked': {
 			color: primaryColor
 		},
 	},
 	checked: {},
 	HeaderLabelActive: {
-		color: '#fff',
+		color: grey[800],
 		"&:hover": {
-			color: primaryColor
+			color: "black"
 		},
 		"&:focus": {
-			color: "#fff"
+			color: grey[900]
 		}
 	},
 	tableCell: {
@@ -132,7 +137,7 @@ class EnhancedTable extends React.Component {
 
 	handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			this.setState({ selected: this.props.data.map(n => n.id) });
+			this.setState({ selected: this.props.data.map(n => n.device_id) });
 			return;
 		}
 		this.setState({ selected: [] });
@@ -203,32 +208,25 @@ class EnhancedTable extends React.Component {
 		let arr = [];
 		arrayOfObjs.map(obj => {
 			arr.push(...this.suggestionSlicer(obj))
-			// for (var prop in obj) {
-			// 	if (obj.hasOwnProperty(prop)) {
-			// 		var innerObj = null
-			// 		if (typeof obj[prop] === 'object') { 
-
-			// 			// var p = obj[prop];
-			// 			// for (var pr in p)
-			// 			// 	if (p.hasOwnProperty(pr)) { 
-			// 			// 		 innerObj = {
-			// 			// 			id: pr.toString().toLowerCase(),
-			// 			// 			label: p[pr].toString()
-			// 			// 		}
-			// 			// 	}
-			// 		}
-			// 		else {	
-						
-			// 		}
-			// 		if (innerObj)
-			// 			arr.push(innerObj) 
-			// 	}
-			// }
 			return ''
 		})
-		console.log(arr)
-
 		return arr;
+	}
+	renderIcon = (status) => {
+		console.log(status)
+		const { classes } = this.props
+		switch (status) {
+			case 1: 
+				return <SignalWifi2Bar className={classes.yellowSignal}/>
+			case 2: 
+				return <SignalWifi2Bar className={classes.greenSignal} />
+			case 0:
+				return <SignalWifi2Bar className={classes.redSignal} />
+			case null:
+				return <SignalWifi2BarLock className={classes.redSignal} />
+			default:
+				break;
+		}
 	}
 	render() {
 		const { classes, data } = this.props;
@@ -283,13 +281,26 @@ class EnhancedTable extends React.Component {
 											<Checkbox checked={isSelected} />
 										</TableCell>
 										<Hidden mdDown>
-											{Object.keys(n).map((k, i) => {
-												return <TableCell key={i} className={classes.tableCell}>
-													<Typography paragraph classes={{ root: classes.paragraphCell }}>
-														{n[k] !== null ? (k === 'organisation' ? n[k].vcName ? n[k].vcName : "Unnasigned" : k === 'project' ? n[k].title : n[k]) : "No Name"} 
-													</Typography>
-												</TableCell>
-											})}
+											 <TableCell className={classes.tableCell}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{n.device_name ?  n.device_name : "No Name"} 
+												</Typography>
+											</TableCell>
+											<TableCell className={classes.tableCell}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{n.device_id}
+												</Typography>
+											</TableCell>
+											<TableCell className={classes.tableCell}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{this.renderIcon(n.liveStatus)}
+												</Typography>
+											</TableCell>
+											<TableCell className={classes.tableCell}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{n.organisation ? n.organisation.vcName  : " Unassigned"}
+												</Typography>
+											</TableCell>
 										</Hidden>
 										<Hidden lgUp>
 											<TableCell className={classes.tableCell}>
@@ -299,36 +310,11 @@ class EnhancedTable extends React.Component {
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.device_name}
+													{this.renderIcon(n.liveStatus)}
 												</Typography>
 											</TableCell>
 										</Hidden>
-										{/* <TableCell className={classes.tableCell}>
-											<Typography paragraph classes={{ root: classes.paragraphCell }}>
-												{n.title}
-											</Typography>
-										</TableCell> */}
-										{/* <Hidden mdDown>
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph title={n.description} classes={{ root: classes.paragraphCell }}>
-													{n.description}
-												</Typography>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{this.dateFormatter(n.open_date)}
-												</Typography>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{this.dateFormatter(n.close_date)}
-												</Typography>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{this.dateFormatter(n.created)}	</Typography>
-											</TableCell>
-										</Hidden> */}
+		
 									</TableRow>
 								);
 							})}

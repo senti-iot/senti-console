@@ -31,6 +31,8 @@ class Project extends Component {
 			},
 			loading: true
 		}
+		props.setHeader(<CircularProgress size={30}/>)
+
 	}
 	componentDidMount = async () => {
 		if (this.props.match)
@@ -38,17 +40,19 @@ class Project extends Component {
 				getProject(this.props.match.params.id).then(rs => {
 					if (rs === null)
 						this.props.history.push('/404')
-					this.props.setHeader(rs.title)
-					this.setState({
-						project: rs, loading: false, facts: {
-							deviceMostCounts: this.deviceMostCount(rs.devices),
-							regMostCounts: this.regMostCount(rs.registrations)
-						}
-					})
-					console.log(rs)
+					else {
+
+						this.props.setHeader(rs.title)
+						this.setState({
+							project: rs, loading: false, facts: {
+								deviceMostCounts: this.deviceMostCount(rs.devices),
+								regMostCounts: this.regMostCount(rs.registrations)
+							}
+						})
+					}
 				})
 			else {
-				this.props.history.push('/projects')
+				this.props.history.push('/404')
 			}
 	}
 	deviceMostCount = (devices) => {
@@ -117,145 +121,143 @@ class Project extends Component {
 		const { regMostCounts, deviceMostCounts } = this.state.facts
 		return (
 			!loading ?
-				<React.Fragment>
-					<Grid container justify={'center'} alignContent={'space-between'} spacing={8}>
-						<ItemGrid xs={12} sm={12} md={12}>
-							<ProjectCard title={project.title} subheader={project.description}
-								noExpand
-								content={
-									<Grid container>
-										<ItemGrid>
-											<Typography variant={"caption"}>Created:</Typography>
-											<Typography variant={'title'}>{dateFormatter(project.created)}</Typography>
-										</ItemGrid>
-										<ItemGrid>
-											<Typography variant={"caption"}>
+				<Grid container justify={'center'} alignContent={'space-between'} spacing={8}>
+					<ItemGrid xs={12} sm={12} md={12}>
+						<ProjectCard title={project.title} subheader={project.description}
+							noExpand
+							content={
+								<Grid container>
+									<ItemGrid>
+										<Typography variant={"caption"}>Created:</Typography>
+										<Typography variant={'title'}>{dateFormatter(project.created)}</Typography>
+									</ItemGrid>
+									<ItemGrid>
+										<Typography variant={"caption"}>
 												Start Date:
-											</Typography>
-											<Typography variant={'title'}>
-												{dateFormatter(project.open_date)}
-											</Typography>
-										</ItemGrid>
-										<ItemGrid>
-											<Typography variant={"caption"}>
+										</Typography>
+										<Typography variant={'title'}>
+											{dateFormatter(project.open_date)}
+										</Typography>
+									</ItemGrid>
+									<ItemGrid>
+										<Typography variant={"caption"}>
 												End Date:
-											</Typography>
-											<Typography variant={'title'}>
-												{dateFormatter(project.close_date)}
-											</Typography>
-										</ItemGrid>
-										<ItemGrid>
-											<Button onClick={() => this.props.history.push(this.props.match.url + '/edit')}>
+										</Typography>
+										<Typography variant={'title'}>
+											{dateFormatter(project.close_date)}
+										</Typography>
+									</ItemGrid>
+									<ItemGrid>
+										<Button onClick={() => this.props.history.push(this.props.match.url + '/edit')}>
 												Edit
-											</Button>
-										</ItemGrid>
-									</Grid>
+										</Button>
+									</ItemGrid>
+								</Grid>
 
-								}
-							/>
-						</ItemGrid>
-						<ItemGrid xs={12} sm={12} md={12}>
-							<ProjectCard title={"Devices"} subheader={"Number of devices:" + project.devices.length}
-								// hideFacts
-								content={
-									<Grid container>
-										<ItemGrid>
-											<Typography variant={'caption'}>
+							}
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12} sm={12} md={12}>
+						<ProjectCard title={"Devices"} subheader={"Number of devices:" + project.devices.length}
+							// hideFacts
+							content={
+								<Grid container>
+									<ItemGrid>
+										<Typography variant={'caption'}>
 												Most active device:
-											</Typography>
-											<Typography variant={"title"}>
-												{deviceMostCounts ? deviceMostCounts.device_name : "-"}
-											</Typography>
-										</ItemGrid>
-										<ItemGrid>
-											<Typography variant={'caption'}>
+										</Typography>
+										<Typography variant={"title"}>
+											{deviceMostCounts ? deviceMostCounts.device_name : "-"}
+										</Typography>
+									</ItemGrid>
+									<ItemGrid>
+										<Typography variant={'caption'}>
 												Hits by most active device:
-											</Typography>
-											<Typography variant={"title"}>
-												{deviceMostCounts ? deviceMostCounts.totalCount : "-"}
-											</Typography>
-										</ItemGrid>
-									</Grid>
-								}
-								hiddenContent={
-									<DeviceSimpleList filters={this.state.deviceFilters} data={project.devices} />
-								}
-							/>
-						</ItemGrid >
-						<ItemGrid xs={12} sm={12} md={12}>
-							<ProjectCard title={"Registrations"} subheader={project.registrations.length}
-								// hideFacts
-								content={
-									<Grid container>
-										<ItemGrid>
-											<Typography variant={'caption'}>
+										</Typography>
+										<Typography variant={"title"}>
+											{deviceMostCounts ? deviceMostCounts.totalCount : "-"}
+										</Typography>
+									</ItemGrid>
+								</Grid>
+							}
+							hiddenContent={
+								<DeviceSimpleList filters={this.state.deviceFilters} data={project.devices} />
+							}
+						/>
+					</ItemGrid >
+					<ItemGrid xs={12} sm={12} md={12}>
+						<ProjectCard title={"Registrations"} subheader={project.registrations.length}
+							// hideFacts
+							content={
+								<Grid container>
+									<ItemGrid>
+										<Typography variant={'caption'}>
 												Total Hits:
-											</Typography>
-											<Typography variant={'title'}>
-												{project.totalCount}
-											</Typography>
-										</ItemGrid>
-										<ItemGrid>
-											<Typography variant={'caption'}>
+										</Typography>
+										<Typography variant={'title'}>
+											{project.totalCount}
+										</Typography>
+									</ItemGrid>
+									<ItemGrid>
+										<Typography variant={'caption'}>
 												Most counts in a registration:
-											</Typography>
-											<Typography variant={'title'}>
-												{
-													regMostCounts ? regMostCounts.device_name + " - " + regMostCounts.count : "-"
-												}
-											</Typography>
-										</ItemGrid>
-									</Grid>
-								}
-								hiddenContent={
-									<RegSimpleList handleFilterKeyword={this.handleFilterRegKeyword} filters={this.state.regFilters} data={this.filterItems(project.registrations, this.state.regFilters.keyword)} />
-								}
-							/>
-						</ItemGrid>
-						<ItemGrid xs={12} sm={12} md={12}>
-							<ProjectCard title={"Contact"} subheader={""}
-								noExpand
+										</Typography>
+										<Typography variant={'title'}>
+											{
+												regMostCounts ? regMostCounts.device_name + " - " + regMostCounts.count : "-"
+											}
+										</Typography>
+									</ItemGrid>
+								</Grid>
+							}
+							hiddenContent={
+								<RegSimpleList handleFilterKeyword={this.handleFilterRegKeyword} filters={this.state.regFilters} data={this.filterItems(project.registrations, this.state.regFilters.keyword)} />
+							}
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12} sm={12} md={12}>
+						<ProjectCard title={"Contact"} subheader={""}
+							noExpand
 
-								content={
-									<Grid container>
-										<ItemGrid>
-											<Typography variant={"caption"}>
+							content={
+								<Grid container>
+									<ItemGrid>
+										<Typography variant={"caption"}>
 												Contact:
-											</Typography>
-											<Typography variant={"title"}>
-												{project.user.vcFirstName + " " + project.user.vcLastName}
-											</Typography>
-										</ItemGrid>
-										<ItemGrid>
-											<Typography variant={"caption"}>
+										</Typography>
+										<Typography variant={"title"}>
+											{project.user.vcFirstName + " " + project.user.vcLastName}
+										</Typography>
+									</ItemGrid>
+									<ItemGrid>
+										<Typography variant={"caption"}>
 												E-mail:
-											</Typography>
-											<Typography variant={"title"}>
-												{project.user.vcEmail}
-											</Typography>
-										</ItemGrid>
-										<ItemGrid>
-											<Typography variant={"caption"}>
+										</Typography>
+										<Typography variant={"title"}>
+											{project.user.vcEmail}
+										</Typography>
+									</ItemGrid>
+									<ItemGrid>
+										<Typography variant={"caption"}>
 												Phone:
-											</Typography>
-											<Typography variant={"title"}>
-												{project.user.vcPhone}
-											</Typography>
-										</ItemGrid>
-										<ItemGrid>
-											<Typography variant={"caption"}>
+										</Typography>
+										<Typography variant={"title"}>
+											{project.user.vcPhone}
+										</Typography>
+									</ItemGrid>
+									<ItemGrid>
+										<Typography variant={"caption"}>
 												Organisation:
-											</Typography>
-											<Typography variant={"title"}>
-												{project.user.organisation}
-											</Typography>
-										</ItemGrid>
-									</Grid>
-								}
-							/>
-						</ItemGrid>
-					</Grid>
-				</React.Fragment>
+										</Typography>
+										<Typography variant={"title"}>
+											{project.user.organisation}
+										</Typography>
+									</ItemGrid>
+								</Grid>
+							}
+						/>
+					</ItemGrid>
+				</Grid>
 				: this.renderLoader())
 	}
 }

@@ -18,7 +18,7 @@ class EnhancedTableHead extends Component {
 	render() {
 		const { onSelectAllClick, order, orderBy, numSelected, rowCount, columnData, classes } = this.props;
 		return (
-			<TableHead>
+			<TableHead className={classes.tableHead}>
 				<TableRow>
 					<TableCell padding="checkbox"
 						className={classes.header + " " + classes.tablecellcheckbox}>

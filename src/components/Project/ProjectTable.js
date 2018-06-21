@@ -15,13 +15,21 @@ import PropTypes from "prop-types";
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import { headerColor, primaryColor } from "assets/jss/material-dashboard-react";
+import { primaryColor } from "assets/jss/material-dashboard-react";
 import { withRouter } from 'react-router';
+import { grey } from "@material-ui/core/colors";
 var moment = require('moment')
 
 const styles = theme => ({
 	headerCell: { 
 		color: "inherit",
+	},
+	tableHead: {
+		
+		// backgroundColor: primaryColor,
+		// boxShadow:
+		// 	"0 12px 20px -10px rgba(55, 168, 145, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(55, 168, 145, 0.28)",
+		// ...transition
 	},
 	paragraphCell: {
 		margin: 0,
@@ -36,29 +44,29 @@ const styles = theme => ({
 	},
 	table: {
 		minWidth: 0,
+		borderRadius: 4
 	},
 	tableWrapper: {
 		overflowX: 'auto',
 	},
 	header: {
-		// padding: 0,
-		backgroundColor: headerColor,
-		color: '#fff'
+		backgroundColor: grey[400],
+		// color: grey[200]
 	},
 	checkbox: {
-		color: 'white',
+		color: grey[800],
 		'&$checked': {
 			color: primaryColor
 		},
 	},
 	checked: {},
 	HeaderLabelActive: {
-		color: '#fff',
+		color: grey[800],
 		"&:hover": {
-			color: primaryColor
+			color: "black"
 		},
 		"&:focus": {
-			color: "#fff"
+			color: grey[900]
 		}
 	},
 	tableCell: {

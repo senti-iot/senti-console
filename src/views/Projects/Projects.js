@@ -148,6 +148,7 @@ class Projects extends Component {
 							cardTitle="All projects"
 							cardSubtitle=""
 							content={ */}
+						
 						{this.renderAllProjects()}
 						{/* } */}
 						{/* /> */}
