@@ -29,7 +29,7 @@ class Dashboard extends React.Component {
 			projects: [],
 			devices: 0
 	  }
-		props.setHeader("Dashboard")
+		props.setHeader("Console")
 
 	}
 	
@@ -56,7 +56,7 @@ class Dashboard extends React.Component {
 				<Grid container>
 					<ItemGrid xs={12}>
 						<RegularCard
-							cardTitle={"Senti Console"}
+							cardTitle={"Senti Cloud Console"}
 							cardSubtitle={"Senti is an open source IoT project that will make cities smarter through intelligent data collection and open API's."}
 							content={
 								<div>
