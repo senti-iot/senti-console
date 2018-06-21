@@ -216,7 +216,6 @@ class EnhancedTable extends React.Component {
 		return arr;
 	}
 	renderIcon = (status) => {
-
 		const { classes } = this.props
 		switch (status) {
 			case 1: 

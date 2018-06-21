@@ -1,64 +1,95 @@
-import { Component } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 
-class GeoLocation extends Component {
-
+export default class Geolocation extends React.Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			lat: '',
-			long: ''
-		}
-
-		this.GetLatitude()
-		this.GetLongitude()
-	}
-
-	GetLatitude = () => {
-
-		var _this = this
-
-		if ("geolocation" in navigator) {
-			navigator.geolocation.getCurrentPosition(function (position) {
-				var lat = position.coords.latitude
-				var long = position.coords.longitude
-				_this.setState({ lat, long })
-			})
-		}
-
-		else {
-
-			console.log('Geolocation is not available')
+			fetchingPosition: false,
+			position: undefined,
+			error: undefined
 		}
 	}
 
-	GetLongitude = () => {
-
-		var _this = this
-
-		if ("geolocation" in navigator) {
-			navigator.geolocation.getCurrentPosition(function (position) {
-				var long = position.coords.longitude
-				_this.setState({ long })
-			})
+	componentWillMount() {
+		if (typeof window !== 'object') {
+			return
 		}
 
-		else {
-
-			console.log('Geolocation is not available')
+		if (!('geolocation' in window.navigator)) {
+			return
 		}
 
+		if (this.props.lazy) {
+			return
+		}
+
+		this.getCurrentPosition()
+	}
+
+	componentWillUnmount() {
+		this.willUnmount = true
+	}
+
+	getCurrentPosition = () => {
+		const {
+			enableHighAccuracy,
+			timeout,
+			maximumAge,
+			onSuccess,
+			onError
+		} = this.props
+
+		this.setState({ fetchingPosition: true })
+
+		return window.navigator.geolocation.getCurrentPosition(
+			position => {
+				if (this.willUnmount) return
+
+				this.setState({ position, fetchingPosition: false }, () =>
+					onSuccess(position)
+				)
+			},
+			err => {
+				if (this.willUnmount) return
+
+				this.setState({ err, fetchingPosition: false }, () => onError(err))
+			},
+			{ enableHighAccuracy, timeout, maximumAge }
+		)
 	}
 
 	render() {
-		console.log(this.state)
-		return null
-		// <div>
-		// 	<p>{this.state.lat} </p>
-		// 	<p>{this.state.long} </p>
-		// </div>
-		
+		if (!this.props.render) {
+			return null
+		}
+		return (
+			this.props.render({
+				getCurrentPosition: this.getCurrentPosition,
+				fetchingPosition: this.state.fetchingPosition,
+				position: this.state.position,
+				error: this.state.error
+			}) || null
+		)
 	}
 }
 
-export default GeoLocation
+Geolocation.propTypes = {
+	enableHighAccuracy: PropTypes.bool,
+	timeout: PropTypes.number,
+	maximumAge: PropTypes.number,
+	onSuccess: PropTypes.func,
+	onError: PropTypes.func,
+	// Do not call getCurrentPosition on mount
+	lazy: PropTypes.bool
+}
+
+Geolocation.defaultProps = {
+	enableHighAccuracy: false,
+	timeout: Infinity,
+	maximumAge: 0,
+	onSuccess: pos => { },
+	onError: err => { },
+	lazy: false
+}
