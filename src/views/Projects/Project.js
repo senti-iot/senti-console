@@ -7,8 +7,11 @@ import moment from "moment";
 import React, { Component } from 'react';
 import { getProject } from 'variables/data';
 import { dateFormatter } from 'variables/functions';
-import ProjectCard from '../../components/Project/ProjectCard';
+// import ProjectCard from '../../components/Project/ProjectCard';
+import InfoCard from 'components/Cards/InfoCard';
 
+const Caption = (props) => <Typography variant={"caption"}>{props.children}</Typography>
+const Info = (props) => <Typography paragraph classes={props.classes}>{props.children}</Typography>
 class Project extends Component {
 	constructor(props) {
 		super(props)
@@ -123,29 +126,29 @@ class Project extends Component {
 			!loading ?
 				<Grid container justify={'center'} alignContent={'space-between'} spacing={8}>
 					<ItemGrid xs={12} sm={12} md={12}>
-						<ProjectCard title={project.title} subheader={project.description}
+						<InfoCard title={project.title} subheader={project.description}
 							noExpand
 							content={
 								<Grid container>
 									<ItemGrid>
-										<Typography variant={"caption"}>Created:</Typography>
-										<Typography variant={'title'}>{dateFormatter(project.created)}</Typography>
+										<Caption>Created:</Caption>
+										<Info>{dateFormatter(project.created)}</Info>>
 									</ItemGrid>
 									<ItemGrid>
-										<Typography variant={"caption"}>
+										<Caption>
 												Start Date:
-										</Typography>
-										<Typography variant={'title'}>
+										</Caption>
+										<Info>
 											{dateFormatter(project.open_date)}
-										</Typography>
+										</Info>
 									</ItemGrid>
 									<ItemGrid>
-										<Typography variant={"caption"}>
+										<Caption>
 												End Date:
-										</Typography>
-										<Typography variant={'title'}>
+										</Caption>
+										<Info>
 											{dateFormatter(project.close_date)}
-										</Typography>
+										</Info>>
 									</ItemGrid>
 									<ItemGrid>
 										<Button onClick={() => this.props.history.push(this.props.match.url + '/edit')}>
@@ -158,25 +161,25 @@ class Project extends Component {
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12}>
-						<ProjectCard title={"Devices"} subheader={"Number of devices:" + project.devices.length}
+						<InfoCard title={"Devices"} subheader={"Number of devices:" + project.devices.length}
 							// hideFacts
 							content={
 								<Grid container>
 									<ItemGrid>
-										<Typography variant={'caption'}>
+										<Caption>
 												Most active device:
-										</Typography>
-										<Typography variant={"title"}>
+										</Caption>
+										<Info>
 											{deviceMostCounts ? deviceMostCounts.device_name : "-"}
-										</Typography>
+										</Info>
 									</ItemGrid>
 									<ItemGrid>
-										<Typography variant={'caption'}>
+										<Caption>
 												Hits by most active device:
-										</Typography>
-										<Typography variant={"title"}>
+										</Caption>
+										<Info>
 											{deviceMostCounts ? deviceMostCounts.totalCount : "-"}
-										</Typography>
+										</Info>
 									</ItemGrid>
 								</Grid>
 							}
@@ -186,27 +189,27 @@ class Project extends Component {
 						/>
 					</ItemGrid >
 					<ItemGrid xs={12} sm={12} md={12}>
-						<ProjectCard title={"Registrations"} subheader={project.registrations.length}
+						<InfoCard title={"Registrations"} subheader={project.registrations.length}
 							// hideFacts
 							content={
 								<Grid container>
 									<ItemGrid>
-										<Typography variant={'caption'}>
+										<Caption>
 												Total Hits:
-										</Typography>
-										<Typography variant={'title'}>
+										</Caption>
+										<Info>
 											{project.totalCount}
-										</Typography>
+										</Info>
 									</ItemGrid>
 									<ItemGrid>
-										<Typography variant={'caption'}>
+										<Caption>
 												Most counts in a registration:
-										</Typography>
-										<Typography variant={'title'}>
+										</Caption>
+										<Info>
 											{
 												regMostCounts ? regMostCounts.device_name + " - " + regMostCounts.count : "-"
 											}
-										</Typography>
+										</Info>
 									</ItemGrid>
 								</Grid>
 							}
@@ -216,42 +219,41 @@ class Project extends Component {
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12}>
-						<ProjectCard title={"Contact"} subheader={""}
+						<InfoCard title={"Contact"} subheader={""}
 							noExpand
-
 							content={
 								<Grid container>
 									<ItemGrid>
-										<Typography variant={"caption"}>
+										<Caption>
 												Contact:
-										</Typography>
-										<Typography variant={"title"}>
+										</Caption>
+										<Info>
 											{project.user.vcFirstName + " " + project.user.vcLastName}
-										</Typography>
+										</Info>
 									</ItemGrid>
 									<ItemGrid>
-										<Typography variant={"caption"}>
+										<Caption>
 												E-mail:
-										</Typography>
-										<Typography variant={"title"}>
+										</Caption>
+										<Info>
 											{project.user.vcEmail}
-										</Typography>
+										</Info>
 									</ItemGrid>
 									<ItemGrid>
-										<Typography variant={"caption"}>
+										<Caption>
 												Phone:
-										</Typography>
-										<Typography variant={"title"}>
+										</Caption>
+										<Info>
 											{project.user.vcPhone}
-										</Typography>
+										</Info>>
 									</ItemGrid>
 									<ItemGrid>
-										<Typography variant={"caption"}>
+										<Caption>
 												Organisation:
-										</Typography>
-										<Typography variant={"title"}>
+										</Caption>
+										<Info>
 											{project.user.organisation}
-										</Typography>
+										</Info>>
 									</ItemGrid>
 								</Grid>
 							}

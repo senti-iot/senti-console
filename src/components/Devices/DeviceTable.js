@@ -91,6 +91,12 @@ class EnhancedTable extends React.Component {
 			anchorFilterMenu: null
 		};
 	}
+	options = [
+		{ label: 'Calibrate', func: this.handleCalibrateFlow, single: true },
+		{ label: 'Edit', func: this.handleDeviceEdit, single: true },
+		{ label: 'Export to PDF', func: () => { }, single: false },
+		{ label: 'Delete', func: this.handleDeleteProjects, single: false },
+	];
 	dateFormatter = (date) => {
 		var a = moment(date).format("DD.MM.YYYY")
 		return a
@@ -180,10 +186,7 @@ class EnhancedTable extends React.Component {
 		})
 	}
 	isSelected = id => this.state.selected.indexOf(id) !== -1;
-	options = [
-		{ label: 'Export to PDF', func: () => { } },
-		{ label: 'Delete', func: this.handleDeleteProjects }
-	];
+
 	suggestionSlicer = (obj) => {
 		var arr = [];
 

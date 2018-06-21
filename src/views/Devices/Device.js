@@ -83,19 +83,25 @@ class Device extends Component {
 	}
 	renderStatus = (status) => {
 		const { classes } = this.props
+
+				
 		switch (status) {
 			case 1:
-				return <div>
+				return <Grid container justify={'center'} alignContent ={'space-between'}>
 				
 					<SignalWifi2Bar className={classes.yellowSignal} />
-					No Data, Connected
-				</div>
+					<Info classes={{
+						paragraph: classes.InfoSignal
+					}}>No Data, Connected</Info>
+				</Grid>
 			case 2:
-				return <div>
+				return < Grid container justify={'center'} alignContent={'space-between'} > 
 					<SignalWifi2Bar className={classes.greenSignal} />
-					Connected
-
-				</div>
+					<Info classes={{
+						paragraph: classes.InfoSignal
+					}}>	Connected
+					</Info>
+				</Grid>
 			case 0:
 				return <Grid container justify={'center'} alignContent={'space-between'}>
 					
@@ -111,7 +117,6 @@ class Device extends Component {
 				return <div>
 					<SignalWifi2BarLock className={classes.redSignal} />
 					<Typography paragraph>
-					
 					Error
 					</Typography>
 				</div>
