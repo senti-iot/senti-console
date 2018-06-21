@@ -3,7 +3,7 @@ import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withS
 import { ItemGrid, Info } from 'components';
 import { getDevice } from 'variables/data';
 import Caption from 'components/Typography/Caption';
-import Geolocation from 'components/Geolocation/Geolocation';
+// import Geolocation from 'components/Geolocation/Geolocation';
 
 const styles = theme => ({
 	root: {
@@ -84,15 +84,15 @@ class CalibrateDevice extends Component {
 		}
 	}
 	getCoords = () => { 
-		// if (navigator.geolocation) {
-		// // {	var geo = new Geolocation()
-		// 	// Geolocation.requestAuthorization()
-		// 	navigator.geolocation.getCurrentPosition(rs => {
-		// 		let lat = rs.coords.latitude
-		// 		let long = rs.coords.longitude
-		// 		this.setState({ lat, long })
-		// 	})
-		// }
+		if (navigator.geolocation) {
+		// {	var geo = new Geolocation()
+			// Geolocation.requestAuthorization()
+			navigator.geolocation.getCurrentPosition(rs => {
+				let lat = rs.coords.latitude
+				let long = rs.coords.longitude
+				this.setState({ lat, long })
+			})
+		}
 	}
 	renderDeviceNameDescriptionForms = () => {
 		// const { device } = this.state
@@ -130,7 +130,7 @@ class CalibrateDevice extends Component {
 	}
 	renderDeviceLocation = () => {
 		return <Fragment>
-			<Geolocation/>
+			{/* <Geolocation/> */}
 			<Button
 				variant="contained"
 				color="primary"
