@@ -191,11 +191,18 @@ let EnhancedTableToolbar = props => {
 								}
 							}}
 						>
-							{props.options.map((option, i) => (
-								<MenuItem key={i} onClick={option.func}>
-									{option.label}
-								</MenuItem>
-							))}
+							{props.options.map((option, i) => {
+								if (option.single)
+									return numSelected === 1 ? <MenuItem key={i} onClick={option.func}>
+										{option.label}
+									</MenuItem> : null
+								else {
+									return <MenuItem key={i} onClick={option.func}>
+										{option.label}
+									</MenuItem>
+								}
+							}
+							)}
 						</Menu>
 					</Fragment>
 				) :

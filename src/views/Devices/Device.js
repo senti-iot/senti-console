@@ -46,7 +46,6 @@ class Device extends Component {
 					if (rs === null)
 						this.props.history.push('/404')
 					else {
-						console.log(rs)
 						this.setState({ device: rs, loading: false })
 						this.props.setHeader(rs.device_name ? rs.device_name : rs.device_id)
 					}
@@ -87,32 +86,14 @@ class Device extends Component {
 				
 		switch (status) {
 			case 1:
-				return <Grid container justify={'center'} alignContent ={'space-between'}>
-				
-					<SignalWifi2Bar className={classes.yellowSignal} />
-					<Info classes={{
-						paragraph: classes.InfoSignal
-					}}>No Data, Connected</Info>
-				</Grid>
+				return	<SignalWifi2Bar className={classes.yellowSignal} />
+
 			case 2:
-				return < Grid container justify={'center'} alignContent={'space-between'} > 
-					<SignalWifi2Bar className={classes.greenSignal} />
-					<Info classes={{
-						paragraph: classes.InfoSignal
-					}}>	Connected
-					</Info>
-				</Grid>
+				return <SignalWifi2Bar className={classes.greenSignal} />
+
 			case 0:
-				return <Grid container justify={'center'} alignContent={'space-between'}>
-					
-					<SignalWifi2Bar className={classes.redSignal} />
-					<Info classes={{
-						paragraph: classes.InfoSignal
-					}}>
-						No Data, No Connection
-					</Info>
-				
-				</Grid>
+				return <SignalWifi2Bar className={classes.redSignal} />
+
 			case null:
 				return <div>
 					<SignalWifi2BarLock className={classes.redSignal} />
@@ -170,6 +151,10 @@ class Device extends Component {
 										<ItemGrid>
 											<Caption>Project:</Caption>
 											<Info>{device.project ? device.project.title : "Unassigned"}</Info>
+										</ItemGrid>
+										<ItemGrid>
+											<Caption>SIM Provider:</Caption>
+											<Info>{device.SIMProvider}</Info>
 										</ItemGrid>
 									</Grid>
 								</Grid>

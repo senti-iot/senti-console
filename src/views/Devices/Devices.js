@@ -24,26 +24,6 @@ class Devices extends Component {
 		}
 		props.setHeader("Devices")
 	}
-	// filterByDate = (items) => {
-	// 	const { startDate, endDate } = this.state.filters
-	// 	var arr = items
-	// 	var keys = Object.keys(arr[0])
-	// 	var filteredByDate = arr.filter(c => {
-	// 		var contains = keys.map(key => {
-	// 			var openDate = moment(c['open_date'])
-	// 			var closeDate = moment(c['close_date'])
-	// 			// console.log(openDate, closeDate)
-	// 			if (openDate > startDate
-	// 				&& closeDate < (endDate ? endDate : moment())) {
-	// 				return true
-	// 			}
-	// 			else
-	// 				return false
-	// 		})
-	// 		return contains.indexOf(true) !== -1 ? true : false
-	// 	})
-	// 	return filteredByDate
-	// }
 
 	filterItems = (projects) => {
 		const { keyword } = this.state.filters
@@ -112,8 +92,13 @@ class Devices extends Component {
 	}
 	componentDidMount = async () => {
 		await this.getDevices()
+		this.liveStatus = setInterval(this.getDevices, 10000);
 		// this.props.setHeader("Projects")
 	}
+	componentWillUnmount = () => {
+	  window.clearInterval(this.liveStatus)
+	}
+	
 	deleteProjects = async (projects) => {
 		await deleteProject(projects).then(() => {
 			this.getDevices()

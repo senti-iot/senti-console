@@ -184,6 +184,8 @@ class EnhancedTable extends React.Component {
 	}
 	isSelected = id => this.state.selected.indexOf(id) !== -1;
 	options = [
+		{ label: 'Edit', func: this.handleEdit, single: true },
+		{ label: 'Assign Device', func: this.assignDevice, single: true },
 		{ label: 'Export to PDF', func: () => { } },
 		{ label: 'Delete', func: this.handleDeleteProjects }
 	];

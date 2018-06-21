@@ -132,7 +132,7 @@ class Project extends Component {
 								<Grid container>
 									<ItemGrid>
 										<Caption>Created:</Caption>
-										<Info>{dateFormatter(project.created)}</Info>>
+										<Info>{dateFormatter(project.created)}</Info>
 									</ItemGrid>
 									<ItemGrid>
 										<Caption>
@@ -148,7 +148,7 @@ class Project extends Component {
 										</Caption>
 										<Info>
 											{dateFormatter(project.close_date)}
-										</Info>>
+										</Info>
 									</ItemGrid>
 									<ItemGrid>
 										<Button onClick={() => this.props.history.push(this.props.match.url + '/edit')}>
@@ -245,7 +245,7 @@ class Project extends Component {
 										</Caption>
 										<Info>
 											{project.user.vcPhone}
-										</Info>>
+										</Info>
 									</ItemGrid>
 									<ItemGrid>
 										<Caption>
@@ -253,7 +253,7 @@ class Project extends Component {
 										</Caption>
 										<Info>
 											{project.user.organisation}
-										</Info>>
+										</Info>
 									</ItemGrid>
 								</Grid>
 							}
