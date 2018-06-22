@@ -123,36 +123,36 @@ class Device extends Component {
 											<Caption>Device Name:</Caption>
 											<Info> {device.device_name ? device.device_name : "No name "}</Info>
 										</ItemGrid>
-										<ItemGrid xs={8}>
-											<Caption>Description:</Caption>
-											<Info>{device.description ? device.description : ""}</Info>
-										</ItemGrid>
 										<ItemGrid>
 											<Caption>Status:</Caption>
 											{this.renderStatus(device.liveStatus)}
 										</ItemGrid>
+										<ItemGrid xs={12}>
+											<Caption>Description:</Caption>
+											<Info>{device.description ? device.description : ""}</Info>
+										</ItemGrid>
 									
 									</Grid>
 									<Grid container>
-										<ItemGrid>
+										<ItemGrid xs>
 											<Caption>Address:</Caption>
 											<Info>{device.address} </Info>
 										</ItemGrid>
-										<ItemGrid>
+										<ItemGrid xs>
 											<Caption>Street Type:</Caption>
 											<Info>{device.streetType} </Info>
 										</ItemGrid>
-										<ItemGrid>
+										<ItemGrid >
 											<Caption>Coordinates:</Caption>
 											<Info>{device.lat + " " + device.long}</Info>
 										</ItemGrid>
 									</Grid>
-									<Grid container alignContent={'space-between'} justify={'space-around'}>
+									<Grid container>
 										<ItemGrid>
 											<Caption>Organisation:</Caption>
 											<Info>{device.organisation ? device.organisation.vcName : "Unassigned"}</Info>
 										</ItemGrid>
-										<ItemGrid>
+										<ItemGrid xs={4}>
 											<Caption>Project:</Caption>
 											<Info>{device.project ? device.project.title : "Unassigned"}</Info>
 										</ItemGrid>
