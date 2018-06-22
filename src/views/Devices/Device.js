@@ -6,7 +6,7 @@ import { ItemGrid, Warning } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons'
 import { red, yellow, green } from "@material-ui/core/colors";
-
+import { ConvertDDToDMS } from 'variables/functions'
 const deviceStyles = theme => ({
 	typoNoMargin: {
 		margin: 0,
@@ -182,7 +182,7 @@ class Device extends Component {
 										</ItemGrid>
 										<ItemGrid >
 											<Caption>Coordinates:</Caption>
-											<Info>{device.lat + " " + device.long}</Info>
+											<Info>{ConvertDDToDMS(device.lat, false) + " " + ConvertDDToDMS(device.long, true)}</Info>
 										</ItemGrid>
 									</Grid>
 									<Grid container>
