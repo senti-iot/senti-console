@@ -24,6 +24,9 @@ const styles = theme => ({
 	},
 	latlong: {
 		margin: theme.spacing.unit
+	},
+	buttonMargin: {
+		margin: theme.spacing.unit
 	}
 });
 
@@ -51,7 +54,7 @@ class CalibrateDevice extends Component {
 	constructor(props) {
 	  super(props)
 	  this.state = {
-		  activeStep: 0,
+		  activeStep: 4,
 		  device_name: '',
 		  device_description: '',
 		  device: null,
@@ -210,7 +213,7 @@ class CalibrateDevice extends Component {
 											{this.renderStep(index)}
 										</Grid>
 										<div className={classes.actionsContainer}>
-											<div>
+											<Grid container>
 												<Button
 													disabled={activeStep === 0}
 													onClick={this.handleBack}
@@ -227,22 +230,35 @@ class CalibrateDevice extends Component {
 												>
 													{activeStep === steps.length - 1 ? 'Finish' : 'Next'}
 												</Button>
-											</div>
+											</Grid>
 										</div>
 									</StepContent>
 								</Step>
 							);
 						})}
 					</Stepper> : null}
-				{activeStep === steps.length && (
+				{activeStep === steps.length && device && (
 					<Paper square elevation={0} className={classes.resetContainer}>
 						<Typography variant={'title'}>Success</Typography>
 						<Typography paragraph>
 						Your Senti device is now configured and calibrated and will produce better results when collecting data. To further enhance the accuracy of your data collection, return to the site of installation and do a new calibration on a regular basis. You can set a reminder for Device Calibration in the Settings section. 
 						</Typography>
-						<Button onClick={this.handleReset} className={classes.button}>
-							Go to device {device.device_id}
-						</Button>
+						<Grid container> 
+							
+							<ItemGrid xs>
+								<Button onClick={this.handleFinish} color={"primary"} variant={"contained"} className={classes.buttonMargin}>
+									Go to device {device.device_id}
+								</Button>
+								<Button onClick={this.handleGoToDeviceList} color={"primary"} variant={"contained"} className={classes.buttonMargin}>
+									Go to device list
+								</Button>
+							</ItemGrid>
+							<ItemGrid xs>
+								<Button onClick={this.handleReset} className={classes.button} >
+									Reset
+								</Button>
+							</ItemGrid>
+						</Grid>
 					</Paper>
 				)}
 	 	 </Paper>
