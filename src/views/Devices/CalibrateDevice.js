@@ -54,7 +54,7 @@ class CalibrateDevice extends Component {
 	constructor(props) {
 	  super(props)
 	  this.state = {
-		  activeStep: 1,
+		  activeStep: 0,
 		  device_name: '',
 		  description: '',
 		  device: null,
