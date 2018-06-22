@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { getDevice } from 'variables/data';
-import { CircularProgress, Grid, Typography, withStyles, Button } from '@material-ui/core';
+import { CircularProgress, Grid, Typography, withStyles, Button, Hidden } from '@material-ui/core';
 import moment from 'moment'
 import { ItemGrid, Warning } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
@@ -125,12 +125,14 @@ class Device extends Component {
 										<Typography paragraph className={classes.typoNoMargin}>
 										Device Details
 										</Typography>
+										<Hidden smDown>
 										 <Button
-											color={!(device.lat > 0) && !(device.long > 0) ? "primary" : "default"}
-											onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}
-											variant={"contained"}>
-											{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
-										</Button>
+												color={!(device.lat > 0) && !(device.long > 0) ? "primary" : "default"}
+												onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}
+												variant={"contained"}>
+												{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
+											</Button>
+										</Hidden>
 									</Grid>
 								</Fragment>}
 							avatar={"D"}
@@ -139,8 +141,16 @@ class Device extends Component {
 							content={
 								<Grid container>
 									<Grid container /* alignContent={'space-between'} justify={'space-around'} */>
-										
-
+										<Hidden smUp>
+											<ItemGrid>
+												<Button
+													color={!(device.lat > 0) && !(device.long > 0) ? "primary" : "default"}
+													onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}
+													variant={"contained"}>
+													{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
+												</Button>
+											</ItemGrid>
+										</Hidden>
 										{!(device.lat > 0) && !(device.long > 0) &&
 											<ItemGrid xs={12}>
 												<Warning>
