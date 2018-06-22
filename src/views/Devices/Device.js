@@ -1,13 +1,18 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { getDevice } from 'variables/data';
-import { CircularProgress, Grid, Typography, withStyles } from '@material-ui/core';
+import { CircularProgress, Grid, Typography, withStyles, Button } from '@material-ui/core';
 import moment from 'moment'
-import { ItemGrid } from 'components';
+import { ItemGrid, Warning } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons'
 import { red, yellow, green } from "@material-ui/core/colors";
 
 const deviceStyles = theme => ({
+	typoNoMargin: {
+		margin: 0,
+		padding: "0 !important",
+		maxHeight: 24
+	},
 	redSignal: {
 		color: red[700],
 		marginRight: 4
@@ -107,18 +112,41 @@ class Device extends Component {
 	}
 	render() {
 		const { device, loading } = this.state
-		
+		const { classes } = this.props
 		return (
 			!loading ?
 				<Grid container justify={'center'} alignContent={'space-between'} spacing={8}>
 					<ItemGrid xs={12}>
 						<InfoCard
-							title={"Device Details"}
+							title={
+								<Fragment>
+									<Grid container justify={'space-between'} alignItems={'center'} className={classes.typoNoMargin}> 
+
+										<Typography paragraph className={classes.typoNoMargin}>
+										Device Details
+										</Typography>
+										 <Button
+											color={!(device.lat > 0) && !(device.long > 0) ? "primary" : "default"}
+											onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}
+											variant={"contained"}>
+											{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
+										</Button>
+									</Grid>
+								</Fragment>}
+							avatar={"D"}
 							subheader={device.device_id}
 							noExpand
 							content={
 								<Grid container>
 									<Grid container /* alignContent={'space-between'} justify={'space-around'} */>
+										
+
+										{!(device.lat > 0) && !(device.long > 0) &&
+											<ItemGrid xs={12}>
+												<Warning>
+											Device has not been manually calibrated!
+												</Warning>
+											</ItemGrid>}
 										<ItemGrid>
 											<Caption>Device Name:</Caption>
 											<Info> {device.device_name ? device.device_name : "No name "}</Info>
@@ -168,6 +196,7 @@ class Device extends Component {
 					<ItemGrid xs={12}>
 						<InfoCard
 							title={"Hardware"}
+							avatar={"H"}
 							subheader={''}
 							content={
 								<Grid container>

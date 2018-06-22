@@ -52,7 +52,11 @@ const typographyStyle = {
 		color: successColor
 	},
 	warningText: {
-		color: warningColor
+		color: warningColor,
+		backgroundColor: "#ff980020",
+		borderRadius: "4px",
+		padding: "4px"
+
 	},
 	dangerText: {
 		color: dangerColor

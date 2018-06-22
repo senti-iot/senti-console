@@ -2,20 +2,8 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-// import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-// import Typography from '@material-ui/core/Typography';
-// import teal from '@material-ui/core/colors/teal';
-// import FavoriteIcon from '@material-ui/icons/Favorite';
-// import ShareIcon from '@material-ui/icons/Share';
+import { Card, CardHeader, CardContent, CardActions, Collapse, Avatar, IconButton } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-// import MoreVertIcon from '@material-ui/icons/MoreVert';
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
 import { Typography } from '@material-ui/core';
 
@@ -42,18 +30,20 @@ class InfoCard extends React.Component {
 		
 	}
 	render() {
-		const { classes, title, subheader, content, hiddenContent } = this.props;
+		const { classes, title, subheader, content, hiddenContent, avatar } = this.props;
 
 		return (
 			<div>
 				<Card className={classes.card + classes.plainCardClasses}>
 					<CardHeader
+						
 						avatar={
 							<Avatar aria-label="Avatar" className={classes.avatar}>
-								{title.substr(0, 1)}
+								{avatar}
 							</Avatar>
 						}
 						title={title}
+						
 						subheader={this.hasSubheader(subheader)}
 					>
 					
