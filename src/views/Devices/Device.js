@@ -118,10 +118,14 @@ class Device extends Component {
 							noExpand
 							content={
 								<Grid container>
-									<Grid container alignContent={'space-between'} justify={'space-around'}>
+									<Grid container /* alignContent={'space-between'} justify={'space-around'} */>
 										<ItemGrid>
 											<Caption>Device Name:</Caption>
 											<Info> {device.device_name ? device.device_name : "No name "}</Info>
+										</ItemGrid>
+										<ItemGrid xs={8}>
+											<Caption>Description:</Caption>
+											<Info>{device.description ? device.description : ""}</Info>
 										</ItemGrid>
 										<ItemGrid>
 											<Caption>Status:</Caption>
@@ -129,7 +133,7 @@ class Device extends Component {
 										</ItemGrid>
 									
 									</Grid>
-									<Grid container alignContent={'space-between'} justify={'space-around'}>
+									<Grid container>
 										<ItemGrid>
 											<Caption>Address:</Caption>
 											<Info>{device.address} </Info>

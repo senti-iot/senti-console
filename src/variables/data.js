@@ -106,6 +106,11 @@ export const getDevice = async (id) => {
 	console.log(data)
 	return data
 }
+export const calibrateDevice = async (device) => {
+	var data = await api.post('senti/calibrate', device).then(rs => rs.data)
+	return data
+
+}
 //Get Device Registrations for Project
 
 export const getDeviceRegistrations = async (deviceIds, pId) => {

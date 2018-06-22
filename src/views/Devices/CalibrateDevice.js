@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withStyles, Grid, TextField } from '@material-ui/core';
 import { ItemGrid, Info, Danger } from 'components';
-import { getDevice } from 'variables/data';
+import { getDevice, calibrateDevice } from 'variables/data';
 import Caption from 'components/Typography/Caption';
 
 const styles = theme => ({
@@ -54,14 +54,18 @@ class CalibrateDevice extends Component {
 	constructor(props) {
 	  super(props)
 	  this.state = {
-		  activeStep: 4,
+		  activeStep: 1,
 		  device_name: '',
-		  device_description: '',
+		  description: '',
 		  device: null,
-		  coordsError: false,
-
+		  error: false,
 		  lat: 0,
 		  long: 0,
+		  calibration: {
+			  startDate: null,
+			  endDate: null,
+			  count: 0
+		  }
 	  }
 		props.setHeader(props.match.params.id + ' Calibration')
 	}
@@ -80,7 +84,7 @@ class CalibrateDevice extends Component {
 						this.setState({
 							device: rs, loading: false,
 							device_name: rs.device_name ? rs.device_name : '',
-							device_description: rs.device_description ? rs.device_description : '' })
+							description: rs.description ? rs.description : '' })
 					}
 				})
 		}
@@ -93,8 +97,8 @@ class CalibrateDevice extends Component {
 			navigator.geolocation.getCurrentPosition(rs => {
 				let lat = rs.coords.latitude
 				let long = rs.coords.longitude
-				this.setState({ lat, long, coordsError: false })
-			}, err => { console.log(err); this.setState({ coordsError: err }) })
+				this.setState({ lat, long, error: false })
+			}, err => { console.log(err); this.setState({ error: err }) })
 		}
 	}
 	renderDeviceNameDescriptionForms = () => {
@@ -119,8 +123,8 @@ class CalibrateDevice extends Component {
 					multiline
 					rows={4}
 					label={'Description'}
-					onChange={this.handleInput('device_description')}
-					value={this.state.device_description}
+					onChange={this.handleInput('description')}
+					value={this.state.description}
 					InputProps={{
 						classes: {
 							root: classes.input
@@ -158,10 +162,65 @@ class CalibrateDevice extends Component {
 				break;
 		}
 	}
-	handleNext = () => {	
-		this.setState({
-			activeStep: this.state.activeStep + 1,
-		});
+	updateCalibration = async () => {
+		const { startDate, endDate, count } = this.state.calibration
+		var success = await calibrateDevice({
+			step: 2,
+			startDate: startDate,
+			endDate: endDate, 
+			count: count
+		}).then(rs => rs)
+		return success
+	}
+	updatePosition = async () => {
+		const { lat, long, device } = this.state
+		var success = await calibrateDevice({
+			step: 1,
+			lat: lat,
+			long: long,
+			device_id: device.device_id
+		}).then(rs => rs)
+		return success
+	}
+	updateNameAndDesc = async () => {
+		const { device_name, description } = this.state
+		 var success = await calibrateDevice({
+			device_name: device_name,
+			description: description,
+			device_id: this.state.device.device_id,
+			step: 0
+		 }).then(rs => rs)
+		console.log(success)
+		return success
+	}
+	handleNext = () => {
+		const { activeStep } = this.state
+		var success
+		switch (activeStep) {
+			case 0:
+				success = this.updateNameAndDesc()
+				break;
+			case 1:
+				success = this.updatePosition()
+				break;
+			case 2: 
+				success = true
+				break;
+			case 3:
+				success = true;
+				break;
+			default:
+				break;
+		}
+		if (success)
+			this.setState({
+				activeStep: this.state.activeStep + 1,
+			});
+		else {
+			this.setState({
+				error: { message: "Network Error" }
+			})
+		}
 	}
 	
 
@@ -195,7 +254,7 @@ class CalibrateDevice extends Component {
 	render() {
 		const { classes } = this.props;
 		const steps = getSteps();
-		const { activeStep, device, coordsError } = this.state;
+		const { activeStep, device, error } = this.state;
 		return (
 			<Paper>
 				{device ? 
@@ -209,7 +268,7 @@ class CalibrateDevice extends Component {
 										{/* <Divider/> */}
 										
 										<Grid>
-											{coordsError ? <Danger >{coordsError.message}</Danger> : null}
+											{error ? <Danger >{error.message}</Danger> : null}
 											{this.renderStep(index)}
 										</Grid>
 										<div className={classes.actionsContainer}>
