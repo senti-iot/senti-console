@@ -1,15 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core";
+import { withStyles, Typography } from "@material-ui/core";
 
 import typographyStyle from "assets/jss/material-dashboard-react/typographyStyle.js";
 
 function Info({ ...props }) {
-	const { classes, children } = props;
+	// const { classes, children } = props;
 	return (
-		<div className={classes.defaultFontStyle + " " + classes.infoText}>
-			{children}
-		</div>
+		<Typography paragraph>{props.children}</Typography>
 	);
 }
 

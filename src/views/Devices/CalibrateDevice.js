@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withStyles, Grid, TextField } from '@material-ui/core';
-import { ItemGrid, Info } from 'components';
+import { ItemGrid, Info, Danger } from 'components';
 import { getDevice } from 'variables/data';
 import Caption from 'components/Typography/Caption';
-// import Geolocation from 'components/Geolocation/Geolocation';
 
 const styles = theme => ({
 	root: {
@@ -22,6 +21,9 @@ const styles = theme => ({
 	},
 	input: {
 		minWidth: 300
+	},
+	latlong: {
+		margin: theme.spacing.unit
 	}
 });
 
@@ -48,12 +50,13 @@ function getStepContent(step) {
 class CalibrateDevice extends Component {
 	constructor(props) {
 	  super(props)
-	
 	  this.state = {
 		  activeStep: 0,
 		  device_name: '',
 		  device_description: '',
 		  device: null,
+		  coordsError: false,
+
 		  lat: 0,
 		  long: 0,
 	  }
@@ -73,9 +76,8 @@ class CalibrateDevice extends Component {
 					else {
 						this.setState({
 							device: rs, loading: false,
-							device_name: rs.device_name,
-							device_description: rs.device_description })
-						// this.props.setHeader(rs.device_name ? rs.device_name : rs.device_id)
+							device_name: rs.device_name ? rs.device_name : '',
+							device_description: rs.device_description ? rs.device_description : '' })
 					}
 				})
 		}
@@ -85,13 +87,11 @@ class CalibrateDevice extends Component {
 	}
 	getCoords = () => { 
 		if (navigator.geolocation) {
-		// {	var geo = new Geolocation()
-			// Geolocation.requestAuthorization()
 			navigator.geolocation.getCurrentPosition(rs => {
 				let lat = rs.coords.latitude
 				let long = rs.coords.longitude
-				this.setState({ lat, long })
-			})
+				this.setState({ lat, long, coordsError: false })
+			}, err => { console.log(err); this.setState({ coordsError: err }) })
 		}
 	}
 	renderDeviceNameDescriptionForms = () => {
@@ -99,7 +99,6 @@ class CalibrateDevice extends Component {
 		const { classes } = this.props
 		return <Grid container>
 			<ItemGrid xs={12}>
-				{/* <Caption>Device Name:</Caption> */}
 				<TextField
 					required={true}
 					label={'Device Name'}
@@ -130,19 +129,20 @@ class CalibrateDevice extends Component {
 	}
 	renderDeviceLocation = () => {
 		return <Fragment>
-			{/* <Geolocation/> */}
+			<div className={this.props.classes.latlong}>
+				<Caption>
+				Latitude &amp; Longitute
+				</Caption>
+				<Info>
+					{this.state.lat + " " + this.state.long}
+				</Info>
+			</div>
 			<Button
 				variant="contained"
 				color="primary"
 				onClick={this.getCoords}
 				className={this.props.classes.button}
 			> Get Coordinates </Button>
-			<Caption>
-				Latitude &amp; Longitute
-			</Caption>
-			<Info>
-				{this.state.lat + " " + this.state.long}
-			</Info>
 		</Fragment>
 	}
 	renderStep = (step) => { 
@@ -155,27 +155,44 @@ class CalibrateDevice extends Component {
 				break;
 		}
 	}
-	handleNext = () => {
+	handleNext = () => {	
 		this.setState({
 			activeStep: this.state.activeStep + 1,
 		});
-	};
+	}
+	
 
 	handleBack = () => {
 		this.setState({
 			activeStep: this.state.activeStep - 1,
 		});
 	};
-
+	handleGoToDeviceList = () => {
+		this.props.history.push('/devices')
+	}
+	handleFinish = () => {
+		this.props.history.push('/device/' + this.state.device.device_id)
+	}
 	handleReset = () => {
 		this.setState({
 			activeStep: 0,
 		});
 	};
+	stepChecker = () => {
+		const { activeStep, lat, long, device_name } = this.state;
+		switch (activeStep) {
+			case 0:
+				return device_name.length > 0 ?  false : true
+			case 1: 
+				return lat > 0 && long > 0 ? false : true
+			default:
+				break;
+		}
+	}
 	render() {
 		const { classes } = this.props;
 		const steps = getSteps();
-		const { activeStep, device } = this.state;
+		const { activeStep, device, coordsError } = this.state;
 		return (
 			<Paper>
 				{device ? 
@@ -189,6 +206,7 @@ class CalibrateDevice extends Component {
 										{/* <Divider/> */}
 										
 										<Grid>
+											{coordsError ? <Danger >{coordsError.message}</Danger> : null}
 											{this.renderStep(index)}
 										</Grid>
 										<div className={classes.actionsContainer}>
@@ -205,6 +223,7 @@ class CalibrateDevice extends Component {
 													color="primary"
 													onClick={this.handleNext}
 													className={classes.button}
+													disabled={this.stepChecker()} 
 												>
 													{activeStep === steps.length - 1 ? 'Finish' : 'Next'}
 												</Button>
@@ -222,7 +241,7 @@ class CalibrateDevice extends Component {
 						Your Senti device is now configured and calibrated and will produce better results when collecting data. To further enhance the accuracy of your data collection, return to the site of installation and do a new calibration on a regular basis. You can set a reminder for Device Calibration in the Settings section. 
 						</Typography>
 						<Button onClick={this.handleReset} className={classes.button}>
-							Reset
+							Go to device {device.device_id}
 						</Button>
 					</Paper>
 				)}
