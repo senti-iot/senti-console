@@ -36,23 +36,23 @@ class CounterModal extends React.Component {
 		this.state = {
 			count: 0,
 			open: false,
-			timer: 120,
-			timestamp: null
+			timer: 0,
+			timestamp: null,
+			timestampFinish: null
 		}
 	}
 	timer = () => {
-		this.setState({ timer: this.state.timer - 1 }, () => {
-			if (this.state.timer === 0) {
+		this.setState({ timer: this.state.timer + 1 }, () => {
+			if (this.state.count === 200) {
 				clearInterval(this.timeCounter)
 				this.timeCounter = null
+				this.setState({ timestampFinish: new Date() })
 			}
 		})
 	}
 	handleStart = () => {
 		this.setState({ timestamp: new Date() })
 		this.timeCounter = setInterval(() => this.timer(), 1000)
-		console.log(this.timeCounter)
-		// console.log(this.timeCounter)
 	}
 
 	handleOpen = () => {
@@ -73,7 +73,33 @@ class CounterModal extends React.Component {
 	handleClose = () => {
 		this.setState({ open: false });
 	};
+	fancyTimeFormat = (time) => {
+		// Hours, minutes and seconds
+		var hrs = ~~(time / 3600);
+		var mins = ~~((time % 3600) / 60);
+		var secs = time % 60;
 
+		// Output like "1:01" or "4:03:59" or "123:03:59"
+		var ret = "";
+
+		if (hrs > 0) {
+			ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+		}
+
+		ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+		ret += "" + secs;
+		return ret;
+	}
+	handleFinish = () => {
+		this.props.handleFinish({
+			count: 200,
+			timestamp: this.state.timestamp,
+			timestampFinish: this.state.timestampFinish,
+			timer: this.state.timer
+		})
+		this.handleReset()
+		this.handleClose()
+	}
 	render() {
 		const { classes } = this.props;
 
@@ -87,44 +113,42 @@ class CounterModal extends React.Component {
 					open={this.state.open}
 					onClose={this.timeCounter ? null : this.handleClose}
 				>
-					<Grid 	
+					<Grid
 						container justify="space-between" className={classes.paper + " " + classes.modalWrapper}>
 						<ItemGrid xs={12}>
 
-							<Typography variant="display4" id="modal-title" className={classes.text}>
-								{this.state.timer}
+							<Typography variant="title" id="modal-title" className={classes.text}>
+								{this.fancyTimeFormat(this.state.timer)}
 							</Typography>
 						</ItemGrid>
-						<ItemGrid xs={12} container justify={"center"} classes={{
-							root: classes.counter
-						}}>
+						<ItemGrid xs={12} container justify={"center"}>
 							<Button
 								color={"primary"}
 								variant="fab"
-								size={"large"}
+								size={"medium"}
 								onClick={this.handleCount}
-								disabled={this.state.timer !== 120 ? false : true}
+								disabled={this.state.timer !== 0 ? this.state.count !== 200 ? false : true : true}
 							>
 								{this.state.count}
 							</Button>
 						</ItemGrid>
-						<ItemGrid xs={12} container justify={"space-evenly"}>
+						<ItemGrid xs={12} container>
 							<ItemGrid>
 								<Button
-									disabled={this.state.timer !== 120 ? true : false }
+									disabled={ this.state.count === 200 ? false : this.state.count > 0 ? true : false}
 									color={"primary"}
 									variant="contained"
-									onClick={this.handleStart}>
-								Start
+									onClick={this.state.count === 200 ? this.handleFinish : this.handleStart}>
+									{this.state.count === 200 ? "Finish" : "Start"}
 								</Button>
 							</ItemGrid>
 							<ItemGrid>
 								<Button
 									color={"primary"}
 									variant="contained"
-									disabled={this.state.timer !== 120 ? false : true}
+									disabled={this.state.timer !== 0 ? false : true}
 									onClick={this.handleReset}>
-								Reset
+									Reset
 								</Button>
 							</ItemGrid>
 						</ItemGrid>

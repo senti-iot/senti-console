@@ -65,7 +65,8 @@ class CalibrateDevice extends Component {
 		  calibration: {
 			  startDate: null,
 			  endDate: null,
-			  count: 0
+			  count: 0,
+			  timer: 0
 		  }
 	  }
 		props.setHeader(props.match.params.id + ' Calibration')
@@ -73,7 +74,14 @@ class CalibrateDevice extends Component {
 	handleInput = (input) => e => {
 		this.setState({ [input]: e.target.value })
 	}
-
+	handleCalibration = (result) => {
+		this.setState({
+			startDate: result.timestamp,
+			endDate: result.timestampFinish,
+			count: 200,
+			timer: result.timer
+		})
+	}
 	componentDidMount = async () => {
 		if (this.props.match) {
 			let id = this.props.match.params.id
@@ -155,7 +163,7 @@ class CalibrateDevice extends Component {
 	}
 	renderCalibration = () => {
 		return <React.Fragment>
-			<CounterModal/>	
+			<CounterModal handleFinish={this.handleCalibration}/>	
 		</React.Fragment>
 	}
 	renderStep = (step) => { 
@@ -176,7 +184,8 @@ class CalibrateDevice extends Component {
 			step: 2,
 			startDate: startDate,
 			endDate: endDate, 
-			count: count
+			count: count,
+			timer: this.state.timer
 		}).then(rs => rs)
 		return success
 	}
@@ -212,7 +221,7 @@ class CalibrateDevice extends Component {
 				success = this.updatePosition()
 				break;
 			case 2: 
-				success = true
+				success = this.updateCalibration()
 				break;
 			case 3:
 				success = true;
