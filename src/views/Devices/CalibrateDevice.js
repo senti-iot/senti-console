@@ -3,6 +3,7 @@ import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withS
 import { ItemGrid, Info, Danger } from 'components';
 import { getDevice, calibrateDevice } from 'variables/data';
 import Caption from 'components/Typography/Caption';
+import CounterModal from 'components/Devices/CounterModal';
 
 const styles = theme => ({
 	root: {
@@ -54,7 +55,7 @@ class CalibrateDevice extends Component {
 	constructor(props) {
 	  super(props)
 	  this.state = {
-		  activeStep: 0,
+		  activeStep: 2,
 		  device_name: '',
 		  description: '',
 		  device: null,
@@ -152,12 +153,19 @@ class CalibrateDevice extends Component {
 			> Get Coordinates </Button>
 		</Fragment>
 	}
+	renderCalibration = () => {
+		return <React.Fragment>
+			<CounterModal/>	
+		</React.Fragment>
+	}
 	renderStep = (step) => { 
 		switch (step) {
 			case 0:
 				return this.renderDeviceNameDescriptionForms()
 			case 1: 
 				return this.renderDeviceLocation()
+			case 2: 
+				return this.renderCalibration()
 			default:
 				break;
 		}
