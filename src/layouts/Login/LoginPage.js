@@ -43,8 +43,11 @@ class LoginPage extends React.Component {
 	componentDidMount() {
 		window.addEventListener('keypress', this.handleKeyPress, false)
 		var loginData = cookie.load('SESSION')
+		// console.log(this.props.history)
+		// console.log(this)
 		if (loginData) { //check if loginData is still valid
 			if (setToken()) {
+				//User redirect instead of push as push will "nullify" the back history item
 				this.props.history.push('/dashboard')
 			}
 		}
@@ -72,7 +75,7 @@ class LoginPage extends React.Component {
 						cookie.save('SESSION', rs)
 						if (rs.isLoggedIn) {
 							if (setToken())
-								this.props.history.push('/')
+								this.props.history.push(this.props.location.state.prevUrl)
 						}
 					}
 					else {

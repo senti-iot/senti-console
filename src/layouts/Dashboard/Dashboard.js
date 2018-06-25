@@ -71,7 +71,9 @@ class App extends React.Component {
 								if (prop.redirect)
 									return <Redirect from={prop.path} to={prop.to} key={key} />;
 								return <Route path={prop.path} render={(routeProps) => <prop.component {...routeProps} setHeader={this.handleSetHeaderTitle} />} key={key} />;
-							}) : <Redirect from={window.location.pathname} to={'/login'} />}
+							}) : <Redirect from={window.location.pathname} to={{ pathname: '/login', state: {
+								prevUrl: window.location.pathname
+							} }}/>}
 						</Switch></div>
 					</div>
 
