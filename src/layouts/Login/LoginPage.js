@@ -30,7 +30,6 @@ class LoginPage extends React.Component {
 			loggingIn: false,
 			error: false
 		};
-		this._isMounted
 	}
 	handleKeyPress = (event) => {
 		if (event.key === 'Enter') {
