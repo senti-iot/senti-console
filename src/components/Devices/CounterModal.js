@@ -40,7 +40,7 @@ class CounterModal extends React.Component {
 		super(props)
 
 		this.state = {
-			count: 0,
+			count: 200,
 			open: true,
 			timer: 0,
 			timestamp: null,
@@ -49,7 +49,7 @@ class CounterModal extends React.Component {
 	}
 	timer = () => {
 		this.setState({ timer: this.state.timer + 1 }, () => {
-			if (this.state.count === 200) {
+			if (this.state.count === 0) {
 				clearInterval(this.timeCounter)
 				this.timeCounter = null
 				this.setState({ timestampFinish: moment().format("YYYY-MM-DD HH:mm:ss") })
@@ -69,12 +69,12 @@ class CounterModal extends React.Component {
 		this.timeCounter = null
 		this.setState({
 			timer: 0,
-			count: 0,
+			count: 200,
 			timestamp: null
 		})
 	}
 	handleCount = () => {
-		this.setState({ count: this.state.count + 1 })
+		this.setState({ count: this.state.count - 1 })
 	}
 	handleClose = () => {
 		this.setState({ open: false });
@@ -136,7 +136,7 @@ class CounterModal extends React.Component {
 										root: classes.counterButton
 									}}
 									onClick={this.handleCount}
-									disabled={this.state.timer !== 0 ? this.state.count !== 200 ? false : true : true}
+									disabled={this.state.timer !== 0 ? this.state.count !== 0 ? false : true : true}
 								>
 									{this.state.count}
 								</Button>
@@ -145,11 +145,11 @@ class CounterModal extends React.Component {
 						<ItemGrid xs={12} container>
 							<ItemGrid>
 								<Button
-									disabled={ this.state.count === 200 ? false : this.state.count > 200 ? true : false}
+									disabled={ this.state.count === 0 ? false : this.state.count < 200 ? true : false}
 									color={"primary"}
 									variant="contained"
-									onClick={this.state.count === 200 ? this.handleFinish : this.handleStart}>
-									{this.state.count === 200 ? "Finish" : "Start"}
+									onClick={this.state.count === 0 ? this.handleFinish : this.handleStart}>
+									{this.state.count === 0 ? "Finish" : "Start"}
 								</Button>
 							</ItemGrid>
 							<ItemGrid>
