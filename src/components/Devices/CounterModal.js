@@ -6,7 +6,7 @@ import Modal from '@material-ui/core/Modal';
 // import Button from '@material-ui/core/Button';
 import { Grid, Button } from '@material-ui/core';
 import ItemGrid from '../Grid/ItemGrid';
-
+import moment from 'moment'
 
 const styles = theme => ({
 	modalWrapper: {
@@ -24,9 +24,15 @@ const styles = theme => ({
 	text: {
 		textAlign: "center"
 	},
-	button: {
-		display: "flex"
+	wrapper: {
+		minHeight: 200,
+		display: 'flex',
+		alignItems: 'center'
 	},
+	counterButton: {
+		minHeight: 100,
+		minWidth: 100
+	}
 });
 
 class CounterModal extends React.Component {
@@ -35,7 +41,7 @@ class CounterModal extends React.Component {
 
 		this.state = {
 			count: 0,
-			open: false,
+			open: true,
 			timer: 0,
 			timestamp: null,
 			timestampFinish: null
@@ -46,12 +52,12 @@ class CounterModal extends React.Component {
 			if (this.state.count === 200) {
 				clearInterval(this.timeCounter)
 				this.timeCounter = null
-				this.setState({ timestampFinish: new Date() })
+				this.setState({ timestampFinish: moment().format("YYYY-MM-DD HH:mm:ss") })
 			}
 		})
 	}
 	handleStart = () => {
-		this.setState({ timestamp: new Date() })
+		this.setState({ timestamp: moment().format("YYYY-MM-DD HH:mm:ss") })
 		this.timeCounter = setInterval(() => this.timer(), 1000)
 	}
 
@@ -104,7 +110,7 @@ class CounterModal extends React.Component {
 		const { classes } = this.props;
 
 		return (
-			<div>
+			<div >
 				{/* <Typography gutterBottom>Click to get the full Modal experience!</Typography> */}
 				<Button onClick={this.handleOpen}>Open Counting Window</Button>
 				<Modal
@@ -122,20 +128,24 @@ class CounterModal extends React.Component {
 							</Typography>
 						</ItemGrid>
 						<ItemGrid xs={12} container justify={"center"}>
-							<Button
-								color={"primary"}
-								variant="fab"
-								size={"medium"}
-								onClick={this.handleCount}
-								disabled={this.state.timer !== 0 ? this.state.count !== 200 ? false : true : true}
-							>
-								{this.state.count}
-							</Button>
+							<div className={classes.wrapper}>
+								<Button
+									color={"primary"}
+									variant="fab"
+									classes={{
+										root: classes.counterButton
+									}}
+									onClick={this.handleCount}
+									disabled={this.state.timer !== 0 ? this.state.count !== 200 ? false : true : true}
+								>
+									{this.state.count}
+								</Button>
+							</div>
 						</ItemGrid>
 						<ItemGrid xs={12} container>
 							<ItemGrid>
 								<Button
-									disabled={ this.state.count === 200 ? false : this.state.count > 0 ? true : false}
+									disabled={ this.state.count === 200 ? false : this.state.count > 200 ? true : false}
 									color={"primary"}
 									variant="contained"
 									onClick={this.state.count === 200 ? this.handleFinish : this.handleStart}>
