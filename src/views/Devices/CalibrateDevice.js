@@ -76,10 +76,13 @@ class CalibrateDevice extends Component {
 	}
 	handleCalibration = (result) => {
 		this.setState({
-			startDate: result.timestamp,
-			endDate: result.timestampFinish,
-			count: 200,
-			timer: result.timer
+			...this.state,
+			calibration: {
+				startDate: result.timestamp,
+				endDate: result.timestampFinish,
+				count: 200,
+				timer: result.timer
+			}
 		})
 	}
 	componentDidMount = async () => {
@@ -180,18 +183,23 @@ class CalibrateDevice extends Component {
 	}
 	updateCalibration = async () => {
 		const { startDate, endDate, count } = this.state.calibration
+		const { device } = this.state
+		// console.log(this.state)
 		var success = await calibrateDevice({
 			step: 2,
 			startDate: startDate,
 			endDate: endDate, 
 			count: count,
-			timer: this.state.timer
+			timer: this.state.timer,
+			device_id: device.device_id
 		}).then(rs => rs)
+		// console.log(success)
 		return success
 	}
 	updatePosition = async () => {
 		const { lat, long, device } = this.state
 		var success = await calibrateDevice({
+			
 			step: 1,
 			lat: lat,
 			long: long,
