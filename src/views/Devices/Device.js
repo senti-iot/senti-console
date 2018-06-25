@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import { getDevice } from 'variables/data';
-import { CircularProgress, Grid, Typography, withStyles, Button, Hidden } from '@material-ui/core';
+import { CircularProgress, Grid, Typography, withStyles, Button, IconButton, Menu, MenuItem } from '@material-ui/core';
 import moment from 'moment'
-import { ItemGrid, Warning } from 'components';
+import { ItemGrid, Warning, P } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
-import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons'
+import { SignalWifi2Bar, SignalWifi2BarLock, MoreVert } from '@material-ui/icons'
 import { red, yellow, green } from "@material-ui/core/colors";
 import { ConvertDDToDMS } from 'variables/functions'
 const deviceStyles = theme => ({
@@ -39,7 +39,8 @@ class Device extends Component {
 
 		this.state = {
 			device: null,
-			loading: true
+			loading: true,
+			anchorEl: null
 		}
 		props.setHeader(<CircularProgress size={30} />)
 	}
@@ -85,6 +86,14 @@ class Device extends Component {
 	renderLoader = () => {
 		return <Grid container><CircularProgress /></Grid>
 	}
+
+	handleClick = event => {
+		this.setState({ anchorEl: event.currentTarget });
+	};
+
+	handleClose = () => {
+		this.setState({ anchorEl: null });
+	};
 	renderStatus = (status) => {
 		const { classes } = this.props
 
@@ -111,7 +120,7 @@ class Device extends Component {
 		}
 	}
 	render() {
-		const { device, loading } = this.state
+		const { device, loading, anchorEl } = this.state
 		const { classes } = this.props
 		return (
 			!loading ?
@@ -120,42 +129,82 @@ class Device extends Component {
 						<InfoCard
 							title={
 								<Fragment>
-									<Grid container justify={'space-between'} alignItems={'center'} className={classes.typoNoMargin}> 
+									<Grid container justify={'space-between'} className={classes.typoNoMargin}> 
 
 										<Typography paragraph className={classes.typoNoMargin}>
 										Device Details
 										</Typography>
-										<Hidden smDown>
-										 <Button
+										{/* <Hidden smDown> */}
+										<ItemGrid>
+											
+											<IconButton
+												aria-label="More"
+												aria-owns={anchorEl ? 'long-menu' : null}
+												aria-haspopup="true"
+												onClick={this.handleClick}
+											>
+												<MoreVert />
+											</IconButton>
+											<Menu
+												id="long-menu"
+												anchorEl={anchorEl}
+												open={Boolean(anchorEl)}
+												onClose={this.handleClose}
+												PaperProps={{
+													style: {
+														maxHeight: 200,
+														width: 200,
+													},
+												}}
+											>
+
+												<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}>
+													{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
+												</MenuItem>
+												<MenuItem onClick={this.handleClose}>
+															Assign to {device.project ? "new Project" : "Project"}
+												</MenuItem>
+												<MenuItem onClick={this.handleClose}>
+															Edit Details
+												</MenuItem>
+														))}
+											</Menu>
+										</ItemGrid>
+										 {/* <Button
 												color={!(device.lat > 0) && !(device.long > 0) ? "primary" : "default"}
 												onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}
 												variant={"contained"}>
 												{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
-											</Button>
-										</Hidden>
+											</Button> */}
+										{/* </Hidden> */}
 									</Grid>
 								</Fragment>}
 							avatar={"D"}
 							subheader={device.device_id}
 							noExpand
 							content={
-								<Grid container>
+								<Fragment>
 									<Grid container /* alignContent={'space-between'} justify={'space-around'} */>
-										<Hidden smUp>
-											<ItemGrid>
-												<Button
-													color={!(device.lat > 0) && !(device.long > 0) ? "primary" : "default"}
-													onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}
-													variant={"contained"}>
-													{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
-												</Button>
-											</ItemGrid>
-										</Hidden>
 										{!(device.lat > 0) && !(device.long > 0) &&
 											<ItemGrid xs={12}>
 												<Warning>
-											Device has not been manually calibrated!
+													<ItemGrid container xs={12}>
+														<P>
+																Device has not been manually calibrated!
+														</P>
+													</ItemGrid>
+													<ItemGrid container xs={12}>
+														
+														<Button
+															color={"default"}
+															onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}
+															variant={"outlined"}>
+														Manual Calibration
+														</Button>
+													</ItemGrid>
 												</Warning>
+											
+											
 											</ItemGrid>}
 										<ItemGrid>
 											<Caption>Name:</Caption>
@@ -200,12 +249,9 @@ class Device extends Component {
 											<Caption>Project:</Caption>
 											<Info>{device.project ? device.project.title : "Unassigned"}</Info>
 										</ItemGrid>
-										<ItemGrid>
-											<Caption>SIM Provider:</Caption>
-											<Info>{device.SIMProvider}</Info>
-										</ItemGrid>
+										
 									</Grid>
-								</Grid>
+								</Fragment>
 							}
 						/>
 					</ItemGrid>
@@ -270,6 +316,10 @@ class Device extends Component {
 									<Info>
 										{device.cellNumber}
 									</Info>
+								</ItemGrid>
+								<ItemGrid>
+									<Caption>SIM Provider:</Caption>
+									<Info>{device.SIMProvider}</Info>
 								</ItemGrid>
 								<ItemGrid>
 									<Caption>

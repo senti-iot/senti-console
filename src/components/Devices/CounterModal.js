@@ -40,8 +40,8 @@ class CounterModal extends React.Component {
 		super(props)
 
 		this.state = {
-			count: 10,
-			open: true,
+			count: 200,
+			open: false,
 			timer: 0,
 			timestamp: null,
 			timestampFinish: null
@@ -122,7 +122,7 @@ class CounterModal extends React.Component {
 		return (
 			<div >
 				{/* <Typography gutterBottom>Click to get the full Modal experience!</Typography> */}
-				<Button onClick={this.handleOpen}>Open Counting Window</Button>
+				<Button variant={"outlined"} color={"primary"} onClick={this.handleOpen}>Open Counting Window</Button>
 				<Modal
 					aria-labelledby="simple-modal-title"
 					aria-describedby="simple-modal-description"
