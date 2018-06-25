@@ -57,7 +57,7 @@ class Dashboard extends React.Component {
 					<ItemGrid xs={12}>
 						<RegularCard
 							cardTitle={"Senti Cloud Console"}
-							cardSubtitle={"Senti is an open source IoT project that will make cities smarter through intelligent data collection and open API's."}
+							cardSubtitle={"Senti Cloud Console lets you control and manage all your Senti-in-a-Box Devices."}
 							content={
 								<div>
 									<Grid container>
