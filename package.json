@@ -23,11 +23,12 @@
 		"react-google-maps": "9.4.5",
 		"react-router-dom": "^4.3.1",
 		"react-scripts": "^1.1.4",
+		"react-sound": "^1.2.0",
 		"react-swipeable-views": "0.12.13"
 	},
 	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
+		"start": "react-scripts start ",
+		"build": "react-scripts build && cp ./build/index.html ./build/200.html",
 		"test": "react-scripts test --env=jsdom",
 		"eject": "react-scripts eject"
 	},

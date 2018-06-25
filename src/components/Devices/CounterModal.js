@@ -46,6 +46,12 @@ class CounterModal extends React.Component {
 			timestamp: null,
 			timestampFinish: null
 		}
+		this.canPlayMP3 = new Audio("/assets/sound/pop.mp3");
+		if (!this.canPlayMP3.canPlayType('audio/mp3') || this.canPlayMP3 === 'no') {
+			let msg = 'This website only works with browsers that can play mp3s. Try using Google Chrome.';
+			alert(msg);
+			throw new Error(msg);
+		}
 	}
 	timer = () => {
 		this.setState({ timer: this.state.timer + 1 }, () => {
@@ -74,6 +80,7 @@ class CounterModal extends React.Component {
 		})
 	}
 	handleCount = () => {
+		this.canPlayMP3.play()
 		this.setState({ count: this.state.count - 1 })
 	}
 	handleClose = () => {
