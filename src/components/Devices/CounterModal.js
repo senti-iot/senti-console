@@ -46,11 +46,10 @@ class CounterModal extends React.Component {
 			timestamp: null,
 			timestampFinish: null
 		}
-		this.canPlayMP3 = new Audio("/assets/sound/pop.mp3");
-		if (!this.canPlayMP3.canPlayType('audio/mp3') || this.canPlayMP3 === 'no') {
-			let msg = 'This website only works with browsers that can play mp3s. Try using Google Chrome.';
+		let canPlayMP3 = new Audio().canPlayType('audio/mp3');
+		if (!canPlayMP3 || canPlayMP3 === 'no') {
+			let msg = 'Your browser doesn\'t support audio files! There will be no sound feedback! Try using Google Chrome.';
 			alert(msg);
-			throw new Error(msg);
 		}
 	}
 	timer = () => {
@@ -79,9 +78,12 @@ class CounterModal extends React.Component {
 			timestamp: null
 		})
 	}
-	handleCount = () => {
-		this.canPlayMP3.play()
-		this.setState({ count: this.state.count - 1 })
+	handleCount = async () => {
+		let playSound = new Audio("/assets/sound/pop.mp3");
+		await playSound.play().then(
+			() => this.setState({ count: this.state.count - 1 })
+		)
+		playSound = null
 	}
 	handleClose = () => {
 		this.setState({ open: false });
@@ -139,6 +141,7 @@ class CounterModal extends React.Component {
 								<Button
 									color={"primary"}
 									variant="fab"
+									disableRipple
 									classes={{
 										root: classes.counterButton
 									}}
