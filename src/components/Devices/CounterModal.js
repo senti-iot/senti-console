@@ -51,6 +51,7 @@ class CounterModal extends React.Component {
 			let msg = 'Your browser doesn\'t support audio files! There will be no sound feedback! Try using Google Chrome.';
 			alert(msg);
 		}
+		this.mp3File = new Audio("/assets/sound/pop.mp3").load()
 	}
 	timer = () => {
 		this.setState({ timer: this.state.timer + 1 }, () => {

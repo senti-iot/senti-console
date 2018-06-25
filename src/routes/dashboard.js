@@ -2,13 +2,13 @@ import React from 'react';
 import { Redirect } from 'react-router-dom'
 import DashboardPage from "views/Dashboard/Dashboard.js";
 // import UserProfile from "views/UserProfile/UserProfile.js";
-import Typography from "views/Typography/Typography.js";
 import Projects from "./projects";
 import ProjectRouting from './project'
 import Devices from './devices'
 import DeviceRouting from './device'
 import { Dashboard, LibraryBooks, Devices as DeviceIco, Settings, People } from "@material-ui/icons";
 import NotFound from "layouts/404/NotFound";
+import UserProfile from 'views/UserProfile/UserProfile';
 
 
 const dashboardRoutes = [
@@ -45,7 +45,7 @@ const dashboardRoutes = [
 		path: "/users",
 		sidebarName: "Users",
 		icon: People,
-		component: Typography
+		component: UserProfile
 	},
 	{
 		path: "/settings",

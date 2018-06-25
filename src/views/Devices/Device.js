@@ -158,12 +158,18 @@ class Device extends Component {
 												</Warning>
 											</ItemGrid>}
 										<ItemGrid>
-											<Caption>Device Name:</Caption>
+											<Caption>Name:</Caption>
 											<Info> {device.device_name ? device.device_name : "No name "}</Info>
 										</ItemGrid>
 										<ItemGrid>
 											<Caption>Status:</Caption>
 											{this.renderStatus(device.liveStatus)}
+										</ItemGrid>
+										<ItemGrid>
+											<Caption>Temperature:</Caption>
+											<Info>
+												{device.temperature} &#8451;
+											</Info>
 										</ItemGrid>
 										<ItemGrid xs={12}>
 											<Caption>Description:</Caption>

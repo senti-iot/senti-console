@@ -6,7 +6,6 @@ import ChartCard from "./Cards/ChartCard.js";
 import ProfileCard from "./Cards/ProfileCard.js";
 import RegularCard from "./Cards/RegularCard.js";
 import StatsCard from "./Cards/StatsCard.js";
-import TasksCard from "./Cards/TasksCard.js";
 
 // ##############################
 // // // CustomButtons
@@ -53,17 +52,6 @@ import Sidebar from "./Sidebar/Sidebar.js";
 import Snackbar from "./Snackbar/Snackbar.js";
 import SnackbarContent from "./Snackbar/SnackbarContent.js";
 
-// ##############################
-// // // Table
-// #############################
-
-import Table from "./Table/Table.js";
-
-// ##############################
-// // // Tasks
-// #############################
-
-import Tasks from "./Tasks/Tasks.js";
 
 // ##############################
 // // // Typography
@@ -86,7 +74,6 @@ export {
 	ProfileCard,
 	RegularCard,
 	StatsCard,
-	TasksCard,
 	// CustomButtons
 	Button,
 	IconButton,
@@ -104,11 +91,6 @@ export {
 	//Snackbar
 	Snackbar,
 	SnackbarContent,
-	// Table
-	Table,
-	// Tasks
-	Tasks,
-	// Typography
 	P,
 	Quote,
 	Muted,
