@@ -40,7 +40,7 @@ class CounterModal extends React.Component {
 		super(props)
 
 		this.state = {
-			count: 200,
+			count: 10,
 			open: true,
 			timer: 0,
 			timestamp: null,
@@ -155,7 +155,7 @@ class CounterModal extends React.Component {
 						<ItemGrid xs={12} container>
 							<ItemGrid>
 								<Button
-									disabled={ this.state.count === 0 ? false : this.state.count < 200 ? true : false}
+									disabled={ this.state.count === 0 ? false : this.state.count < 10 ? true : false}
 									color={"primary"}
 									variant="contained"
 									onClick={this.state.count === 0 ? this.handleFinish : this.handleStart}>
