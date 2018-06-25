@@ -4,6 +4,7 @@ import { ItemGrid, Info, Danger } from 'components';
 import { getDevice, calibrateDevice } from 'variables/data';
 import Caption from 'components/Typography/Caption';
 import CounterModal from 'components/Devices/CounterModal';
+import ImageUpload from './ImageUpload';
 
 const styles = theme => ({
 	root: {
@@ -56,7 +57,7 @@ class CalibrateDevice extends Component {
 	constructor(props) {
 	  super(props)
 	  this.state = {
-		  activeStep: 2,
+		  activeStep: 3,
 		  device_name: '',
 		  description: '',
 		  device: null,
@@ -170,6 +171,11 @@ class CalibrateDevice extends Component {
 			<CounterModal handleFinish={this.handleCalibration}/>	
 		</React.Fragment>
 	}
+	renderImageUpload = () => {
+		return <React.Fragment>
+			<ImageUpload/>
+		</React.Fragment>
+	}
 	renderStep = (step) => { 
 		switch (step) {
 			case 0:
@@ -178,6 +184,8 @@ class CalibrateDevice extends Component {
 				return this.renderDeviceLocation()
 			case 2: 
 				return this.renderCalibration()
+			case 3: 
+				return this.renderImageUpload()
 			default:
 				break;
 		}
@@ -216,7 +224,6 @@ class CalibrateDevice extends Component {
 			device_id: this.state.device.device_id,
 			step: 0
 		 }).then(rs => rs)
-		console.log(success)
 		return success
 	}
 	handleNext = () => {
@@ -267,12 +274,17 @@ class CalibrateDevice extends Component {
 		});
 	};
 	stepChecker = () => {
-		const { activeStep, lat, long, device_name } = this.state;
+		/**
+		 * Return false to NOT disable the Next Step Button
+		 */
+		const { activeStep, lat, long, device_name, calibration } = this.state;
 		switch (activeStep) {
 			case 0:
 				return device_name.length > 0 ?  false : true
 			case 1: 
 				return lat > 0 && long > 0 ? false : true
+			case 2:
+				return calibration.startDate && calibration.endDate && calibration.timer ? false : true
 			default:
 				break;
 		}

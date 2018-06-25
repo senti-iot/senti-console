@@ -30,6 +30,7 @@ class LoginPage extends React.Component {
 			loggingIn: false,
 			error: false
 		};
+		this._isMounted
 	}
 	handleKeyPress = (event) => {
 		if (event.key === 'Enter') {
@@ -37,10 +38,12 @@ class LoginPage extends React.Component {
 		}
 	}
 	componentWillUnmount = () => {
+		this._isMounted = 0
 		window.removeEventListener('keypress', this.handleKeyPress, false)
 	}
 
 	componentDidMount() {
+		this._isMounted = 1
 		window.addEventListener('keypress', this.handleKeyPress, false)
 		var loginData = cookie.load('SESSION')
 		console.log(this.props.history)
@@ -55,7 +58,7 @@ class LoginPage extends React.Component {
 		// we add a hidden class to the card and after 700 ms we delete it and the transition appears
 		setTimeout(
 			function () {
-				this.setState({ cardAnimaton: "" });
+				return this._isMounted ? this.setState({ cardAnimaton: "" }) : '';
 			}.bind(this),
 			300
 		);
@@ -75,7 +78,11 @@ class LoginPage extends React.Component {
 						cookie.save('SESSION', rs, { path: '/' })
 						if (rs.isLoggedIn) {
 							if (setToken())
-								this.props.history.push(this.props.location.state.prevUrl)
+								
+							{
+								var prevURL = this.props.location.state ? this.props.location.state.prevUrl : null
+								this.props.history.push(prevURL ? prevURL : "/dashboard")
+							}
 						}
 					}
 					else {
