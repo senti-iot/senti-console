@@ -47,7 +47,7 @@ function getStepContent(step) {
 			The calibration hit target is set to 200 so you need to count 200 individual entities. When you are ready to start counting press “OPEN COUNTING WINDOW” and press "START". 
 			Push the large button to count. When you have reached your hit target of 200 hits the timer automatically stops.`;
 		case 3:
-			return `You can store an optional picture of your device installation. This will enhance the Senti Cloud experience, and serve as a help for Senti service technicians in case your device needs on-site service.`
+			return `You can store optional picture(s) of your device installation. This will enhance the Senti Cloud experience, and serve as a help for Senti service technicians in case your device needs on-site service.`
 		default:
 			return 'Unknown step';
 	}
