@@ -41,14 +41,14 @@ function getStepContent(step) {
 		case 0:
 			return `To configure your Senti device, please enter a title and an informative description.`;
 		case 1:
-			return `To correctly deploy your Senti device you need to allow Senti.Cloud to store the location of the device. Accept this when prompted to allow to store the location of your mobile device.
+			return `To correctly deploy your Senti device you need to allow Senti Cloud to store the location of the device. Accept this when prompted to allow to store the location of your mobile device.
 			Secondly select a location type to further pinpoint where your data is collected.`;
 		case 2:
 			return `To get the best data collection accuracy, you need to do a manual calibration. 
 			The calibration hit target is set to 200 so you need to count 200 individual entities. When you are ready to start counting press “OPEN COUNTING WINDOW” and press "START". 
 			Push the large button to count. When you have reached your hit target of 200 hits the timer automatically stops.`;
 		case 3:
-			return `You can store an optional picture of your device installation. This will enhance the Senti.Cloud experience, and serve as a help for Senti service technicians in case your device needs on-site service.`
+			return `You can store optional picture(s) of your device installation. This will enhance the Senti Cloud experience, and serve as a help for Senti service technicians in case your device needs on-site service.`
 		default:
 			return 'Unknown step';
 	}
