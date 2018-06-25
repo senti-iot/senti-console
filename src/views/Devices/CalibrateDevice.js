@@ -162,7 +162,7 @@ class CalibrateDevice extends Component {
 				color="primary"
 				onClick={this.getCoords}
 				className={this.props.classes.button}
-			> Get Coordinates </Button>
+			> Get Location </Button>
 		</Fragment>
 	}
 	renderCalibration = () => {
