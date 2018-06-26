@@ -1,4 +1,5 @@
 import { Button, CircularProgress, Grid, Typography, withStyles } from '@material-ui/core';
+import { LibraryBooks, Devices, AssignmentTurnedIn, Person } from '@material-ui/icons'
 import projectStyles from 'assets/jss/views/projects';
 import { ItemGrid } from 'components';
 import DeviceSimpleList from 'components/List/DeviceSimpleList/DeviceSimpleList';
@@ -126,7 +127,7 @@ class Project extends Component {
 			!loading ?
 				<Grid container justify={'center'} alignContent={'space-between'} spacing={8}>
 					<ItemGrid xs={12} sm={12} md={12}>
-						<InfoCard title={project.title} avatar={project.title.substr(0, 1)} subheader={project.description}
+						<InfoCard title={project.title} avatar={<LibraryBooks/>} subheader={project.description}
 							noExpand
 							content={
 								<Grid container>
@@ -161,7 +162,7 @@ class Project extends Component {
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12}>
-						<InfoCard title={"Devices"} avatar={"D"} subheader={"Number of devices:" + project.devices.length}
+						<InfoCard title={"Devices"} avatar={<Devices/>} subheader={"Number of devices:" + project.devices.length}
 							// hideFacts
 							content={
 								<Grid container>
@@ -189,7 +190,7 @@ class Project extends Component {
 						/>
 					</ItemGrid >
 					<ItemGrid xs={12} sm={12} md={12}>
-						<InfoCard title={"Registrations"} avatar={'R'} subheader={project.registrations.length}
+						<InfoCard title={"Registrations"} avatar={<AssignmentTurnedIn/>} subheader={project.registrations.length}
 							// hideFacts
 							content={
 								<Grid container>
@@ -219,7 +220,7 @@ class Project extends Component {
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12}>
-						<InfoCard title={"Contact"} avatar={"C"} subheader={""}
+						<InfoCard title={"Contact"} avatar={<Person/>} subheader={""}
 							noExpand
 							content={
 								<Grid container>

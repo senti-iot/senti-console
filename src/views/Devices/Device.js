@@ -4,7 +4,7 @@ import { CircularProgress, Grid, Typography, withStyles, Button, IconButton, Men
 import moment from 'moment'
 import { ItemGrid, Warning, P } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
-import { SignalWifi2Bar, SignalWifi2BarLock, MoreVert, Build, LibraryBooks, Edit } from '@material-ui/icons'
+import { SignalWifi2Bar, SignalWifi2BarLock, MoreVert, Build, LibraryBooks, Edit, Devices, DeveloperBoard } from '@material-ui/icons'
 import { red, yellow, green } from "@material-ui/core/colors";
 import { ConvertDDToDMS } from 'variables/functions'
 const deviceStyles = theme => ({
@@ -23,7 +23,7 @@ const deviceStyles = theme => ({
 	},
 	leftIcon: {
 		marginRight: theme.spacing.unit
-	}, 
+	},
 	yellowSignal: {
 		color: yellow[600]
 	},
@@ -100,10 +100,10 @@ class Device extends Component {
 	renderStatus = (status) => {
 		const { classes } = this.props
 
-				
+
 		switch (status) {
 			case 1:
-				return	<SignalWifi2Bar className={classes.yellowSignal} />
+				return <SignalWifi2Bar className={classes.yellowSignal} />
 
 			case 2:
 				return <SignalWifi2Bar className={classes.greenSignal} />
@@ -115,7 +115,7 @@ class Device extends Component {
 				return <div>
 					<SignalWifi2BarLock className={classes.redSignal} />
 					<Typography paragraph>
-					Error
+						Error
 					</Typography>
 				</div>
 			default:
@@ -132,14 +132,14 @@ class Device extends Component {
 						<InfoCard
 							title={
 								<Fragment>
-									<Grid container justify={'space-between'} className={classes.typoNoMargin}> 
+									<Grid container justify={'space-between'} className={classes.typoNoMargin}>
 
 										<Typography paragraph className={classes.typoNoMargin}>
-										Device Details
+											Device Details
 										</Typography>
 										{/* <Hidden smDown> */}
 										<ItemGrid>
-											
+
 											<IconButton
 												aria-label="More"
 												aria-owns={anchorEl ? 'long-menu' : null}
@@ -163,18 +163,18 @@ class Device extends Component {
 											>
 
 												<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}>
-													<Build className={classes.leftIcon}/>{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
+													<Build className={classes.leftIcon} />{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
 												</MenuItem>
 												<MenuItem onClick={this.handleClose}>
-													<LibraryBooks className={classes.leftIcon}/>Assign to {device.project ? "new Project" : "Project"}
+													<LibraryBooks className={classes.leftIcon} />Assign to {device.project ? "new Project" : "Project"}
 												</MenuItem>
 												<MenuItem onClick={this.handleClose}>
-													<Edit className={classes.leftIcon}/>Edit Details
+													<Edit className={classes.leftIcon} />Edit Details
 												</MenuItem>
-														))}
+												))}
 											</Menu>
 										</ItemGrid>
-										 {/* <Button
+										{/* <Button
 												color={!(device.lat > 0) && !(device.long > 0) ? "primary" : "default"}
 												onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}
 												variant={"contained"}>
@@ -182,8 +182,8 @@ class Device extends Component {
 											</Button> */}
 										{/* </Hidden> */}
 									</Grid>
-								</Fragment>}Build
-							avatar={"D"}
+								</Fragment>} Build
+							avatar={<Devices />}
 							subheader={device.device_id}
 							noExpand
 							content={
@@ -194,21 +194,21 @@ class Device extends Component {
 												<Warning>
 													<ItemGrid container xs={12}>
 														<P>
-																Device has not been manually calibrated!
+															Device has not been manually calibrated!
 														</P>
 													</ItemGrid>
 													<ItemGrid container xs={12}>
-														
+
 														<Button
 															color={"default"}
 															onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}
 															variant={"outlined"}>
-														Manual Calibration
+															Manual Calibration
 														</Button>
 													</ItemGrid>
 												</Warning>
-											
-											
+
+
 											</ItemGrid>}
 										<ItemGrid>
 											<Caption>Name:</Caption>
@@ -228,7 +228,7 @@ class Device extends Component {
 											<Caption>Description:</Caption>
 											<Info>{device.description ? device.description : ""}</Info>
 										</ItemGrid>
-									
+
 									</Grid>
 									<Grid container>
 										<ItemGrid xs>
@@ -253,7 +253,7 @@ class Device extends Component {
 											<Caption>Project:</Caption>
 											<Info>{device.project ? device.project.title : "Unassigned"}</Info>
 										</ItemGrid>
-										
+
 									</Grid>
 								</Fragment>
 							}
@@ -262,7 +262,7 @@ class Device extends Component {
 					<ItemGrid xs={12}>
 						<InfoCard
 							title={"Hardware"}
-							avatar={"H"}
+							avatar={<DeveloperBoard />}
 							subheader={''}
 							content={
 								<Grid container>
@@ -276,12 +276,15 @@ class Device extends Component {
 											</Info>
 										</ItemGrid>
 										<ItemGrid xs>
+											{/* <Memory /> */}
+
 											<Caption>
 												Memory:
 											</Caption>
 											<Info>
 												{device.memory + " - " + device.memoryModel}
 											</Info>
+
 										</ItemGrid>
 										<ItemGrid xs>
 											<Caption>
@@ -315,7 +318,7 @@ class Device extends Component {
 							hiddenContent={<Grid container>
 								<ItemGrid>
 									<Caption>
-												Cell Number:
+										Cell Number:
 									</Caption>
 									<Info>
 										{device.cellNumber}
@@ -327,7 +330,7 @@ class Device extends Component {
 								</ItemGrid>
 								<ItemGrid>
 									<Caption>
-												SIM-Card ID
+										SIM-Card ID
 									</Caption>
 									<Info>
 										{device.SIMID}
@@ -335,13 +338,13 @@ class Device extends Component {
 								</ItemGrid>
 								<ItemGrid>
 									<Caption>
-												Modem IMEI:
+										Modem IMEI:
 									</Caption>
 									<Info>
 										{device.modemIMEI}
 									</Info>
 								</ItemGrid>
-										
+
 							</Grid>
 							}
 						/>
