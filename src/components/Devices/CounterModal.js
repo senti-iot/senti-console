@@ -166,7 +166,7 @@ class CounterModal extends React.Component {
 
 								<ItemGrid>
 									<Button
-										disabled={ this.state.count === 0 ? false : this.state.count < 10 ? true : false}
+										disabled={ this.state.count === 0 ? false : this.state.count < 200 ? true : false}
 										color={"primary"}
 										variant="contained"
 										onClick={this.state.count === 0 ? this.handleFinish : this.handleStart}>
