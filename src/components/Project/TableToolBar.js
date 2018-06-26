@@ -24,6 +24,9 @@ import teal from '@material-ui/core/colors/teal'
 import { withRouter } from 'react-router-dom'
 
 const toolbarStyles = theme => ({
+	leftIcon: {
+		marginRight: theme.spacing.unit
+	},
 	open: {
 		marginTop: 24
 	},
@@ -194,11 +197,11 @@ let EnhancedTableToolbar = props => {
 							{props.options.map((option, i) => {
 								if (option.single)
 									return numSelected === 1 ? <MenuItem key={i} onClick={option.func}>
-										{option.label}
+										<option.icon className={classes.leftIcon} />{option.label}
 									</MenuItem> : null
 								else {
 									return <MenuItem key={i} onClick={option.func}>
-										{option.label}
+										<option.icon className={classes.leftIcon}/>{option.label}
 									</MenuItem>
 								}
 							}

@@ -6,11 +6,11 @@ import {
 	Menu,
 	Grid,
 } from "@material-ui/core";
-import { AccountCircle  } from "@material-ui/icons";
+import { AccountCircle } from "@material-ui/icons";
 import { withRouter } from 'react-router-dom'
 import headerLinksStyle from "assets/jss/material-dashboard-react/headerLinksStyle";
 import cookie from "react-cookies";
-
+import { Lock, AccountBox, Business } from '@material-ui/icons'
 class HeaderLinks extends React.Component {
 	state = {
 		anchorProfile: null
@@ -45,7 +45,7 @@ class HeaderLinks extends React.Component {
 					aria-haspopup="true"
 					onClick={this.handleProfileOpen}
 					classes={{
-						root: classes.iconRoot						
+						root: classes.iconRoot
 					}}
 				>
 					<AccountCircle />
@@ -70,9 +70,15 @@ class HeaderLinks extends React.Component {
 						}
 					}}
 				>
-					<MenuItem onClick={this.handleProfileClose}>Profile</MenuItem>
-					<MenuItem onClick={this.handleProfileClose}>My account</MenuItem>
-					<MenuItem onClick={this.logOut} className={classes.menuItem}>Log out</MenuItem>
+					<MenuItem onClick={this.handleProfileClose}>
+						<Business className={classes.leftIcon} />Profile
+					</MenuItem>
+					<MenuItem onClick={this.handleProfileClose}>
+						<AccountBox className={classes.leftIcon} />My account
+					</MenuItem>
+					<MenuItem onClick={this.logOut} className={classes.menuItem}>
+						<Lock className={classes.leftIcon}/>Log out
+					 </MenuItem>
 				</Menu>
 			</Grid>
 		);

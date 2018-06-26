@@ -25,7 +25,7 @@ function Header({ ...props }) {
 		<AppBar position={'absolute'} className={classes.appBar + appBarClasses}>
 			<Toolbar className={classes.container}>
 				<div className={classes.flex}>
-					<Button href="/" className={classes.title}>
+					<Button className={classes.title}>
 						{props.headerTitle}
 					</Button>
 				</div>

@@ -4,7 +4,7 @@ import { CircularProgress, Grid, Typography, withStyles, Button, IconButton, Men
 import moment from 'moment'
 import { ItemGrid, Warning, P } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
-import { SignalWifi2Bar, SignalWifi2BarLock, MoreVert } from '@material-ui/icons'
+import { SignalWifi2Bar, SignalWifi2BarLock, MoreVert, Build, LibraryBooks, Edit } from '@material-ui/icons'
 import { red, yellow, green } from "@material-ui/core/colors";
 import { ConvertDDToDMS } from 'variables/functions'
 const deviceStyles = theme => ({
@@ -21,6 +21,9 @@ const deviceStyles = theme => ({
 		color: green[700],
 		margin: 4
 	},
+	leftIcon: {
+		marginRight: theme.spacing.unit
+	}, 
 	yellowSignal: {
 		color: yellow[600]
 	},
@@ -153,19 +156,20 @@ class Device extends Component {
 												PaperProps={{
 													style: {
 														maxHeight: 200,
-														width: 200,
+														// width: 200,
+														minWidth: 200
 													},
 												}}
 											>
 
 												<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}>
-													{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
+													<Build className={classes.leftIcon}/>{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
 												</MenuItem>
 												<MenuItem onClick={this.handleClose}>
-															Assign to {device.project ? "new Project" : "Project"}
+													<LibraryBooks className={classes.leftIcon}/>Assign to {device.project ? "new Project" : "Project"}
 												</MenuItem>
 												<MenuItem onClick={this.handleClose}>
-															Edit Details
+													<Edit className={classes.leftIcon}/>Edit Details
 												</MenuItem>
 														))}
 											</Menu>
@@ -178,7 +182,7 @@ class Device extends Component {
 											</Button> */}
 										{/* </Hidden> */}
 									</Grid>
-								</Fragment>}
+								</Fragment>}Build
 							avatar={"D"}
 							subheader={device.device_id}
 							noExpand

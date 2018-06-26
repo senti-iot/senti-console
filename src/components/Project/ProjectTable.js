@@ -18,6 +18,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { primaryColor } from "assets/jss/material-dashboard-react";
 import { withRouter } from 'react-router';
 import { grey } from "@material-ui/core/colors";
+import { Edit, Devices, PictureAsPdf, Delete } from '@material-ui/icons'
 var moment = require('moment')
 
 const styles = theme => ({
@@ -184,10 +185,10 @@ class EnhancedTable extends React.Component {
 	}
 	isSelected = id => this.state.selected.indexOf(id) !== -1;
 	options = [
-		{ label: 'Edit', func: this.handleEdit, single: true },
-		{ label: 'Assign Device', func: this.assignDevice, single: true },
-		{ label: 'Export to PDF', func: () => { } },
-		{ label: 'Delete', func: this.handleDeleteProjects }
+		{ label: 'Edit', func: this.handleEdit, single: true, icon: Edit },
+		{ label: 'Assign Device', func: this.assignDevice, single: true, icon: Devices },
+		{ label: 'Export to PDF', func: () => { }, icon: PictureAsPdf },
+		{ label: 'Delete', func: this.handleDeleteProjects, icon: Delete }
 	];
 	render() {
 		const { classes, data } = this.props;

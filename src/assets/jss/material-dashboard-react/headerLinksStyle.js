@@ -10,6 +10,9 @@ import {
 } from "assets/jss/material-dashboard-react.js";
 
 const headerLinksStyle = theme => ({
+	leftIcon: {
+		marginRight: theme.spacing.unit
+	},
 	iconRoot: {
 		color: "#FFF"
 	},
