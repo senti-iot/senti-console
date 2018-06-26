@@ -5,7 +5,7 @@ import { getDevice, calibrateDevice } from 'variables/data';
 import Caption from 'components/Typography/Caption';
 import CounterModal from 'components/Devices/CounterModal';
 import ImageUpload from './ImageUpload';
-
+import { NavigateNext, NavigateBefore, Done, Restore, MyLocation } from '@material-ui/icons'
 const styles = theme => ({
 	root: {
 		width: '90%',
@@ -29,6 +29,12 @@ const styles = theme => ({
 	},
 	buttonMargin: {
 		margin: theme.spacing.unit
+	},
+	iconButton: {
+		marginRight: theme.spacing.unit
+	},
+	iconButtonRight: {
+		marginLeft: theme.spacing.unit
 	}
 });
 
@@ -57,7 +63,7 @@ class CalibrateDevice extends Component {
 	constructor(props) {
 	  super(props)
 	  this.state = {
-		  activeStep: 3,
+		  activeStep: 2,
 		  device_name: '',
 		  description: '',
 		  device: null,
@@ -163,7 +169,7 @@ class CalibrateDevice extends Component {
 				color="primary"
 				onClick={this.getCoords}
 				className={this.props.classes.button}
-			> Get Location </Button>
+			> <MyLocation className={this.props.classes.iconButton}/>Get Location </Button>
 		</Fragment>
 	}
 	renderCalibration = () => {
@@ -316,7 +322,7 @@ class CalibrateDevice extends Component {
 													onClick={this.handleBack}
 													className={classes.button}
 												>
-												Back
+													<NavigateBefore className={classes.iconButton} />Back
 												</Button>
 												<Button
 													variant="contained"
@@ -325,7 +331,13 @@ class CalibrateDevice extends Component {
 													className={classes.button}
 													disabled={this.stepChecker()} 
 												>
-													{activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+													{activeStep === steps.length - 1 ? <Fragment>
+													
+														Finish <Done className={classes.iconButtonRight} />
+													</Fragment> :
+														<Fragment>
+															<NavigateNext className={classes.iconButton} />Next 
+														</Fragment>}
 												</Button>
 											</Grid>
 										</div>
@@ -352,7 +364,7 @@ class CalibrateDevice extends Component {
 							</ItemGrid>
 							<ItemGrid xs>
 								<Button onClick={this.handleReset} className={classes.button} >
-									Reset
+									<Restore className={classes.iconButton}/>Reset
 								</Button>
 							</ItemGrid>
 						</Grid>

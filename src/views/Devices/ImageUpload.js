@@ -1,14 +1,8 @@
 import React, { Component } from 'react'
-import { withStyles, Button } from '@material-ui/core';
+import { withStyles, Button, Grid } from '@material-ui/core';
+import { CloudUpload } from '@material-ui/icons'
+import { ItemGrid } from 'components';
 
-
-const RenderIMG = ({ ...props }) => {
-	return (
-		
-		<img src={props.img} alt="" className={props.className}/>
-		
-	)
-}
 
 const styles = theme => ({
 	button: {
@@ -18,8 +12,11 @@ const styles = theme => ({
 		display: 'none',
 	},
 	imgPreview: {
-		height: 200,
-		width: 200
+		maxWidth: 200,
+		margin: theme.spacing.unit
+	},
+	iconButton: {
+		marginLeft: theme.spacing.unit
 	}
 });
 class ImageUpload extends Component {
@@ -31,25 +28,20 @@ class ImageUpload extends Component {
 	  }
 	}
 	tempUpload = e => {
-		console.log([...e.target.files])
 		var imgs = [...e.target.files]
 		var arr = []
 		imgs.forEach(image => {
 			arr.push(URL.createObjectURL(image))
 		});
-		console.log(arr)
-		this.setState({ images: arr })
+		// console.log(arr)
+		this.setState({ images: imgs })
 	}
 	render() {
 		const { classes } = this.props
+		const { images } = this.state
 		return (
 		  <div>
-				{/* <Button
-					variant={"raised"}
-					containerElement='label' // <-- Just add me!
-					label='My Label'>
-					<input type="file" style={{ display: 'none' }}  />
-				</Button> */}
+
 				<input
 					accept="image/*"
 					className={classes.input}
@@ -60,13 +52,20 @@ class ImageUpload extends Component {
 				/>
 				<label htmlFor="contained-button-file">
 					<Button variant="contained" component="span" className={classes.button}>
-						Upload
+						Upload<CloudUpload className={classes.iconButton} />
 					</Button>
 				</label>
-				<img src={this.state.images[0]} alt={"it should work"} className={classes.imgPreview}/>
-				{this.state.images.length > 0 ? (this.state.images.forEach((image, index) => {
-					console.log(this.state.images[0], index, this.state.images[index])
-					return <RenderIMG key={index} img={this.state.images[index]} className={classes.imgPreview} />})) : null}
+				<Grid container> 
+					{
+						[...images].map((img) => {
+							let blob = URL.createObjectURL(img)
+							return <ItemGrid xs={2}>
+								<img src={blob} alt={'preview'} className={classes.imgPreview} />
+							</ItemGrid>
+						})
+					}
+				</Grid>			
+			
 				
 		  </div>
 		)

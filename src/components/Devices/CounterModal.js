@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -7,7 +7,7 @@ import Modal from '@material-ui/core/Modal';
 import { Grid, Button } from '@material-ui/core';
 import ItemGrid from '../Grid/ItemGrid';
 import moment from 'moment'
-
+import { OpenInBrowser, Timer, Done, Restore } from '@material-ui/icons'
 const styles = theme => ({
 	modalWrapper: {
 		top: "50%",
@@ -32,6 +32,9 @@ const styles = theme => ({
 	counterButton: {
 		minHeight: 100,
 		minWidth: 100
+	},
+	iconButton: {
+		marginRight: theme.spacing.unit
 	}
 });
 
@@ -52,6 +55,7 @@ class CounterModal extends React.Component {
 			alert(msg);
 		}
 		this.mp3File = new Audio("/assets/sound/pop.mp3").load()
+		this.timeCounter = null
 	}
 	timer = () => {
 		this.setState({ timer: this.state.timer + 1 }, () => {
@@ -63,8 +67,10 @@ class CounterModal extends React.Component {
 		})
 	}
 	handleStart = () => {
-		this.setState({ timestamp: moment().format("YYYY-MM-DD HH:mm:ss") })
-		this.timeCounter = setInterval(() => this.timer(), 1000)
+		if (this.timeCounter === null) {
+			this.setState({ timestamp: moment().format("YYYY-MM-DD HH:mm:ss") })	
+			this.timeCounter = setInterval(() => this.timer(), 1000)
+		}
 	}
 
 	handleOpen = () => {
@@ -122,7 +128,9 @@ class CounterModal extends React.Component {
 		return (
 			<div >
 				{/* <Typography gutterBottom>Click to get the full Modal experience!</Typography> */}
-				<Button variant={"outlined"} color={"primary"} onClick={this.handleOpen}>Open Counting Window</Button>
+				<Button variant={"outlined"} color={"primary"} onClick={this.handleOpen}>
+					<OpenInBrowser className={classes.iconButton}/> Open Counting Window
+				</Button>
 				<Modal
 					aria-labelledby="simple-modal-title"
 					aria-describedby="simple-modal-description"
@@ -153,25 +161,32 @@ class CounterModal extends React.Component {
 								</Button>
 							</div>
 						</ItemGrid>
-						<ItemGrid xs={12} container>
-							<ItemGrid>
-								<Button
-									disabled={ this.state.count === 0 ? false : this.state.count < 10 ? true : false}
-									color={"primary"}
-									variant="contained"
-									onClick={this.state.count === 0 ? this.handleFinish : this.handleStart}>
-									{this.state.count === 0 ? "Finish" : "Start"}
-								</Button>
-							</ItemGrid>
-							<ItemGrid>
-								<Button
-									color={"primary"}
-									variant="contained"
-									disabled={this.state.timer !== 0 ? false : true}
-									onClick={this.handleReset}>
-									Reset
-								</Button>
-							</ItemGrid>
+						<ItemGrid xs={12}>
+							<div style={{ display: 'flex' }}>
+
+								<ItemGrid>
+									<Button
+										disabled={ this.state.count === 0 ? false : this.state.count < 10 ? true : false}
+										color={"primary"}
+										variant="contained"
+										onClick={this.state.count === 0 ? this.handleFinish : this.handleStart}>
+										{this.state.count === 0 ? <Fragment>
+											<Done className={classes.iconButton}/>Finish
+										</Fragment> : <Fragment>
+											<Timer className={classes.iconButton}/> Start
+										</Fragment>}
+									</Button>
+								</ItemGrid>
+								<ItemGrid>
+									<Button
+										color={"primary"}
+										variant="contained"
+										disabled={this.state.timer !== 0 ? false : true}
+										onClick={this.handleReset}>
+										<Restore className={classes.iconButton} />Reset
+									</Button>
+								</ItemGrid>
+							</div>
 						</ItemGrid>
 						{/* <SimpleModalWrapped /> */}
 					</Grid>
