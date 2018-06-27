@@ -92,18 +92,16 @@ export const getProject = async (projectId) => {
 	return data
 }
 export const uploadPictures = async (device) => {
-	const form = new FormData()
-	// form.append('SentiFile', device.files[0], 'sentiFile')
-
-	console.log(document.getElementById('contained-button-file').files[0]);
-	form.append('sentiFile', document.getElementById('contained-button-file').files[0]);
+	const form = new FormData();
+	// var fles = device.files;
+	[...device.files].map((img, index) => form.append('sentiFile[]', device.files[index]))
 	var config = {
 		onUploadProgress: function (progressEvent) {
 			var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
 			console.log(percentCompleted)
 		}
 	};
-	var data = await imageApi.post('senti/image', form, config).then(rs => {console.log(rs); return rs})
+	var data = await imageApi.post('senti/device/image/' + device.device_id, form, config).then(rs => {console.log(rs); return rs})
 	// var data = await api.post('senti/image', { device_id: device.device_id, sentiFile: device.files }).then(rs => rs)
 	console.log(data)
 	return false
@@ -130,7 +128,7 @@ export const getAllDevices = async () => {
 	return data
 }
 export const getDevice = async (id) => {
-	var data = await api.get('senti/device/' + id).then(rs => rs.data)
+	var data = await api.get('senti/device/' + id).then(rs => { console.log(rs); return rs.data })
 	console.log(data)
 	return data
 }

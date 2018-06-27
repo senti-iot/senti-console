@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { getAllDevices, deleteProject } from '../../variables/data';
 import { Grid, CircularProgress, withStyles } from "@material-ui/core";
 
-import { /* RegularCard */ /* Table, */ ItemGrid } from "components";
 import projectStyles from 'assets/jss/views/projects';
 import DeviceTable from 'components/Devices/DeviceTable';
 var moment = require('moment');
@@ -83,7 +82,7 @@ class Devices extends Component {
 			devices: rs,
 			deviceHeader: [
 				{ id: "device_name", label: "Device Name" },
-				{ id: "device_id", label: "Device ID" },
+				{ id: "device_id", label: "ID" },
 				{ id: "liveStatus", label: "Status" },
 				{ id: "org", label: "Organisation" }
 			],
@@ -124,15 +123,9 @@ class Devices extends Component {
 
 	render() {
 		return (
-			<React.Fragment>
-				{/* <Paper> */}
-				<Grid container justify={'center'}>
-					<ItemGrid xs={12} sm={12} md={12}>
-						{this.renderAllDevices()}
-					</ItemGrid>
-				</Grid>
-				{/* </Paper> */}
-			</React.Fragment>
+			<Grid container justify={'center'}>
+				{this.renderAllDevices()}
+			</Grid>
 
 		)
 	}

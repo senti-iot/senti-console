@@ -29,7 +29,6 @@ class ImageUpload extends Component {
 	}
 	tempUpload = e => {
 		var imgs = [...e.target.files]
-		// console.log(arr)
 		this.setState({ images: imgs })
 		this.props.imgUpload(imgs)
 	}
@@ -63,12 +62,7 @@ class ImageUpload extends Component {
 							</ItemGrid>
 						})
 					}
-				</Grid>			
-
-				<form action="https://senti.cloud/rest/senti/device/image/8020/" method="POST" encType="multipart/form-data">
-					<input type="file" name="sentiFile" />
-					<input type="submit" />
-				</form>
+				</Grid>	
 				
 		  </div>
 		)

@@ -3,10 +3,10 @@ import { withStyles, Grid } from "@material-ui/core";
 
 const style = {
 	grid: {
-		padding: "0 15px !important",
+		padding: "0 8px",
 		margin: "8px",
-		justifyContent: 'center',
-		alignItems: 'center'
+		// justifyContent: 'center',
+		// alignItems: 'center'
 	}
 };
 

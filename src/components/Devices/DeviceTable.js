@@ -252,6 +252,7 @@ class EnhancedTable extends React.Component {
 					numSelected={selected.length}
 					options={this.options}
 					suggestions={this.suggestionGen(data)}
+					noAdd
 				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">

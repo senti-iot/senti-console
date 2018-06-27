@@ -15,7 +15,7 @@ function renderInput(inputProps) {
 
 	return (
 		<TextField
-			fullWidth
+			
 			label={"Search..."}
 			InputLabelProps={{ FormLabelClasses: {
 				root: classes.label,
@@ -121,6 +121,7 @@ const styles = theme => ({
 		listStyleType: 'none',
 	},
 	input: {
+		
 		color: "#000000"
 	}
 });
@@ -169,7 +170,7 @@ class IntegrationAutosuggest extends React.Component {
 					classes,
 					// placeholder: 'Search',
 					value: this.props.searchValue,
-					onChange: this.handleChange,
+					onChange: this.handleChange
 				}}
 			/>
 		);

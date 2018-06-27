@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withStyles, Grid, TextField } from '@material-ui/core';
+import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withStyles, Grid, TextField, FormControl, InputLabel, Select, Input, MenuItem, FormHelperText } from '@material-ui/core';
 import { ItemGrid, Info, Danger } from 'components';
 import { getDevice, calibrateDevice, uploadPictures } from 'variables/data';
 import Caption from 'components/Typography/Caption';
@@ -35,6 +35,9 @@ const styles = theme => ({
 	},
 	iconButtonRight: {
 		marginLeft: theme.spacing.unit
+	},
+	paper: {
+		margin: '8px'
 	}
 });
 
@@ -63,7 +66,7 @@ class CalibrateDevice extends Component {
 	constructor(props) {
 	  super(props)
 	  this.state = {
-		  activeStep: 3,
+		  activeStep: 1,
 		  device_name: '',
 		  description: '',
 		  device: null,
@@ -168,6 +171,22 @@ class CalibrateDevice extends Component {
 	}
 	renderDeviceLocation = () => {
 		return <Fragment>
+			<FormControl className={this.props.classes.formControl}>
+				<InputLabel htmlFor="streetType-helper">Age</InputLabel>
+				<Select
+					value={this.state.age}
+					onChange={this.handleChange}
+					input={<Input name="streetType" id="streetType-helper" />}
+				>
+					<MenuItem value="">
+						<em>None</em>
+					</MenuItem>
+					<MenuItem value={10}>Ten</MenuItem>
+					<MenuItem value={20}>Twenty</MenuItem>
+					<MenuItem value={30}>Thirty</MenuItem>
+				</Select>
+				<FormHelperText>Some important helper text</FormHelperText>
+			</FormControl>
 			<div className={this.props.classes.latlong}>
 				<Caption>
 				Latitude &amp; Longitute
@@ -185,14 +204,12 @@ class CalibrateDevice extends Component {
 		</Fragment>
 	}
 	renderCalibration = () => {
-		return <React.Fragment>
-			<CounterModal handleFinish={this.handleCalibration}/>	
-		</React.Fragment>
+		return <CounterModal handleFinish={this.handleCalibration}/>	
+
 	}
 	renderImageUpload = () => {
-		return <React.Fragment>
-			<ImageUpload imgUpload={this.getImages}/>
-		</React.Fragment>
+		return <ImageUpload imgUpload={this.getImages}/>
+	
 	}
 	renderStep = (step) => { 
 		switch (step) {
@@ -312,7 +329,7 @@ class CalibrateDevice extends Component {
 		const steps = getSteps();
 		const { activeStep, device, error } = this.state;
 		return (
-			<Paper>
+			<Paper classes={{ root: classes.paper }}>
 				{device ? 
 					<Stepper activeStep={activeStep} orientation="vertical">
 						{steps.map((label, index) => {

@@ -174,13 +174,6 @@ class Device extends Component {
 												))}
 											</Menu>
 										</ItemGrid>
-										{/* <Button
-												color={!(device.lat > 0) && !(device.long > 0) ? "primary" : "default"}
-												onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}
-												variant={"contained"}>
-												{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
-											</Button> */}
-										{/* </Hidden> */}
 									</Grid>
 								</Fragment>} Build
 							avatar={<Devices />}
@@ -207,8 +200,6 @@ class Device extends Component {
 														</Button>
 													</ItemGrid>
 												</Warning>
-
-
 											</ItemGrid>}
 										<ItemGrid>
 											<Caption>Name:</Caption>

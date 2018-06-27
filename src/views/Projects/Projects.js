@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { getAllProjects, deleteProject } from '../../variables/data';
 import { Grid, CircularProgress, withStyles } from "@material-ui/core";
 
-import { /* RegularCard */ /* Table, */ ItemGrid } from "components";
 import projectStyles from 'assets/jss/views/projects';
 import ProjectTable from 'components/Project/ProjectTable';
 var moment = require('moment');
@@ -140,23 +139,9 @@ class Projects extends Component {
 
 	render() {
 		return (
-			<React.Fragment>
-				{/* <Paper> */}
-				<Grid container justify={'center'}>
-					<ItemGrid xs={12} sm={12} md={12}>
-						{/* <RegularCard
-							cardTitle="All projects"
-							cardSubtitle=""
-							content={ */}
-						
-						{this.renderAllProjects()}
-						{/* } */}
-						{/* /> */}
-					</ItemGrid>
-				</Grid>
-				{/* </Paper> */}
-			</React.Fragment>
-
+			<Grid container justify={'center'}>
+				{this.renderAllProjects()}
+			</Grid>
 		)
 	}
 }
