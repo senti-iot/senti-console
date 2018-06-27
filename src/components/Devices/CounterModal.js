@@ -43,7 +43,7 @@ class CounterModal extends React.Component {
 		super(props)
 
 		this.state = {
-			count: 5, //change
+			count: 200, //change
 			open: false,
 			timer: 0,
 			timestamp: null,
@@ -81,7 +81,7 @@ class CounterModal extends React.Component {
 		this.timeCounter = null
 		this.setState({
 			timer: 0,
-			count: 5, //change
+			count: 200, //change
 			timestamp: null
 		})
 	}
@@ -166,7 +166,7 @@ class CounterModal extends React.Component {
 
 								<ItemGrid>
 									<Button
-										disabled={ this.state.count === 0 ? false : this.state.count < 5 ? true : false}//change
+										disabled={ this.state.count === 0 ? false : this.state.count < 200 ? true : false}//change
 										color={"primary"}
 										variant="contained"
 										onClick={this.state.count === 0 ? this.handleFinish : this.handleStart}>
