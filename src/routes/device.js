@@ -8,8 +8,9 @@ import CalibrateDevice from 'views/Devices/CalibrateDevice';
 export default withRouter((props) => {
 	return (
 		<Switch>
-			{/* <Route path={`${props.match.url}/edit`} render={() => <CreateProject {...props} />} />*/}
-			<Route path={`${props.match.url}/setup`} render={() => <CalibrateDevice {...props}/>}/>
+			<Route path={`${props.match.url}/edit-hardware`} render={() => <div>Not Implemented - Edit Hardware</div>} />
+			<Route path={`${props.match.url}/setup`} render={() => <CalibrateDevice {...props} />} />
+			<Route path={`${props.match.url}/edit`} render={() => <div>Not Implemented</div>}/>
 			<Route path={`${props.match.url}`} render={() => <Device {...props} />} /> 
 		</Switch>
 	)
