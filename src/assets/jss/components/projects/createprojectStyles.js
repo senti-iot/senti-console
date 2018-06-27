@@ -1,6 +1,9 @@
 import teal from '@material-ui/core/colors/teal'
 
 const createprojectStyles = theme => ({
+	leftIcon: {
+		marginRight: theme.spacing.unit
+	},
 	wrapper: {
 		margin: theme.spacing.unit,
 		position: 'relative',

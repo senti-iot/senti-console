@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Paper, TextField, withStyles, Grid, FormControl, InputLabel, Select, Input, Chip, MenuItem, Collapse, CircularProgress, Button, Icon } from '@material-ui/core';
+import React, { Component, Fragment } from 'react'
+import { Paper, TextField, withStyles, Grid, FormControl, InputLabel, Select, Input, Chip, MenuItem, Collapse, CircularProgress, Button } from '@material-ui/core';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import { DatePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
@@ -7,9 +7,10 @@ import KeyArrRight from '@material-ui/icons/KeyboardArrowRight';
 import KeyArrLeft from '@material-ui/icons/KeyboardArrowLeft';
 import { ItemGrid } from 'components';
 import { getAvailableDevices, createOneProject } from 'variables/data';
-import Save from '@material-ui/icons/Check'
+import Save from '@material-ui/icons/Save'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
+import { withRouter } from 'react-router-dom'
 
 const ITEM_HEIGHT = 32;
 const ITEM_PADDING_TOP = 8;
@@ -74,8 +75,12 @@ class CreateProject extends Component {
 		this.setState({ creating: true })
 		createOneProject(newProject).then(rs => {
 			// console.log(rs)
-			this.setState({ created: rs === true ? true : false, creating: false })
+			this.setState({ created: rs ? true : false, creating: false, id: rs })
 		})
+	}
+	goToNewProject = () => {
+		if (this.state.id)
+			this.props.history.push('/project/' + this.state.id)
 	}
 	render() {
 		const { classes, theme } = this.props
@@ -212,7 +217,7 @@ class CreateProject extends Component {
 															: theme.typography.fontWeightMedium,
 												}}
 											>
-												{name.device_id + "-" + name.device_name}
+												{name.device_id + " - " + (name.device_name ? name.device_name : "No Name")}
 											</MenuItem>
 										))}
 									</Select>
@@ -225,17 +230,12 @@ class CreateProject extends Component {
 										variant="contained"
 										color="primary"
 										className={buttonClassname}
-										disabled={this.state.creating || this.state.created}
-										onClick={this.handleCreateProject}
+										disabled={this.state.creating}
+										onClick={this.state.created ? this.goToNewProject : this.handleCreateProject}
 									>
-										Create Project
+										{this.state.created ? "Go to new Project" : <Fragment><Save className={classes.leftIcon}/>Create Project</Fragment>}
         					  </Button>
 									{this.state.creating && <CircularProgress size={24} className={classes.buttonProgress} />}
-									{this.state.created && <Icon
-										className={classes.buttonProgress}
-									>
-										 <Save /> 
-									</Icon>}
 								</div>
 								{/* <div className={classes.button}>
 									<Button variant={"contained"} color="primary" size="medium" onClick={this.handleCreateProject}>
@@ -257,4 +257,4 @@ class CreateProject extends Component {
 	}
 }
 
-export default withStyles(createprojectStyles, { withTheme: true })(CreateProject)
+export default withRouter(withStyles(createprojectStyles, { withTheme: true })(CreateProject))
