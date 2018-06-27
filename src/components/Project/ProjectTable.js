@@ -193,9 +193,12 @@ class EnhancedTable extends React.Component {
 	render() {
 		const { classes, data } = this.props;
 		const { order, orderBy, selected, rowsPerPage, page } = this.state;
-		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+		let emptyRows;
+		if (data)
+			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
 		return (
+	
 			<Paper className={classes.root}>
 				<EnhancedTableToolbar
 					anchorElMenu={this.state.anchorElMenu}
@@ -211,7 +214,7 @@ class EnhancedTable extends React.Component {
 					filterOptions={this.props.tableHead}
 					numSelected={selected.length}
 					options={this.options}
-					suggestions={data.map(p => ({ id: p.id, label: p.title }))}
+					suggestions={data ? data.map(p => ({ id: p.id, label: p.title }) ) : []}
 				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
@@ -221,12 +224,12 @@ class EnhancedTable extends React.Component {
 							orderBy={orderBy}
 							onSelectAllClick={this.handleSelectAllClick}
 							onRequestSort={this.handleRequestSort}
-							rowCount={data.length}
+							rowCount={data ? data.length : 0}
 							columnData={this.props.tableHead}
 							classes={classes}
 						/>
 						<TableBody>
-							{data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
+							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
 								return (
 									<TableRow
@@ -270,7 +273,7 @@ class EnhancedTable extends React.Component {
 										</Hidden>
 									</TableRow>
 								);
-							})}
+							}) : null}
 							{emptyRows > 0 && (
 								<TableRow style={{ height: 49 * emptyRows }}>
 									<TableCell colSpan={8} />
@@ -281,7 +284,7 @@ class EnhancedTable extends React.Component {
 				</div>
 				<TablePagination
 					component="div"
-					count={data.length}
+					count={data ? data.length : 0}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					backIconButtonProps={{
