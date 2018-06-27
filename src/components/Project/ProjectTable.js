@@ -16,17 +16,17 @@ import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import { primaryColor } from "assets/jss/material-dashboard-react";
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import { grey } from "@material-ui/core/colors";
 import { Edit, Devices, PictureAsPdf, Delete } from '@material-ui/icons'
 var moment = require('moment')
 
 const styles = theme => ({
-	headerCell: { 
+	headerCell: {
 		color: "inherit",
 	},
 	tableHead: {
-		
+
 		// backgroundColor: primaryColor,
 		// boxShadow:
 		// 	"0 12px 20px -10px rgba(55, 168, 145, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(55, 168, 145, 0.28)",
@@ -198,7 +198,7 @@ class EnhancedTable extends React.Component {
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
 		return (
-	
+
 			<Paper className={classes.root}>
 				<EnhancedTableToolbar
 					anchorElMenu={this.state.anchorElMenu}
@@ -214,7 +214,7 @@ class EnhancedTable extends React.Component {
 					filterOptions={this.props.tableHead}
 					numSelected={selected.length}
 					options={this.options}
-					suggestions={data ? data.map(p => ({ id: p.id, label: p.title }) ) : []}
+					suggestions={data ? data.map(p => ({ id: p.id, label: p.title })) : []}
 				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
