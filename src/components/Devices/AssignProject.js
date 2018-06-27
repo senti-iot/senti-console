@@ -16,7 +16,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import { headerColor, primaryColor, hoverColor } from 'assets/jss/material-dashboard-react';
 import cx from "classnames";
-import { getAllProjects } from 'variables/data';
+import { getAllProjects, assignProjectToDevice } from 'variables/data';
 
 const styles = {
 	appBar: {
@@ -76,6 +76,13 @@ class AssignProject extends React.Component {
 		else { this.setState({ selectedProject: pId }) }
 		
 	}
+	assignProject = async () => {
+		await assignProjectToDevice({ project_id: this.state.selectedProject, id: this.props.device_id }).then(rs => console.log(rs))
+		this.props.handleClose(true)
+	}
+	closeDialog = () => {
+		this.props.handleClose(false)
+	}
 	render() {
 		const { classes, open } = this.props;
 		const appBarClasses = cx({
@@ -92,13 +99,13 @@ class AssignProject extends React.Component {
 				>
 					<AppBar className={classes.appBar + appBarClasses}>
 						<Toolbar>
-							<IconButton color="inherit" onClick={this.props.handleClose} aria-label="Close">
+							<IconButton color="inherit" onClick={this.closeDialog} aria-label="Close">
 								<CloseIcon />
 							</IconButton>
 							<Typography variant="title" color="inherit" className={classes.flex}>
 								Projects
   						</Typography>
-							<Button color="inherit" onClick={this.props.handleClose}>
+							<Button color="inherit" onClick={this.assignProject}>
 								save
   						</Button>
 						</Toolbar>

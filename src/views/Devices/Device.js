@@ -47,7 +47,12 @@ class Device extends Component {
 	handleOpenAssign = () => {
 		this.setState({ openAssign: true, anchorEl: null })
 	}
-	handleCloseAssign = () => {
+	handleCloseAssign =async (reload) => {
+		if (reload)
+		{
+			this.setState({ loading: true })
+			this.componentDidMount()
+		}
 		this.setState({ openAssign: false })
 	}
 	filterItems = (projects, keyword) => {
@@ -73,7 +78,7 @@ class Device extends Component {
 		return filtered
 	}
 	renderLoader = () => {
-		return <Grid container><CircularProgress /></Grid>
+		return <Grid container justify={'center'}><CircularProgress /></Grid>
 	}
 
 	handleClick = event => {
@@ -114,7 +119,7 @@ class Device extends Component {
 		return (
 			!loading ?
 				<Grid container justify={'center'} alignContent={'space-between'} spacing={8}>
-					<AssignProject open={this.state.openAssign} handleClose={this.handleCloseAssign}/>
+					<AssignProject device_id={this.state.device.device_id} open={this.state.openAssign} handleClose={this.handleCloseAssign} />
 					<ItemGrid xs={12}>
 						<InfoCard
 							title={
@@ -139,7 +144,9 @@ class Device extends Component {
 												PaperProps={{
 													style: {
 														maxHeight: 200,
-														minWidth: 200 } }}>
+														minWidth: 200
+													}
+												}}>
 												<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}>
 													<Build className={classes.leftIcon} />{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
 												</MenuItem>
@@ -179,7 +186,7 @@ class Device extends Component {
 												</Warning>
 											</ItemGrid>}
 										<ItemGrid>
-											<SmallInfo caption={"Name"} info={device.device_name ? device.device_name : "No name"}/>
+											<SmallInfo caption={"Name"} info={device.device_name ? device.device_name : "No name"} />
 										</ItemGrid>
 										<ItemGrid>
 											<Caption>Status:</Caption>
@@ -217,7 +224,7 @@ class Device extends Component {
 										</ItemGrid>
 										<ItemGrid xs={4}>
 											<Caption>Project:</Caption>
-											<Info>{device.project ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : "Unassigned"}</Info>											
+											<Info>{device.project ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : "Unassigned"}</Info>
 										</ItemGrid>
 									</Grid>
 								</Fragment>
