@@ -8,7 +8,6 @@ import moment from "moment";
 import React, { Component } from 'react';
 import { getProject } from 'variables/data';
 import { dateFormatter } from 'variables/functions';
-// import ProjectCard from '../../components/Project/ProjectCard';
 import InfoCard from 'components/Cards/InfoCard';
 
 const Caption = (props) => <Typography variant={"caption"}>{props.children}</Typography>

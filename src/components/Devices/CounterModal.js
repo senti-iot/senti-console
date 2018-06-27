@@ -8,35 +8,8 @@ import { Grid, Button } from '@material-ui/core';
 import ItemGrid from '../Grid/ItemGrid';
 import moment from 'moment'
 import { OpenInBrowser, Timer, Done, Restore } from '@material-ui/icons'
-const styles = theme => ({
-	modalWrapper: {
-		top: "50%",
-		left: "50%",
-		transform: "translate(-50%, -50%)"
-	},
-	paper: {
-		position: 'absolute',
-		width: theme.spacing.unit * 50,
-		backgroundColor: theme.palette.background.paper,
-		boxShadow: theme.shadows[5],
-		padding: theme.spacing.unit * 4,
-	},
-	text: {
-		textAlign: "center"
-	},
-	wrapper: {
-		minHeight: 200,
-		display: 'flex',
-		alignItems: 'center'
-	},
-	counterButton: {
-		minHeight: 100,
-		minWidth: 100
-	},
-	iconButton: {
-		marginRight: theme.spacing.unit
-	}
-});
+import countermodalStyles from 'assets/jss/components/devices/countermodalStyles';
+
 
 class CounterModal extends React.Component {
 	constructor(props) {
@@ -201,7 +174,5 @@ CounterModal.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-// We need an intermediary variable for handling the recursive nesting.
-// const CounterModal = withStyles(styles)(CounterModal);
 
-export default withStyles(styles)(CounterModal);
+export default withStyles(countermodalStyles)(CounterModal);

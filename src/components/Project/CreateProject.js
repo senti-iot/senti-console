@@ -7,9 +7,9 @@ import KeyArrRight from '@material-ui/icons/KeyboardArrowRight';
 import KeyArrLeft from '@material-ui/icons/KeyboardArrowLeft';
 import { ItemGrid } from 'components';
 import { getAvailableDevices, createOneProject } from 'variables/data';
-import teal from '@material-ui/core/colors/teal'
 import Save from '@material-ui/icons/Check'
 import classNames from 'classnames';
+import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 
 const ITEM_HEIGHT = 32;
 const ITEM_PADDING_TOP = 8;
@@ -21,80 +21,6 @@ const MenuProps = {
 		},
 	},
 };
-const styles = theme => ({
-	wrapper: {
-		margin: theme.spacing.unit,
-		position: 'relative',
-	},
-	buttonSuccess: {
-		backgroundColor: teal[500],
-		'&:hover': {
-			backgroundColor: teal[700],
-		},
-	},
-	buttonProgress: {
-		color: teal[500],
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		marginTop: -12,
-		marginLeft: -12,
-		width: 24,
-		height: 24
-	},
-	root: {
-		display: 'flex',
-		flexWrap: 'wrap',
-	},
-	formControl: {
-		margin: theme.spacing.unit * 2,
-		minWidth: 300,
-		// maxWidth: 300,
-	},
-	chips: {
-		display: 'flex',
-		flexWrap: 'wrap',
-	},
-	chip: {
-		margin: theme.spacing.unit / 8,
-		background: teal[500],
-		color: "#fff"
-	},
-	datepicker: {
-		// background: 
-		color: teal[500],
-		margin: theme.spacing.unit,
-		padding: theme.spacing.unit
-	},
-	textField: {
-		margin: theme.spacing.unit * 2
-	},
-	form: {
-		margin: theme.spacing.unit,
-		padding: theme.spacing.unit,
-		display: 'flex',
-		flexWrap: 'wrap',
-	},
-	paper: {
-		width: '100%',
-		marginTop: theme.spacing.unit * 3,
-		borderRadius: "3px"
-	},
-	label: {
-		'&$focused': {
-			color: teal[500],
-		},
-	},
-	focused: {},
-	underline: {
-		'&:after': {
-			borderBottomColor: teal[500],
-		},
-	},
-	button: {
-		margin: theme.spacing.unit * 2
-	}
-})
 
 class CreateProject extends Component {
 	constructor(props) {
@@ -144,10 +70,10 @@ class CreateProject extends Component {
 			},
 			devices: this.state.devices
 		}
-		console.log(Object.keys(newProject.project).map(p => newProject.project[p] !== null ? false : true))
+		// console.log(Object.keys(newProject.project).map(p => newProject.project[p] !== null ? false : true))
 		this.setState({ creating: true })
 		createOneProject(newProject).then(rs => {
-			console.log(rs)
+			// console.log(rs)
 			this.setState({ created: rs === true ? true : false, creating: false })
 		})
 	}
@@ -331,4 +257,4 @@ class CreateProject extends Component {
 	}
 }
 
-export default withStyles(styles, { withTheme: true })(CreateProject)
+export default withStyles(createprojectStyles, { withTheme: true })(CreateProject)

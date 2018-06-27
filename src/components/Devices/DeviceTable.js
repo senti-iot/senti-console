@@ -4,78 +4,16 @@ import {
 	TableRow, Typography, withStyles
 } from "@material-ui/core";
 import Checkbox from '@material-ui/core/Checkbox';
-import { grey, red, yellow, green } from "@material-ui/core/colors";
 import Paper from '@material-ui/core/Paper';
 import TablePagination from '@material-ui/core/TablePagination';
-import { primaryColor } from "assets/jss/material-dashboard-react";
 import PropTypes from "prop-types";
 import React from "react";
 import { withRouter } from 'react-router-dom';
 import EnhancedTableHead from './DeviceTableHeader';
 import EnhancedTableToolbar from './TableToolBar';
 import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons'
+import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
 var moment = require('moment')
-
-const styles = theme => ({
-	redSignal: {
-		color: red[700]
-	},
-	greenSignal: {
-		color: green[700]
-	},
-	yellowSignal: {
-		color: yellow[600]
-	},
-	headerCell: {
-		color: "inherit",
-	},
-	paragraphCell: {
-		margin: 0,
-		overflow: "hidden",
-		whiteSpace: "nowrap",
-		textOverflow: "ellipsis"
-	},
-	root: {
-		width: '100%',
-		marginTop: theme.spacing.unit * 3,
-		borderRadius: "3px"
-	},
-	table: {
-		minWidth: 0,
-	},
-	tableWrapper: {
-		overflowX: 'auto',
-	},
-	header: {
-		backgroundColor: grey[400],
-		// color: grey[200]
-	},
-	checkbox: {
-		color: grey[800],
-		'&$checked': {
-			color: primaryColor
-		},
-	},
-	checked: {},
-	HeaderLabelActive: {
-		color: grey[800],
-		"&:hover": {
-			color: "black"
-		},
-		"&:focus": {
-			color: grey[900]
-		}
-	},
-	tableCell: {
-		padding: 4,
-		minWidth: 130,
-		maxWidth: 200
-	},
-	tablecellcheckbox: {
-		padding: 0,
-		width: '50px'
-	}
-});
 
 class EnhancedTable extends React.Component {
 	constructor(props) {
@@ -83,7 +21,7 @@ class EnhancedTable extends React.Component {
 
 		this.state = {
 			order: 'asc',
-			orderBy: 'calories',
+			orderBy: 'device_id',
 			selected: [],
 			page: 0,
 			rowsPerPage: 5,
@@ -354,4 +292,4 @@ EnhancedTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withRouter(withStyles(styles)(EnhancedTable));
+export default withRouter(withStyles(devicetableStyles)(EnhancedTable));

@@ -15,71 +15,10 @@ import PropTypes from "prop-types";
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import { primaryColor } from "assets/jss/material-dashboard-react";
 import { withRouter } from 'react-router-dom';
-import { grey } from "@material-ui/core/colors";
 import { Edit, Devices, PictureAsPdf, Delete } from '@material-ui/icons'
+import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
 var moment = require('moment')
-
-const styles = theme => ({
-	headerCell: {
-		color: "inherit",
-	},
-	tableHead: {
-
-		// backgroundColor: primaryColor,
-		// boxShadow:
-		// 	"0 12px 20px -10px rgba(55, 168, 145, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(55, 168, 145, 0.28)",
-		// ...transition
-	},
-	paragraphCell: {
-		margin: 0,
-		overflow: "hidden",
-		whiteSpace: "nowrap",
-		textOverflow: "ellipsis"
-	},
-	root: {
-		width: '100%',
-		marginTop: theme.spacing.unit * 3,
-		borderRadius: "3px"
-	},
-	table: {
-		minWidth: 0,
-		borderRadius: 4
-	},
-	tableWrapper: {
-		overflowX: 'auto',
-	},
-	header: {
-		backgroundColor: grey[400],
-		// color: grey[200]
-	},
-	checkbox: {
-		color: grey[800],
-		'&$checked': {
-			color: primaryColor
-		},
-	},
-	checked: {},
-	HeaderLabelActive: {
-		color: grey[800],
-		"&:hover": {
-			color: "black"
-		},
-		"&:focus": {
-			color: grey[900]
-		}
-	},
-	tableCell: {
-		padding: 4,
-		minWidth: 130,
-		maxWidth: 200
-	},
-	tablecellcheckbox: {
-		padding: 0,
-		width: '50px'
-	}
-});
 
 class EnhancedTable extends React.Component {
 	constructor(props) {
@@ -87,7 +26,7 @@ class EnhancedTable extends React.Component {
 
 		this.state = {
 			order: 'asc',
-			orderBy: 'calories',
+			orderBy: 'id',
 			selected: [],
 			page: 0,
 			rowsPerPage: 5,
@@ -307,4 +246,4 @@ EnhancedTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withRouter(withStyles(styles)(EnhancedTable));
+export default withRouter(withStyles(devicetableStyles)(EnhancedTable));

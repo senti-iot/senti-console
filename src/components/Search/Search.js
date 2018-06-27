@@ -7,7 +7,7 @@ import { TextField } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
-import teal from '@material-ui/core/colors/teal'
+import searchStyles from 'assets/jss/components/search/searchStyles';
 
 
 function renderInput(inputProps) {
@@ -89,43 +89,6 @@ function getSuggestions(value, suggestions) {
 		});
 }
 
-const styles = theme => ({
-	label: {
-		'&$focused': {
-			color: teal[500],
-		},
-	},
-	focused: {},
-	underline: {
-		'&:after': {
-			borderBottomColor: teal[500],
-		},
-	},
-	container: {
-		flexGrow: 1,
-		position: 'relative',
-	},
-	suggestionsContainerOpen: {
-		position: 'absolute',
-		zIndex: 1,
-		marginTop: theme.spacing.unit,
-		left: 0,
-		right: 0,
-	},
-	suggestion: {
-		display: 'block',
-	},
-	suggestionsList: {
-		margin: 0,
-		padding: 0,
-		listStyleType: 'none',
-	},
-	input: {
-		
-		color: "#000000"
-	}
-});
-
 class IntegrationAutosuggest extends React.Component {
 	state = {
 		value: '',
@@ -168,7 +131,6 @@ class IntegrationAutosuggest extends React.Component {
 				renderSuggestion={renderSuggestion}
 				inputProps={{
 					classes,
-					// placeholder: 'Search',
 					value: this.props.searchValue,
 					onChange: this.handleChange
 				}}
@@ -181,4 +143,4 @@ IntegrationAutosuggest.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(IntegrationAutosuggest);
+export default withStyles(searchStyles)(IntegrationAutosuggest);
