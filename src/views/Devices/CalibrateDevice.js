@@ -132,12 +132,12 @@ class CalibrateDevice extends Component {
 		}
 	}
 	uploadImgs = async () => {
-		await uploadPictures({
+		var success = await uploadPictures({
 			device_id: this.state.device.device_id,
 			files: this.state.images,
 			// step: 3
 		}).then(rs => console.log(rs))
-		return false
+		return success
 	}
 	renderDeviceNameDescriptionForms = () => {
 		// const { device } = this.state
@@ -182,6 +182,7 @@ class CalibrateDevice extends Component {
 			'Road',
 			'Motorway',
 			'Port',
+			'Office',
 			'Unspecified']
 	}
 	handleLocationTypeChange = (e) => {
@@ -336,7 +337,6 @@ class CalibrateDevice extends Component {
 			case 1:
 				return lat > 0 && long > 0 ? false : true
 			case 2:
-				console.log(calibration)
 				return calibration.startDate && calibration.endDate && calibration.timer ? false : true
 			default:
 				break;

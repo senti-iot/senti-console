@@ -21,16 +21,18 @@ const styles = theme => ({
 });
 class ImageUpload extends Component {
 	constructor(props) {
-	  super(props)
-	
-	  this.state = {
-		 images: []
-	  }
+		super(props)
+
+		this.state = {
+			images: []
+		}
 	}
 	tempUpload = e => {
-		var imgs = [...e.target.files]
-		this.setState({ images: imgs })
-		this.props.imgUpload(imgs)
+		if (e.target.files[0]) {
+			var imgs = [...e.target.files]
+			this.setState({ images: imgs })
+			this.props.imgUpload(imgs)
+		}
 	}
 	render() {
 		const { classes } = this.props
@@ -53,18 +55,18 @@ class ImageUpload extends Component {
 						Upload<CloudUpload className={classes.iconButton} />
 					</Button>
 				</label>
-				<Grid container> 
-					{
+				<Grid container>
+					{images ?
 						[...images].map((img, index) => {
 							let blob = URL.createObjectURL(img)
 							return <ItemGrid xs={2} key={index}>
 								<img src={blob} alt={'preview'} className={classes.imgPreview} />
 							</ItemGrid>
 						})
-					}
-				</Grid>	
-				
-		  </div>
+						: null}
+				</Grid>
+
+			</div>
 		)
 	}
 }
