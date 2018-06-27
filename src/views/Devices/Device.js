@@ -5,36 +5,13 @@ import moment from 'moment'
 import { ItemGrid, Warning, P } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import { SignalWifi2Bar, SignalWifi2BarLock, MoreVert, Build, LibraryBooks, Edit, Devices, DeveloperBoard } from '@material-ui/icons'
-import { red, yellow, green } from "@material-ui/core/colors";
 import { ConvertDDToDMS } from 'variables/functions'
 import { Link } from 'react-router-dom'
+import deviceStyles from 'assets/jss/views/deviceStyles';
+import SmallInfo from 'components/Card/SmallInfo';
+import AssignProject from 'components/Devices/AssignProject';
 
-const deviceStyles = theme => ({
-	typoNoMargin: {
-		margin: 0,
-		padding: "0 !important",
-		maxHeight: 24
-	},
-	redSignal: {
-		color: red[700],
-		marginRight: 4
-	},
-	greenSignal: {
-		color: green[700],
-		margin: 4
-	},
-	leftIcon: {
-		marginRight: theme.spacing.unit
-	},
-	yellowSignal: {
-		color: yellow[600]
-	},
-	InfoSignal: {
-		marginBottom: '16px',
-		marginTop: '4px',
-		marginLeft: '4px'
-	}
-})
+
 const Caption = (props) => <Typography variant={"caption"}>{props.children}</Typography>
 const Info = (props) => <Typography paragraph classes={props.classes}>{props.children}</Typography>
 
@@ -45,7 +22,8 @@ class Device extends Component {
 		this.state = {
 			device: null,
 			loading: true,
-			anchorEl: null
+			anchorEl: null,
+			openAssign: false
 		}
 		props.setHeader(<CircularProgress size={30} />)
 	}
@@ -65,6 +43,12 @@ class Device extends Component {
 		else {
 			this.props.history.push('/404')
 		}
+	}
+	handleOpenAssign = () => {
+		this.setState({ openAssign: true, anchorEl: null })
+	}
+	handleCloseAssign = () => {
+		this.setState({ openAssign: false })
 	}
 	filterItems = (projects, keyword) => {
 
@@ -130,24 +114,21 @@ class Device extends Component {
 		return (
 			!loading ?
 				<Grid container justify={'center'} alignContent={'space-between'} spacing={8}>
+					<AssignProject open={this.state.openAssign} handleClose={this.handleCloseAssign}/>
 					<ItemGrid xs={12}>
 						<InfoCard
 							title={
 								<Fragment>
 									<Grid container justify={'space-between'} className={classes.typoNoMargin}>
-
 										<Typography paragraph className={classes.typoNoMargin}>
 											Device Details
 										</Typography>
-										{/* <Hidden smDown> */}
 										<ItemGrid>
-
 											<IconButton
 												aria-label="More"
 												aria-owns={anchorEl ? 'long-menu' : null}
 												aria-haspopup="true"
-												onClick={this.handleClick}
-											>
+												onClick={this.handleClick}>
 												<MoreVert />
 											</IconButton>
 											<Menu
@@ -158,16 +139,11 @@ class Device extends Component {
 												PaperProps={{
 													style: {
 														maxHeight: 200,
-														// width: 200,
-														minWidth: 200
-													},
-												}}
-											>
-
+														minWidth: 200 } }}>
 												<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}>
 													<Build className={classes.leftIcon} />{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
 												</MenuItem>
-												<MenuItem onClick={this.handleClose}>
+												<MenuItem onClick={this.handleOpenAssign}>
 													<LibraryBooks className={classes.leftIcon} />Assign to {device.project ? "new Project" : "Project"}
 												</MenuItem>
 												<MenuItem onClick={this.handleClose}>
@@ -183,7 +159,7 @@ class Device extends Component {
 							noExpand
 							content={
 								<Fragment>
-									<Grid container /* alignContent={'space-between'} justify={'space-around'} */>
+									<Grid container>
 										{!(device.lat > 0) && !(device.long > 0) &&
 											<ItemGrid xs={12}>
 												<Warning>
@@ -193,7 +169,6 @@ class Device extends Component {
 														</P>
 													</ItemGrid>
 													<ItemGrid container xs={12}>
-
 														<Button
 															color={"default"}
 															onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}
@@ -204,8 +179,7 @@ class Device extends Component {
 												</Warning>
 											</ItemGrid>}
 										<ItemGrid>
-											<Caption>Name:</Caption>
-											<Info> {device.device_name ? device.device_name : "No name "}</Info>
+											<SmallInfo caption={"Name"} info={device.device_name ? device.device_name : "No name"}/>
 										</ItemGrid>
 										<ItemGrid>
 											<Caption>Status:</Caption>
@@ -221,7 +195,6 @@ class Device extends Component {
 											<Caption>Description:</Caption>
 											<Info>{device.description ? device.description : ""}</Info>
 										</ItemGrid>
-
 									</Grid>
 									<Grid container>
 										<ItemGrid>
@@ -244,18 +217,8 @@ class Device extends Component {
 										</ItemGrid>
 										<ItemGrid xs={4}>
 											<Caption>Project:</Caption>
-											{/* <Button
-												variant={'contained'}
-												component={Link}
-												to={'/project/' + device.project.id}
-												// variant={''}
-												// onClick={() => this.props.history.push('/project/' + device.project.id)}
-											> */}
-											<Info>{device.project ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : "Unassigned"}</Info>
-											{/* </Button> */}
-											
+											<Info>{device.project ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : "Unassigned"}</Info>											
 										</ItemGrid>
-
 									</Grid>
 								</Fragment>
 							}
@@ -270,81 +233,46 @@ class Device extends Component {
 								<Grid container>
 									<Grid container >
 										<ItemGrid xs>
-											<Caption>
-												PC Model:
-											</Caption>
-											<Info>
-												{device.RPImodel}
-											</Info>
+											<Caption>PC Model:</Caption>
+											<Info>{device.RPImodel}</Info>
 										</ItemGrid>
 										<ItemGrid xs>
-											{/* <Memory /> */}
-
-											<Caption>
-												Memory:
-											</Caption>
-											<Info>
-												{device.memory + " - " + device.memoryModel}
-											</Info>
-
+											<Caption>Memory:</Caption>
+											<Info>{device.memory + " - " + device.memoryModel}</Info>
 										</ItemGrid>
 										<ItemGrid xs>
-											<Caption>
-												Power Adapter:
-											</Caption>
-											<Info>
-												{device.adapter}
-											</Info>
+											<Caption>Power Adapter:</Caption>
+											<Info>{device.adapter}</Info>
 										</ItemGrid>
 									</Grid>
 									<Grid container>
 										<ItemGrid xs>
-											<Caption>
-												Wifi Module:
-											</Caption>
-											<Info>
-												{device.wifiModule}
-											</Info>
+											<Caption>Wifi Module:</Caption>
+											<Info>{device.wifiModule}</Info>
 										</ItemGrid>
 										<ItemGrid xs>
-											<Caption>
-												Modem Model:
-											</Caption>
-											<Info>
-												{device.modemModel}
-											</Info>
+											<Caption>Modem Model:</Caption>
+											<Info>{device.modemModel}</Info>
 										</ItemGrid>
 									</Grid>
 								</Grid>
 							}
 							hiddenContent={<Grid container>
 								<ItemGrid>
-									<Caption>
-										Cell Number:
-									</Caption>
-									<Info>
-										{device.cellNumber}
-									</Info>
+									<Caption>Cell Number:</Caption>
+									<Info>{device.cellNumber}</Info>
 								</ItemGrid>
 								<ItemGrid>
 									<Caption>SIM Provider:</Caption>
 									<Info>{device.SIMProvider}</Info>
 								</ItemGrid>
 								<ItemGrid>
-									<Caption>
-										SIM-Card ID
-									</Caption>
-									<Info>
-										{device.SIMID}
-									</Info>
+									<Caption>SIM-Card ID</Caption>
+									<Info>{device.SIMID}</Info>
 								</ItemGrid>
 								<ItemGrid>
-									<Caption>
-										Modem IMEI:
-									</Caption>
-									<Info>
-										{device.modemIMEI}
-									</Info>
+									<Caption>Modem IMEI:</Caption>
+									<Info>{device.modemIMEI}</Info>
 								</ItemGrid>
 
 							</Grid>
@@ -353,7 +281,6 @@ class Device extends Component {
 					</ItemGrid>
 				</Grid>
 				: this.renderLoader()
-
 		)
 	}
 }
