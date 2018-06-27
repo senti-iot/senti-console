@@ -8,6 +8,16 @@ var loginApi = create({
 		'Content-Type': 'application/json'
 	}
 })
+var imageApi = create({
+	baseURL: 'https://senti.cloud/rest/',
+	timeout: 10000,
+	headers: {
+		'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+		'Content-Type': 'multipart/form-data',
+		'ODEUMAuthToken': ''
+	},
+	// mode:
+})
 // Define the API
 const api = create({
 	baseURL: 'https://senti.cloud/rest/',
@@ -25,6 +35,7 @@ export const setToken = () => {
 	try {
 		var OAToken = cookie.load('SESSION').sessionID
 		api.setHeader('ODEUMAuthToken', OAToken)
+		imageApi.setHeader('ODEUMAuthToken', OAToken)
 		return true
 	}
 	catch (error) {
@@ -79,6 +90,23 @@ export const getAllProjects = async () => {
 export const getProject = async (projectId) => {
 	var data = await api.get('senti/project/' + projectId).then(rs => rs.data)
 	return data
+}
+export const uploadPictures = async (device) => {
+	const form = new FormData()
+	// form.append('SentiFile', device.files[0], 'sentiFile')
+
+	console.log(document.getElementById('contained-button-file').files[0]);
+	form.append('sentiFile', document.getElementById('contained-button-file').files[0]);
+	var config = {
+		onUploadProgress: function (progressEvent) {
+			var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+			console.log(percentCompleted)
+		}
+	};
+	var data = await imageApi.post('senti/image', form, config).then(rs => {console.log(rs); return rs})
+	// var data = await api.post('senti/image', { device_id: device.device_id, sentiFile: device.files }).then(rs => rs)
+	console.log(data)
+	return false
 }
 // Get devices for Project
 export const getDevicesForProject = async (projectId) => {

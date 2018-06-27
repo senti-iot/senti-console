@@ -231,11 +231,11 @@ class Device extends Component {
 
 									</Grid>
 									<Grid container>
-										<ItemGrid xs>
+										<ItemGrid>
 											<Caption>Address:</Caption>
 											<Info>{device.address} </Info>
 										</ItemGrid>
-										<ItemGrid xs>
+										<ItemGrid >
 											<Caption>Street Type:</Caption>
 											<Info>{device.streetType} </Info>
 										</ItemGrid>

@@ -29,18 +29,15 @@ class ImageUpload extends Component {
 	}
 	tempUpload = e => {
 		var imgs = [...e.target.files]
-		var arr = []
-		imgs.forEach(image => {
-			arr.push(URL.createObjectURL(image))
-		});
 		// console.log(arr)
 		this.setState({ images: imgs })
+		this.props.imgUpload(imgs)
 	}
 	render() {
 		const { classes } = this.props
 		const { images } = this.state
 		return (
-		  <div>
+			<div>
 
 				<input
 					accept="image/*"
@@ -48,6 +45,8 @@ class ImageUpload extends Component {
 					id="contained-button-file"
 					multiple
 					type="file"
+					name="sentiFile"
+					encType="multipart/form-data"
 					onChange={this.tempUpload}
 				/>
 				<label htmlFor="contained-button-file">
@@ -57,15 +56,19 @@ class ImageUpload extends Component {
 				</label>
 				<Grid container> 
 					{
-						[...images].map((img) => {
+						[...images].map((img, index) => {
 							let blob = URL.createObjectURL(img)
-							return <ItemGrid xs={2}>
+							return <ItemGrid xs={2} key={index}>
 								<img src={blob} alt={'preview'} className={classes.imgPreview} />
 							</ItemGrid>
 						})
 					}
 				</Grid>			
-			
+
+				<form action="https://senti.cloud/rest/senti/device/image/8020/" method="POST" encType="multipart/form-data">
+					<input type="file" name="sentiFile" />
+					<input type="submit" />
+				</form>
 				
 		  </div>
 		)

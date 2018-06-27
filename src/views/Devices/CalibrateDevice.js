@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react'
 import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withStyles, Grid, TextField } from '@material-ui/core';
 import { ItemGrid, Info, Danger } from 'components';
-import { getDevice, calibrateDevice } from 'variables/data';
+import { getDevice, calibrateDevice, uploadPictures } from 'variables/data';
 import Caption from 'components/Typography/Caption';
 import CounterModal from 'components/Devices/CounterModal';
 import ImageUpload from './ImageUpload';
-import { NavigateNext, NavigateBefore, Done, Restore, MyLocation } from '@material-ui/icons'
+import { NavigateNext, NavigateBefore, Done, Restore, MyLocation, Router, Devices } from '@material-ui/icons'
 const styles = theme => ({
 	root: {
 		width: '90%',
@@ -63,7 +63,7 @@ class CalibrateDevice extends Component {
 	constructor(props) {
 	  super(props)
 	  this.state = {
-		  activeStep: 2,
+		  activeStep: 3,
 		  device_name: '',
 		  description: '',
 		  device: null,
@@ -75,12 +75,16 @@ class CalibrateDevice extends Component {
 			  endDate: null,
 			  count: 0,
 			  timer: 0
-		  }
+		  },
+		  images: null
 	  }
 		props.setHeader(props.match.params.id + ' Calibration')
 	}
 	handleInput = (input) => e => {
 		this.setState({ [input]: e.target.value })
+	}
+	getImages = (imgs) => {
+		this.setState({ images: imgs })
 	}
 	handleCalibration = (result) => {
 		this.setState({
@@ -120,6 +124,14 @@ class CalibrateDevice extends Component {
 				this.setState({ lat, long, error: false })
 			}, err => { console.log(err); this.setState({ error: err }) })
 		}
+	}
+	uploadImgs = async () => {
+		await uploadPictures({
+			device_id: this.state.device.device_id,
+			files: this.state.images,
+			// step: 3
+		}).then(rs => console.log(rs))
+		return false
 	}
 	renderDeviceNameDescriptionForms = () => {
 		// const { device } = this.state
@@ -179,7 +191,7 @@ class CalibrateDevice extends Component {
 	}
 	renderImageUpload = () => {
 		return <React.Fragment>
-			<ImageUpload/>
+			<ImageUpload imgUpload={this.getImages}/>
 		</React.Fragment>
 	}
 	renderStep = (step) => { 
@@ -246,7 +258,7 @@ class CalibrateDevice extends Component {
 				success = this.updateCalibration()
 				break;
 			case 3:
-				success = true;
+				success = this.uploadImgs();
 				break;
 			default:
 				break;
@@ -333,7 +345,7 @@ class CalibrateDevice extends Component {
 												>
 													{activeStep === steps.length - 1 ? <Fragment>
 													
-														Finish <Done className={classes.iconButtonRight} />
+														<Done className={classes.iconButton} />Finish 
 													</Fragment> :
 														<Fragment>
 															<NavigateNext className={classes.iconButton} />Next 
@@ -356,10 +368,10 @@ class CalibrateDevice extends Component {
 							
 							<ItemGrid xs>
 								<Button onClick={this.handleFinish} color={"primary"} variant={"contained"} className={classes.buttonMargin}>
-									Go to device {device.device_id}
+									<Router className={classes.iconButton}/>Go to device {device.device_id}
 								</Button>
 								<Button onClick={this.handleGoToDeviceList} color={"primary"} variant={"contained"} className={classes.buttonMargin}>
-									Go to device list
+									<Devices className={classes.iconButton}/>Go to device list
 								</Button>
 							</ItemGrid>
 							<ItemGrid xs>
