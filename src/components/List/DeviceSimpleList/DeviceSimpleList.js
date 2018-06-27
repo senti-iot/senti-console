@@ -14,51 +14,12 @@ import PropTypes from "prop-types";
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import { headerColor, primaryColor } from "assets/jss/material-dashboard-react";
 import { withRouter } from 'react-router-dom';
+import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
+import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons'
+
 var moment = require('moment')
 
-const styles = theme => ({
-	root: {
-		width: '100%',
-		// marginTop: theme.spacing.unit * 3,
-		marginTop: "2px"
-	},
-	table: {
-		minWidth: 0,
-	},
-	tableWrapper: {
-		overflowX: 'auto',
-	},
-	header: {
-		// padding: 0,
-		backgroundColor: headerColor,
-		color: '#fff'
-	},
-	checkbox: {
-		color: 'white',
-		'&$checked': {
-			color: primaryColor
-		},
-	},
-	checked: {},
-	HeaderLabelActive: {
-		color: '#fff',
-		"&:hover": {
-			color: primaryColor
-		},
-		"&:focus": {
-			color: "#fff"
-		}
-	},
-	tableCell: {
-		padding: 0
-	},
-	tablecellcheckbox: {
-		padding: 0,
-		width: '50px'
-	}
-});
 
 class DeviceSimpleList extends React.Component {
 	constructor(props) {
@@ -141,12 +102,27 @@ class DeviceSimpleList extends React.Component {
 	};
 
 	isSelected = id => this.state.selected.indexOf(id) !== -1;
-
+	
+	renderIcon = (status) => {
+		const { classes } = this.props
+		switch (status) {
+			case 1:
+				return <SignalWifi2Bar className={classes.yellowSignal} />
+			case 2:
+				return <SignalWifi2Bar className={classes.greenSignal} />
+			case 0:
+				return <SignalWifi2Bar className={classes.redSignal} />
+			case null:
+				return <SignalWifi2BarLock className={classes.redSignal} />
+			default:
+				break;
+		}
+	}
 	render() {
 		const { classes, data } = this.props;
 		const { order, orderBy, selected, rowsPerPage, page } = this.state;
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-		const tableHead = [{ label: "Device Name" }, { label: "Address" }, { label: "Online" }, { label: "Total Count" }]
+		const tableHead = [{ label: "Name" }, { label: "Address" }, { label: "Status" }, { label: "Total Count" }]
 		return (
 			<Paper className={classes.root}>
 				<EnhancedTableToolbar
@@ -195,7 +171,7 @@ class DeviceSimpleList extends React.Component {
 												{n.address}
 											</TableCell>
 											<TableCell className={classes.tableCell}>
-												{n.online}
+												{this.renderIcon(n.liveStatus)}
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												{n.totalCount}
@@ -237,4 +213,4 @@ DeviceSimpleList.propTypes = {
 	data: PropTypes.array.isRequired
 };
 
-export default withRouter(withStyles(styles)(DeviceSimpleList));
+export default withRouter(withStyles(devicetableStyles)(DeviceSimpleList));

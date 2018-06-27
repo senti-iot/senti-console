@@ -14,51 +14,10 @@ import PropTypes from "prop-types";
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import { headerColor, primaryColor } from "assets/jss/material-dashboard-react";
 import { withRouter } from 'react-router-dom';
+import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
 var moment = require('moment')
 
-const styles = theme => ({
-	root: {
-		width: '100%',
-		// marginTop: theme.spacing.unit * 3,
-		marginTop: "2px"
-	},
-	table: {
-		minWidth: 0,
-	},
-	tableWrapper: {
-		overflowX: 'auto',
-	},
-	header: {
-		// padding: 0,
-		backgroundColor: headerColor,
-		color: '#fff'
-	},
-	checkbox: {
-		color: 'white',
-		'&$checked': {
-			color: primaryColor
-		},
-	},
-	checked: {},
-	HeaderLabelActive: {
-		color: '#fff',
-		"&:hover": {
-			color: primaryColor
-		},
-		"&:focus": {
-			color: "#fff"
-		}
-	},
-	tableCell: {
-		padding: 0
-	},
-	tablecellcheckbox: {
-		padding: 0,
-		width: '50px'
-	}
-});
 
 class RegSimpleList extends React.Component {
 	constructor(props) {
@@ -146,7 +105,7 @@ class RegSimpleList extends React.Component {
 		const { classes, data } = this.props;
 		const { order, orderBy, selected, rowsPerPage, page } = this.state;
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-		const tableHead = [{ label: "Device Name" }, { label: "Interval" }, { label: "Registered" }, { label: "Count" }]
+		const tableHead = [{ label: "Name" }, { label: "Interval" }, { label: "Registered" }, { label: "Count" }]
 		return (
 			<Paper className={classes.root}>
 				<EnhancedTableToolbar
@@ -239,4 +198,4 @@ RegSimpleList.propTypes = {
 	data: PropTypes.array.isRequired
 };
 
-export default withRouter(withStyles(styles)(RegSimpleList));
+export default withRouter(withStyles(devicetableStyles)(RegSimpleList));
