@@ -175,7 +175,6 @@ class CalibrateDevice extends Component {
 	LocationTypes = () => {
 		return ['Pedestrian street',
 			'Park',
-			'Road',
 			'Path',
 			'Square',
 			'Crossroads',
