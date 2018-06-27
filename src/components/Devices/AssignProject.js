@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -74,9 +74,9 @@ class AssignProject extends React.Component {
 				>
 					<AppBar className={classes.appBar + appBarClasses}>
 						<Toolbar>
-							<Button color="inherit" onClick={this.props.handleClose} aria-label="Close">
+							<IconButton color="inherit" onClick={this.props.handleClose} aria-label="Close">
 								<CloseIcon />
-							</Button>
+							</IconButton>
 							<Typography variant="title" color="inherit" className={classes.flex}>
 								Projects
   						</Typography>
@@ -87,9 +87,12 @@ class AssignProject extends React.Component {
 					</AppBar>
 					<List>
 						{this.state.projects ? this.state.projects.map((p, i) => (
-							<ListItem button>
-								<ListItemText primary={p.title} secondary={p.user.organisation}/>
-							</ListItem>
+							<Fragment key={i}>
+								<ListItem button>
+									<ListItemText primary={p.title} secondary={p.user.organisation}/>
+								</ListItem>
+								<Divider/>
+							</Fragment>
 						)
 						) : null}
 						{/* <ListItem button> */}
