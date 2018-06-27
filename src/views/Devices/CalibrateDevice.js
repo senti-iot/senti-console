@@ -178,14 +178,17 @@ class CalibrateDevice extends Component {
 					onChange={this.handleChange}
 					input={<Input name="streetType" id="streetType-helper" />}
 				>
-					<MenuItem value="">
+					<MenuItem value={'vej'}>
+						Vej
+					</MenuItem>
+					{/* <MenuItem value="">
 						<em>None</em>
 					</MenuItem>
 					<MenuItem value={10}>Ten</MenuItem>
 					<MenuItem value={20}>Twenty</MenuItem>
-					<MenuItem value={30}>Thirty</MenuItem>
+					<MenuItem value={30}>Thirty</MenuItem> */}
 				</Select>
-				<FormHelperText>Some important helper text</FormHelperText>
+				<FormHelperText>Select a street type for {this.state.device_name ? this.state.device_name : this.state.device_id}</FormHelperText>
 			</FormControl>
 			<div className={this.props.classes.latlong}>
 				<Caption>
