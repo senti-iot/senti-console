@@ -25,7 +25,7 @@ const styles = theme => ({
 		minWidth: 300
 	},
 	latlong: {
-		margin: theme.spacing.unit
+		margin: theme.spacing.unit * 2 + "px 0px"
 	},
 	buttonMargin: {
 		margin: theme.spacing.unit
@@ -64,23 +64,24 @@ function getStepContent(step) {
 }
 class CalibrateDevice extends Component {
 	constructor(props) {
-	  super(props)
-	  this.state = {
-		  activeStep: 1,
-		  device_name: '',
-		  description: '',
-		  device: null,
-		  error: false,
-		  lat: 0,
-		  long: 0,
-		  calibration: {
-			  startDate: null,
-			  endDate: null,
-			  count: 0,
-			  timer: 0
-		  },
-		  images: null
-	  }
+		super(props)
+		this.state = {
+			activeStep: 1,
+			device_name: '',
+			description: '',
+			device: null,
+			error: false,
+			lat: 0,
+			long: 0,
+			calibration: {
+				startDate: null,
+				endDate: null,
+				count: 0,
+				timer: 0
+			},
+			images: null,
+			locationType: ''
+		}
 		props.setHeader(props.match.params.id + ' Calibration')
 	}
 	handleInput = (input) => e => {
@@ -111,7 +112,9 @@ class CalibrateDevice extends Component {
 						this.setState({
 							device: rs, loading: false,
 							device_name: rs.device_name ? rs.device_name : '',
-							description: rs.description ? rs.description : '' })
+							description: rs.description ? rs.description : '',
+							locationType: rs.location_type ? rs.location_type : ''
+						})
 					}
 				})
 		}
@@ -119,7 +122,7 @@ class CalibrateDevice extends Component {
 			this.props.history.push('/404')
 		}
 	}
-	getCoords = () => { 
+	getCoords = () => {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(rs => {
 				let lat = rs.coords.latitude
@@ -169,30 +172,41 @@ class CalibrateDevice extends Component {
 			</ItemGrid>
 		</Grid>
 	}
+	LocationTypes = () => {
+		return ['Pedestrian street',
+			'Park',
+			'Road',
+			'Path',
+			'Square',
+			'Crossroads',
+			'Road',
+			'Motorway',
+			'Port',
+			'Unspecified']
+	}
+	handleLocationTypeChange = (e) => {
+		this.setState({ locationType: e.target.value })
+	}
 	renderDeviceLocation = () => {
 		return <Fragment>
 			<FormControl className={this.props.classes.formControl}>
-				<InputLabel htmlFor="streetType-helper">Age</InputLabel>
+				<InputLabel htmlFor="streetType-helper">{this.state.locationType ? '' : "Location Type"}</InputLabel>
 				<Select
-					value={this.state.age}
-					onChange={this.handleChange}
+					value={this.state.locationType}
+					onChange={this.handleLocationTypeChange}
 					input={<Input name="streetType" id="streetType-helper" />}
 				>
-					<MenuItem value={'vej'}>
-						Vej
-					</MenuItem>
-					{/* <MenuItem value="">
-						<em>None</em>
-					</MenuItem>
-					<MenuItem value={10}>Ten</MenuItem>
-					<MenuItem value={20}>Twenty</MenuItem>
-					<MenuItem value={30}>Thirty</MenuItem> */}
+					{this.LocationTypes().map((loc, i) => {
+						return <MenuItem key={i} value={loc}>
+							{loc}
+						</MenuItem>
+					})}
 				</Select>
 				<FormHelperText>Select a street type for {this.state.device_name ? this.state.device_name : this.state.device_id}</FormHelperText>
 			</FormControl>
 			<div className={this.props.classes.latlong}>
 				<Caption>
-				Latitude &amp; Longitute
+					Latitude &amp; Longitute
 				</Caption>
 				<Info>
 					{this.state.lat + " " + this.state.long}
@@ -203,26 +217,26 @@ class CalibrateDevice extends Component {
 				color="primary"
 				onClick={this.getCoords}
 				className={this.props.classes.button}
-			> <MyLocation className={this.props.classes.iconButton}/>Get Location </Button>
+			> <MyLocation className={this.props.classes.iconButton} />Get Location </Button>
 		</Fragment>
 	}
 	renderCalibration = () => {
-		return <CounterModal handleFinish={this.handleCalibration}/>	
+		return <CounterModal handleFinish={this.handleCalibration} />
 
 	}
 	renderImageUpload = () => {
-		return <ImageUpload imgUpload={this.getImages}/>
-	
+		return <ImageUpload imgUpload={this.getImages} />
+
 	}
-	renderStep = (step) => { 
+	renderStep = (step) => {
 		switch (step) {
 			case 0:
 				return this.renderDeviceNameDescriptionForms()
-			case 1: 
+			case 1:
 				return this.renderDeviceLocation()
-			case 2: 
+			case 2:
 				return this.renderCalibration()
-			case 3: 
+			case 3:
 				return this.renderImageUpload()
 			default:
 				break;
@@ -235,7 +249,7 @@ class CalibrateDevice extends Component {
 		var success = await calibrateDevice({
 			step: 2,
 			startDate: startDate,
-			endDate: endDate, 
+			endDate: endDate,
 			count: count,
 			timer: timer,
 			device_id: device.device_id
@@ -244,24 +258,24 @@ class CalibrateDevice extends Component {
 		return success
 	}
 	updatePosition = async () => {
-		const { lat, long, device } = this.state
+		const { lat, long, device, locationType } = this.state
 		var success = await calibrateDevice({
-			
 			step: 1,
 			lat: lat,
 			long: long,
+			locationType: locationType,
 			device_id: device.device_id
 		}).then(rs => rs)
 		return success
 	}
 	updateNameAndDesc = async () => {
 		const { device_name, description } = this.state
-		 var success = await calibrateDevice({
+		var success = await calibrateDevice({
 			device_name: device_name,
 			description: description,
 			device_id: this.state.device.device_id,
 			step: 0
-		 }).then(rs => rs)
+		}).then(rs => rs)
 		return success
 	}
 	handleNext = () => {
@@ -274,7 +288,7 @@ class CalibrateDevice extends Component {
 			case 1:
 				success = this.updatePosition()
 				break;
-			case 2: 
+			case 2:
 				success = this.updateCalibration()
 				break;
 			case 3:
@@ -293,7 +307,7 @@ class CalibrateDevice extends Component {
 			})
 		}
 	}
-	
+
 
 	handleBack = () => {
 		this.setState({
@@ -318,8 +332,8 @@ class CalibrateDevice extends Component {
 		const { activeStep, lat, long, device_name, calibration } = this.state;
 		switch (activeStep) {
 			case 0:
-				return device_name.length > 0 ?  false : true
-			case 1: 
+				return device_name.length > 0 ? false : true
+			case 1:
 				return lat > 0 && long > 0 ? false : true
 			case 2:
 				return calibration.startDate && calibration.endDate && calibration.timer ? false : true
@@ -333,7 +347,7 @@ class CalibrateDevice extends Component {
 		const { activeStep, device, error } = this.state;
 		return (
 			<Paper classes={{ root: classes.paper }}>
-				{device ? 
+				{device ?
 					<Stepper activeStep={activeStep} orientation="vertical">
 						{steps.map((label, index) => {
 							return (
@@ -342,7 +356,7 @@ class CalibrateDevice extends Component {
 									<StepContent>
 										<Typography paragraph>{getStepContent(index)}</Typography>
 										{/* <Divider/> */}
-										
+
 										<Grid>
 											{error ? <Danger >{error.message}</Danger> : null}
 											{this.renderStep(index)}
@@ -361,14 +375,14 @@ class CalibrateDevice extends Component {
 													color="primary"
 													onClick={this.handleNext}
 													className={classes.button}
-													disabled={this.stepChecker()} 
+													disabled={this.stepChecker()}
 												>
 													{activeStep === steps.length - 1 ? <Fragment>
-													
-														<Done className={classes.iconButton} />Finish 
+
+														<Done className={classes.iconButton} />Finish
 													</Fragment> :
 														<Fragment>
-															<NavigateNext className={classes.iconButton} />Next 
+															<NavigateNext className={classes.iconButton} />Next
 														</Fragment>}
 												</Button>
 											</Grid>
@@ -382,27 +396,27 @@ class CalibrateDevice extends Component {
 					<Paper square elevation={0} className={classes.resetContainer}>
 						<Typography variant={'title'}>Success</Typography>
 						<Typography paragraph>
-						Your Senti device is now configured and calibrated and will produce better results when collecting data. To further enhance the accuracy of your data collection, return to the site of installation and do a new calibration on a regular basis. You can set a reminder for Device Calibration in the Settings section. 
+							Your Senti device is now configured and calibrated and will produce better results when collecting data. To further enhance the accuracy of your data collection, return to the site of installation and do a new calibration on a regular basis. You can set a reminder for Device Calibration in the Settings section.
 						</Typography>
-						<Grid container> 
-							
+						<Grid container>
+
 							<ItemGrid xs>
 								<Button onClick={this.handleFinish} color={"primary"} variant={"contained"} className={classes.buttonMargin}>
-									<Router className={classes.iconButton}/>Go to device {device.device_id}
+									<Router className={classes.iconButton} />Go to device {device.device_id}
 								</Button>
 								<Button onClick={this.handleGoToDeviceList} color={"primary"} variant={"contained"} className={classes.buttonMargin}>
-									<Devices className={classes.iconButton}/>Go to device list
+									<Devices className={classes.iconButton} />Go to device list
 								</Button>
 							</ItemGrid>
 							<ItemGrid xs>
 								<Button onClick={this.handleReset} className={classes.button} >
-									<Restore className={classes.iconButton}/>Reset
+									<Restore className={classes.iconButton} />Reset
 								</Button>
 							</ItemGrid>
 						</Grid>
 					</Paper>
 				)}
-	 	 </Paper>
+			</Paper>
 		)
 	}
 }
