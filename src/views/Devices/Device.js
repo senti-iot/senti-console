@@ -7,6 +7,8 @@ import InfoCard from 'components/Cards/InfoCard';
 import { SignalWifi2Bar, SignalWifi2BarLock, MoreVert, Build, LibraryBooks, Edit, Devices, DeveloperBoard } from '@material-ui/icons'
 import { red, yellow, green } from "@material-ui/core/colors";
 import { ConvertDDToDMS } from 'variables/functions'
+import { Link } from 'react-router-dom'
+
 const deviceStyles = theme => ({
 	typoNoMargin: {
 		margin: 0,
@@ -242,7 +244,16 @@ class Device extends Component {
 										</ItemGrid>
 										<ItemGrid xs={4}>
 											<Caption>Project:</Caption>
-											<Info>{device.project ? device.project.title : "Unassigned"}</Info>
+											{/* <Button
+												variant={'contained'}
+												component={Link}
+												to={'/project/' + device.project.id}
+												// variant={''}
+												// onClick={() => this.props.history.push('/project/' + device.project.id)}
+											> */}
+											<Info>{device.project ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : "Unassigned"}</Info>
+											{/* </Button> */}
+											
 										</ItemGrid>
 
 									</Grid>
