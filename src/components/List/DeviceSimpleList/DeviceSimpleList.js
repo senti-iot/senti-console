@@ -65,7 +65,7 @@ class DeviceSimpleList extends React.Component {
 
 	handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			this.setState({ selected: this.props.data.map(n => n.id) });
+			this.setState({ selected: this.props.data.map(n => n.device_id) });
 			return;
 		}
 		this.setState({ selected: [] });
@@ -148,11 +148,11 @@ class DeviceSimpleList extends React.Component {
 						/>
 						<TableBody>
 							{data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((n, i) => {
-								const isSelected = this.isSelected(n.id);
+								const isSelected = this.isSelected(n.device_id);
 								return (
 									<TableRow
 										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push('/device/' + n.id) }}
+										onClick={e => { e.stopPropagation(); this.props.history.push('/device/' + n.device_id)}}
 										role="checkbox"
 										aria-checked={isSelected}
 										tabIndex={-1}
@@ -160,7 +160,7 @@ class DeviceSimpleList extends React.Component {
 										selected={isSelected}
 										style={{ cursor: 'pointer' }}
 									>
-										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.device_id)}>
 											<Checkbox checked={isSelected} />
 										</TableCell>
 										<TableCell className={classes.tableCell}>
