@@ -113,7 +113,7 @@ class CalibrateDevice extends Component {
 							device: rs, loading: false,
 							device_name: rs.device_name ? rs.device_name : '',
 							description: rs.description ? rs.description : '',
-							locationType: rs.location_type ? rs.location_type : ''
+							locationType: rs.location_type ? rs.locationType : ''
 						})
 					}
 				})
@@ -202,7 +202,7 @@ class CalibrateDevice extends Component {
 						</MenuItem>
 					})}
 				</Select>
-				<FormHelperText>Select a street type for {this.state.device_name ? this.state.device_name : this.state.device_id}</FormHelperText>
+				<FormHelperText>Select a location type for {this.state.device_name ? this.state.device_name : this.state.device_id}</FormHelperText>
 			</FormControl>
 			<div className={this.props.classes.latlong}>
 				<Caption>
@@ -336,6 +336,7 @@ class CalibrateDevice extends Component {
 			case 1:
 				return lat > 0 && long > 0 ? false : true
 			case 2:
+				console.log(calibration)
 				return calibration.startDate && calibration.endDate && calibration.timer ? false : true
 			default:
 				break;

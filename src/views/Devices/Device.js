@@ -227,8 +227,8 @@ class Device extends Component {
 											<Info>{device.address} </Info>
 										</ItemGrid>
 										<ItemGrid >
-											<Caption>Street Type:</Caption>
-											<Info>{device.streetType} </Info>
+											<Caption>Location Type:</Caption>
+											<Info>{device.locationType} </Info>
 										</ItemGrid>
 										<ItemGrid >
 											<Caption>Coordinates:</Caption>
