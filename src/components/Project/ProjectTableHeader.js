@@ -84,7 +84,7 @@ class EnhancedTableHead extends Component {
 										</TableSortLabel>
 									</Tooltip>
 								</TableCell>
-								<TableCell
+								{/* <TableCell
 									padding={columnData[1].disablePadding ? 'none' : 'default'}
 									sortDirection={orderBy === columnData[1].id ? order : false}
 									className={classes.header + " " + classes.tableCellID}
@@ -109,7 +109,7 @@ class EnhancedTableHead extends Component {
 											<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{columnData[1].label}</Typography>
 										</TableSortLabel>
 									</Tooltip>
-								</TableCell>
+								</TableCell> */}
 							</Fragment>
 
 						}

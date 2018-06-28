@@ -9,7 +9,7 @@ import {
 	Hidden,
 	Typography
 } from "@material-ui/core";
-import EnhancedTableHead from './TableHeader';
+import EnhancedTableHead from './ProjectTableHeader';
 import EnhancedTableToolbar from './TableToolBar'
 import PropTypes from "prop-types";
 import TablePagination from '@material-ui/core/TablePagination';

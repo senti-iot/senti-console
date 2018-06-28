@@ -151,7 +151,7 @@ class RegSimpleList extends React.Component {
 										<TableCell className={classes.tableCell}>
 											{n.device_name}
 										</TableCell>
-										<TableCell className={classes.tableCell}>
+										<TableCell className={classes.tableCellID}>
 											{n.count}
 										</TableCell>
 										<Hidden mdDown>

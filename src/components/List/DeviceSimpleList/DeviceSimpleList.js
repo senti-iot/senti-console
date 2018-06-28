@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import EnhancedTableHead from '../../Project/TableHeader';
 import EnhancedTableToolbar from '../../Project/TableToolBar'
 import {
@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import TablePagination from '@material-ui/core/TablePagination';
-import Paper from '@material-ui/core/Paper';
+// import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import { withRouter } from 'react-router-dom';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
@@ -124,7 +124,9 @@ class DeviceSimpleList extends React.Component {
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 		const tableHead = [{ label: "Name" }, { label: "ID" }, { label: "Address" }, { label: "Status" }, { label: "Total Count" }]
 		return (
-			<Paper className={classes.root}>
+			
+			// <Paper className={classes.root}>
+			<Fragment>
 				<EnhancedTableToolbar
 					noFilterIcon
 					noAdd
@@ -166,7 +168,7 @@ class DeviceSimpleList extends React.Component {
 										<TableCell className={classes.tableCell}>
 											{n.device_name}
 										</TableCell>
-										<TableCell className={classes.tableCell}>
+										<TableCell className={classes.tableCellID}>
 											{n.device_id}
 										</TableCell>
 										<Hidden mdDown>
@@ -206,7 +208,8 @@ class DeviceSimpleList extends React.Component {
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}
 					labelRowsPerPage={<Hidden mdDown>Rows per page</Hidden>}
 				/>
-			</Paper>
+			</Fragment>
+			// </Paper>
 		);
 	}
 }
