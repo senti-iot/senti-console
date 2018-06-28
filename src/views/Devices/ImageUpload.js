@@ -38,7 +38,7 @@ class ImageUpload extends Component {
 		const { classes } = this.props
 		const { images } = this.state
 		return (
-			<div>
+			<Grid container justify={'center'}>
 
 				<input
 					accept="image/*"
@@ -52,7 +52,7 @@ class ImageUpload extends Component {
 				/>
 				<label htmlFor="contained-button-file">
 					<Button variant="contained" component="span" className={classes.button}>
-						Upload<CloudUpload className={classes.iconButton} />
+						Add Images<CloudUpload className={classes.iconButton} />
 					</Button>
 				</label>
 				<Grid container>
@@ -65,8 +65,7 @@ class ImageUpload extends Component {
 						})
 						: null}
 				</Grid>
-
-			</div>
+			</Grid>
 		)
 	}
 }
