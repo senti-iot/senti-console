@@ -244,12 +244,17 @@ class EnhancedTable extends React.Component {
 											</TableCell>
 										</Hidden>
 										<Hidden lgUp>
-											<TableCell className={classes.tableCell}>
+											<TableCell className={classes.tableCellID}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
 													{n.device_id}
 												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCell}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{n.device_name ? n.device_name : "No Name"}
+												</Typography>
+											</TableCell>
+											<TableCell className={classes.tableCellID}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
 													{this.renderIcon(n.liveStatus)}
 												</Typography>

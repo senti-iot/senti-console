@@ -39,7 +39,6 @@ class ImageUpload extends Component {
 		const { images } = this.state
 		return (
 			<Grid container justify={'center'}>
-
 				<input
 					accept="image/*"
 					className={classes.input}

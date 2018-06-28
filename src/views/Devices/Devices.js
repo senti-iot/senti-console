@@ -81,7 +81,7 @@ class Devices extends Component {
 		await getAllDevices().then(rs => this.setState({
 			devices: rs,
 			deviceHeader: [
-				{ id: "device_name", label: "Device Name" },
+				{ id: "device_name", label: "Name" },
 				{ id: "device_id", label: "ID" },
 				{ id: "liveStatus", label: "Status" },
 				{ id: "org", label: "Organisation" }

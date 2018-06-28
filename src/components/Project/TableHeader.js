@@ -34,7 +34,6 @@ class EnhancedTableHead extends Component {
 							return (
 								<TableCell
 									key={i}
-									// numeric={column.numeric}
 									padding={column.disablePadding ? 'none' : 'default'}
 									sortDirection={orderBy === column.id ? order : false}
 									className={classes.header + " " + classes.tableCell}
@@ -48,14 +47,7 @@ class EnhancedTableHead extends Component {
 											active={orderBy === column.id}
 											direction={order}
 											onClick={this.createSortHandler(column.id)}
-											classes={
-												{
-													root: classes.HeaderLabelActive,
-													active: classes.HeaderLabelActive
-
-												}
-											}
-										>
+											classes={{ root: classes.HeaderLabelActive, active: classes.HeaderLabelActive }}>
 											<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{column.label}</Typography>
 										</TableSortLabel>
 									</Tooltip>
@@ -65,26 +57,22 @@ class EnhancedTableHead extends Component {
 					</Hidden>
 					<Hidden lgUp>
 						{
-
 							<Fragment>
-
 								<TableCell
-									key={columnData[1].id}
-
-									// numeric={columnData[0].numeric}
+									key={columnData[0].id}
 									padding={columnData[0].disablePadding ? 'none' : 'default'}
 									sortDirection={orderBy === columnData[1].id ? order : false}
 									className={classes.header + " " + classes.tableCell}
 								>
 									<Tooltip
 										title="Sort"
-										placement={columnData[1].numeric ? 'bottom-end' : 'bottom-start'}
+										placement={columnData[0].numeric ? 'bottom-end' : 'bottom-start'}
 										enterDelay={300}
 									>
 										<TableSortLabel
-											active={orderBy === columnData[1].id}
+											active={orderBy === columnData[0].id}
 											direction={order}
-											onClick={this.createSortHandler(columnData[1].id)}
+											onClick={this.createSortHandler(columnData[0].id)}
 											classes={
 												{
 													root: classes.HeaderLabelActive,
@@ -101,19 +89,19 @@ class EnhancedTableHead extends Component {
 									key={columnData[0].id}
 
 									// numeric={columnData[0].numeric}
-									padding={columnData[0].disablePadding ? 'none' : 'default'}
-									sortDirection={orderBy === columnData[0].id ? order : false}
+									padding={columnData[1].disablePadding ? 'none' : 'default'}
+									sortDirection={orderBy === columnData[1].id ? order : false}
 									className={classes.header + " " + classes.tableCell}
 								>
 									<Tooltip
 										title="Sort"
-										placement={columnData[0].numeric ? 'bottom-end' : 'bottom-start'}
+										placement={columnData[1].numeric ? 'bottom-end' : 'bottom-start'}
 										enterDelay={300}
 									>
 										<TableSortLabel
-											active={orderBy === columnData[0].id}
+											active={orderBy === columnData[1].id}
 											direction={order}
-											onClick={this.createSortHandler(columnData[0].id)}
+											onClick={this.createSortHandler(columnData[1].id)}
 											classes={
 												{
 													root: classes.HeaderLabelActive,

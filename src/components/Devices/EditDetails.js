@@ -19,8 +19,8 @@ class EditDetails extends Component {
 		props.setHeader("Edit " + props.match.params.id)
 	}
 	componentDidMount = async () => {
-		let id = this.props.params.id
-		await getDevice(id).then(rs => this.setState({ name: rs.name, description: rs.description, address: rs.address }))
+		let id = this.props.match.params.id
+		await getDevice(id).then(rs => this.setState({ name: rs.name, description: rs.description, address: rs.address, loading: false }))
 	}
 
 	handleInput = (input) => e => {
