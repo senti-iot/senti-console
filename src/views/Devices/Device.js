@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { getDevice } from 'variables/data';
+import { getDevice, getAllPictures } from 'variables/data';
 import { CircularProgress, Grid, Typography, withStyles, Button, IconButton, Menu, MenuItem } from '@material-ui/core';
 import moment from 'moment'
 import { ItemGrid, Warning, P } from 'components';
@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import SmallInfo from 'components/Card/SmallInfo';
 import AssignProject from 'components/Devices/AssignProject';
+import DeviceImage from 'components/Devices/DeviceImage';
 
 
 const Caption = (props) => <Typography variant={"caption"}>{props.children}</Typography>
@@ -23,7 +24,8 @@ class Device extends Component {
 			device: null,
 			loading: true,
 			anchorEl: null,
-			openAssign: false
+			openAssign: false,
+			img: null
 		}
 		props.setHeader(<CircularProgress size={30} />)
 	}
@@ -31,14 +33,15 @@ class Device extends Component {
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id)
-				await getDevice(id).then(rs => {
-					if (rs === null)
-						this.props.history.push('/404')
-					else {
-						this.setState({ device: rs, loading: false })
-						this.props.setHeader(rs.device_name ? rs.device_name : rs.device_id)
-					}
-				})
+			{await getDevice(id).then(rs => {
+				if (rs === null)
+					this.props.history.push('/404')
+				else {
+					this.setState({ device: rs, loading: false })
+					this.props.setHeader(rs.device_name ? rs.device_name : rs.device_id)
+				}
+			})
+			await getAllPictures(id).then(rs => this.setState({ img: rs }))}
 		}
 		else {
 			this.props.history.push('/404')
@@ -120,6 +123,7 @@ class Device extends Component {
 			!loading ?
 				<Grid container justify={'center'} alignContent={'space-between'} spacing={8}>
 					<AssignProject device_id={this.state.device.device_id} open={this.state.openAssign} handleClose={this.handleCloseAssign} />
+					
 					<ItemGrid xs={12}>
 						<InfoCard
 							title={
@@ -283,6 +287,16 @@ class Device extends Component {
 								</ItemGrid>
 
 							</Grid>
+							}
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12}>
+						<InfoCard
+							noAvatar
+							noExpand
+							content={
+								this.state.img !== null ?
+									 <DeviceImage images={this.state.img} /> : this.renderLoader()
 							}
 						/>
 					</ItemGrid>

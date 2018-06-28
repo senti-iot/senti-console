@@ -91,6 +91,21 @@ export const getProject = async (projectId) => {
 	var data = await api.get('senti/project/' + projectId).then(rs => rs.data)
 	return data
 }
+
+export const getAllPictures = async (deviceId) => {
+	var base64Flag = 'data:image/jpeg;base64,';
+	var data = await api.get('senti/device/images/' + deviceId).then(response => {
+		if (response.data)
+		{
+			var data = response.data.map(img => img = base64Flag + img)
+			return data
+		}
+		else {
+			return 0
+		}
+	})
+	return data
+}
 export const uploadPictures = async (device) => {
 	const form = new FormData();
 	// var fles = device.files;
@@ -102,7 +117,7 @@ export const uploadPictures = async (device) => {
 			//TODO: return percent
 		}
 	};
-	var data = await imageApi.post('senti/device/image/' + device.device_id, form, config).then(rs => rs.data)
+	var data = await imageApi.post('senti/device/images/' + device.device_id, form, config).then(rs => rs.data)
 	return data
 }
 // Get devices for Project

@@ -7,14 +7,16 @@ import MobileStepper from '@material-ui/core/MobileStepper';
 import Button from '@material-ui/core/Button';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import { Grid } from '@material-ui/core';
+import Caption from '../Typography/Caption';
 
 const styles = theme => ({
 	root: {
 		flexGrow: 1,
-		[theme.breakpoints.up('md')]: {
-			maxWidth: 800,
+		[theme.breakpoints.up('sm')]: {
+			maxWidth: 'auto',
 		},
-		[theme.breakpoints.down("lg")]: {
+		[theme.breakpoints.down("md")]: {
 			maxWidth: 400
 		}
 	},
@@ -27,11 +29,12 @@ const styles = theme => ({
 		backgroundColor: theme.palette.background.default,
 	},
 	img: {
-		[theme.breakpoints.up('md')]: {
-			maxWidth: 800,
-			height: 255 * 2
+		[theme.breakpoints.up('sm')]: {
+			maxWidth: 'auto',
+			// height: 255 * 2,
+			maxHeight: 600
 		},
-		[theme.breakpoints.down("lg")]: {
+		[theme.breakpoints.down("md")]: {
 			height: 255,
 			maxWidth: 400
 		},
@@ -40,7 +43,7 @@ const styles = theme => ({
 	},
 });
 
-class ImageCarousel extends React.Component {
+class DeviceImage extends React.Component {
 	state = {
 		activeStep: 0,
 	};
@@ -61,25 +64,27 @@ class ImageCarousel extends React.Component {
 		const { classes, theme, images } = this.props;
 		const { activeStep } = this.state;
 
-		const maxSteps = images.length;
-		let blob = URL.createObjectURL(images[activeStep])
+		const maxSteps = images.length ? images.length : 0;
+		// let blob = URL.createObjectURL(images[activeStep])
 		return (
 			<div className={classes.root}>
 				{/* <Paper square elevation={0} className={classes.header}>
 					<Typography>{tutorialSteps[activeStep].label}</Typography>
 				</Paper> */}
-				<img
+				{images !== 0 ? <img
 					className={classes.img}
-					src={blob}
+					src={images[activeStep]}
 					alt={''}
-				/>
+				/> : <Grid container justify={'center'} >
+					<Caption>There are no pictures uploaded</Caption>
+				</Grid>}
 				<MobileStepper
 					steps={maxSteps}
 					position="static"
 					activeStep={activeStep}
 					className={classes.mobileStepper}
 					nextButton={
-						<Button size="small" onClick={this.handleNext} disabled={activeStep === maxSteps - 1}>
+						<Button size="small" onClick={this.handleNext} disabled={activeStep === maxSteps - 1 || maxSteps === 0}>
 							Next
 							{theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
 						</Button>
@@ -96,10 +101,10 @@ class ImageCarousel extends React.Component {
 	}
 }
 
-ImageCarousel.propTypes = {
+DeviceImage.propTypes = {
 	classes: PropTypes.object.isRequired,
 	theme: PropTypes.object.isRequired,
 	images: PropTypes.array.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(ImageCarousel);
+export default withStyles(styles, { withTheme: true })(DeviceImage);

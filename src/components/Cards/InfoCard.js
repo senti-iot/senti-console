@@ -30,7 +30,7 @@ class InfoCard extends React.Component {
 		
 	}
 	render() {
-		const { classes, title, subheader, content, hiddenContent, avatar } = this.props;
+		const { classes, title, subheader, content, hiddenContent, avatar, noAvatar } = this.props;
 
 		return (
 			<div>
@@ -38,9 +38,9 @@ class InfoCard extends React.Component {
 					<CardHeader
 						
 						avatar={
-							<Avatar aria-label="Avatar" className={classes.avatar}>
+							noAvatar ? null : <Avatar aria-label="Avatar" className={classes.avatar}>
 								{avatar}
-							</Avatar>
+							</Avatar> 
 						}
 						title={title}
 						
