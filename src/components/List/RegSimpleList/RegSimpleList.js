@@ -105,7 +105,7 @@ class RegSimpleList extends React.Component {
 		const { classes, data } = this.props;
 		const { order, orderBy, selected, rowsPerPage, page } = this.state;
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-		const tableHead = [{ label: "Name" }, { label: "Interval" }, { label: "Registered" }, { label: "Count" }]
+		const tableHead = [{ label: "Name" }, { label: "Count" }, { label: "Interval" }, { label: "Registered" }]
 		return (
 			<Paper className={classes.root}>
 				<EnhancedTableToolbar
@@ -151,15 +151,15 @@ class RegSimpleList extends React.Component {
 										<TableCell className={classes.tableCell}>
 											{n.device_name}
 										</TableCell>
+										<TableCell className={classes.tableCell}>
+											{n.count}
+										</TableCell>
 										<Hidden mdDown>
 											<TableCell className={classes.tableCell}>
 												{this.dateFormatter(n.interval)}
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												{this.dateFormatter(n.registered)}
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												{n.count}
 											</TableCell>
 										</Hidden>
 									</TableRow>

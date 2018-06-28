@@ -122,7 +122,7 @@ class DeviceSimpleList extends React.Component {
 		const { classes, data } = this.props;
 		const { order, orderBy, selected, rowsPerPage, page } = this.state;
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-		const tableHead = [{ label: "Name" }, { label: "Address" }, { label: "Status" }, { label: "Total Count" }]
+		const tableHead = [{ label: "Name" }, { label: "ID" }, { label: "Address" }, { label: "Status" }, { label: "Total Count" }]
 		return (
 			<Paper className={classes.root}>
 				<EnhancedTableToolbar
@@ -165,6 +165,9 @@ class DeviceSimpleList extends React.Component {
 										</TableCell>
 										<TableCell className={classes.tableCell}>
 											{n.device_name}
+										</TableCell>
+										<TableCell className={classes.tableCell}>
+											{n.device_id}
 										</TableCell>
 										<Hidden mdDown>
 											<TableCell className={classes.tableCell}>
