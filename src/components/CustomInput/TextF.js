@@ -7,9 +7,11 @@ const styles = theme => ({
 		marginRight: theme.spacing.unit
 	},
 	textField: {
-		margin: theme.spacing.unit * 2
+		margin: theme.spacing.unit * 2,
+		width: 300
 	},
 	label: {
+		width: 300,
 		'&$focused': {
 			color: teal[500],
 		},
@@ -28,7 +30,9 @@ const TextF = (props) => {
 			label={props.label}
 			value={props.val}
 			onChange={props.handleChange}
-			fullWidth
+			fullWidth={props.noFullWidth ? false : true}
+			multiline={props.multiline ? props.multiline : false}
+			rows={props.rows ? props.rows : null}
 			className={props.classes.textField}
 			InputLabelProps={
 				{
