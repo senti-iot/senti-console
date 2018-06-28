@@ -45,16 +45,11 @@ class LoginPage extends React.Component {
 		this._isMounted = 1
 		window.addEventListener('keypress', this.handleKeyPress, false)
 		var loginData = cookie.load('SESSION')
-		console.log(this.props.history)
-		// console.log(this)
-		if (loginData) { //check if loginData is still valid
+		if (loginData) {
 			if (setToken()) {
-				//User redirect instead of push as push will "nullify" the back history item
 				this.props.history.push('/dashboard')
 			}
 		}
-
-		// we add a hidden class to the card and after 700 ms we delete it and the transition appears
 		setTimeout(
 			function () {
 				return this._isMounted ? this.setState({ cardAnimaton: "" }) : '';

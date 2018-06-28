@@ -97,14 +97,13 @@ export const uploadPictures = async (device) => {
 	[...device.files].map((img, index) => form.append('sentiFile[]', device.files[index]))
 	var config = {
 		onUploadProgress: function (progressEvent) {
-			var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-			console.log(percentCompleted)
+			// var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+			// console.log(percentCompleted)
+			//TODO: return percent
 		}
 	};
-	var data = await imageApi.post('senti/device/image/' + device.device_id, form, config).then(rs => {console.log(rs); return rs})
-	// var data = await api.post('senti/image', { device_id: device.device_id, sentiFile: device.files }).then(rs => rs)
-	console.log(data)
-	return false
+	var data = await imageApi.post('senti/device/image/' + device.device_id, form, config).then(rs => rs.data)
+	return data
 }
 // Get devices for Project
 export const getDevicesForProject = async (projectId) => {
@@ -132,14 +131,12 @@ export const getAllDevices = async () => {
 	return data
 }
 export const getDevice = async (id) => {
-	var data = await api.get('senti/device/' + id).then(rs => { console.log(rs); return rs.data })
-	console.log(data)
+	var data = await api.get('senti/device/' + id).then(rs => rs.data )
 	return data
 }
 export const calibrateDevice = async (device) => {
-	var data = await api.post('senti/calibrate', device).then(rs => { console.log(rs); return rs.data })
+	var data = await api.post('senti/calibrate', device).then(rs =>  rs.data)
 	return data
-
 }
 //Get Device Registrations for Project
 

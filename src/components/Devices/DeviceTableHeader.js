@@ -120,9 +120,6 @@ class EnhancedTableHead extends Component {
 							</Tooltip>
 						</TableCell>
 						<TableCell
-							key={columnData[3].id}
-
-							// numeric={columnData[0].numeric}
 							padding={columnData[3].disablePadding ? 'none' : 'default'}
 							sortDirection={orderBy === columnData[2].id ? order : false}
 							className={classes.header + " " + classes.tableCellID}
@@ -136,14 +133,9 @@ class EnhancedTableHead extends Component {
 									active={orderBy === columnData[2].id}
 									direction={order}
 									onClick={this.createSortHandler(columnData[2].id)}
-									classes={
-										{
-											root: classes.HeaderLabelActive,
-											active: classes.HeaderLabelActive
-
-										}
-									}
-								>
+									classes={{
+										root: classes.HeaderLabelActive,
+										active: classes.HeaderLabelActive }}>
 									<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{columnData[2].label}</Typography>
 								</TableSortLabel>
 							</Tooltip>

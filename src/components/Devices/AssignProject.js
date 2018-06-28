@@ -66,7 +66,7 @@ class AssignProject extends React.Component {
 	}
 
 	componentDidMount = async () => {
-		await getAllProjects().then(rs => { console.log(rs); return this.setState({ projects: rs }) })
+		await getAllProjects().then(rs => this.setState({ projects: rs }))
 	}
 
 	selectProject = pId => e => {
@@ -77,7 +77,8 @@ class AssignProject extends React.Component {
 		
 	}
 	assignProject = async () => {
-		await assignProjectToDevice({ project_id: this.state.selectedProject, id: this.props.device_id }).then(rs => console.log(rs))
+		//Todo Snackbar success
+		await assignProjectToDevice({ project_id: this.state.selectedProject, id: this.props.device_id })
 		this.props.handleClose(true)
 	}
 	closeDialog = () => {

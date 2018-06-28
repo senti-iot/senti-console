@@ -18,27 +18,19 @@ import { withRouter } from 'react-router-dom';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
 import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons'
 
-var moment = require('moment')
-
-
 class DeviceSimpleList extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			order: 'asc',
-			orderBy: 'calories',
+			orderBy: '',
 			selected: [],
 			page: 0,
 			rowsPerPage: 5,
 			anchorElMenu: null,
 			keyword: ""
 		};
-	}
-	dateFormatter = (date) => {
-		var a = moment(date).format("DD.MM.YYYY")
-		// console.log(a)
-		return a
 	}
 	handleToolbarMenuOpen = e => {
 		e.stopPropagation()

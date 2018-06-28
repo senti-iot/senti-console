@@ -16,7 +16,7 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import { withRouter } from 'react-router-dom';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
-var moment = require('moment')
+import { dateFormatter } from "variables/functions";
 
 
 class RegSimpleList extends React.Component {
@@ -25,18 +25,14 @@ class RegSimpleList extends React.Component {
 
 		this.state = {
 			order: 'asc',
-			orderBy: 'calories',
+			orderBy: '',
 			selected: [],
 			page: 0,
 			rowsPerPage: 5,
 			anchorElMenu: null
 		};
 	}
-	dateFormatter = (date) => {
-		var a = moment(date).format("DD.MM.YYYY - HH:mm")
-		// console.log(a)
-		return a
-	}
+
 	handleToolbarMenuOpen = e => {
 		e.stopPropagation()
 		this.setState({ anchorElMenu: e.currentTarget });
@@ -156,10 +152,10 @@ class RegSimpleList extends React.Component {
 										</TableCell>
 										<Hidden mdDown>
 											<TableCell className={classes.tableCell}>
-												{this.dateFormatter(n.interval)}
+												{dateFormatter(n.interval)}
 											</TableCell>
 											<TableCell className={classes.tableCell}>
-												{this.dateFormatter(n.registered)}
+												{dateFormatter(n.registered)}
 											</TableCell>
 										</Hidden>
 									</TableRow>

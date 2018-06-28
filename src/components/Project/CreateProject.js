@@ -71,10 +71,8 @@ class CreateProject extends Component {
 			},
 			devices: this.state.devices
 		}
-		// console.log(Object.keys(newProject.project).map(p => newProject.project[p] !== null ? false : true))
 		this.setState({ creating: true })
 		createOneProject(newProject).then(rs => {
-			// console.log(rs)
 			this.setState({ created: rs ? true : false, creating: false, id: rs })
 		})
 	}

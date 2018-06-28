@@ -62,9 +62,7 @@ class ImageCarousel extends React.Component {
 		const { activeStep } = this.state;
 
 		const maxSteps = images.length;
-		console.log(images)
 		let blob = URL.createObjectURL(images[activeStep])
-		console.log(blob)
 		return (
 			<div className={classes.root}>
 				{/* <Paper square elevation={0} className={classes.header}>

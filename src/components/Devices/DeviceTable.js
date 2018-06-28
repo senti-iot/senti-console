@@ -13,7 +13,6 @@ import EnhancedTableHead from './DeviceTableHeader';
 import EnhancedTableToolbar from './TableToolBar';
 import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
-var moment = require('moment')
 
 class EnhancedTable extends React.Component {
 	constructor(props) {
@@ -35,10 +34,6 @@ class EnhancedTable extends React.Component {
 		{ label: 'Export to PDF', func: () => { }, single: false },
 		{ label: 'Delete', func: this.handleDeleteProjects, single: false },
 	];
-	dateFormatter = (date) => {
-		var a = moment(date).format("DD.MM.YYYY")
-		return a
-	}
 	handleToolbarMenuOpen = e => {
 		e.stopPropagation()
 		this.setState({ anchorElMenu: e.currentTarget });
@@ -56,7 +51,7 @@ class EnhancedTable extends React.Component {
 		this.setState({ anchorFilterMenu: null })
 	}
 	handleFilter = e => {
-		console.log('not implemented')
+		// console.log('not implemented')
 	}
 	handleSearch = value => {
 		this.setState({

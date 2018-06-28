@@ -136,7 +136,7 @@ class CalibrateDevice extends Component {
 			device_id: this.state.device.device_id,
 			files: this.state.images,
 			// step: 3
-		}).then(rs => console.log(rs))
+		}).then(rs => rs)
 		return success
 	}
 	renderDeviceNameDescriptionForms = () => {
@@ -245,7 +245,6 @@ class CalibrateDevice extends Component {
 	updateCalibration = async () => {
 		const { startDate, endDate, count, timer } = this.state.calibration
 		const { device } = this.state
-		// console.log(this.state)
 		var success = await calibrateDevice({
 			step: 2,
 			startDate: startDate,
@@ -254,7 +253,6 @@ class CalibrateDevice extends Component {
 			timer: timer,
 			device_id: device.device_id
 		}).then(rs => rs)
-		// console.log(success)
 		return success
 	}
 	updatePosition = async () => {

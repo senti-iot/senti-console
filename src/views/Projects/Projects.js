@@ -30,7 +30,6 @@ class Projects extends Component {
 			var contains = keys.map(key => {
 				var openDate = moment(c['open_date'])
 				var closeDate = moment(c['close_date'])
-				// console.log(openDate, closeDate)
 				if (openDate > startDate
 			 		&& closeDate < (endDate ? endDate : moment())) {
 					return true

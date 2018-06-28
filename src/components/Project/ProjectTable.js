@@ -18,7 +18,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { withRouter } from 'react-router-dom';
 import { Edit, Devices, PictureAsPdf, Delete } from '@material-ui/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
-var moment = require('moment')
+import { dateFormatter } from "variables/functions";
 
 class EnhancedTable extends React.Component {
 	constructor(props) {
@@ -33,10 +33,6 @@ class EnhancedTable extends React.Component {
 			anchorElMenu: null,
 			anchorFilterMenu: null
 		};
-	}
-	dateFormatter = (date) => {
-		var a = moment(date).format("DD.MM.YYYY")
-		return a
 	}
 	handleToolbarMenuOpen = e => {
 		e.stopPropagation()
@@ -55,7 +51,7 @@ class EnhancedTable extends React.Component {
 		this.setState({ anchorFilterMenu: null })
 	}
 	handleFilter = e => {
-		console.log('not implemented')
+		// console.log('not implemented')
 	}
 	handleSearch = value => {
 		this.setState({
@@ -197,17 +193,17 @@ class EnhancedTable extends React.Component {
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{this.dateFormatter(n.open_date)}
+													{dateFormatter(n.open_date)}
 												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{this.dateFormatter(n.close_date)}
+													{dateFormatter(n.close_date)}
 												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{this.dateFormatter(n.created)}	</Typography>
+													{dateFormatter(n.created)}	</Typography>
 											</TableCell>
 										</Hidden>
 									</TableRow>
