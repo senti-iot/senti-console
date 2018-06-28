@@ -117,8 +117,6 @@ class DeviceSimpleList extends React.Component {
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 		const tableHead = [{ label: "Name" }, { label: "ID" }, { label: "Address" }, { label: "Status" }, { label: "Total Count" }]
 		return (
-			
-			// <Paper className={classes.root}>
 			<Fragment>
 				<EnhancedTableToolbar
 					noFilterIcon
