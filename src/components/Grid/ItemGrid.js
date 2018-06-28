@@ -13,7 +13,7 @@ const style = {
 function ItemGrid({ ...props }) {
 	const { classes, children, ...rest } = props;
 	return (
-		<Grid item {...rest} className={classes.grid}>
+		<Grid item {...rest} className={(props.noPadding ? '' : classes.grid) + " " + props.extraClass}>
 			{children}
 		</Grid>
 	);

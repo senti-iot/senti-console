@@ -2,9 +2,13 @@ import React, { Component } from 'react'
 import { withStyles, Button, Grid } from '@material-ui/core';
 import { CloudUpload } from '@material-ui/icons'
 import { ItemGrid } from 'components';
+import ImageCarousel from 'components/Devices/ImageCarousel';
 
 
 const styles = theme => ({
+	grid: {
+		justifyContent:	"center"
+	},
 	button: {
 		margin: theme.spacing.unit,
 	},
@@ -38,32 +42,27 @@ class ImageUpload extends Component {
 		const { classes } = this.props
 		const { images } = this.state
 		return (
-			<Grid container justify={'center'}>
-				<input
-					accept="image/*"
-					className={classes.input}
-					id="contained-button-file"
-					multiple
-					type="file"
-					name="sentiFile"
-					encType="multipart/form-data"
-					onChange={this.tempUpload}
-				/>
-				<label htmlFor="contained-button-file">
-					<Button variant="contained" component="span" className={classes.button}>
+			<Grid container className={classes.grid}>
+				<ItemGrid xs={12} noPadding container extraClass={classes.grid}>
+					{images.length > 0 ? <ImageCarousel images={[...images]} /> : null}
+				</ItemGrid>
+				<ItemGrid xs={12} container justify={'center'}>
+					<input
+						accept="image/*"
+						className={classes.input}
+						id="contained-button-file"
+						multiple
+						type="file"
+						name="sentiFile"
+						encType="multipart/form-data"
+						onChange={this.tempUpload}
+					/>
+					<label htmlFor="contained-button-file">
+						<Button variant="contained" component="span" className={classes.button}>
 						Add Images<CloudUpload className={classes.iconButton} />
-					</Button>
-				</label>
-				<Grid container>
-					{images ?
-						[...images].map((img, index) => {
-							let blob = URL.createObjectURL(img)
-							return <ItemGrid xs={2} key={index}>
-								<img src={blob} alt={'preview'} className={classes.imgPreview} />
-							</ItemGrid>
-						})
-						: null}
-				</Grid>
+						</Button>
+					</label>
+				</ItemGrid>
 			</Grid>
 		)
 	}

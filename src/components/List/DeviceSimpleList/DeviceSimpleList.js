@@ -31,7 +31,8 @@ class DeviceSimpleList extends React.Component {
 			selected: [],
 			page: 0,
 			rowsPerPage: 5,
-			anchorElMenu: null
+			anchorElMenu: null,
+			keyword: ""
 		};
 	}
 	dateFormatter = (date) => {
