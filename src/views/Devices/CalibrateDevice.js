@@ -7,9 +7,6 @@ import CounterModal from 'components/Devices/CounterModal';
 import ImageUpload from './ImageUpload';
 import { NavigateNext, NavigateBefore, Done, Restore, MyLocation, Router, Devices } from '@material-ui/icons'
 const styles = theme => ({
-	root: {
-		width: '90%',
-	},
 	button: {
 		marginTop: theme.spacing.unit,
 		marginRight: theme.spacing.unit,
@@ -37,7 +34,9 @@ const styles = theme => ({
 		marginLeft: theme.spacing.unit
 	},
 	paper: {
-		margin: '8px'
+		margin: '8px',
+		borderRadius: "3px",
+		overflow: "hidden"
 	}
 });
 

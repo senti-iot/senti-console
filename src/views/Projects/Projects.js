@@ -137,8 +137,10 @@ class Projects extends Component {
 	}
 
 	render() {
+		const { classes } = this.props
+
 		return (
-			<Grid container justify={'center'}>
+			<Grid container justify={'center'} className={classes.grid}>
 				{this.renderAllProjects()}
 			</Grid>
 		)

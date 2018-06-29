@@ -9,6 +9,9 @@ const projectStyles = ({
 		marginRight: 'auto',
 		marginLeft: 'auto',
 		color: primaryColor
+	},
+	grid: {
+		padding: "0px 8px"
 	}
 });
 
