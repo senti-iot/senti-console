@@ -11,6 +11,7 @@ import deviceStyles from 'assets/jss/views/deviceStyles';
 import SmallInfo from 'components/Card/SmallInfo';
 import AssignProject from 'components/Devices/AssignProject';
 import DeviceImage from 'components/Devices/DeviceImage';
+import ImageUpload from './DeviceImageUpload';
 
 
 const Caption = (props) => <Typography variant={"caption"}>{props.children}</Typography>
@@ -32,33 +33,44 @@ class Device extends Component {
 	componentDidMount = async () => {
 		if (this.props.match) {
 			let id = this.props.match.params.id
-			if (id)
-			{await getDevice(id).then(rs => {
-				if (rs === null)
-					this.props.history.push('/404')
-				else {
-					console.log(rs)
-					this.setState({ device: rs, loading: false })
-					this.props.setHeader(rs.device_name ? rs.device_name : rs.device_id)
-				}
-			})
-			await getAllPictures(id).then(rs => this.setState({ img: rs }))}
+			if (id) {
+				await this.getAllPics(id)
+				await getDevice(id).then(rs => {
+					if (rs === null)
+						this.props.history.push('/404')
+					else {
+						this.setState({ device: rs, loading: false })
+						this.props.setHeader(rs.device_name ? rs.device_name : rs.device_id)
+					
+					}
+				})
+			}
 		}
 		else {
 			this.props.history.push('/404')
 		}
 	}
+	getAllPics = async (id) => {
+		await getAllPictures(id).then(rs => this.setState({ img: rs }))
+	}
 	handleOpenAssign = () => {
 		this.setState({ openAssign: true, anchorEl: null })
 	}
-	handleCloseAssign =async (reload) => {
-		if (reload)
-		{
+	handleCloseAssign = async (reload) => {
+		if (reload) {
 			this.setState({ loading: true })
 			this.componentDidMount()
 		}
 		this.setState({ openAssign: false })
 	}
+
+	renderImageUpload = (dId) => {
+		const getPics = () => { 
+			this.getAllPics(this.state.device.device_id)
+		}
+		return <ImageUpload dId={dId} imgUpload={this.getAllPics} callBack={getPics}/>
+	}
+
 	filterItems = (projects, keyword) => {
 
 		var searchStr = keyword.toLowerCase()
@@ -124,13 +136,13 @@ class Device extends Component {
 			!loading ?
 				<Grid container justify={'center'} alignContent={'space-between'} spacing={8}>
 					<AssignProject device_id={this.state.device.device_id} open={this.state.openAssign} handleClose={this.handleCloseAssign} />
-					
+
 					<ItemGrid xs={12}>
 						<InfoCard
 							title={
-							
+
 								<Typography paragraph className={classes.typoNoMargin}>
-											Device Details
+									Device Details
 								</Typography>
 							}
 							topAction={
@@ -162,7 +174,7 @@ class Device extends Component {
 										<MenuItem onClick={this.handleClose}>
 											<Edit className={classes.leftIcon} />Edit Details
 										</MenuItem>
-												))}
+										))}
 									</Menu>
 								</ItemGrid>
 							}
@@ -241,10 +253,18 @@ class Device extends Component {
 					<ItemGrid xs={12}>
 						<InfoCard
 							title={"Pictures"}
-							avatar={<Image/>}
-							// noAvatar
+							avatar={<Image />}
 							noExpand
-							content={this.state.img !== null ? <DeviceImage images={this.state.img} /> : this.renderLoader()}/>
+							content={
+								this.state.img !== null ?
+									this.state.img === 0 ?
+										this.renderImageUpload(device.device_id) :
+										<Grid container justify={'center'}>
+											<DeviceImage images={this.state.img} />
+											{this.renderImageUpload(device.device_id)}
+										</Grid>
+									: this.renderLoader()} />
+
 					</ItemGrid>
 					<ItemGrid xs={12}>
 						<InfoCard
@@ -301,7 +321,7 @@ class Device extends Component {
 							}
 						/>
 					</ItemGrid>
-					
+
 				</Grid>
 				: this.renderLoader()
 		)

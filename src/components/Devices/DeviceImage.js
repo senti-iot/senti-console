@@ -68,9 +68,6 @@ class DeviceImage extends React.Component {
 		// let blob = URL.createObjectURL(images[activeStep])
 		return (
 			<div className={classes.root}>
-				{/* <Paper square elevation={0} className={classes.header}>
-					<Typography>{tutorialSteps[activeStep].label}</Typography>
-				</Paper> */}
 				{images !== 0 ? <img
 					className={classes.img}
 					src={images[activeStep]}

@@ -7,6 +7,8 @@ import MobileStepper from '@material-ui/core/MobileStepper';
 import Button from '@material-ui/core/Button';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import { Paper } from '@material-ui/core';
+import Caption from '../Typography/Caption';
 
 const styles = theme => ({
 	root: {
@@ -23,7 +25,7 @@ const styles = theme => ({
 		alignItems: 'center',
 		height: 50,
 		paddingLeft: theme.spacing.unit * 4,
-		marginBottom: 20,
+		marginTop: 20,
 		backgroundColor: theme.palette.background.default,
 	},
 	img: {
@@ -65,9 +67,9 @@ class ImageCarousel extends React.Component {
 		let blob = URL.createObjectURL(images[activeStep])
 		return (
 			<div className={classes.root}>
-				{/* <Paper square elevation={0} className={classes.header}>
-					<Typography>{tutorialSteps[activeStep].label}</Typography>
-				</Paper> */}
+				{this.props.label ? <Paper square elevation={0} className={classes.header}>
+					<Caption>{this.props.label}</Caption>
+				</Paper> : null}
 				<img
 					className={classes.img}
 					src={blob}
