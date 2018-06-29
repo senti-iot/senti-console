@@ -78,7 +78,15 @@ class AssignProject extends React.Component {
 	}
 	assignProject = async () => {
 		//Todo Snackbar success
-		await assignProjectToDevice({ project_id: this.state.selectedProject, id: this.props.device_id })
+		if (Array.isArray(this.props.device_id))
+		{
+			console.log('Arrayed')	
+			this.props.device_id.map(async id => await assignProjectToDevice({ project_id: this.state.selectedProject, id: id }))
+		}
+		else {
+			console.log('crapped');
+			await assignProjectToDevice({ project_id: this.state.selectedProject, id: this.props.device_id });
+		}
 		this.props.handleClose(true)
 	}
 	closeDialog = () => {
@@ -91,7 +99,6 @@ class AssignProject extends React.Component {
 		});
 		return (
 			<div>
-				{/* <Button onClick={this.handleClickOpen}>Open full-screen dialog</Button> */}
 				<Dialog
 					fullScreen
 					open={open}

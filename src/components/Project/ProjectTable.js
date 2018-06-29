@@ -73,7 +73,14 @@ class EnhancedTable extends React.Component {
 
 		this.setState({ data, order, orderBy });
 	};
-
+	handleSelectAllPage = (event, checked) => {
+		if (checked) {
+			const { data } = this.props
+			const { rowsPerPage, page } = this.state
+			this.setState({ selected: data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => n.id) })
+			return;
+		}
+	}
 	handleSelectAllClick = (event, checked) => {
 		if (checked) {
 			this.setState({ selected: this.props.data.map(n => n.id) });
@@ -119,12 +126,14 @@ class EnhancedTable extends React.Component {
 		})
 	}
 	isSelected = id => this.state.selected.indexOf(id) !== -1;
-	options = [
-		{ label: 'Edit', func: this.handleEdit, single: true, icon: Edit },
-		{ label: 'Assign Device', func: this.assignDevice, single: true, icon: Devices },
-		{ label: 'Export to PDF', func: () => { }, icon: PictureAsPdf },
-		{ label: 'Delete', func: this.handleDeleteProjects, icon: Delete }
-	];
+	options = () => {
+		return [
+			{ label: 'Edit', func: this.handleEdit, single: true, icon: Edit },
+			{ label: 'Assign Device', func: this.assignDevice, single: true, icon: Devices },
+			{ label: 'Export to PDF', func: () => { }, icon: PictureAsPdf },
+			{ label: 'Delete', func: this.handleDeleteProjects, icon: Delete }
+		]
+	};
 	render() {
 		const { classes, data } = this.props;
 		const { order, orderBy, selected, rowsPerPage, page } = this.state;

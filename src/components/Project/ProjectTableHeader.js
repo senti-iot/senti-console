@@ -26,6 +26,7 @@ class EnhancedTableHead extends Component {
 							indeterminate={numSelected > 0 && numSelected < rowCount}
 							checked={numSelected === rowCount}
 							onChange={onSelectAllClick}
+							// onClick={onSelectAllClick}
 							className={classes.checkbox}
 						/>
 					</TableCell>

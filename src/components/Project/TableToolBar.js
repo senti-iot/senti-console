@@ -194,7 +194,7 @@ let EnhancedTableToolbar = props => {
 								}
 							}}
 						>
-							{props.options.map((option, i) => {
+							{props.options().map((option, i) => {
 								if (option.single)
 									return numSelected === 1 ? <MenuItem key={i} onClick={option.func}>
 										<option.icon className={classes.leftIcon} />{option.label}

@@ -13,6 +13,7 @@ import EnhancedTableHead from './DeviceTableHeader';
 import EnhancedTableToolbar from './TableToolBar';
 import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
+import AssignProject from "./AssignProject";
 
 class EnhancedTable extends React.Component {
 	constructor(props) {
@@ -25,15 +26,25 @@ class EnhancedTable extends React.Component {
 			page: 0,
 			rowsPerPage: 5,
 			anchorElMenu: null,
-			anchorFilterMenu: null
+			anchorFilterMenu: null,
+			openAssignProject: false
 		};
 	}
-	options = [
-		{ label: 'Calibrate', func: this.handleCalibrateFlow, single: true },
-		{ label: 'Edit', func: this.handleDeviceEdit, single: true },
-		{ label: 'Export to PDF', func: () => { }, single: false },
-		{ label: 'Delete', func: this.handleDeleteProjects, single: false },
-	];
+	options = () => {
+		return [
+			{ label: 'Calibrate', func: this.handleCalibrateFlow, single: true },
+			{ label: 'Edit', func: this.handleDeviceEdit, single: true },
+			{ label: 'Assign To Project', func: this.handleAssignToProject, single: false },
+			{ label: 'Export to PDF', func: () => { }, single: false },
+			{ label: 'Delete', func: this.handleDeleteProjects, single: false },
+		]
+	}
+	handleAssignToProject = () => {
+		this.setState({ openAssignProject: true })
+	}
+	handleCloseAssignToProject = reload => {
+		this.setState({ openAssignProject: false })
+	}
 	handleToolbarMenuOpen = e => {
 		e.stopPropagation()
 		this.setState({ anchorElMenu: e.currentTarget });
@@ -165,11 +176,12 @@ class EnhancedTable extends React.Component {
 	}
 	render() {
 		const { classes, data } = this.props;
-		const { order, orderBy, selected, rowsPerPage, page } = this.state;
+		const { order, orderBy, selected, rowsPerPage, page, openAssignProject } = this.state;
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
 		return (
 			<Paper className={classes.root}>
+				<AssignProject open={openAssignProject} handleClose={this.handleCloseAssignToProject} device_id={selected} />
 				<EnhancedTableToolbar
 					anchorElMenu={this.state.anchorElMenu}
 					anchorFilterMenu={this.state.anchorFilterMenu}

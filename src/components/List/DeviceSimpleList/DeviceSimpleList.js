@@ -126,7 +126,9 @@ class DeviceSimpleList extends React.Component {
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
 					filters={this.props.filters}
-					numSelected={selected.length} />
+					numSelected={selected.length}
+					options={() => []}
+				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
 						<EnhancedTableHead

@@ -114,7 +114,9 @@ class RegSimpleList extends React.Component {
 					noFilterIcon
 					noAdd
 					noDatePickers
-					numSelected={selected.length} />
+					numSelected={selected.length}
+					options={() => []}
+				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
 						<EnhancedTableHead
