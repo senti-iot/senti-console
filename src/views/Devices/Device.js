@@ -157,7 +157,7 @@ class Device extends Component {
 											<Build className={classes.leftIcon} />{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
 										</MenuItem>
 										<MenuItem onClick={this.handleOpenAssign}>
-											<LibraryBooks className={classes.leftIcon} />{device.project ? "Assign to new project" : "Move to another project"}
+											<LibraryBooks className={classes.leftIcon} />{device.project ? "Move to another project" : "Assign to new project"}
 										</MenuItem>
 										<MenuItem onClick={this.handleClose}>
 											<Edit className={classes.leftIcon} />Edit Details
