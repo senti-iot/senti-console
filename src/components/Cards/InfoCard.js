@@ -36,7 +36,7 @@ class InfoCard extends React.Component {
 		return (
 			<Card className={classes.card + classes.plainCardClasses}>
 				<CardHeader
-
+					action={this.props.topAction}
 					avatar={
 						noAvatar ? null : <Avatar aria-label="Avatar" className={classes.avatar}>
 							{avatar}

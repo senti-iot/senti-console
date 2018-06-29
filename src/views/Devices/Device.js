@@ -127,44 +127,44 @@ class Device extends Component {
 					<ItemGrid xs={12}>
 						<InfoCard
 							title={
-								<Fragment>
-									<Grid container justify={'space-between'} className={classes.typoNoMargin}>
-										<Typography paragraph className={classes.typoNoMargin}>
+							
+								<Typography paragraph className={classes.typoNoMargin}>
 											Device Details
-										</Typography>
-										<ItemGrid>
-											<IconButton
-												aria-label="More"
-												aria-owns={anchorEl ? 'long-menu' : null}
-												aria-haspopup="true"
-												onClick={this.handleClick}>
-												<MoreVert />
-											</IconButton>
-											<Menu
-												id="long-menu"
-												anchorEl={anchorEl}
-												open={Boolean(anchorEl)}
-												onClose={this.handleClose}
-												PaperProps={{
-													style: {
-														maxHeight: 200,
-														minWidth: 200
-													}
-												}}>
-												<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}>
-													<Build className={classes.leftIcon} />{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
-												</MenuItem>
-												<MenuItem onClick={this.handleOpenAssign}>
-													<LibraryBooks className={classes.leftIcon} />Assign to {device.project ? "new Project" : "Project"}
-												</MenuItem>
-												<MenuItem onClick={this.handleClose}>
-													<Edit className={classes.leftIcon} />Edit Details
-												</MenuItem>
+								</Typography>
+							}
+							topAction={
+								<ItemGrid>
+									<IconButton
+										aria-label="More"
+										aria-owns={anchorEl ? 'long-menu' : null}
+										aria-haspopup="true"
+										onClick={this.handleClick}>
+										<MoreVert />
+									</IconButton>
+									<Menu
+										id="long-menu"
+										anchorEl={anchorEl}
+										open={Boolean(anchorEl)}
+										onClose={this.handleClose}
+										PaperProps={{
+											style: {
+												maxHeight: 200,
+												minWidth: 200
+											}
+										}}>
+										<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}>
+											<Build className={classes.leftIcon} />{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
+										</MenuItem>
+										<MenuItem onClick={this.handleOpenAssign}>
+											<LibraryBooks className={classes.leftIcon} />Assign to {device.project ? "new Project" : "Project"}
+										</MenuItem>
+										<MenuItem onClick={this.handleClose}>
+											<Edit className={classes.leftIcon} />Edit Details
+										</MenuItem>
 												))}
-											</Menu>
-										</ItemGrid>
-									</Grid>
-								</Fragment>} Build
+									</Menu>
+								</ItemGrid>
+							}
 							avatar={<Devices />}
 							subheader={device.device_id}
 							noExpand

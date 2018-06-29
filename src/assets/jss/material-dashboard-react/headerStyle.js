@@ -29,15 +29,8 @@ const headerStyle = theme => ({
 		transition: "all 150ms ease 0s",
 		minHeight: "50px",
 		display: "block",
-		position: "fixed",
-		[theme.breakpoints.down('md')]: {
-			width: '100%'
-		},
-		[theme.breakpoints.up('sm')]: {
-			width: "calc(100% - 260px)"
-		}
-
-	
+		position: "sticky",
+		width: '100%'
 	},
 	container: {
 		...container,
