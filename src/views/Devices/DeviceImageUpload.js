@@ -40,11 +40,10 @@ class ImageUpload extends Component {
 		}
 	}
 	upload = async () => {
-		console.log(this.props.dId)
 		await uploadPictures({
 			device_id: this.props.dId,
 			files: this.state.images,
-		}).then(rs => { this.setState({ success: rs }); return rs})
+		}).then(rs => { this.setState({ success: rs }); return rs })
 	}
 	finish = () => {
 		this.setState({ images: [] })
@@ -79,7 +78,7 @@ class ImageUpload extends Component {
 										</Fragment>}
 								</Button>
 								<Button variant={"contained"} component="span" className={classes.button} onClick={this.handleReset}>
-									<Restore className={classes.iconButton} /> Reset 
+									<Restore className={classes.iconButton} /> Reset
 								</Button>
 							</ItemGrid>
 						</Grid> :
