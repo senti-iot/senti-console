@@ -20,8 +20,6 @@ const headerStyle = theme => ({
 		boxShadow: "none",
 		borderBottom: "0",
 		marginBottom: "0",
-		position: "absolute",
-		width: "100%",
 		paddingTop: "10px",
 		zIndex: "1029",
 		color: "#ffffff",
@@ -30,7 +28,16 @@ const headerStyle = theme => ({
 		padding: "10px 0",
 		transition: "all 150ms ease 0s",
 		minHeight: "50px",
-		display: "block"
+		display: "block",
+		position: "fixed",
+		[theme.breakpoints.down('md')]: {
+			width: '100%'
+		},
+		[theme.breakpoints.up('sm')]: {
+			width: "calc(100% - 260px)"
+		}
+
+	
 	},
 	container: {
 		...container,
