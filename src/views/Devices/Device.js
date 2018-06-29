@@ -37,6 +37,7 @@ class Device extends Component {
 				if (rs === null)
 					this.props.history.push('/404')
 				else {
+					console.log(rs)
 					this.setState({ device: rs, loading: false })
 					this.props.setHeader(rs.device_name ? rs.device_name : rs.device_id)
 				}
@@ -156,7 +157,7 @@ class Device extends Component {
 											<Build className={classes.leftIcon} />{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
 										</MenuItem>
 										<MenuItem onClick={this.handleOpenAssign}>
-											<LibraryBooks className={classes.leftIcon} />Assign to {device.project ? "new Project" : "Project"}
+											<LibraryBooks className={classes.leftIcon} />{device.project ? "Assign to new project" : "Move to another project"}
 										</MenuItem>
 										<MenuItem onClick={this.handleClose}>
 											<Edit className={classes.leftIcon} />Edit Details
