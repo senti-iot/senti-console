@@ -12,7 +12,7 @@ import {
 	blueCardHeader,
 	purpleCardHeader,
 	primaryCardHeader,
-	sentiCardHeader
+	sentiCardHeader,
 } from "assets/jss/material-dashboard-react.js";
 import teal from '@material-ui/core/colors/teal';
 
@@ -29,12 +29,16 @@ const regularCardStyle = theme => ({
 		display: 'flex',
 		padding: "4px"
 	},
+	expandPosition: {
+		marginLeft: 'auto',
+		textTransform: 'initial'
+	},
 	expand: {
 		transform: 'rotate(0deg)',
 		transition: theme.transitions.create('transform', {
 			duration: theme.transitions.duration.shortest,
 		}),
-		marginLeft: 'auto',
+		// marginLeft: 'auto',
 	},
 	expandOpen: {
 		transform: 'rotate(180deg)',

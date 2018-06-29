@@ -29,3 +29,4 @@ deploy_rsa
 deploy_rsa.pub
 src/theme_old.js
 src/notes
+.env

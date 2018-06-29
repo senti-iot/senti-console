@@ -6,7 +6,7 @@ import typographyStyle from "assets/jss/material-dashboard-react/typographyStyle
 function Caption({ ...props }) {
 	const { children } = props;
 	return (
-		<Typography variant={'caption'}>
+		<Typography variant={'caption'} className={props.className ? props.className : ''}>
 			{children}
 		</Typography>
 	);

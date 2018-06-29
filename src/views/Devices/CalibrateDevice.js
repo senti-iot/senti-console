@@ -345,7 +345,7 @@ class CalibrateDevice extends Component {
 		return (
 			<Paper classes={{ root: classes.paper }}>
 				{device ?
-					<Stepper activeStep={activeStep} orientation="vertical">
+					<Stepper activeStep={activeStep} orientation="vertical" >
 						{steps.map((label, index) => {
 							return (
 								<Step key={label}>

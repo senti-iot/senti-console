@@ -4,7 +4,7 @@ import { CircularProgress, Grid, Typography, withStyles, Button, IconButton, Men
 import moment from 'moment'
 import { ItemGrid, Warning, P } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
-import { SignalWifi2Bar, SignalWifi2BarLock, MoreVert, Build, LibraryBooks, Edit, Devices, DeveloperBoard } from '@material-ui/icons'
+import { SignalWifi2Bar, SignalWifi2BarLock, MoreVert, Build, LibraryBooks, Edit, Devices, DeveloperBoard, Image } from '@material-ui/icons'
 import { ConvertDDToDMS } from 'variables/functions'
 import { Link } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';
@@ -218,7 +218,9 @@ class Device extends Component {
 										</ItemGrid>
 										<ItemGrid >
 											<Caption>Coordinates:</Caption>
-											<Info>{ConvertDDToDMS(device.lat, false) + " " + ConvertDDToDMS(device.long, true)}</Info>
+											<Info><a title={'Open link to Google Maps'} href={`https://www.google.com/maps/search/${device.lat}+${device.long}`} target={'_blank'}>
+												{ConvertDDToDMS(device.lat, false) + " " + ConvertDDToDMS(device.long, true)}</a>
+											</Info>
 										</ItemGrid>
 									</Grid>
 									<Grid container>
@@ -234,6 +236,14 @@ class Device extends Component {
 								</Fragment>
 							}
 						/>
+					</ItemGrid>
+					<ItemGrid xs={12}>
+						<InfoCard
+							title={"Pictures"}
+							avatar={<Image/>}
+							// noAvatar
+							noExpand
+							content={this.state.img !== null ? <DeviceImage images={this.state.img} /> : this.renderLoader()}/>
 					</ItemGrid>
 					<ItemGrid xs={12}>
 						<InfoCard
@@ -290,16 +300,7 @@ class Device extends Component {
 							}
 						/>
 					</ItemGrid>
-					<ItemGrid xs={12}>
-						<InfoCard
-							noAvatar
-							noExpand
-							content={
-								this.state.img !== null ?
-									 <DeviceImage images={this.state.img} /> : this.renderLoader()
-							}
-						/>
-					</ItemGrid>
+					
 				</Grid>
 				: this.renderLoader()
 		)
