@@ -16,7 +16,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import { headerColor, primaryColor, hoverColor } from 'assets/jss/material-dashboard-react';
 import cx from "classnames";
-import { getAllProjects, assignProjectToDevice } from 'variables/data';
+import { getAllProjects } from 'variables/dataProjects';
+import { assignProjectToDevice } from 'variables/dataDevices'
 
 const styles = {
 	appBar: {

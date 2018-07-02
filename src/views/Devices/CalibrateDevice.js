@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withStyles, Grid, TextField, FormControl, InputLabel, Select, Input, MenuItem, FormHelperText } from '@material-ui/core';
 import { ItemGrid, Info, Danger } from 'components';
-import { getDevice, calibrateDevice, uploadPictures } from 'variables/data';
+import { getDevice, calibrateDevice, uploadPictures } from 'variables/dataDevices';
 import Caption from 'components/Typography/Caption';
 import CounterModal from 'components/Devices/CounterModal';
 import ImageUpload from './ImageUpload';

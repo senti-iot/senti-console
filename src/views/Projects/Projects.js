@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getAllProjects, deleteProject } from '../../variables/data';
+import { getAllProjects, deleteProject } from '../../variables/dataProjects';
 import { Grid, withStyles } from "@material-ui/core";
 
 import projectStyles from 'assets/jss/views/projects';

@@ -28,7 +28,7 @@ const TextF = (props) => {
 		<TextField
 			id={props.id}
 			label={props.label}
-			value={props.val}
+			value={props.value}
 			onChange={props.handleChange}
 			fullWidth={props.noFullWidth ? false : true}
 			multiline={props.multiline ? props.multiline : false}

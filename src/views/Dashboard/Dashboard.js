@@ -18,7 +18,7 @@ import {
 
 
 import dashboardStyle from "assets/jss/material-dashboard-react/dashboardStyle";
-import { getAllProjects } from "../../variables/data";
+import { getAllProjects } from "../../variables/dataProjects";
 
 class Dashboard extends React.Component {
 	constructor(props) {

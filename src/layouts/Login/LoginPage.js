@@ -15,7 +15,8 @@ import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 
 import loginPageStyle from "assets/jss/material-dashboard-react/loginPageStyle.js";
-import { loginUser, setToken } from "variables/data";
+import { loginUser } from "variables/dataLogin";
+import { setToken } from 'variables/data'
 import cookie from "react-cookies";
 import classNames from 'classnames';
 import CircularLoader from "components/Loader/CircularLoader";

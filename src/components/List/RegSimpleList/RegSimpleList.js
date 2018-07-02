@@ -16,7 +16,7 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import { withRouter } from 'react-router-dom';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
-import { dateFormatter, dateTimeFormatter } from "variables/functions";
+import { dateTimeFormatter } from "variables/functions";
 
 
 class RegSimpleList extends React.Component {

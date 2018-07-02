@@ -6,7 +6,7 @@ import DeviceSimpleList from 'components/List/DeviceSimpleList/DeviceSimpleList'
 import RegSimpleList from 'components/List/RegSimpleList/RegSimpleList';
 import moment from "moment";
 import React, { Component } from 'react';
-import { getProject } from 'variables/data';
+import { getProject } from 'variables/dataProjects';
 import { dateFormatter } from 'variables/functions';
 import InfoCard from 'components/Cards/InfoCard';
 import CircularLoader from 'components/Loader/CircularLoader';

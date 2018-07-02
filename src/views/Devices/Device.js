@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { getDevice, getAllPictures, assignProjectToDevice } from 'variables/data';
+import { getDevice, getAllPictures, assignProjectToDevice } from 'variables/dataDevices';
 import {  Grid, Typography, withStyles, Button, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
 import moment from 'moment'
 import { ItemGrid, Warning, P } from 'components';

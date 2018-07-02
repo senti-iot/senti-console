@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getAllDevices, deleteProject } from '../../variables/data';
+import { getAllDevices } from '../../variables/dataDevices';
 import { Grid, withStyles } from "@material-ui/core";
 
 import projectStyles from 'assets/jss/views/projects';
@@ -104,11 +104,6 @@ class Devices extends Component {
 	  window.clearInterval(this.liveStatus)
 	}
 	
-	deleteProjects = async (projects) => {
-		await deleteProject(projects).then(() => {
-			this.getDevices()
-		})
-	}
 	renderLoader = () => {
 		// const { classes } = this.props
 
@@ -123,7 +118,6 @@ class Devices extends Component {
 			handleFilterKeyword={this.handleFilterKeyword}
 			handleFilterStartDate={this.handleFilterStartDate}
 			filters={this.state.filters}
-			deleteProjects={this.deleteProjects}
 		/>
 	}
 

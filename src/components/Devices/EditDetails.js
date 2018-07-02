@@ -1,10 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { withStyles, Paper, Grid, FormControl, Button, InputLabel, Select, Input, MenuItem, /* FormHelperText */ } from '@material-ui/core';
 import { ItemGrid } from '..';
 import TextF from '../CustomInput/TextF';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import { Save } from '@material-ui/icons'
-import { getDevice } from 'variables/data';
+import { getDevice } from 'variables/dataDevices';
+import CircularLoader from '../Loader/CircularLoader';
+import { Save, Check } from '@material-ui/icons'
+
 class EditDetails extends Component {
 	constructor(props) {
 		super(props)
@@ -20,7 +22,9 @@ class EditDetails extends Component {
 	}
 	componentDidMount = async () => {
 		let id = this.props.match.params.id
-		await getDevice(id).then(rs => this.setState({ name: rs.name, description: rs.description, address: rs.address, loading: false }))
+		await getDevice(id).then(rs => this.setState({ name: rs.device_name, description: rs.description, address: rs.address, locationType: rs.locationType }))
+		this.setState({ loading: false })
+		console.log(this.state)
 	}
 
 	handleInput = (input) => e => {
@@ -39,10 +43,14 @@ class EditDetails extends Component {
 			'Office',
 			'Unspecified']
 	}
+	handleUpdateDevice = () => {
+		// await updateDevice
+	}
 	render() {
 		const { classes } = this.props
 		const { loading, name, description, address, locationType } = this.state
-		return !loading && (
+		console.log(name)
+		return loading ? <CircularLoader/> : (
 			<Grid container>
 				<Paper className={classes.paper}>
 					<form className={classes.form}>
@@ -98,9 +106,13 @@ class EditDetails extends Component {
 
 							<ItemGrid xs={12} container justify={'center'}>
 								<Button
-									color={'primary'}
-									variant={'contained'}>
-									<Save className={classes.leftIcon} />Save
+									variant="contained"
+									color="primary"
+									// className={buttonClassname}
+									disabled={this.state.creating}
+									onClick={this.state.created ? this.goToDevice : this.handleUpdateDevice}
+								>
+									{this.state.created ? <Fragment><Check /> Go to Device </Fragment> : <Fragment><Save className={classes.leftIcon} />Update Device</Fragment>}
 								</Button>
 							</ItemGrid>
 						</Grid>

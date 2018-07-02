@@ -6,7 +6,8 @@ import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import KeyArrRight from '@material-ui/icons/KeyboardArrowRight';
 import KeyArrLeft from '@material-ui/icons/KeyboardArrowLeft';
 // import { ItemGrid } from 'components';
-import { getAvailableDevices, createOneProject } from 'variables/data';
+import { getAvailableDevices } from 'variables/dataDevices';
+import { createOneProject } from 'variables/dataProjects'
 import { Save, Check } from '@material-ui/icons'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
