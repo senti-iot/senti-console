@@ -56,8 +56,8 @@ class Device extends Component {
 			this.props.history.push('/404')
 		}
 	}
-	getAllPics = async (id) => {
-		await getAllPictures(id).then(rs => this.setState({ img: rs }))
+	getAllPics = (id) => {
+		getAllPictures(id).then(rs => this.setState({ img: rs }))
 	}
 	handleOpenAssign = () => {
 		this.setState({ openAssign: true, anchorEl: null })
