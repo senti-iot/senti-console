@@ -1,12 +1,11 @@
 import React, { Component, Fragment } from 'react'
-import { withStyles, Paper, Grid, FormControl, Button, InputLabel, Select, Input, MenuItem, /* FormHelperText */ } from '@material-ui/core';
+import { withStyles, Paper, Grid, FormControl, Button, InputLabel, Select, Input, MenuItem, Collapse, /* FormHelperText */ } from '@material-ui/core';
 import { ItemGrid } from '..';
 import TextF from '../CustomInput/TextF';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { getDevice, updateDeviceDetails } from 'variables/dataDevices';
 import CircularLoader from '../Loader/CircularLoader';
 import { Save, Check } from '@material-ui/icons'
-
 class EditDetails extends Component {
 	constructor(props) {
 		super(props)
@@ -16,7 +15,9 @@ class EditDetails extends Component {
 			description: '',
 			address: '',
 			locationType: '',
-			loading: true
+			loading: true,
+			updating: false,
+			updated: false
 		}
 		props.setHeader("Edit Details of " + props.match.params.id)
 	}
@@ -45,27 +46,29 @@ class EditDetails extends Component {
 	}
 	handleUpdateDevice = async () => {
 		const { id, address, description, locationType, name } = this.state
-		await updateDeviceDetails({
+		this.setState({ updating: true })
+		 await updateDeviceDetails({
 			device_id: id,
 			device_name: name,
 			address: address,
 			description: description,
 			locationType: locationType
-		}).then(rs => rs.data === true ? this.setState({ success: true }) : null)
+		}).then(rs =>  rs ? this.setState({ updated: true, updating: false }) : null )
+		
+
+	}
+	goToDevice = () => {
+		this.props.history.push(`/device/${this.props.match.params.id}`)
 	}
 	render() {
 		const { classes } = this.props
 		const { loading, name, description, address, locationType } = this.state
-		console.log(name)
-		return loading ? <CircularLoader/> : (
+		return loading ? <CircularLoader /> : (
 			<Grid container>
 				<Paper className={classes.paper}>
 					<form className={classes.form}>
 
 						<Grid container>
-							{/* <ItemGrid xs={12}>
-						<Typography variant={"title"}>Edit {this.props.match.params.id}</Typography>
-					</ItemGrid> */}
 							<ItemGrid>
 								<TextF
 									id={'name'}
@@ -112,15 +115,21 @@ class EditDetails extends Component {
 							</ItemGrid>
 
 							<ItemGrid xs={12} container justify={'center'}>
-								<Button
-									variant="contained"
-									color="primary"
-									// className={buttonClassname}
-									disabled={this.state.creating}
-									onClick={this.state.created ? this.goToDevice : this.handleUpdateDevice}
-								>
-									{this.state.created ? <Fragment><Check /> Go to Device </Fragment> : <Fragment><Save className={classes.leftIcon} />Update Device</Fragment>}
-								</Button>
+								<ItemGrid xs={12}>
+									<Collapse in={this.state.updating} timeout={100} unmountOnExit>
+										<CircularLoader notCentered />
+									</Collapse>
+								</ItemGrid>
+								<ItemGrid>
+									<Button
+										variant="contained"
+										color="primary"
+										disabled={this.state.updating}
+										onClick={this.state.updated ? this.goToDevice : this.handleUpdateDevice}
+									>
+										{this.state.updated ? <Fragment><Check className={classes.leftIcon}/> Go to Device </Fragment> : <Fragment><Save className={classes.leftIcon} />Update Device</Fragment>}
+									</Button>
+								</ItemGrid>
 							</ItemGrid>
 						</Grid>
 					</form>

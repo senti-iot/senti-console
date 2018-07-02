@@ -229,7 +229,7 @@ class Device extends Component {
 										{device.project ? <MenuItem onClick={this.handleOpenUnassign}>
 											<LayersClear className={classes.leftIcon} /> Unassign from project
 										</MenuItem> : null}
-										<MenuItem onClick={this.handleClose}>
+										<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
 											<Edit className={classes.leftIcon} />Edit Details
 										</MenuItem>
 										))}
