@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, TextField, withStyles, Grid, FormControl, InputLabel, Select, Input, Chip, MenuItem, Collapse, CircularProgress, Button } from '@material-ui/core';
+import { Paper, withStyles, Grid, FormControl, InputLabel, Select, Input, Chip, MenuItem, Collapse, Button } from '@material-ui/core';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import { DatePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
@@ -15,7 +15,6 @@ import { withRouter } from 'react-router-dom'
 import Caption from '../Typography/Caption';
 import TextF from '../CustomInput/TextF';
 import ItemGrid from '../Grid/ItemGrid';
-import Info from '../Typography/Info';
 import CircularLoader from '../Loader/CircularLoader';
 
 const ITEM_HEIGHT = 32;
