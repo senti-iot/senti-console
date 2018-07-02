@@ -3,7 +3,7 @@ import { withStyles, Paper, Grid, FormControl, Button, InputLabel, Select, Input
 import { ItemGrid } from '..';
 import TextF from '../CustomInput/TextF';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import { getDevice } from 'variables/dataDevices';
+import { getDevice, updateDeviceDetails } from 'variables/dataDevices';
 import CircularLoader from '../Loader/CircularLoader';
 import { Save, Check } from '@material-ui/icons'
 
@@ -18,13 +18,13 @@ class EditDetails extends Component {
 			locationType: '',
 			loading: true
 		}
-		props.setHeader("Edit " + props.match.params.id)
+		props.setHeader("Edit Details of " + props.match.params.id)
 	}
 	componentDidMount = async () => {
 		let id = this.props.match.params.id
-		await getDevice(id).then(rs => this.setState({ name: rs.device_name, description: rs.description, address: rs.address, locationType: rs.locationType }))
+		await getDevice(id).then(rs => this.setState({ id: rs.device_id, name: rs.device_name, description: rs.description, address: rs.address, locationType: rs.locationType }))
 		this.setState({ loading: false })
-		console.log(this.state)
+		// console.log(this.state)
 	}
 
 	handleInput = (input) => e => {
@@ -43,8 +43,15 @@ class EditDetails extends Component {
 			'Office',
 			'Unspecified']
 	}
-	handleUpdateDevice = () => {
-		// await updateDevice
+	handleUpdateDevice = async () => {
+		const { id, address, description, locationType, name } = this.state
+		await updateDeviceDetails({
+			device_id: id,
+			device_name: name,
+			address: address,
+			description: description,
+			locationType: locationType
+		}).then(rs => rs.data === true ? this.setState({ success: true }) : null)
 	}
 	render() {
 		const { classes } = this.props
