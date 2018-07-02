@@ -80,7 +80,7 @@ class HeaderLinks extends React.Component {
 						<AccountBox className={classes.leftIcon} />My account
 					</MenuItem>
 					<MenuItem onClick={this.logOut} className={classes.menuItem}>
-						<Lock className={classes.leftIcon}/>Log out
+						<Lock className={classes.leftIcon}/>Sign out
 					 </MenuItem>
 				</Menu>
 			</Grid>
