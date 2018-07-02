@@ -200,9 +200,6 @@ class CreateProject extends Component {
 										</div>
 									)}
 									MenuProps={MenuProps}
-								// inputProps={{ classes: { underline: classes.underline } }}
-
-
 								>
 									{availableDevices.map(name => (
 										<MenuItem

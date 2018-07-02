@@ -8,6 +8,10 @@ var loginApi = create({
 		'Content-Type': 'application/json'
 	}
 })
+const mapApi = create({
+	baseURL: 'https://maps.googleapis.com/maps/api/geocode/',
+	timeout: 10000,
+})
 var imageApi = create({
 	baseURL: 'https://senti.cloud/rest/',
 	timeout: 10000,
@@ -147,7 +151,17 @@ export const getAllDevices = async () => {
 	return data
 }
 export const getDevice = async (id) => {
-	var data = await api.get('senti/device/' + id).then(rs => rs.data )
+	var data = await api.get('senti/device/' + id).then(rs => rs.data)
+	if (data.address)
+		return data
+	else {
+		
+		let gaddress = await mapApi.get(`json?latlng=${parseFloat(data.lat)},${parseFloat(data.long)}&key=${process.env.REACT_APP_SENTI_MAPSKEY}`).then(rs => rs.data);
+		if (gaddress.status === 'OK')
+		{
+			data.address = gaddress.results[0].formatted_address
+		}
+	}
 	return data
 }
 export const calibrateDevice = async (device) => {

@@ -5,7 +5,7 @@ import Devices from 'views/Devices/Devices';
 // import CreateProject from 'components/Project/CreateProject';
 
 export default withRouter((props) => {
-	// console.log(process.env.REACT_APP_SENTI_MAPSKEY)
+	console.log(process.env.REACT_APP_SENTI_MAPSKEY)
 	return (
 		<Switch>
 			{/* <Route path={'/devices/new'} component={() => <CreateProject setHeader={props.setHeader} />}/> */}
