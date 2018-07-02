@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { getDevice, getAllPictures } from 'variables/data';
-import { CircularProgress, Grid, Typography, withStyles, Button, IconButton, Menu, MenuItem } from '@material-ui/core';
+import {  Grid, Typography, withStyles, Button, IconButton, Menu, MenuItem } from '@material-ui/core';
 import moment from 'moment'
 import { ItemGrid, Warning, P } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
@@ -12,6 +12,7 @@ import SmallInfo from 'components/Card/SmallInfo';
 import AssignProject from 'components/Devices/AssignProject';
 import DeviceImage from 'components/Devices/DeviceImage';
 import ImageUpload from './DeviceImageUpload';
+import CircularLoader from 'components/Loader/CircularLoader';
 
 
 const Caption = (props) => <Typography variant={"caption"}>{props.children}</Typography>
@@ -28,7 +29,7 @@ class Device extends Component {
 			openAssign: false,
 			img: null
 		}
-		props.setHeader(<CircularProgress size={30} />)
+		props.setHeader('')
 	}
 	componentDidMount = async () => {
 		if (this.props.match) {
@@ -94,7 +95,8 @@ class Device extends Component {
 		return filtered
 	}
 	renderLoader = () => {
-		return <Grid container justify={'center'}><CircularProgress /></Grid>
+		// return <Grid container justify={'center'} alignItems="center"><CircularProgress /></Grid>
+		return <CircularLoader/>
 	}
 
 	handleClick = event => {

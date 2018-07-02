@@ -233,7 +233,7 @@ class CreateProject extends Component {
 								>
 									{this.state.created ? "Go to new Project" : <Fragment><Save className={classes.leftIcon} />Create Project</Fragment>}
 								</Button>
-								{this.state.creating && <CircularProgress size={24} className={classes.buttonProgress} />}
+								{/* {this.state.creating && <CircularProgress size={24} className={classes.buttonProgress} />} */}
 							</div>
 							{/* <div className={classes.button}>
 									<Button variant={"contained"} color="primary" size="medium" onClick={this.handleCreateProject}>

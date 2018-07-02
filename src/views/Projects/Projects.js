@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { getAllProjects, deleteProject } from '../../variables/data';
-import { Grid, CircularProgress, withStyles } from "@material-ui/core";
+import { Grid, withStyles } from "@material-ui/core";
 
 import projectStyles from 'assets/jss/views/projects';
 import ProjectTable from 'components/Project/ProjectTable';
+import CircularLoader from 'components/Loader/CircularLoader';
 var moment = require('moment');
 class Projects extends Component {
 	constructor(props) {
@@ -119,9 +120,9 @@ class Projects extends Component {
 		})
 	}
 	renderLoader = () => {
-		const { classes } = this.props
-
-		return <Grid container><CircularProgress className={classes.loader} /></Grid>
+		// const { classes } = this.props
+		// return <Grid container><CircularProgress className={classes.loader} /></Grid>
+		return <CircularLoader/>
 	}
 	renderAllProjects = () => {
 		const { loading } = this.state

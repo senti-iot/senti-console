@@ -26,7 +26,7 @@ const appStyle = theme => ({
 
 		// marginTop: "70px",
 		padding: "30px 30px",
-		minHeight: "calc(100% - 123px)",
+		minHeight: "calc(100vh - 130px)",
 
 		[theme.breakpoints.down("md")]: {
 			padding: "10px 10px 30px 10px",
@@ -36,6 +36,8 @@ const appStyle = theme => ({
 		}
 	},
 	container: {
+		minHeight: "calc(100vh - 130px)",
+
 		[theme.breakpoints.up("md")]: {
 			...container
 		},

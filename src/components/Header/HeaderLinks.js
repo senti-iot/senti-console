@@ -23,8 +23,9 @@ class HeaderLinks extends React.Component {
 		this.setState({ anchorProfile: null })
 	}
 	logOut = () => {
-		cookie.remove("SESSION")
 		this.setState({ anchorProfile: null })
+		console.log(cookie.remove("SESSION"))
+		cookie.remove("SESSION")
 		this.props.history.push('/login')
 	}
 	render() {

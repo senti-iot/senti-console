@@ -35,14 +35,19 @@ class Dashboard extends React.Component {
 	
 
 	componentDidMount = async () => {
+		this._isMounted = 1
 		let projects = await getAllProjects()
 		let devices = 0;
 		projects.forEach(p => {
 			return p.devices ? devices = devices + p.devices.length : ''
 		});
-		this.setState({ projects: projects, devices: devices })
+		if (this._isMounted)
+			this.setState({ projects: projects, devices: devices })
 	}
-
+	componentWillUnmount = () => {
+	  this._isMounted = 0
+	}
+	
 	handleChange = (value) => {
 		this.setState({ value });
 	};

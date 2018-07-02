@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Grid, Typography, withStyles } from '@material-ui/core';
+import { Button, Grid, Typography, withStyles } from '@material-ui/core';
 import { LibraryBooks, Devices, AssignmentTurnedIn, Person } from '@material-ui/icons'
 import projectStyles from 'assets/jss/views/projects';
 import { ItemGrid } from 'components';
@@ -9,6 +9,7 @@ import React, { Component } from 'react';
 import { getProject } from 'variables/data';
 import { dateFormatter } from 'variables/functions';
 import InfoCard from 'components/Cards/InfoCard';
+import CircularLoader from 'components/Loader/CircularLoader';
 
 const Caption = (props) => <Typography variant={"caption"}>{props.children}</Typography>
 const Info = (props) => <Typography paragraph classes={props.classes}>{props.children}</Typography>
@@ -34,7 +35,7 @@ class Project extends Component {
 			},
 			loading: true
 		}
-		props.setHeader(<CircularProgress size={30}/>)
+		props.setHeader('')
 
 	}
 	componentDidMount = async () => {
@@ -114,9 +115,9 @@ class Project extends Component {
 		})
 	}
 	renderLoader = () => {
-		const { classes } = this.props
-
-		return <Grid container><CircularProgress className={classes.loader} /></Grid>
+		// const { classes } = this.props
+		// return <Grid container><CircularProgress className={classes.loader} /></Grid>
+		return <CircularLoader/>
 	}
 	render() {
 		const { project, loading } = this.state

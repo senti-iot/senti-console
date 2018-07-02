@@ -66,8 +66,13 @@ class AssignProject extends React.Component {
 	}
 
 	componentDidMount = async () => {
-		await getAllProjects().then(rs => this.setState({ projects: rs }))
+		this._isMounted = 1
+		await getAllProjects().then(rs => this._isMounted ? this.setState({ projects: rs }) : null)
 	}
+	componentWillUnmount = () => {
+	  this._isMounted = 0
+	}
+	
 
 	selectProject = pId => e => {
 		e.preventDefault()

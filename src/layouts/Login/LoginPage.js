@@ -1,6 +1,6 @@
 import React from "react";
 // material-ui components
-import { InputAdornment, withStyles, CardContent, Collapse, CircularProgress, Grid } from "@material-ui/core";
+import { InputAdornment, withStyles, CardContent, Collapse } from "@material-ui/core";
 // @material-ui/icons
 import Person from "@material-ui/icons/Person";
 import LockOutline from "@material-ui/icons/LockOutline";
@@ -18,6 +18,7 @@ import loginPageStyle from "assets/jss/material-dashboard-react/loginPageStyle.j
 import { loginUser, setToken } from "variables/data";
 import cookie from "react-cookies";
 import classNames from 'classnames';
+import CircularLoader from "components/Loader/CircularLoader";
 
 class LoginPage extends React.Component {
 	constructor(props) {
@@ -176,7 +177,8 @@ class LoginPage extends React.Component {
 									</form>
 									<Collapse in={this.state.loggingIn} timeout="auto" unmountOnExit>
 										<CardContent>
-											<Grid container><CircularProgress className={classes.loader} /></Grid>
+											{/* <Grid container><CircularProgress className={classes.loader} /></Grid> */}
+											<CircularLoader notCentered/>
 										</CardContent>
 									</Collapse>
 								</Card>
