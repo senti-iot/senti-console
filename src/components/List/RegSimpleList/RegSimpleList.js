@@ -16,7 +16,7 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import { withRouter } from 'react-router-dom';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
-import { dateFormatter } from "variables/functions";
+import { dateFormatter, dateTimeFormatter } from "variables/functions";
 
 
 class RegSimpleList extends React.Component {
@@ -154,10 +154,10 @@ class RegSimpleList extends React.Component {
 										</TableCell>
 										<Hidden mdDown>
 											<TableCell className={classes.tableCell}>
-												{dateFormatter(n.interval)}
+												{dateTimeFormatter(n.interval)}
 											</TableCell>
 											<TableCell className={classes.tableCell}>
-												{dateFormatter(n.registered)}
+												{dateTimeFormatter(n.registered)}
 											</TableCell>
 										</Hidden>
 									</TableRow>

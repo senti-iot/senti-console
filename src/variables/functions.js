@@ -1,5 +1,9 @@
 var moment = require('moment');
 
+export const dateTimeFormatter = (date) => {
+	var dt = moment(date).format("DD.MM.YYYY HH:mm:ss")
+	return dt
+}
 export const dateFormatter = (date) => {
 	var a = moment(date).format("DD.MM.YYYY")
 	return a
