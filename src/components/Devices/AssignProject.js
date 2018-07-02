@@ -85,11 +85,9 @@ class AssignProject extends React.Component {
 		//Todo Snackbar success
 		if (Array.isArray(this.props.device_id))
 		{
-			console.log('Arrayed')	
 			this.props.device_id.map(async id => await assignProjectToDevice({ project_id: this.state.selectedProject, id: id }))
 		}
 		else {
-			console.log('crapped');
 			await assignProjectToDevice({ project_id: this.state.selectedProject, id: this.props.device_id });
 		}
 		this.props.handleClose(true)

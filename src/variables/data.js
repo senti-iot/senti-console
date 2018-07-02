@@ -116,12 +116,10 @@ export const uploadPictures = async (device) => {
 	[...device.files].map((img, index) => form.append('sentiFile[]', device.files[index]))
 	var config = {
 		onUploadProgress: function (progressEvent) {
-			var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-			console.log(percentCompleted)
+			// var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
 			//TODO: return percent
 		}
 	};
-	console.log(device.device_id)
 	var data = await imageApi.post('senti/device/image/' + device.device_id, form, config).then(rs => rs.data)
 	return data
 }
