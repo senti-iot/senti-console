@@ -58,9 +58,9 @@ const createprojectStyles = theme => ({
 		flexWrap: 'wrap',
 	},
 	paper: {
-		width: '100%',
-		// marginTop: theme.spacing.unit * 3,
-		borderRadius: "3px"
+		margin: '8px',
+		overflow: 'hidden',
+		borderRadius: '3px'
 	},
 	label: {
 		'&$focused': {

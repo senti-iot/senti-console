@@ -96,7 +96,7 @@ class Projects extends Component {
 		})
 	}
 	getProjects = async () => {
-		await getAllProjects().then(rs => this.setState({
+		await getAllProjects().then(rs => this._isMounted ? this.setState({
 			projects: rs,
 			projectHeader: [
 				{ id: 'title', label: 'Title', },
@@ -108,12 +108,17 @@ class Projects extends Component {
 				// { id: 'last_modified', label: 'Last Modified', },
 			],
 			loading: false
-		}))
+		}) : null)
 	}
 	componentDidMount = async () => {
+		this._isMounted = 1
 		await this.getProjects()
 		// this.props.setHeader("Projects")
 	}
+	componentWillUnmount = () => {
+	  this._isMounted = 0
+	}
+	
 	deleteProjects = async (projects) => {
 		await deleteProject(projects).then(() => {
 			this.getProjects()

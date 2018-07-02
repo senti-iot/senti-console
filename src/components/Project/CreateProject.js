@@ -13,6 +13,10 @@ import createprojectStyles from 'assets/jss/components/projects/createprojectSty
 import { withRouter } from 'react-router-dom'
 // import Info from '../Typography/Info';
 import Caption from '../Typography/Caption';
+import TextF from '../CustomInput/TextF';
+import ItemGrid from '../Grid/ItemGrid';
+import Info from '../Typography/Info';
+import CircularLoader from '../Loader/CircularLoader';
 
 const ITEM_HEIGHT = 32;
 const ITEM_PADDING_TOP = 8;
@@ -95,139 +99,126 @@ class CreateProject extends Component {
 			[classes.buttonSuccess]: created,
 		});
 		return (
-
 			<Grid container justify={'center'}>
 				{/* <ItemGrid xs={12} sm={12} md={12}> */}
 				<Paper className={classes.paper}>
 					<MuiPickersUtilsProvider utils={MomentUtils}>
 
 						<form className={classes.form}>
+							<Grid container justify={'center'}>
+								<ItemGrid container xs={6}>
+									<ItemGrid xs={12}>
+										<TextF
+											id={"title"}
+											label={"Title"}
+											value={this.state.title}
+											className={classes.textField}
+											handleChange={this.handleChange("title")}
+											margin="normal" />
+									</ItemGrid>
+									<ItemGrid xs={12}>
+										<TextF
+											id={"multiline-flexible"}
+											label={"Description"}
+											multiline
+											// rows={"4"}
+											// rowsMax={"4"}
+											color={"secondary"}
+											className={classes.textField}
+											value={this.state.description}
+											handleChange={this.handleChange("description")}
+											margin="normal" />
+									</ItemGrid>
+								</ItemGrid>
+								<ItemGrid xs={4}>
 
-							<TextField
-								id={"title"}
-								label={"Title"}
-								fullWidth
-								value={this.state.title}
-								className={classes.textField}
-								onChange={this.handleChange("title")}
-								InputLabelProps={
-									{
-										FormLabelClasses: {
-											root: classes.label,
-											focused: classes.focused,
-										},
-									}
-								}
-								InputProps={{
-									classes: {
-										underline: classes.underline,
-									}
-								}}
-								margin="normal" />
+									<div className={classes.datepicker}>
 
-							<TextField
-								fullWidth
-								id={"multiline-flexible"}
-								label={"Description"}
-								multiline
-								rows={"4"}
-								rowsMax={"4"}
-								color={"secondary"}
-								className={classes.textField}
-								value={this.state.description}
-								onChange={this.handleChange("description")}
-								InputLabelProps={{
-									FormLabelClasses: {
-										root: classes.label,
-										focused: classes.focused,
-									}
-								}}
-								InputProps={{ classes: { underline: classes.underline } }}
-								margin="normal" />
-							<div className={classes.datepicker}>
-
-								<DatePicker
-									autoOk
-									label="Start Date"
-									clearable
-									format="DD.MM.YYYY"
-									value={this.state.open_date}
-									onChange={this.handleDateChange("open_date")}
-									animateYearScrolling={false}
-									color="primary"
-									rightArrowIcon={<KeyArrRight />}
-									leftArrowIcon={<KeyArrLeft />}
-									InputLabelProps={{
-										FormLabelClasses: {
-											root: classes.label,
-											focused: classes.focused,
-										}
-									}}
-									InputProps={{ classes: { underline: classes.underline } }}
-
-								/>
-							</div>
-							<div className={classes.datepicker}>
-								<DatePicker
-									color="primary"
-									autoOk
-									label="End Date"
-									clearable
-									format="DD.MM.YYYY"
-									value={this.state.close_date}
-									onChange={this.handleDateChange("close_date")}
-									animateYearScrolling={false}
-									rightArrowIcon={<KeyArrRight />}
-									leftArrowIcon={<KeyArrLeft />}
-									InputLabelProps={{
-										FormLabelClasses: {
-											root: classes.label,
-											focused: classes.focused,
-										}
-									}}
-									InputProps={{ classes: { underline: classes.underline } }}
-
-								/>
-							</div>
-							<FormControl className={classes.formControl}>
-								{availableDevices ?
-									<Fragment>
-										<InputLabel FormLabelClasses={{
-											root: classes.label,
-											focused: classes.focused
-										}} color={"primary"} htmlFor="select-multiple-chip">Devices</InputLabel>
-										<Select
-											color={"primary"}
-											multiple
-											value={this.state.devices}
-											onChange={this.handleDeviceChange}
-											input={<Input id="select-multiple-chip" classes={{
-												underline: classes.underline
-											}} />}
-											renderValue={selected => (
-												<div className={classes.chips}>
-													{selected.map(value => <Chip key={value} label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_name} className={classes.chip} />)}
-												</div>
-											)}
-											MenuProps={MenuProps}
-										>
-											{ availableDevices.map(name => (
-												<MenuItem
-													key={name.device_id}
-													value={name.device_id}
-													style={{
-														fontWeight:
+										<DatePicker
+											autoOk
+											label="Start Date"
+											clearable
+											format="DD.MM.YYYY"
+											value={this.state.open_date}
+											onChange={this.handleDateChange("open_date")}
+											animateYearScrolling={false}
+											color="primary"
+											rightArrowIcon={<KeyArrRight />}
+											leftArrowIcon={<KeyArrLeft />}
+											InputLabelProps={{
+												FormLabelClasses: {
+													root: classes.label,
+													focused: classes.focused,
+												}
+											}}
+											InputProps={{ classes: { underline: classes.underline } }}
+										
+										/>
+									</div>
+									<div className={classes.datepicker}>
+										<DatePicker
+											color="primary"
+											autoOk
+											label="End Date"
+											clearable
+											format="DD.MM.YYYY"
+											value={this.state.close_date}
+											onChange={this.handleDateChange("close_date")}
+											animateYearScrolling={false}
+											rightArrowIcon={<KeyArrRight />}
+											leftArrowIcon={<KeyArrLeft />}
+											InputLabelProps={{
+												FormLabelClasses: {
+													root: classes.label,
+													focused: classes.focused,
+												}
+											}}
+											InputProps={{ classes: { underline: classes.underline } }}
+										
+										/>
+									</div>
+								</ItemGrid>
+								<FormControl className={classes.formControl}>
+									{availableDevices ?
+										<Fragment>
+											<InputLabel FormLabelClasses={{
+												root: classes.label,
+												focused: classes.focused
+											}} color={"primary"} htmlFor="select-multiple-chip">Devices</InputLabel>
+											<Select
+												color={"primary"}
+												multiple
+												value={this.state.devices}
+												onChange={this.handleDeviceChange}
+												input={<Input id="select-multiple-chip" classes={{
+													underline: classes.underline
+												}} />}
+												renderValue={selected => (
+													<div className={classes.chips}>
+														{selected.map(value => <Chip key={value} label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_name} className={classes.chip} />)}
+													</div>
+												)}
+												MenuProps={MenuProps}
+											>
+												{ availableDevices.map(name => (
+													<MenuItem
+														key={name.device_id}
+														value={name.device_id}
+														style={{
+															fontWeight:
 															this.state.devices.indexOf(name.device_id) === -1
 																? theme.typography.fontWeightRegular
 																: theme.typography.fontWeightMedium,
-													}}
-												>
-													{name.device_id + " - " + (name.device_name ? name.device_name : "No Name")}
-												</MenuItem>
-											))}
-										</Select>
-									</Fragment> : <Caption>There are no available Devices</Caption>}
-							</FormControl>
+														}}
+													>
+														{name.device_id + " - " + (name.device_name ? name.device_name : "No Name")}
+													</MenuItem>
+												))}
+											</Select>
+										</Fragment> : <Caption>There are no available Devices</Caption>}
+								</FormControl>
+							</Grid>
+
 						</form>
 						<Grid container justify={"center"}>
 							<div className={classes.wrapper}>
@@ -251,7 +242,7 @@ class CreateProject extends Component {
 						</Grid>
 						<Collapse in={this.state.creating} timeout="auto" unmountOnExit>
 
-							<Grid container><CircularProgress className={classes.loader} /></Grid>
+							<CircularLoader notCentered/>
 
 						</Collapse>
 
