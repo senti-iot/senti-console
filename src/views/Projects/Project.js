@@ -189,7 +189,7 @@ class Project extends Component {
 						/>
 					</ItemGrid >
 					<ItemGrid xs={12} sm={12} md={12}>
-						<InfoCard title={"Registrations"} avatar={<AssignmentTurnedIn/>} subheader={project.registrations.length}
+						<InfoCard title={"Data"} avatar={<AssignmentTurnedIn/>} subheader={project.registrations.length}
 							// hideFacts
 							content={
 								<Grid container>
@@ -203,7 +203,7 @@ class Project extends Component {
 									</ItemGrid>
 									<ItemGrid>
 										<Caption>
-												Most counts in a registration:
+												Device with most hits in a dataset:
 										</Caption>
 										<Info>
 											{
