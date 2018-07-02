@@ -1,5 +1,4 @@
-import { api, setToken, loginApi } from "./data";
-import cookie from 'react-cookies'
+import { api, setToken } from "./data";
 
 export const getOrgs = async () => {
 	// var OAToken = cookie.load('loginData').sessionID
@@ -24,12 +23,7 @@ export const getUserInfo = async (userID) => {
 	var user = await api.get('core/user/' + userID).then(rs => rs.data)
 	return user
 }
-export const logOut = async () => {
-	var session = cookie.load('loginData')
-	var data = await loginApi.delete('/auth/basic', JSON.stringify(session.sessionID))
-	cookie.remove('loginData')
-	return data
-}
+
 export const deleteOrgs = async (orgIds) => {
 	var result = false
 	await orgIds.forEach(async orgId => {

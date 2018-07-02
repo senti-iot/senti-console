@@ -63,10 +63,10 @@ export const calibrateDevice = async (device) => {
 }
 //Get Device Registrations for Project
 
-export const getDeviceRegistrations = async (deviceIds, pId) => {
-	var data = await api.get('senti/devicereg/' + deviceIds + '/' + pId).then(rs => rs.data)
-	return data ? data.sort((a, b) => a.reg_date > b.reg_date ? -1 : a.reg_date < b.reg_date ? 1 : 0) : []
-}
+// export const getDeviceRegistrations = async (deviceIds, pId) => {
+// 	var data = await api.get('senti/devicereg/' + deviceIds + '/' + pId).then(rs => rs.data)
+// 	return data ? data.sort((a, b) => a.reg_date > b.reg_date ? -1 : a.reg_date < b.reg_date ? 1 : 0) : []
+// }
 
 export const updateDevice = async (device) => {
 	var data = await api.put('senti/device', device).then(rs => { console.log(rs); return rs.data })
