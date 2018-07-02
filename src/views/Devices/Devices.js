@@ -79,7 +79,7 @@ class Devices extends Component {
 	}
 
 	getDevices = async () => {
-		await getAllDevices().then(rs => this.setState({
+		await getAllDevices().then(rs => this._isMounted ? this.setState({
 			devices: rs,
 			deviceHeader: [
 				{ id: "device_name", label: "Name" },
@@ -88,13 +88,18 @@ class Devices extends Component {
 				{ id: "org", label: "Organisation" }
 			],
 			loading: false
-		}))
+		}) : null)
 	}
 	componentDidMount = async () => {
+		this._isMounted = 1
 		await this.getDevices()
 		this.liveStatus = setInterval(this.getDevices, 10000);
 		// this.props.setHeader("Projects")
 	}
+	componentWillUnmount = () => {
+	  this._isMounted = 0
+	}
+	
 	componentWillUnmount = () => {
 	  window.clearInterval(this.liveStatus)
 	}

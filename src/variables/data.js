@@ -142,6 +142,7 @@ export const getAvailableDevices = async () => {
 }
 export const assignProjectToDevice = async (args) => {
 	var data = await api.post('senti/availabledevices', args).then(rs => rs.data)
+	console.log(data)
 	return data
 }
 export const getAllDevices = async () => {

@@ -7,10 +7,12 @@ import KeyArrRight from '@material-ui/icons/KeyboardArrowRight';
 import KeyArrLeft from '@material-ui/icons/KeyboardArrowLeft';
 // import { ItemGrid } from 'components';
 import { getAvailableDevices, createOneProject } from 'variables/data';
-import Save from '@material-ui/icons/Save'
+import { Save, Check } from '@material-ui/icons'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { withRouter } from 'react-router-dom'
+// import Info from '../Typography/Info';
+import Caption from '../Typography/Caption';
 
 const ITEM_HEIGHT = 32;
 const ITEM_PADDING_TOP = 8;
@@ -33,19 +35,25 @@ class CreateProject extends Component {
 			open_date: null,
 			close_date: null,
 			devices: [],
-			availableDevices: [],
+			availableDevices: null,
 			creating: false,
 			created: false
 		}
 	}
 	componentDidMount = () => {
+		this._isMounted = 1
 		getAvailableDevices().then(rs => {
-			this.setState({
-				availableDevices: rs
-			})
+			if (this._isMounted)
+				this.setState({
+					availableDevices: rs
+				})
 		})
 		this.props.setHeader("Create new project")
 	}
+	componentWillUnmount = () => {
+	  this._isMounted = 0
+	}
+	
 	handleDeviceChange = event => {
 		this.setState({ devices: event.target.value });
 	};
@@ -182,40 +190,43 @@ class CreateProject extends Component {
 								/>
 							</div>
 							<FormControl className={classes.formControl}>
-								<InputLabel FormLabelClasses={{
-									root: classes.label,
-									focused: classes.focused
-								}} color={"primary"} htmlFor="select-multiple-chip">Devices</InputLabel>
-								<Select
-									color={"primary"}
-									multiple
-									value={this.state.devices}
-									onChange={this.handleDeviceChange}
-									input={<Input id="select-multiple-chip" classes={{
-										underline: classes.underline
-									}} />}
-									renderValue={selected => (
-										<div className={classes.chips}>
-											{selected.map(value => <Chip key={value} label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_name} className={classes.chip} />)}
-										</div>
-									)}
-									MenuProps={MenuProps}
-								>
-									{availableDevices.map(name => (
-										<MenuItem
-											key={name.device_id}
-											value={name.device_id}
-											style={{
-												fontWeight:
-													this.state.devices.indexOf(name.device_id) === -1
-														? theme.typography.fontWeightRegular
-														: theme.typography.fontWeightMedium,
-											}}
+								{availableDevices ?
+									<Fragment>
+										<InputLabel FormLabelClasses={{
+											root: classes.label,
+											focused: classes.focused
+										}} color={"primary"} htmlFor="select-multiple-chip">Devices</InputLabel>
+										<Select
+											color={"primary"}
+											multiple
+											value={this.state.devices}
+											onChange={this.handleDeviceChange}
+											input={<Input id="select-multiple-chip" classes={{
+												underline: classes.underline
+											}} />}
+											renderValue={selected => (
+												<div className={classes.chips}>
+													{selected.map(value => <Chip key={value} label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_name} className={classes.chip} />)}
+												</div>
+											)}
+											MenuProps={MenuProps}
 										>
-											{name.device_id + " - " + (name.device_name ? name.device_name : "No Name")}
-										</MenuItem>
-									))}
-								</Select>
+											{ availableDevices.map(name => (
+												<MenuItem
+													key={name.device_id}
+													value={name.device_id}
+													style={{
+														fontWeight:
+															this.state.devices.indexOf(name.device_id) === -1
+																? theme.typography.fontWeightRegular
+																: theme.typography.fontWeightMedium,
+													}}
+												>
+													{name.device_id + " - " + (name.device_name ? name.device_name : "No Name")}
+												</MenuItem>
+											))}
+										</Select>
+									</Fragment> : <Caption>There are no available Devices</Caption>}
 							</FormControl>
 						</form>
 						<Grid container justify={"center"}>
@@ -228,7 +239,7 @@ class CreateProject extends Component {
 									disabled={this.state.creating}
 									onClick={this.state.created ? this.goToNewProject : this.handleCreateProject}
 								>
-									{this.state.created ? "Go to new Project" : <Fragment><Save className={classes.leftIcon} />Create Project</Fragment>}
+									{this.state.created ? <Fragment><Check/> Go to new Project </Fragment> : <Fragment><Save className={classes.leftIcon} />Create Project</Fragment>}
 								</Button>
 								{/* {this.state.creating && <CircularProgress size={24} className={classes.buttonProgress} />} */}
 							</div>
@@ -238,7 +249,7 @@ class CreateProject extends Component {
                      		 		</Button>
 							  	</div> */}
 						</Grid>
-						<Collapse in={this.state.loggingIn} timeout="auto" unmountOnExit>
+						<Collapse in={this.state.creating} timeout="auto" unmountOnExit>
 
 							<Grid container><CircularProgress className={classes.loader} /></Grid>
 
