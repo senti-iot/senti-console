@@ -1,7 +1,11 @@
 var moment = require('moment');
 
-export const dateTimeFormatter = (date) => {
-	var dt = moment(date).format("DD.MM.YYYY HH:mm:ss")
+export const dateTimeFormatter = (date, withSeconds) => {
+	var dt
+	if (withSeconds)
+		dt = moment(date).format("DD.MM.YYYY HH:mm:ss")
+	else
+		dt = moment(date).format("DD.MM.YYYY HH:mm")
 	return dt
 }
 export const dateFormatter = (date) => {

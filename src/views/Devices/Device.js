@@ -121,9 +121,12 @@ class Device extends Component {
 			}
 		})
 	}
+	renderImageLoader = () => {
+		return <CircularLoader notCentered/>
+	}
 	renderLoader = () => {
 		// return <Grid container justify={'center'} alignItems="center"><CircularProgress /></Grid>
-		return <CircularLoader/>
+		return <CircularLoader />
 	}
 	renderConfirmUnassign = () => {
 		const { device }  = this.state
@@ -136,7 +139,7 @@ class Device extends Component {
 			<DialogTitle id="alert-dialog-title">{"Unassign Project? "}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-						Are you sure you want to unassign {device.device_id + " " + device.device_name} from project {device.project.title}
+						Are you sure you want to unassign {device.device_id + " " + device.device_name} from project {device.project.title} ?
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
@@ -318,7 +321,7 @@ class Device extends Component {
 											<DeviceImage images={this.state.img} />
 											{this.renderImageUpload(device.device_id)}
 										</Grid>
-									: this.renderLoader()} />
+									: this.renderImageLoader()} />
 
 					</ItemGrid>
 					<ItemGrid xs={12}>
