@@ -171,7 +171,7 @@ class Project extends Component {
 												Most active device:
 										</Caption>
 										<Info>
-											{deviceMostCounts ? deviceMostCounts.device_name : "-"}
+											{deviceMostCounts ? deviceMostCounts.device_name ? deviceMostCounts.device_name : deviceMostCounts.device_id : "-"}
 										</Info>
 									</ItemGrid>
 									<ItemGrid>

@@ -115,7 +115,7 @@ class DeviceSimpleList extends React.Component {
 		const { classes, data } = this.props;
 		const { order, orderBy, selected, rowsPerPage, page } = this.state;
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-		const tableHead = [{ label: "Name" }, { label: "ID" }, { label: "Address" }, { label: "Status" }, { label: "Total Count" }]
+		const tableHead = [{ id: "device_name", label: "Name" }, { id: "device_id", label: "ID" }, { id: "address", label: "Address" }, { id: "liveStatus", label: "Status" }, { id: "totalCount", label: "Total Count" }]
 		return (
 			<Fragment>
 				<EnhancedTableToolbar
@@ -159,14 +159,14 @@ class DeviceSimpleList extends React.Component {
 											<Checkbox checked={isSelected} />
 										</TableCell>
 										<TableCell className={classes.tableCell}>
-											{n.device_name}
+											{n.device_name ? n.device_name : "No Name"}
 										</TableCell>
 										<TableCell className={classes.tableCellID}>
 											{n.device_id}
 										</TableCell>
 										<Hidden mdDown>
 											<TableCell className={classes.tableCell}>
-												{n.address}
+												{n.address ? n.address : "No address"}
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												{this.renderIcon(n.liveStatus)}

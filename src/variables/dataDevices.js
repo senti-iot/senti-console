@@ -43,7 +43,13 @@ export const getAllDevices = async () => {
 	var data = await api.get("senti/devices").then(rs => rs.data)
 	return data
 }
-
+export const getSimpleAddress = async (lat, long) => {
+	var gaddress = await mapApi.get(`json?latlng=${parseFloat(lat)},${parseFloat(long)}`).then(rs => rs.data);
+	if (gaddress.status === 'OK')
+		return gaddress.results[0].formatted_address
+	else
+		return null
+}
 export const getDevice = async (id) => {
 	var data = await api.get('senti/device/' + id).then(rs => rs.data)
 	if (data.address)
