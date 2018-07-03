@@ -46,15 +46,15 @@ export const getAllDevices = async () => {
 
 export const getDevice = async (id) => {
 	var data = await api.get('senti/device/' + id).then(rs => rs.data)
-	if (data.address)
-		return data
-	else {
-
-		let gaddress = await mapApi.get(`json?latlng=${parseFloat(data.lat)},${parseFloat(data.long)}&key=${process.env.REACT_APP_SENTI_MAPSKEY}`).then(rs => rs.data);
-		if (gaddress.status === 'OK') {
-			data.address = gaddress.results[0].formatted_address
-		}
+	// if (data.address)
+	// 	return data
+	// else {
+	// & key=${ process.env.REACT_APP_SENTI_MAPSKEY }
+	let gaddress = await mapApi.get(`json?latlng=${parseFloat(data.lat)},${parseFloat(data.long)}`).then(rs => rs.data);
+	if (gaddress.status === 'OK') {
+		data.address = gaddress.results[0].formatted_address
 	}
+	// }
 	return data
 }
 export const calibrateDevice = async (device) => {

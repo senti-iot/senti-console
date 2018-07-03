@@ -3,7 +3,7 @@ import cookie from 'react-cookies'
 
 export const loginApi = create({
 	baseURL: 'https://senti.cloud/rest/odeum/',
-	timout: 10000,
+	timout: 30000,
 	headers: {
 		'Accept': 'application/json',
 		'Content-Type': 'application/json'
@@ -11,11 +11,14 @@ export const loginApi = create({
 })
 export const mapApi = create({
 	baseURL: 'https://maps.googleapis.com/maps/api/geocode/',
-	timeout: 10000,
+	timeout: 30000,
+	params: {
+		key: process.env.REACT_APP_SENTI_MAPSKEY
+	}
 })
 export const imageApi = create({
 	baseURL: 'https://senti.cloud/rest/',
-	timeout: 10000,
+	timeout: 30000,
 	headers: {
 		'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
 		'Content-Type': 'multipart/form-data',
@@ -26,7 +29,7 @@ export const api = create({
 	baseURL: 'https://senti.cloud/rest/',
 	// baseURL: 'http://api.dashboard.senti.cloud/web/',
 	// baseURL: 'http://localhost:80',
-	timeout: 10000,
+	timeout: 30000,
 	headers: {
 		'Accept': 'application/json',
 		'Content-Type': 'application/json',
