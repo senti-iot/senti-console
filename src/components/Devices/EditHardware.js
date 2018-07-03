@@ -3,7 +3,7 @@ import { withStyles, Paper, Grid, Button, Collapse, /* FormHelperText */ } from 
 import { ItemGrid } from '..';
 import TextF from '../CustomInput/TextF';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import { getDevice, updateDeviceDetails } from 'variables/dataDevices';
+import { getDevice, updateDeviceHardware } from 'variables/dataDevices';
 import CircularLoader from '../Loader/CircularLoader';
 import { Save, Check } from '@material-ui/icons'
 import GridContainer from '../Grid/GridContainer';
@@ -30,7 +30,7 @@ class EditDetails extends Component {
 			updating: false,
 			updated: false
 		}
-		props.setHeader("Edit Details of " + props.match.params.id)
+		props.setHeader("Edit hardware info of " + props.match.params.id)
 	}
 	componentDidMount = async () => {
 		let id = this.props.match.params.id
@@ -74,7 +74,7 @@ class EditDetails extends Component {
 		const { id, RPImodel, SIMID, SIMProvider, adapter, cellNumber, memory, memoryModel, modemIMEI, modemModel, wifiModule, } = this.state
 		this.setState({ updating: true })
 		this.timer = setTimeout(async () => {
-			await updateDeviceDetails({
+			await updateDeviceHardware({
 				device_id: id,
 				RPImodel: RPImodel,
 				SIMID: SIMID,
