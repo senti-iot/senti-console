@@ -5,13 +5,19 @@ import PropTypes from "prop-types";
 // material-ui components
 import { withStyles, Grid } from "@material-ui/core";
 
-const style = {
+const style = theme => ({
 	grid: {
-		marginRight: "-15px",
-		marginLeft: "-15px",
+
+		[theme.breakpoints.down("md")]: {
+			padding: "10px 10px 30px 10px",
+		},
+		[theme.breakpoints.down("sm")]: {
+			padding: "8px 8px 30px 8px"
+		},
+		padding: "30px",
 		width: "auto"
 	}
-};
+})
 
 function GridContainer({ ...props }) {
 	const { classes, children, className, ...rest } = props;

@@ -1,10 +1,13 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { getAllDevices } from '../../variables/dataDevices';
-import { Grid, withStyles } from "@material-ui/core";
-
+import { /* Grid, */ withStyles, AppBar, Tabs, Tab, Paper } from "@material-ui/core";
+import { Switch, Route, Redirect } from 'react-router-dom'
 import projectStyles from 'assets/jss/views/projects';
 import DeviceTable from 'components/Devices/DeviceTable';
 import CircularLoader from 'components/Loader/CircularLoader';
+import { Maps } from 'components/Map/Maps';
+import GridContainer from 'components/Grid/GridContainer';
+import { ViewList, ViewModule, Map  } from '@material-ui/icons'
 var moment = require('moment');
 
 class Devices extends Component {
@@ -15,6 +18,7 @@ class Devices extends Component {
 			projects: [],
 			projectHeader: [],
 			loading: true,
+			route: 0,
 			filters: {
 				keyword: '',
 				startDate: null,
@@ -94,7 +98,13 @@ class Devices extends Component {
 		this._isMounted = 1
 		await this.getDevices()
 		this.liveStatus = setInterval(this.getDevices, 10000);
-		// this.props.setHeader("Projects")
+		if (this.props.location.pathname.includes('/map'))
+			this.setState({ route: 1 })
+		else {
+			if (this.props.location.pathname.includes('/cards'))
+				this.setState({ route: 2 })
+		}
+		this.props.setHeader("Devices")
 	}
 	componentWillUnmount = () => {
 	  this._isMounted = 0
@@ -120,13 +130,47 @@ class Devices extends Component {
 			filters={this.state.filters}
 		/>
 	}
+	renderList = () => {
+		// const { classes } = this.props
+		// this.setState({ route: 0 })
+		return <GridContainer container justify={'center'} /* className={classes.grid} */>
+			{this.renderAllDevices()}
+		</GridContainer>
 
-	render() {
+	}
+	renderMap = () => {
+		// this.setState({ route: 1 })
+
+		const { devices } = this.state
 		const { classes } = this.props
+		return <GridContainer container justify={'center'} >
+			<Paper className={classes.paper}>
+				<Maps isMarkerShown markers={devices} zoom={10}/> 
+			</Paper>
+		</GridContainer>
+	}
+	handleTabsChange = (e, value) => { 
+		this.setState({ route: value })
+	}
+	render() {
+		const { devices } = this.state
+		// console.log(this.props)
 		return (
-			<Grid container justify={'center'} className={classes.grid}> 
-				{this.renderAllDevices()}
-			</Grid>
+			<Fragment>
+				<AppBar position="static">
+					<Tabs value={this.state.route} onChange={this.handleTabsChange}>
+						<Tab title={'List View'} id={0} label={<ViewList />} onClick={() => { this.props.history.push(`${this.props.match.path}/list`) }}/>
+						<Tab title={'Map View'} id={1} label={<Map/>} onClick={() => { this.props.history.push(`${this.props.match.path}/map`)}}/>
+						<Tab title={'Cards View'} id={2} label={<ViewModule/>} onClick={() => { this.props.history.push(`${this.props.match.path}/cards`)}}/>
+					</Tabs>
+				</AppBar>
+				{devices ? <Switch>
+					<Route path={`${this.props.match.path}/map`} render={() => this.renderMap()} />
+					<Route path={`${this.props.match.path}/list`} render={() => this.renderList()} />
+					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
+				</Switch> : <CircularLoader/>}
+			</Fragment>
+
 
 		)
 	}

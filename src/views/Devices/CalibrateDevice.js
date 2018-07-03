@@ -6,6 +6,7 @@ import Caption from 'components/Typography/Caption';
 import CounterModal from 'components/Devices/CounterModal';
 import ImageUpload from './ImageUpload';
 import { NavigateNext, NavigateBefore, Done, Restore, MyLocation, Router, Devices } from '@material-ui/icons'
+import GridContainer from 'components/Grid/GridContainer';
 const styles = theme => ({
 	button: {
 		marginTop: theme.spacing.unit,
@@ -343,77 +344,80 @@ class CalibrateDevice extends Component {
 		const steps = getSteps();
 		const { activeStep, device, error } = this.state;
 		return (
-			<Paper classes={{ root: classes.paper }}>
-				{device ?
-					<Stepper activeStep={activeStep} orientation="vertical" >
-						{steps.map((label, index) => {
-							return (
-								<Step key={label}>
-									<StepLabel>{label}</StepLabel>
-									<StepContent>
-										<Typography paragraph>{getStepContent(index)}</Typography>
-										{/* <Divider/> */}
+			<GridContainer>
 
-										<Grid>
-											{error ? <Danger >{error.message}</Danger> : null}
-											{this.renderStep(index)}
-										</Grid>
-										<div className={classes.actionsContainer}>
-											<Grid container>
-												<Button
-													disabled={activeStep === 0}
-													onClick={this.handleBack}
-													className={classes.button}
-												>
-													<NavigateBefore className={classes.iconButton} />Back
-												</Button>
-												<Button
-													variant="contained"
-													color="primary"
-													onClick={this.handleNext}
-													className={classes.button}
-													disabled={this.stepChecker()}
-												>
-													{activeStep === steps.length - 1 ? <Fragment>
+				<Paper classes={{ root: classes.paper }}>
+					{device ?
+						<Stepper activeStep={activeStep} orientation="vertical" >
+							{steps.map((label, index) => {
+								return (
+									<Step key={label}>
+										<StepLabel>{label}</StepLabel>
+										<StepContent>
+											<Typography paragraph>{getStepContent(index)}</Typography>
+											{/* <Divider/> */}
 
-														<Done className={classes.iconButton} />Finish
-													</Fragment> :
-														<Fragment>
-															<NavigateNext className={classes.iconButton} />Next
-														</Fragment>}
-												</Button>
+											<Grid>
+												{error ? <Danger >{error.message}</Danger> : null}
+												{this.renderStep(index)}
 											</Grid>
-										</div>
-									</StepContent>
-								</Step>
-							);
-						})}
-					</Stepper> : null}
-				{activeStep === steps.length && device && (
-					<Paper square elevation={0} className={classes.resetContainer}>
-						<Typography variant={'title'}>Success</Typography>
-						<Typography paragraph>
-							Your Senti device is now configured and calibrated and will produce better results when collecting data. To further enhance the accuracy of your data collection, return to the site of installation and do a new calibration on a regular basis. You can set a reminder for Device Calibration in the Settings section.
-						</Typography>
-						<Grid container>
+											<div className={classes.actionsContainer}>
+												<Grid container>
+													<Button
+														disabled={activeStep === 0}
+														onClick={this.handleBack}
+														className={classes.button}
+													>
+														<NavigateBefore className={classes.iconButton} />Back
+													</Button>
+													<Button
+														variant="contained"
+														color="primary"
+														onClick={this.handleNext}
+														className={classes.button}
+														disabled={this.stepChecker()}
+													>
+														{activeStep === steps.length - 1 ? <Fragment>
 
-							<ItemGrid xs>
-								<Button onClick={this.handleFinish} color={"primary"} variant={"contained"} className={classes.buttonMargin}>
-									<Router className={classes.iconButton} />Go to device {device.device_id}
-								</Button>
-								<Button onClick={this.handleGoToDeviceList} color={"primary"} variant={"contained"} className={classes.buttonMargin}>
-									<Devices className={classes.iconButton} />Go to device list
-								</Button>
-							</ItemGrid>
-							<ItemGrid xs>
-								<Button onClick={this.handleReset} className={classes.button} >
-									<Restore className={classes.iconButton} />Reset
-								</Button>
-							</ItemGrid>
-						</Grid>
-					</Paper>
-				)}
-			</Paper>
+															<Done className={classes.iconButton} />Finish
+														</Fragment> :
+															<Fragment>
+																<NavigateNext className={classes.iconButton} />Next
+															</Fragment>}
+													</Button>
+												</Grid>
+											</div>
+										</StepContent>
+									</Step>
+								);
+							})}
+						</Stepper> : null}
+					{activeStep === steps.length && device && (
+						<Paper square elevation={0} className={classes.resetContainer}>
+							<Typography variant={'title'}>Success</Typography>
+							<Typography paragraph>
+							Your Senti device is now configured and calibrated and will produce better results when collecting data. To further enhance the accuracy of your data collection, return to the site of installation and do a new calibration on a regular basis. You can set a reminder for Device Calibration in the Settings section.
+							</Typography>
+							<Grid container>
+
+								<ItemGrid xs>
+									<Button onClick={this.handleFinish} color={"primary"} variant={"contained"} className={classes.buttonMargin}>
+										<Router className={classes.iconButton} />Go to device {device.device_id}
+									</Button>
+									<Button onClick={this.handleGoToDeviceList} color={"primary"} variant={"contained"} className={classes.buttonMargin}>
+										<Devices className={classes.iconButton} />Go to device list
+									</Button>
+								</ItemGrid>
+								<ItemGrid xs>
+									<Button onClick={this.handleReset} className={classes.button} >
+										<Restore className={classes.iconButton} />Reset
+									</Button>
+								</ItemGrid>
+							</Grid>
+						</Paper>
+					)}
+				</Paper>
+			</GridContainer>
 		)
 	}
 }

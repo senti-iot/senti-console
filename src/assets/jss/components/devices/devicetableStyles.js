@@ -27,7 +27,7 @@ const devicetableStyles = theme => ({
 	},
 	root: {
 		width: '100%',
-		marginTop: theme.spacing.unit,
+		margin: theme.spacing.unit,
 		borderRadius: "3px",
 	},
 	table: {

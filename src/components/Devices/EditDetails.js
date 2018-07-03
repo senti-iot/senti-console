@@ -6,6 +6,7 @@ import createprojectStyles from 'assets/jss/components/projects/createprojectSty
 import { getDevice, updateDeviceDetails } from 'variables/dataDevices';
 import CircularLoader from '../Loader/CircularLoader';
 import { Save, Check } from '@material-ui/icons'
+import GridContainer from '../Grid/GridContainer';
 class EditDetails extends Component {
 	constructor(props) {
 		super(props)
@@ -69,7 +70,7 @@ class EditDetails extends Component {
 		const { classes } = this.props
 		const { loading, name, description, address, locationType } = this.state
 		return loading ? <CircularLoader /> : (
-			<Grid container>
+			<GridContainer>
 				<Paper className={classes.paper}>
 					<form className={classes.form}>
 
@@ -139,7 +140,7 @@ class EditDetails extends Component {
 						</Grid>
 					</form>
 				</Paper>
-			</Grid>
+			</GridContainer>
 		)
 	}
 }

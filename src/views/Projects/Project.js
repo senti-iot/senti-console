@@ -10,6 +10,7 @@ import { getProject } from 'variables/dataProjects';
 import { dateFormatter } from 'variables/functions';
 import InfoCard from 'components/Cards/InfoCard';
 import CircularLoader from 'components/Loader/CircularLoader';
+import GridContainer from 'components/Grid/GridContainer';
 
 const Caption = (props) => <Typography variant={"caption"}>{props.children}</Typography>
 const Info = (props) => <Typography paragraph classes={props.classes}>{props.children}</Typography>
@@ -124,7 +125,7 @@ class Project extends Component {
 		const { regMostCounts, deviceMostCounts } = this.state.facts
 		return (
 			!loading ?
-				<Grid container justify={'center'} alignContent={'space-between'} spacing={8}>
+				<GridContainer justify={'center'} alignContent={'space-between'} spacing={8}>
 					<ItemGrid xs={12} sm={12} md={12}>
 						<InfoCard title={project.title} avatar={<LibraryBooks/>} subheader={project.description}
 							noExpand
@@ -259,7 +260,7 @@ class Project extends Component {
 							}
 						/>
 					</ItemGrid>
-				</Grid>
+				</GridContainer>
 				: this.renderLoader())
 	}
 }

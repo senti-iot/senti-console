@@ -4,7 +4,7 @@ import {  Grid, Typography, withStyles, Button, IconButton, Menu, MenuItem, Dial
 import moment from 'moment'
 import { ItemGrid, Warning, P } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
-import { SignalWifi2Bar, SignalWifi2BarLock, MoreVert, Build, LibraryBooks, Edit, Devices, DeveloperBoard, Image, LayersClear } from '@material-ui/icons'
+import { SignalWifi2Bar, SignalWifi2BarLock, MoreVert, Build, LibraryBooks, Edit, Devices, DeveloperBoard, Image, LayersClear, Map } from '@material-ui/icons'
 import { ConvertDDToDMS } from 'variables/functions'
 import { Link } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';
@@ -13,6 +13,8 @@ import AssignProject from 'components/Devices/AssignProject';
 import DeviceImage from 'components/Devices/DeviceImage';
 import ImageUpload from './DeviceImageUpload';
 import CircularLoader from 'components/Loader/CircularLoader';
+import { Maps } from 'components/Map/Maps';
+import GridContainer from 'components/Grid/GridContainer';
 
 
 const Caption = (props) => <Typography variant={"caption"}>{props.children}</Typography>
@@ -189,17 +191,13 @@ class Device extends Component {
 		const { classes } = this.props
 		return (
 			!loading ?
-				<Grid container justify={'center'} alignContent={'space-between'} spacing={8}>
+				<GridContainer justify={'center'} alignContent={'space-between'} spacing={8}>
 					<AssignProject device_id={this.state.device.device_id} open={this.state.openAssign} handleClose={this.handleCloseAssign} />
 					{device.project ? this.renderConfirmUnassign() : null}
 					<ItemGrid xs={12}>
+				
 						<InfoCard
-							title={
-
-								<Typography paragraph className={classes.typoNoMargin}>
-									Device Details
-								</Typography>
-							}
+							title={<Typography paragraph className={classes.typoNoMargin}>Device Details</Typography>}
 							topAction={
 								<ItemGrid>
 									<IconButton
@@ -304,9 +302,20 @@ class Device extends Component {
 											<Info>{device.project ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : "Unassigned"}</Info>
 										</ItemGrid>
 									</Grid>
-								</Fragment>
-							}
-						/>
+								</Fragment>}/>
+					</ItemGrid>
+					<ItemGrid xs={12}>
+						<InfoCard
+							title={"Map"}
+							subheader={`Coordinates: ${device.lat} ${device.long}`}
+							avatar={<Map />}
+							noExpand
+							content={
+								<Grid container justify={'center'}>
+									<Maps isMarkerShown markers={[{ lat: device.lat, long: device.long }]} />
+								</Grid>
+							} />
+
 					</ItemGrid>
 					<ItemGrid xs={12}>
 						<InfoCard
@@ -380,7 +389,7 @@ class Device extends Component {
 						/>
 					</ItemGrid>
 
-				</Grid>
+				</GridContainer>
 				: this.renderLoader()
 		)
 	}

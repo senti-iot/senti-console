@@ -4,6 +4,7 @@ import { CloudUpload, Restore, Check } from '@material-ui/icons'
 import { ItemGrid, Success, Warning } from 'components';
 import ImageCarousel from 'components/Devices/ImageCarousel';
 import { uploadPictures } from 'variables/dataDevices';
+import GridContainer from 'components/Grid/GridContainer';
 
 
 const styles = theme => ({
@@ -54,7 +55,7 @@ class ImageUpload extends Component {
 		const { classes } = this.props
 		const { images, success } = this.state
 		return (
-			<Grid container className={classes.grid}>
+			<GridContainer /* className={classes.grid} */>
 				<ItemGrid xs={12} noPadding container extraClass={classes.grid}>
 					{images.length > 0 ? <ImageCarousel label={'Preview selected images'} images={[...images]} /> : null}
 				</ItemGrid>
@@ -101,7 +102,7 @@ class ImageUpload extends Component {
 						</Fragment>
 					}
 				</ItemGrid>
-			</Grid>
+			</GridContainer>
 		)
 	}
 }
