@@ -27,7 +27,10 @@ class EditDetails extends Component {
 		this.setState({ loading: false })
 		// console.log(this.state)
 	}
-
+	componentWillUnmount = () => {
+		clearTimeout(this.timer);
+	}
+	
 	handleInput = (input) => e => {
 		e.preventDefault()
 		this.setState({ [input]: e.target.value })
@@ -45,16 +48,18 @@ class EditDetails extends Component {
 			'Unspecified']
 	}
 	handleUpdateDevice = async () => {
+		clearTimeout(this.timer);
 		const { id, address, description, locationType, name } = this.state
 		this.setState({ updating: true })
+		this.timer = setTimeout(async () => {
 		 await updateDeviceDetails({
-			device_id: id,
-			device_name: name,
-			address: address,
-			description: description,
-			locationType: locationType
-		}).then(rs =>  rs ? this.setState({ updated: true, updating: false }) : null )
-		
+				device_id: id,
+				device_name: name,
+				address: address,
+				description: description,
+				locationType: locationType
+			}).then(rs =>  rs ? this.setState({ updated: true, updating: false }) : null )
+		}, 2e3)
 
 	}
 	goToDevice = () => {
