@@ -28,12 +28,12 @@ const appStyle = theme => ({
 		// padding: "30px 30px",
 		minHeight: "calc(100vh - 130px)",
 
-		[theme.breakpoints.down("md")]: {
-			padding: "10px 10px 30px 10px",
-		},
-		[theme.breakpoints.down("sm")]: {
-			padding: "8px 8px 30px 8px"
-		}
+		// [theme.breakpoints.down("md")]: {
+		// 	padding: "10px 10px 30px 10px",
+		// },
+		// [theme.breakpoints.down("sm")]: {
+		// 	padding: "8px 8px 30px 8px"
+		// }
 	},
 	container: {
 		minHeight: "calc(100vh - 130px)",
@@ -41,12 +41,12 @@ const appStyle = theme => ({
 		[theme.breakpoints.up("md")]: {
 			...container
 		},
-		[theme.breakpoints.down("md")]: {
-			paddingRight: "3px",
-			paddingLeft: "3px",
-			marginRight: "auto",
-			marginLeft: "auto"
-		}
+		// [theme.breakpoints.down("md")]: {
+		// 	paddingRight: "3px",
+		// 	paddingLeft: "3px",
+		// 	marginRight: "auto",
+		// 	marginLeft: "auto"
+		// }
 	},
 	map: {
 		marginTop: "70px"

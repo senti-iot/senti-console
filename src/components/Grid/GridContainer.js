@@ -15,7 +15,8 @@ const style = theme => ({
 			padding: "8px 8px 30px 8px"
 		},
 		padding: "30px",
-		width: "auto"
+		width: "auto",
+		margin: 0
 	}
 })
 
