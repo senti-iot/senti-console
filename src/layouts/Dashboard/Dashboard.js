@@ -23,19 +23,24 @@ class App extends React.Component {
 	
 	  this.state = {
 		 	mobileOpen: false,
-			headerTitle: ''
+			headerTitle: '',
+			goBackButton: false
 	  }
 	}
 	
 	handleDrawerToggle = () => {
 		this.setState({ mobileOpen: !this.state.mobileOpen });
 	};
-	handleSetHeaderTitle = (title) => {
+	handleSetHeaderTitle = (title, goBackButton) => {
 		if (title !== this.state.headerTitle)
 			this.setState({
-				headerTitle: title
+				headerTitle: title,
+				goBackButton: goBackButton
 			})
 	};
+	handleGoBackButton = () => {
+		this.props.history.goBack()
+	}
 	componentDidMount() {
 		if (navigator.platform.indexOf('Win') > -1) {
 			// eslint-disable-next-line
@@ -54,6 +59,8 @@ class App extends React.Component {
 					<Header
 						routes={dashboardRoutes}
 						handleDrawerToggle={this.handleDrawerToggle}
+						goBackButton={this.state.goBackButton}
+						gbbFunc={this.handleGoBackButton}
 						{...rest}
 						headerTitle={this.state.headerTitle}
 					/>

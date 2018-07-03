@@ -4,7 +4,7 @@ import { Typography } from '@material-ui/core';
 
 class NotFound extends Component {
 	componentDidMount = () => {
-	  this.props.setHeader("")
+	  this.props.setHeader("", true)
 	}
 	
 	render() {

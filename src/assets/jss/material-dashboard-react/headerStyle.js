@@ -39,6 +39,16 @@ const headerStyle = theme => ({
 	flex: {
 		flex: 1
 	},
+	goBackButton: {
+		color: "inherit",
+		background: "transparent",
+		boxShadow: "none",
+		"&:hover,&:focus": {
+			background: "transparent"
+		},
+		width: 50,
+		height: 50
+	},
 	title: {
 		...defaultFont,
 		lineHeight: "30px",

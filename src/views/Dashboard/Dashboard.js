@@ -30,7 +30,7 @@ class Dashboard extends React.Component {
 			projects: [],
 			devices: 0
 	  }
-		props.setHeader("Console")
+		props.setHeader("Console", false)
 
 	}
 	

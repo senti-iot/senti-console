@@ -46,7 +46,7 @@ class Project extends Component {
 					if (rs === null)
 						this.props.history.push('/404')
 					else {
-						this.props.setHeader(rs.title)
+						this.props.setHeader(rs.title, true)
 						this.setState({
 							project: rs, loading: false, facts: {
 								deviceMostCounts: this.deviceMostCount(rs.devices),

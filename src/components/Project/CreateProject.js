@@ -52,7 +52,7 @@ class CreateProject extends Component {
 					availableDevices: rs
 				})
 		})
-		this.props.setHeader("Create new project")
+		this.props.setHeader("Create new project", true)
 	}
 	componentWillUnmount = () => {
 	  this._isMounted = 0

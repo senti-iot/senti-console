@@ -40,7 +40,7 @@ class Device extends Component {
 				this.props.history.push('/404')
 			else {
 				this.setState({ device: rs, loading: false })
-				this.props.setHeader(rs.device_name ? rs.device_name : rs.device_id)
+				this.props.setHeader(rs.device_name ? rs.device_name : rs.device_id, true)
 					
 			}
 		})

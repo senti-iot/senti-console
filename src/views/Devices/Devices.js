@@ -104,7 +104,7 @@ class Devices extends Component {
 			if (this.props.location.pathname.includes('/cards'))
 				this.setState({ route: 2 })
 		}
-		this.props.setHeader("Devices")
+		this.props.setHeader("Devices", false)
 	}
 	componentWillUnmount = () => {
 	  this._isMounted = 0

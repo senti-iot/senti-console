@@ -82,7 +82,7 @@ class CalibrateDevice extends Component {
 			images: null,
 			locationType: ''
 		}
-		props.setHeader(props.match.params.id + ' Calibration')
+		props.setHeader(props.match.params.id + ' Calibration', true)
 	}
 	handleInput = (input) => e => {
 		this.setState({ [input]: e.target.value })

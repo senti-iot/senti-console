@@ -1,13 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Menu } from "@material-ui/icons";
+import { Menu, KeyboardArrowLeft } from "@material-ui/icons";
 import {
 	withStyles,
 	AppBar,
 	Toolbar,
 	IconButton,
 	Hidden,
-	Button
+	Button,
 } from "@material-ui/core";
 import cx from "classnames";
 
@@ -17,7 +17,7 @@ import HeaderLinks from "./HeaderLinks";
 
 
 function Header({ ...props }) {
-	const { classes, color } = props;
+	const { classes, color, goBackButton, gbbFunc } = props;
 	const appBarClasses = cx({
 		[" " + classes[color]]: color
 	});
@@ -25,6 +25,9 @@ function Header({ ...props }) {
 		<AppBar position={'absolute'} className={classes.appBar + appBarClasses}>
 			<Toolbar className={classes.container}>
 				<div className={classes.flex}>
+					{goBackButton && <Button onClick={gbbFunc} variant={"fab"} className={classes.goBackButton}>
+						<KeyboardArrowLeft width={40} height={40} />
+					</Button>}
 					<Button className={classes.title}>
 						{props.headerTitle}
 					</Button>

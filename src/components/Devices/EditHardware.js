@@ -30,7 +30,7 @@ class EditDetails extends Component {
 			updating: false,
 			updated: false
 		}
-		props.setHeader("Edit hardware info of " + props.match.params.id)
+		props.setHeader("Edit hardware info of " + props.match.params.id, true)
 	}
 	componentDidMount = async () => {
 		let id = this.props.match.params.id

@@ -22,7 +22,7 @@ class Projects extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader("Projects")
+		props.setHeader("Projects", false)
 	}
 	filterByDate = (items) => {
 		const { startDate, endDate } = this.state.filters
