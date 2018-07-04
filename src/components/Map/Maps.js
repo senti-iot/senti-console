@@ -23,7 +23,6 @@ export const Maps = compose(
 )(props => {
 	let defaultLat = props.markers[0] ? props.markers[0].lat : parseFloat(55.298) //Denmark,
 	let defaultLng = props.markers[0] ? props.markers[0].long : parseFloat(10.605) //Denmark
-	console.log(defaultLat, defaultLng)
 	return <GoogleMap defaultZoom={props.zoom ? props.zoom : 7} defaultCenter={{ lat: defaultLat, lng: defaultLng } }>
 		{props.isMarkerShown && (
 			<MarkerClusterer

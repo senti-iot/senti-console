@@ -28,6 +28,7 @@ class Device extends Component {
 			device: null,
 			loading: true,
 			anchorEl: null,
+			anchorElHardware: null,
 			openAssign: false,
 			openUnassign: false,
 			img: null
@@ -154,13 +155,18 @@ class Device extends Component {
 			</DialogActions>
 		</Dialog>
 	}
-	handleClick = event => {
+	handleOpenActionsDetails = event => {
 		this.setState({ anchorEl: event.currentTarget });
 	};
-
-	handleClose = () => {
+	handleCloseActionsDetails = () => {
 		this.setState({ anchorEl: null });
 	};
+	handleOpenActionsHardware = e => {
+		this.setState({ anchorElHardware: e.currentTarget })
+	}
+	handleCloseActionsHardware = e => {
+		this.setState({ anchorElHardware: null })
+	}
 	renderStatus = (status) => {
 		const { classes } = this.props
 
@@ -187,7 +193,7 @@ class Device extends Component {
 		}
 	}
 	render() {
-		const { device, loading, anchorEl } = this.state
+		const { device, loading, anchorEl, anchorElHardware } = this.state
 		const { classes } = this.props
 		return (
 			!loading ?
@@ -204,14 +210,14 @@ class Device extends Component {
 										aria-label="More"
 										aria-owns={anchorEl ? 'long-menu' : null}
 										aria-haspopup="true"
-										onClick={this.handleClick}>
+										onClick={this.handleOpenActionsDetails}>
 										<MoreVert />
 									</IconButton>
 									<Menu
 										id="long-menu"
 										anchorEl={anchorEl}
 										open={Boolean(anchorEl)}
-										onClose={this.handleClose}
+										onClose={this.handleCloseActionsDetails}
 										PaperProps={{
 											style: {
 												maxHeight: 200,
@@ -229,9 +235,6 @@ class Device extends Component {
 										</MenuItem> : null}
 										<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
 											<Edit className={classes.leftIcon} />Edit details
-										</MenuItem>
-										<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit-hardware`)}>
-											<Edit className={classes.leftIcon} />Edit hardware info 
 										</MenuItem>
 										))}
 									</Menu>
@@ -341,6 +344,33 @@ class Device extends Component {
 							title={"Hardware"}
 							avatar={<DeveloperBoard />}
 							subheader={''}
+							topAction={
+								<ItemGrid>
+									<IconButton
+										aria-label="More"
+										aria-owns={anchorElHardware ? 'long-menu' : null}
+										aria-haspopup="true"
+										onClick={this.handleOpenActionsHardware}>
+										<MoreVert />
+									</IconButton>
+									<Menu
+										id="long-menu"
+										anchorEl={anchorElHardware}
+										open={Boolean(anchorElHardware)}
+										onClose={this.handleCloseActionsHardware}
+										PaperProps={{
+											style: {
+												maxHeight: 200,
+												minWidth: 200
+											}
+										}}>
+										<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit-hardware`)}>
+											<Edit className={classes.leftIcon} />Edit hardware info
+										</MenuItem>
+										))}
+									</Menu>
+								</ItemGrid>
+							}
 							content={
 								<Grid container>
 									<Grid container >

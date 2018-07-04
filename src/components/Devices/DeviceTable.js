@@ -261,9 +261,9 @@ class EnhancedTable extends React.Component {
 												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCellID}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+												<div classes={{ root: classes.paragraphCell }}>
 													{this.renderIcon(n.liveStatus)}
-												</Typography>
+												</div>
 											</TableCell>
 										</Hidden>
 		
