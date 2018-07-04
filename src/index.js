@@ -12,6 +12,17 @@ import { primaryColor, secondaryColor, hoverColor } from "assets/jss/material-da
 const hist = createBrowserHistory();
 
 const theme = createMuiTheme({
+	overrides: {
+		MuiInput: {
+			// Name of the styleSheet
+			underline: {
+				'&:hover:not($disabled):not($focused):not($error):before': {
+					borderBottomColor: primaryColor,
+					height: 1,
+				},
+	  },
+		}
+	},
 	palette: {
 		primary: {
 			// light: will be calculated from palette.primary.main,
