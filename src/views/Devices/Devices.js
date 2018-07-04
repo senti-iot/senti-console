@@ -103,11 +103,31 @@ class Devices extends Component {
 		else {
 			if (this.props.location.pathname.includes('/cards'))
 				this.setState({ route: 2 })
+			else { 
+				this.setState({ route: 0 })
+			}
 		}
 		this.props.setHeader("Devices", false)
 	}
+	componentDidUpdate = (prevProps, prevState) => {
+		if (this.props.location.pathname !== prevProps.location.pathname) {	
+			if (this.props.location.pathname.includes('/map'))
+				this.setState({ route: 1 })
+			else {
+				if (this.props.location.pathname.includes('/cards'))
+					this.setState({ route: 2 })
+				else {
+					this.setState({ route: 0 })
+				}
+			}
+		}
+	}
+	
 	componentWillUnmount = () => {
-	  this._isMounted = 0
+		this._isMounted = 0
+		clearInterval(this.liveStatus)
+		
+		// this.liveStatus= null
 	}
 	
 	componentWillUnmount = () => {
