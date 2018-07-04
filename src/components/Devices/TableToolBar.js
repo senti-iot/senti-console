@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 // import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { boxShadow } from 'assets/jss/material-dashboard-react';
-import { Menu, MenuItem, Grid, Tooltip } from '@material-ui/core';
+import { Menu, MenuItem, Grid, /* Tooltip */ } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 // import KeyArrRight from '@material-ui/icons/KeyboardArrowRight';
 // import KeyArrLeft from '@material-ui/icons/KeyboardArrowLeft';

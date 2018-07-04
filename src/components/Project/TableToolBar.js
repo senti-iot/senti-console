@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { primaryColor, boxShadow } from 'assets/jss/material-dashboard-react';
-import { Menu, MenuItem, Grid, Tooltip } from '@material-ui/core';
+import { Menu, MenuItem, Grid, /* Tooltip */ } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import KeyArrRight from '@material-ui/icons/KeyboardArrowRight';
 import KeyArrLeft from '@material-ui/icons/KeyboardArrowLeft';
