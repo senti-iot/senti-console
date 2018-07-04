@@ -239,9 +239,9 @@ class EnhancedTable extends React.Component {
 												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+												<div className={classes.paragraphCell}>
 													{this.renderIcon(n.liveStatus)}
-												</Typography>
+												</div>
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
@@ -261,12 +261,11 @@ class EnhancedTable extends React.Component {
 												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCellID}>
-												<div classes={{ root: classes.paragraphCell }}>
+												<div className={classes.paragraphCell}>
 													{this.renderIcon(n.liveStatus)}
 												</div>
 											</TableCell>
 										</Hidden>
-		
 									</TableRow>
 								);
 							})}

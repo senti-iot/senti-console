@@ -1,20 +1,21 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component, /* Fragment */ } from 'react'
 import { getDevice, getAllPictures, assignProjectToDevice } from 'variables/dataDevices';
 import {  Grid, Typography, withStyles, Button, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
 import moment from 'moment'
-import { ItemGrid, Warning, P } from 'components';
+import { ItemGrid, /* Warning, P  */} from 'components';
 import InfoCard from 'components/Cards/InfoCard';
-import { SignalWifi2Bar, SignalWifi2BarLock, MoreVert, Build, LibraryBooks, Edit, Devices, DeveloperBoard, Image, LayersClear, Map } from '@material-ui/icons'
-import { ConvertDDToDMS } from 'variables/functions'
-import { Link } from 'react-router-dom'
+import { /* SignalWifi2Bar, SignalWifi2BarLock, */ MoreVert, /* Build, LibraryBooks, */ Edit, /* Devices, */ DeveloperBoard, Image, /* LayersClear, */ Map } from '@material-ui/icons'
+// import { ConvertDDToDMS } from 'variables/functions'
+// import { Link } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';
-import SmallInfo from 'components/Card/SmallInfo';
+// import SmallInfo from 'components/Card/SmallInfo';
 import AssignProject from 'components/Devices/AssignProject';
 import DeviceImage from 'components/Devices/DeviceImage';
 import ImageUpload from './DeviceImageUpload';
 import CircularLoader from 'components/Loader/CircularLoader';
 import { Maps } from 'components/Map/Maps';
 import GridContainer from 'components/Grid/GridContainer';
+import DeviceDetails from './DeviceCard/DeviceDetails';
 
 
 const Caption = (props) => <Typography variant={"caption"}>{props.children}</Typography>
@@ -27,7 +28,7 @@ class Device extends Component {
 		this.state = {
 			device: null,
 			loading: true,
-			anchorEl: null,
+			// anchorEl: null,
 			anchorElHardware: null,
 			openAssign: false,
 			openUnassign: false,
@@ -155,45 +156,21 @@ class Device extends Component {
 			</DialogActions>
 		</Dialog>
 	}
-	handleOpenActionsDetails = event => {
-		this.setState({ anchorEl: event.currentTarget });
-	};
-	handleCloseActionsDetails = () => {
-		this.setState({ anchorEl: null });
-	};
+	// handleOpenActionsDetails = event => {
+	// 	this.setState({ anchorEl: event.currentTarget });
+	// };
+	// handleCloseActionsDetails = () => {
+	// 	this.setState({ anchorEl: null });
+	// };
 	handleOpenActionsHardware = e => {
 		this.setState({ anchorElHardware: e.currentTarget })
 	}
 	handleCloseActionsHardware = e => {
 		this.setState({ anchorElHardware: null })
 	}
-	renderStatus = (status) => {
-		const { classes } = this.props
 
-
-		switch (status) {
-			case 1:
-				return <SignalWifi2Bar className={classes.yellowSignal} />
-
-			case 2:
-				return <SignalWifi2Bar className={classes.greenSignal} />
-
-			case 0:
-				return <SignalWifi2Bar className={classes.redSignal} />
-
-			case null:
-				return <div>
-					<SignalWifi2BarLock className={classes.redSignal} />
-					<Typography paragraph>
-						Error
-					</Typography>
-				</div>
-			default:
-				break;
-		}
-	}
 	render() {
-		const { device, loading, anchorEl, anchorElHardware } = this.state
+		const { device, loading, /* anchorEl, */ anchorElHardware } = this.state
 		const { classes } = this.props
 		return (
 			!loading ?
@@ -201,8 +178,14 @@ class Device extends Component {
 					<AssignProject device_id={this.state.device.device_id} open={this.state.openAssign} handleClose={this.handleCloseAssign} />
 					{device.project ? this.renderConfirmUnassign() : null}
 					<ItemGrid xs={12}>
-				
-						<InfoCard
+						<DeviceDetails
+							device={device}
+							history={this.props.history}
+							match={this.props.match}
+							handleOpenAssign={this.handleOpenAssign}
+							handleOpenUnassign={this.handleOpenUnassign}
+						/>
+						{/* <InfoCard
 							title={<Typography paragraph className={classes.typoNoMargin}>Device Details</Typography>}
 							topAction={
 								<ItemGrid>
@@ -308,7 +291,7 @@ class Device extends Component {
 											<Info>{device.project ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : "Unassigned"}</Info>
 										</ItemGrid>
 									</Grid>
-								</Fragment>}/>
+								</Fragment>}/> */}
 					</ItemGrid>
 					<ItemGrid xs={12}>
 						<InfoCard
@@ -318,7 +301,7 @@ class Device extends Component {
 							noExpand
 							content={
 								<Grid container justify={'center'}>
-									<Maps isMarkerShown markers={[{ lat: device.lat, long: device.long }]} />
+									<Maps isMarkerShown markers={[{ lat: device.lat, long: device.long }]} zoom={15} />
 								</Grid>
 							} />
 
