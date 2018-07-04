@@ -163,11 +163,11 @@ class EnhancedTable extends React.Component {
 		const { classes } = this.props
 		switch (status) {
 			case 1: 
-				return <SignalWifi2Bar className={classes.yellowSignal}/>
+				return <div title={"Connected, No Data"}><SignalWifi2Bar className={classes.yellowSignal}/></div>
 			case 2: 
-				return <SignalWifi2Bar className={classes.greenSignal} />
+				return <div title={"Connected, Data"}><SignalWifi2Bar className={classes.greenSignal} /></div>
 			case 0:
-				return <SignalWifi2Bar className={classes.redSignal} />
+				return <div title={"Not Connected, No Data"}><SignalWifi2Bar className={classes.redSignal} /></div>
 			case null:
 				return <SignalWifi2BarLock className={classes.redSignal} />
 			default:

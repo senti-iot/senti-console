@@ -172,15 +172,15 @@ let EnhancedTableToolbar = props => {
 			<div className={classes.actions}>
 				{numSelected > 0 ? (
 					<Fragment>
-						<Tooltip title="Options">
-							<IconButton
-								aria-label="More"
-								aria-owns={props.anchorElMenu ? 'long-menu' : null}
-								aria-haspopup="true"
-								onClick={props.handleToolbarMenuOpen}>
-								<MoreVertIcon />
-							</IconButton>
-						</Tooltip>
+						{/* <Tooltip title="Options"> */}
+						<IconButton
+							aria-label="More"
+							aria-owns={props.anchorElMenu ? 'long-menu' : null}
+							aria-haspopup="true"
+							onClick={props.handleToolbarMenuOpen}>
+							<MoreVertIcon />
+						</IconButton>
+						{/* </Tooltip> */}
 						<Menu
 							id="long-menu"
 							anchorEl={props.anchorElMenu}
@@ -211,23 +211,23 @@ let EnhancedTableToolbar = props => {
 				) :
 					(<Fragment>
 						{props.noAdd ? null :
-							<Tooltip title={'Add New Project'}>
-								<IconButton aria-label="Add new project" onClick={() => props.history.push('/projects/new')}>
-									<Add />
-								</IconButton>
-							</Tooltip>
+							// <Tooltip title={'Add New Project'}>
+							<IconButton aria-label="Add new project" onClick={() => props.history.push('/projects/new')}>
+								<Add />
+							</IconButton>
+							// </Tooltip>
 						}
 						{props.noFilterIcon ? null :
 							<Fragment>
-								<Tooltip title="Filter list">
-									<IconButton
-										className={classes.secondAction}
-										aria-label="Filter list"
-										aria-owns={props.anchorFilterMenu ? "filter-menu" : null}
-										onClick={props.handleFilterMenuOpen}>
-										<FilterListIcon />
-									</IconButton>
-								</Tooltip>
+								{/* <Tooltip title="Filter list"> */}
+								<IconButton
+									className={classes.secondAction}
+									aria-label="Filter list"
+									aria-owns={props.anchorFilterMenu ? "filter-menu" : null}
+									onClick={props.handleFilterMenuOpen}>
+									<FilterListIcon />
+								</IconButton>
+								{/* </Tooltip> */}
 								<Menu
 									id="filter-menu"
 									anchorEl={props.anchorFilterMenu}

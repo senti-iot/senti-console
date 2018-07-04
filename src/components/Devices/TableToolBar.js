@@ -32,15 +32,15 @@ let selectedRender = props => {
 			</Typography>
 		</ItemGrid>
 		<ItemGrid>
-			<Tooltip title="Options">
-				<IconButton
-					aria-label="More"
-					aria-owns={props.anchorElMenu ? 'long-menu' : null}
-					aria-haspopup="true"
-					onClick={props.handleToolbarMenuOpen}>
-					<MoreVertIcon />
-				</IconButton>
-			</Tooltip>
+			{/* <Tooltip title="Options"> */}
+			<IconButton
+				aria-label="More"
+				aria-owns={props.anchorElMenu ? 'long-menu' : null}
+				aria-haspopup="true"
+				onClick={props.handleToolbarMenuOpen}>
+				<MoreVertIcon />
+			</IconButton>
+			{/* </Tooltip> */}
 			<Menu
 				id="long-menu"
 				anchorEl={props.anchorElMenu}
@@ -84,23 +84,23 @@ let defaultRender = props => {
 		</ItemGrid>
 		<ItemGrid xs={2} container justify={'flex-end'}>
 			{props.noAdd ? null :
-				<Tooltip title={'Add New Project'}>
-					<IconButton aria-label="Add new project" onClick={AddNewProject}>
-						<Add />
-					</IconButton>
-				</Tooltip>
+				// <Tooltip title={'Add New Project'}>
+				<IconButton aria-label="Add new project" onClick={AddNewProject}>
+					<Add />
+				</IconButton>
+				// </Tooltip>
 			}
 			{props.noFilterIcon ? null :
 				<Fragment>
-					<Tooltip title="Filter list">
-						<IconButton
-							className={classes.secondAction}
-							aria-label="Filter list"
-							aria-owns={props.anchorFilterMenu ? "filter-menu" : null}
-							onClick={props.handleFilterMenuOpen}>
-							<FilterListIcon />
-						</IconButton>
-					</Tooltip>
+					{/* <Tooltip title="Filter list"> */}
+					<IconButton
+						className={classes.secondAction}
+						aria-label="Filter list"
+						aria-owns={props.anchorFilterMenu ? "filter-menu" : null}
+						onClick={props.handleFilterMenuOpen}>
+						<FilterListIcon />
+					</IconButton>
+					{/* </Tooltip> */}
 					<Menu
 						id="filter-menu"
 						anchorEl={props.anchorFilterMenu}
