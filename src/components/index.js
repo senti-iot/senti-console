@@ -11,8 +11,8 @@ import StatsCard from "./Cards/StatsCard.js";
 // // // CustomButtons
 // #############################
 
-import Button from "./CustomButtons/Button.js";
-import IconButton from "./CustomButtons/IconButton.js";
+// import Button from "./CustomButtons/Button.js";
+// import IconButton from "./CustomButtons/IconButton.js";
 
 // ##############################
 // // // CustomInput
@@ -75,8 +75,8 @@ export {
 	RegularCard,
 	StatsCard,
 	// CustomButtons
-	Button,
-	IconButton,
+	// Button,
+	// IconButton,
 	// CustomInput
 	CustomInput,
 	// Footer

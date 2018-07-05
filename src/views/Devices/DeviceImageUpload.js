@@ -70,7 +70,7 @@ class ImageUpload extends Component {
 										: null}
 							</ItemGrid>
 							<ItemGrid xs={12} container justify={'center'}>
-								<Button variant="contained" color={success ? "primary" : ''} component="span" className={classes.button} onClick={success ? this.finish : this.upload}>
+								<Button variant="contained" color={success ? "primary" : 'default'} component="span" className={classes.button} onClick={success ? this.finish : this.upload}>
 									{!success ? <Fragment>
 										<CloudUpload className={classes.iconButton} /> Upload
 									</Fragment>

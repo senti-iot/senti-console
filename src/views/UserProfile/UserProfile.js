@@ -1,10 +1,10 @@
 import React from "react";
-import { Grid, InputLabel } from "@material-ui/core";
+import { Grid, InputLabel, Button } from "@material-ui/core";
 
 import {
 	ProfileCard,
 	RegularCard,
-	Button,
+	// Button,
 	CustomInput,
 	ItemGrid
 } from "components";

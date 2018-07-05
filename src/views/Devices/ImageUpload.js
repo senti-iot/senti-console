@@ -59,7 +59,7 @@ class ImageUpload extends Component {
 					/>
 					<label htmlFor="contained-button-file">
 						<Button variant="contained" component="span" className={classes.button}>
-						Add Images<CloudUpload className={classes.iconButton} />
+							<CloudUpload className={classes.iconButton} /> Add Images
 						</Button>
 					</label>
 				</ItemGrid>

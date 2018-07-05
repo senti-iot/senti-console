@@ -1,13 +1,13 @@
 import React from "react";
 // material-ui components
-import { InputAdornment, withStyles, CardContent, Collapse } from "@material-ui/core";
+import { InputAdornment, withStyles, CardContent, Collapse, Button } from "@material-ui/core";
 // @material-ui/icons
 import Person from "@material-ui/icons/Person";
 import LockOutline from "@material-ui/icons/LockOutline";
 // core components
 import GridContainer from "components/Grid/GridContainer";
 import GridItem from "components/Grid/ItemGrid";
-import Button from "components/CustomButtons/Button.js";
+// import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
@@ -171,7 +171,7 @@ class LoginPage extends React.Component {
 											/>
 										</CardBody>
 										<CardFooter className={classes.cardFooter}>
-											<Button color="primary" size="large" onClick={this.loginUser}>
+											<Button variant={'contained'} color={'primary'} size="large" className={classes.loginButton} onClick={this.loginUser}>
 												Sign in
                      						 </Button>
 										</CardFooter>

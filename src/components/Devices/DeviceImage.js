@@ -92,8 +92,8 @@ class DeviceImage extends React.Component {
 						onChangeIndex={this.handleStepChange}
 						enableMouseEvents
 						animateHeight={true}
-						slideStyle={{ height: "100%" }}
-						containerStyle={{ minHeight: '400px' }}
+						// slideStyle={{ height: "100%" }}
+						// containerStyle={{ minHeight: '400px' }}
 						action={this.getRef}
 					>
 						{images.map((step, i) => (
