@@ -1,25 +1,19 @@
-import React, { Component, /* Fragment */ } from 'react'
+import React, { Component } from 'react'
 import { getDevice, getAllPictures, assignProjectToDevice } from 'variables/dataDevices';
-import {  Grid, Typography, withStyles, Button, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
+import {  Grid, withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
 import moment from 'moment'
-import { ItemGrid, /* Warning, P  */} from 'components';
+import { ItemGrid } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
-import { /* SignalWifi2Bar, SignalWifi2BarLock, */ MoreVert, /* Build, LibraryBooks, */ Edit, /* Devices, */ DeveloperBoard, Image, /* LayersClear, */ Map } from '@material-ui/icons'
-// import { ConvertDDToDMS } from 'variables/functions'
-// import { Link } from 'react-router-dom'
+import {  Map } from '@material-ui/icons'
 import deviceStyles from 'assets/jss/views/deviceStyles';
-// import SmallInfo from 'components/Card/SmallInfo';
 import AssignProject from 'components/Devices/AssignProject';
-import DeviceImage from 'components/Devices/DeviceImage';
 import ImageUpload from './DeviceImageUpload';
 import CircularLoader from 'components/Loader/CircularLoader';
 import { Maps } from 'components/Map/Maps';
 import GridContainer from 'components/Grid/GridContainer';
-import DeviceDetails from './DeviceCard/DeviceDetails';
-
-
-const Caption = (props) => <Typography variant={"caption"}>{props.children}</Typography>
-const Info = (props) => <Typography paragraph classes={props.classes}>{props.children}</Typography>
+import DeviceDetails from './DeviceCards/DeviceDetails';
+import DeviceHardware from './DeviceCards/DeviceHardware';
+import DeviceImages from './DeviceCards/DeviceImages';
 
 class Device extends Component {
 	constructor(props) {
@@ -28,7 +22,6 @@ class Device extends Component {
 		this.state = {
 			device: null,
 			loading: true,
-			// anchorEl: null,
 			anchorElHardware: null,
 			openAssign: false,
 			openUnassign: false,
@@ -52,7 +45,7 @@ class Device extends Component {
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {
-				this.getAllPics(id)
+				// this.getAllPics(id)
 				await this.getDevice(id)
 			}
 		}
@@ -129,7 +122,6 @@ class Device extends Component {
 		return <CircularLoader notCentered/>
 	}
 	renderLoader = () => {
-		// return <Grid container justify={'center'} alignItems="center"><CircularProgress /></Grid>
 		return <CircularLoader />
 	}
 	renderConfirmUnassign = () => {
@@ -156,22 +148,10 @@ class Device extends Component {
 			</DialogActions>
 		</Dialog>
 	}
-	// handleOpenActionsDetails = event => {
-	// 	this.setState({ anchorEl: event.currentTarget });
-	// };
-	// handleCloseActionsDetails = () => {
-	// 	this.setState({ anchorEl: null });
-	// };
-	handleOpenActionsHardware = e => {
-		this.setState({ anchorElHardware: e.currentTarget })
-	}
-	handleCloseActionsHardware = e => {
-		this.setState({ anchorElHardware: null })
-	}
+
 
 	render() {
-		const { device, loading, /* anchorEl, */ anchorElHardware } = this.state
-		const { classes } = this.props
+		const { device, loading } = this.state
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'} spacing={8}>
@@ -185,113 +165,6 @@ class Device extends Component {
 							handleOpenAssign={this.handleOpenAssign}
 							handleOpenUnassign={this.handleOpenUnassign}
 						/>
-						{/* <InfoCard
-							title={<Typography paragraph className={classes.typoNoMargin}>Device Details</Typography>}
-							topAction={
-								<ItemGrid>
-									<IconButton
-										aria-label="More"
-										aria-owns={anchorEl ? 'long-menu' : null}
-										aria-haspopup="true"
-										onClick={this.handleOpenActionsDetails}>
-										<MoreVert />
-									</IconButton>
-									<Menu
-										id="long-menu"
-										anchorEl={anchorEl}
-										open={Boolean(anchorEl)}
-										onClose={this.handleCloseActionsDetails}
-										PaperProps={{
-											style: {
-												maxHeight: 200,
-												minWidth: 200
-											}
-										}}>
-										<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}>
-											<Build className={classes.leftIcon} />{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
-										</MenuItem>
-										<MenuItem onClick={this.handleOpenAssign}>
-											<LibraryBooks className={classes.leftIcon} />{device.project ? "Move to another project" : "Assign to new project"}
-										</MenuItem>
-										{device.project ? <MenuItem onClick={this.handleOpenUnassign}>
-											<LayersClear className={classes.leftIcon} /> Unassign from project
-										</MenuItem> : null}
-										<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
-											<Edit className={classes.leftIcon} />Edit details
-										</MenuItem>
-										))}
-									</Menu>
-								</ItemGrid>
-							}
-							avatar={<Devices />}
-							subheader={device.device_id}
-							noExpand
-							content={
-								<Fragment>
-									<Grid container>
-										{!(device.lat > 0) && !(device.long > 0) &&
-											<ItemGrid xs={12}>
-												<Warning>
-													<ItemGrid container xs={12}>
-														<P>
-															Device has not been manually calibrated!
-														</P>
-													</ItemGrid>
-													<ItemGrid container xs={12}>
-														<Button
-															color={"default"}
-															onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}
-															variant={"outlined"}>
-															Manual Calibration
-														</Button>
-													</ItemGrid>
-												</Warning>
-											</ItemGrid>}
-										<ItemGrid>
-											<SmallInfo caption={"Name"} info={device.device_name ? device.device_name : "No name"} />
-										</ItemGrid>
-										<ItemGrid>
-											<Caption>Status:</Caption>
-											{this.renderStatus(device.liveStatus)}
-										</ItemGrid>
-										<ItemGrid>
-											<Caption>Temperature:</Caption>
-											<Info>
-												{device.temperature} &#8451;
-											</Info>
-										</ItemGrid>
-										<ItemGrid xs={12}>
-											<Caption>Description:</Caption>
-											<Info>{device.description ? device.description : ""}</Info>
-										</ItemGrid>
-									</Grid>
-									<Grid container>
-										<ItemGrid>
-											<Caption>Address:</Caption>
-											<Info>{device.address} </Info>
-										</ItemGrid>
-										<ItemGrid >
-											<Caption>Location Type:</Caption>
-											<Info>{device.locationType} </Info>
-										</ItemGrid>
-										<ItemGrid >
-											<Caption>Coordinates:</Caption>
-											<Info><a title={'Open link to Google Maps'} href={`https://www.google.com/maps/search/${device.lat}+${device.long}`} target={'_blank'}>
-												{ConvertDDToDMS(device.lat, false) + " " + ConvertDDToDMS(device.long, true)}</a>
-											</Info>
-										</ItemGrid>
-									</Grid>
-									<Grid container>
-										<ItemGrid>
-											<Caption>Organisation:</Caption>
-											<Info>{device.organisation ? device.organisation.vcName : "Unassigned"}</Info>
-										</ItemGrid>
-										<ItemGrid xs={4}>
-											<Caption>Project:</Caption>
-											<Info>{device.project ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : "Unassigned"}</Info>
-										</ItemGrid>
-									</Grid>
-								</Fragment>}/> */}
 					</ItemGrid>
 					<ItemGrid xs={12}>
 						<InfoCard
@@ -307,101 +180,14 @@ class Device extends Component {
 
 					</ItemGrid>
 					<ItemGrid xs={12}>
-						<InfoCard
-							title={"Pictures"}
-							avatar={<Image />}
-							noExpand
-							content={
-								this.state.img !== null ?
-									this.state.img === 0 ?
-										this.renderImageUpload(device.device_id) :
-										<Grid container justify={'center'}>
-											<DeviceImage images={this.state.img} />
-											{this.renderImageUpload(device.device_id)}
-										</Grid>
-									: this.renderImageLoader()} />
-
+						<DeviceImages
+							device={device}/>
 					</ItemGrid>
 					<ItemGrid xs={12}>
-						<InfoCard
-							title={"Hardware"}
-							avatar={<DeveloperBoard />}
-							subheader={''}
-							topAction={
-								<ItemGrid>
-									<IconButton
-										aria-label="More"
-										aria-owns={anchorElHardware ? 'long-menu' : null}
-										aria-haspopup="true"
-										onClick={this.handleOpenActionsHardware}>
-										<MoreVert />
-									</IconButton>
-									<Menu
-										id="long-menu"
-										anchorEl={anchorElHardware}
-										open={Boolean(anchorElHardware)}
-										onClose={this.handleCloseActionsHardware}
-										PaperProps={{
-											style: {
-												maxHeight: 200,
-												minWidth: 200
-											}
-										}}>
-										<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit-hardware`)}>
-											<Edit className={classes.leftIcon} />Edit hardware info
-										</MenuItem>
-										))}
-									</Menu>
-								</ItemGrid>
-							}
-							content={
-								<Grid container>
-									<Grid container >
-										<ItemGrid xs>
-											<Caption>PC Model:</Caption>
-											<Info>{device.RPImodel}</Info>
-										</ItemGrid>
-										<ItemGrid xs>
-											<Caption>Memory:</Caption>
-											<Info>{device.memory + " - " + device.memoryModel}</Info>
-										</ItemGrid>
-										<ItemGrid xs>
-											<Caption>Power Adapter:</Caption>
-											<Info>{device.adapter}</Info>
-										</ItemGrid>
-									</Grid>
-									<Grid container>
-										<ItemGrid xs>
-											<Caption>Wifi Module:</Caption>
-											<Info>{device.wifiModule}</Info>
-										</ItemGrid>
-										<ItemGrid xs>
-											<Caption>Modem Model:</Caption>
-											<Info>{device.modemModel}</Info>
-										</ItemGrid>
-									</Grid>
-								</Grid>
-							}
-							hiddenContent={<Grid container>
-								<ItemGrid>
-									<Caption>Cell Number:</Caption>
-									<Info>{device.cellNumber}</Info>
-								</ItemGrid>
-								<ItemGrid>
-									<Caption>SIM Provider:</Caption>
-									<Info>{device.SIMProvider}</Info>
-								</ItemGrid>
-								<ItemGrid>
-									<Caption>SIM-Card ID</Caption>
-									<Info>{device.SIMID}</Info>
-								</ItemGrid>
-								<ItemGrid>
-									<Caption>Modem IMEI:</Caption>
-									<Info>{device.modemIMEI}</Info>
-								</ItemGrid>
-
-							</Grid>
-							}
+						<DeviceHardware
+							device={device}
+							history={this.props.history}
+							match={this.props.match}
 						/>
 					</ItemGrid>
 
