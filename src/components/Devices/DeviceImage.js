@@ -14,9 +14,10 @@ import SwipeableViews from 'react-swipeable-views';
 import classNames from 'classnames'
 const styles = theme => ({
 	root: {
+		// maxHeight: 800,
 		flexGrow: 1,
 		[theme.breakpoints.up('sm')]: {
-			maxWidth: 'auto',
+			maxWidth: '100%',
 			
 		},
 		[theme.breakpoints.down("md")]: {
@@ -33,23 +34,19 @@ const styles = theme => ({
 	},
 	img: {
 		maxWidth: '100%',
-		height: 0,
-		transition: "height 300ms ease"
+		// transition: 'all 300ms ease'
+		// height: '100%',
 	},
 	activeImage: {
-		height: "100%",
-		[theme.breakpoints.up('sm')]: {
-			maxWidth: 'auto',
-			// maxHeight: "700"
-			// height: 255 * 2,
-			// maxHeight: 600
-		},
-		[theme.breakpoints.down("md")]: {
-			height: 255,
-			// maxWidth: 400
-		},
-		overflow: 'hidden',
-		width: '100%',
+		// height: "0",
+		// [theme.breakpoints.up('sm')]: {
+		// 	maxWidth: '100%',
+		// },
+		// [theme.breakpoints.down("md")]: {
+		// 	height: 255,
+		// },
+		// overflow: 'hidden',
+		// width: '100%',
 	},
 });
 
@@ -70,6 +67,16 @@ class DeviceImage extends React.Component {
 		}));
 	};
 
+	handleStepChange = activeStep => {
+		this.setState({ activeStep });
+	};
+	getRef = e => {
+		this.swipeHeight = e
+	}
+	fixHeight = () => {
+		if (this.swipeHeight)
+			this.swipeHeight.updateHeight()
+	}
 	render() {
 		const { classes, theme, images } = this.props;
 		const { activeStep } = this.state;
@@ -84,15 +91,19 @@ class DeviceImage extends React.Component {
 						index={this.state.activeStep}
 						onChangeIndex={this.handleStepChange}
 						enableMouseEvents
+						animateHeight={true}
+						slideStyle={{ height: "100%" }}
+						containerStyle={{ minHeight: '400px' }}
+						action={this.getRef}
 					>
 						{images.map((step, i) => (
-							<div className={classNames(classes.img, {
-								[classes.activeImage]: this.state.activeStep === i ? true : false
-							})} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-								<ExifOrientationImg key={i} className={classes.activeImage}/*  className={classNames(classes.img, {
-									[classes.activeImage]: this.state.activeStep === i ? true : false
-								})} */ src={step} alt={'Senti Device'} />
-							</div>
+							// <div className={classNames({
+							// 	[classes.activeImage]: this.state.activeStep === i ? false : true
+							// })} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+							<ExifOrientationImg key={i} /* className={classes.img} */ className={classNames(classes.img, {
+								[classes.activeImage]: this.state.activeStep === i ? false : true
+							})} src={step} alt={'Senti Device'} onLoad={this.fixHeight}/>
+							// </div>
 						))}
 					</SwipeableViews> :
 						<Caption>There are no pictures uploaded</Caption>
