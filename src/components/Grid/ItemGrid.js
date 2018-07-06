@@ -2,6 +2,12 @@ import React from "react";
 import { withStyles, Grid } from "@material-ui/core";
 
 const style = {
+	padding: {
+		padding: "0 8px"
+	},
+	margin: {
+		margin: "8px"
+	},
 	grid: {
 		padding: "0 8px",
 		margin: "8px",
@@ -11,9 +17,9 @@ const style = {
 };
 
 function ItemGrid({ ...props }) {
-	const { classes, children, noPadding, extraClass, ...rest } = props;
+	const { classes, children, noPadding, extraClass, noMargin, ...rest } = props;
 	return (
-		<Grid item {...rest} className={(noPadding ? '' : classes.grid) + " " + extraClass}>
+		<Grid item {...rest} className={(noPadding ? '' : classes.padding) + " " + (noMargin ? '' : classes.margin) + " " + (extraClass ? extraClass : '')}>
 			{children}
 		</Grid>
 	);

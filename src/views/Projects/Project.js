@@ -125,7 +125,7 @@ class Project extends Component {
 		const { regMostCounts, deviceMostCounts } = this.state.facts
 		return (
 			!loading ?
-				<GridContainer justify={'center'} alignContent={'space-between'} spacing={8}>
+				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<ItemGrid xs={12} sm={12} md={12}>
 						<InfoCard title={project.title} avatar={<LibraryBooks/>} subheader={project.description}
 							noExpand

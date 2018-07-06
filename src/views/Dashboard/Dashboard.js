@@ -92,44 +92,46 @@ class Dashboard extends React.Component {
 						}>
 					</RegularCard>
 				</ItemGrid>
-				<ItemGrid xs={4} >
-					<StatsCard
-						icon={ViewModule}
-						iconColor="green"
-						title="Projects"
-						description={this.state.projects.length}
-						small="total"
-						noStats
-					/>
-				</ItemGrid>
-				<ItemGrid xs={4} >
-					<StatsCard
-						icon={Store}
-						iconColor="green"
-						title="Devices"
-						description={this.state.devices}
-						noStats
-					/>
-				</ItemGrid>
-				<ItemGrid xs={4} >
-					<StatsCard
-						icon={InfoOutline}
-						iconColor="red"
-						title="Fixed Issues"
-						description="75"
-						statIcon={LocalOffer}
-						statText="Tracked from Github"
-					/>
-				</ItemGrid>
-				<ItemGrid xs={4}>
-					<StatsCard
-						icon={Accessibility}
-						iconColor="blue"
-						title="Followers"
-						description="+245"
-						statIcon={Update}
-						statText="Just Updated"
-					/>
+				<ItemGrid container noPadding>
+					<ItemGrid xs={12} sm={6} noMargin>
+						<StatsCard
+							icon={ViewModule}
+							iconColor="green"
+							title="Projects"
+							description={this.state.projects.length}
+							small="total"
+							noStats
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12} sm={6} noMargin>
+						<StatsCard
+							icon={Store}
+							iconColor="green"
+							title="Devices"
+							description={this.state.devices}
+							noStats
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12} sm={6} noMargin>
+						<StatsCard
+							icon={InfoOutline}
+							iconColor="red"
+							title="Fixed Issues"
+							description="75"
+							statIcon={LocalOffer}
+							statText="Tracked from Github"
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12} sm={6} noMargin>
+						<StatsCard
+							icon={Accessibility}
+							iconColor="blue"
+							title="Followers"
+							description="+245"
+							statIcon={Update}
+							statText="Just Updated"
+						/>
+					</ItemGrid>
 				</ItemGrid>
 			</GridContainer>
 		);
