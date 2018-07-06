@@ -8,25 +8,18 @@ before_deploy:
   - "ssh-add /tmp/deploy_rsa"
 deploy: 
   - 
-    domain: "https://senti-mui.surge.sh"
-    project: ./build
-    provider: surge
-    skip_cleanup: true
-    true: 
-      branch: senti-mui
-  - 
-    domain: senti-dashboard.surge.sh
-    project: ./build/
-    provider: surge
+    provider: script
+    script: "rsync -r --quiet $TRAVIS_BUILD_DIR/build/ ubuntu@kanata.webhouse.net:/srv/www/odeumcode/dashboard.senti.cloud"
     skip_cleanup: true
     true: 
       branch: master
   - 
     provider: script
-    script: "rsync -r --quiet $TRAVIS_BUILD_DIR/build/ ubuntu@kanata.webhouse.net:/srv/www/odeumcode/dashboard.senti.cloud"
+    script: "rsync -r --quiet $TRAVIS_BUILD_DIR/build/ ubuntu@kanata.webhouse.net:/srv/www/odeumcode/beta.senti.cloud"
     skip_cleanup: true
     true: 
-      branch: senti-mui
+      branch: beta
+
 language: node_js
 node_js: 
   - "9"

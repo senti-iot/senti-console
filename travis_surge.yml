@@ -1,0 +1,16 @@
+  - 
+    domain: "https://senti-mui.surge.sh"
+    project: ./build
+    provider: surge
+    skip_cleanup: true
+    true: 
+      branch: senti-mui
+  - 
+    domain: senti-dashboard.surge.sh
+    project: ./build/
+    provider: surge
+    skip_cleanup: true
+    true: 
+      branch: master
+
+
