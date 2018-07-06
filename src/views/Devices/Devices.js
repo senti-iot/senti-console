@@ -165,7 +165,7 @@ class Devices extends Component {
 		const { classes } = this.props
 		return <GridContainer container justify={'center'} >
 			<Paper className={classes.paper}>
-				<Maps isMarkerShown markers={devices} zoom={10}/> 
+				<Maps isMarkerShown markers={devices} /* zoom={10} *//> 
 			</Paper>
 		</GridContainer>
 	}

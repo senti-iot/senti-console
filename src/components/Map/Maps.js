@@ -21,8 +21,12 @@ export const Maps = compose(
 	withScriptjs,
 	withGoogleMap
 )(props => {
-	let defaultLat = props.markers[0] ? props.markers[0].lat : parseFloat(55.298) //Denmark,
-	let defaultLng = props.markers[0] ? props.markers[0].long : parseFloat(10.605) //Denmark
+	let defaultLat = parseFloat(55.298) //Denmark,
+	let defaultLng = parseFloat(10.605) //Denmark
+	if (!props.centerDenmark)
+	{	defaultLat = props.markers[0] ? props.markers[0].lat : defaultLat
+		defaultLng = props.markers[0] ? props.markers[0].long : defaultLng
+	}
 	return <GoogleMap defaultZoom={props.zoom ? props.zoom : 7} defaultCenter={{ lat: defaultLat, lng: defaultLng } }>
 		{props.isMarkerShown && (
 			<MarkerClusterer
