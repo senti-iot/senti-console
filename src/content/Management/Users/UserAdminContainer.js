@@ -159,14 +159,9 @@ class UserAdmin extends Component {
 						</Table>
 					</TableContainer> : <LoaderSmall />
 				}
-				<Modal width={'330px'} height={'50%'} expand={this.state.createUserModal} horizontalControls={false} verticalControls={false}
-					handleOverlay={this.closeNewUserModal}>
-					<CreateUserForm closeModal={this.closeNewUserModal} />
-				</Modal>
-				<Modal width={'330px'} height={'50%'} expand={this.state.editUserModal} horizontalControls={false} verticalControls={false}
-					handleOverlay={this.closeEditUserModal}>
-					<EditUserForm closeModal={this.closeEditUserModal} user={this.state.editUser} />
-				</Modal>
+
+				<CreateUserForm expand={this.state.createUserModal} closeModal={this.closeNewUserModal} />
+				<EditUserForm expand={this.state.editUserModal} closeModal={this.closeEditUserModal} user={this.state.editUser} />
 				{this.renderDeleteUsers()}
 			</div >
 		)

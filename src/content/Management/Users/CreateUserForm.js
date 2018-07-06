@@ -9,6 +9,7 @@ import {
 	Header, FormInputCont,
 	ButtonContainer, FormInput, Select
 } from '../ManagementStyles'
+import Modal from '../../Aux/Modal/Modal'
 
 class CreateUserForm extends Component {
 	constructor(props) {
@@ -58,74 +59,78 @@ class CreateUserForm extends Component {
 	}
 	render() {
 		return (
-			<Container>
-				{this.state.success ? <SuccessContainer> Success ! </SuccessContainer> : null}
-				{this.state.error ? <ErrorContainer> Error! Please check your input and try again. </ErrorContainer> : null}
-				<AppContext.Consumer>
-					{(context) =>
-						<FormContainer>
-							<Header>Create User</Header>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleCreateUserInput("UserName")}
-									placeholder={"Username"}
-									value={this.state.createUserFields.vcUserName}
-								/>
-							</FormInputCont>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleCreateUserInput("Password")}
-									placeholder={"Password"}
-									value={this.state.createUserFields.vcPassword}
-									type={'password'}
-								/>
-							</FormInputCont>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleCreateUserInput("FirstName")}
-									placeholder={"FirstName"}
-									value={this.state.createUserFields.vcFirstName}
-								/>
-							</FormInputCont>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleCreateUserInput("LastName")}
-									placeholder={"LastName"}
-									value={this.state.createUserFields.vcLastName}
-								/>
-							</FormInputCont>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleCreateUserInput("Email")}
-									placeholder={"Email"}
-									value={this.state.createUserFields.vcEmail}
-								/>
-							</FormInputCont>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleCreateUserInput("Phone")}
-									placeholder={"Phone"}
-									value={this.state.createUserFields.vcPhone}
-								/>
-							</FormInputCont>
-							<Select onChange={this.handleOrgSelect}>
-								<option value={0}> No Organisation </option>
-								{context.orgs ? context.orgs.map((org, i) => {
-									return <option key={i} value={org.iOrgID}> {org.vcName} </option>
-								}) : null}
-							</Select>
-							<ButtonContainer style={{ marginTop: '30px' }}>
-								<Button
-									icon={this.state.success ? 'close' : 'person'}
-									iconSize={20}
-									style={{ color: "white" }}
-									color={this.props.theme.button.background}
-									label={this.state.success ? 'Close' : 'Create User'}
-									onClick={this.state.success ? this.props.closeModal : this.handleCreateUser} />
-							</ButtonContainer>
-						</FormContainer>}
-				</AppContext.Consumer>
-			</Container>
+			<Modal width={'330px'} height={'50%'} expand={this.props.expand} horizontalControls={false} verticalControls={false}
+				handleOverlay={this.props.closeModal}>
+				<Container>
+
+					<AppContext.Consumer>
+						{(context) =>
+							<FormContainer>
+								<Header>Create User</Header>
+								<FormInputCont>
+									<FormInput
+										onChange={this.handleCreateUserInput("UserName")}
+										placeholder={"Username"}
+										value={this.state.createUserFields.vcUserName}
+									/>
+								</FormInputCont>
+								<FormInputCont>
+									<FormInput
+										onChange={this.handleCreateUserInput("Password")}
+										placeholder={"Password"}
+										value={this.state.createUserFields.vcPassword}
+										type={'password'}
+									/>
+								</FormInputCont>
+								<FormInputCont>
+									<FormInput
+										onChange={this.handleCreateUserInput("FirstName")}
+										placeholder={"FirstName"}
+										value={this.state.createUserFields.vcFirstName}
+									/>
+								</FormInputCont>
+								<FormInputCont>
+									<FormInput
+										onChange={this.handleCreateUserInput("LastName")}
+										placeholder={"LastName"}
+										value={this.state.createUserFields.vcLastName}
+									/>
+								</FormInputCont>
+								<FormInputCont>
+									<FormInput
+										onChange={this.handleCreateUserInput("Email")}
+										placeholder={"Email"}
+										value={this.state.createUserFields.vcEmail}
+									/>
+								</FormInputCont>
+								<FormInputCont>
+									<FormInput
+										onChange={this.handleCreateUserInput("Phone")}
+										placeholder={"Phone"}
+										value={this.state.createUserFields.vcPhone}
+									/>
+								</FormInputCont>
+								<Select onChange={this.handleOrgSelect}>
+									<option value={0}> No Organisation </option>
+									{context.orgs ? context.orgs.map((org, i) => {
+										return <option key={i} value={org.iOrgID}> {org.vcName} </option>
+									}) : null}
+								</Select>
+								{this.state.success ? <SuccessContainer> Success ! </SuccessContainer> : null}
+								{this.state.error ? <ErrorContainer> Error! Please check your input and try again. </ErrorContainer> : null}
+								<ButtonContainer style={{ marginTop: '30px' }}>
+									<Button
+										icon={this.state.success ? 'close' : 'person'}
+										iconSize={20}
+										style={{ color: "white" }}
+										color={this.props.theme.button.background}
+										label={this.state.success ? 'Close' : 'Create User'}
+										onClick={this.state.success ? this.props.closeModal : this.handleCreateUser} />
+								</ButtonContainer>
+							</FormContainer>}
+					</AppContext.Consumer>
+				</Container>
+			</Modal>
 		)
 	}
 }

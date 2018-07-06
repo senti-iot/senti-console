@@ -6,6 +6,7 @@ import ViewContainer from 'content/Views/ViewContainer'
 import User from './content/User/User'
 import UserAdmin from './content/Management/Users/UserAdminContainer'
 import OrgAdmin from './content/Management/Orgs/OrgAdminContainer'
+import MyProfileSettings from 'content/User/MyProfileContainer'
 
 class App extends Component {
 	constructor(props) {
@@ -57,6 +58,9 @@ class App extends Component {
 									<div style={{ marginRight: 10 }}>Automatisk lås menupanelet </div>
 									<button style={{ height: '23px', margin: 0, padding: 0, background: this.state.onMenuClickClose ? 'green' : 'crimson' }} onClick={this.handleOnMenuClickClose}> {this.state.onMenuClickClose ? 'ON' : 'OFF'} </button>
 								</div>
+							</Tab>
+							<Tab label={'My Profile'} icon={'people'} route={'/profile'}>
+								<MyProfileSettings />
 							</Tab>
 						</Menu>
 					</Protected>

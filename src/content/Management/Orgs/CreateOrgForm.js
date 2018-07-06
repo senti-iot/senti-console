@@ -9,6 +9,7 @@ import {
 	Header, FormInputCont,
 	ButtonContainer, FormInput
 } from '../ManagementStyles'
+import Modal from '../../Aux/Modal/Modal'
 
 class CreateOrganisation extends Component {
 	constructor(props) {
@@ -57,68 +58,69 @@ class CreateOrganisation extends Component {
 	}
 	render() {
 		return (
-			<Container>
+			<Modal width={'330px'} height={'50%'} expand={this.props.expand} horizontalControls={false} verticalControls={false}
+				handleOverlay={this.props.closeModal}>
+				<Container>
 
-				<AppContext.Consumer>
-					{(context) =>
-						<FormContainer>
-							<Header>Create a new Organisation:</Header>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleCreateUserInput("Name")}
-									placeholder={"Name"}
-									value={this.state.createOrgFields.vcName}
-								/>
-							</FormInputCont>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleCreateUserInput("Address")}
-									placeholder={"Address"}
-									value={this.state.createOrgFields.vcAddress}
-								/>
-							</FormInputCont>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleCreateUserInput("City")}
-									placeholder={"City"}
-									value={this.state.createOrgFields.vcCity}
-								/>
-							</FormInputCont>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleCreateUserInput("Country")}
-									placeholder={"Country"}
-									value={this.state.createOrgFields.vcCountry}
-								/>
-							</FormInputCont>
-							<FormInputCont>
-								<FormInput
-									onChange={this.handleCreateUserInput("URL")}
-									placeholder={"Website"}
-									value={this.state.createOrgFields.vcURL}
-								/>
-							</FormInputCont>
+					{/* 				<AppContext.Consumer>
+					 	{(context) => */}
+					<FormContainer>
+						<Header>Create a new Organisation:</Header>
+						<FormInputCont>
+							<FormInput
+								onChange={this.handleCreateUserInput("Name")}
+								placeholder={"Name"}
+								value={this.state.createOrgFields.vcName}
+							/>
+						</FormInputCont>
+						<FormInputCont>
+							<FormInput
+								onChange={this.handleCreateUserInput("Address")}
+								placeholder={"Address"}
+								value={this.state.createOrgFields.vcAddress}
+							/>
+						</FormInputCont>
+						<FormInputCont>
+							<FormInput
+								onChange={this.handleCreateUserInput("City")}
+								placeholder={"City"}
+								value={this.state.createOrgFields.vcCity}
+							/>
+						</FormInputCont>
+						<FormInputCont>
+							<FormInput
+								onChange={this.handleCreateUserInput("Country")}
+								placeholder={"Country"}
+								value={this.state.createOrgFields.vcCountry}
+							/>
+						</FormInputCont>
+						<FormInputCont>
+							<FormInput
+								onChange={this.handleCreateUserInput("URL")}
+								placeholder={"Website"}
+								value={this.state.createOrgFields.vcURL}
+							/>
+						</FormInputCont>
 
-							{this.state.success ? <SuccessContainer>
-								Success !
-							</SuccessContainer> : null}
-							{this.state.error ? <ErrorContainer> Error! Please check your input and try again. </ErrorContainer> : null}
+						{this.state.success ? <SuccessContainer>Success !</SuccessContainer> : null}
+						{this.state.error ? <ErrorContainer> Error! Please check your input and try again. </ErrorContainer> : null}
 
-							<ButtonContainer>
-								<Button
-									style={{ color: 'white' }}
-									icon={this.state.success ? 'close' : 'group_add'}
-									iconSize={20}
+						<ButtonContainer>
+							<Button
+								style={{ color: 'white' }}
+								icon={this.state.success ? 'close' : 'group_add'}
+								iconSize={20}
 
-									color={this.props.theme.button.background}
-									label={this.state.success ? 'Close' : 'Create Organisation'}
-									onClick={this.state.success ? this.props.closeModal : this.handleCreateUser}
-								/>
-							</ButtonContainer>
+								color={this.state.success ? 'crimson' : this.props.theme.button.background}
+								label={this.state.success ? 'Close' : 'Create Organisation'}
+								onClick={this.state.success ? this.props.closeModal : this.handleCreateUser}
+							/>
+						</ButtonContainer>
 
-						</FormContainer>}
-				</AppContext.Consumer>
-			</Container>
+					</FormContainer>
+					{/* 					</AppContext.Consumer>*/}
+				</Container>
+			</Modal>
 		)
 	}
 }
