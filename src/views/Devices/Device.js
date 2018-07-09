@@ -157,7 +157,7 @@ class Device extends Component {
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<AssignProject device_id={this.state.device.device_id} open={this.state.openAssign} handleClose={this.handleCloseAssign} />
 					{device.project ? this.renderConfirmUnassign() : null}
-					<ItemGrid xs={12} noPadding>
+					<ItemGrid xs={12} noMargin>
 						<DeviceDetails
 							device={device}
 							history={this.props.history}
@@ -166,7 +166,7 @@ class Device extends Component {
 							handleOpenUnassign={this.handleOpenUnassign}
 						/>
 					</ItemGrid>
-					<ItemGrid xs={12} noPadding>
+					<ItemGrid xs={12} noMargin>
 						<InfoCard
 							title={"Map"}
 							subheader={`Coordinates: ${device.lat} ${device.long}`}
@@ -179,11 +179,11 @@ class Device extends Component {
 							} />
 
 					</ItemGrid>
-					<ItemGrid xs={12} noPadding>
+					<ItemGrid xs={12} noMargin>
 						<DeviceImages
 							device={device}/>
 					</ItemGrid>
-					<ItemGrid xs={12} noPadding>
+					<ItemGrid xs={12} noMargin>
 						<DeviceHardware
 							device={device}
 							history={this.props.history}

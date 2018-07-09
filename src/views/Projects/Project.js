@@ -126,7 +126,7 @@ class Project extends Component {
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
-					<ItemGrid xs={12} sm={12} md={12}>
+					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<InfoCard title={project.title} avatar={<LibraryBooks/>} subheader={project.description}
 							noExpand
 							content={
@@ -161,7 +161,7 @@ class Project extends Component {
 							}
 						/>
 					</ItemGrid>
-					<ItemGrid xs={12} sm={12} md={12}>
+					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<InfoCard title={"Devices"} avatar={<Devices/>} subheader={"Number of devices:" + project.devices.length}
 							// hideFacts
 							content={
@@ -189,7 +189,7 @@ class Project extends Component {
 							}
 						/>
 					</ItemGrid >
-					<ItemGrid xs={12} sm={12} md={12}>
+					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<InfoCard title={"Data"} avatar={<AssignmentTurnedIn/>} subheader={project.registrations.length}
 							// hideFacts
 							content={
@@ -219,7 +219,7 @@ class Project extends Component {
 							}
 						/>
 					</ItemGrid>
-					<ItemGrid xs={12} sm={12} md={12}>
+					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<InfoCard title={"Contact"} avatar={<Person/>} subheader={""}
 							noExpand
 							content={

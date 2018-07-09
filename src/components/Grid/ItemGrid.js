@@ -8,6 +8,9 @@ const style = {
 	margin: {
 		margin: "8px"
 	},
+	noMargin: {
+		margin: "8px 0px"
+	},
 	grid: {
 		padding: "0 8px",
 		margin: "8px",
@@ -19,7 +22,7 @@ const style = {
 function ItemGrid({ ...props }) {
 	const { classes, children, noPadding, extraClass, noMargin, ...rest } = props;
 	return (
-		<Grid item {...rest} className={(noPadding ? '' : classes.padding) + " " + (noMargin ? '' : classes.margin) + " " + (extraClass ? extraClass : '')}>
+		<Grid item {...rest} className={(noPadding ? '' : classes.padding) + " " + (noMargin ? classes.noMargin : classes.margin) + " " + (extraClass ? extraClass : '')}>
 			{children}
 		</Grid>
 	);

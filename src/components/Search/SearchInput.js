@@ -34,7 +34,7 @@ class SearchInput extends Component {
 	render() {
 		const { classes, ...other } = this.props;
 		return (
-			<ItemGrid container noPadding noMargin alignItems={'center'} style={{ width: "auto" }}>
+			<ItemGrid container noPadding alignItems={'center'} style={{ width: "auto", margin: 0 }}>
 				<ClickAwayListener onClickAway={this.handleClose}>
 
 					<div className={className(classes.inputContainer, { [classes.inputContainerFocused]: this.state.open }, { [classes.inputContainerUnfocused]: !this.state.open })}>
