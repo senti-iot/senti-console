@@ -176,26 +176,21 @@ class Devices extends Component {
 	}
 	render() {
 		const { devices } = this.state
+		const { classes } = this.props
 		// console.log(this.props)
 		return (
 			<Fragment>
-				<AppBar position="static">
+				<AppBar position="sticky" classes={{ root: classes.appBar }}>
 					<Tabs value={this.state.route} onChange={this.handleTabsChange}>
 						<Tab title={'List View'} id={0} label={<ViewList />} onClick={() => { this.props.history.push(`${this.props.match.path}/list`) }}/>
 						<Tab title={'Map View'} id={1} label={<Map/>} onClick={() => { this.props.history.push(`${this.props.match.path}/map`)}}/>
 						<Tab title={'Cards View'} id={2} label={<ViewModule/>} onClick={() => { this.props.history.push(`${this.props.match.path}/cards`)}}/>
-						{/* <ItemGrid noPadding noMargin container justify={"flex-end"} alignItems={'flex-end'}> */}
 						<Search
 							right
 							suggestions={[]}
 							handleFilterKeyword={this.handleFilterKeyword}
 							searchValue={this.state.filters.keyword} />
-						{/* </ItemGrid> */}
 					</Tabs>
-					
-					{/* </AppBar>
-				<AppBar position="static"> */}
-					
 				</AppBar>
 				{devices ? <Switch>
 					<Route path={`${this.props.match.path}/map`} render={() => this.renderMap()} />

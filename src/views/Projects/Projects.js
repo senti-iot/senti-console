@@ -1,11 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { getAllProjects, deleteProject } from '../../variables/dataProjects';
-import { /* Grid, */ withStyles } from "@material-ui/core";
+import { /* Grid, */ withStyles, AppBar } from "@material-ui/core";
 
 import projectStyles from 'assets/jss/views/projects';
 import ProjectTable from 'components/Project/ProjectTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
+import Search from 'components/Search/Search';
 var moment = require('moment');
 class Projects extends Component {
 	constructor(props) {
@@ -144,11 +145,20 @@ class Projects extends Component {
 	}
 
 	render() {
-		// const { classes } = this.props
+		const { classes } = this.props
 		return (
-			<GridContainer justify={'center'}>
-				{this.renderAllProjects()}
-			</GridContainer>
+			<Fragment>
+				<AppBar position={'sticky'} classes={{ root: classes.appBar }}>
+					<Search
+						right
+						suggestions={[]}
+						handleFilterKeyword={this.handleFilterKeyword}
+						searchValue={this.state.filters.keyword}/>
+				</AppBar>
+				<GridContainer justify={'center'}>
+					{this.renderAllProjects()}
+				</GridContainer>
+			</Fragment>
 		)
 	}
 }

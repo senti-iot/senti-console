@@ -10,7 +10,7 @@ import {
 	Typography
 } from "@material-ui/core";
 import EnhancedTableHead from './ProjectTableHeader';
-import EnhancedTableToolbar from './TableToolBar'
+// import EnhancedTableToolbar from './TableToolBar'
 import PropTypes from "prop-types";
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
@@ -144,7 +144,7 @@ class EnhancedTable extends React.Component {
 		return (
 
 			<Paper className={classes.root}>
-				<EnhancedTableToolbar
+				{/* <EnhancedTableToolbar
 					anchorElMenu={this.state.anchorElMenu}
 					anchorFilterMenu={this.state.anchorFilterMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
@@ -159,7 +159,7 @@ class EnhancedTable extends React.Component {
 					numSelected={selected.length}
 					options={this.options}
 					suggestions={data ? data.map(p => ({ id: p.id, label: p.title })) : []}
-				/>
+				/> */}
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
 						<EnhancedTableHead

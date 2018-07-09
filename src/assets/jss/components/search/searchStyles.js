@@ -66,39 +66,34 @@ const searchStyles = theme => ({
 		...transition
 	},
 	inputContainerFocused: {
+		padding: "0px 0px 0px 8px",
 		[theme.breakpoints.up("md")]: {	
 			width: '20vw'
 		},
 		[theme.breakpoints.down("sm")]: {
-			width: 'calc(100vw - 32px)',			
+			width: 'calc(100vw - 48px)',			
 		}
 	},
 	inputContainerUnfocused: {
-		width: 24	
+		width: 24,
+		padding: "0px 8px"	
 	},
 	inputContainer: {
 		display: "flex",
 		alignItems: "center",
 		overflow: "hidden",
 		background: 'white',
-		padding: "0 8px",
+		// padding: "0 8px",
 		borderRadius: 4,
+		// margin: 8,
+		marginRight: 18,
 		[theme.breakpoints.down("sm")]: {
 			position: 'absolute',
-			// left: '90%'
+			margin: 8,
+			marginRight: 18,
 			top: 0,
 			right: 0,
-			margin: 8
 		},
-		// "&:hover": {
-		// 	width: 300
-		// },
-		// "&:focus": {
-		// 	width: 300
-		// },
-		// "&:focus-within": {
-		// 	width: 300
-		// },
 		...transition
 	},
 	icon: {

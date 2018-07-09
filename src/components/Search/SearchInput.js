@@ -18,10 +18,7 @@ class SearchInput extends Component {
 		this.setState({ open: !this.state.open })
 	}	
 	handleClose = () => {
-		if (this.props.value === '')
-			this.setState({ open: false })
-	}
-	handleForceClose = () => {
+		// if (this.props.value === '')
 		this.setState({ open: false })
 	}
 	render() {

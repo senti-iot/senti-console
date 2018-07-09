@@ -5,6 +5,11 @@
 import { primaryColor } from "assets/jss/material-dashboard-react.js";
 
 const projectStyles = ({
+	appBar: {
+		height: 48,
+		zIndex: 1000
+		// position: "relative"
+	},
 	loader: {
 		marginRight: 'auto',
 		marginLeft: 'auto',
