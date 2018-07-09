@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { primaryColor, boxShadow } from 'assets/jss/material-dashboard-react';
-import { Menu, MenuItem, /*Grid, Tooltip */ } from '@material-ui/core';
+import { Menu, MenuItem, Grid, /*Grid, Tooltip */ } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 // import KeyArrRight from '@material-ui/icons/KeyboardArrowRight';
 // import KeyArrLeft from '@material-ui/icons/KeyboardArrowLeft';
@@ -22,6 +22,7 @@ import Add from "@material-ui/icons/Add"
 // import ItemGrid from '../Grid/ItemGrid';
 import teal from '@material-ui/core/colors/teal'
 import { withRouter } from 'react-router-dom'
+import ItemGrid from '../Grid/ItemGrid';
 
 const toolbarStyles = theme => ({
 	leftIcon: {
@@ -59,10 +60,10 @@ const toolbarStyles = theme => ({
 		color: theme.palette.text.secondary,
 	},
 	title: {
-		flex: '1 1 33%',
+		width: '100%'
 	},
 	headerFilter: {
-		flex: '1 1 33%'
+		width: '100%'
 	},
 	froot: {
 		opacity: 0.42
@@ -80,178 +81,110 @@ const toolbarStyles = theme => ({
 	},
 });
 
+let selectedRender = props => {
+	const { numSelected, } = props;
+	return <Grid container justify={'space-between'} alignItems={'center'}>
+		<ItemGrid>
+			<Typography color="primary" variant="subheading">
+				{numSelected} selected
+			</Typography>
+		</ItemGrid>
+		<ItemGrid>
+			<IconButton
+				aria-label="More"
+				aria-owns={props.anchorElMenu ? 'long-menu' : null}
+				aria-haspopup="true"
+				onClick={props.handleToolbarMenuOpen}>
+				<MoreVertIcon />
+			</IconButton>
+			<Menu
+				id="long-menu"
+				anchorEl={props.anchorElMenu}
+				open={Boolean(props.anchorElMenu)}
+				onClose={props.handleToolbarMenuClose}
+				PaperProps={{
+					style: {
+						// maxHeight: ITEM_HEIGHT * 4.5,
+						width: 200,
+						boxShadow: boxShadow
+					}
+				}}
+			>
+				{props.options().map((option, i) => {
+					if (option.single)
+						return numSelected === 1 ? <MenuItem key={i} onClick={option.func}>
+							{option.label}
+						</MenuItem> : null
+					else {
+						return <MenuItem key={i} onClick={option.func}>
+							{option.label}
+						</MenuItem>
+					}
+
+
+				}
+				)}
+			</Menu>
+		</ItemGrid>
+	</Grid>
+}
+let defaultRender = props => {
+	const { classes, filterOptions } = props;
+	const AddNewProject = () => props.history.push('/projects/new')
+	return <ItemGrid container justify={'flex-end'} alignItems={'center'}>
+		{props.noAdd ? null :
+			// <Tooltip title={'Add New Project'}>
+			<IconButton aria-label="Add new project" onClick={AddNewProject}>
+				<Add />
+			</IconButton>
+			// </Tooltip>
+		}
+		{props.noFilterIcon ? null :
+			<Fragment>
+				{/* <Tooltip title="Filter list"> */}
+				<IconButton
+					className={classes.secondAction}
+					aria-label="Filter list"
+					aria-owns={props.anchorFilterMenu ? "filter-menu" : null}
+					onClick={props.handleFilterMenuOpen}>
+					<FilterListIcon />
+				</IconButton>
+				{/* </Tooltip> */}
+				<Menu
+					id="filter-menu"
+					anchorEl={props.anchorFilterMenu}
+					open={Boolean(props.anchorFilterMenu)}
+					onClose={props.handleFilterMenuClose}
+					PaperProps={{ style: { width: 200, boxShadow: boxShadow } }}>
+
+					{filterOptions.map(option => {
+						return <MenuItem key={option.id} onClick={props.handleFilter}>
+							{option.label}
+						</MenuItem>
+					})}
+				</Menu>
+			</Fragment>}
+	</ItemGrid>
+}
 let EnhancedTableToolbar = props => {
-	const { numSelected, classes, filterOptions } = props;
+	const { numSelected, classes } = props;
 	return (
 		<Toolbar
 			className={classNames(classes.root, {
 				[classes.highlight]: numSelected > 0,
-			})}
-		>
+			})}>
+
 			<div className={classes.title}>
 				{numSelected > 0 ? (
-					<Typography color="primary" variant="subheading">
-						{numSelected} selected
-					</Typography>
-				) : null
-					// <MuiPickersUtilsProvider utils={MomentUtils}>
-					// 	<Grid container >
-					// 		<ItemGrid xs={12} sm={12} >
-					// 			<IntegrationAutosuggest
-					// 				suggestions={props.suggestions}
-					// 				handleFilterKeyword={props.handleFilterKeyword}
-					// 				searchValue={props.filters.keyword}
-					// 			/>
-					// 		</ItemGrid>
-					// 		{props.noDatePickers ? null :
-					// 			<React.Fragment>
-					// 				<ItemGrid md={5} sm={12} >
-					// 					<DatePicker
-					// 						autoOk
-					// 						label="Start Date"
-					// 						clearable
-					// 						fullWidth
-					// 						format="DD.MM.YYYY"
-					// 						value={props.filters.startDate}
-					// 						onChange={props.handleFilterStartDate}
-					// 						animateYearScrolling={false}
-					// 						color="primary"
-					// 						rightArrowIcon={<KeyArrRight />}
-					// 						leftArrowIcon={<KeyArrLeft />}
-					// 						InputLabelProps={
-					// 							{
-					// 								FormLabelClasses: {
-					// 									root: classes.label,
-					// 									focused: classes.focused,
-					// 								},
-					// 							}
-					// 						}
-					// 						InputProps={{
-					// 							classes: {
-					// 								underline: classes.underline,
-					// 							}
-					// 						}}
-					// 					/>
-					// 				</ItemGrid>
-					// 				<ItemGrid md={5} sm={12}>
-					// 					<DatePicker
-					// 						color="primary"
-					// 						autoOk
-					// 						label="End Date"
-					// 						clearable
-					// 						fullWidth
-					// 						format="DD.MM.YYYY"
-					// 						value={props.filters.endDate}
-					// 						onChange={props.handleFilterEndDate}
-					// 						animateYearScrolling={false}
-					// 						rightArrowIcon={<KeyArrRight />}
-					// 						leftArrowIcon={<KeyArrLeft />}
-					// 						InputLabelProps={
-					// 							{
-					// 								FormLabelClasses: {
-					// 									root: classes.label,
-					// 									focused: classes.focused,
-					// 								},
-					// 							}
-					// 						}
-					// 						InputProps={{
-					// 							classes: {
-					// 								underline: classes.underline,
-					// 							}
-					// 						}}
-										
-					// 					/>
-					// 				</ItemGrid>
-					// 			</React.Fragment>
-					// 		}
-					// 	</Grid>
-					// </MuiPickersUtilsProvider>
-				}
-			</div>
-			{/* <div className={classes.spacer} /> */}
-			<div className={classes.actions}>
-				{numSelected > 0 ? (
-					<Fragment>
-						<IconButton
-							aria-label="More"
-							aria-owns={props.anchorElMenu ? 'long-menu' : null}
-							aria-haspopup="true"
-							onClick={props.handleToolbarMenuOpen}>
-							<MoreVertIcon />
-						</IconButton>
-						<Menu
-							id="long-menu"
-							anchorEl={props.anchorElMenu}
-							open={Boolean(props.anchorElMenu)}
-							onClose={props.handleToolbarMenuClose}
-							PaperProps={{
-								style: {
-									// maxHeight: ITEM_HEIGHT * 4.5,
-									width: 200,
-									boxShadow: boxShadow
-								}
-							}}
-						>
-							{props.options().map((option, i) => {
-								if (option.single)
-									return numSelected === 1 ? <MenuItem key={i} onClick={option.func}>
-										<option.icon className={classes.leftIcon} />{option.label}
-									</MenuItem> : null
-								else {
-									return <MenuItem key={i} onClick={option.func}>
-										<option.icon className={classes.leftIcon}/>{option.label}
-									</MenuItem>
-								}
-							}
-							)}
-						</Menu>
-					</Fragment>
+					selectedRender(props)
 				) :
-					(<Fragment>
-						{props.noAdd ? null :
-							// <Tooltip title={'Add New Project'}>
-							<IconButton aria-label="Add new project" onClick={() => props.history.push('/projects/new')}>
-								<Add />
-							</IconButton>
-							// </Tooltip>
-						}
-						{props.noFilterIcon ? null :
-							<Fragment>
-								{/* <Tooltip title="Filter list"> */}
-								<IconButton
-									className={classes.secondAction}
-									aria-label="Filter list"
-									aria-owns={props.anchorFilterMenu ? "filter-menu" : null}
-									onClick={props.handleFilterMenuOpen}>
-									<FilterListIcon />
-								</IconButton>
-								{/* </Tooltip> */}
-								<Menu
-									id="filter-menu"
-									anchorEl={props.anchorFilterMenu}
-									open={Boolean(props.anchorFilterMenu)}
-									onClose={props.handleFilterMenuClose}
-									PaperProps={{
-										style: {
-										// maxHeight: ITEM_HEIGHT * 4.5,
-											width: 200,
-											boxShadow: boxShadow
-										}
-									}}
-								>
-									{filterOptions.map(option => (
-										<MenuItem key={option.id} onClick={props.handleFilter}>
-											{option.label}
-										</MenuItem>
-									))}
-								</Menu>
-							</Fragment>}		
-					</Fragment>)
+					defaultRender(props)
 				}
 			</div>
 		</Toolbar>
 	);
 };
+
 
 EnhancedTableToolbar.propTypes = {
 	classes: PropTypes.object.isRequired,
