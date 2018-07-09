@@ -3,25 +3,40 @@ import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-import { TextField } from '@material-ui/core';
+// import { /* TextField, */ Input } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import searchStyles from 'assets/jss/components/search/searchStyles';
-
+// import { Search } from '@material-ui/icons'
+// import { ItemGrid } from '..';
+import SearchInput from './SearchInput';
 
 function renderInput(inputProps) {
-	const { classes, ref, ...other } = inputProps;
+	// const { classes, ref, ...other  } = inputProps;
 
 	return (
-		<TextField
+		<SearchInput {...inputProps}/>
+		// <ItemGrid container noPadding noMargin alignItems={'center'} style={{ width: "auto" }}>
+		// 	<div className={classes.inputContainer}>
+		// 		<Search className={classes.icon}/>
+		// 		<Input 
+		// 			placeholder='Search'
+		// 			ref={ref}
+		// 			classes={{ input: classes.input, underline: classes.underline }}
+		// 			{...other}
+		// 		/>
+		// 	</div>
+		// </ItemGrid>
+	/* 	<TextField
 			
-			label={"Search..."}
-			InputLabelProps={{ FormLabelClasses: {
-				root: classes.label,
-				focused: classes.focused,
-			} }}
+			// label={"Search..."}
+			// InputLabelProps={{ FormLabelClasses: {
+			// 	root: classes.label,
+			// 	focused: classes.focused,
+			// } }}
 			InputProps={{
+				placeholder: "Search",
 				inputRef: ref,
 				classes: {
 					input: classes.input,
@@ -29,7 +44,7 @@ function renderInput(inputProps) {
 				},
 				...other,
 			}}
-		/>
+		/> */
 	);
 }
 
@@ -112,12 +127,12 @@ class IntegrationAutosuggest extends React.Component {
 	};
 
 	render() {
-		const { classes } = this.props;
+		const { classes, right } = this.props;
 
 		return (
 			<Autosuggest
 				theme={{
-					container: classes.container,
+					container: classes.container + " " + (right ? classes.right : ''),
 					suggestionsContainerOpen: classes.suggestionsContainerOpen,
 					suggestionsList: classes.suggestionsList,
 					suggestion: classes.suggestion,

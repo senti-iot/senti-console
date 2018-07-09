@@ -8,6 +8,8 @@ import CircularLoader from 'components/Loader/CircularLoader';
 import { Maps } from 'components/Map/Maps';
 import GridContainer from 'components/Grid/GridContainer';
 import { ViewList, ViewModule, Map  } from '@material-ui/icons'
+import Search from 'components/Search/Search';
+// import { ItemGrid } from 'components';
 var moment = require('moment');
 
 class Devices extends Component {
@@ -165,7 +167,7 @@ class Devices extends Component {
 		const { classes } = this.props
 		return <GridContainer container justify={'center'} >
 			<Paper className={classes.paper}>
-				<Maps isMarkerShown markers={devices} /* zoom={10} *//> 
+				<Maps isMarkerShown markers={this.filterItems(devices)} /* zoom={10} *//> 
 			</Paper>
 		</GridContainer>
 	}
@@ -182,7 +184,18 @@ class Devices extends Component {
 						<Tab title={'List View'} id={0} label={<ViewList />} onClick={() => { this.props.history.push(`${this.props.match.path}/list`) }}/>
 						<Tab title={'Map View'} id={1} label={<Map/>} onClick={() => { this.props.history.push(`${this.props.match.path}/map`)}}/>
 						<Tab title={'Cards View'} id={2} label={<ViewModule/>} onClick={() => { this.props.history.push(`${this.props.match.path}/cards`)}}/>
+						{/* <ItemGrid noPadding noMargin container justify={"flex-end"} alignItems={'flex-end'}> */}
+						<Search
+							right
+							suggestions={[]}
+							handleFilterKeyword={this.handleFilterKeyword}
+							searchValue={this.state.filters.keyword} />
+						{/* </ItemGrid> */}
 					</Tabs>
+					
+					{/* </AppBar>
+				<AppBar position="static"> */}
+					
 				</AppBar>
 				{devices ? <Switch>
 					<Route path={`${this.props.match.path}/map`} render={() => this.renderMap()} />

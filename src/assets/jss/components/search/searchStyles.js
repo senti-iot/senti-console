@@ -1,26 +1,39 @@
 import teal from '@material-ui/core/colors/teal'
+import { transition, primaryColor } from '../../material-dashboard-react';
 
 const searchStyles = theme => ({
 	label: {
-		// color: "#fff",
 		'&$focused': {
 			color: teal[500],
 		},
 	},
+	disabled: {},
 	focused: {},
 	underline: {
-		// color: "#fff",
-		// borderBottomColor: "#fff",
 		'&:before': {
-			// borderBottomColor: '#fff'
+			borderBottom: "1px solid transparent",
 		},
 		'&:after': {
 			borderBottomColor: teal[500],
 		},
+		'&:hover:$disabled:before': {
+			borderBottomColor: "#fff"
+		},
+
+	},
+	center: {
+		justifyContent: "center"
+	},
+	right: {
+		justifyContent: "flex-end"	
 	},
 	container: {
+		// background: "white",
+		margin: 8,
+		borderRadius: 4,
 		flexGrow: 1,
-		position: 'relative',
+		// position: 'relative',
+		display: "flex"
 	},
 	suggestionsContainerOpen: {
 		position: 'absolute',
@@ -38,8 +51,64 @@ const searchStyles = theme => ({
 		listStyleType: 'none',
 	},
 	input: {
-
-		color: "#000000"
+		// background: "white",
+		padding: 8,
+		// margin: 8,
+		color: "#000",
+		borderRadius: 4,
+		width: '100%',
+		"&:hover": {
+			// width: 300
+		},
+		"&:focus": {
+			// width: 300
+		},
+		...transition
+	},
+	inputContainerFocused: {
+		[theme.breakpoints.up("md")]: {	
+			width: '20vw'
+		},
+		[theme.breakpoints.down("sm")]: {
+			width: 'calc(100vw - 32px)',			
+		}
+	},
+	inputContainerUnfocused: {
+		width: 24	
+	},
+	inputContainer: {
+		display: "flex",
+		alignItems: "center",
+		overflow: "hidden",
+		background: 'white',
+		padding: "0 8px",
+		borderRadius: 4,
+		[theme.breakpoints.down("sm")]: {
+			position: 'absolute',
+			// left: '90%'
+			top: 0,
+			right: 0,
+			margin: 8
+		},
+		// "&:hover": {
+		// 	width: 300
+		// },
+		// "&:focus": {
+		// 	width: 300
+		// },
+		// "&:focus-within": {
+		// 	width: 300
+		// },
+		...transition
+	},
+	icon: {
+		color: primaryColor,
+		marginRight: 8
+	},
+	iconActive: {
+		borderRadius: 50,
+		// boxShadow: '0px 0px 5px 1px rgba(55, 168, 145, 0.70)'
+		filter: 'drop-shadow(0px 0px 5px rgba(55, 168, 145, 0.70))' 
 	}
 });
 

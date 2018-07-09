@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { withRouter } from 'react-router-dom';
 import EnhancedTableHead from './DeviceTableHeader';
-import EnhancedTableToolbar from './TableToolBar';
+// import EnhancedTableToolbar from './TableToolBar';
 import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
 import AssignProject from "./AssignProject";
@@ -181,7 +181,7 @@ class EnhancedTable extends React.Component {
 		return (
 			<Paper className={classes.root}>
 				<AssignProject open={openAssignProject} handleClose={this.handleCloseAssignToProject} device_id={selected} />
-				<EnhancedTableToolbar
+				{/* <EnhancedTableToolbar
 					anchorElMenu={this.state.anchorElMenu}
 					anchorFilterMenu={this.state.anchorFilterMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
@@ -197,7 +197,7 @@ class EnhancedTable extends React.Component {
 					options={this.options}
 					suggestions={this.suggestionGen(data)}
 					noAdd
-				/>
+				/> */}
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
 						<EnhancedTableHead
