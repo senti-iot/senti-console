@@ -84,7 +84,7 @@ class EditDetails extends Component {
 									noFullWidth
 								/>
 							</ItemGrid>
-							<ItemGrid>
+							<ItemGrid xs={12}>
 								<FormControl className={this.props.classes.formControl}>
 									<InputLabel htmlFor="streetType-helper" classes={{ root: classes.label }}>{/* locationType ? '' : */ "Location Type"}</InputLabel>
 									<Select
