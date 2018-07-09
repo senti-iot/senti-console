@@ -28,19 +28,18 @@ export const Maps = compose(
 		defaultLng = props.markers[0] ? props.markers[0].long : defaultLng
 	}
 	return <GoogleMap defaultZoom={props.zoom ? props.zoom : 7} defaultCenter={{ lat: defaultLat, lng: defaultLng } }>
-		{props.isMarkerShown && (
-			<MarkerClusterer
-				onClick={props.onMarkerClustererClick}
-				averageCenter
-				enableRetinaIcons
-				gridSize={10}
-			>
-				{props.markers.length > 0 ? props.markers.map((m, i) => {
-					return <Marker /* label={m.device_id.toString()} */	/*  icon={{ url: svg }}*/ onClick = {() => alert('bing')} key={i} position={{ lat: m.lat, lng: m.long }} />
-				})
-					: null}
-			</MarkerClusterer>
-		)}
+
+		<MarkerClusterer
+			onClick={props.onMarkerClustererClick}
+			averageCenter
+			enableRetinaIcons
+			gridSize={10}
+		>
+			{props.markers.length > 0 ? props.markers.map((m, i) => {
+				return <Marker /* label={m.device_id.toString()} */	/*  icon={{ url: svg }}*/ onClick = {() => alert('bing')} key={i} position={{ lat: m.lat, lng: m.long }} />
+			})
+				: null}
+		</MarkerClusterer>
 	</GoogleMap>
 }
 )

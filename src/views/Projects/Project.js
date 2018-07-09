@@ -1,7 +1,7 @@
-import { Button, Grid, Typography, withStyles } from '@material-ui/core';
+import { Button, Grid, withStyles, Collapse } from '@material-ui/core';
 import { LibraryBooks, Devices, AssignmentTurnedIn, Person } from '@material-ui/icons'
 import projectStyles from 'assets/jss/views/projects';
-import { ItemGrid } from 'components';
+import { ItemGrid, Info } from 'components';
 import DeviceSimpleList from 'components/List/DeviceSimpleList/DeviceSimpleList';
 import RegSimpleList from 'components/List/RegSimpleList/RegSimpleList';
 import moment from "moment";
@@ -11,15 +11,18 @@ import { dateFormatter } from 'variables/functions';
 import InfoCard from 'components/Cards/InfoCard';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
+import { Map, ExpandMore } from '@material-ui/icons'
+import { Maps } from 'components/Map/Maps';
+import classNames from 'classnames'
+import Caption from 'components/Typography/Caption';
 
-const Caption = (props) => <Typography variant={"caption"}>{props.children}</Typography>
-const Info = (props) => <Typography paragraph classes={props.classes}>{props.children}</Typography>
 class Project extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
 			project: {},
+			mapExpanded: false,
 			facts: {
 				deviceMostCounts: null,
 				regMostCounts: null
@@ -123,6 +126,7 @@ class Project extends Component {
 	render() {
 		const { project, loading } = this.state
 		const { regMostCounts, deviceMostCounts } = this.state.facts
+		const { classes } = this.props
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
@@ -164,6 +168,22 @@ class Project extends Component {
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<InfoCard title={"Devices"} avatar={<Devices/>} subheader={"Number of devices:" + project.devices.length}
 							// hideFacts
+							leftActions={
+								<Button className={classes.leftActionButton} onClick={() => this.setState({ mapExpanded: !this.state.mapExpanded })}>
+									<Map className={classes.leftIcon}/>
+									<Caption>
+										{this.state.mapExpanded ? "Hide Map" : "See Map"}
+									</Caption>
+									<ExpandMore className={classNames(classes.expand, {
+										[classes.expandOpen]: this.state.mapExpanded,
+									})} />
+								</Button>
+							}
+							leftActionContent={
+								<Collapse in={this.state.mapExpanded} timeout="auto" unmountOnExit>
+									<Maps markers={project.devices}/>
+								</Collapse>
+							}
 							content={
 								<Grid container>
 									<ItemGrid>
@@ -192,11 +212,12 @@ class Project extends Component {
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<InfoCard title={"Data"} avatar={<AssignmentTurnedIn/>} subheader={project.registrations.length}
 							// hideFacts
+
 							content={
 								<Grid container>
 									<ItemGrid>
 										<Caption>
-												Total Hits:
+											Total Hits:
 										</Caption>
 										<Info>
 											{project.totalCount}
@@ -204,12 +225,10 @@ class Project extends Component {
 									</ItemGrid>
 									<ItemGrid>
 										<Caption>
-												Device with most hits in a dataset:
+											Device with most hits in a dataset:
 										</Caption>
 										<Info>
-											{
-												regMostCounts ? regMostCounts.device_name + " - " + regMostCounts.count : "-"
-											}
+											{regMostCounts ? regMostCounts.device_name + " - " + regMostCounts.count : "-"}
 										</Info>
 									</ItemGrid>
 								</Grid>
