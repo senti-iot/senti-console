@@ -17,6 +17,7 @@ import Caption from '../Typography/Caption';
 import TextF from '../CustomInput/TextF';
 import ItemGrid from '../Grid/ItemGrid';
 import CircularLoader from '../Loader/CircularLoader';
+import GridContainer from '../Grid/GridContainer';
 
 const ITEM_HEIGHT = 32;
 const ITEM_PADDING_TOP = 8;
@@ -99,96 +100,85 @@ class CreateProject extends Component {
 			[classes.buttonSuccess]: created,
 		});
 		return (
-			<Grid container justify={'center'}>
-				{/* <ItemGrid xs={12} sm={12} md={12}> */}
+			<GridContainer justify={'center'}>
 				<Paper className={classes.paper}>
 					<MuiPickersUtilsProvider utils={MomentUtils}>
-
 						<form className={classes.form}>
-							<Grid container justify={'center'}>
-								<ItemGrid container xs={6}>
-									<ItemGrid xs={12}>
-										<TextF
-											id={"title"}
-											label={"Title"}
-											value={this.state.title}
-											className={classes.textField}
-											handleChange={this.handleChange("title")}
-											margin="normal" />
-									</ItemGrid>
-									<ItemGrid xs={12}>
-										<TextF
-											id={"multiline-flexible"}
-											label={"Description"}
-											multiline
-											// rows={"4"}
-											// rowsMax={"4"}
-											color={"secondary"}
-											className={classes.textField}
-											value={this.state.description}
-											handleChange={this.handleChange("description")}
-											margin="normal" />
-									</ItemGrid>
-								</ItemGrid>
-								<ItemGrid xs={4}>
-
-									<div className={classes.datepicker}>
-
-										<DatePicker
-											autoOk
-											label="Start Date"
-											clearable
-											format="DD.MM.YYYY"
-											value={this.state.open_date}
-											onChange={this.handleDateChange("open_date")}
-											animateYearScrolling={false}
-											color="primary"
-											rightArrowIcon={<KeyArrRight />}
-											leftArrowIcon={<KeyArrLeft />}
-											InputLabelProps={{
-												FormLabelClasses: {
-													root: classes.label,
-													focused: classes.focused,
-												}
-											}}
-											InputProps={{ classes: { underline: classes.underline } }}
-										
-										/>
-									</div>
-									<div className={classes.datepicker}>
-										<DatePicker
-											color="primary"
-											autoOk
-											label="End Date"
-											clearable
-											format="DD.MM.YYYY"
-											value={this.state.close_date}
-											onChange={this.handleDateChange("close_date")}
-											animateYearScrolling={false}
-											rightArrowIcon={<KeyArrRight />}
-											leftArrowIcon={<KeyArrLeft />}
-											InputLabelProps={{
-												FormLabelClasses: {
-													root: classes.label,
-													focused: classes.focused,
-												}
-											}}
-											InputProps={{ classes: { underline: classes.underline } }}
-										
-										/>
-									</div>
-								</ItemGrid>
+							{/* <Grid container justify={'center'}> */}
+							<ItemGrid container xs={12}>
+								<TextF
+									id={"title"}
+									label={"Title"}
+									value={this.state.title}
+									className={classes.textField}
+									handleChange={this.handleChange("title")}
+									margin="normal"
+									noFullWidth
+								/>
+							</ItemGrid>
+							<ItemGrid xs={12}>
+								<TextF
+									id={"multiline-flexible"}
+									label={"Description"}
+									multiline
+									rows={"4"}
+									// rowsMax={"4"}
+									color={"secondary"}
+									className={classes.textField}
+									value={this.state.description}
+									handleChange={this.handleChange("description")}
+									margin="normal"
+									noFullWidth/>
+							</ItemGrid>
+							<ItemGrid xs={12}>
+								{/* <div className={classes.datepicker}> */}
+								<DatePicker
+									autoOk
+									label="Start Date"
+									clearable
+									format="DD.MM.YYYY"
+									value={this.state.open_date}
+									onChange={this.handleDateChange("open_date")}
+									animateYearScrolling={false}
+									color="primary"
+									rightArrowIcon={<KeyArrRight />}
+									leftArrowIcon={<KeyArrLeft />}
+									InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
+									InputProps={{ classes: { underline: classes.underline } }}
+								/>
+								{/* </div> */}
+							</ItemGrid>
+							<ItemGrid xs={12}>
+								{/* <div className={classes.datepicker}> */}
+								<DatePicker
+									color="primary"
+									autoOk
+									label="End Date"
+									clearable
+									format="DD.MM.YYYY"
+									value={this.state.close_date}
+									onChange={this.handleDateChange("close_date")}
+									animateYearScrolling={false}
+									rightArrowIcon={<KeyArrRight />}
+									leftArrowIcon={<KeyArrLeft />}
+									InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
+									InputProps={{ classes: { underline: classes.underline } }}
+								/>
+								{/* </div> */}
+							</ItemGrid>
+							<ItemGrid xs={12}>
 								<FormControl className={classes.formControl}>
 									{availableDevices ?
 										<Fragment>
 											<InputLabel FormLabelClasses={{
 												root: classes.label,
-												focused: classes.focused
+											// focused: classes.focused
 											}} color={"primary"} htmlFor="select-multiple-chip">Devices</InputLabel>
 											<Select
 												color={"primary"}
 												multiple
 												value={this.state.devices}
+												// autoWidth
 												onChange={this.handleDeviceChange}
 												input={<Input id="select-multiple-chip" classes={{
 													underline: classes.underline
@@ -206,9 +196,9 @@ class CreateProject extends Component {
 														value={name.device_id}
 														style={{
 															fontWeight:
-															this.state.devices.indexOf(name.device_id) === -1
-																? theme.typography.fontWeightRegular
-																: theme.typography.fontWeightMedium,
+													this.state.devices.indexOf(name.device_id) === -1
+														? theme.typography.fontWeightRegular
+														: theme.typography.fontWeightMedium,
 														}}
 													>
 														{name.device_id + " - " + (name.device_name ? name.device_name : "No Name")}
@@ -217,7 +207,8 @@ class CreateProject extends Component {
 											</Select>
 										</Fragment> : <Caption>There are no available Devices</Caption>}
 								</FormControl>
-							</Grid>
+							</ItemGrid>
+							{/* </Grid> */}
 
 						</form>
 						<Grid container justify={"center"}>
@@ -249,7 +240,7 @@ class CreateProject extends Component {
 					</MuiPickersUtilsProvider>
 				</Paper>
 				{/* </ItemGrid> */}
-			</Grid>
+			</GridContainer>
 		)
 	}
 }

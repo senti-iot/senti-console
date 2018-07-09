@@ -9,17 +9,17 @@ import IconButton from '@material-ui/core/IconButton';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { primaryColor, boxShadow } from 'assets/jss/material-dashboard-react';
-import { Menu, MenuItem, Grid, /* Tooltip */ } from '@material-ui/core';
+import { Menu, MenuItem, /*Grid, Tooltip */ } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import KeyArrRight from '@material-ui/icons/KeyboardArrowRight';
-import KeyArrLeft from '@material-ui/icons/KeyboardArrowLeft';
+// import KeyArrRight from '@material-ui/icons/KeyboardArrowRight';
+// import KeyArrLeft from '@material-ui/icons/KeyboardArrowLeft';
 
 import Add from "@material-ui/icons/Add"
-import IntegrationAutosuggest from 'components/Search/Search'
-import { DatePicker } from 'material-ui-pickers';
-import MomentUtils from 'material-ui-pickers/utils/moment-utils';
-import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
-import ItemGrid from '../Grid/ItemGrid';
+// import IntegrationAutosuggest from 'components/Search/Search'
+// import { DatePicker } from 'material-ui-pickers';
+// import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+// import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
+// import ItemGrid from '../Grid/ItemGrid';
 import teal from '@material-ui/core/colors/teal'
 import { withRouter } from 'react-router-dom'
 
@@ -93,86 +93,85 @@ let EnhancedTableToolbar = props => {
 					<Typography color="primary" variant="subheading">
 						{numSelected} selected
 					</Typography>
-				) :
-					<MuiPickersUtilsProvider utils={MomentUtils}>
-						<Grid container >
-							<ItemGrid xs={12} sm={12} >
-								<IntegrationAutosuggest
-									suggestions={props.suggestions}
-									handleFilterKeyword={props.handleFilterKeyword}
-									searchValue={props.filters.keyword}
-								/>
-							</ItemGrid>
-							{props.noDatePickers ? null :
-								<React.Fragment>
-									<ItemGrid md={5} sm={12} >
-										<DatePicker
-											autoOk
-											label="Start Date"
-											clearable
-											fullWidth
-											format="DD.MM.YYYY"
-											value={props.filters.startDate}
-											onChange={props.handleFilterStartDate}
-											animateYearScrolling={false}
-											color="primary"
-											rightArrowIcon={<KeyArrRight />}
-											leftArrowIcon={<KeyArrLeft />}
-											InputLabelProps={
-												{
-													FormLabelClasses: {
-														root: classes.label,
-														focused: classes.focused,
-													},
-												}
-											}
-											InputProps={{
-												classes: {
-													underline: classes.underline,
-												}
-											}}
-										/>
-									</ItemGrid>
-									<ItemGrid md={5} sm={12}>
-										<DatePicker
-											color="primary"
-											autoOk
-											label="End Date"
-											clearable
-											fullWidth
-											format="DD.MM.YYYY"
-											value={props.filters.endDate}
-											onChange={props.handleFilterEndDate}
-											animateYearScrolling={false}
-											rightArrowIcon={<KeyArrRight />}
-											leftArrowIcon={<KeyArrLeft />}
-											InputLabelProps={
-												{
-													FormLabelClasses: {
-														root: classes.label,
-														focused: classes.focused,
-													},
-												}
-											}
-											InputProps={{
-												classes: {
-													underline: classes.underline,
-												}
-											}}
+				) : null
+					// <MuiPickersUtilsProvider utils={MomentUtils}>
+					// 	<Grid container >
+					// 		<ItemGrid xs={12} sm={12} >
+					// 			<IntegrationAutosuggest
+					// 				suggestions={props.suggestions}
+					// 				handleFilterKeyword={props.handleFilterKeyword}
+					// 				searchValue={props.filters.keyword}
+					// 			/>
+					// 		</ItemGrid>
+					// 		{props.noDatePickers ? null :
+					// 			<React.Fragment>
+					// 				<ItemGrid md={5} sm={12} >
+					// 					<DatePicker
+					// 						autoOk
+					// 						label="Start Date"
+					// 						clearable
+					// 						fullWidth
+					// 						format="DD.MM.YYYY"
+					// 						value={props.filters.startDate}
+					// 						onChange={props.handleFilterStartDate}
+					// 						animateYearScrolling={false}
+					// 						color="primary"
+					// 						rightArrowIcon={<KeyArrRight />}
+					// 						leftArrowIcon={<KeyArrLeft />}
+					// 						InputLabelProps={
+					// 							{
+					// 								FormLabelClasses: {
+					// 									root: classes.label,
+					// 									focused: classes.focused,
+					// 								},
+					// 							}
+					// 						}
+					// 						InputProps={{
+					// 							classes: {
+					// 								underline: classes.underline,
+					// 							}
+					// 						}}
+					// 					/>
+					// 				</ItemGrid>
+					// 				<ItemGrid md={5} sm={12}>
+					// 					<DatePicker
+					// 						color="primary"
+					// 						autoOk
+					// 						label="End Date"
+					// 						clearable
+					// 						fullWidth
+					// 						format="DD.MM.YYYY"
+					// 						value={props.filters.endDate}
+					// 						onChange={props.handleFilterEndDate}
+					// 						animateYearScrolling={false}
+					// 						rightArrowIcon={<KeyArrRight />}
+					// 						leftArrowIcon={<KeyArrLeft />}
+					// 						InputLabelProps={
+					// 							{
+					// 								FormLabelClasses: {
+					// 									root: classes.label,
+					// 									focused: classes.focused,
+					// 								},
+					// 							}
+					// 						}
+					// 						InputProps={{
+					// 							classes: {
+					// 								underline: classes.underline,
+					// 							}
+					// 						}}
 										
-										/>
-									</ItemGrid>
-								</React.Fragment>
-							}
-						</Grid>
-					</MuiPickersUtilsProvider>
+					// 					/>
+					// 				</ItemGrid>
+					// 			</React.Fragment>
+					// 		}
+					// 	</Grid>
+					// </MuiPickersUtilsProvider>
 				}
 			</div>
 			{/* <div className={classes.spacer} /> */}
 			<div className={classes.actions}>
 				{numSelected > 0 ? (
 					<Fragment>
-						{/* <Tooltip title="Options"> */}
 						<IconButton
 							aria-label="More"
 							aria-owns={props.anchorElMenu ? 'long-menu' : null}
@@ -180,7 +179,6 @@ let EnhancedTableToolbar = props => {
 							onClick={props.handleToolbarMenuOpen}>
 							<MoreVertIcon />
 						</IconButton>
-						{/* </Tooltip> */}
 						<Menu
 							id="long-menu"
 							anchorEl={props.anchorElMenu}

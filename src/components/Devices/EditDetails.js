@@ -73,7 +73,6 @@ class EditDetails extends Component {
 			<GridContainer>
 				<Paper className={classes.paper}>
 					<form className={classes.form}>
-
 						<Grid container>
 							<ItemGrid>
 								<TextF
