@@ -13,16 +13,26 @@ class SearchInput extends Component {
 	  this.state = {
 		 open: false
 	  }
+		this.inputRef = React.createRef()
+	}
+	focusInput = () => {
+		if (this.state.open)
+			this.inputRef.current.focus()
 	}
 	handleOpen = () => {
-		this.setState({ open: !this.state.open })
+
+		this.setState({ open: !this.state.open }, this.focusInput)
+		// this.props.ref.focus()
+		// console.log(this.inputRef.current)
+		// if (this.state.open === true)
+		// this.inputRef.current.focus()
 	}	
 	handleClose = () => {
 		// if (this.props.value === '')
 		this.setState({ open: false })
 	}
 	render() {
-		const { classes, ref, ...other } = this.props;
+		const { classes, ...other } = this.props;
 		return (
 			<ItemGrid container noPadding noMargin alignItems={'center'} style={{ width: "auto" }}>
 				<ClickAwayListener onClickAway={this.handleClose}>
@@ -30,10 +40,11 @@ class SearchInput extends Component {
 					<div className={className(classes.inputContainer, { [classes.inputContainerFocused]: this.state.open }, { [classes.inputContainerUnfocused]: !this.state.open })}>
 						<Search className={className(classes.icon, { [classes.iconActive]: this.props.value !== '' ? true : false })} onClick={this.handleOpen}/>
 						<Input
+							inputRef={this.inputRef}
 							placeholder='Search'
-							ref={ref}
+							// ref={this.inputRef}
 							onFocus={this.inputFocused}
-							classes={{ input: classes.input, underline: classes.underline }}
+							classes={{ input: classes.input, underline: classes.underline, root: classes.inputRoot }}
 							{...other}
 						/>
 					</div>

@@ -14,7 +14,7 @@ const searchStyles = theme => ({
 			borderBottom: "1px solid transparent",
 		},
 		'&:after': {
-			borderBottomColor: teal[500],
+			borderBottomColor: '#4db6ac',
 		},
 		'&:hover:$disabled:before': {
 			borderBottomColor: "#fff"
@@ -50,9 +50,12 @@ const searchStyles = theme => ({
 		padding: 0,
 		listStyleType: 'none',
 	},
+	inputRoot: {
+		width: "100%"
+	},
 	input: {
 		// background: "white",
-		padding: 8,
+		// padding: 8,
 		// margin: 8,
 		color: "#000",
 		borderRadius: 4,
