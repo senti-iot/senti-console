@@ -86,7 +86,7 @@ class EditDetails extends Component {
 							</ItemGrid>
 							<ItemGrid>
 								<FormControl className={this.props.classes.formControl}>
-									<InputLabel htmlFor="streetType-helper" classes={{ root: classes.label }}>{locationType ? '' : "Location Type"}</InputLabel>
+									<InputLabel htmlFor="streetType-helper" classes={{ root: classes.label }}>{/* locationType ? '' : */ "Location Type"}</InputLabel>
 									<Select
 										value={locationType}
 										onChange={this.handleInput('locationType')}
@@ -108,6 +108,7 @@ class EditDetails extends Component {
 									rows={3}
 									handleChange={this.handleInput('description')}
 									value={description}
+									noFullWidth
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
@@ -123,21 +124,21 @@ class EditDetails extends Component {
 							</ItemGrid>
 
 							<ItemGrid xs={12} container justify={'center'}>
-								<ItemGrid xs={12}>
-									<Collapse in={this.state.updating} timeout={100} unmountOnExit>
-										<CircularLoader notCentered />
-									</Collapse>
-								</ItemGrid>
-								<ItemGrid>
-									<Button
-										variant="contained"
-										color="primary"
-										disabled={this.state.updating}
-										onClick={this.state.updated ? this.goToDevice : this.handleUpdateDevice}
-									>
-										{this.state.updated ? <Fragment><Check className={classes.leftIcon}/> Go to Device </Fragment> : <Fragment><Save className={classes.leftIcon} />Update Device</Fragment>}
-									</Button>
-								</ItemGrid>
+								{/* <ItemGrid /* xs={12} > */}
+								<Collapse in={this.state.updating} timeout={100} unmountOnExit>
+									<CircularLoader notCentered />
+								</Collapse>
+								{/* </ItemGrid> */}
+								{/* <ItemGrid> */}
+								<Button
+									variant="contained"
+									color="primary"
+									disabled={this.state.updating}
+									onClick={this.state.updated ? this.goToDevice : this.handleUpdateDevice}
+								>
+									{this.state.updated ? <Fragment><Check className={classes.leftIcon}/> Go to Device </Fragment> : <Fragment><Save className={classes.leftIcon} />Update Device</Fragment>}
+								</Button>
+								{/* </ItemGrid> */}
 							</ItemGrid>
 						</Grid>
 					</form>

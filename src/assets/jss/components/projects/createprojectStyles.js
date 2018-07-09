@@ -30,7 +30,8 @@ const createprojectStyles = theme => ({
 	},
 	formControl: {
 		marginTop: 16,
-		marginBottom: 8
+		marginBottom: 8,
+		minWidth: 100
 		// margin: theme.spacing.unit * 2,
 		// minWidth: 300,
 		// maxWidth: 300,
