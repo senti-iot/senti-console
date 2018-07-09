@@ -133,14 +133,12 @@ class Projects extends Component {
 			this.getProjects()
 		})
 	}
-	renderLoader = () => {
-		// const { classes } = this.props
-		// return <Grid container><CircularProgress className={classes.loader} /></Grid>
-		return <CircularLoader/>
+	handleTabsChange = (e, value) => {
+		this.setState({ route: value })
 	}
 	renderAllProjects = () => {
 		const { loading } = this.state
-		return loading ? this.renderLoader() : <ProjectTable
+		return loading ? <CircularLoader /> : <ProjectTable
 			data={this.filterItems(this.state.projects)}
 			tableHead={this.state.projectHeader}
 			handleFilterEndDate={this.handleFilterEndDate}
@@ -155,6 +153,11 @@ class Projects extends Component {
 			{this.renderAllProjects()}
 		</GridContainer>
 	}
+	renderCards = () => {
+		return <GridContainer>
+			<div>Not implemented</div>
+		</GridContainer>
+	}
 	render() {
 		const { classes } = this.props
 		const { projects } = this.state
@@ -163,7 +166,7 @@ class Projects extends Component {
 				<AppBar position={'sticky'} classes={{ root: classes.appBar }}>
 					<Tabs value={this.state.route} onChange={this.handleTabsChange}>
 						<Tab title={'List View'} id={0} label={<ViewList />} onClick={() => { this.props.history.push(`${this.props.match.path}/list`) }} />
-						<Tab title={'Cards View'} id={2} label={<ViewModule />} onClick={() => { this.props.history.push(`${this.props.match.path}/cards`) }} />
+						<Tab title={'Cards View'} id={1} label={<ViewModule />} onClick={() => { this.props.history.push(`${this.props.match.path}/cards`) }} />
 						<Search
 							right
 							suggestions={[]}

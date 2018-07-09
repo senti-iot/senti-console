@@ -197,8 +197,6 @@ class Devices extends Component {
 					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
 				</Switch> : <CircularLoader/>}
 			</Fragment>
-
-
 		)
 	}
 }
