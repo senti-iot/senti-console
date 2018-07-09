@@ -38,7 +38,7 @@ const headerStyle = theme => ({
 	},
 	flex: {
 		flex: 1,
-		whiteSpace: 'nowrap'
+		// whiteSpace: 'nowrap'
 	},
 	goBackButton: {
 		color: "inherit",

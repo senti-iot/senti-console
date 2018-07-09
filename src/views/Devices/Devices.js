@@ -17,8 +17,8 @@ class Devices extends Component {
 		super(props)
 
 		this.state = {
-			projects: [],
-			projectHeader: [],
+			devices: null,
+			deviceHeaders: [],
 			loading: true,
 			route: 0,
 			filters: {
@@ -28,14 +28,14 @@ class Devices extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader("Devices")
+		props.setHeader("Devices", false)
 	}
 
-	filterItems = (projects) => {
+	filterItems = (devices) => {
 		const { keyword } = this.state.filters
 		// const { activeDateFilter } = this.state.filters
 		var searchStr = keyword.toLowerCase()
-		var arr = projects
+		var arr = devices
 		// if (activeDateFilter)
 		// 	arr = this.filterByDate(arr)
 		if (arr[0] === undefined)
@@ -109,7 +109,6 @@ class Devices extends Component {
 				this.setState({ route: 0 })
 			}
 		}
-		this.props.setHeader("Devices", false)
 	}
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.location.pathname !== prevProps.location.pathname) {	

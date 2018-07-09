@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { getAllProjects, deleteProject } from '../../variables/dataProjects';
-import { /* Grid, */ withStyles, AppBar } from "@material-ui/core";
-
+import { /* Grid, */ withStyles, AppBar, Tabs, Tab } from "@material-ui/core";
+import { Switch, Route, Redirect } from 'react-router-dom'
+import { ViewList, ViewModule } from '@material-ui/icons'
 import projectStyles from 'assets/jss/views/projects';
 import ProjectTable from 'components/Project/ProjectTable';
 import CircularLoader from 'components/Loader/CircularLoader';
@@ -16,6 +17,7 @@ class Projects extends Component {
 			projects: [],
 			projectHeader: [],
 			loading: true,
+			route: 0,
 			filters: {
 				keyword: '',
 				startDate: null,
@@ -115,10 +117,15 @@ class Projects extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		await this.getProjects()
-		// this.props.setHeader("Projects")
+		if (this.props.location.pathname.includes('/cards')) {
+			this.setState({ route: 1 })
+		}
+		else {
+			this.setState({ route: 0 })	
+		}
 	}
 	componentWillUnmount = () => {
-	  this._isMounted = 0
+	  	this._isMounted = 0
 	}
 	
 	deleteProjects = async (projects) => {
@@ -143,21 +150,32 @@ class Projects extends Component {
 			deleteProjects={this.deleteProjects}
 		/>
 	}
-
+	renderList = () => {
+		return <GridContainer justify={'center'}>
+			{this.renderAllProjects()}
+		</GridContainer>
+	}
 	render() {
 		const { classes } = this.props
+		const { projects } = this.state
 		return (
 			<Fragment>
 				<AppBar position={'sticky'} classes={{ root: classes.appBar }}>
-					<Search
-						right
-						suggestions={[]}
-						handleFilterKeyword={this.handleFilterKeyword}
-						searchValue={this.state.filters.keyword}/>
+					<Tabs value={this.state.route} onChange={this.handleTabsChange}>
+						<Tab title={'List View'} id={0} label={<ViewList />} onClick={() => { this.props.history.push(`${this.props.match.path}/list`) }} />
+						<Tab title={'Cards View'} id={2} label={<ViewModule />} onClick={() => { this.props.history.push(`${this.props.match.path}/cards`) }} />
+						<Search
+							right
+							suggestions={[]}
+							handleFilterKeyword={this.handleFilterKeyword}
+							searchValue={this.state.filters.keyword} />
+					</Tabs>
 				</AppBar>
-				<GridContainer justify={'center'}>
-					{this.renderAllProjects()}
-				</GridContainer>
+				{projects ? <Switch>
+					<Route path={`${this.props.match.path}/cards`} render={() => this.renderCards()} />
+					<Route path={`${this.props.match.path}/list`} render={() => this.renderList()} />
+					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
+				</Switch> : <CircularLoader />}
 			</Fragment>
 		)
 	}

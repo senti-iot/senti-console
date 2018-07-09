@@ -11,13 +11,16 @@ const searchStyles = theme => ({
 	focused: {},
 	underline: {
 		'&:before': {
-			borderBottom: "1px solid transparent",
+			borderBottom: "0px solid transparent",
 		},
 		'&:after': {
-			borderBottomColor: '#4db6ac',
+			// borderBottomColor: '#4db6ac',
+			borderBottom: "0px solid transparent",
 		},
 		'&:hover:$disabled:before': {
-			borderBottomColor: "#fff"
+			// borderBottomColor: "#fff",
+			borderBottom: "0px solid transparent",
+
 		},
 
 	},

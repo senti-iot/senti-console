@@ -77,10 +77,10 @@ let defaultRender = props => {
 	const AddNewProject = () => props.history.push('/projects/new')
 	return <Grid container justify={'space-between'} alignItems={'center'}>
 		<ItemGrid xs={8}>
-			<IntegrationAutosuggest
+			{/* <IntegrationAutosuggest
 				suggestions={props.suggestions}
 				handleFilterKeyword={props.handleFilterKeyword}
-				searchValue={props.filters.keyword} />
+				searchValue={props.filters.keyword} /> */}
 		</ItemGrid>
 		<ItemGrid xs={2} container justify={'flex-end'}>
 			{props.noAdd ? null :

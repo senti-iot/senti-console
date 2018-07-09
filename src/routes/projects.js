@@ -7,7 +7,7 @@ export default withRouter((props) => {
 	return (
 		<Switch>
 			<Route path={'/projects/new'} component={() => <CreateProject setHeader={props.setHeader} />}/>
-			<Route path={'/projects'} render={() => <Projects setHeader={props.setHeader}/>} />
+			<Route path={'/projects'} render={(rp) => <Projects setHeader={props.setHeader} {...rp}/>} />
 		</Switch>
 	)
 })
