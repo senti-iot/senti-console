@@ -114,6 +114,8 @@ class EditDetails extends Component {
 								<TextF
 									id={'address'}
 									label={'Address'}
+									multiline
+									rows={2}
 									handleChange={this.handleInput('address')}
 									value={address}
 									noFullWidth

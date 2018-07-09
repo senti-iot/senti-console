@@ -32,7 +32,6 @@ class DeviceImages extends Component {
 		return <DeviceImageUpload dId={dId} imgUpload={this.getAllPics} callBack={this.getPicsCallBack} />
 	}
 	getAllPics = (id) => {
-		console.log('huh')
 		getAllPictures(id).then(rs => this.setState({ img: rs }))
 	}
 	handleOpenActionsImages = e => {
