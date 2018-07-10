@@ -72,8 +72,9 @@ class DeviceDetails extends Component {
 									minWidth: 200
 								}
 							}}>
-							<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}>
-								<Build className={classes.leftIcon} />{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
+						
+							<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
+								<Edit className={classes.leftIcon} />Edit details
 							</MenuItem>
 							<MenuItem onClick={this.props.handleOpenAssign}>
 								<LibraryBooks className={classes.leftIcon} />{device.project ? "Move to another project" : "Assign to new project"}
@@ -81,8 +82,8 @@ class DeviceDetails extends Component {
 							{device.project_id ? <MenuItem onClick={this.props.handleOpenUnassign}>
 								<LayersClear className={classes.leftIcon} /> Unassign from project
 							</MenuItem> : null}
-							<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
-								<Edit className={classes.leftIcon} />Edit details
+							<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}>
+								<Build className={classes.leftIcon} />{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
 							</MenuItem>
 							))}
 						</Menu>

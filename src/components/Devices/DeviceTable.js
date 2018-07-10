@@ -32,10 +32,10 @@ class EnhancedTable extends React.Component {
 	}
 	options = () => {
 		return [
-			{ label: 'Calibrate', func: this.handleCalibrateFlow, single: true },
 			{ label: 'Edit', func: this.handleDeviceEdit, single: true },
 			{ label: 'Assign To Project', func: this.handleAssignToProject, single: false },
 			{ label: 'Export to PDF', func: () => { }, single: false },
+			{ label: 'Calibrate', func: this.handleCalibrateFlow, single: true },
 			{ label: 'Delete', func: this.handleDeleteProjects, single: false },
 		]
 	}
