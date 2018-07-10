@@ -97,7 +97,6 @@ class DeviceImage extends React.Component {
 						action={this.getRef}
 					>
 						{images.map((step, i) => {
-							console.log(step)
 							let blob = step
 							if (typeof step === 'object')
 							{ blob = URL.createObjectURL(step) }
@@ -141,7 +140,10 @@ class DeviceImage extends React.Component {
 DeviceImage.propTypes = {
 	classes: PropTypes.object.isRequired,
 	theme: PropTypes.object.isRequired,
-	images: PropTypes.array.isRequired
+	images: PropTypes.oneOfType([
+		PropTypes.array,
+		PropTypes.number,
+	]).isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(DeviceImage);

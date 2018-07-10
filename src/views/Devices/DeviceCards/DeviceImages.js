@@ -24,7 +24,6 @@ class DeviceImages extends Component {
 		await this.getAllPics(this.props.device.device_id)
 	}
 	getPicsCallBack = () => {
-		console.log(this.props.device.device_id, 'what?')
 		this.getAllPics(this.props.device.device_id)
 	}
 	renderImageUpload = (dId) => {

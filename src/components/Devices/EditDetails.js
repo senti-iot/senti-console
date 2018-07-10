@@ -26,7 +26,6 @@ class EditDetails extends Component {
 		let id = this.props.match.params.id
 		await getDevice(id).then(rs => this.setState({ id: rs.device_id, name: rs.device_name, description: rs.description, address: rs.address, locationType: rs.locationType }))
 		this.setState({ loading: false })
-		// console.log(this.state)
 	}
 	componentWillUnmount = () => {
 		clearTimeout(this.timer);

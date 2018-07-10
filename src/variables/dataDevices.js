@@ -35,7 +35,6 @@ export const getAvailableDevices = async () => {
 
 export const assignProjectToDevice = async (args) => {
 	var data = await api.post('senti/availabledevices', args).then(rs => rs.data)
-	// console.log(data)
 	return data
 }
 
@@ -74,11 +73,11 @@ export const calibrateDevice = async (device) => {
 // }
 
 export const updateDeviceDetails = async (device) => {
-	var data = await api.put('senti/editdetails', device).then(rs => { console.log(rs); return rs.data })
+	var data = await api.put('senti/editdetails', device).then(rs => {return rs.data })
 	return data
 }
 
 export const updateDeviceHardware = async (device) => {
-	var data = await api.put('senti/edithardware', device).then(rs => { console.log(rs); return rs.data })
+	var data = await api.put('senti/edithardware', device).then(rs => {  return rs.data })
 	return data
 }

@@ -32,7 +32,7 @@ class ImageUpload extends Component {
 
 		this.state = {
 			images: [],
-			success: null
+			success: true
 		}
 	}
 	tempUpload = e => {
@@ -49,7 +49,9 @@ class ImageUpload extends Component {
 	}
 	finish = () => {
 		this.setState({ images: [] })
-		return this.props.callBack ? this.props.callBack() : ''
+		if (this.props.callBack)
+			this.props.callBack()
+		// return this.props.callBack ? this.props.callBack() : ''
 	}
 	handleReset = () => { this.setState({ images: [] }) }
 	render() {

@@ -51,7 +51,6 @@ class EnhancedTable extends React.Component {
 		this.setState({ anchorFilterMenu: null })
 	}
 	handleFilter = e => {
-		// console.log('not implemented')
 	}
 	handleSearch = value => {
 		this.setState({

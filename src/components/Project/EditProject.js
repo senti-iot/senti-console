@@ -56,10 +56,7 @@ class EditProject extends Component {
 		})
 		await getAvailableDevices().then(rs => {
 			if (this._isMounted) {
-				// var dvs = this.state.devices
 				if (rs) {
-					// dvs.push(...rs)
-					// console.log(rs)
 					this.setState({
 						availableDevices: rs
 					})
@@ -115,7 +112,6 @@ class EditProject extends Component {
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		});
-		// console.log(this.state.devices)
 		return (
 			!loading ?
 				<GridContainer justify={'center'}>
@@ -196,7 +192,7 @@ class EditProject extends Component {
 													}} />}
 													renderValue={selected => (
 														<div className={classes.chips}>
-															{selected.map(value => { console.log(selected, value, availableDevices.findIndex(d => d.device_id === value)); return <Chip key={value} label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_name} className={classes.chip} /> })}
+															{selected.map(value => { return <Chip key={value} label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_name} className={classes.chip} /> })}
 														</div>)}
 													MenuProps={MenuProps}>
 													{availableDevices.map(name => (
