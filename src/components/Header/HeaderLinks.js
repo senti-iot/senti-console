@@ -27,7 +27,7 @@ class HeaderLinks extends React.Component {
 			cookie.remove("SESSION", { path: '/' })
 		}
 		catch (e) { 
-			console.log(e)
+			// console.log(e)
 		}
 		if (!cookie.load('SESSION'))
 		{

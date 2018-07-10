@@ -45,7 +45,6 @@ class InfoCard extends React.Component {
 						</Avatar>
 					}
 					title={title}
-
 					subheader={this.hasSubheader(subheader)}
 				>
 
@@ -94,6 +93,17 @@ class InfoCard extends React.Component {
 
 InfoCard.propTypes = {
 	classes: PropTypes.object.isRequired,
+	topAction: PropTypes.any,
+	content: PropTypes.any,
+	avatar: PropTypes.any,
+	leftActions: PropTypes.any,
+	leftActionContent: PropTypes.any,
+	noExpand: PropTypes.bool,
+	title: PropTypes.any,
+	subheader: PropTypes.any,
+	hiddenContent: PropTypes.any,
+	noAvatar: PropTypes.any,
+	hideFacts: PropTypes.bool,
 };
 
 export default withStyles(regularCardStyle)(InfoCard);

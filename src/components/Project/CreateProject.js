@@ -99,6 +99,7 @@ class CreateProject extends Component {
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		});
+		console.log(this.state.devices)
 		return (
 			<GridContainer justify={'center'}>
 				<Paper className={classes.paper}>
@@ -185,7 +186,7 @@ class CreateProject extends Component {
 												}} />}
 												renderValue={selected => (
 													<div className={classes.chips}>
-														{selected.map(value => <Chip key={value} label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_name} className={classes.chip} />)}
+														{selected.map(value => { console.log(selected); return <Chip key={value} label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_name} className={classes.chip} /> })}
 													</div>
 												)}
 												MenuProps={MenuProps}

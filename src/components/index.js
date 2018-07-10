@@ -67,13 +67,14 @@ import Warning from "./Typography/Warning.js";
 import Danger from "./Typography/Danger.js";
 import Small from "./Typography/Small.js";
 import A from "./Typography/A.js";
-
+import Caption from "./Typography/Caption"
 export {
 	// Cards
 	ChartCard,
 	ProfileCard,
 	RegularCard,
 	StatsCard,
+	Caption,
 	// CustomButtons
 	// Button,
 	// IconButton,

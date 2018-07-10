@@ -74,9 +74,7 @@ export const calibrateDevice = async (device) => {
 // }
 
 export const updateDeviceDetails = async (device) => {
-	// console.log(device)
 	var data = await api.put('senti/editdetails', device).then(rs => { console.log(rs); return rs.data })
-	// console.log(data)
 	return data
 }
 

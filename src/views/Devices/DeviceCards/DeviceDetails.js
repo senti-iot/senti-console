@@ -20,18 +20,13 @@ class DeviceDetails extends Component {
 	}
 	renderStatus = (status) => {
 		const { classes } = this.props
-
-
 		switch (status) {
 			case 1:
 				return <SignalWifi2Bar className={classes.yellowSignal} />
-
 			case 2:
 				return <SignalWifi2Bar className={classes.greenSignal} />
-
 			case 0:
 				return <SignalWifi2Bar className={classes.redSignal} />
-
 			case null:
 				return <div>
 					<SignalWifi2BarLock className={classes.redSignal} />
@@ -52,11 +47,13 @@ class DeviceDetails extends Component {
 	render() {
 		const { actionAnchor } = this.state
 		const { classes, device } = this.props
+		console.log(device)
 		return (
 			<InfoCard
-				title={<Typography paragraph className={classes.typoNoMargin}>Device Details</Typography>}
+				title={'Device Details'}
+				avatar={<Devices />}
 				topAction={
-					<ItemGrid>
+					<ItemGrid noMargin noPadding>
 						<IconButton
 							aria-label="More"
 							aria-owns={actionAnchor ? 'long-menu' : null}
@@ -81,7 +78,7 @@ class DeviceDetails extends Component {
 							<MenuItem onClick={this.props.handleOpenAssign}>
 								<LibraryBooks className={classes.leftIcon} />{device.project ? "Move to another project" : "Assign to new project"}
 							</MenuItem>
-							{device.project ? <MenuItem onClick={this.props.handleOpenUnassign}>
+							{device.project_id ? <MenuItem onClick={this.props.handleOpenUnassign}>
 								<LayersClear className={classes.leftIcon} /> Unassign from project
 							</MenuItem> : null}
 							<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
@@ -91,7 +88,6 @@ class DeviceDetails extends Component {
 						</Menu>
 					</ItemGrid>
 				}
-				avatar={<Devices />}
 				subheader={device.device_id}
 				noExpand
 				content={
