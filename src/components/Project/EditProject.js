@@ -59,7 +59,7 @@ class EditProject extends Component {
 				// var dvs = this.state.devices
 				if (rs) {
 					// dvs.push(...rs)
-					console.log(rs)
+					// console.log(rs)
 					this.setState({
 						availableDevices: rs
 					})
@@ -115,7 +115,7 @@ class EditProject extends Component {
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		});
-		console.log(this.state.devices)
+		// console.log(this.state.devices)
 		return (
 			!loading ?
 				<GridContainer justify={'center'}>

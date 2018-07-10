@@ -47,7 +47,6 @@ class DeviceDetails extends Component {
 	render() {
 		const { actionAnchor } = this.state
 		const { classes, device } = this.props
-		console.log(device)
 		return (
 			<InfoCard
 				title={'Device Details'}
