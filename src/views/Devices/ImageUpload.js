@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { withStyles, Button, Grid } from '@material-ui/core';
 import { CloudUpload } from '@material-ui/icons'
 import { ItemGrid } from 'components';
-import ImageCarousel from 'components/Devices/ImageCarousel';
+// import ImageCarousel from 'components/Devices/ImageCarousel';
+import DeviceImage from 'components/Devices/DeviceImage';
 
 
 const styles = theme => ({
@@ -44,7 +45,7 @@ class ImageUpload extends Component {
 		return (
 			<Grid container className={classes.grid}>
 				<ItemGrid xs={12} noPadding container extraClass={classes.grid}>
-					{images.length > 0 ? <ImageCarousel images={[...images]} /> : null}
+					{images.length > 0 ? <DeviceImage images={[...images]} /> : null}
 				</ItemGrid>
 				<ItemGrid xs={12} container justify={'center'}>
 					<input

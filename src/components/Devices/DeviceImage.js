@@ -96,15 +96,21 @@ class DeviceImage extends React.Component {
 						// containerStyle={{ minHeight: '400px' }}
 						action={this.getRef}
 					>
-						{images.map((step, i) => (
+						{images.map((step, i) => {
+							console.log(step)
+							let blob = step
+							if (typeof step === 'object')
+							{ blob = URL.createObjectURL(step) }
 							// <div className={classNames({
 							// 	[classes.activeImage]: this.state.activeStep === i ? false : true
 							// })} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-							<ExifOrientationImg key={i} /* className={classes.img} */ className={classNames(classes.img, {
+							return	<ExifOrientationImg key={i} /* className={classes.img} */ className={classNames(classes.img, {
 								[classes.activeImage]: this.state.activeStep === i ? false : true
-							})} src={step} alt={'Senti Device'} onLoad={this.fixHeight}/>
+							})} src={blob} alt={'Senti Device'} onLoad={this.fixHeight}/>
 							// </div>
-						))}
+						}
+						)
+						}
 					</SwipeableViews> :
 						<Caption>There are no pictures uploaded</Caption>
 					}
