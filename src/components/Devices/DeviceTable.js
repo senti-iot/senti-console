@@ -39,6 +39,10 @@ class EnhancedTable extends React.Component {
 			{ label: 'Delete', func: this.handleDeleteProjects, single: false },
 		]
 	}
+	handleDeviceEdit = () => {
+		const { selected } = this.state
+		this.props.history.push(`/device/${selected[0]}/edit`)
+	}
 	handleAssignToProject = () => {
 		this.setState({ openAssignProject: true })
 	}
