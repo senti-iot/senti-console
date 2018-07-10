@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { getAllPictures } from 'variables/dataDevices';
 import { Grid, withStyles, Menu, MenuItem, IconButton, Modal } from '@material-ui/core';
 import InfoCard from 'components/Cards/InfoCard';
@@ -85,7 +85,7 @@ class DeviceImages extends Component {
 				noExpand
 				content={
 					this.state.img !== null ?
-						<Grid container justify={'center'}>
+						<Fragment>
 							<Modal
 								aria-labelledby="simple-modal-title"
 								aria-describedby="simple-modal-description"
@@ -95,9 +95,12 @@ class DeviceImages extends Component {
 									{this.renderImageUpload(device.device_id)}
 								</div>
 							</Modal>
-							<DeviceImage images={this.state.img} />
-							{/* {this.renderImageUpload(device.device_id)} */}
-						</Grid>
+							<Grid container justify={'center'}>
+	
+								<DeviceImage images={this.state.img} />
+								{/* {this.renderImageUpload(device.device_id)} */}
+							</Grid>
+						</Fragment>
 						: this.renderImageLoader()}
 			/>
 		)

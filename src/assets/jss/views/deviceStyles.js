@@ -2,8 +2,14 @@ import { red, yellow, green } from "@material-ui/core/colors";
 
 const deviceStyles = theme => ({
 	modal: {
+		[theme.breakpoints.up('md')]: {	
+			width: theme.spacing.unit * 50,
+		},
+		[theme.breakpoints.down('sm')]: {
+			width: 'calc(100vw - 10px)',
+			padding: 0
+		},
 		position: 'absolute',
-		width: theme.spacing.unit * 50,
 		backgroundColor: theme.palette.background.paper,
 		boxShadow: theme.shadows[5],
 		padding: theme.spacing.unit * 4,
