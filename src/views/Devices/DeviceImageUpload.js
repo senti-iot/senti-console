@@ -32,7 +32,7 @@ class ImageUpload extends Component {
 
 		this.state = {
 			images: [],
-			success: true
+			success: null
 		}
 	}
 	tempUpload = e => {
