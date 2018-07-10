@@ -21,7 +21,7 @@ const styles = theme => ({
 			
 		},
 		[theme.breakpoints.down("md")]: {
-			maxWidth: 400
+			maxWidth: 300,
 		},
 	},
 	header: {
@@ -100,10 +100,7 @@ class DeviceImage extends React.Component {
 							let blob = step
 							if (typeof step === 'object')
 							{ blob = URL.createObjectURL(step) }
-							// <div className={classNames({
-							// 	[classes.activeImage]: this.state.activeStep === i ? false : true
-							// })} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-							return	<ExifOrientationImg key={i} /* className={classes.img} */ className={classNames(classes.img, {
+							return	<ExifOrientationImg key={i} className={classNames(classes.img, {
 								[classes.activeImage]: this.state.activeStep === i ? false : true
 							})} src={blob} alt={'Senti Device'} onLoad={this.fixHeight}/>
 							// </div>

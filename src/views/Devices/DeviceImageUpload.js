@@ -72,7 +72,7 @@ class ImageUpload extends Component {
 										<Warning>Images failed to upload! Please refresh and try again</Warning>
 										: null}
 							</ItemGrid>
-							<ItemGrid xs={12} container justify={'center'}>
+							<ItemGrid xs={6} noMargin container justify={'center'}>
 								<Button variant="contained" color={success ? "primary" : 'default'} component="span" className={classes.button} onClick={success ? this.finish : this.upload}>
 									{!success ? <Fragment>
 										<CloudUpload className={classes.iconButton} /> Upload
@@ -81,6 +81,8 @@ class ImageUpload extends Component {
 											<Check className={classes.iconButton} /> Finish
 										</Fragment>}
 								</Button>
+							</ItemGrid>
+							<ItemGrid xs={6} noMargin container justify={'center'}>
 								<Button variant={"contained"} component="span" className={classes.button} onClick={this.handleReset}>
 									<Restore className={classes.iconButton} /> Reset
 								</Button>
