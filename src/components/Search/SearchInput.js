@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { /* TextField, */ Input, ClickAwayListener } from '@material-ui/core';
+import { /* TextField, */ Input /* ClickAwayListener */ } from '@material-ui/core';
 
 import { withStyles } from '@material-ui/core/styles';
 import searchStyles from 'assets/jss/components/search/searchStyles';

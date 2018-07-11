@@ -43,13 +43,15 @@ const searchStyles = theme => ({
 		borderRadius: 4,
 		flexGrow: 1,
 		// position: 'relative',
-		display: "flex"
+		display: "flex",
+		maxWidth: "calc(100vw - 100px)"
 	},
 	suggestionsContainerOpen: {
 		position: 'absolute',
 		right: "30px",
 		zIndex: 1,
 		marginTop: theme.spacing.unit * 4,
+		maxWidth: 'calc(100vw - 100px)'
 		// left: 0,
 	},
 	suggestion: {

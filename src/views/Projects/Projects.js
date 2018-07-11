@@ -127,7 +127,34 @@ class Projects extends Component {
 	componentWillUnmount = () => {
 	  	this._isMounted = 0
 	}
-	
+	suggestionSlicer = (obj) => {
+		var arr = [];
+
+		for (var prop in obj) {
+			if (obj.hasOwnProperty(prop)) {
+				var innerObj = {};
+				if (typeof obj[prop] === 'object') {
+					arr.push(...this.suggestionSlicer(obj[prop]))
+				}
+				else {
+					innerObj = {
+						id: prop.toString().toLowerCase(),
+						label: obj[prop] ? obj[prop].toString() : ''
+					};
+					arr.push(innerObj)
+				}
+			}
+		}
+		return arr;
+	}
+	suggestionGen = (arrayOfObjs) => {
+		let arr = [];
+		arrayOfObjs.map(obj => {
+			arr.push(...this.suggestionSlicer(obj))
+			return ''
+		})
+		return arr;
+	}
 	deleteProjects = async (projects) => {
 		await deleteProject(projects).then(() => {
 			this.getProjects()
@@ -164,12 +191,12 @@ class Projects extends Component {
 		return (
 			<Fragment>
 				<AppBar position={'sticky'} classes={{ root: classes.appBar }}>
-					<Tabs value={this.state.route} onChange={this.handleTabsChange}>
+					<Tabs value={this.state.route} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 						<Tab title={'List View'} id={0} label={<ViewList />} onClick={() => { this.props.history.push(`${this.props.match.path}/list`) }} />
 						<Tab title={'Cards View'} id={1} label={<ViewModule />} onClick={() => { this.props.history.push(`${this.props.match.path}/cards`) }} />
 						<Search
 							right
-							suggestions={[]}
+							suggestions={projects ? this.suggestionGen(projects) : [] }
 							handleFilterKeyword={this.handleFilterKeyword}
 							searchValue={this.state.filters.keyword} />
 					</Tabs>
