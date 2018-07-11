@@ -7,7 +7,8 @@ const deviceStyles = theme => ({
 		},
 		[theme.breakpoints.down('sm')]: {
 			width: 'calc(100vw - 10px)',
-			padding: 0
+			padding: 0,
+			maxHeight: 'calc(100vh - 60px)'
 		},
 		position: 'absolute',
 		backgroundColor: theme.palette.background.paper,

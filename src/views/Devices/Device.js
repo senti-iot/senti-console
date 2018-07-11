@@ -7,7 +7,7 @@ import InfoCard from 'components/Cards/InfoCard';
 import {  Map } from '@material-ui/icons'
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import AssignProject from 'components/Devices/AssignProject';
-import ImageUpload from './DeviceImageUpload';
+import ImageUpload from './ImageUpload';
 import CircularLoader from 'components/Loader/CircularLoader';
 import { Maps } from 'components/Map/Maps';
 import GridContainer from 'components/Grid/GridContainer';

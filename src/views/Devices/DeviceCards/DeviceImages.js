@@ -8,7 +8,7 @@ import DeviceImage from 'components/Devices/DeviceImage';
 import CircularLoader from 'components/Loader/CircularLoader';
 // import ImageUpload from '../ImageUpload';
 import { ItemGrid } from 'components';
-import DeviceImageUpload from '../DeviceImageUpload';
+import DeviceImageUpload from '../ImageUpload';
 
 class DeviceImages extends Component {
 	constructor(props) {

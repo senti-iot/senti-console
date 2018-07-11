@@ -12,6 +12,7 @@ import Caption from '../Typography/Caption';
 import ExifOrientationImg from 'react-exif-orientation-img'
 import SwipeableViews from 'react-swipeable-views';
 import classNames from 'classnames'
+import { ItemGrid } from '..';
 const styles = theme => ({
 	root: {
 		// maxHeight: 800,
@@ -20,7 +21,7 @@ const styles = theme => ({
 			maxWidth: '100%',
 			
 		},
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			maxWidth: 300,
 		},
 	},
@@ -34,19 +35,13 @@ const styles = theme => ({
 	},
 	img: {
 		maxWidth: '100%',
-		// transition: 'all 300ms ease'
-		// height: '100%',
+		[theme.breakpoints.down('sm')]: {
+			maxHeight: '200px'
+		}
+	
 	},
 	activeImage: {
-		// height: "0",
-		// [theme.breakpoints.up('sm')]: {
-		// 	maxWidth: '100%',
-		// },
-		// [theme.breakpoints.down("md")]: {
-		// 	height: 255,
-		// },
-		// overflow: 'hidden',
-		// width: '100%',
+	
 	},
 });
 
@@ -74,6 +69,8 @@ class DeviceImage extends React.Component {
 		this.swipeHeight = e
 	}
 	fixHeight = () => {
+		console.log(this.swipeHeight)
+		this.swipeHeight.updateHeight()
 		if (this.swipeHeight)
 			this.swipeHeight.updateHeight()
 	}
@@ -93,20 +90,20 @@ class DeviceImage extends React.Component {
 						enableMouseEvents
 						animateHeight={true}
 						// slideStyle={{ height: "100%" }}
-						// containerStyle={{ minHeight: '400px' }}
+						containerStyle={{ }}
 						action={this.getRef}
+						// slideStyle={{ display: 'flex', justifyContent: 'center' }}
 					>
 						{images.map((step, i) => {
 							let blob = step
 							if (typeof step === 'object')
 							{ blob = URL.createObjectURL(step) }
-							return	<ExifOrientationImg key={i} className={classNames(classes.img, {
-								[classes.activeImage]: this.state.activeStep === i ? false : true
-							})} src={blob} alt={'Senti Device'} onLoad={this.fixHeight}/>
-							// </div>
-						}
-						)
-						}
+							return <ItemGrid zeroMargin noPadding container justify={'center'}>
+								<ExifOrientationImg key={i} className={classNames(classes.img, {
+									[classes.activeImage]: this.state.activeStep === i ? false : true
+								})} src={blob} alt={'Senti Device'} onLoad={this.fixHeight}/>
+							</ItemGrid>
+						})}
 					</SwipeableViews> :
 						<Caption>There are no pictures uploaded</Caption>
 					}
