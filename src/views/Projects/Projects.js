@@ -75,14 +75,12 @@ class Projects extends Component {
 			}
 		}
 		else {
-			found = obj.toString().toLowerCase().includes(searchStr)
+			found = obj ? obj.toString().toLowerCase().includes(searchStr) : null
 		}
 		return found
 	}
 	filterItems = (projects) => {
-		// const { keyword } = this.state.filters
 		const { activeDateFilter } = this.state.filters
-		// var searchStr = keyword.toLowerCase()
 		var arr = projects
 		if (activeDateFilter)
 			arr = this.filterByDate(arr)
@@ -93,20 +91,6 @@ class Projects extends Component {
 			var filtered = arr.filter(c => {
 				var contains = keys.map(key => {
 					return this.keyTester(c[key])
-					// if (c[key] instanceof Date) {
-					// 	let date = moment(c[key]).format("DD.MM.YYYY")
-					// 	return date.toLowerCase().includes(searchStr)
-					// }
-					// else { 
-					// 	if (typeof c[key]  === 'object')
-					// 	{
-
-					// 		console.log(typeof c[key], c[key])
-					// 		return false
-					// 	}
-					// 	else
-					// 		return c[key].toString().toLowerCase().includes(searchStr)
-					// }
 
 				})
 				return contains.indexOf(true) !== -1 ? true : false

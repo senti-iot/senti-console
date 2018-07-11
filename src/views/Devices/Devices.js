@@ -59,31 +59,59 @@ class Devices extends Component {
 		})
 		return arr;
 	}
-	filterItems = (devices) => {
-		const { keyword } = this.state.filters
-		// const { activeDateFilter } = this.state.filters
-		var searchStr = keyword.toLowerCase()
-		var arr = devices
-		// if (activeDateFilter)
-		// 	arr = this.filterByDate(arr)
-		if (arr[0] === undefined)
-			return []
-		var keys = Object.keys(arr[0])
-		var filtered = arr.filter(c => {
-			var contains = keys.map(key => {
-				if (c[key] === null || c[key] === undefined)
-					return false
-				if (c[key] instanceof Date) {
-					let date = moment(c[key]).format("DD.MM.YYYY")
-					return date.toLowerCase().includes(searchStr)
-				}
-				else
-					return c[key].toString().toLowerCase().includes(searchStr)
-			})
-			return contains.indexOf(true) !== -1 ? true : false
-		})
-		return filtered
+
+	isObject = (obj) => {
+		return obj === Object(obj);
 	}
+	keyTester = (obj) => {
+		let searchStr = this.state.filters.keyword.toLowerCase()
+		let found = false
+		if (this.isObject(obj)) {
+			for (var k in obj) {
+				if (!found) {
+					if (k instanceof Date) {
+						let date = moment(obj[k]).format("DD.MM.YYYY")
+						found = date.toLowerCase().includes(searchStr)
+					}
+					else {
+						if (this.isObject(obj[k])) {
+							found = this.keyTester(obj[k])
+						}
+						else {
+							found = obj[k] ? obj[k].toString().toLowerCase().includes(searchStr) : false
+						}
+					}
+				}
+				else {
+					break
+				}
+			}
+		}
+		else {
+			found = obj ? obj.toString().toLowerCase().includes(searchStr) : null
+		}
+		return found
+	}
+	filterItems = (projects) => {
+		const { activeDateFilter } = this.state.filters
+		var arr = projects
+		if (activeDateFilter)
+			arr = this.filterByDate(arr)
+		if (arr) {
+			if (arr[0] === undefined)
+				return []
+			var keys = Object.keys(arr[0])
+			var filtered = arr.filter(c => {
+				var contains = keys.map(key => {
+					return this.keyTester(c[key])
+
+				})
+				return contains.indexOf(true) !== -1 ? true : false
+			})
+			return filtered
+		}
+	}
+
 
 	handleFilterStartDate = (value) => {
 		this.setState({
