@@ -33,14 +33,14 @@ class SearchInput extends Component {
 		this.setState({ open: false })
 	}
 	render() {
-		const { classes, ref, open, ...other } = this.props;
+		const { classes, ref, open, handleClose, handleOpen, ...other } = this.props;
 		// console.log(this.props)
 		return (
 			<ItemGrid container noPadding alignItems={'center'} style={{ width: "auto", margin: 0 }}>
 				{/* 	<ClickAwayListener onClickAway={this.handleClose}> */}
 
 				<div className={className(classes.inputContainer, { [classes.inputContainerFocused]: this.props.open }, { [classes.inputContainerUnfocused]: !this.props.open })}>
-					<Search className={className(classes.icon, { [classes.iconActive]: this.props.value !== '' ? true : false })} onClick={this.props.handleOpen}/>
+					<Search className={className(classes.icon, { [classes.iconActive]: this.props.value !== '' ? true : false })} onClick={handleOpen}/>
 					<Input
 						// inputRef={this.inputRef}
 						placeholder='Search'

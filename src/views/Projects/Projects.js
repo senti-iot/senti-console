@@ -36,7 +36,7 @@ class Projects extends Component {
 				var openDate = moment(c['open_date'])
 				var closeDate = moment(c['close_date'])
 				if (openDate > startDate
-			 		&& closeDate < (endDate ? endDate : moment())) {
+					&& closeDate < (endDate ? endDate : moment())) {
 					return true
 				}
 				else
@@ -47,10 +47,42 @@ class Projects extends Component {
 		return filteredByDate
 	}
 
+	isObject = (obj) => {
+		return obj === Object(obj);
+	}
+	keyTester = (obj) => {
+		let searchStr = this.state.filters.keyword.toLowerCase()
+		let found = false
+		if (this.isObject(obj)) {
+			for (var k in obj) {
+				if (!found) {
+					if (k instanceof Date) {
+						let date = moment(obj[k]).format("DD.MM.YYYY")
+						found = date.toLowerCase().includes(searchStr)
+					}
+					else {
+						if (this.isObject(obj[k])) {
+							found = this.keyTester(obj[k])
+						}
+						else {
+							found = obj[k] ? obj[k].toString().toLowerCase().includes(searchStr) : false
+						}
+					}
+				}
+				else {
+					break
+				}
+			}
+		}
+		else {
+			found = obj.toString().toLowerCase().includes(searchStr)
+		}
+		return found
+	}
 	filterItems = (projects) => {
-		const { keyword } = this.state.filters
+		// const { keyword } = this.state.filters
 		const { activeDateFilter } = this.state.filters
-		var searchStr = keyword.toLowerCase()
+		// var searchStr = keyword.toLowerCase()
 		var arr = projects
 		if (activeDateFilter)
 			arr = this.filterByDate(arr)
@@ -60,13 +92,22 @@ class Projects extends Component {
 			var keys = Object.keys(arr[0])
 			var filtered = arr.filter(c => {
 				var contains = keys.map(key => {
-					if (c[key] instanceof Date)
-					{
-						let date = moment(c[key]).format("DD.MM.YYYY")
-						return date.toLowerCase().includes(searchStr)
-					}
-					else
-						return c[key].toString().toLowerCase().includes(searchStr)
+					return this.keyTester(c[key])
+					// if (c[key] instanceof Date) {
+					// 	let date = moment(c[key]).format("DD.MM.YYYY")
+					// 	return date.toLowerCase().includes(searchStr)
+					// }
+					// else { 
+					// 	if (typeof c[key]  === 'object')
+					// 	{
+
+					// 		console.log(typeof c[key], c[key])
+					// 		return false
+					// 	}
+					// 	else
+					// 		return c[key].toString().toLowerCase().includes(searchStr)
+					// }
+
 				})
 				return contains.indexOf(true) !== -1 ? true : false
 			})
@@ -80,9 +121,10 @@ class Projects extends Component {
 				...this.state.filters,
 				startDate: value,
 				activeDateFilter: value !== null ? true : false
-			} })
+			}
+		})
 	}
-	handleFilterEndDate = (value) => { 
+	handleFilterEndDate = (value) => {
 		this.setState({
 			filters: {
 				...this.state.filters,
@@ -121,11 +163,11 @@ class Projects extends Component {
 			this.setState({ route: 1 })
 		}
 		else {
-			this.setState({ route: 0 })	
+			this.setState({ route: 0 })
 		}
 	}
 	componentWillUnmount = () => {
-	  	this._isMounted = 0
+		this._isMounted = 0
 	}
 	suggestionSlicer = (obj) => {
 		var arr = [];
@@ -196,7 +238,7 @@ class Projects extends Component {
 						<Tab title={'Cards View'} id={1} label={<ViewModule />} onClick={() => { this.props.history.push(`${this.props.match.path}/cards`) }} />
 						<Search
 							right
-							suggestions={projects ? this.suggestionGen(projects) : [] }
+							suggestions={projects ? this.suggestionGen(projects) : []}
 							handleFilterKeyword={this.handleFilterKeyword}
 							searchValue={this.state.filters.keyword} />
 					</Tabs>

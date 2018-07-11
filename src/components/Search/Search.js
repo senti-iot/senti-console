@@ -15,7 +15,6 @@ import { ClickAwayListener } from '@material-ui/core';
 
 function renderInput(inputProps) {
 	// const { classes, ref, ...other  } = inputProps;
-	console.log('renderInput', inputProps)
 	return (
 		<SearchInput {...inputProps} />
 	);
