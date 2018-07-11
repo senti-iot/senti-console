@@ -13,11 +13,12 @@ class SearchInput extends Component {
 	  this.state = {
 		 open: false
 	  }
-		this.inputRef = React.createRef()
+		// this.inputRef = React.createRef()
 	}
 	focusInput = () => {
 		if (this.state.open)
-			this.inputRef.current.focus()
+			// this.inputRef.current.focus()
+			this.props.reference.current.focus()
 	}
 	handleOpen = () => {
 
@@ -32,23 +33,24 @@ class SearchInput extends Component {
 		this.setState({ open: false })
 	}
 	render() {
-		const { classes, ...other } = this.props;
+		const { classes, ref, open, ...other } = this.props;
+		// console.log(this.props)
 		return (
 			<ItemGrid container noPadding alignItems={'center'} style={{ width: "auto", margin: 0 }}>
-				<ClickAwayListener onClickAway={this.handleClose}>
+				{/* 	<ClickAwayListener onClickAway={this.handleClose}> */}
 
-					<div className={className(classes.inputContainer, { [classes.inputContainerFocused]: this.state.open }, { [classes.inputContainerUnfocused]: !this.state.open })}>
-						<Search className={className(classes.icon, { [classes.iconActive]: this.props.value !== '' ? true : false })} onClick={this.handleOpen}/>
-						<Input
-							inputRef={this.inputRef}
-							placeholder='Search'
-							// ref={this.inputRef}
-							onFocus={this.inputFocused}
-							classes={{ input: classes.input, underline: classes.underline, root: classes.inputRoot }}
-							{...other}
-						/>
-					</div>
-				</ClickAwayListener>
+				<div className={className(classes.inputContainer, { [classes.inputContainerFocused]: this.props.open }, { [classes.inputContainerUnfocused]: !this.props.open })}>
+					<Search className={className(classes.icon, { [classes.iconActive]: this.props.value !== '' ? true : false })} onClick={this.props.handleOpen}/>
+					<Input
+						// inputRef={this.inputRef}
+						placeholder='Search'
+						inputRef={this.props.reference}
+						onFocus={this.inputFocused}
+						classes={{ input: classes.input, underline: classes.underline, root: classes.inputRoot }}
+						{...other}
+					/>
+				</div>
+				{/*</ClickAwayListener>*/}
 			</ItemGrid>
 		)
 	}

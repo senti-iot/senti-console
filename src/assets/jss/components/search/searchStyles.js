@@ -2,6 +2,13 @@ import teal from '@material-ui/core/colors/teal'
 import { transition, primaryColor } from '../../material-dashboard-react';
 
 const searchStyles = theme => ({
+	suggestContainer: {
+		width: "100%",
+		position: "relative",
+		[theme.breakpoints.down('sm')]: {
+			position: 'initial'
+		}
+	},
 	label: {
 		'&$focused': {
 			color: teal[500],
@@ -40,10 +47,10 @@ const searchStyles = theme => ({
 	},
 	suggestionsContainerOpen: {
 		position: 'absolute',
+		right: "30px",
 		zIndex: 1,
-		marginTop: theme.spacing.unit,
-		left: 0,
-		right: 0,
+		marginTop: theme.spacing.unit * 4,
+		// left: 0,
 	},
 	suggestion: {
 		display: 'block',

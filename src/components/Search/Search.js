@@ -11,40 +11,13 @@ import searchStyles from 'assets/jss/components/search/searchStyles';
 // import { Search } from '@material-ui/icons'
 // import { ItemGrid } from '..';
 import SearchInput from './SearchInput';
+import { ClickAwayListener } from '@material-ui/core';
 
 function renderInput(inputProps) {
 	// const { classes, ref, ...other  } = inputProps;
-
+	console.log('renderInput', inputProps)
 	return (
-		<SearchInput {...inputProps}/>
-		// <ItemGrid container noPadding noMargin alignItems={'center'} style={{ width: "auto" }}>
-		// 	<div className={classes.inputContainer}>
-		// 		<Search className={classes.icon}/>
-		// 		<Input 
-		// 			placeholder='Search'
-		// 			ref={ref}
-		// 			classes={{ input: classes.input, underline: classes.underline }}
-		// 			{...other}
-		// 		/>
-		// 	</div>
-		// </ItemGrid>
-	/* 	<TextField
-			
-			// label={"Search..."}
-			// InputLabelProps={{ FormLabelClasses: {
-			// 	root: classes.label,
-			// 	focused: classes.focused,
-			// } }}
-			InputProps={{
-				placeholder: "Search",
-				inputRef: ref,
-				classes: {
-					input: classes.input,
-					underline: classes.underline,
-				},
-				...other,
-			}}
-		/> */
+		<SearchInput {...inputProps} />
 	);
 }
 
@@ -73,7 +46,6 @@ function renderSuggestion(suggestion, { query, isHighlighted }) {
 
 function renderSuggestionsContainer(options) {
 	const { containerProps, children } = options;
-
 	return (
 		<Paper {...containerProps} square>
 			{children}
@@ -105,10 +77,17 @@ function getSuggestions(value, suggestions) {
 }
 
 class IntegrationAutosuggest extends React.Component {
-	state = {
-		value: '',
-		suggestions: [],
-	};
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			value: '',
+			suggestions: [],
+			open: false
+		}
+		this.inputRef = React.createRef()
+
+	}
 
 	handleSuggestionsFetchRequested = ({ value }) => {
 		this.setState({
@@ -125,31 +104,52 @@ class IntegrationAutosuggest extends React.Component {
 	handleChange = (event, { newValue }) => {
 		this.props.handleFilterKeyword(newValue)
 	};
-
+	focusInput = () => {
+		if (this.state.open)
+			// this.inputRef.current.focus()
+			this.inputRef.current.focus()
+	}
+	handleOpen = () => {
+		this.setState({ open: !this.state.open }, this.focusInput)
+	}
+	handleClose = () => {
+		this.setState({ open: false })
+	}
 	render() {
 		const { classes, right } = this.props;
 
 		return (
-			<Autosuggest
-				theme={{
-					container: classes.container + " " + (right ? classes.right : ''),
-					suggestionsContainerOpen: classes.suggestionsContainerOpen,
-					suggestionsList: classes.suggestionsList,
-					suggestion: classes.suggestion,
-				}}
-				renderInputComponent={renderInput}
-				suggestions={this.state.suggestions}
-				onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
-				onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
-				renderSuggestionsContainer={renderSuggestionsContainer}
-				getSuggestionValue={getSuggestionValue}
-				renderSuggestion={renderSuggestion}
-				inputProps={{
-					classes,
-					value: this.props.searchValue,
-					onChange: this.handleChange
-				}}
-			/>
+			<div className={classes.suggestContainer}>
+
+				<ClickAwayListener onClickAway={this.handleClose}>
+					<Autosuggest
+						theme={{
+							container: classes.container + " " + (right ? classes.right : ''),
+							suggestionsContainerOpen: classes.suggestionsContainerOpen,
+							suggestionsList: classes.suggestionsList,
+							suggestion: classes.suggestion,
+						}}
+						focusInputOnSuggestionClick={false}
+						renderInputComponent={renderInput}
+						suggestions={this.state.suggestions}
+						onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
+						onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
+						onSuggestionSelected={this.focusInput}
+						renderSuggestionsContainer={renderSuggestionsContainer}
+						getSuggestionValue={getSuggestionValue}
+						renderSuggestion={renderSuggestion}
+						inputProps={{
+							classes,
+							value: this.props.searchValue,
+							onChange: this.handleChange,
+							reference: this.inputRef,
+							open: this.state.open,
+							handleOpen: this.handleOpen,
+							handleClose: this.handleClose
+						}}
+					/>
+				</ClickAwayListener>
+			</div>
 		);
 	}
 }
