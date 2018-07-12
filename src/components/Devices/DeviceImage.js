@@ -69,7 +69,6 @@ class DeviceImage extends React.Component {
 		this.swipeHeight = e
 	}
 	fixHeight = () => {
-		console.log(this.swipeHeight)
 		this.swipeHeight.updateHeight()
 		if (this.swipeHeight)
 			this.swipeHeight.updateHeight()
@@ -98,8 +97,8 @@ class DeviceImage extends React.Component {
 							let blob = step
 							if (typeof step === 'object')
 							{ blob = URL.createObjectURL(step) }
-							return <ItemGrid zeroMargin noPadding container justify={'center'}>
-								<ExifOrientationImg key={i} className={classNames(classes.img, {
+							return <ItemGrid key={i} zeroMargin noPadding container justify={'center'}>
+								<ExifOrientationImg className={classNames(classes.img, {
 									[classes.activeImage]: this.state.activeStep === i ? false : true
 								})} src={blob} alt={'Senti Device'} onLoad={this.fixHeight}/>
 							</ItemGrid>
