@@ -40,7 +40,7 @@ class ProjectCard extends Component {
 		const { p, classes } = this.props
 		const { actionAnchor } = this.state
 		return (
-			<ItemGrid noPadding extraClass={classes.smallCardGrid} xs={3}>
+			<ItemGrid noPadding extraClass={classes.smallCardGrid} md={3}>
 				<SmallCard
 					key={p.id}
 					title={p.title}
