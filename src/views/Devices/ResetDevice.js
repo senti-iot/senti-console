@@ -11,7 +11,6 @@ export default class ResetDevice extends Component {
 	}
 	
 	handleReset =async () => {
-		console.log(this.props.match)
 		await ResetDevice(this.props.match.params.id).then(rs => this.setState({ success: rs }))
 	}
 	render() {

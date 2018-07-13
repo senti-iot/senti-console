@@ -30,7 +30,7 @@ class EditDetails extends Component {
 			updating: false,
 			updated: false
 		}
-		props.setHeader("Edit hardware info of " + props.match.params.id, true)
+		props.setHeader("Edit HW info of " + props.match.params.id, true)
 	}
 	componentDidMount = async () => {
 		let id = this.props.match.params.id
@@ -102,7 +102,7 @@ class EditDetails extends Component {
 					<form className={classes.form}>
 
 						<Grid container>
-							<ItemGrid xs>
+							<ItemGrid xs={6}>
 								<TextF
 									id={'rpimodel'}
 									label={"PC Model"}
@@ -111,7 +111,7 @@ class EditDetails extends Component {
 									noFullWidth
 								/>
 							</ItemGrid>
-							<ItemGrid xs>
+							<ItemGrid xs={6}>
 								<TextF
 									id={'memory'}
 									label={"Memory Size (in GB)"}
@@ -120,7 +120,7 @@ class EditDetails extends Component {
 									noFullWidth
 								/>
 							</ItemGrid>
-							<ItemGrid xs>
+							<ItemGrid xs={6}>
 								<TextF
 									id={'mm'}
 									label={"Memory Model"}
@@ -129,7 +129,7 @@ class EditDetails extends Component {
 									noFullWidth
 								/>
 							</ItemGrid>
-							<ItemGrid xs>
+							<ItemGrid xs={6}>
 								<TextF
 									id={'powerAdapter'}
 									label={"Power Adapter"}
@@ -138,7 +138,7 @@ class EditDetails extends Component {
 									noFullWidth
 								/>
 							</ItemGrid>
-							<ItemGrid xs>
+							<ItemGrid xs={6}>
 								<TextF
 									id={'wifiModule'}
 									label={"WIFI Module"}
@@ -147,7 +147,7 @@ class EditDetails extends Component {
 									noFullWidth
 								/>
 							</ItemGrid>
-							<ItemGrid xs>
+							<ItemGrid xs={6}>
 								<TextF
 									id={'modemModel'}
 									label={"Modem Model"}
@@ -156,7 +156,7 @@ class EditDetails extends Component {
 									noFullWidth
 								/>
 							</ItemGrid>
-							<ItemGrid xs>
+							<ItemGrid xs={6}>
 								<TextF
 									id={'modemIMEI'}
 									label={"Modem IMEI"}
@@ -165,7 +165,7 @@ class EditDetails extends Component {
 									noFullWidth
 								/>
 							</ItemGrid>
-							<ItemGrid xs>
+							<ItemGrid xs={6}>
 								<TextF
 									id={'cellNumber'}
 									label={"Cell Number"}
@@ -174,7 +174,7 @@ class EditDetails extends Component {
 									noFullWidth
 								/>
 							</ItemGrid>
-							<ItemGrid xs>
+							<ItemGrid xs={6}>
 								<TextF
 									id={'SIMID'}
 									label={"SIM ID"}
@@ -183,7 +183,7 @@ class EditDetails extends Component {
 									noFullWidth
 								/>
 							</ItemGrid>
-							<ItemGrid xs>
+							<ItemGrid xs={6}>
 								<TextF
 									id={'SIMProvider'}
 									label={"SIM Provider"}
@@ -193,11 +193,10 @@ class EditDetails extends Component {
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12} container justify={'center'}>
-								<ItemGrid xs={12}>
-									<Collapse in={this.state.updating} timeout={100} unmountOnExit>
-										<CircularLoader notCentered />
-									</Collapse>
-								</ItemGrid>
+					
+								<Collapse in={this.state.updating} timeout={100} unmountOnExit>
+									<CircularLoader notCentered />
+								</Collapse>
 								<ItemGrid>
 									<Button
 										variant="contained"

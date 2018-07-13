@@ -12,6 +12,7 @@ import Caption from '../Typography/Caption';
 import ExifOrientationImg from 'react-exif-orientation-img'
 import SwipeableViews from 'react-swipeable-views';
 import classNames from 'classnames'
+import { ItemGrid } from '..';
 const styles = theme => ({
 	root: {
 		// maxHeight: 800,
@@ -20,8 +21,8 @@ const styles = theme => ({
 			maxWidth: '100%',
 			
 		},
-		[theme.breakpoints.down("md")]: {
-			maxWidth: 400
+		[theme.breakpoints.down("sm")]: {
+			maxWidth: 300,
 		},
 	},
 	header: {
@@ -34,19 +35,13 @@ const styles = theme => ({
 	},
 	img: {
 		maxWidth: '100%',
-		// transition: 'all 300ms ease'
-		// height: '100%',
+		[theme.breakpoints.down('sm')]: {
+			maxHeight: '200px'
+		}
+	
 	},
 	activeImage: {
-		// height: "0",
-		// [theme.breakpoints.up('sm')]: {
-		// 	maxWidth: '100%',
-		// },
-		// [theme.breakpoints.down("md")]: {
-		// 	height: 255,
-		// },
-		// overflow: 'hidden',
-		// width: '100%',
+	
 	},
 });
 
@@ -54,26 +49,29 @@ class DeviceImage extends React.Component {
 	state = {
 		activeStep: 0,
 	};
-
+	handleCallBack = () => {
+		return this.props.handleStep ? this.props.handleStep(this.state.activeStep) : null
+	}
 	handleNext = () => {
 		this.setState(prevState => ({
 			activeStep: prevState.activeStep + 1,
-		}));
+		}), this.handleCallBack);
 	};
 
 	handleBack = () => {
 		this.setState(prevState => ({
 			activeStep: prevState.activeStep - 1,
-		}));
+		}), this.handleCallBack);
 	};
 
 	handleStepChange = activeStep => {
-		this.setState({ activeStep });
+		this.setState({ activeStep }, this.handleCallBack);
 	};
 	getRef = e => {
 		this.swipeHeight = e
 	}
 	fixHeight = () => {
+		this.swipeHeight.updateHeight()
 		if (this.swipeHeight)
 			this.swipeHeight.updateHeight()
 	}
@@ -81,34 +79,31 @@ class DeviceImage extends React.Component {
 		const { classes, theme, images } = this.props;
 		const { activeStep } = this.state;
 		
-		const maxSteps = images.length ? images.length : 0;
+		const maxSteps = images ? images.length ? images.length : 0 : 0;
 		// let blob = URL.createObjectURL(images[activeStep])
 		return (
 			<div className={classes.root}>
-				<Grid container justify={'center'} >
+				{images ? <Grid container justify={'center'} >
 					{images.length > 0 ? <SwipeableViews
 						axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
 						index={this.state.activeStep}
 						onChangeIndex={this.handleStepChange}
 						enableMouseEvents
 						animateHeight={true}
-						// slideStyle={{ height: "100%" }}
-						// containerStyle={{ minHeight: '400px' }}
-						action={this.getRef}
-					>
-						{images.map((step, i) => (
-							// <div className={classNames({
-							// 	[classes.activeImage]: this.state.activeStep === i ? false : true
-							// })} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-							<ExifOrientationImg key={i} /* className={classes.img} */ className={classNames(classes.img, {
-								[classes.activeImage]: this.state.activeStep === i ? false : true
-							})} src={step} alt={'Senti Device'} onLoad={this.fixHeight}/>
-							// </div>
-						))}
+						action={this.getRef}>
+						{images.map((step, i) => {
+							let blob = step
+							if (typeof step === 'object') { blob = URL.createObjectURL(step) }
+							return <ItemGrid key={i} zeroMargin noPadding container justify={'center'}>
+								<ExifOrientationImg className={classNames(classes.img, {
+									[classes.activeImage]: this.state.activeStep === i ? false : true
+								})} src={blob} alt={'Senti Device'} onLoad={this.fixHeight} />
+							</ItemGrid>
+						})}
 					</SwipeableViews> :
 						<Caption>There are no pictures uploaded</Caption>
 					}
-				</Grid>
+				</Grid> : null}
 				<MobileStepper
 					steps={maxSteps}
 					position="static"
@@ -135,7 +130,10 @@ class DeviceImage extends React.Component {
 DeviceImage.propTypes = {
 	classes: PropTypes.object.isRequired,
 	theme: PropTypes.object.isRequired,
-	images: PropTypes.array.isRequired
+	images: PropTypes.oneOfType([
+		PropTypes.array,
+		PropTypes.number,
+	]).isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(DeviceImage);

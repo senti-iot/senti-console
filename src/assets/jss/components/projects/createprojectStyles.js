@@ -29,8 +29,12 @@ const createprojectStyles = theme => ({
 		flexWrap: 'wrap',
 	},
 	formControl: {
-		margin: theme.spacing.unit * 2,
-		minWidth: 300,
+		marginTop: 16,
+		marginBottom: 8,
+		minWidth: 208,
+		flexGrow: 1
+		// margin: theme.spacing.unit * 2,
+		// minWidth: 300,
 		// maxWidth: 300,
 	},
 	chips: {
@@ -58,6 +62,7 @@ const createprojectStyles = theme => ({
 		flexWrap: 'wrap',
 	},
 	paper: {
+		width: '100%',
 		margin: '8px',
 		overflow: 'hidden',
 		borderRadius: '3px'

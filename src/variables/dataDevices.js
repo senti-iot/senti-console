@@ -4,7 +4,7 @@ export const getAllPictures = async (deviceId) => {
 	var base64Flag = 'data:image/jpeg;base64,';
 	var data = await api.get('senti/device/images/' + deviceId).then(response => {
 		if (response.data) {
-			var data = response.data.map(img => img = base64Flag + img)
+			var data = response.data.map(img => { return { filename: img.filename, image: base64Flag + img.image } })
 			return data
 		}
 		else {
@@ -27,7 +27,10 @@ export const uploadPictures = async (device) => {
 	var data = await imageApi.post('senti/device/image/' + device.device_id, form, config).then(rs => rs.data)
 	return data
 }
-
+export const deletePicture = async (dId, img) => {
+	var data = await imageApi.delete('senti/device/image/' + dId + '/' + img).then(rs => {console.log(rs); return rs.data})
+	return data
+}
 export const getAvailableDevices = async () => {
 	var data = await api.get('senti/availabledevices').then(rs => rs.data)
 	return data
@@ -35,7 +38,6 @@ export const getAvailableDevices = async () => {
 
 export const assignProjectToDevice = async (args) => {
 	var data = await api.post('senti/availabledevices', args).then(rs => rs.data)
-	// console.log(data)
 	return data
 }
 
@@ -74,13 +76,11 @@ export const calibrateDevice = async (device) => {
 // }
 
 export const updateDeviceDetails = async (device) => {
-	// console.log(device)
-	var data = await api.put('senti/editdetails', device).then(rs => { console.log(rs); return rs.data })
-	// console.log(data)
+	var data = await api.put('senti/editdetails', device).then(rs => {return rs.data })
 	return data
 }
 
 export const updateDeviceHardware = async (device) => {
-	var data = await api.put('senti/edithardware', device).then(rs => { console.log(rs); return rs.data })
+	var data = await api.put('senti/edithardware', device).then(rs => {  return rs.data })
 	return data
 }

@@ -3,8 +3,17 @@
 // #############################
 
 import { primaryColor } from "assets/jss/material-dashboard-react.js";
+// import regularCardStyle from "../material-dashboard-react/regularCardStyle";
 
-const projectStyles = ({
+const projectStyles = theme => ({
+	noOverflow: {
+		overflow: 'visible'
+	},
+	appBar: {
+		height: 48,
+		zIndex: 1000
+		// position: "relative"
+	},
 	loader: {
 		marginRight: 'auto',
 		marginLeft: 'auto',
@@ -20,6 +29,23 @@ const projectStyles = ({
 		width: '100%',
 		padding: '8px'
 	},
+	leftActionButton: {
+		// marginLeft: 'auto',
+		textTransform: 'initial'
+	},
+	expand: {
+		transform: 'rotate(0deg)',
+		transition: theme.transitions.create('transform', {
+			duration: theme.transitions.duration.shortest,
+		}),
+	},
+	expandOpen: {
+		transform: 'rotate(180deg)',
+	},
+	leftIcon: {
+		marginRight: 8
+	},
+	
 });
 
 export default projectStyles;

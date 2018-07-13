@@ -1,30 +1,37 @@
-import React, { Component } from 'react'
-import { getAllPictures } from 'variables/dataDevices';
-import { Grid, withStyles, Menu, MenuItem, IconButton, Modal } from '@material-ui/core';
+import React, { Component, Fragment } from 'react'
+import { getAllPictures, deletePicture } from 'variables/dataDevices';
+import { Grid, withStyles, Menu, MenuItem, IconButton, Modal, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
 import InfoCard from 'components/Cards/InfoCard';
-import { Image,  MoreVert, CloudUpload } from '@material-ui/icons'
+import { Image,  MoreVert, CloudUpload, Delete } from '@material-ui/icons'
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import DeviceImage from 'components/Devices/DeviceImage';
 import CircularLoader from 'components/Loader/CircularLoader';
 // import ImageUpload from '../ImageUpload';
 import { ItemGrid } from 'components';
-import DeviceImageUpload from '../DeviceImageUpload';
+import DeviceImageUpload from '../ImageUpload';
 
 class DeviceImages extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
+			activeStep: 0,
 			img: null,
 			actionAnchor: null,
-			openImageUpload: false
+			openImageUpload: false,
+			openDeleteImage: false,
+			deletingPicture: false,
+			deleted: null
 		}
 	}
+
+	handleStepChange = activeStep => {
+		this.setState({ activeStep });
+	};
 	componentDidMount = async () => {
 		await this.getAllPics(this.props.device.device_id)
 	}
 	getPicsCallBack = () => {
-		console.log(this.props.device.device_id, 'what?')
 		this.getAllPics(this.props.device.device_id)
 	}
 	renderImageUpload = (dId) => {
@@ -32,7 +39,6 @@ class DeviceImages extends Component {
 		return <DeviceImageUpload dId={dId} imgUpload={this.getAllPics} callBack={this.getPicsCallBack} />
 	}
 	getAllPics = (id) => {
-		console.log('huh')
 		getAllPictures(id).then(rs => this.setState({ img: rs }))
 	}
 	handleOpenActionsImages = e => {
@@ -44,14 +50,31 @@ class DeviceImages extends Component {
 	handleOpenImageUpload = () => {
 		this.setState({ openImageUpload: true, actionAnchor: null })
 	}
+	handleOpenDeletePictureDialog = () => {
+		this.setState({ openDeleteImage: true, actionAnchor: null })
+	}
+	handleCloseDeletePictureDialog = () => {
+		this.setState({ openDeleteImage: false })
+	}
 	handleCloseImageUpload = () => {
 		this.setState({ openImageUpload: false })
+	}
+	handleDeletePicture = async () => {
+		const { img, activeStep } = this.state
+		const dId = this.props.device.device_id
+		this.setState({ deletingPicture: true })
+		console.log(img[activeStep].filename)
+		var deleted = await deletePicture(dId, img[activeStep].filename).then(rs => rs)
+		if (deleted) {	
+			this.setState({ img: null, openDeleteImage: false })
+			this.getAllPics(dId)
+		}
 	}
 	renderImageLoader = () => {
 		return <CircularLoader notCentered />
 	}
 	render() {
-		const { actionAnchor, openImageUpload } = this.state
+		const { actionAnchor, openImageUpload, openDeleteImage, img } = this.state
 		const { classes, device } = this.props
 		return (
 			<InfoCard
@@ -80,14 +103,38 @@ class DeviceImages extends Component {
 							<MenuItem onClick={this.handleOpenImageUpload}>
 								<CloudUpload className={classes.leftIcon} />Upload Pictures
 							</MenuItem>
+							<MenuItem onClick={this.handleOpenDeletePictureDialog}>
+								<Delete className={classes.leftIcon} />Delete this picture
+							</MenuItem>
 							))}
 						</Menu>
 					</ItemGrid>
 				}
 				noExpand
 				content={
-					this.state.img !== null ?
-						<Grid container justify={'center'}>
+					img !== null ?
+						<Fragment>
+							<Dialog
+								open={openDeleteImage}
+								onClose={this.handleCloseImageDelete}
+								aria-labelledby="alert-dialog-title"
+								aria-describedby="alert-dialog-description"
+							>
+								<DialogTitle id="alert-dialog-title">Delete Picture</DialogTitle>
+								<DialogContent>
+									<DialogContentText id="alert-dialog-description">
+										Are you sure you want to delete the picture? 
+									</DialogContentText>
+								</DialogContent>
+								<DialogActions>
+									<Button onClick={this.handleCloseDeletePictureDialog} color="primary">
+										No
+									</Button>
+									<Button onClick={this.handleDeletePicture} color="primary" autoFocus>
+										Yes
+									</Button>
+								</DialogActions>
+							</Dialog>
 							<Modal
 								aria-labelledby="simple-modal-title"
 								aria-describedby="simple-modal-description"
@@ -97,9 +144,15 @@ class DeviceImages extends Component {
 									{this.renderImageUpload(device.device_id)}
 								</div>
 							</Modal>
-							<DeviceImage images={this.state.img} />
-							{/* {this.renderImageUpload(device.device_id)} */}
-						</Grid>
+							<Grid container justify={'center'}>
+	
+								<DeviceImage
+									useParent
+									handleStep={this.handleStepChange}
+									images={ img ? img.map(m => m.image ) : null} />
+								{/* {this.renderImageUpload(device.device_id)} */}
+							</Grid>
+						</Fragment>
 						: this.renderImageLoader()}
 			/>
 		)

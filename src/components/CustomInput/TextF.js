@@ -7,11 +7,11 @@ const styles = theme => ({
 		marginRight: theme.spacing.unit
 	},
 	textField: {
-		margin: theme.spacing.unit * 2,
-		width: 300
+		// margin: theme.spacing.unit * 2,
+		// width: 300
 	},
 	label: {
-		width: 300,
+		// width: 300,
 		'&$focused': {
 			color: teal[500],
 		},

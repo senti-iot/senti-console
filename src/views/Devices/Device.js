@@ -7,7 +7,7 @@ import InfoCard from 'components/Cards/InfoCard';
 import {  Map } from '@material-ui/icons'
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import AssignProject from 'components/Devices/AssignProject';
-import ImageUpload from './DeviceImageUpload';
+import ImageUpload from './ImageUpload';
 import CircularLoader from 'components/Loader/CircularLoader';
 import { Maps } from 'components/Map/Maps';
 import GridContainer from 'components/Grid/GridContainer';
@@ -157,7 +157,7 @@ class Device extends Component {
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<AssignProject device_id={this.state.device.device_id} open={this.state.openAssign} handleClose={this.handleCloseAssign} />
 					{device.project ? this.renderConfirmUnassign() : null}
-					<ItemGrid xs={12} noPadding>
+					<ItemGrid xs={12} noMargin>
 						<DeviceDetails
 							device={device}
 							history={this.props.history}
@@ -166,7 +166,7 @@ class Device extends Component {
 							handleOpenUnassign={this.handleOpenUnassign}
 						/>
 					</ItemGrid>
-					<ItemGrid xs={12} noPadding>
+					<ItemGrid xs={12} noMargin>
 						<InfoCard
 							title={"Map"}
 							subheader={`Coordinates: ${device.lat} ${device.long}`}
@@ -174,16 +174,16 @@ class Device extends Component {
 							noExpand
 							content={
 								<Grid container justify={'center'}>
-									<Maps isMarkerShown markers={[{ lat: device.lat, long: device.long }]} zoom={15} />
+									<Maps isMarkerShown markers={[{ lat: device.lat, long: device.long, liveStatus: device.liveStatus }]} zoom={18} />
 								</Grid>
 							} />
 
 					</ItemGrid>
-					<ItemGrid xs={12} noPadding>
+					<ItemGrid xs={12} noMargin>
 						<DeviceImages
 							device={device}/>
 					</ItemGrid>
-					<ItemGrid xs={12} noPadding>
+					<ItemGrid xs={12} noMargin>
 						<DeviceHardware
 							device={device}
 							history={this.props.history}

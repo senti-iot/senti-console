@@ -17,8 +17,7 @@ const theme = createMuiTheme({
 			// Name of the styleSheet
 			underline: {
 				'&:hover:not($disabled):not($focused):not($error):before': {
-					borderBottomColor: primaryColor,
-					height: 1,
+					borderBottom: "2px solid #4db6ac" /* + primaryColor */,
 				},
 	  },
 		}

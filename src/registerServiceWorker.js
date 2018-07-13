@@ -66,7 +66,7 @@ function registerValidSW(swUrl) {
 							// It's the perfect time to display a "New content is
 							// available; please refresh." message in your web app.
 							console.log('New content is available; please refresh.');
-							alert('New Content is available! Please refresh');
+							alert('New Content is available! To see the new content please close all the tabs regarding Senti and refresh the page');
 						} else {
 							// At this point, everything has been precached.
 							// It's the perfect time to display a

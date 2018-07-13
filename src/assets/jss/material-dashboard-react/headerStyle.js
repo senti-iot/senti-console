@@ -27,7 +27,7 @@ const headerStyle = theme => ({
 		// borderRadius: "3px",
 		padding: "10px 0",
 		transition: "all 150ms ease 0s",
-		minHeight: "50px",
+		minHeight: "48px",
 		display: "block",
 		position: "sticky",
 		width: '100%'
@@ -37,7 +37,8 @@ const headerStyle = theme => ({
 		minHeight: "50px",
 	},
 	flex: {
-		flex: 1
+		flex: 1,
+		// whiteSpace: 'nowrap'
 	},
 	goBackButton: {
 		color: "inherit",

@@ -10,7 +10,7 @@ import Caption from '../Typography/Caption';
 
 
 class InfoCard extends React.Component {
-	state = { expanded: false };
+	state = { expanded: false, leftActions: false };
 
 	handleExpandClick = () => {
 		this.setState({ expanded: !this.state.expanded });
@@ -31,7 +31,9 @@ class InfoCard extends React.Component {
 
 	}
 	render() {
-		const { classes, title, subheader, content, hiddenContent, avatar, noAvatar } = this.props;
+		const { classes, title, subheader,
+			content, hiddenContent, avatar,
+			noAvatar, leftActions, leftActionContent } = this.props;
 
 		return (
 			<Card className={classes.card + classes.plainCardClasses}>
@@ -43,7 +45,6 @@ class InfoCard extends React.Component {
 						</Avatar>
 					}
 					title={title}
-
 					subheader={this.hasSubheader(subheader)}
 				>
 
@@ -57,18 +58,19 @@ class InfoCard extends React.Component {
 				</Collapse>
 				{!this.props.noExpand ?
 					<React.Fragment>
-
+						{/* <Collapse in={this.state.leftActions} timeout={'auto'} unmountOnExit> */}
+						{leftActionContent ? <CardContent classes={{ root: classes.root }}>
+							{leftActionContent}
+						</CardContent>
+							: null}
+						{/* </Collapse> */}
 						<Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-							<CardContent classes={{
-								root: classes.root
-							}
-							}>
+							<CardContent classes={{ root: classes.root }}>
 								{hiddenContent ? hiddenContent : null}
 							</CardContent>
 						</Collapse>
 						<CardActions className={classes.actions} disableActionSpacing>
-							
-							
+							{leftActions ? leftActions : null}
 							<Button
 								onClick={this.handleExpandClick}
 								aria-expanded={this.state.expanded}
@@ -91,6 +93,17 @@ class InfoCard extends React.Component {
 
 InfoCard.propTypes = {
 	classes: PropTypes.object.isRequired,
+	topAction: PropTypes.any,
+	content: PropTypes.any,
+	avatar: PropTypes.any,
+	leftActions: PropTypes.any,
+	leftActionContent: PropTypes.any,
+	noExpand: PropTypes.bool,
+	title: PropTypes.oneOfType([PropTypes.string, PropTypes.object ]),
+	subheader: PropTypes.any,
+	hiddenContent: PropTypes.any,
+	noAvatar: PropTypes.any,
+	hideFacts: PropTypes.bool,
 };
 
 export default withStyles(regularCardStyle)(InfoCard);

@@ -26,7 +26,6 @@ class EditDetails extends Component {
 		let id = this.props.match.params.id
 		await getDevice(id).then(rs => this.setState({ id: rs.device_id, name: rs.device_name, description: rs.description, address: rs.address, locationType: rs.locationType }))
 		this.setState({ loading: false })
-		// console.log(this.state)
 	}
 	componentWillUnmount = () => {
 		clearTimeout(this.timer);
@@ -73,7 +72,6 @@ class EditDetails extends Component {
 			<GridContainer>
 				<Paper className={classes.paper}>
 					<form className={classes.form}>
-
 						<Grid container>
 							<ItemGrid>
 								<TextF
@@ -84,9 +82,9 @@ class EditDetails extends Component {
 									noFullWidth
 								/>
 							</ItemGrid>
-							<ItemGrid>
+							<ItemGrid xs={12}>
 								<FormControl className={this.props.classes.formControl}>
-									<InputLabel htmlFor="streetType-helper" classes={{ root: classes.label }}>{locationType ? '' : "Location Type"}</InputLabel>
+									<InputLabel htmlFor="streetType-helper" classes={{ root: classes.label }}>{/* locationType ? '' : */ "Location Type"}</InputLabel>
 									<Select
 										value={locationType}
 										onChange={this.handleInput('locationType')}
@@ -108,12 +106,15 @@ class EditDetails extends Component {
 									rows={3}
 									handleChange={this.handleInput('description')}
 									value={description}
+									noFullWidth
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<TextF
 									id={'address'}
 									label={'Address'}
+									multiline
+									rows={2}
 									handleChange={this.handleInput('address')}
 									value={address}
 									noFullWidth
@@ -121,21 +122,21 @@ class EditDetails extends Component {
 							</ItemGrid>
 
 							<ItemGrid xs={12} container justify={'center'}>
-								<ItemGrid xs={12}>
-									<Collapse in={this.state.updating} timeout={100} unmountOnExit>
-										<CircularLoader notCentered />
-									</Collapse>
-								</ItemGrid>
-								<ItemGrid>
-									<Button
-										variant="contained"
-										color="primary"
-										disabled={this.state.updating}
-										onClick={this.state.updated ? this.goToDevice : this.handleUpdateDevice}
-									>
-										{this.state.updated ? <Fragment><Check className={classes.leftIcon}/> Go to Device </Fragment> : <Fragment><Save className={classes.leftIcon} />Update Device</Fragment>}
-									</Button>
-								</ItemGrid>
+								{/* <ItemGrid /* xs={12} > */}
+								<Collapse in={this.state.updating} timeout={100} unmountOnExit>
+									<CircularLoader notCentered />
+								</Collapse>
+								{/* </ItemGrid> */}
+								{/* <ItemGrid> */}
+								<Button
+									variant="contained"
+									color="primary"
+									disabled={this.state.updating}
+									onClick={this.state.updated ? this.goToDevice : this.handleUpdateDevice}
+								>
+									{this.state.updated ? <Fragment><Check className={classes.leftIcon}/> Go to Device </Fragment> : <Fragment><Save className={classes.leftIcon} />Update Device</Fragment>}
+								</Button>
+								{/* </ItemGrid> */}
 							</ItemGrid>
 						</Grid>
 					</form>

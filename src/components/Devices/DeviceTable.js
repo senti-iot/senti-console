@@ -32,12 +32,16 @@ class EnhancedTable extends React.Component {
 	}
 	options = () => {
 		return [
-			{ label: 'Calibrate', func: this.handleCalibrateFlow, single: true },
 			{ label: 'Edit', func: this.handleDeviceEdit, single: true },
 			{ label: 'Assign To Project', func: this.handleAssignToProject, single: false },
 			{ label: 'Export to PDF', func: () => { }, single: false },
+			{ label: 'Calibrate', func: this.handleCalibrateFlow, single: true },
 			{ label: 'Delete', func: this.handleDeleteProjects, single: false },
 		]
+	}
+	handleDeviceEdit = () => {
+		const { selected } = this.state
+		this.props.history.push(`/device/${selected[0]}/edit`)
 	}
 	handleAssignToProject = () => {
 		this.setState({ openAssignProject: true })
@@ -62,7 +66,6 @@ class EnhancedTable extends React.Component {
 		this.setState({ anchorFilterMenu: null })
 	}
 	handleFilter = e => {
-		// console.log('not implemented')
 	}
 	handleSearch = value => {
 		this.setState({

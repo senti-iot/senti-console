@@ -26,7 +26,7 @@ class EnhancedTable extends React.Component {
 
 		this.state = {
 			order: 'asc',
-			orderBy: 'id',
+			orderBy: 'title',
 			selected: [],
 			page: 0,
 			rowsPerPage: 5,
@@ -51,7 +51,6 @@ class EnhancedTable extends React.Component {
 		this.setState({ anchorFilterMenu: null })
 	}
 	handleFilter = e => {
-		// console.log('not implemented')
 	}
 	handleSearch = value => {
 		this.setState({
@@ -151,14 +150,14 @@ class EnhancedTable extends React.Component {
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
 					handleFilterMenuOpen={this.handleFilterMenuOpen}
 					handleFilterMenuClose={this.handleFilterMenuClose}
-					handleFilterKeyword={this.props.handleFilterKeyword}
-					handleFilterStartDate={this.props.handleFilterStartDate}
-					handleFilterEndDate={this.props.handleFilterEndDate}
-					filters={this.props.filters}
+					// handleFilterKeyword={this.props.handleFilterKeyword}
+					// handleFilterStartDate={this.props.handleFilterStartDate}
+					// handleFilterEndDate={this.props.handleFilterEndDate}
+					// filters={this.props.filters}
 					filterOptions={this.props.tableHead}
 					numSelected={selected.length}
 					options={this.options}
-					suggestions={data ? data.map(p => ({ id: p.id, label: p.title })) : []}
+					// suggestions={data ? data.map(p => ({ id: p.id, label: p.title })) : []}
 				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
