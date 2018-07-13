@@ -38,7 +38,6 @@ export const Maps = compose(
 			gridSize={10}
 		>
 			{props.markers.length > 0 ? props.markers.map((m, i) => {
-				console.log(m)
 				return <Marker icon={{ url: `data:image/svg+xml,${MarkerIcon(m.liveStatus)}` }} onClick={() => alert('bing')} key={i} position={{ lat: m.lat, lng: m.long }} />
 			})
 				: null}
