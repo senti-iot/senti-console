@@ -99,7 +99,7 @@ InfoCard.propTypes = {
 	leftActions: PropTypes.any,
 	leftActionContent: PropTypes.any,
 	noExpand: PropTypes.bool,
-	title: PropTypes.any,
+	title: PropTypes.oneOfType([PropTypes.string, PropTypes.object ]),
 	subheader: PropTypes.any,
 	hiddenContent: PropTypes.any,
 	noAvatar: PropTypes.any,

@@ -17,6 +17,38 @@ import {
 import teal from '@material-ui/core/colors/teal';
 
 const regularCardStyle = theme => ({
+	fade: {
+		// position: 'relative',
+		// height: '3.6em',
+		// "&:after": {
+		// 	content: "",
+		// 	textAlign: 'right',
+		// 	position: 'absolute',
+		// 	bottom: 0,
+		// 	right: 0,
+		// 	width: '70%',
+		// 	height: '1.2em',
+		// 	background: 'linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%)'
+			
+		// }
+	},
+	leftIcon: {
+		marginRight: 8
+	},
+	smallCardGrid: {
+		// width: "33%",	
+		[theme.breakpoints.down('sm')]: {
+			width: '100%'
+		}
+	},
+	smallCard: {
+		// maxWidth: 345,
+		[theme.breakpoints.up("sm")]: {
+			width: "100%"	
+		},
+		height: '100%',
+		maxHeight: 500
+	},
 	root: {
 		paddingTop: 0,
 		marginTop: 0

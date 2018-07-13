@@ -8,6 +8,7 @@ import ProjectTable from 'components/Project/ProjectTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
 import Search from 'components/Search/Search';
+import ProjectCards from 'components/Project/ProjectCards';
 var moment = require('moment');
 class Projects extends Component {
 	constructor(props) {
@@ -207,8 +208,9 @@ class Projects extends Component {
 		</GridContainer>
 	}
 	renderCards = () => {
-		return <GridContainer>
-			<div>Not implemented</div>
+		const { loading } = this.state
+		return loading ? <CircularLoader /> : <GridContainer>
+			 <ProjectCards projects={this.filterItems(this.state.projects)} />
 		</GridContainer>
 	}
 	render() {
