@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import SmallCard from '../Cards/SmallCard';
-import { IconButton, Menu, MenuItem, withStyles } from '@material-ui/core';
+import { IconButton, Menu, MenuItem, withStyles, Button } from '@material-ui/core';
 import { ItemGrid } from '..';
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
 import { MoreVert, Edit, PictureAsPdf, Devices, Delete } from '@material-ui/icons'
@@ -54,7 +54,7 @@ class ProjectCard extends Component {
 									onClose={this.handleCloseActionsDetails}
 									PaperProps={{
 										style: {
-										// maxHeight: 200,
+											// maxHeight: 200,
 											minWidth: 200
 										}
 									}}>
@@ -70,11 +70,17 @@ class ProjectCard extends Component {
 									<MenuItem onClick={() => alert('Not Implemented')}>
 										<Delete className={classes.leftIcon} /> Delete Project
 									</MenuItem>
-							))}
+									))}
 								</Menu>
 							</ItemGrid>
 						}
-						content={p.description} />
+						content={p.description}
+						rightActions={
+							<Button variant={'flat'} color={'primary'} onClick={() => this.props.history.push(`/project/${p.id}`)}>
+								See More
+							</Button>
+						}
+					/>
 				</div>
 			</ItemGrid>
 

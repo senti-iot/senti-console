@@ -17,20 +17,16 @@ import {
 import teal from '@material-ui/core/colors/teal';
 
 const regularCardStyle = theme => ({
-	fade: {
-		// position: 'relative',
-		// height: '3.6em',
-		// "&:after": {
-		// 	content: "",
-		// 	textAlign: 'right',
-		// 	position: 'absolute',
-		// 	bottom: 0,
-		// 	right: 0,
-		// 	width: '70%',
-		// 	height: '1.2em',
-		// 	background: 'linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%)'
-			
-		// }
+	leftActions: {
+		marginRight: "auto",
+	},
+	rightActions: {
+		marginLeft: "auto"
+	},
+	textOvrflow: {
+		whiteSpace: "nowrap",
+		textOverflow: "ellipsis",
+		overflow: "hidden"
 	},
 	leftIcon: {
 		marginRight: 8
@@ -49,7 +45,11 @@ const regularCardStyle = theme => ({
 		height: '100%',
 		maxHeight: 500
 	},
+	smallCardCustomHeight: {
+		height: "calc(100% - 148px)"
+	},
 	root: {
+		// height: "100%",
 		paddingTop: 0,
 		marginTop: 0
 	},

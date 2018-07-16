@@ -14,9 +14,9 @@ import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardSty
 class SimpleMediaCard extends Component {
 
 	render() {
-		const { classes, title, content, noAvatar, topAction } = this.props;
+		const { classes, title, content, noAvatar, topAction, leftActions, rightActions } = this.props;
 		return (
-			<Card className={classes.smallCard}>
+			<Card className={classes.smallCard + classes.plainCardClasses}>
 				<CardHeader
 					action={topAction}
 					avatar={
@@ -25,18 +25,18 @@ class SimpleMediaCard extends Component {
 						</Avatar>
 					}
 					title={title}/>
-				<CardContent>
-					<Typography component="p" classes={{ root: classes.fade }}>
+				<CardContent classes={{ root: classes.root + ' ' + classes.smallCardCustomHeight }}>
+					<Typography component="p" classes={{ root: classes.textOvrflow }}>
 						{content}
 					</Typography>
 				</CardContent>
-				<CardActions>
-					{/* <Button size="small" color="primary">
-						Share
-						</Button>
-						<Button size="small" color="primary">
-						Learn More
-					</Button> */}
+				<CardActions className={classes.actions} disableActionSpacing>
+					<div className={classes.leftActions}>
+						{leftActions}
+					</div>
+					<div className={classes.rightActions}>
+						{rightActions}
+					</div>
 				</CardActions>
 			</Card>
 		)
