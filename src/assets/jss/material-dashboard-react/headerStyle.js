@@ -29,7 +29,7 @@ const headerStyle = theme => ({
 		transition: "all 150ms ease 0s",
 		minHeight: "48px",
 		display: "block",
-		position: "sticky",
+		position: "inherit",
 		width: '100%'
 	},
 	container: {

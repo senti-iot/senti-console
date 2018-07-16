@@ -22,7 +22,7 @@ function Header({ ...props }) {
 		[" " + classes[color]]: color
 	});
 	return (
-		<AppBar position={'absolute'} className={classes.appBar + appBarClasses}>
+		<AppBar className={classes.appBar + appBarClasses}>
 			<Toolbar className={classes.container}>
 				<div className={classes.flex}>
 					{goBackButton && <Button onClick={gbbFunc} variant={"fab"} className={classes.goBackButton}>
