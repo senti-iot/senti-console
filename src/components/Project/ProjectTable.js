@@ -29,7 +29,7 @@ class EnhancedTable extends React.Component {
 			orderBy: 'title',
 			selected: [],
 			page: 0,
-			rowsPerPage: 5,
+			rowsPerPage: props.theme.breakpoints.width("md") < window.innerWidth ? 10 : 5,
 			anchorElMenu: null,
 			anchorFilterMenu: null
 		};
@@ -250,4 +250,4 @@ EnhancedTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withRouter(withStyles(devicetableStyles)(EnhancedTable));
+export default withRouter(withStyles(devicetableStyles, { withTheme: true })(EnhancedTable));
