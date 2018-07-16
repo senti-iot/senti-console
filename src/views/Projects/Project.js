@@ -16,7 +16,7 @@ import { Maps } from 'components/Map/Maps';
 import classNames from 'classnames'
 import Caption from 'components/Typography/Caption';
 import ProjectDetails from './ProjectCards/ProjectDetails';
-import { getWifiDaily, getWifiHourly, getWifiSummary } from 'variables/dataDevices';
+// import { getWifiDaily, getWifiHourly, getWifiSummary } from 'variables/dataDevices';
 
 class Project extends Component {
 	constructor(props) {

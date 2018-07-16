@@ -8,7 +8,6 @@ export const getWifiSummary = async (dId, from, to) => {
 	return data
 }
 export const getWifiDaily = async (dId, from, to) => {
-	console.log(dId, from, to)
 	var data = await api.get('senti/project/wifidaily/' + dId + '/' + from + '/' + to).then(rs => rs.data)
 	return data
 }
