@@ -6,27 +6,8 @@ import { ItemGrid, Success, Warning } from 'components';
 import { uploadPictures } from 'variables/dataDevices';
 import GridContainer from 'components/Grid/GridContainer';
 import DeviceImage from 'components/Devices/DeviceImage';
+import imageuploadStyles from 'assets/jss/components/image/imageuploadStyles';
 
-
-const styles = theme => ({
-	grid: {
-		padding: 8,
-		justifyContent: 'center'
-	},
-	button: {
-		margin: theme.spacing.unit,
-	},
-	input: {
-		display: 'none',
-	},
-	imgPreview: {
-		maxWidth: 200,
-		margin: theme.spacing.unit
-	},
-	iconButton: {
-		marginRight: theme.spacing.unit
-	}
-});
 class ImageUpload extends Component {
 	constructor(props) {
 		super(props)
@@ -114,4 +95,4 @@ class ImageUpload extends Component {
 	}
 }
 
-export default withStyles(styles)(ImageUpload)
+export default withStyles(imageuploadStyles)(ImageUpload)
