@@ -16,6 +16,7 @@ import { Maps } from 'components/Map/Maps';
 import classNames from 'classnames'
 import Caption from 'components/Typography/Caption';
 import ProjectDetails from './ProjectCards/ProjectDetails';
+import { getWifiDaily, getWifiHourly, getWifiSummary } from 'variables/dataDevices';
 
 class Project extends Component {
 	constructor(props) {
@@ -46,19 +47,35 @@ class Project extends Component {
 	componentDidMount = async () => {
 		if (this.props.match)
 			if (this.props.match.params.id)
-				getProject(this.props.match.params.id).then(rs => {
-					if (rs === null)
-						this.props.history.push('/404')
-					else {
-						this.props.setHeader(rs.title, true)
-						this.setState({
-							project: rs, loading: false, facts: {
-								deviceMostCounts: this.deviceMostCount(rs.devices),
-								regMostCounts: this.regMostCount(rs.registrations)
-							}
+			{await getProject(this.props.match.params.id).then(async rs => {
+				if (rs === null)
+					this.props.history.push('/404')
+				else {
+					this.props.setHeader(rs.title, true)
+					this.setState({
+						project: rs, loading: false, facts: {
+							deviceMostCounts: this.deviceMostCount(rs.devices),
+							regMostCounts: this.regMostCount(rs.registrations)
+						}
+					})
+					let dataArr = [] 
+					for (let i = 0; i < rs.devices.length; i++) { 
+						dataArr.push({
+							id: rs.devices[i].device_id,
+							wifiDaily: await getWifiDaily(rs.devices[i].device_id, '2018-06-15+09:00', '2018-06-16+23:00').then(rs => { console.log(rs); return rs; }),
+							wifiHourly: await getWifiHourly(rs.devices[i].device_id, '2018-06-15+09:00', '2018-06-16+23:00').then(rs => { console.log(rs); return rs; }),
+							wifiSummary: await getWifiSummary(rs.devices[i].device_id, '2018-06-15+09:00', '2018-06-16+23:00').then(rs => { console.log(rs); return rs; }),
 						})
 					}
-				})
+					console.log(dataArr)
+					// getWifiDaily(rs.devices[0].device_id, '2018-06-15+09:00', '2018-06-16+23:00').then(rs => console.log(rs))
+					// getWifiHourly(rs.devices[0].device_id, '2018-06-15+09:00', '2018-06-16+23:00').then(rs => console.log(rs))
+					// getWifiSummary(rs.devices[0].device_id, '2018-06-15+09:00', '2018-06-16+23:00').then(rs => console.log(rs))
+
+				}
+			})
+			
+			}
 			else {
 				this.props.history.push('/404')
 			}
