@@ -1,5 +1,17 @@
 import { api, imageApi, mapApi } from "./data";
-
+export const getWifiHourly = async (dId, from, to) => {
+	var data = await api.get('senti/project/wifihourly' + dId + '/' + from + '/' + to).then(rs => rs.data)
+	return data
+}
+export const getWifiSummary = async (dId, from, to) => {
+	var data = await api.get('senti/project/wifisummary' + dId + '/' + from + '/' + to).then(rs => rs.data)
+	return data
+}
+export const getWifiDaily = async (dId, from, to) => {
+	console.log(dId, from, to)
+	var data = await api.get('senti/project/wifidaily' + dId + '/' + from + '/' + to).then(rs => rs.data)
+	return data
+}
 export const getAllPictures = async (deviceId) => {
 	var base64Flag = 'data:image/jpeg;base64,';
 	var data = await api.get('senti/device/images/' + deviceId).then(response => {
