@@ -58,20 +58,16 @@ class Project extends Component {
 							regMostCounts: this.regMostCount(rs.registrations)
 						}
 					})
-					let dataArr = [] 
-					for (let i = 0; i < rs.devices.length; i++) { 
-						dataArr.push({
-							id: rs.devices[i].device_id,
-							wifiDaily: await getWifiDaily(rs.devices[i].device_id, '2018-06-15+09:00', '2018-06-16+23:00').then(rs => { console.log(rs); return rs; }),
-							wifiHourly: await getWifiHourly(rs.devices[i].device_id, '2018-06-15+09:00', '2018-06-16+23:00').then(rs => { console.log(rs); return rs; }),
-							wifiSummary: await getWifiSummary(rs.devices[i].device_id, '2018-06-15+09:00', '2018-06-16+23:00').then(rs => { console.log(rs); return rs; }),
-						})
-					}
-					console.log(dataArr)
-					// getWifiDaily(rs.devices[0].device_id, '2018-06-15+09:00', '2018-06-16+23:00').then(rs => console.log(rs))
-					// getWifiHourly(rs.devices[0].device_id, '2018-06-15+09:00', '2018-06-16+23:00').then(rs => console.log(rs))
-					// getWifiSummary(rs.devices[0].device_id, '2018-06-15+09:00', '2018-06-16+23:00').then(rs => console.log(rs))
-
+					// let dataArr = [] 
+					// for (let i = 0; i < rs.devices.length; i++) { 
+					// 	dataArr.push({
+					// 		id: rs.devices[i].device_id,
+					// 		wifiDaily: await getWifiDaily(rs.devices[i].device_id, '2018-06-15+09:00', '2018-06-16+23:00').then(rs => { console.log(rs); return rs; }),
+					// 		wifiHourly: await getWifiHourly(rs.devices[i].device_id, '2018-06-15+09:00', '2018-06-16+23:00').then(rs => { console.log(rs); return rs; }),
+					// 		wifiSummary: await getWifiSummary(rs.devices[i].device_id, '2018-06-15+09:00', '2018-06-16+23:00').then(rs => { console.log(rs); return rs; }),
+					// 	})
+					// }
+					// console.log(dataArr)
 				}
 			})
 			
