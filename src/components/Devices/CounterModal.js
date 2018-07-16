@@ -1,11 +1,7 @@
+import { Grid, Button, Modal, withStyles, Typography, } from '@material-ui/core';
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Modal from '@material-ui/core/Modal';
-// import Button from '@material-ui/core/Button';
-import { Grid, Button } from '@material-ui/core';
-import ItemGrid from '../Grid/ItemGrid';
+import { ItemGrid } from '..';
 import moment from 'moment'
 import { OpenInBrowser, Timer, Done, Restore } from '@material-ui/icons'
 import countermodalStyles from 'assets/jss/components/devices/countermodalStyles';

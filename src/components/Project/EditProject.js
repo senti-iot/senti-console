@@ -6,12 +6,8 @@ import { KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft, Sav
 import { getAvailableDevices } from 'variables/dataDevices';
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import Caption from '../Typography/Caption';
-import TextF from '../CustomInput/TextF';
-import ItemGrid from '../Grid/ItemGrid';
-import CircularLoader from '../Loader/CircularLoader';
-import GridContainer from '../Grid/GridContainer';
 import { updateProject, getProject } from 'variables/dataProjects';
+import { Caption, TextF, ItemGrid, CircularLoader, GridContainer } from '..'
 
 const ITEM_HEIGHT = 32;
 const ITEM_PADDING_TOP = 8;
@@ -177,22 +173,21 @@ class EditProject extends Component {
 									<FormControl className={classes.formControl}>
 										{availableDevices.length > 0 ?
 											<Fragment>
-												<InputLabel FormLabelClasses={{
-													root: classes.label,
-												// focused: classes.focused
-												}} color={"primary"} htmlFor="select-multiple-chip">Assign more devices</InputLabel>
+												<InputLabel FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
+													Assign more devices
+												</InputLabel>
 												<Select
-													color={"primary"}
+													color={"primary"}s
 													multiple
 													value={this.state.devices}
-													// autoWidth
 													onChange={this.handleDeviceChange}
-													input={<Input id="select-multiple-chip" classes={{
-														underline: classes.underline
-													}} />}
+													input={<Input id="select-multiple-chip" classes={{ underline: classes.underline }} />}
 													renderValue={selected => (
 														<div className={classes.chips}>
-															{selected.map(value => { return <Chip key={value} label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_name} className={classes.chip} /> })}
+															{selected.map(value => {
+																return <Chip key={value}
+																	label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_name}
+																	className={classes.chip} />})}
 														</div>)}
 													MenuProps={MenuProps}>
 													{availableDevices.map(name => (
@@ -204,41 +199,34 @@ class EditProject extends Component {
 														this.state.devices.indexOf(name.device_id) === -1
 															? theme.typography.fontWeightRegular
 															: theme.typography.fontWeightMedium,
-															}}
-														>
+															}}>
 															{name.device_id + " - " + (name.device_name ? name.device_name : "No Name")}
 														</MenuItem>
 													))}
 												</Select>
 											</Fragment> : <Caption>There are no available Devices</Caption>}
 									</FormControl>
-								</ItemGrid>
-								{/* </Grid> */}
-							
+								</ItemGrid>							
 							</form>
 							<Grid container justify={"center"}>
 								<div className={classes.wrapper}>
-									{/* <Save />  */}
 									<Button
 										variant="contained"
 										color="primary"
 										className={buttonClassname}
 										disabled={this.state.creating}
-										onClick={this.state.created ? this.goToNewProject : this.handleUpdateProject}
-									>
-										{this.state.created ? <Fragment><Check className={classes.leftIcon} /> Go to Project </Fragment> : <Fragment><Save className={classes.leftIcon} />Update Project</Fragment>}
+										onClick={this.state.created ? this.goToNewProject : this.handleUpdateProject}>
+										{this.state.created ?
+											<Fragment><Check className={classes.leftIcon} /> Go to Project </Fragment>
+											: <Fragment><Save className={classes.leftIcon} />Update Project</Fragment>}
 									</Button>
 								</div>
 							</Grid>
 							<Collapse in={this.state.creating} timeout="auto" unmountOnExit>
-
 								<CircularLoader notCentered />
-
 							</Collapse>
-
 						</MuiPickersUtilsProvider>
 					</Paper>
-					{/* </ItemGrid> */}
 				</GridContainer>
 				: <CircularLoader />
 		)

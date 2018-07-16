@@ -29,6 +29,13 @@ const imagecarouselStyles = theme => ({
 		overflow: 'hidden',
 		width: '100%',
 	},
+	deviceImg: {
+		maxWidth: '100%',
+		[theme.breakpoints.down('sm')]: {
+			maxHeight: '200px'
+		}
+
+	},
 });
 
 export default imagecarouselStyles

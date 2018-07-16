@@ -1,12 +1,11 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
+import { Avatar, Button, Card, CardActions, CardContent, CardHeader, Collapse, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
-import { Card, CardHeader, CardContent, CardActions, Collapse, Avatar, Button } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { ExpandMore } from '@material-ui/icons';
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
-import { Typography } from '@material-ui/core';
-import Caption from '../Typography/Caption';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
+import { Caption } from '..';
 
 
 class InfoCard extends React.Component {
@@ -79,7 +78,7 @@ class InfoCard extends React.Component {
 							>
 								<Caption>
 									{this.state.expanded ? "See Less" : "See More"}
-								</Caption><ExpandMoreIcon className={classnames(classes.expand, {
+								</Caption><ExpandMore className={classnames(classes.expand, {
 									[classes.expandOpen]: this.state.expanded,
 								})}/>
 							</Button>

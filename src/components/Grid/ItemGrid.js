@@ -1,5 +1,5 @@
+import { Grid, withStyles } from "@material-ui/core";
 import React from "react";
-import { withStyles, Grid } from "@material-ui/core";
 
 const style = {
 	padding: {

@@ -6,7 +6,7 @@ import {
 	GoogleMap,
 	Marker
 } from "react-google-maps";
-import CircularLoader from "../Loader/CircularLoader";
+import { CircularLoader } from "..";
 import MarkerClusterer from "react-google-maps/lib/components/addons/MarkerClusterer";
 import { MarkerIcon } from './MarkerIcon'
 

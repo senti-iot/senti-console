@@ -1,8 +1,11 @@
-import { lighten } from '@material-ui/core/styles/colorManipulator';
-import { primaryColor } from 'assets/jss/material-dashboard-react';
 import teal from '@material-ui/core/colors/teal'
+import { lighten } from '@material-ui/core/styles/colorManipulator';
+import { primaryColor } from '../material-dashboard-react';
 
-export const toolbarStyles = theme => ({
+const toolbarStyles = theme => ({
+	leftIcon: {
+		marginRight: theme.spacing.unit
+	},
 	open: {
 		marginTop: 24
 	},
@@ -35,12 +38,10 @@ export const toolbarStyles = theme => ({
 		color: theme.palette.text.secondary,
 	},
 	title: {
-		flex: 1,
 		width: '100%'
-		// flex: '1 1 33%',
 	},
 	headerFilter: {
-		flex: '1 1 33%'
+		width: '100%'
 	},
 	froot: {
 		opacity: 0.42
@@ -57,3 +58,5 @@ export const toolbarStyles = theme => ({
 		},
 	},
 });
+
+export default toolbarStyles

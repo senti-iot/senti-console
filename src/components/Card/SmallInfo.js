@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react'
-import { Info } from '..';
-import Caption from '../Typography/Caption';
+import { Info, Caption } from '..';
 
 const SmallInfo = (props) => {
 	return (

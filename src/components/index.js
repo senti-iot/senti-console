@@ -6,7 +6,7 @@ import ChartCard from "./Cards/ChartCard.js";
 import ProfileCard from "./Cards/ProfileCard.js";
 import RegularCard from "./Cards/RegularCard.js";
 import StatsCard from "./Cards/StatsCard.js";
-
+import SmallCard from './Cards/SmallCard.js'
 // ##############################
 // // // CustomButtons
 // #############################
@@ -31,7 +31,7 @@ import Footer from "./Footer/Footer.js";
 // #############################
 
 import ItemGrid from "./Grid/ItemGrid.js";
-
+import GridContainer from "./Grid/GridContainer"
 // ##############################
 // // // Header
 // #############################
@@ -51,13 +51,14 @@ import Sidebar from "./Sidebar/Sidebar.js";
 
 import Snackbar from "./Snackbar/Snackbar.js";
 import SnackbarContent from "./Snackbar/SnackbarContent.js";
-
+import CircularLoader from './Loader/CircularLoader.js'
 
 // ##############################
 // // // Typography
 // #############################
 
 import P from "./Typography/P.js";
+import TextF from "./CustomInput/TextF";
 import Quote from "./Typography/Quote.js";
 import Muted from "./Typography/Muted.js";
 import Primary from "./Typography/Primary.js";
@@ -70,7 +71,11 @@ import A from "./Typography/A.js";
 import Caption from "./Typography/Caption"
 export {
 	// Cards
+	GridContainer,
+	TextF,
+	CircularLoader,
 	ChartCard,
+	SmallCard,
 	ProfileCard,
 	RegularCard,
 	StatsCard,

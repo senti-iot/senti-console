@@ -1,19 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Menu, KeyboardArrowLeft } from "@material-ui/icons";
-import {
-	withStyles,
-	AppBar,
-	Toolbar,
-	IconButton,
-	Hidden,
-	Button,
-} from "@material-ui/core";
-import cx from "classnames";
-
+import { AppBar, Button, Hidden, IconButton, Toolbar, withStyles } from "@material-ui/core";
+import { KeyboardArrowLeft, Menu } from "@material-ui/icons";
 import headerStyle from "assets/jss/material-dashboard-react/headerStyle.js";
-
+import cx from "classnames";
+import PropTypes from "prop-types";
+import React from "react";
 import HeaderLinks from "./HeaderLinks";
+
+
 
 
 function Header({ ...props }) {

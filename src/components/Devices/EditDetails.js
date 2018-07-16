@@ -1,12 +1,9 @@
-import React, { Component, Fragment } from 'react'
-import { withStyles, Paper, Grid, FormControl, Button, InputLabel, Select, Input, MenuItem, Collapse, /* FormHelperText */ } from '@material-ui/core';
-import { ItemGrid } from '..';
-import TextF from '../CustomInput/TextF';
+import { Button, Collapse, FormControl, Grid, Input, InputLabel, MenuItem, Paper, Select, withStyles } from '@material-ui/core';
+import { Check, Save } from '@material-ui/icons';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
+import React, { Component, Fragment } from 'react';
 import { getDevice, updateDeviceDetails } from 'variables/dataDevices';
-import CircularLoader from '../Loader/CircularLoader';
-import { Save, Check } from '@material-ui/icons'
-import GridContainer from '../Grid/GridContainer';
+import { CircularLoader, GridContainer, ItemGrid, TextF } from '..';
 class EditDetails extends Component {
 	constructor(props) {
 		super(props)

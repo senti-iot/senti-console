@@ -1,22 +1,11 @@
-import React from "react";
-import EnhancedTableHead from '../../Project/TableHeader';
-import EnhancedTableToolbar from '../../Project/TableToolBar'
-import {
-	withStyles,
-	Table,
-	// TableHead,
-	TableRow,
-	TableBody,
-	TableCell,
-	Hidden
-} from "@material-ui/core";
-import PropTypes from "prop-types";
-import TablePagination from '@material-ui/core/TablePagination';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
-import { withRouter } from 'react-router-dom';
+import { Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination, TableRow, withStyles } from '@material-ui/core';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
+import PropTypes from "prop-types";
+import React from "react";
+import { withRouter } from 'react-router-dom';
 import { dateTimeFormatter } from "variables/functions";
+import EnhancedTableHead from '../../Project/TableHeader';
+import EnhancedTableToolbar from '../../Project/TableToolBar';
 
 
 class RegSimpleList extends React.Component {

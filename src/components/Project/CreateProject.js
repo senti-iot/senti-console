@@ -1,23 +1,14 @@
-import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, FormControl, InputLabel, Select, Input, Chip, MenuItem, Collapse, Button } from '@material-ui/core';
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
-import { DatePicker } from 'material-ui-pickers';
-import MomentUtils from 'material-ui-pickers/utils/moment-utils';
-import KeyArrRight from '@material-ui/icons/KeyboardArrowRight';
-import KeyArrLeft from '@material-ui/icons/KeyboardArrowLeft';
-// import { ItemGrid } from 'components';
-import { getAvailableDevices } from 'variables/dataDevices';
-import { createOneProject } from 'variables/dataProjects'
-import { Save, Check } from '@material-ui/icons'
-import classNames from 'classnames';
+import { Button, Chip, Collapse, FormControl, Grid, Input, InputLabel, MenuItem, Paper, Select, withStyles } from '@material-ui/core';
+import { Check, KeyboardArrowLeft as KeyArrLeft, KeyboardArrowRight as KeyArrRight, Save } from '@material-ui/icons';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import { withRouter } from 'react-router-dom'
-// import Info from '../Typography/Info';
-import Caption from '../Typography/Caption';
-import TextF from '../CustomInput/TextF';
-import ItemGrid from '../Grid/ItemGrid';
-import CircularLoader from '../Loader/CircularLoader';
-import GridContainer from '../Grid/GridContainer';
+import classNames from 'classnames';
+import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
+import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import React, { Component, Fragment } from 'react';
+import { withRouter } from 'react-router-dom';
+import { getAvailableDevices } from 'variables/dataDevices';
+import { createOneProject } from 'variables/dataProjects';
+import { Caption, CircularLoader, GridContainer, ItemGrid, TextF } from '..';
 
 const ITEM_HEIGHT = 32;
 const ITEM_PADDING_TOP = 8;

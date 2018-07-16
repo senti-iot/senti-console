@@ -1,24 +1,12 @@
-import React from "react";
-import {
-	withStyles,
-	Table,
-	// TableHead,
-	TableRow,
-	TableBody,
-	TableCell,
-	Hidden,
-	Typography
-} from "@material-ui/core";
-import EnhancedTableHead from './ProjectTableHeader';
-import EnhancedTableToolbar from './TableToolBar'
-import PropTypes from "prop-types";
-import TablePagination from '@material-ui/core/TablePagination';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
-import { withRouter } from 'react-router-dom';
-import { Edit, Devices, PictureAsPdf, Delete } from '@material-ui/icons'
+import { Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination, TableRow, Typography, withStyles } from "@material-ui/core";
+import { Delete, Devices, Edit, PictureAsPdf } from '@material-ui/icons';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
+import PropTypes from "prop-types";
+import React from "react";
+import { withRouter } from 'react-router-dom';
 import { dateFormatter } from "variables/functions";
+import EnhancedTableHead from './ProjectTableHeader';
+import EnhancedTableToolbar from './TableToolBar';
 
 class EnhancedTable extends React.Component {
 	constructor(props) {

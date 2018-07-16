@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import SmallCard from '../Cards/SmallCard';
 import { IconButton, Menu, MenuItem, withStyles, Button } from '@material-ui/core';
-import { ItemGrid } from '..';
+import { ItemGrid, SmallCard } from '..';
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
 import { MoreVert, Edit, PictureAsPdf, Devices, Delete } from '@material-ui/icons'
 import { withRouter } from 'react-router-dom'
+//
 class ProjectCard extends Component {
 	constructor(props) {
 	  super(props)

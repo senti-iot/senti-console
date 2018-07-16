@@ -1,16 +1,9 @@
-import React from "react";
-import {
-	withStyles,
-	IconButton,
-	MenuItem,
-	Menu,
-	Grid,
-} from "@material-ui/core";
-import { AccountCircle } from "@material-ui/icons";
-import { withRouter } from 'react-router-dom'
+import { Grid, IconButton, Menu, MenuItem, withStyles } from "@material-ui/core";
+import { AccountBox, AccountCircle, Business, Lock } from '@material-ui/icons';
 import headerLinksStyle from "assets/jss/material-dashboard-react/headerLinksStyle";
+import React from "react";
 import cookie from "react-cookies";
-import { Lock, AccountBox, Business } from '@material-ui/icons'
+import { withRouter } from 'react-router-dom';
 class HeaderLinks extends React.Component {
 	state = {
 		anchorProfile: null

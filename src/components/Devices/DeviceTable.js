@@ -1,19 +1,12 @@
-import {
-	Hidden, Table, TableBody, TableCell,
-	// TableHead,
-	TableRow, Typography, withStyles
-} from "@material-ui/core";
-import Checkbox from '@material-ui/core/Checkbox';
-import Paper from '@material-ui/core/Paper';
-import TablePagination from '@material-ui/core/TablePagination';
+import { Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination, TableRow, Typography, withStyles } from "@material-ui/core";
+import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons';
+import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
 import PropTypes from "prop-types";
 import React from "react";
 import { withRouter } from 'react-router-dom';
+import AssignProject from "./AssignProject";
 import EnhancedTableHead from './DeviceTableHeader';
 import EnhancedTableToolbar from './TableToolBar';
-import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons'
-import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
-import AssignProject from "./AssignProject";
 
 class EnhancedTable extends React.Component {
 	constructor(props) {

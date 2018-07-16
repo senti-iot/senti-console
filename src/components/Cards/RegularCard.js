@@ -1,11 +1,5 @@
 import React from "react";
-import {
-	withStyles,
-	Card,
-	CardContent,
-	CardHeader,
-	CardActions
-} from "@material-ui/core";
+import { withStyles, Card, CardContent, CardHeader, CardActions } from "@material-ui/core";
 import PropTypes from "prop-types";
 import cx from "classnames";
 
