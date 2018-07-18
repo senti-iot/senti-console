@@ -1,13 +1,11 @@
 import { Button, Grid, withStyles, Collapse } from '@material-ui/core';
-import { Devices, AssignmentTurnedIn, Person } from '@material-ui/icons'
+import { Devices, Person } from '@material-ui/icons'
 import projectStyles from 'assets/jss/views/projects';
 import { ItemGrid, Info } from 'components';
 import DeviceSimpleList from 'components/List/DeviceSimpleList/DeviceSimpleList';
-import RegSimpleList from 'components/List/RegSimpleList/RegSimpleList';
 import moment from "moment";
 import React, { Component } from 'react';
 import { getProject } from 'variables/dataProjects';
-// import { dateFormatter } from 'variables/functions';
 import InfoCard from 'components/Cards/InfoCard';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
@@ -16,7 +14,7 @@ import { Maps } from 'components/Map/Maps';
 import classNames from 'classnames'
 import Caption from 'components/Typography/Caption';
 import ProjectDetails from './ProjectCards/ProjectDetails';
-// import { getWifiDaily, getWifiHourly, getWifiSummary } from 'variables/dataDevices';
+import ProjectData from './ProjectCards/ProjectData';
 
 class Project extends Component {
 	constructor(props) {
@@ -58,16 +56,6 @@ class Project extends Component {
 							regMostCounts: this.regMostCount(rs.registrations)
 						}
 					})
-					// let dataArr = [] 
-					// for (let i = 0; i < rs.devices.length; i++) { 
-					// 	dataArr.push({
-					// 		id: rs.devices[i].device_id,
-					// 		wifiDaily: await getWifiDaily(rs.devices[i].device_id, '2018-06-15+09:00', '2018-06-16+23:00').then(rs => { console.log(rs); return rs; }),
-					// 		wifiHourly: await getWifiHourly(rs.devices[i].device_id, '2018-06-15+09:00', '2018-06-16+23:00').then(rs => { console.log(rs); return rs; }),
-					// 		wifiSummary: await getWifiSummary(rs.devices[i].device_id, '2018-06-15+09:00', '2018-06-16+23:00').then(rs => { console.log(rs); return rs; }),
-					// 	})
-					// }
-					// console.log(dataArr)
 				}
 			})
 			
@@ -83,7 +71,6 @@ class Project extends Component {
 			max = (v.totalCount > max.totalCount) ? v : max;
 		}
 		return max;
-		// return devices.reduce((max, d) => d.totalCount > max ? d.totalCount : max, devices[0].totalCount)
 	}
 	regMostCount = (regs) => {
 		let max = regs[0]
@@ -133,13 +120,11 @@ class Project extends Component {
 		})
 	}
 	renderLoader = () => {
-		// const { classes } = this.props
-		// return <Grid container><CircularProgress className={classes.loader} /></Grid>
 		return <CircularLoader />
 	}
 	render() {
 		const { project, loading } = this.state
-		const { regMostCounts, deviceMostCounts } = this.state.facts
+		const { deviceMostCounts } = this.state.facts
 		const { classes } = this.props
 		const rp = { history: this.props.history, match: this.props.match }
 		return (
@@ -147,19 +132,9 @@ class Project extends Component {
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<ProjectDetails project={project} {...rp }/>
-						{/* <InfoCard
-							title={project.title} avatar={<LibraryBooks />}
-							subheader={project.description}
-							noExpand
-							content={}
-							topAction={
-
-							}
-						/> */}
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<InfoCard title={"Devices"} avatar={<Devices />} subheader={"Number of devices:" + project.devices.length}
-							// hideFacts
 							leftActions={
 								<Button className={classes.leftActionButton} onClick={() => this.setState({ mapExpanded: !this.state.mapExpanded })}>
 									<Map className={classes.leftIcon} />
@@ -202,9 +177,8 @@ class Project extends Component {
 						/>
 					</ItemGrid >
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<InfoCard title={"Data"} avatar={<AssignmentTurnedIn />} subheader={project.registrations.length}
-							// hideFacts
-
+						<ProjectData project={project}/>
+						{/* <InfoCard title={"Data"} avatar={<AssignmentTurnedIn />} subheader={project.registrations.length}
 							content={
 								<Grid container>
 									<ItemGrid>
@@ -228,7 +202,7 @@ class Project extends Component {
 							hiddenContent={
 								<RegSimpleList handleFilterKeyword={this.handleFilterRegKeyword} filters={this.state.regFilters} data={this.filterItems(project.registrations, this.state.regFilters.keyword)} />
 							}
-						/>
+						/> */}
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<InfoCard title={"Contact"} avatar={<Person />} subheader={""}
