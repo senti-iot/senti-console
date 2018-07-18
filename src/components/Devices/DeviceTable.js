@@ -241,6 +241,11 @@ class EnhancedTable extends React.Component {
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{n.address}
+												</Typography>
+											</TableCell>
+											<TableCell className={classes.tableCell}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
 													{n.organisation ? n.organisation.vcName  : " Unassigned"}
 												</Typography>
 											</TableCell>

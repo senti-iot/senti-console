@@ -1,4 +1,5 @@
 import { api, imageApi, mapApi } from "./data";
+
 export const getWifiHourly = async (dId, from, to) => {
 	var data = await api.get('senti/project/wifihourly/' + dId + '/' + from + '/' + to).then(rs => rs.data)
 	return data
@@ -54,6 +55,7 @@ export const assignProjectToDevice = async (args) => {
 
 export const getAllDevices = async () => {
 	var data = await api.get("senti/devices").then(rs => rs.data)
+	data.map(async d => d.address ? d.address : d.address = await getSimpleAddress(d.lat, d.long))
 	return data
 }
 export const getSimpleAddress = async (lat, long) => {
