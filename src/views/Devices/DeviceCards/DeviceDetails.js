@@ -78,7 +78,7 @@ class DeviceDetails extends Component {
 							<MenuItem onClick={this.props.handleOpenAssign}>
 								<LibraryBooks className={classes.leftIcon} />{device.project ? "Move to another project" : "Assign to new project"}
 							</MenuItem>
-							{device.project_id ? <MenuItem onClick={this.props.handleOpenUnassign}>
+							{device.project ? <MenuItem onClick={this.props.handleOpenUnassign}>
 								<LayersClear className={classes.leftIcon} /> Unassign from project
 							</MenuItem> : null}
 							<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}>
