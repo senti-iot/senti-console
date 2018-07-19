@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import {
 	Store,
-	InfoOutline,
+	InfoOutlined,
 	LocalOffer,
 	Update,
 	Accessibility,
@@ -114,7 +114,7 @@ class Dashboard extends React.Component {
 					</ItemGrid>
 					<ItemGrid xs={12} sm={6} noMargin>
 						<StatsCard
-							icon={InfoOutline}
+							icon={InfoOutlined}
 							iconColor="red"
 							title="Fixed Issues"
 							description="75"

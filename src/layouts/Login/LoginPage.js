@@ -2,11 +2,9 @@ import React from "react";
 // material-ui components
 import { InputAdornment, withStyles, CardContent, Collapse, Button } from "@material-ui/core";
 // @material-ui/icons
-import Person from "@material-ui/icons/Person";
-import LockOutline from "@material-ui/icons/LockOutline";
+import { LockOutlined, Person } from "@material-ui/icons";
 // core components
-import GridContainer from "components/Grid/GridContainer";
-import GridItem from "components/Grid/ItemGrid";
+import { GridContainer, ItemGrid } from "components";
 // import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
@@ -117,7 +115,7 @@ class LoginPage extends React.Component {
 				>
 					<div className={classes.container}>
 						<GridContainer justify="center">
-							<GridItem xs={12} sm={12} md={3}>
+							<ItemGrid xs={12} sm={12} md={3}>
 								<Card className={classes[this.state.cardAnimaton]}>
 									<form className={classes.form}>
 										<CardHeader color="primary" className={classes.cardHeader}>
@@ -164,7 +162,7 @@ class LoginPage extends React.Component {
 													classes: { underline: classes.underline },
 													endAdornment: (
 														<InputAdornment position="end">
-															<LockOutline className={classes.inputIconsColor} />
+															<LockOutlined className={classes.inputIconsColor} />
 														</InputAdornment>
 													)
 												}}
@@ -183,7 +181,7 @@ class LoginPage extends React.Component {
 										</CardContent>
 									</Collapse>
 								</Card>
-							</GridItem>
+							</ItemGrid>
 						</GridContainer>
 					</div>
 				</div>
