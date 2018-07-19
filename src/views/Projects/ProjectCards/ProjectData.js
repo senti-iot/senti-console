@@ -6,7 +6,7 @@ import { AccessTime, AssignmentTurnedIn, MoreVert, DateRange, KeyboardArrowRight
 import { ItemGrid, CircularLoader, Caption, Info, /* , Caption, Info */ } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import deviceStyles from 'assets/jss/views/deviceStyles';
-import { Doughnut, Polar, Bar } from 'react-chartjs-2';
+import { Doughnut, Bar, Pie } from 'react-chartjs-2';
 import { getWifiSummary } from 'variables/dataDevices';
 import { getRandomColor } from 'variables/colors';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
@@ -33,7 +33,8 @@ class ProjectData extends Component {
 			actionAnchor: null,
 			loading: true,
 			dateFilterInputID: 0,
-			openCustomDate: false
+			openCustomDate: false,
+			display: 0
 		}
 	}
 	getWifiSum = async () => {
@@ -48,6 +49,7 @@ class ProjectData extends Component {
 			await getWifiSummary(d.device_id, startDate, endDate).then(rs => dataSet = { id: d.device_name + "(" + d.device_id + ")", data: rs })
 			return dataArr.push(dataSet)
 		}))
+
 		this.setState({
 			loading: false,
 			roundDataSets: {
@@ -211,6 +213,45 @@ class ProjectData extends Component {
 		</MuiPickersUtilsProvider>
 
 	}
+	renderType = () => {
+		const { display } = this.state
+		switch (display) {
+			case 0:
+				return this.state.roundDataSets ?
+					<Pie
+						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : 1000}
+						width={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerWidth - 40}
+						options={{
+							maintainAspectRatio: false
+						}}
+						redraw
+						data={this.state.roundDataSets} legend={legendOpts} /> : null
+
+			case 1: 
+				return this.state.roundDataSets ?
+					<Doughnut
+						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : 1000}
+						width={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerWidth - 40}
+						options={{
+							maintainAspectRatio: false
+						}}
+						redraw
+						data={this.state.roundDataSets} legend={legendOpts} /> : null
+			case 2: 
+				return this.state.barDataSets ? <Bar
+					data={this.state.barDataSets}
+					legend={legendOpts}
+					redraw
+					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 700 : 1000}
+					width={this.props.theme.breakpoints.width("md") < window.innerWidth ? 700 : window.innerWidth - 40}
+					options={{
+						maintainAspectRatio: false
+					}}
+				/> : null
+			default:
+				break;
+		}
+	}
 	renderDateFilter = () => {
 		const { classes } = this.props
 		const { dateFilterInputID, to, from } = this.state
@@ -285,38 +326,14 @@ class ProjectData extends Component {
 						{loading ? <CircularLoader notCentered /> :
 							<Fragment>
 								<ItemGrid xs={12} container noPadding>
-									{this.state.roundDataSets ?
-										<Doughnut
-											height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : 1000}
-											width={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerWidth - 40}
-											options={{
-												maintainAspectRatio: false
-											}}
-											redraw
-											data={this.state.roundDataSets} legend={legendOpts} /> : null}
+									{this.renderType()}
 								</ItemGrid>
 								<ItemGrid xs={12} container noPadding>
-									{this.state.roundDataSets ? <Polar
-										height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : 1000}
-										width={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerWidth - 40}
-										options={{
-											maintainAspectRatio: false,
-										}}
-										redraw
-										data={this.state.roundDataSets} legend={legendOpts} /> : null}
-								</ItemGrid>
-								<ItemGrid xs={12} container noPadding>
-									{this.state.barDataSets ? <Bar
-										// responsive
-										data={this.state.barDataSets}
-										legend={legendOpts}
-										redraw
-										height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 700 : 1000}
-										width={this.props.theme.breakpoints.width("md") < window.innerWidth ? 700 : window.innerWidth - 40}
-										options={{
-											maintainAspectRatio: false
-										}}
-									/> : null}
+									<Button onClick={() => {
+										this.setState({
+											display: this.state.display + 1 < 3 ? this.state.display + 1 : 0
+										})
+									}}> Change Type</Button>
 								</ItemGrid>
 							</Fragment>}
 					</Grid>}
