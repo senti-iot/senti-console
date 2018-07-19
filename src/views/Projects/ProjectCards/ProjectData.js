@@ -1,7 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types'
-import { Grid, IconButton, Menu, MenuItem, withStyles, /* Typography, */ Select, FormControl, FormHelperText, Divider, Dialog, DialogTitle, DialogContent, /* DialogContentText, */ Button, DialogActions } from '@material-ui/core';
-import { AccessTime, AssignmentTurnedIn, MoreVert, DateRange, KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft } from "@material-ui/icons"
+import { Grid, IconButton, Menu, MenuItem, withStyles, /* Typography, */ Select, FormControl, FormHelperText, Divider, Dialog, DialogTitle, DialogContent, /* DialogContentText, */ Button, DialogActions, ListItem, ListItemIcon, ListItemText, Collapse, List, Hidden } from '@material-ui/core';
+import {
+	AccessTime, AssignmentTurnedIn, MoreVert,
+	DateRange, KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft,
+	DonutLargeRounded, PieChartRounded, BarChart, ExpandLess, ExpandMore, Visibility
+} from "@material-ui/icons"
 // import { dateFormatter } from 'variables/functions';
 import { ItemGrid, CircularLoader, Caption, Info, /* , Caption, Info */ } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
@@ -34,7 +38,8 @@ class ProjectData extends Component {
 			loading: true,
 			dateFilterInputID: 0,
 			openCustomDate: false,
-			display: 0
+			display: 2,
+			visibility: false
 		}
 	}
 	getWifiSum = async () => {
@@ -124,6 +129,10 @@ class ProjectData extends Component {
 			barDataSets: null
 		}, this.getWifiSum)
 	}
+	handleVisibility = (event) => {
+		let id = event.target.value
+		this.setState({ display: id })
+	}
 	handleDateFilter = (event) => {
 		let id = event.target.value
 		if (id !== 4) {
@@ -134,7 +143,6 @@ class ProjectData extends Component {
 		}
 	}
 	handleCustomDate = date => e => {
-		// e.preventDefault()
 		this.setState({
 			[date]: e
 		})
@@ -146,6 +154,11 @@ class ProjectData extends Component {
 		{ id: 3, label: "Last 90 days" },
 		{ id: 4, label: "Custom Interval" },
 
+	]
+	visibilityOptions = [
+		{ id: 0, icon: <PieChartRounded/>, label: "Pie Chart" },
+		{ id: 1, icon: <DonutLargeRounded/>, label: "Donut Chart" },
+		{ id: 2, icon: <BarChart />, label: "Bar Chart" },
 	]
 	handleCloseDialog = () => {
 		this.setState({ openCustomDate: false })
@@ -161,9 +174,6 @@ class ProjectData extends Component {
 				aria-describedby="alert-dialog-description">
 				<DialogTitle id="alert-dialog-title">Custom Date</DialogTitle>
 				<DialogContent>
-					{/* <DialogContentText id="alert-dialog-description"> */}
-					{/* Are you sure you want to unassign {device.device_id + " " + device.device_name} from project {device.project.title} ? */}
-					{/* </DialogContentText> */}
 					<ItemGrid>
 						<DateTimePicker
 							autoOk
@@ -193,6 +203,8 @@ class ProjectData extends Component {
 							value={this.state.to}
 							onChange={this.handleCustomDate('to')}
 							animateYearScrolling={false}
+							dateRangeIcon={<DateRange />}
+							timeIcon={<AccessTime />}
 							color="primary"
 							rightArrowIcon={<KeyArrRight />}
 							leftArrowIcon={<KeyArrLeft />}
@@ -202,7 +214,7 @@ class ProjectData extends Component {
 					</ItemGrid>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={this.handleCloseUnassign} color="primary">
+					<Button onClick={() => { this.setState({ loading: false, openCustomDate: false })}} color="primary">
 						No
 					</Button>
 					<Button onClick={this.handleCloseDialog} color="primary" autoFocus>
@@ -219,30 +231,30 @@ class ProjectData extends Component {
 			case 0:
 				return this.state.roundDataSets ?
 					<Pie
-						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : 1000}
+						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : 700}
 						width={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerWidth - 40}
 						options={{
 							maintainAspectRatio: false
 						}}
-						redraw
+						// redraw
 						data={this.state.roundDataSets} legend={legendOpts} /> : null
 
 			case 1: 
 				return this.state.roundDataSets ?
 					<Doughnut
-						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : 1000}
+						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : 700}
 						width={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerWidth - 40}
 						options={{
 							maintainAspectRatio: false
 						}}
-						redraw
+						// redraw
 						data={this.state.roundDataSets} legend={legendOpts} /> : null
 			case 2: 
 				return this.state.barDataSets ? <Bar
 					data={this.state.barDataSets}
 					legend={legendOpts}
-					redraw
-					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 700 : 1000}
+					// redraw
+					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 700 : 700}
 					width={this.props.theme.breakpoints.width("md") < window.innerWidth ? 700 : window.innerWidth - 40}
 					options={{
 						maintainAspectRatio: false
@@ -259,7 +271,9 @@ class ProjectData extends Component {
 		let displayFrom = moment(from).format(this.format)
 		return (
 			<div className={classes.root}>
-				<DateRange className={classes.leftIcon} />
+				<Hidden smDown>
+					<DateRange className={classes.leftIcon} />
+				</Hidden>
 				<FormControl className={classes.formControl}>
 					<Select
 						value={this.state.dateFilterInputID}
@@ -287,39 +301,67 @@ class ProjectData extends Component {
 			</div>
 		)
 	}
+	renderMenu = () => {
+		const { actionAnchor } = this.state
+		const { classes } = this.props
+		return <ItemGrid container noMargin noPadding>
+			<Hidden smDown>
+				{this.renderDateFilter()}
+			</Hidden>
+			<IconButton
+				aria-label="More"
+				aria-owns={actionAnchor ? 'long-menu' : null}
+				aria-haspopup="true"
+				onClick={this.handleOpenActionsDetails}>
+				<MoreVert />
+			</IconButton>
+			<Menu
+				id="long-menu"
+				anchorEl={actionAnchor}
+				open={Boolean(actionAnchor)}
+				onClose={this.handleCloseActionsDetails}
+				onChange={this.handleVisibility}
+				PaperProps={{
+					style: {
+						maxHeight: 300,
+						minWidth: 250
+					}
+				}}>
+				<Hidden smUp>
+					<ListItem>
+						{this.renderDateFilter()}
+					</ListItem>
+				</Hidden>
+				<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
+					<ListItemIcon>
+						<Visibility />
+					</ListItemIcon>
+					<ListItemText inset primary="Visibility" />
+					{this.state.visibility ? <ExpandLess /> : <ExpandMore />}
+				</ListItem>
+				<Collapse in={this.state.visibility} timeout="auto" unmountOnExit>
+					<List component="div" disablePadding>
+						{this.visibilityOptions.map(op => {
+							return <ListItem key={op.id} button className={classes.nested} onClick={() => this.setState({ display: op.id })}>
+								<ListItemIcon>
+									{op.icon}
+								</ListItemIcon>
+								<ListItemText inset primary={op.label} />
+							</ListItem>
+						})}
+					</List>
+				</Collapse>
+				))}
+			</Menu>
+		</ItemGrid>
+	}
 	render() {
-		const { actionAnchor, loading } = this.state
-
+		const {  loading } = this.state
 		return (
 			<InfoCard
 				title={"Data"} avatar={<AssignmentTurnedIn />}
 				noExpand
-				topAction={<ItemGrid container noMargin noPadding>
-					{this.renderDateFilter()}
-					<IconButton
-						aria-label="More"
-						aria-owns={actionAnchor ? 'long-menu' : null}
-						aria-haspopup="true"
-						onClick={this.handleOpenActionsDetails}>
-						<MoreVert />
-					</IconButton>
-					<Menu
-						id="long-menu"
-						anchorEl={actionAnchor}
-						open={Boolean(actionAnchor)}
-						onClose={this.handleCloseActionsDetails}
-						PaperProps={{
-							style: {
-								maxHeight: 200,
-								minWidth: 200
-							}
-						}}>
-						<MenuItem>
-							{/* <Edit className={classes.leftIcon} />Edit project */}
-						</MenuItem>
-						))}
-					</Menu>
-				</ItemGrid>}
+				topAction={this.renderMenu()}
 				content={
 					<Grid container>
 						{this.renderCustomDateDialog()}
@@ -327,13 +369,6 @@ class ProjectData extends Component {
 							<Fragment>
 								<ItemGrid xs={12} container noPadding>
 									{this.renderType()}
-								</ItemGrid>
-								<ItemGrid xs={12} container noPadding>
-									<Button onClick={() => {
-										this.setState({
-											display: this.state.display + 1 < 3 ? this.state.display + 1 : 0
-										})
-									}}> Change Type</Button>
 								</ItemGrid>
 							</Fragment>}
 					</Grid>}

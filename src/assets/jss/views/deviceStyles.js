@@ -1,17 +1,20 @@
-import { red, yellow, green } from "@material-ui/core/colors";
+import { red, yellow, green, teal } from "@material-ui/core/colors";
 
 const deviceStyles = theme => ({
-	// label: {
-	// 	'&$focused': {
-	// 		color: teal[500],
-	// 	},
-	// },
-	// focused: {},
-	// underline: {
-	// 	'&:after': {
-	// 		borderBottomColor: teal[500],
-	// 	},
-	// },
+	label: {
+		'&$focused': {
+			color: teal[500],
+		},
+	},
+	focused: {},
+	underline: {
+		'&:after': {
+			borderBottomColor: teal[500],
+		},
+	},
+	nested: {
+		paddingLeft: theme.spacing.unit * 4,
+	},
 	root: {
 		display: 'flex',
 		flexWrap: 'wrap',
