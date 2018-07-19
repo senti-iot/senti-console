@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import { Grid, IconButton, Menu, MenuItem, withStyles, Typography, Select, FormControl } from '@material-ui/core';
+import { Grid, IconButton, Menu, MenuItem, withStyles, Typography, Select, FormControl, FormHelperText } from '@material-ui/core';
 import { AssignmentTurnedIn, MoreVert, DateRange /* Edit */ } from "@material-ui/icons"
 // import { dateFormatter } from 'variables/functions';
-import { ItemGrid, /* , Caption, Info */  } from 'components';
+import { ItemGrid, CircularLoader, /* , Caption, Info */  } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { Doughnut, Polar, Bar } from 'react-chartjs-2';
@@ -26,7 +26,8 @@ class ProjectData extends Component {
 		this.state = {
 			barDataSets: null,
 			roundDataSets: null,
-			actionAnchor: null
+			actionAnchor: null,
+			loading: true
 		}
 	}
 	componentDidMount = async () => {
@@ -45,6 +46,7 @@ class ProjectData extends Component {
 			}))
 			this.setState({
 				...this.state,
+				loading: false,
 				roundDataSets: {
 					labels: dataArr.map(da => da.id),
 					datasets: [{
@@ -80,8 +82,9 @@ class ProjectData extends Component {
 	};
 
 	render() {
-		const { actionAnchor } = this.state
+		const { actionAnchor, loading } = this.state
 		const { classes } = this.props
+	
 		return (
 			<InfoCard
 				title={"Data"} avatar={<AssignmentTurnedIn />}
@@ -106,6 +109,7 @@ class ProjectData extends Component {
 								<MenuItem value={20}>Twenty</MenuItem>
 								<MenuItem value={30}>Thirty</MenuItem>
 							</Select>
+							<FormHelperText>{"date.rangePicked"}</FormHelperText>
 						</FormControl>
 					</div>
 					<IconButton
@@ -132,43 +136,43 @@ class ProjectData extends Component {
 						))}
 					</Menu>
 				</ItemGrid>}
-				content={<Grid container>
-					<ItemGrid xs={12} container justify={'center'}>
-						<Typography variant="display1">Daily Summary</Typography>
-					</ItemGrid>
-					<ItemGrid xs={12} container noPadding>
-						{this.state.roundDataSets ? <Doughnut
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : 1000}
-							width={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerWidth - 40}
-							options={{
-								maintainAspectRatio: false
-							}}
-							data={this.state.roundDataSets} legend={legendOpts} responsive /> : null}
-					</ItemGrid>
+				content={loading ? <CircularLoader notCentered /> : 
+					<Grid container>
+						<ItemGrid xs={12} container justify={'center'}>
+							<Typography variant="display1">Daily Summary</Typography>
+						</ItemGrid>
+						<ItemGrid xs={12} container noPadding>
+							{this.state.roundDataSets ? <Doughnut
+								height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : 1000}
+								width={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerWidth - 40}
+								options={{
+									maintainAspectRatio: false
+								}}
+								data={this.state.roundDataSets} legend={legendOpts} responsive /> : null}
+						</ItemGrid>
 					 <ItemGrid xs={12} container noPadding>
-						{this.state.roundDataSets ? <Polar
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : 1000}
-							width={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerWidth - 40}
-							options={{
-								maintainAspectRatio: false,
-							}}
-							data={this.state.roundDataSets} legend={legendOpts} responsive /> : null}
-					</ItemGrid> 
-					<ItemGrid xs={12} container noPadding>
-						{this.state.barDataSets ? <Bar
-							// responsive
-							data={this.state.barDataSets}
-							legend={legendOpts}
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 700 : 1000}
-							width={this.props.theme.breakpoints.width("md") < window.innerWidth ? 700 : window.innerWidth - 40}
-							options={{
-								maintainAspectRatio: false
-							}}
-						/> : null}
-					</ItemGrid>
-				</Grid>}
+							{this.state.roundDataSets ? <Polar
+								height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : 1000}
+								width={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerWidth - 40}
+								options={{
+									maintainAspectRatio: false,
+								}}
+								data={this.state.roundDataSets} legend={legendOpts} responsive /> : null}
+						</ItemGrid> 
+						<ItemGrid xs={12} container noPadding>
+							{this.state.barDataSets ? <Bar
+								// responsive
+								data={this.state.barDataSets}
+								legend={legendOpts}
+								height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 700 : 1000}
+								width={this.props.theme.breakpoints.width("md") < window.innerWidth ? 700 : window.innerWidth - 40}
+								options={{
+									maintainAspectRatio: false
+								}}
+							/> : null}
+						</ItemGrid>
+					</Grid>}
 			/>
-
 		);
 	}
 }
