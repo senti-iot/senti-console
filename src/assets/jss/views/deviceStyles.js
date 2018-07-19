@@ -1,6 +1,21 @@
 import { red, yellow, green } from "@material-ui/core/colors";
 
 const deviceStyles = theme => ({
+	root: {
+		display: 'flex',
+		flexWrap: 'wrap',
+		// flexFlow: "row nowrap",
+		justifyContent: "center",
+		alignItems: "center"
+	},
+	formControl: {
+
+		margin: theme.spacing.unit,
+		minWidth: 120,
+	},
+	selectEmpty: {
+		marginTop: theme.spacing.unit * 2,
+	},
 	modal: {
 		[theme.breakpoints.up('md')]: {	
 			width: theme.spacing.unit * 50,

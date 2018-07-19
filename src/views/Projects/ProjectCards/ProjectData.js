@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import { Grid, IconButton, Menu, MenuItem, withStyles, Button, Typography } from '@material-ui/core';
-import { AssignmentTurnedIn, MoreVert, /* Edit */ } from "@material-ui/icons"
+import { Grid, IconButton, Menu, MenuItem, withStyles, Typography, Select, FormControl } from '@material-ui/core';
+import { AssignmentTurnedIn, MoreVert, DateRange /* Edit */ } from "@material-ui/icons"
 // import { dateFormatter } from 'variables/functions';
 import { ItemGrid, /* , Caption, Info */  } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { Doughnut, Polar, Bar } from 'react-chartjs-2';
 import { getWifiSummary } from 'variables/dataDevices';
-// import { primaryColor } from 'assets/jss/material-dashboard-react';
 import { getRandomColor } from 'variables/colors';
 var moment = require('moment');
 
@@ -82,12 +81,33 @@ class ProjectData extends Component {
 
 	render() {
 		const { actionAnchor } = this.state
-		// const { classes } = this.props
+		const { classes } = this.props
 		return (
 			<InfoCard
 				title={"Data"} avatar={<AssignmentTurnedIn />}
 				noExpand
-				topAction={<ItemGrid noMargin noPadding>
+				topAction={<ItemGrid container noMargin noPadding>
+					<div className={classes.root}>
+						<DateRange className={classes.leftIcon} />
+						<FormControl className={classes.formControl}>
+							{/* <InputLabel htmlFor="age-simple">Date Filter</InputLabel> */}
+							<Select
+								value={this.state.age}
+								onChange={this.handleChange}
+								inputProps={{
+									name: 'age',
+									id: 'age-simple',
+								}}
+							>
+								<MenuItem value="">
+									<em>None</em>
+								</MenuItem>
+								<MenuItem value={10}>Ten</MenuItem>
+								<MenuItem value={20}>Twenty</MenuItem>
+								<MenuItem value={30}>Thirty</MenuItem>
+							</Select>
+						</FormControl>
+					</div>
 					<IconButton
 						aria-label="More"
 						aria-owns={actionAnchor ? 'long-menu' : null}
@@ -146,9 +166,6 @@ class ProjectData extends Component {
 							}}
 						/> : null}
 					</ItemGrid>
-					<ItemGrid xs={12}>
-						<Button onClick={() => console.log(this.state)}> State </Button>
-					</ItemGrid> 
 				</Grid>}
 			/>
 

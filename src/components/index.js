@@ -7,6 +7,7 @@ import ProfileCard from "./Cards/ProfileCard.js";
 import RegularCard from "./Cards/RegularCard.js";
 import StatsCard from "./Cards/StatsCard.js";
 import SmallCard from './Cards/SmallCard.js'
+import InfoCard from './Cards/InfoCard'
 // ##############################
 // // // CustomButtons
 // #############################
@@ -72,6 +73,7 @@ import Caption from "./Typography/Caption"
 export {
 	// Cards
 	GridContainer,
+	InfoCard,
 	TextF,
 	CircularLoader,
 	ChartCard,
