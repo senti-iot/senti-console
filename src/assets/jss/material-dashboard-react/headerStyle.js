@@ -51,6 +51,7 @@ const headerStyle = theme => ({
 		height: 50
 	},
 	title: {
+		maxWidth: "calc(100vw - 130px)",
 		...defaultFont,
 		lineHeight: "30px",
 		fontSize: "18px",
