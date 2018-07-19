@@ -1,6 +1,17 @@
 import { red, yellow, green } from "@material-ui/core/colors";
 
 const deviceStyles = theme => ({
+	// label: {
+	// 	'&$focused': {
+	// 		color: teal[500],
+	// 	},
+	// },
+	// focused: {},
+	// underline: {
+	// 	'&:after': {
+	// 		borderBottomColor: teal[500],
+	// 	},
+	// },
 	root: {
 		display: 'flex',
 		flexWrap: 'wrap',
