@@ -14,6 +14,7 @@ import GridContainer from 'components/Grid/GridContainer';
 import DeviceDetails from './DeviceCards/DeviceDetails';
 import DeviceHardware from './DeviceCards/DeviceHardware';
 import DeviceImages from './DeviceCards/DeviceImages';
+import DeviceData from './DeviceCards/DeviceData';
 
 class Device extends Component {
 	constructor(props) {
@@ -164,6 +165,13 @@ class Device extends Component {
 							match={this.props.match}
 							handleOpenAssign={this.handleOpenAssign}
 							handleOpenUnassign={this.handleOpenUnassign}
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin>
+						<DeviceData
+							device={device}	
+							history={this.props.history}
+							match={this.props.match}
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>

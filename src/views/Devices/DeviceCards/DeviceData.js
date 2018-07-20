@@ -11,14 +11,15 @@ import { ItemGrid, CircularLoader, Caption, Info, /* , Caption, Info */ } from '
 import InfoCard from 'components/Cards/InfoCard';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { Doughnut, Bar, Pie } from 'react-chartjs-2';
-import { getWifiSummary } from 'variables/dataDevices';
+import { getWifiHourly } from 'variables/dataDevices';
 import { getRandomColor } from 'variables/colors';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 var moment = require('moment');
 
 
-class ProjectData extends Component {
+
+class DeviceData extends Component {
 	constructor(props) {
 		super(props)
 
@@ -35,6 +36,7 @@ class ProjectData extends Component {
 			visibility: false
 		}
 	}
+
 	legendOpts = {
 		display: this.props.theme.breakpoints.width("md") < window.innerWidth ? true : false,
 		position: 'bottom',
@@ -54,39 +56,34 @@ class ProjectData extends Component {
 		}
 	}
 	getWifiSum = async () => {
-		const { project } = this.props
+		const { device } = this.props
 		const { from, to } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
-
-		let dataArr = []
-		await Promise.all(project.devices.map(async d => {
-			let dataSet = null
-			await getWifiSummary(d.device_id, startDate, endDate).then(rs => dataSet = { nr: d.device_id, id: d.device_name + "(" + d.device_id + ")", data: rs })
-			return dataArr.push(dataSet)
-		}))
-		dataArr.sort((a, b) => a.nr - b.nr )
+		var data = await getWifiHourly(device.device_id, startDate, endDate).then(rs => rs)
+		console.log(data)
+		var dataArr = Object.keys(data).map(r => ({ id: r, value: data[r] }))
+		console.log(dataArr)
 		this.setState({
 			loading: false,
 			roundDataSets: {
-				labels: dataArr.map(da => da.id),
+				labels: dataArr.map(rd => rd.id),
 				datasets: [{
-					label: "",
 					borderColor: "#FFF",
 					borderWidth: 1,
-					data: dataArr.map(d => parseInt(d.data, 10)),
+					data: dataArr.map(rd => rd.value),
 					backgroundColor: dataArr.map(() => getRandomColor())
 				}]
 			},
 			barDataSets: {
-				labels: dataArr.map(d => d.nr),
+				labels: dataArr.map(rd => rd.id),
+				// data: dataArr.map(rd => rd.value),
 				datasets: [{
 					borderColor: "#FFF",
 					borderWidth: 1,
-					data: dataArr.map(d => d.data),
+					data: dataArr.map(rd => rd.value),
 					backgroundColor: dataArr.map(() => getRandomColor())
 				}]
-				
 			}
 		})
 	}
@@ -250,7 +247,7 @@ class ProjectData extends Component {
 						}}
 					/> : null
 
-			case 1:
+			case 1: 
 				return this.state.roundDataSets ?
 					<Doughnut
 						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
@@ -260,7 +257,7 @@ class ProjectData extends Component {
 						}}
 						data={this.state.roundDataSets}
 					/> : null
-			case 2:
+			case 2: 
 				return this.state.barDataSets ? <Bar
 					data={this.state.barDataSets}
 					legend={this.barOpts}
@@ -336,11 +333,13 @@ class ProjectData extends Component {
 						minWidth: 250
 					}
 				}}>
-				<Hidden smUp>
-					<ListItem>
-						{this.renderDateFilter()}
-					</ListItem>
-				</Hidden>
+				<div>
+					<Hidden smUp>
+						<ListItem>
+							{this.renderDateFilter()}
+						</ListItem>
+					</Hidden>
+				</div>
 				<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
 					<ListItemIcon>
 						<Visibility />
@@ -385,9 +384,9 @@ class ProjectData extends Component {
 		);
 	}
 }
-ProjectData.propTypes = {
+DeviceData.propTypes = {
 	// history: PropTypes.any.isRequired,
 	// match: PropTypes.any.isRequired,
-	project: PropTypes.object.isRequired,
+	device: PropTypes.object.isRequired,
 }
-export default withStyles(deviceStyles, { withTheme: true })(ProjectData);
+export default withStyles(deviceStyles, { withTheme: true })(DeviceData);

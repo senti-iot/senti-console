@@ -124,7 +124,7 @@ class DeviceDetails extends Component {
 									{device.temperature} &#8451;
 								</Info>
 							</ItemGrid>
-							<ItemGrid xs={3}>
+							<ItemGrid>
 								<Caption>Last time device sent data to server:</Caption>
 								<Info>
 									{moment(device.wifiLastD).format("HH:mm:ss DD.MM.YYYY")}
