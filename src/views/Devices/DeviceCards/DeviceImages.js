@@ -7,7 +7,7 @@ import deviceStyles from 'assets/jss/views/deviceStyles';
 import DeviceImage from 'components/Devices/DeviceImage';
 import CircularLoader from 'components/Loader/CircularLoader';
 // import ImageUpload from '../ImageUpload';
-import { ItemGrid } from 'components';
+import { ItemGrid, Caption } from 'components';
 import DeviceImageUpload from '../ImageUpload';
 
 class DeviceImages extends Component {
@@ -39,7 +39,7 @@ class DeviceImages extends Component {
 		return <DeviceImageUpload dId={dId} imgUpload={this.getAllPics} callBack={this.getPicsCallBack} />
 	}
 	getAllPics = (id) => {
-		getAllPictures(id).then(rs => this.setState({ img: rs }))
+		getAllPictures(id).then(rs => { console.log(rs); return this.setState({ img: rs }) })
 	}
 	handleOpenActionsImages = e => {
 		this.setState({ actionAnchor: e.currentTarget })
@@ -112,7 +112,7 @@ class DeviceImages extends Component {
 				}
 				noExpand
 				content={
-					img !== null ?
+					img !== null ? img !== 0 ?
 						<Fragment>
 							<Dialog
 								open={openDeleteImage}
@@ -153,7 +153,7 @@ class DeviceImages extends Component {
 								{/* {this.renderImageUpload(device.device_id)} */}
 							</Grid>
 						</Fragment>
-						: this.renderImageLoader()}
+						: <Grid container justify={'center'}> <Caption> There are no pictures uploaded</Caption></Grid> : this.renderImageLoader()}
 			/>
 		)
 	}
