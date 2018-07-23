@@ -61,9 +61,7 @@ class DeviceData extends Component {
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		var data = await getWifiHourly(device.device_id, startDate, endDate).then(rs => rs)
-		console.log(data)
 		var dataArr = Object.keys(data).map(r => ({ id: r, value: data[r] }))
-		console.log(dataArr)
 		this.setState({
 			loading: false,
 			roundDataSets: {

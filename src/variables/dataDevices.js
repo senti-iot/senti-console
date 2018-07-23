@@ -40,7 +40,7 @@ export const uploadPictures = async (device) => {
 	return data
 }
 export const deletePicture = async (dId, img) => {
-	var data = await imageApi.delete('senti/device/image/' + dId + '/' + img).then(rs => {console.log(rs); return rs.data})
+	var data = await imageApi.delete('senti/device/image/' + dId + '/' + img).then(rs => {return rs.data})
 	return data
 }
 export const getAvailableDevices = async () => {
@@ -55,7 +55,6 @@ export const assignProjectToDevice = async (args) => {
 
 export const getAllDevices = async () => {
 	var data = await api.get("senti/devices").then(rs => rs.data)
-	data.map(async d => d.address ? d.address : d.address = await getSimpleAddress(d.lat, d.long))
 	return data
 }
 export const getSimpleAddress = async (lat, long) => {

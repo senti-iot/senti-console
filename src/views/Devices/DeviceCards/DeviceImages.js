@@ -39,7 +39,7 @@ class DeviceImages extends Component {
 		return <DeviceImageUpload dId={dId} imgUpload={this.getAllPics} callBack={this.getPicsCallBack} />
 	}
 	getAllPics = (id) => {
-		getAllPictures(id).then(rs => { console.log(rs); return this.setState({ img: rs }) })
+		getAllPictures(id).then(rs => { return this.setState({ img: rs }) })
 	}
 	handleOpenActionsImages = e => {
 		this.setState({ actionAnchor: e.currentTarget })
@@ -63,7 +63,6 @@ class DeviceImages extends Component {
 		const { img, activeStep } = this.state
 		const dId = this.props.device.device_id
 		this.setState({ deletingPicture: true })
-		console.log(img[activeStep].filename)
 		var deleted = await deletePicture(dId, img[activeStep].filename).then(rs => rs)
 		if (deleted) {	
 			this.setState({ img: null, openDeleteImage: false })
