@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
-	Store,
+	StoreRounded as Store,
 	InfoOutlined,
-	LocalOffer,
-	Update,
-	Accessibility,
-	ViewModule
+	LocalOfferRounded as LocalOffer,
+	UpdateRounded as Update,
+	AccessibilityRounded as Accessibility,
+	ViewModuleRounded as ViewModule
 } from "@material-ui/icons";
 import { withStyles, Grid } from "@material-ui/core";
 
@@ -33,17 +33,19 @@ class Dashboard extends React.Component {
 		props.setHeader("Console", false)
 
 	}
-	
+	setStateAsync(state) {
+		return new Promise(resolve => {
+			this.setState(state, resolve);
+		});
+	}
 
 	componentDidMount = async () => {
-		this._isMounted = 1
 		let projects = await getAllProjects()
 		let devices = 0;
 		projects.forEach(p => {
 			return p.devices ? devices = devices + p.devices.length : ''
 		});
-		if (this._isMounted)
-			this.setState({ projects: projects, devices: devices })
+		await this.setStateAsync({ projects: projects, devices: devices })
 	}
 	componentWillUnmount = () => {
 	  this._isMounted = 0

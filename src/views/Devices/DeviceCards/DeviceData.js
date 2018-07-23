@@ -7,8 +7,7 @@ import {
 	DonutLargeRounded, PieChartRounded, BarChart, ExpandLess, ExpandMore, Visibility
 } from "@material-ui/icons"
 // import { dateFormatter } from 'variables/functions';
-import { ItemGrid, CircularLoader, Caption, Info, /* , Caption, Info */ } from 'components';
-import InfoCard from 'components/Cards/InfoCard';
+import { InfoCard, ItemGrid, CircularLoader, Caption, Info, /* , Caption, Info */ } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { Doughnut, Bar, Pie } from 'react-chartjs-2';
 import { getWifiHourly } from 'variables/dataDevices';
@@ -61,29 +60,34 @@ class DeviceData extends Component {
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		var data = await getWifiHourly(device.device_id, startDate, endDate).then(rs => rs)
-		var dataArr = Object.keys(data).map(r => ({ id: r, value: data[r] }))
-		this.setState({
-			loading: false,
-			roundDataSets: {
-				labels: dataArr.map(rd => rd.id),
-				datasets: [{
-					borderColor: "#FFF",
-					borderWidth: 1,
-					data: dataArr.map(rd => rd.value),
-					backgroundColor: dataArr.map(() => getRandomColor())
-				}]
-			},
-			barDataSets: {
-				labels: dataArr.map(rd => rd.id),
-				// data: dataArr.map(rd => rd.value),
-				datasets: [{
-					borderColor: "#FFF",
-					borderWidth: 1,
-					data: dataArr.map(rd => rd.value),
-					backgroundColor: dataArr.map(() => getRandomColor())
-				}]
-			}
-		})
+		if (data) {
+			var dataArr = Object.keys(data).map(r => ({ id: r, value: data[r] }))
+			this.setState({
+				loading: false,
+				roundDataSets: {
+					labels: dataArr.map(rd => rd.id),
+					datasets: [{
+						borderColor: "#FFF",
+						borderWidth: 1,
+						data: dataArr.map(rd => rd.value),
+						backgroundColor: dataArr.map(() => getRandomColor())
+					}]
+				},
+				barDataSets: {
+					labels: dataArr.map(rd => rd.id),
+					// data: dataArr.map(rd => rd.value),
+					datasets: [{
+						borderColor: "#FFF",
+						borderWidth: 1,
+						data: dataArr.map(rd => rd.value),
+						backgroundColor: dataArr.map(() => getRandomColor())
+					}]
+				}
+			})
+		}
+		else  {
+			this.setState({ loading: false })
+		}
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
@@ -231,6 +235,11 @@ class DeviceData extends Component {
 		</MuiPickersUtilsProvider>
 
 	}
+	renderNoData = () => {
+		return <ItemGrid container justify={'center'}>
+			<Caption> There is no Data available for the Range Selected</Caption>
+		</ItemGrid>
+	}
 	renderType = () => {
 		const { display } = this.state
 		switch (display) {
@@ -243,7 +252,7 @@ class DeviceData extends Component {
 						options={{
 							maintainAspectRatio: false,
 						}}
-					/> : null
+					/> : this.renderNoData()
 
 			case 1: 
 				return this.state.roundDataSets ?
@@ -254,7 +263,7 @@ class DeviceData extends Component {
 							maintainAspectRatio: false,
 						}}
 						data={this.state.roundDataSets}
-					/> : null
+					/> : this.renderNoData()
 			case 2: 
 				return this.state.barDataSets ? <Bar
 					data={this.state.barDataSets}
@@ -263,7 +272,7 @@ class DeviceData extends Component {
 					options={{
 						maintainAspectRatio: false,
 					}}
-				/> : null
+				/> : this.renderNoData()
 			default:
 				break;
 		}
