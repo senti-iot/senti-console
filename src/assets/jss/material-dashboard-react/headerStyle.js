@@ -52,9 +52,10 @@ const headerStyle = theme => ({
 	},
 	title: {
 		maxWidth: "calc(100vw - 130px)",
-		...defaultFont,
-		lineHeight: "30px",
-		fontSize: "18px",
+		// ...defaultFont,
+		fontWeight: 500,
+		lineHeight: "1.16667em",
+		fontSize: "1.3125rem",
 		borderRadius: "3px",
 		textTransform: "none",
 		color: "inherit",
