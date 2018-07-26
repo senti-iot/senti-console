@@ -50,8 +50,6 @@ import Sidebar from "./Sidebar/Sidebar.js";
 // // // Snackbar
 // #############################
 
-import Snackbar from "./Snackbar/Snackbar.js";
-import SnackbarContent from "./Snackbar/SnackbarContent.js";
 import CircularLoader from './Loader/CircularLoader.js'
 
 // ##############################
@@ -96,9 +94,7 @@ export {
 	HeaderLinks,
 	// Sidebar
 	Sidebar,
-	//Snackbar
-	Snackbar,
-	SnackbarContent,
+	//Text
 	P,
 	Quote,
 	Muted,

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, FormControl, InputLabel, Select, Input, Chip, MenuItem, Collapse, Button } from '@material-ui/core';
+import { Paper, withStyles, Grid, FormControl, InputLabel, Select, Input, Chip, MenuItem, Collapse, Button, Snackbar } from '@material-ui/core';
 import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import { KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft, Save, Check } from '@material-ui/icons';
@@ -25,7 +25,7 @@ class EditProject extends Component {
 		super(props)
 
 		this.state = {
-			id: props.match.params.id,
+			id: 0,
 			title: '',
 			description: '',
 			open_date: null,
@@ -34,7 +34,8 @@ class EditProject extends Component {
 			availableDevices: [],
 			creating: false,
 			created: false,
-			loading: true
+			loading: true,
+			openSnackBar: false,
 		}
 	}
 	componentDidMount = async () => {
@@ -62,10 +63,11 @@ class EditProject extends Component {
 		this.setState({
 			loading: false
 		})
-		this.props.setHeader("Update project", true)
+		this.props.setHeader("Update project " + this.state.title, true)
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
+		clearTimeout(this.timer)
 	}
 
 	handleDeviceChange = event => {
@@ -84,6 +86,7 @@ class EditProject extends Component {
 		})
 	}
 	handleUpdateProject = () => {
+		clearTimeout(this.timer)
 		let newProject = {
 			project: {
 				id: this.props.match.params.id,
@@ -95,9 +98,9 @@ class EditProject extends Component {
 			devices: this.state.devices
 		}
 		this.setState({ creating: true })
-		updateProject(newProject).then(rs => {
-			this.setState({ created: rs ? true : false, creating: false/* , id: rs */ })
-		})
+		this.timer = setTimeout( async () => updateProject(newProject).then(rs => rs ? 
+			this.setState({ created: true, creating: false, openSnackBar: true }) : this.setState({ created: false, creating: false }))
+			, 2e3)
 	}
 	goToNewProject = () => {
 		this.props.history.push('/project/' + this.state.id)
@@ -208,6 +211,11 @@ class EditProject extends Component {
 									</FormControl>
 								</ItemGrid>							
 							</form>
+							<ItemGrid xs={12} container justify={'center'}>
+								<Collapse in={this.state.creating} timeout="auto" unmountOnExit>
+									<CircularLoader notCentered />
+								</Collapse>
+							</ItemGrid>
 							<Grid container justify={"center"}>
 								<div className={classes.wrapper}>
 									<Button
@@ -222,11 +230,22 @@ class EditProject extends Component {
 									</Button>
 								</div>
 							</Grid>
-							<Collapse in={this.state.creating} timeout="auto" unmountOnExit>
-								<CircularLoader notCentered />
-							</Collapse>
+						
 						</MuiPickersUtilsProvider>
 					</Paper>
+					<Snackbar
+						anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+						open={this.state.openSnackBar}
+						onClose={() => { this.setState({ openSnackBar: false }) }}
+						ContentProps={{
+							'aria-describedby': 'message-id',
+						}}
+						message={
+							<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
+								<Check className={classes.leftIcon} color={'primary'} />Project {this.state.title} has been successfully updated!
+							</ItemGrid>
+						}
+					/>
 				</GridContainer>
 				: <CircularLoader />
 		)
