@@ -118,13 +118,7 @@ class EnhancedTable extends React.Component {
 	handleChangeRowsPerPage = event => {
 		this.setState({ rowsPerPage: event.target.value });
 	};
-	handleDeleteProjects = async () => {
-		this.props.deleteProjects(this.state.selected)
-		this.setState({
-			selected: [],
-			anchorElMenu: null
-		})
-	}
+
 	isSelected = id => this.state.selected.indexOf(id) !== -1;
 
 	suggestionSlicer = (obj) => {

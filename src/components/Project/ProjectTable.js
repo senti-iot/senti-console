@@ -289,9 +289,6 @@ class EnhancedTable extends React.Component {
 					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
 					open={this.state.openSnackbar !== 0 ? true : false}
 					onClose={() => { this.setState({ openSnackbar: 0 }) }}
-					ContentProps={{
-						'aria-describedby': 'message-id',
-					}}
 					message={
 						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
 							{this.snackBarMessages()}
