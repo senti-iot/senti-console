@@ -9,16 +9,16 @@ import createprojectStyles from 'assets/jss/components/projects/createprojectSty
 import { updateProject, getProject } from 'variables/dataProjects';
 import { Caption, TextF, ItemGrid, CircularLoader, GridContainer } from '..'
 
-const ITEM_HEIGHT = 32;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-	PaperProps: {
-		style: {
-			maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-			width: 250,
-		},
-	},
-};
+// const ITEM_HEIGHT = 32;
+// const ITEM_PADDING_TOP = 8;
+// const MenuProps = {
+// 	PaperProps: {
+// 		style: {
+// 			maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+// 			width: 250,
+// 		},
+// 	},
+// };
 
 class EditProject extends Component {
 	constructor(props) {
@@ -103,7 +103,7 @@ class EditProject extends Component {
 			, 2e3)
 	}
 	goToNewProject = () => {
-		this.props.history.push('/project/' + this.state.id)
+		this.props.history.push('/project/' + this.props.match.params.id)
 	}
 	render() {
 		const { classes, theme } = this.props
@@ -192,7 +192,7 @@ class EditProject extends Component {
 																	label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_name}
 																	className={classes.chip} />})}
 														</div>)}
-													MenuProps={MenuProps}>
+													/* MenuProps={MenuProps} */>
 													{availableDevices.map(name => (
 														<MenuItem
 															key={name.device_id}
