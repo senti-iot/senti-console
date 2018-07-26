@@ -1,4 +1,8 @@
-import { Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination, TableRow, Typography, withStyles } from "@material-ui/core";
+import {
+	Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination,
+	TableRow, Typography, withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
+	DialogContentText, DialogActions, Button
+} from "@material-ui/core";
 import { Delete, Devices, Edit, PictureAsPdf } from '@material-ui/icons';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
 import PropTypes from "prop-types";
@@ -7,6 +11,7 @@ import { withRouter } from 'react-router-dom';
 import { dateFormatter } from "variables/functions";
 import EnhancedTableHead from './ProjectTableHeader';
 import EnhancedTableToolbar from './TableToolBar';
+import { ItemGrid, Info } from "..";
 
 class EnhancedTable extends React.Component {
 	constructor(props) {
@@ -19,8 +24,21 @@ class EnhancedTable extends React.Component {
 			page: 0,
 			rowsPerPage: props.theme.breakpoints.width("md") < window.innerWidth ? 10 : 5,
 			anchorElMenu: null,
-			anchorFilterMenu: null
+			anchorFilterMenu: null,
+			openSnackbar: 0,
+			openDelete: false
 		};
+	}
+	snackBarMessages = () => { 
+		let msg = this.state.openSnackbar
+		switch (msg) {
+			case 1:
+				return "Delete has been successfully";
+			case 2: 
+				return "Exported"
+			default:
+				break;
+		}
 	}
 	handleToolbarMenuOpen = e => {
 		e.stopPropagation()
@@ -106,11 +124,19 @@ class EnhancedTable extends React.Component {
 		this.setState({ rowsPerPage: event.target.value });
 	};
 	handleDeleteProjects = async () => {
-		this.props.deleteProjects(this.state.selected)
+		await this.props.deleteProjects(this.state.selected)
 		this.setState({
 			selected: [],
-			anchorElMenu: null
+			anchorElMenu: null,
+			openSnackbar: 1,
+			openDelete: false
 		})
+	}
+	handleOpenDeleteDialog = () => {
+		this.setState({ openDelete: true, anchorElMenu: null })
+	}
+	handleCloseDeleteDialog = () => {
+		this.setState({ openDelete: false })
 	}
 	isSelected = id => this.state.selected.indexOf(id) !== -1;
 	options = () => {
@@ -118,9 +144,38 @@ class EnhancedTable extends React.Component {
 			{ label: 'Edit', func: this.handleEdit, single: true, icon: Edit },
 			{ label: 'Assign Device', func: this.assignDevice, single: true, icon: Devices },
 			{ label: 'Export to PDF', func: () => { }, icon: PictureAsPdf },
-			{ label: 'Delete', func: this.handleDeleteProjects, icon: Delete }
+			{ label: 'Delete', func: this.handleOpenDeleteDialog, icon: Delete }
 		]
 	};
+	renderConfirmDelete = () => {
+		const { openDelete, selected } = this.state
+		const { data } = this.props
+		return <Dialog
+			open={openDelete}
+			onClose={this.handleCloseDeleteDialog}
+			aria-labelledby="alert-dialog-title"
+			aria-describedby="alert-dialog-description"
+		>
+			<DialogTitle id="alert-dialog-title">{"Delete Project? "}</DialogTitle>
+			<DialogContent>
+				<DialogContentText id="alert-dialog-description">
+						Are you sure you want to delete the following projects:
+				</DialogContentText>
+				<div>
+					{selected.map(s => <Info key={s}>&bull;{data[data.findIndex(d => d.id === s)].title}</Info>)}
+				</div>
+			</DialogContent>
+			<DialogActions>
+				<Button onClick={this.handleCloseDeleteDialog} color="primary">
+						No
+				</Button>
+				<Button onClick={this.handleDeleteProjects} color="primary" autoFocus>
+						Yes
+				</Button>
+			</DialogActions>
+		</Dialog>
+	}
+
 	render() {
 		const { classes, data } = this.props;
 		const { order, orderBy, selected, rowsPerPage, page } = this.state;
@@ -166,6 +221,7 @@ class EnhancedTable extends React.Component {
 									<TableRow
 										hover
 										onClick={e => { e.stopPropagation(); this.props.history.push('/project/' + n.id) }}
+										// onContextMenu={this.handleToolbarMenuOpen}
 										role="checkbox"
 										aria-checked={isSelected}
 										tabIndex={-1}
@@ -229,6 +285,20 @@ class EnhancedTable extends React.Component {
 					labelRowsPerPage={<Hidden mdDown>Rows per page</Hidden>}
 
 				/>
+				<Snackbar
+					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+					open={this.state.openSnackbar !== 0 ? true : false}
+					onClose={() => { this.setState({ openSnackbar: 0 }) }}
+					ContentProps={{
+						'aria-describedby': 'message-id',
+					}}
+					message={
+						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
+							{this.snackBarMessages()}
+						</ItemGrid>
+					}
+				/>
+				{this.renderConfirmDelete()}
 			</Paper>
 		);
 	}
