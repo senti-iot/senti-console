@@ -33,7 +33,7 @@ class EnhancedTable extends React.Component {
 		let msg = this.state.openSnackbar
 		switch (msg) {
 			case 1:
-				return "Delete has been successfully";
+				return `Project/s have been successfully deleted`;
 			case 2: 
 				return "Exported"
 			default:
