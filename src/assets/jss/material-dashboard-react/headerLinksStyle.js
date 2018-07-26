@@ -10,6 +10,9 @@ import {
 } from "assets/jss/material-dashboard-react.js";
 
 const headerLinksStyle = theme => ({
+	headerMargin: {
+		marginLeft: 18
+	},
 	leftIcon: {
 		marginRight: theme.spacing.unit
 	},

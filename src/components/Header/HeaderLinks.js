@@ -32,7 +32,7 @@ class HeaderLinks extends React.Component {
 		const { anchorProfile } = this.state;
 		const openProfile = Boolean(anchorProfile)
 		return (
-			<Grid container>
+			<Grid container classes={{ container: classes.headerMargin }}>
 				{/* <IconButton
 					color="inherit"
 					aria-label="Dashboard"
