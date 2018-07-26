@@ -14,7 +14,7 @@ export default withRouter((props) => {
 			<Route path={`${props.match.url}/edit-hardware`} render={() => <EditHardware {...props} />} />
 			<Route path={`${props.match.url}/setup`} render={() => <CalibrateDevice {...props} />} />
 			<Route path={`${props.match.url}/edit`} render={() => <EditDetails {...props} />} />
-			<Route path={`${props.match.url}/reset`} render={() => <ResetDevice />}/>
+			<Route path={`${props.match.url}/reset`} render={() => <ResetDevice {...props}/>}/>
 			<Route path={`${props.match.url}`} render={() => <Device {...props} />} /> 
 		</Switch>
 	)

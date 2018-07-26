@@ -4,7 +4,7 @@
 
 import {
 	container,
-	defaultFont,
+	// defaultFont,
 	primaryColor,
 	defaultBoxShadow,
 	infoColor,
