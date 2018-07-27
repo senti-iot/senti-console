@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { getAllPictures, deletePicture } from 'variables/dataDevices';
-import { Grid, withStyles, Menu, MenuItem, IconButton, Modal, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
+import { Grid, withStyles, Menu, MenuItem, IconButton, Modal, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Snackbar } from '@material-ui/core';
 import InfoCard from 'components/Cards/InfoCard';
-import { Image,  MoreVert, CloudUpload, Delete } from '@material-ui/icons'
+import { Image,  MoreVert, CloudUpload, Delete, Check } from '@material-ui/icons'
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import DeviceImage from 'components/Devices/DeviceImage';
 import CircularLoader from 'components/Loader/CircularLoader';
@@ -21,7 +21,8 @@ class DeviceImages extends Component {
 			openImageUpload: false,
 			openDeleteImage: false,
 			deletingPicture: false,
-			deleted: null
+			deleted: null,
+			openSnackbar: 0
 		}
 	}
 
@@ -64,16 +65,69 @@ class DeviceImages extends Component {
 		const dId = this.props.device.device_id
 		this.setState({ deletingPicture: true })
 		var deleted = await deletePicture(dId, img[activeStep].filename).then(rs => rs)
-		if (deleted) {	
-			this.setState({ img: null, openDeleteImage: false })
+		if (deleted) {
+			this.setState({ img: null, openDeleteImage: false, openSnackbar: 1 })
 			this.getAllPics(dId)
+		}
+		else { 
+			this.setState({ openSnackbar: 2, openDeleteImage: false })
+		}
+	}
+	snackBarMessages = () => {
+		let msg = this.state.openSnackbar
+		switch (msg) {
+			case 1:
+				return <Fragment>
+					<Check className={this.props.classes.leftIcon} color={'primary'}/> Picture has been deleted
+				</Fragment>
+			case 2:
+				return <Fragment>
+					Error! Picture has not been deleted!
+				</Fragment>
+			default:
+				break;
 		}
 	}
 	renderImageLoader = () => {
 		return <CircularLoader notCentered />
 	}
+	renderDeleteDialog = () => {
+		return <Dialog
+			open={this.state.openDeleteImage}
+			onClose={this.handleCloseImageDelete}
+			aria-labelledby="alert-dialog-title"
+			aria-describedby="alert-dialog-description"
+		>
+			<DialogTitle id="alert-dialog-title">Delete Picture</DialogTitle>
+			<DialogContent>
+				<DialogContentText id="alert-dialog-description">
+					Are you sure you want to delete the picture?
+				</DialogContentText>
+			</DialogContent>
+			<DialogActions>
+				<Button onClick={this.handleCloseDeletePictureDialog} color="primary">
+					No
+				</Button>
+				<Button onClick={this.handleDeletePicture} color="primary" autoFocus>
+					Yes
+				</Button>
+			</DialogActions>
+		</Dialog>
+	}
+	renderSnackbar = () => 
+		<Snackbar
+			anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+			open={this.state.openSnackbar !== 0 ? true : false}
+			onClose={() => { this.setState({ openSnackbar: 0 }) }}
+			message={
+				<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
+					{this.snackBarMessages()}
+				</ItemGrid>
+			}
+		/>
+	
 	render() {
-		const { actionAnchor, openImageUpload, openDeleteImage, img } = this.state
+		const { actionAnchor, openImageUpload, img } = this.state
 		const { classes, device } = this.props
 		return (
 			<InfoCard
@@ -113,27 +167,8 @@ class DeviceImages extends Component {
 				content={
 					img !== null ? img !== 0 ?
 						<Fragment>
-							<Dialog
-								open={openDeleteImage}
-								onClose={this.handleCloseImageDelete}
-								aria-labelledby="alert-dialog-title"
-								aria-describedby="alert-dialog-description"
-							>
-								<DialogTitle id="alert-dialog-title">Delete Picture</DialogTitle>
-								<DialogContent>
-									<DialogContentText id="alert-dialog-description">
-										Are you sure you want to delete the picture? 
-									</DialogContentText>
-								</DialogContent>
-								<DialogActions>
-									<Button onClick={this.handleCloseDeletePictureDialog} color="primary">
-										No
-									</Button>
-									<Button onClick={this.handleDeletePicture} color="primary" autoFocus>
-										Yes
-									</Button>
-								</DialogActions>
-							</Dialog>
+							{this.renderDeleteDialog()}
+							{this.renderSnackbar()}
 							<Modal
 								aria-labelledby="simple-modal-title"
 								aria-describedby="simple-modal-description"
