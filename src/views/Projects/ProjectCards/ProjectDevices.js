@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Collapse, Grid, withStyles } from '@material-ui/core';
-import { Caption, InfoCard, ItemGrid, Info } from 'components';
+import { Button, Collapse, /* Grid, */ withStyles } from '@material-ui/core';
+import { Caption, InfoCard, /*  ItemGrid, Info */ } from 'components';
 import { Devices, Map, ExpandMore } from '@material-ui/icons'
 import { Maps } from 'components/Map/Maps';
 import DeviceSimpleList from 'components/List/DeviceSimpleList/DeviceSimpleList';
@@ -20,7 +20,7 @@ class ProjectDevices extends Component {
 		this.setState({ mapExpanded: !this.state.mapExpanded })
 	}
 	render() {
-		const { classes, project, deviceMostCounts } = this.props
+		const { classes, project, /* deviceMostCounts */ } = this.props
 		return (
 			<InfoCard title={"Devices"} avatar={<Devices />} subheader={"Number of devices:" + project.devices.length}
 				leftActions={
@@ -39,10 +39,11 @@ class ProjectDevices extends Component {
 						<Maps markers={project.devices} />
 					</Collapse>
 				}
+				noRightExpand
 				content={
-					<Grid container>
-						<ItemGrid>
-							<Caption>
+					// <Grid container>
+					// 	<ItemGrid>
+					/* <Caption>
 								Most active device:
 							</Caption>
 							<Info>
@@ -55,13 +56,15 @@ class ProjectDevices extends Component {
 							</Caption>
 							<Info>
 								{deviceMostCounts ? deviceMostCounts.totalCount : "-"}
-							</Info>
-						</ItemGrid>
-					</Grid>
-				}
-				hiddenContent={
+							</Info> */
 					<DeviceSimpleList filters={this.state.deviceFilters} data={project.devices} />
+					// </ItemGrid>
+					// </Grid>
 				}
+				// noExpand
+				// hiddenContent={
+				// 	<DeviceSimpleList filters={this.state.deviceFilters} data={project.devices} />
+				// }
 			/>
 		)
 	}
