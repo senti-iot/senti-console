@@ -13,7 +13,7 @@ export const mapApi = create({
 	baseURL: 'https://maps.googleapis.com/maps/api/geocode/',
 	timeout: 30000,
 	params: {
-		key: process.env.REACT_APP_SENTI_MAPSKEY
+		// key: process.env.REACT_APP_SENTI_MAPSKEY
 	}
 })
 export const imageApi = create({
