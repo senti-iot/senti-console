@@ -21,10 +21,6 @@ class Project extends Component {
 
 		this.state = {
 			project: {},
-			facts: {
-				deviceMostCounts: null,
-				regMostCounts: null
-			},
 			regFilters: {
 				keyword: '',
 				startDate: '',
@@ -51,10 +47,7 @@ class Project extends Component {
 				else {
 					this.props.setHeader(rs.title, true)
 					this.setState({
-						project: rs, loading: false, facts: {
-							deviceMostCounts: this.deviceMostCount(rs.devices),
-							regMostCounts: this.regMostCount(rs.registrations)
-						}
+						project: rs, loading: false
 					})
 				}
 			}), 2e3)
@@ -115,22 +108,22 @@ class Project extends Component {
 		
 	
 	}
-	deviceMostCount = (devices) => {
-		let max = devices[0]
-		for (let i = 1, len = devices.length; i < len; i++) {
-			let v = devices[i];
-			max = (v.totalCount > max.totalCount) ? v : max;
-		}
-		return max;
-	}
-	regMostCount = (regs) => {
-		let max = regs[0]
-		for (let i = 1, len = regs.length; i < len; i++) {
-			let v = regs[i];
-			max = (v.count > max.count) ? v : max;
-		}
-		return max;
-	}
+	// deviceMostCount = (devices) => {
+	// 	let max = devices[0]
+	// 	for (let i = 1, len = devices.length; i < len; i++) {
+	// 		let v = devices[i];
+	// 		max = (v.totalCount > max.totalCount) ? v : max;
+	// 	}
+	// 	return max;
+	// }
+	// regMostCount = (regs) => {
+	// 	let max = regs[0]
+	// 	for (let i = 1, len = regs.length; i < len; i++) {
+	// 		let v = regs[i];
+	// 		max = (v.count > max.count) ? v : max;
+	// 	}
+	// 	return max;
+	// }
 	filterItems = (projects, keyword) => {
 
 		var searchStr = keyword.toLowerCase()
@@ -207,7 +200,6 @@ class Project extends Component {
 	}
 	render() {
 		const { project, loading } = this.state
-		const { deviceMostCounts } = this.state.facts
 		const rp = { history: this.props.history, match: this.props.match }
 		return (
 			!loading ?
@@ -216,7 +208,7 @@ class Project extends Component {
 						<ProjectDetails project={project} {...rp} deleteProject={this.handleOpenDeleteDialog}/>
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectDevices deviceMostCounts={deviceMostCounts} project={project}/>
+						<ProjectDevices /* deviceMostCounts={deviceMostCounts} */ project={project}/>
 					</ItemGrid >
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<ProjectData project={project}/>

@@ -32,7 +32,7 @@ class InfoCard extends React.Component {
 	render() {
 		const { classes, title, subheader,
 			content, hiddenContent, avatar,
-			noAvatar, leftActions, leftActionContent } = this.props;
+			noAvatar, leftActions, leftActionContent, noRightExpand } = this.props;
 
 		return (
 			<Card className={classes.card + classes.plainCardClasses}>
@@ -70,7 +70,7 @@ class InfoCard extends React.Component {
 						</Collapse>
 						<CardActions className={classes.actions} disableActionSpacing>
 							{leftActions ? leftActions : null}
-							<Button
+							{!noRightExpand ? <Button
 								onClick={this.handleExpandClick}
 								aria-expanded={this.state.expanded}
 								aria-label="Show more"
@@ -80,8 +80,8 @@ class InfoCard extends React.Component {
 									{this.state.expanded ? "See Less" : "See More"}
 								</Caption><ExpandMore className={classnames(classes.expand, {
 									[classes.expandOpen]: this.state.expanded,
-								})}/>
-							</Button>
+								})} />
+							</Button> : null}
 						</CardActions>
 					</React.Fragment>
 					: null}
