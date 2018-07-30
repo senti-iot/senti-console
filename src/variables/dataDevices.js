@@ -83,12 +83,6 @@ export const calibrateDevice = async (device) => {
 	var data = await api.post('senti/calibrate', device).then(rs => rs.data)
 	return data
 }
-//Get Device Registrations for Project
-
-// export const getDeviceRegistrations = async (deviceIds, pId) => {
-// 	var data = await api.get('senti/devicereg/' + deviceIds + '/' + pId).then(rs => rs.data)
-// 	return data ? data.sort((a, b) => a.reg_date > b.reg_date ? -1 : a.reg_date < b.reg_date ? 1 : 0) : []
-// }
 
 export const updateDeviceDetails = async (device) => {
 	var data = await api.put('senti/editdetails', device).then(rs => {return rs.data })
