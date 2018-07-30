@@ -1,0 +1,12 @@
+const uploadImage = (pathToImageOnFilesystem) => {
+    const form = new FormData()
+    form.append('image[image]', {
+      name: 'omgitsme.jpg',
+      uri: pathToImageOnFilesystem,
+      type: 'image/jpg'
+    })
+    const headers = {
+      'Content-Type': 'multipart/form-data'
+    }
+    return api.post('/endpoint/to/upload', form, { headers })
+  }
