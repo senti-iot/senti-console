@@ -4,6 +4,7 @@ import createprojectStyles from 'assets/jss/components/projects/createprojectSty
 import React, { Component, Fragment } from 'react';
 import { getDevice, updateDeviceDetails } from 'variables/dataDevices';
 import { CircularLoader, GridContainer, ItemGrid, TextF } from '..';
+import { PlacesWithStandaloneSearchBox } from '../Map/SearchBox';
 class EditDeviceDetails extends Component {
 	constructor(props) {
 		super(props)
@@ -66,7 +67,7 @@ class EditDeviceDetails extends Component {
 	}
 	render() {
 		const { classes } = this.props
-		const { loading, name, description, address, locationType } = this.state
+		const { loading, name, description, locationType } = this.state
 		return loading ? <CircularLoader /> : (
 			<GridContainer>
 				<Paper className={classes.paper}>
@@ -109,7 +110,7 @@ class EditDeviceDetails extends Component {
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
-								<TextF
+								{/* <TextF
 									id={'address'}
 									label={'Address'}
 									multiline
@@ -117,6 +118,8 @@ class EditDeviceDetails extends Component {
 									handleChange={this.handleInput('address')}
 									value={address}
 									noFullWidth
+								/> */}
+								<PlacesWithStandaloneSearchBox handleChange={this.handleInput('address')}
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12} container justify={'center'}>

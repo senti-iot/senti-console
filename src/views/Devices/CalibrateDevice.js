@@ -7,6 +7,7 @@ import CounterModal from 'components/Devices/CounterModal';
 import ImageUpload from './ImageUpload';
 import { NavigateNext, NavigateBefore, Done, Restore, MyLocation, Router, Devices } from '@material-ui/icons'
 import GridContainer from 'components/Grid/GridContainer';
+import { PlacesWithStandaloneSearchBox } from 'components/Map/SearchBox'
 const styles = theme => ({
 	button: {
 		marginTop: theme.spacing.unit,
@@ -80,7 +81,8 @@ class CalibrateDevice extends Component {
 				timer: 0
 			},
 			images: null,
-			locationType: ''
+			locationType: '',
+			address: ''
 		}
 		props.setHeader(props.match.params.id + ' Calibration', true)
 	}
@@ -132,11 +134,14 @@ class CalibrateDevice extends Component {
 		}
 	}
 	uploadImgs = async () => {
-		var success = await uploadPictures({
-			device_id: this.state.device.device_id,
-			files: this.state.images,
-			// step: 3
-		}).then(rs => rs)
+		let success = false
+		if (this.state.images) { 
+			success = await uploadPictures({
+				device_id: this.state.device.device_id,
+				files: this.state.images,
+				// step: 3
+			}).then(rs => rs)
+		}
 		return success
 	}
 	renderDeviceNameDescriptionForms = () => {
@@ -187,38 +192,53 @@ class CalibrateDevice extends Component {
 	handleLocationTypeChange = (e) => {
 		this.setState({ locationType: e.target.value })
 	}
+	handleSetAddress = (e) => {
+		this.setState({ address: e.target.value })
+	}
 	renderDeviceLocation = () => {
-		return <Fragment>
-			<FormControl className={this.props.classes.formControl}>
-				<InputLabel htmlFor="streetType-helper">{this.state.locationType ? '' : "Location Type"}</InputLabel>
-				<Select
-					value={this.state.locationType}
-					onChange={this.handleLocationTypeChange}
-					input={<Input name="streetType" id="streetType-helper" />}
-				>
-					{this.LocationTypes().map((loc, i) => {
-						return <MenuItem key={i} value={loc}>
-							{loc}
-						</MenuItem>
-					})}
-				</Select>
-				<FormHelperText>Select a location type for {this.state.device_name ? this.state.device_name : this.state.device_id}</FormHelperText>
-			</FormControl>
-			<div className={this.props.classes.latlong}>
-				<Caption>
+		return <Grid container>
+			<ItemGrid xs={12}>
+				{/* <TextF
+					id={"calibrate-address"}
+					label={"Address"}
+					handleChange={this.handleSetAddress}
+					value={this.state.address}
+					noFullWidth
+				/> */}
+				<PlacesWithStandaloneSearchBox handleChange={this.handleSetAddress}/>
+			</ItemGrid>
+			<ItemGrid xs={12}>
+				<FormControl className={this.props.classes.formControl}>
+					<InputLabel htmlFor="streetType-helper">{this.state.locationType ? '' : "Location Type"}</InputLabel>
+					<Select
+						value={this.state.locationType}
+						onChange={this.handleLocationTypeChange}
+						input={<Input name="streetType" id="streetType-helper" />}
+					>
+						{this.LocationTypes().map((loc, i) => {
+							return <MenuItem key={i} value={loc}>
+								{loc}
+							</MenuItem>
+						})}
+					</Select>
+					<FormHelperText>Select a location type for {this.state.device_name ? this.state.device_name : this.state.device_id}</FormHelperText>
+				</FormControl>
+				<div className={this.props.classes.latlong}>
+					<Caption>
 					Latitude &amp; Longitute
-				</Caption>
-				<Info>
-					{this.state.lat + " " + this.state.long}
-				</Info>
-			</div>
-			<Button
-				variant="contained"
-				color="primary"
-				onClick={this.getCoords}
-				className={this.props.classes.button}
-			> <MyLocation className={this.props.classes.iconButton} />Get Location </Button>
-		</Fragment>
+					</Caption>
+					<Info>
+						{this.state.lat + " " + this.state.long}
+					</Info>
+				</div>
+				<Button
+					variant="contained"
+					color="primary"
+					onClick={this.getCoords}
+					className={this.props.classes.button}
+				> <MyLocation className={this.props.classes.iconButton} />Get Location </Button>
+			</ItemGrid>
+		</Grid>
 	}
 	renderCalibration = () => {
 		return <CounterModal handleFinish={this.handleCalibration} />
@@ -256,9 +276,10 @@ class CalibrateDevice extends Component {
 		return success
 	}
 	updatePosition = async () => {
-		const { lat, long, device, locationType } = this.state
+		const { lat, long, device, locationType, address } = this.state
 		var success = await calibrateDevice({
 			step: 1,
+			address: address,
 			lat: lat,
 			long: long,
 			locationType: locationType,
