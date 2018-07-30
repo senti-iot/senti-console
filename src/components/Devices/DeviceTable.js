@@ -235,7 +235,7 @@ class EnhancedTable extends React.Component {
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.address}
+													{n.address ? n.address : "No Address"}
 												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCell}>
