@@ -1,24 +1,23 @@
-import React, { Component, Fragment } from 'react'
-import { withStyles, Paper, Grid, FormControl, Button, InputLabel, Select, Input, MenuItem, Collapse, /* FormHelperText */ } from '@material-ui/core';
-import { ItemGrid } from '..';
-import TextF from '../CustomInput/TextF';
+import { Button, Collapse, FormControl, Grid, Input, InputLabel, MenuItem, Paper, Select, withStyles, Snackbar } from '@material-ui/core';
+import { Check, Save } from '@material-ui/icons';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
+import React, { Component, Fragment } from 'react';
 import { getDevice, updateDeviceDetails } from 'variables/dataDevices';
-import CircularLoader from '../Loader/CircularLoader';
-import { Save, Check } from '@material-ui/icons'
-import GridContainer from '../Grid/GridContainer';
-class EditDetails extends Component {
+import { CircularLoader, GridContainer, ItemGrid, TextF } from '..';
+class EditDeviceDetails extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
+			id: 0,
 			name: '',
 			description: '',
 			address: '',
 			locationType: '',
 			loading: true,
 			updating: false,
-			updated: false
+			updated: false,
+			openSnackBar: false
 		}
 		props.setHeader("Edit Details of " + props.match.params.id, true)
 	}
@@ -58,7 +57,7 @@ class EditDetails extends Component {
 				address: address,
 				description: description,
 				locationType: locationType
-			}).then(rs =>  rs ? this.setState({ updated: true, updating: false }) : null )
+			}).then(rs =>  rs ? this.setState({ updated: true, openSnackBar: true, updating: false }) : null )
 		}, 2e3)
 
 	}
@@ -120,12 +119,14 @@ class EditDetails extends Component {
 									noFullWidth
 								/>
 							</ItemGrid>
-
 							<ItemGrid xs={12} container justify={'center'}>
-								{/* <ItemGrid /* xs={12} > */}
 								<Collapse in={this.state.updating} timeout={100} unmountOnExit>
 									<CircularLoader notCentered />
 								</Collapse>
+							</ItemGrid>
+							<ItemGrid xs={12} container justify={'center'}>
+								{/* <ItemGrid /* xs={12} > */}
+							
 								{/* </ItemGrid> */}
 								{/* <ItemGrid> */}
 								<Button
@@ -141,8 +142,21 @@ class EditDetails extends Component {
 						</Grid>
 					</form>
 				</Paper>
+				<Snackbar
+					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+					open={this.state.openSnackBar}
+					onClose={() => {this.setState({ openSnackBar: false })}}
+					ContentProps={{
+						'aria-describedby': 'message-id',
+					}}
+					message={
+						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
+							<Check className={classes.leftIcon} color={'primary'} />Device {this.state.id} has been successfully updated!
+						</ItemGrid>
+					}
+				/>
 			</GridContainer>
 		)
 	}
 }
-export default withStyles(createprojectStyles)(EditDetails)
+export default withStyles(createprojectStyles)(EditDeviceDetails)

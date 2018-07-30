@@ -1,6 +1,35 @@
-import { red, yellow, green } from "@material-ui/core/colors";
+import { red, yellow, green, teal } from "@material-ui/core/colors";
 
 const deviceStyles = theme => ({
+	label: {
+		'&$focused': {
+			color: teal[500],
+		},
+	},
+	focused: {},
+	underline: {
+		'&:after': {
+			borderBottomColor: teal[500],
+		},
+	},
+	nested: {
+		paddingLeft: theme.spacing.unit * 4,
+	},
+	root: {
+		display: 'flex',
+		flexWrap: 'wrap',
+		// flexFlow: "row nowrap",
+		justifyContent: "center",
+		alignItems: "center"
+	},
+	formControl: {
+
+		margin: theme.spacing.unit,
+		minWidth: 120,
+	},
+	selectEmpty: {
+		marginTop: theme.spacing.unit * 2,
+	},
 	modal: {
 		[theme.breakpoints.up('md')]: {	
 			width: theme.spacing.unit * 50,

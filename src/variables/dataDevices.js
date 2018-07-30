@@ -1,5 +1,17 @@
 import { api, imageApi, mapApi } from "./data";
 
+export const getWifiHourly = async (dId, from, to) => {
+	var data = await api.get('senti/project/wifihourly/' + dId + '/' + from + '/' + to).then(rs => rs.data)
+	return data
+}
+export const getWifiSummary = async (dId, from, to) => {
+	var data = await api.get('senti/project/wifisummary/' + dId + '/' + from + '/' + to).then(rs => rs.data)
+	return data
+}
+export const getWifiDaily = async (dId, from, to) => {
+	var data = await api.get('senti/project/wifidaily/' + dId + '/' + from + '/' + to).then(rs => rs.data)
+	return data
+}
 export const getAllPictures = async (deviceId) => {
 	var base64Flag = 'data:image/jpeg;base64,';
 	var data = await api.get('senti/device/images/' + deviceId).then(response => {
@@ -13,7 +25,10 @@ export const getAllPictures = async (deviceId) => {
 	})
 	return data
 }
-
+export const resetDevice = async (id) => {
+	var data = await api.post('/senti/resetdevice', id).then(rs => {console.log(rs); return rs.data})
+	return data
+}
 export const uploadPictures = async (device) => {
 	const form = new FormData();
 	// var fles = device.files;
@@ -28,7 +43,7 @@ export const uploadPictures = async (device) => {
 	return data
 }
 export const deletePicture = async (dId, img) => {
-	var data = await imageApi.delete('senti/device/image/' + dId + '/' + img).then(rs => {console.log(rs); return rs.data})
+	var data = await imageApi.delete('senti/device/image/' + dId + '/' + img).then(rs => {return rs.data})
 	return data
 }
 export const getAvailableDevices = async () => {

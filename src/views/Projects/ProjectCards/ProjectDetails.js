@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { Grid, IconButton, Menu, MenuItem, withStyles } from '@material-ui/core';
-import { LibraryBooks, MoreVert, Edit } from "@material-ui/icons"
+import { LibraryBooks, MoreVert, Edit, Delete } from "@material-ui/icons"
 import { dateFormatter } from 'variables/functions';
 import { ItemGrid, Caption, Info } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
@@ -23,6 +23,10 @@ class ProjectDetails extends Component {
 	handleCloseActionsDetails = () => {
 		this.setState({ actionAnchor: null });
 	};
+	deleteProject = () => {
+		this.handleCloseActionsDetails()
+		this.props.deleteProject()
+	}
 	render() {
 		const { actionAnchor } = this.state
 		const { project, classes } = this.props
@@ -51,6 +55,9 @@ class ProjectDetails extends Component {
 						}}>
 						<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
 							<Edit className={classes.leftIcon} />Edit project
+						</MenuItem>
+						<MenuItem onClick={this.deleteProject}>
+							<Delete className={classes.leftIcon} />Delete project
 						</MenuItem>
 						))}
 					</Menu>

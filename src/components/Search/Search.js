@@ -88,6 +88,10 @@ class IntegrationAutosuggest extends React.Component {
 
 	}
 
+	handleResetSearch = () => {
+		this.handleChange(null, { newValue: '' })
+
+	}
 	handleSuggestionsFetchRequested = ({ value }) => {
 		this.setState({
 			suggestions: getSuggestions(value, this.props.suggestions),
@@ -144,7 +148,8 @@ class IntegrationAutosuggest extends React.Component {
 							reference: this.inputRef,
 							open: this.state.open,
 							handleOpen: this.handleOpen,
-							handleClose: this.handleClose
+							handleClose: this.handleClose,
+							handleResetSearch: this.handleResetSearch
 						}}
 					/>
 				</ClickAwayListener>

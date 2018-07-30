@@ -1,35 +1,31 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, FormControl, InputLabel, Select, Input, Chip, MenuItem, Collapse, Button } from '@material-ui/core';
+import { Paper, withStyles, Grid, FormControl, InputLabel, Select, Input, Chip, MenuItem, Collapse, Button, Snackbar } from '@material-ui/core';
 import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import { KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft, Save, Check } from '@material-ui/icons';
 import { getAvailableDevices } from 'variables/dataDevices';
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import Caption from '../Typography/Caption';
-import TextF from '../CustomInput/TextF';
-import ItemGrid from '../Grid/ItemGrid';
-import CircularLoader from '../Loader/CircularLoader';
-import GridContainer from '../Grid/GridContainer';
 import { updateProject, getProject } from 'variables/dataProjects';
+import { Caption, TextF, ItemGrid, CircularLoader, GridContainer } from '..'
 
-const ITEM_HEIGHT = 32;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-	PaperProps: {
-		style: {
-			maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-			width: 250,
-		},
-	},
-};
+// const ITEM_HEIGHT = 32;
+// const ITEM_PADDING_TOP = 8;
+// const MenuProps = {
+// 	PaperProps: {
+// 		style: {
+// 			maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+// 			width: 250,
+// 		},
+// 	},
+// };
 
 class EditProject extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			id: props.match.params.id,
+			id: 0,
 			title: '',
 			description: '',
 			open_date: null,
@@ -38,7 +34,8 @@ class EditProject extends Component {
 			availableDevices: [],
 			creating: false,
 			created: false,
-			loading: true
+			loading: true,
+			openSnackBar: false,
 		}
 	}
 	componentDidMount = async () => {
@@ -66,10 +63,11 @@ class EditProject extends Component {
 		this.setState({
 			loading: false
 		})
-		this.props.setHeader("Update project", true)
+		this.props.setHeader("Update project " + this.state.title, true)
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
+		clearTimeout(this.timer)
 	}
 
 	handleDeviceChange = event => {
@@ -88,6 +86,7 @@ class EditProject extends Component {
 		})
 	}
 	handleUpdateProject = () => {
+		clearTimeout(this.timer)
 		let newProject = {
 			project: {
 				id: this.props.match.params.id,
@@ -99,12 +98,12 @@ class EditProject extends Component {
 			devices: this.state.devices
 		}
 		this.setState({ creating: true })
-		updateProject(newProject).then(rs => {
-			this.setState({ created: rs ? true : false, creating: false/* , id: rs */ })
-		})
+		this.timer = setTimeout( async () => updateProject(newProject).then(rs => rs ? 
+			this.setState({ created: true, creating: false, openSnackBar: true }) : this.setState({ created: false, creating: false }))
+			, 2e3)
 	}
 	goToNewProject = () => {
-		this.props.history.push('/project/' + this.state.id)
+		this.props.history.push('/project/' + this.props.match.params.id)
 	}
 	render() {
 		const { classes, theme } = this.props
@@ -177,24 +176,23 @@ class EditProject extends Component {
 									<FormControl className={classes.formControl}>
 										{availableDevices.length > 0 ?
 											<Fragment>
-												<InputLabel FormLabelClasses={{
-													root: classes.label,
-												// focused: classes.focused
-												}} color={"primary"} htmlFor="select-multiple-chip">Assign more devices</InputLabel>
+												<InputLabel FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
+													Assign more devices
+												</InputLabel>
 												<Select
-													color={"primary"}
+													color={"primary"}s
 													multiple
 													value={this.state.devices}
-													// autoWidth
 													onChange={this.handleDeviceChange}
-													input={<Input id="select-multiple-chip" classes={{
-														underline: classes.underline
-													}} />}
+													input={<Input id="select-multiple-chip" classes={{ underline: classes.underline }} />}
 													renderValue={selected => (
 														<div className={classes.chips}>
-															{selected.map(value => { return <Chip key={value} label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_name} className={classes.chip} /> })}
+															{selected.map(value => {
+																return <Chip key={value}
+																	label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_name}
+																	className={classes.chip} />})}
 														</div>)}
-													MenuProps={MenuProps}>
+													/* MenuProps={MenuProps} */>
 													{availableDevices.map(name => (
 														<MenuItem
 															key={name.device_id}
@@ -204,41 +202,50 @@ class EditProject extends Component {
 														this.state.devices.indexOf(name.device_id) === -1
 															? theme.typography.fontWeightRegular
 															: theme.typography.fontWeightMedium,
-															}}
-														>
+															}}>
 															{name.device_id + " - " + (name.device_name ? name.device_name : "No Name")}
 														</MenuItem>
 													))}
 												</Select>
 											</Fragment> : <Caption>There are no available Devices</Caption>}
 									</FormControl>
-								</ItemGrid>
-								{/* </Grid> */}
-							
+								</ItemGrid>							
 							</form>
+							<ItemGrid xs={12} container justify={'center'}>
+								<Collapse in={this.state.creating} timeout="auto" unmountOnExit>
+									<CircularLoader notCentered />
+								</Collapse>
+							</ItemGrid>
 							<Grid container justify={"center"}>
 								<div className={classes.wrapper}>
-									{/* <Save />  */}
 									<Button
 										variant="contained"
 										color="primary"
 										className={buttonClassname}
 										disabled={this.state.creating}
-										onClick={this.state.created ? this.goToNewProject : this.handleUpdateProject}
-									>
-										{this.state.created ? <Fragment><Check className={classes.leftIcon} /> Go to Project </Fragment> : <Fragment><Save className={classes.leftIcon} />Update Project</Fragment>}
+										onClick={this.state.created ? this.goToNewProject : this.handleUpdateProject}>
+										{this.state.created ?
+											<Fragment><Check className={classes.leftIcon} /> Go to Project </Fragment>
+											: <Fragment><Save className={classes.leftIcon} />Update Project</Fragment>}
 									</Button>
 								</div>
 							</Grid>
-							<Collapse in={this.state.creating} timeout="auto" unmountOnExit>
-
-								<CircularLoader notCentered />
-
-							</Collapse>
-
+						
 						</MuiPickersUtilsProvider>
 					</Paper>
-					{/* </ItemGrid> */}
+					<Snackbar
+						anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+						open={this.state.openSnackBar}
+						onClose={() => { this.setState({ openSnackBar: false }) }}
+						ContentProps={{
+							'aria-describedby': 'message-id',
+						}}
+						message={
+							<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
+								<Check className={classes.leftIcon} color={'primary'} />Project {this.state.title} has been successfully updated!
+							</ItemGrid>
+						}
+					/>
 				</GridContainer>
 				: <CircularLoader />
 		)

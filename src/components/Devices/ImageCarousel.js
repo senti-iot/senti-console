@@ -1,46 +1,9 @@
-import React from 'react';
+import { Button, MobileStepper, Paper, withStyles } from '@material-ui/core';
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
+import imagecarouselStyles from 'assets/jss/components/image/imagecarouselStyles';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import MobileStepper from '@material-ui/core/MobileStepper';
-// import Paper from '@material-ui/core/Paper';
-// import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import { Paper } from '@material-ui/core';
-import Caption from '../Typography/Caption';
-
-const styles = theme => ({
-	root: {
-		flexGrow: 1,
-		[theme.breakpoints.up('md')]: {
-			maxWidth: 800,
-		},
-		[theme.breakpoints.down("lg")]: {
-			maxWidth: 400
-		}
-	},
-	header: {
-		display: 'flex',
-		alignItems: 'center',
-		height: 50,
-		paddingLeft: theme.spacing.unit * 4,
-		marginTop: 20,
-		backgroundColor: theme.palette.background.default,
-	},
-	img: {
-		[theme.breakpoints.up('md')]: {
-			maxWidth: 800,
-			height: 255 * 2
-		},
-		[theme.breakpoints.down("lg")]: {
-			height: 255,
-			maxWidth: 400
-		},
-		overflow: 'hidden',
-		width: '100%',
-	},
-});
+import React from 'react';
+import Caption from '..';
 
 class ImageCarousel extends React.Component {
 	state = {
@@ -104,4 +67,4 @@ ImageCarousel.propTypes = {
 	images: PropTypes.array.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(ImageCarousel);
+export default withStyles(imagecarouselStyles, { withTheme: true })(ImageCarousel);

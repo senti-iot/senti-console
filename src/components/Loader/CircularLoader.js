@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { withStyles, Grid, CircularProgress } from '@material-ui/core';
-
+//
 const styles = theme => ({
 	grid: {
 		minHeight: 'calc(100vh - 130px)'

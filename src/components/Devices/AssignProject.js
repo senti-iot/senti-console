@@ -1,23 +1,11 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import { ListItem, ListItemText, List } from "@material-ui/core"
-// import ListItemText from '@material-ui/core/ListItemText';
-// import ListItem from '@material-ui/core/ListItem';
-// import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
-import Slide from '@material-ui/core/Slide';
-import { headerColor, primaryColor, hoverColor } from 'assets/jss/material-dashboard-react';
+import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles } from "@material-ui/core";
+import { Close } from '@material-ui/icons';
+import { headerColor, hoverColor, primaryColor } from 'assets/jss/material-dashboard-react';
 import cx from "classnames";
+import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
+import { assignProjectToDevice } from 'variables/dataDevices';
 import { getAllProjects } from 'variables/dataProjects';
-import { assignProjectToDevice } from 'variables/dataDevices'
 
 const styles = {
 	appBar: {
@@ -112,7 +100,7 @@ class AssignProject extends React.Component {
 					<AppBar className={classes.appBar + appBarClasses}>
 						<Toolbar>
 							<IconButton color="inherit" onClick={this.closeDialog} aria-label="Close">
-								<CloseIcon />
+								<Close />
 							</IconButton>
 							<Typography variant="title" color="inherit" className={classes.flex}>
 								Projects

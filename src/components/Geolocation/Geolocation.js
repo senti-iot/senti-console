@@ -1,5 +1,5 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
+import React from 'react';
 
 export default class Geolocation extends React.Component {
 	constructor(props) {
@@ -16,15 +16,12 @@ export default class Geolocation extends React.Component {
 		if (typeof window !== 'object') {
 			return
 		}
-
 		if (!('geolocation' in window.navigator)) {
 			return
 		}
-
 		if (this.props.lazy) {
 			return
 		}
-
 		this.getCurrentPosition()
 	}
 

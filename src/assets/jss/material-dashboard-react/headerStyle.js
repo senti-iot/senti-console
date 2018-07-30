@@ -4,7 +4,7 @@
 
 import {
 	container,
-	defaultFont,
+	// defaultFont,
 	primaryColor,
 	defaultBoxShadow,
 	infoColor,
@@ -29,7 +29,7 @@ const headerStyle = theme => ({
 		transition: "all 150ms ease 0s",
 		minHeight: "48px",
 		display: "block",
-		position: "sticky",
+		position: "inherit",
 		width: '100%'
 	},
 	container: {
@@ -51,9 +51,11 @@ const headerStyle = theme => ({
 		height: 50
 	},
 	title: {
-		...defaultFont,
-		lineHeight: "30px",
-		fontSize: "18px",
+		maxWidth: "calc(100vw - 130px)",
+		// ...defaultFont,
+		fontWeight: 500,
+		lineHeight: "1.16667em",
+		fontSize: "1.3125rem",
 		borderRadius: "3px",
 		textTransform: "none",
 		color: "inherit",

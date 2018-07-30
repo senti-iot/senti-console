@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles, TextField } from '@material-ui/core';
 import { teal } from '@material-ui/core/colors'
+
 const styles = theme => ({
 	leftIcon: {
 		marginRight: theme.spacing.unit

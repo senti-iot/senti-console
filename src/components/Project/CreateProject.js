@@ -1,23 +1,14 @@
-import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, FormControl, InputLabel, Select, Input, Chip, MenuItem, Collapse, Button } from '@material-ui/core';
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
-import { DatePicker } from 'material-ui-pickers';
-import MomentUtils from 'material-ui-pickers/utils/moment-utils';
-import KeyArrRight from '@material-ui/icons/KeyboardArrowRight';
-import KeyArrLeft from '@material-ui/icons/KeyboardArrowLeft';
-// import { ItemGrid } from 'components';
-import { getAvailableDevices } from 'variables/dataDevices';
-import { createOneProject } from 'variables/dataProjects'
-import { Save, Check } from '@material-ui/icons'
-import classNames from 'classnames';
+import { Button, Chip, Collapse, FormControl, Grid, Input, InputLabel, MenuItem, Paper, Select, withStyles, Snackbar } from '@material-ui/core';
+import { Check, KeyboardArrowLeft as KeyArrLeft, KeyboardArrowRight as KeyArrRight, Save } from '@material-ui/icons';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import { withRouter } from 'react-router-dom'
-// import Info from '../Typography/Info';
-import Caption from '../Typography/Caption';
-import TextF from '../CustomInput/TextF';
-import ItemGrid from '../Grid/ItemGrid';
-import CircularLoader from '../Loader/CircularLoader';
-import GridContainer from '../Grid/GridContainer';
+import classNames from 'classnames';
+import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
+import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import React, { Component, Fragment } from 'react';
+import { withRouter } from 'react-router-dom';
+import { getAvailableDevices } from 'variables/dataDevices';
+import { createOneProject } from 'variables/dataProjects';
+import { Caption, CircularLoader, GridContainer, ItemGrid, TextF } from '..';
 
 const ITEM_HEIGHT = 32;
 const ITEM_PADDING_TOP = 8;
@@ -42,7 +33,8 @@ class CreateProject extends Component {
 			devices: [],
 			availableDevices: null,
 			creating: false,
-			created: false
+			created: false,
+			openSnackBar: false
 		}
 	}
 	componentDidMount = () => {
@@ -56,7 +48,9 @@ class CreateProject extends Component {
 		this.props.setHeader("Create new project", true)
 	}
 	componentWillUnmount = () => {
-	  this._isMounted = 0
+		this._isMounted = 0
+		clearTimeout(this.timer)
+
 	}
 	
 	handleDeviceChange = event => {
@@ -75,6 +69,7 @@ class CreateProject extends Component {
 		})
 	}
 	handleCreateProject = () => {
+		clearTimeout(this.timer)
 		let newProject = {
 			project: {
 				title: this.state.title,
@@ -85,9 +80,9 @@ class CreateProject extends Component {
 			devices: this.state.devices
 		}
 		this.setState({ creating: true })
-		createOneProject(newProject).then(rs => {
-			this.setState({ created: rs ? true : false, creating: false, id: rs })
-		})
+		this.timer = setTimeout(async () => createOneProject(newProject).then(rs => rs ? 
+			this.setState({ created: true, creating: false, id: rs, openSnackBar: true }) : this.setState({ create: false, creating: false, id: 0 })
+		), 2e3)
 	}
 	goToNewProject = () => {
 		if (this.state.id)
@@ -211,6 +206,11 @@ class CreateProject extends Component {
 							{/* </Grid> */}
 
 						</form>
+						<ItemGrid xs={12} container justify={'center'}>
+							<Collapse in={this.state.creating} timeout="auto" unmountOnExit>
+								<CircularLoader notCentered />
+							</Collapse>
+						</ItemGrid>
 						<Grid container justify={"center"}>
 							<div className={classes.wrapper}>
 								{/* <Save />  */}
@@ -231,16 +231,23 @@ class CreateProject extends Component {
                      		 		</Button>
 							  	</div> */}
 						</Grid>
-						<Collapse in={this.state.creating} timeout="auto" unmountOnExit>
-
-							<CircularLoader notCentered/>
-
-						</Collapse>
+		
 
 					</MuiPickersUtilsProvider>
 				</Paper>
-				{/* </ItemGrid> */}
-			</GridContainer>
+				<Snackbar
+					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+					open={this.state.openSnackBar}
+					onClose={() => { this.setState({ openSnackBar: false }) }}
+					ContentProps={{
+						'aria-describedby': 'message-id',
+					}}
+					message={
+						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
+							<Check className={classes.leftIcon} color={'primary'} />Project {this.state.title} has been successfully created!
+						</ItemGrid>
+					}
+				/>			</GridContainer>
 		)
 	}
 }

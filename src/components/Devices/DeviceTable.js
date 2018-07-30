@@ -1,19 +1,12 @@
-import {
-	Hidden, Table, TableBody, TableCell,
-	// TableHead,
-	TableRow, Typography, withStyles
-} from "@material-ui/core";
-import Checkbox from '@material-ui/core/Checkbox';
-import Paper from '@material-ui/core/Paper';
-import TablePagination from '@material-ui/core/TablePagination';
+import { Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination, TableRow, Typography, withStyles } from "@material-ui/core";
+import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons';
+import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
 import PropTypes from "prop-types";
 import React from "react";
 import { withRouter } from 'react-router-dom';
+import AssignProject from "./AssignProject";
 import EnhancedTableHead from './DeviceTableHeader';
 import EnhancedTableToolbar from './TableToolBar';
-import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons'
-import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
-import AssignProject from "./AssignProject";
 
 class EnhancedTable extends React.Component {
 	constructor(props) {
@@ -24,7 +17,7 @@ class EnhancedTable extends React.Component {
 			orderBy: 'device_id',
 			selected: [],
 			page: 0,
-			rowsPerPage: 5,
+			rowsPerPage: props.theme.breakpoints.width("md") < window.innerWidth ? 10 : 5,
 			anchorElMenu: null,
 			anchorFilterMenu: null,
 			openAssignProject: false
@@ -125,13 +118,7 @@ class EnhancedTable extends React.Component {
 	handleChangeRowsPerPage = event => {
 		this.setState({ rowsPerPage: event.target.value });
 	};
-	handleDeleteProjects = async () => {
-		this.props.deleteProjects(this.state.selected)
-		this.setState({
-			selected: [],
-			anchorElMenu: null
-		})
-	}
+
 	isSelected = id => this.state.selected.indexOf(id) !== -1;
 
 	suggestionSlicer = (obj) => {
@@ -248,6 +235,11 @@ class EnhancedTable extends React.Component {
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{n.address}
+												</Typography>
+											</TableCell>
+											<TableCell className={classes.tableCell}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
 													{n.organisation ? n.organisation.vcName  : " Unassigned"}
 												</Typography>
 											</TableCell>
@@ -305,4 +297,4 @@ EnhancedTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withRouter(withStyles(devicetableStyles)(EnhancedTable));
+export default withRouter(withStyles(devicetableStyles, { withTheme: true })(EnhancedTable));

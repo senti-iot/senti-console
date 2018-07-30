@@ -28,6 +28,21 @@ class Projects extends Component {
 		}
 		props.setHeader("Projects", false)
 	}
+	componentDidMount = async () => {
+		this._isMounted = 1
+		await this.getProjects()
+		if (this._isMounted) {
+			if (this.props.location.pathname.includes('/cards')) {
+				this.setState({ route: 1 })
+			}
+			else {
+				this.setState({ route: 0 })
+			}
+		}
+	}
+	componentWillUnmount = () => {
+		this._isMounted = 0
+	}
 	filterByDate = (items) => {
 		const { startDate, endDate } = this.state.filters
 		var arr = items
@@ -141,19 +156,7 @@ class Projects extends Component {
 			loading: false
 		}) : null)
 	}
-	componentDidMount = async () => {
-		this._isMounted = 1
-		await this.getProjects()
-		if (this.props.location.pathname.includes('/cards')) {
-			this.setState({ route: 1 })
-		}
-		else {
-			this.setState({ route: 0 })
-		}
-	}
-	componentWillUnmount = () => {
-		this._isMounted = 0
-	}
+
 	suggestionSlicer = (obj) => {
 		var arr = [];
 

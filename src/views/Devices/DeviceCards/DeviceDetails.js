@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import SmallInfo from 'components/Card/SmallInfo';
 import Caption from 'components/Typography/Caption';
-
+var moment = require("moment");
 
 class DeviceDetails extends Component {
 	constructor(props) {
@@ -78,7 +78,7 @@ class DeviceDetails extends Component {
 							<MenuItem onClick={this.props.handleOpenAssign}>
 								<LibraryBooks className={classes.leftIcon} />{device.project ? "Move to another project" : "Assign to new project"}
 							</MenuItem>
-							{device.project_id ? <MenuItem onClick={this.props.handleOpenUnassign}>
+							{device.project ? <MenuItem onClick={this.props.handleOpenUnassign}>
 								<LayersClear className={classes.leftIcon} /> Unassign from project
 							</MenuItem> : null}
 							<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}>
@@ -118,10 +118,22 @@ class DeviceDetails extends Component {
 								<Caption>Status:</Caption>
 								{this.renderStatus(device.liveStatus)}
 							</ItemGrid>
-							<ItemGrid>
+							<ItemGrid xs={9}>
 								<Caption>Temperature:</Caption>
 								<Info>
 									{device.temperature} &#8451;
+								</Info>
+							</ItemGrid>
+							<ItemGrid>
+								<Caption>Last time device sent data to server:</Caption>
+								<Info>
+									{moment(device.wifiLastD).format("HH:mm:ss DD.MM.YYYY")}
+								</Info>
+							</ItemGrid>
+							<ItemGrid>
+								<Caption>Last time device sent stats to server:</Caption>
+								<Info>
+									{moment(device.execLastD).format("HH:mm:ss DD.MM.YYYY")}
 								</Info>
 							</ItemGrid>
 							<ItemGrid xs={12}>

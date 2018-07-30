@@ -1,49 +1,12 @@
-import React from 'react';
+import { Button, Grid, MobileStepper, withStyles } from '@material-ui/core';
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import MobileStepper from '@material-ui/core/MobileStepper';
-// import Paper from '@material-ui/core/Paper';
-// import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import { Grid } from '@material-ui/core';
-import Caption from '../Typography/Caption';
-import ExifOrientationImg from 'react-exif-orientation-img'
+import React from 'react';
+import ExifOrientationImg from 'react-exif-orientation-img';
 import SwipeableViews from 'react-swipeable-views';
-import classNames from 'classnames'
-import { ItemGrid } from '..';
-const styles = theme => ({
-	root: {
-		// maxHeight: 800,
-		flexGrow: 1,
-		[theme.breakpoints.up('sm')]: {
-			maxWidth: '100%',
-			
-		},
-		[theme.breakpoints.down("sm")]: {
-			maxWidth: 300,
-		},
-	},
-	header: {
-		display: 'flex',
-		alignItems: 'center',
-		height: 50,
-		paddingLeft: theme.spacing.unit * 4,
-		marginBottom: 20,
-		backgroundColor: theme.palette.background.default,
-	},
-	img: {
-		maxWidth: '100%',
-		[theme.breakpoints.down('sm')]: {
-			maxHeight: '200px'
-		}
-	
-	},
-	activeImage: {
-	
-	},
-});
+import { Caption, ItemGrid } from '..';
+import imagecarouselStyles from 'assets/jss/components/image/imagecarouselStyles';
 
 class DeviceImage extends React.Component {
 	state = {
@@ -95,7 +58,7 @@ class DeviceImage extends React.Component {
 							let blob = step
 							if (typeof step === 'object') { blob = URL.createObjectURL(step) }
 							return <ItemGrid key={i} zeroMargin noPadding container justify={'center'}>
-								<ExifOrientationImg className={classNames(classes.img, {
+								<ExifOrientationImg className={classNames(classes.deviceImg, {
 									[classes.activeImage]: this.state.activeStep === i ? false : true
 								})} src={blob} alt={'Senti Device'} onLoad={this.fixHeight} />
 							</ItemGrid>
@@ -136,4 +99,4 @@ DeviceImage.propTypes = {
 	]).isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(DeviceImage);
+export default withStyles(imagecarouselStyles, { withTheme: true })(DeviceImage);

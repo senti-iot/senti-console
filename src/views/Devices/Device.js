@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { getDevice, getAllPictures, assignProjectToDevice } from 'variables/dataDevices';
-import {  Grid, withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
+import {  Grid, withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Snackbar } from '@material-ui/core';
 import moment from 'moment'
 import { ItemGrid } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
@@ -14,6 +14,7 @@ import GridContainer from 'components/Grid/GridContainer';
 import DeviceDetails from './DeviceCards/DeviceDetails';
 import DeviceHardware from './DeviceCards/DeviceHardware';
 import DeviceImages from './DeviceCards/DeviceImages';
+import DeviceData from './DeviceCards/DeviceData';
 
 class Device extends Component {
 	constructor(props) {
@@ -25,6 +26,7 @@ class Device extends Component {
 			anchorElHardware: null,
 			openAssign: false,
 			openUnassign: false,
+			openSnackbar: 0,
 			img: null
 		}
 		props.setHeader('')
@@ -53,6 +55,19 @@ class Device extends Component {
 			this.props.history.push('/404')
 		}
 	}
+	snackBarMessages = () => {
+		let msg = this.state.openSnackbar
+		let name = this.state.device.device_name ? this.state.device.device_name : "No name"
+		let id = this.state.device.device_id
+		switch (msg) {
+			case 1:
+				return `Device ${name + "(" + id + ")"} has been successfully unassigned`
+			case 2:
+				return `Device ${name + "(" + id + ")"} has been successfully assigned`
+			default:
+				break;
+		}
+	}
 	getAllPics = (id) => {
 		getAllPictures(id).then(rs => this.setState({ img: rs }))
 	}
@@ -61,7 +76,7 @@ class Device extends Component {
 	}
 	handleCloseAssign = async (reload) => {
 		if (reload) {
-			this.setState({ loading: true, anchorEl: null })
+			this.setState({ loading: true, anchorEl: null, openSnackbar: 2 })
 			await this.getDevice(this.state.device.device_id)
 		}
 		this.setState({ openAssign: false })
@@ -110,7 +125,7 @@ class Device extends Component {
 		await assignProjectToDevice({ project_id: null, id: this.state.device.device_id }).then(async rs => {
 			if (rs)	
 			{	this.handleCloseUnassign()
-				this.setState({ loading: true, anchorEl: null })
+				this.setState({ loading: true, anchorEl: null, openSnackbar: 1 })
 				await this.getDevice(this.state.device.device_id)} 
 			else {
 				console.log('Failed to unassign') // Snackbar
@@ -167,6 +182,13 @@ class Device extends Component {
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
+						<DeviceData
+							device={device}	
+							history={this.props.history}
+							match={this.props.match}
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin>
 						<InfoCard
 							title={"Map"}
 							subheader={`Coordinates: ${device.lat} ${device.long}`}
@@ -190,7 +212,16 @@ class Device extends Component {
 							match={this.props.match}
 						/>
 					</ItemGrid>
-
+					<Snackbar
+						anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+						open={this.state.openSnackbar !== 0 ? true : false}
+						onClose={() => { this.setState({ openSnackbar: 0 }) }}
+						message={
+							<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
+								{this.snackBarMessages()}
+							</ItemGrid>
+						}
+					/>
 				</GridContainer>
 				: this.renderLoader()
 		)

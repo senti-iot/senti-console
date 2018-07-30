@@ -1,19 +1,8 @@
-import React, { Fragment } from "react";
+import React from "react";
+import { Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination, TableRow, withStyles } from '@material-ui/core';
 import EnhancedTableHead from '../../Project/TableHeader';
 import EnhancedTableToolbar from '../../Project/TableToolBar'
-import {
-	withStyles,
-	Table,
-	// TableHead,
-	TableRow,
-	TableBody,
-	TableCell,
-	Hidden
-} from "@material-ui/core";
 import PropTypes from "prop-types";
-import TablePagination from '@material-ui/core/TablePagination';
-// import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
 import { withRouter } from 'react-router-dom';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
 import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons'
@@ -117,7 +106,7 @@ class DeviceSimpleList extends React.Component {
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 		const tableHead = [{ id: "device_name", label: "Name" }, { id: "device_id", label: "ID" }, { id: "address", label: "Address" }, { id: "liveStatus", label: "Status" }, { id: "totalCount", label: "Total Count" }]
 		return (
-			<Fragment>
+			<Paper className={classes.root}>
 				<EnhancedTableToolbar
 					noFilterIcon
 					noAdd
@@ -201,7 +190,7 @@ class DeviceSimpleList extends React.Component {
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}
 					labelRowsPerPage={<Hidden mdDown>Rows per page</Hidden>}
 				/>
-			</Fragment>
+			</Paper>
 			// </Paper>
 		);
 	}

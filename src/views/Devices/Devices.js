@@ -147,6 +147,7 @@ class Devices extends Component {
 				{ id: "device_name", label: "Name" },
 				{ id: "device_id", label: "ID" },
 				{ id: "liveStatus", label: "Status" },
+				{ id: "address", label: "Address" },
 				{ id: "org", label: "Organisation" }
 			],
 			loading: false
@@ -231,6 +232,7 @@ class Devices extends Component {
 	}
 	render() {
 		const { devices } = this.state
+		// console.log(devices)
 		const { classes } = this.props
 		// console.log(this.props)
 		return (
