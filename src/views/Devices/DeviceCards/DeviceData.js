@@ -10,7 +10,7 @@ import {
 import { InfoCard, ItemGrid, CircularLoader, Caption, Info, /* , Caption, Info */ } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { Doughnut, Bar, Pie } from 'react-chartjs-2';
-import { getWifiHourly } from 'variables/dataDevices';
+import { getWifiHourly, getWifiDaily } from 'variables/dataDevices';
 // import { getRandomColor } from 'variables/colors';
 import { teal } from '@material-ui/core/colors'
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
@@ -34,7 +34,8 @@ class DeviceData extends Component {
 			dateFilterInputID: 0,
 			openCustomDate: false,
 			display: 2,
-			visibility: false
+			visibility: false,
+			noData: false
 		}
 	}
 
@@ -54,6 +55,44 @@ class DeviceData extends Component {
 		reverse: false,
 		labels: {
 			padding: 10
+		}
+	}
+	getWifiDay = async () => {
+		const { device } = this.props
+		const { from, to } = this.state
+		let startDate = moment(from).format(this.format)
+		let endDate = moment(to).format(this.format)
+		let data = await getWifiDaily(device.device_id, startDate, endDate).then(rs => rs)
+		if (data) {
+			let dataArr = Object.keys(data).map(r => ({ id: r, value: data[r] }))
+			this.setState({
+				loading: false,
+				roundDataSets: {
+					labels: dataArr.map(rd => rd.id),
+					datasets: [{
+						borderColor: "#FFF",
+						borderWidth: 1,
+						data: dataArr.map(rd => rd.value),
+						backgroundColor: teal[500]
+					}]
+				},
+				barDataSets: {
+					labels: dataArr.map(rd => rd.id),
+					datasets: [{
+						borderColor: "#FFF",
+						borderWidth: 1,
+						data: dataArr.map(rd => rd.value),
+						backgroundColor: teal[500]
+					}]
+				}
+			})
+		}
+		else {
+			this.setState({
+				loading:false,
+				roundDataSets: null,
+				barDataSets: null
+			})
 		}
 	}
 	getWifiSum = async () => {
@@ -89,8 +128,12 @@ class DeviceData extends Component {
 				}
 			})
 		}
-		else  {
-			this.setState({ loading: false })
+		else {
+			this.setState({
+				loading:false,
+				roundDataSets: null,
+				barDataSets: null
+			})
 		}
 	}
 	componentDidMount = async () => {
@@ -111,6 +154,27 @@ class DeviceData extends Component {
 		this.setState({ actionAnchor: null });
 	};
 	format = "YYYY-MM-DD+HH:mm"
+	handleSwitchDayHour = () => {
+		let id = this.state.dateFilterInputID
+		switch (id) {
+			case 0:
+				this.getWifiSum();
+				break;
+			case 1:
+				this.getWifiDay();
+				break;
+			case 2:
+				this.getWifiDay();
+				break;
+			case 3:
+				this.getWifiDay();
+				break;
+			default:
+				this.getWifiDay();
+				break;
+
+		}
+	}
 	handleSetDate = (id) => {
 		let to = null
 		let from = null
@@ -141,7 +205,7 @@ class DeviceData extends Component {
 			loading: true,
 			roundDataSets: null,
 			barDataSets: null
-		}, this.getWifiSum)
+		}, this.handleSwitchDayHour)
 	}
 	handleVisibility = (event) => {
 		let id = event.target.value
@@ -152,8 +216,8 @@ class DeviceData extends Component {
 		if (id !== 4) {
 			this.handleSetDate(id)
 		}
-		else { 
-			this.setState({ loading: true,  openCustomDate: true, dateFilterInputID: id })
+		else {
+			this.setState({ loading: true, openCustomDate: true, dateFilterInputID: id })
 		}
 	}
 	handleCustomDate = date => e => {
@@ -170,8 +234,8 @@ class DeviceData extends Component {
 
 	]
 	visibilityOptions = [
-		{ id: 0, icon: <PieChartRounded/>, label: "Pie Chart" },
-		{ id: 1, icon: <DonutLargeRounded/>, label: "Donut Chart" },
+		{ id: 0, icon: <PieChartRounded />, label: "Pie Chart" },
+		{ id: 1, icon: <DonutLargeRounded />, label: "Donut Chart" },
 		{ id: 2, icon: <BarChart />, label: "Bar Chart" },
 	]
 	handleCloseDialog = () => {
@@ -181,7 +245,7 @@ class DeviceData extends Component {
 	renderCustomDateDialog = () => {
 		const { classes } = this.props
 		return <MuiPickersUtilsProvider utils={MomentUtils}>
-		 <Dialog
+			<Dialog
 				open={this.state.openCustomDate}
 				onClose={this.handleCloseUnassign}
 				aria-labelledby="alert-dialog-title"
@@ -200,7 +264,7 @@ class DeviceData extends Component {
 							color="primary"
 							disableFuture
 							dateRangeIcon={<DateRange />}
-							timeIcon={<AccessTime/>}
+							timeIcon={<AccessTime />}
 							rightArrowIcon={<KeyArrRight />}
 							leftArrowIcon={<KeyArrLeft />}
 							InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
@@ -228,7 +292,7 @@ class DeviceData extends Component {
 					</ItemGrid>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={() => { this.setState({ loading: false, openCustomDate: false })}} color="primary">
+					<Button onClick={() => { this.setState({ loading: false, openCustomDate: false }) }} color="primary">
 						No
 					</Button>
 					<Button onClick={this.handleCloseDialog} color="primary" autoFocus>
@@ -258,7 +322,7 @@ class DeviceData extends Component {
 						}}
 					/> : this.renderNoData()
 
-			case 1: 
+			case 1:
 				return this.state.roundDataSets ?
 					<Doughnut
 						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
@@ -268,7 +332,7 @@ class DeviceData extends Component {
 						}}
 						data={this.state.roundDataSets}
 					/> : this.renderNoData()
-			case 2: 
+			case 2:
 				return this.state.barDataSets ? <Bar
 					data={this.state.barDataSets}
 					legend={this.barOpts}
@@ -377,7 +441,7 @@ class DeviceData extends Component {
 		</ItemGrid>
 	}
 	render() {
-		const {  loading } = this.state
+		const { loading } = this.state
 		return (
 			<InfoCard
 				title={"Data"} avatar={<AssignmentTurnedIn />}
