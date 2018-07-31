@@ -70,6 +70,15 @@ const deviceStyles = theme => ({
 		marginBottom: '16px',
 		marginTop: '4px',
 		marginLeft: '4px'
+	},
+	expand: {
+		transform: 'rotate(0deg)',
+		transition: theme.transitions.create('transform', {
+			duration: theme.transitions.duration.shortest,
+		}),
+	},
+	expandOpen: {
+		transform: 'rotate(180deg)',
 	}
 })
 export default deviceStyles

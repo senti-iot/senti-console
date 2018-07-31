@@ -4,7 +4,7 @@ import { Grid, IconButton, Menu, MenuItem, withStyles, /* Typography, */ Select,
 import {
 	AccessTime, AssignmentTurnedIn, MoreVert,
 	DateRange, KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft,
-	DonutLargeRounded, PieChartRounded, BarChart, ExpandLess, ExpandMore, Visibility
+	DonutLargeRounded, PieChartRounded, BarChart, ExpandMore, Visibility
 } from "@material-ui/icons"
 // import { dateFormatter } from 'variables/functions';
 import { ItemGrid, CircularLoader, Caption, Info, /* , Caption, Info */ } from 'components';
@@ -15,6 +15,7 @@ import { getWifiSummary } from 'variables/dataDevices';
 import { getRandomColor } from 'variables/colors';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import classNames from 'classnames';
 var moment = require('moment');
 
 
@@ -336,17 +337,21 @@ class ProjectData extends Component {
 						minWidth: 250
 					}
 				}}>
-				<Hidden smUp>
-					<ListItem>
-						{this.renderDateFilter()}
-					</ListItem>
-				</Hidden>
+				<div>
+					<Hidden smUp>
+						<ListItem>
+							{this.renderDateFilter()}
+						</ListItem>
+					</Hidden>
+				</div>
 				<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
 					<ListItemIcon>
 						<Visibility />
 					</ListItemIcon>
-					<ListItemText inset primary="Visibility" />
-					{this.state.visibility ? <ExpandLess /> : <ExpandMore />}
+					<ListItemText inset primary="Graph Type" />
+					<ExpandMore className={classNames({
+						[classes.expandOpen]: this.state.visibility,
+					}, classes.expand)} />
 				</ListItem>
 				<Collapse in={this.state.visibility} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>

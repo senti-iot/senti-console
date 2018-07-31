@@ -4,16 +4,18 @@ import { Grid, IconButton, Menu, MenuItem, withStyles, /* Typography, */ Select,
 import {
 	AccessTime, AssignmentTurnedIn, MoreVert,
 	DateRange, KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft,
-	DonutLargeRounded, PieChartRounded, BarChart, ExpandLess, ExpandMore, Visibility
+	DonutLargeRounded, PieChartRounded, BarChart, ExpandMore, Visibility
 } from "@material-ui/icons"
 // import { dateFormatter } from 'variables/functions';
 import { InfoCard, ItemGrid, CircularLoader, Caption, Info, /* , Caption, Info */ } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { Doughnut, Bar, Pie } from 'react-chartjs-2';
 import { getWifiHourly } from 'variables/dataDevices';
-import { getRandomColor } from 'variables/colors';
+// import { getRandomColor } from 'variables/colors';
+import { teal } from '@material-ui/core/colors'
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import classNames from 'classnames'
 var moment = require('moment');
 
 
@@ -70,7 +72,8 @@ class DeviceData extends Component {
 						borderColor: "#FFF",
 						borderWidth: 1,
 						data: dataArr.map(rd => rd.value),
-						backgroundColor: dataArr.map(() => getRandomColor())
+						// backgroundColor: dataArr.map(() => getRandomColor())
+						backgroundColor: teal[500],
 					}]
 				},
 				barDataSets: {
@@ -80,7 +83,8 @@ class DeviceData extends Component {
 						borderColor: "#FFF",
 						borderWidth: 1,
 						data: dataArr.map(rd => rd.value),
-						backgroundColor: dataArr.map(() => getRandomColor())
+						// backgroundColor: dataArr.map(() => getRandomColor())
+						backgroundColor: teal[500],
 					}]
 				}
 			})
@@ -351,8 +355,10 @@ class DeviceData extends Component {
 					<ListItemIcon>
 						<Visibility />
 					</ListItemIcon>
-					<ListItemText inset primary="Visibility" />
-					{this.state.visibility ? <ExpandLess /> : <ExpandMore />}
+					<ListItemText inset primary="Graph type" />
+					<ExpandMore className={classNames({
+						[classes.expandOpen]: this.state.visibility,
+					}, classes.expand)} />
 				</ListItem>
 				<Collapse in={this.state.visibility} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>

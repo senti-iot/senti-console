@@ -29,9 +29,9 @@ class ProjectDevices extends Component {
 						<Caption>
 							{this.state.mapExpanded ? "Hide Map" : "See Map"}
 						</Caption>
-						<ExpandMore className={classNames(classes.expand, {
+						<ExpandMore className={classNames({
 							[classes.expandOpen]: this.state.mapExpanded,
-						})} />
+						}, classes.expand)} />
 					</Button>
 				}
 				leftActionContent={
