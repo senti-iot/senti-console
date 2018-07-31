@@ -165,29 +165,30 @@ class DeviceImages extends Component {
 				}
 				noExpand
 				content={
-					img !== null ? img !== 0 ?
-						<Fragment>
-							{this.renderDeleteDialog()}
-							{this.renderSnackbar()}
-							<Modal
-								aria-labelledby="simple-modal-title"
-								aria-describedby="simple-modal-description"
-								open={openImageUpload}
-								onClose={this.handleCloseImageUpload}>
-								<div className={classes.modal}>
-									{this.renderImageUpload(device.device_id)}
-								</div>
-							</Modal>
-							<Grid container justify={'center'}>
-	
-								<DeviceImage
-									useParent
-									handleStep={this.handleStepChange}
-									images={ img ? img.map(m => m.image ) : null} />
-								{/* {this.renderImageUpload(device.device_id)} */}
-							</Grid>
-						</Fragment>
-						: <Grid container justify={'center'}> <Caption> There are no pictures uploaded</Caption></Grid> : this.renderImageLoader()}
+					<Fragment>
+						{img !== null ? img !== 0 ?
+							<Fragment>
+								{this.renderDeleteDialog()}
+								<Grid container justify={'center'}>
+									<DeviceImage
+										useParent
+										handleStep={this.handleStepChange}
+										images={img ? img.map(m => m.image) : null} />
+								</Grid>
+							</Fragment>
+							
+							: <Grid container justify={'center'}> <Caption> There are no pictures uploaded</Caption></Grid> : this.renderImageLoader()}
+						{this.renderSnackbar()}
+						<Modal
+							aria-labelledby="simple-modal-title"
+							aria-describedby="simple-modal-description"
+							open={openImageUpload}
+							onClose={this.handleCloseImageUpload}>
+							<div className={classes.modal}>
+								{this.renderImageUpload(device.device_id)}
+							</div>
+						</Modal>
+					</Fragment>}
 			/>
 		)
 	}
