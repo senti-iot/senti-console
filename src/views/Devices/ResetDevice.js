@@ -47,7 +47,7 @@ export default class ResetDevice extends Component {
 	renderSnackbar = () => <Snackbar
 		anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
 		open={this.state.openSnackbar}
-		autoHideDuration={3000}
+		autoHideDuration={5000}
 		onClose={() => { this.setState({ openSnackbar: false }) }}
 		message={
 

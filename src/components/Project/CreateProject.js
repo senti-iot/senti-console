@@ -242,6 +242,7 @@ class CreateProject extends Component {
 					ContentProps={{
 						'aria-describedby': 'message-id',
 					}}
+					autoHideDuration={5000}
 					message={
 						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
 							<Check className={classes.leftIcon} color={'primary'} />Project {this.state.title} has been successfully created!
