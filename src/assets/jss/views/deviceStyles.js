@@ -1,6 +1,10 @@
 import { red, yellow, green, teal } from "@material-ui/core/colors";
 
 const deviceStyles = theme => ({
+	checkbox: {
+		width: 30,
+		height: 30
+	},
 	label: {
 		'&$focused': {
 			color: teal[500],
@@ -31,7 +35,7 @@ const deviceStyles = theme => ({
 		marginTop: theme.spacing.unit * 2,
 	},
 	modal: {
-		[theme.breakpoints.up('md')]: {	
+		[theme.breakpoints.up('md')]: {
 			width: theme.spacing.unit * 50,
 		},
 		[theme.breakpoints.down('sm')]: {

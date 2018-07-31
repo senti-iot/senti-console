@@ -1,6 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types'
-import { Grid, IconButton, Menu, MenuItem, withStyles, /* Typography, */ Select, FormControl, FormHelperText, Divider, Dialog, DialogTitle, DialogContent, /* DialogContentText, */ Button, DialogActions, ListItem, ListItemIcon, ListItemText, Collapse, List, Hidden } from '@material-ui/core';
+import {
+	Grid, IconButton, Menu, MenuItem, withStyles,
+	Select, FormControl, FormHelperText, Divider, Dialog, DialogTitle, DialogContent,
+	Button, DialogActions, ListItem, ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox, FormControlLabel
+} from '@material-ui/core';
 import {
 	AccessTime, AssignmentTurnedIn, MoreVert,
 	DateRange, KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft,
@@ -32,10 +36,10 @@ class DeviceData extends Component {
 			actionAnchor: null,
 			loading: true,
 			dateFilterInputID: 0,
+			timeType: 0,
 			openCustomDate: false,
 			display: 2,
 			visibility: false,
-			noData: false
 		}
 	}
 
@@ -89,7 +93,7 @@ class DeviceData extends Component {
 		}
 		else {
 			this.setState({
-				loading:false,
+				loading: false,
 				roundDataSets: null,
 				barDataSets: null
 			})
@@ -130,7 +134,7 @@ class DeviceData extends Component {
 		}
 		else {
 			this.setState({
-				loading:false,
+				loading: false,
 				roundDataSets: null,
 				barDataSets: null
 			})
@@ -146,7 +150,9 @@ class DeviceData extends Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-
+	handleCustomCheckBox = (e) => {
+		this.setState({ timeType: parseInt(e.target.value, 10) })
+	}
 	handleOpenActionsDetails = event => {
 		this.setState({ actionAnchor: event.currentTarget });
 	};
@@ -155,7 +161,9 @@ class DeviceData extends Component {
 	};
 	format = "YYYY-MM-DD+HH:mm"
 	handleSwitchDayHour = () => {
+
 		let id = this.state.dateFilterInputID
+		console.log(id)
 		switch (id) {
 			case 0:
 				this.getWifiSum();
@@ -240,7 +248,12 @@ class DeviceData extends Component {
 	]
 	handleCloseDialog = () => {
 		this.setState({ openCustomDate: false })
-		this.getWifiSum()
+		if (this.state.timeType === 1) {
+			this.getWifiDay()
+		}
+		else {
+			this.getWifiSum()
+		}
 	}
 	renderCustomDateDialog = () => {
 		const { classes } = this.props
@@ -289,6 +302,37 @@ class DeviceData extends Component {
 							InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
 							InputProps={{ classes: { underline: classes.underline } }}
 						/>
+					</ItemGrid>
+					<ItemGrid container>
+						<ItemGrid xs={12} noPadding zeroMargin>
+							<Caption>Display:</Caption>
+						</ItemGrid>
+						<ItemGrid xs={12} zeroMargin>
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={this.state.timeType === 0 ? true : false}
+										onChange={this.handleCustomCheckBox}
+										value="0"
+										className={classes.checkbox}
+									/>
+								}
+								label="Hourly"
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12} zeroMargin>
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={this.state.timeType === 1 ? true : false}
+										onChange={this.handleCustomCheckBox}
+										value="1"
+										className={classes.checkbox}
+									/>
+								}
+								label="Daily"
+							/>
+						</ItemGrid>
 					</ItemGrid>
 				</DialogContent>
 				<DialogActions>
