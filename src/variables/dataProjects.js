@@ -1,6 +1,9 @@
 import { api } from "./data";
 import { getSimpleAddress } from "./dataDevices";
 
+export const getProjectImage = async (project) => {
+	
+}
 export const createOneProject = async (project) => {
 	var data = await api.post('senti/project', project).then(response => response.data)
 	return data
