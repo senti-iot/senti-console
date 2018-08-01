@@ -7,7 +7,7 @@ import { getAvailableDevices } from 'variables/dataDevices';
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { updateProject, getProject } from 'variables/dataProjects';
-import { Caption, TextF, ItemGrid, CircularLoader, GridContainer } from '..'
+import { TextF, ItemGrid, CircularLoader, GridContainer } from '..'
 
 // const ITEM_HEIGHT = 32;
 // const ITEM_PADDING_TOP = 8;
@@ -32,6 +32,8 @@ class EditProject extends Component {
 			close_date: null,
 			devices: [],
 			availableDevices: [],
+			selectedDevices: [],
+			allDevices: [],
 			creating: false,
 			created: false,
 			loading: true,
@@ -43,21 +45,27 @@ class EditProject extends Component {
 		let id = this.props.match.params.id
 		await getProject(id).then(p => {
 			if (p && this._isMounted)
+			{
 				this.setState({
 					title: p.title,
 					description: p.description,
 					open_date: p.open_date,
 					close_date: p.close_date,
-					devices: p.devices.map(d => d.device_id)
+					devices: p.devices,
+					selectedDevices: p.devices.map(d => d.device_id),
 				})
+			}
 		})
 		await getAvailableDevices().then(rs => {
 			if (this._isMounted) {
-				if (rs) {
-					this.setState({
-						availableDevices: rs
-					})
-				}
+				let allDev = []
+				allDev = this.state.devices ? allDev.concat(this.state.devices) : allDev
+				allDev = rs ? allDev.concat(rs) : allDev
+				this.setState({
+					availableDevices: rs ? rs : [],
+					allDevices: allDev
+				})
+				
 			}
 		})
 		this.setState({
@@ -71,7 +79,7 @@ class EditProject extends Component {
 	}
 
 	handleDeviceChange = event => {
-		this.setState({ devices: event.target.value });
+		this.setState({ selectedDevices: event.target.value });
 	};
 
 	handleDateChange = id => value => {
@@ -87,6 +95,10 @@ class EditProject extends Component {
 	}
 	handleUpdateProject = () => {
 		clearTimeout(this.timer)
+		let selected = this.state.selectedDevices
+		let oldDevices = this.state.devices.map(d => d.device_id)
+		var filtered = [];
+		filtered = oldDevices.filter(value => -1 === selected.indexOf(value));
 		let newProject = {
 			project: {
 				id: this.props.match.params.id,
@@ -95,7 +107,8 @@ class EditProject extends Component {
 				open_date: this.state.open_date,
 				close_date: this.state.close_date
 			},
-			devices: this.state.devices
+			devices: this.state.selectedDevices,
+			unassign: filtered
 		}
 		this.setState({ creating: true })
 		this.timer = setTimeout( async () => updateProject(newProject).then(rs => rs ? 
@@ -107,7 +120,7 @@ class EditProject extends Component {
 	}
 	render() {
 		const { classes, theme } = this.props
-		const { availableDevices, created, loading } = this.state
+		const { availableDevices, created, loading, selectedDevices, devices, allDevices } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		});
@@ -174,40 +187,55 @@ class EditProject extends Component {
 								</ItemGrid>
 								<ItemGrid xs={12}>
 									<FormControl className={classes.formControl}>
-										{availableDevices.length > 0 ?
-											<Fragment>
-												<InputLabel FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
+									
+										<Fragment>
+											<InputLabel FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
 													Assign more devices
-												</InputLabel>
-												<Select
-													color={"primary"}s
-													multiple
-													value={this.state.devices}
-													onChange={this.handleDeviceChange}
-													input={<Input id="select-multiple-chip" classes={{ underline: classes.underline }} />}
-													renderValue={selected => (
-														<div className={classes.chips}>
-															{selected.map(value => {
+											</InputLabel>
+											<Select
+												color={"primary"}
+												multiple
+												value={selectedDevices}
+												onChange={this.handleDeviceChange}
+												input={<Input id="select-multiple-chip" classes={{ underline: classes.underline }} />}
+												renderValue={selected => (
+													<div className={classes.chips}>
+														{selected.map(value => {
+															// console.log(value)
+															// console.log(availableDevices.findIndex(d => d.device_id === value))
+															// console.log(availableDevices[availableDevices.findIndex(d => d.device_id === value)])
+															// console.log(devices.findIndex(d => d.device_id === value))
+															// console.log(devices[devices.findIndex(d => d.device_id === value)])
+															
+															if (availableDevices.findIndex(d => d.device_id === value) > -1)
 																return <Chip key={value}
-																	label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_name}
-																	className={classes.chip} />})}
-														</div>)}
-													/* MenuProps={MenuProps} */>
-													{availableDevices.map(name => (
-														<MenuItem
-															key={name.device_id}
-															value={name.device_id}
-															style={{
-																fontWeight:
+																	label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_id}
+																	className={classes.chip} />
+															else
+															if (devices.findIndex(d => d.device_id === value) > -1)
+																return <Chip key={value}
+																	label={devices[devices.findIndex(d => d.device_id === value)].device_id}
+																	className={classes.chip} />
+															else return null
+														})}
+																
+													</div>)}
+												/* MenuProps={MenuProps} */>
+												{allDevices.map(name => (
+													<MenuItem
+														key={name.device_id}
+														value={name.device_id}
+														style={{
+															fontWeight:
 														this.state.devices.indexOf(name.device_id) === -1
 															? theme.typography.fontWeightRegular
 															: theme.typography.fontWeightMedium,
-															}}>
-															{name.device_id + " - " + (name.device_name ? name.device_name : "No Name")}
-														</MenuItem>
-													))}
-												</Select>
-											</Fragment> : <Caption>There are no available Devices</Caption>}
+														}}>
+														{name.device_id + " - " + (name.device_name ? name.device_name : "No Name")}
+													</MenuItem>
+												))}
+											</Select>
+										</Fragment>
 									</FormControl>
 								</ItemGrid>							
 							</form>
