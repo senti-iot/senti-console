@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 
 import { createBrowserHistory } from "history";
 import { Router, Route, Switch } from "react-router-dom";
-
+import { Provider } from 'react-redux'
+import { store } from './redux/store'
 import indexRoutes from "routes/index.js";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { primaryColor, secondaryColor, hoverColor } from "assets/jss/material-dashboard-react";
@@ -18,7 +19,7 @@ const theme = createMuiTheme({
 				'&:hover:not($disabled):not($focused):not($error):before': {
 					borderBottom: "2px solid #4db6ac" /* + primaryColor */,
 				},
-	  },
+			},
 		}
 	},
 	palette: {
@@ -41,15 +42,17 @@ const theme = createMuiTheme({
 class App extends Component {
 	render() {
 		return (
-	  <MuiThemeProvider theme={theme}>
-		  <Router history={hist}>
-			  <Switch>
-				  {indexRoutes.map((prop, key) => {
-					  return <Route path={prop.path} component={prop.component} key={key} exact={prop.exact ? true : false} />;
-				  })}
-			  </Switch>
-		  </Router>
-	  </MuiThemeProvider>
+			<MuiThemeProvider theme={theme}>
+				<Provider store={store}>
+					<Router history={hist}>
+						<Switch>
+							{indexRoutes.map((prop, key) => {
+								return <Route path={prop.path} component={prop.component} key={key} exact={prop.exact ? true : false} />;
+							})}
+						</Switch>
+					</Router>
+				</Provider>
+			</MuiThemeProvider>
 		)
 	}
 }
