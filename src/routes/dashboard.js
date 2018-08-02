@@ -9,6 +9,7 @@ import DeviceRouting from './device'
 import { Dashboard, LibraryBooks, Devices as DeviceIco, SettingsRounded, People } from "@material-ui/icons";
 import NotFound from "layouts/404/NotFound";
 import UserProfile from 'views/UserProfile/UserProfile';
+import Settings from 'views/Settings/Settings';
 
 
 const dashboardRoutes = [
@@ -51,7 +52,7 @@ const dashboardRoutes = [
 		path: "/settings",
 		sidebarName: "Settings",
 		icon: SettingsRounded,
-		component: DashboardPage
+		component: Settings
 	},
 	{
 		path: "/404",

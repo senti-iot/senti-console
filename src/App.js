@@ -42,8 +42,8 @@ const theme = createMuiTheme({
 class App extends Component {
 	render() {
 		return (
-			<MuiThemeProvider theme={theme}>
-				<Provider store={store}>
+			<Provider store={store}>
+				<MuiThemeProvider theme={theme}>
 					<Router history={hist}>
 						<Switch>
 							{indexRoutes.map((prop, key) => {
@@ -51,8 +51,8 @@ class App extends Component {
 							})}
 						</Switch>
 					</Router>
-				</Provider>
-			</MuiThemeProvider>
+				</MuiThemeProvider>
+			</Provider>
 		)
 	}
 }

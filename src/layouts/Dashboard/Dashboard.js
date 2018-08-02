@@ -5,7 +5,6 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 import { withStyles } from "@material-ui/core";
-
 import { Header, /* Footer, */ Sidebar } from "components";
 
 import dashboardRoutes from "routes/dashboard.js";
@@ -72,18 +71,21 @@ class App extends React.Component {
 						color="senti"
 						{...rest}
 					/>
+					{/* <Provider store={store}> */}
 					<div className={classes.content}>
 						<div className={classes.container}><Switch>
 							{cookie.load('SESSION') ? dashboardRoutes.map((prop, key) => {
 								if (prop.redirect)
 									return <Redirect from={prop.path} to={prop.to} key={key} />;
 								return <Route path={prop.path} render={(routeProps) => <prop.component {...routeProps} setHeader={this.handleSetHeaderTitle} />} key={key} />;
+								// return <Route path={prop.path} component={prop.component} key={key} exact={prop.exact ? true : false} />;
+
 							}) : <Redirect from={window.location.pathname} to={{ pathname: '/login', state: {
 								prevUrl: window.location.pathname
 							} }}/>}
 						</Switch></div>
 					</div>
-
+					{/* </Provider> */}
 				</div>
 			</div >
 		);
@@ -94,4 +96,4 @@ App.propTypes = {
 	classes: PropTypes.object.isRequired
 };
 
-export default withStyles(appStyle)(App);
+export default withStyles(appStyle)(App)
