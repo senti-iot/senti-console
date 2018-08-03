@@ -17,6 +17,10 @@ import {
 import teal from '@material-ui/core/colors/teal';
 
 const regularCardStyle = theme => ({
+	contentMedia: {
+		width: "100%",
+		padding: 0
+	},
 	leftActions: {
 		marginRight: "auto",
 	},
@@ -26,7 +30,8 @@ const regularCardStyle = theme => ({
 	textOvrflow: {
 		whiteSpace: "nowrap",
 		textOverflow: "ellipsis",
-		overflow: "hidden"
+		overflow: "hidden",
+		marginTop: theme.spacing.unit
 	},
 	leftIcon: {
 		marginRight: 8

@@ -13,10 +13,10 @@ class ProjectCards extends Component {
 	static propTypes = {
 		projects: PropTypes.array,
 	}
-
-
+	
 
 	render() {
+		console.log(this.props)
 		// const { actionAnchor } = this.state
  		const { projects } = this.props
 		return (

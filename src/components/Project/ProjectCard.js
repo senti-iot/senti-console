@@ -4,15 +4,30 @@ import { ItemGrid, SmallCard } from '..';
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
 import { MoreVert, Edit, PictureAsPdf, Devices, Delete } from '@material-ui/icons'
 import { withRouter } from 'react-router-dom'
-//
+import { getProjectImage } from 'variables/dataProjects';
 class ProjectCard extends Component {
 	constructor(props) {
 	  super(props)
 	
 	  this.state = {
-		 actionAnchor: null
+		 actionAnchor: null,
+		 img: null
 	  }
 	}
+	componentDidMount = async () => {
+		this._isMounted = 1
+		const { p } = this.props
+		let img = await getProjectImage(p.id).then(rs => rs)
+		if (this._isMounted)
+		{
+			if (img)
+				this.setState({ img: URL.createObjectURL(img) })
+		}
+	}
+	componentWillUnmount = () => {
+	  this._isMounted = 0 
+	}
+	
 	handleOpenActionsDetails = event => {
 		this.setState({ actionAnchor: event.currentTarget });
 	};
@@ -20,11 +35,9 @@ class ProjectCard extends Component {
 		this.setState({ actionAnchor: null });
 	};
 	handleEdit = () => {
-
+		console.log(this.props)
 	}
-	assignDevice = () => {
 
-	}
 	handleDeleteProject = () => {
 
 	}
@@ -38,6 +51,7 @@ class ProjectCard extends Component {
 					<SmallCard
 						key={p.id}
 						title={p.title}
+						img={this.state.img}
 						topAction={
 							<ItemGrid noMargin noPadding>
 								<IconButton

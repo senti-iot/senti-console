@@ -213,7 +213,7 @@ class Projects extends Component {
 	renderCards = () => {
 		const { loading } = this.state
 		return loading ? <CircularLoader /> : <GridContainer>
-			 <ProjectCards projects={this.filterItems(this.state.projects)} />
+			<ProjectCards projects={this.filterItems(this.state.projects)} />
 		</GridContainer>
 	}
 	render() {

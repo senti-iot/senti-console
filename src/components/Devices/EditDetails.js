@@ -142,6 +142,7 @@ class EditDeviceDetails extends Component {
 					ContentProps={{
 						'aria-describedby': 'message-id',
 					}}
+					autoHideDuration={5000}
 					message={
 						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
 							<Check className={classes.leftIcon} color={'primary'} />Device {this.state.id} has been successfully updated!
