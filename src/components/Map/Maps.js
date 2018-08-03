@@ -16,7 +16,7 @@ export const Maps = compose(
 			"https://maps.googleapis.com/maps/api/js?key=" + process.env.REACT_APP_SENTI_MAPSKEY + "&v=3.exp&libraries=geometry,drawing,places",
 		loadingElement: <CircularLoader notCentered />,
 		containerElement: <div style={{ height: `calc(100vh - 268px)`, width: '100%' }} />,
-		mapElement: <div id={'map'} style={{ height: `100%` }}>HelloWorld</div>
+		mapElement: <div id={'map'} style={{ height: `100%` }}/>
 	}),
 	withScriptjs,
 	withGoogleMap

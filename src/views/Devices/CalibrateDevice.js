@@ -198,13 +198,6 @@ class CalibrateDevice extends Component {
 	renderDeviceLocation = () => {
 		return <Grid container>
 			<ItemGrid xs={12}>
-				{/* <TextF
-					id={"calibrate-address"}
-					label={"Address"}
-					handleChange={this.handleSetAddress}
-					value={this.state.address}
-					noFullWidth
-				/> */}
 				<PlacesWithStandaloneSearchBox handleChange={this.handleSetAddress}/>
 			</ItemGrid>
 			<ItemGrid xs={12}>
@@ -242,11 +235,9 @@ class CalibrateDevice extends Component {
 	}
 	renderCalibration = () => {
 		return <CounterModal handleFinish={this.handleCalibration} />
-
 	}
 	renderImageUpload = () => {
 		return <ImageUpload imgUpload={this.getImages} />
-
 	}
 	renderStep = (step) => {
 		switch (step) {
@@ -348,12 +339,12 @@ class CalibrateDevice extends Component {
 		/**
 		 * Return false to NOT disable the Next Step Button
 		 */
-		const { activeStep, lat, long, device_name, calibration } = this.state;
+		const { activeStep, lat, long, device_name, calibration, address } = this.state;
 		switch (activeStep) {
 			case 0:
 				return device_name.length > 0 ? false : true
 			case 1:
-				return lat > 0 && long > 0 ? false : true
+				return lat > 0 && long > 0 && address ? false : true
 			case 2:
 				return calibration.startDate && calibration.endDate && calibration.timer ? false : true
 			default:

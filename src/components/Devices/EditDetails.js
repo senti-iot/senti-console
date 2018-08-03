@@ -110,17 +110,7 @@ class EditDeviceDetails extends Component {
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
-								{/* <TextF
-									id={'address'}
-									label={'Address'}
-									multiline
-									rows={2}
-									handleChange={this.handleInput('address')}
-									value={address}
-									noFullWidth
-								/> */}
-								<PlacesWithStandaloneSearchBox handleChange={this.handleInput('address')}
-								/>
+								<PlacesWithStandaloneSearchBox handleChange={this.handleInput('address')}/>
 							</ItemGrid>
 							<ItemGrid xs={12} container justify={'center'}>
 								<Collapse in={this.state.updating} timeout={100} unmountOnExit>

@@ -161,9 +161,7 @@ class DeviceData extends Component {
 	};
 	format = "YYYY-MM-DD+HH:mm"
 	handleSwitchDayHour = () => {
-
 		let id = this.state.dateFilterInputID
-		console.log(id)
 		switch (id) {
 			case 0:
 				this.getWifiSum();
