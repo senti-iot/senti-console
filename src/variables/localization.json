@@ -1,0 +1,198 @@
+{
+	"en": {
+		"dialogs": {
+			"unassign": "Are you sure you want to unassign  %{deviceID}  %{deviceName} from %{project}"
+		},
+		"menus": {
+			"more": "More",
+			"showMore": "Show More",
+			"hideMore": "Hide",
+			"showMap": "Show Map",
+			"hideMap": "Hide Map",
+			"edit": "Edit",
+			"unassignDevice": "Unassign from project",
+			"unassignProject": "Unassign device/s from project",
+			"assign": "Assign to project",
+			"reassign": "Re-assign to another project",
+			"calibrate": "Calibrate",
+			"recalibrate": "Re-calibrate"
+		},
+		"actions": {
+			"apply": "Apply",
+			"yes": "Yes",
+			"no": "No",
+			"reset": "Reset",
+			"accept": "Accept",
+			"decline": "Decline"
+		},
+		"snackbars": {
+			"updating": "Updating...",
+			"updatedSuccess": "Updated!",
+			"updatedFailed": "Update failed!",
+			"creating": "Creating...",
+			"createdSuccess": "Created!",
+			"createdFail": "Creation Failed!",
+			"deleting": "Deleting...",
+			"deletedSuccess": "Deleted!",
+			"deletedFail": "Deletion Failed!",
+			"redirect": "Redirecting ...",
+			"unassign": "Device unassigned successfully",
+			"assign": "Device assigned successfully"
+		},
+		"filters": {
+			"options": {
+				"graphType": "Graph Type"
+			},
+			"search": "Search",
+			"startDate": "Start Date",
+			"endDate": "End Date",
+			"dateOptions": {
+				"today": "Today",
+				"7days": "Last 7 days",
+				"30days": "Last 30 days",
+				"90days": "Last 90 days",
+				"custom": "Custom Date",
+				"hourly": "Hourly",
+				"daily": "Daily"
+			}
+
+		},
+		"devices": {
+			"pageTitle": "Devices",
+			"new": "",
+			"device": "",
+			"noData": "There is no Data available for the filters selected",
+			"notCalibrated": "Device has not been calibrated yet!",
+			"calibrateButton": "Manual Calibration",
+			"fields": {
+				"name": "Name:",
+				"status": "Status:",
+				"temp": "Temperature:",
+				"lastData": "Last time device sent data to server:",
+				"lastStats": "Last time device sent stats to server:",
+				"description": "Description:",
+				"address": "Address:",
+				"locType": "Location Type:",
+				"coords": "Coordinates:",
+				"org": "Organisation:",
+				"project": "Project:"
+			}
+		},
+		"projects": {
+			"pageTitle": "Projects",
+			"new": "Create new project"
+		},
+		"dashboard": {
+			"pageTitle": "Console"
+		},
+		"sidebar": {
+			"dashboard": "Dashboard",
+			"projects": "Projects",
+			"devices": "Devices",
+			"users": "Users",
+			"settings": "Settings"
+		},
+		"404": {
+			"title": "404 Error - Not Found",
+			"errorMessage": "The resource requested has not been found! Please try again or contact support!"
+		}
+	},
+	"dk": {
+		"dialogs": {
+			"unassign": "Are you sure you want to unassign  %{deviceID}  %{deviceName} from %{project}"
+		},
+		"menus": {
+			"more": "More",
+			"showMore": "Show More",
+			"hideMore": "Hide",
+			"showMap": "Show Map",
+			"hideMap": "Hide Map",
+			"edit": "Edit",
+			"unassignDevice": "Unassign from project",
+			"unassignProject": "Unassign device/s from project",
+			"assign": "Assign to project",
+			"reassign": "Re-assign to another project",
+			"calibrate": "Calibrate",
+			"recalibrate": "Re-calibrate"
+		},
+		"actions": {
+			"apply": "Apply",
+			"yes": "Ja",
+			"no": "Nej",
+			"reset": "Reset",
+			"accept": "Accepter",
+			"decline": "Decline"
+		},
+		"snackbars": {
+			"updating": "Opdatering...",
+			"updatedSuccess": "Updated!",
+			"updatedFailed": "Update failed!",
+			"creating": "Creating...",
+			"createdSuccess": "Created!",
+			"createdFail": "Creation Failed!",
+			"deleting": "Deleting...",
+			"deletedSuccess": "Slettet!",
+			"deletedFail": "Deletion Fejl!",
+			"redirect": "Redirecting ...",
+			"unassign": "Enhed unassigned successfully",
+			"assign": "Enhed assigned successfully"
+		},
+		"filters": {
+			"options": {
+				"graphType": "Graph Type"
+			},
+			"search": "Search",
+			"startDate": "Start Date",
+			"endDate": "End Date",
+			"dateOptions": {
+				"today": "Today",
+				"7days": "Last 7 days",
+				"30days": "Last 30 days",
+				"90days": "Last 90 days",
+				"custom": "Custom Date",
+				"hourly": "Hourly",
+				"daily": "Daily"
+			}
+
+		},
+		"devices": {
+			"pageTitle": "Enheder",
+			"new": "",
+			"device": "",
+			"noData": "There is no Data available for the filters selected",
+			"notCalibrated": "Device has not been calibrated yet!",
+			"calibrateButton": "Manual Calibration",
+			"fields": {
+				"name": "Name:",
+				"status": "Status:",
+				"temp": "Temperature:",
+				"lastData": "Last time device sent data to server:",
+				"lastStats": "Last time device sent stats to server:",
+				"description": "Description:",
+				"address": "Address:",
+				"locType": "Location Type:",
+				"coords": "Coordinates:",
+				"org": "Organisation:",
+				"project": "Project:"
+			}
+		},
+		"projects": {
+			"pageTitle": "Projects",
+			"new": "Create new project"
+		},
+		"dashboard": {
+			"pageTitle": "Console"
+		},
+		"sidebar": {
+			"dashboard": "Dashboard",
+			"projects": "Projects",
+			"devices": "Devices",
+			"users": "Users",
+			"settings": "Settings"
+		},
+		"404": {
+			"title": "404 Error - Not Found",
+			"errorMessage": "The resource requested has not been found! Please try again or contact support!"
+		}
+	}
+}

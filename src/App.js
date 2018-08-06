@@ -8,6 +8,7 @@ import indexRoutes from "routes/index.js";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { primaryColor, secondaryColor, hoverColor } from "assets/jss/material-dashboard-react";
 import "assets/css/material-dashboard-react.css?v=1.2.0";
+import TProvider from 'components/Localization/TProvider';
 
 const hist = createBrowserHistory();
 
@@ -43,15 +44,17 @@ class App extends Component {
 	render() {
 		return (
 			<Provider store={store}>
-				<MuiThemeProvider theme={theme}>
-					<Router history={hist}>
-						<Switch>
-							{indexRoutes.map((prop, key) => {
-								return <Route path={prop.path} component={prop.component} key={key} exact={prop.exact ? true : false} />;
-							})}
-						</Switch>
-					</Router>
-				</MuiThemeProvider>
+				<TProvider>
+					<MuiThemeProvider theme={theme}>
+						<Router history={hist}>
+							<Switch>
+								{indexRoutes.map((prop, key) => {
+									return <Route path={prop.path} component={prop.component} key={key} exact={prop.exact ? true : false} />;
+								})}
+							</Switch>
+						</Router>
+					</MuiThemeProvider>
+				</TProvider>
 			</Provider>
 		)
 	}

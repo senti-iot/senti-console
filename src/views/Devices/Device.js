@@ -15,6 +15,7 @@ import DeviceDetails from './DeviceCards/DeviceDetails';
 import DeviceHardware from './DeviceCards/DeviceHardware';
 import DeviceImages from './DeviceCards/DeviceImages';
 import DeviceData from './DeviceCards/DeviceData';
+import translate from 'components/Localization/T';
 
 class Device extends Component {
 	constructor(props) {
@@ -140,6 +141,7 @@ class Device extends Component {
 		return <CircularLoader />
 	}
 	renderConfirmUnassign = () => {
+		const { t } = this.props
 		const { device }  = this.state
 		return <Dialog
 			open={this.state.openUnassign}
@@ -150,15 +152,16 @@ class Device extends Component {
 			<DialogTitle id="alert-dialog-title">{"Unassign Project? "}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-						Are you sure you want to unassign {device.device_id + " " + device.device_name} from project {device.project.title} ?
+					{/* Are you sure you want to unassign {device.device_id + " " + device.device_name} from project {device.project.title} ? */}
+					{t("dialogs.unassign", { deviceID: device.device_id, deviceName: device.device_name, project: device.project.title } )}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={this.handleCloseUnassign} color="primary">
-						No
+					{t("actions.no")}
 				</Button>
 				<Button onClick={this.handleUnassign} color="primary" autoFocus>
-						Yes
+					{t("actions.yes")}
 				</Button>
 			</DialogActions>
 		</Dialog>
@@ -167,6 +170,7 @@ class Device extends Component {
 
 	render() {
 		const { device, loading } = this.state
+		// console.log(this)
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
@@ -229,4 +233,4 @@ class Device extends Component {
 	}
 }
 
-export default withStyles(deviceStyles)(Device)
+export default translate()(withStyles(deviceStyles)(Device))

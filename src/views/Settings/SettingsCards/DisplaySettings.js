@@ -9,7 +9,7 @@ export default class DisplaySettings extends Component {
 		language: PropTypes.string.isRequired
 	}
 	onClickFunc = () => {
-		this.props.changeLanguage("RO")
+		this.props.changeLanguage("dk")
 	}
 	render() {
 		const { language } = this.props

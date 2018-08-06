@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { InfoCard, GridContainer, ItemGrid } from 'components';
-import { changeLang } from 'redux/settings';
+// import { changeLang } from 'redux/settings';
 // import { Button, Icon } from '@material-ui/core';
 import { Notifications, Devices, BarChart } from '@material-ui/icons'
 import CalibrationSettings from './SettingsCards/CalibrationSettings';
 import DisplaySettings from './SettingsCards/DisplaySettings';
+import { changeLanguage } from 'redux/localization';
 class Settings extends Component {
 
 
@@ -48,13 +49,13 @@ class Settings extends Component {
 
 const mapStateToProps = state => {
 	return {
-		language: state.language
+		language: state.localization.language
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		changeLanguage: code => dispatch(changeLang(code))
+		changeLanguage: code => dispatch(changeLanguage(code))
 	}
 }
 

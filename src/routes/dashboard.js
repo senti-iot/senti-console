@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom'
-import DashboardPage from "views/Dashboard/Dashboard.js";
+import DashboardPage from "views/Dashboard/Dashboard";
 // import UserProfile from "views/UserProfile/UserProfile.js";
 import Projects from "./projects";
 import ProjectRouting from './project'
@@ -15,7 +15,7 @@ import Settings from 'views/Settings/Settings';
 const dashboardRoutes = [
 	{
 		path: "/dashboard",
-		sidebarName: "Dashboard",
+		sidebarName: "Dashboard", //Replace with translation.id
 		navbarName: "Senti Dashboard",
 		icon: Dashboard,
 		component: DashboardPage

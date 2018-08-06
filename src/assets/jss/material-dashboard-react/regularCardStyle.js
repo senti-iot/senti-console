@@ -13,7 +13,7 @@ import {
 	purpleCardHeader,
 	primaryCardHeader,
 	sentiCardHeader,
-} from "assets/jss/material-dashboard-react.js";
+} from "../material-dashboard-react";
 import teal from '@material-ui/core/colors/teal';
 
 const regularCardStyle = theme => ({
