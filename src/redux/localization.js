@@ -20,6 +20,7 @@ export const changeLanguage = (code) => {
 // 	return phrases
 // }
 
+//Polyglot Code modified to be tied to Redux - http://airbnb.io/polyglot.js/
 let phrases = []
 const extend = (morePhrases, prefix) => {
 	forEach(morePhrases, function (phrase, key) {

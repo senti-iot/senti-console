@@ -17,7 +17,7 @@ class TProvider extends Component {
 		 
 	  }
 	}
-
+	//Polyglot Code modified to be tied to Redux - http://airbnb.io/polyglot.js/
 	transformPhrase = (phrase, substitutions, tokenRegex) => {
 		if (typeof phrase !== 'string') {
 			throw new TypeError('TProvider.transformPhrase expects argument #1 to be string')
@@ -43,8 +43,6 @@ class TProvider extends Component {
 		return result
 	}
 	t = (key, options) => {
-		// console.log(this)
-		// console.log(this.props.langStrings[key], key, this.props.langStrings)
 		var phrase, result
 		var opts = options == null ? {} : options
 		if (typeof this.props.langStrings[key] === 'string') {
@@ -63,18 +61,17 @@ class TProvider extends Component {
 		}
 		return result
 	}
-
+	//end polyglot code
 
 	getChildContext() {
-		console.log("Child Context might get it wrong here")
 		return { t: this.t.bind(this) }
 	}
-	componentDidUpdate = (oldProps) => {
-		if (oldProps.language !== this.props.language) { 
-			console.log("Do I need to do something???")
-			// this.props.changeLanguage(this.props.language)
-		}
-	}
+	//Not needed, Redux handles this
+	// componentDidUpdate = (oldProps) => {
+	// 	if (oldProps.language !== this.props.language) { 
+	// 		// this.props.changeLanguage(this.props.language)
+	// 	}
+	// }
 	render() {
 		const children = this.props.children	
 		return React.Children.only(children)
