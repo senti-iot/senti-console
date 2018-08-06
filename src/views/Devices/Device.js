@@ -183,6 +183,7 @@ class Device extends Component {
 							match={this.props.match}
 							handleOpenAssign={this.handleOpenAssign}
 							handleOpenUnassign={this.handleOpenUnassign}
+							t={this.props.t}
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
@@ -190,12 +191,13 @@ class Device extends Component {
 							device={device}	
 							history={this.props.history}
 							match={this.props.match}
+							t={this.props.t}
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
 						<InfoCard
-							title={"Map"}
-							subheader={`Coordinates: ${device.lat} ${device.long}`}
+							title={this.props.t("devices.cards.map")}
+							subheader={this.props.t("devices.fields.coordsW", { lat: device.lat, long: device.long })}
 							avatar={<Map />}
 							noExpand
 							content={
@@ -207,6 +209,7 @@ class Device extends Component {
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
 						<DeviceImages
+							t={this.props.t}
 							device={device}/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
@@ -214,6 +217,7 @@ class Device extends Component {
 							device={device}
 							history={this.props.history}
 							match={this.props.match}
+							t={this.props.t}
 						/>
 					</ItemGrid>
 					<Snackbar

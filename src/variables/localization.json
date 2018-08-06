@@ -15,7 +15,7 @@
 			"assign": "Assign to project",
 			"reassign": "Re-assign to another project",
 			"calibrate": "Calibrate",
-			"recalibrate": "Re-calibrate"
+			"recalibrate": "Recalibrate"
 		},
 		"actions": {
 			"apply": "Apply",
@@ -46,6 +46,7 @@
 			"search": "Search",
 			"startDate": "Start Date",
 			"endDate": "End Date",
+			"display": "Display:",
 			"dateOptions": {
 				"today": "Today",
 				"7days": "Last 7 days",
@@ -63,6 +64,7 @@
 			"device": "",
 			"noData": "There is no Data available for the filters selected",
 			"notCalibrated": "Device has not been calibrated yet!",
+			"noImages": "",
 			"calibrateButton": "Manual Calibration",
 			"fields": {
 				"name": "Name:",
@@ -74,8 +76,16 @@
 				"address": "Address:",
 				"locType": "Location Type:",
 				"coords": "Coordinates:",
+				"coordsW": "Coordinates: %{lat} %{long}",		
 				"org": "Organisation:",
 				"project": "Project:"
+			},
+			"cards": {
+				"details": "Device Details",
+				"map": "Map",
+				"data": "Device Data",
+				"hardware": "Hardware",
+				"pictures": "Pictures"
 			}
 		},
 		"projects": {
@@ -112,8 +122,8 @@
 			"unassignProject": "Unassign device/s from project",
 			"assign": "Tildel til projekt",
 			"reassign": "Overflytte til et andet projekt",
-			"calibrate": "Calibrate",
-			"recalibrate": "Re-calibrate"
+			"calibrate": "Kalibrer",
+			"recalibrate": "Rekalibrer"
 		},
 		"actions": {
 			"apply": "Anvend",
@@ -172,8 +182,16 @@
 				"address": "Addresse:",
 				"locType": "Placeringstype:",
 				"coords": "Koordinater:",
+				"coordsW": "Koordinater: %{lat} %{long}",
 				"org": "Organisation:",
 				"project": "Projekt:"
+			},
+			"cards": {
+				"details": "Enhedsdetaljer",
+				"map": "Kort",
+				"data": "Enhedsdata",
+				"hardware": "Hardware",
+				"pictures": "Billeder"
 			}
 		},
 		"projects": {

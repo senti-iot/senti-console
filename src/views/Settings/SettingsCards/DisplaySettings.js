@@ -9,7 +9,12 @@ export default class DisplaySettings extends Component {
 		language: PropTypes.string.isRequired
 	}
 	onClickFunc = () => {
-		this.props.changeLanguage("dk")
+		// console(this.props.lasnm)
+		if (this.props.language === "en")
+			this.props.changeLanguage("dk")
+		else {
+			this.props.changeLanguage("en")
+		 }
 	}
 	render() {
 		const { language } = this.props
@@ -18,7 +23,7 @@ export default class DisplaySettings extends Component {
 				noExpand
 				avatar={<Laptop />}
 				title={"Display"}
-				content={<Button variant={'contained'} onClick={this.onClickFunc}>{"The Language is:" + language}</Button>} />
+				content={<Button variant={'contained'} onClick={this.onClickFunc}>{"The Language is set to: " + language}</Button>} />
 		)
 	}
 }
