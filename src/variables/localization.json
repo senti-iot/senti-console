@@ -99,59 +99,59 @@
 	},
 	"dk": {
 		"dialogs": {
-			"unassign": "Are you sure you want to unassign  %{deviceID}  %{deviceName} from %{project}"
+			"unassign": "Er du sikker på, at du vil fjerne tildelingen %{deviceID}  %{deviceName} fra %{project} ?"
 		},
 		"menus": {
-			"more": "More",
-			"showMore": "Show More",
-			"hideMore": "Hide",
-			"showMap": "Show Map",
-			"hideMap": "Hide Map",
-			"edit": "Edit",
+			"more": "Mere",
+			"showMore": "Vis mere",
+			"hideMore": "Skjule",
+			"showMap": "Vis kort",
+			"hideMap": "Skjul kort",
+			"edit": "Redigere",
 			"unassignDevice": "Unassign from project",
 			"unassignProject": "Unassign device/s from project",
-			"assign": "Assign to project",
-			"reassign": "Re-assign to another project",
+			"assign": "Tildel til projekt",
+			"reassign": "Overflytte til et andet projekt",
 			"calibrate": "Calibrate",
 			"recalibrate": "Re-calibrate"
 		},
 		"actions": {
-			"apply": "Apply",
+			"apply": "Anvend",
 			"yes": "Ja",
 			"no": "Nej",
-			"reset": "Reset",
+			"reset": "Nulstil",
 			"accept": "Accepter",
-			"decline": "Decline"
+			"decline": "Afvis"
 		},
 		"snackbars": {
 			"updating": "Opdatering...",
-			"updatedSuccess": "Updated!",
-			"updatedFailed": "Update failed!",
-			"creating": "Creating...",
-			"createdSuccess": "Created!",
-			"createdFail": "Creation Failed!",
-			"deleting": "Deleting...",
+			"updatedSuccess": "Opdateret!",
+			"updatedFailed": "Opdatering fejlede!",
+			"creating": "Lave nyt...",
+			"createdSuccess": "Lavet!",
+			"createdFail": "Oprettelse fejlede!",
+			"deleting": "Sletning...",
 			"deletedSuccess": "Slettet!",
-			"deletedFail": "Deletion Fejl!",
+			"deletedFail": "Sletning fejlede!",
 			"redirect": "Redirecting ...",
 			"unassign": "Enhed unassigned successfully",
-			"assign": "Enhed assigned successfully"
+			"assign": "Enhed tildelt succesfuldt"
 		},
 		"filters": {
 			"options": {
 				"graphType": "Graph Type"
 			},
-			"search": "Search",
-			"startDate": "Start Date",
-			"endDate": "End Date",
+			"search": "Søg",
+			"startDate": "Start Dato",
+			"endDate": "Slut Dato",
 			"dateOptions": {
-				"today": "Today",
-				"7days": "Last 7 days",
-				"30days": "Last 30 days",
-				"90days": "Last 90 days",
-				"custom": "Custom Date",
-				"hourly": "Hourly",
-				"daily": "Daily"
+				"today": "Idag",
+				"7days": "Sidste 7 dage",
+				"30days": "Sidste 30 dage",
+				"90days": "Sidste 90 dage",
+				"custom": "Tilpasset Dato",
+				"hourly": "Hver time",
+				"daily": "Hver dage"
 			}
 
 		},
@@ -159,40 +159,40 @@
 			"pageTitle": "Enheder",
 			"new": "",
 			"device": "",
-			"noData": "There is no Data available for the filters selected",
-			"notCalibrated": "Device has not been calibrated yet!",
-			"calibrateButton": "Manual Calibration",
+			"noData": "Der er ingen data tilgængelige for de valgte filtre!",
+			"notCalibrated": "Enhed er endnu ikke blevet kalibreret!",
+			"calibrateButton": "Manuel Kalibrering",
 			"fields": {
-				"name": "Name:",
-				"status": "Status:",
-				"temp": "Temperature:",
-				"lastData": "Last time device sent data to server:",
-				"lastStats": "Last time device sent stats to server:",
-				"description": "Description:",
-				"address": "Address:",
-				"locType": "Location Type:",
-				"coords": "Coordinates:",
+				"name": "Navn:",
+				"status": "Stilling:",
+				"temp": "Temperatur:",
+				"lastData": "Sidste gang enheden sendte data til serveren:",
+				"lastStats": "Sidste gang enheden sendte stilling til serveren:",
+				"description": "Beskrivelse:",
+				"address": "Addresse:",
+				"locType": "Placeringstype:",
+				"coords": "Koordinater:",
 				"org": "Organisation:",
-				"project": "Project:"
+				"project": "Projekt:"
 			}
 		},
 		"projects": {
-			"pageTitle": "Projects",
-			"new": "Create new project"
+			"pageTitle": "Projekter",
+			"new": "Lav ny projekt"
 		},
 		"dashboard": {
 			"pageTitle": "Console"
 		},
 		"sidebar": {
 			"dashboard": "Dashboard",
-			"projects": "Projects",
-			"devices": "Devices",
-			"users": "Users",
-			"settings": "Settings"
+			"projects": "Projekter",
+			"devices": "Enheder",
+			"users": "Bruger",
+			"settings": "Indstillinger"
 		},
 		"404": {
-			"title": "404 Error - Not Found",
-			"errorMessage": "The resource requested has not been found! Please try again or contact support!"
+			"title": "404 Error - Ikke Fundet",
+			"errorMessage": "Den ønskede ressource er ikke fundet! Prøv igen eller kontakt support!"
 		}
 	}
 }
