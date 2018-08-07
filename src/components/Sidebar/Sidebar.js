@@ -25,7 +25,7 @@ const Sidebar = ({ ...props }) => {
 	// 	let newRoute = route.substring(0, route.indexOf(':'))
 	// 	return newRoute
 	// }
-	const { classes, color, logo, image, logoText, routes } = props;
+	const { classes, color, logo, image, logoText, routes, t  } = props;
 	var links = (
 		<List className={classes.list}>
 			{routes.map((prop, key) => {
@@ -49,7 +49,7 @@ const Sidebar = ({ ...props }) => {
 								<prop.icon />
 							</ListItemIcon>
 							<ListItemText
-								primary={prop.sidebarName}
+								primary={t(prop.sidebarName)}
 								className={classes.itemText + whiteFontClasses}
 								disableTypography={true}
 							/>

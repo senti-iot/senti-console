@@ -129,10 +129,10 @@ class DeviceImages extends Component {
 	
 	render() {
 		const { actionAnchor, openImageUpload, img } = this.state
-		const { classes, device } = this.props
+		const { classes, device, t  } = this.props
 		return (
 			<InfoCard
-				title={"Pictures"}
+				title={t("devices.cards.pictures")}
 				avatar={<Image />}
 				topAction={
 					<ItemGrid>

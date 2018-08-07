@@ -9,7 +9,8 @@ import { Maps } from 'components/Map/Maps';
 import GridContainer from 'components/Grid/GridContainer';
 import { ViewList, ViewModule, Map  } from '@material-ui/icons'
 import Search from 'components/Search/Search';
-// import { ItemGrid } from 'components';
+import withLocalization from 'components/Localization/T';
+
 var moment = require('moment');
 
 class Devices extends Component {
@@ -28,7 +29,7 @@ class Devices extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader("Devices", false)
+		props.setHeader(props.t("devices.pageTitle"), false)
 	}
 
 	suggestionSlicer = (obj) => {
@@ -141,14 +142,15 @@ class Devices extends Component {
 	}
 
 	getDevices = async () => {
+		const { t } = this.props
 		await getAllDevices().then(rs => this._isMounted ? this.setState({
 			devices: rs,
 			deviceHeader: [
-				{ id: "device_name", label: "Name" },
-				{ id: "device_id", label: "ID" },
-				{ id: "liveStatus", label: "Status" },
-				{ id: "address", label: "Address" },
-				{ id: "org", label: "Organisation" }
+				{ id: "device_name", label: t("devices.fields.name") },
+				{ id: "device_id", label: t("devices.fields.id") },
+				{ id: "liveStatus", label: t("devices.fields.status") },
+				{ id: "address", label: t("devices.fields.address") },
+				{ id: "org", label: t("devices.fields.org") }
 			],
 			loading: false
 		}) : null)
@@ -200,6 +202,7 @@ class Devices extends Component {
 	renderAllDevices = () => {
 		const { loading } = this.state
 		return loading ? this.renderLoader() : <DeviceTable
+			t={this.props.t}
 			data={this.filterItems(this.state.devices)}
 			tableHead={this.state.deviceHeader}
 			handleFilterEndDate={this.handleFilterEndDate}
@@ -259,4 +262,4 @@ class Devices extends Component {
 	}
 }
 
-export default withStyles(projectStyles)(Devices)
+export default withLocalization()(withStyles(projectStyles)(Devices))

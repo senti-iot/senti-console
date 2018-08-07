@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom'
-import DashboardPage from "views/Dashboard/Dashboard.js";
+import DashboardPage from "views/Dashboard/Dashboard";
 // import UserProfile from "views/UserProfile/UserProfile.js";
 import Projects from "./projects";
 import ProjectRouting from './project'
@@ -9,12 +9,13 @@ import DeviceRouting from './device'
 import { Dashboard, LibraryBooks, Devices as DeviceIco, SettingsRounded, People } from "@material-ui/icons";
 import NotFound from "layouts/404/NotFound";
 import UserProfile from 'views/UserProfile/UserProfile';
+import Settings from 'views/Settings/Settings';
 
 
 const dashboardRoutes = [
 	{
 		path: "/dashboard",
-		sidebarName: "Dashboard",
+		sidebarName: "sidebar.dashboard", //Replace with translation.id
 		navbarName: "Senti Dashboard",
 		icon: Dashboard,
 		component: DashboardPage
@@ -26,7 +27,7 @@ const dashboardRoutes = [
 	},
 	{
 		path: "/projects",
-		sidebarName: "Projects",
+		sidebarName: "sidebar.projects",
 		icon: LibraryBooks,
 		component: Projects
 	},
@@ -37,21 +38,21 @@ const dashboardRoutes = [
 	},
 	{
 		path: "/devices",
-		sidebarName: "Devices",
+		sidebarName: "sidebar.devices",
 		icon: DeviceIco,
 		component: Devices
 	},
 	{
 		path: "/users",
-		sidebarName: "Users",
+		sidebarName: "sidebar.users",
 		icon: People,
 		component: UserProfile
 	},
 	{
 		path: "/settings",
-		sidebarName: "Settings",
+		sidebarName: "sidebar.settings",
 		icon: SettingsRounded,
-		component: DashboardPage
+		component: Settings
 	},
 	{
 		path: "/404",

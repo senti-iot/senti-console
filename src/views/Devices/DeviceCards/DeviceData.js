@@ -232,11 +232,11 @@ class DeviceData extends Component {
 		})
 	}
 	options = [
-		{ id: 0, label: "Today" },
-		{ id: 1, label: "Last 7 days" },
-		{ id: 2, label: "Last 30 days" },
-		{ id: 3, label: "Last 90 days" },
-		{ id: 4, label: "Custom Interval" },
+		{ id: 0, label: this.props.t("filters.dateOptions.today") },
+		{ id: 1, label: this.props.t("filters.dateOptions.7days") },
+		{ id: 2, label: this.props.t("filters.dateOptions.30days") },
+		{ id: 3, label: this.props.t("filters.dateOptions.90days") },
+		{ id: 4, label: this.props.t("filters.dateOptions.custom") },
 
 	]
 	visibilityOptions = [
@@ -254,19 +254,19 @@ class DeviceData extends Component {
 		}
 	}
 	renderCustomDateDialog = () => {
-		const { classes } = this.props
+		const { classes, t } = this.props
 		return <MuiPickersUtilsProvider utils={MomentUtils}>
 			<Dialog
 				open={this.state.openCustomDate}
 				onClose={this.handleCloseUnassign}
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description">
-				<DialogTitle id="alert-dialog-title">Custom Date</DialogTitle>
+				<DialogTitle id="alert-dialog-title">{t("filters.dateOptions.custom")}</DialogTitle>
 				<DialogContent>
 					<ItemGrid>
 						<DateTimePicker
 							autoOk
-							label="Start Date"
+							label={t("filters.startDate")}
 							clearable
 							format="DD.MM.YYYY+HH:mm"
 							value={this.state.from}
@@ -286,7 +286,7 @@ class DeviceData extends Component {
 						<DateTimePicker
 							autoOk
 							disableFuture
-							label="End Date"
+							label={t("filters.endDate")}
 							clearable
 							format="DD.MM.YYYY+HH:mm"
 							value={this.state.to}
@@ -303,7 +303,7 @@ class DeviceData extends Component {
 					</ItemGrid>
 					<ItemGrid container>
 						<ItemGrid xs={12} noPadding zeroMargin>
-							<Caption>Display:</Caption>
+							<Caption>{t("filters.display")}</Caption>
 						</ItemGrid>
 						<ItemGrid xs={12} zeroMargin>
 							<FormControlLabel
@@ -315,7 +315,7 @@ class DeviceData extends Component {
 										className={classes.checkbox}
 									/>
 								}
-								label="Hourly"
+								label={t("filters.dateOptions.hourly")}
 							/>
 						</ItemGrid>
 						<ItemGrid xs={12} zeroMargin>
@@ -328,17 +328,17 @@ class DeviceData extends Component {
 										className={classes.checkbox}
 									/>
 								}
-								label="Daily"
+								label={t("filters.dateOptions.daily")}
 							/>
 						</ItemGrid>
 					</ItemGrid>
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={() => { this.setState({ loading: false, openCustomDate: false }) }} color="primary">
-						No
+						{t("actions.decline")}
 					</Button>
 					<Button onClick={this.handleCloseDialog} color="primary" autoFocus>
-						Apply
+						{t("actions.apply")}
 					</Button>
 				</DialogActions>
 			</Dialog>
@@ -347,7 +347,7 @@ class DeviceData extends Component {
 	}
 	renderNoData = () => {
 		return <ItemGrid container justify={'center'}>
-			<Caption> There is no Data available for the Range Selected</Caption>
+			<Caption> {this.props.t("devices.noData")}</Caption>
 		</ItemGrid>
 	}
 	renderType = () => {
@@ -388,7 +388,7 @@ class DeviceData extends Component {
 		}
 	}
 	renderDateFilter = () => {
-		const { classes } = this.props
+		const { classes, t  } = this.props
 		const { dateFilterInputID, to, from } = this.state
 		let displayTo = moment(to).format(this.format)
 		let displayFrom = moment(from).format(this.format)
@@ -412,12 +412,12 @@ class DeviceData extends Component {
 							<Info>{`${displayFrom} - ${displayTo}`}</Info>
 						</ItemGrid>
 						<Divider />
-						<MenuItem value={0}>Today</MenuItem>
-						<MenuItem value={1}>Last 7 days</MenuItem>
-						<MenuItem value={2}>Last 30 days</MenuItem>
-						<MenuItem value={3}>Last 90 days </MenuItem>
+						<MenuItem value={0}>{t("filters.dateOptions.today")}</MenuItem>
+						<MenuItem value={1}>{t("filters.dateOptions.7days")}</MenuItem>
+						<MenuItem value={2}>{t("filters.dateOptions.30days")}</MenuItem>
+						<MenuItem value={3}>{t("filters.dateOptions.90days")}</MenuItem>
 						<Divider />
-						<MenuItem value={4}>Custom Range</MenuItem>
+						<MenuItem value={4}>{t("filters.dateOptions.custom")}</MenuItem>
 					</Select>
 					<FormHelperText>{`${displayFrom} - ${displayTo}`}</FormHelperText>
 				</FormControl>
@@ -486,7 +486,7 @@ class DeviceData extends Component {
 		const { loading } = this.state
 		return (
 			<InfoCard
-				title={"Data"} avatar={<AssignmentTurnedIn />}
+				title={this.props.t("devices.cards.data")} avatar={<AssignmentTurnedIn />}
 				noExpand
 				topAction={this.renderMenu()}
 				content={

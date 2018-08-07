@@ -20,6 +20,7 @@ import {
 import dashboardStyle from "assets/jss/material-dashboard-react/dashboardStyle";
 import { getAllProjects } from "../../variables/dataProjects";
 import GridContainer from "components/Grid/GridContainer";
+import withLocalization from "components/Localization/T";
 
 class Dashboard extends React.Component {
 	constructor(props) {
@@ -59,6 +60,7 @@ class Dashboard extends React.Component {
 		this.setState({ value: index });
 	};
 	render() {
+		const { t } = this.props
 		return (
 			<GridContainer>
 				<ItemGrid xs={12}>
@@ -70,23 +72,23 @@ class Dashboard extends React.Component {
 								<Grid container>
 									<ItemGrid xs>
 										<div className={this.props.classes.typo}>
-											<h3>Projects</h3>
-											<div className={this.props.classes.section}>Projects help you encapsulate Senti devices for at specific task and data collection use case.</div>
-											<div className={this.props.classes.section}>You can create as many projects as you like, and you can bundle devices from all available locations.</div>
+											<h3>{t("sidebar.projects")}</h3>
+											<div className={this.props.classes.section}>{t("dashboard.projects.s1")}</div>
+											<div className={this.props.classes.section}>{t("dashboard.projects.s2")}</div>
 										</div>
 									</ItemGrid>
 									<ItemGrid xs>
 										<div className={this.props.classes.typo}>
-											<h3>Devices</h3>
-											<div className={this.props.classes.section}>Devices are the actual physical device deployed into your environment. </div>
-											<div className={this.props.classes.section}>Here you can name, configure and set up the devices used in your projects.</div>
+											<h3>{t("sidebar.devices")}</h3>
+											<div className={this.props.classes.section}>{t("dashboard.devices.s1")}</div>
+											<div className={this.props.classes.section}>{t("dashboard.devices.s2")}</div>
 										</div>
 									</ItemGrid>
 									<ItemGrid xs>
 										<div className={this.props.classes.typo}>
 											<h3>Data</h3>
-											<div className={this.props.classes.section}>Viewing your data can be done through lists, cards and different types of graphs.</div>
-											<div className={this.props.classes.section}>You can create reports and export data with very few clicks.</div>
+											<div className={this.props.classes.section}>{t("dashboard.data.s1")}</div>
+											<div className={this.props.classes.section}>{t("dashboard.data.s2")}</div>
 										</div>
 									</ItemGrid>
 								</Grid>
@@ -144,4 +146,4 @@ Dashboard.propTypes = {
 	classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(Dashboard);
+export default withLocalization()(withStyles(dashboardStyle)(Dashboard));

@@ -8,6 +8,7 @@ import searchStyles from 'assets/jss/components/search/searchStyles';
 import { Search, Clear } from '@material-ui/icons'
 import { ItemGrid } from '..';
 import className from 'classnames'
+// import withLocalization from '../Localization/T';
 class SearchInput extends Component {
 	constructor(props) {
 	  super(props)
@@ -35,7 +36,7 @@ class SearchInput extends Component {
 		this.setState({ open: false })
 	}
 	render() {
-		const { classes, ref, open, handleClose, handleOpen, handleResetSearch, ...other } = this.props;
+		const { t, classes, ref, open, handleClose, handleOpen, handleResetSearch, ...other } = this.props;
 		// console.log(this.props)
 		return (
 			<ItemGrid container noPadding alignItems={'center'} style={{ width: "auto", margin: 0 }}>
@@ -45,7 +46,7 @@ class SearchInput extends Component {
 					<Search className={className(classes.icon, { [classes.iconActive]: this.props.value !== '' ? true : false })} onClick={handleOpen}/>
 					<Input
 						// inputRef={this.inputRef}
-						placeholder='Search'
+						placeholder={t("filters.search")}
 						inputRef={this.props.reference}
 						onFocus={this.inputFocused}
 						disableUnderline
@@ -58,7 +59,6 @@ class SearchInput extends Component {
 									classes={{
 										root: classes.square
 									}}
-									aria-label="Toggle password visibility"
 									onClick={handleResetSearch}
 								>
 									<Clear />
