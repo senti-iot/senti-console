@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 // Higher order component (HOC) decorator for components that need `t`
-export default function translate() {
+export default function withLocalization() {
 	return (WrappedComponent) => {
 		const _translate = (props, context) => {
 			return (<WrappedComponent

@@ -15,7 +15,7 @@ import DeviceDetails from './DeviceCards/DeviceDetails';
 import DeviceHardware from './DeviceCards/DeviceHardware';
 import DeviceImages from './DeviceCards/DeviceImages';
 import DeviceData from './DeviceCards/DeviceData';
-import translate from 'components/Localization/T';
+import withLocalization from 'components/Localization/T';
 
 class Device extends Component {
 	constructor(props) {
@@ -237,4 +237,4 @@ class Device extends Component {
 	}
 }
 
-export default translate()(withStyles(deviceStyles)(Device))
+export default withLocalization()(withStyles(deviceStyles)(Device))

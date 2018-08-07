@@ -24,12 +24,13 @@ class EnhancedTable extends React.Component {
 		};
 	}
 	options = () => {
+		const { t } = this.props
 		return [
-			{ label: 'Edit', func: this.handleDeviceEdit, single: true },
-			{ label: 'Assign To Project', func: this.handleAssignToProject, single: false },
-			{ label: 'Export to PDF', func: () => { }, single: false },
-			{ label: 'Calibrate', func: this.handleCalibrateFlow, single: true },
-			{ label: 'Delete', func: this.handleDeleteProjects, single: false },
+			{ label: t("menus.edit"), func: this.handleDeviceEdit, single: true },
+			{ label: t("menus.assign"), func: this.handleAssignToProject, single: false },
+			{ label: t("menus.exportPDF"), func: () => { }, single: false },
+			{ label: t("menus.calibrate"), func: this.handleCalibrateFlow, single: true },
+			{ label: t("menus.delete"), func: this.handleDeleteProjects, single: false },
 		]
 	}
 	handleDeviceEdit = () => {
@@ -150,14 +151,14 @@ class EnhancedTable extends React.Component {
 		return arr;
 	}
 	renderIcon = (status) => {
-		const { classes } = this.props
+		const { classes, t } = this.props
 		switch (status) {
 			case 1: 
-				return <div title={"Connected, No Data"}><SignalWifi2Bar className={classes.yellowSignal}/></div>
+				return <div title={t("devices.status.yellow")}><SignalWifi2Bar className={classes.yellowSignal}/></div>
 			case 2: 
-				return <div title={"Connected, Data"}><SignalWifi2Bar className={classes.greenSignal} /></div>
+				return <div title={t("devices.status.green")}><SignalWifi2Bar className={classes.greenSignal} /></div>
 			case 0:
-				return <div title={"Not Connected, No Data"}><SignalWifi2Bar className={classes.redSignal} /></div>
+				return <div title={t("devices.status.red")}><SignalWifi2Bar className={classes.redSignal} /></div>
 			case null:
 				return <SignalWifi2BarLock className={classes.redSignal} />
 			default:
@@ -165,7 +166,7 @@ class EnhancedTable extends React.Component {
 		}
 	}
 	render() {
-		const { classes, data } = this.props;
+		const { classes, data, t } = this.props;
 		const { order, orderBy, selected, rowsPerPage, page, openAssignProject } = this.state;
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 		return (
@@ -187,6 +188,7 @@ class EnhancedTable extends React.Component {
 					options={this.options}
 					suggestions={this.suggestionGen(data)}
 					noAdd
+					t={t}
 				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
@@ -220,7 +222,7 @@ class EnhancedTable extends React.Component {
 										<Hidden mdDown>
 											 <TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.device_name ?  n.device_name : "No Name"} 
+													{n.device_name ?  n.device_name : t("devices.noName")} 
 												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCell}>
@@ -235,12 +237,12 @@ class EnhancedTable extends React.Component {
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.address ? n.address : "No Address"}
+													{n.address ? n.address : t("devices.noAddress")}
 												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.organisation ? n.organisation.vcName  : " Unassigned"}
+													{n.organisation ? n.organisation.vcName  : t("devices.noProject")}
 												</Typography>
 											</TableCell>
 										</Hidden>
@@ -252,7 +254,7 @@ class EnhancedTable extends React.Component {
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.device_name ? n.device_name : "No Name"}
+													{n.device_name ? n.device_name : t("devices.noName")}
 												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCellID}>
@@ -278,14 +280,14 @@ class EnhancedTable extends React.Component {
 					rowsPerPage={rowsPerPage}
 					page={page}
 					backIconButtonProps={{
-						'aria-label': 'Previous Page',
+						'aria-label': t("actions.nextPage"),
 					}}
 					nextIconButtonProps={{
-						'aria-label': 'Next Page',
+						'aria-label': t("actions.previousPage"),
 					}}
 					onChangePage={this.handleChangePage}
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}
-					labelRowsPerPage={<Hidden mdDown>Rows per page</Hidden>}
+					labelRowsPerPage={<Hidden mdDown>{t("tables.rowsPerPage")}</Hidden>}
 
 				/>
 			</Paper>

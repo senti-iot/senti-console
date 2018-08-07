@@ -49,7 +49,7 @@ class TProvider extends Component {
 			phrase = this.props.langStrings[key]
 		} else if (typeof opts._ === 'string') {
 			phrase = opts._
-		} else if (this.onMissingKey) {
+		} else if (this.onMissingKey) { //TODO: Create Fallback
 			var onMissingKey = this.onMissingKey
 			result = onMissingKey(key, opts, this.tokenRegex)
 		} else {
@@ -95,5 +95,7 @@ TProvider.propTypes = {
 
 TProvider.childContextTypes = {
 	t: PropTypes.func.isRequired,
+	// language: PropTypes.string.isRequired,
+	// langStrings: PropTypes.array.isRequired
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TProvider)

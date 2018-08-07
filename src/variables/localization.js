@@ -1,11 +1,11 @@
-{
+export default {
 	"en": {
-		"tables": {
+		"tables": { //New section
 			"rowsPerPage": "Rows Per page",
 			"selected": "selected",
 			"addNewProject": "Add new Project",
 			"addNewDevice": "Add new Device",
-			"filter": "Filter"
+			"filter": "Filter",
 		},
 		"dialogs": {
 			"unassign": "Are you sure you want to unassign  %{deviceID}  %{deviceName} from %{project}"
@@ -23,6 +23,7 @@
 			"reassign": "Re-assign to another project",
 			"calibrate": "Calibrate",
 			"recalibrate": "Recalibrate",
+			//new
 			"exportPDF": "Export to PDF",
 			"delete": "Delete"
 		},
@@ -33,6 +34,7 @@
 			"reset": "Reset",
 			"accept": "Accept",
 			"decline": "Decline",
+			//new
 			"nextPage": "Next Page",
 			"previousPage": "Previous Page"
 		},
@@ -73,9 +75,9 @@
 			"new": "",
 			"device": "Device",
 			"noData": "There is no Data available for the filters selected",
-			"noName": "No Name",
-			"noAddress": "No Address",
-			"noProject": "Unassigned",
+			"noName": "No Name", //New
+			"noAddress": "No Address", //new
+			"noProject": "Unassigned", //new
 			"notCalibrated": "Device has not been calibrated yet!",
 			"noImages": "",
 			"calibrateButton": "Manual Calibration",
@@ -101,9 +103,10 @@
 				"simProvider": "SIM Provider",
 				"simCard": "SIM Card ID",
 				"modemIMEI": "Modem IMEI",
+				//new
 				"id": "ID"
 			},
-			"status": {
+			"status": { //New
 				"green": "Connected, Data",
 				"yellow": "Connected, No Data",
 				"red": "Not Connected, No Data"
@@ -136,7 +139,7 @@
 		}
 	},
 	"dk": {
-		"tables": {
+		"tables": { //New section
 			"rowsPerPage": "Rows Per page",
 			"selected": "valgt",
 			"addNewProject": "Add new Project",
@@ -159,6 +162,7 @@
 			"reassign": "Overflyt til et andet projekt",
 			"calibrate": "Kalibrer",
 			"recalibrate": "Rekalibrer",
+			//new
 			"exportPDF": "Export til PDF",
 			"delete": "Slet"
 		},
@@ -169,6 +173,7 @@
 			"reset": "Nulstil",
 			"accept": "Accepter",
 			"decline": "Afvis",
+			//new
 			"nextPage": "Next Page",
 			"previousPage": "Previous Page"
 		},
@@ -208,12 +213,12 @@
 			"pageTitle": "Enheder",
 			"new": "",
 			"device": "Enhed",
-			"noName": "Uden navn",
-			"noAddress": "Uden adresse",
+			"noName": "Uden navn", //new
+			"noAddress": "Uden adresse", //new
 			"noData": "Der er ingen data tilgængelig for de valgte filtre!",
 			"notCalibrated": "Enhed er endnu ikke kalibreret!",
-			"noProject": "Ikke tildelt",
-			"noImages": "Der er ikke uploadet billeder!",
+			"noProject": "Ikke tildelt", //new
+			"noImages": "Der er ikke uploadet billeder!", //new
 			"calibrateButton": "Manuel kalibrering",
 			"fields": {
 				"name": "Navn",
@@ -237,9 +242,9 @@
 				"simProvider": "SIM leverandør",
 				"simCard": "SIM-kort ID",
 				"modemIMEI": "Modem IMEI",
-				"id": "ID"
+				"id": "ID" //new
 			},
-			"status": {
+			"status": { //New section
 				"green": "Connected, Data",
 				"yellow": "Connected, No Data",
 				"red": "Not Connected, No Data"

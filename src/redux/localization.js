@@ -1,5 +1,5 @@
 
-import localizationJSON from "variables/localization.json"
+import localizationJSON from "variables/localization"
 var forEach = require('for-each');
 //Action types
 const changeLangAction = "LANG"
@@ -10,15 +10,6 @@ export const changeLanguage = (code) => {
 		code
 	}
 }
-// const createDex = (list) => {
-// 	let phrases = []
-// 	forEach(list, (p, k) => {
-// 		console.log(p, k)
-// 		phrases[k] = extend(list[p], p)
-// 	})
-// 	console.log(phrases)
-// 	return phrases
-// }
 
 //Polyglot Code modified to be tied to Redux - http://airbnb.io/polyglot.js/
 let phrases = []
