@@ -58,7 +58,6 @@ export default class ResetDevice extends Component {
 	/>
 
 	render() {
-		console.log(this.state.success ? this.state.success : null)
 		return (
 			<GridContainer>
 				<InfoCard
