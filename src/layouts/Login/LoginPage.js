@@ -18,6 +18,7 @@ import { setToken } from 'variables/data'
 import cookie from "react-cookies";
 import classNames from 'classnames';
 import CircularLoader from "components/Loader/CircularLoader";
+import withLocalization from "components/Localization/T";
 
 class LoginPage extends React.Component {
 	constructor(props) {
@@ -90,7 +91,7 @@ class LoginPage extends React.Component {
 
 	}
 	render() {
-		const { classes } = this.props;
+		const { classes, t } = this.props;
 		const label = classNames({ [classes.label]: !this.state.error,
 			[classes.errorLabel]: this.state.error
 		});
@@ -123,7 +124,7 @@ class LoginPage extends React.Component {
 										</CardHeader>
 										<CardBody>
 											<CustomInput
-												labelText="Username..."
+												labelText={t("login.username")}
 												id="user"
 												error={this.state.error}
 												formControlProps={{
@@ -144,7 +145,7 @@ class LoginPage extends React.Component {
 												}}
 											/>
 											<CustomInput
-												labelText="Password"
+												labelText={t("login.pass")}
 												id="pass"
 												error={this.state.error}
 												formControlProps={{
@@ -170,7 +171,7 @@ class LoginPage extends React.Component {
 										</CardBody>
 										<CardFooter className={classes.cardFooter}>
 											<Button variant={'contained'} color={'primary'} size="large" className={classes.loginButton} onClick={this.loginUser}>
-												Sign in
+												{t("login.button")}
                      						 </Button>
 										</CardFooter>
 									</form>
@@ -191,4 +192,4 @@ class LoginPage extends React.Component {
 	}
 }
 
-export default withStyles(loginPageStyle)(LoginPage);
+export default withLocalization()(withStyles(loginPageStyle)(LoginPage));

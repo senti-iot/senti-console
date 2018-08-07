@@ -61,9 +61,9 @@ class App extends React.Component {
 						handleDrawerToggle={this.handleDrawerToggle}
 						goBackButton={this.state.goBackButton}
 						gbbFunc={this.handleGoBackButton}
-						{...rest}
 						headerTitle={this.state.headerTitle}
-						t={t}
+						// t={t}
+						{...rest}
 					/>
 					<Sidebar
 						routes={dashboardRoutes}

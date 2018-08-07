@@ -68,6 +68,11 @@
 				"daily": "Daily"
 			}
 		},
+		"login": {
+			"button": "Sign in",
+			"username": "Username",
+			"pass": "Password"
+		},
 		"devices": {
 			"pageTitle": "Devices",
 			"new": "",
@@ -203,6 +208,11 @@
 				"hourly": "Hver time",
 				"daily": "Hver dag"
 			}
+		},
+		"login": {
+			"button": "Sign in",
+			"username": "Username",
+			"pass": "Password"
 		},
 		"devices": {
 			"pageTitle": "Enheder",

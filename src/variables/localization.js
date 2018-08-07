@@ -70,6 +70,11 @@ export default {
 				"daily": "Daily"
 			}
 		},
+		"login": {
+			"button": "Sign in",
+			"username": "Username",
+			"pass": "Password"
+		},
 		"devices": {
 			"pageTitle": "Devices",
 			"new": "",
@@ -139,6 +144,7 @@ export default {
 		}
 	},
 	"dk": {
+		
 		"tables": { //New section
 			"rowsPerPage": "Rows Per page",
 			"selected": "valgt",
@@ -209,6 +215,11 @@ export default {
 				"daily": "Hver dag"
 			}
 		},
+		"login": {
+			"button": "Sign in",
+			"username": "Username",
+			"pass": "Password"
+		},
 		"devices": {
 			"pageTitle": "Enheder",
 			"new": "",
@@ -275,5 +286,6 @@ export default {
 			"title": "404 fejl - Siden Ikke Fundet",
 			"errorMessage": "Den ønskede ressource er ikke fundet! Prøv igen eller kontakt support!"
 		}
+		
 	}
 }
