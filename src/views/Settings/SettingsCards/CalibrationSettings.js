@@ -3,6 +3,9 @@ import React, { Component } from 'react'
 import { InfoCard } from 'components';
 import { Build } from '@material-ui/icons'
 
+//Method ( Time/ Hits) + how many minutes/hits
+//Notifications
+//
 export default class CalibrationSettings extends Component {
 	static propTypes = {
 	}

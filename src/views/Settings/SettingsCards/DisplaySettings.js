@@ -3,7 +3,11 @@ import PropTypes from 'prop-types'
 import { InfoCard } from 'components';
 import { Laptop } from '@material-ui/icons'
 import { Button } from '@material-ui/core';
-
+// Discover Senti
+//List rows per page on Tables
+// Menu Location
+// Dark Mode
+// Themes?
 export default class DisplaySettings extends Component {
 	static propTypes = {
 		language: PropTypes.string.isRequired

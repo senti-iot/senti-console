@@ -13,6 +13,7 @@ import TProvider from 'components/Localization/TProvider';
 const hist = createBrowserHistory();
 
 const theme = createMuiTheme({
+	
 	overrides: {
 		MuiInput: {
 			// Name of the styleSheet
@@ -24,6 +25,7 @@ const theme = createMuiTheme({
 		}
 	},
 	palette: {
+		// type: 'dark',
 		primary: {
 			// light: will be calculated from palette.primary.main,
 			main: primaryColor,
