@@ -14,6 +14,7 @@ import appStyle from "assets/jss/material-dashboard-react/appStyle.js";
 // import image from "assets/img/sidebar-2.jpg";
 import logo from "../../logo.svg";
 import cookie from "react-cookies";
+import withLocalization from "components/Localization/T";
 // import GeoLocation from "components/Geolocation/Geolocation";
 
 class App extends React.Component {
@@ -50,7 +51,7 @@ class App extends React.Component {
 		this.refs.mainPanel.scrollTop = 0;
 	}
 	render() {
-		const { classes, ...rest } = this.props;
+		const { classes, t, ...rest } = this.props;
 		return (
 			<div className={classes.wrapper}>
 				{/* <GeoLocation/> */}
@@ -62,6 +63,7 @@ class App extends React.Component {
 						gbbFunc={this.handleGoBackButton}
 						{...rest}
 						headerTitle={this.state.headerTitle}
+						t={t}
 					/>
 					<Sidebar
 						routes={dashboardRoutes}
@@ -69,6 +71,7 @@ class App extends React.Component {
 						handleDrawerToggle={this.handleDrawerToggle}
 						open={this.state.mobileOpen}
 						color="senti"
+						t={t}
 						{...rest}
 					/>
 					{/* <Provider store={store}> */}
@@ -96,4 +99,4 @@ App.propTypes = {
 	classes: PropTypes.object.isRequired
 };
 
-export default withStyles(appStyle)(App)
+export default withLocalization()(withStyles(appStyle)(App))

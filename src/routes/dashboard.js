@@ -15,7 +15,7 @@ import Settings from 'views/Settings/Settings';
 const dashboardRoutes = [
 	{
 		path: "/dashboard",
-		sidebarName: "Dashboard", //Replace with translation.id
+		sidebarName: "sidebar.dashboard", //Replace with translation.id
 		navbarName: "Senti Dashboard",
 		icon: Dashboard,
 		component: DashboardPage
@@ -27,7 +27,7 @@ const dashboardRoutes = [
 	},
 	{
 		path: "/projects",
-		sidebarName: "Projects",
+		sidebarName: "sidebar.projects",
 		icon: LibraryBooks,
 		component: Projects
 	},
@@ -38,19 +38,19 @@ const dashboardRoutes = [
 	},
 	{
 		path: "/devices",
-		sidebarName: "Devices",
+		sidebarName: "sidebar.devices",
 		icon: DeviceIco,
 		component: Devices
 	},
 	{
 		path: "/users",
-		sidebarName: "Users",
+		sidebarName: "sidebar.users",
 		icon: People,
 		component: UserProfile
 	},
 	{
 		path: "/settings",
-		sidebarName: "Settings",
+		sidebarName: "sidebar.settings",
 		icon: SettingsRounded,
 		component: Settings
 	},
