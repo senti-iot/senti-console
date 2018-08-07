@@ -8,6 +8,7 @@ import ImageUpload from './ImageUpload';
 import { NavigateNext, NavigateBefore, Done, Restore, MyLocation, Router, Devices } from '@material-ui/icons'
 import GridContainer from 'components/Grid/GridContainer';
 import { PlacesWithStandaloneSearchBox } from 'components/Map/SearchBox'
+
 const styles = theme => ({
 	button: {
 		marginTop: theme.spacing.unit,
@@ -361,7 +362,7 @@ class CalibrateDevice extends Component {
 		}
 	}
 	render() {
-		const { classes } = this.props;
+		const { /* t, */ classes } = this.props;
 		const steps = getSteps();
 		const { activeStep, device, error } = this.state;
 		return (

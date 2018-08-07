@@ -6,9 +6,10 @@ import CalibrateDevice from 'views/Devices/CalibrateDevice';
 import EditDetails from 'components/Devices/EditDetails';
 import ResetDevice from 'views/Devices/ResetDevice';
 import EditHardware from 'components/Devices/EditHardware';
+import withLocalization from 'components/Localization/T';
 
 
-export default withRouter((props) => {
+export default withRouter(withLocalization()((props) => {
 	return (
 		<Switch>
 			<Route path={`${props.match.url}/edit-hardware`} render={() => <EditHardware {...props} />} />
@@ -18,4 +19,4 @@ export default withRouter((props) => {
 			<Route path={`${props.match.url}`} render={() => <Device {...props} />} /> 
 		</Switch>
 	)
-})
+}))

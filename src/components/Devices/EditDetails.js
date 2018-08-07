@@ -5,6 +5,7 @@ import React, { Component, Fragment } from 'react';
 import { getDevice, updateDeviceDetails } from 'variables/dataDevices';
 import { CircularLoader, GridContainer, ItemGrid, TextF } from '..';
 import { PlacesWithStandaloneSearchBox } from '../Map/SearchBox';
+
 class EditDeviceDetails extends Component {
 	constructor(props) {
 		super(props)
@@ -20,7 +21,7 @@ class EditDeviceDetails extends Component {
 			updated: false,
 			openSnackBar: false
 		}
-		props.setHeader("Edit Details of " + props.match.params.id, true)
+		props.setHeader(props.t("devices.editDetailsTitle", { deviceId: props.match.params.id }), true)
 	}
 	componentDidMount = async () => {
 		let id = this.props.match.params.id
@@ -36,16 +37,18 @@ class EditDeviceDetails extends Component {
 		this.setState({ [input]: e.target.value })
 	}
 	LocationTypes = () => {
-		return ['Pedestrian street',
-			'Park',
-			'Path',
-			'Square',
-			'Crossroads',
-			'Road',
-			'Motorway',
-			'Port',
-			'Office',
-			'Unspecified']
+		const { t } = this.props
+		return [
+			t("devices.locationTypes.pedStreet"),
+			t("devices.locationTypes.park"),
+			t("devices.locationTypes.path"),
+			t("devices.locationTypes.square"),
+			t("devices.locationTypes.crossroads"),
+			t("devices.locationTypes.road"),
+			t("devices.locationTypes.motorway"),
+			t("devices.locationTypes.port"),
+			t("devices.locationTypes.office"),
+			t("devices.locationTypes.unspecified")]
 	}
 	handleUpdateDevice = async () => {
 		clearTimeout(this.timer);
@@ -66,7 +69,7 @@ class EditDeviceDetails extends Component {
 		this.props.history.push(`/device/${this.props.match.params.id}`)
 	}
 	render() {
-		const { classes } = this.props
+		const { classes, t } = this.props
 		const { loading, name, description, locationType } = this.state
 		return loading ? <CircularLoader /> : (
 			<GridContainer>
@@ -76,7 +79,7 @@ class EditDeviceDetails extends Component {
 							<ItemGrid>
 								<TextF
 									id={'name'}
-									label={"Name"}
+									label={t("devices.fields.name")}
 									handleChange={this.handleInput('name')}
 									value={name}
 									noFullWidth
@@ -84,7 +87,7 @@ class EditDeviceDetails extends Component {
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<FormControl className={this.props.classes.formControl}>
-									<InputLabel htmlFor="streetType-helper" classes={{ root: classes.label }}>{/* locationType ? '' : */ "Location Type"}</InputLabel>
+									<InputLabel htmlFor="streetType-helper" classes={{ root: classes.label }}>{/* locationType ? '' : */ t("devices.fields.locType")}</InputLabel>
 									<Select
 										value={locationType}
 										onChange={this.handleInput('locationType')}
@@ -101,7 +104,7 @@ class EditDeviceDetails extends Component {
 							<ItemGrid xs={12}>
 								<TextF
 									id={'description'}
-									label={'Description'}
+									label={t('devices.fields.description')}
 									multiline
 									rows={3}
 									handleChange={this.handleInput('description')}
@@ -110,17 +113,7 @@ class EditDeviceDetails extends Component {
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
-								{/* <TextF
-									id={'address'}
-									label={'Address'}
-									multiline
-									rows={2}
-									handleChange={this.handleInput('address')}
-									value={address}
-									noFullWidth
-								/> */}
-								<PlacesWithStandaloneSearchBox handleChange={this.handleInput('address')}
-								/>
+								<PlacesWithStandaloneSearchBox t={t} handleChange={this.handleInput('address')}/>
 							</ItemGrid>
 							<ItemGrid xs={12} container justify={'center'}>
 								<Collapse in={this.state.updating} timeout={100} unmountOnExit>

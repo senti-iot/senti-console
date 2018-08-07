@@ -36,7 +36,7 @@ export const PlacesWithStandaloneSearchBox = compose(
 	>
 		<TextF
 			id={"calibrate-address"}
-			label={"Address"}
+			label={props.t("devices.fields.address")}
 			handleChange={props.handleChange}
 			noFullWidth
 		/>

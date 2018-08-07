@@ -12,6 +12,7 @@ import searchStyles from 'assets/jss/components/search/searchStyles';
 // import { ItemGrid } from '..';
 import SearchInput from './SearchInput';
 import { ClickAwayListener } from '@material-ui/core';
+import withLocalization from '../Localization/T';
 
 function renderInput(inputProps) {
 	// const { classes, ref, ...other  } = inputProps;
@@ -149,7 +150,8 @@ class IntegrationAutosuggest extends React.Component {
 							open: this.state.open,
 							handleOpen: this.handleOpen,
 							handleClose: this.handleClose,
-							handleResetSearch: this.handleResetSearch
+							handleResetSearch: this.handleResetSearch,
+							t: this.props.t
 						}}
 					/>
 				</ClickAwayListener>
@@ -162,4 +164,4 @@ IntegrationAutosuggest.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(searchStyles)(IntegrationAutosuggest);
+export default withLocalization()(withStyles(searchStyles)(IntegrationAutosuggest));

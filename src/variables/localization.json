@@ -74,6 +74,19 @@
 			"pass": "Password"
 		},
 		"devices": {
+			"editDetailsTitle": "Edit %{deviceId}",
+			"locationTypes": {
+				"pedStreet": "Pedestrian street",
+				"park": "Park",
+				"path": "Path",
+				"square": "Square",
+				"crossroads": "Crossroads",
+				"road": "Road",
+				"motorway": "Motorway",
+				"port": "Port",
+				"office": "Office",
+				"unspecified": "Unspecified"
+			},
 			"pageTitle": "Devices",
 			"new": "",
 			"device": "Device",
@@ -228,6 +241,19 @@
 			"pass": "Password"
 		},
 		"devices": {
+			"editDetailsTitle": "Edit %{deviceId}",
+			"locationTypes": {
+				"pedStreet": "Pedestrian street",
+				"park": "Park",
+				"path": "Path",
+				"square": "Square",
+				"crossroads": "Crossroads",
+				"road": "Road",
+				"motorway": "Motorway",
+				"port": "Port",
+				"office": "Office",
+				"unspecified": "Unspecified"
+			},
 			"pageTitle": "Enheder",
 			"new": "",
 			"device": "Enhed",
