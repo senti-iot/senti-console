@@ -126,7 +126,20 @@
 			"new": "Create new project"
 		},
 		"dashboard": {
-			"pageTitle": "Console"
+			"pageTitle": "Console",
+			"subtitle": "Senti Cloud Console lets you control and manage all your Senti-in-a-Box Devices.",
+			"projects": {
+				"s1": "Projects help you encapsulate Senti devices for at specific task and data collection use case.",
+				"s2": "You can create as many projects as you like, and you can bundle devices from all available locations."
+			},
+			"devices": {
+				"s1": "Devices are the actual physical device deployed into your environment.",
+				"s2": "Here you can name, configure and set up the devices used in your projects."
+			},
+			"data": {
+				"s1": "Viewing your data can be done through lists, cards and different types of graphs.",
+				"s2": "You can create reports and export data with very few clicks."
+			}
 		},
 		"sidebar": {
 			"dashboard": "Dashboard",
@@ -267,7 +280,20 @@
 			"new": "Opret ny projekt"
 		},
 		"dashboard": {
-			"pageTitle": "Console"
+			"pageTitle": "Console",
+			"subtitle": "Senti Cloud Console lets you control and manage all your Senti-in-a-Box Devices.",
+			"projects": {
+				"s1": "",
+				"s2": ""
+			},
+			"devices": {
+				"s1": "",
+				"s2": ""
+			},
+			"data": {
+				"s1": "",
+				"s2": ""
+			}
 		},
 		"sidebar": {
 			"dashboard": "Dashboard",
