@@ -33,7 +33,9 @@
 		"accept": "Accepter",
 		"decline": "Afvis",
 		"nextPage": "Next Page",
-		"previousPage": "Previous Page"
+		"previousPage": "Previous Page",
+		"goTo": "Go to",
+		"updateDeviceHardware": "Update Device Hardware"
 	},
 	"snackbars": {
 		"updating": "Opdatering...",
@@ -89,11 +91,11 @@
 		"pageTitle": "Enheder",
 		"new": "",
 		"device": "Enhed",
+		"noData": "Der er ingen data tilgængelig for de valgte filtre!",
 		"noName": "Uden navn",
 		"noAddress": "Uden adresse",
-		"noData": "Der er ingen data tilgængelig for de valgte filtre!",
-		"notCalibrated": "Enhed er endnu ikke kalibreret!",
 		"noProject": "Ikke tildelt",
+		"notCalibrated": "Enhed er endnu ikke kalibreret!",
 		"noImages": "Der er ikke uploadet billeder!",
 		"calibrateButton": "Manuel kalibrering",
 		"fields": {
@@ -111,6 +113,7 @@
 			"project": "Projekt",
 			"pcModel": "PC Model",
 			"memory": "Hukommelse",
+			"memoryModel": "Memory Model",
 			"adapter": "Strømforsyning",
 			"wifiModule": "Wifi model",
 			"modemModel": "Modem model",

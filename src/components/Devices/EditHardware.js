@@ -92,7 +92,7 @@ class EditDetails extends Component {
 		this.props.history.push(`/device/${this.props.match.params.id}`)
 	}
 	render() {
-		const { classes } = this.props
+		const { classes, t } = this.props
 		const { loading, RPImodel, SIMID, SIMProvider, adapter, cellNumber, memory, memoryModel, modemIMEI, modemModel, wifiModule, } = this.state
 		return loading ? <CircularLoader /> : (
 			<GridContainer>
@@ -103,7 +103,7 @@ class EditDetails extends Component {
 							<ItemGrid xs={6}>
 								<TextF
 									id={'rpimodel'}
-									label={"PC Model"}
+									label={t("devices.fields.pcModel")}
 									handleChange={this.handleInput('RPImodel')}
 									value={RPImodel}
 									noFullWidth
@@ -112,7 +112,7 @@ class EditDetails extends Component {
 							<ItemGrid xs={6}>
 								<TextF
 									id={'memory'}
-									label={"Memory Size (in GB)"}
+									label={t("devices.fields.memory")}
 									handleChange={this.handleInput('memory')}
 									value={memory}
 									noFullWidth
@@ -121,7 +121,7 @@ class EditDetails extends Component {
 							<ItemGrid xs={6}>
 								<TextF
 									id={'mm'}
-									label={"Memory Model"}
+									label={t("devices.fields.memoryModel")}
 									handleChange={this.handleInput('memoryModel')}
 									value={memoryModel}
 									noFullWidth
@@ -130,7 +130,7 @@ class EditDetails extends Component {
 							<ItemGrid xs={6}>
 								<TextF
 									id={'powerAdapter'}
-									label={"Power Adapter"}
+									label={t("devices.fields.adapter")}
 									handleChange={this.handleInput('adapter')}
 									value={adapter}
 									noFullWidth
@@ -139,7 +139,7 @@ class EditDetails extends Component {
 							<ItemGrid xs={6}>
 								<TextF
 									id={'wifiModule'}
-									label={"WIFI Module"}
+									label={t("devices.fields.wifiModule")}
 									handleChange={this.handleInput('wifiModule')}
 									value={wifiModule}
 									noFullWidth
@@ -148,7 +148,7 @@ class EditDetails extends Component {
 							<ItemGrid xs={6}>
 								<TextF
 									id={'modemModel'}
-									label={"Modem Model"}
+									label={t("devices.fields.modemModel")}
 									handleChange={this.handleInput('modemModel')}
 									value={modemModel}
 									noFullWidth
@@ -157,7 +157,7 @@ class EditDetails extends Component {
 							<ItemGrid xs={6}>
 								<TextF
 									id={'modemIMEI'}
-									label={"Modem IMEI"}
+									label={t("devices.fields.modemIMEI")}
 									handleChange={this.handleInput('modemIMEI')}
 									value={modemIMEI.toString()}
 									noFullWidth
@@ -166,7 +166,7 @@ class EditDetails extends Component {
 							<ItemGrid xs={6}>
 								<TextF
 									id={'cellNumber'}
-									label={"Cell Number"}
+									label={t("devices.fields.cellNumber")}
 									handleChange={this.handleInput('cellNumber')}
 									value={cellNumber.toString()}
 									noFullWidth
@@ -175,7 +175,7 @@ class EditDetails extends Component {
 							<ItemGrid xs={6}>
 								<TextF
 									id={'SIMID'}
-									label={"SIM ID"}
+									label={t("devices.fields.simCard")}
 									handleChange={this.handleInput('SIMID')}
 									value={SIMID.toString()}
 									noFullWidth
@@ -184,7 +184,7 @@ class EditDetails extends Component {
 							<ItemGrid xs={6}>
 								<TextF
 									id={'SIMProvider'}
-									label={"SIM Provider"}
+									label={t("devices.fields.simProvider")}
 									handleChange={this.handleInput('SIMProvider')}
 									value={SIMProvider}
 									noFullWidth
@@ -202,7 +202,7 @@ class EditDetails extends Component {
 										disabled={this.state.updating}
 										onClick={this.state.updated ? this.goToDevice : this.handleUpdateDevice}
 									>
-										{this.state.updated ? <Fragment><Check className={classes.leftIcon} /> Go to Device </Fragment> : <Fragment><Save className={classes.leftIcon} />Update Device Hardware</Fragment>}
+										{this.state.updated ? <Fragment><Check className={classes.leftIcon} />{t("actions.goTo")} {t("devices.device")} </Fragment> : <Fragment><Save className={classes.leftIcon} />{t("actions.updateDeviceHardware")}</Fragment>}
 									</Button>
 								</ItemGrid>
 							</ItemGrid>

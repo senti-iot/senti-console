@@ -33,7 +33,9 @@
 		"accept": "Accept",
 		"decline": "Decline",
 		"nextPage": "Next Page",
-		"previousPage": "Previous Page"
+		"previousPage": "Previous Page",
+		"goTo": "Go to",
+		"updateDeviceHardware": "Update Device Hardware"
 	},
 	"snackbars": {
 		"updating": "Updating...",
@@ -94,7 +96,7 @@
 		"noAddress": "No Address",
 		"noProject": "Unassigned",
 		"notCalibrated": "Device has not been calibrated yet!",
-		"noImages": "",
+		"noImages": "There are no images uploaded!",
 		"calibrateButton": "Manual Calibration",
 		"fields": {
 			"name": "Name",
@@ -111,6 +113,7 @@
 			"project": "Project",
 			"pcModel": "PC Model",
 			"memory": "Memory",
+			"memoryModel": "Memory Model",
 			"adapter": "Power Adapter",
 			"wifiModule": "Wifi Module",
 			"modemModel": "Modem Model",
