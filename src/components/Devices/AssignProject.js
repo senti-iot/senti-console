@@ -85,7 +85,7 @@ class AssignProject extends React.Component {
 		this.props.handleClose(false)
 	}
 	render() {
-		const { classes, open } = this.props;
+		const { classes, open, t } = this.props;
 		const appBarClasses = cx({
 			[" " + classes['primary']]: 'primary'
 		});
@@ -103,10 +103,10 @@ class AssignProject extends React.Component {
 								<Close />
 							</IconButton>
 							<Typography variant="title" color="inherit" className={classes.flex}>
-								Projects
+								{t("projects.pageTitle")}
   						</Typography>
 							<Button color="inherit" onClick={this.assignProject}>
-								save
+								{t("actions.save")}
   						</Button>
 						</Toolbar>
 					</AppBar>

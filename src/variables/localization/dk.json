@@ -35,7 +35,8 @@
 		"nextPage": "Next Page",
 		"previousPage": "Previous Page",
 		"goTo": "Go to",
-		"updateDeviceHardware": "Update Device Hardware"
+		"updateDeviceHardware": "Update Device Hardware",
+		"save": "Gem"
 	},
 	"snackbars": {
 		"updating": "Opdatering...",
