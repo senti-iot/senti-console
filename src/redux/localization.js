@@ -1,6 +1,8 @@
 
-import localizationJSON from "variables/localization"
+// import localizationJSON from "variables/localization"
+import loc from 'variables/localization/index'
 var forEach = require('for-each');
+console.log(loc)
 //Action types
 const changeLangAction = "LANG"
 //Actions
@@ -30,7 +32,7 @@ const extend = (morePhrases, prefix) => {
 //Reducer
 const initialState = {
 	language: "en",
-	s: extend(localizationJSON["en"])
+	s: extend(loc["en"])
 }
 // console.log(initialState)
 export const localization = (state = initialState, action) => {
@@ -40,7 +42,7 @@ export const localization = (state = initialState, action) => {
 			phrases = []
 			return Object.assign({}, state, {
 				language: action.code,
-				s: extend(localizationJSON[action.code])
+				s: extend(loc[action.code])
 			})
 		
 		default:
