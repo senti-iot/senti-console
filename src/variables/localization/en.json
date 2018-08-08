@@ -1,171 +1,181 @@
 {
-	"tables": {
-		"rowsPerPage": "Rows Per page",
-		"selected": "selected",
-		"addNewProject": "Add new Project",
-		"addNewDevice": "Add new Device",
-		"filter": "Filter"
-	},
-	"dialogs": {
-		"unassign": "Are you sure you want to unassign  %{deviceID}  %{deviceName} from %{project}"
-	},
-	"menus": {
-		"more": "More",
-		"showMore": "Show More",
-		"hideMore": "Hide",
-		"showMap": "Show Map",
-		"hideMap": "Hide Map",
-		"edit": "Edit",
-		"unassignDevice": "Unassign from project",
-		"unassignProject": "Unassign device/s from project",
-		"assign": "Assign to project",
-		"reassign": "Re-assign to another project",
-		"calibrate": "Calibrate",
-		"recalibrate": "Recalibrate",
-		"exportPDF": "Export to PDF",
-		"delete": "Delete"
+	"404": {
+		"errorMessage": "The resource requested has not been found! Please try again or contact support!",
+		"title": "404 Error - Not Found"
 	},
 	"actions": {
-		"apply": "Apply",
-		"yes": "Yes",
-		"no": "No",
-		"reset": "Reset",
 		"accept": "Accept",
+		"apply": "Apply",
+		"back": "Back",
 		"decline": "Decline",
-		"nextPage": "Next Page",
-		"previousPage": "Previous Page",
+		"finish": "Finish",
 		"goTo": "Go to",
+		"next": "Next",
+		"nextPage": "Next Page",
+		"no": "No",
+		"openCounter": "Open Counter",
+		"previousPage": "Previous Page",
+		"reset": "Reset",
+		"save": "Save",
+		"start": "Start",
 		"updateDeviceHardware": "Update Device Hardware",
-		"save": "Save"
-	},
-	"snackbars": {
-		"updating": "Updating...",
-		"updatedSuccess": "Updated!",
-		"updatedFailed": "Update failed!",
-		"creating": "Creating...",
-		"createdSuccess": "Created!",
-		"createdFail": "Creation Failed!",
-		"deleting": "Deleting...",
-		"deletedSuccess": "Deleted!",
-		"deletedFail": "Deletion Failed!",
-		"redirect": "Redirecting ...",
-		"unassign": "Device unassigned successfully",
-		"assign": "Device assigned successfully"
-	},
-	"filters": {
-		"options": {
-			"graphType": "Graph Type"
-		},
-		"search": "Search",
-		"startDate": "Start Date",
-		"endDate": "End Date",
-		"display": "Display:",
-		"dateOptions": {
-			"today": "Today",
-			"7days": "Last 7 days",
-			"30days": "Last 30 days",
-			"90days": "Last 90 days",
-			"custom": "Custom Date",
-			"hourly": "Hourly",
-			"daily": "Daily"
-		}
-	},
-	"login": {
-		"button": "Sign in",
-		"username": "Username",
-		"pass": "Password"
-	},
-	"devices": {
-		"editDetailsTitle": "Edit %{deviceId}",
-		"locationTypes": {
-			"pedStreet": "Pedestrian street",
-			"park": "Park",
-			"path": "Path",
-			"square": "Square",
-			"crossroads": "Crossroads",
-			"road": "Road",
-			"motorway": "Motorway",
-			"port": "Port",
-			"office": "Office",
-			"unspecified": "Unspecified"
-		},
-		"pageTitle": "Devices",
-		"new": "",
-		"device": "Device",
-		"noData": "There is no Data available for the filters selected",
-		"noName": "No Name",
-		"noAddress": "No Address",
-		"noProject": "Unassigned",
-		"notCalibrated": "Device has not been calibrated yet!",
-		"noImages": "There are no images uploaded!",
-		"calibrateButton": "Manual Calibration",
-		"fields": {
-			"name": "Name",
-			"status": "Status",
-			"temp": "Temperature",
-			"lastData": "Last time device sent data to server",
-			"lastStats": "Last time device sent stats to server",
-			"description": "Description",
-			"address": "Address",
-			"locType": "Location Type",
-			"coords": "Coordinate",
-			"coordsW": "Coordinates: %{lat} %{long}",
-			"org": "Organisation",
-			"project": "Project",
-			"pcModel": "PC Model",
-			"memory": "Memory",
-			"memoryModel": "Memory Model",
-			"adapter": "Power Adapter",
-			"wifiModule": "Wifi Module",
-			"modemModel": "Modem Model",
-			"cellNumber": "Phone Number",
-			"simProvider": "SIM Provider",
-			"simCard": "SIM Card ID",
-			"modemIMEI": "Modem IMEI",
-			"id": "ID"
-		},
-		"status": {
-			"green": "Connected, Data",
-			"yellow": "Connected, No Data",
-			"red": "Not Connected, No Data"
-		},
-		"cards": {
-			"details": "Device Details",
-			"map": "Map",
-			"data": "Device Data",
-			"hardware": "Hardware",
-			"pictures": "Pictures"
-		}
-	},
-	"projects": {
-		"pageTitle": "Projects",
-		"new": "Create new project"
+		"yes": "Yes"
 	},
 	"dashboard": {
-		"pageTitle": "Console",
-		"subtitle": "Senti Cloud Console lets you control and manage all your Senti-in-a-Box Devices.",
-		"projects": {
-			"s1": "Projects help you encapsulate Senti devices for at specific task and data collection use case.",
-			"s2": "You can create as many projects as you like, and you can bundle devices from all available locations."
+		"data": {
+			"s1": "Viewing your data can be done through lists, cards and different types of graphs.",
+			"s2": "You can create reports and export data with very few clicks."
 		},
 		"devices": {
 			"s1": "Devices are the actual physical device deployed into your environment.",
 			"s2": "Here you can name, configure and set up the devices used in your projects."
 		},
-		"data": {
-			"s1": "Viewing your data can be done through lists, cards and different types of graphs.",
-			"s2": "You can create reports and export data with very few clicks."
+		"pageTitle": "Console",
+		"projects": {
+			"s1": "Projects help you encapsulate Senti devices for at specific task and data collection use case.",
+			"s2": "You can create as many projects as you like, and you can bundle devices from all available locations."
+		},
+		"subtitle": "Senti Cloud Console lets you control and manage all your Senti-in-a-Box Devices."
+	},
+	"devices": {
+		"calibrateButton": "Manual Calibration",
+		"calibration": {
+			"noAudioSupported": "Your browser doesn't support audio files! There will be no sound feedback! Try using Google Chrome."
+		},
+		"cards": {
+			"data": "Device Data",
+			"details": "Device Details",
+			"hardware": "Hardware",
+			"map": "Map",
+			"pictures": "Pictures"
+		},
+		"device": "Device",
+		"editDetailsTitle": "Edit %{deviceId}",
+		"editHardwareTitle": "Edit hardware of %{deviceId}",
+		"fields": {
+			"adapter": "Power Adapter",
+			"address": "Address",
+			"cellNumber": "Phone Number",
+			"coords": "Coordinate",
+			"coordsW": "Coordinates: %{lat} %{long}",
+			"description": "Description",
+			"id": "ID",
+			"lastData": "Last time device sent data to server",
+			"lastStats": "Last time device sent stats to server",
+			"locType": "Location Type",
+			"memory": "Memory",
+			"memoryModel": "Memory Model",
+			"modemIMEI": "Modem IMEI",
+			"modemModel": "Modem Model",
+			"name": "Name",
+			"org": "Organisation",
+			"pcModel": "PC Model",
+			"project": "Project",
+			"simCard": "SIM Card ID",
+			"simProvider": "SIM Provider",
+			"status": "Status",
+			"temp": "Temperature",
+			"wifiModule": "Wifi Module"
+		},
+		"locationTypes": {
+			"crossroads": "Crossroads",
+			"motorway": "Motorway",
+			"office": "Office",
+			"park": "Park",
+			"path": "Path",
+			"pedStreet": "Pedestrian street",
+			"port": "Port",
+			"road": "Road",
+			"square": "Square",
+			"unspecified": "Unspecified"
+		},
+		"new": "",
+		"noAddress": "No Address",
+		"noData": "There is no Data available for the filters selected",
+		"noImages": "There are no images uploaded!",
+		"noName": "No Name",
+		"noProject": "Unassigned",
+		"notCalibrated": "Device has not been calibrated yet!",
+		"pageTitle": "Devices",
+		"status": {
+			"green": "Connected, Data",
+			"red": "Not Connected, No Data",
+			"yellow": "Connected, No Data"
 		}
+	},
+	"dialogs": {
+		"unassignTitle": "Unassign ${what}?",
+		"unassign": "Are you sure you want to unassign  %{deviceID}  %{deviceName} from %{project}"
+	},
+	"filters": {
+		"dateOptions": {
+			"30days": "Last 30 days",
+			"7days": "Last 7 days",
+			"90days": "Last 90 days",
+			"custom": "Custom Date",
+			"daily": "Daily",
+			"hourly": "Hourly",
+			"today": "Today"
+		},
+		"display": "Display:",
+		"endDate": "End Date",
+		"options": {
+			"graphType": "Graph Type"
+		},
+		"search": "Search",
+		"startDate": "Start Date"
+	},
+	"login": {
+		"button": "Sign in",
+		"pass": "Password",
+		"username": "Username"
+	},
+	"menus": {
+		"assign": "Assign to project",
+		"calibrate": "Calibrate",
+		"delete": "Delete",
+		"edit": "Edit",
+		"exportPDF": "Export to PDF",
+		"hideMap": "Hide Map",
+		"hideMore": "Hide",
+		"more": "More",
+		"reassign": "Re-assign to another project",
+		"recalibrate": "Recalibrate",
+		"showMap": "Show Map",
+		"showMore": "Show More",
+		"unassignDevice": "Unassign from project",
+		"unassignProject": "Unassign device/s from project"
+	},
+	"projects": {
+		"new": "Create new project",
+		"pageTitle": "Projects"
 	},
 	"sidebar": {
 		"dashboard": "Dashboard",
-		"projects": "Projects",
 		"devices": "Devices",
-		"users": "Users",
-		"settings": "Settings"
+		"projects": "Projects",
+		"settings": "Settings",
+		"users": "Users"
 	},
-	"404": {
-		"title": "404 Error - Not Found",
-		"errorMessage": "The resource requested has not been found! Please try again or contact support!"
+	"snackbars": {
+		"assign": "Device assigned successfully",
+		"createdFail": "Creation Failed!",
+		"createdSuccess": "Created!",
+		"creating": "Creating...",
+		"deletedFail": "Deletion Failed!",
+		"deletedSuccess": "Deleted!",
+		"deleting": "Deleting...",
+		"redirect": "Redirecting ...",
+		"unassign": "Device unassigned successfully",
+		"updatedFailed": "Update failed!",
+		"updatedSuccess": "Updated!",
+		"updating": "Updating..."
+	},
+	"tables": {
+		"addNewDevice": "Add new Device",
+		"addNewProject": "Add new Project",
+		"filter": "Filter",
+		"rowsPerPage": "Rows Per page",
+		"selected": "selected"
 	}
 }

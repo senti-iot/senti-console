@@ -171,7 +171,11 @@ class EnhancedTable extends React.Component {
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 		return (
 			<Paper className={classes.root}>
-				<AssignProject open={openAssignProject} handleClose={this.handleCloseAssignToProject} device_id={selected} />
+				<AssignProject
+					open={openAssignProject}
+					handleClose={this.handleCloseAssignToProject}
+					device_id={selected}
+					t={t} />
 				<EnhancedTableToolbar
 					anchorElMenu={this.state.anchorElMenu}
 					anchorFilterMenu={this.state.anchorFilterMenu}

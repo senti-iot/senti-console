@@ -20,7 +20,8 @@ class CounterModal extends React.Component {
 		}
 		let canPlayMP3 = new Audio().canPlayType('audio/mp3');
 		if (!canPlayMP3 || canPlayMP3 === 'no') {
-			let msg = 'Your browser doesn\'t support audio files! There will be no sound feedback! Try using Google Chrome.';
+			let msg = props.t("devices.calibration.noAudioSupported")
+			// let msg = 'Your browser doesn\'t support audio files! There will be no sound feedback! Try using Google Chrome.';
 			alert(msg);
 		}
 		this.mp3File = new Audio("/assets/sound/pop.mp3").load()
@@ -37,7 +38,7 @@ class CounterModal extends React.Component {
 	}
 	handleStart = () => {
 		if (this.timeCounter === null) {
-			this.setState({ timestamp: moment().format("YYYY-MM-DD HH:mm:ss") })	
+			this.setState({ timestamp: moment().format("YYYY-MM-DD HH:mm:ss") })
 			this.timeCounter = setInterval(() => this.timer(), 1000)
 		}
 	}
@@ -92,13 +93,13 @@ class CounterModal extends React.Component {
 		this.handleClose()
 	}
 	render() {
-		const { classes } = this.props;
+		const { classes, t } = this.props;
 
 		return (
 			<div >
 				{/* <Typography gutterBottom>Click to get the full Modal experience!</Typography> */}
 				<Button variant={"outlined"} color={"primary"} onClick={this.handleOpen}>
-					<OpenInBrowser className={classes.iconButton}/> Open Counting Window
+					<OpenInBrowser className={classes.iconButton} /> {t("actions.openCounter")}
 				</Button>
 				<Modal
 					aria-labelledby="simple-modal-title"
@@ -135,14 +136,14 @@ class CounterModal extends React.Component {
 
 								<ItemGrid>
 									<Button
-										disabled={ this.state.count === 0 ? false : this.state.count < 5 ? true : false}//change
+										disabled={this.state.count === 0 ? false : this.state.count < 5 ? true : false}//change
 										color={"primary"}
 										variant="contained"
 										onClick={this.state.count === 0 ? this.handleFinish : this.handleStart}>
 										{this.state.count === 0 ? <Fragment>
-											<Done className={classes.iconButton}/>Finish
+											<Done className={classes.iconButton} />{t("actions.finish")}
 										</Fragment> : <Fragment>
-											<Timer className={classes.iconButton}/> Start
+											<Timer className={classes.iconButton} /> {t("actions.start")}
 										</Fragment>}
 									</Button>
 								</ItemGrid>
@@ -152,7 +153,7 @@ class CounterModal extends React.Component {
 										variant="contained"
 										disabled={this.state.timer !== 0 ? false : true}
 										onClick={this.handleReset}>
-										<Restore className={classes.iconButton} />Reset
+										<Restore className={classes.iconButton} />{t("actions.reset")}
 									</Button>
 								</ItemGrid>
 							</div>

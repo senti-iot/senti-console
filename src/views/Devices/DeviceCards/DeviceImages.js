@@ -37,7 +37,12 @@ class DeviceImages extends Component {
 	}
 	renderImageUpload = (dId) => {
 
-		return <DeviceImageUpload dId={dId} imgUpload={this.getAllPics} callBack={this.getPicsCallBack} />
+		return <DeviceImageUpload
+			t={this.props.t}
+			dId={dId}
+			imgUpload={this.getAllPics}
+			callBack={this.getPicsCallBack}
+		/>
 	}
 	getAllPics = (id) => {
 		getAllPictures(id).then(rs => { return this.setState({ img: rs }) })
@@ -172,6 +177,7 @@ class DeviceImages extends Component {
 								{this.renderDeleteDialog()}
 								<Grid container justify={'center'}>
 									<DeviceImage
+										t={this.props.t}
 										useParent
 										handleStep={this.handleStepChange}
 										images={img ? img.map(m => m.image) : null} />

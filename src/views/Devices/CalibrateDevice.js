@@ -136,7 +136,8 @@ class CalibrateDevice extends Component {
 	}
 	uploadImgs = async () => {
 		let success = false
-		if (this.state.images) { 
+		if (this.state.images) {
+			console.log(this.state.device)
 			success = await uploadPictures({
 				device_id: this.state.device.device_id,
 				files: this.state.images,
@@ -179,16 +180,18 @@ class CalibrateDevice extends Component {
 		</Grid>
 	}
 	LocationTypes = () => {
-		return ['Pedestrian street',
-			'Park',
-			'Path',
-			'Square',
-			'Crossroads',
-			'Road',
-			'Motorway',
-			'Port',
-			'Office',
-			'Unspecified']
+		const { t } = this.props
+		return [
+			t("devices.locationTypes.pedStreet"),
+			t("devices.locationTypes.park"),
+			t("devices.locationTypes.path"),
+			t("devices.locationTypes.square"),
+			t("devices.locationTypes.crossroads"),
+			t("devices.locationTypes.road"),
+			t("devices.locationTypes.motorway"),
+			t("devices.locationTypes.port"),
+			t("devices.locationTypes.office"),
+			t("devices.locationTypes.unspecified")]
 	}
 	handleLocationTypeChange = (e) => {
 		this.setState({ locationType: e.target.value })
@@ -197,9 +200,10 @@ class CalibrateDevice extends Component {
 		this.setState({ address: e.target.value })
 	}
 	renderDeviceLocation = () => {
+		const { t } = this.props
 		return <Grid container>
 			<ItemGrid xs={12}>
-				<PlacesWithStandaloneSearchBox handleChange={this.handleSetAddress}/>
+				<PlacesWithStandaloneSearchBox handleChange={this.handleSetAddress} t={t}/>
 			</ItemGrid>
 			<ItemGrid xs={12}>
 				<FormControl className={this.props.classes.formControl}>
@@ -235,10 +239,11 @@ class CalibrateDevice extends Component {
 		</Grid>
 	}
 	renderCalibration = () => {
-		return <CounterModal handleFinish={this.handleCalibration} />
+		return <CounterModal t={this.props.t} handleFinish={this.handleCalibration} />
 	}
 	renderImageUpload = () => {
-		return <ImageUpload imgUpload={this.getImages} />
+		console.log(this.state.device)
+		return <ImageUpload t={this.props.t} imgUpload={this.getImages} dId={this.state.device.device_id}/>
 	}
 	renderStep = (step) => {
 		switch (step) {
@@ -291,23 +296,38 @@ class CalibrateDevice extends Component {
 	}
 	handleNext = () => {
 		const { activeStep } = this.state
-		var success
-		switch (activeStep) {
-			case 0:
-				success = this.updateNameAndDesc()
-				break;
-			case 1:
-				success = this.updatePosition()
-				break;
-			case 2:
-				success = this.updateCalibration()
-				break;
-			case 3:
-				success = this.uploadImgs();
-				break;
-			default:
-				break;
+		var success = false
+		if (activeStep === 3) {
+			let s1 = this.updateNameAndDesc()
+			let s2 = this.updatePosition()
+			let s3 = this.updateCalibration()
+			let s4 = this.uploadImgs()
+			console.log(s1, s2, s3, s4)
+			if (s1 && s2 && s3 && s4)
+			{
+				success = true
+			}
 		}
+		else
+		{
+			success = true
+		}
+		// switch (activeStep) {
+		// 	case 0:
+		// 		// success = this.updateNameAndDesc()
+		// 		break;
+		// 	case 1:
+		// 		// success = this.updatePosition()
+		// 		break;
+		// 	case 2:
+		// 		// success = this.updateCalibration()
+		// 		break;
+		// 	case 3:
+		// 		// success = this.uploadImgs();
+		// 		break;
+		// 	default:
+		// 		break;
+		// }
 		if (success)
 			this.setState({
 				activeStep: this.state.activeStep + 1,

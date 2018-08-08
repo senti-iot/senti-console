@@ -148,7 +148,7 @@ class Device extends Component {
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{"Unassign Project? "}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("dialogs.unassignTitle", { what: "Project" })}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
 					{/* Are you sure you want to unassign {device.device_id + " " + device.device_name} from project {device.project.title} ? */}
@@ -173,7 +173,12 @@ class Device extends Component {
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
-					<AssignProject device_id={this.state.device.device_id} open={this.state.openAssign} handleClose={this.handleCloseAssign} />
+					<AssignProject
+						device_id={this.state.device.device_id}
+						open={this.state.openAssign}
+						handleClose={this.handleCloseAssign}
+						t={this.props.t}
+					/>
 					{device.project ? this.renderConfirmUnassign() : null}
 					<ItemGrid xs={12} noMargin>
 						<DeviceDetails

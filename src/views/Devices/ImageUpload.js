@@ -37,12 +37,12 @@ class ImageUpload extends Component {
 	}
 	handleReset = () => { this.setState({ images: [] }) }
 	render() {
-		const { classes } = this.props
+		const { classes, t } = this.props
 		const { images, success } = this.state
 		return (
 			<GridContainer className={classes.grid}>
 				<ItemGrid xs={12} noPadding container zeroMargin extraClass={classes.grid}>
-					{images.length > 0 ? <DeviceImage label={'Preview selected images'} images={[...images]} /> : null}
+					{images.length > 0 ? <DeviceImage t={t} label={'Preview selected images'} images={[...images]} /> : null}
 				</ItemGrid>
 				<ItemGrid xs={12} container zeroMargin justify={'center'}>
 					{images.length > 0 ?
