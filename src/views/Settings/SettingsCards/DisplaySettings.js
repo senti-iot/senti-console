@@ -1,25 +1,18 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { InfoCard, ItemGrid } from 'components';
+import { InfoCard, ItemGrid, DSelect } from 'components';
 import { Laptop } from '@material-ui/icons'
-import { Grid, ListItem, List, ListItemText, withStyles, FormControl, Select, Input, MenuItem } from '@material-ui/core';
+import { Grid, ListItem, List, ListItemText, withStyles } from '@material-ui/core';
 // Discover Senti
 //List rows per page on Tables
 // Menu Location
 // Dark Mode
 // Themes?
 const styles = theme => ({
-	root: {
-		width: '100%',
-	},
-	formControl: {
-		marginTop: 16,
-		marginBottom: 8,
-		minWidth: 208,
-		flexGrow: 1,
-		maxWidth: 208
-	},
-});
+	list: {
+		width: "100%"
+	}
+})
 class DisplaySettings extends Component {
 	
 	static propTypes = {
@@ -33,24 +26,6 @@ class DisplaySettings extends Component {
 	}
 	changeTheme = (e) => {
 		this.props.changeTheme(e.target.value)
-	}
-	renderSelect = (menuItems, value, func) => {
-		const { classes } = this.props
-		return <FormControl className={this.props.classes.formControl}>
-			{/* <InputLabel htmlFor="streetType-helper" classes={{ root: classes.label }}>{t("devices.fields.locType")}</InputLabel> */}
-			<Select
-				value={value}
-				onChange={func}
-				input={<Input name="streetType" id="streetType-helper" classes={{ root: classes.label }} />}
-			>
-				{menuItems.map((m, i) => {
-					return <MenuItem key={i} value={m.value}>
-						{m.label}
-					</MenuItem>
-				})}
-				})}
-			</Select>
-		</FormControl>
 	}
 
 	render() {
@@ -77,23 +52,23 @@ class DisplaySettings extends Component {
 				title={"Display"}
 				content={
 					<Grid container>
-						<List className={classes.root}>
+						<List className={classes.list}>
 							<ListItem divider>
 								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 									<ListItemText>{t("settings.language")}</ListItemText>
-									{this.renderSelect(languages, language, this.changeLang)}
+									<DSelect menuItems={languages} value={language} func={this.changeLang}/>
 								</ItemGrid>
 							</ListItem>
 							<ListItem divider>
 								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 									<ListItemText>{t("settings.trp")}</ListItemText>
-									{this.renderSelect(trps, trp, this.changeTRP)}
+									<DSelect menuItems={trps} value={trp} func={this.changeTRP} />
 								</ItemGrid>
 							</ListItem>
-							<ListItem divider>
+							<ListItem >
 								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 									<ListItemText>{t("settings.theme")}</ListItemText>
-									{this.renderSelect(themes, theme, this.changeTheme)}
+									<DSelect menuItems={themes} value={theme} func={this.changeTheme} />
 								</ItemGrid>
 							</ListItem>
 						</List>

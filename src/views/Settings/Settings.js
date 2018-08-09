@@ -11,7 +11,15 @@ import { changeLanguage } from 'redux/localization';
 import withLocalization from 'components/Localization/T';
 import { changeTRP, changeTheme } from 'redux/settings';
 class Settings extends Component {
-
+	constructor(props) {
+	  super(props)
+	
+	  this.state = {
+		 
+		}
+		props.setHeader(props.t("settings.pageTitle"), false)
+	}
+	
 
 	render() {
 		const { t } = this.props 

@@ -151,10 +151,11 @@
 		"pageTitle": "Projects"
 	},
 	"settings": {
+		"pageTitle": "Settings",
 		"language": "Language",
 		"languages": {
-			"en":"English",
-			"dk":"Danish"
+			"en": "English",
+			"dk": "Danish"
 		},
 		"theme": "Theme",
 		"themes": {
@@ -163,7 +164,6 @@
 		},
 		"trp": "Table rows per page"
 	},
-
 	"sidebar": {
 		"dashboard": "Dashboard",
 		"devices": "Devices",
