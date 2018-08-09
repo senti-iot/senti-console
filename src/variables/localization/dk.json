@@ -157,6 +157,7 @@
 			"en": "Engelsk",
 			"dk": "Dansk"
 		},
+		"sideBarLoc": "Sidebar Location",
 		"theme": "Stil / Tema",
 		"themes": {
 			"dark": "Mørkt tema",

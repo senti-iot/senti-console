@@ -9,7 +9,7 @@ import CalibrationSettings from './SettingsCards/CalibrationSettings';
 import DisplaySettings from './SettingsCards/DisplaySettings';
 import { changeLanguage } from 'redux/localization';
 import withLocalization from 'components/Localization/T';
-import { changeTRP, changeTheme } from 'redux/settings';
+import { changeTRP, changeTheme, changeCalType, changeSideBarLoc } from 'redux/settings';
 class Settings extends Component {
 	constructor(props) {
 	  super(props)
@@ -23,7 +23,8 @@ class Settings extends Component {
 
 	render() {
 		const { t } = this.props 
-		const { language, changeLanguage, trp, changeTRP, theme, changeTheme  } = this.props
+		const { language, changeLanguage, sideBar, changeSideBarLoc, trp, changeTRP, theme, changeTheme  } = this.props
+		const { calibration, changeCalType } = this.props
 		return (
 			<GridContainer>
 				<ItemGrid xs={12} noMargin>
@@ -34,11 +35,16 @@ class Settings extends Component {
 						changeTheme={changeTheme}
 						language={language}
 						changeLanguage={changeLanguage}
+						sideBar={sideBar}
+						changeSideBarLoc={changeSideBarLoc}
 						t={t}
 					/>
 				</ItemGrid>
 				<ItemGrid xs={12} noMargin>
-					<CalibrationSettings />
+					<CalibrationSettings
+						calibration={calibration}
+						changeCalType={changeCalType}
+						t={t}/>
 				</ItemGrid>
 				<ItemGrid xs={12} noMargin>
 					<InfoCard
@@ -64,10 +70,15 @@ class Settings extends Component {
 }
 
 const mapStateToProps = state => {
+	const s = state.settings
 	return {
 		language: state.localization.language,
-		theme: state.settings.theme,
-		trp: state.settings.trp
+		theme: s.theme,
+		trp: s.trp,
+		sideBar: s.sideBar,
+
+		calibration: s.calibration,
+
 	}
 }
 
@@ -75,7 +86,9 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		changeLanguage: code => dispatch(changeLanguage(code)),
 		changeTRP: nr => dispatch(changeTRP(nr)),
-		changeTheme: t => dispatch(changeTheme(t))
+		changeTheme: t => dispatch(changeTheme(t)),
+		changeSideBarLoc: loc => dispatch(changeSideBarLoc(loc)),
+		changeCalType: type => dispatch(changeCalType(type))
 	}
 }
 

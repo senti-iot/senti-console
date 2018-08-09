@@ -12,9 +12,7 @@ const styles = theme => ({
 
 const DSelect = (props) => {
 	const { classes, value, func, menuItems } = props
-	console.log(props)
 	return <FormControl className={classes.formControl}>
-		{/* <InputLabel htmlFor="streetType-helper" classes={{ root: classes.label }}>{t("devices.fields.locType")}</InputLabel> */}
 		<Select
 			value={value}
 			onChange={func}

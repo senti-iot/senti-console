@@ -3,18 +3,15 @@ import PropTypes from 'prop-types'
 import { InfoCard, ItemGrid, DSelect } from 'components';
 import { Laptop } from '@material-ui/icons'
 import { Grid, ListItem, List, ListItemText, withStyles } from '@material-ui/core';
+import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 // Discover Senti
 //List rows per page on Tables
 // Menu Location
 // Dark Mode
 // Themes?
-const styles = theme => ({
-	list: {
-		width: "100%"
-	}
-})
+
 class DisplaySettings extends Component {
-	
+
 	static propTypes = {
 		language: PropTypes.string.isRequired
 	}
@@ -27,9 +24,11 @@ class DisplaySettings extends Component {
 	changeTheme = (e) => {
 		this.props.changeTheme(e.target.value)
 	}
-
+	changeSideBarLoc = (e) => {
+		this.props.changeSideBarLoc(e.target.value)
+	}
 	render() {
-		const { language, trp, theme, classes, t  } = this.props
+		const { language, trp, sideBar, theme, classes, t } = this.props
 		let languages = [
 			{ value: "en", label: t("settings.languages.en") },
 			{ value: "dk", label: t("settings.languages.dk") }
@@ -45,6 +44,10 @@ class DisplaySettings extends Component {
 			{ value: 50, label: 50 },
 			{ value: 100, label: 100 }
 		]
+		let sideBarLocs = [
+			{ value: 0, label: t("settings.sideBarLeft") },
+			{ value: 1, label: t("settings.sideBarRight") }
+		]
 		return (
 			<InfoCard
 				noExpand
@@ -56,13 +59,19 @@ class DisplaySettings extends Component {
 							<ListItem divider>
 								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 									<ListItemText>{t("settings.language")}</ListItemText>
-									<DSelect menuItems={languages} value={language} func={this.changeLang}/>
+									<DSelect menuItems={languages} value={language} func={this.changeLang} />
 								</ItemGrid>
 							</ListItem>
 							<ListItem divider>
 								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 									<ListItemText>{t("settings.trp")}</ListItemText>
 									<DSelect menuItems={trps} value={trp} func={this.changeTRP} />
+								</ItemGrid>
+							</ListItem>
+							<ListItem divider>
+								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+									<ListItemText>{t("settings.sideBarLoc")}</ListItemText>
+									<DSelect menuItems={sideBarLocs} value={sideBar} func={this.changeSideBarLoc} />
 								</ItemGrid>
 							</ListItem>
 							<ListItem >
@@ -78,4 +87,4 @@ class DisplaySettings extends Component {
 		)
 	}
 }
-export default withStyles(styles)(DisplaySettings)
+export default withStyles(settingsStyles)(DisplaySettings)

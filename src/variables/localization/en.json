@@ -157,6 +157,14 @@
 			"en": "English",
 			"dk": "Danish"
 		},
+		"calibration": {
+			"text": "Calibration Method",
+			"time": "By Time",
+			"count": "By Count"
+		},
+		"sideBarLoc": "Sidebar Location",
+		"sideBarLeft": "Left",
+		"sideBarRight": "Right",
 		"theme": "Theme",
 		"themes": {
 			"dark": "Dark theme",
