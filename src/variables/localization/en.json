@@ -150,6 +150,20 @@
 		"new": "Create new project",
 		"pageTitle": "Projects"
 	},
+	"settings": {
+		"language": "Language",
+		"languages": {
+			"en":"English",
+			"dk":"Danish"
+		},
+		"theme": "Theme",
+		"themes": {
+			"dark": "Dark theme",
+			"light": "Light theme"
+		},
+		"trp": "Table rows per page"
+	},
+
 	"sidebar": {
 		"dashboard": "Dashboard",
 		"devices": "Devices",

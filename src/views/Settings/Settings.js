@@ -8,17 +8,25 @@ import { Notifications, Devices, BarChart } from '@material-ui/icons'
 import CalibrationSettings from './SettingsCards/CalibrationSettings';
 import DisplaySettings from './SettingsCards/DisplaySettings';
 import { changeLanguage } from 'redux/localization';
+import withLocalization from 'components/Localization/T';
+import { changeTRP, changeTheme } from 'redux/settings';
 class Settings extends Component {
 
 
 	render() {
-		const { language, changeLanguage } = this.props
+		const { t } = this.props 
+		const { language, changeLanguage, trp, changeTRP, theme, changeTheme  } = this.props
 		return (
 			<GridContainer>
 				<ItemGrid xs={12} noMargin>
 					<DisplaySettings
+						trp={trp}
+						changeTRP={changeTRP}
+						theme={theme}
+						changeTheme={changeTheme}
 						language={language}
 						changeLanguage={changeLanguage}
+						t={t}
 					/>
 				</ItemGrid>
 				<ItemGrid xs={12} noMargin>
@@ -49,14 +57,18 @@ class Settings extends Component {
 
 const mapStateToProps = state => {
 	return {
-		language: state.localization.language
+		language: state.localization.language,
+		theme: state.settings.theme,
+		trp: state.settings.trp
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		changeLanguage: code => dispatch(changeLanguage(code))
+		changeLanguage: code => dispatch(changeLanguage(code)),
+		changeTRP: nr => dispatch(changeTRP(nr)),
+		changeTheme: t => dispatch(changeTheme(t))
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings)
+export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(Settings))
