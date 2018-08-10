@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Popper, Input, MenuItem, withStyles, Grow, ClickAwayListener, Paper, MenuList, FormControl } from '@material-ui/core';
+import { Popover, Input, MenuItem, withStyles, ClickAwayListener, Paper, MenuList, FormControl } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 import { ArrowDropDown } from "@material-ui/icons"
 class DInput extends Component {
@@ -35,27 +35,33 @@ class DInput extends Component {
 						endAdornment={<ArrowDropDown className={classes.iconColor} />}
 					/>
 				</FormControl>
-				<Popper open={actionAnchor ? true : false} anchorEl={actionAnchor} placement={"bottom-end"} transition disablePortal>
-					{({ TransitionProps, placement }) => (
-						<Grow
-							{...TransitionProps}
-							id="menu-list-grow"
-							style={{ zIndex: "1100" }}
-						>
-							<Paper>
-								<ClickAwayListener onClickAway={this.handleCloseActionsDetails}>
-									<MenuList>
-										{menuItems.map((m, i) => {
-											return <MenuItem onClick={this.handleMenuItem} key={i} value={m.value}>
-												{m.label}
-											</MenuItem>
-										})}
-									</MenuList>
-								</ClickAwayListener>
-							</Paper>
-						</Grow>
-					)}
-				</Popper>
+
+				<Popover
+					open={actionAnchor ? true : false}
+					anchorEl={actionAnchor}
+					anchorOrigin={{
+						vertical: 'bottom',
+						horizontal: 'right',
+					}}
+					transformOrigin={{
+						vertical: 'top',
+						horizontal: 'right',
+					}}
+					disablePortal>
+				
+					<Paper>
+						<ClickAwayListener onClickAway={this.handleCloseActionsDetails}>
+							<MenuList>
+								{menuItems.map((m, i) => {
+									return <MenuItem onClick={this.handleMenuItem} key={i} value={m}>
+										{m}
+									</MenuItem>
+								})}
+							</MenuList>
+						</ClickAwayListener>
+					</Paper>
+				
+				</Popover>
 			</Fragment>
 		)
 	}

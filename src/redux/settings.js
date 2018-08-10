@@ -3,7 +3,18 @@ const MENULOC = "SIDEBAR_LOCATION"
 const THEME = "THEME"
 const TRP = "TABLE_ROWS_PER_PAGE"
 const CALTYPE = "CALIBRATION_TYPE"
+const COUNT = "CALIBRATION_COUNT"
+const CALNOTIF = "CALIBRATION_NOTIFICATION"
 
+export const changeCalNotif = t => ({
+	type: CALNOTIF,
+	t
+})
+
+export const changeCount = count => ({
+	type: COUNT,
+	count
+})
 export const changeCalType = t => ({
 	type: CALTYPE,
 	t
@@ -27,7 +38,9 @@ export const changeTheme = (code) => {
 	}
 }
 let initialState = {
-	calibration: 0,
+	calibration: 1,
+	calNotifications: 0,
+	count: 200,
 	sideBar: 0,
 	theme: "light",
 	trp: 10
@@ -49,6 +62,14 @@ export const settings = (state = initialState, action) => {
 		case CALTYPE:
 			return Object.assign({}, state, {
 				calibration: action.t
+			})
+		case COUNT:
+			return Object.assign({}, state, {
+				count: action.count
+			})
+		case CALNOTIF: 
+			return Object.assign({}, state, {
+				calNotifications: action.t
 			})
 		default:
 			return state
