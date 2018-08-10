@@ -151,23 +151,23 @@
 		"pageTitle": "Projekter"
 	},
 	"settings": {
-		"alerts": "Alerts",
+		"alerts": "Alarmeringer",
 		"calibration": {
-			"12months": "12 Months",
-			"3months": "3 Months",
-			"6months": "6 Months",
-			"9months": "9 Months",
-			"byCount": "Counts",
-			"byTime": "Minutes",
-			"count": "By Count",
-			"history": "Calibration History",
-			"notification": "Calibration Notification",
-			"text": "Calibration Method",
-			"time": "By Time"
+			"12months": "12 måneder",
+			"3months": "3 måneder",
+			"6months": "6 måneder",
+			"9months": "9 måneder",
+			"byCount": "Fast antal tællinger",
+			"byTime": "Fast antal minutter",
+			"count": "Fast antal tællinger",
+			"history": "Kalibrerings-historik",
+			"notification": "Kalibrerings notifikation",
+			"text": "Kalibreringsmetode",
+			"time": "Fast tid"
 		},
-		"defaultDataSet": "Default data set for charts",
-		"didYouKnow": "\"Did you know?\" Pop-ups",
-		"discoverSenti": "\"Discover Senti\" landing page",
+		"defaultDataSet": "Standard datasæt for diagrammer",
+		"didYouKnow": "\"Viste du at?\" Pop-ups",
+		"discoverSenti": "\"Oplev Senti\"",
 		"language": "Sprog",
 		"languages": {
 			"dk": "Dansk",
