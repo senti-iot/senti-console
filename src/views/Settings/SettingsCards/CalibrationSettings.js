@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import { InfoCard, ItemGrid, DSelect } from 'components';
+import { InfoCard, ItemGrid, DSelect, Caption } from 'components';
 import { Build } from '@material-ui/icons'
 import { Grid, ListItem, List, ListItemText, withStyles, Collapse } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
@@ -78,8 +78,8 @@ class CalibrationSettings extends Component {
 							</ListItem>
 							<ListItem >
 								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-									<ListItemText>{t("settings.theme")}</ListItemText>
-									{/* <DSelect menuItems={themes} value={theme} func={this.changeTheme} /> */}
+									<ListItemText>{t("settings.calibration.history")}</ListItemText>
+									<Caption>*Work in progress*</Caption>
 								</ItemGrid>
 							</ListItem>
 						</List>

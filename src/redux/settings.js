@@ -5,7 +5,22 @@ const TRP = "TABLE_ROWS_PER_PAGE"
 const CALTYPE = "CALIBRATION_TYPE"
 const COUNT = "CALIBRATION_COUNT"
 const CALNOTIF = "CALIBRATION_NOTIFICATION"
+const DISCSENT = "DISCOVER_SENTI_PAGE"
+const ALERTS = "NOTIFICATION_ALERTS"
+const DIDKNOW = "NOTIFICATIOn_DIDYOUKNOW"
 
+export const changeAlerts = t => ({
+	type: ALERTS,
+	t
+})
+export const changeDidKnow = t => ({
+	type: DIDKNOW,
+	t
+})
+export const changeDiscoverSenti = val => ({
+	type: DISCSENT,
+	val
+})
 export const changeCalNotif = t => ({
 	type: CALNOTIF,
 	t
@@ -41,9 +56,12 @@ let initialState = {
 	calibration: 1,
 	calNotifications: 0,
 	count: 200,
+	discSentiVal: 1,
 	sideBar: 0,
 	theme: "light",
-	trp: 10
+	trp: 10,
+	alerts: 1,
+	didKnow: 0,
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
@@ -70,6 +88,14 @@ export const settings = (state = initialState, action) => {
 		case CALNOTIF: 
 			return Object.assign({}, state, {
 				calNotifications: action.t
+			})
+		case ALERTS:
+			return Object.assign({}, state, {
+				alerts: action.t
+			})
+		case DIDKNOW:
+			return Object.assign({}, state, {
+				didKnow: action.t
 			})
 		default:
 			return state

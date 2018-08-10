@@ -15,20 +15,19 @@ class DisplaySettings extends Component {
 	static propTypes = {
 		language: PropTypes.string.isRequired
 	}
-	changeLang = (e) => {
-		this.props.changeLanguage(e.target.value)
-	}
-	changeTRP = (e) => {
-		this.props.changeTRP(e.target.value)
-	}
-	changeTheme = (e) => {
-		this.props.changeTheme(e.target.value)
-	}
-	changeSideBarLoc = (e) => {
-		this.props.changeSideBarLoc(e.target.value)
-	}
+	
+	changeLang = (e) => this.props.changeLanguage(e.target.value)
+	changeTRP = (e) => this.props.changeTRP(e.target.value)
+	changeTheme = (e) => this.props.changeTheme(e.target.value)
+	changeSideBarLoc = (e) => this.props.changeSideBarLoc(e.target.value)
+	changeDiscoverSenti = e => this.props.changeDiscoverSenti(e.target.value)
+
 	render() {
-		const { language, trp, sideBar, theme, classes, t } = this.props
+		const { language, trp, sideBar, discSentiVal, theme, classes, t } = this.props
+		let discSenti = [
+			{ value: 1, label: t("actions.yes") },
+			{ value: 0, label: t("actions.no") }
+		]
 		let languages = [
 			{ value: "en", label: t("settings.languages.en") },
 			{ value: "dk", label: t("settings.languages.dk") }
@@ -56,6 +55,12 @@ class DisplaySettings extends Component {
 				content={
 					<Grid container>
 						<List className={classes.list}>
+							<ListItem divider>
+								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+									<ListItemText>{t("settings.discoverSenti")}</ListItemText>
+									<DSelect menuItems={discSenti} value={discSentiVal} func={this.changeDiscoverSenti} />
+								</ItemGrid>
+							</ListItem>
 							<ListItem divider>
 								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 									<ListItemText>{t("settings.language")}</ListItemText>

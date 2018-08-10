@@ -157,17 +157,20 @@
 			"en": "English",
 			"dk": "Danish"
 		},
+		"defaultDataSet": "Default data set for charts",
+		"discoverSenti": "\"Discover Senti\" landing page",
 		"calibration": {
 			"text": "Calibration Method",
 			"time": "By Time",
 			"count": "By Count",
-			"notification":"Calibration Notification",
+			"notification": "Calibration Notification",
 			"byTime": "Minutes",
 			"byCount": "Counts",
 			"3months": "3 Months",
 			"6months": "6 Months",
 			"9months": "9 Months",
-			"12months": "12 Months"
+			"12months": "12 Months",
+			"history": "Calibration History"
 		},
 		"sideBarLoc": "Location of menu",
 		"sideBarLeft": "Left",
