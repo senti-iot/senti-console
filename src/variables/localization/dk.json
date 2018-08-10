@@ -104,8 +104,8 @@
 		}
 	},
 	"dialogs": {
-		"unassignTitle": "Unassign ${what}?",
-		"unassign": "Er du sikker på at du vil fjerne tildelingen %{deviceID}  %{deviceName} fra %{project} ?"
+		"unassign": "Er du sikker på at du vil fjerne tildelingen %{deviceID}  %{deviceName} fra %{project} ?",
+		"unassignTitle": "Unassign ${what}?"
 	},
 	"filters": {
 		"dateOptions": {
@@ -151,13 +151,33 @@
 		"pageTitle": "Projekter"
 	},
 	"settings": {
-		"pageTitle": "Instillinger",
+		"alerts": "Alerts",
+		"calibration": {
+			"12months": "12 Months",
+			"3months": "3 Months",
+			"6months": "6 Months",
+			"9months": "9 Months",
+			"byCount": "Counts",
+			"byTime": "Minutes",
+			"count": "By Count",
+			"history": "Calibration History",
+			"notification": "Calibration Notification",
+			"text": "Calibration Method",
+			"time": "By Time"
+		},
+		"defaultDataSet": "Default data set for charts",
+		"didYouKnow": "\"Did you know?\" Pop-ups",
+		"discoverSenti": "\"Discover Senti\" landing page",
 		"language": "Sprøg",
 		"languages": {
-			"en": "Engelsk",
-			"dk": "Dansk"
+			"dk": "Dansk",
+			"en": "Engelsk"
 		},
+		"notifications": "Notifications",
+		"pageTitle": "Instillinger",
+		"sideBarLeft": "Left",
 		"sideBarLoc": "Sidebar Location",
+		"sideBarRight": "Right",
 		"theme": "Stil / Tema",
 		"themes": {
 			"dark": "Mørkt tema",
