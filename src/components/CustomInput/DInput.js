@@ -48,7 +48,6 @@ class DInput extends Component {
 						horizontal: 'right',
 					}}
 					disablePortal>
-				
 					<Paper>
 						<ClickAwayListener onClickAway={this.handleCloseActionsDetails}>
 							<MenuList>

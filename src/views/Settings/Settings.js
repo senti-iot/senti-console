@@ -4,12 +4,13 @@ import { connect } from 'react-redux'
 import { InfoCard, GridContainer, ItemGrid } from 'components';
 // import { changeLang } from 'redux/settings';
 // import { Button, Icon } from '@material-ui/core';
-import { Notifications, Devices, BarChart } from '@material-ui/icons'
+import { Devices, BarChart } from '@material-ui/icons'
 import CalibrationSettings from './SettingsCards/CalibrationSettings';
 import DisplaySettings from './SettingsCards/DisplaySettings';
 import { changeLanguage } from 'redux/localization';
 import withLocalization from 'components/Localization/T';
-import { changeTRP, changeTheme, changeCalType, changeSideBarLoc, changeCount, changeCalNotif } from 'redux/settings';
+import { changeTRP, changeTheme, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow } from 'redux/settings';
+import NotificationSettings from './SettingsCards/NotificationSettings';
 class Settings extends Component {
 	constructor(props) {
 	  super(props)
@@ -23,8 +24,9 @@ class Settings extends Component {
 
 	render() {
 		const { t } = this.props 
-		const { language, changeLanguage, sideBar, changeSideBarLoc, trp, changeTRP, theme, changeTheme  } = this.props
+		const { language, changeLanguage, sideBar, changeSideBarLoc, trp, changeTRP, theme, changeTheme, changeDiscoverSenti, discSentiVal  } = this.props
 		const { calibration, changeCalType, count, changeCount, calNotifications, changeCalNotif } = this.props
+		const {	alerts, didKnow, changeAlerts, changeDidKnow } = this.props
 		return (
 			<GridContainer>
 				<ItemGrid xs={12} noMargin>
@@ -37,6 +39,8 @@ class Settings extends Component {
 						changeLanguage={changeLanguage}
 						sideBar={sideBar}
 						changeSideBarLoc={changeSideBarLoc}
+						discSentiVal={discSentiVal}
+						changeDiscoverSenti={changeDiscoverSenti}
 						t={t}
 					/>
 				</ItemGrid>
@@ -51,10 +55,13 @@ class Settings extends Component {
 						t={t}/>
 				</ItemGrid>
 				<ItemGrid xs={12} noMargin>
-					<InfoCard
-						noExpand
-						avatar={<Notifications/>}
-						title={"Notifications"} />
+					<NotificationSettings
+						didKnow={didKnow}
+						changeDidKnow={changeDidKnow}
+						alerts={alerts}
+						changeAlerts={changeAlerts}
+						t={t}
+					/>
 				</ItemGrid>
 				<ItemGrid xs={12} noMargin>
 					<InfoCard
@@ -80,22 +87,31 @@ const mapStateToProps = state => {
 		theme: s.theme,
 		trp: s.trp,
 		sideBar: s.sideBar,
+		discSentiVal: s.discSentiVal,
 
 		calibration: s.calibration,
 		count: s.count,
-		calNotifications: s.calNotifications
+		calNotifications: s.calNotifications,
+
+		alerts: s.alerts,
+		didKnow: s.didKnow
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		changeDiscoverSenti: val => dispatch(changeDiscoverSenti(val)),
 		changeLanguage: code => dispatch(changeLanguage(code)),
 		changeTRP: nr => dispatch(changeTRP(nr)),
 		changeTheme: t => dispatch(changeTheme(t)),
 		changeSideBarLoc: loc => dispatch(changeSideBarLoc(loc)),
+		
 		changeCalType: type => dispatch(changeCalType(type)),
 		changeCount: count => dispatch(changeCount(count)),
-		changeCalNotif: type => dispatch(changeCalNotif(type))
+		changeCalNotif: type => dispatch(changeCalNotif(type)),
+
+		changeAlerts: t => dispatch(changeAlerts(t)),
+		changeDidKnow: t => dispatch(changeDidKnow(t))
 	}
 }
 
