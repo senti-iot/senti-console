@@ -1,7 +1,7 @@
 {
 	"404": {
 		"errorMessage": "The resource requested has not been found! Please try again or contact support!",
-		"title": "404 Error - Not Found"
+		"title": "404 Error - Page Not Found"
 	},
 	"actions": {
 		"accept": "Accept",
@@ -40,7 +40,7 @@
 	"devices": {
 		"calibrateButton": "Manual Calibration",
 		"calibration": {
-			"noAudioSupported": "Your browser doesn't support audio files! There will be no sound feedback! Try using Google Chrome."
+			"noAudioSupported": "Your browser doesn't support audio files! There will be no sound feedback! Try using a better browser."
 		},
 		"cards": {
 			"data": "Device Data",
@@ -51,7 +51,7 @@
 		},
 		"device": "Device",
 		"editDetailsTitle": "Edit %{deviceId}",
-		"editHardwareTitle": "Edit hardware of %{deviceId}",
+		"editHardwareTitle": "Edit hardware for device %{deviceId}",
 		"fields": {
 			"adapter": "Power Adapter",
 			"address": "Address",
@@ -71,11 +71,11 @@
 			"org": "Organisation",
 			"pcModel": "PC Model",
 			"project": "Project",
-			"simCard": "SIM Card ID",
-			"simProvider": "SIM Provider",
+			"simCard": "SIM-card ID",
+			"simProvider": "SIM-card Provider",
 			"status": "Status",
 			"temp": "Temperature",
-			"wifiModule": "Wifi Module"
+			"wifiModule": "WiFi Module"
 		},
 		"locationTypes": {
 			"crossroads": "Crossroads",
@@ -91,7 +91,7 @@
 		},
 		"new": "",
 		"noAddress": "No Address",
-		"noData": "There is no Data available for the filters selected",
+		"noData": "There is no data available for the selected filters!",
 		"noImages": "There are no images uploaded!",
 		"noName": "No Name",
 		"noProject": "Unassigned",
@@ -140,7 +140,7 @@
 		"hideMore": "Hide",
 		"more": "More",
 		"reassign": "Re-assign to another project",
-		"recalibrate": "Recalibrate",
+		"recalibrate": "Re-calibrate",
 		"showMap": "Show Map",
 		"showMore": "Show More",
 		"unassignDevice": "Unassign from project",
@@ -183,7 +183,7 @@
 			"dark": "Dark theme",
 			"light": "Light theme"
 		},
-		"trp": "Table rows per page"
+		"trp": "Rows per page on lists"
 	},
 	"sidebar": {
 		"dashboard": "Dashboard",
@@ -210,7 +210,7 @@
 		"addNewDevice": "Add new Device",
 		"addNewProject": "Add new Project",
 		"filter": "Filter",
-		"rowsPerPage": "Rows Per page",
+		"rowsPerPage": "Rows per page",
 		"selected": "selected"
 	}
 }
