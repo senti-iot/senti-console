@@ -153,10 +153,10 @@
 	"settings": {
 		"alerts": "Alerts",
 		"calibration": {
-			"12months": "12 Months",
-			"3months": "3 Months",
-			"6months": "6 Months",
-			"9months": "9 Months",
+			"12months": "Every 12 months",
+			"3months": "Every 3 months",
+			"6months": "Every 6 months",
+			"9months": "Every 9 months",
 			"byCount": "Counts",
 			"byTime": "Minutes",
 			"count": "By Count",
@@ -166,8 +166,8 @@
 			"time": "By Time"
 		},
 		"defaultDataSet": "Default data set for charts",
-		"didYouKnow": "\"Did you know?\" Pop-ups",
-		"discoverSenti": "\"Discover Senti\" landing page",
+		"didYouKnow": "\"Did you know?\"",
+		"discoverSenti": "\"Discover Senti\"",
 		"headers":{
 			"display": "Display",
 			"calibration": "Calibration",
@@ -182,12 +182,12 @@
 		},
 		"pageTitle": "Settings",
 		"sideBarLeft": "Left",
-		"sideBarLoc": "Sidebar Location",
+		"sideBarLoc": "Menu location",
 		"sideBarRight": "Right",
 		"theme": "Theme",
 		"themes": {
-			"dark": "Dark theme",
-			"light": "Light theme"
+			"dark": "Dark",
+			"light": "Light"
 		},
 		"trp": "Rows per page on lists"
 	},

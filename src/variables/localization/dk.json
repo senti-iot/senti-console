@@ -151,23 +151,23 @@
 		"pageTitle": "Projekter"
 	},
 	"settings": {
-		"alerts": "Alerts",
+		"alerts": "Alarmeringer",
 		"calibration": {
-			"12months": "12 Months",
-			"3months": "3 Months",
-			"6months": "6 Months",
-			"9months": "9 Months",
-			"byCount": "Counts",
-			"byTime": "Minutes",
-			"count": "By Count",
-			"history": "Calibration History",
-			"notification": "Calibration Notification",
-			"text": "Calibration Method",
-			"time": "By Time"
+			"12months": "Hver 12. måned",
+			"3months": "Hver 3. måned",
+			"6months": "Hver 6. måned",
+			"9months": "Hver 9. måned",
+			"byCount": "Antal tællinger",
+			"byTime": "Antal minutter",
+			"count": "Antal tællinger",
+			"history": "Kalibreringshistorik",
+			"notification": "Kalibreringsnotifikation",
+			"text": "Kalibreringsmetode",
+			"time": "På tid"
 		},
-		"defaultDataSet": "Default data set for charts",
-		"didYouKnow": "\"Did you know?\" Pop-ups",
-		"discoverSenti": "\"Discover Senti\" landing page",
+		"defaultDataSet": "Standard datasæt for diagrammer",
+		"didYouKnow": "\"Viste du at?\"",
+		"discoverSenti": "\"Oplev Senti\"",
 		"headers": {
 			"display": "Skærm",
 			"calibration": "Kalirering",
@@ -182,13 +182,13 @@
 		},
 		"notifications": "Notifications",
 		"pageTitle": "Instillinger",
-		"sideBarLeft": "Til venstre",
+		"sideBarLeft": "Venstre",
 		"sideBarLoc": "Placering af menu",
-		"sideBarRight": "Til højre",
+		"sideBarRight": "Højre",
 		"theme": "Tema",
 		"themes": {
-			"dark": "Mørkt tema",
-			"light": "Lyst tema"
+			"dark": "Mørkt",
+			"light": "Lyst"
 		},
 		"trp": "Rækker per side i lister"
 	},

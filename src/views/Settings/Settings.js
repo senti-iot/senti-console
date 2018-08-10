@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { InfoCard, GridContainer, ItemGrid } from 'components';
+import { GridContainer, ItemGrid } from 'components';
 // import { changeLang } from 'redux/settings';
 // import { Button, Icon } from '@material-ui/core';
 import CalibrationSettings from './SettingsCards/CalibrationSettings';
