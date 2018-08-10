@@ -163,7 +163,8 @@
 			"history": "Kalibreringshistorik",
 			"notification": "Kalibreringsnotifikation",
 			"text": "Kalibreringsmetode",
-			"time": "På tid"
+			"time": "På tid",
+			"minutes": "minutter"
 		},
 		"defaultDataSet": "Standard datasæt for diagrammer",
 		"didYouKnow": "\"Viste du at?\"",
