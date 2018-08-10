@@ -24,7 +24,7 @@ class NotificationSettings extends Component {
 			<InfoCard
 				noExpand
 				avatar={<Notifications />}
-				title={"Notifications"}
+				title={t("settings.headers.notifications")}
 				subheader={"*Work in progress*"}
 				content={
 					<Grid container>

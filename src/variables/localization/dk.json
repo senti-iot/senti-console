@@ -168,6 +168,13 @@
 		"defaultDataSet": "Default data set for charts",
 		"didYouKnow": "\"Did you know?\" Pop-ups",
 		"discoverSenti": "\"Discover Senti\" landing page",
+		"headers": {
+			"display": "Skærm",
+			"calibration": "Kalirering",
+			"notifications": "Notifikationer",
+			"charts": "Diagrammer",
+			"devices": "Enheder"
+		},
 		"language": "Sprog",
 		"languages": {
 			"dk": "Dansk",

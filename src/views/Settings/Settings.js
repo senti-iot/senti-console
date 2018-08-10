@@ -4,13 +4,14 @@ import { connect } from 'react-redux'
 import { InfoCard, GridContainer, ItemGrid } from 'components';
 // import { changeLang } from 'redux/settings';
 // import { Button, Icon } from '@material-ui/core';
-import { Devices, BarChart } from '@material-ui/icons'
 import CalibrationSettings from './SettingsCards/CalibrationSettings';
 import DisplaySettings from './SettingsCards/DisplaySettings';
 import { changeLanguage } from 'redux/localization';
 import withLocalization from 'components/Localization/T';
 import { changeTRP, changeTheme, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow } from 'redux/settings';
 import NotificationSettings from './SettingsCards/NotificationSettings';
+import DeviceSettings from './SettingsCards/DeviceSettings';
+import ChartSettings from './SettingsCards/ChartSettings';
 class Settings extends Component {
 	constructor(props) {
 	  super(props)
@@ -64,16 +65,14 @@ class Settings extends Component {
 					/>
 				</ItemGrid>
 				<ItemGrid xs={12} noMargin>
-					<InfoCard
-						noExpand
-						avatar={<BarChart/>}
-						title={"Charts"} />
+					<ChartSettings
+						t={t}
+					/>
 				</ItemGrid>
 				<ItemGrid xs={12} noMargin>
-					<InfoCard
-						noExpand
-						avatar={<Devices/>}
-						title={"Devices"} />
+					<DeviceSettings
+						t={t}
+					/>
 				</ItemGrid>
 			</GridContainer>
 		)

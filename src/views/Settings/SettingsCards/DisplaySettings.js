@@ -51,7 +51,7 @@ class DisplaySettings extends Component {
 			<InfoCard
 				noExpand
 				avatar={<Laptop />}
-				title={"Display"}
+				title={t("settings.headers.display")}
 				content={
 					<Grid container>
 						<List className={classes.list}>

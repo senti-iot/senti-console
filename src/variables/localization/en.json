@@ -168,12 +168,18 @@
 		"defaultDataSet": "Default data set for charts",
 		"didYouKnow": "\"Did you know?\" Pop-ups",
 		"discoverSenti": "\"Discover Senti\" landing page",
+		"headers":{
+			"display": "Display",
+			"calibration": "Calibration",
+			"notifications": "Notifications",
+			"charts": "Charts",
+			"devices": "Devices"
+		},
 		"language": "Language",
 		"languages": {
 			"dk": "Danish",
 			"en": "English"
 		},
-		"notifications": "Notifications",
 		"pageTitle": "Settings",
 		"sideBarLeft": "Left",
 		"sideBarLoc": "Sidebar Location",

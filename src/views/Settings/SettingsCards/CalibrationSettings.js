@@ -44,7 +44,7 @@ class CalibrationSettings extends Component {
 			<InfoCard
 				noExpand
 				avatar={<Build />}
-				title={"Calibration"}
+				title={t("settings.headers.calibration")}
 				content={
 					<Grid container>
 						<List className={classes.list}>
