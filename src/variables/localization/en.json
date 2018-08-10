@@ -153,10 +153,10 @@
 	"settings": {
 		"alerts": "Alerts",
 		"calibration": {
-			"12months": "12 Months",
-			"3months": "3 Months",
-			"6months": "6 Months",
-			"9months": "9 Months",
+			"12months": "Every 12 months",
+			"3months": "Every 3 months",
+			"6months": "Every 6 months",
+			"9months": "Every 9 months",
 			"byCount": "Counts",
 			"byTime": "Minutes",
 			"count": "By Count",
@@ -176,7 +176,7 @@
 		"notifications": "Notifications",
 		"pageTitle": "Settings",
 		"sideBarLeft": "Left",
-		"sideBarLoc": "Sidebar Location",
+		"sideBarLoc": "Menu location",
 		"sideBarRight": "Right",
 		"theme": "Theme",
 		"themes": {

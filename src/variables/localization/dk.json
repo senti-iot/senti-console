@@ -153,10 +153,10 @@
 	"settings": {
 		"alerts": "Alarmeringer",
 		"calibration": {
-			"12months": "12 måneder",
-			"3months": "3 måneder",
-			"6months": "6 måneder",
-			"9months": "9 måneder",
+			"12months": "Hver 12. måned",
+			"3months": "Hver 3. måned",
+			"6months": "Hver 6. måned",
+			"9months": "Hver 9. måned",
 			"byCount": "Antal tællinger",
 			"byTime": "Antal minutter",
 			"count": "Antal tællinger",
@@ -175,9 +175,9 @@
 		},
 		"notifications": "Notifications",
 		"pageTitle": "Instillinger",
-		"sideBarLeft": "Til venstre",
+		"sideBarLeft": "Venstre",
 		"sideBarLoc": "Placering af menu",
-		"sideBarRight": "Til højre",
+		"sideBarRight": "Højre",
 		"theme": "Tema",
 		"themes": {
 			"dark": "Mørkt tema",
