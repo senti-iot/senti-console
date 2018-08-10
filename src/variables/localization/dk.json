@@ -180,8 +180,8 @@
 		"sideBarRight": "Højre",
 		"theme": "Tema",
 		"themes": {
-			"dark": "Mørkt tema",
-			"light": "Lyst tema"
+			"dark": "Mørkt",
+			"light": "Lyst"
 		},
 		"trp": "Rækker per side i lister"
 	},

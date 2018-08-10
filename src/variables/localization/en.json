@@ -180,8 +180,8 @@
 		"sideBarRight": "Right",
 		"theme": "Theme",
 		"themes": {
-			"dark": "Dark theme",
-			"light": "Light theme"
+			"dark": "Dark",
+			"light": "Light"
 		},
 		"trp": "Rows per page on lists"
 	},
