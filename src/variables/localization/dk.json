@@ -163,11 +163,19 @@
 			"history": "Kalibreringshistorik",
 			"notification": "Kalibreringsnotifikation",
 			"text": "Kalibreringsmetode",
-			"time": "På tid"
+			"time": "På tid",
+			"minutes": "minutter"
 		},
 		"defaultDataSet": "Standard datasæt for diagrammer",
 		"didYouKnow": "\"Viste du at?\"",
 		"discoverSenti": "\"Oplev Senti\"",
+		"headers": {
+			"display": "Skærm",
+			"calibration": "Kalirering",
+			"notifications": "Notifikationer",
+			"charts": "Diagrammer",
+			"devices": "Enheder"
+		},
 		"language": "Sprog",
 		"languages": {
 			"dk": "Dansk",

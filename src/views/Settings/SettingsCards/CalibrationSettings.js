@@ -30,9 +30,9 @@ class CalibrationSettings extends Component {
 		]
 		const counts = [ 200, 10, 20, 30, 40, 50]
 		const minutes = [
-			{ value: 0, label: "10 minutes" },
-			{ value: 1, label: "20 minutes" },
-			{ value: 3, label: "30 minutes" }
+			{ value: 0, label: "10 " + t("settings.calibration.minutes") },
+			{ value: 1, label: "20 " + t("settings.calibration.minutes") },
+			{ value: 3, label: "30 " + t("settings.calibration.minutes") }
 		]
 		const notifications = [
 			{ value: 0, label: t("settings.calibration.3months") },
@@ -44,7 +44,7 @@ class CalibrationSettings extends Component {
 			<InfoCard
 				noExpand
 				avatar={<Build />}
-				title={"Calibration"}
+				title={t("settings.headers.calibration")}
 				content={
 					<Grid container>
 						<List className={classes.list}>

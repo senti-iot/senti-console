@@ -163,17 +163,25 @@
 			"history": "Calibration History",
 			"notification": "Calibration Notification",
 			"text": "Calibration Method",
-			"time": "By Time"
+			"time": "By Time",
+			"minutes": "minutes"
 		},
+
 		"defaultDataSet": "Default data set for charts",
 		"didYouKnow": "\"Did you know?\"",
 		"discoverSenti": "\"Discover Senti\"",
+		"headers":{
+			"display": "Display",
+			"calibration": "Calibration",
+			"notifications": "Notifications",
+			"charts": "Charts",
+			"devices": "Devices"
+		},
 		"language": "Language",
 		"languages": {
 			"dk": "Danish",
 			"en": "English"
 		},
-		"notifications": "Notifications",
 		"pageTitle": "Settings",
 		"sideBarLeft": "Left",
 		"sideBarLoc": "Menu location",

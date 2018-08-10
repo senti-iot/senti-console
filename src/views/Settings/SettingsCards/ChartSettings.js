@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { BarChart } from '@material-ui/icons'
+import { InfoCard } from 'components';
 
 export default class ChartSettings extends Component {
 	static propTypes = {
@@ -7,10 +9,12 @@ export default class ChartSettings extends Component {
 	}
 
 	render() {
+		const { t } = this.props
 		return (
-			<div>
-
-			</div>
+			<InfoCard
+				noExpand
+				avatar={<BarChart />}
+				title={t("settings.headers.charts")} />
 		)
 	}
 }
