@@ -104,7 +104,13 @@ class DeviceSimpleList extends React.Component {
 		const { classes, data } = this.props;
 		const { order, orderBy, selected, rowsPerPage, page } = this.state;
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-		const tableHead = [{ id: "device_name", label: "Name" }, { id: "device_id", label: "ID" }, { id: "address", label: "Address" }, { id: "liveStatus", label: "Status" }, { id: "totalCount", label: "Total Count" }]
+		const tableHead = [
+			{ id: "device_name", label: t("devices.simpleList.name") }, 
+			{ id: "device_id", label: t("devices.simpleList.id") }, 
+			{ id: "address", label: t("devices.simpleList.address") }, 
+			{ id: "liveStatus", label: t("devices.simpleList.status") }, 
+			{ id: "totalCount", label: t("devices.simpleList.totalcount") }
+		]
 		return (
 			<Paper className={classes.root}>
 				<EnhancedTableToolbar
@@ -148,14 +154,14 @@ class DeviceSimpleList extends React.Component {
 											<Checkbox checked={isSelected} />
 										</TableCell>
 										<TableCell className={classes.tableCell}>
-											{n.device_name ? n.device_name : "No Name"}
+											{n.device_name ? n.device_name : t("devices.simpleList.tableCellDeviceName")}
 										</TableCell>
 										<TableCell className={classes.tableCellID}>
 											{n.device_id}
 										</TableCell>
 										<Hidden mdDown>
 											<TableCell className={classes.tableCell}>
-												{n.address ? n.address : "No address"}
+												{n.address ? n.address : t("devices.simpleList.tableCellAddress")}
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												{this.renderIcon(n.liveStatus)}
@@ -188,7 +194,7 @@ class DeviceSimpleList extends React.Component {
 					}}
 					onChangePage={this.handleChangePage}
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}
-					labelRowsPerPage={<Hidden mdDown>Rows per page</Hidden>}
+					labelRowsPerPage={<Hidden mdDown>{t("tables.rowsPerPage")}</Hidden>}
 				/>
 			</Paper>
 			// </Paper>

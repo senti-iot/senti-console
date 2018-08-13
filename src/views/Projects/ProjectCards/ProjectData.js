@@ -145,6 +145,7 @@ class ProjectData extends Component {
 		let id = event.target.value
 		this.setState({ display: id })
 	}
+	
 	handleDateFilter = (event) => {
 		let id = event.target.value
 		if (id !== 4) {
@@ -154,28 +155,33 @@ class ProjectData extends Component {
 			this.setState({ loading: true,  openCustomDate: true, dateFilterInputID: id })
 		}
 	}
+	
 	handleCustomDate = date => e => {
 		this.setState({
 			[date]: e
 		})
 	}
+	
 	options = [
-		{ id: 0, label: "Today" },
-		{ id: 1, label: "Last 7 days" },
-		{ id: 2, label: "Last 30 days" },
-		{ id: 3, label: "Last 90 days" },
-		{ id: 4, label: "Custom Interval" },
+		{ id: 0, label: this.props.t("filters.dateOptions.today") },
+		{ id: 1, label: this.props.t("filters.dateOptions.7days") },
+		{ id: 2, label: this.props.t("filters.dateOptions.30days") },
+		{ id: 3, label: this.props.t("filters.dateOptions.90days") },
+		{ id: 4, label: this.props.t("filters.dateOptions.custom") },
 
 	]
+
 	visibilityOptions = [
-		{ id: 0, icon: <PieChartRounded/>, label: "Pie Chart" },
-		{ id: 1, icon: <DonutLargeRounded/>, label: "Donut Chart" },
-		{ id: 2, icon: <BarChart />, label: "Bar Chart" },
+		{ id: 0, icon: <PieChartRounded />, label: this.props.t("charts.type.pie") },
+		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t("charts.type.donut") },
+		{ id: 2, icon: <BarChart />, label: this.props.t("charts.type.bar") },
 	]
+
 	handleCloseDialog = () => {
 		this.setState({ openCustomDate: false })
 		this.getWifiSum()
 	}
+
 	renderCustomDateDialog = () => {
 		const { classes, t } = this.props
 		return <MuiPickersUtilsProvider utils={MomentUtils}>
@@ -184,7 +190,7 @@ class ProjectData extends Component {
 				onClose={this.handleCloseUnassign}
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description">
-				<DialogTitle id="alert-dialog-title">Custom Date</DialogTitle>
+				<DialogTitle id="alert-dialog-title">{t("filters.dateOptions.custom")}</DialogTitle>
 				<DialogContent>
 					<ItemGrid>
 						<DateTimePicker

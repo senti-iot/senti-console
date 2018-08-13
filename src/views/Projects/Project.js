@@ -63,12 +63,12 @@ class Project extends Component {
 	}
 	
 	snackBarMessages = () => {
-		const { classes } = this.props
+		const { classes, t } = this.props
 		let msg = this.state.openSnackbar
 		switch (msg) {
 			case 1:
 				return <Fragment>
-					Project has been successfully deleted!
+					{t("projects.projectDeleted")}
 					<IconButton
 						key="close"
 						aria-label="Close"
@@ -80,11 +80,11 @@ class Project extends Component {
 					</IconButton>
 				</Fragment>
 			case 2:
-				return "Exported"
+				return t("projects.projectExported")
 			case 3:
-				return "Redirecting back to Project lists";
+				return t("projects.projectRedirect")
 			default:
-				break;
+				break
 		}
 	}
 	handleDeleteProjects = async () => {
@@ -180,10 +180,10 @@ class Project extends Component {
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{"Delete Project? "}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("projects.projectDelete")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					Are you sure you want to delete {this.state.project.title}?
+					{t("projects.projectDeleteConfirm", { project: this.state.project.title })} {this.state.project.title}?
 				</DialogContentText>
 
 			</DialogContent>
