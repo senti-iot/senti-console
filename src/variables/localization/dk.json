@@ -151,8 +151,10 @@
     "menus": {
         "assign": "Tildel til projekt",
         "calibrate": "Kalibrer",
-        "delete": "Slet",
-        "edit": "Rediger",
+		"delete": "Slet",
+		"deleteProject": "Slet projekt",
+		"edit": "Rediger",
+		"editProject": "Rediger projekt",
         "exportPDF": "Exporter til PDF",
         "hideMap": "Skjul kort",
         "hideMore": "Skjul",
@@ -168,7 +170,9 @@
     },
     "projects": {
         "new": "Opret nyt projekt",
-        "pageTitle": "Projekter",
+		"infoCardProjectData": "Data",
+		"infoCardProjectDetails": "Projektdetaljer",
+		"pageTitle": "Projekter",
 		"projectDeleted": "Projektet er slettet!",
 		"projectExported": "Projektet er eksporteret!",
 		"projectRedirect": "Omdirigerer tilbage til liste over projekter",

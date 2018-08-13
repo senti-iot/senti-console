@@ -151,8 +151,10 @@
     "menus": {
         "assign": "Assign to project",
         "calibrate": "Calibrate",
-        "delete": "Delete",
-        "edit": "Edit",
+		"delete": "Delete",
+		"deleteProject": "Delete Project",
+		"edit": "Edit",
+		"editProject": "Edit Project",
         "exportPDF": "Export to PDF",
         "hideMap": "Hide Map",
         "hideMore": "Hide",
@@ -167,7 +169,9 @@
         "unassignProject": "Unassign device/s from project"
     },
     "projects": {
-        "new": "Create new project",
+		"new": "Create new project",
+		"infoCardProjectData": "Data",
+		"infoCardProjectDetails": "Project Details",
 		"pageTitle": "Projects",
 		"projectDeleted": "Project has been successfully deleted!",
 		"projectExported": "Project has been successfully exported!",

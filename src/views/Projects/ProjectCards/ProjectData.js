@@ -305,10 +305,10 @@ class ProjectData extends Component {
 							<Info>{`${displayFrom} - ${displayTo}`}</Info>
 						</ItemGrid>
 						<Divider />
-						<MenuItem value={0}>Today</MenuItem>
-						<MenuItem value={1}>Last 7 days</MenuItem>
-						<MenuItem value={2}>Last 30 days</MenuItem>
-						<MenuItem value={3}>Last 90 days </MenuItem>
+						<MenuItem value={0}>{t("filters.dateOptions.today")}</MenuItem>
+						<MenuItem value={1}>{t("filters.dateOptions.7days")}</MenuItem>
+						<MenuItem value={2}>{t("filters.dateOptions.30days")}</MenuItem>
+						<MenuItem value={3}>{t("filters.dateOptions.90days")}</MenuItem>
 						<Divider />
 						<MenuItem value={4}>Custom Range</MenuItem>
 					</Select>
@@ -354,7 +354,7 @@ class ProjectData extends Component {
 					<ListItemIcon>
 						<Visibility />
 					</ListItemIcon>
-					<ListItemText inset primary="Graph Type" />
+					<ListItemText inset primary={t("filters.options.graphType")} />
 					<ExpandMore className={classNames({
 						[classes.expandOpen]: this.state.visibility,
 					}, classes.expand)} />
@@ -377,10 +377,10 @@ class ProjectData extends Component {
 	}
 	render() {
 		const { t } = this.props
-		const {  loading } = this.state
+		const { loading } = this.state
 		return (
 			<InfoCard
-				title={"Data"} avatar={<AssignmentTurnedIn />}
+				title={t("projects.infoCardProjectData")} avatar={<AssignmentTurnedIn />}
 				noExpand
 				topAction={this.renderMenu()}
 				content={
