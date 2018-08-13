@@ -8,7 +8,7 @@
         "apply": "Apply",
         "back": "Previous",
         "decline": "Decline",
-        "deletePicture": "Slet denne billeder",
+        "deletePicture": "Delete this picture",
         "finish": "Finish",
         "goTo": "Go to",
         "next": "Next",
@@ -129,7 +129,11 @@
 		"apply": "Apply",
 		"cancel": "Cancel",
 		"abort": "Abort",
-		"accept": "Accept"
+		"accept": "Accept",
+		"warnings": {
+			"notImplemented": "Not Implemented",
+			"wip": "Work in progress"
+		}
     },
     "filters": {
         "dateOptions": {
@@ -150,7 +154,7 @@
         "startDate": "Start Date"
 	},
 	"links": {
-		"googleMaps": "Go to Google Maps",
+		"googleMaps": "Show on Google Maps",
 		"mailTo": "Mail to"
 	},
     "login": {
@@ -192,6 +196,13 @@
 			"seeMap": "See Map",
 			"hideMap": "Hide Map"
 		},
+		"fields": {
+			"name": "Project Name",
+			"description": "Description",
+			"startDate": "Start Date",
+			"endDate": "End Date",
+			"assignDevices": "Assign devices"
+		},
 		"new": "Create new project",
 		"infoCardProjectData": "Data",
 		"infoCardProjectDetails": "Project Details",
@@ -211,7 +222,9 @@
 		"tabs": {
 			"listView": "List View",
 			"cardView": "Card View"
-		}
+		},
+		"updateProject": "Update Project",
+		"viewProject": "View Project"
     },
     "settings": {
         "alerts": "Alerts",

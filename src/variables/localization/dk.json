@@ -129,7 +129,11 @@
 		"apply": "Anvend",
 		"cancel": "Afbryd",
 		"abort": "Afbryd",
-		"accept": "Accepter"
+		"accept": "Accepter",
+		"warnings": {
+			"notImplemented": "Ikke implementeret",
+			"wip": "Under udvikling"
+		}
     },
     "filters": {
         "dateOptions": {
@@ -142,15 +146,15 @@
             "today": "I dag"
         },
         "display": "Visning",
-        "endDate": "Slut Dato",
+        "endDate": "Slutdato",
         "options": {
             "graphType": "Diagramtype"
         },
         "search": "Søg",
-        "startDate": "Start Dato"
+        "startDate": "Startdato"
 	},
 	"links": {
-		"googleMaps": "Gå til Google Maps",
+		"googleMaps": "Vis på Google Maps",
 		"mailTo": "Send mail til"
 	},	
     "login": {
@@ -192,6 +196,13 @@
 			"seeMap": "Se kort",
 			"hideMap": "Skjul kort"
 		},
+		"fields": {
+			"name": "Projektnavn",
+			"description": "Beskrivelse",
+			"startDate": "Startdato",
+			"endDate": "Slutdato",
+			"assignDevices": "Tilknyt enheder"
+		},
 		"new": "Opret nyt projekt",
 		"infoCardProjectData": "Data",
 		"infoCardProjectDetails": "Projektdetaljer",
@@ -211,7 +222,9 @@
 		"tabs": {
 			"listView": "Listevisning",
 			"cardView": "Kortvisning"
-		}
+		},
+		"updateProject": "Update Project",
+		"viewProject": "Vis projekt"
     },
     "settings": {
         "alerts": "Alarmeringer",

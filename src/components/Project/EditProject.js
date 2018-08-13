@@ -40,6 +40,7 @@ class EditProject extends Component {
 			openSnackBar: false,
 		}
 	}
+
 	componentDidMount = async () => {
 		this._isMounted = 1
 		let id = this.props.match.params.id
@@ -71,8 +72,9 @@ class EditProject extends Component {
 		this.setState({
 			loading: false
 		})
-		this.props.setHeader("Update project " + this.state.title, true)
+		this.props.setHeader(this.props.t("projects.updateProject") + " " + this.state.title, true)
 	}
+
 	componentWillUnmount = () => {
 		this._isMounted = 0
 		clearTimeout(this.timer)
@@ -115,16 +117,18 @@ class EditProject extends Component {
 			this.setState({ created: true, creating: false, openSnackBar: true }) : this.setState({ created: false, creating: false }))
 			, 2e3)
 	}
+	
 	goToNewProject = () => {
 		this.props.history.push('/project/' + this.props.match.params.id)
 	}
+
 	render() {
 		const { classes, theme, t } = this.props
 		const { availableDevices, created, loading, selectedDevices, devices, allDevices } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
-		});
-		console.log(t)
+		})
+		
 		return (
 			!loading ?
 				<GridContainer justify={'center'}>
@@ -134,7 +138,7 @@ class EditProject extends Component {
 								<ItemGrid container xs={12} md={6}>
 									<TextF
 										id={"title"}
-										label={"Title"}
+										label={t("projects.fields.name")}
 										value={this.state.title}
 										className={classes.textField}
 										handleChange={this.handleChange("title")}
@@ -144,7 +148,7 @@ class EditProject extends Component {
 								<ItemGrid xs={12} md={6} sm={12}>
 									<TextF
 										id={"multiline-flexible"}
-										label={"Description"}
+										label={t("projects.fields.description")}
 										multiline
 										rows={"4"}
 										color={"secondary"}
@@ -157,7 +161,7 @@ class EditProject extends Component {
 								<ItemGrid xs={12} md={6}>
 									<DatePicker
 										autoOk
-										label="Start Date"
+										label={t("projects.fields.startDate")}
 										clearable
 										format="DD.MM.YYYY"
 										value={this.state.open_date}
@@ -174,7 +178,7 @@ class EditProject extends Component {
 									<DatePicker
 										color="primary"
 										autoOk
-										label="End Date"
+										label={t("projects.fields.endDate")}
 										clearable
 										format="DD.MM.YYYY"
 										value={this.state.close_date}
@@ -187,11 +191,10 @@ class EditProject extends Component {
 									/>
 								</ItemGrid>
 								<ItemGrid xs={12}>
-									<FormControl className={classes.formControl}>
-									
+									<FormControl className={classes.formControl}>									
 										<Fragment>
 											<InputLabel FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
-													Assign more devices
+												{t("projects.fields.assignDevices")}
 											</InputLabel>
 											<Select
 												color={"primary"}
@@ -232,7 +235,7 @@ class EditProject extends Component {
 															? theme.typography.fontWeightRegular
 															: theme.typography.fontWeightMedium,
 														}}>
-														{name.device_id + " - " + (name.device_name ? name.device_name : "No Name")}
+														{name.device_id + " - " + (name.device_name ? name.device_name : t("devices.noName"))}
 													</MenuItem>
 												))}
 											</Select>
@@ -254,8 +257,8 @@ class EditProject extends Component {
 										disabled={this.state.creating}
 										onClick={this.state.created ? this.goToNewProject : this.handleUpdateProject}>
 										{this.state.created ?
-											<Fragment><Check className={classes.leftIcon} /> Go to Project </Fragment>
-											: <Fragment><Save className={classes.leftIcon} />Update Project</Fragment>}
+											<Fragment><Check className={classes.leftIcon} />{t("projects.viewProject")}</Fragment>
+											: <Fragment><Save className={classes.leftIcon} />{t("projects.updateProject")}</Fragment>}
 									</Button>
 								</div>
 							</Grid>
