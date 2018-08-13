@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import { Caption } from '..';
+import withLocalization from '../Localization/T';
 
 
 class InfoCard extends React.Component {
@@ -16,11 +17,11 @@ class InfoCard extends React.Component {
 	};
 	hasSubheader = (subheader) => subheader ? subheader.toString().length < 200 ? subheader ? subheader : null : null : null
 	renderSubHeader = () => {
-		const { subheader } = this.props
+		const { subheader, t  } = this.props
 		return subheader ? subheader.toString().length > 200 ?
 			<Fragment>
 				<Typography variant={'caption'}>
-					Description
+					{t("devices.fields.description")}
 				</Typography>
 				<Typography paragraph>
 					{subheader ? subheader : null}
@@ -32,7 +33,7 @@ class InfoCard extends React.Component {
 	render() {
 		const { classes, title, subheader,
 			content, hiddenContent, avatar,
-			noAvatar, leftActions, leftActionContent, noRightExpand } = this.props;
+			noAvatar, leftActions, leftActionContent, noRightExpand, t  } = this.props;
 
 		return (
 			<Card className={classes.card + classes.plainCardClasses}>
@@ -77,7 +78,7 @@ class InfoCard extends React.Component {
 								className={classes.expandPosition}
 							>
 								<Caption>
-									{this.state.expanded ? "See Less" : "See More"}
+									{this.state.expanded ? t("menus.seeLess") : t("menus.seeMore")}
 								</Caption><ExpandMore className={classnames(classes.expand, {
 									[classes.expandOpen]: this.state.expanded,
 								})} />
@@ -105,4 +106,4 @@ InfoCard.propTypes = {
 	hideFacts: PropTypes.bool,
 };
 
-export default withStyles(regularCardStyle)(InfoCard);
+export default withLocalization()(withStyles(regularCardStyle)(InfoCard));

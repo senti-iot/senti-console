@@ -26,7 +26,7 @@ class DeviceHardware extends Component {
 		const { classes, device, t  } = this.props
 		return (
 			<InfoCard
-				title={t("devices.hardware")}
+				title={t("devices.cards.hardware")}
 				avatar={<DeveloperBoard />}
 				subheader={''}
 				topAction={
