@@ -172,6 +172,12 @@
         "unassignProject": "Unassign device/s from project"
     },
     "projects": {
+		"devices": {
+			"title": "Devices",
+			"numDevices": "Number of devices:",
+			"seeMap": "See Map",
+			"hideMap": "Hide Map"
+		},
 		"new": "Create new project",
 		"infoCardProjectData": "Data",
 		"infoCardProjectDetails": "Project Details",

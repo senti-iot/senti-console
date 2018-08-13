@@ -116,7 +116,7 @@
 			"id": "ID",
 			"address": "Adresse",
 			"status": "Status",
-			"totalcount": "Total hits",
+			"totalcount": "Tællinger total",
 			"tableCellDeviceName": "Unavngivet",
 			"tableCellAddress": "Ingen adresse"
 		}
@@ -171,8 +171,14 @@
         "unassignDevice": "Fjern tilknytning fra projekt",
         "unassignProject": "Fjern enhed/er fra projekt"
     },
-    "projects": {
-        "new": "Opret nyt projekt",
+	"projects": {
+		"devices": {
+			"title": "Enheder",
+			"numDevices": "Antal enheder:",
+			"seeMap": "Se kort",
+			"hideMap": "Skjul kort"
+		},
+		"new": "Opret nyt projekt",
 		"infoCardProjectData": "Data",
 		"infoCardProjectDetails": "Projektdetaljer",
 		"pageTitle": "Projekter",
