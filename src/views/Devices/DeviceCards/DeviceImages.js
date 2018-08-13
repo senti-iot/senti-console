@@ -160,10 +160,10 @@ class DeviceImages extends Component {
 								}
 							}}>
 							<MenuItem onClick={this.handleOpenImageUpload}>
-								<CloudUpload className={classes.leftIcon} />Upload Pictures
+								<CloudUpload className={classes.leftIcon} />{t("actions.uploadImages")}
 							</MenuItem>
 							<MenuItem onClick={this.handleOpenDeletePictureDialog}>
-								<Delete className={classes.leftIcon} />Delete this picture
+								<Delete className={classes.leftIcon} />{t("actions.deletePicture")}
 							</MenuItem>
 							))}
 						</Menu>
@@ -183,8 +183,7 @@ class DeviceImages extends Component {
 										images={img ? img.map(m => m.image) : null} />
 								</Grid>
 							</Fragment>
-							
-							: <Grid container justify={'center'}> <Caption> There are no pictures uploaded</Caption></Grid> : this.renderImageLoader()}
+							: <Grid container justify={'center'}> <Caption>{t("devices.noImages")}</Caption></Grid> : this.renderImageLoader()}
 						{this.renderSnackbar()}
 						<Modal
 							aria-labelledby="simple-modal-title"

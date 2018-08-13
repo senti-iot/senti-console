@@ -8,6 +8,7 @@
         "apply": "Apply",
         "back": "Previous",
         "decline": "Decline",
+        "deletePicture": "Slet denne billeder",
         "finish": "Finish",
         "goTo": "Go to",
         "next": "Next",
@@ -19,6 +20,7 @@
         "save": "Save",
         "start": "Start",
         "updateDeviceHardware": "Update Device Hardware",
+        "uploadImages": "Upload billeder",
         "yes": "Yes"
     },
     "dashboard": {
