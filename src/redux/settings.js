@@ -39,8 +39,17 @@ export const getSettings = async () => {
 	return async dispatch => {
 		var settings = await getSettingsFromServer()
 		console.log(settings)
-		dispatch({ type: GETSETTINGS,
-			settings })
+		if (settings)
+			dispatch({
+				type: GETSETTINGS,
+				settings
+			})
+		else {
+			dispatch({
+				type: "NOSETTINGS",
+				loading: false
+			})
+		 }
 	}
 }
 export const changeAlerts = t => ({
@@ -102,6 +111,10 @@ let initialState = {
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
+	
+		case "NOSETTINGS":
+			console.log({ ...action.settings })
+			return Object.assign({}, state, { loading: false })
 		case GETSETTINGS: 
 			console.log({ ...action.settings })
 			return Object.assign({}, state, { ...action.settings, loading: false })

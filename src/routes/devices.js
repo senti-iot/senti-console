@@ -9,7 +9,7 @@ export default withRouter(withLocalization()((props) => {
 	return (
 		<Switch>
 			{/* <Route path={'/devices/new'} component={() => <CreateProject setHeader={props.setHeader} />}/> */}
-			<Route path={'/devices'} render={(rp) => <Devices setHeader={props.setHeader} {...rp} />} />
+			<Route path={'/devices'} render={(rp) => <Devices setHeader={props.setHeader} t={props.t} {...rp} />} />
 		</Switch>
 	)
 }))
