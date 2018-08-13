@@ -150,7 +150,8 @@
         "startDate": "Start Dato"
 	},
 	"links": {
-		"googleMaps": "Gå til Google Maps"
+		"googleMaps": "Gå til Google Maps",
+		"mailTo": "Send mail til"
 	},	
     "login": {
         "button": "Log ind",

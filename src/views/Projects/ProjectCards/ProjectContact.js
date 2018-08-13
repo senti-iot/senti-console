@@ -24,7 +24,10 @@ export class ProjectContact extends Component {
 								{t("projects.contact.mail")}
 							</Caption>
 							<Info>
-								{project.user.vcEmail}
+								<a title={t("links.mailTo")} href={`mailto:${project.user.vcEmail}`} target={'_blank'}>
+									{project.user.vcEmail}
+								</a>
+								{/* {project.user.vcEmail} */}
 							</Info>
 						</ItemGrid>
 						<ItemGrid>

@@ -233,7 +233,7 @@ class ProjectData extends Component {
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={() => { this.setState({ loading: false, openCustomDate: false })}} color="primary">
-						{t("dialogs.no")}
+						{t("dialogs.cancel")}
 					</Button>
 					<Button onClick={this.handleCloseDialog} color="primary" autoFocus>
 						{t("dialogs.apply")}

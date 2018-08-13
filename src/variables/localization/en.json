@@ -150,7 +150,8 @@
         "startDate": "Start Date"
 	},
 	"links": {
-		"googleMaps": "Go to Google Maps"
+		"googleMaps": "Go to Google Maps",
+		"mailTo": "Mail to"
 	},
     "login": {
         "button": "Sign in",
