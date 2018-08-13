@@ -275,7 +275,9 @@ class EditProject extends Component {
 						autoHideDuration={5000}
 						message={
 							<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-								<Check className={classes.leftIcon} color={'primary'} />Project {this.state.title} has been successfully updated!
+								<Check className={classes.leftIcon} color={'primary'} />
+								{/* Project {this.state.title} has been successfully updated! */}
+								{t("snackbars.projectUpdated", { project: this.state.title })}
 							</ItemGrid>
 						}
 					/>

@@ -282,12 +282,13 @@
         "creating": "Creating...",
         "deletedFail": "Deletion Failed!",
         "deletedSuccess": "Deleted!",
-        "deleting": "Deleting...",
+		"deleting": "Deleting...",
+		"projectUpdated": "Project %{project} has been successfully updated!",
         "redirect": "Redirecting ...",
         "unassign": "Device unassigned successfully",
         "updatedFailed": "Update failed!",
         "updatedSuccess": "Updated!",
-        "updating": "Updating..."
+		"updating": "Updating..."		
     },
     "tables": {
         "addNewDevice": "Add new Device",
