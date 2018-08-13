@@ -183,16 +183,16 @@ class Project extends Component {
 			<DialogTitle id="alert-dialog-title">{t("projects.projectDelete")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("projects.projectDeleteConfirm", { project: this.state.project.title })} {this.state.project.title}?
+					{t("projects.projectDeleteConfirm", { project: this.state.project.title })}
 				</DialogContentText>
 
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={this.handleCloseDeleteDialog} color="primary">
-					No
+					{t("actions.cancel")}
 				</Button>
 				<Button onClick={this.handleDeleteProjects} color="primary" autoFocus>
-					Yes
+					{t("actions.yes")}
 				</Button>
 			</DialogActions>
 		</Dialog>
