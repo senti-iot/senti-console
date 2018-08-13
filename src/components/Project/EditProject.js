@@ -119,11 +119,12 @@ class EditProject extends Component {
 		this.props.history.push('/project/' + this.props.match.params.id)
 	}
 	render() {
-		const { classes, theme } = this.props
+		const { classes, theme, t } = this.props
 		const { availableDevices, created, loading, selectedDevices, devices, allDevices } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		});
+		console.log(t)
 		return (
 			!loading ?
 				<GridContainer justify={'center'}>

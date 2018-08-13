@@ -177,7 +177,8 @@ class EnhancedTable extends React.Component {
 	}
 
 	render() {
-		const { classes, data } = this.props;
+		const { classes, data, t } = this.props;
+		console.log("Project Table", t)
 		const { order, orderBy, selected, rowsPerPage, page } = this.state;
 		let emptyRows;
 		if (data)
@@ -186,7 +187,7 @@ class EnhancedTable extends React.Component {
 		return (
 
 			<Paper className={classes.root}>
-				<EnhancedTableToolbar
+				<EnhancedTableToolbar //	./TableToolbar.js
 					anchorElMenu={this.state.anchorElMenu}
 					anchorFilterMenu={this.state.anchorFilterMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
@@ -200,11 +201,12 @@ class EnhancedTable extends React.Component {
 					filterOptions={this.props.tableHead}
 					numSelected={selected.length}
 					options={this.options}
+					t={t}
 					// suggestions={data ? data.map(p => ({ id: p.id, label: p.title })) : []}
 				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
-						<EnhancedTableHead
+						<EnhancedTableHead // ./ProjectTableHeader
 							numSelected={selected.length}
 							order={order}
 							orderBy={orderBy}
@@ -212,6 +214,7 @@ class EnhancedTable extends React.Component {
 							onRequestSort={this.handleRequestSort}
 							rowCount={data ? data.length : 0}
 							columnData={this.props.tableHead}
+							t={t}
 							classes={classes}
 						/>
 						<TableBody>

@@ -196,6 +196,7 @@ class Projects extends Component {
 		this.setState({ route: value })
 	}
 	renderAllProjects = () => {
+		const { t } = this.props 
 		const { loading } = this.state
 		return loading ? <CircularLoader /> : <ProjectTable
 			data={this.filterItems(this.state.projects)}
@@ -205,6 +206,7 @@ class Projects extends Component {
 			handleFilterStartDate={this.handleFilterStartDate}
 			filters={this.state.filters}
 			deleteProjects={this.deleteProjects}
+			t={t}
 		/>
 	}
 	renderList = () => {
@@ -214,8 +216,9 @@ class Projects extends Component {
 	}
 	renderCards = () => {
 		const { loading } = this.state
+		const { t } = this.props
 		return loading ? <CircularLoader /> : <GridContainer>
-			<ProjectCards projects={this.filterItems(this.state.projects)} />
+			<ProjectCards t={t} projects={this.filterItems(this.state.projects)} />
 		</GridContainer>
 	}
 	render() {

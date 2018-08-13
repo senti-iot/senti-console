@@ -56,11 +56,6 @@ class EnhancedTableHead extends Component {
 									sortDirection={orderBy === columnData[1].id ? order : false}
 									className={classes.header + " " + classes.tableCellID}
 								>
-									{/* <Tooltip
-										title="Sort"
-										placement={columnData[0].numeric ? 'bottom-end' : 'bottom-start'}
-										enterDelay={300}
-									> */}
 									<TableSortLabel
 										active={orderBy === columnData[0].id}
 										direction={order}
@@ -75,29 +70,7 @@ class EnhancedTableHead extends Component {
 									>
 										<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{columnData[0].label}</Typography>
 									</TableSortLabel>
-									{/* </Tooltip> */}
 								</TableCell>
-								{/* <TableCell
-									padding={columnData[1].disablePadding ? 'none' : 'default'}
-									sortDirection={orderBy === columnData[1].id ? order : false}
-									className={classes.header + " " + classes.tableCellID}
-								>
-									
-										<TableSortLabel
-											active={orderBy === columnData[1].id}
-											direction={order}
-											onClick={this.createSortHandler(columnData[1].id)}
-											classes={
-												{
-													root: classes.HeaderLabelActive,
-													active: classes.HeaderLabelActive
-
-												}
-											}
-										>
-											<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{columnData[1].label}</Typography>
-										</TableSortLabel>
-								</TableCell> */}
 							</Fragment>
 
 						}

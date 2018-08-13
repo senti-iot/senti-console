@@ -135,6 +135,7 @@ class DeviceSimpleList extends React.Component {
 							rowCount={data.length}
 							columnData={tableHead}
 							classes={classes}
+							t={t}
 						/>
 						<TableBody>
 							{data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((n, i) => {

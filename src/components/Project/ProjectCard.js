@@ -42,7 +42,8 @@ class ProjectCard extends Component {
 
 	}
 	render() {
-		const { p, classes } = this.props
+		const { p, classes, t } = this.props
+		console.log("Project Card ", t)
 		const { actionAnchor } = this.state
 		return (
 			<ItemGrid noPadding extraClass={classes.smallCardGrid} noMargin md={4}>

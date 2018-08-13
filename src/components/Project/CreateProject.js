@@ -89,11 +89,12 @@ class CreateProject extends Component {
 			this.props.history.push('/project/' + this.state.id)
 	}
 	render() {
-		const { classes, theme } = this.props
+		const { classes, theme, t } = this.props
 		const { availableDevices, created } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		});
+		console.log("CreateProject", t)
 		return (
 			<GridContainer justify={'center'}>
 				<Paper className={classes.paper}>

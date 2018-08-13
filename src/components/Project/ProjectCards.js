@@ -18,10 +18,10 @@ class ProjectCards extends Component {
 	render() {
 		console.log(this.props)
 		// const { actionAnchor } = this.state
- 		const { projects } = this.props
+ 		const { projects, t } = this.props
 		return (
 			projects.map(p => 
-				<ProjectCard key={p.id} p={p}/>
+				<ProjectCard t={t} key={p.id} p={p}/>
 			)
 
 		)
