@@ -142,7 +142,10 @@
         },
         "search": "Søg",
         "startDate": "Start Dato"
-    },
+	},
+	"links": {
+		"googleMaps": "Gå til Google Maps"
+	},	
     "login": {
         "button": "Log ind",
         "pass": "Kodeord",

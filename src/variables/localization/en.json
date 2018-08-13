@@ -142,7 +142,10 @@
         },
         "search": "Search",
         "startDate": "Start Date"
-    },
+	},
+	"links": {
+		"googleMaps": "Go to Google Maps"
+	},
     "login": {
         "button": "Sign in",
         "pass": "Password",
