@@ -29,7 +29,7 @@ class ProjectDetails extends Component {
 	}
 	render() {
 		const { actionAnchor } = this.state
-		const { project, classes } = this.props
+		const { project, classes, t } = this.props
 		return (
 			<InfoCard
 				title={'Project Details'} avatar={<LibraryBooks />}

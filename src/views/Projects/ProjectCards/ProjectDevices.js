@@ -20,7 +20,7 @@ class ProjectDevices extends Component {
 		this.setState({ mapExpanded: !this.state.mapExpanded })
 	}
 	render() {
-		const { classes, project, /* deviceMostCounts */ } = this.props
+		const { classes, project, t /* deviceMostCounts */ } = this.props
 		return (
 			<InfoCard title={"Devices"} avatar={<Devices />} subheader={"Number of devices:" + project.devices.length}
 				leftActions={
@@ -57,7 +57,7 @@ class ProjectDevices extends Component {
 							<Info>
 								{deviceMostCounts ? deviceMostCounts.totalCount : "-"}
 							</Info> */
-					<DeviceSimpleList filters={this.state.deviceFilters} data={project.devices} />
+					<DeviceSimpleList t={t} filters={this.state.deviceFilters} data={project.devices} />
 					// </ItemGrid>
 					// </Grid>
 				}

@@ -1,12 +1,13 @@
-import { Grid, Snackbar, Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, IconButton, withStyles } from '@material-ui/core';
-import { Person, Close } from '@material-ui/icons';
-import { Info, ItemGrid, InfoCard, GridContainer, CircularLoader, Caption } from 'components';
+import { Snackbar, Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, IconButton, withStyles } from '@material-ui/core';
+import { Close } from '@material-ui/icons';
+import { ItemGrid, GridContainer, CircularLoader } from 'components';
 import moment from "moment";
 import React, { Component, Fragment } from 'react';
 import { getProject, deleteProject } from 'variables/dataProjects';
 import ProjectData from './ProjectCards/ProjectData';
 import ProjectDetails from './ProjectCards/ProjectDetails';
 import ProjectDevices from './ProjectCards/ProjectDevices';
+import { ProjectContact } from './ProjectCards/ProjectContact';
 const projectStyles = theme => ({
 	close: {
 		width: theme.spacing.unit * 4,
@@ -87,8 +88,8 @@ class Project extends Component {
 		}
 	}
 	handleDeleteProjects = async () => {
-		await deleteProject([this.state.project.id]).then(rs => {
-			this.setState({ openSnackbar: 1, openDelete: false })
+		await deleteProject([this.state.project.id]).then(() => {
+			this.setState({ openSnackbar: 1, openDelete: false });
 		})
 	}
 	redirect = () => {
@@ -172,6 +173,7 @@ class Project extends Component {
 	}
 	renderDeleteDialog = () => {
 		const { openDelete } = this.state
+		const { t } = this.props
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
@@ -200,60 +202,22 @@ class Project extends Component {
 	}
 	render() {
 		const { project, loading } = this.state
-		const { t } = this.props
+		const { t } = this.props //Localization Provider is HOC'd with withRouter on the Routes Functional Component (See routes/*any*.js) 
 		const rp = { history: this.props.history, match: this.props.match }
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectDetails project={project} {...rp} deleteProject={this.handleOpenDeleteDialog}/>
+						<ProjectDetails t={t} project={project} {...rp} deleteProject={this.handleOpenDeleteDialog}/>
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectDevices /* deviceMostCounts={deviceMostCounts} */ project={project}/>
+						<ProjectDevices t={t} project={project}/>
 					</ItemGrid >
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<ProjectData t={t} project={project}/>
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<InfoCard title={"Contact"} avatar={<Person />} subheader={""}
-							noExpand
-							content={
-								<Grid container>
-									<ItemGrid>
-										<Caption>
-												Contact:
-										</Caption>
-										<Info>
-											{project.user.vcFirstName + " " + project.user.vcLastName}
-										</Info>
-									</ItemGrid>
-									<ItemGrid>
-										<Caption>
-												E-mail:
-										</Caption>
-										<Info>
-											{project.user.vcEmail}
-										</Info>
-									</ItemGrid>
-									<ItemGrid>
-										<Caption>
-												Phone:
-										</Caption>
-										<Info>
-											{project.user.vcPhone}
-										</Info>
-									</ItemGrid>
-									<ItemGrid>
-										<Caption>
-												Organisation:
-										</Caption>
-										<Info>
-											{project.user.organisation}
-										</Info>
-									</ItemGrid>
-								</Grid>
-							}
-						/>
+						<ProjectContact t={t} project={project}/>
 					</ItemGrid>
 					{this.renderDeleteDialog()}
 					<Snackbar
@@ -269,7 +233,6 @@ class Project extends Component {
 						message={
 							<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
 								{this.snackBarMessages()}
-							
 							</ItemGrid>
 						}
 					/>

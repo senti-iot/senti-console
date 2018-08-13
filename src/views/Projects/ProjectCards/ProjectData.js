@@ -177,8 +177,7 @@ class ProjectData extends Component {
 		this.getWifiSum()
 	}
 	renderCustomDateDialog = () => {
-		console.log(this.props.t)
-		const { classes } = this.props
+		const { classes, t } = this.props
 		return <MuiPickersUtilsProvider utils={MomentUtils}>
 		 <Dialog
 				open={this.state.openCustomDate}
@@ -276,7 +275,7 @@ class ProjectData extends Component {
 		}
 	}
 	renderDateFilter = () => {
-		const { classes } = this.props
+		const { classes, t } = this.props
 		const { dateFilterInputID, to, from } = this.state
 		let displayTo = moment(to).format(this.format)
 		let displayFrom = moment(from).format(this.format)
@@ -314,7 +313,7 @@ class ProjectData extends Component {
 	}
 	renderMenu = () => {
 		const { actionAnchor } = this.state
-		const { classes } = this.props
+		const { classes, t } = this.props
 		return <ItemGrid container noMargin noPadding>
 			<Hidden smDown>
 				{this.renderDateFilter()}
@@ -371,7 +370,7 @@ class ProjectData extends Component {
 		</ItemGrid>
 	}
 	render() {
-		console.log(this.props.t)
+		const { t } = this.props
 		const {  loading } = this.state
 		return (
 			<InfoCard
@@ -393,8 +392,6 @@ class ProjectData extends Component {
 	}
 }
 ProjectData.propTypes = {
-	// history: PropTypes.any.isRequired,
-	// match: PropTypes.any.isRequired,
 	project: PropTypes.object.isRequired,
 }
 export default withStyles(deviceStyles, { withTheme: true })(ProjectData);
