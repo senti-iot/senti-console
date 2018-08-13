@@ -101,9 +101,9 @@ class DeviceSimpleList extends React.Component {
 		}
 	}
 	render() {
-		const { classes, data } = this.props;
-		const { order, orderBy, selected, rowsPerPage, page } = this.state;
-		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+		const { classes, data, t } = this.props
+		const { order, orderBy, selected, rowsPerPage, page } = this.state
+		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 		const tableHead = [
 			{ id: "device_name", label: t("devices.simpleList.name") }, 
 			{ id: "device_id", label: t("devices.simpleList.id") }, 
@@ -138,7 +138,8 @@ class DeviceSimpleList extends React.Component {
 						/>
 						<TableBody>
 							{data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((n, i) => {
-								const isSelected = this.isSelected(n.device_id);
+								const isSelected = this.isSelected(n.device_id)
+								const { t } = this.props
 								return (
 									<TableRow
 										hover

@@ -446,7 +446,7 @@ class DeviceData extends Component {
 
 	renderMenu = () => {
 		const { actionAnchor } = this.state
-		const { classes } = this.props
+		const { classes, t } = this.props
 		return <ItemGrid container noMargin noPadding>
 			<Hidden smDown>
 				{this.renderDateFilter()}
