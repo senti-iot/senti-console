@@ -7,13 +7,13 @@ export class ProjectContact extends Component {
 	render() {
 		const { t, project } = this.props
 		return (
-			<InfoCard title={t("project.cards.contact")} avatar={<Person />} subheader={""}
+			<InfoCard title={t("projects.contact.title")} avatar={<Person />} subheader={""}
 				noExpand
 				content={
 					<Grid container>
 						<ItemGrid>
 							<Caption>
-								Contact:
+								{t("projects.contact.name")}
 							</Caption>
 							<Info>
 								{project.user.vcFirstName + " " + project.user.vcLastName}
@@ -21,7 +21,7 @@ export class ProjectContact extends Component {
 						</ItemGrid>
 						<ItemGrid>
 							<Caption>
-								E-mail:
+								{t("projects.contact.mail")}
 							</Caption>
 							<Info>
 								{project.user.vcEmail}
@@ -29,7 +29,7 @@ export class ProjectContact extends Component {
 						</ItemGrid>
 						<ItemGrid>
 							<Caption>
-								Phone:
+								{t("projects.contact.phone")}
 							</Caption>
 							<Info>
 								{project.user.vcPhone}
@@ -37,7 +37,7 @@ export class ProjectContact extends Component {
 						</ItemGrid>
 						<ItemGrid>
 							<Caption>
-								Organisation:
+								{t("projects.contact.organisation")}
 							</Caption>
 							<Info>
 								{project.user.organisation}

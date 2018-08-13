@@ -172,9 +172,16 @@
         "unassignProject": "Fjern enhed/er fra projekt"
     },
 	"projects": {
+		"contact": {
+			"title": "Kontakt",
+			"name": "Navn:",
+			"mail": "E-mail:",
+			"phone": "Telefon:",
+			"organisation": "Organisation:"
+		},
 		"devices": {
 			"title": "Enheder",
-			"numDevices": "Antal enheder:",
+			"numDevices": "Antal enheder: ",
 			"seeMap": "Se kort",
 			"hideMap": "Skjul kort"
 		},

@@ -172,9 +172,16 @@
         "unassignProject": "Unassign device/s from project"
     },
     "projects": {
+		"contact": {
+			"title": "Contact",
+			"name": "Name:",
+			"mail": "E-mail:",
+			"phone": "Phone:",
+			"organisation": "Organisation:"
+		},
 		"devices": {
 			"title": "Devices",
-			"numDevices": "Number of devices:",
+			"numDevices": "Number of devices: ",
 			"seeMap": "See Map",
 			"hideMap": "Hide Map"
 		},
