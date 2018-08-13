@@ -22,7 +22,14 @@
         "updateDeviceHardware": "Opdater hardware for enhed",
         "uploadImages": "Upload billeder",
         "yes": "Ja"
-    },
+	},
+	"charts": {
+		"type": {
+			"pie": "Lagkage diagram",
+			"donut": "Donut diagram",
+			"bar": "Søjle diagram"
+		}
+	},
     "dashboard": {
         "data": {
             "s1": "",
@@ -103,7 +110,16 @@
             "green": "Tilsluttet, Data",
             "red": "Ikke tilsluttet, Ingen Data",
             "yellow": "Tilsluttet, Ingen Data"
-        }
+        },
+		"simpleList": {
+			"name": "Navn",
+			"id": "ID",
+			"address": "Adresse",
+			"status": "Status",
+			"totalcount": "Total hits",
+			"tableCellDeviceName": "Unavngivet",
+			"tableCellAddress": "Ingen adresse"
+		}
     },
     "dialogs": {
         "unassign": "Er du sikker på at du vil fjerne tildelingen %{deviceID}  %{deviceName} fra %{project} ?",
@@ -157,7 +173,18 @@
 		"projectExported": "Projektet er eksporteret!",
 		"projectRedirect": "Omdirigerer tilbage til liste over projekter",
 		"projectDelete": "Slet projekt?",
-		"projectDeleteConfirm": "Er du sikker på du ønsker at slette projektet %{project}?"
+		"projectDeleteConfirm": "Er du sikker på du ønsker at slette projektet %{project}?",
+		"projectsColumnTitle": "Titel",
+		"projectsColumnDescription": "Beskrivelse",
+		"projectsColumnStartDate": "Startdato",
+		"projectsColumnEndDate": "Slutdato",
+		"projectsColumnProgress": "",
+		"projectsColumnCreated": "Oprettet",
+		"projectsColumnLastMod": "Senest rettet",
+		"tabs": {
+			"listView": "Listevisning",
+			"cardView": "Kortvisning"
+		}
     },
     "settings": {
         "alerts": "Alarmeringer",

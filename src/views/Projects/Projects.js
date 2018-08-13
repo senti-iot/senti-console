@@ -26,8 +26,9 @@ class Projects extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader("Projects", false)
+		props.setHeader(props.t("projects.pageTitle"), false)
 	}
+
 	componentDidMount = async () => {
 		this._isMounted = 1
 		await this.getProjects()
@@ -142,16 +143,17 @@ class Projects extends Component {
 		})
 	}
 	getProjects = async () => {
+		const { t } = this.props
 		await getAllProjects().then(rs => this._isMounted ? this.setState({
 			projects: rs,
 			projectHeader: [
-				{ id: 'title', label: 'Title', },
-				{ id: 'description', label: 'Description', },
-				{ id: 'open_date', label: 'Start Date', },
-				{ id: 'close_date', label: 'End Date', },
-				// { id: 'progress', label: 'Progress', },
-				{ id: 'created', label: 'Created', },
-				// { id: 'last_modified', label: 'Last Modified', },
+				{ id: 'title', label: t("projects.projectsColumnTitle"), },
+				{ id: 'description', label: t("projects.projectsColumnDescription"), },
+				{ id: 'open_date', label: t("projects.projectsColumnStartDate"), },
+				{ id: 'close_date', label: t("projects.projectsColumnEndDate"), },
+				// { id: 'progress', label: t("projects.projectsColumnProgress"), },
+				{ id: 'created', label: t("projects.projectsColumnCreated"), },
+				// { id: 'last_modified', label: t("projects.projectsColumnLastMod"), },
 			],
 			loading: false
 		}) : null)
@@ -217,14 +219,14 @@ class Projects extends Component {
 		</GridContainer>
 	}
 	render() {
-		const { classes } = this.props
+		const { classes, t } = this.props
 		const { projects } = this.state
 		return (
 			<Fragment>
 				<AppBar position={'sticky'} classes={{ root: classes.appBar }}>
 					<Tabs value={this.state.route} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
-						<Tab title={'List View'} id={0} label={<ViewList />} onClick={() => { this.props.history.push(`${this.props.match.path}/list`) }} />
-						<Tab title={'Cards View'} id={1} label={<ViewModule />} onClick={() => { this.props.history.push(`${this.props.match.path}/cards`) }} />
+						<Tab title={t("projects.tabs.listView")} id={0} label={<ViewList />} onClick={() => { this.props.history.push(`${this.props.match.path}/list`) }} />
+						<Tab title={t("projects.tabs.cardView")} id={1} label={<ViewModule />} onClick={() => { this.props.history.push(`${this.props.match.path}/cards`) }} />
 						<Search
 							right
 							suggestions={projects ? this.suggestionGen(projects) : []}

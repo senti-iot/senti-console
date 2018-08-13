@@ -22,7 +22,14 @@
         "updateDeviceHardware": "Update Device Hardware",
         "uploadImages": "Upload billeder",
         "yes": "Yes"
-    },
+	},
+	"charts": {
+		"type": {
+			"pie": "Pie Chart",
+			"donut": "Donut Chart",
+			"bar": "Bar Chart"
+		}
+	},
     "dashboard": {
         "data": {
             "s1": "Viewing your data can be done through lists, cards and different types of graphs.",
@@ -103,7 +110,16 @@
             "green": "Connected, Data",
             "red": "Not Connected, No Data",
             "yellow": "Connected, No Data"
-        }
+		},
+		"simpleList": {
+			"name": "Name",
+			"id": "ID",
+			"address": "Address",
+			"status": "Status",
+			"totalcount": "Total Count",
+			"tableCellDeviceName": "No Name",
+			"tableCellAddress": "No Address"		
+		}
     },
     "dialogs": {
         "unassign": "Are you sure you want to unassign  %{deviceID}  %{deviceName} from %{project}",
@@ -157,7 +173,18 @@
 		"projectExported": "Project has been successfully exported!",
 		"projectRedirect": "Redirecting back to list of projects",
 		"projectDelete": "Delete Project?",
-		"projectDeleteConfirm": "Are you sure you want to delete project %{project}?"
+		"projectDeleteConfirm": "Are you sure you want to delete project %{project}?",
+		"projectsColumnTitle": "Title",
+		"projectsColumnDescription": "Description",
+		"projectsColumnStartDate": "Start Date",
+		"projectsColumnEndDate": "End Date",
+		"projectsColumnProgress": "",
+		"projectsColumnCreated": "Created",
+		"projectsColumnLastMod": "Last modified",
+		"tabs": {
+			"listView": "List View",
+			"cardView": "Card View"
+		}
     },
     "settings": {
         "alerts": "Alerts",

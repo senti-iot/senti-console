@@ -61,6 +61,7 @@ class DeviceData extends Component {
 			padding: 10
 		}
 	}
+
 	getWifiDay = async () => {
 		const { device } = this.props
 		const { from, to } = this.state
@@ -99,6 +100,7 @@ class DeviceData extends Component {
 			})
 		}
 	}
+
 	getWifiSum = async () => {
 		const { device } = this.props
 		const { from, to } = this.state
@@ -140,6 +142,7 @@ class DeviceData extends Component {
 			})
 		}
 	}
+
 	componentDidMount = async () => {
 		this._isMounted = 1
 		// console.log(this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : 1000)
@@ -147,19 +150,24 @@ class DeviceData extends Component {
 			this.getWifiSum()
 		}
 	}
+
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
+
 	handleCustomCheckBox = (e) => {
 		this.setState({ timeType: parseInt(e.target.value, 10) })
 	}
 	handleOpenActionsDetails = event => {
 		this.setState({ actionAnchor: event.currentTarget });
-	};
+	}
+
 	handleCloseActionsDetails = () => {
 		this.setState({ actionAnchor: null });
-	};
+	}
+
 	format = "YYYY-MM-DD+HH:mm"
+
 	handleSwitchDayHour = () => {
 		let id = this.state.dateFilterInputID
 		switch (id) {
@@ -181,6 +189,7 @@ class DeviceData extends Component {
 
 		}
 	}
+
 	handleSetDate = (id) => {
 		let to = null
 		let from = null
@@ -213,10 +222,12 @@ class DeviceData extends Component {
 			barDataSets: null
 		}, this.handleSwitchDayHour)
 	}
+
 	handleVisibility = (event) => {
 		let id = event.target.value
 		this.setState({ display: id })
 	}
+
 	handleDateFilter = (event) => {
 		let id = event.target.value
 		if (id !== 4) {
@@ -226,11 +237,13 @@ class DeviceData extends Component {
 			this.setState({ loading: true, openCustomDate: true, dateFilterInputID: id })
 		}
 	}
+
 	handleCustomDate = date => e => {
 		this.setState({
 			[date]: e
 		})
 	}
+
 	options = [
 		{ id: 0, label: this.props.t("filters.dateOptions.today") },
 		{ id: 1, label: this.props.t("filters.dateOptions.7days") },
@@ -239,11 +252,13 @@ class DeviceData extends Component {
 		{ id: 4, label: this.props.t("filters.dateOptions.custom") },
 
 	]
+
 	visibilityOptions = [
-		{ id: 0, icon: <PieChartRounded />, label: "Pie Chart" },
-		{ id: 1, icon: <DonutLargeRounded />, label: "Donut Chart" },
-		{ id: 2, icon: <BarChart />, label: "Bar Chart" },
+		{ id: 0, icon: <PieChartRounded />, label: this.props.t("charts.type.pie") },
+		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t("charts.type.donut") },
+		{ id: 2, icon: <BarChart />, label: this.props.t("charts.type.bar") },
 	]
+
 	handleCloseDialog = () => {
 		this.setState({ openCustomDate: false })
 		if (this.state.timeType === 1) {
@@ -253,6 +268,7 @@ class DeviceData extends Component {
 			this.getWifiSum()
 		}
 	}
+
 	renderCustomDateDialog = () => {
 		const { classes, t } = this.props
 		return <MuiPickersUtilsProvider utils={MomentUtils}>
@@ -345,11 +361,13 @@ class DeviceData extends Component {
 		</MuiPickersUtilsProvider>
 
 	}
+
 	renderNoData = () => {
 		return <ItemGrid container justify={'center'}>
 			<Caption> {this.props.t("devices.noData")}</Caption>
 		</ItemGrid>
 	}
+
 	renderType = () => {
 		const { display } = this.state
 		switch (display) {
@@ -387,6 +405,7 @@ class DeviceData extends Component {
 				break;
 		}
 	}
+
 	renderDateFilter = () => {
 		const { classes, t  } = this.props
 		const { dateFilterInputID, to, from } = this.state
@@ -424,6 +443,7 @@ class DeviceData extends Component {
 			</div>
 		)
 	}
+
 	renderMenu = () => {
 		const { actionAnchor } = this.state
 		const { classes } = this.props
@@ -461,7 +481,7 @@ class DeviceData extends Component {
 					<ListItemIcon>
 						<Visibility />
 					</ListItemIcon>
-					<ListItemText inset primary="Graph type" />
+					<ListItemText inset primary={t("filters.options.graphType")} />
 					<ExpandMore className={classNames({
 						[classes.expandOpen]: this.state.visibility,
 					}, classes.expand)} />
@@ -482,6 +502,7 @@ class DeviceData extends Component {
 			</Menu>
 		</ItemGrid>
 	}
+
 	render() {
 		const { loading } = this.state
 		return (
@@ -503,9 +524,11 @@ class DeviceData extends Component {
 		);
 	}
 }
+
 DeviceData.propTypes = {
 	// history: PropTypes.any.isRequired,
 	// match: PropTypes.any.isRequired,
 	device: PropTypes.object.isRequired,
 }
+
 export default withStyles(deviceStyles, { withTheme: true })(DeviceData);
