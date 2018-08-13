@@ -81,13 +81,13 @@ class ProjectCard extends Component {
 									<MenuItem onClick={() => this.props.history.push(`/project/${p.id}/edit`)}>
 										<Edit className={classes.leftIcon} />{t("menus.editProject")}									
 									</MenuItem>
-									<MenuItem onClick={() => alert('Not Implemented')}>
+									<MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
 										<Devices className={classes.leftIcon} />{t("menus.assignDevices")}
 									</MenuItem>
-									<MenuItem onClick={() => alert('Not Implemented')}>
+									<MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
 										<PictureAsPdf className={classes.leftIcon} />{t("menus.exportPDF")}
 									</MenuItem>
-									<MenuItem onClick={() => alert('Not Implemented')}>
+									<MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
 										<Delete className={classes.leftIcon} />{t("menus.deleteProject")}
 									</MenuItem>
 									))}
