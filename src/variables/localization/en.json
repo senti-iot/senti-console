@@ -152,7 +152,12 @@
     },
     "projects": {
         "new": "Create new project",
-        "pageTitle": "Projects"
+		"pageTitle": "Projects",
+		"projectDeleted": "Project has been successfully deleted!",
+		"projectExported": "Project has been successfully exported!",
+		"projectRedirect": "Redirecting back to list of projects",
+		"projectDelete": "Delete Project?",
+		"projectDeleteConfirm": "Are you sure you want to delete project %{project}?"
     },
     "settings": {
         "alerts": "Alerts",
