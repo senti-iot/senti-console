@@ -9,7 +9,6 @@ import { Maps } from 'components/Map/Maps';
 import GridContainer from 'components/Grid/GridContainer';
 import { ViewList, ViewModule, Map  } from '@material-ui/icons'
 import Search from 'components/Search/Search';
-import withLocalization from 'components/Localization/T';
 
 var moment = require('moment');
 
@@ -262,4 +261,4 @@ class Devices extends Component {
 	}
 }
 
-export default withLocalization()(withStyles(projectStyles)(Devices))
+export default withStyles(projectStyles)(Devices)

@@ -200,6 +200,7 @@ class Project extends Component {
 	}
 	render() {
 		const { project, loading } = this.state
+		const { t } = this.props
 		const rp = { history: this.props.history, match: this.props.match }
 		return (
 			!loading ?
@@ -211,7 +212,7 @@ class Project extends Component {
 						<ProjectDevices /* deviceMostCounts={deviceMostCounts} */ project={project}/>
 					</ItemGrid >
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectData project={project}/>
+						<ProjectData t={t} project={project}/>
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<InfoCard title={"Contact"} avatar={<Person />} subheader={""}

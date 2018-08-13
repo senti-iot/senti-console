@@ -177,6 +177,7 @@ class ProjectData extends Component {
 		this.getWifiSum()
 	}
 	renderCustomDateDialog = () => {
+		console.log(this.props.t)
 		const { classes } = this.props
 		return <MuiPickersUtilsProvider utils={MomentUtils}>
 		 <Dialog
@@ -370,6 +371,7 @@ class ProjectData extends Component {
 		</ItemGrid>
 	}
 	render() {
+		console.log(this.props.t)
 		const {  loading } = this.state
 		return (
 			<InfoCard
