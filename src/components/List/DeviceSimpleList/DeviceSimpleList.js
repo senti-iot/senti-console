@@ -101,7 +101,7 @@ class DeviceSimpleList extends React.Component {
 		}
 	}
 	render() {
-		const { classes, data, t } = this.props;
+		const { classes, data } = this.props;
 		const { order, orderBy, selected, rowsPerPage, page } = this.state;
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 		const tableHead = [

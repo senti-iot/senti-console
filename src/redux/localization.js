@@ -3,8 +3,12 @@
 import loc from 'variables/localization/index'
 var forEach = require('for-each');
 console.log(loc)
+
 //Action types
+
 const changeLangAction = "LANG"
+const GETSETTINGS = "GET_SETTINGS"
+
 //Actions
 export const changeLanguage = (code) => { 
 	return {
@@ -37,7 +41,11 @@ const initialState = {
 // console.log(initialState)
 export const localization = (state = initialState, action) => {
 	switch (action.type) {
-
+		case GETSETTINGS: 
+			return Object.assign({}, state, {
+				language: action.settings.language,
+				s: extend(loc[action.settings.language])
+			})
 		case changeLangAction:
 			phrases = []
 			return Object.assign({}, state, {

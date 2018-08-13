@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { InfoCard, ItemGrid, DSelect } from 'components';
+import { InfoCard, ItemGrid, DSelect, CircularLoader } from 'components';
 import { Laptop } from '@material-ui/icons'
 import { Grid, ListItem, List, ListItemText, withStyles } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
@@ -33,8 +33,8 @@ class DisplaySettings extends Component {
 			{ value: "dk", label: t("settings.languages.dk") }
 		]
 		let themes = [
-			{ value: "dark", label: t("settings.themes.dark") },
-			{ value: "light", label: t("settings.themes.light") }
+			{ value: 1, label: t("settings.themes.dark") },
+			{ value: 0, label: t("settings.themes.light") }
 		]
 		let trps = [
 			{ value: 5, label: 5 },
@@ -48,47 +48,48 @@ class DisplaySettings extends Component {
 			{ value: 1, label: t("settings.sideBarRight") }
 		]
 		return (
-			<InfoCard
-				noExpand
-				avatar={<Laptop />}
-				title={t("settings.headers.display")}
-				content={
-					<Grid container>
-						<List className={classes.list}>
-							<ListItem divider>
-								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-									<ListItemText>{t("settings.discoverSenti")}</ListItemText>
-									<DSelect menuItems={discSenti} value={discSentiVal} func={this.changeDiscoverSenti} />
-								</ItemGrid>
-							</ListItem>
-							<ListItem divider>
-								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-									<ListItemText>{t("settings.language")}</ListItemText>
-									<DSelect menuItems={languages} value={language} func={this.changeLang} />
-								</ItemGrid>
-							</ListItem>
-							<ListItem divider>
-								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-									<ListItemText>{t("settings.trp")}</ListItemText>
-									<DSelect menuItems={trps} value={trp} func={this.changeTRP} />
-								</ItemGrid>
-							</ListItem>
-							<ListItem divider>
-								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-									<ListItemText>{t("settings.sideBarLoc")}</ListItemText>
-									<DSelect menuItems={sideBarLocs} value={sideBar} func={this.changeSideBarLoc} />
-								</ItemGrid>
-							</ListItem>
-							<ListItem >
-								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-									<ListItemText>{t("settings.theme")}</ListItemText>
-									<DSelect menuItems={themes} value={theme} func={this.changeTheme} />
-								</ItemGrid>
-							</ListItem>
-						</List>
-					</Grid>
-				}
-			/>
+			discSentiVal !== null && language !== null && trp !== null && sideBar !== null && theme !== null ? 
+				<InfoCard
+					noExpand
+					avatar={<Laptop />}
+					title={t("settings.headers.display")}
+					content={
+						<Grid container>
+							<List className={classes.list}>
+								<ListItem divider>
+									<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+										<ListItemText>{t("settings.discoverSenti")}</ListItemText>
+										<DSelect menuItems={discSenti} value={discSentiVal} func={this.changeDiscoverSenti} />
+									</ItemGrid>
+								</ListItem>
+								<ListItem divider>
+									<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+										<ListItemText>{t("settings.language")}</ListItemText>
+										<DSelect menuItems={languages} value={language} func={this.changeLang} />
+									</ItemGrid>
+								</ListItem>
+								<ListItem divider>
+									<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+										<ListItemText>{t("settings.trp")}</ListItemText>
+										<DSelect menuItems={trps} value={trp} func={this.changeTRP} />
+									</ItemGrid>
+								</ListItem>
+								<ListItem divider>
+									<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+										<ListItemText>{t("settings.sideBarLoc")}</ListItemText>
+										<DSelect menuItems={sideBarLocs} value={sideBar} func={this.changeSideBarLoc} />
+									</ItemGrid>
+								</ListItem>
+								<ListItem >
+									<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+										<ListItemText>{t("settings.theme")}</ListItemText>
+										<DSelect menuItems={themes} value={theme} func={this.changeTheme} />
+									</ItemGrid>
+								</ListItem>
+							</List>
+						</Grid>
+					}
+				/> : <CircularLoader notCentered/>
 		)
 	}
 }

@@ -19,6 +19,8 @@ import cookie from "react-cookies";
 import classNames from 'classnames';
 import CircularLoader from "components/Loader/CircularLoader";
 import withLocalization from "components/Localization/T";
+import { connect } from 'react-redux';
+import { getSettings } from 'redux/settings';
 
 class LoginPage extends React.Component {
 	constructor(props) {
@@ -68,13 +70,13 @@ class LoginPage extends React.Component {
 		this.setState({ loggingIn: true })
 		setTimeout(
 			async function () {
-				await loginUser(this.state.user, this.state.pass).then(rs => {
+				await loginUser(this.state.user, this.state.pass).then(async rs => {
 					if (rs) {						
 						cookie.save('SESSION', rs, { path: '/' })
 						if (rs.isLoggedIn) {
-							if (setToken())
-								
+							if (setToken())								
 							{
+								await this.props.getSettings()
 								var prevURL = this.props.location.state ? this.props.location.state.prevUrl : null
 								this.props.history.push(prevURL ? prevURL : "/dashboard")
 							}
@@ -191,5 +193,12 @@ class LoginPage extends React.Component {
 		);
 	}
 }
+const mapStateToProps = (state) => ({
+	
+})
 
-export default withLocalization()(withStyles(loginPageStyle)(LoginPage));
+const mapDispatchToProps = dispatch => ({
+	getSettings: async () => dispatch(await getSettings())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(loginPageStyle)(LoginPage)));
