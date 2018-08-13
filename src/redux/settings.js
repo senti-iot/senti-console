@@ -1,3 +1,4 @@
+import { getSettingsFromServer, saveSettingsOnServer } from 'variables/dataLogin';
 
 const MENULOC = "SIDEBAR_LOCATION"
 const THEME = "THEME"
@@ -8,7 +9,40 @@ const CALNOTIF = "CALIBRATION_NOTIFICATION"
 const DISCSENT = "DISCOVER_SENTI_PAGE"
 const ALERTS = "NOTIFICATION_ALERTS"
 const DIDKNOW = "NOTIFICATIOn_DIDYOUKNOW"
+const GETSETTINGS = "GET_SETTINGS"
+const SAVESETTINGS = "SAVE_SETTINGS"
+const changeLangAction = "LANG"
 
+export const saveSettingsOnServ = () => {
+	return async (dispatch, getState) => {
+		let s = getState().settings
+		let settings = {
+			language: s.language,
+			calibration: s.calibration,
+			calNotifications: s.calNotifications,
+			count: s.count,
+			discSentiVal: s.discSentiVal,
+			sideBar: s.sideBar,
+			theme: s.theme,
+			trp: s.trp,
+			alerts: s.alerts,
+			didKnow: s.didKnow
+		}
+		var saved = await saveSettingsOnServer(settings);
+		dispatch({
+			type: SAVESETTINGS,
+			saved
+		})
+	}
+}
+export const getSettings = async () => {
+	return async dispatch => {
+		var settings = await getSettingsFromServer()
+		console.log(settings)
+		dispatch({ type: GETSETTINGS,
+			settings })
+	}
+}
 export const changeAlerts = t => ({
 	type: ALERTS,
 	t
@@ -53,18 +87,32 @@ export const changeTheme = (code) => {
 	}
 }
 let initialState = {
+	language: "en",
 	calibration: 1,
 	calNotifications: 0,
 	count: 200,
 	discSentiVal: 1,
 	sideBar: 0,
-	theme: "light",
+	theme: 0,
 	trp: 10,
 	alerts: 1,
 	didKnow: 0,
+	loading: true,
+	saved: false,
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
+		case GETSETTINGS: 
+			console.log({ ...action.settings })
+			return Object.assign({}, state, { ...action.settings, loading: false })
+		case changeLangAction:
+			return Object.assign({}, state, {
+				language: action.code,
+			})
+		case SAVESETTINGS:
+			return Object.assign({}, state, {
+				saved: action.saved
+			})
 		case THEME:
 			return Object.assign({}, state, {
 				theme: action.code

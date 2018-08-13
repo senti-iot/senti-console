@@ -8,10 +8,11 @@ import CalibrationSettings from './SettingsCards/CalibrationSettings';
 import DisplaySettings from './SettingsCards/DisplaySettings';
 import { changeLanguage } from 'redux/localization';
 import withLocalization from 'components/Localization/T';
-import { changeTRP, changeTheme, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow } from 'redux/settings';
+import { changeTRP, changeTheme, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow, saveSettingsOnServ } from 'redux/settings';
 import NotificationSettings from './SettingsCards/NotificationSettings';
 import DeviceSettings from './SettingsCards/DeviceSettings';
 import ChartSettings from './SettingsCards/ChartSettings';
+import { Button, /*  Paper, Snackbar  */ } from '@material-ui/core';
 class Settings extends Component {
 	constructor(props) {
 	  super(props)
@@ -74,6 +75,25 @@ class Settings extends Component {
 						t={t}
 					/>
 				</ItemGrid>
+				<ItemGrid xs={12} noMargin>
+					<Button variant={'contained'} onClick={() => this.props.saveSettings(this.props.settings)}> Save</Button>
+				</ItemGrid>
+				{/* <Snackbar
+					autoHideDuration={3000}
+					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+					open={this.state.openSnackbar !== 0 ? true : false}
+					onClose={() => { 
+						if (this.state.openSnackbar === 1)
+							this.closeSnackBar()
+						else
+							this.setState({ openSnackbar: 0 })
+					}}
+					message={
+						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
+							{this.snackBarMessages()}
+						</ItemGrid>
+					}
+				/> */}
 			</GridContainer>
 		)
 	}
@@ -82,6 +102,8 @@ class Settings extends Component {
 const mapStateToProps = state => {
 	const s = state.settings
 	return {
+		saved: s.saved,
+		settings: s,
 		language: state.localization.language,
 		theme: s.theme,
 		trp: s.trp,
@@ -110,7 +132,9 @@ const mapDispatchToProps = (dispatch) => {
 		changeCalNotif: type => dispatch(changeCalNotif(type)),
 
 		changeAlerts: t => dispatch(changeAlerts(t)),
-		changeDidKnow: t => dispatch(changeDidKnow(t))
+		changeDidKnow: t => dispatch(changeDidKnow(t)),
+
+		saveSettings: () => dispatch(saveSettingsOnServ())
 	}
 }
 

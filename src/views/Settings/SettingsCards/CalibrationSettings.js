@@ -10,8 +10,6 @@ import DInput from 'components/CustomInput/DInput';
 //Notifications
 //
 class CalibrationSettings extends Component {
-	static propTypes = {
-	}
 
 	changeCalType = e => {
 		this.props.changeCount(0)//Temporary
