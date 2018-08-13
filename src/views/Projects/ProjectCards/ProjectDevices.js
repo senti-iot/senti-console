@@ -16,18 +16,20 @@ class ProjectDevices extends Component {
 		 mapExpanded: false
 	  }
 	}
+	
 	handleExtendMap = () => {
 		this.setState({ mapExpanded: !this.state.mapExpanded })
 	}
+
 	render() {
 		const { classes, project, t /* deviceMostCounts */ } = this.props
 		return (
-			<InfoCard title={"Devices"} avatar={<Devices />} subheader={"Number of devices:" + project.devices.length}
+			<InfoCard title={t("projects.devices.title")} avatar={<Devices />} subheader={t("projects.devices.numDevices") + project.devices.length}
 				leftActions={
 					<Button className={classes.leftActionButton} onClick={this.handleExtendMap}>
 						<Map className={classes.leftIcon} />
 						<Caption>
-							{this.state.mapExpanded ? "Hide Map" : "See Map"}
+							{this.state.mapExpanded ? t("projects.devices.hideMap") : t("projects.devices.seeMap")}
 						</Caption>
 						<ExpandMore className={classNames({
 							[classes.expandOpen]: this.state.mapExpanded,
@@ -69,7 +71,9 @@ class ProjectDevices extends Component {
 		)
 	}
 }
+
 ProjectDevices.propTypes = {
 	project: PropTypes.object.isRequired,
 }
+
 export default withStyles(deviceStyles)(ProjectDevices)

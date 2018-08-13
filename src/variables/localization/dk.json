@@ -116,21 +116,27 @@
 			"id": "ID",
 			"address": "Adresse",
 			"status": "Status",
-			"totalcount": "Total hits",
+			"totalcount": "Tællinger total",
 			"tableCellDeviceName": "Unavngivet",
 			"tableCellAddress": "Ingen adresse"
 		}
     },
     "dialogs": {
         "unassign": "Er du sikker på at du vil fjerne tildelingen %{deviceID}  %{deviceName} fra %{project} ?",
-        "unassignTitle": "Fjern tildeling ${what}?"
+		"unassignTitle": "Fjern tildeling ${what}?",
+		"yes": "Ja",
+		"no": "Nej",
+		"apply": "Anvend",
+		"cancel": "Afbryd",
+		"abort": "Afbryd",
+		"accept": "Accepter"
     },
     "filters": {
         "dateOptions": {
             "30days": "Seneste 30 dage",
             "7days": "Seneste 7 dage",
             "90days": "Seneste 90 dage",
-            "custom": "Tilpasset dato",
+            "custom": "Tilpasset interval",
             "daily": "Hver dag",
             "hourly": "Hver time",
             "today": "I dag"
@@ -142,7 +148,11 @@
         },
         "search": "Søg",
         "startDate": "Start Dato"
-    },
+	},
+	"links": {
+		"googleMaps": "Gå til Google Maps",
+		"mailTo": "Send mail til"
+	},	
     "login": {
         "button": "Log ind",
         "pass": "Kodeord",
@@ -168,8 +178,21 @@
         "unassignDevice": "Fjern tilknytning fra projekt",
         "unassignProject": "Fjern enhed/er fra projekt"
     },
-    "projects": {
-        "new": "Opret nyt projekt",
+	"projects": {
+		"contact": {
+			"title": "Kontakt",
+			"name": "Navn:",
+			"mail": "E-mail:",
+			"phone": "Telefon:",
+			"organisation": "Organisation:"
+		},
+		"devices": {
+			"title": "Enheder",
+			"numDevices": "Antal enheder: ",
+			"seeMap": "Se kort",
+			"hideMap": "Skjul kort"
+		},
+		"new": "Opret nyt projekt",
 		"infoCardProjectData": "Data",
 		"infoCardProjectDetails": "Projektdetaljer",
 		"pageTitle": "Projekter",

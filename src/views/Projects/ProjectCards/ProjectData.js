@@ -195,7 +195,7 @@ class ProjectData extends Component {
 					<ItemGrid>
 						<DateTimePicker
 							autoOk
-							label="Start Date"
+							label={t("filters.startDate")}
 							clearable
 							format="DD.MM.YYYY+HH:mm"
 							value={this.state.from}
@@ -215,7 +215,7 @@ class ProjectData extends Component {
 						<DateTimePicker
 							autoOk
 							disableFuture
-							label="End Date"
+							label={t("filters.endDate")}
 							clearable
 							format="DD.MM.YYYY+HH:mm"
 							value={this.state.to}
@@ -233,10 +233,10 @@ class ProjectData extends Component {
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={() => { this.setState({ loading: false, openCustomDate: false })}} color="primary">
-						No
+						{t("dialogs.cancel")}
 					</Button>
 					<Button onClick={this.handleCloseDialog} color="primary" autoFocus>
-						Apply
+						{t("dialogs.apply")}
 					</Button>
 				</DialogActions>
 			</Dialog>
@@ -310,7 +310,7 @@ class ProjectData extends Component {
 						<MenuItem value={2}>{t("filters.dateOptions.30days")}</MenuItem>
 						<MenuItem value={3}>{t("filters.dateOptions.90days")}</MenuItem>
 						<Divider />
-						<MenuItem value={4}>Custom Range</MenuItem>
+						<MenuItem value={4}>{t("filters.dateOptions.custom")}</MenuItem>
 					</Select>
 					<FormHelperText>{`${displayFrom} - ${displayTo}`}</FormHelperText>
 				</FormControl>

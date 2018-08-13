@@ -16,6 +16,7 @@ class DeviceDetails extends Component {
 		 actionAnchor: null
 	  }
 	}
+
 	renderStatus = (status) => {
 		const { classes } = this.props
 		switch (status) {
@@ -36,12 +37,15 @@ class DeviceDetails extends Component {
 				break;
 		}
 	}
+
 	handleOpenActionsDetails = event => {
 		this.setState({ actionAnchor: event.currentTarget });
-	};
+	}
+
 	handleCloseActionsDetails = () => {
 		this.setState({ actionAnchor: null });
-	};
+	}
+
 	render() {
 		const { actionAnchor } = this.state
 		const { classes, device, t } = this.props
@@ -112,7 +116,7 @@ class DeviceDetails extends Component {
 							<ItemGrid>
 								<Caption>{t("devices.fields.name")}</Caption>
 								<Info>
-									{device.device_name ? device.device_name : "No name"}
+									{device.device_name ? device.device_name : t("devices.noName")}
 								</Info>
 							</ItemGrid>
 							<ItemGrid>
@@ -153,7 +157,7 @@ class DeviceDetails extends Component {
 							</ItemGrid>
 							<ItemGrid >
 								<Caption>{t("devices.fields.coords")}</Caption>
-								<Info><a title={'Open link to Google Maps'} href={`https://www.google.com/maps/search/${device.lat}+${device.long}`} target={'_blank'}>
+								<Info><a title={t("links.googleMaps")} href={`https://www.google.com/maps/search/${device.lat}+${device.long}`} target={'_blank'}>
 									{ConvertDDToDMS(device.lat, false) + " " + ConvertDDToDMS(device.long, true)}</a>
 								</Info>
 							</ItemGrid>
@@ -161,15 +165,16 @@ class DeviceDetails extends Component {
 						<Grid container>
 							<ItemGrid>
 								<Caption>{t("devices.fields.org")}</Caption>
-								<Info>{device.organisation ? device.organisation.vcName : "Unassigned"}</Info>
+								<Info>{device.organisation ? device.organisation.vcName : t("devices.noProject")}</Info>
 							</ItemGrid>
 							<ItemGrid xs={4}>
 								<Caption>{t("devices.fields.project")}</Caption>
-								<Info>{device.project ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : "Unassigned"}</Info>
+								<Info>{device.project ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : t("devices.noProject")}</Info>
 							</ItemGrid>
 						</Grid>
 					</Fragment>} />
 		)
 	}
 }
+
 export default withStyles(deviceStyles)(DeviceDetails)
