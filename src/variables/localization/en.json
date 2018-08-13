@@ -12,22 +12,22 @@
         "finish": "Finish",
         "goTo": "Go to",
         "next": "Next",
-        "nextPage": "Next Page",
+        "nextPage": "Next page",
         "no": "No",
-        "openCounter": "Open Counter",
-        "previousPage": "Previous Page",
+        "openCounter": "Open counter",
+        "previousPage": "Previous page",
         "reset": "Reset",
         "save": "Save",
         "start": "Start",
-        "updateDeviceHardware": "Update Device Hardware",
-        "uploadImages": "Upload billeder",
+        "updateDeviceHardware": "Update device hardware",
+        "uploadImages": "Upload images",
         "yes": "Yes"
 	},
 	"charts": {
 		"type": {
-			"pie": "Pie Chart",
-			"donut": "Donut Chart",
-			"bar": "Bar Chart"
+			"pie": "Pie",
+			"donut": "Donut",
+			"bar": "Bar"
 		}
 	},
     "dashboard": {
@@ -62,29 +62,29 @@
         "editDetailsTitle": "Edit %{deviceId}",
         "editHardwareTitle": "Edit hardware for device %{deviceId}",
         "fields": {
-            "adapter": "Power Adapter",
+            "adapter": "Power adapter",
             "address": "Address",
-            "cellNumber": "Phone Number",
+            "cellNumber": "Phone number",
             "coords": "Coordinate",
             "coordsW": "Coordinates: %{lat} %{long}",
             "description": "Description",
             "id": "ID",
             "lastData": "Last time device sent data to server",
             "lastStats": "Last time device sent stats to server",
-            "locType": "Location Type",
+            "locType": "Location type",
             "memory": "Memory",
-            "memoryModel": "Memory Model",
+            "memoryModel": "Memory model",
             "modemIMEI": "Modem IMEI",
-            "modemModel": "Modem Model",
+            "modemModel": "Modem model",
             "name": "Name",
             "org": "Organisation",
-            "pcModel": "PC Model",
+            "pcModel": "PC model",
             "project": "Project",
             "simCard": "SIM-card ID",
-            "simProvider": "SIM-card Provider",
+            "simProvider": "SIM-card provider",
             "status": "Status",
             "temp": "Temperature",
-            "wifiModule": "WiFi Module"
+            "wifiModule": "Wi-Fi module"
         },
         "locationTypes": {
             "crossroads": "Crossroads",
@@ -102,7 +102,7 @@
         "noAddress": "No Address",
         "noData": "There is no data available for the selected filters!",
         "noImages": "There are no images uploaded!",
-        "noName": "No Name",
+        "noName": "No name",
         "noProject": "Unassigned",
         "notCalibrated": "Device has not been calibrated yet!",
         "pageTitle": "Devices",
@@ -116,9 +116,9 @@
 			"id": "ID",
 			"address": "Address",
 			"status": "Status",
-			"totalcount": "Total Count",
-			"tableCellDeviceName": "No Name",
-			"tableCellAddress": "No Address"		
+			"totalcount": "Total count",
+			"tableCellDeviceName": "No name",
+			"tableCellAddress": "No address"		
 		}
     },
     "dialogs": {
@@ -131,7 +131,7 @@
 		"abort": "Abort",
 		"accept": "Accept",
 		"warnings": {
-			"notImplemented": "Not Implemented",
+			"notImplemented": "Not implemented",
 			"wip": "Work in progress"
 		}
     },
@@ -140,18 +140,18 @@
             "30days": "Last 30 days",
             "7days": "Last 7 days",
             "90days": "Last 90 days",
-            "custom": "Custom Range",
+            "custom": "Custom range",
             "daily": "Daily",
             "hourly": "Hourly",
             "today": "Today"
         },
         "display": "Display:",
-        "endDate": "End Date",
+        "endDate": "End date",
         "options": {
-            "graphType": "Graph Type"
+            "graphType": "Graph type"
         },
         "search": "Search",
-        "startDate": "Start Date"
+        "startDate": "Start date"
 	},
 	"links": {
 		"googleMaps": "Show on Google Maps",
@@ -163,24 +163,25 @@
         "username": "Username"
     },
     "menus": {
-        "assign": "Assign to project",
+		"assign": "Assign to project",
+		"assignDevices": "Assign devices",
         "calibrate": "Calibrate",
 		"delete": "Delete",
-		"deleteProject": "Delete Project",
+		"deleteProject": "Delete project",
 		"edit": "Edit",
-		"editProject": "Edit Project",
+		"editProject": "Edit project",
         "exportPDF": "Export to PDF",
-        "hideMap": "Hide Map",
+        "hideMap": "Hide map",
         "hideMore": "Hide",
         "more": "More",
         "reassign": "Re-assign to another project",
         "recalibrate": "Re-calibrate",
         "seeLess": "See less",
         "seeMore": "See more",
-        "showMap": "Show Map",
-        "showMore": "Show More",
+        "showMap": "Show map",
+        "showMore": "Show more",
         "unassignDevice": "Unassign from project",
-        "unassignProject": "Unassign device/s from project"
+        "unassignProject": "Unassign device(s) from project"
     },
     "projects": {
 		"contact": {
@@ -193,38 +194,38 @@
 		"devices": {
 			"title": "Devices",
 			"numDevices": "Number of devices: ",
-			"seeMap": "See Map",
-			"hideMap": "Hide Map"
+			"seeMap": "See map",
+			"hideMap": "Hide map"
 		},
 		"fields": {
-			"name": "Project Name",
+			"name": "Project name",
 			"description": "Description",
-			"startDate": "Start Date",
-			"endDate": "End Date",
+			"startDate": "Start date",
+			"endDate": "End date",
 			"assignDevices": "Assign devices"
 		},
 		"new": "Create new project",
 		"infoCardProjectData": "Data",
-		"infoCardProjectDetails": "Project Details",
+		"infoCardProjectDetails": "Project details",
 		"pageTitle": "Projects",
 		"projectDeleted": "Project has been successfully deleted!",
 		"projectExported": "Project has been successfully exported!",
 		"projectRedirect": "Redirecting back to list of projects",
-		"projectDelete": "Delete Project?",
+		"projectDelete": "Delete project?",
 		"projectDeleteConfirm": "Are you sure you want to delete project %{project}?",
 		"projectsColumnTitle": "Title",
 		"projectsColumnDescription": "Description",
-		"projectsColumnStartDate": "Start Date",
-		"projectsColumnEndDate": "End Date",
+		"projectsColumnStartDate": "Start date",
+		"projectsColumnEndDate": "End date",
 		"projectsColumnProgress": "",
 		"projectsColumnCreated": "Created",
 		"projectsColumnLastMod": "Last modified",
 		"tabs": {
-			"listView": "List View",
-			"cardView": "Card View"
+			"listView": "List view",
+			"cardView": "Grid view"
 		},
-		"updateProject": "Update Project",
-		"viewProject": "View Project"
+		"updateProject": "Update project",
+		"viewProject": "View project"
     },
     "settings": {
         "alerts": "Alerts",
@@ -236,11 +237,11 @@
             "byCount": "Counts",
             "byTime": "Minutes",
             "count": "By Count",
-            "history": "Calibration History",
+            "history": "History",
             "minutes": "minutes",
-            "notification": "Calibration Notification",
-            "text": "Calibration Method",
-            "time": "By Time"
+            "notification": "Notification",
+            "text": "Method",
+            "time": "By time"
         },
         "defaultDataSet": "Default data set for charts",
         "didYouKnow": "\"Did you know?\"",
@@ -277,10 +278,10 @@
     },
     "snackbars": {
         "assign": "Device assigned successfully",
-        "createdFail": "Creation Failed!",
+        "createdFail": "Creation failed!",
         "createdSuccess": "Created!",
         "creating": "Creating...",
-        "deletedFail": "Deletion Failed!",
+        "deletedFail": "Deletion failed!",
         "deletedSuccess": "Deleted!",
 		"deleting": "Deleting...",
 		"projectUpdated": "Project %{project} has been successfully updated!",
@@ -291,8 +292,8 @@
 		"updating": "Updating..."		
     },
     "tables": {
-        "addNewDevice": "Add new Device",
-        "addNewProject": "Add new Project",
+        "addNewDevice": "Add new device",
+        "addNewProject": "Add new project",
         "filter": "Filter",
         "rowsPerPage": "Rows per page",
         "selected": "selected"

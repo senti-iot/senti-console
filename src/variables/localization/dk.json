@@ -25,9 +25,9 @@
 	},
 	"charts": {
 		"type": {
-			"pie": "Lagkage diagram",
-			"donut": "Donut diagram",
-			"bar": "Søjle diagram"
+			"pie": "Lagkage",
+			"donut": "Donut",
+			"bar": "Søjle"
 		}
 	},
     "dashboard": {
@@ -84,7 +84,7 @@
             "simProvider": "SIM-kort leverandør",
             "status": "Status",
             "temp": "Temperatur",
-            "wifiModule": "WiFi model"
+            "wifiModule": "Wi-Fi model"
         },
         "locationTypes": {
             "crossroads": "Vejkryds",
@@ -96,7 +96,7 @@
             "port": "Havn",
             "road": "Vej",
             "square": "Plads",
-            "unspecified": "Unspecified"
+            "unspecified": "Uspecificeret"
         },
         "new": "",
         "noAddress": "Uden adresse",
@@ -122,7 +122,7 @@
 		}
     },
     "dialogs": {
-        "unassign": "Er du sikker på at du vil fjerne tildelingen %{deviceID}  %{deviceName} fra %{project} ?",
+        "unassign": "Er du sikker på at du vil fjerne tildelingen %{deviceID} %{deviceName} fra %{project} ?",
 		"unassignTitle": "Fjern tildeling ${what}?",
 		"yes": "Ja",
 		"no": "Nej",
@@ -163,7 +163,8 @@
         "username": "Brugernavn"
     },
     "menus": {
-        "assign": "Tildel til projekt",
+		"assign": "Tilknyt projekt",
+		"assignDevices": "Tilknyt enheder",
         "calibrate": "Kalibrer",
 		"delete": "Slet",
 		"deleteProject": "Slet projekt",
@@ -180,7 +181,7 @@
         "showMap": "Vis kort",
         "showMore": "Vis mere",
         "unassignDevice": "Fjern tilknytning fra projekt",
-        "unassignProject": "Fjern enhed/er fra projekt"
+        "unassignProject": "Fjern enhed(er) fra projekt"
     },
 	"projects": {
 		"contact": {
@@ -221,7 +222,7 @@
 		"projectsColumnLastMod": "Senest rettet",
 		"tabs": {
 			"listView": "Listevisning",
-			"cardView": "Kortvisning"
+			"cardView": "Gittervisning"
 		},
 		"updateProject": "Opdater projekt",
 		"viewProject": "Vis projekt"
@@ -236,17 +237,17 @@
             "byCount": "Antal tællinger",
             "byTime": "Antal minutter",
             "count": "Antal tællinger",
-            "history": "Kalibreringshistorik",
+            "history": "Historik",
             "minutes": "minutter",
-            "notification": "Kalibreringsnotifikation",
-            "text": "Kalibreringsmetode",
+            "notification": "Notifikation",
+            "text": "Metode",
             "time": "På tid"
         },
         "defaultDataSet": "Standard datasæt for diagrammer",
         "didYouKnow": "\"Viste du at?\"",
         "discoverSenti": "\"Oplev Senti\"",
         "headers": {
-            "calibration": "Kalirering",
+            "calibration": "Kalibrering",
             "charts": "Diagrammer",
             "devices": "Enheder",
             "display": "Skærm",
@@ -257,7 +258,7 @@
             "dk": "Dansk",
             "en": "Engelsk"
         },
-        "notifications": "Notifications",
+        "notifications": "Notifikationer",
         "pageTitle": "Instillinger",
         "sideBarLeft": "Venstre",
         "sideBarLoc": "Placering af menu",
@@ -286,7 +287,7 @@
 		"deleting": "Sletter ...",
 		"projectUpdated": "Projekt %{project} er succesfuldt opdateret!",
         "redirect": "Omdirigerer ...",
-        "unassign": "Enhed succesfuldt fjernet",
+        "unassign": "Enhed succesfuldt fjernet!",
         "updatedFailed": "Opdatering fejlede!",
         "updatedSuccess": "Opdateret!",
         "updating": "Opdaterer ..."
