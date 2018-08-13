@@ -123,14 +123,20 @@
     },
     "dialogs": {
         "unassign": "Are you sure you want to unassign  %{deviceID}  %{deviceName} from %{project}",
-        "unassignTitle": "Unassign ${what}?"
+		"unassignTitle": "Unassign ${what}?",
+		"yes": "Yes",
+		"no": "No",
+		"apply": "Apply",
+		"cancel": "Cancel",
+		"abort": "Abort",
+		"accept": "Accept"
     },
     "filters": {
         "dateOptions": {
             "30days": "Last 30 days",
             "7days": "Last 7 days",
             "90days": "Last 90 days",
-            "custom": "Custom Date",
+            "custom": "Custom Range",
             "daily": "Daily",
             "hourly": "Hourly",
             "today": "Today"
