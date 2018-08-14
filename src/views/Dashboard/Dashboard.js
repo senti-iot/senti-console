@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { Fragment } from "react"
 import PropTypes from "prop-types"
 import { withStyles, Button } from "@material-ui/core"
@@ -9,17 +8,6 @@ import GridContainer from "components/Grid/GridContainer"
 import withLocalization from "components/Localization/T"
 import DiscoverSenti from './DiscoverSenti'
 import MediaCard from 'components/Cards/MediaCard'
-=======
-import React, { Fragment } from "react";
-import PropTypes from "prop-types";
-import { withStyles, Button } from "@material-ui/core";
-import dashboardStyle from "assets/jss/material-dashboard-react/dashboardStyle";
-import { getAllProjects } from "../../variables/dataProjects";
-import GridContainer from "components/Grid/GridContainer";
-import withLocalization from "components/Localization/T";
-import DiscoverSenti from './DiscoverSenti';
-import MediaCard from 'components/Cards/MediaCard';
->>>>>>> 1b88d5546b271cf39a231f41220be4587dcb3f3f
 
 import imgs from 'assets/img/Squared'
 
