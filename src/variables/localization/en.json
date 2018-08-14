@@ -284,6 +284,7 @@
         "deletedFail": "Deletion failed!",
         "deletedSuccess": "Deleted!",
 		"deleting": "Deleting...",
+		"exported": "Exported!",
 		"projectUpdated": "Project %{project} has been successfully updated!",
         "redirect": "Redirecting ...",
         "unassign": "Device unassigned successfully",
