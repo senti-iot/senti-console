@@ -161,7 +161,7 @@ class Devices extends Component {
 		if (this.props.location.pathname.includes('/map'))
 			this.setState({ route: 1 })
 		else {
-			if (this.props.location.pathname.includes('/cards'))
+			if (this.props.location.pathname.includes('/grid'))
 				this.setState({ route: 2 })
 			else { 
 				this.setState({ route: 0 })
@@ -173,7 +173,7 @@ class Devices extends Component {
 			if (this.props.location.pathname.includes('/map'))
 				this.setState({ route: 1 })
 			else {
-				if (this.props.location.pathname.includes('/cards'))
+				if (this.props.location.pathname.includes('/grid'))
 					this.setState({ route: 2 })
 				else {
 					this.setState({ route: 0 })
@@ -243,7 +243,7 @@ class Devices extends Component {
 					<Tabs value={this.state.route} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 						<Tab title={'List View'} id={0} label={<ViewList />} onClick={() => { this.props.history.push(`${this.props.match.path}/list`) }}/>
 						<Tab title={'Map View'} id={1} label={<Map/>} onClick={() => { this.props.history.push(`${this.props.match.path}/map`)}}/>
-						<Tab title={'Cards View'} id={2} label={<ViewModule/>} onClick={() => { this.props.history.push(`${this.props.match.path}/cards`)}}/>
+						<Tab title={'Cards View'} id={2} label={<ViewModule/>} onClick={() => { this.props.history.push(`${this.props.match.path}/grid`)}}/>
 						<Search
 							right
 							suggestions={devices ? this.suggestionGen(devices) : []}

@@ -12,6 +12,7 @@ import {
 } from "assets/jss/material-dashboard-react.js";
 
 const typographyStyle = {
+
 	defaultFontStyle: {
 		...defaultFont,
 		fontSize: "14px"

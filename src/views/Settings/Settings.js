@@ -13,6 +13,8 @@ import NotificationSettings from './SettingsCards/NotificationSettings';
 import DeviceSettings from './SettingsCards/DeviceSettings';
 import ChartSettings from './SettingsCards/ChartSettings';
 import { Button, /*  Paper, Snackbar  */ } from '@material-ui/core';
+
+//Add Section Calibrated/Uncalibrated data
 class Settings extends Component {
 	constructor(props) {
 	  super(props)

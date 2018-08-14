@@ -5,6 +5,9 @@
 import { successColor } from "assets/jss/material-dashboard-react.js";
 
 const dashboardStyle = {
+	centerGrid: {
+		margin: "0 auto"
+	},
 	successText: {
 		color: successColor
 	},
