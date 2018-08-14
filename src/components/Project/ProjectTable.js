@@ -2,16 +2,16 @@ import {
 	Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination,
 	TableRow, Typography, withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
 	DialogContentText, DialogActions, Button
-} from "@material-ui/core";
-import { Delete, Devices, Edit, PictureAsPdf } from '@material-ui/icons';
-import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
-import PropTypes from "prop-types";
-import React from "react";
-import { withRouter } from 'react-router-dom';
-import { dateFormatter } from "variables/functions";
-import EnhancedTableHead from './ProjectTableHeader';
-import EnhancedTableToolbar from './TableToolBar';
-import { ItemGrid, Info } from "..";
+} from "@material-ui/core"
+import { Delete, Devices, Edit, PictureAsPdf } from '@material-ui/icons'
+import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
+import PropTypes from "prop-types"
+import React from "react"
+import { withRouter } from 'react-router-dom'
+import { dateFormatter } from "variables/functions"
+import EnhancedTableHead from './ProjectTableHeader'
+import EnhancedTableToolbar from './TableToolBar'
+import { ItemGrid, Info } from ".."
 
 class EnhancedTable extends React.Component {
 	constructor(props) {
@@ -85,7 +85,7 @@ class EnhancedTable extends React.Component {
 				? this.props.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
 				: this.props.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1))
 
-		this.setState({ data, order, orderBy });
+		this.setState({ data, order, orderBy })
 	}
 
 	handleSelectAllPage = (event, checked) => {
@@ -102,7 +102,7 @@ class EnhancedTable extends React.Component {
 			this.setState({ selected: this.props.data.map(n => n.id) })
 			return;
 		}
-		this.setState({ selected: [] });
+		this.setState({ selected: [] })
 	}
 
 	handleClick = (event, id) => {
@@ -114,9 +114,9 @@ class EnhancedTable extends React.Component {
 		if (selectedIndex === -1) {
 			newSelected = newSelected.concat(selected, id);
 		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
+			newSelected = newSelected.concat(selected.slice(1))
 		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
+			newSelected = newSelected.concat(selected.slice(0, -1))
 		} else if (selectedIndex > 0) {
 			newSelected = newSelected.concat(
 				selected.slice(0, selectedIndex),
@@ -319,7 +319,7 @@ class EnhancedTable extends React.Component {
 				/>
 				{this.renderConfirmDelete()}
 			</Paper>
-		);
+		)
 	}
 }
 

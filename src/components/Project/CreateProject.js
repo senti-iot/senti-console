@@ -1,17 +1,17 @@
-import { Button, Chip, Collapse, FormControl, Grid, Input, InputLabel, MenuItem, Paper, Select, withStyles, Snackbar } from '@material-ui/core';
-import { Check, KeyboardArrowLeft as KeyArrLeft, KeyboardArrowRight as KeyArrRight, Save } from '@material-ui/icons';
-import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import classNames from 'classnames';
-import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
-import MomentUtils from 'material-ui-pickers/utils/moment-utils';
-import React, { Component, Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
-import { getAvailableDevices } from 'variables/dataDevices';
-import { createOneProject } from 'variables/dataProjects';
-import { Caption, CircularLoader, GridContainer, ItemGrid, TextF } from '..';
+import { Button, Chip, Collapse, FormControl, Grid, Input, InputLabel, MenuItem, Paper, Select, withStyles, Snackbar } from '@material-ui/core'
+import { Check, KeyboardArrowLeft as KeyArrLeft, KeyboardArrowRight as KeyArrRight, Save } from '@material-ui/icons'
+import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
+import classNames from 'classnames'
+import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers'
+import MomentUtils from 'material-ui-pickers/utils/moment-utils'
+import React, { Component, Fragment } from 'react'
+import { withRouter } from 'react-router-dom'
+import { getAvailableDevices } from 'variables/dataDevices'
+import { createOneProject } from 'variables/dataProjects'
+import { Caption, CircularLoader, GridContainer, ItemGrid, TextF } from '..'
 
-const ITEM_HEIGHT = 32;
-const ITEM_PADDING_TOP = 8;
+const ITEM_HEIGHT = 32
+const ITEM_PADDING_TOP = 8
 const MenuProps = {
 	PaperProps: {
 		style: {
@@ -19,7 +19,7 @@ const MenuProps = {
 			width: 250,
 		},
 	},
-};
+}
 
 class CreateProject extends Component {
 	constructor(props) {
@@ -37,7 +37,9 @@ class CreateProject extends Component {
 			openSnackBar: false
 		}
 	}
+
 	componentDidMount = () => {
+		const { t } = this.props
 		this._isMounted = 1
 		getAvailableDevices().then(rs => {
 			if (this._isMounted)
@@ -45,8 +47,9 @@ class CreateProject extends Component {
 					availableDevices: rs
 				})
 		})
-		this.props.setHeader("Create new project", true)
+		this.props.setHeader(t("projects.new"), true)
 	}
+
 	componentWillUnmount = () => {
 		this._isMounted = 0
 		clearTimeout(this.timer)
@@ -54,20 +57,22 @@ class CreateProject extends Component {
 	}
 	
 	handleDeviceChange = event => {
-		this.setState({ devices: event.target.value });
-	};
+		this.setState({ devices: event.target.value })
+	}
 
 	handleDateChange = id => value => {
 		this.setState({
 			[id]: value
 		})
 	}
+
 	handleChange = (id) => e => {
 		e.preventDefault()
 		this.setState({
 			[id]: e.target.value
 		})
 	}
+
 	handleCreateProject = () => {
 		clearTimeout(this.timer)
 		let newProject = {
@@ -84,16 +89,18 @@ class CreateProject extends Component {
 			this.setState({ created: true, creating: false, id: rs, openSnackBar: true }) : this.setState({ create: false, creating: false, id: 0 })
 		), 2e3)
 	}
+
 	goToNewProject = () => {
 		if (this.state.id)
 			this.props.history.push('/project/' + this.state.id)
 	}
+
 	render() {
 		const { classes, theme, t } = this.props
 		const { availableDevices, created } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
-		});
+		})
 		// console.log("CreateProject", t)
 		return (
 			<GridContainer justify={'center'}>
@@ -222,7 +229,7 @@ class CreateProject extends Component {
 									disabled={this.state.creating}
 									onClick={this.state.created ? this.goToNewProject : this.handleCreateProject}
 								>
-									{this.state.created ? <Fragment><Check className={classes.leftIcon}/> Go to new Project </Fragment> : <Fragment><Save className={classes.leftIcon} />Create Project</Fragment>}
+									{this.state.created ? <Fragment><Check className={classes.leftIcon}/>{t("projects.viewProject")}</Fragment> : <Fragment><Save className={classes.leftIcon} />Create Project</Fragment>}
 								</Button>
 								{/* {this.state.creating && <CircularProgress size={24} className={classes.buttonProgress} />} */}
 							</div>
@@ -246,7 +253,7 @@ class CreateProject extends Component {
 					autoHideDuration={5000}
 					message={
 						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-							<Check className={classes.leftIcon} color={'primary'} />Project {this.state.title} has been successfully created!
+							<Check className={classes.leftIcon} color={'primary'} />{t("projects.projectCreated")}
 						</ItemGrid>
 					}
 				/>			</GridContainer>

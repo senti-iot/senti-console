@@ -210,6 +210,7 @@
 		"infoCardProjectData": "Data",
 		"infoCardProjectDetails": "Project details",
 		"pageTitle": "Projects",
+		"projectCreated": "Project has been successfully created!",
 		"projectDeleted": "Project has been successfully deleted!",
 		"projectExported": "Project has been successfully exported!",
 		"projectRedirect": "Redirecting back to list of projects",
