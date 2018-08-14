@@ -335,14 +335,14 @@
 	},
 	"users": {
 		"actions": {
-			"new": "Add new user",
-			"import": "Import users",
-			"edit": "Edit user",
+			"new": "Add new",
+			"import": "Import",
+			"edit": "Edit",
 			"addToGroups": "Add to groups",
-			"mailTo": "E-mail user",
+			"mailTo": "Send E-mail",
 			"resetPassword": "Reset password",
-			"suspend": "Suspend user",
-			"delete": "Delete user",
+			"suspend": "Suspend",
+			"delete": "Delete",
 			"changeOrganisation": "Change organisation"
 		},
 		"fields": {

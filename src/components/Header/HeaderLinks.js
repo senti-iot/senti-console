@@ -71,7 +71,7 @@ class HeaderLinks extends React.Component {
 					}}
 				>
 					<MenuItem onClick={this.handleProfileClose}>
-						<Business className={classes.leftIcon} />{t("users.menus.profile")}
+						<Business className={classes.leftIcon}/>{t("users.menus.profile")}
 					</MenuItem>
 					<MenuItem onClick={this.handleProfileClose}>
 						<AccountBox className={classes.leftIcon} />{t("users.menus.account")}
