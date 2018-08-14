@@ -28,7 +28,7 @@ class HeaderLinks extends React.Component {
 		this.setState({ anchorProfile: null })
 	}
 	render() {
-		const { classes } = this.props;
+		const { classes, t } = this.props;
 		const { anchorProfile } = this.state;
 		const openProfile = Boolean(anchorProfile)
 		return (
@@ -71,13 +71,13 @@ class HeaderLinks extends React.Component {
 					}}
 				>
 					<MenuItem onClick={this.handleProfileClose}>
-						<Business className={classes.leftIcon} />Profile
+						<Business className={classes.leftIcon} />{t("users.menus.profile")}
 					</MenuItem>
 					<MenuItem onClick={this.handleProfileClose}>
-						<AccountBox className={classes.leftIcon} />My account
+						<AccountBox className={classes.leftIcon} />{t("users.menus.account")}
 					</MenuItem>
 					<MenuItem onClick={this.logOut} className={classes.menuItem}>
-						<Lock className={classes.leftIcon}/>Sign out
+						<Lock className={classes.leftIcon} />{t("users.menus.singout")}
 					 </MenuItem>
 				</Menu>
 			</Grid>

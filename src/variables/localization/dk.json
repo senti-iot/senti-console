@@ -302,5 +302,37 @@
         "filter": "Filter",
         "rowsPerPage": "Rækker pr. side",
         "selected": "valgt"
-    }
+	},
+	"users": {
+		"actions": {
+			"new": "Opret ny bruger",
+			"import": "Importer brugere",
+			"edit": "Rediger bruger",
+			"addToGroups": "Tilføj til gruppe(r)",
+			"mailTo": "E-mail bruger",
+			"resetPassword": "Nulstil kodeord",
+			"suspend": "Suspender bruger",
+			"delete": "Slet bruger",
+			"changeOrganisation": "Skift organisation"
+		},
+		"fields": {
+			"firstName": "Fornavn",
+			"lastName": "Efternavn",
+			"profileImage": "Profilbillede",
+			"mail": "E-mail:",
+			"phone": "Telefon:",
+			"organisation": "Organisation:",
+			"language": "System sprog",
+			"created": "Oprettet",
+			"lastSignIn": "Seneste login",
+			"active": "Aktiv (Login suspendederet ja/nej)",
+			"tags": "Tags"
+		},
+		"menus": {
+			"profile": "Profil",
+			"account": "Min konto",
+			"signout": "Log ud"
+		},
+		"messages": {}
+	}
 }
