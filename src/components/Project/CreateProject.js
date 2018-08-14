@@ -94,7 +94,7 @@ class CreateProject extends Component {
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		});
-		console.log("CreateProject", t)
+		// console.log("CreateProject", t)
 		return (
 			<GridContainer justify={'center'}>
 				<Paper className={classes.paper}>
@@ -104,7 +104,7 @@ class CreateProject extends Component {
 							<ItemGrid container xs={12}>
 								<TextF
 									id={"title"}
-									label={"Title"}
+									label={t("projects.fields.name")}
 									value={this.state.title}
 									className={classes.textField}
 									handleChange={this.handleChange("title")}
@@ -115,7 +115,7 @@ class CreateProject extends Component {
 							<ItemGrid xs={12}>
 								<TextF
 									id={"multiline-flexible"}
-									label={"Description"}
+									label={t("projects.fields.description")}
 									multiline
 									rows={"4"}
 									// rowsMax={"4"}
@@ -130,7 +130,7 @@ class CreateProject extends Component {
 								{/* <div className={classes.datepicker}> */}
 								<DatePicker
 									autoOk
-									label="Start Date"
+									label={t("projects.fields.startDate")}
 									clearable
 									format="DD.MM.YYYY"
 									value={this.state.open_date}
@@ -149,7 +149,7 @@ class CreateProject extends Component {
 								<DatePicker
 									color="primary"
 									autoOk
-									label="End Date"
+									label={t("projects.fields.endDate")}
 									clearable
 									format="DD.MM.YYYY"
 									value={this.state.close_date}
@@ -169,7 +169,7 @@ class CreateProject extends Component {
 											<InputLabel FormLabelClasses={{
 												root: classes.label,
 											// focused: classes.focused
-											}} color={"primary"} htmlFor="select-multiple-chip">Devices</InputLabel>
+											}} color={"primary"} htmlFor="select-multiple-chip">{t("projects.fields.assignDevices")}</InputLabel>
 											<Select
 												color={"primary"}
 												multiple
@@ -197,11 +197,11 @@ class CreateProject extends Component {
 														: theme.typography.fontWeightMedium,
 														}}
 													>
-														{name.device_id + " - " + (name.device_name ? name.device_name : "No Name")}
+														{name.device_id + " - " + (name.device_name ? name.device_name : t("devices.noName"))}
 													</MenuItem>
 												))}
 											</Select>
-										</Fragment> : <Caption>There are no available Devices</Caption>}
+										</Fragment> : <Caption>{t("devices.noDevices")}</Caption>}
 								</FormControl>
 							</ItemGrid>
 							{/* </Grid> */}
