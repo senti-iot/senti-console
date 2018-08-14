@@ -40,7 +40,7 @@
 			"data": "Få detaljerede lister og diagrammer til at måle og analysere dine indsamlede data. Opret rapporter og eksporter data i få nemme trin.",
 			"devices": "Enheder er den fysiske hardware enhed, der installeres i det ønskede miljø. Her kan du konfigurere og styre de enheder, der bruges i dine projekter.",
 			"notifications": "Se og administrer notifikations-meddelelser og kontroller hvordan, hvornår, og hvor du vil engagere dine brugere med underretninger.",
-			"onSiteSetup": "Når du installerer dine enheder i det ønskede miljø, er en simpel konfiguration påkrævet. Gem enhedens navn, beskrivelse, placeringsoplysninger og kalibrer enheden for optimal nøjagtighed.",
+			"onSiteSetup": "Når du installerer dine enheder i det ønskede miljø (on-site), er en simpel konfiguration påkrævet. Gem enhedens navn, beskrivelse, placeringsoplysninger og kalibrer enheden for optimal nøjagtighed.",
 			"projects": "Projekter hjælper dig med at administrere Senti-enheder til specifikke måleopgaver og dataindsamling. Et projekt er en container til at samle dine enheder og data for en eller flere lokationer.",
 			"settings": "Kontrolcenter til styring af indstillinger for Senti-in-a-Box-enheder, samt din Senti Cloud Console konto.",
 			"users": "Godkendelse og administration af konti til brugere og organisationer, samt tildeling af adgang til projekter, enheder, indsamlede data og API'er."
