@@ -43,27 +43,6 @@ const styles = theme => ({
 	}
 });
 
-function getSteps() {
-	return ['Device name and description', 'Device location', 'Calibration', 'Picture of installation'];
-}
-
-function getStepContent(step) {
-	switch (step) {
-		case 0:
-			return `To configure your Senti device, please enter a title and an informative description.`;
-		case 1:
-			return `To correctly deploy your Senti device you need to allow Senti Cloud to store the location of the device. Accept this when prompted to allow to store the location of your mobile device.
-			Secondly select a location type to further pinpoint where your data is collected.`;
-		case 2:
-			return `To get the best data collection accuracy, you need to do a manual calibration. 
-			The calibration hit target is set to 200 so you need to count 200 individual entities. When you are ready to start counting press “OPEN COUNTING WINDOW” and press "START". 
-			Push the large button to count. When you have reached your hit target of 200 hits the timer automatically stops.`;
-		case 3:
-			return `You can store optional picture(s) of your device installation. This will enhance the Senti Cloud experience, and serve as a help for Senti service technicians in case your device needs on-site service.`
-		default:
-			return 'Unknown step';
-	}
-}
 class CalibrateDevice extends Component {
 	constructor(props) {
 		super(props)
@@ -86,6 +65,26 @@ class CalibrateDevice extends Component {
 			address: ''
 		}
 		props.setHeader(props.match.params.id + ' Calibration', true)
+	}
+	getSteps() {
+		return ['Device name and description', 'Device location', 'Calibration', 'Picture of installation'];
+	}
+	getStepContent(step) {
+		switch (step) {
+			case 0:
+				return `To configure your Senti device, please enter a title and an informative description.`;
+			case 1:
+				return `To correctly deploy your Senti device you need to allow Senti Cloud to store the location of the device. Accept this when prompted to allow to store the location of your mobile device.
+			Secondly select a location type to further pinpoint where your data is collected.`;
+			case 2:
+				return `To get the best data collection accuracy, you need to do a manual calibration. 
+			The calibration hit target is set to 200 so you need to count 200 individual entities. When you are ready to start counting press “OPEN COUNTING WINDOW” and press "START". 
+			Push the large button to count. When you have reached your hit target of 200 hits the timer automatically stops.`;
+			case 3:
+				return `You can store optional picture(s) of your device installation. This will enhance the Senti Cloud experience, and serve as a help for Senti service technicians in case your device needs on-site service.`
+			default:
+				return 'Unknown step';
+		}
 	}
 	handleInput = (input) => e => {
 		this.setState({ [input]: e.target.value })
@@ -242,7 +241,6 @@ class CalibrateDevice extends Component {
 		return <CounterModal t={this.props.t} handleFinish={this.handleCalibration} />
 	}
 	renderImageUpload = () => {
-		console.log(this.state.device)
 		return <ImageUpload t={this.props.t} imgUpload={this.getImages} dId={this.state.device.device_id}/>
 	}
 	renderStep = (step) => {
@@ -302,7 +300,6 @@ class CalibrateDevice extends Component {
 			let s2 = this.updatePosition()
 			let s3 = this.updateCalibration()
 			let s4 = this.uploadImgs()
-			console.log(s1, s2, s3, s4)
 			if (s1 && s2 && s3 && s4)
 			{
 				success = true
@@ -312,22 +309,6 @@ class CalibrateDevice extends Component {
 		{
 			success = true
 		}
-		// switch (activeStep) {
-		// 	case 0:
-		// 		// success = this.updateNameAndDesc()
-		// 		break;
-		// 	case 1:
-		// 		// success = this.updatePosition()
-		// 		break;
-		// 	case 2:
-		// 		// success = this.updateCalibration()
-		// 		break;
-		// 	case 3:
-		// 		// success = this.uploadImgs();
-		// 		break;
-		// 	default:
-		// 		break;
-		// }
 		if (success)
 			this.setState({
 				activeStep: this.state.activeStep + 1,
@@ -374,7 +355,7 @@ class CalibrateDevice extends Component {
 	}
 	render() {
 		const { /* t, */ classes } = this.props;
-		const steps = getSteps();
+		const steps = this.getSteps();
 		const { activeStep, device, error } = this.state;
 		return (
 			<GridContainer>
@@ -387,7 +368,7 @@ class CalibrateDevice extends Component {
 									<Step key={label}>
 										<StepLabel>{label}</StepLabel>
 										<StepContent>
-											<Typography paragraph>{getStepContent(index)}</Typography>
+											<Typography paragraph>{this.getStepContent(index)}</Typography>
 											{/* <Divider/> */}
 
 											<Grid>
