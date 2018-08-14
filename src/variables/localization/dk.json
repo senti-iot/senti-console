@@ -305,14 +305,14 @@
 	},
 	"users": {
 		"actions": {
-			"new": "Opret ny bruger",
-			"import": "Importer brugere",
-			"edit": "Rediger bruger",
+			"new": "Opret ny",
+			"import": "Importer",
+			"edit": "Rediger",
 			"addToGroups": "Tilføj til gruppe(r)",
-			"mailTo": "E-mail bruger",
+			"mailTo": "Send E-mail",
 			"resetPassword": "Nulstil kodeord",
-			"suspend": "Suspender bruger",
-			"delete": "Slet bruger",
+			"suspend": "Suspender",
+			"delete": "Slet",
 			"changeOrganisation": "Skift organisation"
 		},
 		"fields": {
