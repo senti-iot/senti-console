@@ -162,10 +162,10 @@
 		"yes": "Yes"
 	},
 	"discoverSenti": {
-		"addProject": "Add data projects.",
+		"addProject": "Add data projects",
 		"getStarted": "Get started here:",
-		"onSiteSetup": "On-site Setup of devices.",
-		"startAnalyzeData": "Start analyzing your data.",
+		"onSiteSetup": "On-site setup of devices",
+		"startAnalyzeData": "Start analyzing your data",
 		"welcome": "Welcome to Senti Console!"
 	},
 	"filters": {
@@ -311,7 +311,7 @@
 		"users": "Users"
 	},
 	"snackbars": {
-		"assign": "Device assigned successfully",
+		"assign": "Device %{device} assigned successfully",
 		"createdFail": "Creation failed!",
 		"createdSuccess": "Created!",
 		"creating": "Creating...",
@@ -321,7 +321,7 @@
 		"exported": "Exported!",
 		"projectUpdated": "Project %{project} has been successfully updated!",
 		"redirect": "Redirecting ...",
-		"unassign": "Device unassigned successfully",
+		"unassign": "Device %{device} unassigned successfully",
 		"updatedFailed": "Update failed!",
 		"updatedSuccess": "Updated!",
 		"updating": "Updating..."

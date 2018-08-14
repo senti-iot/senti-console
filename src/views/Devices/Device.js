@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
-import { getDevice, getAllPictures, assignProjectToDevice } from 'variables/dataDevices';
-import {  Grid, withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Snackbar } from '@material-ui/core';
+import { getDevice, getAllPictures, assignProjectToDevice } from 'variables/dataDevices'
+import {  Grid, withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Snackbar } from '@material-ui/core'
 import moment from 'moment'
-import { ItemGrid } from 'components';
-import InfoCard from 'components/Cards/InfoCard';
+import { ItemGrid } from 'components'
+import InfoCard from 'components/Cards/InfoCard'
 import {  Map } from '@material-ui/icons'
-import deviceStyles from 'assets/jss/views/deviceStyles';
-import AssignProject from 'components/Devices/AssignProject';
-import ImageUpload from './ImageUpload';
-import CircularLoader from 'components/Loader/CircularLoader';
-import { Maps } from 'components/Map/Maps';
-import GridContainer from 'components/Grid/GridContainer';
-import DeviceDetails from './DeviceCards/DeviceDetails';
-import DeviceHardware from './DeviceCards/DeviceHardware';
-import DeviceImages from './DeviceCards/DeviceImages';
-import DeviceData from './DeviceCards/DeviceData';
+import deviceStyles from 'assets/jss/views/deviceStyles'
+import AssignProject from 'components/Devices/AssignProject'
+import ImageUpload from './ImageUpload'
+import CircularLoader from 'components/Loader/CircularLoader'
+import { Maps } from 'components/Map/Maps'
+import GridContainer from 'components/Grid/GridContainer'
+import DeviceDetails from './DeviceCards/DeviceDetails'
+import DeviceHardware from './DeviceCards/DeviceHardware'
+import DeviceImages from './DeviceCards/DeviceImages'
+import DeviceData from './DeviceCards/DeviceData'
 
 class Device extends Component {
 	constructor(props) {
@@ -31,6 +31,7 @@ class Device extends Component {
 		}
 		props.setHeader('')
 	}
+
 	getDevice = async (id) => {
 		await getDevice(id).then(rs => {
 			if (rs === null)
@@ -43,6 +44,7 @@ class Device extends Component {
 		})
 
 	}
+
 	componentDidMount = async () => {
 		if (this.props.match) {
 			let id = this.props.match.params.id
@@ -55,25 +57,30 @@ class Device extends Component {
 			this.props.history.push('/404')
 		}
 	}
+
 	snackBarMessages = () => {
+		const { t } = this.props
 		let msg = this.state.openSnackbar
-		let name = this.state.device.device_name ? this.state.device.device_name : "No name"
+		let name = this.state.device.device_name ? this.state.device.device_name : t("devices.noName")
 		let id = this.state.device.device_id
 		switch (msg) {
 			case 1:
-				return `Device ${name + "(" + id + ")"} has been successfully unassigned`
+				return t("snackbars.unassign", { device: name + "(" + id + ")" })
 			case 2:
-				return `Device ${name + "(" + id + ")"} has been successfully assigned`
+				return t("snackbars.assign", { device: name + "(" + id + ")" } )
 			default:
-				break;
+				break
 		}
 	}
+
 	getAllPics = (id) => {
 		getAllPictures(id).then(rs => this.setState({ img: rs }))
 	}
+
 	handleOpenAssign = () => {
 		this.setState({ openAssign: true, anchorEl: null })
 	}
+
 	handleCloseAssign = async (reload) => {
 		if (reload) {
 			this.setState({ loading: true, anchorEl: null, openSnackbar: 2 })
@@ -111,16 +118,19 @@ class Device extends Component {
 		})
 		return filtered
 	}
+
 	handleOpenUnassign = () => {
 		this.setState({
 			openUnassign: true
 		})
 	}
+
 	handleCloseUnassign = () => {
 		this.setState({
 			openUnassign: false
 		})
 	}
+
 	handleUnassign = async () => {
 		await assignProjectToDevice({ project_id: null, id: this.state.device.device_id }).then(async rs => {
 			if (rs)	
@@ -133,12 +143,15 @@ class Device extends Component {
 			}
 		})
 	}
+
 	renderImageLoader = () => {
 		return <CircularLoader notCentered/>
 	}
+
 	renderLoader = () => {
 		return <CircularLoader />
 	}
+
 	renderConfirmUnassign = () => {
 		const { t } = this.props
 		const { device }  = this.state
@@ -165,7 +178,6 @@ class Device extends Component {
 			</DialogActions>
 		</Dialog>
 	}
-
 
 	render() {
 		const { device, loading } = this.state

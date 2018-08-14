@@ -154,7 +154,7 @@
 		"cancel": "Afbryd",
 		"no": "Nej",
 		"unassign": "Er du sikker på at du vil fjerne tildelingen %{deviceID} %{deviceName} fra %{project} ?",
-		"unassignTitle": "Fjern tildeling ${what}?",
+		"unassignTitle": "Fjern tildeling %{what}?",
 		"warnings": {
 			"notImplemented": "Ikke implementeret",
 			"wip": "Under udvikling"
@@ -162,10 +162,10 @@
 		"yes": "Ja"
 	},
 	"discoverSenti": {
-		"addProject": "Opret data projekter.",
+		"addProject": "Opret data projekter",
 		"getStarted": "Start her:",
-		"onSiteSetup": "Opsætning af enheder.",
-		"startAnalyzeData": "Analyser dine data.",
+		"onSiteSetup": "Opsætning af enheder",
+		"startAnalyzeData": "Analyser dine data",
 		"welcome": "Velkommen til Senti Console!"
 	},
 	"filters": {
