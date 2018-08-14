@@ -68,9 +68,11 @@ const regularCardStyle = theme => ({
 		alignItems: "center",
 		justifyContent: "center",
 		cursor: "pointer",
-		height: "250px",
+		height: 250,
+		width: 250,
 		"&:hover": {
-			transform: "scale(1.2)"
+			width: 300,
+			height: 300
 		},
 		...transition
 	},
