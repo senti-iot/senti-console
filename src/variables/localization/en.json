@@ -320,20 +320,20 @@
 		"deleting": "Deleting...",
 		"exported": "Exported!",
 		"projectUpdated": "Project %{project} has been successfully updated!",
-		"redirect": "Redirecting ...",
-		"unassign": "Device unassigned successfully",
-		"updatedFailed": "Update failed!",
-		"updatedSuccess": "Updated!",
-		"updating": "Updating..."
+        "redirect": "Redirecting ...",
+        "unassign": "Device unassigned successfully",
+        "updatedFailed": "Update failed!",
+        "updatedSuccess": "Updated!",
+		"updating": "Updating..."		
+    },
+    "tables": {
+        "addNewDevice": "Add new device",
+        "addNewProject": "Add new project",
+        "filter": "Filter",
+        "rowsPerPage": "Rows per page",
+        "selected": "selected"
 	},
-	"tables": {
-		"addNewDevice": "Add new device",
-		"addNewProject": "Add new project",
-		"filter": "Filter",
-		"rowsPerPage": "Rows per page",
-		"selected": "selected"
-	},
-	"users": {
+	"users": {		
 		"actions": {
 			"new": "Add new user",
 			"import": "Import users",
@@ -344,7 +344,7 @@
 			"suspend": "Suspend user",
 			"delete": "Delete user",
 			"changeOrganisation": "Change organisation"
-		},
+	},
 		"fields": {
 			"firstName": "First name",
 			"lastName": "Last name",
@@ -363,6 +363,8 @@
 			"account": "My account",
 			"signout": "Sign out"
 		},
-		"messages": {}
-	}
+		"messages": {
+			
+		}
+	} 
 }
