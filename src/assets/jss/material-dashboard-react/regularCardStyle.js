@@ -58,6 +58,11 @@ const regularCardStyle = theme => ({
 		display: "flex",
 		justifyContent: "center"
 	},
+	discoverSentiCenter: {
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
+	},
 	discoverSentiImg: {
 		display: "flex",
 		alignItems: "center",
@@ -65,7 +70,7 @@ const regularCardStyle = theme => ({
 		cursor: "pointer",
 		height: "250px",
 		"&:hover": {
-			height: "300px"
+			transform: "scale(1.2)"
 		},
 		...transition
 	},
