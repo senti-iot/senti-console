@@ -77,7 +77,7 @@ class HeaderLinks extends React.Component {
 						<AccountBox className={classes.leftIcon} />{t("users.menus.account")}
 					</MenuItem>
 					<MenuItem onClick={this.logOut} className={classes.menuItem}>
-						<Lock className={classes.leftIcon} />{t("users.menus.singout")}
+						<Lock className={classes.leftIcon} />{t("users.menus.signout")}
 					 </MenuItem>
 				</Menu>
 			</Grid>

@@ -1,11 +1,6 @@
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { withStyles, Button } from "@material-ui/core";
-
-import {
-	ItemGrid
-} from "components";
-
 import dashboardStyle from "assets/jss/material-dashboard-react/dashboardStyle";
 import { getAllProjects } from "../../variables/dataProjects";
 import GridContainer from "components/Grid/GridContainer";
