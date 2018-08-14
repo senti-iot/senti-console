@@ -33,7 +33,7 @@ class Projects extends Component {
 		this._isMounted = 1
 		await this.getProjects()
 		if (this._isMounted) {
-			if (this.props.location.pathname.includes('/cards')) {
+			if (this.props.location.pathname.includes('/grid')) {
 				this.setState({ route: 1 })
 			}
 			else {
@@ -229,7 +229,7 @@ class Projects extends Component {
 				<AppBar position={'sticky'} classes={{ root: classes.appBar }}>
 					<Tabs value={this.state.route} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 						<Tab title={t("projects.tabs.listView")} id={0} label={<ViewList />} onClick={() => { this.props.history.push(`${this.props.match.path}/list`) }} />
-						<Tab title={t("projects.tabs.cardView")} id={1} label={<ViewModule />} onClick={() => { this.props.history.push(`${this.props.match.path}/cards`) }} />
+						<Tab title={t("projects.tabs.cardView")} id={1} label={<ViewModule />} onClick={() => { this.props.history.push(`${this.props.match.path}/grid`) }} />
 						<Search
 							right
 							suggestions={projects ? this.suggestionGen(projects) : []}
@@ -238,7 +238,7 @@ class Projects extends Component {
 					</Tabs>
 				</AppBar>
 				{projects ? <Switch>
-					<Route path={`${this.props.match.path}/cards`} render={() => this.renderCards()} />
+					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} />
 					<Route path={`${this.props.match.path}/list`} render={() => this.renderList()} />
 					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
 				</Switch> : <CircularLoader />}

@@ -87,7 +87,7 @@ const Sidebar = ({ ...props }) => {
 					{brand}
 					<div className={classes.sidebarWrapper}>
 						<div className={classes.appBarWrapper}>
-							<HeaderLinks />
+							<HeaderLinks t={t}/>
 						</div>
 						{links}
 					</div>

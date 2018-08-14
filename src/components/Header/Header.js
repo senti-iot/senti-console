@@ -10,7 +10,7 @@ import HeaderLinks from "./HeaderLinks";
 
 
 function Header({ ...props }) {
-	const { classes, color, goBackButton, gbbFunc } = props;
+	const { classes, color, goBackButton, gbbFunc, t  } = props;
 	const appBarClasses = cx({
 		[" " + classes[color]]: color
 	});
@@ -26,7 +26,7 @@ function Header({ ...props }) {
 					</Button>
 				</div>
 				<Hidden smDown implementation="css">
-					<HeaderLinks />
+					<HeaderLinks t={t}/>
 				</Hidden>
 				<Hidden mdUp>
 					<IconButton
