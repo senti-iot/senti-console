@@ -69,7 +69,7 @@ class App extends React.Component {
 	render() {
 		const { classes, t, loading, ...rest } = this.props;
 		// const { loading } = this.state
-		console.log(loading)
+		console.log(t, "Dashboard")
 		return (
 			!loading ? 
 				<div className={classes.wrapper}>
@@ -81,7 +81,7 @@ class App extends React.Component {
 							goBackButton={this.state.goBackButton}
 							gbbFunc={this.handleGoBackButton}
 							headerTitle={this.state.headerTitle}
-							// t={t}
+							t={t}
 							{...rest}
 						/>
 						<Sidebar

@@ -2,16 +2,16 @@ import {
 	Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination,
 	TableRow, Typography, withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
 	DialogContentText, DialogActions, Button
-} from "@material-ui/core";
-import { Delete, Devices, Edit, PictureAsPdf } from '@material-ui/icons';
-import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
-import PropTypes from "prop-types";
-import React from "react";
-import { withRouter } from 'react-router-dom';
-import { dateFormatter } from "variables/functions";
-import EnhancedTableHead from './ProjectTableHeader';
-import EnhancedTableToolbar from './TableToolBar';
-import { ItemGrid, Info } from "..";
+} from "@material-ui/core"
+import { Delete, Devices, Edit, PictureAsPdf } from '@material-ui/icons'
+import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
+import PropTypes from "prop-types"
+import React from "react"
+import { withRouter } from 'react-router-dom'
+import { dateFormatter } from "variables/functions"
+import EnhancedTableHead from './ProjectTableHeader'
+import EnhancedTableToolbar from './TableToolBar'
+import { ItemGrid, Info } from ".."
 
 class EnhancedTable extends React.Component {
 	constructor(props) {
@@ -27,42 +27,51 @@ class EnhancedTable extends React.Component {
 			anchorFilterMenu: null,
 			openSnackbar: 0,
 			openDelete: false
-		};
+		}
 	}
+
 	snackBarMessages = () => { 
 		let msg = this.state.openSnackbar
+		const { t } = this.props
 		switch (msg) {
 			case 1:
-				return `Project/s have been successfully deleted`;
+				return t("snackbars.deletedSuccess")
 			case 2: 
-				return "Exported"
+				return t("snackbars.exported")
 			default:
 				break;
 		}
 	}
+
 	handleToolbarMenuOpen = e => {
 		e.stopPropagation()
-		this.setState({ anchorElMenu: e.currentTarget });
-	};
+		this.setState({ anchorElMenu: e.currentTarget })
+	}
+
 	handleToolbarMenuClose = e => {
 		e.stopPropagation();
 		this.setState({ anchorElMenu: null })
 	}
+
 	handleFilterMenuOpen = e => {
 		e.stopPropagation()
 		this.setState({ anchorFilterMenu: e.currentTarget })
 	}
+
 	handleFilterMenuClose = e => {
 		e.stopPropagation()
 		this.setState({ anchorFilterMenu: null })
 	}
+
 	handleFilter = e => {
 	}
+
 	handleSearch = value => {
 		this.setState({
 			searchFilter: value
 		})
 	}
+
 	handleRequestSort = (event, property) => {
 		const orderBy = property;
 		let order = 'desc';
@@ -74,10 +83,11 @@ class EnhancedTable extends React.Component {
 		const data =
 			order === 'desc'
 				? this.props.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
-				: this.props.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1));
+				: this.props.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1))
 
-		this.setState({ data, order, orderBy });
-	};
+		this.setState({ data, order, orderBy })
+	}
+
 	handleSelectAllPage = (event, checked) => {
 		if (checked) {
 			const { data } = this.props
@@ -86,26 +96,27 @@ class EnhancedTable extends React.Component {
 			return;
 		}
 	}
+
 	handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			this.setState({ selected: this.props.data.map(n => n.id) });
+			this.setState({ selected: this.props.data.map(n => n.id) })
 			return;
 		}
-		this.setState({ selected: [] });
-	};
+		this.setState({ selected: [] })
+	}
 
 	handleClick = (event, id) => {
 		event.stopPropagation()
 		const { selected } = this.state;
-		const selectedIndex = selected.indexOf(id);
+		const selectedIndex = selected.indexOf(id)
 		let newSelected = [];
 
 		if (selectedIndex === -1) {
 			newSelected = newSelected.concat(selected, id);
 		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
+			newSelected = newSelected.concat(selected.slice(1))
 		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
+			newSelected = newSelected.concat(selected.slice(0, -1))
 		} else if (selectedIndex > 0) {
 			newSelected = newSelected.concat(
 				selected.slice(0, selectedIndex),
@@ -113,16 +124,17 @@ class EnhancedTable extends React.Component {
 			);
 		}
 
-		this.setState({ selected: newSelected });
-	};
+		this.setState({ selected: newSelected })
+	}
 
 	handleChangePage = (event, page) => {
 		this.setState({ page });
-	};
+	}
 
 	handleChangeRowsPerPage = event => {
-		this.setState({ rowsPerPage: event.target.value });
-	};
+		this.setState({ rowsPerPage: event.target.value })
+	}
+
 	handleDeleteProjects = async () => {
 		await this.props.deleteProjects(this.state.selected)
 		this.setState({
@@ -132,34 +144,40 @@ class EnhancedTable extends React.Component {
 			openDelete: false
 		})
 	}
+
 	handleOpenDeleteDialog = () => {
 		this.setState({ openDelete: true, anchorElMenu: null })
 	}
+
 	handleCloseDeleteDialog = () => {
 		this.setState({ openDelete: false })
 	}
-	isSelected = id => this.state.selected.indexOf(id) !== -1;
+
+	isSelected = id => this.state.selected.indexOf(id) !== -1
+
 	options = () => {
+		const { t } = this.props
 		return [
-			{ label: 'Edit', func: this.handleEdit, single: true, icon: Edit },
-			{ label: 'Assign Device', func: this.assignDevice, single: true, icon: Devices },
-			{ label: 'Export to PDF', func: () => { }, icon: PictureAsPdf },
-			{ label: 'Delete', func: this.handleOpenDeleteDialog, icon: Delete }
+			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
+			{ label: t("menus.assignDevices"), func: this.assignDevice, single: true, icon: Devices },
+			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
+			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
-	};
+	}
+
 	renderConfirmDelete = () => {
 		const { openDelete, selected } = this.state
-		const { data } = this.props
+		const { data, t } = this.props
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{"Delete Project? "}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("projects.projectDelete")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-						Are you sure you want to delete the following projects:
+					{t("projects.projectDeleteConfirm")} 
 				</DialogContentText>
 				<div>
 					{selected.map(s => <Info key={s}>&bull;{data[data.findIndex(d => d.id === s)].title}</Info>)}
@@ -167,22 +185,22 @@ class EnhancedTable extends React.Component {
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={this.handleCloseDeleteDialog} color="primary">
-						No
+					{t("actions.no")}
 				</Button>
 				<Button onClick={this.handleDeleteProjects} color="primary" autoFocus>
-						Yes
+					{t("actions.yes")}
 				</Button>
 			</DialogActions>
 		</Dialog>
 	}
 
 	render() {
-		const { classes, data, t } = this.props;
-		console.log("Project Table", t)
-		const { order, orderBy, selected, rowsPerPage, page } = this.state;
+		const { classes, data, t } = this.props
+		// console.log("Project Table", t)
+		const { order, orderBy, selected, rowsPerPage, page } = this.state
 		let emptyRows;
 		if (data)
-			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 
 		return (
 
@@ -262,7 +280,7 @@ class EnhancedTable extends React.Component {
 											</TableCell>
 										</Hidden>
 									</TableRow>
-								);
+								)
 							}) : null}
 							{emptyRows > 0 && (
 								<TableRow style={{ height: 49 * emptyRows }}>
@@ -301,12 +319,12 @@ class EnhancedTable extends React.Component {
 				/>
 				{this.renderConfirmDelete()}
 			</Paper>
-		);
+		)
 	}
 }
 
 EnhancedTable.propTypes = {
 	classes: PropTypes.object.isRequired,
-};
+}
 
-export default withRouter(withStyles(devicetableStyles, { withTheme: true })(EnhancedTable));
+export default withRouter(withStyles(devicetableStyles, { withTheme: true })(EnhancedTable))

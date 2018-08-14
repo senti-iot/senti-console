@@ -1,13 +1,14 @@
-import { Snackbar, Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, IconButton, withStyles } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
-import { ItemGrid, GridContainer, CircularLoader } from 'components';
-import moment from "moment";
-import React, { Component, Fragment } from 'react';
-import { getProject, deleteProject } from 'variables/dataProjects';
-import ProjectData from './ProjectCards/ProjectData';
-import ProjectDetails from './ProjectCards/ProjectDetails';
-import ProjectDevices from './ProjectCards/ProjectDevices';
-import { ProjectContact } from './ProjectCards/ProjectContact';
+import { Snackbar, Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, IconButton, withStyles } from '@material-ui/core'
+import { Close } from '@material-ui/icons'
+import { ItemGrid, GridContainer, CircularLoader } from 'components'
+import moment from "moment"
+import React, { Component, Fragment } from 'react'
+import { getProject, deleteProject } from 'variables/dataProjects'
+import ProjectData from './ProjectCards/ProjectData'
+import ProjectDetails from './ProjectCards/ProjectDetails'
+import ProjectDevices from './ProjectCards/ProjectDevices'
+import { ProjectContact } from './ProjectCards/ProjectContact'
+
 const projectStyles = theme => ({
 	close: {
 		width: theme.spacing.unit * 4,
@@ -16,6 +17,7 @@ const projectStyles = theme => ({
 	},
 
 })
+
 class Project extends Component {
 	constructor(props) {
 		super(props)
@@ -39,6 +41,7 @@ class Project extends Component {
 		props.setHeader('')
 
 	}
+
 	componentDidMount = async () => {
 		if (this.props.match)
 			if (this.props.match.params.id)
@@ -58,6 +61,7 @@ class Project extends Component {
 				this.props.history.push('/404')
 			}
 	}
+
 	componentWillUnmount = () => {
 	   clearTimeout(this.timer)
 	}
@@ -87,11 +91,13 @@ class Project extends Component {
 				break
 		}
 	}
+
 	handleDeleteProjects = async () => {
 		await deleteProject([this.state.project.id]).then(() => {
 			this.setState({ openSnackbar: 1, openDelete: false });
 		})
 	}
+
 	redirect = () => {
 		setTimeout(() => {
 			this.setState({ openSnackbar: 3 })
@@ -99,6 +105,7 @@ class Project extends Component {
 		}, 2e3)
 	
 	}
+
 	closeSnackBar = () => {
 		if (this.state.openSnackbar === 1)
 		{
@@ -125,6 +132,7 @@ class Project extends Component {
 	// 	}
 	// 	return max;
 	// }
+
 	filterItems = (projects, keyword) => {
 
 		var searchStr = keyword.toLowerCase()
@@ -156,6 +164,7 @@ class Project extends Component {
 			}
 		})
 	}
+
 	handleFilterDeviceKeyword = (value) => {
 		this.setState({
 			deviceFilters: {
@@ -165,12 +174,15 @@ class Project extends Component {
 	
 		})
 	}
+
 	handleOpenDeleteDialog = () => {
 		this.setState({ openDelete: true })
 	}
+
 	handleCloseDeleteDialog = () => {
 		this.setState({ openDelete: false })
 	}
+
 	renderDeleteDialog = () => {
 		const { openDelete } = this.state
 		const { t } = this.props
@@ -183,23 +195,25 @@ class Project extends Component {
 			<DialogTitle id="alert-dialog-title">{t("projects.projectDelete")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("projects.projectDeleteConfirm", { project: this.state.project.title })} {this.state.project.title}?
+					{t("projects.projectDeleteConfirm", { project: this.state.project.title }) + "?"}
 				</DialogContentText>
 
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={this.handleCloseDeleteDialog} color="primary">
-					No
+					{t("actions.cancel")}
 				</Button>
 				<Button onClick={this.handleDeleteProjects} color="primary" autoFocus>
-					Yes
+					{t("actions.yes")}
 				</Button>
 			</DialogActions>
 		</Dialog>
 	}
+
 	renderLoader = () => {
 		return <CircularLoader />
 	}
+	
 	render() {
 		const { project, loading } = this.state
 		const { t } = this.props //Localization Provider is HOC'd with withRouter on the Routes Functional Component (See routes/*any*.js) 

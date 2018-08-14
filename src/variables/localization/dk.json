@@ -1,278 +1,328 @@
 {
-    "404": {
-        "errorMessage": "Den ønskede ressource er ikke fundet! Prøv igen eller kontakt support!",
-        "title": "404 fejl - Siden ikke fundet"
-    },
-    "actions": {
-        "accept": "Accepter",
-        "apply": "Anvend",
-        "back": "Forrige",
-        "decline": "Afvis",
-        "deletePicture": "Slet dette billede",
-        "finish": "Luk",
-        "goTo": "Går til",
-        "next": "Næste",
-        "nextPage": "Næste side",
-        "no": "Nej",
-        "openCounter": "Åbn tæller vindue",
-        "previousPage": "Forrige side",
-        "reset": "Nulstil",
-        "save": "Gem",
-        "start": "Start",
-        "updateDeviceHardware": "Opdater hardware for enhed",
-        "uploadImages": "Upload billeder",
-        "yes": "Ja"
+	"404": {
+		"errorMessage": "Den ønskede ressource er ikke fundet! Prøv igen eller kontakt support!",
+		"title": "404 fejl - Siden ikke fundet"
+	},
+	"actions": {
+		"accept": "Accepter",
+		"apply": "Anvend",
+		"back": "Forrige",
+		"cancel": "Afbryd",
+		"decline": "Afvis",
+		"deletePicture": "Slet dette billede",
+		"finish": "Luk",
+		"goTo": "Går til",
+		"learnMore": "Lær mere",
+		"next": "Næste",
+		"nextPage": "Næste side",
+		"no": "Nej",
+		"openCounter": "Åbn tæller vindue",
+		"previousPage": "Forrige side",
+		"reset": "Nulstil",
+		"save": "Gem",
+		"start": "Start",
+		"startNow": "Start nu",
+		"updateDeviceHardware": "Rediger hardware for enhed",
+		"uploadImages": "Upload billeder",
+		"yes": "Ja"
 	},
 	"charts": {
 		"type": {
-			"pie": "Lagkage diagram",
-			"donut": "Donut diagram",
-			"bar": "Søjle diagram"
+			"bar": "Søjle",
+			"donut": "Donut",
+			"pie": "Lagkage"
 		}
 	},
-    "dashboard": {
-        "data": {
-            "s1": "",
-            "s2": ""
-        },
-        "devices": {
-            "s1": "",
-            "s2": ""
-        },
-        "pageTitle": "Console",
-        "projects": {
-            "s1": "",
-            "s2": ""
-        },
-        "subtitle": "Senti Cloud Console tilbyder styring og kontrol af alle dine Senti-in-a-Box enheder."
-    },
-    "devices": {
-        "calibrateButton": "Manuel kalibrering",
-        "calibration": {
-            "noAudioSupported": "Din browser understøtter ikke lydfiler! Der vil derfor ikke være understøttende lyd! Prøv en bedre browser."
-        },
-        "cards": {
-            "data": "Enhedsdata",
-            "details": "Enhedsdetaljer",
-            "hardware": "Udstyr",
-            "map": "Kort",
-            "pictures": "Billeder"
-        },
-        "device": "Enhed",
-        "editDetailsTitle": "Opdater %{deviceId}",
-        "editHardwareTitle": "Opdater hardware for enhed %{deviceId}",
-        "fields": {
-            "adapter": "Strømforsyning",
-            "address": "Adresse",
-            "cellNumber": "Mobilnummer",
-            "coords": "Koordinater",
-            "coordsW": "Koordinater: %{lat} %{long}",
-            "description": "Beskrivelse",
-            "id": "ID",
-            "lastData": "Sidste gang enheden sendte data til serveren",
-            "lastStats": "Sidste gang enheden sendte statistik til serveren",
-            "locType": "Placeringstype",
-            "memory": "Hukommelse",
-            "memoryModel": "Hukommelse model",
-            "modemIMEI": "Modem IMEI",
-            "modemModel": "Modem model",
-            "name": "Navn",
-            "org": "Organisation",
-            "pcModel": "PC Model",
-            "project": "Projekt",
-            "simCard": "SIM-kort ID",
-            "simProvider": "SIM-kort leverandør",
-            "status": "Status",
-            "temp": "Temperatur",
-            "wifiModule": "WiFi model"
-        },
-        "locationTypes": {
-            "crossroads": "Vejkryds",
-            "motorway": "Motorvej",
-            "office": "Kontor",
-            "park": "Park",
-            "path": "Sti",
-            "pedStreet": "Gågade",
-            "port": "Havn",
-            "road": "Vej",
-            "square": "Plads",
-            "unspecified": "Unspecified"
-        },
-        "new": "",
-        "noAddress": "Uden adresse",
-        "noData": "Der er ingen data tilgængelig for de valgte filtre!",
-        "noImages": "Der er ikke uploadet billeder!",
-        "noName": "Unavngivet",
-        "noProject": "Ikke tildelt",
-        "notCalibrated": "Enhed er endnu ikke kalibreret!",
-        "pageTitle": "Enheder",
-        "status": {
-            "green": "Tilsluttet, Data",
-            "red": "Ikke tilsluttet, Ingen Data",
-            "yellow": "Tilsluttet, Ingen Data"
-        },
-		"simpleList": {
-			"name": "Navn",
-			"id": "ID",
+	"dashboard": {
+		"cardContent": {
+			"alerts": "Vidste du, at? ... \n Få intelligente regelbaserede advarsler om arten af dine indsamlede data, og informationer om dine enheders tilgængelighed. ",
+			"api": "SentiAPI giver dig mulighed for at opbygge dine egne Dashboards, Apps eller Widgets. SentiAPI giver adgang til dine egne Senti-enhedsdata eller betalt adgang til Senti Big Data baseret på crowd-sourced anonymiserede Senti data.",
+			"data": "Få detaljerede lister og diagrammer til at måle og analysere dine indsamlede data. Opret rapporter og eksporter data i få nemme trin.",
+			"devices": "Enheder er den fysiske hardware enhed, der installeres i det ønskede miljø. Her kan du konfigurere og styre de enheder, der bruges i dine projekter.",
+			"notifications": "Se og administrer notifikations-meddelelser og kontroller hvordan, hvornår, og hvor du vil engagere dine brugere med underretninger.",
+			"onSiteSetup": "Når du installerer dine enheder i det ønskede miljø (on-site), er en simpel konfiguration påkrævet. Gem enhedens navn, beskrivelse, placeringsoplysninger og kalibrer enheden for optimal nøjagtighed.",
+			"projects": "Projekter hjælper dig med at administrere Senti-enheder til specifikke måleopgaver og dataindsamling. Et projekt er en container til at samle dine enheder og data for en eller flere lokationer.",
+			"settings": "Kontrolcenter til styring af indstillinger for Senti-in-a-Box-enheder, samt din Senti Cloud Console konto.",
+			"users": "Godkendelse og administration af konti til brugere og organisationer, samt tildeling af adgang til projekter, enheder, indsamlede data og API'er."
+		},
+		"cardHeaders": {
+			"alerts": "Intelligente advarsler",
+			"api": "API (kommer snart)",
+			"data": "Data",
+			"devices": "Enheder",
+			"notifications": "Notifikationer",
+			"onSiteSetup": "Lokal opsætning (on-site)",
+			"projects": "Projekter",
+			"settings": "Indstillinger",
+			"users": "Brugere"
+		},
+		"data": {
+			"s1": "",
+			"s2": ""
+		},
+		"devices": {
+			"s1": "",
+			"s2": ""
+		},
+		"pageTitle": "Console",
+		"projects": {
+			"s1": "",
+			"s2": ""
+		},
+		"subtitle": "Senti Cloud Console tilbyder styring og kontrol af alle dine Senti-in-a-Box enheder."
+	},
+	"devices": {
+		"calibrateButton": "Manuel kalibrering",
+		"calibration": {
+			"noAudioSupported": "Din browser understøtter ikke lydfiler! Der vil derfor ikke være understøttende lyd! Prøv en bedre browser."
+		},
+		"cards": {
+			"data": "Enhedsdata",
+			"details": "Enhedsdetaljer",
+			"hardware": "Udstyr",
+			"map": "Kort",
+			"pictures": "Billeder"
+		},
+		"device": "Enhed",
+		"editDetailsTitle": "Opdater %{deviceId}",
+		"editHardwareTitle": "Opdater hardware for enhed %{deviceId}",
+		"fields": {
+			"adapter": "Strømforsyning",
 			"address": "Adresse",
+			"cellNumber": "Mobilnummer",
+			"coords": "Koordinater",
+			"coordsW": "Koordinater: %{lat} %{long}",
+			"description": "Beskrivelse",
+			"id": "ID",
+			"lastData": "Sidste gang enheden sendte data til serveren",
+			"lastStats": "Sidste gang enheden sendte statistik til serveren",
+			"locType": "Placeringstype",
+			"memory": "Hukommelse",
+			"memoryModel": "Hukommelse model",
+			"modemIMEI": "Modem IMEI",
+			"modemModel": "Modem model",
+			"name": "Navn",
+			"org": "Organisation",
+			"pcModel": "PC Model",
+			"project": "Projekt",
+			"simCard": "SIM-kort ID",
+			"simProvider": "SIM-kort leverandør",
 			"status": "Status",
-			"totalcount": "Tællinger total",
+			"temp": "Temperatur",
+			"wifiModule": "Wi-Fi model"
+		},
+		"locationTypes": {
+			"crossroads": "Vejkryds",
+			"motorway": "Motorvej",
+			"office": "Kontor",
+			"park": "Park",
+			"path": "Sti",
+			"pedStreet": "Gågade",
+			"port": "Havn",
+			"road": "Vej",
+			"square": "Plads",
+			"unspecified": "Uspecificeret"
+		},
+		"new": "",
+		"noAddress": "Uden adresse",
+		"noData": "Der er ingen data tilgængelig for de valgte filtre!",
+		"noDevices": "Der er ingen tilgængelige enheder",
+		"noImages": "Der er ikke uploadet billeder!",
+		"noName": "Unavngivet",
+		"noProject": "Ikke tildelt",
+		"notCalibrated": "Enhed er endnu ikke kalibreret!",
+		"pageTitle": "Enheder",
+		"simpleList": {
+			"address": "Adresse",
+			"id": "ID",
+			"name": "Navn",
+			"status": "Status",
+			"tableCellAddress": "Ingen adresse",
 			"tableCellDeviceName": "Unavngivet",
-			"tableCellAddress": "Ingen adresse"
+			"totalcount": "Tællinger total"
+		},
+		"status": {
+			"green": "Tilsluttet, Data",
+			"red": "Ikke tilsluttet, Ingen Data",
+			"yellow": "Tilsluttet, Ingen Data"
 		}
-    },
-    "dialogs": {
-        "unassign": "Er du sikker på at du vil fjerne tildelingen %{deviceID}  %{deviceName} fra %{project} ?",
-		"unassignTitle": "Fjern tildeling ${what}?",
-		"yes": "Ja",
-		"no": "Nej",
+	},
+	"dialogs": {
+		"abort": "Afbryd",
+		"accept": "Accepter",
 		"apply": "Anvend",
 		"cancel": "Afbryd",
-		"abort": "Afbryd",
-		"accept": "Accepter"
-    },
-    "filters": {
-        "dateOptions": {
-            "30days": "Seneste 30 dage",
-            "7days": "Seneste 7 dage",
-            "90days": "Seneste 90 dage",
-            "custom": "Tilpasset interval",
-            "daily": "Hver dag",
-            "hourly": "Hver time",
-            "today": "I dag"
-        },
-        "display": "Visning",
-        "endDate": "Slut Dato",
-        "options": {
-            "graphType": "Diagramtype"
-        },
-        "search": "Søg",
-        "startDate": "Start Dato"
+		"no": "Nej",
+		"unassign": "Er du sikker på at du vil fjerne tildelingen %{deviceID} %{deviceName} fra %{project} ?",
+		"unassignTitle": "Fjern tildeling %{what}?",
+		"warnings": {
+			"notImplemented": "Ikke implementeret",
+			"wip": "Under udvikling"
+		},
+		"yes": "Ja"
+	},
+	"discoverSenti": {
+		"addProject": "Opret data projekter",
+		"getStarted": "Start her:",
+		"onSiteSetup": "Opsætning af enheder",
+		"startAnalyzeData": "Analyser dine data",
+		"welcome": "Velkommen til Senti Console!"
+	},
+	"filters": {
+		"dateOptions": {
+			"30days": "Seneste 30 dage",
+			"7days": "Seneste 7 dage",
+			"90days": "Seneste 90 dage",
+			"custom": "Tilpasset interval",
+			"daily": "Hver dag",
+			"hourly": "Hver time",
+			"today": "I dag"
+		},
+		"display": "Visning",
+		"endDate": "Slutdato",
+		"options": {
+			"graphType": "Diagramtype"
+		},
+		"search": "Søg",
+		"startDate": "Startdato"
 	},
 	"links": {
-		"googleMaps": "Gå til Google Maps",
+		"googleMaps": "Vis på Google Maps",
 		"mailTo": "Send mail til"
-	},	
-    "login": {
-        "button": "Log ind",
-        "pass": "Kodeord",
-        "username": "Brugernavn"
-    },
-    "menus": {
-        "assign": "Tildel til projekt",
-        "calibrate": "Kalibrer",
+	},
+	"login": {
+		"button": "Log ind",
+		"pass": "Kodeord",
+		"username": "Brugernavn"
+	},
+	"menus": {
+		"assign": "Tilknyt projekt",
+		"assignDevices": "Tilknyt enheder",
+		"calibrate": "Kalibrer",
 		"delete": "Slet",
 		"deleteProject": "Slet projekt",
 		"edit": "Rediger",
 		"editProject": "Rediger projekt",
-        "exportPDF": "Exporter til PDF",
-        "hideMap": "Skjul kort",
-        "hideMore": "Skjul",
-        "more": "Mere",
-        "reassign": "Overflyt til et andet projekt",
-        "recalibrate": "Re-kalibrer",
-        "seeLess": "Se mindre",
-        "seeMore": "Se mere",
-        "showMap": "Vis kort",
-        "showMore": "Vis mere",
-        "unassignDevice": "Fjern tilknytning fra projekt",
-        "unassignProject": "Fjern enhed/er fra projekt"
-    },
+		"exportPDF": "Exporter til PDF",
+		"hideMap": "Skjul kort",
+		"hideMore": "Skjul",
+		"more": "Mere",
+		"reassign": "Overflyt til et andet projekt",
+		"recalibrate": "Re-kalibrer",
+		"seeLess": "Se mindre",
+		"seeMore": "Se mere",
+		"showMap": "Vis kort",
+		"showMore": "Vis mere",
+		"unassignDevice": "Fjern tilknytning fra projekt",
+		"unassignProject": "Fjern enhed(er) fra projekt"
+	},
 	"projects": {
 		"contact": {
-			"title": "Kontakt",
-			"name": "Navn:",
 			"mail": "E-mail:",
+			"name": "Navn:",
+			"organisation": "Organisation:",
 			"phone": "Telefon:",
-			"organisation": "Organisation:"
+			"title": "Kontakt"
 		},
 		"devices": {
-			"title": "Enheder",
+			"hideMap": "Skjul kort",
 			"numDevices": "Antal enheder: ",
 			"seeMap": "Se kort",
-			"hideMap": "Skjul kort"
+			"title": "Enheder"
 		},
-		"new": "Opret nyt projekt",
+		"fields": {
+			"assignDevices": "Tilknyt enheder",
+			"description": "Beskrivelse",
+			"endDate": "Slutdato",
+			"name": "Projektnavn",
+			"startDate": "Startdato"
+		},
 		"infoCardProjectData": "Data",
 		"infoCardProjectDetails": "Projektdetaljer",
+		"new": "Opret nyt projekt",
 		"pageTitle": "Projekter",
+		"projectCreated": "Projektet er oprettet!",
+		"projectDelete": "Slet projekt?",
+		"projectDeleteConfirm": "Er du sikker på du ønsker at slette projektet ",
 		"projectDeleted": "Projektet er slettet!",
 		"projectExported": "Projektet er eksporteret!",
 		"projectRedirect": "Omdirigerer tilbage til liste over projekter",
-		"projectDelete": "Slet projekt?",
-		"projectDeleteConfirm": "Er du sikker på du ønsker at slette projektet %{project}?",
-		"projectsColumnTitle": "Titel",
-		"projectsColumnDescription": "Beskrivelse",
-		"projectsColumnStartDate": "Startdato",
-		"projectsColumnEndDate": "Slutdato",
-		"projectsColumnProgress": "",
 		"projectsColumnCreated": "Oprettet",
+		"projectsColumnDescription": "Beskrivelse",
+		"projectsColumnEndDate": "Slutdato",
 		"projectsColumnLastMod": "Senest rettet",
+		"projectsColumnProgress": "",
+		"projectsColumnStartDate": "Startdato",
+		"projectsColumnTitle": "Titel",
 		"tabs": {
-			"listView": "Listevisning",
-			"cardView": "Kortvisning"
-		}
-    },
-    "settings": {
-        "alerts": "Alarmeringer",
-        "calibration": {
-            "12months": "Hver 12. måned",
-            "3months": "Hver 3. måned",
-            "6months": "Hver 6. måned",
-            "9months": "Hver 9. måned",
-            "byCount": "Antal tællinger",
-            "byTime": "Antal minutter",
-            "count": "Antal tællinger",
-            "history": "Kalibreringshistorik",
-            "minutes": "minutter",
-            "notification": "Kalibreringsnotifikation",
-            "text": "Kalibreringsmetode",
-            "time": "På tid"
-        },
-        "defaultDataSet": "Standard datasæt for diagrammer",
-        "didYouKnow": "\"Viste du at?\"",
-        "discoverSenti": "\"Oplev Senti\"",
-        "headers": {
-            "calibration": "Kalirering",
-            "charts": "Diagrammer",
-            "devices": "Enheder",
-            "display": "Skærm",
-            "notifications": "Notifikationer"
-        },
-        "language": "Sprog",
-        "languages": {
-            "dk": "Dansk",
-            "en": "Engelsk"
-        },
-        "notifications": "Notifications",
-        "pageTitle": "Instillinger",
-        "sideBarLeft": "Venstre",
-        "sideBarLoc": "Placering af menu",
-        "sideBarRight": "Højre",
-        "theme": "Tema",
-        "themes": {
-            "dark": "Mørkt",
-            "light": "Lyst"
-        },
-        "trp": "Rækker per side i lister"
-    },
-    "sidebar": {
-        "dashboard": "Dashboard",
-        "devices": "Enheder",
-        "projects": "Projekter",
-        "settings": "Indstillinger",
-        "users": "Brugere"
-    },
-    "snackbars": {
-        "assign": "Enhed tildelt succesfuldt",
-        "createdFail": "Oprettelse fejlede!",
-        "createdSuccess": "Oprettet!",
-        "creating": "Opretter nyt ...",
-        "deletedFail": "Sletning fejlede!",
-        "deletedSuccess": "Slettet!",
-        "deleting": "Sletter ...",
+			"cardView": "Gittervisning",
+			"listView": "Listevisning"
+		},
+		"updateProject": "Rediger projekt",
+		"viewProject": "Vis projekt"
+	},
+	"settings": {
+		"alerts": "Alarmeringer",
+		"calibration": {
+			"12months": "Hver 12. måned",
+			"3months": "Hver 3. måned",
+			"6months": "Hver 6. måned",
+			"9months": "Hver 9. måned",
+			"byCount": "Antal tællinger",
+			"byTime": "Antal minutter",
+			"count": "Antal tællinger",
+			"history": "Historik",
+			"minutes": "minutter",
+			"notification": "Notifikation",
+			"text": "Metode",
+			"time": "På tid"
+		},
+		"defaultDataSet": "Standard datasæt for diagrammer",
+		"didYouKnow": "\"Viste du at?\"",
+		"discoverSenti": "\"Oplev Senti\"",
+		"headers": {
+			"calibration": "Kalibrering",
+			"charts": "Diagrammer",
+			"devices": "Enheder",
+			"display": "Skærm",
+			"notifications": "Notifikationer"
+		},
+		"language": "Sprog",
+		"languages": {
+			"dk": "Dansk",
+			"en": "Engelsk"
+		},
+		"notifications": "Notifikationer",
+		"pageTitle": "Instillinger",
+		"sideBarLeft": "Venstre",
+		"sideBarLoc": "Placering af menu",
+		"sideBarRight": "Højre",
+		"theme": "Tema",
+		"themes": {
+			"dark": "Mørkt",
+			"light": "Lyst"
+		},
+		"trp": "Rækker per side i lister"
+	},
+	"sidebar": {
+		"dashboard": "Dashboard",
+		"devices": "Enheder",
+		"projects": "Projekter",
+		"settings": "Indstillinger",
+		"users": "Brugere"
+	},
+	"snackbars": {
+		"assign": "Enhed tildelt succesfuldt",
+		"createdFail": "Oprettelse fejlede!",
+		"createdSuccess": "Oprettet!",
+		"creating": "Opretter nyt ...",
+		"deletedFail": "Sletning fejlede!",
+		"deletedSuccess": "Slettet!",
+		"deleting": "Sletter ...",
+		"exported": "Eksporteret!",
+		"projectUpdated": "Projekt %{project} er succesfuldt opdateret!",
         "redirect": "Omdirigerer ...",
-        "unassign": "Enhed succesfuldt fjernet",
+        "unassign": "Enhed succesfuldt fjernet!",
         "updatedFailed": "Opdatering fejlede!",
         "updatedSuccess": "Opdateret!",
         "updating": "Opdaterer ..."
@@ -283,5 +333,37 @@
         "filter": "Filter",
         "rowsPerPage": "Rækker pr. side",
         "selected": "valgt"
-    }
+	},
+	"users": {
+		"actions": {
+			"new": "Opret ny",
+			"import": "Importer",
+			"edit": "Rediger",
+			"addToGroups": "Tilføj til gruppe(r)",
+			"mailTo": "Send E-mail",
+			"resetPassword": "Nulstil kodeord",
+			"suspend": "Suspender",
+			"delete": "Slet",
+			"changeOrganisation": "Skift organisation"
+		},
+		"fields": {
+			"firstName": "Fornavn",
+			"lastName": "Efternavn",
+			"profileImage": "Profilbillede",
+			"mail": "E-mail:",
+			"phone": "Telefon:",
+			"organisation": "Organisation:",
+			"language": "System sprog",
+			"created": "Oprettet",
+			"lastSignIn": "Seneste login",
+			"active": "Aktiv (Login suspendederet ja/nej)",
+			"tags": "Tags"
+		},
+		"menus": {
+			"profile": "Profil",
+			"account": "Min konto",
+			"signout": "Log ud"
+		},
+		"messages": {}
+	}
 }

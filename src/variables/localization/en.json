@@ -1,286 +1,368 @@
 {
-    "404": {
-        "errorMessage": "The resource requested has not been found! Please try again or contact support!",
-        "title": "404 Error - Page Not Found"
-    },
-    "actions": {
-        "accept": "Accept",
-        "apply": "Apply",
-        "back": "Previous",
-        "decline": "Decline",
-        "deletePicture": "Slet denne billeder",
-        "finish": "Finish",
-        "goTo": "Go to",
-        "next": "Next",
-        "nextPage": "Next Page",
-        "no": "No",
-        "openCounter": "Open Counter",
-        "previousPage": "Previous Page",
-        "reset": "Reset",
-        "save": "Save",
-        "start": "Start",
-        "updateDeviceHardware": "Update Device Hardware",
-        "uploadImages": "Upload billeder",
-        "yes": "Yes"
+	"404": {
+		"errorMessage": "The resource requested has not been found! Please try again or contact support!",
+		"title": "404 Error - Page Not Found"
+	},
+	"actions": {
+		"accept": "Accept",
+		"apply": "Apply",
+		"back": "Previous",
+		"cancel": "Cancel",
+		"decline": "Decline",
+		"deletePicture": "Delete this picture",
+		"finish": "Finish",
+		"goTo": "Go to",
+		"learnMore": "Learn more",
+		"next": "Next",
+		"nextPage": "Next page",
+		"no": "No",
+		"openCounter": "Open counter",
+		"previousPage": "Previous page",
+		"reset": "Reset",
+		"save": "Save",
+		"start": "Start",
+		"startNow": "Start now",
+		"updateDeviceHardware": "Edit device hardware",
+		"uploadImages": "Upload images",
+		"yes": "Yes"
 	},
 	"charts": {
 		"type": {
-			"pie": "Pie Chart",
-			"donut": "Donut Chart",
-			"bar": "Bar Chart"
+			"bar": "Bar",
+			"donut": "Donut",
+			"pie": "Pie"
 		}
 	},
-    "dashboard": {
-        "data": {
-            "s1": "Viewing your data can be done through lists, cards and different types of graphs.",
-            "s2": "You can create reports and export data with very few clicks."
-        },
-        "devices": {
-            "s1": "Devices are the actual physical device deployed into your environment.",
-            "s2": "Here you can name, configure and set up the devices used in your projects."
-        },
-        "pageTitle": "Console",
-        "projects": {
-            "s1": "Projects help you encapsulate Senti devices for at specific task and data collection use case.",
-            "s2": "You can create as many projects as you like, and you can bundle devices from all available locations."
-        },
-        "subtitle": "Senti Cloud Console lets you control and manage all your Senti-in-a-Box Devices."
-    },
-    "devices": {
-        "calibrateButton": "Manual Calibration",
-        "calibration": {
-            "noAudioSupported": "Your browser doesn't support audio files! There will be no sound feedback! Try using a better browser."
-        },
-        "cards": {
-            "data": "Device Data",
-            "details": "Device Details",
-            "hardware": "Hardware",
-            "map": "Map",
-            "pictures": "Pictures"
-        },
-        "device": "Device",
-        "editDetailsTitle": "Edit %{deviceId}",
-        "editHardwareTitle": "Edit hardware for device %{deviceId}",
-        "fields": {
-            "adapter": "Power Adapter",
-            "address": "Address",
-            "cellNumber": "Phone Number",
-            "coords": "Coordinate",
-            "coordsW": "Coordinates: %{lat} %{long}",
-            "description": "Description",
-            "id": "ID",
-            "lastData": "Last time device sent data to server",
-            "lastStats": "Last time device sent stats to server",
-            "locType": "Location Type",
-            "memory": "Memory",
-            "memoryModel": "Memory Model",
-            "modemIMEI": "Modem IMEI",
-            "modemModel": "Modem Model",
-            "name": "Name",
-            "org": "Organisation",
-            "pcModel": "PC Model",
-            "project": "Project",
-            "simCard": "SIM-card ID",
-            "simProvider": "SIM-card Provider",
-            "status": "Status",
-            "temp": "Temperature",
-            "wifiModule": "WiFi Module"
-        },
-        "locationTypes": {
-            "crossroads": "Crossroads",
-            "motorway": "Motorway",
-            "office": "Office",
-            "park": "Park",
-            "path": "Path",
-            "pedStreet": "Pedestrian street",
-            "port": "Port",
-            "road": "Road",
-            "square": "Square",
-            "unspecified": "Unspecified"
-        },
-        "new": "",
-        "noAddress": "No Address",
-        "noData": "There is no data available for the selected filters!",
-        "noImages": "There are no images uploaded!",
-        "noName": "No Name",
-        "noProject": "Unassigned",
-        "notCalibrated": "Device has not been calibrated yet!",
-        "pageTitle": "Devices",
-        "status": {
-            "green": "Connected, Data",
-            "red": "Not Connected, No Data",
-            "yellow": "Connected, No Data"
+	"dashboard": {
+		"cardContent": {
+			"alerts": "Did you know that? … \n Get true intelligent rule-based alerts about the nature of the data you're collecting.",
+			"api": "SentiAPI allows you to build your own Dashboards, Apps or Widgets. SentiAPI support access to your own Senti device data or paid access to Senti Big Data based upon the crowd-sourced anonymised pool of Senti data.",
+			"data": "Get detailed lists and charts to measure and analyse your collected data. Create reports and export data in few easy steps.",
+			"devices": "Devices are the actual hardware device deployed into your environment. Here you can configure and control the devices used in your projects.",
+			"notifications": "See and manage notification messages and control how, when and where you want to engage your users with notifications.",
+			"onSiteSetup": "When you deploy your devices on-site, a simple configuration is required. Store device name, description, location information and calibrate the device for optimal accuracy.",
+			"projects": "Projects help you manage Senti devices for specific measuring tasks and data collection use cases. A project is a container for your devices and data across one or more locations.",
+			"settings": "The main control center for managing settings for Senti-in-a-Box devices and your Senti Cloud Console.",
+			"users": "Authenticate and manage accounts for users and organisations, and allow access to projects, devices, collected data and API’s."
 		},
-		"simpleList": {
-			"name": "Name",
-			"id": "ID",
-			"address": "Address",
-			"status": "Status",
-			"totalcount": "Total Count",
-			"tableCellDeviceName": "No Name",
-			"tableCellAddress": "No Address"		
-		}
-    },
-    "dialogs": {
-        "unassign": "Are you sure you want to unassign  %{deviceID}  %{deviceName} from %{project}",
-		"unassignTitle": "Unassign ${what}?",
-		"yes": "Yes",
-		"no": "No",
-		"apply": "Apply",
-		"cancel": "Cancel",
-		"abort": "Abort",
-		"accept": "Accept"
-    },
-    "filters": {
-        "dateOptions": {
-            "30days": "Last 30 days",
-            "7days": "Last 7 days",
-            "90days": "Last 90 days",
-            "custom": "Custom Range",
-            "daily": "Daily",
-            "hourly": "Hourly",
-            "today": "Today"
-        },
-        "display": "Display:",
-        "endDate": "End Date",
-        "options": {
-            "graphType": "Graph Type"
-        },
-        "search": "Search",
-        "startDate": "Start Date"
-	},
-	"links": {
-		"googleMaps": "Go to Google Maps",
-		"mailTo": "Mail to"
-	},
-    "login": {
-        "button": "Sign in",
-        "pass": "Password",
-        "username": "Username"
-    },
-    "menus": {
-        "assign": "Assign to project",
-        "calibrate": "Calibrate",
-		"delete": "Delete",
-		"deleteProject": "Delete Project",
-		"edit": "Edit",
-		"editProject": "Edit Project",
-        "exportPDF": "Export to PDF",
-        "hideMap": "Hide Map",
-        "hideMore": "Hide",
-        "more": "More",
-        "reassign": "Re-assign to another project",
-        "recalibrate": "Re-calibrate",
-        "seeLess": "See less",
-        "seeMore": "See more",
-        "showMap": "Show Map",
-        "showMore": "Show More",
-        "unassignDevice": "Unassign from project",
-        "unassignProject": "Unassign device/s from project"
-    },
-    "projects": {
-		"contact": {
-			"title": "Contact",
-			"name": "Name:",
-			"mail": "E-mail:",
-			"phone": "Phone:",
-			"organisation": "Organisation:"
+		"cardHeaders": {
+			"alerts": "Intelligent Alerts",
+			"api": "API (comming soon)",
+			"data": "Data",
+			"devices": "Devices",
+			"notifications": "Notifications",
+			"onSiteSetup": "On-site setup",
+			"projects": "Projects",
+			"settings": "Settings",
+			"users": "Users"
+		},
+		"data": {
+			"s1": "Viewing your data can be done through lists, cards and different types of graphs.",
+			"s2": "You can create reports and export data with very few clicks."
 		},
 		"devices": {
-			"title": "Devices",
-			"numDevices": "Number of devices: ",
-			"seeMap": "See Map",
-			"hideMap": "Hide Map"
+			"s1": "Devices are the actual physical device deployed into your environment.",
+			"s2": "Here you can name, configure and set up the devices used in your projects."
 		},
-		"new": "Create new project",
+		"pageTitle": "Console",
+		"projects": {
+			"s1": "Projects help you encapsulate Senti devices for at specific task and data collection use case.",
+			"s2": "You can create as many projects as you like, and you can bundle devices from all available locations."
+		},
+		"subtitle": "Senti Cloud Console lets you control and manage all your Senti-in-a-Box Devices."
+	},
+	"devices": {
+		"calibrateButton": "Manual Calibration",
+		"calibration": {
+			"noAudioSupported": "Your browser doesn't support audio files! There will be no sound feedback! Try using a better browser."
+		},
+		"cards": {
+			"data": "Device Data",
+			"details": "Device Details",
+			"hardware": "Hardware",
+			"map": "Map",
+			"pictures": "Pictures"
+		},
+		"device": "Device",
+		"editDetailsTitle": "Edit %{deviceId}",
+		"editHardwareTitle": "Edit hardware for device %{deviceId}",
+		"fields": {
+			"adapter": "Power adapter",
+			"address": "Address",
+			"cellNumber": "Phone number",
+			"coords": "Coordinate",
+			"coordsW": "Coordinates: %{lat} %{long}",
+			"description": "Description",
+			"id": "ID",
+			"lastData": "Last time device sent data to server",
+			"lastStats": "Last time device sent stats to server",
+			"locType": "Location type",
+			"memory": "Memory",
+			"memoryModel": "Memory model",
+			"modemIMEI": "Modem IMEI",
+			"modemModel": "Modem model",
+			"name": "Name",
+			"org": "Organisation",
+			"pcModel": "PC model",
+			"project": "Project",
+			"simCard": "SIM-card ID",
+			"simProvider": "SIM-card provider",
+			"status": "Status",
+			"temp": "Temperature",
+			"wifiModule": "Wi-Fi module"
+		},
+		"locationTypes": {
+			"crossroads": "Crossroads",
+			"motorway": "Motorway",
+			"office": "Office",
+			"park": "Park",
+			"path": "Path",
+			"pedStreet": "Pedestrian street",
+			"port": "Port",
+			"road": "Road",
+			"square": "Square",
+			"unspecified": "Unspecified"
+		},
+		"new": "",
+		"noAddress": "No Address",
+		"noData": "There is no data available for the selected filters!",
+		"noDevices": "There are no available devices",
+		"noImages": "There are no images uploaded!",
+		"noName": "No name",
+		"noProject": "Unassigned",
+		"notCalibrated": "Device has not been calibrated yet!",
+		"pageTitle": "Devices",
+		"simpleList": {
+			"address": "Address",
+			"id": "ID",
+			"name": "Name",
+			"status": "Status",
+			"tableCellAddress": "No address",
+			"tableCellDeviceName": "No name",
+			"totalcount": "Total count"
+		},
+		"status": {
+			"green": "Connected, Data",
+			"red": "Not Connected, No Data",
+			"yellow": "Connected, No Data"
+		}
+	},
+	"dialogs": {
+		"abort": "Abort",
+		"accept": "Accept",
+		"apply": "Apply",
+		"cancel": "Cancel",
+		"no": "No",
+		"unassign": "Are you sure you want to unassign %{deviceID} %{deviceName} from %{project}",
+		"unassignTitle": "Unassign ${what}?",
+		"warnings": {
+			"notImplemented": "Not implemented",
+			"wip": "Work in progress"
+		},
+		"yes": "Yes"
+	},
+	"discoverSenti": {
+		"addProject": "Add data projects",
+		"getStarted": "Get started here:",
+		"onSiteSetup": "On-site setup of devices",
+		"startAnalyzeData": "Start analyzing your data",
+		"welcome": "Welcome to Senti Console!"
+	},
+	"filters": {
+		"dateOptions": {
+			"30days": "Last 30 days",
+			"7days": "Last 7 days",
+			"90days": "Last 90 days",
+			"custom": "Custom range",
+			"daily": "Daily",
+			"hourly": "Hourly",
+			"today": "Today"
+		},
+		"display": "Display:",
+		"endDate": "End date",
+		"options": {
+			"graphType": "Graph type"
+		},
+		"search": "Search",
+		"startDate": "Start date"
+	},
+	"links": {
+		"googleMaps": "Show on Google Maps",
+		"mailTo": "Mail to"
+	},
+	"login": {
+		"button": "Sign in",
+		"pass": "Password",
+		"username": "Username"
+	},
+	"menus": {
+		"assign": "Assign to project",
+		"assignDevices": "Assign devices",
+		"calibrate": "Calibrate",
+		"delete": "Delete",
+		"deleteProject": "Delete project",
+		"edit": "Edit",
+		"editProject": "Edit project",
+		"exportPDF": "Export to PDF",
+		"hideMap": "Hide map",
+		"hideMore": "Hide",
+		"more": "More",
+		"reassign": "Re-assign to another project",
+		"recalibrate": "Re-calibrate",
+		"seeLess": "See less",
+		"seeMore": "See more",
+		"showMap": "Show map",
+		"showMore": "Show more",
+		"unassignDevice": "Unassign from project",
+		"unassignProject": "Unassign device(s) from project"
+	},
+	"projects": {
+		"contact": {
+			"mail": "E-mail:",
+			"name": "Name:",
+			"organisation": "Organisation:",
+			"phone": "Phone:",
+			"title": "Contact"
+		},
+		"devices": {
+			"hideMap": "Hide map",
+			"numDevices": "Number of devices: ",
+			"seeMap": "See map",
+			"title": "Devices"
+		},
+		"fields": {
+			"assignDevices": "Assign devices",
+			"description": "Description",
+			"endDate": "End date",
+			"name": "Project name",
+			"startDate": "Start date"
+		},
 		"infoCardProjectData": "Data",
-		"infoCardProjectDetails": "Project Details",
+		"infoCardProjectDetails": "Project details",
+		"new": "Create new project",
 		"pageTitle": "Projects",
+		"projectCreated": "Project has been successfully created!",
+		"projectDelete": "Delete project?",
+		"projectDeleteConfirm": "Are you sure you want to delete project ",
 		"projectDeleted": "Project has been successfully deleted!",
 		"projectExported": "Project has been successfully exported!",
 		"projectRedirect": "Redirecting back to list of projects",
-		"projectDelete": "Delete Project?",
-		"projectDeleteConfirm": "Are you sure you want to delete project %{project}?",
-		"projectsColumnTitle": "Title",
-		"projectsColumnDescription": "Description",
-		"projectsColumnStartDate": "Start Date",
-		"projectsColumnEndDate": "End Date",
-		"projectsColumnProgress": "",
 		"projectsColumnCreated": "Created",
+		"projectsColumnDescription": "Description",
+		"projectsColumnEndDate": "End date",
 		"projectsColumnLastMod": "Last modified",
+		"projectsColumnProgress": "",
+		"projectsColumnStartDate": "Start date",
+		"projectsColumnTitle": "Title",
 		"tabs": {
-			"listView": "List View",
-			"cardView": "Card View"
-		}
-    },
-    "settings": {
-        "alerts": "Alerts",
-        "calibration": {
-            "12months": "Every 12 months",
-            "3months": "Every 3 months",
-            "6months": "Every 6 months",
-            "9months": "Every 9 months",
-            "byCount": "Counts",
-            "byTime": "Minutes",
-            "count": "By Count",
-            "history": "Calibration History",
-            "minutes": "minutes",
-            "notification": "Calibration Notification",
-            "text": "Calibration Method",
-            "time": "By Time"
-        },
-        "defaultDataSet": "Default data set for charts",
-        "didYouKnow": "\"Did you know?\"",
-        "discoverSenti": "\"Discover Senti\"",
-        "headers": {
-            "calibration": "Calibration",
-            "charts": "Charts",
-            "devices": "Devices",
-            "display": "Display",
-            "notifications": "Notifications"
-        },
-        "language": "Language",
-        "languages": {
-            "dk": "Danish",
-            "en": "English"
-        },
-        "pageTitle": "Settings",
-        "sideBarLeft": "Left",
-        "sideBarLoc": "Menu location",
-        "sideBarRight": "Right",
-        "theme": "Theme",
-        "themes": {
-            "dark": "Dark",
-            "light": "Light"
-        },
-        "trp": "Rows per page on lists"
-    },
-    "sidebar": {
-        "dashboard": "Dashboard",
-        "devices": "Devices",
-        "projects": "Projects",
-        "settings": "Settings",
-        "users": "Users"
-    },
-    "snackbars": {
-        "assign": "Device assigned successfully",
-        "createdFail": "Creation Failed!",
-        "createdSuccess": "Created!",
-        "creating": "Creating...",
-        "deletedFail": "Deletion Failed!",
-        "deletedSuccess": "Deleted!",
-        "deleting": "Deleting...",
-        "redirect": "Redirecting ...",
-        "unassign": "Device unassigned successfully",
-        "updatedFailed": "Update failed!",
-        "updatedSuccess": "Updated!",
-        "updating": "Updating..."
-    },
-    "tables": {
-        "addNewDevice": "Add new Device",
-        "addNewProject": "Add new Project",
-        "filter": "Filter",
-        "rowsPerPage": "Rows per page",
-        "selected": "selected"
-    }
+			"cardView": "Grid view",
+			"listView": "List view"
+		},
+		"updateProject": "Edit project",
+		"viewProject": "View project"
+	},
+	"settings": {
+		"alerts": "Alerts",
+		"calibration": {
+			"12months": "Every 12 months",
+			"3months": "Every 3 months",
+			"6months": "Every 6 months",
+			"9months": "Every 9 months",
+			"byCount": "Counts",
+			"byTime": "Minutes",
+			"count": "By Count",
+			"history": "History",
+			"minutes": "minutes",
+			"notification": "Notification",
+			"text": "Method",
+			"time": "By time"
+		},
+		"defaultDataSet": "Default data set for charts",
+		"didYouKnow": "\"Did you know?\"",
+		"discoverSenti": "\"Discover Senti\"",
+		"headers": {
+			"calibration": "Calibration",
+			"charts": "Charts",
+			"devices": "Devices",
+			"display": "Display",
+			"notifications": "Notifications"
+		},
+		"language": "Language",
+		"languages": {
+			"dk": "Danish",
+			"en": "English"
+		},
+		"pageTitle": "Settings",
+		"sideBarLeft": "Left",
+		"sideBarLoc": "Menu location",
+		"sideBarRight": "Right",
+		"theme": "Theme",
+		"themes": {
+			"dark": "Dark",
+			"light": "Light"
+		},
+		"trp": "Rows per page on lists"
+	},
+	"sidebar": {
+		"dashboard": "Dashboard",
+		"devices": "Devices",
+		"projects": "Projects",
+		"settings": "Settings",
+		"users": "Users"
+	},
+	"snackbars": {
+		"assign": "Device %{device} assigned successfully",
+		"createdFail": "Creation failed!",
+		"createdSuccess": "Created!",
+		"creating": "Creating...",
+		"deletedFail": "Deletion failed!",
+		"deletedSuccess": "Deleted!",
+		"deleting": "Deleting...",
+		"exported": "Exported!",
+		"projectUpdated": "Project %{project} has been successfully updated!",
+		"redirect": "Redirecting ...",
+		"unassign": "Device %{device} unassigned successfully",
+		"updatedFailed": "Update failed!",
+		"updatedSuccess": "Updated!",
+		"updating": "Updating..."
+	},
+	"tables": {
+		"addNewDevice": "Add new device",
+		"addNewProject": "Add new project",
+		"filter": "Filter",
+		"rowsPerPage": "Rows per page",
+		"selected": "selected"
+	},
+	"users": {
+		"actions": {
+			"new": "Add new",
+			"import": "Import",
+			"edit": "Edit",
+			"addToGroups": "Add to groups",
+			"mailTo": "Send E-mail",
+			"resetPassword": "Reset password",
+			"suspend": "Suspend",
+			"delete": "Delete",
+			"changeOrganisation": "Change organisation"
+		},
+		"fields": {
+			"firstName": "First name",
+			"lastName": "Last name",
+			"profileImage": "Profile image",
+			"mail": "E-mail:",
+			"phone": "Phone:",
+			"organisation": "Organisation:",
+			"language": "System language",
+			"created": "Created",
+			"lastSignIn": "Last sign in",
+			"active": "Active (Login suspended yes/no)",
+			"tags": "Tags"
+		},
+		"menus": {
+			"profile": "Profile",
+			"account": "My account",
+			"signout": "Sign out"
+		},
+		"messages": {}
+	}
 }

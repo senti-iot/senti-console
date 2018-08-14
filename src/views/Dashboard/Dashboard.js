@@ -1,149 +1,159 @@
-import React from "react";
-import PropTypes from "prop-types";
-import {
-	StoreRounded as Store,
-	InfoOutlined,
-	LocalOfferRounded as LocalOffer,
-	UpdateRounded as Update,
-	AccessibilityRounded as Accessibility,
-	ViewModuleRounded as ViewModule
-} from "@material-ui/icons";
-import { withStyles, Grid } from "@material-ui/core";
+import React, { Fragment } from "react"
+import PropTypes from "prop-types"
+import { withStyles, Button } from "@material-ui/core"
 
-import {
-	StatsCard,
-	RegularCard,
-	ItemGrid
-} from "components";
+import dashboardStyle from "assets/jss/material-dashboard-react/dashboardStyle"
+import { getAllProjects } from "../../variables/dataProjects"
+import GridContainer from "components/Grid/GridContainer"
+import withLocalization from "components/Localization/T"
+import DiscoverSenti from './DiscoverSenti'
+import MediaCard from 'components/Cards/MediaCard'
 
-
-import dashboardStyle from "assets/jss/material-dashboard-react/dashboardStyle";
-import { getAllProjects } from "../../variables/dataProjects";
-import GridContainer from "components/Grid/GridContainer";
-import withLocalization from "components/Localization/T";
+import imgs from 'assets/img/Squared'
 
 class Dashboard extends React.Component {
 	constructor(props) {
-	  super(props)
-	
-	  this.state = {
-			 value: 0,
+		super(props)
+
+		this.state = {
+			value: 0,
 			projects: [],
 			devices: 0
-	  }
+		}
 		props.setHeader("Console", false)
 
 	}
+
 	setStateAsync(state) {
 		return new Promise(resolve => {
-			this.setState(state, resolve);
-		});
+			this.setState(state, resolve)
+		})
 	}
 
 	componentDidMount = async () => {
 		let projects = await getAllProjects()
-		let devices = 0;
+		let devices = 0
 		projects.forEach(p => {
 			return p.devices ? devices = devices + p.devices.length : ''
-		});
+		})
 		await this.setStateAsync({ projects: projects, devices: devices })
 	}
+
 	componentWillUnmount = () => {
-	  this._isMounted = 0
+		this._isMounted = 0
 	}
-	
+
 	handleChange = (value) => {
-		this.setState({ value });
-	};
+		this.setState({ value })
+	}
 
 	handleChangeIndex = index => {
-		this.setState({ value: index });
-	};
-	render() {
+		this.setState({ value: index })
+	}
+
+	renderAction = (text, func, right) => {
 		const { t } = this.props
+		return <Button size={"small"} color={"primary"} onClick={func} style={right ? { marginLeft: "auto" } : null}>{t(text)}</Button>
+	}
+
+	render() {
+		const { classes, t } = this.props
 		return (
-			<GridContainer>
-				<ItemGrid xs={12}>
-					<RegularCard
-						cardTitle={"Senti Cloud Console"}
-						cardSubtitle={"Senti Cloud Console lets you control and manage all your Senti-in-a-Box Devices."}
-						content={
-							<div>
-								<Grid container>
-									<ItemGrid xs>
-										<div className={this.props.classes.typo}>
-											<h3>{t("sidebar.projects")}</h3>
-											<div className={this.props.classes.section}>{t("dashboard.projects.s1")}</div>
-											<div className={this.props.classes.section}>{t("dashboard.projects.s2")}</div>
-										</div>
-									</ItemGrid>
-									<ItemGrid xs>
-										<div className={this.props.classes.typo}>
-											<h3>{t("sidebar.devices")}</h3>
-											<div className={this.props.classes.section}>{t("dashboard.devices.s1")}</div>
-											<div className={this.props.classes.section}>{t("dashboard.devices.s2")}</div>
-										</div>
-									</ItemGrid>
-									<ItemGrid xs>
-										<div className={this.props.classes.typo}>
-											<h3>Data</h3>
-											<div className={this.props.classes.section}>{t("dashboard.data.s1")}</div>
-											<div className={this.props.classes.section}>{t("dashboard.data.s2")}</div>
-										</div>
-									</ItemGrid>
-								</Grid>
-							</div>
-						}>
-					</RegularCard>
-				</ItemGrid>
-				<ItemGrid container noPadding>
-					<ItemGrid xs={12} sm={6} noMargin>
-						<StatsCard
-							icon={ViewModule}
-							iconColor="green"
-							title="Projects"
-							description={this.state.projects.length}
-							small="total"
-							noStats
+			<Fragment>
+				<DiscoverSenti t={t} />
+				<GridContainer spacing={8}>
+					<GridContainer className={classes.centerGrid} justify={"center"}>
+						{/* <ItemGrid xs={12} sm={4} noMargin> */}
+						<MediaCard
+							img={imgs.hosting}
+							header={t("dashboard.cardHeaders.onSiteSetup")}
+							content={t("dashboard.cardContent.onSiteSetup")}
+							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
+							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
 						/>
-					</ItemGrid>
-					<ItemGrid xs={12} sm={6} noMargin>
-						<StatsCard
-							icon={Store}
-							iconColor="green"
-							title="Devices"
-							description={this.state.devices}
-							noStats
+						{/* </ItemGrid> */}
+						{/* <ItemGrid xs={12} sm={4} noMargin> */}
+						<MediaCard
+							img={imgs.storage}
+							header={t("dashboard.cardHeaders.projects")}
+							content={t("dashboard.cardContent.projects")}
+							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
+							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
 						/>
-					</ItemGrid>
-					<ItemGrid xs={12} sm={6} noMargin>
-						<StatsCard
-							icon={InfoOutlined}
-							iconColor="red"
-							title="Fixed Issues"
-							description="75"
-							statIcon={LocalOffer}
-							statText="Tracked from Github"
+						{/* </ItemGrid> */}
+						{/* <ItemGrid xs={12} sm={4} noMargin> */}
+						<MediaCard
+							img={imgs.devices}
+							header={t("dashboard.cardHeaders.devices")}
+							content={t("dashboard.cardContent.devices")}
+							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
+							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
 						/>
-					</ItemGrid>
-					<ItemGrid xs={12} sm={6} noMargin>
-						<StatsCard
-							icon={Accessibility}
-							iconColor="blue"
-							title="Followers"
-							description="+245"
-							statIcon={Update}
-							statText="Just Updated"
+
+						{/* </ItemGrid> */}
+						{/* <ItemGrid xs={12} sm={4} noMargin> */}
+						<MediaCard
+							img={imgs.data}
+							header={t("dashboard.cardHeaders.data")}
+							content={t("dashboard.cardContent.data")}
+							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
+							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
 						/>
-					</ItemGrid>
-				</ItemGrid>
-			</GridContainer>
-		);
+						{/* </ItemGrid> */}
+						{/* <ItemGrid xs={12} sm={4} noMargin> */}
+						<MediaCard
+							img={imgs.users}
+							header={t("dashboard.cardHeaders.users")}
+							content={t("dashboard.cardContent.users")}
+							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
+							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
+						/>
+						{/* </ItemGrid> */}
+						{/* <ItemGrid xs={12} sm={4} noMargin> */}
+						<MediaCard
+							img={imgs.settings}
+							header={t("dashboard.cardHeaders.settings")}
+							content={t("dashboard.cardContent.settings")}
+							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
+							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
+						/>
+						{/* </ItemGrid> */}
+						{/* <ItemGrid xs={12} sm={4} noMargin> */}
+						<MediaCard
+							img={imgs.notifications}
+							header={t("dashboard.cardHeaders.notifications")}
+							content={t("dashboard.cardContent.notifications")}
+							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
+							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
+						/>
+						{/* </ItemGrid> */}
+						{/* <ItemGrid xs={12} sm={4} noMargin> */}
+						<MediaCard
+							img={imgs.predictions}
+							header={t("dashboard.cardHeaders.alerts")}
+							content={t("dashboard.cardContent.alerts")}
+							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
+							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
+						/>
+						{/* </ItemGrid> */}
+						{/* <ItemGrid xs={12} sm={4} noMargin> */}
+						<MediaCard
+							img={imgs.sharing}
+							header={t("dashboard.cardHeaders.api")}
+							content={t("dashboard.cardContent.api")}
+							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
+							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
+						/>
+						{/* </ItemGrid> */}
+					</GridContainer>
+				</GridContainer>
+			</Fragment>
+		)
 	}
 }
 
 Dashboard.propTypes = {
 	classes: PropTypes.object.isRequired
-};
+}
 
-export default withLocalization()(withStyles(dashboardStyle)(Dashboard));
+export default withLocalization()(withStyles(dashboardStyle)(Dashboard))
