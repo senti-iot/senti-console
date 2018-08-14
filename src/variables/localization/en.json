@@ -20,7 +20,7 @@
         "reset": "Reset",
         "save": "Save",
         "start": "Start",
-        "updateDeviceHardware": "Update device hardware",
+        "updateDeviceHardware": "Edit device hardware",
         "uploadImages": "Upload images",
         "yes": "Yes"
 	},
@@ -227,7 +227,7 @@
 			"listView": "List view",
 			"cardView": "Grid view"
 		},
-		"updateProject": "Update project",
+		"updateProject": "Edit project",
 		"viewProject": "View project"
     },
     "settings": {

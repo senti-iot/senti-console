@@ -20,7 +20,7 @@
         "reset": "Nulstil",
         "save": "Gem",
         "start": "Start",
-        "updateDeviceHardware": "Opdater hardware for enhed",
+        "updateDeviceHardware": "Rediger hardware for enhed",
         "uploadImages": "Upload billeder",
         "yes": "Ja"
 	},
@@ -227,7 +227,7 @@
 			"listView": "Listevisning",
 			"cardView": "Gittervisning"
 		},
-		"updateProject": "Opdater projekt",
+		"updateProject": "Rediger projekt",
 		"viewProject": "Vis projekt"
     },
     "settings": {
