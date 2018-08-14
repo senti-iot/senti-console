@@ -159,7 +159,7 @@ class EnhancedTable extends React.Component {
 		const { t } = this.props
 		return [
 			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t("menus.assign"), func: this.assignDevice, single: true, icon: Devices },
+			{ label: t("menus.assignDevices"), func: this.assignDevice, single: true, icon: Devices },
 			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
 			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
@@ -177,7 +177,7 @@ class EnhancedTable extends React.Component {
 			<DialogTitle id="alert-dialog-title">{t("projects.projectDelete")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("projects.projectDeleteConfirm")}
+					{t("projects.projectDeleteConfirm", { project: this.state.project.title })}
 				</DialogContentText>
 				<div>
 					{selected.map(s => <Info key={s}>&bull;{data[data.findIndex(d => d.id === s)].title}</Info>)}
