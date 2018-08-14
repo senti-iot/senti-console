@@ -177,7 +177,7 @@ class EnhancedTable extends React.Component {
 			<DialogTitle id="alert-dialog-title">{t("projects.projectDelete")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("projects.projectDeleteConfirm", { project: this.state.project.title })}
+					{t("projects.projectDeleteConfirm")} 
 				</DialogContentText>
 				<div>
 					{selected.map(s => <Info key={s}>&bull;{data[data.findIndex(d => d.id === s)].title}</Info>)}
