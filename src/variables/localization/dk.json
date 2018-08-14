@@ -212,7 +212,7 @@
 		"projectExported": "Projektet er eksporteret!",
 		"projectRedirect": "Omdirigerer tilbage til liste over projekter",
 		"projectDelete": "Slet projekt?",
-		"projectDeleteConfirm": "Er du sikker på du ønsker at slette projektet %{project}?",
+		"projectDeleteConfirm": "Er du sikker på du ønsker at slette projektet ",
 		"projectsColumnTitle": "Titel",
 		"projectsColumnDescription": "Beskrivelse",
 		"projectsColumnStartDate": "Startdato",

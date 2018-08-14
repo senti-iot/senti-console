@@ -212,7 +212,7 @@
 		"projectExported": "Project has been successfully exported!",
 		"projectRedirect": "Redirecting back to list of projects",
 		"projectDelete": "Delete project?",
-		"projectDeleteConfirm": "Are you sure you want to delete project %{project}?",
+		"projectDeleteConfirm": "Are you sure you want to delete project ",
 		"projectsColumnTitle": "Title",
 		"projectsColumnDescription": "Description",
 		"projectsColumnStartDate": "Start date",

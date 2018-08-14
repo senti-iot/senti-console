@@ -183,7 +183,7 @@ class Project extends Component {
 			<DialogTitle id="alert-dialog-title">{t("projects.projectDelete")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("projects.projectDeleteConfirm", { project: this.state.project.title })}
+					{t("projects.projectDeleteConfirm", { project: this.state.project.title }) + "?"}
 				</DialogContentText>
 
 			</DialogContent>
