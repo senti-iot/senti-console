@@ -10,7 +10,7 @@ class DiscoverSentiCard extends Component {
 		const { classes, content,  leftActions, rightActions, img } = this.props;
 		return (
 			<Card className={classes.cardPlain}>
-				{img ? <CardContent classes={{ root: classes.root + ' ' + classes.discoverSentiImg + ' ' + classes.contentMedia }}>
+				{img ? <CardContent classes={{ root: classes.root + ' ' + classes.discoverSentiCenter + ' ' + classes.contentMedia }}>
 					<ButtonBase className={classes.discoverSentiImg} style={{
 						width: img.width,
 					}}>
