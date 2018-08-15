@@ -221,6 +221,14 @@
 		"search": "Søg",
 		"startDate": "Startdato"
 	},
+	"images": {
+		"add": "Add images",
+		"upload": "Upload",
+		"finish": "Finish",
+		"reset": "Reset",
+		"uploadSuccess": "Images was successfully uploaded",
+		"uploadFailed": "Images failed to upload! Please refresh browser and try again!"
+	},
 	"links": {
 		"googleMaps": "Vis på Google Maps",
 		"mailTo": "Send mail til"
