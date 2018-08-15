@@ -38,7 +38,7 @@ export const Maps = compose(
 			gridSize={10}
 		>
 			{props.markers.length > 0 ? props.markers.map((m, i) => {
-				return <Marker icon={{ url: `data:image/svg+xml,${MarkerIcon(m.liveStatus)}` }} onClick={() => alert('bing')} key={i} position={{ lat: m.lat, lng: m.long }} />
+				return <Marker icon={{ url: `data:image/svg+xml,${MarkerIcon(m.liveStatus)}` }} onClick={() => alert('Work In Progress')} key={i} position={{ lat: m.lat, lng: m.long }} />
 			})
 				: null}
 		</MarkerClusterer>
