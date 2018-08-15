@@ -38,7 +38,6 @@ export const saveSettingsOnServ = () => {
 export const getSettings = async () => {
 	return async dispatch => {
 		var settings = await getSettingsFromServer()
-		console.log(settings)
 		if (settings)
 			dispatch({
 				type: GETSETTINGS,
@@ -113,10 +112,8 @@ export const settings = (state = initialState, action) => {
 	switch (action.type) {
 	
 		case "NOSETTINGS":
-			console.log({ ...action.settings })
 			return Object.assign({}, state, { loading: false })
 		case GETSETTINGS: 
-			console.log({ ...action.settings })
 			return Object.assign({}, state, { ...action.settings, loading: false })
 		case changeLangAction:
 			return Object.assign({}, state, {

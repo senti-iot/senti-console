@@ -196,7 +196,6 @@ class EnhancedTable extends React.Component {
 
 	render() {
 		const { classes, data, t } = this.props
-		// console.log("Project Table", t)
 		const { order, orderBy, selected, rowsPerPage, page } = this.state
 		let emptyRows;
 		if (data)

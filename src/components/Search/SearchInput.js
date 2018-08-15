@@ -16,28 +16,21 @@ class SearchInput extends Component {
 	  this.state = {
 		 open: false
 	  }
-		// this.inputRef = React.createRef()
 	}
 	focusInput = () => {
 		if (this.state.open)
-			// this.inputRef.current.focus()
 			this.props.reference.current.focus()
 	}
 	handleOpen = () => {
 
 		this.setState({ open: !this.state.open }, this.focusInput)
-		// this.props.ref.focus()
-		// console.log(this.inputRef.current)
-		// if (this.state.open === true)
-		// this.inputRef.current.focus()
+
 	}	
 	handleClose = () => {
-		// if (this.props.value === '')
 		this.setState({ open: false })
 	}
 	render() {
 		const { t, classes, ref, open, handleClose, handleOpen, handleResetSearch, ...other } = this.props;
-		// console.log(this.props)
 		return (
 			<ItemGrid container noPadding alignItems={'center'} style={{ width: "auto", margin: 0 }}>
 				{/* 	<ClickAwayListener onClickAway={this.handleClose}> */}

@@ -181,7 +181,6 @@ class Device extends Component {
 
 	render() {
 		const { device, loading } = this.state
-		// console.log(this)
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>

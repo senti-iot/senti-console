@@ -205,12 +205,6 @@ class EditProject extends Component {
 												renderValue={selected => (
 													<div className={classes.chips}>
 														{selected.map(value => {
-															// console.log(value)
-															// console.log(availableDevices.findIndex(d => d.device_id === value))
-															// console.log(availableDevices[availableDevices.findIndex(d => d.device_id === value)])
-															// console.log(devices.findIndex(d => d.device_id === value))
-															// console.log(devices[devices.findIndex(d => d.device_id === value)])
-															
 															if (availableDevices.findIndex(d => d.device_id === value) > -1)
 																return <Chip key={value}
 																	label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_id}

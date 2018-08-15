@@ -8,7 +8,7 @@ import GridContainer from "components/Grid/GridContainer"
 import withLocalization from "components/Localization/T"
 import DiscoverSenti from './DiscoverSenti'
 import MediaCard from 'components/Cards/MediaCard'
-
+import { connect } from 'react-redux'
 import imgs from 'assets/img/Squared'
 
 class Dashboard extends React.Component {
@@ -57,10 +57,10 @@ class Dashboard extends React.Component {
 	}
 
 	render() {
-		const { classes, t } = this.props
+		const { discoverSenti, classes, t } = this.props
 		return (
 			<Fragment>
-				<DiscoverSenti t={t} />
+				{discoverSenti ? <DiscoverSenti t={t} /> : null}
 				<GridContainer spacing={8}>
 					<GridContainer className={classes.centerGrid} justify={"center"}>
 						{/* <ItemGrid xs={12} sm={4} noMargin> */}
@@ -155,5 +155,12 @@ class Dashboard extends React.Component {
 Dashboard.propTypes = {
 	classes: PropTypes.object.isRequired
 }
+const mapStateToProps = (state) => ({
+	discoverSenti: state.settings.discSentiVal
+})
 
-export default withLocalization()(withStyles(dashboardStyle)(Dashboard))
+const mapDispatchToProps = {
+  
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(dashboardStyle)(Dashboard)))

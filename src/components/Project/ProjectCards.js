@@ -16,7 +16,6 @@ class ProjectCards extends Component {
 	
 
 	render() {
-		console.log(this.props)
 		// const { actionAnchor } = this.state
  		const { projects, t } = this.props
 		return (

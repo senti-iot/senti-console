@@ -69,7 +69,6 @@ class App extends React.Component {
 	render() {
 		const { classes, t, loading, ...rest } = this.props;
 		// const { loading } = this.state
-		console.log(t, "Dashboard")
 		return (
 			!loading ? 
 				<div className={classes.wrapper}>

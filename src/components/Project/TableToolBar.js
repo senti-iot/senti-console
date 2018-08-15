@@ -11,7 +11,6 @@ import { ItemGrid } from '..';
 
 let selectedRender = props => {
 	const { numSelected, t } = props;
-	console.log("TableToolbar", t)
 	return <Grid container justify={'space-between'} alignItems={'center'}>
 		<ItemGrid>
 			<Typography color="primary" variant="subheading">

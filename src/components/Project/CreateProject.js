@@ -101,7 +101,6 @@ class CreateProject extends Component {
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
-		// console.log("CreateProject", t)
 		return (
 			<GridContainer justify={'center'}>
 				<Paper className={classes.paper}>

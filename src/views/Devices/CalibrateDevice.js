@@ -136,14 +136,13 @@ class CalibrateDevice extends Component {
 				let lat = rs.coords.latitude
 				let long = rs.coords.longitude
 				this.setState({ lat, long, error: false })
-			}, err => { console.log(err); this.setState({ error: err }) })
+			}, err => { this.setState({ error: err }) })
 		}
 	}
 
 	uploadImgs = async () => {
 		let success = false
 		if (this.state.images) {
-			console.log(this.state.device)
 			success = await uploadPictures({
 				device_id: this.state.device.device_id,
 				files: this.state.images,
