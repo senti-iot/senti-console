@@ -222,12 +222,12 @@
 		"startDate": "Startdato"
 	},
 	"images": {
-		"add": "Add images",
+		"add": "Tilføj billeder",
 		"upload": "Upload",
-		"finish": "Finish",
-		"reset": "Reset",
-		"uploadSuccess": "Images was successfully uploaded",
-		"uploadFailed": "Images failed to upload! Please refresh browser and try again!"
+		"finish": "Afslut",
+		"reset": "Nulstil",
+		"uploadSuccess": "Billeder blev uploaded med succes",
+		"uploadFailed": "Biller blev ikke uploaded! Genindlæs sitet og prøv igen!"
 	},
 	"links": {
 		"googleMaps": "Vis på Google Maps",
