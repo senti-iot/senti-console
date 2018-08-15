@@ -26,6 +26,22 @@
 		"uploadImages": "Upload images",
 		"yes": "Yes"
 	},
+	"calibration": {
+		"header": "On-site setup",
+		"steps": {
+			"0": "To configure your Senti device, please enter a title and an informative description.",
+			"1": "To correctly deploy your Senti device you need to allow Senti Cloud to store the location of the device. Accept this when prompted to allow to store the location of your mobile device. Secondly select a location type to further pinpoint where your data is collected.",
+			"2": "To get the best data collection accuracy, you need to do a manual calibration. The calibration hit target is set to 200 so you need to count 200 individual entities. When you are ready to start counting press “OPEN COUNTING WINDOW” and press “START“. Push the large button to count. When you have reached your hit target of 200 hits the timer automatically stops.",			
+			"3": "You can store optional images of your device installation. This will enhance the Senti Cloud experience, and serve as a help for Senti service technicians in case your device needs on-site service.",
+			"unknown": "Unknown step"
+		},
+		"stepheader": {
+			"name": "Device name and description",
+			"location": "Device location",
+			"calibration": "Calibration",
+			"images": "Images of installation"
+		} 
+	},
 	"charts": {
 		"type": {
 			"bar": "Bar",
@@ -50,8 +66,8 @@
 			"api": "API (comming soon)",
 			"data": "Data",
 			"devices": "Devices",
-			"notifications": "Notifikationer",
-			"onSiteSetup": "On-site Setup",
+			"notifications": "Notifications",
+			"onSiteSetup": "On-site setup",
 			"projects": "Projects",
 			"settings": "Settings",
 			"users": "Users"
@@ -153,7 +169,7 @@
 		"apply": "Apply",
 		"cancel": "Cancel",
 		"no": "No",
-		"unassign": "Are you sure you want to unassign  %{deviceID}  %{deviceName} from %{project}",
+		"unassign": "Are you sure you want to unassign %{deviceID} %{deviceName} from %{project}",
 		"unassignTitle": "Unassign ${what}?",
 		"warnings": {
 			"notImplemented": "Not implemented",
@@ -162,10 +178,10 @@
 		"yes": "Yes"
 	},
 	"discoverSenti": {
-		"addProject": "Add data projects.",
+		"addProject": "Add data projects",
 		"getStarted": "Get started here:",
-		"onSiteSetup": "On-site Setup of devices.",
-		"startAnalyzeData": "Start analyzing your data.",
+		"onSiteSetup": "On-site setup of devices",
+		"startAnalyzeData": "Start analyzing your data",
 		"welcome": "Welcome to Senti Console!"
 	},
 	"filters": {
@@ -278,8 +294,8 @@
 			"time": "By time"
 		},
 		"defaultDataSet": "Default data set for charts",
-		"didYouKnow": "\"Did you know?\"",
-		"discoverSenti": "\"Discover Senti\"",
+		"didYouKnow": "“Did you know?“",
+		"discoverSenti": "“Discover Senti“",
 		"headers": {
 			"calibration": "Calibration",
 			"charts": "Charts",
@@ -311,7 +327,7 @@
 		"users": "Users"
 	},
 	"snackbars": {
-		"assign": "Device assigned successfully",
+		"assign": "Device %{device} assigned successfully",
 		"createdFail": "Creation failed!",
 		"createdSuccess": "Created!",
 		"creating": "Creating...",
@@ -321,7 +337,7 @@
 		"exported": "Exported!",
 		"projectUpdated": "Project %{project} has been successfully updated!",
 		"redirect": "Redirecting ...",
-		"unassign": "Device unassigned successfully",
+		"unassign": "Device %{device} unassigned successfully",
 		"updatedFailed": "Update failed!",
 		"updatedSuccess": "Updated!",
 		"updating": "Updating..."

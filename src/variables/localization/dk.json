@@ -26,6 +26,22 @@
 		"uploadImages": "Upload billeder",
 		"yes": "Ja"
 	},
+	"calibration": {
+		"header": "Lokal opsætning (on-site)",
+		"steps": {
+			"0": "To configure your Senti device, please enter a title and an informative description.",
+			"1": "To correctly deploy your Senti device you need to allow Senti Cloud to store the location of the device. Accept this when prompted to allow to store the location of your mobile device. Secondly select a location type to further pinpoint where your data is collected.",
+			"2": "To get the best data collection accuracy, you need to do a manual calibration. The calibration hit target is set to 200 so you need to count 200 individual entities. When you are ready to start counting press “OPEN COUNTING WINDOW” and press “START“. Push the large button to count. When you have reached your hit target of 200 hits the timer automatically stops.",
+			"3": "You can store optional images of your device installation. This will enhance the Senti Cloud experience, and serve as a help for Senti service technicians in case your device needs on-site service.",
+			"unknown": "Ukendt step"
+		},
+		"stepheader": {
+			"name": "Navn på enhed og beskrivelse",
+			"location": "Lokation for enhed",
+			"calibration": "Kalibrering",
+			"images": "Billeder af installation"
+		}
+	},
 	"charts": {
 		"type": {
 			"bar": "Søjle",
@@ -35,15 +51,15 @@
 	},
 	"dashboard": {
 		"cardContent": {
-			"alerts": "Vidste du, at? ... \n Få ægte intelligente regelbaserede advarsler om arten af de data du indsamler, og informationer om dine enheders tilgængelighed. ",
+			"alerts": "Vidste du, at? ... \n Få intelligente regelbaserede advarsler om arten af dine indsamlede data, og informationer om dine enheders tilgængelighed. ",
 			"api": "SentiAPI giver dig mulighed for at opbygge dine egne Dashboards, Apps eller Widgets. SentiAPI giver adgang til dine egne Senti-enhedsdata eller betalt adgang til Senti Big Data baseret på crowd-sourced anonymiserede Senti data.",
 			"data": "Få detaljerede lister og diagrammer til at måle og analysere dine indsamlede data. Opret rapporter og eksporter data i få nemme trin.",
-			"devices": "Enheder er den faktiske hardwareenhed, der installeres i det ønskede miljø. Her kan du konfigurere og styre de enheder, der bruges i dine projekter.",
-			"notifications": "Se og administrer notifikations-meddelelser og kontroller hvordan, hvornår og hvor du vil engagere dine brugere med underretninger.",
-			"onSiteSetup": "Når du installerer dine enheder på stedet, er en simpel konfiguration påkrævet. Gem enhedens navn, beskrivelse, placeringsoplysninger og kalibrer enheden for optimal nøjagtighed.",
+			"devices": "Enheder er den fysiske hardware enhed, der installeres i det ønskede miljø. Her kan du konfigurere og styre de enheder, der bruges i dine projekter.",
+			"notifications": "Se og administrer notifikations-meddelelser og kontroller hvordan, hvornår, og hvor du vil engagere dine brugere med underretninger.",
+			"onSiteSetup": "Når du installerer dine enheder i det ønskede miljø (on-site), er en simpel konfiguration påkrævet. Gem enhedens navn, beskrivelse, placeringsoplysninger og kalibrer enheden for optimal nøjagtighed.",
 			"projects": "Projekter hjælper dig med at administrere Senti-enheder til specifikke måleopgaver og dataindsamling. Et projekt er en container til at samle dine enheder og data for en eller flere lokationer.",
-			"settings": "Kontrolcenter til styring af indstillinger for Senti-in-a-Box-enheder og din Senti Cloud Console konto.",
-			"users": "Godkendelse og administration af konti til brugere og organisationer, og tildeling af adgang til projekter, enheder, indsamlede data og API'er."
+			"settings": "Kontrolcenter til styring af indstillinger for Senti-in-a-Box-enheder, samt din Senti Cloud Console konto.",
+			"users": "Godkendelse og administration af konti til brugere og organisationer, samt tildeling af adgang til projekter, enheder, indsamlede data og API'er."
 		},
 		"cardHeaders": {
 			"alerts": "Intelligente advarsler",
@@ -51,7 +67,7 @@
 			"data": "Data",
 			"devices": "Enheder",
 			"notifications": "Notifikationer",
-			"onSiteSetup": "On-site Opsætning",
+			"onSiteSetup": "Lokal opsætning (on-site)",
 			"projects": "Projekter",
 			"settings": "Indstillinger",
 			"users": "Brugere"
@@ -154,7 +170,7 @@
 		"cancel": "Afbryd",
 		"no": "Nej",
 		"unassign": "Er du sikker på at du vil fjerne tildelingen %{deviceID} %{deviceName} fra %{project} ?",
-		"unassignTitle": "Fjern tildeling ${what}?",
+		"unassignTitle": "Fjern tildeling %{what}?",
 		"warnings": {
 			"notImplemented": "Ikke implementeret",
 			"wip": "Under udvikling"
@@ -162,10 +178,10 @@
 		"yes": "Ja"
 	},
 	"discoverSenti": {
-		"addProject": "Opret data projekter.",
+		"addProject": "Opret data projekter",
 		"getStarted": "Start her:",
-		"onSiteSetup": "Opsætning af enheder.",
-		"startAnalyzeData": "Analyser dine data.",
+		"onSiteSetup": "Opsætning af enheder",
+		"startAnalyzeData": "Analyser dine data",
 		"welcome": "Velkommen til Senti Console!"
 	},
 	"filters": {
@@ -278,8 +294,8 @@
 			"time": "På tid"
 		},
 		"defaultDataSet": "Standard datasæt for diagrammer",
-		"didYouKnow": "\"Viste du at?\"",
-		"discoverSenti": "\"Oplev Senti\"",
+		"didYouKnow": "“Viste du at?“",
+		"discoverSenti": "“Oplev Senti“",
 		"headers": {
 			"calibration": "Kalibrering",
 			"charts": "Diagrammer",
