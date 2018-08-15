@@ -27,7 +27,26 @@
 		"yes": "Yes"
 	},
 	"calibration": {
+		"fields": {
+			"deviceName": "Device name",
+			"description": "Description"
+		},
 		"header": "On-site setup",
+		"texts": {
+			"lat": "Latitude",
+			"long": "Longitude",
+			"getLocation": "Get location",
+			"networkError": "Network error!",
+			"back": "Back",
+			"finish": "Finish",
+			"next": "Next",
+			"success": "Success!",
+			"successMessage": "Your Senti device is now configured and calibrated and will produce better results when collecting data. To further enhance the accuracy of your data collection, return to the site of installation and do a new calibration on a regular basis. You can set a reminder for Device Calibration in Settings.",
+			"viewDevice": "View device",
+			"viewDeviceList": "View device list",
+			"reset": "Reset"
+		},
+		"selectLocationType": "Select a location type for ",
 		"steps": {
 			"0": "To configure your Senti device, please enter a title and an informative description.",
 			"1": "To correctly deploy your Senti device you need to allow Senti Cloud to store the location of the device. Accept this when prompted to allow to store the location of your mobile device. Secondly select a location type to further pinpoint where your data is collected.",
