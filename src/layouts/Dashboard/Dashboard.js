@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
-import PerfectScrollbar from "perfect-scrollbar";
-import "perfect-scrollbar/css/perfect-scrollbar.css";
+// import PerfectScrollbar from "perfect-scrollbar";
+// import "perfect-scrollbar/css/perfect-scrollbar.css";
 import { withStyles } from "@material-ui/core";
 import { Header, /* Footer, */ Sidebar, CircularLoader } from "components";
 
@@ -27,7 +27,7 @@ class App extends React.Component {
 		 	mobileOpen: false,
 			headerTitle: '',
 			goBackButton: false,
-	  }
+		}
 	}
 	
 	handleDrawerToggle = () => {
@@ -48,7 +48,7 @@ class App extends React.Component {
 		this._isMounted = 1
 		if (navigator.platform.indexOf('Win') > -1) {
 			// eslint-disable-next-line
-			const ps = new PerfectScrollbar(this.refs.mainPanel);
+			// const ps = new PerfectScrollbar(this.refs.mainPanel);
 		}
 		// if (cookie.load('SESSION')) 
 		// {
@@ -63,7 +63,7 @@ class App extends React.Component {
 		// if (cookie.load('SESSION')) 
 		// {
 		//eslint-disable-next-line
-			this.refs.mainPanel ? this.refs.mainPanel.scrollTop = 0 : null
+			// this.refs.mainPanel ? this.refs.mainPanel.scrollTop = 0 : null
 		// }
 	}
 	render() {
@@ -73,7 +73,7 @@ class App extends React.Component {
 			!loading ? 
 				<div className={classes.wrapper}>
 					{/* <GeoLocation/> */}
-					<div className={classes.mainPanel} ref="mainPanel">
+					<div className={classes.mainPanel}>
 						<Header
 							routes={dashboardRoutes}
 							handleDrawerToggle={this.handleDrawerToggle}
