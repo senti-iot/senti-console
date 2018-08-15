@@ -64,12 +64,12 @@ class CalibrateDevice extends Component {
 			locationType: '',
 			address: ''
 		}
-		props.setHeader(this.props.t("calibration.header") + props.match.params.id, true)
+		props.setHeader(this.props.t("calibration.header") + " " + props.match.params.id, true)
 	}
 
 	getSteps() {
 		const { t } = this.props
-		return [t("calibration.name"), t("calibration.location"), t("calibration.calibration"), t("calibration.images")]
+		return [t("calibration.stepheader.name"), t("calibration.stepheader.location"), t("calibration.stepheader.calibration"), t("calibration.stepheader.images")]
 	}
 
 	getStepContent(step) {
