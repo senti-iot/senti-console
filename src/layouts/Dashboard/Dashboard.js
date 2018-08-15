@@ -28,7 +28,6 @@ class App extends React.Component {
 			headerTitle: '',
 			goBackButton: false,
 		}
-		this.refs.mainPanel = React.createRef()
 	}
 	
 	handleDrawerToggle = () => {
@@ -74,7 +73,7 @@ class App extends React.Component {
 			!loading ? 
 				<div className={classes.wrapper}>
 					{/* <GeoLocation/> */}
-					<div className={classes.mainPanel} ref={this.refs.mainPanel}>
+					<div className={classes.mainPanel}>
 						<Header
 							routes={dashboardRoutes}
 							handleDrawerToggle={this.handleDrawerToggle}
