@@ -49,24 +49,24 @@ class ImageUpload extends Component {
 						<Fragment>
 							{success ?
 								<ItemGrid xs={12} zeroMargin container justify={'center'}>
-									{success === true ? <Success>Images uploaded successfully</Success> :
+									{success === true ? <Success>{t("images.uploadSuccess")}</Success> :
 										success === false ?
-											<Warning>Images failed to upload! Please refresh and try again</Warning>
+											<Warning>{t("images.uploadFailed")}</Warning>
 											: null}
 								</ItemGrid> : null}
 							<ItemGrid xs={6} noMargin container justify={'center'}>
 								<Button variant="contained" color={success ? "primary" : 'default'} component="span" className={classes.button} onClick={success ? this.finish : this.upload}>
 									{!success ? <Fragment>
-										<CloudUpload className={classes.iconButton} /> Upload
+										<CloudUpload className={classes.iconButton} />{t("images.upload")}
 									</Fragment>
 										: <Fragment>
-											<Check className={classes.iconButton} /> Finish
+											<Check className={classes.iconButton} />{t("images.finish")}
 										</Fragment>}
 								</Button>
 							</ItemGrid>
 							<ItemGrid xs={6} noMargin container justify={'center'}>
 								<Button variant={"contained"} component="span" className={classes.button} onClick={this.handleReset}>
-									<Restore className={classes.iconButton} /> Reset
+									<Restore className={classes.iconButton} />{t("images.reset")}
 								</Button>
 							</ItemGrid>
 						</Fragment>
@@ -84,7 +84,7 @@ class ImageUpload extends Component {
 							/>
 							<label htmlFor="contained-button-file">
 								<Button variant="contained" component="span" className={classes.button}>
-									<CloudUpload className={classes.iconButton} /> Add Images
+									<CloudUpload className={classes.iconButton} />{t("images.add")}
 								</Button>
 							</label>
 						</Fragment>
