@@ -112,8 +112,8 @@
 			"noAudioSupported": "Din browser understøtter ikke lydfiler! Der vil derfor ikke være understøttende lyd! Prøv en bedre browser."
 		},
 		"cards": {
-			"data": "Enhedsdata",
-			"details": "Enhedsdetaljer",
+			"data": "Data",
+			"details": "Detaljer for enhed",
 			"hardware": "Udstyr",
 			"map": "Kort",
 			"pictures": "Billeder"

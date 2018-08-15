@@ -112,11 +112,11 @@
 			"noAudioSupported": "Your browser doesn't support audio files! There will be no sound feedback! Try using a better browser."
 		},
 		"cards": {
-			"data": "Device Data",
-			"details": "Device Details",
+			"data": "Data",
+			"details": "Device details",
 			"hardware": "Hardware",
 			"map": "Map",
-			"pictures": "Pictures"
+			"pictures": "Images"
 		},
 		"device": "Device",
 		"editDetailsTitle": "Edit %{deviceId}",
