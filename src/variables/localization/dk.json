@@ -290,13 +290,13 @@
 		"projectDeleted": "Projektet er slettet!",
 		"projectExported": "Projektet er eksporteret!",
 		"projectRedirect": "Omdirigerer tilbage til liste over projekter",
-		"projectsColumnCreated": "Oprettet",
+		"projectsColumnCreated": "Opdateret",
 		"projectsColumnDescription": "Beskrivelse",
 		"projectsColumnEndDate": "Slutdato",
-		"projectsColumnLastMod": "Senest rettet",
+		"projectsColumnLastMod": "Senest opdateret",
 		"projectsColumnProgress": "",
 		"projectsColumnStartDate": "Startdato",
-		"projectsColumnTitle": "Titel",
+		"projectsColumnTitle": "Navn",
 		"tabs": {
 			"cardView": "Gittervisning",
 			"listView": "Listevisning"
@@ -397,7 +397,7 @@
 			"phone": "Telefon:",
 			"organisation": "Organisation:",
 			"language": "System sprog",
-			"created": "Oprettet",
+			"created": "Opdateret",
 			"lastSignIn": "Seneste login",
 			"active": "Aktiv (Login suspendederet ja/nej)",
 			"tags": "Tags"
