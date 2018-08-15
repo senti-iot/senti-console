@@ -130,7 +130,7 @@
 			"description": "Description",
 			"id": "ID",
 			"lastData": "Last time device sent data to server",
-			"lastStats": "Last time device sent stats to server",
+			"lastStats": "Last time device was connected to server",
 			"locType": "Location type",
 			"memory": "Memory",
 			"memoryModel": "Memory model",
