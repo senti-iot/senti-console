@@ -26,6 +26,22 @@
 		"uploadImages": "Upload billeder",
 		"yes": "Ja"
 	},
+	"calibration": {
+		"header": "Lokal opsætning (on-site)",
+		"steps": {
+			"0": "To configure your Senti device, please enter a title and an informative description.",
+			"1": "To correctly deploy your Senti device you need to allow Senti Cloud to store the location of the device. Accept this when prompted to allow to store the location of your mobile device. Secondly select a location type to further pinpoint where your data is collected.",
+			"2": "To get the best data collection accuracy, you need to do a manual calibration. The calibration hit target is set to 200 so you need to count 200 individual entities. When you are ready to start counting press “OPEN COUNTING WINDOW” and press “START“. Push the large button to count. When you have reached your hit target of 200 hits the timer automatically stops.",
+			"3": "You can store optional images of your device installation. This will enhance the Senti Cloud experience, and serve as a help for Senti service technicians in case your device needs on-site service.",
+			"unknown": "Ukendt step"
+		},
+		"stepheader": {
+			"name": "Navn på enhed og beskrivelse",
+			"location": "Lokation for enhed",
+			"calibration": "Kalibrering",
+			"images": "Billeder af installation"
+		}
+	},
 	"charts": {
 		"type": {
 			"bar": "Søjle",
@@ -278,8 +294,8 @@
 			"time": "På tid"
 		},
 		"defaultDataSet": "Standard datasæt for diagrammer",
-		"didYouKnow": "\"Viste du at?\"",
-		"discoverSenti": "\"Oplev Senti\"",
+		"didYouKnow": "“Viste du at?“",
+		"discoverSenti": "“Oplev Senti“",
 		"headers": {
 			"calibration": "Kalibrering",
 			"charts": "Diagrammer",

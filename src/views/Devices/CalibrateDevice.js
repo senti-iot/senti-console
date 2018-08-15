@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withStyles, Grid, TextField, FormControl, InputLabel, Select, Input, MenuItem, FormHelperText } from '@material-ui/core';
-import { ItemGrid, Info, Danger } from 'components';
-import { getDevice, calibrateDevice, uploadPictures } from 'variables/dataDevices';
-import Caption from 'components/Typography/Caption';
-import CounterModal from 'components/Devices/CounterModal';
-import ImageUpload from './ImageUpload';
+import { ItemGrid, Info, Danger } from 'components'
+import { getDevice, calibrateDevice, uploadPictures } from 'variables/dataDevices'
+import Caption from 'components/Typography/Caption'
+import CounterModal from 'components/Devices/CounterModal'
+import ImageUpload from './ImageUpload'
 import { NavigateNext, NavigateBefore, Done, Restore, MyLocation, Router, Devices } from '@material-ui/icons'
 import GridContainer from 'components/Grid/GridContainer';
 import { PlacesWithStandaloneSearchBox } from 'components/Map/SearchBox'
@@ -64,34 +64,38 @@ class CalibrateDevice extends Component {
 			locationType: '',
 			address: ''
 		}
-		props.setHeader(props.match.params.id + ' Calibration', true)
+		props.setHeader(props.match.params.id + this.props.t("calibration.header"), true)
 	}
+
 	getSteps() {
-		return ['Device name and description', 'Device location', 'Calibration', 'Picture of installation'];
+		const { t } = this.props
+		return [t("calibration.name"), t("calibration.location"), t("calibration.calibration"), t("calibration.images")]
 	}
+
 	getStepContent(step) {
+		const { t } = this.props
 		switch (step) {
 			case 0:
-				return `To configure your Senti device, please enter a title and an informative description.`;
+				return t("calibration.steps.0")
 			case 1:
-				return `To correctly deploy your Senti device you need to allow Senti Cloud to store the location of the device. Accept this when prompted to allow to store the location of your mobile device.
-			Secondly select a location type to further pinpoint where your data is collected.`;
+				return t("calibration.steps.1")
 			case 2:
-				return `To get the best data collection accuracy, you need to do a manual calibration. 
-			The calibration hit target is set to 200 so you need to count 200 individual entities. When you are ready to start counting press “OPEN COUNTING WINDOW” and press "START". 
-			Push the large button to count. When you have reached your hit target of 200 hits the timer automatically stops.`;
+				return t("calibration.steps.2")
 			case 3:
-				return `You can store optional picture(s) of your device installation. This will enhance the Senti Cloud experience, and serve as a help for Senti service technicians in case your device needs on-site service.`
+				return t("calibration.steps.3")
 			default:
-				return 'Unknown step';
+				return t("calibration.steps.unknown")
 		}
 	}
+
 	handleInput = (input) => e => {
 		this.setState({ [input]: e.target.value })
 	}
+
 	getImages = (imgs) => {
 		this.setState({ images: imgs })
 	}
+
 	handleCalibration = (result) => {
 		this.setState({
 			...this.state,
@@ -103,6 +107,7 @@ class CalibrateDevice extends Component {
 			}
 		})
 	}
+
 	componentDidMount = async () => {
 		if (this.props.match) {
 			let id = this.props.match.params.id
@@ -124,6 +129,7 @@ class CalibrateDevice extends Component {
 			this.props.history.push('/404')
 		}
 	}
+
 	getCoords = () => {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(rs => {
@@ -133,6 +139,7 @@ class CalibrateDevice extends Component {
 			}, err => { console.log(err); this.setState({ error: err }) })
 		}
 	}
+
 	uploadImgs = async () => {
 		let success = false
 		if (this.state.images) {
@@ -145,6 +152,7 @@ class CalibrateDevice extends Component {
 		}
 		return success
 	}
+
 	renderDeviceNameDescriptionForms = () => {
 		// const { device } = this.state
 		const { classes } = this.props
@@ -178,6 +186,7 @@ class CalibrateDevice extends Component {
 			</ItemGrid>
 		</Grid>
 	}
+
 	LocationTypes = () => {
 		const { t } = this.props
 		return [
@@ -192,12 +201,15 @@ class CalibrateDevice extends Component {
 			t("devices.locationTypes.office"),
 			t("devices.locationTypes.unspecified")]
 	}
+
 	handleLocationTypeChange = (e) => {
 		this.setState({ locationType: e.target.value })
 	}
+
 	handleSetAddress = (e) => {
 		this.setState({ address: e.target.value })
 	}
+
 	renderDeviceLocation = () => {
 		const { t } = this.props
 		return <Grid container>
@@ -237,12 +249,15 @@ class CalibrateDevice extends Component {
 			</ItemGrid>
 		</Grid>
 	}
+
 	renderCalibration = () => {
 		return <CounterModal t={this.props.t} handleFinish={this.handleCalibration} />
 	}
+
 	renderImageUpload = () => {
 		return <ImageUpload t={this.props.t} imgUpload={this.getImages} dId={this.state.device.device_id}/>
 	}
+
 	renderStep = (step) => {
 		switch (step) {
 			case 0:
@@ -257,6 +272,7 @@ class CalibrateDevice extends Component {
 				break;
 		}
 	}
+
 	updateCalibration = async () => {
 		const { startDate, endDate, count, timer } = this.state.calibration
 		const { device } = this.state
@@ -270,6 +286,7 @@ class CalibrateDevice extends Component {
 		}).then(rs => rs)
 		return success
 	}
+
 	updatePosition = async () => {
 		const { lat, long, device, locationType, address } = this.state
 		var success = await calibrateDevice({
@@ -282,6 +299,7 @@ class CalibrateDevice extends Component {
 		}).then(rs => rs)
 		return success
 	}
+
 	updateNameAndDesc = async () => {
 		const { device_name, description } = this.state
 		var success = await calibrateDevice({
@@ -292,6 +310,7 @@ class CalibrateDevice extends Component {
 		}).then(rs => rs)
 		return success
 	}
+
 	handleNext = () => {
 		const { activeStep } = this.state
 		var success = false
@@ -324,19 +343,23 @@ class CalibrateDevice extends Component {
 	handleBack = () => {
 		this.setState({
 			activeStep: this.state.activeStep - 1,
-		});
-	};
+		})
+	}
+
 	handleGoToDeviceList = () => {
 		this.props.history.push('/devices')
 	}
+
 	handleFinish = () => {
 		this.props.history.push('/device/' + this.state.device.device_id)
 	}
+
 	handleReset = () => {
 		this.setState({
 			activeStep: 0,
-		});
-	};
+		})
+	}
+
 	stepChecker = () => {
 		/**
 		 * Return false to NOT disable the Next Step Button
@@ -353,6 +376,7 @@ class CalibrateDevice extends Component {
 				break;
 		}
 	}
+
 	render() {
 		const { /* t, */ classes } = this.props;
 		const steps = this.getSteps();
