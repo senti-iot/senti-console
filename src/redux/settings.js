@@ -38,17 +38,20 @@ export const saveSettingsOnServ = () => {
 export const getSettings = async () => {
 	return async dispatch => {
 		var settings = await getSettingsFromServer()
-		if (settings)
+		if (settings) {
 			dispatch({
 				type: GETSETTINGS,
 				settings
 			})
+			return true
+		}
 		else {
 			dispatch({
 				type: "NOSETTINGS",
 				loading: false
 			})
-		 }
+			return false
+		}
 	}
 }
 export const changeAlerts = t => ({
@@ -82,7 +85,7 @@ export const changeSideBarLoc = loc => {
 		loc
 	}
 }
-export const changeTRP = (nr) => { 
+export const changeTRP = (nr) => {
 	return {
 		type: TRP,
 		nr
@@ -115,7 +118,7 @@ export const settings = (state = initialState, action) => {
 			return Object.assign({}, state, { discSentiVal: action.val })
 		case "NOSETTINGS":
 			return Object.assign({}, state, { loading: false })
-		case GETSETTINGS: 
+		case GETSETTINGS:
 			return Object.assign({}, state, { ...action.settings, loading: false })
 		case changeLangAction:
 			return Object.assign({}, state, {
@@ -145,7 +148,7 @@ export const settings = (state = initialState, action) => {
 			return Object.assign({}, state, {
 				count: action.count
 			})
-		case CALNOTIF: 
+		case CALNOTIF:
 			return Object.assign({}, state, {
 				calNotifications: action.t
 			})
