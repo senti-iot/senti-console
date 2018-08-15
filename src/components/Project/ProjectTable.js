@@ -12,7 +12,7 @@ import { dateFormatter } from "variables/functions"
 import EnhancedTableHead from './ProjectTableHeader'
 import EnhancedTableToolbar from './TableToolBar'
 import { ItemGrid, Info } from ".."
-
+import { connect } from "react-redux"
 class EnhancedTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -22,7 +22,7 @@ class EnhancedTable extends React.Component {
 			orderBy: 'title',
 			selected: [],
 			page: 0,
-			rowsPerPage: props.theme.breakpoints.width("md") < window.innerWidth ? 10 : 5,
+			rowsPerPage: props.rowsPerPage,
 			anchorElMenu: null,
 			anchorFilterMenu: null,
 			openSnackbar: 0,
@@ -292,19 +292,19 @@ class EnhancedTable extends React.Component {
 				</div>
 				<TablePagination
 					component="div"
-					count={data ? data.length : 0}
+					count={data.length}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					backIconButtonProps={{
-						'aria-label': 'Previous Page',
+						'aria-label': t("actions.nextPage"),
 					}}
 					nextIconButtonProps={{
-						'aria-label': 'Next Page',
+						'aria-label': t("actions.previousPage"),
 					}}
 					onChangePage={this.handleChangePage}
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}
-					labelRowsPerPage={<Hidden mdDown>Rows per page</Hidden>}
-
+					labelRowsPerPage={<Hidden mdDown>{t("tables.rowsPerPage")}</Hidden>}
+					rowsPerPageOptions={[5, 10, 25, 50, 100]}
 				/>
 				<Snackbar
 					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
@@ -322,9 +322,16 @@ class EnhancedTable extends React.Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	rowsPerPage: state.settings.trp
+})
+
+const mapDispatchToProps = {
+	
+}
 
 EnhancedTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 }
 
-export default withRouter(withStyles(devicetableStyles, { withTheme: true })(EnhancedTable))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(EnhancedTable)))
