@@ -14,12 +14,12 @@ let selectedRender = props => {
 	return <Grid container justify={'space-between'} alignItems={'center'}>
 		<ItemGrid>
 			<Typography color="primary" variant="subheading">
-				{numSelected} selected
+				{numSelected + " " + t("tables.selected")}
 			</Typography>
 		</ItemGrid>
 		<ItemGrid>
 			<IconButton
-				aria-label="More"
+				aria-label={t("menus.more")}
 				aria-owns={props.anchorElMenu ? 'long-menu' : null}
 				aria-haspopup="true"
 				onClick={props.handleToolbarMenuOpen}>
@@ -57,7 +57,7 @@ let selectedRender = props => {
 	</Grid>
 }
 let defaultRender = props => {
-	const { classes, filterOptions } = props;
+	const { classes, filterOptions, t } = props;
 	const AddNewProject = () => props.history.push('/projects/new')
 	return <ItemGrid container justify={'flex-end'} alignItems={'center'}>
 		{props.noAdd ? null :
@@ -72,7 +72,7 @@ let defaultRender = props => {
 				{/* <Tooltip title="Filter list"> */}
 				<IconButton
 					className={classes.secondAction}
-					aria-label="Filter list"
+					aria-label={t("tables.filter")}
 					aria-owns={props.anchorFilterMenu ? "filter-menu" : null}
 					onClick={props.handleFilterMenuOpen}>
 					<FilterList />
