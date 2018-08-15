@@ -48,7 +48,7 @@ class App extends React.Component {
 		this._isMounted = 1
 		if (navigator.platform.indexOf('Win') > -1) {
 			// eslint-disable-next-line
-				// const ps = new PerfectScrollbar(this.refs.mainPanel);
+			const ps = new PerfectScrollbar(this.refs.mainPanel);
 		}
 		// if (cookie.load('SESSION')) 
 		// {
@@ -60,11 +60,11 @@ class App extends React.Component {
 	}
 	
 	componentDidUpdate() {
-		if (cookie.load('SESSION')) 
-		{
-			//eslint-disable-next-line
-			// this.refs.mainPanel ? this.refs.mainPanel.scrollTop = 0 : null
-		}
+		// if (cookie.load('SESSION')) 
+		// {
+		//eslint-disable-next-line
+			this.refs.mainPanel ? this.refs.mainPanel.scrollTop = 0 : null
+		// }
 	}
 	render() {
 		const { classes, t, loading, ...rest } = this.props;

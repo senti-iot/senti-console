@@ -110,7 +110,9 @@ let initialState = {
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
-	
+
+		case DISCSENT:
+			return Object.assign({}, state, { discSentiVal: action.val })
 		case "NOSETTINGS":
 			return Object.assign({}, state, { loading: false })
 		case GETSETTINGS: 
