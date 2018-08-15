@@ -132,13 +132,13 @@ class DeviceDetails extends Component {
 							<ItemGrid>
 								<Caption>{t("devices.fields.lastData")}</Caption>
 								<Info>
-									{moment(device.wifiLastD).format("HH:mm:ss DD.MM.YYYY")}
+									{moment(device.wifiLastD).format("HH:mm:ss - DD.MM.YYYY")}
 								</Info>
 							</ItemGrid>
 							<ItemGrid>
 								<Caption>{t("devices.fields.lastStats")}</Caption>
 								<Info>
-									{moment(device.execLastD).format("HH:mm:ss DD.MM.YYYY")}
+									{moment(device.execLastD).format("HH:mm:ss - DD.MM.YYYY")}
 								</Info>
 							</ItemGrid>
 							<ItemGrid xs={12}>
