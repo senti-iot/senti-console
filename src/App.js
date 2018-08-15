@@ -13,8 +13,13 @@ import TProvider from 'components/Localization/TProvider';
 const hist = createBrowserHistory();
 
 const theme = createMuiTheme({
-	
+
 	overrides: {
+		MuiIcon: {
+			root: {
+				overflow: 'visible',
+			},
+		},
 		MuiInput: {
 			// Name of the styleSheet
 			underline: {
