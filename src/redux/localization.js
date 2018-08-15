@@ -2,7 +2,6 @@
 // import localizationJSON from "variables/localization"
 import loc from 'variables/localization/index'
 var forEach = require('for-each');
-console.log(loc)
 
 //Action types
 
@@ -26,10 +25,8 @@ const extend = (morePhrases, prefix) => {
 			extend(phrase, prefixedKey);
 		} else {
 			phrases[prefixedKey] = phrase;
-			// console.log(phrase, key, phrases)
 		}
 	}, this);
-	// console.log(phrases)
 	return phrases
 };
 
@@ -38,7 +35,6 @@ const initialState = {
 	language: "en",
 	s: extend(loc["en"])
 }
-// console.log(initialState)
 export const localization = (state = initialState, action) => {
 	switch (action.type) {
 		case GETSETTINGS: 

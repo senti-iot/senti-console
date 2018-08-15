@@ -234,9 +234,7 @@ class Devices extends Component {
 	}
 	render() {
 		const { devices } = this.state
-		// console.log(devices)
 		const { classes } = this.props
-		// console.log(this.props)
 		return (
 			<Fragment>
 				<AppBar position="sticky" classes={{ root: classes.appBar }}>

@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import {
 	AccessTime, AssignmentTurnedIn, MoreVert,
-	DateRange, KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft,
+	DateRange, KeyboardArrowRight, KeyboardArrowLeft,
 	DonutLargeRounded, PieChartRounded, BarChart, ExpandMore, Visibility
 } from "@material-ui/icons"
 // import { dateFormatter } from 'variables/functions';
@@ -292,8 +292,8 @@ class DeviceData extends Component {
 							disableFuture
 							dateRangeIcon={<DateRange />}
 							timeIcon={<AccessTime />}
-							rightArrowIcon={<KeyArrRight />}
-							leftArrowIcon={<KeyArrLeft />}
+							rightArrowIcon={<KeyboardArrowRight/>}
+							leftArrowIcon={<KeyboardArrowLeft/>}
 							InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
 							InputProps={{ classes: { underline: classes.underline } }}
 						/>
@@ -311,8 +311,8 @@ class DeviceData extends Component {
 							dateRangeIcon={<DateRange />}
 							timeIcon={<AccessTime />}
 							color="primary"
-							rightArrowIcon={<KeyArrRight />}
-							leftArrowIcon={<KeyArrLeft />}
+							rightArrowIcon={<KeyboardArrowRight />}
+							leftArrowIcon={<KeyboardArrowLeft/>}
 							InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
 							InputProps={{ classes: { underline: classes.underline } }}
 						/>

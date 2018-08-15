@@ -3,12 +3,11 @@ import PropTypes from "prop-types"
 import { withStyles, Button } from "@material-ui/core"
 
 import dashboardStyle from "assets/jss/material-dashboard-react/dashboardStyle"
-import { getAllProjects } from "../../variables/dataProjects"
 import GridContainer from "components/Grid/GridContainer"
 import withLocalization from "components/Localization/T"
 import DiscoverSenti from './DiscoverSenti'
 import MediaCard from 'components/Cards/MediaCard'
-
+import { connect } from 'react-redux'
 import imgs from 'assets/img/Squared'
 
 class Dashboard extends React.Component {
@@ -21,22 +20,11 @@ class Dashboard extends React.Component {
 			devices: 0
 		}
 		props.setHeader("Console", false)
-
 	}
 
-	setStateAsync(state) {
-		return new Promise(resolve => {
-			this.setState(state, resolve)
-		})
-	}
 
 	componentDidMount = async () => {
-		let projects = await getAllProjects()
-		let devices = 0
-		projects.forEach(p => {
-			return p.devices ? devices = devices + p.devices.length : ''
-		})
-		await this.setStateAsync({ projects: projects, devices: devices })
+		
 	}
 
 	componentWillUnmount = () => {
@@ -57,13 +45,12 @@ class Dashboard extends React.Component {
 	}
 
 	render() {
-		const { classes, t } = this.props
+		const { discoverSenti, classes, t } = this.props
 		return (
 			<Fragment>
-				<DiscoverSenti t={t} />
+				{discoverSenti ? <DiscoverSenti t={t} /> : null}
 				<GridContainer spacing={8}>
 					<GridContainer className={classes.centerGrid} justify={"center"}>
-						{/* <ItemGrid xs={12} sm={4} noMargin> */}
 						<MediaCard
 							img={imgs.hosting}
 							header={t("dashboard.cardHeaders.onSiteSetup")}
@@ -71,8 +58,6 @@ class Dashboard extends React.Component {
 							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
 							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
 						/>
-						{/* </ItemGrid> */}
-						{/* <ItemGrid xs={12} sm={4} noMargin> */}
 						<MediaCard
 							img={imgs.storage}
 							header={t("dashboard.cardHeaders.projects")}
@@ -80,8 +65,6 @@ class Dashboard extends React.Component {
 							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
 							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
 						/>
-						{/* </ItemGrid> */}
-						{/* <ItemGrid xs={12} sm={4} noMargin> */}
 						<MediaCard
 							img={imgs.devices}
 							header={t("dashboard.cardHeaders.devices")}
@@ -89,9 +72,6 @@ class Dashboard extends React.Component {
 							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
 							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
 						/>
-
-						{/* </ItemGrid> */}
-						{/* <ItemGrid xs={12} sm={4} noMargin> */}
 						<MediaCard
 							img={imgs.data}
 							header={t("dashboard.cardHeaders.data")}
@@ -99,8 +79,6 @@ class Dashboard extends React.Component {
 							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
 							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
 						/>
-						{/* </ItemGrid> */}
-						{/* <ItemGrid xs={12} sm={4} noMargin> */}
 						<MediaCard
 							img={imgs.users}
 							header={t("dashboard.cardHeaders.users")}
@@ -108,8 +86,6 @@ class Dashboard extends React.Component {
 							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
 							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
 						/>
-						{/* </ItemGrid> */}
-						{/* <ItemGrid xs={12} sm={4} noMargin> */}
 						<MediaCard
 							img={imgs.settings}
 							header={t("dashboard.cardHeaders.settings")}
@@ -117,8 +93,6 @@ class Dashboard extends React.Component {
 							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
 							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
 						/>
-						{/* </ItemGrid> */}
-						{/* <ItemGrid xs={12} sm={4} noMargin> */}
 						<MediaCard
 							img={imgs.notifications}
 							header={t("dashboard.cardHeaders.notifications")}
@@ -126,8 +100,6 @@ class Dashboard extends React.Component {
 							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
 							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
 						/>
-						{/* </ItemGrid> */}
-						{/* <ItemGrid xs={12} sm={4} noMargin> */}
 						<MediaCard
 							img={imgs.predictions}
 							header={t("dashboard.cardHeaders.alerts")}
@@ -135,8 +107,6 @@ class Dashboard extends React.Component {
 							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
 							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
 						/>
-						{/* </ItemGrid> */}
-						{/* <ItemGrid xs={12} sm={4} noMargin> */}
 						<MediaCard
 							img={imgs.sharing}
 							header={t("dashboard.cardHeaders.api")}
@@ -144,7 +114,6 @@ class Dashboard extends React.Component {
 							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
 							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
 						/>
-						{/* </ItemGrid> */}
 					</GridContainer>
 				</GridContainer>
 			</Fragment>
@@ -155,5 +124,12 @@ class Dashboard extends React.Component {
 Dashboard.propTypes = {
 	classes: PropTypes.object.isRequired
 }
+const mapStateToProps = (state) => ({
+	discoverSenti: state.settings.discSentiVal
+})
 
-export default withLocalization()(withStyles(dashboardStyle)(Dashboard))
+const mapDispatchToProps = {
+  
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(dashboardStyle)(Dashboard)))

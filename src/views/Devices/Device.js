@@ -181,12 +181,11 @@ class Device extends Component {
 
 	render() {
 		const { device, loading } = this.state
-		// console.log(this)
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<AssignProject
-						device_id={this.state.device.device_id}
+						deviceId={this.state.device.device_id}
 						open={this.state.openAssign}
 						handleClose={this.handleCloseAssign}
 						t={this.props.t}

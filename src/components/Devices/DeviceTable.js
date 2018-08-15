@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import AssignProject from "./AssignProject";
 import EnhancedTableHead from './DeviceTableHeader';
 import EnhancedTableToolbar from './TableToolBar';
-
+import { connect } from 'react-redux'
 class EnhancedTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -17,7 +17,7 @@ class EnhancedTable extends React.Component {
 			orderBy: 'device_id',
 			selected: [],
 			page: 0,
-			rowsPerPage: props.theme.breakpoints.width("md") < window.innerWidth ? 10 : 5,
+			rowsPerPage: props.rowsPerPage,
 			anchorElMenu: null,
 			anchorFilterMenu: null,
 			openAssignProject: false
@@ -174,7 +174,7 @@ class EnhancedTable extends React.Component {
 				<AssignProject
 					open={openAssignProject}
 					handleClose={this.handleCloseAssignToProject}
-					device_id={selected}
+					deviceId={selected}
 					t={t} />
 				<EnhancedTableToolbar
 					anchorElMenu={this.state.anchorElMenu}
@@ -292,7 +292,7 @@ class EnhancedTable extends React.Component {
 					onChangePage={this.handleChangePage}
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}
 					labelRowsPerPage={<Hidden mdDown>{t("tables.rowsPerPage")}</Hidden>}
-
+					rowsPerPageOptions={[5, 10, 25, 50, 100]}
 				/>
 			</Paper>
 		);
@@ -302,5 +302,12 @@ class EnhancedTable extends React.Component {
 EnhancedTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
+const mapStateToProps = (state) => ({
+	rowsPerPage: state.settings.trp
+})
 
-export default withRouter(withStyles(devicetableStyles, { withTheme: true })(EnhancedTable));
+const mapDispatchToProps = {
+  
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(EnhancedTable)));
