@@ -131,7 +131,13 @@ class EditDeviceDetails extends Component {
 									disabled={this.state.updating}
 									onClick={this.state.updated ? this.goToDevice : this.handleUpdateDevice}
 								>
-									{this.state.updated ? <Fragment><Check className={classes.leftIcon}/> Go to Device </Fragment> : <Fragment><Save className={classes.leftIcon} />Update Device</Fragment>}
+									{this.state.updated ? 
+										<Fragment>
+											<Check className={classes.leftIcon}/>{t("calibration.texts.viewDevice")}
+										</Fragment> : 
+										<Fragment>
+											<Save className={classes.leftIcon} />{t("calibration.texts.updateDevice")}
+										</Fragment>}
 								</Button>
 								{/* </ItemGrid> */}
 							</ItemGrid>
@@ -148,7 +154,7 @@ class EditDeviceDetails extends Component {
 					autoHideDuration={5000}
 					message={
 						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-							<Check className={classes.leftIcon} color={'primary'} />Device {this.state.id} has been successfully updated!
+							<Check className={classes.leftIcon} color={'primary'} />{t("snackbars.deviceUpdated", { device: this.state.id })}
 						</ItemGrid>
 					}
 				/>

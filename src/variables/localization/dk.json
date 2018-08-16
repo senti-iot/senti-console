@@ -44,7 +44,8 @@
 			"successMessage": "Din Senti enhed er nu konfigureret og kalibreret og vil nu producere bedre data under indsamling. For yderligere at forbedre nøjagtigheden af din dataopsamling, returner til opsætningsstedet og lav en ny kalibrering regelmæssigt. Du kan konfigurere en notifikation for kalibrering af enheder under Indstillinger.",
 			"viewDevice": "Vis enhed",
 			"viewDeviceList": "Vis liste over enheder",
-			"reset": "Nulstil"
+			"reset": "Nulstil",
+			"updateDevice": "Opdater enhed"
 		},
 		"selectLocationType": "Vælg en lokationstype for ",
 		"steps": {
@@ -368,7 +369,8 @@
         "unassign": "Enhed succesfuldt fjernet!",
         "updatedFailed": "Opdatering fejlede!",
         "updatedSuccess": "Opdateret!",
-        "updating": "Opdaterer ..."
+		"updating": "Opdaterer ...",
+		"deviceUpdated": "Enhed %{device} er blevet opdateret!"
     },
     "tables": {
         "addNewDevice": "Tilføj ny enhed",

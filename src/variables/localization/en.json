@@ -44,7 +44,8 @@
 			"successMessage": "Your Senti device is now configured and calibrated and will produce better results when collecting data. To further enhance the accuracy of your data collection, return to the site of installation and do a new calibration on a regular basis. You can set a reminder for Device Calibration in Settings.",
 			"viewDevice": "View device",
 			"viewDeviceList": "View device list",
-			"reset": "Reset"
+			"reset": "Reset",
+			"updateDevice": "Update device"			
 		},
 		"selectLocationType": "Select a location type for ",
 		"steps": {
@@ -367,7 +368,8 @@
 		"unassign": "Device %{device} unassigned successfully",
 		"updatedFailed": "Update failed!",
 		"updatedSuccess": "Updated!",
-		"updating": "Updating..."
+		"updating": "Updating...",
+		"deviceUpdated": "Device %{device} has been successfully updated!"
 	},
 	"tables": {
 		"addNewDevice": "Add new device",
