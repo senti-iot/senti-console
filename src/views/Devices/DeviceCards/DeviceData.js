@@ -167,7 +167,7 @@ class DeviceData extends Component {
 	}
 
 	format = "YYYY-MM-DD+HH:mm"
-
+	displayFormat = "DD.MM.YYYY HH:mm"
 	handleSwitchDayHour = () => {
 		let id = this.state.dateFilterInputID
 		switch (id) {
@@ -409,8 +409,8 @@ class DeviceData extends Component {
 	renderDateFilter = () => {
 		const { classes, t  } = this.props
 		const { dateFilterInputID, to, from } = this.state
-		let displayTo = moment(to).format(this.format)
-		let displayFrom = moment(from).format(this.format)
+		let displayTo = moment(to).format(this.displayFormat)
+		let displayFrom = moment(from).format(this.displayFormat)
 		return (
 			<div className={classes.root}>
 				<Hidden smDown>

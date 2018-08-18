@@ -109,6 +109,7 @@ class ProjectData extends Component {
 		this.setState({ actionAnchor: null });
 	};
 	format = "YYYY-MM-DD+HH:mm"
+	displayFormat = "DD.MM.YYYY HH:mm"
 	handleSetDate = (id) => {
 		let to = null
 		let from = null
@@ -283,8 +284,8 @@ class ProjectData extends Component {
 	renderDateFilter = () => {
 		const { classes, t } = this.props
 		const { dateFilterInputID, to, from } = this.state
-		let displayTo = moment(to).format(this.format)
-		let displayFrom = moment(from).format(this.format)
+		let displayTo = moment(to).format(this.displayFormat)
+		let displayFrom = moment(from).format(this.displayFormat)
 		return (
 			<div className={classes.root}>
 				<Hidden smDown>
