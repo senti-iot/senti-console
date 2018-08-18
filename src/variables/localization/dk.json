@@ -27,16 +27,36 @@
 		"yes": "Ja"
 	},
 	"calibration": {
-		"header": "Lokal opsætning (on-site)",
+		"fields": {
+			"deviceName": "Navn på enhed",
+			"description": "Beskrivelse"
+		},
+		"header": "Lokal opsætning",
+		"texts": {
+			"lat": "Breddegrad",
+			"long": "Længdegrad",
+			"getLocation": "Hent lokation",
+			"networkError": "Network error!",
+			"back": "Tilbage",
+			"finish": "Afslut",
+			"next": "Næste",
+			"success": "Succes!",
+			"successMessage": "Din Senti enhed er nu konfigureret og kalibreret og vil nu producere bedre data under indsamling. For yderligere at forbedre nøjagtigheden af din dataopsamling, returner til opsætningsstedet og lav en ny kalibrering regelmæssigt. Du kan konfigurere en notifikation for kalibrering af enheder under Indstillinger.",
+			"viewDevice": "Vis enhed",
+			"viewDeviceList": "Vis liste over enheder",
+			"reset": "Nulstil",
+			"updateDevice": "Opdater enhed"
+		},
+		"selectLocationType": "Vælg en lokationstype for ",
 		"steps": {
-			"0": "To configure your Senti device, please enter a title and an informative description.",
-			"1": "To correctly deploy your Senti device you need to allow Senti Cloud to store the location of the device. Accept this when prompted to allow to store the location of your mobile device. Secondly select a location type to further pinpoint where your data is collected.",
-			"2": "To get the best data collection accuracy, you need to do a manual calibration. The calibration hit target is set to 200 so you need to count 200 individual entities. When you are ready to start counting press “OPEN COUNTING WINDOW” and press “START“. Push the large button to count. When you have reached your hit target of 200 hits the timer automatically stops.",
-			"3": "You can store optional images of your device installation. This will enhance the Senti Cloud experience, and serve as a help for Senti service technicians in case your device needs on-site service.",
-			"unknown": "Ukendt step"
+			"0": "For at konfigurere din Senti enhed, indtast et enhedsnavn og en informativ beskrivelse.",
+			"1": "For at konfigurere din Senti-enhed korrekt skal du tillade Senti Cloud at gemme enhedens placering. Accepter dette, når du bliver bedt om at tillade at gemme placeringen af din mobilenhed. Indtast ligeledes en adresse og vælg en placeringstype for yderligere at specificere, hvor dine data er opsamlet.",
+			"2": "For at få den bedste nøjagtighed af din dataindsamling, skal du foretage en manuel kalibrering. Kalibreringsmålet er sat til 200, så du skal tælle 200 individuelle enheder. Når du er klar til at begynde at tælle, tryk på “ÅBEN TÆLLER VINDUE“ og tryk på “START“. Tryk den store knap for at tælle. Når du har nået dit hitmål på 200 hits, stopper timeren automatisk.",
+			"3": "Du kan valgfrit gemme billeder af din enhedsinstallation. Dette vil forbedre Senti Cloud-oplevelsen og tjene som en hjælp til Senti-serviceteknikere, såfremt din enhed har brug for on-site service.",
+			"unknown": "Ukendt skridt"
 		},
 		"stepheader": {
-			"name": "Navn på enhed og beskrivelse",
+			"name": "Enhedsnavn og beskrivelse",
 			"location": "Lokation for enhed",
 			"calibration": "Kalibrering",
 			"images": "Billeder af installation"
@@ -93,8 +113,8 @@
 			"noAudioSupported": "Din browser understøtter ikke lydfiler! Der vil derfor ikke være understøttende lyd! Prøv en bedre browser."
 		},
 		"cards": {
-			"data": "Enhedsdata",
-			"details": "Enhedsdetaljer",
+			"data": "Data",
+			"details": "Detaljer for enhed",
 			"hardware": "Udstyr",
 			"map": "Kort",
 			"pictures": "Billeder"
@@ -110,8 +130,8 @@
 			"coordsW": "Koordinater: %{lat} %{long}",
 			"description": "Beskrivelse",
 			"id": "ID",
-			"lastData": "Sidste gang enheden sendte data til serveren",
-			"lastStats": "Sidste gang enheden sendte statistik til serveren",
+			"lastData": "Sidste gang enheden sendte data til server",
+			"lastStats": "Sidste gang enheden havde kontakt med server",
 			"locType": "Placeringstype",
 			"memory": "Hukommelse",
 			"memoryModel": "Hukommelse model",
@@ -202,6 +222,14 @@
 		"search": "Søg",
 		"startDate": "Startdato"
 	},
+	"images": {
+		"add": "Tilføj billeder",
+		"upload": "Upload",
+		"finish": "Afslut",
+		"reset": "Nulstil",
+		"uploadSuccess": "Billeder blev uploaded med succes",
+		"uploadFailed": "Biller blev ikke uploaded! Genindlæs sitet og prøv igen!"
+	},
 	"links": {
 		"googleMaps": "Vis på Google Maps",
 		"mailTo": "Send mail til"
@@ -254,7 +282,7 @@
 			"startDate": "Startdato"
 		},
 		"infoCardProjectData": "Data",
-		"infoCardProjectDetails": "Projektdetaljer",
+		"infoCardProjectDetails": "Detaljer for projekt",
 		"new": "Opret nyt projekt",
 		"pageTitle": "Projekter",
 		"projectCreated": "Projektet er oprettet!",
@@ -263,13 +291,13 @@
 		"projectDeleted": "Projektet er slettet!",
 		"projectExported": "Projektet er eksporteret!",
 		"projectRedirect": "Omdirigerer tilbage til liste over projekter",
-		"projectsColumnCreated": "Oprettet",
+		"projectsColumnCreated": "Opdateret",
 		"projectsColumnDescription": "Beskrivelse",
 		"projectsColumnEndDate": "Slutdato",
-		"projectsColumnLastMod": "Senest rettet",
+		"projectsColumnLastMod": "Senest opdateret",
 		"projectsColumnProgress": "",
 		"projectsColumnStartDate": "Startdato",
-		"projectsColumnTitle": "Titel",
+		"projectsColumnTitle": "Navn",
 		"tabs": {
 			"cardView": "Gittervisning",
 			"listView": "Listevisning"
@@ -341,7 +369,8 @@
         "unassign": "Enhed succesfuldt fjernet!",
         "updatedFailed": "Opdatering fejlede!",
         "updatedSuccess": "Opdateret!",
-        "updating": "Opdaterer ..."
+		"updating": "Opdaterer ...",
+		"deviceUpdated": "Enhed %{device} er blevet opdateret!"
     },
     "tables": {
         "addNewDevice": "Tilføj ny enhed",
@@ -370,7 +399,7 @@
 			"phone": "Telefon:",
 			"organisation": "Organisation:",
 			"language": "System sprog",
-			"created": "Oprettet",
+			"created": "Opdateret",
 			"lastSignIn": "Seneste login",
 			"active": "Aktiv (Login suspendederet ja/nej)",
 			"tags": "Tags"

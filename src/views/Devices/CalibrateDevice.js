@@ -64,12 +64,12 @@ class CalibrateDevice extends Component {
 			locationType: '',
 			address: ''
 		}
-		props.setHeader(props.match.params.id + this.props.t("calibration.header"), true)
+		props.setHeader(this.props.t("calibration.header") + " " + props.match.params.id, true)
 	}
 
 	getSteps() {
 		const { t } = this.props
-		return [t("calibration.name"), t("calibration.location"), t("calibration.calibration"), t("calibration.images")]
+		return [t("calibration.stepheader.name"), t("calibration.stepheader.location"), t("calibration.stepheader.calibration"), t("calibration.stepheader.images")]
 	}
 
 	getStepContent(step) {
@@ -154,12 +154,12 @@ class CalibrateDevice extends Component {
 
 	renderDeviceNameDescriptionForms = () => {
 		// const { device } = this.state
-		const { classes } = this.props
+		const { classes, t } = this.props
 		return <Grid container>
 			<ItemGrid xs={12}>
 				<TextField
 					required={true}
-					label={'Device Name'}
+					label={t("calibration.fields.deviceName")}
 					onChange={this.handleInput('device_name')}
 					value={this.state.device_name}
 					InputProps={{
@@ -173,7 +173,7 @@ class CalibrateDevice extends Component {
 				<TextField
 					multiline
 					rows={4}
-					label={'Description'}
+					label={t("calibration.fields.description")}
 					onChange={this.handleInput('description')}
 					value={this.state.description}
 					InputProps={{
@@ -217,7 +217,7 @@ class CalibrateDevice extends Component {
 			</ItemGrid>
 			<ItemGrid xs={12}>
 				<FormControl className={this.props.classes.formControl}>
-					<InputLabel htmlFor="streetType-helper">{this.state.locationType ? '' : "Location Type"}</InputLabel>
+					<InputLabel htmlFor="streetType-helper">{this.state.locationType ? '' : t("devices.fields.locType")}</InputLabel>
 					<Select
 						value={this.state.locationType}
 						onChange={this.handleLocationTypeChange}
@@ -229,11 +229,11 @@ class CalibrateDevice extends Component {
 							</MenuItem>
 						})}
 					</Select>
-					<FormHelperText>Select a location type for {this.state.device_name ? this.state.device_name : this.state.device_id}</FormHelperText>
+					<FormHelperText>{t("calibration.selectLocationType")} {this.state.device_name ? this.state.device_name : this.state.device_id}</FormHelperText>
 				</FormControl>
 				<div className={this.props.classes.latlong}>
 					<Caption>
-					Latitude &amp; Longitute
+						{t("calibration.texts.lat")} &amp; {t("calibration.texts.long")}
 					</Caption>
 					<Info>
 						{this.state.lat + " " + this.state.long}
@@ -244,7 +244,7 @@ class CalibrateDevice extends Component {
 					color="primary"
 					onClick={this.getCoords}
 					className={this.props.classes.button}
-				> <MyLocation className={this.props.classes.iconButton} />Get Location </Button>
+				> <MyLocation className={this.props.classes.iconButton} />{t("calibration.texts.getLocation")}</Button>
 			</ItemGrid>
 		</Grid>
 	}
@@ -312,6 +312,7 @@ class CalibrateDevice extends Component {
 
 	handleNext = () => {
 		const { activeStep } = this.state
+		const { t } = this.props
 		var success = false
 		if (activeStep === 3) {
 			let s1 = this.updateNameAndDesc()
@@ -333,7 +334,7 @@ class CalibrateDevice extends Component {
 			});
 		else {
 			this.setState({
-				error: { message: "Network Error" }
+				error: { message: t("calibration.texts.networkError") }
 			})
 		}
 	}
@@ -377,7 +378,7 @@ class CalibrateDevice extends Component {
 	}
 
 	render() {
-		const { /* t, */ classes } = this.props;
+		const { t, classes } = this.props;
 		const steps = this.getSteps();
 		const { activeStep, device, error } = this.state;
 		return (
@@ -405,7 +406,7 @@ class CalibrateDevice extends Component {
 														onClick={this.handleBack}
 														className={classes.button}
 													>
-														<NavigateBefore className={classes.iconButton} />Back
+														<NavigateBefore className={classes.iconButton} />{t("calibration.texts.back")}
 													</Button>
 													<Button
 														variant="contained"
@@ -416,10 +417,10 @@ class CalibrateDevice extends Component {
 													>
 														{activeStep === steps.length - 1 ? <Fragment>
 
-															<Done className={classes.iconButton} />Finish
+															<Done className={classes.iconButton} />{t("calibration.texts.finish")}
 														</Fragment> :
 															<Fragment>
-																<NavigateNext className={classes.iconButton} />Next
+																<NavigateNext className={classes.iconButton} />{t("calibration.texts.next")}
 															</Fragment>}
 													</Button>
 												</Grid>
@@ -431,23 +432,23 @@ class CalibrateDevice extends Component {
 						</Stepper> : null}
 					{activeStep === steps.length && device && (
 						<Paper square elevation={0} className={classes.resetContainer}>
-							<Typography variant={'title'}>Success</Typography>
+							<Typography variant={'title'}>{t("calibration.texts.success")}</Typography>
 							<Typography paragraph>
-							Your Senti device is now configured and calibrated and will produce better results when collecting data. To further enhance the accuracy of your data collection, return to the site of installation and do a new calibration on a regular basis. You can set a reminder for Device Calibration in the Settings section.
+								{t("calibration.texts.successMessage")}
 							</Typography>
 							<Grid container>
 
 								<ItemGrid xs>
 									<Button onClick={this.handleFinish} color={"primary"} variant={"contained"} className={classes.buttonMargin}>
-										<Router className={classes.iconButton} />Go to device {device.device_id}
+										<Router className={classes.iconButton} />{t("calibration.texts.viewDevice")} {device.device_id}
 									</Button>
 									<Button onClick={this.handleGoToDeviceList} color={"primary"} variant={"contained"} className={classes.buttonMargin}>
-										<Devices className={classes.iconButton} />Go to device list
+										<Devices className={classes.iconButton} />{t("calibration.texts.viewDeviceList")}
 									</Button>
 								</ItemGrid>
 								<ItemGrid xs>
 									<Button onClick={this.handleReset} className={classes.button} >
-										<Restore className={classes.iconButton} />Reset
+										<Restore className={classes.iconButton} />{t("calibration.texts.reset")}
 									</Button>
 								</ItemGrid>
 							</Grid>

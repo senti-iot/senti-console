@@ -114,49 +114,49 @@ class DeviceDetails extends Component {
 									</Warning>
 								</ItemGrid>}
 							<ItemGrid>
-								<Caption>{t("devices.fields.name")}</Caption>
+								<Caption>{t("devices.fields.name")}:</Caption>
 								<Info>
 									{device.device_name ? device.device_name : t("devices.noName")}
 								</Info>
 							</ItemGrid>
 							<ItemGrid>
-								<Caption>{t("devices.fields.status")}</Caption>
+								<Caption>{t("devices.fields.status")}:</Caption>
 								{this.renderStatus(device.liveStatus)}
 							</ItemGrid>
 							<ItemGrid xs={9}>
-								<Caption>{t("devices.fields.temp")}</Caption>
+								<Caption>{t("devices.fields.temp")}:</Caption>
 								<Info>
 									{device.temperature} &#8451;
 								</Info>
 							</ItemGrid>
 							<ItemGrid>
-								<Caption>{t("devices.fields.lastData")}</Caption>
+								<Caption>{t("devices.fields.lastData")}:</Caption>
 								<Info>
-									{moment(device.wifiLastD).format("HH:mm:ss DD.MM.YYYY")}
+									{moment(device.wifiLastD).format("HH:mm - DD.MM.YYYY")}
 								</Info>
 							</ItemGrid>
 							<ItemGrid>
-								<Caption>{t("devices.fields.lastStats")}</Caption>
+								<Caption>{t("devices.fields.lastStats")}:</Caption>
 								<Info>
-									{moment(device.execLastD).format("HH:mm:ss DD.MM.YYYY")}
+									{moment(device.execLastD).format("HH:mm - DD.MM.YYYY")}
 								</Info>
 							</ItemGrid>
 							<ItemGrid xs={12}>
-								<Caption>{t("devices.fields.description")}</Caption>
+								<Caption>{t("devices.fields.description")}:</Caption>
 								<Info>{device.description ? device.description : ""}</Info>
 							</ItemGrid>
 						</Grid>
 						<Grid container>
 							<ItemGrid>
-								<Caption>{t("devices.fields.address")}</Caption>
+								<Caption>{t("devices.fields.address")}:</Caption>
 								<Info>{device.address} </Info>
 							</ItemGrid>
 							<ItemGrid >
-								<Caption>{t("devices.fields.locType")}</Caption>
+								<Caption>{t("devices.fields.locType")}:</Caption>
 								<Info>{device.locationType} </Info>
 							</ItemGrid>
 							<ItemGrid >
-								<Caption>{t("devices.fields.coords")}</Caption>
+								<Caption>{t("devices.fields.coords")}:</Caption>
 								<Info><a title={t("links.googleMaps")} href={`https://www.google.com/maps/search/${device.lat}+${device.long}`} target={'_blank'}>
 									{ConvertDDToDMS(device.lat, false) + " " + ConvertDDToDMS(device.long, true)}</a>
 								</Info>
@@ -164,11 +164,11 @@ class DeviceDetails extends Component {
 						</Grid>
 						<Grid container>
 							<ItemGrid>
-								<Caption>{t("devices.fields.org")}</Caption>
+								<Caption>{t("devices.fields.org")}:</Caption>
 								<Info>{device.organisation ? device.organisation.vcName : t("devices.noProject")}</Info>
 							</ItemGrid>
 							<ItemGrid xs={4}>
-								<Caption>{t("devices.fields.project")}</Caption>
+								<Caption>{t("devices.fields.project")}:</Caption>
 								<Info>{device.project ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : t("devices.noProject")}</Info>
 							</ItemGrid>
 						</Grid>

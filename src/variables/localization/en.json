@@ -27,10 +27,30 @@
 		"yes": "Yes"
 	},
 	"calibration": {
+		"fields": {
+			"deviceName": "Device name",
+			"description": "Description"
+		},
 		"header": "On-site setup",
+		"texts": {
+			"lat": "Latitude",
+			"long": "Longitude",
+			"getLocation": "Get location",
+			"networkError": "Network error!",
+			"back": "Back",
+			"finish": "Finish",
+			"next": "Next",
+			"success": "Success!",
+			"successMessage": "Your Senti device is now configured and calibrated and will produce better results when collecting data. To further enhance the accuracy of your data collection, return to the site of installation and do a new calibration on a regular basis. You can set a reminder for Device Calibration in Settings.",
+			"viewDevice": "View device",
+			"viewDeviceList": "View device list",
+			"reset": "Reset",
+			"updateDevice": "Update device"			
+		},
+		"selectLocationType": "Select a location type for ",
 		"steps": {
 			"0": "To configure your Senti device, please enter a title and an informative description.",
-			"1": "To correctly deploy your Senti device you need to allow Senti Cloud to store the location of the device. Accept this when prompted to allow to store the location of your mobile device. Secondly select a location type to further pinpoint where your data is collected.",
+			"1": "To configure your Senti device you need to allow Senti Cloud to store the location of the device. Accept this when prompted to allow to store the location of your mobile device. Secondly type in an address and select a location type to further pinpoint where your data is collected.",
 			"2": "To get the best data collection accuracy, you need to do a manual calibration. The calibration hit target is set to 200 so you need to count 200 individual entities. When you are ready to start counting press “OPEN COUNTING WINDOW” and press “START“. Push the large button to count. When you have reached your hit target of 200 hits the timer automatically stops.",			
 			"3": "You can store optional images of your device installation. This will enhance the Senti Cloud experience, and serve as a help for Senti service technicians in case your device needs on-site service.",
 			"unknown": "Unknown step"
@@ -93,11 +113,11 @@
 			"noAudioSupported": "Your browser doesn't support audio files! There will be no sound feedback! Try using a better browser."
 		},
 		"cards": {
-			"data": "Device Data",
-			"details": "Device Details",
+			"data": "Data",
+			"details": "Device details",
 			"hardware": "Hardware",
 			"map": "Map",
-			"pictures": "Pictures"
+			"pictures": "Images"
 		},
 		"device": "Device",
 		"editDetailsTitle": "Edit %{deviceId}",
@@ -111,7 +131,7 @@
 			"description": "Description",
 			"id": "ID",
 			"lastData": "Last time device sent data to server",
-			"lastStats": "Last time device sent stats to server",
+			"lastStats": "Last time device was connected to server",
 			"locType": "Location type",
 			"memory": "Memory",
 			"memoryModel": "Memory model",
@@ -201,6 +221,14 @@
 		},
 		"search": "Search",
 		"startDate": "Start date"
+	},
+	"images": {
+		"add": "Add images",
+		"upload": "Upload",
+		"finish": "Finish",
+		"reset": "Reset",
+		"uploadSuccess": "Images was successfully uploaded",
+		"uploadFailed": "Images failed to upload! Please refresh browser and try again!"
 	},
 	"links": {
 		"googleMaps": "Show on Google Maps",
@@ -340,7 +368,8 @@
 		"unassign": "Device %{device} unassigned successfully",
 		"updatedFailed": "Update failed!",
 		"updatedSuccess": "Updated!",
-		"updating": "Updating..."
+		"updating": "Updating...",
+		"deviceUpdated": "Device %{device} has been successfully updated!"
 	},
 	"tables": {
 		"addNewDevice": "Add new device",
