@@ -6,6 +6,7 @@ import Projects from "./projects";
 import ProjectRouting from './project'
 import Devices from './devices'
 import DeviceRouting from './device'
+import UserRouting from './user'
 import { Dashboard, LibraryBooks, Devices as DeviceIco, SettingsRounded, People } from "@material-ui/icons";
 import NotFound from "layouts/404/NotFound";
 import UserProfile from 'views/UserProfile/UserProfile';
@@ -47,6 +48,11 @@ const dashboardRoutes = [
 		sidebarName: "sidebar.users",
 		icon: People,
 		component: UserProfile
+	},
+	{
+		path: "/user/:id",
+		component: UserRouting,
+		hideFromSideBar: true
 	},
 	{
 		path: "/settings",

@@ -365,19 +365,19 @@
 		"deleting": "Sletter ...",
 		"exported": "Eksporteret!",
 		"projectUpdated": "Projekt %{project} er succesfuldt opdateret!",
-        "redirect": "Omdirigerer ...",
-        "unassign": "Enhed succesfuldt fjernet!",
-        "updatedFailed": "Opdatering fejlede!",
-        "updatedSuccess": "Opdateret!",
+		"redirect": "Omdirigerer ...",
+		"unassign": "Enhed succesfuldt fjernet!",
+		"updatedFailed": "Opdatering fejlede!",
+		"updatedSuccess": "Opdateret!",
 		"updating": "Opdaterer ...",
 		"deviceUpdated": "Enhed %{device} er blevet opdateret!"
-    },
-    "tables": {
-        "addNewDevice": "Tilføj ny enhed",
-        "addNewProject": "Opret nyt projekt",
-        "filter": "Filter",
-        "rowsPerPage": "Rækker pr. side",
-        "selected": "valgt"
+	},
+	"tables": {
+		"addNewDevice": "Tilføj ny enhed",
+		"addNewProject": "Opret nyt projekt",
+		"filter": "Filter",
+		"rowsPerPage": "Rækker pr. side",
+		"selected": "valgt"
 	},
 	"users": {
 		"actions": {
@@ -402,7 +402,12 @@
 			"created": "Opdateret",
 			"lastSignIn": "Seneste login",
 			"active": "Aktiv (Login suspendederet ja/nej)",
-			"tags": "Tags"
+			"tags": "Tags",
+			"accessLevel": "Access Level"
+		},
+		"headers": {
+			"contact": "Contact",
+			"system": "System logs"
 		},
 		"menus": {
 			"profile": "Profil",

@@ -401,7 +401,12 @@
 			"created": "Created",
 			"lastSignIn": "Last sign in",
 			"active": "Active (Login suspended yes/no)",
-			"tags": "Tags"
+			"tags": "Tags", 
+			"accessLevel": "Access Level"
+		},
+		"headers": {
+			"contact": "Contact",
+			"system": "System logs"
 		},
 		"menus": {
 			"profile": "Profile",
