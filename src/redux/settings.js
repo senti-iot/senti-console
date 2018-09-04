@@ -98,7 +98,7 @@ export const changeTheme = (code) => {
 	}
 }
 let initialState = {
-	language: "en",
+	language: "dk",
 	calibration: 1,
 	calNotifications: 0,
 	count: 200,
