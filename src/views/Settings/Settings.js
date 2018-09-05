@@ -12,7 +12,7 @@ import { changeTRP, changeTheme, changeCalType, changeSideBarLoc, changeCount, c
 import NotificationSettings from './SettingsCards/NotificationSettings';
 import DeviceSettings from './SettingsCards/DeviceSettings';
 import ChartSettings from './SettingsCards/ChartSettings';
-import { Button, Snackbar, /*  Paper, Snackbar  */ } from '@material-ui/core';
+import { Snackbar, /*  Paper, Snackbar  */ } from '@material-ui/core';
 
 //Add Section Calibrated/Uncalibrated data
 class Settings extends Component {
@@ -76,9 +76,6 @@ class Settings extends Component {
 					<DeviceSettings
 						t={t}
 					/>
-				</ItemGrid>
-				<ItemGrid xs={12} noMargin>
-					<Button variant={'contained'} onClick={() => this.props.saveSettings(this.props.settings)}> Save</Button>
 				</ItemGrid>
 				<Snackbar
 					autoHideDuration={3000}

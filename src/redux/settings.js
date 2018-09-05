@@ -64,43 +64,77 @@ export const changeAlerts = t => {
 		dispatch(saveSettingsOnServ())
 	}
 }
-export const changeDidKnow = t => ({
-	type: DIDKNOW,
-	t
-})
-export const changeDiscoverSenti = val => ({
-	type: DISCSENT,
-	val
-})
-export const changeCalNotif = t => ({
-	type: CALNOTIF,
-	t
-})
+export const changeDidKnow = t => {
+	return async (dispatch, getState) => {
+		dispatch({
+			type: DIDKNOW,
+			t
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeDiscoverSenti = val => {
+	return async (dispatch, getState) => {
+		dispatch({
+			type: DISCSENT,
+			val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeCalNotif = t => {
+	return async (dispatch, getState) => {
+		dispatch({
+			type: CALNOTIF,
+			t
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
 
-export const changeCount = count => ({
-	type: COUNT,
-	count
-})
-export const changeCalType = t => ({
-	type: CALTYPE,
-	t
-})
+export const changeCount = count => {
+	return async (dispatch, getState) => {
+		dispatch({
+			type: COUNT,
+			count
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeCalType = t => {
+	return async (dispatch, getState) => {
+		dispatch({
+			type: CALTYPE,
+			t
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
 export const changeSideBarLoc = loc => {
-	return {
-		type: MENULOC,
-		loc
+	return async (dispatch, getState) => {
+		dispatch({
+			type: MENULOC,
+			loc
+		})
+		dispatch(saveSettingsOnServ())
 	}
 }
 export const changeTRP = (nr) => {
-	return {
-		type: TRP,
-		nr
+	return async (dispatch, getState) => {
+		dispatch({
+			type: TRP,
+			nr
+		})
+		dispatch(saveSettingsOnServ())
 	}
 }
 export const changeTheme = (code) => {
-	return {
-		type: THEME,
-		code
+	return async (dispatch, getState) => {
+		dispatch({
+			type: THEME,
+			code
+		})
+		dispatch(saveSettingsOnServ())
 	}
 }
 export const finishedSaving = () => {
@@ -177,5 +211,5 @@ export const settings = (state = initialState, action) => {
 		default:
 			return state
 	}
-	
+
 }
