@@ -102,6 +102,7 @@ class DeviceSimpleList extends React.Component {
 	}
 	render() {
 		const { classes, data, t } = this.props
+		console.log(t)
 		const { order, orderBy, selected, rowsPerPage, page } = this.state
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 		const tableHead = [
@@ -123,6 +124,7 @@ class DeviceSimpleList extends React.Component {
 					filters={this.props.filters}
 					numSelected={selected.length}
 					options={() => []}
+					t={t}
 				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
