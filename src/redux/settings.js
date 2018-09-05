@@ -12,6 +12,7 @@ const DIDKNOW = "NOTIFICATIOn_DIDYOUKNOW"
 const GETSETTINGS = "GET_SETTINGS"
 const SAVESETTINGS = "SAVE_SETTINGS"
 const changeLangAction = "LANG"
+const SAVED = "SAVED_SETTINGS"
 
 export const saveSettingsOnServ = () => {
 	return async (dispatch, getState) => {
@@ -54,10 +55,15 @@ export const getSettings = async () => {
 		}
 	}
 }
-export const changeAlerts = t => ({
-	type: ALERTS,
-	t
-})
+export const changeAlerts = t => {
+	return async (dispatch, getState) => {
+		dispatch({
+			type: ALERTS,
+			t
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
 export const changeDidKnow = t => ({
 	type: DIDKNOW,
 	t
@@ -97,6 +103,12 @@ export const changeTheme = (code) => {
 		code
 	}
 }
+export const finishedSaving = () => {
+	return {
+		type: SAVED,
+		saved: false
+	}
+}
 let initialState = {
 	language: "dk",
 	calibration: 1,
@@ -114,6 +126,8 @@ let initialState = {
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
 
+		case SAVED:
+			return Object.assign({}, state, { saved: action.saved })
 		case DISCSENT:
 			return Object.assign({}, state, { discSentiVal: action.val })
 		case "NOSETTINGS":
@@ -163,4 +177,5 @@ export const settings = (state = initialState, action) => {
 		default:
 			return state
 	}
+	
 }

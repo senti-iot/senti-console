@@ -10,6 +10,7 @@ import { ItemGrid } from '..';
 
 
 let selectedRender = props => {
+	console.log(props.t, "components/Project")
 	const { numSelected, t } = props;
 	return <Grid container justify={'space-between'} alignItems={'center'}>
 		<ItemGrid>

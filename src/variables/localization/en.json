@@ -355,6 +355,7 @@
 		"users": "Users"
 	},
 	"snackbars": {
+		"settingsSaved": "Settings saved!",
 		"assign": "Device %{device} assigned successfully",
 		"createdFail": "Creation failed!",
 		"createdSuccess": "Created!",
