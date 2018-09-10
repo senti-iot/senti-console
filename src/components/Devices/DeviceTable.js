@@ -5,7 +5,8 @@ import PropTypes from "prop-types";
 import React from "react";
 import { withRouter } from 'react-router-dom';
 import AssignProject from "./AssignProject";
-import EnhancedTableHead from './DeviceTableHeader';
+// import EnhancedTableHead from './DeviceTableHeader';
+import EnhancedTableHead from '../Table/TableHeader'
 import EnhancedTableToolbar from './TableToolBar';
 import { connect } from 'react-redux'
 class EnhancedTable extends React.Component {
@@ -205,6 +206,7 @@ class EnhancedTable extends React.Component {
 							rowCount={data.length}
 							columnData={this.props.tableHead}
 							classes={classes}
+							mdDown={[1, 2]} //Which Columns to display on small Screens
 						/>
 						<TableBody>
 							{data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
@@ -256,11 +258,11 @@ class EnhancedTable extends React.Component {
 													{n.id}
 												</Typography>
 											</TableCell>
-											<TableCell className={classes.tableCell}>
+											{/* <TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
 													{n.name ? n.name : t("devices.noName")}
 												</Typography>
-											</TableCell>
+											</TableCell> */}
 											<TableCell className={classes.tableCellID}>
 												<div className={classes.paragraphCell}>
 													{this.renderIcon(n.liveStatus)}

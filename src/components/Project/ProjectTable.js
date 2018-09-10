@@ -9,7 +9,8 @@ import PropTypes from "prop-types"
 import React from "react"
 import { withRouter } from 'react-router-dom'
 import { dateFormatter } from "variables/functions"
-import EnhancedTableHead from './ProjectTableHeader'
+// import EnhancedTableHead from './ProjectTableHeader'
+import EnhancedTableHead from '../Table/TableHeader'
 import EnhancedTableToolbar from './TableToolBar'
 import { ItemGrid, Info } from ".."
 import { connect } from "react-redux"
@@ -233,6 +234,7 @@ class EnhancedTable extends React.Component {
 							columnData={this.props.tableHead}
 							t={t}
 							classes={classes}
+							mdDown={[0]} //Which Columns to display on small Screens
 						/>
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {

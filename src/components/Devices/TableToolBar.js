@@ -11,7 +11,7 @@ import { ItemGrid } from '..';
 
 let selectedRender = props => {
 	const { numSelected, t } = props;
-	console.log(props.t, "components/Device")
+	// console.log(props.t, "components/Device")
 	return <Grid container justify={'space-between'} alignItems={'center'}>
 		<ItemGrid>
 			<Typography color="primary" variant="subheading">
