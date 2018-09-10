@@ -62,7 +62,7 @@ class DeviceDetails extends Component {
 	renderDeviceLocType = () => {
 		const { device, t } = this.props
 		let deviceLoc = this.LocationTypes()[this.LocationTypes().findIndex(r => r.id === device.locationType)]
-		return deviceLoc.label ? deviceLoc.label : t("devices.noLocType")
+		return deviceLoc ? deviceLoc.label : t("devices.noLocType")
 	}
 	render() {
 		const { actionAnchor } = this.state
