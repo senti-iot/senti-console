@@ -16,7 +16,7 @@ import { ItemGrid, Info } from ".."
 import { connect } from "react-redux"
 // import { Add, FilterList } from '@material-ui/icons';
 // import { boxShadow } from 'assets/jss/material-dashboard-react';
-
+var moment = require("moment")
 class UserTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -274,6 +274,7 @@ class UserTable extends React.Component {
 											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone}</a>} />
 											<TC label={n.email} />
 											<TC label={n.org ? n.org.name : t("users.noOrg")} />
+											<TC label={moment.unix(n.loggedInUnixTime).format("DD.MM.YYYY HH:mm:ss")}/>
 										</Hidden>
 									</TableRow>
 								)

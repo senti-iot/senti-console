@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info } from 'components';
-import { Grid, Chip } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 export class UserLog extends Component {
 	render() {
 		const { t, user } = this.props
@@ -26,7 +26,7 @@ export class UserLog extends Component {
 							<Caption>{t("users.fields.tags")}</Caption>
 							{/* <Info> */}
 							{/* <List> */}
-							{user.tags.map(t => <Chip style={{ margin: 2 }} label={t} key={t}/>)}
+							{/* {user.tags.map(t => <Chip style={{ margin: 2 }} label={t} key={t}/>)} */}
 							{/* </List> */}
 							{/* </Info> */}
 						</ItemGrid>
