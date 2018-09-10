@@ -47,7 +47,7 @@ class DeviceSimpleList extends React.Component {
 
 	handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			this.setState({ selected: this.props.data.map(n => n.device_id) });
+			this.setState({ selected: this.props.data.map(n => n.id) });
 			return;
 		}
 		this.setState({ selected: [] });
@@ -105,8 +105,8 @@ class DeviceSimpleList extends React.Component {
 		const { order, orderBy, selected, rowsPerPage, page } = this.state
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 		const tableHead = [
-			{ id: "device_name", label: t("devices.simpleList.name") }, 
-			{ id: "device_id", label: t("devices.simpleList.id") }, 
+			{ id: "name", label: t("devices.simpleList.name") }, 
+			{ id: "id", label: t("devices.simpleList.id") }, 
 			{ id: "address", label: t("devices.simpleList.address") }, 
 			{ id: "liveStatus", label: t("devices.simpleList.status") }, 
 			{ id: "totalCount", label: t("devices.simpleList.totalcount") }
@@ -140,12 +140,12 @@ class DeviceSimpleList extends React.Component {
 						/>
 						<TableBody>
 							{data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((n, i) => {
-								const isSelected = this.isSelected(n.device_id)
+								const isSelected = this.isSelected(n.id)
 								const { t } = this.props
 								return (
 									<TableRow
 										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push('/device/' + n.device_id)}}
+										onClick={e => { e.stopPropagation(); this.props.history.push('/device/' + n.id)}}
 										role="checkbox"
 										aria-checked={isSelected}
 										tabIndex={-1}
@@ -153,14 +153,14 @@ class DeviceSimpleList extends React.Component {
 										selected={isSelected}
 										style={{ cursor: 'pointer' }}
 									>
-										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.device_id)}>
+										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 											<Checkbox checked={isSelected} />
 										</TableCell>
 										<TableCell className={classes.tableCell}>
-											{n.device_name ? n.device_name : t("devices.simpleList.tableCellDeviceName")}
+											{n.name ? n.name : t("devices.simpleList.tableCellDeviceName")}
 										</TableCell>
 										<TableCell className={classes.tableCellID}>
-											{n.device_id}
+											{n.id}
 										</TableCell>
 										<Hidden mdDown>
 											<TableCell className={classes.tableCell}>

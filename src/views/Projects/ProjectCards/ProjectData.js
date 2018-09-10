@@ -63,7 +63,7 @@ class ProjectData extends Component {
 		let dataArr = []
 		await Promise.all(project.devices.map(async d => {
 			let dataSet = null
-			await getWifiSummary(d.device_id, startDate, endDate).then(rs => dataSet = { nr: d.device_id, id: d.device_name + "(" + d.device_id + ")", data: rs })
+			await getWifiSummary(d.id, startDate, endDate).then(rs => dataSet = { nr: d.id, id: d.name + "(" + d.id + ")", data: rs })
 			return dataArr.push(dataSet)
 		}))
 		dataArr.sort((a, b) => a.nr - b.nr )

@@ -39,7 +39,7 @@ export const uploadPictures = async (device) => {
 			//TODO: return percent
 		}
 	};
-	var data = await imageApi.post('senti/device/image/' + device.device_id, form, config).then(rs => rs.data)
+	var data = await imageApi.post('senti/device/image/' + device.id, form, config).then(rs => rs.data)
 	return data
 }
 export const deletePicture = async (dId, img) => {

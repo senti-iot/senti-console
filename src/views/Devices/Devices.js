@@ -145,8 +145,8 @@ class Devices extends Component {
 		await getAllDevices().then(rs => this._isMounted ? this.setState({
 			devices: rs,
 			deviceHeader: [
-				{ id: "device_name", label: t("devices.fields.name") },
-				{ id: "device_id", label: t("devices.fields.id") },
+				{ id: "name", label: t("devices.fields.name") },
+				{ id: "id", label: t("devices.fields.id") },
 				{ id: "liveStatus", label: t("devices.fields.status") },
 				{ id: "address", label: t("devices.fields.address") },
 				{ id: "org", label: t("devices.fields.org") }

@@ -33,7 +33,7 @@ class EditDetails extends Component {
 	componentDidMount = async () => {
 		let id = this.props.match.params.id
 		await getDevice(id).then(rs => this.setState({
-			id: rs.device_id,
+			id: rs.id,
 			RPImodel: rs.RPImodel,  
 			SIMID: rs.SIMID,
 			SIMProvider: rs.SIMProvider,  
@@ -75,7 +75,7 @@ class EditDetails extends Component {
 		this.setState({ updating: true })
 		this.timer = setTimeout(async () => {
 			await updateDeviceHardware({
-				device_id: id,
+				id: id,
 				RPImodel: RPImodel,
 				SIMID: SIMID,
 				SIMProvider: SIMProvider,

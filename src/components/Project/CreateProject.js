@@ -187,23 +187,23 @@ class CreateProject extends Component {
 												}} />}
 												renderValue={selected => (
 													<div className={classes.chips}>
-														{selected.map(value => { return <Chip key={value} label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_name} className={classes.chip} /> })}
+														{selected.map(value => { return <Chip key={value} label={availableDevices[availableDevices.findIndex(d => d.id === value)].name} className={classes.chip} /> })}
 													</div>
 												)}
 												MenuProps={MenuProps}
 											>
 												{ availableDevices.map(name => (
 													<MenuItem
-														key={name.device_id}
-														value={name.device_id}
+														key={name.id}
+														value={name.id}
 														style={{
 															fontWeight:
-													this.state.devices.indexOf(name.device_id) === -1
+													this.state.devices.indexOf(name.id) === -1
 														? theme.typography.fontWeightRegular
 														: theme.typography.fontWeightMedium,
 														}}
 													>
-														{name.device_id + " - " + (name.device_name ? name.device_name : t("devices.noName"))}
+														{name.id + " - " + (name.name ? name.name : t("devices.noName"))}
 													</MenuItem>
 												))}
 											</Select>

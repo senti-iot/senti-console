@@ -14,7 +14,7 @@ class EnhancedTable extends React.Component {
 
 		this.state = {
 			order: 'asc',
-			orderBy: 'device_id',
+			orderBy: 'id',
 			selected: [],
 			page: 0,
 			rowsPerPage: props.rowsPerPage,
@@ -84,7 +84,7 @@ class EnhancedTable extends React.Component {
 
 	handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			this.setState({ selected: this.props.data.map(n => n.device_id) });
+			this.setState({ selected: this.props.data.map(n => n.id) });
 			return;
 		}
 		this.setState({ selected: [] });
@@ -208,30 +208,30 @@ class EnhancedTable extends React.Component {
 						/>
 						<TableBody>
 							{data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-								const isSelected = this.isSelected(n.device_id);
+								const isSelected = this.isSelected(n.id);
 								return (
 									<TableRow
 										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push('/device/' + n.device_id) }}
+										onClick={e => { e.stopPropagation(); this.props.history.push('/device/' + n.id) }}
 										role="checkbox"
 										aria-checked={isSelected}
 										tabIndex={-1}
-										key={n.device_id}
+										key={n.id}
 										selected={isSelected}
 										style={{ cursor: 'pointer' }}
 									>
-										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.device_id)}>
+										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 											<Checkbox checked={isSelected} />
 										</TableCell>
 										<Hidden mdDown>
 											 <TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.device_name ?  n.device_name : t("devices.noName")} 
+													{n.name ?  n.name : t("devices.noName")} 
 												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.device_id}
+													{n.id}
 												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCell}>
@@ -253,12 +253,12 @@ class EnhancedTable extends React.Component {
 										<Hidden lgUp>
 											<TableCell className={classes.tableCellID}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.device_id}
+													{n.id}
 												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.device_name ? n.device_name : t("devices.noName")}
+													{n.name ? n.name : t("devices.noName")}
 												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCellID}>

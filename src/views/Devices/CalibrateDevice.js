@@ -48,7 +48,7 @@ class CalibrateDevice extends Component {
 		super(props)
 		this.state = {
 			activeStep: 0,
-			device_name: '',
+			name: '',
 			description: '',
 			device: null,
 			error: false,
@@ -118,7 +118,7 @@ class CalibrateDevice extends Component {
 					else {
 						this.setState({
 							device: rs, loading: false,
-							device_name: rs.device_name ? rs.device_name : '',
+							name: rs.name ? rs.name : '',
 							description: rs.description ? rs.description : '',
 							locationType: rs.location_type ? rs.locationType : ''
 						})
@@ -144,7 +144,7 @@ class CalibrateDevice extends Component {
 		let success = false
 		if (this.state.images) {
 			success = await uploadPictures({
-				device_id: this.state.device.device_id,
+				id: this.state.device.id,
 				files: this.state.images,
 				// step: 3
 			}).then(rs => rs)
@@ -160,8 +160,8 @@ class CalibrateDevice extends Component {
 				<TextField
 					required={true}
 					label={t("calibration.fields.deviceName")}
-					onChange={this.handleInput('device_name')}
-					value={this.state.device_name}
+					onChange={this.handleInput('name')}
+					value={this.state.name}
 					InputProps={{
 						classes: {
 							root: classes.input
@@ -229,7 +229,7 @@ class CalibrateDevice extends Component {
 							</MenuItem>
 						})}
 					</Select>
-					<FormHelperText>{t("calibration.selectLocationType")} {this.state.device_name ? this.state.device_name : this.state.device_id}</FormHelperText>
+					<FormHelperText>{t("calibration.selectLocationType")} {this.state.name ? this.state.name : this.state.id}</FormHelperText>
 				</FormControl>
 				<div className={this.props.classes.latlong}>
 					<Caption>
@@ -254,7 +254,7 @@ class CalibrateDevice extends Component {
 	}
 
 	renderImageUpload = () => {
-		return <ImageUpload t={this.props.t} imgUpload={this.getImages} dId={this.state.device.device_id}/>
+		return <ImageUpload t={this.props.t} imgUpload={this.getImages} dId={this.state.device.id}/>
 	}
 
 	renderStep = (step) => {
@@ -281,7 +281,7 @@ class CalibrateDevice extends Component {
 			endDate: endDate,
 			count: count,
 			timer: timer,
-			device_id: device.device_id
+			id: device.id
 		}).then(rs => rs)
 		return success
 	}
@@ -294,17 +294,17 @@ class CalibrateDevice extends Component {
 			lat: lat,
 			long: long,
 			locationType: locationType,
-			device_id: device.device_id
+			id: device.id
 		}).then(rs => rs)
 		return success
 	}
 
 	updateNameAndDesc = async () => {
-		const { device_name, description } = this.state
+		const { name, description } = this.state
 		var success = await calibrateDevice({
-			device_name: device_name,
+			name: name,
 			description: description,
-			device_id: this.state.device.device_id,
+			id: this.state.device.id,
 			step: 0
 		}).then(rs => rs)
 		return success
@@ -351,7 +351,7 @@ class CalibrateDevice extends Component {
 	}
 
 	handleFinish = () => {
-		this.props.history.push('/device/' + this.state.device.device_id)
+		this.props.history.push('/device/' + this.state.device.id)
 	}
 
 	handleReset = () => {
@@ -364,10 +364,10 @@ class CalibrateDevice extends Component {
 		/**
 		 * Return false to NOT disable the Next Step Button
 		 */
-		const { activeStep, lat, long, device_name, calibration, address } = this.state;
+		const { activeStep, lat, long, name, calibration, address } = this.state;
 		switch (activeStep) {
 			case 0:
-				return device_name.length > 0 ? false : true
+				return name.length > 0 ? false : true
 			case 1:
 				return lat > 0 && long > 0 && address ? false : true
 			case 2:
@@ -440,7 +440,7 @@ class CalibrateDevice extends Component {
 
 								<ItemGrid xs>
 									<Button onClick={this.handleFinish} color={"primary"} variant={"contained"} className={classes.buttonMargin}>
-										<Router className={classes.iconButton} />{t("calibration.texts.viewDevice")} {device.device_id}
+										<Router className={classes.iconButton} />{t("calibration.texts.viewDevice")} {device.id}
 									</Button>
 									<Button onClick={this.handleGoToDeviceList} color={"primary"} variant={"contained"} className={classes.buttonMargin}>
 										<Devices className={classes.iconButton} />{t("calibration.texts.viewDeviceList")}

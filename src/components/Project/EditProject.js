@@ -53,7 +53,7 @@ class EditProject extends Component {
 					open_date: p.open_date,
 					close_date: p.close_date,
 					devices: p.devices,
-					selectedDevices: p.devices.map(d => d.device_id),
+					selectedDevices: p.devices.map(d => d.id),
 				})
 			}
 		})
@@ -98,7 +98,7 @@ class EditProject extends Component {
 	handleUpdateProject = () => {
 		clearTimeout(this.timer)
 		let selected = this.state.selectedDevices
-		let oldDevices = this.state.devices.map(d => d.device_id)
+		let oldDevices = this.state.devices.map(d => d.id)
 		var filtered = [];
 		filtered = oldDevices.filter(value => -1 === selected.indexOf(value));
 		let newProject = {
@@ -205,14 +205,14 @@ class EditProject extends Component {
 												renderValue={selected => (
 													<div className={classes.chips}>
 														{selected.map(value => {
-															if (availableDevices.findIndex(d => d.device_id === value) > -1)
+															if (availableDevices.findIndex(d => d.id === value) > -1)
 																return <Chip key={value}
-																	label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_id}
+																	label={availableDevices[availableDevices.findIndex(d => d.id === value)].id}
 																	className={classes.chip} />
 															else
-															if (devices.findIndex(d => d.device_id === value) > -1)
+															if (devices.findIndex(d => d.id === value) > -1)
 																return <Chip key={value}
-																	label={devices[devices.findIndex(d => d.device_id === value)].device_id}
+																	label={devices[devices.findIndex(d => d.id === value)].id}
 																	className={classes.chip} />
 															else return null
 														})}
@@ -221,15 +221,15 @@ class EditProject extends Component {
 												/* MenuProps={MenuProps} */>
 												{allDevices.map(name => (
 													<MenuItem
-														key={name.device_id}
-														value={name.device_id}
+														key={name.id}
+														value={name.id}
 														style={{
 															fontWeight:
-														this.state.devices.indexOf(name.device_id) === -1
+														this.state.devices.indexOf(name.id) === -1
 															? theme.typography.fontWeightRegular
 															: theme.typography.fontWeightMedium,
 														}}>
-														{name.device_id + " - " + (name.device_name ? name.device_name : t("devices.noName"))}
+														{name.id + " - " + (name.name ? name.name : t("devices.noName"))}
 													</MenuItem>
 												))}
 											</Select>

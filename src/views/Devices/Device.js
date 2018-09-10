@@ -38,7 +38,7 @@ class Device extends Component {
 				this.props.history.push('/404')
 			else {
 				this.setState({ device: rs, loading: false })
-				this.props.setHeader(rs.device_name ? rs.device_name : rs.device_id, true)
+				this.props.setHeader(rs.name ? rs.name : rs.id, true)
 					
 			}
 		})
@@ -61,8 +61,8 @@ class Device extends Component {
 	snackBarMessages = () => {
 		const { t } = this.props
 		let msg = this.state.openSnackbar
-		let name = this.state.device.device_name ? this.state.device.device_name : t("devices.noName")
-		let id = this.state.device.device_id
+		let name = this.state.device.name ? this.state.device.name : t("devices.noName")
+		let id = this.state.device.id
 		switch (msg) {
 			case 1:
 				return t("snackbars.unassign", { device: name + "(" + id + ")" })
@@ -84,14 +84,14 @@ class Device extends Component {
 	handleCloseAssign = async (reload) => {
 		if (reload) {
 			this.setState({ loading: true, anchorEl: null, openSnackbar: 2 })
-			await this.getDevice(this.state.device.device_id)
+			await this.getDevice(this.state.device.id)
 		}
 		this.setState({ openAssign: false })
 	}
 
 	renderImageUpload = (dId) => {
 		const getPics = () => { 
-			this.getAllPics(this.state.device.device_id)
+			this.getAllPics(this.state.device.id)
 		}
 		return <ImageUpload dId={dId} imgUpload={this.getAllPics} callBack={getPics}/>
 	}
@@ -132,11 +132,11 @@ class Device extends Component {
 	}
 
 	handleUnassign = async () => {
-		await assignProjectToDevice({ project_id: null, id: this.state.device.device_id }).then(async rs => {
+		await assignProjectToDevice({ project_id: null, id: this.state.device.id }).then(async rs => {
 			if (rs)	
 			{	this.handleCloseUnassign()
 				this.setState({ loading: true, anchorEl: null, openSnackbar: 1 })
-				await this.getDevice(this.state.device.device_id)} 
+				await this.getDevice(this.state.device.id)} 
 			else {
 				console.log('Failed to unassign') // Snackbar
 				// this.setState({ errorUnassign: true })
@@ -164,8 +164,8 @@ class Device extends Component {
 			<DialogTitle id="alert-dialog-title">{t("dialogs.unassignTitle", { what: "Project" })}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{/* Are you sure you want to unassign {device.device_id + " " + device.device_name} from project {device.project.title} ? */}
-					{t("dialogs.unassign", { deviceID: device.device_id, deviceName: device.device_name, project: device.project.title } )}
+					{/* Are you sure you want to unassign {device.id + " " + device.name} from project {device.project.title} ? */}
+					{t("dialogs.unassign", { deviceID: device.id, deviceName: device.name, project: device.project.title } )}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
@@ -185,7 +185,7 @@ class Device extends Component {
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<AssignProject
-						deviceId={this.state.device.device_id}
+						deviceId={this.state.device.id}
 						open={this.state.openAssign}
 						handleClose={this.handleCloseAssign}
 						t={this.props.t}

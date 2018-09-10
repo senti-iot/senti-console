@@ -405,7 +405,8 @@
 			"lastSignIn": "Seneste login",
 			"active": "Aktiv (Login suspendederet ja/nej)",
 			"tags": "Tags",
-			"accessLevel": "Access Level"
+			"accessLevel": "Access Level",
+			"userName": "Brugernavn"
 		},
 		"headers": {
 			"contact": "Contact",

@@ -108,7 +108,7 @@ class DeviceDetails extends Component {
 						</Menu>
 					</ItemGrid>
 				}
-				subheader={device.device_id}
+				subheader={device.id}
 				noExpand
 				content={
 					<Fragment>
@@ -134,7 +134,7 @@ class DeviceDetails extends Component {
 							<ItemGrid>
 								<Caption>{t("devices.fields.name")}:</Caption>
 								<Info>
-									{device.device_name ? device.device_name : t("devices.noName")}
+									{device.name ? device.name : t("devices.noName")}
 								</Info>
 							</ItemGrid>
 							<ItemGrid>

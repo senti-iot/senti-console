@@ -30,10 +30,11 @@ class DeviceImages extends Component {
 		this.setState({ activeStep });
 	};
 	componentDidMount = async () => {
-		await this.getAllPics(this.props.device.device_id)
+		console.log(this.props.device)
+		await this.getAllPics(this.props.device.id)
 	}
 	getPicsCallBack = () => {
-		this.getAllPics(this.props.device.device_id)
+		this.getAllPics(this.props.device.id)
 	}
 	renderImageUpload = (dId) => {
 
@@ -67,7 +68,7 @@ class DeviceImages extends Component {
 	}
 	handleDeletePicture = async () => {
 		const { img, activeStep } = this.state
-		const dId = this.props.device.device_id
+		const dId = this.props.device.id
 		this.setState({ deletingPicture: true })
 		var deleted = await deletePicture(dId, img[activeStep].filename).then(rs => rs)
 		if (deleted) {
@@ -191,7 +192,7 @@ class DeviceImages extends Component {
 							open={openImageUpload}
 							onClose={this.handleCloseImageUpload}>
 							<div className={classes.modal}>
-								{this.renderImageUpload(device.device_id)}
+								{this.renderImageUpload(device.id)}
 							</div>
 						</Modal>
 					</Fragment>}

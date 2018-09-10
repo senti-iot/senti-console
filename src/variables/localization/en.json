@@ -405,7 +405,8 @@
 			"lastSignIn": "Last sign in",
 			"active": "Active (Login suspended yes/no)",
 			"tags": "Tags", 
-			"accessLevel": "Access Level"
+			"accessLevel": "Access Level",
+			"userName": "Username"
 		},
 		"headers": {
 			"contact": "Contact",

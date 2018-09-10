@@ -67,7 +67,7 @@ class DeviceData extends Component {
 		const { from, to } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
-		let data = await getWifiDaily(device.device_id, startDate, endDate).then(rs => rs)
+		let data = await getWifiDaily(device.id, startDate, endDate).then(rs => rs)
 		if (data) {
 			let dataArr = Object.keys(data).map(r => ({ id: moment(r).format("DD.MM.YYYY HH:mm"), value: data[r] }))
 			this.setState({
@@ -106,7 +106,7 @@ class DeviceData extends Component {
 		const { from, to } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
-		var data = await getWifiHourly(device.device_id, startDate, endDate).then(rs => rs)
+		var data = await getWifiHourly(device.id, startDate, endDate).then(rs => rs)
 		if (data) {
 			var dataArr = Object.keys(data).map(r => ({ id: r, value: data[r] }))
 			this.setState({

@@ -25,7 +25,7 @@ class EditDeviceDetails extends Component {
 	}
 	componentDidMount = async () => {
 		let id = this.props.match.params.id
-		await getDevice(id).then(rs => this.setState({ id: rs.device_id, name: rs.device_name, description: rs.description, address: rs.address, locationType: rs.locationType }))
+		await getDevice(id).then(rs => this.setState({ id: rs.id, name: rs.name, description: rs.description, address: rs.address, locationType: rs.locationType }))
 		this.setState({ loading: false })
 	}
 	componentWillUnmount = () => {
@@ -56,8 +56,8 @@ class EditDeviceDetails extends Component {
 		this.setState({ updating: true })
 		this.timer = setTimeout(async () => {
 		 await updateDeviceDetails({
-				device_id: id,
-				device_name: name,
+				id: id,
+				name: name,
 				address: address,
 				description: description,
 				locationType: locationType

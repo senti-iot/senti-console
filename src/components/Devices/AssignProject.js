@@ -77,7 +77,7 @@ class AssignProject extends React.Component {
 			this.props.deviceId.map(async id => await assignProjectToDevice({ project_id: this.state.selectedProject, id: id }))
 		}
 		else {
-			await assignProjectToDevice({ project_id: this.state.selectedProject, id: this.props.device_id });
+			await assignProjectToDevice({ project_id: this.state.selectedProject, id: this.props.id });
 		}
 		this.props.handleClose(true)
 	}

@@ -25,7 +25,7 @@ class ImageUpload extends Component {
 	}
 	upload = async () => {
 		await uploadPictures({
-			device_id: this.props.dId,
+			id: this.props.dId,
 			files: this.state.images,
 		}).then(rs => { this.setState({ success: rs }); return rs })
 	}
