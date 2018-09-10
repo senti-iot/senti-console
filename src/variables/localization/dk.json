@@ -382,7 +382,11 @@
 		"selected": "valgt"
 	},
 	"users": {
-		"pageTitle": "Brugere",
+		"pageTitle": "Brugere & Organisationer",
+		"tabs": {
+			"users": "Brugere",
+			"orgs": "Organisationer"
+		},
 		"actions": {
 			"new": "Opret ny",
 			"import": "Importer",

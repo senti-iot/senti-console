@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { /* Grid, */ withStyles, AppBar, Tabs, Tab } from "@material-ui/core";
 import { Switch, Route, Redirect } from 'react-router-dom'
-import { ViewList, ViewModule } from '@material-ui/icons'
+import { People, Language } from '@material-ui/icons'
 import projectStyles from 'assets/jss/views/projects';
 import UserTable from 'components/User/UserTable';
 import CircularLoader from 'components/Loader/CircularLoader';
@@ -33,7 +33,7 @@ class Users extends Component {
 		this._isMounted = 1
 		await this.getProjects()
 		if (this._isMounted) {
-			if (this.props.location.pathname.includes('/grid')) {
+			if (this.props.location.pathname.includes('/orgs')) {
 				this.setState({ route: 1 })
 			}
 			else {
@@ -221,6 +221,12 @@ class Users extends Component {
 			<ProjectCards t={t} projects={this.filterItems(this.state.projects)} />
 		</GridContainer>
 	}
+	renderOrgs = () => {
+		return <GridContainer justify={'center'}>
+			<div> Not Implemented</div>
+			<div> Org List</div>
+		</GridContainer>
+	}
 	render() {
 		const { classes, t } = this.props
 		const { users } = this.state
@@ -228,8 +234,8 @@ class Users extends Component {
 			<Fragment>
 				<AppBar position={'sticky'} classes={{ root: classes.appBar }}>
 					<Tabs value={this.state.route} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
-						<Tab title={t("projects.tabs.listView")} id={0} label={<ViewList />} onClick={() => { this.props.history.push(`${this.props.match.path}/list`) }} />
-						<Tab title={t("projects.tabs.cardView")} id={1} label={<ViewModule />} onClick={() => { this.props.history.push(`${this.props.match.path}/grid`) }} />
+						<Tab title={t("users.tabs.users")} id={0} label={<People />} onClick={() => { this.props.history.push(`${this.props.match.path}/`) }} />
+						<Tab title={t("users.tabs.orgs")} id={1} label={<Language />} onClick={() => { this.props.history.push(`${this.props.match.path}/orgs`) }} />
 						<Search
 							right
 							suggestions={users ? this.suggestionGen(users) : []}
@@ -238,9 +244,10 @@ class Users extends Component {
 					</Tabs>
 				</AppBar>
 				{users ? <Switch>
-					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} />
-					<Route path={`${this.props.match.path}/list`} render={() => this.renderList()} />
-					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
+					{/* <Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} /> */}
+					<Route path={`${this.props.match.path}/orgs`} render={() => this.renderOrgs()} />
+					<Route path={`${this.props.match.path}/`} render={() => this.renderList()} />
+					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/`} />
 				</Switch> : <CircularLoader />}
 			</Fragment>
 		)
