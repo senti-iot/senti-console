@@ -7,8 +7,9 @@ import UserTable from 'components/User/UserTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
 import Search from 'components/Search/Search';
-import ProjectCards from 'components/Project/ProjectCards';
-import { getAllUsers } from 'variables/dataUsers';
+// import ProjectCards from 'components/Project/ProjectCards';
+import { getAllUsers, getAllOrgs } from 'variables/dataUsers';
+import OrgTable from 'components/User/OrgTable';
 var moment = require('moment');
 class Users extends Component {
 	constructor(props) {
@@ -31,7 +32,7 @@ class Users extends Component {
 
 	componentDidMount = async () => {
 		this._isMounted = 1
-		await this.getProjects()
+		await this.getData()
 		if (this._isMounted) {
 			if (this.props.location.pathname.includes('/orgs')) {
 				this.setState({ route: 1 })
@@ -142,21 +143,34 @@ class Users extends Component {
 			}
 		})
 	}
-	getProjects = async () => {
+	getData = async () => {
 		const { t } = this.props
-		await getAllUsers().then(rs => this._isMounted ? this.setState({
-			users: rs,
-			userHeader: [
-				// { id: "userName", label: t("users.fields.userName") },
-				{ id: "firstName", label: t("users.fields.firstName") },
-				{ id: "lastName", label: t("users.fields.lastName") },
-				{ id: "phone", label: t("users.fields.phone") },
-				{ id: "email", label: t("users.fields.email") },
-				// { id: "sysLang", label: t("users.fields.sysLang") },
-				{ id: "org", label: t("users.fields.organisation") },
-			],
-			loading: false
-		}) : null)
+		let users = await getAllUsers().then(rs => rs)
+		let orgs = await getAllOrgs().then(rs => rs)
+		if (this._isMounted)
+		{
+			this.setState({
+				users: users ? users : [],
+				orgs: orgs ? orgs : [],
+				userHeader: [
+					{ id: "firstName", label: t("users.fields.firstName") },
+					{ id: "lastName", label: t("users.fields.lastName") },
+					{ id: "phone", label: t("users.fields.phone") },
+					{ id: "email", label: t("users.fields.email") },
+					{ id: "org", label: t("users.fields.organisation") },
+					{ id: "lastSignIng", label: t("users.fields.lastSignIn") }
+				],
+				orgsHeader: [
+					{ id: "name", label: t("orgs.fields.name") },
+					{ id: "address", label: t("orgs.fields.address") },
+					{ id: "city", label: t("orgs.fields.city") },
+					// { id: "country", label: t("orgs.fields.country") },
+					{ id: "url", label: t("orgs.fields.url") },
+					{ id: "org", label: t("orgs.fields.org") }
+				],
+				loading: false
+			})
+		}
 	}
 
 	suggestionSlicer = (obj) => {
@@ -187,19 +201,10 @@ class Users extends Component {
 		})
 		return arr;
 	}
-	// deleteProjects = async (projects) => {
-	// 	await deleteProject(projects).then(() => {
-	// 		this.getProjects()
-	// 	})
-	// }
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
 	}
-	renderAllProjects = () => {
-		
-		return 
-	}
-	renderList = () => {
+	renderUsers = () => {
 		const { t } = this.props
 		const { loading } = this.state
 		return <GridContainer justify={'center'}>
@@ -214,17 +219,19 @@ class Users extends Component {
 			/>}
 		</GridContainer>
 	}
-	renderCards = () => {
-		const { loading } = this.state
-		const { t } = this.props
-		return loading ? <CircularLoader /> : <GridContainer>
-			<ProjectCards t={t} projects={this.filterItems(this.state.projects)} />
-		</GridContainer>
-	}
 	renderOrgs = () => {
+		const { t } = this.props
+		const { loading } = this.state
 		return <GridContainer justify={'center'}>
-			<div> Not Implemented</div>
-			<div> Org List</div>
+			{loading ? <CircularLoader /> : <OrgTable
+				data={this.filterItems(this.state.orgs)}
+				tableHead={this.state.orgsHeader}
+				handleFilterEndDate={this.handleFilterEndDate}
+				handleFilterKeyword={this.handleFilterKeyword}
+				handleFilterStartDate={this.handleFilterStartDate}
+				filters={this.state.filters}
+				t={t}
+			/>}
 		</GridContainer>
 	}
 	render() {
@@ -243,12 +250,11 @@ class Users extends Component {
 							searchValue={this.state.filters.keyword} />
 					</Tabs>
 				</AppBar>
-				{users ? <Switch>
-					{/* <Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} /> */}
+			 <Switch>
 					<Route path={`${this.props.match.path}/orgs`} render={() => this.renderOrgs()} />
-					<Route path={`${this.props.match.path}/`} render={() => this.renderList()} />
+					<Route path={`${this.props.match.path}/`} render={() => this.renderUsers()} />
 					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/`} />
-				</Switch> : <CircularLoader />}
+				</Switch>
 			</Fragment>
 		)
 	}

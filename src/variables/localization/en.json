@@ -380,6 +380,17 @@
 		"rowsPerPage": "Rows per page",
 		"selected": "selected"
 	},
+	"orgs": {
+		"fields": {
+			"name": "Name",
+			"address": "Address",
+			"zip": "ZIP Code",
+			"city": "City",
+			"country": "Country",
+			"url": "Website",
+			"org": "Organization"
+		}
+	},
 	"users": {
 		"pageTitle": "Users & Organisations",
 		"tabs": {

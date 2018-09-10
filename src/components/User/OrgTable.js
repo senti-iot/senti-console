@@ -17,7 +17,7 @@ import { connect } from "react-redux"
 // import { Add, FilterList } from '@material-ui/icons';
 // import { boxShadow } from 'assets/jss/material-dashboard-react';
 
-class UserTable extends React.Component {
+class OrgTable extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -267,12 +267,14 @@ class UserTable extends React.Component {
 											<Checkbox checked={isSelected} />
 										</TableCell>
 										{/* <TC label={n.userName} /> */}
-										<TC label={n.firstName} />
-										<TC label={n.lastName} />
+										<TC label={n.name} />
 	
 										<Hidden mdDown>
-											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone}</a>} />
-											<TC label={n.email} />
+											<TC label={n.address} />
+											{/* <TC label={} /> */}
+											<TC label={`${n.zip} ${n.city}`} />
+											<TC label={n.url}/>
+											{/* <TC label={n.sysLang} /> */}
 											<TC label={n.org ? n.org.name : t("users.noOrg")} />
 										</Hidden>
 									</TableRow>
@@ -326,8 +328,8 @@ const mapDispatchToProps = {
 
 }
 
-UserTable.propTypes = {
+OrgTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(UserTable)))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(OrgTable)))
