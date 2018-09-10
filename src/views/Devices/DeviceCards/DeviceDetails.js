@@ -38,6 +38,20 @@ class DeviceDetails extends Component {
 		}
 	}
 
+	LocationTypes = () => {
+		const { t } = this.props
+		return [
+			{ id: 1, label: t("devices.locationTypes.pedStreet") },
+			{ id: 2, label: t("devices.locationTypes.park") },
+			{ id: 3, label: t("devices.locationTypes.path") },
+			{ id: 4, label: t("devices.locationTypes.square") },
+			{ id: 5, label: t("devices.locationTypes.crossroads") },
+			{ id: 6, label: t("devices.locationTypes.road") },
+			{ id: 7, label: t("devices.locationTypes.motorway") },
+			{ id: 8, label: t("devices.locationTypes.port") },
+			{ id: 9, label: t("devices.locationTypes.office") },
+			{ id: 10, label: t("devices.locationTypes.unspecified") }]
+	}
 	handleOpenActionsDetails = event => {
 		this.setState({ actionAnchor: event.currentTarget });
 	}
@@ -45,7 +59,11 @@ class DeviceDetails extends Component {
 	handleCloseActionsDetails = () => {
 		this.setState({ actionAnchor: null });
 	}
-
+	renderDeviceLocType = () => {
+		const { device, t } = this.props
+		let deviceLoc = this.LocationTypes()[this.LocationTypes().findIndex(r => r.id === device.locationType)]
+		return deviceLoc.label ? deviceLoc.label : t("devices.noLocType")
+	}
 	render() {
 		const { actionAnchor } = this.state
 		const { classes, device, t } = this.props
@@ -153,7 +171,7 @@ class DeviceDetails extends Component {
 							</ItemGrid>
 							<ItemGrid >
 								<Caption>{t("devices.fields.locType")}:</Caption>
-								<Info>{device.locationType} </Info>
+								<Info>{this.renderDeviceLocType()} </Info>
 							</ItemGrid>
 							<ItemGrid >
 								<Caption>{t("devices.fields.coords")}:</Caption>

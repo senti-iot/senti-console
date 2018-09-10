@@ -189,16 +189,16 @@ class CalibrateDevice extends Component {
 	LocationTypes = () => {
 		const { t } = this.props
 		return [
-			t("devices.locationTypes.pedStreet"),
-			t("devices.locationTypes.park"),
-			t("devices.locationTypes.path"),
-			t("devices.locationTypes.square"),
-			t("devices.locationTypes.crossroads"),
-			t("devices.locationTypes.road"),
-			t("devices.locationTypes.motorway"),
-			t("devices.locationTypes.port"),
-			t("devices.locationTypes.office"),
-			t("devices.locationTypes.unspecified")]
+			{ id: 1, label: t("devices.locationTypes.pedStreet") },
+			{ id: 2, label: t("devices.locationTypes.park") },
+			{ id: 3, label: t("devices.locationTypes.path") },
+			{ id: 4, label: t("devices.locationTypes.square") },
+			{ id: 5, label: t("devices.locationTypes.crossroads") },
+			{ id: 6, label: t("devices.locationTypes.road") },
+			{ id: 7, label: t("devices.locationTypes.motorway") },
+			{ id: 8, label: t("devices.locationTypes.port") },
+			{ id: 9, label: t("devices.locationTypes.office") },
+			{ id: 10, label: t("devices.locationTypes.unspecified") }]
 	}
 
 	handleLocationTypeChange = (e) => {
@@ -224,8 +224,8 @@ class CalibrateDevice extends Component {
 						input={<Input name="streetType" id="streetType-helper" />}
 					>
 						{this.LocationTypes().map((loc, i) => {
-							return <MenuItem key={i} value={loc}>
-								{loc}
+							return <MenuItem key={i} value={loc.id}>
+								{loc.label}
 							</MenuItem>
 						})}
 					</Select>
