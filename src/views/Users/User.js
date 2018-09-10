@@ -5,8 +5,9 @@ import { UserLog } from './UserCards/UserLog';
 import { userStyles } from 'assets/jss/components/users/userStyles';
 import { withStyles, Typography, Grid, Hidden } from '@material-ui/core';
 import UserPlaceHolder from 'assets/img/userplaceholder.jpg'
+import { getUser } from 'variables/dataUsers';
 var moment = require("moment")
-const demoUser = {
+const user = {
 	name: "Andrei",
 	lastName: "Tudor",
 	accessLevel: "Admin",
@@ -32,7 +33,20 @@ class User extends Component {
 	  }
 	}
 	componentDidMount = () => {
-	  
+		if (this.props.match)
+			if (this.props.match.params.id)
+			{
+				this.timer = setTimeout(async () => await getUser(this.props.match.params.id).then(async rs => {
+					console.log(rs)
+					if (rs === null)
+						this.props.history.push('/404')
+					else {
+						this.props.setHeader(`${rs.firstName} ${rs.lastName}`, true)
+						this.setState({ user: rs, loading: false })
+					}
+						
+				}))
+				  }
 	}
 	
 	render() {
@@ -47,7 +61,7 @@ class User extends Component {
 							</ItemGrid>
 							<ItemGrid xs={12} container alignItems={"center"} justify={"center"}>
 								<Typography variant={"display2"} className={classes.textColor}>
-									{demoUser.name + " " + demoUser.lastName}
+									{user.firstName + " " + user.lastName}
 								</Typography>
 							</ItemGrid>
 
@@ -55,7 +69,7 @@ class User extends Component {
 						<Hidden smDown>
 							<ItemGrid xs container alignItems={"center"} justify={"center"}>
 								<Typography variant={"display3"} className={classes.textColor}>
-									{demoUser.name + " " + demoUser.lastName}
+									{user.firstName + " " + user.lastName}
 								</Typography>
 							</ItemGrid>
 							<ItemGrid xs={3} alignContent={"center"} container>
@@ -67,10 +81,10 @@ class User extends Component {
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 				
 					<ItemGrid xs={12} noMargin>
-						<UserContact t={t} user={demoUser}/>
+						<UserContact t={t} user={user}/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
-						<UserLog t={t} user={demoUser}/>	
+						<UserLog t={t} user={user}/>	
 					</ItemGrid>
 
 				</GridContainer>

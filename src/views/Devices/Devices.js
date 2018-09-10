@@ -143,7 +143,7 @@ class Devices extends Component {
 	getDevices = async () => {
 		const { t } = this.props
 		await getAllDevices().then(rs => this._isMounted ? this.setState({
-			devices: rs,
+			devices: rs ? rs : [],
 			deviceHeader: [
 				{ id: "name", label: t("devices.fields.name") },
 				{ id: "id", label: t("devices.fields.id") },
@@ -221,9 +221,9 @@ class Devices extends Component {
 	renderMap = () => {
 		// this.setState({ route: 1 })
 
-		const { devices } = this.state
+		const { devices, loading } = this.state
 		const { classes } = this.props
-		return <GridContainer container justify={'center'} >
+		return loading ? <CircularLoader /> : <GridContainer container justify={'center'} >
 			<Paper className={classes.paper}>
 				<Maps isMarkerShown markers={this.filterItems(devices)} /* zoom={10} *//> 
 			</Paper>
@@ -249,11 +249,11 @@ class Devices extends Component {
 							searchValue={this.state.filters.keyword} />
 					</Tabs>
 				</AppBar>
-				{devices ? <Switch>
+				<Switch>
 					<Route path={`${this.props.match.path}/map`} render={() => this.renderMap()} />
 					<Route path={`${this.props.match.path}/list`} render={() => this.renderList()} />
 					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
-				</Switch> : <CircularLoader/>}
+				</Switch>
 			</Fragment>
 		)
 	}

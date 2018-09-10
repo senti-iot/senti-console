@@ -145,15 +145,13 @@ class Projects extends Component {
 	getProjects = async () => {
 		const { t } = this.props
 		await getAllProjects().then(rs => this._isMounted ? this.setState({
-			projects: rs,
+			projects: rs ? rs : [],
 			projectHeader: [
 				{ id: 'title', label: t("projects.projectsColumnTitle"), },
 				{ id: 'description', label: t("projects.projectsColumnDescription"), },
 				{ id: 'open_date', label: t("projects.projectsColumnStartDate"), },
 				{ id: 'close_date', label: t("projects.projectsColumnEndDate"), },
-				// { id: 'progress', label: t("projects.projectsColumnProgress"), },
 				{ id: 'created', label: t("projects.projectsColumnCreated"), },
-				// { id: 'last_modified', label: t("projects.projectsColumnLastMod"), },
 			],
 			loading: false
 		}) : null)
@@ -196,7 +194,7 @@ class Projects extends Component {
 		this.setState({ route: value })
 	}
 	renderAllProjects = () => {
-		const { t } = this.props 
+		const { t } = this.props
 		const { loading } = this.state
 		return loading ? <CircularLoader /> : <ProjectTable
 			data={this.filterItems(this.state.projects)}
@@ -237,11 +235,11 @@ class Projects extends Component {
 							searchValue={this.state.filters.keyword} />
 					</Tabs>
 				</AppBar>
-				{projects ? <Switch>
+				<Switch>
 					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} />
 					<Route path={`${this.props.match.path}/list`} render={() => this.renderList()} />
 					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
-				</Switch> : <CircularLoader />}
+				</Switch>
 			</Fragment>
 		)
 	}

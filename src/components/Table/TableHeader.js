@@ -16,7 +16,8 @@ class EnhancedTableHead extends Component {
 						className={classes.header + " " + classes.tablecellcheckbox}>
 						<Checkbox
 							indeterminate={numSelected > 0 && numSelected < rowCount}
-							checked={numSelected === rowCount}
+							checked={numSelected === rowCount && numSelected > 0}
+							disabled={rowCount === 0}
 							onChange={onSelectAllClick}
 							className={classes.checkbox}
 						/>
@@ -32,6 +33,7 @@ class EnhancedTableHead extends Component {
 									<TableSortLabel
 										active={orderBy === column.id}
 										direction={order}
+										disabled={rowCount === 0}
 										onClick={this.createSortHandler(column.id)}
 										classes={{ root: classes.HeaderLabelActive, active: classes.HeaderLabelActive }}>
 										<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{column.label}</Typography>
