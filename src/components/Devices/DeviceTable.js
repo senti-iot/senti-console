@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import AssignProject from "./AssignProject";
 // import EnhancedTableHead from './DeviceTableHeader';
 import EnhancedTableHead from '../Table/TableHeader'
-import EnhancedTableToolbar from './TableToolBar';
+import EnhancedTableToolbar from '../Table/TableToolbar';
 import { connect } from 'react-redux'
 class EnhancedTable extends React.Component {
 	constructor(props) {
@@ -179,20 +179,10 @@ class EnhancedTable extends React.Component {
 					t={t} />
 				<EnhancedTableToolbar
 					anchorElMenu={this.state.anchorElMenu}
-					anchorFilterMenu={this.state.anchorFilterMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
-					handleFilterMenuOpen={this.handleFilterMenuOpen}
-					handleFilterMenuClose={this.handleFilterMenuClose}
-					handleFilterKeyword={this.props.handleFilterKeyword}
-					handleFilterStartDate={this.props.handleFilterStartDate}
-					handleFilterEndDate={this.props.handleFilterEndDate}
-					filters={this.props.filters}
-					filterOptions={this.props.tableHead}
 					numSelected={selected.length}
 					options={this.options}
-					suggestions={this.suggestionGen(data)}
-					noAdd
 					t={t}
 				/>
 				<div className={classes.tableWrapper}>

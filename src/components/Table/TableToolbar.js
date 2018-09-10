@@ -1,11 +1,11 @@
 import { Grid, IconButton, Menu, MenuItem, Toolbar, Typography, withStyles } from '@material-ui/core';
-import { Add, MoreVert as MoreVertIcon } from '@material-ui/icons';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import { MoreVert as MoreVertIcon } from '@material-ui/icons';
+// import FilterListIcon from '@material-ui/icons/FilterList';
 import { boxShadow } from 'assets/jss/material-dashboard-react';
 import toolbarStyles from 'assets/jss/material-dashboard-react/tableToolBarStyle';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { ItemGrid } from '..';
 
@@ -32,7 +32,11 @@ let selectedRender = props => {
 				onClose={props.handleToolbarMenuClose}
 				PaperProps={{
 					style: {
-						width: 200, boxShadow: boxShadow } }}
+						// maxHeight: ITEM_HEIGHT * 4.5,
+						width: 200,
+						boxShadow: boxShadow
+					}
+				}}
 			>
 				{props.options().map((option, i) => {
 					if (option.single)
@@ -43,43 +47,16 @@ let selectedRender = props => {
 						return <MenuItem key={i} onClick={option.func}>
 							{option.label}
 						</MenuItem>
-					}})}
+					}}
+				)}
 			</Menu>
 		</ItemGrid>
 	</Grid>
 }
 let defaultRender = props => {
-	const { classes, filterOptions, t } = props;
-	const AddNewProject = () => props.history.push('/projects/new')
+	const { content } = props
 	return <ItemGrid container justify={'flex-end'} alignItems={'center'}>
-		{props.noAdd ? null :
-			<IconButton aria-label="Add new project" onClick={AddNewProject}>
-				<Add />
-			</IconButton>
-		}
-		{props.noFilterIcon ? null :
-			<Fragment>
-				<IconButton
-					className={classes.secondAction}
-					aria-label={t("tables.filter")}
-					aria-owns={props.anchorFilterMenu ? "filter-menu" : null}
-					onClick={props.handleFilterMenuOpen}>
-					<FilterListIcon />
-				</IconButton>
-				<Menu
-					id="filter-menu"
-					anchorEl={props.anchorFilterMenu}
-					open={Boolean(props.anchorFilterMenu)}
-					onClose={props.handleFilterMenuClose}
-					PaperProps={{ style: { width: 200, boxShadow: boxShadow } }}>
-
-					{filterOptions.map(option => {
-						return <MenuItem key={option.id} onClick={props.handleFilter}>
-							{option.label}
-						</MenuItem>
-					})}
-				</Menu>
-			</Fragment>}
+		{content ? content : null}
 	</ItemGrid>
 }
 let EnhancedTableToolbar = props => {

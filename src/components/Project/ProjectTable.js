@@ -1,19 +1,23 @@
 import {
 	Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination,
 	TableRow, Typography, withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
-	DialogContentText, DialogActions, Button
+	DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem
 } from "@material-ui/core"
 import { Delete, Devices, Edit, PictureAsPdf } from '@material-ui/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import PropTypes from "prop-types"
-import React from "react"
+import React, { Fragment } from "react"
 import { withRouter } from 'react-router-dom'
 import { dateFormatter } from "variables/functions"
 // import EnhancedTableHead from './ProjectTableHeader'
 import EnhancedTableHead from '../Table/TableHeader'
-import EnhancedTableToolbar from './TableToolBar'
+import EnhancedTableToolbar from '../Table/TableToolbar'
+// import EnhancedTableToolbar from './TableToolBar'
 import { ItemGrid, Info } from ".."
 import { connect } from "react-redux"
+import { Add, FilterList } from '@material-ui/icons';
+import { boxShadow } from 'assets/jss/material-dashboard-react';
+
 class EnhancedTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -194,7 +198,38 @@ class EnhancedTable extends React.Component {
 			</DialogActions>
 		</Dialog>
 	}
+	AddNewProject = () => this.props.history.push('/projects/new')
 
+	renderTableToolBarContent = () => {
+		const { classes, tableHead, t } = this.props
+		const { anchorFilterMenu } = this.state
+
+		return <Fragment>
+			<IconButton aria-label="Add new project" onClick={this.AddNewProject}>
+				<Add />
+			</IconButton>
+			<IconButton
+				className={classes.secondAction}
+				aria-label={t("tables.filter")}
+				aria-owns={anchorFilterMenu ? "filter-menu" : null}
+				onClick={this.handleFilterMenuOpen}>
+				<FilterList />
+			</IconButton>
+			<Menu
+				id="filter-menu"
+				anchorEl={anchorFilterMenu}
+				open={Boolean(anchorFilterMenu)}
+				onClose={this.handleFilterMenuClose}
+				PaperProps={{ style: { width: 200, boxShadow: boxShadow } }}>
+
+				{tableHead.map(option => {
+					return <MenuItem key={option.id} onClick={this.handleFilter}>
+						{option.label}
+					</MenuItem>
+				})}
+			</Menu>
+		</Fragment>
+	}
 	render() {
 		const { classes, data, t } = this.props
 		const { order, orderBy, selected, rowsPerPage, page } = this.state
@@ -207,20 +242,12 @@ class EnhancedTable extends React.Component {
 			<Paper className={classes.root}>
 				<EnhancedTableToolbar //	./TableToolbar.js
 					anchorElMenu={this.state.anchorElMenu}
-					anchorFilterMenu={this.state.anchorFilterMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
-					handleFilterMenuOpen={this.handleFilterMenuOpen}
-					handleFilterMenuClose={this.handleFilterMenuClose}
-					// handleFilterKeyword={this.props.handleFilterKeyword}
-					// handleFilterStartDate={this.props.handleFilterStartDate}
-					// handleFilterEndDate={this.props.handleFilterEndDate}
-					// filters={this.props.filters}
-					filterOptions={this.props.tableHead}
 					numSelected={selected.length}
 					options={this.options}
 					t={t}
-					// suggestions={data ? data.map(p => ({ id: p.id, label: p.title })) : []}
+					content={this.renderTableToolBarContent()}
 				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
