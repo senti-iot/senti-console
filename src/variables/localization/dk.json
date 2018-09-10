@@ -164,6 +164,7 @@
 		"noData": "Der er ingen data tilgængelig for de valgte filtre!",
 		"noDevices": "Der er ingen tilgængelige enheder",
 		"noImages": "Der er ikke uploadet billeder!",
+		"noLocType": "Der er ingen placeringstype indstillet",
 		"noName": "Unavngivet",
 		"noProject": "Ikke tildelt",
 		"notCalibrated": "Enhed er endnu ikke kalibreret!",

@@ -147,6 +147,7 @@
 			"temp": "Temperature",
 			"wifiModule": "Wi-Fi module"
 		},
+	
 		"locationTypes": {
 			"crossroads": "Crossroads",
 			"motorway": "Motorway",
@@ -164,6 +165,7 @@
 		"noData": "There is no data available for the selected filters!",
 		"noDevices": "There are no available devices",
 		"noImages": "There are no images uploaded!",
+		"noLocType": " No location type set",
 		"noName": "No name",
 		"noProject": "Unassigned",
 		"notCalibrated": "Device has not been calibrated yet!",
