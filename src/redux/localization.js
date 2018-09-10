@@ -1,6 +1,7 @@
 
 // import localizationJSON from "variables/localization"
 import loc from 'variables/localization/index'
+import { saveSettingsOnServ } from './settings';
 var forEach = require('for-each');
 
 //Action types
@@ -9,10 +10,13 @@ const changeLangAction = "LANG"
 const GETSETTINGS = "GET_SETTINGS"
 
 //Actions
-export const changeLanguage = (code) => { 
-	return {
-		type: changeLangAction,
-		code
+export const changeLanguage = (code) => {
+	return async (dispatch, getState) => {
+		dispatch(
+			{ type: changeLangAction,
+				code
+			})
+		dispatch(saveSettingsOnServ())
 	}
 }
 
