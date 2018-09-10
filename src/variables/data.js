@@ -1,8 +1,9 @@
 import { create } from 'apisauce'
 import cookie from 'react-cookies'
-
+// https://betabackend.senti.cloud/
+// https://senti.cloud
 export const loginApi = create({
-	baseURL: 'https://senti.cloud/rest/odeum/',
+	baseURL: 'https://betabackend.senti.cloud/rest/odeum/',
 	timout: 30000,
 	headers: {
 		'Accept': 'application/json',
@@ -17,7 +18,7 @@ export const mapApi = create({
 	}
 })
 export const imageApi = create({
-	baseURL: 'https://senti.cloud/rest/',
+	baseURL: 'https://betabackend.senti.cloud/rest/',
 	timeout: 30000,
 	headers: {
 		'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -26,7 +27,7 @@ export const imageApi = create({
 	},
 })
 export const api = create({
-	baseURL: 'https://senti.cloud/rest/',
+	baseURL: 'https://betabackend.senti.cloud/rest/',
 	// baseURL: 'http://api.dashboard.senti.cloud/web/',
 	// baseURL: 'http://localhost:80',
 	timeout: 30000,
