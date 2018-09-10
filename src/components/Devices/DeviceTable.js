@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import React from "react";
 import { withRouter } from 'react-router-dom';
 import AssignProject from "./AssignProject";
-// import EnhancedTableHead from './DeviceTableHeader';
 import EnhancedTableHead from '../Table/TableHeader'
 import EnhancedTableToolbar from '../Table/TableToolbar';
 import { connect } from 'react-redux'

@@ -1,7 +1,7 @@
 import React from "react";
 import { Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination, TableRow, withStyles } from '@material-ui/core';
-import EnhancedTableHead from '../../Project/TableHeader';
-import EnhancedTableToolbar from '../../Project/TableToolBar'
+import EnhancedTableHead from 'components/Table/TableHeader';
+import EnhancedTableToolbar from 'components/Table/TableToolbar'
 import PropTypes from "prop-types";
 import { withRouter } from 'react-router-dom';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
