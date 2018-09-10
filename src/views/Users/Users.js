@@ -3,7 +3,7 @@ import { /* Grid, */ withStyles, AppBar, Tabs, Tab } from "@material-ui/core";
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { ViewList, ViewModule } from '@material-ui/icons'
 import projectStyles from 'assets/jss/views/projects';
-import ProjectTable from 'components/Project/ProjectTable';
+import UserTable from 'components/User/UserTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
 import Search from 'components/Search/Search';
@@ -15,8 +15,8 @@ class Users extends Component {
 		super(props)
 
 		this.state = {
-			projects: [],
-			projectHeader: [],
+			users: [],
+			userHeader: [],
 			loading: true,
 			route: 0,
 			filters: {
@@ -26,7 +26,7 @@ class Users extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader(props.t("projects.pageTitle"), false)
+		props.setHeader(props.t("users.pageTitle"), false)
 	}
 
 	componentDidMount = async () => {
@@ -147,12 +147,12 @@ class Users extends Component {
 		await getAllUsers().then(rs => this._isMounted ? this.setState({
 			users: rs,
 			userHeader: [
-				{ id: "userName", label: t("users.fields.userName") },
+				// { id: "userName", label: t("users.fields.userName") },
 				{ id: "firstName", label: t("users.fields.firstName") },
 				{ id: "lastName", label: t("users.fields.lastName") },
 				{ id: "phone", label: t("users.fields.phone") },
 				{ id: "email", label: t("users.fields.email") },
-				{ id: "sysLang", label: t("users.fields.sysLang") },
+				// { id: "sysLang", label: t("users.fields.sysLang") },
 				{ id: "org", label: t("users.fields.organisation") },
 			],
 			loading: false
@@ -196,22 +196,22 @@ class Users extends Component {
 		this.setState({ route: value })
 	}
 	renderAllProjects = () => {
-		const { t } = this.props
-		const { loading } = this.state
-		return loading ? <CircularLoader /> : <ProjectTable
-			data={this.filterItems(this.state.projects)}
-			tableHead={this.state.projectHeader}
-			handleFilterEndDate={this.handleFilterEndDate}
-			handleFilterKeyword={this.handleFilterKeyword}
-			handleFilterStartDate={this.handleFilterStartDate}
-			filters={this.state.filters}
-			// deleteProjects={this.deleteProjects}
-			t={t}
-		/>
+		
+		return 
 	}
 	renderList = () => {
+		const { t } = this.props
+		const { loading } = this.state
 		return <GridContainer justify={'center'}>
-			{this.renderAllProjects()}
+			{loading ? <CircularLoader /> : <UserTable
+				data={this.filterItems(this.state.users)}
+				tableHead={this.state.userHeader}
+				handleFilterEndDate={this.handleFilterEndDate}
+				handleFilterKeyword={this.handleFilterKeyword}
+				handleFilterStartDate={this.handleFilterStartDate}
+				filters={this.state.filters}
+				t={t}
+			/>}
 		</GridContainer>
 	}
 	renderCards = () => {
@@ -223,7 +223,7 @@ class Users extends Component {
 	}
 	render() {
 		const { classes, t } = this.props
-		const { projects } = this.state
+		const { users } = this.state
 		return (
 			<Fragment>
 				<AppBar position={'sticky'} classes={{ root: classes.appBar }}>
@@ -232,12 +232,12 @@ class Users extends Component {
 						<Tab title={t("projects.tabs.cardView")} id={1} label={<ViewModule />} onClick={() => { this.props.history.push(`${this.props.match.path}/grid`) }} />
 						<Search
 							right
-							suggestions={projects ? this.suggestionGen(projects) : []}
+							suggestions={users ? this.suggestionGen(users) : []}
 							handleFilterKeyword={this.handleFilterKeyword}
 							searchValue={this.state.filters.keyword} />
 					</Tabs>
 				</AppBar>
-				{projects ? <Switch>
+				{users ? <Switch>
 					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} />
 					<Route path={`${this.props.match.path}/list`} render={() => this.renderList()} />
 					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />

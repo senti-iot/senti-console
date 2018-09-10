@@ -382,6 +382,7 @@
 		"selected": "selected"
 	},
 	"users": {
+		"pageTitle": "Users",
 		"actions": {
 			"new": "Add new",
 			"import": "Import",
@@ -397,9 +398,9 @@
 			"firstName": "First name",
 			"lastName": "Last name",
 			"profileImage": "Profile image",
-			"mail": "E-mail:",
-			"phone": "Phone:",
-			"organisation": "Organisation:",
+			"email": "E-mail",
+			"phone": "Phone",
+			"organisation": "Organisation",
 			"language": "System language",
 			"created": "Created",
 			"lastSignIn": "Last sign in",

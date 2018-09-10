@@ -382,6 +382,7 @@
 		"selected": "valgt"
 	},
 	"users": {
+		"pageTitle": "Brugere",
 		"actions": {
 			"new": "Opret ny",
 			"import": "Importer",
@@ -397,9 +398,9 @@
 			"firstName": "Fornavn",
 			"lastName": "Efternavn",
 			"profileImage": "Profilbillede",
-			"mail": "E-mail:",
-			"phone": "Telefon:",
-			"organisation": "Organisation:",
+			"email": "E-mail",
+			"phone": "Telefon",
+			"organisation": "Organisation",
 			"language": "System sprog",
 			"created": "Opdateret",
 			"lastSignIn": "Seneste login",
