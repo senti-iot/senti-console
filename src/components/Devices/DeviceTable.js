@@ -237,7 +237,7 @@ class EnhancedTable extends React.Component {
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.organisation ? n.organisation.vcName  : t("devices.noProject")}
+													{n.org ? n.org.name  : t("devices.noProject")}
 												</Typography>
 											</TableCell>
 										</Hidden>
