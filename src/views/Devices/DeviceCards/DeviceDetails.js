@@ -141,7 +141,7 @@ class DeviceDetails extends Component {
 								<Caption>{t("devices.fields.status")}:</Caption>
 								{this.renderStatus(device.liveStatus)}
 							</ItemGrid>
-							<ItemGrid xs={9}>
+							<ItemGrid xs={8}>
 								<Caption>{t("devices.fields.temp")}:</Caption>
 								<Info>
 									{device.temperature} &#8451;
