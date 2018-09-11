@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info } from 'components';
 import { Hidden } from '@material-ui/core';
 import UserPlaceHolder from 'assets/img/userplaceholder.jpg'
+import { pF } from 'variables/functions';
 
 export class UserContact extends Component {
 	render() {
@@ -38,7 +39,7 @@ export class UserContact extends Component {
 							</ItemGrid>
 							<ItemGrid>
 								<Caption>{t("users.fields.phone")}</Caption>
-								<Info>{user.phone} </Info>
+								<Info>{user.phone ? pF(user.phone) : user.phone} </Info>
 							</ItemGrid>
 							<ItemGrid>
 								<Caption>{t("users.fields.organisation")}</Caption>

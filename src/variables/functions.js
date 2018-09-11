@@ -1,5 +1,10 @@
 var moment = require('moment');
-
+const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+var PNF = require('google-libphonenumber').PhoneNumberFormat
+export const pF = (phone) => {
+	let formattedPhone = phoneUtil.parse(phone, "DK")
+	return phoneUtil.format(formattedPhone, PNF.NATIONAL);
+}
 export const dateTimeFormatter = (date, withSeconds) => {
 	var dt
 	if (withSeconds)

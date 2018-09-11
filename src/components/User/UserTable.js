@@ -18,6 +18,7 @@ import Caption from '../Typography/Caption';
 // import { Add, FilterList } from '@material-ui/icons';
 // import { boxShadow } from 'assets/jss/material-dashboard-react';
 import UserPlaceHolder from 'assets/img/userplaceholder.jpg'
+import { pF } from 'variables/functions';
 
 var moment = require("moment")
 class UserTable extends React.Component {
@@ -300,8 +301,8 @@ class UserTable extends React.Component {
 											{/* <TC label={n.userName} /> */}
 											<TC label={n.firstName} />
 											<TC label={n.lastName} />
-											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone}</a>} />
-											<TC label={n.email} />
+											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone) : n.phone}</a>} />
+											<TC label={<a onClick={e => e.stopPropagation()} href={`mailto:${n.email}`}>{n.email}</a>} />
 											<TC label={n.org ? n.org.name : t("users.noOrg")} />
 											<TC label={moment.unix(n.loggedInUnixTime).format("DD.MM.YYYY HH:mm:ss")}/>
 										</Hidden>

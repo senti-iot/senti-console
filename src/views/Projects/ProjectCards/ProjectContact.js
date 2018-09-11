@@ -27,7 +27,6 @@ export class ProjectContact extends Component {
 								<a title={t("links.mailTo")} href={`mailto:${project.user.vcEmail}`}>
 									{project.user.email}
 								</a>
-								{/* {project.user.vcEmail} */}
 							</Info>
 						</ItemGrid>
 						<ItemGrid>
