@@ -200,7 +200,7 @@
 	},
 	"discoverSenti": {
 		"addProject": "Add data projects",
-		"getStarted": "Get started here:",
+		"getStarted": "Get started here",
 		"onSiteSetup": "On-site setup of devices",
 		"startAnalyzeData": "Start analyzing your data",
 		"welcome": "Welcome to Senti Console!"
@@ -392,7 +392,7 @@
 		}
 	},
 	"users": {
-		"pageTitle": "Users & Organisations",
+		"pageTitle": "Users",
 		"tabs": {
 			"users": "Users",
 			"orgs": "Organisations"
