@@ -14,8 +14,11 @@ import EnhancedTableHead from '../Table/TableHeader'
 import EnhancedTableToolbar from '../Table/TableToolbar'
 import { ItemGrid, Info } from ".."
 import { connect } from "react-redux"
+import Caption from '../Typography/Caption';
 // import { Add, FilterList } from '@material-ui/icons';
 // import { boxShadow } from 'assets/jss/material-dashboard-react';
+import UserPlaceHolder from 'assets/img/userplaceholder.jpg'
+
 var moment = require("moment")
 class UserTable extends React.Component {
 	constructor(props) {
@@ -223,16 +226,16 @@ class UserTable extends React.Component {
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 
 		return (
-
 			<Paper className={classes.root}>
-				<EnhancedTableToolbar //	./TableToolbar.js
+			
+				<EnhancedTableToolbar
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
 					numSelected={selected.length}
 					options={this.options}
 					t={t}
-				// content={this.renderTableToolBarContent()}
+					// content={this.renderTableToolBarContent()}
 				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
@@ -246,7 +249,8 @@ class UserTable extends React.Component {
 							columnData={this.props.tableHead}
 							t={t}
 							classes={classes}
-						// mdDown={[0]} //Which Columns to display on small Screens
+							// mdDown={[0]} //Which Columns to display on small Screens
+							customColumn={{ label: "Users" }}
 						/>
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
@@ -263,20 +267,46 @@ class UserTable extends React.Component {
 										selected={isSelected}
 										style={{ cursor: 'pointer' }}
 									>
-										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-											<Checkbox checked={isSelected} />
-										</TableCell>
-										{/* <TC label={n.userName} /> */}
-										<TC label={n.firstName} />
-										<TC label={n.lastName} />
-	
+										<Hidden lgUp>
+											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+												<Checkbox checked={isSelected} />
+											</TableCell>
+											<TableCell className={classes.tableCell}>
+												<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+													<ItemGrid zeroMargin noPadding xs={2}>
+														<ItemGrid container zeroMargin noPadding justify={"center"}>
+															<img src={UserPlaceHolder} alt="brken" className={classes.img}/>
+														</ItemGrid>
+													</ItemGrid>
+													<ItemGrid xs={10} zeroMargin>
+														<ItemGrid zeroMargin zeroMinWidth>
+															<Info noWrap paragraphCell={classes.noMargin}>
+																{`${n.firstName} ${n.lastName}`}
+															</Info>
+														</ItemGrid>
+														<ItemGrid zeroMargin>
+															<Caption>
+																{`${n.org ? n.org.name : t("users.fields.noOrg")} - ${n.email}`}
+															</Caption>
+														</ItemGrid>
+													</ItemGrid>
+												</ItemGrid>
+											</TableCell>
+										</Hidden>
 										<Hidden mdDown>
+											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+												<Checkbox checked={isSelected} />
+											</TableCell>
+											{/* <TC label={n.userName} /> */}
+											<TC label={n.firstName} />
+											<TC label={n.lastName} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone}</a>} />
 											<TC label={n.email} />
 											<TC label={n.org ? n.org.name : t("users.noOrg")} />
 											<TC label={moment.unix(n.loggedInUnixTime).format("DD.MM.YYYY HH:mm:ss")}/>
 										</Hidden>
 									</TableRow>
+
 								)
 							}) : null}
 							{emptyRows > 0 && (
@@ -315,6 +345,7 @@ class UserTable extends React.Component {
 					}
 				/>
 				{this.renderConfirmDelete()}
+			
 			</Paper>
 		)
 	}

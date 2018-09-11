@@ -2,6 +2,15 @@
 import { red, green, yellow, grey } from '@material-ui/core/colors'
 import { primaryColor } from 'assets/jss/material-dashboard-react'
 const devicetableStyles = theme => ({
+	noMargin: {
+		marginBottom: 0,
+		overflow: 'hidden'
+	},
+	img: {
+		borderRadius: "50px",
+		height: "30px",
+		width: "30px"
+	},
 	tableCellID: {
 		padding: "4px",
 		minWidth: "30px",

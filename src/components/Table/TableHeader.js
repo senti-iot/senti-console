@@ -8,7 +8,7 @@ class EnhancedTableHead extends Component {
 	};
 
 	render() {
-		const { onSelectAllClick, order, orderBy, numSelected, rowCount, columnData, classes, mdDown } = this.props;
+		const { onSelectAllClick, order, orderBy, numSelected, rowCount, columnData, classes, mdDown, customColumn } = this.props;
 		return (
 			<TableHead>
 				<TableRow>
@@ -58,7 +58,20 @@ class EnhancedTableHead extends Component {
 										<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{columnData[c].label}</Typography>
 									</TableSortLabel>
 								</TableCell>
-							}) : null
+							}) : customColumn ? 
+								 <TableCell
+									key={columnData.length + 1}
+									sortDirection={orderBy === columnData[0].id ? order : false}
+									className={classes.header + " " + classes.tableCell}>
+									<TableSortLabel
+										active={orderBy === columnData[0].id}
+										direction={order}
+										onClick={this.createSortHandler(columnData[0].id)}
+										classes={{ root: classes.HeaderLabelActive, active: classes.HeaderLabelActive }}>
+										<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{customColumn.label}</Typography>
+									</TableSortLabel>
+								</TableCell> : null
+						
 						}
 					</Hidden>
 
