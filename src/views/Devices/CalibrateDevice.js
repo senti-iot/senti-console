@@ -198,7 +198,7 @@ class CalibrateDevice extends Component {
 			{ id: 7, label: t("devices.locationTypes.motorway") },
 			{ id: 8, label: t("devices.locationTypes.port") },
 			{ id: 9, label: t("devices.locationTypes.office") },
-			{ id: 10, label: t("devices.locationTypes.unspecified") }]
+			{ id: 0, label: t("devices.locationTypes.unspecified") }]
 	}
 
 	handleLocationTypeChange = (e) => {

@@ -15,7 +15,7 @@ class EditDeviceDetails extends Component {
 			name: '',
 			description: '',
 			address: '',
-			locationType: '',
+			locationType: 0,
 			loading: true,
 			updating: false,
 			updated: false,
@@ -25,7 +25,14 @@ class EditDeviceDetails extends Component {
 	}
 	componentDidMount = async () => {
 		let id = this.props.match.params.id
-		await getDevice(id).then(rs => this.setState({ id: rs.id, name: rs.name, description: rs.description, address: rs.address, locationType: rs.locationType }))
+		await getDevice(id).then(rs =>
+			this.setState({
+				id: rs.id,
+				name: rs.name ? rs.name : "",
+				description: rs.description ? rs.description : "",
+				address: rs.address ? rs.address : "",
+				locationType: rs.locationType ? rs.locationType : 0
+			}))
 		this.setState({ loading: false })
 	}
 	componentWillUnmount = () => {
@@ -39,6 +46,7 @@ class EditDeviceDetails extends Component {
 	LocationTypes = () => {
 		const { t } = this.props
 		return [
+			{ id: 0, label: t("devices.locationTypes.unspecified") },
 			{ id: 1, label: t("devices.locationTypes.pedStreet") },
 			{ id: 2, label: t("devices.locationTypes.park") },
 			{ id: 3, label: t("devices.locationTypes.path") },
@@ -47,8 +55,7 @@ class EditDeviceDetails extends Component {
 			{ id: 6, label: t("devices.locationTypes.road") },
 			{ id: 7, label: t("devices.locationTypes.motorway") },
 			{ id: 8, label: t("devices.locationTypes.port") },
-			{ id: 9, label: t("devices.locationTypes.office") },
-			{ id: 10, label: t("devices.locationTypes.unspecified") }]
+			{ id: 9, label: t("devices.locationTypes.office") }]
 	}
 	handleUpdateDevice = async () => {
 		clearTimeout(this.timer);

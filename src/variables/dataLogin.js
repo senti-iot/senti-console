@@ -13,7 +13,7 @@ export const logOut = async () => {
 }
 
 export const getSettingsFromServer = async () => {
-	var data = await api.get('senti/users/settings').then(rs => { console.log(rs.data); return rs.data })
+	var data = await api.get('senti/users/settings').then(rs => rs.data)
 	return JSON.parse(data)
 }
 

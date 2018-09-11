@@ -30,7 +30,6 @@ class DeviceImages extends Component {
 		this.setState({ activeStep });
 	};
 	componentDidMount = async () => {
-		console.log(this.props.device)
 		await this.getAllPics(this.props.device.id)
 	}
 	getPicsCallBack = () => {

@@ -55,20 +55,6 @@ class EditDetails extends Component {
 		e.preventDefault()
 		this.setState({ [input]: e.target.value })
 	}
-	LocationTypes = () => {
-		const { t } = this.props
-		return [
-			t("devices.locationTypes.pedStreet"),
-			t("devices.locationTypes.park"),
-			t("devices.locationTypes.path"),
-			t("devices.locationTypes.square"),
-			t("devices.locationTypes.crossroads"),
-			t("devices.locationTypes.road"),
-			t("devices.locationTypes.motorway"),
-			t("devices.locationTypes.port"),
-			t("devices.locationTypes.office"),
-			t("devices.locationTypes.unspecified")]
-	}
 	handleUpdateDevice = async () => {
 		clearTimeout(this.timer);
 		const { id, RPImodel, SIMID, SIMProvider, adapter, cellNumber, memory, memoryModel, modemIMEI, modemModel, wifiModule, } = this.state
