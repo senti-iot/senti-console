@@ -16,7 +16,7 @@ export class ProjectContact extends Component {
 								{t("projects.contact.name")}
 							</Caption>
 							<Info>
-								{project.user.vcFirstName + " " + project.user.vcLastName}
+								{project.user.firstName + " " + project.user.lastName}
 							</Info>
 						</ItemGrid>
 						<ItemGrid>
@@ -25,7 +25,7 @@ export class ProjectContact extends Component {
 							</Caption>
 							<Info>
 								<a title={t("links.mailTo")} href={`mailto:${project.user.vcEmail}`}>
-									{project.user.vcEmail}
+									{project.user.email}
 								</a>
 								{/* {project.user.vcEmail} */}
 							</Info>
@@ -35,7 +35,7 @@ export class ProjectContact extends Component {
 								{t("projects.contact.phone")}
 							</Caption>
 							<Info>
-								{project.user.vcPhone}
+								{project.user.phone}
 							</Info>
 						</ItemGrid>
 						<ItemGrid>
@@ -43,7 +43,7 @@ export class ProjectContact extends Component {
 								{t("projects.contact.organisation")}
 							</Caption>
 							<Info>
-								{project.user.organisation}
+								{project.user.org ? project.user.org.name : t("users.fields.noOrg")}
 							</Info>
 						</ItemGrid>
 					</Grid>

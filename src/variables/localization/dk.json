@@ -405,6 +405,7 @@
 			"email": "E-mail",
 			"phone": "Telefon",
 			"organisation": "Organisation",
+			"noOrg": "Uden Organisation",
 			"language": "System sprog",
 			"created": "Opdateret",
 			"lastSignIn": "Seneste login",

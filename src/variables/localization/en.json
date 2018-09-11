@@ -415,6 +415,7 @@
 			"email": "E-mail",
 			"phone": "Phone",
 			"organisation": "Organisation",
+			"noOrg": "No Organisation",
 			"language": "System language",
 			"created": "Created",
 			"lastSignIn": "Last sign in",
