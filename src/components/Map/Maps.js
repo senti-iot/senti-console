@@ -1,16 +1,25 @@
 import React from "react";
-import { compose, withProps } from "recompose";
+import { compose, withProps, /* withStateHandlers */ } from "recompose";
 import {
 	withScriptjs,
 	withGoogleMap,
 	GoogleMap,
-	Marker
+	// Marker,
+	// InfoWindow,
 } from "react-google-maps";
 import { CircularLoader } from "..";
 import MarkerClusterer from "react-google-maps/lib/components/addons/MarkerClusterer";
-import { MarkerIcon } from './MarkerIcon'
+// import { MarkerIcon } from './MarkerIcon'
+import { MarkerWithInfo } from './MarkerWithInfo';
 
 export const Maps = compose(
+	// withStateHandlers(() => ({
+	// 	isOpen: 0,
+	// }), {
+	// 	onToggleOpen: ({ id }) => () => ({
+	// 		isOpen: id === this.state.isOpen ? 0 : id,
+	// 	})
+	// }),
 	withProps({
 		googleMapURL:
 			"https://maps.googleapis.com/maps/api/js?key=" + process.env.REACT_APP_SENTI_MAPSKEY + "&v=3.exp&libraries=geometry,drawing,places",
@@ -38,7 +47,10 @@ export const Maps = compose(
 			gridSize={10}
 		>
 			{props.markers.length > 0 ? props.markers.map((m, i) => {
-				return <Marker icon={{ url: `data:image/svg+xml,${MarkerIcon(m.liveStatus)}` }} onClick={() => alert('Work In Progress')} key={i} position={{ lat: m.lat, lng: m.long }} />
+				if (m.lat && m.long)
+					return <MarkerWithInfo key={i} m={m} i={i}/>
+				else
+					return null
 			})
 				: null}
 		</MarkerClusterer>
