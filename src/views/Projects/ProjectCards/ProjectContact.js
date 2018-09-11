@@ -35,7 +35,9 @@ export class ProjectContact extends Component {
 								{t("projects.contact.phone")}
 							</Caption>
 							<Info>
-								{project.user.phone}
+								<a title={t("links.phoneTo")} href={`tel:${project.user.phone}`}>
+									{project.user.phone}
+								</a>
 							</Info>
 						</ItemGrid>
 						<ItemGrid>

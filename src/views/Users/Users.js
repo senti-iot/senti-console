@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { /* Grid, */ withStyles, AppBar, Tabs, Tab } from "@material-ui/core";
 import { Switch, Route, Redirect } from 'react-router-dom'
-import { People, Language } from '@material-ui/icons'
+import { People, Business } from '@material-ui/icons'
 import projectStyles from 'assets/jss/views/projects';
 import UserTable from 'components/User/UserTable';
 import CircularLoader from 'components/Loader/CircularLoader';
@@ -242,7 +242,7 @@ class Users extends Component {
 				<AppBar position={'sticky'} classes={{ root: classes.appBar }}>
 					<Tabs value={this.state.route} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 						<Tab title={t("users.tabs.users")} id={0} label={<People />} onClick={() => { this.props.history.push(`${this.props.match.path}/`) }} />
-						<Tab title={t("users.tabs.orgs")} id={1} label={<Language />} onClick={() => { this.props.history.push(`${this.props.match.path}/orgs`) }} />
+						<Tab title={t("users.tabs.orgs")} id={1} label={<Business />} onClick={() => { this.props.history.push(`${this.props.match.path}/orgs`) }} />
 						<Search
 							right
 							suggestions={users ? this.suggestionGen(users) : []}
