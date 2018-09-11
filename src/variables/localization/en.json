@@ -263,7 +263,7 @@
 	},
 	"projects": {
 		"contact": {
-			"mail": "E-mail:",
+			"email": "E-mail:",
 			"name": "Name:",
 			"organisation": "Organisation:",
 			"phone": "Phone:",

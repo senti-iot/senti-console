@@ -45,8 +45,7 @@ class EditProject extends Component {
 		this._isMounted = 1
 		let id = this.props.match.params.id
 		await getProject(id).then(p => {
-			if (p && this._isMounted)
-			{
+			if (p && this._isMounted) {
 				this.setState({
 					title: p.title,
 					description: p.description,
@@ -66,7 +65,7 @@ class EditProject extends Component {
 					availableDevices: rs ? rs : [],
 					allDevices: allDev
 				})
-				
+
 			}
 		})
 		this.setState({
@@ -113,11 +112,11 @@ class EditProject extends Component {
 			unassign: filtered
 		}
 		this.setState({ creating: true })
-		this.timer = setTimeout( async () => updateProject(newProject).then(rs => rs ? 
+		this.timer = setTimeout(async () => updateProject(newProject).then(rs => rs ?
 			this.setState({ created: true, creating: false, openSnackBar: true }) : this.setState({ created: false, creating: false }))
 			, 2e3)
 	}
-	
+
 	goToNewProject = () => {
 		this.props.history.push('/project/' + this.props.match.params.id)
 	}
@@ -128,7 +127,7 @@ class EditProject extends Component {
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
-		
+
 		return (
 			!loading ?
 				<GridContainer justify={'center'}>
@@ -191,7 +190,7 @@ class EditProject extends Component {
 									/>
 								</ItemGrid>
 								<ItemGrid xs={12}>
-									<FormControl className={classes.formControl}>									
+									<FormControl className={classes.formControl}>
 										<Fragment>
 											<InputLabel FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
 												{t("projects.fields.assignDevices")}
@@ -205,37 +204,37 @@ class EditProject extends Component {
 												renderValue={selected => (
 													<div className={classes.chips}>
 														{selected.map(value => {
-															if (availableDevices.findIndex(d => d.id === value) > -1)
+															if (availableDevices.findIndex(d => d.device_id === value) > -1)
 																return <Chip key={value}
-																	label={availableDevices[availableDevices.findIndex(d => d.id === value)].id}
+																	label={availableDevices[availableDevices.findIndex(d => d.id === value)].device_id}
 																	className={classes.chip} />
 															else
-															if (devices.findIndex(d => d.id === value) > -1)
+															if (devices.findIndex(d => d.device_id === value) > -1)
 																return <Chip key={value}
-																	label={devices[devices.findIndex(d => d.id === value)].id}
+																	label={devices[devices.findIndex(d => d.device_id === value)].device_id}
 																	className={classes.chip} />
 															else return null
 														})}
-																
+
 													</div>)}
 												/* MenuProps={MenuProps} */>
 												{allDevices.map(name => (
 													<MenuItem
-														key={name.id}
-														value={name.id}
+														key={name.device_id}
+														value={name.device_id}
 														style={{
 															fontWeight:
-														this.state.devices.indexOf(name.id) === -1
-															? theme.typography.fontWeightRegular
-															: theme.typography.fontWeightMedium,
+																this.state.devices.indexOf(name.device_id) === -1
+																	? theme.typography.fontWeightRegular
+																	: theme.typography.fontWeightMedium,
 														}}>
-														{name.id + " - " + (name.name ? name.name : t("devices.noName"))}
+														{name.device_id + " - " + (name.device_name ? name.device_name : t("devices.noName"))}
 													</MenuItem>
 												))}
 											</Select>
 										</Fragment>
 									</FormControl>
-								</ItemGrid>							
+								</ItemGrid>
 							</form>
 							<ItemGrid xs={12} container justify={'center'}>
 								<Collapse in={this.state.creating} timeout="auto" unmountOnExit>
@@ -256,7 +255,7 @@ class EditProject extends Component {
 									</Button>
 								</div>
 							</Grid>
-						
+
 						</MuiPickersUtilsProvider>
 					</Paper>
 					<Snackbar
