@@ -263,7 +263,7 @@
 	},
 	"projects": {
 		"contact": {
-			"email": "E-mail:",
+			"email": "Email:",
 			"name": "Name:",
 			"organisation": "Organisation:",
 			"phone": "Phone:",
@@ -402,7 +402,7 @@
 			"import": "Import",
 			"edit": "Edit",
 			"addToGroups": "Add to groups",
-			"mailTo": "Send E-mail",
+			"mailTo": "Send Email",
 			"resetPassword": "Reset password",
 			"suspend": "Suspend",
 			"delete": "Delete",
@@ -412,7 +412,7 @@
 			"firstName": "First name",
 			"lastName": "Last name",
 			"profileImage": "Profile image",
-			"email": "E-mail",
+			"email": "Email",
 			"phone": "Phone",
 			"organisation": "Organisation",
 			"noOrg": "No Organisation",
