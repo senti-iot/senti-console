@@ -200,7 +200,7 @@
 	},
 	"discoverSenti": {
 		"addProject": "Opret data projekter",
-		"getStarted": "Start her:",
+		"getStarted": "Start her",
 		"onSiteSetup": "Opsætning af enheder",
 		"startAnalyzeData": "Analyser dine data",
 		"welcome": "Velkommen til Senti Console!"

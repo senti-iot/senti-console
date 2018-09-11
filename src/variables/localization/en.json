@@ -200,7 +200,7 @@
 	},
 	"discoverSenti": {
 		"addProject": "Add data projects",
-		"getStarted": "Get started here:",
+		"getStarted": "Get started here",
 		"onSiteSetup": "On-site setup of devices",
 		"startAnalyzeData": "Start analyzing your data",
 		"welcome": "Welcome to Senti Console!"
