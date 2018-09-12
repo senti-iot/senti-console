@@ -260,7 +260,7 @@ class UserTable extends React.Component {
 															{`${n.firstName} ${n.lastName}`}
 														</Info>
 													</ItemGrid>
-													<ItemGrid zeroMargin noPadding zerMinWidth xs={12}>
+													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Caption noWrap className={classes.noMargin}>
 															{`${n.org ? n.org.name : t("users.fields.noOrg")} - ${n.email}`}
 														</Caption>

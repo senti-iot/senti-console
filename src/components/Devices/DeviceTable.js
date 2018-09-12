@@ -236,7 +236,7 @@ class EnhancedTable extends React.Component {
 															{n.name ? n.name : n.id} 
 														</Info>
 													</ItemGrid>
-													<ItemGrid zeroMargin noPadding zerMinWidth xs={12}>
+													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Caption noWrap className={classes.noMargin}>
 															{`${n.name ? n.id : t("devices.noName")} - ${n.org ? n.org.name : ''}`}
 														</Caption>
