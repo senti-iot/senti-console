@@ -161,7 +161,7 @@ class EnhancedTable extends React.Component {
 			case 0:
 				return <div title={t("devices.status.red")}><SignalWifi2Bar className={classes.redSignal} /></div>
 			case null:
-				return <SignalWifi2BarLock className={classes.redSignal} />
+				return <SignalWifi2BarLock />
 			default:
 				break;
 		}
@@ -199,11 +199,12 @@ class EnhancedTable extends React.Component {
 							// mdDown={[2, 0]} //Which Columns to display on small Screens
 							customColumn={[
 								{
-									id: "status", label: <ItemGrid container zeroMargin noPadding justify={'center'}>
-										<SignalWifi2Bar />
-									</ItemGrid>, checkbox: true
+									id: "liveStatus", label: <SignalWifi2Bar />, checkbox: true
 								},
-								{ id: "id", label: "Device" }
+								{
+									id: "id",
+									label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>
+									Device</Typography> }
 							]}
 						/>
 						<TableBody>

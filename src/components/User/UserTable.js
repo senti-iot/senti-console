@@ -1,7 +1,7 @@
 import {
 	Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination,
 	TableRow, /* Typography, */ withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
-	DialogContentText, DialogActions, Button, /* IconButton, Menu, MenuItem*/
+	DialogContentText, DialogActions, Button, Typography, /* IconButton, Menu, MenuItem*/
 } from "@material-ui/core"
 import TC from 'components/Table/TableCell'
 import { Delete, /* Devices, */ Edit, PictureAsPdf } from '@material-ui/icons'
@@ -221,7 +221,8 @@ class UserTable extends React.Component {
 							t={t}
 							classes={classes}
 							// mdDown={[0]} //Which Columns to display on small Screens
-							customColumn={[{ id: "avatar", label: "" }, { id: "firstName", label: "Users" }]}
+							customColumn={[{ id: "avatar", label: "" }, {
+								id: "firstName", label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>Users</Typography> }]}
 						/>
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {

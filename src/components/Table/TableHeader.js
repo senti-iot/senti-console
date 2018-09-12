@@ -69,7 +69,7 @@ class EnhancedTableHead extends Component {
 										direction={order}
 										onClick={this.createSortHandler(c.id)}
 										classes={{ root: classes.HeaderLabelActive, active: classes.HeaderLabelActive }}>
-										<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{c.label}</Typography>
+										{/* <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}> */}{c.label}{/* </Typography> */}
 									</TableSortLabel>
 								</TableCell>
 							}) : null
