@@ -263,7 +263,7 @@
 	},
 	"projects": {
 		"contact": {
-			"email": "E-mail:",
+			"email": "Email:",
 			"name": "Navn:",
 			"organisation": "Organisation:",
 			"phone": "Telefon:",
@@ -392,7 +392,7 @@
 			"import": "Importer",
 			"edit": "Rediger",
 			"addToGroups": "Tilføj til gruppe(r)",
-			"mailTo": "Send E-mail",
+			"mailTo": "Send Email",
 			"resetPassword": "Nulstil kodeord",
 			"suspend": "Suspender",
 			"delete": "Slet",
@@ -402,7 +402,7 @@
 			"firstName": "Fornavn",
 			"lastName": "Efternavn",
 			"profileImage": "Profilbillede",
-			"email": "E-mail",
+			"email": "Email",
 			"phone": "Telefon",
 			"organisation": "Organisation",
 			"noOrg": "Uden Organisation",
