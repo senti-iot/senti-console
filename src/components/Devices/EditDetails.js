@@ -30,7 +30,7 @@ class EditDeviceDetails extends Component {
 				device: rs
 			}))
 		this.setState({ loading: false })
-		console.log(this.state.device)
+		// console.log(this.state.device)
 	}
 	componentWillUnmount = () => {
 		clearTimeout(this.timer);

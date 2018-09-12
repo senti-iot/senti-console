@@ -6,9 +6,10 @@ import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers'
 import MomentUtils from 'material-ui-pickers/utils/moment-utils'
 import React, { Component, Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
-import { getAvailableDevices } from 'variables/dataDevices'
+// import { getAvailableDevices } from 'variables/dataDevices'
 import { createOneProject } from 'variables/dataProjects'
 import { Caption, CircularLoader, GridContainer, ItemGrid, TextF } from '..'
+import { getAllOrgs } from 'variables/dataUsers';
 
 const ITEM_HEIGHT = 32
 const ITEM_PADDING_TOP = 8
@@ -31,6 +32,8 @@ class CreateProject extends Component {
 			open_date: null,
 			close_date: null,
 			devices: [],
+			orgs: [],
+			selectedOrgs: [],
 			availableDevices: null,
 			creating: false,
 			created: false,
@@ -41,12 +44,19 @@ class CreateProject extends Component {
 	componentDidMount = () => {
 		const { t } = this.props
 		this._isMounted = 1
-		getAvailableDevices().then(rs => {
+		getAllOrgs().then(rs => {
+			console.log(rs)
 			if (this._isMounted)
 				this.setState({
-					availableDevices: rs
+					orgs: rs
 				})
 		})
+		// getAvailableDevices().then(rs => {
+		// 	if (this._isMounted)
+		// 		this.setState({
+		// 			availableDevices: rs
+		// 		})
+		// })
 		this.props.setHeader(t("projects.new"), true)
 	}
 
@@ -59,7 +69,9 @@ class CreateProject extends Component {
 	handleDeviceChange = event => {
 		this.setState({ devices: event.target.value })
 	}
-
+	handleSelectedOrgs = e => {
+		this.setState({ selectedOrgs: e.target.value })
+	}
 	handleDateChange = id => value => {
 		this.setState({
 			[id]: value
@@ -97,7 +109,7 @@ class CreateProject extends Component {
 
 	render() {
 		const { classes, theme, t } = this.props
-		const { availableDevices, created } = this.state
+		const { availableDevices, created, orgs } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
@@ -170,11 +182,56 @@ class CreateProject extends Component {
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<FormControl className={classes.formControl}>
+									{orgs ?
+										<Fragment>
+											<InputLabel
+												FormLabelClasses={{ root: classes.label }}
+												color={"primary"}
+												htmlFor="select-multiple-chip"
+											>
+												{t("projects.fields.selectOrganisation")}
+											</InputLabel>
+											<Select
+												color={"primary"}
+												// multiple
+												value={this.state.selectedOrgs}
+												// autoWidth
+												onChange={this.handleSelectedOrgs}
+												input={<Input id="select-multiple-chip" classes={{
+													underline: classes.underline
+												}} />}
+												renderValue={selected => {
+													console.log(selected)
+													return (
+														<div className={classes.chips}>
+														 	<Chip key={selected} label={orgs[orgs.findIndex(d => d.id === selected)].name} className={classes.chip} />
+														</div>
+													)
+												}}
+												MenuProps={MenuProps}
+											>
+												{ orgs.map(org => (
+													<MenuItem
+														key={org.id}
+														value={org.id}
+														style={{
+															fontWeight: this.state.selectedOrgs.id === org.id ?
+																theme.typography.fontWeightRegular : theme.typography.fontWeightMedium }}
+													>
+														{org.id + " - " + (org.name ? org.name : t("devices.noName"))}
+													</MenuItem>
+												))}
+											</Select>
+										</Fragment> : <Caption>{t("devices.noDevices")}</Caption>}
+								</FormControl>
+							</ItemGrid>
+							<ItemGrid xs={12}>
+								<FormControl className={classes.formControl}>
 									{availableDevices ?
 										<Fragment>
 											<InputLabel FormLabelClasses={{
 												root: classes.label,
-											// focused: classes.focused
+												// focused: classes.focused
 											}} color={"primary"} htmlFor="select-multiple-chip">{t("projects.fields.assignDevices")}</InputLabel>
 											<Select
 												color={"primary"}
@@ -192,15 +249,15 @@ class CreateProject extends Component {
 												)}
 												MenuProps={MenuProps}
 											>
-												{ availableDevices.map(name => (
+												{availableDevices.map(name => (
 													<MenuItem
 														key={name.id}
 														value={name.id}
 														style={{
 															fontWeight:
-													this.state.devices.indexOf(name.id) === -1
-														? theme.typography.fontWeightRegular
-														: theme.typography.fontWeightMedium,
+																this.state.devices.indexOf(name.id) === -1
+																	? theme.typography.fontWeightRegular
+																	: theme.typography.fontWeightMedium,
 														}}
 													>
 														{name.id + " - " + (name.name ? name.name : t("devices.noName"))}
