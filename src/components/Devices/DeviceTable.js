@@ -8,6 +8,7 @@ import AssignProject from "./AssignProject";
 import EnhancedTableHead from '../Table/TableHeader'
 import EnhancedTableToolbar from '../Table/TableToolbar';
 import { connect } from 'react-redux'
+import { ItemGrid, Info, Caption } from '..';
 class EnhancedTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -195,7 +196,15 @@ class EnhancedTable extends React.Component {
 							rowCount={data.length}
 							columnData={this.props.tableHead}
 							classes={classes}
-							mdDown={[1, 2]} //Which Columns to display on small Screens
+							// mdDown={[2, 0]} //Which Columns to display on small Screens
+							customColumn={[
+								{
+									id: "status", label: <ItemGrid container zeroMargin noPadding justify={'center'}>
+										<SignalWifi2Bar />
+									</ItemGrid>, checkbox: true
+								},
+								{ id: "id", label: "Device" }
+							]}
 						/>
 						<TableBody>
 							{data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
@@ -211,10 +220,35 @@ class EnhancedTable extends React.Component {
 										selected={isSelected}
 										style={{ cursor: 'pointer' }}
 									>
-										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-											<Checkbox checked={isSelected} />
-										</TableCell>
+										<Hidden lgUp>
+											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+												<Checkbox checked={isSelected} />
+											</TableCell>
+											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
+												{/* <ItemGrid container zeroMargin noPadding justify={"center"}> */}
+												{this.renderIcon(n.liveStatus)}
+												{/* </ItemGrid> */}
+											</TableCell>
+											<TableCell classes={{ root: classes.tableCell }}>
+												<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+														<Info noWrap paragraphCell={classes.noMargin}>
+															{n.name ? n.name : n.id} 
+														</Info>
+													</ItemGrid>
+													<ItemGrid zeroMargin noPadding zerMinWidth xs={12}>
+														<Caption noWrap className={classes.noMargin}>
+															{`${n.name ? n.id : t("devices.noName")} - ${n.org ? n.org.name : ''}`}
+														</Caption>
+													</ItemGrid>
+													{/* </ItemGrid> */}
+												</ItemGrid>
+											</TableCell>
+										</Hidden>
 										<Hidden mdDown>
+											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+												<Checkbox checked={isSelected} />
+											</TableCell>
 											 <TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
 													{n.name ?  n.name : t("devices.noName")} 
@@ -239,23 +273,6 @@ class EnhancedTable extends React.Component {
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
 													{n.org ? n.org.name  : t("devices.noProject")}
 												</Typography>
-											</TableCell>
-										</Hidden>
-										<Hidden lgUp>
-											<TableCell className={classes.tableCellID}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.id}
-												</Typography>
-											</TableCell>
-											{/* <TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.name ? n.name : t("devices.noName")}
-												</Typography>
-											</TableCell> */}
-											<TableCell className={classes.tableCellID}>
-												<div className={classes.paragraphCell}>
-													{this.renderIcon(n.liveStatus)}
-												</div>
 											</TableCell>
 										</Hidden>
 									</TableRow>

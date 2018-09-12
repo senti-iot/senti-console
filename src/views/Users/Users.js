@@ -153,8 +153,10 @@ class Users extends Component {
 				users: users ? users : [],
 				orgs: orgs ? orgs : [],
 				userHeader: [
-					{ id: "firstName", label: t("users.fields.firstName") },
-					{ id: "lastName", label: t("users.fields.lastName") },
+					{ id: "avatar", label: "" },
+					{ id: "firstName", label: t("users.fields.firstName")  },
+					// { id: "firstName", label: t("users.fields.firstName") },
+					// { id: "lastName", label: t("users.fields.lastName") },
 					{ id: "phone", label: t("users.fields.phone") },
 					{ id: "email", label: t("users.fields.email") },
 					{ id: "org", label: t("users.fields.organisation") },
