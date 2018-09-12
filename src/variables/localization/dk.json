@@ -399,6 +399,7 @@
 			"changeOrganisation": "Skift organisation"
 		},
 		"fields": {
+			"name": "Navn",
 			"firstName": "Fornavn",
 			"lastName": "Efternavn",
 			"profileImage": "Profilbillede",

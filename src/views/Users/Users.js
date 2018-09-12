@@ -154,7 +154,7 @@ class Users extends Component {
 				orgs: orgs ? orgs : [],
 				userHeader: [
 					{ id: "avatar", label: "" },
-					{ id: "firstName", label: t("users.fields.firstName")  },
+					{ id: "firstName", label: t("users.fields.name")  },
 					// { id: "firstName", label: t("users.fields.firstName") },
 					// { id: "lastName", label: t("users.fields.lastName") },
 					{ id: "phone", label: t("users.fields.phone") },

@@ -409,6 +409,7 @@
 			"changeOrganisation": "Change organisation"
 		},
 		"fields": {
+			"name": "Name",
 			"firstName": "First name",
 			"lastName": "Last name",
 			"profileImage": "Profile image",
