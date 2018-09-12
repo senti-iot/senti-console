@@ -58,7 +58,7 @@ class CalibrateDevice extends Component {
 				startDate: null,
 				endDate: null,
 				count: 0,
-				timer: 0
+				timer: 0,
 			},
 			images: null,
 			locationType: 0,
@@ -74,12 +74,15 @@ class CalibrateDevice extends Component {
 					if (rs === null)
 						this.props.history.push('/404')
 					else {
-						// console.log(rs)
 						this.setState({
-							device: rs, loading: false,
+							device: rs,
+							loading: false,
+							lat: rs.lat,
+							long: rs.long,
+							locationType: rs.locationType,
+							address: rs.address,
 							name: rs.name ? rs.name : '',
 							description: rs.description ? rs.description : '',
-							locationType: rs.location_type ? rs.locationType : ''
 						})
 					}
 				})
@@ -173,7 +176,7 @@ class CalibrateDevice extends Component {
 	}
 
 	handleSetAddress = (e) => {
-		this.setState({ address: e.target.value })
+		this.setState({ address: e })
 	}
 
 	renderDeviceNameDescriptionForms = () => {
@@ -213,7 +216,7 @@ class CalibrateDevice extends Component {
 		const { t } = this.props
 		return <Grid container>
 			<ItemGrid xs={12}>
-				<PlacesWithStandaloneSearchBox handleChange={this.handleSetAddress} t={t}/>
+				<PlacesWithStandaloneSearchBox address={this.state.address} handleChange={this.handleSetAddress} t={t}/>
 			</ItemGrid>
 			<ItemGrid xs={12}>
 				<FormControl className={this.props.classes.formControl}>
