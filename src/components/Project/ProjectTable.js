@@ -13,7 +13,7 @@ import { dateFormatter } from "variables/functions"
 import EnhancedTableHead from '../Table/TableHeader'
 import EnhancedTableToolbar from '../Table/TableToolbar'
 // import EnhancedTableToolbar from './TableToolBar'
-import { ItemGrid, Info } from ".."
+import { ItemGrid, Info, Caption } from ".."
 import { connect } from "react-redux"
 import { Add, FilterList } from '@material-ui/icons';
 import { boxShadow } from 'assets/jss/material-dashboard-react';
@@ -261,16 +261,24 @@ class EnhancedTable extends React.Component {
 							columnData={this.props.tableHead}
 							t={t}
 							classes={classes}
-							mdDown={[0]} //Which Columns to display on small Screens
+							// mdDown={[0]}
+							customColumn={[
+								{
+									id: "title",
+									label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>
+											Projects
+									</Typography>
+								}
+							]} //Which Columns to display on small Screens
 						/>
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
+								console.log(n)
 								return (
 									<TableRow
 										hover
 										onClick={e => { e.stopPropagation(); this.props.history.push('/project/' + n.id) }}
-										// onContextMenu={this.handleToolbarMenuOpen}
 										role="checkbox"
 										aria-checked={isSelected}
 										tabIndex={-1}
@@ -278,15 +286,39 @@ class EnhancedTable extends React.Component {
 										selected={isSelected}
 										style={{ cursor: 'pointer' }}
 									>
-										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-											<Checkbox checked={isSelected} />
-										</TableCell>
-										<TableCell className={classes.tableCell}>
-											<Typography paragraph classes={{ root: classes.paragraphCell }}>
-												{n.title}
-											</Typography>
-										</TableCell>
+										<Hidden lgUp>
+											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+												<Checkbox checked={isSelected} />
+											</TableCell>
+											{/* <TableCell padding="checkbox" className={classes.tablecellcheckbox}> */}
+											{/* {this.renderIcon(n.liveStatus)} */}
+											{/* </TableCell> */}
+											<TableCell classes={{ root: classes.tableCell }}>
+												<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+														<Info noWrap paragraphCell={classes.noMargin}>
+															{n.title}
+														</Info>
+													</ItemGrid>
+													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+														<Caption noWrap className={classes.noMargin}>
+															{`${n.org ? n.org.name : t("users.fields.noOrg")}` /* ${dateFormatter(n.startDate)} - ${dateFormatter(n.endDate)} */}
+														</Caption>
+													</ItemGrid>
+													{/* </ItemGrid> */}
+												</ItemGrid>
+											</TableCell>
+										</Hidden>
+										
 										<Hidden mdDown>
+											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+												<Checkbox checked={isSelected} />
+											</TableCell>
+											<TableCell className={classes.tableCell}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{n.title}
+												</Typography>
+											</TableCell>
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph title={n.description} classes={{ root: classes.paragraphCell }}>
 													{n.description}
@@ -294,12 +326,12 @@ class EnhancedTable extends React.Component {
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{dateFormatter(n.open_date)}
+													{dateFormatter(n.startDate)}
 												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{dateFormatter(n.close_date)}
+													{dateFormatter(n.endDate)}
 												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCell}>
