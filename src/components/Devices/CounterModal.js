@@ -5,6 +5,7 @@ import { ItemGrid } from '..';
 import moment from 'moment'
 import { OpenInBrowser, Timer, Done, Restore } from '@material-ui/icons'
 import countermodalStyles from 'assets/jss/components/devices/countermodalStyles';
+import { connect } from 'react-redux'
 
 
 class CounterModal extends React.Component {
@@ -12,7 +13,7 @@ class CounterModal extends React.Component {
 		super(props)
 
 		this.state = {
-			count: 5, //change
+			count: props.count,
 			open: false,
 			timer: 0,
 			timestamp: null,
@@ -51,7 +52,7 @@ class CounterModal extends React.Component {
 		this.timeCounter = null
 		this.setState({
 			timer: 0,
-			count: 5, //change
+			count: this.props.count, 
 			timestamp: null
 		})
 	}
@@ -171,5 +172,12 @@ CounterModal.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
+const mapStateToProps = (state) => ({
+	count: state.settings.count
+})
 
-export default withStyles(countermodalStyles)(CounterModal);
+const mapDispatchToProps = (dispatch) => {
+	return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(countermodalStyles)(CounterModal));

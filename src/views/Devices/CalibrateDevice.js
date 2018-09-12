@@ -66,48 +66,6 @@ class CalibrateDevice extends Component {
 		}
 		props.setHeader(this.props.t("calibration.header") + " " + props.match.params.id, true)
 	}
-
-	getSteps() {
-		const { t } = this.props
-		return [t("calibration.stepheader.name"), t("calibration.stepheader.location"), t("calibration.stepheader.calibration"), t("calibration.stepheader.images")]
-	}
-
-	getStepContent(step) {
-		const { t } = this.props
-		switch (step) {
-			case 0:
-				return t("calibration.steps.0")
-			case 1:
-				return t("calibration.steps.1")
-			case 2:
-				return t("calibration.steps.2")
-			case 3:
-				return t("calibration.steps.3")
-			default:
-				return t("calibration.steps.unknown")
-		}
-	}
-
-	handleInput = (input) => e => {
-		this.setState({ [input]: e.target.value })
-	}
-
-	getImages = (imgs) => {
-		this.setState({ images: imgs })
-	}
-
-	handleCalibration = (result) => {
-		this.setState({
-			...this.state,
-			calibration: {
-				startDate: result.timestamp,
-				endDate: result.timestampFinish,
-				count: result.count,
-				timer: result.timer
-			}
-		})
-	}
-
 	componentDidMount = async () => {
 		if (this.props.match) {
 			let id = this.props.match.params.id
@@ -127,6 +85,30 @@ class CalibrateDevice extends Component {
 		}
 		else {
 			this.props.history.push('/404')
+		}
+	}
+
+	getSteps() {
+		const { t } = this.props
+		return [t("calibration.stepheader.name"),
+			t("calibration.stepheader.location"),
+			t("calibration.stepheader.calibration"),
+			t("calibration.stepheader.images")]
+	}
+
+	getStepContent(step) {
+		const { t } = this.props
+		switch (step) {
+			case 0:
+				return t("calibration.steps.0")
+			case 1:
+				return t("calibration.steps.1")
+			case 2:
+				return t("calibration.steps.2")
+			case 3:
+				return t("calibration.steps.3")
+			default:
+				return t("calibration.steps.unknown")
 		}
 	}
 
@@ -152,6 +134,51 @@ class CalibrateDevice extends Component {
 		return success
 	}
 
+	getImages = (imgs) => {
+		this.setState({ images: imgs })
+	}
+	handleInput = (input) => e => {
+		this.setState({ [input]: e.target.value })
+	}
+	handleCalibration = (result) => {
+		this.setState({
+			...this.state,
+			calibration: {
+				startDate: result.timestamp,
+				endDate: result.timestampFinish,
+				count: result.count,
+				timer: result.timer
+			}
+		})
+	}
+
+
+
+
+
+
+	LocationTypes = () => {
+		const { t } = this.props
+		return [
+			{ id: 1, label: t("devices.locationTypes.pedStreet") },
+			{ id: 2, label: t("devices.locationTypes.park") },
+			{ id: 3, label: t("devices.locationTypes.path") },
+			{ id: 4, label: t("devices.locationTypes.square") },
+			{ id: 5, label: t("devices.locationTypes.crossroads") },
+			{ id: 6, label: t("devices.locationTypes.road") },
+			{ id: 7, label: t("devices.locationTypes.motorway") },
+			{ id: 8, label: t("devices.locationTypes.port") },
+			{ id: 9, label: t("devices.locationTypes.office") },
+			{ id: 0, label: t("devices.locationTypes.unspecified") }]
+	}
+
+	handleLocationTypeChange = (e) => {
+		this.setState({ locationType: e.target.value })
+	}
+
+	handleSetAddress = (e) => {
+		this.setState({ address: e.target.value })
+	}
 	renderDeviceNameDescriptionForms = () => {
 		// const { device } = this.state
 		const { classes, t } = this.props
@@ -184,29 +211,6 @@ class CalibrateDevice extends Component {
 				/>
 			</ItemGrid>
 		</Grid>
-	}
-
-	LocationTypes = () => {
-		const { t } = this.props
-		return [
-			{ id: 1, label: t("devices.locationTypes.pedStreet") },
-			{ id: 2, label: t("devices.locationTypes.park") },
-			{ id: 3, label: t("devices.locationTypes.path") },
-			{ id: 4, label: t("devices.locationTypes.square") },
-			{ id: 5, label: t("devices.locationTypes.crossroads") },
-			{ id: 6, label: t("devices.locationTypes.road") },
-			{ id: 7, label: t("devices.locationTypes.motorway") },
-			{ id: 8, label: t("devices.locationTypes.port") },
-			{ id: 9, label: t("devices.locationTypes.office") },
-			{ id: 0, label: t("devices.locationTypes.unspecified") }]
-	}
-
-	handleLocationTypeChange = (e) => {
-		this.setState({ locationType: e.target.value })
-	}
-
-	handleSetAddress = (e) => {
-		this.setState({ address: e.target.value })
 	}
 
 	renderDeviceLocation = () => {
@@ -272,71 +276,81 @@ class CalibrateDevice extends Component {
 		}
 	}
 
-	updateCalibration = async () => {
-		const { startDate, endDate, count, timer } = this.state.calibration
-		const { device } = this.state
-		var success = await calibrateDevice({
-			step: 2,
-			startDate: startDate,
-			endDate: endDate,
-			count: count,
-			timer: timer,
-			id: device.id
-		}).then(rs => rs)
-		return success
-	}
+	// updateCalibration = async () => {
+	// 	// const { startDate, endDate, count, timer } = this.state.calibration
+	// 	const { device } = this.state
+	// 	var success = await calibrateDevice({
+	// 		step: 2,
+	// 		startDate: startDate,
+	// 		endDate: endDate,
+	// 		count: count,
+	// 		timer: timer,
+	// 		id: device.id
+	// 	}).then(rs => rs)
+	// 	return success
+	// }
 
-	updatePosition = async () => {
+	// updatePosition = async () => {
+	// 	// const { lat, long, device, locationType, address } = this.state
+	// 	var success = await calibrateDevice({
+	// 		step: 1,
+	// 		address: address,
+	// 		lat: lat,
+	// 		long: long,
+	// 		locationType: locationType,
+	// 		id: device.id
+	// 	}).then(rs => rs)
+	// 	return success
+	// }
+
+	// updateNameAndDesc = async () => {
+	// 	// const { name, description } = this.state
+	// 	var success = await calibrateDevice({
+	// 		name: name,
+	// 		description: description,
+	// 		id: this.state.device.id,
+	// 		step: 0
+	// 	}).then(rs => rs)
+	// 	return success
+	// }
+	updateDevice = async () => {
+		const { name, description } = this.state
 		const { lat, long, device, locationType, address } = this.state
+		const { startDate, endDate, count, timer } = this.state.calibration
 		var success = await calibrateDevice({
-			step: 1,
+			id: device.id,
+			name: name,
+			description: description,
 			address: address,
 			lat: lat,
 			long: long,
 			locationType: locationType,
-			id: device.id
-		}).then(rs => rs)
+			startDate: startDate,
+			endDate: endDate,
+			count: count,
+			timer: timer
+		})
 		return success
 	}
-
-	updateNameAndDesc = async () => {
-		const { name, description } = this.state
-		var success = await calibrateDevice({
-			name: name,
-			description: description,
-			id: this.state.device.id,
-			step: 0
-		}).then(rs => rs)
-		return success
-	}
-
-	handleNext = () => {
+	handleNext = async () => {
 		const { activeStep } = this.state
-		const { t } = this.props
-		var success = false
-		if (activeStep === 3) {
-			let s1 = this.updateNameAndDesc()
-			let s2 = this.updatePosition()
-			let s3 = this.updateCalibration()
-			let s4 = this.uploadImgs()
-			if (s1 && s2 && s3 && s4)
-			{
-				success = true
-			}
-		}
-		else
-		{
-			success = true
-		}
-		if (success)
-			this.setState({
-				activeStep: this.state.activeStep + 1,
-			});
-		else {
-			this.setState({
-				error: { message: t("calibration.texts.networkError") }
-			})
-		}
+		// const { t } = this.props
+		// var success = false
+		// if (activeStep === 3) {
+		// success = await this.updateDevice()
+		// let s2 = this.updatePosition()
+		// let s3 = this.updateCalibration()
+		// let s4 = this.uploadImgs()
+		// }
+		// if (success)
+		this.setState({
+			activeStep: activeStep + 1,
+		});
+		// else {
+		// this.setState({
+		// error: { message: t("calibration.texts.networkError") }
+		// })
+		// }
 	}
 
 
@@ -437,7 +451,6 @@ class CalibrateDevice extends Component {
 								{t("calibration.texts.successMessage")}
 							</Typography>
 							<Grid container>
-
 								<ItemGrid xs>
 									<Button onClick={this.handleFinish} color={"primary"} variant={"contained"} className={classes.buttonMargin}>
 										<Router className={classes.iconButton} />{t("calibration.texts.viewDevice")} {device.id}
