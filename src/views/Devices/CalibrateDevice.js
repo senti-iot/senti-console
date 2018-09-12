@@ -332,25 +332,26 @@ class CalibrateDevice extends Component {
 		})
 		return success
 	}
+
 	handleNext = async () => {
 		const { activeStep } = this.state
-		// const { t } = this.props
-		// var success = false
-		// if (activeStep === 3) {
-		// success = await this.updateDevice()
-		// let s2 = this.updatePosition()
-		// let s3 = this.updateCalibration()
-		// let s4 = this.uploadImgs()
-		// }
-		// if (success)
-		this.setState({
-			activeStep: activeStep + 1,
-		});
-		// else {
-		// this.setState({
-		// error: { message: t("calibration.texts.networkError") }
-		// })
-		// }
+		if (activeStep === 3) {
+			let success = await this.updateDevice()
+			if (success)
+				this.setState({
+					activeStep: activeStep + 1,
+				});
+			else {
+				this.setState({ error: { message: this.props.t("calibration.texts.networkError") } })
+			}
+
+		}	
+		else {
+			this.setState({
+				activeStep: activeStep + 1,
+			});
+		}
+
 	}
 
 
@@ -365,7 +366,9 @@ class CalibrateDevice extends Component {
 	}
 
 	handleFinish = () => {
+		
 		this.props.history.push('/device/' + this.state.device.id)
+		
 	}
 
 	handleReset = () => {
