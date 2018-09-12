@@ -35,9 +35,17 @@ class EditDeviceDetails extends Component {
 	componentWillUnmount = () => {
 		clearTimeout(this.timer);
 	}
-	
+	handleGoogleInput = (address) => {
+		this.setState({
+			device: {
+				...this.state.device,
+				address
+			}
+		})
+	}
 	handleInput = (input) => e => {
-		e.preventDefault()
+		if (e.preventDefault)
+			e.preventDefault()
 		this.setState({
 			device: {
 				...this.state.device,
@@ -116,7 +124,9 @@ class EditDeviceDetails extends Component {
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
-								<PlacesWithStandaloneSearchBox t={t} handleChange={this.handleInput('address')}/>
+								<PlacesWithStandaloneSearchBox
+									address={device.address}
+									t={t} handleChange={this.handleGoogleInput} />
 							</ItemGrid>
 							<ItemGrid xs={12} container justify={'center'}>
 								<Collapse in={this.state.updating} timeout={100} unmountOnExit>
