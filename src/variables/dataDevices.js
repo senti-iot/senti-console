@@ -80,7 +80,9 @@ export const getDevice = async (id) => {
 	return data
 }
 export const calibrateDevice = async (device) => {
-	var data = await api.post('senti/calibrate', device).then(rs => rs.data)
+	var data = await api.post('senti/device/calibrate', device).then(rs => { 
+		return rs.ok
+	})
 	return data
 }
 

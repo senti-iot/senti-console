@@ -74,6 +74,7 @@ class CalibrateDevice extends Component {
 					if (rs === null)
 						this.props.history.push('/404')
 					else {
+						// console.log(rs)
 						this.setState({
 							device: rs, loading: false,
 							name: rs.name ? rs.name : '',
@@ -152,11 +153,6 @@ class CalibrateDevice extends Component {
 		})
 	}
 
-
-
-
-
-
 	LocationTypes = () => {
 		const { t } = this.props
 		return [
@@ -179,8 +175,8 @@ class CalibrateDevice extends Component {
 	handleSetAddress = (e) => {
 		this.setState({ address: e.target.value })
 	}
+
 	renderDeviceNameDescriptionForms = () => {
-		// const { device } = this.state
 		const { classes, t } = this.props
 		return <Grid container>
 			<ItemGrid xs={12}>
@@ -276,43 +272,6 @@ class CalibrateDevice extends Component {
 		}
 	}
 
-	// updateCalibration = async () => {
-	// 	// const { startDate, endDate, count, timer } = this.state.calibration
-	// 	const { device } = this.state
-	// 	var success = await calibrateDevice({
-	// 		step: 2,
-	// 		startDate: startDate,
-	// 		endDate: endDate,
-	// 		count: count,
-	// 		timer: timer,
-	// 		id: device.id
-	// 	}).then(rs => rs)
-	// 	return success
-	// }
-
-	// updatePosition = async () => {
-	// 	// const { lat, long, device, locationType, address } = this.state
-	// 	var success = await calibrateDevice({
-	// 		step: 1,
-	// 		address: address,
-	// 		lat: lat,
-	// 		long: long,
-	// 		locationType: locationType,
-	// 		id: device.id
-	// 	}).then(rs => rs)
-	// 	return success
-	// }
-
-	// updateNameAndDesc = async () => {
-	// 	// const { name, description } = this.state
-	// 	var success = await calibrateDevice({
-	// 		name: name,
-	// 		description: description,
-	// 		id: this.state.device.id,
-	// 		step: 0
-	// 	}).then(rs => rs)
-	// 	return success
-	// }
 	updateDevice = async () => {
 		const { name, description } = this.state
 		const { lat, long, device, locationType, address } = this.state
