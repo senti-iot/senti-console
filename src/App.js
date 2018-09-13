@@ -11,7 +11,6 @@ import "assets/css/material-dashboard-react.css?v=1.2.0";
 import TProvider from 'components/Localization/TProvider';
 
 const hist = createBrowserHistory();
-
 const theme = createMuiTheme({
 
 	overrides: {

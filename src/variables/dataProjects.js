@@ -9,7 +9,8 @@ export const createOneProject = async (project) => {
 	return data
 }
 export const updateProject = async (project) => {
-	var data = await api.put('senti/project', project).then(response => response)
+	// console.log(data)
+	var data = await api.put(`senti/project/${project.id}`, project).then(response => response)
 	return data.data
 }
 export const getAllProjects = async () => {
