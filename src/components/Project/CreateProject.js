@@ -7,10 +7,11 @@ import MomentUtils from 'material-ui-pickers/utils/moment-utils'
 import React, { Component, Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 // import { getAvailableDevices } from 'variables/dataDevices'
-import { createOneProject } from 'variables/dataProjects'
+import { createProject } from 'variables/dataProjects'
 import { Caption, CircularLoader, GridContainer, ItemGrid, TextF } from '..'
 import { getAllOrgs } from 'variables/dataUsers';
 import { getAvailableDevices } from 'variables/dataDevices';
+import { getCreateProject } from '../../variables/dataProjects'
 
 const ITEM_HEIGHT = 32
 const ITEM_PADDING_TOP = 8
@@ -28,10 +29,11 @@ class CreateProject extends Component {
 		super(props)
 
 		this.state = {
+			// project: {},
 			title: '',
 			description: '',
-			open_date: null,
-			close_date: null,
+			startDate: null,
+			endDate: null,
 			devices: [],
 			orgs: [],
 			selectedOrg: '',
@@ -45,10 +47,10 @@ class CreateProject extends Component {
 	componentDidMount = () => {
 		const { t } = this.props
 		this._isMounted = 1
+
 		getAllOrgs().then(rs => {
-			if (this._isMounted)
-			{
-				if (rs.length === 1 )	
+			if (this._isMounted) {
+				if (rs.length === 1)
 					this.setState({
 						orgs: rs,
 						selectedOrg: rs[0].id
@@ -68,7 +70,7 @@ class CreateProject extends Component {
 		clearTimeout(this.timer)
 
 	}
-	
+
 	handleDeviceChange = event => {
 		this.setState({ devices: event.target.value })
 	}
@@ -92,19 +94,26 @@ class CreateProject extends Component {
 
 	handleCreateProject = () => {
 		clearTimeout(this.timer)
-		let newProject = {
-			project: {
-				title: this.state.title,
-				description: this.state.description,
-				open_date: this.state.open_date,
-				close_date: this.state.close_date
-			},
-			devices: this.state.devices
-		}
 		this.setState({ creating: true })
-		this.timer = setTimeout(async () => createOneProject(newProject).then(rs => rs ? 
-			this.setState({ created: true, creating: false, id: rs, openSnackBar: true }) : this.setState({ create: false, creating: false, id: 0 })
-		), 2e3)
+		getCreateProject().then(rs => {
+			if (this._isMounted) {
+				let newProject = {
+					...rs,
+					title: this.state.title,
+					description: this.state.description,
+					startDate: this.state.startDate,
+					endDate: this.state.endDate,
+					devices: this.state.availableDevices.filter(a => this.state.devices.some(b => a.id === b))
+				}
+				this.timer = setTimeout(async () => createProject(newProject).then(rs => rs ?
+					this.setState({ created: true, creating: false, id: rs.id, openSnackBar: true }) : this.setState({ create: false, creating: false, id: 0 })
+				), 2e3)
+			}
+		}
+		)
+
+
+
 	}
 
 	goToNewProject = () => {
@@ -157,8 +166,8 @@ class CreateProject extends Component {
 									label={t("projects.fields.startDate")}
 									clearable
 									format="DD.MM.YYYY"
-									value={this.state.open_date}
-									onChange={this.handleDateChange("open_date")}
+									value={this.state.startDate}
+									onChange={this.handleDateChange("startDate")}
 									animateYearScrolling={false}
 									color="primary"
 									rightArrowIcon={<KeyArrRight />}
@@ -176,8 +185,8 @@ class CreateProject extends Component {
 									label={t("projects.fields.endDate")}
 									clearable
 									format="DD.MM.YYYY"
-									value={this.state.close_date}
-									onChange={this.handleDateChange("close_date")}
+									value={this.state.endDate}
+									onChange={this.handleDateChange("endDate")}
 									animateYearScrolling={false}
 									rightArrowIcon={<KeyArrRight />}
 									leftArrowIcon={<KeyArrLeft />}
@@ -207,17 +216,17 @@ class CreateProject extends Component {
 													id: 'select-org',
 												}}
 											>
-												{orgs.map(org => 
+												{orgs.map(org =>
 													<MenuItem
 														key={org.id}
 														value={org.id}
 														style={{ fontWeight: selectedOrg === org.id ? theme.typography.fontWeightMedium : theme.typography.fontWeightRegular }}>
 														{org.name}
 													</MenuItem>
-												
+
 												)}
 											</Select>
-										</Fragment> : <CircularLoader notCentered/>}
+										</Fragment> : <CircularLoader notCentered />}
 								</FormControl>
 							</ItemGrid>
 							<ItemGrid xs={12}>
@@ -279,15 +288,15 @@ class CreateProject extends Component {
 									disabled={this.state.creating}
 									onClick={this.state.created ? this.goToNewProject : this.handleCreateProject}
 								>
-									{this.state.created ? <Fragment><Check className={classes.leftIcon}/>{t("projects.viewProject")}</Fragment> 
+									{this.state.created ? <Fragment><Check className={classes.leftIcon} />{t("projects.viewProject")}</Fragment>
 										: <Fragment>
 											<Save className={classes.leftIcon} />{t("projects.new")}
 										</Fragment>}
 								</Button>
 							</div>
-							
+
 						</Grid>
-		
+
 
 					</MuiPickersUtilsProvider>
 				</Paper>

@@ -4,8 +4,12 @@ import { getSimpleAddress } from "./dataDevices";
 export const getProjectImage = async (project) => {
 	
 }
-export const createOneProject = async (project) => {
-	var data = await api.post('senti/project', project).then(response => response.data)
+export const getCreateProject = async () => {
+	var data = await api.get('senti/project/create').then(response => response.data)
+	return data
+}
+export const createProject = async (project) => {
+	var data = await api.post('senti/project', project).then(rs => rs.data)
 	return data
 }
 export const updateProject = async (project) => {
