@@ -15,6 +15,13 @@ const hist = createBrowserHistory();
 const theme = createMuiTheme({
 
 	overrides: {
+		MuiFormControl: {
+			root: {
+				minWidth: 0,
+				width: 208,
+				// maxWidth: 208
+			}
+		},
 		MuiIcon: {
 			root: {
 				overflow: 'visible',

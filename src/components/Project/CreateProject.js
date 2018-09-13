@@ -10,6 +10,7 @@ import { withRouter } from 'react-router-dom'
 import { createOneProject } from 'variables/dataProjects'
 import { Caption, CircularLoader, GridContainer, ItemGrid, TextF } from '..'
 import { getAllOrgs } from 'variables/dataUsers';
+import { getAvailableDevices } from 'variables/dataDevices';
 
 const ITEM_HEIGHT = 32
 const ITEM_PADDING_TOP = 8
@@ -33,7 +34,7 @@ class CreateProject extends Component {
 			close_date: null,
 			devices: [],
 			orgs: [],
-			selectedOrgs: [],
+			selectedOrg: '',
 			availableDevices: null,
 			creating: false,
 			created: false,
@@ -45,18 +46,20 @@ class CreateProject extends Component {
 		const { t } = this.props
 		this._isMounted = 1
 		getAllOrgs().then(rs => {
-			console.log(rs)
 			if (this._isMounted)
-				this.setState({
-					orgs: rs
-				})
+			{
+				if (rs.length === 1 )	
+					this.setState({
+						orgs: rs,
+						selectedOrg: rs[0].id
+					})
+				else {
+					this.setState({
+						orgs: rs,
+					})
+				}
+			}
 		})
-		// getAvailableDevices().then(rs => {
-		// 	if (this._isMounted)
-		// 		this.setState({
-		// 			availableDevices: rs
-		// 		})
-		// })
 		this.props.setHeader(t("projects.new"), true)
 	}
 
@@ -69,8 +72,10 @@ class CreateProject extends Component {
 	handleDeviceChange = event => {
 		this.setState({ devices: event.target.value })
 	}
-	handleSelectedOrgs = e => {
-		this.setState({ selectedOrgs: e.target.value })
+	handleSelectedOrgs = async e => {
+		this.setState({ selectedOrg: e.target.value })
+		var devices = await getAvailableDevices(e.target.value).then(rs => rs)
+		this.setState({ availableDevices: devices ? devices : null, devices: [] })
 	}
 	handleDateChange = id => value => {
 		this.setState({
@@ -109,7 +114,7 @@ class CreateProject extends Component {
 
 	render() {
 		const { classes, theme, t } = this.props
-		const { availableDevices, created, orgs } = this.state
+		const { availableDevices, created, orgs, selectedOrg } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
@@ -142,7 +147,8 @@ class CreateProject extends Component {
 									value={this.state.description}
 									handleChange={this.handleChange("description")}
 									margin="normal"
-									noFullWidth/>
+									noFullWidth
+								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								{/* <div className={classes.datepicker}> */}
@@ -187,42 +193,31 @@ class CreateProject extends Component {
 											<InputLabel
 												FormLabelClasses={{ root: classes.label }}
 												color={"primary"}
-												htmlFor="select-multiple-chip"
-											>
+												htmlFor="select-org">
 												{t("projects.fields.selectOrganisation")}
 											</InputLabel>
+
 											<Select
 												color={"primary"}
-												// multiple
-												value={this.state.selectedOrgs}
-												// autoWidth
+												value={this.state.selectedOrg}
 												onChange={this.handleSelectedOrgs}
-												input={<Input id="select-multiple-chip" classes={{
-													underline: classes.underline
-												}} />}
-												renderValue={selected => {
-													console.log(selected)
-													return (
-														<div className={classes.chips}>
-														 	<Chip key={selected} label={orgs[orgs.findIndex(d => d.id === selected)].name} className={classes.chip} />
-														</div>
-													)
-												}}
 												MenuProps={MenuProps}
+												inputProps={{
+													name: 'org',
+													id: 'select-org',
+												}}
 											>
-												{ orgs.map(org => (
+												{orgs.map(org => 
 													<MenuItem
 														key={org.id}
 														value={org.id}
-														style={{
-															fontWeight: this.state.selectedOrgs.id === org.id ?
-																theme.typography.fontWeightRegular : theme.typography.fontWeightMedium }}
-													>
-														{org.id + " - " + (org.name ? org.name : t("devices.noName"))}
+														style={{ fontWeight: selectedOrg === org.id ? theme.typography.fontWeightMedium : theme.typography.fontWeightRegular }}>
+														{org.name}
 													</MenuItem>
-												))}
+												
+												)}
 											</Select>
-										</Fragment> : <Caption>{t("devices.noDevices")}</Caption>}
+										</Fragment> : <CircularLoader notCentered/>}
 								</FormControl>
 							</ItemGrid>
 							<ItemGrid xs={12}>
@@ -264,7 +259,7 @@ class CreateProject extends Component {
 													</MenuItem>
 												))}
 											</Select>
-										</Fragment> : <Caption>{t("devices.noDevices")}</Caption>}
+										</Fragment> : selectedOrg ? <Caption>{t("devices.noDevices")}</Caption> : <Caption>{t("projects.noOrganisationSelected")}</Caption>}
 								</FormControl>
 							</ItemGrid>
 							{/* </Grid> */}
@@ -277,7 +272,6 @@ class CreateProject extends Component {
 						</ItemGrid>
 						<Grid container justify={"center"}>
 							<div className={classes.wrapper}>
-								{/* <Save />  */}
 								<Button
 									variant="contained"
 									color="primary"
@@ -290,13 +284,8 @@ class CreateProject extends Component {
 											<Save className={classes.leftIcon} />{t("projects.new")}
 										</Fragment>}
 								</Button>
-								{/* {this.state.creating && <CircularProgress size={24} className={classes.buttonProgress} />} */}
 							</div>
-							{/* <div className={classes.button}>
-									<Button variant={"contained"} color="primary" size="medium" onClick={this.handleCreateProject}>
-										<Save/>Create Project
-                     		 		</Button>
-							  	</div> */}
+							
 						</Grid>
 		
 

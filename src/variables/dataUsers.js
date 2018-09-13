@@ -3,7 +3,7 @@ import { api } from './data'
 //#region GET User,Users,Org,Orgs
 export const getAllUsers = async () => {
 	var data = await api.get('core/users').then(rs => rs.data)
-	console.log('getAllUsers', data)
+	// console.log('getAllUsers', data)
 	return data
 }
 

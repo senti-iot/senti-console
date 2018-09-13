@@ -46,8 +46,9 @@ export const deletePicture = async (dId, img) => {
 	var data = await imageApi.delete('senti/device/image/' + dId + '/' + img).then(rs => {return rs.data})
 	return data
 }
-export const getAvailableDevices = async () => {
-	var data = await api.get('senti/availabledevices').then(rs => rs.data)
+export const getAvailableDevices = async (orgID) => {
+	// https://betabackend.senti.cloud/rest/senti/devices/available
+	var data = await api.get(orgID ? `senti/devices/available/${orgID}` : 'senti/devices/available').then(rs => rs.data)
 	return data
 }
 
