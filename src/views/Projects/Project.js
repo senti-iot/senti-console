@@ -49,7 +49,7 @@ class Project extends Component {
 				if (rs === null)
 					this.props.history.push('/404')
 				else {
-					this.props.setHeader(rs.title, true)
+					this.props.setHeader(rs.title, true, '/projects/list')
 					this.setState({
 						project: rs, loading: false
 					})

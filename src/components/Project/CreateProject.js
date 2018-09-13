@@ -62,7 +62,7 @@ class CreateProject extends Component {
 				}
 			}
 		})
-		this.props.setHeader(t("projects.new"), true)
+		this.props.setHeader(t("projects.new"), true, "/projects/list")
 	}
 
 	componentWillUnmount = () => {

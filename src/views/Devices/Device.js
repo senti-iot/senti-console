@@ -38,7 +38,7 @@ class Device extends Component {
 				this.props.history.push('/404')
 			else {
 				this.setState({ device: rs, loading: false })
-				this.props.setHeader(rs.name ? rs.name : rs.id, true)
+				this.props.setHeader(rs.name ? rs.name : rs.id, true, `/devices/list`) 
 					
 			}
 		})

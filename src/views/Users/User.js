@@ -24,7 +24,7 @@ class User extends Component {
 					if (rs === null)
 						this.props.history.push('/404')
 					else {
-						this.props.setHeader(`${rs.firstName} ${rs.lastName}`, true)
+						this.props.setHeader(`${rs.firstName} ${rs.lastName}`, true, '/users')
 						this.setState({ user: rs, loading: false })
 					}
 				}))

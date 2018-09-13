@@ -16,7 +16,7 @@ class EditDeviceDetails extends Component {
 			updated: false,
 			openSnackBar: false
 		}
-		props.setHeader(props.t("devices.editDetailsTitle", { deviceId: props.match.params.id }), true)
+		props.setHeader(props.t("devices.editDetailsTitle", { deviceId: props.match.params.id }), true, '/devices/list')
 	}
 	componentDidMount = async () => {
 		let id = this.props.match.params.id
