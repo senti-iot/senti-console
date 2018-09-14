@@ -116,25 +116,8 @@ class Project extends Component {
 		
 	
 	}
-	// deviceMostCount = (devices) => {
-	// 	let max = devices[0]
-	// 	for (let i = 1, len = devices.length; i < len; i++) {
-	// 		let v = devices[i];
-	// 		max = (v.totalCount > max.totalCount) ? v : max;
-	// 	}
-	// 	return max;
-	// }
-	// regMostCount = (regs) => {
-	// 	let max = regs[0]
-	// 	for (let i = 1, len = regs.length; i < len; i++) {
-	// 		let v = regs[i];
-	// 		max = (v.count > max.count) ? v : max;
-	// 	}
-	// 	return max;
-	// }
 
 	filterItems = (projects, keyword) => {
-
 		var searchStr = keyword.toLowerCase()
 		var arr = projects
 		if (arr[0] === undefined)
@@ -231,7 +214,7 @@ class Project extends Component {
 						<ProjectData t={t} project={project}/>
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectContact t={t} project={project}/>
+						<ProjectContact  history={this.props.history} t={t} project={project}/>
 					</ItemGrid>
 					{this.renderDeleteDialog()}
 					<Snackbar

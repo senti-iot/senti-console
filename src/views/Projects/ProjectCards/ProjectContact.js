@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info } from 'components';
 import { Grid } from '@material-ui/core';
 import { Person } from '@material-ui/icons'
+import { Link } from 'react-router-dom'
 
 export class ProjectContact extends Component {
 	render() {
@@ -15,8 +16,10 @@ export class ProjectContact extends Component {
 							<Caption>
 								{t("projects.contact.name")}
 							</Caption>
-							<Info>
-								{project.user.firstName + " " + project.user.lastName}
+							<Info >
+								<Link to={`/user/${project.user.id}`} >
+									{project.user.firstName + " " + project.user.lastName}
+								</Link>
 							</Info>
 						</ItemGrid>
 						<ItemGrid>

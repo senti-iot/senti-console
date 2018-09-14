@@ -41,11 +41,11 @@ class App extends React.Component {
 				this.setState({
 					headerTitle: title,
 					goBackButton: goBackButton,
-					url: ''
+					url: url
 				})
 	};
 	handleGoBackButton = () => {
-		this.props.history.push('/')
+		this.props.history.push(this.state.url)
 		this.setState({ url: '' })
 	}
 	componentDidMount = async () => {
