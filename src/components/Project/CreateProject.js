@@ -68,7 +68,7 @@ class CreateProject extends Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 		clearTimeout(this.timer)
-
+		clearTimeout(this.redirect)
 	}
 
 	handleDeviceChange = event => {
@@ -91,29 +91,29 @@ class CreateProject extends Component {
 			[id]: e.target.value
 		})
 	}
-
-	handleCreateProject = () => {
+	handleFinishCreateProject = (rs) => {
+		this.setState({ created: true, id: rs.id, openSnackBar: true })
+		this.redirect = setTimeout(() => this.props.history.push(`/project/${rs.id}`), 2e3)
+	}
+	handleCreateProject = async () => {
+		const { availableDevices, title, description, startDate, endDate } = this.state
 		clearTimeout(this.timer)
 		this.setState({ creating: true })
-		getCreateProject().then(rs => {
+		await getCreateProject().then(async rs => {
+			// let isCreated = false
 			if (this._isMounted) {
 				let newProject = {
 					...rs,
-					title: this.state.title,
-					description: this.state.description,
-					startDate: this.state.startDate,
-					endDate: this.state.endDate,
-					devices: this.state.availableDevices.filter(a => this.state.devices.some(b => a.id === b))
+					title: title,
+					description: description,
+					startDate: startDate,
+					endDate: endDate,
+					devices: availableDevices ? availableDevices.filter(a => this.state.devices.some(b => a.id === b)) : []
 				}
-				this.timer = setTimeout(async () => createProject(newProject).then(rs => rs ?
-					this.setState({ created: true, creating: false, id: rs.id, openSnackBar: true }) : this.setState({ create: false, creating: false, id: 0 })
+				this.timer = await setTimeout(async () => await createProject(newProject).then(rs => rs ? this.handleFinishCreateProject(rs) : this.setState({ create: false, creating: false, id: 0 })
 				), 2e3)
 			}
-		}
-		)
-
-
-
+		})
 	}
 
 	goToNewProject = () => {
@@ -288,7 +288,7 @@ class CreateProject extends Component {
 									disabled={this.state.creating}
 									onClick={this.state.created ? this.goToNewProject : this.handleCreateProject}
 								>
-									{this.state.created ? <Fragment><Check className={classes.leftIcon} />{t("projects.viewProject")}</Fragment>
+									{this.state.created ? <Fragment><Check className={classes.leftIcon} />{t("projects.redirecting")}</Fragment>
 										: <Fragment>
 											<Save className={classes.leftIcon} />{t("projects.new")}
 										</Fragment>}
