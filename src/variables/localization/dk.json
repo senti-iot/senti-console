@@ -261,18 +261,18 @@
         "showMore": "Vis mere",
         "unassignDevice": "Fjern tilknytning fra projekt",
         "unassignProject": "Fjern enhed(er) fra projekt"
-	},
-		"orgs": {
-			"fields": {
-				"address": "Adresse",
-				"city": "By",
-				"country": "Land",
-				"name": "Navn",
-				"org": "Organisation",
-				"url": "Website",
-				"zip": "Postnummer"
-			}
-		},
+    },
+    "orgs": {
+        "fields": {
+            "address": "Adresse",
+            "city": "By",
+            "country": "Land",
+            "name": "Navn",
+            "org": "Organisation",
+            "url": "Website",
+            "zip": "Postnummer"
+        }
+    },
     "projects": {
         "contact": {
             "email": "Email:",
@@ -408,8 +408,9 @@
             "suspend": "Suspender"
         },
         "fields": {
-            "accessLevel": "Access Level",
-            "active": "Aktiv (Login suspendederet ja/nej)",
+            "accessLevel": "Adgangsniveau",
+			"active": "Aktiv",
+			"loginSuspended": "Login suspendederet", 
             "created": "Opdateret",
             "email": "Email",
             "firstName": "Fornavn",

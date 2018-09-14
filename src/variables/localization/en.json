@@ -409,7 +409,8 @@
         },
         "fields": {
             "accessLevel": "Access Level",
-            "active": "Active (Login suspended yes/no)",
+			"active": "Active",
+			"loginSuspended": "Login suspended",
             "created": "Created",
             "email": "Email",
             "firstName": "First name",
