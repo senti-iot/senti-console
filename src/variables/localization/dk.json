@@ -409,9 +409,9 @@
 			"language": "System sprog",
 			"created": "Opdateret",
 			"lastSignIn": "Seneste login",
-			"active": "Aktiv (Login suspendederet ja/nej)",
+			"active": "Aktiv",
 			"tags": "Tags",
-			"accessLevel": "Access Level",
+			"accessLevel": "Adgangsniveau",
 			"userName": "Brugernavn"
 		},
 		"headers": {

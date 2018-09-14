@@ -419,7 +419,7 @@
 			"language": "System language",
 			"created": "Created",
 			"lastSignIn": "Last sign in",
-			"active": "Active (Login suspended yes/no)",
+			"active": "Active",
 			"tags": "Tags",
 			"accessLevel": "Access Level",
 			"userName": "Username"
