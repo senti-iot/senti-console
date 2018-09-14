@@ -12,6 +12,7 @@ import { Caption, CircularLoader, GridContainer, ItemGrid, TextF } from '..'
 import { getAllOrgs } from 'variables/dataUsers';
 import { getAvailableDevices } from 'variables/dataDevices';
 import { getCreateProject } from '../../variables/dataProjects'
+import { connect } from 'react-redux'
 
 const ITEM_HEIGHT = 32
 const ITEM_PADDING_TOP = 8
@@ -58,6 +59,7 @@ class CreateProject extends Component {
 				else {
 					this.setState({
 						orgs: rs,
+						selectedOrg: this.props.userOrg
 					})
 				}
 			}
@@ -317,5 +319,12 @@ class CreateProject extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	userOrg: state.settings.user.org.id
+})
 
-export default withRouter(withStyles(createprojectStyles, { withTheme: true })(CreateProject))
+const mapDispatchToProps = {
+
+}
+const CP = withStyles(createprojectStyles, { withTheme: true })(CreateProject)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CP))

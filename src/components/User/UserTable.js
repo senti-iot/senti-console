@@ -227,7 +227,7 @@ class UserTable extends React.Component {
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
-								const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? moment(n.lastLoggedIn).format("DD.MM.YYYY HH:mm:ss") : t("users.fields.neverLoggedIn")
+								const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? moment(n.lastLoggedIn).format("DD.MM.YYYY HH:mm") : t("users.fields.neverLoggedIn")
 								return (
 									<TableRow
 										hover

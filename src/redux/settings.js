@@ -1,4 +1,6 @@
 import { getSettingsFromServer, saveSettingsOnServer } from 'variables/dataLogin';
+import cookie from 'react-cookies';
+import { getUser } from '../variables/dataUsers'
 
 const MENULOC = "SIDEBAR_LOCATION"
 const THEME = "THEME"
@@ -39,11 +41,13 @@ export const saveSettingsOnServ = () => {
 export const getSettings = async () => {
 	return async dispatch => {
 		var settings = await getSettingsFromServer()
-		// var getUser = await getUserInfo
+		var userId = cookie.load('SESSION').userID
+		var user = await getUser(userId)
 		if (settings) {
 			dispatch({
 				type: GETSETTINGS,
-				settings
+				settings,
+				user
 			})
 			return true
 		}
@@ -157,8 +161,8 @@ let initialState = {
 	didKnow: 0,
 	loading: true,
 	saved: false,
-	authorizations: {
-	}
+
+
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
@@ -170,7 +174,7 @@ export const settings = (state = initialState, action) => {
 		case "NOSETTINGS":
 			return Object.assign({}, state, { loading: false })
 		case GETSETTINGS:
-			return Object.assign({}, state, { ...action.settings, loading: false })
+			return Object.assign({}, state, { ...action.settings, user: action.user,  loading: false })
 		case changeLangAction:
 			return Object.assign({}, state, {
 				language: action.code,

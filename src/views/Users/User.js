@@ -36,31 +36,6 @@ class User extends Component {
 		const { user, loading } = this.state
 		return (
 			loading ? <CircularLoader /> : <Fragment>
-				{/* <div className={classes.root}>
-					<Grid container justify={"center"} alignItems={"center"} style={{ padding: 10, height: "100%" }}>
-						<Hidden mdUp>
-							<ItemGrid xs={12} alignContent={"center"} justify={"center"} container>
-								<img src={UserPlaceHolder} alt={"profilepicture"} className={classes.img} />
-							</ItemGrid>
-							<ItemGrid xs={12} container alignItems={"center"} justify={"center"}>
-								<Typography variant={"display2"} className={classes.textColor}>
-								
-								</Typography>
-							</ItemGrid>
-
-						</Hidden>
-						<Hidden smDown>
-							<ItemGrid xs container alignItems={"center"} justify={"center"}>
-								<Typography variant={"display3"} className={classes.textColor}>
-									{user.firstName + " " + user.lastName}
-								</Typography>
-							</ItemGrid>
-							<ItemGrid xs={3} alignContent={"center"} container>
-								<img src={UserPlaceHolder} alt={"profilepicture"} className={classes.img} />
-							</ItemGrid>
-						</Hidden>
-					</Grid>
-				</div> */}
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 				
 					<ItemGrid xs={12} noMargin>
