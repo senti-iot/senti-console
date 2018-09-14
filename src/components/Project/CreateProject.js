@@ -13,7 +13,9 @@ import { getAllOrgs } from 'variables/dataUsers';
 import { getAvailableDevices } from 'variables/dataDevices';
 import { getCreateProject } from '../../variables/dataProjects'
 import { connect } from 'react-redux'
-
+// import moment from 'moment';
+// // var moment = require('moment')
+// moment.locale('dk')
 const ITEM_HEIGHT = 32
 const ITEM_PADDING_TOP = 8
 const MenuProps = {
@@ -132,7 +134,7 @@ class CreateProject extends Component {
 		return (
 			<GridContainer justify={'center'}>
 				<Paper className={classes.paper}>
-					<MuiPickersUtilsProvider utils={MomentUtils}>
+					<MuiPickersUtilsProvider utils={MomentUtils} /* locale={'dk'} moment={moment} */>
 						<form className={classes.form}>
 							{/* <Grid container justify={'center'}> */}
 							<ItemGrid container xs={12}>

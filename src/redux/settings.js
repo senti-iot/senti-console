@@ -1,6 +1,10 @@
 import { getSettingsFromServer, saveSettingsOnServer } from 'variables/dataLogin';
 import cookie from 'react-cookies';
 import { getUser } from '../variables/dataUsers'
+// import moment from 'moment'
+import 'moment/locale/da'
+var moment = require("moment")
+// import 'moment/locale/da'
 
 const MENULOC = "SIDEBAR_LOCATION"
 const THEME = "THEME"
@@ -43,7 +47,11 @@ export const getSettings = async () => {
 		var settings = await getSettingsFromServer()
 		var userId = cookie.load('SESSION').userID
 		var user = await getUser(userId)
+
 		if (settings) {
+			moment.locale(settings.language === "dk" ? "da" : "en")
+			// moment().locale("da")
+			console.log(moment.locale())
 			dispatch({
 				type: GETSETTINGS,
 				settings,
@@ -52,12 +60,15 @@ export const getSettings = async () => {
 			return true
 		}
 		else {
+			moment.locale("dk")
 			dispatch({
 				type: "NOSETTINGS",
-				loading: false
+				loading: false,
+				user
 			})
 			return false
 		}
+
 	}
 }
 export const changeAlerts = t => {
@@ -172,13 +183,16 @@ export const settings = (state = initialState, action) => {
 		case DISCSENT:
 			return Object.assign({}, state, { discSentiVal: action.val })
 		case "NOSETTINGS":
-			return Object.assign({}, state, { loading: false })
+			return Object.assign({}, state, { loading: false, user: action.user })
 		case GETSETTINGS:
-			return Object.assign({}, state, { ...action.settings, user: action.user,  loading: false })
+			return Object.assign({}, state, { ...action.settings, user: action.user, loading: false })
 		case changeLangAction:
+		{
+			moment.locale(action.code === "dk" ? "da" : "en")
 			return Object.assign({}, state, {
 				language: action.code,
 			})
+		}
 		case SAVESETTINGS:
 			return Object.assign({}, state, {
 				saved: action.saved
