@@ -298,6 +298,10 @@ class EnhancedTable extends React.Component {
 					nextIconButtonProps={{
 						'aria-label': t("actions.previousPage"),
 					}}
+					classes={{
+						spacer: classes.spacer,
+						input: classes.spaceBetween
+					}}
 					onChangePage={this.handleChangePage}
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}
 					labelRowsPerPage={<Hidden mdDown>{t("tables.rowsPerPage")}</Hidden>}
