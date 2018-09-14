@@ -95,7 +95,7 @@ class CounterModal extends React.Component {
 	}
 	handleFinish = () => {
 		this.props.handleFinish({
-			count: 200,
+			count: this.props.count,
 			timestamp: this.state.timestamp,
 			timestampFinish: this.state.timestampFinish,
 			timer: this.state.timer
