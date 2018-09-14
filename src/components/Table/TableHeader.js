@@ -58,19 +58,21 @@ class EnhancedTableHead extends Component {
 										<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{columnData[c].label}</Typography>
 									</TableSortLabel>
 								</TableCell>
-							}) : customColumn ? 
-								 <TableCell
-									key={columnData.length + 1}
-									sortDirection={orderBy === columnData[0].id ? order : false}
-									className={classes.header + " " + classes.tableCell}>
+							}) : customColumn ? customColumn.map(c => {
+								return <TableCell
+									key={c.id}
+									padding={c.checkbox ? 'checkbox' : 'default'}
+									sortDirection={orderBy === c.id ? order : false}
+									className={c.checkbox ? classes.header + " " + classes.tablecellcheckbox : classes.header + " " + classes.tableCell}>
 									<TableSortLabel
-										active={orderBy === columnData[0].id}
+										active={orderBy === c.id}
 										direction={order}
-										onClick={this.createSortHandler(columnData[0].id)}
+										onClick={this.createSortHandler(c.id)}
 										classes={{ root: classes.HeaderLabelActive, active: classes.HeaderLabelActive }}>
-										<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{customColumn.label}</Typography>
+										{/* <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}> */}{c.label}{/* </Typography> */}
 									</TableSortLabel>
-								</TableCell> : null
+								</TableCell>
+							}) : null
 						
 						}
 					</Hidden>

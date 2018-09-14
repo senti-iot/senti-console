@@ -67,8 +67,11 @@ const devicetableStyles = theme => ({
 	},
 	tableCell: {
 		padding: 4,
-		minWidth: 130,
-		maxWidth: 200
+		// minWidth: 130,
+		maxWidth: 200,
+		"&:last-child": {
+			paddingRight: 4
+		}
 	},
 	tablecellcheckbox: {
 		padding: 0,

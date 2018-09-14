@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { updateProject, getProject } from 'variables/dataProjects';
 import { TextF, ItemGrid, CircularLoader, GridContainer } from '..'
-
+var moment = require("moment")
 // const ITEM_HEIGHT = 32;
 // const ITEM_PADDING_TOP = 8;
 // const MenuProps = {
@@ -25,12 +25,7 @@ class EditProject extends Component {
 		super(props)
 
 		this.state = {
-			id: 0,
-			title: '',
-			description: '',
-			open_date: null,
-			close_date: null,
-			devices: [],
+			project: {},
 			availableDevices: [],
 			selectedDevices: [],
 			allDevices: [],
@@ -44,22 +39,21 @@ class EditProject extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		let id = this.props.match.params.id
+		let projectOrgID = 0
 		await getProject(id).then(p => {
 			if (p && this._isMounted) {
+				projectOrgID = p.org.id
 				this.setState({
-					title: p.title,
-					description: p.description,
-					open_date: p.open_date,
-					close_date: p.close_date,
-					devices: p.devices,
-					selectedDevices: p.devices.map(d => d.id),
+					project: p,
+					// devices: p.devices,
+					selectedDevices: p.devices,
 				})
 			}
 		})
-		await getAvailableDevices().then(rs => {
+		await getAvailableDevices(projectOrgID).then(rs => {
 			if (this._isMounted) {
 				let allDev = []
-				allDev = this.state.devices ? allDev.concat(this.state.devices) : allDev
+				allDev = this.state.project.devices ? allDev.concat(this.state.project.devices) : allDev
 				allDev = rs ? allDev.concat(rs) : allDev
 				this.setState({
 					availableDevices: rs ? rs : [],
@@ -71,7 +65,7 @@ class EditProject extends Component {
 		this.setState({
 			loading: false
 		})
-		this.props.setHeader(this.props.t("projects.updateProject"), true)
+		this.props.setHeader(this.props.t("projects.updateProject"), true, `/project/${id}`)
 	}
 
 	componentWillUnmount = () => {
@@ -80,36 +74,33 @@ class EditProject extends Component {
 	}
 
 	handleDeviceChange = event => {
-		this.setState({ selectedDevices: event.target.value });
+		// console.log(event.target.value)
+		// let newDevices = this.state.selectedDevices.push({ id: event.target.value })
+		this.setState({ selectedDevices: event.target.value.map(d => ({ id: d })) });
 	};
 
 	handleDateChange = id => value => {
 		this.setState({
-			[id]: value
+			project: {
+				...this.state.project,	
+				[id]: moment(value).format("YYYY-MM-DD HH:mm")
+			}
 		})
 	}
 	handleChange = (id) => e => {
 		e.preventDefault()
 		this.setState({
-			[id]: e.target.value
+			project: {
+				...this.state.project,
+				[id]: e.target.value
+			}
 		})
 	}
 	handleUpdateProject = () => {
 		clearTimeout(this.timer)
-		let selected = this.state.selectedDevices
-		let oldDevices = this.state.devices.map(d => d.id)
-		var filtered = [];
-		filtered = oldDevices.filter(value => -1 === selected.indexOf(value));
 		let newProject = {
-			project: {
-				id: this.props.match.params.id,
-				title: this.state.title,
-				description: this.state.description,
-				open_date: this.state.open_date,
-				close_date: this.state.close_date
-			},
+			...this.state.project,
 			devices: this.state.selectedDevices,
-			unassign: filtered
 		}
 		this.setState({ creating: true })
 		this.timer = setTimeout(async () => updateProject(newProject).then(rs => rs ?
@@ -123,7 +114,7 @@ class EditProject extends Component {
 
 	render() {
 		const { classes, theme, t } = this.props
-		const { availableDevices, created, loading, selectedDevices, devices, allDevices } = this.state
+		const { availableDevices, created, loading, selectedDevices, project, allDevices } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
@@ -138,10 +129,11 @@ class EditProject extends Component {
 									<TextF
 										id={"title"}
 										label={t("projects.fields.name")}
-										value={this.state.title}
+										value={this.state.project.title}
 										className={classes.textField}
 										handleChange={this.handleChange("title")}
 										margin="normal"
+										noFullWidth
 									/>
 								</ItemGrid>
 								<ItemGrid xs={12} md={6} sm={12}>
@@ -152,9 +144,10 @@ class EditProject extends Component {
 										rows={"4"}
 										color={"secondary"}
 										className={classes.textField}
-										value={this.state.description}
+										value={this.state.project.description}
 										handleChange={this.handleChange("description")}
 										margin="normal"
+										noFullWidth
 									/>
 								</ItemGrid>
 								<ItemGrid xs={12} md={6}>
@@ -163,8 +156,8 @@ class EditProject extends Component {
 										label={t("projects.fields.startDate")}
 										clearable
 										format="DD.MM.YYYY"
-										value={this.state.open_date}
-										onChange={this.handleDateChange("open_date")}
+										value={this.state.project.startDate}
+										onChange={this.handleDateChange("startDate")}
 										animateYearScrolling={false}
 										color="primary"
 										rightArrowIcon={<KeyArrRight />}
@@ -180,8 +173,8 @@ class EditProject extends Component {
 										label={t("projects.fields.endDate")}
 										clearable
 										format="DD.MM.YYYY"
-										value={this.state.close_date}
-										onChange={this.handleDateChange("close_date")}
+										value={this.state.project.endDate}
+										onChange={this.handleDateChange("endDate")}
 										animateYearScrolling={false}
 										rightArrowIcon={<KeyArrRight />}
 										leftArrowIcon={<KeyArrLeft />}
@@ -198,37 +191,37 @@ class EditProject extends Component {
 											<Select
 												color={"primary"}
 												multiple
-												value={selectedDevices}
+												value={selectedDevices.map(d => d.id)}
 												onChange={this.handleDeviceChange}
 												input={<Input id="select-multiple-chip" classes={{ underline: classes.underline }} />}
 												renderValue={selected => (
 													<div className={classes.chips}>
 														{selected.map(value => {
-															if (availableDevices.findIndex(d => d.device_id === value) > -1)
+															if (availableDevices.findIndex(d => d.id === value) > -1)
 																return <Chip key={value}
-																	label={availableDevices[availableDevices.findIndex(d => d.id === value)].device_id}
+																	label={availableDevices[availableDevices.findIndex(d => d.id === value)].id}
 																	className={classes.chip} />
 															else
-															if (devices.findIndex(d => d.device_id === value) > -1)
+															if (project.devices.findIndex(d => d.id === value) > -1)
 																return <Chip key={value}
-																	label={devices[devices.findIndex(d => d.device_id === value)].device_id}
+																	label={project.devices[project.devices.findIndex(d => d.id === value)].id}
 																	className={classes.chip} />
 															else return null
 														})}
 
 													</div>)}
 												/* MenuProps={MenuProps} */>
-												{allDevices.map(name => (
+												{allDevices.map(device => (
 													<MenuItem
-														key={name.device_id}
-														value={name.device_id}
+														key={device.id}
+														value={device.id}
 														style={{
 															fontWeight:
-																this.state.devices.indexOf(name.device_id) === -1
+																this.state.project.devices.indexOf(device.id) === -1
 																	? theme.typography.fontWeightRegular
 																	: theme.typography.fontWeightMedium,
 														}}>
-														{name.device_id + " - " + (name.device_name ? name.device_name : t("devices.noName"))}
+														{device.id + " - " + (device.name ? device.name : t("devices.noName"))}
 													</MenuItem>
 												))}
 											</Select>
@@ -270,7 +263,7 @@ class EditProject extends Component {
 							<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
 								<Check className={classes.leftIcon} color={'primary'} />
 								{/* Project {this.state.title} has been successfully updated! */}
-								{t("snackbars.projectUpdated", { project: this.state.title })}
+								{t("snackbars.projectUpdated", { project: this.state.project.title })}
 							</ItemGrid>
 						}
 					/>

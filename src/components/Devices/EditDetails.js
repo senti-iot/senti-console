@@ -2,7 +2,7 @@ import { Button, Collapse, FormControl, Grid, Input, InputLabel, MenuItem, Paper
 import { Check, Save } from '@material-ui/icons';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import React, { Component, Fragment } from 'react';
-import { getDevice, updateDeviceDetails } from 'variables/dataDevices';
+import { getDevice, updateDevice } from 'variables/dataDevices';
 import { CircularLoader, GridContainer, ItemGrid, TextF } from '..';
 import { PlacesWithStandaloneSearchBox } from '../Map/SearchBox';
 
@@ -11,37 +11,47 @@ class EditDeviceDetails extends Component {
 		super(props)
 
 		this.state = {
-			id: 0,
-			name: '',
-			description: '',
-			address: '',
-			locationType: 0,
 			loading: true,
 			updating: false,
 			updated: false,
 			openSnackBar: false
 		}
-		props.setHeader(props.t("devices.editDetailsTitle", { deviceId: props.match.params.id }), true)
+		props.setHeader(props.t("devices.editDetailsTitle", { deviceId: props.match.params.id }), true, '/devices/list')
 	}
 	componentDidMount = async () => {
 		let id = this.props.match.params.id
 		await getDevice(id).then(rs =>
 			this.setState({
-				id: rs.id,
-				name: rs.name ? rs.name : "",
-				description: rs.description ? rs.description : "",
-				address: rs.address ? rs.address : "",
-				locationType: rs.locationType ? rs.locationType : 0
+				// id: rs.id,
+				// name: rs.name ? rs.name : "",
+				// description: rs.description ? rs.description : "",
+				// address: rs.address ? rs.address : "",
+				// locationType: rs.locationType ? rs.locationType : 0
+				device: rs
 			}))
 		this.setState({ loading: false })
+		// console.log(this.state.device)
 	}
 	componentWillUnmount = () => {
 		clearTimeout(this.timer);
 	}
-	
+	handleGoogleInput = (address) => {
+		this.setState({
+			device: {
+				...this.state.device,
+				address
+			}
+		})
+	}
 	handleInput = (input) => e => {
-		e.preventDefault()
-		this.setState({ [input]: e.target.value })
+		if (e.preventDefault)
+			e.preventDefault()
+		this.setState({
+			device: {
+				...this.state.device,
+				[input]: e.target.value
+			}
+		})
 	}
 	LocationTypes = () => {
 		const { t } = this.props
@@ -59,16 +69,10 @@ class EditDeviceDetails extends Component {
 	}
 	handleUpdateDevice = async () => {
 		clearTimeout(this.timer);
-		const { id, address, description, locationType, name } = this.state
+		const { device } = this.state
 		this.setState({ updating: true })
 		this.timer = setTimeout(async () => {
-		 await updateDeviceDetails({
-				id: id,
-				name: name,
-				address: address,
-				description: description,
-				locationType: locationType
-			}).then(rs =>  rs ? this.setState({ updated: true, openSnackBar: true, updating: false }) : null )
+			await updateDevice(device).then(rs =>  rs ? this.setState({ updated: true, openSnackBar: true, updating: false }) : null )
 		}, 2e3)
 
 	}
@@ -77,7 +81,7 @@ class EditDeviceDetails extends Component {
 	}
 	render() {
 		const { classes, t } = this.props
-		const { loading, name, description, locationType } = this.state
+		const { loading, device } = this.state
 		return loading ? <CircularLoader /> : (
 			<GridContainer>
 				<Paper className={classes.paper}>
@@ -88,15 +92,15 @@ class EditDeviceDetails extends Component {
 									id={'name'}
 									label={t("devices.fields.name")}
 									handleChange={this.handleInput('name')}
-									value={name}
+									value={device.name}
 									noFullWidth
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<FormControl className={this.props.classes.formControl}>
-									<InputLabel htmlFor="streetType-helper" classes={{ root: classes.label }}>{/* locationType ? '' : */ t("devices.fields.locType")}</InputLabel>
+									<InputLabel htmlFor="streetType-helper" classes={{ root: classes.label }}>{t("devices.fields.locType")}</InputLabel>
 									<Select
-										value={locationType}
+										value={device.locationType}
 										onChange={this.handleInput('locationType')}
 										input={<Input name="streetType" id="streetType-helper" classes={{ root: classes.label }} />}
 									>
@@ -115,12 +119,14 @@ class EditDeviceDetails extends Component {
 									multiline
 									rows={3}
 									handleChange={this.handleInput('description')}
-									value={description}
+									value={device.description}
 									noFullWidth
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
-								<PlacesWithStandaloneSearchBox t={t} handleChange={this.handleInput('address')}/>
+								<PlacesWithStandaloneSearchBox
+									address={device.address}
+									t={t} handleChange={this.handleGoogleInput} />
 							</ItemGrid>
 							<ItemGrid xs={12} container justify={'center'}>
 								<Collapse in={this.state.updating} timeout={100} unmountOnExit>
@@ -161,7 +167,7 @@ class EditDeviceDetails extends Component {
 					autoHideDuration={5000}
 					message={
 						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-							<Check className={classes.leftIcon} color={'primary'} />{t("snackbars.deviceUpdated", { device: this.state.id })}
+							<Check className={classes.leftIcon} color={'primary'} />{t("snackbars.deviceUpdated", { device: this.state.device.id })}
 						</ItemGrid>
 					}
 				/>

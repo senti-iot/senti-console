@@ -1,13 +1,13 @@
 import {
 	Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination,
 	TableRow, /* Typography, */ withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
-	DialogContentText, DialogActions, Button, /* IconButton, Menu, MenuItem*/
+	DialogContentText, DialogActions, Button, Typography, /* IconButton, Menu, MenuItem*/
 } from "@material-ui/core"
 import TC from 'components/Table/TableCell'
 import { Delete, /* Devices, */ Edit, PictureAsPdf } from '@material-ui/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import PropTypes from "prop-types"
-import React, { Fragment } from "react"
+import React from "react"
 import { withRouter } from 'react-router-dom'
 // import { dateFormatter } from "variables/functions"
 import EnhancedTableHead from '../Table/TableHeader'
@@ -189,36 +189,6 @@ class UserTable extends React.Component {
 		</Dialog>
 	}
 
-	renderTableToolBarContent = () => {
-		// const { classes, tableHead, t } = this.props
-		// const { anchorFilterMenu } = this.state
-
-		return <Fragment>
-			{/* <IconButton aria-label="Add new project" onClick={this.AddNewProject}>
-				<Add />
-			</IconButton>
-			<IconButton
-				className={classes.secondAction}
-				aria-label={t("tables.filter")}
-				aria-owns={anchorFilterMenu ? "filter-menu" : null}
-				onClick={this.handleFilterMenuOpen}>
-				<FilterList />
-			</IconButton>
-			<Menu
-				id="filter-menu"
-				anchorEl={anchorFilterMenu}
-				open={Boolean(anchorFilterMenu)}
-				onClose={this.handleFilterMenuClose}
-				PaperProps={{ style: { width: 200, boxShadow: boxShadow } }}>
-
-				{tableHead.map(option => {
-					return <MenuItem key={option.id} onClick={this.handleFilter}>
-						{option.label}
-					</MenuItem>
-				})}
-			</Menu> */}
-		</Fragment>
-	}
 	render() {
 		const { classes, data, t } = this.props
 		const { order, orderBy, selected, rowsPerPage, page } = this.state
@@ -251,7 +221,8 @@ class UserTable extends React.Component {
 							t={t}
 							classes={classes}
 							// mdDown={[0]} //Which Columns to display on small Screens
-							customColumn={{ label: "Users" }}
+							customColumn={[{ id: "avatar", label: "" }, {
+								id: "firstName", label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>Users</Typography> }]}
 						/>
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
@@ -272,25 +243,30 @@ class UserTable extends React.Component {
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
-											<TableCell className={classes.tableCell}>
+											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
+												<ItemGrid container zeroMargin noPadding justify={"center"}>
+													<img src={UserPlaceHolder} alt="brken" className={classes.img} />
+												</ItemGrid>
+											</TableCell>
+											<TableCell classes={{ root: classes.tableCell }}>
 												<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-													<ItemGrid zeroMargin noPadding xs={2}>
-														<ItemGrid container zeroMargin noPadding justify={"center"}>
-															<img src={UserPlaceHolder} alt="brken" className={classes.img}/>
-														</ItemGrid>
+													{/* <ItemGrid zeroMargin noPadding xs={2}>
+													<ItemGrid container zeroMargin noPadding justify={"center"}>
+														<img src={UserPlaceHolder} alt="brken" className={classes.img}/>
 													</ItemGrid>
-													<ItemGrid xs={10} zeroMargin>
-														<ItemGrid zeroMargin zeroMinWidth>
-															<Info noWrap paragraphCell={classes.noMargin}>
-																{`${n.firstName} ${n.lastName}`}
-															</Info>
-														</ItemGrid>
-														<ItemGrid zeroMargin>
-															<Caption>
-																{`${n.org ? n.org.name : t("users.fields.noOrg")} - ${n.email}`}
-															</Caption>
-														</ItemGrid>
+												</ItemGrid> */}
+													{/* <ItemGrid xs={10} zeroMargin> */}
+													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+														<Info noWrap paragraphCell={classes.noMargin}>
+															{`${n.firstName} ${n.lastName}`}
+														</Info>
 													</ItemGrid>
+													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+														<Caption noWrap className={classes.noMargin}>
+															{`${n.org ? n.org.name : t("users.fields.noOrg")} - ${n.email}`}
+														</Caption>
+													</ItemGrid>
+													{/* </ItemGrid> */}
 												</ItemGrid>
 											</TableCell>
 										</Hidden>
@@ -298,9 +274,13 @@ class UserTable extends React.Component {
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
+											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
+												<ItemGrid container zeroMargin noPadding justify={"center"}>	
+													<img src={UserPlaceHolder} alt="brken" className={classes.img} />
+												</ItemGrid>
+											</TableCell>
 											{/* <TC label={n.userName} /> */}
-											<TC label={n.firstName} />
-											<TC label={n.lastName} />
+											<TC label={`${n.firstName} ${n.lastName}`} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone) : n.phone}</a>} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`mailto:${n.email}`}>{n.email}</a>} />
 											<TC label={n.org ? n.org.name : t("users.noOrg")} />

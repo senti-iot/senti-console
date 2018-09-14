@@ -4,22 +4,12 @@ import {
 	withScriptjs,
 	withGoogleMap,
 	GoogleMap,
-	// Marker,
-	// InfoWindow,
 } from "react-google-maps";
 import { CircularLoader } from "..";
 import MarkerClusterer from "react-google-maps/lib/components/addons/MarkerClusterer";
-// import { MarkerIcon } from './MarkerIcon'
 import { MarkerWithInfo } from './MarkerWithInfo';
 
 export const Maps = compose(
-	// withStateHandlers(() => ({
-	// 	isOpen: 0,
-	// }), {
-	// 	onToggleOpen: ({ id }) => () => ({
-	// 		isOpen: id === this.state.isOpen ? 0 : id,
-	// 	})
-	// }),
 	withProps({
 		googleMapURL:
 			"https://maps.googleapis.com/maps/api/js?key=" + process.env.REACT_APP_SENTI_MAPSKEY + "&v=3.exp&libraries=geometry,drawing,places",
@@ -30,8 +20,8 @@ export const Maps = compose(
 	withScriptjs,
 	withGoogleMap
 )(props => {
-	let defaultLat = parseFloat(55.298) //Denmark,
-	let defaultLng = parseFloat(10.605) //Denmark
+	let defaultLat = parseFloat(56.2639) //Denmark,
+	let defaultLng = parseFloat(9.5018) //Denmark
 	if (!props.centerDenmark) {
 		defaultLat = props.markers[0] ? props.markers[0].lat : defaultLat
 		defaultLng = props.markers[0] ? props.markers[0].long : defaultLng

@@ -78,11 +78,11 @@ class ProjectDetails extends Component {
 					</ItemGrid>
 					<ItemGrid>
 						<Caption>{t("projects.projectsColumnStartDate")}:</Caption>
-						<Info>{dateFormatter(project.open_date)}</Info>
+						<Info>{dateFormatter(project.startDate)}</Info>
 					</ItemGrid>
 					<ItemGrid xs>
 						<Caption>{t("projects.projectsColumnEndDate")}:</Caption>
-						<Info>{dateFormatter(project.close_date)}</Info>
+						<Info>{dateFormatter(project.endDate)}</Info>
 					</ItemGrid>
 					<ItemGrid xs={12}>
 						<Caption>{t("projects.projectsColumnCreated")}:</Caption>

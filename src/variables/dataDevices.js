@@ -46,8 +46,9 @@ export const deletePicture = async (dId, img) => {
 	var data = await imageApi.delete('senti/device/image/' + dId + '/' + img).then(rs => {return rs.data})
 	return data
 }
-export const getAvailableDevices = async () => {
-	var data = await api.get('senti/availabledevices').then(rs => rs.data)
+export const getAvailableDevices = async (orgID) => {
+	// https://betabackend.senti.cloud/rest/senti/devices/available
+	var data = await api.get(orgID ? `senti/devices/available/${orgID}` : 'senti/devices/available').then(rs => rs.data)
 	return data
 }
 
@@ -80,12 +81,14 @@ export const getDevice = async (id) => {
 	return data
 }
 export const calibrateDevice = async (device) => {
-	var data = await api.post('senti/calibrate', device).then(rs => rs.data)
+	var data = await api.post('senti/device/calibrate', device).then(rs => { 
+		return rs.ok
+	})
 	return data
 }
 
-export const updateDeviceDetails = async (device) => {
-	var data = await api.put('senti/editdetails', device).then(rs => {return rs.data })
+export const updateDevice = async (device) => {
+	var data = await api.put(`senti/device/${device.id}`, device).then(rs => {return rs.data })
 	return data
 }
 

@@ -276,6 +276,7 @@
 			"title": "Devices"
 		},
 		"fields": {
+			"selectOrganisation": "Organisation",			
 			"assignDevices": "Assign devices",
 			"description": "Description",
 			"endDate": "End date",
@@ -286,6 +287,7 @@
 		"infoCardProjectDetails": "Project details",
 		"new": "Create new project",
 		"pageTitle": "Projects",
+		"noOrganisationSelected": "Select an organisation to see available devices.",
 		"projectCreated": "Project has been successfully created!",
 		"projectDelete": "Delete project?",
 		"projectDeleteConfirm": "Are you sure you want to delete project ",
@@ -409,6 +411,7 @@
 			"changeOrganisation": "Change organisation"
 		},
 		"fields": {
+			"name": "Name",
 			"firstName": "First name",
 			"lastName": "Last name",
 			"profileImage": "Profile image",

@@ -276,6 +276,7 @@
 			"title": "Enheder"
 		},
 		"fields": {
+			"selectOrganisation": "Organisation",
 			"assignDevices": "Tilknyt enheder",
 			"description": "Beskrivelse",
 			"endDate": "Slutdato",
@@ -286,6 +287,7 @@
 		"infoCardProjectDetails": "Detaljer for projekt",
 		"new": "Opret nyt projekt",
 		"pageTitle": "Projekter",
+		"noOrganisationSelected": "Vælg en organisation for at se tilgængelige enheder",
 		"projectCreated": "Projektet er oprettet!",
 		"projectDelete": "Slet projekt?",
 		"projectDeleteConfirm": "Er du sikker på du ønsker at slette projektet ",
@@ -399,6 +401,7 @@
 			"changeOrganisation": "Skift organisation"
 		},
 		"fields": {
+			"name": "Navn",
 			"firstName": "Fornavn",
 			"lastName": "Efternavn",
 			"profileImage": "Profilbillede",

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { TextF } from '..';
 const { compose, withProps, lifecycle } = require("recompose");
 const {
@@ -22,25 +22,43 @@ export const PlacesWithStandaloneSearchBox = compose(
 					refs.searchBox = ref;
 				},
 				handleChange: (e) => {
-					this.props.handleChange(e)
-				}
+					this.props.handleChange(e.target.value)
+				},
+				onPlacesChanged: () => {
+					const places = refs.searchBox.getPlaces();
+					if (places[0])
+						this.props.handleChange(places[0].formatted_address)
+				},
 			})
 		},
 	}),
 	withScriptjs  
 )(props => { 
-	return 	<StandaloneSearchBox
-		ref={props.onSearchBoxMounted}
-		bounds={props.bounds}
-		onPlacesChanged={props.onPlacesChanged}
-	>
-		<TextF
-			id={"calibrate-address"}
-			label={props.t("devices.fields.address")}
-			handleChange={props.handleChange}
-			noFullWidth
-		/>
-	</StandaloneSearchBox>
-
+	// console.log(props)
+	return <Fragment>
+		<StandaloneSearchBox
+			ref={props.onSearchBoxMounted}
+			bounds={props.bounds}
+			onPlacesChanged={props.onPlacesChanged}
+		>
+			<TextF
+				id={"calibrate-address"}
+				label={props.t("devices.fields.address")}
+				handleChange={props.handleChange}
+				noFullWidth
+				value={props.address}
+			/>
+		
+		</StandaloneSearchBox>
+		{/* <ol> //For debugging purposes
+			{props.places.map(({ place_id, formatted_address, geometry: { location } }) =>
+				<li key={place_id}>
+					{formatted_address}
+					{" at "}
+					({location.lat()}, {location.lng()})
+				</li>
+			)}
+		</ol> */}
+	</Fragment>
 }
 );

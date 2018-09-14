@@ -136,24 +136,24 @@ class DeviceDetails extends Component {
 								<Info>
 									{device.name ? device.name : t("devices.noName")}
 								</Info>
-							</ItemGrid>
+							</ItemGrid >
 							<ItemGrid>
 								<Caption>{t("devices.fields.status")}:</Caption>
 								{this.renderStatus(device.liveStatus)}
 							</ItemGrid>
-							<ItemGrid xs={8}>
+							<ItemGrid>
 								<Caption>{t("devices.fields.temp")}:</Caption>
 								<Info>
 									{device.temperature} &#8451;
 								</Info>
 							</ItemGrid>
-							<ItemGrid>
+							<ItemGrid xs={12}>
 								<Caption>{t("devices.fields.lastData")}:</Caption>
 								<Info>
 									{moment(device.wifiLastD).format("HH:mm - DD.MM.YYYY")}
 								</Info>
 							</ItemGrid>
-							<ItemGrid>
+							<ItemGrid xs={12}>
 								<Caption>{t("devices.fields.lastStats")}:</Caption>
 								<Info>
 									{moment(device.execLastD).format("HH:mm - DD.MM.YYYY")}

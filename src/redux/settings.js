@@ -39,6 +39,7 @@ export const saveSettingsOnServ = () => {
 export const getSettings = async () => {
 	return async dispatch => {
 		var settings = await getSettingsFromServer()
+		// var getUser = await getUserInfo
 		if (settings) {
 			dispatch({
 				type: GETSETTINGS,
@@ -156,6 +157,8 @@ let initialState = {
 	didKnow: 0,
 	loading: true,
 	saved: false,
+	authorizations: {
+	}
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {

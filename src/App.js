@@ -11,10 +11,16 @@ import "assets/css/material-dashboard-react.css?v=1.2.0";
 import TProvider from 'components/Localization/TProvider';
 
 const hist = createBrowserHistory();
-
 const theme = createMuiTheme({
 
 	overrides: {
+		MuiFormControl: {
+			root: {
+				minWidth: 0,
+				width: 208,
+				// maxWidth: 208
+			}
+		},
 		MuiIcon: {
 			root: {
 				overflow: 'visible',

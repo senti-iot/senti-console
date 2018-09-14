@@ -21,60 +21,61 @@ import { getSettings } from 'redux/settings';
 
 class App extends React.Component {
 	constructor(props) {
-	  super(props)
-	
-	  this.state = {
-		 	mobileOpen: false,
+		super(props)
+
+		this.state = {
+			mobileOpen: false,
 			headerTitle: '',
 			goBackButton: false,
+			url: ''
 		}
 		// this.mainPanel = React.createRef()
 	}
-	
+
 	handleDrawerToggle = () => {
 		this.setState({ mobileOpen: !this.state.mobileOpen });
 	};
-	handleSetHeaderTitle = (title, goBackButton) => {
+	handleSetHeaderTitle = (title, goBackButton, url) => {
 		if (this._isMounted)
 			if (title !== this.state.headerTitle)
 				this.setState({
 					headerTitle: title,
-					goBackButton: goBackButton
+					goBackButton: goBackButton,
+					url: url
 				})
 	};
 	handleGoBackButton = () => {
-		this.props.history.goBack()
+		this.props.history.push(this.state.url)
+		this.setState({ url: '' })
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
 		await this.props.getSettings().then(() => {
 			if (navigator.platform.indexOf('Win') > -1) {
-				if (!this.props.loading)
-				{
-					if (this.refs.mainPanel)
-					{
+				if (!this.props.loading) {
+					if (this.refs.mainPanel) {
 						//eslint-disable-next-line
 						const ps = new PerfectScrollbar(this.refs.mainPanel);
 					}
 				}
 			}
-		})	
+		})
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-	
+
 	componentDidUpdate() {
-		
+
 		//eslint-disable-next-line
-			this.refs.mainPanel ? this.refs.mainPanel.scrollTop = 0 : null
+		this.refs.mainPanel ? this.refs.mainPanel.scrollTop = 0 : null
 		// }
 	}
 	render() {
 		const { classes, t, loading, ...rest } = this.props;
 		// const { loading } = this.state
 		return (
-			!loading ? 
+			!loading ?
 				<div className={classes.wrapper}>
 					{/* <GeoLocation/> */}
 					<div className={classes.mainPanel} ref={"mainPanel"}>
@@ -103,9 +104,11 @@ class App extends React.Component {
 										return <Redirect from={prop.path} to={prop.to} key={key} />;
 									}
 									return <Route path={prop.path} render={(routeProps) => <prop.component {...routeProps} setHeader={this.handleSetHeaderTitle} />} key={key} />;
-								}) : <Redirect from={window.location.pathname} to={{ pathname: '/login', state: {
-									prevUrl: window.location.pathname
-								} }}/>}
+								}) : <Redirect from={window.location.pathname} to={{
+									pathname: '/login', state: {
+										prevUrl: window.location.pathname
+									}
+								}} />}
 							</Switch></div>
 						</div>
 					</div>

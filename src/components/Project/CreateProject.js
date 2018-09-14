@@ -6,9 +6,12 @@ import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers'
 import MomentUtils from 'material-ui-pickers/utils/moment-utils'
 import React, { Component, Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
-import { getAvailableDevices } from 'variables/dataDevices'
-import { createOneProject } from 'variables/dataProjects'
+// import { getAvailableDevices } from 'variables/dataDevices'
+import { createProject } from 'variables/dataProjects'
 import { Caption, CircularLoader, GridContainer, ItemGrid, TextF } from '..'
+import { getAllOrgs } from 'variables/dataUsers';
+import { getAvailableDevices } from 'variables/dataDevices';
+import { getCreateProject } from '../../variables/dataProjects'
 
 const ITEM_HEIGHT = 32
 const ITEM_PADDING_TOP = 8
@@ -26,11 +29,14 @@ class CreateProject extends Component {
 		super(props)
 
 		this.state = {
+			// project: {},
 			title: '',
 			description: '',
-			open_date: null,
-			close_date: null,
+			startDate: null,
+			endDate: null,
 			devices: [],
+			orgs: [],
+			selectedOrg: '',
 			availableDevices: null,
 			creating: false,
 			created: false,
@@ -41,13 +47,22 @@ class CreateProject extends Component {
 	componentDidMount = () => {
 		const { t } = this.props
 		this._isMounted = 1
-		getAvailableDevices().then(rs => {
-			if (this._isMounted)
-				this.setState({
-					availableDevices: rs
-				})
+
+		getAllOrgs().then(rs => {
+			if (this._isMounted) {
+				if (rs.length === 1)
+					this.setState({
+						orgs: rs,
+						selectedOrg: rs[0].id
+					})
+				else {
+					this.setState({
+						orgs: rs,
+					})
+				}
+			}
 		})
-		this.props.setHeader(t("projects.new"), true)
+		this.props.setHeader(t("projects.new"), true, "/projects/list")
 	}
 
 	componentWillUnmount = () => {
@@ -55,11 +70,15 @@ class CreateProject extends Component {
 		clearTimeout(this.timer)
 
 	}
-	
+
 	handleDeviceChange = event => {
 		this.setState({ devices: event.target.value })
 	}
-
+	handleSelectedOrgs = async e => {
+		this.setState({ selectedOrg: e.target.value })
+		var devices = await getAvailableDevices(e.target.value).then(rs => rs)
+		this.setState({ availableDevices: devices ? devices : null, devices: [] })
+	}
 	handleDateChange = id => value => {
 		this.setState({
 			[id]: value
@@ -75,19 +94,26 @@ class CreateProject extends Component {
 
 	handleCreateProject = () => {
 		clearTimeout(this.timer)
-		let newProject = {
-			project: {
-				title: this.state.title,
-				description: this.state.description,
-				open_date: this.state.open_date,
-				close_date: this.state.close_date
-			},
-			devices: this.state.devices
-		}
 		this.setState({ creating: true })
-		this.timer = setTimeout(async () => createOneProject(newProject).then(rs => rs ? 
-			this.setState({ created: true, creating: false, id: rs, openSnackBar: true }) : this.setState({ create: false, creating: false, id: 0 })
-		), 2e3)
+		getCreateProject().then(rs => {
+			if (this._isMounted) {
+				let newProject = {
+					...rs,
+					title: this.state.title,
+					description: this.state.description,
+					startDate: this.state.startDate,
+					endDate: this.state.endDate,
+					devices: this.state.availableDevices.filter(a => this.state.devices.some(b => a.id === b))
+				}
+				this.timer = setTimeout(async () => createProject(newProject).then(rs => rs ?
+					this.setState({ created: true, creating: false, id: rs.id, openSnackBar: true }) : this.setState({ create: false, creating: false, id: 0 })
+				), 2e3)
+			}
+		}
+		)
+
+
+
 	}
 
 	goToNewProject = () => {
@@ -97,7 +123,7 @@ class CreateProject extends Component {
 
 	render() {
 		const { classes, theme, t } = this.props
-		const { availableDevices, created } = this.state
+		const { availableDevices, created, orgs, selectedOrg } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
@@ -130,7 +156,8 @@ class CreateProject extends Component {
 									value={this.state.description}
 									handleChange={this.handleChange("description")}
 									margin="normal"
-									noFullWidth/>
+									noFullWidth
+								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								{/* <div className={classes.datepicker}> */}
@@ -139,8 +166,8 @@ class CreateProject extends Component {
 									label={t("projects.fields.startDate")}
 									clearable
 									format="DD.MM.YYYY"
-									value={this.state.open_date}
-									onChange={this.handleDateChange("open_date")}
+									value={this.state.startDate}
+									onChange={this.handleDateChange("startDate")}
 									animateYearScrolling={false}
 									color="primary"
 									rightArrowIcon={<KeyArrRight />}
@@ -158,8 +185,8 @@ class CreateProject extends Component {
 									label={t("projects.fields.endDate")}
 									clearable
 									format="DD.MM.YYYY"
-									value={this.state.close_date}
-									onChange={this.handleDateChange("close_date")}
+									value={this.state.endDate}
+									onChange={this.handleDateChange("endDate")}
 									animateYearScrolling={false}
 									rightArrowIcon={<KeyArrRight />}
 									leftArrowIcon={<KeyArrLeft />}
@@ -170,11 +197,45 @@ class CreateProject extends Component {
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<FormControl className={classes.formControl}>
+									{orgs ?
+										<Fragment>
+											<InputLabel
+												FormLabelClasses={{ root: classes.label }}
+												color={"primary"}
+												htmlFor="select-org">
+												{t("projects.fields.selectOrganisation")}
+											</InputLabel>
+
+											<Select
+												color={"primary"}
+												value={this.state.selectedOrg}
+												onChange={this.handleSelectedOrgs}
+												MenuProps={MenuProps}
+												inputProps={{
+													name: 'org',
+													id: 'select-org',
+												}}
+											>
+												{orgs.map(org =>
+													<MenuItem
+														key={org.id}
+														value={org.id}
+														style={{ fontWeight: selectedOrg === org.id ? theme.typography.fontWeightMedium : theme.typography.fontWeightRegular }}>
+														{org.name}
+													</MenuItem>
+
+												)}
+											</Select>
+										</Fragment> : <CircularLoader notCentered />}
+								</FormControl>
+							</ItemGrid>
+							<ItemGrid xs={12}>
+								<FormControl className={classes.formControl}>
 									{availableDevices ?
 										<Fragment>
 											<InputLabel FormLabelClasses={{
 												root: classes.label,
-											// focused: classes.focused
+												// focused: classes.focused
 											}} color={"primary"} htmlFor="select-multiple-chip">{t("projects.fields.assignDevices")}</InputLabel>
 											<Select
 												color={"primary"}
@@ -192,22 +253,22 @@ class CreateProject extends Component {
 												)}
 												MenuProps={MenuProps}
 											>
-												{ availableDevices.map(name => (
+												{availableDevices.map(name => (
 													<MenuItem
 														key={name.id}
 														value={name.id}
 														style={{
 															fontWeight:
-													this.state.devices.indexOf(name.id) === -1
-														? theme.typography.fontWeightRegular
-														: theme.typography.fontWeightMedium,
+																this.state.devices.indexOf(name.id) === -1
+																	? theme.typography.fontWeightRegular
+																	: theme.typography.fontWeightMedium,
 														}}
 													>
 														{name.id + " - " + (name.name ? name.name : t("devices.noName"))}
 													</MenuItem>
 												))}
 											</Select>
-										</Fragment> : <Caption>{t("devices.noDevices")}</Caption>}
+										</Fragment> : selectedOrg ? <Caption>{t("devices.noDevices")}</Caption> : <Caption>{t("projects.noOrganisationSelected")}</Caption>}
 								</FormControl>
 							</ItemGrid>
 							{/* </Grid> */}
@@ -220,7 +281,6 @@ class CreateProject extends Component {
 						</ItemGrid>
 						<Grid container justify={"center"}>
 							<div className={classes.wrapper}>
-								{/* <Save />  */}
 								<Button
 									variant="contained"
 									color="primary"
@@ -228,20 +288,15 @@ class CreateProject extends Component {
 									disabled={this.state.creating}
 									onClick={this.state.created ? this.goToNewProject : this.handleCreateProject}
 								>
-									{this.state.created ? <Fragment><Check className={classes.leftIcon}/>{t("projects.viewProject")}</Fragment> 
+									{this.state.created ? <Fragment><Check className={classes.leftIcon} />{t("projects.viewProject")}</Fragment>
 										: <Fragment>
 											<Save className={classes.leftIcon} />{t("projects.new")}
 										</Fragment>}
 								</Button>
-								{/* {this.state.creating && <CircularProgress size={24} className={classes.buttonProgress} />} */}
 							</div>
-							{/* <div className={classes.button}>
-									<Button variant={"contained"} color="primary" size="medium" onClick={this.handleCreateProject}>
-										<Save/>Create Project
-                     		 		</Button>
-							  	</div> */}
+
 						</Grid>
-		
+
 
 					</MuiPickersUtilsProvider>
 				</Paper>
