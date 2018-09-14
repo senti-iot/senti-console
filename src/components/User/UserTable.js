@@ -17,7 +17,7 @@ import { connect } from "react-redux"
 import Caption from '../Typography/Caption';
 // import { Add, FilterList } from '@material-ui/icons';
 // import { boxShadow } from 'assets/jss/material-dashboard-react';
-import UserPlaceHolder from 'assets/img/userplaceholder.jpg'
+import UserPlaceHolder from 'assets/img/userplaceholder.png'
 import { pF } from 'variables/functions';
 
 var moment = require("moment")

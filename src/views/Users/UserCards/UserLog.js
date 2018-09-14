@@ -24,7 +24,7 @@ export class UserLog extends Component {
 						</ItemGrid>
 						<ItemGrid xs={12}>
 							<Caption>{t("users.fields.active")}</Caption>
-							<Info>{`${t("users.fields.loginSuspended")} ${!user.suspended ? t("actions.no") : t("actions.yes")}` }</Info>
+							<Info>{`${user.suspended ? t("users.fields.loginSuspended") : t("actions.yes")}` }</Info>
 						</ItemGrid>
 						<ItemGrid xs={12}>
 							<Caption>{t("users.fields.tags")}</Caption>

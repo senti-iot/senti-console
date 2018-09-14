@@ -5,7 +5,7 @@ export const userStyles = theme => ({
 		backgroundColor: primaryColor,
 		width: "100%",
 		height: "150px",
-		[theme.breakpoints.down("sm")]: { 
+		[theme.breakpoints.down("sm")]: {
 			height: "auto"
 		}
 	},
@@ -13,9 +13,15 @@ export const userStyles = theme => ({
 		color: "white"
 	},
 	img: {
-		borderRadius: "50px",
-		width: 100,
-		height: 100
+		borderRadius: "250px",
+		[theme.breakpoints.up("sm")]: { 
+			width: 175,
+			height: 175
+		},
+		[theme.breakpoints.down("md")]: {
+			width: 250,
+			height: 250
+		}
 		// [theme.breakpoints.up("sm")]: {
 			
 		// },
@@ -23,5 +29,8 @@ export const userStyles = theme => ({
 		// 	width: 50,
 		// 	height: 50
 		// }
+	},
+	chip: {
+		margin: 4
 	}
 })

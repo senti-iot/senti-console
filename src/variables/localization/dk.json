@@ -424,8 +424,13 @@
             "phone": "Telefon",
             "profileImage": "Profilbillede",
             "tags": "Tags",
-            "userName": "Brugernavn"
-        },
+			"userName": "Brugernavn"
+		},
+		"groups":{
+			"136550100000143": "Superbruger",
+			"136550100000211": "Kontoansvarlig",
+			"136550100000225": "Bruger"
+		},
         "headers": {
             "contact": "Contact",
             "system": "System logs"
@@ -440,6 +445,7 @@
         "tabs": {
             "orgs": "Organisationer",
             "users": "Brugere"
-        }
+		}
+		
     }
 }
