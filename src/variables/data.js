@@ -2,8 +2,19 @@ import { create } from 'apisauce'
 import cookie from 'react-cookies'
 // https://betabackend.senti.cloud/
 // https://senti.cloud
+let backendHost;
+
+const hostname = window && window.location && window.location.hostname;
+
+if (hostname === 'https://console.senti.cloud') {
+	backendHost = 'https://senti.cloud/rest/';
+} else if (hostname === 'https://beta.senti.cloud') {
+	backendHost = 'https://betabackend.senti.cloud/rest/';
+} else {
+	backendHost = 'https://betabackend.senti.cloud/rest';
+}
 export const loginApi = create({
-	baseURL: 'https://betabackend.senti.cloud/rest/odeum/',
+	baseURL: backendHost,
 	timout: 30000,
 	headers: {
 		'Accept': 'application/json',
@@ -11,14 +22,14 @@ export const loginApi = create({
 	}
 })
 export const mapApi = create({
-	baseURL: 'https://maps.googleapis.com/maps/api/geocode/',
+	baseURL: backendHost,
 	timeout: 30000,
 	params: {
 		// key: process.env.REACT_APP_SENTI_MAPSKEY
 	}
 })
 export const imageApi = create({
-	baseURL: 'https://betabackend.senti.cloud/rest/',
+	baseURL: backendHost,
 	timeout: 30000,
 	headers: {
 		'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -27,7 +38,7 @@ export const imageApi = create({
 	},
 })
 export const api = create({
-	baseURL: 'https://betabackend.senti.cloud/rest/',
+	baseURL: backendHost,
 	// baseURL: 'http://api.dashboard.senti.cloud/web/',
 	// baseURL: 'http://localhost:80',
 	timeout: 30000,
