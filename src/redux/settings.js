@@ -49,9 +49,13 @@ export const getSettings = async () => {
 		var user = await getUser(userId)
 
 		if (settings) {
-			moment.locale(settings.language === "dk" ? "da" : "en")
+			moment.locale(settings.language === "dk" ? "da" : "en", {
+				week: {
+					dow: 1,
+				}
+			})
 			// moment().locale("da")
-			console.log(moment.locale())
+			// console.log(moment.locale())
 			dispatch({
 				type: GETSETTINGS,
 				settings,
@@ -188,7 +192,11 @@ export const settings = (state = initialState, action) => {
 			return Object.assign({}, state, { ...action.settings, user: action.user, loading: false })
 		case changeLangAction:
 		{
-			moment.locale(action.code === "dk" ? "da" : "en")
+			moment.locale(action.code === "dk" ? "da" : "en", {
+				week: {
+					dow: 1,
+				}
+			})
 			return Object.assign({}, state, {
 				language: action.code,
 			})
