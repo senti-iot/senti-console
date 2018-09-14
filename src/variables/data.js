@@ -11,7 +11,7 @@ if (hostname === 'console.senti.cloud') {
 } else if (hostname === 'beta.senti.cloud') {
 	backendHost = 'https://betabackend.senti.cloud/rest/';
 } else {
-	backendHost = 'https://betabackend.senti.cloud/rest';
+	backendHost = 'https://betabackend.senti.cloud/rest/';
 }
 export const loginApi = create({
 	baseURL: backendHost,
