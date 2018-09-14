@@ -20,7 +20,7 @@ import InfoCard from './Cards/InfoCard'
 // #############################
 
 import CustomInput from "./CustomInput/CustomInput.js";
-
+import DSelect from './CustomInput/DSelect'
 // ##############################
 // // // Footer
 // #############################
@@ -85,6 +85,7 @@ export {
 	// IconButton,
 	// CustomInput
 	CustomInput,
+	DSelect,
 	// Footer
 	Footer,
 	// Grid

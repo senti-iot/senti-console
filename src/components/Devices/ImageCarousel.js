@@ -23,7 +23,7 @@ class ImageCarousel extends React.Component {
 	};
 
 	render() {
-		const { classes, theme, images } = this.props;
+		const { classes, theme, images, t } = this.props;
 		const { activeStep } = this.state;
 
 		const maxSteps = images.length;
@@ -45,14 +45,14 @@ class ImageCarousel extends React.Component {
 					className={classes.mobileStepper}
 					nextButton={
 						<Button size="small" onClick={this.handleNext} disabled={activeStep === maxSteps - 1}>
-							Next
+							{t("actions.next")}
 							{theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
 						</Button>
 					}
 					backButton={
 						<Button size="small" onClick={this.handleBack} disabled={activeStep === 0}>
 							{theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-							Back
+							{t("actions.back")}
 						</Button>
 					}
 				/>

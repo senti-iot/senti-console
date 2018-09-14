@@ -1,7 +1,7 @@
 import React from "react";
 import { Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination, TableRow, withStyles } from '@material-ui/core';
-import EnhancedTableHead from '../../Project/TableHeader';
-import EnhancedTableToolbar from '../../Project/TableToolBar'
+import EnhancedTableHead from 'components/Table/TableHeader';
+import EnhancedTableToolbar from 'components/Table/TableToolbar'
 import PropTypes from "prop-types";
 import { withRouter } from 'react-router-dom';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
@@ -47,7 +47,7 @@ class DeviceSimpleList extends React.Component {
 
 	handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			this.setState({ selected: this.props.data.map(n => n.device_id) });
+			this.setState({ selected: this.props.data.map(n => n.id) });
 			return;
 		}
 		this.setState({ selected: [] });
@@ -101,10 +101,16 @@ class DeviceSimpleList extends React.Component {
 		}
 	}
 	render() {
-		const { classes, data } = this.props;
-		const { order, orderBy, selected, rowsPerPage, page } = this.state;
-		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-		const tableHead = [{ id: "device_name", label: "Name" }, { id: "device_id", label: "ID" }, { id: "address", label: "Address" }, { id: "liveStatus", label: "Status" }, { id: "totalCount", label: "Total Count" }]
+		const { classes, data, t } = this.props
+		const { order, orderBy, selected, rowsPerPage, page } = this.state
+		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
+		const tableHead = [
+			{ id: "name", label: t("devices.simpleList.name") }, 
+			{ id: "id", label: t("devices.simpleList.id") }, 
+			{ id: "address", label: t("devices.simpleList.address") }, 
+			{ id: "liveStatus", label: t("devices.simpleList.status") }, 
+			{ id: "totalCount", label: t("devices.simpleList.totalcount") }
+		]
 		return (
 			<Paper className={classes.root}>
 				<EnhancedTableToolbar
@@ -117,6 +123,7 @@ class DeviceSimpleList extends React.Component {
 					filters={this.props.filters}
 					numSelected={selected.length}
 					options={() => []}
+					t={t}
 				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
@@ -129,14 +136,16 @@ class DeviceSimpleList extends React.Component {
 							rowCount={data.length}
 							columnData={tableHead}
 							classes={classes}
+							t={t}
 						/>
 						<TableBody>
 							{data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((n, i) => {
-								const isSelected = this.isSelected(n.device_id);
+								const isSelected = this.isSelected(n.id)
+								const { t } = this.props
 								return (
 									<TableRow
 										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push('/device/' + n.device_id)}}
+										onClick={e => { e.stopPropagation(); this.props.history.push('/device/' + n.id)}}
 										role="checkbox"
 										aria-checked={isSelected}
 										tabIndex={-1}
@@ -144,18 +153,18 @@ class DeviceSimpleList extends React.Component {
 										selected={isSelected}
 										style={{ cursor: 'pointer' }}
 									>
-										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.device_id)}>
+										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 											<Checkbox checked={isSelected} />
 										</TableCell>
 										<TableCell className={classes.tableCell}>
-											{n.device_name ? n.device_name : "No Name"}
+											{n.name ? n.name : t("devices.simpleList.tableCellDeviceName")}
 										</TableCell>
 										<TableCell className={classes.tableCellID}>
-											{n.device_id}
+											{n.id}
 										</TableCell>
 										<Hidden mdDown>
 											<TableCell className={classes.tableCell}>
-												{n.address ? n.address : "No address"}
+												{n.address ? n.address : t("devices.simpleList.tableCellAddress")}
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												{this.renderIcon(n.liveStatus)}
@@ -188,7 +197,7 @@ class DeviceSimpleList extends React.Component {
 					}}
 					onChangePage={this.handleChangePage}
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}
-					labelRowsPerPage={<Hidden mdDown>Rows per page</Hidden>}
+					labelRowsPerPage={<Hidden mdDown>{t("tables.rowsPerPage")}</Hidden>}
 				/>
 			</Paper>
 			// </Paper>

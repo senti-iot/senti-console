@@ -13,15 +13,14 @@ class ProjectCards extends Component {
 	static propTypes = {
 		projects: PropTypes.array,
 	}
-
-
+	
 
 	render() {
 		// const { actionAnchor } = this.state
- 		const { projects } = this.props
+ 		const { projects, t } = this.props
 		return (
 			projects.map(p => 
-				<ProjectCard key={p.id} p={p}/>
+				<ProjectCard t={t} key={p.id} p={p}/>
 			)
 
 		)

@@ -23,10 +23,10 @@ class DeviceHardware extends Component {
 
 	render() {
 		const { actionAnchor } = this.state
-		const { classes, device } = this.props
+		const { classes, device, t  } = this.props
 		return (
 			<InfoCard
-				title={"Hardware"}
+				title={t("devices.cards.hardware")}
 				avatar={<DeveloperBoard />}
 				subheader={''}
 				topAction={
@@ -60,25 +60,25 @@ class DeviceHardware extends Component {
 					<Grid container>
 						<Grid container >
 							<ItemGrid xs>
-								<Caption>PC Model:</Caption>
+								<Caption>{t("devices.fields.pcModel")}:</Caption>
 								<Info>{device.RPImodel}</Info>
 							</ItemGrid>
 							<ItemGrid xs>
-								<Caption>Memory:</Caption>
+								<Caption>{t("devices.fields.memory")}:</Caption>
 								<Info>{device.memory + " - " + device.memoryModel}</Info>
 							</ItemGrid>
 							<ItemGrid xs>
-								<Caption>Power Adapter:</Caption>
+								<Caption>{t("devices.fields.adapter")}:</Caption>
 								<Info>{device.adapter}</Info>
 							</ItemGrid>
 						</Grid>
 						<Grid container>
 							<ItemGrid xs>
-								<Caption>Wifi Module:</Caption>
+								<Caption>{t("devices.fields.wifiModule")}:</Caption>
 								<Info>{device.wifiModule}</Info>
 							</ItemGrid>
 							<ItemGrid xs>
-								<Caption>Modem Model:</Caption>
+								<Caption>{t("devices.fields.modemModel")}:</Caption>
 								<Info>{device.modemModel}</Info>
 							</ItemGrid>
 						</Grid>
@@ -86,19 +86,19 @@ class DeviceHardware extends Component {
 				}
 				hiddenContent={<Grid container>
 					<ItemGrid>
-						<Caption>Cell Number:</Caption>
+						<Caption>{t("devices.fields.cellNumber")}:</Caption>
 						<Info>{device.cellNumber}</Info>
 					</ItemGrid>
 					<ItemGrid>
-						<Caption>SIM Provider:</Caption>
+						<Caption>{t("devices.fields.simProvider")}:</Caption>
 						<Info>{device.SIMProvider}</Info>
 					</ItemGrid>
 					<ItemGrid>
-						<Caption>SIM-Card ID</Caption>
+						<Caption>{t("devices.fields.simCard")}:</Caption>
 						<Info>{device.SIMID}</Info>
 					</ItemGrid>
 					<ItemGrid>
-						<Caption>Modem IMEI:</Caption>
+						<Caption>{t("devices.fields.modemIMEI")}:</Caption>
 						<Info>{device.modemIMEI}</Info>
 					</ItemGrid>
 

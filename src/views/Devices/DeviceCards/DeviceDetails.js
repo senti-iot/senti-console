@@ -1,13 +1,11 @@
 import React, { Component, Fragment } from 'react'
 import { Grid, Typography, withStyles, Button, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { ItemGrid, Warning, P, Info } from 'components';
+import { ItemGrid, Warning, P, Info, Caption } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import { SignalWifi2Bar, SignalWifi2BarLock, MoreVert, Build, LibraryBooks, Edit, Devices, LayersClear } from '@material-ui/icons'
 import { ConvertDDToDMS } from 'variables/functions'
 import { Link } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';
-import SmallInfo from 'components/Card/SmallInfo';
-import Caption from 'components/Typography/Caption';
 var moment = require("moment");
 
 class DeviceDetails extends Component {
@@ -18,6 +16,7 @@ class DeviceDetails extends Component {
 		 actionAnchor: null
 	  }
 	}
+
 	renderStatus = (status) => {
 		const { classes } = this.props
 		switch (status) {
@@ -38,18 +37,39 @@ class DeviceDetails extends Component {
 				break;
 		}
 	}
+
+	LocationTypes = () => {
+		const { t } = this.props
+		return [
+			{ id: 1, label: t("devices.locationTypes.pedStreet") },
+			{ id: 2, label: t("devices.locationTypes.park") },
+			{ id: 3, label: t("devices.locationTypes.path") },
+			{ id: 4, label: t("devices.locationTypes.square") },
+			{ id: 5, label: t("devices.locationTypes.crossroads") },
+			{ id: 6, label: t("devices.locationTypes.road") },
+			{ id: 7, label: t("devices.locationTypes.motorway") },
+			{ id: 8, label: t("devices.locationTypes.port") },
+			{ id: 9, label: t("devices.locationTypes.office") },
+			{ id: 0, label: t("devices.locationTypes.unspecified") }]
+	}
 	handleOpenActionsDetails = event => {
 		this.setState({ actionAnchor: event.currentTarget });
-	};
+	}
+
 	handleCloseActionsDetails = () => {
 		this.setState({ actionAnchor: null });
-	};
+	}
+	renderDeviceLocType = () => {
+		const { device, t } = this.props
+		let deviceLoc = this.LocationTypes()[this.LocationTypes().findIndex(r => r.id === device.locationType)]
+		return deviceLoc ? deviceLoc.label : t("devices.noLocType")
+	}
 	render() {
 		const { actionAnchor } = this.state
-		const { classes, device } = this.props
+		const { classes, device, t } = this.props
 		return (
 			<InfoCard
-				title={'Device Details'}
+				title={t("devices.cards.details")}
 				avatar={<Devices />}
 				topAction={
 					<ItemGrid noMargin noPadding>
@@ -73,22 +93,22 @@ class DeviceDetails extends Component {
 							}}>
 						
 							<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
-								<Edit className={classes.leftIcon} />Edit details
+								<Edit className={classes.leftIcon} />{t("menus.edit")}
 							</MenuItem>
 							<MenuItem onClick={this.props.handleOpenAssign}>
-								<LibraryBooks className={classes.leftIcon} />{device.project ? "Move to another project" : "Assign to new project"}
+								<LibraryBooks className={classes.leftIcon} />{device.project ? t("menus.reassign") : t("menus.assign")}
 							</MenuItem>
 							{device.project ? <MenuItem onClick={this.props.handleOpenUnassign}>
-								<LayersClear className={classes.leftIcon} /> Unassign from project
+								<LayersClear className={classes.leftIcon} /> {t("menus.unassignDevice")}
 							</MenuItem> : null}
 							<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}>
-								<Build className={classes.leftIcon} />{!(device.lat > 0) && !(device.long > 0) ? "Manual Calibration" : "Recalibrate"}
+								<Build className={classes.leftIcon} />{!(device.lat > 0) && !(device.long > 0) ? t("menus.calibrate") : t("menus.recalibrate")}
 							</MenuItem>
 							))}
 						</Menu>
 					</ItemGrid>
 				}
-				subheader={device.device_id}
+				subheader={device.id}
 				noExpand
 				content={
 					<Fragment>
@@ -98,7 +118,7 @@ class DeviceDetails extends Component {
 									<Warning>
 										<ItemGrid container xs={12}>
 											<P>
-												Device has not been manually calibrated!
+												{t("devices.notCalibrated")}
 											</P>
 										</ItemGrid>
 										<ItemGrid container xs={12}>
@@ -106,69 +126,73 @@ class DeviceDetails extends Component {
 												color={"default"}
 												onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}
 												variant={"outlined"}>
-												Manual Calibration
+												{t("devices.calibrateButton")}
 											</Button>
 										</ItemGrid>
 									</Warning>
 								</ItemGrid>}
 							<ItemGrid>
-								<SmallInfo caption={"Name"} info={device.device_name ? device.device_name : "No name"} />
-							</ItemGrid>
+								<Caption>{t("devices.fields.name")}:</Caption>
+								<Info>
+									{device.name ? device.name : t("devices.noName")}
+								</Info>
+							</ItemGrid >
 							<ItemGrid>
-								<Caption>Status:</Caption>
+								<Caption>{t("devices.fields.status")}:</Caption>
 								{this.renderStatus(device.liveStatus)}
 							</ItemGrid>
-							<ItemGrid xs={9}>
-								<Caption>Temperature:</Caption>
+							<ItemGrid>
+								<Caption>{t("devices.fields.temp")}:</Caption>
 								<Info>
 									{device.temperature} &#8451;
 								</Info>
 							</ItemGrid>
-							<ItemGrid>
-								<Caption>Last time device sent data to server:</Caption>
+							<ItemGrid xs={12}>
+								<Caption>{t("devices.fields.lastData")}:</Caption>
 								<Info>
-									{moment(device.wifiLastD).format("HH:mm:ss DD.MM.YYYY")}
-								</Info>
-							</ItemGrid>
-							<ItemGrid>
-								<Caption>Last time device sent stats to server:</Caption>
-								<Info>
-									{moment(device.execLastD).format("HH:mm:ss DD.MM.YYYY")}
+									{moment(device.wifiLastD).format("HH:mm - DD.MM.YYYY")}
 								</Info>
 							</ItemGrid>
 							<ItemGrid xs={12}>
-								<Caption>Description:</Caption>
+								<Caption>{t("devices.fields.lastStats")}:</Caption>
+								<Info>
+									{moment(device.execLastD).format("HH:mm - DD.MM.YYYY")}
+								</Info>
+							</ItemGrid>
+							<ItemGrid xs={12}>
+								<Caption>{t("devices.fields.description")}:</Caption>
 								<Info>{device.description ? device.description : ""}</Info>
 							</ItemGrid>
 						</Grid>
 						<Grid container>
 							<ItemGrid>
-								<Caption>Address:</Caption>
+								<Caption>{t("devices.fields.address")}:</Caption>
 								<Info>{device.address} </Info>
 							</ItemGrid>
 							<ItemGrid >
-								<Caption>Location Type:</Caption>
-								<Info>{device.locationType} </Info>
+								<Caption>{t("devices.fields.locType")}:</Caption>
+								<Info>{this.renderDeviceLocType()} </Info>
 							</ItemGrid>
 							<ItemGrid >
-								<Caption>Coordinates:</Caption>
-								<Info><a title={'Open link to Google Maps'} href={`https://www.google.com/maps/search/${device.lat}+${device.long}`} target={'_blank'}>
+								<Caption>{t("devices.fields.coords")}:</Caption>
+								<Info><a title={t("links.googleMaps")} href={`https://www.google.com/maps/search/${device.lat}+${device.long}`} target={'_blank'}>
 									{ConvertDDToDMS(device.lat, false) + " " + ConvertDDToDMS(device.long, true)}</a>
 								</Info>
 							</ItemGrid>
 						</Grid>
 						<Grid container>
 							<ItemGrid>
-								<Caption>Organisation:</Caption>
-								<Info>{device.organisation ? device.organisation.vcName : "Unassigned"}</Info>
+								<Caption>{t("devices.fields.org")}:</Caption>
+								<Info>{device.organisation ? device.organisation.vcName : t("devices.noProject")}</Info>
 							</ItemGrid>
 							<ItemGrid xs={4}>
-								<Caption>Project:</Caption>
-								<Info>{device.project ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : "Unassigned"}</Info>
+								<Caption>{t("devices.fields.project")}:</Caption>
+								<Info>{device.project ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : t("devices.noProject")}</Info>
 							</ItemGrid>
 						</Grid>
 					</Fragment>} />
 		)
 	}
 }
+
 export default withStyles(deviceStyles)(DeviceDetails)

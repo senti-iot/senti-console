@@ -1,12 +1,14 @@
-import { Grid, Snackbar, Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, IconButton, withStyles } from '@material-ui/core';
-import { Person, Close } from '@material-ui/icons';
-import { Info, ItemGrid, InfoCard, GridContainer, CircularLoader, Caption } from 'components';
-import moment from "moment";
-import React, { Component, Fragment } from 'react';
-import { getProject, deleteProject } from 'variables/dataProjects';
-import ProjectData from './ProjectCards/ProjectData';
-import ProjectDetails from './ProjectCards/ProjectDetails';
-import ProjectDevices from './ProjectCards/ProjectDevices';
+import { Snackbar, Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, IconButton, withStyles } from '@material-ui/core'
+import { Close } from '@material-ui/icons'
+import { ItemGrid, GridContainer, CircularLoader } from 'components'
+import moment from "moment"
+import React, { Component, Fragment } from 'react'
+import { getProject, deleteProject } from 'variables/dataProjects'
+import ProjectData from './ProjectCards/ProjectData'
+import ProjectDetails from './ProjectCards/ProjectDetails'
+import ProjectDevices from './ProjectCards/ProjectDevices'
+import { ProjectContact } from './ProjectCards/ProjectContact'
+
 const projectStyles = theme => ({
 	close: {
 		width: theme.spacing.unit * 4,
@@ -15,6 +17,7 @@ const projectStyles = theme => ({
 	},
 
 })
+
 class Project extends Component {
 	constructor(props) {
 		super(props)
@@ -38,6 +41,7 @@ class Project extends Component {
 		props.setHeader('')
 
 	}
+
 	componentDidMount = async () => {
 		if (this.props.match)
 			if (this.props.match.params.id)
@@ -45,7 +49,7 @@ class Project extends Component {
 				if (rs === null)
 					this.props.history.push('/404')
 				else {
-					this.props.setHeader(rs.title, true)
+					this.props.setHeader(rs.title, true, '/projects/list')
 					this.setState({
 						project: rs, loading: false
 					})
@@ -57,17 +61,18 @@ class Project extends Component {
 				this.props.history.push('/404')
 			}
 	}
+
 	componentWillUnmount = () => {
 	   clearTimeout(this.timer)
 	}
 	
 	snackBarMessages = () => {
-		const { classes } = this.props
+		const { classes, t } = this.props
 		let msg = this.state.openSnackbar
 		switch (msg) {
 			case 1:
 				return <Fragment>
-					Project has been successfully deleted!
+					{t("projects.projectDeleted")}
 					<IconButton
 						key="close"
 						aria-label="Close"
@@ -79,18 +84,20 @@ class Project extends Component {
 					</IconButton>
 				</Fragment>
 			case 2:
-				return "Exported"
+				return t("projects.projectExported")
 			case 3:
-				return "Redirecting back to Project lists";
+				return t("projects.projectRedirect")
 			default:
-				break;
+				break
 		}
 	}
+
 	handleDeleteProjects = async () => {
-		await deleteProject([this.state.project.id]).then(rs => {
-			this.setState({ openSnackbar: 1, openDelete: false })
+		await deleteProject([this.state.project.id]).then(() => {
+			this.setState({ openSnackbar: 1, openDelete: false });
 		})
 	}
+
 	redirect = () => {
 		setTimeout(() => {
 			this.setState({ openSnackbar: 3 })
@@ -98,6 +105,7 @@ class Project extends Component {
 		}, 2e3)
 	
 	}
+
 	closeSnackBar = () => {
 		if (this.state.openSnackbar === 1)
 		{
@@ -108,24 +116,8 @@ class Project extends Component {
 		
 	
 	}
-	// deviceMostCount = (devices) => {
-	// 	let max = devices[0]
-	// 	for (let i = 1, len = devices.length; i < len; i++) {
-	// 		let v = devices[i];
-	// 		max = (v.totalCount > max.totalCount) ? v : max;
-	// 	}
-	// 	return max;
-	// }
-	// regMostCount = (regs) => {
-	// 	let max = regs[0]
-	// 	for (let i = 1, len = regs.length; i < len; i++) {
-	// 		let v = regs[i];
-	// 		max = (v.count > max.count) ? v : max;
-	// 	}
-	// 	return max;
-	// }
-	filterItems = (projects, keyword) => {
 
+	filterItems = (projects, keyword) => {
 		var searchStr = keyword.toLowerCase()
 		var arr = projects
 		if (arr[0] === undefined)
@@ -155,6 +147,7 @@ class Project extends Component {
 			}
 		})
 	}
+
 	handleFilterDeviceKeyword = (value) => {
 		this.setState({
 			deviceFilters: {
@@ -164,95 +157,64 @@ class Project extends Component {
 	
 		})
 	}
+
 	handleOpenDeleteDialog = () => {
 		this.setState({ openDelete: true })
 	}
+
 	handleCloseDeleteDialog = () => {
 		this.setState({ openDelete: false })
 	}
+
 	renderDeleteDialog = () => {
 		const { openDelete } = this.state
+		const { t } = this.props
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{"Delete Project? "}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("projects.projectDelete")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					Are you sure you want to delete {this.state.project.title}?
+					{t("projects.projectDeleteConfirm", { project: this.state.project.title }) + "?"}
 				</DialogContentText>
 
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={this.handleCloseDeleteDialog} color="primary">
-					No
+					{t("actions.cancel")}
 				</Button>
 				<Button onClick={this.handleDeleteProjects} color="primary" autoFocus>
-					Yes
+					{t("actions.yes")}
 				</Button>
 			</DialogActions>
 		</Dialog>
 	}
+
 	renderLoader = () => {
 		return <CircularLoader />
 	}
+	
 	render() {
 		const { project, loading } = this.state
+		const { t } = this.props //Localization Provider is HOC'd with withRouter on the Routes Functional Component (See routes/*any*.js) 
 		const rp = { history: this.props.history, match: this.props.match }
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectDetails project={project} {...rp} deleteProject={this.handleOpenDeleteDialog}/>
+						<ProjectDetails t={t} project={project} {...rp} deleteProject={this.handleOpenDeleteDialog}/>
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectDevices /* deviceMostCounts={deviceMostCounts} */ project={project}/>
+						<ProjectDevices t={t} project={project}/>
 					</ItemGrid >
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectData project={project}/>
+						<ProjectData t={t} project={project}/>
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<InfoCard title={"Contact"} avatar={<Person />} subheader={""}
-							noExpand
-							content={
-								<Grid container>
-									<ItemGrid>
-										<Caption>
-												Contact:
-										</Caption>
-										<Info>
-											{project.user.vcFirstName + " " + project.user.vcLastName}
-										</Info>
-									</ItemGrid>
-									<ItemGrid>
-										<Caption>
-												E-mail:
-										</Caption>
-										<Info>
-											{project.user.vcEmail}
-										</Info>
-									</ItemGrid>
-									<ItemGrid>
-										<Caption>
-												Phone:
-										</Caption>
-										<Info>
-											{project.user.vcPhone}
-										</Info>
-									</ItemGrid>
-									<ItemGrid>
-										<Caption>
-												Organisation:
-										</Caption>
-										<Info>
-											{project.user.organisation}
-										</Info>
-									</ItemGrid>
-								</Grid>
-							}
-						/>
+						<ProjectContact  history={this.props.history} t={t} project={project}/>
 					</ItemGrid>
 					{this.renderDeleteDialog()}
 					<Snackbar
@@ -268,7 +230,6 @@ class Project extends Component {
 						message={
 							<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
 								{this.snackBarMessages()}
-							
 							</ItemGrid>
 						}
 					/>

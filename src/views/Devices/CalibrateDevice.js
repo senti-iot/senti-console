@@ -1,13 +1,14 @@
 import React, { Component, Fragment } from 'react'
 import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withStyles, Grid, TextField, FormControl, InputLabel, Select, Input, MenuItem, FormHelperText } from '@material-ui/core';
-import { ItemGrid, Info, Danger } from 'components';
-import { getDevice, calibrateDevice, uploadPictures } from 'variables/dataDevices';
-import Caption from 'components/Typography/Caption';
-import CounterModal from 'components/Devices/CounterModal';
-import ImageUpload from './ImageUpload';
+import { ItemGrid, Info, Danger } from 'components'
+import { getDevice, calibrateDevice, uploadPictures } from 'variables/dataDevices'
+import Caption from 'components/Typography/Caption'
+import CounterModal from 'components/Devices/CounterModal'
+import ImageUpload from './ImageUpload'
 import { NavigateNext, NavigateBefore, Done, Restore, MyLocation, Router, Devices } from '@material-ui/icons'
 import GridContainer from 'components/Grid/GridContainer';
 import { PlacesWithStandaloneSearchBox } from 'components/Map/SearchBox'
+
 const styles = theme => ({
 	button: {
 		marginTop: theme.spacing.unit,
@@ -42,33 +43,12 @@ const styles = theme => ({
 	}
 });
 
-function getSteps() {
-	return ['Device name and description', 'Device location', 'Calibration', 'Picture of installation'];
-}
-
-function getStepContent(step) {
-	switch (step) {
-		case 0:
-			return `To configure your Senti device, please enter a title and an informative description.`;
-		case 1:
-			return `To correctly deploy your Senti device you need to allow Senti Cloud to store the location of the device. Accept this when prompted to allow to store the location of your mobile device.
-			Secondly select a location type to further pinpoint where your data is collected.`;
-		case 2:
-			return `To get the best data collection accuracy, you need to do a manual calibration. 
-			The calibration hit target is set to 200 so you need to count 200 individual entities. When you are ready to start counting press “OPEN COUNTING WINDOW” and press "START". 
-			Push the large button to count. When you have reached your hit target of 200 hits the timer automatically stops.`;
-		case 3:
-			return `You can store optional picture(s) of your device installation. This will enhance the Senti Cloud experience, and serve as a help for Senti service technicians in case your device needs on-site service.`
-		default:
-			return 'Unknown step';
-	}
-}
 class CalibrateDevice extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			activeStep: 0,
-			device_name: '',
+			name: '',
 			description: '',
 			device: null,
 			error: false,
@@ -78,30 +58,13 @@ class CalibrateDevice extends Component {
 				startDate: null,
 				endDate: null,
 				count: 0,
-				timer: 0
+				timer: 0,
 			},
 			images: null,
-			locationType: '',
+			locationType: 0,
 			address: ''
 		}
-		props.setHeader(props.match.params.id + ' Calibration', true)
-	}
-	handleInput = (input) => e => {
-		this.setState({ [input]: e.target.value })
-	}
-	getImages = (imgs) => {
-		this.setState({ images: imgs })
-	}
-	handleCalibration = (result) => {
-		this.setState({
-			...this.state,
-			calibration: {
-				startDate: result.timestamp,
-				endDate: result.timestampFinish,
-				count: result.count,
-				timer: result.timer
-			}
-		})
+		props.setHeader(this.props.t("calibration.header") + " " + props.match.params.id, true, `/device/${props.match.params.id}`)
 	}
 	componentDidMount = async () => {
 		if (this.props.match) {
@@ -112,10 +75,14 @@ class CalibrateDevice extends Component {
 						this.props.history.push('/404')
 					else {
 						this.setState({
-							device: rs, loading: false,
-							device_name: rs.device_name ? rs.device_name : '',
+							device: rs,
+							loading: false,
+							lat: rs.lat,
+							long: rs.long,
+							locationType: rs.locationType,
+							address: rs.address,
+							name: rs.name ? rs.name : '',
 							description: rs.description ? rs.description : '',
-							locationType: rs.location_type ? rs.locationType : ''
 						})
 					}
 				})
@@ -124,36 +91,104 @@ class CalibrateDevice extends Component {
 			this.props.history.push('/404')
 		}
 	}
+
+	getSteps() {
+		const { t } = this.props
+		return [t("calibration.stepheader.name"),
+			t("calibration.stepheader.location"),
+			t("calibration.stepheader.calibration"),
+			t("calibration.stepheader.images")]
+	}
+
+	getStepContent(step) {
+		const { t } = this.props
+		switch (step) {
+			case 0:
+				return t("calibration.steps.0")
+			case 1:
+				return t("calibration.steps.1")
+			case 2:
+				return t("calibration.steps.2")
+			case 3:
+				return t("calibration.steps.3")
+			default:
+				return t("calibration.steps.unknown")
+		}
+	}
+
 	getCoords = () => {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(rs => {
 				let lat = rs.coords.latitude
 				let long = rs.coords.longitude
 				this.setState({ lat, long, error: false })
-			}, err => { console.log(err); this.setState({ error: err }) })
+			}, err => { this.setState({ error: err }) })
 		}
 	}
+
 	uploadImgs = async () => {
 		let success = false
-		if (this.state.images) { 
+		if (this.state.images) {
 			success = await uploadPictures({
-				device_id: this.state.device.device_id,
+				id: this.state.device.id,
 				files: this.state.images,
 				// step: 3
 			}).then(rs => rs)
 		}
 		return success
 	}
+
+	getImages = (imgs) => {
+		this.setState({ images: imgs })
+	}
+	handleInput = (input) => e => {
+		this.setState({ [input]: e.target.value })
+	}
+	handleCalibration = (result) => {
+		console.log(result.count)
+		this.setState({
+			...this.state,
+			calibration: {
+				startDate: result.timestamp,
+				endDate: result.timestampFinish,
+				count: result.count,
+				timer: result.timer
+			}
+		})
+	}
+
+	LocationTypes = () => {
+		const { t } = this.props
+		return [
+			{ id: 1, label: t("devices.locationTypes.pedStreet") },
+			{ id: 2, label: t("devices.locationTypes.park") },
+			{ id: 3, label: t("devices.locationTypes.path") },
+			{ id: 4, label: t("devices.locationTypes.square") },
+			{ id: 5, label: t("devices.locationTypes.crossroads") },
+			{ id: 6, label: t("devices.locationTypes.road") },
+			{ id: 7, label: t("devices.locationTypes.motorway") },
+			{ id: 8, label: t("devices.locationTypes.port") },
+			{ id: 9, label: t("devices.locationTypes.office") },
+			{ id: 0, label: t("devices.locationTypes.unspecified") }]
+	}
+
+	handleLocationTypeChange = (e) => {
+		this.setState({ locationType: e.target.value })
+	}
+
+	handleSetAddress = (e) => {
+		this.setState({ address: e })
+	}
+
 	renderDeviceNameDescriptionForms = () => {
-		// const { device } = this.state
-		const { classes } = this.props
+		const { classes, t } = this.props
 		return <Grid container>
 			<ItemGrid xs={12}>
 				<TextField
 					required={true}
-					label={'Device Name'}
-					onChange={this.handleInput('device_name')}
-					value={this.state.device_name}
+					label={t("calibration.fields.deviceName")}
+					onChange={this.handleInput('name')}
+					value={this.state.name}
 					InputProps={{
 						classes: {
 							root: classes.input
@@ -165,7 +200,7 @@ class CalibrateDevice extends Component {
 				<TextField
 					multiline
 					rows={4}
-					label={'Description'}
+					label={t("calibration.fields.description")}
 					onChange={this.handleInput('description')}
 					value={this.state.description}
 					InputProps={{
@@ -177,55 +212,32 @@ class CalibrateDevice extends Component {
 			</ItemGrid>
 		</Grid>
 	}
-	LocationTypes = () => {
-		return ['Pedestrian street',
-			'Park',
-			'Path',
-			'Square',
-			'Crossroads',
-			'Road',
-			'Motorway',
-			'Port',
-			'Office',
-			'Unspecified']
-	}
-	handleLocationTypeChange = (e) => {
-		this.setState({ locationType: e.target.value })
-	}
-	handleSetAddress = (e) => {
-		this.setState({ address: e.target.value })
-	}
+
 	renderDeviceLocation = () => {
+		const { t } = this.props
 		return <Grid container>
 			<ItemGrid xs={12}>
-				{/* <TextF
-					id={"calibrate-address"}
-					label={"Address"}
-					handleChange={this.handleSetAddress}
-					value={this.state.address}
-					noFullWidth
-				/> */}
-				<PlacesWithStandaloneSearchBox handleChange={this.handleSetAddress}/>
+				<PlacesWithStandaloneSearchBox address={this.state.address} handleChange={this.handleSetAddress} t={t}/>
 			</ItemGrid>
 			<ItemGrid xs={12}>
 				<FormControl className={this.props.classes.formControl}>
-					<InputLabel htmlFor="streetType-helper">{this.state.locationType ? '' : "Location Type"}</InputLabel>
+					<InputLabel htmlFor="streetType-helper">{this.state.locationType ? '' : t("devices.fields.locType")}</InputLabel>
 					<Select
 						value={this.state.locationType}
 						onChange={this.handleLocationTypeChange}
 						input={<Input name="streetType" id="streetType-helper" />}
 					>
 						{this.LocationTypes().map((loc, i) => {
-							return <MenuItem key={i} value={loc}>
-								{loc}
+							return <MenuItem key={i} value={loc.id}>
+								{loc.label}
 							</MenuItem>
 						})}
 					</Select>
-					<FormHelperText>Select a location type for {this.state.device_name ? this.state.device_name : this.state.device_id}</FormHelperText>
+					<FormHelperText>{t("calibration.selectLocationType")} {this.state.name ? this.state.name : this.state.id}</FormHelperText>
 				</FormControl>
 				<div className={this.props.classes.latlong}>
 					<Caption>
-					Latitude &amp; Longitute
+						{t("calibration.texts.lat")} &amp; {t("calibration.texts.long")}
 					</Caption>
 					<Info>
 						{this.state.lat + " " + this.state.long}
@@ -236,18 +248,19 @@ class CalibrateDevice extends Component {
 					color="primary"
 					onClick={this.getCoords}
 					className={this.props.classes.button}
-				> <MyLocation className={this.props.classes.iconButton} />Get Location </Button>
+				> <MyLocation className={this.props.classes.iconButton} />{t("calibration.texts.getLocation")}</Button>
 			</ItemGrid>
 		</Grid>
 	}
+
 	renderCalibration = () => {
-		return <CounterModal handleFinish={this.handleCalibration} />
-
+		return <CounterModal t={this.props.t} handleFinish={this.handleCalibration} />
 	}
+
 	renderImageUpload = () => {
-		return <ImageUpload imgUpload={this.getImages} />
-
+		return <ImageUpload t={this.props.t} imgUpload={this.getImages} dId={this.state.device.id}/>
 	}
+
 	renderStep = (step) => {
 		switch (step) {
 			case 0:
@@ -262,107 +275,91 @@ class CalibrateDevice extends Component {
 				break;
 		}
 	}
-	updateCalibration = async () => {
-		const { startDate, endDate, count, timer } = this.state.calibration
-		const { device } = this.state
-		var success = await calibrateDevice({
-			step: 2,
-			startDate: startDate,
-			endDate: endDate,
-			count: count,
-			timer: timer,
-			device_id: device.device_id
-		}).then(rs => rs)
-		return success
-	}
-	updatePosition = async () => {
+
+	updateDevice = async () => {
+		const { name, description } = this.state
 		const { lat, long, device, locationType, address } = this.state
+		const { startDate, endDate, count, timer } = this.state.calibration
 		var success = await calibrateDevice({
-			step: 1,
+			id: device.id,
+			name: name,
+			description: description,
 			address: address,
 			lat: lat,
 			long: long,
 			locationType: locationType,
-			device_id: device.device_id
-		}).then(rs => rs)
+			startDate: startDate,
+			endDate: endDate,
+			count: count,
+			timer: timer
+		})
 		return success
 	}
-	updateNameAndDesc = async () => {
-		const { device_name, description } = this.state
-		var success = await calibrateDevice({
-			device_name: device_name,
-			description: description,
-			device_id: this.state.device.device_id,
-			step: 0
-		}).then(rs => rs)
-		return success
-	}
-	handleNext = () => {
+
+	handleNext = async () => {
 		const { activeStep } = this.state
-		var success
-		switch (activeStep) {
-			case 0:
-				success = this.updateNameAndDesc()
-				break;
-			case 1:
-				success = this.updatePosition()
-				break;
-			case 2:
-				success = this.updateCalibration()
-				break;
-			case 3:
-				success = this.uploadImgs();
-				break;
-			default:
-				break;
-		}
-		if (success)
-			this.setState({
-				activeStep: this.state.activeStep + 1,
-			});
+		if (activeStep === 3) {
+			let success = await this.updateDevice()
+			if (success)
+				this.setState({
+					activeStep: activeStep + 1,
+				});
+			else {
+				this.setState({ error: { message: this.props.t("calibration.texts.networkError") } })
+			}
+
+		}	
 		else {
 			this.setState({
-				error: { message: "Network Error" }
-			})
+				activeStep: activeStep + 1,
+			});
 		}
+
 	}
 
 
 	handleBack = () => {
 		this.setState({
 			activeStep: this.state.activeStep - 1,
-		});
-	};
+		})
+	}
+
 	handleGoToDeviceList = () => {
 		this.props.history.push('/devices')
 	}
+
 	handleFinish = () => {
-		this.props.history.push('/device/' + this.state.device.device_id)
+		
+		this.props.history.push('/device/' + this.state.device.id)
+		
 	}
+
 	handleReset = () => {
 		this.setState({
 			activeStep: 0,
-		});
-	};
+		})
+	}
+
 	stepChecker = () => {
 		/**
 		 * Return false to NOT disable the Next Step Button
 		 */
-		const { activeStep, lat, long, device_name, calibration } = this.state;
+		const { activeStep, lat, long, name, calibration, address } = this.state;
 		switch (activeStep) {
 			case 0:
-				return device_name.length > 0 ? false : true
+				return name.length > 0 ? false : true
 			case 1:
-				return lat > 0 && long > 0 ? false : true
+				return lat > 0 && long > 0 && address ? false : true
 			case 2:
 				return calibration.startDate && calibration.endDate && calibration.timer ? false : true
 			default:
 				break;
 		}
 	}
+
 	render() {
-		const { classes } = this.props;
-		const steps = getSteps();
+		const { t, classes } = this.props;
+		const steps = this.getSteps();
 		const { activeStep, device, error } = this.state;
 		return (
 			<GridContainer>
@@ -375,7 +372,7 @@ class CalibrateDevice extends Component {
 									<Step key={label}>
 										<StepLabel>{label}</StepLabel>
 										<StepContent>
-											<Typography paragraph>{getStepContent(index)}</Typography>
+											<Typography paragraph>{this.getStepContent(index)}</Typography>
 											{/* <Divider/> */}
 
 											<Grid>
@@ -389,7 +386,7 @@ class CalibrateDevice extends Component {
 														onClick={this.handleBack}
 														className={classes.button}
 													>
-														<NavigateBefore className={classes.iconButton} />Back
+														<NavigateBefore className={classes.iconButton} />{t("calibration.texts.back")}
 													</Button>
 													<Button
 														variant="contained"
@@ -400,10 +397,10 @@ class CalibrateDevice extends Component {
 													>
 														{activeStep === steps.length - 1 ? <Fragment>
 
-															<Done className={classes.iconButton} />Finish
+															<Done className={classes.iconButton} />{t("calibration.texts.finish")}
 														</Fragment> :
 															<Fragment>
-																<NavigateNext className={classes.iconButton} />Next
+																<NavigateNext className={classes.iconButton} />{t("calibration.texts.next")}
 															</Fragment>}
 													</Button>
 												</Grid>
@@ -415,23 +412,22 @@ class CalibrateDevice extends Component {
 						</Stepper> : null}
 					{activeStep === steps.length && device && (
 						<Paper square elevation={0} className={classes.resetContainer}>
-							<Typography variant={'title'}>Success</Typography>
+							<Typography variant={'title'}>{t("calibration.texts.success")}</Typography>
 							<Typography paragraph>
-							Your Senti device is now configured and calibrated and will produce better results when collecting data. To further enhance the accuracy of your data collection, return to the site of installation and do a new calibration on a regular basis. You can set a reminder for Device Calibration in the Settings section.
+								{t("calibration.texts.successMessage")}
 							</Typography>
 							<Grid container>
-
 								<ItemGrid xs>
 									<Button onClick={this.handleFinish} color={"primary"} variant={"contained"} className={classes.buttonMargin}>
-										<Router className={classes.iconButton} />Go to device {device.device_id}
+										<Router className={classes.iconButton} />{t("calibration.texts.viewDevice")} {device.id}
 									</Button>
 									<Button onClick={this.handleGoToDeviceList} color={"primary"} variant={"contained"} className={classes.buttonMargin}>
-										<Devices className={classes.iconButton} />Go to device list
+										<Devices className={classes.iconButton} />{t("calibration.texts.viewDeviceList")}
 									</Button>
 								</ItemGrid>
 								<ItemGrid xs>
 									<Button onClick={this.handleReset} className={classes.button} >
-										<Restore className={classes.iconButton} />Reset
+										<Restore className={classes.iconButton} />{t("calibration.texts.reset")}
 									</Button>
 								</ItemGrid>
 							</Grid>

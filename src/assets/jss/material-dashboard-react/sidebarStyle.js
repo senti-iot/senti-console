@@ -84,6 +84,9 @@ const sidebarStyle = theme => ({
 		display: "inline-block",
 		maxHeight: "50px",
 		marginLeft: "50px",
+		[theme.breakpoints.down("md")]: {
+			marginLeft: "18px"
+		},
 		marginRight: "15px"
 	},
 	img: {

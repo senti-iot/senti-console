@@ -1,12 +1,20 @@
 import { api } from "./data";
 import { getSimpleAddress } from "./dataDevices";
 
-export const createOneProject = async (project) => {
-	var data = await api.post('senti/project', project).then(response => response.data)
+export const getProjectImage = async (project) => {
+	
+}
+export const getCreateProject = async () => {
+	var data = await api.get('senti/project/create').then(response => response.data)
+	return data
+}
+export const createProject = async (project) => {
+	var data = await api.post('senti/project', project).then(rs => rs.data)
 	return data
 }
 export const updateProject = async (project) => {
-	var data = await api.put('senti/project', project).then(response => response)
+	// console.log(data)
+	var data = await api.put(`senti/project/${project.id}`, project).then(response => response)
 	return data.data
 }
 export const getAllProjects = async () => {

@@ -19,7 +19,7 @@ import {
 	infoColor,
 	primaryColor,
 	roseColor
-} from "assets/jss/material-dashboard-react.js";
+} from "../material-dashboard-react";
 
 const statsCardStyle = {
 	card,

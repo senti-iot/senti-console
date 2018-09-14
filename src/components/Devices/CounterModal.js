@@ -5,6 +5,7 @@ import { ItemGrid } from '..';
 import moment from 'moment'
 import { OpenInBrowser, Timer, Done, Restore } from '@material-ui/icons'
 import countermodalStyles from 'assets/jss/components/devices/countermodalStyles';
+import { connect } from 'react-redux'
 
 
 class CounterModal extends React.Component {
@@ -12,15 +13,18 @@ class CounterModal extends React.Component {
 		super(props)
 
 		this.state = {
-			count: 5, //change
+			count: props.count,
 			open: false,
 			timer: 0,
 			timestamp: null,
-			timestampFinish: null
+			timestampFinish: null,
+			started: false,
+			finished: false
 		}
 		let canPlayMP3 = new Audio().canPlayType('audio/mp3');
 		if (!canPlayMP3 || canPlayMP3 === 'no') {
-			let msg = 'Your browser doesn\'t support audio files! There will be no sound feedback! Try using Google Chrome.';
+			let msg = props.t("devices.calibration.noAudioSupported")
+			// let msg = 'Your browser doesn\'t support audio files! There will be no sound feedback! Try using Google Chrome.';
 			alert(msg);
 		}
 		this.mp3File = new Audio("/assets/sound/pop.mp3").load()
@@ -31,13 +35,13 @@ class CounterModal extends React.Component {
 			if (this.state.count === 0) {
 				clearInterval(this.timeCounter)
 				this.timeCounter = null
-				this.setState({ timestampFinish: moment().format("YYYY-MM-DD HH:mm:ss") })
+				this.setState({ timestampFinish: moment().format("YYYY-MM-DD HH:mm:ss"), finished: true })
 			}
 		})
 	}
 	handleStart = () => {
 		if (this.timeCounter === null) {
-			this.setState({ timestamp: moment().format("YYYY-MM-DD HH:mm:ss") })	
+			this.setState({ timestamp: moment().format("YYYY-MM-DD HH:mm:ss"), started: true })
 			this.timeCounter = setInterval(() => this.timer(), 1000)
 		}
 	}
@@ -50,14 +54,22 @@ class CounterModal extends React.Component {
 		this.timeCounter = null
 		this.setState({
 			timer: 0,
-			count: 5, //change
-			timestamp: null
+			count: this.props.count, 
+			timestamp: null,
+			started: false,
+			finished: false
 		})
 	}
 	handleCount = async () => {
 		let playSound = new Audio("/assets/sound/pop.mp3");
 		await playSound.play().then(
-			() => this.setState({ count: this.state.count - 1 })
+			() => {
+				if (this.state.count === 1)
+					this.setState({ count: this.state.count - 1, finished: true, started: false })
+				else
+					this.setState({ count: this.state.count - 1 })
+			}
+			
 		)
 		playSound = null
 	}
@@ -83,7 +95,7 @@ class CounterModal extends React.Component {
 	}
 	handleFinish = () => {
 		this.props.handleFinish({
-			count: 200,
+			count: this.props.count,
 			timestamp: this.state.timestamp,
 			timestampFinish: this.state.timestampFinish,
 			timer: this.state.timer
@@ -91,14 +103,22 @@ class CounterModal extends React.Component {
 		this.handleReset()
 		this.handleClose()
 	}
+	resetButtonDisabled = () => { 
+		const { started, finished } = this.state
+		if (started)
+			return false
+		if (finished)
+			return false
+		return true
+	}
 	render() {
-		const { classes } = this.props;
-
+		const { classes, t } = this.props;
+		const { started, finished } = this.state
 		return (
 			<div >
 				{/* <Typography gutterBottom>Click to get the full Modal experience!</Typography> */}
 				<Button variant={"outlined"} color={"primary"} onClick={this.handleOpen}>
-					<OpenInBrowser className={classes.iconButton}/> Open Counting Window
+					<OpenInBrowser className={classes.iconButton} /> {t("actions.openCounter")}
 				</Button>
 				<Modal
 					aria-labelledby="simple-modal-title"
@@ -124,7 +144,7 @@ class CounterModal extends React.Component {
 										root: classes.counterButton
 									}}
 									onClick={this.handleCount}
-									disabled={this.state.timer !== 0 ? this.state.count !== 0 ? false : true : true}
+									disabled={!started || finished}
 								>
 									{this.state.count}
 								</Button>
@@ -135,14 +155,14 @@ class CounterModal extends React.Component {
 
 								<ItemGrid>
 									<Button
-										disabled={ this.state.count === 0 ? false : this.state.count < 5 ? true : false}//change
+										disabled={started}//change
 										color={"primary"}
 										variant="contained"
 										onClick={this.state.count === 0 ? this.handleFinish : this.handleStart}>
 										{this.state.count === 0 ? <Fragment>
-											<Done className={classes.iconButton}/>Finish
+											<Done className={classes.iconButton} />{t("actions.finish")}
 										</Fragment> : <Fragment>
-											<Timer className={classes.iconButton}/> Start
+											<Timer className={classes.iconButton} /> {t("actions.start")}
 										</Fragment>}
 									</Button>
 								</ItemGrid>
@@ -150,9 +170,9 @@ class CounterModal extends React.Component {
 									<Button
 										color={"primary"}
 										variant="contained"
-										disabled={this.state.timer !== 0 ? false : true}
+										disabled={this.resetButtonDisabled()}
 										onClick={this.handleReset}>
-										<Restore className={classes.iconButton} />Reset
+										<Restore className={classes.iconButton} />{t("actions.reset")}
 									</Button>
 								</ItemGrid>
 							</div>
@@ -170,5 +190,12 @@ CounterModal.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
+const mapStateToProps = (state) => ({
+	count: state.settings.count
+})
 
-export default withStyles(countermodalStyles)(CounterModal);
+const mapDispatchToProps = (dispatch) => {
+	return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(countermodalStyles)(CounterModal));

@@ -19,20 +19,23 @@ class ProjectDetails extends Component {
 
 	handleOpenActionsDetails = event => {
 		this.setState({ actionAnchor: event.currentTarget });
-	};
+	}
+	
 	handleCloseActionsDetails = () => {
 		this.setState({ actionAnchor: null });
-	};
+	}
+
 	deleteProject = () => {
 		this.handleCloseActionsDetails()
 		this.props.deleteProject()
 	}
+
 	render() {
 		const { actionAnchor } = this.state
-		const { project, classes } = this.props
+		const { project, classes, t } = this.props
 		return (
 			<InfoCard
-				title={'Project Details'} avatar={<LibraryBooks />}
+				title={t("projects.infoCardProjectDetails")} avatar={<LibraryBooks />}
 				noExpand
 				topAction={<ItemGrid noMargin noPadding>
 					<IconButton
@@ -54,10 +57,10 @@ class ProjectDetails extends Component {
 							}
 						}}>
 						<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
-							<Edit className={classes.leftIcon} />Edit project
+							<Edit className={classes.leftIcon} />{t("menus.editProject")}
 						</MenuItem>
 						<MenuItem onClick={this.deleteProject}>
-							<Delete className={classes.leftIcon} />Delete project
+							<Delete className={classes.leftIcon} />{t("menus.deleteProject")}
 						</MenuItem>
 						))}
 					</Menu>
@@ -65,24 +68,24 @@ class ProjectDetails extends Component {
 				content={<Grid container>
 					<ItemGrid xs={12} container noMargin noPadding>
 						<ItemGrid>
-							<Caption>Name:</Caption>
+							<Caption>{t("projects.projectsColumnTitle")}:</Caption>
 							<Info>{project.title}</Info>
 						</ItemGrid>
 						<ItemGrid>
-							<Caption>Description:</Caption>
+							<Caption>{t("projects.projectsColumnDescription")}:</Caption>
 							<Info>{project.description}</Info>
 						</ItemGrid>
 					</ItemGrid>
 					<ItemGrid>
-						<Caption>Start Date:</Caption>
-						<Info>{dateFormatter(project.open_date)}</Info>
+						<Caption>{t("projects.projectsColumnStartDate")}:</Caption>
+						<Info>{dateFormatter(project.startDate)}</Info>
 					</ItemGrid>
 					<ItemGrid xs>
-						<Caption>End Date:</Caption>
-						<Info>{dateFormatter(project.close_date)}</Info>
+						<Caption>{t("projects.projectsColumnEndDate")}:</Caption>
+						<Info>{dateFormatter(project.endDate)}</Info>
 					</ItemGrid>
 					<ItemGrid xs={12}>
-						<Caption>Created:</Caption>
+						<Caption>{t("projects.projectsColumnCreated")}:</Caption>
 						<Info>{dateFormatter(project.created)}</Info>
 					</ItemGrid>
 				</Grid>}
@@ -91,9 +94,11 @@ class ProjectDetails extends Component {
 		);
 	}
 }
+
 ProjectDetails.propTypes = {
 	history: PropTypes.any.isRequired,
 	match: PropTypes.any.isRequired,
 	project: PropTypes.object.isRequired,
 }
+
 export default withStyles(deviceStyles)(ProjectDetails);

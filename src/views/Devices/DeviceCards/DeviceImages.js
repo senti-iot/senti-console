@@ -30,14 +30,19 @@ class DeviceImages extends Component {
 		this.setState({ activeStep });
 	};
 	componentDidMount = async () => {
-		await this.getAllPics(this.props.device.device_id)
+		await this.getAllPics(this.props.device.id)
 	}
 	getPicsCallBack = () => {
-		this.getAllPics(this.props.device.device_id)
+		this.getAllPics(this.props.device.id)
 	}
 	renderImageUpload = (dId) => {
 
-		return <DeviceImageUpload dId={dId} imgUpload={this.getAllPics} callBack={this.getPicsCallBack} />
+		return <DeviceImageUpload
+			t={this.props.t}
+			dId={dId}
+			imgUpload={this.getAllPics}
+			callBack={this.getPicsCallBack}
+		/>
 	}
 	getAllPics = (id) => {
 		getAllPictures(id).then(rs => { return this.setState({ img: rs }) })
@@ -62,7 +67,7 @@ class DeviceImages extends Component {
 	}
 	handleDeletePicture = async () => {
 		const { img, activeStep } = this.state
-		const dId = this.props.device.device_id
+		const dId = this.props.device.id
 		this.setState({ deletingPicture: true })
 		var deleted = await deletePicture(dId, img[activeStep].filename).then(rs => rs)
 		if (deleted) {
@@ -119,6 +124,7 @@ class DeviceImages extends Component {
 			anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
 			open={this.state.openSnackbar !== 0 ? true : false}
 			onClose={() => { this.setState({ openSnackbar: 0 }) }}
+			autoHideDuration={5000}
 			message={
 				<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
 					{this.snackBarMessages()}
@@ -128,10 +134,10 @@ class DeviceImages extends Component {
 	
 	render() {
 		const { actionAnchor, openImageUpload, img } = this.state
-		const { classes, device } = this.props
+		const { classes, device, t  } = this.props
 		return (
 			<InfoCard
-				title={"Pictures"}
+				title={t("devices.cards.pictures")}
 				avatar={<Image />}
 				topAction={
 					<ItemGrid>
@@ -154,10 +160,10 @@ class DeviceImages extends Component {
 								}
 							}}>
 							<MenuItem onClick={this.handleOpenImageUpload}>
-								<CloudUpload className={classes.leftIcon} />Upload Pictures
+								<CloudUpload className={classes.leftIcon} />{t("actions.uploadImages")}
 							</MenuItem>
 							<MenuItem onClick={this.handleOpenDeletePictureDialog}>
-								<Delete className={classes.leftIcon} />Delete this picture
+								<Delete className={classes.leftIcon} />{t("actions.deletePicture")}
 							</MenuItem>
 							))}
 						</Menu>
@@ -171,13 +177,13 @@ class DeviceImages extends Component {
 								{this.renderDeleteDialog()}
 								<Grid container justify={'center'}>
 									<DeviceImage
+										t={this.props.t}
 										useParent
 										handleStep={this.handleStepChange}
 										images={img ? img.map(m => m.image) : null} />
 								</Grid>
 							</Fragment>
-							
-							: <Grid container justify={'center'}> <Caption> There are no pictures uploaded</Caption></Grid> : this.renderImageLoader()}
+							: <Grid container justify={'center'}> <Caption>{t("devices.noImages")}</Caption></Grid> : this.renderImageLoader()}
 						{this.renderSnackbar()}
 						<Modal
 							aria-labelledby="simple-modal-title"
@@ -185,7 +191,7 @@ class DeviceImages extends Component {
 							open={openImageUpload}
 							onClose={this.handleCloseImageUpload}>
 							<div className={classes.modal}>
-								{this.renderImageUpload(device.device_id)}
+								{this.renderImageUpload(device.id)}
 							</div>
 						</Modal>
 					</Fragment>}
