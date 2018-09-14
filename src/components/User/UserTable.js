@@ -227,6 +227,7 @@ class UserTable extends React.Component {
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
+								const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? moment(n.lastLoggedIn).format("DD.MM.YYYY HH:mm:ss") : t("users.fields.neverLoggedIn")
 								return (
 									<TableRow
 										hover
@@ -284,7 +285,7 @@ class UserTable extends React.Component {
 											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone) : n.phone}</a>} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`mailto:${n.email}`}>{n.email}</a>} />
 											<TC label={n.org ? n.org.name : t("users.noOrg")} />
-											<TC label={moment.unix(n.loggedInUnixTime).format("DD.MM.YYYY HH:mm:ss")}/>
+											<TC label={lastLoggedIn}/>
 										</Hidden>
 									</TableRow>
 

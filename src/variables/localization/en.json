@@ -406,8 +406,9 @@
             "new": "Add new",
             "resetPassword": "Reset password",
             "suspend": "Suspend"
-        },
+		},
         "fields": {
+			"neverLoggedIn": "Never signed in",
             "accessLevel": "Access Level",
 			"active": "Active",
 			"loginSuspended": "Login suspended",

@@ -408,6 +408,7 @@
             "suspend": "Suspender"
         },
         "fields": {
+			"neverLoggedIn": "Aldrig logget ind",
             "accessLevel": "Adgangsniveau",
 			"active": "Aktiv",
 			"loginSuspended": "Login suspendederet", 
