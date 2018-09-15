@@ -299,9 +299,13 @@ class OrgTable extends React.Component {
 					nextIconButtonProps={{
 						'aria-label': t("actions.previousPage"),
 					}}
+					classes={{
+						spacer: classes.spacer,
+						input: classes.spaceBetween
+					}}
 					onChangePage={this.handleChangePage}
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}
-					labelRowsPerPage={<Hidden mdDown>{t("tables.rowsPerPage")}</Hidden>}
+					labelRowsPerPage={t("tables.rowsPerPage")}
 					rowsPerPageOptions={[5, 10, 25, 50, 100]}
 				/>
 				<Snackbar
