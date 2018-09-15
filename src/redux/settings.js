@@ -45,9 +45,8 @@ export const saveSettingsOnServ = () => {
 export const getSettings = async () => {
 	return async dispatch => {
 		var settings = await getSettingsFromServer()
-		var userId = cookie.load('SESSION').userID
-		var user = await getUser(userId)
-
+		var userId = cookie.load('SESSION') ? cookie.load('SESSION').userID : 0
+		var user = userId !== 0 ? await getUser(userId) : {}
 		if (settings) {
 			moment.locale(settings.language === "dk" ? "da" : "en", {
 				week: {
