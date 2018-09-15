@@ -2,6 +2,12 @@
 import { red, green, yellow, grey } from '@material-ui/core/colors'
 import { primaryColor } from 'assets/jss/material-dashboard-react'
 const devicetableStyles = theme => ({
+	spaceBetween: {
+		marginRight: "auto"
+	},
+	spacer: {
+		flex: 0,
+	},
 	noMargin: {
 		marginBottom: 0,
 		overflow: 'hidden'
