@@ -3,21 +3,25 @@ import { LibraryBooks } from '@material-ui/icons';
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import ExifOrientationImg from 'react-exif-orientation-img';
 
 class SimpleMediaCard extends Component {
 
 	render() {
-		const { classes, title, content, noAvatar, topAction, leftActions, rightActions } = this.props;
+		const { classes, title, content, noAvatar, topAction, leftActions, rightActions, img } = this.props;
 		return (
 			<Card className={classes.smallCard + classes.plainCardClasses}>
 				<CardHeader
 					action={topAction}
 					avatar={
 						noAvatar ? null : <Avatar aria-label="Avatar" className={classes.avatar}>
-							<LibraryBooks/>
+							<LibraryBooks />
 						</Avatar>
 					}
-					title={title}/>
+					title={title} />
+				{img ? <CardContent classes={{ root: classes.root + ' ' + classes.smallCardCustomHeight + ' ' + classes.contentMedia }}>
+					<ExifOrientationImg src={img} width={"100%"} />
+				</CardContent> : null}
 				<CardContent classes={{ root: classes.root + ' ' + classes.smallCardCustomHeight }}>
 					<Typography component="p" classes={{ root: classes.textOvrflow }}>
 						{content}

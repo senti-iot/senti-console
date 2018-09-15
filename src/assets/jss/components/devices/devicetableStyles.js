@@ -2,6 +2,21 @@
 import { red, green, yellow, grey } from '@material-ui/core/colors'
 import { primaryColor } from 'assets/jss/material-dashboard-react'
 const devicetableStyles = theme => ({
+	spaceBetween: {
+		marginRight: "auto"
+	},
+	spacer: {
+		flex: 0,
+	},
+	noMargin: {
+		marginBottom: 0,
+		overflow: 'hidden'
+	},
+	img: {
+		borderRadius: "50px",
+		height: "30px",
+		width: "30px"
+	},
 	tableCellID: {
 		padding: "4px",
 		minWidth: "30px",
@@ -58,8 +73,11 @@ const devicetableStyles = theme => ({
 	},
 	tableCell: {
 		padding: 4,
-		minWidth: 130,
-		maxWidth: 200
+		// minWidth: 130,
+		maxWidth: 200,
+		"&:last-child": {
+			paddingRight: 4
+		}
 	},
 	tablecellcheckbox: {
 		padding: 0,

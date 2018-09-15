@@ -16,6 +16,8 @@
 		"chart.js": "^2.7.2",
 		"chartist": "0.10.1",
 		"classnames": "^2.2.6",
+		"for-each": "^0.3.3",
+		"google-libphonenumber": "^3.1.12",
 		"material-ui-pickers": "^1.0.0-rc.10",
 		"moment": "^2.22.2",
 		"npm-run-all": "4.1.2",
@@ -30,10 +32,13 @@
 		"react-exif-orientation-img": "^0.1.5",
 		"react-google-maps": "^9.4.5",
 		"react-masonry-component": "^6.2.1",
+		"react-redux": "^5.0.7",
 		"react-router-dom": "^4.3.1",
 		"react-scripts": "^1.1.4",
 		"react-sound": "^1.2.0",
-		"react-swipeable-views": "^0.12.14"
+		"react-swipeable-views": "^0.12.14",
+		"redux": "^4.0.0",
+		"redux-thunk": "^2.3.0"
 	},
 	"scripts": {
 		"start": "react-scripts start ",

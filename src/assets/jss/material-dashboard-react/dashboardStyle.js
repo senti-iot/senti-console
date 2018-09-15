@@ -4,7 +4,15 @@
 
 import { successColor } from "assets/jss/material-dashboard-react.js";
 
-const dashboardStyle = {
+const dashboardStyle = theme => ({
+	centerGrid: {
+		display: "grid",
+		[theme.breakpoints.up("sm")]: {
+			gridTemplateColumns: "repeat(3, 1fr)",
+			margin: "0 auto",
+		}
+
+	},
 	successText: {
 		color: successColor
 	},
@@ -33,6 +41,6 @@ const dashboardStyle = {
 		fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
 		marginTop: '10px'
 	}
-};
+});
 
 export default dashboardStyle;

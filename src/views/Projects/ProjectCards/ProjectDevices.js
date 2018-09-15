@@ -16,22 +16,24 @@ class ProjectDevices extends Component {
 		 mapExpanded: false
 	  }
 	}
+	
 	handleExtendMap = () => {
 		this.setState({ mapExpanded: !this.state.mapExpanded })
 	}
+
 	render() {
-		const { classes, project, /* deviceMostCounts */ } = this.props
+		const { classes, project, t /* deviceMostCounts */ } = this.props
 		return (
-			<InfoCard title={"Devices"} avatar={<Devices />} subheader={"Number of devices:" + project.devices.length}
+			<InfoCard title={t("projects.devices.title")} avatar={<Devices />} subheader={t("projects.devices.numDevices") + project.devices.length}
 				leftActions={
 					<Button className={classes.leftActionButton} onClick={this.handleExtendMap}>
 						<Map className={classes.leftIcon} />
 						<Caption>
-							{this.state.mapExpanded ? "Hide Map" : "See Map"}
+							{this.state.mapExpanded ? t("projects.devices.hideMap") : t("projects.devices.seeMap")}
 						</Caption>
-						<ExpandMore className={classNames(classes.expand, {
+						<ExpandMore className={classNames({
 							[classes.expandOpen]: this.state.mapExpanded,
-						})} />
+						}, classes.expand)} />
 					</Button>
 				}
 				leftActionContent={
@@ -47,7 +49,7 @@ class ProjectDevices extends Component {
 								Most active device:
 							</Caption>
 							<Info>
-								{deviceMostCounts ? deviceMostCounts.device_name ? deviceMostCounts.device_name : deviceMostCounts.device_id : "-"}
+								{deviceMostCounts ? deviceMostCounts.name ? deviceMostCounts.name : deviceMostCounts.id : "-"}
 							</Info>
 						</ItemGrid>
 						<ItemGrid>
@@ -57,7 +59,7 @@ class ProjectDevices extends Component {
 							<Info>
 								{deviceMostCounts ? deviceMostCounts.totalCount : "-"}
 							</Info> */
-					<DeviceSimpleList filters={this.state.deviceFilters} data={project.devices} />
+					<DeviceSimpleList t={t} filters={this.state.deviceFilters} data={project.devices} />
 					// </ItemGrid>
 					// </Grid>
 				}
@@ -69,7 +71,9 @@ class ProjectDevices extends Component {
 		)
 	}
 }
+
 ProjectDevices.propTypes = {
 	project: PropTypes.object.isRequired,
 }
+
 export default withStyles(deviceStyles)(ProjectDevices)

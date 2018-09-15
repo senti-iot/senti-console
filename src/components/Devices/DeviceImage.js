@@ -39,7 +39,7 @@ class DeviceImage extends React.Component {
 			this.swipeHeight.updateHeight()
 	}
 	render() {
-		const { classes, theme, images } = this.props;
+		const { classes, theme, images, t } = this.props;
 		const { activeStep } = this.state;
 		
 		const maxSteps = images ? images.length ? images.length : 0 : 0;
@@ -64,7 +64,7 @@ class DeviceImage extends React.Component {
 							</ItemGrid>
 						})}
 					</SwipeableViews> :
-						<Caption>There are no pictures uploaded</Caption>
+						<Caption>{t("devices.noImages")}</Caption>
 					}
 				</Grid> : null}
 				<MobileStepper
@@ -74,14 +74,14 @@ class DeviceImage extends React.Component {
 					className={classes.mobileStepper}
 					nextButton={
 						<Button size="small" onClick={this.handleNext} disabled={activeStep === maxSteps - 1 || maxSteps === 0}>
-							Next
+							{t("actions.next")}
 							{theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
 						</Button>
 					}
 					backButton={
 						<Button size="small" onClick={this.handleBack} disabled={activeStep === 0}>
 							{theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-							Back
+							{t("actions.back")}
 						</Button>
 					}
 				/>

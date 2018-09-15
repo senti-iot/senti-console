@@ -90,8 +90,8 @@ class RegSimpleList extends React.Component {
 		const { classes, data } = this.props;
 		const { order, orderBy, selected, rowsPerPage, page } = this.state;
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-		// { id: "device_name", label: "Name" },
-		// { id: "device_id", label: "ID" },
+		// { id: "name", label: "Name" },
+		// { id: "id", label: "ID" },
 		// { id: "liveStatus", label: "Status" },
 		// { id: "org", label: "Organisation" }
 		const tableHead = [{ id: "name", label: "Name" }, { id: "count", label: "Count" }, { id: "interval", label: "Interval" }, { id: "registered", label: "Registered" }]
@@ -140,7 +140,7 @@ class RegSimpleList extends React.Component {
 											<Checkbox checked={isSelected} />
 										</TableCell>
 										<TableCell className={classes.tableCell}>
-											{n.device_name ? n.device_name : n.device_id}
+											{n.name ? n.name : n.id}
 										</TableCell>
 										<TableCell className={classes.tableCellID}>
 											{n.count}

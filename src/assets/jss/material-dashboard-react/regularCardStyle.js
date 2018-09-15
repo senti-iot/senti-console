@@ -13,10 +13,15 @@ import {
 	purpleCardHeader,
 	primaryCardHeader,
 	sentiCardHeader,
-} from "assets/jss/material-dashboard-react.js";
+	transition,
+} from "../material-dashboard-react";
 import teal from '@material-ui/core/colors/teal';
 
 const regularCardStyle = theme => ({
+	contentMedia: {
+		width: "100%",
+		padding: 0
+	},
 	leftActions: {
 		marginRight: "auto",
 	},
@@ -26,7 +31,8 @@ const regularCardStyle = theme => ({
 	textOvrflow: {
 		whiteSpace: "nowrap",
 		textOverflow: "ellipsis",
-		overflow: "hidden"
+		overflow: "hidden",
+		marginTop: theme.spacing.unit
 	},
 	leftIcon: {
 		marginRight: 8
@@ -47,6 +53,28 @@ const regularCardStyle = theme => ({
 	},
 	smallCardCustomHeight: {
 		height: "calc(100% - 148px)"
+	},
+	alignCenter: {
+		display: "flex",
+		justifyContent: "center"
+	},
+	discoverSentiCenter: {
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	discoverSentiImg: {
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
+		cursor: "pointer",
+		height: 250,
+		width: 250,
+		"&:hover": {
+			width: 300,
+			height: 300
+		},
+		...transition
 	},
 	root: {
 		// height: "100%",
@@ -82,6 +110,7 @@ const regularCardStyle = theme => ({
 		...card,
 		// display: 'flex'
 	},
+
 	cardPlain: {
 		background: "transparent",
 		boxShadow: "none"

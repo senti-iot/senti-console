@@ -1,19 +1,25 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types'
-import { Grid, IconButton, Menu, MenuItem, withStyles, /* Typography, */ Select, FormControl, FormHelperText, Divider, Dialog, DialogTitle, DialogContent, /* DialogContentText, */ Button, DialogActions, ListItem, ListItemIcon, ListItemText, Collapse, List, Hidden } from '@material-ui/core';
+import {
+	Grid, IconButton, Menu, MenuItem, withStyles,
+	Select, FormControl, FormHelperText, Divider, Dialog, DialogTitle, DialogContent,
+	Button, DialogActions, ListItem, ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox, FormControlLabel
+} from '@material-ui/core';
 import {
 	AccessTime, AssignmentTurnedIn, MoreVert,
-	DateRange, KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft,
-	DonutLargeRounded, PieChartRounded, BarChart, ExpandLess, ExpandMore, Visibility
+	DateRange, KeyboardArrowRight, KeyboardArrowLeft,
+	DonutLargeRounded, PieChartRounded, BarChart, ExpandMore, Visibility
 } from "@material-ui/icons"
 // import { dateFormatter } from 'variables/functions';
 import { InfoCard, ItemGrid, CircularLoader, Caption, Info, /* , Caption, Info */ } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { Doughnut, Bar, Pie } from 'react-chartjs-2';
-import { getWifiHourly } from 'variables/dataDevices';
-import { getRandomColor } from 'variables/colors';
+import { getWifiHourly, getWifiDaily } from 'variables/dataDevices';
+// import { getRandomColor } from 'variables/colors';
+import { teal } from '@material-ui/core/colors'
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import classNames from 'classnames'
 var moment = require('moment');
 
 
@@ -30,9 +36,10 @@ class DeviceData extends Component {
 			actionAnchor: null,
 			loading: true,
 			dateFilterInputID: 0,
+			timeType: 0,
 			openCustomDate: false,
 			display: 2,
-			visibility: false
+			visibility: false,
 		}
 	}
 
@@ -54,14 +61,15 @@ class DeviceData extends Component {
 			padding: 10
 		}
 	}
-	getWifiSum = async () => {
+
+	getWifiDay = async () => {
 		const { device } = this.props
 		const { from, to } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
-		var data = await getWifiHourly(device.device_id, startDate, endDate).then(rs => rs)
+		let data = await getWifiDaily(device.id, startDate, endDate).then(rs => rs)
 		if (data) {
-			var dataArr = Object.keys(data).map(r => ({ id: r, value: data[r] }))
+			let dataArr = Object.keys(data).map(r => ({ id: moment(r).format("DD.MM.YYYY"), value: data[r] }))
 			this.setState({
 				loading: false,
 				roundDataSets: {
@@ -70,7 +78,47 @@ class DeviceData extends Component {
 						borderColor: "#FFF",
 						borderWidth: 1,
 						data: dataArr.map(rd => rd.value),
-						backgroundColor: dataArr.map(() => getRandomColor())
+						backgroundColor: teal[500]
+					}]
+				},
+				barDataSets: {
+					labels: dataArr.map(rd => rd.id),
+					datasets: [{
+						borderColor: "#FFF",
+						borderWidth: 1,
+						data: dataArr.map(rd => rd.value),
+						backgroundColor: teal[500]
+					}]
+				}
+			})
+		}
+		else {
+			this.setState({
+				loading: false,
+				roundDataSets: null,
+				barDataSets: null
+			})
+		}
+	}
+
+	getWifiSum = async () => {
+		const { device } = this.props
+		const { from, to } = this.state
+		let startDate = moment(from).format(this.format)
+		let endDate = moment(to).format(this.format)
+		var data = await getWifiHourly(device.id, startDate, endDate).then(rs => rs)
+		if (data) {
+			var dataArr = Object.keys(data).map(r => ({ id: moment(r).format("DD.MM.YYYY HH:mm"), value: data[r] }))
+			this.setState({
+				loading: false,
+				roundDataSets: {
+					labels: dataArr.map(rd => rd.id),
+					datasets: [{
+						borderColor: "#FFF",
+						borderWidth: 1,
+						data: dataArr.map(rd => rd.value),
+						// backgroundColor: dataArr.map(() => getRandomColor())
+						backgroundColor: teal[500],
 					}]
 				},
 				barDataSets: {
@@ -80,15 +128,21 @@ class DeviceData extends Component {
 						borderColor: "#FFF",
 						borderWidth: 1,
 						data: dataArr.map(rd => rd.value),
-						backgroundColor: dataArr.map(() => getRandomColor())
+						// backgroundColor: dataArr.map(() => getRandomColor())
+						backgroundColor: teal[500],
 					}]
 				}
 			})
 		}
-		else  {
-			this.setState({ loading: false })
+		else {
+			this.setState({
+				loading: false,
+				roundDataSets: null,
+				barDataSets: null
+			})
 		}
 	}
+
 	componentDidMount = async () => {
 		this._isMounted = 1
 		// console.log(this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : 1000)
@@ -96,17 +150,46 @@ class DeviceData extends Component {
 			this.getWifiSum()
 		}
 	}
+
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
 
+	handleCustomCheckBox = (e) => {
+		this.setState({ timeType: parseInt(e.target.value, 10) })
+	}
 	handleOpenActionsDetails = event => {
 		this.setState({ actionAnchor: event.currentTarget });
-	};
+	}
+
 	handleCloseActionsDetails = () => {
 		this.setState({ actionAnchor: null });
-	};
+	}
+
 	format = "YYYY-MM-DD+HH:mm"
+	displayFormat = "DD.MM.YYYY HH:mm"
+	handleSwitchDayHour = () => {
+		let id = this.state.dateFilterInputID
+		switch (id) {
+			case 0:
+				this.getWifiSum();
+				break;
+			case 1:
+				this.getWifiDay();
+				break;
+			case 2:
+				this.getWifiDay();
+				break;
+			case 3:
+				this.getWifiDay();
+				break;
+			default:
+				this.getWifiDay();
+				break;
+
+		}
+	}
+
 	handleSetDate = (id) => {
 		let to = null
 		let from = null
@@ -137,57 +220,69 @@ class DeviceData extends Component {
 			loading: true,
 			roundDataSets: null,
 			barDataSets: null
-		}, this.getWifiSum)
+		}, this.handleSwitchDayHour)
 	}
+
 	handleVisibility = (event) => {
 		let id = event.target.value
 		this.setState({ display: id })
 	}
+
 	handleDateFilter = (event) => {
 		let id = event.target.value
 		if (id !== 4) {
 			this.handleSetDate(id)
 		}
-		else { 
-			this.setState({ loading: true,  openCustomDate: true, dateFilterInputID: id })
+		else {
+			this.setState({ loading: true, openCustomDate: true, dateFilterInputID: id })
 		}
 	}
+
 	handleCustomDate = date => e => {
 		this.setState({
 			[date]: e
 		})
 	}
+
 	options = [
-		{ id: 0, label: "Today" },
-		{ id: 1, label: "Last 7 days" },
-		{ id: 2, label: "Last 30 days" },
-		{ id: 3, label: "Last 90 days" },
-		{ id: 4, label: "Custom Interval" },
+		{ id: 0, label: this.props.t("filters.dateOptions.today") },
+		{ id: 1, label: this.props.t("filters.dateOptions.7days") },
+		{ id: 2, label: this.props.t("filters.dateOptions.30days") },
+		{ id: 3, label: this.props.t("filters.dateOptions.90days") },
+		{ id: 4, label: this.props.t("filters.dateOptions.custom") },
 
 	]
+
 	visibilityOptions = [
-		{ id: 0, icon: <PieChartRounded/>, label: "Pie Chart" },
-		{ id: 1, icon: <DonutLargeRounded/>, label: "Donut Chart" },
-		{ id: 2, icon: <BarChart />, label: "Bar Chart" },
+		{ id: 0, icon: <PieChartRounded />, label: this.props.t("charts.type.pie") },
+		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t("charts.type.donut") },
+		{ id: 2, icon: <BarChart />, label: this.props.t("charts.type.bar") },
 	]
+
 	handleCloseDialog = () => {
 		this.setState({ openCustomDate: false })
-		this.getWifiSum()
+		if (this.state.timeType === 1) {
+			this.getWifiDay()
+		}
+		else {
+			this.getWifiSum()
+		}
 	}
+
 	renderCustomDateDialog = () => {
-		const { classes } = this.props
+		const { classes, t } = this.props
 		return <MuiPickersUtilsProvider utils={MomentUtils}>
-		 <Dialog
+			<Dialog
 				open={this.state.openCustomDate}
 				onClose={this.handleCloseUnassign}
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description">
-				<DialogTitle id="alert-dialog-title">Custom Date</DialogTitle>
+				<DialogTitle id="alert-dialog-title">{t("filters.dateOptions.custom")}</DialogTitle>
 				<DialogContent>
 					<ItemGrid>
 						<DateTimePicker
 							autoOk
-							label="Start Date"
+							label={t("filters.startDate")}
 							clearable
 							format="DD.MM.YYYY+HH:mm"
 							value={this.state.from}
@@ -196,9 +291,9 @@ class DeviceData extends Component {
 							color="primary"
 							disableFuture
 							dateRangeIcon={<DateRange />}
-							timeIcon={<AccessTime/>}
-							rightArrowIcon={<KeyArrRight />}
-							leftArrowIcon={<KeyArrLeft />}
+							timeIcon={<AccessTime />}
+							rightArrowIcon={<KeyboardArrowRight/>}
+							leftArrowIcon={<KeyboardArrowLeft/>}
 							InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
 							InputProps={{ classes: { underline: classes.underline } }}
 						/>
@@ -207,7 +302,7 @@ class DeviceData extends Component {
 						<DateTimePicker
 							autoOk
 							disableFuture
-							label="End Date"
+							label={t("filters.endDate")}
 							clearable
 							format="DD.MM.YYYY+HH:mm"
 							value={this.state.to}
@@ -216,30 +311,63 @@ class DeviceData extends Component {
 							dateRangeIcon={<DateRange />}
 							timeIcon={<AccessTime />}
 							color="primary"
-							rightArrowIcon={<KeyArrRight />}
-							leftArrowIcon={<KeyArrLeft />}
+							rightArrowIcon={<KeyboardArrowRight />}
+							leftArrowIcon={<KeyboardArrowLeft/>}
 							InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
 							InputProps={{ classes: { underline: classes.underline } }}
 						/>
 					</ItemGrid>
+					<ItemGrid container>
+						<ItemGrid xs={12} noPadding zeroMargin>
+							<Caption>{t("filters.display")}</Caption>
+						</ItemGrid>
+						<ItemGrid xs={12} zeroMargin>
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={this.state.timeType === 0 ? true : false}
+										onChange={this.handleCustomCheckBox}
+										value="0"
+										className={classes.checkbox}
+									/>
+								}
+								label={t("filters.dateOptions.hourly")}
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12} zeroMargin>
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={this.state.timeType === 1 ? true : false}
+										onChange={this.handleCustomCheckBox}
+										value="1"
+										className={classes.checkbox}
+									/>
+								}
+								label={t("filters.dateOptions.daily")}
+							/>
+						</ItemGrid>
+					</ItemGrid>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={() => { this.setState({ loading: false, openCustomDate: false })}} color="primary">
-						No
+					<Button onClick={() => { this.setState({ loading: false, openCustomDate: false }) }} color="primary">
+						{t("actions.decline")}
 					</Button>
 					<Button onClick={this.handleCloseDialog} color="primary" autoFocus>
-						Apply
+						{t("actions.apply")}
 					</Button>
 				</DialogActions>
 			</Dialog>
 		</MuiPickersUtilsProvider>
 
 	}
+
 	renderNoData = () => {
 		return <ItemGrid container justify={'center'}>
-			<Caption> There is no Data available for the Range Selected</Caption>
+			<Caption> {this.props.t("devices.noData")}</Caption>
 		</ItemGrid>
 	}
+
 	renderType = () => {
 		const { display } = this.state
 		switch (display) {
@@ -254,7 +382,7 @@ class DeviceData extends Component {
 						}}
 					/> : this.renderNoData()
 
-			case 1: 
+			case 1:
 				return this.state.roundDataSets ?
 					<Doughnut
 						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
@@ -264,7 +392,7 @@ class DeviceData extends Component {
 						}}
 						data={this.state.roundDataSets}
 					/> : this.renderNoData()
-			case 2: 
+			case 2:
 				return this.state.barDataSets ? <Bar
 					data={this.state.barDataSets}
 					legend={this.barOpts}
@@ -277,11 +405,12 @@ class DeviceData extends Component {
 				break;
 		}
 	}
+
 	renderDateFilter = () => {
-		const { classes } = this.props
+		const { classes, t  } = this.props
 		const { dateFilterInputID, to, from } = this.state
-		let displayTo = moment(to).format(this.format)
-		let displayFrom = moment(from).format(this.format)
+		let displayTo = moment(to).format(this.displayFormat)
+		let displayFrom = moment(from).format(this.displayFormat)
 		return (
 			<div className={classes.root}>
 				<Hidden smDown>
@@ -302,21 +431,22 @@ class DeviceData extends Component {
 							<Info>{`${displayFrom} - ${displayTo}`}</Info>
 						</ItemGrid>
 						<Divider />
-						<MenuItem value={0}>Today</MenuItem>
-						<MenuItem value={1}>Last 7 days</MenuItem>
-						<MenuItem value={2}>Last 30 days</MenuItem>
-						<MenuItem value={3}>Last 90 days </MenuItem>
+						<MenuItem value={0}>{t("filters.dateOptions.today")}</MenuItem>
+						<MenuItem value={1}>{t("filters.dateOptions.7days")}</MenuItem>
+						<MenuItem value={2}>{t("filters.dateOptions.30days")}</MenuItem>
+						<MenuItem value={3}>{t("filters.dateOptions.90days")}</MenuItem>
 						<Divider />
-						<MenuItem value={4}>Custom Range</MenuItem>
+						<MenuItem value={4}>{t("filters.dateOptions.custom")}</MenuItem>
 					</Select>
 					<FormHelperText>{`${displayFrom} - ${displayTo}`}</FormHelperText>
 				</FormControl>
 			</div>
 		)
 	}
+
 	renderMenu = () => {
 		const { actionAnchor } = this.state
-		const { classes } = this.props
+		const { classes, t } = this.props
 		return <ItemGrid container noMargin noPadding>
 			<Hidden smDown>
 				{this.renderDateFilter()}
@@ -351,8 +481,10 @@ class DeviceData extends Component {
 					<ListItemIcon>
 						<Visibility />
 					</ListItemIcon>
-					<ListItemText inset primary="Visibility" />
-					{this.state.visibility ? <ExpandLess /> : <ExpandMore />}
+					<ListItemText inset primary={t("filters.options.graphType")} />
+					<ExpandMore className={classNames({
+						[classes.expandOpen]: this.state.visibility,
+					}, classes.expand)} />
 				</ListItem>
 				<Collapse in={this.state.visibility} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>
@@ -370,11 +502,12 @@ class DeviceData extends Component {
 			</Menu>
 		</ItemGrid>
 	}
+
 	render() {
-		const {  loading } = this.state
+		const { loading } = this.state
 		return (
 			<InfoCard
-				title={"Data"} avatar={<AssignmentTurnedIn />}
+				title={this.props.t("devices.cards.data")} avatar={<AssignmentTurnedIn />}
 				noExpand
 				topAction={this.renderMenu()}
 				content={
@@ -391,9 +524,11 @@ class DeviceData extends Component {
 		);
 	}
 }
+
 DeviceData.propTypes = {
 	// history: PropTypes.any.isRequired,
 	// match: PropTypes.any.isRequired,
 	device: PropTypes.object.isRequired,
 }
+
 export default withStyles(deviceStyles, { withTheme: true })(DeviceData);

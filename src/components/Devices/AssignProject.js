@@ -72,12 +72,12 @@ class AssignProject extends React.Component {
 	}
 	assignProject = async () => {
 		//Todo Snackbar success
-		if (Array.isArray(this.props.device_id))
+		if (Array.isArray(this.props.deviceId))
 		{
-			this.props.device_id.map(async id => await assignProjectToDevice({ project_id: this.state.selectedProject, id: id }))
+			this.props.deviceId.map(async id => await assignProjectToDevice({ project_id: this.state.selectedProject, id: id }))
 		}
 		else {
-			await assignProjectToDevice({ project_id: this.state.selectedProject, id: this.props.device_id });
+			await assignProjectToDevice({ project_id: this.state.selectedProject, id: this.props.id });
 		}
 		this.props.handleClose(true)
 	}
@@ -85,7 +85,7 @@ class AssignProject extends React.Component {
 		this.props.handleClose(false)
 	}
 	render() {
-		const { classes, open } = this.props;
+		const { classes, open, t } = this.props;
 		const appBarClasses = cx({
 			[" " + classes['primary']]: 'primary'
 		});
@@ -103,10 +103,10 @@ class AssignProject extends React.Component {
 								<Close />
 							</IconButton>
 							<Typography variant="title" color="inherit" className={classes.flex}>
-								Projects
+								{t("projects.pageTitle")}
   						</Typography>
 							<Button color="inherit" onClick={this.assignProject}>
-								save
+								{t("actions.save")}
   						</Button>
 						</Toolbar>
 					</AppBar>

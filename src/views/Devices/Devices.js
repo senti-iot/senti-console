@@ -9,7 +9,7 @@ import { Maps } from 'components/Map/Maps';
 import GridContainer from 'components/Grid/GridContainer';
 import { ViewList, ViewModule, Map  } from '@material-ui/icons'
 import Search from 'components/Search/Search';
-// import { ItemGrid } from 'components';
+
 var moment = require('moment');
 
 class Devices extends Component {
@@ -28,7 +28,7 @@ class Devices extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader("Devices", false)
+		props.setHeader(props.t("devices.pageTitle"), false)
 	}
 
 	suggestionSlicer = (obj) => {
@@ -141,14 +141,15 @@ class Devices extends Component {
 	}
 
 	getDevices = async () => {
+		const { t } = this.props
 		await getAllDevices().then(rs => this._isMounted ? this.setState({
-			devices: rs,
+			devices: rs ? rs : [],
 			deviceHeader: [
-				{ id: "device_name", label: "Name" },
-				{ id: "device_id", label: "ID" },
-				{ id: "liveStatus", label: "Status" },
-				{ id: "address", label: "Address" },
-				{ id: "org", label: "Organisation" }
+				{ id: "name", label: t("devices.fields.name") },
+				{ id: "id", label: t("devices.fields.id") },
+				{ id: "liveStatus", label: t("devices.fields.status") },
+				{ id: "address", label: t("devices.fields.address") },
+				{ id: "org", label: t("devices.fields.org") }
 			],
 			loading: false
 		}) : null)
@@ -160,7 +161,7 @@ class Devices extends Component {
 		if (this.props.location.pathname.includes('/map'))
 			this.setState({ route: 1 })
 		else {
-			if (this.props.location.pathname.includes('/cards'))
+			if (this.props.location.pathname.includes('/grid'))
 				this.setState({ route: 2 })
 			else { 
 				this.setState({ route: 0 })
@@ -172,7 +173,7 @@ class Devices extends Component {
 			if (this.props.location.pathname.includes('/map'))
 				this.setState({ route: 1 })
 			else {
-				if (this.props.location.pathname.includes('/cards'))
+				if (this.props.location.pathname.includes('/grid'))
 					this.setState({ route: 2 })
 				else {
 					this.setState({ route: 0 })
@@ -200,6 +201,7 @@ class Devices extends Component {
 	renderAllDevices = () => {
 		const { loading } = this.state
 		return loading ? this.renderLoader() : <DeviceTable
+			t={this.props.t}
 			data={this.filterItems(this.state.devices)}
 			tableHead={this.state.deviceHeader}
 			handleFilterEndDate={this.handleFilterEndDate}
@@ -219,11 +221,11 @@ class Devices extends Component {
 	renderMap = () => {
 		// this.setState({ route: 1 })
 
-		const { devices } = this.state
+		const { devices, loading } = this.state
 		const { classes } = this.props
-		return <GridContainer container justify={'center'} >
+		return loading ? <CircularLoader /> : <GridContainer container justify={'center'} >
 			<Paper className={classes.paper}>
-				<Maps isMarkerShown markers={this.filterItems(devices)} /* zoom={10} *//> 
+				<Maps isMarkerShown centerDenmark markers={this.filterItems(devices)} /* zoom={10} *//> 
 			</Paper>
 		</GridContainer>
 	}
@@ -232,16 +234,14 @@ class Devices extends Component {
 	}
 	render() {
 		const { devices } = this.state
-		// console.log(devices)
 		const { classes } = this.props
-		// console.log(this.props)
 		return (
 			<Fragment>
 				<AppBar position="sticky" classes={{ root: classes.appBar }}>
 					<Tabs value={this.state.route} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 						<Tab title={'List View'} id={0} label={<ViewList />} onClick={() => { this.props.history.push(`${this.props.match.path}/list`) }}/>
 						<Tab title={'Map View'} id={1} label={<Map/>} onClick={() => { this.props.history.push(`${this.props.match.path}/map`)}}/>
-						<Tab title={'Cards View'} id={2} label={<ViewModule/>} onClick={() => { this.props.history.push(`${this.props.match.path}/cards`)}}/>
+						<Tab title={'Cards View'} id={2} label={<ViewModule/>} onClick={() => { this.props.history.push(`${this.props.match.path}/grid`)}}/>
 						<Search
 							right
 							suggestions={devices ? this.suggestionGen(devices) : []}
@@ -249,11 +249,11 @@ class Devices extends Component {
 							searchValue={this.state.filters.keyword} />
 					</Tabs>
 				</AppBar>
-				{devices ? <Switch>
+				<Switch>
 					<Route path={`${this.props.match.path}/map`} render={() => this.renderMap()} />
 					<Route path={`${this.props.match.path}/list`} render={() => this.renderList()} />
 					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
-				</Switch> : <CircularLoader/>}
+				</Switch>
 			</Fragment>
 		)
 	}

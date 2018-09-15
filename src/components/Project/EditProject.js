@@ -7,8 +7,8 @@ import { getAvailableDevices } from 'variables/dataDevices';
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { updateProject, getProject } from 'variables/dataProjects';
-import { Caption, TextF, ItemGrid, CircularLoader, GridContainer } from '..'
-
+import { TextF, ItemGrid, CircularLoader, GridContainer } from '..'
+var moment = require("moment")
 // const ITEM_HEIGHT = 32;
 // const ITEM_PADDING_TOP = 8;
 // const MenuProps = {
@@ -25,92 +25,100 @@ class EditProject extends Component {
 		super(props)
 
 		this.state = {
-			id: 0,
-			title: '',
-			description: '',
-			open_date: null,
-			close_date: null,
-			devices: [],
+			project: {},
 			availableDevices: [],
+			selectedDevices: [],
+			allDevices: [],
 			creating: false,
 			created: false,
 			loading: true,
 			openSnackBar: false,
 		}
 	}
+
 	componentDidMount = async () => {
 		this._isMounted = 1
 		let id = this.props.match.params.id
+		let projectOrgID = 0
 		await getProject(id).then(p => {
-			if (p && this._isMounted)
+			if (p && this._isMounted) {
+				projectOrgID = p.org.id
 				this.setState({
-					title: p.title,
-					description: p.description,
-					open_date: p.open_date,
-					close_date: p.close_date,
-					devices: p.devices.map(d => d.device_id)
+					project: p,
+					// devices: p.devices,
+					selectedDevices: p.devices,
 				})
+			}
 		})
-		await getAvailableDevices().then(rs => {
+		await getAvailableDevices(projectOrgID).then(rs => {
 			if (this._isMounted) {
-				if (rs) {
-					this.setState({
-						availableDevices: rs
-					})
-				}
+				let allDev = []
+				allDev = this.state.project.devices ? allDev.concat(this.state.project.devices) : allDev
+				allDev = rs ? allDev.concat(rs) : allDev
+				this.setState({
+					availableDevices: rs ? rs : [],
+					allDevices: allDev
+				})
+
 			}
 		})
 		this.setState({
 			loading: false
 		})
-		this.props.setHeader("Update project " + this.state.title, true)
+		this.props.setHeader(this.props.t("projects.updateProject"), true, `/project/${id}`)
 	}
+
 	componentWillUnmount = () => {
 		this._isMounted = 0
 		clearTimeout(this.timer)
 	}
 
 	handleDeviceChange = event => {
-		this.setState({ devices: event.target.value });
+		// console.log(event.target.value)
+		// let newDevices = this.state.selectedDevices.push({ id: event.target.value })
+		this.setState({ selectedDevices: event.target.value.map(d => ({ id: d })) });
 	};
 
 	handleDateChange = id => value => {
 		this.setState({
-			[id]: value
+			project: {
+				...this.state.project,	
+				[id]: moment(value).format("YYYY-MM-DD HH:mm")
+			}
 		})
 	}
 	handleChange = (id) => e => {
 		e.preventDefault()
 		this.setState({
-			[id]: e.target.value
+			project: {
+				...this.state.project,
+				[id]: e.target.value
+			}
 		})
 	}
 	handleUpdateProject = () => {
 		clearTimeout(this.timer)
 		let newProject = {
-			project: {
-				id: this.props.match.params.id,
-				title: this.state.title,
-				description: this.state.description,
-				open_date: this.state.open_date,
-				close_date: this.state.close_date
-			},
-			devices: this.state.devices
+			...this.state.project,
+			devices: this.state.selectedDevices,
 		}
 		this.setState({ creating: true })
-		this.timer = setTimeout( async () => updateProject(newProject).then(rs => rs ? 
+		this.timer = setTimeout(async () => updateProject(newProject).then(rs => rs ?
 			this.setState({ created: true, creating: false, openSnackBar: true }) : this.setState({ created: false, creating: false }))
 			, 2e3)
 	}
+
 	goToNewProject = () => {
 		this.props.history.push('/project/' + this.props.match.params.id)
 	}
+
 	render() {
-		const { classes, theme } = this.props
-		const { availableDevices, created, loading } = this.state
+		const { classes, theme, t } = this.props
+		const { availableDevices, created, loading, selectedDevices, project, allDevices } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
-		});
+		})
+
 		return (
 			!loading ?
 				<GridContainer justify={'center'}>
@@ -120,34 +128,36 @@ class EditProject extends Component {
 								<ItemGrid container xs={12} md={6}>
 									<TextF
 										id={"title"}
-										label={"Title"}
-										value={this.state.title}
+										label={t("projects.fields.name")}
+										value={this.state.project.title}
 										className={classes.textField}
 										handleChange={this.handleChange("title")}
 										margin="normal"
+										noFullWidth
 									/>
 								</ItemGrid>
 								<ItemGrid xs={12} md={6} sm={12}>
 									<TextF
 										id={"multiline-flexible"}
-										label={"Description"}
+										label={t("projects.fields.description")}
 										multiline
 										rows={"4"}
 										color={"secondary"}
 										className={classes.textField}
-										value={this.state.description}
+										value={this.state.project.description}
 										handleChange={this.handleChange("description")}
 										margin="normal"
+										noFullWidth
 									/>
 								</ItemGrid>
 								<ItemGrid xs={12} md={6}>
 									<DatePicker
 										autoOk
-										label="Start Date"
+										label={t("projects.fields.startDate")}
 										clearable
 										format="DD.MM.YYYY"
-										value={this.state.open_date}
-										onChange={this.handleDateChange("open_date")}
+										value={this.state.project.startDate}
+										onChange={this.handleDateChange("startDate")}
 										animateYearScrolling={false}
 										color="primary"
 										rightArrowIcon={<KeyArrRight />}
@@ -160,11 +170,11 @@ class EditProject extends Component {
 									<DatePicker
 										color="primary"
 										autoOk
-										label="End Date"
+										label={t("projects.fields.endDate")}
 										clearable
 										format="DD.MM.YYYY"
-										value={this.state.close_date}
-										onChange={this.handleDateChange("close_date")}
+										value={this.state.project.endDate}
+										onChange={this.handleDateChange("endDate")}
 										animateYearScrolling={false}
 										rightArrowIcon={<KeyArrRight />}
 										leftArrowIcon={<KeyArrLeft />}
@@ -174,42 +184,50 @@ class EditProject extends Component {
 								</ItemGrid>
 								<ItemGrid xs={12}>
 									<FormControl className={classes.formControl}>
-										{availableDevices.length > 0 ?
-											<Fragment>
-												<InputLabel FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
-													Assign more devices
-												</InputLabel>
-												<Select
-													color={"primary"}s
-													multiple
-													value={this.state.devices}
-													onChange={this.handleDeviceChange}
-													input={<Input id="select-multiple-chip" classes={{ underline: classes.underline }} />}
-													renderValue={selected => (
-														<div className={classes.chips}>
-															{selected.map(value => {
+										<Fragment>
+											<InputLabel FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
+												{t("projects.fields.assignDevices")}
+											</InputLabel>
+											<Select
+												color={"primary"}
+												multiple
+												value={selectedDevices.map(d => d.id)}
+												onChange={this.handleDeviceChange}
+												input={<Input id="select-multiple-chip" classes={{ underline: classes.underline }} />}
+												renderValue={selected => (
+													<div className={classes.chips}>
+														{selected.map(value => {
+															if (availableDevices.findIndex(d => d.id === value) > -1)
 																return <Chip key={value}
-																	label={availableDevices[availableDevices.findIndex(d => d.device_id === value)].device_name}
-																	className={classes.chip} />})}
-														</div>)}
-													/* MenuProps={MenuProps} */>
-													{availableDevices.map(name => (
-														<MenuItem
-															key={name.device_id}
-															value={name.device_id}
-															style={{
-																fontWeight:
-														this.state.devices.indexOf(name.device_id) === -1
-															? theme.typography.fontWeightRegular
-															: theme.typography.fontWeightMedium,
-															}}>
-															{name.device_id + " - " + (name.device_name ? name.device_name : "No Name")}
-														</MenuItem>
-													))}
-												</Select>
-											</Fragment> : <Caption>There are no available Devices</Caption>}
+																	label={availableDevices[availableDevices.findIndex(d => d.id === value)].id}
+																	className={classes.chip} />
+															else
+															if (project.devices.findIndex(d => d.id === value) > -1)
+																return <Chip key={value}
+																	label={project.devices[project.devices.findIndex(d => d.id === value)].id}
+																	className={classes.chip} />
+															else return null
+														})}
+
+													</div>)}
+												/* MenuProps={MenuProps} */>
+												{allDevices.map(device => (
+													<MenuItem
+														key={device.id}
+														value={device.id}
+														style={{
+															fontWeight:
+																this.state.project.devices.indexOf(device.id) === -1
+																	? theme.typography.fontWeightRegular
+																	: theme.typography.fontWeightMedium,
+														}}>
+														{device.id + " - " + (device.name ? device.name : t("devices.noName"))}
+													</MenuItem>
+												))}
+											</Select>
+										</Fragment>
 									</FormControl>
-								</ItemGrid>							
+								</ItemGrid>
 							</form>
 							<ItemGrid xs={12} container justify={'center'}>
 								<Collapse in={this.state.creating} timeout="auto" unmountOnExit>
@@ -225,12 +243,12 @@ class EditProject extends Component {
 										disabled={this.state.creating}
 										onClick={this.state.created ? this.goToNewProject : this.handleUpdateProject}>
 										{this.state.created ?
-											<Fragment><Check className={classes.leftIcon} /> Go to Project </Fragment>
-											: <Fragment><Save className={classes.leftIcon} />Update Project</Fragment>}
+											<Fragment><Check className={classes.leftIcon} />{t("projects.viewProject")}</Fragment>
+											: <Fragment><Save className={classes.leftIcon} />{t("projects.updateProject")}</Fragment>}
 									</Button>
 								</div>
 							</Grid>
-						
+
 						</MuiPickersUtilsProvider>
 					</Paper>
 					<Snackbar
@@ -240,9 +258,12 @@ class EditProject extends Component {
 						ContentProps={{
 							'aria-describedby': 'message-id',
 						}}
+						autoHideDuration={5000}
 						message={
 							<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-								<Check className={classes.leftIcon} color={'primary'} />Project {this.state.title} has been successfully updated!
+								<Check className={classes.leftIcon} color={'primary'} />
+								{/* Project {this.state.title} has been successfully updated! */}
+								{t("snackbars.projectUpdated", { project: this.state.project.title })}
 							</ItemGrid>
 						}
 					/>

@@ -25,7 +25,7 @@ class ImageUpload extends Component {
 	}
 	upload = async () => {
 		await uploadPictures({
-			device_id: this.props.dId,
+			id: this.props.dId,
 			files: this.state.images,
 		}).then(rs => { this.setState({ success: rs }); return rs })
 	}
@@ -37,36 +37,36 @@ class ImageUpload extends Component {
 	}
 	handleReset = () => { this.setState({ images: [] }) }
 	render() {
-		const { classes } = this.props
+		const { classes, t } = this.props
 		const { images, success } = this.state
 		return (
 			<GridContainer className={classes.grid}>
 				<ItemGrid xs={12} noPadding container zeroMargin extraClass={classes.grid}>
-					{images.length > 0 ? <DeviceImage label={'Preview selected images'} images={[...images]} /> : null}
+					{images.length > 0 ? <DeviceImage t={t} label={'Preview selected images'} images={[...images]} /> : null}
 				</ItemGrid>
 				<ItemGrid xs={12} container zeroMargin justify={'center'}>
 					{images.length > 0 ?
 						<Fragment>
 							{success ?
 								<ItemGrid xs={12} zeroMargin container justify={'center'}>
-									{success === true ? <Success>Images uploaded successfully</Success> :
+									{success === true ? <Success>{t("images.uploadSuccess")}</Success> :
 										success === false ?
-											<Warning>Images failed to upload! Please refresh and try again</Warning>
+											<Warning>{t("images.uploadFailed")}</Warning>
 											: null}
 								</ItemGrid> : null}
 							<ItemGrid xs={6} noMargin container justify={'center'}>
 								<Button variant="contained" color={success ? "primary" : 'default'} component="span" className={classes.button} onClick={success ? this.finish : this.upload}>
 									{!success ? <Fragment>
-										<CloudUpload className={classes.iconButton} /> Upload
+										<CloudUpload className={classes.iconButton} />{t("images.upload")}
 									</Fragment>
 										: <Fragment>
-											<Check className={classes.iconButton} /> Finish
+											<Check className={classes.iconButton} />{t("images.finish")}
 										</Fragment>}
 								</Button>
 							</ItemGrid>
 							<ItemGrid xs={6} noMargin container justify={'center'}>
 								<Button variant={"contained"} component="span" className={classes.button} onClick={this.handleReset}>
-									<Restore className={classes.iconButton} /> Reset
+									<Restore className={classes.iconButton} />{t("images.reset")}
 								</Button>
 							</ItemGrid>
 						</Fragment>
@@ -84,7 +84,7 @@ class ImageUpload extends Component {
 							/>
 							<label htmlFor="contained-button-file">
 								<Button variant="contained" component="span" className={classes.button}>
-									<CloudUpload className={classes.iconButton} /> Add Images
+									<CloudUpload className={classes.iconButton} />{t("images.add")}
 								</Button>
 							</label>
 						</Fragment>

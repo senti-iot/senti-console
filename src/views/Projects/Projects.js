@@ -26,13 +26,14 @@ class Projects extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader("Projects", false)
+		props.setHeader(props.t("projects.pageTitle"), false)
 	}
+
 	componentDidMount = async () => {
 		this._isMounted = 1
 		await this.getProjects()
 		if (this._isMounted) {
-			if (this.props.location.pathname.includes('/cards')) {
+			if (this.props.location.pathname.includes('/grid')) {
 				this.setState({ route: 1 })
 			}
 			else {
@@ -142,16 +143,15 @@ class Projects extends Component {
 		})
 	}
 	getProjects = async () => {
+		const { t } = this.props
 		await getAllProjects().then(rs => this._isMounted ? this.setState({
-			projects: rs,
+			projects: rs ? rs : [],
 			projectHeader: [
-				{ id: 'title', label: 'Title', },
-				{ id: 'description', label: 'Description', },
-				{ id: 'open_date', label: 'Start Date', },
-				{ id: 'close_date', label: 'End Date', },
-				// { id: 'progress', label: 'Progress', },
-				{ id: 'created', label: 'Created', },
-				// { id: 'last_modified', label: 'Last Modified', },
+				{ id: 'title', label: t("projects.projectsColumnTitle"), },
+				{ id: 'description', label: t("projects.projectsColumnDescription"), },
+				{ id: 'open_date', label: t("projects.projectsColumnStartDate"), },
+				{ id: 'close_date', label: t("projects.projectsColumnEndDate"), },
+				{ id: 'created', label: t("projects.projectsColumnCreated"), },
 			],
 			loading: false
 		}) : null)
@@ -194,6 +194,7 @@ class Projects extends Component {
 		this.setState({ route: value })
 	}
 	renderAllProjects = () => {
+		const { t } = this.props
 		const { loading } = this.state
 		return loading ? <CircularLoader /> : <ProjectTable
 			data={this.filterItems(this.state.projects)}
@@ -203,6 +204,7 @@ class Projects extends Component {
 			handleFilterStartDate={this.handleFilterStartDate}
 			filters={this.state.filters}
 			deleteProjects={this.deleteProjects}
+			t={t}
 		/>
 	}
 	renderList = () => {
@@ -212,19 +214,20 @@ class Projects extends Component {
 	}
 	renderCards = () => {
 		const { loading } = this.state
+		const { t } = this.props
 		return loading ? <CircularLoader /> : <GridContainer>
-			 <ProjectCards projects={this.filterItems(this.state.projects)} />
+			<ProjectCards t={t} projects={this.filterItems(this.state.projects)} />
 		</GridContainer>
 	}
 	render() {
-		const { classes } = this.props
+		const { classes, t } = this.props
 		const { projects } = this.state
 		return (
 			<Fragment>
 				<AppBar position={'sticky'} classes={{ root: classes.appBar }}>
 					<Tabs value={this.state.route} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
-						<Tab title={'List View'} id={0} label={<ViewList />} onClick={() => { this.props.history.push(`${this.props.match.path}/list`) }} />
-						<Tab title={'Cards View'} id={1} label={<ViewModule />} onClick={() => { this.props.history.push(`${this.props.match.path}/cards`) }} />
+						<Tab title={t("projects.tabs.listView")} id={0} label={<ViewList />} onClick={() => { this.props.history.push(`${this.props.match.path}/list`) }} />
+						<Tab title={t("projects.tabs.cardView")} id={1} label={<ViewModule />} onClick={() => { this.props.history.push(`${this.props.match.path}/grid`) }} />
 						<Search
 							right
 							suggestions={projects ? this.suggestionGen(projects) : []}
@@ -232,11 +235,11 @@ class Projects extends Component {
 							searchValue={this.state.filters.keyword} />
 					</Tabs>
 				</AppBar>
-				{projects ? <Switch>
-					<Route path={`${this.props.match.path}/cards`} render={() => this.renderCards()} />
+				<Switch>
+					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} />
 					<Route path={`${this.props.match.path}/list`} render={() => this.renderList()} />
 					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
-				</Switch> : <CircularLoader />}
+				</Switch>
 			</Fragment>
 		)
 	}

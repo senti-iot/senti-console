@@ -4,7 +4,7 @@ import { Grid, IconButton, Menu, MenuItem, withStyles, /* Typography, */ Select,
 import {
 	AccessTime, AssignmentTurnedIn, MoreVert,
 	DateRange, KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft,
-	DonutLargeRounded, PieChartRounded, BarChart, ExpandLess, ExpandMore, Visibility
+	DonutLargeRounded, PieChartRounded, BarChart, ExpandMore, Visibility
 } from "@material-ui/icons"
 // import { dateFormatter } from 'variables/functions';
 import { ItemGrid, CircularLoader, Caption, Info, /* , Caption, Info */ } from 'components';
@@ -15,6 +15,7 @@ import { getWifiSummary } from 'variables/dataDevices';
 import { getRandomColor } from 'variables/colors';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import classNames from 'classnames';
 var moment = require('moment');
 
 
@@ -62,7 +63,7 @@ class ProjectData extends Component {
 		let dataArr = []
 		await Promise.all(project.devices.map(async d => {
 			let dataSet = null
-			await getWifiSummary(d.device_id, startDate, endDate).then(rs => dataSet = { nr: d.device_id, id: d.device_name + "(" + d.device_id + ")", data: rs })
+			await getWifiSummary(d.id, startDate, endDate).then(rs => dataSet = { nr: d.id, id: d.name + "(" + d.id + ")", data: rs })
 			return dataArr.push(dataSet)
 		}))
 		dataArr.sort((a, b) => a.nr - b.nr )
@@ -108,6 +109,7 @@ class ProjectData extends Component {
 		this.setState({ actionAnchor: null });
 	};
 	format = "YYYY-MM-DD+HH:mm"
+	displayFormat = "DD.MM.YYYY HH:mm"
 	handleSetDate = (id) => {
 		let to = null
 		let from = null
@@ -144,6 +146,7 @@ class ProjectData extends Component {
 		let id = event.target.value
 		this.setState({ display: id })
 	}
+	
 	handleDateFilter = (event) => {
 		let id = event.target.value
 		if (id !== 4) {
@@ -153,42 +156,47 @@ class ProjectData extends Component {
 			this.setState({ loading: true,  openCustomDate: true, dateFilterInputID: id })
 		}
 	}
+	
 	handleCustomDate = date => e => {
 		this.setState({
 			[date]: e
 		})
 	}
+	
 	options = [
-		{ id: 0, label: "Today" },
-		{ id: 1, label: "Last 7 days" },
-		{ id: 2, label: "Last 30 days" },
-		{ id: 3, label: "Last 90 days" },
-		{ id: 4, label: "Custom Interval" },
+		{ id: 0, label: this.props.t("filters.dateOptions.today") },
+		{ id: 1, label: this.props.t("filters.dateOptions.7days") },
+		{ id: 2, label: this.props.t("filters.dateOptions.30days") },
+		{ id: 3, label: this.props.t("filters.dateOptions.90days") },
+		{ id: 4, label: this.props.t("filters.dateOptions.custom") },
 
 	]
+
 	visibilityOptions = [
-		{ id: 0, icon: <PieChartRounded/>, label: "Pie Chart" },
-		{ id: 1, icon: <DonutLargeRounded/>, label: "Donut Chart" },
-		{ id: 2, icon: <BarChart />, label: "Bar Chart" },
+		{ id: 0, icon: <PieChartRounded />, label: this.props.t("charts.type.pie") },
+		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t("charts.type.donut") },
+		{ id: 2, icon: <BarChart />, label: this.props.t("charts.type.bar") },
 	]
+
 	handleCloseDialog = () => {
 		this.setState({ openCustomDate: false })
 		this.getWifiSum()
 	}
+
 	renderCustomDateDialog = () => {
-		const { classes } = this.props
+		const { classes, t } = this.props
 		return <MuiPickersUtilsProvider utils={MomentUtils}>
 		 <Dialog
 				open={this.state.openCustomDate}
 				onClose={this.handleCloseUnassign}
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description">
-				<DialogTitle id="alert-dialog-title">Custom Date</DialogTitle>
+				<DialogTitle id="alert-dialog-title">{t("filters.dateOptions.custom")}</DialogTitle>
 				<DialogContent>
 					<ItemGrid>
 						<DateTimePicker
 							autoOk
-							label="Start Date"
+							label={t("filters.startDate")}
 							clearable
 							format="DD.MM.YYYY+HH:mm"
 							value={this.state.from}
@@ -208,7 +216,7 @@ class ProjectData extends Component {
 						<DateTimePicker
 							autoOk
 							disableFuture
-							label="End Date"
+							label={t("filters.endDate")}
 							clearable
 							format="DD.MM.YYYY+HH:mm"
 							value={this.state.to}
@@ -226,10 +234,10 @@ class ProjectData extends Component {
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={() => { this.setState({ loading: false, openCustomDate: false })}} color="primary">
-						No
+						{t("dialogs.cancel")}
 					</Button>
 					<Button onClick={this.handleCloseDialog} color="primary" autoFocus>
-						Apply
+						{t("dialogs.apply")}
 					</Button>
 				</DialogActions>
 			</Dialog>
@@ -274,10 +282,10 @@ class ProjectData extends Component {
 		}
 	}
 	renderDateFilter = () => {
-		const { classes } = this.props
+		const { classes, t } = this.props
 		const { dateFilterInputID, to, from } = this.state
-		let displayTo = moment(to).format(this.format)
-		let displayFrom = moment(from).format(this.format)
+		let displayTo = moment(to).format(this.displayFormat)
+		let displayFrom = moment(from).format(this.displayFormat)
 		return (
 			<div className={classes.root}>
 				<Hidden smDown>
@@ -298,12 +306,12 @@ class ProjectData extends Component {
 							<Info>{`${displayFrom} - ${displayTo}`}</Info>
 						</ItemGrid>
 						<Divider />
-						<MenuItem value={0}>Today</MenuItem>
-						<MenuItem value={1}>Last 7 days</MenuItem>
-						<MenuItem value={2}>Last 30 days</MenuItem>
-						<MenuItem value={3}>Last 90 days </MenuItem>
+						<MenuItem value={0}>{t("filters.dateOptions.today")}</MenuItem>
+						<MenuItem value={1}>{t("filters.dateOptions.7days")}</MenuItem>
+						<MenuItem value={2}>{t("filters.dateOptions.30days")}</MenuItem>
+						<MenuItem value={3}>{t("filters.dateOptions.90days")}</MenuItem>
 						<Divider />
-						<MenuItem value={4}>Custom Range</MenuItem>
+						<MenuItem value={4}>{t("filters.dateOptions.custom")}</MenuItem>
 					</Select>
 					<FormHelperText>{`${displayFrom} - ${displayTo}`}</FormHelperText>
 				</FormControl>
@@ -312,7 +320,7 @@ class ProjectData extends Component {
 	}
 	renderMenu = () => {
 		const { actionAnchor } = this.state
-		const { classes } = this.props
+		const { classes, t } = this.props
 		return <ItemGrid container noMargin noPadding>
 			<Hidden smDown>
 				{this.renderDateFilter()}
@@ -336,17 +344,21 @@ class ProjectData extends Component {
 						minWidth: 250
 					}
 				}}>
-				<Hidden smUp>
-					<ListItem>
-						{this.renderDateFilter()}
-					</ListItem>
-				</Hidden>
+				<div>
+					<Hidden smUp>
+						<ListItem>
+							{this.renderDateFilter()}
+						</ListItem>
+					</Hidden>
+				</div>
 				<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
 					<ListItemIcon>
 						<Visibility />
 					</ListItemIcon>
-					<ListItemText inset primary="Visibility" />
-					{this.state.visibility ? <ExpandLess /> : <ExpandMore />}
+					<ListItemText inset primary={t("filters.options.graphType")} />
+					<ExpandMore className={classNames({
+						[classes.expandOpen]: this.state.visibility,
+					}, classes.expand)} />
 				</ListItem>
 				<Collapse in={this.state.visibility} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>
@@ -365,10 +377,11 @@ class ProjectData extends Component {
 		</ItemGrid>
 	}
 	render() {
-		const {  loading } = this.state
+		const { t } = this.props
+		const { loading } = this.state
 		return (
 			<InfoCard
-				title={"Data"} avatar={<AssignmentTurnedIn />}
+				title={t("projects.infoCardProjectData")} avatar={<AssignmentTurnedIn />}
 				noExpand
 				topAction={this.renderMenu()}
 				content={
@@ -386,8 +399,6 @@ class ProjectData extends Component {
 	}
 }
 ProjectData.propTypes = {
-	// history: PropTypes.any.isRequired,
-	// match: PropTypes.any.isRequired,
 	project: PropTypes.object.isRequired,
 }
 export default withStyles(deviceStyles, { withTheme: true })(ProjectData);
