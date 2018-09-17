@@ -364,7 +364,6 @@ class EnhancedTable extends React.Component {
 						spacer: classes.spacer,
 						input: classes.spaceBetween,
 						caption: classes.tablePaginationCaption
-
 					}}
 					onChangePage={this.handleChangePage}
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}

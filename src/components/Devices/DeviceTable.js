@@ -306,7 +306,7 @@ class EnhancedTable extends React.Component {
 					}}
 					onChangePage={this.handleChangePage}
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}
-					labelRowsPerPage={<Hidden mdDown>{t("tables.rowsPerPage")}</Hidden>}
+					labelRowsPerPage={t("tables.rowsPerPage")}
 					rowsPerPageOptions={[5, 10, 25, 50, 100]}
 					SelectProps={{
 						classes: {
