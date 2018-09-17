@@ -88,6 +88,10 @@ class ProjectDetails extends Component {
 						<Caption>{t("projects.projectsColumnCreated")}:</Caption>
 						<Info>{dateFormatter(project.created)}</Info>
 					</ItemGrid>
+					<ItemGrid xs={12}>
+						<Caption>{t("projects.projectsColumnLastMod")}:</Caption>
+						<Info>{dateFormatter(project.modified)}</Info>
+					</ItemGrid>
 				</Grid>}
 			/>
 
