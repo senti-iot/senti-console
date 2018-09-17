@@ -158,7 +158,8 @@
             "road": "Road",
             "square": "Square",
             "unspecified": "Unspecified"
-        },
+		},
+		"liveCount": "Live Count(last minute)",
         "new": "",
         "noAddress": "No Address",
         "noData": "There is no data available for the selected filters!",

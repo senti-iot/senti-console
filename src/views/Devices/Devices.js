@@ -225,7 +225,7 @@ class Devices extends Component {
 		const { classes } = this.props
 		return loading ? <CircularLoader /> : <GridContainer container justify={'center'} >
 			<Paper className={classes.paper}>
-				<Maps isMarkerShown centerDenmark markers={this.filterItems(devices)} /* zoom={10} *//> 
+				<Maps t={this.props.t} isMarkerShown centerDenmark markers={this.filterItems(devices)} /* zoom={10} *//> 
 			</Paper>
 		</GridContainer>
 	}
