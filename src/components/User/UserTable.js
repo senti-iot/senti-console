@@ -281,7 +281,7 @@ class UserTable extends React.Component {
 												</ItemGrid>
 											</TableCell>
 											{/* <TC label={n.userName} /> */}
-											<TC label={`${n.firstName} ${n.lastName}`} />
+											<TC FirstC label={`${n.firstName} ${n.lastName}`} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone) : n.phone}</a>} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`mailto:${n.email}`}>{n.email}</a>} />
 											<TC label={n.org ? n.org.name : t("users.noOrg")} />

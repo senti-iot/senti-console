@@ -267,7 +267,7 @@ class OrgTable extends React.Component {
 											<Checkbox checked={isSelected} />
 										</TableCell>
 										{/* <TC label={n.userName} /> */}
-										<TC label={n.name} />
+										<TC FirstC label={n.name} />
 	
 										<Hidden mdDown>
 											<TC label={n.address} />
