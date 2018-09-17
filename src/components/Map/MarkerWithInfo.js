@@ -7,6 +7,8 @@ import { withStyles, Button } from '@material-ui/core'
 import { red, green, yellow } from '@material-ui/core/colors'
 import ItemG from '../Grid/ItemG';
 import { Link } from 'react-router-dom'
+import { getWifiSummary } from 'variables/dataDevices';
+var moment = require("moment")
 const styles = theme => ({ 
 	redSignal: {
 		color: red[700]
@@ -23,11 +25,19 @@ class MarkerWithInfo extends Component {
 	  super(props)
 	
 	  this.state = {
-		 isOpen: false
+		 isOpen: false,
+		 liveCount: 0
 	  }
 	}
-	onToggleOpen = () => {
-		this.setState({ isOpen: !this.state.isOpen })
+	onToggleOpen = async () => {
+		if (this.state.isOpen === false) {
+			let OneMinuteAgo = moment().subtract(1, "minute").format("YYYY-MM-DD+HH:mm:ss")
+			let rs = await getWifiSummary(this.props.m.id, OneMinuteAgo, moment().format("YYYY-MM-DD+HH:mm:ss"))
+			this.setState({ isOpen: !this.state.isOpen, liveCount: rs })
+		}
+		else { 
+			this.setState({ isOpen: !this.state.isOpen })
+		}
 	}
 	renderIcon = (status) => {
 		const { classes, t } = this.props
@@ -93,7 +103,7 @@ class MarkerWithInfo extends Component {
 						</ItemG>
 						<ItemG xs={12}>
 							<Caption>{t("devices.liveCount")}</Caption>
-							<Info>*not implemented*</Info>
+							<Info>{this.state.liveCount}</Info>
 						</ItemG>
 						<ItemG xs={12}>
 							<Button variant={"flat"} component={Link} to={`/device/${m.id}`}>
