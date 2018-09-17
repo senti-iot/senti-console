@@ -35,6 +35,7 @@ const TextF = (props) => {
 			multiline={props.multiline ? props.multiline : false}
 			rows={props.rows ? props.rows : null}
 			className={props.classes.textField}
+			error={props.error ? props.error : false}
 			InputLabelProps={
 				{
 					FormLabelClasses: {

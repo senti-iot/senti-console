@@ -319,6 +319,12 @@
             "listView": "List view"
         },
         "updateProject": "Edit project",
+        "validation": {
+            "noEndDate": "Manglende Slutdato",
+            "noStartDate": "Manglende Startdato",
+            "noTitle": "Manglende Projektnavn",
+            "startDateBiggerThanEndDate": "Startdato kan ikke være større end slutdato"
+        },
         "viewProject": "View project"
     },
     "settings": {
@@ -406,31 +412,31 @@
             "new": "Add new",
             "resetPassword": "Reset password",
             "suspend": "Suspend"
-		},
+        },
         "fields": {
-			"neverLoggedIn": "Never signed in",
             "accessLevel": "Access Level",
-			"active": "Active",
-			"loginSuspended": "Login suspended",
+            "active": "Active",
             "created": "Created",
             "email": "Email",
             "firstName": "First name",
             "language": "System language",
             "lastName": "Last name",
             "lastSignIn": "Last sign in",
+            "loginSuspended": "Login suspended",
             "name": "Name",
+            "neverLoggedIn": "Never signed in",
             "noOrg": "No Organisation",
             "organisation": "Organisation",
             "phone": "Phone",
             "profileImage": "Profile image",
             "tags": "Tags",
             "userName": "Username"
-		},
-		"groups": {
-			"136550100000211": "Account Manager",
-			"136550100000143": "Super user",
-			"136550100000225": "User"
-		},
+        },
+        "groups": {
+            "136550100000143": "Super user",
+            "136550100000211": "Account Manager",
+            "136550100000225": "User"
+        },
         "headers": {
             "contact": "Contact",
             "system": "System logs"

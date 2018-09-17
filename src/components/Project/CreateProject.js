@@ -8,13 +8,14 @@ import React, { Component, Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 // import { getAvailableDevices } from 'variables/dataDevices'
 import { createProject } from 'variables/dataProjects'
-import { Caption, CircularLoader, GridContainer, ItemGrid, TextF } from '..'
+import { Caption, CircularLoader, GridContainer, ItemGrid, TextF, Danger } from '..'
 import { getAllOrgs } from 'variables/dataUsers';
 import { getAvailableDevices } from 'variables/dataDevices';
 import { getCreateProject } from '../../variables/dataProjects'
 import { connect } from 'react-redux'
+import Warning from '../Typography/Warning';
 // import moment from 'moment';
-// // var moment = require('moment')
+var moment = require('moment')
 // moment.locale('dk')
 const ITEM_HEIGHT = 32
 const ITEM_PADDING_TOP = 8
@@ -43,7 +44,9 @@ class CreateProject extends Component {
 			availableDevices: null,
 			creating: false,
 			created: false,
-			openSnackBar: false
+			openSnackBar: false,
+			error: false,
+			errorMessage: ""
 		}
 	}
 
@@ -51,7 +54,7 @@ class CreateProject extends Component {
 		const { t } = this.props
 		this._isMounted = 1
 
-		getAllOrgs().then(rs => {
+		getAllOrgs().then(async rs => {
 			if (this._isMounted) {
 				if (rs.length === 1)
 					this.setState({
@@ -59,7 +62,11 @@ class CreateProject extends Component {
 						selectedOrg: rs[0].id
 					})
 				else {
+					var devices = await getAvailableDevices(this.props.userOrg.id).then(rs => rs)
+					this.setState({})
 					this.setState({
+						availableDevices: devices ? devices : null,
+						devices: [], 
 						orgs: rs,
 						selectedOrg: this.props.userOrg
 					})
@@ -74,7 +81,49 @@ class CreateProject extends Component {
 		clearTimeout(this.timer)
 		clearTimeout(this.redirect)
 	}
+	handleValidation = () => {
+		let errorCode = [];
+		const { title, startDate, endDate } = this.state
+		if (title === "")
+		{
+			errorCode.push(1)
+		}
+		if (!moment(startDate).isValid())
+		{
+			errorCode.push(2)
+		}
+		if (!moment(endDate).isValid()) 
+		{
+			errorCode.push(3)
+		}
+		if ( moment(startDate).isAfter(endDate) )
+		{
+			errorCode.push(4)
+		}
+		this.setState({
+			errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>)
+		})	
+		if (errorCode.length === 0)
+			return true
+		else 
+			return false
+	}
+	errorMessages = code => {
+		const { t } = this.props
+		switch (code) {
+			case 1:
+				return t("projects.validation.noTitle")
+			case 2: 
+				return t("projects.validation.noStartDate")
+			case 3: 
+				return t("projects.validation.noEndDate")
+			case 4:
+				return t("projects.validation.startDateBiggerThanEndDate")
+			default: 
+				return ""	
+		}
 
+	}
 	handleDeviceChange = event => {
 		this.setState({ devices: event.target.value })
 	}
@@ -85,6 +134,7 @@ class CreateProject extends Component {
 	}
 	handleDateChange = id => value => {
 		this.setState({
+			error: false,
 			[id]: value
 		})
 	}
@@ -92,6 +142,7 @@ class CreateProject extends Component {
 	handleChange = (id) => e => {
 		e.preventDefault()
 		this.setState({
+			error: false,
 			[id]: e.target.value
 		})
 	}
@@ -103,21 +154,28 @@ class CreateProject extends Component {
 		const { availableDevices, title, description, startDate, endDate } = this.state
 		clearTimeout(this.timer)
 		this.setState({ creating: true })
-		await getCreateProject().then(async rs => {
+		if (this.handleValidation())
+			await getCreateProject().then(async rs => {
 			// let isCreated = false
-			if (this._isMounted) {
-				let newProject = {
-					...rs,
-					title: title,
-					description: description,
-					startDate: startDate,
-					endDate: endDate,
-					devices: availableDevices ? availableDevices.filter(a => this.state.devices.some(b => a.id === b)) : []
+				if (this._isMounted) {
+					let newProject = {
+						...rs,
+						title: title,
+						description: description,
+						startDate: startDate,
+						endDate: endDate,
+						devices: availableDevices ? availableDevices.filter(a => this.state.devices.some(b => a.id === b)) : []
+					}
+					this.timer = await setTimeout(async () => await createProject(newProject).then(rs => rs ? this.handleFinishCreateProject(rs) : this.setState({ create: false, creating: false, id: 0 })
+					), 2e3)
 				}
-				this.timer = await setTimeout(async () => await createProject(newProject).then(rs => rs ? this.handleFinishCreateProject(rs) : this.setState({ create: false, creating: false, id: 0 })
-				), 2e3)
-			}
-		})
+			})
+		else {
+			this.setState({
+				creating: false,
+				error: true,
+			})
+		}
 	}
 
 	goToNewProject = () => {
@@ -127,16 +185,25 @@ class CreateProject extends Component {
 
 	render() {
 		const { classes, theme, t } = this.props
-		const { availableDevices, created, orgs, selectedOrg } = this.state
+		const { availableDevices, created, orgs, selectedOrg, error } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
 		return (
 			<GridContainer justify={'center'}>
 				<Paper className={classes.paper}>
-					<MuiPickersUtilsProvider utils={MomentUtils} /* locale={'dk'} moment={moment} */>
+					<MuiPickersUtilsProvider utils={MomentUtils}>
+					
 						<form className={classes.form}>
-							{/* <Grid container justify={'center'}> */}
+							<ItemGrid xs={12}>
+								<Collapse in={this.state.error}>
+									<Warning>
+										<Danger>
+											{this.state.errorMessage}
+										</Danger>
+									</Warning>
+								</Collapse>
+							</ItemGrid>
 							<ItemGrid container xs={12}>
 								<TextF
 									id={"title"}
@@ -146,6 +213,7 @@ class CreateProject extends Component {
 									handleChange={this.handleChange("title")}
 									margin="normal"
 									noFullWidth
+									error={error}
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
@@ -161,6 +229,7 @@ class CreateProject extends Component {
 									handleChange={this.handleChange("description")}
 									margin="normal"
 									noFullWidth
+									error={error}
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
@@ -178,6 +247,8 @@ class CreateProject extends Component {
 									leftArrowIcon={<KeyArrLeft />}
 									InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
 									InputProps={{ classes: { underline: classes.underline } }}
+									error={error}
+
 								/>
 								{/* </div> */}
 							</ItemGrid>
@@ -196,6 +267,8 @@ class CreateProject extends Component {
 									leftArrowIcon={<KeyArrLeft />}
 									InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
 									InputProps={{ classes: { underline: classes.underline } }}
+									error={error}
+
 								/>
 								{/* </div> */}
 							</ItemGrid>
