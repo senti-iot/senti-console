@@ -41,9 +41,9 @@
         },
         "steps": {
             "0": "To configure your Senti device, please enter a title and an informative description.",
-            "1": "To configure your Senti device you need to allow Senti Cloud to store the location of the device. Accept this when prompted to allow to store the location of your mobile device. Secondly type in an address and select a location type to further pinpoint where your data is collected.",
+            "1": "To configure your Senti device you need to allow Senti.Cloud to store the location of the device. Accept this when prompted to allow to store the location of your mobile device. Secondly type in an address and select a location type to further pinpoint where your data is collected.",
             "2": "To get the best data collection accuracy, you need to do a manual calibration. The calibration hit target is set to 200 so you need to count 200 individual entities. When you are ready to start counting press “OPEN COUNTING WINDOW” and press “START“. Push the large button to count. When you have reached your hit target of 200 hits the timer automatically stops.",
-            "3": "You can store optional images of your device installation. This will enhance the Senti Cloud experience, and serve as a help for Senti service technicians in case your device needs on-site service.",
+            "3": "You can store optional images of your device installation. This will enhance the Senti.Cloud experience, and serve as a help for Senti service technicians in case your device needs on-site service.",
             "unknown": "Unknown step"
         },
         "texts": {
@@ -78,7 +78,7 @@
             "notifications": "See and manage notification messages and control how, when and where you want to engage your users with notifications.",
             "onSiteSetup": "When you deploy your devices on-site, a simple configuration is required. Store device name, description, location information and calibrate the device for optimal accuracy.",
             "projects": "Projects help you manage Senti devices for specific measuring tasks and data collection use cases. A project is a container for your devices and data across one or more locations.",
-            "settings": "The main control center for managing settings for Senti-in-a-Box devices and your Senti Cloud Console.",
+            "settings": "The main control center for managing settings for Senti IoT devices and your Senti.Cloud Console.",
             "users": "Authenticate and manage accounts for users and organisations, and allow access to projects, devices, collected data and API’s."
         },
         "cardHeaders": {
@@ -100,12 +100,12 @@
             "s1": "Devices are the actual physical device deployed into your environment.",
             "s2": "Here you can name, configure and set up the devices used in your projects."
         },
-        "pageTitle": "Console",
+        "pageTitle": "Senti.Cloud",
         "projects": {
             "s1": "Projects help you encapsulate Senti devices for at specific task and data collection use case.",
             "s2": "You can create as many projects as you like, and you can bundle devices from all available locations."
         },
-        "subtitle": "Senti Cloud Console lets you control and manage all your Senti-in-a-Box Devices."
+        "subtitle": "Senti.Cloud lets you control and manage all your Senti-in-a-Box Devices."
     },
     "devices": {
         "calibrateButton": "Manual Calibration",
@@ -203,7 +203,7 @@
         "getStarted": "Get started here",
         "onSiteSetup": "On-site setup of devices",
         "startAnalyzeData": "Start analyzing your data",
-        "welcome": "Welcome to Senti Console!"
+        "welcome": "Welcome to Senti.Cloud!"
     },
     "filters": {
         "dateOptions": {
@@ -306,7 +306,7 @@
         "projectDeleted": "Project has been successfully deleted!",
         "projectExported": "Project has been successfully exported!",
         "projectRedirect": "Redirecting back to list of projects",
-        "projectsColumnCreated": "Created",
+        "projectsColumnCreated": "Updated",
         "projectsColumnDescription": "Description",
         "projectsColumnEndDate": "End date",
         "projectsColumnLastMod": "Last modified",
@@ -425,7 +425,12 @@
             "profileImage": "Profile image",
             "tags": "Tags",
             "userName": "Username"
-        },
+		},
+		"groups": {
+			"136550100000211": "Account Manager",
+			"136550100000143": "Super user",
+			"136550100000225": "User"
+		},
         "headers": {
             "contact": "Contact",
             "system": "System logs"

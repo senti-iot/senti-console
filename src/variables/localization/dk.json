@@ -41,9 +41,9 @@
         },
         "steps": {
             "0": "For at konfigurere din Senti enhed, indtast et enhedsnavn og en informativ beskrivelse.",
-            "1": "For at konfigurere din Senti-enhed korrekt skal du tillade Senti Cloud at gemme enhedens placering. Accepter dette, når du bliver bedt om at tillade at gemme placeringen af din mobilenhed. Indtast ligeledes en adresse og vælg en placeringstype for yderligere at specificere, hvor dine data er opsamlet.",
+            "1": "For at konfigurere din Senti-enhed korrekt skal du tillade Senti.Cloud at gemme enhedens placering. Accepter dette, når du bliver bedt om at tillade at gemme placeringen af din mobilenhed. Indtast ligeledes en adresse og vælg en placeringstype for yderligere at specificere, hvor dine data er opsamlet.",
             "2": "For at få den bedste nøjagtighed af din dataindsamling, skal du foretage en manuel kalibrering. Kalibreringsmålet er sat til 200, så du skal tælle 200 individuelle enheder. Når du er klar til at begynde at tælle, tryk på “ÅBEN TÆLLER VINDUE“ og tryk på “START“. Tryk den store knap for at tælle. Når du har nået dit hitmål på 200 hits, stopper timeren automatisk.",
-            "3": "Du kan valgfrit gemme billeder af din enhedsinstallation. Dette vil forbedre Senti Cloud-oplevelsen og tjene som en hjælp til Senti-serviceteknikere, såfremt din enhed har brug for on-site service.",
+            "3": "Du kan valgfrit gemme billeder af din enhedsinstallation. Dette vil forbedre Senti.Cloud oplevelsen og tjene som en hjælp til Senti-serviceteknikere, såfremt din enhed har brug for on-site service.",
             "unknown": "Ukendt skridt"
         },
         "texts": {
@@ -78,7 +78,7 @@
             "notifications": "Se og administrer notifikations-meddelelser og kontroller hvordan, hvornår, og hvor du vil engagere dine brugere med underretninger.",
             "onSiteSetup": "Når du installerer dine enheder i det ønskede miljø (on-site), er en simpel konfiguration påkrævet. Gem enhedens navn, beskrivelse, placeringsoplysninger og kalibrer enheden for optimal nøjagtighed.",
             "projects": "Projekter hjælper dig med at administrere Senti-enheder til specifikke måleopgaver og dataindsamling. Et projekt er en container til at samle dine enheder og data for en eller flere lokationer.",
-            "settings": "Kontrolcenter til styring af indstillinger for Senti-in-a-Box-enheder, samt din Senti Cloud Console konto.",
+            "settings": "Kontrolcenter til styring af indstillinger for Senti IoT enheder, samt din Senti.Cloud konsol.",
             "users": "Godkendelse og administration af konti til brugere og organisationer, samt tildeling af adgang til projekter, enheder, indsamlede data og API'er."
         },
         "cardHeaders": {
@@ -100,12 +100,12 @@
             "s1": "",
             "s2": ""
         },
-        "pageTitle": "Console",
+        "pageTitle": "Senti.Cloud",
         "projects": {
             "s1": "",
             "s2": ""
         },
-        "subtitle": "Senti Cloud Console tilbyder styring og kontrol af alle dine Senti-in-a-Box enheder."
+        "subtitle": "Senti.Cloud tilbyder styring og kontrol af alle dine Senti IoT enheder."
     },
     "devices": {
         "calibrateButton": "Manuel kalibrering",
@@ -203,7 +203,7 @@
         "getStarted": "Start her",
         "onSiteSetup": "Opsætning af enheder",
         "startAnalyzeData": "Analyser dine data",
-        "welcome": "Velkommen til Senti Console!"
+        "welcome": "Velkommen til Senti.Cloud!"
     },
     "filters": {
         "dateOptions": {
@@ -424,8 +424,13 @@
             "phone": "Telefon",
             "profileImage": "Profilbillede",
             "tags": "Tags",
-            "userName": "Brugernavn"
-        },
+			"userName": "Brugernavn"
+		},
+		"groups":{
+			"136550100000143": "Superbruger",
+			"136550100000211": "Kontoansvarlig",
+			"136550100000225": "Bruger"
+		},
         "headers": {
             "contact": "Contact",
             "system": "System logs"
@@ -440,6 +445,7 @@
         "tabs": {
             "orgs": "Organisationer",
             "users": "Brugere"
-        }
+		}
+		
     }
 }

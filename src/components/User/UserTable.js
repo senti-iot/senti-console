@@ -17,7 +17,7 @@ import { connect } from "react-redux"
 import Caption from '../Typography/Caption';
 // import { Add, FilterList } from '@material-ui/icons';
 // import { boxShadow } from 'assets/jss/material-dashboard-react';
-import UserPlaceHolder from 'assets/img/userplaceholder.jpg'
+import UserPlaceHolder from 'assets/img/userplaceholder.png'
 import { pF } from 'variables/functions';
 
 var moment = require("moment")
@@ -281,7 +281,7 @@ class UserTable extends React.Component {
 												</ItemGrid>
 											</TableCell>
 											{/* <TC label={n.userName} /> */}
-											<TC label={`${n.firstName} ${n.lastName}`} />
+											<TC FirstC label={`${n.firstName} ${n.lastName}`} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone) : n.phone}</a>} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`mailto:${n.email}`}>{n.email}</a>} />
 											<TC label={n.org ? n.org.name : t("users.noOrg")} />
@@ -310,10 +310,20 @@ class UserTable extends React.Component {
 					nextIconButtonProps={{
 						'aria-label': t("actions.previousPage"),
 					}}
+					classes={{
+						spacer: classes.spacer,
+						input: classes.spaceBetween,
+						caption: classes.tablePaginationCaption
+					}}
 					onChangePage={this.handleChangePage}
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}
-					labelRowsPerPage={<Hidden mdDown>{t("tables.rowsPerPage")}</Hidden>}
+					labelRowsPerPage={t("tables.rowsPerPage")}
 					rowsPerPageOptions={[5, 10, 25, 50, 100]}
+					SelectProps={{
+						classes: {
+							select: classes.SelectIcon
+						}
+					}}
 				/>
 				<Snackbar
 					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}

@@ -154,9 +154,9 @@ class EnhancedTable extends React.Component {
 	renderIcon = (status) => {
 		const { classes, t } = this.props
 		switch (status) {
-			case 1: 
-				return <div title={t("devices.status.yellow")}><SignalWifi2Bar className={classes.yellowSignal}/></div>
-			case 2: 
+			case 1:
+				return <div title={t("devices.status.yellow")}><SignalWifi2Bar className={classes.yellowSignal} /></div>
+			case 2:
 				return <div title={t("devices.status.green")}><SignalWifi2Bar className={classes.greenSignal} /></div>
 			case 0:
 				return <div title={t("devices.status.red")}><SignalWifi2Bar className={classes.redSignal} /></div>
@@ -204,7 +204,8 @@ class EnhancedTable extends React.Component {
 								{
 									id: "id",
 									label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>
-									Device</Typography> }
+										Device</Typography>
+								}
 							]}
 						/>
 						<TableBody>
@@ -234,7 +235,7 @@ class EnhancedTable extends React.Component {
 												<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Info noWrap paragraphCell={classes.noMargin}>
-															{n.name ? n.name : n.id} 
+															{n.name ? n.name : n.id}
 														</Info>
 													</ItemGrid>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
@@ -250,9 +251,9 @@ class EnhancedTable extends React.Component {
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
-											 <TableCell className={classes.tableCell}>
+											<TableCell className={classes.tableCell + " " + classes.tableCellNoWidth}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.name ?  n.name : t("devices.noName")} 
+													{n.name ? n.name : t("devices.noName")}
 												</Typography>
 											</TableCell>
 											<TableCell className={classes.tableCell}>
@@ -272,7 +273,7 @@ class EnhancedTable extends React.Component {
 											</TableCell>
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.org ? n.org.name  : t("devices.noProject")}
+													{n.org ? n.org.name : t("devices.noProject")}
 												</Typography>
 											</TableCell>
 										</Hidden>
@@ -298,10 +299,20 @@ class EnhancedTable extends React.Component {
 					nextIconButtonProps={{
 						'aria-label': t("actions.previousPage"),
 					}}
+					classes={{
+						spacer: classes.spacer,
+						input: classes.spaceBetween,
+						caption: classes.tablePaginationCaption
+					}}
 					onChangePage={this.handleChangePage}
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}
-					labelRowsPerPage={<Hidden mdDown>{t("tables.rowsPerPage")}</Hidden>}
+					labelRowsPerPage={t("tables.rowsPerPage")}
 					rowsPerPageOptions={[5, 10, 25, 50, 100]}
+					SelectProps={{
+						classes: {
+							select: classes.SelectIcon
+						}
+					}}
 				/>
 			</Paper>
 		);
@@ -316,7 +327,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  
+
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(EnhancedTable)));

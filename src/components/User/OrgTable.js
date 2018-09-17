@@ -267,7 +267,7 @@ class OrgTable extends React.Component {
 											<Checkbox checked={isSelected} />
 										</TableCell>
 										{/* <TC label={n.userName} /> */}
-										<TC label={n.name} />
+										<TC FirstC label={n.name} />
 	
 										<Hidden mdDown>
 											<TC label={n.address} />
@@ -299,10 +299,20 @@ class OrgTable extends React.Component {
 					nextIconButtonProps={{
 						'aria-label': t("actions.previousPage"),
 					}}
+					classes={{
+						spacer: classes.spacer,
+						input: classes.spaceBetween,
+						caption: classes.tablePaginationCaption
+					}}
 					onChangePage={this.handleChangePage}
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}
-					labelRowsPerPage={<Hidden mdDown>{t("tables.rowsPerPage")}</Hidden>}
+					labelRowsPerPage={t("tables.rowsPerPage")}
 					rowsPerPageOptions={[5, 10, 25, 50, 100]}
+					SelectProps={{
+						classes: {
+							select: classes.SelectIcon
+						}
+					}}
 				/>
 				<Snackbar
 					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}

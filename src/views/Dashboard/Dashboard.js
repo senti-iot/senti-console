@@ -19,7 +19,7 @@ class Dashboard extends React.Component {
 			projects: [],
 			devices: 0
 		}
-		props.setHeader("Console", false)
+		props.setHeader("Senti.Cloud", false)
 	}
 
 
