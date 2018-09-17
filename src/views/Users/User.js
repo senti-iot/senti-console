@@ -37,14 +37,12 @@ class User extends Component {
 		return (
 			loading ? <CircularLoader /> : <Fragment>
 				<GridContainer justify={'center'} alignContent={'space-between'}>
-				
 					<ItemGrid xs={12} noMargin>
 						<UserContact t={t} user={user} classes={classes}/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
 						<UserLog t={t} user={user}/>	
 					</ItemGrid>
-
 				</GridContainer>
 			</Fragment>
 		)

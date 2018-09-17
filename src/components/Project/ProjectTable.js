@@ -313,7 +313,7 @@ class EnhancedTable extends React.Component {
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
-											<TableCell className={classes.tableCell}>
+											<TableCell className={classes.tableCell + " " + classes.tableCellNoWidth}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
 													{n.title}
 												</Typography>
@@ -362,12 +362,18 @@ class EnhancedTable extends React.Component {
 					}}
 					classes={{
 						spacer: classes.spacer,
-						input: classes.spaceBetween
+						input: classes.spaceBetween,
+						caption: classes.tablePaginationCaption
 					}}
 					onChangePage={this.handleChangePage}
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}
 					labelRowsPerPage={t("tables.rowsPerPage")}
 					rowsPerPageOptions={[5, 10, 25, 50, 100]}
+					SelectProps={{
+						classes: {
+							select: classes.SelectIcon
+						}
+					}}
 				/>
 				<Snackbar
 					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}

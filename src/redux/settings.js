@@ -47,14 +47,13 @@ export const getSettings = async () => {
 		var settings = await getSettingsFromServer()
 		var userId = cookie.load('SESSION') ? cookie.load('SESSION').userID : 0
 		var user = userId !== 0 ? await getUser(userId) : {}
+		moment.updateLocale("en", {
+			week: {
+				dow: 1
+			}
+		})
 		if (settings) {
-			moment.locale(settings.language === "dk" ? "da" : "en", {
-				week: {
-					dow: 1,
-				}
-			})
-			// moment().locale("da")
-			// console.log(moment.locale())
+			moment.locale(settings.language === "dk" ? "da" : "en")
 			dispatch({
 				type: GETSETTINGS,
 				settings,
@@ -191,11 +190,7 @@ export const settings = (state = initialState, action) => {
 			return Object.assign({}, state, { ...action.settings, user: action.user, loading: false })
 		case changeLangAction:
 		{
-			moment.locale(action.code === "dk" ? "da" : "en", {
-				week: {
-					dow: 1,
-				}
-			})
+			moment.locale(action.code === "dk" ? "da" : "en")
 			return Object.assign({}, state, {
 				language: action.code,
 			})
