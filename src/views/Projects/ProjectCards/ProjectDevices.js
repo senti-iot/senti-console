@@ -38,35 +38,14 @@ class ProjectDevices extends Component {
 				}
 				leftActionContent={
 					<Collapse in={this.state.mapExpanded} timeout="auto" unmountOnExit>
-						<Maps markers={project.devices} />
+						<Maps markers={project.devices} t={t}/>
 					</Collapse>
 				}
 				noRightExpand
 				content={
-					// <Grid container>
-					// 	<ItemGrid>
-					/* <Caption>
-								Most active device:
-							</Caption>
-							<Info>
-								{deviceMostCounts ? deviceMostCounts.name ? deviceMostCounts.name : deviceMostCounts.id : "-"}
-							</Info>
-						</ItemGrid>
-						<ItemGrid>
-							<Caption>
-								Hits by most active device:
-							</Caption>
-							<Info>
-								{deviceMostCounts ? deviceMostCounts.totalCount : "-"}
-							</Info> */
 					<DeviceSimpleList t={t} filters={this.state.deviceFilters} data={project.devices} />
-					// </ItemGrid>
-					// </Grid>
 				}
-				// noExpand
-				// hiddenContent={
-				// 	<DeviceSimpleList filters={this.state.deviceFilters} data={project.devices} />
-				// }
+			
 			/>
 		)
 	}
