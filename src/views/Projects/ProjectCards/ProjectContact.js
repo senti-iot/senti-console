@@ -27,7 +27,7 @@ export class ProjectContact extends Component {
 								{t("projects.contact.email")}
 							</Caption>
 							<Info>
-								<a title={t("links.mailTo")} href={`mailto:${project.user.vcEmail}`}>
+								<a title={t("links.mailTo")} href={`mailto:${project.user.email}`}>
 									{project.user.email}
 								</a>
 							</Info>
