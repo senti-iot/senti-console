@@ -307,7 +307,7 @@
         "projectDeleted": "Project has been successfully deleted!",
         "projectExported": "Project has been successfully exported!",
         "projectRedirect": "Redirecting back to list of projects",
-        "projectsColumnCreated": "Updated",
+        "projectsColumnCreated": "Created",
         "projectsColumnDescription": "Description",
         "projectsColumnEndDate": "End date",
         "projectsColumnLastMod": "Last modified",

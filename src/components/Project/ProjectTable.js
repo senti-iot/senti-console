@@ -337,6 +337,10 @@ class EnhancedTable extends React.Component {
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
 													{dateFormatter(n.created)}	</Typography>
 											</TableCell>
+											<TableCell className={classes.tableCell}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{dateFormatter(n.modified)}	</Typography>
+											</TableCell>
 										</Hidden>
 									</TableRow>
 								)

@@ -152,6 +152,7 @@ class Projects extends Component {
 				{ id: 'open_date', label: t("projects.projectsColumnStartDate"), },
 				{ id: 'close_date', label: t("projects.projectsColumnEndDate"), },
 				{ id: 'created', label: t("projects.projectsColumnCreated"), },
+				{ id: 'modified', label: t("projects.projectsColumnLastMod"), },
 			],
 			loading: false
 		}) : null)
