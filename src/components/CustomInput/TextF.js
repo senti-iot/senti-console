@@ -27,6 +27,7 @@ const styles = theme => ({
 const TextF = (props) => {
 	return (
 		<TextField
+			autoFocus={props.autoFocus ? props.autoFocus : false}
 			id={props.id}
 			label={props.label}
 			value={props.value}

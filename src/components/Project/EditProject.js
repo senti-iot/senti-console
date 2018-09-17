@@ -7,7 +7,7 @@ import { getAvailableDevices } from 'variables/dataDevices';
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { updateProject, getProject } from 'variables/dataProjects';
-import { TextF, ItemGrid, CircularLoader, GridContainer } from '..'
+import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from '..'
 var moment = require("moment")
 // const ITEM_HEIGHT = 32;
 // const ITEM_PADDING_TOP = 8;
@@ -35,7 +35,44 @@ class EditProject extends Component {
 			openSnackBar: false,
 		}
 	}
-
+	handleValidation = () => {
+		let errorCode = [];
+		const { title, startDate, endDate } = this.state.project
+		if (title === "") {
+			errorCode.push(1)
+		}
+		if (!moment(startDate).isValid()) {
+			errorCode.push(2)
+		}
+		if (!moment(endDate).isValid()) {
+			errorCode.push(3)
+		}
+		if (moment(startDate).isAfter(endDate)) {
+			errorCode.push(4)
+		}
+		this.setState({
+			errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>)
+		})
+		if (errorCode.length === 0)
+			return true
+		else
+			return false
+	}
+	errorMessages = code => {
+		const { t } = this.props
+		switch (code) {
+			case 1:
+				return t("projects.validation.noTitle")
+			case 2:
+				return t("projects.validation.noStartDate")
+			case 3:
+				return t("projects.validation.noEndDate")
+			case 4:
+				return t("projects.validation.startDateBiggerThanEndDate")
+			default:
+				return ""
+		}
+	}
 	componentDidMount = async () => {
 		this._isMounted = 1
 		let id = this.props.match.params.id
@@ -81,8 +118,9 @@ class EditProject extends Component {
 
 	handleDateChange = id => value => {
 		this.setState({
+			error: false,
 			project: {
-				...this.state.project,	
+				...this.state.project,
 				[id]: moment(value).format("YYYY-MM-DD HH:mm")
 			}
 		})
@@ -90,6 +128,7 @@ class EditProject extends Component {
 	handleChange = (id) => e => {
 		e.preventDefault()
 		this.setState({
+			error: false,
 			project: {
 				...this.state.project,
 				[id]: e.target.value
@@ -103,10 +142,21 @@ class EditProject extends Component {
 			devices: this.state.selectedDevices,
 		}
 		this.setState({ creating: true })
-		this.timer = setTimeout(async () => updateProject(newProject).then(rs => rs ?
-			this.setState({ created: true, creating: false, openSnackBar: true }) : this.setState({ created: false, creating: false }))
-			, 2e3)
+		this.timer = setTimeout(async () => {
+			if (this.handleValidation())
+				return updateProject(newProject).then(rs => rs ?
+					this.setState({ created: true, creating: false, openSnackBar: true }) :
+					this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("projects.validation.networkError") })
+					, 2e3)
+			else {
+				this.setState({
+					creating: false,
+					error: true,
+				})
+			}
+		})
 	}
+
 
 	goToNewProject = () => {
 		this.props.history.push('/project/' + this.props.match.params.id)
@@ -114,7 +164,7 @@ class EditProject extends Component {
 
 	render() {
 		const { classes, theme, t } = this.props
-		const { availableDevices, created, loading, selectedDevices, project, allDevices } = this.state
+		const { availableDevices, created, error, loading, selectedDevices, project, allDevices } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
@@ -125,8 +175,18 @@ class EditProject extends Component {
 					<Paper className={classes.paper}>
 						<MuiPickersUtilsProvider utils={MomentUtils}>
 							<form className={classes.form}>
+								<ItemGrid xs={12}>
+									<Collapse in={this.state.error}>
+										<Warning>
+											<Danger>
+												{this.state.errorMessage}
+											</Danger>
+										</Warning>
+									</Collapse>
+								</ItemGrid>
 								<ItemGrid container xs={12} md={6}>
 									<TextF
+										autoFocus
 										id={"title"}
 										label={t("projects.fields.name")}
 										value={this.state.project.title}
@@ -134,6 +194,7 @@ class EditProject extends Component {
 										handleChange={this.handleChange("title")}
 										margin="normal"
 										noFullWidth
+										error={error}
 									/>
 								</ItemGrid>
 								<ItemGrid xs={12} md={6} sm={12}>
@@ -148,6 +209,7 @@ class EditProject extends Component {
 										handleChange={this.handleChange("description")}
 										margin="normal"
 										noFullWidth
+										error={error}
 									/>
 								</ItemGrid>
 								<ItemGrid xs={12} md={6}>
@@ -164,6 +226,7 @@ class EditProject extends Component {
 										leftArrowIcon={<KeyArrLeft />}
 										InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
 										InputProps={{ classes: { underline: classes.underline } }}
+										error={error}
 									/>
 								</ItemGrid>
 								<ItemGrid xs={12} md={6}>
@@ -180,6 +243,7 @@ class EditProject extends Component {
 										leftArrowIcon={<KeyArrLeft />}
 										InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
 										InputProps={{ classes: { underline: classes.underline } }}
+										error={error}
 									/>
 								</ItemGrid>
 								<ItemGrid xs={12}>
@@ -210,7 +274,7 @@ class EditProject extends Component {
 														})}
 
 													</div>)}
-												/* MenuProps={MenuProps} */>
+											/* MenuProps={MenuProps} */>
 												{allDevices.map(device => (
 													<MenuItem
 														key={device.id}

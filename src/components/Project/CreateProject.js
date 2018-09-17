@@ -155,8 +155,9 @@ class CreateProject extends Component {
 		clearTimeout(this.timer)
 		this.setState({ creating: true })
 		if (this.handleValidation())
+		{
 			await getCreateProject().then(async rs => {
-			// let isCreated = false
+				// let isCreated = false
 				if (this._isMounted) {
 					let newProject = {
 						...rs,
@@ -170,6 +171,7 @@ class CreateProject extends Component {
 					), 2e3)
 				}
 			})
+		}
 		else {
 			this.setState({
 				creating: false,
@@ -206,6 +208,7 @@ class CreateProject extends Component {
 							</ItemGrid>
 							<ItemGrid container xs={12}>
 								<TextF
+									autoFocus
 									id={"title"}
 									label={t("projects.fields.name")}
 									value={this.state.title}
@@ -214,6 +217,7 @@ class CreateProject extends Component {
 									margin="normal"
 									noFullWidth
 									error={error}
+
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
