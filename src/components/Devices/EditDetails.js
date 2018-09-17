@@ -87,6 +87,7 @@ class EditDeviceDetails extends Component {
 									label={t("devices.fields.name")}
 									handleChange={this.handleInput('name')}
 									value={device.name}
+									autoFocus
 									noFullWidth
 								/>
 							</ItemGrid>
