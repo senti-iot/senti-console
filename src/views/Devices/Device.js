@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getDevice, getAllPictures, assignProjectToDevice } from 'variables/dataDevices'
+import { getDevice, getAllPictures, updateDevice } from 'variables/dataDevices'
 import {  Grid, withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Snackbar } from '@material-ui/core'
 import moment from 'moment'
 import { ItemGrid } from 'components'
@@ -132,7 +132,7 @@ class Device extends Component {
 	}
 
 	handleUnassign = async () => {
-		await assignProjectToDevice({ project_id: null, id: this.state.device.id }).then(async rs => {
+		await updateDevice({ ...this.state.device, project: { id: 0 } }).then(async rs => {
 			if (rs)	
 			{	this.handleCloseUnassign()
 				this.setState({ loading: true, anchorEl: null, openSnackbar: 1 })
@@ -185,7 +185,7 @@ class Device extends Component {
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<AssignProject
-						deviceId={this.state.device.id}
+						deviceId={[this.state.device]}
 						open={this.state.openAssign}
 						handleClose={this.handleCloseAssign}
 						t={this.props.t}

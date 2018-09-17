@@ -96,9 +96,9 @@ class DeviceDetails extends Component {
 								<Edit className={classes.leftIcon} />{t("menus.edit")}
 							</MenuItem>
 							<MenuItem onClick={this.props.handleOpenAssign}>
-								<LibraryBooks className={classes.leftIcon} />{device.project ? t("menus.reassign") : t("menus.assign")}
+								<LibraryBooks className={classes.leftIcon} />{device.project.id > 0 ? t("menus.reassign") : t("menus.assign")}
 							</MenuItem>
-							{device.project ? <MenuItem onClick={this.props.handleOpenUnassign}>
+							{device.project.id > 0 ? <MenuItem onClick={this.props.handleOpenUnassign}>
 								<LayersClear className={classes.leftIcon} /> {t("menus.unassignDevice")}
 							</MenuItem> : null}
 							<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}>
@@ -187,7 +187,7 @@ class DeviceDetails extends Component {
 							</ItemGrid>
 							<ItemGrid xs={4}>
 								<Caption>{t("devices.fields.project")}:</Caption>
-								<Info>{device.project ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : t("devices.noProject")}</Info>
+								<Info>{device.project.id > 0 ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : t("devices.noProject")}</Info>
 							</ItemGrid>
 						</Grid>
 					</Fragment>} />

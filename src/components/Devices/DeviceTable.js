@@ -175,7 +175,7 @@ class EnhancedTable extends React.Component {
 				<AssignProject
 					open={openAssignProject}
 					handleClose={this.handleCloseAssignToProject}
-					deviceId={selected}
+					deviceId={selected.map(s => data[data.findIndex(d => d.id === s)])}
 					t={t} />
 				<EnhancedTableToolbar
 					anchorElMenu={this.state.anchorElMenu}
