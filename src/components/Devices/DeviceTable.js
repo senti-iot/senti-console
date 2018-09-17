@@ -251,7 +251,7 @@ class EnhancedTable extends React.Component {
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
-											<TableCell className={classes.tableCell + " " + classes.tableCellNoWidth}>
+											<TableCell className={classes.tableCell /* + " " + classes.tableCellNoWidth */}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
 													{n.name ? n.name : t("devices.noName")}
 												</Typography>
@@ -274,6 +274,11 @@ class EnhancedTable extends React.Component {
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
 													{n.org ? n.org.name : t("devices.noProject")}
+												</Typography>
+											</TableCell>
+											<TableCell className={classes.tableCell}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{n.project.id > 0 ? t("devices.fields.notfree") : t("devices.fields.free")}
 												</Typography>
 											</TableCell>
 										</Hidden>

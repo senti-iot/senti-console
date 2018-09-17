@@ -149,7 +149,8 @@ class Devices extends Component {
 				{ id: "id", label: t("devices.fields.id") },
 				{ id: "liveStatus", label: t("devices.fields.status") },
 				{ id: "address", label: t("devices.fields.address") },
-				{ id: "org", label: t("devices.fields.org") }
+				{ id: "org", label: t("devices.fields.org") },
+				{ id: "project", label: t("devices.fields.availability") }
 			],
 			loading: false
 		}) : null)
