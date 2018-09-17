@@ -148,7 +148,7 @@ class CreateProject extends Component {
 	}
 	handleFinishCreateProject = (rs) => {
 		this.setState({ created: true, id: rs.id, openSnackBar: true })
-		this.redirect = setTimeout(() => this.props.history.push(`/project/${rs.id}`), 2e3)
+		this.redirect = setTimeout(() => this.props.history.push(`/project/${rs.id}`), 1000)
 	}
 	handleCreateProject = async () => {
 		const { availableDevices, title, description, startDate, endDate } = this.state
