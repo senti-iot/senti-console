@@ -301,12 +301,18 @@ class OrgTable extends React.Component {
 					}}
 					classes={{
 						spacer: classes.spacer,
-						input: classes.spaceBetween
+						input: classes.spaceBetween,
+						caption: classes.tablePaginationCaption
 					}}
 					onChangePage={this.handleChangePage}
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}
 					labelRowsPerPage={<Hidden mdDown>{t("tables.rowsPerPage")}</Hidden>}
 					rowsPerPageOptions={[5, 10, 25, 50, 100]}
+					SelectProps={{
+						classes: {
+							select: classes.SelectIcon
+						}
+					}}
 				/>
 				<Snackbar
 					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
