@@ -217,7 +217,7 @@ class Device extends Component {
 							noExpand
 							content={
 								<Grid container justify={'center'}>
-									<Maps isMarkerShown markers={[{ lat: device.lat, long: device.long, liveStatus: device.liveStatus }]} zoom={18} />
+									<Maps t={this.props.t} isMarkerShown markers={[device]} zoom={18} />
 								</Grid>
 							} />
 
