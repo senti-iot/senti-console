@@ -6,11 +6,9 @@ import { successColor } from "assets/jss/material-dashboard-react.js";
 
 const dashboardStyle = theme => ({
 	centerGrid: {
-		display: "grid",
-		[theme.breakpoints.up("sm")]: {
-			gridTemplateColumns: "repeat(3, 1fr)",
-			margin: "0 auto",
-		}
+	
+		margin: "0 auto",
+
 
 	},
 	successText: {

@@ -6,14 +6,13 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-
 const styles = {
 	card: {
 		maxWidth: 345,
 		margin: 8
 	},
-	cardMinProps: {
-		minHeight: 345,
+	cardContent: {
+		minHeight: 150,
 	},
 	media: {
 		height: 0,
@@ -24,13 +23,14 @@ const styles = {
 function MediaCard(props) {
 	const { classes, header, content, img, leftAction, rightAction } = props;
 	return (
-		<Card className={classes.card + " " + classes.cardMinProps}>
+		<Card className={classes.card}>
+		
 			<CardMedia
 				className={classes.media}
 				image={img}
 				title=""
 			/>
-			<CardContent>
+			<CardContent classes={{ root: classes.cardContent }}>
 				<Typography gutterBottom variant="headline" component="h2">
 					{header}
 				</Typography>

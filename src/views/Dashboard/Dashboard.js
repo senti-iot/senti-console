@@ -9,6 +9,7 @@ import DiscoverSenti from './DiscoverSenti'
 import MediaCard from 'components/Cards/MediaCard'
 import { connect } from 'react-redux'
 import imgs from 'assets/img/Squared'
+import { ItemG } from 'components';
 
 class Dashboard extends React.Component {
 	constructor(props) {
@@ -49,72 +50,70 @@ class Dashboard extends React.Component {
 		return (
 			<Fragment>
 				{discoverSenti ? <DiscoverSenti t={t} /> : null}
-				<GridContainer spacing={8}>
-					<GridContainer className={classes.centerGrid} justify={"center"}>
-						<MediaCard
-							img={imgs.hosting}
-							header={t("dashboard.cardHeaders.onSiteSetup")}
-							content={t("dashboard.cardContent.onSiteSetup")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/>
-						<MediaCard
-							img={imgs.storage}
-							header={t("dashboard.cardHeaders.projects")}
-							content={t("dashboard.cardContent.projects")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/>
-						<MediaCard
-							img={imgs.devices}
-							header={t("dashboard.cardHeaders.devices")}
-							content={t("dashboard.cardContent.devices")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/>
-						<MediaCard
-							img={imgs.data}
-							header={t("dashboard.cardHeaders.data")}
-							content={t("dashboard.cardContent.data")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/>
-						<MediaCard
-							img={imgs.users}
-							header={t("dashboard.cardHeaders.users")}
-							content={t("dashboard.cardContent.users")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/>
-						<MediaCard
-							img={imgs.settings}
-							header={t("dashboard.cardHeaders.settings")}
-							content={t("dashboard.cardContent.settings")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/>
-						<MediaCard
-							img={imgs.notifications}
-							header={t("dashboard.cardHeaders.notifications")}
-							content={t("dashboard.cardContent.notifications")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/>
-						<MediaCard
-							img={imgs.predictions}
-							header={t("dashboard.cardHeaders.alerts")}
-							content={t("dashboard.cardContent.alerts")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/>
-						<MediaCard
-							img={imgs.sharing}
-							header={t("dashboard.cardHeaders.api")}
-							content={t("dashboard.cardContent.api")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/>
-					</GridContainer>
+				<GridContainer spacing={8} justify={"center"}>
+					<ItemG><MediaCard
+						img={imgs.hosting}
+						header={t("dashboard.cardHeaders.onSiteSetup")}
+						content={t("dashboard.cardContent.onSiteSetup")}
+						leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
+						rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
+					/></ItemG>
+					<ItemG><MediaCard
+						img={imgs.storage}
+						header={t("dashboard.cardHeaders.projects")}
+						content={t("dashboard.cardContent.projects")}
+						leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
+						rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
+					/></ItemG>
+					<ItemG><MediaCard
+						img={imgs.devices}
+						header={t("dashboard.cardHeaders.devices")}
+						content={t("dashboard.cardContent.devices")}
+						leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
+						rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
+					/></ItemG>
+					<ItemG><MediaCard
+						img={imgs.data}
+						header={t("dashboard.cardHeaders.data")}
+						content={t("dashboard.cardContent.data")}
+						leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
+						rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
+					/></ItemG>
+					<ItemG>	<MediaCard
+						img={imgs.users}
+						header={t("dashboard.cardHeaders.users")}
+						content={t("dashboard.cardContent.users")}
+						leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
+						rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
+					/></ItemG>
+					<ItemG>	<MediaCard
+						img={imgs.settings}
+						header={t("dashboard.cardHeaders.settings")}
+						content={t("dashboard.cardContent.settings")}
+						leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
+						rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
+					/></ItemG>
+					<ItemG>	<MediaCard
+						img={imgs.notifications}
+						header={t("dashboard.cardHeaders.notifications")}
+						content={t("dashboard.cardContent.notifications")}
+						leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
+						rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
+					/></ItemG>
+					<ItemG>	<MediaCard
+						img={imgs.predictions}
+						header={t("dashboard.cardHeaders.alerts")}
+						content={t("dashboard.cardContent.alerts")}
+						leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
+						rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
+					/></ItemG>
+					<ItemG>	<MediaCard
+						img={imgs.sharing}
+						header={t("dashboard.cardHeaders.api")}
+						content={t("dashboard.cardContent.api")}
+						leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
+						rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
+					/></ItemG>
 				</GridContainer>
 			</Fragment>
 		)
