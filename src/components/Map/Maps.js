@@ -3,11 +3,12 @@ import { compose, withProps, /* withStateHandlers */ } from "recompose";
 import {
 	withScriptjs,
 	withGoogleMap,
-	GoogleMap,
+	// GoogleMap,
 } from "react-google-maps";
 import { CircularLoader } from "..";
-import MarkerClusterer from "react-google-maps/lib/components/addons/MarkerClusterer";
-import MarkerWithInfo from './MarkerWithInfo'
+// import MarkerClusterer from "react-google-maps/lib/components/addons/MarkerClusterer";
+// import MarkerWithInfo from './MarkerWithInfo'
+import MapComponent from './MapComponent';
 
 export const Maps = compose(
 	withProps({
@@ -19,7 +20,9 @@ export const Maps = compose(
 	}),
 	withScriptjs,
 	withGoogleMap
-)(props => {
+)(MapComponent)
+
+/* props => {
 	let defaultLat = parseFloat(56.2639) //Denmark,
 	let defaultLng = parseFloat(9.5018) //Denmark
 	if (!props.centerDenmark) {
@@ -45,5 +48,4 @@ export const Maps = compose(
 				: null}
 		</MarkerClusterer>
 	</GoogleMap>
-}
-)
+} */

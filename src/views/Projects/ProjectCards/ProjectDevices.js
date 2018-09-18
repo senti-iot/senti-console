@@ -4,7 +4,7 @@ import { Button, Collapse, /* Grid, */ withStyles } from '@material-ui/core';
 import { Caption, InfoCard, ItemG } from 'components';
 import { Devices, Map, ExpandMore } from '@material-ui/icons'
 import { Maps } from 'components/Map/Maps';
-import DeviceSimpleList from 'components/List/DeviceSimpleList/DeviceSimpleList';
+import DeviceSimpleList from 'components/Devices/DeviceSimpleList';
 import classNames from 'classnames'
 import deviceStyles from 'assets/jss/views/deviceStyles';
 
