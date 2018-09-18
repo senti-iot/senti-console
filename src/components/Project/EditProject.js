@@ -215,6 +215,7 @@ class EditProject extends Component {
 								<ItemGrid xs={12} md={6}>
 									<DatePicker
 										autoOk
+										ampm={false}
 										label={t("projects.fields.startDate")}
 										clearable
 										format="DD.MM.YYYY"
@@ -232,6 +233,7 @@ class EditProject extends Component {
 								<ItemGrid xs={12} md={6}>
 									<DatePicker
 										color="primary"
+										ampm={false}
 										autoOk
 										label={t("projects.fields.endDate")}
 										clearable

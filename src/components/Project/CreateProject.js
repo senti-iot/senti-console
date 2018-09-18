@@ -240,6 +240,7 @@ class CreateProject extends Component {
 								{/* <div className={classes.datepicker}> */}
 								<DatePicker
 									autoOk
+									ampm={false}
 									label={t("projects.fields.startDate")}
 									clearable
 									format="DD.MM.YYYY"
@@ -261,6 +262,7 @@ class CreateProject extends Component {
 								<DatePicker
 									color="primary"
 									autoOk
+									ampm={false}
 									label={t("projects.fields.endDate")}
 									clearable
 									format="DD.MM.YYYY"

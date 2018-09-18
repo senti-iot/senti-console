@@ -282,6 +282,7 @@ class DeviceData extends Component {
 					<ItemGrid>
 						<DateTimePicker
 							autoOk
+							ampm={false}
 							label={t("filters.startDate")}
 							clearable
 							format="DD.MM.YYYY+HH:mm"
@@ -302,6 +303,7 @@ class DeviceData extends Component {
 						<DateTimePicker
 							autoOk
 							disableFuture
+							ampm={false}
 							label={t("filters.endDate")}
 							clearable
 							format="DD.MM.YYYY+HH:mm"

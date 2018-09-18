@@ -205,6 +205,7 @@ class ProjectData extends Component {
 							autoOk
 							label={t("filters.startDate")}
 							clearable
+							ampm={false}
 							format="DD.MM.YYYY+HH:mm"
 							value={this.state.from}
 							onChange={this.handleCustomDate('from')}
@@ -225,6 +226,7 @@ class ProjectData extends Component {
 							disableFuture
 							label={t("filters.endDate")}
 							clearable
+							ampm={false}
 							format="DD.MM.YYYY+HH:mm"
 							value={this.state.to}
 							onChange={this.handleCustomDate('to')}
