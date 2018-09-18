@@ -148,6 +148,10 @@ class DeviceDetails extends Component {
 								</Info>
 							</ItemGrid>
 							<ItemGrid xs={12}>
+								<Caption>{t("devices.fields.description")}:</Caption>
+								<Info>{device.description ? device.description : ""}</Info>
+							</ItemGrid>
+							<ItemGrid xs={12}>
 								<Caption>{t("devices.fields.lastData")}:</Caption>
 								<Info>
 									{moment(device.wifiLastD).format("HH:mm - DD.MM.YYYY")}
@@ -158,10 +162,6 @@ class DeviceDetails extends Component {
 								<Info>
 									{moment(device.execLastD).format("HH:mm - DD.MM.YYYY")}
 								</Info>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<Caption>{t("devices.fields.description")}:</Caption>
-								<Info>{device.description ? device.description : ""}</Info>
 							</ItemGrid>
 						</Grid>
 						<Grid container>
@@ -185,9 +185,13 @@ class DeviceDetails extends Component {
 								<Caption>{t("devices.fields.org")}:</Caption>
 								<Info>{device.org ? device.org.name : t("devices.noProject")}</Info>
 							</ItemGrid>
-							<ItemGrid xs={4}>
+							<ItemGrid>
 								<Caption>{t("devices.fields.project")}:</Caption>
 								<Info>{device.project.id > 0 ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : t("devices.noProject")}</Info>
+							</ItemGrid>
+							<ItemGrid>
+								<Caption>{t("devices.fields.availability")}:</Caption>
+								<Info>{device.project.id > 0 ? t("devices.fields.notfree") : t("devices.fields.free")}</Info>
 							</ItemGrid>
 						</Grid>
 					</Fragment>} />
