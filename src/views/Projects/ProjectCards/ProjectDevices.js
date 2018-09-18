@@ -45,7 +45,6 @@ class ProjectDevices extends Component {
 	}
 	render() {
 		const { project, t /* deviceMostCounts */ } = this.props
-		console.log(project.devices)
 		return (
 			<InfoCard title={t("projects.devices.title")} avatar={<Devices />}
 				subheader={project.devices.length > 0 ? t("projects.devices.numDevices") + project.devices.length : null}

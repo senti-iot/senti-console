@@ -404,7 +404,7 @@ class ProjectData extends Component {
 						{this.renderCustomDateDialog()}
 						{loading ? <CircularLoader notCentered /> :
 							<Fragment>
-								<ItemG xs={12} container noPadding>
+								<ItemG xs={12} container>
 									{noData ? this.renderNoData() : this.renderType()}
 								</ItemG>
 							</Fragment>}

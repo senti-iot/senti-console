@@ -16,18 +16,13 @@ class MapComponent extends Component {
 	setCenterAndZoom() {
 		if (!this.state.init) {
 			const bounds = new window.google.maps.LatLngBounds()
-			console.log(this.props.markers)
 			this.props.markers.forEach(bound => {
-				console.log(bound.lat, bound.long)
 				if (bound.lat && bound.long)
 					return (
 						bounds.extend(new window.google.maps.LatLng(bound.lat, bound.long))
 					)
 			})
-			console.log(this.map.current)
-			console.log(bounds)
 			this.map.current.fitBounds(bounds)
-			// this.map.current.LatLng(bounds)
 			this.map.current.panToBounds(bounds, 10);
 		}
 		this.setState({

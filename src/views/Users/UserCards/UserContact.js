@@ -8,7 +8,6 @@ import { NavLink } from 'react-router-dom'
 export class UserContact extends Component {
 	render() {
 		const { t, user, classes } = this.props
-		console.log(user)
 		return (
 
 

@@ -16,10 +16,11 @@ import deviceStyles from 'assets/jss/views/deviceStyles';
 import { Doughnut, Bar, Pie } from 'react-chartjs-2';
 import { getWifiHourly, getWifiDaily } from 'variables/dataDevices';
 // import { getRandomColor } from 'variables/colors';
-import { teal } from '@material-ui/core/colors'
+// import { teal } from '@material-ui/core/colors'
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import classNames from 'classnames'
+import { colors } from '../../../variables/colors'
 var moment = require('moment');
 
 
@@ -44,14 +45,15 @@ class DeviceData extends Component {
 	}
 
 	legendOpts = {
-		display: this.props.theme.breakpoints.width("md") < window.innerWidth ? true : false,
-		position: 'bottom',
+		display: this.props.theme.breakpoints.width("md") < window.innerWidth ? true : true,
+		position: this.props.theme.breakpoints.width("md") < window.innerWidth ? 'left' : "bottom",
 		fullWidth: true,
 		reverse: false,
 		labels: {
 			padding: 10
 		}
 	}
+
 	barOpts = {
 		display: false,
 		position: 'bottom',
@@ -78,7 +80,7 @@ class DeviceData extends Component {
 						borderColor: "#FFF",
 						borderWidth: 1,
 						data: dataArr.map(rd => rd.value),
-						backgroundColor: teal[500]
+						backgroundColor: dataArr.map((rd, id) => colors[id])
 					}]
 				},
 				barDataSets: {
@@ -87,7 +89,7 @@ class DeviceData extends Component {
 						borderColor: "#FFF",
 						borderWidth: 1,
 						data: dataArr.map(rd => rd.value),
-						backgroundColor: teal[500]
+						backgroundColor: dataArr.map((rd, id) => colors[id])
 					}]
 				}
 			})
@@ -118,7 +120,7 @@ class DeviceData extends Component {
 						borderWidth: 1,
 						data: dataArr.map(rd => rd.value),
 						// backgroundColor: dataArr.map(() => getRandomColor())
-						backgroundColor: teal[500],
+						backgroundColor: dataArr.map((rd, id) => colors[id])
 					}]
 				},
 				barDataSets: {
@@ -128,8 +130,8 @@ class DeviceData extends Component {
 						borderColor: "#FFF",
 						borderWidth: 1,
 						data: dataArr.map(rd => rd.value),
-						// backgroundColor: dataArr.map(() => getRandomColor())
-						backgroundColor: teal[500],
+						backgroundColor: dataArr.map((rd, id) => colors[id])
+						// backgroundColor: teal[500],
 					}]
 				}
 			})
