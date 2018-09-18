@@ -9,7 +9,7 @@ import GridContainer from 'components/Grid/GridContainer';
 import Search from 'components/Search/Search';
 // import ProjectCards from 'components/Project/ProjectCards';
 import { getAllUsers, getAllOrgs } from 'variables/dataUsers';
-import OrgTable from 'components/User/OrgTable';
+import OrgTable from 'components/Orgs/OrgTable';
 var moment = require('moment');
 class Users extends Component {
 	constructor(props) {

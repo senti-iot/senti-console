@@ -471,7 +471,7 @@ class DeviceData extends Component {
 					}
 				}}>
 				<div>
-					<Hidden smUp>
+					<Hidden mdUp>
 						<ListItem>
 							{this.renderDateFilter()}
 						</ListItem>
