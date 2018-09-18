@@ -7,7 +7,7 @@ import {
 	DonutLargeRounded, PieChartRounded, BarChart, ExpandMore, Visibility
 } from "@material-ui/icons"
 // import { dateFormatter } from 'variables/functions';
-import { ItemGrid, CircularLoader, Caption, Info, /* , Caption, Info */ } from 'components';
+import { ItemGrid, CircularLoader, Caption, Info, ItemG, /* , Caption, Info */ } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { Doughnut, Bar, Pie } from 'react-chartjs-2';
@@ -66,30 +66,37 @@ class ProjectData extends Component {
 			await getWifiSummary(d.id, startDate, endDate).then(rs => dataSet = { nr: d.id, id: d.name + "(" + d.id + ")", data: rs })
 			return dataArr.push(dataSet)
 		}))
-		dataArr.sort((a, b) => a.nr - b.nr )
-		this.setState({
-			loading: false,
-			roundDataSets: {
-				labels: dataArr.map(da => da.id),
-				datasets: [{
-					label: "",
-					borderColor: "#FFF",
-					borderWidth: 1,
-					data: dataArr.map(d => parseInt(d.data, 10)),
-					backgroundColor: dataArr.map(() => getRandomColor())
-				}]
-			},
-			barDataSets: {
-				labels: dataArr.map(d => d.nr),
-				datasets: [{
-					borderColor: "#FFF",
-					borderWidth: 1,
-					data: dataArr.map(d => d.data),
-					backgroundColor: dataArr.map(() => getRandomColor())
-				}]
+		dataArr.sort((a, b) => a.nr - b.nr)
+		if (dataArr.length > 0)
+			this.setState({
+				loading: false,
+				roundDataSets: {
+					labels: dataArr.map(da => da.id),
+					datasets: [{
+						label: "",
+						borderColor: "#FFF",
+						borderWidth: 1,
+						data: dataArr.map(d => parseInt(d.data, 10)),
+						backgroundColor: dataArr.map(() => getRandomColor())
+					}]
+				},
+				barDataSets: {
+					labels: dataArr.map(d => d.nr),
+					datasets: [{
+						borderColor: "#FFF",
+						borderWidth: 1,
+						data: dataArr.map(d => d.data),
+						backgroundColor: dataArr.map(() => getRandomColor())
+					}]
 				
-			}
-		})
+				}
+			})
+		else { 
+			this.setState({
+				loading: false,
+				noData: true
+			})
+		}
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
@@ -376,22 +383,28 @@ class ProjectData extends Component {
 			</Menu>
 		</ItemGrid>
 	}
+	renderNoData = () => {
+		return <ItemG container justify={'center'}>
+			<Caption> {this.props.t("devices.noData")}</Caption>
+		</ItemG>
+	}
+
 	render() {
 		const { t } = this.props
-		const { loading } = this.state
+		const { loading, noData } = this.state
 		return (
 			<InfoCard
 				title={t("projects.infoCardProjectData")} avatar={<AssignmentTurnedIn />}
 				noExpand
-				topAction={this.renderMenu()}
+				topAction={noData ? null : this.renderMenu()}
 				content={
 					<Grid container>
 						{this.renderCustomDateDialog()}
 						{loading ? <CircularLoader notCentered /> :
 							<Fragment>
-								<ItemGrid xs={12} container noPadding>
-									{this.renderType()}
-								</ItemGrid>
+								<ItemG xs={12} container noPadding>
+									{noData ? this.renderNoData() : this.renderType()}
+								</ItemG>
 							</Fragment>}
 					</Grid>}
 			/>

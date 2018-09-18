@@ -96,7 +96,7 @@ class DeviceData extends Component {
 			this.setState({
 				loading: false,
 				roundDataSets: null,
-				barDataSets: null
+				barDataSets: null,
 			})
 		}
 	}
@@ -138,7 +138,7 @@ class DeviceData extends Component {
 			this.setState({
 				loading: false,
 				roundDataSets: null,
-				barDataSets: null
+				barDataSets: null,
 			})
 		}
 	}
@@ -362,9 +362,9 @@ class DeviceData extends Component {
 
 	}
 
-	renderNoData = () => {
+	renderNoDataFilters = () => {
 		return <ItemGrid container justify={'center'}>
-			<Caption> {this.props.t("devices.noData")}</Caption>
+			<Caption> {this.props.t("devices.noDataFilters")}</Caption>
 		</ItemGrid>
 	}
 
@@ -380,7 +380,7 @@ class DeviceData extends Component {
 						options={{
 							maintainAspectRatio: false,
 						}}
-					/> : this.renderNoData()
+					/> : this.renderNoDataFilters()
 
 			case 1:
 				return this.state.roundDataSets ?
@@ -391,7 +391,7 @@ class DeviceData extends Component {
 							maintainAspectRatio: false,
 						}}
 						data={this.state.roundDataSets}
-					/> : this.renderNoData()
+					/> : this.renderNoDataFilters()
 			case 2:
 				return this.state.barDataSets ? <Bar
 					data={this.state.barDataSets}
@@ -400,7 +400,7 @@ class DeviceData extends Component {
 					options={{
 						maintainAspectRatio: false,
 					}}
-				/> : this.renderNoData()
+				/> : this.renderNoDataFilters()
 			default:
 				break;
 		}
@@ -505,9 +505,10 @@ class DeviceData extends Component {
 
 	render() {
 		const { loading } = this.state
+		const { t } = this.props
 		return (
 			<InfoCard
-				title={this.props.t("devices.cards.data")} avatar={<AssignmentTurnedIn />}
+				title={t("devices.cards.data")} avatar={<AssignmentTurnedIn />}
 				noExpand
 				topAction={this.renderMenu()}
 				content={
@@ -516,7 +517,7 @@ class DeviceData extends Component {
 						{loading ? <CircularLoader notCentered /> :
 							<Fragment>
 								<ItemGrid xs={12} container noPadding>
-									{this.renderType()}
+									 {this.renderType()}
 								</ItemGrid>
 							</Fragment>}
 					</Grid>}
