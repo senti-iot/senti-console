@@ -10,11 +10,11 @@ var moment = require("moment");
 
 class DeviceDetails extends Component {
 	constructor(props) {
-	  super(props)
-	
-	  this.state = {
-		 actionAnchor: null
-	  }
+		super(props)
+
+		this.state = {
+			actionAnchor: null
+		}
 	}
 
 	renderStatus = (status) => {
@@ -69,7 +69,7 @@ class DeviceDetails extends Component {
 		const { classes, device, t } = this.props
 		return (
 			<InfoCard
-				title={t("devices.cards.details")}
+				title={device.name ? device.name : device.id}
 				avatar={<Devices />}
 				topAction={
 					<ItemGrid noMargin noPadding>
@@ -91,7 +91,7 @@ class DeviceDetails extends Component {
 									minWidth: 200
 								}
 							}}>
-						
+
 							<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
 								<Edit className={classes.leftIcon} />{t("menus.edit")}
 							</MenuItem>
@@ -131,12 +131,12 @@ class DeviceDetails extends Component {
 										</ItemGrid>
 									</Warning>
 								</ItemGrid>}
-							<ItemGrid>
+							{/* 							<ItemGrid>
 								<Caption>{t("devices.fields.name")}:</Caption>
 								<Info>
 									{device.name ? device.name : t("devices.noName")}
 								</Info>
-							</ItemGrid >
+							</ItemGrid > */}
 							<ItemGrid>
 								<Caption>{t("devices.fields.status")}:</Caption>
 								{this.renderStatus(device.liveStatus)}

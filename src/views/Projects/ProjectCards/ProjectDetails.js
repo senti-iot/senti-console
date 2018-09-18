@@ -35,7 +35,7 @@ class ProjectDetails extends Component {
 		const { project, classes, t } = this.props
 		return (
 			<InfoCard
-				title={t("projects.infoCardProjectDetails")} avatar={<LibraryBooks />}
+				title={project.title} avatar={<LibraryBooks />}
 				noExpand
 				topAction={<ItemGrid noMargin noPadding>
 					<IconButton
@@ -67,10 +67,10 @@ class ProjectDetails extends Component {
 				</ItemGrid>}
 				content={<Grid container>
 					<ItemGrid xs={12} container noMargin noPadding>
-						<ItemGrid>
+						{/* <ItemGrid>
 							<Caption>{t("projects.projectsColumnTitle")}:</Caption>
 							<Info>{project.title}</Info>
-						</ItemGrid>
+						</ItemGrid> */}
 						<ItemGrid>
 							<Caption>{t("projects.projectsColumnDescription")}:</Caption>
 							<Info>{project.description}</Info>
