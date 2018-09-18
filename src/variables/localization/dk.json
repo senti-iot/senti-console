@@ -125,7 +125,7 @@
 		"fields": {
 			"availability": "Tilgængelighed",
 			"free": "Fri",
-			"notfree": "Indsat",
+			"notfree": "Optaget",
 			"adapter": "Strømforsyning",
 			"address": "Adresse",
 			"cellNumber": "Mobilnummer",
