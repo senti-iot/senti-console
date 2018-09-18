@@ -125,7 +125,7 @@
 		"fields": {
 			"availability": "Availability",
 			"free": "Free",
-			"notfree": "Deployed",
+			"notfree": "Busy",
 			"adapter": "Power adapter",
 			"address": "Address",
 			"cellNumber": "Phone number",

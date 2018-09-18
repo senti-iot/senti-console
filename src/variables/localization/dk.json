@@ -124,7 +124,7 @@
 		"editHardwareTitle": "Opdater hardware for enhed %{deviceId}",
 		"fields": {
 			"availability": "Tilgængelighed",
-			"free": "Fri",
+			"free": "Ledig",
 			"notfree": "Optaget",
 			"adapter": "Strømforsyning",
 			"address": "Adresse",
