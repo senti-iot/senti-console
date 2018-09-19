@@ -26,7 +26,6 @@ class User extends Component {
 		if (this.props.match)
 			if (this.props.match.params.id) {
 				this.timer = setTimeout(async () => await getOrg(this.props.match.params.id).then(async rs => {
-					console.log(rs)
 					if (rs === null)
 						this.props.history.push('/404')
 					else {
