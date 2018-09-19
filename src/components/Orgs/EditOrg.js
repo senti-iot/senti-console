@@ -232,7 +232,7 @@ class EditOrg extends Component {
 										label={t("orgs.fields.url")}
 										value={org.url}
 										className={classes.textField}
-										handleChange={this.handleChange("website")}
+										handleChange={this.handleChange("url")}
 										margin="normal"
 										noFullWidth
 										error={error}
