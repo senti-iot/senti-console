@@ -168,7 +168,7 @@ class Users extends Component {
 					{ id: "city", label: t("orgs.fields.city") },
 					// { id: "country", label: t("orgs.fields.country") },
 					{ id: "url", label: t("orgs.fields.url") },
-					{ id: "org", label: t("orgs.fields.org") }
+					// { id: "org", label: t("orgs.fields.org") }
 				],
 				loading: false
 			})

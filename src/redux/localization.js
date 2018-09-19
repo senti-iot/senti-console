@@ -36,8 +36,8 @@ const extend = (morePhrases, prefix) => {
 
 //Reducer
 const initialState = {
-	language: "dk",
-	s: extend(loc["dk"])
+	language: "da",
+	s: extend(loc["da"])
 }
 export const localization = (state = initialState, action) => {
 	switch (action.type) {

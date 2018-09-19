@@ -275,7 +275,7 @@ class OrgTable extends React.Component {
 											<TC label={`${n.zip} ${n.city}`} />
 											<TC label={n.url}/>
 											{/* <TC label={n.sysLang} /> */}
-											<TC label={n.org ? n.org.name : t("users.noOrg")} />
+											{/* <TC label={n.org ? n.org.name : t("users.noOrg")} /> */}
 										</Hidden>
 									</TableRow>
 								)
