@@ -14,7 +14,6 @@ export class UserContact extends Component {
 			"136550100000225": "Bruger"
 		}, */
 		const { t, user } = this.props
-		console.log(user.groups[136550100000143])
 		if (user.groups[136550100000143])
 			return t("users.groups.136550100000143")
 		if (user.groups[136550100000211])
