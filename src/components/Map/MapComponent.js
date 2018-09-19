@@ -43,7 +43,6 @@ class MapComponent extends Component {
 			defaultCenter={{ lat: defaultLat, lng: defaultLng }}
 			ref={this.map}
 			onTilesLoaded={() => this.setCenterAndZoom()}
-			// ref={map => this.map = map && console.log(map)/* map.fitBounds(bounds) */}
 		>
 
 			<MarkerClusterer

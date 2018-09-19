@@ -111,7 +111,6 @@ class EditProject extends Component {
 	}
 
 	handleDeviceChange = event => {
-		// console.log(event.target.value)
 		// let newDevices = this.state.selectedDevices.push({ id: event.target.value })
 		this.setState({ selectedDevices: event.target.value.map(d => ({ id: d })) });
 	};

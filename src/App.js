@@ -10,6 +10,10 @@ import { primaryColor, secondaryColor, hoverColor } from "assets/jss/material-da
 import "assets/css/material-dashboard-react.css?v=1.2.0";
 import TProvider from 'components/Localization/TProvider';
 
+var countries = require("i18n-iso-countries")
+countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
+countries.registerLocale(require("i18n-iso-countries/langs/da.json"));
+
 const hist = createBrowserHistory();
 const theme = createMuiTheme({
 

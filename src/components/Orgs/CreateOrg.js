@@ -4,13 +4,15 @@ import { MuiPickersUtilsProvider, /* DatePicker */ } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import { /*  KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft,  */Save, Check } from '@material-ui/icons';
 import classNames from 'classnames';
-import { getOrg, updateOrg } from 'variables/dataUsers'
+import { updateOrg } from 'variables/dataUsers'
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from '..'
 import { connect } from 'react-redux'
 import createprojectStyles from '../../assets/jss/components/projects/createprojectStyles'
 
 var moment = require("moment")
-var countries = require("i18n-iso-countries");
+var countries = require("i18n-iso-countries")
+countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
+countries.registerLocale(require("i18n-iso-countries/langs/da.json"));
 
 // const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -22,7 +24,7 @@ const MenuProps = {
 	},
 };
 
-class EditOrg extends Component {
+class CreateOrg extends Component {
 	constructor(props) {
 		super(props)
 
@@ -74,22 +76,18 @@ class EditOrg extends Component {
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
-		let id = this.props.match.params.id
-		await getOrg(id).then(rs => {
-			if (rs && this._isMounted) {
-				this.setState({
-					org: {
-						...rs,
-						country: rs.country.length > 2 ? countries.getAlpha2Code(rs.country, "en") ? countries.getAlpha2Code(rs.country, "en") : countries.getAlpha2Code(rs.country, "da")
-							: rs.country
-					},
-				})
-			}
-		})
+		// let id = this.props.match.params.id
+		// await getOrg(id).then(rs => {
+		// 	if (rs && this._isMounted) {
+		// 		this.setState({
+		// 			org: rs,
+		// 		})
+		// 	}
+		// })
 		this.setState({
 			loading: false
 		})
-		this.props.setHeader(this.props.t("orgs.updateOrg"), true, `/org/${id}`)
+		this.props.setHeader(this.props.t("orgs.createOrg"), true, `/users/orgs`)
 	}
 
 	componentWillUnmount = () => {
@@ -116,13 +114,7 @@ class EditOrg extends Component {
 			}
 		})
 	}
-	snackBarClose = () => {
-		this.setState({ openSnackBar: false })
-		this.redirect = setTimeout(async => {
-			this.props.history.push(`/org/${this.state.org.id}`)
-		}, 1e3)
-	}
-	handleUpdateOrg = () => {
+	handleUpdateProject = () => {
 		clearTimeout(this.timer)
 		this.timer = setTimeout(async () => {
 			// if (this.handleValidation())
@@ -134,8 +126,10 @@ class EditOrg extends Component {
 
 	}
 
+	
+
 	goToOrg = () => {
-		this.props.history.push('/org/' + this.props.match.params.id)
+		this.props.history.push('/org/' + this.props.match.params.id)//REFACTOR
 	}
 
 	render() {
@@ -241,14 +235,14 @@ class EditOrg extends Component {
 								<ItemGrid xs={12}>
 									<FormControl className={classes.formControl}>
 										<Fragment>
-											<InputLabel FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select">
+											<InputLabel FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
 												{t("orgs.fields.country")}
 											</InputLabel>
 											<Select
 												color={"primary"}
 												value={org.country}
 												onChange={this.handleChange("country")}
-												input={<Input id="select" classes={{ underline: classes.underline }} />}
+												input={<Input id="select-multiple-chip" classes={{ underline: classes.underline }} />}
 												MenuProps={MenuProps}
 											>
 												{Object.keys(countries.getNames(this.props.language)).map(country => {
@@ -273,11 +267,11 @@ class EditOrg extends Component {
 										variant="contained"
 										color="primary"
 										className={buttonClassname}
-										disabled={this.state.creating || this.state.created}
-										onClick={this.state.created ? this.goToOrg : this.handleUpdateOrg}>
+										disabled={this.state.creating}
+										onClick={this.state.created ? this.goToOrg : this.handleUpdateProject}>
 										{this.state.created ?
-											<Fragment><Check className={classes.leftIcon} />{t("snackbars.redirect")}</Fragment>
-											: <Fragment><Save className={classes.leftIcon} />{t("orgs.updateOrg")}</Fragment>}
+											<Fragment><Check className={classes.leftIcon} />{t("orgs.viewProject")}</Fragment>
+											: <Fragment><Save className={classes.leftIcon} />{t("orgs.updateProject")}</Fragment>}
 									</Button>
 								</div>
 							</Grid>
@@ -287,15 +281,16 @@ class EditOrg extends Component {
 					<Snackbar
 						anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
 						open={this.state.openSnackBar}
-						onClose={this.snackBarClose}
+						onClose={() => { this.setState({ openSnackBar: false }) }}
 						ContentProps={{
 							'aria-describedby': 'message-id',
 						}}
-						autoHideDuration={1500}
+						autoHideDuration={5000}
 						message={
 							<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
 								<Check className={classes.leftIcon} color={'primary'} />
-								{t("snackbars.orgUpdated", { org: org.name })}
+								{/* Project {this.state.title} has been successfully updated! */}
+								{t("snackbars.orgUpdated", { org: org.title })}
 							</ItemGrid>
 						}
 					/>
@@ -313,4 +308,4 @@ const mapDispatchToProps = {
   
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles, { withTheme: true })(EditOrg))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles, { withTheme: true })(CreateOrg))

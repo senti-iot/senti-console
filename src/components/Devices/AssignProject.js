@@ -73,7 +73,6 @@ class AssignProject extends React.Component {
 	assignProject = async () => {
 		//Todo Snackbar success
 		this.props.deviceId.forEach(async element => {
-			// console.log({ ...element, project: { id: this.state.selectedProject } })
 			await updateDevice({ ...element, project: { id: this.state.selectedProject } }).then(rs => rs)
 		});
 		

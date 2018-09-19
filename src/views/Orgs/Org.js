@@ -3,10 +3,11 @@ import { GridContainer, ItemGrid, CircularLoader } from 'components';
 import { userStyles } from 'assets/jss/components/users/userStyles';
 import { withStyles/* , Typography, Grid, Hidden */ } from '@material-ui/core';
 import { getOrg } from 'variables/dataUsers';
-import { OrgDetails } from './OrgCards/OrgDetails';
+import OrgDetails from './OrgCards/OrgDetails';
 // var moment = require("moment")
+import { connect } from 'react-redux'
 
-class User extends Component {
+class Org extends Component {
 	constructor(props) {
 		super(props)
 
@@ -37,13 +38,13 @@ class User extends Component {
 	}
 
 	render() {
-		const { classes, t, history } = this.props
+		const { classes, t, history, match, language } = this.props
 		const { org, loading } = this.state
 		return (
 			loading ? <CircularLoader /> : <Fragment>
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<ItemGrid xs={12} noMargin>
-						<OrgDetails history={history} classes={classes} t={t} org={org}/>
+						<OrgDetails match={match} history={history} classes={classes} t={t} org={org} language={language}/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
 					
@@ -53,5 +54,12 @@ class User extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	language: state.localization.language
+  
+})
 
-export default withStyles(userStyles)(User)
+const mapDispatchToProps = {
+  
+}
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(userStyles)(Org))

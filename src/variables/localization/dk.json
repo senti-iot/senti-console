@@ -253,8 +253,10 @@
 		"calibrate": "Kalibrer",
 		"delete": "Slet",
 		"deleteProject": "Slet projekt",
+		"deleteOrg": "Slet organisation",
 		"edit": "Rediger",
 		"editProject": "Rediger projekt",
+		"editOrg": "Rediger organisation",
 		"exportPDF": "Exporter til PDF",
 		"hideMap": "Skjul kort",
 		"hideMore": "Skjul",
@@ -269,6 +271,7 @@
 		"unassignProject": "Fjern enhed(er) fra projekt"
 	},
 	"orgs": {
+		"updateOrg": "Rediger Organisation",
 		"fields": {
 			"address": "Adresse",
 			"city": "By",
@@ -402,7 +405,8 @@
 		"unassign": "Enhed succesfuldt fjernet!",
 		"updatedFailed": "Opdatering fejlede!",
 		"updatedSuccess": "Opdateret!",
-		"updating": "Opdaterer ..."
+		"updating": "Opdaterer ...",
+		"orgUpdated": "Organisation %{org} er succesfuldt opdateret!"
 	},
 	"tables": {
 		"addNewDevice": "Tilføj ny enhed",
