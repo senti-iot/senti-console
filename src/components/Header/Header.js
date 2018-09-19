@@ -25,7 +25,7 @@ function Header({ ...props }) {
 						{props.headerTitle}
 					</Button>
 				</div>
-				<Hidden smDown implementation="css">
+				<Hidden mdDown implementation="css">
 					<HeaderLinks t={t}/>
 				</Hidden>
 				<Hidden mdUp>
