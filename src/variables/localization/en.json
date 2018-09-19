@@ -277,6 +277,7 @@
 			"org": "Organisation",
 			"url": "Website",
 			"zip": "ZIP Code",
+			"region": "Region",
 			"parentOrg": "Parent Organisation",
 			"CVR": "Tax Registration Number",
 			"EAN": "EAN Number"

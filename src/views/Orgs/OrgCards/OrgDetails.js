@@ -36,6 +36,14 @@ export class OrgDetails extends Component {
 								{org.city}
 							</Info>
 						</ItemGrid>
+						<ItemGrid>
+							<Caption>
+								{t("orgs.fields.region")}
+							</Caption>
+							<Info>
+								{org.region}
+							</Info>
+						</ItemGrid>
 						<ItemGrid xs={12}>
 							<Caption>
 								{t("orgs.fields.url")}
