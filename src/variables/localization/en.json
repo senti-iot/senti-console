@@ -355,7 +355,7 @@
 		},
 		"defaultDataSet": "Default data set for charts",
 		"didYouKnow": "“Did you know?“",
-		"discoverSenti": "“Discover Senti“",
+		"discoverSenti": "Show intro cards on Dashboard",
 		"headers": {
 			"calibration": "Calibration",
 			"charts": "Charts",
