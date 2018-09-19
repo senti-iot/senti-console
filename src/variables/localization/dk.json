@@ -277,7 +277,9 @@
 			"org": "Organisation",
 			"url": "Website",
 			"zip": "Postnummer",
-			"parentOrg": "Organisation"
+			"parentOrg": "Organisation",
+			"CVR": "CVR nummer",
+			"EAN": "EAN nummer"
 		}
 	},
 	"projects": {

@@ -22,10 +22,18 @@ export class OrgDetails extends Component {
 						</ItemGrid>
 						<ItemGrid>
 							<Caption>
+								{t("orgs.fields.zip")}
+							</Caption>
+							<Info>
+								{org.zip}
+							</Info>
+						</ItemGrid>
+						<ItemGrid>
+							<Caption>
 								{t("orgs.fields.city")}
 							</Caption>
 							<Info>
-								{`${org.zip} ${org.city}`}
+								{org.city}
 							</Info>
 						</ItemGrid>
 						<ItemGrid xs={12}>
@@ -39,7 +47,7 @@ export class OrgDetails extends Component {
 							</Info>
 						</ItemGrid>
 						{org.org.id > 0 ?
-							<ItemGrid>
+							<ItemGrid xs={12}>
 								<Caption>
 									{t("orgs.fields.parentOrg")}
 								</Caption>
@@ -49,6 +57,22 @@ export class OrgDetails extends Component {
 									</Link>
 								</Info>
 							</ItemGrid> : null}
+						<ItemGrid>
+							<Caption>
+								{t("orgs.fields.CVR")}
+							</Caption>
+							<Info>
+								{org.cvr}
+							</Info>
+						</ItemGrid>
+						<ItemGrid>
+							<Caption>
+								{t("orgs.fields.EAN")}
+							</Caption>
+							<Info>
+								{org.ean}
+							</Info>
+						</ItemGrid>
 					</Grid>
 				}
 			/>
