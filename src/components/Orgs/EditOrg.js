@@ -164,7 +164,7 @@ class EditProject extends Component {
 	}
 
 	render() {
-		const { classes, theme, t } = this.props
+		const { classes, t } = this.props
 		const { created, error, loading, selectedDevices, org } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
