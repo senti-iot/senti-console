@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info } from 'components';
 import { Grid, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { Business, MoreVert, Edit, /* Delete */ } from '@material-ui/icons'
-import { Link } from 'react-router-dom'
 var countries = require("i18n-iso-countries")
 
 class OrgDetails extends Component {
@@ -109,7 +108,7 @@ class OrgDetails extends Component {
     							</a>
     						</Info>
     					</ItemGrid>
-    					{org.org.id > 0 ?
+    					{/* {org.org.id > 0 ?
     						<ItemGrid xs={12}>
     							<Caption>
     								{t("orgs.fields.parentOrg")}
@@ -119,7 +118,7 @@ class OrgDetails extends Component {
     									{org.org.name}
     								</Link>
     							</Info>
-    						</ItemGrid> : null}
+    						</ItemGrid> : null} */}
     					<ItemGrid>
     						<Caption>
     							{t("orgs.fields.CVR")}

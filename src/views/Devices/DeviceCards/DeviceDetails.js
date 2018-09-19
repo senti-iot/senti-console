@@ -183,7 +183,12 @@ class DeviceDetails extends Component {
 						<Grid container>
 							<ItemGrid>
 								<Caption>{t("devices.fields.org")}:</Caption>
-								<Info>{device.org ? device.org.name : t("devices.noProject")}</Info>
+								<Info>{device.org ?
+									<Link to={`/org/${device.org.id}`} >
+										{device.org.name}
+									</Link>
+									 : t("devices.noProject")}</Info>
+								
 							</ItemGrid>
 							<ItemGrid>
 								<Caption>{t("devices.fields.project")}:</Caption>
