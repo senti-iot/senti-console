@@ -274,9 +274,10 @@
 			"city": "City",
 			"country": "Country",
 			"name": "Name",
-			"org": "Organization",
+			"org": "Organisation",
 			"url": "Website",
-			"zip": "ZIP Code"
+			"zip": "ZIP Code",
+			"parentOrg": "Parent Organisation"
 		}
 	},
 	"projects": {

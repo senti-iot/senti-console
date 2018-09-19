@@ -276,7 +276,8 @@
 			"name": "Navn",
 			"org": "Organisation",
 			"url": "Website",
-			"zip": "Postnummer"
+			"zip": "Postnummer",
+			"parentOrg": "Organisation"
 		}
 	},
 	"projects": {

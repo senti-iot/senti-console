@@ -254,7 +254,7 @@ class OrgTable extends React.Component {
 								return (
 									<TableRow
 										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push('/user/' + n.id) }}
+										onClick={e => { e.stopPropagation(); this.props.history.push('/org/' + n.id) }}
 										// onContextMenu={this.handleToolbarMenuOpen}
 										role="checkbox"
 										aria-checked={isSelected}
