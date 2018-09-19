@@ -278,7 +278,7 @@
 			"url": "Website",
 			"zip": "Postnummer",
 			"region": "Region",			
-			"parentOrg": "Organisation",
+			"parentOrg": "Organisatorisk tilhørsforhold",
 			"CVR": "CVR nummer",
 			"EAN": "EAN nummer"
 		}
