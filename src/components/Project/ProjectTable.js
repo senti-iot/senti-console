@@ -289,9 +289,6 @@ class EnhancedTable extends React.Component {
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
-											{/* <TableCell padding="checkbox" className={classes.tablecellcheckbox}> */}
-											{/* {this.renderIcon(n.liveStatus)} */}
-											{/* </TableCell> */}
 											<TableCell classes={{ root: classes.tableCell }}>
 												<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>

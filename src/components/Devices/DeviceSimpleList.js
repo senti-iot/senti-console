@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
 import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons'
 import { ItemGrid, Info, Caption } from '..';
+import AssignProject from './AssignProject'
 
 class DeviceSimpleList extends React.Component {
 	constructor(props) {
@@ -75,7 +76,26 @@ class DeviceSimpleList extends React.Component {
 
 		this.setState({ selected: newSelected });
 	};
-
+	options = () => {
+		const { t } = this.props
+		return [
+			{ label: t("menus.edit"), func: this.handleDeviceEdit, single: true },
+			{ label: t("menus.assign"), func: this.handleAssignToProject, single: false },
+			{ label: t("menus.exportPDF"), func: () => { }, single: false },
+			{ label: t("menus.calibrate"), func: this.handleCalibrateFlow, single: true },
+			{ label: t("menus.delete"), func: this.handleDeleteProjects, single: false },
+		]
+	}
+	handleDeviceEdit = () => {
+		const { selected } = this.state
+		this.props.history.push(`/device/${selected[0]}/edit`)
+	}
+	handleAssignToProject = () => {
+		this.setState({ openAssignProject: true })
+	}
+	handleCloseAssignToProject = reload => {
+		this.setState({ openAssignProject: false })
+	}
 	handleChangePage = (event, page) => {
 		this.setState({ page });
 	};
@@ -103,13 +123,18 @@ class DeviceSimpleList extends React.Component {
 	}
 	render() {
 		const { classes, data, t } = this.props
-		const { order, orderBy, selected, rowsPerPage, page } = this.state
+		const { order, orderBy, selected, rowsPerPage, page, openAssignProject } = this.state
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 		const tableHead = [
 			{ id: "id", label: t("devices.pageTitle") }
 		]
 		return (
 			<Fragment>
+				<AssignProject
+					open={openAssignProject}
+					handleClose={this.handleCloseAssignToProject}
+					deviceId={selected.map(s => data[data.findIndex(d => d.id === s)])}
+					t={t} />
 				<EnhancedTableToolbar
 					noFilterIcon
 					noAdd
@@ -119,7 +144,7 @@ class DeviceSimpleList extends React.Component {
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
 					filters={this.props.filters}
 					numSelected={selected.length}
-					options={() => []}
+					options={this.options}
 					t={t}
 				/>
 				{/* <div className={classes.tableWrapper}> */}

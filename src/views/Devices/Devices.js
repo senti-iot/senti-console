@@ -158,7 +158,8 @@ class Devices extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		await this.getDevices()
-		this.liveStatus = setInterval(this.getDevices, 10000);
+		// No more bullcrap
+		// this.liveStatus = setInterval(this.getDevices, 10000);
 		if (this.props.location.pathname.includes('/map'))
 			this.setState({ route: 1 })
 		else {
