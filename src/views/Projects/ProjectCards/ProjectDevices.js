@@ -21,7 +21,8 @@ class ProjectDevices extends Component {
 				{ id: "liveStatus", label: t("devices.fields.status") },
 				{ id: "address", label: t("devices.fields.address") },
 				{ id: "org", label: t("devices.fields.org") },
-				{ id: "project", label: t("devices.fields.availability") }]
+				{ id: "project", label: t("devices.fields.availability") }],
+			openUnassign: false
 		}
 	}
 
