@@ -9,6 +9,7 @@ import EnhancedTableHead from '../Table/TableHeader'
 import EnhancedTableToolbar from '../Table/TableToolbar';
 import { connect } from 'react-redux'
 import { ItemGrid, Info, Caption } from '..';
+import TC from 'components/Table/TC'
 class EnhancedTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -251,36 +252,36 @@ class EnhancedTable extends React.Component {
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
-											<TableCell className={classes.tableCell /* + " " + classes.tableCellNoWidth */}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.name ? n.name : t("devices.noName")}
-												</Typography>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+
+											<TC
+												label={n.name ? n.name : t("devices.noName")}
+											/>
+										
+											<TC
+												label=
 													{n.id}
-												</Typography>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<div className={classes.paragraphCell}>
+											/>
+										
+											<TC
+												content={<div className={classes.paragraphCell}>
 													{this.renderIcon(n.liveStatus)}
-												</div>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+												</div>} />
+										
+											<TC
+												label=
 													{n.address ? n.address : t("devices.noAddress")}
-												</Typography>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+											/>
+										
+											<TC
+												label=
 													{n.org ? n.org.name : t("devices.noProject")}
-												</Typography>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+											/>
+										
+											<TC
+												label=
 													{n.project.id > 0 ? t("devices.fields.notfree") : t("devices.fields.free")}
-												</Typography>
-											</TableCell>
+											/>
+										
 										</Hidden>
 									</TableRow>
 								);

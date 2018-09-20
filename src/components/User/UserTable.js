@@ -3,7 +3,7 @@ import {
 	TableRow, /* Typography, */ withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
 	DialogContentText, DialogActions, Button, Typography, /* IconButton, Menu, MenuItem*/
 } from "@material-ui/core"
-import TC from 'components/Table/TableCell'
+import TC from 'components/Table/TC'
 import { Delete, /* Devices, */ Edit, PictureAsPdf } from '@material-ui/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import PropTypes from "prop-types"
