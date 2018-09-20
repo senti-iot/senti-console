@@ -50,16 +50,17 @@ class App extends React.Component {
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
-		await this.props.getSettings().then(() => {
-			if (navigator.platform.indexOf('Win') > -1) {
-				if (!this.props.loading) {
-					if (this.refs.mainPanel) {
+		if (cookie.load('SESSION'))
+			await this.props.getSettings().then(() => {
+				if (navigator.platform.indexOf('Win') > -1) {
+					if (!this.props.loading) {
+						if (this.refs.mainPanel) {
 						//eslint-disable-next-line
 						const ps = new PerfectScrollbar(this.refs.mainPanel);
+						}
 					}
 				}
-			}
-		})
+			})
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0

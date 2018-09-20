@@ -354,7 +354,7 @@ class ProjectData extends Component {
 					}
 				}}>
 				<div>
-					<Hidden smUp>
+					<Hidden lgUp>
 						<ListItem>
 							{this.renderDateFilter()}
 						</ListItem>

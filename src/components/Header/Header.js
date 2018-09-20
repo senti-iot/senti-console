@@ -28,7 +28,7 @@ function Header({ ...props }) {
 				<Hidden mdDown implementation="css">
 					<HeaderLinks t={t}/>
 				</Hidden>
-				<Hidden mdUp>
+				<Hidden lgUp>
 					<IconButton
 						className={classes.appResponsive}
 						color="primary"

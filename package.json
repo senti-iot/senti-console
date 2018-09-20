@@ -16,6 +16,7 @@
 		"chart.js": "^2.7.2",
 		"chartist": "0.10.1",
 		"classnames": "^2.2.6",
+		"core-js": "^2.5.7",
 		"for-each": "^0.3.3",
 		"google-libphonenumber": "^3.1.12",
 		"i18n-iso-countries": "^3.7.8",

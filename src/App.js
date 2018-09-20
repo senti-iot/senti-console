@@ -10,6 +10,13 @@ import { primaryColor, secondaryColor, hoverColor } from "assets/jss/material-da
 import "assets/css/material-dashboard-react.css?v=1.2.0";
 import TProvider from 'components/Localization/TProvider';
 
+import "core-js/fn/set"; 
+import 'core-js/es6/map';
+import 'core-js/es6/set';
+import 'core-js/fn/array/find';
+import 'core-js/fn/array/includes';
+import 'core-js/fn/number/is-nan';
+
 var countries = require("i18n-iso-countries")
 countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
 countries.registerLocale(require("i18n-iso-countries/langs/da.json"));
