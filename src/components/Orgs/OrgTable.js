@@ -186,8 +186,6 @@ class OrgTable extends React.Component {
 	}
 
 	renderTableToolBarContent = () => {
-		// const { classes, tableHead, t } = this.props
-		// const { anchorFilterMenu } = this.state
 
 		return <Fragment>
 			{/* <IconButton aria-label="Add new project" onClick={this.AddNewProject}>
