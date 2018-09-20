@@ -40,10 +40,12 @@
 		"react-sound": "^1.2.0",
 		"react-swipeable-views": "^0.12.14",
 		"redux": "^4.0.0",
-		"redux-thunk": "^2.3.0"
+		"redux-thunk": "^2.3.0",
+		"source-map-explorer": "^1.6.0"
 	},
 	"scripts": {
 		"start": "react-scripts start ",
+		"analyze": "source-map-explorer build/static/js/main.*",
 		"start-ssh": "HTTPS=true react-scripts start",
 		"build": "react-scripts build && cp ./build/index.html ./build/200.html && cp ./src/assets/sound/pop.mp3 ./build/assets/sound/pop.mp3",
 		"test": "react-scripts test --env=jsdom",
