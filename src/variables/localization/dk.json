@@ -280,10 +280,18 @@
 			"org": "Organisation",
 			"url": "Website",
 			"zip": "Postnummer",
-			"region": "Region",			
+			"region": "Region",
 			"parentOrg": "Organisatorisk tilhørsforhold",
 			"CVR": "CVR nummer",
 			"EAN": "EAN nummer"
+		},
+		"validation": {
+			"noaddress": "Mangler adresse",
+			"nocity": "Mangler by",
+			"nozip": "Mangler Postnummer",
+			"nocountry": "Mangler Land",
+			"noregion": "Mangler Region",
+			"nourl": "Mangler Website"
 		}
 	},
 	"projects": {

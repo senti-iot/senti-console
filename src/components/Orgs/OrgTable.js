@@ -9,13 +9,10 @@ import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import PropTypes from "prop-types"
 import React, { Fragment } from "react"
 import { withRouter } from 'react-router-dom'
-// import { dateFormatter } from "variables/functions"
 import EnhancedTableHead from '../Table/TableHeader'
 import EnhancedTableToolbar from '../Table/TableToolbar'
 import { ItemGrid, Info, ItemG, Caption } from ".."
 import { connect } from "react-redux"
-// import { Add, FilterList } from '@material-ui/icons';
-// import { boxShadow } from 'assets/jss/material-dashboard-react';
 var countries = require("i18n-iso-countries")
 
 class OrgTable extends React.Component {

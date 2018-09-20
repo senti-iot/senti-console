@@ -253,7 +253,7 @@
 		"calibrate": "Calibrate",
 		"delete": "Delete",
 		"deleteProject": "Delete project",
-		"deleteOrg":"Delete organisation",
+		"deleteOrg": "Delete organisation",
 		"edit": "Edit",
 		"editProject": "Edit project",
 		"editOrg": "Edit organisation",
@@ -284,6 +284,14 @@
 			"parentOrg": "Parent Organisation",
 			"CVR": "Tax Registration Number",
 			"EAN": "EAN Number"
+		},
+		"validation": {
+			"noaddress": "Address missing",
+			"nocity": "City missing",
+			"nozip": "ZIP missing",
+			"nocountry": "Country missing",
+			"noregion": "Region missing",
+			"nourl": "Website URL missing"
 		}
 	},
 	"projects": {
