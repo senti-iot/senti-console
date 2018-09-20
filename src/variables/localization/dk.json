@@ -252,11 +252,11 @@
 		"assignDevices": "Tilknyt enheder",
 		"calibrate": "Kalibrer",
 		"delete": "Slet",
-		"deleteProject": "Slet projekt",
-		"deleteOrg": "Slet organisation",
+		"deleteProject": "Slet",
+		"deleteOrg": "Slet",
 		"edit": "Rediger",
-		"editProject": "Rediger projekt",
-		"editOrg": "Rediger organisation",
+		"editProject": "Rediger",
+		"editOrg": "Rediger",
 		"exportPDF": "Exporter til PDF",
 		"hideMap": "Skjul kort",
 		"hideMore": "Skjul",
@@ -271,7 +271,7 @@
 		"unassignProject": "Fjern enhed(er) fra projekt"
 	},
 	"orgs": {
-		"updateOrg": "Rediger Organisation",
+		"updateOrg": "Rediger",
 		"fields": {
 			"address": "Adresse",
 			"city": "By",

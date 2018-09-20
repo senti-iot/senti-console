@@ -252,11 +252,11 @@
 		"assignDevices": "Assign devices",
 		"calibrate": "Calibrate",
 		"delete": "Delete",
-		"deleteProject": "Delete project",
-		"deleteOrg": "Delete organisation",
+		"deleteProject": "Delete",
+		"deleteOrg": "Delete",
 		"edit": "Edit",
-		"editProject": "Edit project",
-		"editOrg": "Edit organisation",
+		"editProject": "Edit",
+		"editOrg": "Edit",
 		"exportPDF": "Export to PDF",
 		"hideMap": "Hide map",
 		"hideMore": "Hide",
@@ -271,7 +271,7 @@
 		"unassignProject": "Unassign device(s) from project"
 	},
 	"orgs": {
-		"updateOrg": "Edit Organisation",
+		"updateOrg": "Edit",
 		"fields": {
 			"address": "Address",
 			"city": "City",
