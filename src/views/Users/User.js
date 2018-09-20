@@ -16,6 +16,12 @@ class User extends Component {
 			loading: true
 	  }
 	}
+	componentDidUpdate = (prevProps, prevState) => {
+		if (prevProps.match && this.props.match.params)
+			if (prevProps.match.params.id !== this.props.match.params.id)
+			  this.componentDidMount()
+	}
+	
 	componentDidMount = () => {
 		if (this.props.match)
 			if (this.props.match.params.id)

@@ -106,15 +106,10 @@ class DeviceSimpleList extends React.Component {
 		const { order, orderBy, selected, rowsPerPage, page } = this.state
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 		const tableHead = [
-			{ id: "id", label: t("devices.pageTitle") }, 
-			// { id: "id", label: t("devices.simpleList.id") }, 
-			// { id: "address", label: t("devices.simpleList.address") }, 
-			// { id: "liveStatus", label: t("devices.simpleList.status") }, 
-			// { id: "totalCount", label: t("devices.simpleList.totalcount") }
+			{ id: "id", label: t("devices.pageTitle") }
 		]
 		return (
 			<Fragment>
-				{/* // <Paper className={classes.root}> */}
 				<EnhancedTableToolbar
 					noFilterIcon
 					noAdd
@@ -171,29 +166,8 @@ class DeviceSimpleList extends React.Component {
 													{`${n.name ? n.id : t("devices.noName")} - ${n.org ? n.org.name : ''}`}
 												</Caption>
 											</ItemGrid>
-											{/* </ItemGrid> */}
 										</ItemGrid>
 									</TableCell>
-									{/* <TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-											<Checkbox checked={isSelected} />
-										</TableCell>
-										<TableCell className={classes.tableCell}>
-											{n.name ? n.name : t("devices.simpleList.tableCellDeviceName")}
-										</TableCell>
-										<TableCell className={classes.tableCellID}>
-											{n.id}
-										</TableCell>
-										<Hidden mdDown>
-											<TableCell className={classes.tableCell}>
-												{n.address ? n.address : t("devices.simpleList.tableCellAddress")}
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												{this.renderIcon(n.liveStatus)}
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												{n.totalCount}
-											</TableCell>
-										</Hidden> */}
 								</TableRow>
 							);
 						})}
