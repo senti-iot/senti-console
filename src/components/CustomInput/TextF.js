@@ -48,8 +48,10 @@ const TextF = (props) => {
 			InputProps={{
 				classes: {
 					underline: props.classes.underline,
-				}
+				},
+				...props.InputProps
 			}}
+			// {...props}
 			margin="normal" />
 
 	)

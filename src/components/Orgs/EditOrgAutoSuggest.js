@@ -4,26 +4,25 @@ import deburr from 'lodash/deburr';
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-import TextField from '@material-ui/core/TextField';
+// import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
-import Popper from '@material-ui/core/Popper';
 import { withStyles } from '@material-ui/core/styles';
+import { TextField } from '@material-ui/core'
 
 function renderInputComponent(inputProps) {
 	const { classes, inputRef = () => { }, ref, ...other } = inputProps;
 
 	return (
 		<TextField
-			fullWidth
+			// noFullWidth
+			margin="normal"
+			// className={classes.textField}
 			InputProps={{
 				inputRef: node => {
 					ref(node);
 					inputRef(node);
-				},
-				classes: {
-					input: classes.input,
-				},
+				}
 			}}
 			{...other}
 		/>
@@ -55,10 +54,13 @@ function renderSuggestion(suggestion, { query, isHighlighted }) {
 
 
 function getSuggestionValue(suggestion) {
-	return suggestion.label;
+	return suggestion.value;
 }
 
 const styles = theme => ({
+	textField: {
+		margin: theme.spacing.unit * 2
+	},
 	root: {
 		height: 250,
 		flexGrow: 1,
@@ -86,19 +88,19 @@ const styles = theme => ({
 	},
 });
 
-class IntegrationAutosuggest extends React.Component {
-	popperNode = null;
-
-	state = {
-		single: '',
-		popper: '',
-		suggestions: [],
-	};
+class EditOrgAutoSuggest extends React.Component {
+	constructor(props) {
+	  super(props)
+	
+	  this.state = {
+		 suggestions: []
+	  }
+	}
+	
 	getSuggestions = (value) => {
 		const inputValue = deburr(value.trim()).toLowerCase();
 		const inputLength = inputValue.length;
 		let count = 0;
-
 		return inputLength === 0
 			? []
 			: this.props.suggestions.filter(suggestion => {
@@ -123,11 +125,16 @@ class IntegrationAutosuggest extends React.Component {
 			suggestions: [],
 		});
 	};
-
-	handleChange = name => (event, { newValue }) => {
+	clearInput = () => {
 		this.setState({
-			[name]: newValue,
+			suggestions: [],
 		});
+	}
+	handleChange = name => (event, { newValue }) => {
+		// this.setState({
+		// 	[name]: newValue,
+		// });
+		this.props.handleChange(newValue)
 	};
 
 	render() {
@@ -140,17 +147,18 @@ class IntegrationAutosuggest extends React.Component {
 			onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
 			getSuggestionValue,
 			renderSuggestion,
-		};
 
+		};
 		return (
 			<div className={classes.root}>
 				<Autosuggest
 					{...autosuggestProps}
 					inputProps={{
 						classes,
-						placeholder: 'Search a country (start with a)',
-						value: this.state.single,
-						onChange: this.handleChange('single'),
+						placeholder: '',
+						value: this.props.country,
+						onChange: this.handleChange(),
+						onClick: this.clearInput
 					}}
 					theme={{
 						container: classes.container,
@@ -164,45 +172,13 @@ class IntegrationAutosuggest extends React.Component {
 						</Paper>
 					)}
 				/>
-				<div className={classes.divider} />
-				<Autosuggest
-					{...autosuggestProps}
-					inputProps={{
-						classes,
-						label: 'Label',
-						placeholder: 'With Popper',
-						value: this.state.popper,
-						onChange: this.handleChange('popper'),
-						inputRef: node => {
-							this.popperNode = node;
-						},
-						InputLabelProps: {
-							shrink: true,
-						},
-					}}
-					theme={{
-						suggestionsList: classes.suggestionsList,
-						suggestion: classes.suggestion,
-					}}
-					renderSuggestionsContainer={options => (
-						<Popper anchorEl={this.popperNode} open={Boolean(options.children)}>
-							<Paper
-								square
-								{...options.containerProps}
-								style={{ width: this.popperNode ? this.popperNode.clientWidth : null }}
-							>
-								{options.children}
-							</Paper>
-						</Popper>
-					)}
-				/>
 			</div>
 		);
 	}
 }
 
-IntegrationAutosuggest.propTypes = {
+EditOrgAutoSuggest.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(IntegrationAutosuggest);
+export default withStyles(styles)(EditOrgAutoSuggest);

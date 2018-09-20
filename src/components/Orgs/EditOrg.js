@@ -1,24 +1,25 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, FormControl, InputLabel, Select, Input, /* Chip, */ MenuItem, Collapse, Button, Snackbar } from '@material-ui/core';
+import { Paper, withStyles, Grid, /*  FormControl, InputLabel, Select, Input, Chip,  MenuItem, */ Collapse, Button, Snackbar } from '@material-ui/core';
 import { Save, Check } from '@material-ui/icons';
 import classNames from 'classnames';
 import { getOrg, updateOrg } from 'variables/dataUsers'
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from '..'
 import { connect } from 'react-redux'
 import createprojectStyles from '../../assets/jss/components/projects/createprojectStyles'
+import EditOrgAutoSuggest from './EditOrgAutoSuggest'
 
-var moment = require("moment")
+// var moment = require("moment")
 var countries = require("i18n-iso-countries");
 
-// const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-	PaperProps: {
-		style: {
-			maxHeight: 300,
-			width: 250,
-		},
-	},
-};
+// // const ITEM_PADDING_TOP = 8;
+// const MenuProps = {
+// 	PaperProps: {
+// 		style: {
+// 			maxHeight: 300,
+// 			width: 250,
+// 		},
+// 	},
+// };
 
 class EditOrg extends Component {
 	constructor(props) {
@@ -26,6 +27,7 @@ class EditOrg extends Component {
 
 		this.state = {
 			org: {},
+			country: {},
 			creating: false,
 			created: false,
 			loading: true,
@@ -87,6 +89,9 @@ class EditOrg extends Component {
 		await getOrg(id).then(rs => {
 			if (rs && this._isMounted) {
 				this.setState({
+					country: {
+						id: rs.country.length > 2 ? countries.getAlpha2Code(rs.country, "en") ? countries.getAlpha2Code(rs.country, "en") : countries.getAlpha2Code(rs.country, "da")
+							: rs.country, label: countries.getName(rs.country, this.props.language) ? countries.getName(rs.country, this.props.language) : '' },
 					org: {
 						...rs,
 						country: rs.country.length > 2 ? countries.getAlpha2Code(rs.country, "en") ? countries.getAlpha2Code(rs.country, "en") : countries.getAlpha2Code(rs.country, "da")
@@ -94,7 +99,7 @@ class EditOrg extends Component {
 					},
 				})
 			}
-			
+
 		})
 		this.setState({
 			loading: false
@@ -107,15 +112,17 @@ class EditOrg extends Component {
 		clearTimeout(this.timer)
 	}
 
-	handleDateChange = id => value => {
+	handleCountryChange = value => {
 		this.setState({
 			error: false,
+			country: { id: value, label: countries.getName(value, this.props.language) },
 			org: {
 				...this.state.org,
-				[id]: moment(value).format("YYYY-MM-DD HH:mm")
+				country: countries.getName(value, this.props.language) ? value : ''
 			}
 		})
 	}
+	
 	handleChange = (id) => e => {
 		e.preventDefault()
 		this.setState({
@@ -135,8 +142,7 @@ class EditOrg extends Component {
 	handleUpdateOrg = () => {
 		clearTimeout(this.timer)
 		this.timer = setTimeout(async () => {
-			if (this.handleValidation())
-			{
+			if (this.handleValidation()) {
 				return updateOrg(this.state.org).then(rs => rs ?
 					this.setState({ created: true, creating: false, openSnackBar: true }) :
 					this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
@@ -192,7 +198,7 @@ class EditOrg extends Component {
 							</ItemGrid>
 							<ItemGrid container xs={12} md={6}>
 								<TextF
-									autoFocus
+
 									id={"address"}
 									label={t("orgs.fields.address")}
 									value={org.address}
@@ -205,7 +211,7 @@ class EditOrg extends Component {
 							</ItemGrid>
 							<ItemGrid container xs={12} md={6}>
 								<TextF
-									autoFocus
+
 									id={"city"}
 									label={t("orgs.fields.city")}
 									value={org.city}
@@ -218,7 +224,7 @@ class EditOrg extends Component {
 							</ItemGrid>
 							<ItemGrid container xs={12} md={6}>
 								<TextF
-									autoFocus
+
 									id={"postcode"}
 									label={t("orgs.fields.zip")}
 									value={org.zip}
@@ -231,7 +237,7 @@ class EditOrg extends Component {
 							</ItemGrid>
 							<ItemGrid container xs={12} md={6}>
 								<TextF
-									autoFocus
+
 									id={"region"}
 									label={t("orgs.fields.region")}
 									value={org.region}
@@ -244,7 +250,7 @@ class EditOrg extends Component {
 							</ItemGrid>
 							<ItemGrid container xs={12} md={6}>
 								<TextF
-									autoFocus
+
 									id={"website"}
 									label={t("orgs.fields.url")}
 									value={org.url}
@@ -255,8 +261,14 @@ class EditOrg extends Component {
 									error={error}
 								/>
 							</ItemGrid>
-							<ItemGrid xs={12}>
-								<FormControl className={classes.formControl}>
+							<ItemGrid container xs={12}>
+								<EditOrgAutoSuggest
+									country={this.state.country.label ? this.state.country.label : this.state.country.id}
+									handleChange={this.handleCountryChange}
+									suggestions={
+										Object.keys(countries.getNames(this.props.language)).map(
+											country => ({ value: country, label: countries.getName(country, this.props.language) }))} />
+								{/* <FormControl className={classes.formControl}>
 									<Fragment>
 										<InputLabel FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select">
 											{t("orgs.fields.country")}
@@ -277,7 +289,7 @@ class EditOrg extends Component {
 											)}
 										</Select>
 									</Fragment>
-								</FormControl>
+								</FormControl> */}
 							</ItemGrid>
 						</form>
 						<ItemGrid xs={12} container justify={'center'}>
@@ -326,7 +338,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles, { withTheme: true })(EditOrg))

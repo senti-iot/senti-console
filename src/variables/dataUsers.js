@@ -24,7 +24,6 @@ export const getOrg = async(orgId) => {
 	// console.log('getOrg', orgId, data)
 	return data
 }
-
 export const updateOrg = async(org) => {
 	var data = await api.put(`core/org/${org.id}`, org).then(rs => rs.data)
 	return data
