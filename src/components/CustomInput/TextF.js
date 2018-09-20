@@ -51,7 +51,9 @@ const TextF = (props) => {
 				},
 				...props.InputProps
 			}}
+			type={props.type ? props.type : null}
 			// {...props}
+			pattern={props.pattern ? props.pattern : ""}
 			margin="normal" />
 
 	)

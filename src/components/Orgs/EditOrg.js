@@ -44,7 +44,7 @@ class EditOrg extends Component {
 		if (city === "") {
 			errorCode.push(2)
 		}
-		if (zip === "") {
+		if (zip === "" ) {
 			errorCode.push(3)
 		}
 		if (country === "") {
@@ -125,13 +125,14 @@ class EditOrg extends Component {
 	
 	handleChange = (id) => e => {
 		e.preventDefault()
-		this.setState({
+		if (e.target.validity.valid)
+		{this.setState({
 			error: false,
 			org: {
 				...this.state.org,
 				[id]: e.target.value
 			}
-		})
+		})}
 	}
 	snackBarClose = () => {
 		this.setState({ openSnackBar: false })
@@ -233,6 +234,8 @@ class EditOrg extends Component {
 									margin="normal"
 									noFullWidth
 									error={error}
+									type={"number"}
+									pattern="[0-9]*"
 								/>
 							</ItemGrid>
 							<ItemGrid container xs={12} md={6}>
