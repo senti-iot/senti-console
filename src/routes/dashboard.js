@@ -9,6 +9,7 @@ import DeviceRouting from './device'
 import Users from './users'
 import UserRouting from './user'
 import OrgRouting from './org'
+import Orgs from './orgs'
 import { Dashboard, LibraryBooks, Devices as DeviceIco, SettingsRounded, People } from "@material-ui/icons";
 import NotFound from "layouts/404/NotFound";
 // import UserProfile from 'views/UserProfile/UserProfile';
@@ -53,6 +54,11 @@ const dashboardRoutes = [
 	{
 		path: "/user/:id",
 		component: UserRouting,
+		hideFromSideBar: true
+	},
+	{
+		path: "/orgs",
+		component: Orgs,
 		hideFromSideBar: true
 	},
 	{

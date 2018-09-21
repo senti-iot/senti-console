@@ -1,35 +1,39 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, FormControl, InputLabel, Select, Input, /* Chip, */ MenuItem, Collapse, Button, Snackbar } from '@material-ui/core';
-import { MuiPickersUtilsProvider, /* DatePicker */ } from 'material-ui-pickers';
-import MomentUtils from 'material-ui-pickers/utils/moment-utils';
-import { /*  KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft,  */Save, Check } from '@material-ui/icons';
+import { Paper, withStyles, Grid, /*  FormControl, InputLabel, Select, Input, Chip,  MenuItem, */ Collapse, Button, Snackbar } from '@material-ui/core';
+import { Save, Check } from '@material-ui/icons';
 import classNames from 'classnames';
-import { updateOrg } from 'variables/dataUsers'
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from '..'
 import { connect } from 'react-redux'
 import createprojectStyles from '../../assets/jss/components/projects/createprojectStyles'
+import EditOrgAutoSuggest from './EditOrgAutoSuggest';
+import { createOrg, /* getCreateOrg */ } from '../../variables/dataUsers';
 
-var moment = require("moment")
-var countries = require("i18n-iso-countries")
-countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
-countries.registerLocale(require("i18n-iso-countries/langs/da.json"));
+// var moment = require("moment")
+var countries = require("i18n-iso-countries");
 
-// const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-	PaperProps: {
-		style: {
-			maxHeight: 300,
-			width: 250,
-		},
-	},
-};
+// // const ITEM_PADDING_TOP = 8;
+// const MenuProps = {
+// 	PaperProps: {
+// 		style: {
+// 			maxHeight: 300,
+// 			width: 250,
+// 		},
+// 	},
+// };
 
 class CreateOrg extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			org: {},
+			org: {
+				country: "",
+				aux: {}
+			},
+			country: {
+				id: "",
+				label: ""
+			},
 			creating: false,
 			created: false,
 			loading: true,
@@ -37,22 +41,29 @@ class CreateOrg extends Component {
 		}
 	}
 	handleValidation = () => {
+		/* Address, City, Postcode, Country, Region, Website. */
 		let errorCode = [];
-		const { title, startDate, endDate } = this.state.org
-		if (title === "") {
+		const { address, city, zip, country, region, url } = this.state.org
+		if (address === "") {
 			errorCode.push(1)
 		}
-		if (!moment(startDate).isValid()) {
+		if (city === "") {
 			errorCode.push(2)
 		}
-		if (!moment(endDate).isValid()) {
+		if (zip === "") {
 			errorCode.push(3)
 		}
-		if (moment(startDate).isAfter(endDate)) {
+		if (country === "") {
 			errorCode.push(4)
 		}
+		if (region === "") {
+			errorCode.push(5)
+		}
+		if (url === "") {
+			errorCode.push(6)
+		}
 		this.setState({
-			errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>)
+			errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
 		})
 		if (errorCode.length === 0)
 			return true
@@ -63,31 +74,28 @@ class CreateOrg extends Component {
 		const { t } = this.props
 		switch (code) {
 			case 1:
-				return t("orgs.validation.noTitle")
+				return t("orgs.validation.noaddress")
 			case 2:
-				return t("orgs.validation.noStartDate")
+				return t("orgs.validation.nocity")
 			case 3:
-				return t("orgs.validation.noEndDate")
+				return t("orgs.validation.nozip")
 			case 4:
-				return t("orgs.validation.startDateBiggerThanEndDate")
+				return t("orgs.validation.nocountry")
+			case 5:
+				return t("orgs.validation.noregion")
+			case 6:
+				return t("orgs.validation.nourl")
 			default:
 				return ""
 		}
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
-		// let id = this.props.match.params.id
-		// await getOrg(id).then(rs => {
-		// 	if (rs && this._isMounted) {
-		// 		this.setState({
-		// 			org: rs,
-		// 		})
-		// 	}
-		// })
+		// var org = await getCreateOrg()
 		this.setState({
 			loading: false
 		})
-		this.props.setHeader(this.props.t("orgs.createOrg"), true, `/users/orgs`)
+		this.props.setHeader(this.props.t("orgs.createOrg"), true, `/orgs`)
 	}
 
 	componentWillUnmount = () => {
@@ -95,41 +103,71 @@ class CreateOrg extends Component {
 		clearTimeout(this.timer)
 	}
 
-	handleDateChange = id => value => {
+	handleCountryChange = value => {
 		this.setState({
 			error: false,
+			country: { id: value, label: countries.getName(value, this.props.language) },
 			org: {
 				...this.state.org,
-				[id]: moment(value).format("YYYY-MM-DD HH:mm")
+				country: countries.getName(value, this.props.language) ? value : ''
 			}
 		})
 	}
-	handleChange = (id) => e => {
+	handleAuxChange = (id) => e => {
 		e.preventDefault()
 		this.setState({
 			error: false,
 			org: {
 				...this.state.org,
-				[id]: e.target.value
+				aux: {
+					...this.state.org.aux,
+					[id]: e.target.value
+				}
 			}
 		})
 	}
-	handleUpdateProject = () => {
+	handleChange = (id) => e => {
+		e.preventDefault()
+		if (e.target.validity.valid) {
+			this.setState({
+				error: false,
+				org: {
+					...this.state.org,
+					[id]: e.target.value
+				}
+			})
+		}
+	}
+	snackBarClose = () => {
+		this.setState({ openSnackBar: false })
+		this.redirect = setTimeout(async => {
+			this.props.history.push(`/org/${this.state.org.id}`)
+		}, 1e3)
+	}
+	handleCreateOrg = () => {
 		clearTimeout(this.timer)
 		this.timer = setTimeout(async () => {
-			// if (this.handleValidation())
-			return updateOrg(this.state.org).then(rs => rs ?
-				this.setState({ created: true, creating: false, openSnackBar: true }) :
-				this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
-				, 2e3)
+			if (this.handleValidation()) {
+				return createOrg(this.state.org).then(rs => {
+					console.log(rs)
+					return rs ?
+						this.setState({ created: true, creating: false, openSnackBar: true, org: rs }) :
+						this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
+				}
+					, 2e3)
+			}
+			else {
+				this.setState({
+					creating: false,
+					error: true,
+				})
+			}
 		})
 
 	}
 
-	
-
 	goToOrg = () => {
-		this.props.history.push('/org/' + this.props.match.params.id)//REFACTOR
+		this.props.history.push('/org/' + this.props.match.params.id)
 	}
 
 	render() {
@@ -143,154 +181,164 @@ class CreateOrg extends Component {
 			!loading ?
 				<GridContainer justify={'center'}>
 					<Paper className={classes.paper}>
-						<MuiPickersUtilsProvider utils={MomentUtils}>
-							<form className={classes.form}>
-								<ItemGrid xs={12}>
-									<Collapse in={this.state.error}>
-										<Warning>
-											<Danger>
-												{this.state.errorMessage}
-											</Danger>
-										</Warning>
-									</Collapse>
-								</ItemGrid>
-								<ItemGrid container xs={12} md={6}>
-									<TextF
-										autoFocus
-										id={"title"}
-										label={t("orgs.fields.name")}
-										value={org.name}
-										className={classes.textField}
-										handleChange={this.handleChange("name")}
-										margin="normal"
-										noFullWidth
-										error={error}
-									/>
-								</ItemGrid>
-								<ItemGrid container xs={12} md={6}>
-									<TextF
-										autoFocus
-										id={"address"}
-										label={t("orgs.fields.address")}
-										value={org.address}
-										className={classes.textField}
-										handleChange={this.handleChange("address")}
-										margin="normal"
-										noFullWidth
-										error={error}
-									/>
-								</ItemGrid>
-								<ItemGrid container xs={12} md={6}>
-									<TextF
-										autoFocus
-										id={"city"}
-										label={t("orgs.fields.city")}
-										value={org.city}
-										className={classes.textField}
-										handleChange={this.handleChange("city")}
-										margin="normal"
-										noFullWidth
-										error={error}
-									/>
-								</ItemGrid>
-								<ItemGrid container xs={12} md={6}>
-									<TextF
-										autoFocus
-										id={"postcode"}
-										label={t("orgs.fields.zip")}
-										value={org.zip}
-										className={classes.textField}
-										handleChange={this.handleChange("zip")}
-										margin="normal"
-										noFullWidth
-										error={error}
-									/>
-								</ItemGrid>
-								<ItemGrid container xs={12} md={6}>
-									<TextF
-										autoFocus
-										id={"region"}
-										label={t("orgs.fields.region")}
-										value={org.region}
-										className={classes.textField}
-										handleChange={this.handleChange("region")}
-										margin="normal"
-										noFullWidth
-										error={error}
-									/>
-								</ItemGrid>
-								<ItemGrid container xs={12} md={6}>
-									<TextF
-										autoFocus
-										id={"website"}
-										label={t("orgs.fields.url")}
-										value={org.url}
-										className={classes.textField}
-										handleChange={this.handleChange("website")}
-										margin="normal"
-										noFullWidth
-										error={error}
-									/>
-								</ItemGrid>
-								<ItemGrid xs={12}>
-									<FormControl className={classes.formControl}>
-										<Fragment>
-											<InputLabel FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
-												{t("orgs.fields.country")}
-											</InputLabel>
-											<Select
-												color={"primary"}
-												value={org.country}
-												onChange={this.handleChange("country")}
-												input={<Input id="select-multiple-chip" classes={{ underline: classes.underline }} />}
-												MenuProps={MenuProps}
-											>
-												{Object.keys(countries.getNames(this.props.language)).map(country => {
-													return <MenuItem key={country} value={country}>
-														{countries.getName(country, this.props.language)}
-													</MenuItem>
-												}
-												)}
-											</Select>
-										</Fragment>
-									</FormControl>
-								</ItemGrid>
-							</form>
-							<ItemGrid xs={12} container justify={'center'}>
-								<Collapse in={this.state.creating} timeout="auto" unmountOnExit>
-									<CircularLoader notCentered />
+						<form className={classes.form}>
+							<ItemGrid xs={12}>
+								<Collapse in={this.state.error}>
+									<Warning>
+										<Danger>
+											{this.state.errorMessage}
+										</Danger>
+									</Warning>
 								</Collapse>
 							</ItemGrid>
-							<Grid container justify={"center"}>
-								<div className={classes.wrapper}>
-									<Button
-										variant="contained"
-										color="primary"
-										className={buttonClassname}
-										disabled={this.state.creating}
-										onClick={this.state.created ? this.goToOrg : this.handleUpdateProject}>
-										{this.state.created ?
-											<Fragment><Check className={classes.leftIcon} />{t("orgs.viewProject")}</Fragment>
-											: <Fragment><Save className={classes.leftIcon} />{t("orgs.updateProject")}</Fragment>}
-									</Button>
-								</div>
-							</Grid>
-							
-						</MuiPickersUtilsProvider>
+							<ItemGrid container xs={12} md={6}>
+								<TextF
+									autoFocus
+									id={"title"}
+									label={t("orgs.fields.name")}
+									value={org.name}
+									className={classes.textField}
+									handleChange={this.handleChange("name")}
+									margin="normal"
+									noFullWidth
+									error={error}
+								/>
+							</ItemGrid>
+							<ItemGrid container xs={12} md={6}>
+								<TextF
+
+									id={"address"}
+									label={t("orgs.fields.address")}
+									value={org.address}
+									className={classes.textField}
+									handleChange={this.handleChange("address")}
+									margin="normal"
+									noFullWidth
+									error={error}
+								/>
+							</ItemGrid>
+							<ItemGrid container xs={12} md={6}>
+								<TextF
+
+									id={"city"}
+									label={t("orgs.fields.city")}
+									value={org.city}
+									className={classes.textField}
+									handleChange={this.handleChange("city")}
+									margin="normal"
+									noFullWidth
+									error={error}
+								/>
+							</ItemGrid>
+							<ItemGrid container xs={12} md={6}>
+								<TextF
+
+									id={"postcode"}
+									label={t("orgs.fields.zip")}
+									value={org.zip}
+									className={classes.textField}
+									handleChange={this.handleChange("zip")}
+									margin="normal"
+									noFullWidth
+									error={error}
+									type={"number"}
+									pattern="[0-9]*"
+								/>
+							</ItemGrid>
+							<ItemGrid container xs={12} md={6}>
+								<TextF
+
+									id={"region"}
+									label={t("orgs.fields.region")}
+									value={org.region}
+									className={classes.textField}
+									handleChange={this.handleChange("region")}
+									margin="normal"
+									noFullWidth
+									error={error}
+								/>
+							</ItemGrid>
+							<ItemGrid container xs={12} md={6}>
+								<TextF
+
+									id={"website"}
+									label={t("orgs.fields.url")}
+									value={org.url}
+									className={classes.textField}
+									handleChange={this.handleChange("url")}
+									margin="normal"
+									noFullWidth
+									error={error}
+								/>
+							</ItemGrid>
+							<ItemGrid container xs={12}>
+								<EditOrgAutoSuggest
+									country={this.state.country.label ? this.state.country.label : this.state.country.id}
+									handleChange={this.handleCountryChange}
+									t={t}
+									suggestions={
+										Object.keys(countries.getNames(this.props.language)).map(
+											country => ({ value: country, label: countries.getName(country, this.props.language) }))} />
+							</ItemGrid>
+							<ItemGrid container xs={12} md={6}>
+								<TextF
+
+									id={"cvr"}
+									label={t("orgs.fields.CVR")}
+									value={org.aux.cvr}
+									className={classes.textField}
+									handleChange={this.handleAuxChange("cvr")}
+									margin="normal"
+									noFullWidth
+									error={error}
+								/>
+							</ItemGrid>
+							<ItemGrid container xs={12} md={6}>
+								<TextF
+									id={"ean"}
+									label={t("orgs.fields.EAN")}
+									value={org.aux.ean}
+									className={classes.textField}
+									handleChange={this.handleAuxChange("ean")}
+									margin="normal"
+									noFullWidth
+									error={error}
+								/>
+							</ItemGrid>
+						</form>
+
+						<ItemGrid xs={12} container justify={'center'}>
+							<Collapse in={this.state.creating} timeout="auto" unmountOnExit>
+								<CircularLoader notCentered />
+							</Collapse>
+						</ItemGrid>
+						<Grid container justify={"center"}>
+							<div className={classes.wrapper}>
+								<Button
+									variant="contained"
+									color="primary"
+									className={buttonClassname}
+									disabled={this.state.creating || this.state.created}
+									onClick={this.state.created ? this.goToOrg : this.handleCreateOrg}>
+									{this.state.created ?
+										<Fragment><Check className={classes.leftIcon} />{t("snackbars.redirect")}</Fragment>
+										: <Fragment><Save className={classes.leftIcon} />{t("orgs.createOrg")}</Fragment>}
+								</Button>
+							</div>
+						</Grid>
 					</Paper>
 					<Snackbar
 						anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
 						open={this.state.openSnackBar}
-						onClose={() => { this.setState({ openSnackBar: false }) }}
+						onClose={this.snackBarClose}
 						ContentProps={{
 							'aria-describedby': 'message-id',
 						}}
-						autoHideDuration={5000}
+						autoHideDuration={1500}
 						message={
 							<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
 								<Check className={classes.leftIcon} color={'primary'} />
-								{/* Project {this.state.title} has been successfully updated! */}
-								{t("snackbars.orgUpdated", { org: org.title })}
+								{t("snackbars.orgCreated", { org: org.name })}
 							</ItemGrid>
 						}
 					/>
@@ -305,7 +353,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles, { withTheme: true })(CreateOrg))

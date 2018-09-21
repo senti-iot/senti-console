@@ -1,10 +1,10 @@
 import {
 	Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination,
 	TableRow, /* Typography, */ withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
-	DialogContentText, DialogActions, Button, /* IconButton, Menu, MenuItem*/
+	DialogContentText, DialogActions, Button, MenuItem, Menu, IconButton, /* IconButton, Menu, MenuItem*/
 } from "@material-ui/core"
 import TC from 'components/Table/TC'
-import { Delete, /* Devices, */ Edit, PictureAsPdf } from '@material-ui/icons'
+import { Delete, /* Devices, */ Edit, PictureAsPdf, FilterList, Add } from '@material-ui/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import PropTypes from "prop-types"
 import React, { Fragment } from "react"
@@ -13,6 +13,7 @@ import EnhancedTableHead from '../Table/TableHeader'
 import EnhancedTableToolbar from '../Table/TableToolbar'
 import { ItemGrid, Info, ItemG, Caption } from ".."
 import { connect } from "react-redux"
+import { boxShadow } from '../../assets/jss/material-dashboard-react';
 var countries = require("i18n-iso-countries")
 
 class OrgTable extends React.Component {
@@ -153,7 +154,37 @@ class OrgTable extends React.Component {
 			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
 	}
+	addNewOrg = () => { this.props.history.push('/orgs/new') }
 
+	renderTableToolBarContent = () => {
+		const { classes, tableHead, t } = this.props
+		const { anchorFilterMenu } = this.state
+		return <Fragment>
+			<IconButton aria-label="Add new organisation" onClick={this.addNewOrg}>
+				<Add />
+			</IconButton>
+			<IconButton
+				className={classes.secondAction}
+				aria-label={t("tables.filter")}
+				aria-owns={anchorFilterMenu ? "filter-menu" : null}
+				onClick={this.handleFilterMenuOpen}>
+				<FilterList />
+			</IconButton>
+			<Menu
+				id="filter-menu"
+				anchorEl={anchorFilterMenu}
+				open={Boolean(anchorFilterMenu)}
+				onClose={this.handleFilterMenuClose}
+				PaperProps={{ style: { width: 200, boxShadow: boxShadow } }}>
+
+				{tableHead.map(option => {
+					return <MenuItem key={option.id} onClick={this.handleFilter}>
+						{option.label}
+					</MenuItem>
+				})}
+			</Menu>
+		</Fragment>
+	}
 	renderConfirmDelete = () => {
 		const { openDelete, selected } = this.state
 		const { data, t } = this.props
@@ -183,34 +214,7 @@ class OrgTable extends React.Component {
 		</Dialog>
 	}
 
-	renderTableToolBarContent = () => {
 
-		return <Fragment>
-			{/* <IconButton aria-label="Add new project" onClick={this.AddNewProject}>
-				<Add />
-			</IconButton>
-			<IconButton
-				className={classes.secondAction}
-				aria-label={t("tables.filter")}
-				aria-owns={anchorFilterMenu ? "filter-menu" : null}
-				onClick={this.handleFilterMenuOpen}>
-				<FilterList />
-			</IconButton>
-			<Menu
-				id="filter-menu"
-				anchorEl={anchorFilterMenu}
-				open={Boolean(anchorFilterMenu)}
-				onClose={this.handleFilterMenuClose}
-				PaperProps={{ style: { width: 200, boxShadow: boxShadow } }}>
-
-				{tableHead.map(option => {
-					return <MenuItem key={option.id} onClick={this.handleFilter}>
-						{option.label}
-					</MenuItem>
-				})}
-			</Menu> */}
-		</Fragment>
-	}
 	render() {
 		const { classes, data, t } = this.props
 		const { order, orderBy, selected, rowsPerPage, page } = this.state
@@ -228,7 +232,7 @@ class OrgTable extends React.Component {
 					numSelected={selected.length}
 					options={this.options}
 					t={t}
-				// content={this.renderTableToolBarContent()}
+					content={this.renderTableToolBarContent()}
 				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
@@ -273,13 +277,13 @@ class OrgTable extends React.Component {
 														</Info>
 														<ItemG>
 															<Caption noWrap className={classes.noMargin}>
-																{ n.address && n.zip && n.city && n.country ? 
+																{n.address && n.zip && n.city && n.country ?
 																	`${n.address}, ${n.zip} ${n.city}, ${countries.getName(n.country, this.props.language)}` : null}
 															</Caption>
 														</ItemG>
 													</ItemG>
 												</ItemG>
-											}/>
+											} />
 										</Hidden>
 										<Hidden mdDown>
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
@@ -287,10 +291,10 @@ class OrgTable extends React.Component {
 											</TableCell>
 											{/* <TC label={n.userName} /> */}
 											<TC FirstC label={n.name} />
-	
+
 											<TC label={n.address} />
 											<TC label={`${n.zip} ${n.city}`} />
-											<TC label={n.url}/>
+											<TC label={n.url} />
 										</Hidden>
 									</TableRow>
 								)

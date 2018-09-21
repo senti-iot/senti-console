@@ -44,7 +44,7 @@ class EditOrg extends Component {
 		if (city === "") {
 			errorCode.push(2)
 		}
-		if (zip === "" ) {
+		if (zip === "") {
 			errorCode.push(3)
 		}
 		if (country === "") {
@@ -91,9 +91,13 @@ class EditOrg extends Component {
 				this.setState({
 					country: {
 						id: rs.country.length > 2 ? countries.getAlpha2Code(rs.country, "en") ? countries.getAlpha2Code(rs.country, "en") : countries.getAlpha2Code(rs.country, "da")
-							: rs.country, label: countries.getName(rs.country, this.props.language) ? countries.getName(rs.country, this.props.language) : '' },
+							: rs.country, label: countries.getName(rs.country, this.props.language) ? countries.getName(rs.country, this.props.language) : ''
+					},
 					org: {
 						...rs,
+						aux: {
+
+						},
 						country: rs.country.length > 2 ? countries.getAlpha2Code(rs.country, "en") ? countries.getAlpha2Code(rs.country, "en") : countries.getAlpha2Code(rs.country, "da")
 							: rs.country
 					},
@@ -122,17 +126,30 @@ class EditOrg extends Component {
 			}
 		})
 	}
-	
-	handleChange = (id) => e => {
+	handleAuxChange = (id) => e => {
 		e.preventDefault()
-		if (e.target.validity.valid)
-		{this.setState({
+		this.setState({
 			error: false,
 			org: {
 				...this.state.org,
-				[id]: e.target.value
+				aux: {
+					...this.state.org.aux,
+					[id]: e.target.value
+				}
 			}
-		})}
+		})
+	}
+	handleChange = (id) => e => {
+		e.preventDefault()
+		if (e.target.validity.valid) {
+			this.setState({
+				error: false,
+				org: {
+					...this.state.org,
+					[id]: e.target.value
+				}
+			})
+		}
 	}
 	snackBarClose = () => {
 		this.setState({ openSnackBar: false })
@@ -266,6 +283,7 @@ class EditOrg extends Component {
 							</ItemGrid>
 							<ItemGrid container xs={12}>
 								<EditOrgAutoSuggest
+									t={t}
 									country={this.state.country.label ? this.state.country.label : this.state.country.id}
 									handleChange={this.handleCountryChange}
 									suggestions={
@@ -293,6 +311,32 @@ class EditOrg extends Component {
 										</Select>
 									</Fragment>
 								</FormControl> */}
+							</ItemGrid>
+							<ItemGrid container xs={12} md={6}>
+								<TextF
+
+									id={"cvr"}
+									label={t("orgs.fields.CVR")}
+									value={org.aux.cvr}
+									className={classes.textField}
+									handleChange={this.handleAuxChange("cvr")}
+									margin="normal"
+									noFullWidth
+									error={error}
+								/>
+							</ItemGrid>
+							<ItemGrid container xs={12} md={6}>
+								<TextF
+
+									id={"ean"}
+									label={t("orgs.fields.EAN")}
+									value={org.aux.ean}
+									className={classes.textField}
+									handleChange={this.handleAuxChange("ean")}
+									margin="normal"
+									noFullWidth
+									error={error}
+								/>
 							</ItemGrid>
 						</form>
 						<ItemGrid xs={12} container justify={'center'}>

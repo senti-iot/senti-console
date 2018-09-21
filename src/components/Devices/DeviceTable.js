@@ -1,8 +1,8 @@
-import { Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination, TableRow, Typography, withStyles, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@material-ui/core";
-import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons';
+import { Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination, TableRow, Typography, withStyles, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem } from "@material-ui/core";
+import { SignalWifi2Bar, SignalWifi2BarLock, Add, FilterList } from '@material-ui/icons';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { Fragment } from "react";
 import { withRouter } from 'react-router-dom';
 import AssignProject from "./AssignProject";
 import EnhancedTableHead from '../Table/TableHeader'
@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 import { ItemGrid, Info, Caption } from '..';
 import TC from 'components/Table/TC'
 import { updateDevice } from '../../variables/dataDevices'
+import { boxShadow } from "assets/jss/material-dashboard-react";
 class EnhancedTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -199,6 +200,37 @@ class EnhancedTable extends React.Component {
 				break;
 		}
 	}
+	addNewOrg = () => { this.props.history.push('/orgs/new') }
+
+	renderTableToolBarContent = () => {
+		const { classes, tableHead, t } = this.props
+		const { anchorFilterMenu } = this.state
+		return <Fragment>
+			<IconButton aria-label="Add new organisation" onClick={this.addNewOrg}>
+				<Add />
+			</IconButton>
+			<IconButton
+				className={classes.secondAction}
+				aria-label={t("tables.filter")}
+				aria-owns={anchorFilterMenu ? "filter-menu" : null}
+				onClick={this.handleFilterMenuOpen}>
+				<FilterList />
+			</IconButton>
+			<Menu
+				id="filter-menu"
+				anchorEl={anchorFilterMenu}
+				open={Boolean(anchorFilterMenu)}
+				onClose={this.handleFilterMenuClose}
+				PaperProps={{ style: { width: 200, boxShadow: boxShadow } }}>
+
+				{tableHead.map(option => {
+					return <MenuItem key={option.id} onClick={this.handleFilter}>
+						{option.label}
+					</MenuItem>
+				})}
+			</Menu>
+		</Fragment>
+	}
 	renderConfirmUnassign = () => {
 		const { openUnassign, selected } = this.state
 		const { data, t } = this.props
@@ -246,6 +278,7 @@ class EnhancedTable extends React.Component {
 					numSelected={selected.length}
 					options={this.options}
 					t={t}
+					content={this.renderTableToolBarContent()}
 				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">

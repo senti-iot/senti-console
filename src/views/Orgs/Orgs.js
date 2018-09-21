@@ -1,19 +1,15 @@
 import React, { Component, Fragment } from 'react'
-import { /* Grid, */ withStyles, /*  AppBar, Tabs, Tab */ } from "@material-ui/core";
-// import { Switch, Route, Redirect } from 'react-router-dom'
-// import { People, Business } from '@material-ui/icons'
+import { withStyles } from "@material-ui/core";
 import projectStyles from 'assets/jss/views/projects';
 import UserTable from 'components/User/UserTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
-// import Search from 'components/Search/Search';
-// import ProjectCards from 'components/Project/ProjectCards';
-import { getAllUsers, getAllOrgs } from 'variables/dataUsers';
+import { getAllOrgs } from 'variables/dataUsers';
 import OrgTable from 'components/Orgs/OrgTable';
-import CreateOrg from '../../components/Orgs/CreateOrg';
-import Toolbar from './Toolbar'
+import Toolbar from 'views/Users/Toolbar'
 var moment = require('moment');
-class Users extends Component {
+
+class Orgs extends Component {
 	constructor(props) {
 		super(props)
 
@@ -29,7 +25,7 @@ class Users extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader(props.t("users.pageTitle"), false)
+		props.setHeader(props.t("orgs.pageTitle"), false)
 	}
 
 	componentDidMount = async () => {
@@ -147,7 +143,7 @@ class Users extends Component {
 	}
 	getData = async () => {
 		const { t } = this.props
-		let users = await getAllUsers().then(rs => rs)
+		let users = await getAllOrgs().then(rs => rs)
 		let orgs = await getAllOrgs().then(rs => rs)
 		if (this._isMounted) {
 			this.setState({
@@ -180,7 +176,7 @@ class Users extends Component {
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
 	}
-	renderUsers = () => {
+	renderOrgs = () => {
 		const { t } = this.props
 		const { loading } = this.state
 		return <GridContainer justify={'center'}>
@@ -195,13 +191,13 @@ class Users extends Component {
 			/>}
 		</GridContainer>
 	}
-	renderNewOrg = () => {
-		const { t } = this.props
-		const { loading } = this.state
-		return <GridContainer justify={'center'}>
-			{loading ?  <CircularLoader/> : <CreateOrg t={t}/>}
-		</GridContainer>
-	}
+	// renderNewOrg = () => {
+	// 	const { t } = this.props
+	// 	const { loading } = this.state
+	// 	return <GridContainer justify={'center'}>
+	// 		{loading ?  <CircularLoader/> : <CreateOrg t={t}/>}
+	// 	</GridContainer>
+	// }
 	renderOrgs = () => {
 		const { t } = this.props
 		const { loading } = this.state
@@ -230,11 +226,11 @@ class Users extends Component {
 					match={this.props.match}
 					handleFilterKeyword={this.handleFilterKeyword}
 				/>
-				{this.renderUsers()}
+				{this.renderOrgs()}
 				{/* <Switch>
 					<Route path={`${this.props.match.path}/orgs/new`} render={() => this.renderNewOrg()} />
 					<Route path={`${this.props.match.path}/orgs`} render={() => this.renderOrgs()} />
-					<Route path={`${this.props.match.path}/`} render={() => this.renderUsers()} />
+					<Route path={`${this.props.match.path}/`} render={() => this.renderOrgs()} />
 					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/`} />
 				</Switch> */}
 			</Fragment>
@@ -242,4 +238,4 @@ class Users extends Component {
 	}
 }
 
-export default withStyles(projectStyles)(Users)
+export default withStyles(projectStyles)(Orgs)

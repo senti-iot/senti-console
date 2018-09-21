@@ -62,7 +62,6 @@ const styles = theme => ({
 		margin: theme.spacing.unit * 2
 	},
 	root: {
-		height: 250,
 		flexGrow: 1,
 	},
 	container: {
@@ -155,7 +154,7 @@ class EditOrgAutoSuggest extends React.Component {
 					{...autosuggestProps}
 					inputProps={{
 						classes,
-						placeholder: '',
+						label: this.props.t("orgs.fields.country"),
 						value: this.props.country,
 						onChange: this.handleChange(),
 						onClick: this.clearInput

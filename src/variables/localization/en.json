@@ -274,7 +274,10 @@
 		"unassignProject": "Unassign device(s) from project"
 	},
 	"orgs": {
+		"pageTitile": "Organisations",
 		"updateOrg": "Edit",
+		"createOrg": "Create new organisation",
+		"create": "Create",
 		"fields": {
 			"address": "Address",
 			"city": "City",
@@ -417,7 +420,8 @@
 		"updatedFailed": "Update failed!",
 		"updatedSuccess": "Updated!",
 		"updating": "Updating...",
-		"orgUpdated": "Organisation %{org} has been successfully updated!"
+		"orgUpdated": "Organisation %{org} has been successfully updated!",
+		"orgCreated": "Organisation %{org} has been successfully created!"
 	},
 	"tables": {
 		"addNewDevice": "Add new device",

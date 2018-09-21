@@ -274,7 +274,10 @@
 		"unassignProject": "Fjern enhed(er) fra projekt"
 	},
 	"orgs": {
+		"pageTitle": "Organisationer",
 		"updateOrg": "Rediger",
+		"createOrg": "Opret et nyt organisation",
+		"create": "Opret",
 		"fields": {
 			"address": "Adresse",
 			"city": "By",
@@ -417,7 +420,8 @@
 		"updatedFailed": "Opdatering fejlede!",
 		"updatedSuccess": "Opdateret!",
 		"updating": "Opdaterer ...",
-		"orgUpdated": "Organisation %{org} er succesfuldt opdateret!"
+		"orgUpdated": "Organisation %{org} er succesfuldt opdateret!",
+		"orgCreated": "Organisation %{org} er succesfuld opretted!"
 	},
 	"tables": {
 		"addNewDevice": "Tilføj ny enhed",
