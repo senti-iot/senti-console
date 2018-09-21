@@ -119,6 +119,8 @@
 			"map": "Map",
 			"pictures": "Images"
 		},
+		"confirmUnassignTitle": "Unassign devices",
+		"confirmUnassignMessage": "Unassign the sellected devices from project:",
 		"device": "Device",
 		"editDetailsTitle": "Edit %{deviceId}",
 		"editHardwareTitle": "Edit hardware for device %{deviceId}",
@@ -267,6 +269,7 @@
 		"seeMore": "See more",
 		"showMap": "Show map",
 		"showMore": "Show more",
+		"unassign": "Unassign",
 		"unassignDevice": "Unassign from project",
 		"unassignProject": "Unassign device(s) from project"
 	},

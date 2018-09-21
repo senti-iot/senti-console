@@ -112,6 +112,8 @@
 		"calibration": {
 			"noAudioSupported": "Din browser understøtter ikke lydfiler! Der vil derfor ikke være understøttende lyd! Prøv en bedre browser."
 		},
+		"confirmUnassignTitle": "Fjern tilknytning",
+		"confirmUnassignMessage" : "Fjern de valgte enheder fra projekt:"		,
 		"cards": {
 			"data": "Data",
 			"details": "Detaljer for enhed",
@@ -267,6 +269,7 @@
 		"seeMore": "Se mere",
 		"showMap": "Vis kort",
 		"showMore": "Vis mere",
+		"unassign": "Fjern tilknytning",
 		"unassignDevice": "Fjern tilknytning fra projekt",
 		"unassignProject": "Fjern enhed(er) fra projekt"
 	},
