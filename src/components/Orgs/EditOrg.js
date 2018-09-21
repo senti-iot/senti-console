@@ -37,7 +37,10 @@ class EditOrg extends Component {
 	handleValidation = () => {
 		/* Address, City, Postcode, Country, Region, Website. */
 		let errorCode = [];
-		const { address, city, zip, country, region, url, aux } = this.state.org
+		const { name, address, city, zip, country } = this.state.org
+		if (name === "") {
+			errorCode.push(0)
+		}
 		if (address === "") {
 			errorCode.push(1)
 		}
@@ -50,18 +53,6 @@ class EditOrg extends Component {
 		if (country === "") {
 			errorCode.push(4)
 		}
-		if (region === "") {
-			errorCode.push(5)
-		}
-		if (url === "") {
-			errorCode.push(6)
-		}
-		if (aux.cvr === "") {
-			errorCode.push(7)
-		}
-		if (aux.ean === "") {
-			errorCode.push(8)
-		}
 		this.setState({
 			errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
 		})
@@ -73,22 +64,16 @@ class EditOrg extends Component {
 	errorMessages = code => {
 		const { t } = this.props
 		switch (code) {
+			case 0:
+				return t("orgs.validation.noName")
 			case 1:
-				return t("orgs.validation.noaddress")
+				return t("orgs.validation.noAddress")
 			case 2:
-				return t("orgs.validation.nocity")
+				return t("orgs.validation.noCity")
 			case 3:
-				return t("orgs.validation.nozip")
+				return t("orgs.validation.noZip")
 			case 4:
-				return t("orgs.validation.nocountry")
-			case 5:
-				return t("orgs.validation.noregion")
-			case 6:
-				return t("orgs.validation.nourl")
-			case 7:
-				return t("orgs.validation.noCVR")
-			case 8:
-				return t("orgs.validation.noEAN")
+				return t("orgs.validation.noCountry")
 			default:
 				return ""
 		}

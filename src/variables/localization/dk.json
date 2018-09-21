@@ -292,12 +292,12 @@
 			"EAN": "EAN nummer"
 		},
 		"validation": {
-			"noaddress": "Mangler adresse",
-			"nocity": "Mangler by",
-			"nozip": "Mangler Postnummer",
-			"nocountry": "Mangler Land",
-			"noregion": "Mangler Region",
-			"nourl": "Mangler Website"
+			"noName": "Mangler navn",
+			"noAddress": "Mangler adresse",
+			"noCity": "Mangler by",
+			"noZip": "Mangler Postnummer",
+			"noCountry": "Mangler Land",
+			"networkError": "Netværk fejl!"
 		}
 	},
 	"projects": {

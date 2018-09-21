@@ -292,12 +292,12 @@
 			"EAN": "EAN Number"
 		},
 		"validation": {
-			"noaddress": "Address missing",
-			"nocity": "City missing",
-			"nozip": "ZIP missing",
-			"nocountry": "Country missing",
-			"noregion": "Region missing",
-			"nourl": "Website URL missing"
+			"noName": "Name missing",
+			"noAddress": "Address missing",
+			"noCity": "City missing",
+			"noZip": "ZIP missing",
+			"noCountry": "Country missing",
+			"networkError": "Network error!"	
 		}
 	},
 	"projects": {
