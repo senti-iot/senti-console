@@ -263,19 +263,6 @@ class EditOrg extends Component {
 									error={error}
 								/>
 							</ItemGrid>
-							<ItemGrid container xs={12} md={6}>
-								<TextF
-
-									id={"website"}
-									label={t("orgs.fields.url")}
-									value={org.url}
-									className={classes.textField}
-									handleChange={this.handleChange("url")}
-									margin="normal"
-									noFullWidth
-									error={error}
-								/>
-							</ItemGrid>
 							<ItemGrid container xs={12}>
 								<EditOrgAutoSuggest
 									t={t}
@@ -307,6 +294,20 @@ class EditOrg extends Component {
 									</Fragment>
 								</FormControl> */}
 							</ItemGrid>
+							<ItemGrid container xs={12} md={6}>
+								<TextF
+
+									id={"website"}
+									label={t("orgs.fields.url")}
+									value={org.url}
+									className={classes.textField}
+									handleChange={this.handleChange("url")}
+									margin="normal"
+									noFullWidth
+									error={error}
+								/>
+							</ItemGrid>
+
 							<ItemGrid container xs={12} md={6}>
 								<TextF
 									id={"cvr"}

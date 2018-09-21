@@ -253,6 +253,7 @@ class CreateOrg extends Component {
 									pattern="[0-9]*"
 								/>
 							</ItemGrid>
+							
 							<ItemGrid container xs={12} md={6}>
 								<TextF
 
@@ -265,6 +266,16 @@ class CreateOrg extends Component {
 									noFullWidth
 									error={error}
 								/>
+							</ItemGrid>
+							<ItemGrid container xs={12}>
+								<EditOrgAutoSuggest
+									error={error}
+									country={this.state.country.label ? this.state.country.label : this.state.country.id}
+									handleChange={this.handleCountryChange}
+									t={t}
+									suggestions={
+										Object.keys(countries.getNames(this.props.language)).map(
+											country => ({ value: country, label: countries.getName(country, this.props.language) }))} />
 							</ItemGrid>
 							<ItemGrid container xs={12} md={6}>
 								<TextF
@@ -279,15 +290,7 @@ class CreateOrg extends Component {
 									error={error}
 								/>
 							</ItemGrid>
-							<ItemGrid container xs={12}>
-								<EditOrgAutoSuggest
-									country={this.state.country.label ? this.state.country.label : this.state.country.id}
-									handleChange={this.handleCountryChange}
-									t={t}
-									suggestions={
-										Object.keys(countries.getNames(this.props.language)).map(
-											country => ({ value: country, label: countries.getName(country, this.props.language) }))} />
-							</ItemGrid>
+						
 							<ItemGrid container xs={12} md={6}>
 								<TextF
 									id={"cvr"}

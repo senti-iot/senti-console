@@ -295,8 +295,8 @@
 			"noName": "Mangler navn",
 			"noAddress": "Mangler adresse",
 			"noCity": "Mangler by",
-			"noZip": "Mangler Postnummer",
-			"noCountry": "Mangler Land",
+			"noZip": "Mangler postnummer",
+			"noCountry": "Mangler land",
 			"networkError": "Netværk fejl!"
 		}
 	},
