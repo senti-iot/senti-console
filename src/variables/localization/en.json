@@ -282,7 +282,7 @@
 			"address": "Address",
 			"city": "City",
 			"country": "Country",
-			"name": "Name",
+			"name": "Organisation name",
 			"org": "Organisation",
 			"url": "Website",
 			"zip": "ZIP Code",
