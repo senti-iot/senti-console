@@ -6,7 +6,7 @@ import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 
 import { connect } from 'react-redux'
 import createprojectStyles from '../../assets/jss/components/projects/createprojectStyles'
 import EditOrgAutoSuggest from './EditOrgAutoSuggest';
-import { createOrg, /* getCreateOrg */ } from '../../variables/dataUsers';
+import { createOrg } from '../../variables/dataUsers';
 
 // var moment = require("moment")
 var countries = require("i18n-iso-countries");
@@ -27,8 +27,18 @@ class CreateOrg extends Component {
 
 		this.state = {
 			org: {
+				id: -1,
+				name: "",
+				address: "",
+				city: "",
+				zip: "",
+				region: "",
 				country: "",
-				aux: {}
+				url: "",
+				aux: {
+					cvr: "",
+					ean: ""
+				}
 			},
 			country: {
 				id: "",
@@ -36,14 +46,20 @@ class CreateOrg extends Component {
 			},
 			creating: false,
 			created: false,
-			loading: true,
+			loading: false,
 			openSnackBar: false,
 		}
 	}
+	componentDidMount = async () => {
+		this._isMounted = 1
+		this.props.setHeader(this.props.t("orgs.createOrg"), true, `/orgs`)
+	}
+
+
 	handleValidation = () => {
 		/* Address, City, Postcode, Country, Region, Website. */
 		let errorCode = [];
-		const { address, city, zip, country, region, url } = this.state.org
+		const { address, city, zip, country, region, url, aux } = this.state.org
 		if (address === "") {
 			errorCode.push(1)
 		}
@@ -61,6 +77,12 @@ class CreateOrg extends Component {
 		}
 		if (url === "") {
 			errorCode.push(6)
+		}
+		if (aux.cvr === "") {
+			errorCode.push(7)
+		}
+		if (aux.ean === "") {
+			errorCode.push(8)
 		}
 		this.setState({
 			errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
@@ -85,17 +107,13 @@ class CreateOrg extends Component {
 				return t("orgs.validation.noregion")
 			case 6:
 				return t("orgs.validation.nourl")
+			case 7:
+				return t("orgs.validation.noCVR")
+			case 8:
+				return t("orgs.validation.noEAN")
 			default:
 				return ""
 		}
-	}
-	componentDidMount = async () => {
-		this._isMounted = 1
-		// var org = await getCreateOrg()
-		this.setState({
-			loading: false
-		})
-		this.props.setHeader(this.props.t("orgs.createOrg"), true, `/orgs`)
 	}
 
 	componentWillUnmount = () => {
@@ -148,10 +166,16 @@ class CreateOrg extends Component {
 		clearTimeout(this.timer)
 		this.timer = setTimeout(async () => {
 			if (this.handleValidation()) {
-				return createOrg(this.state.org).then(rs => {
+				let newOrg = {
+					...this.state.org,
+					org: {
+						id: -1,
+					}
+				}
+				return createOrg(newOrg).then(rs => {
 					console.log(rs)
-					return rs ?
-						this.setState({ created: true, creating: false, openSnackBar: true, org: rs }) :
+					return rs.data ?
+						this.setState({ created: true, creating: false, openSnackBar: true, org: rs.data }) :
 						this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
 				}
 					, 2e3)
@@ -194,7 +218,7 @@ class CreateOrg extends Component {
 							<ItemGrid container xs={12} md={6}>
 								<TextF
 									autoFocus
-									id={"title"}
+									id={"name"}
 									label={t("orgs.fields.name")}
 									value={org.name}
 									className={classes.textField}
@@ -233,7 +257,7 @@ class CreateOrg extends Component {
 							<ItemGrid container xs={12} md={6}>
 								<TextF
 
-									id={"postcode"}
+									id={"zip"}
 									label={t("orgs.fields.zip")}
 									value={org.zip}
 									className={classes.textField}
@@ -261,7 +285,7 @@ class CreateOrg extends Component {
 							<ItemGrid container xs={12} md={6}>
 								<TextF
 
-									id={"website"}
+									id={"url"}
 									label={t("orgs.fields.url")}
 									value={org.url}
 									className={classes.textField}
@@ -282,7 +306,6 @@ class CreateOrg extends Component {
 							</ItemGrid>
 							<ItemGrid container xs={12} md={6}>
 								<TextF
-
 									id={"cvr"}
 									label={t("orgs.fields.CVR")}
 									value={org.aux.cvr}

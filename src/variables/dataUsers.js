@@ -33,7 +33,7 @@ export const createOrg = async (org) => {
 	return result
 }
 export const getCreateOrg = async () => {
-	var result = await api.get('core/org/create')
+	var result = await api.get('core/org/empty')
 	return result
 }
 //#endregion
