@@ -15,7 +15,8 @@ class HeaderLinks extends React.Component {
 	}
 	handleRedirectToOwnProfile = () => {
 		this.setState({ anchorProfile: null })
-		this.props.history.push(`/user/${this.props.userId}`)
+		if (this.props.user)
+			this.props.history.push(`/user/${this.props.user.id}`)
 	}
 	handleProfileClose = () => {
 		this.setState({ anchorProfile: null })
@@ -90,7 +91,7 @@ class HeaderLinks extends React.Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	userId: state.settings.user.id
+	user: state.settings.user
 })
 
 const mapDispatchToProps = {
