@@ -37,7 +37,7 @@ class EditOrg extends Component {
 	handleValidation = () => {
 		/* Address, City, Postcode, Country, Region, Website. */
 		let errorCode = [];
-		const { address, city, zip, country, region, url } = this.state.org
+		const { address, city, zip, country, region, url, aux } = this.state.org
 		if (address === "") {
 			errorCode.push(1)
 		}
@@ -55,6 +55,12 @@ class EditOrg extends Component {
 		}
 		if (url === "") {
 			errorCode.push(6)
+		}
+		if (aux.cvr === "") {
+			errorCode.push(7)
+		}
+		if (aux.ean === "") {
+			errorCode.push(8)
 		}
 		this.setState({
 			errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
@@ -79,6 +85,10 @@ class EditOrg extends Component {
 				return t("orgs.validation.noregion")
 			case 6:
 				return t("orgs.validation.nourl")
+			case 7:
+				return t("orgs.validation.noCVR")
+			case 8:
+				return t("orgs.validation.noEAN")
 			default:
 				return ""
 		}
@@ -96,7 +106,7 @@ class EditOrg extends Component {
 					org: {
 						...rs,
 						aux: {
-
+							...rs.aux
 						},
 						country: rs.country.length > 2 ? countries.getAlpha2Code(rs.country, "en") ? countries.getAlpha2Code(rs.country, "en") : countries.getAlpha2Code(rs.country, "da")
 							: rs.country
@@ -314,7 +324,6 @@ class EditOrg extends Component {
 							</ItemGrid>
 							<ItemGrid container xs={12} md={6}>
 								<TextF
-
 									id={"cvr"}
 									label={t("orgs.fields.CVR")}
 									value={org.aux.cvr}
