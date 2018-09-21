@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info } from 'components';
 import { Hidden } from '@material-ui/core';
-import UserPlaceHolder from 'assets/img/userplaceholder.png'
 import { pF } from 'variables/functions';
 import { Person } from '@material-ui/icons'
 import { NavLink } from 'react-router-dom'
+import Gravatar from 'react-gravatar'
 export class UserContact extends Component {
 
 	renderUserGroup = () => {
@@ -35,7 +35,7 @@ export class UserContact extends Component {
 					<ItemGrid zeroMargin noPadding container >
 						<Hidden lgUp>
 							<ItemGrid container justify={'center'}>
-								<img src={UserPlaceHolder} alt={"profilepicture"} className={classes.img} />
+								{user.img ? <img src={user.img} alt="brken" className={classes.img} /> : <Gravatar size={250} default="identicon" email={user.email} className={classes.img} />}
 							</ItemGrid>
 						</Hidden>
 						<ItemGrid zeroMargin noPadding lg={9} md={12}>
@@ -77,7 +77,7 @@ export class UserContact extends Component {
 						</ItemGrid>
 						<Hidden mdDown>
 							<ItemGrid >
-								<img src={UserPlaceHolder} alt={"profilepicture"} className={classes.img} />
+								{user.img ? <img src={user.img} alt="brken" className={classes.img} /> : <Gravatar default="identicon" size={250} email={user.email} className={classes.img} />}
 							</ItemGrid>
 						</Hidden>
 					</ItemGrid>
