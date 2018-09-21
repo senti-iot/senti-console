@@ -276,7 +276,7 @@
 	"orgs": {
 		"pageTitile": "Organisations",
 		"updateOrg": "Edit",
-		"createOrg": "Create new organisation",
+		"createOrg": "Create organisation",
 		"create": "Create",
 		"fields": {
 			"address": "Address",
