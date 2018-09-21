@@ -7,10 +7,10 @@ import DeviceTable from 'components/Devices/DeviceTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import { Maps } from 'components/Map/Maps';
 import GridContainer from 'components/Grid/GridContainer';
-import { ViewList, ViewModule, Map  } from '@material-ui/icons'
+import { ViewList, ViewModule, Map } from '@material-ui/icons'
 import Toolbar from 'components/Toolbar/Toolbar'
 import { filterItems } from '../../variables/functions';
-
+import DeviceCard from 'components/Devices/DeviceCard'
 // var moment = require('moment');
 
 class Devices extends Component {
@@ -32,9 +32,9 @@ class Devices extends Component {
 		props.setHeader(props.t("devices.pageTitle"), false)
 	}
 
-    filterItems = (data) => {
-    	return filterItems(data, this.state.filters)
-    }
+	filterItems = (data) => {
+		return filterItems(data, this.state.filters)
+	}
 
 	handleFilterStartDate = (value) => {
 		this.setState({
@@ -88,13 +88,13 @@ class Devices extends Component {
 		else {
 			if (this.props.location.pathname.includes('/grid'))
 				this.setState({ route: 2 })
-			else { 
+			else {
 				this.setState({ route: 0 })
 			}
 		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		if (this.props.location.pathname !== prevProps.location.pathname) {	
+		if (this.props.location.pathname !== prevProps.location.pathname) {
 			if (this.props.location.pathname.includes('/map'))
 				this.setState({ route: 1 })
 			else {
@@ -106,47 +106,51 @@ class Devices extends Component {
 			}
 		}
 	}
-	
+
 	componentWillUnmount = () => {
 		this._isMounted = 0
 		clearInterval(this.liveStatus)
-		
+
 		// this.liveStatus= null
 	}
-	
+
 	componentWillUnmount = () => {
-	  window.clearInterval(this.liveStatus)
+		window.clearInterval(this.liveStatus)
 	}
-	
+
 	renderLoader = () => {
 		// const { classes } = this.props
 
-		return <CircularLoader/>
-	}
-	renderAllDevices = () => {
-		const { loading } = this.state
-		return loading ? this.renderLoader() : <DeviceTable
-			t={this.props.t}
-			data={this.filterItems(this.state.devices)}
-			tableHead={this.state.deviceHeader}
-			handleFilterEndDate={this.handleFilterEndDate}
-			handleFilterKeyword={this.handleFilterKeyword}
-			handleFilterStartDate={this.handleFilterStartDate}
-			filters={this.state.filters}
-		/>
+		return <CircularLoader />
 	}
 	renderList = () => {
-		return <GridContainer container justify={'center'} /* className={classes.grid} */>
-			{this.renderAllDevices()}
+		const { loading } = this.state
+		return loading ? this.renderLoader() : <GridContainer container justify={'center'} /* className={classes.grid} */>
+			<DeviceTable
+				t={this.props.t}
+				data={this.filterItems(this.state.devices)}
+				tableHead={this.state.deviceHeader}
+				handleFilterEndDate={this.handleFilterEndDate}
+				handleFilterKeyword={this.handleFilterKeyword}
+				handleFilterStartDate={this.handleFilterStartDate}
+				filters={this.state.filters}
+			/>
 		</GridContainer>
-
+	}
+	renderCards = () => {
+		const { loading } = this.state
+		return loading ? this.renderLoader() : <GridContainer container justify={'center'}>
+			{this.filterItems(this.state.devices).map(d => {
+				return <DeviceCard t={this.props.t} d={d} />
+			})}
+		</GridContainer>
 	}
 	renderMap = () => {
 		const { devices, loading } = this.state
 		const { classes } = this.props
 		return loading ? <CircularLoader /> : <GridContainer container justify={'center'} >
 			<Paper className={classes.paper}>
-				<Maps t={this.props.t} isMarkerShown centerDenmark markers={this.filterItems(devices)} /* zoom={10} *//> 
+				<Maps t={this.props.t} isMarkerShown centerDenmark markers={this.filterItems(devices)} /* zoom={10} */ />
 			</Paper>
 		</GridContainer>
 	}
@@ -170,6 +174,7 @@ class Devices extends Component {
 				<Switch>
 					<Route path={`${this.props.match.path}/map`} render={() => this.renderMap()} />
 					<Route path={`${this.props.match.path}/list`} render={() => this.renderList()} />
+					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} />
 					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
 				</Switch>
 			</Fragment>

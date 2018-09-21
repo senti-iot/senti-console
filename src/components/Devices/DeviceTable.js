@@ -27,6 +27,9 @@ class EnhancedTable extends React.Component {
 			openAssignProject: false
 		};
 	}
+	handleCalibrateFlow = () => {
+		this.props.history.push(`/device/${this.state.selected[0]}/calibrate`)
+	}
 	options = () => {
 		const { t } = this.props
 		return [

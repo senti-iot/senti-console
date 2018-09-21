@@ -1,5 +1,4 @@
-import { Avatar, Card, CardActions, CardContent, CardHeader, Typography, withStyles } from '@material-ui/core';
-import { LibraryBooks } from '@material-ui/icons';
+import { Avatar, Card, CardActions, CardContent, CardHeader, withStyles } from '@material-ui/core';
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -8,14 +7,14 @@ import ExifOrientationImg from 'react-exif-orientation-img';
 class SimpleMediaCard extends Component {
 
 	render() {
-		const { classes, title, content, noAvatar, topAction, leftActions, rightActions, img } = this.props;
+		const { classes, title, content, noAvatar, topAction, leftActions, rightActions, img, avatar, whiteAvatar } = this.props;
 		return (
 			<Card className={classes.smallCard + classes.plainCardClasses}>
 				<CardHeader
 					action={topAction}
 					avatar={
-						noAvatar ? null : <Avatar aria-label="Avatar" className={classes.avatar}>
-							<LibraryBooks />
+						noAvatar ? null : <Avatar aria-label="Avatar" className={whiteAvatar ? classes.whiteAvatar : classes.avatar}>
+							{avatar}
 						</Avatar>
 					}
 					title={title} />
@@ -23,9 +22,10 @@ class SimpleMediaCard extends Component {
 					<ExifOrientationImg src={img} width={"100%"} />
 				</CardContent> : null}
 				<CardContent classes={{ root: classes.root + ' ' + classes.smallCardCustomHeight }}>
-					<Typography component="p" classes={{ root: classes.textOvrflow }}>
-						{content}
-					</Typography>
+					{content}
+					{/* <Typography component="p" classes={{ root: classes.textOvrflow }}>
+					
+					</Typography> */}
 				</CardContent>
 				<CardActions className={classes.actions} disableActionSpacing>
 					<div className={classes.leftActions}>
