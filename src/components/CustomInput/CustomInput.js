@@ -15,9 +15,10 @@ function CustomInput({ ...props }) {
 		labelProps,
 		inputProps,
 		error,
-		success
+		success,
+		autoFocus,
 	} = props;
-
+	console.log(props)
 	const labelClasses = cx({
 		[" " + classes.labelRootError]: error,
 		[" " + classes.labelRootSuccess]: success && !error
@@ -45,6 +46,8 @@ function CustomInput({ ...props }) {
 				</InputLabel>
 			) : null}
 			<Input
+				innerRef={ref => props.inputRef ? props.inputRef(ref) : null}
+				autoFocus={autoFocus ? autoFocus : false}
 				classes={{
 					root: marginTop,
 					disabled: classes.disabled,

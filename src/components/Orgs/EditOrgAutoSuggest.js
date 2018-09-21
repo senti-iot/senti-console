@@ -154,6 +154,7 @@ class EditOrgAutoSuggest extends React.Component {
 					{...autosuggestProps}
 					inputProps={{
 						classes,
+						error: this.props.error,
 						label: this.props.t("orgs.fields.country"),
 						value: this.props.country,
 						onChange: this.handleChange(),

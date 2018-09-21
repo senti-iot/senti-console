@@ -6,7 +6,7 @@ import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 
 import { connect } from 'react-redux'
 import createprojectStyles from '../../assets/jss/components/projects/createprojectStyles'
 import EditOrgAutoSuggest from './EditOrgAutoSuggest';
-import { createOrg, /* getCreateOrg */ } from '../../variables/dataUsers';
+import { createOrg } from '../../variables/dataUsers';
 
 // var moment = require("moment")
 var countries = require("i18n-iso-countries");
@@ -27,8 +27,18 @@ class CreateOrg extends Component {
 
 		this.state = {
 			org: {
+				id: -1,
+				name: "",
+				address: "",
+				city: "",
+				zip: "",
+				region: "",
 				country: "",
-				aux: {}
+				url: "",
+				aux: {
+					cvr: "",
+					ean: ""
+				}
 			},
 			country: {
 				id: "",
@@ -36,14 +46,23 @@ class CreateOrg extends Component {
 			},
 			creating: false,
 			created: false,
-			loading: true,
+			loading: false,
 			openSnackBar: false,
 		}
 	}
+	componentDidMount = async () => {
+		this._isMounted = 1
+		this.props.setHeader(this.props.t("orgs.createOrg"), true, `/orgs`)
+	}
+
+
 	handleValidation = () => {
 		/* Address, City, Postcode, Country, Region, Website. */
 		let errorCode = [];
-		const { address, city, zip, country, region, url } = this.state.org
+		const { name, address, city, zip, country } = this.state.org
+		if (name === "") {
+			errorCode.push(0)
+		}
 		if (address === "") {
 			errorCode.push(1)
 		}
@@ -56,12 +75,6 @@ class CreateOrg extends Component {
 		if (country === "") {
 			errorCode.push(4)
 		}
-		if (region === "") {
-			errorCode.push(5)
-		}
-		if (url === "") {
-			errorCode.push(6)
-		}
 		this.setState({
 			errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
 		})
@@ -73,29 +86,19 @@ class CreateOrg extends Component {
 	errorMessages = code => {
 		const { t } = this.props
 		switch (code) {
+			case 0:
+				return t("orgs.validation.noName")
 			case 1:
-				return t("orgs.validation.noaddress")
+				return t("orgs.validation.noAddress")
 			case 2:
-				return t("orgs.validation.nocity")
+				return t("orgs.validation.noCity")
 			case 3:
-				return t("orgs.validation.nozip")
+				return t("orgs.validation.noZip")
 			case 4:
-				return t("orgs.validation.nocountry")
-			case 5:
-				return t("orgs.validation.noregion")
-			case 6:
-				return t("orgs.validation.nourl")
+				return t("orgs.validation.noCountry")
 			default:
 				return ""
 		}
-	}
-	componentDidMount = async () => {
-		this._isMounted = 1
-		// var org = await getCreateOrg()
-		this.setState({
-			loading: false
-		})
-		this.props.setHeader(this.props.t("orgs.createOrg"), true, `/orgs`)
 	}
 
 	componentWillUnmount = () => {
@@ -148,8 +151,13 @@ class CreateOrg extends Component {
 		clearTimeout(this.timer)
 		this.timer = setTimeout(async () => {
 			if (this.handleValidation()) {
-				return createOrg(this.state.org).then(rs => {
-					console.log(rs)
+				let newOrg = {
+					...this.state.org,
+					org: {
+						id: -1,
+					}
+				}
+				return createOrg(newOrg).then(rs => {
 					return rs ?
 						this.setState({ created: true, creating: false, openSnackBar: true, org: rs }) :
 						this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
@@ -194,7 +202,7 @@ class CreateOrg extends Component {
 							<ItemGrid container xs={12} md={6}>
 								<TextF
 									autoFocus
-									id={"title"}
+									id={"name"}
 									label={t("orgs.fields.name")}
 									value={org.name}
 									className={classes.textField}
@@ -233,7 +241,7 @@ class CreateOrg extends Component {
 							<ItemGrid container xs={12} md={6}>
 								<TextF
 
-									id={"postcode"}
+									id={"zip"}
 									label={t("orgs.fields.zip")}
 									value={org.zip}
 									className={classes.textField}
@@ -245,6 +253,7 @@ class CreateOrg extends Component {
 									pattern="[0-9]*"
 								/>
 							</ItemGrid>
+							
 							<ItemGrid container xs={12} md={6}>
 								<TextF
 
@@ -258,21 +267,9 @@ class CreateOrg extends Component {
 									error={error}
 								/>
 							</ItemGrid>
-							<ItemGrid container xs={12} md={6}>
-								<TextF
-
-									id={"website"}
-									label={t("orgs.fields.url")}
-									value={org.url}
-									className={classes.textField}
-									handleChange={this.handleChange("url")}
-									margin="normal"
-									noFullWidth
-									error={error}
-								/>
-							</ItemGrid>
 							<ItemGrid container xs={12}>
 								<EditOrgAutoSuggest
+									error={error}
 									country={this.state.country.label ? this.state.country.label : this.state.country.id}
 									handleChange={this.handleCountryChange}
 									t={t}
@@ -283,6 +280,19 @@ class CreateOrg extends Component {
 							<ItemGrid container xs={12} md={6}>
 								<TextF
 
+									id={"url"}
+									label={t("orgs.fields.url")}
+									value={org.url}
+									className={classes.textField}
+									handleChange={this.handleChange("url")}
+									margin="normal"
+									noFullWidth
+									error={error}
+								/>
+							</ItemGrid>
+						
+							<ItemGrid container xs={12} md={6}>
+								<TextF
 									id={"cvr"}
 									label={t("orgs.fields.CVR")}
 									value={org.aux.cvr}

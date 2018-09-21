@@ -30,6 +30,7 @@
 		"react-dom": "^16.4.0",
 		"react-exif-orientation-img": "^0.1.5",
 		"react-google-maps": "^9.4.5",
+		"react-gravatar": "^2.6.3",
 		"react-masonry-component": "^6.2.1",
 		"react-redux": "^5.0.7",
 		"react-router-dom": "^4.3.1",
@@ -40,8 +41,8 @@
 		"redux-thunk": "^2.3.0"
 	},
 	"devDependencies": {
-		"source-map-explorer": "^1.6.0",
-		"npm-run-all": "4.1.2"
+		"npm-run-all": "4.1.2",
+		"source-map-explorer": "^1.6.0"
 	},
 	"scripts": {
 		"start": "react-scripts start ",

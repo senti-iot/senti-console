@@ -17,9 +17,8 @@ import { connect } from "react-redux"
 import Caption from '../Typography/Caption';
 // import { Add, FilterList } from '@material-ui/icons';
 // import { boxShadow } from 'assets/jss/material-dashboard-react';
-import UserPlaceHolder from 'assets/img/userplaceholder.png'
 import { pF } from 'variables/functions';
-
+import Gravatar from 'react-gravatar'
 var moment = require("moment")
 class UserTable extends React.Component {
 	constructor(props) {
@@ -246,7 +245,7 @@ class UserTable extends React.Component {
 											</TableCell>
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
 												<ItemGrid container zeroMargin noPadding justify={"center"}>
-													<img src={UserPlaceHolder} alt="brken" className={classes.img} />
+													{n.img ? <img src={n.img} alt="brken" className={classes.img} /> : <Gravatar default="identicon" email={n.email} className={classes.img}/>}
 												</ItemGrid>
 											</TableCell>
 											<TableCell classes={{ root: classes.tableCell }}>
@@ -277,7 +276,7 @@ class UserTable extends React.Component {
 											</TableCell>
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
 												<ItemGrid container zeroMargin noPadding justify={"center"}>	
-													<img src={UserPlaceHolder} alt="brken" className={classes.img} />
+													{n.img ? <img src={n.img} alt="brken" className={classes.img} /> : <Gravatar default="identicon" email={n.email} className={classes.img} />}
 												</ItemGrid>
 											</TableCell>
 											{/* <TC label={n.userName} /> */}

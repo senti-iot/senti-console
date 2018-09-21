@@ -33,6 +33,7 @@ class LoginPage extends React.Component {
 			loggingIn: false,
 			error: false
 		};
+		this.input = React.createRef()
 	}
 	handleKeyPress = (event) => {
 		if (event.key === 'Enter') {
@@ -53,6 +54,7 @@ class LoginPage extends React.Component {
 				this.props.history.push('/dashboard')
 			}
 		}
+		if (this.inputRef.current) { this.inputRef.current.focus() }
 		setTimeout(
 			function () {
 				return this._isMounted ? this.setState({ cardAnimaton: "" }) : '';
@@ -61,10 +63,15 @@ class LoginPage extends React.Component {
 		);
 	}
 	handleInput = (e) => {
+		console.log(this.input)
 		this.setState({ [e.target.id]: e.target.value })
 		if (this.state.error) { 
 			this.setState({ error: false })
 		}
+	}
+	createRef = (ref) => {
+		this.input = ref
+		return this.input
 	}
 	loginUser = async () => {
 		this.setState({ loggingIn: true })
@@ -91,6 +98,9 @@ class LoginPage extends React.Component {
 		);
 
 
+	}
+	inputRef = (ref) => {
+		this.input = ref
 	}
 	render() {
 		const { classes, t } = this.props;
@@ -126,6 +136,8 @@ class LoginPage extends React.Component {
 										</CardHeader>
 										<CardBody>
 											<CustomInput
+												inputRef={this.createRef}
+												autoFocus={true}
 												labelText={t("login.username")}
 												id="user"
 												error={this.state.error}

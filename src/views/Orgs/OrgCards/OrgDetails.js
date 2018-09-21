@@ -124,7 +124,7 @@ class OrgDetails extends Component {
     							{t("orgs.fields.CVR")}
     						</Caption>
     						<Info>
-    							{org.cvr}
+    							{org.aux ? org.aux.cvr : null}
     						</Info>
     					</ItemGrid>
     					<ItemGrid>
@@ -132,7 +132,7 @@ class OrgDetails extends Component {
     							{t("orgs.fields.EAN")}
     						</Caption>
     						<Info>
-    							{org.ean}
+    							{org.aux ? org.aux.ean : null}
     						</Info>
     					</ItemGrid>
     				</Grid>

@@ -144,12 +144,13 @@ class OrgTable extends React.Component {
 	}
 
 	isSelected = id => this.state.selected.indexOf(id) !== -1
-
+	handleEdit = () => {
+		this.props.history.push(`/org/${this.state.selected[0]}/edit`)
+	}
 	options = () => {
 		const { t } = this.props
 		return [
 			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
-			// { label: t("menus.assignDevices"), func: this.assignDevice, single: true, icon: Devices },
 			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
 			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
 		]

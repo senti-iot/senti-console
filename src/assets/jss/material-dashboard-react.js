@@ -17,13 +17,24 @@
 // ##############################
 // // // Variables - Styles that are used on more than one component
 // #############################
-
+import { red, green, yellow } from "@material-ui/core/colors"
 const drawerWidth = 260;
 
 const transition = {
 	transition: "all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1)"
 };
 
+const deviceStatus = {
+	redSignal: {
+		color: red[700]
+	},
+	greenSignal: {
+		color: green[700]
+	},
+	yellowSignal: {
+		color: yellow[600]
+	},
+}
 const container = {
 	// padding: "8px",
 	// paddingRight: "15px",
@@ -157,6 +168,7 @@ const defaultBoxShadow = {
 };
 
 export {
+	deviceStatus,
 	//variables
 	drawerWidth,
 	transition,

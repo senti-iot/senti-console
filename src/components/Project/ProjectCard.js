@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { IconButton, Menu, MenuItem, withStyles, Button } from '@material-ui/core'
+import { IconButton, Menu, MenuItem, withStyles, Button, Typography } from '@material-ui/core'
 import { ItemGrid, SmallCard } from '..'
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle'
-import { MoreVert, Edit, PictureAsPdf, Devices, Delete } from '@material-ui/icons'
+import { MoreVert, Edit, PictureAsPdf, Devices, Delete, LibraryBooks } from '@material-ui/icons'
 import { withRouter } from 'react-router-dom'
 import { getProjectImage } from 'variables/dataProjects'
 
@@ -53,6 +53,7 @@ class ProjectCard extends Component {
 				<div style={{
 					margin: 8, /* width: '100%', */ height: "100%" }}>
 					<SmallCard
+						avatar={<LibraryBooks />}
 						key={p.id}
 						title={p.title}
 						img={this.state.img}
@@ -92,7 +93,7 @@ class ProjectCard extends Component {
 								</Menu>
 							</ItemGrid>
 						}
-						content={p.description}
+						content={<Typography noWrap>{p.description}</Typography>}
 						rightActions={
 							<Button variant={'flat'} color={'primary'} onClick={() => this.props.history.push(`/project/${p.id}`)}>
 								{t("menus.seeMore")}

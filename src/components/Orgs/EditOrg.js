@@ -37,7 +37,10 @@ class EditOrg extends Component {
 	handleValidation = () => {
 		/* Address, City, Postcode, Country, Region, Website. */
 		let errorCode = [];
-		const { address, city, zip, country, region, url } = this.state.org
+		const { name, address, city, zip, country } = this.state.org
+		if (name === "") {
+			errorCode.push(0)
+		}
 		if (address === "") {
 			errorCode.push(1)
 		}
@@ -50,12 +53,6 @@ class EditOrg extends Component {
 		if (country === "") {
 			errorCode.push(4)
 		}
-		if (region === "") {
-			errorCode.push(5)
-		}
-		if (url === "") {
-			errorCode.push(6)
-		}
 		this.setState({
 			errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
 		})
@@ -67,18 +64,16 @@ class EditOrg extends Component {
 	errorMessages = code => {
 		const { t } = this.props
 		switch (code) {
+			case 0:
+				return t("orgs.validation.noName")
 			case 1:
-				return t("orgs.validation.noaddress")
+				return t("orgs.validation.noAddress")
 			case 2:
-				return t("orgs.validation.nocity")
+				return t("orgs.validation.noCity")
 			case 3:
-				return t("orgs.validation.nozip")
+				return t("orgs.validation.noZip")
 			case 4:
-				return t("orgs.validation.nocountry")
-			case 5:
-				return t("orgs.validation.noregion")
-			case 6:
-				return t("orgs.validation.nourl")
+				return t("orgs.validation.noCountry")
 			default:
 				return ""
 		}
@@ -96,7 +91,7 @@ class EditOrg extends Component {
 					org: {
 						...rs,
 						aux: {
-
+							...rs.aux
 						},
 						country: rs.country.length > 2 ? countries.getAlpha2Code(rs.country, "en") ? countries.getAlpha2Code(rs.country, "en") : countries.getAlpha2Code(rs.country, "da")
 							: rs.country
@@ -268,19 +263,6 @@ class EditOrg extends Component {
 									error={error}
 								/>
 							</ItemGrid>
-							<ItemGrid container xs={12} md={6}>
-								<TextF
-
-									id={"website"}
-									label={t("orgs.fields.url")}
-									value={org.url}
-									className={classes.textField}
-									handleChange={this.handleChange("url")}
-									margin="normal"
-									noFullWidth
-									error={error}
-								/>
-							</ItemGrid>
 							<ItemGrid container xs={12}>
 								<EditOrgAutoSuggest
 									t={t}
@@ -315,6 +297,19 @@ class EditOrg extends Component {
 							<ItemGrid container xs={12} md={6}>
 								<TextF
 
+									id={"website"}
+									label={t("orgs.fields.url")}
+									value={org.url}
+									className={classes.textField}
+									handleChange={this.handleChange("url")}
+									margin="normal"
+									noFullWidth
+									error={error}
+								/>
+							</ItemGrid>
+
+							<ItemGrid container xs={12} md={6}>
+								<TextF
 									id={"cvr"}
 									label={t("orgs.fields.CVR")}
 									value={org.aux.cvr}
