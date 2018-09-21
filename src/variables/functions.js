@@ -1,6 +1,78 @@
 var moment = require('moment');
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 var PNF = require('google-libphonenumber').PhoneNumberFormat
+
+const isObject = (obj) => {
+	return obj === Object(obj);
+}
+const filterByDate = (items, filters) => {
+	const { startDate, endDate } = filters
+	var arr = items
+	var keys = Object.keys(arr[0])
+	var filteredByDate = arr.filter(c => {
+		var contains = keys.map(key => {
+			var openDate = moment(c['open_date'])
+			var closeDate = moment(c['close_date'])
+			if (openDate > startDate
+				&& closeDate < (endDate ? endDate : moment())) {
+				return true
+			}
+			else
+				return false
+		})
+		return contains.indexOf(true) !== -1 ? true : false
+	})
+	return filteredByDate
+}
+
+export const filterItems = (data, filters) => {
+    	const { activeDateFilter, keyword } = filters
+    	var arr = data
+    	if (activeDateFilter)
+    		arr = filterByDate(arr, filters)
+    	if (arr) {
+    		if (arr[0] === undefined)
+    			return []
+    		var keys = Object.keys(arr[0])
+    		var filtered = arr.filter(c => {
+    			var contains = keys.map(key => {
+    				return keyTester(c[key], keyword)
+
+    			})
+    			return contains.indexOf(true) !== -1 ? true : false
+    		})
+    		return filtered
+    	}
+}
+export const keyTester = (obj, sstr) => {
+	let searchStr = sstr.toLowerCase()
+	let found = false
+	if (isObject(obj)) {
+		for (var k in obj) {
+			if (!found) {
+				if (k instanceof Date) {
+					let date = moment(obj[k]).format("DD.MM.YYYY")
+					found = date.toLowerCase().includes(searchStr)
+				}
+				else {
+					if (isObject(obj[k])) {
+						found = keyTester(obj[k])
+					}
+					else {
+						found = obj[k] ? obj[k].toString().toLowerCase().includes(searchStr) : false
+					}
+				}
+			}
+			else {
+				break
+			}
+		}
+	}
+	else {
+		found = obj ? obj.toString().toLowerCase().includes(searchStr) : null
+	}
+	return found
+}
 export const pF = (phone) => {
 	let formattedPhone = phoneUtil.parse(phone, "DK")
 	return phoneUtil.format(formattedPhone, PNF.NATIONAL);

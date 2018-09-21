@@ -252,7 +252,7 @@ class OrgTable extends React.Component {
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
-								console.log(n.country)
+								// console.log(n.country)
 								return (
 									<TableRow
 										hover
@@ -289,9 +289,7 @@ class OrgTable extends React.Component {
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
-											{/* <TC label={n.userName} /> */}
 											<TC FirstC label={n.name} />
-
 											<TC label={n.address} />
 											<TC label={`${n.zip} ${n.city}`} />
 											<TC label={n.url} />

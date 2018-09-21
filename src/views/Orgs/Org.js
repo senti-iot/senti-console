@@ -36,7 +36,7 @@ class Org extends Component {
 				}))
 			}
 	}
-
+	
 	render() {
 		const { classes, t, history, match, language } = this.props
 		const { org, loading } = this.state
@@ -56,7 +56,6 @@ class Org extends Component {
 }
 const mapStateToProps = (state) => ({
 	language: state.localization.language
-  
 })
 
 const mapDispatchToProps = {
