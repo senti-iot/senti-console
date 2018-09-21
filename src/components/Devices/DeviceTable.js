@@ -278,7 +278,7 @@ class EnhancedTable extends React.Component {
 					numSelected={selected.length}
 					options={this.options}
 					t={t}
-					content={this.renderTableToolBarContent()}
+					// content={this.renderTableToolBarContent()}
 				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
