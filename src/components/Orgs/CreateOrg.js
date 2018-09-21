@@ -173,9 +173,8 @@ class CreateOrg extends Component {
 					}
 				}
 				return createOrg(newOrg).then(rs => {
-					console.log(rs)
-					return rs.data ?
-						this.setState({ created: true, creating: false, openSnackBar: true, org: rs.data }) :
+					return rs ?
+						this.setState({ created: true, creating: false, openSnackBar: true, org: rs }) :
 						this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
 				}
 					, 2e3)

@@ -29,7 +29,7 @@ export const updateOrg = async(org) => {
 	return data
 }
 export const createOrg = async (org) => {
-	var result = await api.post('core/org', org)
+	var result = await api.post('core/org', org).then(rs => rs.data)
 	return result
 }
 export const getCreateOrg = async () => {
