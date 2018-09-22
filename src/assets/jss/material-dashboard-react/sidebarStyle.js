@@ -22,12 +22,12 @@ const sidebarStyle = theme => ({
 		// overflow: 'auto',
 		...boxShadow,
 		width: drawerWidth,
-		[theme.breakpoints.up("md")]: {
+		[theme.breakpoints.up("lg")]: {
 			width: drawerWidth,
 			position: "fixed",
 			height: "100%"
 		},
-		[theme.breakpoints.down("sm")]: {
+		[theme.breakpoints.down("md")]: {
 			width: drawerWidth,
 			...boxShadow,
 			position: "fixed",
@@ -51,6 +51,7 @@ const sidebarStyle = theme => ({
 		backgroundColor: '#1a1b32',
 		position: "relative",
 		padding: "15px 15px",
+		minHeight: "40px",
 		zIndex: "4",
 		display: 'flex',
 		"&:after": {

@@ -10,11 +10,11 @@ var moment = require("moment");
 
 class DeviceDetails extends Component {
 	constructor(props) {
-	  super(props)
-	
-	  this.state = {
-		 actionAnchor: null
-	  }
+		super(props)
+
+		this.state = {
+			actionAnchor: null
+		}
 	}
 
 	renderStatus = (status) => {
@@ -69,7 +69,7 @@ class DeviceDetails extends Component {
 		const { classes, device, t } = this.props
 		return (
 			<InfoCard
-				title={t("devices.cards.details")}
+				title={device.name ? device.name : device.id}
 				avatar={<Devices />}
 				topAction={
 					<ItemGrid noMargin noPadding>
@@ -91,14 +91,14 @@ class DeviceDetails extends Component {
 									minWidth: 200
 								}
 							}}>
-						
+
 							<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
 								<Edit className={classes.leftIcon} />{t("menus.edit")}
 							</MenuItem>
 							<MenuItem onClick={this.props.handleOpenAssign}>
-								<LibraryBooks className={classes.leftIcon} />{device.project ? t("menus.reassign") : t("menus.assign")}
+								<LibraryBooks className={classes.leftIcon} />{device.project.id > 0 ? t("menus.reassign") : t("menus.assign")}
 							</MenuItem>
-							{device.project ? <MenuItem onClick={this.props.handleOpenUnassign}>
+							{device.project.id > 0 ? <MenuItem onClick={this.props.handleOpenUnassign}>
 								<LayersClear className={classes.leftIcon} /> {t("menus.unassignDevice")}
 							</MenuItem> : null}
 							<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}>
@@ -131,12 +131,12 @@ class DeviceDetails extends Component {
 										</ItemGrid>
 									</Warning>
 								</ItemGrid>}
-							<ItemGrid>
+							{/* 							<ItemGrid>
 								<Caption>{t("devices.fields.name")}:</Caption>
 								<Info>
 									{device.name ? device.name : t("devices.noName")}
 								</Info>
-							</ItemGrid >
+							</ItemGrid > */}
 							<ItemGrid>
 								<Caption>{t("devices.fields.status")}:</Caption>
 								{this.renderStatus(device.liveStatus)}
@@ -146,6 +146,10 @@ class DeviceDetails extends Component {
 								<Info>
 									{device.temperature} &#8451;
 								</Info>
+							</ItemGrid>
+							<ItemGrid xs={12}>
+								<Caption>{t("devices.fields.description")}:</Caption>
+								<Info>{device.description ? device.description : ""}</Info>
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<Caption>{t("devices.fields.lastData")}:</Caption>
@@ -158,10 +162,6 @@ class DeviceDetails extends Component {
 								<Info>
 									{moment(device.execLastD).format("HH:mm - DD.MM.YYYY")}
 								</Info>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<Caption>{t("devices.fields.description")}:</Caption>
-								<Info>{device.description ? device.description : ""}</Info>
 							</ItemGrid>
 						</Grid>
 						<Grid container>
@@ -183,11 +183,20 @@ class DeviceDetails extends Component {
 						<Grid container>
 							<ItemGrid>
 								<Caption>{t("devices.fields.org")}:</Caption>
-								<Info>{device.org ? device.org.name : t("devices.noProject")}</Info>
+								<Info>{device.org ?
+									<Link to={`/org/${device.org.id}`} >
+										{device.org.name}
+									</Link>
+									 : t("devices.noProject")}</Info>
+								
 							</ItemGrid>
-							<ItemGrid xs={4}>
+							<ItemGrid>
 								<Caption>{t("devices.fields.project")}:</Caption>
-								<Info>{device.project ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : t("devices.noProject")}</Info>
+								<Info>{device.project.id > 0 ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : t("devices.noProject")}</Info>
+							</ItemGrid>
+							<ItemGrid>
+								<Caption>{t("devices.fields.availability")}:</Caption>
+								<Info>{device.project.id > 0 ? t("devices.fields.notfree") : t("devices.fields.free")}</Info>
 							</ItemGrid>
 						</Grid>
 					</Fragment>} />

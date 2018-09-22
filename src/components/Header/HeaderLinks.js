@@ -4,6 +4,7 @@ import headerLinksStyle from "assets/jss/material-dashboard-react/headerLinksSty
 import React from "react";
 import cookie from "react-cookies";
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 class HeaderLinks extends React.Component {
 	state = {
 		anchorProfile: null
@@ -11,6 +12,11 @@ class HeaderLinks extends React.Component {
 
 	handleProfileOpen = e => {
 		this.setState({ anchorProfile: e.currentTarget })
+	}
+	handleRedirectToOwnProfile = () => {
+		this.setState({ anchorProfile: null })
+		if (this.props.user)
+			this.props.history.push(`/user/${this.props.user.id}`)
 	}
 	handleProfileClose = () => {
 		this.setState({ anchorProfile: null })
@@ -70,7 +76,7 @@ class HeaderLinks extends React.Component {
 						}
 					}}
 				>
-					<MenuItem onClick={this.handleProfileClose}>
+					<MenuItem onClick={this.handleRedirectToOwnProfile}>
 						<Business className={classes.leftIcon}/>{t("users.menus.profile")}
 					</MenuItem>
 					<MenuItem onClick={this.handleProfileClose}>
@@ -84,5 +90,12 @@ class HeaderLinks extends React.Component {
 		);
 	}
 }
+const mapStateToProps = (state) => ({
+	user: state.settings.user
+})
 
-export default withRouter(withStyles(headerLinksStyle)(HeaderLinks));
+const mapDispatchToProps = {
+	
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(headerLinksStyle)(HeaderLinks)));

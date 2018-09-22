@@ -27,6 +27,7 @@ const styles = theme => ({
 const TextF = (props) => {
 	return (
 		<TextField
+			autoFocus={props.autoFocus ? props.autoFocus : false}
 			id={props.id}
 			label={props.label}
 			value={props.value}
@@ -35,6 +36,7 @@ const TextF = (props) => {
 			multiline={props.multiline ? props.multiline : false}
 			rows={props.rows ? props.rows : null}
 			className={props.classes.textField}
+			error={props.error ? props.error : false}
 			InputLabelProps={
 				{
 					FormLabelClasses: {
@@ -46,8 +48,12 @@ const TextF = (props) => {
 			InputProps={{
 				classes: {
 					underline: props.classes.underline,
-				}
+				},
+				...props.InputProps
 			}}
+			type={props.type ? props.type : null}
+			// {...props}
+			pattern={props.pattern ? props.pattern : ""}
 			margin="normal" />
 
 	)

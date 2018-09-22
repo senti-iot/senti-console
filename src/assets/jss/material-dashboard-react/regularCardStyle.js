@@ -14,10 +14,12 @@ import {
 	primaryCardHeader,
 	sentiCardHeader,
 	transition,
+	deviceStatus,
 } from "../material-dashboard-react";
 import teal from '@material-ui/core/colors/teal';
 
 const regularCardStyle = theme => ({
+	...deviceStatus,
 	contentMedia: {
 		width: "100%",
 		padding: 0
@@ -46,7 +48,7 @@ const regularCardStyle = theme => ({
 	smallCard: {
 		// maxWidth: 345,
 		[theme.breakpoints.up("sm")]: {
-			width: "100%"	
+			width: "100%"
 		},
 		height: '100%',
 		maxHeight: 500
@@ -105,6 +107,9 @@ const regularCardStyle = theme => ({
 	},
 	avatar: {
 		backgroundColor: teal[600],
+	},
+	whiteAvatar: {
+		backgroundColor: "inherit",
 	},
 	card: {
 		...card,

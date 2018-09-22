@@ -64,6 +64,7 @@ class EditDetails extends Component {
 									handleChange={this.handleInput('RPImodel')}
 									value={device.RPImodel}
 									noFullWidth
+									autoFocus
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>

@@ -160,6 +160,9 @@ class EnhancedTable extends React.Component {
 
 	isSelected = id => this.state.selected.indexOf(id) !== -1
 
+	handleEdit = () => { 
+		this.props.history.push(`/project/${this.state.selected[0]}/edit`)
+	}
 	options = () => {
 		const { t } = this.props
 		return [
@@ -289,9 +292,6 @@ class EnhancedTable extends React.Component {
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
-											{/* <TableCell padding="checkbox" className={classes.tablecellcheckbox}> */}
-											{/* {this.renderIcon(n.liveStatus)} */}
-											{/* </TableCell> */}
 											<TableCell classes={{ root: classes.tableCell }}>
 												<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
@@ -336,6 +336,10 @@ class EnhancedTable extends React.Component {
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
 													{dateFormatter(n.created)}	</Typography>
+											</TableCell>
+											<TableCell className={classes.tableCell}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{dateFormatter(n.modified)}	</Typography>
 											</TableCell>
 										</Hidden>
 									</TableRow>

@@ -1,14 +1,17 @@
-import { Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination, TableRow, Typography, withStyles } from "@material-ui/core";
-import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons';
+import { Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination, TableRow, Typography, withStyles, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem } from "@material-ui/core";
+import { SignalWifi2Bar, SignalWifi2BarLock, Add, FilterList } from '@material-ui/icons';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { Fragment } from "react";
 import { withRouter } from 'react-router-dom';
 import AssignProject from "./AssignProject";
 import EnhancedTableHead from '../Table/TableHeader'
 import EnhancedTableToolbar from '../Table/TableToolbar';
 import { connect } from 'react-redux'
 import { ItemGrid, Info, Caption } from '..';
+import TC from 'components/Table/TC'
+import { updateDevice } from '../../variables/dataDevices'
+import { boxShadow } from "assets/jss/material-dashboard-react";
 class EnhancedTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -24,11 +27,15 @@ class EnhancedTable extends React.Component {
 			openAssignProject: false
 		};
 	}
+	handleCalibrateFlow = () => {
+		this.props.history.push(`/device/${this.state.selected[0]}/calibrate`)
+	}
 	options = () => {
 		const { t } = this.props
 		return [
 			{ label: t("menus.edit"), func: this.handleDeviceEdit, single: true },
 			{ label: t("menus.assign"), func: this.handleAssignToProject, single: false },
+			{ label: t("menus.unassign"), func: this.handleOpenUnassignDialog, single: false },
 			{ label: t("menus.exportPDF"), func: () => { }, single: false },
 			{ label: t("menus.calibrate"), func: this.handleCalibrateFlow, single: true },
 			{ label: t("menus.delete"), func: this.handleDeleteProjects, single: false },
@@ -120,6 +127,36 @@ class EnhancedTable extends React.Component {
 	handleChangeRowsPerPage = event => {
 		this.setState({ rowsPerPage: event.target.value });
 	};
+	handleUnassignDevices = async () => {
+		const { data } = this.props
+		const { selected } = this.state
+		// console.log(this.state.selected)
+		var devices = selected.map(s => data[data.findIndex(d => d.id === s)])
+		
+		devices.forEach(async d => {
+			 await updateDevice({
+				...d,
+				project: {
+					id: 0
+				}
+			}).then(rs => this.handleCloseAssignToProject())
+		})
+		// await this.props.deleteProjects(this.state.selected)
+		// this.setState({
+		// 	selected: [],
+		// 	anchorElMenu: null,
+		// 	openSnackbar: 1,
+		// 	openDelete: false
+		// })
+	}
+
+	handleOpenUnassignDialog = () => {
+		this.setState({ openUnassign: true, anchorElMenu: null })
+	}
+
+	handleCloseUnassignDialog = () => {
+		this.setState({ openUnassign: false })
+	}
 
 	isSelected = id => this.state.selected.indexOf(id) !== -1;
 
@@ -166,16 +203,76 @@ class EnhancedTable extends React.Component {
 				break;
 		}
 	}
+	addNewOrg = () => { this.props.history.push('/orgs/new') }
+
+	renderTableToolBarContent = () => {
+		const { classes, tableHead, t } = this.props
+		const { anchorFilterMenu } = this.state
+		return <Fragment>
+			<IconButton aria-label="Add new organisation" onClick={this.addNewOrg}>
+				<Add />
+			</IconButton>
+			<IconButton
+				className={classes.secondAction}
+				aria-label={t("tables.filter")}
+				aria-owns={anchorFilterMenu ? "filter-menu" : null}
+				onClick={this.handleFilterMenuOpen}>
+				<FilterList />
+			</IconButton>
+			<Menu
+				id="filter-menu"
+				anchorEl={anchorFilterMenu}
+				open={Boolean(anchorFilterMenu)}
+				onClose={this.handleFilterMenuClose}
+				PaperProps={{ style: { width: 200, boxShadow: boxShadow } }}>
+
+				{tableHead.map(option => {
+					return <MenuItem key={option.id} onClick={this.handleFilter}>
+						{option.label}
+					</MenuItem>
+				})}
+			</Menu>
+		</Fragment>
+	}
+	renderConfirmUnassign = () => {
+		const { openUnassign, selected } = this.state
+		const { data, t } = this.props
+		return <Dialog
+			open={openUnassign}
+			onClose={this.handleCloseUnassignDialog}
+			aria-labelledby="alert-dialog-title"
+			aria-describedby="alert-dialog-description"
+		>
+			<DialogTitle id="alert-dialog-title">{t("devices.confirmUnassignTitle")}</DialogTitle>
+			<DialogContent>
+				<DialogContentText id="alert-dialog-description">
+					{t("devices.confirmUnassignMessage")}
+				</DialogContentText>
+				<div>
+					{selected.map(s => <Info key={s}>&bull;{data[data.findIndex(d => d.id === s)].id + " " + data[data.findIndex(d => d.id === s)].name }</Info>)}
+				</div>
+			</DialogContent>
+			<DialogActions>
+				<Button onClick={this.handleCloseUnassignDialog} color="primary">
+					{t("actions.no")}
+				</Button>
+				<Button onClick={this.handleUnassignDevices} color="primary" autoFocus>
+					{t("actions.yes")}
+				</Button>
+			</DialogActions>
+		</Dialog>
+	}
 	render() {
 		const { classes, data, t } = this.props;
 		const { order, orderBy, selected, rowsPerPage, page, openAssignProject } = this.state;
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 		return (
 			<Paper className={classes.root}>
+				{this.renderConfirmUnassign()}
 				<AssignProject
 					open={openAssignProject}
 					handleClose={this.handleCloseAssignToProject}
-					deviceId={selected}
+					deviceId={selected.map(s => data[data.findIndex(d => d.id === s)])}
 					t={t} />
 				<EnhancedTableToolbar
 					anchorElMenu={this.state.anchorElMenu}
@@ -184,6 +281,7 @@ class EnhancedTable extends React.Component {
 					numSelected={selected.length}
 					options={this.options}
 					t={t}
+					// content={this.renderTableToolBarContent()}
 				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
@@ -196,15 +294,13 @@ class EnhancedTable extends React.Component {
 							rowCount={data.length}
 							columnData={this.props.tableHead}
 							classes={classes}
-							// mdDown={[2, 0]} //Which Columns to display on small Screens
 							customColumn={[
-								{
-									id: "liveStatus", label: <SignalWifi2Bar />, checkbox: true
-								},
+								{ id: "liveStatus", label: <SignalWifi2Bar />, checkbox: true },
 								{
 									id: "id",
 									label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>
-										Device</Typography>
+										Device
+									</Typography>
 								}
 							]}
 						/>
@@ -227,11 +323,9 @@ class EnhancedTable extends React.Component {
 												<Checkbox checked={isSelected} />
 											</TableCell>
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
-												{/* <ItemGrid container zeroMargin noPadding justify={"center"}> */}
 												{this.renderIcon(n.liveStatus)}
-												{/* </ItemGrid> */}
 											</TableCell>
-											<TableCell classes={{ root: classes.tableCell }}>
+											<TC content={
 												<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Info noWrap paragraphCell={classes.noMargin}>
@@ -243,39 +337,18 @@ class EnhancedTable extends React.Component {
 															{`${n.name ? n.id : t("devices.noName")} - ${n.org ? n.org.name : ''}`}
 														</Caption>
 													</ItemGrid>
-													{/* </ItemGrid> */}
-												</ItemGrid>
-											</TableCell>
+												</ItemGrid>}/>
 										</Hidden>
 										<Hidden mdDown>
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
-											<TableCell className={classes.tableCell + " " + classes.tableCellNoWidth}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.name ? n.name : t("devices.noName")}
-												</Typography>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.id}
-												</Typography>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<div className={classes.paragraphCell}>
-													{this.renderIcon(n.liveStatus)}
-												</div>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.address ? n.address : t("devices.noAddress")}
-												</Typography>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.org ? n.org.name : t("devices.noProject")}
-												</Typography>
-											</TableCell>
+											<TC label={n.name ? n.name : t("devices.noName")}/>
+											<TC label={n.id}/>
+											<TC content={<div className={classes.paragraphCell}> {this.renderIcon(n.liveStatus)}</div>} />
+											<TC label={n.address ? n.address : t("devices.noAddress")}/>
+											<TC label={n.org ? n.org.name : t("devices.noProject")}/>
+											<TC label={n.project.id > 0 ? t("devices.fields.notfree") : t("devices.fields.free")}/>
 										</Hidden>
 									</TableRow>
 								);

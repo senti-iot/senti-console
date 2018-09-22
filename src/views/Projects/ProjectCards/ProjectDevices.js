@@ -1,72 +1,69 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Collapse, /* Grid, */ withStyles } from '@material-ui/core';
-import { Caption, InfoCard, /*  ItemGrid, Info */ } from 'components';
+import { Caption, InfoCard, ItemG } from 'components';
 import { Devices, Map, ExpandMore } from '@material-ui/icons'
 import { Maps } from 'components/Map/Maps';
-import DeviceSimpleList from 'components/List/DeviceSimpleList/DeviceSimpleList';
+// import DeviceSimpleList from 'components/Devices/DeviceSimpleList';
 import classNames from 'classnames'
 import deviceStyles from 'assets/jss/views/deviceStyles';
+import DeviceTable from '../../../components/Devices/DeviceTable'
 
 class ProjectDevices extends Component {
 	constructor(props) {
-	  super(props)
-	
-	  this.state = {
-		 mapExpanded: false
-	  }
+		super(props)
+
+		const { t } = props
+		this.state = {
+			mapExpanded: false,
+			tableHead: [{ id: "name", label: t("devices.fields.name") },
+				{ id: "id", label: t("devices.fields.id") },
+				{ id: "liveStatus", label: t("devices.fields.status") },
+				{ id: "address", label: t("devices.fields.address") },
+				{ id: "org", label: t("devices.fields.org") },
+				{ id: "project", label: t("devices.fields.availability") }],
+			openUnassign: false
+		}
 	}
-	
+
 	handleExtendMap = () => {
 		this.setState({ mapExpanded: !this.state.mapExpanded })
 	}
-
+	renderMapButton = () => {
+		const { classes, t } = this.props
+		return <Button className={classes.leftActionButton} onClick={this.handleExtendMap}>
+			<Map className={classes.leftIcon} />
+			<Caption>
+				{this.state.mapExpanded ? t("projects.devices.hideMap") : t("projects.devices.seeMap")}
+			</Caption>
+			<ExpandMore className={classNames({
+				[classes.expandOpen]: this.state.mapExpanded,
+			}, classes.expand)} />
+		</Button>
+	}
+	renderMap = () => {
+		const { project, t } = this.props
+		return <Collapse in={this.state.mapExpanded} timeout="auto" unmountOnExit>
+			<Maps markers={project.devices} t={t} />
+		</Collapse>
+	}
+	renderNoDevices = () => {
+		return <ItemG container justify={'center'}>
+			<Caption> {this.props.t("devices.noDevicesAssigned")}</Caption>
+		</ItemG>
+	}
 	render() {
-		const { classes, project, t /* deviceMostCounts */ } = this.props
+		const { project, t /* deviceMostCounts */ } = this.props
 		return (
-			<InfoCard title={t("projects.devices.title")} avatar={<Devices />} subheader={t("projects.devices.numDevices") + project.devices.length}
-				leftActions={
-					<Button className={classes.leftActionButton} onClick={this.handleExtendMap}>
-						<Map className={classes.leftIcon} />
-						<Caption>
-							{this.state.mapExpanded ? t("projects.devices.hideMap") : t("projects.devices.seeMap")}
-						</Caption>
-						<ExpandMore className={classNames({
-							[classes.expandOpen]: this.state.mapExpanded,
-						}, classes.expand)} />
-					</Button>
-				}
-				leftActionContent={
-					<Collapse in={this.state.mapExpanded} timeout="auto" unmountOnExit>
-						<Maps markers={project.devices} />
-					</Collapse>
-				}
+			<InfoCard title={t("projects.devices.title")} avatar={<Devices />}
+				subheader={project.devices.length > 0 ? t("projects.devices.numDevices") + project.devices.length : null}
+				leftActions={project.devices.length > 0 ? this.renderMapButton() : null}
+				leftActionContent={project.devices.length > 0 ? this.renderMap() : null}
 				noRightExpand
 				content={
-					// <Grid container>
-					// 	<ItemGrid>
-					/* <Caption>
-								Most active device:
-							</Caption>
-							<Info>
-								{deviceMostCounts ? deviceMostCounts.name ? deviceMostCounts.name : deviceMostCounts.id : "-"}
-							</Info>
-						</ItemGrid>
-						<ItemGrid>
-							<Caption>
-								Hits by most active device:
-							</Caption>
-							<Info>
-								{deviceMostCounts ? deviceMostCounts.totalCount : "-"}
-							</Info> */
-					<DeviceSimpleList t={t} filters={this.state.deviceFilters} data={project.devices} />
-					// </ItemGrid>
-					// </Grid>
+					project.devices.length > 0 ? <DeviceTable t={t} filters={this.state.deviceFilters} data={project.devices} tableHead={this.state.tableHead} /> : this.renderNoDevices()
 				}
-				// noExpand
-				// hiddenContent={
-				// 	<DeviceSimpleList filters={this.state.deviceFilters} data={project.devices} />
-				// }
+
 			/>
 		)
 	}

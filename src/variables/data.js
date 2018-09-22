@@ -4,7 +4,6 @@ import cookie from 'react-cookies'
 // https://senti.cloud
 let backendHost;
 const hostname = window && window.location && window.location.hostname;
-console.log(hostname)
 
 if (hostname === 'console.senti.cloud') {
 	backendHost = 'https://senti.cloud/rest/';

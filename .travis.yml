@@ -9,13 +9,13 @@ before_deploy:
 deploy: 
   - 
     provider: script
-    script: "rsync -r --quiet $TRAVIS_BUILD_DIR/build/ ubuntu@kanata.webhouse.net:/srv/www/odeumcode/dashboard.senti.cloud"
+    script: "rsync -r --delete --quiet $TRAVIS_BUILD_DIR/build/ ubuntu@kanata.webhouse.net:/srv/www/odeumcode/dashboard.senti.cloud"
     skip_cleanup: true
     true: 
       branch: master
   - 
     provider: script
-    script: "rsync -r --quiet $TRAVIS_BUILD_DIR/build/ ubuntu@kanata.webhouse.net:/srv/www/odeumcode/beta.senti.cloud"
+    script: "rsync -r --delete --quiet $TRAVIS_BUILD_DIR/build/ ubuntu@kanata.webhouse.net:/srv/www/odeumcode/beta.senti.cloud"
     skip_cleanup: true
     true: 
       branch: beta

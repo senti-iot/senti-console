@@ -8,6 +8,7 @@ import RegularCard from "./Cards/RegularCard.js";
 import StatsCard from "./Cards/StatsCard.js";
 import SmallCard from './Cards/SmallCard.js'
 import InfoCard from './Cards/InfoCard'
+import ItemG from './Grid/ItemG'
 // ##############################
 // // // CustomButtons
 // #############################
@@ -70,6 +71,7 @@ import A from "./Typography/A.js";
 import Caption from "./Typography/Caption"
 export {
 	// Cards
+	ItemG,
 	GridContainer,
 	InfoCard,
 	TextF,

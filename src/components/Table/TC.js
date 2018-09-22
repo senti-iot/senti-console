@@ -3,13 +3,17 @@ import { TableCell, Typography, withStyles } from "@material-ui/core"
 
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
 
-export default withStyles(devicetableStyles)((props) => {
-	const { classes, label } = props
+
+
+const TC = (props) => {
+	const { classes, label, content } = props
 	return (
 		<TableCell className={props.FirstC ? classes.tableCell + " " + classes.tableCellNoWidth : classes.tableCell}>
-			<Typography paragraph classes={{ root: classes.paragraphCell }}>
+			{label ? <Typography paragraph classes={{ root: classes.paragraphCell }}>
 				{label}
-			</Typography>
+			</Typography> : null}
+			{content ? content : null}
 		</TableCell>
 	)
-})
+}
+export default withStyles(devicetableStyles)(TC)

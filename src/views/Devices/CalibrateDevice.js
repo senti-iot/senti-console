@@ -145,7 +145,6 @@ class CalibrateDevice extends Component {
 		this.setState({ [input]: e.target.value })
 	}
 	handleCalibration = (result) => {
-		console.log(result.count)
 		this.setState({
 			...this.state,
 			calibration: {

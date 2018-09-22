@@ -1,15 +1,15 @@
 import React, { Component, Fragment } from 'react'
 import { withStyles } from "@material-ui/core";
 import projectStyles from 'assets/jss/views/projects';
-import UserTable from 'components/User/UserTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
-import { getAllUsers, getAllOrgs } from 'variables/dataUsers';
+import { getAllOrgs } from 'variables/dataUsers';
+import OrgTable from 'components/Orgs/OrgTable';
 import Toolbar from 'components/Toolbar/Toolbar'
 import { People, Business } from '@material-ui/icons';
-import { filterItems } from '../../variables/functions';
+import { filterItems } from 'variables/functions'
 
-class Users extends Component {
+class Orgs extends Component {
 	constructor(props) {
 		super(props)
 
@@ -25,7 +25,7 @@ class Users extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader(props.t("users.pageTitle"), false)
+		props.setHeader(props.t("orgs.pageTitle"), false)
 	}
 
 	componentDidMount = async () => {
@@ -43,7 +43,7 @@ class Users extends Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-
+	
 	filterItems = (data) => {
 		return filterItems(data, this.state.filters)
 	}
@@ -76,7 +76,7 @@ class Users extends Component {
 	}
 	getData = async () => {
 		const { t } = this.props
-		let users = await getAllUsers().then(rs => rs)
+		let users = await getAllOrgs().then(rs => rs)
 		let orgs = await getAllOrgs().then(rs => rs)
 		if (this._isMounted) {
 			this.setState({
@@ -85,8 +85,6 @@ class Users extends Component {
 				userHeader: [
 					{ id: "avatar", label: "" },
 					{ id: "firstName", label: t("users.fields.name") },
-					// { id: "firstName", label: t("users.fields.firstName") },
-					// { id: "lastName", label: t("users.fields.lastName") },
 					{ id: "phone", label: t("users.fields.phone") },
 					{ id: "email", label: t("users.fields.email") },
 					{ id: "org", label: t("users.fields.organisation") },
@@ -96,9 +94,7 @@ class Users extends Component {
 					{ id: "name", label: t("orgs.fields.name") },
 					{ id: "address", label: t("orgs.fields.address") },
 					{ id: "city", label: t("orgs.fields.city") },
-					// { id: "country", label: t("orgs.fields.country") },
 					{ id: "url", label: t("orgs.fields.url") },
-					// { id: "org", label: t("orgs.fields.org") }
 				],
 				loading: false
 			})
@@ -112,13 +108,14 @@ class Users extends Component {
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
 	}
-	renderUsers = () => {
+
+	renderOrgs = () => {
 		const { t } = this.props
 		const { loading } = this.state
 		return <GridContainer justify={'center'}>
-			{loading ? <CircularLoader /> : <UserTable
-				data={this.filterItems(this.state.users)}
-				tableHead={this.state.userHeader}
+			{loading ? <CircularLoader /> : <OrgTable
+				data={this.filterItems(this.state.orgs)}
+				tableHead={this.state.orgsHeader}
 				handleFilterEndDate={this.handleFilterEndDate}
 				handleFilterKeyword={this.handleFilterKeyword}
 				handleFilterStartDate={this.handleFilterStartDate}
@@ -127,23 +124,24 @@ class Users extends Component {
 			/>}
 		</GridContainer>
 	}
-
 	render() {
-		const { users, filters } = this.state
+		const { orgs, route, filters } = this.state
 		return (
 			<Fragment>
 				<Toolbar
-					data={users}
-					filters={filters}
+					data={orgs} 
+					route={route} 
+					filters={filters} 
 					history={this.props.history}
 					match={this.props.match}
 					handleFilterKeyword={this.handleFilterKeyword}
 					tabs={this.tabs}
+					defaultRoute={1}
 				/>
-				{this.renderUsers()}
+				{this.renderOrgs()}
 			</Fragment>
 		)
 	}
 }
 
-export default withStyles(projectStyles)(Users)
+export default withStyles(projectStyles)(Orgs)

@@ -34,7 +34,6 @@ export const PlacesWithStandaloneSearchBox = compose(
 	}),
 	withScriptjs  
 )(props => { 
-	// console.log(props)
 	return <Fragment>
 		<StandaloneSearchBox
 			ref={props.onSearchBoxMounted}

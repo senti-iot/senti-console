@@ -1,11 +1,13 @@
-import React from "react";
-import { Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination, TableRow, withStyles } from '@material-ui/core';
+import React, { Fragment } from "react";
+import { Checkbox, Table, TableBody, TableCell, TablePagination, TableRow, withStyles } from '@material-ui/core';
 import EnhancedTableHead from 'components/Table/TableHeader';
 import EnhancedTableToolbar from 'components/Table/TableToolbar'
 import PropTypes from "prop-types";
 import { withRouter } from 'react-router-dom';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
 import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons'
+import { ItemGrid, Info, Caption } from '..';
+import AssignProject from './AssignProject'
 
 class DeviceSimpleList extends React.Component {
 	constructor(props) {
@@ -74,7 +76,26 @@ class DeviceSimpleList extends React.Component {
 
 		this.setState({ selected: newSelected });
 	};
-
+	options = () => {
+		const { t } = this.props
+		return [
+			{ label: t("menus.edit"), func: this.handleDeviceEdit, single: true },
+			{ label: t("menus.assign"), func: this.handleAssignToProject, single: false },
+			{ label: t("menus.exportPDF"), func: () => { }, single: false },
+			{ label: t("menus.calibrate"), func: this.handleCalibrateFlow, single: true },
+			{ label: t("menus.delete"), func: this.handleDeleteProjects, single: false },
+		]
+	}
+	handleDeviceEdit = () => {
+		const { selected } = this.state
+		this.props.history.push(`/device/${selected[0]}/edit`)
+	}
+	handleAssignToProject = () => {
+		this.setState({ openAssignProject: true })
+	}
+	handleCloseAssignToProject = reload => {
+		this.setState({ openAssignProject: false })
+	}
 	handleChangePage = (event, page) => {
 		this.setState({ page });
 	};
@@ -102,17 +123,18 @@ class DeviceSimpleList extends React.Component {
 	}
 	render() {
 		const { classes, data, t } = this.props
-		const { order, orderBy, selected, rowsPerPage, page } = this.state
+		const { order, orderBy, selected, rowsPerPage, page, openAssignProject } = this.state
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 		const tableHead = [
-			{ id: "name", label: t("devices.simpleList.name") }, 
-			{ id: "id", label: t("devices.simpleList.id") }, 
-			{ id: "address", label: t("devices.simpleList.address") }, 
-			{ id: "liveStatus", label: t("devices.simpleList.status") }, 
-			{ id: "totalCount", label: t("devices.simpleList.totalcount") }
+			{ id: "id", label: t("devices.pageTitle") }
 		]
 		return (
-			<Paper className={classes.root}>
+			<Fragment>
+				<AssignProject
+					open={openAssignProject}
+					handleClose={this.handleCloseAssignToProject}
+					deviceId={selected.map(s => data[data.findIndex(d => d.id === s)])}
+					t={t} />
 				<EnhancedTableToolbar
 					noFilterIcon
 					noAdd
@@ -122,73 +144,76 @@ class DeviceSimpleList extends React.Component {
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
 					filters={this.props.filters}
 					numSelected={selected.length}
-					options={() => []}
+					options={this.options}
 					t={t}
 				/>
-				<div className={classes.tableWrapper}>
-					<Table className={classes.table} aria-labelledby="tableTitle">
-						<EnhancedTableHead
-							numSelected={selected.length}
-							order={order}
-							orderBy={orderBy}
-							onSelectAllClick={this.handleSelectAllClick}
-							onRequestSort={this.handleRequestSort}
-							rowCount={data.length}
-							columnData={tableHead}
-							classes={classes}
-							t={t}
-						/>
-						<TableBody>
-							{data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((n, i) => {
-								const isSelected = this.isSelected(n.id)
-								const { t } = this.props
-								return (
-									<TableRow
-										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push('/device/' + n.id)}}
-										role="checkbox"
-										aria-checked={isSelected}
-										tabIndex={-1}
-										key={i}
-										selected={isSelected}
-										style={{ cursor: 'pointer' }}
-									>
-										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-											<Checkbox checked={isSelected} />
-										</TableCell>
-										<TableCell className={classes.tableCell}>
-											{n.name ? n.name : t("devices.simpleList.tableCellDeviceName")}
-										</TableCell>
-										<TableCell className={classes.tableCellID}>
-											{n.id}
-										</TableCell>
-										<Hidden mdDown>
-											<TableCell className={classes.tableCell}>
-												{n.address ? n.address : t("devices.simpleList.tableCellAddress")}
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												{this.renderIcon(n.liveStatus)}
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												{n.totalCount}
-											</TableCell>
-										</Hidden>
-									</TableRow>
-								);
-							})}
-							{emptyRows > 0 && (
-								<TableRow style={{ height: 49 * emptyRows }}>
-									<TableCell colSpan={8} />
+				{/* <div className={classes.tableWrapper}> */}
+				<Table className={classes.table} aria-labelledby="tableTitle">
+					<EnhancedTableHead
+						numSelected={selected.length}
+						order={order}
+						orderBy={orderBy}
+						onSelectAllClick={this.handleSelectAllClick}
+						onRequestSort={this.handleRequestSort}
+						rowCount={data.length}
+						columnData={tableHead}
+						classes={classes}
+						mdDown={[0]}
+						t={t}
+					/>
+					<TableBody>
+						{data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((n, i) => {
+							const isSelected = this.isSelected(n.id)
+							const { t } = this.props
+							return (
+								<TableRow
+									hover
+									onClick={e => { e.stopPropagation(); this.props.history.push('/device/' + n.id)}}
+									role="checkbox"
+									aria-checked={isSelected}
+									tabIndex={-1}
+									key={i}
+									selected={isSelected}
+									style={{ cursor: 'pointer' }}
+								>
+									<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+										<Checkbox checked={isSelected} />
+									</TableCell>
+									<TableCell classes={{ root: classes.tableCell }}>
+										<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+											<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+												<Info noWrap paragraphCell={classes.noMargin}>
+													{n.name ? n.name : n.id}
+												</Info>
+											</ItemGrid>
+											<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+												<Caption noWrap className={classes.noMargin}>
+													{`${n.name ? n.id : t("devices.noName")} - ${n.org ? n.org.name : ''}`}
+												</Caption>
+											</ItemGrid>
+										</ItemGrid>
+									</TableCell>
 								</TableRow>
-							)}
-						</TableBody>
-					</Table>
-				</div>
+							);
+						})}
+						{emptyRows > 0 && (
+							<TableRow style={{ height: 49 * emptyRows }}>
+								<TableCell colSpan={8} />
+							</TableRow>
+						)}
+					</TableBody>
+				</Table>
+				{/* </div> */}
 				<TablePagination
 					component="div"
 					count={data.length}
 					rowsPerPage={rowsPerPage}
 					page={page}
+					classes={{
+						spacer: classes.spacer,
+						input: classes.spaceBetween,
+						caption: classes.tablePaginationCaption
+					}}
 					backIconButtonProps={{
 						'aria-label': 'Previous Page',
 					}}
@@ -197,14 +222,18 @@ class DeviceSimpleList extends React.Component {
 					}}
 					onChangePage={this.handleChangePage}
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}
-					labelRowsPerPage={<Hidden mdDown>{t("tables.rowsPerPage")}</Hidden>}
+					labelRowsPerPage={t("tables.rowsPerPage")}
+					SelectProps={{
+						classes: {
+							select: classes.SelectIcon
+						}
+					}}
 				/>
-			</Paper>
-			// </Paper>
+			</Fragment>
 		);
 	}
 }
-
+		
 DeviceSimpleList.propTypes = {
 	classes: PropTypes.object.isRequired,
 	data: PropTypes.array.isRequired

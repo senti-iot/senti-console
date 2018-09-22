@@ -44,8 +44,8 @@ export const saveSettingsOnServ = () => {
 }
 export const getSettings = async () => {
 	return async dispatch => {
-		var settings = await getSettingsFromServer()
 		var userId = cookie.load('SESSION') ? cookie.load('SESSION').userID : 0
+		var settings = userId > 0 ? await getSettingsFromServer() : null
 		var user = userId !== 0 ? await getUser(userId) : {}
 		moment.updateLocale("en", {
 			week: {
@@ -53,7 +53,7 @@ export const getSettings = async () => {
 			}
 		})
 		if (settings) {
-			moment.locale(settings.language === "dk" ? "da" : "en")
+			moment.locale(settings.language)
 			dispatch({
 				type: GETSETTINGS,
 				settings,
@@ -62,7 +62,7 @@ export const getSettings = async () => {
 			return true
 		}
 		else {
-			moment.locale("dk")
+			moment.locale("da")
 			dispatch({
 				type: "NOSETTINGS",
 				loading: false,
@@ -190,7 +190,7 @@ export const settings = (state = initialState, action) => {
 			return Object.assign({}, state, { ...action.settings, user: action.user, loading: false })
 		case changeLangAction:
 		{
-			moment.locale(action.code === "dk" ? "da" : "en")
+			moment.locale(action.code)
 			return Object.assign({}, state, {
 				language: action.code,
 			})

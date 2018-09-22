@@ -16,10 +16,11 @@ import deviceStyles from 'assets/jss/views/deviceStyles';
 import { Doughnut, Bar, Pie } from 'react-chartjs-2';
 import { getWifiHourly, getWifiDaily } from 'variables/dataDevices';
 // import { getRandomColor } from 'variables/colors';
-import { teal } from '@material-ui/core/colors'
+// import { teal } from '@material-ui/core/colors'
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import classNames from 'classnames'
+import { colors } from '../../../variables/colors'
 var moment = require('moment');
 
 
@@ -44,14 +45,15 @@ class DeviceData extends Component {
 	}
 
 	legendOpts = {
-		display: this.props.theme.breakpoints.width("md") < window.innerWidth ? true : false,
-		position: 'bottom',
+		display: this.props.theme.breakpoints.width("md") < window.innerWidth ? true : true,
+		position: this.props.theme.breakpoints.width("md") < window.innerWidth ? 'left' : "bottom",
 		fullWidth: true,
 		reverse: false,
 		labels: {
 			padding: 10
 		}
 	}
+
 	barOpts = {
 		display: false,
 		position: 'bottom',
@@ -78,7 +80,7 @@ class DeviceData extends Component {
 						borderColor: "#FFF",
 						borderWidth: 1,
 						data: dataArr.map(rd => rd.value),
-						backgroundColor: teal[500]
+						backgroundColor: dataArr.map((rd, id) => colors[id])
 					}]
 				},
 				barDataSets: {
@@ -87,7 +89,7 @@ class DeviceData extends Component {
 						borderColor: "#FFF",
 						borderWidth: 1,
 						data: dataArr.map(rd => rd.value),
-						backgroundColor: teal[500]
+						backgroundColor: dataArr.map((rd, id) => colors[id])
 					}]
 				}
 			})
@@ -96,7 +98,7 @@ class DeviceData extends Component {
 			this.setState({
 				loading: false,
 				roundDataSets: null,
-				barDataSets: null
+				barDataSets: null,
 			})
 		}
 	}
@@ -118,7 +120,7 @@ class DeviceData extends Component {
 						borderWidth: 1,
 						data: dataArr.map(rd => rd.value),
 						// backgroundColor: dataArr.map(() => getRandomColor())
-						backgroundColor: teal[500],
+						backgroundColor: dataArr.map((rd, id) => colors[id])
 					}]
 				},
 				barDataSets: {
@@ -128,8 +130,8 @@ class DeviceData extends Component {
 						borderColor: "#FFF",
 						borderWidth: 1,
 						data: dataArr.map(rd => rd.value),
-						// backgroundColor: dataArr.map(() => getRandomColor())
-						backgroundColor: teal[500],
+						backgroundColor: dataArr.map((rd, id) => colors[id])
+						// backgroundColor: teal[500],
 					}]
 				}
 			})
@@ -138,7 +140,7 @@ class DeviceData extends Component {
 			this.setState({
 				loading: false,
 				roundDataSets: null,
-				barDataSets: null
+				barDataSets: null,
 			})
 		}
 	}
@@ -282,6 +284,7 @@ class DeviceData extends Component {
 					<ItemGrid>
 						<DateTimePicker
 							autoOk
+							ampm={false}
 							label={t("filters.startDate")}
 							clearable
 							format="DD.MM.YYYY+HH:mm"
@@ -302,6 +305,7 @@ class DeviceData extends Component {
 						<DateTimePicker
 							autoOk
 							disableFuture
+							ampm={false}
 							label={t("filters.endDate")}
 							clearable
 							format="DD.MM.YYYY+HH:mm"
@@ -362,9 +366,9 @@ class DeviceData extends Component {
 
 	}
 
-	renderNoData = () => {
+	renderNoDataFilters = () => {
 		return <ItemGrid container justify={'center'}>
-			<Caption> {this.props.t("devices.noData")}</Caption>
+			<Caption> {this.props.t("devices.noDataFilters")}</Caption>
 		</ItemGrid>
 	}
 
@@ -380,7 +384,7 @@ class DeviceData extends Component {
 						options={{
 							maintainAspectRatio: false,
 						}}
-					/> : this.renderNoData()
+					/> : this.renderNoDataFilters()
 
 			case 1:
 				return this.state.roundDataSets ?
@@ -391,7 +395,7 @@ class DeviceData extends Component {
 							maintainAspectRatio: false,
 						}}
 						data={this.state.roundDataSets}
-					/> : this.renderNoData()
+					/> : this.renderNoDataFilters()
 			case 2:
 				return this.state.barDataSets ? <Bar
 					data={this.state.barDataSets}
@@ -400,7 +404,7 @@ class DeviceData extends Component {
 					options={{
 						maintainAspectRatio: false,
 					}}
-				/> : this.renderNoData()
+				/> : this.renderNoDataFilters()
 			default:
 				break;
 		}
@@ -471,7 +475,7 @@ class DeviceData extends Component {
 					}
 				}}>
 				<div>
-					<Hidden smUp>
+					<Hidden lgUp>
 						<ListItem>
 							{this.renderDateFilter()}
 						</ListItem>
@@ -505,9 +509,10 @@ class DeviceData extends Component {
 
 	render() {
 		const { loading } = this.state
+		const { t } = this.props
 		return (
 			<InfoCard
-				title={this.props.t("devices.cards.data")} avatar={<AssignmentTurnedIn />}
+				title={t("devices.cards.data")} avatar={<AssignmentTurnedIn />}
 				noExpand
 				topAction={this.renderMenu()}
 				content={
@@ -516,7 +521,7 @@ class DeviceData extends Component {
 						{loading ? <CircularLoader notCentered /> :
 							<Fragment>
 								<ItemGrid xs={12} container noPadding>
-									{this.renderType()}
+									 {this.renderType()}
 								</ItemGrid>
 							</Fragment>}
 					</Grid>}

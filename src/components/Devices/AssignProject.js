@@ -4,8 +4,8 @@ import { headerColor, hoverColor, primaryColor } from 'assets/jss/material-dashb
 import cx from "classnames";
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import { assignProjectToDevice } from 'variables/dataDevices';
 import { getAllProjects } from 'variables/dataProjects';
+import { updateDevice } from '../../variables/dataDevices'
 
 const styles = {
 	appBar: {
@@ -72,13 +72,17 @@ class AssignProject extends React.Component {
 	}
 	assignProject = async () => {
 		//Todo Snackbar success
-		if (Array.isArray(this.props.deviceId))
-		{
-			this.props.deviceId.map(async id => await assignProjectToDevice({ project_id: this.state.selectedProject, id: id }))
-		}
-		else {
-			await assignProjectToDevice({ project_id: this.state.selectedProject, id: this.props.id });
-		}
+		this.props.deviceId.forEach(async element => {
+			await updateDevice({ ...element, project: { id: this.state.selectedProject } }).then(rs => rs)
+		});
+		
+		// if (Array.isArray(this.props.deviceId))
+		// {
+		// 	this.props.deviceId.map(async id => await assignProjectToDevice({ project_id: this.state.selectedProject, id: id }))
+		// }
+		// else {
+		// 	await assignProjectToDevice({ project_id: this.state.selectedProject, id: this.props.id });
+		// }
 		this.props.handleClose(true)
 	}
 	closeDialog = () => {

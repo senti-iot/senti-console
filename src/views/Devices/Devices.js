@@ -1,16 +1,17 @@
 import React, { Component, Fragment } from 'react'
 import { getAllDevices } from '../../variables/dataDevices';
-import { /* Grid, */ withStyles, AppBar, Tabs, Tab, Paper } from "@material-ui/core";
+import { withStyles, Paper } from "@material-ui/core";
 import { Switch, Route, Redirect } from 'react-router-dom'
 import projectStyles from 'assets/jss/views/projects';
 import DeviceTable from 'components/Devices/DeviceTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import { Maps } from 'components/Map/Maps';
 import GridContainer from 'components/Grid/GridContainer';
-import { ViewList, ViewModule, Map  } from '@material-ui/icons'
-import Search from 'components/Search/Search';
-
-var moment = require('moment');
+import { ViewList, ViewModule, Map } from '@material-ui/icons'
+import Toolbar from 'components/Toolbar/Toolbar'
+import { filterItems } from '../../variables/functions';
+import DeviceCard from 'components/Devices/DeviceCard'
+// var moment = require('moment');
 
 class Devices extends Component {
 	constructor(props) {
@@ -31,87 +32,9 @@ class Devices extends Component {
 		props.setHeader(props.t("devices.pageTitle"), false)
 	}
 
-	suggestionSlicer = (obj) => {
-		var arr = [];
-
-		for (var prop in obj) {
-			if (obj.hasOwnProperty(prop)) {
-				var innerObj = {};
-				if (typeof obj[prop] === 'object') {
-					arr.push(...this.suggestionSlicer(obj[prop]))
-				}
-				else {
-					innerObj = {
-						id: prop.toString().toLowerCase(),
-						label: obj[prop] ? obj[prop].toString() : ''
-					};
-					arr.push(innerObj)
-				}
-			}
-		}
-		return arr;
+	filterItems = (data) => {
+		return filterItems(data, this.state.filters)
 	}
-	suggestionGen = (arrayOfObjs) => {
-		let arr = [];
-		arrayOfObjs.map(obj => {
-			arr.push(...this.suggestionSlicer(obj))
-			return ''
-		})
-		return arr;
-	}
-
-	isObject = (obj) => {
-		return obj === Object(obj);
-	}
-	keyTester = (obj) => {
-		let searchStr = this.state.filters.keyword.toLowerCase()
-		let found = false
-		if (this.isObject(obj)) {
-			for (var k in obj) {
-				if (!found) {
-					if (k instanceof Date) {
-						let date = moment(obj[k]).format("DD.MM.YYYY")
-						found = date.toLowerCase().includes(searchStr)
-					}
-					else {
-						if (this.isObject(obj[k])) {
-							found = this.keyTester(obj[k])
-						}
-						else {
-							found = obj[k] ? obj[k].toString().toLowerCase().includes(searchStr) : false
-						}
-					}
-				}
-				else {
-					break
-				}
-			}
-		}
-		else {
-			found = obj ? obj.toString().toLowerCase().includes(searchStr) : null
-		}
-		return found
-	}
-	filterItems = (projects) => {
-		const { activeDateFilter } = this.state.filters
-		var arr = projects
-		if (activeDateFilter)
-			arr = this.filterByDate(arr)
-		if (arr) {
-			if (arr[0] === undefined)
-				return []
-			var keys = Object.keys(arr[0])
-			var filtered = arr.filter(c => {
-				var contains = keys.map(key => {
-					return this.keyTester(c[key])
-
-				})
-				return contains.indexOf(true) !== -1 ? true : false
-			})
-			return filtered
-		}
-	}
-
 
 	handleFilterStartDate = (value) => {
 		this.setState({
@@ -149,7 +72,8 @@ class Devices extends Component {
 				{ id: "id", label: t("devices.fields.id") },
 				{ id: "liveStatus", label: t("devices.fields.status") },
 				{ id: "address", label: t("devices.fields.address") },
-				{ id: "org", label: t("devices.fields.org") }
+				{ id: "org", label: t("devices.fields.org") },
+				{ id: "project", label: t("devices.fields.availability") }
 			],
 			loading: false
 		}) : null)
@@ -157,19 +81,20 @@ class Devices extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		await this.getDevices()
-		this.liveStatus = setInterval(this.getDevices, 10000);
+		// No more bullcrap
+		// this.liveStatus = setInterval(this.getDevices, 10000);
 		if (this.props.location.pathname.includes('/map'))
 			this.setState({ route: 1 })
 		else {
 			if (this.props.location.pathname.includes('/grid'))
 				this.setState({ route: 2 })
-			else { 
+			else {
 				this.setState({ route: 0 })
 			}
 		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		if (this.props.location.pathname !== prevProps.location.pathname) {	
+		if (this.props.location.pathname !== prevProps.location.pathname) {
 			if (this.props.location.pathname.includes('/map'))
 				this.setState({ route: 1 })
 			else {
@@ -181,77 +106,75 @@ class Devices extends Component {
 			}
 		}
 	}
-	
+
 	componentWillUnmount = () => {
 		this._isMounted = 0
 		clearInterval(this.liveStatus)
-		
+
 		// this.liveStatus= null
 	}
-	
+
 	componentWillUnmount = () => {
-	  window.clearInterval(this.liveStatus)
+		window.clearInterval(this.liveStatus)
 	}
-	
+
 	renderLoader = () => {
 		// const { classes } = this.props
 
-		return <CircularLoader/>
-	}
-	renderAllDevices = () => {
-		const { loading } = this.state
-		return loading ? this.renderLoader() : <DeviceTable
-			t={this.props.t}
-			data={this.filterItems(this.state.devices)}
-			tableHead={this.state.deviceHeader}
-			handleFilterEndDate={this.handleFilterEndDate}
-			handleFilterKeyword={this.handleFilterKeyword}
-			handleFilterStartDate={this.handleFilterStartDate}
-			filters={this.state.filters}
-		/>
+		return <CircularLoader />
 	}
 	renderList = () => {
-		// const { classes } = this.props
-		// this.setState({ route: 0 })
-		return <GridContainer container justify={'center'} /* className={classes.grid} */>
-			{this.renderAllDevices()}
+		const { loading } = this.state
+		return loading ? this.renderLoader() : <GridContainer container justify={'center'} /* className={classes.grid} */>
+			<DeviceTable
+				t={this.props.t}
+				data={this.filterItems(this.state.devices)}
+				tableHead={this.state.deviceHeader}
+				handleFilterEndDate={this.handleFilterEndDate}
+				handleFilterKeyword={this.handleFilterKeyword}
+				handleFilterStartDate={this.handleFilterStartDate}
+				filters={this.state.filters}
+			/>
 		</GridContainer>
-
+	}
+	renderCards = () => {
+		const { loading } = this.state
+		return loading ? this.renderLoader() : <GridContainer container justify={'center'}>
+			{this.filterItems(this.state.devices).map(d => {
+				return <DeviceCard t={this.props.t} d={d} />
+			})}
+		</GridContainer>
 	}
 	renderMap = () => {
-		// this.setState({ route: 1 })
-
 		const { devices, loading } = this.state
 		const { classes } = this.props
 		return loading ? <CircularLoader /> : <GridContainer container justify={'center'} >
 			<Paper className={classes.paper}>
-				<Maps isMarkerShown centerDenmark markers={this.filterItems(devices)} /* zoom={10} *//> 
+				<Maps t={this.props.t} isMarkerShown centerDenmark markers={this.filterItems(devices)} /* zoom={10} */ />
 			</Paper>
 		</GridContainer>
 	}
-	handleTabsChange = (e, value) => { 
-		this.setState({ route: value })
-	}
+	tabs = [
+		{ id: 0, title: this.props.t("devices.tabs.listView"), label: <ViewList />, url: `${this.props.match.path}/list` },
+		{ id: 1, title: this.props.t("devices.tabs.mapView"), label: <Map />, url: `${this.props.match.path}/map` },
+		{ id: 2, title: this.props.t("devices.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.path}/grid` },
+	]
 	render() {
-		const { devices } = this.state
-		const { classes } = this.props
+		const { devices, filters } = this.state
 		return (
 			<Fragment>
-				<AppBar position="sticky" classes={{ root: classes.appBar }}>
-					<Tabs value={this.state.route} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
-						<Tab title={'List View'} id={0} label={<ViewList />} onClick={() => { this.props.history.push(`${this.props.match.path}/list`) }}/>
-						<Tab title={'Map View'} id={1} label={<Map/>} onClick={() => { this.props.history.push(`${this.props.match.path}/map`)}}/>
-						<Tab title={'Cards View'} id={2} label={<ViewModule/>} onClick={() => { this.props.history.push(`${this.props.match.path}/grid`)}}/>
-						<Search
-							right
-							suggestions={devices ? this.suggestionGen(devices) : []}
-							handleFilterKeyword={this.handleFilterKeyword}
-							searchValue={this.state.filters.keyword} />
-					</Tabs>
-				</AppBar>
+				<Toolbar
+					data={devices}
+					filters={filters}
+					history={this.props.history}
+					match={this.props.match}
+					handleFilterKeyword={this.handleFilterKeyword}
+					tabs={this.tabs}
+				/>
 				<Switch>
 					<Route path={`${this.props.match.path}/map`} render={() => this.renderMap()} />
 					<Route path={`${this.props.match.path}/list`} render={() => this.renderList()} />
+					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} />
 					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
 				</Switch>
 			</Fragment>

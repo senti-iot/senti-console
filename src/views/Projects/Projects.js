@@ -1,15 +1,16 @@
 import React, { Component, Fragment } from 'react'
 import { getAllProjects, deleteProject } from '../../variables/dataProjects';
-import { /* Grid, */ withStyles, AppBar, Tabs, Tab } from "@material-ui/core";
+import { withStyles } from "@material-ui/core";
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { ViewList, ViewModule } from '@material-ui/icons'
 import projectStyles from 'assets/jss/views/projects';
 import ProjectTable from 'components/Project/ProjectTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
-import Search from 'components/Search/Search';
 import ProjectCards from 'components/Project/ProjectCards';
-var moment = require('moment');
+import Toolbar from 'components/Toolbar/Toolbar'
+import { filterItems } from '../../variables/functions';
+
 class Projects extends Component {
 	constructor(props) {
 		super(props)
@@ -44,76 +45,9 @@ class Projects extends Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-	filterByDate = (items) => {
-		const { startDate, endDate } = this.state.filters
-		var arr = items
-		var keys = Object.keys(arr[0])
-		var filteredByDate = arr.filter(c => {
-			var contains = keys.map(key => {
-				var openDate = moment(c['open_date'])
-				var closeDate = moment(c['close_date'])
-				if (openDate > startDate
-					&& closeDate < (endDate ? endDate : moment())) {
-					return true
-				}
-				else
-					return false
-			})
-			return contains.indexOf(true) !== -1 ? true : false
-		})
-		return filteredByDate
-	}
-
-	isObject = (obj) => {
-		return obj === Object(obj);
-	}
-	keyTester = (obj) => {
-		let searchStr = this.state.filters.keyword.toLowerCase()
-		let found = false
-		if (this.isObject(obj)) {
-			for (var k in obj) {
-				if (!found) {
-					if (k instanceof Date) {
-						let date = moment(obj[k]).format("DD.MM.YYYY")
-						found = date.toLowerCase().includes(searchStr)
-					}
-					else {
-						if (this.isObject(obj[k])) {
-							found = this.keyTester(obj[k])
-						}
-						else {
-							found = obj[k] ? obj[k].toString().toLowerCase().includes(searchStr) : false
-						}
-					}
-				}
-				else {
-					break
-				}
-			}
-		}
-		else {
-			found = obj ? obj.toString().toLowerCase().includes(searchStr) : null
-		}
-		return found
-	}
-	filterItems = (projects) => {
-		const { activeDateFilter } = this.state.filters
-		var arr = projects
-		if (activeDateFilter)
-			arr = this.filterByDate(arr)
-		if (arr) {
-			if (arr[0] === undefined)
-				return []
-			var keys = Object.keys(arr[0])
-			var filtered = arr.filter(c => {
-				var contains = keys.map(key => {
-					return this.keyTester(c[key])
-
-				})
-				return contains.indexOf(true) !== -1 ? true : false
-			})
-			return filtered
-		}
+	
+	filterItems = (data) => {
+		return filterItems(data, this.state.filters)
 	}
 
 	handleFilterStartDate = (value) => {
@@ -152,46 +86,16 @@ class Projects extends Component {
 				{ id: 'open_date', label: t("projects.projectsColumnStartDate"), },
 				{ id: 'close_date', label: t("projects.projectsColumnEndDate"), },
 				{ id: 'created', label: t("projects.projectsColumnCreated"), },
+				{ id: 'modified', label: t("projects.projectsColumnLastMod"), },
 			],
 			loading: false
 		}) : null)
 	}
 
-	suggestionSlicer = (obj) => {
-		var arr = [];
-
-		for (var prop in obj) {
-			if (obj.hasOwnProperty(prop)) {
-				var innerObj = {};
-				if (typeof obj[prop] === 'object') {
-					arr.push(...this.suggestionSlicer(obj[prop]))
-				}
-				else {
-					innerObj = {
-						id: prop.toString().toLowerCase(),
-						label: obj[prop] ? obj[prop].toString() : ''
-					};
-					arr.push(innerObj)
-				}
-			}
-		}
-		return arr;
-	}
-	suggestionGen = (arrayOfObjs) => {
-		let arr = [];
-		arrayOfObjs.map(obj => {
-			arr.push(...this.suggestionSlicer(obj))
-			return ''
-		})
-		return arr;
-	}
 	deleteProjects = async (projects) => {
 		await deleteProject(projects).then(() => {
 			this.getProjects()
 		})
-	}
-	handleTabsChange = (e, value) => {
-		this.setState({ route: value })
 	}
 	renderAllProjects = () => {
 		const { t } = this.props
@@ -219,22 +123,22 @@ class Projects extends Component {
 			<ProjectCards t={t} projects={this.filterItems(this.state.projects)} />
 		</GridContainer>
 	}
+	tabs = [
+		{ id: 0, title: this.props.t("projects.tabs.listView"), label: <ViewList />, url: `${this.props.match.path}/list` },
+		{ id: 1, title: this.props.t("projects.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.path}/grid` },
+	]
 	render() {
-		const { classes, t } = this.props
-		const { projects } = this.state
+		const { projects, filters } = this.state
 		return (
 			<Fragment>
-				<AppBar position={'sticky'} classes={{ root: classes.appBar }}>
-					<Tabs value={this.state.route} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
-						<Tab title={t("projects.tabs.listView")} id={0} label={<ViewList />} onClick={() => { this.props.history.push(`${this.props.match.path}/list`) }} />
-						<Tab title={t("projects.tabs.cardView")} id={1} label={<ViewModule />} onClick={() => { this.props.history.push(`${this.props.match.path}/grid`) }} />
-						<Search
-							right
-							suggestions={projects ? this.suggestionGen(projects) : []}
-							handleFilterKeyword={this.handleFilterKeyword}
-							searchValue={this.state.filters.keyword} />
-					</Tabs>
-				</AppBar>
+				<Toolbar
+					data={projects}
+					filters={filters}
+					history={this.props.history}
+					match={this.props.match}
+					handleFilterKeyword={this.handleFilterKeyword}
+					tabs={this.tabs}
+				/>
 				<Switch>
 					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} />
 					<Route path={`${this.props.match.path}/list`} render={() => this.renderList()} />
