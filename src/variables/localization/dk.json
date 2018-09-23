@@ -186,6 +186,11 @@
 			"tableCellDeviceName": "Unavngivet",
 			"totalcount": "Tællinger total"
 		},
+		"tabs":{
+			"listView":"Listevisning",
+			"cardView": "Gridvisning",
+			"mapView": "Kortvisning"
+		},
 		"status": {
 			"green": "Tilsluttet, Data",
 			"red": "Ikke tilsluttet, Ingen Data",

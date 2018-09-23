@@ -190,6 +190,11 @@
 			"green": "Connected, Data",
 			"red": "Not Connected, No Data",
 			"yellow": "Connected, No Data"
+		},
+		"tabs": {
+			"listView": "List view",
+			"cardView": "Card view",
+			"mapView": "Map view"
 		}
 	},
 	"dialogs": {
@@ -297,7 +302,7 @@
 			"noCity": "City missing",
 			"noZip": "ZIP missing",
 			"noCountry": "Country missing",
-			"networkError": "Network error!"	
+			"networkError": "Network error!"
 		}
 	},
 	"projects": {

@@ -17,16 +17,21 @@ class EnhancedTable extends React.Component {
 		super(props);
 
 		this.state = {
-			order: 'asc',
+			order: 'desc',
 			orderBy: 'id',
 			selected: [],
 			page: 0,
 			rowsPerPage: props.rowsPerPage,
 			anchorElMenu: null,
 			anchorFilterMenu: null,
-			openAssignProject: false
+			openAssignProject: false,
+			openUnassign: false,
 		};
 	}
+	componentDidMount = () => {
+		this.handleRequestSort(null, "id")
+	}
+
 	handleCalibrateFlow = () => {
 		this.props.history.push(`/device/${this.state.selected[0]}/calibrate`)
 	}
@@ -132,9 +137,9 @@ class EnhancedTable extends React.Component {
 		const { selected } = this.state
 		// console.log(this.state.selected)
 		var devices = selected.map(s => data[data.findIndex(d => d.id === s)])
-		
+
 		devices.forEach(async d => {
-			 await updateDevice({
+			await updateDevice({
 				...d,
 				project: {
 					id: 0
@@ -249,7 +254,7 @@ class EnhancedTable extends React.Component {
 					{t("devices.confirmUnassignMessage")}
 				</DialogContentText>
 				<div>
-					{selected.map(s => <Info key={s}>&bull;{data[data.findIndex(d => d.id === s)].id + " " + data[data.findIndex(d => d.id === s)].name }</Info>)}
+					{selected.map(s => <Info key={s}>&bull;{data[data.findIndex(d => d.id === s)].id + " " + data[data.findIndex(d => d.id === s)].name}</Info>)}
 				</div>
 			</DialogContent>
 			<DialogActions>
@@ -263,9 +268,11 @@ class EnhancedTable extends React.Component {
 		</Dialog>
 	}
 	render() {
-		const { classes, data, t } = this.props;
-		const { order, orderBy, selected, rowsPerPage, page, openAssignProject } = this.state;
-		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+		const { classes, t } = this.props;
+		const { order, data, orderBy, selected, rowsPerPage, page, openAssignProject } = this.state;
+		let emptyRows
+		if (data)
+			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 		return (
 			<Paper className={classes.root}>
 				{this.renderConfirmUnassign()}
@@ -281,7 +288,7 @@ class EnhancedTable extends React.Component {
 					numSelected={selected.length}
 					options={this.options}
 					t={t}
-					// content={this.renderTableToolBarContent()}
+				// content={this.renderTableToolBarContent()}
 				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
@@ -291,7 +298,7 @@ class EnhancedTable extends React.Component {
 							orderBy={orderBy}
 							onSelectAllClick={this.handleSelectAllClick}
 							onRequestSort={this.handleRequestSort}
-							rowCount={data.length}
+							rowCount={data ? data.length : 0}
 							columnData={this.props.tableHead}
 							classes={classes}
 							customColumn={[
@@ -305,7 +312,7 @@ class EnhancedTable extends React.Component {
 							]}
 						/>
 						<TableBody>
-							{data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
+							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
 								return (
 									<TableRow
@@ -337,22 +344,22 @@ class EnhancedTable extends React.Component {
 															{`${n.name ? n.id : t("devices.noName")} - ${n.org ? n.org.name : ''}`}
 														</Caption>
 													</ItemGrid>
-												</ItemGrid>}/>
+												</ItemGrid>} />
 										</Hidden>
 										<Hidden mdDown>
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
-											<TC label={n.name ? n.name : t("devices.noName")}/>
-											<TC label={n.id}/>
+											<TC label={n.name ? n.name : t("devices.noName")} />
+											<TC label={n.id} />
 											<TC content={<div className={classes.paragraphCell}> {this.renderIcon(n.liveStatus)}</div>} />
-											<TC label={n.address ? n.address : t("devices.noAddress")}/>
-											<TC label={n.org ? n.org.name : t("devices.noProject")}/>
-											<TC label={n.project.id > 0 ? t("devices.fields.notfree") : t("devices.fields.free")}/>
+											<TC label={n.address ? n.address : t("devices.noAddress")} />
+											<TC label={n.org ? n.org.name : t("devices.noProject")} />
+											<TC label={n.project.id > 0 ? t("devices.fields.notfree") : t("devices.fields.free")} />
 										</Hidden>
 									</TableRow>
 								);
-							})}
+							}) : null}
 							{emptyRows > 0 && (
 								<TableRow style={{ height: 49 * emptyRows }}>
 									<TableCell colSpan={8} />
@@ -363,7 +370,7 @@ class EnhancedTable extends React.Component {
 				</div>
 				<TablePagination
 					component="div"
-					count={data.length}
+					count={data ? data.length : 0}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					backIconButtonProps={{
