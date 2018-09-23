@@ -281,7 +281,7 @@
 	"orgs": {
 		"pageTitle": "Organisationer",
 		"updateOrg": "Rediger",
-		"createOrg": "Opret ny organisation",
+		"createOrg": "Opret organisation",
 		"create": "Opret",
 		"fields": {
 			"address": "Adresse",

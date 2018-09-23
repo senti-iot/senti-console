@@ -248,7 +248,7 @@ class UserTable extends React.Component {
 											</TableCell>
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
 												<ItemGrid container zeroMargin noPadding justify={"center"}>
-													{n.img ? <img src={n.img} alt="brken" className={classes.img} /> : <Gravatar default="identicon" email={n.email} className={classes.img} />}
+													{n.img ? <img src={n.img} alt="brken" className={classes.img} /> : <Gravatar default="mp" email={n.email} className={classes.img}/>}
 												</ItemGrid>
 											</TableCell>
 											<TableCell classes={{ root: classes.tableCell }}>
@@ -278,8 +278,8 @@ class UserTable extends React.Component {
 												<Checkbox checked={isSelected} />
 											</TableCell>
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
-												<ItemGrid container zeroMargin noPadding justify={"center"}>
-													{n.img ? <img src={n.img} alt="brken" className={classes.img} /> : <Gravatar default="identicon" email={n.email} className={classes.img} />}
+												<ItemGrid container zeroMargin noPadding justify={"center"}>	
+													{n.img ? <img src={n.img} alt="brken" className={classes.img} /> : <Gravatar default="mp" email={n.email} className={classes.img} />}
 												</ItemGrid>
 											</TableCell>
 											{/* <TC label={n.userName} /> */}
