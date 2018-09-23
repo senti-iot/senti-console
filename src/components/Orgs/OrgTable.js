@@ -21,7 +21,7 @@ class OrgTable extends React.Component {
 		super(props);
 
 		this.state = {
-			order: 'asc',
+			order: 'desc',
 			orderBy: 'name',
 			selected: [],
 			page: 0,
@@ -32,7 +32,9 @@ class OrgTable extends React.Component {
 			openDelete: false
 		}
 	}
-
+	componentDidMount = () => {
+		this.handleRequestSort(null, "name")
+	}
 	snackBarMessages = () => {
 		let msg = this.state.openSnackbar
 		const { t } = this.props
@@ -224,8 +226,8 @@ class OrgTable extends React.Component {
 
 
 	render() {
-		const { classes, data, t } = this.props
-		const { order, orderBy, selected, rowsPerPage, page } = this.state
+		const { classes, t } = this.props
+		const { order, orderBy, data, selected, rowsPerPage, page } = this.state
 		let emptyRows;
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
@@ -315,7 +317,7 @@ class OrgTable extends React.Component {
 				</div>
 				<TablePagination
 					component="div"
-					count={data.length}
+					count={data ? data.length : 0}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					backIconButtonProps={{

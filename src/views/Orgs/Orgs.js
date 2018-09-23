@@ -76,20 +76,10 @@ class Orgs extends Component {
 	}
 	getData = async () => {
 		const { t } = this.props
-		let users = await getAllOrgs().then(rs => rs)
 		let orgs = await getAllOrgs().then(rs => rs)
 		if (this._isMounted) {
 			this.setState({
-				users: users ? users : [],
 				orgs: orgs ? orgs : [],
-				userHeader: [
-					{ id: "avatar", label: "" },
-					{ id: "firstName", label: t("users.fields.name") },
-					{ id: "phone", label: t("users.fields.phone") },
-					{ id: "email", label: t("users.fields.email") },
-					{ id: "org", label: t("users.fields.organisation") },
-					{ id: "lastSignIng", label: t("users.fields.lastSignIn") }
-				],
 				orgsHeader: [
 					{ id: "name", label: t("orgs.fields.name") },
 					{ id: "address", label: t("orgs.fields.address") },
