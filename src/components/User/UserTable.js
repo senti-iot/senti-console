@@ -25,9 +25,10 @@ class UserTable extends React.Component {
 		super(props);
 
 		this.state = {
-			order: 'asc',
-			orderBy: 'title',
+			order: 'desc',
+			orderBy: 'firstName',
 			selected: [],
+			data: [],
 			page: 0,
 			rowsPerPage: props.rowsPerPage,
 			anchorElMenu: null,
@@ -35,6 +36,9 @@ class UserTable extends React.Component {
 			openSnackbar: 0,
 			openDelete: false
 		}
+	}
+	componentDidMount = () => {
+		this.handleRequestSort(null, "firstName")
 	}
 
 	snackBarMessages = () => {
@@ -78,7 +82,7 @@ class UserTable extends React.Component {
 			order === 'desc'
 				? this.props.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
 				: this.props.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1))
-
+		console.log(data)
 		this.setState({ data, order, orderBy })
 	}
 
@@ -189,15 +193,15 @@ class UserTable extends React.Component {
 	}
 
 	render() {
-		const { classes, data, t } = this.props
-		const { order, orderBy, selected, rowsPerPage, page } = this.state
+		const { classes, t } = this.props
+		const { order, orderBy, selected, rowsPerPage, page, data } = this.state
 		let emptyRows;
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
-
+		console.log(orderBy)
 		return (
 			<Paper className={classes.root}>
-			
+
 				<EnhancedTableToolbar
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
@@ -205,7 +209,7 @@ class UserTable extends React.Component {
 					numSelected={selected.length}
 					options={this.options}
 					t={t}
-					// content={this.renderTableToolBarContent()}
+				// content={this.renderTableToolBarContent()}
 				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
@@ -221,7 +225,8 @@ class UserTable extends React.Component {
 							classes={classes}
 							// mdDown={[0]} //Which Columns to display on small Screens
 							customColumn={[{ id: "avatar", label: "" }, {
-								id: "firstName", label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>Users</Typography> }]}
+								id: "firstName", label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>Users</Typography>
+							}]}
 						/>
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
@@ -245,7 +250,7 @@ class UserTable extends React.Component {
 											</TableCell>
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
 												<ItemGrid container zeroMargin noPadding justify={"center"}>
-													{n.img ? <img src={n.img} alt="brken" className={classes.img} /> : <Gravatar default="identicon" email={n.email} className={classes.img}/>}
+													{n.img ? <img src={n.img} alt="brken" className={classes.img} /> : <Gravatar default="identicon" email={n.email} className={classes.img} />}
 												</ItemGrid>
 											</TableCell>
 											<TableCell classes={{ root: classes.tableCell }}>
@@ -275,7 +280,7 @@ class UserTable extends React.Component {
 												<Checkbox checked={isSelected} />
 											</TableCell>
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
-												<ItemGrid container zeroMargin noPadding justify={"center"}>	
+												<ItemGrid container zeroMargin noPadding justify={"center"}>
 													{n.img ? <img src={n.img} alt="brken" className={classes.img} /> : <Gravatar default="identicon" email={n.email} className={classes.img} />}
 												</ItemGrid>
 											</TableCell>
@@ -284,7 +289,7 @@ class UserTable extends React.Component {
 											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone) : n.phone}</a>} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`mailto:${n.email}`}>{n.email}</a>} />
 											<TC label={n.org ? n.org.name : t("users.noOrg")} />
-											<TC label={lastLoggedIn}/>
+											<TC label={lastLoggedIn} />
 										</Hidden>
 									</TableRow>
 
@@ -300,7 +305,7 @@ class UserTable extends React.Component {
 				</div>
 				<TablePagination
 					component="div"
-					count={data.length}
+					count={data ? data.length : 0}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					backIconButtonProps={{
@@ -336,7 +341,7 @@ class UserTable extends React.Component {
 					}
 				/>
 				{this.renderConfirmDelete()}
-			
+
 			</Paper>
 		)
 	}
