@@ -1,58 +1,27 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles, TextField } from '@material-ui/core';
-import { teal } from '@material-ui/core/colors'
 
 const styles = theme => ({
 	leftIcon: {
 		marginRight: theme.spacing.unit
-	},
-	textField: {
-		// margin: theme.spacing.unit * 2,
-		// width: 300
-	},
-	label: {
-		// width: 300,
-		'&$focused': {
-			color: teal[500],
-		},
-	},
-	focused: {},
-	underline: {
-		'&:after': {
-			borderBottomColor: teal[500],
-		},
 	}
 })
 const TextF = (props) => {
+
 	return (
 		<TextField
-			autoFocus={props.autoFocus ? props.autoFocus : false}
+			autoFocus={props.autoFocus ? props.autoFocus : undefined}
 			id={props.id}
 			label={props.label}
 			value={props.value}
 			onChange={props.handleChange}
-			fullWidth={props.noFullWidth ? false : true}
-			multiline={props.multiline ? props.multiline : false}
-			rows={props.rows ? props.rows : null}
-			className={props.classes.textField}
-			error={props.error ? props.error : false}
-			InputLabelProps={
-				{
-					FormLabelClasses: {
-						root: props.classes.label,
-						focused: props.classes.focused,
-					},
-				}
-			}
-			InputProps={{
-				classes: {
-					underline: props.classes.underline,
-				},
-				...props.InputProps
-			}}
-			type={props.type ? props.type : null}
-			// {...props}
+			fullWidth={props.noFullWidth ? undefined : true}
+			multiline={props.multiline ? props.multiline : undefined}
+			rows={props.rows ? props.rows : undefined}
+			className={props.classes.textField ? props.classes.textFields : ""}
+			error={props.error ? props.error : undefined}
+			type={props.type ? props.type : undefined}
 			pattern={props.pattern ? props.pattern : ""}
 			margin="normal" />
 

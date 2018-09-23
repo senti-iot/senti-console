@@ -112,7 +112,7 @@ class EditDeviceDetails extends Component {
 									id={'description'}
 									label={t('devices.fields.description')}
 									multiline
-									rows={3}
+									rows={4}
 									handleChange={this.handleInput('description')}
 									value={device.description}
 									noFullWidth
