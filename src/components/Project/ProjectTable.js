@@ -23,7 +23,7 @@ class EnhancedTable extends React.Component {
 		super(props);
 
 		this.state = {
-			order: 'asc',
+			order: 'desc',
 			orderBy: 'title',
 			selected: [],
 			page: 0,
@@ -34,7 +34,10 @@ class EnhancedTable extends React.Component {
 			openDelete: false
 		}
 	}
-
+	componentDidMount = () => {
+	  this.handleRequestSort(null, "title")
+	}
+	
 	snackBarMessages = () => { 
 		let msg = this.state.openSnackbar
 		const { t } = this.props
@@ -234,8 +237,8 @@ class EnhancedTable extends React.Component {
 		</Fragment>
 	}
 	render() {
-		const { classes, data, t } = this.props
-		const { order, orderBy, selected, rowsPerPage, page } = this.state
+		const { classes, t } = this.props
+		const { order, data, orderBy, selected, rowsPerPage, page } = this.state
 		let emptyRows;
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
@@ -355,7 +358,7 @@ class EnhancedTable extends React.Component {
 				</div>
 				<TablePagination
 					component="div"
-					count={data.length}
+					count={data ? data.length : 0}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					backIconButtonProps={{
