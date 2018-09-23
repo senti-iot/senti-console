@@ -19,7 +19,7 @@ export const getSettingsFromServer = async () => {
 
 export const saveSettings = async (user) => {
 	var data = await api.put('/senti/user', user).then(rs => rs.data)
-	console.loginApi(data)
+	// console.loginApi(data)
 	return data
 }
 export const saveSettingsOnServer = async (settings) => {

@@ -63,7 +63,6 @@ class LoginPage extends React.Component {
 		);
 	}
 	handleInput = (e) => {
-		console.log(this.input)
 		this.setState({ [e.target.id]: e.target.value })
 		if (this.state.error) { 
 			this.setState({ error: false })

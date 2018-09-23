@@ -82,7 +82,6 @@ class UserTable extends React.Component {
 			order === 'desc'
 				? this.props.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
 				: this.props.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1))
-		console.log(data)
 		this.setState({ data, order, orderBy })
 	}
 
@@ -198,7 +197,6 @@ class UserTable extends React.Component {
 		let emptyRows;
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
-		console.log(orderBy)
 		return (
 			<Paper className={classes.root}>
 
