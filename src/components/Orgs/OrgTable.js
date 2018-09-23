@@ -187,18 +187,25 @@ class OrgTable extends React.Component {
 		</Fragment>
 	}
 	renderConfirmDelete = () => {
-		const { openDelete, selected } = this.state
-		const { data, t } = this.props
+		const { openDelete, /* selected */ } = this.state
+		// const { data, t } = this.props
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{t("projects.projectDelete")}</DialogTitle>
+			<DialogTitle> *Not Implemented* </DialogTitle>
+			<DialogContent>
+				<DialogContentText id="alert-dialog-description"> Not Implemented </DialogContentText>
+			</DialogContent>
+			<DialogActions>
+				<Button></Button>
+			</DialogActions>
+			{/* <DialogTitle id="alert-dialog-title">{t("orgs.orgsDelete")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("projects.projectDeleteConfirm")}
+					{t("orgs.orgsDeleteConfirm")}
 				</DialogContentText>
 				<div>
 					{selected.map(s => <Info key={s}>&bull;{data[data.findIndex(d => d.id === s)].title}</Info>)}
@@ -211,10 +218,9 @@ class OrgTable extends React.Component {
 				<Button onClick={this.handleDeleteProjects} color="primary" autoFocus>
 					{t("actions.yes")}
 				</Button>
-			</DialogActions>
+			</DialogActions> */}
 		</Dialog>
 	}
-
 
 	render() {
 		const { classes, data, t } = this.props
