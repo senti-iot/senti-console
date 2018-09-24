@@ -1,5 +1,5 @@
 import {
-	Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination,
+	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
 	TableRow, Typography, withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
 	DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem
 } from "@material-ui/core"
@@ -17,6 +17,7 @@ import { ItemGrid, Info, Caption } from ".."
 import { connect } from "react-redux"
 import { Add, FilterList } from '@material-ui/icons';
 import { boxShadow } from 'assets/jss/material-dashboard-react';
+import TP from 'components/Table/TP';
 
 class EnhancedTable extends React.Component {
 	constructor(props) {
@@ -356,31 +357,14 @@ class EnhancedTable extends React.Component {
 						</TableBody>
 					</Table>
 				</div>
-				<TablePagination
-					component="div"
-					count={data ? data.length : 0}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					backIconButtonProps={{
-						'aria-label': t("actions.nextPage"),
-					}}
-					nextIconButtonProps={{
-						'aria-label': t("actions.previousPage"),
-					}}
-					classes={{
-						spacer: classes.spacer,
-						input: classes.spaceBetween,
-						caption: classes.tablePaginationCaption
-					}}
-					onChangePage={this.handleChangePage}
-					onChangeRowsPerPage={this.handleChangeRowsPerPage}
-					labelRowsPerPage={t("tables.rowsPerPage")}
-					rowsPerPageOptions={[5, 10, 25, 50, 100]}
-					SelectProps={{
-						classes: {
-							select: classes.SelectIcon
-						}
-					}}
+				<TP
+					count={ data ? data.length : 0 }
+					classes={ classes }
+					rowsPerPage={ rowsPerPage }
+					page={ page }
+					t={ t }
+					handleChangePage={ this.handleChangePage }
+					handleChangeRowsPerPage={ this.handleChangeRowsPerPage }
 				/>
 				<Snackbar
 					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}

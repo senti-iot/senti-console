@@ -1,25 +1,24 @@
 import {
-	Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination,
-	TableRow, /* Typography, */ withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
-	DialogContentText, DialogActions, Button, Typography, /* IconButton, Menu, MenuItem*/
+	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
+	TableRow, withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
+	DialogContentText, DialogActions, Button, Typography,
 } from "@material-ui/core"
 import TC from 'components/Table/TC'
-import { Delete, /* Devices, */ Edit, PictureAsPdf } from '@material-ui/icons'
+import { Delete, Edit, PictureAsPdf } from '@material-ui/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import PropTypes from "prop-types"
 import React from "react"
 import { withRouter } from 'react-router-dom'
-// import { dateFormatter } from "variables/functions"
 import EnhancedTableHead from '../Table/TableHeader'
 import EnhancedTableToolbar from '../Table/TableToolbar'
 import { ItemGrid, Info } from ".."
 import { connect } from "react-redux"
 import Caption from '../Typography/Caption';
-// import { Add, FilterList } from '@material-ui/icons';
-// import { boxShadow } from 'assets/jss/material-dashboard-react';
 import { pF } from 'variables/functions';
 import Gravatar from 'react-gravatar'
+import TP from 'components/Table/TP';
 var moment = require("moment")
+
 class UserTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -156,7 +155,6 @@ class UserTable extends React.Component {
 		const { t } = this.props
 		return [
 			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
-			// { label: t("menus.assignDevices"), func: this.assignDevice, single: true, icon: Devices },
 			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
 			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
@@ -221,7 +219,6 @@ class UserTable extends React.Component {
 							columnData={this.props.tableHead}
 							t={t}
 							classes={classes}
-							// mdDown={[0]} //Which Columns to display on small Screens
 							customColumn={[{ id: "avatar", label: "" }, {
 								id: "firstName", label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>Users</Typography>
 							}]}
@@ -234,7 +231,6 @@ class UserTable extends React.Component {
 									<TableRow
 										hover
 										onClick={e => { e.stopPropagation(); this.props.history.push('/user/' + n.id) }}
-										// onContextMenu={this.handleToolbarMenuOpen}
 										role="checkbox"
 										aria-checked={isSelected}
 										tabIndex={-1}
@@ -253,12 +249,6 @@ class UserTable extends React.Component {
 											</TableCell>
 											<TableCell classes={{ root: classes.tableCell }}>
 												<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-													{/* <ItemGrid zeroMargin noPadding xs={2}>
-													<ItemGrid container zeroMargin noPadding justify={"center"}>
-														<img src={UserPlaceHolder} alt="brken" className={classes.img}/>
-													</ItemGrid>
-												</ItemGrid> */}
-													{/* <ItemGrid xs={10} zeroMargin> */}
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Info noWrap paragraphCell={classes.noMargin}>
 															{`${n.firstName} ${n.lastName}`}
@@ -301,31 +291,14 @@ class UserTable extends React.Component {
 						</TableBody>
 					</Table>
 				</div>
-				<TablePagination
-					component="div"
-					count={data ? data.length : 0}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					backIconButtonProps={{
-						'aria-label': t("actions.nextPage"),
-					}}
-					nextIconButtonProps={{
-						'aria-label': t("actions.previousPage"),
-					}}
-					classes={{
-						spacer: classes.spacer,
-						input: classes.spaceBetween,
-						caption: classes.tablePaginationCaption
-					}}
-					onChangePage={this.handleChangePage}
-					onChangeRowsPerPage={this.handleChangeRowsPerPage}
-					labelRowsPerPage={t("tables.rowsPerPage")}
-					rowsPerPageOptions={[5, 10, 25, 50, 100]}
-					SelectProps={{
-						classes: {
-							select: classes.SelectIcon
-						}
-					}}
+				<TP
+					count={ data ? data.length : 0 }
+					classes={ classes }
+					rowsPerPage={ rowsPerPage }
+					page={ page }
+					t={ t }
+					handleChangePage={ this.handleChangePage }
+					handleChangeRowsPerPage={ this.handleChangeRowsPerPage }
 				/>
 				<Snackbar
 					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}

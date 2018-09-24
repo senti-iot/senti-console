@@ -1,4 +1,8 @@
-import { Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination, TableRow, Typography, withStyles, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem } from "@material-ui/core";
+import {
+	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
+	TableRow, Typography, withStyles, Dialog, DialogTitle, DialogContent,
+	DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem
+} from "@material-ui/core";
 import { SignalWifi2Bar, SignalWifi2BarLock, Add, FilterList } from '@material-ui/icons';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
 import PropTypes from "prop-types";
@@ -10,8 +14,9 @@ import EnhancedTableToolbar from '../Table/TableToolbar';
 import { connect } from 'react-redux'
 import { ItemGrid, Info, Caption } from '..';
 import TC from 'components/Table/TC'
-import { updateDevice } from '../../variables/dataDevices'
+import { updateDevice } from 'variables/dataDevices'
 import { boxShadow } from "assets/jss/material-dashboard-react";
+import TP from 'components/Table/TP';
 class EnhancedTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -368,31 +373,14 @@ class EnhancedTable extends React.Component {
 						</TableBody>
 					</Table>
 				</div>
-				<TablePagination
-					component="div"
-					count={data ? data.length : 0}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					backIconButtonProps={{
-						'aria-label': t("actions.nextPage"),
-					}}
-					nextIconButtonProps={{
-						'aria-label': t("actions.previousPage"),
-					}}
-					classes={{
-						spacer: classes.spacer,
-						input: classes.spaceBetween,
-						caption: classes.tablePaginationCaption
-					}}
-					onChangePage={this.handleChangePage}
-					onChangeRowsPerPage={this.handleChangeRowsPerPage}
-					labelRowsPerPage={t("tables.rowsPerPage")}
-					rowsPerPageOptions={[5, 10, 25, 50, 100]}
-					SelectProps={{
-						classes: {
-							select: classes.SelectIcon
-						}
-					}}
+				<TP
+					count={ data ? data.length : 0 }
+					classes={ classes }
+					rowsPerPage={ rowsPerPage }
+					page={ page }
+					t={ t }
+					handleChangePage={ this.handleChangePage }
+					handleChangeRowsPerPage={ this.handleChangeRowsPerPage }
 				/>
 			</Paper>
 		);
