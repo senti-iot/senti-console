@@ -51,7 +51,7 @@ class App extends React.Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		// if (cookie.load('SESSION'))
-		await this.props.getSettings().then(() => {
+		await this.props.getSettings().then(rs => {
 			if (navigator.platform.indexOf('Win') > -1) {
 				if (!this.props.loading) {
 					if (this.refs.mainPanel) {
