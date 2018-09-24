@@ -59,7 +59,8 @@ export const getSettings = async () => {
 		})
 		if (settings)
 		{
-			moment.locale(user.aux.settings.language)
+			console.log(settings)
+			moment.locale(user.aux.senti.settings.language)
 			dispatch({
 				type: GETSETTINGS,
 				settings: user.aux.senti.settings,
@@ -196,7 +197,7 @@ export const settings = (state = initialState, action) => {
 			return Object.assign({}, state, { loading: false, user: action.user })}
 		case GETSETTINGS:
 		{	
-			return Object.assign({}, state, { settings: action.settings, user: action.user, loading: false })}
+			return Object.assign({}, state, { ...action.settings, user: action.user, loading: false })}
 		case changeLangAction:
 		{
 			moment.locale(action.code)
