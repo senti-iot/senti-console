@@ -14,10 +14,11 @@ class Orgs extends Component {
 		super(props)
 
 		this.state = {
-			users: [],
-			userHeader: [],
+			orgs: [],
 			loading: true,
 			route: 0,
+			order: 'desc',
+			orderBy: 'name',
 			filters: {
 				keyword: '',
 				startDate: null,
@@ -43,7 +44,22 @@ class Orgs extends Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-	
+	handleRequestSort = (event, property) => {
+		const orderBy = property;
+		let order = 'desc';
+
+		if (this.state.orderBy === property && this.state.order === 'desc') {
+			order = 'asc';
+		}
+
+		const orgs =
+			order === 'desc'
+				? this.state.orgs.sort((a, b) => (b[ orderBy ] < a[ orderBy ] ? -1 : 1))
+				: this.state.orgs.sort((a, b) => (a[ orderBy ] < b[ orderBy ] ? -1 : 1))
+
+		this.setState({ orgs, order, orderBy })
+	}
+
 	filterItems = (data) => {
 		return filterItems(data, this.state.filters)
 	}
@@ -87,7 +103,8 @@ class Orgs extends Component {
 					{ id: "url", label: t("orgs.fields.url") },
 				],
 				loading: false
-			})
+			}, () => this.handleRequestSort(null, 'name'))
+		
 		}
 	}
 
@@ -101,34 +118,37 @@ class Orgs extends Component {
 
 	renderOrgs = () => {
 		const { t } = this.props
-		const { loading } = this.state
-		return <GridContainer justify={'center'}>
-			{loading ? <CircularLoader /> : <OrgTable
-				data={this.filterItems(this.state.orgs)}
-				tableHead={this.state.orgsHeader}
-				handleFilterEndDate={this.handleFilterEndDate}
-				handleFilterKeyword={this.handleFilterKeyword}
-				handleFilterStartDate={this.handleFilterStartDate}
-				filters={this.state.filters}
-				t={t}
-			/>}
+		const { loading, order, orderBy } = this.state
+		return <GridContainer justify={ 'center' }>
+			{ loading ? <CircularLoader /> : <OrgTable
+				data={ this.filterItems(this.state.orgs) }
+				tableHead={ this.state.orgsHeader }
+				handleFilterEndDate={ this.handleFilterEndDate }
+				handleFilterKeyword={ this.handleFilterKeyword }
+				handleFilterStartDate={ this.handleFilterStartDate }
+				handleRequestSort={ this.handleRequestSort }
+				orderBy={ orderBy }
+				order={ order }
+				filters={ this.state.filters }
+				t={ t }
+			/> }
 		</GridContainer>
 	}
-	render() {
+	render () {
 		const { orgs, route, filters } = this.state
 		return (
 			<Fragment>
 				<Toolbar
-					data={orgs} 
-					route={route} 
-					filters={filters} 
-					history={this.props.history}
-					match={this.props.match}
-					handleFilterKeyword={this.handleFilterKeyword}
-					tabs={this.tabs}
-					defaultRoute={1}
+					data={ orgs }
+					route={ route }
+					filters={ filters }
+					history={ this.props.history }
+					match={ this.props.match }
+					handleFilterKeyword={ this.handleFilterKeyword }
+					tabs={ this.tabs }
+					defaultRoute={ 1 }
 				/>
-				{this.renderOrgs()}
+				{ this.renderOrgs() }
 			</Fragment>
 		)
 	}

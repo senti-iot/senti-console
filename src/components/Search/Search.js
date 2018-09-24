@@ -117,9 +117,8 @@ class IntegrationAutosuggest extends React.Component {
 		});
 	};
 
-	handleChange = (event, { newValue, method }) => {
-		// console.log(method)
-	
+	handleChange = (event, { newValue }) => {
+		
 		this.props.handleFilterKeyword(newValue)
 	};
 	focusInput = () => {
@@ -133,19 +132,7 @@ class IntegrationAutosuggest extends React.Component {
 	handleClose = () => {
 		this.setState({ open: false })
 	}
-	// handleKeyPress = (event) => {
-	// 	event.stopPropagation()
-	
-	// 	// console.log(event.key, searchValue)
-	// 	if (event.key === 'Escape') {
-	// 	// if (searchValue !== "") {
-	// 	// 	console.log("reset", searchValue)
-	// 	// 	this.handleResetSearch()
-	// 	// }
-	// 		// else {
-		
-	// 	}
-	// }
+
 	render() {
 		const { classes, right } = this.props;
 

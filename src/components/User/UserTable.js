@@ -24,8 +24,6 @@ class UserTable extends React.Component {
 		super(props);
 
 		this.state = {
-			order: 'desc',
-			orderBy: 'firstName',
 			selected: [],
 			data: [],
 			page: 0,
@@ -36,10 +34,7 @@ class UserTable extends React.Component {
 			openDelete: false
 		}
 	}
-	componentDidMount = () => {
-		this.handleRequestSort(null, "firstName")
-	}
-
+	
 	snackBarMessages = () => {
 		let msg = this.state.openSnackbar
 		const { t } = this.props
@@ -70,18 +65,7 @@ class UserTable extends React.Component {
 	}
 
 	handleRequestSort = (event, property) => {
-		const orderBy = property;
-		let order = 'desc';
-
-		if (this.state.orderBy === property && this.state.order === 'desc') {
-			order = 'asc';
-		}
-
-		const data =
-			order === 'desc'
-				? this.props.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
-				: this.props.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1))
-		this.setState({ data, order, orderBy })
+		this.props.handleRequestSort(event, property)
 	}
 
 	handleSelectAllPage = (event, checked) => {
@@ -190,8 +174,8 @@ class UserTable extends React.Component {
 	}
 
 	render() {
-		const { classes, t } = this.props
-		const { order, orderBy, selected, rowsPerPage, page, data } = this.state
+		const { order, orderBy, data, classes, t } = this.props
+		const {  selected, rowsPerPage, page } = this.state
 		let emptyRows;
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)

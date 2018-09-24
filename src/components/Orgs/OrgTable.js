@@ -23,20 +23,16 @@ class OrgTable extends React.Component {
 		super(props);
 
 		this.state = {
-			order: 'desc',
-			orderBy: 'name',
 			selected: [],
 			page: 0,
 			rowsPerPage: props.rowsPerPage,
 			anchorElMenu: null,
 			anchorFilterMenu: null,
 			openSnackbar: 0,
-			openDelete: false
+			openDelete: false,
 		}
 	}
-	componentDidMount = () => {
-		this.handleRequestSort(null, "name")
-	}
+
 	snackBarMessages = () => {
 		let msg = this.state.openSnackbar
 		const { t } = this.props
@@ -60,26 +56,21 @@ class OrgTable extends React.Component {
 		this.setState({ anchorElMenu: null })
 	}
 
-	handleSearch = value => {
-		this.setState({
-			searchFilter: value
-		})
-	}
-
 	handleRequestSort = (event, property) => {
-		const orderBy = property;
-		let order = 'desc';
+		this.props.handleRequestSort(event, property)
+		// const orderBy = property;
+		// let order = 'desc';
 
-		if (this.state.orderBy === property && this.state.order === 'desc') {
-			order = 'asc';
-		}
+		// if (this.state.orderBy === property && this.state.order === 'desc') {
+		// 	order = 'asc';
+		// }
 
-		const data =
-			order === 'desc'
-				? this.props.data.sort((a, b) => (b[ orderBy ] < a[ orderBy ] ? -1 : 1))
-				: this.props.data.sort((a, b) => (a[ orderBy ] < b[ orderBy ] ? -1 : 1))
+		// const data =
+		// 	order === 'desc'
+		// 		? this.props.data.sort((a, b) => (b[ orderBy ] < a[ orderBy ] ? -1 : 1))
+		// 		: this.props.data.sort((a, b) => (a[ orderBy ] < b[ orderBy ] ? -1 : 1))
 
-		this.setState({ data, order, orderBy })
+		// this.setState({ data, order, orderBy })
 	}
 
 	handleSelectAllPage = (event, checked) => {
@@ -220,8 +211,8 @@ class OrgTable extends React.Component {
 
 
 	render () {
-		const { classes, t } = this.props
-		const { order, orderBy, data, selected, rowsPerPage, page } = this.state
+		const { classes, t, order, orderBy, data  } = this.props
+		const {  selected, rowsPerPage, page } = this.state
 		let emptyRows;
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)

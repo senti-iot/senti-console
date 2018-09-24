@@ -18,6 +18,8 @@ class Users extends Component {
 			userHeader: [],
 			loading: true,
 			route: 0,
+			order: "desc",
+			orderBy: "firstName",
 			filters: {
 				keyword: '',
 				startDate: null,
@@ -47,7 +49,21 @@ class Users extends Component {
 	filterItems = (data) => {
 		return filterItems(data, this.state.filters)
 	}
+	handleRequestSort = (event, property) => {
+		const orderBy = property;
+		let order = 'desc';
 
+		if (this.state.orderBy === property && this.state.order === 'desc') {
+			order = 'asc';
+		}
+
+		const users =
+			order === 'desc'
+				? this.state.users.sort((a, b) => (b[ orderBy ] < a[ orderBy ] ? -1 : 1))
+				: this.state.users.sort((a, b) => (a[ orderBy ] < b[ orderBy ] ? -1 : 1))
+
+		this.setState({ users, order, orderBy })
+	}
 	handleFilterStartDate = (value) => {
 		this.setState({
 			filters: {
@@ -85,23 +101,13 @@ class Users extends Component {
 				userHeader: [
 					{ id: "avatar", label: "" },
 					{ id: "firstName", label: t("users.fields.name") },
-					// { id: "firstName", label: t("users.fields.firstName") },
-					// { id: "lastName", label: t("users.fields.lastName") },
 					{ id: "phone", label: t("users.fields.phone") },
 					{ id: "email", label: t("users.fields.email") },
 					{ id: "org", label: t("users.fields.organisation") },
 					{ id: "lastSignIng", label: t("users.fields.lastSignIn") }
-				],
-				orgsHeader: [
-					{ id: "name", label: t("orgs.fields.name") },
-					{ id: "address", label: t("orgs.fields.address") },
-					{ id: "city", label: t("orgs.fields.city") },
-					// { id: "country", label: t("orgs.fields.country") },
-					{ id: "url", label: t("orgs.fields.url") },
-					// { id: "org", label: t("orgs.fields.org") }
-				],
+				], 
 				loading: false
-			})
+			}, () => this.handleRequestSort(null, "firstName"))
 		}
 	}
 
@@ -114,15 +120,18 @@ class Users extends Component {
 	}
 	renderUsers = () => {
 		const { t } = this.props
-		const { loading } = this.state
+		const { loading, order, orderBy, filters, userHeader } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <UserTable
 				data={this.filterItems(this.state.users)}
-				tableHead={this.state.userHeader}
+				tableHead={userHeader}
 				handleFilterEndDate={this.handleFilterEndDate}
 				handleFilterKeyword={this.handleFilterKeyword}
-				handleFilterStartDate={this.handleFilterStartDate}
-				filters={this.state.filters}
+				handleFilterStartDate={ this.handleFilterStartDate }
+				handleRequestSort={ this.handleRequestSort }
+				order={order}
+				orderBy={ orderBy}
+				filters={filters}
 				t={t}
 			/>}
 		</GridContainer>

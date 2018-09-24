@@ -22,6 +22,8 @@ class Devices extends Component {
 			deviceHeaders: [],
 			loading: true,
 			route: 0,
+			order: 'desc',
+			orderBy: 'id',
 			filters: {
 				keyword: '',
 				startDate: null,
@@ -62,7 +64,21 @@ class Devices extends Component {
 			}
 		})
 	}
+	handleRequestSort = (event, property) => {
+		const orderBy = property;
+		let order = 'desc';
 
+		if (this.state.orderBy === property && this.state.order === 'desc') {
+			order = 'asc';
+		}
+
+		const devices =
+			order === 'desc'
+				? this.state.devices.sort((a, b) => (b[ orderBy ] < a[ orderBy ] ? -1 : 1))
+				: this.state.devices.sort((a, b) => (a[ orderBy ] < b[ orderBy ] ? -1 : 1))
+
+		this.setState({ devices, order, orderBy })
+	}
 	getDevices = async () => {
 		const { t } = this.props
 		await getAllDevices().then(rs => this._isMounted ? this.setState({
@@ -76,7 +92,7 @@ class Devices extends Component {
 				{ id: "project", label: t("devices.fields.availability") }
 			],
 			loading: false
-		}) : null)
+		}, () => this.handleRequestSort(null, "id")) : null)
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
@@ -124,33 +140,36 @@ class Devices extends Component {
 		return <CircularLoader />
 	}
 	renderList = () => {
-		const { loading } = this.state
-		return loading ? this.renderLoader() : <GridContainer container justify={'center'} /* className={classes.grid} */>
+		const { loading, order, orderBy } = this.state
+		return loading ? this.renderLoader() : <GridContainer container justify={ 'center' } /* className={classes.grid} */>
 			<DeviceTable
-				t={this.props.t}
-				data={this.filterItems(this.state.devices)}
-				tableHead={this.state.deviceHeader}
-				handleFilterEndDate={this.handleFilterEndDate}
-				handleFilterKeyword={this.handleFilterKeyword}
-				handleFilterStartDate={this.handleFilterStartDate}
-				filters={this.state.filters}
+				t={ this.props.t }
+				data={ this.filterItems(this.state.devices) }
+				tableHead={ this.state.deviceHeader }
+				handleFilterEndDate={ this.handleFilterEndDate }
+				handleFilterKeyword={ this.handleFilterKeyword }
+				handleRequestSort={ this.handleRequestSort }
+				handleFilterStartDate={ this.handleFilterStartDate }
+				filters={ this.state.filters }
+				order={ order }
+				orderBy={ orderBy }
 			/>
 		</GridContainer>
 	}
 	renderCards = () => {
 		const { loading } = this.state
-		return loading ? this.renderLoader() : <GridContainer container justify={'center'}>
-			{this.filterItems(this.state.devices).map(d => {
-				return <DeviceCard t={this.props.t} d={d} />
-			})}
+		return loading ? this.renderLoader() : <GridContainer container justify={ 'center' }>
+			{ this.filterItems(this.state.devices).map(d => {
+				return <DeviceCard t={ this.props.t } d={ d } />
+			}) }
 		</GridContainer>
 	}
 	renderMap = () => {
 		const { devices, loading } = this.state
 		const { classes } = this.props
-		return loading ? <CircularLoader /> : <GridContainer container justify={'center'} >
-			<Paper className={classes.paper}>
-				<Maps t={this.props.t} isMarkerShown centerDenmark markers={this.filterItems(devices)} /* zoom={10} */ />
+		return loading ? <CircularLoader /> : <GridContainer container justify={ 'center' } >
+			<Paper className={ classes.paper }>
+				<Maps t={ this.props.t } isMarkerShown centerDenmark markers={ this.filterItems(devices) } /* zoom={10} */ />
 			</Paper>
 		</GridContainer>
 	}
@@ -159,23 +178,23 @@ class Devices extends Component {
 		{ id: 1, title: this.props.t("devices.tabs.mapView"), label: <Map />, url: `${this.props.match.path}/map` },
 		{ id: 2, title: this.props.t("devices.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.path}/grid` },
 	]
-	render() {
+	render () {
 		const { devices, filters } = this.state
 		return (
 			<Fragment>
 				<Toolbar
-					data={devices}
-					filters={filters}
-					history={this.props.history}
-					match={this.props.match}
-					handleFilterKeyword={this.handleFilterKeyword}
-					tabs={this.tabs}
+					data={ devices }
+					filters={ filters }
+					history={ this.props.history }
+					match={ this.props.match }
+					handleFilterKeyword={ this.handleFilterKeyword }
+					tabs={ this.tabs }
 				/>
 				<Switch>
-					<Route path={`${this.props.match.path}/map`} render={() => this.renderMap()} />
-					<Route path={`${this.props.match.path}/list`} render={() => this.renderList()} />
-					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} />
-					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
+					<Route path={ `${this.props.match.path}/map` } render={ () => this.renderMap() } />
+					<Route path={ `${this.props.match.path}/list` } render={ () => this.renderList() } />
+					<Route path={ `${this.props.match.path}/grid` } render={ () => this.renderCards() } />
+					<Redirect path={ `${this.props.match.path}` } to={ `${this.props.match.path}/list` } />
 				</Switch>
 			</Fragment>
 		)

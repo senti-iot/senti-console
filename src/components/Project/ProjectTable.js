@@ -24,8 +24,6 @@ class EnhancedTable extends React.Component {
 		super(props);
 
 		this.state = {
-			order: 'desc',
-			orderBy: 'title',
 			selected: [],
 			page: 0,
 			rowsPerPage: props.rowsPerPage,
@@ -34,9 +32,6 @@ class EnhancedTable extends React.Component {
 			openSnackbar: 0,
 			openDelete: false
 		}
-	}
-	componentDidMount = () => {
-	  this.handleRequestSort(null, "title")
 	}
 	
 	snackBarMessages = () => { 
@@ -82,19 +77,7 @@ class EnhancedTable extends React.Component {
 	}
 
 	handleRequestSort = (event, property) => {
-		const orderBy = property;
-		let order = 'desc';
-
-		if (this.state.orderBy === property && this.state.order === 'desc') {
-			order = 'asc';
-		}
-
-		const data =
-			order === 'desc'
-				? this.props.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
-				: this.props.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1))
-
-		this.setState({ data, order, orderBy })
+		this.props.handleRequestSort(event, property)
 	}
 
 	handleSelectAllPage = (event, checked) => {
@@ -238,8 +221,8 @@ class EnhancedTable extends React.Component {
 		</Fragment>
 	}
 	render() {
-		const { classes, t } = this.props
-		const { order, data, orderBy, selected, rowsPerPage, page } = this.state
+		const { classes, t, order, data, orderBy } = this.props
+		const {  selected, rowsPerPage, page } = this.state
 		let emptyRows;
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
