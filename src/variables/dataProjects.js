@@ -13,7 +13,6 @@ export const createProject = async (project) => {
 	return data
 }
 export const updateProject = async (project) => {
-	// console.log(data)
 	var data = await api.put(`senti/project/${project.id}`, project).then(response => response)
 	return data.data
 }

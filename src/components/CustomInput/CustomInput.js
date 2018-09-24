@@ -18,7 +18,6 @@ function CustomInput({ ...props }) {
 		success,
 		autoFocus,
 	} = props;
-	console.log(props)
 	const labelClasses = cx({
 		[" " + classes.labelRootError]: error,
 		[" " + classes.labelRootSuccess]: success && !error

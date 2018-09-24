@@ -1,8 +1,9 @@
-import { getSettingsFromServer, saveSettingsOnServer } from 'variables/dataLogin';
+// import { getSettingsFromServer, saveSettingsOnServer } from 'variables/dataLogin';
 import cookie from 'react-cookies';
 import { getUser } from '../variables/dataUsers'
 // import moment from 'moment'
 import 'moment/locale/da'
+import { saveSettings } from '../variables/dataLogin';
 var moment = require("moment")
 // import 'moment/locale/da'
 
@@ -22,6 +23,7 @@ const SAVED = "SAVED_SETTINGS"
 
 export const saveSettingsOnServ = () => {
 	return async (dispatch, getState) => {
+		let user = getState().settings.user
 		let s = getState().settings
 		let settings = {
 			language: s.language,
@@ -35,7 +37,9 @@ export const saveSettingsOnServ = () => {
 			alerts: s.alerts,
 			didKnow: s.didKnow
 		}
-		var saved = await saveSettingsOnServer(settings);
+		user.aux = {}
+		user.aux.settings = settings
+		var saved = await saveSettings(user);
 		dispatch({
 			type: SAVESETTINGS,
 			saved
@@ -45,21 +49,23 @@ export const saveSettingsOnServ = () => {
 export const getSettings = async () => {
 	return async dispatch => {
 		var userId = cookie.load('SESSION') ? cookie.load('SESSION').userID : 0
-		var settings = userId > 0 ? await getSettingsFromServer() : null
+		// var settings = userId > 0 ? await getSettingsFromServer() : null
 		var user = userId !== 0 ? await getUser(userId) : {}
 		moment.updateLocale("en", {
 			week: {
 				dow: 1
 			}
 		})
-		if (settings) {
-			moment.locale(settings.language)
-			dispatch({
-				type: GETSETTINGS,
-				settings,
-				user
-			})
-			return true
+		if (user.aux) {
+			if (user.aux.settings) {	
+				moment.locale(user.aux.settings.language)
+				dispatch({
+					type: GETSETTINGS,
+					settings: user.aux.settings,
+					user
+				})
+				return true
+			}
 		}
 		else {
 			moment.locale("da")
