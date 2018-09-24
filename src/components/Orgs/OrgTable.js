@@ -14,7 +14,7 @@ import EnhancedTableToolbar from 'components/Table/TableToolbar'
 import { ItemGrid, Info, ItemG, Caption } from ".."
 import { connect } from "react-redux"
 import { boxShadow } from 'assets/jss/material-dashboard-react';
-import TP from 'components/Table/TablePagination'
+import TP from 'components/Table/TP'
 
 var countries = require("i18n-iso-countries")
 
