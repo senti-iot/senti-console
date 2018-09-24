@@ -228,19 +228,6 @@ class CreateOrg extends Component {
 							<ItemGrid container xs={12} md={6}>
 								<TextF
 
-									id={"city"}
-									label={t("orgs.fields.city")}
-									value={org.city}
-									className={classes.textField}
-									handleChange={this.handleChange("city")}
-									margin="normal"
-									noFullWidth
-									error={error}
-								/>
-							</ItemGrid>
-							<ItemGrid container xs={12} md={6}>
-								<TextF
-
 									id={"zip"}
 									label={t("orgs.fields.zip")}
 									value={org.zip}
@@ -251,6 +238,19 @@ class CreateOrg extends Component {
 									error={error}
 									type={"number"}
 									pattern="[0-9]*"
+								/>
+							</ItemGrid>
+							<ItemGrid container xs={12} md={6}>
+								<TextF
+
+									id={"city"}
+									label={t("orgs.fields.city")}
+									value={org.city}
+									className={classes.textField}
+									handleChange={this.handleChange("city")}
+									margin="normal"
+									noFullWidth
+									error={error}
 								/>
 							</ItemGrid>
 							
