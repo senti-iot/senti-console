@@ -5,14 +5,11 @@ import { pF } from 'variables/functions';
 import { Person } from '@material-ui/icons'
 import { NavLink } from 'react-router-dom'
 import Gravatar from 'react-gravatar'
-export class UserContact extends Component {
+import { connect } from 'react-redux'
+class UserContact extends Component {
 
 	renderUserGroup = () => {
-		/* 	"groups": {
-			"136550100000143": "Superbruger",
-			"136550100000211": "Kontoansvarlig",
-			"136550100000225": "Bruger"
-		}, */
+
 		const { t, user } = this.props
 		if (user.groups[136550100000143])
 			return t("users.groups.136550100000143")
@@ -22,10 +19,8 @@ export class UserContact extends Component {
 			return t("users.groups.136550100000225")
 	}
 	render() {
-		const { t, user, classes } = this.props
+		const { t, user, classes,  } = this.props
 		return (
-
-
 			<InfoCard
 				// title={t('users.headers.contact')}
 				title={`${user.firstName} ${user.lastName}`}
@@ -65,14 +60,11 @@ export class UserContact extends Component {
 							</ItemGrid>
 							<ItemGrid>
 								<Caption>{t("users.fields.language")}</Caption>
-								{/* <Info>{user.settings.language}</Info> */}
+								<Info>{ user.aux.odeum.language === 'en' ? t("settings.languages.en") : user.aux.odeum.language === "da" ? t("settings.languages.da") : ""}</Info>
 							</ItemGrid>
 							<ItemGrid>
 								<Caption>{t("users.fields.accessLevel")}</Caption>
 								<Info>{this.renderUserGroup()}</Info>
-								{/* <Info>{user.accessLevel}</Info>
-								{user.groups ? Object.keys(user.groups).map((k, i) => k > 0 ? <Chip key={i} color={"primary"} label={t(`users.groups.${k}`)} className={classes.chip} /> : null
-								) : null} */}
 							</ItemGrid>
 						</ItemGrid>
 						<Hidden mdDown>
@@ -89,5 +81,12 @@ export class UserContact extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	language: state.settings.language
+})
 
-export default UserContact
+const mapDispatchToProps = {
+  
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserContact)

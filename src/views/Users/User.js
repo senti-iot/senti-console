@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { GridContainer, ItemGrid, CircularLoader } from 'components';
-import { UserContact } from './UserCards/UserContact';
+import UserContact from './UserCards/UserContact';
 import { UserLog } from './UserCards/UserLog';
 import { userStyles } from 'assets/jss/components/users/userStyles';
 import { withStyles/* , Typography, Grid, Hidden */ } from '@material-ui/core';

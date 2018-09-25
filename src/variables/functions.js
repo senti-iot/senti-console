@@ -27,7 +27,6 @@ const filterByDate = (items, filters) => {
 
 export const filterItems = (data, filters) => {
 	const { activeDateFilter, keyword } = filters
-	console.log(activeDateFilter, keyword)
 	var arr = data
 	if (activeDateFilter)
 		arr = filterByDate(arr, filters)
@@ -46,7 +45,6 @@ export const filterItems = (data, filters) => {
 	}
 }
 export const keyTester = (obj, sstr) => {
-	console.log(obj, sstr)
 	let searchStr = sstr.toLowerCase()
 	let found = false
 	if (isObject(obj)) {
