@@ -51,8 +51,8 @@ export const saveSettingsOnServ = () => {
 export const getSettings = async () => {
 	return async (dispatch, getState) => {
 		var userId = cookie.load('SESSION') ? cookie.load('SESSION').userID : 0
-		var user = userId !== 0 ? await getUser(userId) : {}
-		var settings = user.aux ? user.aux.senti ? user.aux.senti.settings ? user.aux.senti.settings : null : null : null
+		var user = userId !== 0 ? await getUser(userId) : null
+		var settings = user ? user.aux ? user.aux.senti ? user.aux.senti.settings ? user.aux.senti.settings : null : null : null : null
 		moment.updateLocale("en", {
 			week: {
 				dow: 1
