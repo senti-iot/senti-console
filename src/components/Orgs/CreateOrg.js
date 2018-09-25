@@ -205,7 +205,7 @@ class CreateOrg extends Component {
 				color={ "primary" }
 				value={ selectedOrg !== null ? selectedOrg : "" }
 				onChange={ this.handleOrgChange }
-				// input={ <Input id="select-single" /> }
+				renderValue={ value => value.name }
 			>
 				{/* { accessLevel.apisuperuser ? <MenuItem key={ 99 } value={ noOrg }>{ t("orgs.fields.topLevelOrg") }</MenuItem> : null } */}
 				
