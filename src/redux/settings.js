@@ -20,13 +20,13 @@ const GETSETTINGS = "GET_SETTINGS"
 const SAVESETTINGS = "SAVE_SETTINGS"
 const changeLangAction = "LANG"
 const SAVED = "SAVED_SETTINGS"
+const NOSETTINGS = "NO_SETTINGS"
 
 export const saveSettingsOnServ = () => {
 	return async (dispatch, getState) => {
 		let user = getState().settings.user
 		let s = getState().settings
 		let settings = {
-			language: s.language,
 			calibration: s.calibration,
 			calNotifications: s.calNotifications,
 			count: s.count,
@@ -40,6 +40,7 @@ export const saveSettingsOnServ = () => {
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
 		user.aux.senti.settings = settings
+		user.aux.odeum.language = s.language
 		var saved = await saveSettings(user);
 		dispatch({
 			type: SAVESETTINGS,
@@ -48,7 +49,7 @@ export const saveSettingsOnServ = () => {
 	}
 }
 export const getSettings = async () => {
-	return async dispatch => {
+	return async (dispatch, getState) => {
 		var userId = cookie.load('SESSION') ? cookie.load('SESSION').userID : 0
 		var user = userId !== 0 ? await getUser(userId) : {}
 		var settings = user.aux ? user.aux.senti ? user.aux.senti.settings ? user.aux.senti.settings : null : null : null
@@ -59,22 +60,31 @@ export const getSettings = async () => {
 		})
 		if (settings)
 		{
-			console.log(settings)
 			moment.locale(user.aux.senti.settings.language)
 			dispatch({
 				type: GETSETTINGS,
-				settings: user.aux.senti.settings,
+				settings: {
+					...user.aux.senti.settings,
+					language: user.aux.odeum.language
+				},
 				user
 			})
 			return true
 		}
 		else {
+			console.log(user.aux.odeum.language)
+			moment.locale(user.aux.odeum.language)
+			let s = {
+				...getState().settings,
+				language: user.aux.odeum.language
+			}
 
-			moment.locale("da")
+			console.log(s)
 			dispatch({
-				type: "NOSETTINGS",
+				type: NOSETTINGS,
 				loading: false,
-				user
+				user,
+				settings: s
 			})
 			return false
 		}
@@ -192,9 +202,9 @@ export const settings = (state = initialState, action) => {
 			return Object.assign({}, state, { saved: action.saved })
 		case DISCSENT:
 			return Object.assign({}, state, { discSentiVal: action.val })
-		case "NOSETTINGS":
+		case NOSETTINGS:
 		{	
-			return Object.assign({}, state, { loading: false, user: action.user })}
+			return Object.assign({}, state, { ...action.settings, loading: false, user: action.user })}
 		case GETSETTINGS:
 		{	
 			return Object.assign({}, state, { ...action.settings, user: action.user, loading: false })}

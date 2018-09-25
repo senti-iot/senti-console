@@ -8,7 +8,7 @@ var forEach = require('for-each');
 
 const changeLangAction = "LANG"
 const GETSETTINGS = "GET_SETTINGS"
-
+const NOSETTINGS = "NO_SETTINGS"
 //Actions
 export const changeLanguage = (code) => {
 	return async (dispatch, getState) => {
@@ -41,6 +41,11 @@ const initialState = {
 }
 export const localization = (state = initialState, action) => {
 	switch (action.type) {
+		case NOSETTINGS:
+			return Object.assign({}, state, {
+				language: action.settings.language,
+				s: extend(loc[action.settings.language])
+			})
 		case GETSETTINGS: 
 			return Object.assign({}, state, {
 				language: action.settings.language,

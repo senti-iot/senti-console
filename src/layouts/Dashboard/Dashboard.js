@@ -27,7 +27,8 @@ class App extends React.Component {
 			mobileOpen: false,
 			headerTitle: '',
 			goBackButton: false,
-			url: ''
+			url: '',
+			menuRouteId: 0
 		}
 		// this.mainPanel = React.createRef()
 	}
@@ -35,13 +36,14 @@ class App extends React.Component {
 	handleDrawerToggle = () => {
 		this.setState({ mobileOpen: !this.state.mobileOpen });
 	};
-	handleSetHeaderTitle = (title, goBackButton, url) => {
+	handleSetHeaderTitle = (headerTitle, goBackButton, url, menuRouteId) => {
 		if (this._isMounted)
-			if (title !== this.state.headerTitle)
+			if (headerTitle !== this.state.headerTitle)
 				this.setState({
-					headerTitle: title,
-					goBackButton: goBackButton,
-					url: url
+					headerTitle,
+					goBackButton,
+					url, 
+					menuRouteId
 				})
 	};
 	handleGoBackButton = () => {
@@ -75,6 +77,7 @@ class App extends React.Component {
 	render() {
 		const { classes, t, loading, ...rest } = this.props;
 		// const { loading } = this.state
+		console.log(rest)
 		return (
 			!loading ?
 				<div className={classes.wrapper}>
