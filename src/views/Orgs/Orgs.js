@@ -26,7 +26,7 @@ class Orgs extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader(props.t("orgs.pageTitle"), false)
+		props.setHeader(props.t("orgs.pageTitle"), false, '', "users")
 	}
 
 	componentDidMount = async () => {

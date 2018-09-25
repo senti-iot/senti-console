@@ -4,7 +4,7 @@ import projectStyles from 'assets/jss/views/projects';
 import UserTable from 'components/User/UserTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
-import { getAllUsers, getAllOrgs } from 'variables/dataUsers';
+import { getAllUsers } from 'variables/dataUsers';
 import Toolbar from 'components/Toolbar/Toolbar'
 import { People, Business } from '@material-ui/icons';
 import { filterItems } from '../../variables/functions';
@@ -27,7 +27,7 @@ class Users extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader(props.t("users.pageTitle"), false)
+		props.setHeader(props.t("users.pageTitle"), false, '', 'users')
 	}
 
 	componentDidMount = async () => {
@@ -93,11 +93,9 @@ class Users extends Component {
 	getData = async () => {
 		const { t } = this.props
 		let users = await getAllUsers().then(rs => rs)
-		let orgs = await getAllOrgs().then(rs => rs)
 		if (this._isMounted) {
 			this.setState({
 				users: users ? users : [],
-				orgs: orgs ? orgs : [],
 				userHeader: [
 					{ id: "avatar", label: "" },
 					{ id: "firstName", label: t("users.fields.name") },

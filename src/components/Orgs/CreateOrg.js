@@ -52,7 +52,7 @@ class CreateOrg extends Component {
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
-		this.props.setHeader(this.props.t("orgs.createOrg"), true, `/orgs`)
+		this.props.setHeader(this.props.t("orgs.createOrg"), true, `/orgs`, "users")
 	}
 
 

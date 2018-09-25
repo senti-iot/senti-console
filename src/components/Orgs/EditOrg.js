@@ -103,7 +103,7 @@ class EditOrg extends Component {
 		this.setState({
 			loading: false
 		})
-		this.props.setHeader(this.props.t("orgs.updateOrg"), true, `/org/${id}`)
+		this.props.setHeader(this.props.t("orgs.updateOrg"), true, `/org/${id}`, "users")
 	}
 
 	componentWillUnmount = () => {

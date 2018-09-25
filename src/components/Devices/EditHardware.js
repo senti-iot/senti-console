@@ -14,7 +14,7 @@ class EditDetails extends Component {
 			updating: false,
 			updated: false
 		}
-		props.setHeader(props.t("devices.editHardwareTitle", { deviceId: props.match.params.id }), true, '/devices/list')
+		props.setHeader(props.t("devices.editHardwareTitle", { deviceId: props.match.params.id }), true, '/devices/list', "devices")
 	}
 	componentDidMount = async () => {
 		let id = this.props.match.params.id

@@ -102,7 +102,7 @@ class EditProject extends Component {
 		this.setState({
 			loading: false
 		})
-		this.props.setHeader(this.props.t("projects.updateProject"), true, `/project/${id}`)
+		this.props.setHeader(this.props.t("projects.updateProject"), true, `/project/${id}`, "projects")
 	}
 
 	componentWillUnmount = () => {

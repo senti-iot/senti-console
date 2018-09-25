@@ -21,62 +21,72 @@ const dashboardRoutes = [
 		sidebarName: "sidebar.dashboard", //Replace with translation.id
 		navbarName: "Senti Dashboard",
 		icon: Dashboard,
-		component: DashboardPage
+		component: DashboardPage,
+		menuRoute: "dashboard"
 	},
 	{
 		path: "/project/:id",
 		component: ProjectRouting,
-		hideFromSideBar: true
+		hideFromSideBar: true,
+		menuRoute: "projects"
 	},
 	{
 		path: "/projects",
 		sidebarName: "sidebar.projects",
 		icon: LibraryBooks,
-		component: Projects
+		component: Projects,
+		menuRoute: "projects"
 	},
 	{
 		path: "/device/:id",
 		component: DeviceRouting,
-		hideFromSideBar: true
+		hideFromSideBar: true,
+		menuRoute: "devices"
 	},
 	{
 		path: "/devices",
 		sidebarName: "sidebar.devices",
 		icon: DeviceIco,
-		component: Devices
+		component: Devices,
+		menuRoute: "devices"
 	},
 	{
 		path: "/users",
 		sidebarName: "sidebar.users",
 		icon: People,
-		component: Users
+		component: Users,
+		menuRoute: "users"
 	},
 	{
 		path: "/user/:id",
 		component: UserRouting,
-		hideFromSideBar: true
+		hideFromSideBar: true,
+		menuRoute: "users"
 	},
 	{
 		path: "/orgs",
 		component: Orgs,
-		hideFromSideBar: true
+		hideFromSideBar: true,
+		menuRoute: "users"
 	},
 	{
 		path: "/org/:id",
 		component: OrgRouting,
-		hideFromSideBar: true
+		hideFromSideBar: true,
+		menuRoute: "users"
 	},
 	{
 		path: "/settings",
 		sidebarName: "sidebar.settings",
 		icon: SettingsRounded,
-		component: Settings
+		component: Settings,
+		menuRoute: "settings"
 	},
 	{
 		path: "/404",
 		sidebarName: "Error",
 		component: NotFound,
-		hideFromSideBar: true
+		hideFromSideBar: true,
 	},
 	{
 		path: "*",

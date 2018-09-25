@@ -29,7 +29,7 @@ class Projects extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader(props.t("projects.pageTitle"), false)
+		props.setHeader(props.t("projects.pageTitle"), false, '', "projects")
 	}
 
 	componentDidMount = async () => {

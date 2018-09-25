@@ -30,7 +30,7 @@ class Org extends Component {
 					if (rs === null)
 						this.props.history.push('/404')
 					else {
-						this.props.setHeader(`${rs.name}`, true, '/orgs')
+						this.props.setHeader(`${rs.name}`, true, '/orgs', "users")
 						this.setState({ org: rs, loading: false })
 					}
 				}))

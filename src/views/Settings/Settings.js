@@ -22,7 +22,7 @@ class Settings extends Component {
 	  this.state = {
 		 
 		}
-		props.setHeader(props.t("settings.pageTitle"), false)
+		props.setHeader(props.t("settings.pageTitle"), false, '', "settings")
 	}
 	
 

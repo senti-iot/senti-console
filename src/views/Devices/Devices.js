@@ -31,7 +31,7 @@ class Devices extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader(props.t("devices.pageTitle"), false)
+		props.setHeader(props.t("devices.pageTitle"), false, '', "devices")
 	}
 
 	filterItems = (data) => {

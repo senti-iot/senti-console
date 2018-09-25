@@ -1,8 +1,6 @@
 import { api, setToken } from "./data";
 
 export const getOrgs = async () => {
-	// var OAToken = cookie.load('loginData').sessionID
-	// api.setHeader('ODEUMAuthToken', OAToken)
 	var orgs = await api.get('core/orgs').then(rs => rs.data)
 	return orgs
 }

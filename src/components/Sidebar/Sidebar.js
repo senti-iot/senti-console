@@ -20,7 +20,7 @@ const Sidebar = ({ ...props }) => {
 	// verifies if routeName is the one active (in browser input)
 	function activeRoute (routeName) {
 		// console.log(routeName, props.location.pathname.indexOf(routeName))
-		return props.location.pathname.indexOf(routeName) > -1 ? true : false;
+		return props.menuRoute === routeName ? true : false;
 	}
 	// function strip(route) {
 	// 	let newRoute = route.substring(0, route.indexOf(':'))
@@ -32,11 +32,12 @@ const Sidebar = ({ ...props }) => {
 			{routes.map((prop, key) => {
 				if (prop.redirect) return null;
 				if (prop.hideFromSideBar) return null;
+
 				const listItemClasses = cx({
-					[" " + classes[color]]: activeRoute(prop.path)
+					[" " + classes[color]]: activeRoute(prop.menuRoute)
 				});
 				const whiteFontClasses = cx({
-					[" " + classes.whiteFont]: activeRoute(prop.path)
+					[" " + classes.whiteFont]: activeRoute(prop.menuRoute)
 				});
 				return (
 					<NavLink

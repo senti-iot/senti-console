@@ -28,7 +28,7 @@ class App extends React.Component {
 			headerTitle: '',
 			goBackButton: false,
 			url: '',
-			menuRouteId: 0
+			menuRoute: 0
 		}
 		// this.mainPanel = React.createRef()
 	}
@@ -36,14 +36,14 @@ class App extends React.Component {
 	handleDrawerToggle = () => {
 		this.setState({ mobileOpen: !this.state.mobileOpen });
 	};
-	handleSetHeaderTitle = (headerTitle, goBackButton, url, menuRouteId) => {
+	handleSetHeaderTitle = (headerTitle, goBackButton, url, menuRoute) => {
 		if (this._isMounted)
 			if (headerTitle !== this.state.headerTitle)
 				this.setState({
 					headerTitle,
 					goBackButton,
 					url, 
-					menuRouteId
+					menuRoute
 				})
 	};
 	handleGoBackButton = () => {
@@ -98,7 +98,8 @@ class App extends React.Component {
 							handleDrawerToggle={this.handleDrawerToggle}
 							open={this.state.mobileOpen}
 							color="senti"
-							t={t}
+							t={ t }
+							menuRoute={ this.state.menuRoute }
 							{...rest}
 						/>
 						<div className={classes.content}>

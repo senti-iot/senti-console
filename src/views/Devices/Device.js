@@ -29,7 +29,7 @@ class Device extends Component {
 			openSnackbar: 0,
 			img: null
 		}
-		props.setHeader('')
+		props.setHeader('', true, `/devices/list`, "devices")
 	}
 
 	getDevice = async (id) => {
@@ -38,7 +38,7 @@ class Device extends Component {
 				this.props.history.push('/404')
 			else {
 				this.setState({ device: rs, loading: false })
-				this.props.setHeader(rs.name ? rs.name : rs.id, true, `/devices/list`) 
+				this.props.setHeader(rs.name ? rs.name : rs.id, true, `/devices/list`, "devices") 
 					
 			}
 		})
