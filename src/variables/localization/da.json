@@ -283,6 +283,10 @@
 		"updateOrg": "Rediger",
 		"createOrg": "Opret organisation",
 		"create": "Opret",
+		"orgDelete": "Slet organisation?",
+		"orgDeleteConfirm": "Er du sikker på du ønsker at slette %{org}",
+		"orgsDelete":"Slet organisationer",
+		"orgsDeleteConfirm": "Er du sikker på du ønsker at slette organisationer",
 		"fields": {
 			"address": "Adresse",
 			"city": "By",
@@ -428,7 +432,8 @@
 		"updatedSuccess": "Opdateret!",
 		"updating": "Opdaterer ...",
 		"orgUpdated": "Organisation %{org} er succesfuldt opdateret!",
-		"orgCreated": "Organisation %{org} er succesfuld opretted!"
+		"orgCreated": "Organisation %{org} er succesfuldt opretted!",
+		"orgDeleted": "Organisation er succefuld slettet!"
 	},
 	"tables": {
 		"addNewDevice": "Tilføj ny enhed",

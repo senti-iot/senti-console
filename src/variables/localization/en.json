@@ -283,6 +283,10 @@
 		"updateOrg": "Edit",
 		"createOrg": "Create organisation",
 		"create": "Create",
+		"orgDelete": "Delete organisation?",
+		"orgDeleteConfirm": "Are you sure you want to delete organisation %{org}",
+		"orgsDelete": "Delete organisations",
+		"orgsDeleteConfirm": "Are you sure you want to delete the following organisation",
 		"fields": {
 			"address": "Address",
 			"city": "City",
@@ -428,7 +432,8 @@
 		"updatedSuccess": "Updated!",
 		"updating": "Updating...",
 		"orgUpdated": "Organisation %{org} has been successfully updated!",
-		"orgCreated": "Organisation %{org} has been successfully created!"
+		"orgCreated": "Organisation %{org} has been successfully created!",
+		"orgDeleted": "Organisation has been successfully deleted!"
 	},
 	"tables": {
 		"addNewDevice": "Add new device",

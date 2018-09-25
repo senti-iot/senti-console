@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info } from 'components';
 import { Grid, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { Business, MoreVert, Edit, /* Delete */ } from '@material-ui/icons'
+import { Business, MoreVert, Edit, Delete } from '@material-ui/icons'
 var countries = require("i18n-iso-countries")
 
 class OrgDetails extends Component {
@@ -19,8 +19,11 @@ class OrgDetails extends Component {
     handleCloseActionsDetails = () => {
     	this.setState({ actionAnchor: null });
     }
-
-    render() {
+	deleteOrg = () => {
+		this.handleCloseActionsDetails()
+		this.props.deleteOrg()
+	}
+	render() {
     	const { actionAnchor } = this.state
     	const { t, org, classes } = this.props
     	return (
@@ -48,9 +51,9 @@ class OrgDetails extends Component {
     					<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
     						<Edit className={classes.leftIcon} />{t("menus.editOrg")}
     					</MenuItem>
-    					{/* <MenuItem onClick={this.deleteProject}>
+    					<MenuItem onClick={this.deleteOrg}>
     						<Delete className={classes.leftIcon} />{t("menus.deleteOrg")}
-    					</MenuItem> */}
+    					</MenuItem>
 						))}
     				</Menu>
     			</ItemGrid>}
@@ -139,7 +142,7 @@ class OrgDetails extends Component {
     			}
     		/>
     	)
-    }
+	}
 }
 
 export default OrgDetails

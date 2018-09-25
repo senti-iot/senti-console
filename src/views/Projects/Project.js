@@ -112,8 +112,6 @@ class Project extends Component {
 		}
 		else
 			this.setState({ openSnackbar: 0 })
-
-
 	}
 
 	filterItems = (projects, keyword) => {

@@ -28,7 +28,10 @@ class Orgs extends Component {
 		}
 		props.setHeader(props.t("orgs.pageTitle"), false, '', "users")
 	}
-
+	reload = async () => {
+		this.setState({ loading: true })
+		await this.getData()
+	}
 	componentDidMount = async () => {
 		this._isMounted = 1
 		await this.getData()
@@ -44,14 +47,16 @@ class Orgs extends Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-	handleRequestSort = (event, property) => {
+	handleRequestSort = (event, property, way) => {
 		const orderBy = property;
 		let order = 'desc';
 
 		if (this.state.orderBy === property && this.state.order === 'desc') {
 			order = 'asc';
 		}
-
+		if (way) { 
+			order = way
+		}
 		const orgs =
 			order === 'desc'
 				? this.state.orgs.sort((a, b) => (b[ orderBy ] < a[ orderBy ] ? -1 : 1))
@@ -103,8 +108,8 @@ class Orgs extends Component {
 					{ id: "url", label: t("orgs.fields.url") },
 				],
 				loading: false
-			}, () => this.handleRequestSort(null, 'name'))
-		
+			}, () => this.handleRequestSort(null, 'name', 'asc'))
+
 		}
 	}
 
@@ -130,6 +135,7 @@ class Orgs extends Component {
 				orderBy={ orderBy }
 				order={ order }
 				filters={ this.state.filters }
+				reload={ this.reload }
 				t={ t }
 			/> }
 		</GridContainer>
