@@ -367,7 +367,6 @@ class CreateOrg extends Component {
 									error={ error }
 								/>
 							</ItemGrid>
-							{/* {accessLevel.} */ }
 						</form>
 
 						<ItemGrid xs={ 12 } container justify={ 'center' }>

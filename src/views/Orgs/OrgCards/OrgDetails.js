@@ -19,17 +19,30 @@ class OrgDetails extends Component {
     handleCloseActionsDetails = () => {
     	this.setState({ actionAnchor: null });
     }
-	deleteOrg = () => {
+	handleDeleteOrg = () => {
 		this.handleCloseActionsDetails()
 		this.props.deleteOrg()
 	}
+	handleEdit = () => this.props.history.push(`${this.props.match.url}/edit`)
+	options = () => {
+		const { t, accessLevel } = this.props
+		let allOptions = [
+			{ label: t("menus.editOrg"), func: this.handleEdit, single: true, icon: Edit },
+			{ label: t("menus.deleteOrg"), func: this.handleDeleteOrg, icon: Delete }
+		]
+		if (accessLevel.apiorg.edit)
+			return allOptions
+		else return [
+		]
+	}
+
 	render() {
     	const { actionAnchor } = this.state
     	const { t, org, classes } = this.props
     	return (
     		<InfoCard title={org.name} avatar={<Business />} subheader={""}
     			noExpand
-    			topAction={<ItemGrid noMargin noPadding>
+    			topAction={this.options().length > 0 ? <ItemGrid noMargin noPadding>
     				<IconButton
     					aria-label="More"
     					aria-owns={actionAnchor ? 'long-menu' : null}
@@ -48,15 +61,15 @@ class OrgDetails extends Component {
     							minWidth: 200
     						}
     					}}>
-    					<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
-    						<Edit className={classes.leftIcon} />{t("menus.editOrg")}
-    					</MenuItem>
-    					<MenuItem onClick={this.deleteOrg}>
+						{this.options().map((m, i) => <MenuItem onClick={m.func}>
+							<m.icon className={classes.leftIcon} />{m.label}
+						</MenuItem>)}
+    					{/* <MenuItem onClick={this.deleteOrg}>
     						<Delete className={classes.leftIcon} />{t("menus.deleteOrg")}
-    					</MenuItem>
+    					</MenuItem> */}
 						))}
     				</Menu>
-    			</ItemGrid>}
+    			</ItemGrid> : null}
     			content={
     				<Grid container>
     					<ItemGrid>

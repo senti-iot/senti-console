@@ -111,8 +111,6 @@ class Org extends Component {
 		switch (msg) {
 			case 1:
 				return t("snackbars.orgDeleted")
-			// case 2:
-			// 	return t("orgs.projectExported")
 			case 3:
 				return t("snackbars.redirect")
 			default:
@@ -149,10 +147,8 @@ class Org extends Component {
 							classes={classes}
 							t={t}
 							org={org}
-							language={language} />
-					</ItemGrid>
-					<ItemGrid xs={12} noMargin>
-
+							language={language}
+							accessLevel={this.props.accessLevel}/>
 					</ItemGrid>
 				</GridContainer>
 				{this.renderSnackBar()}
@@ -162,7 +158,8 @@ class Org extends Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	language: state.localization.language
+	language: state.localization.language,
+	accessLevel: state.settings.user.privileges
 })
 
 const mapDispatchToProps = {

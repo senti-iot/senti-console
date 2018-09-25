@@ -134,11 +134,16 @@ class OrgTable extends React.Component {
 		this.props.history.push(`/org/${this.state.selected[0]}/edit`)
 	}
 	options = () => {
-		const { t } = this.props
-		return [
+		const { t, accessLevel } = this.props
+		let allOptions = [
 			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
 			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
 			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
+		]
+		if (accessLevel.apiorg.edit)
+			return allOptions
+		else return [
+			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf }
 		]
 	}
 	addNewOrg = () => { this.props.history.push('/orgs/new') }
@@ -319,7 +324,8 @@ class OrgTable extends React.Component {
 }
 const mapStateToProps = (state) => ({
 	rowsPerPage: state.settings.trp,
-	language: state.localization.language
+	language: state.localization.language,
+	accessLevel: state.settings.user.privileges
 })
 
 const mapDispatchToProps = {
