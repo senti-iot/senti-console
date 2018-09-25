@@ -88,7 +88,7 @@ class Org extends Component {
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{t("projects.projectDelete")}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("orgs.orgDelete")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
 					{t("orgs.orgDeleteConfirm", { org: this.state.org.name }) + "?"}
