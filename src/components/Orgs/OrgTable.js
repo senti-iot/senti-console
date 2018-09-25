@@ -1,10 +1,10 @@
 import {
 	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
 	TableRow, withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
-	DialogContentText, DialogActions, Button, MenuItem, Menu, IconButton, ListItem, ListItemIcon, ListItemText, List,
+	DialogContentText, DialogActions, Button, /* MenuItem, Menu, */ IconButton, ListItem, ListItemIcon, ListItemText, List,
 } from "@material-ui/core"
 import TC from 'components/Table/TC'
-import { Delete, Edit, PictureAsPdf, FilterList, Add } from '@material-ui/icons'
+import { Delete, Edit, PictureAsPdf, /* FilterList, */ Add } from '@material-ui/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import PropTypes from "prop-types"
 import React, { Fragment } from "react"
@@ -13,7 +13,6 @@ import EnhancedTableHead from 'components/Table/TableHeader'
 import EnhancedTableToolbar from 'components/Table/TableToolbar'
 import { ItemGrid, Info, ItemG, Caption } from ".."
 import { connect } from "react-redux"
-import { boxShadow } from 'assets/jss/material-dashboard-react';
 import TP from 'components/Table/TP'
 import { deleteOrg } from 'variables/dataOrgs';
 
@@ -149,32 +148,14 @@ class OrgTable extends React.Component {
 	addNewOrg = () => { this.props.history.push('/orgs/new') }
 
 	renderTableToolBarContent = () => {
-		const { classes, tableHead, t } = this.props
-		const { anchorFilterMenu } = this.state
+		const { accessLevel } = this.props
+		// const { anchorFilterMenu } = this.state
+		let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
 		return <Fragment>
-			<IconButton aria-label="Add new organisation" onClick={this.addNewOrg}>
+			{access ? <IconButton aria-label="Add new organisation" onClick={this.addNewOrg}>
 				<Add />
-			</IconButton>
-			<IconButton
-				className={classes.secondAction}
-				aria-label={t("tables.filter")}
-				aria-owns={anchorFilterMenu ? "filter-menu" : null}
-				onClick={this.handleFilterMenuOpen}>
-				<FilterList />
-			</IconButton>
-			<Menu
-				id="filter-menu"
-				anchorEl={anchorFilterMenu}
-				open={Boolean(anchorFilterMenu)}
-				onClose={this.handleFilterMenuClose}
-				PaperProps={{ style: { width: 200, boxShadow: boxShadow } }}>
-
-				{tableHead.map(option => {
-					return <MenuItem key={option.id} onClick={this.handleFilter}>
-						{option.label}
-					</MenuItem>
-				})}
-			</Menu>
+			</IconButton> : null
+			}
 		</Fragment>
 	}
 	renderConfirmDelete = () => {
