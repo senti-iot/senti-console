@@ -58,28 +58,40 @@ export const getSettings = async () => {
 				dow: 1
 			}
 		})
-		if (settings)
-		{
-			moment.locale(user.aux.senti.settings.language)
-			dispatch({
-				type: GETSETTINGS,
-				settings: {
-					...user.aux.senti.settings,
+		if (user) {
+			if (settings) {
+				moment.locale(user.aux.senti.settings.language)
+				dispatch({
+					type: GETSETTINGS,
+					settings: {
+						...user.aux.senti.settings,
+						language: user.aux.odeum.language
+					},
+					user
+				})
+				return true
+			}
+			else {
+				moment.locale(user.aux.odeum.language)
+				let s = {
+					...getState().settings,
 					language: user.aux.odeum.language
-				},
-				user
-			})
-			return true
+				}
+
+				dispatch({
+					type: NOSETTINGS,
+					loading: false,
+					user,
+					settings: s
+				})
+				return false
+			}
 		}
 		else {
-			console.log(user.aux.odeum.language)
-			moment.locale(user.aux.odeum.language)
+			moment.locale('da')
 			let s = {
 				...getState().settings,
-				language: user.aux.odeum.language
 			}
-
-			console.log(s)
 			dispatch({
 				type: NOSETTINGS,
 				loading: false,
@@ -88,9 +100,9 @@ export const getSettings = async () => {
 			})
 			return false
 		}
-		
-
 	}
+
+
 }
 export const changeAlerts = t => {
 	return async (dispatch, getState) => {
@@ -203,11 +215,13 @@ export const settings = (state = initialState, action) => {
 		case DISCSENT:
 			return Object.assign({}, state, { discSentiVal: action.val })
 		case NOSETTINGS:
-		{	
-			return Object.assign({}, state, { ...action.settings, loading: false, user: action.user })}
+		{
+			return Object.assign({}, state, { ...action.settings, loading: false, user: action.user })
+		}
 		case GETSETTINGS:
-		{	
-			return Object.assign({}, state, { ...action.settings, user: action.user, loading: false })}
+		{
+			return Object.assign({}, state, { ...action.settings, user: action.user, loading: false })
+		}
 		case changeLangAction:
 		{
 			moment.locale(action.code)
