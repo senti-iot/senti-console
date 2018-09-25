@@ -58,7 +58,7 @@ class CreateOrg extends Component {
 		await getAllOrgs().then(rs => {
 			if (this._isMounted) {
 				if (accessLevel.apisuperuser)
-					 rs.unshift({ id: -1, name: t("orgs.fields.topLevelOrg") })
+					rs.unshift({ id: -1, name: t("orgs.fields.topLevelOrg") })
 				this.setState({ orgs: rs, loading: false })
 			}
 		})
@@ -69,6 +69,7 @@ class CreateOrg extends Component {
 		/* Address, City, Postcode, Country, Region, Website. */
 		let errorCode = [];
 		const { name, address, city, zip, country } = this.state.org
+		const { selectedOrg } = this.state
 		if (name === "") {
 			errorCode.push(0)
 		}
@@ -83,6 +84,9 @@ class CreateOrg extends Component {
 		}
 		if (country === "") {
 			errorCode.push(4)
+		}
+		if (selectedOrg === null) {
+			errorCode.push(5)
 		}
 		this.setState({
 			errorMessage: errorCode.map(c => <Danger key={ c }>{ this.errorMessages(c) }</Danger>),
@@ -105,6 +109,8 @@ class CreateOrg extends Component {
 				return t("orgs.validation.noZip")
 			case 4:
 				return t("orgs.validation.noCountry")
+			case 5:
+				return t("orgs.validation.noParent")
 			default:
 				return ""
 		}
@@ -194,21 +200,22 @@ class CreateOrg extends Component {
 	}
 	renderOrgs = () => {
 		const { classes, t } = this.props
-		const { orgs, selectedOrg } = this.state
-	
+		const { orgs, selectedOrg, error } = this.state
+
 		return <FormControl className={ classes.formControl }>
-			<InputLabel FormLabelClasses={ { root: classes.label } } color={ "primary" } htmlFor="select-multiple-chip">
+			<InputLabel error={ error } FormLabelClasses={ { root: classes.label } } color={ "primary" } htmlFor="select-multiple-chip">
 				{ t("orgs.fields.parentOrg") }
 			</InputLabel>
 			<Select
+				error={ error }
 				fullWidth={ false }
 				color={ "primary" }
 				value={ selectedOrg !== null ? selectedOrg : "" }
 				onChange={ this.handleOrgChange }
 				renderValue={ value => value.name }
 			>
-				{/* { accessLevel.apisuperuser ? <MenuItem key={ 99 } value={ noOrg }>{ t("orgs.fields.topLevelOrg") }</MenuItem> : null } */}
-				
+				{/* { accessLevel.apisuperuser ? <MenuItem key={ 99 } value={ noOrg }>{ t("orgs.fields.topLevelOrg") }</MenuItem> : null } */ }
+
 				{ orgs ? orgs.map(org => (
 					<MenuItem
 						key={ org.id }

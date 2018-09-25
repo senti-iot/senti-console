@@ -303,7 +303,8 @@
 			"noCity": "Mangler by",
 			"noZip": "Mangler postnummer",
 			"noCountry": "Mangler land",
-			"networkError": "Netværk fejl!"
+			"networkError": "Netværk fejl!",
+			"noParent": "Mangler organisatorisk tilhørsforhold"
 		}
 	},
 	"projects": {

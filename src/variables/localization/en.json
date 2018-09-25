@@ -303,7 +303,8 @@
 			"noCity": "City missing",
 			"noZip": "ZIP missing",
 			"noCountry": "Country missing",
-			"networkError": "Network error!"
+			"networkError": "Network error!",
+			"noParent": "Parent Organisation missing"
 		}
 	},
 	"projects": {
