@@ -258,21 +258,7 @@ class EditOrg extends Component {
 									error={ error }
 								/>
 							</ItemGrid>
-							<ItemGrid container xs={ 12 } md={ 6 }>
-								<TextF
-
-									id={ "postcode" }
-									label={ t("orgs.fields.zip") }
-									value={ org.zip }
-									className={ classes.textField }
-									handleChange={ this.handleChange("zip") }
-									margin="normal"
-									noFullWidth
-									error={ error }
-									type={ "number" }
-									pattern="[0-9]*"
-								/>
-							</ItemGrid>
+						
 							<ItemGrid container xs={ 12 } md={ 6 }>
 								<TextF
 
@@ -284,6 +270,20 @@ class EditOrg extends Component {
 									margin="normal"
 									noFullWidth
 									error={ error }
+								/>
+							</ItemGrid>
+							<ItemGrid container xs={ 12 } md={ 6 }>
+								<TextF
+									id={ "postcode" }
+									label={ t("orgs.fields.zip") }
+									value={ org.zip }
+									className={ classes.textField }
+									handleChange={ this.handleChange("zip") }
+									margin="normal"
+									noFullWidth
+									error={ error }
+									type={ "number" }
+									pattern="[0-9]*"
 								/>
 							</ItemGrid>
 							<ItemGrid container xs={ 12 } md={ 6 }>
