@@ -293,6 +293,7 @@
 			"zip": "ZIP Code",
 			"region": "Region",
 			"parentOrg": "Parent Organisation",
+			"topLevelOrg": "No Parent Organisation",
 			"CVR": "Tax Registration Number",
 			"EAN": "EAN Number"
 		},
