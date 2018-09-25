@@ -336,7 +336,7 @@ class EditOrg extends Component {
 								/>
 							</ItemGrid>
 							<ItemGrid container xs={ 12 } md={ 6 }>
-								{ this.renderOrgs() }
+								{ this.props.userOrg.id === org.id ? null : this.renderOrgs() }
 							</ItemGrid>
 							<ItemGrid container xs={ 12 } md={ 6 }>
 								<TextF
@@ -406,7 +406,8 @@ class EditOrg extends Component {
 }
 const mapStateToProps = (state) => ({
 	language: state.localization.language,
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	userOrg: state.settings.user.org
 })
 
 const mapDispatchToProps = {
