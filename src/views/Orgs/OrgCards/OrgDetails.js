@@ -103,7 +103,7 @@ class OrgDetails extends Component {
     							{t("orgs.fields.url")}
     						</Caption>
     						<Info>
-    							<a href={org.url}>
+    							<a href={ org.url } target={"_blank"}>
     								{org.url}
     							</a>
     						</Info>
