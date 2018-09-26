@@ -194,7 +194,7 @@
 		"status": {
 			"green": "Enheden er tilsluttet og modtager data",
 			"red": "Enheden er ikke tilsluttet og modtager ingen data",
-			"yellow": "Enheden er tilsluttet, men modtager ingen Data"
+			"yellow": "Enheden er tilsluttet, men modtager ingen data"
 		}
 	},
 	"dialogs": {
