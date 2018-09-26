@@ -1,13 +1,13 @@
 import {
 	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
 	TableRow, withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
-	DialogContentText, DialogActions, Button, Typography,
+	DialogContentText, DialogActions, Button, Typography, IconButton,
 } from "@material-ui/core"
 import TC from 'components/Table/TC'
-import { Delete, Edit, PictureAsPdf } from '@material-ui/icons'
+import { Delete, Edit, PictureAsPdf, Add } from '@material-ui/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import PropTypes from "prop-types"
-import React from "react"
+import React, { Fragment } from "react"
 import { withRouter } from 'react-router-dom'
 import EnhancedTableHead from '../Table/TableHeader'
 import EnhancedTableToolbar from '../Table/TableToolbar'
@@ -173,6 +173,18 @@ class UserTable extends React.Component {
 		</Dialog>
 	}
 
+	addNewUser = () => { this.props.history.push('/users/new') }
+
+	renderTableToolBarContent = () => {
+		const { accessLevel } = this.props
+		let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
+		return <Fragment>
+			{access ? <IconButton aria-label="Add new user" onClick={this.addNewUser}>
+				<Add />
+			</IconButton> : null
+			}
+		</Fragment>
+	}
 	render() {
 		const { order, orderBy, data, classes, t } = this.props
 		const {  selected, rowsPerPage, page } = this.state
@@ -189,7 +201,7 @@ class UserTable extends React.Component {
 					numSelected={selected.length}
 					options={this.options}
 					t={t}
-				// content={this.renderTableToolBarContent()}
+					content={this.renderTableToolBarContent()}
 				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
