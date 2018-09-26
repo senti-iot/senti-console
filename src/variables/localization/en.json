@@ -144,7 +144,7 @@
 			"modemModel": "Modem model",
 			"name": "Name",
 			"org": "Organisation",
-			"pcModel": "PC model",
+			"pcModel": "Device model",
 			"project": "Project",
 			"simCard": "SIM-card ID",
 			"simProvider": "SIM-card provider",
@@ -175,7 +175,7 @@
 		"noLocType": " No location type set",
 		"noName": "No name",
 		"noProject": "Unassigned",
-		"notCalibrated": "Device has not been calibrated yet!",
+		"notCalibrated": "Device has not been calibrated!",
 		"pageTitle": "Devices",
 		"simpleList": {
 			"address": "Address",
@@ -187,9 +187,9 @@
 			"totalcount": "Total count"
 		},
 		"status": {
-			"green": "Connected, Data",
-			"red": "Not Connected, No Data",
-			"yellow": "Connected, No Data"
+			"green": "The device is connected and data is received",
+			"red": "The device is not connected, and no data is received",
+			"yellow": "The device is connected, but no data is received"
 		},
 		"tabs": {
 			"listView": "List view",
@@ -335,7 +335,7 @@
 		},
 		"infoCardProjectData": "Data",
 		"infoCardProjectDetails": "Project details",
-		"new": "Create new project",
+		"new": "Create project",
 		"noOrganisationSelected": "Select an organisation to see available devices.",
 		"pageTitle": "Projects",
 		"projectCreated": "Project has been successfully created!",
@@ -437,14 +437,14 @@
 		"userCreated": "User %{user} has been succesfully created!"
 	},
 	"tables": {
-		"addNewDevice": "Add new device",
-		"addNewProject": "Add new project",
+		"addNewDevice": "Add device",
+		"addNewProject": "Add project",
 		"filter": "Filter",
 		"rowsPerPage": "Rows per page",
 		"selected": "selected"
 	},
 	"users": {
-		"createUser": "Create new user",
+		"createUser": "Create user",
 		"actions": {
 			"addToGroups": "Add to groups",
 			"changeOrganisation": "Change organisation",

@@ -144,7 +144,7 @@
 			"modemModel": "Modem model",
 			"name": "Navn",
 			"org": "Organisation",
-			"pcModel": "PC Model",
+			"pcModel": "Enhedsmodel",
 			"project": "Projekt",
 			"simCard": "SIM-kort ID",
 			"simProvider": "SIM-kort leverandør",
@@ -170,12 +170,12 @@
 		"noDataFilters": "Der er ingen data tilgængelig for de valgte filtre!",
 		"noData": "Der er ingen data!",
 		"noDevices": "Der er ingen tilgængelige enheder",
-		"noDevicesAssigned": "Der er ingen tildelt enheder!",
+		"noDevicesAssigned": "Der er ingen tildelte enheder!",
 		"noImages": "Der er ikke uploadet billeder!",
 		"noLocType": "Der er ingen placeringstype indstillet",
 		"noName": "Unavngivet",
 		"noProject": "Ikke tildelt",
-		"notCalibrated": "Enhed er endnu ikke kalibreret!",
+		"notCalibrated": "Enhed er ikke kalibreret!",
 		"pageTitle": "Enheder",
 		"simpleList": {
 			"address": "Adresse",
@@ -188,13 +188,13 @@
 		},
 		"tabs":{
 			"listView":"Listevisning",
-			"cardView": "Gridvisning",
+			"cardView": "Gittervisning",
 			"mapView": "Kortvisning"
 		},
 		"status": {
-			"green": "Tilsluttet, Data",
-			"red": "Ikke tilsluttet, Ingen Data",
-			"yellow": "Tilsluttet, Ingen Data"
+			"green": "Enheden er tilsluttet og modtager data",
+			"red": "Enheden er ikke tilsluttet og modtager ingen data",
+			"yellow": "Enheden er tilsluttet, men modtager ingen Data"
 		}
 	},
 	"dialogs": {
@@ -335,7 +335,7 @@
 		},
 		"infoCardProjectData": "Data",
 		"infoCardProjectDetails": "Detaljer for projekt",
-		"new": "Opret nyt projekt",
+		"new": "Opret projekt",
 		"noOrganisationSelected": "Vælg en organisation for at se tilgængelige enheder",
 		"pageTitle": "Projekter",
 		"projectCreated": "Projektet er oprettet!",
@@ -418,7 +418,7 @@
 		"assign": "Enhed tildelt succesfuldt",
 		"createdFail": "Oprettelse fejlede!",
 		"createdSuccess": "Oprettet!",
-		"creating": "Opretter nyt ...",
+		"creating": "Opretter ...",
 		"deletedFail": "Sletning fejlede!",
 		"deletedSuccess": "Slettet!",
 		"deleting": "Sletter ...",
@@ -437,14 +437,14 @@
 		"userCreated": "Bruger %{user} er succesfuldt opretted!"
 	},
 	"tables": {
-		"addNewDevice": "Tilføj ny enhed",
-		"addNewProject": "Opret nyt projekt",
+		"addNewDevice": "Tilføj enhed",
+		"addNewProject": "Opret projekt",
 		"filter": "Filter",
 		"rowsPerPage": "Rækker pr. side",
 		"selected": "valgt"
 	},
 	"users": {
-		"createUser": "Opret ny bruger",
+		"createUser": "Opret bruger",
 		"actions": {
 			"addToGroups": "Tilføj til gruppe(r)",
 			"changeOrganisation": "Skift organisation",
