@@ -68,7 +68,11 @@ class CreateUser extends Component {
     } 
     handleCreateUser = async () => {
     	const { user } = this.state
-    	await createUser(user).then(rs => rs ?
+    	let newUser = {
+    		...this.state.user,
+    		userName: user.email
+    	}
+    	await createUser(newUser).then(rs => rs ?
     		this.setState({ created: true, creating: false, openSnackbar: true, org: rs }) :
     		this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
 				
@@ -263,7 +267,7 @@ class CreateUser extends Component {
     	]
     	return <FormControl className={classes.formControl}>
     		<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
-    			{t("users.fields.group")}
+    			{t("users.fields.accessLevel")}
     		</InputLabel>
     		<Select
     			error={error}
@@ -303,7 +307,7 @@ class CreateUser extends Component {
     							</Warning>
     						</Collapse>
     					</ItemGrid>
-    					<ItemGrid container xs={12} md={6}>
+    					{/* <ItemGrid container xs={12} md={6}>
     						<TextF
     							autoFocus
     							id={"userName"}
@@ -315,7 +319,7 @@ class CreateUser extends Component {
     							noFullWidth
     							error={error}
     						/>
-    					</ItemGrid>
+    					</ItemGrid> */}
     					<ItemGrid container xs={12} md={6}>
     						<TextF
     							id={"firstName"}
