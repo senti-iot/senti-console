@@ -434,7 +434,8 @@
 		"orgUpdated": "Organisation %{org} er succesfuldt opdateret!",
 		"orgCreated": "Organisation %{org} er succesfuldt opretted!",
 		"orgDeleted": "Organisation er succefuld slettet!",
-		"userCreated": "Bruger %{user} er succesfuldt opretted!"
+		"userCreated": "Bruger %{user} er succesfuldt opretted!",
+		"userUpdated": "Bruger %{org} er succesfuldt opdateret!"		
 	},
 	"tables": {
 		"addNewDevice": "Tilføj enhed",
@@ -444,6 +445,7 @@
 		"selected": "valgt"
 	},
 	"users": {
+		"editUser": "Opdater bruger",				
 		"createUser": "Opret bruger",
 		"actions": {
 			"addToGroups": "Tilføj til gruppe(r)",

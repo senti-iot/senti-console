@@ -434,7 +434,8 @@
 		"orgUpdated": "Organisation %{org} has been successfully updated!",
 		"orgCreated": "Organisation %{org} has been successfully created!",
 		"orgDeleted": "Organisation has been successfully deleted!",
-		"userCreated": "User %{user} has been succesfully created!"
+		"userCreated": "User %{user} has been succesfully created!",
+		"userUpdated": "User %{user} has been succesfully updated!"
 	},
 	"tables": {
 		"addNewDevice": "Add device",
@@ -444,6 +445,7 @@
 		"selected": "selected"
 	},
 	"users": {
+		"editUser": "Edit user",
 		"createUser": "Create user",
 		"actions": {
 			"addToGroups": "Add to groups",
