@@ -1,10 +1,11 @@
 import { Grid, IconButton, Menu, MenuItem, withStyles } from "@material-ui/core";
-import { AccountBox, AccountCircle, Business, Lock } from '@material-ui/icons';
+import { AccountBox, Business, Lock } from '@material-ui/icons';
 import headerLinksStyle from "assets/jss/material-dashboard-react/headerLinksStyle";
 import React from "react";
 import cookie from "react-cookies";
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Gravatar from 'react-gravatar'
 class HeaderLinks extends React.Component {
 	state = {
 		anchorProfile: null
@@ -34,7 +35,7 @@ class HeaderLinks extends React.Component {
 		this.setState({ anchorProfile: null })
 	}
 	render() {
-		const { classes, t } = this.props;
+		const { classes, t, user } = this.props;
 		const { anchorProfile } = this.state;
 		const openProfile = Boolean(anchorProfile)
 		return (
@@ -54,7 +55,7 @@ class HeaderLinks extends React.Component {
 						root: classes.iconRoot
 					}}
 				>
-					<AccountCircle />
+					{user.img ? <img src={user.img} alt="UserProfile" className={classes.img} /> : <Gravatar default="mp" email={user.email} className={classes.img} size={36} />}
 				</IconButton>
 				<Menu
 					id="menu-appbar"
@@ -77,10 +78,10 @@ class HeaderLinks extends React.Component {
 					}}
 				>
 					<MenuItem onClick={this.handleRedirectToOwnProfile}>
-						<Business className={classes.leftIcon}/>{t("users.menus.profile")}
+						<AccountBox className={classes.leftIcon}/>{t("users.menus.profile")}
 					</MenuItem>
 					<MenuItem onClick={this.handleProfileClose}>
-						<AccountBox className={classes.leftIcon} />{t("users.menus.account")}
+						<Business className={classes.leftIcon} />{t("users.menus.account")}
 					</MenuItem>
 					<MenuItem onClick={this.logOut} className={classes.menuItem}>
 						<Lock className={classes.leftIcon} />{t("users.menus.signout")}

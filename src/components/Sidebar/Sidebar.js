@@ -17,15 +17,11 @@ import { HeaderLinks } from "components";
 import sidebarStyle from "assets/jss/material-dashboard-react/sidebarStyle.js";
 
 const Sidebar = ({ ...props }) => {
-	// verifies if routeName is the one active (in browser input)
-	function activeRoute (routeName) {
-		// console.log(routeName, props.location.pathname.indexOf(routeName))
+
+	function activeRoute(routeName) {
 		return props.menuRoute === routeName ? true : false;
 	}
-	// function strip(route) {
-	// 	let newRoute = route.substring(0, route.indexOf(':'))
-	// 	return newRoute
-	// }
+
 	const { classes, color, logo, image, logoText, routes, t  } = props;
 	var links = (
 		<List className={classes.list}>

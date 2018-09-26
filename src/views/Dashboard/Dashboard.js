@@ -25,7 +25,8 @@ class Dashboard extends React.Component {
 
 
 	componentDidMount = async () => {
-		
+		console.log("Mounted")
+		this.props.setHeader("Senti.Cloud", false, '', "dashboard")
 	}
 
 	componentWillUnmount = () => {
