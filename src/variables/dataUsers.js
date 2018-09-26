@@ -1,6 +1,6 @@
 import { api } from './data'
 
-//#region GET User,Users,Org,Orgs
+//#region GET User,Users
 export const getAllUsers = async () => {
 	var data = await api.get('core/users').then(rs => rs.data)
 	// console.log('getAllUsers', data)
@@ -12,7 +12,11 @@ export const getUser = async (userId) => {
 	// console.log('getUser', userId, data)
 	return data
 }
-
+export const createUser = async (user) => {
+	let data = await api.post(`core/user`, user).then(rs => rs.data)
+	console.log('createUser', data)
+	return data
+}
 export const getAllOrgs = async () => {
 	var data = await api.get(`core/orgs`).then(rs => rs.data)
 	// console.log('getOrgs', data)

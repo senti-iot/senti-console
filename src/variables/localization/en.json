@@ -433,7 +433,8 @@
 		"updating": "Updating...",
 		"orgUpdated": "Organisation %{org} has been successfully updated!",
 		"orgCreated": "Organisation %{org} has been successfully created!",
-		"orgDeleted": "Organisation has been successfully deleted!"
+		"orgDeleted": "Organisation has been successfully deleted!",
+		"userCreated": "User %{user} has been succesfully created!"
 	},
 	"tables": {
 		"addNewDevice": "Add new device",
@@ -443,6 +444,7 @@
 		"selected": "selected"
 	},
 	"users": {
+		"createUser": "Create new user",
 		"actions": {
 			"addToGroups": "Add to groups",
 			"changeOrganisation": "Change organisation",
@@ -455,6 +457,7 @@
 			"suspend": "Suspend"
 		},
 		"fields": {
+			"group": "Group",
 			"accessLevel": "Access Level",
 			"active": "Active",
 			"created": "Created",
@@ -476,7 +479,10 @@
 		"groups": {
 			"136550100000143": "Super user",
 			"136550100000211": "Account Manager",
-			"136550100000225": "User"
+			"136550100000225": "User",
+			"superUser": "Super User",
+			"accountManager": "Account Manager",
+			"user": "User"
 		},
 		"headers": {
 			"contact": "Contact",

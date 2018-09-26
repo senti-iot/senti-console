@@ -433,7 +433,8 @@
 		"updating": "Opdaterer ...",
 		"orgUpdated": "Organisation %{org} er succesfuldt opdateret!",
 		"orgCreated": "Organisation %{org} er succesfuldt opretted!",
-		"orgDeleted": "Organisation er succefuld slettet!"
+		"orgDeleted": "Organisation er succefuld slettet!",
+		"userCreated": "Bruger %{user} er succesfuldt opretted!"
 	},
 	"tables": {
 		"addNewDevice": "Tilføj ny enhed",
@@ -443,6 +444,7 @@
 		"selected": "valgt"
 	},
 	"users": {
+		"createUser": "Opret ny bruger",
 		"actions": {
 			"addToGroups": "Tilføj til gruppe(r)",
 			"changeOrganisation": "Skift organisation",
@@ -455,6 +457,7 @@
 			"suspend": "Suspender"
 		},
 		"fields": {
+			"group": "Gruppe",
 			"accessLevel": "Adgangsniveau",
 			"active": "Aktiv",
 			"created": "Opdateret",
@@ -476,7 +479,10 @@
 		"groups": {
 			"136550100000143": "Superbruger",
 			"136550100000211": "Kontoansvarlig",
-			"136550100000225": "Bruger"
+			"136550100000225": "Bruger",
+			"superUser": "Superbruger",
+			"accountManager": "Kontoansvarli",
+			"user": "Bruger"
 		},
 		"headers": {
 			"contact": "Contact",

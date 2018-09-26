@@ -7,19 +7,7 @@ import { connect } from 'react-redux'
 import createprojectStyles from '../../assets/jss/components/projects/createprojectStyles'
 import EditOrgAutoSuggest from './EditOrgAutoSuggest';
 import { createOrg, getAllOrgs } from '../../variables/dataUsers';
-
-// var moment = require("moment")
 var countries = require("i18n-iso-countries");
-
-// // const ITEM_PADDING_TOP = 8;
-// const MenuProps = {
-// 	PaperProps: {
-// 		style: {
-// 			maxHeight: 300,
-// 			width: 250,
-// 		},
-// 	},
-// };
 
 class CreateOrg extends Component {
 	constructor(props) {
@@ -53,8 +41,8 @@ class CreateOrg extends Component {
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
-		const { t, accessLevel } = this.props
-		this.props.setHeader(this.props.t("orgs.createOrg"), true, `/orgs`, "users")
+		const { t, accessLevel, setHeader } = this.props
+		setHeader(t("orgs.createOrg"), true, `/orgs`, "users")
 		await getAllOrgs().then(rs => {
 			if (this._isMounted) {
 				if (accessLevel.apisuperuser)
@@ -192,12 +180,14 @@ class CreateOrg extends Component {
 	goToOrg = () => {
 		this.props.history.push('/org/' + this.props.match.params.id)
 	}
+
 	handleOrgChange = e => {
 		console.log(e.target.value)
 		this.setState({
 			selectedOrg: e.target.value
 		})
 	}
+	
 	renderOrgs = () => {
 		const { classes, t } = this.props
 		const { orgs, selectedOrg, error } = this.state
@@ -214,8 +204,6 @@ class CreateOrg extends Component {
 				onChange={ this.handleOrgChange }
 				renderValue={ value => value.name }
 			>
-				{/* { accessLevel.apisuperuser ? <MenuItem key={ 99 } value={ noOrg }>{ t("orgs.fields.topLevelOrg") }</MenuItem> : null } */ }
-
 				{ orgs ? orgs.map(org => (
 					<MenuItem
 						key={ org.id }
