@@ -177,33 +177,33 @@ class EditUser extends Component {
     		}
     	})
     }
-    renderOrgs = () => {
-    	const { classes, t } = this.props
-    	const { orgs, user, error } = this.state
-    	const { org } = user
-    	return <FormControl className={classes.formControl}>
-    		<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
-    			{t("users.fields.organisation")}
-    		</InputLabel>
-    		<Select
-    			error={error}
-    			fullWidth={false}
-    			color={"primary"}
-    			value={org.id}
-    			onChange={this.handleOrgChange}
-    			// renderValue={value => value.name}
-    		>
-    			{orgs ? orgs.map(org => (
-    				<MenuItem
-    					key={org.id}
-    					value={org.id}
-    				>
-    					{org.name}
-    				</MenuItem>
-    			)) : null}
-    		</Select>
-    	</FormControl>
-    }
+	renderOrgs = () => {
+		const { classes, t, accessLevel } = this.props
+		const { orgs, user, error } = this.state
+		const { org } = user
+		return accessLevel.apiorg.editusers ? <FormControl className={classes.formControl}>
+			<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
+				{t("users.fields.organisation")}
+			</InputLabel>
+			<Select
+				error={error}
+				fullWidth={false}
+				color={"primary"}
+				value={org.id}
+				onChange={this.handleOrgChange}
+			// renderValue={value => value.name}
+			>
+				{orgs ? orgs.map(org => (
+					<MenuItem
+						key={org.id}
+						value={org.id}
+					>
+						{org.name}
+					</MenuItem>
+				)) : null}
+			</Select>
+		</FormControl> : null
+	}
     renderLanguage = () => {
     	const { t, classes } = this.props
     	const { error, user } = this.state

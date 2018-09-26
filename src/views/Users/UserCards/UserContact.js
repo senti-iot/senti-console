@@ -1,12 +1,32 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info } from 'components';
-import { Hidden } from '@material-ui/core';
+import { Hidden, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { pF } from 'variables/functions';
-import { Person } from '@material-ui/icons'
+import { Person, MoreVert, Edit, Delete } from '@material-ui/icons'
 import { NavLink } from 'react-router-dom'
 import Gravatar from 'react-gravatar'
 import { connect } from 'react-redux'
 class UserContact extends Component {
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			actionAnchor: null
+		}
+	}
+
+	handleOpenActionsDetails = event => {
+		this.setState({ actionAnchor: event.currentTarget });
+	}
+
+	handleCloseActionsDetails = () => {
+		this.setState({ actionAnchor: null });
+	}
+
+	deleteUser = () => {
+		this.handleCloseActionsDetails()
+		this.props.deleteUser()
+	}
 
 	renderUserGroup = () => {
 
@@ -18,19 +38,65 @@ class UserContact extends Component {
 		if (user.groups[136550100000225])
 			return t("users.groups.136550100000225")
 	}
+	renderTopActionPriv = () => {
+		const { loggedUser, user } = this.props
+		const { apiorg } = loggedUser.privileges
+		if (apiorg) {
+			if (apiorg.editusers) {
+				return this.renderTopAction()
+			}
+		}
+		if (loggedUser.id === user.id)
+			return this.renderTopAction()
+		return null
+	}
+	renderTopAction = () => {
+		const { t, user, classes } = this.props
+		const { actionAnchor } = this.state
+		const { apiorg } = user.privileges
+		return <ItemGrid noMargin noPadding>
+			<IconButton
+				aria-label="More"
+				aria-owns={actionAnchor ? 'long-menu' : null}
+				aria-haspopup="true"
+				onClick={this.handleOpenActionsDetails}>
+				<MoreVert />
+			</IconButton>
+			<Menu
+				id="long-menu"
+				anchorEl={actionAnchor}
+				open={Boolean(actionAnchor)}
+				onClose={this.handleCloseActionsDetails}
+				PaperProps={{
+					style: {
+						maxHeight: 200,
+						minWidth: 200
+					}
+				}}>
+				<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
+					<Edit className={classes.leftIcon} />{t("menus.edit")}
+				</MenuItem>
+				{apiorg ? apiorg.editusers ? <MenuItem onClick={this.deleteUser}>
+					<Delete className={classes.leftIcon} />{t("menus.delete")}
+				</MenuItem> : null : null}
+				))}
+			</Menu>
+		</ItemGrid>
+	}
 	render() {
-		const { t, user, classes,  } = this.props
+		const { t, user, classes } = this.props
+		// const { actionAnchor } = this.state
 		return (
 			<InfoCard
-				// title={t('users.headers.contact')}
 				title={`${user.firstName} ${user.lastName}`}
 				noExpand
 				avatar={<Person />}
+				topAction={this.renderTopActionPriv()}
 				content={
 					<ItemGrid zeroMargin noPadding container >
 						<Hidden lgUp>
 							<ItemGrid container justify={'center'}>
-								{user.img ? <img src={user.img} alt="brken" className={classes.img} /> : <Gravatar size={250} default="mp" email={user.email} className={classes.img} />}
+								{user.img ? <img src={user.img} alt="UserAvatar" className={classes.img} /> : <Gravatar size={250} default="mp" email={user.email} className={classes.img} />}
 							</ItemGrid>
 						</Hidden>
 						<ItemGrid zeroMargin noPadding lg={9} md={12}>
@@ -60,7 +126,7 @@ class UserContact extends Component {
 							</ItemGrid>
 							<ItemGrid>
 								<Caption>{t("users.fields.language")}</Caption>
-								<Info>{ user.aux.odeum.language === 'en' ? t("settings.languages.en") : user.aux.odeum.language === "da" ? t("settings.languages.da") : ""}</Info>
+								<Info>{user.aux.odeum.language === 'en' ? t("settings.languages.en") : user.aux.odeum.language === "da" ? t("settings.languages.da") : ""}</Info>
 							</ItemGrid>
 							<ItemGrid>
 								<Caption>{t("users.fields.accessLevel")}</Caption>
@@ -69,7 +135,7 @@ class UserContact extends Component {
 						</ItemGrid>
 						<Hidden mdDown>
 							<ItemGrid >
-								{user.img ? <img src={user.img} alt="brken" className={classes.img} /> : <Gravatar default="mp" size={250} email={user.email} className={classes.img} />}
+								{user.img ? <img src={user.img} alt="UserAvatar" className={classes.img} /> : <Gravatar default="mp" size={250} email={user.email} className={classes.img} />}
 							</ItemGrid>
 						</Hidden>
 					</ItemGrid>
@@ -82,11 +148,13 @@ class UserContact extends Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	language: state.settings.language
+	language: state.settings.language,
+	loggedUser: state.settings.user,
+	accessLevel: state.settings.user.privileges
 })
 
 const mapDispatchToProps = {
-  
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserContact)

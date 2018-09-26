@@ -99,11 +99,7 @@ class Project extends Component {
 	}
 
 	redirect = () => {
-		setTimeout(() => {
-			this.setState({ openSnackbar: 3 })
-			setTimeout(() => this.props.history.push('/projects/list'), 1000)
-		}, 2e3)
-
+		setTimeout(() => this.props.history.push('/projects/list'), 1000)
 	}
 
 	closeSnackBar = () => {
@@ -218,12 +214,7 @@ class Project extends Component {
 						autoHideDuration={ 1000 }
 						anchorOrigin={ { vertical: "bottom", horizontal: "right" } }
 						open={ this.state.openSnackbar !== 0 ? true : false }
-						onClose={ () => {
-							if (this.state.openSnackbar === 1)
-								this.closeSnackBar()
-							else
-								this.setState({ openSnackbar: 0 })
-						} }
+						onClose={this.closeSnackBar}
 						message={
 							<ItemGrid zeroMargin noPadding justify={ 'center' } alignItems={ 'center' } container id="message-id">
 								{ this.snackBarMessages() }

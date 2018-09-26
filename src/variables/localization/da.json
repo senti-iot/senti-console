@@ -435,7 +435,7 @@
 		"orgCreated": "Organisation %{org} er succesfuldt opretted!",
 		"orgDeleted": "Organisation er succefuld slettet!",
 		"userCreated": "Bruger %{user} er succesfuldt opretted!",
-		"userUpdated": "Bruger %{org} er succesfuldt opdateret!"		
+		"userUpdated": "Bruger %{user} er succesfuldt opdateret!"		
 	},
 	"tables": {
 		"addNewDevice": "Tilføj enhed",
