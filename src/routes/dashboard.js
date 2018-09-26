@@ -18,7 +18,7 @@ import Settings from 'views/Settings/Settings';
 const dashboardRoutes = [
 	{
 		path: "/dashboard",
-		sidebarName: "sidebar.dashboard", //Replace with translation.id
+		sidebarName: "sidebar.dashboard",
 		navbarName: "Senti Dashboard",
 		icon: Dashboard,
 		component: DashboardPage,
