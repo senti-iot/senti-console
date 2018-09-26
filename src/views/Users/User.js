@@ -41,11 +41,12 @@ class User extends Component {
 	render() {
 		const { classes, t } = this.props
 		const { user, loading } = this.state
+		const rp = { history: this.props.history, match: this.props.match }
 		return (
 			loading ? <CircularLoader /> : <Fragment>
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<ItemGrid xs={12} noMargin>
-						<UserContact t={t} user={user} classes={classes}/>
+						<UserContact t={t} user={user} classes={classes} {...rp}/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
 						<UserLog t={t} user={user}/>	
