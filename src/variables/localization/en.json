@@ -488,7 +488,7 @@
 		},
 		"headers": {
 			"contact": "Contact",
-			"system": "System logs"
+			"system": "System log"
 		},
 		"menus": {
 			"account": "My account",
