@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { createUser } from 'variables/dataUsers';
+import { editUser, getUser } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
 import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader } from '..';
 import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Snackbar, Grid, Button } from '@material-ui/core';
@@ -8,7 +8,7 @@ import { Check, Save } from '@material-ui/icons'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 
-class CreateUser extends Component {
+class EditUser extends Component {
 	constructor(props) {
 		super(props)
 
@@ -51,10 +51,22 @@ class CreateUser extends Component {
     componentDidMount = async () => {
     	this._isMounted = 1
     	const { t, setHeader } = this.props
-    	setHeader(t("users.createUser"), true, '/users', "users")
+    	setHeader(t("users.editUser"), true, '/users', "users")
     	if (this._isMounted)
+    	{
+    		await this.getUser()
     		await this.getOrgs()
+    	}
     }
+	getUser = async () => {
+		let id = this.props.match.params.id
+		if (id) {
+			let user = await getUser(id).then(rs => rs)
+			this.setState({
+				user: user
+			})
+		}
+	}
     componentWillUnmount = () => {
     	this._isMounted = 0
     }
@@ -66,13 +78,13 @@ class CreateUser extends Component {
     		loading: false
     	})
     } 
-    handleCreateUser = async () => {
+    handleEditUser = async () => {
     	const { user } = this.state
     	let newUser = {
     		...this.state.user,
     		userName: user.email
     	}
-    	await createUser(newUser).then(rs => rs ?
+    	await editUser(newUser).then(rs => rs ?
     		this.setState({ created: true, creating: false, openSnackbar: true, org: rs }) :
     		this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
 				
@@ -87,24 +99,8 @@ class CreateUser extends Component {
     	})
     }
     handleValidation = () => {
-    	/* Address, City, Postcode, Country, Region, Website. */
     	let errorCode = [];
     	const { email } = this.state.user
-    	// if (name === "") {
-    	// 	errorCode.push(0)
-    	// }
-    	// if (address === "") {
-    	// 	errorCode.push(1)
-    	// }
-    	// if (city === "") {
-    	// 	errorCode.push(2)
-    	// }
-    	// if (zip === "") {
-    	// 	errorCode.push(3)
-    	// }
-    	// if (country === "") {
-    	// 	errorCode.push(4)
-    	// }
     	if (email === '') {
     		errorCode.push(4)
     	}
@@ -245,14 +241,14 @@ class CreateUser extends Component {
     		{
     			id: 136550100000211,
     			appId: 1220,
-    			name: t("users.groups.accountManager"),
+    			name: "Senti Account Managers",
     			show: accessLevel.apiorg.editusers ? true : false
     			// description: ""
     		},
     		{
     			id: 136550100000143,
     			appId: 1220,
-    			name: t("users.groups.superUser"),
+    			name: "Senti Super Users",
     			// description: "Senti Cloud group containing Super Users",
     			show: accessLevel.apisuperuser ? true : false
 
@@ -260,12 +256,12 @@ class CreateUser extends Component {
     		{
     			id: 136550100000225,
     			appId: 1220,
-    			name: t("users.groups.user"),
+    			name: "Senti Users",
     			show: true
     			// description: "Senti Users"
     		}
     	]
-    	return <FormControl className={classes.formControl}>
+    	return accessLevel.apiorg.editusers ? <FormControl className={classes.formControl}>
     		<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
     			{t("users.fields.accessLevel")}
     		</InputLabel>
@@ -286,7 +282,7 @@ class CreateUser extends Component {
     				</MenuItem>
     			) : null)}
     		</Select>
-    	</FormControl>
+    	</FormControl> : null
     }
     render() {
     	const { error, errorMessage, user, created } = this.state
@@ -391,10 +387,10 @@ class CreateUser extends Component {
     							color="primary"
     							className={buttonClassname}
     							disabled={this.state.creating || this.state.created}
-    							onClick={this.handleCreateUser}>
+    							onClick={this.handleEditUser}>
     							{this.state.created ?
     								<Fragment><Check className={classes.leftIcon} />{t("snackbars.redirect")}</Fragment>
-    								: <Fragment><Save className={classes.leftIcon} />{t("users.createUser")}</Fragment>}
+    								: <Fragment><Save className={classes.leftIcon} />{t("users.editUser")}</Fragment>}
     						</Button>
     					</div>
     				</Grid>
@@ -410,7 +406,7 @@ class CreateUser extends Component {
     				message={
     					<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
     						<Check className={classes.leftIcon} color={'primary'} />
-    						{t("snackbars.userCreated", { user: user.firstName + " " + user.lastName })}
+    						{t("snackbars.userUpdated", { user: user.firstName + " " + user.lastName })}
     					</ItemGrid>
     				}
     			/>
@@ -428,4 +424,4 @@ const mapDispatchToProps = {
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles)(CreateUser))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles)(EditUser))

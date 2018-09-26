@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import cx from "classnames";
 import {
 	withStyles,
@@ -63,12 +63,12 @@ const Sidebar = ({ ...props }) => {
 	);
 	var brand = (
 		<div className={classes.logo}>
-			<a href={'/'} className={classes.logoLink}>
+			<Link to={'/'} className={classes.logoLink}>
 				<div className={classes.logoImage}>
 					<img src={logo} alt="logo" className={classes.img} />
 				</div>
 				{logoText}
-			</a>
+			</Link>
 		</div>
 	);
 	return (
