@@ -314,7 +314,8 @@ class UserTable extends React.Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	rowsPerPage: state.settings.trp
+	rowsPerPage: state.settings.trp,
+	accessLevel: state.settings.user.privileges
 })
 
 const mapDispatchToProps = {
