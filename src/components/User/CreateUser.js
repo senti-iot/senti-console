@@ -30,18 +30,8 @@ class CreateUser extends Component {
 				},
 				sysLang: 2,
 				org: {
-					id: -1,
-					name: "Ingen organisation",
-					address: "",
-					zip: "",
-					city: "",
-					region: "",
-					country: "",
-					url: "",
-					org: {
-						id: -1,
-						name: "Ingen organisation"
-					}
+					id: "",
+					name: "Ingen organisation"
 				},
 				groups: {
 					136550100000225: {
@@ -55,16 +45,13 @@ class CreateUser extends Component {
 			created: false,
 			loading: true,
 			openSnackbar: false,
-			selectedGroup: {
-				id: 136550100000225,
-				name: "Senti User"
-			}
+			selectedGroup: "",
 		}
 	}
     componentDidMount = async () => {
     	this._isMounted = 1
     	const { t, setHeader } = this.props
-    	setHeader(t("users.createUser", true, '/users', "users"))
+    	setHeader(t("users.createUser"), true, '/users', "users")
     	if (this._isMounted)
     		await this.getOrgs()
     }
@@ -161,7 +148,7 @@ class CreateUser extends Component {
     				...this.state.user.aux,
     				odeum: {
     					...this.state.user.aux.odeum,
-    					language: e.target.value.value
+    					language: e.target.value
     				}
     			}
     		}
@@ -173,10 +160,8 @@ class CreateUser extends Component {
     		user: {
     			...this.state.user,
     			groups: {
-    				[e.target.value.id]: {
-    					id: e.target.value.id,
-    					name: e.target.value.name,
-    					appId: e.target.value.appId
+    				[e.target.value]: {
+    					id: e.target.value
     				}
     			}
     		}
@@ -186,14 +171,16 @@ class CreateUser extends Component {
     	this.setState({
     		user: {
     			...this.state.user,
-    			org: e.target.value
+    			org: {
+    				id: e.target.value
+    			}
     		}
     	})
     }
     renderOrgs = () => {
     	const { classes, t } = this.props
     	const { orgs, user, error } = this.state
-
+    	const { org } = user
     	return <FormControl className={classes.formControl}>
     		<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
     			{t("users.fields.organisation")}
@@ -202,14 +189,14 @@ class CreateUser extends Component {
     			error={error}
     			fullWidth={false}
     			color={"primary"}
-    			value={user.org}
+    			value={org.id}
     			onChange={this.handleOrgChange}
-    			renderValue={value => value.name}
+    			// renderValue={value => value.name}
     		>
     			{orgs ? orgs.map(org => (
     				<MenuItem
     					key={org.id}
-    					value={org}
+    					value={org.id}
     				>
     					{org.name}
     				</MenuItem>
@@ -234,12 +221,12 @@ class CreateUser extends Component {
     			color={"primary"}
     			value={user.aux.odeum.language}
     			onChange={this.handleLangChange}
-    			renderValue={value => languages[languages.findIndex(l => l.value === value)].label}
+    			// renderValue={value => languages[languages.findIndex(l => l.value === value)].label}
     		>
     			{languages.map(l => (
     				<MenuItem
     					key={l.value}
-    					value={l}
+    					value={l.value}
     				>
     					{l.label}
     				</MenuItem>
@@ -284,12 +271,12 @@ class CreateUser extends Component {
     			color={"primary"}
     			value={selectedGroup}
     			onChange={this.handleGroupChange}
-    			renderValue={value => value.name}
+    			// renderValue={value => value.name}
     		>
     			{groups.map(g => g.show ? (
     				<MenuItem
     					key={g.id}
-    					value={g}
+    					value={g.id}
     				>
     					{g.name}
     				</MenuItem>
@@ -415,7 +402,7 @@ class CreateUser extends Component {
     				ContentProps={{
     					'aria-describedby': 'message-id',
     				}}
-    				autoHideDuration={2000}
+    				autoHideDuration={1000}
     				message={
     					<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
     						<Check className={classes.leftIcon} color={'primary'} />
