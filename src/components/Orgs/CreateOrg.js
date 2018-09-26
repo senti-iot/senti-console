@@ -28,7 +28,7 @@ class CreateOrg extends Component {
 					ean: ""
 				}
 			},
-			selectedOrg: null,
+			selectedOrg: "",
 			country: {
 				id: "",
 				label: ""
@@ -157,7 +157,7 @@ class CreateOrg extends Component {
 				let newOrg = {
 					...this.state.org,
 					org: {
-						...this.state.selectedOrg
+						id: this.state.selectedOrg
 					}
 				}
 				return createOrg(newOrg).then(rs => {
@@ -182,7 +182,6 @@ class CreateOrg extends Component {
 	}
 
 	handleOrgChange = e => {
-		console.log(e.target.value)
 		this.setState({
 			selectedOrg: e.target.value
 		})
@@ -200,14 +199,14 @@ class CreateOrg extends Component {
 				error={ error }
 				fullWidth={ false }
 				color={ "primary" }
-				value={ selectedOrg !== null ? selectedOrg : "" }
+				value={ selectedOrg }
 				onChange={ this.handleOrgChange }
-				renderValue={ value => value.name }
+				// renderValue={ value => value.name }
 			>
 				{ orgs ? orgs.map(org => (
 					<MenuItem
 						key={ org.id }
-						value={ org }
+						value={ org.id }
 					>
 						{ org.name }
 					</MenuItem>
