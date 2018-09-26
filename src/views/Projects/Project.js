@@ -101,7 +101,7 @@ class Project extends Component {
 	redirect = () => {
 		setTimeout(() => {
 			this.setState({ openSnackbar: 3 })
-			setTimeout(() => this.props.history.push('/projects/list'), 2e3)
+			setTimeout(() => this.props.history.push('/projects/list'), 1000)
 		}, 2e3)
 
 	}
@@ -215,7 +215,7 @@ class Project extends Component {
 					</ItemGrid>
 					{ this.renderDeleteDialog() }
 					<Snackbar
-						autoHideDuration={ 3000 }
+						autoHideDuration={ 1000 }
 						anchorOrigin={ { vertical: "bottom", horizontal: "right" } }
 						open={ this.state.openSnackbar !== 0 ? true : false }
 						onClose={ () => {

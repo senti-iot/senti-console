@@ -355,7 +355,7 @@ class EnhancedTable extends React.Component {
 					anchorOrigin={ { vertical: "bottom", horizontal: "right" } }
 					open={ this.state.openSnackbar !== 0 ? true : false }
 					onClose={ () => { this.setState({ openSnackbar: 0 }) } }
-					autoHideDuration={ 5000 }
+					autoHideDuration={ 1000 }
 					message={
 						<ItemGrid zeroMargin noPadding justify={ 'center' } alignItems={ 'center' } container id="message-id">
 							{ this.snackBarMessages() }
