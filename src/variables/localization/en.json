@@ -448,7 +448,8 @@
 		"orgCreated": "Organisation %{org} has been successfully created!",
 		"orgDeleted": "Organisation has been successfully deleted!",
 		"userCreated": "User %{user} has been succesfully created!",
-		"userUpdated": "User %{user} has been succesfully updated!"
+		"userUpdated": "User %{user} has been succesfully updated!",
+		"userDeleted": "User %{user} has been succesfully deleted!"
 	},
 	"tables": {
 		"addNewDevice": "Add device",
@@ -460,6 +461,10 @@
 	"users": {
 		"editUser": "Edit user",
 		"createUser": "Create user",
+		"userDelete": "Delete user",
+		"userDeleteConfirm": "Are you sure you want to delete this user",
+		"usersDelete": "Delete users",
+		"usersDeleteConfirm": "Are you sure you want to delete the following users:",
 		"actions": {
 			"addToGroups": "Add to groups",
 			"changeOrganisation": "Change organisation",

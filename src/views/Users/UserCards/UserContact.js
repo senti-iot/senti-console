@@ -76,9 +76,9 @@ class UserContact extends Component {
 				<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
 					<Edit className={classes.leftIcon} />{t("menus.edit")}
 				</MenuItem>
-				{apiorg ? apiorg.editusers ? !loggedUser.id === user.id ?  <MenuItem onClick={this.deleteUser}>
+				{apiorg ? apiorg.editusers || !loggedUser.id === user.id ?  <MenuItem onClick={this.deleteUser}>
 					<Delete className={classes.leftIcon} />{t("menus.delete")}
-				</MenuItem> : null : null : null}
+				</MenuItem> : null : null}
 				))}
 			</Menu>
 		</ItemGrid>

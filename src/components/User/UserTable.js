@@ -115,8 +115,8 @@ class UserTable extends React.Component {
 		this.setState({ rowsPerPage: event.target.value })
 	}
 
-	handleDeleteProjects = async () => {
-		await this.props.deleteProjects(this.state.selected)
+	handleDeleteUsers = async () => {
+		await this.props.handleDeleteUsers(this.state.selected)
 		this.setState({
 			selected: [],
 			anchorElMenu: null,
@@ -154,7 +154,7 @@ class UserTable extends React.Component {
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{t("users.deleteUsers")}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("users.usersDelete")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
 					{t("users.usersDeleteConfirm")}
@@ -170,7 +170,7 @@ class UserTable extends React.Component {
 				<Button onClick={this.handleCloseDeleteDialog} color="primary">
 					{t("actions.no")}
 				</Button>
-				<Button onClick={this.handle} color="primary" autoFocus>
+				<Button onClick={this.handleDeleteUsers} color="primary" autoFocus>
 					{t("actions.yes")}
 				</Button>
 			</DialogActions>

@@ -22,8 +22,14 @@ export const confirmUser = async (obj) => {
 	return data
 }
 export const editUser = async (user) => {
-	let data = await api.put(`core/user/${user.id}`, user).then(rs => rs.data)
+	let data = await api.put(`core/user/${user}`, user).then(rs => rs.data)
 	console.log('editUser', data)
+	return data
+}
+
+export const deleteUser = async (user) => {
+	let data = await api.delete(`core/user/${user}`).then(rs => rs.data)
+	console.log('deleteUser', data)
 	return data
 }
 

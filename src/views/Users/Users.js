@@ -4,7 +4,7 @@ import projectStyles from 'assets/jss/views/projects';
 import UserTable from 'components/User/UserTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
-import { getAllUsers } from 'variables/dataUsers';
+import { getAllUsers, deleteUser } from 'variables/dataUsers';
 import Toolbar from 'components/Toolbar/Toolbar'
 import { People, Business } from '@material-ui/icons';
 import { filterItems } from '../../variables/functions';
@@ -49,14 +49,16 @@ class Users extends Component {
 	filterItems = (data) => {
 		return filterItems(data, this.state.filters)
 	}
-	handleRequestSort = (event, property) => {
+	handleRequestSort = (event, property, way) => {
 		const orderBy = property;
 		let order = 'desc';
 
 		if (this.state.orderBy === property && this.state.order === 'desc') {
 			order = 'asc';
 		}
-
+		if (way) {
+			order = way
+		}
 		const users =
 			order === 'desc'
 				? this.state.users.sort((a, b) => (b[ orderBy ] < a[ orderBy ] ? -1 : 1))
@@ -105,7 +107,7 @@ class Users extends Component {
 					{ id: "lastSignIng", label: t("users.fields.lastSignIn") }
 				], 
 				loading: false
-			}, () => this.handleRequestSort(null, "firstName"))
+			}, () => this.handleRequestSort(null, "firstName", "asc"))
 		}
 	}
 
@@ -115,6 +117,14 @@ class Users extends Component {
 	]
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
+	}
+	handleDeleteUsers = async (selected) => {
+		console.log(selected)
+		await selected.forEach(async u => {
+			console.log(u)
+			await deleteUser(u)
+		})
+		this.getData()
 	}
 	renderUsers = () => {
 		const { t } = this.props
@@ -126,7 +136,8 @@ class Users extends Component {
 				handleFilterEndDate={this.handleFilterEndDate}
 				handleFilterKeyword={this.handleFilterKeyword}
 				handleFilterStartDate={ this.handleFilterStartDate }
-				handleRequestSort={ this.handleRequestSort }
+				handleRequestSort={this.handleRequestSort}
+				handleDeleteUsers={this.handleDeleteUsers}
 				order={order}
 				orderBy={ orderBy}
 				filters={filters}
