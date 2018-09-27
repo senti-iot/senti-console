@@ -261,7 +261,7 @@ class EditUser extends Component {
     			// description: "Senti Users"
     		}
     	]
-    	return accessLevel.apiorg.editusers ? <FormControl className={classes.formControl}>
+    	return accessLevel.apisuperuser ? <FormControl className={classes.formControl}>
     		<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
     			{t("users.fields.accessLevel")}
     		</InputLabel>
