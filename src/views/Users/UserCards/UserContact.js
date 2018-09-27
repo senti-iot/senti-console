@@ -51,7 +51,7 @@ class UserContact extends Component {
 		return null
 	}
 	renderTopAction = () => {
-		const { t, loggedUser, classes } = this.props
+		const { t, loggedUser, classes, user } = this.props
 		const { actionAnchor } = this.state
 		const { apiorg } = loggedUser.privileges
 		return <ItemGrid noMargin noPadding>
@@ -76,9 +76,9 @@ class UserContact extends Component {
 				<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
 					<Edit className={classes.leftIcon} />{t("menus.edit")}
 				</MenuItem>
-				{apiorg ? apiorg.editusers ? <MenuItem onClick={this.deleteUser}>
+				{apiorg ? apiorg.editusers ? !loggedUser.id === user.id ?  <MenuItem onClick={this.deleteUser}>
 					<Delete className={classes.leftIcon} />{t("menus.delete")}
-				</MenuItem> : null : null}
+				</MenuItem> : null : null : null}
 				))}
 			</Menu>
 		</ItemGrid>

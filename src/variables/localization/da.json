@@ -69,6 +69,15 @@
 			"pie": "Lagkage"
 		}
 	},
+	"confirmUser": {
+		"welcomeMessage": "Vilkommen til Senti.Cloud!",
+		"lastStep": "Du skal bare bekræfte et kodeord, og du er helt oprettet!",
+		"password": "Kodeord",
+		"passwordConfirm": "Bekræft kodeord",
+		"button": "Bekræft kodeord",
+		"passwordMismatch": "Kodeorde er ikke de samme",
+		"networkError": "Netværk fejl!"
+	},
 	"dashboard": {
 		"cardContent": {
 			"alerts": "Vidste du, at? ... \n Modtag intelligente regelbaserede advarsler om arten af dine indsamlede data, og informationer om dine enheders tilgængelighed. ",
@@ -113,7 +122,7 @@
 			"noAudioSupported": "Din browser understøtter ikke lydfiler! Der vil derfor ikke være understøttende lyd! Prøv en bedre browser."
 		},
 		"confirmUnassignTitle": "Fjern tilknytning",
-		"confirmUnassignMessage" : "Fjern de valgte enheder fra projekt:"		,
+		"confirmUnassignMessage": "Fjern de valgte enheder fra projekt:",
 		"cards": {
 			"data": "Data",
 			"details": "Detaljer for enhed",
@@ -186,8 +195,8 @@
 			"tableCellDeviceName": "Unavngivet",
 			"totalcount": "Tællinger total"
 		},
-		"tabs":{
-			"listView":"Listevisning",
+		"tabs": {
+			"listView": "Listevisning",
 			"cardView": "Gittervisning",
 			"mapView": "Kortvisning"
 		},
@@ -285,7 +294,7 @@
 		"create": "Opret",
 		"orgDelete": "Slet organisation?",
 		"orgDeleteConfirm": "Er du sikker på du ønsker at slette %{org}",
-		"orgsDelete":"Slet organisationer",
+		"orgsDelete": "Slet organisationer",
 		"orgsDeleteConfirm": "Er du sikker på du ønsker at slette organisationer",
 		"fields": {
 			"address": "Adresse",
@@ -435,7 +444,7 @@
 		"orgCreated": "Organisation %{org} er succesfuldt opretted!",
 		"orgDeleted": "Organisation er succefuld slettet!",
 		"userCreated": "Bruger %{user} er succesfuldt opretted!",
-		"userUpdated": "Bruger %{user} er succesfuldt opdateret!"		
+		"userUpdated": "Bruger %{user} er succesfuldt opdateret!"
 	},
 	"tables": {
 		"addNewDevice": "Tilføj enhed",
@@ -445,7 +454,7 @@
 		"selected": "valgt"
 	},
 	"users": {
-		"editUser": "Opdater bruger",				
+		"editUser": "Opdater bruger",
 		"createUser": "Opret bruger",
 		"actions": {
 			"addToGroups": "Tilføj til gruppe(r)",

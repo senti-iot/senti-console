@@ -69,6 +69,15 @@
 			"pie": "Pie"
 		}
 	},
+	"confirmUser": {
+		"welcomeMessage": "Welcome to Senti.Cloud!",
+		"lastStep": "You just have to confirm a password and you're all set up!",
+		"password": "Password",
+		"passwordConfirm": "Confirm password",
+		"button": "Confirm password",
+		"passwordMismatch": "Passwords are not the same!",
+		"networkError": "Network error!"
+	},
 	"dashboard": {
 		"cardContent": {
 			"alerts": "Did you know that? … \n Get true intelligent rule-based alerts about the nature of the data you're collecting.",

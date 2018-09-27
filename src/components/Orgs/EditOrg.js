@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { Paper, withStyles, Grid, /*  FormControl, InputLabel, Select, Input, Chip,  MenuItem, */ Collapse, Button, Snackbar, MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
 import { Save, Check } from '@material-ui/icons';
 import classNames from 'classnames';
-import { getOrg, updateOrg, getAllOrgs } from 'variables/dataUsers'
+import { getOrg, updateOrg, getAllOrgs } from 'variables/dataOrgs'
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from '..'
 import { connect } from 'react-redux'
 import createprojectStyles from '../../assets/jss/components/projects/createprojectStyles'

@@ -4,7 +4,7 @@ import {/*  InputAdornment, */ withStyles, CardContent, Collapse, Button } from 
 // @material-ui/icons
 // import { LockOutlined, Person } from "@material-ui/icons";
 // core components
-import { GridContainer, ItemGrid } from "components";
+import { GridContainer, ItemGrid, Info, /* Warning,  */Danger } from "components";
 // import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
@@ -13,15 +13,19 @@ import CardFooter from "components/Card/CardFooter.js";
 // import CustomInput from "components/CustomInput/CustomInput.js";
 
 import loginPageStyle from "assets/jss/material-dashboard-react/loginPageStyle.js";
-import { loginUser } from "variables/dataLogin";
-import { setToken } from 'variables/data'
-import cookie from "react-cookies";
+// import { loginUser } from "variables/dataLogin";
+// import { setToken } from 'variables/data'
+// import cookie from "react-cookies";
 // import classNames from 'classnames';
 import CircularLoader from "components/Loader/CircularLoader";
 import withLocalization from "components/Localization/T";
 import { connect } from 'react-redux';
 import { getSettings } from 'redux/settings';
 import TextF from '../../components/CustomInput/TextF';
+import { changeLanguage } from 'redux/localization';
+import { confirmUser } from 'variables/dataUsers';
+import cookie from 'react-cookies';
+import { setToken } from 'variables/data';
 
 class ConfirmUser extends React.Component {
 	constructor(props) {
@@ -29,8 +33,8 @@ class ConfirmUser extends React.Component {
 		// we use this to make the card to appear after the page has been rendered
 		this.state = {
 			cardAnimaton: "cardHidden",
-			user: '',
-			pass: '',
+			password: '',
+			confirmPassword: '',
 			loggingIn: false,
 			error: false
 		};
@@ -38,7 +42,7 @@ class ConfirmUser extends React.Component {
 	}
 	handleKeyPress = (event) => {
 		if (event.key === 'Enter') {
-			this.loginUser()
+			this.confirmUser()
 		}
 	}
 	componentWillUnmount = () => {
@@ -47,15 +51,13 @@ class ConfirmUser extends React.Component {
 	}
 
 	componentDidMount() {
-		console.log(this)
 		this._isMounted = 1
 		window.addEventListener('keypress', this.handleKeyPress, false)
-		// var loginData = cookie.load('SESSION')
-		// if (loginData) {
-		// 	if (setToken()) {
-		// 		this.props.history.push('/dashboard')
-		// 	}
-		// }
+		let lang = this.props.match.params.lang
+		this.token = this.props.match.params.token
+		if (lang) {
+			this.props.changeLanguage(lang)
+		}
 		if (this.inputRef.current) { this.inputRef.current.focus() }
 		setTimeout(
 			function () {
@@ -66,7 +68,7 @@ class ConfirmUser extends React.Component {
 	}
 	handleInput = (e) => {
 		this.setState({ [e.target.id]: e.target.value })
-		if (this.state.error) { 
+		if (this.state.error) {
 			this.setState({ error: false })
 		}
 	}
@@ -74,50 +76,75 @@ class ConfirmUser extends React.Component {
 		this.input = ref
 		return this.input
 	}
-	loginUser = async () => {
+	validatePassword = () => {
+		const { t } = this.props
+		const { password, confirmPassword } = this.state
+		if (password === confirmPassword && password !== '' && confirmPassword !== '') {
+			return true
+		}
+		else {
+			this.setState({
+				error: true,
+				errorMessage: t("confirmUser.passwordMismatch")
+			})
+		}
+	}
+	confirmUser = async () => {
+		if (this.validatePassword()) {
+			const { password } = this.state
+			const { t } = this.props
+			let session = await confirmUser({ newPassword: password, passwordToken: this.token })
+			if (session)
+				this.loginUser(session)
+			else {
+				this.setState({
+					error: true,
+					errorMessage: t("confirmUser.networkError")
+				})
+			}
+		}
+	}
+	loginUser = async (session) => {
+		const { t } = this.props
 		this.setState({ loggingIn: true })
 		setTimeout(
-			async function () {
-				await loginUser(this.state.user, this.state.pass).then(async rs => {
-					if (rs) {						
-						cookie.save('SESSION', rs, { path: '/' })
-						if (rs.isLoggedIn) {
-							if (setToken())								
-							{
-								await this.props.getSettings()
-								var prevURL = this.props.location.state ? this.props.location.state.prevUrl : null
-								this.props.history.push(prevURL ? prevURL : "/dashboard")
-							}
-						}
+			async () => {
+
+				cookie.save('SESSION', session, { path: '/' })
+				if (session.isLoggedIn) {
+					if (setToken()) {
+						await this.props.getSettings()
+						this.props.history.push("/dashboard")
 					}
-					else {
-						this.setState({ error: true, loggingIn: false })
-					}
-				})
-			}.bind(this),
-			1000
-		);
+				}
+
+				else {
+					this.setState({
+						error: true,
+						errorMessage: t("confirmUser.networkError"),
+						loggingIn: false
+					})
+				}
+			}, 1000)
+	}
 
 
+	handleChange = prop => e => {
+		this.setState({
+			...this.state,
+			[prop]: e.target.value
+		})
+		if (this.state.error)
+			this.setState({
+				error: false
+			})
 	}
 	inputRef = (ref) => {
 		this.input = ref
 	}
 	render() {
-		const { classes, /* t */ } = this.props;
-		const { error } = this.state
-		// const label = classNames({ [classes.label]: !this.state.error,
-		// 	[classes.errorLabel]: this.state.error
-		// });
-		// const underline = classNames({
-		// 	[classes.underline]: !this.state.error,
-		// 	[classes.errorUnderline]: this.state.error
-		// });
-		// const focused = classNames({
-		// 	[classes.focused]: !this.state.error,
-		// 	[classes.errorFocused]: this.state.error
-		
-		// });
+		const { classes, t } = this.props;
+		const { error, password, confirmPassword, errorMessage } = this.state
 		return (
 			<div>
 				<div
@@ -137,24 +164,20 @@ class ConfirmUser extends React.Component {
 											<h4>Senti.Cloud</h4>
 										</CardHeader>
 										<CardBody>
-											<TextF
-												id={"token"}
-												label={"Token"}
-												value={this.props.match.params.token}
-												className={classes.textField}
-												disabled={true}
-												// handleChange={this.handleChange("zip")}
-												margin="normal"
-												noFullWidth
-												error={error}
-											/>
+											<Collapse in={!error}>
+												<Info>{t("confirmUser.welcomeMessage")}</Info>
+												<Info>{t("confirmUser.lastStep")}</Info>
+											</Collapse>
+											<Collapse in={error}>
+												<Danger>{errorMessage}</Danger>
+											</Collapse>
 											<TextF
 												id={"password"}
-												label={"New Password"}
-												value={this.props.match.params.token}
+												label={t('confirmUser.password')}
+												value={password}
 												className={classes.textField}
 												// disabled={true}
-												// handleChange={this.handleChange("zip")}
+												handleChange={this.handleChange("password")}
 												margin="normal"
 												noFullWidth
 												error={error}
@@ -162,75 +185,26 @@ class ConfirmUser extends React.Component {
 											/>
 											<TextF
 												id={"confirmpassword"}
-												label={"Confirm password"}
-												value={this.props.match.params.token}
+												label={t("confirmUser.passwordConfirm")}
+												value={confirmPassword}
 												className={classes.textField}
 												// disabled={true}
-												// handleChange={this.handleChange("zip")}
+												handleChange={this.handleChange("confirmPassword")}
 												margin="normal"
 												noFullWidth
 												error={error}
 												type={'password'}
 											/>
-											{/* <CustomInput
-												inputRef={this.createRef}
-												autoFocus={true}
-												labelText={t("login.username")}
-												id="user"
-												error={this.state.error}
-												formControlProps={{
-													fullWidth: true
-												}}
-												labelProps={{ FormLabelClasses: {
-													root: label,
-													focused: focused } }}
-												inputProps={{
-													type: "email",
-													onChange: this.handleInput,
-													classes: { underline: underline },
-													endAdornment: (
-														<InputAdornment position="end">
-															<Person className={classes.inputIconsColor} />
-														</InputAdornment>
-													)
-												}}
-											/>
-											<CustomInput
-												labelText={t("login.pass")}
-												id="pass"
-												error={this.state.error}
-												formControlProps={{
-													fullWidth: true
-												}}
-												labelProps={{
-													FormLabelClasses: {
-														root: classes.label,
-														focused: classes.focused
-													}
-												}}
-												inputProps={{
-													type: "password",
-													onChange: this.handleInput,
-													classes: { underline: classes.underline },
-													endAdornment: (
-														<InputAdornment position="end">
-															<LockOutlined className={classes.inputIconsColor} />
-														</InputAdornment>
-													)
-												}}
-											/> */}
 										</CardBody>
 										<CardFooter className={classes.cardFooter}>
-											<Button variant={'contained'} color={'primary'} size="large" className={classes.loginButton} onClick={this.loginUser}>
-												{/* {t("login.button")} */}
-												Confirm User
+											<Button variant={'contained'} color={'primary'} size="large" className={classes.loginButton} onClick={this.confirmUser}>
+												{t("confirmUser.button")}
 											</Button>
 										</CardFooter>
 									</form>
 									<Collapse in={this.state.loggingIn} timeout="auto" unmountOnExit>
 										<CardContent>
-											{/* <Grid container><CircularProgress className={classes.loader} /></Grid> */}
-											<CircularLoader notCentered/>
+											<CircularLoader notCentered />
 										</CardContent>
 									</Collapse>
 								</Card>
@@ -244,11 +218,12 @@ class ConfirmUser extends React.Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	
+
 })
 
 const mapDispatchToProps = dispatch => ({
-	getSettings: async () => dispatch(await getSettings())
+	getSettings: async () => dispatch(await getSettings()),
+	changeLanguage: l => dispatch(changeLanguage(l, true))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(loginPageStyle)(ConfirmUser)));

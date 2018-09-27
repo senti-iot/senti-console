@@ -25,17 +25,19 @@ class User extends Component {
 	
 	componentDidMount = () => {
 		if (this.props.match)
-			if (this.props.match.params.id)
-			{
-				this.timer = setTimeout(async () => await getUser(this.props.match.params.id).then(async rs => {
-					if (rs === null)
-						this.props.history.push('/404')
-					else {
-						this.props.setHeader(`${rs.firstName} ${rs.lastName}`, true, '/users', "users")
-						this.setState({ user: rs, loading: false })
-					}
-				}))
-				  }
+		{	if (this.props.match.params.id) {
+			this.timer = setTimeout(async () => await getUser(this.props.match.params.id).then(async rs => {
+				if (rs.id === null)
+					this.props.history.push('/404')
+				else {
+					this.props.setHeader(`${rs.firstName} ${rs.lastName}`, true, '/users', "users")
+					this.setState({ user: rs, loading: false })
+				}
+			}))
+		}}
+		else {
+			this.props.history.push('/404')
+		 }
 	}
 	
 	render() {

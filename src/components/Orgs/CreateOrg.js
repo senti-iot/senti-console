@@ -6,7 +6,7 @@ import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 
 import { connect } from 'react-redux'
 import createprojectStyles from '../../assets/jss/components/projects/createprojectStyles'
 import EditOrgAutoSuggest from './EditOrgAutoSuggest';
-import { createOrg, getAllOrgs } from '../../variables/dataUsers';
+import { createOrg, getAllOrgs } from '../../variables/dataOrgs';
 var countries = require("i18n-iso-countries");
 
 class CreateOrg extends Component {

@@ -10,13 +10,14 @@ const changeLangAction = "LANG"
 const GETSETTINGS = "GET_SETTINGS"
 const NOSETTINGS = "NO_SETTINGS"
 //Actions
-export const changeLanguage = (code) => {
+export const changeLanguage = (code, noSave) => {
 	return async (dispatch, getState) => {
 		dispatch(
 			{ type: changeLangAction,
 				code
 			})
-		dispatch(saveSettingsOnServ())
+		if (!noSave)
+		 	dispatch(saveSettingsOnServ())
 	}
 }
 

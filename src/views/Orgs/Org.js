@@ -11,7 +11,7 @@ import {
 	Button,
 	Snackbar,
 } from '@material-ui/core';
-import { getOrg } from 'variables/dataUsers';
+import { getOrg } from 'variables/dataOrgs';
 import OrgDetails from './OrgCards/OrgDetails';
 // var moment = require("moment")
 import { connect } from 'react-redux'

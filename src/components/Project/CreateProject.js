@@ -9,7 +9,7 @@ import { withRouter } from 'react-router-dom'
 // import { getAvailableDevices } from 'variables/dataDevices'
 import { createProject } from 'variables/dataProjects'
 import { Caption, CircularLoader, GridContainer, ItemGrid, TextF, Danger } from '..'
-import { getAllOrgs } from 'variables/dataUsers';
+import { getAllOrgs } from 'variables/dataOrgs';
 import { getAvailableDevices } from 'variables/dataDevices';
 import { getCreateProject } from '../../variables/dataProjects'
 import { connect } from 'react-redux'
