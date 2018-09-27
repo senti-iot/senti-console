@@ -75,7 +75,11 @@
 		"password": "Password",
 		"passwordConfirm": "Confirm and sign in",
 		"button": "Confirm password",
-		"passwordMismatch": "The entered passwords are not identical!",
+		"validation":{
+			"passwordMismatch": "The entered passwords are not identical!",
+			"passwordUnder8": "Password must contain at least 8 characters!",
+			"passwordEmpty": "Password cannot be empty!"
+		},
 		"networkError": "Network Error!"
 	},
 	"dashboard": {

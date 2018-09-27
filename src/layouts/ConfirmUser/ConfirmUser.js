@@ -79,7 +79,7 @@ class ConfirmUser extends React.Component {
 	handleValidation = () => {
 		let errorCode = [];
 		const { password, confirmPassword } = this.state
-		if (password !== '' && confirmPassword !== '') {
+		if (password === '' && confirmPassword === '') {
 			errorCode.push(0)
 		}
 		if (password.length < 8) {

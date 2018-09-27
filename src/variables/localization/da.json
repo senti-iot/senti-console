@@ -75,7 +75,11 @@
 		"password": "Kodeord",
 		"passwordConfirm": "Bekræft kodeord",
 		"button": "Bekræft og log ind",
-		"passwordMismatch": "Indtastede kodeord er ikke ens!",
+		"validation": {
+			"passwordMismatch": "Indtastede kodeord er ikke ens!",
+			"passwordUnder8": "Indtastede kodeord skal have mindst 8 tegn!",
+			"passwordEmpty": "Kodeord kan ikke være tomt!"
+		},
 		"networkError": "Netværksfejl!"
 	},
 	"dashboard": {
