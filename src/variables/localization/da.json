@@ -307,7 +307,7 @@
 			"noCity": "Mangler by",
 			"noZip": "Mangler postnummer",
 			"noCountry": "Mangler land",
-			"networkError": "Netværk fejl!",
+			"networkError": "Netværksfejl!",
 			"noParent": "Mangler organisatorisk tilhørsforhold"
 		}
 	},
