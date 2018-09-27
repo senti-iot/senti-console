@@ -15,12 +15,15 @@ class HeaderLinks extends React.Component {
 		this.setState({ anchorProfile: e.currentTarget })
 	}
 	handleRedirectToOwnProfile = () => {
-		this.setState({ anchorProfile: null })
+		this.handleProfileClose()
 		if (this.props.user)
 			this.props.history.push(`/user/${this.props.user.id}`)
+		
 	}
 	handleProfileClose = () => {
 		this.setState({ anchorProfile: null })
+		if (this.props.onClose)
+			this.props.onClose() 
 	}
 	logOut = () => {
 		try {
