@@ -23,6 +23,7 @@ const TextF = (props) => {
 			error={props.error ? props.error : undefined}
 			type={props.type ? props.type : undefined}
 			pattern={props.pattern ? props.pattern : ""}
+			disabled={props.disabled ? props.disabled : false}
 			margin="normal" />
 
 	)
@@ -31,6 +32,6 @@ TextF.propTypes = {
 	id: PropTypes.string.isRequired,
 	label: PropTypes.string.isRequired,
 	value: PropTypes.string,
-	handleChange: PropTypes.func.isRequired
+	// handleChange: PropTypes.func.isRequired
 }
 export default withStyles(styles)(TextF)
