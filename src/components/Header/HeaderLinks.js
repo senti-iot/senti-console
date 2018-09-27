@@ -55,7 +55,7 @@ class HeaderLinks extends React.Component {
 						root: classes.iconRoot
 					}}
 				>
-					{user.img ? <img src={user.img} alt="UserProfile" className={classes.img} /> : <Gravatar default="mp" email={user.email} className={classes.img} size={36} />}
+					{user ? user.img ? <img src={user.img} alt="UserProfile" className={classes.img} /> : <Gravatar default="mp" email={user.email} className={classes.img} size={36} /> : null}
 				</IconButton>
 				<Menu
 					id="menu-appbar"
