@@ -316,7 +316,7 @@
 			"noCity": "City missing",
 			"noZip": "ZIP missing",
 			"noCountry": "Country missing",
-			"networkError": "Network error!",
+			"networkError": "Network Error!",
 			"noParent": "Parent Organisation missing"
 		}
 	},
