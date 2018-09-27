@@ -71,12 +71,12 @@
 	},
 	"confirmUser": {
 		"welcomeMessage": "Welcome to Senti.Cloud!",
-		"lastStep": "You just have to confirm a password and you're all set up!",
+		"lastStep": "Create your password to confirm your Senti.Cloud account.",
 		"password": "Password",
-		"passwordConfirm": "Confirm password",
+		"passwordConfirm": "Confirm and sign in",
 		"button": "Confirm password",
-		"passwordMismatch": "Passwords are not the same!",
-		"networkError": "Network error!"
+		"passwordMismatch": "The entered passwords are not identical!",
+		"networkError": "Network Error!"
 	},
 	"dashboard": {
 		"cardContent": {
