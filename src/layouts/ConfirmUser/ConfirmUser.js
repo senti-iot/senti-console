@@ -1,10 +1,10 @@
 import React from "react";
 // material-ui components
-import {/*  InputAdornment, */ withStyles, CardContent, Collapse, Button } from "@material-ui/core";
+import {/*  InputAdornment, */ withStyles, CardContent, Collapse, Button, Grid } from "@material-ui/core";
 // @material-ui/icons
 // import { LockOutlined, Person } from "@material-ui/icons";
 // core components
-import { GridContainer, ItemGrid, Info, /* Warning,  */Danger } from "components";
+import { GridContainer, ItemGrid, Info, /* Warning,  */Danger, ItemG } from "components";
 // import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
@@ -26,6 +26,7 @@ import { changeLanguage } from 'redux/localization';
 import { confirmUser } from 'variables/dataUsers';
 import cookie from 'react-cookies';
 import { setToken } from 'variables/data';
+var passChecker = require("zxcvbn")
 
 class ConfirmUser extends React.Component {
 	constructor(props) {
@@ -36,7 +37,11 @@ class ConfirmUser extends React.Component {
 			password: '',
 			confirmPassword: '',
 			loggingIn: false,
-			error: false
+			error: false,
+			errorMessage: [],
+			score: 0,
+			minScore: 2,
+			minLength: 8,
 		};
 		this.input = React.createRef()
 	}
@@ -66,31 +71,48 @@ class ConfirmUser extends React.Component {
 			300
 		);
 	}
-	handleInput = (e) => {
-		this.setState({ [e.target.id]: e.target.value })
-		if (this.state.error) {
-			this.setState({ error: false })
-		}
-	}
+
 	createRef = (ref) => {
 		this.input = ref
 		return this.input
 	}
-	validatePassword = () => {
-		const { t } = this.props
+	handleValidation = () => {
+		let errorCode = [];
 		const { password, confirmPassword } = this.state
-		if (password === confirmPassword && password !== '' && confirmPassword !== '') {
-			return true
+		if (password !== '' && confirmPassword !== '') {
+			errorCode.push(0)
 		}
-		else {
-			this.setState({
-				error: true,
-				errorMessage: t("confirmUser.passwordMismatch")
-			})
+		if (password.length < 8) {
+			errorCode.push(1)
+		}
+		if (password !== confirmPassword) {
+			errorCode.push(2)
+		}
+		this.setState({
+			error: true,
+			errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
+		})
+		console.log(errorCode)
+		if (errorCode.length === 0)
+			return true
+		else
+			return false
+	}
+	errorMessages = code => {
+		const { t } = this.props
+		switch (code) {
+			case 0:
+				return t("confirmUser.validation.passwordEmpty")
+			case 1:
+				return t("confirmUser.validation.passwordUnder8")
+			case 2:
+				return t("confirmUser.validation.passwordMismatch")
+			default:
+				return ""
 		}
 	}
 	confirmUser = async () => {
-		if (this.validatePassword()) {
+		if (this.handleValidation()) {
 			const { password } = this.state
 			const { t } = this.props
 			let session = await confirmUser({ newPassword: password, passwordToken: this.token })
@@ -99,7 +121,7 @@ class ConfirmUser extends React.Component {
 			else {
 				this.setState({
 					error: true,
-					errorMessage: t("confirmUser.networkError")
+					errorMessage: [t("confirmUser.networkError")]
 				})
 			}
 		}
@@ -130,8 +152,17 @@ class ConfirmUser extends React.Component {
 
 
 	handleChange = prop => e => {
+		let score = 0 
+		let result = null
+		let pass = e.target.value
+		if (!(pass.length < this.state.minLength)) { 
+			result = passChecker(pass, [])
+			score = result.score
+		}
 		this.setState({
 			...this.state,
+			isValid: score >= this.state.minScore,
+			score,
 			[prop]: e.target.value
 		})
 		if (this.state.error)
@@ -157,44 +188,53 @@ class ConfirmUser extends React.Component {
 				>
 					<div className={classes.container}>
 						<GridContainer justify="center">
-							<ItemGrid xs={12} sm={12} md={3}>
+							<ItemGrid xs={12} sm={6} md={4}>
 								<Card className={classes[this.state.cardAnimaton]}>
 									<form className={classes.form}>
 										<CardHeader color="primary" className={classes.cardHeader}>
 											<h4>Senti.Cloud</h4>
 										</CardHeader>
 										<CardBody>
-											<Collapse in={!error}>
-												<Info>{t("confirmUser.welcomeMessage")}</Info>
-												<Info>{t("confirmUser.lastStep")}</Info>
-											</Collapse>
-											<Collapse in={error}>
-												<Danger>{errorMessage}</Danger>
-											</Collapse>
-											<TextF
-												id={"password"}
-												label={t('confirmUser.password')}
-												value={password}
-												className={classes.textField}
-												// disabled={true}
-												handleChange={this.handleChange("password")}
-												margin="normal"
-												noFullWidth
-												error={error}
-												type={'password'}
-											/>
-											<TextF
-												id={"confirmpassword"}
-												label={t("confirmUser.passwordConfirm")}
-												value={confirmPassword}
-												className={classes.textField}
-												// disabled={true}
-												handleChange={this.handleChange("confirmPassword")}
-												margin="normal"
-												noFullWidth
-												error={error}
-												type={'password'}
-											/>
+											<Grid container>
+												<ItemG xs={12}>
+													<Collapse in={!error}>
+														<Info>{t("confirmUser.welcomeMessage")}</Info>
+														<Info>{t("confirmUser.lastStep")}</Info>
+													</Collapse>
+													<Collapse in={error}>
+														{errorMessage.map(m => m)}
+													</Collapse>
+												</ItemG>
+												<ItemG xs={12}>
+													<TextF
+														id={"password"}
+														label={t('confirmUser.password')}
+														value={password}
+														className={classes.textField}
+														// disabled={true}
+														handleChange={this.handleChange("password")}
+														margin="normal"
+														noFullWidth
+														error={error}
+														type={'password'}
+													// helperText={<Danger>{this.state.score}</Danger>}
+													/>
+												</ItemG>
+												<ItemG xs={12}>
+													<TextF
+														id={"confirmpassword"}
+														label={t("confirmUser.passwordConfirm")}
+														value={confirmPassword}
+														className={classes.textField}
+														// disabled={true}
+														handleChange={this.handleChange("confirmPassword")}
+														margin="normal"
+														noFullWidth
+														error={error}
+														type={'password'}
+													/>
+												</ItemG>
+											</Grid>
 										</CardBody>
 										<CardFooter className={classes.cardFooter}>
 											<Button variant={'contained'} color={'primary'} size="large" className={classes.loginButton} onClick={this.confirmUser}>

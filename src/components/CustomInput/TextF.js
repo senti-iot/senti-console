@@ -25,6 +25,7 @@ const TextF = (props) => {
 			pattern={props.pattern ? props.pattern : ""}
 			disabled={props.disabled ? props.disabled : false}
 			margin="normal"
+			helperText={props.helperText}
 		/>
 
 	)

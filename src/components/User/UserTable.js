@@ -147,26 +147,30 @@ class UserTable extends React.Component {
 	renderConfirmDelete = () => {
 		const { openDelete, selected } = this.state
 		const { data, t } = this.props
+
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{t("projects.projectDelete")}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("users.deleteUsers")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("projects.projectDeleteConfirm")}
+					{t("users.usersDeleteConfirm")}
 				</DialogContentText>
 				<div>
-					{selected.map(s => <Info key={s}>&bull;{data[data.findIndex(d => d.id === s)].title}</Info>)}
+					{selected.map(s => {
+						let u = data[data.findIndex(d => d.id === s)]
+						return <Info key={s}>&bull;{u.firstName + " " + u.lastName}</Info>})
+					}
 				</div>
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={this.handleCloseDeleteDialog} color="primary">
 					{t("actions.no")}
 				</Button>
-				<Button onClick={this.handleDeleteProjects} color="primary" autoFocus>
+				<Button onClick={this.handle} color="primary" autoFocus>
 					{t("actions.yes")}
 				</Button>
 			</DialogActions>
