@@ -51,9 +51,9 @@ class UserContact extends Component {
 		return null
 	}
 	renderTopAction = () => {
-		const { t, user, classes } = this.props
+		const { t, loggedUser, classes } = this.props
 		const { actionAnchor } = this.state
-		const { apiorg } = user.privileges
+		const { apiorg } = loggedUser.privileges
 		return <ItemGrid noMargin noPadding>
 			<IconButton
 				aria-label="More"
