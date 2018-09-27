@@ -70,13 +70,13 @@
 		}
 	},
 	"confirmUser": {
-		"welcomeMessage": "Vilkommen til Senti.Cloud!",
-		"lastStep": "Du skal bare bekræfte et kodeord, og du er helt oprettet!",
+		"welcomeMessage": "Velkommen til Senti.Cloud!",
+		"lastStep": "Indtast et kodeord for at bekræfte oprettelsen af din Senti.Cloud konto.",
 		"password": "Kodeord",
 		"passwordConfirm": "Bekræft kodeord",
-		"button": "Bekræft kodeord",
-		"passwordMismatch": "Kodeorde er ikke de samme",
-		"networkError": "Netværk fejl!"
+		"button": "Bekræft og log ind",
+		"passwordMismatch": "Indtastede kodeord er ikke ens!",
+		"networkError": "Netværksfejl!"
 	},
 	"dashboard": {
 		"cardContent": {
