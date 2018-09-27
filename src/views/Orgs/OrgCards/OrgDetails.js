@@ -61,7 +61,7 @@ class OrgDetails extends Component {
     							minWidth: 200
     						}
     					}}>
-						{this.options().map((m, i) => <MenuItem onClick={m.func}>
+						{this.options().map((m, i) => <MenuItem key={i} onClick={m.func}>
 							<m.icon className={classes.leftIcon} />{m.label}
 						</MenuItem>)}
     					{/* <MenuItem onClick={this.deleteOrg}>

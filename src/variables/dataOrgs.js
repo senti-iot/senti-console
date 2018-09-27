@@ -6,12 +6,16 @@ export const getAllOrgs = async () => {
 	return data
 }
 
-export const getOrg = async(orgId) => {
+export const getOrg = async (orgId) => {
 	var data = await api.get(`core/org/${orgId}`).then(rs => rs.data)
 	// console.log('getOrg', orgId, data)
 	return data
 }
-export const updateOrg = async(org) => {
+export const getOrgUsers = async (orgId) => {
+	var data = await api.get(`core/org/users/${orgId}`).then(rs => rs.data)
+	return data
+}
+export const updateOrg = async (org) => {
 	var data = await api.put(`core/org/${org.id}`, org).then(rs => rs.data)
 	return data
 }

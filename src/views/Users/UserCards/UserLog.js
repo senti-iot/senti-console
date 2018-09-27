@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info } from 'components';
+import { FolderShared } from '@material-ui/icons'
 import { Grid } from '@material-ui/core'
 var moment = require('moment')
 export class UserLog extends Component {
@@ -12,6 +13,7 @@ export class UserLog extends Component {
 			<InfoCard
 				title={t("users.headers.system")}
 				noExpand
+				avatar={<FolderShared/>}
 				content={
 					<Grid container>
 						<ItemGrid xs={12}>

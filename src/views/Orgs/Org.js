@@ -11,11 +11,12 @@ import {
 	Button,
 	Snackbar,
 } from '@material-ui/core';
-import { getOrg } from 'variables/dataOrgs';
+import { getOrg, getOrgUsers } from 'variables/dataOrgs';
 import OrgDetails from './OrgCards/OrgDetails';
 // var moment = require("moment")
 import { connect } from 'react-redux'
 import { deleteOrg } from '../../variables/dataOrgs';
+import OrgUsers from 'views/Orgs/OrgCards/OrgUsers';
 
 class Org extends Component {
 	constructor(props) {
@@ -23,7 +24,9 @@ class Org extends Component {
 
 		this.state = {
 			org: {},
+			users: [],
 			loading: true,
+			loadingUsers: true,
 			openDelete: false,
 			openSnackbar: 0
 		}
@@ -34,17 +37,20 @@ class Org extends Component {
 		}
 	}
 
-	componentDidMount = () => {
+	componentDidMount = async () => {
 		if (this.props.match)
 			if (this.props.match.params.id) {
-				this.timer = setTimeout(async () => await getOrg(this.props.match.params.id).then(async rs => {
+				await getOrg(this.props.match.params.id).then(async rs => {
 					if (rs === null)
 						this.props.history.push('/404')
 					else {
 						this.props.setHeader(`${rs.name}`, true, '/orgs', "users")
 						this.setState({ org: rs, loading: false })
 					}
-				}))
+				})
+				await getOrgUsers(this.props.match.params.id).then(rs => {
+					this.setState({ users: rs, loadingUsers: false })
+				})
 			}
 	}
 	handleDeleteOrg = async () => {
@@ -135,7 +141,7 @@ class Org extends Component {
 	/>
 	render() {
 		const { classes, t, history, match, language } = this.props
-		const { org, loading } = this.state
+		const { org, loading, loadingUsers } = this.state
 		return (
 			loading ? <CircularLoader /> : <Fragment>
 				<GridContainer justify={'center'} alignContent={'space-between'}>
@@ -148,7 +154,15 @@ class Org extends Component {
 							t={t}
 							org={org}
 							language={language}
-							accessLevel={this.props.accessLevel}/>
+							accessLevel={this.props.accessLevel} />
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin>
+						{!loadingUsers ? <OrgUsers
+							t={t}
+							users={this.state.users}
+							history={history}
+						/> :
+							<CircularLoader notCentered />}
 					</ItemGrid>
 				</GridContainer>
 				{this.renderSnackBar()}
