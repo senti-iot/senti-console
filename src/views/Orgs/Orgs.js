@@ -26,7 +26,7 @@ class Orgs extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader(props.t("orgs.pageTitle"), false, '', "users")
+		props.setHeader("orgs.pageTitle", false, '', "users")
 	}
 	reload = async () => {
 		this.setState({ loading: true })

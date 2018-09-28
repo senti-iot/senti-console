@@ -50,8 +50,8 @@ class EditUser extends Component {
 	}
     componentDidMount = async () => {
     	this._isMounted = 1
-    	const { t, setHeader } = this.props
-    	setHeader(t("users.editUser"), true, '/users', "users")
+    	const { setHeader } = this.props
+    	setHeader("users.editUser", true, '/users', "users")
     	if (this._isMounted)
     	{
     		await this.getUser()

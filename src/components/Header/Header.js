@@ -22,7 +22,7 @@ function Header({ ...props }) {
 						<KeyboardArrowLeft width={40} height={40} />
 					</Button>}
 					<Button className={classes.title}>
-						{props.headerTitle}
+						{props.headerTitle ? t(props.headerTitle.id, props.headerTitle.options) : ""}
 					</Button>
 				</div>
 				<Hidden mdDown implementation="css">

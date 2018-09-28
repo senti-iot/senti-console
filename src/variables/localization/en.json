@@ -3,6 +3,7 @@
 		"errorMessage": "The resource requested has not been found! Please try again or contact support!",
 		"title": "404 Error - Page Not Found"
 	},
+	"Senti.Cloud" : "Senti.Cloud",
 	"actions": {
 		"accept": "Accept",
 		"apply": "Apply",
@@ -31,7 +32,7 @@
 			"description": "Description",
 			"deviceName": "Device name"
 		},
-		"header": "On-site setup",
+		"header": "On-site setup %{deviceId}",
 		"selectLocationType": "Select a location type for ",
 		"stepheader": {
 			"calibration": "Calibration",

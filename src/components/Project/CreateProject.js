@@ -51,7 +51,6 @@ class CreateProject extends Component {
 	}
 
 	componentDidMount = () => {
-		const { t } = this.props
 		this._isMounted = 1
 
 		getAllOrgs().then(async rs => {
@@ -73,7 +72,7 @@ class CreateProject extends Component {
 				}
 			}
 		})
-		this.props.setHeader(t("projects.new"), true, "/projects/list", "projects")
+		this.props.setHeader("projects.new", true, "/projects/list", "projects")
 	}
 
 	componentWillUnmount = () => {

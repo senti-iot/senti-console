@@ -9,7 +9,7 @@ import DiscoverSenti from './DiscoverSenti'
 import MediaCard from 'components/Cards/MediaCard'
 import { connect } from 'react-redux'
 import imgs from 'assets/img/Squared'
-import { ItemG } from 'components';
+import { ItemG, Caption } from 'components';
 import { Link } from 'react-router-dom';
 
 class Dashboard extends React.Component {
@@ -26,7 +26,6 @@ class Dashboard extends React.Component {
 
 
 	componentDidMount = async () => {
-		console.log("Mounted")
 		this.props.setHeader("Senti.Cloud", false, '', "dashboard")
 	}
 
@@ -116,6 +115,11 @@ class Dashboard extends React.Component {
 						leftAction={this.renderAction("actions.learnMore", "/")}
 						rightAction={this.renderAction("actions.startNow", "/", true)}
 					/></ItemG>
+					<ItemG justify xs={12}>
+						<Caption>
+							Senti.Cloud version 2.1
+						</Caption>
+					</ItemG>
 				</GridContainer>
 			</Fragment>
 		)

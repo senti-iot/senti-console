@@ -50,8 +50,8 @@ class CreateUser extends Component {
 	}
     componentDidMount = async () => {
     	this._isMounted = 1
-    	const { t, setHeader } = this.props
-    	setHeader(t("users.createUser"), true, '/users', "users")
+    	const { setHeader } = this.props
+    	setHeader("users.createUser", true, '/users', "users")
     	if (this._isMounted)
     		await this.getOrgs()
     }

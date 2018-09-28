@@ -64,7 +64,7 @@ class CalibrateDevice extends Component {
 			locationType: 0,
 			address: ''
 		}
-		props.setHeader(this.props.t("calibration.header") + " " + props.match.params.id, true, `/device/${props.match.params.id}`, "devices")
+		props.setHeader( { id: "calibration.header", options: { deviceId: props.match.params.id } }, true, `/device/${props.match.params.id}`, "devices")
 	}
 	componentDidMount = async () => {
 		if (this.props.match) {

@@ -22,12 +22,12 @@ class Settings extends Component {
 	  this.state = {
 		 
 		}
-		props.setHeader(props.t("settings.pageTitle"), false, '', "settings")
+		props.setHeader("settings.pageTitle", false, '', "settings")
 	}
 	
 	changeLanguage = (lang) => {
 		this.props.changeLanguage(lang)
-		setTimeout(() => this.props.setHeader(this.props.t("settings.pageTitle"), false, '', "settings"), 100)
+		// setTimeout(() => this.props.setHeader(this.props.t("settings.pageTitle"), false, '', "settings"), 100)
 	}
 	render() {
 		const { t } = this.props 

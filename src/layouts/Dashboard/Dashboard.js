@@ -39,12 +39,25 @@ class App extends React.Component {
 	handleSetHeaderTitle = (headerTitle, goBackButton, url, menuRoute) => {
 		if (this._isMounted)
 			if (headerTitle !== this.state.headerTitle) {
-				this.setState({
-					headerTitle,
-					goBackButton: goBackButton,
-					url,
-					menuRoute
-				})
+				console.log(typeof headerTitle)
+				if (typeof headerTitle === 'string')
+					this.setState({
+						headerTitle: {
+							id: headerTitle,
+							options: null
+						},
+						goBackButton: goBackButton,
+						url,
+						menuRoute
+					})
+				else {
+					this.setState({
+						headerTitle: headerTitle,
+						goBackButton: goBackButton,
+						url,
+						menuRoute
+					})
+				}
 			}
 	};
 	handleGoBackButton = () => {
