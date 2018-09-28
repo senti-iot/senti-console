@@ -1,5 +1,5 @@
 import { api } from "./data";
-import { getSimpleAddress } from "./dataDevices";
+// import { getSimpleAddress } from "./dataDevices";
 
 export const getProjectImage = async (project) => {
 	
@@ -23,9 +23,9 @@ export const getAllProjects = async () => {
 
 export const getProject = async (projectId) => {
 	var data = await api.get('senti/project/' + projectId).then(rs => rs.data)
-	data.devices.map(async d => {
-		return d.address ? null : d.address = await getSimpleAddress(d.lat, d.long)
-	})
+	// data.devices.map(async d => {
+	// 	return d.address ? null : d.address = await getSimpleAddress(d.lat, d.long)
+	// })
 	return data
 }
 

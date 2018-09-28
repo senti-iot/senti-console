@@ -26,6 +26,7 @@ const TextF = (props) => {
 			disabled={props.disabled ? props.disabled : false}
 			margin="normal"
 			helperText={props.helperText}
+			InputProps={props.InputProps ? props.InputProps : null}
 		/>
 
 	)

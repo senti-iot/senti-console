@@ -264,6 +264,7 @@
 	},
 	"login": {
 		"button": "Log ind",
+		"forgotPass": "Glemt kodeord?",
 		"pass": "Kodeord",
 		"username": "Brugernavn"
 	},

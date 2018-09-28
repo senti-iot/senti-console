@@ -11,7 +11,21 @@ export const logOut = async () => {
 	cookie.remove('loginData')
 	return data
 }
-
+export const resetPassword = async(obj) => {
+	let data = await api.post(`/core/user/forgotpassword`, obj).then(rs => rs.data)
+	console.log(data)
+	return data
+}
+export const confirmPassword = async (obj) => {
+	let data = await api.post(`/core/user/forgotpassword/set`, obj).then(rs => rs.data)
+	console.log(data)
+	return data
+}
+export const setPassword = async (obj) => {
+	let data = await api.post(`/core/user/setpassword`, obj).then(rs => rs.data)
+	console.log(data)
+	return data
+}
 export const getSettingsFromServer = async () => {
 	var data = await api.get('senti/users/settings').then(rs => rs.data)
 	return JSON.parse(data)

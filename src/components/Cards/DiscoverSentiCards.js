@@ -13,7 +13,7 @@ class DiscoverSentiCard extends Component {
 				{img ? <CardContent classes={{ root: classes.root + ' ' + classes.discoverSentiCenter + ' ' + classes.contentMedia }}>
 					<ButtonBase className={classes.discoverSentiImg} style={{
 						width: img.width,
-					}}>
+					}} onClick={this.props.onClick}>
 						<ExifOrientationImg src={img} height={"100%"} style={{ maxWidth: "100%" }} />
 					</ButtonBase>
 				</CardContent> : null}

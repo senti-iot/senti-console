@@ -264,6 +264,7 @@
 	},
 	"login": {
 		"button": "Sign in",
+		"forgotPass": "Forgot password?",
 		"pass": "Password",
 		"username": "Username"
 	},
