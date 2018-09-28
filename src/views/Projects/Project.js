@@ -45,7 +45,7 @@ class Project extends Component {
 	componentDidMount = async () => {
 		if (this.props.match)
 			if (this.props.match.params.id) {
-				this.timer = setTimeout(async () => await getProject(this.props.match.params.id).then(async rs => {
+			 await getProject(this.props.match.params.id).then(async rs => {
 					if (rs === null)
 						this.props.history.push('/404')
 					else {
@@ -54,7 +54,7 @@ class Project extends Component {
 							project: rs, loading: false
 						})
 					}
-				}), 2e3)
+				})
 
 			}
 			else {
