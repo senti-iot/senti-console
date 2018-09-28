@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers'
 import MomentUtils from 'material-ui-pickers/utils/moment-utils'
 import React, { Component, Fragment } from 'react'
-import { withRouter } from 'react-router-dom'
+// import { withRouter } from 'react-router-dom'
 // import { getAvailableDevices } from 'variables/dataDevices'
 import { createProject } from 'variables/dataProjects'
 import { Caption, CircularLoader, GridContainer, ItemGrid, TextF, Danger } from '..'
@@ -48,6 +48,7 @@ class CreateProject extends Component {
 			error: false,
 			errorMessage: ""
 		}
+		props.setHeader("projects.new", true, "/projects/list", "projects")
 	}
 
 	componentDidMount = () => {
@@ -62,7 +63,6 @@ class CreateProject extends Component {
 					})
 				else {
 					var devices = await getAvailableDevices(this.props.userOrg.id).then(rs => rs)
-					this.setState({})
 					this.setState({
 						availableDevices: devices ? devices : null,
 						devices: [], 
@@ -72,7 +72,6 @@ class CreateProject extends Component {
 				}
 			}
 		})
-		this.props.setHeader("projects.new", true, "/projects/list", "projects")
 	}
 
 	componentWillUnmount = () => {
@@ -404,5 +403,5 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
 
 }
-const CP = withStyles(createprojectStyles, { withTheme: true })(CreateProject)
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CP))
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles, { withTheme: true })(CreateProject))

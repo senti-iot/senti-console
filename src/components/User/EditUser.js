@@ -180,14 +180,14 @@ class EditUser extends Component {
     	groups = groups.filter(x => !this.groups().some(y => x.id === y.id))
     	let g = this.groups()[this.groups().findIndex(x => x.id === e.target.value)]
     	groups.push(g)
-    	console.log(groups)
+    	// console.log(groups)
     	this.setState({
     		selectedGroup: e.target.value,
     		user: {
     			...this.state.user,
     			groups: groups
     			}
-    	}, () => console.log(this.state.user.groups))
+    	})
     }
     handleOrgChange = e => {
     	this.setState({

@@ -7,7 +7,7 @@ import withLocalization from 'components/Localization/T';
 export default withRouter(withLocalization()((props) => {
 	return (
 		<Switch>
-			<Route path={'/projects/new'} component={() => <CreateProject t={props.t} setHeader={props.setHeader} />}/>
+			<Route path={'/projects/new'} component={(rp) => <CreateProject t={props.t} setHeader={props.setHeader} {...rp}/>}/>
 			<Route path={'/projects'} render={(rp) => <Projects setHeader={props.setHeader} t={props.t} {...rp}/>} />
 		</Switch>
 	)

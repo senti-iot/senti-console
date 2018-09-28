@@ -145,7 +145,7 @@ class LoginPage extends React.Component {
 												handleChange={this.handleInput}
 												InputProps={{
 													type: "password",
-													endAdornment: <InputAdornment position="end" onFocus={() => {console.log("it Worked")}}>
+													endAdornment: <InputAdornment position="end">
 														<LockOutlined className={IconEndAd} />
 													</InputAdornment>
 												}}
