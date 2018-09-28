@@ -462,8 +462,10 @@
 	"users": {
 		"editUser": "Opdater bruger",
 		"createUser": "Opret bruger",
-		"userDelete": "Delete user",
-		"userDeleteConfirm": "Are you sure you want to delete this user",
+		"userDelete": "Slet bruger",
+		"userDeleteConfirm": "Er du sikker på du vil slette denne bruger?",
+		"usersDelete": "Slet brugere",
+		"usersDeleteConfirm": "Er du sikker på du vil slette de følgende brugere?:",	
 		"actions": {
 			"addToGroups": "Tilføj til gruppe(r)",
 			"changeOrganisation": "Skift organisation",

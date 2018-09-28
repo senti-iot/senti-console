@@ -463,9 +463,9 @@
 		"editUser": "Edit user",
 		"createUser": "Create user",
 		"userDelete": "Delete user",
-		"userDeleteConfirm": "Are you sure you want to delete this user",
+		"userDeleteConfirm": "Are you sure you want to delete this user?",
 		"usersDelete": "Delete users",
-		"usersDeleteConfirm": "Are you sure you want to delete the following users:",
+		"usersDeleteConfirm": "Are you sure you want to delete the following users?:",
 		"actions": {
 			"addToGroups": "Add to groups",
 			"changeOrganisation": "Change organisation",
