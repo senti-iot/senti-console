@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types'
-import { Grid, IconButton, Menu, MenuItem, withStyles, /* Typography, */ Select, FormControl, FormHelperText, Divider, Dialog, DialogTitle, DialogContent, /* DialogContentText, */ Button, DialogActions, ListItem, ListItemIcon, ListItemText, Collapse, List, Hidden } from '@material-ui/core';
+import { Grid, IconButton, Menu, MenuItem, withStyles, /* Typography, */ Select, FormControl, FormHelperText, Divider, Dialog, DialogTitle, DialogContent, /* DialogContentText, */ Button, DialogActions, ListItem, ListItemIcon, ListItemText, Collapse, List, Hidden, colors } from '@material-ui/core';
 import {
 	AccessTime, AssignmentTurnedIn, MoreVert,
 	DateRange, KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft,
@@ -12,7 +12,7 @@ import InfoCard from 'components/Cards/InfoCard';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { Doughnut, Bar, Pie } from 'react-chartjs-2';
 import { getWifiSummary } from 'variables/dataDevices';
-import { getRandomColor } from 'variables/colors';
+// import { getRandomColor } from 'variables/colors';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import classNames from 'classnames';
@@ -77,7 +77,7 @@ class ProjectData extends Component {
 						borderColor: "#FFF",
 						borderWidth: 1,
 						data: dataArr.map(d => parseInt(d.data, 10)),
-						backgroundColor: dataArr.map(() => getRandomColor())
+						backgroundColor: dataArr.map((rd, id) => colors[id])
 					}]
 				},
 				barDataSets: {
@@ -86,7 +86,7 @@ class ProjectData extends Component {
 						borderColor: "#FFF",
 						borderWidth: 1,
 						data: dataArr.map(d => d.data),
-						backgroundColor: dataArr.map(() => getRandomColor())
+						backgroundColor: dataArr.map((rd, id) => colors[id])
 					}]
 				
 				}

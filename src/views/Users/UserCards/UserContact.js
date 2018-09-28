@@ -29,7 +29,6 @@ class UserContact extends Component {
 	}
 
 	renderUserGroup = () => {
-
 		const { t, user } = this.props
 		if (user.groups[136550100000143])
 			return t("users.groups.136550100000143")

@@ -263,6 +263,10 @@
 		"phoneTo": "Call"
 	},
 	"login": {
+		"requestPasswordReset": "Request password reset",
+		"changePassword": "Change password",
+		"resetPasswordMessage": "Reset your password by inserting your email",
+		"resetPassRequestMessage": "An email has been sent with instructions on how to reset your password!",
 		"button": "Sign in",
 		"forgotPass": "Forgot password?",
 		"pass": "Password",

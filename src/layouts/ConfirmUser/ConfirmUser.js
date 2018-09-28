@@ -88,15 +88,17 @@ class ConfirmUser extends React.Component {
 		if (password !== confirmPassword) {
 			errorCode.push(2)
 		}
-		this.setState({
-			error: true,
-			errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
-		})
-		console.log(errorCode)
 		if (errorCode.length === 0)
+		{
 			return true
-		else
+		}
+		else {
+			this.setState({
+				error: true,
+				errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
+			})	
 			return false
+		}
 	}
 	errorMessages = code => {
 		const { t } = this.props
@@ -121,7 +123,7 @@ class ConfirmUser extends React.Component {
 			else {
 				this.setState({
 					error: true,
-					errorMessage: [t("confirmUser.networkError")]
+					errorMessage: [<Danger >{t("confirmUser.networkError")}</Danger>]
 				})
 			}
 		}
@@ -207,6 +209,7 @@ class ConfirmUser extends React.Component {
 												</ItemG>
 												<ItemG xs={12}>
 													<TextF
+														autoFocus
 														id={"password"}
 														label={t('confirmUser.password')}
 														value={password}

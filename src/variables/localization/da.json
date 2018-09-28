@@ -263,6 +263,10 @@
 		"phoneTo": "Ring til"
 	},
 	"login": {
+		"requestPasswordReset": "Request password reset",
+		"changePassword": "Change password",
+		"resetPasswordMessage": "Reset your password by inserting your email",
+		"resetPassRequestMessage": "An email has been sent with instructions on how to reset your password!",
 		"button": "Log ind",
 		"forgotPass": "Glemt kodeord?",
 		"pass": "Kodeord",
@@ -465,7 +469,7 @@
 		"userDelete": "Slet bruger",
 		"userDeleteConfirm": "Er du sikker på du vil slette denne bruger?",
 		"usersDelete": "Slet brugere",
-		"usersDeleteConfirm": "Er du sikker på du vil slette de følgende brugere?:",	
+		"usersDeleteConfirm": "Er du sikker på du vil slette de følgende brugere?:",
 		"actions": {
 			"addToGroups": "Tilføj til gruppe(r)",
 			"changeOrganisation": "Skift organisation",

@@ -4,7 +4,7 @@ import {/*  InputAdornment, */ withStyles, CardContent, Collapse, Button, Grid }
 // @material-ui/icons
 // import { LockOutlined, Person } from "@material-ui/icons";
 // core components
-import { GridContainer, ItemGrid, Info, /* Warning,  */Danger, ItemG } from "components";
+import { GridContainer, ItemGrid, Info, /* Warning,  */Danger, ItemG, Success } from "components";
 // import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
@@ -43,13 +43,13 @@ class ResetPassword extends React.Component {
 			score: 0,
 			minScore: 2,
 			minLength: 8,
-			passwordRequested: ""
+			passwordRequested: false
 		};
 		this.input = React.createRef()
 	}
 	handleKeyPress = (event) => {
 		if (event.key === 'Enter') {
-			this.confirmUser()
+			this.confirmPass()
 		}
 	}
 	componentWillUnmount = () => {
@@ -65,7 +65,6 @@ class ResetPassword extends React.Component {
 		if (lang) {
 			this.props.changeLanguage(lang)
 		}
-		// if (this.inputRef.current) { this.inputRef.current.focus() }
 		setTimeout(
 			function () {
 				return this._isMounted ? this.setState({ cardAnimaton: "" }) : '';
@@ -90,15 +89,18 @@ class ResetPassword extends React.Component {
 		if (password !== confirmPassword) {
 			errorCode.push(2)
 		}
-		this.setState({
-			error: true,
-			errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
-		})
-		console.log(errorCode)
-		if (errorCode.length === 0)
+		if (errorCode.length === 0) {
+		
 			return true
-		else
+		}
+		else {
+			console.log("hit")
+			this.setState({
+				error: true,
+				errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
+			})	
 			return false
+		}
 	}
 	errorMessages = code => {
 		const { t } = this.props
@@ -123,7 +125,7 @@ class ResetPassword extends React.Component {
 			else {
 				this.setState({
 					error: true,
-					errorMessage: [t("confirmUser.networkError")]
+					errorMessage: [<Danger>{t("confirmUser.networkError")}</Danger>]
 				})
 			}
 		}
@@ -131,7 +133,7 @@ class ResetPassword extends React.Component {
 	resetPass = async () => {
 		const { email } = this.state
 		let session = await resetPassword({ email: email })
-		if (session) { 
+		if (session) {
 			this.setState({
 				passwordRequested: true
 			})
@@ -178,12 +180,13 @@ class ResetPassword extends React.Component {
 		})
 		if (this.state.error)
 			this.setState({
-				error: false
+				error: false,
+				errorMessage: []
 			})
 	}
 	render() {
 		const { classes, t } = this.props;
-		const { error, email, errorMessage, password, confirmPassword } = this.state
+		const { error, email, errorMessage, password, confirmPassword, passwordRequested } = this.state
 		return (
 			<div>
 				<div
@@ -205,8 +208,11 @@ class ResetPassword extends React.Component {
 										<CardBody>
 											<Grid container>
 												<ItemG xs={12}>
+													<Collapse in={passwordRequested}>
+														<Success>{t("login.resetPassRequestMessage")}</Success>
+													</Collapse>
 													<Collapse in={!error}>
-														{this.token ? null : <Info>{t("loginUser.resetPasswordMessage")}</Info>}
+														{this.token ? null : <Info>{t("login.resetPasswordMessage")}</Info>}
 													</Collapse>
 													<Collapse in={error}>
 														{errorMessage.map(m => m)}
@@ -215,6 +221,7 @@ class ResetPassword extends React.Component {
 												<ItemG xs={12}>
 													{this.token ? null : <TextF
 														id={"email"}
+														autoFocus
 														label={t('users.fields.email')}
 														value={email}
 														className={classes.textField}
@@ -225,7 +232,7 @@ class ResetPassword extends React.Component {
 														error={error}
 													/>}
 												</ItemG>
-											
+
 												{this.token ? <Fragment>
 													<ItemG xs={12}>
 														<TextF
@@ -239,7 +246,7 @@ class ResetPassword extends React.Component {
 															noFullWidth
 															error={error}
 															type={'password'}
-															// helperText={<Danger>{this.state.score}</Danger>}
+														// helperText={<Danger>{this.state.score}</Danger>}
 														/>
 													</ItemG>
 													<ItemG xs={12}>
@@ -260,9 +267,12 @@ class ResetPassword extends React.Component {
 											</Grid>
 										</CardBody>
 										<CardFooter className={classes.cardFooter}>
-											<Button variant={'contained'} color={'primary'} onClick={this.resetPass}>
-												{t("confirmUser.button")}
-											</Button>
+											{!this.token ? <Button variant={'contained'} color={'primary'} onClick={this.resetPass}>
+												{t("login.requestPasswordReset")}
+											</Button> :
+												<Button variant={'contained'} color={'primary'} onClick={this.confirmPass}>
+													{t("login.changePassword")}
+												</Button>}
 										</CardFooter>
 									</form>
 									<Collapse in={this.state.loggingIn} timeout="auto" unmountOnExit>
