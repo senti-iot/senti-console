@@ -5,7 +5,7 @@ import { People } from "@material-ui/icons";
 import TC from 'components/Table/TC';
 import devicetableStyles from '../../../assets/jss/components/devices/devicetableStyles';
 import Gravatar from 'react-gravatar'
-import { pF } from 'variables/functions';
+import { pF, dateFormat } from 'variables/functions';
 var moment = require('moment')
 class OrgUsers extends Component {
 	render() {
@@ -19,7 +19,7 @@ class OrgUsers extends Component {
 					<Table>
 						<TableBody>
 							{users ? users.map((n, i) => {
-								const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? moment(n.lastLoggedIn).format("DD.MM.YYYY HH:mm") : t("users.fields.neverLoggedIn")
+								const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? dateFormat(n.lastLoggedIn) : t("users.fields.neverLoggedIn")
 								return (
 									<TableRow
 										hover

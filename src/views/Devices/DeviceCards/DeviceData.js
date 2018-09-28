@@ -71,7 +71,7 @@ class DeviceData extends Component {
 		let endDate = moment(to).format(this.format)
 		let data = await getWifiDaily(device.id, startDate, endDate).then(rs => rs)
 		if (data) {
-			let dataArr = Object.keys(data).map(r => ({ id: moment(r).format("DD.MM.YYYY"), value: data[r] }))
+			let dataArr = Object.keys(data).map(r => ({ id: moment(r).format("DD.MMMM YYYY"), value: data[r] }))
 			this.setState({
 				loading: false,
 				roundDataSets: {
@@ -169,7 +169,7 @@ class DeviceData extends Component {
 	}
 
 	format = "YYYY-MM-DD+HH:mm"
-	displayFormat = "DD.MM.YYYY HH:mm"
+	displayFormat = "DD MMMM YYYY HH:mm"
 	handleSwitchDayHour = () => {
 		let id = this.state.dateFilterInputID
 		switch (id) {
@@ -287,7 +287,7 @@ class DeviceData extends Component {
 							ampm={false}
 							label={t("filters.startDate")}
 							clearable
-							format="DD.MM.YYYY+HH:mm"
+							format="DD MMMM YYYY+HH:mm"
 							value={this.state.from}
 							onChange={this.handleCustomDate('from')}
 							animateYearScrolling={false}
@@ -308,7 +308,7 @@ class DeviceData extends Component {
 							ampm={false}
 							label={t("filters.endDate")}
 							clearable
-							format="DD.MM.YYYY+HH:mm"
+							format="DD MMMM YYYY+HH:mm"
 							value={this.state.to}
 							onChange={this.handleCustomDate('to')}
 							animateYearScrolling={false}

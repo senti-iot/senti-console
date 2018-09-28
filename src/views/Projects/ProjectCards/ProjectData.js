@@ -116,7 +116,7 @@ class ProjectData extends Component {
 		this.setState({ actionAnchor: null });
 	};
 	format = "YYYY-MM-DD+HH:mm"
-	displayFormat = "DD.MM.YYYY HH:mm"
+	displayFormat = "DD MMMM YYYY HH:mm"
 	handleSetDate = (id) => {
 		let to = null
 		let from = null
@@ -206,7 +206,7 @@ class ProjectData extends Component {
 							label={t("filters.startDate")}
 							clearable
 							ampm={false}
-							format="DD.MM.YYYY+HH:mm"
+							format="DD MMMM YYYY HH:mm"
 							value={this.state.from}
 							onChange={this.handleCustomDate('from')}
 							animateYearScrolling={false}
@@ -227,7 +227,7 @@ class ProjectData extends Component {
 							label={t("filters.endDate")}
 							clearable
 							ampm={false}
-							format="DD.MM.YYYY+HH:mm"
+							format="DD MMMM YYYY HH:mm"
 							value={this.state.to}
 							onChange={this.handleCustomDate('to')}
 							animateYearScrolling={false}

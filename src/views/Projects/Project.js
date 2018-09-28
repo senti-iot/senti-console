@@ -110,7 +110,7 @@ class Project extends Component {
 				if (c[key] === null)
 					return searchStr === "null" ? true : false
 				if (c[key] instanceof Date) {
-					let date = moment(c[key]).format("DD.MM.YYYY")
+					let date = moment(c[key]).format("DD MMMM YYYY")
 					return date.toLowerCase().includes(searchStr)
 				}
 				else

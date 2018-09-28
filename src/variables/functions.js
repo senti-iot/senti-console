@@ -87,13 +87,13 @@ export const pF = (phone) => {
 export const dateTimeFormatter = (date, withSeconds) => {
 	var dt
 	if (withSeconds)
-		dt = moment(date).format("DD.MM.YYYY HH:mm:ss")
+		dt = moment(date).format("DD MMMM YYYY HH:mm:ss")
 	else
-		dt = moment(date).format("DD.MM.YYYY HH:mm")
+		dt = moment(date).format("DD MMMM YYYY HH:mm")
 	return dt
 }
 export const dateFormatter = (date) => {
-	var a = moment(date).format("DD.MM.YYYY")
+	var a = moment(date).format("DD MMMM YYYY")
 	return a
 }
 export const ConvertDDToDMS = (D, lng) => {
