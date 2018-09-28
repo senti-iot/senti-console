@@ -6,7 +6,7 @@ var moment = require('moment')
 export class UserLog extends Component {
 	render() {
 		const { t, user } = this.props
-		const lastLoggedIn = moment(user.lastLoggedIn).isValid() ? moment(user.lastLoggedIn).format("DD.MM.YYYY HH:mm") : t("users.fields.neverLoggedIn")
+		const lastLoggedIn = moment(user.lastLoggedIn).isValid() ? moment(user.lastLoggedIn).fromNow() : t("users.fields.neverLoggedIn")
 		const created = moment(user.created).isValid() ? moment(user.created).format("DD.MM.YYYY HH:mm") : ""
 
 		return (
