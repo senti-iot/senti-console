@@ -6,7 +6,7 @@ import {  Typography } from "@material-ui/core";
 function Info({ ...props }) {
 	// const { classes, children } = props;
 	return (
-		<Typography noWrap={props.noWrap ? true : false} paragraph classes={{ root: props.paragraphCell }}>{props.children}</Typography>
+		<Typography {...props} noWrap={props.noWrap ? true : false} paragraph classes={{ root: props.paragraphCell }}>{props.children}</Typography>
 	);
 }
 
