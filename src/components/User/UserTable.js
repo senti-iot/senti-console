@@ -14,7 +14,7 @@ import EnhancedTableToolbar from '../Table/TableToolbar'
 import { ItemGrid, Info } from ".."
 import { connect } from "react-redux"
 import Caption from '../Typography/Caption';
-import { pF } from 'variables/functions';
+import { pF, dateFormat } from 'variables/functions';
 import Gravatar from 'react-gravatar'
 import TP from 'components/Table/TP';
 var moment = require("moment")
@@ -226,7 +226,7 @@ class UserTable extends React.Component {
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
-								const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? moment(n.lastLoggedIn).fromNow() : t("users.fields.neverLoggedIn")
+								const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? dateFormat(n.lastLoggedIn) : t("users.fields.neverLoggedIn")
 								return (
 									<TableRow
 										hover

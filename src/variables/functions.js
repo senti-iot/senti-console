@@ -2,6 +2,13 @@ var moment = require('moment');
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 var PNF = require('google-libphonenumber').PhoneNumberFormat
 
+export const dateFormat = (date) => {
+	let newDate = moment(date)
+	if (newDate.isBetween(moment().subtract(7, "day"), moment().add(7, "day")))
+		return moment(date).calendar()
+	else
+		return moment(date).fromNow()
+}
 const isObject = (obj) => {
 	return obj === Object(obj);
 }

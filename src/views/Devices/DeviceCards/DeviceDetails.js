@@ -3,7 +3,7 @@ import { Grid, Typography, withStyles, Button, IconButton, Menu, MenuItem } from
 import { ItemGrid, Warning, P, Info, Caption } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import { SignalWifi2Bar, SignalWifi2BarLock, MoreVert, Build, LibraryBooks, Edit, Devices, LayersClear } from '@material-ui/icons'
-import { ConvertDDToDMS } from 'variables/functions'
+import { ConvertDDToDMS, dateFormat } from 'variables/functions'
 import { Link } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';
 var moment = require("moment");
@@ -154,13 +154,13 @@ class DeviceDetails extends Component {
 							<ItemGrid xs={12}>
 								<Caption>{t("devices.fields.lastData")}:</Caption>
 								<Info title={moment(device.wifiLast).format("HH:mm - DD.MM.YYYY")}>
-									{moment(device.wifiLast).fromNow()}
+									{dateFormat(device.wifiLast)}
 								</Info>
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<Caption>{t("devices.fields.lastStats")}:</Caption>
 								<Info title={moment(device.execLast).format("HH:mm - DD.MM.YYYY")}>
-									{moment(device.execLast).fromNow()}
+									{dateFormat(device.execLast)}
 								</Info>
 							</ItemGrid>
 						</Grid>

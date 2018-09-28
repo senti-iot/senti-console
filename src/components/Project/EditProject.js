@@ -222,7 +222,7 @@ class EditProject extends Component {
 										// ampm={false}
 										label={t("projects.fields.startDate")}
 										clearable
-										format="DD.MM.YYYY"
+										format="DD.MMMM YYYY"
 										value={this.state.project.startDate}
 										onChange={this.handleDateChange("startDate")}
 										animateYearScrolling={false}
@@ -241,7 +241,7 @@ class EditProject extends Component {
 										autoOk
 										label={t("projects.fields.endDate")}
 										clearable
-										format="DD.MM.YYYY"
+										format="DD.MMMM YYYY"
 										value={this.state.project.endDate}
 										onChange={this.handleDateChange("endDate")}
 										animateYearScrolling={false}
