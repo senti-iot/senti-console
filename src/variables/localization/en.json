@@ -177,7 +177,7 @@
 			"square": "Square",
 			"unspecified": "Unspecified"
 		},
-		"liveCount": "Live count (most recent minute)",
+		"liveCount": "Live count (last 10 minutes)",
 		"new": "",
 		"noAddress": "No Address",
 		"noDataFilters": "There is no data available for the selected filters!",

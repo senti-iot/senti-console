@@ -85,7 +85,7 @@ const Sidebar = ({ ...props }) => {
 					{brand}
 					<div className={classes.sidebarWrapper}>
 						<div className={classes.appBarWrapper}>
-							<HeaderLinks t={t}/>
+							<HeaderLinks t={t} onClose={props.handleDrawerToggle}/>
 						</div>
 						{links}
 					</div>

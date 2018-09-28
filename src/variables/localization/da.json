@@ -177,7 +177,7 @@
 			"square": "Plads",
 			"unspecified": "Uspecificeret"
 		},
-		"liveCount": "Live tælling (seneste minut)",
+		"liveCount": "Live tælling (seneste 10 minutter)",
 		"new": "",
 		"noAddress": "Uden adresse",
 		"noDataFilters": "Der er ingen data tilgængelig for de valgte filtre!",

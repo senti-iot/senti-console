@@ -34,7 +34,7 @@ class EditUser extends Component {
 					name: "Ingen organisation"
 				},
 				groups: {
-					136550100000225: {
+					"136550100000225": {
 						id: 136550100000225,
 						name: "Senti User"
 					} 
@@ -62,8 +62,21 @@ class EditUser extends Component {
 		let id = this.props.match.params.id
 		if (id) {
 			let user = await getUser(id).then(rs => rs)
+			let g = 0
+			Object.keys(user.groups).forEach(x => {
+				if (x === "136550100000211")
+					g = x //S
+				if (x === "136550100000225")
+					g = x //AM
+				if (x === "136550100000143")
+					g = x //SU
+			})
 			this.setState({
-				user: user
+				selectedGroup: g,
+				user: {
+					...user,
+					groups: Object.keys(user.groups).map(g => ({ id: g, name: user.groups[g].name, appId: user.groups[g].appId }))
+				}
 			})
 		}
 	}
@@ -80,9 +93,16 @@ class EditUser extends Component {
     } 
     handleEditUser = async () => {
     	const { user } = this.state
+    	let groups = {}
+    	this.state.user.groups.forEach(x => {
+    		groups[x.id] = {
+    			...x
+    		}
+    	})
     	let newUser = {
     		...this.state.user,
-    		userName: user.email
+    		userName: user.email,
+    		groups: groups
     	}
     	await editUser(newUser).then(rs => rs ?
     		this.setState({ created: true, creating: false, openSnackbar: true, org: rs }) :
@@ -155,17 +175,19 @@ class EditUser extends Component {
     	})
     }
     handleGroupChange = e => { 
+    	const { user } = this.state
+    	let groups = user.groups
+    	groups = groups.filter(x => !this.groups().some(y => x.id === y.id))
+    	let g = this.groups()[this.groups().findIndex(x => x.id === e.target.value)]
+    	groups.push(g)
+    	console.log(groups)
     	this.setState({
     		selectedGroup: e.target.value,
     		user: {
     			...this.state.user,
-    			groups: {
-    				[e.target.value]: {
-    					id: e.target.value
-    				}
+    			groups: groups
     			}
-    		}
-    	})
+    	}, () => console.log(this.state.user.groups))
     }
     handleOrgChange = e => {
     	this.setState({
@@ -234,33 +256,37 @@ class EditUser extends Component {
     		</Select>
     	</FormControl>
     }
+	groups = () => {
+		const { accessLevel, t } = this.props
+		return [
+			{
+				id: "136550100000211",
+				appId: "1220",
+				name: t("users.groups.accountManager"),
+				show: accessLevel.apiorg.editusers ? true : false
+				// description: ""
+			},
+			{
+				id: "136550100000143",
+				appId: "1220",
+				name: t("users.groups.superUser"),
+				// description: "Senti Cloud group containing Super Users",
+				show: accessLevel.apisuperuser ? true : false
+
+			},
+			{
+				id: "136550100000225",
+				appId: "1220",
+				name: t("users.groups.user"),
+				show: true
+				// description: "Senti Users"
+			}
+		]
+	}
     renderAccess = () => {
     	const { t, classes, accessLevel } = this.props
     	const { error, selectedGroup } = this.state
-    	let groups = [
-    		{
-    			id: 136550100000211,
-    			appId: 1220,
-    			name: "Senti Account Managers",
-    			show: accessLevel.apiorg.editusers ? true : false
-    			// description: ""
-    		},
-    		{
-    			id: 136550100000143,
-    			appId: 1220,
-    			name: "Senti Super Users",
-    			// description: "Senti Cloud group containing Super Users",
-    			show: accessLevel.apisuperuser ? true : false
-
-    		},
-    		{
-    			id: 136550100000225,
-    			appId: 1220,
-    			name: "Senti Users",
-    			show: true
-    			// description: "Senti Users"
-    		}
-    	]
+    	
     	return accessLevel.apisuperuser ? <FormControl className={classes.formControl}>
     		<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
     			{t("users.fields.accessLevel")}
@@ -273,7 +299,7 @@ class EditUser extends Component {
     			onChange={this.handleGroupChange}
     			// renderValue={value => value.name}
     		>
-    			{groups.map(g => g.show ? (
+    			{this.groups().map(g => g.show ? (
     				<MenuItem
     					key={g.id}
     					value={g.id}

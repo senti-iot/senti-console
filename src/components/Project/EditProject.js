@@ -32,7 +32,7 @@ class EditProject extends Component {
 			creating: false,
 			created: false,
 			loading: true,
-			openSnackBar: false,
+			openSnackbar: false,
 		}
 	}
 	handleValidation = () => {
@@ -144,7 +144,7 @@ class EditProject extends Component {
 		this.timer = setTimeout(async () => {
 			if (this.handleValidation())
 				return updateProject(newProject).then(rs => rs ?
-					this.setState({ created: true, creating: false, openSnackBar: true }) :
+					this.setState({ created: true, creating: false, openSnackbar: true }) :
 					this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("projects.validation.networkError") })
 					, 2e3)
 			else {
@@ -156,7 +156,12 @@ class EditProject extends Component {
 		})
 	}
 
-
+	snackBarClose = () => {
+		this.setState({ openSnackbar: false })
+		this.redirect = setTimeout(async => {
+			this.goToNewProject()
+		}, 1e3)
+	}
 	goToNewProject = () => {
 		this.props.history.push('/project/' + this.props.match.params.id)
 	}
@@ -305,10 +310,10 @@ class EditProject extends Component {
 										variant="contained"
 										color="primary"
 										className={buttonClassname}
-										disabled={this.state.creating}
-										onClick={this.state.created ? this.goToNewProject : this.handleUpdateProject}>
+										disabled={this.state.creating || this.state.created}
+										onClick={ this.handleUpdateProject}>
 										{this.state.created ?
-											<Fragment><Check className={classes.leftIcon} />{t("projects.viewProject")}</Fragment>
+											<Fragment><Check className={classes.leftIcon} />{t("snackbars.redirect")}</Fragment>
 											: <Fragment><Save className={classes.leftIcon} />{t("projects.updateProject")}</Fragment>}
 									</Button>
 								</div>
@@ -318,12 +323,12 @@ class EditProject extends Component {
 					</Paper>
 					<Snackbar
 						anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-						open={this.state.openSnackBar}
-						onClose={() => { this.setState({ openSnackBar: false }) }}
+						open={this.state.openSnackbar}
+						onClose={this.snackBarClose}
 						ContentProps={{
 							'aria-describedby': 'message-id',
 						}}
-						autoHideDuration={5000}
+						autoHideDuration={1000}
 						message={
 							<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
 								<Check className={classes.leftIcon} color={'primary'} />
