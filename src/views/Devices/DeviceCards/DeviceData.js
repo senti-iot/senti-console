@@ -21,6 +21,7 @@ import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import classNames from 'classnames'
 import { colors } from '../../../variables/colors'
+import { dateFormatter } from 'variables/functions';
 var moment = require('moment');
 
 
@@ -71,7 +72,7 @@ class DeviceData extends Component {
 		let endDate = moment(to).format(this.format)
 		let data = await getWifiDaily(device.id, startDate, endDate).then(rs => rs)
 		if (data) {
-			let dataArr = Object.keys(data).map(r => ({ id: moment(r).format("DD.MMMM YYYY"), value: data[r] }))
+			let dataArr = Object.keys(data).map(r => ({ id: dateFormatter(r), value: data[r] }))
 			this.setState({
 				loading: false,
 				roundDataSets: {
@@ -169,7 +170,7 @@ class DeviceData extends Component {
 	}
 
 	format = "YYYY-MM-DD+HH:mm"
-	displayFormat = "DD MMMM YYYY HH:mm"
+
 	handleSwitchDayHour = () => {
 		let id = this.state.dateFilterInputID
 		switch (id) {
@@ -287,7 +288,7 @@ class DeviceData extends Component {
 							ampm={false}
 							label={t("filters.startDate")}
 							clearable
-							format="DD MMMM YYYY+HH:mm"
+							format="LLL"
 							value={this.state.from}
 							onChange={this.handleCustomDate('from')}
 							animateYearScrolling={false}
@@ -308,7 +309,7 @@ class DeviceData extends Component {
 							ampm={false}
 							label={t("filters.endDate")}
 							clearable
-							format="DD MMMM YYYY+HH:mm"
+							format="LLL"
 							value={this.state.to}
 							onChange={this.handleCustomDate('to')}
 							animateYearScrolling={false}
@@ -413,8 +414,8 @@ class DeviceData extends Component {
 	renderDateFilter = () => {
 		const { classes, t  } = this.props
 		const { dateFilterInputID, to, from } = this.state
-		let displayTo = moment(to).format(this.displayFormat)
-		let displayFrom = moment(from).format(this.displayFormat)
+		let displayTo = dateFormatter(to)
+		let displayFrom = dateFormatter(from)
 		return (
 			<div className={classes.root}>
 				<Hidden smDown>

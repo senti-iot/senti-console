@@ -16,6 +16,7 @@ import { getWifiSummary } from 'variables/dataDevices';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import classNames from 'classnames';
+import { dateFormatter } from 'variables/functions';
 var moment = require('moment');
 
 
@@ -206,7 +207,7 @@ class ProjectData extends Component {
 							label={t("filters.startDate")}
 							clearable
 							ampm={false}
-							format="DD MMMM YYYY HH:mm"
+							format="LLL"
 							value={this.state.from}
 							onChange={this.handleCustomDate('from')}
 							animateYearScrolling={false}
@@ -227,7 +228,7 @@ class ProjectData extends Component {
 							label={t("filters.endDate")}
 							clearable
 							ampm={false}
-							format="DD MMMM YYYY HH:mm"
+							format="LLL"
 							value={this.state.to}
 							onChange={this.handleCustomDate('to')}
 							animateYearScrolling={false}
@@ -293,8 +294,8 @@ class ProjectData extends Component {
 	renderDateFilter = () => {
 		const { classes, t } = this.props
 		const { dateFilterInputID, to, from } = this.state
-		let displayTo = moment(to).format(this.displayFormat)
-		let displayFrom = moment(from).format(this.displayFormat)
+		let displayTo = dateFormatter(to)
+		let displayFrom = dateFormatter(from)
 		return (
 			<div className={classes.root}>
 				<Hidden smDown>

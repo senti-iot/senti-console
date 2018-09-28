@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { getDevice, getAllPictures, updateDevice } from 'variables/dataDevices'
 import {  Grid, withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Snackbar } from '@material-ui/core'
-import moment from 'moment'
 import { ItemGrid } from 'components'
 import InfoCard from 'components/Cards/InfoCard'
 import {  Map } from '@material-ui/icons'
@@ -15,6 +14,7 @@ import DeviceDetails from './DeviceCards/DeviceDetails'
 import DeviceHardware from './DeviceCards/DeviceHardware'
 import DeviceImages from './DeviceCards/DeviceImages'
 import DeviceData from './DeviceCards/DeviceData'
+import { dateFormatter } from 'variables/functions';
 
 class Device extends Component {
 	constructor(props) {
@@ -108,7 +108,7 @@ class Device extends Component {
 				if (c[key] === null)
 					return searchStr === "null" ? true : false
 				if (c[key] instanceof Date) {
-					let date = moment(c[key]).format("DD MMMM YYYY")
+					let date = dateFormatter(c[key])
 					return date.toLowerCase().includes(searchStr)
 				}
 				else

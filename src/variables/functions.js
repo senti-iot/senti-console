@@ -58,7 +58,7 @@ export const keyTester = (obj, sstr) => {
 		for (var k in obj) {
 			if (!found) {
 				if (k instanceof Date) {
-					let date = moment(obj[ k ]).format("DD.MM.YYYY")
+					let date = dateFormatter(obj[ k ])
 					found = date.toLowerCase().includes(searchStr)
 				}
 				else {
@@ -93,7 +93,7 @@ export const dateTimeFormatter = (date, withSeconds) => {
 	return dt
 }
 export const dateFormatter = (date) => {
-	var a = moment(date).format("DD MMMM YYYY")
+	var a = moment(date).format("LL")
 	return a
 }
 export const ConvertDDToDMS = (D, lng) => {

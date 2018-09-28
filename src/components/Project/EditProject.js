@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { updateProject, getProject } from 'variables/dataProjects';
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from '..'
+import { dateFormatter } from 'variables/functions';
 var moment = require("moment")
 // const ITEM_HEIGHT = 32;
 // const ITEM_PADDING_TOP = 8;
@@ -120,7 +121,7 @@ class EditProject extends Component {
 			error: false,
 			project: {
 				...this.state.project,
-				[id]: moment(value).format("YYYY-MM-DD HH:mm")
+				[id]: dateFormatter(value)
 			}
 		})
 	}
@@ -222,7 +223,7 @@ class EditProject extends Component {
 										// ampm={false}
 										label={t("projects.fields.startDate")}
 										clearable
-										format="DD MMMM YYYY"
+										format="LL"
 										value={this.state.project.startDate}
 										onChange={this.handleDateChange("startDate")}
 										animateYearScrolling={false}
@@ -241,7 +242,7 @@ class EditProject extends Component {
 										autoOk
 										label={t("projects.fields.endDate")}
 										clearable
-										format="DD MMMM YYYY"
+										format="LL"
 										value={this.state.project.endDate}
 										onChange={this.handleDateChange("endDate")}
 										animateYearScrolling={false}

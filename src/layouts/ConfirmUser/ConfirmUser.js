@@ -190,7 +190,7 @@ class ConfirmUser extends React.Component {
 				>
 					<div className={classes.container}>
 						<GridContainer justify="center">
-							<ItemGrid xs={12} sm={6} md={4}>
+							<ItemGrid xs={12} sm={6} md={3}>
 								<Card className={classes[this.state.cardAnimaton]}>
 									<form className={classes.form}>
 										<CardHeader color="primary" className={classes.cardHeader}>

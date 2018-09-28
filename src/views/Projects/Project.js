@@ -1,13 +1,13 @@
 import { Snackbar, Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, /* IconButton, */ withStyles } from '@material-ui/core'
 // import { Close } from '@material-ui/icons'
 import { ItemGrid, GridContainer, CircularLoader } from 'components'
-import moment from "moment"
 import React, { Component } from 'react'
 import { getProject, deleteProject } from 'variables/dataProjects'
 import ProjectData from './ProjectCards/ProjectData'
 import ProjectDetails from './ProjectCards/ProjectDetails'
 import ProjectDevices from './ProjectCards/ProjectDevices'
 import { ProjectContact } from './ProjectCards/ProjectContact'
+import { dateFormatter } from 'variables/functions';
 
 const projectStyles = theme => ({
 	close: {
@@ -110,7 +110,7 @@ class Project extends Component {
 				if (c[key] === null)
 					return searchStr === "null" ? true : false
 				if (c[key] instanceof Date) {
-					let date = moment(c[key]).format("DD MMMM YYYY")
+					let date = dateFormatter(c[key])
 					return date.toLowerCase().includes(searchStr)
 				}
 				else
