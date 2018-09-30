@@ -275,6 +275,7 @@
 	},
 	"menus": {
 		"assign": "Tilknyt projekt",
+		"assignOrg": "Tilknyt organisation",
 		"assignDevices": "Tilknyt enheder",
 		"calibrate": "Kalibrer",
 		"delete": "Slet",
@@ -288,6 +289,7 @@
 		"hideMore": "Skjul",
 		"more": "Mere",
 		"reassign": "Overflyt til et andet projekt",
+		"reassignOrg": "Overflyt til et andet organisation",
 		"recalibrate": "Re-kalibrer",
 		"seeLess": "Se mindre",
 		"seeMore": "Se mere",

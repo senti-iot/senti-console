@@ -1,20 +1,13 @@
 import React, { Component, Fragment } from 'react'
-import { Grid, Typography, withStyles, Button, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { Grid, Typography, withStyles, Button, MenuItem } from '@material-ui/core';
 import { ItemGrid, Warning, P, Info, Caption } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
-import { SignalWifi2Bar, SignalWifi2BarLock, MoreVert, Build, LibraryBooks, Edit, Devices, LayersClear } from '@material-ui/icons'
+import { SignalWifi2Bar, SignalWifi2BarLock, Build, LibraryBooks, Edit, Devices, LayersClear, Business } from '@material-ui/icons'
 import { ConvertDDToDMS, dateFormat, dateFormatter } from 'variables/functions'
 import { Link } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';
-
+import Dropdown from 'components/Dropdown/Dropdown'
 class DeviceDetails extends Component {
-	constructor(props) {
-		super(props)
-
-		this.state = {
-			actionAnchor: null
-		}
-	}
 
 	renderStatus = (status) => {
 		const { classes } = this.props
@@ -51,61 +44,39 @@ class DeviceDetails extends Component {
 			{ id: 9, label: t("devices.locationTypes.office") },
 			{ id: 0, label: t("devices.locationTypes.unspecified") }]
 	}
-	handleOpenActionsDetails = event => {
-		this.setState({ actionAnchor: event.currentTarget });
-	}
 
-	handleCloseActionsDetails = () => {
-		this.setState({ actionAnchor: null });
-	}
 	renderDeviceLocType = () => {
 		const { device, t } = this.props
 		let deviceLoc = this.LocationTypes()[this.LocationTypes().findIndex(r => r.id === device.locationType)]
 		return deviceLoc ? deviceLoc.label : t("devices.noLocType")
 	}
 	render() {
-		const { actionAnchor } = this.state
-		const { classes, device, t } = this.props
+		const { classes, device, t, accessLevel } = this.props
+		console.log(accessLevel);
+
 		return (
 			<InfoCard
 				title={device.name ? device.name : device.id}
 				avatar={<Devices />}
-				topAction={
-					<ItemGrid noMargin noPadding>
-						<IconButton
-							aria-label="More"
-							aria-owns={actionAnchor ? 'long-menu' : null}
-							aria-haspopup="true"
-							onClick={this.handleOpenActionsDetails}>
-							<MoreVert />
-						</IconButton>
-						<Menu
-							id="long-menu"
-							anchorEl={actionAnchor}
-							open={Boolean(actionAnchor)}
-							onClose={this.handleCloseActionsDetails}
-							PaperProps={{
-								style: {
-									maxHeight: 200,
-									minWidth: 200
-								}
-							}}>
+				topAction={<Dropdown menuItems={
+					[<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
+						<Edit className={classes.leftIcon} />{t("menus.edit")}
+					</MenuItem>,
+					<MenuItem onClick={this.props.handleOpenAssign}>
+						<LibraryBooks className={classes.leftIcon} />{device.project.id > 0 ? t("menus.reassign") : t("menus.assign")}
+					</MenuItem>,
+					accessLevel.apisuperuser ? <MenuItem onClick={this.props.handleOpenAssignOrg}>
+						<Business className={classes.leftIcon} />{device.org.id > 0 ? t("menus.reassignOrg") : t("menus.assignOrg")}
+					</MenuItem> : null,
+					device.project.id > 0 ? <MenuItem onClick={this.props.handleOpenUnassign}>
+						<LayersClear className={classes.leftIcon} /> {t("menus.unassignDevice")}
+					</MenuItem> : null,
+					<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}>
+						<Build className={classes.leftIcon} />{!(device.lat > 0) && !(device.long > 0) ? t("menus.calibrate") : t("menus.recalibrate")}
+					</MenuItem>
+					]
+				} />
 
-							<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
-								<Edit className={classes.leftIcon} />{t("menus.edit")}
-							</MenuItem>
-							<MenuItem onClick={this.props.handleOpenAssign}>
-								<LibraryBooks className={classes.leftIcon} />{device.project.id > 0 ? t("menus.reassign") : t("menus.assign")}
-							</MenuItem>
-							{device.project.id > 0 ? <MenuItem onClick={this.props.handleOpenUnassign}>
-								<LayersClear className={classes.leftIcon} /> {t("menus.unassignDevice")}
-							</MenuItem> : null}
-							<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}>
-								<Build className={classes.leftIcon} />{!(device.lat > 0) && !(device.long > 0) ? t("menus.calibrate") : t("menus.recalibrate")}
-							</MenuItem>
-							))}
-						</Menu>
-					</ItemGrid>
 				}
 				subheader={device.id}
 				noExpand
@@ -186,8 +157,8 @@ class DeviceDetails extends Component {
 									<Link to={`/org/${device.org.id}`} >
 										{device.org.name}
 									</Link>
-									 : t("devices.noProject")}</Info>
-								
+									: t("devices.noProject")}</Info>
+
 							</ItemGrid>
 							<ItemGrid>
 								<Caption>{t("devices.fields.project")}:</Caption>

@@ -460,7 +460,7 @@ class DeviceData extends Component {
 				</ItemG> : this.renderNoDataFilters()
 
 			case 1:
-				return this.state.calibrated.roundDataSets ? <ItemG container>
+				return this.state.calibrated ? this.state.calibrated.roundDataSets ? <ItemG container>
 					<ItemG xs={12}>
 						<Caption className={classes.bigCaption2}>Calibrated Data</Caption>
 						<Doughnut
@@ -481,9 +481,9 @@ class DeviceData extends Component {
 							}}
 							data={this.state.uncalibrated.roundDataSets}
 						/></ItemG>
-				</ItemG> : this.renderNoDataFilters()
+				</ItemG> : this.renderNoDataFilters() : this.renderNoDataFilters()
 			case 2:
-				return this.state.calibrated.barDataSets ? <ItemG container>
+				return this.state.calibrated ? this.state.calibrated.barDataSets ? <ItemG container>
 					<ItemG xs={12}>
 						<Caption className={classes.bigCaption2}>Calibrated Data</Caption>
 						<Bar
@@ -506,7 +506,7 @@ class DeviceData extends Component {
 							}}
 						/>
 					</ItemG>
-				</ItemG> : this.renderNoDataFilters()
+				</ItemG> : this.renderNoDataFilters() : this.renderNoDataFilters()
 
 
 			default:

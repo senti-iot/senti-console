@@ -53,8 +53,8 @@ class TProvider extends Component {
 			var onMissingKey = this.onMissingKey
 			result = onMissingKey(key, opts, this.tokenRegex)
 		} else {
-			console.log('Missing translation for key: "' + key + '"')
-			result = key
+			// console.log('Missing translation for key: "' + key + '"')
+			result = null
 		}
 		if (typeof phrase === 'string') {
 			result = this.transformPhrase(phrase, opts, this.tokenRegex)
@@ -66,12 +66,6 @@ class TProvider extends Component {
 	getChildContext() {
 		return { t: this.t.bind(this) }
 	}
-	//Not needed, Redux handles this
-	// componentDidUpdate = (oldProps) => {
-	// 	if (oldProps.language !== this.props.language) { 
-	// 		// this.props.changeLanguage(this.props.language)
-	// 	}
-	// }
 	render() {
 		const children = this.props.children	
 		return React.Children.only(children)
@@ -95,7 +89,5 @@ TProvider.propTypes = {
 
 TProvider.childContextTypes = {
 	t: PropTypes.func.isRequired,
-	// language: PropTypes.string.isRequired,
-	// langStrings: PropTypes.array.isRequired
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TProvider)
