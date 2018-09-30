@@ -152,7 +152,7 @@ class DeviceData extends Component {
 						datasets: [{
 							borderColor: "#FFF",
 							borderWidth: 1,
-							data: dataArr.map(rd => rd.value),
+							data: dataArr.map(rd => parseInt(rd.value, 10) * device.wifiFactor),
 							// backgroundColor: dataArr.map(() => getRandomColor())
 							backgroundColor: dataArr.map((rd, id) => colors[id])
 						}]
