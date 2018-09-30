@@ -343,7 +343,7 @@ class EnhancedTable extends React.Component {
 								);
 							}) : null }
 							{ emptyRows > 0 && (
-								<TableRow style={ { height: 49 * emptyRows } }>
+								<TableRow style={ { height: 49/*  * emptyRows */ } }>
 									<TableCell colSpan={ 8 } />
 								</TableRow>
 							) }
