@@ -137,7 +137,7 @@ class User extends Component {
 				{accessLevel.apiorg.editusers ? null : <ItemG>
 					<TextF
 						id={'current'}
-						label={"Your password"}
+						label={t("users.fields.currentPass")}
 						type={"password"}
 						handleChange={this.handleInputChange}
 					/>
@@ -145,7 +145,7 @@ class User extends Component {
 				<ItemG>
 					<TextF
 						id={'newP'}
-						label={"New password"}
+						label={t("users.fields.newPass")}
 						type={"password"}
 						handleChange={this.handleInputChange}
 					/>
@@ -153,7 +153,7 @@ class User extends Component {
 				<ItemG>
 					<TextF
 						id={'confirm'}
-						label={"Confirm password"}
+						label={t("users.fields.confirmPass")}
 						type={"password"}
 						handleChange={this.handleInputChange}
 					/>
@@ -164,7 +164,7 @@ class User extends Component {
 					{t("actions.cancel")}
 				</Button>
 				<Button onClick={this.handleChangePassword} color="primary" autoFocus>
-					{t("actions.yes")}
+					{t("menus.changePassword")}
 				</Button>
 			</DialogActions>
 		</Dialog>
