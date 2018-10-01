@@ -53,6 +53,7 @@ class Projects extends Component {
 	}
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		console.log('hrsProject', order, property)
 		let newData = handleRequestSort(property, order, this.state.projects)
 		this.setState({ projects: newData, order, orderBy: property })
 	}
@@ -104,8 +105,8 @@ class Projects extends Component {
 			projectHeader: [
 				{ id: 'title', label: t("projects.projectsColumnTitle"), },
 				{ id: 'description', label: t("projects.projectsColumnDescription"), },
-				{ id: 'open_date', label: t("projects.projectsColumnStartDate"), },
-				{ id: 'close_date', label: t("projects.projectsColumnEndDate"), },
+				{ id: 'startDate', label: t("projects.projectsColumnStartDate"), },
+				{ id: 'endDate', label: t("projects.projectsColumnEndDate"), },
 				{ id: 'created', label: t("projects.projectsColumnCreated"), },
 				{ id: 'modified', label: t("projects.projectsColumnLastMod"), },
 			],

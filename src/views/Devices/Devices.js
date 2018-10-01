@@ -9,7 +9,7 @@ import { Maps } from 'components/Map/Maps';
 import GridContainer from 'components/Grid/GridContainer';
 import { ViewList, ViewModule, Map } from '@material-ui/icons'
 import Toolbar from 'components/Toolbar/Toolbar'
-import { filterItems } from '../../variables/functions';
+import { filterItems, handleRequestSort } from '../../variables/functions';
 import DeviceCard from 'components/Devices/DeviceCard'
 // var moment = require('moment');
 
@@ -69,21 +69,9 @@ class Devices extends Component {
 		await this.getDevices()
 	}
 	handleRequestSort = (event, property, way) => {
-		const orderBy = property;
-		let order = 'desc';
-
-		if (this.state.orderBy === property && this.state.order === 'desc') {
-			order = 'asc';
-		}
-		if (way) {
-			order = way
-		}
-		const devices =
-			order === 'desc'
-				? this.state.devices.sort((a, b) => (b[ orderBy ] < a[ orderBy ] ? -1 : 1))
-				: this.state.devices.sort((a, b) => (a[ orderBy ] < b[ orderBy ] ? -1 : 1))
-
-		this.setState({ devices, order, orderBy })
+		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		let newData = handleRequestSort(property, order, this.state.devices)
+		this.setState({ devices: newData, order, orderBy: property })
 	}
 	getDevices = async () => {
 		const { t } = this.props

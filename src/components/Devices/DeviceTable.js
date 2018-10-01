@@ -31,6 +31,7 @@ class EnhancedTable extends React.Component {
 			anchorElMenu: null,
 			anchorFilterMenu: null,
 			openAssignProject: false,
+			openAssignOrg: false,
 			openUnassign: false,
 		};
 	}

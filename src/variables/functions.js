@@ -85,20 +85,19 @@ export const handleRequestSort = (property, way, data) => {
 	const orderBy = property;
 	let order = way;
 	let newData = []
-	// let keyTest = data[0]
-	// if (moment(keyTest[property]).isValid()) {
-	// 	newData =
-	// 		order === 'desc'
-	// 			? data.sort((a, b) => (moment(b[orderBy]).isBefore(a[orderBy] ? -1 : 1)))
-	// 			: data.sort((a, b) => (moment(a[orderBy]).isBefore(b[orderBy] ? -1 : 1)))
-	// }
-	// else {
-	newData =
+	let keyTest = data[0]
+	if (moment(keyTest[property]).isValid()) {
+		newData =
+			order === 'desc'
+	 			? data.sort((a, b) => (moment(b[orderBy]).isBefore(a[orderBy]) ? -1 : 1))
+				: data.sort((a, b) => (moment(b[orderBy]).isAfter(a[orderBy]) ? -1 : 1))
+	}
+	else {
+		newData =
 			order === 'desc'
 				? data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
 				: data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1))
-	// }
-
+	}
 	return newData
 }
 export const pF = (phone) => {

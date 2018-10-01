@@ -7,7 +7,7 @@ import GridContainer from 'components/Grid/GridContainer';
 import { getAllUsers, deleteUser } from 'variables/dataUsers';
 import Toolbar from 'components/Toolbar/Toolbar'
 import { People, Business } from '@material-ui/icons';
-import { filterItems } from '../../variables/functions';
+import { filterItems, handleRequestSort } from '../../variables/functions';
 
 class Users extends Component {
 	constructor(props) {
@@ -50,21 +50,9 @@ class Users extends Component {
 		return filterItems(data, this.state.filters)
 	}
 	handleRequestSort = (event, property, way) => {
-		const orderBy = property;
-		let order = 'desc';
-
-		if (this.state.orderBy === property && this.state.order === 'desc') {
-			order = 'asc';
-		}
-		if (way) {
-			order = way
-		}
-		const users =
-			order === 'desc'
-				? this.state.users.sort((a, b) => (b[ orderBy ] < a[ orderBy ] ? -1 : 1))
-				: this.state.users.sort((a, b) => (a[ orderBy ] < b[ orderBy ] ? -1 : 1))
-
-		this.setState({ users, order, orderBy })
+		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		let newData = handleRequestSort(property, order, this.state.users)
+		this.setState({ users: newData, order, orderBy: property })
 	}
 	handleFilterStartDate = (value) => {
 		this.setState({

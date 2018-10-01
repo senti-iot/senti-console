@@ -148,7 +148,7 @@ class EnhancedTable extends React.Component {
 	isSelected = id => this.state.selected.indexOf(id) !== -1
 
 	handleEdit = () => {
-		this.props.history.push(`/project/${this.state.selected[ 0 ]}/edit`)
+		this.props.history.push(`/project/${this.state.selected[0]}/edit`)
 	}
 	options = () => {
 		const { t } = this.props
@@ -164,28 +164,28 @@ class EnhancedTable extends React.Component {
 		const { openDelete, selected } = this.state
 		const { data, t } = this.props
 		return <Dialog
-			open={ openDelete }
-			onClose={ this.handleCloseDeleteDialog }
+			open={openDelete}
+			onClose={this.handleCloseDeleteDialog}
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{ t("projects.projectDelete") }</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("projects.projectDelete")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{ t("projects.projectDeleteConfirm") }
+					{t("projects.projectDeleteConfirm")}
 				</DialogContentText>
 				<List>
-					{ selected.map(s => <ListItem key={ s }><ListItemIcon><div>&bull;</div></ListItemIcon>
-						<ListItemText primary={ data[ data.findIndex(d => d.id === s) ].title } /></ListItem>) }
+					{selected.map(s => <ListItem key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
+						<ListItemText primary={data[data.findIndex(d => d.id === s)].title} /></ListItem>)}
 
 				</List>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={ this.handleCloseDeleteDialog } color="primary">
-					{ t("actions.no") }
+				<Button onClick={this.handleCloseDeleteDialog} color="primary">
+					{t("actions.no")}
 				</Button>
-				<Button onClick={ this.handleDeleteProjects } color="primary" autoFocus>
-					{ t("actions.yes") }
+				<Button onClick={this.handleDeleteProjects} color="primary" autoFocus>
+					{t("actions.yes")}
 				</Button>
 			</DialogActions>
 		</Dialog>
@@ -197,172 +197,173 @@ class EnhancedTable extends React.Component {
 		const { anchorFilterMenu } = this.state
 
 		return <Fragment>
-			<IconButton aria-label="Add new project" onClick={ this.AddNewProject }>
+			<IconButton aria-label="Add new project" onClick={this.AddNewProject}>
 				<Add />
 			</IconButton>
 			<IconButton
-				className={ classes.secondAction }
-				aria-label={ t("tables.filter") }
-				aria-owns={ anchorFilterMenu ? "filter-menu" : null }
-				onClick={ this.handleFilterMenuOpen }>
+				className={classes.secondAction}
+				aria-label={t("tables.filter")}
+				aria-owns={anchorFilterMenu ? "filter-menu" : null}
+				onClick={this.handleFilterMenuOpen}>
 				<FilterList />
 			</IconButton>
 			<Menu
 				id="filter-menu"
-				anchorEl={ anchorFilterMenu }
-				open={ Boolean(anchorFilterMenu) }
-				onClose={ this.handleFilterMenuClose }
-				PaperProps={ { style: { width: 200, boxShadow: boxShadow } } }>
+				anchorEl={anchorFilterMenu}
+				open={Boolean(anchorFilterMenu)}
+				onClose={this.handleFilterMenuClose}
+				PaperProps={{ style: { width: 200, boxShadow: boxShadow } }}>
 
-				{ tableHead.map(option => {
-					return <MenuItem key={ option.id } onClick={ this.handleFilter }>
-						{ option.label }
+				{tableHead.map(option => {
+					return <MenuItem key={option.id} onClick={this.handleFilter}>
+						{option.label}
 					</MenuItem>
-				}) }
+				})}
 			</Menu>
 		</Fragment>
 	}
-	render () {
+	render() {
 		const { classes, t, order, data, orderBy } = this.props
 		const { selected, rowsPerPage, page } = this.state
 		let emptyRows;
+		console.log(order, orderBy)
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 
 		return (
 
-			<Paper className={ classes.root }>
+			<Paper className={classes.root}>
 				<EnhancedTableToolbar
-					anchorElMenu={ this.state.anchorElMenu }
-					handleToolbarMenuClose={ this.handleToolbarMenuClose }
-					handleToolbarMenuOpen={ this.handleToolbarMenuOpen }
-					numSelected={ selected.length }
-					options={ this.options }
-					t={ t }
-					content={ this.renderTableToolBarContent() }
+					anchorElMenu={this.state.anchorElMenu}
+					handleToolbarMenuClose={this.handleToolbarMenuClose}
+					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+					numSelected={selected.length}
+					options={this.options}
+					t={t}
+					content={this.renderTableToolBarContent()}
 				/>
-				<div className={ classes.tableWrapper }>
-					<Table className={ classes.table } aria-labelledby="tableTitle">
+				<div className={classes.tableWrapper}>
+					<Table className={classes.table} aria-labelledby="tableTitle">
 						<EnhancedTableHead // ./ProjectTableHeader
-							numSelected={ selected.length }
-							order={ order }
-							orderBy={ orderBy }
-							onSelectAllClick={ this.handleSelectAllClick }
-							onRequestSort={ this.handleRequestSort }
-							rowCount={ data ? data.length : 0 }
-							columnData={ this.props.tableHead }
-							t={ t }
-							classes={ classes }
+							numSelected={selected.length}
+							order={order}
+							orderBy={orderBy}
+							onSelectAllClick={this.handleSelectAllClick}
+							onRequestSort={this.handleRequestSort}
+							rowCount={data ? data.length : 0}
+							columnData={this.props.tableHead}
+							t={t}
+							classes={classes}
 							// mdDown={[0]}
-							customColumn={ [
+							customColumn={[
 								{
 									id: "title",
-									label: <Typography paragraph classes={ { root: classes.paragraphCell + " " + classes.headerCell } }>
+									label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>
 										Projects
 									</Typography>
 								}
-							] } //Which Columns to display on small Screens
+							]} //Which Columns to display on small Screens
 						/>
 						<TableBody>
-							{ data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
+							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
 								return (
 									<TableRow
 										hover
-										onClick={ e => { e.stopPropagation(); this.props.history.push('/project/' + n.id) } }
+										onClick={e => { e.stopPropagation(); this.props.history.push('/project/' + n.id) }}
 										role="checkbox"
-										aria-checked={ isSelected }
-										tabIndex={ -1 }
-										key={ n.id }
-										selected={ isSelected }
-										style={ { cursor: 'pointer' } }
+										aria-checked={isSelected}
+										tabIndex={-1}
+										key={n.id}
+										selected={isSelected}
+										style={{ cursor: 'pointer' }}
 									>
 										<Hidden lgUp>
-											<TableCell padding="checkbox" className={ classes.tablecellcheckbox } onClick={ e => this.handleClick(e, n.id) }>
-												<Checkbox checked={ isSelected } />
+											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+												<Checkbox checked={isSelected} />
 											</TableCell>
-											<TableCell classes={ { root: classes.tableCell } }>
-												<ItemGrid container zeroMargin noPadding alignItems={ "center" }>
-													<ItemGrid zeroMargin noPadding zeroMinWidth xs={ 12 }>
-														<Info noWrap paragraphCell={ classes.noMargin }>
-															{ n.title }
+											<TableCell classes={{ root: classes.tableCell }}>
+												<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+														<Info noWrap paragraphCell={classes.noMargin}>
+															{n.title}
 														</Info>
 													</ItemGrid>
-													<ItemGrid zeroMargin noPadding zeroMinWidth xs={ 12 }>
-														<Caption noWrap className={ classes.noMargin }>
-															{ `${n.org ? n.org.name : t("users.fields.noOrg")}` /* ${dateFormatter(n.startDate)} - ${dateFormatter(n.endDate)} */ }
+													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+														<Caption noWrap className={classes.noMargin}>
+															{`${n.org ? n.org.name : t("users.fields.noOrg")}` /* ${dateFormatter(n.startDate)} - ${dateFormatter(n.endDate)} */}
 														</Caption>
 													</ItemGrid>
-													{/* </ItemGrid> */ }
+													{/* </ItemGrid> */}
 												</ItemGrid>
 											</TableCell>
 										</Hidden>
 
 										<Hidden mdDown>
-											<TableCell padding="checkbox" className={ classes.tablecellcheckbox } onClick={ e => this.handleClick(e, n.id) }>
-												<Checkbox checked={ isSelected } />
+											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+												<Checkbox checked={isSelected} />
 											</TableCell>
-											<TableCell className={ classes.tableCell + " " + classes.tableCellNoWidth }>
-												<Typography paragraph classes={ { root: classes.paragraphCell } }>
-													{ n.title }
+											<TableCell className={classes.tableCell + " " + classes.tableCellNoWidth}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{n.title}
 												</Typography>
 											</TableCell>
-											<TableCell className={ classes.tableCell }>
-												<Typography paragraph title={ n.description } classes={ { root: classes.paragraphCell } }>
-													{ n.description }
+											<TableCell className={classes.tableCell}>
+												<Typography paragraph title={n.description} classes={{ root: classes.paragraphCell }}>
+													{n.description}
 												</Typography>
 											</TableCell>
-											<TableCell className={ classes.tableCell }>
-												<Typography paragraph classes={ { root: classes.paragraphCell } }>
-													{ dateFormatter(n.startDate) }
+											<TableCell className={classes.tableCell}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{dateFormatter(n.startDate)}
 												</Typography>
 											</TableCell>
-											<TableCell className={ classes.tableCell }>
-												<Typography paragraph classes={ { root: classes.paragraphCell } }>
-													{ dateFormatter(n.endDate) }
+											<TableCell className={classes.tableCell}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{dateFormatter(n.endDate)}
 												</Typography>
 											</TableCell>
-											<TableCell className={ classes.tableCell }>
-												<Typography paragraph classes={ { root: classes.paragraphCell } }>
-													{ dateFormatter(n.created) }	</Typography>
+											<TableCell className={classes.tableCell}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{dateFormatter(n.created)}	</Typography>
 											</TableCell>
-											<TableCell className={ classes.tableCell }>
-												<Typography paragraph classes={ { root: classes.paragraphCell } }>
-													{ dateFormatter(n.modified) }	</Typography>
+											<TableCell className={classes.tableCell}>
+												<Typography paragraph classes={{ root: classes.paragraphCell }}>
+													{dateFormatter(n.modified)}	</Typography>
 											</TableCell>
 										</Hidden>
 									</TableRow>
 								)
-							}) : null }
-							{ emptyRows > 0 && (
-								<TableRow style={ { height: 49/*  * emptyRows  */ }}>
-									<TableCell colSpan={ 8 } />
+							}) : null}
+							{emptyRows > 0 && (
+								<TableRow style={{ height: 49/*  * emptyRows  */ }}>
+									<TableCell colSpan={8} />
 								</TableRow>
-							) }
+							)}
 						</TableBody>
 					</Table>
 				</div>
 				<TP
-					count={ data ? data.length : 0 }
-					classes={ classes }
-					rowsPerPage={ rowsPerPage }
-					page={ page }
-					t={ t }
-					handleChangePage={ this.handleChangePage }
-					handleChangeRowsPerPage={ this.handleChangeRowsPerPage }
+					count={data ? data.length : 0}
+					classes={classes}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					t={t}
+					handleChangePage={this.handleChangePage}
+					handleChangeRowsPerPage={this.handleChangeRowsPerPage}
 				/>
 				<Snackbar
-					anchorOrigin={ { vertical: "bottom", horizontal: "right" } }
-					open={ this.state.openSnackbar !== 0 ? true : false }
-					onClose={ () => { this.setState({ openSnackbar: 0 }) } }
-					autoHideDuration={ 1000 }
+					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+					open={this.state.openSnackbar !== 0 ? true : false}
+					onClose={() => { this.setState({ openSnackbar: 0 }) }}
+					autoHideDuration={1000}
 					message={
-						<ItemGrid zeroMargin noPadding justify={ 'center' } alignItems={ 'center' } container id="message-id">
-							{ this.snackBarMessages() }
+						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
+							{this.snackBarMessages()}
 						</ItemGrid>
 					}
 				/>
-				{ this.renderConfirmDelete() }
+				{this.renderConfirmDelete()}
 			</Paper>
 		)
 	}
