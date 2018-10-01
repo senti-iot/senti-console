@@ -18,7 +18,6 @@ import withLocalization from "components/Localization/T";
 import { connect } from "react-redux"
 import { getSettings } from 'redux/settings';
 // import GeoLocation from "components/Geolocation/Geolocation";
-
 class App extends React.Component {
 	constructor(props) {
 		super(props)

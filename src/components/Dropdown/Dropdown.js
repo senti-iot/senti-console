@@ -43,7 +43,7 @@ class Dropdown extends Component {
 							minWidth: 200
 						}
 					}}>
-					{menuItems.map(n => n)}
+					{menuItems}
 					))}
 				</Menu>
 			</ItemGrid>

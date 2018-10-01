@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 import imgs from 'assets/img/Squared'
 import { ItemG, Caption } from 'components';
 import { Link } from 'react-router-dom';
+import pj from '../../../package.json'
 
 class Dashboard extends React.Component {
 	constructor(props) {
@@ -117,7 +118,7 @@ class Dashboard extends React.Component {
 					/></ItemG>
 					<ItemG justify xs={12}>
 						<Caption>
-							Senti.Cloud version 2.1
+							Senti.Cloud version {pj.version}
 						</Caption>
 					</ItemG>
 				</GridContainer>

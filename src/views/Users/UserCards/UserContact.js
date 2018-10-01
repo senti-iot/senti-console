@@ -1,27 +1,13 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info } from 'components';
-import { Hidden, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { Hidden, MenuItem } from '@material-ui/core';
 import { pF } from 'variables/functions';
-import { Person, MoreVert, Edit, Delete } from '@material-ui/icons'
+import { Person, Edit, Delete, LockOpen } from '@material-ui/icons'
 import { NavLink } from 'react-router-dom'
 import Gravatar from 'react-gravatar'
 import { connect } from 'react-redux'
+import Dropdown from 'components/Dropdown/Dropdown';
 class UserContact extends Component {
-	constructor(props) {
-		super(props)
-
-		this.state = {
-			actionAnchor: null
-		}
-	}
-
-	handleOpenActionsDetails = event => {
-		this.setState({ actionAnchor: event.currentTarget });
-	}
-
-	handleCloseActionsDetails = () => {
-		this.setState({ actionAnchor: null });
-	}
 
 	deleteUser = () => {
 		this.handleCloseActionsDetails()
@@ -51,36 +37,21 @@ class UserContact extends Component {
 	}
 	renderTopAction = () => {
 		const { t, loggedUser, classes, user } = this.props
-		const { actionAnchor } = this.state
 		const { apiorg } = loggedUser.privileges
-		return <ItemGrid noMargin noPadding>
-			<IconButton
-				aria-label="More"
-				aria-owns={actionAnchor ? 'long-menu' : null}
-				aria-haspopup="true"
-				onClick={this.handleOpenActionsDetails}>
-				<MoreVert />
-			</IconButton>
-			<Menu
-				id="long-menu"
-				anchorEl={actionAnchor}
-				open={Boolean(actionAnchor)}
-				onClose={this.handleCloseActionsDetails}
-				PaperProps={{
-					style: {
-						maxHeight: 200,
-						minWidth: 200
-					}
-				}}>
+		return <Dropdown menuItems={
+			[
 				<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
 					<Edit className={classes.leftIcon} />{t("menus.edit")}
-				</MenuItem>
-				{apiorg ? apiorg.editusers || !loggedUser.id === user.id ?  <MenuItem onClick={this.deleteUser}>
+				</MenuItem>,
+				<MenuItem onClick={() => this.props.changePass()}>
+					<LockOpen className={classes.leftIcon} /> {t("menus.changePassword")}
+				</MenuItem>,
+				(apiorg ? apiorg.editusers || !loggedUser.id === user.id ? <MenuItem onClick={this.deleteUser}>
 					<Delete className={classes.leftIcon} />{t("menus.delete")}
-				</MenuItem> : null : null}
-				))}
-			</Menu>
-		</ItemGrid>
+				</MenuItem> : null : null)
+			
+			]
+		}/>
 	}
 	render() {
 		const { t, user, classes } = this.props
