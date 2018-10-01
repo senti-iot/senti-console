@@ -53,6 +53,7 @@ export const getSettings = async () => {
 		var userId = cookie.load('SESSION') ? cookie.load('SESSION').userID : 0
 		var user = userId !== 0 ? await getUser(userId) : null
 		var settings = user ? user.aux ? user.aux.senti ? user.aux.senti.settings ? user.aux.senti.settings : null : null : null : null
+		var language = user ? user.aux ? user.aux.odeum ? user.aux.odeum.language ? user.aux.odeum.language : "da" : "da" : "da" : "da"
 		moment.updateLocale("en", {
 			week: {
 				dow: 1
@@ -60,22 +61,22 @@ export const getSettings = async () => {
 		})
 		if (user) {
 			if (settings) {
-				moment.locale(user.aux.odeum.language)
+				moment.locale(language)
 				dispatch({
 					type: GETSETTINGS,
 					settings: {
 						...user.aux.senti.settings,
-						language: user.aux.odeum.language
+						language: language
 					},
 					user
 				})
 				return true
 			}
 			else {
-				moment.locale(user.aux.odeum.language)
+				moment.locale(language)
 				let s = {
 					...getState().settings,
-					language: user.aux.odeum.language
+					language: language
 				}
 
 				dispatch({

@@ -3,15 +3,15 @@ import cookie from 'react-cookies'
 // https://betabackend.senti.cloud/
 // https://senti.cloud
 let backendHost;
-const hostname = window && window.location && window.location.hostname;
+// const hostname = window && window.location && window.location.hostname;
 
-if (hostname === 'console.senti.cloud') {
-	backendHost = 'https://senti.cloud/rest/';
-} else if (hostname === 'beta.senti.cloud') {
-	backendHost = 'https://betabackend.senti.cloud/rest/';
-} else {
-	backendHost = 'https://betabackend.senti.cloud/rest/';
-}
+// if (hostname === 'console.senti.cloud') {
+backendHost = 'https://senti.cloud/rest/';
+// } else if (hostname === 'beta.senti.cloud') {
+// 	backendHost = 'https://betabackend.senti.cloud/rest/';
+// } else {
+// 	backendHost = 'https://betabackend.senti.cloud/rest/';
+// }
 export const loginApi = create({
 	baseURL: backendHost,
 	timout: 30000,
