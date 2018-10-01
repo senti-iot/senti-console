@@ -270,9 +270,9 @@
         "changePassword": "Skift kodeord",
         "forgotPass": "Glemt kodeord?",
         "pass": "Kodeord",
-        "requestPasswordReset": "Request password reset",
-        "resetPassRequestMessage": "An email has been sent with instructions on how to reset your password!",
-        "resetPasswordMessage": "Reset your password by inserting your email",
+        "requestPasswordReset": "Anmodning om nulstilling af kodeord",
+        "resetPassRequestMessage": "En Email er er blevet sendt med instruktioner for hvordan du nulstiller dit kodeord!",
+        "resetPasswordMessage": "Nulstil dit kodeord ved at indtaste din Email-adresse",
         "username": "Brugernavn"
     },
     "menus": {

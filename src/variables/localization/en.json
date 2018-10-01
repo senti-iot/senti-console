@@ -271,8 +271,8 @@
 		"forgotPass": "Forgot password?",
 		"pass": "Password",
 		"requestPasswordReset": "Request password reset",
-		"resetPassRequestMessage": "An email has been sent with instructions on how to reset your password!",
-		"resetPasswordMessage": "Reset your password by inserting your email",
+		"resetPassRequestMessage": "An Email has been sent with instructions on how to reset your password!",
+		"resetPasswordMessage": "Reset your password by entering your Email",
 		"username": "Username"
 	},
 	"menus": {
