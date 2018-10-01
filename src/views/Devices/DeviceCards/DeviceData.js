@@ -316,7 +316,6 @@ class DeviceData extends Component {
 		{ id: 2, label: this.props.t("filters.dateOptions.30days") },
 		{ id: 3, label: this.props.t("filters.dateOptions.90days") },
 		{ id: 4, label: this.props.t("filters.dateOptions.custom") },
-
 	]
 
 	visibilityOptions = [
