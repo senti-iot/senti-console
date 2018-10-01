@@ -240,7 +240,9 @@
 			"custom": "Custom range",
 			"daily": "Daily",
 			"hourly": "Hourly",
-			"today": "Today"
+			"today": "Today",
+			"yesterday": "Yesterday",
+			"thisWeek": "This week"
 		},
 		"display": "Display:",
 		"endDate": "End date",

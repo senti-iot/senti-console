@@ -240,7 +240,9 @@
             "custom": "Tilpasset interval",
             "daily": "Hver dag",
             "hourly": "Hver time",
-            "today": "I dag"
+			"today": "I dag",
+			"yesterday": "I går",
+			"thisWeek": "Denne uge"
         },
         "display": "Visning",
         "endDate": "Slutdato",
