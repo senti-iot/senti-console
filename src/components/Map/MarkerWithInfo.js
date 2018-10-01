@@ -31,7 +31,7 @@ class MarkerWithInfo extends Component {
 	}
 	onToggleOpen = async () => {
 		if (this.state.isOpen === false) {
-			let OneMinuteAgo = moment().subtract(1, "minute").format("YYYY-MM-DD+HH:mm:ss")
+			let OneMinuteAgo = moment().subtract(10, "minute").format("YYYY-MM-DD+HH:mm:ss")
 			let rs = await getWifiSummary(this.props.m.id, OneMinuteAgo, moment().format("YYYY-MM-DD+HH:mm:ss"))
 			this.setState({ isOpen: !this.state.isOpen, liveCount: rs })
 		}

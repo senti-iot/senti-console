@@ -4,10 +4,10 @@ import projectStyles from 'assets/jss/views/projects';
 import UserTable from 'components/User/UserTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
-import { getAllUsers, getAllOrgs } from 'variables/dataUsers';
+import { getAllUsers, deleteUser } from 'variables/dataUsers';
 import Toolbar from 'components/Toolbar/Toolbar'
 import { People, Business } from '@material-ui/icons';
-import { filterItems } from '../../variables/functions';
+import { filterItems, handleRequestSort } from '../../variables/functions';
 
 class Users extends Component {
 	constructor(props) {
@@ -18,6 +18,8 @@ class Users extends Component {
 			userHeader: [],
 			loading: true,
 			route: 0,
+			order: "desc",
+			orderBy: "firstName",
 			filters: {
 				keyword: '',
 				startDate: null,
@@ -25,7 +27,7 @@ class Users extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader(props.t("users.pageTitle"), false)
+		props.setHeader(props.t("users.pageTitle"), false, '', 'users')
 	}
 
 	componentDidMount = async () => {
@@ -47,7 +49,11 @@ class Users extends Component {
 	filterItems = (data) => {
 		return filterItems(data, this.state.filters)
 	}
-
+	handleRequestSort = (event, property, way) => {
+		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		let newData = handleRequestSort(property, order, this.state.users)
+		this.setState({ users: newData, order, orderBy: property })
+	}
 	handleFilterStartDate = (value) => {
 		this.setState({
 			filters: {
@@ -77,31 +83,19 @@ class Users extends Component {
 	getData = async () => {
 		const { t } = this.props
 		let users = await getAllUsers().then(rs => rs)
-		let orgs = await getAllOrgs().then(rs => rs)
 		if (this._isMounted) {
 			this.setState({
 				users: users ? users : [],
-				orgs: orgs ? orgs : [],
 				userHeader: [
 					{ id: "avatar", label: "" },
 					{ id: "firstName", label: t("users.fields.name") },
-					// { id: "firstName", label: t("users.fields.firstName") },
-					// { id: "lastName", label: t("users.fields.lastName") },
 					{ id: "phone", label: t("users.fields.phone") },
 					{ id: "email", label: t("users.fields.email") },
-					{ id: "org", label: t("users.fields.organisation") },
+					{ id: "org.name", label: t("users.fields.organisation") },
 					{ id: "lastSignIng", label: t("users.fields.lastSignIn") }
-				],
-				orgsHeader: [
-					{ id: "name", label: t("orgs.fields.name") },
-					{ id: "address", label: t("orgs.fields.address") },
-					{ id: "city", label: t("orgs.fields.city") },
-					// { id: "country", label: t("orgs.fields.country") },
-					{ id: "url", label: t("orgs.fields.url") },
-					// { id: "org", label: t("orgs.fields.org") }
-				],
+				], 
 				loading: false
-			})
+			}, () => this.handleRequestSort(null, "firstName", "asc"))
 		}
 	}
 
@@ -112,17 +106,27 @@ class Users extends Component {
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
 	}
+	handleDeleteUsers = async (selected) => {
+		await selected.forEach(async u => {
+			await deleteUser(u)
+		})
+		this.getData()
+	}
 	renderUsers = () => {
 		const { t } = this.props
-		const { loading } = this.state
+		const { loading, order, orderBy, filters, userHeader } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <UserTable
 				data={this.filterItems(this.state.users)}
-				tableHead={this.state.userHeader}
+				tableHead={userHeader}
 				handleFilterEndDate={this.handleFilterEndDate}
 				handleFilterKeyword={this.handleFilterKeyword}
-				handleFilterStartDate={this.handleFilterStartDate}
-				filters={this.state.filters}
+				handleFilterStartDate={ this.handleFilterStartDate }
+				handleRequestSort={this.handleRequestSort}
+				handleDeleteUsers={this.handleDeleteUsers}
+				order={order}
+				orderBy={ orderBy}
+				filters={filters}
 				t={t}
 			/>}
 		</GridContainer>

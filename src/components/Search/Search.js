@@ -88,12 +88,24 @@ class IntegrationAutosuggest extends React.Component {
 		this.inputRef = React.createRef()
 
 	}
-
+	// componentDidMount() {
+	// 	document.addEventListener("keydown", this.handleKeyPress, false);
+	// }
+	// componentWillUnmount() {
+	// 	document.removeEventListener("keydown", this.handleKeyPress, false);
+	// }
 	handleResetSearch = () => {
 		this.handleChange(null, { newValue: '' })
 
 	}
-	handleSuggestionsFetchRequested = ({ value }) => {
+	handleSuggestionsFetchRequested = ({ value, reason }) => {
+		const { open } = this.state
+		const { searchValue } = this.props
+		if (open && searchValue === "" && reason === "escape-pressed") {
+			// console.log("reset", open, searchValue, open && searchValue === "" ? true : false)
+			this.handleClose()
+			// }
+		}
 		this.setState({
 			suggestions: getSuggestions(value, this.props.suggestions),
 		});
@@ -106,6 +118,7 @@ class IntegrationAutosuggest extends React.Component {
 	};
 
 	handleChange = (event, { newValue }) => {
+		
 		this.props.handleFilterKeyword(newValue)
 	};
 	focusInput = () => {
@@ -119,6 +132,7 @@ class IntegrationAutosuggest extends React.Component {
 	handleClose = () => {
 		this.setState({ open: false })
 	}
+
 	render() {
 		const { classes, right } = this.props;
 
@@ -127,13 +141,15 @@ class IntegrationAutosuggest extends React.Component {
 
 				<ClickAwayListener onClickAway={this.handleClose}>
 					<Autosuggest
+
 						theme={{
 							container: classes.container + " " + (right ? classes.right : ''),
 							suggestionsContainerOpen: classes.suggestionsContainerOpen,
 							suggestionsList: classes.suggestionsList,
 							suggestion: classes.suggestion,
 						}}
-						focusInputOnSuggestionClick={false}
+						alwaysRenderSuggestions={true}
+						focusInputOnSuggestionClick={true}
 						renderInputComponent={renderInput}
 						suggestions={this.state.suggestions}
 						onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
@@ -151,6 +167,7 @@ class IntegrationAutosuggest extends React.Component {
 							handleOpen: this.handleOpen,
 							handleClose: this.handleClose,
 							handleResetSearch: this.handleResetSearch,
+							// onKeyPress: this.handleKeyPress,
 							t: this.props.t
 						}}
 					/>

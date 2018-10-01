@@ -9,6 +9,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { primaryColor, secondaryColor, hoverColor } from "assets/jss/material-dashboard-react";
 import "assets/css/material-dashboard-react.css?v=1.2.0";
 import TProvider from 'components/Localization/TProvider';
+import { teal } from "@material-ui/core/colors"
 
 import "core-js/fn/set"; 
 import 'core-js/es6/map';
@@ -37,13 +38,25 @@ const theme = createMuiTheme({
 				overflow: 'visible',
 			},
 		},
+		MuiFormLabel: {
+			root: {
+				'&$focused': {
+					color: teal[500],
+				},
+			},
+		},
 		MuiInput: {
 			// Name of the styleSheet
 			underline: {
 				'&:hover:not($disabled):not($focused):not($error):before': {
 					borderBottom: "2px solid #4db6ac" /* + primaryColor */,
+				},	
+				'&:after': {
+					borderBottomColor: teal[500],
 				},
-			},
+			}
+			
+			
 		}
 	},
 	palette: {

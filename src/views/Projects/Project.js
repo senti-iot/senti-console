@@ -1,13 +1,13 @@
-import { Snackbar, Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, IconButton, withStyles } from '@material-ui/core'
-import { Close } from '@material-ui/icons'
+import { Snackbar, Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, /* IconButton, */ withStyles } from '@material-ui/core'
+// import { Close } from '@material-ui/icons'
 import { ItemGrid, GridContainer, CircularLoader } from 'components'
-import moment from "moment"
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { getProject, deleteProject } from 'variables/dataProjects'
 import ProjectData from './ProjectCards/ProjectData'
 import ProjectDetails from './ProjectCards/ProjectDetails'
 import ProjectDevices from './ProjectCards/ProjectDevices'
 import { ProjectContact } from './ProjectCards/ProjectContact'
+import { dateFormatter } from 'variables/functions';
 
 const projectStyles = theme => ({
 	close: {
@@ -38,24 +38,24 @@ class Project extends Component {
 			openSnackbar: 0,
 			openDelete: false
 		}
-		props.setHeader('')
+		props.setHeader('', false, '', "projects")
 
 	}
 
 	componentDidMount = async () => {
 		if (this.props.match)
-			if (this.props.match.params.id)
-			{this.timer = setTimeout(async () => await getProject(this.props.match.params.id).then(async rs => {
-				if (rs === null)
-					this.props.history.push('/404')
-				else {
-					this.props.setHeader(rs.title, true, '/projects/list')
-					this.setState({
-						project: rs, loading: false
-					})
-				}
-			}), 2e3)
-			
+			if (this.props.match.params.id) {
+			 await getProject(this.props.match.params.id).then(async rs => {
+					if (rs === null)
+						this.props.history.push('/404')
+					else {
+						this.props.setHeader(rs.title, true, '/projects/list', "projects")
+						this.setState({
+							project: rs, loading: false
+						})
+					}
+				})
+
 			}
 			else {
 				this.props.history.push('/404')
@@ -63,26 +63,15 @@ class Project extends Component {
 	}
 
 	componentWillUnmount = () => {
-	   clearTimeout(this.timer)
+		clearTimeout(this.timer)
 	}
-	
+
 	snackBarMessages = () => {
-		const { classes, t } = this.props
+		const { t } = this.props
 		let msg = this.state.openSnackbar
 		switch (msg) {
 			case 1:
-				return <Fragment>
-					{t("projects.projectDeleted")}
-					<IconButton
-						key="close"
-						aria-label="Close"
-						color="inherit"
-						className={classes.close}
-						onClick={this.closeSnackBar}
-					>
-						<Close />
-					</IconButton>
-				</Fragment>
+				return t("projects.projectDeleted")
 			case 2:
 				return t("projects.projectExported")
 			case 3:
@@ -99,22 +88,15 @@ class Project extends Component {
 	}
 
 	redirect = () => {
-		setTimeout(() => {
-			this.setState({ openSnackbar: 3 })
-			setTimeout(() => this.props.history.push('/projects/list'), 2e3)
-		}, 2e3)
-	
+		setTimeout(() => this.props.history.push('/projects/list'), 1000)
 	}
 
 	closeSnackBar = () => {
-		if (this.state.openSnackbar === 1)
-		{
+		if (this.state.openSnackbar === 1) {
 			this.setState({ openSnackbar: 0 }, () => this.redirect())
 		}
 		else
 			this.setState({ openSnackbar: 0 })
-		
-	
 	}
 
 	filterItems = (projects, keyword) => {
@@ -128,7 +110,7 @@ class Project extends Component {
 				if (c[key] === null)
 					return searchStr === "null" ? true : false
 				if (c[key] instanceof Date) {
-					let date = moment(c[key]).format("DD.MM.YYYY")
+					let date = dateFormatter(c[key])
 					return date.toLowerCase().includes(searchStr)
 				}
 				else
@@ -154,7 +136,7 @@ class Project extends Component {
 				...this.state.deviceFilters,
 				keyword: value
 			}
-	
+
 		})
 	}
 
@@ -196,7 +178,7 @@ class Project extends Component {
 	renderLoader = () => {
 		return <CircularLoader />
 	}
-	
+
 	render() {
 		const { project, loading } = this.state
 		const { t } = this.props //Localization Provider is HOC'd with withRouter on the Routes Functional Component (See routes/*any*.js) 
@@ -205,28 +187,23 @@ class Project extends Component {
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectDetails t={t} project={project} {...rp} deleteProject={this.handleOpenDeleteDialog}/>
+						<ProjectDetails t={t} project={project} {...rp} deleteProject={this.handleOpenDeleteDialog} />
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectDevices t={t} project={project}/>
+						<ProjectDevices t={t} project={project} />
 					</ItemGrid >
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectData t={t} project={project}/>
+						<ProjectData t={t} project={project} />
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectContact  history={this.props.history} t={t} project={project}/>
+						<ProjectContact history={this.props.history} t={t} project={project} />
 					</ItemGrid>
 					{this.renderDeleteDialog()}
 					<Snackbar
-						autoHideDuration={3000}
+						autoHideDuration={1000}
 						anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
 						open={this.state.openSnackbar !== 0 ? true : false}
-						onClose={() => { 
-							if (this.state.openSnackbar === 1)
-								this.closeSnackBar()
-							else
-								this.setState({ openSnackbar: 0 })
-						}}
+						onClose={this.closeSnackBar}
 						message={
 							<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
 								{this.snackBarMessages()}
@@ -237,5 +214,5 @@ class Project extends Component {
 				: this.renderLoader())
 	}
 }
-	
+
 export default withStyles(projectStyles)(Project)

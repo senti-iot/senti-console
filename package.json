@@ -1,6 +1,6 @@
 {
 	"name": "senti-cloud",
-	"version": "2.0.5",
+	"version": "2.1.0",
 	"description": "Senti Cloud",
 	"private": true,
 	"main": "index.js",
@@ -38,7 +38,8 @@
 		"react-sound": "^1.2.0",
 		"react-swipeable-views": "^0.12.14",
 		"redux": "^4.0.0",
-		"redux-thunk": "^2.3.0"
+		"redux-thunk": "^2.3.0",
+		"zxcvbn": "^4.4.2"
 	},
 	"devDependencies": {
 		"npm-run-all": "4.1.2",

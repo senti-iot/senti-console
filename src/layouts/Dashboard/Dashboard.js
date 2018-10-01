@@ -18,7 +18,6 @@ import withLocalization from "components/Localization/T";
 import { connect } from "react-redux"
 import { getSettings } from 'redux/settings';
 // import GeoLocation from "components/Geolocation/Geolocation";
-
 class App extends React.Component {
 	constructor(props) {
 		super(props)
@@ -27,7 +26,8 @@ class App extends React.Component {
 			mobileOpen: false,
 			headerTitle: '',
 			goBackButton: false,
-			url: ''
+			url: '',
+			menuRoute: 0
 		}
 		// this.mainPanel = React.createRef()
 	}
@@ -35,14 +35,33 @@ class App extends React.Component {
 	handleDrawerToggle = () => {
 		this.setState({ mobileOpen: !this.state.mobileOpen });
 	};
-	handleSetHeaderTitle = (title, goBackButton, url) => {
-		if (this._isMounted)
-			if (title !== this.state.headerTitle)
-				this.setState({
-					headerTitle: title,
-					goBackButton: goBackButton,
-					url: url
-				})
+	handleSetHeaderTitle = (headerTitle, goBackButton, url, menuRoute) => {
+		if (this._isMounted) {
+			// console.log(headerTitle, typeof headerTitle, this.state.headerTitle, headerTitle !== this.state.headerTitle)
+			if (headerTitle !== this.state.headerTitle) {
+				if (typeof headerTitle === 'string') {
+					if (headerTitle !== this.state.headerTitle.id) {
+						this.setState({
+							headerTitle: {
+								id: headerTitle,
+								options: null
+							},
+							goBackButton: goBackButton,
+							url,
+							menuRoute
+						})
+					}
+				}
+				else {
+					this.setState({
+						headerTitle: headerTitle,
+						goBackButton: goBackButton,
+						url,
+						menuRoute
+					})
+				}
+			}
+		}
 	};
 	handleGoBackButton = () => {
 		this.props.history.push(this.state.url)
@@ -50,8 +69,10 @@ class App extends React.Component {
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
-		// if (cookie.load('SESSION'))
-		await this.props.getSettings().then(() => {
+		if (this._isMounted) {
+			this.handleSetHeaderTitle("Senti.Cloud", false, '', "dashboard")
+		 }
+		await this.props.getSettings().then(rs => {
 			if (navigator.platform.indexOf('Win') > -1) {
 				if (!this.props.loading) {
 					if (this.refs.mainPanel) {
@@ -96,6 +117,7 @@ class App extends React.Component {
 							open={this.state.mobileOpen}
 							color="senti"
 							t={t}
+							menuRoute={this.state.menuRoute}
 							{...rest}
 						/>
 						<div className={classes.content}>

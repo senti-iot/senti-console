@@ -10,25 +10,25 @@ import { ItemGrid } from '..';
 import className from 'classnames'
 // import withLocalization from '../Localization/T';
 class SearchInput extends Component {
-	constructor(props) {
-	  super(props)
+	// constructor(props) {
+	//   super(props)
 	
-	  this.state = {
-		 open: false
-	  }
-	}
-	focusInput = () => {
-		if (this.state.open)
-			this.props.reference.current.focus()
-	}
-	handleOpen = () => {
+	//   this.state = {
+	// 	 open: false
+	//   }
+	// }
+	// focusInput = () => {
+	// 	if (this.state.open)
+	// 		this.props.reference.current.focus()
+	// }
+	// handleOpen = () => {
 
-		this.setState({ open: !this.state.open }, this.focusInput)
+	// 	this.setState({ open: !this.state.open }, this.focusInput)
 
-	}	
-	handleClose = () => {
-		this.setState({ open: false })
-	}
+	// }	
+	// handleClose = () => {
+	// 	this.setState({ open: false })
+	// }
 	render() {
 		const { t, classes, ref, open, handleClose, handleOpen, handleResetSearch, ...other } = this.props;
 		return (

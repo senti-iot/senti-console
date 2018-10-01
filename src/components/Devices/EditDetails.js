@@ -15,8 +15,8 @@ class EditDeviceDetails extends Component {
 			updating: false,
 			updated: false,
 			openSnackBar: false
-		}
-		props.setHeader(props.t("devices.editDetailsTitle", { deviceId: props.match.params.id }), true, '/devices/list')
+		}		
+		props.setHeader({ id: "devices.editDetailsTitle", options: { deviceId: props.match.params.id } }, true, props.history.location.state ? props.history.location.state['backurl'] : '/devices/list', "devices")
 	}
 	componentDidMount = async () => {
 		let id = this.props.match.params.id
@@ -66,7 +66,13 @@ class EditDeviceDetails extends Component {
 		const { device } = this.state
 		this.setState({ updating: true })
 		this.timer = setTimeout(async () => {
-			await updateDevice(device).then(rs =>  rs ? this.setState({ updated: true, openSnackBar: true, updating: false }) : null )
+			let updateD = {
+				...device,
+				project: {
+					id: 0
+				}
+			}
+			await updateDevice(updateD).then(rs =>  rs ? this.setState({ updated: true, openSnackBar: true, updating: false }) : null )
 		}, 2e3)
 
 	}
@@ -112,7 +118,7 @@ class EditDeviceDetails extends Component {
 									id={'description'}
 									label={t('devices.fields.description')}
 									multiline
-									rows={3}
+									rows={4}
 									handleChange={this.handleInput('description')}
 									value={device.description}
 									noFullWidth

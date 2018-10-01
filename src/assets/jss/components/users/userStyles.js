@@ -1,6 +1,7 @@
-import { primaryColor } from '../../material-dashboard-react';
+import { primaryColor, leftIcon } from '../../material-dashboard-react';
 
 export const userStyles = theme => ({
+	leftIcon: leftIcon,
 	root: {
 		backgroundColor: primaryColor,
 		width: "100%",

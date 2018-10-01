@@ -1,6 +1,6 @@
 import React, { Fragment } from "react"
 import PropTypes from "prop-types"
-import { withStyles, Button, Hidden } from "@material-ui/core"
+import { withStyles, Button } from "@material-ui/core"
 
 import dashboardStyle from "assets/jss/material-dashboard-react/dashboardStyle"
 import GridContainer from "components/Grid/GridContainer"
@@ -9,7 +9,9 @@ import DiscoverSenti from './DiscoverSenti'
 import MediaCard from 'components/Cards/MediaCard'
 import { connect } from 'react-redux'
 import imgs from 'assets/img/Squared'
-import { ItemG } from 'components';
+import { ItemG, Caption } from 'components';
+import { Link } from 'react-router-dom';
+import pj from '../../../package.json'
 
 class Dashboard extends React.Component {
 	constructor(props) {
@@ -20,12 +22,12 @@ class Dashboard extends React.Component {
 			projects: [],
 			devices: 0
 		}
-		props.setHeader("Senti.Cloud", false)
+		props.setHeader("Senti.Cloud", false, '', "dashboard")
 	}
 
 
 	componentDidMount = async () => {
-		
+		this.props.setHeader("Senti.Cloud", false, '', "dashboard")
 	}
 
 	componentWillUnmount = () => {
@@ -39,10 +41,10 @@ class Dashboard extends React.Component {
 	handleChangeIndex = index => {
 		this.setState({ value: index })
 	}
-
-	renderAction = (text, func, right) => {
-		const { t } = this.props
-		return <Button size={"small"} color={"primary"} onClick={func} style={right ? { marginLeft: "auto" } : null}>{t(text)}</Button>
+	
+	renderAction = (text, loc, right) => {
+		const { t, /* history */ } = this.props
+		return <Button size={"small"} color={"primary"} component={Link} to={loc} style={right ? { marginLeft: "auto" } : null}>{t(text)}</Button>
 	}
 
 	render() {
@@ -50,141 +52,76 @@ class Dashboard extends React.Component {
 		return (
 			<Fragment>
 				{discoverSenti ? <DiscoverSenti t={t} /> : null}
-				<Hidden smDown>
-					<GridContainer spacing={8} justify={"center"}>
-						<ItemG justify xs={4}><MediaCard
-							img={imgs.hosting}
-							header={t("dashboard.cardHeaders.onSiteSetup")}
-							content={t("dashboard.cardContent.onSiteSetup")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/></ItemG>
-						<ItemG justify xs={4}><MediaCard
-							img={imgs.storage}
-							header={t("dashboard.cardHeaders.projects")}
-							content={t("dashboard.cardContent.projects")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/></ItemG>
-						<ItemG justify xs={4}><MediaCard
-							img={imgs.devices}
-							header={t("dashboard.cardHeaders.devices")}
-							content={t("dashboard.cardContent.devices")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/></ItemG>
-						<ItemG justify xs={4}><MediaCard
-							img={imgs.data}
-							header={t("dashboard.cardHeaders.data")}
-							content={t("dashboard.cardContent.data")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/></ItemG>
-						<ItemG justify xs={4}>	<MediaCard
-							img={imgs.users}
-							header={t("dashboard.cardHeaders.users")}
-							content={t("dashboard.cardContent.users")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/></ItemG>
-						<ItemG justify xs={4}>	<MediaCard
-							img={imgs.settings}
-							header={t("dashboard.cardHeaders.settings")}
-							content={t("dashboard.cardContent.settings")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/></ItemG>
-						<ItemG justify xs={4}>	<MediaCard
-							img={imgs.notifications}
-							header={t("dashboard.cardHeaders.notifications")}
-							content={t("dashboard.cardContent.notifications")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/></ItemG>
-						<ItemG justify xs={4}>	<MediaCard
-							img={imgs.predictions}
-							header={t("dashboard.cardHeaders.alerts")}
-							content={t("dashboard.cardContent.alerts")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/></ItemG>
-						<ItemG justify xs={4}>	<MediaCard
-							img={imgs.sharing}
-							header={t("dashboard.cardHeaders.api")}
-							content={t("dashboard.cardContent.api")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/></ItemG>
-					</GridContainer>
-				</Hidden>
-				<Hidden mdUp>
-					<GridContainer spacing={8} justify={"center"}>
-
-						<ItemG justify xs={12}><MediaCard
-							img={imgs.hosting}
-							header={t("dashboard.cardHeaders.onSiteSetup")}
-							content={t("dashboard.cardContent.onSiteSetup")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/></ItemG>
-						<ItemG justify xs={12}><MediaCard
-							img={imgs.storage}
-							header={t("dashboard.cardHeaders.projects")}
-							content={t("dashboard.cardContent.projects")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/></ItemG>
-						<ItemG justify xs={12}><MediaCard
-							img={imgs.devices}
-							header={t("dashboard.cardHeaders.devices")}
-							content={t("dashboard.cardContent.devices")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/></ItemG>
-						<ItemG justify xs={12}><MediaCard
-							img={imgs.data}
-							header={t("dashboard.cardHeaders.data")}
-							content={t("dashboard.cardContent.data")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/></ItemG>
-						<ItemG justify xs={12}>	<MediaCard
-							img={imgs.users}
-							header={t("dashboard.cardHeaders.users")}
-							content={t("dashboard.cardContent.users")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/></ItemG>
-						<ItemG justify xs={12}>	<MediaCard
-							img={imgs.settings}
-							header={t("dashboard.cardHeaders.settings")}
-							content={t("dashboard.cardContent.settings")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/></ItemG>
-						<ItemG justify xs={12}>	<MediaCard
-							img={imgs.notifications}
-							header={t("dashboard.cardHeaders.notifications")}
-							content={t("dashboard.cardContent.notifications")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/></ItemG>
-						<ItemG justify xs={12}>	<MediaCard
-							img={imgs.predictions}
-							header={t("dashboard.cardHeaders.alerts")}
-							content={t("dashboard.cardContent.alerts")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/></ItemG>
-						<ItemG justify xs={12}>	<MediaCard
-							img={imgs.sharing}
-							header={t("dashboard.cardHeaders.api")}
-							content={t("dashboard.cardContent.api")}
-							leftAction={this.renderAction("actions.learnMore", () => alert(t("dialogs.warnings.wip")))}
-							rightAction={this.renderAction("actions.startNow", () => alert(t("dialogs.warnings.wip")), true)}
-						/></ItemG>
-					</GridContainer>
-				</Hidden>
+				<GridContainer spacing={8} justify={"center"}>
+					<ItemG justify sm={12} md={4}><MediaCard
+						img={imgs.hosting}
+						header={t("dashboard.cardHeaders.onSiteSetup")}
+						content={t("dashboard.cardContent.onSiteSetup")}
+						leftAction={this.renderAction("actions.learnMore", "/")}
+						rightAction={this.renderAction("actions.startNow", "/", true)}
+					/></ItemG>
+					<ItemG justify sm={12} md={4}><MediaCard
+						img={imgs.storage}
+						header={t("dashboard.cardHeaders.projects")}
+						content={t("dashboard.cardContent.projects")}
+						leftAction={this.renderAction("actions.learnMore", "/")}
+						rightAction={this.renderAction("actions.startNow", "/projects", true)}
+					/></ItemG>
+					<ItemG justify sm={12} md={4}><MediaCard
+						img={imgs.devices}
+						header={t("dashboard.cardHeaders.devices")}
+						content={t("dashboard.cardContent.devices")}
+						leftAction={this.renderAction("actions.learnMore", "/")}
+						rightAction={this.renderAction("actions.startNow", "/devices", true)}
+					/></ItemG>
+					<ItemG justify sm={12} md={4}><MediaCard
+						img={imgs.data}
+						header={t("dashboard.cardHeaders.data")}
+						content={t("dashboard.cardContent.data")}
+						leftAction={this.renderAction("actions.learnMore", "/")}
+						rightAction={this.renderAction("actions.startNow", "/", true)}
+					/></ItemG>
+					<ItemG justify sm={12} md={4}>	<MediaCard
+						img={imgs.users}
+						header={t("dashboard.cardHeaders.users")}
+						content={t("dashboard.cardContent.users")}
+						leftAction={this.renderAction("actions.learnMore", "/")}
+						rightAction={this.renderAction("actions.startNow", "/users", true)}
+					/></ItemG>
+					<ItemG justify sm={12} md={4}>	<MediaCard
+						img={imgs.settings}
+						header={t("dashboard.cardHeaders.settings")}
+						content={t("dashboard.cardContent.settings")}
+						leftAction={this.renderAction("actions.learnMore", "/")}
+						rightAction={this.renderAction("actions.startNow", "/settings", true)}
+					/></ItemG>
+					<ItemG justify sm={12} md={4}>	<MediaCard
+						img={imgs.notifications}
+						header={t("dashboard.cardHeaders.notifications")}
+						content={t("dashboard.cardContent.notifications")}
+						leftAction={this.renderAction("actions.learnMore", "/")}
+						rightAction={this.renderAction("actions.startNow", "/settings", true)}
+					/></ItemG>
+					<ItemG justify sm={12} md={4}>	<MediaCard
+						img={imgs.predictions}
+						header={t("dashboard.cardHeaders.alerts")}
+						content={t("dashboard.cardContent.alerts")}
+						leftAction={this.renderAction("actions.learnMore", "/")}
+						rightAction={this.renderAction("actions.startNow", "/settings", true)}
+					/></ItemG>
+					<ItemG justify sm={12} md={4}>	<MediaCard
+						img={imgs.sharing}
+						header={t("dashboard.cardHeaders.api")}
+						content={t("dashboard.cardContent.api")}
+						leftAction={this.renderAction("actions.learnMore", "/")}
+						rightAction={this.renderAction("actions.startNow", "/", true)}
+					/></ItemG>
+					<ItemG justify xs={12}>
+						<Caption>
+							Senti.Cloud version {pj.version}
+						</Caption>
+					</ItemG>
+				</GridContainer>
 			</Fragment>
 		)
 	}

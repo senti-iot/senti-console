@@ -1,10 +1,18 @@
 import { container, primaryColor } from "assets/jss/material-dashboard-react";
 import teal from '@material-ui/core/colors/teal'
 
-const signupPageStyle = {
+const signupPageStyle = theme => ({
+	iconError: {
+		color: "red"
+	},
+	forgotPass: {
+		fontSize: "0.875em",
+		margin: 8,
+		marginBottom: 12
+	},
 	loginButton: {
 		fontSize: "12px",
-		fontWeight: "400"
+		fontWeight: "400",
 	},
 	loader: {
 		marginRight: 'auto',
@@ -41,7 +49,13 @@ const signupPageStyle = {
 		...container,
 		zIndex: "2",
 		position: "relative",
-		paddingTop: "20vh",
+		// paddingTop: "20vh",
+		[theme.breakpoints.up("lg")]: {
+			paddingTop: "20vh"
+		},
+		[theme.breakpoints.down("md")]: {
+			paddingTop: "10vh"
+		},
 		color: "#FFFFFF"
 	},
 	cardHidden: {
@@ -113,6 +127,6 @@ const signupPageStyle = {
 	inputIconsColor: {
 		color: "#495057",
 	}
-};
+});
 
 export default signupPageStyle;

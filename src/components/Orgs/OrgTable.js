@@ -1,19 +1,21 @@
 import {
-	Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination,
-	TableRow, /* Typography, */ withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
-	DialogContentText, DialogActions, Button, MenuItem, Menu, IconButton, /* IconButton, Menu, MenuItem*/
+	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
+	TableRow, withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
+	DialogContentText, DialogActions, Button, /* MenuItem, Menu, */ IconButton, ListItem, ListItemIcon, ListItemText, List,
 } from "@material-ui/core"
 import TC from 'components/Table/TC'
-import { Delete, /* Devices, */ Edit, PictureAsPdf, FilterList, Add } from '@material-ui/icons'
+import { Delete, Edit, PictureAsPdf, /* FilterList, */ Add } from '@material-ui/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import PropTypes from "prop-types"
 import React, { Fragment } from "react"
 import { withRouter } from 'react-router-dom'
-import EnhancedTableHead from '../Table/TableHeader'
-import EnhancedTableToolbar from '../Table/TableToolbar'
+import EnhancedTableHead from 'components/Table/TableHeader'
+import EnhancedTableToolbar from 'components/Table/TableToolbar'
 import { ItemGrid, Info, ItemG, Caption } from ".."
 import { connect } from "react-redux"
-import { boxShadow } from '../../assets/jss/material-dashboard-react';
+import TP from 'components/Table/TP'
+import { deleteOrg } from 'variables/dataOrgs';
+
 var countries = require("i18n-iso-countries")
 
 class OrgTable extends React.Component {
@@ -21,15 +23,13 @@ class OrgTable extends React.Component {
 		super(props);
 
 		this.state = {
-			order: 'asc',
-			orderBy: 'title',
 			selected: [],
 			page: 0,
 			rowsPerPage: props.rowsPerPage,
 			anchorElMenu: null,
 			anchorFilterMenu: null,
 			openSnackbar: 0,
-			openDelete: false
+			openDelete: false,
 		}
 	}
 
@@ -56,26 +56,8 @@ class OrgTable extends React.Component {
 		this.setState({ anchorElMenu: null })
 	}
 
-	handleSearch = value => {
-		this.setState({
-			searchFilter: value
-		})
-	}
-
 	handleRequestSort = (event, property) => {
-		const orderBy = property;
-		let order = 'desc';
-
-		if (this.state.orderBy === property && this.state.order === 'desc') {
-			order = 'asc';
-		}
-
-		const data =
-			order === 'desc'
-				? this.props.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
-				: this.props.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1))
-
-		this.setState({ data, order, orderBy })
+		this.props.handleRequestSort(event, property)
 	}
 
 	handleSelectAllPage = (event, checked) => {
@@ -125,15 +107,6 @@ class OrgTable extends React.Component {
 		this.setState({ rowsPerPage: event.target.value })
 	}
 
-	handleDeleteProjects = async () => {
-		await this.props.deleteProjects(this.state.selected)
-		this.setState({
-			selected: [],
-			anchorElMenu: null,
-			openSnackbar: 1,
-			openDelete: false
-		})
-	}
 
 	handleOpenDeleteDialog = () => {
 		this.setState({ openDelete: true, anchorElMenu: null })
@@ -142,89 +115,82 @@ class OrgTable extends React.Component {
 	handleCloseDeleteDialog = () => {
 		this.setState({ openDelete: false })
 	}
-
+	handleDeleteOrg = async () => {
+		this.state.selected.forEach(async o => await deleteOrg(o))
+		this.setState({
+			selected: [],
+			anchorElMenu: null,
+			openSnackbar: 1,
+			openDelete: false
+		})
+		this.reload = setTimeout(() => {
+			this.props.reload()
+		}, 1e3);
+	}
 	isSelected = id => this.state.selected.indexOf(id) !== -1
+
 	handleEdit = () => {
 		this.props.history.push(`/org/${this.state.selected[0]}/edit`)
 	}
 	options = () => {
-		const { t } = this.props
-		return [
+		const { t, accessLevel } = this.props
+		let allOptions = [
 			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
 			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
 			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
+		]
+		if (accessLevel.apiorg.edit)
+			return allOptions
+		else return [
+			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf }
 		]
 	}
 	addNewOrg = () => { this.props.history.push('/orgs/new') }
 
 	renderTableToolBarContent = () => {
-		const { classes, tableHead, t } = this.props
-		const { anchorFilterMenu } = this.state
+		const { accessLevel } = this.props
+		// const { anchorFilterMenu } = this.state
+		let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
 		return <Fragment>
-			<IconButton aria-label="Add new organisation" onClick={this.addNewOrg}>
+			{access ? <IconButton aria-label="Add new organisation" onClick={this.addNewOrg}>
 				<Add />
-			</IconButton>
-			<IconButton
-				className={classes.secondAction}
-				aria-label={t("tables.filter")}
-				aria-owns={anchorFilterMenu ? "filter-menu" : null}
-				onClick={this.handleFilterMenuOpen}>
-				<FilterList />
-			</IconButton>
-			<Menu
-				id="filter-menu"
-				anchorEl={anchorFilterMenu}
-				open={Boolean(anchorFilterMenu)}
-				onClose={this.handleFilterMenuClose}
-				PaperProps={{ style: { width: 200, boxShadow: boxShadow } }}>
-
-				{tableHead.map(option => {
-					return <MenuItem key={option.id} onClick={this.handleFilter}>
-						{option.label}
-					</MenuItem>
-				})}
-			</Menu>
+			</IconButton> : null
+			}
 		</Fragment>
 	}
-	renderConfirmDelete = () => {
-		const { openDelete, /* selected */ } = this.state
-		// const { data, t } = this.props
+renderConfirmDelete = () => {
+		const { openDelete, selected } = this.state
+		const { data, t, classes } = this.props
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle> *Not Implemented* </DialogTitle>
-			<DialogContent>
-				<DialogContentText id="alert-dialog-description"> Not Implemented </DialogContentText>
-			</DialogContent>
-			<DialogActions>
-				<Button></Button>
-			</DialogActions>
-			{/* <DialogTitle id="alert-dialog-title">{t("orgs.orgsDelete")}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("orgs.orgsDelete")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("orgs.orgsDeleteConfirm")}
+					{t("orgs.orgsDeleteConfirm")}:
 				</DialogContentText>
-				<div>
-					{selected.map(s => <Info key={s}>&bull;{data[data.findIndex(d => d.id === s)].title}</Info>)}
-				</div>
+				<List>
+					{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
+						<ListItemText primary={data[data.findIndex(d => d.id === s)].name} /></ListItem>)}
+				</List>
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={this.handleCloseDeleteDialog} color="primary">
 					{t("actions.no")}
 				</Button>
-				<Button onClick={this.handleDeleteProjects} color="primary" autoFocus>
+				<Button onClick={this.handleDeleteOrg} color="primary" autoFocus>
 					{t("actions.yes")}
 				</Button>
-			</DialogActions> */}
+			</DialogActions>
 		</Dialog>
 	}
 
 	render() {
-		const { classes, data, t } = this.props
-		const { order, orderBy, selected, rowsPerPage, page } = this.state
+		const { classes, t, order, orderBy, data } = this.props
+		const { selected, rowsPerPage, page } = this.state
 		let emptyRows;
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
@@ -259,7 +225,6 @@ class OrgTable extends React.Component {
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
-								// console.log(n.country)
 								return (
 									<TableRow
 										hover
@@ -305,38 +270,21 @@ class OrgTable extends React.Component {
 								)
 							}) : null}
 							{emptyRows > 0 && (
-								<TableRow style={{ height: 49 * emptyRows }}>
+								<TableRow style={{ height: 49 /* * emptyRows */ }}>
 									<TableCell colSpan={8} />
 								</TableRow>
 							)}
 						</TableBody>
 					</Table>
 				</div>
-				<TablePagination
-					component="div"
-					count={data.length}
+				<TP
+					count={data ? data.length : 0}
+					classes={classes}
 					rowsPerPage={rowsPerPage}
 					page={page}
-					backIconButtonProps={{
-						'aria-label': t("actions.nextPage"),
-					}}
-					nextIconButtonProps={{
-						'aria-label': t("actions.previousPage"),
-					}}
-					classes={{
-						spacer: classes.spacer,
-						input: classes.spaceBetween,
-						caption: classes.tablePaginationCaption
-					}}
-					onChangePage={this.handleChangePage}
-					onChangeRowsPerPage={this.handleChangeRowsPerPage}
-					labelRowsPerPage={t("tables.rowsPerPage")}
-					rowsPerPageOptions={[5, 10, 25, 50, 100]}
-					SelectProps={{
-						classes: {
-							select: classes.SelectIcon
-						}
-					}}
+					t={t}
+					handleChangePage={this.handleChangePage}
+					handleChangeRowsPerPage={this.handleChangeRowsPerPage}
 				/>
 				<Snackbar
 					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
@@ -356,7 +304,8 @@ class OrgTable extends React.Component {
 }
 const mapStateToProps = (state) => ({
 	rowsPerPage: state.settings.trp,
-	language: state.localization.language
+	language: state.localization.language,
+	accessLevel: state.settings.user.privileges
 })
 
 const mapDispatchToProps = {

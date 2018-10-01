@@ -10,6 +10,10 @@ import {
 } from "assets/jss/material-dashboard-react.js";
 
 const headerLinksStyle = theme => ({
+	img: {
+		borderRadius: 50
+		
+	},
 	headerMargin: {
 		marginLeft: 18
 	},

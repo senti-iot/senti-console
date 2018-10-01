@@ -1,18 +1,20 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info } from 'components';
-import { Hidden } from '@material-ui/core';
+import { Hidden, MenuItem } from '@material-ui/core';
 import { pF } from 'variables/functions';
-import { Person } from '@material-ui/icons'
+import { Person, Edit, Delete, LockOpen, Email } from '@material-ui/icons'
 import { NavLink } from 'react-router-dom'
 import Gravatar from 'react-gravatar'
-export class UserContact extends Component {
+import { connect } from 'react-redux'
+import Dropdown from 'components/Dropdown/Dropdown';
+class UserContact extends Component {
+
+	deleteUser = () => {
+		this.handleCloseActionsDetails()
+		this.props.deleteUser()
+	}
 
 	renderUserGroup = () => {
-		/* 	"groups": {
-			"136550100000143": "Superbruger",
-			"136550100000211": "Kontoansvarlig",
-			"136550100000225": "Bruger"
-		}, */
 		const { t, user } = this.props
 		if (user.groups[136550100000143])
 			return t("users.groups.136550100000143")
@@ -21,21 +23,53 @@ export class UserContact extends Component {
 		if (user.groups[136550100000225])
 			return t("users.groups.136550100000225")
 	}
+	renderTopActionPriv = () => {
+		const { loggedUser, user } = this.props
+		const { apiorg } = loggedUser.privileges
+		if (apiorg) {
+			if (apiorg.editusers) {
+				return this.renderTopAction()
+			}
+		}
+		if (loggedUser.id === user.id)
+			return this.renderTopAction()
+		return null
+	}
+	renderTopAction = () => {
+		const { t, loggedUser, classes, user } = this.props
+		const { apiorg } = loggedUser.privileges
+		return <Dropdown menuItems={
+			[
+				<MenuItem key={0} onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
+					<Edit className={classes.leftIcon} />{t("menus.edit")}
+				</MenuItem>,
+				<MenuItem key={1} onClick={() => this.props.changePass()}>
+					<LockOpen className={classes.leftIcon} /> {t("menus.changePassword")}
+				</MenuItem>,
+				(user.suspended === 2 ? <MenuItem key={4} onClick={() => this.props.resendConfirmEmail()}>
+					<Email className={classes.leftIcon} /> {t("users.userResendEmail")}					
+				</MenuItem> : null),
+				(apiorg ? apiorg.editusers || !loggedUser.id === user.id ? <MenuItem key={3} onClick={this.deleteUser}>
+					<Delete className={classes.leftIcon} />{t("menus.delete")}
+				</MenuItem> : null : null)
+			
+			]
+		}/>
+	}
 	render() {
 		const { t, user, classes } = this.props
+		// const { actionAnchor } = this.state
 		return (
-
-
 			<InfoCard
-				// title={t('users.headers.contact')}
 				title={`${user.firstName} ${user.lastName}`}
 				noExpand
 				avatar={<Person />}
+				topAction={this.renderTopActionPriv()}
 				content={
 					<ItemGrid zeroMargin noPadding container >
 						<Hidden lgUp>
 							<ItemGrid container justify={'center'}>
-								{user.img ? <img src={user.img} alt="brken" className={classes.img} /> : <Gravatar size={250} default="mp" email={user.email} className={classes.img} />}
+								{user.img ? <img src={user.img} alt="UserAvatar" className={classes.img} /> : <Gravatar size={250} default="mp" email={user.email} className={classes.img} />}
 							</ItemGrid>
 						</Hidden>
 						<ItemGrid zeroMargin noPadding lg={9} md={12}>
@@ -65,19 +99,16 @@ export class UserContact extends Component {
 							</ItemGrid>
 							<ItemGrid>
 								<Caption>{t("users.fields.language")}</Caption>
-								{/* <Info>{user.settings.language}</Info> */}
+								<Info>{user.aux.odeum.language === 'en' ? t("settings.languages.en") : user.aux.odeum.language === "da" ? t("settings.languages.da") : ""}</Info>
 							</ItemGrid>
 							<ItemGrid>
 								<Caption>{t("users.fields.accessLevel")}</Caption>
 								<Info>{this.renderUserGroup()}</Info>
-								{/* <Info>{user.accessLevel}</Info>
-								{user.groups ? Object.keys(user.groups).map((k, i) => k > 0 ? <Chip key={i} color={"primary"} label={t(`users.groups.${k}`)} className={classes.chip} /> : null
-								) : null} */}
 							</ItemGrid>
 						</ItemGrid>
 						<Hidden mdDown>
 							<ItemGrid >
-								{user.img ? <img src={user.img} alt="brken" className={classes.img} /> : <Gravatar default="mp" size={250} email={user.email} className={classes.img} />}
+								{user.img ? <img src={user.img} alt="UserAvatar" className={classes.img} /> : <Gravatar default="mp" size={250} email={user.email} className={classes.img} />}
 							</ItemGrid>
 						</Hidden>
 					</ItemGrid>
@@ -89,5 +120,14 @@ export class UserContact extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	language: state.settings.language,
+	loggedUser: state.settings.user,
+	accessLevel: state.settings.user.privileges
+})
 
-export default UserContact
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserContact)

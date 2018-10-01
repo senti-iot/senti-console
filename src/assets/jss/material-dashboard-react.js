@@ -74,6 +74,9 @@ const infoColor = "#00acc1";
 const roseColor = "#e91e63";
 const grayColor = "#999999";
 
+const leftIcon = {
+	marginRight: "8px"
+}
 const primaryBoxShadow = {
 	boxShadow:
 		"0 12px 20px -10px rgba(55, 168, 145, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(55, 168, 145, 0.28)"
@@ -168,6 +171,7 @@ const defaultBoxShadow = {
 };
 
 export {
+	leftIcon,
 	deviceStatus,
 	//variables
 	drawerWidth,

@@ -1,7 +1,7 @@
 import {
-	Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination,
+	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
 	TableRow, Typography, withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
-	DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem
+	DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem, List, ListItem, ListItemIcon, ListItemText
 } from "@material-ui/core"
 import { Delete, Devices, Edit, PictureAsPdf } from '@material-ui/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
@@ -17,14 +17,13 @@ import { ItemGrid, Info, Caption } from ".."
 import { connect } from "react-redux"
 import { Add, FilterList } from '@material-ui/icons';
 import { boxShadow } from 'assets/jss/material-dashboard-react';
+import TP from 'components/Table/TP';
 
 class EnhancedTable extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			order: 'asc',
-			orderBy: 'title',
 			selected: [],
 			page: 0,
 			rowsPerPage: props.rowsPerPage,
@@ -35,13 +34,13 @@ class EnhancedTable extends React.Component {
 		}
 	}
 
-	snackBarMessages = () => { 
+	snackBarMessages = () => {
 		let msg = this.state.openSnackbar
 		const { t } = this.props
 		switch (msg) {
 			case 1:
 				return t("snackbars.deletedSuccess")
-			case 2: 
+			case 2:
 				return t("snackbars.exported")
 			default:
 				break;
@@ -78,19 +77,7 @@ class EnhancedTable extends React.Component {
 	}
 
 	handleRequestSort = (event, property) => {
-		const orderBy = property;
-		let order = 'desc';
-
-		if (this.state.orderBy === property && this.state.order === 'desc') {
-			order = 'asc';
-		}
-
-		const data =
-			order === 'desc'
-				? this.props.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
-				: this.props.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1))
-
-		this.setState({ data, order, orderBy })
+		this.props.handleRequestSort(event, property)
 	}
 
 	handleSelectAllPage = (event, checked) => {
@@ -160,7 +147,7 @@ class EnhancedTable extends React.Component {
 
 	isSelected = id => this.state.selected.indexOf(id) !== -1
 
-	handleEdit = () => { 
+	handleEdit = () => {
 		this.props.history.push(`/project/${this.state.selected[0]}/edit`)
 	}
 	options = () => {
@@ -185,11 +172,13 @@ class EnhancedTable extends React.Component {
 			<DialogTitle id="alert-dialog-title">{t("projects.projectDelete")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("projects.projectDeleteConfirm")} 
+					{t("projects.projectDeleteConfirm")}
 				</DialogContentText>
-				<div>
-					{selected.map(s => <Info key={s}>&bull;{data[data.findIndex(d => d.id === s)].title}</Info>)}
-				</div>
+				<List>
+					{selected.map(s => <ListItem key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
+						<ListItemText primary={data[data.findIndex(d => d.id === s)].title} /></ListItem>)}
+
+				</List>
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={this.handleCloseDeleteDialog} color="primary">
@@ -234,8 +223,8 @@ class EnhancedTable extends React.Component {
 		</Fragment>
 	}
 	render() {
-		const { classes, data, t } = this.props
-		const { order, orderBy, selected, rowsPerPage, page } = this.state
+		const { classes, t, order, data, orderBy } = this.props
+		const { selected, rowsPerPage, page } = this.state
 		let emptyRows;
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
@@ -269,7 +258,7 @@ class EnhancedTable extends React.Component {
 								{
 									id: "title",
 									label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>
-											Projects
+										Projects
 									</Typography>
 								}
 							]} //Which Columns to display on small Screens
@@ -308,7 +297,7 @@ class EnhancedTable extends React.Component {
 												</ItemGrid>
 											</TableCell>
 										</Hidden>
-										
+
 										<Hidden mdDown>
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
@@ -346,44 +335,27 @@ class EnhancedTable extends React.Component {
 								)
 							}) : null}
 							{emptyRows > 0 && (
-								<TableRow style={{ height: 49 * emptyRows }}>
+								<TableRow style={{ height: 49/*  * emptyRows  */ }}>
 									<TableCell colSpan={8} />
 								</TableRow>
 							)}
 						</TableBody>
 					</Table>
 				</div>
-				<TablePagination
-					component="div"
-					count={data.length}
+				<TP
+					count={data ? data.length : 0}
+					classes={classes}
 					rowsPerPage={rowsPerPage}
 					page={page}
-					backIconButtonProps={{
-						'aria-label': t("actions.nextPage"),
-					}}
-					nextIconButtonProps={{
-						'aria-label': t("actions.previousPage"),
-					}}
-					classes={{
-						spacer: classes.spacer,
-						input: classes.spaceBetween,
-						caption: classes.tablePaginationCaption
-					}}
-					onChangePage={this.handleChangePage}
-					onChangeRowsPerPage={this.handleChangeRowsPerPage}
-					labelRowsPerPage={t("tables.rowsPerPage")}
-					rowsPerPageOptions={[5, 10, 25, 50, 100]}
-					SelectProps={{
-						classes: {
-							select: classes.SelectIcon
-						}
-					}}
+					t={t}
+					handleChangePage={this.handleChangePage}
+					handleChangeRowsPerPage={this.handleChangeRowsPerPage}
 				/>
 				<Snackbar
 					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
 					open={this.state.openSnackbar !== 0 ? true : false}
 					onClose={() => { this.setState({ openSnackbar: 0 }) }}
-					autoHideDuration={5000}
+					autoHideDuration={1000}
 					message={
 						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
 							{this.snackBarMessages()}
@@ -400,7 +372,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-	
+
 }
 
 EnhancedTable.propTypes = {

@@ -1,6 +1,17 @@
 import { red, yellow, green, teal } from "@material-ui/core/colors";
 
 const deviceStyles = theme => ({
+	bigCaption2: {
+		fontWeight: 500,
+		fontSize: "1.1em",
+		paddingTop: 0,
+		padding: 30
+	},
+	bigCaption1: {
+		fontWeight: 500,
+		fontSize: "1.1em",
+		padding: 30
+	},
 	checkbox: {
 		width: 30,
 		height: 30

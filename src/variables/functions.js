@@ -1,7 +1,14 @@
 var moment = require('moment');
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 var PNF = require('google-libphonenumber').PhoneNumberFormat
-
+var _ = require('lodash')
+export const dateFormat = (date) => {
+	let newDate = moment(date)
+	if (newDate.isBetween(moment().subtract(7, "day"), moment().add(7, "day")))
+		return moment(date).calendar()
+	else
+		return moment(date).fromNow()
+}
 const isObject = (obj) => {
 	return obj === Object(obj);
 }
@@ -26,24 +33,25 @@ const filterByDate = (items, filters) => {
 }
 
 export const filterItems = (data, filters) => {
-    	const { activeDateFilter, keyword } = filters
-    	var arr = data
-    	if (activeDateFilter)
-    		arr = filterByDate(arr, filters)
-    	if (arr) {
-    		if (arr[0] === undefined)
-    			return []
-    		var keys = Object.keys(arr[0])
-    		var filtered = arr.filter(c => {
-    			var contains = keys.map(key => {
-    				return keyTester(c[key], keyword)
+	const { activeDateFilter, keyword } = filters
+	var arr = data
+	if (activeDateFilter)
+		arr = filterByDate(arr, filters)
+	if (arr) {
+		if (arr[0] === undefined)
+			return []
+		var keys = Object.keys(arr[0])
+		var filtered = arr.filter(c => {
+			var contains = keys.map(key => {
+				return keyTester(c[key], keyword ? keyword : "")
 
-    			})
-    			return contains.indexOf(true) !== -1 ? true : false
-    		})
-    		return filtered
-    	}
+			})
+			return contains.indexOf(true) !== -1 ? true : false
+		})
+		return filtered
+	}
 }
+
 export const keyTester = (obj, sstr) => {
 	let searchStr = sstr.toLowerCase()
 	let found = false
@@ -51,12 +59,12 @@ export const keyTester = (obj, sstr) => {
 		for (var k in obj) {
 			if (!found) {
 				if (k instanceof Date) {
-					let date = moment(obj[k]).format("DD.MM.YYYY")
+					let date = dateFormatter(obj[k])
 					found = date.toLowerCase().includes(searchStr)
 				}
 				else {
 					if (isObject(obj[k])) {
-						found = keyTester(obj[k])
+						found = keyTester(obj[k], sstr)
 					}
 					else {
 						found = obj[k] ? obj[k].toString().toLowerCase().includes(searchStr) : false
@@ -73,6 +81,28 @@ export const keyTester = (obj, sstr) => {
 	}
 	return found
 }
+const sortFunc = (a, b, orderBy, way) => {
+	let newA = _.get(a, orderBy) ? _.get(a, orderBy) : ""
+	let newB = _.get(b, orderBy) ? _.get(b, orderBy) : ""
+	
+	if (way) {
+		return newB.toString().toLowerCase() <= newA.toString().toLowerCase() ? -1 : 1
+	}
+	else {
+		return newA.toString().toLowerCase() < newB.toString().toLowerCase() ? -1 : 1
+	}
+}
+
+export const handleRequestSort = (property, way, data) => {
+	const orderBy = property;
+	let order = way;
+	let newData = []
+	newData =
+		order === 'desc'
+			? data.sort((a, b) => sortFunc(a, b, orderBy, true))
+			: data.sort((a, b) => sortFunc(a, b, orderBy, false))
+	return newData
+}
 export const pF = (phone) => {
 	let formattedPhone = phoneUtil.parse(phone, "DK")
 	return phoneUtil.format(formattedPhone, PNF.NATIONAL);
@@ -80,13 +110,17 @@ export const pF = (phone) => {
 export const dateTimeFormatter = (date, withSeconds) => {
 	var dt
 	if (withSeconds)
-		dt = moment(date).format("DD.MM.YYYY HH:mm:ss")
+		dt = moment(date).format("DD MMMM YYYY HH:mm:ss")
 	else
-		dt = moment(date).format("DD.MM.YYYY HH:mm")
+		dt = moment(date).format("DD MMMM YYYY HH:mm")
 	return dt
 }
+export const shortDateFormat = (date) => {
+	var a = moment(date).format("ll")
+	return a
+}
 export const dateFormatter = (date) => {
-	var a = moment(date).format("DD.MM.YYYY")
+	var a = moment(date).format("LL")
 	return a
 }
 export const ConvertDDToDMS = (D, lng) => {

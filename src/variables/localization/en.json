@@ -3,6 +3,7 @@
 		"errorMessage": "The resource requested has not been found! Please try again or contact support!",
 		"title": "404 Error - Page Not Found"
 	},
+	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
 		"accept": "Accept",
 		"apply": "Apply",
@@ -31,7 +32,7 @@
 			"description": "Description",
 			"deviceName": "Device name"
 		},
-		"header": "On-site setup",
+		"header": "On-site setup %{deviceId}",
 		"selectLocationType": "Select a location type for ",
 		"stepheader": {
 			"calibration": "Calibration",
@@ -68,6 +69,19 @@
 			"donut": "Donut",
 			"pie": "Pie"
 		}
+	},
+	"confirmUser": {
+		"button": "Confirm password",
+		"lastStep": "Create your password to confirm your Senti.Cloud account.",
+		"networkError": "Network Error!",
+		"password": "Password",
+		"passwordConfirm": "Confirm and sign in",
+		"validation": {
+			"passwordEmpty": "Password cannot be empty!",
+			"passwordMismatch": "The entered passwords are not identical!",
+			"passwordUnder8": "Password must contain at least 8 characters!"
+		},
+		"welcomeMessage": "Welcome to Senti.Cloud!"
 	},
 	"dashboard": {
 		"cardContent": {
@@ -119,21 +133,20 @@
 			"map": "Map",
 			"pictures": "Images"
 		},
-		"confirmUnassignTitle": "Unassign devices",
 		"confirmUnassignMessage": "Unassign the sellected devices from project:",
+		"confirmUnassignTitle": "Unassign devices",
 		"device": "Device",
 		"editDetailsTitle": "Edit %{deviceId}",
 		"editHardwareTitle": "Edit hardware for device %{deviceId}",
 		"fields": {
-			"availability": "Availability",
-			"free": "Free",
-			"notfree": "Busy",
 			"adapter": "Power adapter",
 			"address": "Address",
+			"availability": "Availability",
 			"cellNumber": "Phone number",
 			"coords": "Coordinate",
 			"coordsW": "Coordinates: %{lat} %{long}",
 			"description": "Description",
+			"free": "Free",
 			"id": "ID",
 			"lastData": "Last time device sent data to server",
 			"lastStats": "Last time device was connected to server",
@@ -143,8 +156,9 @@
 			"modemIMEI": "Modem IMEI",
 			"modemModel": "Modem model",
 			"name": "Name",
+			"notfree": "Busy",
 			"org": "Organisation",
-			"pcModel": "PC model",
+			"pcModel": "Device model",
 			"project": "Project",
 			"simCard": "SIM-card ID",
 			"simProvider": "SIM-card provider",
@@ -152,6 +166,7 @@
 			"temp": "Temperature",
 			"wifiModule": "Wi-Fi module"
 		},
+		"liveCount": "Live count (last 10 minutes)",
 		"locationTypes": {
 			"crossroads": "Crossroads",
 			"motorway": "Motorway",
@@ -164,18 +179,17 @@
 			"square": "Square",
 			"unspecified": "Unspecified"
 		},
-		"liveCount": "Live count (most recent minute)",
 		"new": "",
 		"noAddress": "No Address",
-		"noDataFilters": "There is no data available for the selected filters!",
 		"noData": "There is no data!",
-		"noDevicesAssigned": "There are no devices assigned!",
+		"noDataFilters": "There is no data available for the selected filters!",
 		"noDevices": "There are no available devices",
+		"noDevicesAssigned": "There are no devices assigned!",
 		"noImages": "There are no images uploaded!",
 		"noLocType": " No location type set",
 		"noName": "No name",
 		"noProject": "Unassigned",
-		"notCalibrated": "Device has not been calibrated yet!",
+		"notCalibrated": "Device has not been calibrated!",
 		"pageTitle": "Devices",
 		"simpleList": {
 			"address": "Address",
@@ -187,9 +201,14 @@
 			"totalcount": "Total count"
 		},
 		"status": {
-			"green": "Connected, Data",
-			"red": "Not Connected, No Data",
-			"yellow": "Connected, No Data"
+			"green": "The device is connected and data is received",
+			"red": "The device is not connected, and no data is received",
+			"yellow": "The device is connected, but no data is received"
+		},
+		"tabs": {
+			"cardView": "Card view",
+			"listView": "List view",
+			"mapView": "Map view"
 		}
 	},
 	"dialogs": {
@@ -221,7 +240,9 @@
 			"custom": "Custom range",
 			"daily": "Daily",
 			"hourly": "Hourly",
-			"today": "Today"
+			"today": "Today",
+			"yesterday": "Yesterday",
+			"thisWeek": "This week"
 		},
 		"display": "Display:",
 		"endDate": "End date",
@@ -246,24 +267,32 @@
 	},
 	"login": {
 		"button": "Sign in",
+		"changePassword": "Change password",
+		"forgotPass": "Forgot password?",
 		"pass": "Password",
+		"requestPasswordReset": "Request password reset",
+		"resetPassRequestMessage": "An Email has been sent with instructions on how to reset your password!",
+		"resetPasswordMessage": "Reset your password by entering your Email",
 		"username": "Username"
 	},
 	"menus": {
 		"assign": "Assign to project",
 		"assignDevices": "Assign devices",
+		"assignOrg": "Assign to organisation",
 		"calibrate": "Calibrate",
+		"changePassword": "Change password",
 		"delete": "Delete",
-		"deleteProject": "Delete",
 		"deleteOrg": "Delete",
+		"deleteProject": "Delete",
 		"edit": "Edit",
-		"editProject": "Edit",
 		"editOrg": "Edit",
+		"editProject": "Edit",
 		"exportPDF": "Export to PDF",
 		"hideMap": "Hide map",
 		"hideMore": "Hide",
 		"more": "More",
 		"reassign": "Re-assign to another project",
+		"reassignOrg": "Re-assign to another organisation",
 		"recalibrate": "Re-calibrate",
 		"seeLess": "See less",
 		"seeMore": "See more",
@@ -274,30 +303,36 @@
 		"unassignProject": "Unassign device(s) from project"
 	},
 	"orgs": {
-		"pageTitile": "Organisations",
-		"updateOrg": "Edit",
-		"createOrg": "Create organisation",
 		"create": "Create",
+		"createOrg": "Create organisation",
 		"fields": {
+			"CVR": "Tax Registration Number",
+			"EAN": "EAN Number",
 			"address": "Address",
 			"city": "City",
 			"country": "Country",
 			"name": "Organisation name",
 			"org": "Organisation",
-			"url": "Website",
-			"zip": "ZIP Code",
-			"region": "Region",
 			"parentOrg": "Parent Organisation",
-			"CVR": "Tax Registration Number",
-			"EAN": "EAN Number"
+			"region": "Region",
+			"topLevelOrg": "No Parent Organisation",
+			"url": "Website",
+			"zip": "ZIP Code"
 		},
+		"orgDelete": "Delete organisation?",
+		"orgDeleteConfirm": "Are you sure you want to delete organisation %{org}",
+		"orgsDelete": "Delete organisations",
+		"orgsDeleteConfirm": "Are you sure you want to delete the following organisation",
+		"pageTitile": "Organisations",
+		"updateOrg": "Edit",
 		"validation": {
-			"noName": "Name missing",
+			"networkError": "Network Error!",
 			"noAddress": "Address missing",
 			"noCity": "City missing",
-			"noZip": "ZIP missing",
 			"noCountry": "Country missing",
-			"networkError": "Network error!"	
+			"noName": "Name missing",
+			"noParent": "Parent Organisation missing",
+			"noZip": "ZIP missing"
 		}
 	},
 	"projects": {
@@ -324,7 +359,7 @@
 		},
 		"infoCardProjectData": "Data",
 		"infoCardProjectDetails": "Project details",
-		"new": "Create new project",
+		"new": "Create project",
 		"noOrganisationSelected": "Select an organisation to see available devices.",
 		"pageTitle": "Projects",
 		"projectCreated": "Project has been successfully created!",
@@ -382,7 +417,7 @@
 		},
 		"language": "Language",
 		"languages": {
-			"dk": "Danish",
+			"da": "Danish",
 			"en": "English"
 		},
 		"pageTitle": "Settings",
@@ -413,6 +448,9 @@
 		"deleting": "Deleting...",
 		"deviceUpdated": "Device %{device} has been successfully updated!",
 		"exported": "Exported!",
+		"orgCreated": "Organisation %{org} has been successfully created!",
+		"orgDeleted": "Organisation has been successfully deleted!",
+		"orgUpdated": "Organisation %{org} has been successfully updated!",
 		"projectUpdated": "Project %{project} has been successfully updated!",
 		"redirect": "Redirecting ...",
 		"settingsSaved": "Settings saved!",
@@ -420,12 +458,13 @@
 		"updatedFailed": "Update failed!",
 		"updatedSuccess": "Updated!",
 		"updating": "Updating...",
-		"orgUpdated": "Organisation %{org} has been successfully updated!",
-		"orgCreated": "Organisation %{org} has been successfully created!"
+		"userCreated": "User %{user} has been succesfully created!",
+		"userDeleted": "User %{user} has been succesfully deleted!",
+		"userUpdated": "User %{user} has been succesfully updated!"
 	},
 	"tables": {
-		"addNewDevice": "Add new device",
-		"addNewProject": "Add new project",
+		"addNewDevice": "Add device",
+		"addNewProject": "Add project",
 		"filter": "Filter",
 		"rowsPerPage": "Rows per page",
 		"selected": "selected"
@@ -442,12 +481,15 @@
 			"resetPassword": "Reset password",
 			"suspend": "Suspend"
 		},
+		"createUser": "Create user",
+		"editUser": "Edit user",
 		"fields": {
 			"accessLevel": "Access Level",
 			"active": "Active",
 			"created": "Created",
 			"email": "Email",
 			"firstName": "First name",
+			"group": "Group",
 			"language": "System language",
 			"lastName": "Last name",
 			"lastSignIn": "Last sign in",
@@ -459,16 +501,22 @@
 			"phone": "Phone",
 			"profileImage": "Profile image",
 			"tags": "Tags",
-			"userName": "Username"
+			"userName": "Username",
+			"currentPass": "Current password",
+			"newPass": "New password",
+			"confirmPass": "Confirm new password"
 		},
 		"groups": {
 			"136550100000143": "Super user",
 			"136550100000211": "Account Manager",
-			"136550100000225": "User"
+			"136550100000225": "User",
+			"accountManager": "Account Manager",
+			"superUser": "Super User",
+			"user": "User"
 		},
 		"headers": {
 			"contact": "Contact",
-			"system": "System logs"
+			"system": "System log"
 		},
 		"menus": {
 			"account": "My account",
@@ -480,6 +528,12 @@
 		"tabs": {
 			"orgs": "Organisations",
 			"users": "Users"
-		}
+		},
+		"userResendEmail": "Resend Confirm Email",
+		"userResendConfirm": "Are you sure you want to resend confirmation email?",
+		"userDelete": "Delete user",
+		"userDeleteConfirm": "Are you sure you want to delete this user?",
+		"usersDelete": "Delete users",
+		"usersDeleteConfirm": "Are you sure you want to delete the following users?:"
 	}
 }

@@ -5,11 +5,11 @@ import classNames from 'classnames'
 import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers'
 import MomentUtils from 'material-ui-pickers/utils/moment-utils'
 import React, { Component, Fragment } from 'react'
-import { withRouter } from 'react-router-dom'
+// import { withRouter } from 'react-router-dom'
 // import { getAvailableDevices } from 'variables/dataDevices'
 import { createProject } from 'variables/dataProjects'
 import { Caption, CircularLoader, GridContainer, ItemGrid, TextF, Danger } from '..'
-import { getAllOrgs } from 'variables/dataUsers';
+import { getAllOrgs } from 'variables/dataOrgs';
 import { getAvailableDevices } from 'variables/dataDevices';
 import { getCreateProject } from '../../variables/dataProjects'
 import { connect } from 'react-redux'
@@ -48,10 +48,10 @@ class CreateProject extends Component {
 			error: false,
 			errorMessage: ""
 		}
+		props.setHeader("projects.new", true, "/projects/list", "projects")
 	}
 
 	componentDidMount = () => {
-		const { t } = this.props
 		this._isMounted = 1
 
 		getAllOrgs().then(async rs => {
@@ -63,7 +63,6 @@ class CreateProject extends Component {
 					})
 				else {
 					var devices = await getAvailableDevices(this.props.userOrg.id).then(rs => rs)
-					this.setState({})
 					this.setState({
 						availableDevices: devices ? devices : null,
 						devices: [], 
@@ -73,7 +72,6 @@ class CreateProject extends Component {
 				}
 			}
 		})
-		this.props.setHeader(t("projects.new"), true, "/projects/list")
 	}
 
 	componentWillUnmount = () => {
@@ -240,10 +238,9 @@ class CreateProject extends Component {
 								{/* <div className={classes.datepicker}> */}
 								<DatePicker
 									autoOk
-									ampm={false}
 									label={t("projects.fields.startDate")}
 									clearable
-									format="DD.MM.YYYY"
+									format="LL"
 									value={this.state.startDate}
 									onChange={this.handleDateChange("startDate")}
 									animateYearScrolling={false}
@@ -262,10 +259,9 @@ class CreateProject extends Component {
 								<DatePicker
 									color="primary"
 									autoOk
-									ampm={false}
 									label={t("projects.fields.endDate")}
 									clearable
-									format="DD.MM.YYYY"
+									format="LL"
 									value={this.state.endDate}
 									onChange={this.handleDateChange("endDate")}
 									animateYearScrolling={false}
@@ -407,5 +403,5 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
 
 }
-const CP = withStyles(createprojectStyles, { withTheme: true })(CreateProject)
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CP))
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles, { withTheme: true })(CreateProject))

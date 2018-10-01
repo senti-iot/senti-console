@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import cx from "classnames";
 import {
 	withStyles,
@@ -17,25 +17,23 @@ import { HeaderLinks } from "components";
 import sidebarStyle from "assets/jss/material-dashboard-react/sidebarStyle.js";
 
 const Sidebar = ({ ...props }) => {
-	// verifies if routeName is the one active (in browser input)
+
 	function activeRoute(routeName) {
-		return props.location.pathname.indexOf(routeName) > -1 ? true : false;
+		return props.menuRoute === routeName ? true : false;
 	}
-	// function strip(route) {
-	// 	let newRoute = route.substring(0, route.indexOf(':'))
-	// 	return newRoute
-	// }
+
 	const { classes, color, logo, image, logoText, routes, t  } = props;
 	var links = (
 		<List className={classes.list}>
 			{routes.map((prop, key) => {
 				if (prop.redirect) return null;
 				if (prop.hideFromSideBar) return null;
+
 				const listItemClasses = cx({
-					[" " + classes[color]]: activeRoute(prop.path)
+					[" " + classes[color]]: activeRoute(prop.menuRoute)
 				});
 				const whiteFontClasses = cx({
-					[" " + classes.whiteFont]: activeRoute(prop.path)
+					[" " + classes.whiteFont]: activeRoute(prop.menuRoute)
 				});
 				return (
 					<NavLink
@@ -61,12 +59,12 @@ const Sidebar = ({ ...props }) => {
 	);
 	var brand = (
 		<div className={classes.logo}>
-			<a href={'/'} className={classes.logoLink}>
+			<Link to={'/'} className={classes.logoLink}>
 				<div className={classes.logoImage}>
 					<img src={logo} alt="logo" className={classes.img} />
 				</div>
 				{logoText}
-			</a>
+			</Link>
 		</div>
 	);
 	return (
@@ -87,7 +85,7 @@ const Sidebar = ({ ...props }) => {
 					{brand}
 					<div className={classes.sidebarWrapper}>
 						<div className={classes.appBarWrapper}>
-							<HeaderLinks t={t}/>
+							<HeaderLinks t={t} onClose={props.handleDrawerToggle}/>
 						</div>
 						{links}
 					</div>

@@ -5,10 +5,6 @@ import {
 	green, lightGreen, lime, yellow, amber, orange, deepOrange
 } from '@material-ui/core/colors'
 
-export const getRandomColor = () => {
-	let x = Math.floor(Math.random() * (colors.length - 0 + 1)) + 0;
-	return colors[x]
-}
 export const colors = [
 	lightBlue[400],
 	cyan[400],

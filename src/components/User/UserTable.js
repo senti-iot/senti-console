@@ -1,33 +1,31 @@
 import {
-	Checkbox, Hidden, Paper, Table, TableBody, TableCell, TablePagination,
-	TableRow, /* Typography, */ withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
-	DialogContentText, DialogActions, Button, Typography, /* IconButton, Menu, MenuItem*/
+	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
+	TableRow, withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
+	DialogContentText, DialogActions, Button, Typography, IconButton,
 } from "@material-ui/core"
 import TC from 'components/Table/TC'
-import { Delete, /* Devices, */ Edit, PictureAsPdf } from '@material-ui/icons'
+import { Delete, Edit, PictureAsPdf, Add } from '@material-ui/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import PropTypes from "prop-types"
-import React from "react"
+import React, { Fragment } from "react"
 import { withRouter } from 'react-router-dom'
-// import { dateFormatter } from "variables/functions"
 import EnhancedTableHead from '../Table/TableHeader'
 import EnhancedTableToolbar from '../Table/TableToolbar'
 import { ItemGrid, Info } from ".."
 import { connect } from "react-redux"
 import Caption from '../Typography/Caption';
-// import { Add, FilterList } from '@material-ui/icons';
-// import { boxShadow } from 'assets/jss/material-dashboard-react';
-import { pF } from 'variables/functions';
+import { pF, dateFormat } from 'variables/functions';
 import Gravatar from 'react-gravatar'
+import TP from 'components/Table/TP';
 var moment = require("moment")
+
 class UserTable extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			order: 'asc',
-			orderBy: 'title',
 			selected: [],
+			data: [],
 			page: 0,
 			rowsPerPage: props.rowsPerPage,
 			anchorElMenu: null,
@@ -36,7 +34,7 @@ class UserTable extends React.Component {
 			openDelete: false
 		}
 	}
-
+	
 	snackBarMessages = () => {
 		let msg = this.state.openSnackbar
 		const { t } = this.props
@@ -67,19 +65,7 @@ class UserTable extends React.Component {
 	}
 
 	handleRequestSort = (event, property) => {
-		const orderBy = property;
-		let order = 'desc';
-
-		if (this.state.orderBy === property && this.state.order === 'desc') {
-			order = 'asc';
-		}
-
-		const data =
-			order === 'desc'
-				? this.props.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
-				: this.props.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1))
-
-		this.setState({ data, order, orderBy })
+		this.props.handleRequestSort(event, property)
 	}
 
 	handleSelectAllPage = (event, checked) => {
@@ -129,8 +115,8 @@ class UserTable extends React.Component {
 		this.setState({ rowsPerPage: event.target.value })
 	}
 
-	handleDeleteProjects = async () => {
-		await this.props.deleteProjects(this.state.selected)
+	handleDeleteUsers = async () => {
+		await this.props.handleDeleteUsers(this.state.selected)
 		this.setState({
 			selected: [],
 			anchorElMenu: null,
@@ -153,7 +139,6 @@ class UserTable extends React.Component {
 		const { t } = this.props
 		return [
 			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
-			// { label: t("menus.assignDevices"), func: this.assignDevice, single: true, icon: Devices },
 			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
 			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
@@ -162,42 +147,57 @@ class UserTable extends React.Component {
 	renderConfirmDelete = () => {
 		const { openDelete, selected } = this.state
 		const { data, t } = this.props
+
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{t("projects.projectDelete")}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("users.usersDelete")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("projects.projectDeleteConfirm")}
+					{t("users.usersDeleteConfirm")}
 				</DialogContentText>
 				<div>
-					{selected.map(s => <Info key={s}>&bull;{data[data.findIndex(d => d.id === s)].title}</Info>)}
+					{selected.map(s => {
+						let u = data[data.findIndex(d => d.id === s)]
+						return <Info key={s}>&bull;{u.firstName + " " + u.lastName}</Info>})
+					}
 				</div>
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={this.handleCloseDeleteDialog} color="primary">
 					{t("actions.no")}
 				</Button>
-				<Button onClick={this.handleDeleteProjects} color="primary" autoFocus>
+				<Button onClick={this.handleDeleteUsers} color="primary" autoFocus>
 					{t("actions.yes")}
 				</Button>
 			</DialogActions>
 		</Dialog>
 	}
 
+	addNewUser = () => { this.props.history.push('/users/new') }
+
+	renderTableToolBarContent = () => {
+		const { accessLevel } = this.props
+		let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
+		return <Fragment>
+			{access ? <IconButton aria-label="Add new user" onClick={this.addNewUser}>
+				<Add />
+			</IconButton> : null
+			}
+		</Fragment>
+	}
 	render() {
-		const { classes, data, t } = this.props
-		const { order, orderBy, selected, rowsPerPage, page } = this.state
+		const { order, orderBy, data, classes, t } = this.props
+		const {  selected, rowsPerPage, page } = this.state
 		let emptyRows;
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
-
 		return (
 			<Paper className={classes.root}>
-			
+
 				<EnhancedTableToolbar
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
@@ -205,7 +205,7 @@ class UserTable extends React.Component {
 					numSelected={selected.length}
 					options={this.options}
 					t={t}
-					// content={this.renderTableToolBarContent()}
+					content={this.renderTableToolBarContent()}
 				/>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
@@ -219,19 +219,18 @@ class UserTable extends React.Component {
 							columnData={this.props.tableHead}
 							t={t}
 							classes={classes}
-							// mdDown={[0]} //Which Columns to display on small Screens
 							customColumn={[{ id: "avatar", label: "" }, {
-								id: "firstName", label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>Users</Typography> }]}
+								id: "firstName", label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>Users</Typography>
+							}]}
 						/>
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
-								const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? moment(n.lastLoggedIn).format("DD.MM.YYYY HH:mm") : t("users.fields.neverLoggedIn")
+								const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? dateFormat(n.lastLoggedIn) : t("users.fields.neverLoggedIn")
 								return (
 									<TableRow
 										hover
 										onClick={e => { e.stopPropagation(); this.props.history.push('/user/' + n.id) }}
-										// onContextMenu={this.handleToolbarMenuOpen}
 										role="checkbox"
 										aria-checked={isSelected}
 										tabIndex={-1}
@@ -250,12 +249,6 @@ class UserTable extends React.Component {
 											</TableCell>
 											<TableCell classes={{ root: classes.tableCell }}>
 												<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-													{/* <ItemGrid zeroMargin noPadding xs={2}>
-													<ItemGrid container zeroMargin noPadding justify={"center"}>
-														<img src={UserPlaceHolder} alt="brken" className={classes.img}/>
-													</ItemGrid>
-												</ItemGrid> */}
-													{/* <ItemGrid xs={10} zeroMargin> */}
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Info noWrap paragraphCell={classes.noMargin}>
 															{`${n.firstName} ${n.lastName}`}
@@ -284,45 +277,28 @@ class UserTable extends React.Component {
 											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone) : n.phone}</a>} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`mailto:${n.email}`}>{n.email}</a>} />
 											<TC label={n.org ? n.org.name : t("users.noOrg")} />
-											<TC label={lastLoggedIn}/>
+											<TC label={lastLoggedIn} />
 										</Hidden>
 									</TableRow>
 
 								)
 							}) : null}
 							{emptyRows > 0 && (
-								<TableRow style={{ height: 49 * emptyRows }}>
+								<TableRow style={{ height: 49 /* * emptyRows  */}}>
 									<TableCell colSpan={8} />
 								</TableRow>
 							)}
 						</TableBody>
 					</Table>
 				</div>
-				<TablePagination
-					component="div"
-					count={data.length}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					backIconButtonProps={{
-						'aria-label': t("actions.nextPage"),
-					}}
-					nextIconButtonProps={{
-						'aria-label': t("actions.previousPage"),
-					}}
-					classes={{
-						spacer: classes.spacer,
-						input: classes.spaceBetween,
-						caption: classes.tablePaginationCaption
-					}}
-					onChangePage={this.handleChangePage}
-					onChangeRowsPerPage={this.handleChangeRowsPerPage}
-					labelRowsPerPage={t("tables.rowsPerPage")}
-					rowsPerPageOptions={[5, 10, 25, 50, 100]}
-					SelectProps={{
-						classes: {
-							select: classes.SelectIcon
-						}
-					}}
+				<TP
+					count={ data ? data.length : 0 }
+					classes={ classes }
+					rowsPerPage={ rowsPerPage }
+					page={ page }
+					t={ t }
+					handleChangePage={ this.handleChangePage }
+					handleChangeRowsPerPage={ this.handleChangeRowsPerPage }
 				/>
 				<Snackbar
 					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
@@ -336,13 +312,14 @@ class UserTable extends React.Component {
 					}
 				/>
 				{this.renderConfirmDelete()}
-			
+
 			</Paper>
 		)
 	}
 }
 const mapStateToProps = (state) => ({
-	rowsPerPage: state.settings.trp
+	rowsPerPage: state.settings.trp,
+	accessLevel: state.settings.user.privileges
 })
 
 const mapDispatchToProps = {

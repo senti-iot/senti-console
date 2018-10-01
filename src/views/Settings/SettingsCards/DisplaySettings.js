@@ -30,7 +30,7 @@ class DisplaySettings extends Component {
 		]
 		let languages = [
 			{ value: "en", label: t("settings.languages.en") },
-			{ value: "da", label: t("settings.languages.dk") }
+			{ value: "da", label: t("settings.languages.da") }
 		]
 		let themes = [
 			{ value: 1, label: t("settings.themes.dark") },
@@ -39,6 +39,8 @@ class DisplaySettings extends Component {
 		let trps = [
 			{ value: 5, label: 5 },
 			{ value: 10, label: 10 },
+			{ value: 15, label: 15 },
+			{ value: 20, label: 20 },
 			{ value: 25, label: 25 },
 			{ value: 50, label: 50 },
 			{ value: 100, label: 100 }

@@ -1,8 +1,9 @@
-import { getSettingsFromServer, saveSettingsOnServer } from 'variables/dataLogin';
+// import { getSettingsFromServer, saveSettingsOnServer } from 'variables/dataLogin';
 import cookie from 'react-cookies';
 import { getUser } from '../variables/dataUsers'
 // import moment from 'moment'
 import 'moment/locale/da'
+import { saveSettings } from '../variables/dataLogin';
 var moment = require("moment")
 // import 'moment/locale/da'
 
@@ -19,12 +20,13 @@ const GETSETTINGS = "GET_SETTINGS"
 const SAVESETTINGS = "SAVE_SETTINGS"
 const changeLangAction = "LANG"
 const SAVED = "SAVED_SETTINGS"
+const NOSETTINGS = "NO_SETTINGS"
 
 export const saveSettingsOnServ = () => {
 	return async (dispatch, getState) => {
+		let user = getState().settings.user
 		let s = getState().settings
 		let settings = {
-			language: s.language,
 			calibration: s.calibration,
 			calNotifications: s.calNotifications,
 			count: s.count,
@@ -35,43 +37,72 @@ export const saveSettingsOnServ = () => {
 			alerts: s.alerts,
 			didKnow: s.didKnow
 		}
-		var saved = await saveSettingsOnServer(settings);
+		user.aux = user.aux ? user.aux : {}
+		user.aux.senti = user.aux.senti ? user.aux.senti : {}
+		user.aux.senti.settings = settings
+		user.aux.odeum.language = s.language
+		var saved = await saveSettings(user);
 		dispatch({
 			type: SAVESETTINGS,
-			saved
+			saved: saved ? true : false
 		})
 	}
 }
 export const getSettings = async () => {
-	return async dispatch => {
+	return async (dispatch, getState) => {
 		var userId = cookie.load('SESSION') ? cookie.load('SESSION').userID : 0
-		var settings = userId > 0 ? await getSettingsFromServer() : null
-		var user = userId !== 0 ? await getUser(userId) : {}
+		var user = userId !== 0 ? await getUser(userId) : null
+		var settings = user ? user.aux ? user.aux.senti ? user.aux.senti.settings ? user.aux.senti.settings : null : null : null : null
 		moment.updateLocale("en", {
 			week: {
 				dow: 1
 			}
 		})
-		if (settings) {
-			moment.locale(settings.language)
-			dispatch({
-				type: GETSETTINGS,
-				settings,
-				user
-			})
-			return true
+		if (user) {
+			if (settings) {
+				moment.locale(user.aux.odeum.language)
+				dispatch({
+					type: GETSETTINGS,
+					settings: {
+						...user.aux.senti.settings,
+						language: user.aux.odeum.language
+					},
+					user
+				})
+				return true
+			}
+			else {
+				moment.locale(user.aux.odeum.language)
+				let s = {
+					...getState().settings,
+					language: user.aux.odeum.language
+				}
+
+				dispatch({
+					type: NOSETTINGS,
+					loading: false,
+					user,
+					settings: s
+				})
+				return false
+			}
 		}
 		else {
-			moment.locale("da")
+			moment.locale('da')
+			let s = {
+				...getState().settings,
+			}
 			dispatch({
-				type: "NOSETTINGS",
+				type: NOSETTINGS,
 				loading: false,
-				user
+				user,
+				settings: s
 			})
 			return false
 		}
-
 	}
+
+
 }
 export const changeAlerts = t => {
 	return async (dispatch, getState) => {
@@ -174,8 +205,7 @@ let initialState = {
 	didKnow: 0,
 	loading: true,
 	saved: false,
-
-
+	rowsPerPageOptions: [ 5, 10, 15, 20, 25, 50, 100 ]
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
@@ -184,10 +214,14 @@ export const settings = (state = initialState, action) => {
 			return Object.assign({}, state, { saved: action.saved })
 		case DISCSENT:
 			return Object.assign({}, state, { discSentiVal: action.val })
-		case "NOSETTINGS":
-			return Object.assign({}, state, { loading: false, user: action.user })
+		case NOSETTINGS:
+		{
+			return Object.assign({}, state, { ...action.settings, loading: false, user: action.user })
+		}
 		case GETSETTINGS:
+		{
 			return Object.assign({}, state, { ...action.settings, user: action.user, loading: false })
+		}
 		case changeLangAction:
 		{
 			moment.locale(action.code)

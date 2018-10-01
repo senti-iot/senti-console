@@ -22,13 +22,16 @@ class Settings extends Component {
 	  this.state = {
 		 
 		}
-		props.setHeader(props.t("settings.pageTitle"), false)
+		props.setHeader("settings.pageTitle", false, '', "settings")
 	}
 	
-
+	changeLanguage = (lang) => {
+		this.props.changeLanguage(lang)
+		// setTimeout(() => this.props.setHeader(this.props.t("settings.pageTitle"), false, '', "settings"), 100)
+	}
 	render() {
 		const { t } = this.props 
-		const { language, changeLanguage, sideBar, changeSideBarLoc, trp, changeTRP, theme, changeTheme, changeDiscoverSenti, discSentiVal  } = this.props
+		const { language, sideBar, changeSideBarLoc, trp, changeTRP, theme, changeTheme, changeDiscoverSenti, discSentiVal  } = this.props
 		const { calibration, changeCalType, count, changeCount, calNotifications, changeCalNotif } = this.props
 		const {	alerts, didKnow, changeAlerts, changeDidKnow } = this.props
 		return (
@@ -40,7 +43,7 @@ class Settings extends Component {
 						theme={theme}
 						changeTheme={changeTheme}
 						language={language}
-						changeLanguage={changeLanguage}
+						changeLanguage={this.changeLanguage}
 						sideBar={sideBar}
 						changeSideBarLoc={changeSideBarLoc}
 						discSentiVal={discSentiVal}

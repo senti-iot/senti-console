@@ -10,6 +10,7 @@ import {
 	DateRange, KeyboardArrowRight, KeyboardArrowLeft,
 	DonutLargeRounded, PieChartRounded, BarChart, ExpandMore, Visibility
 } from "@material-ui/icons"
+// import { red } from '@material-ui/core/colors'
 // import { dateFormatter } from 'variables/functions';
 import { InfoCard, ItemGrid, CircularLoader, Caption, Info, /* , Caption, Info */ } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
@@ -21,9 +22,9 @@ import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import classNames from 'classnames'
 import { colors } from '../../../variables/colors'
+import { shortDateFormat } from 'variables/functions';
+import ItemG from '../../../components/Grid/ItemG';
 var moment = require('moment');
-
-
 
 class DeviceData extends Component {
 	constructor(props) {
@@ -59,6 +60,7 @@ class DeviceData extends Component {
 		position: 'bottom',
 		fullWidth: true,
 		reverse: false,
+
 		labels: {
 			padding: 10
 		}
@@ -71,34 +73,63 @@ class DeviceData extends Component {
 		let endDate = moment(to).format(this.format)
 		let data = await getWifiDaily(device.id, startDate, endDate).then(rs => rs)
 		if (data) {
-			let dataArr = Object.keys(data).map(r => ({ id: moment(r).format("DD.MM.YYYY"), value: data[r] }))
+			let dataArr = Object.keys(data).map(r => ({ id: shortDateFormat(r), value: data[r] }))
 			this.setState({
 				loading: false,
-				roundDataSets: {
-					labels: dataArr.map(rd => rd.id),
-					datasets: [{
-						borderColor: "#FFF",
-						borderWidth: 1,
-						data: dataArr.map(rd => rd.value),
-						backgroundColor: dataArr.map((rd, id) => colors[id])
-					}]
+				calibrated: {
+					roundDataSets: {
+						labels: dataArr.map(rd => rd.id),
+						datasets: [{
+							borderColor: "#FFF",
+							borderWidth: 1,
+							data: dataArr.map(rd => device.wifiFactor ? parseInt(rd.value, 10) * device.wifiFactor : parseInt(rd.value, 10)),
+							// backgroundColor: dataArr.map(() => getRandomColor())
+							backgroundColor: dataArr.map((rd, id) => colors[id])
+						}]
+					},
+					barDataSets: {
+						labels: dataArr.map(rd => rd.id),
+						datasets: [{
+							borderColor: "#FFF",
+							borderWidth: 1,
+							data: dataArr.map(rd => device.wifiFactor ? parseInt(rd.value, 10) * device.wifiFactor : parseInt(rd.value, 10)),
+							backgroundColor: dataArr.map((rd, id) => colors[id])
+						}
+						]
+					}
 				},
-				barDataSets: {
-					labels: dataArr.map(rd => rd.id),
-					datasets: [{
-						borderColor: "#FFF",
-						borderWidth: 1,
-						data: dataArr.map(rd => rd.value),
-						backgroundColor: dataArr.map((rd, id) => colors[id])
-					}]
+				uncalibrated: {
+
+					roundDataSets: {
+						labels: dataArr.map(rd => rd.id),
+						datasets: [{
+							borderColor: "#FFF",
+							borderWidth: 1,
+							data: dataArr.map(rd => rd.value),
+							// backgroundColor: dataArr.map(() => getRandomColor())
+							backgroundColor: dataArr.map((rd, id) => colors[id])
+						}]
+					},
+					barDataSets: {
+						labels: dataArr.map(rd => rd.id),
+						datasets: [{
+							borderColor: "#FFF",
+							borderWidth: 1,
+							data: dataArr.map(rd => rd.value),
+							backgroundColor: dataArr.map((rd, id) => colors[id])
+						}
+						]
+					}
 				}
 			})
 		}
 		else {
 			this.setState({
 				loading: false,
-				roundDataSets: null,
-				barDataSets: null,
+				calibrated: {
+					roundDataSets: null,
+					barDataSets: null,
+				}
 			})
 		}
 	}
@@ -113,26 +144,50 @@ class DeviceData extends Component {
 			var dataArr = Object.keys(data).map(r => ({ id: moment(r).format("HH:mm"), value: data[r] }))
 			this.setState({
 				loading: false,
-				roundDataSets: {
-					labels: dataArr.map(rd => rd.id),
-					datasets: [{
-						borderColor: "#FFF",
-						borderWidth: 1,
-						data: dataArr.map(rd => rd.value),
-						// backgroundColor: dataArr.map(() => getRandomColor())
-						backgroundColor: dataArr.map((rd, id) => colors[id])
-					}]
+				calibrated: {
+					roundDataSets: {
+						labels: dataArr.map(rd => rd.id),
+						datasets: [{
+							borderColor: "#FFF",
+							borderWidth: 1,
+							data: dataArr.map(rd => device.wifiFactor ? parseInt(rd.value, 10) * device.wifiFactor : parseInt(rd.value, 10)),
+							// backgroundColor: dataArr.map(() => getRandomColor())
+							backgroundColor: dataArr.map((rd, id) => colors[id])
+						}]
+					},
+					barDataSets: {
+						labels: dataArr.map(rd => rd.id),
+						datasets: [{
+							borderColor: "#FFF",
+							borderWidth: 1,
+							data: dataArr.map(rd => device.wifiFactor ? parseInt(rd.value, 10) * device.wifiFactor : parseInt(rd.value, 10)),
+							backgroundColor: dataArr.map((rd, id) => colors[id])
+						}
+						]
+					}
 				},
-				barDataSets: {
-					labels: dataArr.map(rd => rd.id),
-					// data: dataArr.map(rd => rd.value),
-					datasets: [{
-						borderColor: "#FFF",
-						borderWidth: 1,
-						data: dataArr.map(rd => rd.value),
-						backgroundColor: dataArr.map((rd, id) => colors[id])
-						// backgroundColor: teal[500],
-					}]
+				uncalibrated: {
+
+					roundDataSets: {
+						labels: dataArr.map(rd => rd.id),
+						datasets: [{
+							borderColor: "#FFF",
+							borderWidth: 1,
+							data: dataArr.map(rd => rd.value),
+							// backgroundColor: dataArr.map(() => getRandomColor())
+							backgroundColor: dataArr.map((rd, id) => colors[id])
+						}]
+					},
+					barDataSets: {
+						labels: dataArr.map(rd => rd.id),
+						datasets: [{
+							borderColor: "#FFF",
+							borderWidth: 1,
+							data: dataArr.map(rd => rd.value),
+							backgroundColor: dataArr.map((rd, id) => colors[id])
+						}
+						]
+					}
 				}
 			})
 		}
@@ -147,7 +202,6 @@ class DeviceData extends Component {
 
 	componentDidMount = async () => {
 		this._isMounted = 1
-		// console.log(this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : 1000)
 		if (this._isMounted) {
 			this.getWifiSum()
 		}
@@ -169,7 +223,7 @@ class DeviceData extends Component {
 	}
 
 	format = "YYYY-MM-DD+HH:mm"
-	displayFormat = "DD.MM.YYYY HH:mm"
+
 	handleSwitchDayHour = () => {
 		let id = this.state.dateFilterInputID
 		switch (id) {
@@ -212,6 +266,14 @@ class DeviceData extends Component {
 				from = moment().subtract(90, 'd').startOf('day')
 				to = moment().endOf('day')
 				break;
+			case 5:
+				from = moment().subtract(1, 'd').startOf('day')
+				to = moment().endOf('day')
+				break;
+			case 6:
+				from = moment().startOf('week').startOf('day')
+				to = moment().endOf('day')
+				break;
 			default:
 				break;
 		}
@@ -248,11 +310,12 @@ class DeviceData extends Component {
 
 	options = [
 		{ id: 0, label: this.props.t("filters.dateOptions.today") },
+		{ id: 5, label: this.props.t("filters.dateOptions.yesterday") },
+		{ id: 6, label: this.props.t("filters.dateOptions.thisWeek") },
 		{ id: 1, label: this.props.t("filters.dateOptions.7days") },
 		{ id: 2, label: this.props.t("filters.dateOptions.30days") },
 		{ id: 3, label: this.props.t("filters.dateOptions.90days") },
 		{ id: 4, label: this.props.t("filters.dateOptions.custom") },
-
 	]
 
 	visibilityOptions = [
@@ -287,7 +350,7 @@ class DeviceData extends Component {
 							ampm={false}
 							label={t("filters.startDate")}
 							clearable
-							format="DD.MM.YYYY+HH:mm"
+							format="LLL"
 							value={this.state.from}
 							onChange={this.handleCustomDate('from')}
 							animateYearScrolling={false}
@@ -295,8 +358,8 @@ class DeviceData extends Component {
 							disableFuture
 							dateRangeIcon={<DateRange />}
 							timeIcon={<AccessTime />}
-							rightArrowIcon={<KeyboardArrowRight/>}
-							leftArrowIcon={<KeyboardArrowLeft/>}
+							rightArrowIcon={<KeyboardArrowRight />}
+							leftArrowIcon={<KeyboardArrowLeft />}
 							InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
 							InputProps={{ classes: { underline: classes.underline } }}
 						/>
@@ -308,7 +371,7 @@ class DeviceData extends Component {
 							ampm={false}
 							label={t("filters.endDate")}
 							clearable
-							format="DD.MM.YYYY+HH:mm"
+							format="LLL"
 							value={this.state.to}
 							onChange={this.handleCustomDate('to')}
 							animateYearScrolling={false}
@@ -316,7 +379,7 @@ class DeviceData extends Component {
 							timeIcon={<AccessTime />}
 							color="primary"
 							rightArrowIcon={<KeyboardArrowRight />}
-							leftArrowIcon={<KeyboardArrowLeft/>}
+							leftArrowIcon={<KeyboardArrowLeft />}
 							InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
 							InputProps={{ classes: { underline: classes.underline } }}
 						/>
@@ -374,47 +437,94 @@ class DeviceData extends Component {
 
 	renderType = () => {
 		const { display } = this.state
+		const { classes } = this.props
 		switch (display) {
 			case 0:
-				return this.state.roundDataSets ?
-					<Pie
-						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-						legend={this.legendOpts}
-						data={this.state.roundDataSets}
-						options={{
-							maintainAspectRatio: false,
-						}}
-					/> : this.renderNoDataFilters()
+				return this.state.calibrated.roundDataSets ? <ItemG container>
+					<ItemG xs={12}>
+						<Caption className={classes.bigCaption2}>Calibrated Data</Caption>
+						<Pie
+							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
+							legend={this.legendOpts}
+							data={this.state.calibrated.roundDataSets}
+							options={{
+								maintainAspectRatio: false,
+							}}
+						/>
+					</ItemG>
+					<ItemG xs={12}>
+						<Caption className={classes.bigCaption2}>Raw Data</Caption>
+						<Pie
+							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
+							legend={this.legendOpts}
+							data={this.state.uncalibrated.roundDataSets}
+							options={{
+								maintainAspectRatio: false,
+							}}
+						/>
+					</ItemG>
+				</ItemG> : this.renderNoDataFilters()
 
 			case 1:
-				return this.state.roundDataSets ?
-					<Doughnut
-						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-						legend={this.legendOpts}
-						options={{
-							maintainAspectRatio: false,
-						}}
-						data={this.state.roundDataSets}
-					/> : this.renderNoDataFilters()
+				return this.state.calibrated ? this.state.calibrated.roundDataSets ? <ItemG container>
+					<ItemG xs={12}>
+						<Caption className={classes.bigCaption2}>Calibrated Data</Caption>
+						<Doughnut
+							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
+							legend={this.legendOpts}
+							options={{
+								maintainAspectRatio: false,
+							}}
+							data={this.state.calibrated.roundDataSets}
+						/>	</ItemG>
+					<ItemG xs={12}>
+						<Caption className={classes.bigCaption2}>Raw Data</Caption>
+						<Doughnut
+							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
+							legend={this.legendOpts}
+							options={{
+								maintainAspectRatio: false,
+							}}
+							data={this.state.uncalibrated.roundDataSets}
+						/></ItemG>
+				</ItemG> : this.renderNoDataFilters() : this.renderNoDataFilters()
 			case 2:
-				return this.state.barDataSets ? <Bar
-					data={this.state.barDataSets}
-					legend={this.barOpts}
-					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 700 : window.innerHeight - 200}
-					options={{
-						maintainAspectRatio: false,
-					}}
-				/> : this.renderNoDataFilters()
+				return this.state.calibrated ? this.state.calibrated.barDataSets ? <ItemG container>
+					<ItemG xs={12}>
+						<Caption className={classes.bigCaption2}>Calibrated Data</Caption>
+						<Bar
+							data={this.state.calibrated.barDataSets}
+							legend={this.barOpts}
+							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
+							options={{
+								maintainAspectRatio: false,
+							}}
+						/>
+					</ItemG>
+					<ItemG xs={12}>
+						<Caption className={classes.bigCaption1}>Raw Data</Caption>
+						<Bar
+							data={this.state.uncalibrated.barDataSets}
+							legend={this.barOpts}
+							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
+							options={{
+								maintainAspectRatio: false,
+							}}
+						/>
+					</ItemG>
+				</ItemG> : this.renderNoDataFilters() : this.renderNoDataFilters()
+
+
 			default:
 				break;
 		}
 	}
 
 	renderDateFilter = () => {
-		const { classes, t  } = this.props
+		const { classes, t } = this.props
 		const { dateFilterInputID, to, from } = this.state
-		let displayTo = moment(to).format(this.displayFormat)
-		let displayFrom = moment(from).format(this.displayFormat)
+		let displayTo = shortDateFormat(to)
+		let displayFrom = shortDateFormat(from)
 		return (
 			<div className={classes.root}>
 				<Hidden smDown>
@@ -436,6 +546,8 @@ class DeviceData extends Component {
 						</ItemGrid>
 						<Divider />
 						<MenuItem value={0}>{t("filters.dateOptions.today")}</MenuItem>
+						<MenuItem value={5}>{t("filters.dateOptions.yesterday")}</MenuItem>
+						<MenuItem value={6}>{t("filters.dateOptions.thisWeek")}</MenuItem>
 						<MenuItem value={1}>{t("filters.dateOptions.7days")}</MenuItem>
 						<MenuItem value={2}>{t("filters.dateOptions.30days")}</MenuItem>
 						<MenuItem value={3}>{t("filters.dateOptions.90days")}</MenuItem>
@@ -521,7 +633,7 @@ class DeviceData extends Component {
 						{loading ? <CircularLoader notCentered /> :
 							<Fragment>
 								<ItemGrid xs={12} container noPadding>
-									 {this.renderType()}
+									{this.renderType()}
 								</ItemGrid>
 							</Fragment>}
 					</Grid>}

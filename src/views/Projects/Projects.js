@@ -9,7 +9,7 @@ import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
 import ProjectCards from 'components/Project/ProjectCards';
 import Toolbar from 'components/Toolbar/Toolbar'
-import { filterItems } from '../../variables/functions';
+import { filterItems, handleRequestSort } from '../../variables/functions';
 
 class Projects extends Component {
 	constructor(props) {
@@ -20,6 +20,8 @@ class Projects extends Component {
 			projectHeader: [],
 			loading: true,
 			route: 0,
+			order: "desc",
+			orderBy: "title",
 			filters: {
 				keyword: '',
 				startDate: null,
@@ -27,7 +29,7 @@ class Projects extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader(props.t("projects.pageTitle"), false)
+		props.setHeader("projects.pageTitle", false, '', "projects")
 	}
 
 	componentDidMount = async () => {
@@ -45,9 +47,14 @@ class Projects extends Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-	
+
 	filterItems = (data) => {
 		return filterItems(data, this.state.filters)
+	}
+	handleRequestSort = (event, property, way) => {
+		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		let newData = handleRequestSort(property, order, this.state.projects)
+		this.setState({ projects: newData, order, orderBy: property })
 	}
 
 	handleFilterStartDate = (value) => {
@@ -83,13 +90,13 @@ class Projects extends Component {
 			projectHeader: [
 				{ id: 'title', label: t("projects.projectsColumnTitle"), },
 				{ id: 'description', label: t("projects.projectsColumnDescription"), },
-				{ id: 'open_date', label: t("projects.projectsColumnStartDate"), },
-				{ id: 'close_date', label: t("projects.projectsColumnEndDate"), },
+				{ id: 'startDate', label: t("projects.projectsColumnStartDate"), },
+				{ id: 'endDate', label: t("projects.projectsColumnEndDate"), },
 				{ id: 'created', label: t("projects.projectsColumnCreated"), },
 				{ id: 'modified', label: t("projects.projectsColumnLastMod"), },
 			],
 			loading: false
-		}) : null)
+		}, () => this.handleRequestSort(null, "title")) : null)
 	}
 
 	deleteProjects = async (projects) => {
@@ -99,50 +106,53 @@ class Projects extends Component {
 	}
 	renderAllProjects = () => {
 		const { t } = this.props
-		const { loading } = this.state
+		const { loading, order, orderBy, projects, projectHeader, filters } = this.state
 		return loading ? <CircularLoader /> : <ProjectTable
-			data={this.filterItems(this.state.projects)}
-			tableHead={this.state.projectHeader}
-			handleFilterEndDate={this.handleFilterEndDate}
-			handleFilterKeyword={this.handleFilterKeyword}
-			handleFilterStartDate={this.handleFilterStartDate}
-			filters={this.state.filters}
-			deleteProjects={this.deleteProjects}
-			t={t}
+			data={ this.filterItems(projects) }
+			tableHead={ projectHeader }
+			handleFilterEndDate={ this.handleFilterEndDate }
+			handleFilterKeyword={ this.handleFilterKeyword }
+			handleFilterStartDate={ this.handleFilterStartDate }
+			handleRequestSort={ this.handleRequestSort }
+			order={ order }
+			orderBy={ orderBy }
+			filters={ filters }
+			deleteProjects={ this.deleteProjects }
+			t={ t }
 		/>
 	}
 	renderList = () => {
-		return <GridContainer justify={'center'}>
-			{this.renderAllProjects()}
+		return <GridContainer justify={ 'center' }>
+			{ this.renderAllProjects() }
 		</GridContainer>
 	}
 	renderCards = () => {
 		const { loading } = this.state
 		const { t } = this.props
 		return loading ? <CircularLoader /> : <GridContainer>
-			<ProjectCards t={t} projects={this.filterItems(this.state.projects)} />
+			<ProjectCards t={ t } projects={ this.filterItems(this.state.projects) } />
 		</GridContainer>
 	}
 	tabs = [
 		{ id: 0, title: this.props.t("projects.tabs.listView"), label: <ViewList />, url: `${this.props.match.path}/list` },
 		{ id: 1, title: this.props.t("projects.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.path}/grid` },
 	]
-	render() {
+	render () {
 		const { projects, filters } = this.state
 		return (
 			<Fragment>
 				<Toolbar
-					data={projects}
-					filters={filters}
-					history={this.props.history}
-					match={this.props.match}
-					handleFilterKeyword={this.handleFilterKeyword}
-					tabs={this.tabs}
+					data={ projects }
+					filters={ filters }
+					history={ this.props.history }
+					match={ this.props.match }
+					handleFilterKeyword={ this.handleFilterKeyword }
+					tabs={ this.tabs }
 				/>
 				<Switch>
-					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} />
-					<Route path={`${this.props.match.path}/list`} render={() => this.renderList()} />
-					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
+					<Route path={ `${this.props.match.path}/grid` } render={ () => this.renderCards() } />
+					<Route path={ `${this.props.match.path}/list` } render={ () => this.renderList() } />
+					<Redirect path={ `${this.props.match.path}` } to={ `${this.props.match.path}/list` } />
 				</Switch>
 			</Fragment>
 		)

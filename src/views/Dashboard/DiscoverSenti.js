@@ -43,7 +43,7 @@ class DiscoverSenti extends Component {
 								</ItemGrid>
 								<ItemGrid xs={12} sm={4} noMargin>
 									<DiscoverSentiCards img={AnalyticsImg}
-										onClick={this.goTo("/projects/list")}
+										onClick={this.goTo("/devices/list")}
 										content={
 											<Typography variant={"title"} style={{ color: "white", fontWeight: 400 }}>{t("discoverSenti.startAnalyzeData")}</Typography>
 										}

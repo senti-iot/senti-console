@@ -3,21 +3,22 @@ import { withStyles } from "@material-ui/core";
 import projectStyles from 'assets/jss/views/projects';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
-import { getAllOrgs } from 'variables/dataUsers';
+import { getAllOrgs } from 'variables/dataOrgs';
 import OrgTable from 'components/Orgs/OrgTable';
 import Toolbar from 'components/Toolbar/Toolbar'
 import { People, Business } from '@material-ui/icons';
-import { filterItems } from 'variables/functions'
+import { filterItems, handleRequestSort } from 'variables/functions'
 
 class Orgs extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			users: [],
-			userHeader: [],
+			orgs: [],
 			loading: true,
 			route: 0,
+			order: 'desc',
+			orderBy: 'name',
 			filters: {
 				keyword: '',
 				startDate: null,
@@ -25,9 +26,12 @@ class Orgs extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader(props.t("orgs.pageTitle"), false)
+		props.setHeader("orgs.pageTitle", false, '', "users")
 	}
-
+	reload = async () => {
+		this.setState({ loading: true })
+		await this.getData()
+	}
 	componentDidMount = async () => {
 		this._isMounted = 1
 		await this.getData()
@@ -43,7 +47,12 @@ class Orgs extends Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-	
+	handleRequestSort = (event, property, way) => {
+		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		let newData = handleRequestSort(property, order, this.state.orgs)
+		this.setState({ orgs: newData, order, orderBy: property })
+	}
+
 	filterItems = (data) => {
 		return filterItems(data, this.state.filters)
 	}
@@ -76,20 +85,10 @@ class Orgs extends Component {
 	}
 	getData = async () => {
 		const { t } = this.props
-		let users = await getAllOrgs().then(rs => rs)
 		let orgs = await getAllOrgs().then(rs => rs)
 		if (this._isMounted) {
 			this.setState({
-				users: users ? users : [],
 				orgs: orgs ? orgs : [],
-				userHeader: [
-					{ id: "avatar", label: "" },
-					{ id: "firstName", label: t("users.fields.name") },
-					{ id: "phone", label: t("users.fields.phone") },
-					{ id: "email", label: t("users.fields.email") },
-					{ id: "org", label: t("users.fields.organisation") },
-					{ id: "lastSignIng", label: t("users.fields.lastSignIn") }
-				],
 				orgsHeader: [
 					{ id: "name", label: t("orgs.fields.name") },
 					{ id: "address", label: t("orgs.fields.address") },
@@ -97,7 +96,8 @@ class Orgs extends Component {
 					{ id: "url", label: t("orgs.fields.url") },
 				],
 				loading: false
-			})
+			}, () => this.handleRequestSort(null, 'name', 'asc'))
+
 		}
 	}
 
@@ -111,34 +111,38 @@ class Orgs extends Component {
 
 	renderOrgs = () => {
 		const { t } = this.props
-		const { loading } = this.state
-		return <GridContainer justify={'center'}>
-			{loading ? <CircularLoader /> : <OrgTable
-				data={this.filterItems(this.state.orgs)}
-				tableHead={this.state.orgsHeader}
-				handleFilterEndDate={this.handleFilterEndDate}
-				handleFilterKeyword={this.handleFilterKeyword}
-				handleFilterStartDate={this.handleFilterStartDate}
-				filters={this.state.filters}
-				t={t}
-			/>}
+		const { loading, order, orderBy } = this.state
+		return <GridContainer justify={ 'center' }>
+			{ loading ? <CircularLoader /> : <OrgTable
+				data={ this.filterItems(this.state.orgs) }
+				tableHead={ this.state.orgsHeader }
+				handleFilterEndDate={ this.handleFilterEndDate }
+				handleFilterKeyword={ this.handleFilterKeyword }
+				handleFilterStartDate={ this.handleFilterStartDate }
+				handleRequestSort={ this.handleRequestSort }
+				orderBy={ orderBy }
+				order={ order }
+				filters={ this.state.filters }
+				reload={ this.reload }
+				t={ t }
+			/> }
 		</GridContainer>
 	}
-	render() {
+	render () {
 		const { orgs, route, filters } = this.state
 		return (
 			<Fragment>
 				<Toolbar
-					data={orgs} 
-					route={route} 
-					filters={filters} 
-					history={this.props.history}
-					match={this.props.match}
-					handleFilterKeyword={this.handleFilterKeyword}
-					tabs={this.tabs}
-					defaultRoute={1}
+					data={ orgs }
+					route={ route }
+					filters={ filters }
+					history={ this.props.history }
+					match={ this.props.match }
+					handleFilterKeyword={ this.handleFilterKeyword }
+					tabs={ this.tabs }
+					defaultRoute={ 1 }
 				/>
-				{this.renderOrgs()}
+				{ this.renderOrgs() }
 			</Fragment>
 		)
 	}

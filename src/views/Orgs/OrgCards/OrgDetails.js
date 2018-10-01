@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info } from 'components';
 import { Grid, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { Business, MoreVert, Edit, /* Delete */ } from '@material-ui/icons'
+import { Business, MoreVert, Edit, Delete } from '@material-ui/icons'
 var countries = require("i18n-iso-countries")
 
 class OrgDetails extends Component {
@@ -19,14 +19,30 @@ class OrgDetails extends Component {
     handleCloseActionsDetails = () => {
     	this.setState({ actionAnchor: null });
     }
+	handleDeleteOrg = () => {
+		this.handleCloseActionsDetails()
+		this.props.deleteOrg()
+	}
+	handleEdit = () => this.props.history.push(`${this.props.match.url}/edit`)
+	options = () => {
+		const { t, accessLevel } = this.props
+		let allOptions = [
+			{ label: t("menus.editOrg"), func: this.handleEdit, single: true, icon: Edit },
+			{ label: t("menus.deleteOrg"), func: this.handleDeleteOrg, icon: Delete }
+		]
+		if (accessLevel.apiorg.edit)
+			return allOptions
+		else return [
+		]
+	}
 
-    render() {
+	render() {
     	const { actionAnchor } = this.state
     	const { t, org, classes } = this.props
     	return (
     		<InfoCard title={org.name} avatar={<Business />} subheader={""}
     			noExpand
-    			topAction={<ItemGrid noMargin noPadding>
+    			topAction={this.options().length > 0 ? <ItemGrid noMargin noPadding>
     				<IconButton
     					aria-label="More"
     					aria-owns={actionAnchor ? 'long-menu' : null}
@@ -45,15 +61,15 @@ class OrgDetails extends Component {
     							minWidth: 200
     						}
     					}}>
-    					<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
-    						<Edit className={classes.leftIcon} />{t("menus.editOrg")}
-    					</MenuItem>
-    					{/* <MenuItem onClick={this.deleteProject}>
+						{this.options().map((m, i) => <MenuItem key={i} onClick={m.func}>
+							<m.icon className={classes.leftIcon} />{m.label}
+						</MenuItem>)}
+    					{/* <MenuItem onClick={this.deleteOrg}>
     						<Delete className={classes.leftIcon} />{t("menus.deleteOrg")}
     					</MenuItem> */}
 						))}
     				</Menu>
-    			</ItemGrid>}
+    			</ItemGrid> : null}
     			content={
     				<Grid container>
     					<ItemGrid>
@@ -103,7 +119,7 @@ class OrgDetails extends Component {
     							{t("orgs.fields.url")}
     						</Caption>
     						<Info>
-    							<a href={org.url}>
+    							<a href={ org.url } target={"_blank"}>
     								{org.url}
     							</a>
     						</Info>
@@ -139,7 +155,7 @@ class OrgDetails extends Component {
     			}
     		/>
     	)
-    }
+	}
 }
 
 export default OrgDetails

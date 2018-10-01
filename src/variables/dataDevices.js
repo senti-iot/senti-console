@@ -26,7 +26,7 @@ export const getAllPictures = async (deviceId) => {
 	return data
 }
 export const resetDevice = async (id) => {
-	var data = await api.post('/senti/resetdevice', id).then(rs => {console.log(rs); return rs.data})
+	var data = await api.post('/senti/resetdevice', id).then(rs => { return rs.data})
 	return data
 }
 export const uploadPictures = async (device) => {

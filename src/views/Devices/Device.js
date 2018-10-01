@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { getDevice, getAllPictures, updateDevice } from 'variables/dataDevices'
 import {  Grid, withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Snackbar } from '@material-ui/core'
-import moment from 'moment'
 import { ItemGrid } from 'components'
 import InfoCard from 'components/Cards/InfoCard'
 import {  Map } from '@material-ui/icons'
 import deviceStyles from 'assets/jss/views/deviceStyles'
 import AssignProject from 'components/Devices/AssignProject'
+import AssignOrg from 'components/Devices/AssignOrg'
 import ImageUpload from './ImageUpload'
 import CircularLoader from 'components/Loader/CircularLoader'
 import { Maps } from 'components/Map/Maps'
@@ -15,6 +15,8 @@ import DeviceDetails from './DeviceCards/DeviceDetails'
 import DeviceHardware from './DeviceCards/DeviceHardware'
 import DeviceImages from './DeviceCards/DeviceImages'
 import DeviceData from './DeviceCards/DeviceData'
+import { dateFormatter } from 'variables/functions';
+import { connect } from 'react-redux';
 
 class Device extends Component {
 	constructor(props) {
@@ -29,7 +31,7 @@ class Device extends Component {
 			openSnackbar: 0,
 			img: null
 		}
-		props.setHeader('')
+		props.setHeader('', true, `/devices/list`, "devices")
 	}
 
 	getDevice = async (id) => {
@@ -38,7 +40,7 @@ class Device extends Component {
 				this.props.history.push('/404')
 			else {
 				this.setState({ device: rs, loading: false })
-				this.props.setHeader(rs.name ? rs.name : rs.id, true, `/devices/list`) 
+				this.props.setHeader(rs.name ? rs.name : rs.id, true, `/devices/list`, "devices") 
 					
 			}
 		})
@@ -67,7 +69,9 @@ class Device extends Component {
 			case 1:
 				return t("snackbars.unassign", { device: name + "(" + id + ")" })
 			case 2:
-				return t("snackbars.assign", { device: name + "(" + id + ")" } )
+				return t("snackbars.assign", { device: name + "(" + id + ")" })
+			case 3: 
+				return t("snackbars.failedUnassign")
 			default:
 				break
 		}
@@ -77,6 +81,17 @@ class Device extends Component {
 		getAllPictures(id).then(rs => this.setState({ img: rs }))
 	}
 
+	handleOpenAssignOrg = () => {
+		this.setState({ openAssignOrg: true, anchorEl: null })
+	}
+
+	handleCloseAssignOrg = async (reload) => {
+		if (reload) {
+			this.setState({ loading: true, anchorEl: null, openSnackbar: 2 })
+			await this.getDevice(this.state.device.id)
+		}
+		this.setState({ openAssignOrg: false })
+	}
 	handleOpenAssign = () => {
 		this.setState({ openAssign: true, anchorEl: null })
 	}
@@ -108,7 +123,7 @@ class Device extends Component {
 				if (c[key] === null)
 					return searchStr === "null" ? true : false
 				if (c[key] instanceof Date) {
-					let date = moment(c[key]).format("DD.MM.YYYY")
+					let date = dateFormatter(c[key])
 					return date.toLowerCase().includes(searchStr)
 				}
 				else
@@ -138,8 +153,7 @@ class Device extends Component {
 				this.setState({ loading: true, anchorEl: null, openSnackbar: 1 })
 				await this.getDevice(this.state.device.id)} 
 			else {
-				console.log('Failed to unassign') // Snackbar
-				// this.setState({ errorUnassign: true })
+				this.setState({ loading: false, anchorEl: null, openSnackbar: 3 })
 			}
 		})
 	}
@@ -190,6 +204,12 @@ class Device extends Component {
 						handleClose={this.handleCloseAssign}
 						t={this.props.t}
 					/>
+					<AssignOrg
+						deviceId={[this.state.device]}
+						open={this.state.openAssignOrg}
+						handleClose={this.handleCloseAssignOrg}
+						t={this.props.t}
+					/>
 					{device.project ? this.renderConfirmUnassign() : null}
 					<ItemGrid xs={12} noMargin>
 						<DeviceDetails
@@ -198,7 +218,9 @@ class Device extends Component {
 							match={this.props.match}
 							handleOpenAssign={this.handleOpenAssign}
 							handleOpenUnassign={this.handleOpenUnassign}
+							handleOpenAssignOrg={this.handleOpenAssignOrg}
 							t={this.props.t}
+							accessLevel={this.props.accessLevel}
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
@@ -251,5 +273,12 @@ class Device extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	accessLevel: state.settings.user.privileges
+})
 
-export default withStyles(deviceStyles)(Device)
+const mapDispatchToProps = {
+  
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles)(Device))
