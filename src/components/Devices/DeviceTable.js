@@ -58,7 +58,10 @@ class EnhancedTable extends React.Component {
 	}
 	handleDeviceEdit = () => {
 		const { selected } = this.state
-		this.props.history.push(`/device/${selected[ 0 ]}/edit`)
+		this.props.history.push({
+			pathname: `/device/${selected[0]}/edit`,
+			state: { backUrl: '/404' }
+		})
 	}
 	handleAssignToOrg = () => {
 		this.setState({ openAssignOrg: true })

@@ -57,7 +57,7 @@ class DeviceDetails extends Component {
 				title={device.name ? device.name : device.id}
 				avatar={<Devices />}
 				topAction={<Dropdown menuItems={
-					[<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
+					[<MenuItem onClick={() => this.props.history.push({ pathname: `/device/${device.id}/edit`, state: { backurl: `/device/${device.id}` } })}>
 						<Edit className={classes.leftIcon} />{t("menus.edit")}
 					</MenuItem>,
 					<MenuItem onClick={this.props.handleOpenAssign}>
