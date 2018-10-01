@@ -15,11 +15,11 @@ const isObject = (obj) => {
 const filterByDate = (items, filters) => {
 	const { startDate, endDate } = filters
 	var arr = items
-	var keys = Object.keys(arr[ 0 ])
+	var keys = Object.keys(arr[0])
 	var filteredByDate = arr.filter(c => {
 		var contains = keys.map(key => {
-			var openDate = moment(c[ 'open_date' ])
-			var closeDate = moment(c[ 'close_date' ])
+			var openDate = moment(c['open_date'])
+			var closeDate = moment(c['close_date'])
 			if (openDate > startDate
 				&& closeDate < (endDate ? endDate : moment())) {
 				return true
@@ -38,12 +38,12 @@ export const filterItems = (data, filters) => {
 	if (activeDateFilter)
 		arr = filterByDate(arr, filters)
 	if (arr) {
-		if (arr[ 0 ] === undefined)
+		if (arr[0] === undefined)
 			return []
-		var keys = Object.keys(arr[ 0 ])
+		var keys = Object.keys(arr[0])
 		var filtered = arr.filter(c => {
 			var contains = keys.map(key => {
-				return keyTester(c[ key ], keyword ? keyword : "")
+				return keyTester(c[key], keyword ? keyword : "")
 
 			})
 			return contains.indexOf(true) !== -1 ? true : false
@@ -51,6 +51,7 @@ export const filterItems = (data, filters) => {
 		return filtered
 	}
 }
+
 export const keyTester = (obj, sstr) => {
 	let searchStr = sstr.toLowerCase()
 	let found = false
@@ -58,15 +59,15 @@ export const keyTester = (obj, sstr) => {
 		for (var k in obj) {
 			if (!found) {
 				if (k instanceof Date) {
-					let date = dateFormatter(obj[ k ])
+					let date = dateFormatter(obj[k])
 					found = date.toLowerCase().includes(searchStr)
 				}
 				else {
-					if (isObject(obj[ k ])) {
-						found = keyTester(obj[ k ], sstr)
+					if (isObject(obj[k])) {
+						found = keyTester(obj[k], sstr)
 					}
 					else {
-						found = obj[ k ] ? obj[ k ].toString().toLowerCase().includes(searchStr) : false
+						found = obj[k] ? obj[k].toString().toLowerCase().includes(searchStr) : false
 					}
 				}
 			}
@@ -79,6 +80,26 @@ export const keyTester = (obj, sstr) => {
 		found = obj ? obj.toString().toLowerCase().includes(searchStr) : null
 	}
 	return found
+}
+export const handleRequestSort = (property, way, data) => {
+	const orderBy = property;
+	let order = way;
+	let newData = []
+	// let keyTest = data[0]
+	// if (moment(keyTest[property]).isValid()) {
+	// 	newData =
+	// 		order === 'desc'
+	// 			? data.sort((a, b) => (moment(b[orderBy]).isBefore(a[orderBy] ? -1 : 1)))
+	// 			: data.sort((a, b) => (moment(a[orderBy]).isBefore(b[orderBy] ? -1 : 1)))
+	// }
+	// else {
+	newData =
+			order === 'desc'
+				? data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
+				: data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1))
+	// }
+
+	return newData
 }
 export const pF = (phone) => {
 	let formattedPhone = phoneUtil.parse(phone, "DK")
@@ -97,7 +118,7 @@ export const dateFormatter = (date) => {
 	return a
 }
 export const ConvertDDToDMS = (D, lng) => {
-	return [ 0 | D, '\u00B0', 0 | (D < 0 ? D = -D : D) % 1 * 60, "' ", 0 | D * 60 % 1 * 60, '"', D < 0 ? lng ? 'W' : 'S' : lng ? 'E' : 'N' ].join('');
+	return [0 | D, '\u00B0', 0 | (D < 0 ? D = -D : D) % 1 * 60, "' ", 0 | D * 60 % 1 * 60, '"', D < 0 ? lng ? 'W' : 'S' : lng ? 'E' : 'N'].join('');
 }
 
 const suggestionSlicer = (obj) => {
@@ -106,13 +127,13 @@ const suggestionSlicer = (obj) => {
 	for (var prop in obj) {
 		if (obj.hasOwnProperty(prop)) {
 			var innerObj = {};
-			if (typeof obj[ prop ] === 'object') {
-				arr.push(...suggestionSlicer(obj[ prop ]))
+			if (typeof obj[prop] === 'object') {
+				arr.push(...suggestionSlicer(obj[prop]))
 			}
 			else {
 				innerObj = {
 					id: prop.toString().toLowerCase(),
-					label: obj[ prop ] ? obj[ prop ].toString() : ''
+					label: obj[prop] ? obj[prop].toString() : ''
 				};
 				arr.push(innerObj)
 			}

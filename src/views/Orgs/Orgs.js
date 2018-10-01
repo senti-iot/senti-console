@@ -7,7 +7,7 @@ import { getAllOrgs } from 'variables/dataOrgs';
 import OrgTable from 'components/Orgs/OrgTable';
 import Toolbar from 'components/Toolbar/Toolbar'
 import { People, Business } from '@material-ui/icons';
-import { filterItems } from 'variables/functions'
+import { filterItems, handleRequestSort } from 'variables/functions'
 
 class Orgs extends Component {
 	constructor(props) {
@@ -48,21 +48,9 @@ class Orgs extends Component {
 		this._isMounted = 0
 	}
 	handleRequestSort = (event, property, way) => {
-		const orderBy = property;
-		let order = 'desc';
-
-		if (this.state.orderBy === property && this.state.order === 'desc') {
-			order = 'asc';
-		}
-		if (way) { 
-			order = way
-		}
-		const orgs =
-			order === 'desc'
-				? this.state.orgs.sort((a, b) => (b[ orderBy ] < a[ orderBy ] ? -1 : 1))
-				: this.state.orgs.sort((a, b) => (a[ orderBy ] < b[ orderBy ] ? -1 : 1))
-
-		this.setState({ orgs, order, orderBy })
+		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		let newData = handleRequestSort(property, order, this.state.orgs)
+		this.setState({ orgs: newData, order, orderBy: property })
 	}
 
 	filterItems = (data) => {

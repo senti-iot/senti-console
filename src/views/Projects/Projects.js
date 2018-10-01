@@ -9,7 +9,7 @@ import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
 import ProjectCards from 'components/Project/ProjectCards';
 import Toolbar from 'components/Toolbar/Toolbar'
-import { filterItems } from '../../variables/functions';
+import { filterItems, handleRequestSort } from '../../variables/functions';
 
 class Projects extends Component {
 	constructor(props) {
@@ -51,21 +51,26 @@ class Projects extends Component {
 	filterItems = (data) => {
 		return filterItems(data, this.state.filters)
 	}
-	handleRequestSort = (event, property) => {
-		const orderBy = property;
-		let order = 'desc';
-
-		if (this.state.orderBy === property && this.state.order === 'desc') {
-			order = 'asc';
-		}
-
-		const projects =
-			order === 'desc'
-				? this.state.projects.sort((a, b) => (b[ orderBy ] < a[ orderBy ] ? -1 : 1))
-				: this.state.projects.sort((a, b) => (a[ orderBy ] < b[ orderBy ] ? -1 : 1))
-
-		this.setState({ projects, order, orderBy })
+	handleRequestSort = (event, property, way) => {
+		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		let newData = handleRequestSort(property, order, this.state.projects)
+		this.setState({ projects: newData, order, orderBy: property })
 	}
+	// handleRequestSort = (event, property) => {
+	// 	const orderBy = property;
+	// 	let order = 'desc';
+
+	// 	if (this.state.orderBy === property && this.state.order === 'desc') {
+	// 		order = 'asc';
+	// 	}
+
+	// 	const projects =
+	// 		order === 'desc'
+	// 			? this.state.projects.sort((a, b) => (b[ orderBy ] < a[ orderBy ] ? -1 : 1))
+	// 			: this.state.projects.sort((a, b) => (a[ orderBy ] < b[ orderBy ] ? -1 : 1))
+
+	// 	this.setState({ projects, order, orderBy })
+	// }
 	handleFilterStartDate = (value) => {
 		this.setState({
 			filters: {
