@@ -40,13 +40,13 @@ class UserContact extends Component {
 		const { apiorg } = loggedUser.privileges
 		return <Dropdown menuItems={
 			[
-				<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
+				<MenuItem key={0} onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
 					<Edit className={classes.leftIcon} />{t("menus.edit")}
 				</MenuItem>,
-				<MenuItem onClick={() => this.props.changePass()}>
+				<MenuItem key={1} onClick={() => this.props.changePass()}>
 					<LockOpen className={classes.leftIcon} /> {t("menus.changePassword")}
 				</MenuItem>,
-				(apiorg ? apiorg.editusers || !loggedUser.id === user.id ? <MenuItem onClick={this.deleteUser}>
+				(apiorg ? apiorg.editusers || !loggedUser.id === user.id ? <MenuItem key={3} onClick={this.deleteUser}>
 					<Delete className={classes.leftIcon} />{t("menus.delete")}
 				</MenuItem> : null : null)
 			
