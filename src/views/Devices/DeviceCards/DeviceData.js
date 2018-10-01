@@ -72,7 +72,6 @@ class DeviceData extends Component {
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		let data = await getWifiDaily(device.id, startDate, endDate).then(rs => rs)
-		console.log('getwifiData', data)
 		if (data) {
 			let dataArr = Object.keys(data).map(r => ({ id: shortDateFormat(r), value: data[r] }))
 			this.setState({
@@ -83,7 +82,7 @@ class DeviceData extends Component {
 						datasets: [{
 							borderColor: "#FFF",
 							borderWidth: 1,
-							data: dataArr.map(rd => rd.value),
+							data: dataArr.map(rd => device.wifiFactor ? parseInt(rd.value, 10) * device.wifiFactor : parseInt(rd.value, 10)),
 							// backgroundColor: dataArr.map(() => getRandomColor())
 							backgroundColor: dataArr.map((rd, id) => colors[id])
 						}]
@@ -93,7 +92,7 @@ class DeviceData extends Component {
 						datasets: [{
 							borderColor: "#FFF",
 							borderWidth: 1,
-							data: dataArr.map(rd => parseInt(rd.value, 10) * device.wifiFactor),
+							data: dataArr.map(rd => device.wifiFactor ? parseInt(rd.value, 10) * device.wifiFactor : parseInt(rd.value, 10)),
 							backgroundColor: dataArr.map((rd, id) => colors[id])
 						}
 						]
@@ -141,7 +140,6 @@ class DeviceData extends Component {
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		var data = await getWifiHourly(device.id, startDate, endDate).then(rs => rs)
-		console.log(data)
 		if (data) {
 			var dataArr = Object.keys(data).map(r => ({ id: moment(r).format("HH:mm"), value: data[r] }))
 			this.setState({
@@ -152,7 +150,7 @@ class DeviceData extends Component {
 						datasets: [{
 							borderColor: "#FFF",
 							borderWidth: 1,
-							data: dataArr.map(rd => parseInt(rd.value, 10) * device.wifiFactor),
+							data: dataArr.map(rd => device.wifiFactor ? parseInt(rd.value, 10) * device.wifiFactor : parseInt(rd.value, 10)),
 							// backgroundColor: dataArr.map(() => getRandomColor())
 							backgroundColor: dataArr.map((rd, id) => colors[id])
 						}]
@@ -162,7 +160,7 @@ class DeviceData extends Component {
 						datasets: [{
 							borderColor: "#FFF",
 							borderWidth: 1,
-							data: dataArr.map(rd => parseInt(rd.value, 10) * device.wifiFactor),
+							data: dataArr.map(rd => device.wifiFactor ? parseInt(rd.value, 10) * device.wifiFactor : parseInt(rd.value, 10)),
 							backgroundColor: dataArr.map((rd, id) => colors[id])
 						}
 						]
