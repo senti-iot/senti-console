@@ -16,6 +16,11 @@ export const createUser = async (user) => {
 	// console.log('createUser', data)
 	return data
 }
+export const resendConfirmEmail = async (user) => {
+	let data = await api.post('core/user/resendconfirmmail', user).then(rs => rs.data)
+	console.log(data)
+	return data
+}
 export const confirmUser = async (obj) => {
 	let data = await api.post(`core/user/confirm`, obj).then(rs => rs.data)
 	console.log('confirmUser', data)

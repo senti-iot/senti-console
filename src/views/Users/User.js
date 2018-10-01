@@ -13,7 +13,7 @@ import {
 	Button,
 	Snackbar
 } from '@material-ui/core';
-import { getUser, deleteUser } from 'variables/dataUsers';
+import { getUser, deleteUser, resendConfirmEmail } from 'variables/dataUsers';
 import { connect } from 'react-redux'
 import { setPassword } from 'variables/dataLogin';
 
@@ -29,6 +29,7 @@ class User extends Component {
 			openSnackbar: 0,
 			openDelete: false,
 			openChangePassword: false,
+			openResendConfirm: false,
 			pw: {
 				current: "",
 				newP: "",
@@ -61,6 +62,24 @@ class User extends Component {
 			this.props.history.push('/404')
 		}
 	}
+	resendConfirmEmail = async () => {
+		const { user } = this.state
+		let userId = {
+			id: user.id
+		}
+		let data = await resendConfirmEmail(userId).then(rs => rs)
+		console.log(data);
+		this.setState({ openResendConfirm: false })
+		
+	}
+	handleOpenResend = () => {
+		this.setState({ openResendConfirm: true })
+	}
+
+	handleCloseResend = () => {
+		this.setState({ openResendConfirm: false })
+	}
+
 	handleOpenDeleteDialog = () => {
 		this.setState({ openDelete: true })
 	}
@@ -168,6 +187,32 @@ class User extends Component {
 			</DialogActions>
 		</Dialog>
 	}
+	renderConfirmEmail = () => {
+		const { openResendConfirm } = this.state
+		const { t } = this.props
+		return <Dialog
+			open={openResendConfirm}
+			onClose={this.handleCloseDeleteDialog}
+			aria-labelledby="alert-dialog-title"
+			aria-describedby="alert-dialog-description"
+		>
+			<DialogTitle id="alert-dialog-title">{t("users.userResendEmail")}</DialogTitle>
+			<DialogContent>
+				<DialogContentText id="alert-dialog-description">
+					{t("users.userResendConfirm", { user: (this.state.user.firstName + " " + this.state.user.lastName) }) + "?"}
+				</DialogContentText>
+
+			</DialogContent>
+			<DialogActions>
+				<Button onClick={this.handleCloseDeleteDialog} color="primary">
+					{t("actions.cancel")}
+				</Button>
+				<Button onClick={this.resendConfirmEmail} color="primary" autoFocus>
+					{t("actions.yes")}
+				</Button>
+			</DialogActions>
+		</Dialog>
+	}
 	renderDeleteDialog = () => {
 		const { openDelete } = this.state
 		const { t } = this.props
@@ -209,6 +254,7 @@ class User extends Component {
 							classes={classes}
 							deleteUser={this.handleOpenDeleteDialog}
 							changePass={this.handleOpenChangePassword}
+							resendConfirmEmail={this.handleOpenResend}
 							{...rp} />
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
@@ -217,6 +263,7 @@ class User extends Component {
 				</GridContainer>
 				{this.renderDeleteDialog()}
 				{this.renderChangePassword()}
+				{this.renderConfirmEmail()}
 				<Snackbar
 					autoHideDuration={1000}
 					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}

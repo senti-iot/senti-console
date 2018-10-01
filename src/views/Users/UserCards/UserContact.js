@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info } from 'components';
 import { Hidden, MenuItem } from '@material-ui/core';
 import { pF } from 'variables/functions';
-import { Person, Edit, Delete, LockOpen } from '@material-ui/icons'
+import { Person, Edit, Delete, LockOpen, Email } from '@material-ui/icons'
 import { NavLink } from 'react-router-dom'
 import Gravatar from 'react-gravatar'
 import { connect } from 'react-redux'
@@ -46,6 +46,9 @@ class UserContact extends Component {
 				<MenuItem key={1} onClick={() => this.props.changePass()}>
 					<LockOpen className={classes.leftIcon} /> {t("menus.changePassword")}
 				</MenuItem>,
+				(user.suspended === 2 ? <MenuItem key={4} onClick={() => this.props.resendConfirmEmail()}>
+					<Email className={classes.leftIcon} /> {t("users.userResendEmail")}					
+				</MenuItem> : null),
 				(apiorg ? apiorg.editusers || !loggedUser.id === user.id ? <MenuItem key={3} onClick={this.deleteUser}>
 					<Delete className={classes.leftIcon} />{t("menus.delete")}
 				</MenuItem> : null : null)

@@ -526,10 +526,12 @@
         "tabs": {
             "orgs": "Organisationer",
             "users": "Brugere"
-        },
+		},
+		"userResendEmail": "Resend Confirm Email",
+		"userResendConfirm": "Are you sure you want to resend confirmation email?",
         "userDelete": "Slet bruger",
-        "userDeleteConfirm": "Er du sikker på du vil slette denne bruger?",
+        "userDeleteConfirm": "Er du sikker på du vil slette denne bruger %{user} ?",
         "usersDelete": "Slet brugere",
-        "usersDeleteConfirm": "Er du sikker på du vil slette de følgende brugere?:"
+        "usersDeleteConfirm": "Er du sikker på du vil slette de følgende brugere:"
     }
 }
