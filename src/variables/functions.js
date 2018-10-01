@@ -1,7 +1,7 @@
 var moment = require('moment');
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 var PNF = require('google-libphonenumber').PhoneNumberFormat
-
+var _ = require('lodash')
 export const dateFormat = (date) => {
 	let newDate = moment(date)
 	if (newDate.isBetween(moment().subtract(7, "day"), moment().add(7, "day")))
@@ -81,23 +81,16 @@ export const keyTester = (obj, sstr) => {
 	}
 	return found
 }
+
 export const handleRequestSort = (property, way, data) => {
 	const orderBy = property;
 	let order = way;
 	let newData = []
-	let keyTest = data[0]
-	if (moment(keyTest[property]).isValid()) {
-		newData =
-			order === 'desc'
-	 			? data.sort((a, b) => (moment(b[orderBy]).isBefore(a[orderBy]) ? -1 : 1))
-				: data.sort((a, b) => (moment(b[orderBy]).isAfter(a[orderBy]) ? -1 : 1))
-	}
-	else {
-		newData =
-			order === 'desc'
-				? data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
-				: data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1))
-	}
+
+	newData =
+		order === 'desc'
+			? data.sort((a, b) => (_.get(b, orderBy) <= _.get(a, orderBy) ? -1 : 1))
+			: data.sort((a, b) => (_.get(a, orderBy) < _.get(b, orderBy) ? -1 : 1))
 	return newData
 }
 export const pF = (phone) => {

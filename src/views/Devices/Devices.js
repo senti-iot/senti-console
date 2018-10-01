@@ -71,6 +71,7 @@ class Devices extends Component {
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
 		let newData = handleRequestSort(property, order, this.state.devices)
+		// console.log(this.state.devices, newData, order, property);
 		this.setState({ devices: newData, order, orderBy: property })
 	}
 	getDevices = async () => {
@@ -82,8 +83,8 @@ class Devices extends Component {
 				{ id: "id", label: t("devices.fields.id") },
 				{ id: "liveStatus", label: t("devices.fields.status") },
 				{ id: "address", label: t("devices.fields.address") },
-				{ id: "org", label: t("devices.fields.org") },
-				{ id: "project", label: t("devices.fields.availability") }
+				{ id: "org.name", label: t("devices.fields.org") },
+				{ id: "project.id", label: t("devices.fields.availability") }
 			],
 			loading: false
 		}, () => this.handleRequestSort(null, "id", "asc")) : null)
