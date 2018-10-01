@@ -64,14 +64,20 @@ class Devices extends Component {
 			}
 		})
 	}
-	handleRequestSort = (event, property) => {
+	reload = async () => {
+		this.setState({ loading: true })
+		await this.getDevices()
+	}
+	handleRequestSort = (event, property, way) => {
 		const orderBy = property;
 		let order = 'desc';
 
 		if (this.state.orderBy === property && this.state.order === 'desc') {
 			order = 'asc';
 		}
-
+		if (way) {
+			order = way
+		}
 		const devices =
 			order === 'desc'
 				? this.state.devices.sort((a, b) => (b[ orderBy ] < a[ orderBy ] ? -1 : 1))
@@ -92,7 +98,7 @@ class Devices extends Component {
 				{ id: "project", label: t("devices.fields.availability") }
 			],
 			loading: false
-		}, () => this.handleRequestSort(null, "id")) : null)
+		}, () => this.handleRequestSort(null, "id", "asc")) : null)
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
@@ -143,16 +149,17 @@ class Devices extends Component {
 		const { loading, order, orderBy } = this.state
 		return loading ? this.renderLoader() : <GridContainer container justify={ 'center' } /* className={classes.grid} */>
 			<DeviceTable
-				t={ this.props.t }
-				data={ this.filterItems(this.state.devices) }
-				tableHead={ this.state.deviceHeader }
-				handleFilterEndDate={ this.handleFilterEndDate }
-				handleFilterKeyword={ this.handleFilterKeyword }
-				handleRequestSort={ this.handleRequestSort }
-				handleFilterStartDate={ this.handleFilterStartDate }
-				filters={ this.state.filters }
-				order={ order }
-				orderBy={ orderBy }
+				t={this.props.t}
+				data={this.filterItems(this.state.devices)}
+				tableHead={this.state.deviceHeader}
+				handleFilterEndDate={this.handleFilterEndDate}
+				handleFilterKeyword={this.handleFilterKeyword}
+				handleRequestSort={this.handleRequestSort}
+				handleFilterStartDate={this.handleFilterStartDate}
+				filters={this.state.filters}
+				order={order}
+				orderBy={orderBy}
+				reload={this.reload}
 			/>
 		</GridContainer>
 	}

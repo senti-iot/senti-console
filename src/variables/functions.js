@@ -113,6 +113,10 @@ export const dateTimeFormatter = (date, withSeconds) => {
 		dt = moment(date).format("DD MMMM YYYY HH:mm")
 	return dt
 }
+export const shortDateFormat = (date) => {
+	var a = moment(date).format("ll")
+	return a
+}
 export const dateFormatter = (date) => {
 	var a = moment(date).format("LL")
 	return a

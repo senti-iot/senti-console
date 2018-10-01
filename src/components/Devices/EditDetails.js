@@ -66,7 +66,13 @@ class EditDeviceDetails extends Component {
 		const { device } = this.state
 		this.setState({ updating: true })
 		this.timer = setTimeout(async () => {
-			await updateDevice(device).then(rs =>  rs ? this.setState({ updated: true, openSnackBar: true, updating: false }) : null )
+			let updateD = {
+				...device,
+				project: {
+					id: 0
+				}
+			}
+			await updateDevice(updateD).then(rs =>  rs ? this.setState({ updated: true, openSnackBar: true, updating: false }) : null )
 		}, 2e3)
 
 	}

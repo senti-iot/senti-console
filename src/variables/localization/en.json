@@ -3,7 +3,7 @@
 		"errorMessage": "The resource requested has not been found! Please try again or contact support!",
 		"title": "404 Error - Page Not Found"
 	},
-	"Senti.Cloud" : "Senti.Cloud",
+	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
 		"accept": "Accept",
 		"apply": "Apply",
@@ -76,7 +76,7 @@
 		"password": "Password",
 		"passwordConfirm": "Confirm and sign in",
 		"button": "Confirm password",
-		"validation":{
+		"validation": {
 			"passwordMismatch": "The entered passwords are not identical!",
 			"passwordUnder8": "Password must contain at least 8 characters!",
 			"passwordEmpty": "Password cannot be empty!"
@@ -276,6 +276,7 @@
 	"menus": {
 		"assign": "Assign to project",
 		"assignDevices": "Assign devices",
+		"assignOrg": "Assign to organisation",
 		"calibrate": "Calibrate",
 		"delete": "Delete",
 		"deleteProject": "Delete",
@@ -288,6 +289,7 @@
 		"hideMore": "Hide",
 		"more": "More",
 		"reassign": "Re-assign to another project",
+		"reassignOrg": "Re-assign to another organisation",
 		"recalibrate": "Re-calibrate",
 		"seeLess": "See less",
 		"seeMore": "See more",

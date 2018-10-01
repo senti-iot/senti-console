@@ -37,19 +37,22 @@ class App extends React.Component {
 		this.setState({ mobileOpen: !this.state.mobileOpen });
 	};
 	handleSetHeaderTitle = (headerTitle, goBackButton, url, menuRoute) => {
-		if (this._isMounted)
+		if (this._isMounted) {
+			// console.log(headerTitle, typeof headerTitle, this.state.headerTitle, headerTitle !== this.state.headerTitle)
 			if (headerTitle !== this.state.headerTitle) {
-				console.log(typeof headerTitle)
-				if (typeof headerTitle === 'string')
-					this.setState({
-						headerTitle: {
-							id: headerTitle,
-							options: null
-						},
-						goBackButton: goBackButton,
-						url,
-						menuRoute
-					})
+				if (typeof headerTitle === 'string') {
+					if (headerTitle !== this.state.headerTitle.id) {
+						this.setState({
+							headerTitle: {
+								id: headerTitle,
+								options: null
+							},
+							goBackButton: goBackButton,
+							url,
+							menuRoute
+						})
+					}
+				}
 				else {
 					this.setState({
 						headerTitle: headerTitle,
@@ -59,6 +62,7 @@ class App extends React.Component {
 					})
 				}
 			}
+		}
 	};
 	handleGoBackButton = () => {
 		this.props.history.push(this.state.url)

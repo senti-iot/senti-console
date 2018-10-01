@@ -94,7 +94,6 @@ class ResetPassword extends React.Component {
 			return true
 		}
 		else {
-			console.log("hit")
 			this.setState({
 				error: true,
 				errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),

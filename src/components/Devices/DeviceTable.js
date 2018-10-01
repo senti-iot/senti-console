@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 import { withRouter } from 'react-router-dom';
 import AssignProject from "./AssignProject";
+import AssignOrg from "./AssignOrg";
 import EnhancedTableHead from '../Table/TableHeader'
 import EnhancedTableToolbar from '../Table/TableToolbar';
 import { connect } from 'react-redux'
@@ -38,25 +39,39 @@ class EnhancedTable extends React.Component {
 		this.props.history.push(`/device/${this.state.selected[ 0 ]}/calibrate`)
 	}
 	options = () => {
-		const { t } = this.props
-		return [
-			{ label: t("menus.edit"), func: this.handleDeviceEdit, single: true },
-			{ label: t("menus.assign"), func: this.handleAssignToProject, single: false },
-			{ label: t("menus.unassign"), func: this.handleOpenUnassignDialog, single: false },
-			{ label: t("menus.exportPDF"), func: () => { }, single: false },
-			{ label: t("menus.calibrate"), func: this.handleCalibrateFlow, single: true },
-			{ label: t("menus.delete"), func: this.handleDeleteProjects, single: false },
-		]
+		const { t, accessLevel } = this.props
+		if (accessLevel.apisuperuser)
+			return [
+				{ label: t("menus.edit"), func: this.handleDeviceEdit, single: true },
+				{ label: t("menus.assign"), func: this.handleAssignToProject, single: false },
+				{ label: t("menus.assignOrg"), func: this.handleAssignToOrg, single: false },
+				{ label: t("menus.unassign"), func: this.handleOpenUnassignDialog, single: false },
+				{ label: t("menus.exportPDF"), func: () => { }, single: false },
+				{ label: t("menus.calibrate"), func: this.handleCalibrateFlow, single: true },
+				{ label: t("menus.delete"), func: this.handleDeleteProjects, single: false }, ]
+		else {
+			return [
+				{ label: t("menus.exportPDF"), func: () => { }, single: false }
+			]
+		}
 	}
 	handleDeviceEdit = () => {
 		const { selected } = this.state
 		this.props.history.push(`/device/${selected[ 0 ]}/edit`)
+	}
+	handleAssignToOrg = () => {
+		this.setState({ openAssignOrg: true })
+	}
+	handleCloseAssignToOrg = reload => {
+		this.setState({ openAssignOrg: false })
+		this.props.reload()
 	}
 	handleAssignToProject = () => {
 		this.setState({ openAssignProject: true })
 	}
 	handleCloseAssignToProject = reload => {
 		this.setState({ openAssignProject: false })
+		this.props.reload()
 	}
 	handleToolbarMenuOpen = e => {
 		e.stopPropagation()
@@ -251,7 +266,7 @@ class EnhancedTable extends React.Component {
 	}
 	render () {
 		const { classes, t, data, order, orderBy } = this.props;
-		const { selected, rowsPerPage, page, openAssignProject } = this.state;
+		const { selected, rowsPerPage, page, openAssignProject, openAssignOrg } = this.state;
 		let emptyRows
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
@@ -262,7 +277,12 @@ class EnhancedTable extends React.Component {
 					open={ openAssignProject }
 					handleClose={ this.handleCloseAssignToProject }
 					deviceId={ selected.map(s => data[ data.findIndex(d => d.id === s) ]) }
-					t={ t } />
+					t={t} />
+				<AssignOrg
+					open={openAssignOrg}
+					handleClose={this.handleCloseAssignToOrg}
+					deviceId={selected.map(s => data[data.findIndex(d => d.id === s)])}
+					t={t} />
 				<EnhancedTableToolbar
 					anchorElMenu={ this.state.anchorElMenu }
 					handleToolbarMenuClose={ this.handleToolbarMenuClose }
@@ -343,7 +363,7 @@ class EnhancedTable extends React.Component {
 								);
 							}) : null }
 							{ emptyRows > 0 && (
-								<TableRow style={ { height: 49 * emptyRows } }>
+								<TableRow style={ { height: 49/*  * emptyRows */ } }>
 									<TableCell colSpan={ 8 } />
 								</TableRow>
 							) }
@@ -368,7 +388,8 @@ EnhancedTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 const mapStateToProps = (state) => ({
-	rowsPerPage: state.settings.trp
+	rowsPerPage: state.settings.trp,
+	accessLevel: state.settings.user.privileges
 })
 
 const mapDispatchToProps = {

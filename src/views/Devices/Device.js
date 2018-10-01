@@ -6,6 +6,7 @@ import InfoCard from 'components/Cards/InfoCard'
 import {  Map } from '@material-ui/icons'
 import deviceStyles from 'assets/jss/views/deviceStyles'
 import AssignProject from 'components/Devices/AssignProject'
+import AssignOrg from 'components/Devices/AssignOrg'
 import ImageUpload from './ImageUpload'
 import CircularLoader from 'components/Loader/CircularLoader'
 import { Maps } from 'components/Map/Maps'
@@ -15,6 +16,7 @@ import DeviceHardware from './DeviceCards/DeviceHardware'
 import DeviceImages from './DeviceCards/DeviceImages'
 import DeviceData from './DeviceCards/DeviceData'
 import { dateFormatter } from 'variables/functions';
+import { connect } from 'react-redux';
 
 class Device extends Component {
 	constructor(props) {
@@ -77,6 +79,17 @@ class Device extends Component {
 		getAllPictures(id).then(rs => this.setState({ img: rs }))
 	}
 
+	handleOpenAssignOrg = () => {
+		this.setState({ openAssignOrg: true, anchorEl: null })
+	}
+
+	handleCloseAssignOrg = async (reload) => {
+		if (reload) {
+			this.setState({ loading: true, anchorEl: null, openSnackbar: 2 })
+			await this.getDevice(this.state.device.id)
+		}
+		this.setState({ openAssignOrg: false })
+	}
 	handleOpenAssign = () => {
 		this.setState({ openAssign: true, anchorEl: null })
 	}
@@ -190,6 +203,12 @@ class Device extends Component {
 						handleClose={this.handleCloseAssign}
 						t={this.props.t}
 					/>
+					<AssignOrg
+						deviceId={[this.state.device]}
+						open={this.state.openAssignOrg}
+						handleClose={this.handleCloseAssignOrg}
+						t={this.props.t}
+					/>
 					{device.project ? this.renderConfirmUnassign() : null}
 					<ItemGrid xs={12} noMargin>
 						<DeviceDetails
@@ -198,7 +217,9 @@ class Device extends Component {
 							match={this.props.match}
 							handleOpenAssign={this.handleOpenAssign}
 							handleOpenUnassign={this.handleOpenUnassign}
+							handleOpenAssignOrg={this.handleOpenAssignOrg}
 							t={this.props.t}
+							accessLevel={this.props.accessLevel}
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
@@ -251,5 +272,12 @@ class Device extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	accessLevel: state.settings.user.privileges
+})
 
-export default withStyles(deviceStyles)(Device)
+const mapDispatchToProps = {
+  
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles)(Device))
