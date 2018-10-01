@@ -91,7 +91,7 @@ class Users extends Component {
 					{ id: "firstName", label: t("users.fields.name") },
 					{ id: "phone", label: t("users.fields.phone") },
 					{ id: "email", label: t("users.fields.email") },
-					{ id: "org", label: t("users.fields.organisation") },
+					{ id: "org.name", label: t("users.fields.organisation") },
 					{ id: "lastSignIng", label: t("users.fields.lastSignIn") }
 				], 
 				loading: false
