@@ -172,6 +172,14 @@ class ProjectData extends Component {
 				from = moment().subtract(90, 'd').startOf('day')
 				to = moment().endOf('day')
 				break;
+			case 5:
+				from = moment().subtract(1, 'd').startOf('day')
+				to = moment().endOf('day')
+				break;
+			case 6:
+				from = moment().startOf('week').startOf('day')
+				to = moment().endOf('day')
+				break;
 			default:
 				break;
 		}
@@ -207,11 +215,12 @@ class ProjectData extends Component {
 	
 	options = [
 		{ id: 0, label: this.props.t("filters.dateOptions.today") },
+		{ id: 5, label: this.props.t("filters.dateOptions.yesterday") },
+		{ id: 6, label: this.props.t("filters.dateOptions.thisWeek") },
 		{ id: 1, label: this.props.t("filters.dateOptions.7days") },
 		{ id: 2, label: this.props.t("filters.dateOptions.30days") },
 		{ id: 3, label: this.props.t("filters.dateOptions.90days") },
 		{ id: 4, label: this.props.t("filters.dateOptions.custom") },
-
 	]
 
 	visibilityOptions = [
@@ -381,6 +390,8 @@ class ProjectData extends Component {
 						</ItemGrid>
 						<Divider />
 						<MenuItem value={0}>{t("filters.dateOptions.today")}</MenuItem>
+						<MenuItem value={5}>{t("filters.dateOptions.yesterday")}</MenuItem>
+						<MenuItem value={6}>{t("filters.dateOptions.thisWeek")}</MenuItem>
 						<MenuItem value={1}>{t("filters.dateOptions.7days")}</MenuItem>
 						<MenuItem value={2}>{t("filters.dateOptions.30days")}</MenuItem>
 						<MenuItem value={3}>{t("filters.dateOptions.90days")}</MenuItem>
