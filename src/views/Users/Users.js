@@ -107,9 +107,7 @@ class Users extends Component {
 		this.setState({ route: value })
 	}
 	handleDeleteUsers = async (selected) => {
-		console.log(selected)
 		await selected.forEach(async u => {
-			console.log(u)
 			await deleteUser(u)
 		})
 		this.getData()

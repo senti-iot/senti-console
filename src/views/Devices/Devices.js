@@ -71,7 +71,6 @@ class Devices extends Component {
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
 		let newData = handleRequestSort(property, order, this.state.devices)
-		// console.log(this.state.devices, newData, order, property);
 		this.setState({ devices: newData, order, orderBy: property })
 	}
 	getDevices = async () => {
@@ -155,8 +154,8 @@ class Devices extends Component {
 	renderCards = () => {
 		const { loading } = this.state
 		return loading ? this.renderLoader() : <GridContainer container justify={ 'center' }>
-			{ this.filterItems(this.state.devices).map(d => {
-				return <DeviceCard t={ this.props.t } d={ d } />
+			{ this.filterItems(this.state.devices).map((d, k) => {
+				return <DeviceCard key={k} t={ this.props.t } d={ d } />
 			}) }
 		</GridContainer>
 	}

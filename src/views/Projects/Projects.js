@@ -53,25 +53,10 @@ class Projects extends Component {
 	}
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
-		console.log('hrsProject', order, property)
 		let newData = handleRequestSort(property, order, this.state.projects)
 		this.setState({ projects: newData, order, orderBy: property })
 	}
-	// handleRequestSort = (event, property) => {
-	// 	const orderBy = property;
-	// 	let order = 'desc';
 
-	// 	if (this.state.orderBy === property && this.state.order === 'desc') {
-	// 		order = 'asc';
-	// 	}
-
-	// 	const projects =
-	// 		order === 'desc'
-	// 			? this.state.projects.sort((a, b) => (b[ orderBy ] < a[ orderBy ] ? -1 : 1))
-	// 			: this.state.projects.sort((a, b) => (a[ orderBy ] < b[ orderBy ] ? -1 : 1))
-
-	// 	this.setState({ projects, order, orderBy })
-	// }
 	handleFilterStartDate = (value) => {
 		this.setState({
 			filters: {

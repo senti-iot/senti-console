@@ -202,7 +202,6 @@ class DeviceData extends Component {
 
 	componentDidMount = async () => {
 		this._isMounted = 1
-		// console.log(this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : 1000)
 		if (this._isMounted) {
 			this.getWifiSum()
 		}

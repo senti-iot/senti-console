@@ -69,7 +69,9 @@ class Device extends Component {
 			case 1:
 				return t("snackbars.unassign", { device: name + "(" + id + ")" })
 			case 2:
-				return t("snackbars.assign", { device: name + "(" + id + ")" } )
+				return t("snackbars.assign", { device: name + "(" + id + ")" })
+			case 3: 
+				return t("snackbars.failedUnassign")
 			default:
 				break
 		}
@@ -151,8 +153,7 @@ class Device extends Component {
 				this.setState({ loading: true, anchorEl: null, openSnackbar: 1 })
 				await this.getDevice(this.state.device.id)} 
 			else {
-				console.log('Failed to unassign') // Snackbar
-				// this.setState({ errorUnassign: true })
+				this.setState({ loading: false, anchorEl: null, openSnackbar: 3 })
 			}
 		})
 	}

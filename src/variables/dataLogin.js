@@ -13,17 +13,17 @@ export const logOut = async () => {
 }
 export const resetPassword = async(obj) => {
 	let data = await api.post(`/core/user/forgotpassword`, obj).then(rs => rs.data)
-	console.log(data)
+	console.log('resetPassword', data)
 	return data
 }
 export const confirmPassword = async (obj) => {
 	let data = await api.post(`/core/user/forgotpassword/set`, obj).then(rs => rs.data)
-	console.log(data)
+	console.log('confirmPassword', data)
 	return data
 }
 export const setPassword = async (obj) => {
 	let data = await api.post(`/core/user/setpassword`, obj).then(rs => rs.data)
-	console.log(data)
+	console.log('setPassword', data)
 	return data
 }
 export const getSettingsFromServer = async () => {
