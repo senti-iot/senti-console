@@ -81,6 +81,17 @@ export const keyTester = (obj, sstr) => {
 	}
 	return found
 }
+const sortFunc = (a, b, orderBy, way) => {
+	let newA = _.get(a, orderBy) ? _.get(a, orderBy) : ""
+	let newB = _.get(b, orderBy) ? _.get(b, orderBy) : ""
+	
+	if (way) {
+		return newB.toString().toLowerCase() <= newA.toString().toLowerCase() ? -1 : 1
+	}
+	else {
+		return newA.toString().toLowerCase() < newB.toString().toLowerCase() ? -1 : 1
+	}
+}
 
 export const handleRequestSort = (property, way, data) => {
 	const orderBy = property;
@@ -88,8 +99,8 @@ export const handleRequestSort = (property, way, data) => {
 	let newData = []
 	newData =
 		order === 'desc'
-			? data.sort((a, b) => (_.get(b, orderBy).toString().toLowerCase() <= _.get(a, orderBy).toString().toLowerCase() ? -1 : 1))
-			: data.sort((a, b) => (_.get(a, orderBy).toString().toLowerCase() < _.get(b, orderBy).toString().toLowerCase() ? -1 : 1))
+			? data.sort((a, b) => sortFunc(a, b, orderBy, true))
+			: data.sort((a, b) => sortFunc(a, b, orderBy, false))
 	return newData
 }
 export const pF = (phone) => {
