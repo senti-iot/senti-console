@@ -89,8 +89,8 @@ export const handleRequestSort = (property, way, data) => {
 
 	newData =
 		order === 'desc'
-			? data.sort((a, b) => (_.get(b, orderBy) <= _.get(a, orderBy) ? -1 : 1))
-			: data.sort((a, b) => (_.get(a, orderBy) < _.get(b, orderBy) ? -1 : 1))
+			? data.sort((a, b) => (_.get(b, orderBy).toLowerCase() <= _.get(a, orderBy).toLowerCase() ? -1 : 1))
+			: data.sort((a, b) => (_.get(a, orderBy).toLowerCase() < _.get(b, orderBy).toLowerCase() ? -1 : 1))
 	return newData
 }
 export const pF = (phone) => {
