@@ -25,7 +25,6 @@ export const createOrg = async (org) => {
 }
 export const deleteOrg = async (org) => {
 	var result = await api.delete(`core/org/${org}`).then(rs => rs)
-	console.log(result)
 	return result
 }
 // export const getCreateOrg = async () => {

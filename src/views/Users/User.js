@@ -122,7 +122,6 @@ class User extends Component {
 	renderChangePassword = () => {
 		const { openChangePassword } = this.state
 		const { t, accessLevel } = this.props
-		console.log(accessLevel);
 		return <Dialog
 			open={openChangePassword}
 			onClose={this.handleCloseChangePassword}
