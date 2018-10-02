@@ -217,7 +217,7 @@
         "apply": "Anvend",
         "cancel": "Afbryd",
         "no": "Nej",
-        "unassign": "Er du sikker på at du vil fjerne tildelingen %{deviceID} %{deviceName} fra %{project} ?",
+        "unassign": "Er du sikker på at du vil fjerne tilknytningen af enhed %{deviceID} %{deviceName}, fra %{project} ?",
         "unassignTitle": "Fjern tilknytning?",
         "warnings": {
             "notImplemented": "Ikke implementeret",
