@@ -53,7 +53,7 @@
             "getLocation": "Hent lokation",
             "lat": "Breddegrad",
             "long": "Længdegrad",
-            "networkError": "Network error!",
+            "networkError": "Netværksfejl!",
             "next": "Næste",
             "reset": "Nulstil",
             "success": "Succes!",
@@ -218,7 +218,7 @@
         "cancel": "Afbryd",
         "no": "Nej",
         "unassign": "Er du sikker på at du vil fjerne tildelingen %{deviceID} %{deviceName} fra %{project} ?",
-        "unassignTitle": "Fjern tildeling %{what}?",
+        "unassignTitle": "Fjern tilknytning?",
         "warnings": {
             "notImplemented": "Ikke implementeret",
             "wip": "Under udvikling"
@@ -262,7 +262,7 @@
     },
     "links": {
         "googleMaps": "Vis på Google Maps",
-        "mailTo": "Send mail til",
+        "mailTo": "Send E-mail til",
         "phoneTo": "Ring til"
     },
     "login": {
@@ -271,8 +271,8 @@
         "forgotPass": "Glemt kodeord?",
         "pass": "Kodeord",
         "requestPasswordReset": "Anmodning om nulstilling af kodeord",
-        "resetPassRequestMessage": "En Email er er blevet sendt med instruktioner for hvordan du nulstiller dit kodeord!",
-        "resetPasswordMessage": "Nulstil dit kodeord ved at indtaste din Email-adresse",
+        "resetPassRequestMessage": "En E-mail er er blevet sendt med instruktioner for hvordan du nulstiller dit kodeord!",
+        "resetPasswordMessage": "Nulstil dit kodeord ved at indtaste din E-mail adresse",
         "username": "Brugernavn"
     },
     "menus": {
@@ -337,7 +337,7 @@
     },
     "projects": {
         "contact": {
-            "email": "Email:",
+            "email": "E-mail:",
             "name": "Navn:",
             "organisation": "Organisation:",
             "phone": "Telefon:",
@@ -406,8 +406,8 @@
             "time": "På tid"
         },
         "defaultDataSet": "Standard datasæt for diagrammer",
-        "didYouKnow": "“Viste du at?“",
-        "discoverSenti": "“Vis intro kort på Dashboard“",
+        "didYouKnow": "Intelligente notifikationer",
+        "discoverSenti": "Vis intro kort",
         "headers": {
             "calibration": "Kalibrering",
             "charts": "Diagrammer",
@@ -448,8 +448,8 @@
         "deleting": "Sletter ...",
         "deviceUpdated": "Enhed %{device} er blevet opdateret!",
         "exported": "Eksporteret!",
-        "orgCreated": "Organisation %{org} er succesfuldt opretted!",
-        "orgDeleted": "Organisation er succefuld slettet!",
+        "orgCreated": "Organisation %{org} er succesfuldt oprettet!",
+        "orgDeleted": "Organisation er succefuldt slettet!",
         "orgUpdated": "Organisation %{org} er succesfuldt opdateret!",
         "projectUpdated": "Projekt %{project} er succesfuldt opdateret!",
         "redirect": "Omdirigerer ...",
@@ -476,7 +476,7 @@
             "delete": "Slet",
             "edit": "Rediger",
             "import": "Importer",
-            "mailTo": "Send Email",
+            "mailTo": "Send E-mail",
             "new": "Opret ny",
             "resetPassword": "Nulstil kodeord",
             "suspend": "Suspender"
@@ -487,7 +487,7 @@
             "accessLevel": "Adgangsniveau",
             "active": "Aktiv",
             "created": "Opdateret",
-            "email": "Email",
+            "email": "E-mail",
             "firstName": "Fornavn",
             "group": "Gruppe",
             "language": "System sprog",
@@ -502,9 +502,9 @@
             "profileImage": "Profilbillede",
             "tags": "Tags",
 			"userName": "Brugernavn",
-			"currentPass": "Current password",
-			"newPass": "New password",
-			"confirmPass": "Confirm new password"
+			"currentPass": "Nuværende kodeord",
+			"newPass": "Nyt kodeord",
+			"confirmPass": "Bekræft nyt kodeord"
         },
         "groups": {
             "136550100000143": "Superbruger",
@@ -515,7 +515,7 @@
             "user": "Bruger"
         },
         "headers": {
-            "contact": "Contact",
+            "contact": "Kontakt",
             "system": "Systemlog"
         },
         "menus": {
@@ -529,8 +529,8 @@
             "orgs": "Organisationer",
             "users": "Brugere"
 		},
-		"userResendEmail": "Resend Confirm Email",
-		"userResendConfirm": "Are you sure you want to resend confirmation email?",
+		"userResendEmail": "Gensend bekræftelses E-mail",
+		"userResendConfirm": "Er du sikker på du ønsker at gensende bekræftelses E-mail?",
         "userDelete": "Slet bruger",
         "userDeleteConfirm": "Er du sikker på du vil slette denne bruger %{user} ?",
         "usersDelete": "Slet brugere",

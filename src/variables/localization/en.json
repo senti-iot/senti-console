@@ -218,7 +218,7 @@
 		"cancel": "Cancel",
 		"no": "No",
 		"unassign": "Are you sure you want to unassign %{deviceID} %{deviceName} from %{project}",
-		"unassignTitle": "Unassign ${what}?",
+		"unassignTitle": "Unassign?",
 		"warnings": {
 			"notImplemented": "Not implemented",
 			"wip": "Work in progress"
@@ -271,8 +271,8 @@
 		"forgotPass": "Forgot password?",
 		"pass": "Password",
 		"requestPasswordReset": "Request password reset",
-		"resetPassRequestMessage": "An Email has been sent with instructions on how to reset your password!",
-		"resetPasswordMessage": "Reset your password by entering your Email",
+		"resetPassRequestMessage": "An E-mail has been sent with instructions on how to reset your password!",
+		"resetPasswordMessage": "Reset your password by entering your E-mail",
 		"username": "Username"
 	},
 	"menus": {
@@ -337,7 +337,7 @@
 	},
 	"projects": {
 		"contact": {
-			"email": "Email:",
+			"email": "E-mail:",
 			"name": "Name:",
 			"organisation": "Organisation:",
 			"phone": "Phone:",
@@ -406,7 +406,7 @@
 			"time": "By time"
 		},
 		"defaultDataSet": "Default data set for charts",
-		"didYouKnow": "“Did you know?“",
+		"didYouKnow": "Intelligent Notifications",
 		"discoverSenti": "Show intro cards on Dashboard",
 		"headers": {
 			"calibration": "Calibration",
@@ -476,7 +476,7 @@
 			"delete": "Delete",
 			"edit": "Edit",
 			"import": "Import",
-			"mailTo": "Send Email",
+			"mailTo": "Send E-mail",
 			"new": "Add new",
 			"resetPassword": "Reset password",
 			"suspend": "Suspend"
@@ -487,7 +487,7 @@
 			"accessLevel": "Access Level",
 			"active": "Active",
 			"created": "Created",
-			"email": "Email",
+			"email": "E-mail",
 			"firstName": "First name",
 			"group": "Group",
 			"language": "System language",
@@ -529,8 +529,8 @@
 			"orgs": "Organisations",
 			"users": "Users"
 		},
-		"userResendEmail": "Resend Confirm Email",
-		"userResendConfirm": "Are you sure you want to resend confirmation email?",
+		"userResendEmail": "Resend Confirm E-mail",
+		"userResendConfirm": "Are you sure you want to resend confirmation E-mail?",
 		"userDelete": "Delete user",
 		"userDeleteConfirm": "Are you sure you want to delete this user?",
 		"usersDelete": "Delete users",
