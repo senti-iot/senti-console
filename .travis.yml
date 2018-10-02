@@ -21,7 +21,14 @@ deploy:
     skip_cleanup: true
     true: 
       branch: beta
-
+	-
+    domain: "https://alphasenti.surge.sh"
+    project: ./build
+    provider: surge
+    skip_cleanup: true
+    true: 
+      branch: alpha
+			
 language: node_js
 node_js: 
   - "9"
