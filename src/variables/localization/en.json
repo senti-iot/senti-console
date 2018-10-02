@@ -217,7 +217,7 @@
 		"apply": "Apply",
 		"cancel": "Cancel",
 		"no": "No",
-		"unassign": "Are you sure you want to unassign device %{deviceID} %{deviceName}, from %{project}",
+		"unassign": "Are you sure you want to unassign device: %{deviceName} with ID: %{deviceID}, from %{project}",
 		"unassignTitle": "Unassign?",
 		"warnings": {
 			"notImplemented": "Not implemented",
