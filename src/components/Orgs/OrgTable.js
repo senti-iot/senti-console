@@ -4,7 +4,7 @@ import {
 	DialogContentText, DialogActions, Button, /* MenuItem, Menu, */ IconButton, ListItem, ListItemIcon, ListItemText, List,
 } from "@material-ui/core"
 import TC from 'components/Table/TC'
-import { Delete, Edit, PictureAsPdf, /* FilterList, */ Add } from '@material-ui/icons'
+import { Delete, Edit, PictureAsPdf, /* FilterList, */ Add } from 'variables/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import PropTypes from "prop-types"
 import React, { Fragment } from "react"

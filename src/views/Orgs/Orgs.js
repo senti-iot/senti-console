@@ -6,7 +6,7 @@ import GridContainer from 'components/Grid/GridContainer';
 import { getAllOrgs } from 'variables/dataOrgs';
 import OrgTable from 'components/Orgs/OrgTable';
 import Toolbar from 'components/Toolbar/Toolbar'
-import { People, Business } from '@material-ui/icons';
+import { People, Business } from 'variables/icons';
 import { filterItems, handleRequestSort } from 'variables/functions'
 
 class Orgs extends Component {

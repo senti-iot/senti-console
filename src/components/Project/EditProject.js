@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { Paper, withStyles, Grid, FormControl, InputLabel, Select, Input, Chip, MenuItem, Collapse, Button, Snackbar } from '@material-ui/core';
 import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
-import { KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft, Save, Check } from '@material-ui/icons';
+import { KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft, Save, Check } from 'variables/icons';
 import { getAvailableDevices } from 'variables/dataDevices';
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';

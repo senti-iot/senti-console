@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info } from 'components';
 import { Grid } from '@material-ui/core';
-import { Person } from '@material-ui/icons'
+import { Person } from 'variables/icons'
 import { Link } from 'react-router-dom'
 
 export class ProjectContact extends Component {

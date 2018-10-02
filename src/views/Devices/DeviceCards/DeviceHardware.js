@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Grid, IconButton, Menu, MenuItem, withStyles } from '@material-ui/core';
 import { ItemGrid, Info } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
-import { MoreVert, Edit, DeveloperBoard } from '@material-ui/icons'
+import { MoreVert, Edit, DeveloperBoard } from 'variables/icons'
 import Caption from 'components/Typography/Caption';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 

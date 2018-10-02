@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Paper, withStyles, Grid, /*  FormControl, InputLabel, Select, Input, Chip,  MenuItem, */ Collapse, Button, Snackbar, MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
-import { Save, Check } from '@material-ui/icons';
+import { Save, Check } from 'variables/icons';
 import classNames from 'classnames';
 import { getOrg, updateOrg, getAllOrgs } from 'variables/dataOrgs'
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from '..'

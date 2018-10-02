@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info } from 'components';
-import { FolderShared } from '@material-ui/icons'
+import { FolderShared } from 'variables/icons'
 import { Grid } from '@material-ui/core'
 import { dateFormat, dateFormatter } from 'variables/functions';
 var moment = require('moment')

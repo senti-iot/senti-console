@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info } from 'components';
 import { Grid, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { Business, MoreVert, Edit, Delete } from '@material-ui/icons'
+import { Business, MoreVert, Edit, Delete } from 'variables/icons'
 var countries = require("i18n-iso-countries")
 
 class OrgDetails extends Component {

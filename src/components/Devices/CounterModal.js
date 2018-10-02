@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { ItemGrid } from '..';
 import moment from 'moment'
-import { OpenInBrowser, Timer, Done, Restore } from '@material-ui/icons'
+import { OpenInBrowser, Timer, Done, Restore } from 'variables/icons'
 import countermodalStyles from 'assets/jss/components/devices/countermodalStyles';
 import { connect } from 'react-redux'
 

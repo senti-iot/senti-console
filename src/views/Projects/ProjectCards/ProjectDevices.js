@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Collapse, /* Grid, */ withStyles } from '@material-ui/core';
 import { Caption, InfoCard, ItemG } from 'components';
-import { Devices, Map, ExpandMore } from '@material-ui/icons'
+import { Devices, Map, ExpandMore } from 'variables/icons'
 import { Maps } from 'components/Map/Maps';
 // import DeviceSimpleList from 'components/Devices/DeviceSimpleList';
 import classNames from 'classnames'

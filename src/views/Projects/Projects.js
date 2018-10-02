@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { getAllProjects, deleteProject } from '../../variables/dataProjects';
 import { withStyles } from "@material-ui/core";
 import { Switch, Route, Redirect } from 'react-router-dom'
-import { ViewList, ViewModule } from '@material-ui/icons'
+import { ViewList, ViewModule } from 'variables/icons'
 import projectStyles from 'assets/jss/views/projects';
 import ProjectTable from 'components/Project/ProjectTable';
 import CircularLoader from 'components/Loader/CircularLoader';

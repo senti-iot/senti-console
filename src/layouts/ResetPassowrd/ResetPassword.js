@@ -26,7 +26,7 @@ import { changeLanguage } from 'redux/localization';
 import cookie from 'react-cookies';
 import { setToken } from 'variables/data';
 import { resetPassword, confirmPassword } from '../../variables/dataLogin';
-var passChecker = require("zxcvbn")
+// var passChecker = require("zxcvbn")
 
 class ResetPassword extends React.Component {
 	constructor(props) {
@@ -164,17 +164,17 @@ class ResetPassword extends React.Component {
 
 
 	handleChange = prop => e => {
-		let score = 0
-		let result = null
-		let pass = e.target.value
-		if (!(pass.length < this.state.minLength)) {
-			result = passChecker(pass, [])
-			score = result.score
-		}
+		// let score = 0
+		// let result = null
+		// let pass = e.target.value
+		// if (!(pass.length < this.state.minLength)) {
+		// 	result = passChecker(pass, [])
+		// 	score = result.score
+		// }
 		this.setState({
 			...this.state,
-			isValid: score >= this.state.minScore,
-			score,
+			// isValid: score >= this.state.minScore,
+			// score,
 			[prop]: e.target.value
 		})
 		if (this.state.error)

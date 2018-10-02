@@ -4,7 +4,7 @@ import { createUser } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
 import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader } from '..';
 import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Snackbar, Grid, Button } from '@material-ui/core';
-import { Check, Save } from '@material-ui/icons'
+import { Check, Save } from 'variables/icons'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info } from 'components';
 import { Hidden, MenuItem } from '@material-ui/core';
 import { pF } from 'variables/functions';
-import { Person, Edit, Delete, LockOpen, Email } from '@material-ui/icons'
+import { Person, Edit, Delete, LockOpen, Email } from 'variables/icons'
 import { NavLink } from 'react-router-dom'
 import Gravatar from 'react-gravatar'
 import { connect } from 'react-redux'

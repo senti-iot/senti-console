@@ -1,5 +1,5 @@
 import { Button, Collapse, FormControl, Grid, Input, InputLabel, MenuItem, Paper, Select, withStyles, Snackbar } from '@material-ui/core';
-import { Check, Save } from '@material-ui/icons';
+import { Check, Save } from 'variables/icons';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import React, { Component, Fragment } from 'react';
 import { getDevice, updateDevice } from 'variables/dataDevices';

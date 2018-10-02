@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { Grid, Typography, withStyles, Button, MenuItem } from '@material-ui/core';
 import { ItemGrid, Warning, P, Info, Caption } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
-import { SignalWifi2Bar, SignalWifi2BarLock, Build, LibraryBooks, Edit, Devices, LayersClear, Business } from '@material-ui/icons'
+import { SignalWifi2Bar, SignalWifi2BarLock, Build, LibraryBooks, Edit, Devices, LayersClear, Business } from 'variables/icons'
 import { ConvertDDToDMS, dateFormat, dateFormatter } from 'variables/functions'
 import { Link } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';

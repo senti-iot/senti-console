@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Paper, withStyles, Grid, /*  FormControl, InputLabel, Select, Input, Chip,  MenuItem, */ Collapse, Button, Snackbar, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
-import { Save, Check } from '@material-ui/icons';
+import { Save, Check } from 'variables/icons';
 import classNames from 'classnames';
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from '..'
 import { connect } from 'react-redux'

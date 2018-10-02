@@ -1,5 +1,4 @@
 import { Snackbar, Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, /* IconButton, */ withStyles } from '@material-ui/core'
-// import { Close } from '@material-ui/icons'
 import { ItemGrid, GridContainer, CircularLoader } from 'components'
 import React, { Component } from 'react'
 import { getProject, deleteProject } from 'variables/dataProjects'

@@ -1,5 +1,5 @@
 import { Button, Chip, Collapse, FormControl, Grid, Input, InputLabel, MenuItem, Paper, Select, withStyles, Snackbar } from '@material-ui/core'
-import { Check, KeyboardArrowLeft as KeyArrLeft, KeyboardArrowRight as KeyArrRight, Save } from '@material-ui/icons'
+import { Check, KeyboardArrowLeft as KeyArrLeft, KeyboardArrowRight as KeyArrRight, Save } from 'variables/icons'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
 import classNames from 'classnames'
 import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers'

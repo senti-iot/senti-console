@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, DSelect } from 'components';
-import { Notifications } from '@material-ui/icons';
+import { Notifications } from 'variables/icons';
 import { Grid, List, ListItem, ListItemText, withStyles } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 

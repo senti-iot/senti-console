@@ -1,7 +1,6 @@
 import React from "react";
 // material-ui components
 import { InputAdornment, withStyles, CardContent, Collapse, Button, Grid } from "@material-ui/core";
-// @material-ui/icons
 import { LockOutlined, Person } from "@material-ui/icons";
 // core components
 import { GridContainer, ItemGrid, ItemG, TextF } from "components";

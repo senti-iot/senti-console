@@ -3,7 +3,7 @@ import {
 	TableRow, Typography, withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
 	DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem, List, ListItem, ListItemIcon, ListItemText
 } from "@material-ui/core"
-import { Delete, Devices, Edit, PictureAsPdf } from '@material-ui/icons'
+import { Delete, Devices, Edit, PictureAsPdf } from 'variables/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import PropTypes from "prop-types"
 import React, { Fragment } from "react"
@@ -15,7 +15,7 @@ import EnhancedTableToolbar from '../Table/TableToolbar'
 // import EnhancedTableToolbar from './TableToolBar'
 import { ItemGrid, Info, Caption } from ".."
 import { connect } from "react-redux"
-import { Add, FilterList } from '@material-ui/icons';
+import { Add, FilterList } from 'variables/icons';
 import { boxShadow } from 'assets/jss/material-dashboard-react';
 import TP from 'components/Table/TP';
 

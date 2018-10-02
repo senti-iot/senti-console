@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { getAllPictures, deletePicture } from 'variables/dataDevices';
 import { Grid, withStyles, Menu, MenuItem, IconButton, Modal, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Snackbar } from '@material-ui/core';
 import InfoCard from 'components/Cards/InfoCard';
-import { Image,  MoreVert, CloudUpload, Delete, Check } from '@material-ui/icons'
+import { Image,  MoreVert, CloudUpload, Delete, Check } from 'variables/icons'
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import DeviceImage from 'components/Devices/DeviceImage';
 import CircularLoader from 'components/Loader/CircularLoader';

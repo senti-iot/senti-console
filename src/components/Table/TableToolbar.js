@@ -1,5 +1,5 @@
 import { Grid, IconButton, Menu, MenuItem, Toolbar, Typography, withStyles } from '@material-ui/core';
-import { MoreVert as MoreVertIcon } from '@material-ui/icons';
+import { MoreVert as MoreVertIcon } from 'variables/icons';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import { boxShadow } from 'assets/jss/material-dashboard-react';
 import toolbarStyles from 'assets/jss/material-dashboard-react/tableToolBarStyle';

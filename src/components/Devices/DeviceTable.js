@@ -3,7 +3,7 @@ import {
 	TableRow, Typography, withStyles, Dialog, DialogTitle, DialogContent,
 	DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem
 } from "@material-ui/core";
-import { SignalWifi2Bar, SignalWifi2BarLock, Add, FilterList } from '@material-ui/icons';
+import { SignalWifi2Bar, SignalWifi2BarLock, Add, FilterList } from 'variables/icons';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
 import PropTypes from "prop-types";
 import React, { Fragment } from "react";

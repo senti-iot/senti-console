@@ -5,7 +5,7 @@ import { /* TextField, */ Input, /* ClickAwayListener */
 
 import { withStyles } from '@material-ui/core/styles';
 import searchStyles from 'assets/jss/components/search/searchStyles';
-import { Search, Clear } from '@material-ui/icons'
+import { Search, Clear } from 'variables/icons'
 import { ItemGrid } from '..';
 import className from 'classnames'
 // import withLocalization from '../Localization/T';

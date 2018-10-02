@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { InfoWindow, Marker } from 'react-google-maps';
 import { MarkerIcon } from './MarkerIcon';
 import { ItemGrid, Info, Caption } from '..';
-import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons'
+import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
 import { withStyles, Button } from '@material-ui/core'
 import { red, green, yellow } from '@material-ui/core/colors'
 import ItemG from '../Grid/ItemG';

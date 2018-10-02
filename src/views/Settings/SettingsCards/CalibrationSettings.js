@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import { InfoCard, ItemGrid, DSelect, Caption } from 'components';
-import { Build } from '@material-ui/icons'
+import { Build } from 'variables/icons'
 import { Grid, ListItem, List, ListItemText, withStyles, Collapse } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 import DInput from 'components/CustomInput/DInput';

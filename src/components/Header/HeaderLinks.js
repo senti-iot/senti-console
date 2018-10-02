@@ -1,5 +1,5 @@
 import { Grid, IconButton, Menu, MenuItem, withStyles } from "@material-ui/core";
-import { AccountBox, Business, Lock } from '@material-ui/icons';
+import { AccountBox, Business, Lock } from 'variables/icons';
 import headerLinksStyle from "assets/jss/material-dashboard-react/headerLinksStyle";
 import React from "react";
 import cookie from "react-cookies";

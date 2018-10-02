@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
@@ -71,7 +71,7 @@ class App extends React.Component {
 		this._isMounted = 1
 		if (this._isMounted) {
 			this.handleSetHeaderTitle("Senti.Cloud", false, '', "dashboard")
-		 }
+		}
 		await this.props.getSettings().then(rs => {
 			if (navigator.platform.indexOf('Win') > -1) {
 				if (!this.props.loading) {
@@ -97,19 +97,20 @@ class App extends React.Component {
 		const { classes, t, loading, ...rest } = this.props;
 		// const { loading } = this.state
 		return (
-			!loading ?
-				<div className={classes.wrapper}>
-					{/* <GeoLocation/> */}
-					<div className={classes.mainPanel} ref={"mainPanel"}>
-						<Header
-							routes={dashboardRoutes}
-							handleDrawerToggle={this.handleDrawerToggle}
-							goBackButton={this.state.goBackButton}
-							gbbFunc={this.handleGoBackButton}
-							headerTitle={this.state.headerTitle}
-							t={t}
-							{...rest}
-						/>
+
+			<div className={classes.wrapper}>
+				{/* <GeoLocation/> */}
+				<div className={classes.mainPanel} ref={"mainPanel"}>
+					<Header
+						routes={dashboardRoutes}
+						handleDrawerToggle={this.handleDrawerToggle}
+						goBackButton={this.state.goBackButton}
+						gbbFunc={this.handleGoBackButton}
+						headerTitle={this.state.headerTitle}
+						t={t}
+						{...rest}
+					/>
+					 <Fragment>
 						<Sidebar
 							routes={dashboardRoutes}
 							logo={logo}
@@ -120,7 +121,7 @@ class App extends React.Component {
 							menuRoute={this.state.menuRoute}
 							{...rest}
 						/>
-						<div className={classes.content}>
+						{!loading ? <div className={classes.content}>
 							<div className={classes.container}><Switch>
 								{cookie.load('SESSION') ? dashboardRoutes.map((prop, key) => {
 									if (prop.redirect) {
@@ -133,9 +134,10 @@ class App extends React.Component {
 									}
 								}} />}
 							</Switch></div>
-						</div>
-					</div>
-				</div > : <CircularLoader />
+						</div> : <CircularLoader />}
+					</Fragment> 
+				</div>
+			</div >
 		);
 	}
 }
