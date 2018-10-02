@@ -20,6 +20,7 @@ const headerStyle = theme => ({
 		boxShadow: "none",
 		borderBottom: "0",
 		marginBottom: "0",
+		height: "70px",
 		// padding: "5px",
 		// paddingTop: "10px",
 		zIndex: "1029",
@@ -35,6 +36,7 @@ const headerStyle = theme => ({
 	},
 	container: {
 		...container,
+		height: "100%",
 		minHeight: "50px",
 	},
 	flex: {

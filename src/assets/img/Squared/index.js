@@ -1,5 +1,5 @@
 import config from './config.jpg'
-import data from './data.jpg'
+import data from './data.svg'
 import devices from './devices.jpg'
 import hosting from './hosting.jpg'
 import notifications from './notifications.jpg'
