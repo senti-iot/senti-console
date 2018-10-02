@@ -166,20 +166,17 @@ class EditOrg extends Component {
 	}
 	handleUpdateOrg = () => {
 		clearTimeout(this.timer)
-		this.timer = setTimeout(async () => {
-			if (this.handleValidation()) {
-				return updateOrg(this.state.org).then(rs => rs ?
-					this.setState({ created: true, creating: false, openSnackBar: true }) :
-					this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
-					, 2e3)
-			}
-			else {
-				this.setState({
-					creating: false,
-					error: true,
-				})
-			}
-		})
+		if (this.handleValidation()) {
+			return updateOrg(this.state.org).then(rs => rs ?
+				this.setState({ created: true, creating: false, openSnackBar: true }) :
+				this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
+			)}
+		else {
+			this.setState({
+				creating: false,
+				error: true,
+			})
+		}
 
 	}
 
@@ -210,8 +207,6 @@ class EditOrg extends Component {
 				onChange={ this.handleOrgChange }
 				renderValue={ value => value.name }
 			>
-				{/* { accessLevel.apisuperuser ? <MenuItem key={ 99 } value={ noOrg }>{ t("orgs.fields.topLevelOrg") }</MenuItem> : null } */ }
-
 				{ orgs ? orgs.map(org => (
 					<MenuItem
 						key={ org.id }
