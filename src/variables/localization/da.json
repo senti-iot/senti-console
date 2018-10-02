@@ -133,8 +133,8 @@
             "map": "Kort",
             "pictures": "Billeder"
         },
-        "confirmUnassignMessage": "Fjern de valgte enheder fra projekt:",
-        "confirmUnassignTitle": "Fjern tilknytning",
+        "confirmUnassignMessage": "Fjern tilknytning af de valgte enheder fra projekterne:",
+        "confirmUnassignTitle": "Fjern tilknytning fra projekt",
         "device": "Enhed",
         "editDetailsTitle": "Opdater %{deviceId}",
         "editHardwareTitle": "Opdater hardware for enhed %{deviceId}",

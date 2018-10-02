@@ -133,8 +133,8 @@
 			"map": "Map",
 			"pictures": "Images"
 		},
-		"confirmUnassignMessage": "Unassign the sellected devices from project:",
-		"confirmUnassignTitle": "Unassign devices",
+		"confirmUnassignMessage": "Unassign the selected devices from project:",
+		"confirmUnassignTitle": "Unassign from project",
 		"device": "Device",
 		"editDetailsTitle": "Edit %{deviceId}",
 		"editHardwareTitle": "Edit hardware for device %{deviceId}",
