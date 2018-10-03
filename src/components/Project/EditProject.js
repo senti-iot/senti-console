@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, FormControl, InputLabel, Select, Input, Chip, MenuItem, Collapse, Button, Snackbar } from '@material-ui/core';
+import { Paper, withStyles, Grid, FormControl, InputLabel, Select, Input, Chip, MenuItem, Collapse, Button } from '@material-ui/core';
 import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import { KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft, Save, Check } from 'variables/icons';
@@ -32,8 +32,7 @@ class EditProject extends Component {
 			allDevices: [],
 			creating: false,
 			created: false,
-			loading: true,
-			openSnackbar: false,
+			loading: true
 		}
 	}
 	handleValidation = () => {
@@ -136,35 +135,30 @@ class EditProject extends Component {
 		})
 	}
 	handleUpdateProject = () => {
-		clearTimeout(this.timer)
+		
 		let newProject = {
 			...this.state.project,
 			devices: this.state.selectedDevices,
 		}
 		this.setState({ creating: true })
-		this.timer = setTimeout(async () => {
-			if (this.handleValidation())
-				return updateProject(newProject).then(rs => rs ?
-					this.setState({ created: true, creating: false, openSnackbar: true }) :
-					this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("projects.validation.networkError") })
-					, 2e3)
-			else {
-				this.setState({
-					creating: false,
-					error: true,
-				})
-			}
-		})
+		if (this.handleValidation())
+			return updateProject(newProject).then(rs => rs ?
+				this.close() :
+				this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("projects.validation.networkError") })
+			)
+		else {
+			this.setState({
+				creating: false,
+				error: true,
+			})
+		}
 	}
 
-	snackBarClose = () => {
-		this.setState({ openSnackbar: false })
-		this.redirect = setTimeout(async => {
-			this.goToNewProject()
-		}, 1e3)
-	}
-	goToNewProject = () => {
-		this.props.history.push('/project/' + this.props.match.params.id)
+	close = () => {
+		this.setState({ created: true, creating: false })
+		const { s, history } = this.props
+		s("snackbars.projectUpdated", { project: this.state.project.title })
+		history.push('/project/' + this.props.match.params.id)
 	}
 
 	render() {
@@ -322,22 +316,6 @@ class EditProject extends Component {
 
 						</MuiPickersUtilsProvider>
 					</Paper>
-					<Snackbar
-						anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-						open={this.state.openSnackbar}
-						onClose={this.snackBarClose}
-						ContentProps={{
-							'aria-describedby': 'message-id',
-						}}
-						autoHideDuration={1000}
-						message={
-							<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-								<Check className={classes.leftIcon} color={'primary'} />
-								{/* Project {this.state.title} has been successfully updated! */}
-								{t("snackbars.projectUpdated", { project: this.state.project.title })}
-							</ItemGrid>
-						}
-					/>
 				</GridContainer>
 				: <CircularLoader />
 		)
