@@ -6,7 +6,6 @@ import ProjectData from './ProjectCards/ProjectData'
 import ProjectDetails from './ProjectCards/ProjectDetails'
 import ProjectDevices from './ProjectCards/ProjectDevices'
 import { ProjectContact } from './ProjectCards/ProjectContact'
-import { dateFormatter } from 'variables/functions';
 
 const projectStyles = theme => ({
 	close: {
@@ -79,52 +78,11 @@ class Project extends Component {
 		}
 	}
 
-	handleDeleteProjects = async () => {
+	handleDeleteProject = async () => {
 		await deleteProject([this.state.project.id]).then(() => {
 			this.setState({ openDelete: false })
 			this.snackBarMessages(1)
 			this.props.history.push('/projects/list')
-		})
-	}
-
-	filterItems = (projects, keyword) => {
-		var searchStr = keyword.toLowerCase()
-		var arr = projects
-		if (arr[0] === undefined)
-			return []
-		var keys = Object.keys(arr[0])
-		var filtered = arr.filter(c => {
-			var contains = keys.map(key => {
-				if (c[key] === null)
-					return searchStr === "null" ? true : false
-				if (c[key] instanceof Date) {
-					let date = dateFormatter(c[key])
-					return date.toLowerCase().includes(searchStr)
-				}
-				else
-					return c[key].toString().toLowerCase().includes(searchStr)
-			})
-			return contains.indexOf(true) !== -1 ? true : false
-		})
-		return filtered
-	}
-
-	handleFilterRegKeyword = (value) => {
-		this.setState({
-			regFilters: {
-				...this.state.regFilters,
-				keyword: value
-			}
-		})
-	}
-
-	handleFilterDeviceKeyword = (value) => {
-		this.setState({
-			deviceFilters: {
-				...this.state.deviceFilters,
-				keyword: value
-			}
-
 		})
 	}
 
@@ -156,7 +114,7 @@ class Project extends Component {
 				<Button onClick={this.handleCloseDeleteDialog} color="primary">
 					{t("actions.cancel")}
 				</Button>
-				<Button onClick={this.handleDeleteProjects} color="primary" autoFocus>
+				<Button onClick={this.handleDeleteProject} color="primary" autoFocus>
 					{t("actions.yes")}
 				</Button>
 			</DialogActions>
@@ -169,7 +127,7 @@ class Project extends Component {
 
 	render() {
 		const { project, loading } = this.state
-		const { t } = this.props //Localization Provider is HOC'd with withRouter on the Routes Functional Component (See routes/*any*.js) 
+		const { t } = this.props 
 		const rp = { history: this.props.history, match: this.props.match }
 		return (
 			!loading ?

@@ -5,7 +5,7 @@ import { getUser } from '../variables/dataUsers'
 import 'moment/locale/da'
 import { saveSettings } from '../variables/dataLogin';
 var moment = require("moment")
-// import 'moment/locale/da'
+
 
 const MENULOC = "SIDEBAR_LOCATION"
 const THEME = "THEME"

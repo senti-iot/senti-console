@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 // Higher order component (HOC) decorator for components that need `t`
-export default function withSnackbar() {
+export default function withSnackbarHandler() {
 
 	return (WrappedComponent) => {
 		const _snackbar = (props, context) => {
@@ -11,6 +11,7 @@ export default function withSnackbar() {
 				{...props}
 				s={context.s}
 				sId={context.sId}
+				sOpt={context.sOpt}
 			/>
 			)
 		}

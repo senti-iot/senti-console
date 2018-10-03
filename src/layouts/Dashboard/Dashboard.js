@@ -17,7 +17,7 @@ import cookie from "react-cookies";
 import withLocalization from "components/Localization/T";
 import { connect } from "react-redux"
 import { getSettings } from 'redux/settings';
-import withSnackbar from 'components/Localization/S';
+import withSnackbarHandler from 'components/Localization/SnackbarHandler';
 import {  Close } from 'variables/icons';
 // import GeoLocation from "components/Geolocation/Geolocation";
 class App extends React.Component {
@@ -181,4 +181,4 @@ const mapDispatchToProps = dispatch => ({
 	getSettings: async () => dispatch(await getSettings())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withSnackbar()((withLocalization()(withStyles(appStyle)(App)))))
+export default connect(mapStateToProps, mapDispatchToProps)(withSnackbarHandler()((withLocalization()(withStyles(appStyle)(App)))))

@@ -12,28 +12,32 @@ import { changeTRP, changeTheme, changeCalType, changeSideBarLoc, changeCount, c
 import NotificationSettings from './SettingsCards/NotificationSettings';
 import DeviceSettings from './SettingsCards/DeviceSettings';
 import ChartSettings from './SettingsCards/ChartSettings';
-import { Snackbar, /*  Paper, Snackbar  */ } from '@material-ui/core';
+import withSnackbar from 'components/Localization/S';
+import { compose } from 'recompose';
 
 //Add Section Calibrated/Uncalibrated data
 class Settings extends Component {
 	constructor(props) {
-	  super(props)
-	
-	  this.state = {
-		 
+		super(props)
+
+		this.state = {
+
 		}
 		props.setHeader("settings.pageTitle", false, '', "settings")
 	}
 	
-	changeLanguage = (lang) => {
-		this.props.changeLanguage(lang)
-		// setTimeout(() => this.props.setHeader(this.props.t("settings.pageTitle"), false, '', "settings"), 100)
+	componentDidUpdate = (prevProps, prevState) => {
+		if (this.props.saved === true) {
+			this.props.s("snackbars.settingsSaved")
+			this.props.finishedSaving()
+		}
 	}
+
 	render() {
-		const { t } = this.props 
-		const { language, sideBar, changeSideBarLoc, trp, changeTRP, theme, changeTheme, changeDiscoverSenti, discSentiVal  } = this.props
+		const { t } = this.props
+		const { language, sideBar, changeSideBarLoc, trp, changeTRP, theme, changeTheme, changeDiscoverSenti, discSentiVal, changeLanguage } = this.props
 		const { calibration, changeCalType, count, changeCount, calNotifications, changeCalNotif } = this.props
-		const {	alerts, didKnow, changeAlerts, changeDidKnow } = this.props
+		const { alerts, didKnow, changeAlerts, changeDidKnow } = this.props
 		return (
 			<GridContainer>
 				<ItemGrid xs={12} noMargin>
@@ -43,7 +47,7 @@ class Settings extends Component {
 						theme={theme}
 						changeTheme={changeTheme}
 						language={language}
-						changeLanguage={this.changeLanguage}
+						changeLanguage={changeLanguage}
 						sideBar={sideBar}
 						changeSideBarLoc={changeSideBarLoc}
 						discSentiVal={discSentiVal}
@@ -59,7 +63,7 @@ class Settings extends Component {
 						changeCount={changeCount}
 						calNotifications={calNotifications}
 						changeCalNotif={changeCalNotif}
-						t={t}/>
+						t={t} />
 				</ItemGrid>
 				<ItemGrid xs={12} noMargin>
 					<NotificationSettings
@@ -80,7 +84,7 @@ class Settings extends Component {
 						t={t}
 					/>
 				</ItemGrid>
-				<Snackbar
+				{/* <Snackbar
 					autoHideDuration={3000}
 					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
 					open={this.props.saved}
@@ -90,7 +94,7 @@ class Settings extends Component {
 							{t("snackbars.settingsSaved")}
 						</ItemGrid>
 					}
-				/>
+				/> */}
 			</GridContainer>
 		)
 	}
@@ -123,7 +127,7 @@ const mapDispatchToProps = (dispatch) => {
 		changeTRP: nr => dispatch(changeTRP(nr)),
 		changeTheme: t => dispatch(changeTheme(t)),
 		changeSideBarLoc: loc => dispatch(changeSideBarLoc(loc)),
-		
+
 		changeCalType: type => dispatch(changeCalType(type)),
 		changeCount: count => dispatch(changeCount(count)),
 		changeCalNotif: type => dispatch(changeCalNotif(type)),
@@ -135,5 +139,5 @@ const mapDispatchToProps = (dispatch) => {
 		finishedSaving: () => dispatch(finishedSaving())
 	}
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(Settings))
+const Setting = compose(withLocalization(), withSnackbar())(Settings)
+export default connect(mapStateToProps, mapDispatchToProps)(Setting)

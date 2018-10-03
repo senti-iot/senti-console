@@ -10,8 +10,7 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogActions,
-	Button,
-	Snackbar
+	Button
 } from '@material-ui/core';
 import { getUser, deleteUser, resendConfirmEmail } from 'variables/dataUsers';
 import { connect } from 'react-redux'
@@ -87,13 +86,15 @@ class User extends Component {
 		this.setState({ openDelete: false })
 	}
 	handleDeleteUser = async () => {
-		await deleteUser(this.state.user.id).then(rs => {
-			return rs ? this.setState({ openSnackbar: 1, openDelete: false }) : null;
-		})
+		await deleteUser(this.state.user.id).then(rs => rs ? this.close() : null )
 	}
-	snackBarMessages = () => {
+	close = (rs) => {
+		this.setState({ openDelete: false })
+		this.snackBarMessages(1)
+		this.props.history.push('/users')
+	}
+	snackBarMessages = (msg) => {
 		const { t } = this.props
-		let msg = this.state.openSnackbar
 		switch (msg) {
 			case 1:
 				return t("snackbars.userDeleted", { user: this.state.user.firstName + " " + this.state.user.lastName })
@@ -101,16 +102,7 @@ class User extends Component {
 				break
 		}
 	}
-	closeSnackBar = () => {
-		if (this.state.openSnackbar === 1) {
-			this.setState({ openSnackbar: 0 }, () => this.redirect())
-		}
-		else
-			this.setState({ openSnackbar: 0 })
-	}
-	redirect = () => {
-		setTimeout(() => this.props.history.push('/users'), 1000)
-	}
+
 	handleOpenChangePassword = () => {
 		this.setState({ openChangePassword: true })
 	}
@@ -263,17 +255,6 @@ class User extends Component {
 				{this.renderDeleteDialog()}
 				{this.renderChangePassword()}
 				{this.renderConfirmEmail()}
-				<Snackbar
-					autoHideDuration={1000}
-					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-					open={this.state.openSnackbar !== 0 ? true : false}
-					onClose={this.closeSnackBar}
-					message={
-						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-							{this.snackBarMessages()}
-						</ItemGrid>
-					}
-				/>
 			</Fragment>
 		)
 	}
