@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { getDevice, getAllPictures, updateDevice } from 'variables/dataDevices'
-import {  Grid, withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Snackbar } from '@material-ui/core'
+import {  Grid, withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
 import { ItemGrid } from 'components'
 import InfoCard from 'components/Cards/InfoCard'
 import {  Map } from 'variables/icons'
@@ -61,17 +61,20 @@ class Device extends Component {
 	}
 
 	snackBarMessages = () => {
-		const { t } = this.props
+		const { s, t } = this.props
 		let msg = this.state.openSnackbar
 		let name = this.state.device.name ? this.state.device.name : t("devices.noName")
 		let id = this.state.device.id
 		switch (msg) {
 			case 1:
-				return t("snackbars.unassign", { device: name + "(" + id + ")" })
+				s("snackbars.unassign", { device: name + "(" + id + ")" })
+				break
 			case 2:
-				return t("snackbars.assign", { device: name + "(" + id + ")" })
+				s("snackbars.assign", { device: name + "(" + id + ")" })
+				break
 			case 3: 
-				return t("snackbars.failedUnassign")
+				s("snackbars.failedUnassign")
+				break
 			default:
 				break
 		}
@@ -246,6 +249,7 @@ class Device extends Component {
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
 						<DeviceImages
+							s={this.props.s}
 							t={this.props.t}
 							device={device}/>
 					</ItemGrid>
@@ -257,17 +261,6 @@ class Device extends Component {
 							t={this.props.t}
 						/>
 					</ItemGrid>
-					<Snackbar
-						anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-						open={this.state.openSnackbar !== 0 ? true : false}
-						onClose={() => { this.setState({ openSnackbar: 0 }) }}
-						autoHideDuration={5000}
-						message={
-							<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-								{this.snackBarMessages()}
-							</ItemGrid>
-						}
-					/>
 				</GridContainer>
 				: this.renderLoader()
 		)
