@@ -10,8 +10,8 @@ import { compose } from 'recompose';
 const users = (props) => {
 	return (
 		<Switch>
-			<Route path={'/users/new'} render={(rp) => <CreateUser setHeader={props.setHeader} t={props.t} {...rp}/>}/>
-			<Route path={'/users'} render={(rp) => <Users setHeader={props.setHeader} t={props.t} {...rp}/>} />
+			<Route path={'/users/new'} render={(rp) => <CreateUser {...props} {...rp}/>}/>
+			<Route path={'/users'} render={(rp) => <Users {...props} {...rp}/>} />
 		</Switch>
 	)
 }

@@ -30,26 +30,11 @@ class UserTable extends React.Component {
 			rowsPerPage: props.rowsPerPage,
 			anchorElMenu: null,
 			anchorFilterMenu: null,
-			openSnackbar: 0,
 			openDelete: false
 		}
 	}
 	
-	snackBarMessages = () => {
-		let msg = this.state.openSnackbar
-		const { s } = this.props
-		switch (msg) {
-			case 1:
-				s("snackbars.deletedSuccess")
-				break
-			case 2:
-				s("snackbars.exported")
-				break
-			default:
-				break;
-		}
-	}
-
+	
 	handleToolbarMenuOpen = e => {
 		e.stopPropagation()
 		this.setState({ anchorElMenu: e.currentTarget })
@@ -122,7 +107,6 @@ class UserTable extends React.Component {
 		this.setState({
 			selected: [],
 			anchorElMenu: null,
-			openSnackbar: 1,
 			openDelete: false
 		})
 	}

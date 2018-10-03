@@ -209,7 +209,6 @@ class EnhancedTable extends React.Component {
 				break;
 		}
 	}
-	addNewOrg = () => { this.props.history.push('/orgs/new') }
 
 	renderTableToolBarContent = () => {
 		const { classes, tableHead, t } = this.props

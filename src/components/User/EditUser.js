@@ -104,7 +104,7 @@ class EditUser extends Component {
     		groups: groups
     	}
     	await editUser(newUser).then(rs => rs ?
-    		this.close() :
+    		this.close(rs) :
     		this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
 				
     	)
@@ -112,7 +112,7 @@ class EditUser extends Component {
 	close = rs => {
 		this.setState({ created: true, creating: false, org: rs })
 		const { s, history } = this.props
-		s("userUpdated", { user: `${rs.firstName} ${rs.lastName}` })
+		s("snackbars.userUpdated", { user: `${rs.firstName} ${rs.lastName}` })
 		history.push(`/user/${rs.id}`)
 	}
 	

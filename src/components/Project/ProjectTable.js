@@ -34,21 +34,6 @@ class EnhancedTable extends React.Component {
 		}
 	}
 
-	snackBarMessages = () => {
-		let msg = this.state.openSnackbar
-		const { s } = this.props
-		switch (msg) {
-			case 1:
-				s("snackbars.deletedSuccess")
-				break;
-			case 2:
-				s("snackbars.exported")
-				break;
-			default:
-				break;
-		}
-	}
-
 	handleToolbarMenuOpen = e => {
 		e.stopPropagation()
 		this.setState({ anchorElMenu: e.currentTarget })
@@ -134,7 +119,6 @@ class EnhancedTable extends React.Component {
 		this.setState({
 			selected: [],
 			anchorElMenu: null,
-			openSnackbar: 1,
 			openDelete: false
 		})
 	}

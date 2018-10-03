@@ -28,23 +28,7 @@ class OrgTable extends React.Component {
 			rowsPerPage: props.rowsPerPage,
 			anchorElMenu: null,
 			anchorFilterMenu: null,
-			openSnackbar: 0,
 			openDelete: false,
-		}
-	}
-
-	snackBarMessages = () => {
-		let msg = this.state.openSnackbar
-		const { s } = this.props
-		switch (msg) {
-			case 1:
-				s("snackbars.deletedSuccess")
-				break;
-			case 2:
-				s("snackbars.exported")
-				break;
-			default:
-				break;
 		}
 	}
 
@@ -118,14 +102,12 @@ class OrgTable extends React.Component {
 		this.setState({ openDelete: false })
 	}
 	handleDeleteOrg = async () => {
-		this.state.selected.forEach(async o => await deleteOrg(o))
+		await this.props.handleDeleteOrgs(this.state.selected)
 		this.setState({
 			selected: [],
 			anchorElMenu: null,
-			openSnackbar: 1,
 			openDelete: false
 		})
-		this.props.reload()
 	}
 	isSelected = id => this.state.selected.indexOf(id) !== -1
 

@@ -93,7 +93,7 @@ class Users extends Component {
 					{ id: "email", label: t("users.fields.email") },
 					{ id: "org.name", label: t("users.fields.organisation") },
 					{ id: "lastSignIng", label: t("users.fields.lastSignIn") }
-				], 
+				],
 				loading: false
 			}, () => this.handleRequestSort(null, "firstName", "asc"))
 		}
@@ -106,11 +106,29 @@ class Users extends Component {
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
 	}
+	snackBarMessages = (msg) => {
+		const { s } = this.props
+		switch (msg) {
+			case 1:
+				s("snackbars.deletedSuccess")
+				break
+			case 2:
+				s("snackbars.exported")
+				break
+			default:
+				break;
+		}
+	}
+	reload = async () => {
+		this.setState({ loading: true })
+		await this.getData()
+	}
 	handleDeleteUsers = async (selected) => {
 		await selected.forEach(async u => {
 			await deleteUser(u)
 		})
 		this.getData()
+		this.snackBarMessages(1)
 	}
 	renderUsers = () => {
 		const { t } = this.props
@@ -121,11 +139,11 @@ class Users extends Component {
 				tableHead={userHeader}
 				handleFilterEndDate={this.handleFilterEndDate}
 				handleFilterKeyword={this.handleFilterKeyword}
-				handleFilterStartDate={ this.handleFilterStartDate }
+				handleFilterStartDate={this.handleFilterStartDate}
 				handleRequestSort={this.handleRequestSort}
 				handleDeleteUsers={this.handleDeleteUsers}
 				order={order}
-				orderBy={ orderBy}
+				orderBy={orderBy}
 				filters={filters}
 				t={t}
 			/>}

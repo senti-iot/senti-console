@@ -8,6 +8,7 @@ import OrgTable from 'components/Orgs/OrgTable';
 import Toolbar from 'components/Toolbar/Toolbar'
 import { People, Business } from 'variables/icons';
 import { filterItems, handleRequestSort } from 'variables/functions'
+import { deleteOrg } from '../../variables/dataOrgs';
 
 class Orgs extends Component {
 	constructor(props) {
@@ -105,44 +106,63 @@ class Orgs extends Component {
 		{ id: 0, title: this.props.t("users.tabs.users"), label: <People />, url: `/users` },
 		{ id: 1, title: this.props.t("users.tabs.orgs"), label: <Business />, url: `/orgs` },
 	]
+	snackBarMessages = (msg) => {
+		const { s } = this.props
+		switch (msg) {
+			case 1:
+				s("snackbars.deletedSuccess")
+				break;
+			case 2:
+				s("snackbars.exported")
+				break;
+			default:
+				break;
+		}
+	}
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
 	}
-
+	handleDeleteOrgs = async (selected) => {
+		await selected.forEach(async u => {
+			await deleteOrg(u)
+		})
+		this.getData()
+		this.snackBarMessages(1)
+	}
 	renderOrgs = () => {
 		const { t } = this.props
 		const { loading, order, orderBy } = this.state
-		return <GridContainer justify={ 'center' }>
-			{ loading ? <CircularLoader /> : <OrgTable
-				data={ this.filterItems(this.state.orgs) }
-				tableHead={ this.state.orgsHeader }
-				handleFilterEndDate={ this.handleFilterEndDate }
-				handleFilterKeyword={ this.handleFilterKeyword }
-				handleFilterStartDate={ this.handleFilterStartDate }
-				handleRequestSort={ this.handleRequestSort }
-				orderBy={ orderBy }
-				order={ order }
-				filters={ this.state.filters }
-				reload={ this.reload }
-				t={ t }
-			/> }
+		return <GridContainer justify={'center'}>
+			{loading ? <CircularLoader /> : <OrgTable
+				data={this.filterItems(this.state.orgs)}
+				tableHead={this.state.orgsHeader}
+				handleFilterEndDate={this.handleFilterEndDate}
+				handleFilterKeyword={this.handleFilterKeyword}
+				handleFilterStartDate={this.handleFilterStartDate}
+				handleRequestSort={this.handleRequestSort}
+				handleDeleteOrgs={this.handleDeleteOrgs}
+				orderBy={orderBy}
+				order={order}
+				filters={this.state.filters}
+				t={t}
+			/>}
 		</GridContainer>
 	}
-	render () {
+	render() {
 		const { orgs, route, filters } = this.state
 		return (
 			<Fragment>
 				<Toolbar
-					data={ orgs }
-					route={ route }
-					filters={ filters }
-					history={ this.props.history }
-					match={ this.props.match }
-					handleFilterKeyword={ this.handleFilterKeyword }
-					tabs={ this.tabs }
-					defaultRoute={ 1 }
+					data={orgs}
+					route={route}
+					filters={filters}
+					history={this.props.history}
+					match={this.props.match}
+					handleFilterKeyword={this.handleFilterKeyword}
+					tabs={this.tabs}
+					defaultRoute={1}
 				/>
-				{ this.renderOrgs() }
+				{this.renderOrgs()}
 			</Fragment>
 		)
 	}

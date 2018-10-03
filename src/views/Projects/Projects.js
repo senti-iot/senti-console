@@ -34,7 +34,7 @@ class Projects extends Component {
 
 	componentDidMount = async () => {
 		this._isMounted = 1
-		await this.getProjects()
+		await this.getData()
 		if (this._isMounted) {
 			if (this.props.location.pathname.includes('/grid')) {
 				this.setState({ route: 1 })
@@ -83,7 +83,7 @@ class Projects extends Component {
 			}
 		})
 	}
-	getProjects = async () => {
+	getData = async () => {
 		const { t } = this.props
 		await getAllProjects().then(rs => this._isMounted ? this.setState({
 			projects: rs ? rs : [],
@@ -98,11 +98,26 @@ class Projects extends Component {
 			loading: false
 		}, () => this.handleRequestSort(null, "title")) : null)
 	}
-
+	snackBarMessages = () => {
+		let msg = this.state.openSnackbar
+		const { s } = this.props
+		switch (msg) {
+			case 1:
+				s("snackbars.deletedSuccess")
+				break;
+			case 2:
+				s("snackbars.exported")
+				break;
+			default:
+				break;
+		}
+	}
 	deleteProjects = async (projects) => {
 		await deleteProject(projects).then(() => {
-			this.getProjects()
+			this.getData()
 		})
+		this.getData()
+		this.snackBarMessages(1)
 	}
 	renderAllProjects = () => {
 		const { t } = this.props
