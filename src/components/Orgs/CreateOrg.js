@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, /*  FormControl, InputLabel, Select, Input, Chip,  MenuItem, */ Collapse, Button, Snackbar, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
-import { Save, Check } from 'variables/icons';
+import { Paper, withStyles, Grid, /*  FormControl, InputLabel, Select, Input, Chip,  MenuItem, */ Collapse, Button, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { Save } from 'variables/icons';
 import classNames from 'classnames';
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from '..'
 import { connect } from 'react-redux'
@@ -144,36 +144,32 @@ class CreateOrg extends Component {
 			})
 		}
 	}
-	snackBarClose = () => {
-		this.setState({ openSnackBar: false })
-		this.redirect = setTimeout(async => {
-			this.props.history.push(`/org/${this.state.org.id}`)
-		}, 1e3)
+	close = (rs) => {
+		this.setState({ created: true, creating: false, org: rs })
+		this.props.s("snackbars.orgCreated", { org: this.state.org.name })
+		this.props.history.push(`/org/${this.state.org.id}`)
 	}
-	handleCreateOrg = () => {
-		clearTimeout(this.timer)
-		this.timer = setTimeout(async () => {
-			if (this.handleValidation()) {
-				let newOrg = {
-					...this.state.org,
-					org: {
-						id: this.state.selectedOrg
-					}
+	handleCreateOrg = () => {		
+		if (this.handleValidation()) {
+			let newOrg = {
+				...this.state.org,
+				org: {
+					id: this.state.selectedOrg
 				}
-				return createOrg(newOrg).then(rs => {
-					return rs ?
-						this.setState({ created: true, creating: false, openSnackBar: true, org: rs }) :
-						this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
-				}
-					, 2e3)
 			}
-			else {
-				this.setState({
-					creating: false,
-					error: true,
-				})
-			}
-		})
+			return createOrg(newOrg).then(rs => 
+				rs ?
+					this.close(rs) :
+					this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
+			)
+		}
+		else {
+			this.setState({
+				creating: false,
+				error: true,
+			})
+		}
+
 
 	}
 
@@ -370,27 +366,12 @@ class CreateOrg extends Component {
 									disabled={ this.state.creating || this.state.created }
 									onClick={ this.state.created ? this.goToOrg : this.handleCreateOrg }>
 									{ this.state.created ?
-										<Fragment><Check className={ classes.leftIcon } />{ t("snackbars.redirect") }</Fragment>
+										<Fragment>{t("snackbars.redirect") }</Fragment>
 										: <Fragment><Save className={ classes.leftIcon } />{ t("orgs.createOrg") }</Fragment> }
 								</Button>
 							</div>
 						</Grid>
 					</Paper>
-					<Snackbar
-						anchorOrigin={ { vertical: "bottom", horizontal: "right" } }
-						open={ this.state.openSnackBar }
-						onClose={ this.snackBarClose }
-						ContentProps={ {
-							'aria-describedby': 'message-id',
-						} }
-						autoHideDuration={ 1500 }
-						message={
-							<ItemGrid zeroMargin noPadding justify={ 'center' } alignItems={ 'center' } container id="message-id">
-								<Check className={ classes.leftIcon } color={ 'primary' } />
-								{ t("snackbars.orgCreated", { org: org.name }) }
-							</ItemGrid>
-						}
-					/>
 				</GridContainer>
 				: <CircularLoader />
 		)
