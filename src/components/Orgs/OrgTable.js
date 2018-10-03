@@ -1,6 +1,6 @@
 import {
 	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
-	TableRow, withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
+	TableRow, withStyles, DialogTitle, Dialog, DialogContent,
 	DialogContentText, DialogActions, Button, /* MenuItem, Menu, */ IconButton, ListItem, ListItemIcon, ListItemText, List,
 } from "@material-ui/core"
 import TC from 'components/Table/TC'
@@ -11,7 +11,7 @@ import React, { Fragment } from "react"
 import { withRouter } from 'react-router-dom'
 import EnhancedTableHead from 'components/Table/TableHeader'
 import EnhancedTableToolbar from 'components/Table/TableToolbar'
-import { ItemGrid, Info, ItemG, Caption } from ".."
+import { Info, ItemG, Caption } from ".."
 import { connect } from "react-redux"
 import TP from 'components/Table/TP'
 import { deleteOrg } from 'variables/dataOrgs';
@@ -35,12 +35,14 @@ class OrgTable extends React.Component {
 
 	snackBarMessages = () => {
 		let msg = this.state.openSnackbar
-		const { t } = this.props
+		const { s } = this.props
 		switch (msg) {
 			case 1:
-				return t("snackbars.deletedSuccess")
+				s("snackbars.deletedSuccess")
+				break;
 			case 2:
-				return t("snackbars.exported")
+				s("snackbars.exported")
+				break;
 			default:
 				break;
 		}
@@ -123,9 +125,7 @@ class OrgTable extends React.Component {
 			openSnackbar: 1,
 			openDelete: false
 		})
-		this.reload = setTimeout(() => {
-			this.props.reload()
-		}, 1e3);
+		this.props.reload()
 	}
 	isSelected = id => this.state.selected.indexOf(id) !== -1
 
@@ -286,17 +286,6 @@ class OrgTable extends React.Component {
 					t={t}
 					handleChangePage={this.handleChangePage}
 					handleChangeRowsPerPage={this.handleChangeRowsPerPage}
-				/>
-				<Snackbar
-					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-					open={this.state.openSnackbar !== 0 ? true : false}
-					onClose={() => { this.setState({ openSnackbar: 0 }) }}
-					autoHideDuration={5000}
-					message={
-						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-							{this.snackBarMessages()}
-						</ItemGrid>
-					}
 				/>
 				{this.renderConfirmDelete()}
 			</Paper>
