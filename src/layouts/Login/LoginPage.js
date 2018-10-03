@@ -19,6 +19,7 @@ import withLocalization from "components/Localization/T";
 import { connect } from 'react-redux';
 import { getSettings } from 'redux/settings';
 import { Link } from 'react-router-dom'
+var moment = require("moment")
 
 class LoginPage extends React.Component {
 	constructor(props) {
@@ -75,8 +76,9 @@ class LoginPage extends React.Component {
 		setTimeout(
 			async function () {
 				await loginUser(this.state.user, this.state.pass).then(async rs => {
-					if (rs) {						
-						cookie.save('SESSION', rs, { path: '/' })
+					if (rs) {
+						let exp = moment().add("1", "day")
+						cookie.save('SESSION', rs, { path: '/', expires: exp.toDate() })
 						if (rs.isLoggedIn) {
 							if (setToken())								
 							{
