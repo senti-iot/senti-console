@@ -1,4 +1,4 @@
-import { Snackbar, Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, /* IconButton, */ withStyles } from '@material-ui/core'
+import {  Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, /* IconButton, */ withStyles } from '@material-ui/core'
 import { ItemGrid, GridContainer, CircularLoader } from 'components'
 import React, { Component } from 'react'
 import { getProject, deleteProject } from 'variables/dataProjects'
@@ -198,17 +198,6 @@ class Project extends Component {
 						<ProjectContact history={this.props.history} t={t} project={project} />
 					</ItemGrid>
 					{this.renderDeleteDialog()}
-					<Snackbar
-						autoHideDuration={1000}
-						anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-						open={this.state.openSnackbar !== 0 ? true : false}
-						onClose={this.closeSnackBar}
-						message={
-							<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-								{this.snackBarMessages()}
-							</ItemGrid>
-						}
-					/>
 				</GridContainer>
 				: this.renderLoader())
 	}

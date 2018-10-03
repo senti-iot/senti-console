@@ -10,8 +10,8 @@ import { compose } from 'recompose';
 const orgs = (props) => {
 	return (
 		<Switch>
-			<Route path={'/orgs/new'} component={(rp) => <CreateOrg t={props.t} setHeader={props.setHeader}  {...rp}/>}/>
-			<Route path={'/orgs'} render={(rp) => <Orgs setHeader={props.setHeader} t={props.t} {...rp}/>} />
+			<Route path={'/orgs/new'} component={(rp) => <CreateOrg {...props}  {...rp}/>}/>
+			<Route path={'/orgs'} render={(rp) => <Orgs {...props} {...rp}/>} />
 		</Switch>
 	)
 }

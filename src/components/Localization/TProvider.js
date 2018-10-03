@@ -100,7 +100,7 @@ TProvider.propTypes = {
 TProvider.childContextTypes = {
 	t: PropTypes.func.isRequired,
 	s: PropTypes.func.isRequired,
-	sOpt: PropTypes.func.isRequired,
-	sId: PropTypes.object
+	sId: PropTypes.string.isRequired,
+	sOpt: PropTypes.object,
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TProvider)

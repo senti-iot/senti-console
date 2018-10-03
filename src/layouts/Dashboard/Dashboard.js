@@ -96,8 +96,8 @@ class App extends React.Component {
 			this.setState({ openSnackbar: true })
 	}
 	closeSnackBar = () => {
-		this.setState({ openSnackbar: false })
-		this.props.s("", {})
+		this.setState({ openSnackbar: false }, () => setTimeout(() => {this.props.s("", {})}, 100))
+
 	}
 	render() {
 		const { classes, t, loading, ...rest } = this.props;

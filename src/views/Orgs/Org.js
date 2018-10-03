@@ -9,7 +9,6 @@ import {
 	DialogContentText,
 	DialogActions,
 	Button,
-	Snackbar,
 } from '@material-ui/core';
 import { getOrg, getOrgUsers } from 'variables/dataOrgs';
 import OrgDetails from './OrgCards/OrgDetails';
@@ -58,15 +57,9 @@ class Org extends Component {
 			this.setState({
 				openSnackbar: 1,
 				openDelete: false
-			})
+			}, () => this.props.history.push('/orgs'))
+			
 		})
-	}
-	redirect = () => {
-		setTimeout(() => {
-			this.setState({ openSnackbar: 3 })
-			setTimeout(() => this.props.history.push('/orgs'), 1e3)
-		}, 2e3)
-
 	}
 
 	handleOpenDeleteDialog = () => {
@@ -77,13 +70,6 @@ class Org extends Component {
 		this.setState({ openDelete: false })
 	}
 
-	closeSnackBar = () => {
-		if (this.state.openSnackbar === 1) {
-			this.setState({ openSnackbar: 0 }, () => this.redirect())
-		}
-		else
-			this.setState({ openSnackbar: 0 })
-	}
 
 	renderDeleteDialog = () => {
 		const { openDelete } = this.state
@@ -112,33 +98,17 @@ class Org extends Component {
 		</Dialog>
 	}
 	snackBarMessages = () => {
-		const { t } = this.props
+		const { s } = this.props
 		let msg = this.state.openSnackbar
 		switch (msg) {
 			case 1:
-				return t("snackbars.orgDeleted")
-			case 3:
-				return t("snackbars.redirect")
+				s("snackbars.orgDeleted")
+				break
 			default:
 				break
 		}
 	}
-	renderSnackBar = () => <Snackbar
-		autoHideDuration={3000}
-		anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-		open={this.state.openSnackbar !== 0 ? true : false}
-		onClose={() => {
-			if (this.state.openSnackbar === 1)
-				this.closeSnackBar()
-			else
-				this.setState({ openSnackbar: 0 })
-		}}
-		message={
-			<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-				{this.snackBarMessages()}
-			</ItemGrid>
-		}
-	/>
+
 	render() {
 		const { classes, t, history, match, language } = this.props
 		const { org, loading, loadingUsers } = this.state
@@ -165,7 +135,6 @@ class Org extends Component {
 							<CircularLoader notCentered />}
 					</ItemGrid>
 				</GridContainer>
-				{this.renderSnackBar()}
 				{this.renderDeleteDialog()}
 			</Fragment>
 		)
