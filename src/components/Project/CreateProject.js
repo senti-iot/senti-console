@@ -1,5 +1,5 @@
-import { Button, Chip, Collapse, FormControl, Grid, Input, InputLabel, MenuItem, Paper, Select, withStyles, Snackbar } from '@material-ui/core'
-import { Check, KeyboardArrowLeft as KeyArrLeft, KeyboardArrowRight as KeyArrRight, Save } from 'variables/icons'
+import { Button, Chip, Collapse, FormControl, Grid, Input, InputLabel, MenuItem, Paper, Select, withStyles } from '@material-ui/core'
+import { KeyboardArrowLeft as KeyArrLeft, KeyboardArrowRight as KeyArrRight, Save } from 'variables/icons'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
 import classNames from 'classnames'
 import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers'
@@ -76,8 +76,6 @@ class CreateProject extends Component {
 
 	componentWillUnmount = () => {
 		this._isMounted = 0
-		clearTimeout(this.timer)
-		clearTimeout(this.redirect)
 	}
 	handleValidation = () => {
 		let errorCode = [];
@@ -145,12 +143,12 @@ class CreateProject extends Component {
 		})
 	}
 	handleFinishCreateProject = (rs) => {
-		this.setState({ created: true, id: rs.id, openSnackBar: true })
-		this.redirect = setTimeout(() => this.props.history.push(`/project/${rs.id}`), 1000)
+		this.setState({ created: true, id: rs.id })
+		this.props.s("snackbars.projectCreated", { project: this.state.title })			
+		this.props.history.push(`/project/${rs.id}`)
 	}
 	handleCreateProject = async () => {
 		const { availableDevices, title, description, startDate, endDate } = this.state
-		clearTimeout(this.timer)
 		this.setState({ creating: true })
 		if (this.handleValidation())
 		{
@@ -165,8 +163,8 @@ class CreateProject extends Component {
 						endDate: endDate,
 						devices: availableDevices ? availableDevices.filter(a => this.state.devices.some(b => a.id === b)) : []
 					}
-					this.timer = await setTimeout(async () => await createProject(newProject).then(rs => rs ? this.handleFinishCreateProject(rs) : this.setState({ create: false, creating: false, id: 0 })
-					), 2e3)
+					await createProject(newProject).then(rs => rs ? this.handleFinishCreateProject(rs) : this.setState({ create: false, creating: false, id: 0 })
+					)
 				}
 			})
 		}
@@ -178,11 +176,6 @@ class CreateProject extends Component {
 		}
 	}
 
-	goToNewProject = () => {
-		if (this.state.id)
-			this.props.history.push('/project/' + this.state.id)
-	}
-
 	render() {
 		const { classes, theme, t } = this.props
 		const { availableDevices, created, orgs, selectedOrg, error } = this.state
@@ -191,7 +184,7 @@ class CreateProject extends Component {
 		})
 		return (
 			<GridContainer justify={'center'}>
-				<Paper className={classes.paper}>
+				<Paper className={classes.paper}> : 
 					<MuiPickersUtilsProvider utils={MomentUtils}>
 					
 						<form className={classes.form}>
@@ -364,10 +357,10 @@ class CreateProject extends Component {
 									variant="contained"
 									color="primary"
 									className={buttonClassname}
-									disabled={this.state.creating}
-									onClick={this.state.created ? this.goToNewProject : this.handleCreateProject}
+									disabled={this.state.creating || this.state.created}
+									onClick={this.handleCreateProject}
 								>
-									{this.state.created ? <Fragment><Check className={classes.leftIcon} />{t("projects.redirecting")}</Fragment>
+									{this.state.created ? t("snackbars.redirect")
 										: <Fragment>
 											<Save className={classes.leftIcon} />{t("projects.new")}
 										</Fragment>}
@@ -379,20 +372,7 @@ class CreateProject extends Component {
 
 					</MuiPickersUtilsProvider>
 				</Paper>
-				<Snackbar
-					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-					open={this.state.openSnackBar}
-					onClose={() => { this.setState({ openSnackBar: false }) }}
-					ContentProps={{
-						'aria-describedby': 'message-id',
-					}}
-					autoHideDuration={5000}
-					message={
-						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-							<Check className={classes.leftIcon} color={'primary'} />{t("projects.projectCreated")}
-						</ItemGrid>
-					}
-				/>			</GridContainer>
+			</GridContainer> 
 		)
 	}
 }
