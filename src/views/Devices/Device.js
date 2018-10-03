@@ -28,7 +28,6 @@ class Device extends Component {
 			anchorElHardware: null,
 			openAssign: false,
 			openUnassign: false,
-			openSnackbar: 0,
 			img: null
 		}
 		props.setHeader('', true, `/devices/list`, "devices")
@@ -60,9 +59,8 @@ class Device extends Component {
 		}
 	}
 
-	snackBarMessages = () => {
+	snackBarMessages = (msg) => {
 		const { s, t } = this.props
-		let msg = this.state.openSnackbar
 		let name = this.state.device.name ? this.state.device.name : t("devices.noName")
 		let id = this.state.device.id
 		switch (msg) {
@@ -90,7 +88,8 @@ class Device extends Component {
 
 	handleCloseAssignOrg = async (reload) => {
 		if (reload) {
-			this.setState({ loading: true, anchorEl: null, openSnackbar: 2 })
+			this.setState({ loading: true, anchorEl: null })
+			this.snackBarMessages(2)
 			await this.getDevice(this.state.device.id)
 		}
 		this.setState({ openAssignOrg: false })
@@ -101,7 +100,8 @@ class Device extends Component {
 
 	handleCloseAssign = async (reload) => {
 		if (reload) {
-			this.setState({ loading: true, anchorEl: null, openSnackbar: 2 })
+			this.setState({ loading: true, anchorEl: null })
+			this.snackBarMessages(2)
 			await this.getDevice(this.state.device.id)
 		}
 		this.setState({ openAssign: false })
@@ -153,10 +153,12 @@ class Device extends Component {
 		await updateDevice({ ...this.state.device, project: { id: 0 } }).then(async rs => {
 			if (rs)	
 			{	this.handleCloseUnassign()
-				this.setState({ loading: true, anchorEl: null, openSnackbar: 1 })
+				this.setState({ loading: true, anchorEl: null })
+				this.snackBarMessages(1)
 				await this.getDevice(this.state.device.id)} 
 			else {
-				this.setState({ loading: false, anchorEl: null, openSnackbar: 3 })
+				this.setState({ loading: false, anchorEl: null })
+				this.snackBarMessages(3)
 			}
 		})
 	}
@@ -181,7 +183,6 @@ class Device extends Component {
 			<DialogTitle id="alert-dialog-title">{t("dialogs.unassignTitle", { what: "Project" })}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{/* Are you sure you want to unassign {device.id + " " + device.name} from project {device.project.title} ? */}
 					{t("dialogs.unassign", { deviceID: device.id, deviceName: device.name, project: device.project.title } )}
 				</DialogContentText>
 			</DialogContent>
