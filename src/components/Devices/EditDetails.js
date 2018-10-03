@@ -1,4 +1,4 @@
-import { Button, Collapse, FormControl, Grid, Input, InputLabel, MenuItem, Paper, Select, withStyles, Snackbar } from '@material-ui/core';
+import { Button, Collapse, FormControl, Grid, Input, InputLabel, MenuItem, Paper, Select, withStyles } from '@material-ui/core';
 import { Check, Save } from 'variables/icons';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import React, { Component, Fragment } from 'react';
@@ -13,8 +13,7 @@ class EditDeviceDetails extends Component {
 		this.state = {
 			loading: true,
 			updating: false,
-			updated: false,
-			openSnackBar: false
+			updated: false
 		}		
 		props.setHeader({ id: "devices.editDetailsTitle", options: { deviceId: props.match.params.id } }, true, props.history.location.state ? props.history.location.state['backurl'] : '/devices/list', "devices")
 	}
@@ -62,21 +61,19 @@ class EditDeviceDetails extends Component {
 			{ id: 9, label: t("devices.locationTypes.office") }]
 	}
 	handleUpdateDevice = async () => {
-		clearTimeout(this.timer);
 		const { device } = this.state
 		this.setState({ updating: true })
-		this.timer = setTimeout(async () => {
-			let updateD = {
-				...device,
-				project: {
-					id: 0
-				}
+		let updateD = {
+			...device,
+			project: {
+				id: 0
 			}
-			await updateDevice(updateD).then(rs =>  rs ? this.setState({ updated: true, openSnackBar: true, updating: false }) : null )
-		}, 2e3)
-
+		}
+		await updateDevice(updateD).then(rs =>  rs ?  this.goToDevice() : null )
 	}
 	goToDevice = () => {
+		this.setState({ updated: true, updating: false })
+		this.props.s("snackbars.deviceUpdated", { device: this.state.device.id })
 		this.props.history.push(`/device/${this.props.match.params.id}`)
 	}
 	render() {
@@ -142,12 +139,12 @@ class EditDeviceDetails extends Component {
 								<Button
 									variant="contained"
 									color="primary"
-									disabled={this.state.updating}
-									onClick={this.state.updated ? this.goToDevice : this.handleUpdateDevice}
+									disabled={this.state.updating || this.state.updated}
+									onClick={this.handleUpdateDevice}
 								>
 									{this.state.updated ? 
 										<Fragment>
-											<Check className={classes.leftIcon}/>{t("calibration.texts.viewDevice")}
+											<Check className={classes.leftIcon}/>{t("snackbars.redirect")}
 										</Fragment> : 
 										<Fragment>
 											<Save className={classes.leftIcon} />{t("calibration.texts.updateDevice")}
@@ -158,7 +155,7 @@ class EditDeviceDetails extends Component {
 						</Grid>
 					</form>
 				</Paper>
-				<Snackbar
+				{/* <Snackbar
 					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
 					open={this.state.openSnackBar}
 					onClose={() => {this.setState({ openSnackBar: false })}}
@@ -171,7 +168,7 @@ class EditDeviceDetails extends Component {
 							<Check className={classes.leftIcon} color={'primary'} />{t("snackbars.deviceUpdated", { device: this.state.device.id })}
 						</ItemGrid>
 					}
-				/>
+				/> */}
 			</GridContainer>
 		)
 	}

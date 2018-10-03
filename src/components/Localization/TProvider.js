@@ -14,10 +14,11 @@ class TProvider extends Component {
 	  super(props)
 	
 	  this.state = {
-		 
+		 sId: "",
+		 sOpt: {}
 	  }
 	}
-	//Polyglot Code modified to be tied to Redux - http://airbnb.io/polyglot.js/
+	//#region Polyglot Code modified to be tied to Redux - http://airbnb.io/polyglot.js/
 	transformPhrase = (phrase, substitutions, tokenRegex) => {
 		if (typeof phrase !== 'string') {
 			throw new TypeError('TProvider.transformPhrase expects argument #1 to be string')
@@ -61,10 +62,19 @@ class TProvider extends Component {
 		}
 		return result
 	}
-	//end polyglot code
-
+	//#endregion polyglot code
+	
+	//#region Snackbar
+	s = (sId, sOpt) => {
+		console.log(sOpt)
+		this.setState({ sId, sOpt: sOpt }, () => console.log(this.state))
+	}
+	getOpt = () => {
+		return this.state.sOpt
+	}
+	//#endregion
 	getChildContext() {
-		return { t: this.t.bind(this) }
+		return { sOpt: this.state.sOpt, t: this.t.bind(this), s: this.s.bind(this), sId: this.state.sId }
 	}
 	render() {
 		const children = this.props.children	
@@ -89,5 +99,8 @@ TProvider.propTypes = {
 
 TProvider.childContextTypes = {
 	t: PropTypes.func.isRequired,
+	s: PropTypes.func.isRequired,
+	sOpt: PropTypes.func.isRequired,
+	sId: PropTypes.object
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TProvider)

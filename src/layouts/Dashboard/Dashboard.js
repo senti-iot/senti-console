@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
-import { withStyles } from "@material-ui/core";
+import { withStyles, Snackbar, Button } from "@material-ui/core";
 import { Header, /* Footer, */ Sidebar, CircularLoader } from "components";
 
 import dashboardRoutes from "routes/dashboard.js";
@@ -17,6 +17,8 @@ import cookie from "react-cookies";
 import withLocalization from "components/Localization/T";
 import { connect } from "react-redux"
 import { getSettings } from 'redux/settings';
+import withSnackbar from 'components/Localization/S';
+import {  Close } from 'variables/icons';
 // import GeoLocation from "components/Geolocation/Geolocation";
 class App extends React.Component {
 	constructor(props) {
@@ -27,7 +29,8 @@ class App extends React.Component {
 			headerTitle: '',
 			goBackButton: false,
 			url: '',
-			menuRoute: 0
+			menuRoute: 0,
+			openSnackbar: false
 		}
 		// this.mainPanel = React.createRef()
 	}
@@ -86,16 +89,18 @@ class App extends React.Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-
-	componentDidUpdate() {
-
+	componentDidUpdate = (prevProps, prevState) => {
 		//eslint-disable-next-line
 		this.refs.mainPanel ? this.refs.mainPanel.scrollTop = 0 : null
-		// }
+		if (prevProps.sId !== this.props.sId && this.props.sId !== "")
+			this.setState({ openSnackbar: true })
+	}
+	closeSnackBar = () => {
+		this.setState({ openSnackbar: false })
+		this.props.s("", {})
 	}
 	render() {
 		const { classes, t, loading, ...rest } = this.props;
-		// const { loading } = this.state
 		return (
 
 			<div className={classes.wrapper}>
@@ -110,7 +115,7 @@ class App extends React.Component {
 						t={t}
 						{...rest}
 					/>
-					 <Fragment>
+					<Fragment>
 						<Sidebar
 							routes={dashboardRoutes}
 							logo={logo}
@@ -122,20 +127,43 @@ class App extends React.Component {
 							{...rest}
 						/>
 						{!loading ? <div className={classes.content}>
-							<div className={classes.container}><Switch>
-								{cookie.load('SESSION') ? dashboardRoutes.map((prop, key) => {
-									if (prop.redirect) {
-										return <Redirect from={prop.path} to={prop.to} key={key} />;
-									}
-									return <Route path={prop.path} render={(routeProps) => <prop.component {...routeProps} setHeader={this.handleSetHeaderTitle} />} key={key} />;
-								}) : <Redirect from={window.location.pathname} to={{
-									pathname: '/login', state: {
-										prevUrl: window.location.pathname
-									}
-								}} />}
-							</Switch></div>
+							<div className={classes.container}>
+								<Switch>
+									{cookie.load('SESSION') ?
+										dashboardRoutes.map((prop, key) => {
+											if (prop.redirect) {
+												return <Redirect from={prop.path} to={prop.to} key={key} />;
+											}
+											return <Route path={prop.path} render={(routeProps) => <prop.component {...routeProps} setHeader={this.handleSetHeaderTitle} />} key={key} />;
+										})
+										: <Redirect from={window.location.pathname} to={{
+											pathname: '/login', state: {
+												prevUrl: window.location.pathname
+											}
+										}} />}
+								</Switch>
+							</div>
+							<Snackbar
+								anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+								open={this.state.openSnackbar}
+								onClose={this.closeSnackBar}
+								ContentProps={{
+									'aria-describedby': 'message-id',
+								}}
+								ClickAwayListenerProps={{
+									mouseEvent: false,
+									touchEvent: false
+								}}
+								autoHideDuration={3000}
+								message={t(this.props.sId, this.props.sOpt)}
+								action={
+									<Button size={"small"} variant={"text"} onClick={this.closeSnackBar} >
+										<Close style={{ color: "white" }}/>
+									</Button>
+								}
+							/>
 						</div> : <CircularLoader />}
-					</Fragment> 
+					</Fragment>
 				</div>
 			</div >
 		);
@@ -153,4 +181,4 @@ const mapDispatchToProps = dispatch => ({
 	getSettings: async () => dispatch(await getSettings())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(appStyle)(App)))
+export default connect(mapStateToProps, mapDispatchToProps)(withSnackbar()((withLocalization()(withStyles(appStyle)(App)))))

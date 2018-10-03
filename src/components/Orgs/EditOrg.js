@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, /*  FormControl, InputLabel, Select, Input, Chip,  MenuItem, */ Collapse, Button, Snackbar, MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
+import { Paper, withStyles, Grid, /*  FormControl, InputLabel, Select, Input, Chip,  MenuItem, */ Collapse, Button, /* Snackbar */ MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
 import { Save, Check } from 'variables/icons';
 import classNames from 'classnames';
 import { getOrg, updateOrg, getAllOrgs } from 'variables/dataOrgs'
@@ -78,6 +78,8 @@ class EditOrg extends Component {
 				return ""
 		}
 	}
+	
+	
 	componentDidMount = async () => {
 		this._isMounted = 1
 		let id = this.props.match.params.id
@@ -158,17 +160,19 @@ class EditOrg extends Component {
 			})
 		}
 	}
-	snackBarClose = () => {
-		this.setState({ openSnackBar: false })
-		this.redirect = setTimeout(async => {
-			this.props.history.push(`/org/${this.state.org.id}`)
-		}, 1e3)
+	close = () => {
+		this.setState({ created: true, creating: false })
+		this.props.s("snackbars.orgUpdated", ({ org: this.state.org.name }))
+		// this.setState({ openSnackBar: false })
+		// this.redirect = setTimeout(async => {
+		this.props.history.push(`/org/${this.state.org.id}`)
+		// }, 1e3)
 	}
 	handleUpdateOrg = () => {
 		clearTimeout(this.timer)
 		if (this.handleValidation()) {
 			return updateOrg(this.state.org).then(rs => rs ?
-				this.setState({ created: true, creating: false, openSnackBar: true }) :
+				this.close() :
 				this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
 			)}
 		else {
@@ -379,7 +383,7 @@ class EditOrg extends Component {
 							</div>
 						</Grid>
 					</Paper>
-					<Snackbar
+					{/* <Snackbar
 						anchorOrigin={ { vertical: "bottom", horizontal: "right" } }
 						open={ this.state.openSnackBar }
 						onClose={ this.snackBarClose }
@@ -393,7 +397,7 @@ class EditOrg extends Component {
 								{ t("snackbars.orgUpdated", { org: org.name }) }
 							</ItemGrid>
 						}
-					/>
+					/> */}
 				</GridContainer>
 				: <CircularLoader />
 		)
