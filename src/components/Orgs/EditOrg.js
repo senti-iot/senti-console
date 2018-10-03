@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, /*  FormControl, InputLabel, Select, Input, Chip,  MenuItem, */ Collapse, Button, /* Snackbar */ MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
+import { Paper, withStyles, Grid, /*  FormControl, InputLabel, Select, Input, Chip,  MenuItem, */ Collapse, Button, MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
 import { Save, Check } from 'variables/icons';
 import classNames from 'classnames';
 import { getOrg, updateOrg, getAllOrgs } from 'variables/dataOrgs'
@@ -31,7 +31,6 @@ class EditOrg extends Component {
 			creating: false,
 			created: false,
 			loading: true,
-			openSnackBar: false,
 		}
 	}
 	handleValidation = () => {
@@ -163,11 +162,9 @@ class EditOrg extends Component {
 	close = () => {
 		this.setState({ created: true, creating: false })
 		this.props.s("snackbars.orgUpdated", ({ org: this.state.org.name }))
-		// this.setState({ openSnackBar: false })
-		// this.redirect = setTimeout(async => {
 		this.props.history.push(`/org/${this.state.org.id}`)
-		// }, 1e3)
 	}
+
 	handleUpdateOrg = () => {
 		clearTimeout(this.timer)
 		if (this.handleValidation()) {
@@ -383,21 +380,6 @@ class EditOrg extends Component {
 							</div>
 						</Grid>
 					</Paper>
-					{/* <Snackbar
-						anchorOrigin={ { vertical: "bottom", horizontal: "right" } }
-						open={ this.state.openSnackBar }
-						onClose={ this.snackBarClose }
-						ContentProps={ {
-							'aria-describedby': 'message-id',
-						} }
-						autoHideDuration={ 1500 }
-						message={
-							<ItemGrid zeroMargin noPadding justify={ 'center' } alignItems={ 'center' } container id="message-id">
-								<Check className={ classes.leftIcon } color={ 'primary' } />
-								{ t("snackbars.orgUpdated", { org: org.name }) }
-							</ItemGrid>
-						}
-					/> */}
 				</GridContainer>
 				: <CircularLoader />
 		)
