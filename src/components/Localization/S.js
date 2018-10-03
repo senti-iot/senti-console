@@ -6,11 +6,9 @@ export default function withSnackbar() {
 
 	return (WrappedComponent) => {
 		const _snackbar = (props, context) => {
-			console.log(context)
 			return (<WrappedComponent
 				{...props}
 				s={context.s}
-				sId={context.sId}
 			/>
 			)
 		}

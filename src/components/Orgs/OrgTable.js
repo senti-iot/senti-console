@@ -14,8 +14,6 @@ import EnhancedTableToolbar from 'components/Table/TableToolbar'
 import { Info, ItemG, Caption } from ".."
 import { connect } from "react-redux"
 import TP from 'components/Table/TP'
-import { deleteOrg } from 'variables/dataOrgs';
-
 var countries = require("i18n-iso-countries")
 
 class OrgTable extends React.Component {

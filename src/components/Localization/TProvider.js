@@ -11,12 +11,15 @@ var has = require('has')
 
 class TProvider extends Component {
 	constructor(props) {
-	  super(props)
-	
-	  this.state = {
-		 sId: "",
-		 sOpt: {}
-	  }
+		super(props)
+
+		this.state = {
+			sMessage: {
+				sId: "",
+				sOpt: {}
+			},
+			sOpen: false
+		}
 	}
 	//#region Polyglot Code modified to be tied to Redux - http://airbnb.io/polyglot.js/
 	transformPhrase = (phrase, substitutions, tokenRegex) => {
@@ -63,21 +66,50 @@ class TProvider extends Component {
 		return result
 	}
 	//#endregion polyglot code
-	
+
 	//#region Snackbar
+	queue = []
 	s = (sId, sOpt) => {
-		console.log(sOpt)
-		this.setState({ sId, sOpt: sOpt }, () => console.log(this.state))
+		this.queue.push({ sId, sOpt })
+		if (this.state.sOpen) {
+			// immediately begin dismissing current message
+			// to start showing new one
+			this.setState({ sOpen: false });
+		} else {
+			this.processQueue();
+		}
+		// this.setState({ sOpen: true, sId, sOpt: sOpt })
 	}
-	getOpt = () => {
-		return this.state.sOpt
+	processQueue = () => {
+		if (this.queue.length > 0) {
+			this.setState({
+				sMessage: this.queue.shift(),
+				sOpen: true
+			});
+		}
+	};
+	sClose = () => {
+		this.setState({
+			sOpen: false
+		})
+	}
+	handleNextS = () => {
+		this.processQueue()
 	}
 	//#endregion
 	getChildContext() {
-		return { sOpt: this.state.sOpt, t: this.t.bind(this), s: this.s.bind(this), sId: this.state.sId }
+		return {
+			sClose: this.sClose.bind(this),
+			sOpen: this.state.sOpen,
+			sOpt: this.state.sMessage.sOpt,
+			t: this.t.bind(this),
+			s: this.s.bind(this),
+			sId: this.state.sMessage.sId,
+			handleNextS: this.handleNextS.bind(this)
+		}
 	}
 	render() {
-		const children = this.props.children	
+		const children = this.props.children
 		return React.Children.only(children)
 	}
 }
@@ -90,7 +122,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
 	return {
 		changeLanguage: code => dispatch(changeLanguage(code))
-
 	}
 }
 TProvider.propTypes = {
@@ -102,5 +133,8 @@ TProvider.childContextTypes = {
 	s: PropTypes.func.isRequired,
 	sId: PropTypes.string.isRequired,
 	sOpt: PropTypes.object,
+	sOpen: PropTypes.bool.isRequired,
+	sClose: PropTypes.func.isRequired,
+	handleNextS: PropTypes.func.isRequired
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TProvider)

@@ -30,7 +30,7 @@ class App extends React.Component {
 			goBackButton: false,
 			url: '',
 			menuRoute: 0,
-			openSnackbar: false
+			// openSnackbar: false
 		}
 		// this.mainPanel = React.createRef()
 	}
@@ -95,10 +95,10 @@ class App extends React.Component {
 		if (prevProps.sId !== this.props.sId && this.props.sId !== "")
 			this.setState({ openSnackbar: true })
 	}
-	closeSnackBar = () => {
-		this.setState({ openSnackbar: false }, () => setTimeout(() => {this.props.s("", {})}, 100))
+	// closeSnackBar = () => {
+	// 	this.setState({ openSnackbar: false }, () => setTimeout(() => {this.props.s("", {})}, 100))
 
-	}
+	// }
 	render() {
 		const { classes, t, loading, ...rest } = this.props;
 		return (
@@ -145,8 +145,9 @@ class App extends React.Component {
 							</div>
 							<Snackbar
 								anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-								open={this.state.openSnackbar}
-								onClose={this.closeSnackBar}
+								open={this.props.sOpen}
+								onClose={this.props.sClose}
+								onExited={this.props.handleNextS}
 								ContentProps={{
 									'aria-describedby': 'message-id',
 								}}
@@ -157,7 +158,7 @@ class App extends React.Component {
 								autoHideDuration={3000}
 								message={t(this.props.sId, this.props.sOpt)}
 								action={
-									<Button size={"small"} variant={"text"} onClick={this.closeSnackBar} >
+									<Button size={"small"} variant={"text"} onClick={this.props.sClose} >
 										<Close style={{ color: "white" }}/>
 									</Button>
 								}

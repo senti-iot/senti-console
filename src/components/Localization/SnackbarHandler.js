@@ -12,14 +12,19 @@ export default function withSnackbarHandler() {
 				s={context.s}
 				sId={context.sId}
 				sOpt={context.sOpt}
+				sOpen={context.sOpen}
+				sClose={context.sClose}
+				handleNextS={context.handleNextS}
 			/>
 			)
 		}
 
 		_snackbar.contextTypes = {
-			s: PropTypes.func.isRequired,
+			sOpen: PropTypes.bool.isRequired,
 			sId: PropTypes.string.isRequired,
-			sOpt: PropTypes.object
+			sOpt: PropTypes.object,
+			sClose: PropTypes.func.isRequired,
+			handleNextS: PropTypes.func.isRequired
 		}
 
 		return _snackbar
