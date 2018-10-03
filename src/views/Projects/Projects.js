@@ -98,8 +98,7 @@ class Projects extends Component {
 			loading: false
 		}, () => this.handleRequestSort(null, "title")) : null)
 	}
-	snackBarMessages = () => {
-		let msg = this.state.openSnackbar
+	snackBarMessages = (msg) => {
 		const { s } = this.props
 		switch (msg) {
 			case 1:
@@ -114,10 +113,9 @@ class Projects extends Component {
 	}
 	deleteProjects = async (projects) => {
 		await deleteProject(projects).then(() => {
+			this.snackBarMessages(1)
 			this.getData()
 		})
-		this.getData()
-		this.snackBarMessages(1)
 	}
 	renderAllProjects = () => {
 		const { t } = this.props

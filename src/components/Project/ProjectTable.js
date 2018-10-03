@@ -29,7 +29,6 @@ class EnhancedTable extends React.Component {
 			rowsPerPage: props.rowsPerPage,
 			anchorElMenu: null,
 			anchorFilterMenu: null,
-			openSnackbar: 0,
 			openDelete: false
 		}
 	}

@@ -9,8 +9,8 @@ import { compose } from 'recompose';
 const projects = (props) => {
 	return (
 		<Switch>
-			<Route path={'/projects/new'} component={(rp) => <CreateProject t={props.t} setHeader={props.setHeader} {...rp}/>}/>
-			<Route path={'/projects'} render={(rp) => <Projects setHeader={props.setHeader} t={props.t} {...rp}/>} />
+			<Route path={'/projects/new'} component={(rp) => <CreateProject {...props} {...rp}/>}/>
+			<Route path={'/projects'} render={(rp) => <Projects {...props} {...rp}/>} />
 		</Switch>
 	)
 }

@@ -67,8 +67,7 @@ class User extends Component {
 		let userId = {
 			id: user.id
 		}
-		let data = await resendConfirmEmail(userId).then(rs => rs)
-		console.log(data);
+		await resendConfirmEmail(userId).then(rs => rs)
 		this.setState({ openResendConfirm: false })
 		
 	}

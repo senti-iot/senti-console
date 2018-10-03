@@ -65,16 +65,15 @@ class Project extends Component {
 		clearTimeout(this.timer)
 	}
 
-	snackBarMessages = () => {
-		const { t } = this.props
-		let msg = this.state.openSnackbar
+	snackBarMessages = (msg) => {
+		const { s } = this.props
 		switch (msg) {
 			case 1:
-				return t("projects.projectDeleted")
+				s("snackbars.projectDeleted")
+				break
 			case 2:
-				return t("projects.projectExported")
-			case 3:
-				return t("projects.projectRedirect")
+				s("snackbars.projectExported")
+				break
 			default:
 				break
 		}
@@ -82,20 +81,10 @@ class Project extends Component {
 
 	handleDeleteProjects = async () => {
 		await deleteProject([this.state.project.id]).then(() => {
-			this.setState({ openSnackbar: 1, openDelete: false });
+			this.setState({ openDelete: false })
+			this.snackBarMessages(1)
+			this.props.history.push('/projects/list')
 		})
-	}
-
-	redirect = () => {
-		setTimeout(() => this.props.history.push('/projects/list'), 1000)
-	}
-
-	closeSnackBar = () => {
-		if (this.state.openSnackbar === 1) {
-			this.setState({ openSnackbar: 0 }, () => this.redirect())
-		}
-		else
-			this.setState({ openSnackbar: 0 })
 	}
 
 	filterItems = (projects, keyword) => {

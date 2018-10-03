@@ -10,7 +10,6 @@ import Dropdown from 'components/Dropdown/Dropdown';
 class UserContact extends Component {
 
 	deleteUser = () => {
-		this.handleCloseActionsDetails()
 		this.props.deleteUser()
 	}
 

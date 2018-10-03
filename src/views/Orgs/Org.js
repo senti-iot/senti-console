@@ -26,8 +26,7 @@ class Org extends Component {
 			users: [],
 			loading: true,
 			loadingUsers: true,
-			openDelete: false,
-			openSnackbar: 0
+			openDelete: false
 		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
@@ -52,13 +51,16 @@ class Org extends Component {
 				})
 			}
 	}
+	close = () => {
+		this.snackBarMessages(1)
+		this.props.history.push('/orgs')
+	}
 	handleDeleteOrg = async () => {
 		await deleteOrg(this.state.org.id).then(rs => {
 			this.setState({
-				openSnackbar: 1,
 				openDelete: false
-			}, () => this.props.history.push('/orgs'))
-			
+			})
+			this.close()
 		})
 	}
 
@@ -97,9 +99,8 @@ class Org extends Component {
 			</DialogActions>
 		</Dialog>
 	}
-	snackBarMessages = () => {
+	snackBarMessages = (msg) => {
 		const { s } = this.props
-		let msg = this.state.openSnackbar
 		switch (msg) {
 			case 1:
 				s("snackbars.orgDeleted")
