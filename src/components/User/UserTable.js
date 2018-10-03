@@ -1,6 +1,6 @@
 import {
 	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
-	TableRow, withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
+	TableRow, withStyles, DialogTitle, Dialog, DialogContent,
 	DialogContentText, DialogActions, Button, Typography, IconButton,
 } from "@material-ui/core"
 import TC from 'components/Table/TC'
@@ -37,12 +37,14 @@ class UserTable extends React.Component {
 	
 	snackBarMessages = () => {
 		let msg = this.state.openSnackbar
-		const { t } = this.props
+		const { s } = this.props
 		switch (msg) {
 			case 1:
-				return t("snackbars.deletedSuccess")
+				s("snackbars.deletedSuccess")
+				break
 			case 2:
-				return t("snackbars.exported")
+				s("snackbars.exported")
+				break
 			default:
 				break;
 		}
@@ -299,17 +301,6 @@ class UserTable extends React.Component {
 					t={ t }
 					handleChangePage={ this.handleChangePage }
 					handleChangeRowsPerPage={ this.handleChangeRowsPerPage }
-				/>
-				<Snackbar
-					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-					open={this.state.openSnackbar !== 0 ? true : false}
-					onClose={() => { this.setState({ openSnackbar: 0 }) }}
-					autoHideDuration={5000}
-					message={
-						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-							{this.snackBarMessages()}
-						</ItemGrid>
-					}
 				/>
 				{this.renderConfirmDelete()}
 

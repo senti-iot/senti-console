@@ -4,7 +4,7 @@ import { createUser } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
 import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader } from '..';
 import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Grid, Button } from '@material-ui/core';
-import { Check, Save } from 'variables/icons'
+import { Save } from 'variables/icons'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 
@@ -376,7 +376,7 @@ class CreateUser extends Component {
     							disabled={this.state.creating || this.state.created}
     							onClick={this.handleCreateUser}>
     							{this.state.created ?
-    								<Fragment><Check className={classes.leftIcon} />{t("snackbars.redirect")}</Fragment>
+    								<Fragment>{t("snackbars.redirect")}</Fragment>
     								: <Fragment><Save className={classes.leftIcon} />{t("users.createUser")}</Fragment>}
     						</Button>
     					</div>
