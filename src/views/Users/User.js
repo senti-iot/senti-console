@@ -94,10 +94,10 @@ class User extends Component {
 		this.props.history.push('/users')
 	}
 	snackBarMessages = (msg) => {
-		const { t } = this.props
+		const { s } = this.props
 		switch (msg) {
 			case 1:
-				return t("snackbars.userDeleted", { user: this.state.user.firstName + " " + this.state.user.lastName })
+				return s("snackbars.userDeleted", { user: this.state.user.firstName + " " + this.state.user.lastName })
 			default:
 				break
 		}
