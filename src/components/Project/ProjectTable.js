@@ -1,6 +1,6 @@
 import {
 	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
-	TableRow, Typography, withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
+	TableRow, Typography, withStyles, DialogTitle, Dialog, DialogContent,
 	DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem, List, ListItem, ListItemIcon, ListItemText
 } from "@material-ui/core"
 import { Delete, Devices, Edit, PictureAsPdf } from 'variables/icons'
@@ -36,12 +36,14 @@ class EnhancedTable extends React.Component {
 
 	snackBarMessages = () => {
 		let msg = this.state.openSnackbar
-		const { t } = this.props
+		const { s } = this.props
 		switch (msg) {
 			case 1:
-				return t("snackbars.deletedSuccess")
+				s("snackbars.deletedSuccess")
+				break;
 			case 2:
-				return t("snackbars.exported")
+				s("snackbars.exported")
+				break;
 			default:
 				break;
 		}
@@ -350,17 +352,6 @@ class EnhancedTable extends React.Component {
 					t={t}
 					handleChangePage={this.handleChangePage}
 					handleChangeRowsPerPage={this.handleChangeRowsPerPage}
-				/>
-				<Snackbar
-					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-					open={this.state.openSnackbar !== 0 ? true : false}
-					onClose={() => { this.setState({ openSnackbar: 0 }) }}
-					autoHideDuration={1000}
-					message={
-						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-							{this.snackBarMessages()}
-						</ItemGrid>
-					}
 				/>
 				{this.renderConfirmDelete()}
 			</Paper>
