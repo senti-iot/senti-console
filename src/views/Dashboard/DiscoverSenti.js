@@ -23,10 +23,10 @@ class DiscoverSenti extends Component {
 								<ItemGrid xs={12}>
 									<Typography variant={"title"} style={{ color: "white" }}>{t("discoverSenti.welcome")}</Typography>
 								</ItemGrid>
-								<ItemGrid xs={12}>
+{/* 								<ItemGrid xs={12}>
 									<Typography variant={"display2"} style={{ color: "white", fontWeight: 500 }}>{t("discoverSenti.getStarted")}</Typography>
 								</ItemGrid>
-								<ItemGrid xs={12} sm={4} noMargin>
+ */}								<ItemGrid xs={12} sm={4} noMargin>
 									<DiscoverSentiCards img={StorageImg}
 										onClick={this.goTo("/projects/new")}
 										content={
