@@ -75,6 +75,7 @@ class App extends React.Component {
 		if (this._isMounted) {
 			this.handleSetHeaderTitle("Senti.Cloud", false, '', "dashboard")
 		}
+
 		await this.props.getSettings().then(rs => {
 			if (navigator.platform.indexOf('Win') > -1) {
 				if (!this.props.loading) {
@@ -95,10 +96,7 @@ class App extends React.Component {
 		if (prevProps.sId !== this.props.sId && this.props.sId !== "")
 			this.setState({ openSnackbar: true })
 	}
-	// closeSnackBar = () => {
-	// 	this.setState({ openSnackbar: false }, () => setTimeout(() => {this.props.s("", {})}, 100))
-
-	// }
+	
 	render() {
 		const { classes, t, loading, ...rest } = this.props;
 		return (

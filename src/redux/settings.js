@@ -1,6 +1,6 @@
 // import { getSettingsFromServer, saveSettingsOnServer } from 'variables/dataLogin';
 import cookie from 'react-cookies';
-import { getUser } from '../variables/dataUsers'
+import { getUser, getValidSession } from '../variables/dataUsers'
 // import moment from 'moment'
 import 'moment/locale/da'
 import { saveSettings } from '../variables/dataLogin';
@@ -50,6 +50,19 @@ export const saveSettingsOnServ = () => {
 }
 export const getSettings = async () => {
 	return async (dispatch, getState) => {
+		var sessionCookie = cookie.load('SESSION') ? cookie.load('SESSION') : null
+		if (sessionCookie)
+		{
+			let vSession = await getValidSession(sessionCookie.userID).then(rs => rs.status)
+			if (vSession === 200) {
+				let exp = moment().add("1", "day")
+				cookie.save('SESSION', sessionCookie, { path: '/', expires: exp.toDate() })
+			}
+			else {
+				return cookie.remove('SESSION')
+			}
+		}
+
 		var userId = cookie.load('SESSION') ? cookie.load('SESSION').userID : 0
 		var user = userId !== 0 ? await getUser(userId) : null
 		var settings = user ? user.aux ? user.aux.senti ? user.aux.senti.settings ? user.aux.senti.settings : null : null : null : null

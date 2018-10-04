@@ -41,8 +41,9 @@ class CreateOrg extends Component {
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
-		const { t, accessLevel, setHeader } = this.props
-		setHeader("orgs.createOrg", true, `/orgs`, "users")
+		const { t, accessLevel, setHeader, history } = this.props
+		let prevURL = history.location.state ? history.location.state['prevURL'] : null
+		setHeader("orgs.createOrg", true, prevURL ? prevURL : `/orgs`, "users")
 		await getAllOrgs().then(rs => {
 			if (this._isMounted) {
 				if (accessLevel.apisuperuser)

@@ -82,7 +82,7 @@ class EditOrg extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		let id = this.props.match.params.id
-		const { accessLevel, t } = this.props
+		const { accessLevel, t, history } = this.props
 		await getOrg(id).then(rs => {
 			if (rs && this._isMounted) {
 				this.setState({
@@ -116,7 +116,8 @@ class EditOrg extends Component {
 		this.setState({
 			loading: false
 		})
-		this.props.setHeader("orgs.updateOrg", true, `/org/${id}`, "users")
+		let prevURL = history.location.state ? history.location.state['prevURL'] : null
+		this.props.setHeader("orgs.updateOrg", true, prevURL ? prevURL : "/orgs", "users")
 	}
 
 	componentWillUnmount = () => {
