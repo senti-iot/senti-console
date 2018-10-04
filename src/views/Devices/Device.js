@@ -28,6 +28,7 @@ class Device extends Component {
 			anchorElHardware: null,
 			openAssign: false,
 			openUnassign: false,
+			openAssignOrg: false,
 			img: null
 		}
 		props.setHeader('', true, `/devices/list`, "devices")

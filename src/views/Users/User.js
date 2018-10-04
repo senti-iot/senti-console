@@ -44,7 +44,7 @@ class User extends Component {
 			}
 	}
 
-	componentDidMount =async  () => {
+	componentDidMount = async () => {
 		if (this.props.match) {
 			if (this.props.match.params.id) {
 				await getUser(this.props.match.params.id).then(async rs => {
@@ -68,7 +68,7 @@ class User extends Component {
 		}
 		await resendConfirmEmail(userId).then(rs => rs)
 		this.setState({ openResendConfirm: false })
-		
+
 	}
 	handleOpenResend = () => {
 		this.setState({ openResendConfirm: true })
@@ -86,7 +86,7 @@ class User extends Component {
 		this.setState({ openDelete: false })
 	}
 	handleDeleteUser = async () => {
-		await deleteUser(this.state.user.id).then(rs => rs ? this.close() : null )
+		await deleteUser(this.state.user.id).then(rs => rs ? this.close() : null)
 	}
 	close = (rs) => {
 		this.setState({ openDelete: false })
@@ -97,7 +97,11 @@ class User extends Component {
 		const { s } = this.props
 		switch (msg) {
 			case 1:
-				return s("snackbars.userDeleted", { user: this.state.user.firstName + " " + this.state.user.lastName })
+				s("snackbars.userDeleted", { user: this.state.user.firstName + " " + this.state.user.lastName })
+				break
+			case 2:
+				s("snackbars.userPasswordChanged")
+				break
 			default:
 				break
 		}
@@ -106,9 +110,11 @@ class User extends Component {
 	handleOpenChangePassword = () => {
 		this.setState({ openChangePassword: true })
 	}
+	
 	handleCloseChangePassword = () => {
 		this.setState({ openChangePassword: false })
 	}
+
 	handleInputChange = e => {
 		this.setState({
 			pw: {
@@ -125,8 +131,9 @@ class User extends Component {
 				oldPassword: this.state.pw.current,
 				newPassword: this.state.pw.newP
 			}
-			let data = await setPassword(newPassObj).then(rs => rs)
-			return data
+			let success = await setPassword(newPassObj).then(rs => rs)
+			if (success)
+				this.handleChangePassword()
 		}
 	}
 	renderChangePassword = () => {
