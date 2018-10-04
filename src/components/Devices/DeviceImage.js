@@ -1,5 +1,5 @@
 import { Button, Grid, MobileStepper, withStyles } from '@material-ui/core';
-import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
+import { KeyboardArrowLeft, KeyboardArrowRight } from 'variables/icons';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';

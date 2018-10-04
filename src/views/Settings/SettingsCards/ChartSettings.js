@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BarChart } from '@material-ui/icons'
+import { BarChart } from 'variables/icons'
 import { InfoCard } from 'components';
 
 export default class ChartSettings extends Component {

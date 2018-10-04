@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react'
-import { Grid, Typography, withStyles, Button, MenuItem } from '@material-ui/core';
+import { Grid, Typography, withStyles, Button } from '@material-ui/core';
 import { ItemGrid, Warning, P, Info, Caption } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
-import { SignalWifi2Bar, SignalWifi2BarLock, Build, LibraryBooks, Edit, Devices, LayersClear, Business } from '@material-ui/icons'
+import { SignalWifi2Bar, SignalWifi2BarLock, Build, LibraryBooks, Edit, Devices, LayersClear, Business } from 'variables/icons'
 import { ConvertDDToDMS, dateFormat, dateFormatter } from 'variables/functions'
 import { Link } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';
@@ -51,27 +51,18 @@ class DeviceDetails extends Component {
 		return deviceLoc ? deviceLoc.label : t("devices.noLocType")
 	}
 	render() {
-		const { classes, device, t, accessLevel } = this.props
+		const { classes, device, t, accessLevel, history } = this.props
 		return (
 			<InfoCard
 				title={device.name ? device.name : device.id}
 				avatar={<Devices />}
 				topAction={<Dropdown menuItems={
-					[<MenuItem onClick={() => this.props.history.push({ pathname: `/device/${device.id}/edit`, state: { backurl: `/device/${device.id}` } })}>
-						<Edit className={classes.leftIcon} />{t("menus.edit")}
-					</MenuItem>,
-					<MenuItem onClick={this.props.handleOpenAssign}>
-						<LibraryBooks className={classes.leftIcon} />{device.project.id > 0 ? t("menus.reassign") : t("menus.assign")}
-					</MenuItem>,
-					accessLevel.apisuperuser ? <MenuItem onClick={this.props.handleOpenAssignOrg}>
-						<Business className={classes.leftIcon} />{device.org.id > 0 ? t("menus.reassignOrg") : t("menus.assignOrg")}
-					</MenuItem> : null,
-					device.project.id > 0 ? <MenuItem onClick={this.props.handleOpenUnassign}>
-						<LayersClear className={classes.leftIcon} /> {t("menus.unassignDevice")}
-					</MenuItem> : null,
-					<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}>
-						<Build className={classes.leftIcon} />{!(device.lat > 0) && !(device.long > 0) ? t("menus.calibrate") : t("menus.recalibrate")}
-					</MenuItem>
+					[
+						{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/device/${device.id}/edit`, state: { prevURL: `/device/${device.id}` } }) },
+						{ label: device.project.id > 0 ? t("menus.reassign") : t("menus.assign"), icon: <LibraryBooks className={classes.leftIcon} />, func: this.props.handleOpenAssign },
+						{ label: device.org.id > 0 ? t("menus.reassignOrg") : t("menus.assignOrg"), icon: <Business className={classes.leftIcon} />, func: this.props.handleOpenAssignOrg, dontShow: accessLevel.apisuperuser ? false : true },
+						{ label: t("menus.unassignDevice"), icon: <LayersClear className={classes.leftIcon} />, func: this.props.handleOpenUnassign, dontShow: device.project.id > 0 ? false : true },
+						{ label: !(device.lat > 0) && !(device.long > 0) ? t("menus.calibrate") : t("menus.recalibrate"), icon: <Build className={classes.leftIcon} />, func: () => this.props.history.push(`${this.props.match.url}/setup`) }
 					]
 				} />
 

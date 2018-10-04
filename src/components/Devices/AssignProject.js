@@ -1,5 +1,5 @@
 import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles } from "@material-ui/core";
-import { Close } from '@material-ui/icons';
+import { Close } from 'variables/icons';
 import { headerColor, hoverColor, primaryColor } from 'assets/jss/material-dashboard-react';
 import cx from "classnames";
 import PropTypes from 'prop-types';

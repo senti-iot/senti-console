@@ -32,7 +32,7 @@ const createprojectStyles = theme => ({
 		marginTop: 16,
 		marginBottom: 8,
 		minWidth: 208,
-		width: 208
+		// width: 208
 	},
 	chips: {
 		display: 'flex',

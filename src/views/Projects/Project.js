@@ -1,5 +1,4 @@
-import { Snackbar, Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, /* IconButton, */ withStyles } from '@material-ui/core'
-// import { Close } from '@material-ui/icons'
+import {  Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, /* IconButton, */ withStyles } from '@material-ui/core'
 import { ItemGrid, GridContainer, CircularLoader } from 'components'
 import React, { Component } from 'react'
 import { getProject, deleteProject } from 'variables/dataProjects'
@@ -7,7 +6,6 @@ import ProjectData from './ProjectCards/ProjectData'
 import ProjectDetails from './ProjectCards/ProjectDetails'
 import ProjectDevices from './ProjectCards/ProjectDevices'
 import { ProjectContact } from './ProjectCards/ProjectContact'
-import { dateFormatter } from 'variables/functions';
 
 const projectStyles = theme => ({
 	close: {
@@ -66,77 +64,25 @@ class Project extends Component {
 		clearTimeout(this.timer)
 	}
 
-	snackBarMessages = () => {
-		const { t } = this.props
-		let msg = this.state.openSnackbar
+	snackBarMessages = (msg) => {
+		const { s } = this.props
 		switch (msg) {
 			case 1:
-				return t("projects.projectDeleted")
+				s("snackbars.projectDeleted")
+				break
 			case 2:
-				return t("projects.projectExported")
-			case 3:
-				return t("projects.projectRedirect")
+				s("snackbars.projectExported")
+				break
 			default:
 				break
 		}
 	}
 
-	handleDeleteProjects = async () => {
+	handleDeleteProject = async () => {
 		await deleteProject([this.state.project.id]).then(() => {
-			this.setState({ openSnackbar: 1, openDelete: false });
-		})
-	}
-
-	redirect = () => {
-		setTimeout(() => this.props.history.push('/projects/list'), 1000)
-	}
-
-	closeSnackBar = () => {
-		if (this.state.openSnackbar === 1) {
-			this.setState({ openSnackbar: 0 }, () => this.redirect())
-		}
-		else
-			this.setState({ openSnackbar: 0 })
-	}
-
-	filterItems = (projects, keyword) => {
-		var searchStr = keyword.toLowerCase()
-		var arr = projects
-		if (arr[0] === undefined)
-			return []
-		var keys = Object.keys(arr[0])
-		var filtered = arr.filter(c => {
-			var contains = keys.map(key => {
-				if (c[key] === null)
-					return searchStr === "null" ? true : false
-				if (c[key] instanceof Date) {
-					let date = dateFormatter(c[key])
-					return date.toLowerCase().includes(searchStr)
-				}
-				else
-					return c[key].toString().toLowerCase().includes(searchStr)
-			})
-			return contains.indexOf(true) !== -1 ? true : false
-		})
-		return filtered
-	}
-
-	handleFilterRegKeyword = (value) => {
-		this.setState({
-			regFilters: {
-				...this.state.regFilters,
-				keyword: value
-			}
-		})
-	}
-
-	handleFilterDeviceKeyword = (value) => {
-		this.setState({
-			deviceFilters: {
-				...this.state.deviceFilters,
-				keyword: value
-			}
-
+			this.setState({ openDelete: false })
+			this.snackBarMessages(1)
+			this.props.history.push('/projects/list')
 		})
 	}
 
@@ -168,7 +114,7 @@ class Project extends Component {
 				<Button onClick={this.handleCloseDeleteDialog} color="primary">
 					{t("actions.cancel")}
 				</Button>
-				<Button onClick={this.handleDeleteProjects} color="primary" autoFocus>
+				<Button onClick={this.handleDeleteProject} color="primary" autoFocus>
 					{t("actions.yes")}
 				</Button>
 			</DialogActions>
@@ -181,7 +127,7 @@ class Project extends Component {
 
 	render() {
 		const { project, loading } = this.state
-		const { t } = this.props //Localization Provider is HOC'd with withRouter on the Routes Functional Component (See routes/*any*.js) 
+		const { t } = this.props 
 		const rp = { history: this.props.history, match: this.props.match }
 		return (
 			!loading ?
@@ -199,17 +145,6 @@ class Project extends Component {
 						<ProjectContact history={this.props.history} t={t} project={project} />
 					</ItemGrid>
 					{this.renderDeleteDialog()}
-					<Snackbar
-						autoHideDuration={1000}
-						anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-						open={this.state.openSnackbar !== 0 ? true : false}
-						onClose={this.closeSnackBar}
-						message={
-							<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-								{this.snackBarMessages()}
-							</ItemGrid>
-						}
-					/>
 				</GridContainer>
 				: this.renderLoader())
 	}

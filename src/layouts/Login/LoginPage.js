@@ -1,7 +1,6 @@
 import React from "react";
 // material-ui components
 import { InputAdornment, withStyles, CardContent, Collapse, Button, Grid } from "@material-ui/core";
-// @material-ui/icons
 import { LockOutlined, Person } from "@material-ui/icons";
 // core components
 import { GridContainer, ItemGrid, ItemG, TextF } from "components";
@@ -20,6 +19,7 @@ import withLocalization from "components/Localization/T";
 import { connect } from 'react-redux';
 import { getSettings } from 'redux/settings';
 import { Link } from 'react-router-dom'
+var moment = require("moment")
 
 class LoginPage extends React.Component {
 	constructor(props) {
@@ -76,11 +76,13 @@ class LoginPage extends React.Component {
 		setTimeout(
 			async function () {
 				await loginUser(this.state.user, this.state.pass).then(async rs => {
-					if (rs) {						
-						cookie.save('SESSION', rs, { path: '/' })
+					if (rs) {
+						let exp = moment().add("1", "day")
+						cookie.save('SESSION', rs, { path: '/', expires: exp.toDate() })
 						if (rs.isLoggedIn) {
 							if (setToken())								
 							{
+								console.log(cookie.load('SESSION'))
 								await this.props.getSettings()
 								var prevURL = this.props.location.state ? this.props.location.state.prevUrl : null
 								this.props.history.push(prevURL ? prevURL : "/dashboard")

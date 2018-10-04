@@ -29,7 +29,7 @@ const theme = createMuiTheme({
 		MuiFormControl: {
 			root: {
 				minWidth: 0,
-				width: 208,
+				width: 230,
 				// maxWidth: 208
 			}
 		},

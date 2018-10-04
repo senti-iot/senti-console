@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { createUser } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
 import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader } from '..';
-import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Snackbar, Grid, Button } from '@material-ui/core';
-import { Check, Save } from '@material-ui/icons'
+import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Grid, Button } from '@material-ui/core';
+import { Save } from 'variables/icons'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 
@@ -44,7 +44,6 @@ class CreateUser extends Component {
 			creating: false,
 			created: false,
 			loading: true,
-			openSnackbar: false,
 			selectedGroup: "",
 		}
 	}
@@ -59,7 +58,6 @@ class CreateUser extends Component {
     	this._isMounted = 0
     }
     getOrgs = async () => { 
-    	// const { orgs } = this.state
     	let orgs = await getAllOrgs().then(rs => rs)
     	this.setState({
     		orgs: orgs,
@@ -73,11 +71,17 @@ class CreateUser extends Component {
     		userName: user.email
     	}
     	await createUser(newUser).then(rs => rs ?
-    		this.setState({ created: true, creating: false, openSnackbar: true, org: rs }) :
+    		this.close(rs) :
     		this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
 				
     	)
     }
+	close = (rs) => {
+		this.setState({ created: true, creating: false, org: rs }) 
+		const { history, s } = this.props
+		s("snackbars.userCreated", { user: `${rs.firstName} ${rs.lastName}` })
+		history.push(`/user/${rs.id}`)
+	}
     handleChange = prop => e => {
     	this.setState({
     		user: {
@@ -90,21 +94,6 @@ class CreateUser extends Component {
     	/* Address, City, Postcode, Country, Region, Website. */
     	let errorCode = [];
     	const { email } = this.state.user
-    	// if (name === "") {
-    	// 	errorCode.push(0)
-    	// }
-    	// if (address === "") {
-    	// 	errorCode.push(1)
-    	// }
-    	// if (city === "") {
-    	// 	errorCode.push(2)
-    	// }
-    	// if (zip === "") {
-    	// 	errorCode.push(3)
-    	// }
-    	// if (country === "") {
-    	// 	errorCode.push(4)
-    	// }
     	if (email === '') {
     		errorCode.push(4)
     	}
@@ -137,12 +126,6 @@ class CreateUser extends Component {
     			return ""
     	}
 	
-    }
-    snackBarClose = () => {
-    	this.setState({ openSnackbar: false })
-    	this.redirect = setTimeout(async => {
-    		this.props.history.push(`/user/${this.state.org.id}`)
-    	}, 1e3)
     }
     handleLangChange = e => {
     	this.setState({
@@ -393,27 +376,12 @@ class CreateUser extends Component {
     							disabled={this.state.creating || this.state.created}
     							onClick={this.handleCreateUser}>
     							{this.state.created ?
-    								<Fragment><Check className={classes.leftIcon} />{t("snackbars.redirect")}</Fragment>
+    								<Fragment>{t("snackbars.redirect")}</Fragment>
     								: <Fragment><Save className={classes.leftIcon} />{t("users.createUser")}</Fragment>}
     						</Button>
     					</div>
     				</Grid>
     			</Paper>
-    			<Snackbar
-    				anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-    				open={this.state.openSnackbar}
-    				onClose={this.snackBarClose}
-    				ContentProps={{
-    					'aria-describedby': 'message-id',
-    				}}
-    				autoHideDuration={1000}
-    				message={
-    					<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-    						<Check className={classes.leftIcon} color={'primary'} />
-    						{t("snackbars.userCreated", { user: user.firstName + " " + user.lastName })}
-    					</ItemGrid>
-    				}
-    			/>
     		</GridContainer>
     	)
     }

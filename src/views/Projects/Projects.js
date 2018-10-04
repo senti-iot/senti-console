@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { getAllProjects, deleteProject } from '../../variables/dataProjects';
 import { withStyles } from "@material-ui/core";
 import { Switch, Route, Redirect } from 'react-router-dom'
-import { ViewList, ViewModule } from '@material-ui/icons'
+import { ViewList, ViewModule } from 'variables/icons'
 import projectStyles from 'assets/jss/views/projects';
 import ProjectTable from 'components/Project/ProjectTable';
 import CircularLoader from 'components/Loader/CircularLoader';
@@ -34,7 +34,7 @@ class Projects extends Component {
 
 	componentDidMount = async () => {
 		this._isMounted = 1
-		await this.getProjects()
+		await this.getData()
 		if (this._isMounted) {
 			if (this.props.location.pathname.includes('/grid')) {
 				this.setState({ route: 1 })
@@ -83,7 +83,7 @@ class Projects extends Component {
 			}
 		})
 	}
-	getProjects = async () => {
+	getData = async () => {
 		const { t } = this.props
 		await getAllProjects().then(rs => this._isMounted ? this.setState({
 			projects: rs ? rs : [],
@@ -98,10 +98,23 @@ class Projects extends Component {
 			loading: false
 		}, () => this.handleRequestSort(null, "title")) : null)
 	}
-
+	snackBarMessages = (msg) => {
+		const { s } = this.props
+		switch (msg) {
+			case 1:
+				s("snackbars.deletedSuccess")
+				break;
+			case 2:
+				s("snackbars.exported")
+				break;
+			default:
+				break;
+		}
+	}
 	deleteProjects = async (projects) => {
 		await deleteProject(projects).then(() => {
-			this.getProjects()
+			this.snackBarMessages(1)
+			this.getData()
 		})
 	}
 	renderAllProjects = () => {

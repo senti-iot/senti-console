@@ -10,14 +10,10 @@ import {
 	DateRange, KeyboardArrowRight, KeyboardArrowLeft,
 	DonutLargeRounded, PieChartRounded, BarChart, ExpandMore, Visibility
 } from "@material-ui/icons"
-// import { red } from '@material-ui/core/colors'
-// import { dateFormatter } from 'variables/functions';
-import { InfoCard, ItemGrid, CircularLoader, Caption, Info, /* , Caption, Info */ } from 'components';
+import { InfoCard, ItemGrid, CircularLoader, Caption, Info } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { Doughnut, Bar, Pie } from 'react-chartjs-2';
 import { getWifiHourly, getWifiDaily } from 'variables/dataDevices';
-// import { getRandomColor } from 'variables/colors';
-// import { teal } from '@material-ui/core/colors'
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import classNames from 'classnames'

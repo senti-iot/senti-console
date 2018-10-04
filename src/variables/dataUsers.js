@@ -6,6 +6,10 @@ export const getAllUsers = async () => {
 	// console.log('getAllUsers', data)
 	return data
 }
+export const getValidSession = async (userId) => {
+	var data = await api.get(`core/user/${userId}`).then(rs => rs)
+	return data
+}
 export const getUser = async (userId) => {
 	var data = await api.get(`core/user/${userId}`).then(rs => rs.data)
 	// console.log('getUser', userId, data)

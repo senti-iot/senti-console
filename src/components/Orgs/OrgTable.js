@@ -1,21 +1,19 @@
 import {
 	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
-	TableRow, withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
+	TableRow, withStyles, DialogTitle, Dialog, DialogContent,
 	DialogContentText, DialogActions, Button, /* MenuItem, Menu, */ IconButton, ListItem, ListItemIcon, ListItemText, List,
 } from "@material-ui/core"
 import TC from 'components/Table/TC'
-import { Delete, Edit, PictureAsPdf, /* FilterList, */ Add } from '@material-ui/icons'
+import { Delete, Edit, PictureAsPdf, /* FilterList, */ Add } from 'variables/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import PropTypes from "prop-types"
 import React, { Fragment } from "react"
 import { withRouter } from 'react-router-dom'
 import EnhancedTableHead from 'components/Table/TableHeader'
 import EnhancedTableToolbar from 'components/Table/TableToolbar'
-import { ItemGrid, Info, ItemG, Caption } from ".."
+import { Info, ItemG, Caption } from ".."
 import { connect } from "react-redux"
 import TP from 'components/Table/TP'
-import { deleteOrg } from 'variables/dataOrgs';
-
 var countries = require("i18n-iso-countries")
 
 class OrgTable extends React.Component {
@@ -28,21 +26,7 @@ class OrgTable extends React.Component {
 			rowsPerPage: props.rowsPerPage,
 			anchorElMenu: null,
 			anchorFilterMenu: null,
-			openSnackbar: 0,
 			openDelete: false,
-		}
-	}
-
-	snackBarMessages = () => {
-		let msg = this.state.openSnackbar
-		const { t } = this.props
-		switch (msg) {
-			case 1:
-				return t("snackbars.deletedSuccess")
-			case 2:
-				return t("snackbars.exported")
-			default:
-				break;
 		}
 	}
 
@@ -116,16 +100,12 @@ class OrgTable extends React.Component {
 		this.setState({ openDelete: false })
 	}
 	handleDeleteOrg = async () => {
-		this.state.selected.forEach(async o => await deleteOrg(o))
+		await this.props.handleDeleteOrgs(this.state.selected)
 		this.setState({
 			selected: [],
 			anchorElMenu: null,
-			openSnackbar: 1,
 			openDelete: false
 		})
-		this.reload = setTimeout(() => {
-			this.props.reload()
-		}, 1e3);
 	}
 	isSelected = id => this.state.selected.indexOf(id) !== -1
 
@@ -285,17 +265,6 @@ renderConfirmDelete = () => {
 					t={t}
 					handleChangePage={this.handleChangePage}
 					handleChangeRowsPerPage={this.handleChangeRowsPerPage}
-				/>
-				<Snackbar
-					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-					open={this.state.openSnackbar !== 0 ? true : false}
-					onClose={() => { this.setState({ openSnackbar: 0 }) }}
-					autoHideDuration={5000}
-					message={
-						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-							{this.snackBarMessages()}
-						</ItemGrid>
-					}
 				/>
 				{this.renderConfirmDelete()}
 			</Paper>

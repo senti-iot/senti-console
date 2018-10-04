@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { InfoCard, ItemGrid, DSelect, CircularLoader } from 'components';
-import { Laptop } from '@material-ui/icons'
+import { Laptop } from 'variables/icons'
 import { Grid, ListItem, List, ListItemText, withStyles } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 // Discover Senti

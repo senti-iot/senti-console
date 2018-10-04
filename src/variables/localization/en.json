@@ -300,7 +300,8 @@
 		"showMore": "Show more",
 		"unassign": "Unassign",
 		"unassignDevice": "Unassign from project",
-		"unassignProject": "Unassign device(s) from project"
+		"unassignProject": "Unassign device(s) from project",
+		"userResendEmail": "Resend Confirm Email"
 	},
 	"orgs": {
 		"create": "Create",
@@ -362,11 +363,8 @@
 		"new": "Create project",
 		"noOrganisationSelected": "Select an organisation to see available devices.",
 		"pageTitle": "Projects",
-		"projectCreated": "Project has been successfully created!",
 		"projectDelete": "Delete project?",
 		"projectDeleteConfirm": "Are you sure you want to delete project ",
-		"projectDeleted": "Project has been successfully deleted!",
-		"projectExported": "Project has been successfully exported!",
 		"projectRedirect": "Redirecting back to list of projects",
 		"projectsColumnCreated": "Created",
 		"projectsColumnDescription": "Description",
@@ -451,8 +449,14 @@
 		"orgCreated": "Organisation %{org} has been successfully created!",
 		"orgDeleted": "Organisation has been successfully deleted!",
 		"orgUpdated": "Organisation %{org} has been successfully updated!",
+		"pictureDeleted": "Picture has been succesfully deleted!",
+		"pictureNotDeleted": "Picture has not been deleted!",
+		"projectCreated": "Project %{project} has been successfully created!",
+		"projectDeleted": "Project(s) has been successfully deleted!",
+		"projectExported": "Project has been successfully exported!",
 		"projectUpdated": "Project %{project} has been successfully updated!",
 		"redirect": "Redirecting ...",
+		"resetDeviceSuccess": "Device has been resetted",
 		"settingsSaved": "Settings saved!",
 		"unassign": "Device %{device} unassigned successfully",
 		"updatedFailed": "Update failed!",
@@ -460,7 +464,8 @@
 		"updating": "Updating...",
 		"userCreated": "User %{user} has been succesfully created!",
 		"userDeleted": "User %{user} has been succesfully deleted!",
-		"userUpdated": "User %{user} has been succesfully updated!"
+		"userUpdated": "User %{user} has been succesfully updated!",
+		"userPasswordChanged": "Password has been changed succesfully!"
 	},
 	"tables": {
 		"addNewDevice": "Add device",

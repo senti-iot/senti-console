@@ -7,9 +7,10 @@ import EditDetails from 'components/Devices/EditDetails';
 import ResetDevice from 'views/Devices/ResetDevice';
 import EditHardware from 'components/Devices/EditHardware';
 import withLocalization from 'components/Localization/T';
+import withSnackbar from 'components/Localization/S';
+import { compose } from 'recompose';
 
-
-export default withRouter(withLocalization()((props) => {
+const device = (props) => {
 	return (
 		<Switch>
 			<Route path={`${props.match.url}/edit-hardware`} render={() => <EditHardware {...props} />} />
@@ -19,4 +20,6 @@ export default withRouter(withLocalization()((props) => {
 			<Route path={`${props.match.url}`} render={() => <Device {...props} />} /> 
 		</Switch>
 	)
-}))
+}
+
+export default compose(withRouter, withLocalization(), withSnackbar())(device)

@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { getDevice, getAllPictures, updateDevice } from 'variables/dataDevices'
-import {  Grid, withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Snackbar } from '@material-ui/core'
+import {  Grid, withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
 import { ItemGrid } from 'components'
 import InfoCard from 'components/Cards/InfoCard'
-import {  Map } from '@material-ui/icons'
+import {  Map } from 'variables/icons'
 import deviceStyles from 'assets/jss/views/deviceStyles'
 import AssignProject from 'components/Devices/AssignProject'
 import AssignOrg from 'components/Devices/AssignOrg'
@@ -28,7 +28,7 @@ class Device extends Component {
 			anchorElHardware: null,
 			openAssign: false,
 			openUnassign: false,
-			openSnackbar: 0,
+			openAssignOrg: false,
 			img: null
 		}
 		props.setHeader('', true, `/devices/list`, "devices")
@@ -60,18 +60,20 @@ class Device extends Component {
 		}
 	}
 
-	snackBarMessages = () => {
-		const { t } = this.props
-		let msg = this.state.openSnackbar
+	snackBarMessages = (msg) => {
+		const { s, t } = this.props
 		let name = this.state.device.name ? this.state.device.name : t("devices.noName")
 		let id = this.state.device.id
 		switch (msg) {
 			case 1:
-				return t("snackbars.unassign", { device: name + "(" + id + ")" })
+				s("snackbars.unassign", { device: name + "(" + id + ")" })
+				break
 			case 2:
-				return t("snackbars.assign", { device: name + "(" + id + ")" })
+				s("snackbars.assign", { device: name + "(" + id + ")" })
+				break
 			case 3: 
-				return t("snackbars.failedUnassign")
+				s("snackbars.failedUnassign")
+				break
 			default:
 				break
 		}
@@ -87,7 +89,8 @@ class Device extends Component {
 
 	handleCloseAssignOrg = async (reload) => {
 		if (reload) {
-			this.setState({ loading: true, anchorEl: null, openSnackbar: 2 })
+			this.setState({ loading: true, anchorEl: null })
+			this.snackBarMessages(2)
 			await this.getDevice(this.state.device.id)
 		}
 		this.setState({ openAssignOrg: false })
@@ -98,7 +101,8 @@ class Device extends Component {
 
 	handleCloseAssign = async (reload) => {
 		if (reload) {
-			this.setState({ loading: true, anchorEl: null, openSnackbar: 2 })
+			this.setState({ loading: true, anchorEl: null })
+			this.snackBarMessages(2)
 			await this.getDevice(this.state.device.id)
 		}
 		this.setState({ openAssign: false })
@@ -150,10 +154,12 @@ class Device extends Component {
 		await updateDevice({ ...this.state.device, project: { id: 0 } }).then(async rs => {
 			if (rs)	
 			{	this.handleCloseUnassign()
-				this.setState({ loading: true, anchorEl: null, openSnackbar: 1 })
+				this.setState({ loading: true, anchorEl: null })
+				this.snackBarMessages(1)
 				await this.getDevice(this.state.device.id)} 
 			else {
-				this.setState({ loading: false, anchorEl: null, openSnackbar: 3 })
+				this.setState({ loading: false, anchorEl: null })
+				this.snackBarMessages(3)
 			}
 		})
 	}
@@ -178,7 +184,6 @@ class Device extends Component {
 			<DialogTitle id="alert-dialog-title">{t("dialogs.unassignTitle", { what: "Project" })}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{/* Are you sure you want to unassign {device.id + " " + device.name} from project {device.project.title} ? */}
 					{t("dialogs.unassign", { deviceID: device.id, deviceName: device.name, project: device.project.title } )}
 				</DialogContentText>
 			</DialogContent>
@@ -246,6 +251,7 @@ class Device extends Component {
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
 						<DeviceImages
+							s={this.props.s}
 							t={this.props.t}
 							device={device}/>
 					</ItemGrid>
@@ -257,17 +263,6 @@ class Device extends Component {
 							t={this.props.t}
 						/>
 					</ItemGrid>
-					<Snackbar
-						anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-						open={this.state.openSnackbar !== 0 ? true : false}
-						onClose={() => { this.setState({ openSnackbar: 0 }) }}
-						autoHideDuration={5000}
-						message={
-							<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-								{this.snackBarMessages()}
-							</ItemGrid>
-						}
-					/>
 				</GridContainer>
 				: this.renderLoader()
 		)

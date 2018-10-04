@@ -1,9 +1,9 @@
 import {
 	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
-	TableRow, Typography, withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
+	TableRow, Typography, withStyles, DialogTitle, Dialog, DialogContent,
 	DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem, List, ListItem, ListItemIcon, ListItemText
 } from "@material-ui/core"
-import { Delete, Devices, Edit, PictureAsPdf } from '@material-ui/icons'
+import { Delete, Devices, Edit, PictureAsPdf } from 'variables/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import PropTypes from "prop-types"
 import React, { Fragment } from "react"
@@ -15,7 +15,7 @@ import EnhancedTableToolbar from '../Table/TableToolbar'
 // import EnhancedTableToolbar from './TableToolBar'
 import { ItemGrid, Info, Caption } from ".."
 import { connect } from "react-redux"
-import { Add, FilterList } from '@material-ui/icons';
+import { Add, FilterList } from 'variables/icons';
 import { boxShadow } from 'assets/jss/material-dashboard-react';
 import TP from 'components/Table/TP';
 
@@ -29,21 +29,7 @@ class EnhancedTable extends React.Component {
 			rowsPerPage: props.rowsPerPage,
 			anchorElMenu: null,
 			anchorFilterMenu: null,
-			openSnackbar: 0,
 			openDelete: false
-		}
-	}
-
-	snackBarMessages = () => {
-		let msg = this.state.openSnackbar
-		const { t } = this.props
-		switch (msg) {
-			case 1:
-				return t("snackbars.deletedSuccess")
-			case 2:
-				return t("snackbars.exported")
-			default:
-				break;
 		}
 	}
 
@@ -132,7 +118,6 @@ class EnhancedTable extends React.Component {
 		this.setState({
 			selected: [],
 			anchorElMenu: null,
-			openSnackbar: 1,
 			openDelete: false
 		})
 	}
@@ -350,17 +335,6 @@ class EnhancedTable extends React.Component {
 					t={t}
 					handleChangePage={this.handleChangePage}
 					handleChangeRowsPerPage={this.handleChangeRowsPerPage}
-				/>
-				<Snackbar
-					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-					open={this.state.openSnackbar !== 0 ? true : false}
-					onClose={() => { this.setState({ openSnackbar: 0 }) }}
-					autoHideDuration={1000}
-					message={
-						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-							{this.snackBarMessages()}
-						</ItemGrid>
-					}
 				/>
 				{this.renderConfirmDelete()}
 			</Paper>

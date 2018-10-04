@@ -1,10 +1,10 @@
   - 
-    domain: "https://senti-mui.surge.sh"
+    domain: "https://alphasenti.surge.sh"
     project: ./build
     provider: surge
     skip_cleanup: true
     true: 
-      branch: senti-mui
+      branch: alpha
   - 
     domain: senti-dashboard.surge.sh
     project: ./build/

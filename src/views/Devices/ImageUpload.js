@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { withStyles, Button } from '@material-ui/core';
-import { CloudUpload, Restore, Check } from '@material-ui/icons'
+import { CloudUpload, Restore, Check } from 'variables/icons'
 import { ItemGrid, Success, Warning } from 'components';
 // import ImageCarousel from 'components/Devices/ImageCarousel';
 import { uploadPictures } from 'variables/dataDevices';

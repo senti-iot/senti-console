@@ -2,21 +2,24 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 // Higher order component (HOC) decorator for components that need `t`
-export default function withLocalization() {
+export default function withSnackbar() {
 
 	return (WrappedComponent) => {
-		const _translate = (props, context) => {
+		const _snackbar = (props, context) => {
 			return (<WrappedComponent
 				{...props}
-				t={context.t} />
+				s={context.s}
+			/>
 			)
 		}
 
-		_translate.contextTypes = {
-			t: PropTypes.func.isRequired,
+		_snackbar.contextTypes = {
+			s: PropTypes.func.isRequired,
+			sId: PropTypes.string.isRequired,
+			sOpt: PropTypes.object
 		}
 
-		return _translate
+		return _snackbar
 	}
 }
 

@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { editUser, getUser } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
 import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader } from '..';
-import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Snackbar, Grid, Button } from '@material-ui/core';
-import { Check, Save } from '@material-ui/icons'
+import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Grid, Button } from '@material-ui/core';
+import { Save } from 'variables/icons'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 
@@ -44,14 +44,14 @@ class EditUser extends Component {
 			creating: false,
 			created: false,
 			loading: true,
-			openSnackbar: false,
 			selectedGroup: "",
 		}
 	}
     componentDidMount = async () => {
     	this._isMounted = 1
-    	const { setHeader } = this.props
-    	setHeader("users.editUser", true, '/users', "users")
+    	const { setHeader, history } = this.props
+    	let prevURL = history.location.state ? history.location.state['prevURL'] : null
+    	setHeader("users.editUser", true, prevURL ? prevURL : '/users', "users")
     	if (this._isMounted)
     	{
     		await this.getUser()
@@ -105,11 +105,18 @@ class EditUser extends Component {
     		groups: groups
     	}
     	await editUser(newUser).then(rs => rs ?
-    		this.setState({ created: true, creating: false, openSnackbar: true, org: rs }) :
+    		this.close(rs) :
     		this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
 				
     	)
     }
+	close = rs => {
+		this.setState({ created: true, creating: false, org: rs })
+		const { s, history } = this.props
+		s("snackbars.userUpdated", { user: `${rs.firstName} ${rs.lastName}` })
+		history.push(`/user/${rs.id}`)
+	}
+	
     handleChange = prop => e => {
     	this.setState({
     		user: {
@@ -154,12 +161,7 @@ class EditUser extends Component {
     	}
 	
     }
-    snackBarClose = () => {
-    	this.setState({ openSnackbar: false })
-    	this.redirect = setTimeout(async => {
-    		this.props.history.push(`/user/${this.state.org.id}`)
-    	}, 1e3)
-    }
+	
     handleLangChange = e => {
     	this.setState({
     		user: {
@@ -415,27 +417,13 @@ class EditUser extends Component {
     							disabled={this.state.creating || this.state.created}
     							onClick={this.handleEditUser}>
     							{this.state.created ?
-    								<Fragment><Check className={classes.leftIcon} />{t("snackbars.redirect")}</Fragment>
+    								<Fragment>{t("snackbars.redirect")}</Fragment>
     								: <Fragment><Save className={classes.leftIcon} />{t("users.editUser")}</Fragment>}
     						</Button>
     					</div>
     				</Grid>
     			</Paper>
-    			<Snackbar
-    				anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-    				open={this.state.openSnackbar}
-    				onClose={this.snackBarClose}
-    				ContentProps={{
-    					'aria-describedby': 'message-id',
-    				}}
-    				autoHideDuration={1000}
-    				message={
-    					<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-    						<Check className={classes.leftIcon} color={'primary'} />
-    						{t("snackbars.userUpdated", { user: user.firstName + " " + user.lastName })}
-    					</ItemGrid>
-    				}
-    			/>
+    		
     		</GridContainer>
     	)
     }
