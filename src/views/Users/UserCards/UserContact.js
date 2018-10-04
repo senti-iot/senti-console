@@ -38,7 +38,8 @@ class UserContact extends Component {
 		const { t, loggedUser, classes, user, history } = this.props
 		const { apiorg } = loggedUser.privileges
 		return <Dropdown menuItems={
-			[{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push(`${this.props.match.url}/edit`) },
+			[
+				{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `${this.props.match.url}/edit`, state: { prevURL: `/user/${user.id}` } }) },
 				{ label: t("menus.changePassword"), icon: <LockOpen className={classes.leftIcon} />, func: this.props.changePass },
 				{ label: t("menus.userResendEmail"), icon: <Email className={classes.leftIcon} />, func: this.props.resendConfirmEmail, dontShow: user.suspended !== 2 },
 				{ label: t("menus.delete"), icon: <Delete className={classes.leftIcon} />, func: this.deleteUser, dontShow: apiorg ? apiorg.editusers || !loggedUser.id === user.id ? false : true : true }
