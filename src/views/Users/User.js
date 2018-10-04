@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { GridContainer, ItemGrid, CircularLoader, ItemG, TextF } from 'components';
+import { GridContainer, ItemGrid, CircularLoader, ItemG, TextF, Danger } from 'components';
 import UserContact from './UserCards/UserContact';
 import { UserLog } from './UserCards/UserLog';
 import { userStyles } from 'assets/jss/components/users/userStyles';
@@ -33,7 +33,9 @@ class User extends Component {
 				current: "",
 				newP: "",
 				confirm: ""
-			}
+			},
+			changePasswordError: false,
+			errorMessage: ""
 		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
@@ -110,12 +112,21 @@ class User extends Component {
 	handleOpenChangePassword = () => {
 		this.setState({ openChangePassword: true })
 	}
-	
-	handleCloseChangePassword = () => {
+
+	handleCloseChangePassword = success => e => {
+		if (e)
+			e.preventDefault()
+		if (success === true)
+			this.snackBarMessages(2) //userPasswordChanged
 		this.setState({ openChangePassword: false })
 	}
 
 	handleInputChange = e => {
+		if (this.state.changePasswordError)
+			this.setState({
+				errorMessage: false,
+				changePasswordError: false
+			})
 		this.setState({
 			pw: {
 				...this.state.pw,
@@ -124,6 +135,7 @@ class User extends Component {
 		})
 	}
 	handleChangePassword = async () => {
+		const { t } = this.props
 		const { confirm, newP } = this.state.pw
 		if (confirm === newP) {
 			let newPassObj = {
@@ -133,7 +145,13 @@ class User extends Component {
 			}
 			let success = await setPassword(newPassObj).then(rs => rs)
 			if (success)
-				this.handleChangePassword()
+				this.handleCloseChangePassword(success)()
+			else {
+				this.setState({ changePasswordError: true, errorMessage: t("confirmUser.networkError") })
+			}
+		}
+		else {
+			this.setState({ changePasswordError: true, errorMessage: t("confirmUser.validation.passwordMismatch") })
 		}
 	}
 	renderChangePassword = () => {
@@ -141,15 +159,13 @@ class User extends Component {
 		const { t, accessLevel } = this.props
 		return <Dialog
 			open={openChangePassword}
-			onClose={this.handleCloseChangePassword}
+			onClose={this.handleCloseChangePassword()}
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
 			<DialogTitle id="alert-dialog-title">{t("menus.changePassword")}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{/* {t("users.userDeleteConfirm", { user: (this.state.user.firstName + " " + this.state.user.lastName) }) + "?"} */}
-				</DialogContentText>
+				<Danger> {this.state.errorMessage} </Danger>
 				{accessLevel.apiorg.editusers ? null : <ItemG>
 					<TextF
 						id={'current'}

@@ -300,7 +300,8 @@
 		"showMore": "Show more",
 		"unassign": "Unassign",
 		"unassignDevice": "Unassign from project",
-		"unassignProject": "Unassign device(s) from project"
+		"unassignProject": "Unassign device(s) from project",
+		"userResendEmail": "Resend Confirm Email"
 	},
 	"orgs": {
 		"create": "Create",
@@ -463,7 +464,8 @@
 		"updating": "Updating...",
 		"userCreated": "User %{user} has been succesfully created!",
 		"userDeleted": "User %{user} has been succesfully deleted!",
-		"userUpdated": "User %{user} has been succesfully updated!"
+		"userUpdated": "User %{user} has been succesfully updated!",
+		"userPasswordChanged": "Password has been changed succesfully!"
 	},
 	"tables": {
 		"addNewDevice": "Add device",

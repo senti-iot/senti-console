@@ -9,7 +9,6 @@ import { compose } from 'recompose';
 
 
 const user = (props) => {
-	console.log(props.s)
 	return (
 		<Switch>
 			<Route path={`${props.match.url}/edit`} render={(rp) => <EditUser {...rp} {...props}/>} />
