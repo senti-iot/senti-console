@@ -138,7 +138,7 @@ class OrgTable extends React.Component {
 			}
 		</Fragment>
 	}
-	renderConfirmDelete = () => {
+renderConfirmDelete = () => {
 		const { openDelete, selected } = this.state
 		const { data, t, classes } = this.props
 		return <Dialog
@@ -167,7 +167,6 @@ class OrgTable extends React.Component {
 			</DialogActions>
 		</Dialog>
 	}
-
 
 	render() {
 		const { classes, t, order, orderBy, data } = this.props
