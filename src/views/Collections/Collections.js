@@ -6,10 +6,10 @@ import GridContainer from 'components/Grid/GridContainer';
 import { getAllCollections } from 'variables/dataCollections';
 import CollectionTable from 'components/Collections/CollectionTable';
 import Toolbar from 'components/Toolbar/Toolbar'
-import { /* People, Business, */ DataUsage } from 'variables/icons';
+import { ViewList, ViewModule, Map } from 'variables/icons';
 import { filterItems, handleRequestSort } from 'variables/functions'
 import { deleteCollection } from '../../variables/dataCollections';
-
+import { Route, Switch, Redirect } from "react-router-dom";
 class Collections extends Component {
 	constructor(props) {
 		super(props)
@@ -106,8 +106,9 @@ class Collections extends Component {
 	}
 
 	tabs = [
-		{ id: 0, title: this.props.t("users.tabs.collections"), label: <DataUsage />, url: `/users` },
-		// { id: 1, title: this.props.t("users.tabs.collections"), label: <Business />, url: `/collections` },
+		{ id: 0, title: this.props.t("devices.tabs.listView"), label: <ViewList />, url: `${this.props.match.url}/list` },
+		{ id: 1, title: this.props.t("devices.tabs.mapView"), label: <Map />, url: `${this.props.match.url}/map` },
+		{ id: 2, title: this.props.t("devices.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.url}/cards` },
 	]
 	snackBarMessages = (msg) => {
 		const { s } = this.props
@@ -165,7 +166,13 @@ class Collections extends Component {
 					tabs={this.tabs}
 					defaultRoute={0}
 				/>
-				{this.renderCollections()}
+				<Switch>
+					<Route path={`${this.props.match.path}/map`} render={() => this.renderCollections()} />
+					<Route path={`${this.props.match.path}/list`} render={() => this.renderCollections() } />
+					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCollections()} />
+					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
+				</Switch>
+				
 			</Fragment>
 		)
 	}

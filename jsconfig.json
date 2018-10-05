@@ -1,15 +1,14 @@
 {
     "compilerOptions": {
-        "target": "ES6",
+        "target": "es2016",
 		"module": "es6",
 		"jsx": "react",
 		"removeComments": true,
         "baseUrl": "./src",
-		"allowSyntheticDefaultImports": true,
+		"allowSyntheticDefaultImports": true
 	},
 	"include": [
 		"src/**/*",
-		"@material-ui/core"
 	],
 	"exclude": [
 		"node_modules",

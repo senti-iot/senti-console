@@ -241,12 +241,6 @@ class CollectionTable extends React.Component {
 
 											/>
 										</Hidden>
-										{/* 		{ id: "name", label: t("collections.fields.name") },
-					{ id: "description", label: t("collections.fields.address") },
-					{ id: "created", label: t("collections.fields.city") },
-					{ id: "modified", label: t("collections.fields.url") },
-					{ id: "org.name", label: t("collections.fields.org") }
-	 					*/}
 										<Hidden mdDown>
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
