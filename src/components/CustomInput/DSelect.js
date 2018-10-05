@@ -4,9 +4,7 @@ const styles = theme => ({
 	formControl: {
 		marginTop: 16,
 		marginBottom: 8,
-		minWidth: 208,
-		flexGrow: 1,
-		maxWidth: 208
+		minWidth: 208
 	},
 });
 

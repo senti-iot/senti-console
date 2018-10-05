@@ -430,6 +430,7 @@
 		"trp": "Rows per page on lists"
 	},
 	"sidebar": {
+		"collections": "Data",
 		"dashboard": "Dashboard",
 		"devices": "Devices",
 		"projects": "Projects",

@@ -1,4 +1,4 @@
-import api from 'variables/data'
+import { api } from 'variables/data'
 
 /**
  * Get all available devices for data collections
