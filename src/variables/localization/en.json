@@ -70,6 +70,16 @@
 			"pie": "Pie"
 		}
 	},
+	"collections": {
+		"pageTitle": "Data Collections",
+		"fields": {
+			"name":"Name",
+			"description":"Description",
+			"created":"Created",
+			"modified":"Last modified",
+			"collection":"Data collection"
+		}
+	},	
 	"confirmUser": {
 		"button": "Confirm password",
 		"lastStep": "Create your password to confirm your Senti.Cloud account.",

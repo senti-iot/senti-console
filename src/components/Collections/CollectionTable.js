@@ -232,7 +232,7 @@ class CollectionTable extends React.Component {
 														<ItemG>
 															<Caption noWrap className={classes.noMargin}>
 																
-																{`${n.description}, ${n.org ? n.org.name : ""}`} 
+																{`${n.org ? n.org.name : ""}`} 
 															</Caption>
 														</ItemG>
 													</ItemG>
@@ -254,6 +254,7 @@ class CollectionTable extends React.Component {
 											<TC FirstC label={n.name} />
 											<TC label={n.description} />
 											<TC label={dateFormatter(n.created)} />
+											<TC label={dateFormatter(n.modified)} />
 											<TC label={n.org ? n.org.name : ""} /> 
 
 										</Hidden>

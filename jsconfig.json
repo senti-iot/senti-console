@@ -12,8 +12,8 @@
 		"@material-ui/core"
 	],
 	"exclude": [
-		// "node_modules",
-		// "dist",
-		// "**/*.spec.ts"
+		"node_modules",
+		"dist",
+		"**/*.spec.ts"
 	]
 }
