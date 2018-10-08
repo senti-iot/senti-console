@@ -121,6 +121,9 @@ class UserTable extends React.Component {
 
 	isSelected = id => this.state.selected.indexOf(id) !== -1
 
+	handleEdit = () => {
+		this.props.history.push(`/user/${this.state.selected[0]}/edit`)
+	}
 	options = () => {
 		const { t } = this.props
 		return [
