@@ -2,8 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { Grid, Typography, withStyles, /* Button */ } from '@material-ui/core';
 import { ItemGrid, /* Warning, P, */ Info, Caption } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
-import { SignalWifi2Bar, SignalWifi2BarLock, Build, /* LibraryBooks, */ Edit, Devices, /*  LayersClear, */ Business } from 'variables/icons'
-// import { ConvertDDToDMS, dateFormat, dateFormatter } from 'variables/functions'
+import { SignalWifi2Bar, SignalWifi2BarLock, Edit, Devices, Business, LayersClear } from 'variables/icons'
 import { Link } from 'react-router-dom'
 import collectionStyles from 'assets/jss/views/deviceStyles';
 import Dropdown from 'components/Dropdown/Dropdown'
@@ -61,8 +60,8 @@ class DeviceDetails extends Component {
 						{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/collection/${collection.id}/edit`, state: { prevURL: `/collection/${collection.id}` } }) },
 						// { label: collection.project.id > 0 ? t("menus.reassign") : t("menus.assign"), icon: <LibraryBooks className={classes.leftIcon} />, func: this.props.handleOpenAssign },
 						{ label: collection.org.id > 0 ? t("menus.reassignOrg") : t("menus.assignOrg"), icon: <Business className={classes.leftIcon} />, func: this.props.handleOpenAssignOrg, dontShow: accessLevel.apisuperuser ? false : true },
-						// { label: t("menus.unassignDevice"), icon: <LayersClear className={classes.leftIcon} />, func: this.props.handleOpenUnassign, dontShow: collection.project.id > 0 ? false : true },
-						{ label: !(collection.lat > 0) && !(collection.long > 0) ? t("menus.calibrate") : t("menus.recalibrate"), icon: <Build className={classes.leftIcon} />, func: () => this.props.history.push(`${this.props.match.url}/setup`) }
+						{ label: t("menus.unassignOrg"), icon: <LayersClear className={classes.leftIcon} />, func: this.props.handleOpenUnassign, dontShow: collection.org.id > 0 ? false : true },
+						// { label: !(collection.lat > 0) && !(collection.long > 0) ? t("menus.calibrate") : t("menus.recalibrate"), icon: <Build className={classes.leftIcon} />, func: () => this.props.history.push(`${this.props.match.url}/setup`) }
 					]
 				} />
 

@@ -184,7 +184,7 @@ class Device extends Component {
 			<DialogTitle id="alert-dialog-title">{t("dialogs.unassignTitle", { what: "Project" })}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("dialogs.unassign", { deviceID: device.id, deviceName: device.name, project: device.project.title } )}
+					{t("dialogs.unassign", { id: device.id, name: device.name, what: device.project.title } )}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>

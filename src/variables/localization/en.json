@@ -227,7 +227,7 @@
 		"apply": "Apply",
 		"cancel": "Cancel",
 		"no": "No",
-		"unassign": "Are you sure you want to unassign device: %{deviceName} with ID: %{deviceID}, from %{project}",
+		"unassign": "Are you sure you want to unassign %{name} with ID: %{id}, from %{what}",
 		"unassignTitle": "Unassign?",
 		"warnings": {
 			"notImplemented": "Not implemented",
@@ -311,6 +311,7 @@
 		"unassign": "Unassign",
 		"unassignDevice": "Unassign from project",
 		"unassignProject": "Unassign device(s) from project",
+		"unassignOrg": "Unassign organisation",
 		"userResendEmail": "Resend Confirm Email"
 	},
 	"orgs": {
@@ -448,7 +449,8 @@
 		"users": "Users"
 	},
 	"snackbars": {
-		"assign": "Device %{device} assigned successfully",
+		"assignDevice": "Device %{device} assigned to %{org}",
+		"assignCollection": "Collection %{collection} assigned to %{org}",
 		"createdFail": "Creation failed!",
 		"createdSuccess": "Created!",
 		"creating": "Creating...",
@@ -469,7 +471,8 @@
 		"redirect": "Redirecting ...",
 		"resetDeviceSuccess": "Device has been resetted",
 		"settingsSaved": "Settings saved!",
-		"unassign": "Device %{device} unassigned successfully",
+		"unassignDevice": "Device %{device} unassigned from %{org}",
+		"unassignCollection": "Collection %{collection} unassigned from %{org}",
 		"updatedFailed": "Update failed!",
 		"updatedSuccess": "Updated!",
 		"updating": "Updating...",

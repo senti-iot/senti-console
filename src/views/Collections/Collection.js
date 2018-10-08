@@ -68,10 +68,10 @@ class Collection extends Component {
 		let id = this.state.collection.id
 		switch (msg) {
 			case 1:
-				s("snackbars.unassign", { collection: name + "(" + id + ")" })
+				s("snackbars.unassignCollection", { collection: name + "(" + id + ")", org: this.state.collection.org.name })
 				break
 			case 2:
-				s("snackbars.assign", { collection: name + "(" + id + ")" })
+				s("snackbars.assignCollection", { collection: name + "(" + id + ")", org: this.state.collection.org.name })
 				break
 			case 3:
 				s("snackbars.failedUnassign")
@@ -88,8 +88,9 @@ class Collection extends Component {
 	handleCloseAssignOrg = async (reload) => {
 		if (reload) {
 			this.setState({ loading: true, anchorEl: null })
-			this.snackBarMessages(2)
-			await this.getCollection(this.state.collection.id)
+			await this.getCollection(this.state.collection.id).then(() => {
+				this.snackBarMessages(2)
+			})
 		}
 		this.setState({ openAssignOrg: false })
 	}
@@ -142,13 +143,13 @@ class Collection extends Component {
 		})
 	}
 
-	handleUnassign = async () => {
-		await updateCollection({ ...this.state.collection, project: { id: 0 } }).then(async rs => {
+	handleUnassignOrg = async () => {
+		await updateCollection({ ...this.state.collection, org: { id: 0 } }).then(async rs => {
 			if (rs) {
 				this.handleCloseUnassign()
 				this.setState({ loading: true, anchorEl: null })
-				this.snackBarMessages(1)
 				await this.getCollection(this.state.collection.id)
+				this.snackBarMessages(1)
 			}
 			else {
 				this.setState({ loading: false, anchorEl: null })
@@ -174,17 +175,17 @@ class Collection extends Component {
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{t("dialogs.unassignTitle", { what: "Project" })}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("dialogs.unassignTitle", { what: t("collection.fields.organisation") })}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("dialogs.unassign", { collectionID: collection.id, collectionName: collection.name, project: collection.project.title })}
+					{t("dialogs.unassign", { id: collection.id, name: collection.name, what: collection.org.name })}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={this.handleCloseUnassign} color="primary">
 					{t("actions.no")}
 				</Button>
-				<Button onClick={this.handleUnassign} color="primary" autoFocus>
+				<Button onClick={this.handleUnassignOrg} color="primary" autoFocus>
 					{t("actions.yes")}
 				</Button>
 			</DialogActions>
@@ -209,7 +210,7 @@ class Collection extends Component {
 						handleClose={this.handleCloseAssignOrg}
 						t={this.props.t}
 					/>
-					{collection.project ? this.renderConfirmUnassign() : null}
+					{collection.org.id ? this.renderConfirmUnassign() : null}
 					<ItemGrid xs={12} noMargin>
 						<CollectionDetails
 							collection={collection}

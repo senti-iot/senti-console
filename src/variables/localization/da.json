@@ -300,7 +300,8 @@
 		"showMore": "Vis mere",
 		"unassign": "Fjern tilknytning",
 		"unassignDevice": "Fjern tilknytning fra projekt",
-		"unassignProject": "Fjern enhed(er) fra projekt"
+		"unassignProject": "Fjern enhed(er) fra projekt",
+		"unassignOrg": "Fjern tilknytning fra organisation"
 	},
 	"orgs": {
 		"create": "Opret",
@@ -435,7 +436,8 @@
 		"users": "Brugere"
 	},
 	"snackbars": {
-		"assign": "Enhed tildelt succesfuldt",
+		"assignDevice": "Enhed ${device} tildelt til ${org}",
+		"assignCollection": "Collection ${collection} tildelt til ${org}",
 		"createdFail": "Oprettelse fejlede!",
 		"createdSuccess": "Oprettet!",
 		"creating": "Opretter ...",
@@ -453,7 +455,8 @@
 		"projectUpdated": "Projekt %{project} er succesfuldt opdateret!",
 		"redirect": "Omdirigerer ...",
 		"settingsSaved": "Instillinger gemt!",
-		"unassign": "Enhed succesfuldt fjernet!",
+		"unassignDevice": "Enhed ${device} fjernet fra ${org}!",
+		"unassignCollection": "Collection ${collection} fjernet fra ${org}",
 		"updatedFailed": "Opdatering fejlede!",
 		"updatedSuccess": "Opdateret!",
 		"updating": "Opdaterer ...",
