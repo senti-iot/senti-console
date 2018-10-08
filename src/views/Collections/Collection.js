@@ -203,6 +203,7 @@ class Collection extends Component {
 						t={this.props.t}
 					/>
 					<AssignOrg
+						collections
 						collectionId={[this.state.collection]}
 						open={this.state.openAssignOrg}
 						handleClose={this.handleCloseAssignOrg}

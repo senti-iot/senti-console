@@ -210,6 +210,7 @@ class Device extends Component {
 						t={this.props.t}
 					/>
 					<AssignOrg
+						devices
 						deviceId={[this.state.device]}
 						open={this.state.openAssignOrg}
 						handleClose={this.handleCloseAssignOrg}
