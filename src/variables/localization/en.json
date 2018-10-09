@@ -96,14 +96,14 @@
 	"dashboard": {
 		"cardContent": {
 			"alerts": "Did you know that? … \n Get true intelligent rule-based alerts about the nature of the data you're collecting.",
-			"api": "SentiAPI allows you to build your own Dashboards, Apps or Widgets. SentiAPI support access to your own Senti device data or paid access to Senti Big Data based upon the crowd-sourced anonymised pool of Senti data.",
+			"api": "SentiAPI allows you to build your own IoT Dashboards, Apps or Widgets. SentiAPI support access to your own Senti IoT device data or paid access to Senti Big Data based upon the crowd-sourced anonymised pool of Senti data.",
 			"data": "Get detailed lists and charts to measure and analyse your collected data. Create reports and export data in few easy steps.",
-			"devices": "Devices are the actual hardware device deployed into your environment. Here you can configure and control the devices used in your projects.",
+			"devices": "Devices are the actual IoT hardware device deployed into your environment. Here you can configure and control the IoT devices used in your data collections.",
 			"notifications": "See and manage notification messages and control how, when and where you want to engage your users with notifications.",
-			"onSiteSetup": "When you deploy your devices on-site, a simple configuration is required. Store device name, description, location information and calibrate the device for optimal accuracy.",
-			"projects": "Projects help you manage Senti devices for specific measuring tasks and data collection use cases. A project is a container for your devices and data across one or more locations.",
+			"onSiteSetup": "When you deploy your IoT devices on-site, a simple configuration is advantageous. Store device name, description, location information and calibrate the device for optimal accuracy.",
+			"projects": "Projects help you manage Senti IoT data collections for specific measuring tasks and use cases. A project is a container for your data collections and data across one or more locations.",
 			"settings": "The main control center for managing settings for Senti IoT devices and your Senti.Cloud Console.",
-			"users": "Authenticate and manage accounts for users and organisations, and allow access to projects, devices, collected data and API’s."
+			"users": "Authenticate and manage accounts for users and organisations, and allow access to projects, collected data, devices and API’s."
 		},
 		"cardHeaders": {
 			"alerts": "Intelligent Alerts",
