@@ -248,7 +248,7 @@ class CollectionTable extends React.Component {
 												<Checkbox checked={isSelected} />
 											</TableCell>
 											<TC  label={n.name} />
-											<TC className={classes.tablecellcheckbox} FirstC label={n.activeDevice ? this.renderIcon(n.activeDevice.liveStatus) : null} />
+											<TC className={classes.tablecellcheckbox} FirstC content={n.activeDevice ? this.renderIcon(n.activeDevice.liveStatus) : null} />
 											<TC label={dateFormatter(n.created)} />
 											<TC label={dateFormatter(n.modified)} />
 											<TC label={n.org ? n.org.name : ""} />

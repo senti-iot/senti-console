@@ -1,16 +1,18 @@
 import {
 	Table,
+	TableBody,
+	TableCell,
 	TableHead,
 	TableRow
 } from '@material-ui/core';
 import React from 'react'
 
-import TC from 'components/Table/TC';
+import TC from '../../../components/Table/TC';
 
-class CollectionDevices extends React.Component {
-	render() {
+class CollectionData extends React.Component {
+	render () {
 		const { devices, classes } = this.props
-		return <Table className={classes.table}>
+		return     <Table className={classes.table}>
 			<TableHead>
 				<TableRow>
 					<TableCell>Dessert (100g serving)</TableCell>
@@ -24,8 +26,8 @@ class CollectionDevices extends React.Component {
 				{devices.map(row => {
 					return (
 						<TableRow key={row.id}>
-							<TC label={row.name} />
-							<TC label={row.id} />
+							<TC label={row.name}/>
+							<TC label={row.id}/>
 						</TableRow>
 					);
 				})}
@@ -34,4 +36,4 @@ class CollectionDevices extends React.Component {
 	}
 }
 
-export default CollectionDevices;
+export default CollectionData;
