@@ -1,29 +1,30 @@
 import React, { Component } from 'react'
-import { getDevice, getAllPictures, updateDevice } from 'variables/dataDevices'
-import {  Grid, withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
+import { getCollection, updateCollection } from 'variables/dataCollections'
+import { Grid, withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
 import { ItemGrid } from 'components'
 import InfoCard from 'components/Cards/InfoCard'
-import {  Map } from 'variables/icons'
-import deviceStyles from 'assets/jss/views/deviceStyles'
+import { Map } from 'variables/icons'
+import collectionStyles from 'assets/jss/views/deviceStyles'
 import AssignProject from 'components/Devices/AssignProject'
 import AssignOrg from 'components/Devices/AssignOrg'
-import ImageUpload from './ImageUpload'
+// import ImageUpload from './ImageUpload'
 import CircularLoader from 'components/Loader/CircularLoader'
 import { Maps } from 'components/Map/Maps'
 import GridContainer from 'components/Grid/GridContainer'
-import DeviceDetails from './DeviceCards/DeviceDetails'
-import DeviceHardware from './DeviceCards/DeviceHardware'
-import DeviceImages from './DeviceCards/DeviceImages'
-import DeviceData from './DeviceCards/DeviceData'
+// import CollectionDetails from './CollectionCards/CollectionDetails'
+// import CollectionHardware from './CollectionCards/CollectionHardware'
+// import CollectionImages from './CollectionCards/CollectionImages'
+// import CollectionData from './CollectionCards/CollectionData'
 import { dateFormatter } from 'variables/functions';
 import { connect } from 'react-redux';
+import CollectionDetails from 'views/Collections/CollectionCards/CollectionDetails';
 
-class Device extends Component {
+class Collection extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			device: null,
+			collection: null,
 			loading: true,
 			anchorElHardware: null,
 			openAssign: false,
@@ -31,20 +32,19 @@ class Device extends Component {
 			openAssignOrg: false,
 			img: null
 		}
-		props.setHeader('', true, `/devices/list`, "devices")
+		props.setHeader('', true, `/collections/list`, "collections")
 	}
 
-	getDevice = async (id) => {
-		await getDevice(id).then(rs => {
+	getCollection = async (id) => {
+		await getCollection(id).then(rs => {
+			console.log(rs)
 			if (rs === null)
 				this.props.history.push('/404')
 			else {
-				this.setState({ device: rs, loading: false })
-				this.props.setHeader(rs.name ? rs.name : rs.id, true, `/devices/list`, "devices") 
-					
+				this.setState({ collection: rs, loading: false })
+				this.props.setHeader(rs.name ? rs.name : rs.id, true, `/collections/list`, "collections")
 			}
 		})
-
 	}
 
 	componentDidMount = async () => {
@@ -52,7 +52,7 @@ class Device extends Component {
 			let id = this.props.match.params.id
 			if (id) {
 				// this.getAllPics(id)
-				await this.getDevice(id)
+				await this.getCollection(id)
 			}
 		}
 		else {
@@ -62,25 +62,21 @@ class Device extends Component {
 
 	snackBarMessages = (msg) => {
 		const { s, t } = this.props
-		let name = this.state.device.name ? this.state.device.name : t("devices.noName")
-		let id = this.state.device.id
+		let name = this.state.collection.name ? this.state.collection.name : t("collections.noName")
+		let id = this.state.collection.id
 		switch (msg) {
 			case 1:
-				s("snackbars.unassign", { device: name + "(" + id + ")" })
+				s("snackbars.unassignCollection", { collection: name + "(" + id + ")", org: this.state.collection.org.name })
 				break
 			case 2:
-				s("snackbars.assign", { device: name + "(" + id + ")" })
+				s("snackbars.assignCollection", { collection: name + "(" + id + ")", org: this.state.collection.org.name })
 				break
-			case 3: 
+			case 3:
 				s("snackbars.failedUnassign")
 				break
 			default:
 				break
 		}
-	}
-
-	getAllPics = (id) => {
-		getAllPictures(id).then(rs => this.setState({ img: rs }))
 	}
 
 	handleOpenAssignOrg = () => {
@@ -90,8 +86,9 @@ class Device extends Component {
 	handleCloseAssignOrg = async (reload) => {
 		if (reload) {
 			this.setState({ loading: true, anchorEl: null })
-			this.snackBarMessages(2)
-			await this.getDevice(this.state.device.id)
+			await this.getCollection(this.state.collection.id).then(() => {
+				this.snackBarMessages(2)
+			})
 		}
 		this.setState({ openAssignOrg: false })
 	}
@@ -103,17 +100,11 @@ class Device extends Component {
 		if (reload) {
 			this.setState({ loading: true, anchorEl: null })
 			this.snackBarMessages(2)
-			await this.getDevice(this.state.device.id)
+			await this.getCollection(this.state.collection.id)
 		}
 		this.setState({ openAssign: false })
 	}
 
-	renderImageUpload = (dId) => {
-		const getPics = () => { 
-			this.getAllPics(this.state.device.id)
-		}
-		return <ImageUpload dId={dId} imgUpload={this.getAllPics} callBack={getPics}/>
-	}
 
 	filterItems = (projects, keyword) => {
 
@@ -150,13 +141,14 @@ class Device extends Component {
 		})
 	}
 
-	handleUnassign = async () => {
-		await updateDevice({ ...this.state.device, project: { id: 0 } }).then(async rs => {
-			if (rs)	
-			{	this.handleCloseUnassign()
+	handleUnassignOrg = async () => {
+		await updateCollection({ ...this.state.collection, org: { id: 0 } }).then(async rs => {
+			if (rs) {
+				this.handleCloseUnassign()
 				this.setState({ loading: true, anchorEl: null })
+				await this.getCollection(this.state.collection.id)
 				this.snackBarMessages(1)
-				await this.getDevice(this.state.device.id)} 
+			}
 			else {
 				this.setState({ loading: false, anchorEl: null })
 				this.snackBarMessages(3)
@@ -164,9 +156,9 @@ class Device extends Component {
 		})
 	}
 
-	renderImageLoader = () => {
-		return <CircularLoader notCentered/>
-	}
+	// renderImageLoader = () => {
+	// 	return <CircularLoader notCentered />
+	// }
 
 	renderLoader = () => {
 		return <CircularLoader />
@@ -174,24 +166,24 @@ class Device extends Component {
 
 	renderConfirmUnassign = () => {
 		const { t } = this.props
-		const { device }  = this.state
+		const { collection } = this.state
 		return <Dialog
 			open={this.state.openUnassign}
 			onClose={this.handleCloseUnassign}
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{t("dialogs.unassignTitle", { what: "Project" })}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("dialogs.unassignTitle", { what: t("collection.fields.organisation") })}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("dialogs.unassign", { id: device.id, name: device.name, what: device.project.title } )}
+					{t("dialogs.unassign", { id: collection.id, name: collection.name, what: collection.org.name })}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={this.handleCloseUnassign} color="primary">
 					{t("actions.no")}
 				</Button>
-				<Button onClick={this.handleUnassign} color="primary" autoFocus>
+				<Button onClick={this.handleUnassignOrg} color="primary" autoFocus>
 					{t("actions.yes")}
 				</Button>
 			</DialogActions>
@@ -199,27 +191,27 @@ class Device extends Component {
 	}
 
 	render() {
-		const { device, loading } = this.state
+		const { collection, loading } = this.state
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<AssignProject
-						deviceId={[this.state.device]}
+						collectionId={[this.state.collection]}
 						open={this.state.openAssign}
 						handleClose={this.handleCloseAssign}
 						t={this.props.t}
 					/>
 					<AssignOrg
-						devices
-						deviceId={[this.state.device]}
+						collections
+						collectionId={[this.state.collection]}
 						open={this.state.openAssignOrg}
 						handleClose={this.handleCloseAssignOrg}
 						t={this.props.t}
 					/>
-					{device.project ? this.renderConfirmUnassign() : null}
+					{collection.org.id ? this.renderConfirmUnassign() : null}
 					<ItemGrid xs={12} noMargin>
-						<DeviceDetails
-							device={device}
+						<CollectionDetails
+							collection={collection}
 							history={this.props.history}
 							match={this.props.match}
 							handleOpenAssign={this.handleOpenAssign}
@@ -230,39 +222,33 @@ class Device extends Component {
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
-						<DeviceData
-							device={device}	
+						{/* <CollectionData
+							collection={collection}
 							history={this.props.history}
 							match={this.props.match}
 							t={this.props.t}
-						/>
+						/> */}
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
 						<InfoCard
-							title={this.props.t("devices.cards.map")}
-							subheader={this.props.t("devices.fields.coordsW", { lat: device.lat, long: device.long })}
+							title={this.props.t("collections.cards.map")}
+							subheader={this.props.t("collections.fields.coordsW", { lat: collection.lat, long: collection.long })}
 							avatar={<Map />}
 							noExpand
 							content={
 								<Grid container justify={'center'}>
-									<Maps t={this.props.t} isMarkerShown markers={[device]} zoom={18} />
+									<Maps t={this.props.t} isMarkerShown markers={[collection]} zoom={18} />
 								</Grid>
 							} />
 
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
-						<DeviceImages
-							s={this.props.s}
-							t={this.props.t}
-							device={device}/>
-					</ItemGrid>
-					<ItemGrid xs={12} noMargin>
-						<DeviceHardware
-							device={device}
+						{/* <CollectionHardware
+							collection={collection}
 							history={this.props.history}
 							match={this.props.match}
 							t={this.props.t}
-						/>
+						/> */}
 					</ItemGrid>
 				</GridContainer>
 				: this.renderLoader()
@@ -274,7 +260,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  
+
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles)(Device))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(collectionStyles)(Collection))

@@ -1,5 +1,5 @@
 import {
-	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
+	Checkbox, Hidden, Table, TableBody, TableCell,
 	TableRow, Typography, withStyles, DialogTitle, Dialog, DialogContent,
 	DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem, List, ListItem, ListItemIcon, ListItemText
 } from "@material-ui/core"
@@ -11,7 +11,6 @@ import { withRouter } from 'react-router-dom'
 import { dateFormatter } from "variables/functions"
 // import EnhancedTableHead from './ProjectTableHeader'
 import EnhancedTableHead from '../Table/TableHeader'
-import EnhancedTableToolbar from '../Table/TableToolbar'
 // import EnhancedTableToolbar from './TableToolBar'
 import { ItemGrid, Info, Caption } from ".."
 import { connect } from "react-redux"
@@ -53,7 +52,7 @@ class EnhancedTable extends React.Component {
 		this.setState({ anchorFilterMenu: null })
 	}
 
-	handleFilter = e => {
+	handleFilter = () => {
 	}
 
 	handleSearch = value => {
@@ -215,17 +214,18 @@ class EnhancedTable extends React.Component {
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 
 		return (
-
-			<Paper className={classes.root}>
-				<EnhancedTableToolbar
-					anchorElMenu={this.state.anchorElMenu}
-					handleToolbarMenuClose={this.handleToolbarMenuClose}
-					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
-					numSelected={selected.length}
-					options={this.options}
-					t={t}
-					content={this.renderTableToolBarContent()}
-				/>
+			// <Paper className={classes.root}>
+			// 	<EnhancedTableToolbar
+			// 		ft={this.ft()}
+			// 		anchorElMenu={this.state.anchorElMenu}
+			// 		handleToolbarMenuClose={this.handleToolbarMenuClose}
+			// 		handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+			// 		numSelected={selected.length}
+			// 		options={this.options}
+			// 		t={t}
+			// 		content={this.renderTableToolBarContent()}
+			// 	/>
+			<Fragment>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
 						<EnhancedTableHead // ./ProjectTableHeader
@@ -337,7 +337,7 @@ class EnhancedTable extends React.Component {
 					handleChangeRowsPerPage={this.handleChangeRowsPerPage}
 				/>
 				{this.renderConfirmDelete()}
-			</Paper>
+			</Fragment>
 		)
 	}
 }

@@ -282,6 +282,7 @@ class EnhancedTable extends React.Component {
 					deviceId={ selected.map(s => data[ data.findIndex(d => d.id === s) ]) }
 					t={t} />
 				<AssignOrg
+					devices
 					open={openAssignOrg}
 					handleClose={this.handleCloseAssignToOrg}
 					deviceId={selected.map(s => data[data.findIndex(d => d.id === s)])}

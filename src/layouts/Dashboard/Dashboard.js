@@ -91,8 +91,8 @@ class App extends React.Component {
 		this._isMounted = 0
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		//eslint-disable-next-line
-		this.refs.mainPanel ? this.refs.mainPanel.scrollTop = 0 : null
+		if (prevState.headerTitle.id !== this.state.headerTitle.id && this.refs.mainPanel)
+			this.refs.mainPanel.scrollTop = 0
 		if (prevProps.sId !== this.props.sId && this.props.sId !== "")
 			this.setState({ openSnackbar: true })
 	}
@@ -102,7 +102,6 @@ class App extends React.Component {
 		return (
 
 			<div className={classes.wrapper}>
-				{/* <GeoLocation/> */}
 				<div className={classes.mainPanel} ref={"mainPanel"}>
 					<Header
 						routes={dashboardRoutes}
@@ -142,6 +141,7 @@ class App extends React.Component {
 								</Switch>
 							</div>
 							<Snackbar
+								
 								anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
 								open={this.props.sOpen}
 								onClose={this.props.sClose}

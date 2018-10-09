@@ -1,11 +1,20 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom'
 import DashboardPage from "views/Dashboard/Dashboard";
-import { Dashboard, LibraryBooks, Devices as DeviceIco, SettingsRounded, People } from "@material-ui/icons";
+import { Dashboard, LibraryBooks, SettingsRounded, People, DeviceHub } from "variables/icons";
 import NotFound from "layouts/404/NotFound";
 import Loadable from 'react-loadable';
 import AsyncLoader from 'components/Loader/AsyncLoader';
+import { DataUsage } from 'variables/icons';
 
+const AsyncCollection = Loadable({
+	loader: () => import('./collection'),
+	loading: AsyncLoader
+})
+const AsyncCollections = Loadable({
+	loader: () => import('./collections'),
+	loading: AsyncLoader
+})
 const AsyncProjects = Loadable({
 	loader: () => import("./projects"),
 	loading: AsyncLoader
@@ -65,6 +74,19 @@ const dashboardRoutes = [
 		menuRoute: "projects"
 	},
 	{
+		path: "/collection/:id",
+		component: AsyncCollection,
+		hideFromSideBar: true,
+		menuRoute: "collections"
+	},
+	{
+		path: "/collections",
+		sidebarName: "sidebar.collections",
+		component: AsyncCollections,
+		icon: DataUsage,
+		menuRoute: "collections"
+	},
+	{
 		path: "/device/:id",
 		component: AsyncDevice,
 		hideFromSideBar: true,
@@ -73,7 +95,7 @@ const dashboardRoutes = [
 	{
 		path: "/devices",
 		sidebarName: "sidebar.devices",
-		icon: DeviceIco,
+		icon: DeviceHub,
 		component: AsyncDevices,
 		menuRoute: "devices"
 	},

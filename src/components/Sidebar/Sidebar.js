@@ -67,6 +67,15 @@ const Sidebar = ({ ...props }) => {
 			</Link>
 		</div>
 	);
+	var smallBrand = (
+		<div className={classes.logo}>
+			<Link to={'/'} onClick={props.handleDrawerToggle} className={classes.logoLink}>
+				<div className={classes.logoImage}>
+					<img src={logo} alt="logo" className={classes.img}/>
+				</div>
+			</Link>
+		</div>
+	)
 	return (
 		<div>
 			<Hidden lgUp>
@@ -82,7 +91,7 @@ const Sidebar = ({ ...props }) => {
 						keepMounted: true // Better open performance on mobile.
 					}}
 				>
-					{brand}
+					{smallBrand}
 					<div className={classes.sidebarWrapper}>
 						<div className={classes.appBarWrapper}>
 							<HeaderLinks t={t} onClose={props.handleDrawerToggle}/>

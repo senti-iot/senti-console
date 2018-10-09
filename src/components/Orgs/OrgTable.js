@@ -139,137 +139,137 @@ class OrgTable extends React.Component {
 		</Fragment>
 	}
 renderConfirmDelete = () => {
-		const { openDelete, selected } = this.state
-		const { data, t, classes } = this.props
-		return <Dialog
-			open={openDelete}
-			onClose={this.handleCloseDeleteDialog}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
-		>
-			<DialogTitle id="alert-dialog-title">{t("orgs.orgsDelete")}</DialogTitle>
-			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{t("orgs.orgsDeleteConfirm")}:
-				</DialogContentText>
-				<List>
-					{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
-						<ListItemText primary={data[data.findIndex(d => d.id === s)].name} /></ListItem>)}
-				</List>
-			</DialogContent>
-			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color="primary">
-					{t("actions.no")}
-				</Button>
-				<Button onClick={this.handleDeleteOrg} color="primary" autoFocus>
-					{t("actions.yes")}
-				</Button>
-			</DialogActions>
-		</Dialog>
-	}
+	const { openDelete, selected } = this.state
+	const { data, t, classes } = this.props
+	return <Dialog
+		open={openDelete}
+		onClose={this.handleCloseDeleteDialog}
+		aria-labelledby="alert-dialog-title"
+		aria-describedby="alert-dialog-description"
+	>
+		<DialogTitle id="alert-dialog-title">{t("orgs.orgsDelete")}</DialogTitle>
+		<DialogContent>
+			<DialogContentText id="alert-dialog-description">
+				{t("orgs.orgsDeleteConfirm")}:
+			</DialogContentText>
+			<List>
+				{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
+					<ListItemText primary={data[data.findIndex(d => d.id === s)].name} /></ListItem>)}
+			</List>
+		</DialogContent>
+		<DialogActions>
+			<Button onClick={this.handleCloseDeleteDialog} color="primary">
+				{t("actions.no")}
+			</Button>
+			<Button onClick={this.handleDeleteOrg} color="primary" autoFocus>
+				{t("actions.yes")}
+			</Button>
+		</DialogActions>
+	</Dialog>
+}
 
-	render() {
-		const { classes, t, order, orderBy, data } = this.props
-		const { selected, rowsPerPage, page } = this.state
-		let emptyRows;
-		if (data)
-			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
+render() {
+	const { classes, t, order, orderBy, data } = this.props
+	const { selected, rowsPerPage, page } = this.state
+	let emptyRows;
+	if (data)
+		emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 
-		return (
+	return (
 
-			<Paper className={classes.root}>
-				<EnhancedTableToolbar //	./TableToolbar.js
-					anchorElMenu={this.state.anchorElMenu}
-					handleToolbarMenuClose={this.handleToolbarMenuClose}
-					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
-					numSelected={selected.length}
-					options={this.options}
-					t={t}
-					content={this.renderTableToolBarContent()}
-				/>
-				<div className={classes.tableWrapper}>
-					<Table className={classes.table} aria-labelledby="tableTitle">
-						<EnhancedTableHead // ./ProjectTableHeader
-							numSelected={selected.length}
-							order={order}
-							orderBy={orderBy}
-							onSelectAllClick={this.handleSelectAllClick}
-							onRequestSort={this.handleRequestSort}
-							rowCount={data ? data.length : 0}
-							columnData={this.props.tableHead}
-							t={t}
-							classes={classes}
-							// mdDown={[0]} //Which Columns to display on small Screens
-							customColumn={[{ id: "name", label: t("orgs.fields.org") }]}
-						/>
-						<TableBody>
-							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-								const isSelected = this.isSelected(n.id);
-								return (
-									<TableRow
-										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push('/org/' + n.id) }}
-										// onContextMenu={this.handleToolbarMenuOpen}
-										role="checkbox"
-										aria-checked={isSelected}
-										tabIndex={-1}
-										key={n.id}
-										selected={isSelected}
-										style={{ cursor: 'pointer' }}
-									>
-										<Hidden lgUp>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-												<Checkbox checked={isSelected} />
-											</TableCell>
-											<TC content={
-												<ItemG container alignItems={"center"}>
+		<Paper className={classes.root}>
+			<EnhancedTableToolbar //	./TableToolbar.js
+				anchorElMenu={this.state.anchorElMenu}
+				handleToolbarMenuClose={this.handleToolbarMenuClose}
+				handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+				numSelected={selected.length}
+				options={this.options}
+				t={t}
+				content={this.renderTableToolBarContent()}
+			/>
+			<div className={classes.tableWrapper}>
+				<Table className={classes.table} aria-labelledby="tableTitle">
+					<EnhancedTableHead // ./ProjectTableHeader
+						numSelected={selected.length}
+						order={order}
+						orderBy={orderBy}
+						onSelectAllClick={this.handleSelectAllClick}
+						onRequestSort={this.handleRequestSort}
+						rowCount={data ? data.length : 0}
+						columnData={this.props.tableHead}
+						t={t}
+						classes={classes}
+						// mdDown={[0]} //Which Columns to display on small Screens
+						customColumn={[{ id: "name", label: t("orgs.fields.org") }]}
+					/>
+					<TableBody>
+						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
+							const isSelected = this.isSelected(n.id);
+							return (
+								<TableRow
+									hover
+									onClick={e => { e.stopPropagation(); this.props.history.push('/org/' + n.id) }}
+									// onContextMenu={this.handleToolbarMenuOpen}
+									role="checkbox"
+									aria-checked={isSelected}
+									tabIndex={-1}
+									key={n.id}
+									selected={isSelected}
+									style={{ cursor: 'pointer' }}
+								>
+									<Hidden lgUp>
+										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+											<Checkbox checked={isSelected} />
+										</TableCell>
+										<TC content={
+											<ItemG container alignItems={"center"}>
+												<ItemG>
+													<Info noWrap paragraphCell={classes.noMargin}>
+														{n.name}
+													</Info>
 													<ItemG>
-														<Info noWrap paragraphCell={classes.noMargin}>
-															{n.name}
-														</Info>
-														<ItemG>
-															<Caption noWrap className={classes.noMargin}>
-																{n.address && n.zip && n.city && n.country ?
-																	`${n.address}, ${n.zip} ${n.city}, ${countries.getName(n.country, this.props.language)}` : null}
-															</Caption>
-														</ItemG>
+														<Caption noWrap className={classes.noMargin}>
+															{n.address && n.zip && n.city && n.country ?
+																`${n.address}, ${n.zip} ${n.city}, ${countries.getName(n.country, this.props.language)}` : null}
+														</Caption>
 													</ItemG>
 												</ItemG>
-											} />
-										</Hidden>
-										<Hidden mdDown>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-												<Checkbox checked={isSelected} />
-											</TableCell>
-											<TC FirstC label={n.name} />
-											<TC label={n.address} />
-											<TC label={`${n.zip} ${n.city}`} />
-											<TC label={n.url} />
-										</Hidden>
-									</TableRow>
-								)
-							}) : null}
-							{emptyRows > 0 && (
-								<TableRow style={{ height: 49 /* * emptyRows */ }}>
-									<TableCell colSpan={8} />
+											</ItemG>
+										} />
+									</Hidden>
+									<Hidden mdDown>
+										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+											<Checkbox checked={isSelected} />
+										</TableCell>
+										<TC FirstC label={n.name} />
+										<TC label={n.address} />
+										<TC label={`${n.zip} ${n.city}`} />
+										<TC label={n.url} />
+									</Hidden>
 								</TableRow>
-							)}
-						</TableBody>
-					</Table>
-				</div>
-				<TP
-					count={data ? data.length : 0}
-					classes={classes}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					t={t}
-					handleChangePage={this.handleChangePage}
-					handleChangeRowsPerPage={this.handleChangeRowsPerPage}
-				/>
-				{this.renderConfirmDelete()}
-			</Paper>
-		)
-	}
+							)
+						}) : null}
+						{emptyRows > 0 && (
+							<TableRow style={{ height: 49 /* * emptyRows */ }}>
+								<TableCell colSpan={8} />
+							</TableRow>
+						)}
+					</TableBody>
+				</Table>
+			</div>
+			<TP
+				count={data ? data.length : 0}
+				classes={classes}
+				rowsPerPage={rowsPerPage}
+				page={page}
+				t={t}
+				handleChangePage={this.handleChangePage}
+				handleChangeRowsPerPage={this.handleChangeRowsPerPage}
+			/>
+			{this.renderConfirmDelete()}
+		</Paper>
+	)
+}
 }
 const mapStateToProps = (state) => ({
 	rowsPerPage: state.settings.trp,

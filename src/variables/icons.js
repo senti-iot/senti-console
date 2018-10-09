@@ -56,9 +56,14 @@ import Notifications from '@material-ui/icons/Notifications'
 import Email from '@material-ui/icons/Email'
 import LockOpen from '@material-ui/icons/LockOpen'
 import FolderShared from '@material-ui/icons/FolderShared'
-
+import DataUsage from '@material-ui/icons/DataUsage'
+import DeviceHub from '@material-ui/icons/DeviceHub'
+import Dashboard from '@material-ui/icons/Dashboard'
 
 export {
+	Dashboard,
+	DeviceHub,
+	DataUsage,
 	ExpandMore,
 	Clear,
 	Check,
