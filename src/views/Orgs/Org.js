@@ -130,7 +130,7 @@ class Org extends Component {
 					<ItemGrid xs={12} noMargin>
 						{!loadingUsers ? <OrgUsers
 							t={t}
-							users={this.state.users ? this.state.user : []}
+							users={this.state.users ? this.state.users : []}
 							history={history}
 						/> :
 							<CircularLoader notCentered />}
