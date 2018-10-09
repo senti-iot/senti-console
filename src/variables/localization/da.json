@@ -70,6 +70,18 @@
 			"pie": "Lagkage"
 		}
 	},
+	"collections": {
+		"pageTitle": "Datasamlinger",
+		"fields": {
+			"name": "Navn",
+			"status": "Status",
+			"description":"Beskrivelse",
+			"created": "Oprettet",
+			"modified": "Opdateret",
+			"collection": "Datasamling",
+			"org":"Organisation"
+		}
+	},
 	"confirmUser": {
 		"button": "Bekræft og log ind",
 		"lastStep": "Indtast et kodeord for at bekræfte oprettelsen af din Senti.Cloud konto.",
@@ -433,7 +445,8 @@
 		"devices": "Enheder",
 		"projects": "Projekter",
 		"settings": "Indstillinger",
-		"users": "Brugere"
+		"users": "Brugere",
+		"collections": "Data"
 	},
 	"snackbars": {
 		"assignDevice": "Enhed ${device} tildelt til ${org}",

@@ -1,15 +1,17 @@
 import React, { Component, Fragment } from 'react'
-import { withStyles, Paper, IconButton } from "@material-ui/core";
+import { withStyles, Paper/* , IconButton */ } from "@material-ui/core";
 import projectStyles from 'assets/jss/views/projects';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
 import { getAllCollections, deleteCollection } from 'variables/dataCollections';
 import CollectionTable from 'components/Collections/CollectionTable';
 import Toolbar from 'components/Toolbar/Toolbar'
-import { ViewList, ViewModule, Map, Add } from 'variables/icons';
+import { ViewList, ViewModule, Map, PictureAsPdf, Edit, Delete } from 'variables/icons';
 import { filterItems, handleRequestSort } from 'variables/functions'
 import { Route, Switch, Redirect } from "react-router-dom";
 import TableToolbar from '../../components/Table/TableToolbar';
+import { connect } from 'react-redux'
+
 class Collections extends Component {
 	constructor(props) {
 		super(props)
@@ -91,11 +93,13 @@ class Collections extends Component {
 		const { t } = this.props
 		let collections = await getAllCollections().then(rs => rs)
 		if (this._isMounted) {
+			console.log(collections);
+			
 			this.setState({
 				collections: collections ? collections : [],
 				collectionsHeader: [
 					{ id: "name", label: t("collections.fields.name") },
-					{ id: "status", label: t("collections.fields.status") },
+					{ id: "activeDevice.liveStatus", label: t("collections.fields.status") },
 					{ id: "created", label: t("collections.fields.created") },
 					{ id: "modified", label: t("collections.fields.modified") },
 					{ id: "org.name", label: t("collections.fields.org") }
@@ -132,7 +136,7 @@ class Collections extends Component {
 			await deleteCollection(u)
 		})
 		await this.getData()
-		this.setState({ selected: [] })
+		this.setState({ selected: [], anchorElMenu: null })
 		this.snackBarMessages(1)
 	}
 	handleSelectAllClick = (event, checked) => {
@@ -174,6 +178,28 @@ class Collections extends Component {
 		// 	</IconButton> : null
 		// 	}
 		// </Fragment>
+	}
+	options = () => {
+		const { t, /* accessLevel */ } = this.props
+		let allOptions = [
+			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
+			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
+			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
+		]
+		// if (accessLevel.apiorg.edit)
+		return allOptions
+		// else return [
+		// { label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf }
+		// ]
+	}
+	handleToolbarMenuOpen = e => {
+		e.stopPropagation()
+		this.setState({ anchorElMenu: e.currentTarget })
+	}
+
+	handleToolbarMenuClose = e => {
+		e.stopPropagation();
+		this.setState({ anchorElMenu: null })
 	}
 	renderTableToolBar = () => {
 		const { t } = this.props
@@ -245,5 +271,12 @@ class Collections extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	accessLevel: state.settings.user.privileges
+})
 
-export default withStyles(projectStyles)(Collections)
+const mapDispatchToProps = {
+  
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(projectStyles)(Collections))

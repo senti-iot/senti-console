@@ -4,7 +4,7 @@ import {
 	DialogContentText, DialogActions, Button, /* MenuItem, Menu, IconButton,*/  ListItem, ListItemIcon, ListItemText, List,
 } from "@material-ui/core"
 import TC from 'components/Table/TC'
-import { Delete, Edit, PictureAsPdf/*  Add */ } from 'variables/icons'
+// import { Delete, Edit, PictureAsPdf/*  Add */ } from 'variables/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import PropTypes from "prop-types"
 import React, { Fragment } from "react"
@@ -15,7 +15,7 @@ import { connect } from "react-redux"
 import TP from 'components/Table/TP'
 import { Info, Caption, ItemG } from "components";
 import { dateFormatter } from 'variables/functions';
-
+import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
 class CollectionTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -24,21 +24,21 @@ class CollectionTable extends React.Component {
 			// selected: [],
 			page: 0,
 			rowsPerPage: props.rowsPerPage,
-			anchorElMenu: null,
+			// anchorElMenu: null,
 			anchorFilterMenu: null,
 			openDelete: false,
 		}
 	}
 
-	handleToolbarMenuOpen = e => {
-		e.stopPropagation()
-		this.setState({ anchorElMenu: e.currentTarget })
-	}
+	// handleToolbarMenuOpen = e => {
+	// 	e.stopPropagation()
+	// 	this.setState({ anchorElMenu: e.currentTarget })
+	// }
 
-	handleToolbarMenuClose = e => {
-		e.stopPropagation();
-		this.setState({ anchorElMenu: null })
-	}
+	// handleToolbarMenuClose = e => {
+	// 	e.stopPropagation();
+	// 	this.setState({ anchorElMenu: null })
+	// }
 
 	handleRequestSort = (event, property) => {
 		this.props.handleRequestSort(event, property)
@@ -104,7 +104,6 @@ class CollectionTable extends React.Component {
 	handleDeleteCollection = async () => {
 		await this.props.handleDeleteCollections(this.props.selected)
 		this.setState({
-			anchorElMenu: null,
 			openDelete: false
 		})
 	}
@@ -113,19 +112,7 @@ class CollectionTable extends React.Component {
 	handleEdit = () => {
 		this.props.history.push(`/collection/${this.state.selected[0]}/edit`)
 	}
-	options = () => {
-		const { t, accessLevel } = this.props
-		let allOptions = [
-			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
-			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
-		]
-		if (accessLevel.apicollection.edit)
-			return allOptions
-		else return [
-			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf }
-		]
-	}
+	
 	addNewCollection = () => { this.props.history.push('/collections/new') }
 
 	// renderTableToolBarContent = () => {
@@ -168,7 +155,21 @@ class CollectionTable extends React.Component {
 			</DialogActions>
 		</Dialog>
 	}
-
+	renderIcon = (status) => {
+		const { classes, t } = this.props
+		switch (status) {
+			case 1:
+				return <div title={t("devices.status.yellow")}><SignalWifi2Bar className={classes.yellowSignal} /></div>
+			case 2:
+				return <div title={t("devices.status.green")}><SignalWifi2Bar className={classes.greenSignal} /></div>
+			case 0:
+				return <div title={t("devices.status.red")}><SignalWifi2Bar className={classes.redSignal} /></div>
+			case null:
+				return <SignalWifi2BarLock />
+			default:
+				break;
+		}
+	}
 
 	render() {
 		const { classes, t, order, orderBy, data, selected } = this.props
@@ -246,12 +247,12 @@ class CollectionTable extends React.Component {
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
-											<TC FirstC label={n.name} />
-											<TC label={n.description} />
+											<TC  label={n.name} />
+											<TC className={classes.tablecellcheckbox} FirstC label={n.activeDevice ? this.renderIcon(n.activeDevice.liveStatus) : null} />
 											<TC label={dateFormatter(n.created)} />
 											<TC label={dateFormatter(n.modified)} />
 											<TC label={n.org ? n.org.name : ""} />
-
+											
 										</Hidden>
 									</TableRow>
 								)
