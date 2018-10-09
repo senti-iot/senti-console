@@ -270,7 +270,7 @@
 		"changePassword": "Skift kodeord",
 		"forgotPass": "Glemt kodeord?",
 		"pass": "Kodeord",
-		"requestPasswordReset": "Anmodning om nulstilling af kodeord",
+		"requestPasswordReset": "Nulstil kodeord",
 		"resetPassRequestMessage": "En E-mail er er blevet sendt med instruktioner for hvordan du nulstiller dit kodeord!",
 		"resetPasswordMessage": "Nulstil dit kodeord ved at indtaste din E-mail adresse",
 		"username": "Brugernavn"
