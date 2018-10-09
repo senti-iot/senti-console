@@ -1,5 +1,5 @@
 import { Grid, IconButton, Menu, MenuItem, Toolbar, Typography, withStyles } from '@material-ui/core';
-import { MoreVert as MoreVertIcon } from '@material-ui/icons';
+import { MoreVert as MoreVertIcon } from 'variables/icons';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import { boxShadow } from 'assets/jss/material-dashboard-react';
 import toolbarStyles from 'assets/jss/material-dashboard-react/tableToolBarStyle';
@@ -8,6 +8,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { ItemGrid } from '..';
+// import FilterToolbar from 'components/Table/FilterToolbar';
+import { ItemG } from 'components/index';
 
 let selectedRender = props => {
 	const { numSelected, t } = props;
@@ -66,14 +68,19 @@ let EnhancedTableToolbar = props => {
 			className={classNames(classes.root, {
 				[classes.highlight]: numSelected > 0,
 			})}>
-
-			<div className={classes.title}>
+			{/* <ItemG container> */}
+			<ItemG xs={12}>
 				{numSelected > 0 ? (
 					selectedRender(props)
 				) :
 					defaultRender(props)
 				}
-			</div>
+			</ItemG>
+			{/* <div style={{ width: "100%", background: "#ececec", height: 1, margin: 4 }}/> */}
+			{/* <ItemG xs={12}>
+					<FilterToolbar filters={props.ft}/>
+				</ItemG> */}
+			{/* </ItemG> */}
 		</Toolbar>
 	);
 };

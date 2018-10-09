@@ -7,7 +7,7 @@ import DeviceTable from 'components/Devices/DeviceTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import { Maps } from 'components/Map/Maps';
 import GridContainer from 'components/Grid/GridContainer';
-import { ViewList, ViewModule, Map } from '@material-ui/icons'
+import { ViewList, ViewModule, Map } from 'variables/icons'
 import Toolbar from 'components/Toolbar/Toolbar'
 import { filterItems, handleRequestSort } from '../../variables/functions';
 import DeviceCard from 'components/Devices/DeviceCard'

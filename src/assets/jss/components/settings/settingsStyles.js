@@ -6,8 +6,6 @@ export const settingsStyles = theme => ({
 		marginTop: 16,
 		marginBottom: 8,
 		minWidth: 208,
-		flexGrow: 1,
-		maxWidth: 208,
 	},
 	iconColor: {
 		fill: "rgba(0, 0, 0, 0.54)",

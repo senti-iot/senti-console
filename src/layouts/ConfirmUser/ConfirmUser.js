@@ -1,22 +1,11 @@
 import React from "react";
-// material-ui components
-import {/*  InputAdornment, */ withStyles, CardContent, Collapse, Button, Grid } from "@material-ui/core";
-// @material-ui/icons
-// import { LockOutlined, Person } from "@material-ui/icons";
-// core components
-import { GridContainer, ItemGrid, Info, /* Warning,  */Danger, ItemG } from "components";
-// import Button from "components/CustomButtons/Button.js";
+import { withStyles, CardContent, Collapse, Button, Grid } from "@material-ui/core";
+import { GridContainer, ItemGrid, Info, Danger, ItemG } from "components";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
-// import CustomInput from "components/CustomInput/CustomInput.js";
-
 import loginPageStyle from "assets/jss/material-dashboard-react/loginPageStyle.js";
-// import { loginUser } from "variables/dataLogin";
-// import { setToken } from 'variables/data'
-// import cookie from "react-cookies";
-// import classNames from 'classnames';
 import CircularLoader from "components/Loader/CircularLoader";
 import withLocalization from "components/Localization/T";
 import { connect } from 'react-redux';
@@ -26,7 +15,7 @@ import { changeLanguage } from 'redux/localization';
 import { confirmUser } from 'variables/dataUsers';
 import cookie from 'react-cookies';
 import { setToken } from 'variables/data';
-var passChecker = require("zxcvbn")
+// var passChecker = require("zxcvbn")
 
 class ConfirmUser extends React.Component {
 	constructor(props) {
@@ -154,17 +143,17 @@ class ConfirmUser extends React.Component {
 
 
 	handleChange = prop => e => {
-		let score = 0 
-		let result = null
-		let pass = e.target.value
-		if (!(pass.length < this.state.minLength)) { 
-			result = passChecker(pass, [])
-			score = result.score
-		}
+		// let score = 0 
+		// let result = null
+		// let pass = e.target.value
+		// if (!(pass.length < this.state.minLength)) { 
+		// 	result = passChecker(pass, [])
+		// 	score = result.score
+		// }
 		this.setState({
 			...this.state,
-			isValid: score >= this.state.minScore,
-			score,
+			// isValid: score >= this.state.minScore,
+			// score,
 			[prop]: e.target.value
 		})
 		if (this.state.error)

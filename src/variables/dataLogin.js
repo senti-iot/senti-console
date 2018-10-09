@@ -6,9 +6,9 @@ export const loginUser = async (username, password) => {
 	return session
 }
 export const logOut = async () => {
-	var session = cookie.load('loginData')
+	var session = cookie.load('SESSION')
 	var data = await loginApi.delete('odeum/auth/basic', JSON.stringify(session.sessionID))
-	cookie.remove('loginData')
+	cookie.remove('SESSION')
 	return data
 }
 

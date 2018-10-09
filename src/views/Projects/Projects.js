@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { getAllProjects, deleteProject } from '../../variables/dataProjects';
 import { withStyles } from "@material-ui/core";
 import { Switch, Route, Redirect } from 'react-router-dom'
-import { ViewList, ViewModule } from '@material-ui/icons'
+import { ViewList, ViewModule, Add, FilterList } from 'variables/icons'
 import projectStyles from 'assets/jss/views/projects';
 import ProjectTable from 'components/Project/ProjectTable';
 import CircularLoader from 'components/Loader/CircularLoader';
@@ -10,12 +10,19 @@ import GridContainer from 'components/Grid/GridContainer';
 import ProjectCards from 'components/Project/ProjectCards';
 import Toolbar from 'components/Toolbar/Toolbar'
 import { filterItems, handleRequestSort } from '../../variables/functions';
+import EnhancedTableToolbar from 'components/Table/TableToolbar'
+import {
+	/* Checkbox, Hidden, */ Paper, /* DialogTitle, Dialog, DialogContent, */
+	/* DialogContentText, DialogActions,  */IconButton, Menu, MenuItem
+} from "@material-ui/core"
+import { boxShadow } from 'assets/jss/material-dashboard-react';
 
 class Projects extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
+			selected: [],
 			projects: [],
 			projectHeader: [],
 			loading: true,
@@ -23,6 +30,7 @@ class Projects extends Component {
 			order: "desc",
 			orderBy: "title",
 			filters: {
+				name: false,
 				keyword: '',
 				startDate: null,
 				endDate: null,
@@ -34,7 +42,7 @@ class Projects extends Component {
 
 	componentDidMount = async () => {
 		this._isMounted = 1
-		await this.getProjects()
+		await this.getData()
 		if (this._isMounted) {
 			if (this.props.location.pathname.includes('/grid')) {
 				this.setState({ route: 1 })
@@ -47,7 +55,9 @@ class Projects extends Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-
+	filter = (s) => {
+		console.log(s)
+	}
 	filterItems = (data) => {
 		return filterItems(data, this.state.filters)
 	}
@@ -83,7 +93,7 @@ class Projects extends Component {
 			}
 		})
 	}
-	getProjects = async () => {
+	getData = async () => {
 		const { t } = this.props
 		await getAllProjects().then(rs => this._isMounted ? this.setState({
 			projects: rs ? rs : [],
@@ -98,61 +108,124 @@ class Projects extends Component {
 			loading: false
 		}, () => this.handleRequestSort(null, "title")) : null)
 	}
-
+	snackBarMessages = (msg) => {
+		const { s } = this.props
+		switch (msg) {
+			case 1:
+				s("snackbars.deletedSuccess")
+				break;
+			case 2:
+				s("snackbars.exported")
+				break;
+			default:
+				break;
+		}
+	}
 	deleteProjects = async (projects) => {
 		await deleteProject(projects).then(() => {
-			this.getProjects()
+			this.snackBarMessages(1)
+			this.getData()
 		})
 	}
-	renderAllProjects = () => {
+	renderTableToolBarContent = () => {
+		const { classes, t } = this.props
+		const { anchorFilterMenu, projectHeader } = this.state
+
+		return <Fragment>
+			<IconButton aria-label="Add new project" onClick={this.AddNewProject}>
+				<Add />
+			</IconButton>
+			<IconButton
+				className={classes.secondAction}
+				aria-label={t("tables.filter")}
+				aria-owns={anchorFilterMenu ? "filter-menu" : null}
+				onClick={this.handleFilterMenuOpen}>
+				<FilterList />
+			</IconButton>
+			<Menu
+				id="filter-menu"
+				anchorEl={anchorFilterMenu}
+				open={Boolean(anchorFilterMenu)}
+				onClose={this.handleFilterMenuClose}
+				PaperProps={{ style: { width: 200, boxShadow: boxShadow } }}>
+
+				{projectHeader.map(option => {
+					return <MenuItem key={option.id} onClick={this.handleFilter}>
+						{option.label}
+					</MenuItem>
+				})}
+			</Menu>
+		</Fragment>
+	}
+	ft = () => {
 		const { t } = this.props
-		const { loading, order, orderBy, projects, projectHeader, filters } = this.state
-		return loading ? <CircularLoader /> : <ProjectTable
-			data={ this.filterItems(projects) }
-			tableHead={ projectHeader }
-			handleFilterEndDate={ this.handleFilterEndDate }
-			handleFilterKeyword={ this.handleFilterKeyword }
-			handleFilterStartDate={ this.handleFilterStartDate }
-			handleRequestSort={ this.handleRequestSort }
-			order={ order }
-			orderBy={ orderBy }
-			filters={ filters }
-			deleteProjects={ this.deleteProjects }
-			t={ t }
-		/>
+		return [{ id: 'title', name: t("projects.fields.name"), func: this.filter, type: "text" },
+			{ id: 'startDate', name: t("projects.fields.startDate"), func: this.filter, type: "date" }
+		]
+
+	}
+	renderAllProjects = () => {
+		const { t, classes } = this.props
+		const { loading, order, orderBy, projects, projectHeader, filters, selected } = this.state
+		return loading ? <CircularLoader /> :
+			<Paper className={classes.root}>
+				<EnhancedTableToolbar
+					ft={this.ft()}
+					anchorElMenu={this.state.anchorElMenu}
+					handleToolbarMenuClose={this.handleToolbarMenuClose}
+					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+					numSelected={selected.length}
+					options={this.options}
+					t={t}
+					content={this.renderTableToolBarContent()}
+				/><ProjectTable
+					filter={this.filter}
+					data={this.filterItems(projects)}
+					tableHead={projectHeader}
+					handleFilterEndDate={this.handleFilterEndDate}
+					handleFilterKeyword={this.handleFilterKeyword}
+					handleFilterStartDate={this.handleFilterStartDate}
+					handleRequestSort={this.handleRequestSort}
+					order={order}
+					orderBy={orderBy}
+					filters={filters}
+					deleteProjects={this.deleteProjects}
+					t={t}
+				/>
+			</Paper>
 	}
 	renderList = () => {
-		return <GridContainer justify={ 'center' }>
-			{ this.renderAllProjects() }
+		return <GridContainer justify={'center'}>
+			{this.renderAllProjects()}
 		</GridContainer>
 	}
 	renderCards = () => {
 		const { loading } = this.state
 		const { t } = this.props
 		return loading ? <CircularLoader /> : <GridContainer>
-			<ProjectCards t={ t } projects={ this.filterItems(this.state.projects) } />
+			<ProjectCards t={t} projects={this.filterItems(this.state.projects)} />
 		</GridContainer>
 	}
 	tabs = [
 		{ id: 0, title: this.props.t("projects.tabs.listView"), label: <ViewList />, url: `${this.props.match.path}/list` },
 		{ id: 1, title: this.props.t("projects.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.path}/grid` },
 	]
-	render () {
+	render() {
 		const { projects, filters } = this.state
 		return (
 			<Fragment>
 				<Toolbar
-					data={ projects }
-					filters={ filters }
-					history={ this.props.history }
-					match={ this.props.match }
-					handleFilterKeyword={ this.handleFilterKeyword }
-					tabs={ this.tabs }
+					data={projects}
+					filters={filters}
+					history={this.props.history}
+					match={this.props.match}
+					handleFilterKeyword={this.handleFilterKeyword}
+					tabs={this.tabs}
 				/>
 				<Switch>
-					<Route path={ `${this.props.match.path}/grid` } render={ () => this.renderCards() } />
-					<Route path={ `${this.props.match.path}/list` } render={ () => this.renderList() } />
-					<Redirect path={ `${this.props.match.path}` } to={ `${this.props.match.path}/list` } />
+					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} />
+					<Route path={`${this.props.match.path}/list`} render={() => this.renderList()} />
+					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
 				</Switch>
 			</Fragment>
 		)

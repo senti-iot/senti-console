@@ -1,11 +1,12 @@
 import { Grid, IconButton, Menu, MenuItem, withStyles } from "@material-ui/core";
-import { AccountBox, Business, Lock } from '@material-ui/icons';
+import { AccountBox, Business, Lock } from 'variables/icons';
 import headerLinksStyle from "assets/jss/material-dashboard-react/headerLinksStyle";
 import React from "react";
 import cookie from "react-cookies";
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Gravatar from 'react-gravatar'
+import { logOut } from 'variables/dataLogin';
 class HeaderLinks extends React.Component {
 	state = {
 		anchorProfile: null
@@ -25,9 +26,9 @@ class HeaderLinks extends React.Component {
 		if (this.props.onClose)
 			this.props.onClose() 
 	}
-	logOut = () => {
+	logOut = async () => {
 		try {
-			cookie.remove("SESSION", { path: '/' })
+			await logOut().then(() => {	cookie.remove("SESSION", { path: '/' })})
 		}
 		catch (e) { 
 		}

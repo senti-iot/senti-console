@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { GridContainer, ItemGrid, CircularLoader, ItemG, TextF } from 'components';
+import { GridContainer, ItemGrid, CircularLoader, ItemG, TextF, Danger } from 'components';
 import UserContact from './UserCards/UserContact';
 import { UserLog } from './UserCards/UserLog';
 import { userStyles } from 'assets/jss/components/users/userStyles';
@@ -10,8 +10,7 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogActions,
-	Button,
-	Snackbar
+	Button
 } from '@material-ui/core';
 import { getUser, deleteUser, resendConfirmEmail } from 'variables/dataUsers';
 import { connect } from 'react-redux'
@@ -34,7 +33,9 @@ class User extends Component {
 				current: "",
 				newP: "",
 				confirm: ""
-			}
+			},
+			changePasswordError: false,
+			errorMessage: ""
 		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
@@ -45,17 +46,17 @@ class User extends Component {
 			}
 	}
 
-	componentDidMount = () => {
+	componentDidMount = async () => {
 		if (this.props.match) {
 			if (this.props.match.params.id) {
-				this.timer = setTimeout(async () => await getUser(this.props.match.params.id).then(async rs => {
+				await getUser(this.props.match.params.id).then(async rs => {
 					if (rs.id === null)
 						this.props.history.push('/404')
 					else {
 						this.props.setHeader(`${rs.firstName} ${rs.lastName}`, true, '/users', "users")
 						this.setState({ user: rs, loading: false })
 					}
-				}))
+				})
 			}
 		}
 		else {
@@ -67,10 +68,9 @@ class User extends Component {
 		let userId = {
 			id: user.id
 		}
-		let data = await resendConfirmEmail(userId).then(rs => rs)
-		console.log(data);
+		await resendConfirmEmail(userId).then(rs => rs)
 		this.setState({ openResendConfirm: false })
-		
+
 	}
 	handleOpenResend = () => {
 		this.setState({ openResendConfirm: true })
@@ -88,37 +88,45 @@ class User extends Component {
 		this.setState({ openDelete: false })
 	}
 	handleDeleteUser = async () => {
-		await deleteUser(this.state.user.id).then(rs => {
-			return rs ? this.setState({ openSnackbar: 1, openDelete: false }) : null;
-		})
+		await deleteUser(this.state.user.id).then(rs => rs ? this.close() : null)
 	}
-	snackBarMessages = () => {
-		const { t } = this.props
-		let msg = this.state.openSnackbar
+	close = (rs) => {
+		this.setState({ openDelete: false })
+		this.snackBarMessages(1)
+		this.props.history.push('/users')
+	}
+	snackBarMessages = (msg) => {
+		const { s } = this.props
 		switch (msg) {
 			case 1:
-				return t("snackbars.userDeleted", { user: this.state.user.firstName + " " + this.state.user.lastName })
+				s("snackbars.userDeleted", { user: this.state.user.firstName + " " + this.state.user.lastName })
+				break
+			case 2:
+				s("snackbars.userPasswordChanged")
+				break
 			default:
 				break
 		}
 	}
-	closeSnackBar = () => {
-		if (this.state.openSnackbar === 1) {
-			this.setState({ openSnackbar: 0 }, () => this.redirect())
-		}
-		else
-			this.setState({ openSnackbar: 0 })
-	}
-	redirect = () => {
-		setTimeout(() => this.props.history.push('/users'), 1000)
-	}
+
 	handleOpenChangePassword = () => {
 		this.setState({ openChangePassword: true })
 	}
-	handleCloseChangePassword = () => {
+
+	handleCloseChangePassword = success => e => {
+		if (e)
+			e.preventDefault()
+		if (success === true)
+			this.snackBarMessages(2) //userPasswordChanged
 		this.setState({ openChangePassword: false })
 	}
+
 	handleInputChange = e => {
+		if (this.state.changePasswordError)
+			this.setState({
+				errorMessage: false,
+				changePasswordError: false
+			})
 		this.setState({
 			pw: {
 				...this.state.pw,
@@ -127,6 +135,7 @@ class User extends Component {
 		})
 	}
 	handleChangePassword = async () => {
+		const { t } = this.props
 		const { confirm, newP } = this.state.pw
 		if (confirm === newP) {
 			let newPassObj = {
@@ -134,8 +143,15 @@ class User extends Component {
 				oldPassword: this.state.pw.current,
 				newPassword: this.state.pw.newP
 			}
-			let data = await setPassword(newPassObj).then(rs => rs)
-			return data
+			let success = await setPassword(newPassObj).then(rs => rs)
+			if (success)
+				this.handleCloseChangePassword(success)()
+			else {
+				this.setState({ changePasswordError: true, errorMessage: t("confirmUser.networkError") })
+			}
+		}
+		else {
+			this.setState({ changePasswordError: true, errorMessage: t("confirmUser.validation.passwordMismatch") })
 		}
 	}
 	renderChangePassword = () => {
@@ -143,15 +159,13 @@ class User extends Component {
 		const { t, accessLevel } = this.props
 		return <Dialog
 			open={openChangePassword}
-			onClose={this.handleCloseChangePassword}
+			onClose={this.handleCloseChangePassword()}
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
 			<DialogTitle id="alert-dialog-title">{t("menus.changePassword")}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{/* {t("users.userDeleteConfirm", { user: (this.state.user.firstName + " " + this.state.user.lastName) }) + "?"} */}
-				</DialogContentText>
+				<Danger> {this.state.errorMessage} </Danger>
 				{accessLevel.apiorg.editusers ? null : <ItemG>
 					<TextF
 						id={'current'}
@@ -264,17 +278,6 @@ class User extends Component {
 				{this.renderDeleteDialog()}
 				{this.renderChangePassword()}
 				{this.renderConfirmEmail()}
-				<Snackbar
-					autoHideDuration={1000}
-					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-					open={this.state.openSnackbar !== 0 ? true : false}
-					onClose={this.closeSnackBar}
-					message={
-						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-							{this.snackBarMessages()}
-						</ItemGrid>
-					}
-				/>
 			</Fragment>
 		)
 	}

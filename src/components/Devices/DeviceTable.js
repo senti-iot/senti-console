@@ -3,7 +3,7 @@ import {
 	TableRow, Typography, withStyles, Dialog, DialogTitle, DialogContent,
 	DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem
 } from "@material-ui/core";
-import { SignalWifi2Bar, SignalWifi2BarLock, Add, FilterList } from '@material-ui/icons';
+import { SignalWifi2Bar, SignalWifi2BarLock, Add, FilterList } from 'variables/icons';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
 import PropTypes from "prop-types";
 import React, { Fragment } from "react";
@@ -209,7 +209,6 @@ class EnhancedTable extends React.Component {
 				break;
 		}
 	}
-	addNewOrg = () => { this.props.history.push('/orgs/new') }
 
 	renderTableToolBarContent = () => {
 		const { classes, tableHead, t } = this.props
@@ -283,6 +282,7 @@ class EnhancedTable extends React.Component {
 					deviceId={ selected.map(s => data[ data.findIndex(d => d.id === s) ]) }
 					t={t} />
 				<AssignOrg
+					devices
 					open={openAssignOrg}
 					handleClose={this.handleCloseAssignToOrg}
 					deviceId={selected.map(s => data[data.findIndex(d => d.id === s)])}

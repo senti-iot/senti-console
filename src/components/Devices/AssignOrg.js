@@ -1,11 +1,12 @@
 import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles } from "@material-ui/core";
-import { Close } from '@material-ui/icons';
+import { Close } from 'variables/icons';
 import { headerColor, hoverColor, primaryColor } from 'assets/jss/material-dashboard-react';
 import cx from "classnames";
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import { getAllOrgs } from 'variables/dataOrgs';
 import { updateDevice } from 'variables/dataDevices'
+import { updateCollection } from 'variables/dataCollections';
 
 const styles = {
 	appBar: {
@@ -71,11 +72,14 @@ class AssignOrg extends React.Component {
 		
 	}
 	assignOrg = async () => {
-		//Todo Snackbar success
-		this.props.deviceId.forEach(async element => {
-			await updateDevice({ ...element, org: { id: this.state.selectedOrg } }).then(rs => rs)
-		});
-		
+		if (this.props.devices)
+			this.props.deviceId.forEach(async element => {
+				await updateDevice({ ...element, org: { id: this.state.selectedOrg } }).then(rs => rs)
+			});
+		if (this.props.collections)
+			this.props.collectionId.forEach(async e => {
+				await updateCollection({ ...e, org: { id: this.state.selectedOrg } }).then(rs => rs)
+			})
 		// if (Array.isArray(this.props.deviceId))
 		// {
 		// 	this.props.deviceId.map(async id => await assignOrgToDevice({ Org_id: this.state.selectedOrg, id: id }))

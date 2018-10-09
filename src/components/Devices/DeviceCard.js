@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { withStyles, IconButton, Menu, MenuItem, Button } from '@material-ui/core';
 import { ItemGrid, SmallCard, ItemG, Info } from '../index';
-import { MoreVert, Edit, SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons';
+import { MoreVert, Edit, SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons';
 import Caption from '../Typography/Caption';
 import { Link } from 'react-router-dom';
 import regularCardStyle from '../../assets/jss/material-dashboard-react/regularCardStyle';

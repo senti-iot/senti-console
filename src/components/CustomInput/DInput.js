@@ -12,6 +12,7 @@ class DInput extends Component {
 	}
 	handleMenuItem = (e) => {
 		this.props.func(e.target.value)
+		this.handleCloseActionsDetails()
 	}
 	handleCloseActionsDetails = event => {
 		this.setState({ actionAnchor: null });

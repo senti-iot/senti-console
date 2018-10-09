@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, /*  FormControl, InputLabel, Select, Input, Chip,  MenuItem, */ Collapse, Button, Snackbar, MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
-import { Save, Check } from '@material-ui/icons';
+import { Paper, withStyles, Grid, /*  FormControl, InputLabel, Select, Input, Chip,  MenuItem, */ Collapse, Button, MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
+import { Save, Check } from 'variables/icons';
 import classNames from 'classnames';
 import { getOrg, updateOrg, getAllOrgs } from 'variables/dataOrgs'
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from '..'
@@ -31,7 +31,6 @@ class EditOrg extends Component {
 			creating: false,
 			created: false,
 			loading: true,
-			openSnackBar: false,
 		}
 	}
 	handleValidation = () => {
@@ -78,10 +77,12 @@ class EditOrg extends Component {
 				return ""
 		}
 	}
+	
+	
 	componentDidMount = async () => {
 		this._isMounted = 1
 		let id = this.props.match.params.id
-		const { accessLevel, t } = this.props
+		const { accessLevel, t, history } = this.props
 		await getOrg(id).then(rs => {
 			if (rs && this._isMounted) {
 				this.setState({
@@ -115,7 +116,8 @@ class EditOrg extends Component {
 		this.setState({
 			loading: false
 		})
-		this.props.setHeader("orgs.updateOrg", true, `/org/${id}`, "users")
+		let prevURL = history.location.state ? history.location.state['prevURL'] : null
+		this.props.setHeader("orgs.updateOrg", true, prevURL ? prevURL : "/orgs", "users")
 	}
 
 	componentWillUnmount = () => {
@@ -158,28 +160,25 @@ class EditOrg extends Component {
 			})
 		}
 	}
-	snackBarClose = () => {
-		this.setState({ openSnackBar: false })
-		this.redirect = setTimeout(async => {
-			this.props.history.push(`/org/${this.state.org.id}`)
-		}, 1e3)
+	close = () => {
+		this.setState({ created: true, creating: false })
+		this.props.s("snackbars.orgUpdated", ({ org: this.state.org.name }))
+		this.props.history.push(`/org/${this.state.org.id}`)
 	}
+
 	handleUpdateOrg = () => {
 		clearTimeout(this.timer)
-		this.timer = setTimeout(async () => {
-			if (this.handleValidation()) {
-				return updateOrg(this.state.org).then(rs => rs ?
-					this.setState({ created: true, creating: false, openSnackBar: true }) :
-					this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
-					, 2e3)
-			}
-			else {
-				this.setState({
-					creating: false,
-					error: true,
-				})
-			}
-		})
+		if (this.handleValidation()) {
+			return updateOrg(this.state.org).then(rs => rs ?
+				this.close() :
+				this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
+			)}
+		else {
+			this.setState({
+				creating: false,
+				error: true,
+			})
+		}
 
 	}
 
@@ -210,8 +209,6 @@ class EditOrg extends Component {
 				onChange={ this.handleOrgChange }
 				renderValue={ value => value.name }
 			>
-				{/* { accessLevel.apisuperuser ? <MenuItem key={ 99 } value={ noOrg }>{ t("orgs.fields.topLevelOrg") }</MenuItem> : null } */ }
-
 				{ orgs ? orgs.map(org => (
 					<MenuItem
 						key={ org.id }
@@ -384,21 +381,6 @@ class EditOrg extends Component {
 							</div>
 						</Grid>
 					</Paper>
-					<Snackbar
-						anchorOrigin={ { vertical: "bottom", horizontal: "right" } }
-						open={ this.state.openSnackBar }
-						onClose={ this.snackBarClose }
-						ContentProps={ {
-							'aria-describedby': 'message-id',
-						} }
-						autoHideDuration={ 1500 }
-						message={
-							<ItemGrid zeroMargin noPadding justify={ 'center' } alignItems={ 'center' } container id="message-id">
-								<Check className={ classes.leftIcon } color={ 'primary' } />
-								{ t("snackbars.orgUpdated", { org: org.name }) }
-							</ItemGrid>
-						}
-					/>
 				</GridContainer>
 				: <CircularLoader />
 		)

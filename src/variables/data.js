@@ -3,6 +3,7 @@ import cookie from 'react-cookies'
 // https://betabackend.senti.cloud/
 // https://senti.cloud
 let backendHost;
+
 const hostname = window && window.location && window.location.hostname;
 
 if (hostname === 'console.senti.cloud') {

@@ -70,6 +70,16 @@
 			"pie": "Pie"
 		}
 	},
+	"collections": {
+		"pageTitle": "Data Collections",
+		"fields": {
+			"name":"Name",
+			"description":"Description",
+			"created":"Created",
+			"modified":"Last modified",
+			"collection":"Data collection"
+		}
+	},	
 	"confirmUser": {
 		"button": "Confirm password",
 		"lastStep": "Create your password to confirm your Senti.Cloud account.",
@@ -133,8 +143,8 @@
 			"map": "Map",
 			"pictures": "Images"
 		},
-		"confirmUnassignMessage": "Unassign the sellected devices from project:",
-		"confirmUnassignTitle": "Unassign devices",
+		"confirmUnassignMessage": "Unassign the selected devices from project:",
+		"confirmUnassignTitle": "Unassign from project",
 		"device": "Device",
 		"editDetailsTitle": "Edit %{deviceId}",
 		"editHardwareTitle": "Edit hardware for device %{deviceId}",
@@ -217,8 +227,8 @@
 		"apply": "Apply",
 		"cancel": "Cancel",
 		"no": "No",
-		"unassign": "Are you sure you want to unassign %{deviceID} %{deviceName} from %{project}",
-		"unassignTitle": "Unassign ${what}?",
+		"unassign": "Are you sure you want to unassign %{name} with ID: %{id}, from %{what}",
+		"unassignTitle": "Unassign?",
 		"warnings": {
 			"notImplemented": "Not implemented",
 			"wip": "Work in progress"
@@ -271,8 +281,8 @@
 		"forgotPass": "Forgot password?",
 		"pass": "Password",
 		"requestPasswordReset": "Request password reset",
-		"resetPassRequestMessage": "An Email has been sent with instructions on how to reset your password!",
-		"resetPasswordMessage": "Reset your password by entering your Email",
+		"resetPassRequestMessage": "An E-mail has been sent with instructions on how to reset your password!",
+		"resetPasswordMessage": "Reset your password by entering your E-mail",
 		"username": "Username"
 	},
 	"menus": {
@@ -300,7 +310,9 @@
 		"showMore": "Show more",
 		"unassign": "Unassign",
 		"unassignDevice": "Unassign from project",
-		"unassignProject": "Unassign device(s) from project"
+		"unassignProject": "Unassign device(s) from project",
+		"unassignOrg": "Unassign organisation",
+		"userResendEmail": "Resend Confirm Email"
 	},
 	"orgs": {
 		"create": "Create",
@@ -337,7 +349,7 @@
 	},
 	"projects": {
 		"contact": {
-			"email": "Email:",
+			"email": "E-mail:",
 			"name": "Name:",
 			"organisation": "Organisation:",
 			"phone": "Phone:",
@@ -362,11 +374,8 @@
 		"new": "Create project",
 		"noOrganisationSelected": "Select an organisation to see available devices.",
 		"pageTitle": "Projects",
-		"projectCreated": "Project has been successfully created!",
 		"projectDelete": "Delete project?",
 		"projectDeleteConfirm": "Are you sure you want to delete project ",
-		"projectDeleted": "Project has been successfully deleted!",
-		"projectExported": "Project has been successfully exported!",
 		"projectRedirect": "Redirecting back to list of projects",
 		"projectsColumnCreated": "Created",
 		"projectsColumnDescription": "Description",
@@ -406,7 +415,7 @@
 			"time": "By time"
 		},
 		"defaultDataSet": "Default data set for charts",
-		"didYouKnow": "“Did you know?“",
+		"didYouKnow": "Intelligent Notifications",
 		"discoverSenti": "Show intro cards on Dashboard",
 		"headers": {
 			"calibration": "Calibration",
@@ -432,6 +441,7 @@
 		"trp": "Rows per page on lists"
 	},
 	"sidebar": {
+		"collections": "Data",
 		"dashboard": "Dashboard",
 		"devices": "Devices",
 		"projects": "Projects",
@@ -439,7 +449,8 @@
 		"users": "Users"
 	},
 	"snackbars": {
-		"assign": "Device %{device} assigned successfully",
+		"assignDevice": "Device %{device} assigned to %{org}",
+		"assignCollection": "Collection %{collection} assigned to %{org}",
 		"createdFail": "Creation failed!",
 		"createdSuccess": "Created!",
 		"creating": "Creating...",
@@ -451,16 +462,24 @@
 		"orgCreated": "Organisation %{org} has been successfully created!",
 		"orgDeleted": "Organisation has been successfully deleted!",
 		"orgUpdated": "Organisation %{org} has been successfully updated!",
+		"pictureDeleted": "Picture has been succesfully deleted!",
+		"pictureNotDeleted": "Picture has not been deleted!",
+		"projectCreated": "Project %{project} has been successfully created!",
+		"projectDeleted": "Project(s) has been successfully deleted!",
+		"projectExported": "Project has been successfully exported!",
 		"projectUpdated": "Project %{project} has been successfully updated!",
 		"redirect": "Redirecting ...",
+		"resetDeviceSuccess": "Device has been resetted",
 		"settingsSaved": "Settings saved!",
-		"unassign": "Device %{device} unassigned successfully",
+		"unassignDevice": "Device %{device} unassigned from %{org}",
+		"unassignCollection": "Collection %{collection} unassigned from %{org}",
 		"updatedFailed": "Update failed!",
 		"updatedSuccess": "Updated!",
 		"updating": "Updating...",
 		"userCreated": "User %{user} has been succesfully created!",
 		"userDeleted": "User %{user} has been succesfully deleted!",
-		"userUpdated": "User %{user} has been succesfully updated!"
+		"userUpdated": "User %{user} has been succesfully updated!",
+		"userPasswordChanged": "Password has been changed succesfully!"
 	},
 	"tables": {
 		"addNewDevice": "Add device",
@@ -476,7 +495,7 @@
 			"delete": "Delete",
 			"edit": "Edit",
 			"import": "Import",
-			"mailTo": "Send Email",
+			"mailTo": "Send E-mail",
 			"new": "Add new",
 			"resetPassword": "Reset password",
 			"suspend": "Suspend"
@@ -487,7 +506,7 @@
 			"accessLevel": "Access Level",
 			"active": "Active",
 			"created": "Created",
-			"email": "Email",
+			"email": "E-mail",
 			"firstName": "First name",
 			"group": "Group",
 			"language": "System language",
@@ -529,11 +548,11 @@
 			"orgs": "Organisations",
 			"users": "Users"
 		},
-		"userResendEmail": "Resend Confirm Email",
-		"userResendConfirm": "Are you sure you want to resend confirmation email?",
+		"userResendEmail": "Resend Confirm E-mail",
+		"userResendConfirm": "Are you sure you want to resend confirmation E-mail?",
 		"userDelete": "Delete user",
 		"userDeleteConfirm": "Are you sure you want to delete this user?",
 		"usersDelete": "Delete users",
-		"usersDeleteConfirm": "Are you sure you want to delete the following users?:"
+		"usersDeleteConfirm": "Are you sure you want to delete the following users:"
 	}
 }
