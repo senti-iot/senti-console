@@ -1,7 +1,9 @@
 import {
 	Table,
 	TableHead,
-	TableRow
+	TableRow,
+	TableCell,
+	TableBody
 } from '@material-ui/core';
 import React from 'react'
 
