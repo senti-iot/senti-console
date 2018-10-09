@@ -130,6 +130,7 @@ class Org extends Component {
 					<ItemGrid xs={12} noMargin>
 						{!loadingUsers ? <OrgUsers
 							t={t}
+							org={org}
 							users={this.state.users ? this.state.users : []}
 							history={history}
 						/> :
