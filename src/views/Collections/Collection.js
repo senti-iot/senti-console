@@ -37,7 +37,6 @@ class Collection extends Component {
 
 	getCollection = async (id) => {
 		await getCollection(id).then(rs => {
-			console.log(rs)
 			if (rs === null)
 				this.props.history.push('/404')
 			else {

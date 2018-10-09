@@ -74,10 +74,12 @@
 		"pageTitle": "Data Collections",
 		"fields": {
 			"name":"Name",
+			"status":"Status",
 			"description":"Description",
 			"created":"Created",
 			"modified":"Last modified",
-			"collection":"Data collection"
+			"collection":"Data collection",
+			"org":"Organisation"
 		}
 	},	
 	"confirmUser": {

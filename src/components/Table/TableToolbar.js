@@ -61,7 +61,7 @@ let defaultRender = props => {
 		{content ? content : null}
 	</ItemGrid>
 }
-let EnhancedTableToolbar = props => {
+let TableToolbar = props => {
 	const { numSelected, classes } = props;
 	return (
 		<Toolbar
@@ -86,9 +86,9 @@ let EnhancedTableToolbar = props => {
 };
 
 
-EnhancedTableToolbar.propTypes = {
+TableToolbar.propTypes = {
 	classes: PropTypes.object.isRequired,
 	numSelected: PropTypes.number.isRequired,
 };
 
-export default withRouter(withStyles(toolbarStyles)(EnhancedTableToolbar));
+export default withRouter(withStyles(toolbarStyles)(TableToolbar));

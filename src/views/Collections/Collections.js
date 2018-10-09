@@ -1,20 +1,23 @@
 import React, { Component, Fragment } from 'react'
-import { withStyles } from "@material-ui/core";
+import { withStyles, Paper/* , IconButton */ } from "@material-ui/core";
 import projectStyles from 'assets/jss/views/projects';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
-import { getAllCollections } from 'variables/dataCollections';
+import { getAllCollections, deleteCollection } from 'variables/dataCollections';
 import CollectionTable from 'components/Collections/CollectionTable';
 import Toolbar from 'components/Toolbar/Toolbar'
-import { ViewList, ViewModule, Map } from 'variables/icons';
+import { ViewList, ViewModule, Map, PictureAsPdf, Edit, Delete } from 'variables/icons';
 import { filterItems, handleRequestSort } from 'variables/functions'
-import { deleteCollection } from '../../variables/dataCollections';
 import { Route, Switch, Redirect } from "react-router-dom";
+import TableToolbar from '../../components/Table/TableToolbar';
+import { connect } from 'react-redux'
+
 class Collections extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
+			selected: [],
 			collections: [],
 			loading: true,
 			route: 0,
@@ -90,13 +93,14 @@ class Collections extends Component {
 		const { t } = this.props
 		let collections = await getAllCollections().then(rs => rs)
 		if (this._isMounted) {
+			// console.log(collections);
 			this.setState({
 				collections: collections ? collections : [],
 				collectionsHeader: [
 					{ id: "name", label: t("collections.fields.name") },
-					{ id: "description", label: t("collections.fields.address") },
-					{ id: "created", label: t("collections.fields.city") },
-					{ id: "modified", label: t("collections.fields.url") },
+					{ id: "activeDevice.liveStatus", label: t("collections.fields.status") },
+					{ id: "created", label: t("collections.fields.created") },
+					{ id: "modified", label: t("collections.fields.modified") },
 					{ id: "org.name", label: t("collections.fields.org") }
 				],
 				loading: false
@@ -130,26 +134,115 @@ class Collections extends Component {
 		await selected.forEach(async u => {
 			await deleteCollection(u)
 		})
-		this.getData()
+		await this.getData()
+		this.setState({ selected: [], anchorElMenu: null })
 		this.snackBarMessages(1)
 	}
-	renderCollections = () => {
+	handleSelectAllClick = (event, checked) => {
+		if (checked) {
+			this.setState({ selected: this.state.collections.map(n => n.id) })
+			return;
+		}
+		this.setState({ selected: [] })
+	}
+
+	handleClick = (event, id) => {
+		event.stopPropagation()
+		const { selected } = this.state;
+		const selectedIndex = selected.indexOf(id)
+		let newSelected = [];
+
+		if (selectedIndex === -1) {
+			newSelected = newSelected.concat(selected, id);
+		} else if (selectedIndex === 0) {
+			newSelected = newSelected.concat(selected.slice(1))
+		} else if (selectedIndex === selected.length - 1) {
+			newSelected = newSelected.concat(selected.slice(0, -1))
+		} else if (selectedIndex > 0) {
+			newSelected = newSelected.concat(
+				selected.slice(0, selectedIndex),
+				selected.slice(selectedIndex + 1),
+			);
+		}
+
+		this.setState({ selected: newSelected })
+	}
+	renderTableToolBarContent = () => {
+		// const { accessLevel } = this.props
+		// const { anchorFilterMenu } = this.state
+		// let access = accessLevel.apicollection ? accessLevel.apicollection.edit ? true : false : false
+		// return <Fragment>
+		// 	{access ? <IconButton aria-label="Add new collection" onClick={this.addNewCollection}>
+		// 		<Add />
+		// 	</IconButton> : null
+		// 	}
+		// </Fragment>
+	}
+	options = () => {
+		const { t, /* accessLevel */ } = this.props
+		let allOptions = [
+			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
+			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
+			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
+		]
+		// if (accessLevel.apiorg.edit)
+		return allOptions
+		// else return [
+		// { label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf }
+		// ]
+	}
+	handleToolbarMenuOpen = e => {
+		e.stopPropagation()
+		this.setState({ anchorElMenu: e.currentTarget })
+	}
+
+	handleToolbarMenuClose = e => {
+		e.stopPropagation();
+		this.setState({ anchorElMenu: null })
+	}
+	renderTableToolBar = () => {
 		const { t } = this.props
-		const { loading, order, orderBy } = this.state
+		const { selected } = this.state
+		return <TableToolbar //	./TableToolbar.js
+			anchorElMenu={this.state.anchorElMenu}
+			handleToolbarMenuClose={this.handleToolbarMenuClose}
+			handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+			numSelected={selected.length}
+			options={this.options}
+			t={t}
+			// content={this.renderTableToolBarContent()}
+		/>
+	}
+	renderTable = () => {
+		const { t } = this.props
+		const { order, orderBy, selected } = this.state
+
+		return <CollectionTable
+			selected={selected}
+			handleClick={this.handleClick}
+			handleSelectAllClick={this.handleSelectAllClick}
+			data={this.filterItems(this.state.collections)}
+			tableHead={this.state.collectionsHeader}
+			handleFilterEndDate={this.handleFilterEndDate}
+			handleFilterKeyword={this.handleFilterKeyword}
+			handleFilterStartDate={this.handleFilterStartDate}
+			handleRequestSort={this.handleRequestSort}
+			handleDeleteCollections={this.handleDeleteCollections}
+			orderBy={orderBy}
+			order={order}
+			filters={this.state.filters}
+			t={t}
+		/>
+	}
+	renderCollections = () => {
+		const { classes } = this.props
+		const { loading } = this.state
 		return <GridContainer justify={'center'}>
-			{loading ? <CircularLoader /> : <CollectionTable
-				data={this.filterItems(this.state.collections)}
-				tableHead={this.state.collectionsHeader}
-				handleFilterEndDate={this.handleFilterEndDate}
-				handleFilterKeyword={this.handleFilterKeyword}
-				handleFilterStartDate={this.handleFilterStartDate}
-				handleRequestSort={this.handleRequestSort}
-				handleDeleteCollections={this.handleDeleteCollections}
-				orderBy={orderBy}
-				order={order}
-				filters={this.state.filters}
-				t={t}
-			/>}
+			{loading ? <CircularLoader /> : <Paper className={classes.root}>
+				{this.renderTableToolBar()}
+				{this.renderTable()}
+			</Paper>
+			}
 		</GridContainer>
 	}
 	render() {
@@ -177,5 +270,12 @@ class Collections extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	accessLevel: state.settings.user.privileges
+})
 
-export default withStyles(projectStyles)(Collections)
+const mapDispatchToProps = {
+  
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(projectStyles)(Collections))

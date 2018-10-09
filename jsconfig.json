@@ -1,0 +1,25 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es5",
+		"lib": [
+			"es6",
+			"dom"
+		],
+		"baseUrl": "./src",
+		"allowSyntheticDefaultImports": true,
+		"paths": {
+			"@material-ui/core": [
+				"../node_modules/@material-ui/core/*"
+			]
+		}
+	},
+	"include": [
+		"src/**/*"
+	],
+	"exclude": [
+		"node_modules",
+		"dist",
+		"**/*.spec.ts"
+	]
+}
