@@ -43,10 +43,8 @@ class Collection extends Component {
 			else {
 				this.setState({ collection: rs, loading: false })
 				this.props.setHeader(rs.name ? rs.name : rs.id, true, `/collections/list`, "collections")
-
 			}
 		})
-
 	}
 
 	componentDidMount = async () => {

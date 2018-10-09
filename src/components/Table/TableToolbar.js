@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { ItemGrid } from '..';
-import FilterToolbar from 'components/Table/FilterToolbar';
+// import FilterToolbar from 'components/Table/FilterToolbar';
 import { ItemG } from 'components/index';
 
 let selectedRender = props => {
@@ -68,19 +68,19 @@ let EnhancedTableToolbar = props => {
 			className={classNames(classes.root, {
 				[classes.highlight]: numSelected > 0,
 			})}>
-			<ItemG container>
-				<ItemG xs={12}>
-					{numSelected > 0 ? (
-						selectedRender(props)
-					) :
-						defaultRender(props)
-					}
-				</ItemG>
-				<div style={{ width: "100%", background: "#ececec", height: 1, margin: 4 }}/>
-				<ItemG xs={12}>
-					<FilterToolbar filters={props.ft}/>
-				</ItemG>
+			{/* <ItemG container> */}
+			<ItemG xs={12}>
+				{numSelected > 0 ? (
+					selectedRender(props)
+				) :
+					defaultRender(props)
+				}
 			</ItemG>
+			{/* <div style={{ width: "100%", background: "#ececec", height: 1, margin: 4 }}/> */}
+			{/* <ItemG xs={12}>
+					<FilterToolbar filters={props.ft}/>
+				</ItemG> */}
+			{/* </ItemG> */}
 		</Toolbar>
 	);
 };
