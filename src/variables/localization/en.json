@@ -278,6 +278,7 @@
 		"phoneTo": "Call"
 	},
 	"login": {
+		"goToLogin": "Go to Sign in",
 		"button": "Sign in",
 		"changePassword": "Change password",
 		"forgotPass": "Forgot password?",

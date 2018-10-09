@@ -278,6 +278,7 @@
 		"phoneTo": "Ring til"
 	},
 	"login": {
+		"goToLogin": "Går til log ind",
 		"button": "Log ind",
 		"changePassword": "Skift kodeord",
 		"forgotPass": "Glemt kodeord?",
