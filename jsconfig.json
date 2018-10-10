@@ -1,18 +1,14 @@
 {
 	"compilerOptions": {
-		"module": "commonjs",
-		"target": "es5",
+		"module": "es6",
+		"target": "es6",
 		"lib": [
 			"es6",
 			"dom"
 		],
+		"jsx":"react",
 		"baseUrl": "./src",
 		"allowSyntheticDefaultImports": true,
-		"paths": {
-			"@material-ui/core": [
-				"../node_modules/@material-ui/core/*"
-			]
-		}
 	},
 	"include": [
 		"src/**/*"

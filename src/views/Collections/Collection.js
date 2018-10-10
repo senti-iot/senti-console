@@ -1,24 +1,19 @@
 import React, { Component } from 'react'
 import { getCollection, updateCollection } from 'variables/dataCollections'
-import { Grid, withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
+import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
 import { ItemGrid } from 'components'
-import InfoCard from 'components/Cards/InfoCard'
-import { Map } from 'variables/icons'
 import collectionStyles from 'assets/jss/views/deviceStyles'
 import AssignProject from 'components/Devices/AssignProject'
 import AssignOrg from 'components/Devices/AssignOrg'
-// import ImageUpload from './ImageUpload'
 import CircularLoader from 'components/Loader/CircularLoader'
-import { Maps } from 'components/Map/Maps'
 import GridContainer from 'components/Grid/GridContainer'
-// import CollectionDetails from './CollectionCards/CollectionDetails'
-// import CollectionHardware from './CollectionCards/CollectionHardware'
-// import CollectionImages from './CollectionCards/CollectionImages'
-// import CollectionData from './CollectionCards/CollectionData'
 import { dateFormatter } from 'variables/functions';
 import { connect } from 'react-redux';
 import CollectionDetails from 'views/Collections/CollectionCards/CollectionDetails';
-
+import CollectionHistory from './CollectionCards/CollectionHistory';
+import CollectionActiveDevice from './CollectionCards/CollectionActiveDevice'
+import CollectionData from './CollectionCards/CollectionData';
+// import moment from 'moment'
 class Collection extends Component {
 	constructor(props) {
 		super(props)
@@ -30,7 +25,11 @@ class Collection extends Component {
 			openAssign: false,
 			openUnassign: false,
 			openAssignOrg: false,
-			img: null
+			img: null,
+			filter: {
+				startDate: "",
+				endDate: ""
+			}
 		}
 		props.setHeader('', true, `/collections/list`, "collections")
 	}
@@ -50,8 +49,8 @@ class Collection extends Component {
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {
-				// this.getAllPics(id)
 				await this.getCollection(id)
+				// this.getCollectionDataDaily(id)
 			}
 		}
 		else {
@@ -190,7 +189,8 @@ class Collection extends Component {
 	}
 
 	render() {
-		const { collection, loading } = this.state
+		const { t, classes } = this.props
+		const { collection, loading, loadingData } = this.state
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
@@ -198,14 +198,14 @@ class Collection extends Component {
 						collectionId={[this.state.collection]}
 						open={this.state.openAssign}
 						handleClose={this.handleCloseAssign}
-						t={this.props.t}
+						t={t}
 					/>
 					<AssignOrg
 						collections
 						collectionId={[this.state.collection]}
 						open={this.state.openAssignOrg}
 						handleClose={this.handleCloseAssignOrg}
-						t={this.props.t}
+						t={t}
 					/>
 					{collection.org.id ? this.renderConfirmUnassign() : null}
 					<ItemGrid xs={12} noMargin>
@@ -216,37 +216,39 @@ class Collection extends Component {
 							handleOpenAssign={this.handleOpenAssign}
 							handleOpenUnassign={this.handleOpenUnassign}
 							handleOpenAssignOrg={this.handleOpenAssignOrg}
-							t={this.props.t}
+							t={t}
 							accessLevel={this.props.accessLevel}
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
-						{/* <CollectionData
+						<CollectionData
+							loading={loadingData}
+							collection={collection}
+							t={t}
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin>
+						<CollectionActiveDevice
+							device={collection.activeDevice ? collection.activeDevice : null}
+							t={t}
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin>
+						<CollectionHistory
+							classes={classes}
 							collection={collection}
 							history={this.props.history}
 							match={this.props.match}
-							t={this.props.t}
-						/> */}
+							t={t}
+						/>
 					</ItemGrid>
-					<ItemGrid xs={12} noMargin>
-						<InfoCard
-							title={this.props.t("collections.cards.map")}
-							subheader={this.props.t("collections.fields.coordsW", { lat: collection.lat, long: collection.long })}
-							avatar={<Map />}
-							noExpand
-							content={
-								<Grid container justify={'center'}>
-									<Maps t={this.props.t} isMarkerShown markers={[collection]} zoom={18} />
-								</Grid>
-							} />
 
-					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
 						{/* <CollectionHardware
 							collection={collection}
 							history={this.props.history}
 							match={this.props.match}
-							t={this.props.t}
+							t={t}
 						/> */}
 					</ItemGrid>
 				</GridContainer>

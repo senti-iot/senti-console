@@ -17,13 +17,13 @@ class InfoCard extends React.Component {
 	};
 	hasSubheader = (subheader) => subheader ? subheader.toString().length < 200 ? subheader ? subheader : null : null : null
 	renderSubHeader = () => {
-		const { subheader, t  } = this.props
+		const { subheader, subheaderTitle  } = this.props
 		return subheader ? subheader.toString().length > 200 ?
 			<Fragment>
 				<Typography variant={'caption'}>
-					{t("devices.fields.description")}
+					{subheaderTitle ? subheaderTitle : null}
 				</Typography>
-				<Typography paragraph>
+				<Typography>
 					{subheader ? subheader : null}
 				</Typography>
 			</Fragment>
