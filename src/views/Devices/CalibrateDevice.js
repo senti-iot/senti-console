@@ -411,7 +411,7 @@ class CalibrateDevice extends Component {
 						</Stepper> : null}
 					{activeStep === steps.length && device && (
 						<Paper square elevation={0} className={classes.resetContainer}>
-							<Typography variant={'title'}>{t("calibration.texts.success")}</Typography>
+							<Typography variant={'h6'}>{t("calibration.texts.success")}</Typography>
 							<Typography paragraph>
 								{t("calibration.texts.successMessage")}
 							</Typography>

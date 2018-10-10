@@ -93,14 +93,14 @@ class Collections extends Component {
 		const { t } = this.props
 		let collections = await getAllCollections().then(rs => rs)
 		if (this._isMounted) {
-			// console.log(collections);
+			console.log(collections);
 			this.setState({
 				collections: collections ? collections : [],
 				collectionsHeader: [
 					{ id: "name", label: t("collections.fields.name") },
 					{ id: "activeDevice.liveStatus", label: t("collections.fields.status") },
 					{ id: "created", label: t("collections.fields.created") },
-					{ id: "modified", label: t("collections.fields.modified") },
+					{ id: "activeDevice.startDate", label: t("collections.fields.modified") },
 					{ id: "org.name", label: t("collections.fields.org") }
 				],
 				loading: false
