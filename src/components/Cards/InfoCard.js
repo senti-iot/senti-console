@@ -58,12 +58,9 @@ class InfoCard extends React.Component {
 				</Collapse>
 				{!this.props.noExpand ?
 					<React.Fragment>
-						{/* <Collapse in={this.state.leftActions} timeout={'auto'} unmountOnExit> */}
 						{leftActionContent ? <CardContent classes={{ root: classes.root }}>
 							{leftActionContent}
-						</CardContent>
-							: null}
-						{/* </Collapse> */}
+						</CardContent> : null}
 						<Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
 							<CardContent classes={{ root: classes.root }}>
 								{hiddenContent ? hiddenContent : null}

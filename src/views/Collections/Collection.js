@@ -189,7 +189,7 @@ class Collection extends Component {
 	}
 
 	render() {
-		const { t, classes } = this.props
+		const { history, t, classes, accessLevel } = this.props
 		const { collection, loading, loadingData } = this.state
 		return (
 			!loading ?
@@ -230,7 +230,11 @@ class Collection extends Component {
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
 						<CollectionActiveDevice
+							collection={collection}
+							history={history}
 							device={collection.activeDevice ? collection.activeDevice : null}
+							accessLevel={accessLevel}
+							classes={classes}
 							t={t}
 						/>
 					</ItemGrid>
@@ -242,15 +246,6 @@ class Collection extends Component {
 							match={this.props.match}
 							t={t}
 						/>
-					</ItemGrid>
-
-					<ItemGrid xs={12} noMargin>
-						{/* <CollectionHardware
-							collection={collection}
-							history={this.props.history}
-							match={this.props.match}
-							t={t}
-						/> */}
 					</ItemGrid>
 				</GridContainer>
 				: this.renderLoader()

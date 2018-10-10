@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { Grid, Typography, withStyles, /* Button */ } from '@material-ui/core';
 import { ItemGrid, /* Warning, P, */ Info, Caption } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
-import { SignalWifi2Bar, SignalWifi2BarLock, Edit, Devices, Business, LayersClear } from 'variables/icons'
+import { SignalWifi2Bar, SignalWifi2BarLock, Edit, DataUsage, Business, LayersClear } from 'variables/icons'
 import { Link } from 'react-router-dom'
 import collectionStyles from 'assets/jss/views/deviceStyles';
 import Dropdown from 'components/Dropdown/Dropdown'
@@ -54,7 +54,7 @@ class DeviceDetails extends Component {
 		return (
 			<InfoCard
 				title={collection.name ? collection.name : collection.id}
-				avatar={<Devices />}
+				avatar={<DataUsage />}
 				topAction={<Dropdown menuItems={
 					[
 						{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/collection/${collection.id}/edit`, state: { prevURL: `/collection/${collection.id}` } }) },
