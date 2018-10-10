@@ -2,24 +2,20 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types'
 import {
 	Grid, IconButton, Menu, MenuItem, withStyles,
-	Select, FormControl, FormHelperText, Divider, Dialog, DialogTitle, DialogContent,
-	Button, DialogActions, ListItem, ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox, FormControlLabel
-} from '@material-ui/core';
+	Select, FormControl, FormHelperText, Divider, ListItem, ListItemIcon, ListItemText, Collapse, List, Hidden } from '@material-ui/core';
 import {
-	AccessTime, AssignmentTurnedIn, MoreVert,
-	DateRange, KeyboardArrowRight, KeyboardArrowLeft,
-	DonutLargeRounded, PieChartRounded, BarChart, ExpandMore, Visibility
+	AssignmentTurnedIn, MoreVert,
+	DateRange, DonutLargeRounded, PieChartRounded, BarChart, ExpandMore, Visibility
 } from "@material-ui/icons"
 import { InfoCard, ItemGrid, CircularLoader, Caption, Info } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { Doughnut, Bar, Pie } from 'react-chartjs-2';
 import { getWifiHourly, getWifiDaily } from 'variables/dataDevices';
-import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
-import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import classNames from 'classnames'
 import { colors } from '../../../variables/colors'
 import { shortDateFormat } from 'variables/functions';
 import ItemG from '../../../components/Grid/ItemG';
+import { CustomDateTime } from '../../../components/index';
 var moment = require('moment');
 
 class DeviceData extends Component {
@@ -329,100 +325,26 @@ class DeviceData extends Component {
 			this.getWifiSum()
 		}
 	}
-
+    handleCancelCustomDate = () => {
+    	this.setState({
+    		loading: false, openCustomDate: false
+    	})
+    }
 	renderCustomDateDialog = () => {
 		const { classes, t } = this.props
-		return <MuiPickersUtilsProvider utils={MomentUtils}>
-			<Dialog
-				open={this.state.openCustomDate}
-				onClose={this.handleCloseUnassign}
-				aria-labelledby="alert-dialog-title"
-				aria-describedby="alert-dialog-description">
-				<DialogTitle id="alert-dialog-title">{t("filters.dateOptions.custom")}</DialogTitle>
-				<DialogContent>
-					<ItemGrid>
-						<DateTimePicker
-							autoOk
-							ampm={false}
-							label={t("filters.startDate")}
-							clearable
-							format="LLL"
-							value={this.state.from}
-							onChange={this.handleCustomDate('from')}
-							animateYearScrolling={false}
-							color="primary"
-							disableFuture
-							dateRangeIcon={<DateRange />}
-							timeIcon={<AccessTime />}
-							rightArrowIcon={<KeyboardArrowRight />}
-							leftArrowIcon={<KeyboardArrowLeft />}
-							InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-							InputProps={{ classes: { underline: classes.underline } }}
-						/>
-					</ItemGrid>
-					<ItemGrid>
-						<DateTimePicker
-							autoOk
-							disableFuture
-							ampm={false}
-							label={t("filters.endDate")}
-							clearable
-							format="LLL"
-							value={this.state.to}
-							onChange={this.handleCustomDate('to')}
-							animateYearScrolling={false}
-							dateRangeIcon={<DateRange />}
-							timeIcon={<AccessTime />}
-							color="primary"
-							rightArrowIcon={<KeyboardArrowRight />}
-							leftArrowIcon={<KeyboardArrowLeft />}
-							InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-							InputProps={{ classes: { underline: classes.underline } }}
-						/>
-					</ItemGrid>
-					<ItemGrid container>
-						<ItemGrid xs={12} noPadding zeroMargin>
-							<Caption>{t("filters.display")}</Caption>
-						</ItemGrid>
-						<ItemGrid xs={12} zeroMargin>
-							<FormControlLabel
-								control={
-									<Checkbox
-										checked={this.state.timeType === 0 ? true : false}
-										onChange={this.handleCustomCheckBox}
-										value="0"
-										className={classes.checkbox}
-									/>
-								}
-								label={t("filters.dateOptions.hourly")}
-							/>
-						</ItemGrid>
-						<ItemGrid xs={12} zeroMargin>
-							<FormControlLabel
-								control={
-									<Checkbox
-										checked={this.state.timeType === 1 ? true : false}
-										onChange={this.handleCustomCheckBox}
-										value="1"
-										className={classes.checkbox}
-									/>
-								}
-								label={t("filters.dateOptions.daily")}
-							/>
-						</ItemGrid>
-					</ItemGrid>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={() => { this.setState({ loading: false, openCustomDate: false }) }} color="primary">
-						{t("actions.decline")}
-					</Button>
-					<Button onClick={this.handleCloseDialog} color="primary" autoFocus>
-						{t("actions.apply")}
-					</Button>
-				</DialogActions>
-			</Dialog>
-		</MuiPickersUtilsProvider>
-
+		const { openCustomDate, to, from, timeType } = this.state
+		return <CustomDateTime
+			openCustomDate={openCustomDate}
+			handleCloseDialog={this.handleCloseDialog}
+			handleCustomDate={this.handleCustomDate}
+			to={to}
+			from={from}
+			timeType={timeType}
+			handleCustomCheckBox={this.handleCustomCheckBox}
+			handleCancelCustomDate={this.handleCancelCustomDate}
+			t={t}
+			classes={classes}
+		/>
 	}
 
 	renderNoDataFilters = () => {
@@ -560,16 +482,20 @@ class DeviceData extends Component {
 		const { actionAnchor } = this.state
 		const { classes, t } = this.props
 		return <ItemGrid container noMargin noPadding>
-			<Hidden smDown>
-				{this.renderDateFilter()}
-			</Hidden>
-			<IconButton
-				aria-label="More"
-				aria-owns={actionAnchor ? 'long-menu' : null}
-				aria-haspopup="true"
-				onClick={this.handleOpenActionsDetails}>
-				<MoreVert />
-			</IconButton>
+			<ItemG>
+				<Hidden smDown>
+					{this.renderDateFilter()}
+				</Hidden>
+			</ItemG>
+			<ItemG>
+				<IconButton
+					aria-label="More"
+					aria-owns={actionAnchor ? 'long-menu' : null}
+					aria-haspopup="true"
+					onClick={this.handleOpenActionsDetails}>
+					<MoreVert />
+				</IconButton>
+			</ItemG>
 			<Menu
 				id="long-menu"
 				anchorEl={actionAnchor}

@@ -224,6 +224,7 @@ class Collection extends Component {
 						<CollectionData
 							loading={loadingData}
 							collection={collection}
+							classes={classes}
 							t={t}
 						/>
 					</ItemGrid>

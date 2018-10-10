@@ -10,6 +10,7 @@ import SmallCard from './Cards/SmallCard.js'
 import InfoCard from './Cards/InfoCard'
 import ItemG from './Grid/ItemG'
 import Dropdown from './Dropdown/Dropdown'
+import CustomDateTime from './CustomInput/CustomDateTime'
 // ##############################
 // // // CustomButtons
 // #############################
@@ -71,6 +72,7 @@ import Small from "./Typography/Small.js";
 import A from "./Typography/A.js";
 import Caption from "./Typography/Caption"
 export {
+	CustomDateTime,
 	// Cards
 	Dropdown,
 	ItemG,

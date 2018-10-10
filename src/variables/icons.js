@@ -1,5 +1,5 @@
 /* Tree Shaking in react does not work and @material-ui/icons is huge */
-
+import ShowChart from '@material-ui/icons/ShowChart'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import Clear from '@material-ui/icons/Clear'
 import Check from '@material-ui/icons/Check'
@@ -61,6 +61,7 @@ import DeviceHub from '@material-ui/icons/DeviceHub'
 import Dashboard from '@material-ui/icons/Dashboard'
 
 export {
+	ShowChart,
 	Dashboard,
 	DeviceHub,
 	DataUsage,
