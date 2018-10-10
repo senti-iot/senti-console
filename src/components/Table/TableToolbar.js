@@ -68,19 +68,19 @@ let TableToolbar = props => {
 			className={classNames(classes.root, {
 				[classes.highlight]: numSelected > 0,
 			})}>
-			{/* <ItemG container> */}
-			<ItemG xs={12}>
-				{numSelected > 0 ? (
-					selectedRender(props)
-				) :
-					defaultRender(props)
-				}
-			</ItemG>
-			{/* <div style={{ width: "100%", background: "#ececec", height: 1, margin: 4 }}/> */}
-			{/* <ItemG xs={12}>
+			<ItemG container>
+				<ItemG xs={12}>
+					{numSelected > 0 ? (
+						selectedRender(props)
+					) :
+						defaultRender(props)
+					}
+				</ItemG>
+				{/* <div style={{ width: "100%", background: "#ececec", height: 1, margin: 4 }}/> */}
+				{/* <ItemG xs={12}>
 					<FilterToolbar filters={props.ft}/>
 				</ItemG> */}
-			{/* </ItemG> */}
+			</ItemG>
 		</Toolbar>
 	);
 };
