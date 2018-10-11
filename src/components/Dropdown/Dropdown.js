@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
-import { ItemGrid } from '../index';
+import { ItemGrid } from 'components';
 import { MoreVert } from 'variables/icons';
 
 class Dropdown extends Component {

@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { ItemGrid } from '..';
+import { ItemGrid } from 'components';
 // import FilterToolbar from 'components/Table/FilterToolbar';
 import { ItemG } from 'components/index';
 

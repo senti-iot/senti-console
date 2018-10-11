@@ -7,7 +7,7 @@ import { Maps } from 'components/Map/Maps';
 // import DeviceSimpleList from 'components/Devices/DeviceSimpleList';
 import classNames from 'classnames'
 import deviceStyles from 'assets/jss/views/deviceStyles';
-import DeviceTable from '../../../components/Devices/DeviceTable'
+import DeviceTable from 'components/Devices/DeviceTable'
 
 class ProjectDevices extends Component {
 	constructor(props) {

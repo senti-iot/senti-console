@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, /*  FormControl, InputLabel, Select, Input, Chip,  MenuItem, */ Collapse, Button, MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
+import { Paper, withStyles, Grid, Collapse, Button, MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
 import { Save, Check } from 'variables/icons';
 import classNames from 'classnames';
 import { getOrg, updateOrg, getAllOrgs } from 'variables/dataOrgs'
-import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from '..'
+import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
 import { connect } from 'react-redux'
-import createprojectStyles from '../../assets/jss/components/projects/createprojectStyles'
+import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
 import EditOrgAutoSuggest from './EditOrgAutoSuggest'
 
 // var moment = require("moment")

@@ -1,22 +1,15 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types'
-import {
-	Grid, IconButton, Menu, MenuItem, withStyles,
-	Select, FormControl, FormHelperText, Divider, ListItem, ListItemIcon, ListItemText, Collapse, List, Hidden } from '@material-ui/core';
-import {
-	AssignmentTurnedIn, MoreVert,
-	DateRange, DonutLargeRounded, PieChartRounded, BarChart, ExpandMore, Visibility
-} from "@material-ui/icons"
-import { InfoCard, ItemGrid, CircularLoader, Caption, Info } from 'components';
+import { Collapse, Divider, FormControl, FormHelperText, Grid, Hidden, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Select, withStyles } from '@material-ui/core';
+import { AssignmentTurnedIn, BarChart, DateRange, DonutLargeRounded, ExpandMore, MoreVert, PieChartRounded, Visibility } from "@material-ui/icons";
 import deviceStyles from 'assets/jss/views/deviceStyles';
-import { Doughnut, Bar, Pie } from 'react-chartjs-2';
-import { getWifiHourly, getWifiDaily } from 'variables/dataDevices';
-import classNames from 'classnames'
-import { colors } from '../../../variables/colors'
+import classNames from 'classnames';
+import { Caption, CircularLoader, CustomDateTime, Info, InfoCard, ItemG, ItemGrid } from 'components';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { Bar, Doughnut, Pie } from 'react-chartjs-2';
+import { colors } from 'variables/colors';
+import { getWifiDaily, getWifiHourly } from 'variables/dataDevices';
 import { shortDateFormat } from 'variables/functions';
-import ItemG from '../../../components/Grid/ItemG';
-import { CustomDateTime } from '../../../components/index';
-var moment = require('moment');
 
 class DeviceData extends Component {
 	constructor(props) {

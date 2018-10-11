@@ -3,8 +3,8 @@ import { Check, Save } from 'variables/icons';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import React, { Component, Fragment } from 'react';
 import { getDevice, updateDevice } from 'variables/dataDevices';
-import { CircularLoader, GridContainer, ItemGrid, TextF } from '..';
-import { PlacesWithStandaloneSearchBox } from '../Map/SearchBox';
+import { CircularLoader, GridContainer, ItemGrid, TextF } from 'components';
+import { PlacesWithStandaloneSearchBox } from 'components/Map/SearchBox';
 
 class EditDeviceDetails extends Component {
 	constructor(props) {

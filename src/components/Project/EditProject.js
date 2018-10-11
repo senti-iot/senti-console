@@ -7,7 +7,7 @@ import { getAvailableDevices } from 'variables/dataDevices';
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { updateProject, getProject } from 'variables/dataProjects';
-import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from '..'
+import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
 import { dateFormatter } from 'variables/functions';
 var moment = require("moment")
 // const ITEM_HEIGHT = 32;

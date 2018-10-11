@@ -7,7 +7,7 @@ import GridContainer from 'components/Grid/GridContainer';
 import { getAllUsers, deleteUser } from 'variables/dataUsers';
 import Toolbar from 'components/Toolbar/Toolbar'
 import { People, Business } from 'variables/icons';
-import { filterItems, handleRequestSort } from '../../variables/functions';
+import { filterItems, handleRequestSort } from 'variables/functions';
 
 class Users extends Component {
 	constructor(props) {

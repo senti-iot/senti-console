@@ -3,7 +3,7 @@ import { KeyboardArrowLeft, KeyboardArrowRight } from 'variables/icons';
 import imagecarouselStyles from 'assets/jss/components/image/imagecarouselStyles';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Caption from '..';
+import Caption from 'components';
 
 class ImageCarousel extends React.Component {
 	state = {

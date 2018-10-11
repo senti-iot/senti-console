@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { TextF } from '..';
+import { TextF } from 'components';
 const { compose, withProps, lifecycle } = require("recompose");
 const {
 	withScriptjs,

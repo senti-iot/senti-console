@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { createUser } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
-import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader } from '..';
+import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader } from 'components';
 import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Grid, Button } from '@material-ui/core';
 import { Save } from 'variables/icons'
 import classNames from 'classnames';

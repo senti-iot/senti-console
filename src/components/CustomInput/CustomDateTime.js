@@ -1,9 +1,9 @@
 import React from 'react'
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import { Dialog, DialogTitle, DialogContent, FormControlLabel, Checkbox, DialogActions, Button } from '@material-ui/core';
-import { ItemGrid, Caption } from '../index';
+import { ItemGrid, Caption } from 'components';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
-import { DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from '../../variables/icons';
+import { DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons';
 
 const CustomDateTime = (props) => {
 	const { classes, t, openCustomDate, handleCloseDialog, handleCustomDate, to, from,

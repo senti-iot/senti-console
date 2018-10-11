@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
-import { GridContainer, ItemGrid } from 'components';
-import { Typography, Hidden, withStyles } from '@material-ui/core';
-import DiscoverSentiCards from 'components/Cards/DiscoverSentiCards';
-import AnalyticsImg from 'assets/img/Rounded/analytics.png'
-import StorageImg from 'assets/img/Rounded/storage.png'
-import HostingImg from 'assets/img/Rounded/hosting.png'
+import { Hidden, Typography, withStyles } from '@material-ui/core';
+import AnalyticsImg from 'assets/img/Rounded/analytics.png';
+import HostingImg from 'assets/img/Rounded/hosting.png';
+import StorageImg from 'assets/img/Rounded/storage.png';
 import discoverSentiStyle from 'assets/jss/material-dashboard-react/discoverSentiStyles';
+import { GridContainer, ItemGrid } from 'components';
+import DiscoverSentiCards from 'components/Cards/DiscoverSentiCards';
+import React, { Component } from 'react';
 
 class DiscoverSenti extends Component {
 	goTo = (where) => e => {

@@ -9,10 +9,8 @@ import PropTypes from "prop-types"
 import React, { Fragment } from "react"
 import { withRouter } from 'react-router-dom'
 import { dateFormatter } from "variables/functions"
-// import EnhancedTableHead from './ProjectTableHeader'
-import EnhancedTableHead from '../Table/TableHeader'
-// import EnhancedTableToolbar from './TableToolBar'
-import { ItemGrid, Info, Caption } from ".."
+import EnhancedTableHead from 'components/Table/TableHeader'
+import { ItemGrid, Info, Caption } from "components"
 import { connect } from "react-redux"
 import { Add, FilterList } from 'variables/icons';
 import { boxShadow } from 'assets/jss/material-dashboard-react';

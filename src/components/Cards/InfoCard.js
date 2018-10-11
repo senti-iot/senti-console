@@ -5,8 +5,8 @@ import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardSty
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import { Caption } from '..';
-import withLocalization from '../Localization/T';
+import { Caption } from 'components';
+import withLocalization from 'components/Localization/T';
 
 
 class InfoCard extends React.Component {

@@ -1,37 +1,22 @@
 import React, { Fragment } from "react";
 // material-ui components
 import {/*  InputAdornment, */ withStyles, CardContent, Collapse, Button, Grid } from "@material-ui/core";
-// @material-ui/icons
-// import { LockOutlined, Person } from "@material-ui/icons";
-// core components
-import { GridContainer, ItemGrid, Info, /* Warning,  */Danger, ItemG, Success } from "components";
-// import Button from "components/CustomButtons/Button.js";
-import Card from "components/Card/Card.js";
-import CardBody from "components/Card/CardBody.js";
-import CardHeader from "components/Card/CardHeader.js";
-import CardFooter from "components/Card/CardFooter.js";
-// import CustomInput from "components/CustomInput/CustomInput.js";
 
+import { GridContainer, ItemGrid, Info, Danger, ItemG, Success, CircularLoader, Card, CardBody, CardHeader, CardFooter } from "components";
 import loginPageStyle from "assets/jss/material-dashboard-react/loginPageStyle.js";
-// import { loginUser } from "variables/dataLogin";
-// import { setToken } from 'variables/data'
-// import cookie from "react-cookies";
-// import classNames from 'classnames';
-import CircularLoader from "components/Loader/CircularLoader";
 import withLocalization from "components/Localization/T";
 import { connect } from 'react-redux';
 import { getSettings } from 'redux/settings';
-import TextF from '../../components/CustomInput/TextF';
+import TextF from 'components/CustomInput/TextF';
 import { changeLanguage } from 'redux/localization';
 import cookie from 'react-cookies';
 import { setToken } from 'variables/data';
-import { resetPassword, confirmPassword } from '../../variables/dataLogin';
+import { resetPassword, confirmPassword } from 'variables/dataLogin';
 // var passChecker = require("zxcvbn")
 
 class ResetPassword extends React.Component {
 	constructor(props) {
 		super(props);
-		// we use this to make the card to appear after the page has been rendered
 		this.state = {
 			cardAnimaton: "cardHidden",
 			email: '',

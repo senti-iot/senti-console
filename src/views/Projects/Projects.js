@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { getAllProjects, deleteProject } from '../../variables/dataProjects';
+import { getAllProjects, deleteProject } from 'variables/dataProjects';
 import { withStyles } from "@material-ui/core";
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { ViewList, ViewModule, Add, FilterList } from 'variables/icons'
@@ -9,7 +9,7 @@ import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
 import ProjectCards from 'components/Project/ProjectCards';
 import Toolbar from 'components/Toolbar/Toolbar'
-import { filterItems, handleRequestSort } from '../../variables/functions';
+import { filterItems, handleRequestSort } from 'variables/functions';
 import EnhancedTableToolbar from 'components/Table/TableToolbar'
 import {
 	/* Checkbox, Hidden, */ Paper, /* DialogTitle, Dialog, DialogContent, */

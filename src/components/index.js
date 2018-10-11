@@ -71,7 +71,15 @@ import Danger from "./Typography/Danger.js";
 import Small from "./Typography/Small.js";
 import A from "./Typography/A.js";
 import Caption from "./Typography/Caption"
+import Card from './Card/Card'
+import CardHeader from "./Card/CardHeader";
+import CardFooter from './Card/CardFooter'
+import CardBody from './Card/CardBody'
 export {
+	Card,
+	CardHeader,
+	CardFooter,
+	CardBody,
 	CustomDateTime,
 	// Cards
 	Dropdown,

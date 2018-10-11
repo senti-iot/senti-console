@@ -1,6 +1,6 @@
 import React from "react";
 import { withStyles, CardContent, Collapse, Button, Grid } from "@material-ui/core";
-import { GridContainer, ItemGrid, Info, Danger, ItemG } from "components";
+import { GridContainer, ItemGrid, Info, Danger, ItemG, TextF } from "components";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
@@ -10,7 +10,6 @@ import CircularLoader from "components/Loader/CircularLoader";
 import withLocalization from "components/Localization/T";
 import { connect } from 'react-redux';
 import { getSettings } from 'redux/settings';
-import TextF from '../../components/CustomInput/TextF';
 import { changeLanguage } from 'redux/localization';
 import { confirmUser } from 'variables/dataUsers';
 import cookie from 'react-cookies';

@@ -10,10 +10,10 @@ import React, { Fragment } from "react";
 import { withRouter } from 'react-router-dom';
 import AssignProject from "./AssignProject";
 import AssignOrg from "./AssignOrg";
-import EnhancedTableHead from '../Table/TableHeader'
-import EnhancedTableToolbar from '../Table/TableToolbar';
+import EnhancedTableHead from 'components/Table/TableHeader'
+import EnhancedTableToolbar from 'components/Table/TableToolbar';
 import { connect } from 'react-redux'
-import { ItemGrid, Info, Caption } from '..';
+import { ItemGrid, Info, Caption } from 'components';
 import TC from 'components/Table/TC'
 import { updateDevice } from 'variables/dataDevices'
 import { boxShadow } from "assets/jss/material-dashboard-react";

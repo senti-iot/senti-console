@@ -5,7 +5,7 @@ import cx from "classnames";
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import { getAllProjects } from 'variables/dataProjects';
-import { updateDevice } from '../../variables/dataDevices'
+import { updateDevice } from 'variables/dataDevices'
 
 const styles = {
 	appBar: {

@@ -9,8 +9,8 @@ import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import DiscoverSenti from 'views/Dashboard/DiscoverSenti';
 import pj from '../../../package.json';
-import DiscoverSenti from './DiscoverSenti';
 
 class Dashboard extends React.Component {
 	constructor(props) {

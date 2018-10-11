@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { getAllDevices } from '../../variables/dataDevices';
+import { getAllDevices } from 'variables/dataDevices';
 import { withStyles, Paper } from "@material-ui/core";
 import { Switch, Route, Redirect } from 'react-router-dom'
 import projectStyles from 'assets/jss/views/projects';
@@ -9,7 +9,7 @@ import { Maps } from 'components/Map/Maps';
 import GridContainer from 'components/Grid/GridContainer';
 import { ViewList, ViewModule, Map } from 'variables/icons'
 import Toolbar from 'components/Toolbar/Toolbar'
-import { filterItems, handleRequestSort } from '../../variables/functions';
+import { filterItems, handleRequestSort } from 'variables/functions';
 import DeviceCard from 'components/Devices/DeviceCard'
 // var moment = require('moment');
 

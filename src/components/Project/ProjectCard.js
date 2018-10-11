@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { IconButton, Menu, MenuItem, withStyles, Button, Typography } from '@material-ui/core'
-import { ItemGrid, SmallCard } from '..'
+import { ItemGrid, SmallCard } from 'components'
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle'
 import { MoreVert, Edit, PictureAsPdf, Devices, Delete, LibraryBooks } from 'variables/icons'
 import { withRouter } from 'react-router-dom'

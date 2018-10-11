@@ -3,7 +3,7 @@ import { InfoCard, ItemGrid, Info, Caption } from 'components';
 import { Table, TableBody, TableRow, Hidden, TableCell, withStyles } from '@material-ui/core';
 import { People } from "@material-ui/icons";
 import TC from 'components/Table/TC';
-import devicetableStyles from '../../../assets/jss/components/devices/devicetableStyles';
+import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
 import Gravatar from 'react-gravatar'
 import { pF, dateFormat } from 'variables/functions';
 var moment = require('moment')

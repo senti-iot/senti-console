@@ -6,9 +6,8 @@ import { Image,  MoreVert, CloudUpload, Delete } from 'variables/icons'
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import DeviceImage from 'components/Devices/DeviceImage';
 import CircularLoader from 'components/Loader/CircularLoader';
-// import ImageUpload from '../ImageUpload';
 import { ItemGrid, Caption } from 'components';
-import DeviceImageUpload from '../ImageUpload';
+import DeviceImageUpload from 'views/Devices/ImageUpload';
 
 class DeviceImages extends Component {
 	constructor(props) {

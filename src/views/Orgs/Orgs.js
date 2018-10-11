@@ -8,7 +8,7 @@ import OrgTable from 'components/Orgs/OrgTable';
 import Toolbar from 'components/Toolbar/Toolbar'
 import { People, Business } from 'variables/icons';
 import { filterItems, handleRequestSort } from 'variables/functions'
-import { deleteOrg } from '../../variables/dataOrgs';
+import { deleteOrg } from 'variables/dataOrgs';
 
 class Orgs extends Component {
 	constructor(props) {

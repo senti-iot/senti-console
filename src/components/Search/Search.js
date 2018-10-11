@@ -3,20 +3,15 @@ import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-// import { /* TextField, */ Input } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import searchStyles from 'assets/jss/components/search/searchStyles';
-// import { Search } from 'variables/icons'
-// import { ItemGrid } from '..';
 import SearchInput from './SearchInput';
 import { ClickAwayListener } from '@material-ui/core';
-import withLocalization from '../Localization/T';
-// import { Caption } from 'components';
+import withLocalization from 'components/Localization/T';
 
 function renderInput(inputProps) {
-	// const { classes, ref, ...other  } = inputProps;
 	return (
 		<SearchInput {...inputProps} />
 	);

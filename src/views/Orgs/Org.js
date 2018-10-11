@@ -14,7 +14,7 @@ import { getOrg, getOrgUsers } from 'variables/dataOrgs';
 import OrgDetails from './OrgCards/OrgDetails';
 // var moment = require("moment")
 import { connect } from 'react-redux'
-import { deleteOrg } from '../../variables/dataOrgs';
+import { deleteOrg } from 'variables/dataOrgs';
 import OrgUsers from 'views/Orgs/OrgCards/OrgUsers';
 
 class Org extends Component {

@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { AppBar, Tabs, Tab, withStyles } from '@material-ui/core';
-import Search from '../../components/Search/Search';
+import Search from 'components/Search/Search';
 import { suggestionGen } from 'variables/functions'
 
 const styles = theme => ({

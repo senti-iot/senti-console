@@ -3,7 +3,7 @@ import { Check, Save } from 'variables/icons';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import React, { Component, Fragment } from 'react';
 import { getDevice, updateDevice } from 'variables/dataDevices';
-import { ItemGrid, TextF, GridContainer, CircularLoader, } from '..';
+import { ItemGrid, TextF, GridContainer, CircularLoader, } from 'components';
 
 class EditDetails extends Component {
 	constructor(props) {
