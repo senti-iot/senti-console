@@ -67,7 +67,8 @@
 		"type": {
 			"bar": "Søjle",
 			"donut": "Donut",
-			"pie": "Lagkage"
+			"pie": "Lagkage",
+			"line": "Linje"
 		}
 	},
 	"collections": {

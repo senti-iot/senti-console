@@ -67,7 +67,8 @@
 		"type": {
 			"bar": "Bar",
 			"donut": "Donut",
-			"pie": "Pie"
+			"pie": "Pie",
+			"line": "Line"
 		}
 	},
 	"collections": {
