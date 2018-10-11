@@ -38,14 +38,7 @@ class Collections extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		await this.getData()
-		// if (this._isMounted) {
-		// 	if (this.props.location.pathname.includes('/collections')) {
-		// 		this.setState({ route: 1 })
-		// 	}
-		// 	else {
-		// 		this.setState({ route: 0 })
-		// 	}
-		// }
+
 	}
 	componentWillUnmount = () => {
 
@@ -92,7 +85,7 @@ class Collections extends Component {
 		const { t } = this.props
 		let collections = await getAllCollections().then(rs => rs)
 		if (this._isMounted) {
-			console.log(collections);
+			// console.log(collections);
 			this.setState({
 				collections: collections ? collections : [],
 				collectionsHeader: [
