@@ -80,7 +80,8 @@
 		"calibratedData": "Calibrated Data",
 		"rawData": "Raw data",
 		"fields": {
-			"activeDevice": "Acive Device ",
+			"activeDevice": "Acive Device",
+			"activeDeviceStartDate": "Device Start Date",
 			"organisation":"Organisation",
 			"name":"Name",
 			"status":"Status",

@@ -100,7 +100,7 @@ class Collections extends Component {
 					{ id: "name", label: t("collections.fields.name") },
 					{ id: "activeDevice.liveStatus", label: t("collections.fields.status") },
 					{ id: "created", label: t("collections.fields.created") },
-					{ id: "activeDevice.startDate", label: t("collections.fields.modified") },
+					{ id: "activeDevice.startDate", label: t("collections.fields.activeDeviceStartDate") },
 					{ id: "org.name", label: t("collections.fields.org") }
 				],
 				loading: false

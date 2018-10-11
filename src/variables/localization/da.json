@@ -82,6 +82,7 @@
 		"fields": {
 			"organisation":"Organisation",
 			"activeDevice": "Aktiv enhed",
+			"activeDeviceStartDate": "Enhed Startdato",
 			"name": "Navn",
 			"status": "Status",
 			"description":"Beskrivelse",
