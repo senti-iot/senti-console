@@ -10,6 +10,7 @@ import React from 'react'
 // import TC from '../../../components/Table/TC';
 import { dateFormatter } from '../../../variables/functions';
 import { InfoCard } from '../../../components/index';
+import { History } from 'variables/icons';
 
 class CollectionHistory extends React.Component {
 	render() {
@@ -19,6 +20,7 @@ class CollectionHistory extends React.Component {
 		return <InfoCard
 			noExpand
 			title={t("collections.cards.log")}
+			avatar={<History />}
 			content={<Table>
 				<TableHead>
 					<TableRow>

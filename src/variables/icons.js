@@ -1,4 +1,5 @@
 /* Tree Shaking in react does not work and @material-ui/icons is huge */
+import Timeline from '@material-ui/icons/Timeline'
 import ShowChart from '@material-ui/icons/ShowChart'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import Clear from '@material-ui/icons/Clear'
@@ -59,8 +60,10 @@ import FolderShared from '@material-ui/icons/FolderShared'
 import DataUsage from '@material-ui/icons/DataUsage'
 import DeviceHub from '@material-ui/icons/DeviceHub'
 import Dashboard from '@material-ui/icons/Dashboard'
-
+import History from '@material-ui/icons/History'
 export {
+	History,
+	Timeline,
 	ShowChart,
 	Dashboard,
 	DeviceHub,

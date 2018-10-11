@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ItemG, InfoCard, CircularLoader, CustomDateTime, Caption, ItemGrid, Info } from '../../../components/index';
-import { ShowChart, PieChartRounded, DonutLargeRounded, BarChart, DateRange, Visibility, ExpandMore, MoreVert } from '../../../variables/icons';
+import { ShowChart, PieChartRounded, DonutLargeRounded, BarChart, DateRange, Visibility, ExpandMore, MoreVert, Timeline } from '../../../variables/icons';
 import { getDataDaily } from 'variables/dataCollections'
 import moment from 'moment';
 import { shortDateFormat } from '../../../variables/functions';
@@ -457,7 +457,7 @@ class CollectionData extends Component {
 				noExpand
 				topAction={this.renderMenu()}
 				title={t("collections.cards.data")}
-
+				avatar={<Timeline/>}
 				content={
 					<ItemG container>
 						{this.renderCustomDateDialog()}
