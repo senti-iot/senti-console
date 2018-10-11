@@ -1,11 +1,12 @@
-import React, { Component, Fragment } from 'react'
-import { Grid, Typography, withStyles, /* Button */ } from '@material-ui/core';
-import { ItemGrid, /* Warning, P, */ Info, Caption } from 'components';
-import InfoCard from 'components/Cards/InfoCard';
-import { SignalWifi2Bar, SignalWifi2BarLock, Edit, DataUsage, Business, LayersClear } from 'variables/icons'
-import { Link } from 'react-router-dom'
+import { Grid, Typography, withStyles } from '@material-ui/core';
 import collectionStyles from 'assets/jss/views/deviceStyles';
-import Dropdown from 'components/Dropdown/Dropdown'
+import { Caption, Info, ItemGrid } from 'components';
+import InfoCard from 'components/Cards/InfoCard';
+import Dropdown from 'components/Dropdown/Dropdown';
+import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router-dom';
+import { Business, DataUsage, Edit, LayersClear, SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons';
+
 class DeviceDetails extends Component {
 
 	renderStatus = (status) => {

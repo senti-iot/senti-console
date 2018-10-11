@@ -1,16 +1,15 @@
-import React, { Component, Fragment } from 'react'
-import { withStyles, Paper/* , IconButton */ } from "@material-ui/core";
+import { Paper, withStyles } from "@material-ui/core";
 import projectStyles from 'assets/jss/views/projects';
-import CircularLoader from 'components/Loader/CircularLoader';
-import GridContainer from 'components/Grid/GridContainer';
-import { getAllCollections, deleteCollection } from 'variables/dataCollections';
 import CollectionTable from 'components/Collections/CollectionTable';
-import Toolbar from 'components/Toolbar/Toolbar'
-import { ViewList, ViewModule, Map, PictureAsPdf, Edit, Delete } from 'variables/icons';
-import { filterItems, handleRequestSort } from 'variables/functions'
-import { Route, Switch, Redirect } from "react-router-dom";
-import TableToolbar from '../../components/Table/TableToolbar';
-import { connect } from 'react-redux'
+import TableToolbar from 'components/Table/TableToolbar';
+import Toolbar from 'components/Toolbar/Toolbar';
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import { Redirect, Route, Switch } from "react-router-dom";
+import { deleteCollection, getAllCollections } from 'variables/dataCollections';
+import { filterItems, handleRequestSort } from 'variables/functions';
+import { Delete, Edit, Map, PictureAsPdf, ViewList, ViewModule } from 'variables/icons';
+import { GridContainer, CircularLoader } from 'components'
 
 class Collections extends Component {
 	constructor(props) {
@@ -100,7 +99,7 @@ class Collections extends Component {
 					{ id: "name", label: t("collections.fields.name") },
 					{ id: "activeDevice.liveStatus", label: t("collections.fields.status") },
 					{ id: "created", label: t("collections.fields.created") },
-					{ id: "activeDevice.startDate", label: t("collections.fields.activeDeviceStartDate") },
+					{ id: "devices[0].start", label: t("collections.fields.activeDeviceStartDate") },
 					{ id: "org.name", label: t("collections.fields.org") }
 				],
 				loading: false

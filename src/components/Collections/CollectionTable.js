@@ -250,7 +250,7 @@ class CollectionTable extends React.Component {
 											<TC  label={n.name} />
 											<TC className={classes.tablecellcheckbox} FirstC content={n.activeDevice ? this.renderIcon(n.activeDevice.liveStatus) : null} />
 											<TC label={dateFormatter(n.created)} />
-											<TC label={dateFormatter(n.activeDevice ? n.activeDevice.start : "")} />
+											<TC label={dateFormatter(n.devices ? n.devices[0].start : "")} />
 											<TC label={n.org ? n.org.name : ""} />
 											
 										</Hidden>

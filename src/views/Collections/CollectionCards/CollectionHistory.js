@@ -1,15 +1,7 @@
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableRow
-} from '@material-ui/core';
-import React from 'react'
-
-// import TC from '../../../components/Table/TC';
-import { dateFormatter } from '../../../variables/functions';
-import { InfoCard } from '../../../components/index';
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { InfoCard } from 'components/index';
+import React from 'react';
+import { dateFormatter } from 'variables/functions';
 import { History } from 'variables/icons';
 
 class CollectionHistory extends React.Component {

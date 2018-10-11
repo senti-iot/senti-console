@@ -1,14 +1,13 @@
-import React, { Component } from 'react'
-import { ItemG, InfoCard, CircularLoader, CustomDateTime, Caption, ItemGrid, Info } from '../../../components/index';
-import { ShowChart, PieChartRounded, DonutLargeRounded, BarChart, DateRange, Visibility, ExpandMore, MoreVert, Timeline } from '../../../variables/icons';
-import { getDataDaily } from 'variables/dataCollections'
-import moment from 'moment';
-import { shortDateFormat } from '../../../variables/functions';
-import { Line, Bar, Doughnut, Pie } from 'react-chartjs-2';
-import { withTheme, Select, FormControl, Hidden, Divider, MenuItem, FormHelperText, ListItem, ListItemIcon, ListItemText, Collapse, List, IconButton, Menu, Checkbox } from '@material-ui/core';
-import { colors } from '../../../variables/colors';
+import { Checkbox, Collapse, Divider, FormControl, FormHelperText, Hidden, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Select, withTheme } from '@material-ui/core';
 import classNames from 'classnames';
-import { getDataHourly } from '../../../variables/dataCollections';
+import { Caption, CircularLoader, CustomDateTime, Info, InfoCard, ItemG, ItemGrid } from 'components/index';
+import moment from 'moment';
+import React, { Component } from 'react';
+import { Bar, Doughnut, Line, Pie } from 'react-chartjs-2';
+import { colors } from 'variables/colors';
+import { getDataDaily, getDataHourly } from 'variables/dataCollections';
+import { shortDateFormat } from 'variables/functions';
+import { BarChart, DateRange, DonutLargeRounded, ExpandMore, MoreVert, PieChartRounded, ShowChart, Timeline, Visibility } from 'variables/icons';
 
 class CollectionData extends Component {
 	constructor(props) {

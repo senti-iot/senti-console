@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import { InfoCard, ItemGrid, Caption, Info, ItemG } from '../../../components/index';
-import { DeviceHub, SignalWifi2BarLock, SignalWifi2Bar } from '../../../variables/icons';
-import { dateFormatter, dateFormat, ConvertDDToDMS } from '../../../variables/functions';
+import { Button, Typography } from '@material-ui/core';
+import { Caption, Info, InfoCard, ItemG, ItemGrid } from 'components/index';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Typography, Button } from '@material-ui/core';
+import { ConvertDDToDMS, dateFormat, dateFormatter } from 'variables/functions';
+import { DeviceHub, SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons';
 
 class CollectionActiveDevice extends Component {
 

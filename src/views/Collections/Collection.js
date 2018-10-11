@@ -1,18 +1,17 @@
-import React, { Component } from 'react'
-import { getCollection, updateCollection } from 'variables/dataCollections'
-import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
-import { ItemGrid } from 'components'
-import collectionStyles from 'assets/jss/views/deviceStyles'
-import AssignProject from 'components/Devices/AssignProject'
-import AssignOrg from 'components/Devices/AssignOrg'
-import CircularLoader from 'components/Loader/CircularLoader'
-import GridContainer from 'components/Grid/GridContainer'
-import { dateFormatter } from 'variables/functions';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, withStyles } from '@material-ui/core';
+import collectionStyles from 'assets/jss/views/deviceStyles';
+import { CircularLoader, GridContainer, ItemGrid } from 'components';
+import AssignOrg from 'components/Devices/AssignOrg';
+import AssignProject from 'components/Devices/AssignProject';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { getCollection, updateCollection } from 'variables/dataCollections';
+import { dateFormatter } from 'variables/functions';
+import CollectionActiveDevice from 'views/Collections/CollectionCards/CollectionActiveDevice';
+import CollectionData from 'views/Collections/CollectionCards/CollectionData';
 import CollectionDetails from 'views/Collections/CollectionCards/CollectionDetails';
-import CollectionHistory from './CollectionCards/CollectionHistory';
-import CollectionActiveDevice from './CollectionCards/CollectionActiveDevice'
-import CollectionData from './CollectionCards/CollectionData';
+import CollectionHistory from 'views/Collections/CollectionCards/CollectionHistory';
+
 // import moment from 'moment'
 class Collection extends Component {
 	constructor(props) {
