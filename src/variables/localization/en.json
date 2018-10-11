@@ -81,7 +81,7 @@
 		"rawData": "Raw data",
 		"fields": {
 			"activeDevice": "Active Device",
-			"activeDeviceStartDate": "Device Start Date",
+			"activeDeviceStartDate": "Data collection start",
 			"organisation":"Organisation",
 			"name":"Name",
 			"status":"Status",
