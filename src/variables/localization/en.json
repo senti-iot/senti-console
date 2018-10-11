@@ -71,8 +71,16 @@
 		}
 	},
 	"collections": {
+		"cards": {
+			"data": "Data",
+			"log": "Device log"
+		},
 		"pageTitle": "Data Collections",
+		"calibratedData": "Calibrated Data",
+		"rawData": "Raw data",
 		"fields": {
+			"activeDevice": "Acive Device ",
+			"organisation":"Organisation",
 			"name":"Name",
 			"status":"Status",
 			"description":"Description",

@@ -71,8 +71,16 @@
 		}
 	},
 	"collections": {
+		"cards": {
+			"data": "Data",
+			"log": "Enhed log"
+		},
 		"pageTitle": "Datasamlinger",
+		"calibratedData": "Kalibreret data",
+		"rawData": "Rådata",
 		"fields": {
+			"organisation":"Organisation",
+			"activeDevice": "Aktiv enhed",
 			"name": "Navn",
 			"status": "Status",
 			"description":"Beskrivelse",

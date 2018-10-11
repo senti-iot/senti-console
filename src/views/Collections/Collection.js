@@ -171,7 +171,7 @@ class Collection extends Component {
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{t("dialogs.unassignTitle", { what: t("collection.fields.organisation") })}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("dialogs.unassignTitle", { what: t("collections.fields.organisation") })}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
 					{t("dialogs.unassign", { id: collection.id, name: collection.name, what: collection.org.name })}

@@ -363,7 +363,7 @@ class CollectionData extends Component {
 						/>
 					</ListItemIcon>
 					<ListItemText>
-						{t("collection.fields.rawData")}
+						{t("collections.rawData")}
 					</ListItemText>
 				</ListItem>
 				<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
@@ -456,13 +456,13 @@ class CollectionData extends Component {
 			<InfoCard
 				noExpand
 				topAction={this.renderMenu()}
-				title={t("collection.cards.data")}
+				title={t("collections.cards.data")}
 
 				content={
 					<ItemG container>
 						{this.renderCustomDateDialog()}
 						{loading ? this.renderLoader() : <ItemG xs={12}>
-							<Caption className={classes.bigCaption2}>{raw ? t("collections.rawData") : t("collection.calibratedData")}</Caption>
+							<Caption className={classes.bigCaption2}>{raw ? t("collections.rawData") : t("collections.calibratedData")}</Caption>
 							{this.renderType()}
 						</ItemG>}
 					</ItemG>
