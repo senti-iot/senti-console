@@ -13,6 +13,7 @@ import searchStyles from 'assets/jss/components/search/searchStyles';
 import SearchInput from './SearchInput';
 import { ClickAwayListener } from '@material-ui/core';
 import withLocalization from '../Localization/T';
+// import { Caption } from 'components';
 
 function renderInput(inputProps) {
 	// const { classes, ref, ...other  } = inputProps;
@@ -21,28 +22,6 @@ function renderInput(inputProps) {
 	);
 }
 
-function renderSuggestion(suggestion, { query, isHighlighted }) {
-	const matches = match(suggestion.label, query);
-	const parts = parse(suggestion.label, matches);
-
-	return (
-		<MenuItem selected={isHighlighted} component="div">
-			<div>
-				{parts.map((part, index) => {
-					return part.highlight ? (
-						<span key={String(index)} style={{ fontWeight: 300, maxWidth: "calc(100vw-100px)", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-							{part.text}
-						</span>
-					) : (
-						<strong key={String(index)} style={{ fontWeight: 500 }}>
-							{part.text}
-						</strong>
-					);
-				})}
-			</div>
-		</MenuItem>
-	);
-}
 
 function renderSuggestionsContainer(options) {
 	const { containerProps, children } = options;
@@ -97,6 +76,32 @@ class IntegrationAutosuggest extends React.Component {
 	handleResetSearch = () => {
 		this.handleChange(null, { newValue: '' })
 
+	}
+	renderSuggestion(suggestion, { query, isHighlighted }) {
+		// console.log(suggestion)
+		const matches = match(suggestion.label, query);
+		const parts = parse(suggestion.label, matches);
+
+		return (
+			<MenuItem selected={isHighlighted} component="div">
+				<div>
+					{parts.map((part, index) => {
+						return part.highlight ? (
+							<span key={String(index)} style={{ fontWeight: 300, maxWidth: "calc(100vw-100px)", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+								{part.text} 
+							</span>
+						) : (
+							<strong key={String(index)} style={{ fontWeight: 500 }}>
+								{part.text}
+							</strong>
+						);
+					})}
+					{/* <Caption>
+						{suggestion.id}
+					</Caption> */}
+				</div>
+			</MenuItem>
+		);
 	}
 	handleSuggestionsFetchRequested = ({ value, reason }) => {
 		const { open } = this.state
@@ -157,7 +162,7 @@ class IntegrationAutosuggest extends React.Component {
 						onSuggestionSelected={this.focusInput}
 						renderSuggestionsContainer={renderSuggestionsContainer}
 						getSuggestionValue={getSuggestionValue}
-						renderSuggestion={renderSuggestion}
+						renderSuggestion={this.renderSuggestion}
 						inputProps={{
 							classes,
 							value: this.props.searchValue,

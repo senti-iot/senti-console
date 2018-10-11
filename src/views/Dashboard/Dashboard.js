@@ -48,10 +48,10 @@ class Dashboard extends React.Component {
 	}
 
 	render() {
-		const { discoverSenti, t } = this.props
+		const { discoverSenti, t, history } = this.props
 		return (
 			<Fragment>
-				{discoverSenti ? <DiscoverSenti t={t} /> : null}
+				{discoverSenti ? <DiscoverSenti t={t} history={history}/> : null}
 				<GridContainer spacing={8} justify={"center"}>
 					<ItemG justify sm={12} md={4}><MediaCard
 						img={imgs.hosting}

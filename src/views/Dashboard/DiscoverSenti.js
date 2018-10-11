@@ -25,16 +25,16 @@ class DiscoverSenti extends Component {
 								</ItemGrid>
 								<ItemGrid xs={12} sm={4} noMargin>
 									<DiscoverSentiCards img={StorageImg}
-										onClick={this.goTo("/projects/new")}
+										onClick={this.goTo("/projects/list")}
 										content={
-											<Typography variant={'h6'} style={{ color: "white", fontWeight: 400 }}>{t("discoverSenti.addProject")}</Typography>
+											<Typography variant={'h6'} style={{ color: "white", fontWeight: 400, textTransform: "none" }}>{t("discoverSenti.addProject")}</Typography>
 										}/>
 								</ItemGrid>
 								<ItemGrid xs={12} sm={4} noMargin>
 									<DiscoverSentiCards img={HostingImg}
 										onClick={this.goTo("/devices/list")}
 										content={
-											<Typography variant={'h6'} style={{ color: "white", fontWeight: 400 }}>{t("discoverSenti.onSiteSetup")}</Typography>
+											<Typography variant={'h6'} style={{ color: "white", fontWeight: 400, textTransform: "none" }}>{t("discoverSenti.onSiteSetup")}</Typography>
 
 										}/>
 								</ItemGrid>
@@ -42,7 +42,7 @@ class DiscoverSenti extends Component {
 									<DiscoverSentiCards img={AnalyticsImg}
 										onClick={this.goTo("/collections/list")}
 										content={
-											<Typography variant={'h6'} style={{ color: "white", fontWeight: 400 }}>{t("discoverSenti.startAnalyzeData")}</Typography>
+											<Typography variant={'h6'} style={{ color: "white", fontWeight: 400, textTransform: "none" }}>{t("discoverSenti.startAnalyzeData")}</Typography>
 										}
 									/>
 								</ItemGrid>

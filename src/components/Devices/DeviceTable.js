@@ -166,34 +166,34 @@ class EnhancedTable extends React.Component {
 
 	isSelected = id => this.state.selected.indexOf(id) !== -1;
 
-	suggestionSlicer = (obj) => {
-		var arr = [];
+	// suggestionSlicer = (obj) => {
+	// 	var arr = [];
 
-		for (var prop in obj) {
-			if (obj.hasOwnProperty(prop)) {
-				var innerObj = {};
-				if (typeof obj[ prop ] === 'object') {
-					arr.push(...this.suggestionSlicer(obj[ prop ]))
-				}
-				else {
-					innerObj = {
-						id: prop.toString().toLowerCase(),
-						label: obj[ prop ] ? obj[ prop ].toString() : ''
-					};
-					arr.push(innerObj)
-				}
-			}
-		}
-		return arr;
-	}
-	suggestionGen = (arrayOfObjs) => {
-		let arr = [];
-		arrayOfObjs.map(obj => {
-			arr.push(...this.suggestionSlicer(obj))
-			return ''
-		})
-		return arr;
-	}
+	// 	for (var prop in obj) {
+	// 		if (obj.hasOwnProperty(prop)) {
+	// 			var innerObj = {};
+	// 			if (typeof obj[ prop ] === 'object') {
+	// 				arr.push(...this.suggestionSlicer(obj[ prop ]))
+	// 			}
+	// 			else {
+	// 				innerObj = {
+	// 					id: prop.toString().toLowerCase(),
+	// 					label: obj[ prop ] ? obj[ prop ].toString() : ''
+	// 				};
+	// 				arr.push(innerObj)
+	// 			}
+	// 		}
+	// 	}
+	// 	return arr;
+	// }
+	// suggestionGen = (arrayOfObjs) => {
+	// 	let arr = [];
+	// 	arrayOfObjs.map(obj => {
+	// 		arr.push(...this.suggestionSlicer(obj))
+	// 		return ''
+	// 	})
+	// 	return arr;
+	// }
 	renderIcon = (status) => {
 		const { classes, t } = this.props
 		switch (status) {
