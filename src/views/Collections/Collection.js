@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getCollection, updateCollection } from 'variables/dataCollections';
 import { dateFormatter } from 'variables/functions';
-// import CollectionActiveDevice from 'views/Collections/CollectionCards/CollectionActiveDevice';
+import CollectionActiveDevice from 'views/Collections/CollectionCards/CollectionActiveDevice';
 import CollectionData from 'views/Collections/CollectionCards/CollectionData';
 import CollectionDetails from 'views/Collections/CollectionCards/CollectionDetails';
 import CollectionHistory from 'views/Collections/CollectionCards/CollectionHistory';
@@ -188,7 +188,7 @@ class Collection extends Component {
 	}
 
 	render() {
-		const { /* history, */ t, classes, /* accessLevel */ } = this.props
+		const { history, t, classes, accessLevel } = this.props
 		const { collection, loading, loadingData } = this.state
 		return (
 			!loading ?
@@ -228,14 +228,14 @@ class Collection extends Component {
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
-						{/* <CollectionActiveDevice
+						<CollectionActiveDevice
 							collection={collection}
 							history={history}
-							device={collection.activeDevice ? collection.activeDevice : null}
+							device={collection.activeDeviceStats ? collection.activeDeviceStats : null}
 							accessLevel={accessLevel}
 							classes={classes}
 							t={t}
-						/> */}
+						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
 						<CollectionHistory

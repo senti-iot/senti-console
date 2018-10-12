@@ -82,10 +82,12 @@ class EditCollection extends Component {
 	}
 	handleUpdate = async () => {
 		// console.log(this.props.s)
-		const { s, t } = this.props
+		const { s, t, history } = this.props
 		let rs = this.postUpdate()
-		if (rs)
+		if (rs) {
 			s(t("snackbars.collectionUpdated"))
+			history.push(`/collection/${this.id}`)
+		}
 		else
 			s(t("snackbars.failed"))
 	}

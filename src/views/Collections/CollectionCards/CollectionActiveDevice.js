@@ -1,8 +1,8 @@
 import { Button, Typography } from '@material-ui/core';
 import { Caption, Info, InfoCard, ItemG, ItemGrid } from 'components/index';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { ConvertDDToDMS, dateFormat, dateFormatter } from 'variables/functions';
+// import { Link } from 'react-router-dom';
+import { dateFormat, dateFormatter } from 'variables/functions';
 import { DeviceHub, SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons';
 
 class CollectionActiveDevice extends Component {
@@ -47,10 +47,9 @@ class CollectionActiveDevice extends Component {
 		let deviceLoc = this.LocationTypes()[this.LocationTypes().findIndex(r => r.id === device.locationType)]
 		return deviceLoc ? deviceLoc.label : t("devices.noLocType")
 	}
-
 	render() {
 		const {/*  classes, */ device, t, /* accessLevel, */ history, collection } = this.props
-		// console.log(device)
+		console.log(device)
 		return (
 			<InfoCard
 				title={t("collections.fields.activeDevice")}
@@ -69,7 +68,7 @@ class CollectionActiveDevice extends Component {
 						<ItemG container>
 							<ItemGrid>
 								<Caption>{t("devices.fields.status")}:</Caption>
-								{this.renderStatus(device.liveStatus)}
+								{this.renderStatus(device.state)}
 							</ItemGrid>
 							<ItemGrid>
 								<Caption>{t("devices.fields.temp")}:</Caption>
@@ -77,23 +76,23 @@ class CollectionActiveDevice extends Component {
 									{device.temperature} &#8451;
 								</Info>
 							</ItemGrid>
-							<ItemGrid xs={12}>
+							{/* <ItemGrid xs={12}>
 								<Caption>{t("devices.fields.description")}:</Caption>
 								<Info>{device.description ? device.description : ""}</Info>
-							</ItemGrid>
+							</ItemGrid> */}
 							<ItemGrid xs={12}>
 								<Caption>{t("devices.fields.lastData")}:</Caption>
-								<Info title={dateFormatter(device.wifiLast)}>
-									{dateFormat(device.wifiLast)}
+								<Info title={dateFormatter(device.latestData)}>
+									{dateFormat(device.latestData)}
 								</Info>
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<Caption>{t("devices.fields.lastStats")}:</Caption>
-								<Info title={dateFormatter(device.execLast)}>
-									{dateFormat(device.execLast)}
+								<Info title={dateFormatter(device.latestActivity)}>
+									{dateFormat(device.latestActivity)}
 								</Info>
 							</ItemGrid>
-							<ItemGrid xs={12}>
+							{/* <ItemGrid xs={12}>
 								<Caption>{t("devices.fields.locType")}:</Caption>
 								<Info>{this.renderDeviceLocType()} </Info>
 							</ItemGrid>
@@ -106,21 +105,16 @@ class CollectionActiveDevice extends Component {
 								<Info><a title={t("links.googleMaps")} href={`https://www.google.com/maps/search/${device.lat}+${device.long}`} target={'_blank'}>
 									{ConvertDDToDMS(device.lat, false) + " " + ConvertDDToDMS(device.long, true)}</a>
 								</Info>
-							</ItemGrid>
-							<ItemGrid>
+							</ItemGrid> */}
+							{/* <ItemGrid>
 								<Caption>{t("devices.fields.org")}:</Caption>
 								<Info>{device.org ?
 									<Link to={`/org/${device.org.id}`} >
 										{device.org.name}
 									</Link>
-									: t("devices.noProject")}</Info>
+									: t("devices.noOrg")}</Info>
 
-							</ItemGrid>
-							<ItemGrid>
-								<Caption>{t("devices.fields.project")}:</Caption>
-								<Info>{device.project.id > 0 ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : t("devices.noProject")}</Info>
-							</ItemGrid>
-						
+							</ItemGrid> */}
 						</ItemG>
 						: <Caption>{t("collections.noActiveDevice")}</Caption>
 		

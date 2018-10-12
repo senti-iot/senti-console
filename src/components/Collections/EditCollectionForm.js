@@ -75,10 +75,21 @@ class EditCollectionForm extends Component {
 							<ItemGrid xs={12}>
 								<TextF
 									id={'collectionName'}
-									label={t("collection.fields.name")}
+									label={t("collections.fields.name")}
 									handleChange={handleChange("name")}
 									value={collection.name}
 									autoFocus
+									noFullWidth
+								/>
+							</ItemGrid>
+							<ItemGrid xs={12}>
+								<TextF
+									id={"collectionDescription"}
+									label={t("collections.fields.description")}
+									handleChange={handleChange("description")}
+									value={collection.description}
+									multiline
+									rows={3}
 									noFullWidth
 								/>
 							</ItemGrid>
