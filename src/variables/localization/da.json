@@ -76,6 +76,8 @@
 			"data": "Data",
 			"log": "Enhed log"
 		},
+		"noActiveDevice": "Ingen aktiv enhed",
+		"noHistory": "Ingen logfiler",
 		"pageTitle": "Datasamlinger",
 		"calibratedData": "Kalibreret data",
 		"rawData": "Rådata",

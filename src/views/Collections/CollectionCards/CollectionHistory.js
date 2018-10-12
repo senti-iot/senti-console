@@ -1,5 +1,5 @@
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
-import { InfoCard } from 'components/index';
+import { InfoCard, Caption } from 'components';
 import React from 'react';
 import { dateFormatter } from 'variables/functions';
 import { History } from 'variables/icons';
@@ -13,7 +13,7 @@ class CollectionHistory extends React.Component {
 			noExpand
 			title={t("collections.cards.log")}
 			avatar={<History />}
-			content={<Table>
+			content={collection.devices.length > 0 ? <Table>
 				<TableHead>
 					<TableRow>
 						<TableCell>Device Name</TableCell>
@@ -34,7 +34,7 @@ class CollectionHistory extends React.Component {
 						);
 					})}
 				</TableBody>
-			</Table>}
+			</Table> : <Caption>{t("collections.noHistory")}</Caption>}
 		/>
 	}
 }

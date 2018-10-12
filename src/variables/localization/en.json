@@ -76,6 +76,8 @@
 			"data": "Data",
 			"log": "Device log"
 		},
+		"noActiveDevice": "No active device",
+		"noHistory": "No logs",
 		"pageTitle": "Data Collections",
 		"calibratedData": "Calibrated Data",
 		"rawData": "Raw data",

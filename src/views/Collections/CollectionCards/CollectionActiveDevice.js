@@ -55,72 +55,74 @@ class CollectionActiveDevice extends Component {
 			<InfoCard
 				title={t("collections.fields.activeDevice")}
 				avatar={<DeviceHub />}
-				subheader={device.id}
+				subheader={device ? device.id : ""}
 				noRightExpand
 				leftActionContent={
-					<ItemG xs={12}>
+					device ? <ItemG xs={12}>
 						<Button variant={'text'} color={"primary"} onClick={() => { history.push({ pathname: `/device/${device.id}`, state: { prevURL: `/collection/${collection.id}` } })}}>
 							{t("menus.seeMore")}
 						</Button>
-					</ItemG>
+					</ItemG> : null
 				}
 				content={
-					<ItemG container>
-						<ItemGrid>
-							<Caption>{t("devices.fields.status")}:</Caption>
-							{this.renderStatus(device.liveStatus)}
-						</ItemGrid>
-						<ItemGrid>
-							<Caption>{t("devices.fields.temp")}:</Caption>
-							<Info>
-								{device.temperature} &#8451;
-							</Info>
-						</ItemGrid>
-						<ItemGrid xs={12}>
-							<Caption>{t("devices.fields.description")}:</Caption>
-							<Info>{device.description ? device.description : ""}</Info>
-						</ItemGrid>
-						<ItemGrid xs={12}>
-							<Caption>{t("devices.fields.lastData")}:</Caption>
-							<Info title={dateFormatter(device.wifiLast)}>
-								{dateFormat(device.wifiLast)}
-							</Info>
-						</ItemGrid>
-						<ItemGrid xs={12}>
-							<Caption>{t("devices.fields.lastStats")}:</Caption>
-							<Info title={dateFormatter(device.execLast)}>
-								{dateFormat(device.execLast)}
-							</Info>
-						</ItemGrid>
-						<ItemGrid xs={12}>
-							<Caption>{t("devices.fields.locType")}:</Caption>
-							<Info>{this.renderDeviceLocType()} </Info>
-						</ItemGrid>
-						<ItemGrid xs={2}>
-							<Caption>{t("devices.fields.address")}:</Caption>
-							<Info>{device.address} </Info>
-						</ItemGrid>
-						<ItemGrid xs={9}>
-							<Caption>{t("devices.fields.coords")}:</Caption>
-							<Info><a title={t("links.googleMaps")} href={`https://www.google.com/maps/search/${device.lat}+${device.long}`} target={'_blank'}>
-								{ConvertDDToDMS(device.lat, false) + " " + ConvertDDToDMS(device.long, true)}</a>
-							</Info>
-						</ItemGrid>
-						<ItemGrid>
-							<Caption>{t("devices.fields.org")}:</Caption>
-							<Info>{device.org ?
-								<Link to={`/org/${device.org.id}`} >
-									{device.org.name}
-								</Link>
-								: t("devices.noProject")}</Info>
+					device ?
+						<ItemG container>
+							<ItemGrid>
+								<Caption>{t("devices.fields.status")}:</Caption>
+								{this.renderStatus(device.liveStatus)}
+							</ItemGrid>
+							<ItemGrid>
+								<Caption>{t("devices.fields.temp")}:</Caption>
+								<Info>
+									{device.temperature} &#8451;
+								</Info>
+							</ItemGrid>
+							<ItemGrid xs={12}>
+								<Caption>{t("devices.fields.description")}:</Caption>
+								<Info>{device.description ? device.description : ""}</Info>
+							</ItemGrid>
+							<ItemGrid xs={12}>
+								<Caption>{t("devices.fields.lastData")}:</Caption>
+								<Info title={dateFormatter(device.wifiLast)}>
+									{dateFormat(device.wifiLast)}
+								</Info>
+							</ItemGrid>
+							<ItemGrid xs={12}>
+								<Caption>{t("devices.fields.lastStats")}:</Caption>
+								<Info title={dateFormatter(device.execLast)}>
+									{dateFormat(device.execLast)}
+								</Info>
+							</ItemGrid>
+							<ItemGrid xs={12}>
+								<Caption>{t("devices.fields.locType")}:</Caption>
+								<Info>{this.renderDeviceLocType()} </Info>
+							</ItemGrid>
+							<ItemGrid xs={2}>
+								<Caption>{t("devices.fields.address")}:</Caption>
+								<Info>{device.address} </Info>
+							</ItemGrid>
+							<ItemGrid xs={9}>
+								<Caption>{t("devices.fields.coords")}:</Caption>
+								<Info><a title={t("links.googleMaps")} href={`https://www.google.com/maps/search/${device.lat}+${device.long}`} target={'_blank'}>
+									{ConvertDDToDMS(device.lat, false) + " " + ConvertDDToDMS(device.long, true)}</a>
+								</Info>
+							</ItemGrid>
+							<ItemGrid>
+								<Caption>{t("devices.fields.org")}:</Caption>
+								<Info>{device.org ?
+									<Link to={`/org/${device.org.id}`} >
+										{device.org.name}
+									</Link>
+									: t("devices.noProject")}</Info>
 
-						</ItemGrid>
-						<ItemGrid>
-							<Caption>{t("devices.fields.project")}:</Caption>
-							<Info>{device.project.id > 0 ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : t("devices.noProject")}</Info>
-						</ItemGrid>
+							</ItemGrid>
+							<ItemGrid>
+								<Caption>{t("devices.fields.project")}:</Caption>
+								<Info>{device.project.id > 0 ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : t("devices.noProject")}</Info>
+							</ItemGrid>
 						
-					</ItemG>
+						</ItemG>
+						: <Caption>{t("collections.noActiveDevice")}</Caption>
 		
 				} />)
 	}
