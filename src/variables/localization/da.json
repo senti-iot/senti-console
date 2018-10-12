@@ -87,6 +87,10 @@
 			"activeDeviceStartDate": "Dataopsamling start",
 			"name": "Navn",
 			"status": "Status",
+			"state": {
+				"active": "Aktiv",
+				"inactive": "Inaktiv"
+			},
 			"description":"Beskrivelse",
 			"created": "Oprettet",
 			"modified": "Opdateret",

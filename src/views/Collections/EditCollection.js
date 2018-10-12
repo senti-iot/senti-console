@@ -37,7 +37,7 @@ class EditCollection extends Component {
 				orgs: [{ id: 0, name: t("users.fields.noOrg") }, ...orgs],
 				loading: false
 			})
-			let prevURL = history.location.state ? history.location.state['prevURL'] : null
+			let prevURL = history.location.state ? history.location.state['prevURL'] : `/collection/${this.id}`
 			setHeader(`${t("menus.edit")} ${collection.name} `, true, prevURL, "collections")
 		}
 		else {

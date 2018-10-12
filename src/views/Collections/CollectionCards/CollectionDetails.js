@@ -1,55 +1,26 @@
-import { Grid, Typography, withStyles } from '@material-ui/core';
+import { Grid, withStyles } from '@material-ui/core';
 import collectionStyles from 'assets/jss/views/deviceStyles';
 import { Caption, Info, ItemGrid } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { Business, DataUsage, Edit, LayersClear, SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons';
+import { Business, DataUsage, Edit,  } from 'variables/icons';
 
 class DeviceDetails extends Component {
 
-	renderStatus = (status) => {
-		const { classes } = this.props
-		switch (status) {
+	collectionState = () => {
+		const { collection, t } = this.props
+		switch (collection.state) {
 			case 1:
-				return <SignalWifi2Bar className={classes.yellowSignal} />
+				return t("collections.fields.state.active")
 			case 2:
-				return <SignalWifi2Bar className={classes.greenSignal} />
-			case 0:
-				return <SignalWifi2Bar className={classes.redSignal} />
-			case null:
-				return <div>
-					<SignalWifi2BarLock className={classes.redSignal} />
-					<Typography paragraph>
-						Error
-					</Typography>
-				</div>
+				return t("collections.fields.state.inactive") 
 			default:
 				break;
 		}
 	}
 
-	LocationTypes = () => {
-		const { t } = this.props
-		return [
-			{ id: 1, label: t("collections.locationTypes.pedStreet") },
-			{ id: 2, label: t("collections.locationTypes.park") },
-			{ id: 3, label: t("collections.locationTypes.path") },
-			{ id: 4, label: t("collections.locationTypes.square") },
-			{ id: 5, label: t("collections.locationTypes.crossroads") },
-			{ id: 6, label: t("collections.locationTypes.road") },
-			{ id: 7, label: t("collections.locationTypes.motorway") },
-			{ id: 8, label: t("collections.locationTypes.port") },
-			{ id: 9, label: t("collections.locationTypes.office") },
-			{ id: 0, label: t("collections.locationTypes.unspecified") }]
-	}
-
-	renderDeviceLocType = () => {
-		const { collection, t } = this.props
-		let collectionLoc = this.LocationTypes()[this.LocationTypes().findIndex(r => r.id === collection.locationType)]
-		return collectionLoc ? collectionLoc.label : t("collections.noLocType")
-	}
 	render() {
 		const { classes, collection, t, accessLevel, history } = this.props
 		return (
@@ -61,7 +32,7 @@ class DeviceDetails extends Component {
 						{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/collection/${collection.id}/edit`, state: { prevURL: `/collection/${collection.id}` } }) },
 						// { label: collection.project.id > 0 ? t("menus.reassign") : t("menus.assign"), icon: <LibraryBooks className={classes.leftIcon} />, func: this.props.handleOpenAssign },
 						{ label: collection.org.id > 0 ? t("menus.reassignOrg") : t("menus.assignOrg"), icon: <Business className={classes.leftIcon} />, func: this.props.handleOpenAssignOrg, dontShow: accessLevel.apisuperuser ? false : true },
-						{ label: t("menus.unassignOrg"), icon: <LayersClear className={classes.leftIcon} />, func: this.props.handleOpenUnassign, dontShow: collection.org.id > 0 ? false : true },
+						// { label: t("menus.unassignOrg"), icon: <LayersClear className={classes.leftIcon} />, func: this.props.handleOpenUnassign, dontShow: collection.org.id > 0 ? false : true },
 						// { label: !(collection.lat > 0) && !(collection.long > 0) ? t("menus.calibrate") : t("menus.recalibrate"), icon: <Build className={classes.leftIcon} />, func: () => this.props.history.push(`${this.props.match.url}/setup`) }
 					]
 				} />
@@ -72,40 +43,10 @@ class DeviceDetails extends Component {
 				content={
 					<Fragment>
 						<Grid container>
-							{/* {!(collection.lat > 0) && !(collection.long > 0) &&
-								<ItemGrid xs={12}>
-									<Warning>
-										<ItemGrid container xs={12}>
-											<P>
-												{t("collections.notCalibrated")}
-											</P>
-										</ItemGrid>
-										<ItemGrid container xs={12}>
-											<Button
-												color={"default"}
-												onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}
-												variant={"outlined"}>
-												{t("collections.calibrateButton")}
-											</Button>
-										</ItemGrid>
-									</Warning>
-								</ItemGrid>} */}
-							{/* 							<ItemGrid>
-								<Caption>{t("collections.fields.name")}:</Caption>
-								<Info>
-									{collection.name ? collection.name : t("collections.noName")}
-								</Info>
-							</ItemGrid > */}
 							<ItemGrid>
 								<Caption>{t("collections.fields.status")}:</Caption>
-								{this.renderStatus(collection.state)}
+								<Info>{this.collectionState()}</Info>
 							</ItemGrid>
-							{/* <ItemGrid>
-								<Caption>{t("collections.fields.temp")}:</Caption>
-								<Info>
-									{collection.temperature} &#8451;
-								</Info>
-							</ItemGrid> */}
 							<ItemGrid xs={12}>
 								<Caption>{t("collections.fields.description")}:</Caption>
 								<Info>{collection.description ? collection.description : ""}</Info>

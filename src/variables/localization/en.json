@@ -87,6 +87,10 @@
 			"organisation":"Organisation",
 			"name":"Name",
 			"status":"Status",
+			"state": {
+				"active": "Active",
+				"inactive": "Inactive"
+			},
 			"description":"Description",
 			"created":"Created",
 			"modified":"Last modified",
