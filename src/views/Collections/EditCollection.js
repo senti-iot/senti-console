@@ -34,7 +34,7 @@ class EditCollection extends Component {
 		if (collection) {
 			this.setState({
 				collection: collection,
-				orgs: [{ id: 0, name: "No Org" }, ...orgs],
+				orgs: [{ id: 0, name: t("users.fields.noOrg") }, ...orgs],
 				loading: false
 			})
 			let prevURL = history.location.state ? history.location.state['prevURL'] : null

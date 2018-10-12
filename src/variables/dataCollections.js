@@ -34,11 +34,11 @@ export const getAllCollections = async () => {
 	return data
 }
 export const updateCollection = async (dc) => {
-	let data = await api.put(`/senti/datacollection/${dc.id}`, dc).then(rs => rs.data)
+	let data = await api.post(`/senti/datacollection/${dc.id}`, dc).then(rs => rs.data)
 	return data
 }
 export const createCollection = async (dc) => {
-	let data = await api.post(`/senti/datacollection`, dc).then(rs => rs.data)
+	let data = await api.put(`/senti/datacollection`, dc).then(rs => rs.data)
 	return data
 }
 export const deleteCollection = async (id) => {
