@@ -5,7 +5,7 @@ import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { Business, DataUsage, Edit, DeviceHub,  } from 'variables/icons';
+import { Business, DataUsage, Edit, DeviceHub, LibraryBooks,  } from 'variables/icons';
 
 class DeviceDetails extends Component {
 
@@ -32,8 +32,7 @@ class DeviceDetails extends Component {
 						{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/collection/${collection.id}/edit`, state: { prevURL: `/collection/${collection.id}` } }) },
 						{ label: collection.activeDeviceStats ? t("menus.reassignDevice") : t("menus.assignDevice"), icon: <DeviceHub className={classes.leftIcon} />, func: this.props.handleOpenAssignDevice },
 						{ label: collection.org.id > 0 ? t("menus.reassignOrg") : t("menus.assignOrg"), icon: <Business className={classes.leftIcon} />, func: this.props.handleOpenAssignOrg, dontShow: accessLevel.apisuperuser ? false : true },
-						// { label: t("menus.unassignOrg"), icon: <LayersClear className={classes.leftIcon} />, func: this.props.handleOpenUnassign, dontShow: collection.org.id > 0 ? false : true },
-						// { label: !(collection.lat > 0) && !(collection.long > 0) ? t("menus.calibrate") : t("menus.recalibrate"), icon: <Build className={classes.leftIcon} />, func: () => this.props.history.push(`${this.props.match.url}/setup`) }
+						{ label: collection.project.id ? t("menus.reassignProject") : t("menus.assignProject"), icon: <LibraryBooks className={classes.leftIcon} />, func: this.props.handleOpenAssignProject, /*  dontShow: collection.org.id > 0 ? false : true */ },
 					]
 				} />
 
