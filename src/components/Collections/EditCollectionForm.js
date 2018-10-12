@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, Grid, Dialog, Slide, AppBar, Toolbar, List, ListItem, Divider, ListItemText, withStyles, Button, IconButton, Typography } from '@material-ui/core'
+import { Paper, Grid, Dialog, Slide, AppBar, Toolbar, List, ListItem, Divider, ListItemText, withStyles, Button, Typography } from '@material-ui/core'
 import { GridContainer, TextF, ItemGrid } from 'components/index';
 import PropTypes from 'prop-types'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
