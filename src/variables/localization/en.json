@@ -67,37 +67,37 @@
 		"type": {
 			"bar": "Bar",
 			"donut": "Donut",
-			"pie": "Pie",
-			"line": "Line"
+			"line": "Line",
+			"pie": "Pie"
 		}
 	},
 	"collections": {
+		"calibratedData": "Calibrated Data",
 		"cards": {
 			"data": "Data",
 			"log": "Device log"
 		},
-		"noActiveDevice": "No active device",
-		"noHistory": "No logs",
-		"pageTitle": "Data Collections",
-		"calibratedData": "Calibrated Data",
-		"rawData": "Raw data",
 		"fields": {
 			"activeDevice": "Active Device",
 			"activeDeviceStartDate": "Data collection start",
-			"organisation":"Organisation",
-			"name":"Name",
-			"status":"Status",
+			"collection": "Data collection",
+			"created": "Created",
+			"description": "Description",
+			"modified": "Last modified",
+			"name": "Name",
+			"org": "Organisation",
+			"organisation": "Organisation",
 			"state": {
 				"active": "Active",
 				"inactive": "Inactive"
 			},
-			"description":"Description",
-			"created":"Created",
-			"modified":"Last modified",
-			"collection":"Data collection",
-			"org":"Organisation"
-		}
-	},	
+			"status": "Status"
+		},
+		"noActiveDevice": "No active device",
+		"noHistory": "No logs",
+		"pageTitle": "Data Collections",
+		"rawData": "Raw data"
+	},
 	"confirmUser": {
 		"button": "Confirm password",
 		"lastStep": "Create your password to confirm your Senti.Cloud account.",
@@ -268,9 +268,9 @@
 			"custom": "Custom range",
 			"daily": "Daily",
 			"hourly": "Hourly",
+			"thisWeek": "This week",
 			"today": "Today",
-			"yesterday": "Yesterday",
-			"thisWeek": "This week"
+			"yesterday": "Yesterday"
 		},
 		"display": "Display:",
 		"endDate": "End date",
@@ -294,10 +294,10 @@
 		"phoneTo": "Call"
 	},
 	"login": {
-		"goToLogin": "Go to Sign in",
 		"button": "Sign in",
 		"changePassword": "Change password",
 		"forgotPass": "Forgot password?",
+		"goToLogin": "Go to Sign in",
 		"pass": "Password",
 		"requestPasswordReset": "Request password reset",
 		"resetPassRequestMessage": "An E-mail has been sent with instructions on how to reset your password!",
@@ -305,10 +305,10 @@
 		"username": "Username"
 	},
 	"menus": {
-		"assignProject": "Assign to project",
 		"assignDevice": "Assign device",
 		"assignDevices": "Assign devices",
 		"assignOrg": "Assign to organisation",
+		"assignProject": "Assign to project",
 		"calibrate": "Calibrate",
 		"changePassword": "Change password",
 		"delete": "Delete",
@@ -321,9 +321,9 @@
 		"hideMap": "Hide map",
 		"hideMore": "Hide",
 		"more": "More",
-		"reassignProject": "Reassign to another project",
 		"reassignDevice": "Reassign to another device",
 		"reassignOrg": "Reassign to another organisation",
+		"reassignProject": "Reassign to another project",
 		"recalibrate": "Recalibrate",
 		"seeLess": "See less",
 		"seeMore": "See more",
@@ -331,8 +331,8 @@
 		"showMore": "Show more",
 		"unassign": "Unassign",
 		"unassignDevice": "Unassign from project",
-		"unassignProject": "Unassign device(s) from project",
 		"unassignOrg": "Unassign organisation",
+		"unassignProject": "Unassign device(s) from project",
 		"userResendEmail": "Resend Confirm Email"
 	},
 	"orgs": {
@@ -397,7 +397,6 @@
 		"pageTitle": "Projects",
 		"projectDelete": "Delete project?",
 		"projectDeleteConfirm": "Are you sure you want to delete project ",
-		"projectRedirect": "Redirecting back to list of projects",
 		"projectsColumnCreated": "Created",
 		"projectsColumnDescription": "Description",
 		"projectsColumnEndDate": "End date",
@@ -470,8 +469,8 @@
 		"users": "Users"
 	},
 	"snackbars": {
-		"assignDevice": "Device %{device} assigned to %{org}",
 		"assignCollection": "Collection %{collection} assigned to %{org}",
+		"assignDevice": "Device %{device} assigned to %{org}",
 		"createdFail": "Creation failed!",
 		"createdSuccess": "Created!",
 		"creating": "Creating...",
@@ -492,15 +491,15 @@
 		"redirect": "Redirecting ...",
 		"resetDeviceSuccess": "Device has been resetted",
 		"settingsSaved": "Settings saved!",
-		"unassignDevice": "Device %{device} unassigned from %{org}",
 		"unassignCollection": "Collection %{collection} unassigned from %{org}",
+		"unassignDevice": "Device %{device} unassigned from %{org}",
 		"updatedFailed": "Update failed!",
 		"updatedSuccess": "Updated!",
 		"updating": "Updating...",
 		"userCreated": "User %{user} has been succesfully created!",
 		"userDeleted": "User %{user} has been succesfully deleted!",
-		"userUpdated": "User %{user} has been succesfully updated!",
-		"userPasswordChanged": "Password has been changed succesfully!"
+		"userPasswordChanged": "Password has been changed succesfully!",
+		"userUpdated": "User %{user} has been succesfully updated!"
 	},
 	"tables": {
 		"addNewDevice": "Add device",
@@ -526,7 +525,9 @@
 		"fields": {
 			"accessLevel": "Access Level",
 			"active": "Active",
+			"confirmPass": "Confirm new password",
 			"created": "Created",
+			"currentPass": "Current password",
 			"email": "E-mail",
 			"firstName": "First name",
 			"group": "Group",
@@ -536,15 +537,13 @@
 			"loginSuspended": "Login suspended",
 			"name": "Name",
 			"neverLoggedIn": "Never signed in",
+			"newPass": "New password",
 			"noOrg": "No Organisation",
 			"organisation": "Organisation",
 			"phone": "Phone",
 			"profileImage": "Profile image",
 			"tags": "Tags",
-			"userName": "Username",
-			"currentPass": "Current password",
-			"newPass": "New password",
-			"confirmPass": "Confirm new password"
+			"userName": "Username"
 		},
 		"groups": {
 			"136550100000143": "Super user",
@@ -569,10 +568,10 @@
 			"orgs": "Organisations",
 			"users": "Users"
 		},
-		"userResendEmail": "Resend Confirm E-mail",
-		"userResendConfirm": "Are you sure you want to resend confirmation E-mail?",
 		"userDelete": "Delete user",
 		"userDeleteConfirm": "Are you sure you want to delete this user?",
+		"userResendConfirm": "Are you sure you want to resend confirmation E-mail?",
+		"userResendEmail": "Resend Confirm E-mail",
 		"usersDelete": "Delete users",
 		"usersDeleteConfirm": "Are you sure you want to delete the following users:"
 	}

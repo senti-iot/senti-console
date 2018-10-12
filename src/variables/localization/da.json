@@ -67,36 +67,36 @@
 		"type": {
 			"bar": "Søjle",
 			"donut": "Donut",
-			"pie": "Lagkage",
-			"line": "Linje"
+			"line": "Linje",
+			"pie": "Lagkage"
 		}
 	},
 	"collections": {
+		"calibratedData": "Kalibreret data",
 		"cards": {
 			"data": "Data",
 			"log": "Enhed log"
 		},
-		"noActiveDevice": "Ingen aktiv enhed",
-		"noHistory": "Ingen logfiler",
-		"pageTitle": "Datasamlinger",
-		"calibratedData": "Kalibreret data",
-		"rawData": "Rådata",
 		"fields": {
-			"organisation":"Organisation",
 			"activeDevice": "Aktiv enhed",
 			"activeDeviceStartDate": "Dataopsamling start",
+			"collection": "Datasamling",
+			"created": "Oprettet",
+			"description": "Beskrivelse",
+			"modified": "Opdateret",
 			"name": "Navn",
-			"status": "Status",
+			"org": "Organisation",
+			"organisation": "Organisation",
 			"state": {
 				"active": "Aktiv",
 				"inactive": "Inaktiv"
 			},
-			"description":"Beskrivelse",
-			"created": "Oprettet",
-			"modified": "Opdateret",
-			"collection": "Datasamling",
-			"org":"Organisation"
-		}
+			"status": "Status"
+		},
+		"noActiveDevice": "Ingen aktiv enhed",
+		"noHistory": "Ingen logfiler",
+		"pageTitle": "Datasamlinger",
+		"rawData": "Rådata"
 	},
 	"confirmUser": {
 		"button": "Bekræft og log ind",
@@ -268,9 +268,9 @@
 			"custom": "Tilpasset interval",
 			"daily": "Hver dag",
 			"hourly": "Hver time",
+			"thisWeek": "Denne uge",
 			"today": "I dag",
-			"yesterday": "I går",
-			"thisWeek": "Denne uge"
+			"yesterday": "I går"
 		},
 		"display": "Visning",
 		"endDate": "Slutdato",
@@ -294,10 +294,10 @@
 		"phoneTo": "Ring til"
 	},
 	"login": {
-		"goToLogin": "Går til log ind",
 		"button": "Log ind",
 		"changePassword": "Skift kodeord",
 		"forgotPass": "Glemt kodeord?",
+		"goToLogin": "Går til log ind",
 		"pass": "Kodeord",
 		"requestPasswordReset": "Nulstil kodeord",
 		"resetPassRequestMessage": "En E-mail er er blevet sendt med instruktioner for hvordan du nulstiller dit kodeord!",
@@ -305,10 +305,10 @@
 		"username": "Brugernavn"
 	},
 	"menus": {
-		"assignProject": "Tilknyt projekt",
-		"assignDevices": "Tilknyt enheder",
 		"assignDevice": "Tlknyt enhed",
+		"assignDevices": "Tilknyt enheder",
 		"assignOrg": "Tilknyt organisation",
+		"assignProject": "Tilknyt projekt",
 		"calibrate": "Kalibrer",
 		"changePassword": "Skift kodeord",
 		"delete": "Slet",
@@ -322,8 +322,8 @@
 		"hideMore": "Skjul",
 		"more": "Mere",
 		"reassignDevice": "Tilknyt anden enhed",
-		"reassignProject": "Overflyt til andet projekt",
 		"reassignOrg": "Overflyt til anden organisation",
+		"reassignProject": "Overflyt til andet projekt",
 		"recalibrate": "Rekalibring",
 		"seeLess": "Se mindre",
 		"seeMore": "Se mere",
@@ -331,8 +331,9 @@
 		"showMore": "Vis mere",
 		"unassign": "Fjern tilknytning",
 		"unassignDevice": "Fjern tilknytning fra projekt",
+		"unassignOrg": "Fjern tilknytning fra organisation",
 		"unassignProject": "Fjern enhed(er) fra projekt",
-		"unassignOrg": "Fjern tilknytning fra organisation"
+		"userResendEmail": "Resend Confirm Email"
 	},
 	"orgs": {
 		"create": "Opret",
@@ -460,16 +461,16 @@
 		"trp": "Rækker per side i lister"
 	},
 	"sidebar": {
+		"collections": "Data",
 		"dashboard": "Dashboard",
 		"devices": "Enheder",
 		"projects": "Projekter",
 		"settings": "Indstillinger",
-		"users": "Brugere",
-		"collections": "Data"
+		"users": "Brugere"
 	},
 	"snackbars": {
-		"assignDevice": "Enhed ${device} tildelt til ${org}",
 		"assignCollection": "Collection ${collection} tildelt til ${org}",
+		"assignDevice": "Enhed ${device} tildelt til ${org}",
 		"createdFail": "Oprettelse fejlede!",
 		"createdSuccess": "Oprettet!",
 		"creating": "Opretter ...",
@@ -481,21 +482,24 @@
 		"orgCreated": "Organisation %{org} er succesfuldt oprettet!",
 		"orgDeleted": "Organisation er succefuldt slettet!",
 		"orgUpdated": "Organisation %{org} er succesfuldt opdateret!",
+		"pictureDeleted": "Picture has been deleted!",
+		"pictureNotDeleted": "Picture has not been deleted!",
 		"projectCreated": "Projektet %{project} er oprettet!",
-     	"projectDeleted": "Projekt(er) er slettet!",
-    	"projectExported": "Projektet er eksporteret!",
+		"projectDeleted": "Projekt(er) er slettet!",
+		"projectExported": "Projektet er eksporteret!",
 		"projectUpdated": "Projekt %{project} er succesfuldt opdateret!",
 		"redirect": "Omdirigerer ...",
+		"resetDeviceSuccess": "Device has been resetted",
 		"settingsSaved": "Instillinger gemt!",
-		"unassignDevice": "Enhed ${device} fjernet fra ${org}!",
 		"unassignCollection": "Collection ${collection} fjernet fra ${org}",
+		"unassignDevice": "Enhed ${device} fjernet fra ${org}!",
 		"updatedFailed": "Opdatering fejlede!",
 		"updatedSuccess": "Opdateret!",
 		"updating": "Opdaterer ...",
 		"userCreated": "Bruger %{user} er succesfuldt opretted!",
 		"userDeleted": "Bruger %{user} er succesfuldt sletted!",
-		"userUpdated": "Bruger %{user} er succesfuldt opdateret!",
-		"userPasswordChanged": "Kodeord er succesfuld skiftet!"
+		"userPasswordChanged": "Kodeord er succesfuld skiftet!",
+		"userUpdated": "Bruger %{user} er succesfuldt opdateret!"
 	},
 	"tables": {
 		"addNewDevice": "Tilføj enhed",
@@ -521,7 +525,9 @@
 		"fields": {
 			"accessLevel": "Adgangsniveau",
 			"active": "Aktiv",
+			"confirmPass": "Bekræft nyt kodeord",
 			"created": "Opdateret",
+			"currentPass": "Nuværende kodeord",
 			"email": "E-mail",
 			"firstName": "Fornavn",
 			"group": "Gruppe",
@@ -531,15 +537,13 @@
 			"loginSuspended": "Login suspendederet",
 			"name": "Navn",
 			"neverLoggedIn": "Aldrig logget ind",
+			"newPass": "Nyt kodeord",
 			"noOrg": "Uden Organisation",
 			"organisation": "Organisation",
 			"phone": "Telefon",
 			"profileImage": "Profilbillede",
 			"tags": "Tags",
-			"userName": "Brugernavn",
-			"currentPass": "Nuværende kodeord",
-			"newPass": "Nyt kodeord",
-			"confirmPass": "Bekræft nyt kodeord"
+			"userName": "Brugernavn"
 		},
 		"groups": {
 			"136550100000143": "Superbruger",
@@ -564,10 +568,10 @@
 			"orgs": "Organisationer",
 			"users": "Brugere"
 		},
-		"userResendEmail": "Gensend bekræftelses E-mail",
-		"userResendConfirm": "Er du sikker på du ønsker at gensende bekræftelses E-mail?",
 		"userDelete": "Slet bruger",
 		"userDeleteConfirm": "Er du sikker på du vil slette denne bruger %{user} ?",
+		"userResendConfirm": "Er du sikker på du ønsker at gensende bekræftelses E-mail?",
+		"userResendEmail": "Gensend bekræftelses E-mail",
 		"usersDelete": "Slet brugere",
 		"usersDeleteConfirm": "Er du sikker på du vil slette de følgende brugere:"
 	}
