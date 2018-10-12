@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormControl, withStyles, Select, Input, MenuItem } from '@material-ui/core';
+import { FormControl, withStyles, Select, Input, MenuItem, InputLabel } from '@material-ui/core';
 const styles = theme => ({
 	formControl: {
 		marginTop: 16,
@@ -9,12 +9,15 @@ const styles = theme => ({
 });
 
 const DSelect = (props) => {
-	const { classes, value, func, menuItems } = props
+	const { classes, value, func, menuItems, label } = props
 	return <FormControl className={classes.formControl}>
+		{label ? <InputLabel FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
+			{label}
+		</InputLabel> : null}
 		<Select
 			value={value}
 			onChange={func}
-			input={<Input name="streetType" id="streetType-helper" classes={{ root: classes.label }} />}
+			input={<Input classes={{ root: classes.label }} />}
 		>
 			{menuItems.map((m, i) => {
 				return <MenuItem key={i} value={m.value}>

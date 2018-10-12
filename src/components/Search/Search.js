@@ -20,6 +20,7 @@ function renderInput(inputProps) {
 
 function renderSuggestionsContainer(options) {
 	const { containerProps, children } = options;
+	console.log(children)
 	return (
 		<Paper {...containerProps} square>
 			{children}
@@ -50,7 +51,7 @@ function getSuggestions(value, suggestions) {
 		});
 }
 
-class IntegrationAutosuggest extends React.Component {
+class IntegrationAutosuggest extends React.PureComponent {
 	constructor(props) {
 		super(props)
 
@@ -91,9 +92,6 @@ class IntegrationAutosuggest extends React.Component {
 							</strong>
 						);
 					})}
-					{/* <Caption>
-						{suggestion.id}
-					</Caption> */}
 				</div>
 			</MenuItem>
 		);
@@ -102,9 +100,7 @@ class IntegrationAutosuggest extends React.Component {
 		const { open } = this.state
 		const { searchValue } = this.props
 		if (open && searchValue === "" && reason === "escape-pressed") {
-			// console.log("reset", open, searchValue, open && searchValue === "" ? true : false)
 			this.handleClose()
-			// }
 		}
 		this.setState({
 			suggestions: getSuggestions(value, this.props.suggestions),
@@ -123,7 +119,6 @@ class IntegrationAutosuggest extends React.Component {
 	};
 	focusInput = () => {
 		if (this.state.open)
-			// this.inputRef.current.focus()
 			this.inputRef.current.focus()
 	}
 	handleOpen = () => {
@@ -135,13 +130,11 @@ class IntegrationAutosuggest extends React.Component {
 
 	render() {
 		const { classes, right } = this.props;
-
 		return (
 			<div className={classes.suggestContainer}>
 
 				<ClickAwayListener onClickAway={this.handleClose}>
 					<Autosuggest
-
 						theme={{
 							container: classes.container + " " + (right ? classes.right : ''),
 							suggestionsContainerOpen: classes.suggestionsContainerOpen,
@@ -149,7 +142,7 @@ class IntegrationAutosuggest extends React.Component {
 							suggestion: classes.suggestion,
 						}}
 						alwaysRenderSuggestions={true}
-						focusInputOnSuggestionClick={true}
+						focusInputOnSuggestionClick={false}
 						renderInputComponent={renderInput}
 						suggestions={this.state.suggestions}
 						onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}

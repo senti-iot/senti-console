@@ -10,6 +10,7 @@ import className from 'classnames'
 class SearchInput extends Component {
 	render() {
 		const { t, classes, ref, open, handleClose, handleOpen, handleResetSearch, ...other } = this.props;
+		// console.log(ref, this.props.reference)
 		return (
 			<ItemGrid container noPadding alignItems={'center'} style={{ width: "auto", margin: 0 }}>
 
