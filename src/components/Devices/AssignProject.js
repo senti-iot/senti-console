@@ -5,7 +5,8 @@ import cx from "classnames";
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import { getAllProjects } from 'variables/dataProjects';
-import { updateDevice } from 'variables/dataDevices'
+// import { updateDevice } from 'variables/dataDevices'
+import { updateCollection } from 'variables/dataCollections';
 
 const styles = {
 	appBar: {
@@ -72,8 +73,8 @@ class AssignProject extends React.Component {
 	}
 	assignProject = async () => {
 		//Todo Snackbar success
-		this.props.deviceId.forEach(async element => {
-			await updateDevice({ ...element, project: { id: this.state.selectedProject } }).then(rs => rs)
+		this.props.collectionId.forEach(async element => {
+			await updateCollection({ ...element, project: { id: this.state.selectedProject } }).then(rs => rs)
 		});
 		
 		// if (Array.isArray(this.props.deviceId))

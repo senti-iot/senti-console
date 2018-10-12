@@ -89,11 +89,11 @@ class Collection extends Component {
 		}
 		this.setState({ openAssignOrg: false })
 	}
-	handleOpenAssign = () => {
+	handleOpenAssignProject = () => {
 		this.setState({ openAssign: true, anchorEl: null })
 	}
 
-	handleCloseAssign = async (reload) => {
+	handleCloseAssignProject = async (reload) => {
 		if (reload) {
 			this.setState({ loading: true, anchorEl: null })
 			this.snackBarMessages(2)
@@ -196,7 +196,7 @@ class Collection extends Component {
 					<AssignProject
 						collectionId={[this.state.collection]}
 						open={this.state.openAssign}
-						handleClose={this.handleCloseAssign}
+						handleClose={this.handleCloseAssignProject}
 						t={t}
 					/>
 					<AssignOrg
@@ -212,7 +212,7 @@ class Collection extends Component {
 							collection={collection}
 							history={this.props.history}
 							match={this.props.match}
-							handleOpenAssign={this.handleOpenAssign}
+							handleOpenAssignProject={this.handleOpenAssignProject}
 							handleOpenUnassign={this.handleOpenUnassign}
 							handleOpenAssignOrg={this.handleOpenAssignOrg}
 							t={t}

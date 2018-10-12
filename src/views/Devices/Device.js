@@ -5,7 +5,7 @@ import { ItemGrid } from 'components'
 import InfoCard from 'components/Cards/InfoCard'
 import {  Map } from 'variables/icons'
 import deviceStyles from 'assets/jss/views/deviceStyles'
-import AssignProject from 'components/Devices/AssignProject'
+// import AssignProject from 'components/Devices/AssignProject'
 import AssignOrg from 'components/Devices/AssignOrg'
 import ImageUpload from './ImageUpload'
 import CircularLoader from 'components/Loader/CircularLoader'
@@ -204,12 +204,12 @@ class Device extends Component {
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
-					<AssignProject
+					{/* <AssignProject
 						deviceId={[this.state.device]}
 						open={this.state.openAssign}
 						handleClose={this.handleCloseAssign}
 						t={this.props.t}
-					/>
+					/> */}
 					<AssignOrg
 						devices
 						deviceId={[this.state.device]}
@@ -223,8 +223,8 @@ class Device extends Component {
 							device={device}
 							history={this.props.history}
 							match={this.props.match}
-							handleOpenAssign={this.handleOpenAssign}
-							handleOpenUnassign={this.handleOpenUnassign}
+							// handleOpenAssign={this.handleOpenAssign}
+							// handleOpenUnassign={this.handleOpenUnassign}
 							handleOpenAssignOrg={this.handleOpenAssignOrg}
 							t={this.props.t}
 							accessLevel={this.props.accessLevel}
