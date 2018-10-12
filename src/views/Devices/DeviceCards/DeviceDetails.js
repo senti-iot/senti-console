@@ -149,10 +149,10 @@ class DeviceDetails extends Component {
 									: t("devices.noProject")}</Info>
 
 							</ItemGrid>
-							<ItemGrid>
+							{/* <ItemGrid>
 								<Caption>{t("devices.fields.project")}:</Caption>
 								<Info>{device.project.id > 0 ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : t("devices.noProject")}</Info>
-							</ItemGrid>
+							</ItemGrid> */}
 							<ItemGrid>
 								<Caption>{t("devices.fields.availability")}:</Caption>
 								<Info>{device.project.id > 0 ? t("devices.fields.notfree") : t("devices.fields.free")}</Info>
