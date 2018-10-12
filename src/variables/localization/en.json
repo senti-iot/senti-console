@@ -305,7 +305,8 @@
 		"username": "Username"
 	},
 	"menus": {
-		"assign": "Assign to project",
+		"assignProject": "Assign to project",
+		"assignDevice": "Assign device",
 		"assignDevices": "Assign devices",
 		"assignOrg": "Assign to organisation",
 		"calibrate": "Calibrate",
@@ -320,8 +321,9 @@
 		"hideMap": "Hide map",
 		"hideMore": "Hide",
 		"more": "More",
-		"reassign": "Reassign to other project",
-		"reassignOrg": "Reassign to other organisation",
+		"reassignProject": "Reassign to another project",
+		"reassignDevice": "Reassign to another device",
+		"reassignOrg": "Reassign to another organisation",
 		"recalibrate": "Recalibrate",
 		"seeLess": "See less",
 		"seeMore": "See more",

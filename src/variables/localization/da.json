@@ -305,8 +305,9 @@
 		"username": "Brugernavn"
 	},
 	"menus": {
-		"assign": "Tilknyt projekt",
+		"assignProject": "Tilknyt projekt",
 		"assignDevices": "Tilknyt enheder",
+		"assignDevice": "Tlknyt enhed",
 		"assignOrg": "Tilknyt organisation",
 		"calibrate": "Kalibrer",
 		"changePassword": "Skift kodeord",
@@ -320,7 +321,8 @@
 		"hideMap": "Skjul kort",
 		"hideMore": "Skjul",
 		"more": "Mere",
-		"reassign": "Overflyt til andet projekt",
+		"reassignDevice": "Tilknyt anden enhed",
+		"reassignProject": "Overflyt til andet projekt",
 		"reassignOrg": "Overflyt til anden organisation",
 		"recalibrate": "Rekalibring",
 		"seeLess": "Se mindre",

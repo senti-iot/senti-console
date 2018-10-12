@@ -59,7 +59,7 @@ class DeviceDetails extends Component {
 				topAction={<Dropdown menuItems={
 					[
 						{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/device/${device.id}/edit`, state: { prevURL: `/device/${device.id}` } }) },
-						{ label: device.project.id > 0 ? t("menus.reassign") : t("menus.assign"), icon: <LibraryBooks className={classes.leftIcon} />, func: this.props.handleOpenAssign },
+						{ label: device.project.id > 0 ? t("menus.reassignProject") : t("menus.assignProject"), icon: <LibraryBooks className={classes.leftIcon} />, func: this.props.handleOpenAssign },
 						{ label: device.org.id > 0 ? t("menus.reassignOrg") : t("menus.assignOrg"), icon: <Business className={classes.leftIcon} />, func: this.props.handleOpenAssignOrg, dontShow: accessLevel.apisuperuser ? false : true },
 						{ label: t("menus.unassignDevice"), icon: <LayersClear className={classes.leftIcon} />, func: this.props.handleOpenUnassign, dontShow: device.project.id > 0 ? false : true },
 						{ label: !(device.lat > 0) && !(device.long > 0) ? t("menus.calibrate") : t("menus.recalibrate"), icon: <Build className={classes.leftIcon} />, func: () => this.props.history.push(`${this.props.match.url}/setup`) }
