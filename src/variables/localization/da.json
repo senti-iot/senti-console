@@ -78,6 +78,7 @@
 			"log": "Enhed log"
 		},
 		"fields": {
+			"project":"Projekt",
 			"activeDevice": "Aktiv enhed",
 			"activeDeviceStartDate": "Dataopsamling start",
 			"collection": "Datasamling",

@@ -11,6 +11,7 @@ import CollectionActiveDevice from 'views/Collections/CollectionCards/Collection
 import CollectionData from 'views/Collections/CollectionCards/CollectionData';
 import CollectionDetails from 'views/Collections/CollectionCards/CollectionDetails';
 import CollectionHistory from 'views/Collections/CollectionCards/CollectionHistory';
+import { getProject } from 'variables/dataProjects';
 
 // import moment from 'moment'
 class Collection extends Component {
@@ -34,12 +35,17 @@ class Collection extends Component {
 	}
 
 	getCollection = async (id) => {
-		await getCollection(id).then(rs => {
+		await getCollection(id).then(async rs => {
 			if (rs === null)
 				this.props.history.push('/404')
 			else {
-				this.setState({ collection: rs, loading: false })
+				this.setState({ collection: rs })
 				this.props.setHeader(rs.name ? rs.name : rs.id, true, `/collections/list`, "collections")
+				if (rs.project.id) {
+					let project = await getProject(rs.project.id)
+					console.log(project)
+					this.setState({ collection: { ...this.state.collection, project: project }, loading: false })
+				}
 			}
 		})
 	}

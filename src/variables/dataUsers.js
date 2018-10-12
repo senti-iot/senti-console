@@ -22,23 +22,23 @@ export const createUser = async (user) => {
 }
 export const resendConfirmEmail = async (user) => {
 	let data = await api.post('core/user/resendconfirmmail', user).then(rs => rs.data)
-	console.log(data)
+	// console.log(data)
 	return data
 }
 export const confirmUser = async (obj) => {
 	let data = await api.post(`core/user/confirm`, obj).then(rs => rs.data)
-	console.log('confirmUser', data)
+	// console.log('confirmUser', data)
 	return data
 }
 export const editUser = async (user) => {
 	let data = await api.put(`core/user/${user.id}`, user).then(rs => rs.data)
-	console.log('editUser', data)
+	// console.log('editUser', data)
 	return data
 }
 
 export const deleteUser = async (user) => {
 	let data = await api.delete(`core/user/${user}`).then(rs => rs.data)
-	console.log('deleteUser', data)
+	// console.log('deleteUser', data)
 	return data
 }
 

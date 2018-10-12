@@ -56,7 +56,7 @@ export const deleteCollection = async (id) => {
 export const getDataDaily = async (id, from, to, raw) => {
 	let URL = raw ? `/senti/sentiwi/daily/raw/${id}/${from}/${to}` : `/senti/sentiwi/daily/${id}/${from}/${to}` 
 	let response = await api.get(URL)
-	console.log(response)
+	// console.log(response)
 	return response.data ? response.data : response.status
 }
 /**
@@ -69,7 +69,7 @@ export const getDataDaily = async (id, from, to, raw) => {
 export const getDataHourly = async (id, from, to, raw) => {
 	let URL = raw ? `/senti/sentiwi/hourly/raw/${id}/${from}/${to}` : `/senti/sentiwi/hourly/${id}/${from}/${to}`
 	let response = await api.get(URL)
-	console.log(response)
+	// console.log(response)
 	return response.data ? response.data : response.status
 }
 

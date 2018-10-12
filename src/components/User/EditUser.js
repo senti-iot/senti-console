@@ -64,7 +64,7 @@ class EditUser extends Component {
 			let g = 0
 			let userGroups = Object.keys(user.groups)
 			userGroups.sort((a, b) => a > b ? 1 : -1)
-			console.log(userGroups)
+			// console.log(userGroups)
 			if (userGroups.find(x => x === "136550100000211"))
 				g = "136550100000211"
 			if (userGroups.find(x => x === "136550100000225"))

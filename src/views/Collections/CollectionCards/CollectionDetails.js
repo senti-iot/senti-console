@@ -67,6 +67,22 @@ class DeviceDetails extends Component {
 							</ItemGrid>
 						
 						</Grid>
+						<Grid container>
+							<ItemGrid>
+								<Caption>{t("collections.fields.project")}:</Caption>
+								<Info>{collection.project ?
+									<Link to={{
+										pathname: `/project/${collection.project.id}`,
+										state: {
+											prevURL: `/collection/${collection.id}`
+										} }} >
+										{collection.project.title}
+									</Link>
+									: t("collections.noProject")}</Info>
+
+							</ItemGrid>
+						
+						</Grid>
 					</Fragment>} />
 		)
 	}

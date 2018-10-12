@@ -103,8 +103,8 @@ class EditProject extends Component {
 		this.setState({
 			loading: false
 		})
-		let prevURL = history.location.state ? history.location.state['prevURL'] : null
-		this.props.setHeader("projects.updateProject", true, prevURL ? prevURL : '/projects', "projects")
+		let prevURL = history.location.state ? history.location.state['prevURL'] : '/projects/list'
+		this.props.setHeader("projects.updateProject", true, prevURL, "projects")
 	}
 
 	componentWillUnmount = () => {

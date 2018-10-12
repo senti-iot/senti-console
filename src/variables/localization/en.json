@@ -78,6 +78,7 @@
 			"log": "Device log"
 		},
 		"fields": {
+			"project": "Project",
 			"activeDevice": "Active Device",
 			"activeDeviceStartDate": "Data collection start",
 			"collection": "Data collection",
