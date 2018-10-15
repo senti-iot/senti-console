@@ -250,7 +250,7 @@ class EnhancedTable extends React.Component {
 				<AssignCollection
 					open={ openAssignCollection }
 					handleClose={ this.handleCloseAssignCollection }
-					deviceId={ selected[0] }
+					deviceId={ selected[0] ? selected[0] : 0 }
 					t={t} />
 				<AssignOrg
 					devices
