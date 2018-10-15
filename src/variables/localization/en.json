@@ -278,7 +278,7 @@
 		"display": "Display:",
 		"endDate": "End date",
 		"options": {
-			"graphType": "Graph type"
+			"graphType": "Chart type"
 		},
 		"search": "Search",
 		"startDate": "Start date"
