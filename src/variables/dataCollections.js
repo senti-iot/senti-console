@@ -12,8 +12,8 @@ export const getAvailableDevices = async () => {
  * Assign a Device to a collection
  * @function
  * @param obj - Contains:
- * id - Data Collection ID
- * deviceId - Device ID
+ * id - Data Collection ID \n
+ * deviceId - Device ID \n
  * start - Date
  */
 export const assignDeviceToCollection = async (obj) => {

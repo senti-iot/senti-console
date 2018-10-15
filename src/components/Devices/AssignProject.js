@@ -84,7 +84,6 @@ class AssignProject extends React.Component {
 		Promise.all([this.props.collectionId.map(async element => {
 			await updateCollection({ ...element, project: { id: this.state.selectedProject } })
 		})]).then(rs => {
-			// console.log(rs);
 			this.props.handleClose(true)
 		})
 

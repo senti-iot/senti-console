@@ -13,6 +13,7 @@ import CollectionDetails from 'views/Collections/CollectionCards/CollectionDetai
 import CollectionHistory from 'views/Collections/CollectionCards/CollectionHistory';
 import { getProject } from 'variables/dataProjects';
 import Search from 'components/Search/Search';
+import AssignDevice from 'components/Assign/AssignDevice';
 
 // import moment from 'moment'
 class Collection extends Component {
@@ -26,7 +27,7 @@ class Collection extends Component {
 			openAssign: false,
 			openUnassign: false,
 			openAssignOrg: false,
-			openAssignDevice: true,
+			openAssignDevice: false,
 			openDelete: false,
 			img: null,
 			filter: {
@@ -75,13 +76,16 @@ class Collection extends Component {
 		let id = this.state.collection.id
 		switch (msg) {
 			case 1:
-				s(t("snackbars.unassignCollection", { collection: name + "(" + id + ")", org: this.state.collection.org.name }))
+				s(t("snackbars.unassignCollection", { collection: `${name} (${id})`, org: this.state.collection.org.name }))
 				break
 			case 2:
-				s(t("snackbars.assignCollection", { collection: name + "(" + id + ")", org: this.state.collection.org.name }))
+				s(t("snackbars.assignCollection", { collection: `${name} (${id})`, org: this.state.collection.org.name }))
 				break
 			case 5: 
 				s(t("snackbars.assignCollection", { collection: `${name} (${id})`, org: this.state.collection.project.title }))
+				break
+			case 6:
+				s(t("snackbars.assignCollection", { collection: `${name} (${id})`, org: "Device" }))
 				break
 			case 3:
 				s(t("snackbars.failedUnassign"))
@@ -116,7 +120,20 @@ class Collection extends Component {
 				
 		})
 	}
-
+	handleOpenAssignDevice = () => {
+		this.setState({ openAssignDevice: true, anchorEl: null })
+	}
+	handleCancelAssignDevice = () => {
+		this.setState({ openAssignDevice: false })
+	}
+	handleCloseAssignDevice =async (reload) => {
+		if (reload) { 
+			this.setState({ loading: true, anchorEl: null, openAssignDevice: false })
+			await this.getCollection(this.state.collection.id).then(rs => { 
+				this.snackBarMessages()
+			})
+		}
+	}
 	handleOpenAssignOrg = () => {
 		this.setState({ openAssignOrg: true, anchorEl: null })
 	}
@@ -285,6 +302,14 @@ class Collection extends Component {
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
+					<AssignDevice
+						collectionId={this.state.collection.id}
+						orgId={this.state.collection.org.id}
+						handleCancel={this.handleCancelAssignDevice}
+						handleClose={this.handleCloseAssignDevice}
+						open={this.state.openAssignDevice}
+						t={t}
+					/>
 					<AssignProject
 						collectionId={[this.state.collection]}
 						open={this.state.openAssign}
@@ -312,6 +337,7 @@ class Collection extends Component {
 							handleOpenUnassign={this.handleOpenUnassign}
 							handleOpenAssignOrg={this.handleOpenAssignOrg}
 							handleOpenDeleteDialog={this.handleOpenDeleteDialog}
+							handleOpenAssignDevice={this.handleOpenAssignDevice}
 							t={t}
 							accessLevel={this.props.accessLevel}
 						/>

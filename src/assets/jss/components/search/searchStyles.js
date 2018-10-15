@@ -7,9 +7,9 @@ const searchStyles = theme => ({
 	},
 	suggestContainer: {
 		width: "100%",
-		[theme.breakpoints.down("md")]: {
-			width: "auto"
-		},
+		// [theme.breakpoints.down("md")]: {
+		// 	width: "auto"
+		// },
 		position: "relative",
 		[theme.breakpoints.down('sm')]: {
 			position: 'initial'

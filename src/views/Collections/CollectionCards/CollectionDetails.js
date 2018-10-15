@@ -35,7 +35,7 @@ class DeviceDetails extends Component {
 						{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/collection/${collection.id}/edit`, state: { prevURL: `/collection/${collection.id}` } }) },
 						{ label: collection.activeDeviceStats ? t("menus.reassignDevice") : t("menus.assignDevice"), icon: <DeviceHub className={classes.leftIcon} />, func: this.props.handleOpenAssignDevice },
 						{ label: collection.org.id > 0 ? t("menus.reassignOrg") : t("menus.assignOrg"), icon: <Business className={classes.leftIcon} />, func: this.props.handleOpenAssignOrg, dontShow: accessLevel.apisuperuser ? false : true },
-						{ label: collection.project.id ? t("menus.reassignProject") : t("menus.assignProject"), icon: <LibraryBooks className={classes.leftIcon} />, func: this.props.handleOpenAssignProject, /*  dontShow: collection.org.id > 0 ? false : true */ },
+						{ label: collection.project ? collection.project.id ? t("menus.reassignProject") : t("menus.assignProject") : t("menus.assignProject"), icon: <LibraryBooks className={classes.leftIcon} />, func: this.props.handleOpenAssignProject, /*  dontShow: collection.org.id > 0 ? false : true */ },
 						{ label: t("menus.delete"), icon: <Close className={classes.leftIcon} />, func: handleOpenDeleteDialog }
 					]
 				} />

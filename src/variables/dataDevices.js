@@ -51,6 +51,7 @@ export const deletePicture = async (dId, img) => {
  */
 export const getAvailableDevices = async (orgId) => {
 	let response = await api.get(`senti/datacollection/availabledevices/${orgId}`)
+	// console.log(response)
 	return response.data
 }
 // *Deprecated*

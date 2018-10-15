@@ -4,12 +4,13 @@ import { headerColor, hoverColor, primaryColor } from 'assets/jss/material-dashb
 import cx from "classnames";
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import { getAllDevices } from 'variables/dataDevices';
-import { updateDevice } from 'variables/dataDevices'
-import { updateCollection } from 'variables/dataCollections';
+import { getAvailableDevices } from 'variables/dataDevices';
+// import { updateDevice } from 'variables/dataDevices'
+// import { updateCollection } from 'variables/dataCollections';
 import { ItemG, CircularLoader } from 'components';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
+import { assignDeviceToCollection } from 'variables/dataCollections';
 
 const styles = {
 	appBar: {
@@ -54,7 +55,7 @@ class AssignDevice extends React.Component {
 
 		this.state = {
 			devices: [],
-			selectedDevice: null,
+			selectedDevices: [],
 			filters: {
 				keyword: '',
 				startDate: null,
@@ -66,30 +67,42 @@ class AssignDevice extends React.Component {
 
 	componentDidMount = async () => {
 		this._isMounted = 1
-		await getAllDevices().then(rs => this._isMounted ? this.setState({ devices: rs }) : null)
+		const { orgId } = this.props
+		await getAvailableDevices(orgId).then(rs => this._isMounted ? this.setState({ devices: rs }) : this.setState({ devices: [] }))
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-	selectDevice = pId => e => {
-		e.preventDefault()
-		this.setState({ selectedDevice: pId })
-	}
-	assignDevice = async () => {
-		if (this.props.devices)
-			Promise.all([this.props.deviceId.forEach(async e => {
-				await updateDevice({ ...e, device: { id: this.state.selectedDevice } }).then(rs => rs)
-			})]).then(() => {
-				this.props.handleClose(true)
-			})
-		if (this.props.collections) {
-			Promise.all([this.props.collectionId.map(e => {
-				return updateCollection({ ...e, device: { id: this.state.selectedDevice } })
-			})]).then(() => {
-				this.props.handleClose(true)
-			}
-			)
+	handleClick = (event, id) => {
+		event.stopPropagation()
+		const { selectedDevices } = this.state;
+		const selectedIndex = selectedDevices.indexOf(id)
+		let newSelected = [];
+
+		if (selectedIndex === -1) {
+			newSelected = newSelected.concat(selectedDevices, id);
+		} else if (selectedIndex === 0) {
+			newSelected = newSelected.concat(selectedDevices.slice(1))
+		} else if (selectedIndex === selectedDevices.length - 1) {
+			newSelected = newSelected.concat(selectedDevices.slice(0, -1))
+		} else if (selectedIndex > 0) {
+			newSelected = newSelected.concat(
+				selectedDevices.slice(0, selectedIndex),
+				selectedDevices.slice(selectedIndex + 1),
+			);
 		}
+
+		this.setState({ selectedDevices: newSelected })
+	}
+
+	assignDevice = async () => {
+		// if (this.props.devices)
+		const { collectionId } = this.props
+		Promise.all([this.state.selectedDevices.forEach(async e => {
+			return assignDeviceToCollection({ id: collectionId, deviceId: e })
+		})]).then(() => {
+			this.props.handleClose(true)
+		})
 	}
 	closeDialog = () => {
 		this.props.handleClose(false)
@@ -102,6 +115,7 @@ class AssignDevice extends React.Component {
 			}
 		})
 	}
+	isSelected = id => this.state.selectedDevices.indexOf(id) !== -1 ? true : false 
 	render() {
 		const { devices, filters } = this.state
 		const { classes, open, t } = this.props;
@@ -174,18 +188,13 @@ class AssignDevice extends React.Component {
 					<List>
 						{devices ? filterItems(devices, filters).map((p, i) => (
 							<Fragment key={i}>
-								<ListItem button onClick={this.selectDevice(p.id)} value={p.id}
-									classes={{
-										root: this.state.selectedDevice === p.id ? classes.selectedItem : null
-									}}
-								>
-									<ListItemText primaryTypographyProps={{
-										className: this.state.selectedDevice === p.id ? classes.selectedItemText : null
-									}}
-									secondaryTypographyProps={{
-										classes: { root: this.state.selectedDevice === p.id ? classes.selectedItemText : null }
-									}}
-									primary={p.name} /* secondary={p.user.deviceanisation} */ />
+								<ListItem button
+									onClick={e => this.handleClick(e, p.id)}
+									classes={{ root: this.isSelected(p.id) ? classes.selectedItem : null }}>
+									<ListItemText
+										primaryTypographyProps={{ className: this.isSelected(p.id) ? classes.selectedItemText : null }}
+										secondaryTypographyProps={{ classes: { root: this.isSelected(p.id) ? classes.selectedItemText : null } }}
+										primary={p.name} secondary={p.id} />
 								</ListItem>
 								<Divider />
 							</Fragment>
@@ -201,7 +210,7 @@ class AssignDevice extends React.Component {
 AssignDevice.propTypes = {
 	classes: PropTypes.object.isRequired,
 	orgId: PropTypes.number.isRequired,
-	
+	collectionId: PropTypes.number.isRequired,
 };
 
 export default withStyles(styles)(AssignDevice);
