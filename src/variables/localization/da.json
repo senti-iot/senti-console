@@ -92,7 +92,7 @@
 				"active": "Aktiv",
 				"inactive": "Inaktiv"
 			},
-			"status": "Status"
+			"status": "Status for enhed"
 		},
 		"dcDeleteConfirm": "Er du sikker på du ønsker at slette denne Datasamling?",
 		"dcDelete": "Slet Datasamling",
