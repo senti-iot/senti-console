@@ -1,8 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, withStyles } from '@material-ui/core';
 import collectionStyles from 'assets/jss/views/deviceStyles';
-import { CircularLoader, GridContainer, ItemGrid } from 'components';
-import AssignOrg from 'components/Devices/AssignOrg';
-import AssignProject from 'components/Devices/AssignProject';
+import { CircularLoader, GridContainer, ItemGrid, AssignOrg, AssignProject, AssignDevice } from 'components';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getCollection, updateCollection, deleteCollection } from 'variables/dataCollections';
@@ -13,7 +11,6 @@ import CollectionDetails from 'views/Collections/CollectionCards/CollectionDetai
 import CollectionHistory from 'views/Collections/CollectionCards/CollectionHistory';
 import { getProject } from 'variables/dataProjects';
 import Search from 'components/Search/Search';
-import AssignDevice from 'components/Assign/AssignDevice';
 
 // import moment from 'moment'
 class Collection extends Component {
@@ -130,7 +127,7 @@ class Collection extends Component {
 		if (reload) { 
 			this.setState({ loading: true, anchorEl: null, openAssignDevice: false })
 			await this.getCollection(this.state.collection.id).then(rs => { 
-				this.snackBarMessages()
+				this.snackBarMessages(6)
 			})
 		}
 	}

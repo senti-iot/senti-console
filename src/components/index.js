@@ -12,11 +12,12 @@ import ItemG from './Grid/ItemG'
 import Dropdown from './Dropdown/Dropdown'
 import CustomDateTime from './CustomInput/CustomDateTime'
 // ##############################
-// // // CustomButtons
+// // // AssignComponents
 // #############################
 
-// import Button from "./CustomButtons/Button.js";
-// import IconButton from "./CustomButtons/IconButton.js";
+import AssignOrg from './Assign/AssignOrg'
+import AssignDevice from './Assign/AssignDevice'
+import AssignProject from './Assign/AssignProject'
 
 // ##############################
 // // // CustomInput
@@ -76,6 +77,9 @@ import CardHeader from "./Card/CardHeader";
 import CardFooter from './Card/CardFooter'
 import CardBody from './Card/CardBody'
 export {
+	AssignDevice,
+	AssignOrg,
+	AssignProject,
 	Card,
 	CardHeader,
 	CardFooter,

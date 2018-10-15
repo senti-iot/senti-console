@@ -8,12 +8,10 @@ import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
 import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 import { withRouter } from 'react-router-dom';
-import AssignProject from "./AssignProject";
-import AssignOrg from "./AssignOrg";
 import EnhancedTableHead from 'components/Table/TableHeader'
 import EnhancedTableToolbar from 'components/Table/TableToolbar';
 import { connect } from 'react-redux'
-import { ItemGrid, Info, Caption } from 'components';
+import { ItemGrid, Info, Caption, AssignOrg, AssignProject } from 'components';
 import TC from 'components/Table/TC'
 import { updateDevice } from 'variables/dataDevices'
 import { boxShadow } from "assets/jss/material-dashboard-react";

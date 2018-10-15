@@ -8,8 +8,8 @@ import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from "react-router-dom";
 import { deleteCollection, getAllCollections } from 'variables/dataCollections';
 import { filterItems, handleRequestSort } from 'variables/functions';
-import { Delete, Edit, Map, PictureAsPdf, ViewList, ViewModule } from 'variables/icons';
-import { GridContainer, CircularLoader } from 'components'
+import { Delete, Edit, Map, PictureAsPdf, ViewList, ViewModule, DeviceHub } from 'variables/icons';
+import { GridContainer, CircularLoader, AssignDevice } from 'components'
 
 class Collections extends Component {
 	constructor(props) {
@@ -19,6 +19,7 @@ class Collections extends Component {
 			selected: [],
 			collections: [],
 			loading: true,
+			openAssignDevice: false,
 			route: 0,
 			order: 'desc',
 			orderBy: 'name',
@@ -115,6 +116,9 @@ class Collections extends Component {
 			case 2:
 				s("snackbars.exported")
 				break;
+			case 3:
+				s("snackbars.assignCollection", { collection: ``, org: "Device" })
+				break;
 			default:
 				break;
 		}
@@ -170,10 +174,25 @@ class Collections extends Component {
 		// 	}
 		// </Fragment>
 	}
+	handleOpenAssignDevice = () => {
+		this.setState({ openAssignDevice: true, anchorElMenu: null })
+	}
+	handleCancelAssignDevice = () => {
+		this.setState({ openAssignDevice: false })
+	}
+	handleCloseAssignDevice = async (reload) => {
+		if (reload) {
+			this.setState({ loading: true, openAssignDevice: false })
+			await this.getData().then(rs => {
+				this.snackBarMessages(6)
+			})
+		}
+	}
 	options = () => {
 		const { t, /* accessLevel */ } = this.props
 		let allOptions = [
 			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
+			{ label: t("menus.assignDevice"), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
 			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
 			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
@@ -202,29 +221,40 @@ class Collections extends Component {
 			numSelected={selected.length}
 			options={this.options}
 			t={t}
-			// content={this.renderTableToolBarContent()}
+		// content={this.renderTableToolBarContent()}
 		/>
 	}
 	renderTable = () => {
 		const { t } = this.props
-		const { order, orderBy, selected } = this.state
-
-		return <CollectionTable
-			selected={selected}
-			handleClick={this.handleClick}
-			handleSelectAllClick={this.handleSelectAllClick}
-			data={this.filterItems(this.state.collections)}
-			tableHead={this.state.collectionsHeader}
-			handleFilterEndDate={this.handleFilterEndDate}
-			handleFilterKeyword={this.handleFilterKeyword}
-			handleFilterStartDate={this.handleFilterStartDate}
-			handleRequestSort={this.handleRequestSort}
-			handleDeleteCollections={this.handleDeleteCollections}
-			orderBy={orderBy}
-			order={order}
-			filters={this.state.filters}
-			t={t}
-		/>
+		const { order, orderBy, selected, openAssignDevice } = this.state
+		let collectionOrg = this.state.collections.find(r => r.id === selected[0])
+		console.log(this.state.collections.find(r => r.id === selected[0]))
+		return <Fragment>
+			<AssignDevice
+				collectionId={selected[0] ? selected[0] : 0}
+				orgId={collectionOrg ? collectionOrg.org.id : 0}
+				handleCancel={this.handleCancelAssignDevice}
+				handleClose={this.handleCloseAssignDevice}
+				open={openAssignDevice}
+				t={t}
+			/>
+			<CollectionTable
+				selected={selected}
+				handleClick={this.handleClick}
+				handleSelectAllClick={this.handleSelectAllClick}
+				data={this.filterItems(this.state.collections)}
+				tableHead={this.state.collectionsHeader}
+				handleFilterEndDate={this.handleFilterEndDate}
+				handleFilterKeyword={this.handleFilterKeyword}
+				handleFilterStartDate={this.handleFilterStartDate}
+				handleRequestSort={this.handleRequestSort}
+				handleDeleteCollections={this.handleDeleteCollections}
+				orderBy={orderBy}
+				order={order}
+				filters={this.state.filters}
+				t={t}
+			/>
+		</Fragment>
 	}
 	renderCollections = () => {
 		const { classes } = this.props
@@ -253,11 +283,11 @@ class Collections extends Component {
 				/>
 				<Switch>
 					<Route path={`${this.props.match.path}/map`} render={() => this.renderCollections()} />
-					<Route path={`${this.props.match.path}/list`} render={() => this.renderCollections() } />
+					<Route path={`${this.props.match.path}/list`} render={() => this.renderCollections()} />
 					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCollections()} />
 					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
 				</Switch>
-				
+
 			</Fragment>
 		)
 	}
@@ -267,7 +297,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(projectStyles)(Collections))

@@ -21,68 +21,23 @@ class CollectionTable extends React.Component {
 		super(props);
 
 		this.state = {
-			// selected: [],
 			page: 0,
 			rowsPerPage: props.rowsPerPage,
-			// anchorElMenu: null,
 			anchorFilterMenu: null,
 			openDelete: false,
 		}
 	}
 
-	// handleToolbarMenuOpen = e => {
-	// 	e.stopPropagation()
-	// 	this.setState({ anchorElMenu: e.currentTarget })
-	// }
-
-	// handleToolbarMenuClose = e => {
-	// 	e.stopPropagation();
-	// 	this.setState({ anchorElMenu: null })
-	// }
-
 	handleRequestSort = (event, property) => {
 		this.props.handleRequestSort(event, property)
 	}
 
-	// handleSelectAllPage = (event, checked) => {
-	// 	if (checked) {
-	// 		const { data } = this.props
-	// 		const { rowsPerPage, page } = this.state
-	// 		this.setState({ selected: data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => n.id) })
-	// 		return;
-	// 	}
-	// }
-
 	handleSelectAllClick = (event, checked) => {
 		this.props.handleSelectAllClick(event, checked)
-		// if (checked) {
-		// this.setState({ selected: this.props.data.map(n => n.id) })
-		// return;
-		// }
-		// this.setState({ selected: [] })
 	}
 
 	handleClick = (event, id) => {
 		this.props.handleClick(event, id)
-		// event.stopPropagation()
-		// const { selected } = this.state;
-		// const selectedIndex = selected.indexOf(id)
-		// let newSelected = [];
-
-		// if (selectedIndex === -1) {
-		// 	newSelected = newSelected.concat(selected, id);
-		// } else if (selectedIndex === 0) {
-		// 	newSelected = newSelected.concat(selected.slice(1))
-		// } else if (selectedIndex === selected.length - 1) {
-		// 	newSelected = newSelected.concat(selected.slice(0, -1))
-		// } else if (selectedIndex > 0) {
-		// 	newSelected = newSelected.concat(
-		// 		selected.slice(0, selectedIndex),
-		// 		selected.slice(selectedIndex + 1),
-		// 	);
-		// }
-
-		// this.setState({ selected: newSelected })
 	}
 
 	handleChangePage = (event, page) => {
@@ -92,7 +47,6 @@ class CollectionTable extends React.Component {
 	handleChangeRowsPerPage = event => {
 		this.setState({ rowsPerPage: event.target.value })
 	}
-
 
 	handleOpenDeleteDialog = () => {
 		this.setState({ openDelete: true, anchorElMenu: null })
@@ -115,17 +69,6 @@ class CollectionTable extends React.Component {
 	
 	addNewCollection = () => { this.props.history.push('/collections/new') }
 
-	// renderTableToolBarContent = () => {
-	// 	const { accessLevel } = this.props
-	// 	// const { anchorFilterMenu } = this.state
-	// 	let access = accessLevel.apicollection ? accessLevel.apicollection.edit ? true : false : false
-	// 	return <Fragment>
-	// 		{access ? <IconButton aria-label="Add new collection" onClick={this.addNewCollection}>
-	// 			<Add />
-	// 		</IconButton> : null
-	// 		}
-	// 	</Fragment>
-	// }
 	renderConfirmDelete = () => {
 		const { openDelete  } = this.state
 		const { data, t, classes, selected } = this.props
@@ -179,17 +122,7 @@ class CollectionTable extends React.Component {
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 		return (
 			<Fragment>
-
-				{/*<Paper className={classes.root}>
-				<EnhancedTableToolbar //	./TableToolbar.js
-					anchorElMenu={this.state.anchorElMenu}
-					handleToolbarMenuClose={this.handleToolbarMenuClose}
-					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
-					numSelected={selected.length}
-					options={this.options}
-					t={t}
-					content={this.renderTableToolBarContent()}
-				/> */}
+				
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
 						<EnhancedTableHead // ./ProjectTableHeader
