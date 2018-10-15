@@ -94,6 +94,8 @@
 			},
 			"status": "Status"
 		},
+		"dcDeleteConfirm": "Er du sikker på du ønsker at slette denne Datasamling?",
+		"dcDelete": "Slet Datasamling",
 		"noActiveDevice": "Ingen aktiv enhed",
 		"noHistory": "Ingen logfiler",
 		"pageTitle": "Datasamlinger",
@@ -479,6 +481,9 @@
 		"deletedSuccess": "Slettet!",
 		"deleting": "Sletter ...",
 		"deviceUpdated": "Enhed %{device} er blevet opdateret!",
+		"collectionDeleted": "Datasamling er slettet!",
+		"collectionCreated": "Dtasamling er oppretet!",
+		"collectionUpdated": "Datasaming er opdateret!",
 		"exported": "Eksporteret!",
 		"orgCreated": "Organisation %{org} er succesfuldt oprettet!",
 		"orgDeleted": "Organisation er succefuldt slettet!",

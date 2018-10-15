@@ -5,7 +5,10 @@ import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { Business, DataUsage, Edit, DeviceHub, LibraryBooks,  } from 'variables/icons';
+import { Business, DataUsage, Edit, DeviceHub, LibraryBooks, Close } from 'variables/icons';
+// import React from 'react'
+
+
 
 class DeviceDetails extends Component {
 
@@ -15,14 +18,14 @@ class DeviceDetails extends Component {
 			case 1:
 				return t("collections.fields.state.active")
 			case 2:
-				return t("collections.fields.state.inactive") 
+				return t("collections.fields.state.inactive")
 			default:
 				break;
 		}
 	}
 
 	render() {
-		const { classes, collection, t, accessLevel, history } = this.props
+		const { classes, collection, t, accessLevel, history, handleOpenDeleteDialog } = this.props
 		return (
 			<InfoCard
 				title={collection.name ? collection.name : collection.id}
@@ -33,6 +36,7 @@ class DeviceDetails extends Component {
 						{ label: collection.activeDeviceStats ? t("menus.reassignDevice") : t("menus.assignDevice"), icon: <DeviceHub className={classes.leftIcon} />, func: this.props.handleOpenAssignDevice },
 						{ label: collection.org.id > 0 ? t("menus.reassignOrg") : t("menus.assignOrg"), icon: <Business className={classes.leftIcon} />, func: this.props.handleOpenAssignOrg, dontShow: accessLevel.apisuperuser ? false : true },
 						{ label: collection.project.id ? t("menus.reassignProject") : t("menus.assignProject"), icon: <LibraryBooks className={classes.leftIcon} />, func: this.props.handleOpenAssignProject, /*  dontShow: collection.org.id > 0 ? false : true */ },
+						{ label: t("menus.delete"), icon: <Close className={classes.leftIcon} />, func: handleOpenDeleteDialog }
 					]
 				} />
 
@@ -50,10 +54,10 @@ class DeviceDetails extends Component {
 								<Caption>{t("collections.fields.description")}:</Caption>
 								<Info>{collection.description ? collection.description : ""}</Info>
 							</ItemGrid>
-						
+
 						</Grid>
 						<Grid container>
-							
+
 						</Grid>
 						<Grid container>
 							<ItemGrid>
@@ -65,7 +69,7 @@ class DeviceDetails extends Component {
 									: t("collections.noProject")}</Info>
 
 							</ItemGrid>
-						
+
 						</Grid>
 						<Grid container>
 							<ItemGrid>
@@ -75,13 +79,14 @@ class DeviceDetails extends Component {
 										pathname: `/project/${collection.project.id}`,
 										state: {
 											prevURL: `/collection/${collection.id}`
-										} }} >
+										}
+									}} >
 										{collection.project.title}
 									</Link>
 									: t("collections.noProject")}</Info>
 
 							</ItemGrid>
-						
+
 						</Grid>
 					</Fragment>} />
 		)

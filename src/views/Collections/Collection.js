@@ -5,7 +5,7 @@ import AssignOrg from 'components/Devices/AssignOrg';
 import AssignProject from 'components/Devices/AssignProject';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getCollection, updateCollection } from 'variables/dataCollections';
+import { getCollection, updateCollection, deleteCollection } from 'variables/dataCollections';
 import { dateFormatter } from 'variables/functions';
 import CollectionActiveDevice from 'views/Collections/CollectionCards/CollectionActiveDevice';
 import CollectionData from 'views/Collections/CollectionCards/CollectionData';
@@ -25,6 +25,7 @@ class Collection extends Component {
 			openAssign: false,
 			openUnassign: false,
 			openAssignOrg: false,
+			openDelete: false,
 			img: null,
 			filter: {
 				startDate: "",
@@ -40,12 +41,12 @@ class Collection extends Component {
 			if (rs === null)
 				this.props.history.push('/404')
 			else {
-				this.setState({ collection: rs })
+				this.setState({ collection: rs, loading: false })
 				this.props.setHeader(rs.name ? rs.name : rs.id, true, `/collections/list`, "collections")
 				if (rs.project.id) {
 					let project = await getProject(rs.project.id)
 					// console.log(project)
-					this.setState({ collection: { ...this.state.collection, project: project }, loading: false })
+					this.setState({ collection: { ...this.state.collection, project: project }, loadingProject: false })
 				}
 			}
 		})
@@ -70,17 +71,43 @@ class Collection extends Component {
 		let id = this.state.collection.id
 		switch (msg) {
 			case 1:
-				s("snackbars.unassignCollection", { collection: name + "(" + id + ")", org: this.state.collection.org.name })
+				s(t("snackbars.unassignCollection", { collection: name + "(" + id + ")", org: this.state.collection.org.name }))
 				break
 			case 2:
-				s("snackbars.assignCollection", { collection: name + "(" + id + ")", org: this.state.collection.org.name })
+				s(t("snackbars.assignCollection", { collection: name + "(" + id + ")", org: this.state.collection.org.name }))
 				break
 			case 3:
-				s("snackbars.failedUnassign")
+				s(t("snackbars.failedUnassign"))
+				break
+			case 4:
+				s(t("snackbars.collectionDeleted"))
 				break
 			default:
 				break
 		}
+	}
+	handleOpenDeleteDialog = () => {
+		this.setState({ openDelete: true })
+	}
+
+	handleCloseDeleteDialog = () => {
+		this.setState({ openDelete: false })
+	}
+	handleDeleteCollection = async () => {
+		await deleteCollection(this.state.collection.id).then(rs => {
+			this.setState({
+				openDelete: false
+			})
+			// this.close()
+			if (rs) { 
+				this.props.history.push('/collections/list')
+				this.snackBarMessages(4)
+			}
+			else {
+				alert("Delete failed") //todo
+			}
+				
+		})
 	}
 
 	handleOpenAssignOrg = () => {
@@ -193,6 +220,34 @@ class Collection extends Component {
 			</DialogActions>
 		</Dialog>
 	}
+	renderDeleteDialog = () => {
+		const { openDelete } = this.state
+		const { t } = this.props
+		return (
+			<Dialog
+				open={openDelete}
+				onClose={this.handleCloseDeleteDialog}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			>
+				<DialogTitle id="alert-dialog-title">{t("collections.dcDelete")}</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="alert-dialog-description">
+						{t("collections.dcDeleteConfirm")}
+					</DialogContentText>
+
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={this.handleCloseDeleteDialog} color="primary">
+						{t("actions.cancel")}
+					</Button>
+					<Button onClick={this.handleDeleteCollection} color="primary" autoFocus>
+						{t("actions.yes")}
+					</Button>
+				</DialogActions>
+			</Dialog>
+		)
+	}
 
 	render() {
 		const { history, t, classes, accessLevel } = this.props
@@ -214,6 +269,7 @@ class Collection extends Component {
 						t={t}
 					/>
 					{collection.org.id ? this.renderConfirmUnassign() : null}
+					{this.renderDeleteDialog()}
 					<ItemGrid xs={12} noMargin>
 						<CollectionDetails
 							collection={collection}
@@ -222,6 +278,7 @@ class Collection extends Component {
 							handleOpenAssignProject={this.handleOpenAssignProject}
 							handleOpenUnassign={this.handleOpenUnassign}
 							handleOpenAssignOrg={this.handleOpenAssignOrg}
+							handleOpenDeleteDialog={this.handleOpenDeleteDialog}
 							t={t}
 							accessLevel={this.props.accessLevel}
 						/>

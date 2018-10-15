@@ -94,6 +94,8 @@
 			},
 			"status": "Status"
 		},
+		"dcDeleteConfirm": "Are you sure you want to delete this Data Collection?",
+		"dcDelete": "Delete Data Collection",
 		"noActiveDevice": "No active device",
 		"noHistory": "No logs",
 		"pageTitle": "Data Collections",
