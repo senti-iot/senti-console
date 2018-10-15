@@ -34,9 +34,13 @@ class Collection extends Component {
 		}
 		props.setHeader('', true, `/collections/list`, "collections")
 	}
-
+	getCollectionProject = async (rs) => {
+		let project = await getProject(rs)
+		// console.log(project)
+		this.setState({ collection: { ...this.state.collection, project: project }, loadingProject: false })
+	}
 	getCollection = async (id) => {
-		await getCollection(id).then(async rs => {
+		await getCollection(id).then(rs => {
 			console.log(rs)
 			if (rs === null)
 				this.props.history.push('/404')
@@ -44,9 +48,7 @@ class Collection extends Component {
 				this.setState({ collection: rs, loading: false })
 				this.props.setHeader(rs.name ? rs.name : rs.id, true, `/collections/list`, "collections")
 				if (rs.project.id) {
-					let project = await getProject(rs.project.id)
-					// console.log(project)
-					this.setState({ collection: { ...this.state.collection, project: project }, loadingProject: false })
+					this.getCollectionProject(rs.project.id)
 				}
 			}
 		})
@@ -116,12 +118,12 @@ class Collection extends Component {
 
 	handleCloseAssignOrg = async (reload) => {
 		if (reload) {
-			this.setState({ loading: true, anchorEl: null })
-			await this.getCollection(this.state.collection.id).then(() => {
+			this.setState({ loading: true, anchorEl: null, openAssignOrg: false })
+			await this.getCollection(this.state.collection.id).then(rs => {
 				this.snackBarMessages(2)
 			})
 		}
-		this.setState({ openAssignOrg: false })
+		// this.setState({ openAssignOrg: false })
 	}
 	handleOpenAssignProject = () => {
 		this.setState({ openAssign: true, anchorEl: null })

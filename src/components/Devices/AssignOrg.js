@@ -60,26 +60,37 @@ class AssignOrg extends React.Component {
 		await getAllOrgs().then(rs => this._isMounted ? this.setState({ Orgs: rs }) : null)
 	}
 	componentWillUnmount = () => {
-	  this._isMounted = 0
+		this._isMounted = 0
 	}
-	
+
 
 	selectOrg = pId => e => {
 		e.preventDefault()
-		if (this.state.selectedOrg === pId)
+		/* if (this.state.selectedOrg === pId)
 			this.setState({ selectedOrg: null })
-		else { this.setState({ selectedOrg: pId }) }
-		
+		else { */
+		this.setState({ selectedOrg: pId })
+
 	}
 	assignOrg = async () => {
 		if (this.props.devices)
-			this.props.deviceId.forEach(async element => {
-				await updateDevice({ ...element, org: { id: this.state.selectedOrg } }).then(rs => rs)
-			});
-		if (this.props.collections)
-			this.props.collectionId.forEach(async e => {
-				await updateCollection({ ...e, org: { id: this.state.selectedOrg } }).then(rs => rs)
+			Promise.all([this.props.deviceId.forEach(async e => {
+				await updateDevice({ ...e, org: { id: this.state.selectedOrg } }).then(rs => rs)
+			})]).then(() => {
+				this.props.handleClose(true)
 			})
+		if (this.props.collections) {
+			Promise.all([this.props.collectionId.map( e => {
+				return updateCollection({ ...e, org: { id: this.state.selectedOrg } })
+			})]).then(() => {
+				this.props.handleClose(true)
+			}
+			)
+		}
+	
+	
+	
+
 		// if (Array.isArray(this.props.deviceId))
 		// {
 		// 	this.props.deviceId.map(async id => await assignOrgToDevice({ Org_id: this.state.selectedOrg, id: id }))
@@ -87,7 +98,6 @@ class AssignOrg extends React.Component {
 		// else {
 		// 	await assignOrgToDevice({ Org_id: this.state.selectedOrg, id: this.props.id });
 		// }
-		this.props.handleClose(true)
 	}
 	closeDialog = () => {
 		this.props.handleClose(false)
@@ -112,10 +122,10 @@ class AssignOrg extends React.Component {
 							</IconButton>
 							<Typography variant="title" color="inherit" className={classes.flex}>
 								{t("orgs.pageTitle")}
-  						</Typography>
+							</Typography>
 							<Button color="inherit" onClick={this.assignOrg}>
 								{t("actions.save")}
-  						</Button>
+							</Button>
 						</Toolbar>
 					</AppBar>
 					<List>
@@ -127,9 +137,11 @@ class AssignOrg extends React.Component {
 									}}
 								>
 									<ListItemText primaryTypographyProps={{
-										className: this.state.selectedOrg === p.id ? classes.selectedItemText : null }}
+										className: this.state.selectedOrg === p.id ? classes.selectedItemText : null
+									}}
 									secondaryTypographyProps={{
-										classes: { root: this.state.selectedOrg === p.id ? classes.selectedItemText : null } }}
+										classes: { root: this.state.selectedOrg === p.id ? classes.selectedItemText : null }
+									}}
 									primary={p.name} /* secondary={p.user.organisation} */ />
 								</ListItem>
 								<Divider />
