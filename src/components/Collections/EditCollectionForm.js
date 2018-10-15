@@ -55,7 +55,7 @@ class EditCollectionForm extends Component {
 			</AppBar>
 			<List>
 				{orgs ? orgs.map((o, i) => {
-					return <Fragment>
+					return <Fragment key={i}>
 						<ListItem button onClick={handleChangeOrg(o)}>
 							<ListItemText primary={o.name} />
 						</ListItem>
@@ -100,6 +100,7 @@ class EditCollectionForm extends Component {
 									label={t("collections.fields.org")}
 									value={collection.org.name ? collection.org.name : t("collections.noOrg")}
 									handleClick={handleOpenOrg}
+									handleChange={() => { }}
 									noFullWidth
 									InputProps={{
 										onChange: handleOpenOrg,
