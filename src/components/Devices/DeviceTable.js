@@ -11,11 +11,12 @@ import { withRouter } from 'react-router-dom';
 import EnhancedTableHead from 'components/Table/TableHeader'
 import EnhancedTableToolbar from 'components/Table/TableToolbar';
 import { connect } from 'react-redux'
-import { ItemGrid, Info, Caption, AssignOrg, AssignProject } from 'components';
+import { ItemGrid, Info, Caption, AssignOrg } from 'components';
 import TC from 'components/Table/TC'
 import { updateDevice } from 'variables/dataDevices'
 import { boxShadow } from "assets/jss/material-dashboard-react";
 import TP from 'components/Table/TP';
+import AssignCollection from 'components/Assign/AssignCollection';
 class EnhancedTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -28,7 +29,7 @@ class EnhancedTable extends React.Component {
 			rowsPerPage: props.rowsPerPage,
 			anchorElMenu: null,
 			anchorFilterMenu: null,
-			openAssignProject: false,
+			openAssignCollection: false,
 			openAssignOrg: false,
 			openUnassign: false,
 		};
@@ -42,7 +43,7 @@ class EnhancedTable extends React.Component {
 		if (accessLevel.apisuperuser)
 			return [
 				{ label: t("menus.edit"), func: this.handleDeviceEdit, single: true },
-				{ label: t("menus.assign"), func: this.handleAssignToProject, single: false },
+				{ label: t("menus.assignCollection"), func: this.handleOpenAssignCollection, single: true },
 				{ label: t("menus.assignOrg"), func: this.handleAssignToOrg, single: false },
 				{ label: t("menus.unassign"), func: this.handleOpenUnassignDialog, single: false },
 				{ label: t("menus.exportPDF"), func: () => { }, single: false },
@@ -68,11 +69,11 @@ class EnhancedTable extends React.Component {
 		this.setState({ openAssignOrg: false })
 		this.props.reload()
 	}
-	handleAssignToProject = () => {
-		this.setState({ openAssignProject: true })
+	handleOpenAssignCollection = () => {
+		this.setState({ openAssignCollection: true })
 	}
-	handleCloseAssignToProject = reload => {
-		this.setState({ openAssignProject: false })
+	handleCloseAssignCollection = reload => {
+		this.setState({ openAssignCollection: false })
 		this.props.reload()
 	}
 	handleToolbarMenuOpen = e => {
@@ -150,7 +151,7 @@ class EnhancedTable extends React.Component {
 				project: {
 					id: 0
 				}
-			}).then(rs => this.handleCloseAssignToProject())
+			}).then(rs => this.handleCloseAssignCollection())
 		})
 	}
 
@@ -164,34 +165,6 @@ class EnhancedTable extends React.Component {
 
 	isSelected = id => this.state.selected.indexOf(id) !== -1;
 
-	// suggestionSlicer = (obj) => {
-	// 	var arr = [];
-
-	// 	for (var prop in obj) {
-	// 		if (obj.hasOwnProperty(prop)) {
-	// 			var innerObj = {};
-	// 			if (typeof obj[ prop ] === 'object') {
-	// 				arr.push(...this.suggestionSlicer(obj[ prop ]))
-	// 			}
-	// 			else {
-	// 				innerObj = {
-	// 					id: prop.toString().toLowerCase(),
-	// 					label: obj[ prop ] ? obj[ prop ].toString() : ''
-	// 				};
-	// 				arr.push(innerObj)
-	// 			}
-	// 		}
-	// 	}
-	// 	return arr;
-	// }
-	// suggestionGen = (arrayOfObjs) => {
-	// 	let arr = [];
-	// 	arrayOfObjs.map(obj => {
-	// 		arr.push(...this.suggestionSlicer(obj))
-	// 		return ''
-	// 	})
-	// 	return arr;
-	// }
 	renderIcon = (status) => {
 		const { classes, t } = this.props
 		switch (status) {
@@ -267,17 +240,17 @@ class EnhancedTable extends React.Component {
 	}
 	render () {
 		const { classes, t, data, order, orderBy } = this.props;
-		const { selected, rowsPerPage, page, openAssignProject, openAssignOrg } = this.state;
+		const { selected, rowsPerPage, page, openAssignCollection, openAssignOrg } = this.state;
 		let emptyRows
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 		return (
 			<Paper className={ classes.root }>
 				{ this.renderConfirmUnassign() }
-				<AssignProject
-					open={ openAssignProject }
-					handleClose={ this.handleCloseAssignToProject }
-					deviceId={ selected.map(s => data[ data.findIndex(d => d.id === s) ]) }
+				<AssignCollection
+					open={ openAssignCollection }
+					handleClose={ this.handleCloseAssignCollection }
+					deviceId={ selected[0] }
 					t={t} />
 				<AssignOrg
 					devices

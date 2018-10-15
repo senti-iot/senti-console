@@ -1,6 +1,5 @@
 import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles, Hidden } from "@material-ui/core";
 import { Close } from 'variables/icons';
-import { headerColor, hoverColor, primaryColor } from 'assets/jss/material-dashboard-react';
 import cx from "classnames";
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
@@ -10,39 +9,8 @@ import { updateCollection } from 'variables/dataCollections';
 import { ItemG, CircularLoader } from 'components';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
+import assignStyles from 'assets/jss/components/assign/assignStyles';
 
-const styles = {
-	appBar: {
-		position: 'relative',
-		backgroundColor: headerColor,
-		boxShadow: "none",
-		borderBottom: "0",
-		marginBottom: "0",
-		width: "100%",
-		paddingTop: "10px",
-		zIndex: "1029",
-		color: "#ffffff",
-		border: "0",
-		// borderRadius: "3px",
-		padding: "10px 0",
-		transition: "all 150ms ease 0s",
-		minHeight: "50px",
-		display: "block"
-	},
-	flex: {
-		flex: 1,
-	},
-	selectedItem: {
-		background: primaryColor,
-		"&:hover": {
-			background: hoverColor
-		}
-		// color: "#fff"
-	},
-	selectedItemText: {
-		color: "#FFF"
-	}
-};
 
 function Transition(props) {
 	return <Slide direction="up" {...props} />;
@@ -202,4 +170,4 @@ AssignOrg.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(AssignOrg);
+export default withStyles(assignStyles)(AssignOrg);

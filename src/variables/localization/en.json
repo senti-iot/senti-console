@@ -309,6 +309,7 @@
 		"username": "Username"
 	},
 	"menus": {
+		"assignCollection": "Assign to collection",
 		"assignDevice": "Assign device",
 		"assignDevices": "Assign devices",
 		"assignOrg": "Assign to organisation",

@@ -1,26 +1,30 @@
 import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles, Hidden } from "@material-ui/core";
 import { Close } from 'variables/icons';
+import { headerColor, hoverColor, primaryColor } from 'assets/jss/material-dashboard-react';
 import cx from "classnames";
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import { getAvailableDevices } from 'variables/dataDevices';
+import { getAllCollections } from 'variables/dataCollections';
+// import { updateCollection } from 'variables/dataCollections'
+// import { updateCollection } from 'variables/dataCollections';
 import { ItemG, CircularLoader } from 'components';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import { assignDeviceToCollection } from 'variables/dataCollections';
 import assignStyles from 'assets/jss/components/assign/assignStyles';
 
+
 function Transition(props) {
 	return <Slide direction="up" {...props} />;
 }
 
-class AssignDevice extends React.Component {
+class AssignCollection extends React.Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			devices: [],
-			selectedDevices: [],
+			collections: [],
+			selectedCollections: [],
 			filters: {
 				keyword: '',
 				startDate: null,
@@ -32,39 +36,38 @@ class AssignDevice extends React.Component {
 
 	componentDidMount = async () => {
 		this._isMounted = 1
-		const { orgId } = this.props
-		await getAvailableDevices(orgId).then(rs => this._isMounted ? this.setState({ devices: rs }) : this.setState({ devices: [] }))
+		// const { orgId } = this.props
+		await getAllCollections().then(rs => this._isMounted ? this.setState({ collections: rs }) : this.setState({ collections: [] }))
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
 	handleClick = (event, id) => {
 		event.stopPropagation()
-		const { selectedDevices } = this.state;
-		const selectedIndex = selectedDevices.indexOf(id)
+		const { selectedCollections } = this.state;
+		const selectedIndex = selectedCollections.indexOf(id)
 		let newSelected = [];
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selectedDevices, id);
+			newSelected = newSelected.concat(selectedCollections, id);
 		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selectedDevices.slice(1))
-		} else if (selectedIndex === selectedDevices.length - 1) {
-			newSelected = newSelected.concat(selectedDevices.slice(0, -1))
+			newSelected = newSelected.concat(selectedCollections.slice(1))
+		} else if (selectedIndex === selectedCollections.length - 1) {
+			newSelected = newSelected.concat(selectedCollections.slice(0, -1))
 		} else if (selectedIndex > 0) {
 			newSelected = newSelected.concat(
-				selectedDevices.slice(0, selectedIndex),
-				selectedDevices.slice(selectedIndex + 1),
+				selectedCollections.slice(0, selectedIndex),
+				selectedCollections.slice(selectedIndex + 1),
 			);
 		}
 
-		this.setState({ selectedDevices: newSelected })
+		this.setState({ selectedCollections: newSelected })
 	}
 
-	assignDevice = async () => {
-		// if (this.props.devices)
-		const { collectionId } = this.props
-		Promise.all([this.state.selectedDevices.forEach(async e => {
-			return assignDeviceToCollection({ id: collectionId, deviceId: e })
+	assignCollection = async () => {
+		const { deviceId } = this.props
+		Promise.all([this.state.selectedCollections.forEach(async e => {
+			return assignDeviceToCollection({ id: e, deviceId })
 		})]).then(() => {
 			this.props.handleClose(true)
 		})
@@ -80,9 +83,9 @@ class AssignDevice extends React.Component {
 			}
 		})
 	}
-	isSelected = id => this.state.selectedDevices.indexOf(id) !== -1 ? true : false 
+	isSelected = id => this.state.selectedCollections.indexOf(id) !== -1 ? true : false 
 	render() {
-		const { devices, filters } = this.state
+		const { collections, filters } = this.state
 		const { classes, open, t } = this.props;
 		const appBarClasses = cx({
 			[" " + classes['primary']]: 'primary'
@@ -104,7 +107,7 @@ class AssignDevice extends React.Component {
 											<Close />
 										</IconButton>
 										<Typography variant="title" color="inherit" className={classes.flex}>
-											{t("devices.pageTitle")}
+											{t("collections.pageTitle")}
 										</Typography>
 									</ItemG>
 									<ItemG xs={8}>
@@ -112,12 +115,12 @@ class AssignDevice extends React.Component {
 											fullWidth
 											open={true}
 											focusOnMount
-											suggestions={devices ? suggestionGen(devices) : []}
+											suggestions={collections ? suggestionGen(collections) : []}
 											handleFilterKeyword={this.handleFilterKeyword}
 											searchValue={filters.keyword} />
 									</ItemG>
 									<ItemG xs={2}>
-										<Button color="inherit" onClick={this.assignDevice}>
+										<Button color="inherit" onClick={this.assignCollection}>
 											{t("actions.save")}
 										</Button>
 									</ItemG>
@@ -130,9 +133,9 @@ class AssignDevice extends React.Component {
 											<Close />
 										</IconButton>
 										<Typography variant="title" color="inherit" className={classes.flex}>
-											{t("devices.pageTitle")}
+											{t("collections.pageTitle")}
 										</Typography>
-										<Button variant={'contained'} color="primary" onClick={this.assignDevice}>
+										<Button variant={'contained'} color="primary" onClick={this.assignCollection}>
 											{t("actions.save")}
 										</Button>
 									</ItemG>
@@ -142,7 +145,7 @@ class AssignDevice extends React.Component {
 											fullWidth
 											open={true}
 											focusOnMount
-											suggestions={devices ? suggestionGen(devices) : []}
+											suggestions={collections ? suggestionGen(collections) : []}
 											handleFilterKeyword={this.handleFilterKeyword}
 											searchValue={filters.keyword} />
 									</ItemG>
@@ -151,7 +154,7 @@ class AssignDevice extends React.Component {
 						</Toolbar>
 					</AppBar>
 					<List>
-						{devices ? filterItems(devices, filters).map((p, i) => (
+						{collections ? filterItems(collections, filters).map((p, i) => (
 							<Fragment key={i}>
 								<ListItem button
 									onClick={e => this.handleClick(e, p.id)}
@@ -159,7 +162,7 @@ class AssignDevice extends React.Component {
 									<ListItemText
 										primaryTypographyProps={{ className: this.isSelected(p.id) ? classes.selectedItemText : null }}
 										secondaryTypographyProps={{ classes: { root: this.isSelected(p.id) ? classes.selectedItemText : null } }}
-										primary={p.name} secondary={p.id} />
+										primary={p.name} secondary={`${t("collections.fields.id")}: ${p.id}`} />
 								</ListItem>
 								<Divider />
 							</Fragment>
@@ -172,10 +175,9 @@ class AssignDevice extends React.Component {
 	}
 }
 
-AssignDevice.propTypes = {
+AssignCollection.propTypes = {
 	classes: PropTypes.object.isRequired,
-	orgId: PropTypes.number.isRequired,
-	collectionId: PropTypes.number.isRequired,
+	deviceId: PropTypes.number.isRequired,
 };
 
-export default withStyles(assignStyles)(AssignDevice);
+export default withStyles(assignStyles)(AssignCollection);

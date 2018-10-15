@@ -309,7 +309,8 @@
 		"username": "Brugernavn"
 	},
 	"menus": {
-		"assignDevice": "Tlknyt enhed",
+		"assignCollection": "Tilknyt til datasamling",
+		"assignDevice": "Tilknyt enhed",
 		"assignDevices": "Tilknyt enheder",
 		"assignOrg": "Tilknyt organisation",
 		"assignProject": "Tilknyt projekt",
