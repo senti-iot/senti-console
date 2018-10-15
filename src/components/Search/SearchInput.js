@@ -9,12 +9,13 @@ import className from 'classnames'
 
 class SearchInput extends Component {
 	render() {
-		const { t, classes, ref, open, handleClose, handleOpen, handleResetSearch, ...other } = this.props;
+		const { noAbsolute, t, classes, ref, open, handleClose, handleOpen, handleResetSearch, fullWidth, ...other } = this.props;
 		// console.log(ref, this.props.reference)
+		console.log(noAbsolute)
 		return (
-			<ItemGrid container noPadding alignItems={'center'} style={{ width: "auto", margin: 0 }}>
+			<ItemGrid container noPadding alignItems={'center'} style={{ width: fullWidth ? "100%" : "auto", margin: 0 }}>
 
-				<div className={className(classes.inputContainer, { [classes.inputContainerFocused]: this.props.open }, { [classes.inputContainerUnfocused]: !this.props.open })}>
+				<div className={className({ [classes.inputContainer]: !noAbsolute }, { [classes.inputContainerNoAbsolute]: noAbsolute }, { [fullWidth ? classes.inputContainerFullWidth : classes.inputContainerFocused ]: this.props.open }, { [classes.inputContainerUnfocused]: !this.props.open })}>
 					<Search className={className(classes.icon, { [classes.iconActive]: this.props.value !== '' ? true : false })} onClick={handleOpen}/>
 					<Input
 						placeholder={t("filters.search")}

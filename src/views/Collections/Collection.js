@@ -12,6 +12,7 @@ import CollectionData from 'views/Collections/CollectionCards/CollectionData';
 import CollectionDetails from 'views/Collections/CollectionCards/CollectionDetails';
 import CollectionHistory from 'views/Collections/CollectionCards/CollectionHistory';
 import { getProject } from 'variables/dataProjects';
+import Search from 'components/Search/Search';
 
 // import moment from 'moment'
 class Collection extends Component {
@@ -25,6 +26,7 @@ class Collection extends Component {
 			openAssign: false,
 			openUnassign: false,
 			openAssignOrg: false,
+			openAssignDevice: true,
 			openDelete: false,
 			img: null,
 			filter: {
@@ -78,6 +80,9 @@ class Collection extends Component {
 			case 2:
 				s(t("snackbars.assignCollection", { collection: name + "(" + id + ")", org: this.state.collection.org.name }))
 				break
+			case 5: 
+				s(t("snackbars.assignCollection", { collection: `${name} (${id})`, org: this.state.collection.project.title }))
+				break
 			case 3:
 				s(t("snackbars.failedUnassign"))
 				break
@@ -115,7 +120,9 @@ class Collection extends Component {
 	handleOpenAssignOrg = () => {
 		this.setState({ openAssignOrg: true, anchorEl: null })
 	}
-
+	handleCancelAssignOrg = () => {
+		this.setState({ openAssignOrg: false })
+	}
 	handleCloseAssignOrg = async (reload) => {
 		if (reload) {
 			this.setState({ loading: true, anchorEl: null, openAssignOrg: false })
@@ -128,14 +135,17 @@ class Collection extends Component {
 	handleOpenAssignProject = () => {
 		this.setState({ openAssign: true, anchorEl: null })
 	}
-
-	handleCloseAssignProject = async (reload) => {
-		if (reload) {
-			this.setState({ loading: true, anchorEl: null })
-			this.snackBarMessages(2)
-			await this.getCollection(this.state.collection.id)
-		}
+	handleCancelAssignProject = () => {
 		this.setState({ openAssign: false })
+	}
+	handleCloseAssignProject = async (reload, success) => {
+		if (reload) {
+			this.setState({ loading: true, anchorEl: null, openAssign: false })
+			await this.getCollection(this.state.collection.id).then(() => {
+				this.snackBarMessages(5)
+			})
+		}
+		// this.setState({ openAssign: false })
 	}
 
 
@@ -196,7 +206,25 @@ class Collection extends Component {
 	renderLoader = () => {
 		return <CircularLoader />
 	}
-
+	renderAssignDevice = () => {
+		const { t } = this.props
+		const { collection, openAssignDevice } = this.state
+		return (
+			<Dialog
+				open={openAssignDevice}
+				onClose={this.handleCloseAssignDevice}	
+			>
+				<DialogTitle>
+					<DialogActions>
+						<Search />
+					</DialogActions>
+					<DialogContentText id="alert-dialog-description">
+						{t("dialogs.unassign", { id: collection.id, name: collection.name, what: collection.org.name })}
+					</DialogContentText>
+				</DialogTitle>
+			</Dialog>
+		)
+	}
 	renderConfirmUnassign = () => {
 		const { t } = this.props
 		const { collection } = this.state
@@ -261,6 +289,7 @@ class Collection extends Component {
 						collectionId={[this.state.collection]}
 						open={this.state.openAssign}
 						handleClose={this.handleCloseAssignProject}
+						handleCancel={this.handleCancelAssignProject}
 						t={t}
 					/>
 					<AssignOrg
@@ -268,10 +297,12 @@ class Collection extends Component {
 						collectionId={[this.state.collection]}
 						open={this.state.openAssignOrg}
 						handleClose={this.handleCloseAssignOrg}
+						handleCancel={this.handleCancelAssignOrg}
 						t={t}
 					/>
 					{collection.org.id ? this.renderConfirmUnassign() : null}
 					{this.renderDeleteDialog()}
+					{/* {this.renderAssignDevice()} */}
 					<ItemGrid xs={12} noMargin>
 						<CollectionDetails
 							collection={collection}

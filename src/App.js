@@ -9,7 +9,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { primaryColor, secondaryColor, hoverColor } from "assets/jss/material-dashboard-react";
 import "assets/css/material-dashboard-react.css?v=1.2.0";
 import TProvider from 'components/Localization/TProvider';
-import { teal } from "@material-ui/core/colors"
+import { teal, red } from "@material-ui/core/colors"
 
 import "core-js/fn/set"; 
 import 'core-js/es6/map';
@@ -76,7 +76,9 @@ const theme = createMuiTheme({
 			light: hoverColor,
 			// dark: will be calculated from palette.secondary.main,
 		},
-		// error: will use the default color
+		error: {
+			main: red[400]
+		}
 	},
 });
 

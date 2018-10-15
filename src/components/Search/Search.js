@@ -51,6 +51,12 @@ function getSuggestions(value, suggestions) {
 		});
 }
 
+/**
+* @augments {Component<{	
+	searchValue:string,	
+	suggestions:array.isRequired,	
+	handleFilterKeyword:Function.isRequired,>}
+*/
 class IntegrationAutosuggest extends React.PureComponent {
 	constructor(props) {
 		super(props)
@@ -63,9 +69,11 @@ class IntegrationAutosuggest extends React.PureComponent {
 		this.inputRef = React.createRef()
 
 	}
-	// componentDidMount() {
-	// 	document.addEventListener("keydown", this.handleKeyPress, false);
-	// }
+	componentDidMount() {
+		// document.addEventListener("keydown", this.handleKeyPress, false);
+		if (this.props.focusOnMount && this.inputRef.current)
+			this.focusInput()
+	}
 	// componentWillUnmount() {
 	// 	document.removeEventListener("keydown", this.handleKeyPress, false);
 	// }
@@ -118,26 +126,27 @@ class IntegrationAutosuggest extends React.PureComponent {
 		this.props.handleFilterKeyword(newValue)
 	};
 	focusInput = () => {
-		if (this.state.open)
+		if (this.state.open || this.props.open)
 			this.inputRef.current.focus()
 	}
 	handleOpen = () => {
-		this.setState({ open: !this.state.open }, this.focusInput)
+		if (this.props.open === undefined)
+			this.setState({ open: !this.state.open }, this.focusInput)
 	}
 	handleClose = () => {
-		this.setState({ open: false })
+		if (this.props.open === undefined)
+			this.setState({ open: false })
 	}
 
 	render() {
 		const { classes, right } = this.props;
 		return (
 			<div className={classes.suggestContainer}>
-
 				<ClickAwayListener onClickAway={this.handleClose}>
 					<Autosuggest
 						theme={{
 							container: classes.container + " " + (right ? classes.right : ''),
-							suggestionsContainerOpen: classes.suggestionsContainerOpen,
+							suggestionsContainerOpen: /* noAbsolute ? classes.suggestionsContainerOpenNoAbsolute : */ classes.suggestionsContainerOpen,
 							suggestionsList: classes.suggestionsList,
 							suggestion: classes.suggestion,
 						}}
@@ -152,11 +161,13 @@ class IntegrationAutosuggest extends React.PureComponent {
 						getSuggestionValue={getSuggestionValue}
 						renderSuggestion={this.renderSuggestion}
 						inputProps={{
+							noAbsolute: this.props.noAbsolute,
 							classes,
+							fullWidth: this.props.fullWidth,
 							value: this.props.searchValue,
 							onChange: this.handleChange,
 							reference: this.inputRef,
-							open: this.state.open,
+							open: this.state.open || this.props.open,
 							handleOpen: this.handleOpen,
 							handleClose: this.handleClose,
 							handleResetSearch: this.handleResetSearch,
@@ -172,6 +183,10 @@ class IntegrationAutosuggest extends React.PureComponent {
 
 IntegrationAutosuggest.propTypes = {
 	classes: PropTypes.object.isRequired,
+	searchValue: PropTypes.string,
+	t: PropTypes.func.isRequired,
+	suggestions: PropTypes.array.isRequired,
+	handleFilterKeyword: PropTypes.func.isRequired,
 };
 
 export default withLocalization()(withStyles(searchStyles)(IntegrationAutosuggest));

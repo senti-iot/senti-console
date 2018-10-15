@@ -7,6 +7,9 @@ const searchStyles = theme => ({
 	},
 	suggestContainer: {
 		width: "100%",
+		[theme.breakpoints.down("md")]: {
+			width: "auto"
+		},
 		position: "relative",
 		[theme.breakpoints.down('sm')]: {
 			position: 'initial'
@@ -47,7 +50,14 @@ const searchStyles = theme => ({
 		flexGrow: 1,
 		// position: 'relative',
 		display: "flex",
-		maxWidth: "calc(100vw - 100px)"
+		// maxWidth: "calc(100vw - 100px)"
+	},
+	suggestionsContainerOpenNoAbsolute: {
+		// position: 'absolute',
+		// right: "30px",
+		// zIndex: 1,
+		marginTop: theme.spacing.unit * 4,
+		maxWidth: 'calc(100vw - 100px)'
 	},
 	suggestionsContainerOpen: {
 		position: 'absolute',
@@ -92,9 +102,24 @@ const searchStyles = theme => ({
 			width: 'calc(100vw - 48px)',			
 		}
 	},
+	inputContainerFullWidth: {
+		padding: "0px 0px 0px 8px",
+		width: '100%'
+	},	
 	inputContainerUnfocused: {
 		width: 24,
 		padding: "0px 8px"	
+	},
+	inputContainerNoAbsolute: {
+		display: "flex",
+		alignItems: "center",
+		overflow: "hidden",
+		background: 'white',
+		// padding: "0 8px",
+		borderRadius: 4,
+		// margin: 8,
+		// marginRight: 18,
+		...transition
 	},
 	inputContainer: {
 		display: "flex",

@@ -1,4 +1,4 @@
-import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles } from "@material-ui/core";
+import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles, Hidden } from "@material-ui/core";
 import { Close } from 'variables/icons';
 import { headerColor, hoverColor, primaryColor } from 'assets/jss/material-dashboard-react';
 import cx from "classnames";
@@ -7,6 +7,9 @@ import React, { Fragment } from 'react';
 import { getAllProjects } from 'variables/dataProjects';
 // import { updateDevice } from 'variables/dataDevices'
 import { updateCollection } from 'variables/dataCollections';
+import Search from 'components/Search/Search';
+import { suggestionGen, filterItems } from 'variables/functions';
+import { ItemG } from 'components';
 
 const styles = {
 	appBar: {
@@ -51,7 +54,13 @@ class AssignProject extends React.Component {
 
 		this.state = {
 			projects: [],
-			selectedProject: null
+			selectedProject: null,
+			filters: {
+				keyword: '',
+				startDate: null,
+				endDate: null,
+				activeDateFilter: false
+			}
 		}
 	}
 
@@ -60,23 +69,25 @@ class AssignProject extends React.Component {
 		await getAllProjects().then(rs => this._isMounted ? this.setState({ projects: rs }) : null)
 	}
 	componentWillUnmount = () => {
-	  this._isMounted = 0
+		this._isMounted = 0
 	}
-	
+
 
 	selectProject = pId => e => {
 		e.preventDefault()
 		if (this.state.selectedProject === pId)
 			this.setState({ selectedProject: null })
 		else { this.setState({ selectedProject: pId }) }
-		
+
 	}
 	assignProject = async () => {
-		//Todo Snackbar success
-		this.props.collectionId.forEach(async element => {
-			await updateCollection({ ...element, project: { id: this.state.selectedProject } }).then(rs => rs)
-		});
-		
+		Promise.all([this.props.collectionId.map(async element => {
+			await updateCollection({ ...element, project: { id: this.state.selectedProject } })
+		})]).then(rs => {
+			console.log(rs);
+			this.props.handleClose(true)
+		})
+
 		// if (Array.isArray(this.props.deviceId))
 		// {
 		// 	this.props.deviceId.map(async id => await assignProjectToDevice({ project_id: this.state.selectedProject, id: id }))
@@ -84,12 +95,24 @@ class AssignProject extends React.Component {
 		// else {
 		// 	await assignProjectToDevice({ project_id: this.state.selectedProject, id: this.props.id });
 		// }
-		this.props.handleClose(true)
+		// this.props.handleClose(true)
 	}
 	closeDialog = () => {
 		this.props.handleClose(false)
 	}
+	handleFilterKeyword = value => {
+		this.setState({
+			filters: {
+				...this.state.filters,
+				keyword: value
+			}
+		})
+	}
+	renderList = (projects) => {
+		
+	}
 	render() {
+		const { filters, projects } = this.state
 		const { classes, open, t } = this.props;
 		const appBarClasses = cx({
 			[" " + classes['primary']]: 'primary'
@@ -104,19 +127,63 @@ class AssignProject extends React.Component {
 				>
 					<AppBar className={classes.appBar + appBarClasses}>
 						<Toolbar>
-							<IconButton color="inherit" onClick={this.closeDialog} aria-label="Close">
-								<Close />
-							</IconButton>
-							<Typography variant="title" color="inherit" className={classes.flex}>
-								{t("projects.pageTitle")}
-  						</Typography>
-							<Button color="inherit" onClick={this.assignProject}>
-								{t("actions.save")}
-  						</Button>
+							<Hidden mdDown>
+								<ItemG container justify={'center'} alignItems={'center'}>
+									<ItemG xs={2} container alignItems={"center"}>
+										<IconButton color="inherit" onClick={this.props.handleCancel} aria-label="Close">
+											<Close />
+										</IconButton>
+										<Typography variant="title" color="inherit" className={classes.flex}>
+											{t("projects.pageTitle")}
+										</Typography>
+									</ItemG>
+									<ItemG xs={8}>
+										<Search
+											fullWidth
+											open={true}
+											focusOnMount
+											suggestions={projects ? suggestionGen(projects) : []}
+											handleFilterKeyword={this.handleFilterKeyword}
+											searchValue={filters.keyword} />
+									</ItemG>
+									<ItemG xs={2}>
+										<Button color="inherit" onClick={this.assignProject}>
+											{t("actions.save")}
+										</Button>
+									</ItemG>
+								</ItemG>
+							</Hidden>
+							<Hidden lgUp>
+								<ItemG container justify={'center'} alignItems={'center'}>
+									<ItemG xs container alignItems={"center"}>
+										<IconButton color="inherit" onClick={this.props.handleCancel} aria-label="Close">
+											<Close />
+										</IconButton>
+										<Typography variant="title" color="inherit" className={classes.flex}>
+											{t("projects.pageTitle")}
+										</Typography>
+										<Button variant={'contained'} color="primary" onClick={this.assignProject}>
+											{t("actions.save")}
+										</Button>
+									</ItemG>
+									<ItemG xs={12} container alignItems={'center'}>
+										<Search
+											noAbsolute
+											fullWidth
+											open={true}
+											focusOnMount
+											suggestions={projects ? suggestionGen(projects) : []}
+											handleFilterKeyword={this.handleFilterKeyword}
+											searchValue={filters.keyword}
+										/>
+
+									</ItemG>
+								</ItemG>	
+							</Hidden>
 						</Toolbar>
 					</AppBar>
 					<List>
-						{this.state.projects ? this.state.projects.map((p, i) => (
+						{projects ? filterItems(projects, filters).map((p, i) => (
 							<Fragment key={i}>
 								<ListItem button onClick={this.selectProject(p.id)} value={p.id}
 									classes={{
@@ -124,9 +191,11 @@ class AssignProject extends React.Component {
 									}}
 								>
 									<ListItemText primaryTypographyProps={{
-										className: this.state.selectedProject === p.id ? classes.selectedItemText : null }}
+										className: this.state.selectedProject === p.id ? classes.selectedItemText : null
+									}}
 									secondaryTypographyProps={{
-										classes: { root: this.state.selectedProject === p.id ? classes.selectedItemText : null } }}
+										classes: { root: this.state.selectedProject === p.id ? classes.selectedItemText : null }
+									}}
 									primary={p.title} secondary={p.user.organisation} />
 								</ListItem>
 								<Divider />
