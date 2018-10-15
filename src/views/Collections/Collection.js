@@ -36,6 +36,7 @@ class Collection extends Component {
 
 	getCollection = async (id) => {
 		await getCollection(id).then(async rs => {
+			console.log(rs)
 			if (rs === null)
 				this.props.history.push('/404')
 			else {
@@ -43,7 +44,7 @@ class Collection extends Component {
 				this.props.setHeader(rs.name ? rs.name : rs.id, true, `/collections/list`, "collections")
 				if (rs.project.id) {
 					let project = await getProject(rs.project.id)
-					console.log(project)
+					// console.log(project)
 					this.setState({ collection: { ...this.state.collection, project: project }, loading: false })
 				}
 			}

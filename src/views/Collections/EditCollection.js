@@ -22,6 +22,7 @@ class EditCollection extends Component {
 	}
 	postUpdate = async () => {
 		let success = await updateCollection(this.state.collection)
+		console.log(success);
 		if (success)
 			return true
 		else
@@ -83,7 +84,7 @@ class EditCollection extends Component {
 	handleUpdate = async () => {
 		// console.log(this.props.s)
 		const { s, t, history } = this.props
-		let rs = this.postUpdate()
+		let rs = await this.postUpdate()
 		if (rs) {
 			s(t("snackbars.collectionUpdated"))
 			history.push(`/collection/${this.id}`)
