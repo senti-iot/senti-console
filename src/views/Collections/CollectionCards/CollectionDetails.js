@@ -1,6 +1,6 @@
 import { Grid, withStyles } from '@material-ui/core';
 import collectionStyles from 'assets/jss/views/deviceStyles';
-import { Caption, Info, ItemGrid } from 'components';
+import { Caption, Info, ItemGrid, ItemG } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
 import React, { Component, Fragment } from 'react';
@@ -41,7 +41,9 @@ class DeviceDetails extends Component {
 				} />
 
 				}
-				subheader={collection.id}
+				subheader={<ItemG container alignItems={'center'}>
+					<Caption>{t("collections.fields.id")}:</Caption>&nbsp;{collection.id}
+				</ItemG>}
 				noExpand
 				content={
 					<Fragment>

@@ -22,7 +22,7 @@ class EditCollection extends Component {
 	}
 	postUpdate = async () => {
 		let success = await updateCollection(this.state.collection)
-		console.log(success);
+		// console.log(success);
 		if (success)
 			return true
 		else

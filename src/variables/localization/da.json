@@ -88,6 +88,7 @@
 			"name": "Navn",
 			"org": "Organisation",
 			"organisation": "Organisation",
+			"id": "Datasamling ID",
 			"state": {
 				"active": "Aktiv",
 				"inactive": "Inaktiv"
@@ -178,7 +179,7 @@
 			"coordsW": "Koordinater: %{lat} %{long}",
 			"description": "Beskrivelse",
 			"free": "Ledig",
-			"id": "ID",
+			"id": "Enhed ID",
 			"lastData": "Sidste gang enheden sendte data til server",
 			"lastStats": "Sidste gang enheden havde kontakt med server",
 			"locType": "Placeringstype",
@@ -482,8 +483,8 @@
 		"deleting": "Sletter ...",
 		"deviceUpdated": "Enhed %{device} er blevet opdateret!",
 		"collectionDeleted": "Datasamling er slettet!",
-		"collectionCreated": "Dtasamling er oppretet!",
-		"collectionUpdated": "Datasaming er opdateret!",
+		"collectionCreated": "Datasamling er oppretet!",
+		"collectionUpdated": "Datasamling er opdateret!",
 		"exported": "Eksporteret!",
 		"orgCreated": "Organisation %{org} er succesfuldt oprettet!",
 		"orgDeleted": "Organisation er succefuldt slettet!",

@@ -46,12 +46,18 @@ export const deletePicture = async (dId, img) => {
 	var data = await imageApi.delete('senti/device/image/' + dId + '/' + img).then(rs => {return rs.data})
 	return data
 }
-export const getAvailableDevices = async (orgID) => {
-	var data = await api.get(orgID ? `senti/devices/available/${orgID}` : 'senti/devices/available').then(rs => rs.data)
-	return data
+/**
+ * 
+ */
+export const getAvailableDevices = async (orgId) => {
+	let response = await api.get(`senti/datacollection/availabledevices/${orgId}`)
+	return response.data
 }
-
 // *Deprecated*
+// export const getAvailableDevices = async (orgID) => {
+// 	var data = await api.get(orgID ? `senti/devices/available/${orgID}` : 'senti/devices/available').then(rs => rs.data)
+// 	return data
+// }
 // export const assignProjectToDevice = async (args) => {
 // 	var data = await api.post('senti/availabledevices', args).then(rs => rs.data)
 // 	return data

@@ -20,7 +20,7 @@ function renderInput(inputProps) {
 
 function renderSuggestionsContainer(options) {
 	const { containerProps, children } = options;
-	console.log(children)
+	// console.log(children)
 	return (
 		<Paper {...containerProps} square>
 			{children}

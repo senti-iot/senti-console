@@ -88,6 +88,7 @@
 			"name": "Name",
 			"org": "Organisation",
 			"organisation": "Organisation",
+			"id": "Data Collection ID",
 			"state": {
 				"active": "Active",
 				"inactive": "Inactive"
@@ -178,7 +179,7 @@
 			"coordsW": "Coordinates: %{lat} %{long}",
 			"description": "Description",
 			"free": "Free",
-			"id": "ID",
+			"id": "Device ID",
 			"lastData": "Last time device sent data to server",
 			"lastStats": "Last time device was connected to server",
 			"locType": "Location type",
@@ -485,6 +486,9 @@
 		"orgCreated": "Organisation %{org} has been successfully created!",
 		"orgDeleted": "Organisation has been successfully deleted!",
 		"orgUpdated": "Organisation %{org} has been successfully updated!",
+		"collectionDeleted": "Data Collection has been deleted!",
+		"collectionCreated": "Data Collection has been created!",
+		"collectionUpdated": "Data Collection has been updated!",
 		"pictureDeleted": "Picture has been succesfully deleted!",
 		"pictureNotDeleted": "Picture has not been deleted!",
 		"projectCreated": "Project %{project} has been successfully created!",

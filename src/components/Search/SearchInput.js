@@ -10,8 +10,6 @@ import className from 'classnames'
 class SearchInput extends Component {
 	render() {
 		const { noAbsolute, t, classes, ref, open, handleClose, handleOpen, handleResetSearch, fullWidth, ...other } = this.props;
-		// console.log(ref, this.props.reference)
-		console.log(noAbsolute)
 		return (
 			<ItemGrid container noPadding alignItems={'center'} style={{ width: fullWidth ? "100%" : "auto", margin: 0 }}>
 

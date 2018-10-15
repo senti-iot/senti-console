@@ -8,7 +8,7 @@ class CollectionHistory extends React.Component {
 	render() {
 		
 		const { collection, t } = this.props
-		// console.log(collection);
+		// console.log(collection.devices);
 		return <InfoCard
 			noExpand
 			title={t("collections.cards.log")}
@@ -16,7 +16,7 @@ class CollectionHistory extends React.Component {
 			content={collection.devices.length > 0 ? <Table>
 				<TableHead>
 					<TableRow>
-						<TableCell>Device Name</TableCell>
+						{/* <TableCell>Device Name</TableCell> */}
 						<TableCell>Device id</TableCell>
 						<TableCell>Start date</TableCell>
 						<TableCell>End date</TableCell>
@@ -26,7 +26,7 @@ class CollectionHistory extends React.Component {
 					{collection.devices.map((c, i) => {
 						return (
 							<TableRow key={i}>
-								<TableCell>{c.name ? c.name : this.props.t("devices.noName")} </TableCell>
+								{/* <TableCell>{c.name ? c.name : this.props.t("devices.noName")} </TableCell> */}
 								<TableCell>{c.id} </TableCell>
 								<TableCell>{dateFormatter(c.start)} </TableCell>
 								<TableCell>{dateFormatter(c.end)}</TableCell>

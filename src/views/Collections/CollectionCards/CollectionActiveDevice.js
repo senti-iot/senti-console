@@ -54,7 +54,10 @@ class CollectionActiveDevice extends Component {
 			<InfoCard
 				title={t("collections.fields.activeDevice")}
 				avatar={<DeviceHub />}
-				subheader={device ? device.id : ""}
+				// subheader={device ? device.id : ""}
+				subheader={<ItemG container alignItems={'center'}>
+					<Caption>{t("devices.fields.id")}:</Caption>&nbsp;{device ? device.id : ""}
+				</ItemG>}
 				noRightExpand
 				leftActionContent={
 					device ? <ItemG xs={12}>
@@ -92,29 +95,6 @@ class CollectionActiveDevice extends Component {
 									{dateFormat(device.latestActivity)}
 								</Info>
 							</ItemGrid>
-							{/* <ItemGrid xs={12}>
-								<Caption>{t("devices.fields.locType")}:</Caption>
-								<Info>{this.renderDeviceLocType()} </Info>
-							</ItemGrid>
-							<ItemGrid xs={2}>
-								<Caption>{t("devices.fields.address")}:</Caption>
-								<Info>{device.address} </Info>
-							</ItemGrid>
-							<ItemGrid xs={9}>
-								<Caption>{t("devices.fields.coords")}:</Caption>
-								<Info><a title={t("links.googleMaps")} href={`https://www.google.com/maps/search/${device.lat}+${device.long}`} target={'_blank'}>
-									{ConvertDDToDMS(device.lat, false) + " " + ConvertDDToDMS(device.long, true)}</a>
-								</Info>
-							</ItemGrid> */}
-							{/* <ItemGrid>
-								<Caption>{t("devices.fields.org")}:</Caption>
-								<Info>{device.org ?
-									<Link to={`/org/${device.org.id}`} >
-										{device.org.name}
-									</Link>
-									: t("devices.noOrg")}</Info>
-
-							</ItemGrid> */}
 						</ItemG>
 						: <Caption>{t("collections.noActiveDevice")}</Caption>
 		
