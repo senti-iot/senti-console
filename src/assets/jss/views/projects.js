@@ -15,6 +15,7 @@ const projectStyles = theme => ({
 		overflow: 'visible'
 	},
 	appBar: {
+		top: "70px",
 		height: 48,
 		zIndex: 1000
 		// position: "relative"

@@ -31,8 +31,11 @@ const headerStyle = theme => ({
 		transition: "all 150ms ease 0s",
 		minHeight: "48px",
 		display: "block",
-		position: "inherit",
-		width: '100%'
+		position: "fixed",
+		[theme.breakpoints.up("lg")]: {
+			width: 'calc(100% - 260px)'
+		}
+		
 	},
 	container: {
 		...container,
