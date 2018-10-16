@@ -76,9 +76,6 @@ class Projects extends Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-	// filter = (s) => {
-	// 	console.log(s)
-	// }
 	filterItems = (data) => {
 		return filterItems(data, this.state.filters)
 	}

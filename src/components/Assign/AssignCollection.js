@@ -84,13 +84,8 @@ class AssignCollection extends React.Component {
 			}
 		})
 	}
-	handleMyPula = () => {
-		console.log(this.props.handleClose)
-		// this.props.handleClose(false)
-	}
 	isSelected = id => this.state.selectedCollections === (id) ? true : false 
 	render() {
-		console.log(this.props.handleCancel)
 		const { collections, filters } = this.state
 		const { classes, open, t } = this.props;
 		const appBarClasses = cx({
@@ -101,7 +96,7 @@ class AssignCollection extends React.Component {
 				<Dialog
 					fullScreen
 					open={open}
-					onClose={this.handleClose}
+					onClose={() => this.props.handleClose(false)}
 					TransitionComponent={Transition}
 				>
 					<AppBar className={classes.appBar + appBarClasses}>
@@ -109,7 +104,7 @@ class AssignCollection extends React.Component {
 							<Hidden mdDown>
 								<ItemG container alignItems={'center'}>
 									<ItemG xs={2} container alignItems={'center'}>
-										<IconButton color={'inherit'} onClick={this.props.handleClose} aria-label="CloseCollection">
+										<IconButton color={'inherit'} onClick={() => this.props.handleClose(false)} aria-label="CloseCollection">
 											<Close />
 										</IconButton>
 										<Typography variant="h6" color="inherit" className={classes.flex}>

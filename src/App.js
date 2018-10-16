@@ -29,6 +29,17 @@ const theme = createMuiTheme({
 		suppressDeprecationWarnings: true
 	},
 	overrides: {
+		MuiTypography: {
+			h6: {
+				textTransform: "none"
+			},
+			h5: {
+				textTransform: "none"
+			},
+			h4: {
+				textTransform: "none"
+			}	
+		},
 		MuiFormControl: {
 			root: {
 				minWidth: 0,

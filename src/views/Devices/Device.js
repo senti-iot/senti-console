@@ -99,7 +99,6 @@ class Device extends Component {
 	}
 
 	handleCloseAssign = async (reload) => {
-		console.log(reload)
 		if (reload) {
 			this.setState({ loading: true, anchorEl: null })
 			this.snackBarMessages(2)
@@ -171,9 +170,7 @@ class Device extends Component {
 	renderLoader = () => {
 		return <CircularLoader />
 	}
-	handleCancelAssign = () => {
-		console.log("e cretin sa mor io de nu");
-	}
+
 	renderConfirmUnassign = () => {
 		const { t } = this.props
 		const { device }  = this.state
@@ -202,7 +199,6 @@ class Device extends Component {
 
 	render() {
 		const { device, loading } = this.state
-		console.log(this.handleCancelAssign, this.handleCloseAssign)
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>

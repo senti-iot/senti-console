@@ -238,9 +238,6 @@ class EnhancedTable extends React.Component {
 			</DialogActions>
 		</Dialog>
 	}
-	handleCancelAssign = () => {
-		console.log("PULA")
-	}
 	render () {
 		const { classes, t, data, order, orderBy } = this.props;
 		const { selected, rowsPerPage, page, openAssignCollection, openAssignOrg } = this.state;
