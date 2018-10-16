@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from "react-router-dom";
 import { deleteCollection, getAllCollections } from 'variables/dataCollections';
 import { filterItems, handleRequestSort } from 'variables/functions';
-import { Delete, Edit, Map, PictureAsPdf, ViewList, ViewModule, DeviceHub } from 'variables/icons';
+import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub } from 'variables/icons';
 import { GridContainer, CircularLoader, AssignDevice } from 'components'
 
 class Collections extends Component {
@@ -104,7 +104,6 @@ class Collections extends Component {
 
 	tabs = [
 		{ id: 0, title: this.props.t("devices.tabs.listView"), label: <ViewList />, url: `${this.props.match.url}/list` },
-		{ id: 1, title: this.props.t("devices.tabs.mapView"), label: <Map />, url: `${this.props.match.url}/map` },
 		{ id: 2, title: this.props.t("devices.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.url}/cards` },
 	]
 	snackBarMessages = (msg) => {
@@ -282,7 +281,6 @@ class Collections extends Component {
 					defaultRoute={0}
 				/>
 				<Switch>
-					<Route path={`${this.props.match.path}/map`} render={() => this.renderCollections()} />
 					<Route path={`${this.props.match.path}/list`} render={() => this.renderCollections()} />
 					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCollections()} />
 					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
