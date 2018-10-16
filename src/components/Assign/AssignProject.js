@@ -99,7 +99,7 @@ class AssignProject extends React.Component {
 										<IconButton color="inherit" onClick={this.props.handleCancel} aria-label="Close">
 											<Close />
 										</IconButton>
-										<Typography variant="title" color="inherit" className={classes.flex}>
+										<Typography variant="h6" color="inherit" className={classes.flex}>
 											{t("projects.pageTitle")}
 										</Typography>
 									</ItemG>
@@ -125,7 +125,7 @@ class AssignProject extends React.Component {
 										<IconButton color="inherit" onClick={this.props.handleCancel} aria-label="Close">
 											<Close />
 										</IconButton>
-										<Typography variant="title" color="inherit" className={classes.flex}>
+										<Typography variant="h6" color="inherit" className={classes.flex}>
 											{t("projects.pageTitle")}
 										</Typography>
 										<Button variant={'contained'} color="primary" onClick={this.assignProject}>

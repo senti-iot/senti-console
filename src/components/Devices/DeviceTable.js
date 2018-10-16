@@ -238,6 +238,9 @@ class EnhancedTable extends React.Component {
 			</DialogActions>
 		</Dialog>
 	}
+	handleCancelAssign = () => {
+		console.log("PULA")
+	}
 	render () {
 		const { classes, t, data, order, orderBy } = this.props;
 		const { selected, rowsPerPage, page, openAssignCollection, openAssignOrg } = this.state;
@@ -248,10 +251,12 @@ class EnhancedTable extends React.Component {
 			<Paper className={ classes.root }>
 				{ this.renderConfirmUnassign() }
 				<AssignCollection
-					open={ openAssignCollection }
-					handleClose={ this.handleCloseAssignCollection }
-					deviceId={ selected[0] ? selected[0] : 0 }
-					t={t} />
+					deviceId={selected[0] ? selected[0] : 0}
+					open={openAssignCollection}
+					handleClose={this.handleCloseAssignCollection}
+					handleCancel={this.handleCancelAssign}
+					t={this.props.t}
+				/>
 				<AssignOrg
 					devices
 					open={openAssignOrg}

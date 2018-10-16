@@ -45,7 +45,7 @@ class EditCollectionForm extends Component {
 			TransitionComponent={this.transition}>
 			<AppBar className={classes.appBar + " " + appBarClasses}>
 				<Toolbar>
-					<Typography variant="title" color="inherit" className={classes.flex}>
+					<Typography variant="h6" color="inherit" className={classes.flex}>
 						{t("orgs.pageTitle")}
 					</Typography>
 					<Button variant={'extendedFab'} color="primary" onClick={handleCloseOrg} aria-label="Close">

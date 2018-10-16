@@ -41,33 +41,35 @@ class AssignCollection extends React.Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-	handleClick = (event, id) => {
-		event.stopPropagation()
-		const { selectedCollections } = this.state;
-		const selectedIndex = selectedCollections.indexOf(id)
-		let newSelected = [];
+	// handleClick = (event, id) => {
+	// 	event.stopPropagation()
+	// 	const { selectedCollections } = this.state;
+	// 	const selectedIndex = selectedCollections.indexOf(id)
+	// 	let newSelected = [];
 
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selectedCollections, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selectedCollections.slice(1))
-		} else if (selectedIndex === selectedCollections.length - 1) {
-			newSelected = newSelected.concat(selectedCollections.slice(0, -1))
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(
-				selectedCollections.slice(0, selectedIndex),
-				selectedCollections.slice(selectedIndex + 1),
-			);
-		}
+	// 	if (selectedIndex === -1) {
+	// 		newSelected = newSelected.concat(selectedCollections, id);
+	// 	} else if (selectedIndex === 0) {
+	// 		newSelected = newSelected.concat(selectedCollections.slice(1))
+	// 	} else if (selectedIndex === selectedCollections.length - 1) {
+	// 		newSelected = newSelected.concat(selectedCollections.slice(0, -1))
+	// 	} else if (selectedIndex > 0) {
+	// 		newSelected = newSelected.concat(
+	// 			selectedCollections.slice(0, selectedIndex),
+	// 			selectedCollections.slice(selectedIndex + 1),
+	// 		);
+	// 	}
 
-		this.setState({ selectedCollections: newSelected })
+	// 	this.setState({ selectedCollections: newSelected })
+	// }
+	handleClick = (e, pId) => {
+		e.preventDefault()
+		this.setState({ selectedCollections: pId })
 	}
-
 	assignCollection = async () => {
 		const { deviceId } = this.props
-		Promise.all([this.state.selectedCollections.forEach(async e => {
-			return assignDeviceToCollection({ id: e, deviceId })
-		})]).then(() => {
+
+		await assignDeviceToCollection({ id: this.state.selectedCollections, deviceId }).then(() => {
 			this.props.handleClose(true)
 		})
 	}
@@ -82,8 +84,13 @@ class AssignCollection extends React.Component {
 			}
 		})
 	}
-	isSelected = id => this.state.selectedCollections.indexOf(id) !== -1 ? true : false 
+	handleMyPula = () => {
+		console.log(this.props.handleClose)
+		// this.props.handleClose(false)
+	}
+	isSelected = id => this.state.selectedCollections === (id) ? true : false 
 	render() {
+		console.log(this.props.handleCancel)
 		const { collections, filters } = this.state
 		const { classes, open, t } = this.props;
 		const appBarClasses = cx({
@@ -102,10 +109,10 @@ class AssignCollection extends React.Component {
 							<Hidden mdDown>
 								<ItemG container alignItems={'center'}>
 									<ItemG xs={2} container alignItems={'center'}>
-										<IconButton color="inherit" onClick={this.props.handleCancel} aria-label="Close">
+										<IconButton color={'inherit'} onClick={this.props.handleClose} aria-label="CloseCollection">
 											<Close />
 										</IconButton>
-										<Typography variant="title" color="inherit" className={classes.flex}>
+										<Typography variant="h6" color="inherit" className={classes.flex}>
 											{t("collections.pageTitle")}
 										</Typography>
 									</ItemG>
@@ -131,7 +138,7 @@ class AssignCollection extends React.Component {
 										<IconButton color={'inherit'} onClick={this.props.handleCancel} aria-label="Close">
 											<Close />
 										</IconButton>
-										<Typography variant="title" color="inherit" className={classes.flex}>
+										<Typography variant="h6" color="inherit" className={classes.flex}>
 											{t("collections.pageTitle")}
 										</Typography>
 										<Button variant={'contained'} color="primary" onClick={this.assignCollection}>

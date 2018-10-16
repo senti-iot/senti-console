@@ -130,7 +130,7 @@ class CounterModal extends React.Component {
 						container justify="space-between" className={classes.paper + " " + classes.modalWrapper}>
 						<ItemGrid xs={12}>
 
-							<Typography variant="title" id="modal-title" className={classes.text}>
+							<Typography variant="h6" id="modal-title" className={classes.text}>
 								{this.fancyTimeFormat(this.state.timer)}
 							</Typography>
 						</ItemGrid>

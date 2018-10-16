@@ -15,7 +15,7 @@ import DeviceImages from './DeviceCards/DeviceImages'
 import DeviceData from './DeviceCards/DeviceData'
 import { dateFormatter } from 'variables/functions';
 import { connect } from 'react-redux';
-
+import AssignCollection from 'components/Assign/AssignCollection';
 class Device extends Component {
 	constructor(props) {
 		super(props)
@@ -24,7 +24,7 @@ class Device extends Component {
 			device: null,
 			loading: true,
 			anchorElHardware: null,
-			openAssign: false,
+			openAssignCollection: false,
 			openUnassign: false,
 			openAssignOrg: false,
 			img: null
@@ -68,7 +68,7 @@ class Device extends Component {
 				s("snackbars.unassign", { device: name + "(" + id + ")" })
 				break
 			case 2:
-				s("snackbars.assign", { device: name + "(" + id + ")" })
+				s("snackbars.assignCollection", { device: name + "(" + id + ")" })
 				break
 			case 3: 
 				s("snackbars.failedUnassign")
@@ -95,16 +95,17 @@ class Device extends Component {
 		this.setState({ openAssignOrg: false })
 	}
 	handleOpenAssign = () => {
-		this.setState({ openAssign: true, anchorEl: null })
+		this.setState({ openAssignCollection: true, anchorEl: null })
 	}
 
 	handleCloseAssign = async (reload) => {
+		console.log(reload)
 		if (reload) {
 			this.setState({ loading: true, anchorEl: null })
 			this.snackBarMessages(2)
 			await this.getDevice(this.state.device.id)
 		}
-		this.setState({ openAssign: false })
+		this.setState({ openAssignCollection: false })
 	}
 
 	renderImageUpload = (dId) => {
@@ -170,7 +171,9 @@ class Device extends Component {
 	renderLoader = () => {
 		return <CircularLoader />
 	}
-
+	handleCancelAssign = () => {
+		console.log("e cretin sa mor io de nu");
+	}
 	renderConfirmUnassign = () => {
 		const { t } = this.props
 		const { device }  = this.state
@@ -199,15 +202,17 @@ class Device extends Component {
 
 	render() {
 		const { device, loading } = this.state
+		console.log(this.handleCancelAssign, this.handleCloseAssign)
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
-					{/* <AssignProject
-						deviceId={[this.state.device]}
-						open={this.state.openAssign}
+					<AssignCollection
+						deviceId={device.id}
+						open={this.state.openAssignCollection}
 						handleClose={this.handleCloseAssign}
+						handleCancel={this.handleCancelAssign}
 						t={this.props.t}
-					/> */}
+					/>
 					<AssignOrg
 						devices
 						deviceId={[this.state.device]}
@@ -221,7 +226,7 @@ class Device extends Component {
 							device={device}
 							history={this.props.history}
 							match={this.props.match}
-							// handleOpenAssign={this.handleOpenAssign}
+							handleOpenAssign={this.handleOpenAssign}
 							// handleOpenUnassign={this.handleOpenUnassign}
 							handleOpenAssignOrg={this.handleOpenAssignOrg}
 							t={this.props.t}

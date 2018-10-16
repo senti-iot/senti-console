@@ -15,7 +15,7 @@ let selectedRender = props => {
 	const { numSelected, t } = props;
 	return <Grid container justify={'space-between'} alignItems={'center'}>
 		<ItemGrid>
-			<Typography color="primary" variant="subheading">
+			<Typography color="primary" variant="subtitle1">
 				{numSelected + " " + t("tables.selected")}
 			</Typography>
 		</ItemGrid>
