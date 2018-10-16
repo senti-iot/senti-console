@@ -91,12 +91,8 @@ class DeviceCard extends Component {
 											minWidth: 200
 										}
 									}}>
-									<MenuItem component={Link} to={`/device/${d.id}/edit`} style={{
-										color: "black"
-									}}>
-										{/* <Link to=> */}
+									<MenuItem component={Link} to={`/device/${d.id}/edit`} style={{ color: "black" }}>
 										<Edit className={classes.leftIcon} />{t("menus.edit")}
-										{/* </Link> */}
 									</MenuItem>
 									{/* <MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
 										<Devices className={classes.leftIcon} />{t("menus.assignDevices")}

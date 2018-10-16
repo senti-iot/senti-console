@@ -8,8 +8,9 @@ import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from "react-router-dom";
 import { deleteCollection, getAllCollections } from 'variables/dataCollections';
 import { filterItems, handleRequestSort } from 'variables/functions';
-import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub } from 'variables/icons';
-import { GridContainer, CircularLoader, AssignDevice } from 'components'
+import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks } from 'variables/icons';
+import { GridContainer, CircularLoader, AssignDevice, AssignProject } from 'components'
+import CollectionCard from 'components/Collections/CollectionCard';
 
 class Collections extends Component {
 	constructor(props) {
@@ -20,6 +21,7 @@ class Collections extends Component {
 			collections: [],
 			loading: true,
 			openAssignDevice: false,
+			openAssignProject: false,
 			route: 0,
 			order: 'desc',
 			orderBy: 'name',
@@ -32,9 +34,62 @@ class Collections extends Component {
 		}
 		props.setHeader("collections.pageTitle", false, '', "collections")
 	}
+	tabs = [
+		{ id: 0, title: this.props.t("devices.tabs.listView"), label: <ViewList />, url: `${this.props.match.url}/list` },
+		{ id: 2, title: this.props.t("devices.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.url}/grid` },
+	]
+	options = () => {
+		const { t, /* accessLevel */ } = this.props
+		let allOptions = [
+			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
+			{ label: t("menus.assignProject"), func: this.handleOpenAssignProject, single: false, icon: LibraryBooks },
+			{ label: t("menus.assignDevice"), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
+			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
+			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
+		]
+		return allOptions
+	}
+	snackBarMessages = (msg) => {
+		const { s } = this.props
+		switch (msg) {
+			case 1:
+				s("snackbars.deletedSuccess")
+				break;
+			case 2:
+				s("snackbars.exported")
+				break;
+			case 3:
+				s("snackbars.assignCollection", { collection: ``, org: "Device" })
+				break;
+			case 6:
+				s("snackbars.assignCollection", { collection: ``, org: "Project" })
+				break
+			default:
+				break;
+		}
+	}
 	reload = async () => {
 		this.setState({ loading: true })
 		await this.getData()
+	}
+	getData = async () => {
+		const { t } = this.props
+		let collections = await getAllCollections().then(rs => rs)
+		if (this._isMounted) {
+			// console.log(collections);
+			this.setState({
+				collections: collections ? collections : [],
+				collectionsHeader: [
+					{ id: "name", label: t("collections.fields.name") },
+					{ id: "activeDevice.liveStatus", label: t("collections.fields.status") },
+					{ id: "created", label: t("collections.fields.created") },
+					{ id: "devices[0].start", label: t("collections.fields.activeDeviceStartDate") },
+					{ id: "org.name", label: t("collections.fields.org") }
+				],
+				loading: false
+			}, () => this.handleRequestSort(null, 'name', 'asc'))
+
+		}
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
@@ -82,46 +137,6 @@ class Collections extends Component {
 		})
 	}
 
-	getData = async () => {
-		const { t } = this.props
-		let collections = await getAllCollections().then(rs => rs)
-		if (this._isMounted) {
-			// console.log(collections);
-			this.setState({
-				collections: collections ? collections : [],
-				collectionsHeader: [
-					{ id: "name", label: t("collections.fields.name") },
-					{ id: "activeDevice.liveStatus", label: t("collections.fields.status") },
-					{ id: "created", label: t("collections.fields.created") },
-					{ id: "devices[0].start", label: t("collections.fields.activeDeviceStartDate") },
-					{ id: "org.name", label: t("collections.fields.org") }
-				],
-				loading: false
-			}, () => this.handleRequestSort(null, 'name', 'asc'))
-
-		}
-	}
-
-	tabs = [
-		{ id: 0, title: this.props.t("devices.tabs.listView"), label: <ViewList />, url: `${this.props.match.url}/list` },
-		{ id: 2, title: this.props.t("devices.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.url}/cards` },
-	]
-	snackBarMessages = (msg) => {
-		const { s } = this.props
-		switch (msg) {
-			case 1:
-				s("snackbars.deletedSuccess")
-				break;
-			case 2:
-				s("snackbars.exported")
-				break;
-			case 3:
-				s("snackbars.assignCollection", { collection: ``, org: "Device" })
-				break;
-			default:
-				break;
-		}
-	}
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
 	}
@@ -187,20 +202,21 @@ class Collections extends Component {
 			})
 		}
 	}
-	options = () => {
-		const { t, /* accessLevel */ } = this.props
-		let allOptions = [
-			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t("menus.assignDevice"), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
-			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
-			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
-		]
-		// if (accessLevel.apiorg.edit)
-		return allOptions
-		// else return [
-		// { label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf }
-		// ]
+	handleOpenAssignProject = () => {
+		this.setState({ openAssignProject: true, anchorElMenu: null })
 	}
+	handleCancelAssignProject = () => {
+		this.setState({ openAssignProject: false })
+	}
+	handleCloseAssignProject = async (reload) => {
+		if (reload) {
+			this.setState({ loading: true, openAssignProject: false })
+			await this.getData().then(rs => {
+				this.snackBarMessages(6)
+			})
+		}
+	}
+
 	handleToolbarMenuOpen = e => {
 		e.stopPropagation()
 		this.setState({ anchorElMenu: e.currentTarget })
@@ -225,10 +241,17 @@ class Collections extends Component {
 	}
 	renderTable = () => {
 		const { t } = this.props
-		const { order, orderBy, selected, openAssignDevice } = this.state
+		const { order, orderBy, selected, openAssignDevice, openAssignProject } = this.state
 		let collectionOrg = this.state.collections.find(r => r.id === selected[0])
-		console.log(this.state.collections.find(r => r.id === selected[0]))
 		return <Fragment>
+			<AssignProject
+				onlyId
+				collectionId={selected ? selected : []}
+				handleCancel={this.handleCancelAssignProject}
+				handleClose={this.handleCloseAssignProject}
+				open={openAssignProject}
+				t={t}
+			/>
 			<AssignDevice
 				collectionId={selected[0] ? selected[0] : 0}
 				orgId={collectionOrg ? collectionOrg.org.id : 0}
@@ -254,6 +277,14 @@ class Collections extends Component {
 				t={t}
 			/>
 		</Fragment>
+	}
+	renderCards = () => {
+		const { loading } = this.state
+		return loading ? <CircularLoader /> : <GridContainer container justify={'center'}>
+			{this.filterItems(this.state.collections).map((d, k) => {
+				return <CollectionCard key={k} t={this.props.t} d={d} history={this.props.history} />
+			})}
+		</GridContainer>
 	}
 	renderCollections = () => {
 		const { classes } = this.props
@@ -282,7 +313,7 @@ class Collections extends Component {
 				/>
 				<Switch>
 					<Route path={`${this.props.match.path}/list`} render={() => this.renderCollections()} />
-					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCollections()} />
+					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} />
 					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
 				</Switch>
 

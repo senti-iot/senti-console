@@ -9,7 +9,7 @@ const collections = (props) => {
 	return (
 		<Switch>
 			{/* <Route path={'/devices/new'} component={() => <CreateProject setHeader={props.setHeader} />}/> */}
-			<Route path={'/collections'} render={(rp) => <Collections setHeader={props.setHeader} t={props.t} {...rp} />} />
+			<Route path={'/collections'} render={() => <Collections {...props}/>} />
 		</Switch>
 	)
 }

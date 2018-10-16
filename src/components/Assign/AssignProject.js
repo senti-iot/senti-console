@@ -3,16 +3,15 @@ import { Close } from 'variables/icons';
 import cx from "classnames";
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import { getAllProjects } from 'variables/dataProjects';
+import { getAllProjects, updateProject, getProject } from 'variables/dataProjects';
 // import { updateDevice } from 'variables/dataDevices'
-import { updateCollection } from 'variables/dataCollections';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import { ItemG } from 'components';
 import assignStyles from 'assets/jss/components/assign/assignStyles';
 
 function Transition(props) {
-	return <Slide direction="up" {...props} />;
+	return <Slide direction="up"a {...props} />;
 }
 
 class AssignProject extends React.Component {
@@ -21,7 +20,9 @@ class AssignProject extends React.Component {
 
 		this.state = {
 			projects: [],
-			selectedProject: null,
+			selectedProject: {
+				id: 0
+			},
 			filters: {
 				keyword: '',
 				startDate: null,
@@ -43,29 +44,28 @@ class AssignProject extends React.Component {
 	selectProject = pId => e => {
 		e.preventDefault()
 		if (this.state.selectedProject === pId)
-			this.setState({ selectedProject: null })
+			this.setState({ selectedProject: { id: 0 } })
 		else { this.setState({ selectedProject: pId }) }
 
 	}
 	assignProject = async () => {
-		Promise.all([this.props.collectionId.map(async element => {
-			await updateCollection({ ...element, project: { id: this.state.selectedProject } })
-		})]).then(rs => {
-			this.props.handleClose(true)
-		})
+		// if (this.props.onlyId)
 
-		// if (Array.isArray(this.props.deviceId))
-		// {
-		// 	this.props.deviceId.map(async id => await assignProjectToDevice({ project_id: this.state.selectedProject, id: id }))
-		// }
-		// else {
-		// 	await assignProjectToDevice({ project_id: this.state.selectedProject, id: this.props.id });
-		// }
-		// this.props.handleClose(true)
+		const { selectedProject } = this.state
+		let newProject = await getProject(selectedProject.id)
+		if (newProject.dataCollections)
+			newProject.dataCollections = [...newProject.dataCollections, ...this.props.collectionId.map(ci => ({ id: ci }))]
+		else { 
+			newProject.dataCollections = [...this.props.collectionId.map(ci => ({ id: ci }))]
+		}
+		await updateProject(newProject).then(() => {this.props.handleClose(true)
+		 this.setState({ selectedProject: {
+			 id: 0
+		 } })
+		
+		})
 	}
-	closeDialog = () => {
-		this.props.handleClose(false)
-	}
+	
 	handleFilterKeyword = value => {
 		this.setState({
 			filters: {
@@ -79,7 +79,7 @@ class AssignProject extends React.Component {
 	}
 	render() {
 		const { filters, projects } = this.state
-		const { classes, open, t } = this.props;
+		const { classes, open, t, handleCancel } = this.props;
 		const appBarClasses = cx({
 			[" " + classes['primary']]: 'primary'
 		});
@@ -88,7 +88,7 @@ class AssignProject extends React.Component {
 				<Dialog
 					fullScreen
 					open={open}
-					onClose={this.handleClose}
+					onClose={handleCancel}
 					TransitionComponent={Transition}
 				>
 					<AppBar className={classes.appBar + appBarClasses}>
@@ -96,7 +96,7 @@ class AssignProject extends React.Component {
 							<Hidden mdDown>
 								<ItemG container justify={'center'} alignItems={'center'}>
 									<ItemG xs={2} container alignItems={"center"}>
-										<IconButton color="inherit" onClick={this.props.handleCancel} aria-label="Close">
+										<IconButton color="inherit" onClick={handleCancel} aria-label="Close">
 											<Close />
 										</IconButton>
 										<Typography variant="h6" color="inherit" className={classes.flex}>
@@ -122,7 +122,7 @@ class AssignProject extends React.Component {
 							<Hidden lgUp>
 								<ItemG container justify={'center'} alignItems={'center'}>
 									<ItemG xs container alignItems={"center"}>
-										<IconButton color="inherit" onClick={this.props.handleCancel} aria-label="Close">
+										<IconButton color="inherit" onClick={handleCancel} aria-label="Close">
 											<Close />
 										</IconButton>
 										<Typography variant="h6" color="inherit" className={classes.flex}>
@@ -151,16 +151,16 @@ class AssignProject extends React.Component {
 					<List>
 						{projects ? filterItems(projects, filters).map((p, i) => (
 							<Fragment key={i}>
-								<ListItem button onClick={this.selectProject(p.id)} value={p.id}
+								<ListItem button onClick={this.selectProject(p)}
 									classes={{
-										root: this.state.selectedProject === p.id ? classes.selectedItem : null
+										root: this.state.selectedProject.id === p.id ? classes.selectedItem : null
 									}}
 								>
 									<ListItemText primaryTypographyProps={{
-										className: this.state.selectedProject === p.id ? classes.selectedItemText : null
+										className: this.state.selectedProject.id === p.id ? classes.selectedItemText : null
 									}}
 									secondaryTypographyProps={{
-										classes: { root: this.state.selectedProject === p.id ? classes.selectedItemText : null }
+										classes: { root: this.state.selectedProject.id === p.id ? classes.selectedItemText : null }
 									}}
 									primary={p.title} secondary={p.user.organisation} />
 								</ListItem>
@@ -177,6 +177,11 @@ class AssignProject extends React.Component {
 
 AssignProject.propTypes = {
 	classes: PropTypes.object.isRequired,
+	open: PropTypes.bool.isRequired,
+	t: PropTypes.func.isRequired,
+	handleClose: PropTypes.func.isRequired,
+	handleCancel: PropTypes.func.isRequired,
+	collectionId: PropTypes.array.isRequired,
 };
 
 export default withStyles(assignStyles)(AssignProject);
