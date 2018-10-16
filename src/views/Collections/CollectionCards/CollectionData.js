@@ -26,7 +26,7 @@ class CollectionData extends Component {
 			dateFilterInputID: 1,
 			timeType: 0,
 			openCustomDate: false,
-			display: 2,
+			display: 3,
 			visibility: false,
 		}
 	}
