@@ -155,5 +155,6 @@ export const suggestionGen = (arrayOfObjs) => {
 		arr.push(...suggestionSlicer(obj))
 		return ''
 	})
+	arr = _.uniqBy(arr, "label")
 	return arr;
 }
