@@ -65,7 +65,7 @@ class DeviceDetails extends Component {
 							<ItemGrid>
 								<Caption>{t("collections.fields.org")}:</Caption>
 								<Info>{collection.org ?
-									<Link to={`/org/${collection.org.id}`} >
+									<Link to={{ pathname: `/org/${collection.org.id}`, prevURL: `/collection/${collection.id}` }} >
 										{collection.org.name}
 									</Link>
 									: t("collections.noProject")}</Info>
