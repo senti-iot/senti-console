@@ -1,4 +1,4 @@
-import { Paper, withStyles } from "@material-ui/core";
+import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon } from "@material-ui/core";
 import projectStyles from 'assets/jss/views/projects';
 import CollectionTable from 'components/Collections/CollectionTable';
 import TableToolbar from 'components/Table/TableToolbar';
@@ -22,6 +22,7 @@ class Collections extends Component {
 			loading: true,
 			openAssignDevice: false,
 			openAssignProject: false,
+			openDelete: false,
 			route: 0,
 			order: 'desc',
 			orderBy: 'name',
@@ -38,10 +39,6 @@ class Collections extends Component {
 		{ id: 0, title: this.props.t("devices.tabs.listView"), label: <ViewList />, url: `${this.props.match.url}/list` },
 		{ id: 2, title: this.props.t("devices.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.url}/grid` },
 	]
-	handleEdit = () => {
-		const { selected } = this.state
-		this.props.history.push({ pathname: `/collection/${selected[0]}/edit`, prevURL: `/collections/list` })
-	}
 	options = () => {
 		const { t, /* accessLevel */ } = this.props
 		let allOptions = [
@@ -52,6 +49,10 @@ class Collections extends Component {
 			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
 		return allOptions
+	}
+	handleEdit = () => {
+		const { selected } = this.state
+		this.props.history.push({ pathname: `/collection/${selected[0]}/edit`, prevURL: `/collections/list` })
 	}
 	snackBarMessages = (msg) => {
 		const { s } = this.props
@@ -144,13 +145,15 @@ class Collections extends Component {
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
 	}
-	handleDeleteCollections = async (selected) => {
-		await selected.forEach(async u => {
-			await deleteCollection(u)
+	handleDeleteCollections = async () => {
+		const { selected } = this.state
+		Promise.all([selected.map(u => {
+			return deleteCollection(u)
+		})]).then(async () => {
+			this.setState({ loading: true, openDelete: false, anchorElMenu: null, selected: [] })
+			this.snackBarMessages(1)
+			await this.getData()
 		})
-		await this.getData()
-		this.setState({ selected: [], anchorElMenu: null })
-		this.snackBarMessages(1)
 	}
 	handleSelectAllClick = (event, checked) => {
 		if (checked) {
@@ -181,23 +184,15 @@ class Collections extends Component {
 
 		this.setState({ selected: newSelected })
 	}
-	renderTableToolBarContent = () => {
-		// const { accessLevel } = this.props
-		// const { anchorFilterMenu } = this.state
-		// let access = accessLevel.apicollection ? accessLevel.apicollection.edit ? true : false : false
-		// return <Fragment>
-		// 	{access ? <IconButton aria-label="Add new collection" onClick={this.addNewCollection}>
-		// 		<Add />
-		// 	</IconButton> : null
-		// 	}
-		// </Fragment>
-	}
+
 	handleOpenAssignDevice = () => {
 		this.setState({ openAssignDevice: true, anchorElMenu: null })
 	}
+
 	handleCancelAssignDevice = () => {
 		this.setState({ openAssignDevice: false })
 	}
+
 	handleCloseAssignDevice = async (reload) => {
 		if (reload) {
 			this.setState({ loading: true, openAssignDevice: false })
@@ -209,9 +204,11 @@ class Collections extends Component {
 	handleOpenAssignProject = () => {
 		this.setState({ openAssignProject: true, anchorElMenu: null })
 	}
+
 	handleCancelAssignProject = () => {
 		this.setState({ openAssignProject: false })
 	}
+
 	handleCloseAssignProject = async (reload) => {
 		if (reload) {
 			this.setState({ loading: true, openAssignProject: false })
@@ -230,6 +227,57 @@ class Collections extends Component {
 		e.stopPropagation();
 		this.setState({ anchorElMenu: null })
 	}
+
+	handleOpenDeleteDialog = () => {
+		this.setState({ openDelete: true, anchorElMenu: null })
+	}
+
+	handleCloseDeleteDialog = () => {
+		this.setState({ openDelete: false })
+	}
+
+	renderConfirmDelete = () => {
+		const { openDelete, collections, selected } = this.state
+		const { t, classes  } = this.props
+		return <Dialog
+			open={openDelete}
+			onClose={this.handleCloseDeleteDialog}
+			aria-labelledby="alert-dialog-title"
+			aria-describedby="alert-dialog-description"
+		>
+			<DialogTitle id="alert-dialog-title">{t("collections.dcDelete")}</DialogTitle>
+			<DialogContent>
+				<DialogContentText id="alert-dialog-description">
+					{t("collections.dcsDeleteConfirm")}
+				</DialogContentText>
+				<List>
+					{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
+						<ListItemText primary={collections[collections.findIndex(d => d.id === s)].name} /></ListItem>)}
+				</List>
+			</DialogContent>
+			<DialogActions>
+				<Button onClick={this.handleCloseDeleteDialog} color="primary">
+					{t("actions.no")}
+				</Button>
+				<Button onClick={this.handleDeleteCollections} color="primary" autoFocus>
+					{t("actions.yes")}
+				</Button>
+			</DialogActions>
+		</Dialog>
+	}
+
+	renderTableToolBarContent = () => {
+		// const { accessLevel } = this.props
+		// const { anchorFilterMenu } = this.state
+		// let access = accessLevel.apicollection ? accessLevel.apicollection.edit ? true : false : false
+		// return <Fragment>
+		// 	{access ? <IconButton aria-label="Add new collection" onClick={this.addNewCollection}>
+		// 		<Add />
+		// 	</IconButton> : null
+		// 	}
+		// </Fragment>
+	}
+
 	renderTableToolBar = () => {
 		const { t } = this.props
 		const { selected } = this.state
@@ -243,6 +291,7 @@ class Collections extends Component {
 		// content={this.renderTableToolBarContent()}
 		/>
 	}
+
 	renderTable = () => {
 		const { t } = this.props
 		const { order, orderBy, selected, openAssignDevice, openAssignProject } = this.state
@@ -282,6 +331,7 @@ class Collections extends Component {
 			/>
 		</Fragment>
 	}
+
 	renderCards = () => {
 		const { loading } = this.state
 		return loading ? <CircularLoader /> : <GridContainer container justify={'center'}>
@@ -290,6 +340,7 @@ class Collections extends Component {
 			})}
 		</GridContainer>
 	}
+
 	renderCollections = () => {
 		const { classes } = this.props
 		const { loading } = this.state
@@ -297,10 +348,12 @@ class Collections extends Component {
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
 				{this.renderTableToolBar()}
 				{this.renderTable()}
+				{this.renderConfirmDelete()}
 			</Paper>
 			}
 		</GridContainer>
 	}
+
 	render() {
 		const { collections, route, filters } = this.state
 		return (
@@ -325,6 +378,7 @@ class Collections extends Component {
 		)
 	}
 }
+
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges
 })

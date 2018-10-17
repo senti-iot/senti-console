@@ -1,7 +1,6 @@
 import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
-	TableRow, withStyles, DialogTitle, Dialog, DialogContent,
-	DialogContentText, DialogActions, Button, /* MenuItem, Menu, IconButton,*/  ListItem, ListItemIcon, ListItemText, List,
+	TableRow, withStyles
 } from "@material-ui/core"
 import TC from 'components/Table/TC'
 // import { Delete, Edit, PictureAsPdf/*  Add */ } from 'variables/icons'
@@ -48,19 +47,7 @@ class CollectionTable extends React.Component {
 		this.setState({ rowsPerPage: event.target.value })
 	}
 
-	handleOpenDeleteDialog = () => {
-		this.setState({ openDelete: true, anchorElMenu: null })
-	}
 
-	handleCloseDeleteDialog = () => {
-		this.setState({ openDelete: false })
-	}
-	handleDeleteCollection = async () => {
-		await this.props.handleDeleteCollections(this.props.selected)
-		this.setState({
-			openDelete: false
-		})
-	}
 	isSelected = id => this.props.selected.indexOf(id) !== -1
 
 	handleEdit = () => {
@@ -69,35 +56,7 @@ class CollectionTable extends React.Component {
 	
 	addNewCollection = () => { this.props.history.push('/collections/new') }
 
-	renderConfirmDelete = () => {
-		const { openDelete  } = this.state
-		const { data, t, classes, selected } = this.props
-		return <Dialog
-			open={openDelete}
-			onClose={this.handleCloseDeleteDialog}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
-		>
-			<DialogTitle id="alert-dialog-title">{t("collections.collectionsDelete")}</DialogTitle>
-			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{t("collections.collectionsDeleteConfirm")}:
-				</DialogContentText>
-				<List>
-					{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
-						<ListItemText primary={data[data.findIndex(d => d.id === s)].name} /></ListItem>)}
-				</List>
-			</DialogContent>
-			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color="primary">
-					{t("actions.no")}
-				</Button>
-				<Button onClick={this.handleDeleteCollection} color="primary" autoFocus>
-					{t("actions.yes")}
-				</Button>
-			</DialogActions>
-		</Dialog>
-	}
+
 	renderIcon = (status) => {
 		const { classes, t } = this.props
 		switch (status) {
@@ -206,7 +165,7 @@ class CollectionTable extends React.Component {
 					handleChangePage={this.handleChangePage}
 					handleChangeRowsPerPage={this.handleChangeRowsPerPage}
 				/>
-				{this.renderConfirmDelete()}
+				{/* {this.renderConfirmDelete()} */}
 			</Fragment>
 
 		)

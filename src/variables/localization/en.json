@@ -97,6 +97,7 @@
 			"status": "Device status"
 		},
 		"dcDeleteConfirm": "Are you sure you want to delete this Data Collection?",
+		"dcsDeleteConfirm": "Are you sure you want to delete these Data Collections:",
 		"dcDelete": "Delete Data Collection",
 		"noActiveDevice": "No active device",
 		"noHistory": "No logs",
