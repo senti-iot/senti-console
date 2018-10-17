@@ -79,10 +79,8 @@ class DeviceDetails extends Component {
 								<Info>{collection.project ?
 									<Link to={{
 										pathname: `/project/${collection.project.id}`,
-										state: {
-											prevURL: `/collection/${collection.id}`
-										}
-									}} >
+										prevURL: `/collection/${collection.id}` }}
+									>
 										{collection.project.title}
 									</Link>
 									: t("collections.noProject")}</Info>
