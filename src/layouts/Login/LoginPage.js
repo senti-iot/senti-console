@@ -84,7 +84,9 @@ class LoginPage extends React.Component {
 							{
 								// console.log(cookie.load('SESSION'))
 								await this.props.getSettings()
-								var prevURL = this.props.location.state ? this.props.location.state.prevUrl : null
+						
+								var prevURL = this.props.location.state ? this.props.location.state.prevURL : null
+								console.log(prevURL, this.props.location)
 								this.props.history.push(prevURL ? prevURL : "/dashboard")
 							}
 						}
@@ -133,6 +135,7 @@ class LoginPage extends React.Component {
 												label={t("login.username")}
 												error={this.state.error}
 												handleChange={this.handleInput}
+												value={this.state.user}
 												InputProps={{
 													type: "email",
 													endAdornment: <InputAdornment position="end">
@@ -145,6 +148,7 @@ class LoginPage extends React.Component {
 												label={t("login.pass")}
 												error={this.state.error}
 												handleChange={this.handleInput}
+												value={this.state.pass}
 												InputProps={{
 													type: "password",
 													endAdornment: <InputAdornment position="end">

@@ -135,7 +135,7 @@ class App extends React.Component {
 										})
 										: <Redirect from={window.location.pathname} to={{
 											pathname: '/login', state: {
-												prevUrl: window.location.pathname
+												prevURL: window.location.pathname
 											}
 										}} />}
 								</Switch>
