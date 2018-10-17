@@ -89,6 +89,7 @@
 			"org": "Organisation",
 			"organisation": "Organisation",
 			"id": "Datasamling ID",
+			"ownState": "State",
 			"state": {
 				"active": "Aktiv",
 				"inactive": "Inaktiv"

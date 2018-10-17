@@ -51,7 +51,7 @@ class InfoCard extends React.Component {
 				</CardHeader>
 
 				<Collapse in={this.props.hideFacts ? !this.state.expanded : true} timeout="auto" unmountOnExit>
-					<CardContent>
+					<CardContent className={this.props.noPadding ? classes.contentMedia : ""}>
 						{this.renderSubHeader()}
 						{content ? content : null}
 					</CardContent>

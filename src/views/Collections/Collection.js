@@ -45,7 +45,8 @@ class Collection extends Component {
 				this.props.history.push('/404')
 			else {
 				this.setState({ collection: rs, loading: false })
-				this.props.setHeader(rs.name ? rs.name : rs.id, true, `/collections/list`, "collections")
+				let prevURL = this.props.location.prevURL ? this.props.location.prevURL : '/collections/list'
+				this.props.setHeader(rs.name ? rs.name : rs.id, true, prevURL, "collections")
 				if (rs.project.id) {
 					this.getCollectionProject(rs.project.id)
 				}

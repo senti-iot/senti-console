@@ -16,6 +16,7 @@ class OrgUsers extends Component {
 				title={"Users"}
 				avatar={<People />}
 				noExpand
+				noPadding
 				content={
 					<Table>
 						<TableBody>

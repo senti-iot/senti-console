@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { getProject, deleteProject } from 'variables/dataProjects'
 import ProjectData from './ProjectCards/ProjectData'
 import ProjectDetails from './ProjectCards/ProjectDetails'
-import ProjectDevices from './ProjectCards/ProjectDevices'
+import ProjectCollections from './ProjectCards/ProjectCollections'
 import { ProjectContact } from './ProjectCards/ProjectContact'
 
 const projectStyles = theme => ({
@@ -139,11 +139,11 @@ class Project extends Component {
 						<ProjectDetails t={t} project={project} {...rp} deleteProject={this.handleOpenDeleteDialog} />
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectDevices t={t} project={project} />
-					</ItemGrid >
-					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<ProjectData t={t} project={project} />
 					</ItemGrid>
+					<ItemGrid xs={12} sm={12} md={12} noMargin>
+						<ProjectCollections t={t} project={project} {...rp}/>
+					</ItemGrid >
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<ProjectContact history={this.props.history} t={t} project={project} />
 					</ItemGrid>
