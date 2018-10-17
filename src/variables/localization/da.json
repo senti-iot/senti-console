@@ -88,7 +88,7 @@
 			"name": "Navn",
 			"org": "Organisation",
 			"organisation": "Organisation",
-			"id": "Datasamling ID",
+			"id": "Datasamling",
 			"ownState": "State",
 			"state": {
 				"active": "Aktiv",
