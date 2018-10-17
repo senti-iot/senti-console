@@ -88,7 +88,7 @@
 			"name": "Name",
 			"org": "Organisation",
 			"organisation": "Organisation",
-			"id": "Data Collection ID",
+			"id": "Data Collection",
 			"ownState": "Status",
 			"state": {
 				"active": "Active",
