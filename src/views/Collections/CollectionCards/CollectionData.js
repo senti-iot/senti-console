@@ -239,7 +239,7 @@ class CollectionData extends Component {
 				break;
 			case 5:
 				from = moment().subtract(1, 'd').startOf('day')
-				to = moment().endOf('day')
+				to = moment().subtract(1, 'd').endOf('day')
 				break;
 			case 6:
 				from = moment().startOf('week').startOf('day')

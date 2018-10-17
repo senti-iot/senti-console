@@ -11,7 +11,7 @@ import { ItemGrid, CircularLoader, Caption, Info, ItemG, /* , Caption, Info */ }
 import InfoCard from 'components/Cards/InfoCard';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { Doughnut, Bar, Pie } from 'react-chartjs-2';
-import { getWifiSummary } from 'variables/dataDevices';
+import { getDataDaily } from 'variables/dataCollections';
 import { colors } from 'variables/colors';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
@@ -34,7 +34,8 @@ class ProjectData extends Component {
 			dateFilterInputID: 0,
 			openCustomDate: false,
 			display: 2,
-			visibility: false
+			visibility: false,
+			rawData: false
 		}
 	}
 	legendOpts = {
@@ -57,51 +58,24 @@ class ProjectData extends Component {
 	}
 	getWifiSum = async () => {
 		const { project } = this.props
-		const { from, to } = this.state
+		const { from, to, rawData } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 
 		let dataArr = []
-		await Promise.all(project.devices.map(async d => {
+		await Promise.all(project.dataCollections.map(async d => {
 			let dataSet = null
-			await getWifiSummary(d.id, startDate, endDate).then(rs => dataSet = { nr: d.id, id: d.name + "(" + d.id + ")", data: rs, factor: d.wifiFactor })
+			let rs = await getDataDaily(d.id, startDate, endDate, rawData)
+			dataSet = { nr: d.id, id: d.name + "(" + d.id + ")", data: Object.keys(rs).map(k => rs[k]) }
 			return dataArr.push(dataSet)
 		}))
 		dataArr.sort((a, b) => a.nr - b.nr)
 		if (dataArr.length > 0)
 			this.setState({
 				loading: false,
-				calibrated: {
-					roundDataSets: {
-						labels: dataArr.map(rd => rd.id),
-						datasets: [{
-							label: "",
-							borderColor: "#FFF",
-							borderWidth: 1,
-							data: dataArr.map(rd => rd.factor > 0 ? parseInt(rd.data, 10) * rd.factor : parseInt(rd.data, 10)),
-							// backgroundColor: dataArr.map(() => getRandomColor())
-							backgroundColor: dataArr.map((rd, id) => colors[id])
-						}]
-					},
-				},
-				uncalibrated: {
-
-					roundDataSets: {
-						labels: dataArr.map(rd => rd.id),
-						datasets: [{
-							label: "",
-							borderColor: "#FFF",
-							borderWidth: 1,
-							data: dataArr.map(rd => parseInt(rd.data, 10)),
-							// backgroundColor: dataArr.map(() => getRandomColor())
-							backgroundColor: dataArr.map((rd, id) => colors[id])
-						}]
-					},
-				},
 				roundDataSets: {
 					labels: dataArr.map(da => da.id),
 					datasets: [{
-						label: "Raw data",
 						borderColor: "#FFF",
 						borderWidth: 1,
 						data: dataArr.map(d => parseInt(d.data, 10)),
@@ -109,20 +83,12 @@ class ProjectData extends Component {
 					}]
 				},
 				barDataSets: {
-					labels: dataArr.map(d => d.nr),
+					labels: dataArr.map(d => d.id),
 					datasets: [{
-						label: "Raw data",
 						borderColor: "#FFF",
 						borderWidth: 1,
 						data: dataArr.map(d => d.data),
 						backgroundColor: dataArr.map((rd, id) => colors[id])
-					},
-					{
-						label: "Calibrated data",
-						borderColor: "#FFF",
-						borderWidth: 1,
-						data: dataArr.map(d => d.factor > 0 ? parseInt(d.data, 10) * parseInt(d.factor, 10) : d.data),
-						backgroundColor: dataArr.map((rd, id) => colors[id + 15])
 					}]
 				
 				}
@@ -174,7 +140,7 @@ class ProjectData extends Component {
 				break;
 			case 5:
 				from = moment().subtract(1, 'd').startOf('day')
-				to = moment().endOf('day')
+				to = moment().subtract(1, 'd').endOf('day')
 				break;
 			case 6:
 				from = moment().startOf('week').startOf('day')
@@ -299,58 +265,30 @@ class ProjectData extends Component {
 	}
 	renderType = () => {
 		const { display } = this.state
-		const { classes } = this.props
 
 		switch (display) {
 			case 0:
-				return this.state.calibrated.roundDataSets ? <ItemG container>
-					<ItemG xs={12}>
-						<Caption className={classes.bigCaption2}>Calibrated Data</Caption>
-						<Pie
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-							legend={this.legendOpts}
-							data={this.state.calibrated.roundDataSets}
-							options={{
-								maintainAspectRatio: false,
-							}}
-						/>
-					</ItemG>
-					<ItemG xs={12}>
-						<Caption className={classes.bigCaption2}>Raw Data</Caption>
-						<Pie
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-							legend={this.legendOpts}
-							data={this.state.uncalibrated.roundDataSets}
-							options={{
-								maintainAspectRatio: false,
-							}}
-						/>
-					</ItemG>
-				</ItemG> : this.renderNoDataFilters()
-
+				return this.state.roundDataSets ? 
+					<Pie
+						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
+						legend={this.legendOpts}
+						data={this.state.roundDataSets}
+						options={{
+							maintainAspectRatio: false,
+						}}
+					/>
+				 : this.renderNoDataFilters()
 			case 1:
-				return this.state.calibrated.roundDataSets ? <ItemG container>
-					<ItemG xs={12}>
-						<Caption className={classes.bigCaption2}>Calibrated Data</Caption>
-						<Doughnut
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-							legend={this.legendOpts}
-							options={{
-								maintainAspectRatio: false,
-							}}
-							data={this.state.calibrated.roundDataSets}
-						/>	</ItemG>
-					<ItemG xs={12}>
-						<Caption className={classes.bigCaption2}>Raw Data</Caption>
-						<Doughnut
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-							legend={this.legendOpts}
-							options={{
-								maintainAspectRatio: false,
-							}}
-							data={this.state.uncalibrated.roundDataSets}
-						/></ItemG>
-				</ItemG> : this.renderNoDataFilters()
+				return this.state.roundDataSets ?
+				
+					<Doughnut
+						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
+						legend={this.legendOpts}
+						options={{
+							maintainAspectRatio: false,
+						}}
+						data={this.state.roundDataSets}
+					/> : this.renderNoDataFilters()
 			case 2:
 				return this.state.barDataSets ? <Bar
 					data={this.state.barDataSets}

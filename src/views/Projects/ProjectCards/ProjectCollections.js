@@ -99,7 +99,6 @@ class ProjectCollections extends Component {
 		const { project, t, classes /* collectionMostCounts */ } = this.props
 		const { dataCollections } = project
 		const { page, rowsPerPage } = this.state
-		console.log(dataCollections)
 		return (
 			<InfoCard title={t("collections.pageTitle")} avatar={<DataUsage />}
 				// subheader={project.dataCollections.length > 0 ? t("projects.collections.numCollections") + project.dataCollections.length : null}
