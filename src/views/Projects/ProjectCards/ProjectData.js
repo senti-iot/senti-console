@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types'
-import { Grid, IconButton, Menu, MenuItem, withStyles, /* Typography, */ Select, FormControl, FormHelperText, Divider, Dialog, DialogTitle, DialogContent, /* DialogContentText, */ Button, DialogActions, ListItem, ListItemIcon, ListItemText, Collapse, List, Hidden } from '@material-ui/core';
+import { Grid, IconButton, Menu, MenuItem, withStyles, /* Typography, */ Select, FormControl, FormHelperText, Divider, Dialog, DialogTitle, DialogContent, /* DialogContentText, */ Button, DialogActions, ListItem, ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox } from '@material-ui/core';
 import {
 	AccessTime, AssignmentTurnedIn, MoreVert,
 	DateRange, KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft,
@@ -35,7 +35,7 @@ class ProjectData extends Component {
 			openCustomDate: false,
 			display: 2,
 			visibility: false,
-			rawData: false
+			raw: false
 		}
 	}
 	legendOpts = {
@@ -56,20 +56,44 @@ class ProjectData extends Component {
 			padding: 10
 		}
 	}
+	options = [
+		{ id: 0, label: this.props.t("filters.dateOptions.today") },
+		{ id: 1, label: this.props.t("filters.dateOptions.yesterday") },
+		{ id: 2, label: this.props.t("filters.dateOptions.thisWeek") },
+		{ id: 3, label: this.props.t("filters.dateOptions.7days") },
+		{ id: 4, label: this.props.t("filters.dateOptions.30days") },
+		{ id: 5, label: this.props.t("filters.dateOptions.90days") },
+		{ id: 6, label: this.props.t("filters.dateOptions.custom") },
+	]
+
+	visibilityOptions = [
+		{ id: 0, icon: <PieChartRounded />, label: this.props.t("charts.type.pie") },
+		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t("charts.type.donut") },
+		{ id: 2, icon: <BarChart />, label: this.props.t("charts.type.bar") },
+	]
 	getWifiSum = async () => {
 		const { project } = this.props
-		const { from, to, rawData } = this.state
+		const { from, to, raw } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 
 		let dataArr = []
 		await Promise.all(project.dataCollections.map(async d => {
 			let dataSet = null
-			let rs = await getDataDaily(d.id, startDate, endDate, rawData)
-			dataSet = { nr: d.id, id: d.name + "(" + d.id + ")", data: Object.keys(rs).map(k => rs[k]) }
+			let rs = await getDataDaily(d.id, startDate, endDate, raw)
+			let total = 0
+			Object.keys(rs).map(r => total = total + parseInt(rs[r], 10))
+			console.log(total);
+			dataSet = { nr: d.id, id: d.name + "(" + d.id + ")", data: total }
 			return dataArr.push(dataSet)
 		}))
 		dataArr.sort((a, b) => a.nr - b.nr)
+		console.log(dataArr.map((d, id) => ({
+			borderColor: "#FFF",
+			borderWidth: 1,
+			data: parseInt(d.data, 10),
+			backgroundColor: colors[id]
+		})))
 		if (dataArr.length > 0)
 			this.setState({
 				loading: false,
@@ -83,14 +107,14 @@ class ProjectData extends Component {
 					}]
 				},
 				barDataSets: {
-					labels: dataArr.map(d => d.id),
-					datasets: [{
+					labels: [this.options[this.state.dateFilterInputID].label],
+					datasets: dataArr.map((d, id) => ({
+						label: d.id,
 						borderColor: "#FFF",
 						borderWidth: 1,
-						data: dataArr.map(d => d.data),
-						backgroundColor: dataArr.map((rd, id) => colors[id])
-					}]
-				
+						data: [parseInt(d.data, 10)],
+						backgroundColor: colors[id]
+					}))
 				}
 			})
 		else { 
@@ -126,24 +150,24 @@ class ProjectData extends Component {
 				from = moment().startOf('day')
 				to = moment().endOf('day')
 				break;
-			case 1: // Last 7 days
-				from = moment().subtract(7, 'd').startOf('day')
-				to = moment().endOf('day')
-				break;
-			case 2: // last 30 days
-				from = moment().subtract(30, 'd').startOf('day')
-				to = moment().endOf('day')
-				break;
-			case 3: // last 90 days
-				from = moment().subtract(90, 'd').startOf('day')
-				to = moment().endOf('day')
-				break;
-			case 5:
+			case 1: // Yesterday
 				from = moment().subtract(1, 'd').startOf('day')
 				to = moment().subtract(1, 'd').endOf('day')
 				break;
-			case 6:
+			case 2: // This week
 				from = moment().startOf('week').startOf('day')
+				to = moment().endOf('day')
+				break;
+			case 3: // Last 7 days
+				from = moment().subtract(7, 'd').startOf('day')
+				to = moment().endOf('day')
+				break;
+			case 4: // last 30 days
+				from = moment().subtract(30, 'd').startOf('day')
+				to = moment().endOf('day')
+				break;
+			case 5: // last 90 days
+				from = moment().subtract(90, 'd').startOf('day')
 				to = moment().endOf('day')
 				break;
 			default:
@@ -165,7 +189,7 @@ class ProjectData extends Component {
 	
 	handleDateFilter = (event) => {
 		let id = event.target.value
-		if (id !== 4) {
+		if (id !== 6) {
 			this.handleSetDate(id)
 		}
 		else { 
@@ -178,26 +202,14 @@ class ProjectData extends Component {
 			[date]: e
 		})
 	}
-	
-	options = [
-		{ id: 0, label: this.props.t("filters.dateOptions.today") },
-		{ id: 5, label: this.props.t("filters.dateOptions.yesterday") },
-		{ id: 6, label: this.props.t("filters.dateOptions.thisWeek") },
-		{ id: 1, label: this.props.t("filters.dateOptions.7days") },
-		{ id: 2, label: this.props.t("filters.dateOptions.30days") },
-		{ id: 3, label: this.props.t("filters.dateOptions.90days") },
-		{ id: 4, label: this.props.t("filters.dateOptions.custom") },
-	]
-
-	visibilityOptions = [
-		{ id: 0, icon: <PieChartRounded />, label: this.props.t("charts.type.pie") },
-		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t("charts.type.donut") },
-		{ id: 2, icon: <BarChart />, label: this.props.t("charts.type.bar") },
-	]
 
 	handleCloseDialog = () => {
 		this.setState({ openCustomDate: false })
 		this.getWifiSum()
+	}
+
+	handleRawData = () => { 
+		this.setState({ loading: true, actionAnchor: null, raw: !this.state.raw }, () => this.getWifiSum())
 	}
 
 	renderCustomDateDialog = () => {
@@ -328,13 +340,13 @@ class ProjectData extends Component {
 						</ItemGrid>
 						<Divider />
 						<MenuItem value={0}>{t("filters.dateOptions.today")}</MenuItem>
-						<MenuItem value={5}>{t("filters.dateOptions.yesterday")}</MenuItem>
-						<MenuItem value={6}>{t("filters.dateOptions.thisWeek")}</MenuItem>
-						<MenuItem value={1}>{t("filters.dateOptions.7days")}</MenuItem>
-						<MenuItem value={2}>{t("filters.dateOptions.30days")}</MenuItem>
-						<MenuItem value={3}>{t("filters.dateOptions.90days")}</MenuItem>
+						<MenuItem value={1}>{t("filters.dateOptions.yesterday")}</MenuItem>
+						<MenuItem value={2}>{t("filters.dateOptions.thisWeek")}</MenuItem>
+						<MenuItem value={3}>{t("filters.dateOptions.7days")}</MenuItem>
+						<MenuItem value={4}>{t("filters.dateOptions.30days")}</MenuItem>
+						<MenuItem value={5}>{t("filters.dateOptions.90days")}</MenuItem>
 						<Divider />
-						<MenuItem value={4}>{t("filters.dateOptions.custom")}</MenuItem>
+						<MenuItem value={6}>{t("filters.dateOptions.custom")}</MenuItem>
 					</Select>
 					<FormHelperText>{`${displayFrom} - ${displayTo}`}</FormHelperText>
 				</FormControl>
@@ -345,16 +357,20 @@ class ProjectData extends Component {
 		const { actionAnchor } = this.state
 		const { classes, t } = this.props
 		return <ItemGrid container noMargin noPadding>
-			<Hidden smDown>
-				{this.renderDateFilter()}
-			</Hidden>
-			<IconButton
-				aria-label="More"
-				aria-owns={actionAnchor ? 'long-menu' : null}
-				aria-haspopup="true"
-				onClick={this.handleOpenActionsDetails}>
-				<MoreVert />
-			</IconButton>
+			<ItemG>
+				<Hidden smDown>
+					{this.renderDateFilter()}
+				</Hidden>
+			</ItemG>
+			<ItemG>
+				<IconButton
+					aria-label="More"
+					aria-owns={actionAnchor ? 'long-menu' : null}
+					aria-haspopup="true"
+					onClick={this.handleOpenActionsDetails}>
+					<MoreVert />
+				</IconButton>
+			</ItemG>
 			<Menu
 				id="long-menu"
 				anchorEl={actionAnchor}
@@ -374,6 +390,18 @@ class ProjectData extends Component {
 						</ListItem>
 					</Hidden>
 				</div>
+				<ListItem button onClick={() => this.handleRawData()}>
+					<ListItemIcon>
+						<Checkbox
+							checked={this.state.raw}
+							// disabled
+							className={classes.noPadding}
+						/>
+					</ListItemIcon>
+					<ListItemText>
+						{t("collections.rawData")}
+					</ListItemText>
+				</ListItem>
 				<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
 					<ListItemIcon>
 						<Visibility />
@@ -406,12 +434,13 @@ class ProjectData extends Component {
 	}
 
 	render() {
-		const { t } = this.props
-		const { loading, noData } = this.state
+		const { t, classes } = this.props
+		const { loading, noData, raw } = this.state
 		return (
 			<InfoCard
 				title={t("projects.infoCardProjectData")} avatar={<AssignmentTurnedIn />}
 				noExpand
+				// noPadding
 				topAction={noData ? null : this.renderMenu()}
 				content={
 					<Grid container>
@@ -419,6 +448,7 @@ class ProjectData extends Component {
 						{loading ? <CircularLoader notCentered /> :
 							<Fragment>
 								<ItemG xs={12} container>
+									<Caption className={classes.bigCaption2}>{raw ? t("collections.rawData") : t("collections.calibratedData")}</Caption>
 									{noData ? this.renderNoData() : this.renderType()}
 								</ItemG>
 							</Fragment>}

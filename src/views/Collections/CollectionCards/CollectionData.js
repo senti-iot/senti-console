@@ -314,7 +314,6 @@ class CollectionData extends Component {
 	}
 	handleRawData = () => { 
 		this.setState({ loading: true, actionAnchor: null, raw: !this.state.raw }, () => this.handleWifiDaily())
-		
 	}
 	renderMenu = () => {
 		const { actionAnchor } = this.state
