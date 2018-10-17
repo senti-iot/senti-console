@@ -9,6 +9,7 @@ import classNames from 'classnames'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import { dateFormatter } from 'variables/functions';
 import TP from 'components/Table/TP';
+import TC from 'components/Table/TC';
 
 class ProjectCollections extends Component {
 	constructor(props) {
@@ -110,31 +111,21 @@ class ProjectCollections extends Component {
 							<Table>
 								<TableHead>
 									<TableRow>
-										<TableCell className={classes.tablecellcheckbox}>
-											<ItemG container justify={"center"}>
-												{t("collections.fields.ownState")}
-											</ItemG>
+										<TableCell className={classes.tablecellcheckbox + " " + classes.paddingLeft}>
+											{t("collections.fields.ownState")}
 										</TableCell>
 										<TableCell classes={{ root: classes.tableCell }}>
-											<ItemG container justify={'center'}>
-												{t("collections.fields.name")}
-											</ItemG>
+											{t("collections.fields.name")}
 										</TableCell>
 										<Hidden mdDown>
 											<TableCell padding={'checkbox'} classes={{ root: classes.tableCell }}>
-												<ItemG container justify={"center"}>
-													{t("collections.fields.status")}
-												</ItemG>
+												{t("collections.fields.status")}
 											</TableCell>
 											<TableCell classes={{ root: classes.tableCell }}>
-												<ItemG container justify={"center"}>
-													{t("collections.fields.created")}
-												</ItemG>
+												{t("collections.fields.created")}
 											</TableCell>
 											<TableCell classes={{ root: classes.tableCell }}>
-												<ItemG container justify={"center"}>
-													{t("collections.fields.org")}
-												</ItemG>
+												{t("collections.fields.org")}
 											</TableCell>
 										</Hidden>
 									</TableRow>
@@ -149,7 +140,7 @@ class ProjectCollections extends Component {
 												style={{ cursor: 'pointer' }}
 											>
 												<Hidden lgUp>
-													<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
+													<TableCell padding="checkbox" className={classes.tablecellcheckbox + " " + classes.paddingLeft}>
 														<ItemG container justify={"center"}>
 															{this.renderStatus(n.state)}
 														</ItemG>
@@ -170,31 +161,18 @@ class ProjectCollections extends Component {
 													</TableCell>
 												</Hidden>
 												<Hidden mdDown>
-													<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
+													<TableCell padding="checkbox" className={classes.tablecellcheckbox + " " + classes.paddingLeft}>
 														<ItemG container justify={"center"}>
 															{this.renderStatus(n.state)}
 														</ItemG>
 													</TableCell>
-													<TableCell padding="checkbox">
-														<ItemG container justify={"center"}>
-															{n.name}
-														</ItemG>
-													</TableCell>
-													<TableCell padding="checkbox">
-														<ItemG container justify={"center"}>
-															{this.renderDeviceStatus(n.activeDevice.liveStatus)}
-														</ItemG>
-													</TableCell>
-													<TableCell padding="checkbox">
-														<ItemG container justify={"center"}>
-															{dateFormatter(n.created)}
-														</ItemG>
-													</TableCell>
-													<TableCell padding="checkbox">
-														<ItemG container justify={"center"}>
-															{n.org.name}
-														</ItemG>
-													</TableCell>
+													<TC FirstC label={n.name}/>
+													<TC content={<div style={{ paddingLeft: 25 }}>
+														{this.renderDeviceStatus(n.activeDevice.liveStatus)}
+													</div>
+													}/>
+													<TC label={dateFormatter(n.created)}/>
+													<TC label={n.org.name}/>
 												</Hidden>
 											</TableRow>
 
