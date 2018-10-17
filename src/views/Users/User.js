@@ -47,14 +47,14 @@ class User extends Component {
 	}
 
 	componentDidMount = async () => {
-		const { match, setHeader, history } = this.props
+		const { match, setHeader, history, location } = this.props
 		if (match) {
 			if (match.params.id) {
 				await getUser(match.params.id).then(async rs => {
 					if (rs.id === null)
 						history.push('/404')
 					else {
-						let prevURL = history.location.state ? history.location.state['prevURL'] : '/users'
+						let prevURL = location.prevURL ? location.prevURL : '/users'
 						setHeader(`${rs.firstName} ${rs.lastName}`, true, prevURL, "users")
 						this.setState({ user: rs, loading: false })
 					}

@@ -41,16 +41,16 @@ class Project extends Component {
 	}
 
 	componentDidMount = async () => {
-		
-		if (this.props.match)
-			if (this.props.match.params.id) {
-			 await getProject(this.props.match.params.id).then(async rs => {
+		const { history, location, match, setHeader } = this.props
+		if (match)
+			if (match.params.id) {
+			 await getProject(match.params.id).then(async rs => {
 					if (rs === null)
-						this.props.history.push('/404')
+						history.push('/404')
 					else {
-						const { history } = this.props
-						let prevURL = history.location.state ? history.location.state['prevURL'] : '/projects/list'
-						this.props.setHeader(rs.title, true, prevURL, "projects")
+						
+						let prevURL = location.prevURL ? location.prevURL : '/projects/list'
+						setHeader(rs.title, true, prevURL, "projects")
 						this.setState({
 							project: rs, loading: false
 						})
@@ -59,7 +59,7 @@ class Project extends Component {
 
 			}
 			else {
-				this.props.history.push('/404')
+				history.push('/404')
 			}
 	}
 

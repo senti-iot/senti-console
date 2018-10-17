@@ -23,7 +23,7 @@ class OrgDetails extends Component {
 		this.handleCloseActionsDetails()
 		this.props.deleteOrg()
 	}
-	handleEdit = () => this.props.history.push({ pathname: `${this.props.match.url}/edit`, state: { prevURL: `/org/${this.props.org.id}` } })
+	handleEdit = () => this.props.history.push({ pathname: `${this.props.match.url}/edit`, prevURL: `/org/${this.props.org.id}`  })
 
 	options = () => {
 		const { t, accessLevel, classes } = this.props

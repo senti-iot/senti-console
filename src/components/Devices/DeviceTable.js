@@ -59,7 +59,7 @@ class EnhancedTable extends React.Component {
 		const { selected } = this.state
 		this.props.history.push({
 			pathname: `/device/${selected[0]}/edit`,
-			state: { backUrl: '/404' }
+			prevURL: '/devices/list' 
 		})
 	}
 	handleAssignToOrg = () => {

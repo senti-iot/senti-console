@@ -61,7 +61,7 @@ class CollectionActiveDevice extends Component {
 				noRightExpand
 				leftActionContent={
 					device ? <ItemG xs={12}>
-						<Button variant={'text'} color={"primary"} onClick={() => { history.push({ pathname: `/device/${device.id}`, state: { prevURL: `/collection/${collection.id}` } })}}>
+						<Button variant={'text'} color={"primary"} onClick={() => { history.push({ pathname: `/device/${device.id}`, prevURL: `/collection/${collection.id}` } )}}>
 							{t("menus.seeMore")}
 						</Button>
 					</ItemG> : null

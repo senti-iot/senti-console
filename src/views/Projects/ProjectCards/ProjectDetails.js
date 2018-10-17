@@ -15,7 +15,7 @@ class ProjectDetails extends Component {
 		this.props.deleteProject()
 	}
 	editProject = () => {
-		this.props.history.push({ pathname: `${this.props.match.url}/edit`, state: { prevURL: `/project/${this.props.project.id}` } })
+		this.props.history.push({ pathname: `${this.props.match.url}/edit`, prevURL: `/project/${this.props.project.id}` })
 	}
 	render() {
 		const { project, classes, t } = this.props

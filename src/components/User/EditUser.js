@@ -49,9 +49,9 @@ class EditUser extends Component {
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
-		const { setHeader, history } = this.props
-		let prevURL = history.location.state ? history.location.state['prevURL'] : null
-		setHeader("users.editUser", true, prevURL ? prevURL : '/users', "users")
+		const { setHeader, location } = this.props
+		let prevURL = location.prevURL ? location.prevURL : null
+		setHeader("users.editUser", true, prevURL, "users")
 		if (this._isMounted) {
 			await this.getUser()
 			await this.getOrgs()

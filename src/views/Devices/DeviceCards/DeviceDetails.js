@@ -58,7 +58,7 @@ class DeviceDetails extends Component {
 				avatar={<DeviceHub />}
 				topAction={<Dropdown menuItems={
 					[
-						{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/device/${device.id}/edit`, state: { prevURL: `/device/${device.id}` } }) },
+						{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/device/${device.id}/edit`, prevURL: `/device/${device.id}`  }) },
 						{ label: t("menus.assignCollection"), icon: <DataUsage className={classes.leftIcon} />, func: this.props.handleOpenAssign },
 						{ label: device.org.id > 0 ? t("menus.reassignOrg") : t("menus.assignOrg"), icon: <Business className={classes.leftIcon} />, func: this.props.handleOpenAssignOrg, dontShow: accessLevel.apisuperuser ? false : true },
 						{ label: t("menus.unassignDevice"), icon: <LayersClear className={classes.leftIcon} />, func: this.props.handleOpenUnassign, dontShow: device.project.id > 0 ? false : true },
@@ -143,7 +143,7 @@ class DeviceDetails extends Component {
 							<ItemGrid>
 								<Caption>{t("devices.fields.org")}:</Caption>
 								<Info>{device.org ?
-									<Link to={`/org/${device.org.id}`} >
+									<Link to={{ pathname: `/org/${device.org.id}`, prevURL: `/device/${device.id}` }} >
 										{device.org.name}
 									</Link>
 									: t("devices.noProject")}</Info>

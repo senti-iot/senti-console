@@ -26,7 +26,7 @@ class CollectionCard extends Component {
 						topAction={
 							<Dropdown menuItems={
 								[
-									{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/collection/${d.id}/edit`, state: { prevURL: `/collections/grid` } }) },
+									{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/collection/${d.id}/edit`, prevURL: `/collections/grid` }) },
 								]
 							} />
 
@@ -55,13 +55,13 @@ class CollectionCard extends Component {
 						</ItemGrid>}
 						leftActions={
 							
-							d.activeDeviceStats ? <Button variant={'text'} color={"primary"} onClick={() => { history.push({ pathname: `/device/${d.activeDeviceStats.id}`, state: { prevURL: '/collections/grid' } }) }}>
+							d.activeDeviceStats ? <Button variant={'text'} color={"primary"} onClick={() => { history.push({ pathname: `/device/${d.activeDeviceStats.id}`, prevURL: '/collections/grid' }) }}>
 								{t("menus.seeDevice")}
 							</Button> : null
 						}
 						rightActions={
 							<Fragment>
-								<Button variant={'text'} color={"primary"} onClick={() => { history.push({ pathname: `/collection/${d.id}`, state: { prevURL: '/collections/grid' } }) }}>
+								<Button variant={'text'} color={"primary"} onClick={() => { history.push({ pathname: `/collection/${d.id}`, prevURL: '/collections/grid' }) }}>
 									{t("menus.seeMore")}
 								</Button>
 							</Fragment>

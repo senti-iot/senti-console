@@ -76,7 +76,7 @@ class EditProject extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		let id = this.props.match.params.id
-		const history = this.props.history
+		const { location } = this.props
 		let projectOrgID = 0
 		await getProject(id).then(p => {
 			if (p && this._isMounted) {
@@ -103,7 +103,7 @@ class EditProject extends Component {
 		this.setState({
 			loading: false
 		})
-		let prevURL = history.location.state ? history.location.state['prevURL'] : '/projects/list'
+		let prevURL = location.prevURL ? location.prevURL : '/projects/list'
 		this.props.setHeader("projects.updateProject", true, prevURL, "projects")
 	}
 
