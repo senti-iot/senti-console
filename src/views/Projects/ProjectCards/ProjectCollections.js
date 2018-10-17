@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Collapse, /* Grid, */ withStyles, TableRow, TableBody, Table, Hidden, TableCell, Typography, TableHead } from '@material-ui/core';
 import { Caption, InfoCard, ItemG, ItemGrid, Info } from 'components';
@@ -8,23 +8,26 @@ import { Maps } from 'components/Map/Maps';
 import classNames from 'classnames'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import { dateFormatter } from 'variables/functions';
+import TP from 'components/Table/TP';
 
 class ProjectCollections extends Component {
 	constructor(props) {
 		super(props)
 
-		const { t } = props
+		// const { t } = props
 		this.state = {
 			mapExpanded: false,
-			tableHead: [{ id: "name", label: t("collections.fields.name") },
-				{ id: "activeDevice.liveStatus", label: t("collections.fields.status") },
-				{ id: "created", label: t("collections.fields.created") },
-				{ id: "devices[0].start", label: t("collections.fields.activeDeviceStartDate") },
-				{ id: "org.name", label: t("collections.fields.org") }],
-			openUnassign: false
+			openUnassign: false,
+			page: 0,
+			rowsPerPage: 5
 		}
 	}
-
+	handleChangePage = (event, page) => {
+		this.setState({ page })
+	}
+	handleChangeRowsPerPage = event => {
+		this.setState({ rowsPerPage: event.target.value })
+	}
 	handleExtendMap = () => {
 		this.setState({ mapExpanded: !this.state.mapExpanded })
 	}
@@ -94,6 +97,7 @@ class ProjectCollections extends Component {
 	render() {
 		const { project, t, classes /* collectionMostCounts */ } = this.props
 		const { dataCollections } = project
+		const { page, rowsPerPage } = this.state
 		console.log(dataCollections)
 		return (
 			<InfoCard title={t("collections.pageTitle")} avatar={<DataUsage />}
@@ -102,101 +106,113 @@ class ProjectCollections extends Component {
 				noPadding
 				content={
 					project.dataCollections.length > 0 ?
-						<Table>
-							<TableHead>
-								<TableRow>
-									<TableCell className={classes.tablecellcheckbox}>
-										<ItemG container justify={"center"}>
-											{t("collections.fields.ownState")}
-										</ItemG>
-									</TableCell>
-									<TableCell classes={{ root: classes.tableCell }}>
-										<ItemG container justify={'center'}>
-											{t("collections.fields.name")}
-										</ItemG>
-									</TableCell>
-									<Hidden mdDown>
-										<TableCell padding={'checkbox'} classes={{ root: classes.tableCell }}>
+						<Fragment>
+							<Table>
+								<TableHead>
+									<TableRow>
+										<TableCell className={classes.tablecellcheckbox}>
 											<ItemG container justify={"center"}>
-												{t("collections.fields.status")}
+												{t("collections.fields.ownState")}
 											</ItemG>
 										</TableCell>
 										<TableCell classes={{ root: classes.tableCell }}>
-											<ItemG container justify={"center"}>
-												{t("collections.fields.created")}
+											<ItemG container justify={'center'}>
+												{t("collections.fields.name")}
 											</ItemG>
 										</TableCell>
-										<TableCell classes={{ root: classes.tableCell }}>
-											<ItemG container justify={"center"}>
-												{t("collections.fields.org")}
-											</ItemG>
-										</TableCell>
-									</Hidden>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{dataCollections ? dataCollections.map((n, i) => {
-									return (
-										<TableRow
-											hover
-											onClick={e => { e.stopPropagation(); this.props.history.push({ pathname: '/collection/' + n.id, prevURL: `/project/${project.id}` }) }}
-											key={i}
-											style={{ cursor: 'pointer' }}
-										>
-											<Hidden lgUp>
-												<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
-													<ItemG container justify={"center"}>
-														{this.renderStatus(n.state)}
-													</ItemG>
-												</TableCell>
-												<TableCell classes={{ root: classes.tableCell }}>
-													<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-														<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
-															<Info noWrap paragraphCell={classes.noMargin}>
-																{`${n.name}`}
-															</Info>
+										<Hidden mdDown>
+											<TableCell padding={'checkbox'} classes={{ root: classes.tableCell }}>
+												<ItemG container justify={"center"}>
+													{t("collections.fields.status")}
+												</ItemG>
+											</TableCell>
+											<TableCell classes={{ root: classes.tableCell }}>
+												<ItemG container justify={"center"}>
+													{t("collections.fields.created")}
+												</ItemG>
+											</TableCell>
+											<TableCell classes={{ root: classes.tableCell }}>
+												<ItemG container justify={"center"}>
+													{t("collections.fields.org")}
+												</ItemG>
+											</TableCell>
+										</Hidden>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{dataCollections ? dataCollections.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((n, i) => {
+										return (
+											<TableRow
+												hover
+												onClick={e => { e.stopPropagation(); this.props.history.push({ pathname: '/collection/' + n.id, prevURL: `/project/${project.id}` }) }}
+												key={i}
+												style={{ cursor: 'pointer' }}
+											>
+												<Hidden lgUp>
+													<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
+														<ItemG container justify={"center"}>
+															{this.renderStatus(n.state)}
+														</ItemG>
+													</TableCell>
+													<TableCell classes={{ root: classes.tableCell }}>
+														<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+															<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+																<Info noWrap paragraphCell={classes.noMargin}>
+																	{`${n.name}`}
+																</Info>
+															</ItemGrid>
+															<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+																<Caption noWrap className={classes.noMargin}>
+																	{`${t("collections.fields.id")}: ${n.id}`}
+																</Caption>
+															</ItemGrid>
 														</ItemGrid>
-														<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
-															<Caption noWrap className={classes.noMargin}>
-																{`${t("collections.fields.id")}: ${n.id}`}
-															</Caption>
-														</ItemGrid>
-													</ItemGrid>
-												</TableCell>
-											</Hidden>
-											<Hidden mdDown>
-												<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
-													<ItemG container justify={"center"}>
-														{this.renderStatus(n.state)}
-													</ItemG>
-												</TableCell>
-												<TableCell padding="checkbox">
-													<ItemG container justify={"center"}>
-														{n.name}	
-													</ItemG>
-												</TableCell>
-												<TableCell padding="checkbox">
-													<ItemG container justify={"center"}>
-														{this.renderDeviceStatus(n.activeDevice.liveStatus)}
-													</ItemG>
-												</TableCell>
-												<TableCell padding="checkbox">
-													<ItemG container justify={"center"}>
-														{dateFormatter(n.created)}
-													</ItemG>
-												</TableCell>
-												<TableCell padding="checkbox">
-													<ItemG container justify={"center"}>
-														{n.org.name}
-													</ItemG>
-												</TableCell>
-											</Hidden>
-										</TableRow>
+													</TableCell>
+												</Hidden>
+												<Hidden mdDown>
+													<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
+														<ItemG container justify={"center"}>
+															{this.renderStatus(n.state)}
+														</ItemG>
+													</TableCell>
+													<TableCell padding="checkbox">
+														<ItemG container justify={"center"}>
+															{n.name}
+														</ItemG>
+													</TableCell>
+													<TableCell padding="checkbox">
+														<ItemG container justify={"center"}>
+															{this.renderDeviceStatus(n.activeDevice.liveStatus)}
+														</ItemG>
+													</TableCell>
+													<TableCell padding="checkbox">
+														<ItemG container justify={"center"}>
+															{dateFormatter(n.created)}
+														</ItemG>
+													</TableCell>
+													<TableCell padding="checkbox">
+														<ItemG container justify={"center"}>
+															{n.org.name}
+														</ItemG>
+													</TableCell>
+												</Hidden>
+											</TableRow>
 
-									)
-								}) : null}
-							</TableBody>
-						</Table>
+										)
+									}) : null}
+								</TableBody>
+							</Table>
+							<TP
+								component={'div'}
+								count={dataCollections.length}
+								page={this.state.page}
+								rowsPerPage={this.state.rowsPerPage}
+								handleChangePage={this.handleChangePage}
+								handleChangeRowsPerPage={this.handleChangeRowsPerPage}
+								classes={classes}
+								t={t}
+							/>
+						</Fragment>
 						: this.renderNoCollections()
 				}
 

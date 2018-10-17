@@ -38,6 +38,9 @@ const theme = createMuiTheme({
 			},
 			h4: {
 				textTransform: "none"
+			},
+			body1: {
+				fontSize: '0.875rem',
 			}	
 		},
 		MuiFormControl: {
