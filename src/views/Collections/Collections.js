@@ -38,6 +38,10 @@ class Collections extends Component {
 		{ id: 0, title: this.props.t("devices.tabs.listView"), label: <ViewList />, url: `${this.props.match.url}/list` },
 		{ id: 2, title: this.props.t("devices.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.url}/grid` },
 	]
+	handleEdit = () => {
+		const { selected } = this.state
+		this.props.history.push({ pathname: `/collection/${selected[0]}/edit`, prevURL: `/collections/list` })
+	}
 	options = () => {
 		const { t, /* accessLevel */ } = this.props
 		let allOptions = [
