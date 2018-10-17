@@ -3,7 +3,7 @@ import { InfoCard, ItemGrid, Caption, Info } from 'components';
 import { Hidden } from '@material-ui/core';
 import { pF } from 'variables/functions';
 import { Person, Edit, Delete, LockOpen, Email } from 'variables/icons'
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Gravatar from 'react-gravatar'
 import { connect } from 'react-redux'
 import Dropdown from 'components/Dropdown/Dropdown';
@@ -82,9 +82,9 @@ class UserContact extends Component {
 							<ItemGrid>
 								<Caption>{t("users.fields.organisation")}</Caption>
 								<Info>
-									<NavLink to={`/org/${user.org.id}`}>
+									<Link to={{ pathname: `/org/${user.org.id}`, state: { prevURL: `/user/${user.id}` } }}>
 										{user.org ? user.org.name : t("users.noOrg")}
-									</NavLink>
+									</Link>
 								</Info>
 							</ItemGrid>
 							<ItemGrid>

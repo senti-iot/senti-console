@@ -36,13 +36,15 @@ class Org extends Component {
 	}
 
 	componentDidMount = async () => {
-		if (this.props.match)
-			if (this.props.match.params.id) {
-				await getOrg(this.props.match.params.id).then(async rs => {
+		const { match, setHeader, history } = this.props
+		if (match)
+			if (match.params.id) {
+				await getOrg(match.params.id).then(async rs => {
 					if (rs === null)
-						this.props.history.push('/404')
+						history.push('/404')
 					else {
-						this.props.setHeader(`${rs.name}`, true, '/orgs', "users")
+						let prevURL = history.location.state ? history.location.state['prevURL'] : '/orgs'
+						setHeader(`${rs.name}`, true, prevURL, "users")
 						this.setState({ org: rs, loading: false })
 					}
 				})
