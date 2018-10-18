@@ -7,14 +7,9 @@ import cx from "classnames";
 import DSelect from 'components/CustomInput/DSelect';
 import { Close } from 'variables/icons';
 
+
 /**
-* @augments {Component<{t:object.isRequired,
-	collection:object.isRequired,
-	handleChange:Function.isRequired,
-	handleCloseOrg:Function.isRequired,
-	handleOpenOrg:Function.isRequired,
-	open:boolean.isRequired,
-	orgs:array.isRequired,	>}
+* @augments {Component<{	t:Function.isRequired,	collection:object.isRequired,	handleChangeDevice:Function.isRequired,	handleCloseDevice:Function.isRequired,	handleOpenDevice:Function.isRequired,	open:boolean.isRequired,	devices:array.isRequired,	device:object.isRequired,	handleCreate:Function.isRequired,	handleChange:Function.isRequired,>}
 */
 class CreateCollectionForm extends Component {
 
@@ -175,12 +170,14 @@ class CreateCollectionForm extends Component {
 CreateCollectionForm.propTypes = {
 	t: PropTypes.func.isRequired,
 	collection: PropTypes.object.isRequired,
-	handleChange: PropTypes.func.isRequired,
-	handleCloseOrg: PropTypes.func.isRequired,
-	handleOpenOrg: PropTypes.func.isRequired,
+	handleChangeDevice: PropTypes.func.isRequired,
+	handleCloseDevice: PropTypes.func.isRequired,
+	handleOpenDevice: PropTypes.func.isRequired,
 	open: PropTypes.bool.isRequired,
-	orgs: PropTypes.array.isRequired,
-	handleUpdate: PropTypes.func.isRequired,
+	devices: PropTypes.array.isRequired,
+	device: PropTypes.object.isRequired,
+	handleCreate: PropTypes.func.isRequired,
+	handleChange: PropTypes.func.isRequired,
 
 
 }

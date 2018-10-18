@@ -32,14 +32,16 @@ class CreateCollection extends Component {
 	getAvailableDevices = async () => {
 		const { t, orgId } = this.props
 		let devices = await getAvailableDevices(orgId)
+
 		this.setState({
-			devices: [{ id: 0, name: t("collections.noDevice") }, ...devices],
+			devices: devices ? [{ id: 0, name: t("collections.noDevice") }, ...devices] : [{ id: 0, name: t("collections.noDevice") }],
 			// loading: false
 		})
 	}
 	getEmptyCollection = async () => {
 		// console.log("Entered")
 		let emptyDC = await getEmptyCollection()
+		Object.keys(emptyDC).map(k => emptyDC[k] === null ? emptyDC[k] = '' : null)
 		// console.log(emptyDC)
 		this.setState({
 			loading: false,
