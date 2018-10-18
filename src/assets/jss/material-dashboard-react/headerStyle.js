@@ -32,9 +32,9 @@ const headerStyle = theme => ({
 		minHeight: "48px",
 		display: "block",
 		position: "sticky",
-		[theme.breakpoints.up("lg")]: {
-			width: 'calc(100% - 260px)'
-		}
+		// [theme.breakpoints.up("lg")]: {
+		// 	width: 'calc(100% - 260px)'
+		// }
 		
 	},
 	container: {
