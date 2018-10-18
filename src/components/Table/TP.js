@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { TablePagination } from '@material-ui/core'
+import { TablePagination, withWidth } from '@material-ui/core'
+import { isWidthUp } from '@material-ui/core/withWidth'
 
 class TP extends Component {
 	handleChangeRowsPerPage = e => {
@@ -11,8 +12,9 @@ class TP extends Component {
 		this.props.handleChangePage(e, page)
 	}
 	render() {
-		const { count, rowsPerPage, rowsPerPageOptions, t, classes, page } = this.props
-
+		const { count, rowsPerPage, rowsPerPageOptions, t, classes, page, width } = this.props
+		// console.log(theme.breakpoints.up("lg"))
+		console.log(width)
 		return (
 			<TablePagination
 				component="div"
@@ -32,7 +34,7 @@ class TP extends Component {
 				}}
 				onChangePage={this.handleChangePage}
 				onChangeRowsPerPage={this.handleChangeRowsPerPage}
-				labelRowsPerPage={t("tables.rowsPerPage")}
+				labelRowsPerPage={isWidthUp("sm", width) ?  t("tables.rowsPerPage") : ""}
 				rowsPerPageOptions={ rowsPerPageOptions}
 				SelectProps={{
 					classes: {
@@ -53,4 +55,4 @@ const mapDispatchToProps = {
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TP)
+export default withWidth()(connect(mapStateToProps, mapDispatchToProps)(TP))

@@ -11,6 +11,7 @@ const appStyle = theme => ({
 		height: "100vh"
 	},
 	mainPanel: {
+		marginTop: 70,
 		[theme.breakpoints.up("lg")]: {
 			width: `calc(100% - ${drawerWidth}px)`
 		},
@@ -23,10 +24,10 @@ const appStyle = theme => ({
 		overflowScrolling: 'touch'
 	},
 	content: {
-
-		marginTop: "70px",
+		maxHeight: "calc(100vh - 70px)"
+		// marginTop: "70px",
 		// padding: "30px 30px",
-		minHeight: "calc(100vh - 130px)",
+		// minHeight: "calc(100vh - 130px)",
 
 		// [theme.breakpoints.down("md")]: {
 		// 	padding: "10px 10px 30px 10px",
