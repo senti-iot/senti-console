@@ -13,8 +13,6 @@ class TP extends Component {
 	}
 	render() {
 		const { count, rowsPerPage, rowsPerPageOptions, t, classes, page, width } = this.props
-		// console.log(theme.breakpoints.up("lg"))
-		console.log(width)
 		return (
 			<TablePagination
 				component="div"

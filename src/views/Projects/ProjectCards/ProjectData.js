@@ -83,17 +83,17 @@ class ProjectData extends Component {
 			let rs = await getDataDaily(d.id, startDate, endDate, raw)
 			let total = 0
 			Object.keys(rs).map(r => total = total + parseInt(rs[r], 10))
-			console.log(total);
+			// console.log(total);
 			dataSet = { nr: d.id, id: d.name + "(" + d.id + ")", data: total }
 			return dataArr.push(dataSet)
 		}))
 		dataArr.sort((a, b) => a.nr - b.nr)
-		console.log(dataArr.map((d, id) => ({
-			borderColor: "#FFF",
-			borderWidth: 1,
-			data: parseInt(d.data, 10),
-			backgroundColor: colors[id]
-		})))
+		// console.log(dataArr.map((d, id) => ({
+		// 	borderColor: "#FFF",
+		// 	borderWidth: 1,
+		// 	data: parseInt(d.data, 10),
+		// 	backgroundColor: colors[id]
+		// })))
 		if (dataArr.length > 0)
 			this.setState({
 				loading: false,

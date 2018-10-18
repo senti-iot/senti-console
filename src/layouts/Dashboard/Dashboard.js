@@ -86,7 +86,6 @@ class App extends React.Component {
 				}
 			}
 		})
-		document.getElementById('root').requestFullscreen()
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
