@@ -86,6 +86,7 @@ class App extends React.Component {
 				}
 			}
 		})
+		document.getElementById('root').requestFullscreen()
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
@@ -123,7 +124,7 @@ class App extends React.Component {
 							menuRoute={this.state.menuRoute}
 							{...rest}
 						/>
-						{!loading ? <div className={classes.content}>
+						{!loading ? <Fragment>
 							<div className={classes.container}>
 								<Switch>
 									{cookie.load('SESSION') ?
@@ -161,7 +162,7 @@ class App extends React.Component {
 									</Button>
 								}
 							/>
-						</div> : <CircularLoader />}
+						</Fragment> : <CircularLoader />}
 					</Fragment>
 				</div>
 			</div >

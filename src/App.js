@@ -95,6 +95,7 @@ const theme = createMuiTheme({
 		}
 	},
 });
+window.scrollTo(0, 1)
 
 class App extends Component {
 	render() {

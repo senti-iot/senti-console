@@ -15,16 +15,16 @@ const appStyle = theme => ({
 		[theme.breakpoints.up("lg")]: {
 			width: `calc(100% - ${drawerWidth}px)`
 		},
-		overflow: "auto",
+		// overflow: "auto",
 		position: "relative",
 		float: "right",
 		...transition,
 		maxHeight: "100%",
 		width: "100%",
-		overflowScrolling: 'touch'
+		
 	},
 	content: {
-		maxHeight: "calc(100vh - 70px)"
+		maxHeight: "calc(100vh - 100px)"
 		// marginTop: "70px",
 		// padding: "30px 30px",
 		// minHeight: "calc(100vh - 130px)",
@@ -37,9 +37,10 @@ const appStyle = theme => ({
 		// }
 	},
 	container: {
-		minHeight: "calc(100vh - 130px)",
-
-		[theme.breakpoints.up("md")]: {
+		maxHeight: "calc(100vh - 70px)",	
+		overflow: 'auto',
+		overflowScrolling: 'touch',
+		[theme.breakpoints.up("lg")]: {
 			...container
 		},
 		// [theme.breakpoints.down("md")]: {
