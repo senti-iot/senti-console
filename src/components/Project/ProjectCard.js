@@ -95,7 +95,7 @@ class ProjectCard extends Component {
 						}
 						content={<Typography noWrap>{p.description}</Typography>}
 						rightActions={
-							<Button variant={'flat'} color={'primary'} onClick={() => this.props.history.push(`/project/${p.id}`)}>
+							<Button variant={'text'} color={'primary'} onClick={() => this.props.history.push(`/project/${p.id}`)}>
 								{t("menus.seeMore")}
 							</Button>
 						}

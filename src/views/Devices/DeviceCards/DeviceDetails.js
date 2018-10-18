@@ -52,6 +52,7 @@ class DeviceDetails extends Component {
 	}
 	render() {
 		const { classes, device, t, accessLevel, history } = this.props
+		console.log(device)
 		return (
 			<InfoCard
 				title={device.name ? device.name : device.id}

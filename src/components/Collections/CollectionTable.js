@@ -1,6 +1,6 @@
 import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
-	TableRow, withStyles
+	TableRow, withStyles, Typography
 } from "@material-ui/core"
 import TC from 'components/Table/TC'
 // import { Delete, Edit, PictureAsPdf/*  Add */ } from 'variables/icons'
@@ -95,7 +95,9 @@ class CollectionTable extends React.Component {
 							t={t}
 							classes={classes}
 							// mdDown={[0]} //Which Columns to display on small Screens
-							customColumn={[{ id: "name", label: t("collections.fields.collection") }]}
+							customColumn={[{ id: "name", label: <Typography paragraph classes={ { root: classes.paragraphCell + " " + classes.headerCell } }>
+								{t("collections.fields.collection")}
+							</Typography> }]}
 						/>
 
 						<TableBody>

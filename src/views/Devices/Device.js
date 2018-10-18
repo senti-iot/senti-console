@@ -16,6 +16,7 @@ import DeviceData from './DeviceCards/DeviceData'
 import { dateFormatter } from 'variables/functions';
 import { connect } from 'react-redux';
 import AssignCollection from 'components/Assign/AssignCollection';
+import { getCollection } from 'variables/dataCollections';
 class Device extends Component {
 	constructor(props) {
 		super(props)
@@ -38,14 +39,27 @@ class Device extends Component {
 				this.props.history.push('/404')
 			else {
 				this.setState({ device: rs, loading: false })
+				if (rs.dataCollection !== null)
+				{
+					this.getDataCollection(rs.dataCollection)
+				}
 				let prevURL = this.props.location.prevURL ? this.props.location.prevURL : '/devices/list'
 				this.props.setHeader(rs.name ? rs.name : rs.id, true, prevURL ? prevURL : '/devices/list', "devices") 
 					
 			}
 		})
-
 	}
-
+	
+	getDataCollection = async (id) => {
+		await getCollection(id).then(rs => {
+			this.setState({
+				device: {
+					...this.state.device,
+					dataCollection: rs
+				}
+			})
+		})
+	}
 	componentDidMount = async () => {
 		if (this.props.match) {
 			let id = this.props.match.params.id

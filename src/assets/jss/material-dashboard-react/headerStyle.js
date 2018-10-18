@@ -31,7 +31,7 @@ const headerStyle = theme => ({
 		transition: "all 150ms ease 0s",
 		minHeight: "48px",
 		display: "block",
-		position: "fixed",
+		position: "sticky",
 		[theme.breakpoints.up("lg")]: {
 			width: 'calc(100% - 260px)'
 		}

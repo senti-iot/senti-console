@@ -11,7 +11,7 @@ const appStyle = theme => ({
 		height: "100vh"
 	},
 	mainPanel: {
-		marginTop: 70,
+		// marginTop: 70,
 		[theme.breakpoints.up("lg")]: {
 			width: `calc(100% - ${drawerWidth}px)`
 		},

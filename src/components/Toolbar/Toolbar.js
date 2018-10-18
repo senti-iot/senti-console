@@ -7,7 +7,7 @@ import { suggestionGen } from 'variables/functions'
 
 const styles = theme => ({
 	appBar: {
-		// top: 70,
+		top: 70,
 		height: 48,
 		zIndex: 1000
 	},

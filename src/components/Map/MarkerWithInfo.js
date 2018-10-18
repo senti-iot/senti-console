@@ -105,7 +105,7 @@ class MarkerWithInfo extends Component {
 							<Info>{this.state.liveCount}</Info>
 						</ItemG>
 						<ItemG xs={12}>
-							<Button variant={"flat"} component={Link} to={`/device/${m.id}`}>
+							<Button variant={"text"} color={"primary"} component={Link} to={`/device/${m.id}`}>
 								{/* <NavLink to={`/device/${m.id}`}> */}
 								{t("menus.seeMore")}
 								{/* </NavLink> */}
