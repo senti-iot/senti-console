@@ -3,7 +3,7 @@ import {
 	TableRow, Typography, withStyles, Dialog, DialogTitle, DialogContent,
 	DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem
 } from "@material-ui/core";
-import { SignalWifi2Bar, SignalWifi2BarLock, Add, FilterList } from 'variables/icons';
+import { SignalWifi2Bar, SignalWifi2BarLock, Add, FilterList, Delete, Build, Close, Business, DataUsage, Edit } from 'variables/icons';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
 import PropTypes from "prop-types";
 import React, { Fragment } from "react";
@@ -42,13 +42,13 @@ class EnhancedTable extends React.Component {
 		const { t, accessLevel } = this.props
 		if (accessLevel.apisuperuser)
 			return [
-				{ label: t("menus.edit"), func: this.handleDeviceEdit, single: true },
-				{ label: t("menus.assignCollection"), func: this.handleOpenAssignCollection, single: true },
-				{ label: t("menus.assignOrg"), func: this.handleAssignToOrg, single: false },
-				{ label: t("menus.unassign"), func: this.handleOpenUnassignDialog, single: false },
-				{ label: t("menus.exportPDF"), func: () => { }, single: false },
-				{ label: t("menus.calibrate"), func: this.handleCalibrateFlow, single: true },
-				{ label: t("menus.delete"), func: this.handleDeleteProjects, single: false }, ]
+				{ label: t("menus.edit"), func: this.handleDeviceEdit, single: true, icon: Edit },
+				{ label: t("menus.assignCollection"), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },
+				{ label: t("menus.assignOrg"), func: this.handleAssignToOrg, single: false, icon: Business },
+				{ label: t("menus.unassign"), func: this.handleOpenUnassignDialog, single: false, icon: Close },
+				// { label: t("menus.exportPDF"), func: () => { }, single: false, icon: PictureAsPdf},
+				{ label: t("menus.calibrate"), func: this.handleCalibrateFlow, single: true, icon: Build },
+				{ label: t("menus.delete"), func: this.handleDeleteProjects, single: false, icon: Delete }, ]
 		else {
 			return [
 				{ label: t("menus.exportPDF"), func: () => { }, single: false }

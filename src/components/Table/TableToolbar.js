@@ -35,7 +35,7 @@ let selectedRender = props => {
 				PaperProps={{
 					style: {
 						// maxHeight: ITEM_HEIGHT * 4.5,
-						width: 200,
+						// width: 200,
 						boxShadow: boxShadow
 					}
 				}}
