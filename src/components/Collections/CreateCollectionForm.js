@@ -17,6 +17,7 @@ import { Close } from 'variables/icons';
 	orgs:array.isRequired,	>}
 */
 class CreateCollectionForm extends Component {
+
 	transition = (props) => {
 		return <Slide direction="up" {...props} />;
 	}
@@ -33,7 +34,7 @@ class CreateCollectionForm extends Component {
 			<AppBar className={classes.appBar + " " + appBarClasses}>
 				<Toolbar>
 					<Typography variant="h6" color="inherit" className={classes.flex}>
-						{t("orgs.pageTitle")}
+						{t("devices.pageTitle")}
 					</Typography>
 					<Button variant={'extendedFab'} color="primary" onClick={handleCloseDevice} aria-label="Close">
 						<Close /> {t("actions.cancel")}
@@ -65,40 +66,40 @@ class CreateCollectionForm extends Component {
 			]}
 		/>
 	}
-	renderSelectOrg = () => {
-		const { t, open, handleCloseOrg, orgs, handleChangeOrg, classes } = this.props
-		const appBarClasses = cx({
-			[" " + classes['primary']]: 'primary'
-		});
-		return <Dialog
-			fullScreen
-			open={open}
-			onClose={handleCloseOrg}
-			TransitionComponent={this.transition}>
-			<AppBar className={classes.appBar + " " + appBarClasses}>
-				<Toolbar>
-					<Typography variant="h6" color="inherit" className={classes.flex}>
-						{t("orgs.pageTitle")}
-					</Typography>
-					<Button variant={'extendedFab'} color="primary" onClick={handleCloseOrg} aria-label="Close">
-						<Close /> {t("actions.cancel")}
-					</Button>
-				</Toolbar>
-			</AppBar>
-			<List>
-				{orgs ? orgs.map((o, i) => {
-					return <Fragment key={i}>
-						<ListItem button onClick={handleChangeOrg(o)}>
-							<ListItemText primary={o.name} />
-						</ListItem>
-						<Divider />
-					</Fragment>
-				}) : null}
-			</List>
-		</Dialog>
-	}
+	// renderSelectOrg = () => {
+	// 	const { t, open, handleCloseOrg, orgs, handleChangeOrg, classes } = this.props
+	// 	const appBarClasses = cx({
+	// 		[" " + classes['primary']]: 'primary'
+	// 	});
+	// 	return <Dialog
+	// 		fullScreen
+	// 		open={open}
+	// 		onClose={handleCloseOrg}
+	// 		TransitionComponent={this.transition}>
+	// 		<AppBar className={classes.appBar + " " + appBarClasses}>
+	// 			<Toolbar>
+	// 				<Typography variant="h6" color="inherit" className={classes.flex}>
+	// 					{t("orgs.pageTitle")}
+	// 				</Typography>
+	// 				<Button variant={'extendedFab'} color="primary" onClick={handleCloseOrg} aria-label="Close">
+	// 					<Close /> {t("actions.cancel")}
+	// 				</Button>
+	// 			</Toolbar>
+	// 		</AppBar>
+	// 		<List>
+	// 			{orgs ? orgs.map((o, i) => {
+	// 				return <Fragment key={i}>
+	// 					<ListItem button onClick={handleChangeOrg(o)}>
+	// 						<ListItemText primary={o.name} />
+	// 					</ListItem>
+	// 					<Divider />
+	// 				</Fragment>
+	// 			}) : null}
+	// 		</List>
+	// 	</Dialog>
+	// }
 	render() {
-		const { t, handleChange, collection, classes, handleOpenOrg, handleUpdate } = this.props
+		const { t, handleChange, collection, classes, handleOpenDevice, handleCreate, device } = this.props
 		return (
 			<GridContainer>
 				<Paper className={classes.paper}>
@@ -125,7 +126,7 @@ class CreateCollectionForm extends Component {
 									noFullWidth
 								/>
 							</ItemGrid>
-							<ItemGrid xs={12}>
+							{/* <ItemGrid xs={12}>
 								{this.renderSelectOrg()}
 								<TextF
 									id={'collectionOrg'}
@@ -139,18 +140,18 @@ class CreateCollectionForm extends Component {
 										readOnly: true
 									}}
 								/>
-							</ItemGrid>
+							</ItemGrid> */}
 							<ItemGrid xs={12}>
 								{this.renderSelectDevice()}
 								<TextF
 									id={'collectionOrg'}
-									label={t("collections.fields.org")}
-									value={collection.org.name ? collection.org.name : t("collections.noOrg")}
-									handleClick={handleOpenOrg}
+									label={t("collections.fields.activeDevice")}
+									value={device.name}
+									handleClick={handleOpenDevice}
 									handleChange={() => { }}
 									noFullWidth
 									InputProps={{
-										onChange: handleOpenOrg,
+										onChange: handleOpenDevice,
 										readOnly: true
 									}}
 								/>
@@ -159,7 +160,7 @@ class CreateCollectionForm extends Component {
 								{this.renderSelectState()}
 							</ItemGrid>
 							<ItemGrid xs={12} container justify={'center'}>
-								<Button onClick={handleUpdate} variant={'contained'} color={'primary'}>
+								<Button onClick={handleCreate} variant={'contained'} color={'primary'}>
 									{t("actions.save")}
 								</Button>
 							</ItemGrid> 

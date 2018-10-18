@@ -267,14 +267,13 @@ class Collections extends Component {
 	}
 	addNewCollection = () => this.props.history.push(`/collections/new`)
 	renderTableToolBarContent = () => {
-		const { accessLevel } = this.props
+		// const { accessLevel } = this.props
 		// const { anchorFilterMenu } = this.state
-		let access = accessLevel.apicollection ? accessLevel.apicollection.edit ? true : false : false
+		// let access = accessLevel.apicollection ? accessLevel.apicollection.edit ? true : false : false
 		return <Fragment>
-			{access ? <IconButton aria-label="Add new collection" onClick={this.addNewCollection}>
+			 <IconButton aria-label="Add new collection" onClick={this.addNewCollection}>
 				<Add />
-			</IconButton> : null
-			}
+			</IconButton>
 		</Fragment>
 	}
 

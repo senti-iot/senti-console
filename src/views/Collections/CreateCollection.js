@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { createCollection, getEmptyCollection } from 'variables/dataCollections';
+import { createCollection, getEmptyCollection, assignDeviceToCollection } from 'variables/dataCollections';
 import { connect } from 'react-redux'
-import { getAllOrgs } from 'variables/dataOrgs';
+// import { getAllOrgs } from 'variables/dataOrgs';
 import CreateCollectionForm from 'components/Collections/CreateCollectionForm';
 import { CircularLoader } from 'components';
+import { getAvailableDevices } from 'variables/dataDevices';
 
 
 class CreateCollection extends Component {
@@ -14,7 +15,8 @@ class CreateCollection extends Component {
 		this.state = {
 			collection: null,
 			loading: true,
-			openOrg: false,
+			openDevice: false,
+			device: { id: 0, name: props.t("collections.noDevice") }
 		}
 		this.id = props.match.params.id
 		// props.setHeader('', true, `/collections/list`, "collections")
@@ -23,22 +25,22 @@ class CreateCollection extends Component {
 		let success = await createCollection(this.state.collection)
 		// console.log(success);
 		if (success)
-			return true
+			return success
 		else
 			return false
 	}
 	getAvailableDevices = async () => {
-		const { t } = this.props
-		let orgs = await getAllOrgs()
+		const { t, orgId } = this.props
+		let devices = await getAvailableDevices(orgId)
 		this.setState({
-			orgs: [{ id: 0, name: t("users.fields.noOrg") }, ...orgs],
+			devices: [{ id: 0, name: t("collections.noDevice") }, ...devices],
 			// loading: false
 		})
 	}
 	getEmptyCollection = async () => {
-		console.log("Entered")
+		// console.log("Entered")
 		let emptyDC = await getEmptyCollection()
-		console.log(emptyDC)
+		// console.log(emptyDC)
 		this.setState({
 			loading: false,
 			collection: emptyDC
@@ -48,23 +50,20 @@ class CreateCollection extends Component {
 		await this.getEmptyCollection()
 		this.getAvailableDevices()
 	}
-	handleOpenOrg = () => {
+	handleOpenDevice = () => {
 		this.setState({
-			openOrg: true
+			openDevice: true
 		})
 	}
-	handleCloseOrg = () => {
+	handleCloseDevice = () => {
 		this.setState({
-			openOrg: false
+			openDevice: false
 		})
 	}
-	handleChangeOrg = (o) => e => {
+	handleChangeDevice = (o) => e => {
 		this.setState({
-			collection: {
-				...this.state.collection,
-				org: o
-			},
-			openOrg: false
+			device: o,
+			openDevice: false
 		})
 	}
 	handleChange = (what) => e => {
@@ -80,28 +79,43 @@ class CreateCollection extends Component {
 	handleCreate = async () => {
 		// console.log(this.props.s)
 		const { s, t, history } = this.props
+		const { device } = this.state
 		let rs = await this.createDC()
+		
 		if (rs) {
-			s(t("snackbars.collectionUpdated"))
-			history.push(`/collection/${this.id}`)
+			if (device.id > 0) {
+				let assignRs = await assignDeviceToCollection({
+					id: rs.id,
+					deviceId: device.id
+				})
+				if (assignRs) { 
+					s(t("snackbars.collectionCreated"))
+					history.push(`/collection/${rs.id}`)
+				}
+			}
+			else { 
+				s(t("snackbars.collectionCreated"))
+				history.push(`/collection/${rs.id}`)
+			}
 		}
 		else
 			s(t("snackbars.failed"))
 	}
 	render() {
 		const { t } = this.props
-		const { loading, collection, openOrg, orgs } = this.state
+		const { loading, collection, openDevice, devices, device } = this.state
 		return (
 			loading ? <CircularLoader /> : 
 				<CreateCollectionForm
 					collection={collection}
 					handleChange={this.handleChange}
-					open={openOrg}
-					orgs={orgs}
-					handleCloseOrg={this.handleCloseOrg}
-					handleOpenOrg={this.handleOpenOrg}
-					handleChangeOrg={this.handleChangeOrg}
-					handleUpdate={this.handleUpdate}
+					open={openDevice}
+					devices={devices}
+					device={device}
+					handleCloseDevice={this.handleCloseDevice}
+					handleOpenDevice={this.handleOpenDevice}
+					handleChangeDevice={this.handleChangeDevice}
+					handleCreate={this.handleCreate}
 					t={t}
 				/> 
 		)
@@ -113,7 +127,8 @@ CreateCollection.propTypes = {
 	accessLevel: PropTypes.object.isRequired,
 }
 const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	orgId: state.settings.user.org.id
 })
 
 const mapDispatchToProps = {
