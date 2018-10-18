@@ -37,6 +37,10 @@ export const updateCollection = async (dc) => {
 	let data = await api.put(`/senti/datacollection/${dc.id}`, dc).then(rs => rs.data)
 	return data
 }
+export const getEmptyCollection = async () => {
+	let response = await api.get(`/senti/datacollection/empty`)
+	return response.data
+}
 export const createCollection = async (dc) => {
 	let data = await api.post(`/senti/datacollection`, dc).then(rs => rs.data)
 	return data

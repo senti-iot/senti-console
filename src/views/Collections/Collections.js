@@ -1,4 +1,4 @@
-import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon } from "@material-ui/core";
+import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton } from "@material-ui/core";
 import projectStyles from 'assets/jss/views/projects';
 import CollectionTable from 'components/Collections/CollectionTable';
 import TableToolbar from 'components/Table/TableToolbar';
@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from "react-router-dom";
 import { deleteCollection, getAllCollections } from 'variables/dataCollections';
 import { filterItems, handleRequestSort } from 'variables/functions';
-import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks } from 'variables/icons';
+import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks, Add } from 'variables/icons';
 import { GridContainer, CircularLoader, AssignDevice, AssignProject } from 'components'
 import CollectionCard from 'components/Collections/CollectionCard';
 
@@ -265,17 +265,17 @@ class Collections extends Component {
 			</DialogActions>
 		</Dialog>
 	}
-
+	addNewCollection = () => this.props.history.push(`/collections/new`)
 	renderTableToolBarContent = () => {
-		// const { accessLevel } = this.props
+		const { accessLevel } = this.props
 		// const { anchorFilterMenu } = this.state
-		// let access = accessLevel.apicollection ? accessLevel.apicollection.edit ? true : false : false
-		// return <Fragment>
-		// 	{access ? <IconButton aria-label="Add new collection" onClick={this.addNewCollection}>
-		// 		<Add />
-		// 	</IconButton> : null
-		// 	}
-		// </Fragment>
+		let access = accessLevel.apicollection ? accessLevel.apicollection.edit ? true : false : false
+		return <Fragment>
+			{access ? <IconButton aria-label="Add new collection" onClick={this.addNewCollection}>
+				<Add />
+			</IconButton> : null
+			}
+		</Fragment>
 	}
 
 	renderTableToolBar = () => {
@@ -288,7 +288,7 @@ class Collections extends Component {
 			numSelected={selected.length}
 			options={this.options}
 			t={t}
-		// content={this.renderTableToolBarContent()}
+			content={this.renderTableToolBarContent()}
 		/>
 	}
 
