@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { getDevice, getAllPictures, updateDevice } from 'variables/dataDevices'
 import {  Grid, withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
-import { ItemGrid, AssignOrg } from 'components'
+import { ItemGrid, AssignOrg, AssignDC } from 'components'
 import InfoCard from 'components/Cards/InfoCard'
 import {  Map } from 'variables/icons'
 import deviceStyles from 'assets/jss/views/deviceStyles'
@@ -15,8 +15,8 @@ import DeviceImages from './DeviceCards/DeviceImages'
 import DeviceData from './DeviceCards/DeviceData'
 import { dateFormatter } from 'variables/functions';
 import { connect } from 'react-redux';
-import AssignCollection from 'components/Assign/AssignCollection';
 import { getCollection } from 'variables/dataCollections';
+
 class Device extends Component {
 	constructor(props) {
 		super(props)
@@ -216,7 +216,7 @@ class Device extends Component {
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
-					<AssignCollection
+					<AssignDC
 						deviceId={device.id}
 						open={this.state.openAssignCollection}
 						handleClose={this.handleCloseAssign}

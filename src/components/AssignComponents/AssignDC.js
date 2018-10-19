@@ -13,11 +13,7 @@ import { assignDeviceToCollection } from 'variables/dataCollections';
 import assignStyles from 'assets/jss/components/assign/assignStyles';
 
 
-function Transition(props) {
-	return <Slide direction="up" {...props} />;
-}
-
-class AssignCollection extends React.Component {
+class AssignDC extends React.Component {
 	constructor(props) {
 		super(props)
 
@@ -32,7 +28,9 @@ class AssignCollection extends React.Component {
 			}
 		}
 	}
-
+	Transition = (props) => {
+		return <Slide direction="up" {...props} />;
+	}
 	componentDidMount = async () => {
 		this._isMounted = 1
 		// const { orgId } = this.props
@@ -41,27 +39,7 @@ class AssignCollection extends React.Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-	// handleClick = (event, id) => {
-	// 	event.stopPropagation()
-	// 	const { selectedCollections } = this.state;
-	// 	const selectedIndex = selectedCollections.indexOf(id)
-	// 	let newSelected = [];
 
-	// 	if (selectedIndex === -1) {
-	// 		newSelected = newSelected.concat(selectedCollections, id);
-	// 	} else if (selectedIndex === 0) {
-	// 		newSelected = newSelected.concat(selectedCollections.slice(1))
-	// 	} else if (selectedIndex === selectedCollections.length - 1) {
-	// 		newSelected = newSelected.concat(selectedCollections.slice(0, -1))
-	// 	} else if (selectedIndex > 0) {
-	// 		newSelected = newSelected.concat(
-	// 			selectedCollections.slice(0, selectedIndex),
-	// 			selectedCollections.slice(selectedIndex + 1),
-	// 		);
-	// 	}
-
-	// 	this.setState({ selectedCollections: newSelected })
-	// }
 	handleClick = (e, pId) => {
 		e.preventDefault()
 		this.setState({ selectedCollections: pId })
@@ -74,6 +52,7 @@ class AssignCollection extends React.Component {
 		})
 	}
 	closeDialog = () => {
+		console.log("Closing")
 		this.props.handleClose(false)
 	}
 	handleFilterKeyword = value => {
@@ -97,14 +76,15 @@ class AssignCollection extends React.Component {
 					fullScreen
 					open={open}
 					onClose={() => this.props.handleClose(false)}
-					TransitionComponent={Transition}
+					TransitionComponent={this.Transition}
 				>
 					<AppBar className={classes.appBar + appBarClasses}>
 						<Toolbar>
 							<Hidden mdDown>
 								<ItemG container alignItems={'center'}>
 									<ItemG xs={2} container alignItems={'center'}>
-										<IconButton color={'inherit'} onClick={() => this.props.handleClose(false)} aria-label="CloseCollection">
+										<IconButton color={'inherit'} onClick={() => this.props.handleClose(false)}
+											aria-label="CloseCollection">
 											<Close />
 										</IconButton>
 										<Typography variant="h6" color="inherit" className={classes.flex}>
@@ -130,7 +110,7 @@ class AssignCollection extends React.Component {
 							<Hidden lgUp>
 								<ItemG container alignItems={'center'}>
 									<ItemG xs={12} container alignItems={'center'}>
-										<IconButton color={'inherit'} onClick={this.props.handleCancel} aria-label="Close">
+										<IconButton color={'inherit'} onClick={() => this.props.handleClose(false)} aria-label="Close">
 											<Close />
 										</IconButton>
 										<Typography variant="h6" color="inherit" className={classes.flex}>
@@ -176,9 +156,9 @@ class AssignCollection extends React.Component {
 	}
 }
 
-AssignCollection.propTypes = {
+AssignDC.propTypes = {
 	classes: PropTypes.object.isRequired,
 	deviceId: PropTypes.number.isRequired,
 };
 
-export default withStyles(assignStyles)(AssignCollection);
+export default withStyles(assignStyles)(AssignDC);

@@ -11,12 +11,11 @@ import { withRouter } from 'react-router-dom';
 import EnhancedTableHead from 'components/Table/TableHeader'
 import EnhancedTableToolbar from 'components/Table/TableToolbar';
 import { connect } from 'react-redux'
-import { ItemGrid, Info, Caption, AssignOrg } from 'components';
+import { ItemGrid, Info, Caption, AssignOrg, AssignDC } from 'components';
 import TC from 'components/Table/TC'
 import { updateDevice } from 'variables/dataDevices'
 import { boxShadow } from "assets/jss/material-dashboard-react";
 import TP from 'components/Table/TP';
-import AssignCollection from 'components/Assign/AssignCollection';
 class EnhancedTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -247,7 +246,7 @@ class EnhancedTable extends React.Component {
 		return (
 			<Paper className={ classes.root }>
 				{ this.renderConfirmUnassign() }
-				<AssignCollection
+				<AssignDC
 					deviceId={selected[0] ? selected[0] : 0}
 					open={openAssignCollection}
 					handleClose={this.handleCloseAssignCollection}

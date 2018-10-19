@@ -15,10 +15,10 @@ import CustomDateTime from './CustomInput/CustomDateTime'
 // // // AssignComponents
 // #############################
 
-import AssignOrg from './Assign/AssignOrg'
-import AssignDevice from './Assign/AssignDevice'
-import AssignProject from './Assign/AssignProject'
-
+import AssignOrg from './AssignComponents/AssignOrg'
+import AssignDevice from './AssignComponents/AssignDevice'
+import AssignProject from './AssignComponents/AssignProject'
+import AssignDC from './AssignComponents/AssignDC'
 // ##############################
 // // // CustomInput
 // #############################
@@ -77,6 +77,7 @@ import CardHeader from "./Card/CardHeader";
 import CardFooter from './Card/CardFooter'
 import CardBody from './Card/CardBody'
 export {
+	AssignDC,
 	AssignDevice,
 	AssignOrg,
 	AssignProject,
