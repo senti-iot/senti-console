@@ -212,7 +212,7 @@ class DeviceData extends Component {
 	handleSwitchDayHour = () => {
 		let id = this.state.dateFilterInputID
 		switch (id) {
-			case 0:
+			case 0://
 				this.getWifiSum();
 				break;
 			case 1:
@@ -223,7 +223,13 @@ class DeviceData extends Component {
 				break;
 			case 3:
 				this.getWifiDay();
-				break;
+				break; 
+			case 5:
+				this.getWifiSum();
+				break
+			case 6:
+				this.getWifiDay();
+				break
 			default:
 				this.getWifiDay();
 				break;
@@ -251,11 +257,11 @@ class DeviceData extends Component {
 				from = moment().subtract(90, 'd').startOf('day')
 				to = moment().endOf('day')
 				break;
-			case 5:
+			case 5: // Yesterday
 				from = moment().subtract(1, 'd').startOf('day')
 				to = moment().subtract(1, 'd').endOf('day')
 				break;
-			case 6:
+			case 6: //This Week
 				from = moment().startOf('week').startOf('day')
 				to = moment().endOf('day')
 				break;

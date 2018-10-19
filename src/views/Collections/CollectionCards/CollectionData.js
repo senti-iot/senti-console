@@ -197,6 +197,7 @@ class CollectionData extends Component {
 	}
 	handleSwitchDayHour = () => {
 		let id = this.state.dateFilterInputID
+		let { timeType } = this.state
 		switch (id) {
 			case 0:
 				this.handleWifiHourly();
@@ -210,6 +211,9 @@ class CollectionData extends Component {
 			case 3:
 				this.handleWifiDaily();
 				break;
+			case 4: 
+				timeType === 1 ? this.handleWifiDaily() : this.handleWifiHourly()
+				break
 			case 5:
 				this.handleWifiHourly()
 				break
@@ -242,6 +246,10 @@ class CollectionData extends Component {
 			case 3: // last 90 days
 				from = moment().subtract(90, 'd').startOf('day')
 				to = moment().endOf('day')
+				break;
+			case 4:
+				from = moment(this.state.from)
+				to = moment(this.state.to)
 				break;
 			case 5:
 				from = moment().subtract(1, 'd').startOf('day')
@@ -286,7 +294,7 @@ class CollectionData extends Component {
 		let displayFrom = shortDateFormat(from)
 		return (
 			<div className={classes.root}>
-				<Hidden mdDown>
+				<Hidden smDown>
 					<DateRange className={classes.leftIcon} />
 				</Hidden>
 				<FormControl className={classes.formControl}>
@@ -319,15 +327,46 @@ class CollectionData extends Component {
 		)
 	}
 	handleRawData = () => { 
-		this.setState({ loading: true, actionAnchor: null, raw: !this.state.raw }, () => this.handleSetDate(this.state.dateFilterInputID))
+		const { dateFilterInputID } = this.state
+		this.setState({ loading: true, actionAnchor: null, raw: !this.state.raw }, () => this.handleSetDate(dateFilterInputID))
+
 	}
 	renderMenu = () => {
-		const { actionAnchor } = this.state
+		const { actionAnchor, actionAnchorVisibility } = this.state
 		const { classes, t } = this.props
 		return <ItemGrid container noMargin noPadding>
 			<ItemG>
-				<Hidden mdDown>
+				<Hidden smDown>
 					{this.renderDateFilter()}
+				</Hidden>
+			</ItemG>
+			<ItemG>
+
+				<Hidden smDown>
+					<IconButton title={"Chart Type"} variant={"fab"} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
+						<Visibility />
+					</IconButton>
+					<Menu
+						id="long-menu"
+						anchorEl={actionAnchorVisibility}
+						open={Boolean(actionAnchorVisibility)}
+						onClose={e => this.setState({ actionAnchorVisibility: null })}
+						PaperProps={{
+							style: {
+							// maxHeight: 300,
+								minWidth: 250
+							}
+						}}>					<List component="div" disablePadding>
+							{this.visibilityOptions.map(op => {
+								return <ListItem key={op.id} button className={classes.nested} onClick={() => this.setState({ display: op.id })}>
+									<ListItemIcon>
+										{op.icon}
+									</ListItemIcon>
+									<ListItemText inset primary={op.label} />
+								</ListItem>
+							})}
+						</List>
+					</Menu>
 				</Hidden>
 			</ItemG>
 			<ItemG>
@@ -352,7 +391,7 @@ class CollectionData extends Component {
 					}
 				}}>
 				<div>
-					<Hidden lgUp>
+					<Hidden mdUp>
 						<ListItem>
 							{this.renderDateFilter()}
 						</ListItem>
@@ -370,27 +409,31 @@ class CollectionData extends Component {
 						{t("collections.rawData")}
 					</ListItemText>
 				</ListItem>
-				<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
-					<ListItemIcon>
-						<Visibility />
-					</ListItemIcon>
-					<ListItemText inset primary={t("filters.options.graphType")} />
-					<ExpandMore className={classNames({
-						[classes.expandOpen]: this.state.visibility,
-					}, classes.expand)} />
-				</ListItem>
-				<Collapse in={this.state.visibility} timeout="auto" unmountOnExit>
-					<List component="div" disablePadding>
-						{this.visibilityOptions.map(op => {
-							return <ListItem key={op.id} button className={classes.nested} onClick={() => this.setState({ display: op.id })}>
-								<ListItemIcon>
-									{op.icon}
-								</ListItemIcon>
-								<ListItemText inset primary={op.label} />
-							</ListItem>
-						})}
-					</List>
-				</Collapse>
+				<div>
+					<Hidden mdUp>
+						<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
+							<ListItemIcon>
+								<Visibility />
+							</ListItemIcon>
+							<ListItemText inset primary={t("filters.options.graphType")} />
+							<ExpandMore className={classNames({
+								[classes.expandOpen]: this.state.visibility,
+							}, classes.expand)} />
+						</ListItem>
+						<Collapse in={this.state.visibility} timeout="auto" unmountOnExit>
+							<List component="div" disablePadding>
+								{this.visibilityOptions.map(op => {
+									return <ListItem key={op.id} button className={classes.nested} onClick={() => this.setState({ display: op.id })}>
+										<ListItemIcon>
+											{op.icon}
+										</ListItemIcon>
+										<ListItemText inset primary={op.label} />
+									</ListItem>
+								})}
+							</List>
+						</Collapse>
+					</Hidden>
+				</div>
 				))}
 			</Menu>
 		</ItemGrid>
