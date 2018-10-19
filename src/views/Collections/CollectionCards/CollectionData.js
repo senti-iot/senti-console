@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import { Bar, Doughnut, Line, Pie } from 'react-chartjs-2';
 import { colors } from 'variables/colors';
 import { getDataDaily, getDataHourly } from 'variables/dataCollections';
-import { shortDateFormat } from 'variables/functions';
+import { shortDateFormat, timeFormatter } from 'variables/functions';
 import { BarChart, DateRange, DonutLargeRounded, ExpandMore, MoreVert, PieChartRounded, ShowChart, Timeline, Visibility } from 'variables/icons';
 
 class CollectionData extends Component {
@@ -93,7 +93,7 @@ class CollectionData extends Component {
 		const { from, to, raw } = this.state
 		let data = await getDataHourly(collection.id, moment(from).format(this.format), moment(to).format(this.format), raw)
 		if (data) {
-			let dataArr = Object.keys(data).map(r => ({ id: shortDateFormat(r), value: data[r] }))
+			let dataArr = Object.keys(data).map(r => ({ id: timeFormatter(r), value: data[r] }))
 			this.setState({
 				data: data,
 				charts: {
@@ -210,6 +210,12 @@ class CollectionData extends Component {
 			case 3:
 				this.handleWifiDaily();
 				break;
+			case 5:
+				this.handleWifiHourly()
+				break
+			case 6:
+				this.handleWifiDaily();
+				break
 			default:
 				this.handleWifiDaily();
 				break;
