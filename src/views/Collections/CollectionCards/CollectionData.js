@@ -341,7 +341,6 @@ class CollectionData extends Component {
 				</Hidden>
 			</ItemG>
 			<ItemG>
-
 				<Hidden smDown>
 					<IconButton title={"Chart Type"} variant={"fab"} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
 						<Visibility />
