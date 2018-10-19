@@ -319,7 +319,7 @@ class CollectionData extends Component {
 		)
 	}
 	handleRawData = () => { 
-		this.setState({ loading: true, actionAnchor: null, raw: !this.state.raw }, () => this.handleWifiDaily())
+		this.setState({ loading: true, actionAnchor: null, raw: !this.state.raw }, () => this.handleSetDate(this.state.dateFilterInputID))
 	}
 	renderMenu = () => {
 		const { actionAnchor } = this.state
