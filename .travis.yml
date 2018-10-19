@@ -33,6 +33,5 @@ notifications:
   email: true
   slack: "webhouseteam:82qu1PX5R5wkYNCW5x6fVlhu"
 script: 
-  - npm
   - "npm run-script build"
   - "cp ./build/index.html ./build/200.html"
