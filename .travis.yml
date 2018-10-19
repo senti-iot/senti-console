@@ -33,6 +33,6 @@ notifications:
   email: true
   slack: "webhouseteam:82qu1PX5R5wkYNCW5x6fVlhu"
 script: 
-  - yarn
-  - "yarn build"
+  - npm
+  - "npm build"
   - "cp ./build/index.html ./build/200.html"
