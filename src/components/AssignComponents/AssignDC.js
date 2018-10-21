@@ -52,7 +52,6 @@ class AssignDC extends React.Component {
 		})
 	}
 	closeDialog = () => {
-		console.log("Closing")
 		this.props.handleClose(false)
 	}
 	handleFilterKeyword = value => {

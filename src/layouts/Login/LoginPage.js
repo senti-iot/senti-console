@@ -82,7 +82,6 @@ class LoginPage extends React.Component {
 						if (rs.isLoggedIn) {
 							if (setToken())								
 							{
-								// console.log(cookie.load('SESSION'))
 								await this.props.getSettings()
 								var prevURL = this.props.location.state ? this.props.location.state.prevURL : null
 								this.props.history.push(prevURL ? prevURL : "/dashboard")

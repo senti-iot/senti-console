@@ -4,7 +4,7 @@ import cx from "classnames";
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import { getAvailableDevices } from 'variables/dataDevices';
-import { ItemG, CircularLoader } from 'components';
+import { ItemG, CircularLoader, Info } from 'components';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import { assignDeviceToCollection } from 'variables/dataCollections';
@@ -21,6 +21,7 @@ class AssignDevice extends React.Component {
 		this.state = {
 			devices: [],
 			selectedDevices: [],
+			noData: false,
 			filters: {
 				keyword: '',
 				startDate: null,
@@ -33,7 +34,9 @@ class AssignDevice extends React.Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		const { orgId } = this.props
-		await getAvailableDevices(orgId).then(rs => this._isMounted ? this.setState({ devices: rs }) : this.setState({ devices: [] }))
+		await getAvailableDevices(orgId).then(rs => {
+			return rs ? this.setState({ devices: rs }) : this.setState({ devices: null, noData: true })
+		})
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
@@ -82,7 +85,7 @@ class AssignDevice extends React.Component {
 	}
 	isSelected = id => this.state.selectedDevices.indexOf(id) !== -1 ? true : false 
 	render() {
-		const { devices, filters } = this.state
+		const { devices, filters, noData } = this.state
 		const { classes, open, t } = this.props;
 		const appBarClasses = cx({
 			[" " + classes['primary']]: 'primary'
@@ -164,7 +167,11 @@ class AssignDevice extends React.Component {
 								<Divider />
 							</Fragment>
 						)
-						) : <CircularLoader />}
+						) : noData ? <div style={{ height: "100%", width: "100%" }}>
+							<ItemG container justify={'center'} alignItems={'center'}>
+								<Info>{t("devices.noDevices")}</Info>
+							</ItemG>
+						</div> : <CircularLoader />}
 					</List>
 				</Dialog>
 			</div>

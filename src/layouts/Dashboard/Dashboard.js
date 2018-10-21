@@ -99,7 +99,6 @@ class App extends React.Component {
 	
 	render() {
 		const { classes, t, loading, sOpt, ...rest } = this.props;
-		console.log(sOpt)
 		return (
 			<div className={classes.wrapper}>
 				<div className={classes.mainPanel} ref={"mainPanel"}>

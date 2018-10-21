@@ -49,20 +49,27 @@ class AssignProject extends React.Component {
 
 	}
 	assignProject = async () => {
-		// if (this.props.onlyId)
-
 		const { selectedProject } = this.state
 		let newProject = await getProject(selectedProject.id)
-		if (newProject.dataCollections)
-			newProject.dataCollections = [...newProject.dataCollections, ...this.props.collectionId.map(ci => ({ id: ci }))]
-		else { 
-			newProject.dataCollections = [...this.props.collectionId.map(ci => ({ id: ci }))]
+		if (this.props.multiple)
+		{ 
+			if (newProject.dataCollections)
+				newProject.dataCollections = [...newProject.dataCollections, ...this.props.collectionId.map(ci => ({ id: ci }))]
+			else {
+				newProject.dataCollections = [...this.props.collectionId.map(ci => ({ id: ci }))]
+			}
+		}	
+		else {
+			if (newProject.dataCollections)
+				newProject.dataCollections = [...newProject.dataCollections, ...this.props.collectionId.map(ci => ({ ...ci }))]
+			else { 
+				newProject.dataCollections = [...this.props.collectionId.map(ci => ({  ...ci }))]
+			}
 		}
 		await updateProject(newProject).then(() => {this.props.handleClose(true)
 		 this.setState({ selectedProject: {
 			 id: 0
 		 } })
-		
 		})
 	}
 	

@@ -20,7 +20,6 @@ function renderInput(inputProps) {
 
 function renderSuggestionsContainer(options) {
 	const { containerProps, children } = options;
-	// console.log(children)
 	return (
 		<Paper {...containerProps} square>
 			{children}
@@ -82,7 +81,6 @@ class IntegrationAutosuggest extends React.PureComponent {
 
 	}
 	renderSuggestion(suggestion, { query, isHighlighted }) {
-		// console.log(suggestion)
 		const matches = match(suggestion.label, query);
 		const parts = parse(suggestion.label, matches);
 

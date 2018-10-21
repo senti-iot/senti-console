@@ -297,7 +297,7 @@ class Collections extends Component {
 		let collectionOrg = this.state.collections.find(r => r.id === selected[0])
 		return <Fragment>
 			<AssignProject
-				onlyId
+				multiple
 				collectionId={selected ? selected : []}
 				handleCancel={this.handleCancelAssignProject}
 				handleClose={this.handleCloseAssignProject}

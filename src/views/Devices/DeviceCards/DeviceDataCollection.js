@@ -30,7 +30,6 @@ class DeviceDataCollection extends Component {
 	render() {
 		const { t } = this.props
 		const { dc, noDc, loading } = this.state
-		console.log(dc)
 		return (
 			<InfoCard
 				noExpand

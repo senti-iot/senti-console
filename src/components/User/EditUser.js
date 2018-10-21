@@ -64,24 +64,13 @@ class EditUser extends Component {
 			let g = 0
 			let userGroups = Object.keys(user.groups)
 			userGroups.sort((a, b) => a > b ? 1 : -1)
-			// console.log(userGroups)
 			if (userGroups.find(x => x === "136550100000211"))
 				g = "136550100000211"
 			if (userGroups.find(x => x === "136550100000225"))
 				g = "136550100000225"
 			if (userGroups.find(x => x === "136550100000143"))
 				g = "136550100000143"
-			
-			// Object.keys(user.groups).forEach(x => {
-			// 	if (x > 1) {
-			// 		if (x === "136550100000211")
-			// 			g = x //S
-			// 		if (x === "136550100000225")
-			// 			g = x //AM
-			// 		if (x === "136550100000143")
-			// 			g = x //SU}
-			// 	}
-			// })
+
 			this.setState({
 				selectedGroup: g,
 				user: {

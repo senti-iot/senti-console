@@ -166,9 +166,9 @@ class ProjectCollections extends Component {
 														</ItemG>
 													</TableCell>
 													<TC FirstC label={n.name}/>
-													<TC content={<div style={{ paddingLeft: 25 }}>
+													<TC content={n.activeDevice ? <div style={{ paddingLeft: 25 }}>
 														{this.renderDeviceStatus(n.activeDevice.liveStatus)}
-													</div>
+													</div> : null
 													}/>
 													<TC label={dateFormatter(n.created)}/>
 													<TC label={n.org.name}/>

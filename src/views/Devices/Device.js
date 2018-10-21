@@ -184,8 +184,6 @@ class Device extends Component {
 			id: device.dataCollection.id,
 			deviceId: device.id
 		})
-		console.log(rs)
-		// await updateDevice({ ...this.state.device, project: { id: 0 } }).then(async rs => {
 		if (rs) {
 			this.handleCloseUnassign()
 			this.setState({ loading: true, anchorEl: null })
@@ -196,7 +194,6 @@ class Device extends Component {
 			this.setState({ loading: false, anchorEl: null })
 			this.snackBarMessages(3)
 		}
-		// })
 	}
 
 	renderImageLoader = () => {

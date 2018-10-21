@@ -144,7 +144,7 @@ class Collection extends Component {
 				this.snackBarMessages(2)
 			})
 		}
-		// this.setState({ openAssignOrg: false })
+		this.setState({ openAssignOrg: false })
 	}
 	handleOpenAssignProject = () => {
 		this.setState({ openAssign: true, anchorEl: null })
@@ -319,7 +319,6 @@ class Collection extends Component {
 						collectionId={[this.state.collection]}
 						open={this.state.openAssignOrg}
 						handleClose={this.handleCloseAssignOrg}
-						handleCancel={this.handleCancelAssignOrg}
 						t={t}
 					/>
 					{collection.org.id ? this.renderConfirmUnassign() : null}
