@@ -36,11 +36,11 @@ class AssignDCS extends React.Component {
 		this._isMounted = 1
 		// const { orgId } = this.props
 		await getAllCollections().then(rs => this._isMounted ? this.setState({ collections: rs }) : this.setState({ collections: [] }))
-		await getProject(this.props.project).then(rs => this._isMounted ? this.setState({ project: rs, selectedCollections: rs.dataCollections.map(r => r.id) }) : null)
+		await getProject(this.props.project).then(rs => this._isMounted ? this.setState({ project: rs, selectedCollections: rs ? rs.dataCollections.map(r => r.id) : [] }) : null)
 	}
 	componentWillUpdate = async (nextProps, nextState) => {
 		if (nextProps.project !== this.props.project)
-			await getProject(nextProps.project).then(rs => this._isMounted ? this.setState({ project: rs, selectedCollections: rs.dataCollections.map(r => r.id) }) : null)
+			await getProject(nextProps.project).then(rs => this._isMounted ? this.setState({ project: rs, selectedCollections: rs ? rs.dataCollections.map(r => r.id) : [] }) : null)
 	}
 	
 	componentWillUnmount = () => {

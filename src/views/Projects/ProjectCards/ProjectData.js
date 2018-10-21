@@ -4,14 +4,14 @@ import { Grid, IconButton, Menu, MenuItem, withStyles, /* Typography, */ Select,
 import {
 	AccessTime, AssignmentTurnedIn, MoreVert,
 	DateRange, KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft,
-	DonutLargeRounded, PieChartRounded, BarChart, ExpandMore, Visibility
+	DonutLargeRounded, PieChartRounded, BarChart, ExpandMore, Visibility, ShowChart
 } from "@material-ui/icons"
 // import { dateFormatter } from 'variables/functions';
 import { ItemGrid, CircularLoader, Caption, Info, ItemG, /* , Caption, Info */ } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import deviceStyles from 'assets/jss/views/deviceStyles';
-import { Doughnut, Bar, Pie } from 'react-chartjs-2';
-import { getDataDaily } from 'variables/dataCollections';
+import { Doughnut, Bar, Pie, Line  } from 'react-chartjs-2';
+import { getDataSummary, getDataDaily, /* getDataHourly */ } from 'variables/dataCollections';
 import { colors } from 'variables/colors';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
@@ -19,21 +19,41 @@ import classNames from 'classnames';
 import { dateFormatter } from 'variables/functions';
 var moment = require('moment');
 
+// options: {
+// 	title: {
+// 		display: true,
+// 			text: 'Chart.js Bar Chart - Stacked'
+// 	},
+// 	tooltips: {
+// 		mode: 'index',
+// 			intersect: false
+// 	},
+// 	responsive: true,
+// 		scales: {
+// 		xAxes: [{
+// 			stacked: true,
+// 		}],
+// 			yAxes: [{
+// 				stacked: true
+// 			}]
+// 	}
+// }
+
 
 class ProjectData extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			from: moment().startOf('day'),
+			from: moment().subtract(7, 'd').startOf('day'),
 			to: moment().endOf('day'),
 			barDataSets: null,
 			roundDataSets: null,
 			actionAnchor: null,
 			loading: true,
-			dateFilterInputID: 0,
+			dateFilterInputID: 3,
 			openCustomDate: false,
-			display: 2,
+			display: 3,
 			visibility: false,
 			raw: false
 		}
@@ -70,7 +90,83 @@ class ProjectData extends Component {
 		{ id: 0, icon: <PieChartRounded />, label: this.props.t("charts.type.pie") },
 		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t("charts.type.donut") },
 		{ id: 2, icon: <BarChart />, label: this.props.t("charts.type.bar") },
-	]
+		{ id: 3, icon: <ShowChart />, label: this.props.t("charts.type.line") }
+	] 
+	datesToArr = () => {
+		const { from, to } = this.state
+		let startDate = moment(from)
+		let endDate = moment(to)
+		let arr = []
+		let d = startDate.clone()
+		while (d <= endDate) {
+			arr.push(d)
+			d = d.clone().add(1, 'd')
+		}
+		return arr
+	}
+	getWifiDaily = async () => {
+		const { project } = this.props
+		const { from, to, raw } = this.state
+		let startDate = moment(from).format(this.format)
+		let endDate = moment(to).format(this.format)
+		let days = this.datesToArr()
+		console.log(days);
+		
+		let dataArr = []
+
+		await Promise.all(project.dataCollections.map(async d => {
+			let dataSet = null
+			let data = await getDataDaily(d.id, startDate, endDate, raw)
+			dataSet = {
+				name: d.name,
+				id: d.id,
+				data: data
+			}
+			return dataArr.push(dataSet)
+		}))
+		console.log(dataArr, dataArr.length);
+		
+		// if (dataArr.length > 0)
+		this.setState({
+			loading: false,
+			lineDataSets: {
+				labels: days.map(d => dateFormatter(d)),
+				datasets: dataArr.map((d, id) => ({
+					borderColor: colors[id],
+					// borderWidth: 1,
+					label: d.name,
+					data: Object.keys(d.data).map(data => parseInt(d.data[data], 10)),
+					backgroundColor: colors[18],
+					fill: false,
+					lineTension: 0.1,
+					borderCapStyle: 'butt',
+					borderJoinStyle: 'miter',
+					pointBorderColor: colors[18]
+				}))
+			},
+			roundDataSets: {
+				labels: days.map(d => dateFormatter(d)),
+				datasets: dataArr.map((d, id) => ({
+					label: d.name,
+					borderColor: "#FFF",
+					borderWidth: 1,
+					data: Object.keys(d.data).map(data => parseInt(d.data[data], 10)),
+					backgroundColor: colors[id]
+				}))
+			},
+			barDataSets: {
+				labels: days.map(d => dateFormatter(d)),
+				datasets: dataArr.map((d, id) => ({
+					label: d.name,
+					borderColor: "#FFF",
+					borderWidth: 1,
+					data: Object.keys(d.data).map(data => parseInt(d.data[data], 10)),
+					backgroundColor: colors[id]
+				}))
+			}
+		})
+
+	}
 	getWifiSum = async () => {
 		const { project } = this.props
 		const { from, to, raw } = this.state
@@ -80,7 +176,7 @@ class ProjectData extends Component {
 		let dataArr = []
 		await Promise.all(project.dataCollections.map(async d => {
 			let dataSet = null
-			let rs = await getDataDaily(d.id, startDate, endDate, raw)
+			let rs = await getDataSummary(d.id, startDate, endDate, raw)
 			let total = 0
 			Object.keys(rs).map(r => total = total + parseInt(rs[r], 10))
 			// console.log(total);
@@ -127,7 +223,7 @@ class ProjectData extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		if (this._isMounted) {
-			this.getWifiSum()
+			this.getWifiDaily()
 		}
 	}
 	componentWillUnmount = () => {
@@ -136,10 +232,12 @@ class ProjectData extends Component {
 
 	handleOpenActionsDetails = event => {
 		this.setState({ actionAnchor: event.currentTarget });
-	};
+	}
+
 	handleCloseActionsDetails = () => {
 		this.setState({ actionAnchor: null });
-	};
+	}
+
 	format = "YYYY-MM-DD+HH:mm"
 	displayFormat = "DD MMMM YYYY HH:mm"
 	handleSetDate = (id) => {
@@ -180,7 +278,7 @@ class ProjectData extends Component {
 			loading: true,
 			roundDataSets: null,
 			barDataSets: null
-		}, this.getWifiSum)
+		}, this.getWifiDaily)
 	}
 	handleVisibility = (event) => {
 		let id = event.target.value
@@ -277,7 +375,7 @@ class ProjectData extends Component {
 	}
 	renderType = () => {
 		const { display } = this.state
-
+		// const { t } = this.props
 		switch (display) {
 			case 0:
 				return this.state.roundDataSets ? 
@@ -289,7 +387,7 @@ class ProjectData extends Component {
 							maintainAspectRatio: false,
 						}}
 					/>
-				 : this.renderNoDataFilters()
+					: this.renderNoData()
 			case 1:
 				return this.state.roundDataSets ?
 				
@@ -300,16 +398,36 @@ class ProjectData extends Component {
 							maintainAspectRatio: false,
 						}}
 						data={this.state.roundDataSets}
-					/> : this.renderNoDataFilters()
+					/> : this.renderNoData()
 			case 2:
 				return this.state.barDataSets ? <Bar
 					data={this.state.barDataSets}
 					legend={this.barOpts}
 					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerWidth / 4 : window.innerHeight - 200}
 					options={{
+						display: true,
+						// title: { display: true, text: raw ? t("collections.rawData") : t("collections.calibratedData") },
+						maintainAspectRatio: false,
+						// scales: {
+						// 	xAxes: [{
+						// 		stacked: true,
+						// 	}],
+						// 	yAxes: [{
+						// 		stacked: true
+						// 	}]
+						// }
+					}}
+				/> : this.renderNoData()
+			case 3: 
+				return this.state.lineDataSets ? <Line 
+					data={this.state.lineDataSets}
+					legend={this.barOpts}
+					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerWidth / 4 : window.innerHeight - 200}
+					options={{
+						display: true,
 						maintainAspectRatio: false,
 					}}
-				/> : null
+				/> : this.renderNoData()
 			default:
 				break;
 		}
