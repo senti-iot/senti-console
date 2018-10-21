@@ -132,7 +132,7 @@ class Devices extends Component {
 				{ id: "project.id", label: t("devices.fields.availability") }
 			],
 			loading: false
-		}, () => this.handleRequestSort(null, "id", "desc")) : null)
+		}, () => this.handleRequestSort(null, "id", "asc")) : null)
 	}
 
 	componentWillUnmount = () => {

@@ -152,7 +152,7 @@ class App extends React.Component {
 									touchEvent: false
 								}}
 								autoHideDuration={3000}
-								message={t(this.props.sId, this.props.sOpt)}
+								message={<span>{t(this.props.sId, this.props.sOpt)}</span>}
 								action={
 									<Button size={"small"} variant={"text"} onClick={this.props.sClose} >
 										<Close style={{ color: "white" }}/>

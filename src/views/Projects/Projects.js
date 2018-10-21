@@ -10,7 +10,8 @@ import React, { Component, Fragment } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { deleteProject, getAllProjects } from 'variables/dataProjects';
 import { filterItems, handleRequestSort } from 'variables/functions';
-import { Add, Delete, Devices, Edit, PictureAsPdf, ViewList, ViewModule } from 'variables/icons';
+import { Add, Delete, Edit, PictureAsPdf, ViewList, ViewModule, DataUsage } from 'variables/icons';
+import AssignDCs from 'components/AssignComponents/AssignDCs';
 
 class Projects extends Component {
 	constructor(props) {
@@ -26,6 +27,7 @@ class Projects extends Component {
 			route: 0,
 			order: "desc",
 			orderBy: "title",
+			openAssignDC: false,
 			filters: {
 				name: false,
 				keyword: '',
@@ -40,11 +42,16 @@ class Projects extends Component {
 		const { t } = this.props
 		return [
 			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t("menus.assignDevices"), func: this.assignDevice, single: true, icon: Devices },
+			{ label: t("menus.assignCollections"), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },
 			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
 			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
 	}
+	
+	tabs = [
+		{ id: 0, title: this.props.t("projects.tabs.listView"), label: <ViewList />, url: `${this.props.match.path}/list` },
+		{ id: 1, title: this.props.t("projects.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.path}/grid` },
+	]
 
 	getData = async () => {
 		const { t } = this.props
@@ -61,6 +68,7 @@ class Projects extends Component {
 			loading: false
 		}, () => this.handleRequestSort(null, "title")) : null)
 	}
+
 	componentDidMount = async () => {
 		this._isMounted = 1
 		await this.getData()
@@ -73,26 +81,48 @@ class Projects extends Component {
 			}
 		}
 	}
+
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
+
 	filterItems = (data) => {
 		return filterItems(data, this.state.filters)
 	}
+
 	handleEdit = () => {
 		this.props.history.push(`/project/${this.state.selected[0]}/edit`)
 	}
+
 	handleOpenDeleteDialog = () => {
 		this.setState({ openDelete: true, anchorElMenu: null })
 	}
+
 	handleCloseDeleteDialog = () => {
 		this.setState({ openDelete: false })
+	}
+
+	handleOpenAssignCollection = () => {
+		this.setState({ openAssignDC: true, anchorElMenu: null })
+	}
+
+	handleCloseAssignCollection = async (reload) => {
+		if (reload) {
+			this.setState({ loading: true, openAssignDC: false })
+			await this.getData().then(rs => {
+				this.snackBarMessages(3)
+			})
+		}
+		else {
+			this.setState({ openAssignDC: false })
+		}
 	}
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
 		let newData = handleRequestSort(property, order, this.state.projects)
 		this.setState({ projects: newData, order, orderBy: property })
 	}
+
 	handleFilterStartDate = (value) => {
 		this.setState({
 			filters: {
@@ -102,6 +132,7 @@ class Projects extends Component {
 			}
 		})
 	}
+
 	handleFilterEndDate = (value) => {
 		this.setState({
 			filters: {
@@ -111,6 +142,7 @@ class Projects extends Component {
 			}
 		})
 	}
+
 	handleFilterKeyword = (value) => {
 		this.setState({
 			filters: {
@@ -159,10 +191,14 @@ class Projects extends Component {
 			case 2:
 				s("snackbars.exported")
 				break;
+			case 3: 
+				s("snackbars.assignCollections")
+				break
 			default:
 				break;
 		}
 	}
+	
 	deleteProjects = async (projects) => {
 		await deleteProject(projects).then(() => {
 			this.snackBarMessages(1)
@@ -174,7 +210,9 @@ class Projects extends Component {
 			})
 		})
 	}
+	
 	AddNewProject = () => this.props.history.push('/projects/new')
+	
 	handleToolbarMenuOpen = e => {
 		e.stopPropagation()
 		this.setState({ anchorElMenu: e.currentTarget })
@@ -184,6 +222,7 @@ class Projects extends Component {
 		e.stopPropagation();
 		this.setState({ anchorElMenu: null })
 	}
+	
 	renderTableToolBarContent = () => {
 		return <Fragment>
 			<IconButton aria-label="Add new project" onClick={this.AddNewProject}>
@@ -191,6 +230,7 @@ class Projects extends Component {
 			</IconButton>
 		</Fragment>
 	}
+	
 	ft = () => {
 		const { t } = this.props
 		return [{ id: 'title', name: t("projects.fields.name"), func: this.filter, type: "text" },
@@ -198,11 +238,18 @@ class Projects extends Component {
 		]
 
 	}
+	
 	renderAllProjects = () => {
 		const { t, classes } = this.props
-		const { openDelete, loading, order, orderBy, projects, projectHeader, filters, selected } = this.state
+		const { openDelete, openAssignDC, loading, order, orderBy, projects, projectHeader, filters, selected } = this.state
 		return loading ? <CircularLoader /> :
 			<Paper className={classes.root}>
+				<AssignDCs 
+					open={openAssignDC}
+					handleClose={this.handleCloseAssignCollection}
+					project={selected[0]}
+					t={t}
+				/>
 				<EnhancedTableToolbar
 					ft={this.ft()}
 					anchorElMenu={this.state.anchorElMenu}
@@ -234,11 +281,13 @@ class Projects extends Component {
 				/>
 			</Paper>
 	}
+	
 	renderList = () => {
 		return <GridContainer justify={'center'}>
 			{this.renderAllProjects()}
 		</GridContainer>
 	}
+	
 	renderCards = () => {
 		const { loading } = this.state
 		const { t } = this.props
@@ -246,10 +295,6 @@ class Projects extends Component {
 			<ProjectCards t={t} projects={this.filterItems(this.state.projects)} />
 		</GridContainer>
 	}
-	tabs = [
-		{ id: 0, title: this.props.t("projects.tabs.listView"), label: <ViewList />, url: `${this.props.match.path}/list` },
-		{ id: 1, title: this.props.t("projects.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.path}/grid` },
-	]
 	render() {
 		const { projects, filters } = this.state
 		return (

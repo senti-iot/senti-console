@@ -312,6 +312,7 @@
         "username": "Username"
     },
     "menus": {
+		"assignCollections": "Assign collections",
         "assignCollection": "Assign to collection",
         "assignDevice": "Assign device",
         "assignDevices": "Assign devices",
@@ -478,6 +479,7 @@
         "users": "Users"
     },
     "snackbars": {
+		"assignCollections": "Data collections assigned to project",
         "assignCollection": "Collection %{collection} assigned to %{what}",
         "assignDevice": "Device %{device} assigned to %{what}",
         "collectionCreated": "Data Collection has been created!",

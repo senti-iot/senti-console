@@ -312,6 +312,7 @@
 		"username": "Brugernavn"
 	},
 	"menus": {
+		"assignCollections": "Tilknyt til datasamlinger",
 		"assignCollection": "Tilknyt til datasamling",
 		"assignDevice": "Tilknyt enhed",
 		"assignDevices": "Tilknyt enheder",
@@ -478,8 +479,9 @@
 		"users": "Brugere"
 	},
 	"snackbars": {
-		"assignCollection": "Collection ${collection} tildelt til ${org}",
-		"assignDevice": "Enhed ${device} tildelt til ${org}",
+		"assignCollections": "Datasamlinger tildelt til projekt",
+		"assignCollection": "Datasamling ${collection} tildelt til ${what}",
+		"assignDevice": "Enhed ${device} tildelt til ${what}",
 		"collectionCreated": "Datasamling er oppretet!",
 		"collectionDeleted": "Datasamling er slettet!",
 		"collectionUpdated": "Datasamling er opdateret!",

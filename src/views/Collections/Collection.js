@@ -125,10 +125,13 @@ class Collection extends Component {
 	}
 	handleCloseAssignDevice =async (reload) => {
 		if (reload) { 
-			this.setState({ loading: true, anchorEl: null, openAssignDevice: false })
+			this.setState({ loading: true, openAssignDevice: false })
 			await this.getCollection(this.state.collection.id).then(rs => { 
 				this.snackBarMessages(6)
 			})
+		}
+		else {
+			this.setState({ openAssignDevice: false })
 		}
 	}
 	handleOpenAssignOrg = () => {

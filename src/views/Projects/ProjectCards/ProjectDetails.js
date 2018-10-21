@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { Grid, withStyles } from '@material-ui/core';
-import { LibraryBooks, Edit, Delete } from "@material-ui/icons"
+import { LibraryBooks, Edit, Delete, DataUsage } from "@material-ui/icons"
 import { dateFormatter } from 'variables/functions';
 import { ItemGrid, Caption, Info, Dropdown } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
@@ -24,8 +24,11 @@ class ProjectDetails extends Component {
 				title={project.title} avatar={<LibraryBooks />}
 				noExpand
 				topAction={<Dropdown
-					menuItems={[{ label: t("menus.editProject"), icon: <Edit className={classes.leftIcon} />, func: this.editProject },
-						{ label: t("menus.deleteProject"), icon: <Delete className={classes.leftIcon} />, func: this.deleteProject }]
+					menuItems={[
+						{ label: t("menus.editProject"), icon: <Edit className={classes.leftIcon} />, func: this.editProject },
+						{ label: t("menus.deleteProject"), icon: <Delete className={classes.leftIcon} />, func: this.deleteProject },
+						{ label: t("menus.assignCollections"), icon: <DataUsage className={classes.leftIcon} />, func: this.props.handleOpenAssignCollection },
+					]
 					}
 				/>
 				}
