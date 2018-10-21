@@ -340,7 +340,8 @@
         "unassign": "Unassign",
         "unassignDevice": "Unassign from project",
         "unassignOrg": "Unassign organisation",
-        "unassignProject": "Unassign device(s) from project",
+		"unassignProject": "Unassign device(s) from project",
+		"unassignCollection": "Unassign device from collection",
         "userResendEmail": "Resend Confirm Email"
     },
     "orgs": {
@@ -478,7 +479,7 @@
     },
     "snackbars": {
         "assignCollection": "Collection %{collection} assigned to %{org}",
-        "assignDevice": "Device %{device} assigned to %{org}",
+        "assignDevice": "Device %{device} assigned to %{what}",
         "collectionCreated": "Data Collection has been created!",
         "collectionDeleted": "Data Collection has been deleted!",
         "collectionUpdated": "Data Collection has been updated!",
@@ -502,8 +503,8 @@
         "redirect": "Redirecting ...",
         "resetDeviceSuccess": "Device has been resetted",
         "settingsSaved": "Settings saved!",
-        "unassignCollection": "Collection %{collection} unassigned from %{org}",
-        "unassignDevice": "Device %{device} unassigned from %{org}",
+        "unassignCollection": "Collection %{collection} unassigned from %{what}",
+        "unassignDevice": "Device %{device} unassigned from %{what}",
         "updatedFailed": "Update failed!",
         "updatedSuccess": "Updated!",
         "updating": "Updating...",

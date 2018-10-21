@@ -11,51 +11,85 @@ export const getAvailableDevices = async () => {
 /**
  * Assign a Device to a collection
  * @function
- * @param obj - Contains:
- * id - Data Collection ID \n
- * deviceId - Device ID \n
- * start - Date
+ * @param {Object} obj - Contains:
+ * @param {int} obj.id - Data Collection ID
+ * @param {int} obj.deviceId - Device ID
+ * @param {Date} obj.start - Date
  */
 export const assignDeviceToCollection = async (obj) => {
 	let data = await api.post(`/senti/datacollection/assigndevice`, obj).then(rs => rs.data)
 	return data
 }
 /**
- * 
- * @param id 
+ * @function
+ * @param {Object} obj - Contains:
+ * @param {int} obj.id - Data Collection ID
+ * @param {int} obj.deviceId - Device ID
+ * @param {Date} obj.end - Date
+ */
+export const unassignDeviceFromCollection = async (obj) => {
+	// let obj = date ? { id: dcId, deviceId: dId, end: date } : { id: dcId, deviceId: dId }
+	let response = await api.post(`/senti/datacollection/unassigndevice`, obj)
+	return response.data ? response.data : response.status
+}
+/**
+ * @function
+ * @param id - DataCollection ID
  */
 export const getCollection = async (id) => {
 	let data = await api.get(`/senti/datacollection/${id}`).then(rs => rs.data)
 	return data
 }
-
+/**
+ * Get All the Data Collections
+ * @function
+ */
 export const getAllCollections = async () => {
 	let data = await api.get(`/senti/datacollections`).then(rs => rs.data)
 	return data
 }
+/**
+ * Update Data Collection
+ * @function
+ * @param {Object} dc - Data Collection Object
+ */
 export const updateCollection = async (dc) => {
 	let data = await api.put(`/senti/datacollection/${dc.id}`, dc).then(rs => rs.data)
 	return data
 }
+/**
+ * @function
+ */
 export const getEmptyCollection = async () => {
 	let response = await api.get(`/senti/datacollection/empty`)
 	return response.data
 }
+/** 
+ * Create Collection
+ * @function
+ * @param {Object} dc - Data Collection Object based of `getEmptyCollection`
+*/
 export const createCollection = async (dc) => {
 	let data = await api.post(`/senti/datacollection`, dc).then(rs => rs.data)
 	return data
 }
+/**
+ * Delete a Data Collection
+ * @function
+ * @param {int} id - Data collection Id to be deleted
+ */
 export const deleteCollection = async (id) => {
 	let data = await api.delete(`/senti/datacollection/${id}`).then(rs => rs.data)
 	return data
 }
 //#region get Data
 /**
- * 
- * @param {int} id
+ * Get Daily Data
+ * @function
+ * @param {int} id - Data Collection ID
  * @param {Date} from - YYYY-MM-DDTHH:mm
  * @param {Date} to - YYYY-MM-DDTHH:mm
- * @param {bool} raw 
+ * @param {bool} raw - Raw Data
  */
 export const getDataDaily = async (id, from, to, raw) => {
 	let URL = raw ? `/senti/sentiwi/daily/raw/${id}/${from}/${to}` : `/senti/sentiwi/daily/${id}/${from}/${to}` 
@@ -64,8 +98,9 @@ export const getDataDaily = async (id, from, to, raw) => {
 	return response.data ? response.data : response.status
 }
 /**
- * 
- * @param {int} id
+ * Get Hourly Data 
+ * @function
+ * @param {int} id - Data Collection ID
  * @param {Date} from - YYYY-MM-DDTHH:mm
  * @param {Date} to - YYYY-MM-DDTHH:mm
  * @param {bool} raw 
@@ -74,6 +109,19 @@ export const getDataHourly = async (id, from, to, raw) => {
 	let URL = raw ? `/senti/sentiwi/hourly/raw/${id}/${from}/${to}` : `/senti/sentiwi/hourly/${id}/${from}/${to}`
 	let response = await api.get(URL)
 	// console.log(response)
+	return response.data ? response.data : response.status
+}
+/**
+ * Get Summary Data 
+ * @function
+ * @param {int} id - Data Collection ID
+ * @param {Date} from - YYYY-MM-DDTHH:mm
+ * @param {Date} to - YYYY-MM-DDTHH:mm
+ * @param {bool} raw 
+ */
+export const getSummaryData = async (id, from, to, raw) => {
+	let URL = raw ? `/senti/sentiwi/summary/raw/${id}/${from}/${to}` : `/senti/sentiwi/summary/${id}/${from}/${to}`
+	let response = await api.get(URL)
 	return response.data ? response.data : response.status
 }
 

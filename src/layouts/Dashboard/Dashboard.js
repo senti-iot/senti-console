@@ -98,9 +98,9 @@ class App extends React.Component {
 	}
 	
 	render() {
-		const { classes, t, loading, ...rest } = this.props;
+		const { classes, t, loading, sOpt, ...rest } = this.props;
+		console.log(sOpt)
 		return (
-
 			<div className={classes.wrapper}>
 				<div className={classes.mainPanel} ref={"mainPanel"}>
 					<Header
@@ -141,7 +141,6 @@ class App extends React.Component {
 								</Switch>
 							</div>
 							<Snackbar
-								
 								anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
 								open={this.props.sOpen}
 								onClose={this.props.sClose}

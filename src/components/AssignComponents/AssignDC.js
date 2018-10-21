@@ -47,7 +47,7 @@ class AssignDC extends React.Component {
 	assignCollection = async () => {
 		const { deviceId } = this.props
 
-		await assignDeviceToCollection({ id: this.state.selectedCollections, deviceId }).then(() => {
+		await assignDeviceToCollection({ id: this.state.selectedCollections, deviceId }).then(rs => {
 			this.props.handleClose(true)
 		})
 	}
