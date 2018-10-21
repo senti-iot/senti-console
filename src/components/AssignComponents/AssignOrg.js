@@ -89,7 +89,7 @@ class AssignOrg extends React.Component {
 							<Hidden mdDown>
 								<ItemG container alignItems={'center'}>
 									<ItemG xs={2} container alignItems={'center'}>
-										<IconButton color="inherit" onClick={this.props.handleCancel} aria-label="Close">
+										<IconButton color="inherit" onClick={this.closeDialog} aria-label="Close">
 											<Close />
 										</IconButton>
 										<Typography variant="h6" color="inherit" className={classes.flex}>
@@ -115,7 +115,7 @@ class AssignOrg extends React.Component {
 							<Hidden lgUp>
 								<ItemG container alignItems={'center'}>
 									<ItemG xs={12} container alignItems={'center'}>
-										<IconButton color={'inherit'} onClick={this.props.handleCancel} aria-label="Close">
+										<IconButton color={'inherit'} onClick={this.closeDialog} aria-label="Close">
 											<Close />
 										</IconButton>
 										<Typography variant="h6" color="inherit" className={classes.flex}>
