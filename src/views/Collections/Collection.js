@@ -203,8 +203,9 @@ class Collection extends Component {
 			if (rs) {
 				this.handleCloseUnassign()
 				this.setState({ loading: true, anchorEl: null })
-				await this.getCollection(this.state.collection.id)
-				this.snackBarMessages(1)
+				await this.getCollection(this.state.collection.id).then(
+					() => this.snackBarMessages(1)
+				)
 			}
 			else {
 				this.setState({ loading: false, anchorEl: null })

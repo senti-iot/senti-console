@@ -45,15 +45,15 @@ class AssignOrg extends React.Component {
 	}
 	assignOrg = async () => {
 		if (this.props.devices)
-			Promise.all([this.props.deviceId.forEach(async e => {
-				await updateDevice({ ...e, org: { id: this.state.selectedOrg } }).then(rs => rs)
-			})]).then(() => {
+			Promise.all(this.props.deviceId.map( e =>
+				updateDevice({ ...e, org: { id: this.state.selectedOrg } }).then(rs => rs)
+			)).then(rs => {
 				this.props.handleClose(true)
 			})
 		if (this.props.collections) {
-			Promise.all([this.props.collectionId.map(e => {
+			Promise.all(this.props.collectionId.map(e => {
 				return updateCollection({ ...e, org: { id: this.state.selectedOrg } })
-			})]).then(() => {
+			})).then(rs => {
 				this.props.handleClose(true)
 			}
 			)

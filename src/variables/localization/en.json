@@ -168,7 +168,7 @@
             "map": "Map",
             "pictures": "Images"
         },
-        "confirmUnassignMessage": "Unassign the selected devices from project:",
+        "confirmUnassignMessage": "Unassign the selected devices from data collections:",
         "confirmUnassignTitle": "Unassign from project",
         "device": "Device",
         "editDetailsTitle": "Edit %{deviceId}",
@@ -365,7 +365,7 @@
         "orgDeleteConfirm": "Are you sure you want to delete organisation %{org}",
         "orgsDelete": "Delete organisations",
         "orgsDeleteConfirm": "Are you sure you want to delete the following organisation",
-        "pageTitile": "Organisations",
+        "pageTitle": "Organisations",
         "updateOrg": "Edit",
         "validation": {
             "networkError": "Network Error!",
@@ -478,7 +478,7 @@
         "users": "Users"
     },
     "snackbars": {
-        "assignCollection": "Collection %{collection} assigned to %{org}",
+        "assignCollection": "Collection %{collection} assigned to %{what}",
         "assignDevice": "Device %{device} assigned to %{what}",
         "collectionCreated": "Data Collection has been created!",
         "collectionDeleted": "Data Collection has been deleted!",

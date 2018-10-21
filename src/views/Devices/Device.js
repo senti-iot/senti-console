@@ -57,6 +57,9 @@ class Device extends Component {
 				this.setState({
 					device: {
 						...this.state.device,
+						project: {
+							id: 0
+						},
 						dataCollection: rs
 					},
 					 loading: false
@@ -69,7 +72,10 @@ class Device extends Component {
 						...this.state.device,
 						dataCollection: {
 							id: 0
-						}
+						},
+						project: {
+							id: 0
+						},
 					}
 				})
 			}
@@ -103,6 +109,9 @@ class Device extends Component {
 			case 3:
 				s("snackbars.failedUnassign")
 				break
+			case 4: 
+				s("snackbars.assignDevice", { device: `${name}(${id})`, what: `${device.org.name}` })
+				break
 			default:
 				break
 		}
@@ -118,9 +127,10 @@ class Device extends Component {
 
 	handleCloseAssignOrg = async (reload) => {
 		if (reload) {
-			this.setState({ loading: true, anchorEl: null })
-			this.snackBarMessages(2)
-			await this.getDevice(this.state.device.id)
+			this.setState({ loading: true })
+			await this.getDevice(this.state.device.id).then(
+				() => this.snackBarMessages(4)
+			)
 		}
 		this.setState({ openAssignOrg: false })
 	}
@@ -187,8 +197,8 @@ class Device extends Component {
 		if (rs) {
 			this.handleCloseUnassign()
 			this.setState({ loading: true, anchorEl: null })
-			this.snackBarMessages(1)
-			await this.getDevice(this.state.device.id)
+			
+			await this.getDevice(this.state.device.id).then(() => this.snackBarMessages(1))
 		}
 		else {
 			this.setState({ loading: false, anchorEl: null })

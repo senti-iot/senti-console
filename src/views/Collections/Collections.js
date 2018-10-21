@@ -64,10 +64,10 @@ class Collections extends Component {
 				s("snackbars.exported")
 				break;
 			case 3:
-				s("snackbars.assignCollection", { collection: ``, org: "Device" })
+				s("snackbars.assignCollection", { collection: ``, what: "Device" })
 				break;
 			case 6:
-				s("snackbars.assignCollection", { collection: ``, org: "Project" })
+				s("snackbars.assignCollection", { collection: ``, what: "Project" })
 				break
 			default:
 				break;
@@ -151,8 +151,9 @@ class Collections extends Component {
 			return deleteCollection(u)
 		})]).then(async () => {
 			this.setState({ loading: true, openDelete: false, anchorElMenu: null, selected: [] })
-			this.snackBarMessages(1)
-			await this.getData()
+			await this.getData().then(
+				() => this.snackBarMessages(1)
+			)
 		})
 	}
 	handleSelectAllClick = (event, checked) => {

@@ -168,7 +168,7 @@
 			"map": "Kort",
 			"pictures": "Billeder"
 		},
-		"confirmUnassignMessage": "Fjern tilknytning af de valgte enheder fra projekterne:",
+		"confirmUnassignMessage": "Fjern tilknytning af de valgte enheder fra datasamlingere:",
 		"confirmUnassignTitle": "Fjern tilknytning fra projekt",
 		"device": "Enhed",
 		"editDetailsTitle": "Opdater %{deviceId}",

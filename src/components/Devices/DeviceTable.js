@@ -1,89 +1,31 @@
 import {
-	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
-	TableRow, Typography, withStyles, Dialog, DialogTitle, DialogContent,
-	DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem
+	Checkbox, Hidden, Table, TableBody, TableCell,
+	TableRow, Typography, withStyles,
 } from "@material-ui/core";
-import { SignalWifi2Bar, SignalWifi2BarLock, Add, FilterList, Delete, Build, Business, DataUsage, Edit, LayersClear } from 'variables/icons';
+import { SignalWifi2Bar, SignalWifi2BarLock, /* Delete, Build, Business, DataUsage, Edit, LayersClear */ } from 'variables/icons';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
 import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 import { withRouter } from 'react-router-dom';
 import EnhancedTableHead from 'components/Table/TableHeader'
-import EnhancedTableToolbar from 'components/Table/TableToolbar';
 import { connect } from 'react-redux'
-import { ItemGrid, Info, Caption, AssignOrg, AssignDC } from 'components';
+import { ItemGrid, Info, Caption } from 'components';
 import TC from 'components/Table/TC'
-import { updateDevice } from 'variables/dataDevices'
-import { boxShadow } from "assets/jss/material-dashboard-react";
 import TP from 'components/Table/TP';
+
 class EnhancedTable extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			order: 'desc',
-			orderBy: 'id',
 			selected: [],
 			page: 0,
 			rowsPerPage: props.rowsPerPage,
 			anchorElMenu: null,
 			anchorFilterMenu: null,
-			openAssignCollection: false,
-			openAssignOrg: false,
-			openUnassign: false,
 		};
 	}
 
-	handleCalibrateFlow = () => {
-		this.props.history.push(`/device/${this.state.selected[0]}/calibrate`)
-	}
-	options = () => {
-		const { t, accessLevel } = this.props
-		if (accessLevel.apisuperuser)
-			return [
-				{ label: t("menus.edit"), func: this.handleDeviceEdit, single: true, icon: Edit },
-				{ label: t("menus.assignCollection"), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },
-				{ label: t("menus.assignOrg"), func: this.handleAssignToOrg, single: false, icon: Business },
-				{ label: t("menus.unassignCollection"), func: this.handleOpenUnassignDialog, single: false, icon: LayersClear },
-				// { label: t("menus.unassignCollection"), func: this.handleOpenUnassignCollection, single: true, icon: LayersClear },
-				// { label: t("menus.exportPDF"), func: () => { }, single: false, icon: PictureAsPdf},
-				{ label: t("menus.calibrate"), func: this.handleCalibrateFlow, single: true, icon: Build },
-				{ label: t("menus.delete"), func: this.handleDeleteProjects, single: false, icon: Delete }, ]
-		else {
-			return [
-				{ label: t("menus.exportPDF"), func: () => { }, single: false }
-			]
-		}
-	}
-	handleDeviceEdit = () => {
-		const { selected } = this.state
-		this.props.history.push({
-			pathname: `/device/${selected[0]}/edit`,
-			prevURL: '/devices/list'
-		})
-	}
-	handleAssignToOrg = () => {
-		this.setState({ openAssignOrg: true })
-	}
-	handleCloseAssignToOrg = reload => {
-		this.setState({ openAssignOrg: false })
-		this.props.reload()
-	}
-	handleOpenAssignCollection = () => {
-		this.setState({ openAssignCollection: true })
-	}
-	handleCloseAssignCollection = reload => {
-		this.setState({ openAssignCollection: false })
-		this.props.reload()
-	}
-	handleToolbarMenuOpen = e => {
-		e.stopPropagation()
-		this.setState({ anchorElMenu: e.currentTarget });
-	};
-	handleToolbarMenuClose = e => {
-		e.stopPropagation();
-		this.setState({ anchorElMenu: null })
-	}
 	handleFilterMenuOpen = e => {
 		e.stopPropagation()
 		this.setState({ anchorFilterMenu: e.currentTarget })
@@ -91,8 +33,6 @@ class EnhancedTable extends React.Component {
 	handleFilterMenuClose = e => {
 		e.stopPropagation()
 		this.setState({ anchorFilterMenu: null })
-	}
-	handleFilter = e => {
 	}
 	handleSearch = value => {
 		this.setState({
@@ -103,36 +43,6 @@ class EnhancedTable extends React.Component {
 		this.props.handleRequestSort(event, property)
 	}
 
-	handleSelectAllClick = (event, checked) => {
-		if (checked) {
-			this.setState({ selected: this.props.data.map(n => n.id) });
-			return;
-		}
-		this.setState({ selected: [] });
-	};
-
-	handleClick = (event, id) => {
-		event.stopPropagation()
-		const { selected } = this.state;
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
-
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(
-				selected.slice(0, selectedIndex),
-				selected.slice(selectedIndex + 1),
-			);
-		}
-
-		this.setState({ selected: newSelected });
-	};
-
 	handleChangePage = (event, page) => {
 		this.setState({ page });
 	};
@@ -140,30 +50,9 @@ class EnhancedTable extends React.Component {
 	handleChangeRowsPerPage = event => {
 		this.setState({ rowsPerPage: event.target.value });
 	};
-	handleUnassignDevices = async () => {
-		const { data } = this.props
-		const { selected } = this.state
-		var devices = selected.map(s => data[data.findIndex(d => d.id === s)])
 
-		devices.forEach(async d => {
-			await updateDevice({
-				...d,
-				project: {
-					id: 0
-				}
-			}).then(rs => this.handleCloseAssignCollection())
-		})
-	}
 
-	handleOpenUnassignDialog = () => {
-		this.setState({ openUnassign: true, anchorElMenu: null })
-	}
-
-	handleCloseUnassignDialog = () => {
-		this.setState({ openUnassign: false })
-	}
-
-	isSelected = id => this.state.selected.indexOf(id) !== -1;
+	isSelected = id => this.props.selected.indexOf(id) !== -1;
 
 	renderIcon = (status) => {
 		const { classes, t } = this.props
@@ -181,104 +70,22 @@ class EnhancedTable extends React.Component {
 		}
 	}
 
-	renderTableToolBarContent = () => {
-		const { classes, tableHead, t } = this.props
-		const { anchorFilterMenu } = this.state
-		return <Fragment>
-			<IconButton aria-label="Add new organisation" onClick={this.addNewOrg}>
-				<Add />
-			</IconButton>
-			<IconButton
-				className={classes.secondAction}
-				aria-label={t("tables.filter")}
-				aria-owns={anchorFilterMenu ? "filter-menu" : null}
-				onClick={this.handleFilterMenuOpen}>
-				<FilterList />
-			</IconButton>
-			<Menu
-				id="filter-menu"
-				anchorEl={anchorFilterMenu}
-				open={Boolean(anchorFilterMenu)}
-				onClose={this.handleFilterMenuClose}
-				PaperProps={{ style: { width: 200, boxShadow: boxShadow } }}>
 
-				{tableHead.map(option => {
-					return <MenuItem key={option.id} onClick={this.handleFilter}>
-						{option.label}
-					</MenuItem>
-				})}
-			</Menu>
-		</Fragment>
-	}
-	renderConfirmUnassign = () => {
-		const { openUnassign, selected } = this.state
-		const { data, t } = this.props
-		return <Dialog
-			open={openUnassign}
-			onClose={this.handleCloseUnassignDialog}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
-		>
-			<DialogTitle id="alert-dialog-title">{t("devices.confirmUnassignTitle")}</DialogTitle>
-			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{t("devices.confirmUnassignMessage")}
-				</DialogContentText>
-				<div>
-					{selected.map(s => {
-						let device = data[data.findIndex(d => d.id === s)]
-						return <Info key={s}>&bull;{`${device.id} ${device.name}`}</Info>})
-					}
-				</div>
-			</DialogContent>
-			<DialogActions>
-				<Button onClick={this.handleCloseUnassignDialog} color="primary">
-					{t("actions.no")}
-				</Button>
-				<Button onClick={this.handleUnassignDevices} color="primary" autoFocus>
-					{t("actions.yes")}
-				</Button>
-			</DialogActions>
-		</Dialog>
-	}
 	render() {
-		const { classes, t, data, order, orderBy } = this.props;
-		const { selected, rowsPerPage, page, openAssignCollection, openAssignOrg } = this.state;
+		const { classes, t, data, order, orderBy, handleClick, handleSelectAllClick  } = this.props;
+		const { selected, rowsPerPage, page,  } = this.state;
 		let emptyRows
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 		return (
-			<Paper className={classes.root}>
-				{this.renderConfirmUnassign()}
-				<AssignDC
-					deviceId={selected[0] ? selected[0] : 0}
-					open={openAssignCollection}
-					handleClose={this.handleCloseAssignCollection}
-					handleCancel={this.handleCancelAssign}
-					t={this.props.t}
-				/>
-				<AssignOrg
-					devices
-					open={openAssignOrg}
-					handleClose={this.handleCloseAssignToOrg}
-					deviceId={selected.map(s => data[data.findIndex(d => d.id === s)])}
-					t={t} />
-				<EnhancedTableToolbar
-					anchorElMenu={this.state.anchorElMenu}
-					handleToolbarMenuClose={this.handleToolbarMenuClose}
-					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
-					numSelected={selected.length}
-					options={this.options}
-					t={t}
-				// content={this.renderTableToolBarContent()}
-				/>
+			<Fragment>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
 						<EnhancedTableHead
 							numSelected={selected.length}
 							order={order}
 							orderBy={orderBy}
-							onSelectAllClick={this.handleSelectAllClick}
+							onSelectAllClick={handleSelectAllClick}
 							onRequestSort={this.handleRequestSort}
 							rowCount={data ? data.length : 0}
 							columnData={this.props.tableHead}
@@ -308,7 +115,7 @@ class EnhancedTable extends React.Component {
 										style={{ cursor: 'pointer' }}
 									>
 										<Hidden lgUp>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
@@ -329,7 +136,7 @@ class EnhancedTable extends React.Component {
 												</ItemGrid>} />
 										</Hidden>
 										<Hidden mdDown>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
 											<TC label={n.name ? n.name : t("devices.noName")} />
@@ -359,7 +166,7 @@ class EnhancedTable extends React.Component {
 					handleChangePage={this.handleChangePage}
 					handleChangeRowsPerPage={this.handleChangeRowsPerPage}
 				/>
-			</Paper>
+			</Fragment>
 		);
 	}
 }
