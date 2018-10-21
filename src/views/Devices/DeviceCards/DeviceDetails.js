@@ -52,7 +52,7 @@ class DeviceDetails extends Component {
 	}
 	render() {
 		const { classes, device, t, accessLevel, history } = this.props
-		// console.log(device)
+		console.log(device)
 		return (
 			<InfoCard
 				title={device.name ? device.name : device.id}
@@ -150,13 +150,13 @@ class DeviceDetails extends Component {
 									: t("devices.noProject")}</Info>
 
 							</ItemGrid>
-							{/* <ItemGrid>
-								<Caption>{t("devices.fields.project")}:</Caption>
-								<Info>{device.project.id > 0 ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : t("devices.noProject")}</Info>
-							</ItemGrid> */}
+							<ItemGrid xs={12}>
+								<Caption>{t("collections.fields.id")}:</Caption>
+								<Info>{device.dataCollection.id > 0 ? <Link to={'/collection/' + device.dataCollection.id}>{device.dataCollection.name}</Link> : t("devices.noProject")}</Info>
+							</ItemGrid>
 							<ItemGrid>
 								<Caption>{t("devices.fields.availability")}:</Caption>
-								<Info>{device.project.id > 0 ? t("devices.fields.notfree") : t("devices.fields.free")}</Info>
+								<Info>{device.dataCollection.id > 0 ? t("devices.fields.notfree") : t("devices.fields.free")}</Info>
 							</ItemGrid>
 						</Grid>
 					</Fragment>} />

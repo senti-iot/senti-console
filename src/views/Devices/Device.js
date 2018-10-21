@@ -16,6 +16,7 @@ import DeviceData from './DeviceCards/DeviceData'
 import { dateFormatter } from 'variables/functions';
 import { connect } from 'react-redux';
 import { getCollection } from 'variables/dataCollections';
+// import DeviceDataCollection from './DeviceCards/DeviceDataCollection';
 
 class Device extends Component {
 	constructor(props) {
@@ -250,6 +251,14 @@ class Device extends Component {
 							match={this.props.match}
 							t={this.props.t}
 						/>
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin>
+						{/* <DeviceDataCollection
+							dcId={device.dataCollection}
+							history={this.props.history}
+							match={this.props.match}
+							t={this.props.t}
+						/> */}
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
 						<InfoCard

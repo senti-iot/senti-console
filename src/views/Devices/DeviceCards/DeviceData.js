@@ -692,13 +692,22 @@ class DeviceData extends Component {
 
 	render() {
 		const { loading, raw } = this.state
-		const { t, classes } = this.props
+		const { t, classes, /*  device */ } = this.props
 		return (
 			<InfoCard
-				noExpand
+				noRightExpand
 				topAction={this.renderMenu()}
 				title={t("devices.cards.data")}
 				avatar={<Timeline />}
+				// leftActions={
+				// 	<Button
+				// 		style={{ marginLeft: 24, padding: 16 }} 
+				// 		variant={'text'} 
+				// 		color={"primary"} 
+				// 		onClick={() => this.props.history.push({ pathname: `/collection/${device.dataCollection.id}`, prevURL: `/device/${device.id}` })}>
+				// 		{t("menus.seeMore")}
+				// 	</Button>
+				// }
 				content={
 					<ItemG container>
 						{this.renderCustomDateDialog()}

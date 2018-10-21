@@ -135,6 +135,7 @@ class LoginPage extends React.Component {
 												handleChange={this.handleInput}
 												value={this.state.user}
 												InputProps={{
+													autoComplete: true,
 													type: "email",
 													endAdornment: <InputAdornment position="end">
 														<Person className={IconEndAd} />
@@ -144,10 +145,12 @@ class LoginPage extends React.Component {
 											<TextF
 												id={"pass"}
 												label={t("login.pass")}
+											
 												error={this.state.error}
 												handleChange={this.handleInput}
 												value={this.state.pass}
 												InputProps={{
+													autoComplete: true,
 													type: "password",
 													endAdornment: <InputAdornment position="end">
 														<LockOutlined className={IconEndAd} />
