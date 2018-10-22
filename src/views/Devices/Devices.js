@@ -223,7 +223,7 @@ class Devices extends Component {
 
 	handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			this.setState({ selected: this.props.data.map(n => n.id) });
+			this.setState({ selected: this.state.devices.map(n => n.id) });
 			return;
 		}
 		this.setState({ selected: [] });
