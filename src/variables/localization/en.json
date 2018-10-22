@@ -77,9 +77,6 @@
 			"data": "Data",
 			"log": "Device log"
 		},
-		"dcDelete": "Delete Data Collection",
-		"dcDeleteConfirm": "Are you sure you want to delete this Data Collection?",
-		"dcsDeleteConfirm": "Are you sure you want to delete these Data Collections:",
 		"fields": {
 			"activeDevice": "Active Device",
 			"activeDeviceStartDate": "Data collection start",
@@ -264,7 +261,7 @@
 				"users": "Delete users?"
 			},
 			"message": {
-				"collection": "Are you sure you want to delete this data collection?",
+				"collection": "Are you sure you want to delete this data collection ( %{collection} )?",
 				"collections": "Are you sure you want to delete these data collections:",
 				"project": "Are you sure you want to delete this project?",
 				"projects": "Are you sure you want to delete these projects:",

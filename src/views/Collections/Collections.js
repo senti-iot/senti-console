@@ -246,10 +246,10 @@ class Collections extends Component {
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{t("collections.dcDelete")}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("dialogs.delete.title.collections")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("collections.dcsDeleteConfirm")}
+					{t("dialogs.delete.message.collections")}
 				</DialogContentText>
 				<List>
 					{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>

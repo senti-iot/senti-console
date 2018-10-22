@@ -288,10 +288,10 @@ class Collection extends Component {
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description"
 			>
-				<DialogTitle id="alert-dialog-title">{t("collections.dcDelete")}</DialogTitle>
+				<DialogTitle id="alert-dialog-title">{t("dialogs.delete.title.collection")}</DialogTitle>
 				<DialogContent>
 					<DialogContentText id="alert-dialog-description">
-						{t("collections.dcDeleteConfirm")}
+						{t("dialogs.delete.message.collection", { collection: this.state.collection.name })}
 					</DialogContentText>
 
 				</DialogContent>
