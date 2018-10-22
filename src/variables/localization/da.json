@@ -77,8 +77,6 @@
 			"data": "Data",
 			"log": "Enhedslog"
 		},
-	
-		"dcsDeleteConfirm": "Er du sikker på, at du vil slette disse Datasamlinger:",
 		"fields": {
 			"activeDevice": "Aktiv enhed",
 			"activeDeviceStartDate": "Dataopsamling start",
@@ -167,8 +165,6 @@
 			"map": "Kort",
 			"pictures": "Billeder"
 		},
-		"confirmUnassignMessage": "Fjern tilknytning af de valgte enheder fra datasamlingere:",
-		"confirmUnassignTitle": "Fjern tilknytning fra projekt",
 		"device": "Enhed",
 		"editDetailsTitle": "Opdater %{deviceId}",
 		"editHardwareTitle": "Opdater hardware for enhed %{deviceId}",

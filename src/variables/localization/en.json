@@ -165,8 +165,6 @@
 			"map": "Map",
 			"pictures": "Images"
 		},
-		"confirmUnassignMessage": "Unassign the selected devices from data collections:",
-		"confirmUnassignTitle": "Unassign from project",
 		"device": "Device",
 		"editDetailsTitle": "Edit %{deviceId}",
 		"editHardwareTitle": "Edit hardware for device %{deviceId}",
@@ -271,21 +269,22 @@
 				"users": "Are you sure you want to delete these users:"
 			}
 		},
-		"unassignNew": {
+		"unassign": {
 			"title": {
 				"deviceFromCollection": "Unassign device from collection?",
+				"devicesFromCollection": "Unassign devices from collection?",
 				"deviceFromOrg": "Unassign device from organisation?",
 				"collectionFromProject": "Unassign collection from project?",
 				"collectionsFromProject": "Unassign collecitons from project?"
 			},
 			"message": {
 				"deviceFromCollection": "Unassign device %{device} from collection %{collection}?",
+				"devicesFromCollection": "Unassign the selected devices from their data collection:",
 				"deviceFromOrg": "Unassign device %{device} from organisation %{organisation}?",
 				"collectionFromProject": "Unassign collection %{collection} from project %{project} ?",
 				"collectionsFromProject": "Unassign the following collections from project: "
 			}
 		},
-		"unassign": "Are you sure you want to unassign %{name} with ID: %{id}, from %{what}",
 		"unassignDeviceFromCollection": "Are you sure you want to unassign device (%{id}) from %{collection}?",
 		"unassignTitle": "Unassign?",
 		"warnings": {

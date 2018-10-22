@@ -290,10 +290,10 @@ class Devices extends Component {
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{t("devices.confirmUnassignTitle")}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("dialogs.unassign.title.devicesFromCollection")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("devices.confirmUnassignMessage")}
+					{t("dialogs.unassign.message.devicesFromCollection")}
 				</DialogContentText>
 				<div>
 					{selected.map(s => {
