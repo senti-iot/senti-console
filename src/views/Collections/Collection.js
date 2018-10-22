@@ -3,7 +3,7 @@ import collectionStyles from 'assets/jss/views/deviceStyles';
 import { CircularLoader, GridContainer, ItemGrid, AssignOrg, AssignProject, AssignDevice } from 'components';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getCollection, updateCollection, deleteCollection } from 'variables/dataCollections';
+import { getCollection, deleteCollection, unassignDeviceFromCollection } from 'variables/dataCollections';
 import { dateFormatter } from 'variables/functions';
 import CollectionActiveDevice from 'views/Collections/CollectionCards/CollectionActiveDevice';
 import CollectionData from 'views/Collections/CollectionCards/CollectionData';
@@ -22,7 +22,7 @@ class Collection extends Component {
 			loading: true,
 			anchorElHardware: null,
 			openAssign: false,
-			openUnassign: false,
+			openUnassignDevice: false,
 			openAssignOrg: false,
 			openAssignDevice: false,
 			openDelete: false,
@@ -71,21 +71,19 @@ class Collection extends Component {
 		const { s, t } = this.props
 		let name = this.state.collection.name ? this.state.collection.name : t("collections.noName")
 		let id = this.state.collection.id
+		console.log(this.state.collection)
 		switch (msg) {
 			case 1:
-				s(t("snackbars.unassignCollection", { collection: `${name} (${id})`, org: this.state.collection.org.name }))
+				s(t("snackbars.unassignDevice", { what: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id }))
 				break
 			case 2:
-				s(t("snackbars.assignCollection", { collection: `${name} (${id})`, org: this.state.collection.org.name }))
+				s(t("snackbars.assignCollection", { collection: `${name} (${id})`, what: this.state.collection.org.name }))
 				break
 			case 5: 
-				s(t("snackbars.assignCollection", { collection: `${name} (${id})`, org: this.state.collection.project.title }))
+				s(t("snackbars.assignCollection", { collection: `${name} (${id})`, what: this.state.collection.project.title }))
 				break
 			case 6:
-				s(t("snackbars.assignCollection", { collection: `${name} (${id})`, org: "Device" }))
-				break
-			case 3:
-				s(t("snackbars.failedUnassign"))
+				s(t("snackbars.assignCollection", { collection: `${name} (${id})`, what: this.state.collection.activeDeviceStats.id }))
 				break
 			case 4:
 				s(t("snackbars.collectionDeleted"))
@@ -123,7 +121,7 @@ class Collection extends Component {
 	handleCancelAssignDevice = () => {
 		this.setState({ openAssignDevice: false })
 	}
-	handleCloseAssignDevice =async (reload) => {
+	handleCloseAssignDevice = async (reload) => {
 		if (reload) { 
 			this.setState({ loading: true, openAssignDevice: false })
 			await this.getCollection(this.state.collection.id).then(rs => { 
@@ -142,7 +140,7 @@ class Collection extends Component {
 	}
 	handleCloseAssignOrg = async (reload) => {
 		if (reload) {
-			this.setState({ loading: true, anchorEl: null, openAssignOrg: false })
+			this.setState({ loading: true, openAssignOrg: false })
 			await this.getCollection(this.state.collection.id).then(rs => {
 				this.snackBarMessages(2)
 			})
@@ -189,32 +187,44 @@ class Collection extends Component {
 		return filtered
 	}
 
-	handleOpenUnassign = () => {
+	handleOpenUnassignDevice = () => {
 		this.setState({
-			openUnassign: true
+			openUnassignDevice: true
 		})
 	}
 
-	handleCloseUnassign = () => {
+	handleCloseUnassignDevice = () => {
 		this.setState({
-			openUnassign: false
+			openUnassignDevice: false, anchorEl: null
 		})
 	}
 
-	handleUnassignOrg = async () => {
-		await updateCollection({ ...this.state.collection, org: { id: 0 } }).then(async rs => {
+	handleUnassignDevice = async () => {
+		const { collection } = this.state
+		await unassignDeviceFromCollection({
+			id: collection.id,
+			deviceId: collection.activeDeviceStats.id
+		}).then(async rs => {
 			if (rs) {
-				this.handleCloseUnassign()
-				this.setState({ loading: true, anchorEl: null })
-				await this.getCollection(this.state.collection.id).then(
-					() => this.snackBarMessages(1)
-				)
-			}
-			else {
-				this.setState({ loading: false, anchorEl: null })
-				this.snackBarMessages(3)
+				this.handleCloseUnassignDevice()
+				this.setState({ loading: true })
+				this.snackBarMessages(1)
+				await this.getCollection(this.state.collection.id)
 			}
 		})
+		// await updateCollection({ ...this.state.collection, org: { id: 0 } }).then(async rs => {
+		// 	if (rs) {
+		// 		this.handleCloseUnassign()
+		// 		this.setState({ loading: true, anchorEl: null })
+		// 		await this.getCollection(this.state.collection.id).then(
+		// 			() => this.snackBarMessages(1)
+		// 		)
+		// 	}
+		// 	else {
+		// 		this.setState({ loading: false, anchorEl: null })
+		// 		this.snackBarMessages(3)
+		// 	}
+		// })
 	}
 
 	// renderImageLoader = () => {
@@ -247,22 +257,22 @@ class Collection extends Component {
 		const { t } = this.props
 		const { collection } = this.state
 		return <Dialog
-			open={this.state.openUnassign}
-			onClose={this.handleCloseUnassign}
+			open={this.state.openUnassignDevice}
+			onClose={this.handleCloseUnassignDevice}
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{t("dialogs.unassignTitle", { what: t("collections.fields.organisation") })}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("dialogs.unassignTitle")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("dialogs.unassign", { id: collection.id, name: collection.name, what: collection.org.name })}
+					{t("dialogs.unassignDeviceFromCollection", { id: collection.activeDeviceStats.id, collection: collection.name })}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseUnassign} color="primary">
+				<Button onClick={this.handleCloseUnassignDevice} color="primary">
 					{t("actions.no")}
 				</Button>
-				<Button onClick={this.handleUnassignOrg} color="primary" autoFocus>
+				<Button onClick={this.handleUnassignDevice} color="primary" autoFocus>
 					{t("actions.yes")}
 				</Button>
 			</DialogActions>
@@ -325,7 +335,7 @@ class Collection extends Component {
 						handleClose={this.handleCloseAssignOrg}
 						t={t}
 					/>
-					{collection.org.id ? this.renderConfirmUnassign() : null}
+					{collection.activeDeviceStats ? this.renderConfirmUnassign() : null}
 					{this.renderDeleteDialog()}
 					{/* {this.renderAssignDevice()} */}
 					<ItemGrid xs={12} noMargin>
@@ -334,7 +344,7 @@ class Collection extends Component {
 							history={this.props.history}
 							match={this.props.match}
 							handleOpenAssignProject={this.handleOpenAssignProject}
-							handleOpenUnassign={this.handleOpenUnassign}
+							handleOpenUnassignDevice={this.handleOpenUnassignDevice}
 							handleOpenAssignOrg={this.handleOpenAssignOrg}
 							handleOpenDeleteDialog={this.handleOpenDeleteDialog}
 							handleOpenAssignDevice={this.handleOpenAssignDevice}
