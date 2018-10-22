@@ -1,6 +1,9 @@
 --- 
 addons: 
   ssh_known_hosts: kanata.webhouse.net
+cache:
+  directiories:
+  - "$HOME/.npm"
 before_deploy: 
   - "openssl aes-256-cbc -K $encrypted_2c76d570a277_key -iv $encrypted_2c76d570a277_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d"
   - "eval \"$(ssh-agent -s)\""
