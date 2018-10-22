@@ -274,7 +274,7 @@
 				"users": "Are you sure you want to delete these users:"
 			}
 		},
-		"unassign": {
+		"unassignNew": {
 			"title": {
 				"deviceFromCollection": "Unassign device from collection?",
 				"deviceFromOrg": "Unassign device from organisation?",
@@ -288,7 +288,7 @@
 				"collectionsFromProject": "Unassign the following collections from project: "
 			}
 		},
-		"unassignOld": "Are you sure you want to unassign %{name} with ID: %{id}, from %{what}",
+		"unassign": "Are you sure you want to unassign %{name} with ID: %{id}, from %{what}",
 		"unassignDeviceFromCollection": "Are you sure you want to unassign device (%{id}) from %{collection}?",
 		"unassignTitle": "Unassign?",
 		"warnings": {
