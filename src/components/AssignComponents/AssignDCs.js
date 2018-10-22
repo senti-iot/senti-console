@@ -176,7 +176,7 @@ class AssignDCS extends React.Component {
 
 AssignDCS.propTypes = {
 	classes: PropTypes.object.isRequired,
-	deviceId: PropTypes.number.isRequired,
+	// deviceId: PropTypes.number.isRequired,
 };
 
 export default withStyles(assignStyles)(AssignDCS);
