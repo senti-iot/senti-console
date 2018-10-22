@@ -252,6 +252,42 @@
 		"apply": "Anvend",
 		"cancel": "Afbryd",
 		"no": "Nej",
+		"delete": {
+			"title": {
+				"collection": "Delete data collection?",
+				"collections": "Delete data collections?",
+				"project": "Delete project?",
+				"projects": "Delete projects?",
+				"org": "Delete organisation?",
+				"orgs": "Delete organisations?",
+				"user": "Delete user?",
+				"users": "Delete users?"
+			},
+			"message": {
+				"collection": "Are you sure you want to delete this data collection?",
+				"collections": "Are you sure you want to delete these data collections:",
+				"project": "Are you sure you want to delete this project?",
+				"projects": "Are you sure you want to delete these projects:",
+				"org": "Are you sure you want to delete this organisation?",
+				"orgs": "Are you sure you want to delete these organisations:",
+				"user": "Are you sure you want to delete this user?",
+				"users": "Are you sure you want to delete these users:"
+			}
+		},
+		"unassignNew": {
+			"title": {
+				"deviceFromCollection": "Unassign device from collection?",
+				"deviceFromOrg": "Unassign device from organisation?",
+				"collectionFromProject": "Unassign collection from project?",
+				"collectionsFromProject": "Unassign collecitons from project?"
+			},
+			"message": {
+				"deviceFromCollection": "Unassign device %{device} from collection %{collection}?",
+				"deviceFromOrg": "Unassign device %{device} from organisation %{organisation}?",
+				"collectionFromProject": "Unassign collection %{collection} from project %{project} ?",
+				"collectionsFromProject": "Unassign the following collections from project: "
+			}
+		},
 		"unassign": "Er du sikker på at du vil fjerne tilknytningen af enheden: %{deviceName} med ID: %{deviceID}, fra %{project} ?",
 		"unassignTitle": "Fjern tilknytning?",
 		"warnings": {
