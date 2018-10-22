@@ -193,7 +193,7 @@
 			"simCard": "SIM-kort ID",
 			"simProvider": "SIM-kort leverandør",
 			"status": "Status",
-			"temp": "Temperatur",
+			"temp": "CPU temperatur",
 			"wifiModule": "Wi-Fi model"
 		},
 		"liveCount": "Live tælling (seneste 10 minutter)",
