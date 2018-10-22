@@ -198,7 +198,7 @@
 			"simCard": "SIM-card ID",
 			"simProvider": "SIM-card provider",
 			"status": "Status",
-			"temp": "Temperature",
+			"temp": "CPU temperature",
 			"wifiModule": "Wi-Fi module"
 		},
 		"liveCount": "Live count (last 10 minutes)",
