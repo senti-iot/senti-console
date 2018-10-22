@@ -312,7 +312,7 @@
 		"username": "Brugernavn"
 	},
 	"menus": {
-		"assignCollections": "Tilknyt til datasamlinger",
+		"assignCollections": "Tilknyt datasamlinger",
 		"assignCollection": "Tilknyt til datasamling",
 		"assignDevice": "Tilknyt enhed",
 		"assignDevices": "Tilknyt enheder",
