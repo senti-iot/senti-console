@@ -350,6 +350,7 @@
 			"deviceToOrg": "Assign device to organisation"
 		},
 		"reassign": {
+			"deviceToOrg": "Reassign to another organisation",
 			"collectionToProject": "Reassign to another project"
 		},
 		"calibrate": "Calibrate",
