@@ -41,6 +41,13 @@ class AssignDevice extends React.Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
+	selectDevice = pId => e => {
+		e.preventDefault()
+		if (this.state.selectedDevices === pId)
+			this.setState({ selectedDevices: { id: 0 } })
+		else { this.setState({ selectedDevices: pId }) }
+	}
+
 	handleClick = (event, id) => {
 		event.stopPropagation()
 		const { selectedDevices } = this.state;
@@ -66,11 +73,21 @@ class AssignDevice extends React.Component {
 	assignDevice = async () => {
 		// if (this.props.devices)
 		const { collectionId } = this.props
-		Promise.all([this.state.selectedDevices.forEach(async e => {
-			return assignDeviceToCollection({ id: collectionId, deviceId: e })
-		})]).then(() => {
-			this.props.handleClose(true)
-		})
+		const { selectedDevices } = this.state
+		// Promise.all([selectedDevices.forEach(e => {
+		// 	return assignDeviceToCollection({ id: collectionId, deviceId: e })
+		// })]).then(() => {
+
+		// 	this.props.handleClose(true)
+		// })
+		await assignDeviceToCollection({
+			id: collectionId,
+			deviceId: selectedDevices
+		}).then(() => {
+			let device = this.state.devices[this.state.devices.findIndex(d => d.id === selectedDevices)].name
+			this.props.handleClose(true, device)
+		}
+		)
 	}
 	closeDialog = () => {
 		this.props.handleClose(false)
@@ -83,7 +100,8 @@ class AssignDevice extends React.Component {
 			}
 		})
 	}
-	isSelected = id => this.state.selectedDevices.indexOf(id) !== -1 ? true : false 
+	// isSelected = id => this.state.selectedDevices.indexOf(id) !== -1 ? true : false 
+	isSelected = id => this.state.selectedDevices === id ? true : false
 	render() {
 		const { devices, filters, noData } = this.state
 		const { classes, open, t } = this.props;
@@ -159,7 +177,7 @@ class AssignDevice extends React.Component {
 						{devices ? filterItems(devices, filters).map((p, i) => (
 							<Fragment key={i}>
 								<ListItem button
-									onClick={e => this.handleClick(e, p.id)}
+									onClick={this.selectDevice(p.id)}
 									classes={{ root: this.isSelected(p.id) ? classes.selectedItem : null }}>
 									<ListItemText
 										primaryTypographyProps={{ className: this.isSelected(p.id) ? classes.selectedItemText : null }}

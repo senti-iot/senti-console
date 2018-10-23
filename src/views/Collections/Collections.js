@@ -22,6 +22,7 @@ class Collections extends Component {
 			loading: true,
 			openAssignDevice: false,
 			openAssignProject: false,
+			openUnassignDevice: false,
 			openDelete: false,
 			route: 0,
 			order: 'desc',
@@ -55,8 +56,9 @@ class Collections extends Component {
 		const { selected } = this.state
 		this.props.history.push({ pathname: `/collection/${selected[0]}/edit`, prevURL: `/collections/list` })
 	}
-	snackBarMessages = (msg) => {
+	snackBarMessages = (msg, display) => {
 		const { s } = this.props
+		const { collections, selected } = this.state
 		switch (msg) {
 			case 1:
 				s("snackbars.deletedSuccess")
@@ -70,7 +72,7 @@ class Collections extends Component {
 				break;
 			case 6:
 			//TODO
-				s("snackbars.assign.collectionToDevice", { collection: ``, what: "Project" })
+				s("snackbars.assign.deviceToCollection", { collection: `${collections[collections.findIndex(c => c.id === selected[0])].name}`, device: display })
 				break
 			default:
 				break;
@@ -197,11 +199,12 @@ class Collections extends Component {
 		this.setState({ openAssignDevice: false })
 	}
 
-	handleCloseAssignDevice = async (reload) => {
+	handleCloseAssignDevice = async (reload, display) => {
 		if (reload) {
 			this.setState({ loading: true, openAssignDevice: false })
 			await this.getData().then(rs => {
-				this.snackBarMessages(6)
+				this.snackBarMessages(6, display)
+				this.setState({ selected: [] })
 			})
 		}
 	}
@@ -272,19 +275,20 @@ class Collections extends Component {
 		 }
 	}
 
-	renderConfirmUnassign = () => {
+	renderDeviceUnassign = () => {
 		const { t } = this.props
-		const { collection } = this.state
+		const { selected, collections } = this.state
+		let collection = collections[collections.findIndex(c => c.id === selected[0])]
 		return <Dialog
 			open={this.state.openUnassignDevice}
 			onClose={this.handleCloseUnassignDevice}
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{t("dialogs.unassignTitle")}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("dialogs.unassign.title.devicesFromCollection")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("dialogs.unassignDeviceFromCollection", { id: collection.activeDeviceStats.id, collection: collection.name })}
+					{t("dialogs.unassign.message.deviceFromCollection", { collection: collection.name, device: collection.activeDeviceStats.id })}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
@@ -373,6 +377,7 @@ class Collections extends Component {
 				open={openAssignDevice}
 				t={t}
 			/>
+			{selected.length > 0 ? this.renderDeviceUnassign() : null}
 			<CollectionTable
 				selected={selected}
 				handleClick={this.handleClick}
