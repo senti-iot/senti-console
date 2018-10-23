@@ -15,7 +15,6 @@ const styles = theme => ({
 */
 const TextF = (props) => {
 	let mobile = window.innerWidth <= props.theme.breakpoints.values.md ? true : false
-	console.log(mobile, props.noFullWidth)
 	return (		
 		<TextField
 			autoFocus={props.autoFocus ? props.autoFocus : undefined}
