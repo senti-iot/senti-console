@@ -82,9 +82,8 @@ class LoginPage extends React.Component {
 						if (rs.isLoggedIn) {
 							if (setToken())								
 							{
-								console.log(cookie.load('SESSION'))
 								await this.props.getSettings()
-								var prevURL = this.props.location.state ? this.props.location.state.prevUrl : null
+								var prevURL = this.props.location.state ? this.props.location.state.prevURL : null
 								this.props.history.push(prevURL ? prevURL : "/dashboard")
 							}
 						}
@@ -133,7 +132,9 @@ class LoginPage extends React.Component {
 												label={t("login.username")}
 												error={this.state.error}
 												handleChange={this.handleInput}
+												value={this.state.user}
 												InputProps={{
+													autoComplete: true,
 													type: "email",
 													endAdornment: <InputAdornment position="end">
 														<Person className={IconEndAd} />
@@ -143,9 +144,12 @@ class LoginPage extends React.Component {
 											<TextF
 												id={"pass"}
 												label={t("login.pass")}
+											
 												error={this.state.error}
 												handleChange={this.handleInput}
+												value={this.state.pass}
 												InputProps={{
+													autoComplete: true,
 													type: "password",
 													endAdornment: <InputAdornment position="end">
 														<LockOutlined className={IconEndAd} />

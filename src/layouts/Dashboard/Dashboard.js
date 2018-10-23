@@ -98,9 +98,8 @@ class App extends React.Component {
 	}
 	
 	render() {
-		const { classes, t, loading, ...rest } = this.props;
+		const { classes, t, loading, sOpt, ...rest } = this.props;
 		return (
-
 			<div className={classes.wrapper}>
 				<div className={classes.mainPanel} ref={"mainPanel"}>
 					<Header
@@ -123,7 +122,7 @@ class App extends React.Component {
 							menuRoute={this.state.menuRoute}
 							{...rest}
 						/>
-						{!loading ? <div className={classes.content}>
+						{!loading ? <Fragment>
 							<div className={classes.container}>
 								<Switch>
 									{cookie.load('SESSION') ?
@@ -135,13 +134,12 @@ class App extends React.Component {
 										})
 										: <Redirect from={window.location.pathname} to={{
 											pathname: '/login', state: {
-												prevUrl: window.location.pathname
+												prevURL: window.location.pathname
 											}
 										}} />}
 								</Switch>
 							</div>
 							<Snackbar
-								
 								anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
 								open={this.props.sOpen}
 								onClose={this.props.sClose}
@@ -154,14 +152,14 @@ class App extends React.Component {
 									touchEvent: false
 								}}
 								autoHideDuration={3000}
-								message={t(this.props.sId, this.props.sOpt)}
+								message={<span>{t(this.props.sId, this.props.sOpt)}</span>}
 								action={
 									<Button size={"small"} variant={"text"} onClick={this.props.sClose} >
 										<Close style={{ color: "white" }}/>
 									</Button>
 								}
 							/>
-						</div> : <CircularLoader />}
+						</Fragment> : <CircularLoader />}
 					</Fragment>
 				</div>
 			</div >

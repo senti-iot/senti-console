@@ -47,7 +47,7 @@ export class ProjectContact extends Component {
 								{t("projects.contact.organisation")}
 							</Caption>
 							<Info>
-								{project.user.org ? <Link to={`/org/${project.user.org.id}`} >
+								{project.user.org ? <Link to={{ pathname: `/org/${project.user.org.id}`, prevURL: `/project/${project.id}` }} >
 									{project.user.org.name}
 								</Link> : t("users.fields.noOrg")}
 							</Info>

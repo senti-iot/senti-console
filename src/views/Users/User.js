@@ -47,20 +47,22 @@ class User extends Component {
 	}
 
 	componentDidMount = async () => {
-		if (this.props.match) {
-			if (this.props.match.params.id) {
-				await getUser(this.props.match.params.id).then(async rs => {
+		const { match, setHeader, history, location } = this.props
+		if (match) {
+			if (match.params.id) {
+				await getUser(match.params.id).then(async rs => {
 					if (rs.id === null)
-						this.props.history.push('/404')
+						history.push('/404')
 					else {
-						this.props.setHeader(`${rs.firstName} ${rs.lastName}`, true, '/users', "users")
+						let prevURL = location.prevURL ? location.prevURL : '/users'
+						setHeader(`${rs.firstName} ${rs.lastName}`, true, prevURL, "users")
 						this.setState({ user: rs, loading: false })
 					}
 				})
 			}
 		}
 		else {
-			this.props.history.push('/404')
+			history.push('/404')
 		}
 	}
 	resendConfirmEmail = async () => {

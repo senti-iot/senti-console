@@ -7,7 +7,7 @@ import { getAvailableDevices } from 'variables/dataDevices';
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { updateProject, getProject } from 'variables/dataProjects';
-import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from '..'
+import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
 import { dateFormatter } from 'variables/functions';
 var moment = require("moment")
 // const ITEM_HEIGHT = 32;
@@ -76,7 +76,7 @@ class EditProject extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		let id = this.props.match.params.id
-		const history = this.props.history
+		const { location } = this.props
 		let projectOrgID = 0
 		await getProject(id).then(p => {
 			if (p && this._isMounted) {
@@ -103,8 +103,8 @@ class EditProject extends Component {
 		this.setState({
 			loading: false
 		})
-		let prevURL = history.location.state ? history.location.state['prevURL'] : null
-		this.props.setHeader("projects.updateProject", true, prevURL ? prevURL : '/projects', "projects")
+		let prevURL = location.prevURL ? location.prevURL : '/projects/list'
+		this.props.setHeader("projects.updateProject", true, prevURL, "projects")
 	}
 
 	componentWillUnmount = () => {
@@ -194,7 +194,7 @@ class EditProject extends Component {
 										className={classes.textField}
 										handleChange={this.handleChange("title")}
 										margin="normal"
-										noFullWidth
+										
 										error={error}
 									/>
 								</ItemGrid>
@@ -209,7 +209,7 @@ class EditProject extends Component {
 										value={this.state.project.description}
 										handleChange={this.handleChange("description")}
 										margin="normal"
-										noFullWidth
+										
 										error={error}
 									/>
 								</ItemGrid>

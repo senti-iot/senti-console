@@ -1,86 +1,40 @@
 import {
-	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
-	TableRow, withStyles, DialogTitle, Dialog, DialogContent,
-	DialogContentText, DialogActions, Button, /* MenuItem, Menu, */ IconButton, ListItem, ListItemIcon, ListItemText, List,
+	Checkbox, Hidden, Table, TableBody, TableCell,
+	TableRow, withStyles, Typography
 } from "@material-ui/core"
 import TC from 'components/Table/TC'
-import { Delete, Edit, PictureAsPdf, Add } from 'variables/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import PropTypes from "prop-types"
 import React, { Fragment } from "react"
 import { withRouter } from 'react-router-dom'
 import EnhancedTableHead from 'components/Table/TableHeader'
-import EnhancedTableToolbar from 'components/Table/TableToolbar'
+// import EnhancedTableToolbar from 'components/Table/TableToolbar'
 import { connect } from "react-redux"
 import TP from 'components/Table/TP'
 import { Info, Caption, ItemG } from "components";
 import { dateFormatter } from 'variables/functions';
-
+import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
 class CollectionTable extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			selected: [],
 			page: 0,
 			rowsPerPage: props.rowsPerPage,
-			anchorElMenu: null,
 			anchorFilterMenu: null,
-			openDelete: false,
 		}
-	}
-
-	handleToolbarMenuOpen = e => {
-		e.stopPropagation()
-		this.setState({ anchorElMenu: e.currentTarget })
-	}
-
-	handleToolbarMenuClose = e => {
-		e.stopPropagation();
-		this.setState({ anchorElMenu: null })
 	}
 
 	handleRequestSort = (event, property) => {
 		this.props.handleRequestSort(event, property)
 	}
 
-	handleSelectAllPage = (event, checked) => {
-		if (checked) {
-			const { data } = this.props
-			const { rowsPerPage, page } = this.state
-			this.setState({ selected: data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => n.id) })
-			return;
-		}
-	}
-
 	handleSelectAllClick = (event, checked) => {
-		if (checked) {
-			this.setState({ selected: this.props.data.map(n => n.id) })
-			return;
-		}
-		this.setState({ selected: [] })
+		this.props.handleSelectAllClick(event, checked)
 	}
 
 	handleClick = (event, id) => {
-		event.stopPropagation()
-		const { selected } = this.state;
-		const selectedIndex = selected.indexOf(id)
-		let newSelected = [];
-
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1))
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1))
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(
-				selected.slice(0, selectedIndex),
-				selected.slice(selectedIndex + 1),
-			);
-		}
-
-		this.setState({ selected: newSelected })
+		this.props.handleClick(event, id)
 	}
 
 	handleChangePage = (event, page) => {
@@ -92,102 +46,40 @@ class CollectionTable extends React.Component {
 	}
 
 
-	handleOpenDeleteDialog = () => {
-		this.setState({ openDelete: true, anchorElMenu: null })
-	}
-
-	handleCloseDeleteDialog = () => {
-		this.setState({ openDelete: false })
-	}
-	handleDeleteCollection = async () => {
-		await this.props.handleDeleteCollections(this.state.selected)
-		this.setState({
-			selected: [],
-			anchorElMenu: null,
-			openDelete: false
-		})
-	}
-	isSelected = id => this.state.selected.indexOf(id) !== -1
+	isSelected = id => this.props.selected.indexOf(id) !== -1
 
 	handleEdit = () => {
 		this.props.history.push(`/collection/${this.state.selected[0]}/edit`)
 	}
-	options = () => {
-		const { t, accessLevel } = this.props
-		let allOptions = [
-			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
-			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
-		]
-		if (accessLevel.apicollection.edit)
-			return allOptions
-		else return [
-			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf }
-		]
-	}
+	
 	addNewCollection = () => { this.props.history.push('/collections/new') }
 
-	renderTableToolBarContent = () => {
-		const { accessLevel } = this.props
-		// const { anchorFilterMenu } = this.state
-		let access = accessLevel.apicollection ? accessLevel.apicollection.edit ? true : false : false
-		return <Fragment>
-			{access ? <IconButton aria-label="Add new collection" onClick={this.addNewCollection}>
-				<Add />
-			</IconButton> : null
-			}
-		</Fragment>
-	}
-	renderConfirmDelete = () => {
-		const { openDelete, selected } = this.state
-		const { data, t, classes } = this.props
-		return <Dialog
-			open={openDelete}
-			onClose={this.handleCloseDeleteDialog}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
-		>
-			<DialogTitle id="alert-dialog-title">{t("collections.collectionsDelete")}</DialogTitle>
-			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{t("collections.collectionsDeleteConfirm")}:
-				</DialogContentText>
-				<List>
-					{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
-						<ListItemText primary={data[data.findIndex(d => d.id === s)].name} /></ListItem>)}
-				</List>
-			</DialogContent>
-			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color="primary">
-					{t("actions.no")}
-				</Button>
-				<Button onClick={this.handleDeleteCollection} color="primary" autoFocus>
-					{t("actions.yes")}
-				</Button>
-			</DialogActions>
-		</Dialog>
-	}
 
+	renderIcon = (status) => {
+		const { classes, t } = this.props
+		switch (status) {
+			case 1:
+				return <div title={t("devices.status.yellow")}><SignalWifi2Bar className={classes.yellowSignal} /></div>
+			case 2:
+				return <div title={t("devices.status.green")}><SignalWifi2Bar className={classes.greenSignal} /></div>
+			case 0:
+				return <div title={t("devices.status.red")}><SignalWifi2Bar className={classes.redSignal} /></div>
+			case null:
+				return <SignalWifi2BarLock />
+			default:
+				break;
+		}
+	}
 
 	render() {
-		const { classes, t, order, orderBy, data } = this.props
-		const { selected, rowsPerPage, page } = this.state
+		const { classes, t, order, orderBy, data, selected } = this.props
+		const { rowsPerPage, page } = this.state
 		let emptyRows;
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
-		console.log(data)
 		return (
-
-			<Paper className={classes.root}>
-				<EnhancedTableToolbar //	./TableToolbar.js
-					anchorElMenu={this.state.anchorElMenu}
-					handleToolbarMenuClose={this.handleToolbarMenuClose}
-					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
-					numSelected={selected.length}
-					options={this.options}
-					t={t}
-					content={this.renderTableToolBarContent()}
-				/>
+			<Fragment>
+				
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">
 						<EnhancedTableHead // ./ProjectTableHeader
@@ -201,7 +93,9 @@ class CollectionTable extends React.Component {
 							t={t}
 							classes={classes}
 							// mdDown={[0]} //Which Columns to display on small Screens
-							customColumn={[{ id: "name", label: t("collections.fields.collection") }]}
+							customColumn={[{ id: "name", label: <Typography paragraph classes={ { root: classes.paragraphCell + " " + classes.headerCell } }>
+								{t("collections.fields.collection")}
+							</Typography> }]}
 						/>
 
 						<TableBody>
@@ -231,8 +125,8 @@ class CollectionTable extends React.Component {
 														</Info>
 														<ItemG>
 															<Caption noWrap className={classes.noMargin}>
-																
-																{`${n.org ? n.org.name : ""}`} 
+
+																{`${n.org ? n.org.name : ""}`}
 															</Caption>
 														</ItemG>
 													</ItemG>
@@ -245,12 +139,11 @@ class CollectionTable extends React.Component {
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
-											<TC FirstC label={n.name} />
-											<TC label={n.description} />
+											<TC  label={n.name} />
+											<TC className={classes.tablecellcheckbox} FirstC content={n.activeDeviceStats ? this.renderIcon(n.activeDeviceStats.state) : null} />
 											<TC label={dateFormatter(n.created)} />
-											<TC label={dateFormatter(n.modified)} />
-											<TC label={n.org ? n.org.name : ""} /> 
-
+											<TC label={n.devices ? n.devices[0] ? dateFormatter(n.devices[0].start) : "" : ""} />
+											<TC label={n.org ? n.org.name : ""} />
 										</Hidden>
 									</TableRow>
 								)
@@ -272,8 +165,8 @@ class CollectionTable extends React.Component {
 					handleChangePage={this.handleChangePage}
 					handleChangeRowsPerPage={this.handleChangeRowsPerPage}
 				/>
-				{this.renderConfirmDelete()}
-			</Paper>
+			</Fragment>
+
 		)
 	}
 }

@@ -1,9 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from './App'
-import registerServiceWorker from './registerServiceWorker';
+import { unregister } from './registerServiceWorker';
 
-registerServiceWorker();
+unregister();
+// Service Worker is disabled until the project is delivered fully
+// registerServiceWorker();
 var rootEl = document.getElementById('root')
 ReactDOM.render(<App />, rootEl)
 

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ExifOrientationImg from 'react-exif-orientation-img';
 import SwipeableViews from 'react-swipeable-views';
-import { Caption, ItemGrid } from '..';
+import { Caption, ItemGrid } from 'components';
 import imagecarouselStyles from 'assets/jss/components/image/imagecarouselStyles';
 
 class DeviceImage extends React.Component {

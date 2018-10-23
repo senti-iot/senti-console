@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
-import { GridContainer, ItemGrid } from 'components';
-import { Typography, Hidden, withStyles } from '@material-ui/core';
-import DiscoverSentiCards from 'components/Cards/DiscoverSentiCards';
-import AnalyticsImg from 'assets/img/Rounded/analytics.png'
-import StorageImg from 'assets/img/Rounded/storage.png'
-import HostingImg from 'assets/img/Rounded/hosting.png'
+import { Hidden, Typography, withStyles } from '@material-ui/core';
+import AnalyticsImg from 'assets/img/Rounded/analytics.png';
+import HostingImg from 'assets/img/Rounded/hosting.png';
+import StorageImg from 'assets/img/Rounded/storage.png';
 import discoverSentiStyle from 'assets/jss/material-dashboard-react/discoverSentiStyles';
+import { GridContainer, ItemGrid } from 'components';
+import DiscoverSentiCards from 'components/Cards/DiscoverSentiCards';
+import React, { Component } from 'react';
 
 class DiscoverSenti extends Component {
 	goTo = (where) => e => {
@@ -21,28 +21,28 @@ class DiscoverSenti extends Component {
 						<div className={classes.devicesPicture}>
 							<GridContainer>
 								<ItemGrid xs={12}>
-									<Typography variant={"title"} style={{ color: "white" }}>{t("discoverSenti.welcome")}</Typography>
+									<Typography variant={'h6'} style={{ color: "white" }}>{t("discoverSenti.welcome")}</Typography>
 								</ItemGrid>
 								<ItemGrid xs={12} sm={4} noMargin>
 									<DiscoverSentiCards img={StorageImg}
-										onClick={this.goTo("/projects/new")}
+										onClick={this.goTo("/projects/list")}
 										content={
-											<Typography variant={"title"} style={{ color: "white", fontWeight: 400 }}>{t("discoverSenti.addProject")}</Typography>
+											<Typography variant={'h6'} style={{ color: "white", fontWeight: 400, textTransform: "none" }}>{t("discoverSenti.addProject")}</Typography>
 										}/>
 								</ItemGrid>
 								<ItemGrid xs={12} sm={4} noMargin>
 									<DiscoverSentiCards img={HostingImg}
 										onClick={this.goTo("/devices/list")}
 										content={
-											<Typography variant={"title"} style={{ color: "white", fontWeight: 400 }}>{t("discoverSenti.onSiteSetup")}</Typography>
+											<Typography variant={'h6'} style={{ color: "white", fontWeight: 400, textTransform: "none" }}>{t("discoverSenti.onSiteSetup")}</Typography>
 
 										}/>
 								</ItemGrid>
 								<ItemGrid xs={12} sm={4} noMargin>
 									<DiscoverSentiCards img={AnalyticsImg}
-										onClick={this.goTo("/devices/list")}
+										onClick={this.goTo("/collections/list")}
 										content={
-											<Typography variant={"title"} style={{ color: "white", fontWeight: 400 }}>{t("discoverSenti.startAnalyzeData")}</Typography>
+											<Typography variant={'h6'} style={{ color: "white", fontWeight: 400, textTransform: "none" }}>{t("discoverSenti.startAnalyzeData")}</Typography>
 										}
 									/>
 								</ItemGrid>

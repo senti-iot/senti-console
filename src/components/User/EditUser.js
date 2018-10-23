@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { editUser, getUser } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
-import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader } from '..';
+import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader } from 'components';
 import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Grid, Button } from '@material-ui/core';
 import { Save } from 'variables/icons'
 import classNames from 'classnames';
@@ -49,9 +49,9 @@ class EditUser extends Component {
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
-		const { setHeader, history } = this.props
-		let prevURL = history.location.state ? history.location.state['prevURL'] : null
-		setHeader("users.editUser", true, prevURL ? prevURL : '/users', "users")
+		const { setHeader, location } = this.props
+		let prevURL = location.prevURL ? location.prevURL : null
+		setHeader("users.editUser", true, prevURL, "users")
 		if (this._isMounted) {
 			await this.getUser()
 			await this.getOrgs()
@@ -64,24 +64,13 @@ class EditUser extends Component {
 			let g = 0
 			let userGroups = Object.keys(user.groups)
 			userGroups.sort((a, b) => a > b ? 1 : -1)
-			console.log(userGroups)
 			if (userGroups.find(x => x === "136550100000211"))
 				g = "136550100000211"
 			if (userGroups.find(x => x === "136550100000225"))
 				g = "136550100000225"
 			if (userGroups.find(x => x === "136550100000143"))
 				g = "136550100000143"
-			
-			// Object.keys(user.groups).forEach(x => {
-			// 	if (x > 1) {
-			// 		if (x === "136550100000211")
-			// 			g = x //S
-			// 		if (x === "136550100000225")
-			// 			g = x //AM
-			// 		if (x === "136550100000143")
-			// 			g = x //SU}
-			// 	}
-			// })
+
 			this.setState({
 				selectedGroup: g,
 				user: {
@@ -351,7 +340,7 @@ class EditUser extends Component {
     							className={classes.textField}
     							handleChange={this.handleChange("userName")}
     							margin="normal"
-    							noFullWidth
+    							
     							error={error}
     						/>
     					</ItemGrid> */}
@@ -363,7 +352,7 @@ class EditUser extends Component {
 								className={classes.textField}
 								handleChange={this.handleChange("firstName")}
 								margin="normal"
-								noFullWidth
+								
 								error={error}
 							/>
 						</ItemGrid>
@@ -375,7 +364,7 @@ class EditUser extends Component {
 								className={classes.textField}
 								handleChange={this.handleChange("lastName")}
 								margin="normal"
-								noFullWidth
+								
 								error={error}
 							/>
 						</ItemGrid>
@@ -387,7 +376,7 @@ class EditUser extends Component {
 								className={classes.textField}
 								handleChange={this.handleChange("email")}
 								margin="normal"
-								noFullWidth
+								
 								error={error}
 							/>
 						</ItemGrid>
@@ -399,7 +388,7 @@ class EditUser extends Component {
 								className={classes.textField}
 								handleChange={this.handleChange("phone")}
 								margin="normal"
-								noFullWidth
+								
 								error={error}
 							/>
 						</ItemGrid>

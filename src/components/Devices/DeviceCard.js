@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { withStyles, IconButton, Menu, MenuItem, Button } from '@material-ui/core';
-import { ItemGrid, SmallCard, ItemG, Info } from '../index';
+import { ItemGrid, SmallCard, ItemG, Info, Caption } from 'components';
 import { MoreVert, Edit, SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons';
-import Caption from '../Typography/Caption';
 import { Link } from 'react-router-dom';
-import regularCardStyle from '../../assets/jss/material-dashboard-react/regularCardStyle';
+import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
 
 class DeviceCard extends Component {
 	constructor(props) {
@@ -92,12 +91,8 @@ class DeviceCard extends Component {
 											minWidth: 200
 										}
 									}}>
-									<MenuItem component={Link} to={`/device/${d.id}/edit`} style={{
-										color: "black"
-									}}>
-										{/* <Link to=> */}
+									<MenuItem component={Link} to={`/device/${d.id}/edit`} style={{ color: "black" }}>
 										<Edit className={classes.leftIcon} />{t("menus.edit")}
-										{/* </Link> */}
 									</MenuItem>
 									{/* <MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
 										<Devices className={classes.leftIcon} />{t("menus.assignDevices")}
@@ -106,7 +101,7 @@ class DeviceCard extends Component {
 										<PictureAsPdf className={classes.leftIcon} />{t("menus.exportPDF")}
 									</MenuItem>
 									<MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
-										<Delete className={classes.leftIcon} />{t("menus.deleteProject")}
+										<Delete className={classes.leftIcon} />{t("menus.delete")}
 									</MenuItem> */}
 									))}
 								</Menu>

@@ -10,6 +10,7 @@ import withLocalization from 'components/Localization/T';
 import withSnackbar from 'components/Localization/S';
 import { compose } from 'recompose';
 import Collection from 'views/Collections/Collection';
+import EditCollection from 'views/Collections/EditCollection';
 
 const collection = (props) => {
 	return (
@@ -18,6 +19,7 @@ const collection = (props) => {
 			<Route path={`${props.match.url}/setup`} render={() => <CalibrateDevice {...props} />} /> */}
 			{/* <Route path={`${props.match.url}/edit`} render={() => <EditDetails {...props} />} /> */}
 			{/* <Route path={`${props.match.url}/reset`} render={() => <ResetDevice {...props}/>}/> */}
+			<Route path={`${props.match.url}/edit`} render={() => <EditCollection {...props} />}/>
 			<Route path={`${props.match.url}`} render={() => <Collection {...props} />} /> 
 		</Switch>
 	)

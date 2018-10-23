@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, /*  FormControl, InputLabel, Select, Input, Chip,  MenuItem, */ Collapse, Button, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { Paper, withStyles, Grid, Collapse, Button, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 import { Save } from 'variables/icons';
 import classNames from 'classnames';
-import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from '..'
+import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
 import { connect } from 'react-redux'
-import createprojectStyles from '../../assets/jss/components/projects/createprojectStyles'
+import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
 import EditOrgAutoSuggest from './EditOrgAutoSuggest';
-import { createOrg, getAllOrgs } from '../../variables/dataOrgs';
+import { createOrg, getAllOrgs } from 'variables/dataOrgs';
 var countries = require("i18n-iso-countries");
 
 class CreateOrg extends Component {
@@ -41,9 +41,9 @@ class CreateOrg extends Component {
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
-		const { t, accessLevel, setHeader, history } = this.props
-		let prevURL = history.location.state ? history.location.state['prevURL'] : null
-		setHeader("orgs.createOrg", true, prevURL ? prevURL : `/orgs`, "users")
+		const { t, accessLevel, setHeader, location } = this.props
+		let prevURL = location.prevURL ? location.prevURL : `/orgs`
+		setHeader("orgs.createOrg", true, prevURL, "users")
 		await getAllOrgs().then(rs => {
 			if (this._isMounted) {
 				if (accessLevel.apisuperuser)
@@ -242,7 +242,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("name") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -255,7 +255,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("address") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -268,7 +268,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("zip") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 									type={ "number" }
 									pattern="[0-9]*"
@@ -283,7 +283,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("city") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -297,7 +297,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("region") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -320,7 +320,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("url") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -335,7 +335,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleAuxChange("cvr") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -347,7 +347,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleAuxChange("ean") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>

@@ -88,15 +88,22 @@ const devicetableStyles = theme => ({
 	},
 	tableCell: {
 		padding: 4,
-		// minWidth: 130,
+		fontSize: '0.875rem',
 		maxWidth: 250,
 		"&:last-child": {
 			paddingRight: 4
-		}
+		},
+		borderTop: "1px solid rgba(224, 224, 224, 1)",
+
 	},
 	tablecellcheckbox: {
+		fontSize: '0.875rem',
+		borderTop: "1px solid rgba(224, 224, 224, 1)",
 		padding: 0,
 		width: '50px'
+	},
+	paddingLeft: {
+		paddingLeft: 16
 	}
 });
 

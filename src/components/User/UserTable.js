@@ -9,11 +9,10 @@ import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import PropTypes from "prop-types"
 import React, { Fragment } from "react"
 import { withRouter } from 'react-router-dom'
-import EnhancedTableHead from '../Table/TableHeader'
-import EnhancedTableToolbar from '../Table/TableToolbar'
-import { ItemGrid, Info } from ".."
+import EnhancedTableHead from 'components/Table/TableHeader'
+import EnhancedTableToolbar from 'components/Table/TableToolbar'
+import { ItemGrid, Info, Caption } from "components"
 import { connect } from "react-redux"
-import Caption from '../Typography/Caption';
 import { pF, dateFormat } from 'variables/functions';
 import Gravatar from 'react-gravatar'
 import TP from 'components/Table/TP';

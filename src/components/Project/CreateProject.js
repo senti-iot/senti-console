@@ -5,18 +5,14 @@ import classNames from 'classnames'
 import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers'
 import MomentUtils from 'material-ui-pickers/utils/moment-utils'
 import React, { Component, Fragment } from 'react'
-// import { withRouter } from 'react-router-dom'
-// import { getAvailableDevices } from 'variables/dataDevices'
 import { createProject } from 'variables/dataProjects'
-import { Caption, CircularLoader, GridContainer, ItemGrid, TextF, Danger } from '..'
+import { Caption, CircularLoader, GridContainer, ItemGrid, TextF, Danger, Warning } from 'components'
 import { getAllOrgs } from 'variables/dataOrgs';
 import { getAvailableDevices } from 'variables/dataDevices';
-import { getCreateProject } from '../../variables/dataProjects'
+import { getCreateProject } from 'variables/dataProjects'
 import { connect } from 'react-redux'
-import Warning from '../Typography/Warning';
-// import moment from 'moment';
-var moment = require('moment')
-// moment.locale('dk')
+import moment from 'moment';
+
 const ITEM_HEIGHT = 32
 const ITEM_PADDING_TOP = 8
 const MenuProps = {
@@ -206,7 +202,7 @@ class CreateProject extends Component {
 									className={classes.textField}
 									handleChange={this.handleChange("title")}
 									margin="normal"
-									noFullWidth
+									
 									error={error}
 
 								/>
@@ -223,7 +219,7 @@ class CreateProject extends Component {
 									value={this.state.description}
 									handleChange={this.handleChange("description")}
 									margin="normal"
-									noFullWidth
+									
 									error={error}
 								/>
 							</ItemGrid>

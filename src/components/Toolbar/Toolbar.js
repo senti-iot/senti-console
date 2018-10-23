@@ -2,11 +2,12 @@
 
 import React, { Component } from 'react'
 import { AppBar, Tabs, Tab, withStyles } from '@material-ui/core';
-import Search from '../../components/Search/Search';
+import Search from 'components/Search/Search';
 import { suggestionGen } from 'variables/functions'
 
 const styles = theme => ({
 	appBar: {
+		// top: 70,
 		height: 48,
 		zIndex: 1000
 	},

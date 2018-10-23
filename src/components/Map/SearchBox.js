@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { TextF } from '..';
+import { TextF } from 'components';
 const { compose, withProps, lifecycle } = require("recompose");
 const {
 	withScriptjs,
@@ -42,14 +42,14 @@ export const PlacesWithStandaloneSearchBox = compose(
 		>
 			<TextF
 				id={"calibrate-address"}
+				placeholder={''}
 				label={props.t("devices.fields.address")}
 				handleChange={props.handleChange}
-				noFullWidth
 				value={props.address}
 			/>
 		
 		</StandaloneSearchBox>
-		{/* <ol> //For debugging purposes
+		{/* <ol> {/* //For debugging purposes
 			{props.places.map(({ place_id, formatted_address, geometry: { location } }) =>
 				<li key={place_id}>
 					{formatted_address}

@@ -10,7 +10,7 @@ class NotFound extends Component {
 	render() {
 		return (
 
-			<Typography variant={'display2'}>
+			<Typography variant={'h2'}>
 							404
 			</Typography>
 

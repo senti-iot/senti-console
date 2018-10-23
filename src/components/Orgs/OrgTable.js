@@ -11,7 +11,7 @@ import React, { Fragment } from "react"
 import { withRouter } from 'react-router-dom'
 import EnhancedTableHead from 'components/Table/TableHeader'
 import EnhancedTableToolbar from 'components/Table/TableToolbar'
-import { Info, ItemG, Caption } from ".."
+import { Info, ItemG, Caption } from "components"
 import { connect } from "react-redux"
 import TP from 'components/Table/TP'
 var countries = require("i18n-iso-countries")

@@ -31,7 +31,7 @@ function MediaCard(props) {
 				title=""
 			/>
 			<CardContent classes={{ root: classes.cardContent }}>
-				<Typography gutterBottom variant="headline" component="h2">
+				<Typography gutterBottom variant="h5">
 					{header}
 				</Typography>
 				<Typography component="p">

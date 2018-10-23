@@ -1,17 +1,16 @@
-import React, { Fragment } from "react"
-import PropTypes from "prop-types"
-import { withStyles, Button } from "@material-ui/core"
-
-import dashboardStyle from "assets/jss/material-dashboard-react/dashboardStyle"
-import GridContainer from "components/Grid/GridContainer"
-import withLocalization from "components/Localization/T"
-import DiscoverSenti from './DiscoverSenti'
-import MediaCard from 'components/Cards/MediaCard'
-import { connect } from 'react-redux'
-import imgs from 'assets/img/Squared'
-import { ItemG, Caption } from 'components';
+import { Button, withStyles } from "@material-ui/core";
+import imgs from 'assets/img/Squared';
+import dashboardStyle from "assets/jss/material-dashboard-react/dashboardStyle";
+import { Caption, ItemG } from 'components';
+import MediaCard from 'components/Cards/MediaCard';
+import GridContainer from "components/Grid/GridContainer";
+import withLocalization from "components/Localization/T";
+import PropTypes from "prop-types";
+import React, { Fragment } from "react";
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import pj from '../../../package.json'
+import DiscoverSenti from 'views/Dashboard/DiscoverSenti';
+import pj from '../../../package.json';
 
 class Dashboard extends React.Component {
 	constructor(props) {
@@ -48,10 +47,10 @@ class Dashboard extends React.Component {
 	}
 
 	render() {
-		const { discoverSenti, t } = this.props
+		const { discoverSenti, t, history } = this.props
 		return (
 			<Fragment>
-				{discoverSenti ? <DiscoverSenti t={t} /> : null}
+				{discoverSenti ? <DiscoverSenti t={t} history={history}/> : null}
 				<GridContainer spacing={8} justify={"center"}>
 					<ItemG justify sm={12} md={4}><MediaCard
 						img={imgs.hosting}
@@ -79,7 +78,7 @@ class Dashboard extends React.Component {
 						header={t("dashboard.cardHeaders.data")}
 						content={t("dashboard.cardContent.data")}
 						leftAction={this.renderAction("actions.learnMore", "/")}
-						rightAction={this.renderAction("actions.startNow", "/", true)}
+						rightAction={this.renderAction("actions.startNow", "/collections/list", true)}
 					/></ItemG>
 					<ItemG justify sm={12} md={4}>	<MediaCard
 						img={imgs.users}
@@ -95,27 +94,27 @@ class Dashboard extends React.Component {
 						leftAction={this.renderAction("actions.learnMore", "/")}
 						rightAction={this.renderAction("actions.startNow", "/settings", true)}
 					/></ItemG>
-					<ItemG justify sm={12} md={4}>	<MediaCard
+					{/* <ItemG justify sm={12} md={4}>	<MediaCard
 						img={imgs.notifications}
 						header={t("dashboard.cardHeaders.notifications")}
 						content={t("dashboard.cardContent.notifications")}
 						leftAction={this.renderAction("actions.learnMore", "/")}
 						rightAction={this.renderAction("actions.startNow", "/settings", true)}
-					/></ItemG>
-					<ItemG justify sm={12} md={4}>	<MediaCard
+					/></ItemG> */}
+					{/* <ItemG justify sm={12} md={4}>	<MediaCard
 						img={imgs.predictions}
 						header={t("dashboard.cardHeaders.alerts")}
 						content={t("dashboard.cardContent.alerts")}
 						leftAction={this.renderAction("actions.learnMore", "/")}
 						rightAction={this.renderAction("actions.startNow", "/settings", true)}
-					/></ItemG>
-					<ItemG justify sm={12} md={4}>	<MediaCard
+					/></ItemG> */}
+					{/* <ItemG justify sm={12} md={4}>	<MediaCard
 						img={imgs.sharing}
 						header={t("dashboard.cardHeaders.api")}
 						content={t("dashboard.cardContent.api")}
 						leftAction={this.renderAction("actions.learnMore", "/")}
 						rightAction={this.renderAction("actions.startNow", "/", true)}
-					/></ItemG>
+					/></ItemG> */}
 					<ItemG justify xs={12}>
 						<Caption>
 							Senti.Cloud version {pj.version}

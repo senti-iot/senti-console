@@ -23,13 +23,13 @@ class OrgDetails extends Component {
 		this.handleCloseActionsDetails()
 		this.props.deleteOrg()
 	}
-	handleEdit = () => this.props.history.push({ pathname: `${this.props.match.url}/edit`, state: { prevURL: `/org/${this.props.org.id}` } })
+	handleEdit = () => this.props.history.push({ pathname: `${this.props.match.url}/edit`, prevURL: `/org/${this.props.org.id}`  })
 
 	options = () => {
 		const { t, accessLevel, classes } = this.props
 		let allOptions = [
-			{ label: t("menus.editOrg"), func: this.handleEdit, single: true, icon: <Edit className={classes.leftIcon} /> },
-			{ label: t("menus.deleteOrg"), func: this.handleDeleteOrg, icon: <Delete className={classes.leftIcon} /> }
+			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: <Edit className={classes.leftIcon} /> },
+			{ label: t("menus.delete"), func: this.handleDeleteOrg, icon: <Delete className={classes.leftIcon} /> }
 		]
 		if (accessLevel.apiorg.edit)
 			return allOptions

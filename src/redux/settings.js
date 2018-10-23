@@ -1,9 +1,9 @@
 // import { getSettingsFromServer, saveSettingsOnServer } from 'variables/dataLogin';
 import cookie from 'react-cookies';
-import { getUser, getValidSession } from '../variables/dataUsers'
+import { getUser, getValidSession } from 'variables/dataUsers'
 // import moment from 'moment'
 import 'moment/locale/da'
-import { saveSettings } from '../variables/dataLogin';
+import { saveSettings } from 'variables/dataLogin';
 var moment = require("moment")
 
 

@@ -14,7 +14,7 @@ import { getOrg, getOrgUsers } from 'variables/dataOrgs';
 import OrgDetails from './OrgCards/OrgDetails';
 // var moment = require("moment")
 import { connect } from 'react-redux'
-import { deleteOrg } from '../../variables/dataOrgs';
+import { deleteOrg } from 'variables/dataOrgs';
 import OrgUsers from 'views/Orgs/OrgCards/OrgUsers';
 
 class Org extends Component {
@@ -36,13 +36,15 @@ class Org extends Component {
 	}
 
 	componentDidMount = async () => {
-		if (this.props.match)
-			if (this.props.match.params.id) {
-				await getOrg(this.props.match.params.id).then(async rs => {
+		const { match, setHeader, location, history } = this.props
+		if (match)
+			if (match.params.id) {
+				await getOrg(match.params.id).then(async rs => {
 					if (rs === null)
-						this.props.history.push('/404')
+						history.push('/404')
 					else {
-						this.props.setHeader(`${rs.name}`, true, '/orgs', "users")
+						let prevURL = location.prevURL ? location.prevURL : '/orgs'						
+						setHeader(`${rs.name}`, true, prevURL, "users")
 						this.setState({ org: rs, loading: false })
 					}
 				})
@@ -130,7 +132,8 @@ class Org extends Component {
 					<ItemGrid xs={12} noMargin>
 						{!loadingUsers ? <OrgUsers
 							t={t}
-							users={this.state.users ? this.state.user : []}
+							org={org}
+							users={this.state.users ? this.state.users : []}
 							history={history}
 						/> :
 							<CircularLoader notCentered />}

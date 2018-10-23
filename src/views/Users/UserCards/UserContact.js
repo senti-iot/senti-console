@@ -3,7 +3,7 @@ import { InfoCard, ItemGrid, Caption, Info } from 'components';
 import { Hidden } from '@material-ui/core';
 import { pF } from 'variables/functions';
 import { Person, Edit, Delete, LockOpen, Email } from 'variables/icons'
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Gravatar from 'react-gravatar'
 import { connect } from 'react-redux'
 import Dropdown from 'components/Dropdown/Dropdown';
@@ -39,7 +39,7 @@ class UserContact extends Component {
 		const { apiorg } = loggedUser.privileges
 		return <Dropdown menuItems={
 			[
-				{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `${this.props.match.url}/edit`, state: { prevURL: `/user/${user.id}` } }) },
+				{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `${this.props.match.url}/edit`, prevURL: `/user/${user.id}`  }) },
 				{ label: t("menus.changePassword"), icon: <LockOpen className={classes.leftIcon} />, func: this.props.changePass },
 				{ label: t("menus.userResendEmail"), icon: <Email className={classes.leftIcon} />, func: this.props.resendConfirmEmail, dontShow: user.suspended !== 2 },
 				{ label: t("menus.delete"), icon: <Delete className={classes.leftIcon} />, func: this.deleteUser, dontShow: apiorg ? apiorg.editusers || !loggedUser.id === user.id ? false : true : true }
@@ -82,9 +82,9 @@ class UserContact extends Component {
 							<ItemGrid>
 								<Caption>{t("users.fields.organisation")}</Caption>
 								<Info>
-									<NavLink to={`/org/${user.org.id}`}>
+									<Link to={{ pathname: `/org/${user.org.id}`, prevURL: `/user/${user.id}` }}>
 										{user.org ? user.org.name : t("users.noOrg")}
-									</NavLink>
+									</Link>
 								</Info>
 							</ItemGrid>
 							<ItemGrid>

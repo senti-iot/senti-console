@@ -1,26 +1,16 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types'
-import {
-	Grid, IconButton, Menu, MenuItem, withStyles,
-	Select, FormControl, FormHelperText, Divider, Dialog, DialogTitle, DialogContent,
-	Button, DialogActions, ListItem, ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox, FormControlLabel
-} from '@material-ui/core';
-import {
-	AccessTime, AssignmentTurnedIn, MoreVert,
-	DateRange, KeyboardArrowRight, KeyboardArrowLeft,
-	DonutLargeRounded, PieChartRounded, BarChart, ExpandMore, Visibility
-} from "@material-ui/icons"
-import { InfoCard, ItemGrid, CircularLoader, Caption, Info } from 'components';
+import { Collapse, Divider, FormControl, FormHelperText, Hidden, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Select, withStyles, Checkbox } from '@material-ui/core';
+import { BarChart, DateRange, DonutLargeRounded, ExpandMore, MoreVert, PieChartRounded, Visibility, Timeline, ShowChart } from "@material-ui/icons";
 import deviceStyles from 'assets/jss/views/deviceStyles';
-import { Doughnut, Bar, Pie } from 'react-chartjs-2';
-import { getWifiHourly, getWifiDaily } from 'variables/dataDevices';
-import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
-import MomentUtils from 'material-ui-pickers/utils/moment-utils';
-import classNames from 'classnames'
-import { colors } from '../../../variables/colors'
+import classNames from 'classnames';
+import { Caption, CircularLoader, CustomDateTime, Info, InfoCard, ItemG, ItemGrid } from 'components';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { Bar, Doughnut, Pie, Line } from 'react-chartjs-2';
+import { colors } from 'variables/colors';
+import { getWifiDaily, getWifiHourly } from 'variables/dataDevices';
 import { shortDateFormat } from 'variables/functions';
-import ItemG from '../../../components/Grid/ItemG';
-var moment = require('moment');
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 
 class DeviceData extends Component {
 	constructor(props) {
@@ -42,8 +32,8 @@ class DeviceData extends Component {
 	}
 
 	legendOpts = {
-		display: this.props.theme.breakpoints.width("md") < window.innerWidth ? true : true,
-		position: this.props.theme.breakpoints.width("md") < window.innerWidth ? 'left' : "bottom",
+		display: !isWidthUp("md", this.props.width) ? true : true,
+		position: !isWidthUp("md", this.props.width) ? 'left' : "bottom",
 		fullWidth: true,
 		reverse: false,
 		labels: {
@@ -62,6 +52,36 @@ class DeviceData extends Component {
 		}
 	}
 
+	format = "YYYY-MM-DD+HH:mm"
+
+	visibilityOptions = [
+		{ id: 0, icon: <PieChartRounded />, label: this.props.t("charts.type.pie") },
+		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t("charts.type.donut") },
+		{ id: 2, icon: <BarChart />, label: this.props.t("charts.type.bar") },
+		{ id: 3, icon: <ShowChart />, label: this.props.t("charts.type.line") }
+	]
+
+	options = [
+		{ id: 0, label: this.props.t("filters.dateOptions.today") },
+		{ id: 5, label: this.props.t("filters.dateOptions.yesterday") },
+		{ id: 6, label: this.props.t("filters.dateOptions.thisWeek") },
+		{ id: 1, label: this.props.t("filters.dateOptions.7days") },
+		{ id: 2, label: this.props.t("filters.dateOptions.30days") },
+		{ id: 3, label: this.props.t("filters.dateOptions.90days") },
+		{ id: 4, label: this.props.t("filters.dateOptions.custom") },
+	]
+
+	componentDidMount = async () => {
+		this._isMounted = 1
+		if (this._isMounted) {
+			this.getWifiSum()
+		}
+	}
+
+	componentWillUnmount = () => {
+		this._isMounted = 0
+	}
+
 	getWifiDay = async () => {
 		const { device } = this.props
 		const { from, to } = this.state
@@ -73,6 +93,21 @@ class DeviceData extends Component {
 			this.setState({
 				loading: false,
 				calibrated: {
+					lineDataSets: {
+						labels: dataArr.map(rd => rd.id),
+						datasets: [{
+							borderColor: colors[18],
+							// borderWidth: 1,
+							data: dataArr.map(rd => device.wifiFactor ? parseInt(rd.value, 10) * device.wifiFactor : parseInt(rd.value, 10)),
+							backgroundColor: colors[18],
+							fill: false,
+							lineTension: 0.1,
+							borderCapStyle: 'butt',
+							borderJoinStyle: 'miter',
+							pointBorderColor: colors[18]
+						}]
+
+					},
 					roundDataSets: {
 						labels: dataArr.map(rd => rd.id),
 						datasets: [{
@@ -95,7 +130,21 @@ class DeviceData extends Component {
 					}
 				},
 				uncalibrated: {
+					lineDataSets: {
+						labels: dataArr.map(rd => rd.id),
+						datasets: [{
+							borderColor: colors[18],
+							// borderWidth: 1,
+							data: dataArr.map(rd => parseInt(rd.value, 10)),
+							backgroundColor: colors[18],
+							fill: false,
+							lineTension: 0.1,
+							borderCapStyle: 'butt',
+							borderJoinStyle: 'miter',
+							pointBorderColor: colors[18]
+						}]
 
+					},
 					roundDataSets: {
 						labels: dataArr.map(rd => rd.id),
 						datasets: [{
@@ -141,6 +190,20 @@ class DeviceData extends Component {
 			this.setState({
 				loading: false,
 				calibrated: {
+					lineDataSets: {
+						labels: dataArr.map(rd => rd.id),
+						datasets: [{
+							borderColor: colors[18],
+							// borderWidth: 1,
+							data: dataArr.map(rd => device.wifiFactor ? parseInt(rd.value, 10) * device.wifiFactor : parseInt(rd.value, 10)),
+							backgroundColor: colors[18],
+							fill: false,
+							lineTension: 0.1,
+							borderCapStyle: 'butt',
+							borderJoinStyle: 'miter',
+							pointBorderColor: colors[18]
+						}]
+					},
 					roundDataSets: {
 						labels: dataArr.map(rd => rd.id),
 						datasets: [{
@@ -163,7 +226,21 @@ class DeviceData extends Component {
 					}
 				},
 				uncalibrated: {
+					lineDataSets: {
+						labels: dataArr.map(rd => rd.id),
+						datasets: [{
+							borderColor: colors[18],
+							// borderWidth: 1,
+							data: dataArr.map(rd => parseInt(rd.value, 10)),
+							backgroundColor: colors[18],
+							fill: false,
+							lineTension: 0.1,
+							borderCapStyle: 'butt',
+							borderJoinStyle: 'miter',
+							pointBorderColor: colors[18]
+						}]
 
+					},
 					roundDataSets: {
 						labels: dataArr.map(rd => rd.id),
 						datasets: [{
@@ -196,17 +273,6 @@ class DeviceData extends Component {
 		}
 	}
 
-	componentDidMount = async () => {
-		this._isMounted = 1
-		if (this._isMounted) {
-			this.getWifiSum()
-		}
-	}
-
-	componentWillUnmount = () => {
-		this._isMounted = 0
-	}
-
 	handleCustomCheckBox = (e) => {
 		this.setState({ timeType: parseInt(e.target.value, 10) })
 	}
@@ -218,12 +284,11 @@ class DeviceData extends Component {
 		this.setState({ actionAnchor: null });
 	}
 
-	format = "YYYY-MM-DD+HH:mm"
-
 	handleSwitchDayHour = () => {
 		let id = this.state.dateFilterInputID
+		const { timeType } = this.state.timeType
 		switch (id) {
-			case 0:
+			case 0://
 				this.getWifiSum();
 				break;
 			case 1:
@@ -235,6 +300,15 @@ class DeviceData extends Component {
 			case 3:
 				this.getWifiDay();
 				break;
+			case 4:
+				timeType === 1 ? this.getWifiDay() : this.getWifiSum()
+				break
+			case 5:
+				this.getWifiSum();
+				break
+			case 6:
+				this.getWifiDay();
+				break
 			default:
 				this.getWifiDay();
 				break;
@@ -262,11 +336,15 @@ class DeviceData extends Component {
 				from = moment().subtract(90, 'd').startOf('day')
 				to = moment().endOf('day')
 				break;
-			case 5:
+			case 4: //Custom range
+				from = moment(this.state.from)
+				to = moment(this.state.to)
+				break
+			case 5: // Yesterday
 				from = moment().subtract(1, 'd').startOf('day')
-				to = moment().endOf('day')
+				to = moment().subtract(1, 'd').endOf('day')
 				break;
-			case 6:
+			case 6: //This Week
 				from = moment().startOf('week').startOf('day')
 				to = moment().endOf('day')
 				break;
@@ -304,22 +382,6 @@ class DeviceData extends Component {
 		})
 	}
 
-	options = [
-		{ id: 0, label: this.props.t("filters.dateOptions.today") },
-		{ id: 5, label: this.props.t("filters.dateOptions.yesterday") },
-		{ id: 6, label: this.props.t("filters.dateOptions.thisWeek") },
-		{ id: 1, label: this.props.t("filters.dateOptions.7days") },
-		{ id: 2, label: this.props.t("filters.dateOptions.30days") },
-		{ id: 3, label: this.props.t("filters.dateOptions.90days") },
-		{ id: 4, label: this.props.t("filters.dateOptions.custom") },
-	]
-
-	visibilityOptions = [
-		{ id: 0, icon: <PieChartRounded />, label: this.props.t("charts.type.pie") },
-		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t("charts.type.donut") },
-		{ id: 2, icon: <BarChart />, label: this.props.t("charts.type.bar") },
-	]
-
 	handleCloseDialog = () => {
 		this.setState({ openCustomDate: false })
 		if (this.state.timeType === 1) {
@@ -330,99 +392,32 @@ class DeviceData extends Component {
 		}
 	}
 
+	handleCancelCustomDate = () => {
+		this.setState({
+			loading: false, openCustomDate: false
+		})
+	}
+
+	handleRawData = () => {
+		const { dateFilterInputID } = this.state
+		this.setState({ loading: true, actionAnchor: null, raw: !this.state.raw }, () => this.handleSetDate(dateFilterInputID))
+	}
+
 	renderCustomDateDialog = () => {
 		const { classes, t } = this.props
-		return <MuiPickersUtilsProvider utils={MomentUtils}>
-			<Dialog
-				open={this.state.openCustomDate}
-				onClose={this.handleCloseUnassign}
-				aria-labelledby="alert-dialog-title"
-				aria-describedby="alert-dialog-description">
-				<DialogTitle id="alert-dialog-title">{t("filters.dateOptions.custom")}</DialogTitle>
-				<DialogContent>
-					<ItemGrid>
-						<DateTimePicker
-							autoOk
-							ampm={false}
-							label={t("filters.startDate")}
-							clearable
-							format="LLL"
-							value={this.state.from}
-							onChange={this.handleCustomDate('from')}
-							animateYearScrolling={false}
-							color="primary"
-							disableFuture
-							dateRangeIcon={<DateRange />}
-							timeIcon={<AccessTime />}
-							rightArrowIcon={<KeyboardArrowRight />}
-							leftArrowIcon={<KeyboardArrowLeft />}
-							InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-							InputProps={{ classes: { underline: classes.underline } }}
-						/>
-					</ItemGrid>
-					<ItemGrid>
-						<DateTimePicker
-							autoOk
-							disableFuture
-							ampm={false}
-							label={t("filters.endDate")}
-							clearable
-							format="LLL"
-							value={this.state.to}
-							onChange={this.handleCustomDate('to')}
-							animateYearScrolling={false}
-							dateRangeIcon={<DateRange />}
-							timeIcon={<AccessTime />}
-							color="primary"
-							rightArrowIcon={<KeyboardArrowRight />}
-							leftArrowIcon={<KeyboardArrowLeft />}
-							InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-							InputProps={{ classes: { underline: classes.underline } }}
-						/>
-					</ItemGrid>
-					<ItemGrid container>
-						<ItemGrid xs={12} noPadding zeroMargin>
-							<Caption>{t("filters.display")}</Caption>
-						</ItemGrid>
-						<ItemGrid xs={12} zeroMargin>
-							<FormControlLabel
-								control={
-									<Checkbox
-										checked={this.state.timeType === 0 ? true : false}
-										onChange={this.handleCustomCheckBox}
-										value="0"
-										className={classes.checkbox}
-									/>
-								}
-								label={t("filters.dateOptions.hourly")}
-							/>
-						</ItemGrid>
-						<ItemGrid xs={12} zeroMargin>
-							<FormControlLabel
-								control={
-									<Checkbox
-										checked={this.state.timeType === 1 ? true : false}
-										onChange={this.handleCustomCheckBox}
-										value="1"
-										className={classes.checkbox}
-									/>
-								}
-								label={t("filters.dateOptions.daily")}
-							/>
-						</ItemGrid>
-					</ItemGrid>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={() => { this.setState({ loading: false, openCustomDate: false }) }} color="primary">
-						{t("actions.decline")}
-					</Button>
-					<Button onClick={this.handleCloseDialog} color="primary" autoFocus>
-						{t("actions.apply")}
-					</Button>
-				</DialogActions>
-			</Dialog>
-		</MuiPickersUtilsProvider>
-
+		const { openCustomDate, to, from, timeType } = this.state
+		return <CustomDateTime
+			openCustomDate={openCustomDate}
+			handleCloseDialog={this.handleCloseDialog}
+			handleCustomDate={this.handleCustomDate}
+			to={to}
+			from={from}
+			timeType={timeType}
+			handleCustomCheckBox={this.handleCustomCheckBox}
+			handleCancelCustomDate={this.handleCancelCustomDate}
+			t={t}
+			classes={classes}
+		/>
 	}
 
 	renderNoDataFilters = () => {
@@ -432,87 +427,119 @@ class DeviceData extends Component {
 	}
 
 	renderType = () => {
-		const { display } = this.state
-		const { classes } = this.props
-		switch (display) {
-			case 0:
-				return this.state.calibrated.roundDataSets ? <ItemG container>
-					<ItemG xs={12}>
-						<Caption className={classes.bigCaption2}>Calibrated Data</Caption>
-						<Pie
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-							legend={this.legendOpts}
-							data={this.state.calibrated.roundDataSets}
-							options={{
-								maintainAspectRatio: false,
-							}}
-						/>
-					</ItemG>
-					<ItemG xs={12}>
-						<Caption className={classes.bigCaption2}>Raw Data</Caption>
-						<Pie
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-							legend={this.legendOpts}
-							data={this.state.uncalibrated.roundDataSets}
-							options={{
-								maintainAspectRatio: false,
-							}}
-						/>
-					</ItemG>
-				</ItemG> : this.renderNoDataFilters()
+		const { display, raw } = this.state
+		if (raw) {
+			switch (display) {
+				case 0:
+					return this.state.uncalibrated ? this.state.uncalibrated.roundDataSets ? <div style={{ maxHeight: 400 }}>						<Pie
+						height={!isWidthUp("md", this.props.width) ? 300 : window.innerHeight - 300}
+						legend={this.legendOpts}
+						data={this.state.uncalibrated.roundDataSets}
+						options={{
+							maintainAspectRatio: false,
+						}}
+					/>
+					</div>
+						: this.renderNoDataFilters() : this.renderNoDataFilters()
+				case 1:
+					return this.state.uncalibrated ? this.state.uncalibrated.roundDataSets ?
+						<div style={{ maxHeight: 400 }}>
 
-			case 1:
-				return this.state.calibrated ? this.state.calibrated.roundDataSets ? <ItemG container>
-					<ItemG xs={12}>
-						<Caption className={classes.bigCaption2}>Calibrated Data</Caption>
-						<Doughnut
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-							legend={this.legendOpts}
-							options={{
-								maintainAspectRatio: false,
-							}}
-							data={this.state.calibrated.roundDataSets}
-						/>	</ItemG>
-					<ItemG xs={12}>
-						<Caption className={classes.bigCaption2}>Raw Data</Caption>
-						<Doughnut
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-							legend={this.legendOpts}
-							options={{
-								maintainAspectRatio: false,
-							}}
-							data={this.state.uncalibrated.roundDataSets}
-						/></ItemG>
-				</ItemG> : this.renderNoDataFilters() : this.renderNoDataFilters()
-			case 2:
-				return this.state.calibrated ? this.state.calibrated.barDataSets ? <ItemG container>
-					<ItemG xs={12}>
-						<Caption className={classes.bigCaption2}>Calibrated Data</Caption>
-						<Bar
-							data={this.state.calibrated.barDataSets}
-							legend={this.barOpts}
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
-							options={{
-								maintainAspectRatio: false,
-							}}
-						/>
-					</ItemG>
-					<ItemG xs={12}>
-						<Caption className={classes.bigCaption1}>Raw Data</Caption>
-						<Bar
-							data={this.state.uncalibrated.barDataSets}
-							legend={this.barOpts}
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
-							options={{
-								maintainAspectRatio: false,
-							}}
-						/>
-					</ItemG>
-				</ItemG> : this.renderNoDataFilters() : this.renderNoDataFilters()
+							<Doughnut
+								height={!isWidthUp("md", this.props.width) ? 300 : window.innerHeight - 300}
+								legend={this.legendOpts}
+								options={{
+									maintainAspectRatio: false,
+								}}
+								data={this.state.uncalibrated.roundDataSets}
+							/></div>
+						: this.renderNoDataFilters() : this.renderNoDataFilters()
+				case 2:
+					return this.state.uncalibrated ? this.state.uncalibrated.barDataSets ?
+						<div style={{ maxHeight: 400 }}>
+							<Bar
+								data={this.state.uncalibrated.barDataSets}
+								legend={this.barOpts}
+								height={!isWidthUp("md", this.props.width) ? 300 : window.innerHeight - 300}
+								options={{
+									maintainAspectRatio: false,
+								}}
+							/>
+						</div>
+						: this.renderNoDataFilters() : this.renderNoDataFilters()
+				case 3:
+					return this.state.uncalibrated ? this.state.uncalibrated.lineDataSets ?
+						<div style={{ maxHeight: 400 }}>
+							<Line
+								data={this.state.uncalibrated.lineDataSets}
+								legend={this.barOpts}
+								height={!isWidthUp("md", this.props.width) ? 300 : window.innerHeight - 300}
+								options={{
+									maintainAspectRatio: false,
+								}} />
+						</div>
+						: this.renderNoDataFilters() : this.renderNoDataFilters()
 
+				default:
+					break;
+			}
+		}
+		else {
+			switch (display) {
+				case 0:
+					return this.state.calibrated ? this.state.calibrated.roundDataSets ?
+						<div style={{ maxHeight: 400 }}>
+							<Pie
+								height={!isWidthUp("md", this.props.width) ? 300 : window.innerHeight - 300}
+								legend={this.legendOpts}
+								data={this.state.calibrated.roundDataSets}
+								options={{
+									maintainAspectRatio: false,
+								}}
+							/>
+						</div>
+						: this.renderNoDataFilters() : this.renderNoDataFilters()
+				case 1:
+					return this.state.calibrated ? this.state.calibrated.roundDataSets ?
+						<div style={{ maxHeight: 400 }}>
+							<Doughnut
+								height={!isWidthUp("md", this.props.width) ? 300 : window.innerHeight - 300}
+								legend={this.legendOpts}
+								options={{
+									maintainAspectRatio: false,
+								}}
+								data={this.state.calibrated.roundDataSets}
+							/>	</div>
+						: this.renderNoDataFilters() : this.renderNoDataFilters()
+				case 2:
+					return this.state.calibrated ? this.state.calibrated.barDataSets ?
+						<div style={{ maxHeight: 400 }}>
+							<Bar
+								data={this.state.calibrated.barDataSets}
+								legend={this.barOpts}
+								height={!isWidthUp("md", this.props.width) ? 300 : window.innerHeight - 300}
+								options={{
+									maintainAspectRatio: false,
+								}}
+							/>
+						</div>
+						: this.renderNoDataFilters() : this.renderNoDataFilters()
+				case 3:
+					return this.state.calibrated ? this.state.calibrated.lineDataSets ?
+						<div style={{ maxHeight: 400 }}>
+							<Line
+								data={this.state.calibrated.lineDataSets}
+								legend={this.barOpts}
+								height={!isWidthUp("md", this.props.width) ? 300 : window.innerHeight - 300}
+								options={{
+									maintainAspectRatio: false,
+								}} />
+						</div>
+						: this.renderNoDataFilters() : this.renderNoDataFilters()
 
-			default:
-				break;
+				default:
+					break;
+			}
 		}
 	}
 
@@ -557,19 +584,51 @@ class DeviceData extends Component {
 	}
 
 	renderMenu = () => {
-		const { actionAnchor } = this.state
+		const { actionAnchor, actionAnchorVisibility } = this.state
 		const { classes, t } = this.props
 		return <ItemGrid container noMargin noPadding>
-			<Hidden smDown>
-				{this.renderDateFilter()}
-			</Hidden>
-			<IconButton
-				aria-label="More"
-				aria-owns={actionAnchor ? 'long-menu' : null}
-				aria-haspopup="true"
-				onClick={this.handleOpenActionsDetails}>
-				<MoreVert />
-			</IconButton>
+			<ItemG>
+				<Hidden smDown>
+					{this.renderDateFilter()}
+				</Hidden>
+			</ItemG>
+			<ItemG>
+				<Hidden smDown>
+					<IconButton title={"Chart Type"} variant={"fab"} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
+						<Visibility />
+					</IconButton>
+					<Menu
+						id="long-menu"
+						anchorEl={actionAnchorVisibility}
+						open={Boolean(actionAnchorVisibility)}
+						onClose={e => this.setState({ actionAnchorVisibility: null })}
+						PaperProps={{
+							style: {
+								// maxHeight: 300,
+								minWidth: 250
+							}
+						}}>					<List component="div" disablePadding>
+							{this.visibilityOptions.map(op => {
+								return <ListItem key={op.id} button className={classes.nested} onClick={() => this.setState({ display: op.id })}>
+									<ListItemIcon>
+										{op.icon}
+									</ListItemIcon>
+									<ListItemText inset primary={op.label} />
+								</ListItem>
+							})}
+						</List>
+					</Menu>
+				</Hidden>
+			</ItemG>
+			<ItemG>
+				<IconButton
+					aria-label="More"
+					aria-owns={actionAnchor ? 'long-menu' : null}
+					aria-haspopup="true"
+					onClick={this.handleOpenActionsDetails}>
+					<MoreVert />
+				</IconButton>
+			</ItemG>
 			<Menu
 				id="long-menu"
 				anchorEl={actionAnchor}
@@ -578,61 +637,86 @@ class DeviceData extends Component {
 				onChange={this.handleVisibility}
 				PaperProps={{
 					style: {
-						maxHeight: 300,
+						// maxHeight: 300,
 						minWidth: 250
 					}
 				}}>
 				<div>
-					<Hidden lgUp>
+					<Hidden mdUp>
 						<ListItem>
 							{this.renderDateFilter()}
 						</ListItem>
 					</Hidden>
 				</div>
-				<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
+				<ListItem button onClick={() => this.handleRawData()}>
 					<ListItemIcon>
-						<Visibility />
+						<Checkbox
+							checked={this.state.raw}
+							// disabled
+							className={classes.noPadding}
+						/>
 					</ListItemIcon>
-					<ListItemText inset primary={t("filters.options.graphType")} />
-					<ExpandMore className={classNames({
-						[classes.expandOpen]: this.state.visibility,
-					}, classes.expand)} />
+					<ListItemText>
+						{t("collections.rawData")}
+					</ListItemText>
 				</ListItem>
-				<Collapse in={this.state.visibility} timeout="auto" unmountOnExit>
-					<List component="div" disablePadding>
-						{this.visibilityOptions.map(op => {
-							return <ListItem key={op.id} button className={classes.nested} onClick={() => this.setState({ display: op.id })}>
-								<ListItemIcon>
-									{op.icon}
-								</ListItemIcon>
-								<ListItemText inset primary={op.label} />
-							</ListItem>
-						})}
-					</List>
-				</Collapse>
+				<div>
+					<Hidden mdUp>
+						<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
+							<ListItemIcon>
+								<Visibility />
+							</ListItemIcon>
+							<ListItemText inset primary={t("filters.options.graphType")} />
+							<ExpandMore className={classNames({
+								[classes.expandOpen]: this.state.visibility,
+							}, classes.expand)} />
+						</ListItem>
+						<Collapse in={this.state.visibility} timeout="auto" unmountOnExit>
+							<List component="div" disablePadding>
+								{this.visibilityOptions.map(op => {
+									return <ListItem key={op.id} button className={classes.nested} onClick={() => this.setState({ display: op.id })}>
+										<ListItemIcon>
+											{op.icon}
+										</ListItemIcon>
+										<ListItemText inset primary={op.label} />
+									</ListItem>
+								})}
+							</List>
+						</Collapse>
+					</Hidden>
+				</div>
 				))}
 			</Menu>
 		</ItemGrid>
 	}
 
 	render() {
-		const { loading } = this.state
-		const { t } = this.props
+		const { loading, raw } = this.state
+		const { t, classes, /*  device */ } = this.props
 		return (
 			<InfoCard
-				title={t("devices.cards.data")} avatar={<AssignmentTurnedIn />}
-				noExpand
+				noRightExpand
 				topAction={this.renderMenu()}
+				title={t("devices.cards.data")}
+				avatar={<Timeline />}
+				// leftActions={
+				// 	<Button
+				// 		style={{ marginLeft: 24, padding: 16 }} 
+				// 		variant={'text'} 
+				// 		color={"primary"} 
+				// 		onClick={() => this.props.history.push({ pathname: `/collection/${device.dataCollection.id}`, prevURL: `/device/${device.id}` })}>
+				// 		{t("menus.seeMore")}
+				// 	</Button>
+				// }
 				content={
-					<Grid container>
+					<ItemG container>
 						{this.renderCustomDateDialog()}
 						{loading ? <CircularLoader notCentered /> :
-							<Fragment>
-								<ItemGrid xs={12} container noPadding>
-									{this.renderType()}
-								</ItemGrid>
-							</Fragment>}
-					</Grid>}
+							<ItemG xs={12}>
+								<Caption className={classes.bigCaption2}>{raw ? t("collections.rawData") : t("collections.calibratedData")}</Caption>
+								{this.renderType()}
+							</ItemG>}
+					</ItemG>}
 			/>
 		);
 	}
@@ -644,4 +728,4 @@ DeviceData.propTypes = {
 	device: PropTypes.object.isRequired,
 }
 
-export default withStyles(deviceStyles, { withTheme: true })(DeviceData);
+export default withStyles(deviceStyles, { withWidth: true })(withWidth()(DeviceData));

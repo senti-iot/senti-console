@@ -1,14 +1,11 @@
 import React from "react";
-import { compose, withProps, /* withStateHandlers */ } from "recompose";
+import { compose, withProps } from "recompose";
 import {
 	withScriptjs,
 	withGoogleMap,
-	// GoogleMap,
 } from "react-google-maps";
-import { CircularLoader } from "..";
-// import MarkerClusterer from "react-google-maps/lib/components/addons/MarkerClusterer";
-// import MarkerWithInfo from './MarkerWithInfo'
-import MapComponent from './MapComponent';
+import { CircularLoader } from "components";
+import MapComponent from 'components/Map/MapComponent';
 
 export const Maps = compose(
 	withProps({
@@ -21,31 +18,3 @@ export const Maps = compose(
 	withScriptjs,
 	withGoogleMap
 )(MapComponent)
-
-/* props => {
-	let defaultLat = parseFloat(56.2639) //Denmark,
-	let defaultLng = parseFloat(9.5018) //Denmark
-	if (!props.centerDenmark) {
-		defaultLat = props.markers[0] ? props.markers[0].lat : defaultLat
-		defaultLng = props.markers[0] ? props.markers[0].long : defaultLng
-	}
-
-
-	return <GoogleMap defaultZoom={props.zoom ? props.zoom : 7} defaultCenter={{ lat: defaultLat, lng: defaultLng }}>
-
-		<MarkerClusterer
-			onClick={props.onMarkerClustererClick}
-			averageCenter
-			enableRetinaIcons
-			gridSize={10}
-		>
-			{props.markers.length > 0 ? props.markers.map((m, i) => {
-				if (m.lat && m.long)
-					return <MarkerWithInfo t={props.t} key={i} m={m} i={i}/>
-				else
-					return null
-			})
-				: null}
-		</MarkerClusterer>
-	</GoogleMap>
-} */

@@ -1,37 +1,22 @@
 import React, { Fragment } from "react";
 // material-ui components
 import {/*  InputAdornment, */ withStyles, CardContent, Collapse, Button, Grid } from "@material-ui/core";
-// @material-ui/icons
-// import { LockOutlined, Person } from "@material-ui/icons";
-// core components
-import { GridContainer, ItemGrid, Info, /* Warning,  */Danger, ItemG, Success } from "components";
-// import Button from "components/CustomButtons/Button.js";
-import Card from "components/Card/Card.js";
-import CardBody from "components/Card/CardBody.js";
-import CardHeader from "components/Card/CardHeader.js";
-import CardFooter from "components/Card/CardFooter.js";
-// import CustomInput from "components/CustomInput/CustomInput.js";
 
+import { GridContainer, ItemGrid, Info, Danger, ItemG, Success, CircularLoader, Card, CardBody, CardHeader, CardFooter } from "components";
 import loginPageStyle from "assets/jss/material-dashboard-react/loginPageStyle.js";
-// import { loginUser } from "variables/dataLogin";
-// import { setToken } from 'variables/data'
-// import cookie from "react-cookies";
-// import classNames from 'classnames';
-import CircularLoader from "components/Loader/CircularLoader";
 import withLocalization from "components/Localization/T";
 import { connect } from 'react-redux';
 import { getSettings } from 'redux/settings';
-import TextF from '../../components/CustomInput/TextF';
+import TextF from 'components/CustomInput/TextF';
 import { changeLanguage } from 'redux/localization';
 import cookie from 'react-cookies';
 import { setToken } from 'variables/data';
-import { resetPassword, confirmPassword } from '../../variables/dataLogin';
+import { resetPassword, confirmPassword } from 'variables/dataLogin';
 // var passChecker = require("zxcvbn")
 
 class ResetPassword extends React.Component {
 	constructor(props) {
 		super(props);
-		// we use this to make the card to appear after the page has been rendered
 		this.state = {
 			cardAnimaton: "cardHidden",
 			email: '',
@@ -90,14 +75,14 @@ class ResetPassword extends React.Component {
 			errorCode.push(2)
 		}
 		if (errorCode.length === 0) {
-		
+
 			return true
 		}
 		else {
 			this.setState({
 				error: true,
 				errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
-			})	
+			})
 			return false
 		}
 	}
@@ -205,73 +190,91 @@ class ResetPassword extends React.Component {
 											<h4>Senti.Cloud</h4>
 										</CardHeader>
 										<CardBody>
-											<Grid container>
-												<ItemG xs={12}>
-													<Collapse in={passwordRequested}>
-														<Success>{t("login.resetPassRequestMessage")}</Success>
-													</Collapse>
-													<Collapse in={!error}>
-														{this.token ? null : <Info>{t("login.resetPasswordMessage")}</Info>}
-													</Collapse>
-													<Collapse in={error}>
-														{errorMessage.map(m => m)}
-													</Collapse>
-												</ItemG>
-												<ItemG xs={12}>
-													{this.token ? null : <TextF
-														id={"email"}
-														autoFocus
-														label={t('users.fields.email')}
-														value={email}
-														className={classes.textField}
-														// disabled={true}
-														handleChange={this.handleChange("email")}
-														margin="normal"
-														noFullWidth
-														error={error}
-													/>}
-												</ItemG>
+											<Collapse in={!passwordRequested}>
+												<Grid container>
+													<ItemG xs={12}>
+														<Collapse in={!error}>
+															{this.token ? null : <Info>{t("login.resetPasswordMessage")}</Info>}
+														</Collapse>
+														<Collapse in={error}>
+															{errorMessage.map(m => m)}
+														</Collapse>
+													</ItemG>
+													<ItemG xs={12}>
+														{this.token ? null : <TextF
+															id={"email"}
+															autoFocus
+															label={t('users.fields.email')}
+															value={email}
+															className={classes.textField}
+															// disabled={true}
+															handleChange={this.handleChange("email")}
+															margin="normal"
+															
+															error={error}
+														/>}
+													</ItemG>
 
-												{this.token ? <Fragment>
-													<ItemG xs={12}>
-														<TextF
-															id={"password"}
-															label={t('confirmUser.password')}
-															value={password}
-															className={classes.textField}
-															// disabled={true}
-															handleChange={this.handleChange("password")}
-															margin="normal"
-															noFullWidth
-															error={error}
-															type={'password'}
-														// helperText={<Danger>{this.state.score}</Danger>}
-														/>
-													</ItemG>
-													<ItemG xs={12}>
-														<TextF
-															id={"confirmpassword"}
-															label={t("confirmUser.passwordConfirm")}
-															value={confirmPassword}
-															className={classes.textField}
-															// disabled={true}
-															handleChange={this.handleChange("confirmPassword")}
-															margin="normal"
-															noFullWidth
-															error={error}
-															type={'password'}
-														/>
-													</ItemG>
-												</Fragment> : null}
-											</Grid>
+													{this.token ? <Fragment>
+														<ItemG xs={12}>
+															<TextF
+																id={"password"}
+																label={t('confirmUser.password')}
+																value={password}
+																className={classes.textField}
+																// disabled={true}
+																handleChange={this.handleChange("password")}
+																margin="normal"
+																
+																error={error}
+																type={'password'}
+															// helperText={<Danger>{this.state.score}</Danger>}
+															/>
+														</ItemG>
+														<ItemG xs={12}>
+															<TextF
+																id={"confirmpassword"}
+																label={t("confirmUser.passwordConfirm")}
+																value={confirmPassword}
+																className={classes.textField}
+																// disabled={true}
+																handleChange={this.handleChange("confirmPassword")}
+																margin="normal"
+																
+																error={error}
+																type={'password'}
+															/>
+														</ItemG>
+													</Fragment> : null}
+												</Grid>
+											</Collapse>
+											<Collapse in={passwordRequested}>
+												<ItemG xs={12}>
+													<Success>{t("login.resetPassRequestMessage")}</Success>
+												</ItemG>
+												
+											</Collapse>
 										</CardBody>
 										<CardFooter className={classes.cardFooter}>
-											{!this.token ? <Button variant={'contained'} color={'primary'} onClick={this.resetPass}>
-												{t("login.requestPasswordReset")}
-											</Button> :
-												<Button variant={'contained'} color={'primary'} onClick={this.confirmPass}>
-													{t("login.changePassword")}
-												</Button>}
+											<ItemG container>
+												<ItemG xs={12} container justify={'center'}>
+													<Collapse in={!passwordRequested}>
+														{!this.token ? <Button variant={'contained'} color={'primary'} onClick={this.resetPass}>
+															{t("login.requestPasswordReset")}
+														</Button> :
+															<Button variant={'contained'} color={'primary'} onClick={this.confirmPass}>
+																{t("login.changePassword")}
+															</Button>}
+													</Collapse>
+												</ItemG>
+												<ItemG xs={12} justify={'center'}>
+													<Collapse in={passwordRequested}>
+														<Button variant={'contained'} color={'primary'} onClick={() => this.props.history.push('/login')}>
+															{t("login.goToLogin")}
+														</Button>
+													</Collapse>
+												</ItemG>
+											</ItemG>
 										</CardFooter>
 									</form>
 									<Collapse in={this.state.loggingIn} timeout="auto" unmountOnExit>

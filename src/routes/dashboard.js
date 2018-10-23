@@ -8,47 +8,47 @@ import AsyncLoader from 'components/Loader/AsyncLoader';
 import { DataUsage } from 'variables/icons';
 
 const AsyncCollection = Loadable({
-	loader: () => import('./collection'),
+	loader: () => import('routes/collection'),
 	loading: AsyncLoader
 })
 const AsyncCollections = Loadable({
-	loader: () => import('./collections'),
+	loader: () => import('routes/collections'),
 	loading: AsyncLoader
 })
 const AsyncProjects = Loadable({
-	loader: () => import("./projects"),
+	loader: () => import("routes/projects"),
 	loading: AsyncLoader
 });
 const AsyncProject  = Loadable({
-	loader: () => import("./project"),
+	loader: () => import("routes/project"),
 	loading: AsyncLoader
 })
 const AsyncDevices  = Loadable({
-	loader: () => import("./devices"),
+	loader: () => import("routes/devices"),
 	loading: AsyncLoader
 })
 const AsyncDevice = Loadable({
-	loader: () => import("./device"),
+	loader: () => import("routes/device"),
 	loading: AsyncLoader
 })
 const AsyncUsers  = Loadable({
-	loader: () => import("./users"),
+	loader: () => import("routes/users"),
 	loading: AsyncLoader
 })
 const AsyncUser  = Loadable({
-	loader: () => import("./user"),
+	loader: () => import("routes/user"),
 	loading: AsyncLoader
 })
 const AsyncOrgs = Loadable({
-	loader: () => import("./orgs"),
+	loader: () => import("routes/orgs"),
 	loading: AsyncLoader
 })
 const AsyncOrg = Loadable({
-	loader: () => import("./org"),
+	loader: () => import("routes/org"),
 	loading: AsyncLoader
 })
 const AsyncSettings = Loadable({
-	loader: () => import("../views/Settings/Settings"),
+	loader: () => import("views/Settings/Settings"),
 	loading: AsyncLoader
 })
 const dashboardRoutes = [

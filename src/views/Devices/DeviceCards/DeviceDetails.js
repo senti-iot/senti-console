@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { Grid, Typography, withStyles, Button } from '@material-ui/core';
 import { ItemGrid, Warning, P, Info, Caption } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
-import { SignalWifi2Bar, SignalWifi2BarLock, Build, LibraryBooks, Edit, Devices, LayersClear, Business } from 'variables/icons'
+import { SignalWifi2Bar, SignalWifi2BarLock, Build, /* LibraryBooks,  */Edit, DeviceHub, LayersClear, Business, DataUsage } from 'variables/icons'
 import { ConvertDDToDMS, dateFormat, dateFormatter } from 'variables/functions'
 import { Link } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';
@@ -55,13 +55,13 @@ class DeviceDetails extends Component {
 		return (
 			<InfoCard
 				title={device.name ? device.name : device.id}
-				avatar={<Devices />}
+				avatar={<DeviceHub />}
 				topAction={<Dropdown menuItems={
 					[
-						{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/device/${device.id}/edit`, state: { prevURL: `/device/${device.id}` } }) },
-						{ label: device.project.id > 0 ? t("menus.reassign") : t("menus.assign"), icon: <LibraryBooks className={classes.leftIcon} />, func: this.props.handleOpenAssign },
-						{ label: device.org.id > 0 ? t("menus.reassignOrg") : t("menus.assignOrg"), icon: <Business className={classes.leftIcon} />, func: this.props.handleOpenAssignOrg, dontShow: accessLevel.apisuperuser ? false : true },
-						{ label: t("menus.unassignDevice"), icon: <LayersClear className={classes.leftIcon} />, func: this.props.handleOpenUnassign, dontShow: device.project.id > 0 ? false : true },
+						{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/device/${device.id}/edit`, prevURL: `/device/${device.id}`  }) },
+						{ label: t("menus.assign.deviceToCollection"), icon: <DataUsage className={classes.leftIcon} />, func: this.props.handleOpenAssign },
+						{ label: device.org.id > 0 ? t("menus.reassign.deviceToOrg") : t("menus.assign.deviceToOrg"), icon: <Business className={classes.leftIcon} />, func: this.props.handleOpenAssignOrg, dontShow: accessLevel.senticloud ? accessLevel.senticloud.editdeviceownership ? false : true : true },
+						{ label: t("menus.unassign.deviceFromCollection"), icon: <LayersClear className={classes.leftIcon} />, func: this.props.handleOpenUnassign, dontShow: device.dataCollection.id > 0 ? false : true },
 						{ label: !(device.lat > 0) && !(device.long > 0) ? t("menus.calibrate") : t("menus.recalibrate"), icon: <Build className={classes.leftIcon} />, func: () => this.props.history.push(`${this.props.match.url}/setup`) }
 					]
 				} />
@@ -143,19 +143,19 @@ class DeviceDetails extends Component {
 							<ItemGrid>
 								<Caption>{t("devices.fields.org")}:</Caption>
 								<Info>{device.org ?
-									<Link to={`/org/${device.org.id}`} >
+									<Link to={{ pathname: `/org/${device.org.id}`, prevURL: `/device/${device.id}` }} >
 										{device.org.name}
 									</Link>
 									: t("devices.noProject")}</Info>
 
 							</ItemGrid>
-							<ItemGrid>
-								<Caption>{t("devices.fields.project")}:</Caption>
-								<Info>{device.project.id > 0 ? <Link to={'/project/' + device.project.id}>{device.project.title}</Link> : t("devices.noProject")}</Info>
+							<ItemGrid xs={12}>
+								<Caption>{t("collections.fields.id")}:</Caption>
+								<Info>{device.dataCollection.id > 0 ? <Link to={'/collection/' + device.dataCollection.id}>{device.dataCollection.name}</Link> : t("devices.noProject")}</Info>
 							</ItemGrid>
 							<ItemGrid>
 								<Caption>{t("devices.fields.availability")}:</Caption>
-								<Info>{device.project.id > 0 ? t("devices.fields.notfree") : t("devices.fields.free")}</Info>
+								<Info>{device.dataCollection.id > 0 ? t("devices.fields.notfree") : t("devices.fields.free")}</Info>
 							</ItemGrid>
 						</Grid>
 					</Fragment>} />

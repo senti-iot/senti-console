@@ -1,17 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types'
-import { Grid, IconButton, Menu, MenuItem, withStyles, /* Typography, */ Select, FormControl, FormHelperText, Divider, Dialog, DialogTitle, DialogContent, /* DialogContentText, */ Button, DialogActions, ListItem, ListItemIcon, ListItemText, Collapse, List, Hidden } from '@material-ui/core';
+import { Grid, IconButton, Menu, MenuItem, withStyles, /* Typography, */ Select, FormControl, FormHelperText, Divider, Dialog, DialogTitle, DialogContent, /* DialogContentText, */ Button, DialogActions, ListItem, ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox } from '@material-ui/core';
 import {
 	AccessTime, AssignmentTurnedIn, MoreVert,
 	DateRange, KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft,
-	DonutLargeRounded, PieChartRounded, BarChart, ExpandMore, Visibility
+	DonutLargeRounded, PieChartRounded, BarChart, ExpandMore, Visibility, ShowChart
 } from "@material-ui/icons"
 // import { dateFormatter } from 'variables/functions';
 import { ItemGrid, CircularLoader, Caption, Info, ItemG, /* , Caption, Info */ } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import deviceStyles from 'assets/jss/views/deviceStyles';
-import { Doughnut, Bar, Pie } from 'react-chartjs-2';
-import { getWifiSummary } from 'variables/dataDevices';
+import { Doughnut, Bar, Pie, Line  } from 'react-chartjs-2';
+import { getDataSummary, getDataDaily, /* getDataHourly */ } from 'variables/dataCollections';
 import { colors } from 'variables/colors';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
@@ -19,22 +19,43 @@ import classNames from 'classnames';
 import { dateFormatter } from 'variables/functions';
 var moment = require('moment');
 
+// options: {
+// 	title: {
+// 		display: true,
+// 			text: 'Chart.js Bar Chart - Stacked'
+// 	},
+// 	tooltips: {
+// 		mode: 'index',
+// 			intersect: false
+// 	},
+// 	responsive: true,
+// 		scales: {
+// 		xAxes: [{
+// 			stacked: true,
+// 		}],
+// 			yAxes: [{
+// 				stacked: true
+// 			}]
+// 	}
+// }
+
 
 class ProjectData extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			from: moment().startOf('day'),
+			from: moment().subtract(7, 'd').startOf('day'),
 			to: moment().endOf('day'),
 			barDataSets: null,
 			roundDataSets: null,
 			actionAnchor: null,
 			loading: true,
-			dateFilterInputID: 0,
+			dateFilterInputID: 3,
 			openCustomDate: false,
-			display: 2,
-			visibility: false
+			display: 3,
+			visibility: false,
+			raw: false
 		}
 	}
 	legendOpts = {
@@ -55,53 +76,126 @@ class ProjectData extends Component {
 			padding: 10
 		}
 	}
+	options = [
+		{ id: 0, label: this.props.t("filters.dateOptions.today") },
+		{ id: 1, label: this.props.t("filters.dateOptions.yesterday") },
+		{ id: 2, label: this.props.t("filters.dateOptions.thisWeek") },
+		{ id: 3, label: this.props.t("filters.dateOptions.7days") },
+		{ id: 4, label: this.props.t("filters.dateOptions.30days") },
+		{ id: 5, label: this.props.t("filters.dateOptions.90days") },
+		{ id: 6, label: this.props.t("filters.dateOptions.custom") },
+	]
+
+	visibilityOptions = [
+		{ id: 0, icon: <PieChartRounded />, label: this.props.t("charts.type.pie") },
+		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t("charts.type.donut") },
+		{ id: 2, icon: <BarChart />, label: this.props.t("charts.type.bar") },
+		{ id: 3, icon: <ShowChart />, label: this.props.t("charts.type.line") }
+	] 
+	datesToArr = () => {
+		const { from, to } = this.state
+		let startDate = moment(from)
+		let endDate = moment(to)
+		let arr = []
+		let d = startDate.clone()
+		while (d <= endDate) {
+			arr.push(d)
+			d = d.clone().add(1, 'd')
+		}
+		return arr
+	}
+	getWifiDaily = async () => {
+		const { project } = this.props
+		const { from, to, raw } = this.state
+		let startDate = moment(from).format(this.format)
+		let endDate = moment(to).format(this.format)
+		let days = this.datesToArr()
+		console.log(days);
+		
+		let dataArr = []
+
+		await Promise.all(project.dataCollections.map(async d => {
+			let dataSet = null
+			let data = await getDataDaily(d.id, startDate, endDate, raw)
+			dataSet = {
+				name: d.name,
+				id: d.id,
+				data: data
+			}
+			return dataArr.push(dataSet)
+		}))
+		console.log(dataArr, dataArr.length);
+		
+		// if (dataArr.length > 0)
+		this.setState({
+			loading: false,
+			lineDataSets: {
+				labels: days.map(d => dateFormatter(d)),
+				datasets: dataArr.map((d, id) => ({
+					borderColor: colors[id],
+					// borderWidth: 1,
+					label: d.name,
+					data: Object.keys(d.data).map(data => parseInt(d.data[data], 10)),
+					backgroundColor: colors[18],
+					fill: false,
+					lineTension: 0.1,
+					borderCapStyle: 'butt',
+					borderJoinStyle: 'miter',
+					pointBorderColor: colors[18]
+				}))
+			},
+			roundDataSets: {
+				labels: days.map(d => dateFormatter(d)),
+				datasets: dataArr.map((d, id) => ({
+					label: d.name,
+					borderColor: "#FFF",
+					borderWidth: 1,
+					data: Object.keys(d.data).map(data => parseInt(d.data[data], 10)),
+					backgroundColor: colors[id]
+				}))
+			},
+			barDataSets: {
+				labels: days.map(d => dateFormatter(d)),
+				datasets: dataArr.map((d, id) => ({
+					label: d.name,
+					borderColor: "#FFF",
+					borderWidth: 1,
+					data: Object.keys(d.data).map(data => parseInt(d.data[data], 10)),
+					backgroundColor: colors[id]
+				}))
+			}
+		})
+
+	}
 	getWifiSum = async () => {
 		const { project } = this.props
-		const { from, to } = this.state
+		const { from, to, raw } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 
 		let dataArr = []
-		await Promise.all(project.devices.map(async d => {
+		await Promise.all(project.dataCollections.map(async d => {
 			let dataSet = null
-			await getWifiSummary(d.id, startDate, endDate).then(rs => dataSet = { nr: d.id, id: d.name + "(" + d.id + ")", data: rs, factor: d.wifiFactor })
+			let rs = await getDataSummary(d.id, startDate, endDate, raw)
+			let total = 0
+			Object.keys(rs).map(r => total = total + parseInt(rs[r], 10))
+			// console.log(total);
+			dataSet = { nr: d.id, id: d.name + "(" + d.id + ")", data: total }
 			return dataArr.push(dataSet)
 		}))
 		dataArr.sort((a, b) => a.nr - b.nr)
+		// console.log(dataArr.map((d, id) => ({
+		// 	borderColor: "#FFF",
+		// 	borderWidth: 1,
+		// 	data: parseInt(d.data, 10),
+		// 	backgroundColor: colors[id]
+		// })))
 		if (dataArr.length > 0)
 			this.setState({
 				loading: false,
-				calibrated: {
-					roundDataSets: {
-						labels: dataArr.map(rd => rd.id),
-						datasets: [{
-							label: "",
-							borderColor: "#FFF",
-							borderWidth: 1,
-							data: dataArr.map(rd => rd.factor > 0 ? parseInt(rd.data, 10) * rd.factor : parseInt(rd.data, 10)),
-							// backgroundColor: dataArr.map(() => getRandomColor())
-							backgroundColor: dataArr.map((rd, id) => colors[id])
-						}]
-					},
-				},
-				uncalibrated: {
-
-					roundDataSets: {
-						labels: dataArr.map(rd => rd.id),
-						datasets: [{
-							label: "",
-							borderColor: "#FFF",
-							borderWidth: 1,
-							data: dataArr.map(rd => parseInt(rd.data, 10)),
-							// backgroundColor: dataArr.map(() => getRandomColor())
-							backgroundColor: dataArr.map((rd, id) => colors[id])
-						}]
-					},
-				},
 				roundDataSets: {
 					labels: dataArr.map(da => da.id),
 					datasets: [{
-						label: "Raw data",
 						borderColor: "#FFF",
 						borderWidth: 1,
 						data: dataArr.map(d => parseInt(d.data, 10)),
@@ -109,22 +203,14 @@ class ProjectData extends Component {
 					}]
 				},
 				barDataSets: {
-					labels: dataArr.map(d => d.nr),
-					datasets: [{
-						label: "Raw data",
+					labels: [this.options[this.state.dateFilterInputID].label],
+					datasets: dataArr.map((d, id) => ({
+						label: d.id,
 						borderColor: "#FFF",
 						borderWidth: 1,
-						data: dataArr.map(d => d.data),
-						backgroundColor: dataArr.map((rd, id) => colors[id])
-					},
-					{
-						label: "Calibrated data",
-						borderColor: "#FFF",
-						borderWidth: 1,
-						data: dataArr.map(d => d.factor > 0 ? parseInt(d.data, 10) * parseInt(d.factor, 10) : d.data),
-						backgroundColor: dataArr.map((rd, id) => colors[id + 15])
-					}]
-				
+						data: [parseInt(d.data, 10)],
+						backgroundColor: colors[id]
+					}))
 				}
 			})
 		else { 
@@ -137,7 +223,7 @@ class ProjectData extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		if (this._isMounted) {
-			this.getWifiSum()
+			this.getWifiDaily()
 		}
 	}
 	componentWillUnmount = () => {
@@ -146,10 +232,12 @@ class ProjectData extends Component {
 
 	handleOpenActionsDetails = event => {
 		this.setState({ actionAnchor: event.currentTarget });
-	};
+	}
+
 	handleCloseActionsDetails = () => {
 		this.setState({ actionAnchor: null });
-	};
+	}
+
 	format = "YYYY-MM-DD+HH:mm"
 	displayFormat = "DD MMMM YYYY HH:mm"
 	handleSetDate = (id) => {
@@ -160,24 +248,24 @@ class ProjectData extends Component {
 				from = moment().startOf('day')
 				to = moment().endOf('day')
 				break;
-			case 1: // Last 7 days
+			case 1: // Yesterday
+				from = moment().subtract(1, 'd').startOf('day')
+				to = moment().subtract(1, 'd').endOf('day')
+				break;
+			case 2: // This week
+				from = moment().startOf('week').startOf('day')
+				to = moment().endOf('day')
+				break;
+			case 3: // Last 7 days
 				from = moment().subtract(7, 'd').startOf('day')
 				to = moment().endOf('day')
 				break;
-			case 2: // last 30 days
+			case 4: // last 30 days
 				from = moment().subtract(30, 'd').startOf('day')
 				to = moment().endOf('day')
 				break;
-			case 3: // last 90 days
+			case 5: // last 90 days
 				from = moment().subtract(90, 'd').startOf('day')
-				to = moment().endOf('day')
-				break;
-			case 5:
-				from = moment().subtract(1, 'd').startOf('day')
-				to = moment().endOf('day')
-				break;
-			case 6:
-				from = moment().startOf('week').startOf('day')
 				to = moment().endOf('day')
 				break;
 			default:
@@ -190,7 +278,7 @@ class ProjectData extends Component {
 			loading: true,
 			roundDataSets: null,
 			barDataSets: null
-		}, this.getWifiSum)
+		}, this.getWifiDaily)
 	}
 	handleVisibility = (event) => {
 		let id = event.target.value
@@ -199,7 +287,7 @@ class ProjectData extends Component {
 	
 	handleDateFilter = (event) => {
 		let id = event.target.value
-		if (id !== 4) {
+		if (id !== 6) {
 			this.handleSetDate(id)
 		}
 		else { 
@@ -212,26 +300,14 @@ class ProjectData extends Component {
 			[date]: e
 		})
 	}
-	
-	options = [
-		{ id: 0, label: this.props.t("filters.dateOptions.today") },
-		{ id: 5, label: this.props.t("filters.dateOptions.yesterday") },
-		{ id: 6, label: this.props.t("filters.dateOptions.thisWeek") },
-		{ id: 1, label: this.props.t("filters.dateOptions.7days") },
-		{ id: 2, label: this.props.t("filters.dateOptions.30days") },
-		{ id: 3, label: this.props.t("filters.dateOptions.90days") },
-		{ id: 4, label: this.props.t("filters.dateOptions.custom") },
-	]
-
-	visibilityOptions = [
-		{ id: 0, icon: <PieChartRounded />, label: this.props.t("charts.type.pie") },
-		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t("charts.type.donut") },
-		{ id: 2, icon: <BarChart />, label: this.props.t("charts.type.bar") },
-	]
 
 	handleCloseDialog = () => {
 		this.setState({ openCustomDate: false })
 		this.getWifiSum()
+	}
+
+	handleRawData = () => { 
+		this.setState({ loading: true, actionAnchor: null, raw: !this.state.raw }, () => this.getWifiSum())
 	}
 
 	renderCustomDateDialog = () => {
@@ -299,67 +375,59 @@ class ProjectData extends Component {
 	}
 	renderType = () => {
 		const { display } = this.state
-		const { classes } = this.props
-
+		// const { t } = this.props
 		switch (display) {
 			case 0:
-				return this.state.calibrated.roundDataSets ? <ItemG container>
-					<ItemG xs={12}>
-						<Caption className={classes.bigCaption2}>Calibrated Data</Caption>
-						<Pie
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-							legend={this.legendOpts}
-							data={this.state.calibrated.roundDataSets}
-							options={{
-								maintainAspectRatio: false,
-							}}
-						/>
-					</ItemG>
-					<ItemG xs={12}>
-						<Caption className={classes.bigCaption2}>Raw Data</Caption>
-						<Pie
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-							legend={this.legendOpts}
-							data={this.state.uncalibrated.roundDataSets}
-							options={{
-								maintainAspectRatio: false,
-							}}
-						/>
-					</ItemG>
-				</ItemG> : this.renderNoDataFilters()
-
+				return this.state.roundDataSets ? 
+					<Pie
+						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
+						legend={this.legendOpts}
+						data={this.state.roundDataSets}
+						options={{
+							maintainAspectRatio: false,
+						}}
+					/>
+					: this.renderNoData()
 			case 1:
-				return this.state.calibrated.roundDataSets ? <ItemG container>
-					<ItemG xs={12}>
-						<Caption className={classes.bigCaption2}>Calibrated Data</Caption>
-						<Doughnut
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-							legend={this.legendOpts}
-							options={{
-								maintainAspectRatio: false,
-							}}
-							data={this.state.calibrated.roundDataSets}
-						/>	</ItemG>
-					<ItemG xs={12}>
-						<Caption className={classes.bigCaption2}>Raw Data</Caption>
-						<Doughnut
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-							legend={this.legendOpts}
-							options={{
-								maintainAspectRatio: false,
-							}}
-							data={this.state.uncalibrated.roundDataSets}
-						/></ItemG>
-				</ItemG> : this.renderNoDataFilters()
+				return this.state.roundDataSets ?
+				
+					<Doughnut
+						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
+						legend={this.legendOpts}
+						options={{
+							maintainAspectRatio: false,
+						}}
+						data={this.state.roundDataSets}
+					/> : this.renderNoData()
 			case 2:
 				return this.state.barDataSets ? <Bar
 					data={this.state.barDataSets}
 					legend={this.barOpts}
 					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerWidth / 4 : window.innerHeight - 200}
 					options={{
+						display: true,
+						// title: { display: true, text: raw ? t("collections.rawData") : t("collections.calibratedData") },
+						maintainAspectRatio: false,
+						// scales: {
+						// 	xAxes: [{
+						// 		stacked: true,
+						// 	}],
+						// 	yAxes: [{
+						// 		stacked: true
+						// 	}]
+						// }
+					}}
+				/> : this.renderNoData()
+			case 3: 
+				return this.state.lineDataSets ? <Line 
+					data={this.state.lineDataSets}
+					legend={this.barOpts}
+					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerWidth / 4 : window.innerHeight - 200}
+					options={{
+						display: true,
 						maintainAspectRatio: false,
 					}}
-				/> : null
+				/> : this.renderNoData()
 			default:
 				break;
 		}
@@ -390,13 +458,13 @@ class ProjectData extends Component {
 						</ItemGrid>
 						<Divider />
 						<MenuItem value={0}>{t("filters.dateOptions.today")}</MenuItem>
-						<MenuItem value={5}>{t("filters.dateOptions.yesterday")}</MenuItem>
-						<MenuItem value={6}>{t("filters.dateOptions.thisWeek")}</MenuItem>
-						<MenuItem value={1}>{t("filters.dateOptions.7days")}</MenuItem>
-						<MenuItem value={2}>{t("filters.dateOptions.30days")}</MenuItem>
-						<MenuItem value={3}>{t("filters.dateOptions.90days")}</MenuItem>
+						<MenuItem value={1}>{t("filters.dateOptions.yesterday")}</MenuItem>
+						<MenuItem value={2}>{t("filters.dateOptions.thisWeek")}</MenuItem>
+						<MenuItem value={3}>{t("filters.dateOptions.7days")}</MenuItem>
+						<MenuItem value={4}>{t("filters.dateOptions.30days")}</MenuItem>
+						<MenuItem value={5}>{t("filters.dateOptions.90days")}</MenuItem>
 						<Divider />
-						<MenuItem value={4}>{t("filters.dateOptions.custom")}</MenuItem>
+						<MenuItem value={6}>{t("filters.dateOptions.custom")}</MenuItem>
 					</Select>
 					<FormHelperText>{`${displayFrom} - ${displayTo}`}</FormHelperText>
 				</FormControl>
@@ -407,16 +475,20 @@ class ProjectData extends Component {
 		const { actionAnchor } = this.state
 		const { classes, t } = this.props
 		return <ItemGrid container noMargin noPadding>
-			<Hidden smDown>
-				{this.renderDateFilter()}
-			</Hidden>
-			<IconButton
-				aria-label="More"
-				aria-owns={actionAnchor ? 'long-menu' : null}
-				aria-haspopup="true"
-				onClick={this.handleOpenActionsDetails}>
-				<MoreVert />
-			</IconButton>
+			<ItemG>
+				<Hidden smDown>
+					{this.renderDateFilter()}
+				</Hidden>
+			</ItemG>
+			<ItemG>
+				<IconButton
+					aria-label="More"
+					aria-owns={actionAnchor ? 'long-menu' : null}
+					aria-haspopup="true"
+					onClick={this.handleOpenActionsDetails}>
+					<MoreVert />
+				</IconButton>
+			</ItemG>
 			<Menu
 				id="long-menu"
 				anchorEl={actionAnchor}
@@ -436,6 +508,18 @@ class ProjectData extends Component {
 						</ListItem>
 					</Hidden>
 				</div>
+				<ListItem button onClick={() => this.handleRawData()}>
+					<ListItemIcon>
+						<Checkbox
+							checked={this.state.raw}
+							// disabled
+							className={classes.noPadding}
+						/>
+					</ListItemIcon>
+					<ListItemText>
+						{t("collections.rawData")}
+					</ListItemText>
+				</ListItem>
 				<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
 					<ListItemIcon>
 						<Visibility />
@@ -468,12 +552,13 @@ class ProjectData extends Component {
 	}
 
 	render() {
-		const { t } = this.props
-		const { loading, noData } = this.state
+		const { t, classes } = this.props
+		const { loading, noData, raw } = this.state
 		return (
 			<InfoCard
 				title={t("projects.infoCardProjectData")} avatar={<AssignmentTurnedIn />}
 				noExpand
+				// noPadding
 				topAction={noData ? null : this.renderMenu()}
 				content={
 					<Grid container>
@@ -481,6 +566,7 @@ class ProjectData extends Component {
 						{loading ? <CircularLoader notCentered /> :
 							<Fragment>
 								<ItemG xs={12} container>
+									<Caption className={classes.bigCaption2}>{raw ? t("collections.rawData") : t("collections.calibratedData")}</Caption>
 									{noData ? this.renderNoData() : this.renderType()}
 								</ItemG>
 							</Fragment>}

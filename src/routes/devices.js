@@ -11,7 +11,7 @@ const devices = (props) => {
 	return (
 		<Switch>
 			{/* <Route path={'/devices/new'} component={() => <CreateProject setHeader={props.setHeader} />}/> */}
-			<Route path={'/devices'} render={(rp) => <Devices setHeader={props.setHeader} t={props.t} {...rp} />} />
+			<Route path={'/devices'} render={(rp) => <Devices {...props}/>} />
 		</Switch>
 	)
 }

@@ -4,8 +4,9 @@ import React, { Component } from 'react'
 import { getProject, deleteProject } from 'variables/dataProjects'
 import ProjectData from './ProjectCards/ProjectData'
 import ProjectDetails from './ProjectCards/ProjectDetails'
-import ProjectDevices from './ProjectCards/ProjectDevices'
+import ProjectCollections from './ProjectCards/ProjectCollections'
 import { ProjectContact } from './ProjectCards/ProjectContact'
+import AssignDCs from 'components/AssignComponents/AssignDCs';
 
 const projectStyles = theme => ({
 	close: {
@@ -22,6 +23,7 @@ class Project extends Component {
 
 		this.state = {
 			project: {},
+			openAssignDC: false,
 			regFilters: {
 				keyword: '',
 				startDate: '',
@@ -41,13 +43,16 @@ class Project extends Component {
 	}
 
 	componentDidMount = async () => {
-		if (this.props.match)
-			if (this.props.match.params.id) {
-			 await getProject(this.props.match.params.id).then(async rs => {
+		const { history, location, match, setHeader } = this.props
+		if (match)
+			if (match.params.id) {
+			 await getProject(match.params.id).then(async rs => {
 					if (rs === null)
-						this.props.history.push('/404')
+						history.push('/404')
 					else {
-						this.props.setHeader(rs.title, true, '/projects/list', "projects")
+						
+						let prevURL = location.prevURL ? location.prevURL : '/projects/list'
+						setHeader(rs.title, true, prevURL, "projects")
 						this.setState({
 							project: rs, loading: false
 						})
@@ -56,7 +61,7 @@ class Project extends Component {
 
 			}
 			else {
-				this.props.history.push('/404')
+				history.push('/404')
 			}
 	}
 
@@ -72,6 +77,9 @@ class Project extends Component {
 				break
 			case 2:
 				s("snackbars.projectExported")
+				break
+			case 3:
+				s("snackbars.assign.collectionsToProject")
 				break
 			default:
 				break
@@ -124,27 +132,51 @@ class Project extends Component {
 	renderLoader = () => {
 		return <CircularLoader />
 	}
-
+	handleOpenAssignCollection = () => {
+		this.setState({ openAssignDC: true, anchorElMenu: null })
+	}
+	handleCloseAssignCollection = async (reload) => {
+		if (reload) {
+			this.setState({ loading: true, openAssignDC: false })
+			await this.componentDidMount().then(rs => {
+				this.snackBarMessages(3)
+			})
+		}
+		else {
+			this.setState({ openAssignDC: false })
+		}
+	}
 	render() {
-		const { project, loading } = this.state
+		const { project, loading, openAssignDC } = this.state
 		const { t } = this.props 
 		const rp = { history: this.props.history, match: this.props.match }
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
+					
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectDetails t={t} project={project} {...rp} deleteProject={this.handleOpenDeleteDialog} />
+						<ProjectDetails t={t}
+							project={project} {...rp}
+							deleteProject={this.handleOpenDeleteDialog}
+							handleOpenAssignCollection={this.handleOpenAssignCollection}
+						/>
 					</ItemGrid>
-					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectDevices t={t} project={project} />
-					</ItemGrid >
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<ProjectData t={t} project={project} />
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
+						<ProjectCollections t={t} project={project} {...rp}/>
+					</ItemGrid >
+					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<ProjectContact history={this.props.history} t={t} project={project} />
 					</ItemGrid>
 					{this.renderDeleteDialog()}
+					<AssignDCs 
+						open={openAssignDC}
+						handleClose={this.handleCloseAssignCollection}
+						project={project.id}
+						t={t}
+					/>
 				</GridContainer>
 				: this.renderLoader())
 	}

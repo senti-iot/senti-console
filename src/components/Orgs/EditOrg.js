@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, /*  FormControl, InputLabel, Select, Input, Chip,  MenuItem, */ Collapse, Button, MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
+import { Paper, withStyles, Grid, Collapse, Button, MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
 import { Save, Check } from 'variables/icons';
 import classNames from 'classnames';
 import { getOrg, updateOrg, getAllOrgs } from 'variables/dataOrgs'
-import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from '..'
+import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
 import { connect } from 'react-redux'
-import createprojectStyles from '../../assets/jss/components/projects/createprojectStyles'
+import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
 import EditOrgAutoSuggest from './EditOrgAutoSuggest'
 
 // var moment = require("moment")
@@ -82,7 +82,7 @@ class EditOrg extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		let id = this.props.match.params.id
-		const { accessLevel, t, history } = this.props
+		const { accessLevel, t, location } = this.props
 		await getOrg(id).then(rs => {
 			if (rs && this._isMounted) {
 				this.setState({
@@ -116,8 +116,8 @@ class EditOrg extends Component {
 		this.setState({
 			loading: false
 		})
-		let prevURL = history.location.state ? history.location.state['prevURL'] : null
-		this.props.setHeader("orgs.updateOrg", true, prevURL ? prevURL : "/orgs", "users")
+		let prevURL = location.prevURL ? location.prevURL : null
+		this.props.setHeader("orgs.updateOrg", true, prevURL, "users")
 	}
 
 	componentWillUnmount = () => {
@@ -251,7 +251,7 @@ class EditOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("name") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -265,7 +265,7 @@ class EditOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("address") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -277,7 +277,7 @@ class EditOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("zip") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 									type={ "number" }
 									pattern="[0-9]*"
@@ -292,7 +292,7 @@ class EditOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("city") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -306,7 +306,7 @@ class EditOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("region") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -328,7 +328,7 @@ class EditOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("url") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -343,7 +343,7 @@ class EditOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleAuxChange("cvr") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -356,7 +356,7 @@ class EditOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleAuxChange("ean") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>

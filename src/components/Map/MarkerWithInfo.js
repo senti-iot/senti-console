@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { InfoWindow, Marker } from 'react-google-maps';
 import { MarkerIcon } from './MarkerIcon';
-import { ItemGrid, Info, Caption } from '..';
+import { ItemGrid, Info, Caption, ItemG } from 'components';
 import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
 import { withStyles, Button } from '@material-ui/core'
 import { red, green, yellow } from '@material-ui/core/colors'
-import ItemG from '../Grid/ItemG';
 import { Link } from 'react-router-dom'
 import { getWifiSummary } from 'variables/dataDevices';
 var moment = require("moment")
@@ -106,7 +105,7 @@ class MarkerWithInfo extends Component {
 							<Info>{this.state.liveCount}</Info>
 						</ItemG>
 						<ItemG xs={12}>
-							<Button variant={"flat"} component={Link} to={`/device/${m.id}`}>
+							<Button variant={"text"} color={"primary"} component={Link} to={`/device/${m.id}`}>
 								{/* <NavLink to={`/device/${m.id}`}> */}
 								{t("menus.seeMore")}
 								{/* </NavLink> */}

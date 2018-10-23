@@ -1,21 +1,17 @@
-import React, { Component, Fragment } from 'react'
-import { getAllProjects, deleteProject } from '../../variables/dataProjects';
-import { withStyles } from "@material-ui/core";
-import { Switch, Route, Redirect } from 'react-router-dom'
-import { ViewList, ViewModule, Add, FilterList } from 'variables/icons'
+import { IconButton, Paper, withStyles } from "@material-ui/core";
 import projectStyles from 'assets/jss/views/projects';
-import ProjectTable from 'components/Project/ProjectTable';
-import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
+import CircularLoader from 'components/Loader/CircularLoader';
 import ProjectCards from 'components/Project/ProjectCards';
-import Toolbar from 'components/Toolbar/Toolbar'
-import { filterItems, handleRequestSort } from '../../variables/functions';
-import EnhancedTableToolbar from 'components/Table/TableToolbar'
-import {
-	/* Checkbox, Hidden, */ Paper, /* DialogTitle, Dialog, DialogContent, */
-	/* DialogContentText, DialogActions,  */IconButton, Menu, MenuItem
-} from "@material-ui/core"
-import { boxShadow } from 'assets/jss/material-dashboard-react';
+import ProjectTable from 'components/Project/ProjectTable';
+import EnhancedTableToolbar from 'components/Table/TableToolbar';
+import Toolbar from 'components/Toolbar/Toolbar';
+import React, { Component, Fragment } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { deleteProject, getAllProjects } from 'variables/dataProjects';
+import { filterItems, handleRequestSort } from 'variables/functions';
+import { Add, Delete, Edit, PictureAsPdf, ViewList, ViewModule, DataUsage } from 'variables/icons';
+import AssignDCs from 'components/AssignComponents/AssignDCs';
 
 class Projects extends Component {
 	constructor(props) {
@@ -25,10 +21,13 @@ class Projects extends Component {
 			selected: [],
 			projects: [],
 			projectHeader: [],
+			anchorElMenu: null,
+			openDelete: false,
 			loading: true,
 			route: 0,
 			order: "desc",
 			orderBy: "title",
+			openAssignDC: false,
 			filters: {
 				name: false,
 				keyword: '',
@@ -38,6 +37,36 @@ class Projects extends Component {
 			}
 		}
 		props.setHeader("projects.pageTitle", false, '', "projects")
+	}
+	options = () => {
+		const { t } = this.props
+		return [
+			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
+			{ label: t("menus.assign.collectionsToProjects"), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },
+			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
+			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
+		]
+	}
+	
+	tabs = [
+		{ id: 0, title: this.props.t("projects.tabs.listView"), label: <ViewList />, url: `${this.props.match.path}/list` },
+		{ id: 1, title: this.props.t("projects.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.path}/grid` },
+	]
+
+	getData = async () => {
+		const { t } = this.props
+		await getAllProjects().then(rs => this._isMounted ? this.setState({
+			projects: rs ? rs : [],
+			projectHeader: [
+				{ id: 'title', label: t("projects.projectsColumnTitle"), },
+				{ id: 'description', label: t("projects.projectsColumnDescription"), },
+				{ id: 'startDate', label: t("projects.projectsColumnStartDate"), },
+				{ id: 'endDate', label: t("projects.projectsColumnEndDate"), },
+				{ id: 'created', label: t("projects.projectsColumnCreated"), },
+				{ id: 'modified', label: t("projects.projectsColumnLastMod"), },
+			],
+			loading: false
+		}, () => this.handleRequestSort(null, "title")) : null)
 	}
 
 	componentDidMount = async () => {
@@ -52,14 +81,41 @@ class Projects extends Component {
 			}
 		}
 	}
+
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-	filter = (s) => {
-		console.log(s)
-	}
+
 	filterItems = (data) => {
 		return filterItems(data, this.state.filters)
+	}
+
+	handleEdit = () => {
+		this.props.history.push(`/project/${this.state.selected[0]}/edit`)
+	}
+
+	handleOpenDeleteDialog = () => {
+		this.setState({ openDelete: true, anchorElMenu: null })
+	}
+
+	handleCloseDeleteDialog = () => {
+		this.setState({ openDelete: false })
+	}
+
+	handleOpenAssignCollection = () => {
+		this.setState({ openAssignDC: true, anchorElMenu: null })
+	}
+
+	handleCloseAssignCollection = async (reload) => {
+		if (reload) {
+			this.setState({ loading: true, openAssignDC: false })
+			await this.getData().then(rs => {
+				this.snackBarMessages(3)
+			})
+		}
+		else {
+			this.setState({ openAssignDC: false })
+		}
 	}
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
@@ -76,6 +132,7 @@ class Projects extends Component {
 			}
 		})
 	}
+
 	handleFilterEndDate = (value) => {
 		this.setState({
 			filters: {
@@ -85,6 +142,7 @@ class Projects extends Component {
 			}
 		})
 	}
+
 	handleFilterKeyword = (value) => {
 		this.setState({
 			filters: {
@@ -93,21 +151,37 @@ class Projects extends Component {
 			}
 		})
 	}
-	getData = async () => {
-		const { t } = this.props
-		await getAllProjects().then(rs => this._isMounted ? this.setState({
-			projects: rs ? rs : [],
-			projectHeader: [
-				{ id: 'title', label: t("projects.projectsColumnTitle"), },
-				{ id: 'description', label: t("projects.projectsColumnDescription"), },
-				{ id: 'startDate', label: t("projects.projectsColumnStartDate"), },
-				{ id: 'endDate', label: t("projects.projectsColumnEndDate"), },
-				{ id: 'created', label: t("projects.projectsColumnCreated"), },
-				{ id: 'modified', label: t("projects.projectsColumnLastMod"), },
-			],
-			loading: false
-		}, () => this.handleRequestSort(null, "title")) : null)
+
+	handleSelectAllClick = (event, checked) => {
+		if (checked) {
+			this.setState({ selected: this.state.projects.map(n => n.id) })
+			return;
+		}
+		this.setState({ selected: [] })
 	}
+
+	handleClick = (event, id) => {
+		event.stopPropagation()
+		const { selected } = this.state;
+		const selectedIndex = selected.indexOf(id)
+		let newSelected = [];
+
+		if (selectedIndex === -1) {
+			newSelected = newSelected.concat(selected, id);
+		} else if (selectedIndex === 0) {
+			newSelected = newSelected.concat(selected.slice(1))
+		} else if (selectedIndex === selected.length - 1) {
+			newSelected = newSelected.concat(selected.slice(0, -1))
+		} else if (selectedIndex > 0) {
+			newSelected = newSelected.concat(
+				selected.slice(0, selectedIndex),
+				selected.slice(selectedIndex + 1),
+			);
+		}
+
+		this.setState({ selected: newSelected })
+	}
+
 	snackBarMessages = (msg) => {
 		const { s } = this.props
 		switch (msg) {
@@ -117,46 +191,46 @@ class Projects extends Component {
 			case 2:
 				s("snackbars.exported")
 				break;
+			case 3: 
+				s("snackbars.assign.collectionsToProject")
+				break
 			default:
 				break;
 		}
 	}
+	
 	deleteProjects = async (projects) => {
 		await deleteProject(projects).then(() => {
 			this.snackBarMessages(1)
 			this.getData()
+			this.setState({
+				selected: [],
+				anchorElMenu: null,
+				openDelete: false
+			})
 		})
 	}
-	renderTableToolBarContent = () => {
-		const { classes, t } = this.props
-		const { anchorFilterMenu, projectHeader } = this.state
+	
+	AddNewProject = () => this.props.history.push('/projects/new')
+	
+	handleToolbarMenuOpen = e => {
+		e.stopPropagation()
+		this.setState({ anchorElMenu: e.currentTarget })
+	}
 
+	handleToolbarMenuClose = e => {
+		e.stopPropagation();
+		this.setState({ anchorElMenu: null })
+	}
+	
+	renderTableToolBarContent = () => {
 		return <Fragment>
 			<IconButton aria-label="Add new project" onClick={this.AddNewProject}>
 				<Add />
 			</IconButton>
-			<IconButton
-				className={classes.secondAction}
-				aria-label={t("tables.filter")}
-				aria-owns={anchorFilterMenu ? "filter-menu" : null}
-				onClick={this.handleFilterMenuOpen}>
-				<FilterList />
-			</IconButton>
-			<Menu
-				id="filter-menu"
-				anchorEl={anchorFilterMenu}
-				open={Boolean(anchorFilterMenu)}
-				onClose={this.handleFilterMenuClose}
-				PaperProps={{ style: { width: 200, boxShadow: boxShadow } }}>
-
-				{projectHeader.map(option => {
-					return <MenuItem key={option.id} onClick={this.handleFilter}>
-						{option.label}
-					</MenuItem>
-				})}
-			</Menu>
 		</Fragment>
 	}
+	
 	ft = () => {
 		const { t } = this.props
 		return [{ id: 'title', name: t("projects.fields.name"), func: this.filter, type: "text" },
@@ -164,11 +238,18 @@ class Projects extends Component {
 		]
 
 	}
+	
 	renderAllProjects = () => {
 		const { t, classes } = this.props
-		const { loading, order, orderBy, projects, projectHeader, filters, selected } = this.state
+		const { openDelete, openAssignDC, loading, order, orderBy, projects, projectHeader, filters, selected } = this.state
 		return loading ? <CircularLoader /> :
 			<Paper className={classes.root}>
+				<AssignDCs 
+					open={openAssignDC}
+					handleClose={this.handleCloseAssignCollection}
+					project={selected[0]}
+					t={t}
+				/>
 				<EnhancedTableToolbar
 					ft={this.ft()}
 					anchorElMenu={this.state.anchorElMenu}
@@ -179,13 +260,19 @@ class Projects extends Component {
 					t={t}
 					content={this.renderTableToolBarContent()}
 				/><ProjectTable
+					openDelete={openDelete}
+					handleOpenDeleteDialog={this.handleOpenDeleteDialog}
+					handleCloseDeleteDialog={this.handleCloseDeleteDialog}
+					selected={selected}
 					filter={this.filter}
 					data={this.filterItems(projects)}
+					handleSelectAllClick={this.handleSelectAllClick}
 					tableHead={projectHeader}
 					handleFilterEndDate={this.handleFilterEndDate}
 					handleFilterKeyword={this.handleFilterKeyword}
 					handleFilterStartDate={this.handleFilterStartDate}
 					handleRequestSort={this.handleRequestSort}
+					handleClick={this.handleClick}
 					order={order}
 					orderBy={orderBy}
 					filters={filters}
@@ -194,11 +281,13 @@ class Projects extends Component {
 				/>
 			</Paper>
 	}
+	
 	renderList = () => {
 		return <GridContainer justify={'center'}>
 			{this.renderAllProjects()}
 		</GridContainer>
 	}
+	
 	renderCards = () => {
 		const { loading } = this.state
 		const { t } = this.props
@@ -206,10 +295,6 @@ class Projects extends Component {
 			<ProjectCards t={t} projects={this.filterItems(this.state.projects)} />
 		</GridContainer>
 	}
-	tabs = [
-		{ id: 0, title: this.props.t("projects.tabs.listView"), label: <ViewList />, url: `${this.props.match.path}/list` },
-		{ id: 1, title: this.props.t("projects.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.path}/grid` },
-	]
 	render() {
 		const { projects, filters } = this.state
 		return (

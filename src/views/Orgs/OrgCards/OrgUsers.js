@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import { InfoCard, ItemGrid, Info, Caption } from 'components';
-import { Table, TableBody, TableRow, Hidden, TableCell, withStyles } from '@material-ui/core';
-import { People } from "@material-ui/icons";
-import TC from 'components/Table/TC';
-import devicetableStyles from '../../../assets/jss/components/devices/devicetableStyles';
+import { InfoCard, ItemGrid, Info, Caption } from 'components'
+import { Table, TableBody, TableRow, Hidden, TableCell, withStyles } from '@material-ui/core'
+import { People } from "@material-ui/icons"
+import TC from 'components/Table/TC'
+import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
 import Gravatar from 'react-gravatar'
-import { pF, dateFormat } from 'variables/functions';
-var moment = require('moment')
+import { pF, dateFormat } from 'variables/functions'
+import moment from 'moment'
+
 class OrgUsers extends Component {
 	render() {
 		const { users, classes, t } = this.props
@@ -15,6 +16,7 @@ class OrgUsers extends Component {
 				title={"Users"}
 				avatar={<People />}
 				noExpand
+				noPadding
 				content={
 					<Table>
 						<TableBody>
@@ -23,7 +25,7 @@ class OrgUsers extends Component {
 								return (
 									<TableRow
 										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push('/user/' + n.id) }}
+										onClick={e => { e.stopPropagation(); this.props.history.push({ pathname: '/user/' + n.id, prevURL: `/org/${this.props.org.id}` }) }}
 										// tabIndex={-1}
 										key={i}
 										style={{ cursor: 'pointer' }}
