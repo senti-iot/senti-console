@@ -42,11 +42,12 @@ class Collections extends Component {
 	]
 	options = () => {
 		const { t, /* accessLevel */ } = this.props
+		const { selected, collections } = this.state
 		let allOptions = [
 			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
 			{ label: t("menus.assign.collectionToProject"), func: this.handleOpenAssignProject, single: false, icon: LibraryBooks },
 			{ label: t("menus.assign.deviceToCollection"), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
-			{ label: t("menus.unassign.deviceFromCollection"), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear },
+			{ label: t("menus.unassign.deviceFromCollection"), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear, dontShow: collections[collections.findIndex(c => c.id === selected[0])].activeDeviceStats ? false : true },
 			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
 			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
@@ -279,6 +280,8 @@ class Collections extends Component {
 		const { t } = this.props
 		const { selected, collections } = this.state
 		let collection = collections[collections.findIndex(c => c.id === selected[0])]
+		if (collection.activeDeviceStats === null)
+			return null
 		return <Dialog
 			open={this.state.openUnassignDevice}
 			onClose={this.handleCloseUnassignDevice}

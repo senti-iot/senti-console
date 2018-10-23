@@ -13,6 +13,7 @@ import { ItemG } from 'components/index';
 
 let selectedRender = props => {
 	const { numSelected, t } = props;
+	console.log(props.options())
 	return <Grid container justify={'space-between'} alignItems={'center'}>
 		<ItemGrid>
 			<Typography color="primary" variant="subtitle1">
@@ -41,6 +42,8 @@ let selectedRender = props => {
 				}}
 			>
 				{props.options().map((option, i) => {
+					if (option.dontShow)
+						return null
 					if (option.single)
 						return numSelected === 1 ? <MenuItem key={i} onClick={option.func}>
 							<option.icon className={props.classes.leftIcon}/>{option.label}
