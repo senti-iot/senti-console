@@ -75,6 +75,10 @@ export const getSimpleAddress = async (lat, long) => {
 	else
 		return null
 }
+/**
+ * Get device
+ * @param {int} id 
+ */
 export const getDevice = async (id) => {
 	var data = await api.get('senti/device/' + id).then(rs => rs.data)
 	if (data.address)
@@ -87,19 +91,22 @@ export const getDevice = async (id) => {
 	}
 	return data
 }
+/**
+ * Calibrate device
+ * @param {object} device 
+ */
 export const calibrateDevice = async (device) => {
 	var data = await api.post('senti/device/calibrate', device).then(rs => { 
 		return rs.ok
 	})
 	return data
 }
-
+/**
+ * Update device 
+ * @param {object} device
+ * @param {int} device.id 
+ */
 export const updateDevice = async (device) => {
 	var data = await api.put(`senti/device/${device.id}`, device).then(rs => {return rs.data })
 	return data
 }
-// * Deprecated
-// export const updateDeviceHardware = async (device) => {
-// 	var data = await api.put('senti/edithardware', device).then(rs => {  return rs.data })
-// 	return data
-// }

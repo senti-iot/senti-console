@@ -64,7 +64,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.pcModel")}
 									handleChange={this.handleInput('RPImodel')}
 									value={device.RPImodel}
-									noFullWidth
+									
 									autoFocus
 								/>
 							</ItemGrid>
@@ -74,7 +74,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.memory")}
 									handleChange={this.handleInput('memory')}
 									value={device.memory}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -83,7 +83,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.memoryModel")}
 									handleChange={this.handleInput('memoryModel')}
 									value={device.memoryModel}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -92,7 +92,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.adapter")}
 									handleChange={this.handleInput('adapter')}
 									value={device.adapter}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -101,7 +101,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.wifiModule")}
 									handleChange={this.handleInput('wifiModule')}
 									value={device.wifiModule}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -110,7 +110,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.modemModel")}
 									handleChange={this.handleInput('modemModel')}
 									value={device.modemModel}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -119,7 +119,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.modemIMEI")}
 									handleChange={this.handleInput('modemIMEI')}
 									value={device.modemIMEI.toString()}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -128,7 +128,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.cellNumber")}
 									handleChange={this.handleInput('cellNumber')}
 									value={device.cellNumber.toString()}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -137,7 +137,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.simCard")}
 									handleChange={this.handleInput('SIMID')}
 									value={device.SIMID.toString()}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -146,7 +146,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.simProvider")}
 									handleChange={this.handleInput('SIMProvider')}
 									value={device.SIMProvider}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12} container justify={'center'}>

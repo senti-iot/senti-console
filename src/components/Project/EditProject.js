@@ -194,7 +194,7 @@ class EditProject extends Component {
 										className={classes.textField}
 										handleChange={this.handleChange("title")}
 										margin="normal"
-										noFullWidth
+										
 										error={error}
 									/>
 								</ItemGrid>
@@ -209,7 +209,7 @@ class EditProject extends Component {
 										value={this.state.project.description}
 										handleChange={this.handleChange("description")}
 										margin="normal"
-										noFullWidth
+										
 										error={error}
 									/>
 								</ItemGrid>

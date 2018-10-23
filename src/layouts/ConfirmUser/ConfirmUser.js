@@ -205,7 +205,7 @@ class ConfirmUser extends React.Component {
 														// disabled={true}
 														handleChange={this.handleChange("password")}
 														margin="normal"
-														noFullWidth
+														
 														error={error}
 														type={'password'}
 													// helperText={<Danger>{this.state.score}</Danger>}
@@ -220,7 +220,7 @@ class ConfirmUser extends React.Component {
 														// disabled={true}
 														handleChange={this.handleChange("confirmPassword")}
 														margin="normal"
-														noFullWidth
+														
 														error={error}
 														type={'password'}
 													/>

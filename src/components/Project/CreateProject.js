@@ -202,7 +202,7 @@ class CreateProject extends Component {
 									className={classes.textField}
 									handleChange={this.handleChange("title")}
 									margin="normal"
-									noFullWidth
+									
 									error={error}
 
 								/>
@@ -219,7 +219,7 @@ class CreateProject extends Component {
 									value={this.state.description}
 									handleChange={this.handleChange("description")}
 									margin="normal"
-									noFullWidth
+									
 									error={error}
 								/>
 							</ItemGrid>

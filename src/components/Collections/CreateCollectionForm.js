@@ -107,7 +107,7 @@ class CreateCollectionForm extends Component {
 									handleChange={handleChange("name")}
 									value={collection.name}
 									autoFocus
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
@@ -118,7 +118,7 @@ class CreateCollectionForm extends Component {
 									value={collection.description}
 									multiline
 									rows={3}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							{/* <ItemGrid xs={12}>
@@ -129,7 +129,7 @@ class CreateCollectionForm extends Component {
 									value={collection.org.name ? collection.org.name : t("collections.noOrg")}
 									handleClick={handleOpenOrg}
 									handleChange={() => { }}
-									noFullWidth
+									
 									InputProps={{
 										onChange: handleOpenOrg,
 										readOnly: true
@@ -144,7 +144,7 @@ class CreateCollectionForm extends Component {
 									value={device.name}
 									handleClick={handleOpenDevice}
 									handleChange={() => { }}
-									noFullWidth
+									
 									InputProps={{
 										onChange: handleOpenDevice,
 										readOnly: true

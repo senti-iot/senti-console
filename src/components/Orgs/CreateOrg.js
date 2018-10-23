@@ -242,7 +242,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("name") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -255,7 +255,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("address") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -268,7 +268,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("zip") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 									type={ "number" }
 									pattern="[0-9]*"
@@ -283,7 +283,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("city") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -297,7 +297,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("region") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -320,7 +320,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("url") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -335,7 +335,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleAuxChange("cvr") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -347,7 +347,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleAuxChange("ean") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>

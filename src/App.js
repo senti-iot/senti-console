@@ -25,8 +25,7 @@ countries.registerLocale(require("i18n-iso-countries/langs/da.json"));
 const hist = createBrowserHistory();
 const theme = createMuiTheme({
 	typography: {
-		useNextVariants: true,
-		suppressDeprecationWarnings: true
+		useNextVariants: true
 	},
 	overrides: {
 		MuiTypography: {
@@ -46,7 +45,7 @@ const theme = createMuiTheme({
 		MuiFormControl: {
 			root: {
 				minWidth: 0,
-				width: 230,
+				// width: 230,
 				// maxWidth: 208
 			}
 		},

@@ -299,7 +299,7 @@ class CreateUser extends Component {
     							className={classes.textField}
     							handleChange={this.handleChange("userName")}
     							margin="normal"
-    							noFullWidth
+    							
     							error={error}
     						/>
     					</ItemGrid> */}
@@ -311,7 +311,7 @@ class CreateUser extends Component {
     							className={classes.textField}
     							handleChange={this.handleChange("firstName")}
     							margin="normal"
-    							noFullWidth
+    							
     							error={error}
     						/>
     					</ItemGrid>
@@ -323,7 +323,7 @@ class CreateUser extends Component {
     							className={classes.textField}
     							handleChange={this.handleChange("lastName")}
     							margin="normal"
-    							noFullWidth
+    							
     							error={error}
     						/>
     					</ItemGrid>
@@ -335,7 +335,7 @@ class CreateUser extends Component {
     							className={classes.textField}
     							handleChange={this.handleChange("email")}
     							margin="normal"
-    							noFullWidth
+    							
     							error={error}
     						/>
     					</ItemGrid>
@@ -347,7 +347,7 @@ class CreateUser extends Component {
     							className={classes.textField}
     							handleChange={this.handleChange("phone")}
     							margin="normal"
-    							noFullWidth
+    							
     							error={error}
     						/>
     					</ItemGrid>

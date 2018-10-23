@@ -15,7 +15,7 @@ function renderInputComponent(inputProps) {
 
 	return (
 		<TextField
-			// noFullWidth
+			// 
 			margin="normal"
 			// className={classes.textField}
 			InputProps={{

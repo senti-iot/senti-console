@@ -79,7 +79,7 @@ class EditCollectionForm extends Component {
 									handleChange={handleChange("name")}
 									value={collection.name}
 									autoFocus
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
@@ -90,7 +90,7 @@ class EditCollectionForm extends Component {
 									value={collection.description}
 									multiline
 									rows={3}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
@@ -101,7 +101,7 @@ class EditCollectionForm extends Component {
 									value={collection.org.name ? collection.org.name : t("collections.noOrg")}
 									handleClick={handleOpenOrg}
 									handleChange={() => { }}
-									noFullWidth
+									
 									InputProps={{
 										onChange: handleOpenOrg,
 										readOnly: true
