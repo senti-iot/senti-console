@@ -102,27 +102,11 @@ class EnhancedTable extends React.Component {
 
 	handleDeleteProjects = async () => {
 		await this.props.deleteProjects(this.props.selected)
-		// this.setState({
-		// 	// selected: [],
-		// 	anchorElMenu: null, //Check if valid
-		// 	openDelete: false
-		// })
 	}
 
 
 
 	isSelected = id => this.props.selected.indexOf(id) !== -1
-
-
-	// options = () => {
-	// 	const { t } = this.props
-	// 	return [
-	// 		{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
-	// 		{ label: t("menus.assignDevices"), func: this.assignDevice, single: true, icon: Devices },
-	// 		{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
-	// 		{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
-	// 	]
-	// }
 
 	renderConfirmDelete = () => {
 		// const { openDelete } = this.state
@@ -163,17 +147,6 @@ class EnhancedTable extends React.Component {
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 
 		return (
-			// <Paper className={classes.root}>
-			// 	<EnhancedTableToolbar
-			// 		ft={this.ft()}
-			// 		anchorElMenu={this.state.anchorElMenu}
-			// 		handleToolbarMenuClose={this.handleToolbarMenuClose}
-			// 		handleToolbarMenuOpen={this.handleToolbarMenuOpen}
-			// 		numSelected={selected.length}
-			// 		options={this.options}
-			// 		t={t}
-			// 		content={this.renderTableToolBarContent()}
-			// 	/>
 			<Fragment>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby="tableTitle">

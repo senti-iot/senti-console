@@ -6,9 +6,9 @@ import Toolbar from 'components/Toolbar/Toolbar';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from "react-router-dom";
-import { deleteCollection, getAllCollections } from 'variables/dataCollections';
+import { deleteCollection, getAllCollections, unassignDeviceFromCollection, getCollection } from 'variables/dataCollections';
 import { filterItems, handleRequestSort } from 'variables/functions';
-import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks, Add } from 'variables/icons';
+import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks, Add, LayersClear } from 'variables/icons';
 import { GridContainer, CircularLoader, AssignDevice, AssignProject } from 'components'
 import CollectionCard from 'components/Collections/CollectionCard';
 
@@ -43,8 +43,9 @@ class Collections extends Component {
 		const { t, /* accessLevel */ } = this.props
 		let allOptions = [
 			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t("menus.assignProject"), func: this.handleOpenAssignProject, single: false, icon: LibraryBooks },
-			{ label: t("menus.assignDevice"), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
+			{ label: t("menus.assign.collectionToProject"), func: this.handleOpenAssignProject, single: false, icon: LibraryBooks },
+			{ label: t("menus.assign.deviceToCollection"), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
+			{ label: t("menus.unassign.deviceFromCollection"), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear },
 			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
 			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
@@ -64,10 +65,12 @@ class Collections extends Component {
 				s("snackbars.exported")
 				break;
 			case 3:
-				s("snackbars.assignCollection", { collection: ``, what: "Device" })
+			//TODO
+				s("snackbars.assign.deviceToCollection", { collection: ``, what: "Device" })
 				break;
 			case 6:
-				s("snackbars.assignCollection", { collection: ``, what: "Project" })
+			//TODO
+				s("snackbars.assign.collectionToDevice", { collection: ``, what: "Project" })
 				break
 			default:
 				break;
@@ -236,7 +239,64 @@ class Collections extends Component {
 	handleCloseDeleteDialog = () => {
 		this.setState({ openDelete: false })
 	}
+	handleOpenUnassignDevice = () => {
+		this.setState({
+			openUnassignDevice: true
+		})
+	}
 
+	handleCloseUnassignDevice = () => {
+		this.setState({
+			openUnassignDevice: false, anchorEl: null
+		})
+	}
+
+	handleUnassignDevice = async () => {
+		const { selected } = this.state
+		let collection = await getCollection(selected[0])
+		if (collection.activeDeviceStats)
+			await unassignDeviceFromCollection({
+				id: collection.id,
+				deviceId: collection.activeDeviceStats.id
+			}).then(async rs => {
+				if (rs) {
+					this.handleCloseUnassignDevice()
+					this.setState({ loading: true })
+					this.snackBarMessages(1)
+					await this.getCollection(this.state.collection.id)
+				}
+			})
+		else {
+			//The Collection doesn't have a device assigned to it...
+			this.handleCloseUnassignDevice()
+		 }
+	}
+
+	renderConfirmUnassign = () => {
+		const { t } = this.props
+		const { collection } = this.state
+		return <Dialog
+			open={this.state.openUnassignDevice}
+			onClose={this.handleCloseUnassignDevice}
+			aria-labelledby="alert-dialog-title"
+			aria-describedby="alert-dialog-description"
+		>
+			<DialogTitle id="alert-dialog-title">{t("dialogs.unassignTitle")}</DialogTitle>
+			<DialogContent>
+				<DialogContentText id="alert-dialog-description">
+					{t("dialogs.unassignDeviceFromCollection", { id: collection.activeDeviceStats.id, collection: collection.name })}
+				</DialogContentText>
+			</DialogContent>
+			<DialogActions>
+				<Button onClick={this.handleCloseUnassignDevice} color="primary">
+					{t("actions.no")}
+				</Button>
+				<Button onClick={this.handleUnassignDevice} color="primary" autoFocus>
+					{t("actions.yes")}
+				</Button>
+			</DialogActions>
+		</Dialog>
+	}
 	renderConfirmDelete = () => {
 		const { openDelete, collections, selected } = this.state
 		const { t, classes  } = this.props
@@ -323,7 +383,7 @@ class Collections extends Component {
 				handleFilterKeyword={this.handleFilterKeyword}
 				handleFilterStartDate={this.handleFilterStartDate}
 				handleRequestSort={this.handleRequestSort}
-				handleDeleteCollections={this.handleDeleteCollections}
+				handleOpenUnassignDevice={this.handleOpenUnassignDevice}
 				orderBy={orderBy}
 				order={order}
 				filters={this.state.filters}

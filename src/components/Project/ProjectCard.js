@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { IconButton, Menu, MenuItem, withStyles, Button, Typography } from '@material-ui/core'
 import { ItemGrid, SmallCard } from 'components'
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle'
-import { MoreVert, Edit, PictureAsPdf, Devices, Delete, LibraryBooks } from 'variables/icons'
+import { MoreVert, Edit, /* PictureAsPdf, Devices, Delete, */ LibraryBooks } from 'variables/icons'
 import { withRouter } from 'react-router-dom'
 import { getProjectImage } from 'variables/dataProjects'
 
@@ -78,17 +78,17 @@ class ProjectCard extends Component {
 										}
 									}}>
 									<MenuItem onClick={() => this.props.history.push(`/project/${p.id}/edit`)}>
-										<Edit className={classes.leftIcon} />{t("menus.editProject")}									
+										<Edit className={classes.leftIcon} />{t("menus.edit")}									
 									</MenuItem>
-									<MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
+									{/* <MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
 										<Devices className={classes.leftIcon} />{t("menus.assignDevices")}
 									</MenuItem>
 									<MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
 										<PictureAsPdf className={classes.leftIcon} />{t("menus.exportPDF")}
 									</MenuItem>
 									<MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
-										<Delete className={classes.leftIcon} />{t("menus.deleteProject")}
-									</MenuItem>
+										<Delete className={classes.leftIcon} />{t("menus.delete")}
+									</MenuItem> */}
 									))}
 								</Menu>
 							</ItemGrid>

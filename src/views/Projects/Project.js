@@ -79,7 +79,7 @@ class Project extends Component {
 				s("snackbars.projectExported")
 				break
 			case 3:
-				s("snackbars.assignCollections")
+				s("snackbars.assign.collectionsToProject")
 				break
 			default:
 				break

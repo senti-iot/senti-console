@@ -54,9 +54,9 @@ class Devices extends Component {
 		if (accessLevel.apisuperuser)
 			return [
 				{ label: t("menus.edit"), func: this.handleDeviceEdit, single: true, icon: Edit },
-				{ label: t("menus.assignCollection"), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },
-				{ label: t("menus.assignOrg"), func: this.handleOpenAssignOrg, single: false, icon: Business },
-				{ label: t("menus.unassignCollection"), func: this.handleOpenUnassignDialog, single: false, icon: LayersClear },
+				{ label: t("menus.assign.deviceToCollection"), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },
+				{ label: t("menus.assign.deviceToOrg"), func: this.handleOpenAssignOrg, single: false, icon: Business },
+				{ label: t("menus.unassign.deviceFromCollection"), func: this.handleOpenUnassignDialog, single: false, icon: LayersClear },
 				{ label: t("menus.calibrate"), func: this.handleCalibrateFlow, single: true, icon: Build },
 				// { label: t("menus.delete"), func: this.handleDeleteProjects, single: false, icon: Delete }, 
 			]
@@ -70,10 +70,12 @@ class Devices extends Component {
 		const { s, t } = this.props
 		switch (msg) {
 			case 1: 
-				s("snackbars.assignDevice", { device: "", what: t("collections.fields.id") })
+			//TODO
+				s("snackbars.assign.deviceToCollection", { device: "", collection: "" })
 				break
 			case 2:
-				s("snackbars.assignDevice", { device: "", what: t("orgs.fields.org") })
+				//TODO
+				s("snackbars.assign.deviceToOrg", { device: "", org: "" })
 				break
 			case 3: 
 				s("snackbars.unassignDevice", {

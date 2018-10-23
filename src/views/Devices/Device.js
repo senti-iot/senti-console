@@ -104,13 +104,13 @@ class Device extends Component {
 				s("snackbars.unassignDevice", { device: `${name}(${id})`, what: `${device.dataCollection.name}(${device.dataCollection.id})` })
 				break
 			case 2:
-				s("snackbars.assignDevice", { device: `${name}(${id})`, what: `${device.dataCollection.name}(${device.dataCollection.id})` })
+				s("snackbars.assign.deviceToCollection", { device: `${name}(${id})`, collection: `${device.dataCollection.name}(${device.dataCollection.id})` })
 				break
 			case 3:
 				s("snackbars.failedUnassign")
 				break
 			case 4: 
-				s("snackbars.assignDevice", { device: `${name}(${id})`, what: `${device.org.name}` })
+				s("snackbars.assign.deviceToOrg", { device: `${name}(${id})`, org: `${device.org.name}` })
 				break
 			default:
 				break

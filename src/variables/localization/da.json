@@ -273,18 +273,18 @@
 			"title": {
 				"deviceFromCollection": "Fjern tilknytningen af enhed fra datasamling?",
 				"deviceFromOrg": "Fjern tilknytningen af enhed fra organisation?",
+				"devicesFromCollection": "Fjern tilknytningen af disse enheder fra deres datasamling?",
 				"collectionFromProject": "Fjern tilknytningen af datasamling fra projekt?",
 				"collectionsFromProject": "Fjern tilknytningen af datasamlinger fra projekt?"
 			},
 			"message": {
 				"deviceFromCollection": "Fjern tilknytningen af enhed %{device} fra datasamling %{collection}?",
 				"deviceFromOrg": "Fjern tilknytningen af enhed %{device} fra organisation %{organisation}?",
+				"devicesFromCollection": "Fjern tilknytningen af disse enheder fra deres datasamling:",
 				"collectionFromProject": "Fjern tilknytningen af datasamling %{collection} fra projekt %{project} ?",
-				"collectionsFromProject": "Fjern tilknytningen af disse datasamlinger fra projekt: "
+				"collectionsFromProject": "Fjern tilknytningen af disse datasamlinger fra projekt:"
 			}
 		},
-		"unassign": "Er du sikker på at du vil fjerne tilknytningen af enheden: %{deviceName} med ID: %{deviceID}, fra %{project} ?",
-		"unassignTitle": "Fjern tilknytning?",
 		"warnings": {
 			"notImplemented": "Ikke implementeret",
 			"wip": "Under udvikling"
@@ -343,37 +343,33 @@
 		"username": "Brugernavn"
 	},
 	"menus": {
-		"assignCollections": "Tilknyt datasamlinger",
-		"assignCollection": "Tilknyt til datasamling",
-		"assignDevice": "Tilknyt enhed",
-		"assignDevices": "Tilknyt enheder",
-		"assignOrg": "Tilknyt organisation",
-		"assignProject": "Tilknyt projekt",
+		"assign": {
+			"collectionsToProject": "Tilknyt datasamlinger til projekt",
+			"collectionToProject": "Tilknyt datasamling til projekt",
+			"deviceToCollection": "Tilknyt enhed til datasamling",
+			"deviceToOrg": "Tilknyt enhed til organisation"
+		},
+		"reassign": {
+			"collectionsTOProject": "Overflyt til anded projekt"
+		},
 		"calibrate": "Kalibrer",
 		"changePassword": "Skift kodeord",
 		"delete": "Slet",
-		"deleteOrg": "Slet",
-		"deleteProject": "Slet",
 		"edit": "Rediger",
-		"editOrg": "Rediger",
-		"editProject": "Rediger",
 		"exportPDF": "Exporter til PDF",
 		"hideMap": "Skjul kort",
 		"hideMore": "Skjul",
 		"more": "Mere",
-		"reassignDevice": "Tilknyt anden enhed",
-		"reassignOrg": "Overflyt til anden organisation",
-		"reassignProject": "Overflyt til andet projekt",
 		"recalibrate": "Rekalibring",
 		"seeLess": "Se mindre",
 		"seeMore": "Se mere",
 		"showMap": "Vis kort",
 		"showMore": "Vis mere",
-		"unassign": "Fjern tilknytning",
-		"unassignDevice": "Fjern tilknytning fra projekt",
-		"unassignOrg": "Fjern tilknytning fra organisation",
-		"unassignProject": "Fjern enhed(er) fra projekt",
-		"unassignCollection": "Fjern enhed fra datasamling",
+		"unassign": {
+			"deviceFromCollection": "Fjern enhed tilknyting fra datasamling",
+			"collectionFromProject": "Fjern datasamling tilknyting fra project",
+			"deviceFromOrg": "Fjern enhed tilknyting fra organisation"
+		},
 		"userResendEmail": "Send bekræft e-mail igen"
 	},
 	"orgs": {
@@ -510,9 +506,20 @@
 		"users": "Brugere"
 	},
 	"snackbars": {
-		"assignCollections": "Datasamlinger tildelt til projekt",
-		"assignCollection": "Datasamling ${collection} tildelt til ${what}",
-		"assignDevice": "Enhed ${device} tildelt til ${what}",
+		"assign": {
+			"deviceToCollection": "Enhed %{device} tilknyt til datasamling %{collection}",
+			"deviceToOrg": "Enhed %{device} tilknyt til organisation %{org}",
+			"collectionToProject": "Datasamling %{collection} tilknyt til projekt %{project}",
+			"collectionsToProject": "Data collections tilknyt til projekt",
+			"collectionToOrg": "Datasamling %{collection} tilknyt til organisation %{org}",
+			"projectToOrg": "Project %{project} tilknyt til organisation %{org}"
+		},
+		"unassign": {
+			"deviceFromCollection": "Enhed %{device} fjernet fra datasamling %{collection}",
+			"deviceFromOrg": "Enhed %{device} fjernet fra organisation %{org}",
+			"collectionFromProject": "Datasamling %{collection} fjernet fra projekt %{project}",
+			"collectionsFromProject": "Datasamlinger fjernet fra projekt %{project}"
+		},
 		"collectionCreated": "Datasamling er oppretet!",
 		"collectionDeleted": "Datasamling er slettet!",
 		"collectionUpdated": "Datasamling er opdateret!",
@@ -534,10 +541,8 @@
 		"projectExported": "Projektet er eksporteret!",
 		"projectUpdated": "Projekt %{project} er succesfuldt opdateret!",
 		"redirect": "Omdirigerer ...",
-		"resetDeviceSuccess": "Device has been resetted",
+		"resetDeviceSuccess": "Enhed has been resetted",
 		"settingsSaved": "Instillinger gemt!",
-		"unassignCollection": "Collection ${collection} fjernet fra ${org}",
-		"unassignDevice": "Enhed ${device} fjernet fra ${org}!",
 		"updatedFailed": "Opdatering fejlede!",
 		"updatedSuccess": "Opdateret!",
 		"updating": "Opdaterer ...",

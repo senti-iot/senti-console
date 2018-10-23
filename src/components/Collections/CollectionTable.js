@@ -3,7 +3,6 @@ import {
 	TableRow, withStyles, Typography
 } from "@material-ui/core"
 import TC from 'components/Table/TC'
-// import { Delete, Edit, PictureAsPdf/*  Add */ } from 'variables/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import PropTypes from "prop-types"
 import React, { Fragment } from "react"
@@ -23,7 +22,6 @@ class CollectionTable extends React.Component {
 			page: 0,
 			rowsPerPage: props.rowsPerPage,
 			anchorFilterMenu: null,
-			openDelete: false,
 		}
 	}
 
@@ -167,7 +165,6 @@ class CollectionTable extends React.Component {
 					handleChangePage={this.handleChangePage}
 					handleChangeRowsPerPage={this.handleChangeRowsPerPage}
 				/>
-				{/* {this.renderConfirmDelete()} */}
 			</Fragment>
 
 		)

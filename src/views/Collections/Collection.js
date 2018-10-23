@@ -74,16 +74,16 @@ class Collection extends Component {
 		console.log(this.state.collection)
 		switch (msg) {
 			case 1:
-				s(t("snackbars.unassignDevice", { what: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id }))
+				s(t("snackbars.unassign.deviceFromCollection", { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id }))
 				break
 			case 2:
 				s(t("snackbars.assignCollection", { collection: `${name} (${id})`, what: this.state.collection.org.name }))
 				break
 			case 5: 
-				s(t("snackbars.assignCollection", { collection: `${name} (${id})`, what: this.state.collection.project.title }))
+				s(t("snackbars.assign.collectionToProject", { collection: `${name} (${id})`, what: this.state.collection.project.title }))
 				break
 			case 6:
-				s(t("snackbars.assignCollection", { collection: `${name} (${id})`, what: this.state.collection.activeDeviceStats.id }))
+				s(t("snackbars.assign.deviceToCollection", { collection: `${name} (${id})`, what: this.state.collection.activeDeviceStats.id }))
 				break
 			case 4:
 				s(t("snackbars.collectionDeleted"))
@@ -212,28 +212,12 @@ class Collection extends Component {
 				await this.getCollection(this.state.collection.id)
 			}
 		})
-		// await updateCollection({ ...this.state.collection, org: { id: 0 } }).then(async rs => {
-		// 	if (rs) {
-		// 		this.handleCloseUnassign()
-		// 		this.setState({ loading: true, anchorEl: null })
-		// 		await this.getCollection(this.state.collection.id).then(
-		// 			() => this.snackBarMessages(1)
-		// 		)
-		// 	}
-		// 	else {
-		// 		this.setState({ loading: false, anchorEl: null })
-		// 		this.snackBarMessages(3)
-		// 	}
-		// })
 	}
-
-	// renderImageLoader = () => {
-	// 	return <CircularLoader notCentered />
-	// }
 
 	renderLoader = () => {
 		return <CircularLoader />
 	}
+
 	renderAssignDevice = () => {
 		const { t } = this.props
 		const { collection, openAssignDevice } = this.state

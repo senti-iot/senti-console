@@ -101,7 +101,7 @@ class DeviceCard extends Component {
 										<PictureAsPdf className={classes.leftIcon} />{t("menus.exportPDF")}
 									</MenuItem>
 									<MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
-										<Delete className={classes.leftIcon} />{t("menus.deleteProject")}
+										<Delete className={classes.leftIcon} />{t("menus.delete")}
 									</MenuItem> */}
 									))}
 								</Menu>

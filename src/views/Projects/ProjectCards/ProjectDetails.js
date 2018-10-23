@@ -25,9 +25,9 @@ class ProjectDetails extends Component {
 				noExpand
 				topAction={<Dropdown
 					menuItems={[
-						{ label: t("menus.editProject"), icon: <Edit className={classes.leftIcon} />, func: this.editProject },
-						{ label: t("menus.deleteProject"), icon: <Delete className={classes.leftIcon} />, func: this.deleteProject },
-						{ label: t("menus.assignCollections"), icon: <DataUsage className={classes.leftIcon} />, func: this.props.handleOpenAssignCollection },
+						{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: this.editProject },
+						{ label: t("menus.assign.collectionsToProject"), icon: <DataUsage className={classes.leftIcon} />, func: this.props.handleOpenAssignCollection },
+						{ label: t("menus.delete"), icon: <Delete className={classes.leftIcon} />, func: this.deleteProject },
 					]
 					}
 				/>

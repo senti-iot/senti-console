@@ -285,8 +285,6 @@
 				"collectionsFromProject": "Unassign the following collections from project: "
 			}
 		},
-		"unassignDeviceFromCollection": "Are you sure you want to unassign device (%{id}) from %{collection}?",
-		"unassignTitle": "Unassign?",
 		"warnings": {
 			"notImplemented": "Not implemented",
 			"wip": "Work in progress"
@@ -345,37 +343,33 @@
 		"username": "Username"
 	},
 	"menus": {
-		"assignCollections": "Assign collections",
-		"assignCollection": "Assign to collection",
-		"assignDevice": "Assign device",
-		"assignDevices": "Assign devices",
-		"assignOrg": "Assign to organisation",
-		"assignProject": "Assign to project",
+		"assign": {
+			"collectionsToProject": "Assign/Unassign data collections to project",
+			"collectionToProject": "Assign data collection to project",
+			"deviceToCollection": "Assign device to data collection",
+			"deviceToOrg": "Assign device to organisation"
+		},
+		"reassign": {
+			"collectionToProject": "Reassign to another project"
+		},
 		"calibrate": "Calibrate",
 		"changePassword": "Change password",
 		"delete": "Delete",
-		"deleteOrg": "Delete",
-		"deleteProject": "Delete",
 		"edit": "Edit",
-		"editOrg": "Edit",
-		"editProject": "Edit",
 		"exportPDF": "Export to PDF",
 		"hideMap": "Hide map",
 		"hideMore": "Hide",
 		"more": "More",
-		"reassignDevice": "Assign a different device",
-		"reassignOrg": "Reassign to another organisation",
-		"reassignProject": "Reassign to another project",
 		"recalibrate": "Recalibrate",
 		"seeLess": "See less",
 		"seeMore": "See more",
 		"showMap": "Show map",
 		"showMore": "Show more",
-		"unassign": "Unassign",
-		"unassignDevice": "Unassign from project",
-		"unassignOrg": "Unassign organisation",
-		"unassignProject": "Unassign device(s) from project",
-		"unassignCollection": "Unassign device from collection",
+		"unassign": {
+			"deviceFromCollection": "Unassign device from collection",
+			"collectionFromProject": "Unassign collection from project",
+			"deviceFromOrg": "Unassign device from organisation"
+		},
 		"userResendEmail": "Resend Confirm Email"
 	},
 	"orgs": {
@@ -513,7 +507,7 @@
 	},
 	"snackbars": {
 		"assign": {
-			"deviceToCollection": "Device %{device} assigned to colletion %{collection}",
+			"deviceToCollection": "Device %{device} assigned to collection %{collection}",
 			"deviceToOrg": "Device %{device} assigned to organisation %{org}",
 			"collectionToProject": "Data collection %{collection} assigned to project %{project}",
 			"collectionsToProject": "Data collections assigned to project",
@@ -526,9 +520,6 @@
 			"collectionFromProject": "Data collection %{collection} unassigned from project %{project}",
 			"collectionsFromProject": "Data collections unassigned from %{project}"
 		},
-		"assignCollections": "Data collections assigned to project",
-		"assignCollection": "Collection %{collection} assigned to %{what}",
-		"assignDevice": "Device %{device} assigned to %{what}",
 		"collectionCreated": "Data Collection has been created!",
 		"collectionDeleted": "Data Collection has been deleted!",
 		"collectionUpdated": "Data Collection has been updated!",
@@ -552,8 +543,6 @@
 		"redirect": "Redirecting ...",
 		"resetDeviceSuccess": "Device has been resetted",
 		"settingsSaved": "Settings saved!",
-		"unassignCollection": "Collection %{collection} unassigned from %{what}",
-		"unassignDevice": "Device %{device} unassigned from %{what}",
 		"updatedFailed": "Update failed!",
 		"updatedSuccess": "Updated!",
 		"updating": "Updating...",

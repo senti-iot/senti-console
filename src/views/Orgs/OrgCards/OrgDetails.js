@@ -28,8 +28,8 @@ class OrgDetails extends Component {
 	options = () => {
 		const { t, accessLevel, classes } = this.props
 		let allOptions = [
-			{ label: t("menus.editOrg"), func: this.handleEdit, single: true, icon: <Edit className={classes.leftIcon} /> },
-			{ label: t("menus.deleteOrg"), func: this.handleDeleteOrg, icon: <Delete className={classes.leftIcon} /> }
+			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: <Edit className={classes.leftIcon} /> },
+			{ label: t("menus.delete"), func: this.handleDeleteOrg, icon: <Delete className={classes.leftIcon} /> }
 		]
 		if (accessLevel.apiorg.edit)
 			return allOptions
