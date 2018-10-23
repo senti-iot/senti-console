@@ -110,7 +110,7 @@ class ProjectData extends Component {
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		let days = this.datesToArr()
-		console.log(days);
+		// console.log(days);
 		
 		let dataArr = []
 
@@ -124,7 +124,7 @@ class ProjectData extends Component {
 			}
 			return dataArr.push(dataSet)
 		}))
-		console.log(dataArr, dataArr.length);
+		// console.log(dataArr, dataArr.length);
 		
 		// if (dataArr.length > 0)
 		this.setState({

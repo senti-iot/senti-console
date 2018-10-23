@@ -71,7 +71,7 @@ class Collection extends Component {
 		const { s, t } = this.props
 		let name = this.state.collection.name ? this.state.collection.name : t("collections.noName")
 		let id = this.state.collection.id
-		console.log(this.state.collection)
+		// console.log(this.state.collection)
 		switch (msg) {
 			case 1:
 				s(t("snackbars.unassign.deviceFromCollection", { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id }))
