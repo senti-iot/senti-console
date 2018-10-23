@@ -44,9 +44,9 @@ const theme = createMuiTheme({
 		},
 		MuiFormControl: {
 			root: {
-				minWidth: 0,
-				// width: 230,
-				// maxWidth: 208
+				minWidth: 230,
+				// width: "100%",
+				// maxWidth: 230
 			}
 		},
 		MuiIcon: {
