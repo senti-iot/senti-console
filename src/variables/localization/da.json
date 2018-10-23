@@ -261,7 +261,7 @@
 			"message": {
 				"collection": "Er du sikker på du ønsker at slette denne datasamling ( %{collection} )?",
 				"collections": "Er du sikker på du ønsker at slette disse datasamlinger:",
-				"project": "Er du sikker på du ønsker at slette denne projekt ( %{project} )?",
+				"project": "Er du sikker på du ønsker at slette dette projekt ( %{project} )?",
 				"projects": "Er du sikker på du ønsker at slette disse projekter:",
 				"org": "Er du sikker på du ønsker at slette denne organisation ( %{org} )?",
 				"orgs": "Er du sikker på du ønsker at slette disse organisationer:",
@@ -271,16 +271,16 @@
 		},
 		"unassignNew": {
 			"title": {
-				"deviceFromCollection": "Fjerne tilknytningen af enhed fra datasamling?",
-				"deviceFromOrg": "Fjerne tilknytningen af enhed fra organisation?",
-				"collectionFromProject": "Fjerne tilknytningen af datasamling fra projekt?",
-				"collectionsFromProject": "Fjerne tilknytningen af datasamlinger fra projekt?"
+				"deviceFromCollection": "Fjern tilknytningen af enhed fra datasamling?",
+				"deviceFromOrg": "Fjern tilknytningen af enhed fra organisation?",
+				"collectionFromProject": "Fjern tilknytningen af datasamling fra projekt?",
+				"collectionsFromProject": "Fjern tilknytningen af datasamlinger fra projekt?"
 			},
 			"message": {
-				"deviceFromCollection": "Fjerne tilknytningen af enhed %{device} fra datasamling %{collection}?",
-				"deviceFromOrg": "Fjerne tilknytningen af enhed %{device} fra organisation %{organisation}?",
-				"collectionFromProject": "Fjerne tilknytningen af datasamling %{collection} fra projekt %{project} ?",
-				"collectionsFromProject": "Fjerne tilknytningen af disse datasamlinger fra projekt: "
+				"deviceFromCollection": "Fjern tilknytningen af enhed %{device} fra datasamling %{collection}?",
+				"deviceFromOrg": "Fjern tilknytningen af enhed %{device} fra organisation %{organisation}?",
+				"collectionFromProject": "Fjern tilknytningen af datasamling %{collection} fra projekt %{project} ?",
+				"collectionsFromProject": "Fjern tilknytningen af disse datasamlinger fra projekt: "
 			}
 		},
 		"unassign": "Er du sikker på at du vil fjerne tilknytningen af enheden: %{deviceName} med ID: %{deviceID}, fra %{project} ?",
