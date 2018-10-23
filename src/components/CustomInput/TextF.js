@@ -2,18 +2,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles, TextField } from '@material-ui/core';
+import { compose } from 'recompose';
 
 const styles = theme => ({
 	leftIcon: {
 		marginRight: theme.spacing.unit
 	}
 })
+
 /**
-* @augments {Component<{	id:string.isRequired,	label:string.isRequired,	value:string.isRequired,	handleChange:Function.isRequired,	handleClick:Function,	autoFocus:boolean,	noFullWidth:boolean,	multiline:boolean,	rows:number,	error:boolean,	type:string,	disabled:boolean,	helperText:string,	InputProps:object,>}
+* @augments {Component<{	id:string.isRequired,	label:string.isRequired,	value:string.isRequired,	handleChange:Function.isRequired,	handleClick:Function,	autoFocus:boolean,	:boolean,	multiline:boolean,	rows:number,	error:boolean,	type:string,	disabled:boolean,	helperText:string,	InputProps:object,>}
 */
 const TextF = (props) => {
-
-	return (
+	let mobile = window.innerWidth < props.theme.breakpoints.values.md ? true : false
+	return (		
 		<TextField
 			autoFocus={props.autoFocus ? props.autoFocus : undefined}
 			id={props.id}
@@ -21,7 +23,7 @@ const TextF = (props) => {
 			value={props.value}
 			onClick={props.handleClick}
 			onChange={props.handleChange}
-			fullWidth={props.noFullWidth ? undefined : true}
+			fullWidth={mobile ? (props.noFullWidth ? false : true) : false}
 			multiline={props.multiline ? props.multiline : undefined}
 			rows={props.rows ? props.rows : undefined}
 			className={props.classes.textField ? props.classes.textFields : ""}
@@ -52,4 +54,4 @@ TextF.propTypes = {
 	helperText: PropTypes.string,
 	InputProps: PropTypes.object,
 }
-export default withStyles(styles)(TextF)
+export default compose(withStyles(styles, { withTheme: true }))(TextF)
