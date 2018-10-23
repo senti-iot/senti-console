@@ -94,27 +94,27 @@ class Dashboard extends React.Component {
 						leftAction={this.renderAction("actions.learnMore", "/")}
 						rightAction={this.renderAction("actions.startNow", "/settings", true)}
 					/></ItemG>
-					<ItemG justify sm={12} md={4}>	<MediaCard
+					{/* <ItemG justify sm={12} md={4}>	<MediaCard
 						img={imgs.notifications}
 						header={t("dashboard.cardHeaders.notifications")}
 						content={t("dashboard.cardContent.notifications")}
 						leftAction={this.renderAction("actions.learnMore", "/")}
 						rightAction={this.renderAction("actions.startNow", "/settings", true)}
-					/></ItemG>
-					<ItemG justify sm={12} md={4}>	<MediaCard
+					/></ItemG> */}
+					{/* <ItemG justify sm={12} md={4}>	<MediaCard
 						img={imgs.predictions}
 						header={t("dashboard.cardHeaders.alerts")}
 						content={t("dashboard.cardContent.alerts")}
 						leftAction={this.renderAction("actions.learnMore", "/")}
 						rightAction={this.renderAction("actions.startNow", "/settings", true)}
-					/></ItemG>
-					<ItemG justify sm={12} md={4}>	<MediaCard
+					/></ItemG> */}
+					{/* <ItemG justify sm={12} md={4}>	<MediaCard
 						img={imgs.sharing}
 						header={t("dashboard.cardHeaders.api")}
 						content={t("dashboard.cardContent.api")}
 						leftAction={this.renderAction("actions.learnMore", "/")}
 						rightAction={this.renderAction("actions.startNow", "/", true)}
-					/></ItemG>
+					/></ItemG> */}
 					<ItemG justify xs={12}>
 						<Caption>
 							Senti.Cloud version {pj.version}
