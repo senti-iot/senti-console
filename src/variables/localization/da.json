@@ -350,6 +350,7 @@
 			"deviceToOrg": "Tilknyt enhed til organisation"
 		},
 		"reassign": {
+			"deviceToOrg": "Overflyt til anden organisation",
 			"collectionsTOProject": "Overflyt til anded projekt"
 		},
 		"calibrate": "Kalibrer",

@@ -14,7 +14,7 @@ const styles = theme => ({
 * @augments {Component<{	id:string.isRequired,	label:string.isRequired,	value:string.isRequired,	handleChange:Function.isRequired,	handleClick:Function,	autoFocus:boolean,	:boolean,	multiline:boolean,	rows:number,	error:boolean,	type:string,	disabled:boolean,	helperText:string,	InputProps:object,>}
 */
 const TextF = (props) => {
-	let mobile = window.innerWidth < props.theme.breakpoints.values.md ? true : false
+	let mobile = window.innerWidth <= props.theme.breakpoints.values.md ? true : false
 	return (		
 		<TextField
 			autoFocus={props.autoFocus ? props.autoFocus : undefined}
@@ -23,7 +23,7 @@ const TextF = (props) => {
 			value={props.value}
 			onClick={props.handleClick}
 			onChange={props.handleChange}
-			fullWidth={mobile ? (props.noFullWidth ? false : true) : false}
+			fullWidth={props.fullWidth || mobile ? true : false}
 			multiline={props.multiline ? props.multiline : undefined}
 			rows={props.rows ? props.rows : undefined}
 			className={props.classes.textField ? props.classes.textFields : ""}
@@ -45,7 +45,7 @@ TextF.propTypes = {
 	handleChange: PropTypes.func.isRequired,
 	handleClick: PropTypes.func,
 	autoFocus: PropTypes.bool,
-	noFullWidth: PropTypes.bool,
+	fullWidth: PropTypes.bool,
 	multiline: PropTypes.bool,
 	rows: PropTypes.number,
 	error: PropTypes.bool,

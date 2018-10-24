@@ -119,43 +119,50 @@ class LoginPage extends React.Component {
 				>
 					<div className={classes.container}>
 						<GridContainer justify="center">
-							<ItemGrid xs={12} sm={12} md={3}>
+							<ItemGrid xs={12} sm={12} md={4}>
 								<Card className={classes[this.state.cardAnimaton]}>
 									<form className={classes.form}>
 										<CardHeader color="primary" className={classes.cardHeader}>
 											<h4>Senti.Cloud</h4>
 										</CardHeader>
 										<CardBody>
-											<TextF 
-												id={"user"}
-												autoFocus
-												label={t("login.username")}
-												error={this.state.error}
-												handleChange={this.handleInput}
-												value={this.state.user}
-												InputProps={{
-													autoComplete: true,
-													type: "email",
-													endAdornment: <InputAdornment position="end">
-														<Person className={IconEndAd} />
-													</InputAdornment>
-												}}
-											/>
-											<TextF
-												id={"pass"}
-												label={t("login.pass")}
-											
-												error={this.state.error}
-												handleChange={this.handleInput}
-												value={this.state.pass}
-												InputProps={{
-													autoComplete: true,
-													type: "password",
-													endAdornment: <InputAdornment position="end">
-														<LockOutlined className={IconEndAd} />
-													</InputAdornment>
-												}}
-											/>
+											<ItemG container>
+												<ItemG xs={12}>
+													<TextF 
+														id={"user"}
+														autoFocus
+														label={t("login.username")}
+														error={this.state.error}
+														fullWidth
+														handleChange={this.handleInput}
+														value={this.state.user}
+														InputProps={{
+															autoComplete: true,
+															type: "email",
+															endAdornment: <InputAdornment position="end">
+																<Person className={IconEndAd} />
+															</InputAdornment>
+														}}
+													/>
+												</ItemG>
+												<ItemG xs={12}>
+													<TextF
+														id={"pass"}
+														label={t("login.pass")}
+														error={this.state.error}
+														fullWidth
+														handleChange={this.handleInput}
+														value={this.state.pass}
+														InputProps={{
+															autoComplete: true,
+															type: "password",
+															endAdornment: <InputAdornment position="end">
+																<LockOutlined className={IconEndAd} />
+															</InputAdornment>
+														}}
+													/>
+												</ItemG>
+											</ItemG>
 										</CardBody>
 										<CardFooter className={classes.cardFooter}>
 											<Grid container justify={"center"}>
