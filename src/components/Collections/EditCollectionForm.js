@@ -25,7 +25,7 @@ class EditCollectionForm extends Component {
 		return <DSelect
 			label={t("collections.fields.status")}
 			value={collection.state}
-			func={handleChange("state")}
+			onChange={handleChange("state")}
 			menuItems={[
 				// { value: 0, label: t("collections.fields.status.deleted") },
 				{ value: 1, label: t("collections.fields.state.active") },
@@ -125,14 +125,14 @@ class EditCollectionForm extends Component {
 }
 
 EditCollectionForm.propTypes = {
-	t: PropTypes.func.isRequired,
+	t: PropTypes.onChange.isRequired,
 	collection: PropTypes.object.isRequired,
-	handleChange: PropTypes.func.isRequired,
-	handleCloseOrg: PropTypes.func.isRequired,
-	handleOpenOrg: PropTypes.func.isRequired,
+	handleChange: PropTypes.onChange.isRequired,
+	handleCloseOrg: PropTypes.onChange.isRequired,
+	handleOpenOrg: PropTypes.onChange.isRequired,
 	open: PropTypes.bool.isRequired,
 	orgs: PropTypes.array.isRequired,
-	handleUpdate: PropTypes.func.isRequired,
+	handleUpdate: PropTypes.onChange.isRequired,
 
 
 }

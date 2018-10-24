@@ -53,7 +53,7 @@ class CreateCollectionForm extends Component {
 		return <DSelect
 			label={t("collections.fields.status")}
 			value={collection.state}
-			func={handleChange("state")}
+			onChange={handleChange("state")}
 			menuItems={[
 				// { value: 0, label: t("collections.fields.status.deleted") },
 				{ value: 1, label: t("collections.fields.state.active") },
@@ -168,16 +168,16 @@ class CreateCollectionForm extends Component {
 }
 
 CreateCollectionForm.propTypes = {
-	t: PropTypes.func.isRequired,
+	t: PropTypes.onChange.isRequired,
 	collection: PropTypes.object.isRequired,
-	handleChangeDevice: PropTypes.func.isRequired,
-	handleCloseDevice: PropTypes.func.isRequired,
-	handleOpenDevice: PropTypes.func.isRequired,
+	handleChangeDevice: PropTypes.onChange.isRequired,
+	handleCloseDevice: PropTypes.onChange.isRequired,
+	handleOpenDevice: PropTypes.onChange.isRequired,
 	open: PropTypes.bool.isRequired,
 	devices: PropTypes.array.isRequired,
 	device: PropTypes.object.isRequired,
-	handleCreate: PropTypes.func.isRequired,
-	handleChange: PropTypes.func.isRequired,
+	handleCreate: PropTypes.onChange.isRequired,
+	handleChange: PropTypes.onChange.isRequired,
 
 
 }
