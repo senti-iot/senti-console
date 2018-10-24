@@ -144,7 +144,7 @@ class CollectionData extends Component {
 		const { from, to, raw } = this.state
 		let data = await getDataDaily(collection.id, moment(from).format(this.format), moment(to).format(this.format), raw)
 		if (data) {
-			let dataArr = Object.keys(data).map(r => ({ id: shortDateFormat(r), value: data[r] }))
+			let dataArr = Object.keys(data).map(r => ({ id: [shortDateFormat(r), moment(r).format('dddd').charAt(0).toUpperCase() + moment(r).format('dddd').slice(1)], value: data[r] }))
 			this.setState({
 				data: data,
 				charts: {

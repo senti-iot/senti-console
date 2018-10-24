@@ -16,7 +16,7 @@ import { colors } from 'variables/colors';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import classNames from 'classnames';
-import { dateFormatter } from 'variables/functions';
+import { dateFormatter, shortDateFormat } from 'variables/functions';
 import { connect } from 'react-redux'
 import moment from 'moment'
 // var moment = require('moment');
@@ -128,12 +128,12 @@ class ProjectData extends Component {
 			return dataArr.push(dataSet)
 		}))
 		// console.log(dataArr, dataArr.length);
-		
+		// ({ id: [shortDateFormat(r), moment(r).format('dddd').charAt(0).toUpperCase() + moment(r).format('dddd').slice(1)],
 		// if (dataArr.length > 0)
 		this.setState({
 			loading: false,
 			lineDataSets: {
-				labels: days.map(d => dateFormatter(d)),
+				labels: days.map(d => [shortDateFormat(d), moment(d).format('dddd').charAt(0).toUpperCase() + moment(d).format('dddd').slice(1)]),
 				datasets: dataArr.map((d, id) => ({
 					borderColor: colors[id],
 					// borderWidth: 1,
