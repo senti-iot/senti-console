@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { BarChart, PieChartRounded, ShowChart, DonutLargeRounded } from 'variables/icons'
-import { InfoCard } from 'components';
+import { InfoCard, DSelect, ItemGrid } from 'components';
+import { ListItemText, ListItem, List, Grid } from '@material-ui/core';
 
 export default class ChartSettings extends Component {
 	constructor(props) {
@@ -21,12 +22,26 @@ export default class ChartSettings extends Component {
 
 	}
 	render() {
-		const { t } = this.props
+		const { t, classes } = this.props
 		return (
 			<InfoCard
 				noExpand
 				avatar={<BarChart />}
-				title={t("settings.headers.charts")} />
+				title={t("settings.headers.charts")}
+				content={
+					<Grid container>
+						<List className={classes.list}>
+							<ListItem divider>
+								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+									<ListItemText>{t("settings.discoverSenti")}</ListItemText>
+									<DSelect menuItems={discSenti} value={discSentiVal} onChange={this.changeDiscoverSenti} />
+								</ItemGrid>
+							</ListItem>
+						</List>
+					</Grid>
+				
+				}
+			/>
 		)
 	}
 }
