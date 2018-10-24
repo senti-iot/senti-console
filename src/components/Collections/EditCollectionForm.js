@@ -125,14 +125,14 @@ class EditCollectionForm extends Component {
 }
 
 EditCollectionForm.propTypes = {
-	t: PropTypes.onChange.isRequired,
+	t: PropTypes.func.isRequired,
 	collection: PropTypes.object.isRequired,
-	handleChange: PropTypes.onChange.isRequired,
-	handleCloseOrg: PropTypes.onChange.isRequired,
-	handleOpenOrg: PropTypes.onChange.isRequired,
+	handleChange: PropTypes.func.isRequired,
+	handleCloseOrg: PropTypes.func.isRequired,
+	handleOpenOrg: PropTypes.func.isRequired,
 	open: PropTypes.bool.isRequired,
 	orgs: PropTypes.array.isRequired,
-	handleUpdate: PropTypes.onChange.isRequired,
+	handleUpdate: PropTypes.func.isRequired,
 
 
 }

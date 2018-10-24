@@ -131,7 +131,7 @@ class CreateCollectionForm extends Component {
 									handleChange={() => { }}
 									
 									InputProps={{
-										onChange: handleOpenOrg,
+										func: handleOpenOrg,
 										readOnly: true
 									}}
 								/>
@@ -168,16 +168,16 @@ class CreateCollectionForm extends Component {
 }
 
 CreateCollectionForm.propTypes = {
-	t: PropTypes.onChange.isRequired,
+	t: PropTypes.func.isRequired,
 	collection: PropTypes.object.isRequired,
-	handleChangeDevice: PropTypes.onChange.isRequired,
-	handleCloseDevice: PropTypes.onChange.isRequired,
-	handleOpenDevice: PropTypes.onChange.isRequired,
+	handleChangeDevice: PropTypes.func.isRequired,
+	handleCloseDevice: PropTypes.func.isRequired,
+	handleOpenDevice: PropTypes.func.isRequired,
 	open: PropTypes.bool.isRequired,
 	devices: PropTypes.array.isRequired,
 	device: PropTypes.object.isRequired,
-	handleCreate: PropTypes.onChange.isRequired,
-	handleChange: PropTypes.onChange.isRequired,
+	handleCreate: PropTypes.func.isRequired,
+	handleChange: PropTypes.func.isRequired,
 
 
 }
