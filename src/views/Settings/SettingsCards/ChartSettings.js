@@ -28,7 +28,7 @@ class ChartSettings extends Component {
 						<List className={classes.list}>
 							<ListItem>
 								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-									<ListItemText>{t("settings.discoverSenti")}</ListItemText>
+									<ListItemText>{t("settings.chart.defaultChart")}</ListItemText>
 									<DSelect menuItems={this.chartTypes()} value={chartType} onChange={this.changeChartType} />
 								</ItemGrid>
 							</ListItem>

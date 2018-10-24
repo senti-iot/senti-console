@@ -17,7 +17,10 @@ import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import classNames from 'classnames';
 import { dateFormatter } from 'variables/functions';
-var moment = require('moment');
+import { connect } from 'react-redux'
+import moment from 'moment'
+// var moment = require('moment');
+
 
 // options: {
 // 	title: {
@@ -378,7 +381,7 @@ class ProjectData extends Component {
 		// const { t } = this.props
 		switch (display) {
 			case 0:
-				return this.state.roundDataSets ? 
+				return this.state.roundDataSets ? <div style={{ maxHeight: 400 }}>
 					<Pie
 						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
 						legend={this.legendOpts}
@@ -387,20 +390,22 @@ class ProjectData extends Component {
 							maintainAspectRatio: false,
 						}}
 					/>
+				</div>
 					: this.renderNoData()
 			case 1:
 				return this.state.roundDataSets ?
-				
-					<Doughnut
-						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-						legend={this.legendOpts}
-						options={{
-							maintainAspectRatio: false,
-						}}
-						data={this.state.roundDataSets}
-					/> : this.renderNoData()
+					<div style={{ maxHeight: 400 }}>
+						<Doughnut
+							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
+							legend={this.legendOpts}
+							options={{
+								maintainAspectRatio: false,
+							}}
+							data={this.state.roundDataSets}
+						/></div>
+					: this.renderNoData()
 			case 2:
-				return this.state.barDataSets ? <Bar
+				return this.state.barDataSets ? <div style={{ maxHeight: 400 }}><Bar
 					data={this.state.barDataSets}
 					legend={this.barOpts}
 					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerWidth / 4 : window.innerHeight - 200}
@@ -417,9 +422,9 @@ class ProjectData extends Component {
 						// 	}]
 						// }
 					}}
-				/> : this.renderNoData()
+				/></div> : this.renderNoData()
 			case 3: 
-				return this.state.lineDataSets ? <Line 
+				return this.state.lineDataSets ? <div style={{ maxHeight: 400 }}> <Line 
 					data={this.state.lineDataSets}
 					legend={this.barOpts}
 					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerWidth / 4 : window.innerHeight - 200}
@@ -427,7 +432,7 @@ class ProjectData extends Component {
 						display: true,
 						maintainAspectRatio: false,
 					}}
-				/> : this.renderNoData()
+				/></div> : this.renderNoData()
 			default:
 				break;
 		}
@@ -472,12 +477,40 @@ class ProjectData extends Component {
 		)
 	}
 	renderMenu = () => {
-		const { actionAnchor } = this.state
+		const { actionAnchor, actionAnchorVisibility } = this.state
 		const { classes, t } = this.props
 		return <ItemGrid container noMargin noPadding>
 			<ItemG>
 				<Hidden smDown>
 					{this.renderDateFilter()}
+				</Hidden>
+			</ItemG>
+			<ItemG>
+				<Hidden smDown>
+					<IconButton title={"Chart Type"} variant={"fab"} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
+						<Visibility />
+					</IconButton>
+					<Menu
+						id="long-menu"
+						anchorEl={actionAnchorVisibility}
+						open={Boolean(actionAnchorVisibility)}
+						onClose={e => this.setState({ actionAnchorVisibility: null })}
+						PaperProps={{
+							style: {
+								// maxHeight: 300,
+								minWidth: 250
+							}
+						}}>					<List component="div" disablePadding>
+							{this.visibilityOptions.map(op => {
+								return <ListItem key={op.id} button className={classes.nested} onClick={() => this.setState({ display: op.id })}>
+									<ListItemIcon>
+										{op.icon}
+									</ListItemIcon>
+									<ListItemText inset primary={op.label} />
+								</ListItem>
+							})}
+						</List>
+					</Menu>
 				</Hidden>
 			</ItemG>
 			<ItemG>
@@ -497,12 +530,12 @@ class ProjectData extends Component {
 				onChange={this.handleVisibility}
 				PaperProps={{
 					style: {
-						maxHeight: 300,
+						// maxHeight: 300,
 						minWidth: 250
 					}
 				}}>
 				<div>
-					<Hidden lgUp>
+					<Hidden mdUp>
 						<ListItem>
 							{this.renderDateFilter()}
 						</ListItem>
@@ -520,27 +553,31 @@ class ProjectData extends Component {
 						{t("collections.rawData")}
 					</ListItemText>
 				</ListItem>
-				<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
-					<ListItemIcon>
-						<Visibility />
-					</ListItemIcon>
-					<ListItemText inset primary={t("filters.options.graphType")} />
-					<ExpandMore className={classNames({
-						[classes.expandOpen]: this.state.visibility,
-					}, classes.expand)} />
-				</ListItem>
-				<Collapse in={this.state.visibility} timeout="auto" unmountOnExit>
-					<List component="div" disablePadding>
-						{this.visibilityOptions.map(op => {
-							return <ListItem key={op.id} button className={classes.nested} onClick={() => this.setState({ display: op.id })}>
-								<ListItemIcon>
-									{op.icon}
-								</ListItemIcon>
-								<ListItemText inset primary={op.label} />
-							</ListItem>
-						})}
-					</List>
-				</Collapse>
+				<div>
+					<Hidden mdUp>
+						<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
+							<ListItemIcon>
+								<Visibility />
+							</ListItemIcon>
+							<ListItemText inset primary={t("filters.options.graphType")} />
+							<ExpandMore className={classNames({
+								[classes.expandOpen]: this.state.visibility,
+							}, classes.expand)} />
+						</ListItem>
+						<Collapse in={this.state.visibility} timeout="auto" unmountOnExit>
+							<List component="div" disablePadding>
+								{this.visibilityOptions.map(op => {
+									return <ListItem key={op.id} button className={classes.nested} onClick={() => this.setState({ display: op.id })}>
+										<ListItemIcon>
+											{op.icon}
+										</ListItemIcon>
+										<ListItemText inset primary={op.label} />
+									</ListItem>
+								})}
+							</List>
+						</Collapse>
+					</Hidden>
+				</div>
 				))}
 			</Menu>
 		</ItemGrid>
@@ -565,7 +602,7 @@ class ProjectData extends Component {
 						{this.renderCustomDateDialog()}
 						{loading ? <CircularLoader notCentered /> :
 							<Fragment>
-								<ItemG xs={12} container>
+								<ItemG xs={12}>
 									<Caption className={classes.bigCaption2}>{raw ? t("collections.rawData") : t("collections.calibratedData")}</Caption>
 									{noData ? this.renderNoData() : this.renderType()}
 								</ItemG>
@@ -578,4 +615,12 @@ class ProjectData extends Component {
 ProjectData.propTypes = {
 	project: PropTypes.object.isRequired,
 }
-export default withStyles(deviceStyles, { withTheme: true })(ProjectData);
+const mapStateToProps = (state) => ({
+	chartType: state.settings.chartType
+})
+
+const mapDispatchToProps = {
+  
+}
+
+export default connect(mapStateToProps,	mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(ProjectData))

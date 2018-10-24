@@ -472,6 +472,9 @@
 			"text": "Metode",
 			"time": "På tid"
 		},
+		"chart": {
+			"defaultChart": "Standard diagram"
+		},
 		"defaultDataSet": "Standard datasæt for diagrammer",
 		"didYouKnow": "Viste du at?",
 		"discoverSenti": "Vis intro kort på Dashboard",

@@ -472,6 +472,9 @@
 			"text": "Method",
 			"time": "By time"
 		},
+		"chart": {
+			"defaultChart": "Default chart type"
+		},
 		"defaultDataSet": "Default data set for charts",
 		"didYouKnow": "Intelligent Notifications",
 		"discoverSenti": "Show intro cards on Dashboard",
