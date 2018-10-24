@@ -53,7 +53,7 @@ class CreateCollectionForm extends Component {
 		return <DSelect
 			label={t("collections.fields.status")}
 			value={collection.state}
-			func={handleChange("state")}
+			onChange={handleChange("state")}
 			menuItems={[
 				// { value: 0, label: t("collections.fields.status.deleted") },
 				{ value: 1, label: t("collections.fields.state.active") },

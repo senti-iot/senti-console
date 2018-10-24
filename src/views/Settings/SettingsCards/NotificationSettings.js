@@ -32,13 +32,13 @@ class NotificationSettings extends Component {
 							<ListItem divider>
 								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 									<ListItemText>{t("settings.alerts")}</ListItemText>
-									<DSelect menuItems={alertVals} value={alerts} func={this.changeAlerts} />
+									<DSelect menuItems={alertVals} value={alerts} onChange={this.changeAlerts} />
 								</ItemGrid>
 							</ListItem>
 							<ListItem>
 								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 									<ListItemText>{t("settings.didYouKnow")}</ListItemText>
-									<DSelect menuItems={didKnows} value={didKnow} func={this.changeDidKnow} />
+									<DSelect menuItems={didKnows} value={didKnow} onChange={this.changeDidKnow} />
 								</ItemGrid>
 							</ListItem>
 						</List>
