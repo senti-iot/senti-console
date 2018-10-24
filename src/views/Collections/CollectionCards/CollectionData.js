@@ -199,13 +199,15 @@ class CollectionData extends Component {
 	}
 	handleSwitchDayHour = () => {
 		let id = this.state.dateFilterInputID
+		const { to, from } = this.state
+		let diff = moment.duration(to.diff(from)).days()
 		let { timeType } = this.state
 		switch (id) {
 			case 0:
 				this.handleWifiHourly();
 				break;
 			case 1:
-				this.handleWifiDaily();
+				 this.handleWifiDaily() 
 				break;
 			case 2:
 				this.handleWifiDaily();
@@ -220,7 +222,7 @@ class CollectionData extends Component {
 				this.handleWifiHourly()
 				break
 			case 6:
-				this.handleWifiDaily();
+				parseInt(diff, 10) > 1 ? this.handleWifiDaily() : this.handleWifiHourly()
 				break
 			default:
 				this.handleWifiDaily();
@@ -259,6 +261,7 @@ class CollectionData extends Component {
 				break;
 			case 6:
 				from = moment().startOf('week').startOf('day')
+				// from = moment().startOf('day')
 				to = moment().endOf('day')
 				break;
 			default:
