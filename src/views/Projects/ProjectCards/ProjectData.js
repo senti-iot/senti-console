@@ -148,7 +148,7 @@ class ProjectData extends Component {
 				}))
 			},
 			roundDataSets: {
-				labels: days.map(d => dateFormatter(d)),
+				labels: days.map(d => [shortDateFormat(d), moment(d).format('dddd').charAt(0).toUpperCase() + moment(d).format('dddd').slice(1)]),
 				datasets: dataArr.map((d, id) => ({
 					label: d.name,
 					borderColor: "#FFF",
@@ -158,7 +158,7 @@ class ProjectData extends Component {
 				}))
 			},
 			barDataSets: {
-				labels: days.map(d => dateFormatter(d)),
+				labels: days.map(d => [shortDateFormat(d), moment(d).format('dddd').charAt(0).toUpperCase() + moment(d).format('dddd').slice(1)]),
 				datasets: dataArr.map((d, id) => ({
 					label: d.name,
 					borderColor: "#FFF",
