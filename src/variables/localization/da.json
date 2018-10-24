@@ -81,6 +81,7 @@
 			"activeDevice": "Aktiv enhed",
 			"activeDeviceStartDate": "Dataopsamling start",
 			"collection": "Datasamling",
+			"device": "Enhed",
 			"created": "Oprettet",
 			"description": "Beskrivelse",
 			"id": "Datasamling",
@@ -91,13 +92,13 @@
 			"name": "Navn",
 			"org": "Organisation",
 			"organisation": "Organisation",
-			"ownState": "State",
+			"ownState": "Status",
 			"project": "Projekt",
 			"state": {
 				"active": "Aktiv",
 				"inactive": "Inaktiv"
 			},
-			"status": "Status for enhed"
+			"status": "Status"
 		},
 		"noActiveDevice": "Ingen aktiv enhed",
 		"noDevice": "Ingen enhed",

@@ -110,20 +110,30 @@ class ProjectCollections extends Component {
 							<Table>
 								<TableHead>
 									<TableRow>
-										<TableCell className={classes.tablecellcheckbox + " " + classes.paddingLeft}>
-											{t("collections.fields.ownState")}
+										<TableCell padding="checkbox" /* className={classes.tablecellcheckbox + " " + classes.paddingLeft} */>
+											<ItemG container justify={'center'}>
+												{t("collections.fields.ownState")}
+											</ItemG>
+											<ItemG container justify={'center'}>
+												({t("collections.fields.collection")})
+											</ItemG>
 										</TableCell>
-										<TableCell classes={{ root: classes.tableCell }}>
+										<TableCell /* classes={{ root: classes.tableCell }} */>
 											{t("collections.fields.name")}
 										</TableCell>
 										<Hidden mdDown>
-											<TableCell padding={'checkbox'} classes={{ root: classes.tableCell }}>
-												{t("collections.fields.status")}
+											<TableCell padding={'checkbox'} /* classes={{ root: classes.tableCell }} */>
+												<ItemG container justify={'center'}>
+													{t("collections.fields.status")}
+												</ItemG>
+												<ItemG container justify={'center'}>
+													({t("collections.fields.device")})
+												</ItemG>
 											</TableCell>
-											<TableCell classes={{ root: classes.tableCell }}>
+											<TableCell>
 												{t("collections.fields.created")}
 											</TableCell>
-											<TableCell classes={{ root: classes.tableCell }}>
+											<TableCell>
 												{t("collections.fields.org")}
 											</TableCell>
 										</Hidden>
@@ -160,15 +170,16 @@ class ProjectCollections extends Component {
 													</TableCell>
 												</Hidden>
 												<Hidden mdDown>
-													<TableCell padding="checkbox" className={classes.tablecellcheckbox + " " + classes.paddingLeft}>
+													<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
 														<ItemG container justify={"center"}>
 															{this.renderStatus(n.state)}
 														</ItemG>
 													</TableCell>
 													<TC FirstC label={n.name}/>
-													<TC content={n.activeDevice ? <div style={{ paddingLeft: 25 }}>
+													<TC FirstC content={n.activeDevice ? <ItemG container justify={"center"}>
 														{this.renderDeviceStatus(n.activeDevice.liveStatus)}
-													</div> : null
+													</ItemG>
+												 : null
 													}/>
 													<TC label={dateFormatter(n.created)}/>
 													<TC label={n.org.name}/>

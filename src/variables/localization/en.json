@@ -80,6 +80,7 @@
 		"fields": {
 			"activeDevice": "Active Device",
 			"activeDeviceStartDate": "Data collection start",
+			"device": "Device",
 			"collection": "Data collection",
 			"created": "Created",
 			"description": "Description",
