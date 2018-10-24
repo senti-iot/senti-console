@@ -175,7 +175,7 @@ class ProjectCollections extends Component {
 															{this.renderStatus(n.state)}
 														</ItemG>
 													</TableCell>
-													<TC FirstC label={n.name}/>
+													<TC /* FirstC */ label={n.name}/>
 													<TC FirstC content={n.activeDevice ? <ItemG container justify={"center"}>
 														{this.renderDeviceStatus(n.activeDevice.liveStatus)}
 													</ItemG>

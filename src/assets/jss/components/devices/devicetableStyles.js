@@ -89,7 +89,8 @@ const devicetableStyles = theme => ({
 	tableCell: {
 		padding: 4,
 		fontSize: '0.875rem',
-		maxWidth: 250,
+		// maxWidth: 250,
+		width: 200,
 		"&:last-child": {
 			paddingRight: 4
 		},
