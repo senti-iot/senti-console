@@ -49,14 +49,14 @@ class CalibrationSettings extends Component {
 							<ListItem divider>
 								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 									<ListItemText>{t("settings.calibration.text")}</ListItemText>
-									<DSelect menuItems={calibrations} value={calibration} func={this.changeCalType} />
+									<DSelect menuItems={calibrations} value={calibration} onChange={this.changeCalType} />
 								</ItemGrid>
 							</ListItem>
 							<Collapse in={calibration === 1 ? true : false} style={{ width: "100%" }}>
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 										<ListItemText>{t("settings.calibration.byCount")}</ListItemText>
-										<DInput menuItems={counts} value={count} func={this.changeCount} />
+										<DInput menuItems={counts} value={count} onChange={this.changeCount} />
 									</ItemGrid>
 								</ListItem>
 							</Collapse>
@@ -64,14 +64,14 @@ class CalibrationSettings extends Component {
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 										<ListItemText>{t("settings.calibration.byTime")}</ListItemText>
-										<DSelect menuItems={minutes} value={count} func={this.changeMinutesCount} />
+										<DSelect menuItems={minutes} value={count} onChange={this.changeMinutesCount} />
 									</ItemGrid>
 								</ListItem>
 							</Collapse>
 							<ListItem divider>
 								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 									<ListItemText>{t("settings.calibration.notification")}</ListItemText>
-									<DSelect menuItems={notifications} value={calNotifications} func={this.changeCalNotif} />
+									<DSelect menuItems={notifications} value={calNotifications} onChange={this.changeCalNotif} />
 								</ItemGrid>
 							</ListItem>
 							<ListItem >
