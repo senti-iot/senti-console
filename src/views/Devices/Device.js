@@ -101,7 +101,7 @@ class Device extends Component {
 		let id = this.state.device.id
 		switch (msg) {
 			case 1:
-				s("snackbars.unassignDevice", { device: `${name}(${id})`, what: `${device.dataCollection.name}(${device.dataCollection.id})` })
+				s("snackbars.unassign.deviceFromCollection", { device: `${name}(${id})`, what: `${device.dataCollection.name}(${device.dataCollection.id})` })
 				break
 			case 2:
 				s("snackbars.assign.deviceToCollection", { device: `${name}(${id})`, collection: `${device.dataCollection.name}(${device.dataCollection.id})` })
@@ -223,10 +223,10 @@ class Device extends Component {
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{t("dialogs.unassignTitle", { what: t("collections.fields.id") })}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("dialogs.unassign.title.deviceFromCollection", { what: t("collections.fields.id") })}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("dialogs.unassign", { id: device.id, name: device.name, what: device.dataCollection.name })}
+					{t("dialogs.unassign.message.deviceFromCollection", { device: `${device.name} (${device.id})`, collection: device.dataCollection.name })}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>

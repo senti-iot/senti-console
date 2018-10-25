@@ -51,10 +51,10 @@ const signupPageStyle = theme => ({
 		position: "relative",
 		// paddingTop: "20vh",
 		[theme.breakpoints.up("lg")]: {
-			paddingTop: "20vh"
+			paddingTop: "25vh"
 		},
 		[theme.breakpoints.down("md")]: {
-			paddingTop: "10vh"
+			paddingTop: "15vh"
 		},
 		color: "#FFFFFF"
 	},

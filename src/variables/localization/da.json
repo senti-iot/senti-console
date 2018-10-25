@@ -269,7 +269,7 @@
 				"users": "Er du sikker på du ønsker at slette disse brugere:"
 			}
 		},
-		"unassignNew": {
+		"unassign": {
 			"title": {
 				"deviceFromCollection": "Fjern tilknytningen af enhed fra datasamling?",
 				"deviceFromOrg": "Fjern tilknytningen af enhed fra organisation?",
