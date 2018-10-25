@@ -371,9 +371,9 @@
 		"showMap": "Show map",
 		"showMore": "Show more",
 		"unassign": {
-			"deviceFromCollection": "Unassign device from collection",
-			"collectionFromProject": "Unassign collection from project",
-			"deviceFromOrg": "Unassign device from organisation"
+			"deviceFromCollection": "Unassign from collection",
+			"collectionFromProject": "Unassign from project",
+			"deviceFromOrg": "Unassign from organisation"
 		},
 		"userResendEmail": "Resend Confirm Email"
 	},

@@ -355,7 +355,7 @@
 		},
 		"reassign": {
 			"deviceToOrg": "Overflyt til anden organisation",
-			"collectionsTOProject": "Overflyt til anded projekt"
+			"collectionsTOProject": "Overflyt til andet projekt"
 		},
 		"calibrate": "Kalibrer",
 		"changePassword": "Skift kodeord",
@@ -371,9 +371,9 @@
 		"showMap": "Vis kort",
 		"showMore": "Vis mere",
 		"unassign": {
-			"deviceFromCollection": "Fjern enhed tilknyting fra datasamling",
-			"collectionFromProject": "Fjern datasamling tilknyting fra project",
-			"deviceFromOrg": "Fjern enhed tilknyting fra organisation"
+			"deviceFromCollection": "Fjern tilknytning fra datasamling",
+			"collectionFromProject": "Fjern tilknytning fra projekt",
+			"deviceFromOrg": "Fjern tilknytning fra organisation"
 		},
 		"userResendEmail": "Send bekræft e-mail igen"
 	},
