@@ -633,6 +633,8 @@
 		"usersDelete": "Slet brugere",
 		"usersDeleteConfirm": "Er du sikker på du vil slette de følgende brugere:",
 		"validation": {
+			"noEmail": "E-mail mangler",
+			"noOrg": "Organisation mangler",
 			"userAlreadyExists": "E-mail er allerede brugt af en anden bruger!"
 		}
 	}

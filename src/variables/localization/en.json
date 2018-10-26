@@ -633,6 +633,8 @@
 		"usersDelete": "Delete users",
 		"usersDeleteConfirm": "Are you sure you want to delete the following users:",
 		"validation": {
+			"noEmail": "E-mail is missing",
+			"noOrg": "Organisation is missing",
 			"userAlreadyExists": "E-mail is already used by another user!"
 		}
 	}
