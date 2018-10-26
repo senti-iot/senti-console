@@ -10,6 +10,7 @@ importScripts('/workbox-sw.js');
 // });
 workbox.skipWaiting();
 workbox.clientsClaim();
+workbox.precaching.suppressWarnings();
 // self.addEventListener('activate', event => event.waitUntil(workbox.clientsClaim(true)));
 
 //This will precache everything, not optimal
