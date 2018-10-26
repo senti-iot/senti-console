@@ -139,8 +139,11 @@ class CollectionTable extends React.Component {
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
-											<TC  label={n.name} />
-											<TC className={classes.tablecellcheckbox} FirstC content={n.activeDeviceStats ? this.renderIcon(n.activeDeviceStats.state) : null} />
+											<TC FirstC label={n.name} />
+											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
+												{n.activeDeviceStats ? this.renderIcon(n.activeDeviceStats.state) : null}
+											</TableCell>
+											{/* <TC className={classes.tablecellcheckbox} FirstC content= /> */}
 											<TC label={dateFormatter(n.created)} />
 											<TC label={n.devices ? n.devices[0] ? dateFormatter(n.devices[0].start) : "" : ""} />
 											<TC label={n.org ? n.org.name : ""} />

@@ -62,6 +62,11 @@ const theme = createMuiTheme({
 				},
 			},
 		},
+		MuiTableCell: {
+			root: {
+				padding: '0px 8px'
+			}
+		},
 		MuiInput: {
 			// Name of the styleSheet
 			underline: {

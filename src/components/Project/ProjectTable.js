@@ -214,11 +214,11 @@ class EnhancedTable extends React.Component {
 													{n.title}
 												</Typography>
 											</TableCell>
-											<TableCell className={classes.tableCell}>
+											{/* <TableCell className={classes.tableCell}>
 												<Typography paragraph title={n.description} classes={{ root: classes.paragraphCell }}>
 													{n.description}
 												</Typography>
-											</TableCell>
+											</TableCell> */}
 											<TableCell className={classes.tableCell}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
 													{dateFormatter(n.startDate)}

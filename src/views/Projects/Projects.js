@@ -59,7 +59,7 @@ class Projects extends Component {
 			projects: rs ? rs : [],
 			projectHeader: [
 				{ id: 'title', label: t("projects.projectsColumnTitle"), },
-				{ id: 'description', label: t("projects.projectsColumnDescription"), },
+				// { id: 'description', label: t("projects.projectsColumnDescription"), },
 				{ id: 'startDate', label: t("projects.projectsColumnStartDate"), },
 				{ id: 'endDate', label: t("projects.projectsColumnEndDate"), },
 				{ id: 'created', label: t("projects.projectsColumnCreated"), },
