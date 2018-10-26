@@ -25,7 +25,8 @@ countries.registerLocale(require("i18n-iso-countries/langs/da.json"));
 const hist = createBrowserHistory();
 const theme = createMuiTheme({
 	typography: {
-		useNextVariants: true
+		useNextVariants: true,
+		suppressDeprecationWarnings: true,
 	},
 	overrides: {
 		MuiTypography: {

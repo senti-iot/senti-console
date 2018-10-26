@@ -208,7 +208,7 @@ class UserTable extends React.Component {
 							t={t}
 							classes={classes}
 							customColumn={[{ id: "avatar", label: "" }, {
-								id: "firstName", label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>Users</Typography>
+								id: "firstName", label: <Typography variant={"body1"} classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>Users</Typography>
 							}]}
 						/>
 						<TableBody>
