@@ -106,8 +106,13 @@ export const handleRequestSort = (property, way, data) => {
 	return newData
 }
 export const pF = (phone) => {
-	let formattedPhone = phoneUtil.parse(phone, "DK")
-	return phoneUtil.format(formattedPhone, PNF.NATIONAL);
+	try {
+		let formattedPhone = phoneUtil.parse(phone, "DK")
+		return phoneUtil.format(formattedPhone, PNF.NATIONAL);
+		
+	} catch (error) {
+		return phone
+	}
 }
 export const dateTimeFormatter = (date, withSeconds) => {
 	var dt

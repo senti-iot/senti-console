@@ -70,10 +70,12 @@ class CreateUser extends Component {
     		...this.state.user,
     		userName: user.email
     	}
-    	await createUser(newUser).then(rs => rs ?
-    		this.close(rs) :
-    		this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
-				
+    	await createUser(newUser).then(rs => {
+    		console.log(rs)
+    		return rs !== 400 ?
+    			this.close(rs) :
+    			this.setState({ created: false, creating: false, error: true, errorMessage: this.errorMessages(rs) })
+    	}
     	)
     }
 	close = (rs) => {
@@ -122,6 +124,8 @@ class CreateUser extends Component {
     			return t("users.validation.noorg")
     		case 6: 
     			return t("users.validation.nogroup")
+    		case 400: 
+    			return t("users.validation.userAlreadyExists")
     		default:
     			return ""
     	}

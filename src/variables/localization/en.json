@@ -631,6 +631,9 @@
 		"userResendConfirm": "Are you sure you want to resend confirmation E-mail?",
 		"userResendEmail": "Resend Confirm E-mail",
 		"usersDelete": "Delete users",
-		"usersDeleteConfirm": "Are you sure you want to delete the following users:"
+		"usersDeleteConfirm": "Are you sure you want to delete the following users:",
+		"validation": {
+			"userAlreadyExists": "E-mail is already used by another user!"
+		}
 	}
 }
