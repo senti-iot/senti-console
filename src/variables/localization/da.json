@@ -355,7 +355,7 @@
 		},
 		"reassign": {
 			"deviceToOrg": "Overflyt til anden organisation",
-			"collectionsTOProject": "Overflyt til andet projekt"
+			"collectionToProject": "Overflyt til andet projekt"
 		},
 		"calibrate": "Kalibrer",
 		"changePassword": "Skift kodeord",
