@@ -84,14 +84,27 @@ class CreateUser extends Component {
 		s("snackbars.userCreated", { user: `${rs.firstName} ${rs.lastName}` })
 		history.push(`/user/${rs.id}`)
 	}
-    handleChange = prop => e => {
-    	this.setState({
-    		user: {
-    			...this.state.user,
-    			[prop]: e.target.value
-    		}
-    	})
-    }
+	handleChange = prop => e => {
+		const { error } = this.state
+		if (error) {
+			this.setState({
+				error: false,
+				errorMessage: [],
+				user: {
+					...this.state.user,
+					[prop]: e.target.value
+				}
+			})
+		}
+		else { 
+			this.setState({
+				user: {
+					...this.state.user,
+					[prop]: e.target.value
+				}
+			})
+		}
+	}
     handleValidation = () => {
     	/* Address, City, Postcode, Country, Region, Website. */
     	let errorCode = [];

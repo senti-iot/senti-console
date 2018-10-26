@@ -17,7 +17,7 @@ export const getUser = async (userId) => {
 }
 export const createUser = async (user) => {
 	let response = await api.post(`core/user`, user).then(rs => rs)
-	console.log('createUser', response.problem, response.status, response.originalError)
+	// console.log('createUser', response.problem, response.status, response.originalError)
 	// response.status
 	return response.data ? response.data : response.status
 }
