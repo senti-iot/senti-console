@@ -34,15 +34,29 @@ class UserContact extends Component {
 			return this.renderTopAction()
 		return null
 	}
+	canDelete = () => {
+		const { accessLevel, user, loggedUser } = this.props
+		let dontShow = true
+		if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers && !user.privileges.apisuperuser)) {
+			dontShow = false
+		}
+		if (loggedUser.id === user.id)
+			dontShow = true
+		return dontShow
+	}
 	renderTopAction = () => {
-		const { t, loggedUser, classes, user, history } = this.props
-		const { apiorg } = loggedUser.privileges
+		const { t, classes, user, history } = this.props
 		return <Dropdown menuItems={
 			[
 				{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `${this.props.match.url}/edit`, prevURL: `/user/${user.id}`  }) },
 				{ label: t("menus.changePassword"), icon: <LockOpen className={classes.leftIcon} />, func: this.props.changePass },
 				{ label: t("menus.userResendEmail"), icon: <Email className={classes.leftIcon} />, func: this.props.resendConfirmEmail, dontShow: user.suspended !== 2 },
-				{ label: t("menus.delete"), icon: <Delete className={classes.leftIcon} />, func: this.deleteUser, dontShow: apiorg ? apiorg.editusers || !loggedUser.id === user.id ? false : true : true }
+				{
+					label: t("menus.delete"),
+					icon: <Delete className={classes.leftIcon} />,
+					func: this.deleteUser,
+					dontShow: this.canDelete()
+				}
 			]
 		}/>
 	}
