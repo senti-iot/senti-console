@@ -316,8 +316,9 @@ class EditOrg extends Component {
 									country={ this.state.country.label}
 									handleChange={ this.handleCountryChange }
 									suggestions={
-										Object.keys(countries.getNames(this.props.language)).map(
-											country => ({ value: countries.getName(country, this.props.language), label: countries.getName(country, this.props.language) })) } />
+										Object.entries(countries.getNames(this.props.language)).map(
+											country => ({ value: country[1], label: country[1] }))
+									} />
 							</ItemGrid>
 							<ItemGrid container xs={ 12 } md={ 6 }>
 								<TextF

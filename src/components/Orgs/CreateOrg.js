@@ -113,10 +113,10 @@ class CreateOrg extends Component {
 	handleCountryChange = value => {
 		this.setState({
 			error: false,
-			country: { id: value, label: countries.getName(value, this.props.language) },
+			country: { id: value, label: value },
 			org: {
 				...this.state.org,
-				country: countries.getName(value, this.props.language) ? value : ''
+				country: countries.getAlpha2Code(value, this.props.language) ? countries.getAlpha2Code(value, this.props.language) : ''
 			}
 		})
 	}
@@ -188,7 +188,7 @@ class CreateOrg extends Component {
 		const { classes, t } = this.props
 		const { orgs, selectedOrg, error } = this.state
 
-		return <FormControl className={ classes.formControl }>
+		return <FormControl>
 			<InputLabel error={ error } FormLabelClasses={ { root: classes.label } } color={ "primary" } htmlFor="select-multiple-chip">
 				{ t("orgs.fields.parentOrg") }
 			</InputLabel>
@@ -303,13 +303,14 @@ class CreateOrg extends Component {
 							</ItemGrid>
 							<ItemGrid container xs={ 12 }>
 								<EditOrgAutoSuggest
-									error={ error }
-									country={ this.state.country.label ? this.state.country.label : this.state.country.id }
-									handleChange={ this.handleCountryChange }
-									t={ t }
+									error={error}
+									country={this.state.country.label ? this.state.country.label : this.state.country.id}
+									handleChange={this.handleCountryChange}
+									t={t}
 									suggestions={
-										Object.keys(countries.getNames(this.props.language)).map(
-											country => ({ value: country, label: countries.getName(country, this.props.language) })) } />
+										Object.entries(countries.getNames(this.props.language)).map(
+											country => ({ value: country[1], label: country[1] }))
+									} />
 							</ItemGrid>
 							<ItemGrid container xs={ 12 } md={ 6 }>
 								<TextF

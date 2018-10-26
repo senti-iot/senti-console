@@ -11,8 +11,10 @@ class DInput extends Component {
 		}
 	}
 	handleMenuItem = (e) => {
-		this.props.func(e.target.value)
+		// console.trace(this.props.onChange(e.target.value))
+		this.props.onChange(e.target.value)
 		this.handleCloseActionsDetails()
+		
 	}
 	handleCloseActionsDetails = event => {
 		this.setState({ actionAnchor: null });
