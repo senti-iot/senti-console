@@ -1,13 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from './App'
-import * as serviceWorker from './serviceWorker';
+import registerServiceWorker from './serviceWorker';
+// import NewContent from 'layouts/404/NewContent';
 
-serviceWorker.unregister();
+// serviceWorker.unregister();
 // Service Worker is disabled until the project is delivered fully
-// registerServiceWorker();
+registerServiceWorker()
 var rootEl = document.getElementById('root')
 ReactDOM.render(<App />, rootEl)
+
+//New Content Dialog Debug
+// var rootUpdate = document.getElementById("update")
+// ReactDOM.render(<NewContent />, rootUpdate)
 
 // Are we in development mode?
 if (module.hot) {
