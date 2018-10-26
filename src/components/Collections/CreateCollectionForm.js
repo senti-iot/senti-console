@@ -131,7 +131,7 @@ class CreateCollectionForm extends Component {
 									handleChange={() => { }}
 									
 									InputProps={{
-										onChange: handleOpenOrg,
+										func: handleOpenOrg,
 										readOnly: true
 									}}
 								/>

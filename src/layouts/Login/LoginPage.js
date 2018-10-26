@@ -108,7 +108,6 @@ class LoginPage extends React.Component {
 			[classes.inputIconsColor]: !this.state.error,
 			[classes.iconError]: this.state.error
 		})
-		console.log(this.props.width)
 		return (
 			<div>
 				<div
@@ -121,7 +120,7 @@ class LoginPage extends React.Component {
 				>
 					<div className={classes.container}>
 						<GridContainer justify="center" alignItems={"center"}>
-							<ItemGrid xs={12} sm={6} md={4} xl={2} lg={2}>
+							<ItemGrid xs={12} sm={6} md={4} xl={2} lg={3}>
 								<Card className={classes[this.state.cardAnimaton]}>
 									<form className={classes.form}>
 										<CardHeader color="primary" className={classes.cardHeader}>

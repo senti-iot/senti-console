@@ -7,6 +7,9 @@
 
 // To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
 // This link also includes instructions on opting out of this behavior.
+import React from "react";
+import ReactDOM from "react-dom";
+import NewContent from 'layouts/404/NewContent';
 
 const isLocalhost = Boolean(
 	window.location.hostname === 'localhost' ||
@@ -28,10 +31,11 @@ export default function register() {
 			// serve assets; see https://github.com/facebookincubator/create-react-app/issues/2374
 			return;
 		}
-
+		// console.log(isLocalhost)
 		window.addEventListener('load', () => {
-			const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
-
+			// const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
+			const swUrl = `${process.env.PUBLIC_URL}/sw-default.js`
+			
 			if (isLocalhost) {
 				// This is running on localhost. Lets check if a service worker still exists or not.
 				checkValidServiceWorker(swUrl);
@@ -68,7 +72,9 @@ function registerValidSW(swUrl) {
 							// It's the perfect time to display a "New content is
 							// available; please refresh." message in your web app.
 							console.log('New content is available; please refresh.');
-							alert('New Content is available! To see the new content please close all the tabs regarding Senti and refresh the page');
+							// alert('New Content is available! To see the new content please close all the tabs regarding Senti and refresh the page');
+							var rootUpdate = document.getElementById('update')
+							ReactDOM.render(<NewContent />, rootUpdate)
 						} else {
 							// At this point, everything has been precached.
 							// It's the perfect time to display a
@@ -88,7 +94,6 @@ function checkValidServiceWorker(swUrl) {
 	// Check if the service worker can be found. If it can't reload the page.
 	fetch(swUrl)
 		.then(response => {
-			console.log("checkValidServiceWorker", response)
 			// Ensure service worker exists, and that we really are getting a JS file.
 			if (
 				response.status === 404 ||

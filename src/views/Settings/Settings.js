@@ -8,7 +8,7 @@ import CalibrationSettings from './SettingsCards/CalibrationSettings';
 import DisplaySettings from './SettingsCards/DisplaySettings';
 import { changeLanguage } from 'redux/localization';
 import withLocalization from 'components/Localization/T';
-import { changeTRP, changeTheme, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow, saveSettingsOnServ, finishedSaving } from 'redux/settings';
+import { changeTRP, changeTheme, changeChartType, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow, saveSettingsOnServ, finishedSaving } from 'redux/settings';
 import NotificationSettings from './SettingsCards/NotificationSettings';
 import DeviceSettings from './SettingsCards/DeviceSettings';
 import ChartSettings from './SettingsCards/ChartSettings';
@@ -35,9 +35,9 @@ class Settings extends Component {
 
 	render() {
 		const { t } = this.props
-		const { language, sideBar, changeSideBarLoc, trp, changeTRP, theme, changeTheme, changeDiscoverSenti, discSentiVal, changeLanguage } = this.props
+		const { language, sideBar, changeSideBarLoc, trp, changeTRP, theme, changeTheme, changeDiscoverSenti, discSentiVal, changeLanguage, changeChartType } = this.props
 		const { calibration, changeCalType, count, changeCount, calNotifications, changeCalNotif } = this.props
-		const { alerts, didKnow, changeAlerts, changeDidKnow } = this.props
+		const { alerts, didKnow, changeAlerts, changeDidKnow, chartType } = this.props
 		return (
 			<GridContainer>
 				<ItemGrid xs={12} noMargin>
@@ -76,6 +76,8 @@ class Settings extends Component {
 				</ItemGrid>
 				<ItemGrid xs={12} noMargin>
 					<ChartSettings
+						chartType={chartType}
+						changeChartType={changeChartType}
 						t={t}
 					/>
 				</ItemGrid>
@@ -84,17 +86,6 @@ class Settings extends Component {
 						t={t}
 					/>
 				</ItemGrid>
-				{/* <Snackbar
-					autoHideDuration={3000}
-					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-					open={this.props.saved}
-					onClose={() => this.props.finishedSaving()}
-					message={
-						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-							{t("snackbars.settingsSaved")}
-						</ItemGrid>
-					}
-				/> */}
 			</GridContainer>
 		)
 	}
@@ -110,10 +101,12 @@ const mapStateToProps = state => {
 		trp: s.trp,
 		sideBar: s.sideBar,
 		discSentiVal: s.discSentiVal,
-
 		calibration: s.calibration,
+		
 		count: s.count,
 		calNotifications: s.calNotifications,
+		
+		chartType: s.chartType,
 
 		alerts: s.alerts,
 		didKnow: s.didKnow
@@ -134,6 +127,8 @@ const mapDispatchToProps = (dispatch) => {
 
 		changeAlerts: t => dispatch(changeAlerts(t)),
 		changeDidKnow: t => dispatch(changeDidKnow(t)),
+
+		changeChartType: type => dispatch(changeChartType(type)),
 
 		saveSettings: () => dispatch(saveSettingsOnServ()),
 		finishedSaving: () => dispatch(finishedSaving())

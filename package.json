@@ -1,12 +1,12 @@
 {
 	"name": "senti-cloud",
-	"version": "2.1.0",
+	"version": "2.1.17",
 	"description": "Senti Cloud",
 	"private": true,
 	"main": "index.js",
 	"dependencies": {
 		"@babel/runtime": "7.1.2",
-		"@material-ui/core": "3.2.1",
+		"@material-ui/core": "3.2.2",
 		"@material-ui/icons": "^3.0.1",
 		"@types/googlemaps": "^3.30.13",
 		"@types/markerclustererplus": "^2.1.33",
@@ -39,7 +39,8 @@
 		"react-sound": "^1.2.0",
 		"react-swipeable-views": "^0.13.0",
 		"redux": "^4.0.0",
-		"redux-thunk": "^2.3.0"
+		"redux-thunk": "^2.3.0",
+		"workbox-build": "^3.6.3"
 	},
 	"devDependencies": {
 		"babel-plugin-transform-imports": "^1.5.1",
@@ -50,9 +51,10 @@
 		"start": "react-scripts start ",
 		"analyze": "source-map-explorer build/static/js/*",
 		"start-ssh": "HTTPS=true react-scripts start",
-		"build": "react-scripts build && cp ./build/index.html ./build/200.html && cp ./src/assets/sound/pop.mp3 ./build/assets/sound/pop.mp3",
+		"build": "react-scripts build && cp ./build/index.html ./build/200.html && cp ./src/assets/sound/pop.mp3 ./build/assets/sound/pop.mp3 && npm run-script sw",
 		"test": "react-scripts test --env=jsdom",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"sw": "node build-sw.js"
 	},
 	"keywords": [],
 	"author": "Christian Broberg",

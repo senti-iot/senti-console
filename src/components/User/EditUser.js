@@ -50,7 +50,7 @@ class EditUser extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		const { setHeader, location } = this.props
-		let prevURL = location.prevURL ? location.prevURL : null
+		let prevURL = location.prevURL ? location.prevURL : '/users'
 		setHeader("users.editUser", true, prevURL, "users")
 		if (this._isMounted) {
 			await this.getUser()
@@ -182,7 +182,6 @@ class EditUser extends Component {
 		groups = groups.filter(x => !this.groups().some(y => x.id === y.id))
 		let g = this.groups()[this.groups().findIndex(x => x.id === e.target.value)]
 		groups.push(g)
-		// console.log(groups)
 		this.setState({
 			selectedGroup: e.target.value,
 			user: {
@@ -287,9 +286,12 @@ class EditUser extends Component {
 	}
 	renderAccess = () => {
 		const { t, classes, accessLevel } = this.props
-		const { error, selectedGroup } = this.state
-
-		return accessLevel.apisuperuser ? <FormControl className={classes.formControl}>
+		const { error, selectedGroup, user } = this.state
+		let rend = false
+		if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers && !user.privileges.apisuperuser)) { 
+			rend = true
+		}
+		return rend ? <FormControl className={classes.formControl}>
 			<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
 				{t("users.fields.accessLevel")}
 			</InputLabel>
@@ -299,7 +301,7 @@ class EditUser extends Component {
 				color={"primary"}
 				value={selectedGroup}
 				onChange={this.handleGroupChange}
-			// renderValue={value => value.name}
+				// renderValue={value => value.name}
 			>
 				{this.groups().map(g => g.show ? (
 					<MenuItem
@@ -313,12 +315,12 @@ class EditUser extends Component {
 		</FormControl> : null
 	}
 	render() {
-		const { error, errorMessage, user, created } = this.state
+		const { error, errorMessage, user, created, loading } = this.state
 		const { classes, t } = this.props
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
-		return (
+		return !loading ? 
 			<GridContainer justify={'center'}>
 				<Paper className={classes.paper}>
 					<form className={classes.form}>
@@ -424,8 +426,8 @@ class EditUser extends Component {
 					</Grid>
 				</Paper>
 
-			</GridContainer>
-		)
+			</GridContainer> : <CircularLoader />
+		
 	}
 }
 

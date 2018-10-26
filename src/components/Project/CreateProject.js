@@ -127,7 +127,7 @@ class CreateProject extends Component {
 	handleDateChange = id => value => {
 		this.setState({
 			error: false,
-			[id]: value
+			[id]: moment(value).local().format("YYYY-MM-DDTHH:ss")
 		})
 	}
 
@@ -229,7 +229,8 @@ class CreateProject extends Component {
 									autoOk
 									label={t("projects.fields.startDate")}
 									clearable
-									format="LL"
+									labelFunc={(date, invalidLabel) => date === null ? '' : moment(date).format('LL')}
+									format="YYYY-MM-DDTHH:mm"
 									value={this.state.startDate}
 									onChange={this.handleDateChange("startDate")}
 									animateYearScrolling={false}
@@ -250,7 +251,8 @@ class CreateProject extends Component {
 									autoOk
 									label={t("projects.fields.endDate")}
 									clearable
-									format="LL"
+									labelFunc={(date, invalidLabel) => date === null ? '' : moment(date).format('LL')}
+									format="YYYY-MM-DDTHH:mm"
 									value={this.state.endDate}
 									onChange={this.handleDateChange("endDate")}
 									animateYearScrolling={false}

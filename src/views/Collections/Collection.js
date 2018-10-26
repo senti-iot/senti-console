@@ -36,7 +36,6 @@ class Collection extends Component {
 	}
 	getCollectionProject = async (rs) => {
 		let project = await getProject(rs)
-		// console.log(project)
 		this.setState({ collection: { ...this.state.collection, project: project }, loadingProject: false })
 	}
 	getCollection = async (id) => {
@@ -71,7 +70,6 @@ class Collection extends Component {
 		const { s, t } = this.props
 		let name = this.state.collection.name ? this.state.collection.name : t("collections.noName")
 		let id = this.state.collection.id
-		// console.log(this.state.collection)
 		switch (msg) {
 			case 1:
 				s(t("snackbars.unassign.deviceFromCollection", { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id }))
@@ -246,10 +244,10 @@ class Collection extends Component {
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{t("dialogs.unassignTitle")}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("dialogs.unassign.title.deviceFromCollection")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("dialogs.unassignDeviceFromCollection", { id: collection.activeDeviceStats.id, collection: collection.name })}
+					{t("dialogs.unassign.message.deviceFromCollection", { device: collection.activeDeviceStats.id, collection: collection.name })}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>

@@ -81,20 +81,24 @@
 			"activeDevice": "Aktiv enhed",
 			"activeDeviceStartDate": "Dataopsamling start",
 			"collection": "Datasamling",
+			"device": "Enhed",
 			"created": "Oprettet",
 			"description": "Beskrivelse",
 			"id": "Datasamling",
+			"deviceId": "Enhed ID",
+			"activated": "Aktiveret",
+			"endOfService": "Afslutning af tjenesten",
 			"modified": "Opdateret",
 			"name": "Navn",
 			"org": "Organisation",
 			"organisation": "Organisation",
-			"ownState": "State",
+			"ownState": "Status",
 			"project": "Projekt",
 			"state": {
 				"active": "Aktiv",
 				"inactive": "Inaktiv"
 			},
-			"status": "Status for enhed"
+			"status": "Status"
 		},
 		"noActiveDevice": "Ingen aktiv enhed",
 		"noDevice": "Ingen enhed",
@@ -271,18 +275,18 @@
 		},
 		"unassign": {
 			"title": {
-				"deviceFromCollection": "Fjern tilknytningen af enhed fra datasamling?",
-				"deviceFromOrg": "Fjern tilknytningen af enhed fra organisation?",
-				"devicesFromCollection": "Fjern tilknytningen af disse enheder fra deres datasamling?",
-				"collectionFromProject": "Fjern tilknytningen af datasamling fra projekt?",
-				"collectionsFromProject": "Fjern tilknytningen af datasamlinger fra projekt?"
+				"deviceFromCollection": "Fjern tilknytningen af enhed med datasamling?",
+				"deviceFromOrg": "Fjern tilknytningen af enhed med organisation?",
+				"devicesFromCollection": "Fjern tilknytningen af disse enheder med deres datasamling?",
+				"collectionFromProject": "Fjern tilknytningen af datasamling med projekt?",
+				"collectionsFromProject": "Fjern tilknytningen af datasamlinger med projekt?"
 			},
 			"message": {
-				"deviceFromCollection": "Fjern tilknytningen af enhed %{device} fra datasamling %{collection}?",
-				"deviceFromOrg": "Fjern tilknytningen af enhed %{device} fra organisation %{organisation}?",
-				"devicesFromCollection": "Fjern tilknytningen af disse enheder fra deres datasamling:",
-				"collectionFromProject": "Fjern tilknytningen af datasamling %{collection} fra projekt %{project} ?",
-				"collectionsFromProject": "Fjern tilknytningen af disse datasamlinger fra projekt:"
+				"deviceFromCollection": "Fjern tilknytningen af enhed %{device} med datasamling %{collection}?",
+				"deviceFromOrg": "Fjern tilknytningen af enhed %{device} med organisation %{organisation}?",
+				"devicesFromCollection": "Fjern tilknytningen af disse enheder med deres datasamling:",
+				"collectionFromProject": "Fjern tilknytningen af datasamling %{collection} med projekt %{project} ?",
+				"collectionsFromProject": "Fjern tilknytningen af disse datasamlinger med projekt:"
 			}
 		},
 		"warnings": {
@@ -351,7 +355,7 @@
 		},
 		"reassign": {
 			"deviceToOrg": "Overflyt til anden organisation",
-			"collectionsTOProject": "Overflyt til anded projekt"
+			"collectionToProject": "Overflyt til andet projekt"
 		},
 		"calibrate": "Kalibrer",
 		"changePassword": "Skift kodeord",
@@ -367,9 +371,9 @@
 		"showMap": "Vis kort",
 		"showMore": "Vis mere",
 		"unassign": {
-			"deviceFromCollection": "Fjern enhed tilknyting fra datasamling",
-			"collectionFromProject": "Fjern datasamling tilknyting fra project",
-			"deviceFromOrg": "Fjern enhed tilknyting fra organisation"
+			"deviceFromCollection": "Fjern enhed tilknytning med datasamling",
+			"collectionFromProject": "Fjern tilknytning med projekt",
+			"deviceFromOrg": "Fjern tilknytning fra organisation"
 		},
 		"userResendEmail": "Send bekræft e-mail igen"
 	},
@@ -471,6 +475,9 @@
 			"notification": "Notifikation",
 			"text": "Metode",
 			"time": "På tid"
+		},
+		"chart": {
+			"defaultChart": "Standard diagram"
 		},
 		"defaultDataSet": "Standard datasæt for diagrammer",
 		"didYouKnow": "Viste du at?",
@@ -624,6 +631,11 @@
 		"userResendConfirm": "Er du sikker på du ønsker at gensende bekræftelses E-mail?",
 		"userResendEmail": "Gensend bekræftelses E-mail",
 		"usersDelete": "Slet brugere",
-		"usersDeleteConfirm": "Er du sikker på du vil slette de følgende brugere:"
+		"usersDeleteConfirm": "Er du sikker på du vil slette de følgende brugere:",
+		"validation": {
+			"noEmail": "E-mail mangler",
+			"noOrg": "Organisation mangler",
+			"userAlreadyExists": "E-mail er allerede brugt af en anden bruger!"
+		}
 	}
 }

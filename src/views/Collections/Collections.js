@@ -87,7 +87,6 @@ class Collections extends Component {
 		const { t } = this.props
 		let collections = await getAllCollections().then(rs => rs)
 		if (this._isMounted) {
-			// console.log(collections);
 			this.setState({
 				collections: collections ? collections : [],
 				collectionsHeader: [

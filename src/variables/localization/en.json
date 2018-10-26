@@ -80,9 +80,13 @@
 		"fields": {
 			"activeDevice": "Active Device",
 			"activeDeviceStartDate": "Data collection start",
+			"device": "Device",
 			"collection": "Data collection",
 			"created": "Created",
 			"description": "Description",
+			"deviceId": "Device ID",
+			"activated": "Activated",
+			"endOfService": "End of service",
 			"id": "Data Collection",
 			"modified": "Last modified",
 			"name": "Name",
@@ -367,9 +371,9 @@
 		"showMap": "Show map",
 		"showMore": "Show more",
 		"unassign": {
-			"deviceFromCollection": "Unassign device from collection",
-			"collectionFromProject": "Unassign collection from project",
-			"deviceFromOrg": "Unassign device from organisation"
+			"deviceFromCollection": "Unassign from collection",
+			"collectionFromProject": "Unassign from project",
+			"deviceFromOrg": "Unassign from organisation"
 		},
 		"userResendEmail": "Resend Confirm Email"
 	},
@@ -471,6 +475,9 @@
 			"notification": "Notification",
 			"text": "Method",
 			"time": "By time"
+		},
+		"chart": {
+			"defaultChart": "Default chart type"
 		},
 		"defaultDataSet": "Default data set for charts",
 		"didYouKnow": "Intelligent Notifications",
@@ -624,6 +631,11 @@
 		"userResendConfirm": "Are you sure you want to resend confirmation E-mail?",
 		"userResendEmail": "Resend Confirm E-mail",
 		"usersDelete": "Delete users",
-		"usersDeleteConfirm": "Are you sure you want to delete the following users:"
+		"usersDeleteConfirm": "Are you sure you want to delete the following users:",
+		"validation": {
+			"noEmail": "E-mail is missing",
+			"noOrg": "Organisation is missing",
+			"userAlreadyExists": "E-mail is already used by another user!"
+		}
 	}
 }

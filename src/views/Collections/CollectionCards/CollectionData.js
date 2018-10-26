@@ -1,4 +1,4 @@
-import { Checkbox, Collapse, Divider, FormControl, FormHelperText, Hidden, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Select, withTheme } from '@material-ui/core';
+import { Checkbox, Collapse, Divider, FormControl, FormHelperText, Hidden, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Select } from '@material-ui/core';
 import classNames from 'classnames';
 import { Caption, CircularLoader, CustomDateTime, Info, InfoCard, ItemG, ItemGrid } from 'components/index';
 import moment from 'moment';
@@ -8,6 +8,8 @@ import { colors } from 'variables/colors';
 import { getDataDaily, getDataHourly } from 'variables/dataCollections';
 import { shortDateFormat, timeFormatter } from 'variables/functions';
 import { BarChart, DateRange, DonutLargeRounded, ExpandMore, MoreVert, PieChartRounded, ShowChart, Timeline, Visibility } from 'variables/icons';
+import { connect } from 'react-redux'
+import /* withWidth, */ withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 
 class CollectionData extends Component {
 	constructor(props) {
@@ -26,7 +28,7 @@ class CollectionData extends Component {
 			dateFilterInputID: 1,
 			timeType: 0,
 			openCustomDate: false,
-			display: 3,
+			display: props.chartType,
 			visibility: false,
 		}
 	}
@@ -142,7 +144,7 @@ class CollectionData extends Component {
 		const { from, to, raw } = this.state
 		let data = await getDataDaily(collection.id, moment(from).format(this.format), moment(to).format(this.format), raw)
 		if (data) {
-			let dataArr = Object.keys(data).map(r => ({ id: shortDateFormat(r), value: data[r] }))
+			let dataArr = Object.keys(data).map(r => ({ id: [shortDateFormat(r), moment(r).format('dddd').charAt(0).toUpperCase() + moment(r).format('dddd').slice(1)], value: data[r] }))
 			this.setState({
 				data: data,
 				charts: {
@@ -197,13 +199,15 @@ class CollectionData extends Component {
 	}
 	handleSwitchDayHour = () => {
 		let id = this.state.dateFilterInputID
+		const { to, from } = this.state
+		let diff = moment.duration(to.diff(from)).days()
 		let { timeType } = this.state
 		switch (id) {
 			case 0:
 				this.handleWifiHourly();
 				break;
 			case 1:
-				this.handleWifiDaily();
+				 this.handleWifiDaily() 
 				break;
 			case 2:
 				this.handleWifiDaily();
@@ -218,7 +222,7 @@ class CollectionData extends Component {
 				this.handleWifiHourly()
 				break
 			case 6:
-				this.handleWifiDaily();
+				parseInt(diff, 10) > 1 ? this.handleWifiDaily() : this.handleWifiHourly()
 				break
 			default:
 				this.handleWifiDaily();
@@ -257,6 +261,7 @@ class CollectionData extends Component {
 				break;
 			case 6:
 				from = moment().startOf('week').startOf('day')
+				// from = moment().startOf('day')
 				to = moment().endOf('day')
 				break;
 			default:
@@ -445,7 +450,7 @@ class CollectionData extends Component {
 			case 0:
 				return this.state.charts.roundDataSets ? <div style={{ maxHeight: 400 }}>
 					<Pie
-						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
+						height={!isWidthUp("md", this.props.width) ? 300 : window.innerHeight - 300}
 						legend={this.legendOpts}
 						data={this.state.charts.roundDataSets}
 						options={{
@@ -457,7 +462,7 @@ class CollectionData extends Component {
 			case 1:
 				return this.state.charts ? this.state.charts.roundDataSets ? <div style={{ maxHeight: 400 }}>
 					<Doughnut
-						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
+						height={!isWidthUp("md", this.props.width) ? 300 : window.innerHeight - 300}
 						legend={this.legendOpts}
 						options={{
 							maintainAspectRatio: false,
@@ -470,7 +475,7 @@ class CollectionData extends Component {
 					<Bar
 						data={this.state.charts.barDataSets}
 						legend={this.barOpts}
-						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
+						height={!isWidthUp("md", this.props.width) ? 300 : window.innerHeight - 300}
 						options={{
 							maintainAspectRatio: false,
 						}}
@@ -483,7 +488,7 @@ class CollectionData extends Component {
 							data={this.state.charts.lineDataSets}
 							legend={this.barOpts}
 							height={400}
-							// height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
+							// height={!isWidthUp("md", this.props.width) ? 300 : window.innerHeight - 300}
 							options={{
 								maintainAspectRatio: false,
 							}}
@@ -517,5 +522,12 @@ class CollectionData extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	chartType: state.settings.chartType
+})
 
-export default withTheme()(CollectionData)
+const mapDispatchToProps = {
+  
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withWidth()(CollectionData))

@@ -82,7 +82,6 @@ class EditDeviceDetails extends Component {
 		const { classes, t } = this.props
 		const { loading, device } = this.state
 		// let mobile = isWidthUp("md", this.props.width)
-		// console.log(mobile)
 		return loading ? <CircularLoader /> : (
 			<GridContainer>
 				<Paper className={classes.paper}>

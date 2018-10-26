@@ -13,7 +13,6 @@ import { ItemG } from 'components/index';
 
 let selectedRender = props => {
 	const { numSelected, t } = props;
-	console.log(props.options())
 	return <Grid container justify={'space-between'} alignItems={'center'}>
 		<ItemGrid>
 			<Typography color="primary" variant="subtitle1">

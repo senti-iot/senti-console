@@ -1,8 +1,6 @@
 import React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import Devices from 'views/Devices/Devices';
-// import Projects from 'views/Projects/Projects';
-// import CreateProject from 'components/Project/CreateProject';
 import withLocalization from 'components/Localization/T';
 import withSnackbar from 'components/Localization/S';
 import { compose } from 'recompose';

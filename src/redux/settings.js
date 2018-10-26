@@ -19,6 +19,7 @@ const DIDKNOW = "NOTIFICATIOn_DIDYOUKNOW"
 const GETSETTINGS = "GET_SETTINGS"
 const SAVESETTINGS = "SAVE_SETTINGS"
 const changeLangAction = "LANG"
+const CHARTTYPE = "CHART_TYPE"
 const SAVED = "SAVED_SETTINGS"
 const NOSETTINGS = "NO_SETTINGS"
 
@@ -30,12 +31,13 @@ export const saveSettingsOnServ = () => {
 			calibration: s.calibration,
 			calNotifications: s.calNotifications,
 			count: s.count,
+			chartType: s.chartType,
 			discSentiVal: s.discSentiVal,
 			sideBar: s.sideBar,
 			theme: s.theme,
 			trp: s.trp,
 			alerts: s.alerts,
-			didKnow: s.didKnow
+			didKnow: s.didKnow,
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -66,11 +68,13 @@ export const getSettings = async () => {
 		var userId = cookie.load('SESSION') ? cookie.load('SESSION').userID : 0
 		var user = userId !== 0 ? await getUser(userId) : null
 		var settings = user ? user.aux ? user.aux.senti ? user.aux.senti.settings ? user.aux.senti.settings : null : null : null : null
+
 		moment.updateLocale("en", {
 			week: {
 				dow: 1
 			}
 		})
+		moment().utc()
 		if (user) {
 			if (settings) {
 				moment.locale(user.aux.odeum.language)
@@ -130,6 +134,16 @@ export const changeDidKnow = t => {
 	return async (dispatch, getState) => {
 		dispatch({
 			type: DIDKNOW,
+			t
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+
+export const changeChartType = t => {
+	return async (dispatch, getState) => {
+		dispatch({
+			type: CHARTTYPE,
 			t
 		})
 		dispatch(saveSettingsOnServ())
@@ -213,6 +227,7 @@ let initialState = {
 	discSentiVal: 1,
 	sideBar: 0,
 	theme: 0,
+	chartType: 3,
 	trp: 10,
 	alerts: 1,
 	didKnow: 0,
@@ -277,6 +292,10 @@ export const settings = (state = initialState, action) => {
 		case DIDKNOW:
 			return Object.assign({}, state, {
 				didKnow: action.t
+			})
+		case CHARTTYPE: 
+			return Object.assign({}, state, {
+				chartType: action.t
 			})
 		default:
 			return state

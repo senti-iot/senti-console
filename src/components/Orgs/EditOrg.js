@@ -128,10 +128,10 @@ class EditOrg extends Component {
 	handleCountryChange = value => {
 		this.setState({
 			error: false,
-			country: { id: value, label: countries.getName(value, this.props.language) },
+			country: { id: value, label: value },
 			org: {
 				...this.state.org,
-				country: countries.getName(value, this.props.language) ? value : ''
+				country: countries.getAlpha2Code(value, this.props.language) ? countries.getAlpha2Code(value, this.props.language) : ''
 			}
 		})
 	}
@@ -313,11 +313,12 @@ class EditOrg extends Component {
 							<ItemGrid container xs={ 12 }>
 								<EditOrgAutoSuggest
 									t={ t }
-									country={ this.state.country.label ? this.state.country.label : this.state.country.id }
+									country={ this.state.country.label}
 									handleChange={ this.handleCountryChange }
 									suggestions={
-										Object.keys(countries.getNames(this.props.language)).map(
-											country => ({ value: country, label: countries.getName(country, this.props.language) })) } />
+										Object.entries(countries.getNames(this.props.language)).map(
+											country => ({ value: country[1], label: country[1] }))
+									} />
 							</ItemGrid>
 							<ItemGrid container xs={ 12 } md={ 6 }>
 								<TextF

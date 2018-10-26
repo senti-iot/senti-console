@@ -59,7 +59,7 @@ class Projects extends Component {
 			projects: rs ? rs : [],
 			projectHeader: [
 				{ id: 'title', label: t("projects.projectsColumnTitle"), },
-				{ id: 'description', label: t("projects.projectsColumnDescription"), },
+				// { id: 'description', label: t("projects.projectsColumnDescription"), },
 				{ id: 'startDate', label: t("projects.projectsColumnStartDate"), },
 				{ id: 'endDate', label: t("projects.projectsColumnEndDate"), },
 				{ id: 'created', label: t("projects.projectsColumnCreated"), },
@@ -244,12 +244,12 @@ class Projects extends Component {
 		const { openDelete, openAssignDC, loading, order, orderBy, projects, projectHeader, filters, selected } = this.state
 		return loading ? <CircularLoader /> :
 			<Paper className={classes.root}>
-				<AssignDCs 
+				{selected[0] ? <AssignDCs
 					open={openAssignDC}
 					handleClose={this.handleCloseAssignCollection}
 					project={selected[0]}
 					t={t}
-				/>
+				/> : null}
 				<EnhancedTableToolbar
 					ft={this.ft()}
 					anchorElMenu={this.state.anchorElMenu}

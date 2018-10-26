@@ -30,7 +30,7 @@ class CreateUser extends Component {
 				},
 				sysLang: 2,
 				org: {
-					id: "",
+					id: 0,
 					name: "Ingen organisation"
 				},
 				groups: {
@@ -44,7 +44,7 @@ class CreateUser extends Component {
 			creating: false,
 			created: false,
 			loading: true,
-			selectedGroup: "",
+			selectedGroup: 136550100000225,
 		}
 	}
     componentDidMount = async () => {
@@ -70,11 +70,13 @@ class CreateUser extends Component {
     		...this.state.user,
     		userName: user.email
     	}
-    	await createUser(newUser).then(rs => rs ?
-    		this.close(rs) :
-    		this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
-				
-    	)
+    	if (this.handleValidation()) {
+    		await createUser(newUser).then(rs => {
+    		return rs !== 400 ?
+    			this.close(rs) :
+    			this.setState({ created: false, creating: false, error: true, errorMessage: this.errorMessages(rs) })
+    		})
+    	}
     }
 	close = (rs) => {
 		this.setState({ created: true, creating: false, org: rs }) 
@@ -82,20 +84,36 @@ class CreateUser extends Component {
 		s("snackbars.userCreated", { user: `${rs.firstName} ${rs.lastName}` })
 		history.push(`/user/${rs.id}`)
 	}
-    handleChange = prop => e => {
-    	this.setState({
-    		user: {
-    			...this.state.user,
-    			[prop]: e.target.value
-    		}
-    	})
-    }
+	handleChange = prop => e => {
+		const { error } = this.state
+		if (error) {
+			this.setState({
+				error: false,
+				errorMessage: [],
+				user: {
+					...this.state.user,
+					[prop]: e.target.value
+				}
+			})
+		}
+		else { 
+			this.setState({
+				user: {
+					...this.state.user,
+					[prop]: e.target.value
+				}
+			})
+		}
+	}
     handleValidation = () => {
     	/* Address, City, Postcode, Country, Region, Website. */
     	let errorCode = [];
-    	const { email } = this.state.user
+    	const { email, org } = this.state.user
     	if (email === '') {
     		errorCode.push(4)
+    	}
+    	if (org.id === 0) {
+    		errorCode.push(5)
     	}
     	this.setState({
     		errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
@@ -103,25 +121,28 @@ class CreateUser extends Component {
     	if (errorCode.length === 0)
     		return true
     	else
+    		this.setState({ error: true })
     		return false
     }
     errorMessages = code => {
     	const { t } = this.props
     	switch (code) {
     		case 0:
-    			return t("users.validation.nouserName")
+    			return t("users.validation.noUserName")
     		case 1:
-    			return t("users.validation.nofirstName")
+    			return t("users.validation.noFirstName")
     		case 2:
-    			return t("users.validation.nolastName")
+    			return t("users.validation.noLastName")
     		case 3:
-    			return t("users.validation.nophone")
+    			return t("users.validation.noPhone")
     		case 4:
-    			return t("users.validation.noemail")
+    			return t("users.validation.noEmail")
     		case 5:
-    			return t("users.validation.noorg")
+    			return t("users.validation.noOrg")
     		case 6: 
-    			return t("users.validation.nogroup")
+    			return t("users.validation.noGroup")
+    		case 400: 
+    			return t("users.validation.userAlreadyExists")
     		default:
     			return ""
     	}

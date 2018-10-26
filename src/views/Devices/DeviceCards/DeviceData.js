@@ -11,6 +11,7 @@ import { colors } from 'variables/colors';
 import { getWifiDaily, getWifiHourly } from 'variables/dataDevices';
 import { shortDateFormat } from 'variables/functions';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
+import { connect } from 'react-redux'
 
 class DeviceData extends Component {
 	constructor(props) {
@@ -26,7 +27,7 @@ class DeviceData extends Component {
 			dateFilterInputID: 0,
 			timeType: 0,
 			openCustomDate: false,
-			display: 2,
+			display: props.chartType,
 			visibility: false,
 		}
 	}
@@ -89,7 +90,7 @@ class DeviceData extends Component {
 		let endDate = moment(to).format(this.format)
 		let data = await getWifiDaily(device.id, startDate, endDate).then(rs => rs)
 		if (data) {
-			let dataArr = Object.keys(data).map(r => ({ id: shortDateFormat(r), value: data[r] }))
+			let dataArr = Object.keys(data).map(r => ({ id: [shortDateFormat(r), moment(r).format('dddd').charAt(0).toUpperCase() + moment(r).format('dddd').slice(1)], value: data[r] }))
 			this.setState({
 				loading: false,
 				calibrated: {
@@ -426,19 +427,20 @@ class DeviceData extends Component {
 		</ItemGrid>
 	}
 
-	renderType = () => {
+	renderType =() => {
 		const { display, raw } = this.state
 		if (raw) {
 			switch (display) {
 				case 0:
-					return this.state.uncalibrated ? this.state.uncalibrated.roundDataSets ? <div style={{ maxHeight: 400 }}>						<Pie
-						height={!isWidthUp("md", this.props.width) ? 300 : window.innerHeight - 300}
-						legend={this.legendOpts}
-						data={this.state.uncalibrated.roundDataSets}
-						options={{
-							maintainAspectRatio: false,
-						}}
-					/>
+					return this.state.uncalibrated ? this.state.uncalibrated.roundDataSets ? <div style={{ maxHeight: 400 }}>
+						<Pie
+							height={!isWidthUp("md", this.props.width) ? 300 : window.innerHeight - 300}
+							legend={this.legendOpts}
+							data={this.state.uncalibrated.roundDataSets}
+							options={{
+								maintainAspectRatio: false,
+							}}
+						/>
 					</div>
 						: this.renderNoDataFilters() : this.renderNoDataFilters()
 				case 1:
@@ -699,15 +701,7 @@ class DeviceData extends Component {
 				topAction={this.renderMenu()}
 				title={t("devices.cards.data")}
 				avatar={<Timeline />}
-				// leftActions={
-				// 	<Button
-				// 		style={{ marginLeft: 24, padding: 16 }} 
-				// 		variant={'text'} 
-				// 		color={"primary"} 
-				// 		onClick={() => this.props.history.push({ pathname: `/collection/${device.dataCollection.id}`, prevURL: `/device/${device.id}` })}>
-				// 		{t("menus.seeMore")}
-				// 	</Button>
-				// }
+
 				content={
 					<ItemG container>
 						{this.renderCustomDateDialog()}
@@ -727,5 +721,12 @@ DeviceData.propTypes = {
 	// match: PropTypes.any.isRequired,
 	device: PropTypes.object.isRequired,
 }
+const mapStateToProps = (state) => ({
+	chartType: state.settings.chartType
+})
 
-export default withStyles(deviceStyles, { withWidth: true })(withWidth()(DeviceData));
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles)(withWidth()(DeviceData)))
