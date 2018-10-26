@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { updateProject, getProject } from 'variables/dataProjects';
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
-import { dateFormatter } from 'variables/functions';
+// import { dateFormatter } from 'variables/functions';
 var moment = require("moment")
 // const ITEM_HEIGHT = 32;
 // const ITEM_PADDING_TOP = 8;
@@ -118,11 +118,14 @@ class EditProject extends Component {
 	};
 
 	handleDateChange = id => value => {
+		// console.log(value.toDate())
+		// console.log(moment.utc(value).format("YYYY MM DD HH:ss"))
+		// console.log(moment(value).local().format("YYYY MM DD HH:ss"))
 		this.setState({
 			error: false,
 			project: {
 				...this.state.project,
-				[id]: dateFormatter(value)
+				[id]: moment(value).local().format("YYYY-MM-DDTHH:ss")
 			}
 		})
 	}
@@ -174,7 +177,7 @@ class EditProject extends Component {
 			!loading ?
 				<GridContainer justify={'center'}>
 					<Paper className={classes.paper}>
-						<MuiPickersUtilsProvider utils={MomentUtils}>
+						<MuiPickersUtilsProvider utils={MomentUtils} moment={moment}>
 							<form className={classes.form}>
 								<ItemGrid xs={12}>
 									<Collapse in={this.state.error}>
@@ -219,7 +222,9 @@ class EditProject extends Component {
 										// ampm={false}
 										label={t("projects.fields.startDate")}
 										clearable
-										format="LL"
+										labelFunc={(date, invalidLabel) => date === null ? '' : moment(date).format('LL')}
+										format="YYYY-MM-DDTHH:mm"
+										// format="LL"
 										value={this.state.project.startDate}
 										onChange={this.handleDateChange("startDate")}
 										animateYearScrolling={false}
@@ -238,7 +243,9 @@ class EditProject extends Component {
 										autoOk
 										label={t("projects.fields.endDate")}
 										clearable
-										format="LL"
+										labelFunc={(date, invalidLabel) => date === null ?  '' : date.format('LL') }
+										format="YYYY-MM-DDTHH:mm"
+										// format="LL"
 										value={this.state.project.endDate}
 										onChange={this.handleDateChange("endDate")}
 										animateYearScrolling={false}

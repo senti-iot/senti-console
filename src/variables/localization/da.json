@@ -275,18 +275,18 @@
 		},
 		"unassign": {
 			"title": {
-				"deviceFromCollection": "Fjern tilknytningen af enhed fra datasamling?",
-				"deviceFromOrg": "Fjern tilknytningen af enhed fra organisation?",
-				"devicesFromCollection": "Fjern tilknytningen af disse enheder fra deres datasamling?",
-				"collectionFromProject": "Fjern tilknytningen af datasamling fra projekt?",
-				"collectionsFromProject": "Fjern tilknytningen af datasamlinger fra projekt?"
+				"deviceFromCollection": "Fjern tilknytningen af enhed med datasamling?",
+				"deviceFromOrg": "Fjern tilknytningen af enhed med organisation?",
+				"devicesFromCollection": "Fjern tilknytningen af disse enheder med deres datasamling?",
+				"collectionFromProject": "Fjern tilknytningen af datasamling med projekt?",
+				"collectionsFromProject": "Fjern tilknytningen af datasamlinger med projekt?"
 			},
 			"message": {
-				"deviceFromCollection": "Fjern tilknytningen af enhed %{device} fra datasamling %{collection}?",
-				"deviceFromOrg": "Fjern tilknytningen af enhed %{device} fra organisation %{organisation}?",
-				"devicesFromCollection": "Fjern tilknytningen af disse enheder fra deres datasamling:",
-				"collectionFromProject": "Fjern tilknytningen af datasamling %{collection} fra projekt %{project} ?",
-				"collectionsFromProject": "Fjern tilknytningen af disse datasamlinger fra projekt:"
+				"deviceFromCollection": "Fjern tilknytningen af enhed %{device} med datasamling %{collection}?",
+				"deviceFromOrg": "Fjern tilknytningen af enhed %{device} med organisation %{organisation}?",
+				"devicesFromCollection": "Fjern tilknytningen af disse enheder med deres datasamling:",
+				"collectionFromProject": "Fjern tilknytningen af datasamling %{collection} med projekt %{project} ?",
+				"collectionsFromProject": "Fjern tilknytningen af disse datasamlinger med projekt:"
 			}
 		},
 		"warnings": {
@@ -371,8 +371,8 @@
 		"showMap": "Vis kort",
 		"showMore": "Vis mere",
 		"unassign": {
-			"deviceFromCollection": "Fjern tilknytning fra datasamling",
-			"collectionFromProject": "Fjern tilknytning fra projekt",
+			"deviceFromCollection": "Fjern enhed tilknytning med datasamling",
+			"collectionFromProject": "Fjern tilknytning med projekt",
 			"deviceFromOrg": "Fjern tilknytning fra organisation"
 		},
 		"userResendEmail": "Send bekræft e-mail igen"

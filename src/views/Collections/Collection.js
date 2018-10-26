@@ -244,10 +244,10 @@ class Collection extends Component {
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{t("dialogs.unassignTitle")}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{t("dialogs.unassign.title.deviceFromCollection")}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="alert-dialog-description">
-					{t("dialogs.unassignDeviceFromCollection", { id: collection.activeDeviceStats.id, collection: collection.name })}
+					{t("dialogs.unassign.message.deviceFromCollection", { device: collection.activeDeviceStats.id, collection: collection.name })}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>

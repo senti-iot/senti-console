@@ -68,11 +68,13 @@ export const getSettings = async () => {
 		var userId = cookie.load('SESSION') ? cookie.load('SESSION').userID : 0
 		var user = userId !== 0 ? await getUser(userId) : null
 		var settings = user ? user.aux ? user.aux.senti ? user.aux.senti.settings ? user.aux.senti.settings : null : null : null : null
+
 		moment.updateLocale("en", {
 			week: {
 				dow: 1
 			}
 		})
+		moment().utc()
 		if (user) {
 			if (settings) {
 				moment.locale(user.aux.odeum.language)
