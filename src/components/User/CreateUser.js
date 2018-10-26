@@ -44,7 +44,7 @@ class CreateUser extends Component {
 			creating: false,
 			created: false,
 			loading: true,
-			selectedGroup: "",
+			selectedGroup: 136550100000225,
 		}
 	}
     componentDidMount = async () => {
