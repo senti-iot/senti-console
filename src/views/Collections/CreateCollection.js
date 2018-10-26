@@ -23,7 +23,6 @@ class CreateCollection extends Component {
 	}
 	createDC = async () => {
 		let success = await createCollection(this.state.collection)
-		// console.log(success);
 		if (success)
 			return success
 		else
@@ -39,10 +38,8 @@ class CreateCollection extends Component {
 		})
 	}
 	getEmptyCollection = async () => {
-		// console.log("Entered")
 		let emptyDC = await getEmptyCollection()
 		Object.keys(emptyDC).map(k => emptyDC[k] === null ? emptyDC[k] = '' : null)
-		// console.log(emptyDC)
 		this.setState({
 			loading: false,
 			collection: emptyDC
@@ -79,7 +76,6 @@ class CreateCollection extends Component {
 		})
 	}
 	handleCreate = async () => {
-		// console.log(this.props.s)
 		const { s, t, history } = this.props
 		const { device } = this.state
 		let rs = await this.createDC()

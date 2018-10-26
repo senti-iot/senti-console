@@ -8,7 +8,6 @@ class CollectionHistory extends React.Component {
 	render() {
 		
 		const { collection, t } = this.props
-		// console.log(collection.devices);
 		return <InfoCard
 			noExpand
 			title={t("collections.cards.log")}

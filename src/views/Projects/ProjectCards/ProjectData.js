@@ -113,7 +113,6 @@ class ProjectData extends Component {
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		let days = this.datesToArr()
-		// console.log(days);
 		
 		let dataArr = []
 
@@ -127,7 +126,6 @@ class ProjectData extends Component {
 			}
 			return dataArr.push(dataSet)
 		}))
-		// console.log(dataArr, dataArr.length);
 		// ({ id: [shortDateFormat(r), moment(r).format('dddd').charAt(0).toUpperCase() + moment(r).format('dddd').slice(1)],
 		// if (dataArr.length > 0)
 		this.setState({
@@ -168,8 +166,8 @@ class ProjectData extends Component {
 				}))
 			}
 		})
-
 	}
+	
 	getWifiSum = async () => {
 		const { project } = this.props
 		const { from, to, raw } = this.state
@@ -182,17 +180,11 @@ class ProjectData extends Component {
 			let rs = await getDataSummary(d.id, startDate, endDate, raw)
 			let total = 0
 			Object.keys(rs).map(r => total = total + parseInt(rs[r], 10))
-			// console.log(total);
 			dataSet = { nr: d.id, id: d.name + "(" + d.id + ")", data: total }
 			return dataArr.push(dataSet)
 		}))
 		dataArr.sort((a, b) => a.nr - b.nr)
-		// console.log(dataArr.map((d, id) => ({
-		// 	borderColor: "#FFF",
-		// 	borderWidth: 1,
-		// 	data: parseInt(d.data, 10),
-		// 	backgroundColor: colors[id]
-		// })))
+
 		if (dataArr.length > 0)
 			this.setState({
 				loading: false,

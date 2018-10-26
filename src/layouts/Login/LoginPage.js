@@ -108,7 +108,6 @@ class LoginPage extends React.Component {
 			[classes.inputIconsColor]: !this.state.error,
 			[classes.iconError]: this.state.error
 		})
-		// console.log(this.props.width)
 		return (
 			<div>
 				<div

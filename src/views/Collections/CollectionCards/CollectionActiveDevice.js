@@ -49,7 +49,6 @@ class CollectionActiveDevice extends Component {
 	}
 	render() {
 		const {/*  classes, */ device, t, /* accessLevel, */ history, collection } = this.props
-		// console.log(device)
 		return (
 			<InfoCard
 				title={t("collections.fields.activeDevice")}

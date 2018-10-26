@@ -51,7 +51,6 @@ class EditUser extends Component {
 		this._isMounted = 1
 		const { setHeader, location } = this.props
 		let prevURL = location.prevURL ? location.prevURL : '/users'
-		console.log(prevURL)
 		setHeader("users.editUser", true, prevURL, "users")
 		if (this._isMounted) {
 			await this.getUser()
@@ -183,7 +182,6 @@ class EditUser extends Component {
 		groups = groups.filter(x => !this.groups().some(y => x.id === y.id))
 		let g = this.groups()[this.groups().findIndex(x => x.id === e.target.value)]
 		groups.push(g)
-		// console.log(groups)
 		this.setState({
 			selectedGroup: e.target.value,
 			user: {
@@ -290,7 +288,6 @@ class EditUser extends Component {
 		const { t, classes, accessLevel } = this.props
 		const { error, selectedGroup, user } = this.state
 		let rend = false
-		console.log('renderAccess', user)
 		if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers && !user.privileges.apisuperuser)) { 
 			rend = true
 		}

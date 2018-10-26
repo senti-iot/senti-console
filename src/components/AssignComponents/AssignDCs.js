@@ -62,8 +62,6 @@ class AssignDCS extends React.Component {
 	}
 
 	assignCollection = async () => {
-		// console.log(project)
-
 		const { selectedCollections, project } = this.state
 		await updateProject({ ...project, dataCollections: [...selectedCollections.map(c => ({ id: c }))] }).then(
 			() => this.props.handleClose(true)

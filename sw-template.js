@@ -2,16 +2,9 @@
 importScripts('/workbox-sw.js');
 // workbox.setConfig({ debug: true });
 // workbox.core.setLogLevel(workbox.core.LOG_LEVELS.debug);
-// self.addEventListener('install', event => {
-// 	// console.log(event)
-// 	workbox.skipWaiting(true)
-// 	return event.waitUntil(workbox.skipWaiting(true))
-
-// });
 workbox.skipWaiting();
 workbox.clientsClaim();
 workbox.precaching.suppressWarnings();
-// self.addEventListener('activate', event => event.waitUntil(workbox.clientsClaim(true)));
 
 //This will precache everything, not optimal
 workbox.precaching.precacheAndRoute([])

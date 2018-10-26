@@ -71,7 +71,6 @@ class CreateUser extends Component {
     		userName: user.email
     	}
     	await createUser(newUser).then(rs => {
-    		console.log(rs)
     		return rs !== 400 ?
     			this.close(rs) :
     			this.setState({ created: false, creating: false, error: true, errorMessage: this.errorMessages(rs) })
