@@ -9,10 +9,13 @@ import Typography from '@material-ui/core/Typography';
 const styles = {
 	card: {
 		maxWidth: 345,
-		margin: 8
+		margin: 8,
+		display: 'flex',
+		flexFlow: 'column'
 	},
 	cardContent: {
 		minHeight: 150,
+		flexGrow: 1
 	},
 	media: {
 		height: 0,
