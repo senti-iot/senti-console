@@ -126,13 +126,12 @@ class EditOrg extends Component {
 	}
 
 	handleCountryChange = value => {
-		console.log(value)
 		this.setState({
 			error: false,
 			country: { id: value, label: value },
 			org: {
 				...this.state.org,
-				country: countries.getName(value, this.props.language) ? value : ''
+				country: countries.getAlpha2Code(value, this.props.language) ? countries.getAlpha2Code(value, this.props.language) : ''
 			}
 		})
 	}
