@@ -111,16 +111,16 @@
 	},
 	"confirmUser": {
 		"button": "Bekræft og log ind",
-		"lastStep": "Indtast et kodeord for at bekræfte oprettelsen af din Senti.Cloud konto.",
+		"lastStep": "Indtast et kodeord for at bekræfte oprettelsen af din konto.",
 		"networkError": "Netværksfejl!",
 		"password": "Kodeord",
 		"passwordConfirm": "Bekræft kodeord",
 		"validation": {
-			"passwordEmpty": "Kodeord kan ikke være tomt!",
+			"passwordEmpty": "Kodeord må ikke være blankt!",
 			"passwordMismatch": "Indtastede kodeord er ikke ens!",
 			"passwordUnder8": "Indtastede kodeord skal have mindst 8 tegn!",
-			"userDoesntExistAnymore": "Brugeren eksisterer ikke længere, eller token er udløbet.",
-			"emailDoesntExist": "Den leverede e-mail findes ikke i vores databaser"
+			"userDoesntExistAnymore": "Brugeren eksisterer ikke længere, eller adgang er udløbet!",
+			"emailDoesntExist": "Den indtastede E-mail er ikke tilknyttet en eksisterende konto!"
 		},
 		"welcomeMessage": "Velkommen til Senti.Cloud!"
 	},
@@ -344,7 +344,7 @@
 		"button": "Log ind",
 		"changePassword": "Skift kodeord",
 		"forgotPass": "Glemt kodeord?",
-		"goToLogin": "Går til log ind",
+		"goToLogin": "Gå til log ind",
 		"pass": "Kodeord",
 		"requestPasswordReset": "Nulstil kodeord",
 		"resetPassRequestMessage": "En E-mail er er blevet sendt med instruktioner for hvordan du nulstiller dit kodeord!",
