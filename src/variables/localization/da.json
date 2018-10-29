@@ -633,7 +633,7 @@
 		"userResendConfirm": "Er du sikker på du ønsker at gensende bekræftelses E-mail?",
 		"userResendEmail": "Gensend bekræftelses E-mail",
 		"usersDelete": "Slet brugere",
-		"usersDeleteConfirm": "Er du sikker på du vil slette de følgende brugere:",
+		"usersDeleteConfirm": "Er du sikker på du vil slette følgende brugere:",
 		"validation": {
 			"noEmail": "E-mail mangler",
 			"noOrg": "Organisation mangler",
