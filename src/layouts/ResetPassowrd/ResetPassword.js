@@ -95,6 +95,8 @@ class ResetPassword extends React.Component {
 				return t("confirmUser.validation.passwordUnder8")
 			case 2:
 				return t("confirmUser.validation.passwordMismatch")
+			case 404: 
+				return t("confirmUser.validation.emailDoesntExist")
 			default:
 				return ""
 		}
@@ -117,9 +119,15 @@ class ResetPassword extends React.Component {
 	resetPass = async () => {
 		const { email } = this.state
 		let session = await resetPassword({ email: email })
-		if (session) {
+		if (session !== 404 && session) {
 			this.setState({
 				passwordRequested: true
+			})
+		}
+		else { 
+			this.setState({
+				error: true,
+				errorMessage: [<Danger>{this.errorMessages(session)}</Danger>]
 			})
 		}
 	}
@@ -197,7 +205,7 @@ class ResetPassword extends React.Component {
 															{this.token ? null : <Info>{t("login.resetPasswordMessage")}</Info>}
 														</Collapse>
 														<Collapse in={error}>
-															{errorMessage.map(m => m)}
+															{errorMessage}
 														</Collapse>
 													</ItemG>
 													<ItemG xs={12}>

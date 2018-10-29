@@ -13,8 +13,8 @@ export const logOut = async () => {
 }
 
 export const resetPassword = async(obj) => {
-	let data = await api.post(`/core/user/forgotpassword`, obj).then(rs => rs.data)
-	return data
+	let response = await api.post(`/core/user/forgotpassword`, obj).then(rs => rs)
+	return response.ok ? response.data : response.status
 }
 export const confirmPassword = async (obj) => {
 	let data = await api.post(`/core/user/forgotpassword/set`, obj).then(rs => rs.data)

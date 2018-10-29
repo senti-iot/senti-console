@@ -118,7 +118,9 @@
 		"validation": {
 			"passwordEmpty": "Kodeord kan ikke være tomt!",
 			"passwordMismatch": "Indtastede kodeord er ikke ens!",
-			"passwordUnder8": "Indtastede kodeord skal have mindst 8 tegn!"
+			"passwordUnder8": "Indtastede kodeord skal have mindst 8 tegn!",
+			"userDoesntExistAnymore": "Brugeren eksisterer ikke længere, eller token er udløbet.",
+			"emailDoesntExist": "Den leverede e-mail findes ikke i vores databaser"
 		},
 		"welcomeMessage": "Velkommen til Senti.Cloud!"
 	},

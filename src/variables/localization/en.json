@@ -118,7 +118,9 @@
 		"validation": {
 			"passwordEmpty": "Password cannot be empty!",
 			"passwordMismatch": "The entered passwords are not identical!",
-			"passwordUnder8": "Password must contain at least 8 characters!"
+			"passwordUnder8": "Password must contain at least 8 characters!",
+			"userDoesntExistAnymore": "The user doesn't exist anymore or the token has expired!",
+			"emailDoesntExist": "The e-mail provided does not exist in our databases"
 		},
 		"welcomeMessage": "Welcome to Senti.Cloud!"
 	},

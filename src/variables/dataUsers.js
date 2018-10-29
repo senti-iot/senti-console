@@ -23,8 +23,8 @@ export const resendConfirmEmail = async (user) => {
 	return data
 }
 export const confirmUser = async (obj) => {
-	let data = await api.post(`core/user/confirm`, obj).then(rs => rs.data)
-	return data
+	let response = await api.post(`core/user/confirm`, obj).then(rs => rs)
+	return response.ok ? response.data : response.status 
 }
 export const editUser = async (user) => {
 	let data = await api.put(`core/user/${user.id}`, user).then(rs => rs.data)
