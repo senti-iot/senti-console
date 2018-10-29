@@ -102,6 +102,7 @@
 		},
 		"noActiveDevice": "No active device",
 		"noDevice": "No device",
+		"noProject": "No project",
 		"noHistory": "No logs",
 		"pageTitle": "Data Collections",
 		"rawData": "Raw data"

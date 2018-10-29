@@ -102,6 +102,7 @@
 		},
 		"noActiveDevice": "Ingen aktiv enhed",
 		"noDevice": "Ingen enhed",
+		"noProject": "Ingen projekt",
 		"noHistory": "Ingen logfiler",
 		"pageTitle": "Datasamlinger",
 		"rawData": "Rådata"
