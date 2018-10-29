@@ -1,6 +1,7 @@
+import { parsePhoneNumber } from 'libphonenumber-js'
 var moment = require('moment');
-const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
-var PNF = require('google-libphonenumber').PhoneNumberFormat
+// const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+// var PNF = require('google-libphonenumber').PhoneNumberFormat
 var _ = require('lodash')
 
 
@@ -88,10 +89,10 @@ const sortFunc = (a, b, orderBy, way) => {
 	let newB = _.get(b, orderBy) ? _.get(b, orderBy) : ""
 	if (typeof newA === 'number')
 		if (way) {
-			return newB/* .toString().toLowerCase() */ <= newA/* .toString().toLowerCase() */ ? -1 : 1
+			return newB <= newA ? -1 : 1
 		}
 		else {
-			return newA/* .toString().toLowerCase() */ < newB/* .toString().toLowerCase()  */ ? -1 : 1
+			return newA < newB ? -1 : 1
 		}
 	else { 
 		if (way) {
@@ -113,14 +114,27 @@ export const handleRequestSort = (property, way, data) => {
 			: data.sort((a, b) => sortFunc(a, b, orderBy, false))
 	return newData
 }
-export const pF = (phone) => {
+export const pF = (phone, loc) => {
+	// console.log(phone, loc)
+	let phoneNumber
 	try {
-		let formattedPhone = phoneUtil.parse(phone, "DK")
-		return phoneUtil.format(formattedPhone, PNF.NATIONAL);
 		
-	} catch (error) {
+		 phoneNumber = parsePhoneNumber(phone, 'DK')
+	}
+	catch (error) { 
+		// console.log(error)
 		return phone
 	}
+
+	// phoneNumber 
+	return phoneNumber.formatInternational()
+	// try {
+	// 	let formattedPhone = phoneUtil.parse(phone, "DK")
+	// 	return phoneUtil.format(formattedPhone, PNF.NATIONAL);
+		
+	// } catch (error) {
+	// 	return phone
+	// }
 }
 export const dateTimeFormatter = (date, withSeconds) => {
 	var dt
