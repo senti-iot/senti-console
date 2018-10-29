@@ -106,7 +106,8 @@
 		"noProject": "No project",
 		"noHistory": "No logs",
 		"pageTitle": "Data Collections",
-		"rawData": "Raw data"
+		"rawData": "Raw data",
+		"noCollectionsAssigned": "No Data Collections assigned!"
 	},
 	"confirmUser": {
 		"button": "Confirm password",
@@ -637,7 +638,7 @@
 		"validation": {
 			"noEmail": "E-mail is missing",
 			"noOrg": "Organisation is missing",
-			"userAlreadyExists": "E-mail is already used by another user!"
+			"userAlreadyExists": "E-mail is already assigned to another user account!"
 		}
 	}
 }

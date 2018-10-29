@@ -106,7 +106,8 @@
 		"noProject": "Ingen projekt",
 		"noHistory": "Ingen logfiler",
 		"pageTitle": "Datasamlinger",
-		"rawData": "Rådata"
+		"rawData": "Rådata",
+		"noCollectionsAssigned": "Ingen Datasamlinger tilknyttet!"
 	},
 	"confirmUser": {
 		"button": "Bekræft og log ind",
@@ -633,11 +634,11 @@
 		"userResendConfirm": "Er du sikker på du ønsker at gensende bekræftelses E-mail?",
 		"userResendEmail": "Gensend bekræftelses E-mail",
 		"usersDelete": "Slet brugere",
-		"usersDeleteConfirm": "Er du sikker på du vil slette de følgende brugere:",
+		"usersDeleteConfirm": "Er du sikker på du vil slette følgende brugere:",
 		"validation": {
 			"noEmail": "E-mail mangler",
 			"noOrg": "Organisation mangler",
-			"userAlreadyExists": "E-mail er allerede brugt af en anden bruger!"
+			"userAlreadyExists": "E-mail er allerede tilknyttet en anden bruger konto!"
 		}
 	}
 }
