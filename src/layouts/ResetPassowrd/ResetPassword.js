@@ -97,6 +97,8 @@ class ResetPassword extends React.Component {
 				return t("confirmUser.validation.passwordMismatch")
 			case 404: 
 				return t("confirmUser.validation.emailDoesntExist")
+			case 404.1: 
+				return t("confirmUser.validation.userDoesntExistAnymore")
 			default:
 				return ""
 		}
@@ -104,14 +106,13 @@ class ResetPassword extends React.Component {
 	confirmPass = async () => {
 		if (this.handleValidation()) {
 			const { password } = this.state
-			const { t } = this.props
 			let session = await confirmPassword({ newPassword: password, passwordToken: this.token })
-			if (session)
+			if (session !== 404 && session)
 				this.loginUser(session)
 			else {
 				this.setState({
 					error: true,
-					errorMessage: [<Danger>{t("confirmUser.networkError")}</Danger>]
+					errorMessage: [<Danger>{this.errorMessages(404.1)}</Danger>]
 				})
 			}
 		}

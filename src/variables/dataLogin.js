@@ -17,8 +17,8 @@ export const resetPassword = async(obj) => {
 	return response.ok ? response.data : response.status
 }
 export const confirmPassword = async (obj) => {
-	let data = await api.post(`/core/user/forgotpassword/set`, obj).then(rs => rs.data)
-	return data
+	let response = await api.post(`/core/user/forgotpassword/set`, obj).then(rs => rs)
+	return response.ok ? response.data : response.status
 }
 export const setPassword = async (obj) => {
 	let data = await api.post(`/core/user/setpassword`, obj).then(rs => rs.data)
