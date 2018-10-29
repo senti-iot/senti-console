@@ -637,7 +637,7 @@
 		"validation": {
 			"noEmail": "E-mail mangler",
 			"noOrg": "Organisation mangler",
-			"userAlreadyExists": "E-mail er allerede brugt af en anden bruger!"
+			"userAlreadyExists": "E-mail er allerede tilknyttet en anden bruger konto!"
 		}
 	}
 }

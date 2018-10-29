@@ -637,7 +637,7 @@
 		"validation": {
 			"noEmail": "E-mail is missing",
 			"noOrg": "Organisation is missing",
-			"userAlreadyExists": "E-mail is already used by another user!"
+			"userAlreadyExists": "E-mail is already assigned to another user account!"
 		}
 	}
 }
