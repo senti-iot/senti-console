@@ -88,10 +88,10 @@ const sortFunc = (a, b, orderBy, way) => {
 	let newB = _.get(b, orderBy) ? _.get(b, orderBy) : ""
 	
 	if (way) {
-		return newB.toString().toLowerCase() <= newA.toString().toLowerCase() ? -1 : 1
+		return newB/* .toString().toLowerCase() */ <= newA/* .toString().toLowerCase() */ ? -1 : 1
 	}
 	else {
-		return newA.toString().toLowerCase() < newB.toString().toLowerCase() ? -1 : 1
+		return newA/* .toString().toLowerCase() */ < newB/* .toString().toLowerCase()  */? -1 : 1
 	}
 }
 
