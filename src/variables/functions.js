@@ -86,12 +86,20 @@ export const keyTester = (obj, sstr) => {
 const sortFunc = (a, b, orderBy, way) => {
 	let newA = _.get(a, orderBy) ? _.get(a, orderBy) : ""
 	let newB = _.get(b, orderBy) ? _.get(b, orderBy) : ""
-	
-	if (way) {
-		return newB/* .toString().toLowerCase() */ <= newA/* .toString().toLowerCase() */ ? -1 : 1
-	}
-	else {
-		return newA/* .toString().toLowerCase() */ < newB/* .toString().toLowerCase()  */? -1 : 1
+	if (typeof newA === 'number')
+		if (way) {
+			return newB/* .toString().toLowerCase() */ <= newA/* .toString().toLowerCase() */ ? -1 : 1
+		}
+		else {
+			return newA/* .toString().toLowerCase() */ < newB/* .toString().toLowerCase()  */ ? -1 : 1
+		}
+	else { 
+		if (way) {
+			return newB.toString().toLowerCase() <= newA.toString().toLowerCase() ? -1 : 1
+		}
+		else {
+			return newA.toString().toLowerCase() < newB.toString().toLowerCase()  ? -1 : 1
+		}
 	}
 }
 

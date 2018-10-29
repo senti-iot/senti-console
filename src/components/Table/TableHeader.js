@@ -24,11 +24,6 @@ class EnhancedTableHead extends Component {
 					</TableCell>
 					<Hidden mdDown>
 						{columnData.map((column, i) => {
-							console.log(!(orderBy === column.id), orderBy, column.id)
-							console.log(classNames({
-								[classes.hideIcon]: !(orderBy === column.id) ? true : false
-							}));
-							
 							return (
 								<TableCell
 									key={i}
