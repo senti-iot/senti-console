@@ -106,7 +106,8 @@
 		"noProject": "No project",
 		"noHistory": "No logs",
 		"pageTitle": "Data Collections",
-		"rawData": "Raw data"
+		"rawData": "Raw data",
+		"noCollectionsAssigned": "No Data Collections assigned!"
 	},
 	"confirmUser": {
 		"button": "Confirm password",
