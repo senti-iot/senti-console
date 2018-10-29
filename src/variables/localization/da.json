@@ -88,7 +88,7 @@
 			"id": "Datasamling",
 			"deviceId": "Enhed ID",
 			"activated": "Aktiveret",
-			"endOfService": "Afslutning af tjenesten",
+			"endOfService": "Tjeneste afsluttet",
 			"modified": "Opdateret",
 			"name": "Navn",
 			"org": "Organisation",
@@ -118,9 +118,7 @@
 		"validation": {
 			"passwordEmpty": "Kodeord kan ikke være tomt!",
 			"passwordMismatch": "Indtastede kodeord er ikke ens!",
-			"passwordUnder8": "Indtastede kodeord skal have mindst 8 tegn!",
-			"userDoesntExistAnymore": "Brugeren eksisterer ikke længere, eller token er udløbet.",
-			"emailDoesntExist": "Den leverede e-mail findes ikke i vores databaser"
+			"passwordUnder8": "Indtastede kodeord skal have mindst 8 tegn!"
 		},
 		"welcomeMessage": "Velkommen til Senti.Cloud!"
 	},
