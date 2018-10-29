@@ -117,8 +117,8 @@
 		"passwordConfirm": "Bekræft kodeord",
 		"validation": {
 			"passwordEmpty": "Kodeord må ikke være blankt!",
-			"passwordMismatch": "Indtastede kodeord er ikke ens!",
-			"passwordUnder8": "Indtastede kodeord skal have mindst 8 tegn!",
+			"passwordMismatch": "De indtastede kodeord er ikke ens!",
+			"passwordUnder8": "Kodeord skal være på mindst 8 tegn!",
 			"userDoesntExistAnymore": "Brugeren eksisterer ikke længere, eller adgang er udløbet!",
 			"emailDoesntExist": "Den indtastede E-mail er ikke tilknyttet en eksisterende konto!"
 		},
