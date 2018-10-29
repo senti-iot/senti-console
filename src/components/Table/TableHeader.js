@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TableCell, TableHead, TableRow, TableSortLabel, Checkbox, Hidden, Typography } from "@material-ui/core"
-
+import classNames from 'classnames'
 class EnhancedTableHead extends Component {
 	createSortHandler = property => event => {
 		this.props.onRequestSort(event, property);
@@ -24,18 +24,28 @@ class EnhancedTableHead extends Component {
 					</TableCell>
 					<Hidden mdDown>
 						{columnData.map((column, i) => {
+							console.log(!(orderBy === column.id), orderBy, column.id)
+							console.log(classNames({
+								[classes.hideIcon]: !(orderBy === column.id) ? true : false
+							}));
+							
 							return (
 								<TableCell
 									key={i}
 									padding={column.disablePadding ? 'none' : 'default'}
 									sortDirection={orderBy === column.id ? order : false}
-									className={classes.header + " " + classes.tableCell}>
+									className={`${classes.header} ${classes.tableCell} ${column.centered ? classes.centered : ''}`}
+									numeric={column.numeric ? true : false}>
 									<TableSortLabel
 										active={orderBy === column.id}
 										direction={order}
+										// hideSortIcon={!orderBy === column.id}
 										disabled={rowCount === 0}
 										onClick={this.createSortHandler(column.id)}
-										classes={{ root: classes.HeaderLabelActive, active: classes.HeaderLabelActive }}>
+										classes={{
+											root: classes.HeaderLabelActive, active: classes.HeaderLabelActive, icon: classNames({
+												[classes.hideIcon]: !(orderBy === column.id) ? true : false
+											}) }}>
 										<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{column.label}</Typography>
 									</TableSortLabel>
 								</TableCell>
@@ -54,7 +64,11 @@ class EnhancedTableHead extends Component {
 										active={orderBy === columnData[c].id}
 										direction={order}
 										onClick={this.createSortHandler(columnData[c].id)}
-										classes={{ root: classes.HeaderLabelActive, active: classes.HeaderLabelActive }}>
+										classes={{
+											root: classes.HeaderLabelActive, active: classes.HeaderLabelActive, icon: classNames({
+												[classes.hideIcon]: !(orderBy === columnData[c].id) ? true : false
+											})
+										}}>
 										<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{columnData[c].label}</Typography>
 									</TableSortLabel>
 								</TableCell>
@@ -68,7 +82,11 @@ class EnhancedTableHead extends Component {
 										active={orderBy === c.id}
 										direction={order}
 										onClick={this.createSortHandler(c.id)}
-										classes={{ root: classes.HeaderLabelActive, active: classes.HeaderLabelActive }}>
+										classes={{
+											root: classes.HeaderLabelActive, active: classes.HeaderLabelActive, icon: classNames({
+												[classes.hideIcon]: !(orderBy === c.id) ? true : false
+											})
+										}}>
 										{/* <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}> */}{c.label}{/* </Typography> */}
 									</TableSortLabel>
 								</TableCell>

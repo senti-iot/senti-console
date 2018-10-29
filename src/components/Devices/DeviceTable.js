@@ -9,7 +9,7 @@ import React, { Fragment } from "react";
 import { withRouter } from 'react-router-dom';
 import EnhancedTableHead from 'components/Table/TableHeader'
 import { connect } from 'react-redux'
-import { ItemGrid, Info, Caption } from 'components';
+import { ItemGrid, Info, Caption, ItemG } from 'components';
 import TC from 'components/Table/TC'
 import TP from 'components/Table/TP';
 
@@ -58,11 +58,23 @@ class EnhancedTable extends React.Component {
 		const { classes, t } = this.props
 		switch (status) {
 			case 1:
-				return <div title={t("devices.status.yellow")}><SignalWifi2Bar className={classes.yellowSignal} /></div>
+				return <div title={t("devices.status.yellow")}>
+					<ItemG container justify={'center'}>
+						<SignalWifi2Bar className={classes.yellowSignal} />
+					</ItemG>
+				</div>
 			case 2:
-				return <div title={t("devices.status.green")}><SignalWifi2Bar className={classes.greenSignal} /></div>
+				return <div title={t("devices.status.green")}>
+					<ItemG container justify={'center'}>
+						<SignalWifi2Bar className={classes.greenSignal} />
+					</ItemG>
+				</div>
 			case 0:
-				return <div title={t("devices.status.red")}><SignalWifi2Bar className={classes.redSignal} /></div>
+				return <div title={t("devices.status.red")}>
+					<ItemG container justify={'center'}>
+						<SignalWifi2Bar className={classes.redSignal} />
+					</ItemG>
+				</div>
 			case null:
 				return <SignalWifi2BarLock />
 			default:
@@ -91,7 +103,11 @@ class EnhancedTable extends React.Component {
 							columnData={this.props.tableHead}
 							classes={classes}
 							customColumn={[
-								{ id: "liveStatus", label: <SignalWifi2Bar />, checkbox: true },
+								{
+									id: "liveStatus", label: <ItemG container justify={'center'}>
+										<SignalWifi2Bar />
+									</ItemG>, checkbox: true
+								},
 								{
 									id: "id",
 									label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>
