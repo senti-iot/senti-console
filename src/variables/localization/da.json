@@ -107,7 +107,7 @@
 		"noHistory": "Ingen logfiler",
 		"pageTitle": "Datasamlinger",
 		"rawData": "Rådata",
-		"noCollectionsAssigned": "Ingen Datasamlinger tilknyttet!"
+		"noCollectionsAssigned": "Ingen datasamlinger tilknyttet!"
 	},
 	"confirmUser": {
 		"button": "Bekræft og log ind",
