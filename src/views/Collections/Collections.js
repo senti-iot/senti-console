@@ -90,6 +90,7 @@ class Collections extends Component {
 			this.setState({
 				collections: collections ? collections : [],
 				collectionsHeader: [
+					{ id: "id", label: t("collections.fields.dcID") },
 					{ id: "name", label: t("collections.fields.name") },
 					{ id: "activeDevice.liveStatus", label: t("collections.fields.status") },
 					{ id: "created", label: t("collections.fields.created") },

@@ -84,6 +84,7 @@
 			"device": "Enhed",
 			"created": "Oprettet",
 			"description": "Beskrivelse",
+			"dcID": "ID",
 			"id": "Datasamling",
 			"deviceId": "Enhed ID",
 			"activated": "Aktiveret",

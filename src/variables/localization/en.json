@@ -87,6 +87,7 @@
 			"deviceId": "Device ID",
 			"activated": "Activated",
 			"endOfService": "End of service",
+			"dcID": "ID",
 			"id": "Data Collection",
 			"modified": "Last modified",
 			"name": "Name",
