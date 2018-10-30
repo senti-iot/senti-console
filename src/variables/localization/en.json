@@ -111,7 +111,7 @@
 	},
 	"confirmUser": {
 		"button": "Confirm password",
-		"lastStep": "Create your password to confirm your Senti.Cloud account.",
+		"lastStep": "Create your password to confirm your account.",
 		"networkError": "Network Error!",
 		"password": "Password",
 		"passwordConfirm": "Confirm and sign in",
@@ -120,7 +120,7 @@
 			"passwordMismatch": "The entered passwords are not identical!",
 			"passwordUnder8": "Password must contain at least 8 characters!",
 			"userDoesntExistAnymore": "The user doesn't exist anymore or the token has expired!",
-			"emailDoesntExist": "The e-mail provided does not exist in our databases"
+			"emailDoesntExist": "The E-mail provided is not assigned to an existing account!"
 		},
 		"welcomeMessage": "Welcome to Senti.Cloud!"
 	},
