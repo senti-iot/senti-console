@@ -37,7 +37,8 @@ class Project extends Component {
 			},
 			loading: true,
 			openSnackbar: 0,
-			openDelete: false
+			openDelete: false,
+			hoverID: 0,
 		}
 		props.setHeader('', false, '', "projects")
 
@@ -51,7 +52,6 @@ class Project extends Component {
 					if (rs === null)
 						history.push('/404')
 					else {
-						
 						let prevURL = location.prevURL ? location.prevURL : '/projects/list'
 						setHeader(rs.title, true, prevURL, "projects")
 						this.setState({
@@ -63,15 +63,10 @@ class Project extends Component {
 						})
 					}
 				})
-
 			}
 			else {
 				history.push('/404')
 			}
-	}
-
-	componentWillUnmount = () => {
-		clearTimeout(this.timer)
 	}
 
 	snackBarMessages = (msg) => {
@@ -151,6 +146,10 @@ class Project extends Component {
 			this.setState({ openAssignDC: false })
 		}
 	}
+	setHoverID = (id) => {
+		console.log(id)
+		this.setState({ hoverID: id })
+	}
 	render() {
 		const { project, loading, openAssignDC } = this.state
 		const { t } = this.props 
@@ -167,10 +166,10 @@ class Project extends Component {
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectData t={t} project={project} />
+						<ProjectData setHoverID={this.setHoverID} hoverID={this.state.hoverID} t={t} project={project} />
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectCollections t={t} project={project} {...rp}/>
+						<ProjectCollections setHoverID={this.setHoverID} t={t} project={project} {...rp}/>
 					</ItemGrid >
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<ProjectContact history={this.props.history} t={t} project={project} />

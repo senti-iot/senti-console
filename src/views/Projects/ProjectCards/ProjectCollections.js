@@ -92,7 +92,7 @@ class ProjectCollections extends Component {
 						<Fragment>
 							<Table>
 								<TableHead>
-									<TableRow>
+									<TableRow >
 										<TableCell padding="checkbox" /* className={classes.tablecellcheckbox + " " + classes.paddingLeft} */>
 											<ItemG container justify={'center'}>
 												{t("collections.fields.ownState")}
@@ -126,13 +126,15 @@ class ProjectCollections extends Component {
 									{dataCollections ? dataCollections.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((n, i) => {
 										return (
 											<TableRow
+												onMouseLeave={() => this.props.setHoverID(0)}
+												onMouseOver={() => this.props.setHoverID(n.id)}
 												hover
 												onClick={e => { e.stopPropagation(); this.props.history.push({ pathname: '/collection/' + n.id, prevURL: `/project/${project.id}` }) }}
 												key={i}
 												style={{ cursor: 'pointer' }}
 											>
 												<Hidden lgUp>
-													<TableCell padding="checkbox" className={classes.tablecellcheckbox + " " + classes.paddingLeft}>
+													<TableCell  padding="checkbox" className={classes.tablecellcheckbox + " " + classes.paddingLeft}>
 														<ItemG container justify={"center"} >
 															<div style={{ color: n.color }}>
 																{this.renderStatus()}

@@ -19,12 +19,17 @@ class LineChart extends Component {
 		}
 	}
 	componentDidMount = () => {
-		window.addEventListener('scroll', () => { console.log('scrolled') }, false)
+		
 	}
 	componentWillUnmount = () => {
-		window.removeEventListener('scroll', () => { console.log('scrolled') }, false)
-	}
 
+	}
+	legendOptions = {
+		position: "bottom",
+		onHover: (t, l) => {
+			this.props.setHoverID(this.props.data.datasets[l.datasetIndex].id)
+		}
+	}
 	lineOptions = {
 		display: true,
 		maintainAspectRatio: false,
@@ -37,7 +42,6 @@ class LineChart extends Component {
 					this.hideTooltip()
 					return
 				}
-				console.log(tooltipModel)
 				const position = this.chart.chartInstance.canvas.getBoundingClientRect();
 				const left = position.left + tooltipModel.caretX + 10;
 				const top = position.top + tooltipModel.caretY + 10;
@@ -73,7 +77,7 @@ class LineChart extends Component {
 		})
 	}
 	hideTooltip = () => {
-		console.log('called')
+		// console.log('called')
 		this.setState({
 			tooltip: {
 				...this.state.tooltip,
@@ -84,12 +88,13 @@ class LineChart extends Component {
 	render() {
 		const { classes } = this.props
 		return (
-			<div style={{ maxHeight: 400 }} onScroll={this.hideTooltip}>
+			<div style={{ maxHeight: 400 }} onScroll={this.hideTooltip} onMouseLeave={() => this.props.setHoverID(0)}>
 				<Line
 					data={this.props.data}
 					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerWidth / 4 : window.innerHeight - 200}
 					ref={r => this.chart = r}
 					options={this.lineOptions}
+					legend={this.legendOptions}
 				/>
 				{this.state.tooltip.show &&
 					<Popover
@@ -110,7 +115,7 @@ class LineChart extends Component {
 							<Typography variant={'h6'}>{this.state.tooltip.title}</Typography>
 							{this.state.tooltip.data.map(d => {
 								return (
-									<ItemG container /* justify={'center'} */ alignItems={'center'}>
+									<ItemG key={d.id} container /* justify={'center'} */ alignItems={'center'}>
 										<div style={{ background: d.color, width: 15, height: 15, marginRight: 10 }} />
 										<Typography variant={'caption'}>{d.device}</Typography>
 										<Typography classes={{

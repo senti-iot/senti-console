@@ -96,16 +96,23 @@ class ProjectData extends Component {
 		}
 		return arr
 	}
-
-	setDailyData = (dataArr) => {
-		console.log('dataArr', dataArr)
+	componentDidUpdate = (prevProps, prevState) => {
+		if (prevProps.hoverID !== this.props.hoverID)
+			this.setDailyData()
+	}
+	
+	setDailyData = () => {
+		const { dataArr } = this.state
+		// console.log(this.props.hoverID)
 		this.setState({
 			loading: false,
 			lineDataSets: {
 				labels: [...this.datesToArr()],
 				datasets: dataArr.map((d, i) => ({
+					id: d.id,
 					backgroundColor: d.color,
 					borderColor: d.color,
+					borderWidth: this.props.hoverID === d.id ? 8 : 3,
 					fill: false,
 					label: [d.name],
 					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
@@ -138,7 +145,8 @@ class ProjectData extends Component {
 				newArr.push(d)
 			return newArr
 		}, [])
-		this.setDailyData(dataArr)
+		this.setState({ dataArr: dataArr }, this.setDailyData)
+		// this.setDailyData(dataArr)
 	}
 
 	getWifiSum = async () => {
@@ -427,7 +435,7 @@ class ProjectData extends Component {
 				/></div> : this.renderNoData()
 			case 3:
 				return this.state.lineDataSets ? 
-					<LineChart data={this.state.lineDataSets}/> : this.renderNoData()
+					<LineChart setHoverID={this.props.setHoverID} data={this.state.lineDataSets}/> : this.renderNoData()
 			default:
 				break;
 		}
@@ -601,6 +609,7 @@ class ProjectData extends Component {
 									<Caption className={classes.bigCaption2}>{raw ? t("collections.rawData") : t("collections.calibratedData")}</Caption>
 									{noData ? this.renderNoData() : this.renderType()}
 								</ItemG>
+								{/* {this.props.hoverID} */}
 							</Fragment>}
 					</Grid>}
 			/>
