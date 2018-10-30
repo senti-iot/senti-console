@@ -94,7 +94,7 @@ export const deleteCollection = async (id) => {
 export const getDataDaily = async (id, from, to, raw) => {
 	let URL = raw ? `/senti/sentiwi/daily/raw/${id}/${from}/${to}` : `/senti/sentiwi/daily/${id}/${from}/${to}` 
 	let response = await api.get(URL)
-	return response.data ? response.data : response.status
+	return response.ok ? response.data : response.status
 }
 /**
  * Get Hourly Data 

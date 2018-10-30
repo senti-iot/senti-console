@@ -7,6 +7,7 @@ import ProjectDetails from './ProjectCards/ProjectDetails'
 import ProjectCollections from './ProjectCards/ProjectCollections'
 import { ProjectContact } from './ProjectCards/ProjectContact'
 import AssignDCs from 'components/AssignComponents/AssignDCs';
+import { colors } from 'variables/colors';
 
 const projectStyles = theme => ({
 	close: {
@@ -54,7 +55,11 @@ class Project extends Component {
 						let prevURL = location.prevURL ? location.prevURL : '/projects/list'
 						setHeader(rs.title, true, prevURL, "projects")
 						this.setState({
-							project: rs, loading: false
+							project: {
+								...rs,
+								dataCollections: rs.dataCollections.map((dc, i) => ({ ...dc, color: colors[i] }))
+
+							}, loading: false
 						})
 					}
 				})
