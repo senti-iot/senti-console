@@ -284,7 +284,7 @@
 				"devicesFromCollection": "Unassign devices from collection?",
 				"deviceFromOrg": "Unassign device from organisation?",
 				"collectionFromProject": "Unassign collection from project?",
-				"collectionsFromProject": "Unassign collecitons from project?"
+				"collectionsFromProject": "Unassign colletions from project?"
 			},
 			"message": {
 				"deviceFromCollection": "Unassign device %{device} from collection %{collection}?",
@@ -376,9 +376,9 @@
 		"showMap": "Show map",
 		"showMore": "Show more",
 		"unassign": {
-			"deviceFromCollection": "Unassign from collection",
-			"collectionFromProject": "Unassign from project",
-			"deviceFromOrg": "Unassign from organisation"
+			"deviceFromCollection": "Unassign device from collection",
+			"collectionFromProject": "Unassign device from project",
+			"deviceFromOrg": "Unassign device from organisation"
 		},
 		"userResendEmail": "Resend Confirm Email"
 	},

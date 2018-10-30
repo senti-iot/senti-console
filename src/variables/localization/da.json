@@ -280,18 +280,18 @@
 		},
 		"unassign": {
 			"title": {
-				"deviceFromCollection": "Fjern tilknytningen af enhed med datasamling?",
-				"deviceFromOrg": "Fjern tilknytningen af enhed med organisation?",
-				"devicesFromCollection": "Fjern tilknytningen af disse enheder med deres datasamling?",
-				"collectionFromProject": "Fjern tilknytningen af datasamling med projekt?",
-				"collectionsFromProject": "Fjern tilknytningen af datasamlinger med projekt?"
+				"deviceFromCollection": "Frigør enhed fra datasamling?",
+				"deviceFromOrg": "Frigør enhed fra organisation?",
+				"devicesFromCollection": "Frigør disse enheder fra deres datasamling?",
+				"collectionFromProject": "Frigør datasamling fra projekt?",
+				"collectionsFromProject": "Frigør datasamlinger fra projekt?"
 			},
 			"message": {
-				"deviceFromCollection": "Fjern tilknytningen af enhed %{device} med datasamling %{collection}?",
-				"deviceFromOrg": "Fjern tilknytningen af enhed %{device} med organisation %{organisation}?",
-				"devicesFromCollection": "Fjern tilknytningen af disse enheder med deres datasamling:",
-				"collectionFromProject": "Fjern tilknytningen af datasamling %{collection} med projekt %{project} ?",
-				"collectionsFromProject": "Fjern tilknytningen af disse datasamlinger med projekt:"
+				"deviceFromCollection": "Frigør enhed %{device} fra datasamling %{collection}?",
+				"deviceFromOrg": "Frigør enhed %{device} fra organisation %{organisation}?",
+				"devicesFromCollection": "Frigør disse enheder fra deres datasamling:",
+				"collectionFromProject": "Frigør datasamling %{collection} fra projekt %{project} ?",
+				"collectionsFromProject": "Frigør disse datasamlinger fra projekt:"
 			}
 		},
 		"warnings": {
@@ -376,9 +376,9 @@
 		"showMap": "Vis kort",
 		"showMore": "Vis mere",
 		"unassign": {
-			"deviceFromCollection": "Fjern enhed tilknytning med datasamling",
-			"collectionFromProject": "Fjern tilknytning med projekt",
-			"deviceFromOrg": "Fjern tilknytning fra organisation"
+			"deviceFromCollection": "Frigør enhed fra datasamling",
+			"collectionFromProject": "Frigør datasamling fra projekt",
+			"deviceFromOrg": "Frigør enhed fra organisation"
 		},
 		"userResendEmail": "Send bekræft e-mail igen"
 	},
@@ -520,18 +520,18 @@
 	},
 	"snackbars": {
 		"assign": {
-			"deviceToCollection": "Enhed %{device} tilknyt til datasamling %{collection}",
-			"deviceToOrg": "Enhed %{device} tilknyt til organisation %{org}",
-			"collectionToProject": "Datasamling %{collection} tilknyt til projekt %{project}",
-			"collectionsToProject": "Data collections tilknyt til projekt",
-			"collectionToOrg": "Datasamling %{collection} tilknyt til organisation %{org}",
-			"projectToOrg": "Project %{project} tilknyt til organisation %{org}"
+			"deviceToCollection": "Enhed %{device} tilknyttet til datasamling %{collection}",
+			"deviceToOrg": "Enhed %{device} tilknyttet til organisation %{org}",
+			"collectionToProject": "Datasamling %{collection} tilknyttet til projekt %{project}",
+			"collectionsToProject": "Data collections tilknyttet til projekt",
+			"collectionToOrg": "Datasamling %{collection} tilknyttet til organisation %{org}",
+			"projectToOrg": "Project %{project} tilknyttet til organisation %{org}"
 		},
 		"unassign": {
-			"deviceFromCollection": "Enhed %{device} fjernet fra datasamling %{collection}",
-			"deviceFromOrg": "Enhed %{device} fjernet fra organisation %{org}",
-			"collectionFromProject": "Datasamling %{collection} fjernet fra projekt %{project}",
-			"collectionsFromProject": "Datasamlinger fjernet fra projekt %{project}"
+			"deviceFromCollection": "Enheden %{device} er frigjort fra datasamlingen %{collection}",
+			"deviceFromOrg": "Enheden %{device} er frigjort fra organisationen %{org}",
+			"collectionFromProject": "Datasamlingen %{collection} er frigjort fra projektet %{project}",
+			"collectionsFromProject": "Datasamlinger frigjort fra projektet %{project}"
 		},
 		"collectionCreated": "Datasamling er oppretet!",
 		"collectionDeleted": "Datasamling er slettet!",
