@@ -20,6 +20,7 @@ class LineChart extends Component {
 	}
 	legendOptions = {
 		position: "bottom",
+		
 		onHover: (t, l) => {
 			this.props.setHoverID(this.props.data.datasets[l.datasetIndex].id)
 		}
@@ -51,6 +52,9 @@ class LineChart extends Component {
 				const top = /* position.top +  */tooltipModel.caretY;
 				this.setTooltip({ top, left, title: tooltipModel.title, data: tooltipModel.dataPoints.map((d, i) => ({ device: tooltipModel.body[i].lines[0].split(':')[0], count: d.yLabel, color: tooltipModel.labelColors[i].backgroundColor })) })
 			}
+		},
+		hover: {
+			mode: "point"
 		},
 		scales: {
 			xAxes: [{
