@@ -14,7 +14,7 @@ import { ItemGrid, CircularLoader, Caption, Info, ItemG, /* , Caption, Info */ }
 import InfoCard from 'components/Cards/InfoCard';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { Doughnut, Bar, Pie } from 'react-chartjs-2';
-import { getDataSummary, getDataDaily, getDataHourly, /* getDataHourly */ } from 'variables/dataCollections';
+import { getDataSummary, getDataDaily, getDataHourly, getDataMinutely, /* getDataHourly */ } from 'variables/dataCollections';
 import { colors } from 'variables/colors';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
@@ -80,8 +80,8 @@ class ProjectData extends PureComponent {
 		{ id: 6, label: this.props.t("filters.dateOptions.custom") },
 	]
 	timeTypes = [
-		{ id: 0, format: "HH:mm", chart: "minute" },
-		{ id: 1, format: "HH:mm", chart: "hour" },
+		{ id: 0, format: "lll", chart: "minute" },
+		{ id: 1, format: "lll", chart: "hour" },
 		{ id: 2, format: "ll", chart: "day" },
 		{ id: 3, format: "ll", chart: "day" },
 	]
@@ -91,6 +91,18 @@ class ProjectData extends PureComponent {
 		{ id: 2, icon: <BarChart />, label: this.props.t("charts.type.bar") },
 		{ id: 3, icon: <ShowChart />, label: this.props.t("charts.type.line") }
 	]
+	minutesToArray = () => {
+		const { from, to } = this.state
+		let startDate = moment(from)
+		let endDate = moment(to)
+		let d = startDate
+		let arr = []
+		while (d <= endDate) {
+			arr.push(d.toDate())
+			d = d.clone().add(15, 'm')
+		}
+		return arr
+	}
 	hoursToArr = () => {
 		const { from, to } = this.state
 		let startDate = moment(from)
@@ -122,10 +134,9 @@ class ProjectData extends PureComponent {
 
 	setDailyData = () => {
 		const { dataArr } = this.state
-		// console.log(this.props.hoverID)
-		// this.props.setTimeType(2)
 		this.setState({
 			loading: false,
+			timeType: 2,
 			lineDataSets: {
 				labels: [...this.datesToArr()],
 				datasets: dataArr.map((d, i) => ({
@@ -142,8 +153,6 @@ class ProjectData extends PureComponent {
 	}
 	setHourlyData = () => {
 		const { dataArr } = this.state
-		// console.log(this.hoursToArr())
-		// this.props.setTimeType(1)
 		this.setState({
 			loading: false,
 			timeType: 1,
@@ -160,18 +169,32 @@ class ProjectData extends PureComponent {
 				}))
 			}
 		})
-		// console.log(this.state.lineDataSets)
+	}
+	setMinutelyData = () => {
+		const { dataArr } = this.state
+		this.setState({
+			loading: false,
+			timeType: 0,
+			lineDataSets: {
+				labels: [...this.minutesToArray()],
+				datasets: dataArr.map((d, i) => ({
+					id: d.id,
+					backgroundColor: d.color,
+					borderColor: d.color,
+					borderWidth: this.props.hoverID === d.id ? 8 : 3,
+					fill: false,
+					label: [d.name],
+					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
+				}))
+			}
+		})
 	}
 	getWifiHourly = async () => {
 		const { project } = this.props
 		const { from, to, raw } = this.state
-		console.log(from, to)
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
-		// let days = this.datesToArr()
-
 		let dataArr = []
-
 		await Promise.all(project.dataCollections.map(async d => {
 			let dataSet = null
 			let data = await getDataHourly(d.id, startDate, endDate, raw)
@@ -188,10 +211,37 @@ class ProjectData extends PureComponent {
 				newArr.push(d)
 			return newArr
 		}, [])
-		// console.log('dataArr', dataArr)
 		this.setState({ dataArr: dataArr }, this.setHourlyData)
+	}
+	getWifiMinutely = async () => {
+		const { project } = this.props
+		const { from, to, raw } = this.state
+		let startDate = moment(from).format(this.format)
+		let endDate = moment(to).format(this.format)
+		// let days = this.datesToArr()
+
+		let dataArr = []
+
+		await Promise.all(project.dataCollections.map(async d => {
+			let dataSet = null
+			let data = await getDataMinutely(d.id, startDate, endDate, raw)
+			dataSet = {
+				name: d.name,
+				id: d.id,
+				data: data,
+				color: d.color
+			}
+			return dataArr.push(dataSet)
+		}))
+		dataArr = dataArr.reduce((newArr, d) => {
+			if (d.data !== null)
+				newArr.push(d)
+			return newArr
+		}, [])
+		this.setState({ dataArr: dataArr }, this.setMinutelyData)
 		// this.setDailyData(dataArr)
 	}
+
 	getWifiDaily = async () => {
 		const { project } = this.props
 		const { from, to, raw } = this.state
@@ -390,7 +440,6 @@ class ProjectData extends PureComponent {
 	}
 
 	handleCustomDate = date => e => {
-		console.log(e)
 		this.setState({
 			[date]: e
 		})
@@ -405,29 +454,38 @@ class ProjectData extends PureComponent {
 		this.setState({ loading: true, actionAnchor: null, raw: !this.state.raw }, () => this.getWifiDaily())
 	}
 	handleZoomOnData = async (elements) => {
-		// console.log(elements)
 		if (elements.length > 0) {
-			// console.log(this.state.lineDataSets)
-			// console.log(elements[0])
+			const { timeType } = this.state
 			let date = null
 			let startDate = null
 			let endDate = null
 			try {
 				date = this.state.lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
-				startDate = moment(date).startOf('day')
-				endDate = moment(date).endOf('day')
-				this.setState({
-					from: startDate,
-					to: endDate,
-					dateFilterInputID: 6,
-					timeType: 1
-				}, await this.getWifiHourly)
-
+				switch (timeType) {
+					case 1: 
+						startDate = moment(date).startOf('hour')
+						endDate = moment(date).endOf('hour')
+						this.setState({
+							from: startDate,
+							to: endDate,
+							dateFilterInputID: 6
+						}, await this.getWifiMinutely)
+						break
+					case 2:
+						startDate = moment(date).startOf('day')
+						endDate = moment(date).endOf('day')
+						this.setState({
+							from: startDate,
+							to: endDate,
+							dateFilterInputID: 6
+						}, await this.getWifiHourly)
+						break;
+					default:
+						break;
+				}
 			}
 			catch (error) {
-				console.log('Error')
 			}
-			// console.log(date)
 		}
 	}
 	renderCustomDateDialog = () => {

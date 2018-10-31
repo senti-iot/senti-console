@@ -74,7 +74,7 @@ export const getSettings = async () => {
 				dow: 1
 			}
 		})
-		moment().utc()
+		// moment().utc()
 		if (user) {
 			if (settings) {
 				moment.locale(user.aux.odeum.language)

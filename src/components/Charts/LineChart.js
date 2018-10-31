@@ -36,6 +36,9 @@ class LineChart extends PureComponent {
 							id: "day",
 							type: 'time',
 							time: {
+								displayFormats: {
+									hour: "LT"
+								},
 								unit: props.unit.chart,
 								tooltipFormat: props.unit.format
 							},
@@ -53,8 +56,6 @@ class LineChart extends PureComponent {
 				}
 			}
 		}
-		// this.hideTooltip = this.hideTooltip.bind(this)
-		// this.setTooltip = this.setTooltip.bind(this)
 	}
 	legendOptions = {
 		position: "bottom",
@@ -68,9 +69,6 @@ class LineChart extends PureComponent {
 		  chartWidth: this.chart.chartInstance.canvas.width
 	  })
 	}
-	// componentDidUpdate = (prevProps, prevState) => {
-	//   this.chart.chartInstance.update()
-	// }
 	customTooltip = (tooltipModel) => {
 		if (tooltipModel.opacity === 0) {
 			this.hideTooltip()
@@ -87,51 +85,6 @@ class LineChart extends PureComponent {
 			}))
 		})
 	}
-	lineOptions = {
-		display: true,
-		maintainAspectRatio: false,
-		tooltips: {
-			mode: "point",
-			intersect: false,
-			enabled: false,
-			custom: this.customTooltip
-		},
-		hover: {
-			mode: "point"
-		},
-		scales: {
-			xAxes: [
-				{
-					id: "hour",
-					type: 'time',
-					time: {
-						unit: "hour",
-						tooltipFormat: "ll"
-					},
-					scaleLabel: {
-						display: true,
-						labelString: 'Hours'
-					}
-				}, {
-					id: "day",
-					type: 'time',
-					time: {
-						unit: "day",
-						tooltipFormat: "lll"
-					},
-					scaleLabel: {
-						display: true,
-						labelString: 'Date'
-					}
-				}],
-			yAxes: [{
-				scaleLabel: {
-					display: true,
-					labelString: 'value'
-				}
-			}]
-		}
-	}
 	componentDidUpdate = (prevProps, prevState) => {
 		if (prevProps.unit !== this.props.unit)
 		{
@@ -143,7 +96,11 @@ class LineChart extends PureComponent {
 						xAxes: [{
 							id: "day",
 							type: 'time',
+						
 							time: {
+								displayFormats: {
+									hour: "LT"
+								},
 								unit: this.props.unit.chart,
 								tooltipFormat: this.props.unit.format
 							},
@@ -155,18 +112,6 @@ class LineChart extends PureComponent {
 					}
 				}
 			})
-			// this.chart.chartInstance.config.options.scales.xAxes[0] = {
-			// 	id: "day",
-			// 	type: 'time',
-			// 	time: {
-			// 		unit: this.props.unit,
-			// 		tooltipFormat: "ll"
-			// 	},
-			// 	scaleLabel: {
-			// 		display: true,
-			// 		labelString: 'Date'
-			// 	}
-			// }
 			this.chart.chartInstance.update()
 		}
 	}

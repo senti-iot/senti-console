@@ -110,6 +110,19 @@ export const getDataHourly = async (id, from, to, raw) => {
 	return response.data ? response.data : null
 }
 /**
+ * Get Minutely Data 
+ * @function
+ * @param {int} id - Data Collection ID
+ * @param {Date} from - YYYY-MM-DDTHH:mm
+ * @param {Date} to - YYYY-MM-DDTHH:mm
+ * @param {bool} raw 
+ */
+export const getDataMinutely = async (id, from, to, raw) => {
+	let URL = raw ? `/senti/sentiwi/minutely/raw/${id}/${from}/${to}` : `/senti/sentiwi/minutely/${id}/${from}/${to}`
+	let response = await api.get(URL)
+	return response.data ? response.data : null
+}
+/**
  * Get Summary Data 
  * @function
  * @param {int} id - Data Collection ID
