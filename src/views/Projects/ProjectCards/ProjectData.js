@@ -694,7 +694,6 @@ class ProjectData extends PureComponent {
 	}
 
 	render() {
-		console.log(this.state, this.props)
 		const { t, classes } = this.props
 		const { loading, noData, raw } = this.state
 		return (

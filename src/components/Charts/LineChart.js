@@ -72,8 +72,6 @@ class LineChart extends PureComponent {
 	//   this.chart.chartInstance.update()
 	// }
 	customTooltip = (tooltipModel) => {
-		// console.log(this.chart.chartInstance)
-		// console.log(tooltipModel.opacity)
 		if (tooltipModel.opacity === 0) {
 			this.hideTooltip()
 			return
@@ -209,8 +207,6 @@ class LineChart extends PureComponent {
 	render() {
 		const { classes } = this.props
 		const { tooltip, chartWidth } = this.state
-		console.log(this.props.unit)
-		// console.log(this.state.lineOptions)
 		return (
 			<div style={{ maxHeight: 400, position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={() => {this.props.setHoverID(0);/* this.hideTooltip() */}}>
 				<Line
