@@ -42,7 +42,7 @@ class Projects extends Component {
 		const { t } = this.props
 		return [
 			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t("menus.assign.collectionsToProjects"), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },
+			{ label: t("menus.assign.collectionsToProject"), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },
 			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
 			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
