@@ -19,7 +19,7 @@ import { colors } from 'variables/colors';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import classNames from 'classnames';
-import { dateFormatter } from 'variables/functions';
+import { dateTimeFormatter } from 'variables/functions';
 import { connect } from 'react-redux'
 import moment from 'moment'
 import LineChart from 'components/Charts/LineChart';
@@ -604,8 +604,8 @@ class ProjectData extends PureComponent {
 	renderDateFilter = () => {
 		const { classes, t } = this.props
 		const { dateFilterInputID, to, from } = this.state
-		let displayTo = dateFormatter(to)
-		let displayFrom = dateFormatter(from)
+		let displayTo = dateTimeFormatter(to)
+		let displayFrom = dateTimeFormatter(from)
 		return (
 			<div className={classes.root}>
 				<Hidden smDown>

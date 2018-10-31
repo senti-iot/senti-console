@@ -103,7 +103,12 @@ const sortFunc = (a, b, orderBy, way) => {
 		}
 	}
 }
-
+/**
+ * Handle Sorting
+ * @param {String} property 
+ * @param {String} way 
+ * @param {Array} data 
+ */
 export const handleRequestSort = (property, way, data) => {
 	const orderBy = property;
 	let order = way;
@@ -114,40 +119,45 @@ export const handleRequestSort = (property, way, data) => {
 			: data.sort((a, b) => sortFunc(a, b, orderBy, false))
 	return newData
 }
-export const pF = (phone, loc) => {
-	// console.log(phone, loc)
+/**
+ * Phone Formatter
+ * @param {String} phone 
+ */
+export const pF = (phone) => {
 	let phoneNumber
 	try {
-		
 		 phoneNumber = parsePhoneNumber(phone, 'DK')
 	}
 	catch (error) { 
-		// console.log(error)
 		return phone
 	}
-
-	// phoneNumber 
 	return phoneNumber.formatInternational()
-	// try {
-	// 	let formattedPhone = phoneUtil.parse(phone, "DK")
-	// 	return phoneUtil.format(formattedPhone, PNF.NATIONAL);
-		
-	// } catch (error) {
-	// 	return phone
-	// }
 }
+/**
+ * Date Time Formatter
+ * @param {Date} date 
+ * @param {boolean} withSeconds 
+ */
 export const dateTimeFormatter = (date, withSeconds) => {
 	var dt
 	if (withSeconds)
 		dt = moment(date).format("DD MMMM YYYY HH:mm:ss")
 	else
-		dt = moment(date).format("DD MMMM YYYY HH:mm")
+		dt = moment(date).format("lll")
 	return dt
 }
+/**
+ * Short Date "ll" format
+ * @param {Date} date 
+ */
 export const shortDateFormat = (date) => {
 	var a = moment(date).format("ll")
 	return a
 }
+/**
+ * Date Formatter "LL" format
+ * @param {Date} date 
+ */
 export const dateFormatter = (date) => {
 	var a = moment(date).format("LL")
 	return a

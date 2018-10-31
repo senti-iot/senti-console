@@ -22,6 +22,7 @@ class LineChart extends PureComponent {
 				display: true,
 				maintainAspectRatio: false,
 				tooltips: {
+					titleFontFamily: "inherit",
 					mode: "point",
 					intersect: false,
 					enabled: false,
