@@ -35,6 +35,7 @@ class Project extends Component {
 				startDate: '',
 				endDate: ''
 			},
+			timeType: 2,
 			loading: true,
 			openSnackbar: 0,
 			openDelete: false,
@@ -43,7 +44,12 @@ class Project extends Component {
 		props.setHeader('', false, '', "projects")
 
 	}
-
+	timeTypes = [
+		{ id: 0, format: "HH:mm", chart: "minute" },
+		{ id: 1, format: "HH:mm", chart: "hour" },
+		{ id: 2, format: "ll", chart: "day" },
+		{ id: 3, format: "ll", chart: "day" },
+	]
 	componentDidMount = async () => {
 		const { history, location, match, setHeader } = this.props
 		if (match)
@@ -167,7 +173,14 @@ class Project extends Component {
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectData setHoverID={this.setHoverID} hoverID={this.state.hoverID} t={t} project={project} />
+						<ProjectData
+							setTimeType={(e) => this.setState({ timeType: e })}
+							timeTypes={this.timeTypes}
+							timeType={this.state.timeType}
+							setHoverID={this.setHoverID}
+							hoverID={this.state.hoverID}
+							t={t}
+							project={project} />
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<ProjectCollections setHoverID={this.setHoverID} t={t} project={project} {...rp}/>
