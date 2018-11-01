@@ -7,22 +7,24 @@ import {
 import {
 	AccessTime, AssignmentTurnedIn, MoreVert,
 	DateRange, KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft,
-	DonutLargeRounded, PieChartRounded, BarChart, ExpandMore, Visibility, ShowChart
+	DonutLargeRounded, PieChartRounded, BarChart as BarChartIcon, ExpandMore, Visibility, ShowChart
 } from "variables/icons"
 // import { dateFormatter } from 'variables/functions';
 import { ItemGrid, CircularLoader, Caption, Info, ItemG, /* , Caption, Info */ } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import deviceStyles from 'assets/jss/views/deviceStyles';
-import { Doughnut, Bar, Pie } from 'react-chartjs-2';
+import { Doughnut, Pie } from 'react-chartjs-2';
 import { getDataSummary, getDataDaily, getDataHourly, getDataMinutely, /* getDataHourly */ } from 'variables/dataCollections';
 import { colors } from 'variables/colors';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import classNames from 'classnames';
-import { dateTimeFormatter } from 'variables/functions';
+import { dateTimeFormatter, datesToArr, hoursToArr, minutesToArray } from 'variables/functions';
 import { connect } from 'react-redux'
 import moment from 'moment'
 import LineChart from 'components/Charts/LineChart';
+import BarChart from 'components/Charts/BarChart';
+import teal from '@material-ui/core/colors/teal'
 
 class ProjectData extends PureComponent {
 	constructor(props) {
@@ -37,16 +39,10 @@ class ProjectData extends PureComponent {
 			loading: true,
 			dateFilterInputID: 3,
 			openCustomDate: false,
-			display: 3,
+			display: 2,
 			visibility: false,
 			timeType: 2,
 			raw: false,
-			tooltip: {
-				show: false,
-				top: 0,
-				left: 0,
-				value: 0
-			}
 		}
 	}
 
@@ -88,62 +84,39 @@ class ProjectData extends PureComponent {
 	visibilityOptions = [
 		{ id: 0, icon: <PieChartRounded />, label: this.props.t("charts.type.pie") },
 		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t("charts.type.donut") },
-		{ id: 2, icon: <BarChart />, label: this.props.t("charts.type.bar") },
+		{ id: 2, icon: <BarChartIcon />, label: this.props.t("charts.type.bar") },
 		{ id: 3, icon: <ShowChart />, label: this.props.t("charts.type.line") }
 	]
-	minutesToArray = () => {
-		const { from, to } = this.state
-		let startDate = moment(from)
-		let endDate = moment(to)
-		let d = startDate
-		let arr = []
-		while (d <= endDate) {
-			arr.push(d.toDate())
-			d = d.clone().add(15, 'm')
-		}
-		return arr
-	}
-	hoursToArr = () => {
-		const { from, to } = this.state
-		let startDate = moment(from)
-		let endDate = moment(to)
-		let arr = []
-		let d = startDate.clone()
-		while (d <= endDate) {
-			arr.push(d.toDate())
-			d = d.clone().add(1, 'h')
-		}
-		return arr
-	}
-	datesToArr = () => {
-		const { from, to } = this.state
-		let startDate = moment(from)
-		let endDate = moment(to)
-		let arr = []
-		let d = startDate.clone()
-		while (d <= endDate) {
-			arr.push(d.toDate())
-			d = d.clone().add(1, 'd')
-		}
-		return arr
-	}
+	
 	componentDidUpdate = (prevProps, prevState) => {
 		if (prevProps.hoverID !== this.props.hoverID)
 			this.state.timeType === 1 ? this.setHourlyData() :  this.setDailyData()
 	}
 
 	setDailyData = () => {
-		const { dataArr } = this.state
+		const { dataArr, from, to } = this.state
 		this.setState({
 			loading: false,
 			timeType: 2,
 			lineDataSets: {
-				labels: [...this.datesToArr()],
+				labels: datesToArr(from, to),
 				datasets: dataArr.map((d, i) => ({
 					id: d.id,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 8 : 3,
+					fill: false,
+					label: [d.name],
+					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
+				}))
+			},
+			barDataSets: {
+				labels: datesToArr(from, to),
+				datasets: dataArr.map((d, i) => ({
+					id: d.id,
+					backgroundColor: d.color,
+					borderColor: teal[500],
+					borderWidth: this.props.hoverID === d.id ? 4 : 0,
 					fill: false,
 					label: [d.name],
 					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
@@ -152,12 +125,12 @@ class ProjectData extends PureComponent {
 		})
 	}
 	setHourlyData = () => {
-		const { dataArr } = this.state
+		const { dataArr, from, to } = this.state
 		this.setState({
 			loading: false,
 			timeType: 1,
 			lineDataSets: {
-				labels: [...this.hoursToArr()],
+				labels: hoursToArr(from, to),
 				datasets: dataArr.map((d, i) => ({
 					id: d.id,
 					backgroundColor: d.color,
@@ -167,16 +140,28 @@ class ProjectData extends PureComponent {
 					label: [d.name],
 					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
 				}))
+			},
+			barDataSets: {
+				labels: hoursToArr(from, to),
+				datasets: dataArr.map((d, i) => ({
+					id: d.id,
+					backgroundColor: d.color,
+					borderColor: d.color,
+					borderWidth: this.props.hoverID === d.id ? 4 : 0,
+					fill: false,
+					label: [d.name],
+					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
+				}))
 			}
 		})
 	}
 	setMinutelyData = () => {
-		const { dataArr } = this.state
+		const { dataArr, from, to } = this.state
 		this.setState({
 			loading: false,
 			timeType: 0,
 			lineDataSets: {
-				labels: [...this.minutesToArray()],
+				labels: minutesToArray(from, to),
 				datasets: dataArr.map((d, i) => ({
 					id: d.id,
 					backgroundColor: d.color,
@@ -580,14 +565,18 @@ class ProjectData extends PureComponent {
 						/></div>
 					: this.renderNoData()
 			case 2:
-				return this.state.barDataSets ? <div style={{ maxHeight: 400 }}><Bar
+				return this.state.barDataSets ? <div style={{ maxHeight: 400 }}><BarChart
+					unit={this.timeTypes[this.state.timeType]}
+					onElementsClick={this.handleZoomOnData}
+					setHoverID={this.props.setHoverID}
 					data={this.state.barDataSets}
-					legend={this.barOpts}
-					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerWidth / 4 : window.innerHeight - 200}
-					options={{
-						display: true,
-						maintainAspectRatio: false,
-					}}
+					// data={this.state.lineDataSets}
+					// legend={this.barOpts}
+					// height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerWidth / 4 : window.innerHeight - 200}
+					// options={{
+					// 	display: true,
+					// 	maintainAspectRatio: false,
+					// }}
 				/></div> : this.renderNoData()
 			case 3:
 				return this.state.lineDataSets ?

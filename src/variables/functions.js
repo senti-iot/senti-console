@@ -4,7 +4,39 @@ var moment = require('moment');
 // var PNF = require('google-libphonenumber').PhoneNumberFormat
 var _ = require('lodash')
 
-
+export const minutesToArray = (from, to) => {
+	let startDate = moment(from)
+	let endDate = moment(to)
+	let d = startDate
+	let arr = []
+	while (d <= endDate) {
+		arr.push(d.toDate())
+		d = d.clone().add(15, 'm')
+	}
+	return arr
+}
+export const hoursToArr = (from, to) => {
+	let startDate = moment(from)
+	let endDate = moment(to)
+	let arr = []
+	let d = startDate.clone()
+	while (d <= endDate) {
+		arr.push(d.toDate())
+		d = d.clone().add(1, 'h')
+	}
+	return arr
+}
+export const datesToArr = (from, to) => {
+	let startDate = moment(from)
+	let endDate = moment(to)
+	let arr = []
+	let d = startDate.clone()
+	while (d <= endDate) {
+		arr.push(d.toDate())
+		d = d.clone().add(1, 'd')
+	}
+	return arr
+}
 export const dateFormat = (date) => {
 	let newDate = moment(date)
 	if (newDate.isBetween(moment().subtract(7, "day"), moment().add(7, "day")))

@@ -33,42 +33,39 @@ class LineChart extends PureComponent {
 				},
 				scales: {
 					xAxes: [
-						 {
+						{
 							id: "day",
 							type: 'time',
 							time: {
 								displayFormats: {
-									hour: "LT"
+									hour: "LT",
+									day: 'll'
 								},
 								unit: props.unit.chart,
 								tooltipFormat: props.unit.format
 							},
-							scaleLabel: {
-								display: true,
-								labelString: 'Date'
-							}
 						}],
-					yAxes: [{
-						scaleLabel: {
-							display: true,
-							labelString: 'value'
-						}
-					}]
+					// yAxes: [{
+					// 	scaleLabel: {
+					// 		display: true,
+					// 		labelString: 'value'
+					// 	}
+					// }]
 				}
 			}
 		}
 	}
 	legendOptions = {
 		position: "bottom",
-		
-		onHover: (t, l) => {
+
+		onHover: !this.props.single ? (t, l) => {
 			this.props.setHoverID(this.props.data.datasets[l.datasetIndex].id)
-		}
+		} : null
 	}
 	componentDidMount = () => {
 		this.setState({
-		  chartWidth: this.chart.chartInstance.canvas.width
-	  })
+			chartWidth: this.chart.chartInstance.canvas.width
+		})
 	}
 	customTooltip = (tooltipModel) => {
 		if (tooltipModel.opacity === 0) {
@@ -87,8 +84,7 @@ class LineChart extends PureComponent {
 		})
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		if (prevProps.unit !== this.props.unit)
-		{
+		if (prevProps.unit !== this.props.unit) {
 			this.setState({
 				lineOptions: {
 					...this.state.lineOptions,
@@ -97,7 +93,7 @@ class LineChart extends PureComponent {
 						xAxes: [{
 							id: "day",
 							type: 'time',
-						
+
 							time: {
 								displayFormats: {
 									hour: "LT"
@@ -105,10 +101,6 @@ class LineChart extends PureComponent {
 								unit: this.props.unit.chart,
 								tooltipFormat: this.props.unit.format
 							},
-							scaleLabel: {
-								display: true,
-								labelString: 'Date'
-							}
 						}]
 					}
 				}
@@ -116,7 +108,7 @@ class LineChart extends PureComponent {
 			this.chart.chartInstance.update()
 		}
 	}
-	
+
 	setTooltip = (tooltip) => {
 		this.setState({
 			tooltip: {
@@ -143,18 +135,21 @@ class LineChart extends PureComponent {
 		})
 	}
 	elementClicked = async (elements) => {
-		if (this.props.onElementsClick)
-		{
+		if (this.props.onElementsClick) {
 			await this.props.onElementsClick(elements)
-			
+
 		}
 		this.hideTooltip()
+	}
+	onMouseLeave = () => {
+		const { single } = this.props
+		return !single ? () => this.props.setHoverID(0) : undefined
 	}
 	render() {
 		const { classes } = this.props
 		const { tooltip, chartWidth } = this.state
 		return (
-			<div style={{ maxHeight: 400, position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={() => {this.props.setHoverID(0);/* this.hideTooltip() */}}>
+			<div style={{ maxHeight: 400, position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
 				<Line
 					// redraw={true}
 					data={this.props.data}
