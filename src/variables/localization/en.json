@@ -315,6 +315,8 @@
 			"custom": "Custom range",
 			"daily": "Daily",
 			"hourly": "Hourly",
+			"minutely": "Minutely",
+			"summary": "Summary",
 			"thisWeek": "This week",
 			"today": "Today",
 			"yesterday": "Yesterday"

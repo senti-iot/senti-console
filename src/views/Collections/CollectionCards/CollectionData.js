@@ -52,12 +52,12 @@ class CollectionData extends Component {
 	]
 	options = [
 		{ id: 0, label: this.props.t("filters.dateOptions.today") },
-		{ id: 5, label: this.props.t("filters.dateOptions.yesterday") },
-		{ id: 6, label: this.props.t("filters.dateOptions.thisWeek") },
-		{ id: 1, label: this.props.t("filters.dateOptions.7days") },
-		{ id: 2, label: this.props.t("filters.dateOptions.30days") },
-		{ id: 3, label: this.props.t("filters.dateOptions.90days") },
-		{ id: 4, label: this.props.t("filters.dateOptions.custom") },
+		{ id: 1, label: this.props.t("filters.dateOptions.yesterday") },
+		{ id: 2, label: this.props.t("filters.dateOptions.thisWeek") },
+		{ id: 3, label: this.props.t("filters.dateOptions.7days") },
+		{ id: 4, label: this.props.t("filters.dateOptions.30days") },
+		{ id: 5, label: this.props.t("filters.dateOptions.90days") },
+		{ id: 6, label: this.props.t("filters.dateOptions.custom") },
 	]
 	visibilityOptions = [
 		{ id: 0, icon: <PieChartRounded />, label: this.props.t("charts.type.pie") },
@@ -170,10 +170,10 @@ class CollectionData extends Component {
 		const { collection } = this.props
 		const { from, to, raw } = this.state
 		let data = await getDataHourly(collection.id, moment(from).format(this.format), moment(to).format(this.format), raw)
-		console.log(data)
+		
 		if (data) {
 			let dataArr = Object.keys(data).map(r => ({ id: timeFormatter(r), value: data[r] }))
-			console.log(dataArr)
+			
 			this.setState({
 				dataArr: dataArr,
 				data: data,
@@ -231,7 +231,7 @@ class CollectionData extends Component {
 				color: teal[500]
 			}
 			let dataArr = [dataSet]
-			console.log(dataArr)
+			
 			this.setState({
 				loading: false,
 				dataArr: dataArr,
@@ -292,26 +292,27 @@ class CollectionData extends Component {
 		let diff = moment.duration(to.diff(from)).days()
 		let { timeType } = this.state
 		switch (id) {
-			case 0:
+			case 0: //Today
 				this.handleWifiHourly();
 				break;
-			case 1:
+			case 1:// Yesterday
 				 this.handleWifiDaily() 
 				break;
-			case 2:
+			case 2:// This Week
+				parseInt(diff, 10) > 1 ? this.getWifiDaily() : this.getWifiDaily()
+				break;
+			case 3: // 7 days
 				this.handleWifiDaily();
 				break;
-			case 3:
-				this.handleWifiDaily();
-				break;
-			case 4: 
+			case 4:// 30 days
+				this.handleWifiDaily()
+				// parseInt(diff, 10) > 1 ? this.handleWifiDaily() : this.handleWifiHourly()
+				break
+			case 5: // 90 days
+				this.handleWifiDaily()
+				break
+			case 6:  // Custom
 				timeType === 1 ? this.handleWifiDaily() : this.handleWifiHourly()
-				break
-			case 5:
-				this.handleWifiHourly()
-				break
-			case 6:
-				parseInt(diff, 10) > 1 ? this.handleWifiDaily() : this.handleWifiHourly()
 				break
 			default:
 				this.handleWifiDaily();
@@ -332,26 +333,26 @@ class CollectionData extends Component {
 				from = moment().subtract(7, 'd').startOf('day')
 				to = moment().endOf('day')
 				break;
-			case 2: // last 30 days
-				from = moment().subtract(30, 'd').startOf('day')
-				to = moment().endOf('day')
-				break;
-			case 3: // last 90 days
-				from = moment().subtract(90, 'd').startOf('day')
-				to = moment().endOf('day')
-				break;
-			case 4:
-				from = moment(this.state.from)
-				to = moment(this.state.to)
-				break;
-			case 5:
+			case 2: // Yesterday
 				from = moment().subtract(1, 'd').startOf('day')
 				to = moment().subtract(1, 'd').endOf('day')
 				break;
-			case 6:
+			case 3: // This week
 				from = moment().startOf('week').startOf('day')
 				// from = moment().startOf('day')
 				to = moment().endOf('day')
+				break;
+			case 4: // last 30 days
+				from = moment().subtract(30, 'd').startOf('day')
+				to = moment().endOf('day')
+				break;
+			case 5: // last 90 days
+				from = moment().subtract(90, 'd').startOf('day')
+				to = moment().endOf('day')
+				break;
+			case 6: // Custom
+				from = moment(this.state.from)
+				to = moment(this.state.to)
 				break;
 			default:
 				break;
@@ -382,7 +383,7 @@ class CollectionData extends Component {
 		/> : null
 	}
 	renderDateFilter = () => {
-		const { classes, t } = this.props
+		const { classes } = this.props
 		const { dateFilterInputID, to, from } = this.state
 		let displayTo = shortDateFormat(to)
 		let displayFrom = shortDateFormat(from)
@@ -406,14 +407,14 @@ class CollectionData extends Component {
 							<Info>{`${displayFrom} - ${displayTo}`}</Info>
 						</ItemGrid>
 						<Divider />
-						<MenuItem value={0}>{t("filters.dateOptions.today")}</MenuItem>
-						<MenuItem value={5}>{t("filters.dateOptions.yesterday")}</MenuItem>
-						<MenuItem value={6}>{t("filters.dateOptions.thisWeek")}</MenuItem>
-						<MenuItem value={1}>{t("filters.dateOptions.7days")}</MenuItem>
-						<MenuItem value={2}>{t("filters.dateOptions.30days")}</MenuItem>
-						<MenuItem value={3}>{t("filters.dateOptions.90days")}</MenuItem>
+						<MenuItem value={0}>{this.options[0].label}</MenuItem>
+						<MenuItem value={1}>{this.options[1].label}</MenuItem>
+						<MenuItem value={2}>{this.options[2].label}</MenuItem>
+						<MenuItem value={3}>{this.options[3].label}</MenuItem>
+						<MenuItem value={4}>{this.options[4].label}</MenuItem>
+						<MenuItem value={5}>{this.options[5].label}</MenuItem>
 						<Divider />
-						<MenuItem value={4}>{t("filters.dateOptions.custom")}</MenuItem>
+						<MenuItem value={6}>{this.options[6].label}</MenuItem>
 					</Select>
 					<FormHelperText>{`${displayFrom} - ${displayTo}`}</FormHelperText>
 				</FormControl>

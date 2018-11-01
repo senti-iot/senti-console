@@ -118,9 +118,9 @@ class EditProject extends Component {
 	};
 
 	handleDateChange = id => value => {
-		// console.log(value.toDate())
-		// console.log(moment.utc(value).format("YYYY MM DD HH:ss"))
-		// console.log(moment(value).local().format("YYYY MM DD HH:ss"))
+		// )
+		// .format("YYYY MM DD HH:ss"))
+		// .local().format("YYYY MM DD HH:ss"))
 		this.setState({
 			error: false,
 			project: {

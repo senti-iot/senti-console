@@ -67,7 +67,20 @@ const CustomDateTime = (props) => {
 								<Checkbox
 									checked={timeType === 0 ? true : false}
 									onChange={handleCustomCheckBox}
-									value="0"
+									value={"0"}
+									className={classes.checkbox}
+								/>
+							}
+							label={t("filters.dateOptions.minutely")}
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12} zeroMargin>
+						<FormControlLabel
+							control={
+								<Checkbox
+									checked={timeType === 1 ? true : false}
+									onChange={handleCustomCheckBox}
+									value={"1"}
 									className={classes.checkbox}
 								/>
 							}
@@ -78,13 +91,26 @@ const CustomDateTime = (props) => {
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={timeType === 1 ? true : false}
+									checked={timeType === 2 ? true : false}
 									onChange={handleCustomCheckBox}
-									value="1"
+									value={"2"}
 									className={classes.checkbox}
 								/>
 							}
 							label={t("filters.dateOptions.daily")}
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12} zeroMargin>
+						<FormControlLabel
+							control={
+								<Checkbox
+									checked={timeType === 3 ? true : false}
+									onChange={handleCustomCheckBox}
+									value={"3"}
+									className={classes.checkbox}
+								/>
+							}
+							label={t("filters.dateOptions.summary")}
 						/>
 					</ItemGrid>
 				</ItemGrid>

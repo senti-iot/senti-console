@@ -1,23 +1,20 @@
 import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types'
 import {
-	Grid, IconButton, Menu, MenuItem, withStyles, Select, FormControl, FormHelperText, Divider, Dialog, DialogTitle, DialogContent, Button, DialogActions, ListItem,
+	Grid, IconButton, Menu, MenuItem, withStyles, Select, FormControl, FormHelperText, Divider, ListItem,
 	ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox,
 } from '@material-ui/core';
 import {
-	AccessTime, AssignmentTurnedIn, MoreVert,
-	DateRange, KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft,
-	DonutLargeRounded, PieChartRounded, BarChart as BarChartIcon, ExpandMore, Visibility, ShowChart
+	AssignmentTurnedIn, MoreVert,
+	DateRange, DonutLargeRounded, PieChartRounded, BarChart as BarChartIcon, ExpandMore, Visibility, ShowChart
 } from "variables/icons"
 // import { dateFormatter } from 'variables/functions';
-import { ItemGrid, CircularLoader, Caption, Info, ItemG, /* , Caption, Info */ } from 'components';
+import { ItemGrid, CircularLoader, Caption, Info, ItemG, CustomDateTime, /* , Caption, Info */ } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import deviceStyles from 'assets/jss/views/deviceStyles';
-import { Doughnut, Pie } from 'react-chartjs-2';
+import { /* Doughnut,  */Pie } from 'react-chartjs-2';
 import { getDataSummary, getDataDaily, getDataHourly, getDataMinutely, /* getDataHourly */ } from 'variables/dataCollections';
-import { colors } from 'variables/colors';
-import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
-import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+// import { colors } from 'variables/colors';
 import classNames from 'classnames';
 import { dateTimeFormatter, datesToArr, hoursToArr, minutesToArray } from 'variables/functions';
 import { connect } from 'react-redux'
@@ -25,6 +22,7 @@ import moment from 'moment'
 import LineChart from 'components/Charts/LineChart';
 import BarChart from 'components/Charts/BarChart';
 import teal from '@material-ui/core/colors/teal'
+import DoughnutChart from 'components/Charts/DoughnutChart';
 
 class ProjectData extends PureComponent {
 	constructor(props) {
@@ -39,32 +37,15 @@ class ProjectData extends PureComponent {
 			loading: true,
 			dateFilterInputID: 3,
 			openCustomDate: false,
-			display: 2,
+			display: 1,
 			visibility: false,
 			timeType: 2,
 			raw: false,
 		}
 	}
+	format = "YYYY-MM-DD+HH:mm"
 
-	legendOpts = {
-		display: this.props.theme.breakpoints.width("md") < window.innerWidth ? true : false,
-		position: 'bottom',
-		fullWidth: true,
-		reverse: false,
-		labels: {
-			padding: 10
-		},
-
-	}
-	barOpts = {
-		display: false,
-		position: 'bottom',
-		fullWidth: true,
-		reverse: false,
-		labels: {
-			padding: 10
-		}
-	}
+	displayFormat = "DD MMMM YYYY HH:mm"
 
 	options = [
 		{ id: 0, label: this.props.t("filters.dateOptions.today") },
@@ -88,11 +69,28 @@ class ProjectData extends PureComponent {
 		{ id: 3, icon: <ShowChart />, label: this.props.t("charts.type.line") }
 	]
 	
-	componentDidUpdate = (prevProps, prevState) => {
+	componentDidUpdate = (prevProps) => {
 		if (prevProps.hoverID !== this.props.hoverID)
 			this.state.timeType === 1 ? this.setHourlyData() :  this.setDailyData()
 	}
-
+	setSummaryData = () => {
+		const { dataArr, from, to } = this.state
+		let displayTo = dateTimeFormatter(to)
+		let displayFrom = dateTimeFormatter(from)
+		this.setState({
+			title: `${displayFrom} - ${displayTo}`,
+			loading: false,
+			timeType: 3,
+			roundDataSets: {
+				labels: dataArr.map(d => d.name),
+				datasets: [{
+					backgroundColor: dataArr.map(d => d.color),
+					fill: false,
+					data: dataArr.map(d => d.data)
+				}]
+			}
+		})
+	}
 	setDailyData = () => {
 		const { dataArr, from, to } = this.state
 		this.setState({
@@ -100,7 +98,7 @@ class ProjectData extends PureComponent {
 			timeType: 2,
 			lineDataSets: {
 				labels: datesToArr(from, to),
-				datasets: dataArr.map((d, i) => ({
+				datasets: dataArr.map((d) => ({
 					id: d.id,
 					backgroundColor: d.color,
 					borderColor: d.color,
@@ -112,7 +110,7 @@ class ProjectData extends PureComponent {
 			},
 			barDataSets: {
 				labels: datesToArr(from, to),
-				datasets: dataArr.map((d, i) => ({
+				datasets: dataArr.map((d) => ({
 					id: d.id,
 					backgroundColor: d.color,
 					borderColor: teal[500],
@@ -121,7 +119,8 @@ class ProjectData extends PureComponent {
 					label: [d.name],
 					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
 				}))
-			}
+			},
+			roundDataSets: null
 		})
 	}
 	setHourlyData = () => {
@@ -131,7 +130,7 @@ class ProjectData extends PureComponent {
 			timeType: 1,
 			lineDataSets: {
 				labels: hoursToArr(from, to),
-				datasets: dataArr.map((d, i) => ({
+				datasets: dataArr.map((d) => ({
 					id: d.id,
 					backgroundColor: d.color,
 					borderColor: d.color,
@@ -143,7 +142,7 @@ class ProjectData extends PureComponent {
 			},
 			barDataSets: {
 				labels: hoursToArr(from, to),
-				datasets: dataArr.map((d, i) => ({
+				datasets: dataArr.map((d) => ({
 					id: d.id,
 					backgroundColor: d.color,
 					borderColor: d.color,
@@ -152,7 +151,8 @@ class ProjectData extends PureComponent {
 					label: [d.name],
 					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
 				}))
-			}
+			},
+			roundDataSets: null
 		})
 	}
 	setMinutelyData = () => {
@@ -162,7 +162,7 @@ class ProjectData extends PureComponent {
 			timeType: 0,
 			lineDataSets: {
 				labels: minutesToArray(from, to),
-				datasets: dataArr.map((d, i) => ({
+				datasets: dataArr.map((d) => ({
 					id: d.id,
 					backgroundColor: d.color,
 					borderColor: d.color,
@@ -170,10 +170,24 @@ class ProjectData extends PureComponent {
 					fill: false,
 					label: [d.name],
 					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
-				}))
+				})),
+				barDataSets: {
+					labels: hoursToArr(from, to),
+					datasets: dataArr.map((d) => ({
+						id: d.id,
+						backgroundColor: d.color,
+						borderColor: d.color,
+						borderWidth: this.props.hoverID === d.id ? 4 : 0,
+						fill: false,
+						label: [d.name],
+						data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
+					}))
+				},
+				roundDataSets: null
 			}
 		})
 	}
+
 	getWifiHourly = async () => {
 		const { project } = this.props
 		const { from, to, raw } = this.state
@@ -196,17 +210,14 @@ class ProjectData extends PureComponent {
 				newArr.push(d)
 			return newArr
 		}, [])
-		this.setState({ dataArr: dataArr }, this.setHourlyData)
+		this.setState({ dataArr: dataArr, timeType: 1 }, this.setHourlyData)
 	}
 	getWifiMinutely = async () => {
 		const { project } = this.props
 		const { from, to, raw } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
-		// let days = this.datesToArr()
-
 		let dataArr = []
-
 		await Promise.all(project.dataCollections.map(async d => {
 			let dataSet = null
 			let data = await getDataMinutely(d.id, startDate, endDate, raw)
@@ -223,19 +234,15 @@ class ProjectData extends PureComponent {
 				newArr.push(d)
 			return newArr
 		}, [])
-		this.setState({ dataArr: dataArr }, this.setMinutelyData)
+		this.setState({ dataArr: dataArr, timeType: 0 }, this.setMinutelyData)
 		// this.setDailyData(dataArr)
 	}
-
 	getWifiDaily = async () => {
 		const { project } = this.props
 		const { from, to, raw } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
-		// let days = this.datesToArr()
-
 		let dataArr = []
-
 		await Promise.all(project.dataCollections.map(async d => {
 			let dataSet = null
 			let data = await getDataDaily(d.id, startDate, endDate, raw)
@@ -252,53 +259,38 @@ class ProjectData extends PureComponent {
 				newArr.push(d)
 			return newArr
 		}, [])
-		this.setState({ dataArr: dataArr }, this.setDailyData)
+		this.setState({ dataArr: dataArr, timeType: 2 }, this.setDailyData)
 		// this.setDailyData(dataArr)
 	}
-
 	getWifiSum = async () => {
 		const { project } = this.props
 		const { from, to, raw } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
-
 		let dataArr = []
 		await Promise.all(project.dataCollections.map(async d => {
 			let dataSet = null
-			let rs = await getDataSummary(d.id, startDate, endDate, raw)
-			let total = 0
-			Object.keys(rs).map(r => total = total + parseInt(rs[r], 10))
-			dataSet = { nr: d.id, id: d.name + "(" + d.id + ")", data: total }
+			let data = await getDataSummary(d.id, startDate, endDate, raw)
+			dataSet = {
+				name: d.name,
+				id: d.id,
+				data: data,
+				color: d.color
+			}
 			return dataArr.push(dataSet)
 		}))
-		dataArr.sort((a, b) => a.nr - b.nr)
+		dataArr = dataArr.reduce((newArr, d) => {
+			if (d.data !== null)
+				newArr.push(d)
+			return newArr
+		}, [])
 		if (dataArr.length > 0)
 			this.setState({
-				loading: false,
-				roundDataSets: {
-					labels: dataArr.map(da => da.id),
-					datasets: [{
-						borderColor: "#FFF",
-						borderWidth: 1,
-						data: dataArr.map(d => parseInt(d.data, 10)),
-						backgroundColor: dataArr.map((rd, id) => colors[id])
-					}]
-				},
-				barDataSets: {
-					// labels: [this.options[this.state.dateFilterInputID].label],
-					label: "DataSet",
-					datasets: dataArr.map((d, id) => ({
-						label: d.id,
-						borderColor: "#FFF",
-						borderWidth: 1,
-						data: [parseInt(d.data, 10)],
-						backgroundColor: colors[id]
-					}))
-				}
-			})
+				dataArr: dataArr
+			}, this.setSummaryData)
 		else {
 			this.setState({
-				loading: false,
+				dataArr: null,
 				noData: true
 			})
 		}
@@ -307,7 +299,7 @@ class ProjectData extends PureComponent {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		if (this._isMounted) {
-			this.getWifiDaily()
+			this.handleSwitchVisibility()
 		}
 	}
 	componentWillUnmount = () => {
@@ -322,9 +314,9 @@ class ProjectData extends PureComponent {
 		this.setState({ actionAnchor: null });
 	}
 
-	format = "YYYY-MM-DD+HH:mm"
-	displayFormat = "DD MMMM YYYY HH:mm"
+	
 	handleSetDate = (id) => {
+		
 		let to = null
 		let from = null
 		switch (id) {
@@ -362,11 +354,12 @@ class ProjectData extends PureComponent {
 			loading: true,
 			roundDataSets: null,
 			barDataSets: null
-		}, this.handleSwitchDayHourSummary)
+		}, this.handleSwitchVisibility)
 	}
 	handleSwitchDayHourSummary = () => {
+		
 		let id = this.state.dateFilterInputID
-		const { to, from, timeType } = this.state
+		const { to, from } = this.state
 		let diff = moment.duration(to.diff(from)).days()
 		switch (id) {
 			case 0:// Today
@@ -382,13 +375,13 @@ class ProjectData extends PureComponent {
 				this.getWifiDaily();
 				break;
 			case 4:
-				timeType === 1 ? this.getWifiDaily() : this.getWifiDaily()
+				this.getWifiDaily();
 				break
 			case 5:
 				this.getWifiDaily();
 				break
 			case 6:
-				this.getWifiDaily();
+				this.customDisplay()
 				break
 			default:
 				this.getWifiDaily();
@@ -396,22 +389,58 @@ class ProjectData extends PureComponent {
 
 		}
 	}
+	customDisplay = () => {
+		
+		const { display, timeType } = this.state
+		if (display !== 0 || display !== 1) {
+			switch (timeType) {
+				case 0:
+					this.getWifiMinutely()
+					break;
+				case 1:
+					this.getWifiHourly()
+					break
+				case 2:
+					this.getWifiDaily()
+					break
+				case 3:
+					this.getWifiSum()
+					break
+				default:
+					break;
+			}
+		}
+		else { 
+			this.getWifiSum()
+		}
+	}
 	handleSwitchVisibility = () => {
+		
 		const { display } = this.state
+		
 		switch (display) {
-			case 0 || 1 || 2:
+			case 0:
 				this.getWifiSum()
 				break;
-			case 3:
+			case 1: 
+				this.getWifiSum()
+				break
+			case 2:
 				this.handleSwitchDayHourSummary()
-				break;
+				break
+			case 3: 
+				this.handleSwitchDayHourSummary()
+				break
 			default:
 				break;
 		}
 	}
-	handleVisibility = (event) => {
-		let id = event.target.value
-		this.setState({ display: id })
+	handleVisibility = id => (event) => {
+		if (event)
+			event.preventDefault()
+		// 
+		// let id = event.target.value
+		this.setState({ display: id, loading: true }, this.handleSwitchVisibility)
 	}
 
 	handleDateFilter = (event) => {
@@ -432,12 +461,13 @@ class ProjectData extends PureComponent {
 
 	handleCloseDialog = () => {
 		this.setState({ openCustomDate: false })
-		this.getWifiDaily()
+		this.handleSwitchVisibility()
 	}
 
 	handleRawData = () => {
-		this.setState({ loading: true, actionAnchor: null, raw: !this.state.raw }, () => this.getWifiDaily())
+		this.setState({ loading: true, actionAnchor: null, raw: !this.state.raw }, () => this.handleSwitchVisibility())
 	}
+
 	handleZoomOnData = async (elements) => {
 		if (elements.length > 0) {
 			const { timeType } = this.state
@@ -473,68 +503,29 @@ class ProjectData extends PureComponent {
 			}
 		}
 	}
+	handleCustomCheckBox = (e) => {
+		this.setState({ timeType: parseInt(e.target.value, 10) })
+	}
+	handleCancelCustomDate = () => {
+		this.setState({
+			loading: false, openCustomDate: false
+		})
+	}
 	renderCustomDateDialog = () => {
 		const { classes, t } = this.props
-		return <MuiPickersUtilsProvider utils={MomentUtils}>
-			<Dialog
-				open={this.state.openCustomDate}
-				onClose={this.handleCloseUnassign}
-				aria-labelledby="alert-dialog-title"
-				aria-describedby="alert-dialog-description">
-				<DialogTitle id="alert-dialog-title">{t("filters.dateOptions.custom")}</DialogTitle>
-				<DialogContent>
-					<ItemGrid>
-						<DateTimePicker
-							autoOk
-							label={t("filters.startDate")}
-							clearable
-							ampm={false}
-							format="LLL"
-							value={this.state.from}
-							onChange={this.handleCustomDate('from')}
-							animateYearScrolling={false}
-							color="primary"
-							disableFuture
-							dateRangeIcon={<DateRange />}
-							timeIcon={<AccessTime />}
-							rightArrowIcon={<KeyArrRight />}
-							leftArrowIcon={<KeyArrLeft />}
-							InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-							InputProps={{ classes: { underline: classes.underline } }}
-						/>
-					</ItemGrid>
-					<ItemGrid>
-						<DateTimePicker
-							autoOk
-							disableFuture
-							label={t("filters.endDate")}
-							clearable
-							ampm={false}
-							format="LLL"
-							value={this.state.to}
-							onChange={this.handleCustomDate('to')}
-							animateYearScrolling={false}
-							dateRangeIcon={<DateRange />}
-							timeIcon={<AccessTime />}
-							color="primary"
-							rightArrowIcon={<KeyArrRight />}
-							leftArrowIcon={<KeyArrLeft />}
-							InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-							InputProps={{ classes: { underline: classes.underline } }}
-						/>
-					</ItemGrid>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={() => { this.setState({ loading: false, openCustomDate: false }) }} color="primary">
-						{t("dialogs.cancel")}
-					</Button>
-					<Button onClick={this.handleCloseDialog} color="primary" autoFocus>
-						{t("dialogs.apply")}
-					</Button>
-				</DialogActions>
-			</Dialog>
-		</MuiPickersUtilsProvider>
-
+		const { openCustomDate, to, from, timeType } = this.state
+		return openCustomDate ? <CustomDateTime
+			openCustomDate={openCustomDate}
+			handleCloseDialog={this.handleCloseDialog}//
+			handleCustomDate={this.handleCustomDate}
+			to={to}
+			from={from}
+			timeType={timeType}
+			handleCustomCheckBox={this.handleCustomCheckBox}//
+			handleCancelCustomDate={this.handleCancelCustomDate}//
+			t={t}
+			classes={classes}
+		/> : null
 	}
 	renderType = () => {
 		const { display } = this.state
@@ -544,7 +535,7 @@ class ProjectData extends PureComponent {
 				return this.state.roundDataSets ? <div style={{ maxHeight: 400 }}>
 					<Pie
 						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-						legend={this.legendOpts}
+						// legend={this.legendOpts}
 						data={this.state.roundDataSets}
 						options={{
 							maintainAspectRatio: false,
@@ -555,12 +546,12 @@ class ProjectData extends PureComponent {
 			case 1:
 				return this.state.roundDataSets ?
 					<div style={{ maxHeight: 400 }}>
-						<Doughnut
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-							legend={this.legendOpts}
-							options={{
-								maintainAspectRatio: false,
-							}}
+						<DoughnutChart
+							title={this.state.title}
+							single //temporary
+							unit={this.timeTypes[this.state.timeType]}
+							onElementsClick={this.handleZoomOnData}
+							setHoverID={this.props.setHoverID}
 							data={this.state.roundDataSets}
 						/></div>
 					: this.renderNoData()
@@ -647,7 +638,7 @@ class ProjectData extends PureComponent {
 						id="long-menu"
 						anchorEl={actionAnchorVisibility}
 						open={Boolean(actionAnchorVisibility)}
-						onClose={e => this.setState({ actionAnchorVisibility: null })}
+						onClose={() => this.setState({ actionAnchorVisibility: null })}
 						PaperProps={{
 							style: {
 								// maxHeight: 300,
@@ -655,7 +646,7 @@ class ProjectData extends PureComponent {
 							}
 						}}>					<List component="div" disablePadding>
 							{this.visibilityOptions.map(op => {
-								return <ListItem key={op.id} button className={classes.nested} onClick={() => this.setState({ display: op.id })}>
+								return <ListItem key={op.id} value={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
 									<ListItemIcon>
 										{op.icon}
 									</ListItemIcon>
@@ -720,7 +711,7 @@ class ProjectData extends PureComponent {
 						<Collapse in={this.state.visibility} timeout="auto" unmountOnExit>
 							<List component="div" disablePadding>
 								{this.visibilityOptions.map(op => {
-									return <ListItem key={op.id} button className={classes.nested} onClick={() => this.setState({ display: op.id })}>
+									return <ListItem key={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
 										<ListItemIcon>
 											{op.icon}
 										</ListItemIcon>
