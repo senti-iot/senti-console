@@ -3,13 +3,16 @@ import classNames from 'classnames';
 import { Caption, CircularLoader, CustomDateTime, Info, InfoCard, ItemG, ItemGrid } from 'components/index';
 import moment from 'moment';
 import React, { Component } from 'react';
-import { Bar, Doughnut, Line, Pie } from 'react-chartjs-2';
+import { Bar, Doughnut, /* Line, */ Pie } from 'react-chartjs-2';
 import { colors } from 'variables/colors';
 import { getDataDaily, getDataHourly } from 'variables/dataCollections';
-import { shortDateFormat, timeFormatter } from 'variables/functions';
+import { shortDateFormat, timeFormatter, minutesToArray, hoursToArr, datesToArr } from 'variables/functions';
 import { BarChart, DateRange, DonutLargeRounded, ExpandMore, MoreVert, PieChartRounded, ShowChart, Timeline, Visibility } from 'variables/icons';
 import { connect } from 'react-redux'
+import teal from '@material-ui/core/colors/teal'
 import /* withWidth, */ withWidth, { isWidthUp } from '@material-ui/core/withWidth';
+import LineChart from 'components/Charts/LineChart';
+// import LineChart from 'components/Charts/LineChart';
 
 class CollectionData extends Component {
 	constructor(props) {
@@ -20,13 +23,11 @@ class CollectionData extends Component {
 			from: moment().subtract(7, 'd').startOf('day'),
 			to: moment().endOf('day'),
 			raw: false,
-			charts: {
-				barDataSets: null,
-				roundDataSets: null,
-				lineDataSets: null,
-			},
+			barDataSets: null,
+			roundDataSets: null,
+			lineDataSets: null,
 			dateFilterInputID: 1,
-			timeType: 0,
+			timeType: 2,
 			openCustomDate: false,
 			display: props.chartType,
 			visibility: false,
@@ -43,6 +44,12 @@ class CollectionData extends Component {
 			padding: 10
 		}
 	}
+	timeTypes = [
+		{ id: 0, format: "lll", chart: "minute" },
+		{ id: 1, format: "lll", chart: "hour" },
+		{ id: 2, format: "ll", chart: "day" },
+		{ id: 3, format: "ll", chart: "day" },
+	]
 	options = [
 		{ id: 0, label: this.props.t("filters.dateOptions.today") },
 		{ id: 5, label: this.props.t("filters.dateOptions.yesterday") },
@@ -90,13 +97,85 @@ class CollectionData extends Component {
 	handleCloseActionsDetails = () => {
 		this.setState({ actionAnchor: null });
 	}
+	// setSummaryData = () => {
+	// 	const { dataArr, from, to } = this.state
+	// 	this.setState({
+	// 		loading: false,
+	// 		timeType: 3,
+	// 		barDataSets: {
+	// 			labels: ""
+	// 		}
+	// 	})
+	// }
+	setDailyData = () => {
+		const { dataArr, from, to } = this.state
+		this.setState({
+			loading: false,
+			timeType: 2,
+			lineDataSets: {
+				labels: datesToArr(from, to),
+				datasets: dataArr.map((d, i) => ({
+					id: d.id,
+					backgroundColor: d.color,
+					borderColor: d.color,
+					borderWidth: this.props.hoverID === d.id ? 8 : 3,
+					fill: false,
+					label: [d.name],
+					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
+				}))
+			}
+		})
+	}
+	setHourlyData = () => {
+		const { dataArr, from, to } = this.state
+		this.setState({
+			loading: false,
+			timeType: 1,
+			lineDataSets: {
+				labels: hoursToArr(from, to),
+				datasets: dataArr.map((d, i) => ({
+					id: d.id,
+					zIndex: this.props.hoverID === d.id ? 8 : 3,
+					backgroundColor: d.color,
+					borderColor: d.color,
+					borderWidth: this.props.hoverID === d.id ? 8 : 3,
+					fill: false,
+					label: [d.name],
+					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
+				}))
+			}
+		})
+	}
+	setMinutelyData = () => {
+		const { dataArr, from, to } = this.state
+		this.setState({
+			loading: false,
+			timeType: 0,
+			lineDataSets: {
+				labels: minutesToArray(from, to),
+				datasets: dataArr.map((d, i) => ({
+					id: d.id,
+					backgroundColor: d.color,
+					borderColor: d.color,
+					borderWidth: this.props.hoverID === d.id ? 8 : 3,
+					fill: false,
+					label: [d.name],
+					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
+				}))
+			}
+		})
+	}
+
 	handleWifiHourly = async () => {
 		const { collection } = this.props
 		const { from, to, raw } = this.state
 		let data = await getDataHourly(collection.id, moment(from).format(this.format), moment(to).format(this.format), raw)
+		console.log(data)
 		if (data) {
 			let dataArr = Object.keys(data).map(r => ({ id: timeFormatter(r), value: data[r] }))
+			console.log(dataArr)
 			this.setState({
+				dataArr: dataArr,
 				data: data,
 				charts: {
 					lineDataSets: {
@@ -136,16 +215,26 @@ class CollectionData extends Component {
 					}
 				},
 				loading: false
-			})
+			}, this.setHourlyData)
 		}
+		
 	}
 	handleWifiDaily = async () => {
 		const { collection } = this.props
 		const { from, to, raw } = this.state
 		let data = await getDataDaily(collection.id, moment(from).format(this.format), moment(to).format(this.format), raw)
 		if (data) {
-			let dataArr = Object.keys(data).map(r => ({ id: [shortDateFormat(r), moment(r).format('dddd').charAt(0).toUpperCase() + moment(r).format('dddd').slice(1)], value: data[r] }))
+			let dataSet = {
+				name: collection.name,
+				id: collection.id,
+				data: data,
+				color: teal[500]
+			}
+			let dataArr = [dataSet]
+			console.log(dataArr)
 			this.setState({
+				loading: false,
+				dataArr: dataArr,
 				data: data,
 				charts: {
 					lineDataSets: {
@@ -184,9 +273,9 @@ class CollectionData extends Component {
 						]
 					}
 				},
-				loading: false
-			})
+			}, 	this.setDailyData)
 		}
+	
 	}
 	handleDateFilter = (event) => {
 		let id = event.target.value
@@ -484,14 +573,10 @@ class CollectionData extends Component {
 			case 3: 
 				return this.state.charts ? this.state.charts.lineDataSets ?
 					<div style={{ maxHeight: 400 }}>
-						<Line
-							data={this.state.charts.lineDataSets}
-							legend={this.barOpts}
-							height={400}
-							// height={!isWidthUp("md", this.props.width) ? 300 : window.innerHeight - 300}
-							options={{
-								maintainAspectRatio: false,
-							}}
+						<LineChart
+							data={this.state.lineDataSets}
+							unit={this.timeTypes[2]}
+							single
 						/>
 					</div>
 					: this.renderNoDataFilters() : this.renderNoDataFilters()
