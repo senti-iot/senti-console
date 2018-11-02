@@ -8,21 +8,18 @@ import {
 	AssignmentTurnedIn, MoreVert,
 	DateRange, DonutLargeRounded, PieChartRounded, BarChart as BarChartIcon, ExpandMore, Visibility, ShowChart
 } from "variables/icons"
-// import { dateFormatter } from 'variables/functions';
-import { ItemGrid, CircularLoader, Caption, Info, ItemG, CustomDateTime, /* , Caption, Info */ } from 'components';
-import InfoCard from 'components/Cards/InfoCard';
+import {
+	ItemGrid, CircularLoader, Caption, Info, ItemG, CustomDateTime, InfoCard, BarChart,
+	LineChart,
+	DoughnutChart,
+	PieChart } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
-import { /* Doughnut,  */Pie } from 'react-chartjs-2';
 import { getDataSummary, getDataDaily, getDataHourly, getDataMinutely, /* getDataHourly */ } from 'variables/dataCollections';
-// import { colors } from 'variables/colors';
 import classNames from 'classnames';
 import { dateTimeFormatter, datesToArr, hoursToArr, minutesToArray } from 'variables/functions';
 import { connect } from 'react-redux'
 import moment from 'moment'
-import LineChart from 'components/Charts/LineChart';
-import BarChart from 'components/Charts/BarChart';
 import teal from '@material-ui/core/colors/teal'
-import DoughnutChart from 'components/Charts/DoughnutChart';
 
 class ProjectData extends PureComponent {
 	constructor(props) {
@@ -37,7 +34,7 @@ class ProjectData extends PureComponent {
 			loading: true,
 			dateFilterInputID: 3,
 			openCustomDate: false,
-			display: 1,
+			display: 3,
 			visibility: false,
 			timeType: 2,
 			raw: false,
@@ -71,7 +68,7 @@ class ProjectData extends PureComponent {
 	
 	componentDidUpdate = (prevProps) => {
 		if (prevProps.hoverID !== this.props.hoverID)
-			this.state.timeType === 1 ? this.setHourlyData() :  this.setDailyData()
+			this.customSetDisplay()
 	}
 	setSummaryData = () => {
 		const { dataArr, from, to } = this.state
@@ -159,7 +156,6 @@ class ProjectData extends PureComponent {
 		const { dataArr, from, to } = this.state
 		this.setState({
 			loading: false,
-			timeType: 0,
 			lineDataSets: {
 				labels: minutesToArray(from, to),
 				datasets: dataArr.map((d) => ({
@@ -389,6 +385,31 @@ class ProjectData extends PureComponent {
 
 		}
 	}
+	customSetDisplay = () => {
+
+		const { display, timeType } = this.state
+		if (display !== 0 || display !== 1) {
+			switch (timeType) {
+				case 0:
+					this.setMinutelyData()
+					break;
+				case 1:
+					this.setHourlyData()
+					break
+				case 2:
+					this.setDailyData()
+					break
+				case 3:
+					this.setSummaryData()
+					break
+				default:
+					break;
+			}
+		}
+		else {
+			this.setSummaryData()
+		}
+	}
 	customDisplay = () => {
 		
 		const { display, timeType } = this.state
@@ -533,13 +554,13 @@ class ProjectData extends PureComponent {
 		switch (display) {
 			case 0:
 				return this.state.roundDataSets ? <div style={{ maxHeight: 400 }}>
-					<Pie
-						height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-						// legend={this.legendOpts}
+					<PieChart
+						title={this.state.title}
+						single //temporary
+						unit={this.timeTypes[this.state.timeType]}
+						onElementsClick={this.handleZoomOnData}
+						setHoverID={this.props.setHoverID}
 						data={this.state.roundDataSets}
-						options={{
-							maintainAspectRatio: false,
-						}}
 					/>
 				</div>
 					: this.renderNoData()
@@ -572,6 +593,7 @@ class ProjectData extends PureComponent {
 			case 3:
 				return this.state.lineDataSets ?
 					<LineChart
+						hoverID={this.props.hoverID}
 						unit={this.timeTypes[this.state.timeType]}
 						onElementsClick={this.handleZoomOnData}
 						setHoverID={this.props.setHoverID}
