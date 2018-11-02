@@ -482,7 +482,7 @@ class ProjectData extends PureComponent {
 
 	handleCloseDialog = () => {
 		this.setState({ openCustomDate: false })
-		this.handleSwitchVisibility()
+		this.customDisplay()
 	}
 
 	handleRawData = () => {
