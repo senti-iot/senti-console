@@ -75,25 +75,8 @@ class ProjectCollections extends Component {
 				break;
 		}
 	}
-	renderStatus = (status) => {
-		const { classes } = this.props
-		switch (status) {
-			case 2:
-				return <DataUsage className={classes.yellowSignal} />
-			case 1:
-				return <DataUsage className={classes.greenSignal} />
-			case 0:
-				return <DataUsage className={classes.redSignal} />
-			case null:
-				return <div>
-					<SignalWifi2BarLock className={classes.redSignal} />
-					<Typography>
-						Error
-					</Typography>
-				</div>
-			default:
-				break;
-		}
+	renderStatus = () => {
+		return <DataUsage style={{ marginRight: 8 }}/>
 	}
 	render() {
 		const { project, t, classes /* collectionMostCounts */ } = this.props
@@ -109,7 +92,7 @@ class ProjectCollections extends Component {
 						<Fragment>
 							<Table>
 								<TableHead>
-									<TableRow>
+									<TableRow >
 										<TableCell padding="checkbox" /* className={classes.tablecellcheckbox + " " + classes.paddingLeft} */>
 											<ItemG container justify={'center'}>
 												{t("collections.fields.ownState")}
@@ -143,15 +126,19 @@ class ProjectCollections extends Component {
 									{dataCollections ? dataCollections.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((n, i) => {
 										return (
 											<TableRow
+												onMouseLeave={() => this.props.setHoverID(0)}
+												onMouseOver={() => this.props.setHoverID(n.id)}
 												hover
 												onClick={e => { e.stopPropagation(); this.props.history.push({ pathname: '/collection/' + n.id, prevURL: `/project/${project.id}` }) }}
 												key={i}
 												style={{ cursor: 'pointer' }}
 											>
 												<Hidden lgUp>
-													<TableCell padding="checkbox" className={classes.tablecellcheckbox + " " + classes.paddingLeft}>
-														<ItemG container justify={"center"}>
-															{this.renderStatus(n.state)}
+													<TableCell  padding="checkbox" className={classes.tablecellcheckbox + " " + classes.paddingLeft}>
+														<ItemG container justify={"center"} >
+															<div style={{ color: n.color }}>
+																{this.renderStatus()}
+															</div>
 														</ItemG>
 													</TableCell>
 													<TableCell classes={{ root: classes.tableCell }}>
@@ -172,7 +159,9 @@ class ProjectCollections extends Component {
 												<Hidden mdDown>
 													<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
 														<ItemG container justify={"center"}>
-															{this.renderStatus(n.state)}
+															<div style={{ color: n.color }}>
+																{this.renderStatus()}
+															</div>
 														</ItemG>
 													</TableCell>
 													<TC /* FirstC */ label={n.name}/>

@@ -262,7 +262,7 @@ class UserTable extends React.Component {
 											</TableCell>
 											{/* <TC label={n.userName} /> */}
 											<TC FirstC label={`${n.firstName} ${n.lastName}`} />
-											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone) : n.phone}</a>} />
+											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone, this.props.language) : n.phone}</a>} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`mailto:${n.email}`}>{n.email}</a>} />
 											<TC label={n.org ? n.org.name : t("users.noOrg")} />
 											<TC label={lastLoggedIn} />
@@ -296,7 +296,8 @@ class UserTable extends React.Component {
 }
 const mapStateToProps = (state) => ({
 	rowsPerPage: state.settings.trp,
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	language: state.settings.language
 })
 
 const mapDispatchToProps = {

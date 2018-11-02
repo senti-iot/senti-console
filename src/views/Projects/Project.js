@@ -7,6 +7,7 @@ import ProjectDetails from './ProjectCards/ProjectDetails'
 import ProjectCollections from './ProjectCards/ProjectCollections'
 import { ProjectContact } from './ProjectCards/ProjectContact'
 import AssignDCs from 'components/AssignComponents/AssignDCs';
+import { colors } from 'variables/colors';
 
 const projectStyles = theme => ({
 	close: {
@@ -34,14 +35,21 @@ class Project extends Component {
 				startDate: '',
 				endDate: ''
 			},
+			timeType: 2,
 			loading: true,
 			openSnackbar: 0,
-			openDelete: false
+			openDelete: false,
+			hoverID: 0,
 		}
 		props.setHeader('', false, '', "projects")
 
 	}
-
+	timeTypes = [
+		{ id: 0, format: "HH:mm", chart: "minute" },
+		{ id: 1, format: "HH:mm", chart: "hour" },
+		{ id: 2, format: "ll", chart: "day" },
+		{ id: 3, format: "ll", chart: "day" },
+	]
 	componentDidMount = async () => {
 		const { history, location, match, setHeader } = this.props
 		if (match)
@@ -50,23 +58,21 @@ class Project extends Component {
 					if (rs === null)
 						history.push('/404')
 					else {
-						
 						let prevURL = location.prevURL ? location.prevURL : '/projects/list'
 						setHeader(rs.title, true, prevURL, "projects")
 						this.setState({
-							project: rs, loading: false
+							project: {
+								...rs,
+								dataCollections: rs.dataCollections.map((dc, i) => ({ ...dc, color: colors[i] }))
+
+							}, loading: false
 						})
 					}
 				})
-
 			}
 			else {
 				history.push('/404')
 			}
-	}
-
-	componentWillUnmount = () => {
-		clearTimeout(this.timer)
 	}
 
 	snackBarMessages = (msg) => {
@@ -146,6 +152,11 @@ class Project extends Component {
 			this.setState({ openAssignDC: false })
 		}
 	}
+	setHoverID = (id) => {
+		// 
+		if (id !== this.state.hoverID)
+			this.setState({ hoverID: id })
+	}
 	render() {
 		const { project, loading, openAssignDC } = this.state
 		const { t } = this.props 
@@ -162,10 +173,17 @@ class Project extends Component {
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectData t={t} project={project} />
+						<ProjectData
+							setTimeType={(e) => this.setState({ timeType: e })}
+							timeTypes={this.timeTypes}
+							timeType={this.state.timeType}
+							setHoverID={this.setHoverID}
+							hoverID={this.state.hoverID}
+							t={t}
+							project={project} />
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectCollections t={t} project={project} {...rp}/>
+						<ProjectCollections setHoverID={this.setHoverID} t={t} project={project} {...rp}/>
 					</ItemGrid >
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<ProjectContact history={this.props.history} t={t} project={project} />

@@ -84,10 +84,11 @@
 			"device": "Enhed",
 			"created": "Oprettet",
 			"description": "Beskrivelse",
+			"dcID": "ID",
 			"id": "Datasamling",
 			"deviceId": "Enhed ID",
 			"activated": "Aktiveret",
-			"endOfService": "Afslutning af tjenesten",
+			"endOfService": "Tjeneste afsluttet",
 			"modified": "Opdateret",
 			"name": "Navn",
 			"org": "Organisation",
@@ -102,20 +103,24 @@
 		},
 		"noActiveDevice": "Ingen aktiv enhed",
 		"noDevice": "Ingen enhed",
+		"noProject": "Ingen projekt",
 		"noHistory": "Ingen logfiler",
 		"pageTitle": "Datasamlinger",
-		"rawData": "Rådata"
+		"rawData": "Rådata",
+		"noCollectionsAssigned": "Ingen datasamlinger tilknyttet!"
 	},
 	"confirmUser": {
 		"button": "Bekræft og log ind",
-		"lastStep": "Indtast et kodeord for at bekræfte oprettelsen af din Senti.Cloud konto.",
+		"lastStep": "Indtast et kodeord for at bekræfte oprettelsen af din konto.",
 		"networkError": "Netværksfejl!",
 		"password": "Kodeord",
 		"passwordConfirm": "Bekræft kodeord",
 		"validation": {
-			"passwordEmpty": "Kodeord kan ikke være tomt!",
-			"passwordMismatch": "Indtastede kodeord er ikke ens!",
-			"passwordUnder8": "Indtastede kodeord skal have mindst 8 tegn!"
+			"passwordEmpty": "Kodeord må ikke være blankt!",
+			"passwordMismatch": "De indtastede kodeord er ikke ens!",
+			"passwordUnder8": "Kodeord skal være på mindst 8 tegn!",
+			"userDoesntExistAnymore": "Brugeren eksisterer ikke længere, eller adgang er udløbet!",
+			"emailDoesntExist": "Den indtastede E-mail er ikke tilknyttet en eksisterende konto!"
 		},
 		"welcomeMessage": "Velkommen til Senti.Cloud!"
 	},
@@ -275,18 +280,18 @@
 		},
 		"unassign": {
 			"title": {
-				"deviceFromCollection": "Fjern tilknytningen af enhed med datasamling?",
-				"deviceFromOrg": "Fjern tilknytningen af enhed med organisation?",
-				"devicesFromCollection": "Fjern tilknytningen af disse enheder med deres datasamling?",
-				"collectionFromProject": "Fjern tilknytningen af datasamling med projekt?",
-				"collectionsFromProject": "Fjern tilknytningen af datasamlinger med projekt?"
+				"deviceFromCollection": "Frigør enhed fra datasamling?",
+				"deviceFromOrg": "Frigør enhed fra organisation?",
+				"devicesFromCollection": "Frigør disse enheder fra deres datasamling?",
+				"collectionFromProject": "Frigør datasamling fra projekt?",
+				"collectionsFromProject": "Frigør datasamlinger fra projekt?"
 			},
 			"message": {
-				"deviceFromCollection": "Fjern tilknytningen af enhed %{device} med datasamling %{collection}?",
-				"deviceFromOrg": "Fjern tilknytningen af enhed %{device} med organisation %{organisation}?",
-				"devicesFromCollection": "Fjern tilknytningen af disse enheder med deres datasamling:",
-				"collectionFromProject": "Fjern tilknytningen af datasamling %{collection} med projekt %{project} ?",
-				"collectionsFromProject": "Fjern tilknytningen af disse datasamlinger med projekt:"
+				"deviceFromCollection": "Frigør enhed %{device} fra datasamling %{collection}?",
+				"deviceFromOrg": "Frigør enhed %{device} fra organisation %{organisation}?",
+				"devicesFromCollection": "Frigør disse enheder fra deres datasamling:",
+				"collectionFromProject": "Frigør datasamling %{collection} fra projekt %{project} ?",
+				"collectionsFromProject": "Frigør disse datasamlinger fra projekt:"
 			}
 		},
 		"warnings": {
@@ -310,6 +315,8 @@
 			"custom": "Tilpasset interval",
 			"daily": "Hver dag",
 			"hourly": "Hver time",
+			"minutely": "Hver minut",
+			"summary": "Resumé",
 			"thisWeek": "Denne uge",
 			"today": "I dag",
 			"yesterday": "I går"
@@ -339,7 +346,7 @@
 		"button": "Log ind",
 		"changePassword": "Skift kodeord",
 		"forgotPass": "Glemt kodeord?",
-		"goToLogin": "Går til log ind",
+		"goToLogin": "Gå til log ind",
 		"pass": "Kodeord",
 		"requestPasswordReset": "Nulstil kodeord",
 		"resetPassRequestMessage": "En E-mail er er blevet sendt med instruktioner for hvordan du nulstiller dit kodeord!",
@@ -368,12 +375,13 @@
 		"recalibrate": "Rekalibring",
 		"seeLess": "Se mindre",
 		"seeMore": "Se mere",
+		"seeDevice": "Se enhed",
 		"showMap": "Vis kort",
 		"showMore": "Vis mere",
 		"unassign": {
-			"deviceFromCollection": "Fjern enhed tilknytning med datasamling",
-			"collectionFromProject": "Fjern tilknytning med projekt",
-			"deviceFromOrg": "Fjern tilknytning fra organisation"
+			"deviceFromCollection": "Frigør enhed fra datasamling",
+			"collectionFromProject": "Frigør datasamling fra projekt",
+			"deviceFromOrg": "Frigør enhed fra organisation"
 		},
 		"userResendEmail": "Send bekræft e-mail igen"
 	},
@@ -515,18 +523,18 @@
 	},
 	"snackbars": {
 		"assign": {
-			"deviceToCollection": "Enhed %{device} tilknyt til datasamling %{collection}",
-			"deviceToOrg": "Enhed %{device} tilknyt til organisation %{org}",
-			"collectionToProject": "Datasamling %{collection} tilknyt til projekt %{project}",
-			"collectionsToProject": "Data collections tilknyt til projekt",
-			"collectionToOrg": "Datasamling %{collection} tilknyt til organisation %{org}",
-			"projectToOrg": "Project %{project} tilknyt til organisation %{org}"
+			"deviceToCollection": "Enhed %{device} tilknyttet til datasamling %{collection}",
+			"deviceToOrg": "Enhed %{device} tilknyttet til organisation %{org}",
+			"collectionToProject": "Datasamling %{collection} tilknyttet til projekt %{project}",
+			"collectionsToProject": "Data collections tilknyttet til projekt",
+			"collectionToOrg": "Datasamling %{collection} tilknyttet til organisation %{org}",
+			"projectToOrg": "Project %{project} tilknyttet til organisation %{org}"
 		},
 		"unassign": {
-			"deviceFromCollection": "Enhed %{device} fjernet fra datasamling %{collection}",
-			"deviceFromOrg": "Enhed %{device} fjernet fra organisation %{org}",
-			"collectionFromProject": "Datasamling %{collection} fjernet fra projekt %{project}",
-			"collectionsFromProject": "Datasamlinger fjernet fra projekt %{project}"
+			"deviceFromCollection": "Enheden %{device} er frigjort fra datasamlingen %{collection}",
+			"deviceFromOrg": "Enheden %{device} er frigjort fra organisationen %{org}",
+			"collectionFromProject": "Datasamlingen %{collection} er frigjort fra projektet %{project}",
+			"collectionsFromProject": "Datasamlinger frigjort fra projektet %{project}"
 		},
 		"collectionCreated": "Datasamling er oppretet!",
 		"collectionDeleted": "Datasamling er slettet!",
@@ -631,11 +639,11 @@
 		"userResendConfirm": "Er du sikker på du ønsker at gensende bekræftelses E-mail?",
 		"userResendEmail": "Gensend bekræftelses E-mail",
 		"usersDelete": "Slet brugere",
-		"usersDeleteConfirm": "Er du sikker på du vil slette de følgende brugere:",
+		"usersDeleteConfirm": "Er du sikker på du vil slette følgende brugere:",
 		"validation": {
 			"noEmail": "E-mail mangler",
 			"noOrg": "Organisation mangler",
-			"userAlreadyExists": "E-mail er allerede brugt af en anden bruger!"
+			"userAlreadyExists": "E-mail er allerede tilknyttet en anden bruger konto!"
 		}
 	}
 }

@@ -115,11 +115,13 @@ class User extends Component {
 		this.setState({ openChangePassword: true })
 	}
 
-	handleCloseChangePassword = success => e => {
-		if (e)
+	handleCloseChangePassword = success => e => {		
+		if (e) {
 			e.preventDefault()
-		if (success === true)
-			this.snackBarMessages(2) //userPasswordChanged
+		}
+		if (success === true) {
+			this.snackBarMessages(2)
+		} //userPasswordChanged
 		this.setState({ openChangePassword: false })
 	}
 
@@ -174,6 +176,7 @@ class User extends Component {
 						label={t("users.fields.currentPass")}
 						type={"password"}
 						handleChange={this.handleInputChange}
+						value={this.state.pw.current}
 					/>
 				</ItemG>}
 				<ItemG>
@@ -182,6 +185,7 @@ class User extends Component {
 						label={t("users.fields.newPass")}
 						type={"password"}
 						handleChange={this.handleInputChange}
+						value={this.state.pw.newP}
 					/>
 				</ItemG>
 				<ItemG>
@@ -190,11 +194,12 @@ class User extends Component {
 						label={t("users.fields.confirmPass")}
 						type={"password"}
 						handleChange={this.handleInputChange}
+						value={this.state.pw.confirm}
 					/>
 				</ItemG>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseChangePassword} color="primary">
+				<Button onClick={this.handleCloseChangePassword(false)} color="primary">
 					{t("actions.cancel")}
 				</Button>
 				<Button onClick={this.handleChangePassword} color="primary" autoFocus>

@@ -87,6 +87,7 @@
 			"deviceId": "Device ID",
 			"activated": "Activated",
 			"endOfService": "End of service",
+			"dcID": "ID",
 			"id": "Data Collection",
 			"modified": "Last modified",
 			"name": "Name",
@@ -102,20 +103,24 @@
 		},
 		"noActiveDevice": "No active device",
 		"noDevice": "No device",
+		"noProject": "No project",
 		"noHistory": "No logs",
 		"pageTitle": "Data Collections",
-		"rawData": "Raw data"
+		"rawData": "Raw data",
+		"noCollectionsAssigned": "No data collections assigned!"
 	},
 	"confirmUser": {
 		"button": "Confirm password",
-		"lastStep": "Create your password to confirm your Senti.Cloud account.",
+		"lastStep": "Create your password to confirm your account.",
 		"networkError": "Network Error!",
 		"password": "Password",
 		"passwordConfirm": "Confirm and sign in",
 		"validation": {
 			"passwordEmpty": "Password cannot be empty!",
 			"passwordMismatch": "The entered passwords are not identical!",
-			"passwordUnder8": "Password must contain at least 8 characters!"
+			"passwordUnder8": "Password must contain at least 8 characters!",
+			"userDoesntExistAnymore": "The user doesn't exist anymore or the token has expired!",
+			"emailDoesntExist": "The E-mail provided is not assigned to an existing account!"
 		},
 		"welcomeMessage": "Welcome to Senti.Cloud!"
 	},
@@ -279,7 +284,7 @@
 				"devicesFromCollection": "Unassign devices from collection?",
 				"deviceFromOrg": "Unassign device from organisation?",
 				"collectionFromProject": "Unassign collection from project?",
-				"collectionsFromProject": "Unassign collecitons from project?"
+				"collectionsFromProject": "Unassign colletions from project?"
 			},
 			"message": {
 				"deviceFromCollection": "Unassign device %{device} from collection %{collection}?",
@@ -310,6 +315,8 @@
 			"custom": "Custom range",
 			"daily": "Daily",
 			"hourly": "Hourly",
+			"minutely": "Minutely",
+			"summary": "Summary",
 			"thisWeek": "This week",
 			"today": "Today",
 			"yesterday": "Yesterday"
@@ -368,12 +375,13 @@
 		"recalibrate": "Recalibrate",
 		"seeLess": "See less",
 		"seeMore": "See more",
+		"seeDevice": "See device",
 		"showMap": "Show map",
 		"showMore": "Show more",
 		"unassign": {
-			"deviceFromCollection": "Unassign from collection",
-			"collectionFromProject": "Unassign from project",
-			"deviceFromOrg": "Unassign from organisation"
+			"deviceFromCollection": "Unassign device from collection",
+			"collectionFromProject": "Unassign device from project",
+			"deviceFromOrg": "Unassign device from organisation"
 		},
 		"userResendEmail": "Resend Confirm Email"
 	},
@@ -635,7 +643,7 @@
 		"validation": {
 			"noEmail": "E-mail is missing",
 			"noOrg": "Organisation is missing",
-			"userAlreadyExists": "E-mail is already used by another user!"
+			"userAlreadyExists": "E-mail is already assigned to another user account!"
 		}
 	}
 }

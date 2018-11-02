@@ -59,11 +59,23 @@ class CollectionTable extends React.Component {
 		const { classes, t } = this.props
 		switch (status) {
 			case 1:
-				return <div title={t("devices.status.yellow")}><SignalWifi2Bar className={classes.yellowSignal} /></div>
+				return <div title={t("devices.status.yellow")}>
+					<ItemG container justify={'center'}>
+						<SignalWifi2Bar className={classes.yellowSignal} />
+					</ItemG>
+				</div>
 			case 2:
-				return <div title={t("devices.status.green")}><SignalWifi2Bar className={classes.greenSignal} /></div>
+				return <div title={t("devices.status.green")}>
+					<ItemG container justify={'center'}>
+						<SignalWifi2Bar className={classes.greenSignal} />
+					</ItemG>
+				</div>
 			case 0:
-				return <div title={t("devices.status.red")}><SignalWifi2Bar className={classes.redSignal} /></div>
+				return <div title={t("devices.status.red")}>
+					<ItemG container justify={'center'}>
+						<SignalWifi2Bar className={classes.redSignal} />
+					</ItemG>
+				</div>
 			case null:
 				return <SignalWifi2BarLock />
 			default:
@@ -93,9 +105,19 @@ class CollectionTable extends React.Component {
 							t={t}
 							classes={classes}
 							// mdDown={[0]} //Which Columns to display on small Screens
-							customColumn={[{ id: "name", label: <Typography paragraph classes={ { root: classes.paragraphCell + " " + classes.headerCell } }>
-								{t("collections.fields.collection")}
-							</Typography> }]}
+							customColumn={
+								[
+								
+									{ id: "name", label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>
+										{t("collections.fields.collection")}
+									</Typography>
+									},
+									{
+										id: 'activeDeviceStats.state', label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>
+											{t("collections.fields.status")}
+										</Typography>
+									},
+								]}
 						/>
 
 						<TableBody>
@@ -117,28 +139,31 @@ class CollectionTable extends React.Component {
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
+										
 											<TC content={
 												<ItemG container alignItems={"center"}>
 													<ItemG>
 														<Info noWrap paragraphCell={classes.noMargin}>
 															{n.name}
 														</Info>
-														<ItemG>
+														<ItemG container>
 															<Caption noWrap className={classes.noMargin}>
-
-																{`${n.org ? n.org.name : ""}`}
+																{`${n.org ? n.org.name : ""} `} 
 															</Caption>
 														</ItemG>
 													</ItemG>
 												</ItemG>
 											}
-
 											/>
+											<TableCell className={classes.tablecellcheckbox}>
+												{n.activeDeviceStats ? this.renderIcon(n.activeDeviceStats.state) : null}
+											</TableCell>
 										</Hidden>
 										<Hidden mdDown>
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
+											<TC FirstC label={n.id} />
 											<TC FirstC label={n.name} />
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
 												{n.activeDeviceStats ? this.renderIcon(n.activeDeviceStats.state) : null}

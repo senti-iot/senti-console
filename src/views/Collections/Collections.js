@@ -90,8 +90,9 @@ class Collections extends Component {
 			this.setState({
 				collections: collections ? collections : [],
 				collectionsHeader: [
+					{ id: "id", label: t("collections.fields.dcID") },
 					{ id: "name", label: t("collections.fields.name") },
-					{ id: "activeDevice.liveStatus", label: t("collections.fields.status") },
+					{ id: "activeDeviceStats.state", label: t("collections.fields.status"), centered: true },
 					{ id: "created", label: t("collections.fields.created") },
 					{ id: "devices[0].start", label: t("collections.fields.activeDeviceStartDate") },
 					{ id: "org.name", label: t("collections.fields.org") }

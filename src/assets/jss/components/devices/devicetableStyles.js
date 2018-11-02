@@ -2,6 +2,14 @@
 import { red, green, yellow, grey } from '@material-ui/core/colors'
 import { primaryColor } from 'assets/jss/material-dashboard-react'
 const devicetableStyles = theme => ({
+	hideIcon: {
+		display: "none",
+		// position: 'absolute',
+		// left: '90%'
+	},
+	centered: {
+		textAlign: 'center'
+	},
 	deleteListItem: {
 		padding: 0
 	},

@@ -11,7 +11,7 @@ import { ItemG } from 'components';
 import assignStyles from 'assets/jss/components/assign/assignStyles';
 
 function Transition(props) {
-	return <Slide direction="up"a {...props} />;
+	return <Slide direction="up" {...props} />;
 }
 
 class AssignProject extends React.Component {

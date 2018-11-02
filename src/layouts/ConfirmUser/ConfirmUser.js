@@ -97,6 +97,8 @@ class ConfirmUser extends React.Component {
 				return t("confirmUser.validation.passwordUnder8")
 			case 2:
 				return t("confirmUser.validation.passwordMismatch")
+			case 404: 
+				return t("confirmUser.validation.userDoesntExistAnymore")
 			default:
 				return ""
 		}
@@ -104,14 +106,14 @@ class ConfirmUser extends React.Component {
 	confirmUser = async () => {
 		if (this.handleValidation()) {
 			const { password } = this.state
-			const { t } = this.props
+			// const { t } = this.props
 			let session = await confirmUser({ newPassword: password, passwordToken: this.token })
-			if (session)
+			if (session !== 404 && session)
 				this.loginUser(session)
 			else {
 				this.setState({
 					error: true,
-					errorMessage: [<Danger >{t("confirmUser.networkError")}</Danger>]
+					errorMessage: [<Danger >{this.errorMessages(session)}</Danger>]
 				})
 			}
 		}

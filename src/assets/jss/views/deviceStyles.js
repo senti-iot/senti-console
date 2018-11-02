@@ -2,6 +2,7 @@ import { red, yellow, green, teal } from "@material-ui/core/colors";
 import { boxShadow } from '../material-dashboard-react';
 
 const deviceStyles = theme => ({
+	
 	noPadding: {
 		padding: 0
 	},
