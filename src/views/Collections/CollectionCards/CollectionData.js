@@ -361,7 +361,7 @@ class CollectionData extends PureComponent {
 				this.getWifiHourly();
 				break;
 			case 2://this week
-				parseInt(diff, 10) > 1 ? this.getWifiDaily() : this.getWifiDaily()
+				parseInt(diff, 10) > 1 ? this.getWifiDaily() : this.getWifiHourly()
 				break;
 			case 3:
 				this.getWifiDaily();
