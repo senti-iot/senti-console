@@ -79,8 +79,8 @@ export const getSettings = async () => {
 		
 		// })
 		// moment().utc()
-		console.log(moment.localeData('en'));
-		window.moment = moment
+		// console.log(moment.localeData('en'));
+		// window.moment = moment
 		if (user) {
 			if (settings) {
 				// moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
