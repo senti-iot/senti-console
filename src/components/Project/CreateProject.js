@@ -1,4 +1,4 @@
-import { Button, Chip, Collapse, FormControl, Grid, Input, InputLabel, MenuItem, Paper, Select, withStyles } from '@material-ui/core'
+import { Button, /* Chip, */ Collapse, FormControl, Grid, /* Input, */ InputLabel, MenuItem, Paper, Select, withStyles } from '@material-ui/core'
 import { KeyboardArrowLeft as KeyArrLeft, KeyboardArrowRight as KeyArrRight, Save } from 'variables/icons'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
 import classNames from 'classnames'
@@ -6,7 +6,7 @@ import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers'
 import MomentUtils from 'material-ui-pickers/utils/moment-utils'
 import React, { Component, Fragment } from 'react'
 import { createProject } from 'variables/dataProjects'
-import { Caption, CircularLoader, GridContainer, ItemGrid, TextF, Danger, Warning } from 'components'
+import { /* Caption, */ CircularLoader, GridContainer, ItemGrid, TextF, Danger, Warning } from 'components'
 import { getAllOrgs } from 'variables/dataOrgs';
 import { getAvailableDevices } from 'variables/dataDevices';
 import { getCreateProject } from 'variables/dataProjects'
@@ -121,8 +121,8 @@ class CreateProject extends Component {
 	}
 	handleSelectedOrgs = async e => {
 		this.setState({ selectedOrg: e.target.value })
-		var devices = await getAvailableDevices(e.target.value).then(rs => rs)
-		this.setState({ availableDevices: devices ? devices : null, devices: [] })
+		// var devices = await getAvailableDevices(e.target.value).then(rs => rs)
+		// this.setState({ availableDevices: devices ? devices : null, devices: [] })
 	}
 	handleDateChange = id => value => {
 		this.setState({
@@ -144,7 +144,7 @@ class CreateProject extends Component {
 		this.props.history.push(`/project/${rs.id}`)
 	}
 	handleCreateProject = async () => {
-		const { availableDevices, title, description, startDate, endDate } = this.state
+		const { /* availableDevices, */ title, description, startDate, endDate } = this.state
 		this.setState({ creating: true })
 		if (this.handleValidation())
 		{
@@ -157,7 +157,7 @@ class CreateProject extends Component {
 						description: description,
 						startDate: startDate,
 						endDate: endDate,
-						devices: availableDevices ? availableDevices.filter(a => this.state.devices.some(b => a.id === b)) : []
+						// devices: availableDevices ? availableDevices.filter(a => this.state.devices.some(b => a.id === b)) : []
 					}
 					await createProject(newProject).then(rs => rs ? this.handleFinishCreateProject(rs) : this.setState({ create: false, creating: false, id: 0 })
 					)
@@ -174,7 +174,7 @@ class CreateProject extends Component {
 
 	render() {
 		const { classes, theme, t } = this.props
-		const { availableDevices, created, orgs, selectedOrg, error } = this.state
+		const { /* availableDevices, */ created, orgs, selectedOrg, error } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
@@ -299,7 +299,7 @@ class CreateProject extends Component {
 										</Fragment> : <CircularLoader notCentered />}
 								</FormControl>
 							</ItemGrid>
-							<ItemGrid xs={12}>
+							{/* <ItemGrid xs={12}>
 								<FormControl className={classes.formControl}>
 									{availableDevices ?
 										<Fragment>
@@ -340,7 +340,7 @@ class CreateProject extends Component {
 											</Select>
 										</Fragment> : selectedOrg ? <Caption>{t("devices.noDevices")}</Caption> : <Caption>{t("projects.noOrganisationSelected")}</Caption>}
 								</FormControl>
-							</ItemGrid>
+							</ItemGrid> */}
 							{/* </Grid> */}
 
 						</form>
