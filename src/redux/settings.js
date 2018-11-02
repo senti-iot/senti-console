@@ -81,7 +81,7 @@ export const getSettings = async () => {
 					type: GETSETTINGS,
 					settings: {
 						...user.aux.senti.settings,
-						language: language
+						language: user.aux.odeum.language
 					},
 					user
 				})
@@ -91,7 +91,7 @@ export const getSettings = async () => {
 				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
 				let s = {
 					...getState().settings,
-					language: language
+					language: user.aux.odeum.language
 				}
 
 				dispatch({
