@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, FormControl, InputLabel, Select, Input, Chip, MenuItem, Collapse, Button } from '@material-ui/core';
+import { Paper, withStyles, Grid, Collapse, Button } from '@material-ui/core';
 import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import { KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft, Save, Check } from 'variables/icons';
@@ -77,29 +77,29 @@ class EditProject extends Component {
 		this._isMounted = 1
 		let id = this.props.match.params.id
 		const { location } = this.props
-		let projectOrgID = 0
+		// let projectOrgID = 0
 		await getProject(id).then(p => {
 			if (p && this._isMounted) {
-				projectOrgID = p.org.id
+				// projectOrgID = p.org.id
 				this.setState({
 					project: p,
 					// devices: p.devices,
-					selectedDevices: p.devices,
+					// selectedDevices: p.devices,
 				})
 			}
 		})
-		await getAvailableDevices(projectOrgID).then(rs => {
-			if (this._isMounted) {
-				let allDev = []
-				allDev = this.state.project.devices ? allDev.concat(this.state.project.devices) : allDev
-				allDev = rs ? allDev.concat(rs) : allDev
-				this.setState({
-					availableDevices: rs ? rs : [],
-					allDevices: allDev
-				})
+		// await getAvailableDevices(projectOrgID).then(rs => {
+		// 	if (this._isMounted) {
+		// 		let allDev = []
+		// 		allDev = this.state.project.devices ? allDev.concat(this.state.project.devices) : allDev
+		// 		allDev = rs ? allDev.concat(rs) : allDev
+		// 		this.setState({
+		// 			availableDevices: rs ? rs : [],
+		// 			allDevices: allDev
+		// 		})
 
-			}
-		})
+		// 	}
+		// })
 		this.setState({
 			loading: false
 		})
@@ -167,8 +167,8 @@ class EditProject extends Component {
 	}
 
 	render() {
-		const { classes, theme, t } = this.props
-		const { availableDevices, created, error, loading, selectedDevices, project, allDevices } = this.state
+		const { classes, /* theme, */ t } = this.props
+		const { /* availableDevices, */ created, error, loading, /* selectedDevices, project, allDevices */ } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
@@ -256,7 +256,7 @@ class EditProject extends Component {
 										error={error}
 									/>
 								</ItemGrid>
-								<ItemGrid xs={12}>
+								{/* <ItemGrid xs={12}>
 									<FormControl className={classes.formControl}>
 										<Fragment>
 											<InputLabel FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
@@ -284,7 +284,7 @@ class EditProject extends Component {
 														})}
 
 													</div>)}
-											/* MenuProps={MenuProps} */>
+											>
 												{allDevices.map(device => (
 													<MenuItem
 														key={device.id}
@@ -301,7 +301,7 @@ class EditProject extends Component {
 											</Select>
 										</Fragment>
 									</FormControl>
-								</ItemGrid>
+								</ItemGrid> */}
 							</form>
 							<ItemGrid xs={12} container justify={'center'}>
 								<Collapse in={this.state.creating} timeout="auto" unmountOnExit>
@@ -331,4 +331,4 @@ class EditProject extends Component {
 	}
 }
 
-export default withStyles(createprojectStyles, { withTheme: true })(EditProject)
+export default withStyles(createprojectStyles/* , { withTheme: true } */)(EditProject)
