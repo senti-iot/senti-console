@@ -1,10 +1,10 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
-import { withStyles } from "@material-ui/core";
+import { withStyles, Snackbar, Button } from "@material-ui/core";
 import { Header, /* Footer, */ Sidebar, CircularLoader } from "components";
 
 import dashboardRoutes from "routes/dashboard.js";
@@ -17,6 +17,8 @@ import cookie from "react-cookies";
 import withLocalization from "components/Localization/T";
 import { connect } from "react-redux"
 import { getSettings } from 'redux/settings';
+import withSnackbarHandler from 'components/Localization/SnackbarHandler';
+import {  Close } from 'variables/icons';
 // import GeoLocation from "components/Geolocation/Geolocation";
 class App extends React.Component {
 	constructor(props) {
@@ -27,7 +29,8 @@ class App extends React.Component {
 			headerTitle: '',
 			goBackButton: false,
 			url: '',
-			menuRoute: 0
+			menuRoute: 0,
+			// openSnackbar: false
 		}
 		// this.mainPanel = React.createRef()
 	}
@@ -37,7 +40,6 @@ class App extends React.Component {
 	};
 	handleSetHeaderTitle = (headerTitle, goBackButton, url, menuRoute) => {
 		if (this._isMounted) {
-			// console.log(headerTitle, typeof headerTitle, this.state.headerTitle, headerTitle !== this.state.headerTitle)
 			if (headerTitle !== this.state.headerTitle) {
 				if (typeof headerTitle === 'string') {
 					if (headerTitle !== this.state.headerTitle.id) {
@@ -71,7 +73,8 @@ class App extends React.Component {
 		this._isMounted = 1
 		if (this._isMounted) {
 			this.handleSetHeaderTitle("Senti.Cloud", false, '', "dashboard")
-		 }
+		}
+
 		await this.props.getSettings().then(rs => {
 			if (navigator.platform.indexOf('Win') > -1) {
 				if (!this.props.loading) {
@@ -86,30 +89,28 @@ class App extends React.Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-
-	componentDidUpdate() {
-
-		//eslint-disable-next-line
-		this.refs.mainPanel ? this.refs.mainPanel.scrollTop = 0 : null
-		// }
+	componentDidUpdate = (prevProps, prevState) => {
+		if (prevState.headerTitle.id !== this.state.headerTitle.id && this.refs.mainPanel)
+			this.refs.mainPanel.scrollTop = 0
+		if (prevProps.sId !== this.props.sId && this.props.sId !== "")
+			this.setState({ openSnackbar: true })
 	}
+	
 	render() {
-		const { classes, t, loading, ...rest } = this.props;
-		// const { loading } = this.state
+		const { classes, t, loading, sOpt, ...rest } = this.props;
 		return (
-			!loading ?
-				<div className={classes.wrapper}>
-					{/* <GeoLocation/> */}
-					<div className={classes.mainPanel} ref={"mainPanel"}>
-						<Header
-							routes={dashboardRoutes}
-							handleDrawerToggle={this.handleDrawerToggle}
-							goBackButton={this.state.goBackButton}
-							gbbFunc={this.handleGoBackButton}
-							headerTitle={this.state.headerTitle}
-							t={t}
-							{...rest}
-						/>
+			<div className={classes.wrapper}>
+				<div className={classes.mainPanel} ref={"mainPanel"}>
+					<Header
+						routes={dashboardRoutes}
+						handleDrawerToggle={this.handleDrawerToggle}
+						goBackButton={this.state.goBackButton}
+						gbbFunc={this.handleGoBackButton}
+						headerTitle={this.state.headerTitle}
+						t={t}
+						{...rest}
+					/>
+					<Fragment>
 						<Sidebar
 							routes={dashboardRoutes}
 							logo={logo}
@@ -120,22 +121,47 @@ class App extends React.Component {
 							menuRoute={this.state.menuRoute}
 							{...rest}
 						/>
-						<div className={classes.content}>
-							<div className={classes.container}><Switch>
-								{cookie.load('SESSION') ? dashboardRoutes.map((prop, key) => {
-									if (prop.redirect) {
-										return <Redirect from={prop.path} to={prop.to} key={key} />;
-									}
-									return <Route path={prop.path} render={(routeProps) => <prop.component {...routeProps} setHeader={this.handleSetHeaderTitle} />} key={key} />;
-								}) : <Redirect from={window.location.pathname} to={{
-									pathname: '/login', state: {
-										prevUrl: window.location.pathname
-									}
-								}} />}
-							</Switch></div>
-						</div>
-					</div>
-				</div > : <CircularLoader />
+						{!loading ? <Fragment>
+							<div className={classes.container}>
+								<Switch>
+									{cookie.load('SESSION') ?
+										dashboardRoutes.map((prop, key) => {
+											if (prop.redirect) {
+												return <Redirect from={prop.path} to={prop.to} key={key} />;
+											}
+											return <Route path={prop.path} render={(routeProps) => <prop.component {...routeProps} setHeader={this.handleSetHeaderTitle} />} key={key} />;
+										})
+										: <Redirect from={window.location.pathname} to={{
+											pathname: '/login', state: {
+												prevURL: window.location.pathname
+											}
+										}} />}
+								</Switch>
+							</div>
+							<Snackbar
+								anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+								open={this.props.sOpen}
+								onClose={this.props.sClose}
+								onExited={this.props.handleNextS}
+								ContentProps={{
+									'aria-describedby': 'message-id',
+								}}
+								ClickAwayListenerProps={{
+									mouseEvent: false,
+									touchEvent: false
+								}}
+								autoHideDuration={3000}
+								message={<span>{t(this.props.sId, this.props.sOpt)}</span>}
+								action={
+									<Button size={"small"} variant={"text"} onClick={this.props.sClose} >
+										<Close style={{ color: "white" }}/>
+									</Button>
+								}
+							/>
+						</Fragment> : <CircularLoader />}
+					</Fragment>
+				</div>
+			</div >
 		);
 	}
 }
@@ -151,4 +177,4 @@ const mapDispatchToProps = dispatch => ({
 	getSettings: async () => dispatch(await getSettings())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(appStyle)(App)))
+export default connect(mapStateToProps, mapDispatchToProps)(withSnackbarHandler()((withLocalization()(withStyles(appStyle)(App)))))

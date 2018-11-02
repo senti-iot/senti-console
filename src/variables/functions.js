@@ -1,7 +1,42 @@
+import { parsePhoneNumber } from 'libphonenumber-js'
 var moment = require('moment');
-const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
-var PNF = require('google-libphonenumber').PhoneNumberFormat
+// const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+// var PNF = require('google-libphonenumber').PhoneNumberFormat
 var _ = require('lodash')
+
+export const minutesToArray = (from, to) => {
+	let startDate = moment(from)
+	let endDate = moment(to)
+	let d = startDate
+	let arr = []
+	while (d <= endDate) {
+		arr.push(d.toDate())
+		d = d.clone().add(15, 'm')
+	}
+	return arr
+}
+export const hoursToArr = (from, to) => {
+	let startDate = moment(from)
+	let endDate = moment(to)
+	let arr = []
+	let d = startDate.clone()
+	while (d <= endDate) {
+		arr.push(d.toDate())
+		d = d.clone().add(1, 'h')
+	}
+	return arr
+}
+export const datesToArr = (from, to) => {
+	let startDate = moment(from)
+	let endDate = moment(to)
+	let arr = []
+	let d = startDate.clone()
+	while (d <= endDate) {
+		arr.push(d.toDate())
+		d = d.clone().add(1, 'd')
+	}
+	return arr
+}
 export const dateFormat = (date) => {
 	let newDate = moment(date)
 	if (newDate.isBetween(moment().subtract(7, "day"), moment().add(7, "day")))
@@ -84,15 +119,28 @@ export const keyTester = (obj, sstr) => {
 const sortFunc = (a, b, orderBy, way) => {
 	let newA = _.get(a, orderBy) ? _.get(a, orderBy) : ""
 	let newB = _.get(b, orderBy) ? _.get(b, orderBy) : ""
-	
-	if (way) {
-		return newB.toString().toLowerCase() <= newA.toString().toLowerCase() ? -1 : 1
-	}
-	else {
-		return newA.toString().toLowerCase() < newB.toString().toLowerCase() ? -1 : 1
+	if (typeof newA === 'number')
+		if (way) {
+			return newB <= newA ? -1 : 1
+		}
+		else {
+			return newA < newB ? -1 : 1
+		}
+	else { 
+		if (way) {
+			return newB.toString().toLowerCase() <= newA.toString().toLowerCase() ? -1 : 1
+		}
+		else {
+			return newA.toString().toLowerCase() < newB.toString().toLowerCase()  ? -1 : 1
+		}
 	}
 }
-
+/**
+ * Handle Sorting
+ * @param {String} property 
+ * @param {String} way 
+ * @param {Array} data 
+ */
 export const handleRequestSort = (property, way, data) => {
 	const orderBy = property;
 	let order = way;
@@ -103,24 +151,51 @@ export const handleRequestSort = (property, way, data) => {
 			: data.sort((a, b) => sortFunc(a, b, orderBy, false))
 	return newData
 }
+/**
+ * Phone Formatter
+ * @param {String} phone 
+ */
 export const pF = (phone) => {
-	let formattedPhone = phoneUtil.parse(phone, "DK")
-	return phoneUtil.format(formattedPhone, PNF.NATIONAL);
+	let phoneNumber
+	try {
+		 phoneNumber = parsePhoneNumber(phone, 'DK')
+	}
+	catch (error) { 
+		return phone
+	}
+	return phoneNumber.formatInternational()
 }
+/**
+ * Date Time Formatter
+ * @param {Date} date 
+ * @param {boolean} withSeconds 
+ */
 export const dateTimeFormatter = (date, withSeconds) => {
 	var dt
 	if (withSeconds)
 		dt = moment(date).format("DD MMMM YYYY HH:mm:ss")
 	else
-		dt = moment(date).format("DD MMMM YYYY HH:mm")
+		dt = moment(date).format("lll")
 	return dt
 }
+/**
+ * Short Date "ll" format
+ * @param {Date} date 
+ */
 export const shortDateFormat = (date) => {
 	var a = moment(date).format("ll")
 	return a
 }
+/**
+ * Date Formatter "LL" format
+ * @param {Date} date 
+ */
 export const dateFormatter = (date) => {
 	var a = moment(date).format("LL")
+	return a
+}
+export const timeFormatter = (date) => {
+	var a = moment(date).format("HH:mm")
 	return a
 }
 export const ConvertDDToDMS = (D, lng) => {
@@ -153,5 +228,6 @@ export const suggestionGen = (arrayOfObjs) => {
 		arr.push(...suggestionSlicer(obj))
 		return ''
 	})
+	arr = _.uniqBy(arr, "label")
 	return arr;
 }

@@ -1,10 +1,11 @@
-import { Button, Collapse, FormControl, Grid, Input, InputLabel, MenuItem, Paper, Select, withStyles, Snackbar } from '@material-ui/core';
-import { Check, Save } from '@material-ui/icons';
+import { Button, Collapse, Grid, Paper, withStyles } from '@material-ui/core';
+import { Check, Save } from 'variables/icons';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import React, { Component, Fragment } from 'react';
 import { getDevice, updateDevice } from 'variables/dataDevices';
-import { CircularLoader, GridContainer, ItemGrid, TextF } from '..';
-import { PlacesWithStandaloneSearchBox } from '../Map/SearchBox';
+import { CircularLoader, GridContainer, ItemGrid, TextF } from 'components';
+import { PlacesWithStandaloneSearchBox } from 'components/Map/SearchBox';
+import DSelect from 'components/CustomInput/DSelect';
 
 class EditDeviceDetails extends Component {
 	constructor(props) {
@@ -13,10 +14,10 @@ class EditDeviceDetails extends Component {
 		this.state = {
 			loading: true,
 			updating: false,
-			updated: false,
-			openSnackBar: false
-		}		
-		props.setHeader({ id: "devices.editDetailsTitle", options: { deviceId: props.match.params.id } }, true, props.history.location.state ? props.history.location.state['backurl'] : '/devices/list', "devices")
+			updated: false
+		}
+		let prevURL = props.location.prevURL ? props.location.prevURL : '/devices/list'
+		props.setHeader({ id: "devices.editDetailsTitle", options: { deviceId: props.match.params.id } }, true, prevURL, "devices")
 	}
 	componentDidMount = async () => {
 		let id = this.props.match.params.id
@@ -50,68 +51,57 @@ class EditDeviceDetails extends Component {
 	LocationTypes = () => {
 		const { t } = this.props
 		return [
-			{ id: 0, label: t("devices.locationTypes.unspecified") },
-			{ id: 1, label: t("devices.locationTypes.pedStreet") },
-			{ id: 2, label: t("devices.locationTypes.park") },
-			{ id: 3, label: t("devices.locationTypes.path") },
-			{ id: 4, label: t("devices.locationTypes.square") },
-			{ id: 5, label: t("devices.locationTypes.crossroads") },
-			{ id: 6, label: t("devices.locationTypes.road") },
-			{ id: 7, label: t("devices.locationTypes.motorway") },
-			{ id: 8, label: t("devices.locationTypes.port") },
-			{ id: 9, label: t("devices.locationTypes.office") }]
+			{ value: 0, label: t("devices.locationTypes.unspecified") },
+			{ value: 1, label: t("devices.locationTypes.pedStreet") },
+			{ value: 2, label: t("devices.locationTypes.park") },
+			{ value: 3, label: t("devices.locationTypes.path") },
+			{ value: 4, label: t("devices.locationTypes.square") },
+			{ value: 5, label: t("devices.locationTypes.crossroads") },
+			{ value: 6, label: t("devices.locationTypes.road") },
+			{ value: 7, label: t("devices.locationTypes.motorway") },
+			{ value: 8, label: t("devices.locationTypes.port") },
+			{ value: 9, label: t("devices.locationTypes.office") }]
 	}
 	handleUpdateDevice = async () => {
-		clearTimeout(this.timer);
 		const { device } = this.state
 		this.setState({ updating: true })
-		this.timer = setTimeout(async () => {
-			let updateD = {
-				...device,
-				project: {
-					id: 0
-				}
+		let updateD = {
+			...device,
+			project: {
+				id: 0
 			}
-			await updateDevice(updateD).then(rs =>  rs ? this.setState({ updated: true, openSnackBar: true, updating: false }) : null )
-		}, 2e3)
-
+		}
+		await updateDevice(updateD).then(rs =>  rs ?  this.goToDevice() : null )
 	}
 	goToDevice = () => {
+		this.setState({ updated: true, updating: false })
+		this.props.s("snackbars.deviceUpdated", { device: this.state.device.id })
 		this.props.history.push(`/device/${this.props.match.params.id}`)
 	}
 	render() {
 		const { classes, t } = this.props
 		const { loading, device } = this.state
+		// let mobile = isWidthUp("md", this.props.width)
 		return loading ? <CircularLoader /> : (
 			<GridContainer>
 				<Paper className={classes.paper}>
 					<form className={classes.form}>
 						<Grid container>
-							<ItemGrid>
+							<ItemGrid xs={12}>
 								<TextF
 									id={'name'}
 									label={t("devices.fields.name")}
 									handleChange={this.handleInput('name')}
 									value={device.name}
 									autoFocus
-									noFullWidth
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
-								<FormControl className={this.props.classes.formControl}>
-									<InputLabel htmlFor="streetType-helper" classes={{ root: classes.label }}>{t("devices.fields.locType")}</InputLabel>
-									<Select
-										value={device.locationType}
-										onChange={this.handleInput('locationType')}
-										input={<Input name="streetType" id="streetType-helper" classes={{ root: classes.label }} />}
-									>
-										{this.LocationTypes().map((loc, i) => {
-											return <MenuItem key={i} value={loc.id}>
-												{loc.label}
-											</MenuItem>
-										})}
-									</Select>
-								</FormControl>
+								<DSelect
+									value={device.locationType}
+									onChange={this.handleInput('locationType')}
+									menuItems={this.LocationTypes()}
+								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<TextF
@@ -121,7 +111,7 @@ class EditDeviceDetails extends Component {
 									rows={4}
 									handleChange={this.handleInput('description')}
 									value={device.description}
-									noFullWidth
+						
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
@@ -142,12 +132,12 @@ class EditDeviceDetails extends Component {
 								<Button
 									variant="contained"
 									color="primary"
-									disabled={this.state.updating}
-									onClick={this.state.updated ? this.goToDevice : this.handleUpdateDevice}
+									disabled={this.state.updating || this.state.updated}
+									onClick={this.handleUpdateDevice}
 								>
 									{this.state.updated ? 
 										<Fragment>
-											<Check className={classes.leftIcon}/>{t("calibration.texts.viewDevice")}
+											<Check className={classes.leftIcon}/>{t("snackbars.redirect")}
 										</Fragment> : 
 										<Fragment>
 											<Save className={classes.leftIcon} />{t("calibration.texts.updateDevice")}
@@ -158,20 +148,6 @@ class EditDeviceDetails extends Component {
 						</Grid>
 					</form>
 				</Paper>
-				<Snackbar
-					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-					open={this.state.openSnackBar}
-					onClose={() => {this.setState({ openSnackBar: false })}}
-					ContentProps={{
-						'aria-describedby': 'message-id',
-					}}
-					autoHideDuration={5000}
-					message={
-						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-							<Check className={classes.leftIcon} color={'primary'} />{t("snackbars.deviceUpdated", { device: this.state.device.id })}
-						</ItemGrid>
-					}
-				/>
 			</GridContainer>
 		)
 	}

@@ -1,6 +1,16 @@
 import { red, yellow, green, teal } from "@material-ui/core/colors";
+import { boxShadow } from '../material-dashboard-react';
 
 const deviceStyles = theme => ({
+	
+	noPadding: {
+		padding: 0
+	},
+	table: {
+		background: "#fff",
+		boxShadow: boxShadow,
+		borderRadius: 4
+	},
 	bigCaption2: {
 		fontWeight: 500,
 		fontSize: "1.1em",

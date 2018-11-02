@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info } from 'components';
 import { Grid } from '@material-ui/core';
-import { Person } from '@material-ui/icons'
+import { Person } from 'variables/icons'
 import { Link } from 'react-router-dom'
 
 export class ProjectContact extends Component {
@@ -47,7 +47,7 @@ export class ProjectContact extends Component {
 								{t("projects.contact.organisation")}
 							</Caption>
 							<Info>
-								{project.user.org ? <Link to={`/org/${project.user.org.id}`} >
+								{project.user.org ? <Link to={{ pathname: `/org/${project.user.org.id}`, prevURL: `/project/${project.id}` }} >
 									{project.user.org.name}
 								</Link> : t("users.fields.noOrg")}
 							</Info>

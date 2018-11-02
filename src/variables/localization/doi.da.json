@@ -1,0 +1,22 @@
+{
+	"Black Friday": {
+		"date": "23-11-2018",
+		"time": null,
+		"repeat": "annualy"
+	},
+	"Juleaften": {
+		"date": "24-12-2018",
+		"time": null,
+		"repeat": "annual"
+	},
+	"1. juledag": {
+		"date": "25-12-2018",
+		"time": null,
+		"repeat": "annual"
+	},
+	"Nytårsaften": {
+		"date": "31-12-2018",
+		"time": null,
+		"repeat": "annual"
+	}
+}

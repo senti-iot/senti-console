@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { InfoCard, ItemGrid, DSelect, CircularLoader } from 'components';
-import { Laptop } from '@material-ui/icons'
+import { Laptop } from 'variables/icons'
 import { Grid, ListItem, List, ListItemText, withStyles } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 // Discover Senti
@@ -61,31 +61,31 @@ class DisplaySettings extends Component {
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 										<ListItemText>{t("settings.discoverSenti")}</ListItemText>
-										<DSelect menuItems={discSenti} value={discSentiVal} func={this.changeDiscoverSenti} />
+										<DSelect menuItems={discSenti} value={discSentiVal} onChange={this.changeDiscoverSenti} />
 									</ItemGrid>
 								</ListItem>
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 										<ListItemText>{t("settings.language")}</ListItemText>
-										<DSelect menuItems={languages} value={language} func={this.changeLang} />
+										<DSelect menuItems={languages} value={language} onChange={this.changeLang} />
 									</ItemGrid>
 								</ListItem>
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 										<ListItemText>{t("settings.trp")}</ListItemText>
-										<DSelect menuItems={trps} value={trp} func={this.changeTRP} />
+										<DSelect menuItems={trps} value={trp} onChange={this.changeTRP} />
 									</ItemGrid>
 								</ListItem>
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 										<ListItemText>{t("settings.sideBarLoc")}</ListItemText>
-										<DSelect menuItems={sideBarLocs} value={sideBar} func={this.changeSideBarLoc} />
+										<DSelect menuItems={sideBarLocs} value={sideBar} onChange={this.changeSideBarLoc} />
 									</ItemGrid>
 								</ListItem>
 								<ListItem >
 									<ItemGrid container zeroMargin noPadding alignItems={"center"}>
 										<ListItemText>{t("settings.theme")}</ListItemText>
-										<DSelect menuItems={themes} value={theme} func={this.changeTheme} />
+										<DSelect menuItems={themes} value={theme} onChange={this.changeTheme} />
 									</ItemGrid>
 								</ListItem>
 							</List>

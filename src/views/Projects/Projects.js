@@ -1,28 +1,35 @@
-import React, { Component, Fragment } from 'react'
-import { getAllProjects, deleteProject } from '../../variables/dataProjects';
-import { withStyles } from "@material-ui/core";
-import { Switch, Route, Redirect } from 'react-router-dom'
-import { ViewList, ViewModule } from '@material-ui/icons'
+import { IconButton, Paper, withStyles } from "@material-ui/core";
 import projectStyles from 'assets/jss/views/projects';
-import ProjectTable from 'components/Project/ProjectTable';
-import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
+import CircularLoader from 'components/Loader/CircularLoader';
 import ProjectCards from 'components/Project/ProjectCards';
-import Toolbar from 'components/Toolbar/Toolbar'
-import { filterItems, handleRequestSort } from '../../variables/functions';
+import ProjectTable from 'components/Project/ProjectTable';
+import EnhancedTableToolbar from 'components/Table/TableToolbar';
+import Toolbar from 'components/Toolbar/Toolbar';
+import React, { Component, Fragment } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { deleteProject, getAllProjects } from 'variables/dataProjects';
+import { filterItems, handleRequestSort } from 'variables/functions';
+import { Add, Delete, Edit, PictureAsPdf, ViewList, ViewModule, DataUsage } from 'variables/icons';
+import AssignDCs from 'components/AssignComponents/AssignDCs';
 
 class Projects extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
+			selected: [],
 			projects: [],
 			projectHeader: [],
+			anchorElMenu: null,
+			openDelete: false,
 			loading: true,
 			route: 0,
 			order: "desc",
 			orderBy: "title",
+			openAssignDC: false,
 			filters: {
+				name: false,
 				keyword: '',
 				startDate: null,
 				endDate: null,
@@ -31,10 +38,40 @@ class Projects extends Component {
 		}
 		props.setHeader("projects.pageTitle", false, '', "projects")
 	}
+	options = () => {
+		const { t } = this.props
+		return [
+			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
+			{ label: t("menus.assign.collectionsToProject"), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },
+			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
+			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
+		]
+	}
+	
+	tabs = [
+		{ id: 0, title: this.props.t("projects.tabs.listView"), label: <ViewList />, url: `${this.props.match.path}/list` },
+		{ id: 1, title: this.props.t("projects.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.path}/grid` },
+	]
+
+	getData = async () => {
+		const { t } = this.props
+		await getAllProjects().then(rs => this._isMounted ? this.setState({
+			projects: rs ? rs : [],
+			projectHeader: [
+				{ id: 'title', label: t("projects.projectsColumnTitle"), },
+				// { id: 'description', label: t("projects.projectsColumnDescription"), },
+				{ id: 'startDate', label: t("projects.projectsColumnStartDate"), },
+				{ id: 'endDate', label: t("projects.projectsColumnEndDate"), },
+				{ id: 'created', label: t("projects.projectsColumnCreated"), },
+				{ id: 'modified', label: t("projects.projectsColumnLastMod"), },
+			],
+			loading: false
+		}, () => this.handleRequestSort(null, "title")) : null)
+	}
 
 	componentDidMount = async () => {
 		this._isMounted = 1
-		await this.getProjects()
+		await this.getData()
 		if (this._isMounted) {
 			if (this.props.location.pathname.includes('/grid')) {
 				this.setState({ route: 1 })
@@ -44,12 +81,41 @@ class Projects extends Component {
 			}
 		}
 	}
+
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
 
 	filterItems = (data) => {
 		return filterItems(data, this.state.filters)
+	}
+
+	handleEdit = () => {
+		this.props.history.push(`/project/${this.state.selected[0]}/edit`)
+	}
+
+	handleOpenDeleteDialog = () => {
+		this.setState({ openDelete: true, anchorElMenu: null })
+	}
+
+	handleCloseDeleteDialog = () => {
+		this.setState({ openDelete: false })
+	}
+
+	handleOpenAssignCollection = () => {
+		this.setState({ openAssignDC: true, anchorElMenu: null })
+	}
+
+	handleCloseAssignCollection = async (reload) => {
+		if (reload) {
+			this.setState({ loading: true, openAssignDC: false })
+			await this.getData().then(rs => {
+				this.snackBarMessages(3)
+			})
+		}
+		else {
+			this.setState({ openAssignDC: false })
+		}
 	}
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
@@ -66,6 +132,7 @@ class Projects extends Component {
 			}
 		})
 	}
+
 	handleFilterEndDate = (value) => {
 		this.setState({
 			filters: {
@@ -75,6 +142,7 @@ class Projects extends Component {
 			}
 		})
 	}
+
 	handleFilterKeyword = (value) => {
 		this.setState({
 			filters: {
@@ -83,76 +151,166 @@ class Projects extends Component {
 			}
 		})
 	}
-	getProjects = async () => {
-		const { t } = this.props
-		await getAllProjects().then(rs => this._isMounted ? this.setState({
-			projects: rs ? rs : [],
-			projectHeader: [
-				{ id: 'title', label: t("projects.projectsColumnTitle"), },
-				{ id: 'description', label: t("projects.projectsColumnDescription"), },
-				{ id: 'startDate', label: t("projects.projectsColumnStartDate"), },
-				{ id: 'endDate', label: t("projects.projectsColumnEndDate"), },
-				{ id: 'created', label: t("projects.projectsColumnCreated"), },
-				{ id: 'modified', label: t("projects.projectsColumnLastMod"), },
-			],
-			loading: false
-		}, () => this.handleRequestSort(null, "title")) : null)
+
+	handleSelectAllClick = (event, checked) => {
+		if (checked) {
+			this.setState({ selected: this.state.projects.map(n => n.id) })
+			return;
+		}
+		this.setState({ selected: [] })
 	}
 
+	handleClick = (event, id) => {
+		event.stopPropagation()
+		const { selected } = this.state;
+		const selectedIndex = selected.indexOf(id)
+		let newSelected = [];
+
+		if (selectedIndex === -1) {
+			newSelected = newSelected.concat(selected, id);
+		} else if (selectedIndex === 0) {
+			newSelected = newSelected.concat(selected.slice(1))
+		} else if (selectedIndex === selected.length - 1) {
+			newSelected = newSelected.concat(selected.slice(0, -1))
+		} else if (selectedIndex > 0) {
+			newSelected = newSelected.concat(
+				selected.slice(0, selectedIndex),
+				selected.slice(selectedIndex + 1),
+			);
+		}
+
+		this.setState({ selected: newSelected })
+	}
+
+	snackBarMessages = (msg) => {
+		const { s } = this.props
+		switch (msg) {
+			case 1:
+				s("snackbars.deletedSuccess")
+				break;
+			case 2:
+				s("snackbars.exported")
+				break;
+			case 3: 
+				s("snackbars.assign.collectionsToProject")
+				break
+			default:
+				break;
+		}
+	}
+	
 	deleteProjects = async (projects) => {
 		await deleteProject(projects).then(() => {
-			this.getProjects()
+			this.snackBarMessages(1)
+			this.getData()
+			this.setState({
+				selected: [],
+				anchorElMenu: null,
+				openDelete: false
+			})
 		})
 	}
-	renderAllProjects = () => {
-		const { t } = this.props
-		const { loading, order, orderBy, projects, projectHeader, filters } = this.state
-		return loading ? <CircularLoader /> : <ProjectTable
-			data={ this.filterItems(projects) }
-			tableHead={ projectHeader }
-			handleFilterEndDate={ this.handleFilterEndDate }
-			handleFilterKeyword={ this.handleFilterKeyword }
-			handleFilterStartDate={ this.handleFilterStartDate }
-			handleRequestSort={ this.handleRequestSort }
-			order={ order }
-			orderBy={ orderBy }
-			filters={ filters }
-			deleteProjects={ this.deleteProjects }
-			t={ t }
-		/>
+	
+	AddNewProject = () => this.props.history.push('/projects/new')
+	
+	handleToolbarMenuOpen = e => {
+		e.stopPropagation()
+		this.setState({ anchorElMenu: e.currentTarget })
 	}
+
+	handleToolbarMenuClose = e => {
+		e.stopPropagation();
+		this.setState({ anchorElMenu: null })
+	}
+	
+	renderTableToolBarContent = () => {
+		return <Fragment>
+			<IconButton aria-label="Add new project" onClick={this.AddNewProject}>
+				<Add />
+			</IconButton>
+		</Fragment>
+	}
+	
+	ft = () => {
+		const { t } = this.props
+		return [{ id: 'title', name: t("projects.fields.name"), func: this.filter, type: "text" },
+			{ id: 'startDate', name: t("projects.fields.startDate"), func: this.filter, type: "date" }
+		]
+
+	}
+	
+	renderAllProjects = () => {
+		const { t, classes } = this.props
+		const { openDelete, openAssignDC, loading, order, orderBy, projects, projectHeader, filters, selected } = this.state
+		return loading ? <CircularLoader /> :
+			<Paper className={classes.root}>
+				{selected[0] ? <AssignDCs
+					open={openAssignDC}
+					handleClose={this.handleCloseAssignCollection}
+					project={selected[0]}
+					t={t}
+				/> : null}
+				<EnhancedTableToolbar
+					ft={this.ft()}
+					anchorElMenu={this.state.anchorElMenu}
+					handleToolbarMenuClose={this.handleToolbarMenuClose}
+					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+					numSelected={selected.length}
+					options={this.options}
+					t={t}
+					content={this.renderTableToolBarContent()}
+				/><ProjectTable
+					openDelete={openDelete}
+					handleOpenDeleteDialog={this.handleOpenDeleteDialog}
+					handleCloseDeleteDialog={this.handleCloseDeleteDialog}
+					selected={selected}
+					filter={this.filter}
+					data={this.filterItems(projects)}
+					handleSelectAllClick={this.handleSelectAllClick}
+					tableHead={projectHeader}
+					handleFilterEndDate={this.handleFilterEndDate}
+					handleFilterKeyword={this.handleFilterKeyword}
+					handleFilterStartDate={this.handleFilterStartDate}
+					handleRequestSort={this.handleRequestSort}
+					handleClick={this.handleClick}
+					order={order}
+					orderBy={orderBy}
+					filters={filters}
+					deleteProjects={this.deleteProjects}
+					t={t}
+				/>
+			</Paper>
+	}
+	
 	renderList = () => {
-		return <GridContainer justify={ 'center' }>
-			{ this.renderAllProjects() }
+		return <GridContainer justify={'center'}>
+			{this.renderAllProjects()}
 		</GridContainer>
 	}
+	
 	renderCards = () => {
 		const { loading } = this.state
 		const { t } = this.props
 		return loading ? <CircularLoader /> : <GridContainer>
-			<ProjectCards t={ t } projects={ this.filterItems(this.state.projects) } />
+			<ProjectCards t={t} projects={this.filterItems(this.state.projects)} />
 		</GridContainer>
 	}
-	tabs = [
-		{ id: 0, title: this.props.t("projects.tabs.listView"), label: <ViewList />, url: `${this.props.match.path}/list` },
-		{ id: 1, title: this.props.t("projects.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.path}/grid` },
-	]
-	render () {
+	render() {
 		const { projects, filters } = this.state
 		return (
 			<Fragment>
 				<Toolbar
-					data={ projects }
-					filters={ filters }
-					history={ this.props.history }
-					match={ this.props.match }
-					handleFilterKeyword={ this.handleFilterKeyword }
-					tabs={ this.tabs }
+					data={projects}
+					filters={filters}
+					history={this.props.history}
+					match={this.props.match}
+					handleFilterKeyword={this.handleFilterKeyword}
+					tabs={this.tabs}
 				/>
 				<Switch>
-					<Route path={ `${this.props.match.path}/grid` } render={ () => this.renderCards() } />
-					<Route path={ `${this.props.match.path}/list` } render={ () => this.renderList() } />
-					<Redirect path={ `${this.props.match.path}` } to={ `${this.props.match.path}/list` } />
+					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} />
+					<Route path={`${this.props.match.path}/list`} render={() => this.renderList()} />
+					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
 				</Switch>
 			</Fragment>
 		)

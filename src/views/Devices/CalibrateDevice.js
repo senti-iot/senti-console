@@ -5,7 +5,7 @@ import { getDevice, calibrateDevice, uploadPictures } from 'variables/dataDevice
 import Caption from 'components/Typography/Caption'
 import CounterModal from 'components/Devices/CounterModal'
 import ImageUpload from './ImageUpload'
-import { NavigateNext, NavigateBefore, Done, Restore, MyLocation, Router, Devices } from '@material-ui/icons'
+import { NavigateNext, NavigateBefore, Done, Restore, MyLocation, Router, Devices } from 'variables/icons'
 import GridContainer from 'components/Grid/GridContainer';
 import { PlacesWithStandaloneSearchBox } from 'components/Map/SearchBox'
 
@@ -411,7 +411,7 @@ class CalibrateDevice extends Component {
 						</Stepper> : null}
 					{activeStep === steps.length && device && (
 						<Paper square elevation={0} className={classes.resetContainer}>
-							<Typography variant={'title'}>{t("calibration.texts.success")}</Typography>
+							<Typography variant={'h6'}>{t("calibration.texts.success")}</Typography>
 							<Typography paragraph>
 								{t("calibration.texts.successMessage")}
 							</Typography>

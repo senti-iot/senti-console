@@ -1,4 +1,13 @@
 // ##############################
+// // // Charts
+// #############################
+
+import BarChart from './Charts/BarChart'
+import LineChart from './Charts/LineChart'
+import DoughnutChart from './Charts/DoughnutChart'
+import PieChart	 from './Charts/PieChart'
+
+// ##############################
 // // // Cards
 // #############################
 
@@ -8,20 +17,25 @@ import RegularCard from "./Cards/RegularCard.js";
 import StatsCard from "./Cards/StatsCard.js";
 import SmallCard from './Cards/SmallCard.js'
 import InfoCard from './Cards/InfoCard'
-import ItemG from './Grid/ItemG'
+
 // ##############################
-// // // CustomButtons
+// // // AssignComponents
 // #############################
 
-// import Button from "./CustomButtons/Button.js";
-// import IconButton from "./CustomButtons/IconButton.js";
+import AssignOrg from './AssignComponents/AssignOrg'
+import AssignDevice from './AssignComponents/AssignDevice'
+import AssignProject from './AssignComponents/AssignProject'
+import AssignDC from './AssignComponents/AssignDC'
 
 // ##############################
 // // // CustomInput
 // #############################
 
+import Dropdown from './Dropdown/Dropdown'
+import CustomDateTime from './CustomInput/CustomDateTime'
 import CustomInput from "./CustomInput/CustomInput.js";
 import DSelect from './CustomInput/DSelect'
+
 // ##############################
 // // // Footer
 // #############################
@@ -32,6 +46,7 @@ import Footer from "./Footer/Footer.js";
 // // // Grid
 // #############################
 
+import ItemG from './Grid/ItemG'
 import ItemGrid from "./Grid/ItemGrid.js";
 import GridContainer from "./Grid/GridContainer"
 // ##############################
@@ -48,7 +63,7 @@ import HeaderLinks from "./Header/HeaderLinks.js";
 import Sidebar from "./Sidebar/Sidebar.js";
 
 // ##############################
-// // // Snackbar
+// // // Loader
 // #############################
 
 import CircularLoader from './Loader/CircularLoader.js'
@@ -69,8 +84,26 @@ import Danger from "./Typography/Danger.js";
 import Small from "./Typography/Small.js";
 import A from "./Typography/A.js";
 import Caption from "./Typography/Caption"
+import Card from './Card/Card'
+import CardHeader from "./Card/CardHeader";
+import CardFooter from './Card/CardFooter'
+import CardBody from './Card/CardBody'
 export {
+	BarChart,
+	LineChart,
+	DoughnutChart,
+	PieChart,
+	AssignDC,
+	AssignDevice,
+	AssignOrg,
+	AssignProject,
+	Card,
+	CardHeader,
+	CardFooter,
+	CardBody,
+	CustomDateTime,
 	// Cards
+	Dropdown,
 	ItemG,
 	GridContainer,
 	InfoCard,

@@ -6,25 +6,22 @@ export const loginUser = async (username, password) => {
 	return session
 }
 export const logOut = async () => {
-	var session = cookie.load('loginData')
-	var data = await loginApi.delete('odeum/auth/basic', JSON.stringify(session.sessionID))
-	cookie.remove('loginData')
+	var session = cookie.load('SESSION')
+	var data = await loginApi.delete(`odeum/auth/${session.sessionID}`)
+	cookie.remove('SESSION')
 	return data
 }
 
 export const resetPassword = async(obj) => {
-	let data = await api.post(`/core/user/forgotpassword`, obj).then(rs => rs.data)
-	console.log('resetPassword', data)
-	return data
+	let response = await api.post(`/core/user/forgotpassword`, obj).then(rs => rs)
+	return response.ok ? response.data : response.status
 }
 export const confirmPassword = async (obj) => {
-	let data = await api.post(`/core/user/forgotpassword/set`, obj).then(rs => rs.data)
-	console.log('confirmPassword', data)
-	return data
+	let response = await api.post(`/core/user/forgotpassword/set`, obj).then(rs => rs)
+	return response.ok ? response.data : response.status
 }
 export const setPassword = async (obj) => {
 	let data = await api.post(`/core/user/setpassword`, obj).then(rs => rs.data)
-	console.log('setPassword', data)
 	return data
 }
 export const getSettingsFromServer = async () => {

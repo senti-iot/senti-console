@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Button, Dialog, DialogTitle, /*  DialogContent, DialogContentText, */ DialogActions, Snackbar } from '@material-ui/core';
-import { GridContainer, InfoCard, ItemGrid } from 'components';
+import { Button, Dialog, DialogTitle, /*  DialogContent, DialogContentText, */ DialogActions } from '@material-ui/core';
+import { GridContainer, InfoCard } from 'components';
 import { resetDevice } from 'variables/dataDevices';
 
 export default class ResetDevice extends Component {
@@ -10,17 +10,19 @@ export default class ResetDevice extends Component {
 		this.state = {
 			success: null,
 			resetDialog: false,
-			openSnackbar: false
 		}
 	}
 
 	handleReset = async () => {
 		await resetDevice(this.props.match.params.id).then(rs => {
-			this.setState({ success: rs, resetDialog: false, openSnackbar: true })
+			this.setState({ success: rs, resetDialog: false })
 		})
 	}
 	handleOpenResetDialog = () => { this.setState({ resetDialog: true }) }
-	handleCloseResetDialog = () => { this.setState({ resetDialog: false }) }
+	handleCloseResetDialog = () => {
+		this.setState({ resetDialog: false })
+		this.props.s("snackbars.resetDeviceSuccess")
+	}
 	renderResetDialog = () => {
 		return <Dialog
 			open={this.state.resetDialog}
@@ -44,18 +46,7 @@ export default class ResetDevice extends Component {
 			</DialogActions>
 		</Dialog>
 	}
-	renderSnackbar = () => <Snackbar
-		anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-		open={this.state.openSnackbar}
-		autoHideDuration={5000}
-		onClose={() => { this.setState({ openSnackbar: false }) }}
-		message={
-
-			<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-				{this.state.success ? "Reset Successful" : "Reset Failed"}
-			</ItemGrid>
-		}
-	/>
+	
 
 	render() {
 		return (
@@ -70,7 +61,6 @@ export default class ResetDevice extends Component {
 			  		</Button>
 					} />
 				{this.renderResetDialog()}
-				{this.renderSnackbar()}
 			</GridContainer>
 		)
 	}

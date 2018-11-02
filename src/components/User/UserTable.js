@@ -1,19 +1,18 @@
 import {
 	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
-	TableRow, withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
+	TableRow, withStyles, DialogTitle, Dialog, DialogContent,
 	DialogContentText, DialogActions, Button, Typography, IconButton,
 } from "@material-ui/core"
 import TC from 'components/Table/TC'
-import { Delete, Edit, PictureAsPdf, Add } from '@material-ui/icons'
+import { Delete, Edit, PictureAsPdf, Add } from 'variables/icons'
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import PropTypes from "prop-types"
 import React, { Fragment } from "react"
 import { withRouter } from 'react-router-dom'
-import EnhancedTableHead from '../Table/TableHeader'
-import EnhancedTableToolbar from '../Table/TableToolbar'
-import { ItemGrid, Info } from ".."
+import EnhancedTableHead from 'components/Table/TableHeader'
+import EnhancedTableToolbar from 'components/Table/TableToolbar'
+import { ItemGrid, Info, Caption } from "components"
 import { connect } from "react-redux"
-import Caption from '../Typography/Caption';
 import { pF, dateFormat } from 'variables/functions';
 import Gravatar from 'react-gravatar'
 import TP from 'components/Table/TP';
@@ -30,24 +29,11 @@ class UserTable extends React.Component {
 			rowsPerPage: props.rowsPerPage,
 			anchorElMenu: null,
 			anchorFilterMenu: null,
-			openSnackbar: 0,
 			openDelete: false
 		}
 	}
 	
-	snackBarMessages = () => {
-		let msg = this.state.openSnackbar
-		const { t } = this.props
-		switch (msg) {
-			case 1:
-				return t("snackbars.deletedSuccess")
-			case 2:
-				return t("snackbars.exported")
-			default:
-				break;
-		}
-	}
-
+	
 	handleToolbarMenuOpen = e => {
 		e.stopPropagation()
 		this.setState({ anchorElMenu: e.currentTarget })
@@ -120,7 +106,6 @@ class UserTable extends React.Component {
 		this.setState({
 			selected: [],
 			anchorElMenu: null,
-			openSnackbar: 1,
 			openDelete: false
 		})
 	}
@@ -135,6 +120,9 @@ class UserTable extends React.Component {
 
 	isSelected = id => this.state.selected.indexOf(id) !== -1
 
+	handleEdit = () => {
+		this.props.history.push(`/user/${this.state.selected[0]}/edit`)
+	}
 	options = () => {
 		const { t } = this.props
 		return [
@@ -220,7 +208,7 @@ class UserTable extends React.Component {
 							t={t}
 							classes={classes}
 							customColumn={[{ id: "avatar", label: "" }, {
-								id: "firstName", label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>Users</Typography>
+								id: "firstName", label: <Typography variant={"body1"} classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>Users</Typography>
 							}]}
 						/>
 						<TableBody>
@@ -274,7 +262,7 @@ class UserTable extends React.Component {
 											</TableCell>
 											{/* <TC label={n.userName} /> */}
 											<TC FirstC label={`${n.firstName} ${n.lastName}`} />
-											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone) : n.phone}</a>} />
+											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone, this.props.language) : n.phone}</a>} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`mailto:${n.email}`}>{n.email}</a>} />
 											<TC label={n.org ? n.org.name : t("users.noOrg")} />
 											<TC label={lastLoggedIn} />
@@ -300,17 +288,6 @@ class UserTable extends React.Component {
 					handleChangePage={ this.handleChangePage }
 					handleChangeRowsPerPage={ this.handleChangeRowsPerPage }
 				/>
-				<Snackbar
-					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-					open={this.state.openSnackbar !== 0 ? true : false}
-					onClose={() => { this.setState({ openSnackbar: 0 }) }}
-					autoHideDuration={5000}
-					message={
-						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-							{this.snackBarMessages()}
-						</ItemGrid>
-					}
-				/>
 				{this.renderConfirmDelete()}
 
 			</Paper>
@@ -319,7 +296,8 @@ class UserTable extends React.Component {
 }
 const mapStateToProps = (state) => ({
 	rowsPerPage: state.settings.trp,
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	language: state.settings.language
 })
 
 const mapDispatchToProps = {

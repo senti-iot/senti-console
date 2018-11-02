@@ -1,7 +1,6 @@
 import React from "react";
 // material-ui components
-import { InputAdornment, withStyles, CardContent, Collapse, Button, Grid } from "@material-ui/core";
-// @material-ui/icons
+import { InputAdornment, withStyles, CardContent, Collapse, Button, Grid, withWidth } from "@material-ui/core";
 import { LockOutlined, Person } from "@material-ui/icons";
 // core components
 import { GridContainer, ItemGrid, ItemG, TextF } from "components";
@@ -20,6 +19,8 @@ import withLocalization from "components/Localization/T";
 import { connect } from 'react-redux';
 import { getSettings } from 'redux/settings';
 import { Link } from 'react-router-dom'
+import { compose } from 'recompose';
+var moment = require("moment")
 
 class LoginPage extends React.Component {
 	constructor(props) {
@@ -76,13 +77,14 @@ class LoginPage extends React.Component {
 		setTimeout(
 			async function () {
 				await loginUser(this.state.user, this.state.pass).then(async rs => {
-					if (rs) {						
-						cookie.save('SESSION', rs, { path: '/' })
+					if (rs) {
+						let exp = moment().add("1", "day")
+						cookie.save('SESSION', rs, { path: '/', expires: exp.toDate() })
 						if (rs.isLoggedIn) {
 							if (setToken())								
 							{
 								await this.props.getSettings()
-								var prevURL = this.props.location.state ? this.props.location.state.prevUrl : null
+								var prevURL = this.props.location.state ? this.props.location.state.prevURL : null
 								this.props.history.push(prevURL ? prevURL : "/dashboard")
 							}
 						}
@@ -117,39 +119,51 @@ class LoginPage extends React.Component {
 					}}
 				>
 					<div className={classes.container}>
-						<GridContainer justify="center">
-							<ItemGrid xs={12} sm={12} md={3}>
+						<GridContainer justify="center" alignItems={"center"}>
+							<ItemGrid xs={12} sm={6} md={4} xl={2} lg={3}>
 								<Card className={classes[this.state.cardAnimaton]}>
 									<form className={classes.form}>
 										<CardHeader color="primary" className={classes.cardHeader}>
 											<h4>Senti.Cloud</h4>
 										</CardHeader>
 										<CardBody>
-											<TextF 
-												id={"user"}
-												autoFocus
-												label={t("login.username")}
-												error={this.state.error}
-												handleChange={this.handleInput}
-												InputProps={{
-													type: "email",
-													endAdornment: <InputAdornment position="end">
-														<Person className={IconEndAd} />
-													</InputAdornment>
-												}}
-											/>
-											<TextF
-												id={"pass"}
-												label={t("login.pass")}
-												error={this.state.error}
-												handleChange={this.handleInput}
-												InputProps={{
-													type: "password",
-													endAdornment: <InputAdornment position="end">
-														<LockOutlined className={IconEndAd} />
-													</InputAdornment>
-												}}
-											/>
+											<ItemG container>
+												<ItemG xs={12}>
+													<TextF 
+														id={"user"}
+														autoFocus
+														label={t("login.username")}
+														error={this.state.error}
+														fullWidth
+														handleChange={this.handleInput}
+														value={this.state.user}
+														InputProps={{
+															autoComplete: "on",
+															type: "email",
+															endAdornment: <InputAdornment position="end">
+																<Person className={IconEndAd} />
+															</InputAdornment>
+														}}
+													/>
+												</ItemG>
+												<ItemG xs={12}>
+													<TextF
+														id={"pass"}
+														label={t("login.pass")}
+														error={this.state.error}
+														fullWidth
+														handleChange={this.handleInput}
+														value={this.state.pass}
+														InputProps={{
+															autoComplete: "on",
+															type: "password",
+															endAdornment: <InputAdornment position="end">
+																<LockOutlined className={IconEndAd} />
+															</InputAdornment>
+														}}
+													/>
+												</ItemG>
+											</ItemG>
 										</CardBody>
 										<CardFooter className={classes.cardFooter}>
 											<Grid container justify={"center"}>
@@ -192,4 +206,4 @@ const mapDispatchToProps = dispatch => ({
 	getSettings: async () => dispatch(await getSettings())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(loginPageStyle)(LoginPage)));
+export default compose( connect(mapStateToProps, mapDispatchToProps), withLocalization(), withWidth(), withStyles(loginPageStyle))(LoginPage);

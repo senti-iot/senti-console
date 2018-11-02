@@ -1,16 +1,15 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info } from 'components';
-import { Hidden, MenuItem } from '@material-ui/core';
+import { Hidden } from '@material-ui/core';
 import { pF } from 'variables/functions';
-import { Person, Edit, Delete, LockOpen, Email } from '@material-ui/icons'
-import { NavLink } from 'react-router-dom'
+import { Person, Edit, Delete, LockOpen, Email } from 'variables/icons'
+import { Link } from 'react-router-dom'
 import Gravatar from 'react-gravatar'
 import { connect } from 'react-redux'
 import Dropdown from 'components/Dropdown/Dropdown';
 class UserContact extends Component {
 
 	deleteUser = () => {
-		this.handleCloseActionsDetails()
 		this.props.deleteUser()
 	}
 
@@ -35,24 +34,29 @@ class UserContact extends Component {
 			return this.renderTopAction()
 		return null
 	}
+	canDelete = () => {
+		const { accessLevel, user, loggedUser } = this.props
+		let dontShow = true
+		if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers && !user.privileges.apisuperuser)) {
+			dontShow = false
+		}
+		if (loggedUser.id === user.id)
+			dontShow = true
+		return dontShow
+	}
 	renderTopAction = () => {
-		const { t, loggedUser, classes, user } = this.props
-		const { apiorg } = loggedUser.privileges
+		const { t, classes, user, history } = this.props
 		return <Dropdown menuItems={
 			[
-				<MenuItem key={0} onClick={() => this.props.history.push(`${this.props.match.url}/edit`)}>
-					<Edit className={classes.leftIcon} />{t("menus.edit")}
-				</MenuItem>,
-				<MenuItem key={1} onClick={() => this.props.changePass()}>
-					<LockOpen className={classes.leftIcon} /> {t("menus.changePassword")}
-				</MenuItem>,
-				(user.suspended === 2 ? <MenuItem key={4} onClick={() => this.props.resendConfirmEmail()}>
-					<Email className={classes.leftIcon} /> {t("users.userResendEmail")}					
-				</MenuItem> : null),
-				(apiorg ? apiorg.editusers || !loggedUser.id === user.id ? <MenuItem key={3} onClick={this.deleteUser}>
-					<Delete className={classes.leftIcon} />{t("menus.delete")}
-				</MenuItem> : null : null)
-			
+				{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `${this.props.match.url}/edit`, prevURL: `/user/${user.id}`  }) },
+				{ label: t("menus.changePassword"), icon: <LockOpen className={classes.leftIcon} />, func: this.props.changePass },
+				{ label: t("menus.userResendEmail"), icon: <Email className={classes.leftIcon} />, func: this.props.resendConfirmEmail, dontShow: user.suspended !== 2 },
+				{
+					label: t("menus.delete"),
+					icon: <Delete className={classes.leftIcon} />,
+					func: this.deleteUser,
+					dontShow: this.canDelete()
+				}
 			]
 		}/>
 	}
@@ -92,9 +96,9 @@ class UserContact extends Component {
 							<ItemGrid>
 								<Caption>{t("users.fields.organisation")}</Caption>
 								<Info>
-									<NavLink to={`/org/${user.org.id}`}>
+									<Link to={{ pathname: `/org/${user.org.id}`, prevURL: `/user/${user.id}` }}>
 										{user.org ? user.org.name : t("users.noOrg")}
-									</NavLink>
+									</Link>
 								</Info>
 							</ItemGrid>
 							<ItemGrid>

@@ -5,9 +5,8 @@ import EnhancedTableToolbar from 'components/Table/TableToolbar'
 import PropTypes from "prop-types";
 import { withRouter } from 'react-router-dom';
 import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
-import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons'
-import { ItemGrid, Info, Caption } from '..';
-import AssignProject from './AssignProject'
+import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
+import { ItemGrid, Info, Caption, AssignProject } from 'components';
 
 class DeviceSimpleList extends React.Component {
 	constructor(props) {

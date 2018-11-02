@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, /*  FormControl, InputLabel, Select, Input, Chip,  MenuItem, */ Collapse, Button, Snackbar, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
-import { Save, Check } from '@material-ui/icons';
+import { Paper, withStyles, Grid, Collapse, Button, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { Save } from 'variables/icons';
 import classNames from 'classnames';
-import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from '..'
+import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
 import { connect } from 'react-redux'
-import createprojectStyles from '../../assets/jss/components/projects/createprojectStyles'
+import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
 import EditOrgAutoSuggest from './EditOrgAutoSuggest';
-import { createOrg, getAllOrgs } from '../../variables/dataOrgs';
+import { createOrg, getAllOrgs } from 'variables/dataOrgs';
 var countries = require("i18n-iso-countries");
 
 class CreateOrg extends Component {
@@ -41,8 +41,9 @@ class CreateOrg extends Component {
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
-		const { t, accessLevel, setHeader } = this.props
-		setHeader("orgs.createOrg", true, `/orgs`, "users")
+		const { t, accessLevel, setHeader, location } = this.props
+		let prevURL = location.prevURL ? location.prevURL : `/orgs`
+		setHeader("orgs.createOrg", true, prevURL, "users")
 		await getAllOrgs().then(rs => {
 			if (this._isMounted) {
 				if (accessLevel.apisuperuser)
@@ -112,10 +113,10 @@ class CreateOrg extends Component {
 	handleCountryChange = value => {
 		this.setState({
 			error: false,
-			country: { id: value, label: countries.getName(value, this.props.language) },
+			country: { id: value, label: value },
 			org: {
 				...this.state.org,
-				country: countries.getName(value, this.props.language) ? value : ''
+				country: countries.getAlpha2Code(value, this.props.language) ? countries.getAlpha2Code(value, this.props.language) : ''
 			}
 		})
 	}
@@ -144,36 +145,32 @@ class CreateOrg extends Component {
 			})
 		}
 	}
-	snackBarClose = () => {
-		this.setState({ openSnackBar: false })
-		this.redirect = setTimeout(async => {
-			this.props.history.push(`/org/${this.state.org.id}`)
-		}, 1e3)
+	close = (rs) => {
+		this.setState({ created: true, creating: false, org: rs })
+		this.props.s("snackbars.orgCreated", { org: this.state.org.name })
+		this.props.history.push(`/org/${this.state.org.id}`)
 	}
-	handleCreateOrg = () => {
-		clearTimeout(this.timer)
-		this.timer = setTimeout(async () => {
-			if (this.handleValidation()) {
-				let newOrg = {
-					...this.state.org,
-					org: {
-						id: this.state.selectedOrg
-					}
+	handleCreateOrg = () => {		
+		if (this.handleValidation()) {
+			let newOrg = {
+				...this.state.org,
+				org: {
+					id: this.state.selectedOrg
 				}
-				return createOrg(newOrg).then(rs => {
-					return rs ?
-						this.setState({ created: true, creating: false, openSnackBar: true, org: rs }) :
-						this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
-				}
-					, 2e3)
 			}
-			else {
-				this.setState({
-					creating: false,
-					error: true,
-				})
-			}
-		})
+			return createOrg(newOrg).then(rs => 
+				rs ?
+					this.close(rs) :
+					this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
+			)
+		}
+		else {
+			this.setState({
+				creating: false,
+				error: true,
+			})
+		}
+
 
 	}
 
@@ -191,7 +188,7 @@ class CreateOrg extends Component {
 		const { classes, t } = this.props
 		const { orgs, selectedOrg, error } = this.state
 
-		return <FormControl className={ classes.formControl }>
+		return <FormControl>
 			<InputLabel error={ error } FormLabelClasses={ { root: classes.label } } color={ "primary" } htmlFor="select-multiple-chip">
 				{ t("orgs.fields.parentOrg") }
 			</InputLabel>
@@ -245,7 +242,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("name") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -258,7 +255,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("address") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -271,7 +268,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("zip") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 									type={ "number" }
 									pattern="[0-9]*"
@@ -286,7 +283,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("city") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -300,19 +297,20 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("region") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
 							<ItemGrid container xs={ 12 }>
 								<EditOrgAutoSuggest
-									error={ error }
-									country={ this.state.country.label ? this.state.country.label : this.state.country.id }
-									handleChange={ this.handleCountryChange }
-									t={ t }
+									error={error}
+									country={this.state.country.label ? this.state.country.label : this.state.country.id}
+									handleChange={this.handleCountryChange}
+									t={t}
 									suggestions={
-										Object.keys(countries.getNames(this.props.language)).map(
-											country => ({ value: country, label: countries.getName(country, this.props.language) })) } />
+										Object.entries(countries.getNames(this.props.language)).map(
+											country => ({ value: country[1], label: country[1] }))
+									} />
 							</ItemGrid>
 							<ItemGrid container xs={ 12 } md={ 6 }>
 								<TextF
@@ -323,7 +321,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("url") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -338,7 +336,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleAuxChange("cvr") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -350,7 +348,7 @@ class CreateOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleAuxChange("ean") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -370,27 +368,12 @@ class CreateOrg extends Component {
 									disabled={ this.state.creating || this.state.created }
 									onClick={ this.state.created ? this.goToOrg : this.handleCreateOrg }>
 									{ this.state.created ?
-										<Fragment><Check className={ classes.leftIcon } />{ t("snackbars.redirect") }</Fragment>
+										<Fragment>{t("snackbars.redirect") }</Fragment>
 										: <Fragment><Save className={ classes.leftIcon } />{ t("orgs.createOrg") }</Fragment> }
 								</Button>
 							</div>
 						</Grid>
 					</Paper>
-					<Snackbar
-						anchorOrigin={ { vertical: "bottom", horizontal: "right" } }
-						open={ this.state.openSnackBar }
-						onClose={ this.snackBarClose }
-						ContentProps={ {
-							'aria-describedby': 'message-id',
-						} }
-						autoHideDuration={ 1500 }
-						message={
-							<ItemGrid zeroMargin noPadding justify={ 'center' } alignItems={ 'center' } container id="message-id">
-								<Check className={ classes.leftIcon } color={ 'primary' } />
-								{ t("snackbars.orgCreated", { org: org.name }) }
-							</ItemGrid>
-						}
-					/>
 				</GridContainer>
 				: <CircularLoader />
 		)

@@ -2,9 +2,9 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { createUser } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
-import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader } from '..';
-import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Snackbar, Grid, Button } from '@material-ui/core';
-import { Check, Save } from '@material-ui/icons'
+import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader } from 'components';
+import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Grid, Button } from '@material-ui/core';
+import { Save } from 'variables/icons'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 
@@ -30,7 +30,7 @@ class CreateUser extends Component {
 				},
 				sysLang: 2,
 				org: {
-					id: "",
+					id: 0,
 					name: "Ingen organisation"
 				},
 				groups: {
@@ -44,8 +44,7 @@ class CreateUser extends Component {
 			creating: false,
 			created: false,
 			loading: true,
-			openSnackbar: false,
-			selectedGroup: "",
+			selectedGroup: 136550100000225,
 		}
 	}
     componentDidMount = async () => {
@@ -59,7 +58,6 @@ class CreateUser extends Component {
     	this._isMounted = 0
     }
     getOrgs = async () => { 
-    	// const { orgs } = this.state
     	let orgs = await getAllOrgs().then(rs => rs)
     	this.setState({
     		orgs: orgs,
@@ -72,41 +70,50 @@ class CreateUser extends Component {
     		...this.state.user,
     		userName: user.email
     	}
-    	await createUser(newUser).then(rs => rs ?
-    		this.setState({ created: true, creating: false, openSnackbar: true, org: rs }) :
-    		this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
-				
-    	)
+    	if (this.handleValidation()) {
+    		await createUser(newUser).then(rs => {
+    		return rs !== 400 ?
+    			this.close(rs) :
+    			this.setState({ created: false, creating: false, error: true, errorMessage: this.errorMessages(rs) })
+    		})
+    	}
     }
-    handleChange = prop => e => {
-    	this.setState({
-    		user: {
-    			...this.state.user,
-    			[prop]: e.target.value
-    		}
-    	})
-    }
+	close = (rs) => {
+		this.setState({ created: true, creating: false, org: rs }) 
+		const { history, s } = this.props
+		s("snackbars.userCreated", { user: `${rs.firstName} ${rs.lastName}` })
+		history.push(`/user/${rs.id}`)
+	}
+	handleChange = prop => e => {
+		const { error } = this.state
+		if (error) {
+			this.setState({
+				error: false,
+				errorMessage: [],
+				user: {
+					...this.state.user,
+					[prop]: e.target.value
+				}
+			})
+		}
+		else { 
+			this.setState({
+				user: {
+					...this.state.user,
+					[prop]: e.target.value
+				}
+			})
+		}
+	}
     handleValidation = () => {
     	/* Address, City, Postcode, Country, Region, Website. */
     	let errorCode = [];
-    	const { email } = this.state.user
-    	// if (name === "") {
-    	// 	errorCode.push(0)
-    	// }
-    	// if (address === "") {
-    	// 	errorCode.push(1)
-    	// }
-    	// if (city === "") {
-    	// 	errorCode.push(2)
-    	// }
-    	// if (zip === "") {
-    	// 	errorCode.push(3)
-    	// }
-    	// if (country === "") {
-    	// 	errorCode.push(4)
-    	// }
+    	const { email, org } = this.state.user
     	if (email === '') {
     		errorCode.push(4)
+    	}
+    	if (org.id === 0) {
+    		errorCode.push(5)
     	}
     	this.setState({
     		errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
@@ -114,35 +121,32 @@ class CreateUser extends Component {
     	if (errorCode.length === 0)
     		return true
     	else
+    		this.setState({ error: true })
     		return false
     }
     errorMessages = code => {
     	const { t } = this.props
     	switch (code) {
     		case 0:
-    			return t("users.validation.nouserName")
+    			return t("users.validation.noUserName")
     		case 1:
-    			return t("users.validation.nofirstName")
+    			return t("users.validation.noFirstName")
     		case 2:
-    			return t("users.validation.nolastName")
+    			return t("users.validation.noLastName")
     		case 3:
-    			return t("users.validation.nophone")
+    			return t("users.validation.noPhone")
     		case 4:
-    			return t("users.validation.noemail")
+    			return t("users.validation.noEmail")
     		case 5:
-    			return t("users.validation.noorg")
+    			return t("users.validation.noOrg")
     		case 6: 
-    			return t("users.validation.nogroup")
+    			return t("users.validation.noGroup")
+    		case 400: 
+    			return t("users.validation.userAlreadyExists")
     		default:
     			return ""
     	}
 	
-    }
-    snackBarClose = () => {
-    	this.setState({ openSnackbar: false })
-    	this.redirect = setTimeout(async => {
-    		this.props.history.push(`/user/${this.state.org.id}`)
-    	}, 1e3)
     }
     handleLangChange = e => {
     	this.setState({
@@ -316,7 +320,7 @@ class CreateUser extends Component {
     							className={classes.textField}
     							handleChange={this.handleChange("userName")}
     							margin="normal"
-    							noFullWidth
+    							
     							error={error}
     						/>
     					</ItemGrid> */}
@@ -328,7 +332,7 @@ class CreateUser extends Component {
     							className={classes.textField}
     							handleChange={this.handleChange("firstName")}
     							margin="normal"
-    							noFullWidth
+    							
     							error={error}
     						/>
     					</ItemGrid>
@@ -340,7 +344,7 @@ class CreateUser extends Component {
     							className={classes.textField}
     							handleChange={this.handleChange("lastName")}
     							margin="normal"
-    							noFullWidth
+    							
     							error={error}
     						/>
     					</ItemGrid>
@@ -352,7 +356,7 @@ class CreateUser extends Component {
     							className={classes.textField}
     							handleChange={this.handleChange("email")}
     							margin="normal"
-    							noFullWidth
+    							
     							error={error}
     						/>
     					</ItemGrid>
@@ -364,7 +368,7 @@ class CreateUser extends Component {
     							className={classes.textField}
     							handleChange={this.handleChange("phone")}
     							margin="normal"
-    							noFullWidth
+    							
     							error={error}
     						/>
     					</ItemGrid>
@@ -393,27 +397,12 @@ class CreateUser extends Component {
     							disabled={this.state.creating || this.state.created}
     							onClick={this.handleCreateUser}>
     							{this.state.created ?
-    								<Fragment><Check className={classes.leftIcon} />{t("snackbars.redirect")}</Fragment>
+    								<Fragment>{t("snackbars.redirect")}</Fragment>
     								: <Fragment><Save className={classes.leftIcon} />{t("users.createUser")}</Fragment>}
     						</Button>
     					</div>
     				</Grid>
     			</Paper>
-    			<Snackbar
-    				anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-    				open={this.state.openSnackbar}
-    				onClose={this.snackBarClose}
-    				ContentProps={{
-    					'aria-describedby': 'message-id',
-    				}}
-    				autoHideDuration={1000}
-    				message={
-    					<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-    						<Check className={classes.leftIcon} color={'primary'} />
-    						{t("snackbars.userCreated", { user: user.firstName + " " + user.lastName })}
-    					</ItemGrid>
-    				}
-    			/>
     		</GridContainer>
     	)
     }

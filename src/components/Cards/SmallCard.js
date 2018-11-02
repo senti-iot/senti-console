@@ -7,7 +7,7 @@ import ExifOrientationImg from 'react-exif-orientation-img';
 class SimpleMediaCard extends Component {
 
 	render() {
-		const { classes, title, content, noAvatar, topAction, leftActions, rightActions, img, avatar, whiteAvatar } = this.props;
+		const { classes, title, content, noAvatar, topAction, leftActions, rightActions, img, avatar, whiteAvatar, subheader } = this.props;
 		return (
 			<Card className={classes.smallCard + classes.plainCardClasses}>
 				<CardHeader
@@ -17,7 +17,9 @@ class SimpleMediaCard extends Component {
 							{avatar}
 						</Avatar>
 					}
-					title={title} />
+					title={title}
+					subheader={subheader}
+				/>
 				{img ? <CardContent classes={{ root: classes.root + ' ' + classes.smallCardCustomHeight + ' ' + classes.contentMedia }}>
 					<ExifOrientationImg src={img} width={"100%"} />
 				</CardContent> : null}

@@ -1,12 +1,12 @@
 import { Avatar, Button, Card, CardActions, CardContent, CardHeader, Collapse, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { ExpandMore } from '@material-ui/icons';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import { Caption } from '..';
-import withLocalization from '../Localization/T';
+import { Caption } from 'components';
+import withLocalization from 'components/Localization/T';
 
 
 class InfoCard extends React.Component {
@@ -17,13 +17,13 @@ class InfoCard extends React.Component {
 	};
 	hasSubheader = (subheader) => subheader ? subheader.toString().length < 200 ? subheader ? subheader : null : null : null
 	renderSubHeader = () => {
-		const { subheader, t  } = this.props
+		const { subheader, subheaderTitle  } = this.props
 		return subheader ? subheader.toString().length > 200 ?
 			<Fragment>
 				<Typography variant={'caption'}>
-					{t("devices.fields.description")}
+					{subheaderTitle ? subheaderTitle : null}
 				</Typography>
-				<Typography paragraph>
+				<Typography>
 					{subheader ? subheader : null}
 				</Typography>
 			</Fragment>
@@ -51,19 +51,16 @@ class InfoCard extends React.Component {
 				</CardHeader>
 
 				<Collapse in={this.props.hideFacts ? !this.state.expanded : true} timeout="auto" unmountOnExit>
-					<CardContent>
+					<CardContent className={this.props.noPadding ? classes.contentMedia : ""}>
 						{this.renderSubHeader()}
 						{content ? content : null}
 					</CardContent>
 				</Collapse>
 				{!this.props.noExpand ?
 					<React.Fragment>
-						{/* <Collapse in={this.state.leftActions} timeout={'auto'} unmountOnExit> */}
 						{leftActionContent ? <CardContent classes={{ root: classes.root }}>
 							{leftActionContent}
-						</CardContent>
-							: null}
-						{/* </Collapse> */}
+						</CardContent> : null}
 						<Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
 							<CardContent classes={{ root: classes.root }}>
 								{hiddenContent ? hiddenContent : null}

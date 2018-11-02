@@ -20,20 +20,26 @@ const headerStyle = theme => ({
 		boxShadow: "none",
 		borderBottom: "0",
 		marginBottom: "0",
-		paddingTop: "10px",
+		height: "70px",
+		// padding: "5px",
+		// paddingTop: "10px",
 		zIndex: "1029",
 		color: "#ffffff",
 		border: "0",
 		// borderRadius: "3px",
-		padding: "10px 0",
+		// padding: "10px 0",
 		transition: "all 150ms ease 0s",
 		minHeight: "48px",
 		display: "block",
-		position: "inherit",
-		width: '100%'
+		position: "sticky",
+		// [theme.breakpoints.up("lg")]: {
+		// 	width: 'calc(100% - 260px)'
+		// }
+		
 	},
 	container: {
 		...container,
+		height: "100%",
 		minHeight: "50px",
 	},
 	flex: {

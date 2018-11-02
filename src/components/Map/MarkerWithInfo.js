@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import { InfoWindow, Marker } from 'react-google-maps';
 import { MarkerIcon } from './MarkerIcon';
-import { ItemGrid, Info, Caption } from '..';
-import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons'
+import { ItemGrid, Info, Caption, ItemG } from 'components';
+import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
 import { withStyles, Button } from '@material-ui/core'
 import { red, green, yellow } from '@material-ui/core/colors'
-import ItemG from '../Grid/ItemG';
 import { Link } from 'react-router-dom'
-import { getWifiSummary } from 'variables/dataDevices';
+import { getDataSummary } from 'variables/dataDevices';
 var moment = require("moment")
 const styles = theme => ({ 
 	redSignal: {
@@ -32,7 +31,7 @@ class MarkerWithInfo extends Component {
 	onToggleOpen = async () => {
 		if (this.state.isOpen === false) {
 			let OneMinuteAgo = moment().subtract(10, "minute").format("YYYY-MM-DD+HH:mm:ss")
-			let rs = await getWifiSummary(this.props.m.id, OneMinuteAgo, moment().format("YYYY-MM-DD+HH:mm:ss"))
+			let rs = await getDataSummary(this.props.m.id, OneMinuteAgo, moment().format("YYYY-MM-DD+HH:mm:ss"), false)
 			this.setState({ isOpen: !this.state.isOpen, liveCount: rs })
 		}
 		else { 
@@ -106,7 +105,7 @@ class MarkerWithInfo extends Component {
 							<Info>{this.state.liveCount}</Info>
 						</ItemG>
 						<ItemG xs={12}>
-							<Button variant={"flat"} component={Link} to={`/device/${m.id}`}>
+							<Button variant={"text"} color={"primary"} component={Link} to={`/device/${m.id}`}>
 								{/* <NavLink to={`/device/${m.id}`}> */}
 								{t("menus.seeMore")}
 								{/* </NavLink> */}

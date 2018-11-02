@@ -2,6 +2,14 @@
 import { red, green, yellow, grey } from '@material-ui/core/colors'
 import { primaryColor } from 'assets/jss/material-dashboard-react'
 const devicetableStyles = theme => ({
+	hideIcon: {
+		display: "none",
+		// position: 'absolute',
+		// left: '90%'
+	},
+	centered: {
+		textAlign: 'center'
+	},
 	deleteListItem: {
 		padding: 0
 	},
@@ -87,16 +95,24 @@ const devicetableStyles = theme => ({
 		}
 	},
 	tableCell: {
-		padding: 4,
-		// minWidth: 130,
-		maxWidth: 250,
+		/* 		padding: 4,
+		fontSize: '0.875rem',
+		// maxWidth: 250,
+		width: 200,
 		"&:last-child": {
 			paddingRight: 4
-		}
+		}, */
+		borderTop: "1px solid rgba(224, 224, 224, 1)",
+
 	},
 	tablecellcheckbox: {
-		padding: 0,
+		fontSize: '0.875rem',
+		borderTop: "1px solid rgba(224, 224, 224, 1)",
+		/*padding: 0, */
 		width: '50px'
+	},
+	paddingLeft: {
+		paddingLeft: 16
 	}
 });
 

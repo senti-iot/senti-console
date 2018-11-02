@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, /*  FormControl, InputLabel, Select, Input, Chip,  MenuItem, */ Collapse, Button, Snackbar, MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
-import { Save, Check } from '@material-ui/icons';
+import { Paper, withStyles, Grid, Collapse, Button, MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
+import { Save, Check } from 'variables/icons';
 import classNames from 'classnames';
 import { getOrg, updateOrg, getAllOrgs } from 'variables/dataOrgs'
-import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from '..'
+import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
 import { connect } from 'react-redux'
-import createprojectStyles from '../../assets/jss/components/projects/createprojectStyles'
+import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
 import EditOrgAutoSuggest from './EditOrgAutoSuggest'
 
 // var moment = require("moment")
@@ -31,7 +31,6 @@ class EditOrg extends Component {
 			creating: false,
 			created: false,
 			loading: true,
-			openSnackBar: false,
 		}
 	}
 	handleValidation = () => {
@@ -78,10 +77,12 @@ class EditOrg extends Component {
 				return ""
 		}
 	}
+	
+	
 	componentDidMount = async () => {
 		this._isMounted = 1
 		let id = this.props.match.params.id
-		const { accessLevel, t } = this.props
+		const { accessLevel, t, location } = this.props
 		await getOrg(id).then(rs => {
 			if (rs && this._isMounted) {
 				this.setState({
@@ -115,7 +116,8 @@ class EditOrg extends Component {
 		this.setState({
 			loading: false
 		})
-		this.props.setHeader("orgs.updateOrg", true, `/org/${id}`, "users")
+		let prevURL = location.prevURL ? location.prevURL : null
+		this.props.setHeader("orgs.updateOrg", true, prevURL, "users")
 	}
 
 	componentWillUnmount = () => {
@@ -126,10 +128,10 @@ class EditOrg extends Component {
 	handleCountryChange = value => {
 		this.setState({
 			error: false,
-			country: { id: value, label: countries.getName(value, this.props.language) },
+			country: { id: value, label: value },
 			org: {
 				...this.state.org,
-				country: countries.getName(value, this.props.language) ? value : ''
+				country: countries.getAlpha2Code(value, this.props.language) ? countries.getAlpha2Code(value, this.props.language) : ''
 			}
 		})
 	}
@@ -158,28 +160,25 @@ class EditOrg extends Component {
 			})
 		}
 	}
-	snackBarClose = () => {
-		this.setState({ openSnackBar: false })
-		this.redirect = setTimeout(async => {
-			this.props.history.push(`/org/${this.state.org.id}`)
-		}, 1e3)
+	close = () => {
+		this.setState({ created: true, creating: false })
+		this.props.s("snackbars.orgUpdated", ({ org: this.state.org.name }))
+		this.props.history.push(`/org/${this.state.org.id}`)
 	}
+
 	handleUpdateOrg = () => {
 		clearTimeout(this.timer)
-		this.timer = setTimeout(async () => {
-			if (this.handleValidation()) {
-				return updateOrg(this.state.org).then(rs => rs ?
-					this.setState({ created: true, creating: false, openSnackBar: true }) :
-					this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
-					, 2e3)
-			}
-			else {
-				this.setState({
-					creating: false,
-					error: true,
-				})
-			}
-		})
+		if (this.handleValidation()) {
+			return updateOrg(this.state.org).then(rs => rs ?
+				this.close() :
+				this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
+			)}
+		else {
+			this.setState({
+				creating: false,
+				error: true,
+			})
+		}
 
 	}
 
@@ -210,8 +209,6 @@ class EditOrg extends Component {
 				onChange={ this.handleOrgChange }
 				renderValue={ value => value.name }
 			>
-				{/* { accessLevel.apisuperuser ? <MenuItem key={ 99 } value={ noOrg }>{ t("orgs.fields.topLevelOrg") }</MenuItem> : null } */ }
-
 				{ orgs ? orgs.map(org => (
 					<MenuItem
 						key={ org.id }
@@ -254,7 +251,7 @@ class EditOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("name") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -268,7 +265,7 @@ class EditOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("address") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -280,7 +277,7 @@ class EditOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("zip") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 									type={ "number" }
 									pattern="[0-9]*"
@@ -295,7 +292,7 @@ class EditOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("city") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -309,18 +306,19 @@ class EditOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("region") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
 							<ItemGrid container xs={ 12 }>
 								<EditOrgAutoSuggest
 									t={ t }
-									country={ this.state.country.label ? this.state.country.label : this.state.country.id }
+									country={ this.state.country.label}
 									handleChange={ this.handleCountryChange }
 									suggestions={
-										Object.keys(countries.getNames(this.props.language)).map(
-											country => ({ value: country, label: countries.getName(country, this.props.language) })) } />
+										Object.entries(countries.getNames(this.props.language)).map(
+											country => ({ value: country[1], label: country[1] }))
+									} />
 							</ItemGrid>
 							<ItemGrid container xs={ 12 } md={ 6 }>
 								<TextF
@@ -331,7 +329,7 @@ class EditOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleChange("url") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -346,7 +344,7 @@ class EditOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleAuxChange("cvr") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -359,7 +357,7 @@ class EditOrg extends Component {
 									className={ classes.textField }
 									handleChange={ this.handleAuxChange("ean") }
 									margin="normal"
-									noFullWidth
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -384,21 +382,6 @@ class EditOrg extends Component {
 							</div>
 						</Grid>
 					</Paper>
-					<Snackbar
-						anchorOrigin={ { vertical: "bottom", horizontal: "right" } }
-						open={ this.state.openSnackBar }
-						onClose={ this.snackBarClose }
-						ContentProps={ {
-							'aria-describedby': 'message-id',
-						} }
-						autoHideDuration={ 1500 }
-						message={
-							<ItemGrid zeroMargin noPadding justify={ 'center' } alignItems={ 'center' } container id="message-id">
-								<Check className={ classes.leftIcon } color={ 'primary' } />
-								{ t("snackbars.orgUpdated", { org: org.name }) }
-							</ItemGrid>
-						}
-					/>
 				</GridContainer>
 				: <CircularLoader />
 		)

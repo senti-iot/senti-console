@@ -1,14 +1,14 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, FormControl, InputLabel, Select, Input, Chip, MenuItem, Collapse, Button, Snackbar } from '@material-ui/core';
+import { Paper, withStyles, Grid, Collapse, Button } from '@material-ui/core';
 import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
-import { KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft, Save, Check } from '@material-ui/icons';
-import { getAvailableDevices } from 'variables/dataDevices';
+import { KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft, Save, Check } from 'variables/icons';
+// import { getAvailableDevices } from 'variables/dataDevices';
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { updateProject, getProject } from 'variables/dataProjects';
-import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from '..'
-import { dateFormatter } from 'variables/functions';
+import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
+// import { dateFormatter } from 'variables/functions';
 var moment = require("moment")
 // const ITEM_HEIGHT = 32;
 // const ITEM_PADDING_TOP = 8;
@@ -32,8 +32,7 @@ class EditProject extends Component {
 			allDevices: [],
 			creating: false,
 			created: false,
-			loading: true,
-			openSnackbar: false,
+			loading: true
 		}
 	}
 	handleValidation = () => {
@@ -77,33 +76,35 @@ class EditProject extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		let id = this.props.match.params.id
-		let projectOrgID = 0
+		const { location } = this.props
+		// let projectOrgID = 0
 		await getProject(id).then(p => {
 			if (p && this._isMounted) {
-				projectOrgID = p.org.id
+				// projectOrgID = p.org.id
 				this.setState({
 					project: p,
 					// devices: p.devices,
-					selectedDevices: p.devices,
+					// selectedDevices: p.devices,
 				})
 			}
 		})
-		await getAvailableDevices(projectOrgID).then(rs => {
-			if (this._isMounted) {
-				let allDev = []
-				allDev = this.state.project.devices ? allDev.concat(this.state.project.devices) : allDev
-				allDev = rs ? allDev.concat(rs) : allDev
-				this.setState({
-					availableDevices: rs ? rs : [],
-					allDevices: allDev
-				})
+		// await getAvailableDevices(projectOrgID).then(rs => {
+		// 	if (this._isMounted) {
+		// 		let allDev = []
+		// 		allDev = this.state.project.devices ? allDev.concat(this.state.project.devices) : allDev
+		// 		allDev = rs ? allDev.concat(rs) : allDev
+		// 		this.setState({
+		// 			availableDevices: rs ? rs : [],
+		// 			allDevices: allDev
+		// 		})
 
-			}
-		})
+		// 	}
+		// })
 		this.setState({
 			loading: false
 		})
-		this.props.setHeader("projects.updateProject", true, `/project/${id}`, "projects")
+		let prevURL = location.prevURL ? location.prevURL : '/projects/list'
+		this.props.setHeader("projects.updateProject", true, prevURL, "projects")
 	}
 
 	componentWillUnmount = () => {
@@ -117,11 +118,14 @@ class EditProject extends Component {
 	};
 
 	handleDateChange = id => value => {
+		// )
+		// .format("YYYY MM DD HH:ss"))
+		// .local().format("YYYY MM DD HH:ss"))
 		this.setState({
 			error: false,
 			project: {
 				...this.state.project,
-				[id]: dateFormatter(value)
+				[id]: moment(value).local().format("YYYY-MM-DDTHH:ss")
 			}
 		})
 	}
@@ -136,40 +140,35 @@ class EditProject extends Component {
 		})
 	}
 	handleUpdateProject = () => {
-		clearTimeout(this.timer)
+		
 		let newProject = {
 			...this.state.project,
 			devices: this.state.selectedDevices,
 		}
 		this.setState({ creating: true })
-		this.timer = setTimeout(async () => {
-			if (this.handleValidation())
-				return updateProject(newProject).then(rs => rs ?
-					this.setState({ created: true, creating: false, openSnackbar: true }) :
-					this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("projects.validation.networkError") })
-					, 2e3)
-			else {
-				this.setState({
-					creating: false,
-					error: true,
-				})
-			}
-		})
+		if (this.handleValidation())
+			return updateProject(newProject).then(rs => rs ?
+				this.close() :
+				this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("projects.validation.networkError") })
+			)
+		else {
+			this.setState({
+				creating: false,
+				error: true,
+			})
+		}
 	}
 
-	snackBarClose = () => {
-		this.setState({ openSnackbar: false })
-		this.redirect = setTimeout(async => {
-			this.goToNewProject()
-		}, 1e3)
-	}
-	goToNewProject = () => {
-		this.props.history.push('/project/' + this.props.match.params.id)
+	close = () => {
+		this.setState({ created: true, creating: false })
+		const { s, history } = this.props
+		s("snackbars.projectUpdated", { project: this.state.project.title })
+		history.push('/project/' + this.props.match.params.id)
 	}
 
 	render() {
-		const { classes, theme, t } = this.props
-		const { availableDevices, created, error, loading, selectedDevices, project, allDevices } = this.state
+		const { classes, /* theme, */ t } = this.props
+		const { /* availableDevices, */ created, error, loading, /* selectedDevices, project, allDevices */ } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
@@ -178,7 +177,7 @@ class EditProject extends Component {
 			!loading ?
 				<GridContainer justify={'center'}>
 					<Paper className={classes.paper}>
-						<MuiPickersUtilsProvider utils={MomentUtils}>
+						<MuiPickersUtilsProvider utils={MomentUtils} moment={moment}>
 							<form className={classes.form}>
 								<ItemGrid xs={12}>
 									<Collapse in={this.state.error}>
@@ -198,7 +197,7 @@ class EditProject extends Component {
 										className={classes.textField}
 										handleChange={this.handleChange("title")}
 										margin="normal"
-										noFullWidth
+										
 										error={error}
 									/>
 								</ItemGrid>
@@ -213,7 +212,7 @@ class EditProject extends Component {
 										value={this.state.project.description}
 										handleChange={this.handleChange("description")}
 										margin="normal"
-										noFullWidth
+										
 										error={error}
 									/>
 								</ItemGrid>
@@ -223,7 +222,9 @@ class EditProject extends Component {
 										// ampm={false}
 										label={t("projects.fields.startDate")}
 										clearable
-										format="LL"
+										labelFunc={(date, invalidLabel) => date === null ? '' : moment(date).format('LL')}
+										format="YYYY-MM-DDTHH:mm"
+										// format="LL"
 										value={this.state.project.startDate}
 										onChange={this.handleDateChange("startDate")}
 										animateYearScrolling={false}
@@ -242,7 +243,9 @@ class EditProject extends Component {
 										autoOk
 										label={t("projects.fields.endDate")}
 										clearable
-										format="LL"
+										labelFunc={(date, invalidLabel) => date === null ?  '' : date.format('LL') }
+										format="YYYY-MM-DDTHH:mm"
+										// format="LL"
 										value={this.state.project.endDate}
 										onChange={this.handleDateChange("endDate")}
 										animateYearScrolling={false}
@@ -253,7 +256,7 @@ class EditProject extends Component {
 										error={error}
 									/>
 								</ItemGrid>
-								<ItemGrid xs={12}>
+								{/* <ItemGrid xs={12}>
 									<FormControl className={classes.formControl}>
 										<Fragment>
 											<InputLabel FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
@@ -281,7 +284,7 @@ class EditProject extends Component {
 														})}
 
 													</div>)}
-											/* MenuProps={MenuProps} */>
+											>
 												{allDevices.map(device => (
 													<MenuItem
 														key={device.id}
@@ -298,7 +301,7 @@ class EditProject extends Component {
 											</Select>
 										</Fragment>
 									</FormControl>
-								</ItemGrid>
+								</ItemGrid> */}
 							</form>
 							<ItemGrid xs={12} container justify={'center'}>
 								<Collapse in={this.state.creating} timeout="auto" unmountOnExit>
@@ -322,26 +325,10 @@ class EditProject extends Component {
 
 						</MuiPickersUtilsProvider>
 					</Paper>
-					<Snackbar
-						anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-						open={this.state.openSnackbar}
-						onClose={this.snackBarClose}
-						ContentProps={{
-							'aria-describedby': 'message-id',
-						}}
-						autoHideDuration={1000}
-						message={
-							<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-								<Check className={classes.leftIcon} color={'primary'} />
-								{/* Project {this.state.title} has been successfully updated! */}
-								{t("snackbars.projectUpdated", { project: this.state.project.title })}
-							</ItemGrid>
-						}
-					/>
 				</GridContainer>
 				: <CircularLoader />
 		)
 	}
 }
 
-export default withStyles(createprojectStyles, { withTheme: true })(EditProject)
+export default withStyles(createprojectStyles/* , { withTheme: true } */)(EditProject)

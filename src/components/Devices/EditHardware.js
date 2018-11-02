@@ -1,9 +1,9 @@
 import { Button, Collapse, Grid, Paper, withStyles } from '@material-ui/core';
-import { Check, Save } from '@material-ui/icons';
+import { Check, Save } from 'variables/icons';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import React, { Component, Fragment } from 'react';
 import { getDevice, updateDevice } from 'variables/dataDevices';
-import { ItemGrid, TextF, GridContainer, CircularLoader, } from '..';
+import { ItemGrid, TextF, GridContainer, CircularLoader, } from 'components';
 
 class EditDetails extends Component {
 	constructor(props) {
@@ -14,7 +14,8 @@ class EditDetails extends Component {
 			updating: false,
 			updated: false
 		}
-		props.setHeader({ id: "devices.editHardwareTitle", options: { deviceId: props.match.params.id } }, true, '/devices/list', "devices")
+		let prevURL = props.location.state ? props.location.prevURL : `/devices/list`
+		props.setHeader({ id: "devices.editHardwareTitle", options: { deviceId: props.match.params.id } }, true, prevURL, "devices")
 	}
 	componentDidMount = async () => {
 		let id = this.props.match.params.id
@@ -63,7 +64,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.pcModel")}
 									handleChange={this.handleInput('RPImodel')}
 									value={device.RPImodel}
-									noFullWidth
+									
 									autoFocus
 								/>
 							</ItemGrid>
@@ -73,7 +74,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.memory")}
 									handleChange={this.handleInput('memory')}
 									value={device.memory}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -82,7 +83,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.memoryModel")}
 									handleChange={this.handleInput('memoryModel')}
 									value={device.memoryModel}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -91,7 +92,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.adapter")}
 									handleChange={this.handleInput('adapter')}
 									value={device.adapter}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -100,7 +101,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.wifiModule")}
 									handleChange={this.handleInput('wifiModule')}
 									value={device.wifiModule}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -109,7 +110,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.modemModel")}
 									handleChange={this.handleInput('modemModel')}
 									value={device.modemModel}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -118,7 +119,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.modemIMEI")}
 									handleChange={this.handleInput('modemIMEI')}
 									value={device.modemIMEI.toString()}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -127,7 +128,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.cellNumber")}
 									handleChange={this.handleInput('cellNumber')}
 									value={device.cellNumber.toString()}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -136,7 +137,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.simCard")}
 									handleChange={this.handleInput('SIMID')}
 									value={device.SIMID.toString()}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -145,7 +146,7 @@ class EditDetails extends Component {
 									label={t("devices.fields.simProvider")}
 									handleChange={this.handleInput('SIMProvider')}
 									value={device.SIMProvider}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12} container justify={'center'}>

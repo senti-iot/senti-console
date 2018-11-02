@@ -10,14 +10,14 @@ const discoverSentiStyle = theme => ({
 	root: {
 		backgroundColor: primaryColor,
 		width: "100%",
-		height: "600px"
+		height: "425px"
 	},
 	devicesPicture: {
 		backgroundImage: `url(${ImgDevices})`,
 		backgroundRepeat: "no-repeat",
 		backgroundPosition: "top right",
 		width: "100%",
-		height: "600px"
+		height: "425px"
 	},
 	texturePicture: {
 		backgroundImage: `url(${ImgTexture})`,
@@ -25,7 +25,7 @@ const discoverSentiStyle = theme => ({
 		backgroundPosition: "bottom",
 		backgroundColor: primaryColor,
 		width: "100%",
-		height: "600px"
+		height: "425px"
 	}
 });
 

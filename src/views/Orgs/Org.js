@@ -9,13 +9,12 @@ import {
 	DialogContentText,
 	DialogActions,
 	Button,
-	Snackbar,
 } from '@material-ui/core';
 import { getOrg, getOrgUsers } from 'variables/dataOrgs';
 import OrgDetails from './OrgCards/OrgDetails';
 // var moment = require("moment")
 import { connect } from 'react-redux'
-import { deleteOrg } from '../../variables/dataOrgs';
+import { deleteOrg } from 'variables/dataOrgs';
 import OrgUsers from 'views/Orgs/OrgCards/OrgUsers';
 
 class Org extends Component {
@@ -27,8 +26,7 @@ class Org extends Component {
 			users: [],
 			loading: true,
 			loadingUsers: true,
-			openDelete: false,
-			openSnackbar: 0
+			openDelete: false
 		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
@@ -38,13 +36,15 @@ class Org extends Component {
 	}
 
 	componentDidMount = async () => {
-		if (this.props.match)
-			if (this.props.match.params.id) {
-				await getOrg(this.props.match.params.id).then(async rs => {
+		const { match, setHeader, location, history } = this.props
+		if (match)
+			if (match.params.id) {
+				await getOrg(match.params.id).then(async rs => {
 					if (rs === null)
-						this.props.history.push('/404')
+						history.push('/404')
 					else {
-						this.props.setHeader(`${rs.name}`, true, '/orgs', "users")
+						let prevURL = location.prevURL ? location.prevURL : '/orgs'						
+						setHeader(`${rs.name}`, true, prevURL, "users")
 						this.setState({ org: rs, loading: false })
 					}
 				})
@@ -53,20 +53,17 @@ class Org extends Component {
 				})
 			}
 	}
+	close = () => {
+		this.snackBarMessages(1)
+		this.props.history.push('/orgs')
+	}
 	handleDeleteOrg = async () => {
 		await deleteOrg(this.state.org.id).then(rs => {
 			this.setState({
-				openSnackbar: 1,
 				openDelete: false
 			})
+			this.close()
 		})
-	}
-	redirect = () => {
-		setTimeout(() => {
-			this.setState({ openSnackbar: 3 })
-			setTimeout(() => this.props.history.push('/orgs'), 1e3)
-		}, 2e3)
-
 	}
 
 	handleOpenDeleteDialog = () => {
@@ -77,13 +74,6 @@ class Org extends Component {
 		this.setState({ openDelete: false })
 	}
 
-	closeSnackBar = () => {
-		if (this.state.openSnackbar === 1) {
-			this.setState({ openSnackbar: 0 }, () => this.redirect())
-		}
-		else
-			this.setState({ openSnackbar: 0 })
-	}
 
 	renderDeleteDialog = () => {
 		const { openDelete } = this.state
@@ -111,34 +101,17 @@ class Org extends Component {
 			</DialogActions>
 		</Dialog>
 	}
-	snackBarMessages = () => {
-		const { t } = this.props
-		let msg = this.state.openSnackbar
+	snackBarMessages = (msg) => {
+		const { s } = this.props
 		switch (msg) {
 			case 1:
-				return t("snackbars.orgDeleted")
-			case 3:
-				return t("snackbars.redirect")
+				s("snackbars.orgDeleted")
+				break
 			default:
 				break
 		}
 	}
-	renderSnackBar = () => <Snackbar
-		autoHideDuration={3000}
-		anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-		open={this.state.openSnackbar !== 0 ? true : false}
-		onClose={() => {
-			if (this.state.openSnackbar === 1)
-				this.closeSnackBar()
-			else
-				this.setState({ openSnackbar: 0 })
-		}}
-		message={
-			<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-				{this.snackBarMessages()}
-			</ItemGrid>
-		}
-	/>
+
 	render() {
 		const { classes, t, history, match, language } = this.props
 		const { org, loading, loadingUsers } = this.state
@@ -159,13 +132,13 @@ class Org extends Component {
 					<ItemGrid xs={12} noMargin>
 						{!loadingUsers ? <OrgUsers
 							t={t}
-							users={this.state.users}
+							org={org}
+							users={this.state.users ? this.state.users : []}
 							history={history}
 						/> :
 							<CircularLoader notCentered />}
 					</ItemGrid>
 				</GridContainer>
-				{this.renderSnackBar()}
 				{this.renderDeleteDialog()}
 			</Fragment>
 		)

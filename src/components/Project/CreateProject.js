@@ -1,22 +1,18 @@
-import { Button, Chip, Collapse, FormControl, Grid, Input, InputLabel, MenuItem, Paper, Select, withStyles, Snackbar } from '@material-ui/core'
-import { Check, KeyboardArrowLeft as KeyArrLeft, KeyboardArrowRight as KeyArrRight, Save } from '@material-ui/icons'
+import { Button, /* Chip, */ Collapse, FormControl, Grid, /* Input, */ InputLabel, MenuItem, Paper, Select, withStyles } from '@material-ui/core'
+import { KeyboardArrowLeft as KeyArrLeft, KeyboardArrowRight as KeyArrRight, Save } from 'variables/icons'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
 import classNames from 'classnames'
 import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers'
 import MomentUtils from 'material-ui-pickers/utils/moment-utils'
 import React, { Component, Fragment } from 'react'
-// import { withRouter } from 'react-router-dom'
-// import { getAvailableDevices } from 'variables/dataDevices'
 import { createProject } from 'variables/dataProjects'
-import { Caption, CircularLoader, GridContainer, ItemGrid, TextF, Danger } from '..'
+import { /* Caption, */ CircularLoader, GridContainer, ItemGrid, TextF, Danger, Warning } from 'components'
 import { getAllOrgs } from 'variables/dataOrgs';
 import { getAvailableDevices } from 'variables/dataDevices';
-import { getCreateProject } from '../../variables/dataProjects'
+import { getCreateProject } from 'variables/dataProjects'
 import { connect } from 'react-redux'
-import Warning from '../Typography/Warning';
-// import moment from 'moment';
-var moment = require('moment')
-// moment.locale('dk')
+import moment from 'moment';
+
 const ITEM_HEIGHT = 32
 const ITEM_PADDING_TOP = 8
 const MenuProps = {
@@ -76,8 +72,6 @@ class CreateProject extends Component {
 
 	componentWillUnmount = () => {
 		this._isMounted = 0
-		clearTimeout(this.timer)
-		clearTimeout(this.redirect)
 	}
 	handleValidation = () => {
 		let errorCode = [];
@@ -127,13 +121,13 @@ class CreateProject extends Component {
 	}
 	handleSelectedOrgs = async e => {
 		this.setState({ selectedOrg: e.target.value })
-		var devices = await getAvailableDevices(e.target.value).then(rs => rs)
-		this.setState({ availableDevices: devices ? devices : null, devices: [] })
+		// var devices = await getAvailableDevices(e.target.value).then(rs => rs)
+		// this.setState({ availableDevices: devices ? devices : null, devices: [] })
 	}
 	handleDateChange = id => value => {
 		this.setState({
 			error: false,
-			[id]: value
+			[id]: moment(value).local().format("YYYY-MM-DDTHH:ss")
 		})
 	}
 
@@ -145,12 +139,12 @@ class CreateProject extends Component {
 		})
 	}
 	handleFinishCreateProject = (rs) => {
-		this.setState({ created: true, id: rs.id, openSnackBar: true })
-		this.redirect = setTimeout(() => this.props.history.push(`/project/${rs.id}`), 1000)
+		this.setState({ created: true, id: rs.id })
+		this.props.s("snackbars.projectCreated", { project: this.state.title })			
+		this.props.history.push(`/project/${rs.id}`)
 	}
 	handleCreateProject = async () => {
-		const { availableDevices, title, description, startDate, endDate } = this.state
-		clearTimeout(this.timer)
+		const { /* availableDevices, */ title, description, startDate, endDate } = this.state
 		this.setState({ creating: true })
 		if (this.handleValidation())
 		{
@@ -163,10 +157,10 @@ class CreateProject extends Component {
 						description: description,
 						startDate: startDate,
 						endDate: endDate,
-						devices: availableDevices ? availableDevices.filter(a => this.state.devices.some(b => a.id === b)) : []
+						// devices: availableDevices ? availableDevices.filter(a => this.state.devices.some(b => a.id === b)) : []
 					}
-					this.timer = await setTimeout(async () => await createProject(newProject).then(rs => rs ? this.handleFinishCreateProject(rs) : this.setState({ create: false, creating: false, id: 0 })
-					), 2e3)
+					await createProject(newProject).then(rs => rs ? this.handleFinishCreateProject(rs) : this.setState({ create: false, creating: false, id: 0 })
+					)
 				}
 			})
 		}
@@ -178,20 +172,15 @@ class CreateProject extends Component {
 		}
 	}
 
-	goToNewProject = () => {
-		if (this.state.id)
-			this.props.history.push('/project/' + this.state.id)
-	}
-
 	render() {
 		const { classes, theme, t } = this.props
-		const { availableDevices, created, orgs, selectedOrg, error } = this.state
+		const { /* availableDevices, */ created, orgs, selectedOrg, error } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
 		return (
 			<GridContainer justify={'center'}>
-				<Paper className={classes.paper}>
+				<Paper className={classes.paper}> : 
 					<MuiPickersUtilsProvider utils={MomentUtils}>
 					
 						<form className={classes.form}>
@@ -213,7 +202,7 @@ class CreateProject extends Component {
 									className={classes.textField}
 									handleChange={this.handleChange("title")}
 									margin="normal"
-									noFullWidth
+									
 									error={error}
 
 								/>
@@ -230,7 +219,7 @@ class CreateProject extends Component {
 									value={this.state.description}
 									handleChange={this.handleChange("description")}
 									margin="normal"
-									noFullWidth
+									
 									error={error}
 								/>
 							</ItemGrid>
@@ -240,7 +229,8 @@ class CreateProject extends Component {
 									autoOk
 									label={t("projects.fields.startDate")}
 									clearable
-									format="LL"
+									labelFunc={(date, invalidLabel) => date === null ? '' : moment(date).format('LL')}
+									format="YYYY-MM-DDTHH:mm"
 									value={this.state.startDate}
 									onChange={this.handleDateChange("startDate")}
 									animateYearScrolling={false}
@@ -261,7 +251,8 @@ class CreateProject extends Component {
 									autoOk
 									label={t("projects.fields.endDate")}
 									clearable
-									format="LL"
+									labelFunc={(date, invalidLabel) => date === null ? '' : moment(date).format('LL')}
+									format="YYYY-MM-DDTHH:mm"
 									value={this.state.endDate}
 									onChange={this.handleDateChange("endDate")}
 									animateYearScrolling={false}
@@ -308,7 +299,7 @@ class CreateProject extends Component {
 										</Fragment> : <CircularLoader notCentered />}
 								</FormControl>
 							</ItemGrid>
-							<ItemGrid xs={12}>
+							{/* <ItemGrid xs={12}>
 								<FormControl className={classes.formControl}>
 									{availableDevices ?
 										<Fragment>
@@ -349,7 +340,7 @@ class CreateProject extends Component {
 											</Select>
 										</Fragment> : selectedOrg ? <Caption>{t("devices.noDevices")}</Caption> : <Caption>{t("projects.noOrganisationSelected")}</Caption>}
 								</FormControl>
-							</ItemGrid>
+							</ItemGrid> */}
 							{/* </Grid> */}
 
 						</form>
@@ -364,10 +355,10 @@ class CreateProject extends Component {
 									variant="contained"
 									color="primary"
 									className={buttonClassname}
-									disabled={this.state.creating}
-									onClick={this.state.created ? this.goToNewProject : this.handleCreateProject}
+									disabled={this.state.creating || this.state.created}
+									onClick={this.handleCreateProject}
 								>
-									{this.state.created ? <Fragment><Check className={classes.leftIcon} />{t("projects.redirecting")}</Fragment>
+									{this.state.created ? t("snackbars.redirect")
 										: <Fragment>
 											<Save className={classes.leftIcon} />{t("projects.new")}
 										</Fragment>}
@@ -379,20 +370,7 @@ class CreateProject extends Component {
 
 					</MuiPickersUtilsProvider>
 				</Paper>
-				<Snackbar
-					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-					open={this.state.openSnackBar}
-					onClose={() => { this.setState({ openSnackBar: false }) }}
-					ContentProps={{
-						'aria-describedby': 'message-id',
-					}}
-					autoHideDuration={5000}
-					message={
-						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-							<Check className={classes.leftIcon} color={'primary'} />{t("projects.projectCreated")}
-						</ItemGrid>
-					}
-				/>			</GridContainer>
+			</GridContainer> 
 		)
 	}
 }
