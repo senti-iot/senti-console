@@ -5,7 +5,7 @@ import {
 	ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox,
 } from '@material-ui/core';
 import {
-	AssignmentTurnedIn, MoreVert,
+	Timeline, MoreVert,
 	DateRange, DonutLargeRounded, PieChartRounded, BarChart as BarChartIcon, ExpandMore, Visibility, ShowChart
 } from "variables/icons"
 import {
@@ -34,7 +34,7 @@ class ProjectData extends PureComponent {
 			loading: true,
 			dateFilterInputID: 3,
 			openCustomDate: false,
-			display: 3,
+			display: props.chartType,
 			visibility: false,
 			timeType: 2,
 			raw: false,
@@ -758,7 +758,8 @@ class ProjectData extends PureComponent {
 		const { loading, noData, raw } = this.state
 		return (
 			<InfoCard
-				title={t("projects.infoCardProjectData")} avatar={<AssignmentTurnedIn />}
+				title={t("projects.infoCardProjectData")} 
+				avatar={<Timeline />}
 				noExpand
 				// noPadding
 				topAction={noData ? null : this.renderMenu()}

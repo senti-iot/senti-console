@@ -58,7 +58,7 @@ class LineChart extends PureComponent {
 	}
 	legendOptions = {
 		position: "bottom",
-
+		display: !this.props.single ? true : false,
 		onHover: !this.props.single ? (t, l) => {
 			this.props.setHoverID(this.props.data.datasets[l.datasetIndex].id)
 		} : null
