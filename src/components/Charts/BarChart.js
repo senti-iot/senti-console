@@ -18,7 +18,7 @@ class BarChart extends PureComponent {
 			lineOptions: {
 				categoryPercentage: 0.5,
 				barPercentage: 0.5,
-				barThickness: "flex",
+				barThickness: 'flex',
 				gridLines: { offsetGridLines: false },	
 				animation: {
 					duration: 500
@@ -26,25 +26,26 @@ class BarChart extends PureComponent {
 				display: true,
 				maintainAspectRatio: false,
 				tooltips: {
-					titleFontFamily: "inherit",
-					mode: "point",
+					titleFontFamily: 'inherit',
+					mode: 'point',
 					intersect: false,
 					enabled: false,
 					custom: this.customTooltip
 				},
 				hover: {
-					mode: "point"
+					mode: 'point'
 				},
 				scales: {
 					xAxes: [
 						{
 							offset: true,
-							id: "day",
+							id: 'day',
 							type: 'time',
 							time: {
 								displayFormats: {
-									hour: "LT",
-									day: 'll'
+									hour: 'LT',
+									day: 'll',
+									minute: 'LT'
 								},
 								unit: props.unit.chart,
 								tooltipFormat: props.unit.format
@@ -64,7 +65,7 @@ class BarChart extends PureComponent {
 		}
 	}
 	legendOptions = {
-		position: "bottom",
+		position: 'bottom',
 		display: !this.props.single ? true : false,
 		onHover: !this.props.single ? (t, l) => {
 			this.props.setHoverID(this.props.data.datasets[l.datasetIndex].id)
@@ -100,12 +101,14 @@ class BarChart extends PureComponent {
 						...this.state.lineOptions.scales,
 						xAxes: [{
 							offset: true,
-							id: "day",
+							id: 'day',
 							type: 'time',
 
 							time: {
 								displayFormats: {
-									hour: "LT"
+									hour: 'LT',
+									minute: 'LT',
+									day: 'll'
 								},
 								unit: this.props.unit.chart,
 								tooltipFormat: this.props.unit.format
@@ -162,7 +165,7 @@ class BarChart extends PureComponent {
 				<Bar
 					// redraw={true}
 					data={this.props.data}
-					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerWidth / 4 : window.innerHeight - 200}
+					height={this.props.theme.breakpoints.width('md') < window.innerWidth ? window.innerWidth / 4 : window.innerHeight - 200}
 					ref={r => this.chart = r}
 					options={this.state.lineOptions}
 					legend={this.legendOptions}
