@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="70px" height="66px" viewBox="0 0 70 66" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.3 (67297) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_clear_sky_day</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" stop-opacity="0.5" offset="0%"></stop>
+            <stop stop-color="#000000" stop-opacity="0.5" offset="100%"></stop>
+        </linearGradient>
+        <polygon id="path-2" points="34.4077833 58.1979717 23.7751935 66.1565848 19.8462237 53.4615925 6.57130188 53.6439067 10.8466849 41.0615909 0 33.3979684 10.8466849 25.7343459 6.57130188 13.15203 19.8462237 13.3343442 23.7751935 0.639351978 34.4077833 8.59796508 45.0403731 0.639351978 48.969343 13.3343442 62.2442648 13.15203 57.9688818 25.7343459 68.8155667 33.3979684 57.9688818 41.0615909 62.2442648 53.6439067 48.969343 53.4615925 45.0403731 66.1565848"></polygon>
+        <ellipse id="path-3" cx="34.4077833" cy="33.3979684" rx="18.9836046" ry="19.0038332"></ellipse>
+        <filter x="-36.9%" y="-26.3%" width="173.7%" height="173.7%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="0" dy="4" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="4" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Weather-icons" transform="translate(-205.000000, -159.000000)">
+            <g id="icons" transform="translate(195.000000, 158.000000)">
+                <g id="icon_clear_sky_day" transform="translate(10.449275, 0.315619)">
+                    <g id="sun">
+                        <g id="Star">
+                            <use fill="#FCC02E" xlink:href="#path-2"></use>
+                            <use fill-opacity="0.3" fill="url(#linearGradient-1)" style="mix-blend-mode: overlay;" xlink:href="#path-2"></use>
+                        </g>
+                        <g id="Oval">
+                            <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                            <use fill="#FEE6AC" fill-rule="evenodd" xlink:href="#path-3"></use>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

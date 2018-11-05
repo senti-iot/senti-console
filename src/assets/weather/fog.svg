@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="90px" height="65px" viewBox="0 0 90 65" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.3 (67297) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_scattered_clouds_night</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-38.0%" y="-58.7%" width="176.1%" height="217.4%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="4" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.14 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Weather-icons" transform="translate(-533.000000, -163.000000)" fill="#FFFFFF">
+            <g id="icons" transform="translate(195.000000, 158.000000)">
+                <g id="icon_scattered_clouds_night" filter="url(#filter-1)" transform="translate(348.136728, 10.999212)">
+                    <path d="M16.5303618,45.1337613 L56.6323864,45.1337613 C63.9999628,45.1337613 70.0013478,38.9450571 70.0013478,31.5902758 C70.0013478,25.4015716 65.9374834,20.229588 60.2221101,18.5441887 C60.0707739,13.0289591 55.5036123,8.62636714 49.8784854,8.62636714 C48.2436374,8.62636714 46.7032009,9.0230526 45.3279848,9.68899088 C42.8954975,3.99220406 37.1856778,0 30.5289653,0 C23.2703787,0 17.139872,4.75954035 15.1551457,11.2860095 C6.5754908,12.3088962 0,19.4163486 0,28.1598715 C0,37.3206336 7.12599378,45.1337613 16.5303618,45.1337613" id="cloud"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

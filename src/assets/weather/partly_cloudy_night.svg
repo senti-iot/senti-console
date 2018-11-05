@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="76px" height="57px" viewBox="0 0 76 57" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.3 (67297) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_few_clouds_night</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" stop-opacity="0.5" offset="0%"></stop>
+            <stop stop-color="#000000" stop-opacity="0.5" offset="100%"></stop>
+        </linearGradient>
+        <path d="M30.9119186,49.1806515 C39.630411,45.0345342 45.6581115,36.1386075 45.6581115,25.8333358 C45.6581115,15.528064 39.630411,6.6321373 30.9119186,2.48602 C34.2639325,0.891955132 38.0136951,0 41.9715633,0 C56.2237338,0 67.7774008,11.5659784 67.7774008,25.8333358 C67.7774008,40.1006931 56.2237338,51.6666715 41.9715633,51.6666715 C38.0136951,51.6666715 34.2639325,50.7747164 30.9119186,49.1806515 Z" id="path-2"></path>
+        <path d="M11.7673762,44.5399907 L40.3145802,44.5399907 C45.5592956,44.5399907 49.8314679,40.1427535 49.8314679,34.9169878 C49.8314679,30.5197506 46.9385475,26.8449202 42.8699767,25.6473996 C42.7622458,21.7286838 39.5110461,18.6005264 35.5067184,18.6005264 C34.3429283,18.6005264 33.2463464,18.8823819 32.267379,19.3555485 C30.5357779,15.3078316 26.4711605,12.4712655 21.7324837,12.4712655 C16.5653543,12.4712655 12.2012648,15.8530442 10.7884088,20.4902723 C4.68085786,21.2170602 0,26.2670922 0,32.4795953 C0,38.9885578 5.07274133,44.5399907 11.7673762,44.5399907" id="path-3"></path>
+        <filter x="-28.1%" y="-31.2%" width="156.2%" height="187.3%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="0" dy="4" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="4" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.2 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Weather-icons" transform="translate(-365.000000, -284.000000)">
+            <g id="icons" transform="translate(195.000000, 158.000000)">
+                <g id="icon_few_clouds_night" transform="translate(177.838886, 126.357275)">
+                    <g id="moon">
+                        <use fill="#FFFFFF" xlink:href="#path-2"></use>
+                        <use fill-opacity="0.300000012" fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+                        <use fill-opacity="0.5" fill="#3F8AE9" style="mix-blend-mode: color;" xlink:href="#path-2"></use>
+                    </g>
+                    <g id="cloud">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                        <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-3"></use>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
