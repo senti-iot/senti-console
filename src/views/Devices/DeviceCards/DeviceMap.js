@@ -15,7 +15,7 @@ export default class DeviceMap extends Component {
 				noExpand
 				content={
 					<Grid container justify={'center'}>
-						<Maps t={this.props.t} isMarkerShown markers={[device]} zoom={18} />
+						<Maps t={this.props.t} isMarkerShown markers={[device]} zoom={10} />
 					</Grid>
 				} />
 
