@@ -4,7 +4,7 @@ import { Map } from 'variables/icons'
 import { Grid } from '@material-ui/core';
 import { Maps } from 'components/Map/Maps';
 
-export default class DeviceMap extends Component {
+export default class ActiveDeviceMap extends Component {
 	render() {
 		const { device, t } = this.props
 		return (
