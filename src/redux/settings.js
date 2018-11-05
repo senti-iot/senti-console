@@ -3,6 +3,7 @@ import cookie from 'react-cookies';
 import { getUser, getValidSession } from 'variables/dataUsers'
 // import moment from 'moment'
 import 'moment/locale/da'
+import 'moment/locale/en-gb'
 import { saveSettings } from 'variables/dataLogin';
 var moment = require("moment")
 
@@ -68,16 +69,16 @@ export const getSettings = async () => {
 		var userId = cookie.load('SESSION') ? cookie.load('SESSION').userID : 0
 		var user = userId !== 0 ? await getUser(userId) : null
 		var settings = user ? user.aux ? user.aux.senti ? user.aux.senti.settings ? user.aux.senti.settings : null : null : null : null
-
-		moment.updateLocale("en", {
+		// moment.locale('en', null)
+		moment.updateLocale("en-gb", {
 			week: {
 				dow: 1
 			}
 		})
-		// moment().utc()
 		if (user) {
 			if (settings) {
-				moment.locale(user.aux.odeum.language)
+				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
+				// moment.locale(user.aux.odeum.language)
 				dispatch({
 					type: GETSETTINGS,
 					settings: {
@@ -89,7 +90,7 @@ export const getSettings = async () => {
 				return true
 			}
 			else {
-				moment.locale(user.aux.odeum.language)
+				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
 				let s = {
 					...getState().settings,
 					language: user.aux.odeum.language

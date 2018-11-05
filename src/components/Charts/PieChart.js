@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react'
-import { Line } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
 import { Typography, withStyles, Paper, Grow } from '@material-ui/core';
 import { ItemG } from 'components';
 import { graphStyles } from './graphStyles';
-class LineChart extends PureComponent {
+class PieChart extends PureComponent {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -16,6 +16,14 @@ class LineChart extends PureComponent {
 				exited: false
 			},
 			lineOptions: {
+				title: {
+					display: true,
+					text: props.title,
+				},
+				categoryPercentage: 0.5,
+				barPercentage: 0.5,
+				barThickness: "flex",
+				gridLines: { offsetGridLines: false },
 				animation: {
 					duration: 500
 				},
@@ -31,28 +39,32 @@ class LineChart extends PureComponent {
 				hover: {
 					mode: "point"
 				},
-				scales: {
-					xAxes: [
-						{
-							// id: "xAxis",
-							type: 'time',
-							time: {
-								displayFormats: {
-									hour: "LT",
-									day: 'll',
-									minute: 'LT'
-								},
-								unit: props.unit.chart,
-								tooltipFormat: props.unit.format
-							},
-						}],
-					yAxes: [{
-						scaleLabel: {
-							display: true,
-							labelString: 'value'
-						}
-					}]
-				}
+				// scales: {
+				// 	xAxes: [
+				// 		{
+				// 			display: false,
+				// 			offset: true,
+				// 			id: "day",
+				// 			type: 'time',
+				// 			time: {
+				// 				displayFormats: {
+				// 					hour: "LT",
+				// 					day: 'll'
+				// 				},
+				// 				unit: props.unit.chart,
+				// 				tooltipFormat: props.unit.format
+				// 			},
+				// 			gridLines: {
+				// 				offsetGridLines: true
+				// 			}
+				// 		}],
+				//		 yAxes: [{
+				//		 	scaleLabel: {
+				//		 		display: true,
+				//		 		labelString: 'value'
+				//		 	}
+				//		 }]
+				// }
 			}
 		}
 	}
@@ -75,41 +87,53 @@ class LineChart extends PureComponent {
 		}
 		const left = tooltipModel.caretX;
 		const top = tooltipModel.caretY;
+		// ;
+		// )
 		this.setTooltip({
 			top,
 			left,
 			title: tooltipModel.title,
 			data: tooltipModel.dataPoints.map((d, i) => ({
-				device: tooltipModel.body[i].lines[0].split(':')[0], count: d.yLabel, color: tooltipModel.labelColors[i].backgroundColor
+				device: tooltipModel.body[i].lines[0].split(':')[0], count: tooltipModel.body[i].lines[0].split(':')[1], color: tooltipModel.labelColors[i].backgroundColor
 			}))
 		})
 	}
-	setXAxis = () => {
-		this.setState({
-			lineOptions: {
-				...this.state.lineOptions,
-				scales: {
-					...this.state.lineOptions.scales,
-					xAxes: [{
-						// id: "day",
-						type: 'time',
-						time: {
-							displayFormats: {
-								hour: 'LT',
-								day: 'll',
-								minute: 'LT'
-							},
-							unit: this.props.unit.chart,
-							tooltipFormat: this.props.unit.format
-						},
-					}]
-				}
-			}
-		}, this.chart.chartInstance.update())
-	}
 	componentDidUpdate = (prevProps, prevState) => {
-		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID) {
-			this.setXAxis()
+		if (prevProps.unit !== this.props.unit) {
+			this.setState({
+				lineOptions: {
+					...this.state.lineOptions,
+
+					scales: {
+						...this.state.lineOptions.scales,
+						xAxes: [{
+							offset: true,
+							id: "day",
+							type: 'time',
+
+							time: {
+								displayFormats: {
+									hour: "LT"
+								},
+								unit: this.props.unit.chart,
+								tooltipFormat: this.props.unit.format
+							},
+						}]
+					}
+				}
+			})
+			this.chart.chartInstance.update()
+		}
+		if (prevProps.title !== this.props.title) {
+			this.setState({
+				lineOptions: {
+					...this.state.lineOptions,
+					title: {
+						display: true,
+						text: this.props.title
+					}
+				}
+			})
 		}
 	}
 
@@ -154,10 +178,11 @@ class LineChart extends PureComponent {
 		const { tooltip, chartWidth } = this.state
 		return (
 			<div style={{ maxHeight: 400, position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
-				<Line
+				<Pie
 					// redraw={true}
 					data={this.props.data}
-					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerWidth / 4 : window.innerHeight - 200}
+					height={400}
+					// height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerWidth / 4 : window.innerHeight - 200}
 					ref={r => this.chart = r}
 					options={this.state.lineOptions}
 					legend={this.legendOptions}
@@ -195,4 +220,4 @@ class LineChart extends PureComponent {
 	}
 }
 
-export default withStyles(graphStyles, { withTheme: true })(LineChart)
+export default withStyles(graphStyles, { withTheme: true })(PieChart)

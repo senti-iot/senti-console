@@ -6,7 +6,7 @@ import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
 import { withStyles, Button } from '@material-ui/core'
 import { red, green, yellow } from '@material-ui/core/colors'
 import { Link } from 'react-router-dom'
-import { getWifiSummary } from 'variables/dataDevices';
+import { getDataSummary } from 'variables/dataDevices';
 var moment = require("moment")
 const styles = theme => ({ 
 	redSignal: {
@@ -31,7 +31,7 @@ class MarkerWithInfo extends Component {
 	onToggleOpen = async () => {
 		if (this.state.isOpen === false) {
 			let OneMinuteAgo = moment().subtract(10, "minute").format("YYYY-MM-DD+HH:mm:ss")
-			let rs = await getWifiSummary(this.props.m.id, OneMinuteAgo, moment().format("YYYY-MM-DD+HH:mm:ss"))
+			let rs = await getDataSummary(this.props.m.id, OneMinuteAgo, moment().format("YYYY-MM-DD+HH:mm:ss"), false)
 			this.setState({ isOpen: !this.state.isOpen, liveCount: rs })
 		}
 		else { 

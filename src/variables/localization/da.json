@@ -315,6 +315,8 @@
 			"custom": "Tilpasset interval",
 			"daily": "Hver dag",
 			"hourly": "Hver time",
+			"minutely": "Hver minut",
+			"summary": "Resumé",
 			"thisWeek": "Denne uge",
 			"today": "I dag",
 			"yesterday": "I går"
@@ -373,6 +375,7 @@
 		"recalibrate": "Rekalibring",
 		"seeLess": "Se mindre",
 		"seeMore": "Se mere",
+		"seeDevice": "Se enhed",
 		"showMap": "Vis kort",
 		"showMore": "Vis mere",
 		"unassign": {
