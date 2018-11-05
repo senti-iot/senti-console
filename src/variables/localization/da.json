@@ -119,7 +119,7 @@
 			"passwordEmpty": "Kodeord må ikke være blankt!",
 			"passwordMismatch": "De indtastede kodeord er ikke ens!",
 			"passwordUnder8": "Kodeord skal være på mindst 8 tegn!",
-			"userDoesntExistAnymore": "Brugeren eksisterer ikke længere, eller adgang er udløbet!",
+			"userDoesntExistAnymore": "Brugeren eksisterer ikke længere, eller adgangen er udløbet!",
 			"emailDoesntExist": "Den indtastede E-mail er ikke tilknyttet en eksisterende konto!"
 		},
 		"welcomeMessage": "Velkommen til Senti.Cloud!"
@@ -333,9 +333,9 @@
 		"add": "Tilføj billeder",
 		"finish": "Afslut",
 		"reset": "Nulstil",
-		"upload": "Upload",
-		"uploadFailed": "Biller blev ikke uploaded! Genindlæs sitet og prøv igen!",
-		"uploadSuccess": "Billeder blev uploaded med succes"
+		"upload": "Overfør",
+		"uploadFailed": "Biller blev ikke overført! Genindlæs sitet og prøv igen!",
+		"uploadSuccess": "Billeder blev overført"
 	},
 	"links": {
 		"googleMaps": "Vis på Google Maps",
@@ -368,7 +368,7 @@
 		"changePassword": "Skift kodeord",
 		"delete": "Slet",
 		"edit": "Rediger",
-		"exportPDF": "Exporter til PDF",
+		"exportPDF": "Print som PDF",
 		"hideMap": "Skjul kort",
 		"hideMore": "Skjul",
 		"more": "Mere",
@@ -454,7 +454,7 @@
 		"projectsColumnProgress": "",
 		"projectsColumnStartDate": "Startdato",
 		"projectsColumnTitle": "Navn",
-		"redirecting": "Redirecting",
+		"redirecting": "Omdirigerer",
 		"tabs": {
 			"cardView": "Gittervisning",
 			"listView": "Listevisning"
@@ -464,7 +464,7 @@
 			"noEndDate": "Manglende Slutdato",
 			"noStartDate": "Manglende Startdato",
 			"noTitle": "Manglende Projektnavn",
-			"startDateBiggerThanEndDate": "Startdato kan ikke være større end slutdato"
+			"startDateBiggerThanEndDate": "Startdato må ikke være senere end slutdato"
 		},
 		"viewProject": "Vis projekt"
 	},
@@ -526,7 +526,7 @@
 			"deviceToCollection": "Enhed %{device} tilknyttet til datasamling %{collection}",
 			"deviceToOrg": "Enhed %{device} tilknyttet til organisation %{org}",
 			"collectionToProject": "Datasamling %{collection} tilknyttet til projekt %{project}",
-			"collectionsToProject": "Data collections tilknyttet til projekt",
+			"collectionsToProject": "Datasamlinger tilknyttet til projekt",
 			"collectionToOrg": "Datasamling %{collection} tilknyttet til organisation %{org}",
 			"projectToOrg": "Project %{project} tilknyttet til organisation %{org}"
 		},
@@ -547,25 +547,25 @@
 		"deleting": "Sletter ...",
 		"deviceUpdated": "Enhed %{device} er blevet opdateret!",
 		"exported": "Eksporteret!",
-		"orgCreated": "Organisation %{org} er succesfuldt oprettet!",
-		"orgDeleted": "Organisation er succefuldt slettet!",
-		"orgUpdated": "Organisation %{org} er succesfuldt opdateret!",
-		"pictureDeleted": "Picture has been deleted!",
-		"pictureNotDeleted": "Picture has not been deleted!",
+		"orgCreated": "Organisation %{org} er  oprettet!",
+		"orgDeleted": "Organisation er slettet!",
+		"orgUpdated": "Organisation %{org} er opdateret!",
+		"pictureDeleted": "Billedet er slettet!",
+		"pictureNotDeleted": "Billedet blev ikke slettet!",
 		"projectCreated": "Projektet %{project} er oprettet!",
 		"projectDeleted": "Projekt(er) er slettet!",
 		"projectExported": "Projektet er eksporteret!",
-		"projectUpdated": "Projekt %{project} er succesfuldt opdateret!",
+		"projectUpdated": "Projekt %{project} er opdateret!",
 		"redirect": "Omdirigerer ...",
-		"resetDeviceSuccess": "Enhed has been resetted",
-		"settingsSaved": "Instillinger gemt!",
+		"resetDeviceSuccess": "Enhed er blevet nulstillet",
+		"settingsSaved": "Indstillinger gemt!",
 		"updatedFailed": "Opdatering fejlede!",
 		"updatedSuccess": "Opdateret!",
 		"updating": "Opdaterer ...",
-		"userCreated": "Bruger %{user} er succesfuldt opretted!",
-		"userDeleted": "Bruger %{user} er succesfuldt sletted!",
-		"userPasswordChanged": "Kodeord er succesfuld skiftet!",
-		"userUpdated": "Bruger %{user} er succesfuldt opdateret!"
+		"userCreated": "Bruger %{user} er opretted!",
+		"userDeleted": "Bruger %{user} er sletted!",
+		"userPasswordChanged": "Kodeord er skiftet!",
+		"userUpdated": "Bruger %{user} er opdateret!"
 	},
 	"tables": {
 		"addNewDevice": "Tilføj enhed",
