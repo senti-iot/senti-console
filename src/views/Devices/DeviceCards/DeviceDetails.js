@@ -7,6 +7,9 @@ import { ConvertDDToDMS, dateFormat, dateFormatter } from 'variables/functions'
 import { Link } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import Dropdown from 'components/Dropdown/Dropdown'
+import teal from '@material-ui/core/colors/teal'
+const Skycons = require('skycons')(window)
+
 class DeviceDetails extends Component {
 
 	renderStatus = (status) => {
@@ -44,7 +47,34 @@ class DeviceDetails extends Component {
 			{ id: 9, label: t("devices.locationTypes.office") },
 			{ id: 0, label: t("devices.locationTypes.unspecified") }]
 	}
+	componentDidMount = () => {
 
+	}
+	componentWillUpdate = () => {
+		// if (this.props.weather) {
+		// console.log(this.props.weather)
+		// var skycons = new Skycons({
+		//  "monochrome": false,
+		//  "colors" : {
+		//    "cloud" : "#F00"
+		//  }
+		//  });
+		let weatherIcon = new Skycons({
+			"monochrome": false,
+			"colors": {
+				"main": teal[500],
+				"sun": "#FF0",
+				"cloud": "#F00"
+			}
+		});
+		let iconStr = /* this.props.weather.currently.icon.toString() ?*/  'PARTLY_CLOUDY_DAY'
+		// iconStr = iconStr.replace(/-/g, '_')
+		// iconStr = iconStr.toUpperCase()
+		// console.log(Skycons[iconStr], iconStr)
+		weatherIcon.add('icon1', Skycons[iconStr])
+		weatherIcon.play()
+		// }
+	}
 	renderDeviceLocType = () => {
 		const { device, t } = this.props
 		let deviceLoc = this.LocationTypes()[this.LocationTypes().findIndex(r => r.id === device.locationType)]
@@ -58,7 +88,7 @@ class DeviceDetails extends Component {
 				avatar={<DeviceHub />}
 				topAction={<Dropdown menuItems={
 					[
-						{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/device/${device.id}/edit`, prevURL: `/device/${device.id}`  }) },
+						{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/device/${device.id}/edit`, prevURL: `/device/${device.id}` }) },
 						{ label: t("menus.assign.deviceToCollection"), icon: <DataUsage className={classes.leftIcon} />, func: this.props.handleOpenAssign },
 						{ label: device.org.id > 0 ? t("menus.reassign.deviceToOrg") : t("menus.assign.deviceToOrg"), icon: <Business className={classes.leftIcon} />, func: this.props.handleOpenAssignOrg, dontShow: accessLevel.senticloud ? accessLevel.senticloud.editdeviceownership ? false : true : true },
 						{ label: t("menus.unassign.deviceFromCollection"), icon: <LayersClear className={classes.leftIcon} />, func: this.props.handleOpenUnassign, dontShow: device.dataCollection.id > 0 ? false : true },
@@ -105,6 +135,10 @@ class DeviceDetails extends Component {
 								<Info>
 									{device.temperature} &#8451;
 								</Info>
+							</ItemGrid>
+							<ItemGrid>
+								<Caption> Weather </Caption> {/* TODO: String Localization */}
+								<Info><canvas id="icon1" width="32" height="32"></canvas></Info>
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<Caption>{t("devices.fields.description")}:</Caption>

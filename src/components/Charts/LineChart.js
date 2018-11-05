@@ -3,6 +3,7 @@ import { Line } from 'react-chartjs-2';
 import { Typography, withStyles, Paper, Grow } from '@material-ui/core';
 import { ItemG } from 'components';
 import { graphStyles } from './graphStyles';
+// import { getWeather } from 'variables/dataDevices';
 class LineChart extends PureComponent {
 	constructor(props) {
 		super(props)
@@ -73,9 +74,14 @@ class LineChart extends PureComponent {
 			this.hideTooltip()
 			return
 		}
+		console.log(tooltipModel)
+		console.log(this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].id)
 		const left = tooltipModel.caretX;
 		const top = tooltipModel.caretY;
+		// let deviceWeather = getWeather(device).then(rs => rs)
+
 		this.setTooltip({
+			// weather: deviceWeather,
 			top,
 			left,
 			title: tooltipModel.title,

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getDevice, getAllPictures } from 'variables/dataDevices'
+import { getDevice, getAllPictures, /* getWeather */ } from 'variables/dataDevices'
 import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
 import { ItemGrid, AssignOrg, AssignDC } from 'components'
 import deviceStyles from 'assets/jss/views/deviceStyles'
@@ -40,6 +40,8 @@ class Device extends Component {
 				if (rs.dataCollection) {
 					await this.getDataCollection(rs.dataCollection)
 				}
+				// let data = await getWeather(rs)
+				// this.setState({ weather: data })
 				let prevURL = this.props.location.prevURL ? this.props.location.prevURL : '/devices/list'
 				this.props.setHeader(rs.name ? rs.name : rs.id, true, prevURL ? prevURL : '/devices/list', "devices")
 
@@ -269,6 +271,7 @@ class Device extends Component {
 					{device.dataCollection ? this.renderConfirmUnassign() : null}
 					<ItemGrid xs={12} noMargin>
 						<DeviceDetails
+							weather={this.state.weather}
 							device={device}
 							history={this.props.history}
 							match={this.props.match}

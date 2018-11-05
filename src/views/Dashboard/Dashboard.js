@@ -120,7 +120,6 @@ class Dashboard extends React.Component {
 						<Caption>
 							Alpha Senti.Cloud version {pj.version}
 						</Caption>
-						<canvas id="icon1" width="128" height="128"></canvas>
 					</ItemG>
 				</GridContainer>
 			</Fragment>
