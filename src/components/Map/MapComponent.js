@@ -35,7 +35,7 @@ class MapComponent extends Component {
 	}
 	
 	render() {
-		console.log(this.props.zoom)
+		// console.log(this.props.zoom)
 		let props = this.props
 		let defaultLat = parseFloat(56.2639) //Denmark,
 		let defaultLng = parseFloat(9.5018) //Denmark

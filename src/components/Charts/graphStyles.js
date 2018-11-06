@@ -1,4 +1,8 @@
 export const graphStyles = theme => ({
+	antialias: {
+		webkitFontSmoothing: 'antialiased',
+		"-webkit-font-smoothing": "antialiased"
+	},
 	expand: {
 		flex: 1,
 		width: 'auto',

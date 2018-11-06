@@ -37,7 +37,6 @@ export const unassignDeviceFromCollection = async (obj) => {
  * @param id - DataCollection ID
  */
 export const getCollection = async (id) => {
-	console.trace()
 	let data = await api.get(`/senti/datacollection/${id}`).then(rs => rs.data)
 	return data
 }

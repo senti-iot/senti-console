@@ -1,4 +1,3 @@
-/* Tree Shaking in react does not work and @material-ui/icons is huge */
 //#region weather Icons 
 import ClearDay from 'assets/weather/clear_day.svg'
 import ClearNight from 'assets/weather/clear_night.svg'

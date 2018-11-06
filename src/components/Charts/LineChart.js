@@ -1,13 +1,16 @@
 import React, { PureComponent } from 'react'
 import { Line } from 'react-chartjs-2';
 import { Typography, withStyles, Paper, Grow } from '@material-ui/core';
-import { ItemG } from 'components';
+import { ItemG, WeatherIcon } from 'components';
 import { graphStyles } from './graphStyles';
+import { getWeather } from 'variables/dataDevices';
+import moment from 'moment'
 // import { getWeather } from 'variables/dataDevices';
 class LineChart extends PureComponent {
 	constructor(props) {
 		super(props)
 		this.state = {
+			weatherDate: null,
 			tooltip: {
 				show: false,
 				title: '',
@@ -18,7 +21,8 @@ class LineChart extends PureComponent {
 			},
 			lineOptions: {
 				animation: {
-					duration: 500
+					duration: 500,
+					onComplete: props.getImage,
 				},
 				display: true,
 				maintainAspectRatio: false,
@@ -69,19 +73,40 @@ class LineChart extends PureComponent {
 			chartWidth: this.chart.chartInstance.canvas.width
 		})
 	}
-	customTooltip = (tooltipModel) => {
+	setHours = (date) => {
+		if (this.props.unit.chart === 'day')
+			return moment(date).startOf('day').add(12, 'h')
+			
+	}
+	customTooltip = async (tooltipModel) => {
 		if (tooltipModel.opacity === 0) {
 			this.hideTooltip()
 			return
 		}
-		console.log(tooltipModel)
-		console.log(this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].id)
+		// console.log(tooltipModel)
+		// console.log(this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x)
+		let weatherData = null
+		let wDate = null
+		try {
+			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
+			// console.log(this.state.weatherDate, wDate, this.state.weatherDate === wDate)
+			if (this.state.weatherDate !== wDate)
+				weatherData = await getWeather(this.props.obj, this.setHours(wDate))
+			this.setState({
+				weatherDate: wDate,
+				weather: weatherData ? weatherData : this.state.weather
+			})
+		}
+		catch (err) { 
+
+		}
+
 		const left = tooltipModel.caretX;
 		const top = tooltipModel.caretY;
 		// let deviceWeather = getWeather(device).then(rs => rs)
-
+	
 		this.setTooltip({
-			// weather: deviceWeather,
+			
 			top,
 			left,
 			title: tooltipModel.title,
@@ -179,8 +204,12 @@ class LineChart extends PureComponent {
 				}}>
 					<Grow in={tooltip.show} onExited={this.exitedTooltip} >
 						<Paper className={classes.paper}>
-							<ItemG>
-								<Typography variant={'h6'}>{this.state.tooltip.title}</Typography>
+							<ItemG container>
+								<ItemG container direction="row"
+									justify="space-between">
+									<Typography variant={'h6'} classes={{ root: classes.antialias }}>{this.state.tooltip.title}</Typography>
+									{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : null}
+								</ItemG>
 								{this.state.tooltip.data.map((d, i) => {
 									return (
 										<ItemG key={i} container alignItems={'center'}>

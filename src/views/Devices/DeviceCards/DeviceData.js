@@ -44,7 +44,7 @@ class DeviceData extends PureComponent {
 	format = "YYYY-MM-DD+HH:mm"
 
 	displayFormat = "DD MMMM YYYY HH:mm"
-
+	image = null
 	options = [
 		{ id: 0, label: this.props.t("filters.dateOptions.today") },
 		{ id: 1, label: this.props.t("filters.dateOptions.yesterday") },
@@ -256,6 +256,7 @@ class DeviceData extends PureComponent {
 		this.setState({ dataArr: dataArr, timeType: 2 }, this.setDailyData)
 		// this.setDailyData(dataArr)
 	}
+
 	getWifiSum = async () => {
 		const { device } = this.props
 		const { from, to, raw } = this.state
@@ -287,12 +288,23 @@ class DeviceData extends PureComponent {
 			})
 		}
 	}
-
+	getImage = () => {
+		var canvas = document.getElementsByClassName("chartjs-render-monitor");
+		if (canvas.length > 0) {
+			 this.image = canvas[0].toDataURL("image/png");
+			// this.setState({ image: this.image })
+			// console.log(this.image)
+		}
+	}
 	componentDidMount = async () => {
 		this._isMounted = 1
 		if (this._isMounted) {
 			this.handleSwitchVisibility()
+			
 		}
+	}
+	componentDidUpdate = async () => {
+		// this.getImage()
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
@@ -587,6 +599,8 @@ class DeviceData extends PureComponent {
 					<LineChart
 						hoverID={this.props.hoverID}
 						single
+						getImage={this.getImage}
+						obj={this.props.device}
 						unit={this.timeTypes[this.state.timeType]}
 						onElementsClick={this.handleZoomOnData}
 						setHoverID={this.props.setHoverID}
@@ -750,25 +764,28 @@ class DeviceData extends PureComponent {
 		const { t, classes } = this.props
 		const { loading, noData, raw } = this.state
 		return (
-			<InfoCard
-				title={t("collections.cards.data")}
-				avatar={<Timeline />}
-				noExpand
-				// noPadding
-				topAction={noData ? null : this.renderMenu()}
-				content={
-					<Grid container>
-						{this.renderCustomDateDialog()}
-						{loading ? <CircularLoader notCentered /> :
-							<Fragment>
-								<ItemG xs={12}>
-									<Caption className={classes.bigCaption2}>{raw ? t("collections.rawData") : t("collections.calibratedData")}</Caption>
-									{noData ? this.renderNoData() : this.renderType()}
-								</ItemG>
-								{/* {this.props.hoverID} */}
-							</Fragment>}
-					</Grid>}
-			/>
+			<Fragment>
+				<InfoCard
+					title={t("collections.cards.data")}
+					avatar={<Timeline />}
+					noExpand
+					// noPadding
+					topAction={noData ? null : this.renderMenu()}
+					content={
+						<Grid container>
+							{this.renderCustomDateDialog()}
+							{loading ? <CircularLoader notCentered /> :
+								<Fragment>
+									<ItemG xs={12}>
+										<Caption className={classes.bigCaption2}>{raw ? t("collections.rawData") : t("collections.calibratedData")}</Caption>
+										{noData ? this.renderNoData() : this.renderType()}
+									</ItemG>
+									{/* {this.props.hoverID} */}
+								</Fragment>}
+						</Grid>}
+				/>
+				{/* <img src={this.state.image} alt='NOPE' width={1025}/> */}
+			</Fragment >
 		);
 	}
 }

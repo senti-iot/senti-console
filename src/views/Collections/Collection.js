@@ -39,7 +39,7 @@ class Collection extends Component {
 	}
 	getActiveDevice = async (id) => {
 		let device = await getDevice(id)
-		return device ? this.setState({ activeDevice: device }, () => console.log(this.state)) : null
+		return device ? this.setState({ activeDevice: device }) : null
 	}
 	getCollectionProject = async (rs) => {
 		let project = await getProject(rs)

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getDevice, getAllPictures, /* getWeather */ } from 'variables/dataDevices'
+import { getDevice, getAllPictures, getWeather, /* getWeather */ } from 'variables/dataDevices'
 import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
 import { ItemGrid, AssignOrg, AssignDC } from 'components'
 import deviceStyles from 'assets/jss/views/deviceStyles'
@@ -40,14 +40,12 @@ class Device extends Component {
 				if (rs.dataCollection) {
 					await this.getDataCollection(rs.dataCollection)
 				}
-				// let data = await getWeather(rs)
-				// this.setState({ weather: data })
+				let data = await getWeather(rs)
+				this.setState({ weather: data })
 				let prevURL = this.props.location.prevURL ? this.props.location.prevURL : '/devices/list'
 				this.props.setHeader(rs.name ? rs.name : rs.id, true, prevURL ? prevURL : '/devices/list', "devices")
-
 			}
 		})
-		return true
 	}
 
 		getDataCollection = async (id) => {
@@ -87,7 +85,7 @@ class Device extends Component {
 			if (id) {
 				// this.getAllPics(id)
 				await this.getDevice(id)
-				console.log(this.state.device);
+				// console.log(this.state.device);
 				
 			}
 		}

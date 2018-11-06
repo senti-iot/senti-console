@@ -12,18 +12,20 @@ const styles = (theme) => ({
 })
 const WeatherIcon = (props) => {
 	const getIcon = () => {
+		// console.log(props.icon);
+		
 		switch (props.icon) {
-			case 'clear_day':
+			case 'clear-day':
 				return ClearDay
-			case 'clear_night':
+			case 'clear-night':
 				return ClearNight
 			case 'cloudy':
 				return Cloudy
 			case 'fog':
 				return Fog
-			case 'partly_cloudy_day':
+			case 'partly-cloudy-day':
 				return PartlyCloudyDay
-			case 'partly_cloudy_night':
+			case 'partly-cloudy-night':
 				return PartlyCloudyNight
 			case 'rain':
 				return Rain

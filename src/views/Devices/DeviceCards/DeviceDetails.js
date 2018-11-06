@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { Grid, Typography, withStyles, Button } from '@material-ui/core';
-import { ItemGrid, Warning, P, Info, Caption } from 'components';
+import { ItemGrid, Warning, P, Info, Caption, WeatherIcon } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
-import { SignalWifi2Bar, SignalWifi2BarLock, Build, /* LibraryBooks,  */Edit, DeviceHub, LayersClear, Business, DataUsage } from 'variables/icons'
+import { SignalWifi2Bar, SignalWifi2BarLock, Build, /* LibraryBooks,  */Edit, DeviceHub, LayersClear, Business, DataUsage, Wind } from 'variables/icons'
 import { ConvertDDToDMS, dateFormat, dateFormatter } from 'variables/functions'
 import { Link } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';
@@ -138,7 +138,8 @@ class DeviceDetails extends Component {
 							</ItemGrid>
 							<ItemGrid>
 								<Caption> Weather </Caption> {/* TODO: String Localization */}
-								{/* <WeatherIcon icon={this.props.weather.summary.icon}/> */}
+								{/* <Wind/> */}
+								{this.props.weather ? <WeatherIcon icon={this.props.weather.currently.icon} /> : null}
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<Caption>{t("devices.fields.description")}:</Caption>

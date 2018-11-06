@@ -2,10 +2,10 @@ import { api, imageApi, mapApi, weatherApi } from "./data";
 import moment from 'moment'
 
 //#region getWeather
-export const getWeather = async (device) => {
-	let URL = `/${moment().format('YYYY-MM-DDTHH:mm:ss')}/${device.lat}/${device.long}`
+export const getWeather = async (device, date) => {
+	let URL = `/${moment(date).format('YYYY-MM-DDTHH:mm:ss')}/${device.lat}/${device.long}`
 	let response = await weatherApi.get(URL).then(rs => rs)
-	console.log(response)
+	// console.log(response)
 	return response.data
 }
 
