@@ -1,4 +1,16 @@
 /* Tree Shaking in react does not work and @material-ui/icons is huge */
+//#region weather Icons 
+import ClearDay from 'assets/weather/clear_day.svg'
+import ClearNight from 'assets/weather/clear_night.svg'
+import Cloudy from 'assets/weather/cloudy.svg'
+import Fog from 'assets/weather/fog.svg'
+import PartlyCloudyDay from 'assets/weather/partly_cloudy_day.svg'
+import PartlyCloudyNight from 'assets/weather/partly_cloudy_night.svg'
+import Rain from 'assets/weather/rain.svg'
+import Sleet from 'assets/weather/sleet.svg'
+import Snow from 'assets/weather/snow.svg'
+import Wind from 'assets/weather/wind.svg'
+//#endregion
 import Timeline from '@material-ui/icons/Timeline'
 import ShowChart from '@material-ui/icons/ShowChart'
 import ExpandMore from '@material-ui/icons/ExpandMore'
@@ -62,6 +74,18 @@ import DeviceHub from '@material-ui/icons/DeviceHub'
 import Dashboard from '@material-ui/icons/Dashboard'
 import History from '@material-ui/icons/History'
 export {
+	//Weather Icons
+	ClearDay,
+	ClearNight,
+	Cloudy,
+	Fog,
+	PartlyCloudyDay,
+	PartlyCloudyNight,
+	Rain,
+	Sleet,
+	Snow,
+	Wind,
+	//End Weather Icons
 	History,
 	Timeline,
 	ShowChart,

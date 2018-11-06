@@ -7,8 +7,8 @@ import { ConvertDDToDMS, dateFormat, dateFormatter } from 'variables/functions'
 import { Link } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import Dropdown from 'components/Dropdown/Dropdown'
-import teal from '@material-ui/core/colors/teal'
-const Skycons = require('skycons')(window)
+// import teal from '@material-ui/core/colors/teal'
+// const Skycons = require('skycons')(window)
 
 class DeviceDetails extends Component {
 
@@ -59,20 +59,20 @@ class DeviceDetails extends Component {
 		//    "cloud" : "#F00"
 		//  }
 		//  });
-		let weatherIcon = new Skycons({
-			"monochrome": false,
-			"colors": {
-				"main": teal[500],
-				"sun": "#FF0",
-				"cloud": "#F00"
-			}
-		});
-		let iconStr = /* this.props.weather.currently.icon.toString() ?*/  'PARTLY_CLOUDY_DAY'
-		// iconStr = iconStr.replace(/-/g, '_')
-		// iconStr = iconStr.toUpperCase()
-		// console.log(Skycons[iconStr], iconStr)
-		weatherIcon.add('icon1', Skycons[iconStr])
-		weatherIcon.play()
+		// let weatherIcon = new Skycons({
+		// 	"monochrome": false,
+		// 	"colors": {
+		// 		"main": teal[500],
+		// 		"sun": "#FF0",
+		// 		"cloud": "#F00"
+		// 	}
+		// });
+		// let iconStr = /* this.props.weather.currently.icon.toString() ?*/  'PARTLY_CLOUDY_DAY'
+		// // iconStr = iconStr.replace(/-/g, '_')
+		// // iconStr = iconStr.toUpperCase()
+		// // console.log(Skycons[iconStr], iconStr)
+		// weatherIcon.add('icon1', Skycons[iconStr])
+		// weatherIcon.play()
 		// }
 	}
 	renderDeviceLocType = () => {
@@ -138,7 +138,7 @@ class DeviceDetails extends Component {
 							</ItemGrid>
 							<ItemGrid>
 								<Caption> Weather </Caption> {/* TODO: String Localization */}
-								<Info><canvas id="icon1" width="32" height="32"></canvas></Info>
+								{/* <WeatherIcon icon={this.props.weather.summary.icon}/> */}
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<Caption>{t("devices.fields.description")}:</Caption>
