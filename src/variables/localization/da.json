@@ -355,10 +355,10 @@
 	},
 	"menus": {
 		"assign": {
-			"collectionsToProject": "Tilknyt datasamlinger til projekt",
-			"collectionToProject": "Tilknyt datasamling til projekt",
-			"deviceToCollection": "Tilknyt enhed til datasamling",
-			"deviceToOrg": "Tilknyt enhed til organisation"
+			"collectionsToProject": "Tilknyt datasamlinger",
+			"collectionToProject": "Tilknyt datasamling",
+			"deviceToCollection": "Tilknyt enhed",
+			"deviceToOrg": "Tilknyt enhed"
 		},
 		"reassign": {
 			"deviceToOrg": "Overflyt til anden organisation",
