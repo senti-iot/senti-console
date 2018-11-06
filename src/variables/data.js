@@ -22,7 +22,7 @@ export const loginApi = create({
 	}
 })
 export const weatherApi = create({
-	baseURL: `https://odeum-weather.herokuapp.com`,
+	baseURL: `https://api.senti.cloud/weather`,
 	timeout: 30000,
 	headers: {
 		'Accept': 'application/json',
