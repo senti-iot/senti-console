@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Grid, Typography, withStyles, Button } from '@material-ui/core';
+import { Grid, Typography, withStyles, Button, CircularProgress } from '@material-ui/core';
 import { ItemG, Warning, P, Info, Caption, WeatherIcon } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import { SignalWifi2Bar, SignalWifi2BarLock, Build, /* LibraryBooks,  */Edit, DeviceHub, LayersClear, Business, DataUsage } from 'variables/icons'
@@ -81,7 +81,7 @@ class DeviceDetails extends Component {
 		return deviceLoc ? deviceLoc.label : t("devices.noLocType")
 	}
 	render() {
-		const { classes, device, t, accessLevel, history } = this.props
+		const { classes, device, t, accessLevel, history, weather } = this.props
 		return (
 			<InfoCard
 				title={device.name ? device.name : device.id}
@@ -130,11 +130,20 @@ class DeviceDetails extends Component {
 									{device.temperature} &#8451;
 								</Info>
 							</ItemG>
-							<ItemG xs={6} md={3} lg={3} xl={3}>
-								{/* <Caption> Weather </Caption>  */}
-								{/* <Wind/> */}
-								{this.props.weather ? <WeatherIcon icon={this.props.weather.currently.icon} /> : null}
-							</ItemG>
+							<ItemG container xs={6} md={3} lg={3} xl={3}>
+								{weather ? 	<Fragment>
+									<ItemG xs={2}>
+										<WeatherIcon icon={weather.currently.icon} /> 
+									</ItemG>
+									<ItemG xs={8}>
+										<Caption>{t("devices.fields.weather")}</Caption>
+										<Info>
+											{weather.currently.summary}
+										</Info>
+									</ItemG>
+								</Fragment>
+									: <CircularProgress size={20}/>}
+							</ItemG> 
 							<ItemG xs={6} md={3} lg={3} xl={3}>
 								<Caption>{t("devices.fields.locType")}:</Caption>
 								<Info>{this.renderDeviceLocType()} </Info>

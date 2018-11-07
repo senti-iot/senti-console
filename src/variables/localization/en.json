@@ -178,6 +178,7 @@
 		"editDetailsTitle": "Edit %{deviceId}",
 		"editHardwareTitle": "Edit hardware for device %{deviceId}",
 		"fields": {
+			"weather": "Weather",
 			"adapter": "Power adapter",
 			"address": "Address",
 			"availability": "Availability",

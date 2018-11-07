@@ -300,6 +300,7 @@ class Device extends Component {
 					<ItemGrid xs={12} noMargin>
 						<DeviceMap 
 							device={device}
+							weather={this.state.weather}
 							t={this.props.t}
 						/>
 					</ItemGrid>

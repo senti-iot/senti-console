@@ -178,6 +178,7 @@
 		"editDetailsTitle": "Opdater %{deviceId}",
 		"editHardwareTitle": "Opdater hardware for enhed %{deviceId}",
 		"fields": {
+			"weather": "Vejr",
 			"adapter": "Strømforsyning",
 			"address": "Adresse",
 			"availability": "Tilgængelighed",

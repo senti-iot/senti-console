@@ -58,7 +58,7 @@ class MapComponent extends Component {
 			>
 				{props.markers.length > 0 ? props.markers.map((m, i) => {
 					if (m.lat && m.long)
-						return <MarkerWithInfo t={props.t} key={i} m={m} i={i} />
+						return <MarkerWithInfo t={props.t} key={i} m={m} i={i} weather={m.weather} />
 					else
 						return null
 				})
