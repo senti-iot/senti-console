@@ -5,6 +5,9 @@ import { ItemG, WeatherIcon } from 'components';
 import { graphStyles } from './graphStyles';
 import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
+import { compose } from 'recompose';
+import { connect } from 'react-redux'
+
 // import { getWeather } from 'variables/dataDevices';
 class LineChart extends PureComponent {
 	constructor(props) {
@@ -53,7 +56,7 @@ class LineChart extends PureComponent {
 						}],
 					yAxes: [{
 						scaleLabel: {
-							display: true,
+							display: false,
 							labelString: 'value'
 						}
 					}]
@@ -68,15 +71,35 @@ class LineChart extends PureComponent {
 			this.props.setHoverID(this.props.data.datasets[l.datasetIndex].id)
 		} : null
 	}
+	clickEvent = () => {
+		if ('ontouchstart' in document.documentElement === true)
+			return false
+		else
+			return true
+	}
 	componentDidMount = () => {
 		this.setState({
-			chartWidth: this.chart.chartInstance.canvas.width
-		})
+			chartWidth: parseInt(this.chart.chartInstance.canvas.style.width.substring(0, this.chart.chartInstance.canvas.style.width.length - 1), 10),
+			chartHeight: parseInt(this.chart.chartInstance.canvas.style.height.substring(0, this.chart.chartInstance.canvas.style.height.length - 1), 10),
+			mobile: window.innerWidth > 400 ? false : true
+		})	
 	}
+	componentDidUpdate = (prevProps, prevState) => {
+		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID) {
+			this.setXAxis()
+		}
+		if (this.chart.chartInstance.canvas.style.width !== this.state.chartWidth || this.state.chartHeight !== this.chart.chartInstance.canvas.style.height) {
+			this.setState({
+				chartWidth: parseInt(this.chart.chartInstance.canvas.style.width.substring(0, this.chart.chartInstance.canvas.style.width.length - 1), 10),
+				chartHeight: parseInt(this.chart.chartInstance.canvas.style.height.substring(0, this.chart.chartInstance.canvas.style.height.length - 1), 10)
+			})
+		}
+	}
+
 	setHours = (date) => {
 		if (this.props.unit.chart === 'day')
 			return moment(date).startOf('day').add(12, 'h')
-			
+
 	}
 	customTooltip = async (tooltipModel) => {
 		if (tooltipModel.opacity === 0) {
@@ -91,22 +114,20 @@ class LineChart extends PureComponent {
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
 			// console.log(this.state.weatherDate, wDate, this.state.weatherDate === wDate)
 			if (this.state.weatherDate !== wDate)
-				weatherData = await getWeather(this.props.obj, this.setHours(wDate))
+				weatherData = await getWeather(this.props.obj, this.setHours(wDate), this.props.lang)
 			this.setState({
 				weatherDate: wDate,
 				weather: weatherData ? weatherData : this.state.weather
 			})
 		}
-		catch (err) { 
+		catch (err) {
 
 		}
 
 		const left = tooltipModel.caretX;
 		const top = tooltipModel.caretY;
 		// let deviceWeather = getWeather(device).then(rs => rs)
-	
 		this.setTooltip({
-			
 			top,
 			left,
 			title: tooltipModel.title,
@@ -137,11 +158,6 @@ class LineChart extends PureComponent {
 				}
 			}
 		}, this.chart.chartInstance.update())
-	}
-	componentDidUpdate = (prevProps, prevState) => {
-		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID) {
-			this.setXAxis()
-		}
 	}
 
 	setTooltip = (tooltip) => {
@@ -180,27 +196,57 @@ class LineChart extends PureComponent {
 		const { single } = this.props
 		return !single ? () => this.props.setHoverID(0) : undefined
 	}
+	transformLoc = () => {
+		const { tooltip, chartWidth, chartHeight, mobile } = this.state
+		let x = 0
+		let y = 0
+		if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
+			x = '-25%'
+			y = '25%'
+		}
+		if (tooltip.left < (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
+			x = '-25%'
+			y = '-125%'
+		}
+		if (tooltip.left > (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
+			x = '-80%'
+			y = '-125%'
+		}
+		if (tooltip.left > (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
+			x = '-80%'
+			y = '-125%'
+		}
+		if (tooltip.left > ((chartWidth / 4) * 3)) { 
+			x = '-90%'
+		}
+		if (tooltip.left < chartWidth / 4) { 
+			x = '0%'
+		}
+		if (mobile)
+			x = '-50%'
+		return `translate(${x}, ${y})`
+	}
 	render() {
 		const { classes } = this.props
-		const { tooltip, chartWidth } = this.state
+		const { tooltip, chartWidth, mobile } = this.state
 		return (
 			<div style={{ maxHeight: 400, position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
 				<Line
-					// redraw={true}
 					data={this.props.data}
-					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerWidth / 4 : window.innerHeight - 200}
+					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
 					ref={r => this.chart = r}
 					options={this.state.lineOptions}
 					legend={this.legendOptions}
-					onElementsClick={this.elementClicked}
+					onElementsClick={this.clickEvent() ? this.elementClicked : undefined}
 				/>
 				<div ref={r => this.tooltip = r} style={{
 					zIndex: tooltip.show ? 1300 : tooltip.exited ? -1 : 1300,
 					position: 'absolute',
 					top: Math.round(this.state.tooltip.top),
-					left: Math.round(this.state.tooltip.left),
-					transform: (tooltip.left) > (chartWidth / 2) ? 'translate(-105%, -50%)' : 'translate(5%, -50%)',
-					minWidth: 300
+					left: mobile ? '50%' : Math.round(this.state.tooltip.left),
+					transform: this.transformLoc(),
+					width: mobile ? 200 : 300,
+					maxWidth: mobile ?  (chartWidth ? chartWidth : window.innerWidth - 250) : 300 
 				}}>
 					<Grow in={tooltip.show} onExited={this.exitedTooltip} >
 						<Paper className={classes.paper}>
@@ -213,11 +259,13 @@ class LineChart extends PureComponent {
 								{this.state.tooltip.data.map((d, i) => {
 									return (
 										<ItemG key={i} container alignItems={'center'}>
-											<div style={{ background: d.color, width: 15, height: 15, marginRight: 10 }} />
-											<Typography variant={'caption'}>{d.device}</Typography>
-											<Typography classes={{
+											<ItemG xs={1}>
+												<div style={{ background: d.color, width: 15, height: 15, marginRight: 8 }} />
+											</ItemG>
+											<ItemG xs={8}><Typography noWrap variant={'caption'}>{d.device}</Typography></ItemG>
+											<ItemG xs={3}><Typography variant={'caption'} classes={{
 												root: classes.expand
-											}}>{Math.round(d.count)}</Typography>
+											}}>{Math.round(d.count)}</Typography></ItemG>
 										</ItemG>
 									)
 								})}
@@ -229,5 +277,14 @@ class LineChart extends PureComponent {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	lang: state.settings.language
+})
 
-export default withStyles(graphStyles, { withTheme: true })(LineChart)
+const mapDispatchToProps = {
+
+}
+
+let LineChartCompose = compose(connect(mapStateToProps, mapDispatchToProps), withStyles(graphStyles, { withTheme: true }))(LineChart)
+// export default withStyles(graphStyles, { withTheme: true })(LineChart)
+export default LineChartCompose

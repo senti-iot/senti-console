@@ -587,6 +587,7 @@ class DeviceData extends PureComponent {
 			case 2:
 				return this.state.barDataSets ? <div style={{ maxHeight: 400 }}>
 					<BarChart
+						obj={this.props.device}
 						single
 						unit={this.timeTypes[this.state.timeType]}
 						onElementsClick={this.handleZoomOnData}
