@@ -14,6 +14,7 @@ import { dateFormatter } from 'variables/functions';
 import { connect } from 'react-redux';
 import { unassignDeviceFromCollection, getCollection } from 'variables/dataCollections';
 import DeviceMap from './DeviceCards/DeviceMap';
+import moment from 'moment'
 
 class Device extends Component {
 	constructor(props) {
@@ -40,7 +41,7 @@ class Device extends Component {
 				if (rs.dataCollection) {
 					await this.getDataCollection(rs.dataCollection)
 				}
-				let data = await getWeather(rs)
+				let data = await getWeather(rs, moment(), this.props.language)
 				this.setState({ weather: data })
 				let prevURL = this.props.location.prevURL ? this.props.location.prevURL : '/devices/list'
 				this.props.setHeader(rs.name ? rs.name : rs.id, true, prevURL ? prevURL : '/devices/list', "devices")
@@ -322,7 +323,8 @@ class Device extends Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	language: state.settings.language
 })
 
 const mapDispatchToProps = {
