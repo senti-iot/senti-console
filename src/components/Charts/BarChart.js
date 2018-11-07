@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Bar } from 'react-chartjs-2';
 import { Typography, withStyles, Paper, Grow } from '@material-ui/core';
-import { ItemG, WeatherIcon } from 'components';
+import { ItemG, WeatherIcon, Caption, Info } from 'components';
 import { graphStyles } from './graphStyles';
 import { compose } from 'recompose';
 import { connect } from 'react-redux'
@@ -263,6 +263,10 @@ class BarChart extends PureComponent {
 									<Typography variant={'h6'} classes={{ root: classes.antialias }}>{this.state.tooltip.title}</Typography>
 									{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : null}
 								</ItemG>
+								{this.state.weather ? <ItemG>
+									<Caption>{this.props.t('devices.fields.weather')}</Caption>
+									<Info>{this.state.weather.currently.summary}</Info>
+								</ItemG> : null}
 								{this.state.tooltip.data.map((d, i) => {
 									return (
 										<ItemG key={i} container alignItems={'center'}>

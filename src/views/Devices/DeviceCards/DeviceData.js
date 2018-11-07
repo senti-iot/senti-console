@@ -593,7 +593,7 @@ class DeviceData extends PureComponent {
 						onElementsClick={this.handleZoomOnData}
 						setHoverID={this.props.setHoverID}
 						data={this.state.barDataSets}
-
+						t={this.props.t}
 					/></div> : this.renderNoData()
 			case 3:
 				return this.state.lineDataSets ?
@@ -606,6 +606,7 @@ class DeviceData extends PureComponent {
 						onElementsClick={this.handleZoomOnData}
 						setHoverID={this.props.setHoverID}
 						data={this.state.lineDataSets}
+						t={this.props.t}
 					/> : this.renderNoData()
 			default:
 				break;

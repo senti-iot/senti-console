@@ -93,11 +93,11 @@ class MarkerWithInfo extends Component {
 							* Live count (the last record/minute)
 							* Button to open device card (full view) */}
 						
-						<ItemG xs={6} container>
-							<ItemG xs={6}>
+						<ItemG xs={12} container>
+							<ItemG xs={3}>
 								{m.weather ? <WeatherIcon icon={m.weather.currently.icon} /> : null}
 							</ItemG>
-							<ItemG xs={6}>
+							<ItemG xs={9}>
 								<Caption>{t("devices.fields.weather")}</Caption>
 								<Info>
 									{m.weather.currently.summary}

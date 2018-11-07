@@ -1,5 +1,4 @@
 import React from 'react'
-import Info from './Info';
 import { withStyles } from '@material-ui/core';
 import { ClearDay, ClearNight, Cloudy, Fog, PartlyCloudyDay, PartlyCloudyNight, Rain, Sleet, Snow, Wind, } from "variables/icons";
 const styles = (theme) => ({
@@ -40,9 +39,9 @@ const WeatherIcon = (props) => {
 		}
 	}
 	return (
-		<Info>
-			<img className={props.classes.img} src={getIcon()} height={'27'} width={'27'} alt='' />
-		</Info>
+		
+		<img className={props.classes.img} src={getIcon()} height={'27'} width={'27'} alt='' />
+
 
 	)
 }
