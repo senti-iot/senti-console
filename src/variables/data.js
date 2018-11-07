@@ -22,7 +22,7 @@ export const loginApi = create({
 	}
 })
 export const weatherApi = create({
-	baseURL: `https://api.senti.cloud/weather`,
+	baseURL: `https://api.senti.cloud/weather/v1/`,
 	timeout: 30000,
 	headers: {
 		'Accept': 'application/json',
