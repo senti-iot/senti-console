@@ -11,8 +11,9 @@ import CollectionDetails from 'views/Collections/CollectionCards/CollectionDetai
 import CollectionHistory from 'views/Collections/CollectionCards/CollectionHistory';
 import { getProject } from 'variables/dataProjects';
 import Search from 'components/Search/Search';
-import { getDevice } from 'variables/dataDevices';
+import { getDevice, getWeather } from 'variables/dataDevices';
 import ActiveDeviceMap from './CollectionCards/CollectionActiveDeviceMap';
+import moment from 'moment'
 
 // import moment from 'moment'
 class Collection extends Component {
@@ -22,6 +23,7 @@ class Collection extends Component {
 		this.state = {
 			collection: null,
 			activeDevice: null,
+			weather: '',
 			loading: true,
 			anchorElHardware: null,
 			openAssign: false,
@@ -39,6 +41,11 @@ class Collection extends Component {
 	}
 	getActiveDevice = async (id) => {
 		let device = await getDevice(id)
+		if (device.lat && device.long) {
+			let data = await getWeather(device, moment(), this.props.language)
+			console.log(data)
+			this.setState({ weather: data }, console.log(this.state.weather))
+		}
 		return device ? this.setState({ activeDevice: device }) : null
 	}
 	getCollectionProject = async (rs) => {
@@ -301,7 +308,7 @@ class Collection extends Component {
 
 	render() {
 		const { history, t, classes, accessLevel } = this.props
-		const { collection, loading, loadingData } = this.state
+		const { collection, loading, loadingData, activeDevice, weather } = this.state
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
@@ -333,6 +340,7 @@ class Collection extends Component {
 					<ItemGrid xs={12} noMargin>
 						<CollectionDetails
 							collection={collection}
+							weather={weather}
 							history={this.props.history}
 							match={this.props.match}
 							handleOpenAssignProject={this.handleOpenAssignProject}
@@ -349,6 +357,7 @@ class Collection extends Component {
 							loading={loadingData}
 							collection={collection}
 							classes={classes}
+							device={activeDevice}
 							t={t}
 						/>
 					</ItemGrid>
@@ -383,7 +392,8 @@ class Collection extends Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	language: state.settings.language
 })
 
 const mapDispatchToProps = {

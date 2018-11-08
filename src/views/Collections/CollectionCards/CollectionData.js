@@ -585,12 +585,14 @@ class CollectionData extends PureComponent {
 			case 3:
 				return this.state.lineDataSets ?
 					<LineChart
+						obj={this.props.device}
 						hoverID={this.props.hoverID}
 						single
 						unit={this.timeTypes[this.state.timeType]}
 						onElementsClick={this.handleZoomOnData}
 						setHoverID={this.props.setHoverID}
 						data={this.state.lineDataSets}
+						t={this.props.t}
 					/> : this.renderNoData()
 			default:
 				break;

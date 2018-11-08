@@ -1,6 +1,6 @@
-import { Grid, withStyles } from '@material-ui/core';
+import { withStyles, CircularProgress } from '@material-ui/core';
 import collectionStyles from 'assets/jss/views/deviceStyles';
-import { Caption, Info, ItemGrid, ItemG } from 'components';
+import { Caption, Info, ItemG, WeatherIcon } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
 import React, { Component, Fragment } from 'react';
@@ -25,7 +25,8 @@ class DeviceDetails extends Component {
 	}
 
 	render() {
-		const { classes, collection, t, /* accessLevel ,*/ history, handleOpenDeleteDialog } = this.props
+		const { classes, collection, t, /* accessLevel ,*/ history, handleOpenDeleteDialog, weather } = this.props
+		// console.log(weather, 'weather')
 		return (
 			<InfoCard
 				title={collection.name ? collection.name : collection.id}
@@ -47,49 +48,53 @@ class DeviceDetails extends Component {
 				</ItemG>}
 				noExpand
 				content={
-					<Fragment>
-						<Grid container>
-							<ItemGrid>
-								<Caption>{t("collections.fields.status")}:</Caption>
-								<Info>{this.collectionState()}</Info>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<Caption>{t("collections.fields.description")}:</Caption>
-								<Info>{collection.description ? collection.description : ""}</Info>
-							</ItemGrid>
+					<ItemG container spacing={16}>
+						<ItemG xs={12} sm={1} md={1} lg={1} xl={1}>
+							<Caption>{t("collections.fields.status")}:</Caption>
+							<Info>{this.collectionState()}</Info>
+						</ItemG>
+						<ItemG container xs={12} sm={11} md={11} lg={11} xl={11}>
+							{weather === '' ? null : weather !== null ? <Fragment>
+								<ItemG xs={2} sm={1} md={1} lg={1} container justify={'center'}>
+									<WeatherIcon icon={weather.currently.icon} />
+								</ItemG>
+								<ItemG xs>
+									<Caption>{t("devices.fields.weather")}</Caption>
+									<Info>
+										{weather.currently.summary}
+									</Info>
+								</ItemG>
+							</Fragment>
+								: <CircularProgress size={20} />}
+						</ItemG>
+						<ItemG xs={12}>
+							<Caption>{t("collections.fields.description")}:</Caption>
+							<Info>{collection.description ? collection.description : ""}</Info>
+						</ItemG>
 
-						</Grid>
-						<Grid container>
 
-						</Grid>
-						<Grid container>
-							<ItemGrid>
-								<Caption>{t("collections.fields.org")}:</Caption>
-								<Info>{collection.org ?
-									<Link to={{ pathname: `/org/${collection.org.id}`, prevURL: `/collection/${collection.id}` }} >
-										{collection.org.name}
-									</Link>
-									: t("collections.noProject")}</Info>
+						<ItemG>
+							<Caption>{t("collections.fields.org")}:</Caption>
+							<Info>{collection.org ?
+								<Link to={{ pathname: `/org/${collection.org.id}`, prevURL: `/collection/${collection.id}` }} >
+									{collection.org.name}
+								</Link>
+								: t("collections.noProject")}</Info>
 
-							</ItemGrid>
+						</ItemG>
+						<ItemG>
+							<Caption>{t("collections.fields.project")}:</Caption>
+							<Info>{collection.project ?
+								<Link to={{
+									pathname: `/project/${collection.project.id}`,
+									prevURL: `/collection/${collection.id}` }}
+								>
+									{collection.project.title}
+								</Link>
+								: t("collections.noProject")}</Info>
 
-						</Grid>
-						<Grid container>
-							<ItemGrid>
-								<Caption>{t("collections.fields.project")}:</Caption>
-								<Info>{collection.project ?
-									<Link to={{
-										pathname: `/project/${collection.project.id}`,
-										prevURL: `/collection/${collection.id}` }}
-									>
-										{collection.project.title}
-									</Link>
-									: t("collections.noProject")}</Info>
-
-							</ItemGrid>
-
-						</Grid>
-					</Fragment>} />
+						</ItemG>
+					</ItemG>} />
 		)
 	}
 }
