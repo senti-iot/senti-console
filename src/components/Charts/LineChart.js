@@ -99,7 +99,8 @@ class LineChart extends PureComponent {
 	setHours = (date) => {
 		if (this.props.unit.chart === 'day')
 			return moment(date).startOf('day').add(12, 'h')
-
+		else 
+			return moment(date)
 	}
 	customTooltip = async (tooltipModel) => {
 		if (tooltipModel.opacity === 0) {
