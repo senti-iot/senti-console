@@ -88,7 +88,9 @@ import Card from './Card/Card'
 import CardHeader from "./Card/CardHeader";
 import CardFooter from './Card/CardFooter'
 import CardBody from './Card/CardBody'
+import WeatherIcon from './Typography/WeatherIcon'
 export {
+	WeatherIcon,
 	BarChart,
 	LineChart,
 	DoughnutChart,

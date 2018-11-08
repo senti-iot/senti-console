@@ -9,9 +9,9 @@ const style = {
 };
 
 function ItemG({ ...props }) {
-	const { classes, children, justify, ...rest } = props;
+	const { classes, children, ...rest } = props;
 	return (
-		<Grid item {...rest} className={justify ? classes.justify : ""}>
+		<Grid item {...rest} /* className={justify ? classes.justify : ""} */>
 			{children}
 		</Grid>
 	);

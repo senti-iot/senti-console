@@ -178,6 +178,7 @@
 		"editDetailsTitle": "Edit %{deviceId}",
 		"editHardwareTitle": "Edit hardware for device %{deviceId}",
 		"fields": {
+			"weather": "Weather",
 			"adapter": "Power adapter",
 			"address": "Address",
 			"availability": "Availability",
@@ -335,7 +336,7 @@
 		"reset": "Reset",
 		"upload": "Upload",
 		"uploadFailed": "Images failed to upload! Please refresh browser and try again!",
-		"uploadSuccess": "Images was successfully uploaded"
+		"uploadSuccess": "Images was uploaded"
 	},
 	"links": {
 		"googleMaps": "Show on Google Maps",
@@ -355,10 +356,10 @@
 	},
 	"menus": {
 		"assign": {
-			"collectionsToProject": "Assign/Unassign data collections to project",
-			"collectionToProject": "Assign data collection to project",
-			"deviceToCollection": "Assign device to data collection",
-			"deviceToOrg": "Assign device to organisation"
+			"collectionsToProject": "Assign data collections",
+			"collectionToProject": "Assign data collection",
+			"deviceToCollection": "Assign device",
+			"deviceToOrg": "Assign device"
 		},
 		"reassign": {
 			"deviceToOrg": "Reassign to another organisation",
@@ -368,7 +369,7 @@
 		"changePassword": "Change password",
 		"delete": "Delete",
 		"edit": "Edit",
-		"exportPDF": "Export to PDF",
+		"exportPDF": "Print as PDF",
 		"hideMap": "Hide map",
 		"hideMore": "Hide",
 		"more": "More",
@@ -461,10 +462,10 @@
 		},
 		"updateProject": "Edit project",
 		"validation": {
-			"noEndDate": "Manglende Slutdato",
-			"noStartDate": "Manglende Startdato",
-			"noTitle": "Manglende Projektnavn",
-			"startDateBiggerThanEndDate": "Startdato kan ikke være større end slutdato"
+			"noEndDate": "End date is missing",
+			"noStartDate": "Start date is missing",
+			"noTitle": "Project name is missing",
+			"startDateBiggerThanEndDate": "Start date can not be later than End date!"
 		},
 		"viewProject": "View project"
 	},
@@ -545,27 +546,27 @@
 		"deletedFail": "Deletion failed!",
 		"deletedSuccess": "Deleted!",
 		"deleting": "Deleting...",
-		"deviceUpdated": "Device %{device} has been successfully updated!",
+		"deviceUpdated": "Device %{device} has been updated!",
 		"exported": "Exported!",
-		"orgCreated": "Organisation %{org} has been successfully created!",
-		"orgDeleted": "Organisation has been successfully deleted!",
-		"orgUpdated": "Organisation %{org} has been successfully updated!",
-		"pictureDeleted": "Picture has been succesfully deleted!",
+		"orgCreated": "Organisation %{org} has been created!",
+		"orgDeleted": "Organisation has been deleted!",
+		"orgUpdated": "Organisation %{org} has been updated!",
+		"pictureDeleted": "Picture has been deleted!",
 		"pictureNotDeleted": "Picture has not been deleted!",
-		"projectCreated": "Project %{project} has been successfully created!",
-		"projectDeleted": "Project(s) has been successfully deleted!",
-		"projectExported": "Project has been successfully exported!",
-		"projectUpdated": "Project %{project} has been successfully updated!",
+		"projectCreated": "Project %{project} has been created!",
+		"projectDeleted": "Project(s) has been deleted!",
+		"projectExported": "Project has been exported!",
+		"projectUpdated": "Project %{project} has been updated!",
 		"redirect": "Redirecting ...",
-		"resetDeviceSuccess": "Device has been resetted",
+		"resetDeviceSuccess": "Device has been reset",
 		"settingsSaved": "Settings saved!",
 		"updatedFailed": "Update failed!",
 		"updatedSuccess": "Updated!",
 		"updating": "Updating...",
-		"userCreated": "User %{user} has been succesfully created!",
-		"userDeleted": "User %{user} has been succesfully deleted!",
-		"userPasswordChanged": "Password has been changed succesfully!",
-		"userUpdated": "User %{user} has been succesfully updated!"
+		"userCreated": "User %{user} has been created!",
+		"userDeleted": "User %{user} has been deleted!",
+		"userPasswordChanged": "Password has been changed!",
+		"userUpdated": "User %{user} has been updated!"
 	},
 	"tables": {
 		"addNewDevice": "Add device",

@@ -22,6 +22,10 @@ class MapComponent extends Component {
 						bounds.extend(new window.google.maps.LatLng(bound.lat, bound.long))
 					)
 			})
+			var offset = 0.002;
+			var center = bounds.getCenter();
+			bounds.extend(new window.google.maps.LatLng(center.lat() + offset, center.lng() + offset));
+			bounds.extend(new window.google.maps.LatLng(center.lat() - offset, center.lng() - offset));
 			this.map.current.fitBounds(bounds)
 			this.map.current.panToBounds(bounds, 10);
 		}
@@ -31,6 +35,7 @@ class MapComponent extends Component {
 	}
 	
 	render() {
+		// console.log(this.props.zoom)
 		let props = this.props
 		let defaultLat = parseFloat(56.2639) //Denmark,
 		let defaultLng = parseFloat(9.5018) //Denmark
@@ -53,7 +58,7 @@ class MapComponent extends Component {
 			>
 				{props.markers.length > 0 ? props.markers.map((m, i) => {
 					if (m.lat && m.long)
-						return <MarkerWithInfo t={props.t} key={i} m={m} i={i} />
+						return <MarkerWithInfo t={props.t} key={i} m={m} i={i} weather={m.weather} />
 					else
 						return null
 				})

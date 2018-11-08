@@ -1,5 +1,15 @@
-import { api, imageApi, mapApi } from "./data";
+import { api, imageApi, mapApi, weatherApi } from "./data";
+import moment from 'moment'
 
+//#region getWeather
+export const getWeather = async (device, date, lang) => {
+	let URL = `/${moment(date).format('YYYY-MM-DDTHH:mm:ss')}/${device.lat}/${device.long}/${lang}`
+	let response = await weatherApi.get(URL).then(rs => rs)
+	// console.log(response)
+	return response.data
+}
+
+//#endregion
 //#region GetDeviceData
 
 /**
@@ -15,7 +25,6 @@ export const getDataDaily = async (id, from, to, raw) => {
 	let response = await api.get(URL)
 	return response.ok ? response.data : null
 }
-
 /**
  * Get Hourly Data 
  * @function
@@ -136,10 +145,10 @@ export const getDevice = async (id) => {
 	if (data.address)
 		return data
 	else {
-		let gaddress = await mapApi.get(`json?latlng=${parseFloat(data.lat)},${parseFloat(data.long)}`).then(rs => rs.data);
-		if (gaddress.status === 'OK') {
-			data.address = gaddress.results[0].formatted_address
-		}
+		// let gaddress = await mapApi.get(`json?latlng=${parseFloat(data.lat)},${parseFloat(data.long)}`).then(rs => rs.data);
+		// if (gaddress.status === 'OK') {
+		// data.address = gaddress.results[0].formatted_address
+		// }
 	}
 	return data
 }

@@ -7,6 +7,7 @@ import { withStyles, Button } from '@material-ui/core'
 import { red, green, yellow } from '@material-ui/core/colors'
 import { Link } from 'react-router-dom'
 import { getDataSummary } from 'variables/dataDevices';
+import WeatherIcon from 'components/Typography/WeatherIcon';
 var moment = require("moment")
 const styles = theme => ({ 
 	redSignal: {
@@ -79,19 +80,30 @@ class MarkerWithInfo extends Component {
 							<Caption>{t("devices.fields.status")}</Caption>
 							{this.renderIcon(m.liveStatus)}
 						</ItemG>
+						{m.name ?
+							<ItemG xs={12}>
+								<Caption>{t("devices.fields.name")}</Caption>
+								<Info>{m.name}</Info>
+							</ItemG>
+							: null}
 						{/* * Device name
 							* Status
 							* Temperature
 							* Address
 							* Live count (the last record/minute)
 							* Button to open device card (full view) */}
-						{m.name ? 
-							<ItemG xs={6}>
-								<Caption>{t("devices.fields.name")}</Caption>
-								<Info>{m.name}</Info>
+						
+						<ItemG xs={12} container>
+							<ItemG xs={3}>
+								{m.weather ? <WeatherIcon icon={m.weather.currently.icon} /> : null}
 							</ItemG>
-							: null}
-					
+							<ItemG xs={9}>
+								<Caption>{t("devices.fields.weather")}</Caption>
+								<Info>
+									{m.weather.currently.summary}
+								</Info>
+							</ItemG>
+						</ItemG>
 						<ItemG xs={6}>
 							<Caption>{t("devices.fields.temp")}</Caption>
 							<Info>{m.temperature} &#8451;</Info>

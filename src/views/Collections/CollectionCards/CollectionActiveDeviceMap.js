@@ -4,9 +4,9 @@ import { Map } from 'variables/icons'
 import { Grid } from '@material-ui/core';
 import { Maps } from 'components/Map/Maps';
 
-export default class DeviceMap extends Component {
+export default class ActiveDeviceMap extends Component {
 	render() {
-		const { device, weather, t } = this.props
+		const { device, t } = this.props
 		return (
 			<InfoCard
 				title={t("devices.cards.map")}
@@ -15,7 +15,7 @@ export default class DeviceMap extends Component {
 				noExpand
 				content={
 					<Grid container justify={'center'}>
-						<Maps t={this.props.t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} />
+						<Maps t={this.props.t} isMarkerShown markers={[device]} zoom={18} />
 					</Grid>
 				} />
 

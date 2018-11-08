@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
-import { getDevice, getAllPictures } from 'variables/dataDevices'
-import { Grid, withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
+import { getDevice, getAllPictures, getWeather, /* getWeather */ } from 'variables/dataDevices'
+import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
 import { ItemGrid, AssignOrg, AssignDC } from 'components'
-import InfoCard from 'components/Cards/InfoCard'
-import { Map } from 'variables/icons'
 import deviceStyles from 'assets/jss/views/deviceStyles'
 import ImageUpload from './ImageUpload'
 import CircularLoader from 'components/Loader/CircularLoader'
-import { Maps } from 'components/Map/Maps'
 import GridContainer from 'components/Grid/GridContainer'
 import DeviceDetails from './DeviceCards/DeviceDetails'
 import DeviceHardware from './DeviceCards/DeviceHardware'
@@ -15,7 +12,9 @@ import DeviceImages from './DeviceCards/DeviceImages'
 import DeviceData from './DeviceCards/DeviceData'
 import { dateFormatter } from 'variables/functions';
 import { connect } from 'react-redux';
-import { getCollection, unassignDeviceFromCollection } from 'variables/dataCollections';
+import { unassignDeviceFromCollection, getCollection } from 'variables/dataCollections';
+import DeviceMap from './DeviceCards/DeviceMap';
+import moment from 'moment'
 
 class Device extends Component {
 	constructor(props) {
@@ -38,55 +37,57 @@ class Device extends Component {
 			if (rs === null)
 				this.props.history.push('/404')
 			else {
-				this.setState({ device: rs })
-				if (rs.dataCollection !== null) {
+				this.setState({ device: rs, loading: false })
+				if (rs.dataCollection) {
 					await this.getDataCollection(rs.dataCollection)
 				}
+				let data = await getWeather(rs, moment(), this.props.language)
+				this.setState({ weather: data })
 				let prevURL = this.props.location.prevURL ? this.props.location.prevURL : '/devices/list'
 				this.props.setHeader(rs.name ? rs.name : rs.id, true, prevURL ? prevURL : '/devices/list', "devices")
-
 			}
 		})
-		return true
 	}
 
-	getDataCollection = async (id) => {
-		await getCollection(id).then(rs => {
-			if (rs) {
+		getDataCollection = async (id) => {
+			await getCollection(id).then(rs => {
+				if (rs) {
 
-				this.setState({
-					device: {
-						...this.state.device,
-						project: {
-							id: 0
+					this.setState({
+						device: {
+							...this.state.device,
+							project: {
+								id: 0
+							},
+							dataCollection: rs
 						},
-						dataCollection: rs
-					},
 					 loading: false
-				})
-			}
-			else {
-				this.setState({
-					loading: false,
-					device: {
-						...this.state.device,
-						dataCollection: {
-							id: 0
-						},
-						project: {
-							id: 0
-						},
-					}
-				})
-			}
-		})
-	}
+					})
+				}
+				else {
+					this.setState({
+						loading: false,
+						device: {
+							...this.state.device,
+							dataCollection: {
+								id: 0
+							},
+							project: {
+								id: 0
+							},
+						}
+					})
+				}
+			})
+		}
 	componentDidMount = async () => {
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {
 				// this.getAllPics(id)
 				await this.getDevice(id)
+				// console.log(this.state.device);
+				
 			}
 		}
 		else {
@@ -96,12 +97,12 @@ class Device extends Component {
 
 	snackBarMessages = (msg) => {
 		const { s, t } = this.props
-		const { device } = this.state
+		const { device, oldCollection } = this.state
 		let name = this.state.device.name ? this.state.device.name : t("devices.noName")
 		let id = this.state.device.id
 		switch (msg) {
 			case 1:
-				s("snackbars.unassign.deviceFromCollection", { device: `${name}(${id})`, what: `${device.dataCollection.name}(${device.dataCollection.id})` })
+				s("snackbars.unassign.deviceFromCollection", { device: `${name}(${id})`, collection: `${oldCollection.name}(${oldCollection.id})` })
 				break
 			case 2:
 				s("snackbars.assign.deviceToCollection", { device: `${name}(${id})`, collection: `${device.dataCollection.name}(${device.dataCollection.id})` })
@@ -139,11 +140,12 @@ class Device extends Component {
 	}
 
 	handleCloseAssign = async (reload) => {
-		if (reload) {
-			this.setState({ loading: true, anchorEl: null })
-			await this.getDevice(this.state.device.id).then(() => this.snackBarMessages(2))
-		}
-		this.setState({ openAssignCollection: false })
+		this.setState({ openAssignCollection: false }, () => setTimeout(async () => {
+			if (reload) {
+				this.setState({ loading: true })
+				await this.getDevice(this.state.device.id).then(() => this.snackBarMessages(2))
+			}
+		}, 300))
 	}
 
 	renderImageUpload = (dId) => {
@@ -190,6 +192,12 @@ class Device extends Component {
 
 	handleUnassign = async () => {
 		const { device } = this.state
+		let collection = this.state.device.dataCollection
+		this.setState({
+			oldCollection: {
+				name: collection.name,
+				id: collection.id
+			} })
 		let rs = await unassignDeviceFromCollection({
 			id: device.dataCollection.id,
 			deviceId: device.id
@@ -262,6 +270,7 @@ class Device extends Component {
 					{device.dataCollection ? this.renderConfirmUnassign() : null}
 					<ItemGrid xs={12} noMargin>
 						<DeviceDetails
+							weather={this.state.weather}
 							device={device}
 							history={this.props.history}
 							match={this.props.match}
@@ -289,17 +298,11 @@ class Device extends Component {
 						/> */}
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
-						<InfoCard
-							title={this.props.t("devices.cards.map")}
-							subheader={this.props.t("devices.fields.coordsW", { lat: device.lat, long: device.long })}
-							avatar={<Map />}
-							noExpand
-							content={
-								<Grid container justify={'center'}>
-									<Maps t={this.props.t} isMarkerShown markers={[device]} zoom={18} />
-								</Grid>
-							} />
-
+						<DeviceMap 
+							device={device}
+							weather={this.state.weather}
+							t={this.props.t}
+						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
 						<DeviceImages
@@ -321,7 +324,8 @@ class Device extends Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	language: state.settings.language
 })
 
 const mapDispatchToProps = {

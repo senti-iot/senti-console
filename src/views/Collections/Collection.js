@@ -11,6 +11,8 @@ import CollectionDetails from 'views/Collections/CollectionCards/CollectionDetai
 import CollectionHistory from 'views/Collections/CollectionCards/CollectionHistory';
 import { getProject } from 'variables/dataProjects';
 import Search from 'components/Search/Search';
+import { getDevice } from 'variables/dataDevices';
+import ActiveDeviceMap from './CollectionCards/CollectionActiveDeviceMap';
 
 // import moment from 'moment'
 class Collection extends Component {
@@ -19,6 +21,7 @@ class Collection extends Component {
 
 		this.state = {
 			collection: null,
+			activeDevice: null,
 			loading: true,
 			anchorElHardware: null,
 			openAssign: false,
@@ -34,12 +37,16 @@ class Collection extends Component {
 		}
 		props.setHeader('', true, `/collections/list`, "collections")
 	}
+	getActiveDevice = async (id) => {
+		let device = await getDevice(id)
+		return device ? this.setState({ activeDevice: device }) : null
+	}
 	getCollectionProject = async (rs) => {
 		let project = await getProject(rs)
 		this.setState({ collection: { ...this.state.collection, project: project }, loadingProject: false })
 	}
 	getCollection = async (id) => {
-		await getCollection(id).then(rs => {
+		await getCollection(id).then(async rs => {
 			if (rs === null)
 				this.props.history.push('/404')
 			else {
@@ -48,6 +55,9 @@ class Collection extends Component {
 				this.props.setHeader(rs.name ? rs.name : rs.id, true, prevURL, "collections")
 				if (rs.project.id) {
 					this.getCollectionProject(rs.project.id)
+				}
+				if (rs.activeDeviceStats) { 
+					await this.getActiveDevice(rs.activeDeviceStats.id)
 				}
 			}
 		})
@@ -342,6 +352,12 @@ class Collection extends Component {
 							t={t}
 						/>
 					</ItemGrid>
+					{this.state.activeDevice ? <ItemGrid xs={12} noMargin>
+						<ActiveDeviceMap
+							device={this.state.activeDevice}
+							t={t}
+						/>
+					</ItemGrid> : null}
 					<ItemGrid xs={12} noMargin>
 						<CollectionActiveDevice
 							collection={collection}

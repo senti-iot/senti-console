@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import DiscoverSenti from 'views/Dashboard/DiscoverSenti';
 import pj from '../../../package.json';
+// const Skycons = require('skycons')(window)
 
 class Dashboard extends React.Component {
 	constructor(props) {
@@ -57,7 +58,7 @@ class Dashboard extends React.Component {
 						header={t("dashboard.cardHeaders.onSiteSetup")}
 						content={t("dashboard.cardContent.onSiteSetup")}
 						leftAction={this.renderAction("actions.learnMore", "/")}
-						rightAction={this.renderAction("actions.startNow", "/", true)}
+						rightAction={this.renderAction("actions.startNow", "/devices", true)}
 					/></ItemG>
 					<ItemG justify sm={12} md={4}><MediaCard
 						img={imgs.storage}
