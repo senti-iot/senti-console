@@ -8,6 +8,7 @@ const CookiePage = () => {
 	console.log(cookie.loadAll())
 	let SessionCookie = cookie.load("SESSION")
 	return <div>
+		The Cookie should appear here:
 		{JSON.stringify(SessionCookie)}
 	</div>
 }
