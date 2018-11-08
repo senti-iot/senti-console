@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import MarkerWithInfo from './MarkerWithInfo';
-import { GoogleMap } from 'react-google-maps';
+import { GoogleMap/*,  Circle */ } from 'react-google-maps';
 import MarkerClusterer from "react-google-maps/lib/components/addons/MarkerClusterer";
+// import { colors } from 'variables/colors';
 
 class MapComponent extends Component {
 	constructor(props) {
@@ -33,7 +34,16 @@ class MapComponent extends Component {
 			init: true
 		})
 	}
-	
+	createHeatmapLayerPoints = () => {
+		console.log(this.props.markers)
+		let hArr = this.props.markers.map(point => (
+			{
+				location: new window.google.maps.LatLng(point.lat, point.long),
+				weight: Math.floor(Math.random() * 1001)
+			}))
+		return hArr
+	}
+
 	render() {
 		// console.log(this.props.zoom)
 		let props = this.props
@@ -43,13 +53,26 @@ class MapComponent extends Component {
 		// 	defaultLat = props.markers[0] ? props.markers[0].lat : defaultLat
 		// 	defaultLng = props.markers[0] ? props.markers[0].long : defaultLng
 		// }
+		// this.createHeatmapLayerPoints()
+		// console.log(this)
 		return <GoogleMap
 			defaultZoom={props.zoom ? props.zoom : 7}
 			defaultCenter={{ lat: defaultLat, lng: defaultLng }}
 			ref={this.map}
 			onTilesLoaded={() => this.setCenterAndZoom()}
 		>
-
+			{/* {this.createHeatmapLayerPoints().map((d, i) => {
+				return <Circle
+					id={i}
+					options={{
+						fillColor: colors[i],
+						strokeColor: colors[i]
+					}}
+					defaultCenter={d.location}
+					radius={d.weight}
+				/>
+			})} */}
+			{/* <HeatmapLayer data={this.createHeatmapLayerPoints()}/> */}
 			<MarkerClusterer
 				onClick={props.onMarkerClustererClick}
 				// averageCenter

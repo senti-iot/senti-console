@@ -25,7 +25,7 @@ class LineChart extends PureComponent {
 			lineOptions: {
 				animation: {
 					duration: 500,
-					onComplete: props.getImage,
+					onComplete: props.getImage ? props.getImage : null,
 				},
 				display: true,
 				maintainAspectRatio: false,
@@ -233,7 +233,7 @@ class LineChart extends PureComponent {
 		const { classes } = this.props
 		const { tooltip, chartWidth, mobile } = this.state
 		return (
-			<div style={{ maxHeight: 400, position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
+			<div style={{ maxHeight: 400, position: 'relative', height: '100%' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
 				<Line
 					data={this.props.data}
 					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}

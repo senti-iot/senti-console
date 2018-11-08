@@ -21,6 +21,7 @@ import { dateTimeFormatter, datesToArr, hoursToArr, minutesToArray } from 'varia
 import { connect } from 'react-redux'
 import moment from 'moment'
 import teal from '@material-ui/core/colors/teal'
+// import DevicePDF from 'components/Exports/DevicePDF';
 
 class DeviceData extends PureComponent {
 	constructor(props) {
@@ -290,10 +291,11 @@ class DeviceData extends PureComponent {
 	}
 	getImage = () => {
 		var canvas = document.getElementsByClassName("chartjs-render-monitor");
+		console.log(canvas)
 		if (canvas.length > 0) {
-			 this.image = canvas[0].toDataURL("image/png");
-			// this.setState({ image: this.image })
-			// console.log(this.image)
+			 this.image = canvas[1].toDataURL("image/png");
+			this.setState({ image: this.image })
+			console.log(this.image)
 		}
 	}
 	componentDidMount = async () => {
@@ -600,7 +602,7 @@ class DeviceData extends PureComponent {
 					<LineChart
 						hoverID={this.props.hoverID}
 						single
-						getImage={this.getImage}
+						// getImage={this.getImage}
 						obj={this.props.device}
 						unit={this.timeTypes[this.state.timeType]}
 						onElementsClick={this.handleZoomOnData}
@@ -754,6 +756,9 @@ class DeviceData extends PureComponent {
 					</Hidden>
 				</div>
 			</Menu>
+			<ItemG>
+				Download PDF
+			</ItemG>
 		</ItemGrid>
 	}
 	renderNoData = () => {
@@ -783,10 +788,26 @@ class DeviceData extends PureComponent {
 										{noData ? this.renderNoData() : this.renderType()}
 									</ItemG>
 									{/* {this.props.hoverID} */}
+									{/* <img src={this.state.image} alt={'not loaded'}/> */}
+									{/* <DevicePDF img={this.state.image}/> */}
 								</Fragment>}
 						</Grid>}
 				/>
 				{/* <img src={this.state.image} alt='NOPE' width={1025}/> */}
+				<div style={{ position: 'absolute', top: "-100%", width: 1000, height: 400 }}>
+					{this.state.lineDataSets ?
+						<LineChart
+							// hoverID={this.props.hoverID}
+							single
+							getImage={this.getImage}
+							// obj={this.props.device}
+							unit={this.timeTypes[this.state.timeType]}
+							// onElementsClick={this.handleZoomOnData}
+							// setHoverID={this.props.setHoverID}
+							data={this.state.lineDataSets}
+							t={this.props.t}
+						/> : this.renderNoData()}
+				</div>
 			</Fragment >
 		);
 	}

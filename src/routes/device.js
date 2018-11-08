@@ -9,10 +9,12 @@ import EditHardware from 'components/Devices/EditHardware';
 import withLocalization from 'components/Localization/T';
 import withSnackbar from 'components/Localization/S';
 import { compose } from 'recompose';
+import DevicePDF from 'components/Exports/DevicePDF';
 
 const device = (props) => {
 	return (
 		<Switch>
+			<Route path={`${props.match.url}/pdf`} render={() => <DevicePDF {...props}/>} />
 			<Route path={`${props.match.url}/edit-hardware`} render={() => <EditHardware {...props} />} />
 			<Route path={`${props.match.url}/setup`} render={() => <CalibrateDevice {...props} />} />
 			<Route path={`${props.match.url}/edit`} render={() => <EditDetails {...props} />} />
