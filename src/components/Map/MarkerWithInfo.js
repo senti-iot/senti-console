@@ -48,10 +48,8 @@ class MarkerWithInfo extends Component {
 				return <div title={t("devices.status.green")}><SignalWifi2Bar className={classes.greenSignal} /></div>
 			case 0:
 				return <div title={t("devices.status.red")}><SignalWifi2Bar className={classes.redSignal} /></div>
-			case null:
-				return <SignalWifi2BarLock />
 			default:
-				break;
+				return <div title={t("devices.status.red")}> <SignalWifi2BarLock className={classes.redSignal}/></div>
 		}
 	}
 	render() {
@@ -93,17 +91,17 @@ class MarkerWithInfo extends Component {
 							* Live count (the last record/minute)
 							* Button to open device card (full view) */}
 						
-						<ItemG xs={12} container>
+						{m.weather ? <ItemG xs={12} container>
 							<ItemG xs={3}>
-								{m.weather ? <WeatherIcon icon={m.weather.currently.icon} /> : null}
+								<WeatherIcon icon={m.weather.currently.icon} />
 							</ItemG>
 							<ItemG xs={9}>
 								<Caption>{t("devices.fields.weather")}</Caption>
 								<Info>
-									{m.weather ? m.weather.currently.summary : null}
+									 {m.weather.currently.summary}
 								</Info>
 							</ItemG>
-						</ItemG>
+						</ItemG> : null}
 						<ItemG xs={6}>
 							<Caption>{t("devices.fields.temp")}</Caption>
 							<Info>{m.temperature} &#8451;</Info>
