@@ -6,7 +6,7 @@ import { Maps } from 'components/Map/Maps';
 
 export default class ActiveDeviceMap extends Component {
 	render() {
-		const { device, t } = this.props
+		const { device, t, weather } = this.props
 		return (
 			<InfoCard
 				title={t("devices.cards.map")}
@@ -15,7 +15,7 @@ export default class ActiveDeviceMap extends Component {
 				noExpand
 				content={
 					<Grid container justify={'center'}>
-						<Maps t={this.props.t} isMarkerShown markers={[device]} zoom={18} />
+						<Maps t={this.props.t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={18} />
 					</Grid>
 				} />
 

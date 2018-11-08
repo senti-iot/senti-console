@@ -100,7 +100,7 @@ class MarkerWithInfo extends Component {
 							<ItemG xs={9}>
 								<Caption>{t("devices.fields.weather")}</Caption>
 								<Info>
-									{m.weather.currently.summary}
+									{m.weather ? m.weather.currently.summary : null}
 								</Info>
 							</ItemG>
 						</ItemG>

@@ -364,6 +364,7 @@ class Collection extends Component {
 					{this.state.activeDevice ? <ItemGrid xs={12} noMargin>
 						<ActiveDeviceMap
 							device={this.state.activeDevice}
+							weather={this.state.weather}
 							t={t}
 						/>
 					</ItemGrid> : null}
