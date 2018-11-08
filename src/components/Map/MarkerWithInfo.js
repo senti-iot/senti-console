@@ -55,8 +55,9 @@ class MarkerWithInfo extends Component {
 	render() {
 		const { m, i, t } = this.props
 		const { isOpen } = this.state
+		console.log(m)
 		return (
-			<Marker icon={{ url: `data:image/svg+xml,${MarkerIcon(m.liveStatus)}` }} onClick={this.onToggleOpen} key={i} position={{ lat: m.lat, lng: m.long }}>
+			<Marker icon={{ url: `data:image/svg+xml,${MarkerIcon(m.color ? m.color : m.liveStatus)}` }} onClick={this.onToggleOpen} key={i} position={{ lat: m.lat, lng: m.long }}>
 				{isOpen && <InfoWindow onCloseClick={this.onToggleOpen}
 					options={{
 						alignBottom: true,

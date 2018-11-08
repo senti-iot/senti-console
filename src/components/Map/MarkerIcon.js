@@ -12,7 +12,7 @@ const colorFunc = (status) => {
 			return { primary: green[700], secondary: green[100] }
 		}
 		default:
-			return { primary: red[700], secondary: red[100] }
+			return { primary: status, secondary: "#fefefe" }
 	}
 }
 

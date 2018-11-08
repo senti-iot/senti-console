@@ -13,7 +13,6 @@ class MapComponent extends Component {
 		}
 		this.map = React.createRef()
 	}
-
 	setCenterAndZoom() {
 		if (!this.state.init) {
 			const bounds = new window.google.maps.LatLngBounds()
@@ -43,18 +42,10 @@ class MapComponent extends Component {
 			}))
 		return hArr
 	}
-
 	render() {
-		// console.log(this.props.zoom)
 		let props = this.props
 		let defaultLat = parseFloat(56.2639) //Denmark,
 		let defaultLng = parseFloat(9.5018) //Denmark
-		// if (!props.centerDenmark) {
-		// 	defaultLat = props.markers[0] ? props.markers[0].lat : defaultLat
-		// 	defaultLng = props.markers[0] ? props.markers[0].long : defaultLng
-		// }
-		// this.createHeatmapLayerPoints()
-		// console.log(this)
 		return <GoogleMap
 			defaultZoom={props.zoom ? props.zoom : 7}
 			defaultCenter={{ lat: defaultLat, lng: defaultLng }}
@@ -74,8 +65,9 @@ class MapComponent extends Component {
 			})} */}
 			{/* <HeatmapLayer data={this.createHeatmapLayerPoints()}/> */}
 			<MarkerClusterer
-				onClick={props.onMarkerClustererClick}
-				// averageCenter
+				onClick={this.onMarkerClustererClick}
+				averageCenter
+				maxZoom={15}
 				enableRetinaIcons
 				gridSize={8}
 			>
