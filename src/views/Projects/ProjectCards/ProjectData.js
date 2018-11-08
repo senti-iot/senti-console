@@ -598,6 +598,7 @@ class ProjectData extends PureComponent {
 						onElementsClick={this.handleZoomOnData}
 						setHoverID={this.props.setHoverID}
 						data={this.state.lineDataSets}
+						t={this.props.t}
 					/> : this.renderNoData()
 			default:
 				break;
