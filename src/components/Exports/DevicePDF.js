@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Document, Page, Text, View, BlobProvider, PDFDownloadLink, PDFViewer, Image } from '@react-pdf/renderer';
-// import { Button } from '@material-ui/core';
+import { Document, Page, Text, View, PDFDownloadLink, Image } from '@react-pdf/renderer';
+import { Button } from '@material-ui/core';
 
 
 const Doc = (props) => {
@@ -34,23 +34,11 @@ class DevicePDF extends Component {
 	render() {
 		// console.log(Template)
 		return (
-			<div>
-				{this.props.img ? <PDFViewer>
-					<Doc img={this.props.img} />
-				</PDFViewer> : null}
-				<PDFDownloadLink document={<Doc img={this.props.img}/>} fileName="somename.pdf">
-					{({ blob, url, loading, error }) =>
-						loading ? 'Loading document...' : 'Download now!'
-					}
-				</PDFDownloadLink>
-				<BlobProvider document={<Doc img={this.props.image}/>}>
-					{({ blob, url, loading, error }) => {
-						console.log(blob)
-						// let urlBlob = URL.createObjectURL(blob);
-						return !loading ? <iframe title={"pdf"} src={blob}/> : null
-					}}
-				</BlobProvider>
-			</div>
+			<PDFDownloadLink document={<Doc img={this.props.img}/>} fileName="somename.pdf">
+				{({ blob, url, loading, error }) =>
+					loading ? null : <Button variant={'contained'} color={"primary"}>PDF</Button>
+				}
+			</PDFDownloadLink>
 		)
 	}
 }

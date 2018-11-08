@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import {
 	Timeline, MoreVert,
-	DateRange, DonutLargeRounded, PieChartRounded, BarChart as BarChartIcon, ExpandMore, Visibility, ShowChart
+	DateRange, DonutLargeRounded, PieChartRounded, BarChart as BarChartIcon, ExpandMore, Visibility, ShowChart, CloudDownload
 } from "variables/icons"
 import {
 	ItemGrid, CircularLoader, Caption, Info, ItemG, CustomDateTime, InfoCard, BarChart,
@@ -21,6 +21,7 @@ import { dateTimeFormatter, datesToArr, hoursToArr, minutesToArray } from 'varia
 import { connect } from 'react-redux'
 import moment from 'moment'
 import teal from '@material-ui/core/colors/teal'
+import ExportModal from 'components/Exports/ExportModal';
 // import DevicePDF from 'components/Exports/DevicePDF';
 
 class DeviceData extends PureComponent {
@@ -35,6 +36,7 @@ class DeviceData extends PureComponent {
 			actionAnchor: null,
 			loading: true,
 			dateFilterInputID: 3,
+			openDownload: false,
 			openCustomDate: false,
 			display: props.chartType,
 			visibility: false,
@@ -542,6 +544,12 @@ class DeviceData extends PureComponent {
 			loading: false, openCustomDate: false
 		})
 	}
+	handleOpenDownloadModal= () => {
+		this.setState({ openDownload: true, actionAnchor: null })
+	}
+	handleCloseDownloadModal = () => {
+		this.setState({ openDownload: false })
+	}
 	renderCustomDateDialog = () => {
 		const { classes, t } = this.props
 		const { openCustomDate, to, from, timeType } = this.state
@@ -718,6 +726,10 @@ class DeviceData extends PureComponent {
 						</ListItem>
 					</Hidden>
 				</div>
+				<ListItem button onClick={this.handleOpenDownloadModal}>
+					<ListItemIcon><CloudDownload /></ListItemIcon>
+					<ListItemText>{t("data.download")}</ListItemText>
+				</ListItem>
 				<ListItem button onClick={() => this.handleRawData()}>
 					<ListItemIcon>
 						<Checkbox
@@ -756,9 +768,6 @@ class DeviceData extends PureComponent {
 					</Hidden>
 				</div>
 			</Menu>
-			<ItemG>
-				Download PDF
-			</ItemG>
 		</ItemGrid>
 	}
 	renderNoData = () => {
@@ -769,7 +778,7 @@ class DeviceData extends PureComponent {
 
 	render() {
 		const { t, classes } = this.props
-		const { loading, noData, raw } = this.state
+		const { loading, noData, raw, openDownload } = this.state
 		return (
 			<Fragment>
 				<InfoCard
@@ -780,6 +789,12 @@ class DeviceData extends PureComponent {
 					topAction={noData ? null : this.renderMenu()}
 					content={
 						<Grid container>
+							<ExportModal
+								img={this.state.image}
+								open={openDownload}
+								handleClose={this.handleCloseDownloadModal}
+								t={t}
+							/>
 							{this.renderCustomDateDialog()}
 							{loading ? <CircularLoader notCentered /> :
 								<Fragment>

@@ -131,7 +131,7 @@ class DeviceDetails extends Component {
 								</Info>
 							</ItemG>
 							<ItemG container xs={6} md={3} lg={3} xl={3}>
-								{weather ? 	<Fragment>
+								{weather ? weather !== "" ? <CircularProgress size={20} /> : <Fragment>
 									<ItemG xs={5} sm={2} md={3} lg={2}>
 										<WeatherIcon icon={weather.currently.icon} /> 
 									</ItemG>
@@ -142,7 +142,7 @@ class DeviceDetails extends Component {
 										</Info>
 									</ItemG>
 								</Fragment>
-									: <CircularProgress size={20}/>}
+									: null}
 							</ItemG> 
 							<ItemG xs={6} md={3} lg={3} xl={3}>
 								<Caption>{t("devices.fields.locType")}:</Caption>
