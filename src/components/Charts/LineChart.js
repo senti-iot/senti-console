@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { Line } from 'react-chartjs-2';
-import { Typography, withStyles, Paper, Grow } from '@material-ui/core';
+import { Typography, withStyles, Paper, Grow, CircularProgress } from '@material-ui/core';
 import { ItemG, WeatherIcon, Caption, Info } from 'components';
 import { graphStyles } from './graphStyles';
 import { getWeather } from 'variables/dataDevices';
@@ -114,8 +114,10 @@ class LineChart extends PureComponent {
 		try {
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
 			// console.log(this.state.weatherDate, wDate, this.state.weatherDate === wDate)
-			if (this.state.weatherDate !== wDate)
+			if (this.state.weatherDate !== wDate) {
+				this.setState({ weather: "" })
 				weatherData = await getWeather(this.props.obj, this.setHours(wDate), this.props.lang)
+			}
 			this.setState({
 				weatherDate: wDate,
 				weather: weatherData ? weatherData : this.state.weather
@@ -255,7 +257,7 @@ class LineChart extends PureComponent {
 								<ItemG container direction="row"
 									justify="space-between">
 									<Typography variant={'h6'} classes={{ root: classes.antialias }} >{this.state.tooltip.title}</Typography>
-									{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : null}
+									{this.state.weather ? this.state.weather !== "" ? <WeatherIcon icon={this.state.weather.currently.icon} /> : <CircularProgress size={20} /> : null}
 								</ItemG>
 								{this.state.weather ? <ItemG>
 									<Caption>{this.props.t('devices.fields.weather')}</Caption>
