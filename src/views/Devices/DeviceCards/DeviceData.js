@@ -473,7 +473,7 @@ class DeviceData extends PureComponent {
 			event.preventDefault()
 		// 
 		// let id = event.target.value
-		this.setState({ display: id, loading: true }, this.handleSwitchVisibility)
+		this.setState({ display: id, loading: true, actionAnchorVisibility: null }, this.handleSwitchVisibility)
 	}
 
 	handleDateFilter = (event) => {
