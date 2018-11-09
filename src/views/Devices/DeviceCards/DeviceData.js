@@ -293,11 +293,11 @@ class DeviceData extends PureComponent {
 	}
 	getImage = () => {
 		var canvas = document.getElementsByClassName("chartjs-render-monitor");
-		console.log(canvas)
+		// console.log(canvas)
 		if (canvas.length > 0) {
 			 this.image = canvas[1].toDataURL("image/png");
 			this.setState({ image: this.image })
-			console.log(this.image)
+			// console.log(this.image)
 		}
 	}
 	componentDidMount = async () => {

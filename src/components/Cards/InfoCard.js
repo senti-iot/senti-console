@@ -5,7 +5,6 @@ import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardSty
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import { Caption } from 'components';
 import withLocalization from 'components/Localization/T';
 
 
@@ -69,14 +68,16 @@ class InfoCard extends React.Component {
 						<CardActions className={classes.actions} disableActionSpacing>
 							{leftActions ? leftActions : null}
 							{!noRightExpand ? <Button
+								variant={'flat'}
+								color={'primary'}
 								onClick={this.handleExpandClick}
 								aria-expanded={this.state.expanded}
 								aria-label="Show more"
 								className={classes.expandPosition}
 							>
-								<Caption>
-									{this.state.expanded ? t("menus.seeLess") : t("menus.seeMore")}
-								</Caption><ExpandMore className={classnames(classes.expand, {
+								{/* <Caption> */}
+								{this.state.expanded ? t("menus.seeLess") : t("menus.seeMore")}
+								{/* </Caption> */}<ExpandMore className={classnames(classes.expand, {
 									[classes.expandOpen]: this.state.expanded,
 								})} />
 							</Button> : null}

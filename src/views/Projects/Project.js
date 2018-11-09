@@ -8,7 +8,6 @@ import ProjectCollections from './ProjectCards/ProjectCollections'
 import { ProjectContact } from './ProjectCards/ProjectContact'
 import AssignDCs from 'components/AssignComponents/AssignDCs';
 import { colors } from 'variables/colors';
-import ProjectMap from './ProjectCards/ProjectMap';
 
 const projectStyles = theme => ({
 	close: {
@@ -162,6 +161,7 @@ class Project extends Component {
 		const { project, loading, openAssignDC } = this.state
 		const { t } = this.props
 		const rp = { history: this.props.history, match: this.props.match }
+		console.log(project)
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
@@ -186,12 +186,7 @@ class Project extends Component {
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<ProjectCollections setHoverID={this.setHoverID} t={t} project={project} {...rp} />
 					</ItemGrid >
-					<ItemGrid xs={12} noMargin>
-						{project.devices ? <ProjectMap
-							devices={project.devices}
-							t={t}
-						/> : null}
-					</ItemGrid>
+				
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<ProjectContact history={this.props.history} t={t} project={project} />
 					</ItemGrid>

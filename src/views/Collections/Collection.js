@@ -43,8 +43,7 @@ class Collection extends Component {
 		let device = await getDevice(id)
 		if (device.lat && device.long) {
 			let data = await getWeather(device, moment(), this.props.language)
-			console.log(data)
-			this.setState({ weather: data }, console.log(this.state.weather))
+			this.setState({ weather: data })
 		}
 		return device ? this.setState({ activeDevice: device }) : null
 	}
