@@ -13,7 +13,7 @@ class InfoCard extends React.Component {
 	  super(props)
 	
 	  this.state = {
-		  expanded: props.cardExpanded !== undefined ? props.cardExpanded : true,
+		  expanded: false,
 		  leftActions: false,
 	  }
 	}
@@ -67,7 +67,7 @@ class InfoCard extends React.Component {
 				</CardHeader>
 				<CardContent className={classnames(
 					{ [classes.contentMedia]: this.props.noPadding },
-					{ [classes.noMargin]: !this.state.expanded })}>
+					{ [classes.noMargin]: this.props.noExpand ? false : !this.state.expanded })}>
 					{this.renderSubHeader()}
 					{content ? content : null}
 				</CardContent>
