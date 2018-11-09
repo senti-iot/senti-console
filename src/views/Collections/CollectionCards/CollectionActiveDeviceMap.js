@@ -15,7 +15,7 @@ export default class ActiveDeviceMap extends Component {
 				noExpand
 				content={
 					<Grid container justify={'center'}>
-						<Maps t={this.props.t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={18} />
+						{device.lat && device.long ? <Maps t={this.props.t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={18} /> : null}
 					</Grid>
 				} />
 

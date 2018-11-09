@@ -183,15 +183,15 @@ class Project extends Component {
 							t={t}
 							project={project} />
 					</ItemGrid>
+					<ItemGrid xs={12} sm={12} md={12} noMargin>
+						<ProjectCollections setHoverID={this.setHoverID} t={t} project={project} {...rp} />
+					</ItemGrid >
 					<ItemGrid xs={12} noMargin>
 						{project.devices ? <ProjectMap
 							devices={project.devices}
 							t={t}
 						/> : null}
 					</ItemGrid>
-					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectCollections setHoverID={this.setHoverID} t={t} project={project} {...rp} />
-					</ItemGrid >
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<ProjectContact history={this.props.history} t={t} project={project} />
 					</ItemGrid>
