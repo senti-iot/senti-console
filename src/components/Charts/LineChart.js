@@ -78,10 +78,16 @@ class LineChart extends PureComponent {
 			return true
 	}
 	componentDidMount = () => {
+		console.log(this.chart.chartInstance.config.options.elements.point.radius)
+		this.chart.chartInstance.config.options.elements.point.radius = this.clickEvent() ? 3 : 5 
+		this.chart.chartInstance.config.options.elements.point.hitRadius = this.clickEvent() ? 3 : 5 
+		this.chart.chartInstance.config.options.elements.point.hoverRadius = this.clickEvent() ? 4 : 6 
+
 		this.setState({
 			chartWidth: parseInt(this.chart.chartInstance.canvas.style.width.substring(0, this.chart.chartInstance.canvas.style.width.length - 1), 10),
 			chartHeight: parseInt(this.chart.chartInstance.canvas.style.height.substring(0, this.chart.chartInstance.canvas.style.height.length - 1), 10),
 			mobile: window.innerWidth > 400 ? false : true
+
 		})	
 	}
 	componentDidUpdate = (prevProps, prevState) => {

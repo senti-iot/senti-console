@@ -32,6 +32,7 @@ const devicetableStyles = theme => ({
 		flex: 0,
 	},
 	noMargin: {
+		whiteSpace: "pre-line",
 		marginBottom: 0,
 		overflow: 'hidden'
 	},
