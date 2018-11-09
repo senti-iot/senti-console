@@ -12,10 +12,10 @@ export default class ActiveDeviceMap extends Component {
 				title={t("devices.cards.map")}
 				subheader={t("devices.fields.coordsW", { lat: device.lat, long: device.long })}
 				avatar={<Map />}
-				collapsable
+				// collapsable
 				cardExpanded={false}
-				noExpand
-				content={
+				// noExpand
+				hiddenContent={
 					<Grid container justify={'center'}>
 						{device.lat && device.long ? <Maps t={this.props.t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={18} /> : <Caption>{t("devices.notCalibrated")}</Caption>}
 					</Grid>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Grid, withStyles } from '@material-ui/core';
-import { ItemGrid, Info, Dropdown } from 'components';
+import { withStyles } from '@material-ui/core';
+import { ItemG, Info, Dropdown } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import { Edit, DeveloperBoard } from 'variables/icons'
 import Caption from 'components/Typography/Caption';
@@ -28,6 +28,7 @@ class DeviceHardware extends Component {
 				title={t("devices.cards.hardware")}
 				avatar={<DeveloperBoard />}
 				subheader={''}
+				haveMargin
 				topAction={
 					<Dropdown menuItems={
 						[
@@ -35,7 +36,7 @@ class DeviceHardware extends Component {
 							// { label: t("actions.deletePicture"), icon: <Delete className={classes.leftIcon} />, func: this.handleOpenDeletePictureDialog },
 						]
 					} />
-					// <ItemGrid>
+					// <ItemG>
 					// 	<IconButton
 					// 		aria-label="More"
 					// 		aria-owns={actionAnchor ? 'long-menu' : null}
@@ -59,55 +60,53 @@ class DeviceHardware extends Component {
 					// 		</MenuItem>
 					// 		))}
 					// 	</Menu>
-					// </ItemGrid>
+					// </ItemG>
 				}
 				content={
-					<Grid container>
-						<Grid container >
-							<ItemGrid xs>
-								<Caption>{t("devices.fields.pcModel")}:</Caption>
-								<Info>{device.RPImodel}</Info>
-							</ItemGrid>
-							<ItemGrid xs>
-								<Caption>{t("devices.fields.memory")}:</Caption>
-								<Info>{device.memory + " - " + device.memoryModel}</Info>
-							</ItemGrid>
-							<ItemGrid xs>
-								<Caption>{t("devices.fields.adapter")}:</Caption>
-								<Info>{device.adapter}</Info>
-							</ItemGrid>
-						</Grid>
-						<Grid container>
-							<ItemGrid xs>
-								<Caption>{t("devices.fields.wifiModule")}:</Caption>
-								<Info>{device.wifiModule}</Info>
-							</ItemGrid>
-							<ItemGrid xs>
-								<Caption>{t("devices.fields.modemModel")}:</Caption>
-								<Info>{device.modemModel}</Info>
-							</ItemGrid>
-						</Grid>
-					</Grid>
+					<ItemG container spacing={16}>
+						<ItemG>
+							<Caption>{t("devices.fields.pcModel")}:</Caption>
+							<Info>{device.RPImodel}</Info>
+						</ItemG>
+						<ItemG>
+							<Caption>{t("devices.fields.memory")}:</Caption>
+							<Info>{device.memory + " - " + device.memoryModel}</Info>
+						</ItemG>
+						<ItemG>
+							<Caption>{t("devices.fields.adapter")}:</Caption>
+							<Info>{device.adapter}</Info>
+						</ItemG>
+					
+						<ItemG>
+							<Caption>{t("devices.fields.wifiModule")}:</Caption>
+							<Info>{device.wifiModule}</Info>
+						</ItemG>
+						<ItemG>
+							<Caption>{t("devices.fields.modemModel")}:</Caption>
+							<Info>{device.modemModel}</Info>
+						</ItemG>
+					
+					</ItemG>
 				}
-				hiddenContent={<Grid container>
-					<ItemGrid>
+				hiddenContent={<ItemG container spacing={16}>
+					<ItemG>
 						<Caption>{t("devices.fields.cellNumber")}:</Caption>
 						<Info>{device.cellNumber}</Info>
-					</ItemGrid>
-					<ItemGrid>
+					</ItemG>
+					<ItemG>
 						<Caption>{t("devices.fields.simProvider")}:</Caption>
 						<Info>{device.SIMProvider}</Info>
-					</ItemGrid>
-					<ItemGrid>
+					</ItemG>
+					<ItemG>
 						<Caption>{t("devices.fields.simCard")}:</Caption>
 						<Info>{device.SIMID}</Info>
-					</ItemGrid>
-					<ItemGrid>
+					</ItemG>
+					<ItemG>
 						<Caption>{t("devices.fields.modemIMEI")}:</Caption>
 						<Info>{device.modemIMEI}</Info>
-					</ItemGrid>
+					</ItemG>
 
-				</Grid>
+				</ItemG>
 				}
 			/>
 		)

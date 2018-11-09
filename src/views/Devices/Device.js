@@ -293,14 +293,6 @@ class Device extends Component {
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
-						{/* <DeviceDataCollection
-							dcId={device.dataCollection}
-							history={this.props.history}
-							match={this.props.match}
-							t={this.props.t}
-						/> */}
-					</ItemGrid>
-					<ItemGrid xs={12} noMargin>
 						<DeviceMap
 							device={device}
 							weather={this.state.weather}
