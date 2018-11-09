@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Line } from 'react-chartjs-2';
 import { Typography, withStyles, Paper, Grow, CircularProgress } from '@material-ui/core';
-import { ItemG, WeatherIcon, Caption, Info } from 'components';
+import { ItemG, WeatherIcon, Caption } from 'components';
 import { graphStyles } from './graphStyles';
 import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
