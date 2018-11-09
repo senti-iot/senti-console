@@ -13,8 +13,8 @@ export default class ProjectMap extends Component {
 				title={t("devices.cards.map")}
 				// subheader={t("devices.fields.coordsW", { lat: device.lat, long: device.long })}
 				avatar={<Map />}
-				noExpand
-				collapsable
+				// noExpand
+				// collapsable
 				cardExpanded={false}
 				content={
 					<Grid container justify={'center'}>

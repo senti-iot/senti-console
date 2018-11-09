@@ -29,16 +29,21 @@ const theme = createMuiTheme({
 		suppressDeprecationWarnings: true,
 	},
 	overrides: {
+		MuiButton: {
+			text: {
+				textTransform: "uppercase"
+			}
+		},
 		MuiTypography: {
-			h6: {
-				textTransform: "none"
-			},
-			h5: {
-				textTransform: "none"
-			},
-			h4: {
-				textTransform: "none"
-			},
+			// h6: {
+			// 	textTransform: "none"
+			// },
+			// h5: {
+			// 	textTransform: "none"
+			// },
+			// h4: {
+			// 	textTransform: "none"
+			// },
 			body1: {
 				fontSize: '0.875rem',
 			}	

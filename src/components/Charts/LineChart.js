@@ -269,12 +269,12 @@ class LineChart extends PureComponent {
 								<ItemG container direction="row"
 									justify="space-between">
 									<Typography variant={'h6'} classes={{ root: classes.antialias }} >{this.state.tooltip.title}</Typography>
-									{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : <CircularProgress size={27} />}
+									{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : <CircularProgress size={37} />}
 								</ItemG>
-								{this.state.weather ? <ItemG>
-									<Caption>{this.props.t('devices.fields.weather')}: {this.state.weather.currently.summary}</Caption>
+								 <ItemG>
+									<Caption>{this.props.t('devices.fields.weather')}: {this.state.weather ? this.state.weather.currently.summary : null}</Caption>
 									{/* <Info></Info> */}
-								</ItemG> : null}
+								</ItemG> 
 								{this.state.tooltip.data.map((d, i) => {
 									return (
 										<ItemG key={i} container alignItems={'center'}>
