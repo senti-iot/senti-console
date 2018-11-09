@@ -78,7 +78,7 @@ class LineChart extends PureComponent {
 			return true
 	}
 	componentDidMount = () => {
-		console.log(this.chart.chartInstance.config.options.elements.point.radius)
+		// console.log(this.chart.chartInstance.config.options.elements.point.radius)
 		this.chart.chartInstance.config.options.elements.point.radius = this.clickEvent() ? 3 : 5 
 		this.chart.chartInstance.config.options.elements.point.hitRadius = this.clickEvent() ? 3 : 5 
 		this.chart.chartInstance.config.options.elements.point.hoverRadius = this.clickEvent() ? 4 : 6 
@@ -115,19 +115,25 @@ class LineChart extends PureComponent {
 		}
 		// console.log(tooltipModel)
 		// console.log(this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x)
-		let weatherData = null
+		// let weatherData = null
 		let wDate = null
 		try {
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
 			// console.log(this.state.weatherDate, wDate, this.state.weatherDate === wDate)
 			if (this.state.weatherDate !== wDate) {
-				this.setState({ weather: "" })
-				weatherData = await getWeather(this.props.obj, this.setHours(wDate), this.props.lang)
+				this.setState({ weather: null })
+				getWeather(this.props.obj, this.setHours(wDate), this.props.lang).then(rs => {
+					this.setState({
+						weatherDate: wDate,
+						weather: rs
+					})
+				})
+			
 			}
-			this.setState({
-				weatherDate: wDate,
-				weather: weatherData ? weatherData : this.state.weather
-			})
+			// this.setState({
+			// 	weatherDate: wDate,
+			// 	weather: weatherData ? weatherData : this.state.weather
+			// })
 		}
 		catch (err) {
 
@@ -263,11 +269,11 @@ class LineChart extends PureComponent {
 								<ItemG container direction="row"
 									justify="space-between">
 									<Typography variant={'h6'} classes={{ root: classes.antialias }} >{this.state.tooltip.title}</Typography>
-									{this.state.weather ? this.state.weather !== "" ? <WeatherIcon icon={this.state.weather.currently.icon} /> : <CircularProgress size={20} /> : null}
+									{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : <CircularProgress size={27} />}
 								</ItemG>
 								{this.state.weather ? <ItemG>
-									<Caption>{this.props.t('devices.fields.weather')}</Caption>
-									<Info>{this.state.weather.currently.summary}</Info>
+									<Caption>{this.props.t('devices.fields.weather')}: {this.state.weather.currently.summary}</Caption>
+									{/* <Info></Info> */}
 								</ItemG> : null}
 								{this.state.tooltip.data.map((d, i) => {
 									return (
