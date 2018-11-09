@@ -43,7 +43,7 @@ class InfoCard extends React.Component {
 	renderTopAction = () => {
 		const { classes, t, collapsable } = this.props
 		return <ItemG container justify={'flex-end'}>
-			{collapsable ? <ItemG xs={12} justify={'flex-end'}>
+			{collapsable ? <ItemG xs={12}>
 				<Button
 					variant={'text'}
 					color={'primary'}

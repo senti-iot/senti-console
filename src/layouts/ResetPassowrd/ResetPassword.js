@@ -276,7 +276,7 @@ class ResetPassword extends React.Component {
 															</Button>}
 													</Collapse>
 												</ItemG>
-												<ItemG xs={12} justify={'center'}>
+												<ItemG xs={12} container justify={'center'}>
 													<Collapse in={passwordRequested}>
 														<Button variant={'contained'} color={'primary'} onClick={() => this.props.history.push('/login')}>
 															{t("login.goToLogin")}

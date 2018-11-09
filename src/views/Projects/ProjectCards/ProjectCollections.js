@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Collapse, /* Grid, */ withStyles, TableRow, TableBody, Table, Hidden, TableCell, Typography, TableHead } from '@material-ui/core';
-import { Caption, InfoCard, ItemG, ItemGrid, Info } from 'components';
+import { Caption, InfoCard, ItemG, ItemGrid, Info, GridContainer } from 'components';
 import { Map, ExpandMore, DataUsage, SignalWifi2BarLock, SignalWifi2Bar } from 'variables/icons'
 import { Maps } from 'components/Map/Maps';
 // import CollectionSimpleList from 'components/Collections/CollectionSimpleList';
@@ -51,9 +51,9 @@ class ProjectCollections extends Component {
 		</Collapse>
 	}
 	renderNoCollections = () => {
-		return <ItemG container justify={'center'}>
+		return <GridContainer justify={'center'}>
 			<Caption> {this.props.t("collections.noCollectionsAssigned")}</Caption>
-		</ItemG>
+		</GridContainer>
 	}
 	renderDeviceStatus = (status) => {
 		const { classes } = this.props
@@ -86,7 +86,7 @@ class ProjectCollections extends Component {
 		return (
 			<InfoCard title={t("collections.pageTitle")} avatar={<DataUsage />}
 				// subheader={project.dataCollections.length > 0 ? t("projects.collections.numCollections") + project.dataCollections.length : null}
-				// noRightExpand
+				noRightExpand
 				noPadding
 				content={
 					project.dataCollections.length > 0 ?

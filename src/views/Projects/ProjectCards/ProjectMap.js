@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { InfoCard } from 'components';
+import { InfoCard, Caption } from 'components';
 import { Map } from 'variables/icons'
 import { Grid } from '@material-ui/core';
 import { Maps } from 'components/Map/Maps';
@@ -7,6 +7,7 @@ import { Maps } from 'components/Map/Maps';
 export default class ProjectMap extends Component {
 	render() {
 		const { devices, t } = this.props
+		console.log(devices)
 		return (
 			<InfoCard
 				title={t("devices.cards.map")}
@@ -17,7 +18,7 @@ export default class ProjectMap extends Component {
 				cardExpanded={false}
 				content={
 					<Grid container justify={'center'}>
-						<Maps t={t} isMarkerShown markers={devices} zoom={10} />
+						{devices.length > 0 ? <Maps t={t} isMarkerShown markers={devices} zoom={10} /> : <Caption>{t("projects.noAvailableDevices")}</Caption>}
 					</Grid>
 				} />
 
