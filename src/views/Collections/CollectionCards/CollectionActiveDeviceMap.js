@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { InfoCard } from 'components';
+import { InfoCard, Caption } from 'components';
 import { Map } from 'variables/icons'
 import { Grid } from '@material-ui/core';
 import { Maps } from 'components/Map/Maps';
@@ -17,7 +17,7 @@ export default class ActiveDeviceMap extends Component {
 				noExpand
 				content={
 					<Grid container justify={'center'}>
-						{device.lat && device.long ? <Maps t={this.props.t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={18} /> : null}
+						{device.lat && device.long ? <Maps t={this.props.t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={18} /> : <Caption>{t("devices.notCalibrated")}</Caption>}
 					</Grid>
 				} />
 
