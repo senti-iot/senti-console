@@ -12,6 +12,8 @@ export default class ActiveDeviceMap extends Component {
 				title={t("devices.cards.map")}
 				subheader={t("devices.fields.coordsW", { lat: device.lat, long: device.long })}
 				avatar={<Map />}
+				collapsable
+				cardExpanded={false}
 				noExpand
 				content={
 					<Grid container justify={'center'}>

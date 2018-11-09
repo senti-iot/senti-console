@@ -646,7 +646,7 @@ class ProjectData extends PureComponent {
 	renderMenu = () => {
 		const { actionAnchor, actionAnchorVisibility } = this.state
 		const { classes, t } = this.props
-		return <ItemGrid container noMargin noPadding>
+		return <Fragment>
 			<ItemG>
 				<Hidden smDown>
 					{this.renderDateFilter()}
@@ -746,7 +746,7 @@ class ProjectData extends PureComponent {
 					</Hidden>
 				</div>
 			</Menu>
-		</ItemGrid>
+		</Fragment>
 	}
 	renderNoData = () => {
 		return <ItemG container justify={'center'}>

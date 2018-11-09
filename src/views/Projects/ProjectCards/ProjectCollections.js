@@ -10,7 +10,6 @@ import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
 import { dateFormatter } from 'variables/functions';
 import TP from 'components/Table/TP';
 import TC from 'components/Table/TC';
-import ProjectMap from './ProjectMap';
 
 class ProjectCollections extends Component {
 	constructor(props) {
@@ -88,14 +87,6 @@ class ProjectCollections extends Component {
 			<InfoCard title={t("collections.pageTitle")} avatar={<DataUsage />}
 				// subheader={project.dataCollections.length > 0 ? t("projects.collections.numCollections") + project.dataCollections.length : null}
 				// noRightExpand
-				hiddenContent={
-					project.devices ? <ItemGrid xs={12} noMargin>
-					 <ProjectMap
-							devices={project.devices}
-							t={t}
-						/> 
-					</ItemGrid> : null
-				}
 				noPadding
 				content={
 					project.dataCollections.length > 0 ?

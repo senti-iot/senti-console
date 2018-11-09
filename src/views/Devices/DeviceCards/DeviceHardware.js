@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Grid, IconButton, Menu, MenuItem, withStyles } from '@material-ui/core';
-import { ItemGrid, Info } from 'components';
+import { Grid, withStyles } from '@material-ui/core';
+import { ItemGrid, Info, Dropdown } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
-import { MoreVert, Edit, DeveloperBoard } from 'variables/icons'
+import { Edit, DeveloperBoard } from 'variables/icons'
 import Caption from 'components/Typography/Caption';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 
@@ -17,12 +17,11 @@ class DeviceHardware extends Component {
 	handleOpenActionsHardware = e => {
 		this.setState({ actionAnchor: e.currentTarget })
 	}
-	handleCloseActionsHardware = e => {
-		this.setState({ actionAnchor: null })
+	handleCloseActionsHardware = () => {
+		this.setState({ actionAnchor: null });
 	}
 
 	render() {
-		const { actionAnchor } = this.state
 		const { classes, device, t  } = this.props
 		return (
 			<InfoCard
@@ -30,31 +29,37 @@ class DeviceHardware extends Component {
 				avatar={<DeveloperBoard />}
 				subheader={''}
 				topAction={
-					<ItemGrid>
-						<IconButton
-							aria-label="More"
-							aria-owns={actionAnchor ? 'long-menu' : null}
-							aria-haspopup="true"
-							onClick={this.handleOpenActionsHardware}>
-							<MoreVert />
-						</IconButton>
-						<Menu
-							id="long-menu"
-							anchorEl={actionAnchor}
-							open={Boolean(actionAnchor)}
-							onClose={this.handleCloseActionsHardware}
-							PaperProps={{
-								style: {
-									maxHeight: 200,
-									minWidth: 200
-								}
-							}}>
-							<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit-hardware`)}>
-								<Edit className={classes.leftIcon} />Edit hardware info
-							</MenuItem>
-							))}
-						</Menu>
-					</ItemGrid>
+					<Dropdown menuItems={
+						[
+							{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => this.props.history.push(`${this.props.match.url}/edit-hardware`) },
+							// { label: t("actions.deletePicture"), icon: <Delete className={classes.leftIcon} />, func: this.handleOpenDeletePictureDialog },
+						]
+					} />
+					// <ItemGrid>
+					// 	<IconButton
+					// 		aria-label="More"
+					// 		aria-owns={actionAnchor ? 'long-menu' : null}
+					// 		aria-haspopup="true"
+					// 		onClick={this.handleOpenActionsHardware}>
+					// 		<MoreVert />
+					// 	</IconButton>
+					// 	<Menu
+					// 		id="long-menu"
+					// 		anchorEl={actionAnchor}
+					// 		open={Boolean(actionAnchor)}
+					// 		onClose={this.handleCloseActionsHardware}
+					// 		PaperProps={{
+					// 			style: {
+					// 				maxHeight: 200,
+					// 				minWidth: 200
+					// 			}
+					// 		}}>
+					// 		<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit-hardware`)}>
+					// 			<Edit className={classes.leftIcon} />Edit hardware info
+					// 		</MenuItem>
+					// 		))}
+					// 	</Menu>
+					// </ItemGrid>
 				}
 				content={
 					<Grid container>

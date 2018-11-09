@@ -8,6 +8,7 @@ import ProjectCollections from './ProjectCards/ProjectCollections'
 import { ProjectContact } from './ProjectCards/ProjectContact'
 import AssignDCs from 'components/AssignComponents/AssignDCs';
 import { colors } from 'variables/colors';
+import ProjectMap from './ProjectCards/ProjectMap';
 
 const projectStyles = theme => ({
 	close: {
@@ -186,7 +187,13 @@ class Project extends Component {
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<ProjectCollections setHoverID={this.setHoverID} t={t} project={project} {...rp} />
 					</ItemGrid >
-				
+					{project.devices ? <ItemGrid xs={12} noMargin>
+						<ProjectMap
+							devices={project.devices}
+							t={t}
+						/>
+					</ItemGrid> : null
+					}
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<ProjectContact history={this.props.history} t={t} project={project} />
 					</ItemGrid>

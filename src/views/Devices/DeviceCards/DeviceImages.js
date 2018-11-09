@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react'
 import { getAllPictures, deletePicture } from 'variables/dataDevices';
-import { Grid, withStyles, Menu, MenuItem, IconButton, Modal, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
+import { Grid, withStyles, Modal, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
 import InfoCard from 'components/Cards/InfoCard';
-import { Image,  MoreVert, CloudUpload, Delete } from 'variables/icons'
+import { Image, CloudUpload, Delete } from 'variables/icons'
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import DeviceImage from 'components/Devices/DeviceImage';
 import CircularLoader from 'components/Loader/CircularLoader';
-import { ItemGrid, Caption } from 'components';
+import { Caption, Dropdown } from 'components';
 import DeviceImageUpload from 'views/Devices/ImageUpload';
 
 class DeviceImages extends Component {
@@ -16,7 +16,6 @@ class DeviceImages extends Component {
 		this.state = {
 			activeStep: 0,
 			img: null,
-			actionAnchor: null,
 			openImageUpload: false,
 			openDeleteImage: false,
 			deletingPicture: false,
@@ -46,17 +45,11 @@ class DeviceImages extends Component {
 	getAllPics = (id) => {
 		getAllPictures(id).then(rs => { return this.setState({ img: rs }) })
 	}
-	handleOpenActionsImages = e => {
-		this.setState({ actionAnchor: e.currentTarget })
-	}
-	handleCloseActionsImages = e => {
-		this.setState({ actionAnchor: null })
-	}
 	handleOpenImageUpload = () => {
-		this.setState({ openImageUpload: true, actionAnchor: null })
+		this.setState({ openImageUpload: true })
 	}
 	handleOpenDeletePictureDialog = () => {
-		this.setState({ openDeleteImage: true, actionAnchor: null })
+		this.setState({ openDeleteImage: true })
 	}
 	handleCloseDeletePictureDialog = () => {
 		this.setState({ openDeleteImage: false })
@@ -120,41 +113,47 @@ class DeviceImages extends Component {
 
 	
 	render() {
-		const { actionAnchor, openImageUpload, img } = this.state
+		const { openImageUpload, img } = this.state
 		const { classes, device, t  } = this.props
 		return (
 			<InfoCard
 				title={t("devices.cards.pictures")}
 				avatar={<Image />}
 				topAction={
-					<ItemGrid>
-						<IconButton
-							aria-label="More"
-							aria-owns={actionAnchor ? 'long-menu' : null}
-							aria-haspopup="true"
-							onClick={this.handleOpenActionsImages}>
-							<MoreVert />
-						</IconButton>
-						<Menu
-							id="long-menu"
-							anchorEl={actionAnchor}
-							open={Boolean(actionAnchor)}
-							onClose={this.handleCloseActionsImages}
-							PaperProps={{
-								style: {
-									maxHeight: 200,
-									minWidth: 200
-								}
-							}}>
-							<MenuItem onClick={this.handleOpenImageUpload}>
-								<CloudUpload className={classes.leftIcon} />{t("actions.uploadImages")}
-							</MenuItem>
-							<MenuItem onClick={this.handleOpenDeletePictureDialog}>
-								<Delete className={classes.leftIcon} />{t("actions.deletePicture")}
-							</MenuItem>
-							))}
-						</Menu>
-					</ItemGrid>
+					<Dropdown menuItems={
+						[
+							{ label: t("actions.uploadImages"), icon: <CloudUpload className={classes.leftIcon} />, func: this.handleOpenImageUpload },
+							{ label: t("actions.deletePicture"), icon: <Delete className={classes.leftIcon} />, func: this.handleOpenDeletePictureDialog },
+						]
+					} />
+					// <ItemG>
+					// 	<IconButton
+					// 		aria-label="More"
+					// 		aria-owns={actionAnchor ? 'long-menu' : null}
+					// 		aria-haspopup="true"
+					// 		onClick={this.handleOpenActionsImages}>
+					// 		<MoreVert />
+					// 	</IconButton>
+					// 	<Menu
+					// 		id="long-menu"
+					// 		anchorEl={actionAnchor}
+					// 		open={Boolean(actionAnchor)}
+					// 		onClose={this.handleCloseActionsImages}
+					// 		PaperProps={{
+					// 			style: {
+					// 				maxHeight: 200,
+					// 				minWidth: 200
+					// 			}
+					// 		}}>
+					// 		<MenuItem onClick={this.handleOpenImageUpload}>
+					// 			<CloudUpload className={classes.leftIcon} />{t("actions.uploadImages")}
+					// 		</MenuItem>
+					// 		<MenuItem onClick={this.handleOpenDeletePictureDialog}>
+					// 			<Delete className={classes.leftIcon} />{t("actions.deletePicture")}
+					// 		</MenuItem>
+					// 		))}
+					// 	</Menu>
+					// </ItemG>
 				}
 				noExpand
 				content={
