@@ -67,7 +67,7 @@ class InfoCard extends React.Component {
 						<CardActions className={classes.actions} disableActionSpacing>
 							{leftActions ? leftActions : null}
 							{!noRightExpand ? <Button
-								variant={'flat'}
+								variant={'text'}
 								color={'primary'}
 								onClick={this.handleExpandClick}
 								aria-expanded={this.state.expanded}
