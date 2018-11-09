@@ -15,7 +15,7 @@ export default class ProjectMap extends Component {
 				avatar={<Map />}
 				// noExpand
 				// collapsable
-				content={
+				hiddenContent={
 					<Grid container justify={'center'}>
 						{devices.length > 0 ? <Maps t={t} isMarkerShown markers={devices} zoom={10} /> : <Caption>{t("projects.noAvailableDevices")}</Caption>}
 					</Grid>

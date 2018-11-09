@@ -118,27 +118,27 @@ class LineChart extends PureComponent {
 		// let weatherData = null
 		let wDate = null
 		try {
+			let lat = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].lat
+			let long = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].long
+			// console.log(lat, long)
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
-			// console.log(this.state.weatherDate, wDate, this.state.weatherDate === wDate)
-			if (this.state.weatherDate !== wDate) {
+			if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long)) {
 				this.setState({ weather: null })
-				getWeather(this.props.obj, this.setHours(wDate), this.props.lang).then(rs => {
+				getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then(rs => {
 					this.setState({
 						weatherDate: wDate,
-						weather: rs
+						weather: rs,
+						loc: {
+							lat: lat,
+							long: long
+						}
 					})
 				})
-			
 			}
-			// this.setState({
-			// 	weatherDate: wDate,
-			// 	weather: weatherData ? weatherData : this.state.weather
-			// })
 		}
 		catch (err) {
-
+			// console.log(err)
 		}
-
 		const left = tooltipModel.caretX;
 		const top = tooltipModel.caretY;
 		// let deviceWeather = getWeather(device).then(rs => rs)

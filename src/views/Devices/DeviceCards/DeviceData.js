@@ -101,6 +101,8 @@ class DeviceData extends PureComponent {
 				labels: datesToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.lat,
+					long: d.long,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 8 : 3,
@@ -113,6 +115,8 @@ class DeviceData extends PureComponent {
 				labels: datesToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.lat,
+					long: d.long,
 					backgroundColor: d.color,
 					borderColor: teal[500],
 					borderWidth: this.props.hoverID === d.id ? 4 : 0,
@@ -133,6 +137,8 @@ class DeviceData extends PureComponent {
 				labels: hoursToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.lat,
+					long: d.long,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 8 : 3,
@@ -145,6 +151,8 @@ class DeviceData extends PureComponent {
 				labels: hoursToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.lat,
+					long: d.long,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 4 : 0,
@@ -164,6 +172,8 @@ class DeviceData extends PureComponent {
 				labels: minutesToArray(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.lat,
+					long: d.long,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 8 : 3,
@@ -175,6 +185,8 @@ class DeviceData extends PureComponent {
 					labels: hoursToArr(from, to),
 					datasets: dataArr.map((d) => ({
 						id: d.id,
+						lat: d.lat,
+						long: d.long,
 						backgroundColor: d.color,
 						borderColor: d.color,
 						borderWidth: this.props.hoverID === d.id ? 4 : 0,
@@ -223,6 +235,8 @@ class DeviceData extends PureComponent {
 			name: device.name,
 			id: device.id,
 			data: data,
+			lat: device.lat,
+			long: device.long,
 			color: teal[500]
 		}
 		dataArr.push(dataSet)
@@ -246,6 +260,8 @@ class DeviceData extends PureComponent {
 		dataSet = {
 			name: device.name,
 			id: device.id,
+			lat: device.lat,
+			long: device.long,
 			data: data,
 			color: teal[500]
 		}
@@ -271,6 +287,8 @@ class DeviceData extends PureComponent {
 		dataSet = {
 			name: device.name,
 			id: device.id,
+			lat: device.lat,
+			long: device.long,
 			data: data,
 			color: teal[500]
 		}

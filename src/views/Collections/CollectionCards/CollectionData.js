@@ -98,6 +98,8 @@ class CollectionData extends PureComponent {
 				labels: datesToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.activeDeviceStats ? d.activeDeviceStats.lat : 0,
+					long: d.activeDeviceStats ? d.activeDeviceStats.long : 0,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 8 : 3,
@@ -110,6 +112,8 @@ class CollectionData extends PureComponent {
 				labels: datesToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.activeDeviceStats ? d.activeDeviceStats.lat : 0,
+					long: d.activeDeviceStats ? d.activeDeviceStats.long : 0,
 					backgroundColor: d.color,
 					borderColor: teal[500],
 					borderWidth: this.props.hoverID === d.id ? 4 : 0,
@@ -130,6 +134,8 @@ class CollectionData extends PureComponent {
 				labels: hoursToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.activeDeviceStats ? d.activeDeviceStats.lat : 0,
+					long: d.activeDeviceStats ? d.activeDeviceStats.long : 0,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 8 : 3,
@@ -142,6 +148,8 @@ class CollectionData extends PureComponent {
 				labels: hoursToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.activeDeviceStats ? d.activeDeviceStats.lat : 0,
+					long: d.activeDeviceStats ? d.activeDeviceStats.long : 0,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 4 : 0,
@@ -161,6 +169,8 @@ class CollectionData extends PureComponent {
 				labels: minutesToArray(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.activeDeviceStats ? d.activeDeviceStats.lat : 0,
+					long: d.activeDeviceStats ? d.activeDeviceStats.long : 0,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 8 : 3,
@@ -172,6 +182,8 @@ class CollectionData extends PureComponent {
 					labels: hoursToArr(from, to),
 					datasets: dataArr.map((d) => ({
 						id: d.id,
+						lat: d.activeDeviceStats ? d.activeDeviceStats.lat : 0,
+						long: d.activeDeviceStats ? d.activeDeviceStats.long : 0,
 						backgroundColor: d.color,
 						borderColor: d.color,
 						borderWidth: this.props.hoverID === d.id ? 4 : 0,

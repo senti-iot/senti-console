@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Grid, Typography, withStyles, Button, CircularProgress } from '@material-ui/core';
-import { ItemG, Warning, P, Info, Caption, WeatherIcon } from 'components';
+import { ItemG, Warning, P, Info, Caption, WeatherIcon, ItemGrid } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import { SignalWifi2Bar, SignalWifi2BarLock, Build, /* LibraryBooks,  */Edit, DeviceHub, LayersClear, Business, DataUsage } from 'variables/icons'
 import { ConvertDDToDMS, dateFormat, dateFormatter } from 'variables/functions'
@@ -51,29 +51,7 @@ class DeviceDetails extends Component {
 
 	}
 	componentWillUpdate = () => {
-		// if (this.props.weather) {
-		// console.log(this.props.weather)
-		// var skycons = new Skycons({
-		//  "monochrome": false,
-		//  "colors" : {
-		//    "cloud" : "#F00"
-		//  }
-		//  });
-		// let weatherIcon = new Skycons({
-		// 	"monochrome": false,
-		// 	"colors": {
-		// 		"main": teal[500],
-		// 		"sun": "#FF0",
-		// 		"cloud": "#F00"
-		// 	}
-		// });
-		// let iconStr = /* this.props.weather.currently.icon.toString() ?*/  'PARTLY_CLOUDY_DAY'
-		// // iconStr = iconStr.replace(/-/g, '_')
-		// // iconStr = iconStr.toUpperCase()
-		// // console.log(Skycons[iconStr], iconStr)
-		// weatherIcon.add('icon1', Skycons[iconStr])
-		// weatherIcon.play()
-		// }
+
 	}
 	renderDeviceLocType = () => {
 		const { device, t } = this.props
@@ -100,7 +78,7 @@ class DeviceDetails extends Component {
 				subheader={device.id}
 				noExpand
 				content={
-					<Fragment>
+					<ItemGrid>
 						<Grid container spacing={16}>
 							{!(device.lat > 0) && !(device.long > 0) &&
 								<ItemG xs={12}>
@@ -196,7 +174,7 @@ class DeviceDetails extends Component {
 								<Info>{device.dataCollection.id > 0 ? t("devices.fields.notfree") : t("devices.fields.free")}</Info>
 							</ItemG>
 						</Grid>
-					</Fragment>} />
+					</ItemGrid>} />
 		)
 	}
 }
