@@ -58,8 +58,8 @@ class CollectionActiveDevice extends Component {
 					<Caption>{t("devices.fields.id")}:</Caption>&nbsp;{device ? device.id : ""}
 				</ItemG>}
 				noRightExpand
-				leftActionContent={
-					device ? <ItemG xs={12}>
+				leftActions={
+					device ? <ItemG xs={12} container justify={'flex-end'}>
 						<Button variant={'text'} color={"primary"} onClick={() => { history.push({ pathname: `/device/${device.id}`, prevURL: `/collection/${collection.id}` } )}}>
 							{t("menus.seeMore")}
 						</Button>
@@ -95,8 +95,9 @@ class CollectionActiveDevice extends Component {
 								</Info>
 							</ItemGrid>
 						</ItemG>
-						: <Caption>{t("collections.noActiveDevice")}</Caption>
-		
+						: <ItemG container justify={'center'}>
+							<Caption>{t("collections.noActiveDevice")}</Caption>
+						</ItemG>
 				} />)
 	}
 }

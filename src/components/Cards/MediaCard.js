@@ -8,10 +8,13 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 const styles = {
 	card: {
-		maxWidth: 345,
+		// maxWidth: 345,
 		margin: 8,
 		display: 'flex',
-		flexFlow: 'column'
+		flexFlow: 'column',
+		flexGrow: 1
+		// justifyContent: "center",
+		// alignItems: "center"
 	},
 	cardContent: {
 		minHeight: 150,

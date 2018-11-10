@@ -11,8 +11,9 @@ import CollectionDetails from 'views/Collections/CollectionCards/CollectionDetai
 import CollectionHistory from 'views/Collections/CollectionCards/CollectionHistory';
 import { getProject } from 'variables/dataProjects';
 import Search from 'components/Search/Search';
-import { getDevice } from 'variables/dataDevices';
+import { getDevice, getWeather } from 'variables/dataDevices';
 import ActiveDeviceMap from './CollectionCards/CollectionActiveDeviceMap';
+import moment from 'moment'
 
 // import moment from 'moment'
 class Collection extends Component {
@@ -22,6 +23,7 @@ class Collection extends Component {
 		this.state = {
 			collection: null,
 			activeDevice: null,
+			weather: '',
 			loading: true,
 			anchorElHardware: null,
 			openAssign: false,
@@ -39,6 +41,10 @@ class Collection extends Component {
 	}
 	getActiveDevice = async (id) => {
 		let device = await getDevice(id)
+		if (device.lat && device.long) {
+			let data = await getWeather(device, moment(), this.props.language)
+			this.setState({ weather: data })
+		}
 		return device ? this.setState({ activeDevice: device }) : null
 	}
 	getCollectionProject = async (rs) => {
@@ -85,13 +91,13 @@ class Collection extends Component {
 				s(t("snackbars.unassign.deviceFromCollection", { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id }))
 				break
 			case 2:
-				s(t("snackbars.assignCollection", { collection: `${name} (${id})`, what: this.state.collection.org.name }))
+				s(t("snackbars.assign.collectionToOrg", { collection: `${name} (${id})`, org: this.state.collection.org.name }))
 				break
 			case 5: 
-				s(t("snackbars.assign.collectionToProject", { collection: `${name} (${id})`, what: this.state.collection.project.title }))
+				s(t("snackbars.assign.collectionToProject", { collection: `${name} (${id})`, project: this.state.collection.project.title }))
 				break
 			case 6:
-				s(t("snackbars.assign.deviceToCollection", { collection: `${name} (${id})`, what: this.state.collection.activeDeviceStats.id }))
+				s(t("snackbars.assign.deviceToCollection", { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id }))
 				break
 			case 4:
 				s(t("snackbars.collectionDeleted"))
@@ -301,7 +307,7 @@ class Collection extends Component {
 
 	render() {
 		const { history, t, classes, accessLevel } = this.props
-		const { collection, loading, loadingData } = this.state
+		const { collection, loading, loadingData, activeDevice, weather } = this.state
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
@@ -333,6 +339,7 @@ class Collection extends Component {
 					<ItemGrid xs={12} noMargin>
 						<CollectionDetails
 							collection={collection}
+							weather={weather}
 							history={this.props.history}
 							match={this.props.match}
 							handleOpenAssignProject={this.handleOpenAssignProject}
@@ -349,12 +356,14 @@ class Collection extends Component {
 							loading={loadingData}
 							collection={collection}
 							classes={classes}
+							device={activeDevice}
 							t={t}
 						/>
 					</ItemGrid>
 					{this.state.activeDevice ? <ItemGrid xs={12} noMargin>
 						<ActiveDeviceMap
 							device={this.state.activeDevice}
+							weather={this.state.weather}
 							t={t}
 						/>
 					</ItemGrid> : null}
@@ -383,7 +392,8 @@ class Collection extends Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	language: state.settings.language
 })
 
 const mapDispatchToProps = {

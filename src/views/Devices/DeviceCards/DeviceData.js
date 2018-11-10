@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import {
 	Timeline, MoreVert,
-	DateRange, DonutLargeRounded, PieChartRounded, BarChart as BarChartIcon, ExpandMore, Visibility, ShowChart
+	DateRange, DonutLargeRounded, PieChartRounded, BarChart as BarChartIcon, ExpandMore, Visibility, ShowChart, CloudDownload
 } from "variables/icons"
 import {
 	ItemGrid, CircularLoader, Caption, Info, ItemG, CustomDateTime, InfoCard, BarChart,
@@ -21,6 +21,8 @@ import { dateTimeFormatter, datesToArr, hoursToArr, minutesToArray } from 'varia
 import { connect } from 'react-redux'
 import moment from 'moment'
 import teal from '@material-ui/core/colors/teal'
+import ExportModal from 'components/Exports/ExportModal';
+// import DevicePDF from 'components/Exports/DevicePDF';
 
 class DeviceData extends PureComponent {
 	constructor(props) {
@@ -34,6 +36,7 @@ class DeviceData extends PureComponent {
 			actionAnchor: null,
 			loading: true,
 			dateFilterInputID: 3,
+			openDownload: false,
 			openCustomDate: false,
 			display: props.chartType,
 			visibility: false,
@@ -98,6 +101,8 @@ class DeviceData extends PureComponent {
 				labels: datesToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.lat,
+					long: d.long,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 8 : 3,
@@ -110,6 +115,8 @@ class DeviceData extends PureComponent {
 				labels: datesToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.lat,
+					long: d.long,
 					backgroundColor: d.color,
 					borderColor: teal[500],
 					borderWidth: this.props.hoverID === d.id ? 4 : 0,
@@ -130,6 +137,8 @@ class DeviceData extends PureComponent {
 				labels: hoursToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.lat,
+					long: d.long,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 8 : 3,
@@ -142,6 +151,8 @@ class DeviceData extends PureComponent {
 				labels: hoursToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.lat,
+					long: d.long,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 4 : 0,
@@ -161,6 +172,8 @@ class DeviceData extends PureComponent {
 				labels: minutesToArray(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.lat,
+					long: d.long,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 8 : 3,
@@ -172,6 +185,8 @@ class DeviceData extends PureComponent {
 					labels: hoursToArr(from, to),
 					datasets: dataArr.map((d) => ({
 						id: d.id,
+						lat: d.lat,
+						long: d.long,
 						backgroundColor: d.color,
 						borderColor: d.color,
 						borderWidth: this.props.hoverID === d.id ? 4 : 0,
@@ -220,6 +235,8 @@ class DeviceData extends PureComponent {
 			name: device.name,
 			id: device.id,
 			data: data,
+			lat: device.lat,
+			long: device.long,
 			color: teal[500]
 		}
 		dataArr.push(dataSet)
@@ -243,6 +260,8 @@ class DeviceData extends PureComponent {
 		dataSet = {
 			name: device.name,
 			id: device.id,
+			lat: device.lat,
+			long: device.long,
 			data: data,
 			color: teal[500]
 		}
@@ -268,6 +287,8 @@ class DeviceData extends PureComponent {
 		dataSet = {
 			name: device.name,
 			id: device.id,
+			lat: device.lat,
+			long: device.long,
 			data: data,
 			color: teal[500]
 		}
@@ -290,9 +311,10 @@ class DeviceData extends PureComponent {
 	}
 	getImage = () => {
 		var canvas = document.getElementsByClassName("chartjs-render-monitor");
+		// console.log(canvas)
 		if (canvas.length > 0) {
-			 this.image = canvas[0].toDataURL("image/png");
-			// this.setState({ image: this.image })
+			 this.image = canvas[1].toDataURL("image/png");
+			this.setState({ image: this.image })
 			// console.log(this.image)
 		}
 	}
@@ -469,7 +491,7 @@ class DeviceData extends PureComponent {
 			event.preventDefault()
 		// 
 		// let id = event.target.value
-		this.setState({ display: id, loading: true }, this.handleSwitchVisibility)
+		this.setState({ display: id, loading: true, actionAnchorVisibility: null }, this.handleSwitchVisibility)
 	}
 
 	handleDateFilter = (event) => {
@@ -540,6 +562,12 @@ class DeviceData extends PureComponent {
 			loading: false, openCustomDate: false
 		})
 	}
+	handleOpenDownloadModal= () => {
+		this.setState({ openDownload: true, actionAnchor: null })
+	}
+	handleCloseDownloadModal = () => {
+		this.setState({ openDownload: false })
+	}
 	renderCustomDateDialog = () => {
 		const { classes, t } = this.props
 		const { openCustomDate, to, from, timeType } = this.state
@@ -600,7 +628,7 @@ class DeviceData extends PureComponent {
 					<LineChart
 						hoverID={this.props.hoverID}
 						single
-						getImage={this.getImage}
+						// getImage={this.getImage}
 						obj={this.props.device}
 						unit={this.timeTypes[this.state.timeType]}
 						onElementsClick={this.handleZoomOnData}
@@ -654,7 +682,7 @@ class DeviceData extends PureComponent {
 	renderMenu = () => {
 		const { actionAnchor, actionAnchorVisibility } = this.state
 		const { classes, t } = this.props
-		return <ItemGrid container noMargin noPadding>
+		return <Fragment>
 			<ItemG>
 				<Hidden smDown>
 					{this.renderDateFilter()}
@@ -716,6 +744,10 @@ class DeviceData extends PureComponent {
 						</ListItem>
 					</Hidden>
 				</div>
+				<ListItem button onClick={this.handleOpenDownloadModal}>
+					<ListItemIcon><CloudDownload /></ListItemIcon>
+					<ListItemText>{t("data.download")}</ListItemText>
+				</ListItem>
 				<ListItem button onClick={() => this.handleRawData()}>
 					<ListItemIcon>
 						<Checkbox
@@ -754,7 +786,7 @@ class DeviceData extends PureComponent {
 					</Hidden>
 				</div>
 			</Menu>
-		</ItemGrid>
+		</Fragment>
 	}
 	renderNoData = () => {
 		return <ItemG container justify={'center'}>
@@ -764,7 +796,7 @@ class DeviceData extends PureComponent {
 
 	render() {
 		const { t, classes } = this.props
-		const { loading, noData, raw } = this.state
+		const { loading, noData, raw, openDownload } = this.state
 		return (
 			<Fragment>
 				<InfoCard
@@ -775,6 +807,12 @@ class DeviceData extends PureComponent {
 					topAction={noData ? null : this.renderMenu()}
 					content={
 						<Grid container>
+							<ExportModal
+								img={this.state.image}
+								open={openDownload}
+								handleClose={this.handleCloseDownloadModal}
+								t={t}
+							/>
 							{this.renderCustomDateDialog()}
 							{loading ? <CircularLoader notCentered /> :
 								<Fragment>
@@ -783,10 +821,26 @@ class DeviceData extends PureComponent {
 										{noData ? this.renderNoData() : this.renderType()}
 									</ItemG>
 									{/* {this.props.hoverID} */}
+									{/* <img src={this.state.image} alt={'not loaded'}/> */}
+									{/* <DevicePDF img={this.state.image}/> */}
 								</Fragment>}
 						</Grid>}
 				/>
 				{/* <img src={this.state.image} alt='NOPE' width={1025}/> */}
+				<div style={{ position: 'absolute', top: "-100%", width: 1000, height: 400 }}>
+					{this.state.lineDataSets ?
+						<LineChart
+							// hoverID={this.props.hoverID}
+							single
+							getImage={this.getImage}
+							// obj={this.props.device}
+							unit={this.timeTypes[this.state.timeType]}
+							// onElementsClick={this.handleZoomOnData}
+							// setHoverID={this.props.setHoverID}
+							data={this.state.lineDataSets}
+							t={this.props.t}
+						/> : this.renderNoData()}
+				</div>
 			</Fragment >
 		);
 	}

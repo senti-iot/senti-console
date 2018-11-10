@@ -41,45 +41,47 @@ class Device extends Component {
 				if (rs.dataCollection) {
 					await this.getDataCollection(rs.dataCollection)
 				}
-				let data = await getWeather(rs, moment(), this.props.language)
-				this.setState({ weather: data })
+				if (rs.lat && rs.long) { 
+					let data = await getWeather(rs, moment(), this.props.language)
+					this.setState({ weather: data })
+				}
 				let prevURL = this.props.location.prevURL ? this.props.location.prevURL : '/devices/list'
 				this.props.setHeader(rs.name ? rs.name : rs.id, true, prevURL ? prevURL : '/devices/list', "devices")
 			}
 		})
 	}
 
-		getDataCollection = async (id) => {
-			await getCollection(id).then(rs => {
-				if (rs) {
+	getDataCollection = async (id) => {
+		await getCollection(id).then(rs => {
+			if (rs) {
 
-					this.setState({
-						device: {
-							...this.state.device,
-							project: {
-								id: 0
-							},
-							dataCollection: rs
+				this.setState({
+					device: {
+						...this.state.device,
+						project: {
+							id: 0
 						},
-					 loading: false
-					})
-				}
-				else {
-					this.setState({
-						loading: false,
-						device: {
-							...this.state.device,
-							dataCollection: {
-								id: 0
-							},
-							project: {
-								id: 0
-							},
-						}
-					})
-				}
-			})
-		}
+						dataCollection: rs
+					},
+					loading: false
+				})
+			}
+			else {
+				this.setState({
+					loading: false,
+					device: {
+						...this.state.device,
+						dataCollection: {
+							id: 0
+						},
+						project: {
+							id: 0
+						},
+					}
+				})
+			}
+		})
+	}
 	componentDidMount = async () => {
 		if (this.props.match) {
 			let id = this.props.match.params.id
@@ -87,7 +89,7 @@ class Device extends Component {
 				// this.getAllPics(id)
 				await this.getDevice(id)
 				// console.log(this.state.device);
-				
+
 			}
 		}
 		else {
@@ -110,7 +112,7 @@ class Device extends Component {
 			case 3:
 				s("snackbars.failedUnassign")
 				break
-			case 4: 
+			case 4:
 				s("snackbars.assign.deviceToOrg", { device: `${name}(${id})`, org: `${device.org.name}` })
 				break
 			default:
@@ -197,7 +199,8 @@ class Device extends Component {
 			oldCollection: {
 				name: collection.name,
 				id: collection.id
-			} })
+			}
+		})
 		let rs = await unassignDeviceFromCollection({
 			id: device.dataCollection.id,
 			deviceId: device.id
@@ -205,7 +208,7 @@ class Device extends Component {
 		if (rs) {
 			this.handleCloseUnassign()
 			this.setState({ loading: true, anchorEl: null })
-			
+
 			await this.getDevice(this.state.device.id).then(() => this.snackBarMessages(1))
 		}
 		else {
@@ -290,15 +293,7 @@ class Device extends Component {
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
-						{/* <DeviceDataCollection
-							dcId={device.dataCollection}
-							history={this.props.history}
-							match={this.props.match}
-							t={this.props.t}
-						/> */}
-					</ItemGrid>
-					<ItemGrid xs={12} noMargin>
-						<DeviceMap 
+						<DeviceMap
 							device={device}
 							weather={this.state.weather}
 							t={this.props.t}

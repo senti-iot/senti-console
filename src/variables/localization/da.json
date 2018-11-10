@@ -225,7 +225,7 @@
 		"noDataFilters": "Der er ingen data tilgængelig for de valgte filtre!",
 		"noDevices": "Der er ingen tilgængelige enheder",
 		"noDevicesAssigned": "Der er ingen tildelte enheder!",
-		"noImages": "Der er ikke uploadet billeder!",
+		"noImages": "Der er ikke overført billeder!",
 		"noLocType": "Der er ingen placeringstype indstillet",
 		"noName": "Unavngivet",
 		"noProject": "Ikke tildelt",
@@ -335,8 +335,8 @@
 		"finish": "Afslut",
 		"reset": "Nulstil",
 		"upload": "Overfør",
-		"uploadFailed": "Biller blev ikke overført! Genindlæs sitet og prøv igen!",
-		"uploadSuccess": "Billeder blev overført"
+		"uploadFailed": "Billeder ikke overført! Genindlæs sitet og prøv igen!",
+		"uploadSuccess": "Billeder overført"
 	},
 	"links": {
 		"googleMaps": "Vis på Google Maps",
@@ -446,6 +446,7 @@
 		"new": "Opret projekt",
 		"noOrganisationSelected": "Vælg en organisation for at se tilgængelige enheder",
 		"pageTitle": "Projekter",
+		"noAvailableDevices": "Der er ingen enheder kalibreret til visning",
 		"projectDelete": "Slet projekt?",
 		"projectDeleteConfirm": "Er du sikker på du ønsker at slette projektet ",
 		"projectsColumnCreated": "Oprettet",

@@ -4,20 +4,20 @@ import { Map } from 'variables/icons'
 import { Grid } from '@material-ui/core';
 import { Maps } from 'components/Map/Maps';
 
-export default class ActiveDeviceMap extends Component {
+export default class ProjectMap extends Component {
 	render() {
-		const { device, t, weather } = this.props
+		const { devices, t } = this.props
+		console.log(devices)
 		return (
 			<InfoCard
 				title={t("devices.cards.map")}
-				subheader={t("devices.fields.coordsW", { lat: device.lat, long: device.long })}
+				// subheader={t("devices.fields.coordsW", { lat: device.lat, long: device.long })}
 				avatar={<Map />}
-				// collapsable
-				cardExpanded={false}
 				// noExpand
+				// collapsable
 				hiddenContent={
 					<Grid container justify={'center'}>
-						{device.lat && device.long ? <Maps t={this.props.t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={18} /> : <Caption>{t("devices.notCalibrated")}</Caption>}
+						{devices.length > 0 ? <Maps t={t} isMarkerShown markers={devices} zoom={10} /> : <Caption>{t("projects.noAvailableDevices")}</Caption>}
 					</Grid>
 				} />
 

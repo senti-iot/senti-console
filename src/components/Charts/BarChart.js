@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react'
 import { Bar } from 'react-chartjs-2';
-import { Typography, withStyles, Paper, Grow } from '@material-ui/core';
-import { ItemG, WeatherIcon, Caption, Info } from 'components';
+import { Typography, withStyles, Paper, Grow, CircularProgress } from '@material-ui/core';
+import { ItemG, WeatherIcon, Caption } from 'components';
 import { graphStyles } from './graphStyles';
 import { compose } from 'recompose';
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { getWeather } from 'variables/dataDevices';
+import withLocalization from 'components/Localization/T';
 
 class BarChart extends PureComponent {
 	constructor(props) {
@@ -111,21 +112,24 @@ class BarChart extends PureComponent {
 			this.hideTooltip()
 			return
 		}
-		// console.log(tooltipModel)
-		// console.log(this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x)
-		let weatherData = null
 		let wDate = null
 		try {
-
+			let lat = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].lat
+			let long = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].long
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
-			// console.log(this.state.weatherDate, wDate, this.state.weatherDate === wDate)
-			if (this.state.weatherDate !== wDate) {
-				weatherData = await getWeather(this.props.obj, this.setHours(wDate), this.props.lang)
+			if (this.state.weatherDate !== wDate && lat !== this.state.lat && long !== this.state.long) {
+				this.setState({ weather: null })
+				getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then(rs => {
+					this.setState({
+						weatherDate: wDate,
+						weather: rs,
+						loc: {
+							lat: lat,
+							long: long
+						}
+					})
+				})
 			}
-			this.setState({
-				weatherDate: wDate,
-				weather: weatherData ? weatherData : this.state.weather
-			})
 		}
 		catch (err) {
 			// console.log(err)
@@ -209,7 +213,7 @@ class BarChart extends PureComponent {
 		let y = 0
 		if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
 			x = '-25%'
-			y = '25%'
+			y = '-125%'
 		}
 		if (tooltip.left < (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
 			x = '-25%'
@@ -260,13 +264,13 @@ class BarChart extends PureComponent {
 							<ItemG container>
 								<ItemG container direction="row"
 									justify="space-between">
-									<Typography variant={'h6'} classes={{ root: classes.antialias }}>{this.state.tooltip.title}</Typography>
-									{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : null}
+									<Typography variant={'h6'} classes={{ root: classes.antialias }} >{this.state.tooltip.title}</Typography>
+									{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : <CircularProgress size={37} />}
 								</ItemG>
-								{this.state.weather ? <ItemG>
-									<Caption>{this.props.t('devices.fields.weather')}</Caption>
-									<Info>{this.state.weather.currently.summary}</Info>
-								</ItemG> : null}
+								<ItemG>
+									<Caption>{this.props.t('devices.fields.weather')}: {this.state.weather ? this.state.weather.currently.summary : null}</Caption>
+									{/* <Info></Info> */}
+								</ItemG> 
 								{this.state.tooltip.data.map((d, i) => {
 									return (
 										<ItemG key={i} container alignItems={'center'}>
@@ -296,7 +300,7 @@ const mapDispatchToProps = {
 
 }
 
-let BarChartCompose = compose(connect(mapStateToProps, mapDispatchToProps), withStyles(graphStyles, { withTheme: true }))(BarChart)
+let BarChartCompose = compose(connect(mapStateToProps, mapDispatchToProps), withStyles(graphStyles, { withTheme: true }), withLocalization())(BarChart)
 // export default withStyles(graphStyles, { withTheme: true })(BarChart)
 
 export default BarChartCompose

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Line } from 'react-chartjs-2';
-import { Typography, withStyles, Paper, Grow } from '@material-ui/core';
-import { ItemG, WeatherIcon, Caption, Info } from 'components';
+import { Typography, withStyles, Paper, Grow, CircularProgress } from '@material-ui/core';
+import { ItemG, WeatherIcon, Caption } from 'components';
 import { graphStyles } from './graphStyles';
 import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
@@ -25,7 +25,7 @@ class LineChart extends PureComponent {
 			lineOptions: {
 				animation: {
 					duration: 500,
-					onComplete: props.getImage,
+					onComplete: props.getImage ? props.getImage : null,
 				},
 				display: true,
 				maintainAspectRatio: false,
@@ -78,10 +78,16 @@ class LineChart extends PureComponent {
 			return true
 	}
 	componentDidMount = () => {
+		// console.log(this.chart.chartInstance.config.options.elements.point.radius)
+		this.chart.chartInstance.config.options.elements.point.radius = this.clickEvent() ? 3 : 5 
+		this.chart.chartInstance.config.options.elements.point.hitRadius = this.clickEvent() ? 3 : 5 
+		this.chart.chartInstance.config.options.elements.point.hoverRadius = this.clickEvent() ? 4 : 6 
+
 		this.setState({
 			chartWidth: parseInt(this.chart.chartInstance.canvas.style.width.substring(0, this.chart.chartInstance.canvas.style.width.length - 1), 10),
 			chartHeight: parseInt(this.chart.chartInstance.canvas.style.height.substring(0, this.chart.chartInstance.canvas.style.height.length - 1), 10),
 			mobile: window.innerWidth > 400 ? false : true
+
 		})	
 	}
 	componentDidUpdate = (prevProps, prevState) => {
@@ -99,7 +105,8 @@ class LineChart extends PureComponent {
 	setHours = (date) => {
 		if (this.props.unit.chart === 'day')
 			return moment(date).startOf('day').add(12, 'h')
-
+		else 
+			return moment(date)
 	}
 	customTooltip = async (tooltipModel) => {
 		if (tooltipModel.opacity === 0) {
@@ -108,22 +115,30 @@ class LineChart extends PureComponent {
 		}
 		// console.log(tooltipModel)
 		// console.log(this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x)
-		let weatherData = null
+		// let weatherData = null
 		let wDate = null
 		try {
+			let lat = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].lat
+			let long = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].long
+			// console.log(lat, long)
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
-			// console.log(this.state.weatherDate, wDate, this.state.weatherDate === wDate)
-			if (this.state.weatherDate !== wDate)
-				weatherData = await getWeather(this.props.obj, this.setHours(wDate), this.props.lang)
-			this.setState({
-				weatherDate: wDate,
-				weather: weatherData ? weatherData : this.state.weather
-			})
+			if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long)) {
+				this.setState({ weather: null })
+				getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then(rs => {
+					this.setState({
+						weatherDate: wDate,
+						weather: rs,
+						loc: {
+							lat: lat,
+							long: long
+						}
+					})
+				})
+			}
 		}
 		catch (err) {
-
+			// console.log(err)
 		}
-
 		const left = tooltipModel.caretX;
 		const top = tooltipModel.caretY;
 		// let deviceWeather = getWeather(device).then(rs => rs)
@@ -230,7 +245,7 @@ class LineChart extends PureComponent {
 		const { classes } = this.props
 		const { tooltip, chartWidth, mobile } = this.state
 		return (
-			<div style={{ maxHeight: 400, position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
+			<div style={{ maxHeight: 400, position: 'relative', height: '100%' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
 				<Line
 					data={this.props.data}
 					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
@@ -254,12 +269,12 @@ class LineChart extends PureComponent {
 								<ItemG container direction="row"
 									justify="space-between">
 									<Typography variant={'h6'} classes={{ root: classes.antialias }} >{this.state.tooltip.title}</Typography>
-									{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : null}
+									{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : <CircularProgress size={37} />}
 								</ItemG>
-								{this.state.weather ? <ItemG>
-									<Caption>{this.props.t('devices.fields.weather')}</Caption>
-									<Info>{this.state.weather.currently.summary}</Info>
-								</ItemG> : null}
+								 <ItemG>
+									<Caption>{this.props.t('devices.fields.weather')}: {this.state.weather ? this.state.weather.currently.summary : null}</Caption>
+									{/* <Info></Info> */}
+								</ItemG> 
 								{this.state.tooltip.data.map((d, i) => {
 									return (
 										<ItemG key={i} container alignItems={'center'}>

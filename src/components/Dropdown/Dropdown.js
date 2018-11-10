@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
-import { ItemGrid } from 'components';
+import { ItemG } from 'components';
 import { MoreVert } from 'variables/icons';
 
 class Dropdown extends Component {
@@ -24,7 +24,7 @@ class Dropdown extends Component {
 		const { actionAnchor } = this.state
 		const { menuItems } = this.props
 		return (
-			<ItemGrid noMargin noPadding>
+			<ItemG>
 				<IconButton
 					aria-label="More"
 					aria-owns={actionAnchor ? 'long-menu' : null}
@@ -52,7 +52,7 @@ class Dropdown extends Component {
 					})}
 					))}
 				</Menu>
-			</ItemGrid>
+			</ItemG>
 		)
 	}
 }

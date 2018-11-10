@@ -98,6 +98,8 @@ class CollectionData extends PureComponent {
 				labels: datesToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.activeDeviceStats ? d.activeDeviceStats.lat : 0,
+					long: d.activeDeviceStats ? d.activeDeviceStats.long : 0,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 8 : 3,
@@ -110,6 +112,8 @@ class CollectionData extends PureComponent {
 				labels: datesToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.activeDeviceStats ? d.activeDeviceStats.lat : 0,
+					long: d.activeDeviceStats ? d.activeDeviceStats.long : 0,
 					backgroundColor: d.color,
 					borderColor: teal[500],
 					borderWidth: this.props.hoverID === d.id ? 4 : 0,
@@ -130,6 +134,8 @@ class CollectionData extends PureComponent {
 				labels: hoursToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.activeDeviceStats ? d.activeDeviceStats.lat : 0,
+					long: d.activeDeviceStats ? d.activeDeviceStats.long : 0,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 8 : 3,
@@ -142,6 +148,8 @@ class CollectionData extends PureComponent {
 				labels: hoursToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.activeDeviceStats ? d.activeDeviceStats.lat : 0,
+					long: d.activeDeviceStats ? d.activeDeviceStats.long : 0,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 4 : 0,
@@ -161,6 +169,8 @@ class CollectionData extends PureComponent {
 				labels: minutesToArray(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.activeDeviceStats ? d.activeDeviceStats.lat : 0,
+					long: d.activeDeviceStats ? d.activeDeviceStats.long : 0,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 8 : 3,
@@ -172,6 +182,8 @@ class CollectionData extends PureComponent {
 					labels: hoursToArr(from, to),
 					datasets: dataArr.map((d) => ({
 						id: d.id,
+						lat: d.activeDeviceStats ? d.activeDeviceStats.lat : 0,
+						long: d.activeDeviceStats ? d.activeDeviceStats.long : 0,
 						backgroundColor: d.color,
 						borderColor: d.color,
 						borderWidth: this.props.hoverID === d.id ? 4 : 0,
@@ -457,7 +469,7 @@ class CollectionData extends PureComponent {
 			event.preventDefault()
 		// 
 		// let id = event.target.value
-		this.setState({ display: id, loading: true }, this.handleSwitchVisibility)
+		this.setState({ display: id, loading: true, actionAnchorVisibility: null }, this.handleSwitchVisibility)
 	}
 
 	handleDateFilter = (event) => {
@@ -585,12 +597,14 @@ class CollectionData extends PureComponent {
 			case 3:
 				return this.state.lineDataSets ?
 					<LineChart
+						obj={this.props.device}
 						hoverID={this.props.hoverID}
 						single
 						unit={this.timeTypes[this.state.timeType]}
 						onElementsClick={this.handleZoomOnData}
 						setHoverID={this.props.setHoverID}
 						data={this.state.lineDataSets}
+						t={this.props.t}
 					/> : this.renderNoData()
 			default:
 				break;
@@ -638,7 +652,7 @@ class CollectionData extends PureComponent {
 	renderMenu = () => {
 		const { actionAnchor, actionAnchorVisibility } = this.state
 		const { classes, t } = this.props
-		return <ItemGrid container noMargin noPadding>
+		return <Fragment>
 			<ItemG>
 				<Hidden smDown>
 					{this.renderDateFilter()}
@@ -738,7 +752,7 @@ class CollectionData extends PureComponent {
 					</Hidden>
 				</div>
 			</Menu>
-		</ItemGrid>
+		</Fragment>
 	}
 	renderNoData = () => {
 		return <ItemG container justify={'center'}>

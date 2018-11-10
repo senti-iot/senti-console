@@ -22,6 +22,10 @@ const regularCardStyle = theme => ({
 	...deviceStatus,
 	contentMedia: {
 		width: "100%",
+		padding: 0,
+	},
+	noMargin: {
+		margin: 0,
 		padding: 0
 	},
 	leftActions: {
@@ -93,7 +97,7 @@ const regularCardStyle = theme => ({
 	},
 	expandPosition: {
 		marginLeft: 'auto',
-		textTransform: 'initial'
+		// textTransform: 'initial'
 	},
 	expand: {
 		transform: 'rotate(0deg)',

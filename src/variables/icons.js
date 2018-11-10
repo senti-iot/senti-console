@@ -10,6 +10,7 @@ import Sleet from 'assets/weather/sleet.svg'
 import Snow from 'assets/weather/snow.svg'
 import Wind from 'assets/weather/wind.svg'
 //#endregion
+import CloudDownload from '@material-ui/icons/CloudDownload'
 import Timeline from '@material-ui/icons/Timeline'
 import ShowChart from '@material-ui/icons/ShowChart'
 import ExpandMore from '@material-ui/icons/ExpandMore'
@@ -85,6 +86,7 @@ export {
 	Snow,
 	Wind,
 	//End Weather Icons
+	CloudDownload,
 	History,
 	Timeline,
 	ShowChart,

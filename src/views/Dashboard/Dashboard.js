@@ -52,71 +52,71 @@ class Dashboard extends React.Component {
 		return (
 			<Fragment>
 				{discoverSenti ? <DiscoverSenti t={t} history={history}/> : null}
-				<GridContainer spacing={8} justify={"center"}>
-					<ItemG justify sm={12} md={4}><MediaCard
+				<GridContainer spacing={8} justify={'center'}>
+					<ItemG container justify={'center'} xs={12} sm={6} md={4}><MediaCard
 						img={imgs.hosting}
 						header={t("dashboard.cardHeaders.onSiteSetup")}
 						content={t("dashboard.cardContent.onSiteSetup")}
 						leftAction={this.renderAction("actions.learnMore", "/")}
 						rightAction={this.renderAction("actions.startNow", "/devices", true)}
 					/></ItemG>
-					<ItemG justify sm={12} md={4}><MediaCard
+					<ItemG container justify={'center'} xs={12} sm={6} md={4}><MediaCard
 						img={imgs.storage}
 						header={t("dashboard.cardHeaders.projects")}
 						content={t("dashboard.cardContent.projects")}
 						leftAction={this.renderAction("actions.learnMore", "/")}
 						rightAction={this.renderAction("actions.startNow", "/projects", true)}
 					/></ItemG>
-					<ItemG justify sm={12} md={4}><MediaCard
+					<ItemG container justify={'center'} xs={12} sm={6} md={4}><MediaCard
 						img={imgs.devices}
 						header={t("dashboard.cardHeaders.devices")}
 						content={t("dashboard.cardContent.devices")}
 						leftAction={this.renderAction("actions.learnMore", "/")}
 						rightAction={this.renderAction("actions.startNow", "/devices", true)}
 					/></ItemG>
-					<ItemG justify sm={12} md={4}><MediaCard
+					<ItemG container justify={'center'} xs={12} sm={6} md={4}><MediaCard
 						img={imgs.data}
 						header={t("dashboard.cardHeaders.data")}
 						content={t("dashboard.cardContent.data")}
 						leftAction={this.renderAction("actions.learnMore", "/")}
 						rightAction={this.renderAction("actions.startNow", "/collections/list", true)}
 					/></ItemG>
-					<ItemG justify sm={12} md={4}>	<MediaCard
+					<ItemG container justify={'center'} xs={12} sm={6} md={4}>	<MediaCard
 						img={imgs.users}
 						header={t("dashboard.cardHeaders.users")}
 						content={t("dashboard.cardContent.users")}
 						leftAction={this.renderAction("actions.learnMore", "/")}
 						rightAction={this.renderAction("actions.startNow", "/users", true)}
 					/></ItemG>
-					<ItemG justify sm={12} md={4}>	<MediaCard
+					<ItemG container justify={'center'} xs={12} sm={6} md={4}>	<MediaCard
 						img={imgs.settings}
 						header={t("dashboard.cardHeaders.settings")}
 						content={t("dashboard.cardContent.settings")}
 						leftAction={this.renderAction("actions.learnMore", "/")}
 						rightAction={this.renderAction("actions.startNow", "/settings", true)}
 					/></ItemG>
-					{/* <ItemG justify sm={12} md={4}>	<MediaCard
+					{/* <ItemG container justify={'center'} sm={6} md={4}>	<MediaCard
 						img={imgs.notifications}
 						header={t("dashboard.cardHeaders.notifications")}
 						content={t("dashboard.cardContent.notifications")}
 						leftAction={this.renderAction("actions.learnMore", "/")}
 						rightAction={this.renderAction("actions.startNow", "/settings", true)}
 					/></ItemG> */}
-					{/* <ItemG justify sm={12} md={4}>	<MediaCard
+					{/* <ItemG container justify={'center'} sm={6} md={4}>	<MediaCard
 						img={imgs.predictions}
 						header={t("dashboard.cardHeaders.alerts")}
 						content={t("dashboard.cardContent.alerts")}
 						leftAction={this.renderAction("actions.learnMore", "/")}
 						rightAction={this.renderAction("actions.startNow", "/settings", true)}
 					/></ItemG> */}
-					{/* <ItemG justify sm={12} md={4}>	<MediaCard
+					{/* <ItemG container justify={'center'} sm={6} md={4}>	<MediaCard
 						img={imgs.sharing}
 						header={t("dashboard.cardHeaders.api")}
 						content={t("dashboard.cardContent.api")}
 						leftAction={this.renderAction("actions.learnMore", "/")}
 						rightAction={this.renderAction("actions.startNow", "/", true)}
 					/></ItemG> */}
-					<ItemG justify xs={12}>
+					<ItemG container justify={'center'} xs={12}>
 						<Caption>
 							Beta Senti.Cloud version {pj.version}
 						</Caption>

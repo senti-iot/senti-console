@@ -445,6 +445,7 @@
 		"infoCardProjectDetails": "Project details",
 		"new": "Create project",
 		"noOrganisationSelected": "Select an organisation to see available devices.",
+		"noAvailableDevices": "There are no devices calibrated to display",
 		"pageTitle": "Projects",
 		"projectDelete": "Delete project?",
 		"projectDeleteConfirm": "Are you sure you want to delete project ",

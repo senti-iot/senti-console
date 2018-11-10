@@ -1,4 +1,4 @@
-import {  Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, /* IconButton, */ withStyles } from '@material-ui/core'
+import { Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, /* IconButton, */ withStyles } from '@material-ui/core'
 import { ItemGrid, GridContainer, CircularLoader } from 'components'
 import React, { Component } from 'react'
 import { getProject, deleteProject } from 'variables/dataProjects'
@@ -8,6 +8,7 @@ import ProjectCollections from './ProjectCards/ProjectCollections'
 import { ProjectContact } from './ProjectCards/ProjectContact'
 import AssignDCs from 'components/AssignComponents/AssignDCs';
 import { colors } from 'variables/colors';
+import ProjectMap from './ProjectCards/ProjectMap';
 
 const projectStyles = theme => ({
 	close: {
@@ -54,7 +55,7 @@ class Project extends Component {
 		const { history, location, match, setHeader } = this.props
 		if (match)
 			if (match.params.id) {
-			 await getProject(match.params.id).then(async rs => {
+				await getProject(match.params.id).then(async rs => {
 					if (rs === null)
 						history.push('/404')
 					else {
@@ -63,10 +64,10 @@ class Project extends Component {
 						this.setState({
 							project: {
 								...rs,
-								dataCollections: rs.dataCollections.map((dc, i) => ({ ...dc, color: colors[i] }))
-
+								dataCollections: rs.dataCollections.map((dc, i) => ({ ...dc, color: colors[i] })),
+								devices: rs.dataCollections.filter(dc => dc.activeDevice ? true : false).map((dc, i) => dc.activeDevice ? { ...dc.activeDevice, color: colors[i] } : null)
 							}, loading: false
-						})
+						}, () => window.state = this.state)
 					}
 				})
 			}
@@ -159,12 +160,13 @@ class Project extends Component {
 	}
 	render() {
 		const { project, loading, openAssignDC } = this.state
-		const { t } = this.props 
+		const { t } = this.props
 		const rp = { history: this.props.history, match: this.props.match }
+		console.log(project)
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>
-					
+
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<ProjectDetails t={t}
 							project={project} {...rp}
@@ -183,13 +185,20 @@ class Project extends Component {
 							project={project} />
 					</ItemGrid>
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
-						<ProjectCollections setHoverID={this.setHoverID} t={t} project={project} {...rp}/>
+						<ProjectCollections setHoverID={this.setHoverID} t={t} project={project} {...rp} />
 					</ItemGrid >
+					{project.devices ? <ItemGrid xs={12} noMargin>
+						<ProjectMap
+							devices={project.devices}
+							t={t}
+						/>
+					</ItemGrid> : null
+					}
 					<ItemGrid xs={12} sm={12} md={12} noMargin>
 						<ProjectContact history={this.props.history} t={t} project={project} />
 					</ItemGrid>
 					{this.renderDeleteDialog()}
-					<AssignDCs 
+					<AssignDCs
 						open={openAssignDC}
 						handleClose={this.handleCloseAssignCollection}
 						project={project.id}

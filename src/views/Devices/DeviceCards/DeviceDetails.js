@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Grid, Typography, withStyles, Button, CircularProgress } from '@material-ui/core';
+import { Typography, withStyles, Button, CircularProgress } from '@material-ui/core';
 import { ItemG, Warning, P, Info, Caption, WeatherIcon } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import { SignalWifi2Bar, SignalWifi2BarLock, Build, /* LibraryBooks,  */Edit, DeviceHub, LayersClear, Business, DataUsage } from 'variables/icons'
@@ -51,29 +51,7 @@ class DeviceDetails extends Component {
 
 	}
 	componentWillUpdate = () => {
-		// if (this.props.weather) {
-		// console.log(this.props.weather)
-		// var skycons = new Skycons({
-		//  "monochrome": false,
-		//  "colors" : {
-		//    "cloud" : "#F00"
-		//  }
-		//  });
-		// let weatherIcon = new Skycons({
-		// 	"monochrome": false,
-		// 	"colors": {
-		// 		"main": teal[500],
-		// 		"sun": "#FF0",
-		// 		"cloud": "#F00"
-		// 	}
-		// });
-		// let iconStr = /* this.props.weather.currently.icon.toString() ?*/  'PARTLY_CLOUDY_DAY'
-		// // iconStr = iconStr.replace(/-/g, '_')
-		// // iconStr = iconStr.toUpperCase()
-		// // console.log(Skycons[iconStr], iconStr)
-		// weatherIcon.add('icon1', Skycons[iconStr])
-		// weatherIcon.play()
-		// }
+
 	}
 	renderDeviceLocType = () => {
 		const { device, t } = this.props
@@ -100,9 +78,8 @@ class DeviceDetails extends Component {
 				subheader={device.id}
 				noExpand
 				content={
-					<Fragment>
-						<Grid container spacing={16}>
-							{!(device.lat > 0) && !(device.long > 0) &&
+					<ItemG container spacing={16}>
+						{!(device.lat > 0) && !(device.long > 0) &&
 								<ItemG xs={12}>
 									<Warning>
 										<ItemG container xs={12}>
@@ -120,83 +97,83 @@ class DeviceDetails extends Component {
 										</ItemG>
 									</Warning>
 								</ItemG>}
-							<ItemG xs={6} md={3} lg={3} xl={3}>
-								<Caption>{t("devices.fields.status")}:</Caption>
-								{this.renderStatus(device.liveStatus)}
-							</ItemG>
-							<ItemG xs={6} md={3} lg={3} xl={3}>
-								<Caption>{t("devices.fields.temp")}:</Caption>
-								<Info>
-									{device.temperature} &#8451;
-								</Info>
-							</ItemG>
-							<ItemG container xs={6} md={3} lg={3} xl={3}>
-								{weather ? 	<Fragment>
-									<ItemG xs={5} sm={2} md={3} lg={2}>
-										<WeatherIcon icon={weather.currently.icon} /> 
-									</ItemG>
-									<ItemG xs={7} sm={10} md={9} lg={10}>
-										<Caption>{t("devices.fields.weather")}</Caption>
-										<Info>
-											{weather.currently.summary}
-										</Info>
-									</ItemG>
-								</Fragment>
-									: <CircularProgress size={20}/>}
-							</ItemG> 
-							<ItemG xs={6} md={3} lg={3} xl={3}>
-								<Caption>{t("devices.fields.locType")}:</Caption>
-								<Info>{this.renderDeviceLocType()} </Info>
-							</ItemG>
-							<ItemG xs={12}>
-								<Caption>{t("devices.fields.description")}:</Caption>
-								<Info>{device.description ? device.description : ""}</Info>
-							</ItemG>
-							<ItemG xs={12} md={6} lg={6} xl={4}>
-								<Caption>{t("devices.fields.lastData")}:</Caption>
-								<Info title={dateFormatter(device.wifiLast)}>
-									{dateFormat(device.wifiLast)}
-								</Info>
-							</ItemG>
-							<ItemG xs={12} md={6} lg={6} xl={8}>
-								<Caption>{t("devices.fields.lastStats")}:</Caption>
-								<Info title={dateFormatter(device.execLast)}>
-									{dateFormat(device.execLast)}
-								</Info>
-							</ItemG>
+						<ItemG xs={6} md={3} lg={3} xl={3}>
+							<Caption>{t("devices.fields.status")}:</Caption>
+							{this.renderStatus(device.liveStatus)}
+						</ItemG>
+						<ItemG xs={6} md={3} lg={3} xl={3}>
+							<Caption>{t("devices.fields.temp")}:</Caption>
+							<Info>
+								{device.temperature} &#8451;
+							</Info>
+						</ItemG>
+						<ItemG container xs={6} md={3} lg={3} xl={3}>
+							{weather ? weather === "" ? <CircularProgress size={20} /> : <Fragment>
+								<ItemG xs={5} sm={2} md={3} lg={2}>
+									<WeatherIcon icon={weather.currently.icon} /> 
+								</ItemG>
+								<ItemG xs={7} sm={10} md={9} lg={10}>
+									<Caption>{t("devices.fields.weather")}</Caption>
+									<Info>
+										{weather.currently.summary}
+									</Info>
+								</ItemG>
+							</Fragment>
+								: null}
+						</ItemG> 
+						<ItemG xs={6} md={3} lg={3} xl={3}>
+							<Caption>{t("devices.fields.locType")}:</Caption>
+							<Info>{this.renderDeviceLocType()} </Info>
+						</ItemG>
+						<ItemG xs={12}>
+							<Caption>{t("devices.fields.description")}:</Caption>
+							<Info>{device.description ? device.description : ""}</Info>
+						</ItemG>
+						<ItemG xs={12} md={6} lg={6} xl={4}>
+							<Caption>{t("devices.fields.lastData")}:</Caption>
+							<Info title={dateFormatter(device.wifiLast)}>
+								{dateFormat(device.wifiLast)}
+							</Info>
+						</ItemG>
+						<ItemG xs={12} md={6} lg={6} xl={8}>
+							<Caption>{t("devices.fields.lastStats")}:</Caption>
+							<Info title={dateFormatter(device.execLast)}>
+								{dateFormat(device.execLast)}
+							</Info>
+						</ItemG>
 					
 					
-							<ItemG xs={12} md={6} lg={6} xl={4}>
-								<Caption>{t("devices.fields.address")}:</Caption>
-								<Info>{device.address} </Info>
-							</ItemG>
-							<ItemG xs={12} md={6} lg={6}>
-								<Caption>{t("devices.fields.coords")}:</Caption>
-								<Info><a title={t("links.googleMaps")} href={`https://www.google.com/maps/search/${device.lat}+${device.long}`} target={'_blank'}>
-									{ConvertDDToDMS(device.lat, false) + " " + ConvertDDToDMS(device.long, true)}</a>
-								</Info>
-							</ItemG>
+						<ItemG xs={12} md={6} lg={6} xl={4}>
+							<Caption>{t("devices.fields.address")}:</Caption>
+							<Info>{device.address} </Info>
+						</ItemG>
+						<ItemG xs={12} md={6} lg={6}>
+							<Caption>{t("devices.fields.coords")}:</Caption>
+							<Info><a title={t("links.googleMaps")} href={`https://www.google.com/maps/search/${device.lat}+${device.long}`} target={'_blank'}>
+								{ConvertDDToDMS(device.lat, false) + " " + ConvertDDToDMS(device.long, true)}</a>
+							</Info>
+						</ItemG>
 						
 					
-							<ItemG xs={12} md={3} lg={3}>
-								<Caption>{t("devices.fields.org")}:</Caption>
-								<Info>{device.org ?
-									<Link to={{ pathname: `/org/${device.org.id}`, prevURL: `/device/${device.id}` }} >
-										{device.org.name}
-									</Link>
-									: t("devices.noProject")}</Info>
+						<ItemG xs={12} md={3} lg={3}>
+							<Caption>{t("devices.fields.org")}:</Caption>
+							<Info>{device.org ?
+								<Link to={{ pathname: `/org/${device.org.id}`, prevURL: `/device/${device.id}` }} >
+									{device.org.name}
+								</Link>
+								: t("devices.noProject")}</Info>
 
-							</ItemG>
-							<ItemG xs={12} md={3} lg={3}>
-								<Caption>{t("collections.fields.id")}:</Caption>
-								<Info>{device.dataCollection.id > 0 ? <Link to={'/collection/' + device.dataCollection.id}>{device.dataCollection.name}</Link> : t("devices.noProject")}</Info>
-							</ItemG>
-							<ItemG xs={12} md={3} lg={3}>
-								<Caption>{t("devices.fields.availability")}:</Caption>
-								<Info>{device.dataCollection.id > 0 ? t("devices.fields.notfree") : t("devices.fields.free")}</Info>
-							</ItemG>
-						</Grid>
-					</Fragment>} />
+						</ItemG>
+						<ItemG xs={12} md={3} lg={3}>
+							<Caption>{t("collections.fields.id")}:</Caption>
+							<Info>{device.dataCollection.id > 0 ? <Link to={'/collection/' + device.dataCollection.id}>{device.dataCollection.name}</Link> : t("devices.noProject")}</Info>
+						</ItemG>
+						<ItemG xs={12} md={3} lg={3}>
+							<Caption>{t("devices.fields.availability")}:</Caption>
+							<Info>{device.dataCollection.id > 0 ? t("devices.fields.notfree") : t("devices.fields.free")}</Info>
+						</ItemG>
+				
+					</ItemG>} />
 		)
 	}
 }
