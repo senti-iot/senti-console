@@ -36,23 +36,24 @@ class Toolbar extends Component {
 		const { classes, tabs, data, noSearch, filters, handleFilterKeyword, content } = this.props
 		return (
 			<AppBar position={'sticky'} classes={{ root: classes.appBar }}>
-				{tabs ? <Tabs value={this.state.route}  onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
+				{tabs ? <Tabs value={this.state.route} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 					{tabs ? tabs.map((t, i) => {
 						return <Tab title={t.title}
-							component={(props) => <Link {...props} style={{ color: "#fff" }}/>}
+							component={(props) => <Link {...props} scroll={el => el.scrollIntoView({ behavior: 'smooth', block: 'center' })} style={{ color: "#fff" }}/>}
 							id={t.id}
 							key={i}
 							smooth
 							label={t.label}
 							to={`${t.url}`} />
 					}) : null}
-					{noSearch ? null : <Search
-						right
-						suggestions={data ? suggestionGen(data) : []}
-						handleFilterKeyword={handleFilterKeyword}
-						searchValue={filters.keyword} />}
+				
 			
 				</Tabs> : null}
+				{noSearch ? null : <Search
+					right
+					suggestions={data ? suggestionGen(data) : []}
+					handleFilterKeyword={handleFilterKeyword}
+					searchValue={filters.keyword} />}
 				{
 					content ? <ToolBar classes={{ root: classes.appBar }}>
 						{content}

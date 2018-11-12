@@ -430,11 +430,11 @@ class DeviceData extends PureComponent {
 		const { actionAnchor, actionAnchorVisibility } = this.state
 		const { classes, t } = this.props
 		return <Fragment>
-			<ItemG>
+			{/* <ItemG>
 				<Hidden smDown>
 					{this.renderDateFilter()}
 				</Hidden>
-			</ItemG>
+			</ItemG> */}
 			<ItemG>
 				<Hidden smDown>
 					<IconButton title={"Chart Type"} variant={"fab"} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
@@ -472,7 +472,7 @@ class DeviceData extends PureComponent {
 					<MoreVert />
 				</IconButton>
 			</ItemG>
-			<Menu
+			 <Menu
 				id="long-menu"
 				anchorEl={actionAnchor}
 				open={Boolean(actionAnchor)}
@@ -484,13 +484,13 @@ class DeviceData extends PureComponent {
 						minWidth: 250
 					}
 				}}>
-				<div>
+				{/*<div>
 					<Hidden mdUp>
 						<ListItem>
 							{this.renderDateFilter()}
 						</ListItem>
 					</Hidden>
-				</div>
+				</div> */}
 				{/* <ListItem button onClick={this.handleOpenDownloadModal}>
 					<ListItemIcon><CloudDownload /></ListItemIcon>
 					<ListItemText>{t("data.download")}</ListItemText>
