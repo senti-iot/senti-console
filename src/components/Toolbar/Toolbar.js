@@ -14,7 +14,7 @@ const styles = theme => ({
 		// top: 70,
 		minHeight: 48,
 		height: 48,
-		zIndex: 1000
+		zIndex: 1300
 	},
 	noOverflow: {
 		overflow: 'visible'
@@ -38,7 +38,13 @@ class Toolbar extends Component {
 			<AppBar position={'sticky'} classes={{ root: classes.appBar }}>
 				{tabs ? <Tabs value={this.state.route}  onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 					{tabs ? tabs.map((t, i) => {
-						return <Tab title={t.title} component={Link} id={t.id} key={i} smooth label={t.label} to={/* () => history.push( */`${t.url}`} />
+						return <Tab title={t.title}
+							component={(props) => <Link {...props} style={{ color: "#fff" }}/>}
+							id={t.id}
+							key={i}
+							smooth
+							label={t.label}
+							to={`${t.url}`} />
 					}) : null}
 					{noSearch ? null : <Search
 						right
