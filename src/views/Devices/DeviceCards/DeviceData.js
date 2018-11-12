@@ -42,7 +42,7 @@ class DeviceData extends PureComponent {
 			dateOption: 3,
 			openDownload: false,
 			// openCustomDate: false,
-			display: props.chartType,
+			display: props.chartType ? props.chartType : 3,
 			visibility: false,
 			// timeType: 2,
 			raw: false,
@@ -233,6 +233,7 @@ class DeviceData extends PureComponent {
 		if (display !== 0 || display !== 1) {
 			switch (timeType) {
 				case 0:
+					console.log("set")
 					this.setMinutelyData()
 					break;
 				case 1:
@@ -293,7 +294,7 @@ class DeviceData extends PureComponent {
 
 	handleZoomOnData = async (elements) => {
 		if (elements.length > 0) {
-			const { timeType } = this.state
+			const { timeType } = this.props
 			let date = null
 			let startDate = null
 			let endDate = null
@@ -326,9 +327,9 @@ class DeviceData extends PureComponent {
 			}
 		}
 	}
-	handleCustomCheckBox = (e) => {
-		this.setState({ timeType: parseInt(e.target.value, 10) })
-	}
+	// handleCustomCheckBox = (e) => {
+	// 	this.setState({ timeType: parseInt(e.target.value, 10) })
+	// }
 	handleCancelCustomDate = () => {
 		this.setState({
 			loading: false, openCustomDate: false
@@ -365,7 +366,7 @@ class DeviceData extends PureComponent {
 					<PieChart
 						title={this.state.title}
 						single //temporary
-						unit={this.timeTypes[this.state.timeType]}
+						unit={this.timeTypes[this.props.timeType]}
 						onElementsClick={this.handleZoomOnData}
 						setHoverID={this.props.setHoverID}
 						data={this.state.roundDataSets}
@@ -378,7 +379,7 @@ class DeviceData extends PureComponent {
 						<DoughnutChart
 							title={this.state.title}
 							single //temporary
-							unit={this.timeTypes[this.state.timeType]}
+							unit={this.timeTypes[this.props.timeType]}
 							onElementsClick={this.handleZoomOnData}
 							setHoverID={this.props.setHoverID}
 							data={this.state.roundDataSets}
@@ -389,20 +390,21 @@ class DeviceData extends PureComponent {
 					<BarChart
 						obj={this.props.device}
 						single
-						unit={this.timeTypes[this.state.timeType]}
+						unit={this.timeTypes[this.props.timeType]}
 						onElementsClick={this.handleZoomOnData}
 						setHoverID={this.props.setHoverID}
 						data={this.state.barDataSets}
 						t={this.props.t}
 					/></div> : this.renderNoData()
 			case 3:
+				console.log(this.props.timeType)
 				return this.state.lineDataSets ?
 					<LineChart
 						hoverID={this.props.hoverID}
 						single
 						// getImage={this.getImage}
 						obj={this.props.device}
-						unit={this.timeTypes[this.state.timeType]}
+						unit={this.timeTypes[this.props.timeType]}
 						onElementsClick={this.handleZoomOnData}
 						setHoverID={this.props.setHoverID}
 						data={this.state.lineDataSets}
@@ -430,11 +432,6 @@ class DeviceData extends PureComponent {
 		const { actionAnchor, actionAnchorVisibility } = this.state
 		const { classes, t } = this.props
 		return <Fragment>
-			{/* <ItemG>
-				<Hidden smDown>
-					{this.renderDateFilter()}
-				</Hidden>
-			</ItemG> */}
 			<ItemG>
 				<Hidden smDown>
 					<IconButton title={"Chart Type"} variant={"fab"} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
