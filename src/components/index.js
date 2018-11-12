@@ -89,7 +89,11 @@ import CardHeader from "./Card/CardHeader";
 import CardFooter from './Card/CardFooter'
 import CardBody from './Card/CardBody'
 import WeatherIcon from './Typography/WeatherIcon'
+import DateFilterMenu from './CustomInput/DateFilterMenu'
+import ExportModal from './Exports/ExportModal'
 export {
+	ExportModal,
+	DateFilterMenu,
 	WeatherIcon,
 	BarChart,
 	LineChart,

@@ -1,18 +1,19 @@
 import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types'
 import {
-	Grid, IconButton, Menu, MenuItem, withStyles, Select, FormControl, FormHelperText, Divider, ListItem,
+	Grid, IconButton, Menu, withStyles, ListItem,
 	ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox,
 } from '@material-ui/core';
 import {
 	Timeline, MoreVert,
-	DateRange, DonutLargeRounded, PieChartRounded, BarChart as BarChartIcon, ExpandMore, Visibility, ShowChart
+	DonutLargeRounded, PieChartRounded, BarChart as BarChartIcon, ExpandMore, Visibility, ShowChart
 } from "variables/icons"
 import {
-	ItemGrid, CircularLoader, Caption, Info, ItemG, CustomDateTime, InfoCard, BarChart,
+	CircularLoader, Caption, ItemG, CustomDateTime, InfoCard, BarChart,
 	LineChart,
 	DoughnutChart,
-	PieChart
+	PieChart,
+	DateFilterMenu
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { getDataSummary, getDataDaily, getDataHourly, getDataMinutely, /* getDataHourly */ } from 'variables/dataCollections';
@@ -613,41 +614,14 @@ class CollectionData extends PureComponent {
 	renderDateFilter = () => {
 		const { classes, t } = this.props
 		const { dateFilterInputID, to, from } = this.state
-		let displayTo = dateTimeFormatter(to)
-		let displayFrom = dateTimeFormatter(from)
-		return (
-			<div className={classes.root}>
-				<Hidden smDown>
-					<DateRange className={classes.leftIcon} />
-				</Hidden>
-				<FormControl className={classes.formControl}>
-					<Select
-						value={this.state.dateFilterInputID}
-						onChange={this.handleDateFilter}
-						inputProps={{
-							name: 'data-dateFilter',
-							id: 'data-dateFilterInput',
-						}}
-					>
-						<ItemGrid >
-							<Caption>{this.options[this.options.findIndex(d => d.id === dateFilterInputID ? true : false)].label}</Caption>
-							{/* <Info>{`${from.substr(0, 10)} - ${to.substr(0, 10)}`}</Info> */}
-							<Info>{`${displayFrom} - ${displayTo}`}</Info>
-						</ItemGrid>
-						<Divider />
-						<MenuItem value={0}>{t("filters.dateOptions.today")}</MenuItem>
-						<MenuItem value={1}>{t("filters.dateOptions.yesterday")}</MenuItem>
-						<MenuItem value={2}>{t("filters.dateOptions.thisWeek")}</MenuItem>
-						<MenuItem value={3}>{t("filters.dateOptions.7days")}</MenuItem>
-						<MenuItem value={4}>{t("filters.dateOptions.30days")}</MenuItem>
-						<MenuItem value={5}>{t("filters.dateOptions.90days")}</MenuItem>
-						<Divider />
-						<MenuItem value={6}>{t("filters.dateOptions.custom")}</MenuItem>
-					</Select>
-					<FormHelperText>{`${displayFrom} - ${displayTo}`}</FormHelperText>
-				</FormControl>
-			</div>
-		)
+		return <DateFilterMenu
+			classes={classes}
+			t={t}
+			dateFilterInputID={dateFilterInputID}
+			from={from}
+			to={to}
+			handleDateFilter={this.handleDateFilter}
+		/>
 	}
 	renderMenu = () => {
 		const { actionAnchor, actionAnchorVisibility } = this.state

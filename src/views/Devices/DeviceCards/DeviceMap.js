@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { InfoCard, Caption, Dropdown } from 'components';
+import { InfoCard, Caption, Dropdown, DateFilterMenu } from 'components';
 import { Map } from 'variables/icons'
 import { Grid, Checkbox } from '@material-ui/core';
 import { Maps } from 'components/Map/Maps';
@@ -12,13 +12,23 @@ export default class DeviceMap extends Component {
 		 heatMap: false
 	  }
 	}
-	
+	renderDateFilter = () => {
+		const { classes, t } = this.props
+		const { dateFilterInputID, to, from } = this.state
+		return <DateFilterMenu
+			classes={classes}
+			t={t}
+			dateFilterInputID={dateFilterInputID}
+			from={from}
+			to={to}
+			handleDateFilter={this.handleDateFilter}
+		/>
+	}
 	renderMenu = () => {
 		const { t } = this.props
 		return <Dropdown menuItems={
-			[
-				{ label: t("actions.heatMap"), icon: <Checkbox checked={this.state.heatMap}/>, func: () => this.setState({ heatMap: !this.state.heatMap }) },
-			]
+			[{ label: t("actions.heatMap"), icon: <Checkbox checked={this.state.heatMap} />, func: () => this.setState({ heatMap: !this.state.heatMap }) },
+				{ label: <div>text</div>, icon: null, func: () => { } }]
 		} />
 	}
 	render() {

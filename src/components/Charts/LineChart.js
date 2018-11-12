@@ -139,8 +139,11 @@ class LineChart extends PureComponent {
 		catch (err) {
 			// console.log(err)
 		}
-		const left = tooltipModel.caretX;
-		const top = tooltipModel.caretY;
+		let left = tooltipModel.caretX;
+		let top = tooltipModel.caretY;
+		if (!this.clickEvent()) { 
+			left = this.state.chartWidth / 2
+		}
 		// let deviceWeather = getWeather(device).then(rs => rs)
 		this.setTooltip({
 			top,
@@ -212,9 +215,16 @@ class LineChart extends PureComponent {
 		return !single ? () => this.props.setHoverID(0) : undefined
 	}
 	transformLoc = () => {
-		const { tooltip, chartWidth, chartHeight, mobile } = this.state
+		const { tooltip, chartWidth, chartHeight } = this.state
 		let x = 0
 		let y = 0
+		if (!this.clickEvent()) {
+			x = '-50%'
+			y = tooltip.top < (chartHeight / 2) ? '25%' : '-125%'
+			return `translate(${x}, ${y})`
+		}
+
+		console.log(x, y)
 		if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
 			x = '-25%'
 			y = '25%'
@@ -225,7 +235,7 @@ class LineChart extends PureComponent {
 		}
 		if (tooltip.left > (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
 			x = '-80%'
-			y = '-125%'
+			y = '25%'
 		}
 		if (tooltip.left > (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
 			x = '-80%'
@@ -237,8 +247,6 @@ class LineChart extends PureComponent {
 		if (tooltip.left < chartWidth / 4) { 
 			x = '0%'
 		}
-		if (mobile)
-			x = '-50%'
 		return `translate(${x}, ${y})`
 	}
 	render() {
