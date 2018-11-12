@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { getDevice, getAllPictures, getWeather, /* getWeather */ } from 'variables/dataDevices'
+import { getDevice, getAllPictures, getWeather, getDataHourly, getDataMinutely, getDataDaily, getDataSummary, /* getWeather */ } from 'variables/dataDevices'
 import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, ListItem, IconButton, Menu } from '@material-ui/core'
 import { ItemGrid, AssignOrg, AssignDC, DateFilterMenu, ItemG } from 'components'
 import deviceStyles from 'assets/jss/views/deviceStyles'
@@ -17,28 +17,34 @@ import DeviceMap from './DeviceCards/DeviceMap';
 import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
 import { DateRange, Timeline, DeviceHub, Map, DeveloperBoard } from 'variables/icons';
-
+import teal from '@material-ui/core/colors/teal'
 class Device extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
+			//Date Filter stuff
 			actionAnchor: null,
-			device: null,
-			loading: true,
-			anchorElHardware: null,
+			dateOption: 3,
+			loadingData: true,
+			from: moment().subtract(7, 'd').startOf('day'),
+			to: moment().endOf('day'),
+			timeType: 3,
+			raw: false,
+			//End Date Filter Tools
+			//Assign/Unassign
 			openAssignCollection: false,
 			openUnassign: false,
 			openAssignOrg: false,
+			//End Assign/Unassign
+			device: null,
+			loading: true,
+			anchorElHardware: null,
 			img: null,
-			dateOption: 0,
-			to: moment(),
-			from: moment(),
-			timeType: 3
 		}
 		props.setHeader('', true, `/devices/list`, "devices")
 	}
-
+	format = "YYYY-MM-DD+HH:mm"
 	getDevice = async (id) => {
 		await getDevice(id).then(async rs => {
 			if (rs === null)
@@ -61,7 +67,6 @@ class Device extends Component {
 	getDataCollection = async (id) => {
 		await getCollection(id).then(rs => {
 			if (rs) {
-
 				this.setState({
 					device: {
 						...this.state.device,
@@ -96,6 +101,7 @@ class Device extends Component {
 				// this.getAllPics(id)
 				await this.getDevice(id)
 				// console.log(this.state.device);
+				this.getWifiDaily()
 
 			}
 		}
@@ -103,7 +109,174 @@ class Device extends Component {
 			this.props.history.push('/404')
 		}
 	}
+	handleSetDate = (id, to, from, timeType) => {
+		this.setState({
+			dateOption: id,
+			to: to,
+			from: from,
+			timeType: timeType,
+			loadingData: true,
+			actionAnchor: null,
+			roundDataSets: null,
+			barDataSets: null
+		}, this.handleSwitchDayHourSummary)
+	}
+	
+	handleSwitchDayHourSummary = () => {
+		let id = this.state.dateOption
+		const { to, from } = this.state
+		let diff = moment.duration(to.diff(from)).days()
+		switch (id) {
+			case 0:// Today
+				this.getWifiHourly();
+				break;
+			case 1:// Yesterday
+				this.getWifiHourly();
+				break;
+			case 2://this week
+				parseInt(diff, 10) > 1 ? this.getWifiDaily() : this.getWifiHourly()
+				break;
+			case 3:
+				this.getWifiDaily();
+				break;
+			case 4:
+				this.getWifiDaily();
+				break
+			case 5:
+				this.getWifiDaily();
+				break
+			case 6:
+				this.handleSetCustomRange()
+				break
+			default:
+				this.getWifiDaily();
+				break;
+		}
+	}
 
+	getWifiHourly = async () => {
+		// const { device } = this.props
+		const { from, to, raw, device } = this.state
+		let startDate = moment(from).format(this.format)
+		let endDate = moment(to).format(this.format)
+		let dataArr = []
+		let dataSet = null
+		let data = await getDataHourly(device.id, startDate, endDate, raw)
+		dataSet = {
+			name: device.name,
+			id: device.id,
+			lat: device.lat,
+			long: device.long,
+			data: data,
+			color: teal[500]
+		}
+		dataArr.push(dataSet)
+		dataArr = dataArr.reduce((newArr, d) => {
+			if (d.data !== null)
+				newArr.push(d)
+			return newArr
+		}, [])
+		this.setState({
+			dataArr: dataArr,
+			loadingData: false,
+			timeType: 1
+		}, this.setHourlyData)
+	}
+	getWifiMinutely = async () => {
+		// const { device } = this.props
+		const { from, to, raw, device } = this.state
+		let startDate = moment(from).format(this.format)
+		let endDate = moment(to).format(this.format)
+		let dataArr = []
+
+		let dataSet = null
+		let data = await getDataMinutely(device.id, startDate, endDate, raw)
+		dataSet = {
+			name: device.name,
+			id: device.id,
+			data: data,
+			lat: device.lat,
+			long: device.long,
+			color: teal[500]
+		}
+		dataArr.push(dataSet)
+
+		dataArr = dataArr.reduce((newArr, d) => {
+			if (d.data !== null)
+				newArr.push(d)
+			return newArr
+		}, [])
+		this.setState({
+			dataArr: dataArr,
+			loadingData: false,
+			timeType: 0
+		}, this.setMinutelyData)
+		// this.setDailyData(dataArr)
+	}
+	getWifiDaily = async () => {
+		// const { device } = this.props
+		const { from, to, raw, device } = this.state
+		let startDate = moment(from).format(this.format)
+		let endDate = moment(to).format(this.format)
+		let dataArr = []
+		let dataSet = null
+		let data = await getDataDaily(device.id, startDate, endDate, raw)
+		dataSet = {
+			name: device.name,
+			id: device.id,
+			lat: device.lat,
+			long: device.long,
+			data: data,
+			color: teal[500]
+		}
+		dataArr.push(dataSet)
+
+		dataArr = dataArr.reduce((newArr, d) => {
+			if (d.data !== null)
+				newArr.push(d)
+			return newArr
+		}, [])
+		this.setState({
+			dataArr: dataArr,
+			loadingData: false,
+			timeType: 2
+		}, this.setDailyData)
+	}
+
+	getWifiSum = async () => {
+		// const { device } = this.props
+		const { from, to, raw, device } = this.state
+		let startDate = moment(from).format(this.format)
+		let endDate = moment(to).format(this.format)
+		let dataArr = []
+		let dataSet = null
+		let data = await getDataSummary(device.id, startDate, endDate, raw)
+		dataSet = {
+			name: device.name,
+			id: device.id,
+			lat: device.lat,
+			long: device.long,
+			data: data,
+			color: teal[500]
+		}
+		dataArr.push(dataSet)
+		dataArr = dataArr.reduce((newArr, d) => {
+			if (d.data !== null)
+				newArr.push(d)
+			return newArr
+		}, [])
+		if (dataArr.length > 0)
+			this.setState({
+				dataArr: dataArr,
+				loadingData: false,
+			}, this.setSummaryData)
+		else {
+			this.setState({
+				dataArr: null,
+				noData: true
+			})
+		}
+	}
 	snackBarMessages = (msg) => {
 		const { s, t } = this.props
 		const { device, oldCollection } = this.state
@@ -316,26 +489,19 @@ class Device extends Component {
 		{ id: 0, title: "", label: <DeviceHub />, url: `#details` },
 		{ id: 1, title: "", label: <Timeline />, url: `#data` },
 		{ id: 2, title: "", label: <Map />, url: `#map` },
-		{ id: 3, title: "", label: <DeveloperBoard />, url: `#hardware` },
-		// { id: 4, title: "", label: <Timeline />, url: `#data` },
+		{ id: 3, title: "", label: <DeveloperBoard />, url: `#hardware` }
 	]
 	render() {
-		const { device, loading } = this.state
+		const { device, loading, loadingData } = this.state
 		return (
 			<Fragment>
 				
 				<Toolbar
 					noSearch
-					// data={devices}
-					// filters={filters}
 					history={this.props.history}
 					match={this.props.match}
-					// handleFilterKeyword={this.handleFilterKeyword}
 					tabs={this.tabs}
-					content={
-						this.renderMenu()
-						
-					}
+					content={this.renderMenu()}
 				/>
 				{!loading ?
 					<GridContainer justify={'center'} alignContent={'space-between'}>
@@ -368,12 +534,16 @@ class Device extends Component {
 							/>
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id={"data"}>
-							<DeviceData
+							{!loadingData ? <DeviceData
+								dataArr={this.state.dataArr}
+								timeType={this.state.timeType}
+								from={this.state.from}
+								to={this.state.to}
 								device={device}
 								history={this.props.history}
 								match={this.props.match}
 								t={this.props.t}
-							/>
+							/> : this.renderLoader()}
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id={"map"}>
 							<DeviceMap

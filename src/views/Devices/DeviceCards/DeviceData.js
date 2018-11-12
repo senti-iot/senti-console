@@ -20,7 +20,7 @@ import {
 	ExportModal
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
-import { getDataSummary, getDataDaily, getDataHourly, getDataMinutely, /* getDataHourly */ } from 'variables/dataDevices';
+// import { getDataSummary, getDataDaily, getDataHourly, getDataMinutely, /* getDataHourly */ } from 'variables/dataDevices';
 import classNames from 'classnames';
 import { dateTimeFormatter, datesToArr, hoursToArr, minutesToArray } from 'variables/functions';
 import { connect } from 'react-redux'
@@ -48,7 +48,7 @@ class DeviceData extends PureComponent {
 			raw: false,
 		}
 	}
-	format = "YYYY-MM-DD+HH:mm"
+
 
 	displayFormat = "DD MMMM YYYY HH:mm"
 	image = null
@@ -88,7 +88,7 @@ class DeviceData extends PureComponent {
 		})
 	}
 	setDailyData = () => {
-		const { dataArr, from, to } = this.state
+		const { dataArr, from, to } = this.props
 		this.setState({
 			loading: false,
 			timeType: 2,
@@ -124,7 +124,7 @@ class DeviceData extends PureComponent {
 		})
 	}
 	setHourlyData = () => {
-		const { dataArr, from, to } = this.state
+		const { dataArr, from, to } = this.props
 		this.setState({
 			loading: false,
 			timeType: 1,
@@ -160,7 +160,7 @@ class DeviceData extends PureComponent {
 		})
 	}
 	setMinutelyData = () => {
-		const { dataArr, from, to } = this.state
+		const { dataArr, from, to } = this.props
 		this.setState({
 			loading: false,
 			lineDataSets: {
@@ -195,116 +195,6 @@ class DeviceData extends PureComponent {
 		})
 	}
 
-	getWifiHourly = async () => {
-		const { device } = this.props
-		const { from, to, raw } = this.state
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataArr = []
-		let dataSet = null
-		let data = await getDataHourly(device.id, startDate, endDate, raw)
-		dataSet = {
-			name: device.name,
-			id: device.id,
-			lat: device.lat,
-			long: device.long,
-			data: data,
-			color: teal[500]
-		}
-		dataArr.push(dataSet)
-		dataArr = dataArr.reduce((newArr, d) => {
-			if (d.data !== null)
-				newArr.push(d)
-			return newArr
-		}, [])
-		this.setState({ dataArr: dataArr, timeType: 1 }, this.setHourlyData)
-	}
-	getWifiMinutely = async () => {
-		const { device } = this.props
-		const { from, to, raw } = this.state
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataArr = []
-
-		let dataSet = null
-		let data = await getDataMinutely(device.id, startDate, endDate, raw)
-		dataSet = {
-			name: device.name,
-			id: device.id,
-			data: data,
-			lat: device.lat,
-			long: device.long,
-			color: teal[500]
-		}
-		dataArr.push(dataSet)
-
-		dataArr = dataArr.reduce((newArr, d) => {
-			if (d.data !== null)
-				newArr.push(d)
-			return newArr
-		}, [])
-		this.setState({ dataArr: dataArr, timeType: 0 }, this.setMinutelyData)
-		// this.setDailyData(dataArr)
-	}
-	getWifiDaily = async () => {
-		const { device } = this.props
-		const { from, to, raw } = this.state
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataArr = []
-		let dataSet = null
-		let data = await getDataDaily(device.id, startDate, endDate, raw)
-		dataSet = {
-			name: device.name,
-			id: device.id,
-			lat: device.lat,
-			long: device.long,
-			data: data,
-			color: teal[500]
-		}
-		dataArr.push(dataSet)
-
-		dataArr = dataArr.reduce((newArr, d) => {
-			if (d.data !== null)
-				newArr.push(d)
-			return newArr
-		}, [])
-		this.setState({ dataArr: dataArr, timeType: 2 }, this.setDailyData)
-	}
-
-	getWifiSum = async () => {
-		const { device } = this.props
-		const { from, to, raw } = this.state
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataArr = []
-		let dataSet = null
-		let data = await getDataSummary(device.id, startDate, endDate, raw)
-		dataSet = {
-			name: device.name,
-			id: device.id,
-			lat: device.lat,
-			long: device.long,
-			data: data,
-			color: teal[500]
-		}
-		dataArr.push(dataSet)
-		dataArr = dataArr.reduce((newArr, d) => {
-			if (d.data !== null)
-				newArr.push(d)
-			return newArr
-		}, [])
-		if (dataArr.length > 0)
-			this.setState({
-				dataArr: dataArr
-			}, this.setSummaryData)
-		else {
-			this.setState({
-				dataArr: null,
-				noData: true
-			})
-		}
-	}
 	getImage = () => {
 		var canvas = document.getElementsByClassName("chartjs-render-monitor");
 		// console.log(canvas)
@@ -336,52 +226,10 @@ class DeviceData extends PureComponent {
 		this.setState({ actionAnchor: null });
 	}
 
-
-	handleSetDate = (id, to, from, timeType) => {
-		this.setState({
-			dateOption: id,
-			to: to,
-			from: from,
-			timeType: timeType,
-			loading: true,
-			actionAnchor: null,
-			roundDataSets: null,
-			barDataSets: null
-		}, this.handleSwitchVisibility)
-	}
-	handleSwitchDayHourSummary = () => {
-		let id = this.state.dateOption
-		const { to, from } = this.state
-		let diff = moment.duration(to.diff(from)).days()
-		switch (id) {
-			case 0:// Today
-				this.getWifiHourly();
-				break;
-			case 1:// Yesterday
-				this.getWifiHourly();
-				break;
-			case 2://this week
-				parseInt(diff, 10) > 1 ? this.getWifiDaily() : this.getWifiHourly()
-				break;
-			case 3:
-				this.getWifiDaily();
-				break;
-			case 4:
-				this.getWifiDaily();
-				break
-			case 5:
-				this.getWifiDaily();
-				break
-			case 6:
-				this.handleSetCustomRange()
-				break
-			default:
-				this.getWifiDaily();
-				break;
-		}
-	}
 	customSetDisplay = () => {
-		const { display, timeType } = this.state
+		const { display } = this.state
+		const { timeType } = this.props
+		console.log('customSetDisplay', timeType, display)
 		if (display !== 0 || display !== 1) {
 			switch (timeType) {
 				case 0:
@@ -404,40 +252,18 @@ class DeviceData extends PureComponent {
 			this.setSummaryData()
 		}
 	}
-	handleSetCustomRange = () => {
-		const { display, timeType } = this.state
-		if (display !== 0 || display !== 1) {
-			switch (timeType) {
-				case 0:
-					this.getWifiMinutely()
-					break;
-				case 1:
-					this.getWifiHourly()
-					break
-				case 2:
-					this.getWifiDaily()
-					break
-				case 3:
-					this.getWifiSum()
-					break
-				default:
-					break;
-			}
-		}
-		else {
-			this.getWifiSum()
-		}
-	}
+
 	handleSwitchVisibility = () => {
 		const { display } = this.state
+		console.log('handleSwitchVisibility', display)
 		switch (display) {
 			case 0:
 			case 1:
-				this.getWifiSum()
+				this.setSummaryData()
 				break;
 			case 2:
 			case 3:
-				this.handleSwitchDayHourSummary()
+				this.customSetDisplay()
 				break
 			default:
 				break;
