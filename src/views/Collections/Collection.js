@@ -43,8 +43,7 @@ class Collection extends Component {
 		let device = await getDevice(id)
 		if (device.lat && device.long) {
 			let data = await getWeather(device, moment(), this.props.language)
-			console.log(data)
-			this.setState({ weather: data }, console.log(this.state.weather))
+			this.setState({ weather: data })
 		}
 		return device ? this.setState({ activeDevice: device }) : null
 	}
@@ -92,13 +91,13 @@ class Collection extends Component {
 				s(t("snackbars.unassign.deviceFromCollection", { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id }))
 				break
 			case 2:
-				s(t("snackbars.assignCollection", { collection: `${name} (${id})`, what: this.state.collection.org.name }))
+				s(t("snackbars.assign.collectionToOrg", { collection: `${name} (${id})`, org: this.state.collection.org.name }))
 				break
 			case 5: 
-				s(t("snackbars.assign.collectionToProject", { collection: `${name} (${id})`, what: this.state.collection.project.title }))
+				s(t("snackbars.assign.collectionToProject", { collection: `${name} (${id})`, project: this.state.collection.project.title }))
 				break
 			case 6:
-				s(t("snackbars.assign.deviceToCollection", { collection: `${name} (${id})`, what: this.state.collection.activeDeviceStats.id }))
+				s(t("snackbars.assign.deviceToCollection", { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id }))
 				break
 			case 4:
 				s(t("snackbars.collectionDeleted"))

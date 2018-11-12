@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Grid, IconButton, Menu, MenuItem, withStyles } from '@material-ui/core';
-import { ItemGrid, Info } from 'components';
+import { withStyles } from '@material-ui/core';
+import { ItemG, Info, Dropdown } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
-import { MoreVert, Edit, DeveloperBoard } from 'variables/icons'
+import { Edit, DeveloperBoard } from 'variables/icons'
 import Caption from 'components/Typography/Caption';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 
@@ -17,92 +17,96 @@ class DeviceHardware extends Component {
 	handleOpenActionsHardware = e => {
 		this.setState({ actionAnchor: e.currentTarget })
 	}
-	handleCloseActionsHardware = e => {
-		this.setState({ actionAnchor: null })
+	handleCloseActionsHardware = () => {
+		this.setState({ actionAnchor: null });
 	}
 
 	render() {
-		const { actionAnchor } = this.state
 		const { classes, device, t  } = this.props
 		return (
 			<InfoCard
 				title={t("devices.cards.hardware")}
 				avatar={<DeveloperBoard />}
 				subheader={''}
+				haveMargin
 				topAction={
-					<ItemGrid>
-						<IconButton
-							aria-label="More"
-							aria-owns={actionAnchor ? 'long-menu' : null}
-							aria-haspopup="true"
-							onClick={this.handleOpenActionsHardware}>
-							<MoreVert />
-						</IconButton>
-						<Menu
-							id="long-menu"
-							anchorEl={actionAnchor}
-							open={Boolean(actionAnchor)}
-							onClose={this.handleCloseActionsHardware}
-							PaperProps={{
-								style: {
-									maxHeight: 200,
-									minWidth: 200
-								}
-							}}>
-							<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit-hardware`)}>
-								<Edit className={classes.leftIcon} />Edit hardware info
-							</MenuItem>
-							))}
-						</Menu>
-					</ItemGrid>
+					<Dropdown menuItems={
+						[
+							{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => this.props.history.push(`${this.props.match.url}/edit-hardware`) },
+							// { label: t("actions.deletePicture"), icon: <Delete className={classes.leftIcon} />, func: this.handleOpenDeletePictureDialog },
+						]
+					} />
+					// <ItemG>
+					// 	<IconButton
+					// 		aria-label="More"
+					// 		aria-owns={actionAnchor ? 'long-menu' : null}
+					// 		aria-haspopup="true"
+					// 		onClick={this.handleOpenActionsHardware}>
+					// 		<MoreVert />
+					// 	</IconButton>
+					// 	<Menu
+					// 		id="long-menu"
+					// 		anchorEl={actionAnchor}
+					// 		open={Boolean(actionAnchor)}
+					// 		onClose={this.handleCloseActionsHardware}
+					// 		PaperProps={{
+					// 			style: {
+					// 				maxHeight: 200,
+					// 				minWidth: 200
+					// 			}
+					// 		}}>
+					// 		<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit-hardware`)}>
+					// 			<Edit className={classes.leftIcon} />Edit hardware info
+					// 		</MenuItem>
+					// 		))}
+					// 	</Menu>
+					// </ItemG>
 				}
 				content={
-					<Grid container>
-						<Grid container >
-							<ItemGrid xs>
-								<Caption>{t("devices.fields.pcModel")}:</Caption>
-								<Info>{device.RPImodel}</Info>
-							</ItemGrid>
-							<ItemGrid xs>
-								<Caption>{t("devices.fields.memory")}:</Caption>
-								<Info>{device.memory + " - " + device.memoryModel}</Info>
-							</ItemGrid>
-							<ItemGrid xs>
-								<Caption>{t("devices.fields.adapter")}:</Caption>
-								<Info>{device.adapter}</Info>
-							</ItemGrid>
-						</Grid>
-						<Grid container>
-							<ItemGrid xs>
-								<Caption>{t("devices.fields.wifiModule")}:</Caption>
-								<Info>{device.wifiModule}</Info>
-							</ItemGrid>
-							<ItemGrid xs>
-								<Caption>{t("devices.fields.modemModel")}:</Caption>
-								<Info>{device.modemModel}</Info>
-							</ItemGrid>
-						</Grid>
-					</Grid>
+					<ItemG container spacing={16}>
+						<ItemG>
+							<Caption>{t("devices.fields.pcModel")}:</Caption>
+							<Info>{device.RPImodel}</Info>
+						</ItemG>
+						<ItemG>
+							<Caption>{t("devices.fields.memory")}:</Caption>
+							<Info>{device.memory + " - " + device.memoryModel}</Info>
+						</ItemG>
+						<ItemG>
+							<Caption>{t("devices.fields.adapter")}:</Caption>
+							<Info>{device.adapter}</Info>
+						</ItemG>
+					
+						<ItemG>
+							<Caption>{t("devices.fields.wifiModule")}:</Caption>
+							<Info>{device.wifiModule}</Info>
+						</ItemG>
+						<ItemG>
+							<Caption>{t("devices.fields.modemModel")}:</Caption>
+							<Info>{device.modemModel}</Info>
+						</ItemG>
+					
+					</ItemG>
 				}
-				hiddenContent={<Grid container>
-					<ItemGrid>
+				hiddenContent={<ItemG container spacing={16}>
+					<ItemG>
 						<Caption>{t("devices.fields.cellNumber")}:</Caption>
 						<Info>{device.cellNumber}</Info>
-					</ItemGrid>
-					<ItemGrid>
+					</ItemG>
+					<ItemG>
 						<Caption>{t("devices.fields.simProvider")}:</Caption>
 						<Info>{device.SIMProvider}</Info>
-					</ItemGrid>
-					<ItemGrid>
+					</ItemG>
+					<ItemG>
 						<Caption>{t("devices.fields.simCard")}:</Caption>
 						<Info>{device.SIMID}</Info>
-					</ItemGrid>
-					<ItemGrid>
+					</ItemG>
+					<ItemG>
 						<Caption>{t("devices.fields.modemIMEI")}:</Caption>
 						<Info>{device.modemIMEI}</Info>
-					</ItemGrid>
+					</ItemG>
 
-				</Grid>
+				</ItemG>
 				}
 			/>
 		)

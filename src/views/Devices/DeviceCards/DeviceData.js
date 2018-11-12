@@ -101,6 +101,8 @@ class DeviceData extends PureComponent {
 				labels: datesToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.lat,
+					long: d.long,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 8 : 3,
@@ -113,6 +115,8 @@ class DeviceData extends PureComponent {
 				labels: datesToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.lat,
+					long: d.long,
 					backgroundColor: d.color,
 					borderColor: teal[500],
 					borderWidth: this.props.hoverID === d.id ? 4 : 0,
@@ -133,6 +137,8 @@ class DeviceData extends PureComponent {
 				labels: hoursToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.lat,
+					long: d.long,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 8 : 3,
@@ -145,6 +151,8 @@ class DeviceData extends PureComponent {
 				labels: hoursToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.lat,
+					long: d.long,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 4 : 0,
@@ -164,6 +172,8 @@ class DeviceData extends PureComponent {
 				labels: minutesToArray(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.lat,
+					long: d.long,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 8 : 3,
@@ -175,6 +185,8 @@ class DeviceData extends PureComponent {
 					labels: hoursToArr(from, to),
 					datasets: dataArr.map((d) => ({
 						id: d.id,
+						lat: d.lat,
+						long: d.long,
 						backgroundColor: d.color,
 						borderColor: d.color,
 						borderWidth: this.props.hoverID === d.id ? 4 : 0,
@@ -223,6 +235,8 @@ class DeviceData extends PureComponent {
 			name: device.name,
 			id: device.id,
 			data: data,
+			lat: device.lat,
+			long: device.long,
 			color: teal[500]
 		}
 		dataArr.push(dataSet)
@@ -246,6 +260,8 @@ class DeviceData extends PureComponent {
 		dataSet = {
 			name: device.name,
 			id: device.id,
+			lat: device.lat,
+			long: device.long,
 			data: data,
 			color: teal[500]
 		}
@@ -271,6 +287,8 @@ class DeviceData extends PureComponent {
 		dataSet = {
 			name: device.name,
 			id: device.id,
+			lat: device.lat,
+			long: device.long,
 			data: data,
 			color: teal[500]
 		}
@@ -293,11 +311,11 @@ class DeviceData extends PureComponent {
 	}
 	getImage = () => {
 		var canvas = document.getElementsByClassName("chartjs-render-monitor");
-		console.log(canvas)
+		// console.log(canvas)
 		if (canvas.length > 0) {
 			 this.image = canvas[1].toDataURL("image/png");
 			this.setState({ image: this.image })
-			console.log(this.image)
+			// console.log(this.image)
 		}
 	}
 	componentDidMount = async () => {
@@ -473,7 +491,7 @@ class DeviceData extends PureComponent {
 			event.preventDefault()
 		// 
 		// let id = event.target.value
-		this.setState({ display: id, loading: true }, this.handleSwitchVisibility)
+		this.setState({ display: id, loading: true, actionAnchorVisibility: null }, this.handleSwitchVisibility)
 	}
 
 	handleDateFilter = (event) => {
@@ -664,7 +682,7 @@ class DeviceData extends PureComponent {
 	renderMenu = () => {
 		const { actionAnchor, actionAnchorVisibility } = this.state
 		const { classes, t } = this.props
-		return <ItemGrid container noMargin noPadding>
+		return <Fragment>
 			<ItemG>
 				<Hidden smDown>
 					{this.renderDateFilter()}
@@ -768,7 +786,7 @@ class DeviceData extends PureComponent {
 					</Hidden>
 				</div>
 			</Menu>
-		</ItemGrid>
+		</Fragment>
 	}
 	renderNoData = () => {
 		return <ItemG container justify={'center'}>

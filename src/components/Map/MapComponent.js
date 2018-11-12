@@ -3,6 +3,7 @@ import MarkerWithInfo from './MarkerWithInfo';
 import { GoogleMap/*,  Circle */ } from 'react-google-maps';
 import MarkerClusterer from "react-google-maps/lib/components/addons/MarkerClusterer";
 // import { colors } from 'variables/colors';
+import { connect } from 'react-redux'
 
 class MapComponent extends Component {
 	constructor(props) {
@@ -34,7 +35,6 @@ class MapComponent extends Component {
 		})
 	}
 	createHeatmapLayerPoints = () => {
-		console.log(this.props.markers)
 		let hArr = this.props.markers.map(point => (
 			{
 				location: new window.google.maps.LatLng(point.lat, point.long),
@@ -73,7 +73,13 @@ class MapComponent extends Component {
 			>
 				{props.markers.length > 0 ? props.markers.map((m, i) => {
 					if (m.lat && m.long)
-						return <MarkerWithInfo t={props.t} key={i} m={m} i={i} weather={m.weather} />
+						return <MarkerWithInfo
+							lang={props.language}
+							t={props.t}
+							key={i}
+							m={m}
+							i={i}
+							weather={m.weather} />
 					else
 						return null
 				})
@@ -82,5 +88,12 @@ class MapComponent extends Component {
 		</GoogleMap>
 	}
 }
+const mapStateToProps = (state) => ({
+	language: state.settings.language
+})
 
-export default MapComponent
+const mapDispatchToProps = {
+  
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapComponent)

@@ -6,7 +6,7 @@ import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
 import { withStyles, Button } from '@material-ui/core'
 import { red, green, yellow } from '@material-ui/core/colors'
 import { Link } from 'react-router-dom'
-import { getDataSummary } from 'variables/dataDevices';
+import { getDataSummary, getWeather } from 'variables/dataDevices';
 import WeatherIcon from 'components/Typography/WeatherIcon';
 var moment = require("moment")
 const styles = theme => ({ 
@@ -26,17 +26,25 @@ class MarkerWithInfo extends Component {
 	
 	  this.state = {
 		 isOpen: false,
-		 liveCount: 0
+		 liveCount: 0,
+		 weather: null
 	  }
 	}
+
 	onToggleOpen = async () => {
-		if (this.state.isOpen === false) {
+		const { m, lang } = this.props
+		const { isOpen } = this.state
+		if (isOpen === false) {
+			if (this.state.weather === null && !m.weather && m.lat && m.long) { 
+				let weather = await getWeather(m, moment(), lang)
+				this.setState({ weather: weather })
+			}
 			let OneMinuteAgo = moment().subtract(10, "minute").format("YYYY-MM-DD+HH:mm:ss")
 			let rs = await getDataSummary(this.props.m.id, OneMinuteAgo, moment().format("YYYY-MM-DD+HH:mm:ss"), false)
-			this.setState({ isOpen: !this.state.isOpen, liveCount: rs })
+			this.setState({ isOpen: !isOpen, liveCount: rs })
 		}
 		else { 
-			this.setState({ isOpen: !this.state.isOpen })
+			this.setState({ isOpen: !isOpen })
 		}
 	}
 	renderIcon = (status) => {
@@ -55,7 +63,6 @@ class MarkerWithInfo extends Component {
 	render() {
 		const { m, i, t } = this.props
 		const { isOpen } = this.state
-		console.log(m)
 		return (
 			<Marker icon={{ url: `data:image/svg+xml,${MarkerIcon(m.color ? m.color : m.liveStatus)}` }} onClick={this.onToggleOpen} key={i} position={{ lat: m.lat, lng: m.long }}>
 				{isOpen && <InfoWindow onCloseClick={this.onToggleOpen}
@@ -100,6 +107,16 @@ class MarkerWithInfo extends Component {
 								<Caption>{t("devices.fields.weather")}</Caption>
 								<Info>
 									 {m.weather.currently.summary}
+								</Info>
+							</ItemG>
+						</ItemG> : this.state.weather ? <ItemG xs={12} container>
+							<ItemG xs={3}>
+								<WeatherIcon icon={this.state.weather.currently.icon} />
+							</ItemG>
+							<ItemG xs={9}>
+								<Caption>{t("devices.fields.weather")}</Caption>
+								<Info>
+									{this.state.weather.currently.summary}
 								</Info>
 							</ItemG>
 						</ItemG> : null}

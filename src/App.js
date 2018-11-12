@@ -29,16 +29,21 @@ const theme = createMuiTheme({
 		suppressDeprecationWarnings: true,
 	},
 	overrides: {
+		MuiButton: {
+			text: {
+				textTransform: "uppercase"
+			}
+		},
 		MuiTypography: {
-			h6: {
-				textTransform: "none"
-			},
-			h5: {
-				textTransform: "none"
-			},
-			h4: {
-				textTransform: "none"
-			},
+			// h6: {
+			// 	textTransform: "none"
+			// },
+			// h5: {
+			// 	textTransform: "none"
+			// },
+			// h4: {
+			// 	textTransform: "none"
+			// },
 			body1: {
 				fontSize: '0.875rem',
 			}	
@@ -85,10 +90,7 @@ const theme = createMuiTheme({
 		// type: 'dark',
 		primary: {
 			// light: will be calculated from palette.primary.main,
-			main: primaryColor,
-
-			// dark: will be calculated from palette.primary.main,
-			// contrastText: will be calculated to contast with palette.primary.main
+			main: primaryColor
 		},
 		secondary: {
 			main: secondaryColor,
@@ -100,7 +102,6 @@ const theme = createMuiTheme({
 		}
 	},
 });
-window.scrollTo(0, 1)
 
 class App extends Component {
 	render() {
@@ -121,5 +122,6 @@ class App extends Component {
 		)
 	}
 }
+
 
 export default App

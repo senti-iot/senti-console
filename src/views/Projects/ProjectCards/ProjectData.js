@@ -97,6 +97,8 @@ class ProjectData extends PureComponent {
 				labels: datesToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.lat,
+					long: d.long,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 8 : 3,
@@ -109,6 +111,8 @@ class ProjectData extends PureComponent {
 				labels: datesToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.lat,
+					long: d.long,
 					backgroundColor: d.color,
 					borderColor: teal[500],
 					borderWidth: this.props.hoverID === d.id ? 4 : 0,
@@ -129,6 +133,8 @@ class ProjectData extends PureComponent {
 				labels: hoursToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.lat,
+					long: d.long,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 8 : 3,
@@ -141,6 +147,8 @@ class ProjectData extends PureComponent {
 				labels: hoursToArr(from, to),
 				datasets: dataArr.map((d) => ({
 					id: d.id,
+					lat: d.lat,
+					long: d.long,
 					backgroundColor: d.color,
 					borderColor: d.color,
 					borderWidth: this.props.hoverID === d.id ? 4 : 0,
@@ -197,7 +205,9 @@ class ProjectData extends PureComponent {
 				name: d.name,
 				id: d.id,
 				data: data,
-				color: d.color
+				color: d.color,
+				lat: d.activeDevice ? d.activeDevice.lat : 0,
+				long: d.activeDevice ? d.activeDevice.long : 0
 			}
 			return dataArr.push(dataSet)
 		}))
@@ -221,7 +231,9 @@ class ProjectData extends PureComponent {
 				name: d.name,
 				id: d.id,
 				data: data,
-				color: d.color
+				color: d.color,
+				lat: d.activeDevice ? d.activeDevice.lat : 0,
+				long: d.activeDevice ? d.activeDevice.long : 0
 			}
 			return dataArr.push(dataSet)
 		}))
@@ -246,7 +258,9 @@ class ProjectData extends PureComponent {
 				name: d.name,
 				id: d.id,
 				data: data,
-				color: d.color
+				color: d.color,
+				lat: d.activeDevice ? d.activeDevice.lat : 0,
+				long: d.activeDevice ? d.activeDevice.long : 0
 			}
 			return dataArr.push(dataSet)
 		}))
@@ -461,7 +475,7 @@ class ProjectData extends PureComponent {
 			event.preventDefault()
 		// 
 		// let id = event.target.value
-		this.setState({ display: id, loading: true }, this.handleSwitchVisibility)
+		this.setState({ display: id, loading: true, actionAnchorVisibility: null }, this.handleSwitchVisibility)
 	}
 
 	handleDateFilter = (event) => {
@@ -646,7 +660,7 @@ class ProjectData extends PureComponent {
 	renderMenu = () => {
 		const { actionAnchor, actionAnchorVisibility } = this.state
 		const { classes, t } = this.props
-		return <ItemGrid container noMargin noPadding>
+		return <Fragment>
 			<ItemG>
 				<Hidden smDown>
 					{this.renderDateFilter()}
@@ -746,7 +760,7 @@ class ProjectData extends PureComponent {
 					</Hidden>
 				</div>
 			</Menu>
-		</ItemGrid>
+		</Fragment>
 	}
 	renderNoData = () => {
 		return <ItemG container justify={'center'}>
