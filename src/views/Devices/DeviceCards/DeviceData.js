@@ -157,7 +157,7 @@ class DeviceData extends PureComponent {
 				}))
 			},
 			roundDataSets: null
-		}, () => window.lineDataSet = this.state.lineDataSets)
+		})
 	}
 	setMinutelyData = () => {
 		const { dataArr, from, to } = this.state

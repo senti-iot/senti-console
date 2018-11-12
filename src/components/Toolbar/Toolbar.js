@@ -1,13 +1,18 @@
 
 
 import React, { Component } from 'react'
-import { AppBar, Tabs, Tab, withStyles } from '@material-ui/core';
+import { AppBar, Tabs, Tab, withStyles, Toolbar as ToolBar } from '@material-ui/core';
 import Search from 'components/Search/Search';
 import { suggestionGen } from 'variables/functions'
+import { NavHashLink as Link } from 'react-router-hash-link';
 
 const styles = theme => ({
 	appBar: {
+		display: 'flex',
+		flexFlow: "row",
+		justifyContent: 'space-between',
 		// top: 70,
+		minHeight: 48,
 		height: 48,
 		zIndex: 1000
 	},
@@ -28,19 +33,25 @@ class Toolbar extends Component {
 		this.setState({ route: value })
 	}
 	render() {
-		const { props } = this
+		const { classes, tabs, data, noSearch, filters, handleFilterKeyword, content } = this.props
 		return (
-			<AppBar position={'sticky'} classes={{ root: props.classes.appBar }}>
-				<Tabs value={this.state.route} onChange={this.handleTabsChange} classes={{ fixed: props.classes.noOverflow, root: props.classes.noOverflow }}>
-					{props.tabs ? props.tabs.map((t, i) => {
-						return <Tab title={t.title} id={t.id} key={i} label={t.label} onClick={() => props.history.push(`${t.url}`)}/>
+			<AppBar position={'sticky'} classes={{ root: classes.appBar }}>
+				{tabs ? <Tabs value={this.state.route}  onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
+					{tabs ? tabs.map((t, i) => {
+						return <Tab title={t.title} component={Link} id={t.id} key={i} smooth label={t.label} to={/* () => history.push( */`${t.url}`} />
 					}) : null}
-					<Search
+					{noSearch ? null : <Search
 						right
-						suggestions={props.data ? suggestionGen(props.data) : []}
-						handleFilterKeyword={props.handleFilterKeyword}
-						searchValue={props.filters.keyword} />
-				</Tabs>
+						suggestions={data ? suggestionGen(data) : []}
+						handleFilterKeyword={handleFilterKeyword}
+						searchValue={filters.keyword} />}
+			
+				</Tabs> : null}
+				{
+					content ? <ToolBar classes={{ root: classes.appBar }}>
+						{content}
+					</ToolBar> : null
+				}
 			</AppBar>
 		)
 	}

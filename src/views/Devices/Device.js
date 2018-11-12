@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { getDevice, getAllPictures, getWeather, /* getWeather */ } from 'variables/dataDevices'
-import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
-import { ItemGrid, AssignOrg, AssignDC } from 'components'
+import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, ListItem, IconButton, Menu } from '@material-ui/core'
+import { ItemGrid, AssignOrg, AssignDC, DateFilterMenu, ItemG } from 'components'
 import deviceStyles from 'assets/jss/views/deviceStyles'
 import ImageUpload from './ImageUpload'
 import CircularLoader from 'components/Loader/CircularLoader'
@@ -15,19 +15,26 @@ import { connect } from 'react-redux';
 import { unassignDeviceFromCollection, getCollection } from 'variables/dataCollections';
 import DeviceMap from './DeviceCards/DeviceMap';
 import moment from 'moment'
+import Toolbar from 'components/Toolbar/Toolbar';
+import { DateRange, Timeline, DeviceHub, Map, DeveloperBoard } from 'variables/icons';
 
 class Device extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
+			actionAnchor: null,
 			device: null,
 			loading: true,
 			anchorElHardware: null,
 			openAssignCollection: false,
 			openUnassign: false,
 			openAssignOrg: false,
-			img: null
+			img: null,
+			dateOption: 0,
+			to: moment(),
+			from: moment(),
+			timeType: 3
 		}
 		props.setHeader('', true, `/devices/list`, "devices")
 	}
@@ -250,72 +257,149 @@ class Device extends Component {
 			</DialogActions>
 		</Dialog>
 	}
+	renderDateFilter = () => {
+		const { classes, t } = this.props
+		const { dateOption, to, from } = this.state
+		return <DateFilterMenu
+			dateOption={dateOption}
+			classes={classes}
+			to={to}
+			from={from}
+			t={t}
+			handleSetDate={this.handleSetDate}
+			handleCustomDate={this.handleCustomDate}
+		/>
+	}
 
+	handleOpenActionsDetails = event => {
+		this.setState({ actionAnchor: event.currentTarget });
+	}
+
+	handleCloseActionsDetails = () => {
+		this.setState({ actionAnchor: null });
+	}
+	renderMenu = () => {
+		const { actionAnchor } = this.state
+
+		return <ItemG container justify={'flex-end'}>
+			<ItemG>
+				<IconButton
+					// color={"#fff"}
+
+					aria-label="More"
+					aria-owns={actionAnchor ? 'long-menu' : null}
+					aria-haspopup="true"
+					onClick={this.handleOpenActionsDetails}>
+					<DateRange style={{ color: "#fff" }}/>
+				</IconButton>
+			</ItemG>
+			<Menu
+				id="long-menu"
+				anchorEl={actionAnchor}
+				open={Boolean(actionAnchor)}
+				onClose={this.handleCloseActionsDetails}
+				onChange={this.handleVisibility}
+				PaperProps={{
+					style: {
+						minWidth: 250
+					}
+				}}>
+				<div>
+					<ListItem>
+						{this.renderDateFilter()}
+					</ListItem>
+				</div>
+			</Menu>
+		</ItemG>
+	}
+	tabs = [
+		{ id: 0, title: "", label: <DeviceHub />, url: `#details` },
+		{ id: 1, title: "", label: <Timeline />, url: `#data` },
+		{ id: 2, title: "", label: <Map />, url: `#map` },
+		{ id: 3, title: "", label: <DeveloperBoard />, url: `#hardware` },
+		// { id: 4, title: "", label: <Timeline />, url: `#data` },
+	]
 	render() {
 		const { device, loading } = this.state
 		return (
-			!loading ?
-				<GridContainer justify={'center'} alignContent={'space-between'}>
-					<AssignDC
-						deviceId={device.id}
-						open={this.state.openAssignCollection}
-						handleClose={this.handleCloseAssign}
-						handleCancel={this.handleCancelAssign}
-						t={this.props.t}
-					/>
-					<AssignOrg
-						devices
-						deviceId={[this.state.device]}
-						open={this.state.openAssignOrg}
-						handleClose={this.handleCloseAssignOrg}
-						t={this.props.t}
-					/>
-					{device.dataCollection ? this.renderConfirmUnassign() : null}
-					<ItemGrid xs={12} noMargin>
-						<DeviceDetails
-							weather={this.state.weather}
-							device={device}
-							history={this.props.history}
-							match={this.props.match}
-							handleOpenAssign={this.handleOpenAssign}
-							handleOpenUnassign={this.handleOpenUnassign}
-							handleOpenAssignOrg={this.handleOpenAssignOrg}
-							t={this.props.t}
-							accessLevel={this.props.accessLevel}
-						/>
-					</ItemGrid>
-					<ItemGrid xs={12} noMargin>
-						<DeviceData
-							device={device}
-							history={this.props.history}
-							match={this.props.match}
+			<Fragment>
+				
+				<Toolbar
+					noSearch
+					// data={devices}
+					// filters={filters}
+					history={this.props.history}
+					match={this.props.match}
+					// handleFilterKeyword={this.handleFilterKeyword}
+					tabs={this.tabs}
+					content={
+						this.renderMenu()
+						
+					}
+				/>
+				{!loading ?
+					<GridContainer justify={'center'} alignContent={'space-between'}>
+						<AssignDC
+							deviceId={device.id}
+							open={this.state.openAssignCollection}
+							handleClose={this.handleCloseAssign}
+							handleCancel={this.handleCancelAssign}
 							t={this.props.t}
 						/>
-					</ItemGrid>
-					<ItemGrid xs={12} noMargin>
-						<DeviceMap
-							classes={this.props.classes}
-							device={device}
-							weather={this.state.weather}
+						<AssignOrg
+							devices
+							deviceId={[this.state.device]}
+							open={this.state.openAssignOrg}
+							handleClose={this.handleCloseAssignOrg}
 							t={this.props.t}
 						/>
-					</ItemGrid>
-					<ItemGrid xs={12} noMargin>
-						<DeviceImages
-							s={this.props.s}
-							t={this.props.t}
-							device={device} />
-					</ItemGrid>
-					<ItemGrid xs={12} noMargin>
-						<DeviceHardware
-							device={device}
-							history={this.props.history}
-							match={this.props.match}
-							t={this.props.t}
-						/>
-					</ItemGrid>
-				</GridContainer>
-				: this.renderLoader()
+						{device.dataCollection ? this.renderConfirmUnassign() : null}
+						<ItemGrid xs={12} noMargin id={"details"}>
+							<DeviceDetails
+								weather={this.state.weather}
+								device={device}
+								history={this.props.history}
+								match={this.props.match}
+								handleOpenAssign={this.handleOpenAssign}
+								handleOpenUnassign={this.handleOpenUnassign}
+								handleOpenAssignOrg={this.handleOpenAssignOrg}
+								t={this.props.t}
+								accessLevel={this.props.accessLevel}
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12} noMargin id={"data"}>
+							<DeviceData
+								device={device}
+								history={this.props.history}
+								match={this.props.match}
+								t={this.props.t}
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12} noMargin id={"map"}>
+							<DeviceMap
+								classes={this.props.classes}
+								device={device}
+								weather={this.state.weather}
+								t={this.props.t}
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12} noMargin id={"images"}>
+							<DeviceImages
+								s={this.props.s}
+								t={this.props.t}
+								device={device} />
+						</ItemGrid>
+						<ItemGrid xs={12} noMargin id={"hardware"}>
+							<DeviceHardware
+								device={device}
+								history={this.props.history}
+								match={this.props.match}
+								t={this.props.t}
+							/>
+						</ItemGrid>
+					</GridContainer>
+					: this.renderLoader()}
+			</Fragment>
 		)
 	}
 }

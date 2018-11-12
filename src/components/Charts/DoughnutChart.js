@@ -189,7 +189,7 @@ class DoughnutChart extends PureComponent {
 					onElementsClick={this.elementClicked}
 				/>
 				<div ref={r => this.tooltip = r} style={{
-					zIndex: tooltip.show ? 1300 : tooltip.exited ? -1 : 1300,
+					zIndex: tooltip.show ? 1200 : tooltip.exited ? -1 : 1200,
 					position: 'absolute',
 					top: Math.round(this.state.tooltip.top),
 					left: Math.round(this.state.tooltip.left),
