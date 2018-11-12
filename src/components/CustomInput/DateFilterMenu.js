@@ -11,13 +11,11 @@ import moment from 'moment'
 */
 class DateFilterMenu extends Component {
 	constructor(props) {
-	  super(props)
-	
-	  this.state = {
-		  dateFilterInputID: 3,
-		  from: moment().subtract(7, 'd').startOf('day'),
-		  to: moment().endOf('day'),
-	  }
+		super(props)
+
+		this.state = {
+			timeType: 2,
+		}
 	}
 	timeTypes = [
 		{ id: 0, format: "lll", chart: "minute" },
@@ -63,27 +61,22 @@ class DateFilterMenu extends Component {
 				from = moment().subtract(90, 'd').startOf('day')
 				to = moment().endOf('day')
 				break;
+			case 6:
+				from = this.props.from
+				to = this.props.to
+				break;
 			default:
 				break;
 		}
-		this.setState({
-			dateFilterInputID: id,
-			to: to,
-			from: from,
-			loading: true,
-			roundDataSets: null,
-			barDataSets: null
-		}, this.props.handleSetDate(id, to, from))
+		this.props.handleSetDate(id, to, from, this.state.timeType)
 	}
 	handleCustomDate = date => e => {
-		this.setState({
-			[date]: e
-		})
+		this.props.handleCustomDate(date)(e)
 	}
 
 	handleCloseDialog = () => {
 		this.setState({ openCustomDate: false })
-		this.customDisplay()
+		this.handleSetDate(6)
 	}
 	handleDateFilter = (event) => {
 		let id = event.target.value
@@ -91,8 +84,7 @@ class DateFilterMenu extends Component {
 			this.handleSetDate(id)
 		}
 		else {
-			//this.props.handleDateFilter(loading, dateFilterInputID)
-			this.setState({ loading: true, openCustomDate: true, dateFilterInputID: id })
+			this.setState({ openCustomDate: true })
 		}
 	}
 
@@ -106,8 +98,8 @@ class DateFilterMenu extends Component {
 		})
 	}
 	renderCustomDateDialog = () => {
-		const { classes, t } = this.props
-		const { openCustomDate, to, from, timeType } = this.state
+		const { classes, to, from, t } = this.props
+		const { openCustomDate, timeType } = this.state
 		return openCustomDate ? <CustomDateTime
 			openCustomDate={openCustomDate}
 			handleCloseDialog={this.handleCloseDialog}//
@@ -121,10 +113,10 @@ class DateFilterMenu extends Component {
 			classes={classes}
 		/> : null
 	}
+	
 	render() {
-		const { to, from, dateFilterInputID } = this.state
-		const { classes, /* to, from, */ t, /* dateFilterInputID  */} = this.props
-		// const { handleDateFilter } = this.props
+		// const { dateFilterInputID } = this.state
+		const { classes, to, from, t, dateOption  } = this.props
 		let displayTo = dateTimeFormatter(to)
 		let displayFrom = dateTimeFormatter(from)
 		return (<Fragment>
@@ -135,7 +127,7 @@ class DateFilterMenu extends Component {
 				</Hidden>
 				<FormControl className={classes.formControl}>
 					<Select
-						value={dateFilterInputID}
+						value={dateOption}
 						onChange={this.handleDateFilter}
 						inputProps={{
 							name: 'data-dateFilter',
@@ -143,7 +135,7 @@ class DateFilterMenu extends Component {
 						}}
 					>
 						<ItemGrid>
-							<Caption>{this.options[this.options.findIndex(d => d.id === dateFilterInputID ? true : false)].label}</Caption>
+							<Caption>{this.options[this.options.findIndex(d => d.id === dateOption ? true : false)].label}</Caption>
 							<Info>{`${displayFrom} - ${displayTo}`}</Info>
 						</ItemGrid>
 						<Divider />

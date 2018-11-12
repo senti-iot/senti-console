@@ -7,12 +7,12 @@ import {
 import {
 	Timeline, MoreVert,
 	DonutLargeRounded,
-	PieChartRounded, 
-	BarChart as BarChartIcon, 
+	PieChartRounded,
+	BarChart as BarChartIcon,
 	ExpandMore, Visibility, ShowChart, /* CloudDownload */
 } from "variables/icons"
 import {
-	CircularLoader, Caption, ItemG, CustomDateTime, InfoCard, BarChart,
+	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
 	LineChart,
 	DoughnutChart,
 	PieChart,
@@ -39,7 +39,7 @@ class DeviceData extends PureComponent {
 			roundDataSets: null,
 			actionAnchor: null,
 			loading: true,
-			// dateFilterInputID: 3,
+			dateOption: 3,
 			openDownload: false,
 			// openCustomDate: false,
 			display: props.chartType,
@@ -263,14 +263,13 @@ class DeviceData extends PureComponent {
 			color: teal[500]
 		}
 		dataArr.push(dataSet)
-		
+
 		dataArr = dataArr.reduce((newArr, d) => {
 			if (d.data !== null)
 				newArr.push(d)
 			return newArr
 		}, [])
 		this.setState({ dataArr: dataArr, timeType: 2 }, this.setDailyData)
-		// this.setDailyData(dataArr)
 	}
 
 	getWifiSum = async () => {
@@ -310,7 +309,7 @@ class DeviceData extends PureComponent {
 		var canvas = document.getElementsByClassName("chartjs-render-monitor");
 		// console.log(canvas)
 		if (canvas.length > 0) {
-			 this.image = canvas[1].toDataURL("image/png");
+			this.image = canvas[1].toDataURL("image/png");
 			this.setState({ image: this.image })
 			// console.log(this.image)
 		}
@@ -319,7 +318,7 @@ class DeviceData extends PureComponent {
 		this._isMounted = 1
 		if (this._isMounted) {
 			this.handleSwitchVisibility()
-			
+
 		}
 	}
 	componentDidUpdate = async () => {
@@ -338,20 +337,20 @@ class DeviceData extends PureComponent {
 	}
 
 
-	handleSetDate = (id, to, from) => {
-
+	handleSetDate = (id, to, from, timeType) => {
 		this.setState({
-			dateFilterInputID: id,
+			dateOption: id,
 			to: to,
 			from: from,
+			timeType: timeType,
 			loading: true,
+			actionAnchor: null,
 			roundDataSets: null,
 			barDataSets: null
 		}, this.handleSwitchVisibility)
 	}
 	handleSwitchDayHourSummary = () => {
-
-		let id = this.state.dateFilterInputID
+		let id = this.state.dateOption
 		const { to, from } = this.state
 		let diff = moment.duration(to.diff(from)).days()
 		switch (id) {
@@ -374,16 +373,14 @@ class DeviceData extends PureComponent {
 				this.getWifiDaily();
 				break
 			case 6:
-				this.customDisplay()
+				this.handleSetCustomRange()
 				break
 			default:
 				this.getWifiDaily();
 				break;
-
 		}
 	}
 	customSetDisplay = () => {
-
 		const { display, timeType } = this.state
 		if (display !== 0 || display !== 1) {
 			switch (timeType) {
@@ -407,8 +404,7 @@ class DeviceData extends PureComponent {
 			this.setSummaryData()
 		}
 	}
-	customDisplay = () => {
-
+	handleSetCustomRange = () => {
 		const { display, timeType } = this.state
 		if (display !== 0 || display !== 1) {
 			switch (timeType) {
@@ -433,19 +429,13 @@ class DeviceData extends PureComponent {
 		}
 	}
 	handleSwitchVisibility = () => {
-
 		const { display } = this.state
-
 		switch (display) {
 			case 0:
-				this.getWifiSum()
-				break;
 			case 1:
 				this.getWifiSum()
-				break
+				break;
 			case 2:
-				this.handleSwitchDayHourSummary()
-				break
 			case 3:
 				this.handleSwitchDayHourSummary()
 				break
@@ -456,20 +446,9 @@ class DeviceData extends PureComponent {
 	handleVisibility = id => (event) => {
 		if (event)
 			event.preventDefault()
-		// 
-		// let id = event.target.value
 		this.setState({ display: id, loading: true, actionAnchorVisibility: null }, this.handleSwitchVisibility)
 	}
 
-	handleDateFilter = (event) => {
-		let id = event.target.value
-		if (id !== 6) {
-			this.handleSetDate(id)
-		}
-		else {
-			this.setState({ loading: true, openCustomDate: true, dateFilterInputID: id })
-		}
-	}
 
 	handleCustomDate = date => e => {
 		this.setState({
@@ -477,10 +456,10 @@ class DeviceData extends PureComponent {
 		})
 	}
 
-	handleCloseDialog = () => {
-		this.setState({ openCustomDate: false })
-		this.customDisplay()
-	}
+	// handleCloseDialog = () => {
+	// 	this.setState({ openCustomDate: false })
+	// 	this.customDisplay()
+	// }
 
 	handleRawData = () => {
 		this.setState({ loading: true, actionAnchor: null, raw: !this.state.raw }, () => this.handleSwitchVisibility())
@@ -501,7 +480,7 @@ class DeviceData extends PureComponent {
 						this.setState({
 							from: startDate,
 							to: endDate,
-							dateFilterInputID: 6
+							dateOption: 6
 						}, await this.getWifiMinutely)
 						break
 					case 2:
@@ -510,7 +489,7 @@ class DeviceData extends PureComponent {
 						this.setState({
 							from: startDate,
 							to: endDate,
-							dateFilterInputID: 6
+							dateOption: 6
 						}, await this.getWifiHourly)
 						break;
 					default:
@@ -529,28 +508,28 @@ class DeviceData extends PureComponent {
 			loading: false, openCustomDate: false
 		})
 	}
-	handleOpenDownloadModal= () => {
+	handleOpenDownloadModal = () => {
 		this.setState({ openDownload: true, actionAnchor: null })
 	}
 	handleCloseDownloadModal = () => {
 		this.setState({ openDownload: false })
 	}
-	renderCustomDateDialog = () => {
-		const { classes, t } = this.props
-		const { openCustomDate, to, from, timeType } = this.state
-		return openCustomDate ? <CustomDateTime
-			openCustomDate={openCustomDate}
-			handleCloseDialog={this.handleCloseDialog}//
-			handleCustomDate={this.handleCustomDate}
-			to={to}
-			from={from}
-			timeType={timeType}
-			handleCustomCheckBox={this.handleCustomCheckBox}//
-			handleCancelCustomDate={this.handleCancelCustomDate}//
-			t={t}
-			classes={classes}
-		/> : null
-	}
+	// renderCustomDateDialog = () => {
+	// 	const { classes, t } = this.props
+	// 	const { openCustomDate, to, from, timeType } = this.state
+	// 	return openCustomDate ? <CustomDateTime
+	// 		openCustomDate={openCustomDate}
+	// 		handleCloseDialog={this.handleCloseDialog}//
+	// 		handleCustomDate={this.handleCustomDate}
+	// 		to={to}
+	// 		from={from}
+	// 		timeType={timeType}
+	// 		handleCustomCheckBox={this.handleCustomCheckBox}//
+	// 		handleCancelCustomDate={this.handleCancelCustomDate}//
+	// 		t={t}
+	// 		classes={classes}
+	// 	/> : null
+	// }
 	renderType = () => {
 		const { display } = this.state
 		// const { t } = this.props
@@ -607,16 +586,18 @@ class DeviceData extends PureComponent {
 				break;
 		}
 	}
+
 	renderDateFilter = () => {
 		const { classes, t } = this.props
-		const { dateFilterInputID, to, from } = this.state
+		const { dateOption, to, from } = this.state
 		return <DateFilterMenu
+			dateOption={dateOption}
 			classes={classes}
-			t={t}
-			dateFilterInputID={dateFilterInputID}
-			from={from}
 			to={to}
+			from={from}
+			t={t}
 			handleSetDate={this.handleSetDate}
+			handleCustomDate={this.handleCustomDate}
 		/>
 	}
 	renderMenu = () => {
@@ -744,7 +725,7 @@ class DeviceData extends PureComponent {
 					avatar={<Timeline />}
 					noExpand
 					// noPadding
-					topAction={noData ? null : this.renderMenu()}
+					topAction={this.renderMenu()}
 					content={
 						<Grid container>
 							<ExportModal
@@ -753,7 +734,7 @@ class DeviceData extends PureComponent {
 								handleClose={this.handleCloseDownloadModal}
 								t={t}
 							/>
-							{this.renderCustomDateDialog()}
+							{/* {this.renderCustomDateDialog()} */}
 							{loading ? <CircularLoader notCentered /> :
 								<Fragment>
 									<ItemG xs={12}>
