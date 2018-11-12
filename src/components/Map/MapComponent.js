@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import MarkerWithInfo from './MarkerWithInfo';
-import { GoogleMap/*,  Circle */ } from 'react-google-maps';
+import { GoogleMap,  Circle  } from 'react-google-maps';
 import MarkerClusterer from "react-google-maps/lib/components/addons/MarkerClusterer";
 // import { colors } from 'variables/colors';
 import { connect } from 'react-redux'
+import { colors } from 'variables/colors';
 
 class MapComponent extends Component {
 	constructor(props) {
@@ -43,6 +44,7 @@ class MapComponent extends Component {
 		return hArr
 	}
 	render() {
+		console.log(this.props.heatMap)
 		let props = this.props
 		let defaultLat = parseFloat(56.2639) //Denmark,
 		let defaultLng = parseFloat(9.5018) //Denmark
@@ -52,8 +54,9 @@ class MapComponent extends Component {
 			ref={this.map}
 			onTilesLoaded={() => this.setCenterAndZoom()}
 		>
-			{/* {this.createHeatmapLayerPoints().map((d, i) => {
+			{this.props.heatMap ? this.createHeatmapLayerPoints().map((d, i) => {
 				return <Circle
+					key={i}
 					id={i}
 					options={{
 						fillColor: colors[i],
@@ -62,8 +65,8 @@ class MapComponent extends Component {
 					defaultCenter={d.location}
 					radius={d.weight}
 				/>
-			})} */}
-			{/* <HeatmapLayer data={this.createHeatmapLayerPoints()}/> */}
+			}) : null}
+			{/* {this.props.heatMap ? <HeatmapLayer data={this.createHeatmapLayerPoints()} /> : null} */}
 			<MarkerClusterer
 				onClick={this.onMarkerClustererClick}
 				averageCenter

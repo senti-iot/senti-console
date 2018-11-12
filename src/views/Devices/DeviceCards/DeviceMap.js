@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { InfoCard, Caption, Dropdown } from 'components';
 import { Map } from 'variables/icons'
-import { Grid } from '@material-ui/core';
+import { Grid, Checkbox } from '@material-ui/core';
 import { Maps } from 'components/Map/Maps';
 
 export default class DeviceMap extends Component {
@@ -14,10 +14,10 @@ export default class DeviceMap extends Component {
 	}
 	
 	renderMenu = () => {
-		const { classes, t } = this.props
+		const { t } = this.props
 		return <Dropdown menuItems={
 			[
-				{ label: t("actions.heatMap"), icon: <Map className={classes.leftIcon} />, func: () => this.setState({ heatMap: !this.state.heatMap }) },
+				{ label: t("actions.heatMap"), icon: <Checkbox checked={this.state.heatMap}/>, func: () => this.setState({ heatMap: !this.state.heatMap }) },
 			]
 		} />
 	}
@@ -26,12 +26,12 @@ export default class DeviceMap extends Component {
 		return (
 			<InfoCard
 				title={t("devices.cards.map")}
-				subheader={t("devices.fields.coordsW", { lat: device.lat, long: device.long })}
+				subheader={`${t("devices.fields.coordsW", { lat: device.lat, long: device.long })}, Heatmap ${this.state.heatMap ? "ON" : "OFF"}`}
 				avatar={<Map />}
-				topAction={this.renderMenu()}
+				topAction={device.lat && device.long ? this.renderMenu() : null}
 				hiddenContent={
 					<Grid container justify={'center'}>
-						{device.lat && device.long ? <Maps t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t("devices.notCalibrated")}</Caption>}
+						{device.lat && device.long ? <Maps heatMap={this.state.heatMap} t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t("devices.notCalibrated")}</Caption>}
 						
 					</Grid>
 				} />

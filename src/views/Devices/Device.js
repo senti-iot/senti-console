@@ -294,6 +294,7 @@ class Device extends Component {
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin>
 						<DeviceMap
+							classes={this.props.classes}
 							device={device}
 							weather={this.state.weather}
 							t={this.props.t}
