@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react'
-import { AppBar, Tabs, Tab, withStyles } from '@material-ui/core';
+import { AppBar, Tabs, Tab, withStyles, Toolbar as ToolBar } from '@material-ui/core';
 import Search from 'components/Search/Search';
 import { suggestionGen } from 'variables/functions'
 import { NavHashLink as Link } from 'react-router-hash-link';
@@ -15,6 +15,15 @@ const styles = theme => ({
 		minHeight: 48,
 		height: 48,
 		zIndex: 1300
+	},
+	contentToolbar: { 
+		display: 'flex',
+		flexFlow: "row",
+		justifyContent: 'space-between',
+		height: 41,
+		minHeight: 41,
+		maxHeight: 41,
+		padding: 0,
 	},
 	noOverflow: {
 		overflow: 'visible'
@@ -39,26 +48,32 @@ class Toolbar extends Component {
 				{tabs ? <Tabs value={this.state.route} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 					{tabs ? tabs.map((t, i) => {
 						return <Tab title={t.title}
-							component={(props) => <Link {...props} scroll={el => el.scrollIntoView({ behavior: 'smooth', block: 'center' })} style={{ color: "#fff" }}/>}
+							component={(props) => <Link {...props} scroll={el => {
+								let topOfElement = el.offsetTop - 130
+								let container = document.getElementById('container')
+								container.scroll({ top: topOfElement, behavior: 'smooth' })
+							}
+							} style={{ color: "#fff" }} />}
 							id={t.id}
 							key={i}
 							smooth
 							label={t.label}
 							to={`${t.url}`} />
 					}) : null}
-				
-					{content}
+					{/* <ToolBar classes={{ root: classes.appBar }}>
+						{content}
+					</ToolBar> */}
 				</Tabs> : null}
 				{noSearch ? null : <Search
 					right
 					suggestions={data ? suggestionGen(data) : []}
 					handleFilterKeyword={handleFilterKeyword}
 					searchValue={filters.keyword} />}
-				{/* {
-					content ? <ToolBar classes={{ root: classes.appBar }}>
+				{
+					<ToolBar classes={{ root: classes.contentToolbar }}>
 						{content}
-					</ToolBar> : null
-				} */}
+					</ToolBar>
+				}
 			</AppBar>
 		)
 	}

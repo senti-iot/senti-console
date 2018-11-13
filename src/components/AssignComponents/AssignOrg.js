@@ -77,91 +77,91 @@ class AssignOrg extends React.Component {
 			[" " + classes['primary']]: 'primary'
 		});
 		return (
-			<div>
-				<Dialog
-					fullScreen
-					open={open}
-					onClose={this.handleClose}
-					TransitionComponent={Transition}
-				>
-					<AppBar className={classes.appBar + appBarClasses}>
-						<Toolbar>
-							<Hidden mdDown>
-								<ItemG container alignItems={'center'}>
-									<ItemG xs={2} container alignItems={'center'}>
-										<IconButton color="inherit" onClick={this.closeDialog} aria-label="Close">
-											<Close />
-										</IconButton>
-										<Typography variant="h6" color="inherit" className={classes.flex}>
-											{t("orgs.pageTitle")}
-										</Typography>
-									</ItemG>
-									<ItemG xs={8}>
-										<Search
-											fullWidth
-											open={true}
-											focusOnMount
-											suggestions={orgs ? suggestionGen(orgs) : []}
-											handleFilterKeyword={this.handleFilterKeyword}
-											searchValue={filters.keyword} />
-									</ItemG>
-									<ItemG xs={2}>
-										<Button color="inherit" onClick={this.assignOrg}>
-											{t("actions.save")}
-										</Button>
-									</ItemG>
+			
+			<Dialog
+				fullScreen
+				open={open}
+				onClose={this.handleClose}
+				TransitionComponent={Transition}
+			>
+				<AppBar className={classes.appBar + appBarClasses}>
+					<Toolbar>
+						<Hidden mdDown>
+							<ItemG container alignItems={'center'}>
+								<ItemG xs={2} container alignItems={'center'}>
+									<IconButton color="inherit" onClick={this.closeDialog} aria-label="Close">
+										<Close />
+									</IconButton>
+									<Typography variant="h6" color="inherit" className={classes.flex}>
+										{t("orgs.pageTitle")}
+									</Typography>
 								</ItemG>
-							</Hidden>
-							<Hidden lgUp>
-								<ItemG container alignItems={'center'}>
-									<ItemG xs={12} container alignItems={'center'}>
-										<IconButton color={'inherit'} onClick={this.closeDialog} aria-label="Close">
-											<Close />
-										</IconButton>
-										<Typography variant="h6" color="inherit" className={classes.flex}>
-											{t("orgs.pageTitle")}
-										</Typography>
-										<Button variant={'contained'} color="primary" onClick={this.assignOrg}>
-											{t("actions.save")}
-										</Button>
-									</ItemG>
-									<ItemG xs={12} container alignItems={'center'} justify={'center'}>
-										<Search
-											noAbsolute
-											fullWidth
-											open={true}
-											focusOnMount
-											suggestions={orgs ? suggestionGen(orgs) : []}
-											handleFilterKeyword={this.handleFilterKeyword}
-											searchValue={filters.keyword} />
-									</ItemG>
+								<ItemG xs={8}>
+									<Search
+										fullWidth
+										open={true}
+										focusOnMount
+										suggestions={orgs ? suggestionGen(orgs) : []}
+										handleFilterKeyword={this.handleFilterKeyword}
+										searchValue={filters.keyword} />
 								</ItemG>
-							</Hidden>
-						</Toolbar>
-					</AppBar>
-					<List>
-						{orgs ? filterItems(orgs, filters).map((p, i) => (
-							<Fragment key={i}>
-								<ListItem button onClick={this.selectOrg(p.id)} value={p.id}
-									classes={{
-										root: this.state.selectedOrg === p.id ? classes.selectedItem : null
-									}}
-								>
-									<ListItemText primaryTypographyProps={{
-										className: this.state.selectedOrg === p.id ? classes.selectedItemText : null
-									}}
-									secondaryTypographyProps={{
-										classes: { root: this.state.selectedOrg === p.id ? classes.selectedItemText : null }
-									}}
-									primary={p.name} /* secondary={p.user.organisation} */ />
-								</ListItem>
-								<Divider />
-							</Fragment>
-						)
-						) : <CircularLoader />}
-					</List>
-				</Dialog>
-			</div>
+								<ItemG xs={2}>
+									<Button color="inherit" onClick={this.assignOrg}>
+										{t("actions.save")}
+									</Button>
+								</ItemG>
+							</ItemG>
+						</Hidden>
+						<Hidden lgUp>
+							<ItemG container alignItems={'center'}>
+								<ItemG xs={12} container alignItems={'center'}>
+									<IconButton color={'inherit'} onClick={this.closeDialog} aria-label="Close">
+										<Close />
+									</IconButton>
+									<Typography variant="h6" color="inherit" className={classes.flex}>
+										{t("orgs.pageTitle")}
+									</Typography>
+									<Button variant={'contained'} color="primary" onClick={this.assignOrg}>
+										{t("actions.save")}
+									</Button>
+								</ItemG>
+								<ItemG xs={12} container alignItems={'center'} justify={'center'}>
+									<Search
+										noAbsolute
+										fullWidth
+										open={true}
+										focusOnMount
+										suggestions={orgs ? suggestionGen(orgs) : []}
+										handleFilterKeyword={this.handleFilterKeyword}
+										searchValue={filters.keyword} />
+								</ItemG>
+							</ItemG>
+						</Hidden>
+					</Toolbar>
+				</AppBar>
+				<List>
+					{orgs ? filterItems(orgs, filters).map((p, i) => (
+						<Fragment key={i}>
+							<ListItem button onClick={this.selectOrg(p.id)} value={p.id}
+								classes={{
+									root: this.state.selectedOrg === p.id ? classes.selectedItem : null
+								}}
+							>
+								<ListItemText primaryTypographyProps={{
+									className: this.state.selectedOrg === p.id ? classes.selectedItemText : null
+								}}
+								secondaryTypographyProps={{
+									classes: { root: this.state.selectedOrg === p.id ? classes.selectedItemText : null }
+								}}
+								primary={p.name} /* secondary={p.user.organisation} */ />
+							</ListItem>
+							<Divider />
+						</Fragment>
+					)
+					) : <CircularLoader />}
+				</List>
+			</Dialog>
+		
 		);
 	}
 }

@@ -122,7 +122,7 @@ class App extends React.Component {
 							{...rest}
 						/>
 						{!loading ? <Fragment>
-							<div className={classes.container}>
+							<div className={classes.container} id={'container'}>
 								<Switch>
 									{cookie.load('SESSION') ?
 										dashboardRoutes.map((prop, key) => {
