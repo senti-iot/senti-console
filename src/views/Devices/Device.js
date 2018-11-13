@@ -534,7 +534,8 @@ class Device extends Component {
 							/>
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id={"data"}>
-							{!loadingData ? <DeviceData
+							<DeviceData
+								loading={loadingData}
 								dataArr={this.state.dataArr}
 								timeType={this.state.timeType}
 								from={this.state.from}
@@ -543,7 +544,7 @@ class Device extends Component {
 								history={this.props.history}
 								match={this.props.match}
 								t={this.props.t}
-							/> : this.renderLoader()}
+							/>
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id={"map"}>
 							<DeviceMap

@@ -542,8 +542,8 @@ class DeviceData extends PureComponent {
 	}
 
 	render() {
-		const { t, classes } = this.props
-		const { loading, noData, raw, openDownload } = this.state
+		const { t, classes, loading, dataArr } = this.props
+		const { raw, openDownload } = this.state
 		return (
 			<Fragment>
 				<InfoCard
@@ -565,7 +565,7 @@ class DeviceData extends PureComponent {
 								<Fragment>
 									<ItemG xs={12}>
 										<Caption className={classes.bigCaption2}>{raw ? t("collections.rawData") : t("collections.calibratedData")}</Caption>
-										{noData ? this.renderNoData() : this.renderType()}
+										{dataArr.length > 0 ? this.renderType() : this.renderNoData() }
 									</ItemG>
 									{/* {this.props.hoverID} */}
 									{/* <img src={this.state.image} alt={'not loaded'}/> */}
