@@ -43,12 +43,36 @@ class LineChart extends PureComponent {
 				scales: {
 					xAxes: [
 						{
-							// id: "xAxis",
+							ticks: {
+								source: "labels",
+							},
+							id: "xAxis",
 							type: 'time',
 							time: {
 								displayFormats: {
 									hour: "LT",
 									day: 'll',
+									minute: 'LT'
+								},
+								unit: props.unit.chart,
+								tooltipFormat: props.unit.format
+							},
+						},
+						{
+							display: props.unit.chart === 'day' ? true : false,
+							ticks: {
+								source: "labels",
+							},
+							gridLines: {
+								drawBorder: false,
+								drawTicks: false,
+							},
+							id: "xAxis-day",
+							type: 'time',
+							time: {
+								displayFormats: {
+									hour: "LT",
+									day: 'dddd',
 									minute: 'LT'
 								},
 								unit: props.unit.chart,
@@ -145,11 +169,13 @@ class LineChart extends PureComponent {
 		if (!this.clickEvent()) { 
 			left = this.state.chartWidth / 2
 		}
-		// let deviceWeather = getWeather(device).then(rs => rs)
+		let str = tooltipModel.title[0]
+		var rest = str.substring(0, str.lastIndexOf(" ") + 1);
+		var last = str.substring(str.lastIndexOf(" ") + 1, str.length);
 		this.setTooltip({
 			top,
 			left,
-			title: tooltipModel.title,
+			title: [rest, last],
 			data: tooltipModel.dataPoints.map((d, i) => ({
 				device: tooltipModel.body[i].lines[0].split(':')[0], count: d.yLabel, color: tooltipModel.labelColors[i].backgroundColor
 			}))
@@ -161,19 +187,20 @@ class LineChart extends PureComponent {
 				...this.state.lineOptions,
 				scales: {
 					...this.state.lineOptions.scales,
-					xAxes: [{
-						// id: "day",
-						type: 'time',
-						time: {
-							displayFormats: {
-								hour: 'LT',
-								day: 'll',
-								minute: 'LT'
+					xAxes: [...this.state.lineOptions.scales.xAxes,
+						{
+							id: "xAxis",
+							type: 'time',
+							time: {
+								displayFormats: {
+									hour: 'LT',
+									day: 'll dddd',
+									minute: 'LT'
+								},
+								unit: this.props.unit.chart,
+								tooltipFormat: this.props.unit.format
 							},
-							unit: this.props.unit.chart,
-							tooltipFormat: this.props.unit.format
-						},
-					}]
+						}]
 				}
 			}
 		}, this.chart.chartInstance.update())
@@ -275,7 +302,7 @@ class LineChart extends PureComponent {
 							<ItemG container>
 								<ItemG container direction="row"
 									justify="space-between">
-									<Typography variant={'h6'} classes={{ root: classes.antialias }} >{this.state.tooltip.title}</Typography>
+									<Typography variant={'h6'} classes={{ root: classes.antialias }} >{`${tooltip.title[1]} (${tooltip.title[0]})`}</Typography>
 									{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : <CircularProgress size={37} />}
 								</ItemG>
 								 <ItemG>

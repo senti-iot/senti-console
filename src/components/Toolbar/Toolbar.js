@@ -24,6 +24,7 @@ const styles = theme => ({
 		minHeight: 41,
 		maxHeight: 41,
 		padding: 0,
+		marginRight: 8
 	},
 	noOverflow: {
 		overflow: 'visible'

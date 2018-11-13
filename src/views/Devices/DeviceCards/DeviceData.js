@@ -92,6 +92,7 @@ class DeviceData extends PureComponent {
 	}
 	setDailyData = () => {
 		const { dataArr, from, to } = this.props
+		console.log(datesToArr(from, to))
 		this.setState({
 			loading: false,
 			timeType: 2,
@@ -287,9 +288,9 @@ class DeviceData extends PureComponent {
 	// 	this.customDisplay()
 	// }
 
-	handleRawData = () => {
-		this.setState({ loading: true, actionAnchor: null, raw: !this.state.raw }, () => this.handleSwitchVisibility())
-	}
+	// handleRawData = () => {
+	// 	this.setState({ loading: true, actionAnchor: null, raw: !this.state.raw }, () => this.handleSwitchVisibility())
+	// }
 
 	handleZoomOnData = async (elements) => {
 		if (elements.length > 0) {
@@ -491,10 +492,10 @@ class DeviceData extends PureComponent {
 					<ListItemIcon><CloudDownload /></ListItemIcon>
 					<ListItemText>{t("data.download")}</ListItemText>
 				</ListItem> */}
-				<ListItem button onClick={() => this.handleRawData()}>
+				<ListItem button onClick={this.props.handleRawData}>
 					<ListItemIcon>
 						<Checkbox
-							checked={this.state.raw}
+							checked={this.props.raw}
 							// disabled
 							className={classes.noPadding}
 						/>
@@ -538,8 +539,8 @@ class DeviceData extends PureComponent {
 	}
 
 	render() {
-		const { t, classes, loading, dataArr, to, from } = this.props
-		const { raw, openDownload } = this.state
+		const { raw, t, classes, loading, dataArr, to, from } = this.props
+		const {  openDownload } = this.state
 		let displayTo = dateTimeFormatter(to)
 		let displayFrom = dateTimeFormatter(from)
 		return (

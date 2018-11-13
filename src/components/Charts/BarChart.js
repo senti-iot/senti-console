@@ -45,7 +45,7 @@ class BarChart extends PureComponent {
 					xAxes: [
 						{
 							offset: true,
-							id: 'day',
+							id: "xAxis",
 							type: 'time',
 							time: {
 								displayFormats: {
@@ -59,13 +59,30 @@ class BarChart extends PureComponent {
 							gridLines: {
 								offsetGridLines: true
 							}
+						},
+						{
+							display: props.unit.chart === 'day' ? true : false,
+							offset: true,
+							ticks: {
+								source: "labels",
+							},
+							gridLines: {
+								offsetGridLines: true,
+								drawBorder: false,
+								drawTicks: false,
+							},
+							id: "xAxis-day",
+							type: 'time',
+							time: {
+								displayFormats: {
+									hour: "LT",
+									day: 'dddd',
+									minute: 'LT'
+								},
+								unit: props.unit.chart,
+								tooltipFormat: props.unit.format
+							},
 						}],
-					// yAxes: [{
-					// 	scaleLabel: {
-					// 		display: true,
-					// 		labelString: 'value'
-					// 	}
-					// }]
 				}
 			}
 		}
@@ -112,12 +129,16 @@ class BarChart extends PureComponent {
 			this.hideTooltip()
 			return
 		}
+		// console.log(tooltipModel)
+		// console.log(this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x)
+		// let weatherData = null
 		let wDate = null
 		try {
 			let lat = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].lat
 			let long = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].long
+			// console.log(lat, long)
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
-			if (this.state.weatherDate !== wDate && lat !== this.state.lat && long !== this.state.long) {
+			if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long)) {
 				this.setState({ weather: null })
 				getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then(rs => {
 					this.setState({
@@ -134,14 +155,18 @@ class BarChart extends PureComponent {
 		catch (err) {
 			// console.log(err)
 		}
-
-		const left = tooltipModel.caretX;
-		const top = tooltipModel.caretY;
-		// let deviceWeather = getWeather(device).then(rs => rs)
+		let left = tooltipModel.caretX;
+		let top = this.state.chartHeight / 2;
+		if (!this.clickEvent()) {
+			left = this.state.chartWidth / 2
+		}
+		let str = tooltipModel.title[0]
+		var rest = str.substring(0, str.lastIndexOf(" ") + 1);
+		var last = str.substring(str.lastIndexOf(" ") + 1, str.length);
 		this.setTooltip({
 			top,
 			left,
-			title: tooltipModel.title,
+			title: [rest, last],
 			data: tooltipModel.dataPoints.map((d, i) => ({
 				device: tooltipModel.body[i].lines[0].split(':')[0], count: d.yLabel, color: tooltipModel.labelColors[i].backgroundColor
 			}))
@@ -153,19 +178,20 @@ class BarChart extends PureComponent {
 				...this.state.lineOptions,
 				scales: {
 					...this.state.lineOptions.scales,
-					xAxes: [{
-						// id: "day",
-						type: 'time',
-						time: {
-							displayFormats: {
-								hour: 'LT',
-								day: 'll',
-								minute: 'LT'
+					xAxes: [...this.state.lineOptions.scales.xAxes,
+						{
+							id: "xAxis",
+							type: 'time',
+							time: {
+								displayFormats: {
+									hour: 'LT',
+									day: 'll',
+									minute: 'LT'
+								},
+								unit: this.props.unit.chart,
+								tooltipFormat: this.props.unit.format
 							},
-							unit: this.props.unit.chart,
-							tooltipFormat: this.props.unit.format
-						},
-					}]
+						}]
 				}
 			}
 		}, this.chart.chartInstance.update())
@@ -208,33 +234,21 @@ class BarChart extends PureComponent {
 		return !single ? () => this.props.setHoverID(0) : undefined
 	}
 	transformLoc = () => {
-		const { tooltip, chartWidth, chartHeight, mobile } = this.state
+		const { tooltip, chartWidth, chartHeight } = this.state
 		let x = 0
 		let y = 0
-		if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
-			x = '-25%'
-			y = '-125%'
-		}
-		if (tooltip.left < (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
-			x = '-25%'
-			y = '-125%'
-		}
-		if (tooltip.left > (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
-			x = '-80%'
-			y = '-125%'
-		}
-		if (tooltip.left > (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
-			x = '-80%'
-			y = '-125%'
-		}
-		if (tooltip.left > ((chartWidth / 4) * 3)) {
-			x = '-90%'
-		}
-		if (tooltip.left < chartWidth / 4) {
-			x = '0%'
-		}
-		if (mobile)
+		if (!this.clickEvent()) {
 			x = '-50%'
+			y = tooltip.top < (chartHeight / 2) ? '25%' : '-125%'
+			return `translate(${x}, ${y})`
+		}
+		y = '-50%'
+		if (tooltip.left < (chartWidth / 2)) {
+			x = '25%'
+		}
+		if (tooltip.left > (chartWidth / 2)) {
+			x = '-125%'
+		}
 		return `translate(${x}, ${y})`
 	}
 	render() {
@@ -264,7 +278,7 @@ class BarChart extends PureComponent {
 							<ItemG container>
 								<ItemG container direction="row"
 									justify="space-between">
-									<Typography variant={'h6'} classes={{ root: classes.antialias }} >{this.state.tooltip.title}</Typography>
+									<Typography variant={'h6'} classes={{ root: classes.antialias }} >{`${tooltip.title[1]} (${tooltip.title[0]})`}</Typography>
 									{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : <CircularProgress size={37} />}
 								</ItemG>
 								<ItemG>

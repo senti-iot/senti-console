@@ -109,8 +109,17 @@ class Device extends Component {
 			this.props.history.push('/404')
 		}
 	}
+
+	//
+	/**
+	 * This is the callback from the Date Filter
+	 * @function
+	 * @param id Date Option id (Today, yesterday, 7 days...)
+	 * @param to Date end Date
+	 * @param from Date 
+	 * @param timeType 
+	 */
 	handleSetDate = (id, to, from, timeType) => {
-		console.log(timeType)
 		this.setState({
 			dateOption: id,
 			to: to,
@@ -164,7 +173,6 @@ class Device extends Component {
 		const { timeType } = this.state
 		switch (timeType) {
 			case 0:
-				console.log('handleSetCustomRange', timeType)
 				this.getWifiMinutely()
 				break;
 			case 1:
@@ -510,6 +518,10 @@ class Device extends Component {
 		{ id: 2, title: "", label: <Map />, url: `#map` },
 		{ id: 3, title: "", label: <DeveloperBoard />, url: `#hardware` }
 	]
+	handleRawData = () => {
+		this.setState({ loadingData: true, actionAnchor: null, raw: !this.state.raw }, () => this.handleSwitchDayHourSummary())
+	}
+
 	render() {
 		const { device, loading, loadingData } = this.state
 		console.log(this.state.timeType)
@@ -561,6 +573,7 @@ class Device extends Component {
 								from={this.state.from}
 								to={this.state.to}
 								device={device}
+								handleRawData={this.handleRawData}
 								history={this.props.history}
 								match={this.props.match}
 								t={this.props.t}
