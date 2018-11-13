@@ -32,8 +32,13 @@ deploy:
 language: node_js
 node_js: 
   - stable
-notifications: 
-  email: true
+notifications:
+  email:
+    recipients:
+      - at@webhouse.dk
+      #- other@example.com
+    on_success: never # default: change
+    on_failure: always # default: always
   slack: "webhouseteam:82qu1PX5R5wkYNCW5x6fVlhu"
 script: 
   - "npm run-script build"
