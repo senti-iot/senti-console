@@ -12,6 +12,7 @@ import { connect } from 'react-redux'
 class LineChart extends PureComponent {
 	constructor(props) {
 		super(props)
+		console.log("props.unit", props.unit)
 		this.state = {
 			weatherDate: null,
 			tooltip: {
@@ -223,8 +224,6 @@ class LineChart extends PureComponent {
 			y = tooltip.top < (chartHeight / 2) ? '25%' : '-125%'
 			return `translate(${x}, ${y})`
 		}
-
-		console.log(x, y)
 		if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
 			x = '-25%'
 			y = '25%'

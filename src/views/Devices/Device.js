@@ -110,6 +110,7 @@ class Device extends Component {
 		}
 	}
 	handleSetDate = (id, to, from, timeType) => {
+		console.log(timeType)
 		this.setState({
 			dateOption: id,
 			to: to,
@@ -153,7 +154,32 @@ class Device extends Component {
 				break;
 		}
 	}
+	handleCustomDate = date => e => {
+		this.setState({
+			[date]: e
+		})
+	}
 
+	handleSetCustomRange = () => {
+		const { timeType } = this.state
+		switch (timeType) {
+			case 0:
+				console.log('handleSetCustomRange', timeType)
+				this.getWifiMinutely()
+				break;
+			case 1:
+				this.getWifiHourly()
+				break
+			case 2:
+				this.getWifiDaily()
+				break
+			case 3:
+				this.getWifiSum()
+				break
+			default:
+				break;
+		}
+	}
 	getWifiHourly = async () => {
 		// const { device } = this.props
 		const { from, to, raw, device } = this.state
@@ -210,7 +236,7 @@ class Device extends Component {
 			dataArr: dataArr,
 			loadingData: false,
 			timeType: 0
-		}, this.setMinutelyData)
+		})
 		// this.setDailyData(dataArr)
 	}
 	getWifiDaily = async () => {
@@ -240,9 +266,8 @@ class Device extends Component {
 			dataArr: dataArr,
 			loadingData: false,
 			timeType: 2
-		}, this.setDailyData)
+		})
 	}
-
 	getWifiSum = async () => {
 		// const { device } = this.props
 		const { from, to, raw, device } = this.state
@@ -493,6 +518,7 @@ class Device extends Component {
 	]
 	render() {
 		const { device, loading, loadingData } = this.state
+		console.log(this.state.timeType)
 		return (
 			<Fragment>
 				
