@@ -66,11 +66,14 @@ class DeviceData extends PureComponent {
 	]
 
 	componentDidUpdate = (prevProps) => {
-		if (prevProps.hoverID !== this.props.hoverID)
+		console.log(prevProps)
+		if (prevProps.loading === true && (prevProps.loading !== this.props.loading))
 			this.customSetDisplay()
+		if (prevProps.hoverID !== this.props.hoverID)
+			return this.props.loading ? null : this.customSetDisplay()
 	}
 	setSummaryData = () => {
-		const { dataArr, from, to } = this.state
+		const { dataArr, from, to } = this.props
 		let displayTo = dateTimeFormatter(to)
 		let displayFrom = dateTimeFormatter(from)
 		this.setState({
@@ -207,12 +210,8 @@ class DeviceData extends PureComponent {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		if (this._isMounted) {
-			this.handleSwitchVisibility()
-
+			return this.props.loading ? null : this.customSetDisplay()
 		}
-	}
-	componentDidUpdate = async () => {
-		// this.getImage()
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
@@ -539,8 +538,10 @@ class DeviceData extends PureComponent {
 	}
 
 	render() {
-		const { t, classes, loading, dataArr } = this.props
+		const { t, classes, loading, dataArr, to, from } = this.props
 		const { raw, openDownload } = this.state
+		let displayTo = dateTimeFormatter(to)
+		let displayFrom = dateTimeFormatter(from)
 		return (
 			<Fragment>
 				<InfoCard
@@ -557,11 +558,13 @@ class DeviceData extends PureComponent {
 								handleClose={this.handleCloseDownloadModal}
 								t={t}
 							/>
-							{/* {this.renderCustomDateDialog()} */}
 							{loading ? <CircularLoader notCentered /> :
 								<Fragment>
-									<ItemG xs={12}>
+									<ItemG xs={12} container direction={'column'} alignItems={'center'} justify={'center'}>
 										<Caption className={classes.bigCaption2}>{raw ? t("collections.rawData") : t("collections.calibratedData")}</Caption>
+										<Caption className={classes.captionPading}>{`${displayFrom} - ${displayTo}`}</Caption>
+									</ItemG>
+									<ItemG xs={12}>
 										{dataArr.length > 0 ? this.renderType() : this.renderNoData() }
 									</ItemG>
 									{/* {this.props.hoverID} */}
@@ -570,17 +573,12 @@ class DeviceData extends PureComponent {
 								</Fragment>}
 						</Grid>}
 				/>
-				{/* <img src={this.state.image} alt='NOPE' width={1025}/> */}
 				<div style={{ position: 'absolute', top: "-100%", width: 1000, height: 400 }}>
 					{this.state.lineDataSets ?
 						<LineChart
-							// hoverID={this.props.hoverID}
 							single
 							getImage={this.getImage}
-							// obj={this.props.device}
 							unit={this.timeTypes[this.state.timeType]}
-							// onElementsClick={this.handleZoomOnData}
-							// setHoverID={this.props.setHoverID}
 							data={this.state.lineDataSets}
 							t={this.props.t}
 						/> : this.renderNoData()}

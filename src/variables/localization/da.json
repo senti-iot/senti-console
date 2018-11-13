@@ -270,13 +270,13 @@
 				"users": "Slet brugere?"
 			},
 			"message": {
-				"collection": "Er du sikker på du ønsker at slette denne datasamling ( %{collection} )?",
+				"collection": "Er du sikker på du ønsker at slette denne datasamling ( %{collection} )",
 				"collections": "Er du sikker på du ønsker at slette disse datasamlinger:",
-				"project": "Er du sikker på du ønsker at slette dette projekt ( %{project} )?",
+				"project": "Er du sikker på du ønsker at slette dette projekt ( %{project} )",
 				"projects": "Er du sikker på du ønsker at slette disse projekter:",
-				"org": "Er du sikker på du ønsker at slette denne organisation ( %{org} )?",
+				"org": "Er du sikker på du ønsker at slette denne organisation ( %{org} )",
 				"orgs": "Er du sikker på du ønsker at slette disse organisationer:",
-				"user": "Er du sikker på du ønsker at slette denne bruger?",
+				"user": "Er du sikker på du ønsker at slette denne bruger",
 				"users": "Er du sikker på du ønsker at slette disse brugere:"
 			}
 		},

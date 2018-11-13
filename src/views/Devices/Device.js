@@ -29,7 +29,7 @@ class Device extends Component {
 			loadingData: true,
 			from: moment().subtract(7, 'd').startOf('day'),
 			to: moment().endOf('day'),
-			timeType: 3,
+			timeType: 2,
 			raw: false,
 			//End Date Filter Tools
 			//Assign/Unassign
@@ -264,8 +264,8 @@ class Device extends Component {
 		}, [])
 		this.setState({
 			dataArr: dataArr,
+			timeType: 2,
 			loadingData: false,
-			timeType: 2
 		})
 	}
 	getWifiSum = async () => {
@@ -290,17 +290,11 @@ class Device extends Component {
 				newArr.push(d)
 			return newArr
 		}, [])
-		if (dataArr.length > 0)
-			this.setState({
-				dataArr: dataArr,
-				loadingData: false,
-			}, this.setSummaryData)
-		else {
-			this.setState({
-				dataArr: null,
-				noData: true
-			})
-		}
+		this.setState({
+			dataArr: dataArr,
+			timeType: 3,
+			loadingData: false,
+		})
 	}
 	snackBarMessages = (msg) => {
 		const { s, t } = this.props

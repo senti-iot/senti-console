@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react'
-import { AppBar, Tabs, Tab, withStyles, Toolbar as ToolBar } from '@material-ui/core';
+import { AppBar, Tabs, Tab, withStyles } from '@material-ui/core';
 import Search from 'components/Search/Search';
 import { suggestionGen } from 'variables/functions'
 import { NavHashLink as Link } from 'react-router-hash-link';
@@ -47,18 +47,18 @@ class Toolbar extends Component {
 							to={`${t.url}`} />
 					}) : null}
 				
-			
+					{content}
 				</Tabs> : null}
 				{noSearch ? null : <Search
 					right
 					suggestions={data ? suggestionGen(data) : []}
 					handleFilterKeyword={handleFilterKeyword}
 					searchValue={filters.keyword} />}
-				{
+				{/* {
 					content ? <ToolBar classes={{ root: classes.appBar }}>
 						{content}
 					</ToolBar> : null
-				}
+				} */}
 			</AppBar>
 		)
 	}
