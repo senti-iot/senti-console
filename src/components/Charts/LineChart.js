@@ -12,7 +12,7 @@ import { connect } from 'react-redux'
 class LineChart extends PureComponent {
 	constructor(props) {
 		super(props)
-		console.log("props.unit", props.unit)
+		
 		this.state = {
 			weatherDate: null,
 			tooltip: {
@@ -103,7 +103,7 @@ class LineChart extends PureComponent {
 			return true
 	}
 	componentDidMount = () => {
-		// console.log(this.chart.chartInstance.config.options.elements.point.radius)
+		
 		this.chart.chartInstance.config.options.elements.point.radius = this.clickEvent() ? 3 : 5 
 		this.chart.chartInstance.config.options.elements.point.hitRadius = this.clickEvent() ? 3 : 5 
 		this.chart.chartInstance.config.options.elements.point.hoverRadius = this.clickEvent() ? 4 : 6 
@@ -138,14 +138,14 @@ class LineChart extends PureComponent {
 			this.hideTooltip()
 			return
 		}
-		// console.log(tooltipModel)
-		// console.log(this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x)
+		
+		
 		// let weatherData = null
 		let wDate = null
 		try {
 			let lat = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].lat
 			let long = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].long
-			// console.log(lat, long)
+			
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
 			if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long)) {
 				this.setState({ weather: null })
@@ -162,7 +162,7 @@ class LineChart extends PureComponent {
 			}
 		}
 		catch (err) {
-			// console.log(err)
+			
 		}
 		let left = tooltipModel.caretX;
 		let top = tooltipModel.caretY;

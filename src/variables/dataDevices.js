@@ -5,7 +5,7 @@ import moment from 'moment'
 export const getWeather = async (device, date, lang) => {
 	let URL = `/${moment(date).format('YYYY-MM-DDTHH:mm:ss')}/${device.lat}/${device.long}/${lang}`
 	let response = await weatherApi.get(URL).then(rs => rs)
-	// console.log(response)
+	
 	return response.data
 }
 

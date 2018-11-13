@@ -11,7 +11,7 @@ const styles = (theme) => ({
 })
 const WeatherIcon = (props) => {
 	const getIcon = () => {
-		// console.log(props.icon);
+		;
 		
 		switch (props.icon) {
 			case 'clear-day':

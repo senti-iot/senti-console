@@ -162,7 +162,7 @@ class Project extends Component {
 		const { project, loading, openAssignDC } = this.state
 		const { t } = this.props
 		const rp = { history: this.props.history, match: this.props.match }
-		console.log(project)
+		
 		return (
 			!loading ?
 				<GridContainer justify={'center'} alignContent={'space-between'}>

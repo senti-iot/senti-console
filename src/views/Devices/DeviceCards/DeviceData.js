@@ -41,11 +41,8 @@ class DeviceData extends PureComponent {
 			loading: true,
 			dateOption: 3,
 			openDownload: false,
-			// openCustomDate: false,
 			display: props.chartType ? props.chartType : 3,
 			visibility: false,
-			// timeType: 2,
-			raw: false,
 		}
 	}
 
@@ -66,7 +63,7 @@ class DeviceData extends PureComponent {
 	]
 
 	componentDidUpdate = (prevProps) => {
-		console.log(prevProps)
+		
 		if (prevProps.loading === true && (prevProps.loading !== this.props.loading))
 			this.customSetDisplay()
 		if (prevProps.hoverID !== this.props.hoverID)
@@ -92,7 +89,6 @@ class DeviceData extends PureComponent {
 	}
 	setDailyData = () => {
 		const { dataArr, from, to } = this.props
-		console.log(datesToArr(from, to))
 		this.setState({
 			loading: false,
 			timeType: 2,
@@ -201,11 +197,11 @@ class DeviceData extends PureComponent {
 
 	getImage = () => {
 		var canvas = document.getElementsByClassName("chartjs-render-monitor");
-		// console.log(canvas)
+		
 		if (canvas.length > 0) {
 			this.image = canvas[1].toDataURL("image/png");
 			this.setState({ image: this.image })
-			// console.log(this.image)
+			
 		}
 	}
 	componentDidMount = async () => {
@@ -229,11 +225,11 @@ class DeviceData extends PureComponent {
 	customSetDisplay = () => {
 		const { display } = this.state
 		const { timeType } = this.props
-		console.log('customSetDisplay', timeType, display)
+		
 		if (display !== 0 || display !== 1) {
 			switch (timeType) {
 				case 0:
-					console.log("set")
+					
 					this.setMinutelyData()
 					break;
 				case 1:
@@ -256,7 +252,7 @@ class DeviceData extends PureComponent {
 
 	handleSwitchVisibility = () => {
 		const { display } = this.state
-		console.log('handleSwitchVisibility', display)
+		
 		switch (display) {
 			case 0:
 			case 1:
@@ -282,15 +278,6 @@ class DeviceData extends PureComponent {
 			[date]: e
 		})
 	}
-
-	// handleCloseDialog = () => {
-	// 	this.setState({ openCustomDate: false })
-	// 	this.customDisplay()
-	// }
-
-	// handleRawData = () => {
-	// 	this.setState({ loading: true, actionAnchor: null, raw: !this.state.raw }, () => this.handleSwitchVisibility())
-	// }
 
 	handleZoomOnData = async (elements) => {
 		if (elements.length > 0) {
@@ -397,7 +384,7 @@ class DeviceData extends PureComponent {
 						t={this.props.t}
 					/></div> : this.renderNoData()
 			case 3:
-				console.log(this.props.timeType)
+				
 				return this.state.lineDataSets ?
 					<LineChart
 						hoverID={this.props.hoverID}

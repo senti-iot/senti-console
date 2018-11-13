@@ -4,7 +4,7 @@ import { Button } from '@material-ui/core';
 
 
 const Doc = (props) => {
-	// console.log(props.img)
+	
 	return (<Document>
 		<Page wrap>
 			<Image style={{ maxHeight: 300 }} src={props.img}></Image>
@@ -32,7 +32,7 @@ class DevicePDF extends Component {
 		}
 	}
 	render() {
-		// console.log(Template)
+		
 		return (
 			<PDFDownloadLink document={<Doc img={this.props.img}/>} fileName="somename.pdf">
 				{({ blob, url, loading, error }) =>

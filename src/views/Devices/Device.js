@@ -100,7 +100,7 @@ class Device extends Component {
 			if (id) {
 				// this.getAllPics(id)
 				await this.getDevice(id)
-				// console.log(this.state.device);
+				;
 				this.getWifiDaily()
 
 			}
@@ -524,7 +524,7 @@ class Device extends Component {
 
 	render() {
 		const { device, loading, loadingData } = this.state
-		console.log(this.state.timeType)
+		
 		return (
 			<Fragment>
 				
@@ -573,6 +573,7 @@ class Device extends Component {
 								from={this.state.from}
 								to={this.state.to}
 								device={device}
+								raw={this.state.raw}
 								handleRawData={this.handleRawData}
 								history={this.props.history}
 								match={this.props.match}

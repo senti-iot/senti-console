@@ -129,14 +129,14 @@ class BarChart extends PureComponent {
 			this.hideTooltip()
 			return
 		}
-		// console.log(tooltipModel)
-		// console.log(this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x)
+		
+		
 		// let weatherData = null
 		let wDate = null
 		try {
 			let lat = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].lat
 			let long = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].long
-			// console.log(lat, long)
+			
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
 			if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long)) {
 				this.setState({ weather: null })
@@ -153,7 +153,7 @@ class BarChart extends PureComponent {
 			}
 		}
 		catch (err) {
-			// console.log(err)
+			
 		}
 		let left = tooltipModel.caretX;
 		let top = this.state.chartHeight / 2;

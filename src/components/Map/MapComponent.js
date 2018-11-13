@@ -44,7 +44,7 @@ class MapComponent extends Component {
 		return hArr
 	}
 	render() {
-		console.log(this.props.heatMap)
+		
 		let props = this.props
 		let defaultLat = parseFloat(56.2639) //Denmark,
 		let defaultLng = parseFloat(9.5018) //Denmark

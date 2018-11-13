@@ -26,7 +26,7 @@ class DeviceDetails extends Component {
 
 	render() {
 		const { classes, collection, t, /* accessLevel ,*/ history, handleOpenDeleteDialog, weather } = this.props
-		// console.log(weather, 'weather')
+		
 		return (
 			<InfoCard
 				title={collection.name ? collection.name : collection.id}
