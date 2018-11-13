@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { getDevice, getAllPictures, getWeather, getDataHourly, getDataMinutely, getDataDaily, getDataSummary, /* getWeather */ } from 'variables/dataDevices'
-import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, ListItem, IconButton, Menu } from '@material-ui/core'
+import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, IconButton, Menu } from '@material-ui/core'
 import { ItemGrid, AssignOrg, AssignDC, DateFilterMenu, ItemG } from 'components'
 import deviceStyles from 'assets/jss/views/deviceStyles'
 import ImageUpload from './ImageUpload'
@@ -504,11 +504,7 @@ class Device extends Component {
 						minWidth: 250
 					}
 				}}>
-				<div>
-					<ListItem>
-						{this.renderDateFilter()}
-					</ListItem>
-				</div>
+				{this.renderDateFilter()}
 			</Menu>
 		</ItemG>
 	}

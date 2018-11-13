@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Hidden, FormControl, Select, Divider, MenuItem, FormHelperText } from '@material-ui/core';
-import { DateRange } from 'variables/icons';
-import { ItemGrid, Caption, Info, CustomDateTime } from 'components';
+import { Divider, MenuItem } from '@material-ui/core';
+import { ItemGrid, Caption, Info, CustomDateTime, ItemG } from 'components';
 import { dateTimeFormatter } from 'variables/functions';
 import moment from 'moment'
 
@@ -116,41 +115,29 @@ class DateFilterMenu extends Component {
 	
 	render() {
 		// const { dateFilterInputID } = this.state
-		const { classes, to, from, t, dateOption  } = this.props
+		const { to, from, t, dateOption  } = this.props
 		let displayTo = dateTimeFormatter(to)
 		let displayFrom = dateTimeFormatter(from)
 		return (<Fragment>
 			{this.renderCustomDateDialog()}
-			<div className={classes.root}>
-				<Hidden smDown>
-					<DateRange className={classes.leftIcon} />
-				</Hidden>
-				<FormControl className={classes.formControl}>
-					<Select
-						value={dateOption}
-						onChange={this.handleDateFilter}
-						inputProps={{
-							name: 'data-dateFilter',
-							id: 'data-dateFilterInput',
-						}}
-					>
-						<ItemGrid>
-							<Caption>{this.options[this.options.findIndex(d => d.id === dateOption ? true : false)].label}</Caption>
-							<Info>{`${displayFrom} - ${displayTo}`}</Info>
-						</ItemGrid>
-						<Divider />
-						<MenuItem value={0}>{t("filters.dateOptions.today")}</MenuItem>
-						<MenuItem value={1}>{t("filters.dateOptions.yesterday")}</MenuItem>
-						<MenuItem value={2}>{t("filters.dateOptions.thisWeek")}</MenuItem>
-						<MenuItem value={3}>{t("filters.dateOptions.7days")}</MenuItem>
-						<MenuItem value={4}>{t("filters.dateOptions.30days")}</MenuItem>
-						<MenuItem value={5}>{t("filters.dateOptions.90days")}</MenuItem>
-						<Divider />
-						<MenuItem value={6}>{t("filters.dateOptions.custom")}</MenuItem>
-					</Select>
-					<FormHelperText>{`${displayFrom} - ${displayTo}`}</FormHelperText>
-				</FormControl>
-			</div>
+
+			<ItemG container direction={"column"}>
+				<ItemGrid>
+					<Caption>{this.options[this.options.findIndex(d => d.id === dateOption ? true : false)].label}</Caption>
+					<Info>{`${displayFrom} - ${displayTo}`}</Info>
+				</ItemGrid>
+				<Divider />
+				<MenuItem onClick={this.handleDateFilter} value={0}>{t("filters.dateOptions.today")}</MenuItem>
+				<MenuItem onClick={this.handleDateFilter} value={1}>{t("filters.dateOptions.yesterday")}</MenuItem>
+				<MenuItem onClick={this.handleDateFilter} value={2}>{t("filters.dateOptions.thisWeek")}</MenuItem>
+				<MenuItem onClick={this.handleDateFilter} value={3}>{t("filters.dateOptions.7days")}</MenuItem>
+				<MenuItem onClick={this.handleDateFilter} value={4}>{t("filters.dateOptions.30days")}</MenuItem>
+				<MenuItem onClick={this.handleDateFilter} value={5}>{t("filters.dateOptions.90days")}</MenuItem>
+			
+				<Divider />
+				<MenuItem onClick={this.handleDateFilter} value={6}>{t("filters.dateOptions.custom")}</MenuItem>
+			</ItemG>
+			
 		</Fragment>
 		)
 	}
