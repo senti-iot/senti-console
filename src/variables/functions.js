@@ -18,23 +18,33 @@ export const minutesToArray = (from, to) => {
 export const hoursToArr = (from, to) => {
 	let startDate = moment(from)
 	let endDate = moment(to)
+	let diff = moment.duration(endDate.diff(startDate)).asHours()
+	let amount = diff > 10 ? diff > 20 ? diff > 35 ? 30 : 5 : 3 : 1
+	if (window.innerWidth < 426)
+		amount = diff > 5 ? diff > 10 ? diff > 20 ? diff > 35 ? 30 : 5 : 3 : 3 : 1
 	let arr = []
 	let d = startDate.clone()
 	while (d <= endDate) {
 		arr.push(d.toDate())
-		d = d.clone().add(1, 'h')
+		d = d.clone().add(amount, 'h')
 	}
 	return arr
 }
 export const datesToArr = (from, to) => {
 	let startDate = moment(from)
 	let endDate = moment(to)
+	console.log(startDate.format('lll'), endDate.format('lll'))
+	let diff = moment.duration(endDate.diff(startDate)).asDays()
+	let amount = diff > 10 ? diff > 20 ? diff > 35 ? 30 : 5 : 3 : 1
+	if (window.innerWidth < 426)
+		amount = diff > 5 ? diff > 10 ? diff > 20 ? diff > 35 ? 30 : 5 : 3 : 3 : 1
 	let arr = []
 	let d = startDate.clone()
 	while (d <= endDate) {
 		arr.push(d.toDate())
-		d = d.clone().add(1, 'd')
+		d = d.clone().add(amount, 'd')
 	}
+	console.log(arr)
 	return arr
 }
 export const dateFormat = (date) => {
@@ -126,12 +136,12 @@ const sortFunc = (a, b, orderBy, way) => {
 		else {
 			return newA < newB ? -1 : 1
 		}
-	else { 
+	else {
 		if (way) {
 			return newB.toString().toLowerCase() <= newA.toString().toLowerCase() ? -1 : 1
 		}
 		else {
-			return newA.toString().toLowerCase() < newB.toString().toLowerCase()  ? -1 : 1
+			return newA.toString().toLowerCase() < newB.toString().toLowerCase() ? -1 : 1
 		}
 	}
 }
@@ -158,9 +168,9 @@ export const handleRequestSort = (property, way, data) => {
 export const pF = (phone) => {
 	let phoneNumber
 	try {
-		 phoneNumber = parsePhoneNumber(phone, 'DK')
+		phoneNumber = parsePhoneNumber(phone, 'DK')
 	}
-	catch (error) { 
+	catch (error) {
 		return phone
 	}
 	return phoneNumber.formatInternational()

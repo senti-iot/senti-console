@@ -24,6 +24,7 @@ class LineChart extends PureComponent {
 				exited: false
 			},
 			lineOptions: {
+				responsive: true,
 				animation: {
 					duration: 500,
 					onComplete: props.getImage ? props.getImage : null,
@@ -45,9 +46,12 @@ class LineChart extends PureComponent {
 						{
 							ticks: {
 								source: "labels",
+								autoSkipPadding: 10,
+								maxRotation: 0
 							},
 							id: "xAxis",
 							type: 'time',
+							// distribution: 'series',
 							time: {
 								displayFormats: {
 									hour: "LT",
@@ -60,20 +64,20 @@ class LineChart extends PureComponent {
 						},
 						{
 							display: props.unit.chart === 'day' ? true : false,
-							ticks: {
-								source: "labels",
-							},
 							gridLines: {
 								drawBorder: false,
 								drawTicks: false,
+							},
+							ticks: {
+								source: "labels",
+								autoSkipPadding: 10,
+								maxRotation: 0
 							},
 							id: "xAxis-day",
 							type: 'time',
 							time: {
 								displayFormats: {
-									hour: "LT",
-									day: 'dddd',
-									minute: 'LT'
+									day: 'ddd',
 								},
 								unit: props.unit.chart,
 								tooltipFormat: props.unit.format
@@ -169,6 +173,7 @@ class LineChart extends PureComponent {
 		if (!this.clickEvent()) { 
 			left = this.state.chartWidth / 2
 		}
+		console.log(tooltipModel.title)
 		let str = tooltipModel.title[0]
 		var rest = str.substring(0, str.lastIndexOf(" ") + 1);
 		var last = str.substring(str.lastIndexOf(" ") + 1, str.length);
@@ -279,7 +284,7 @@ class LineChart extends PureComponent {
 		const { classes } = this.props
 		const { tooltip, chartWidth, mobile } = this.state
 		return (
-			<div style={{ maxHeight: 400, position: 'relative', height: '100%' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
+			<div style={{ maxHeight: 400, position: 'relative', height: 400 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
 				<Line
 					data={this.props.data}
 					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}

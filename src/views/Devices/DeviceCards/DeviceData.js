@@ -50,10 +50,10 @@ class DeviceData extends PureComponent {
 	displayFormat = "DD MMMM YYYY HH:mm"
 	image = null
 	timeTypes = [
-		{ id: 0, format: "lll", chart: "minute" },
-		{ id: 1, format: "lll", chart: "hour" },
-		{ id: 2, format: "ll", chart: "day" },
-		{ id: 3, format: "ll", chart: "day" },
+		{ id: 0, format: "lll dddd", chart: "minute" },
+		{ id: 1, format: "lll dddd", chart: "hour" },
+		{ id: 2, format: "ll dddd", chart: "day" },
+		{ id: 3, format: "ll dddd", chart: "day" },
 	]
 	visibilityOptions = [
 		{ id: 0, icon: <PieChartRounded />, label: this.props.t("charts.type.pie") },
