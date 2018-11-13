@@ -8,10 +8,14 @@ export const minutesToArray = (from, to) => {
 	let startDate = moment(from)
 	let endDate = moment(to)
 	let d = startDate
+	let diff = moment.duration(endDate.diff(startDate)).asMinutes()
+	let amount = diff > 60 ? diff > 120 ? diff > 240 ? 60 : 45 : 30 : 15
+	if (window.innerWidth < 426)
+		amount = diff > 60 ? diff > 120 ? diff > 240 ? 60 : 45 : 30 : 15
 	let arr = []
 	while (d <= endDate) {
 		arr.push(d.toDate())
-		d = d.clone().add(15, 'm')
+		d = d.clone().add(amount, 'm')
 	}
 	return arr
 }
