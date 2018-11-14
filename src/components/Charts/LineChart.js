@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Line, Chart } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import { Typography, withStyles, Paper, Grow, CircularProgress } from '@material-ui/core';
 import { ItemG, WeatherIcon, Caption } from 'components';
 import { graphStyles } from './graphStyles';
@@ -113,11 +113,6 @@ class LineChart extends PureComponent {
 			return true
 	}
 	componentDidMount = () => {
-		Chart.pluginService.register({
-			afterDraw: function (chart, easing) {
-				// Plugin code.
-			}
-		});
 		this.chart.chartInstance.config.options.elements.point.radius = this.clickEvent() ? 3 : 5 
 		this.chart.chartInstance.config.options.elements.point.hitRadius = this.clickEvent() ? 3 : 5 
 		this.chart.chartInstance.config.options.elements.point.hoverRadius = this.clickEvent() ? 4 : 6 
@@ -129,9 +124,8 @@ class LineChart extends PureComponent {
 
 		})	
 	}
-	componentDidUpdate = (prevProps, prevState) => {
 
-		/**
+	/**
 		 * 	How the damn zoom Works:
 		 *  1. Sets a min/max moment objects scale on the x axis
 		 *  2. Re renders the chart
@@ -142,8 +136,8 @@ class LineChart extends PureComponent {
 		 *  3. Create a new function that based on the difference between the dates, sets the appropiate timeType (hour, minute, day, month, etc.)
 		 *  4. Set the "newData" without loading
 		 * 	@debug console.log(this.chart.chartInstance.scales['xAxis'].options.time)
-		 *  */ 
-	
+		 *  */
+	componentDidUpdate = (prevProps, prevState) => {
 	
 		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID) {
 			this.setXAxis()
@@ -211,12 +205,13 @@ class LineChart extends PureComponent {
 		})
 	}
 	setXAxis = () => {
+		console.log(this.props)
 		this.setState({
 			lineOptions: {
 				...this.state.lineOptions,
 				scales: {
 					...this.state.lineOptions.scales,
-					xAxes: [...this.state.lineOptions.scales.xAxes,
+					xAxes: [
 						{
 							id: "xAxis",
 							type: 'time',
@@ -225,6 +220,27 @@ class LineChart extends PureComponent {
 									hour: 'LT',
 									day: 'll dddd',
 									minute: 'LT'
+								},
+								unit: this.props.unit.chart,
+								tooltipFormat: this.props.unit.format
+							},
+						},
+						{
+							display: this.props.unit.chart === 'day' ? true : false,
+							gridLines: {
+								drawBorder: false,
+								drawTicks: false,
+							},
+							ticks: {
+								source: "labels",
+								autoSkipPadding: 10,
+								maxRotation: 0
+							},
+							id: "xAxis-day",
+							type: 'time',
+							time: {
+								displayFormats: {
+									day: 'ddd',
 								},
 								unit: this.props.unit.chart,
 								tooltipFormat: this.props.unit.format

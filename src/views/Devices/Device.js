@@ -118,15 +118,13 @@ class Device extends Component {
 	 * @param from Date 
 	 * @param timeType 
 	 */
-	handleSetDate = (id, to, from, timeType) => {
+	handleSetDate = (id, to, from, timeType, loading) => {
 		this.setState({
 			dateOption: id,
 			to: to,
 			from: from,
 			timeType: timeType,
-			loadingData: true,
-			roundDataSets: null,
-			barDataSets: null
+			loadingData: loading !== undefined ? loading : true,
 		}, this.handleSwitchDayHourSummary)
 	}
 	
@@ -212,7 +210,7 @@ class Device extends Component {
 			dataArr: dataArr,
 			loadingData: false,
 			timeType: 1
-		}, this.setHourlyData)
+		})
 	}
 	getWifiMinutely = async () => {
 		// const { device } = this.props
@@ -243,7 +241,6 @@ class Device extends Component {
 			loadingData: false,
 			timeType: 0
 		})
-		// this.setDailyData(dataArr)
 	}
 	getWifiDaily = async () => {
 		// const { device } = this.props

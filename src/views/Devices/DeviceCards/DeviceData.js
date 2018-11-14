@@ -60,11 +60,19 @@ class DeviceData extends PureComponent {
 	]
 
 	componentDidUpdate = (prevProps) => {
-		
+		// this.customSetDisplay()
+		// console.log(this.props.dataArr ? this.props.dataArr[0].data : "Still loading")
+		if (prevProps.timeType !== this.props.timeType) { 
+			this.customSetDisplay()
+		}
+		if ( prevProps.dataArr !== this.props.dataArr)
+		{
+			this.customSetDisplay()
+		}
 		if (prevProps.loading === true && (prevProps.loading !== this.props.loading))
 			this.customSetDisplay()
-		if (prevProps.hoverID !== this.props.hoverID)
-			return this.props.loading ? null : this.customSetDisplay()
+		// if (prevProps.hoverID !== this.props.hoverID)
+		// 	return this.props.loading ? null : this.customSetDisplay()
 	}
 	setSummaryData = () => {
 		const { dataArr, from, to } = this.props
@@ -193,13 +201,13 @@ class DeviceData extends PureComponent {
 	}
 
 	getImage = () => {
-		var canvas = document.getElementsByClassName("chartjs-render-monitor");
-		
-		if (canvas.length > 0) {
-			this.image = canvas[1].toDataURL("image/png");
-			this.setState({ image: this.image })
+		// var canvas = document.getElementsByClassName("chartjs-render-monitor");
+	
+		// if (canvas.length > 0) {
+		// 	this.image = canvas[1].toDataURL("image/png");
+		// 	this.setState({ image: this.image })
 			
-		}
+		// }
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
@@ -224,6 +232,7 @@ class DeviceData extends PureComponent {
 		const { timeType } = this.props
 		
 		if (display !== 0 || display !== 1) {
+			console.log(timeType)
 			switch (timeType) {
 				case 0:
 					
@@ -288,12 +297,12 @@ class DeviceData extends PureComponent {
 					case 1:
 						startDate = moment(date).startOf('hour')
 						endDate = moment(date).endOf('hour')
-						this.props.handleSetDate(6, endDate, startDate, 0)
+						this.props.handleSetDate(6, endDate, startDate, 0, false)
 						break
 					case 2:
 						startDate = moment(date).startOf('day')
 						endDate = moment(date).endOf('day')
-						this.props.handleSetDate(6, endDate, startDate, 1)
+						this.props.handleSetDate(6, endDate, startDate, 1, false)
 						break;
 					default:
 						break;
