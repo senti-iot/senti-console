@@ -24,7 +24,7 @@ class LineChart extends PureComponent {
 				exited: false
 			},
 			lineOptions: {
-				responsive: true,
+				// responsive: true,
 				animation: {
 					duration: 500,
 					onComplete: props.getImage ? props.getImage : null,

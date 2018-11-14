@@ -12,8 +12,7 @@ import {
 	CircularLoader, Caption, ItemG, CustomDateTime, InfoCard, BarChart,
 	LineChart,
 	DoughnutChart,
-	PieChart, 
-	DateFilterMenu } from 'components';
+	PieChart } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { getDataSummary, getDataDaily, getDataHourly, getDataMinutely, /* getDataHourly */ } from 'variables/dataCollections';
 import classNames from 'classnames';
@@ -619,27 +618,10 @@ class ProjectData extends PureComponent {
 				break;
 		}
 	}
-	renderDateFilter = () => {
-		const { classes, t } = this.props
-		const { dateFilterInputID, to, from } = this.state
-		return <DateFilterMenu
-			classes={classes}
-			t={t}
-			dateFilterInputID={dateFilterInputID}
-			from={from}
-			to={to}
-			handleDateFilter={this.handleDateFilter}
-		/>
-	}
 	renderMenu = () => {
 		const { actionAnchor, actionAnchorVisibility } = this.state
 		const { classes, t } = this.props
 		return <Fragment>
-			<ItemG>
-				<Hidden smDown>
-					{this.renderDateFilter()}
-				</Hidden>
-			</ItemG>
 			<ItemG>
 				<Hidden smDown>
 					<IconButton title={"Chart Type"} variant={"fab"} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
@@ -689,13 +671,6 @@ class ProjectData extends PureComponent {
 						minWidth: 250
 					}
 				}}>
-				<div>
-					<Hidden mdUp>
-						<ListItem>
-							{this.renderDateFilter()}
-						</ListItem>
-					</Hidden>
-				</div>
 				<ListItem button onClick={() => this.handleRawData()}>
 					<ListItemIcon>
 						<Checkbox

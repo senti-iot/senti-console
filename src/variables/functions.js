@@ -53,7 +53,7 @@ export const datesToArr = (from, to) => {
 	let endDate = moment(to)
 	// console.log(startDate.format('lll'), endDate.format('lll'))
 	let diff = moment.duration(endDate.diff(startDate)).asDays()
-	let amount = diff > 10 ? diff > 20 ? diff > 35 ? 30 : 5 : 3 : 1
+	let amount = diff > 10 ? diff > 20 ? diff > 35 ? 15 : 5 : 3 : 1
 	if (window.innerWidth < 426)
 		amount = diff > 5 ? diff > 10 ? diff > 20 ? diff > 35 ? 30 : 5 : 3 : 3 : 1
 	let arr = []
