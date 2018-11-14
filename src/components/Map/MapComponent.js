@@ -39,7 +39,7 @@ class MapComponent extends Component {
 		let hArr = this.props.markers.map(point => (
 			{
 				location: new window.google.maps.LatLng(point.lat, point.long),
-				weight: Math.floor(Math.random() * 1001)
+				weight: (point.heatData.data / 100 )
 			}))
 		return hArr
 	}
@@ -66,7 +66,6 @@ class MapComponent extends Component {
 					radius={d.weight}
 				/>
 			}) : null}
-			{/* {this.props.heatMap ? <HeatmapLayer data={this.createHeatmapLayerPoints()} /> : null} */}
 			<MarkerClusterer
 				onClick={this.onMarkerClustererClick}
 				averageCenter

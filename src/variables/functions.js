@@ -3,6 +3,20 @@ var moment = require('moment');
 // const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 // var PNF = require('google-libphonenumber').PhoneNumberFormat
 var _ = require('lodash')
+export const dateDiff = (from, to) => {
+	let diff = moment.duration(from.diff(to)).asMinutes()
+	if (diff > 60 * 24 * 30)
+		return 3
+	if (diff < 60 * 24 && diff > 60)
+		return 1
+	if (diff > 60 * 24 * 2)
+		return 2
+	if (diff > 60)
+		return 1
+	else {
+		return 0
+	}
+}
 
 export const minutesToArray = (from, to) => {
 	let startDate = moment(from)

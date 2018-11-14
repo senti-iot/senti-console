@@ -36,6 +36,10 @@ class Device extends Component {
 			openUnassign: false,
 			openAssignOrg: false,
 			//End Assign/Unassign
+			//Map
+			loadingMap: false,
+			heatData: null,
+			//End Map
 			device: null,
 			loading: true,
 			anchorElHardware: null,
@@ -99,16 +103,42 @@ class Device extends Component {
 			if (id) {
 				// this.getAllPics(id)
 				await this.getDevice(id)
-				;
 				this.getWifiDaily()
-
+				this.getHeatMapData()
 			}
 		}
 		else {
 			this.props.history.push('/404')
 		}
 	}
+	getHeatMapData = async () => {
+		// const { device } = this.props
+		const { from, to, raw, device } = this.state
+		let startDate = moment(from).format(this.format)
+		let endDate = moment(to).format(this.format)
+		// let dataArr = []
+		let dataSet = null
+		let data = await getDataSummary(device.id, startDate, endDate, raw)
+		dataSet = {
+			name: device.name,
+			id: device.id,
+			lat: device.lat,
+			long: device.long,
+			data: data,
+			color: teal[500]
+		}
+		// dataArr.push(dataSet)
 
+		// dataArr = dataArr.reduce((newArr, d) => {
+		// 	if (d.data !== null)
+		// 		newArr.push(d)
+		// 	return newArr
+		// }, [])
+		this.setState({
+			heatData: dataSet,
+			loadingMap: false
+		})
+	}
 	//
 	/**
 	 * This is the callback from the Date Filter
@@ -578,6 +608,8 @@ class Device extends Component {
 						<ItemGrid xs={12} noMargin id={"map"}>
 							<DeviceMap
 								classes={this.props.classes}
+								heatData={this.state.heatData}
+								loading={this.state.loadingMap}
 								device={device}
 								weather={this.state.weather}
 								t={this.props.t}

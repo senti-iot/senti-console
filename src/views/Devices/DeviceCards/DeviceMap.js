@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { InfoCard, Caption, Dropdown, DateFilterMenu } from 'components';
+import { InfoCard, Caption, Dropdown, CircularLoader } from 'components';
 import { Map } from 'variables/icons'
 import { Grid, Checkbox } from '@material-ui/core';
 import { Maps } from 'components/Map/Maps';
@@ -12,18 +12,6 @@ export default class DeviceMap extends Component {
 		 heatMap: false
 	  }
 	}
-	renderDateFilter = () => {
-		const { classes, t } = this.props
-		const { dateFilterInputID, to, from } = this.state
-		return <DateFilterMenu
-			classes={classes}
-			t={t}
-			dateFilterInputID={dateFilterInputID}
-			from={from}
-			to={to}
-			handleDateFilter={this.handleDateFilter}
-		/>
-	}
 	renderMenu = () => {
 		const { t } = this.props
 		return <Dropdown menuItems={
@@ -32,7 +20,8 @@ export default class DeviceMap extends Component {
 		} />
 	}
 	render() {
-		const { device, weather, t } = this.props
+		const { device, weather, t, heatData, loading } = this.props
+		console.log(heatData)
 		return (
 			<InfoCard
 				title={t("devices.cards.map")}
@@ -40,10 +29,10 @@ export default class DeviceMap extends Component {
 				avatar={<Map />}
 				topAction={device.lat && device.long ? this.renderMenu() : null}
 				hiddenContent={
-					<Grid container justify={'center'}>
-						{device.lat && device.long ? <Maps heatMap={this.state.heatMap} t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t("devices.notCalibrated")}</Caption>}
-						
-					</Grid>
+					loading ? <CircularLoader /> :  
+						<Grid container justify={'center'}>
+							{device.lat && device.long ? <Maps heatMap={this.state.heatMap} t={t} isMarkerShown markers={[{ ...device, weather: weather, heatData }]} zoom={10} /> : <Caption>{t("devices.notCalibrated")}</Caption>}
+						</Grid>
 				} />
 
 		)
