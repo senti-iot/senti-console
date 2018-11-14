@@ -55,13 +55,12 @@ class InfoCard extends React.Component {
 			<Card className={classes.card + classes.plainCardClasses}>
 				<CardHeader
 					action={this.renderTopAction()}
-					avatar={
-						noAvatar ? null : <Avatar aria-label="Avatar" className={classes.avatar}>
-							{avatar}
-						</Avatar>
-					}
+					avatar={noAvatar ? null : <Avatar aria-label="Avatar" className={classes.avatar}>{avatar}</Avatar>}
 					title={title}
 					subheader={this.hasSubheader(subheader)}
+					classes={{
+						title: classes.title
+					}}
 				>
 
 				</CardHeader>

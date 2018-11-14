@@ -328,22 +328,7 @@ class DeviceData extends PureComponent {
 	handleCloseDownloadModal = () => {
 		this.setState({ openDownload: false })
 	}
-	// renderCustomDateDialog = () => {
-	// 	const { classes, t } = this.props
-	// 	const { openCustomDate, to, from, timeType } = this.state
-	// 	return openCustomDate ? <CustomDateTime
-	// 		openCustomDate={openCustomDate}
-	// 		handleCloseDialog={this.handleCloseDialog}//
-	// 		handleCustomDate={this.handleCustomDate}
-	// 		to={to}
-	// 		from={from}
-	// 		timeType={timeType}
-	// 		handleCustomCheckBox={this.handleCustomCheckBox}//
-	// 		handleCancelCustomDate={this.handleCancelCustomDate}//
-	// 		t={t}
-	// 		classes={classes}
-	// 	/> : null
-	// }
+
 	renderType = () => {
 		const { display } = this.state
 		// const { t } = this.props
@@ -526,7 +511,7 @@ class DeviceData extends PureComponent {
 	}
 
 	render() {
-		const { raw, t, classes, loading, dataArr, to, from } = this.props
+		const { raw, t, loading, dataArr, to, from } = this.props
 		const {  openDownload } = this.state
 		let displayTo = dateTimeFormatter(to)
 		let displayFrom = dateTimeFormatter(from)
@@ -534,9 +519,9 @@ class DeviceData extends PureComponent {
 			<Fragment>
 				<InfoCard
 					title={t("collections.cards.data")}
+					subheader={`${raw ? t("collections.rawData") : t("collections.calibratedData")}, ${displayFrom} - ${displayTo}`}
 					avatar={<Timeline />}
 					noExpand
-					// noPadding
 					topAction={this.renderMenu()}
 					content={
 						<Grid container>
@@ -548,10 +533,10 @@ class DeviceData extends PureComponent {
 							/>
 							{loading ? <CircularLoader notCentered /> :
 								<Fragment>
-									<ItemG xs={12} container direction={'column'} alignItems={'center'} justify={'center'}>
+									{/* <ItemG xs={12} container direction={'column'} alignItems={'center'} justify={'center'}>
 										<Caption className={classes.bigCaption2}>{raw ? t("collections.rawData") : t("collections.calibratedData")}</Caption>
 										<Caption className={classes.captionPading}>{`${displayFrom} - ${displayTo}`}</Caption>
-									</ItemG>
+									</ItemG> */}
 									<ItemG xs={12}>
 										{dataArr.length > 0 ? this.renderType() : this.renderNoData() }
 									</ItemG>

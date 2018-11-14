@@ -41,7 +41,6 @@ class Device extends Component {
 			anchorElHardware: null,
 			img: null,
 		}
-		props.setHeader('', true, `/devices/list`, "devices")
 	}
 	format = "YYYY-MM-DD+HH:mm"
 	getDevice = async (id) => {
@@ -57,8 +56,7 @@ class Device extends Component {
 					let data = await getWeather(rs, moment(), this.props.language)
 					this.setState({ weather: data })
 				}
-				let prevURL = this.props.location.prevURL ? this.props.location.prevURL : '/devices/list'
-				this.props.setHeader(rs.name ? rs.name : rs.id, true, prevURL ? prevURL : '/devices/list', "devices")
+
 			}
 		})
 	}
@@ -94,6 +92,8 @@ class Device extends Component {
 		})
 	}
 	componentDidMount = async () => {
+		let prevURL = this.props.location.prevURL ? this.props.location.prevURL : '/devices/list'
+		this.props.setHeader(this.props.t("devices.device"), true, prevURL ? prevURL : '/devices/list', "devices")
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {

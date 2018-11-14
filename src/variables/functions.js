@@ -37,7 +37,7 @@ export const hoursToArr = (from, to) => {
 export const datesToArr = (from, to) => {
 	let startDate = moment(from)
 	let endDate = moment(to)
-	console.log(startDate.format('lll'), endDate.format('lll'))
+	// console.log(startDate.format('lll'), endDate.format('lll'))
 	let diff = moment.duration(endDate.diff(startDate)).asDays()
 	let amount = diff > 10 ? diff > 20 ? diff > 35 ? 30 : 5 : 3 : 1
 	if (window.innerWidth < 426)
@@ -48,7 +48,7 @@ export const datesToArr = (from, to) => {
 		arr.push(d.toDate())
 		d = d.clone().add(amount, 'd')
 	}
-	console.log(arr)
+	// console.log(arr)
 	return arr
 }
 export const dateFormat = (date) => {

@@ -139,6 +139,10 @@ const regularCardStyle = theme => ({
 	purpleCardHeader,
 	primaryCardHeader,
 	sentiCardHeader,
+	title: {
+		fontSize: "1em",
+		fontWeight: 500
+	},
 	cardTitle: {
 		color: "#FFFFFF",
 		marginTop: "0",
