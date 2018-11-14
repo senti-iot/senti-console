@@ -1,8 +1,57 @@
 import React, { Component } from 'react'
-import { Document, Page, Text, View, PDFDownloadLink, Image } from '@react-pdf/renderer';
+// import { Document, Page, Text, View, PDFDownloadLink, Image } from '@react-pdf/renderer';
 import { Button } from '@material-ui/core';
+import Loadable from 'react-loadable';
+import AsyncLoader from 'components/Loader/AsyncLoader';
 
-
+const Document = Loadable({
+	loader: () => import('@react-pdf/renderer'),
+	render(loaded, props) { 
+		let Component = loaded.Document
+		return <Component {...props}/>
+	},
+	loading: AsyncLoader
+})
+const Page = Loadable({
+	loader: () => import('@react-pdf/renderer'),
+	render(loaded, props) {
+		let Component = loaded.Page
+		return < Component { ...props }/>
+	},
+	loading: AsyncLoader
+})
+const Text = Loadable({
+	loader: () => import('@react-pdf/renderer'),
+	render(loaded, props) { 
+		let Component = loaded.Text
+		return <Component {...props}/>
+	},
+	loading: AsyncLoader
+})
+const View = Loadable({
+	loader: () => import('@react-pdf/renderer'),
+	render(loaded, props) {
+		let Component = loaded.View
+		return < Component { ...props }/>
+	},
+	loading: AsyncLoader
+})
+const PDFDownloadLink = Loadable({
+	loader: () => import('@react-pdf/renderer'),
+	render(loaded, props) { 
+		let Component = loaded.PDFDownloadLink
+		return <Component {...props}/>
+	},
+	loading: AsyncLoader
+})
+const Image = Loadable({
+	loader: () => import('@react-pdf/renderer'),
+	render(loaded, props) {
+		let Component = loaded.Image
+		return < Component { ...props }/>
+	},
+	loading: AsyncLoader
+})
 const Doc = (props) => {
 	
 	return (<Document>
