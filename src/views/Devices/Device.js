@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { getDevice, getAllPictures, getWeather, getDataHourly, getDataMinutely, getDataDaily, getDataSummary, /* getWeather */ } from 'variables/dataDevices'
-import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, IconButton, Menu } from '@material-ui/core'
-import { ItemGrid, AssignOrg, AssignDC, DateFilterMenu, ItemG } from 'components'
+import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
+import { ItemGrid, AssignOrg, AssignDC, DateFilterMenu } from 'components'
 import deviceStyles from 'assets/jss/views/deviceStyles'
 import ImageUpload from './ImageUpload'
 import CircularLoader from 'components/Loader/CircularLoader'
@@ -16,7 +16,7 @@ import { unassignDeviceFromCollection, getCollection } from 'variables/dataColle
 import DeviceMap from './DeviceCards/DeviceMap';
 import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
-import { DateRange, Timeline, DeviceHub, Map, DeveloperBoard } from 'variables/icons';
+import { Timeline, DeviceHub, Map, DeveloperBoard } from 'variables/icons';
 import teal from '@material-ui/core/colors/teal'
 class Device extends Component {
 	constructor(props) {
@@ -24,7 +24,6 @@ class Device extends Component {
 
 		this.state = {
 			//Date Filter stuff
-			actionAnchor: null,
 			dateOption: 3,
 			loadingData: true,
 			from: moment().subtract(7, 'd').startOf('day'),
@@ -126,7 +125,6 @@ class Device extends Component {
 			from: from,
 			timeType: timeType,
 			loadingData: true,
-			actionAnchor: null,
 			roundDataSets: null,
 			barDataSets: null
 		}, this.handleSwitchDayHourSummary)
@@ -457,10 +455,13 @@ class Device extends Component {
 			</DialogActions>
 		</Dialog>
 	}
-	renderDateFilter = () => {
+
+
+	renderMenu = () => {
 		const { classes, t } = this.props
-		const { dateOption, to, from } = this.state
+		const { dateOption, to, from, timeType } = this.state
 		return <DateFilterMenu
+			timeType={timeType}
 			dateOption={dateOption}
 			classes={classes}
 			to={to}
@@ -471,43 +472,7 @@ class Device extends Component {
 		/>
 	}
 
-	handleOpenActionsDetails = event => {
-		this.setState({ actionAnchor: event.currentTarget });
-	}
-
-	handleCloseActionsDetails = () => {
-		this.setState({ actionAnchor: null });
-	}
-	renderMenu = () => {
-		const { actionAnchor } = this.state
-
-		return <ItemG container justify={'flex-end'}>
-			<ItemG>
-				<IconButton
-					// color={"#fff"}
-
-					aria-label="More"
-					aria-owns={actionAnchor ? 'long-menu' : null}
-					aria-haspopup="true"
-					onClick={this.handleOpenActionsDetails}>
-					<DateRange style={{ color: "#fff" }}/>
-				</IconButton>
-			</ItemG>
-			<Menu
-				id="long-menu"
-				anchorEl={actionAnchor}
-				open={Boolean(actionAnchor)}
-				onClose={this.handleCloseActionsDetails}
-				onChange={this.handleVisibility}
-				PaperProps={{
-					style: {
-						minWidth: 250
-					}
-				}}>
-				{this.renderDateFilter()}
-			</Menu>
-		</ItemG>
-	}
+	
 	tabs = [
 		{ id: 0, title: "", label: <DeviceHub />, url: `#details` },
 		{ id: 1, title: "", label: <Timeline />, url: `#data` },
@@ -515,7 +480,7 @@ class Device extends Component {
 		{ id: 3, title: "", label: <DeveloperBoard />, url: `#hardware` }
 	]
 	handleRawData = () => {
-		this.setState({ loadingData: true, actionAnchor: null, raw: !this.state.raw }, () => this.handleSwitchDayHourSummary())
+		this.setState({ loadingData: true, raw: !this.state.raw }, () => this.handleSwitchDayHourSummary())
 	}
 
 	render() {
@@ -523,7 +488,6 @@ class Device extends Component {
 		
 		return (
 			<Fragment>
-				
 				<Toolbar
 					noSearch
 					history={this.props.history}

@@ -1,9 +1,10 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Divider, MenuItem } from '@material-ui/core';
+import { Divider, MenuItem, Menu, IconButton } from '@material-ui/core';
 import { ItemGrid, Caption, Info, CustomDateTime, ItemG } from 'components';
 import { dateTimeFormatter } from 'variables/functions';
 import moment from 'moment'
+import { DateRange } from 'variables/icons';
 
 /**
 * @augments {Component<{	classes:object,	to:instanceOf(Date),	from:instanceOf(Date),	t:Function,	dateFilterInputID:number,	handleDateFilter:Function,>}
@@ -13,7 +14,7 @@ class DateFilterMenu extends Component {
 		super(props)
 
 		this.state = {
-			timeType: 2,
+			timeType: props.timeType !== undefined ?  props.timeType : 2,
 		}
 	}
 	timeTypes = [
@@ -85,6 +86,7 @@ class DateFilterMenu extends Component {
 		else {
 			this.setState({ openCustomDate: true })
 		}
+		this.setState({ actionAnchor: null })
 	}
 
 	handleCustomCheckBox = (e) => {
@@ -112,33 +114,63 @@ class DateFilterMenu extends Component {
 			classes={classes}
 		/> : null
 	}
-	
+	handleOpenMenu = e => {
+		this.setState({ actionAnchor: e.currentTarget })
+	}
+	handleCloseMenu= e => {
+		this.setState({ actionAnchor: null })
+	}
+	onChange = (e) => {
+
+	}
 	render() {
 		// const { dateFilterInputID } = this.state
-		const { to, from, t, dateOption  } = this.props
+		const { to, from, t, dateOption } = this.props
+		const { actionAnchor } = this.state
 		let displayTo = dateTimeFormatter(to)
 		let displayFrom = dateTimeFormatter(from)
-		return (<Fragment>
-			{this.renderCustomDateDialog()}
-
-			<ItemG container direction={"column"}>
-				<ItemGrid>
-					<Caption>{this.options[this.options.findIndex(d => d.id === dateOption ? true : false)].label}</Caption>
-					<Info>{`${displayFrom} - ${displayTo}`}</Info>
-				</ItemGrid>
-				<Divider />
-				<MenuItem onClick={this.handleDateFilter} value={0}>{t("filters.dateOptions.today")}</MenuItem>
-				<MenuItem onClick={this.handleDateFilter} value={1}>{t("filters.dateOptions.yesterday")}</MenuItem>
-				<MenuItem onClick={this.handleDateFilter} value={2}>{t("filters.dateOptions.thisWeek")}</MenuItem>
-				<MenuItem onClick={this.handleDateFilter} value={3}>{t("filters.dateOptions.7days")}</MenuItem>
-				<MenuItem onClick={this.handleDateFilter} value={4}>{t("filters.dateOptions.30days")}</MenuItem>
-				<MenuItem onClick={this.handleDateFilter} value={5}>{t("filters.dateOptions.90days")}</MenuItem>
+		return (
+			<div>
+				<IconButton				
+					aria-label="More"
+					aria-owns={actionAnchor ? 'long-menu' : null}
+					aria-haspopup="true"
+					onClick={this.handleOpenMenu}>
+					<DateRange style={{ color: "#fff" }} />
+				</IconButton>
+				<Menu
+					disableAutoFocus
+					disableRestoreFocus
+					id="long-menu"
+					anchorEl={actionAnchor}
+					open={Boolean(actionAnchor)}
+					anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+					onClose={this.handleCloseMenu}
+					getContentAnchorEl={null}
+					PaperProps={{
+						style: {
+							minWidth: 250
+						}
+					}}>
+					<ItemG container direction={"column"}>
+						<ItemGrid>
+							<Caption>{this.options[this.options.findIndex(d => d.id === dateOption ? true : false)].label}</Caption>
+							<Info>{`${displayFrom} - ${displayTo}`}</Info>
+						</ItemGrid>
+						<Divider />
+						<MenuItem onClick={this.handleDateFilter} value={0}>{t("filters.dateOptions.today")}</MenuItem>
+						<MenuItem onClick={this.handleDateFilter} value={1}>{t("filters.dateOptions.yesterday")}</MenuItem>
+						<MenuItem onClick={this.handleDateFilter} value={2}>{t("filters.dateOptions.thisWeek")}</MenuItem>
+						<MenuItem onClick={this.handleDateFilter} value={3}>{t("filters.dateOptions.7days")}</MenuItem>
+						<MenuItem onClick={this.handleDateFilter} value={4}>{t("filters.dateOptions.30days")}</MenuItem>
+						<MenuItem onClick={this.handleDateFilter} value={5}>{t("filters.dateOptions.90days")}</MenuItem>
 			
-				<Divider />
-				<MenuItem onClick={this.handleDateFilter} value={6}>{t("filters.dateOptions.custom")}</MenuItem>
-			</ItemG>
-			
-		</Fragment>
+						<Divider />
+						<MenuItem onClick={this.handleDateFilter} value={6}>{t("filters.dateOptions.custom")}</MenuItem>
+					</ItemG>
+					{this.renderCustomDateDialog()}
+				</Menu>
+			</div>
 		)
 	}
 }
