@@ -75,18 +75,18 @@ class DateFilterMenu extends Component {
 	}
 
 	handleCloseDialog = () => {
-		this.setState({ openCustomDate: false })
+		this.setState({ openCustomDate: false, actionAnchor: null })
 		this.handleSetDate(6)
 	}
 	handleDateFilter = (event) => {
 		let id = event.target.value
 		if (id !== 6) {
 			this.handleSetDate(id)
+			this.setState({ actionAnchor: null })
 		}
 		else {
 			this.setState({ openCustomDate: true })
 		}
-		this.setState({ actionAnchor: null })
 	}
 
 	handleCustomCheckBox = (e) => {

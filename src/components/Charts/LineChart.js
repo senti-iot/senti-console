@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Line } from 'react-chartjs-2';
+import { Line, Chart } from 'react-chartjs-2';
 import { Typography, withStyles, Paper, Grow, CircularProgress } from '@material-ui/core';
 import { ItemG, WeatherIcon, Caption } from 'components';
 import { graphStyles } from './graphStyles';
@@ -7,7 +7,7 @@ import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
 import { compose } from 'recompose';
 import { connect } from 'react-redux'
-
+import './zoom';
 // import { getWeather } from 'variables/dataDevices';
 class LineChart extends PureComponent {
 	constructor(props) {
@@ -89,6 +89,12 @@ class LineChart extends PureComponent {
 							labelString: 'value'
 						}
 					}]
+				},
+				zoom: {
+					enabled: true,
+					drag: true,
+					mode: 'x',
+					onZoom: function (props) { console.log('zoomed'); console.log(props) }
 				}
 			}
 		}
@@ -107,7 +113,11 @@ class LineChart extends PureComponent {
 			return true
 	}
 	componentDidMount = () => {
-		
+		Chart.pluginService.register({
+			afterDraw: function (chart, easing) {
+				// Plugin code.
+			}
+		});
 		this.chart.chartInstance.config.options.elements.point.radius = this.clickEvent() ? 3 : 5 
 		this.chart.chartInstance.config.options.elements.point.hitRadius = this.clickEvent() ? 3 : 5 
 		this.chart.chartInstance.config.options.elements.point.hoverRadius = this.clickEvent() ? 4 : 6 

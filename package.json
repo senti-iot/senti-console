@@ -15,6 +15,7 @@
 		"apisauce": "^0.16.0",
 		"autosuggest-highlight": "^3.1.1",
 		"chart.js": "^2.7.2",
+		"chartjs-plugin-zoom": "^0.6.5",
 		"classnames": "^2.2.6",
 		"core-js": "^2.5.7",
 		"for-each": "^0.3.3",
