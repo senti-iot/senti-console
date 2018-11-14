@@ -7,7 +7,7 @@ import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
 import { compose } from 'recompose';
 import { connect } from 'react-redux'
-import './zoom';
+// import './zoom';
 // import { getWeather } from 'variables/dataDevices';
 class LineChart extends PureComponent {
 	constructor(props) {
@@ -90,12 +90,12 @@ class LineChart extends PureComponent {
 						}
 					}]
 				},
-				zoom: {
-					enabled: true,
-					drag: true,
-					mode: 'x',
-					onZoom: function (props) { console.log('zoomed'); console.log(props) }
-				}
+				// zoom: {
+				// 	enabled: true,
+				// 	drag: true,
+				// 	mode: 'x',
+				// 	// onZoom: function (props) { console.log('zoomed'); console.log(props) }
+				// }
 			}
 		}
 	}
@@ -130,6 +130,21 @@ class LineChart extends PureComponent {
 		})	
 	}
 	componentDidUpdate = (prevProps, prevState) => {
+
+		/**
+		 * 	How the damn zoom Works:
+		 *  1. Sets a min/max moment objects scale on the x axis
+		 *  2. Re renders the chart
+		 * 
+		 *  How to implement in our code:
+		 *  1. In the onZoom function get the minMax from the xAxis scale
+		 *  2. Pass them to the same function as CustomSetRange used by the filter in Device.js
+		 *  3. Create a new function that based on the difference between the dates, sets the appropiate timeType (hour, minute, day, month, etc.)
+		 *  4. Set the "newData" without loading
+		 * 	@debug console.log(this.chart.chartInstance.scales['xAxis'].options.time)
+		 *  */ 
+	
+	
 		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID) {
 			this.setXAxis()
 		}
@@ -183,7 +198,6 @@ class LineChart extends PureComponent {
 		if (!this.clickEvent()) { 
 			left = this.state.chartWidth / 2
 		}
-		console.log(tooltipModel.title)
 		let str = tooltipModel.title[0]
 		var rest = str.substring(0, str.lastIndexOf(" ") + 1);
 		var last = str.substring(str.lastIndexOf(" ") + 1, str.length);
@@ -247,10 +261,16 @@ class LineChart extends PureComponent {
 		})
 	}
 	elementClicked = async (elements) => {
-		if (this.props.onElementsClick) {
+		console.log("clicked")
+		// console.log(this.props)
+		// if (this.props.onElementsClick) {
+		try {
 			await this.props.onElementsClick(elements)
-
 		}
+		catch (e) {
+			console.log(e);
+		}
+		// }
 		this.hideTooltip()
 	}
 	onMouseLeave = () => {

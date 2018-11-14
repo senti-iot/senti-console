@@ -16,7 +16,6 @@ import {
 	LineChart,
 	DoughnutChart,
 	PieChart,
-	DateFilterMenu,
 	ExportModal
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
@@ -38,8 +37,6 @@ class DeviceData extends PureComponent {
 			barDataSets: null,
 			roundDataSets: null,
 			actionAnchor: null,
-			loading: true,
-			dateOption: 3,
 			openDownload: false,
 			display: props.chartType ? props.chartType : 3,
 			visibility: false,
@@ -53,7 +50,7 @@ class DeviceData extends PureComponent {
 		{ id: 0, format: "lll dddd", chart: "minute" },
 		{ id: 1, format: "lll dddd", chart: "hour" },
 		{ id: 2, format: "ll dddd", chart: "day" },
-		{ id: 3, format: "ll dddd", chart: "day" },
+		{ id: 3, format: "ll dddd", chart: "month" },
 	]
 	visibilityOptions = [
 		{ id: 0, icon: <PieChartRounded />, label: this.props.t("charts.type.pie") },
@@ -291,32 +288,22 @@ class DeviceData extends PureComponent {
 					case 1:
 						startDate = moment(date).startOf('hour')
 						endDate = moment(date).endOf('hour')
-						this.setState({
-							from: startDate,
-							to: endDate,
-							dateOption: 6
-						}, await this.getWifiMinutely)
+						this.props.handleSetDate(6, endDate, startDate, 0)
 						break
 					case 2:
 						startDate = moment(date).startOf('day')
 						endDate = moment(date).endOf('day')
-						this.setState({
-							from: startDate,
-							to: endDate,
-							dateOption: 6
-						}, await this.getWifiHourly)
+						this.props.handleSetDate(6, endDate, startDate, 1)
 						break;
 					default:
 						break;
 				}
 			}
 			catch (error) {
+				console.log(error)
 			}
 		}
 	}
-	// handleCustomCheckBox = (e) => {
-	// 	this.setState({ timeType: parseInt(e.target.value, 10) })
-	// }
 	handleCancelCustomDate = () => {
 		this.setState({
 			loading: false, openCustomDate: false
@@ -339,7 +326,7 @@ class DeviceData extends PureComponent {
 						title={this.state.title}
 						single //temporary
 						unit={this.timeTypes[this.props.timeType]}
-						onElementsClick={this.handleZoomOnData}
+						// onElementsClick={this.handleZoomOnData}
 						setHoverID={this.props.setHoverID}
 						data={this.state.roundDataSets}
 					/>
@@ -352,7 +339,7 @@ class DeviceData extends PureComponent {
 							title={this.state.title}
 							single //temporary
 							unit={this.timeTypes[this.props.timeType]}
-							onElementsClick={this.handleZoomOnData}
+							// onElementsClick={this.handleZoomOnData}
 							setHoverID={this.props.setHoverID}
 							data={this.state.roundDataSets}
 						/></div>
@@ -387,19 +374,19 @@ class DeviceData extends PureComponent {
 		}
 	}
 
-	renderDateFilter = () => {
-		const { classes, t } = this.props
-		const { dateOption, to, from } = this.state
-		return <DateFilterMenu
-			dateOption={dateOption}
-			classes={classes}
-			to={to}
-			from={from}
-			t={t}
-			handleSetDate={this.handleSetDate}
-			handleCustomDate={this.handleCustomDate}
-		/>
-	}
+	// renderDateFilter = () => {
+	// 	const { classes, t } = this.props
+	// 	const { dateOption, to, from } = this.state
+	// 	return <DateFilterMenu
+	// 		dateOption={dateOption}
+	// 		classes={classes}
+	// 		to={to}
+	// 		from={from}
+	// 		t={t}
+	// 		handleSetDate={this.handleSetDate}
+	// 		handleCustomDate={this.handleCustomDate}
+	// 	/>
+	// }
 	renderMenu = () => {
 		const { actionAnchor, actionAnchorVisibility } = this.state
 		const { classes, t } = this.props
