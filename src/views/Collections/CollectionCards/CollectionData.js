@@ -208,6 +208,8 @@ class CollectionData extends PureComponent {
 		dataSet = {
 			name: collection.name,
 			id: collection.id,
+			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
+			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			data: data,
 			color: teal[500]
 		}
@@ -231,6 +233,8 @@ class CollectionData extends PureComponent {
 		dataSet = {
 			name: collection.name,
 			id: collection.id,
+			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
+			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			data: data,
 			color: teal[500]
 		}
@@ -255,6 +259,8 @@ class CollectionData extends PureComponent {
 		dataSet = {
 			name: collection.name,
 			id: collection.id,
+			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
+			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			data: data,
 			color: teal[500]
 		}
@@ -279,6 +285,8 @@ class CollectionData extends PureComponent {
 		dataSet = {
 			name: collection.name,
 			id: collection.id,
+			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
+			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			data: data,
 			color: teal[500]
 		}

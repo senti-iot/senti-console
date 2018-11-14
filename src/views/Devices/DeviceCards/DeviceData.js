@@ -211,6 +211,8 @@ class DeviceData extends PureComponent {
 		dataSet = {
 			name: device.name,
 			id: device.id,
+			lat: device.lat,
+			long: device.long,
 			data: data,
 			color: teal[500]
 		}

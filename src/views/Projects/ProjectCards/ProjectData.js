@@ -170,6 +170,8 @@ class ProjectData extends PureComponent {
 					id: d.id,
 					backgroundColor: d.color,
 					borderColor: d.color,
+					lat: d.lat,
+					long: d.long,
 					borderWidth: this.props.hoverID === d.id ? 8 : 3,
 					fill: false,
 					label: [d.name],
@@ -285,7 +287,9 @@ class ProjectData extends PureComponent {
 				name: d.name,
 				id: d.id,
 				data: data,
-				color: d.color
+				color: d.color,
+				lat: d.activeDevice ? d.activeDevice.lat : 0,
+				long: d.activeDevice ? d.activeDevice.long : 0
 			}
 			return dataArr.push(dataSet)
 		}))
