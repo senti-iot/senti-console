@@ -111,7 +111,6 @@ class Project extends Component {
 		}, [])
 		let newState = setHourlyData(dataArr, from, to, hoverID)
 		this.setState({
-			...this.state,
 			dataArr: dataArr,
 			loadingData: false,
 			timeType: 1,
@@ -144,7 +143,6 @@ class Project extends Component {
 		}, [])
 		let newState = setMinutelyData(dataArr, from, to, hoverID)
 		this.setState({
-			...this.state,
 			dataArr: dataArr,
 			loadingData: false,
 			timeType: 0,
@@ -177,7 +175,6 @@ class Project extends Component {
 		}, [])
 		let newState = setDailyData(dataArr, from, to, hoverID)
 		this.setState({
-			...this.state,
 			dataArr: dataArr,
 			loadingData: false,
 			timeType: 2,
@@ -209,7 +206,6 @@ class Project extends Component {
 		}, [])
 		let newState = setSummaryData(dataArr, from, to, hoverID)
 		this.setState({
-			...this.state,
 			dataArr: dataArr,
 			loadingData: false,
 			timeType: 3,
@@ -365,37 +361,39 @@ class Project extends Component {
 		this.setState({ openDelete: false })
 	}
 	setHoverID = (id) => {
+		console.log(id)
 		if (id !== this.state.hoverID)
 		{
-			this.setState({ hoverID: id })
-			this.hoverGrow()
+			this.setState({ hoverID: id }, this.hoverGrow)
 		}
 		
 	}
 	hoverGrow = () => {
-		const { timeType, dataArr, to, from, hoverID  } = this.state
-		let newState = {}
-		switch (timeType) {
-			case 0:
-				newState = setMinutelyData(dataArr, from, to, hoverID)
-				break;
-			case 1:
-				newState = setHourlyData(dataArr, from, to, hoverID)
-				break
-			case 2:
-				newState = setDailyData(dataArr, from, to, hoverID)
-				break
-			case 3:
-				newState = setSummaryData(dataArr, from, to, hoverID)
-				break
-			default:
-				break;
+		const { timeType, dataArr, to, from, hoverID } = this.state
+		if (dataArr.findIndex(dc => dc.id === hoverID) !== -1 || hoverID === 0) {
+			let newState = {}
+			switch (timeType) {
+				case 0:
+					newState = setMinutelyData(dataArr, from, to, hoverID)
+					break;
+				case 1:
+					newState = setHourlyData(dataArr, from, to, hoverID)
+					break
+				case 2:
+					newState = setDailyData(dataArr, from, to, hoverID)
+					break
+				case 3:
+					newState = setSummaryData(dataArr, from, to, hoverID)
+					break
+				default:
+					break;
+			}
+
+			this.setState({
+				...newState
+			})
 		}
 		
-		this.setState({
-			...this.state,
-			...newState
-		})
 	}
 	renderDeleteDialog = () => {
 		const { openDelete } = this.state
@@ -491,8 +489,8 @@ class Project extends Component {
 							<ProjectCollections 
 								setHoverID={this.setHoverID} 
 								t={t}
-							 project={project}
-							  {...rp} />
+							 	project={project}
+							  	{...rp} />
 						</ItemGrid >
 						{project.devices ? <ItemGrid xs={12} noMargin id="map">
 							<ProjectMap
