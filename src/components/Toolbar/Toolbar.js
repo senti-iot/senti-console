@@ -32,20 +32,22 @@ const styles = theme => ({
 		height: 41,
 		minHeight: 41,
 		maxHeight: 41,
-		padding: "0 8px",
+		paddingLeft: 0,
 		// marginRight: 8,
+		// paddingLeft: 24,
 		marginLeft: 'auto',
 		// borderLeft: "1px solid rgb(255, 255, 255, 0.5)"
 	},
 	dividerContainer: {
+		marginLeft: "auto",
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
-		height: 41,
+		height: 48,
 	},
 	divider: {
 		width: 2,
-		height: 30,
+		height: 32,
 		background: "rgb(255, 255, 255, 0.5)",
 	},
 	noOverflow: {
@@ -97,11 +99,9 @@ class Toolbar extends PureComponent {
 					suggestions={data ? suggestionGen(data) : []}
 					handleFilterKeyword={handleFilterKeyword}
 					searchValue={filters.keyword} />}
-				{
-					<ToolBar classes={{ root: classes.contentToolbar }}>
-						{content}
-					</ToolBar>
-				}
+				{content ? <ToolBar classes={{ root: classes.contentToolbar }}>
+					{content}
+				</ToolBar> : null}
 			</AppBar>
 		)
 	}

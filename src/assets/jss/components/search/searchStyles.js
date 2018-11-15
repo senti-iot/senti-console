@@ -6,10 +6,15 @@ const searchStyles = theme => ({
 		borderRadius: 0,
 	},
 	suggestContainer: {
-		width: "100%",
+		// width: "100%",
 		// [theme.breakpoints.down("md")]: {
 		// 	width: "auto"
 		// },
+		[theme.breakpoints.down("xs")]: {
+			width: 72,
+			marginLeft: 0,
+		},
+		marginLeft: "auto",
 		position: "relative",
 		[theme.breakpoints.down('sm')]: {
 			position: 'initial'
