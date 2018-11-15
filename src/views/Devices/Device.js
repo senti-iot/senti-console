@@ -39,7 +39,7 @@ class Device extends Component {
 			openAssignOrg: false,
 			//End Assign/Unassign
 			//Map
-			loadingMap: false,
+			loadingMap: true,
 			heatData: null,
 			//End Map
 			device: null,
@@ -359,6 +359,7 @@ class Device extends Component {
 			...newState
 		})
 	}
+
 	snackBarMessages = (msg) => {
 		const { s, t } = this.props
 		const { device, oldCollection } = this.state
@@ -588,6 +589,7 @@ class Device extends Component {
 								from={this.state.from}
 								to={this.state.to}
 								device={device}
+								dateOption={this.state.dateOption}
 								raw={this.state.raw}
 								handleRawData={this.handleRawData}
 								history={this.props.history}
@@ -600,7 +602,7 @@ class Device extends Component {
 								classes={this.props.classes}
 								heatData={this.state.heatData}
 								loading={this.state.loadingMap}
-								device={device}
+								device={this.state.heatData}
 								weather={this.state.weather}
 								t={this.props.t}
 							/>

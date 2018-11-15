@@ -14,6 +14,7 @@ import { getDataHourly, getDataMinutely, getDataSummary, getDataDaily } from 'va
 import { setHourlyData, setDailyData, setSummaryData, setMinutelyData } from 'components/Charts/DataModel';
 import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
+import { AssignmentTurnedIn, Timeline, Map, DataUsage, Person } from 'variables/icons';
 class Project extends Component {
 	constructor(props) {
 		super(props)
@@ -25,6 +26,7 @@ class Project extends Component {
 			timeType: 2,
 			raw: false,
 			project: {},
+			heatData: [],
 			openAssignDC: false,
 			regFilters: {
 				keyword: '',
@@ -45,19 +47,21 @@ class Project extends Component {
 		props.setHeader('', false, '', "projects")
 
 	}
-	timeTypes = [
-		{ id: 0, format: "HH:mm", chart: "minute" },
-		{ id: 1, format: "HH:mm", chart: "hour" },
-		{ id: 2, format: "ll", chart: "day" },
-		{ id: 3, format: "ll", chart: "day" },
+	format = "YYYY-MM-DD+HH:mm"
+	tabs = [
+		{ id: 0, title: "", label: <AssignmentTurnedIn />, url: `#details` },
+		{ id: 1, title: "", label: <Timeline />, url: `#data` },
+		{ id: 3, title: "", label: <DataUsage />, url: `#collections` },
+		{ id: 2, title: "", label: <Map />, url: `#map` },
+		{ id: 4, title: "", label: <Person />, url: `#contact` }
 	]
-
 	componentDidMount = async () => {
 		const { history, match } = this.props
 		if (match)
 			if (match.params.id) {
 				await this.getProject(match.params.id)
 				this.getWifiDaily()
+				this.getHeatMapData()
 			}
 			else {
 				history.push('/404')
@@ -210,6 +214,35 @@ class Project extends Component {
 			loadingData: false,
 			timeType: 3,
 			...newState
+		})
+	}
+	getHeatMapData = async () => {
+		// const { device } = this.props
+		const { from, to, raw, project } = this.state
+		let startDate = moment(from).format(this.format)
+		let endDate = moment(to).format(this.format)
+		let dataArr = []
+		await Promise.all(project.dataCollections.map(async d => {
+			let dataSet = null
+			let data = await getDataSummary(d.id, startDate, endDate, raw)
+			dataSet = {
+				name: d.name,
+				id: d.id,
+				data: data,
+				color: d.color,
+				lat: d.activeDevice ? d.activeDevice.lat : 0,
+				long: d.activeDevice ? d.activeDevice.long : 0
+			}
+			return dataArr.push(dataSet)
+		}))
+		dataArr = dataArr.reduce((newArr, d) => {
+			if (d.data !== null)
+				newArr.push(d)
+			return newArr
+		}, [])
+		this.setState({
+			heatData: dataArr,
+			loadingMap: false
 		})
 	}
 	/**
@@ -398,14 +431,15 @@ class Project extends Component {
 				{!loading ?
 					<GridContainer justify={'center'} alignContent={'space-between'}>
 
-						<ItemGrid xs={12} noMargin>
-							<ProjectDetails t={t}
+						<ItemGrid xs={12} noMargin id="details">
+							<ProjectDetails
+								t={t}
 								project={project} {...rp}
 								deleteProject={this.handleOpenDeleteDialog}
 								handleOpenAssignCollection={this.handleOpenAssignCollection}
 							/>
 						</ItemGrid>
-						<ItemGrid xs={12} noMargin>
+						<ItemGrid xs={12} noMargin id="data">
 							<ProjectData
 								barDataSets={barDataSets}
 								roundDataSets={roundDataSets}
@@ -417,24 +451,32 @@ class Project extends Component {
 								to={to}
 								project={project}
 								raw={raw}
+								dateOption={this.state.dateOption}
 								handleRawData={this.handleRawData}
 								history={this.props.history}
 								match={this.props.match}
 								t={this.props.t}
 							/>
 						</ItemGrid>
-						<ItemGrid xs={12} noMargin>
-							<ProjectCollections setHoverID={this.setHoverID} t={t} project={project} {...rp} />
+						<ItemGrid xs={12} noMargin id="collections">
+							<ProjectCollections 
+								setHoverID={this.setHoverID} 
+								t={t}
+							 project={project}
+							  {...rp} />
 						</ItemGrid >
-						{project.devices ? <ItemGrid xs={12} noMargin>
+						{project.devices ? <ItemGrid xs={12} noMargin id="map">
 							<ProjectMap
-								devices={project.devices}
+								devices={this.state.heatData}
 								t={t}
 							/>
 						</ItemGrid> : null
 						}
-						<ItemGrid xs={12} noMargin>
-							<ProjectContact history={this.props.history} t={t} project={project} />
+						<ItemGrid xs={12} noMargin id="contact" >
+							<ProjectContact
+								history={this.props.history}
+							  	t={t} 
+							  	project={project} />
 						</ItemGrid>
 						{this.renderDeleteDialog()}
 						<AssignDCs

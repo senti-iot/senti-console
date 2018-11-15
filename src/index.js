@@ -12,10 +12,10 @@ registerServiceWorker()
 var rootEl = document.getElementById('root')
 ReactDOM.render(<App />, rootEl)
 
-if (process.env.NODE_ENV !== 'production') {
-	const { whyDidYouUpdate } = require('why-did-you-update');
-	whyDidYouUpdate(React, { exclude: [/^Connect/, /^Route/, /^NoSsr/] });
-}
+// if (process.env.NODE_ENV !== 'production') {
+// 	const { whyDidYouUpdate } = require('why-did-you-update');
+// 	whyDidYouUpdate(React, { exclude: [/^Connect/, /^Route/, /^NoSsr/] });
+// }
 //New Content Dialog Debug
 // var rootUpdate = document.getElementById("update")
 // ReactDOM.render(<NewContent />, rootUpdate)

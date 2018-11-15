@@ -43,6 +43,15 @@ class ProjectData extends PureComponent {
 
 	displayFormat = "DD MMMM YYYY HH:mm"
 	image = null
+	options = [
+		{ id: 0, label: this.props.t("filters.dateOptions.today") },
+		{ id: 1, label: this.props.t("filters.dateOptions.yesterday") },
+		{ id: 2, label: this.props.t("filters.dateOptions.thisWeek") },
+		{ id: 3, label: this.props.t("filters.dateOptions.7days") },
+		{ id: 4, label: this.props.t("filters.dateOptions.30days") },
+		{ id: 5, label: this.props.t("filters.dateOptions.90days") },
+		{ id: 6, label: this.props.t("filters.dateOptions.custom") },
+	]
 	timeTypes = [
 		{ id: 0, format: "lll dddd", chart: "minute" },
 		{ id: 1, format: "lll dddd", chart: "hour" },
@@ -55,38 +64,6 @@ class ProjectData extends PureComponent {
 		{ id: 2, icon: <BarChartIcon />, label: this.props.t("charts.type.bar") },
 		{ id: 3, icon: <ShowChart />, label: this.props.t("charts.type.line") }
 	]
-	
-	componentDidUpdate = (prevProps) => {
-		// if (prevProps.timeType !== this.props.timeType) { 
-		// 	this.customSetDisplay()
-		// }
-		// if ( prevProps.dataArr !== this.props.dataArr)
-		// {
-		// 	this.customSetDisplay()
-		// }
-		// if (prevProps.loading === true && (prevProps.loading !== this.props.loading))
-		// 	this.customSetDisplay()
-	}
-	// setSummaryData = () => {
-	// 	const { dataArr, from, to, hoverID } = this.props
-	// 	let newState = setSummaryData(dataArr, from, to, hoverID)
-	// 	this.setState({ ...this.state, ...newState })
-	// }
-	// setDailyData = () => {
-	// 	const { dataArr, from, to, hoverID } = this.props
-	// 	let newState = setDailyData(dataArr, from, to, hoverID)
-	// 	this.setState({ ...this.state, ...newState })
-	// }
-	// setHourlyData = () => {
-	// 	const { dataArr, from, to, hoverID } = this.props
-	// 	let newState = setHourlyData(dataArr, from, to, hoverID)
-	// 	this.setState({ ...this.state, ...newState })
-	// }
-	// setMinutelyData = () => {
-	// 	const { dataArr, from, to, hoverID } = this.props
-	// 	let newState = setMinutelyData(dataArr, from, to, hoverID)
-	// 	this.setState({ ...this.state, ...newState })
-	// }
 
 	getImage = () => {
 		// var canvas = document.getElementsByClassName("chartjs-render-monitor");
@@ -97,12 +74,7 @@ class ProjectData extends PureComponent {
 			
 		// }
 	}
-	componentDidMount = async () => {
-		// this._isMounted = 1
-		// if (this._isMounted) {
-		// 	return this.props.loading ? null : this.customSetDisplay()
-		// }
-	}
+
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
@@ -115,56 +87,11 @@ class ProjectData extends PureComponent {
 		this.setState({ actionAnchor: null });
 	}
 
-	customSetDisplay = () => {
-		const { display } = this.state
-		const { timeType } = this.props
-		
-		if (display !== 0 || display !== 1) {
-			console.log(timeType)
-			switch (timeType) {
-				case 0:
-					this.setMinutelyData()
-					break;
-				case 1:
-					this.setHourlyData()
-					break
-				case 2:
-					this.setDailyData()
-					break
-				case 3:
-					this.setSummaryData()
-					break
-				default:
-					break;
-			}
-		}
-		else {
-			this.setSummaryData()
-		}
-	}
-
-	handleSwitchVisibility = () => {
-		const { display } = this.state
-		
-		switch (display) {
-			case 0:
-			case 1:
-				this.setSummaryData()
-				break;
-			case 2:
-			case 3:
-				this.customSetDisplay()
-				break
-			default:
-				break;
-		}
-	}
 	handleVisibility = id => (event) => {
 		if (event)
 			event.preventDefault()
-		this.setState({ display: id, loading: true, actionAnchorVisibility: null }, this.handleSwitchVisibility)
+		this.setState({ display: id, loading: true, actionAnchorVisibility: null })
 	}
-
 
 	handleCustomDate = date => e => {
 		this.setState({
@@ -270,19 +197,6 @@ class ProjectData extends PureComponent {
 		}
 	}
 
-	// renderDateFilter = () => {
-	// 	const { classes, t } = this.props
-	// 	const { dateOption, to, from } = this.state
-	// 	return <DateFilterMenu
-	// 		dateOption={dateOption}
-	// 		classes={classes}
-	// 		to={to}
-	// 		from={from}
-	// 		t={t}
-	// 		handleSetDate={this.handleSetDate}
-	// 		handleCustomDate={this.handleCustomDate}
-	// 	/>
-	// }
 	renderMenu = () => {
 		const { actionAnchor, actionAnchorVisibility } = this.state
 		const { classes, t } = this.props
@@ -394,7 +308,7 @@ class ProjectData extends PureComponent {
 	}
 
 	render() {
-		const { raw, t, loading, to, from } = this.props
+		const { raw, t, loading, to, from, dateOption } = this.props
 		// const {  openDownload } = this.state
 		let displayTo = dateTimeFormatter(to)
 		let displayFrom = dateTimeFormatter(from)
@@ -402,7 +316,7 @@ class ProjectData extends PureComponent {
 			<Fragment>
 				<InfoCard
 					title={t("collections.cards.data")}
-					subheader={`${raw ? t("collections.rawData") : t("collections.calibratedData")}, ${displayFrom} - ${displayTo}`}
+					subheader={`${this.options[dateOption].label}, ${raw ? t("collections.rawData") : t("collections.calibratedData")}, ${displayFrom} - ${displayTo}`}
 					avatar={<Timeline />}
 					noExpand
 					topAction={this.renderMenu()}
