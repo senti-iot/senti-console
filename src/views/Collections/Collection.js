@@ -144,7 +144,9 @@ class Collection extends Component {
 			loadingData: loading !== undefined ? loading : true,
 		}, this.handleSwitchDayHourSummary)
 	}
-
+	handleRawData = () => {
+		this.setState({ loadingData: true, raw: !this.state.raw }, () => this.handleSwitchDayHourSummary())
+	}
 	handleSwitchDayHourSummary = () => {
 		let id = this.state.dateOption
 		const { to, from } = this.state

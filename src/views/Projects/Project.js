@@ -360,6 +360,9 @@ class Project extends Component {
 	handleCloseDeleteDialog = () => {
 		this.setState({ openDelete: false })
 	}
+	handleRawData = () => {
+		this.setState({ loadingData: true, raw: !this.state.raw }, () => this.handleSwitchDayHourSummary())
+	}
 	setHoverID = (id) => {
 		if (id !== this.state.hoverID)
 		{
