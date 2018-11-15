@@ -361,7 +361,6 @@ class Project extends Component {
 		this.setState({ openDelete: false })
 	}
 	setHoverID = (id) => {
-		console.log(id)
 		if (id !== this.state.hoverID)
 		{
 			this.setState({ hoverID: id }, this.hoverGrow)
