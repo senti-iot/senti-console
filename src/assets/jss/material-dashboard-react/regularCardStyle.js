@@ -58,7 +58,8 @@ const regularCardStyle = theme => ({
 		maxHeight: 500
 	},
 	smallCardCustomHeight: {
-		height: "calc(100% - 148px)"
+		// height: "calc(100% - 148px)"
+		flex: 1
 	},
 	alignCenter: {
 		display: "flex",
