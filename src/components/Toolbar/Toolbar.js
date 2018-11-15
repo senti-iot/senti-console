@@ -1,14 +1,16 @@
 
 
 import React, { PureComponent } from 'react'
-import { AppBar, Tabs, Tab, withStyles, Toolbar as ToolBar } from '@material-ui/core';
+import { AppBar, Tabs, Tab, withStyles, Toolbar as ToolBar, withWidth } from '@material-ui/core';
 import Search from 'components/Search/Search';
 import { suggestionGen } from 'variables/functions'
 import { NavHashLink as Link } from 'react-router-hash-link';
 
 const styles = theme => ({
 	tab: {
-		minWidth: 52
+		// [theme.breakpoints.down("xs")]: {
+		// 	minWidth: 56
+		// }
 	},
 
 	appBar: {
@@ -24,14 +26,27 @@ const styles = theme => ({
 	},
 	contentToolbar: { 
 		// display: 'flex',
+		// alignItems: "flex-start",
 		// flexFlow: "row",
 		// justifyContent: 'space-between',
 		height: 41,
 		minHeight: 41,
 		maxHeight: 41,
-		padding: 0,
-		marginRight: 8,
+		padding: "0 8px",
+		// marginRight: 8,
 		marginLeft: 'auto',
+		// borderLeft: "1px solid rgb(255, 255, 255, 0.5)"
+	},
+	dividerContainer: {
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+		height: 41,
+	},
+	divider: {
+		width: 2,
+		height: 30,
+		background: "rgb(255, 255, 255, 0.5)",
 	},
 	noOverflow: {
 		overflow: 'hidden'
@@ -57,10 +72,10 @@ class Toolbar extends PureComponent {
 		
 	}
 	render() {
-		const { classes, tabs, data, noSearch, filters, handleFilterKeyword, content } = this.props
+		const { classes, tabs, data, noSearch, filters, handleFilterKeyword, content, width } = this.props
 		return (
 			<AppBar position={'sticky'} classes={{ root: classes.appBar }}>
-				{tabs ? <Tabs value={this.state.route} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
+				{tabs ? <Tabs value={this.state.route} scrollable={width === "xs" ? true : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 					{tabs ? tabs.map((t, i) => {
 						return <Tab title={t.title}
 							component={(props) => <Link {...props} scroll={this.handleScroll } style={{ color: "#fff" }} />}
@@ -74,6 +89,9 @@ class Toolbar extends PureComponent {
 							to={`${t.url}`} />
 					}) : null}
 				</Tabs> : null}
+				{width === "xs" ? <div className={classes.dividerContainer}>
+					<div className={classes.divider} />
+				</div> : null}
 				{noSearch ? null : <Search
 					right
 					suggestions={data ? suggestionGen(data) : []}
@@ -89,4 +107,4 @@ class Toolbar extends PureComponent {
 	}
 }
 
-export default withStyles(styles)(Toolbar)
+export default withWidth()(withStyles(styles)(Toolbar))

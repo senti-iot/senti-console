@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Divider, MenuItem, Menu, IconButton } from '@material-ui/core';
 import { ItemGrid, Caption, Info, CustomDateTime, ItemG } from 'components';
@@ -130,7 +130,7 @@ class DateFilterMenu extends Component {
 		let displayTo = dateTimeFormatter(to)
 		let displayFrom = dateTimeFormatter(from)
 		return (
-			<div>
+			<Fragment>
 				<IconButton				
 					aria-label="More"
 					aria-owns={actionAnchor ? 'long-menu' : null}
@@ -170,7 +170,7 @@ class DateFilterMenu extends Component {
 					</ItemG>
 					{this.renderCustomDateDialog()}
 				</Menu>
-			</div>
+			</Fragment>
 		)
 	}
 }
