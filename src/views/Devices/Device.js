@@ -480,6 +480,10 @@ class Device extends Component {
 		}
 	}
 
+	handleRawData = () => {
+		this.setState({ loadingData: true, raw: !this.state.raw }, () => this.handleSwitchDayHourSummary())
+	}
+
 	renderImageLoader = () => {
 		return <CircularLoader notCentered />
 	}
@@ -514,7 +518,6 @@ class Device extends Component {
 		</Dialog>
 	}
 
-
 	renderMenu = () => {
 		const { classes, t } = this.props
 		const { dateOption, to, from, timeType } = this.state
@@ -528,12 +531,6 @@ class Device extends Component {
 			handleSetDate={this.handleSetDate}
 			handleCustomDate={this.handleCustomDate}
 		/>
-	}
-
-	
-
-	handleRawData = () => {
-		this.setState({ loadingData: true, raw: !this.state.raw }, () => this.handleSwitchDayHourSummary())
 	}
 
 	render() {

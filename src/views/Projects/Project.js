@@ -44,7 +44,8 @@ class Project extends Component {
 			openDelete: false,
 			hoverID: 0,
 		}
-		props.setHeader('', false, '', "projects")
+		let prevURL = props.location.prevURL ? props.location.prevURL : '/projects/list'
+		props.setHeader(props.t("collections.fields.project"), true, prevURL, "projects")
 
 	}
 	format = "YYYY-MM-DD+HH:mm"
@@ -68,14 +69,12 @@ class Project extends Component {
 			}
 	}
 	getProject = async id => {
-		const { history, location, setHeader } = this.props
+		const { history } = this.props
 
 		await getProject(id).then(async rs => {
 			if (rs === null)
 				history.push('/404')
 			else {
-				let prevURL = location.prevURL ? location.prevURL : '/projects/list'
-				setHeader(rs.title, true, prevURL, "projects")
 				this.setState({
 					project: {
 						...rs,
