@@ -6,20 +6,25 @@ import {
 } from '@material-ui/core';
 import {
 	Timeline, MoreVert,
-	DonutLargeRounded, PieChartRounded, BarChart as BarChartIcon, ExpandMore, Visibility, ShowChart
+	DonutLargeRounded,
+	PieChartRounded,
+	BarChart as BarChartIcon,
+	ExpandMore, Visibility, ShowChart, /* CloudDownload */
 } from "variables/icons"
 import {
-	CircularLoader, Caption, ItemG, CustomDateTime, InfoCard, BarChart,
+	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
 	LineChart,
 	DoughnutChart,
-	PieChart } from 'components';
+	PieChart,
+	// ExportModal
+} from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
-import { getDataSummary, getDataDaily, getDataHourly, getDataMinutely, /* getDataHourly */ } from 'variables/dataCollections';
+// import { getDataSummary, getDataDaily, getDataHourly, getDataMinutely, /* getDataHourly */ } from 'variables/dataDevices';
 import classNames from 'classnames';
-import { dateTimeFormatter, datesToArr, hoursToArr, minutesToArray } from 'variables/functions';
 import { connect } from 'react-redux'
 import moment from 'moment'
-import teal from '@material-ui/core/colors/teal'
+import { dateTimeFormatter } from 'variables/functions'
+// import DevicePDF from 'components/Exports/DevicePDF';
 
 class ProjectData extends PureComponent {
 	constructor(props) {
@@ -28,36 +33,21 @@ class ProjectData extends PureComponent {
 		this.state = {
 			from: moment().subtract(7, 'd').startOf('day'),
 			to: moment().endOf('day'),
-			barDataSets: null,
-			roundDataSets: null,
 			actionAnchor: null,
-			loading: true,
-			dateFilterInputID: 3,
-			openCustomDate: false,
-			display: props.chartType,
+			openDownload: false,
+			display: props.chartType ? props.chartType : 3,
 			visibility: false,
-			timeType: 2,
-			raw: false,
 		}
 	}
-	format = "YYYY-MM-DD+HH:mm"
+
 
 	displayFormat = "DD MMMM YYYY HH:mm"
-
-	options = [
-		{ id: 0, label: this.props.t("filters.dateOptions.today") },
-		{ id: 1, label: this.props.t("filters.dateOptions.yesterday") },
-		{ id: 2, label: this.props.t("filters.dateOptions.thisWeek") },
-		{ id: 3, label: this.props.t("filters.dateOptions.7days") },
-		{ id: 4, label: this.props.t("filters.dateOptions.30days") },
-		{ id: 5, label: this.props.t("filters.dateOptions.90days") },
-		{ id: 6, label: this.props.t("filters.dateOptions.custom") },
-	]
+	image = null
 	timeTypes = [
-		{ id: 0, format: "lll", chart: "minute" },
-		{ id: 1, format: "lll", chart: "hour" },
-		{ id: 2, format: "ll", chart: "day" },
-		{ id: 3, format: "ll", chart: "day" },
+		{ id: 0, format: "lll dddd", chart: "minute" },
+		{ id: 1, format: "lll dddd", chart: "hour" },
+		{ id: 2, format: "ll dddd", chart: "day" },
+		{ id: 3, format: "ll dddd", chart: "month" },
 	]
 	visibilityOptions = [
 		{ id: 0, icon: <PieChartRounded />, label: this.props.t("charts.type.pie") },
@@ -67,250 +57,51 @@ class ProjectData extends PureComponent {
 	]
 	
 	componentDidUpdate = (prevProps) => {
-		if (prevProps.hoverID !== this.props.hoverID)
-			this.customSetDisplay()
+		// if (prevProps.timeType !== this.props.timeType) { 
+		// 	this.customSetDisplay()
+		// }
+		// if ( prevProps.dataArr !== this.props.dataArr)
+		// {
+		// 	this.customSetDisplay()
+		// }
+		// if (prevProps.loading === true && (prevProps.loading !== this.props.loading))
+		// 	this.customSetDisplay()
 	}
-	setSummaryData = () => {
-		const { dataArr, from, to } = this.state
-		let displayTo = dateTimeFormatter(to)
-		let displayFrom = dateTimeFormatter(from)
-		this.setState({
-			title: `${displayFrom} - ${displayTo}`,
-			loading: false,
-			timeType: 3,
-			roundDataSets: {
-				labels: dataArr.map(d => d.name),
-				datasets: [{
-					backgroundColor: dataArr.map(d => d.color),
-					fill: false,
-					data: dataArr.map(d => d.data)
-				}]
-			}
-		})
-	}
-	setDailyData = () => {
-		const { dataArr, from, to } = this.state
-		this.setState({
-			loading: false,
-			timeType: 2,
-			lineDataSets: {
-				labels: datesToArr(from, to),
-				datasets: dataArr.map((d) => ({
-					id: d.id,
-					lat: d.lat,
-					long: d.long,
-					backgroundColor: d.color,
-					borderColor: d.color,
-					borderWidth: this.props.hoverID === d.id ? 8 : 3,
-					fill: false,
-					label: [d.name],
-					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
-				}))
-			},
-			barDataSets: {
-				labels: datesToArr(from, to),
-				datasets: dataArr.map((d) => ({
-					id: d.id,
-					lat: d.lat,
-					long: d.long,
-					backgroundColor: d.color,
-					borderColor: teal[500],
-					borderWidth: this.props.hoverID === d.id ? 4 : 0,
-					fill: false,
-					label: [d.name],
-					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
-				}))
-			},
-			roundDataSets: null
-		})
-	}
-	setHourlyData = () => {
-		const { dataArr, from, to } = this.state
-		this.setState({
-			loading: false,
-			timeType: 1,
-			lineDataSets: {
-				labels: hoursToArr(from, to),
-				datasets: dataArr.map((d) => ({
-					id: d.id,
-					lat: d.lat,
-					long: d.long,
-					backgroundColor: d.color,
-					borderColor: d.color,
-					borderWidth: this.props.hoverID === d.id ? 8 : 3,
-					fill: false,
-					label: [d.name],
-					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
-				}))
-			},
-			barDataSets: {
-				labels: hoursToArr(from, to),
-				datasets: dataArr.map((d) => ({
-					id: d.id,
-					lat: d.lat,
-					long: d.long,
-					backgroundColor: d.color,
-					borderColor: d.color,
-					borderWidth: this.props.hoverID === d.id ? 4 : 0,
-					fill: false,
-					label: [d.name],
-					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
-				}))
-			},
-			roundDataSets: null
-		})
-	}
-	setMinutelyData = () => {
-		const { dataArr, from, to } = this.state
-		this.setState({
-			loading: false,
-			lineDataSets: {
-				labels: minutesToArray(from, to),
-				datasets: dataArr.map((d) => ({
-					id: d.id,
-					backgroundColor: d.color,
-					borderColor: d.color,
-					borderWidth: this.props.hoverID === d.id ? 8 : 3,
-					fill: false,
-					label: [d.name],
-					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
-				})),
-				barDataSets: {
-					labels: hoursToArr(from, to),
-					datasets: dataArr.map((d) => ({
-						id: d.id,
-						backgroundColor: d.color,
-						borderColor: d.color,
-						borderWidth: this.props.hoverID === d.id ? 4 : 0,
-						fill: false,
-						label: [d.name],
-						data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
-					}))
-				},
-				roundDataSets: null
-			}
-		})
-	}
+	// setSummaryData = () => {
+	// 	const { dataArr, from, to, hoverID } = this.props
+	// 	let newState = setSummaryData(dataArr, from, to, hoverID)
+	// 	this.setState({ ...this.state, ...newState })
+	// }
+	// setDailyData = () => {
+	// 	const { dataArr, from, to, hoverID } = this.props
+	// 	let newState = setDailyData(dataArr, from, to, hoverID)
+	// 	this.setState({ ...this.state, ...newState })
+	// }
+	// setHourlyData = () => {
+	// 	const { dataArr, from, to, hoverID } = this.props
+	// 	let newState = setHourlyData(dataArr, from, to, hoverID)
+	// 	this.setState({ ...this.state, ...newState })
+	// }
+	// setMinutelyData = () => {
+	// 	const { dataArr, from, to, hoverID } = this.props
+	// 	let newState = setMinutelyData(dataArr, from, to, hoverID)
+	// 	this.setState({ ...this.state, ...newState })
+	// }
 
-	getWifiHourly = async () => {
-		const { project } = this.props
-		const { from, to, raw } = this.state
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataArr = []
-		await Promise.all(project.dataCollections.map(async d => {
-			let dataSet = null
-			let data = await getDataHourly(d.id, startDate, endDate, raw)
-			dataSet = {
-				name: d.name,
-				id: d.id,
-				data: data,
-				color: d.color,
-				lat: d.activeDevice ? d.activeDevice.lat : 0,
-				long: d.activeDevice ? d.activeDevice.long : 0
-			}
-			return dataArr.push(dataSet)
-		}))
-		dataArr = dataArr.reduce((newArr, d) => {
-			if (d.data !== null)
-				newArr.push(d)
-			return newArr
-		}, [])
-		this.setState({ dataArr: dataArr, timeType: 1 }, this.setHourlyData)
+	getImage = () => {
+		// var canvas = document.getElementsByClassName("chartjs-render-monitor");
+	
+		// if (canvas.length > 0) {
+		// 	this.image = canvas[1].toDataURL("image/png");
+		// 	this.setState({ image: this.image })
+			
+		// }
 	}
-	getWifiMinutely = async () => {
-		const { project } = this.props
-		const { from, to, raw } = this.state
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataArr = []
-		await Promise.all(project.dataCollections.map(async d => {
-			let dataSet = null
-			let data = await getDataMinutely(d.id, startDate, endDate, raw)
-			dataSet = {
-				name: d.name,
-				id: d.id,
-				data: data,
-				color: d.color,
-				lat: d.activeDevice ? d.activeDevice.lat : 0,
-				long: d.activeDevice ? d.activeDevice.long : 0
-			}
-			return dataArr.push(dataSet)
-		}))
-		dataArr = dataArr.reduce((newArr, d) => {
-			if (d.data !== null)
-				newArr.push(d)
-			return newArr
-		}, [])
-		this.setState({ dataArr: dataArr, timeType: 0 }, this.setMinutelyData)
-		// this.setDailyData(dataArr)
-	}
-	getWifiDaily = async () => {
-		const { project } = this.props
-		const { from, to, raw } = this.state
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataArr = []
-		await Promise.all(project.dataCollections.map(async d => {
-			let dataSet = null
-			let data = await getDataDaily(d.id, startDate, endDate, raw)
-			dataSet = {
-				name: d.name,
-				id: d.id,
-				data: data,
-				color: d.color,
-				lat: d.activeDevice ? d.activeDevice.lat : 0,
-				long: d.activeDevice ? d.activeDevice.long : 0
-			}
-			return dataArr.push(dataSet)
-		}))
-		dataArr = dataArr.reduce((newArr, d) => {
-			if (d.data !== null)
-				newArr.push(d)
-			return newArr
-		}, [])
-		this.setState({ dataArr: dataArr, timeType: 2 }, this.setDailyData)
-		// this.setDailyData(dataArr)
-	}
-	getWifiSum = async () => {
-		const { project } = this.props
-		const { from, to, raw } = this.state
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataArr = []
-		await Promise.all(project.dataCollections.map(async d => {
-			let dataSet = null
-			let data = await getDataSummary(d.id, startDate, endDate, raw)
-			dataSet = {
-				name: d.name,
-				id: d.id,
-				data: data,
-				color: d.color
-			}
-			return dataArr.push(dataSet)
-		}))
-		dataArr = dataArr.reduce((newArr, d) => {
-			if (d.data !== null)
-				newArr.push(d)
-			return newArr
-		}, [])
-		if (dataArr.length > 0)
-			this.setState({
-				dataArr: dataArr
-			}, this.setSummaryData)
-		else {
-			this.setState({
-				dataArr: null,
-				noData: true
-			})
-		}
-	}
-
 	componentDidMount = async () => {
-		this._isMounted = 1
-		if (this._isMounted) {
-			this.handleSwitchVisibility()
-		}
+		// this._isMounted = 1
+		// if (this._isMounted) {
+		// 	return this.props.loading ? null : this.customSetDisplay()
+		// }
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
@@ -324,85 +115,12 @@ class ProjectData extends PureComponent {
 		this.setState({ actionAnchor: null });
 	}
 
-	
-	handleSetDate = (id) => {
-		
-		let to = null
-		let from = null
-		switch (id) {
-			case 0: // Today
-				from = moment().startOf('day')
-				to = moment().endOf('day')
-				break;
-			case 1: // Yesterday
-				from = moment().subtract(1, 'd').startOf('day')
-				to = moment().subtract(1, 'd').endOf('day')
-				break;
-			case 2: // This week
-				from = moment().startOf('week').startOf('day')
-				to = moment().endOf('day')
-				break;
-			case 3: // Last 7 days
-				from = moment().subtract(7, 'd').startOf('day')
-				to = moment().endOf('day')
-				break;
-			case 4: // last 30 days
-				from = moment().subtract(30, 'd').startOf('day')
-				to = moment().endOf('day')
-				break;
-			case 5: // last 90 days
-				from = moment().subtract(90, 'd').startOf('day')
-				to = moment().endOf('day')
-				break;
-			default:
-				break;
-		}
-		this.setState({
-			dateFilterInputID: id,
-			to: to,
-			from: from,
-			loading: true,
-			roundDataSets: null,
-			barDataSets: null
-		}, this.handleSwitchVisibility)
-	}
-	handleSwitchDayHourSummary = () => {
-		
-		let id = this.state.dateFilterInputID
-		const { to, from } = this.state
-		let diff = moment.duration(to.diff(from)).days()
-		switch (id) {
-			case 0:// Today
-				this.getWifiHourly();
-				break;
-			case 1:// Yesterday
-				this.getWifiHourly();
-				break;
-			case 2://this week
-				parseInt(diff, 10) > 1 ? this.getWifiDaily() : this.getWifiHourly()
-				break;
-			case 3:
-				this.getWifiDaily();
-				break;
-			case 4:
-				this.getWifiDaily();
-				break
-			case 5:
-				this.getWifiDaily();
-				break
-			case 6:
-				this.customDisplay()
-				break
-			default:
-				this.getWifiDaily();
-				break;
-
-		}
-	}
 	customSetDisplay = () => {
-
-		const { display, timeType } = this.state
+		const { display } = this.state
+		const { timeType } = this.props
+		
 		if (display !== 0 || display !== 1) {
+			console.log(timeType)
 			switch (timeType) {
 				case 0:
 					this.setMinutelyData()
@@ -424,47 +142,18 @@ class ProjectData extends PureComponent {
 			this.setSummaryData()
 		}
 	}
-	customDisplay = () => {
-		
-		const { display, timeType } = this.state
-		if (display !== 0 || display !== 1) {
-			switch (timeType) {
-				case 0:
-					this.getWifiMinutely()
-					break;
-				case 1:
-					this.getWifiHourly()
-					break
-				case 2:
-					this.getWifiDaily()
-					break
-				case 3:
-					this.getWifiSum()
-					break
-				default:
-					break;
-			}
-		}
-		else { 
-			this.getWifiSum()
-		}
-	}
+
 	handleSwitchVisibility = () => {
-		
 		const { display } = this.state
 		
 		switch (display) {
 			case 0:
-				this.getWifiSum()
+			case 1:
+				this.setSummaryData()
 				break;
-			case 1: 
-				this.getWifiSum()
-				break
 			case 2:
-				this.handleSwitchDayHourSummary()
-				break
-			case 3: 
-				this.handleSwitchDayHourSummary()
+			case 3:
+				this.customSetDisplay()
 				break
 			default:
 				break;
@@ -473,20 +162,9 @@ class ProjectData extends PureComponent {
 	handleVisibility = id => (event) => {
 		if (event)
 			event.preventDefault()
-		// 
-		// let id = event.target.value
 		this.setState({ display: id, loading: true, actionAnchorVisibility: null }, this.handleSwitchVisibility)
 	}
 
-	handleDateFilter = (event) => {
-		let id = event.target.value
-		if (id !== 6) {
-			this.handleSetDate(id)
-		}
-		else {
-			this.setState({ loading: true, openCustomDate: true, dateFilterInputID: id })
-		}
-	}
 
 	handleCustomDate = date => e => {
 		this.setState({
@@ -494,130 +172,117 @@ class ProjectData extends PureComponent {
 		})
 	}
 
-	handleCloseDialog = () => {
-		this.setState({ openCustomDate: false })
-		this.customDisplay()
-	}
-
-	handleRawData = () => {
-		this.setState({ loading: true, actionAnchor: null, raw: !this.state.raw }, () => this.handleSwitchVisibility())
-	}
-
 	handleZoomOnData = async (elements) => {
 		if (elements.length > 0) {
-			const { timeType } = this.state
+			const { timeType, lineDataSets } = this.props
 			let date = null
 			let startDate = null
 			let endDate = null
 			try {
-				date = this.state.lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
+				date = lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
 				switch (timeType) {
-					case 1: 
+					case 1:
 						startDate = moment(date).startOf('hour')
 						endDate = moment(date).endOf('hour')
-						this.setState({
-							from: startDate,
-							to: endDate,
-							dateFilterInputID: 6
-						}, await this.getWifiMinutely)
+						this.props.handleSetDate(6, endDate, startDate, 0, false)
 						break
 					case 2:
 						startDate = moment(date).startOf('day')
 						endDate = moment(date).endOf('day')
-						this.setState({
-							from: startDate,
-							to: endDate,
-							dateFilterInputID: 6
-						}, await this.getWifiHourly)
+						this.props.handleSetDate(6, endDate, startDate, 1, false)
 						break;
 					default:
 						break;
 				}
 			}
 			catch (error) {
+				console.log(error)
 			}
 		}
-	}
-	handleCustomCheckBox = (e) => {
-		this.setState({ timeType: parseInt(e.target.value, 10) })
 	}
 	handleCancelCustomDate = () => {
 		this.setState({
 			loading: false, openCustomDate: false
 		})
 	}
-	renderCustomDateDialog = () => {
-		const { classes, t } = this.props
-		const { openCustomDate, to, from, timeType } = this.state
-		return openCustomDate ? <CustomDateTime
-			openCustomDate={openCustomDate}
-			handleCloseDialog={this.handleCloseDialog}//
-			handleCustomDate={this.handleCustomDate}
-			to={to}
-			from={from}
-			timeType={timeType}
-			handleCustomCheckBox={this.handleCustomCheckBox}//
-			handleCancelCustomDate={this.handleCancelCustomDate}//
-			t={t}
-			classes={classes}
-		/> : null
+	handleOpenDownloadModal = () => {
+		this.setState({ openDownload: true, actionAnchor: null })
 	}
+	handleCloseDownloadModal = () => {
+		this.setState({ openDownload: false })
+	}
+
 	renderType = () => {
 		const { display } = this.state
-		// const { t } = this.props
+		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device } = this.props
 		switch (display) {
 			case 0:
-				return this.state.roundDataSets ? <div style={{ maxHeight: 400 }}>
+				return roundDataSets ? <div style={{ maxHeight: 400 }}>
 					<PieChart
-						title={this.state.title}
+						title={title}
 						single //temporary
-						unit={this.timeTypes[this.state.timeType]}
-						onElementsClick={this.handleZoomOnData}
-						setHoverID={this.props.setHoverID}
-						data={this.state.roundDataSets}
+						unit={this.timeTypes[timeType]}
+						// onElementsClick={this.handleZoomOnData}
+						setHoverID={setHoverID}
+						data={roundDataSets}
 					/>
 				</div>
 					: this.renderNoData()
 			case 1:
-				return this.state.roundDataSets ?
+				return roundDataSets ?
 					<div style={{ maxHeight: 400 }}>
 						<DoughnutChart
-							title={this.state.title}
+							title={title}
 							single //temporary
-							unit={this.timeTypes[this.state.timeType]}
-							onElementsClick={this.handleZoomOnData}
-							setHoverID={this.props.setHoverID}
-							data={this.state.roundDataSets}
+							unit={this.timeTypes[timeType]}
+							// onElementsClick={this.handleZoomOnData}
+							setHoverID={setHoverID}
+							data={roundDataSets}
 						/></div>
 					: this.renderNoData()
 			case 2:
-				return this.state.barDataSets ? <div style={{ maxHeight: 400 }}><BarChart
-					unit={this.timeTypes[this.state.timeType]}
-					onElementsClick={this.handleZoomOnData}
-					setHoverID={this.props.setHoverID}
-					data={this.state.barDataSets}
-					// data={this.state.lineDataSets}
-					// legend={this.barOpts}
-					// height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerWidth / 4 : window.innerHeight - 200}
-					// options={{
-					// 	display: true,
-					// 	maintainAspectRatio: false,
-					// }}
-				/></div> : this.renderNoData()
+				return barDataSets ? <div style={{ maxHeight: 400 }}>
+					<BarChart
+						obj={device}
+						single
+						unit={this.timeTypes[timeType]}
+						onElementsClick={this.handleZoomOnData}
+						setHoverID={setHoverID}
+						data={barDataSets}
+						t={t}
+					/></div> : this.renderNoData()
 			case 3:
-				return this.state.lineDataSets ?
+				
+				return lineDataSets ?
 					<LineChart
 						hoverID={this.props.hoverID}
-						unit={this.timeTypes[this.state.timeType]}
+						single
+						// getImage={this.getImage}
+						obj={device}
+						unit={this.timeTypes[timeType]}
 						onElementsClick={this.handleZoomOnData}
-						setHoverID={this.props.setHoverID}
-						data={this.state.lineDataSets}
-						t={this.props.t}
+						setHoverID={setHoverID}
+						data={lineDataSets}
+						t={t}
 					/> : this.renderNoData()
 			default:
 				break;
 		}
 	}
+
+	// renderDateFilter = () => {
+	// 	const { classes, t } = this.props
+	// 	const { dateOption, to, from } = this.state
+	// 	return <DateFilterMenu
+	// 		dateOption={dateOption}
+	// 		classes={classes}
+	// 		to={to}
+	// 		from={from}
+	// 		t={t}
+	// 		handleSetDate={this.handleSetDate}
+	// 		handleCustomDate={this.handleCustomDate}
+	// 	/>
+	// }
 	renderMenu = () => {
 		const { actionAnchor, actionAnchorVisibility } = this.state
 		const { classes, t } = this.props
@@ -659,7 +324,7 @@ class ProjectData extends PureComponent {
 					<MoreVert />
 				</IconButton>
 			</ItemG>
-			<Menu
+			 <Menu
 				id="long-menu"
 				anchorEl={actionAnchor}
 				open={Boolean(actionAnchor)}
@@ -671,10 +336,21 @@ class ProjectData extends PureComponent {
 						minWidth: 250
 					}
 				}}>
-				<ListItem button onClick={() => this.handleRawData()}>
+				{/*<div>
+					<Hidden mdUp>
+						<ListItem>
+							{this.renderDateFilter()}
+						</ListItem>
+					</Hidden>
+				</div> */}
+				{/* <ListItem button onClick={this.handleOpenDownloadModal}>
+					<ListItemIcon><CloudDownload /></ListItemIcon>
+					<ListItemText>{t("data.download")}</ListItemText>
+				</ListItem> */}
+				<ListItem button onClick={this.props.handleRawData}>
 					<ListItemIcon>
 						<Checkbox
-							checked={this.state.raw}
+							checked={this.props.raw}
 							// disabled
 							className={classes.noPadding}
 						/>
@@ -718,28 +394,52 @@ class ProjectData extends PureComponent {
 	}
 
 	render() {
-		const { t, classes } = this.props
-		const { loading, noData, raw } = this.state
+		const { raw, t, loading, to, from } = this.props
+		// const {  openDownload } = this.state
+		let displayTo = dateTimeFormatter(to)
+		let displayFrom = dateTimeFormatter(from)
 		return (
-			<InfoCard
-				title={t("projects.infoCardProjectData")} 
-				avatar={<Timeline />}
-				noExpand
-				// noPadding
-				topAction={noData ? null : this.renderMenu()}
-				content={
-					<Grid container>
-						{this.renderCustomDateDialog()}
-						{loading ? <CircularLoader notCentered /> :
-							<Fragment>
-								<ItemG xs={12}>
-									<Caption className={classes.bigCaption2}>{raw ? t("collections.rawData") : t("collections.calibratedData")}</Caption>
-									{noData ? this.renderNoData() : this.renderType()}
-								</ItemG>
-								{/* {this.props.hoverID} */}
-							</Fragment>}
-					</Grid>}
-			/>
+			<Fragment>
+				<InfoCard
+					title={t("collections.cards.data")}
+					subheader={`${raw ? t("collections.rawData") : t("collections.calibratedData")}, ${displayFrom} - ${displayTo}`}
+					avatar={<Timeline />}
+					noExpand
+					topAction={this.renderMenu()}
+					content={
+						<Grid container>
+							{/* <ExportModal
+								img={this.state.image}
+								open={openDownload}
+								handleClose={this.handleCloseDownloadModal}
+								t={t}
+							/> */}
+							{loading ? <CircularLoader notCentered /> :
+								<Fragment>
+									{/* <ItemG xs={12} container direction={'column'} alignItems={'center'} justify={'center'}>
+										<Caption className={classes.bigCaption2}>{raw ? t("collections.rawData") : t("collections.calibratedData")}</Caption>
+										<Caption className={classes.captionPading}>{`${displayFrom} - ${displayTo}`}</Caption>
+									</ItemG> */}
+									<ItemG xs={12}>
+										{ this.renderType() }
+									</ItemG>
+									{/* {this.props.hoverID} */}
+									{/* <img src={this.state.image} alt={'not loaded'}/> */}
+									{/* <DevicePDF img={this.state.image}/> */}
+								</Fragment>}
+						</Grid>}
+				/>
+				{/* <div style={{ position: 'absolute', top: "-100%", width: 1000, height: 400 }}>
+					{this.state.lineDataSets ?
+						<LineChart
+							single
+							getImage={this.getImage}
+							unit={this.timeTypes[this.state.timeType]}
+							data={this.state.lineDataSets}
+							t={this.props.t}
+						/> : this.renderNoData()}
+				</div> */}
+			</Fragment >
 		);
 	}
 }

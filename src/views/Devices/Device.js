@@ -49,6 +49,12 @@ class Device extends Component {
 		}
 	}
 	format = "YYYY-MM-DD+HH:mm"
+	tabs = [
+		{ id: 0, title: "", label: <DeviceHub />, url: `#details` },
+		{ id: 1, title: "", label: <Timeline />, url: `#data` },
+		{ id: 2, title: "", label: <Map />, url: `#map` },
+		{ id: 3, title: "", label: <DeveloperBoard />, url: `#hardware` }
+	]
 	getDevice = async (id) => {
 		await getDevice(id).then(async rs => {
 			if (rs === null)
@@ -405,44 +411,7 @@ class Device extends Component {
 			}
 		}, 300))
 	}
-	handleZoomOnData = async (elements) => {
-		console.log(elements, "itGot where it had to get")
-		if (elements.length > 0) {
-			const { timeType } = this.state
-			let date = null
-			let startDate = null
-			let endDate = null
-			try {
-				console.log(this.state)
-				date = this.state.lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
-				switch (timeType) {
-					case 1:
-						startDate = moment(date).startOf('hour')
-						endDate = moment(date).endOf('hour')
-						this.setState({
-							from: startDate,
-							to: endDate,
-							dateOption: 6
-						}, await this.getWifiMinutely)
-						break
-					case 2:
-						startDate = moment(date).startOf('day')
-						endDate = moment(date).endOf('day')
-						this.setState({
-							from: startDate,
-							to: endDate,
-							dateOption: 6
-						}, await this.getWifiHourly)
-						break;
-					default:
-						break;
-				}
-			}
-			catch (error) {
-				console.log(error)
-			}
-		}
-	}
+
 	renderImageUpload = (dId) => {
 		const getPics = () => {
 			this.getAllPics(this.state.device.id)
@@ -561,12 +530,7 @@ class Device extends Component {
 	}
 
 	
-	tabs = [
-		{ id: 0, title: "", label: <DeviceHub />, url: `#details` },
-		{ id: 1, title: "", label: <Timeline />, url: `#data` },
-		{ id: 2, title: "", label: <Map />, url: `#map` },
-		{ id: 3, title: "", label: <DeveloperBoard />, url: `#hardware` }
-	]
+
 	handleRawData = () => {
 		this.setState({ loadingData: true, raw: !this.state.raw }, () => this.handleSwitchDayHourSummary())
 	}
@@ -620,7 +584,6 @@ class Device extends Component {
 								lineDataSets={this.state.lineDataSets}
 								handleSetDate={this.handleSetDate}
 								loading={loadingData}
-								dataArr={this.state.dataArr}
 								timeType={this.state.timeType}
 								from={this.state.from}
 								to={this.state.to}

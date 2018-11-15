@@ -69,6 +69,10 @@ class LineChart extends PureComponent {
 								drawTicks: false,
 							},
 							ticks: {
+							
+								callback: function (value, index, values) {
+									return value.charAt(0).toUpperCase() + value.slice(1);
+								},
 								source: "labels",
 								autoSkipPadding: 10,
 								maxRotation: 0
@@ -77,7 +81,7 @@ class LineChart extends PureComponent {
 							type: 'time',
 							time: {
 								displayFormats: {
-									day: 'ddd',
+									day: 'dddd',
 								},
 								unit: props.unit.chart,
 								tooltipFormat: props.unit.format
@@ -205,7 +209,6 @@ class LineChart extends PureComponent {
 		})
 	}
 	setXAxis = () => {
-		console.log(this.props)
 		this.setState({
 			lineOptions: {
 				...this.state.lineOptions,
@@ -232,6 +235,9 @@ class LineChart extends PureComponent {
 								drawTicks: false,
 							},
 							ticks: {
+								callback: function (value, index, values) {
+									return value.charAt(0).toUpperCase() + value.slice(1);
+								},
 								source: "labels",
 								autoSkipPadding: 10,
 								maxRotation: 0
@@ -240,7 +246,7 @@ class LineChart extends PureComponent {
 							type: 'time',
 							time: {
 								displayFormats: {
-									day: 'ddd',
+									day: 'dddd',
 								},
 								unit: this.props.unit.chart,
 								tooltipFormat: this.props.unit.format
@@ -277,14 +283,11 @@ class LineChart extends PureComponent {
 		})
 	}
 	elementClicked = async (elements) => {
-		console.log("clicked")
-		// console.log(this.props)
-		// if (this.props.onElementsClick) {
 		try {
 			await this.props.onElementsClick(elements)
 		}
 		catch (e) {
-			console.log(e);
+			// console.log(e);
 		}
 		// }
 		this.hideTooltip()
@@ -329,6 +332,8 @@ class LineChart extends PureComponent {
 	render() {
 		const { classes } = this.props
 		const { tooltip, chartWidth, mobile } = this.state
+		let DayStr = tooltip.title[1] ? tooltip.title[1].charAt(0).toUpperCase() + tooltip.title[1].slice(1) : ""
+		let DateStr = tooltip.title[0] ? tooltip.title[0] : ""
 		return (
 			<div style={{ maxHeight: 400, position: 'relative', height: 400 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
 				<Line
@@ -353,8 +358,8 @@ class LineChart extends PureComponent {
 							<ItemG container>
 								<ItemG container direction="row" justify="space-between">
 									<ItemG xs container direction="column">
-										<Typography variant={'h6'} classes={{ root: classes.antialias }} >{`${tooltip.title[1]}`}</Typography>
-										<Caption> {tooltip.title[0] ? `(${tooltip.title[0]})` : null}</Caption>
+										<Typography variant={'h6'} classes={{ root: classes.antialias }} >{`${DayStr}`}</Typography>
+										<Caption> {`(${DateStr})`}</Caption>
 									</ItemG>
 									<ItemG xs={2}>
 										{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : <CircularProgress size={37} />}
