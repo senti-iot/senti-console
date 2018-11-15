@@ -1,16 +1,22 @@
 
 
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { AppBar, Tabs, Tab, withStyles, Toolbar as ToolBar } from '@material-ui/core';
 import Search from 'components/Search/Search';
 import { suggestionGen } from 'variables/functions'
 import { NavHashLink as Link } from 'react-router-hash-link';
 
 const styles = theme => ({
+	tab: {
+		minWidth: 52
+	},
+
 	appBar: {
 		display: 'flex',
 		flexFlow: "row",
 		justifyContent: 'space-between',
+		maxWidth: "100%",
+		overflow: "hidden",
 		// top: 70,
 		minHeight: 48,
 		height: 48,
@@ -28,11 +34,11 @@ const styles = theme => ({
 		marginLeft: 'auto',
 	},
 	noOverflow: {
-		overflow: 'visible'
+		overflow: 'hidden'
 	},
 })
 
-class Toolbar extends Component {
+class Toolbar extends PureComponent {
 	constructor(props) {
 	  super(props)
 	
@@ -61,6 +67,9 @@ class Toolbar extends Component {
 							id={t.id}
 							key={i}
 							smooth
+							classes={{
+								root: classes.tab
+							}}
 							label={t.label}
 							to={`${t.url}`} />
 					}) : null}

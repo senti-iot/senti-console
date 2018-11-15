@@ -112,6 +112,7 @@ class Project extends Component {
 		let newState = setHourlyData(dataArr, from, to, hoverID)
 		this.setState({
 			...this.state,
+			dataArr: dataArr,
 			loadingData: false,
 			timeType: 1,
 			...newState
@@ -144,7 +145,7 @@ class Project extends Component {
 		let newState = setMinutelyData(dataArr, from, to, hoverID)
 		this.setState({
 			...this.state,
-			// dataArr: dataArr,
+			dataArr: dataArr,
 			loadingData: false,
 			timeType: 0,
 			...newState
@@ -177,7 +178,7 @@ class Project extends Component {
 		let newState = setDailyData(dataArr, from, to, hoverID)
 		this.setState({
 			...this.state,
-			// dataArr: dataArr,
+			dataArr: dataArr,
 			loadingData: false,
 			timeType: 2,
 			...newState
@@ -209,7 +210,7 @@ class Project extends Component {
 		let newState = setSummaryData(dataArr, from, to, hoverID)
 		this.setState({
 			...this.state,
-			// dataArr: dataArr,
+			dataArr: dataArr,
 			loadingData: false,
 			timeType: 3,
 			...newState
@@ -365,9 +366,37 @@ class Project extends Component {
 	}
 	setHoverID = (id) => {
 		if (id !== this.state.hoverID)
+		{
 			this.setState({ hoverID: id })
+			this.hoverGrow()
+		}
+		
 	}
-
+	hoverGrow = () => {
+		const { timeType, dataArr, to, from, hoverID  } = this.state
+		let newState = {}
+		switch (timeType) {
+			case 0:
+				newState = setMinutelyData(dataArr, from, to, hoverID)
+				break;
+			case 1:
+				newState = setHourlyData(dataArr, from, to, hoverID)
+				break
+			case 2:
+				newState = setDailyData(dataArr, from, to, hoverID)
+				break
+			case 3:
+				newState = setSummaryData(dataArr, from, to, hoverID)
+				break
+			default:
+				break;
+		}
+		
+		this.setState({
+			...this.state,
+			...newState
+		})
+	}
 	renderDeleteDialog = () => {
 		const { openDelete } = this.state
 		const { t } = this.props
@@ -440,6 +469,7 @@ class Project extends Component {
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id="data">
 							<ProjectData
+								setHoverID={this.setHoverID} 
 								barDataSets={barDataSets}
 								roundDataSets={roundDataSets}
 								lineDataSets={lineDataSets}

@@ -171,7 +171,6 @@ class ProjectData extends PureComponent {
 				return barDataSets ? <div style={{ maxHeight: 400 }}>
 					<BarChart
 						obj={device}
-						single
 						unit={this.timeTypes[timeType]}
 						onElementsClick={this.handleZoomOnData}
 						setHoverID={setHoverID}
@@ -183,7 +182,6 @@ class ProjectData extends PureComponent {
 				return lineDataSets ?
 					<LineChart
 						hoverID={this.props.hoverID}
-						single
 						// getImage={this.getImage}
 						obj={device}
 						unit={this.timeTypes[timeType]}
