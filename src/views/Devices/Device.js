@@ -18,6 +18,8 @@ import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
 import { Timeline, DeviceHub, Map, DeveloperBoard } from 'variables/icons';
 import teal from '@material-ui/core/colors/teal'
+import { setHourlyData, setMinutelyData, setDailyData, setSummaryData } from 'components/Charts/DataModel';
+
 class Device extends Component {
 	constructor(props) {
 		super(props)
@@ -127,13 +129,6 @@ class Device extends Component {
 			data: data,
 			color: teal[500]
 		}
-		// dataArr.push(dataSet)
-
-		// dataArr = dataArr.reduce((newArr, d) => {
-		// 	if (d.data !== null)
-		// 		newArr.push(d)
-		// 	return newArr
-		// }, [])
 		this.setState({
 			heatData: dataSet,
 			loadingMap: false
@@ -214,9 +209,29 @@ class Device extends Component {
 				break;
 		}
 	}
+	// setSummaryData = () => {
+	// 	const { dataArr, from, to, hoverID } = this.props
+	// 	let newState = setSummaryData(dataArr, from, to, hoverID)
+	// 	this.setState({ ...this.state, ...newState })
+	// }
+	// setDailyData = () => {
+	// 	const { dataArr, from, to, hoverID } = this.props
+	// 	let newState = setDailyData(dataArr, from, to, hoverID)
+	// 	this.setState({ ...this.state, ...newState })
+	// }
+	// setHourlyData = () => {
+	// 	const { dataArr, from, to, hoverID } = this.props
+	// 	let newState = setHourlyData(dataArr, from, to, hoverID)
+	// 	this.setState({ ...this.state, ...newState })
+	// }
+	// setMinutelyData = () => {
+	// 	const { dataArr, from, to, hoverID } = this.props
+	// 	let newState = setMinutelyData(dataArr, from, to, hoverID)
+	// 	this.setState({ ...this.state, ...newState })
+	// }
 	getWifiHourly = async () => {
 		// const { device } = this.props
-		const { from, to, raw, device } = this.state
+		const { from, to, raw, device, hoverID } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		let dataArr = []
@@ -236,15 +251,17 @@ class Device extends Component {
 				newArr.push(d)
 			return newArr
 		}, [])
+		let newState = setHourlyData(dataArr, from, to, hoverID)
 		this.setState({
-			dataArr: dataArr,
+			...this.state,
+			// dataArr: dataArr,
 			loadingData: false,
-			timeType: 1
+			timeType: 1,
+			...newState
 		})
 	}
 	getWifiMinutely = async () => {
-		// const { device } = this.props
-		const { from, to, raw, device } = this.state
+		const { from, to, raw, device, hoverID } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		let dataArr = []
@@ -266,15 +283,17 @@ class Device extends Component {
 				newArr.push(d)
 			return newArr
 		}, [])
+		let newState = setMinutelyData(dataArr, from, to, hoverID)
 		this.setState({
-			dataArr: dataArr,
+			...this.state,
+			// dataArr: dataArr,
 			loadingData: false,
-			timeType: 0
+			timeType: 0,
+			...newState
 		})
 	}
 	getWifiDaily = async () => {
-		// const { device } = this.props
-		const { from, to, raw, device } = this.state
+		const { from, to, raw, device, hoverID } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		let dataArr = []
@@ -295,15 +314,17 @@ class Device extends Component {
 				newArr.push(d)
 			return newArr
 		}, [])
+		let newState = setDailyData(dataArr, from, to, hoverID)
 		this.setState({
-			dataArr: dataArr,
-			timeType: 2,
+			...this.state,
+			// dataArr: dataArr,
 			loadingData: false,
+			timeType: 2,
+			...newState
 		})
 	}
 	getWifiSum = async () => {
-		// const { device } = this.props
-		const { from, to, raw, device } = this.state
+		const { from, to, raw, device, hoverID } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		let dataArr = []
@@ -323,10 +344,13 @@ class Device extends Component {
 				newArr.push(d)
 			return newArr
 		}, [])
+		let newState = setSummaryData(dataArr, from, to, hoverID)
 		this.setState({
-			dataArr: dataArr,
-			timeType: 3,
+			...this.state,
+			// dataArr: dataArr,
 			loadingData: false,
+			timeType: 3,
+			...newState
 		})
 	}
 	snackBarMessages = (msg) => {
@@ -591,6 +615,9 @@ class Device extends Component {
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id={"data"}>
 							<DeviceData
+								barDataSets={this.state.barDataSets}
+								roundDataSets={this.state.roundDataSets}
+								lineDataSets={this.state.lineDataSets}
 								handleSetDate={this.handleSetDate}
 								loading={loadingData}
 								dataArr={this.state.dataArr}

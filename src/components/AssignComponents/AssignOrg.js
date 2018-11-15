@@ -2,7 +2,7 @@ import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemTe
 import { Close } from 'variables/icons';
 import cx from "classnames";
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import { getAllOrgs } from 'variables/dataOrgs';
 import { updateDevice } from 'variables/dataDevices'
 import { updateCollection } from 'variables/dataCollections';
@@ -16,7 +16,7 @@ function Transition(props) {
 	return <Slide direction="up" {...props} />;
 }
 
-class AssignOrg extends React.Component {
+class AssignOrg extends PureComponent {
 	constructor(props) {
 		super(props)
 

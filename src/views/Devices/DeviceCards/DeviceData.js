@@ -16,15 +16,14 @@ import {
 	LineChart,
 	DoughnutChart,
 	PieChart,
-	ExportModal
+	// ExportModal
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 // import { getDataSummary, getDataDaily, getDataHourly, getDataMinutely, /* getDataHourly */ } from 'variables/dataDevices';
 import classNames from 'classnames';
-import { dateTimeFormatter, datesToArr, hoursToArr, minutesToArray } from 'variables/functions';
 import { connect } from 'react-redux'
 import moment from 'moment'
-import teal from '@material-ui/core/colors/teal'
+import { dateTimeFormatter } from 'variables/functions'
 // import DevicePDF from 'components/Exports/DevicePDF';
 
 class DeviceData extends PureComponent {
@@ -34,8 +33,6 @@ class DeviceData extends PureComponent {
 		this.state = {
 			from: moment().subtract(7, 'd').startOf('day'),
 			to: moment().endOf('day'),
-			barDataSets: null,
-			roundDataSets: null,
 			actionAnchor: null,
 			openDownload: false,
 			display: props.chartType ? props.chartType : 3,
@@ -58,147 +55,38 @@ class DeviceData extends PureComponent {
 		{ id: 2, icon: <BarChartIcon />, label: this.props.t("charts.type.bar") },
 		{ id: 3, icon: <ShowChart />, label: this.props.t("charts.type.line") }
 	]
-
+	
 	componentDidUpdate = (prevProps) => {
-		// this.customSetDisplay()
-		// console.log(this.props.dataArr ? this.props.dataArr[0].data : "Still loading")
-		if (prevProps.timeType !== this.props.timeType) { 
-			this.customSetDisplay()
-		}
-		if ( prevProps.dataArr !== this.props.dataArr)
-		{
-			this.customSetDisplay()
-		}
-		if (prevProps.loading === true && (prevProps.loading !== this.props.loading))
-			this.customSetDisplay()
-		// if (prevProps.hoverID !== this.props.hoverID)
-		// 	return this.props.loading ? null : this.customSetDisplay()
+		// if (prevProps.timeType !== this.props.timeType) { 
+		// 	this.customSetDisplay()
+		// }
+		// if ( prevProps.dataArr !== this.props.dataArr)
+		// {
+		// 	this.customSetDisplay()
+		// }
+		// if (prevProps.loading === true && (prevProps.loading !== this.props.loading))
+		// 	this.customSetDisplay()
 	}
-	setSummaryData = () => {
-		const { dataArr, from, to } = this.props
-		let displayTo = dateTimeFormatter(to)
-		let displayFrom = dateTimeFormatter(from)
-		this.setState({
-			title: `${displayFrom} - ${displayTo}`,
-			loading: false,
-			timeType: 3,
-			roundDataSets: {
-				labels: dataArr.map(d => d.name),
-				datasets: [{
-					backgroundColor: dataArr.map(d => d.color),
-					fill: false,
-					data: dataArr.map(d => d.data)
-				}]
-			}
-		})
-	}
-	setDailyData = () => {
-		const { dataArr, from, to } = this.props
-		this.setState({
-			loading: false,
-			timeType: 2,
-			lineDataSets: {
-				labels: datesToArr(from, to),
-				datasets: dataArr.map((d) => ({
-					id: d.id,
-					lat: d.lat,
-					long: d.long,
-					backgroundColor: d.color,
-					borderColor: d.color,
-					borderWidth: this.props.hoverID === d.id ? 8 : 3,
-					fill: false,
-					label: [d.name],
-					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
-				}))
-			},
-			barDataSets: {
-				labels: datesToArr(from, to),
-				datasets: dataArr.map((d) => ({
-					id: d.id,
-					lat: d.lat,
-					long: d.long,
-					backgroundColor: d.color,
-					borderColor: teal[500],
-					borderWidth: this.props.hoverID === d.id ? 4 : 0,
-					fill: false,
-					label: [d.name],
-					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
-				}))
-			},
-			roundDataSets: null
-		})
-	}
-	setHourlyData = () => {
-		const { dataArr, from, to } = this.props
-		this.setState({
-			loading: false,
-			timeType: 1,
-			lineDataSets: {
-				labels: hoursToArr(from, to),
-				datasets: dataArr.map((d) => ({
-					id: d.id,
-					lat: d.lat,
-					long: d.long,
-					backgroundColor: d.color,
-					borderColor: d.color,
-					borderWidth: this.props.hoverID === d.id ? 8 : 3,
-					fill: false,
-					label: [d.name],
-					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
-				}))
-			},
-			barDataSets: {
-				labels: hoursToArr(from, to),
-				datasets: dataArr.map((d) => ({
-					id: d.id,
-					lat: d.lat,
-					long: d.long,
-					backgroundColor: d.color,
-					borderColor: d.color,
-					borderWidth: this.props.hoverID === d.id ? 4 : 0,
-					fill: false,
-					label: [d.name],
-					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
-				}))
-			},
-			roundDataSets: null
-		})
-	}
-	setMinutelyData = () => {
-		const { dataArr, from, to } = this.props
-		this.setState({
-			loading: false,
-			lineDataSets: {
-				labels: minutesToArray(from, to),
-				datasets: dataArr.map((d) => ({
-					id: d.id,
-					lat: d.lat,
-					long: d.long,
-					backgroundColor: d.color,
-					borderColor: d.color,
-					borderWidth: this.props.hoverID === d.id ? 8 : 3,
-					fill: false,
-					label: [d.name],
-					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
-				})),
-				barDataSets: {
-					labels: hoursToArr(from, to),
-					datasets: dataArr.map((d) => ({
-						id: d.id,
-						lat: d.lat,
-						long: d.long,
-						backgroundColor: d.color,
-						borderColor: d.color,
-						borderWidth: this.props.hoverID === d.id ? 4 : 0,
-						fill: false,
-						label: [d.name],
-						data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
-					}))
-				},
-				roundDataSets: null
-			}
-		})
-	}
+	// setSummaryData = () => {
+	// 	const { dataArr, from, to, hoverID } = this.props
+	// 	let newState = setSummaryData(dataArr, from, to, hoverID)
+	// 	this.setState({ ...this.state, ...newState })
+	// }
+	// setDailyData = () => {
+	// 	const { dataArr, from, to, hoverID } = this.props
+	// 	let newState = setDailyData(dataArr, from, to, hoverID)
+	// 	this.setState({ ...this.state, ...newState })
+	// }
+	// setHourlyData = () => {
+	// 	const { dataArr, from, to, hoverID } = this.props
+	// 	let newState = setHourlyData(dataArr, from, to, hoverID)
+	// 	this.setState({ ...this.state, ...newState })
+	// }
+	// setMinutelyData = () => {
+	// 	const { dataArr, from, to, hoverID } = this.props
+	// 	let newState = setMinutelyData(dataArr, from, to, hoverID)
+	// 	this.setState({ ...this.state, ...newState })
+	// }
 
 	getImage = () => {
 		// var canvas = document.getElementsByClassName("chartjs-render-monitor");
@@ -210,10 +98,10 @@ class DeviceData extends PureComponent {
 		// }
 	}
 	componentDidMount = async () => {
-		this._isMounted = 1
-		if (this._isMounted) {
-			return this.props.loading ? null : this.customSetDisplay()
-		}
+		// this._isMounted = 1
+		// if (this._isMounted) {
+		// 	return this.props.loading ? null : this.customSetDisplay()
+		// }
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
@@ -235,7 +123,6 @@ class DeviceData extends PureComponent {
 			console.log(timeType)
 			switch (timeType) {
 				case 0:
-					
 					this.setMinutelyData()
 					break;
 				case 1:
@@ -287,12 +174,12 @@ class DeviceData extends PureComponent {
 
 	handleZoomOnData = async (elements) => {
 		if (elements.length > 0) {
-			const { timeType } = this.props
+			const { timeType, lineDataSets } = this.props
 			let date = null
 			let startDate = null
 			let endDate = null
 			try {
-				date = this.state.lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
+				date = lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
 				switch (timeType) {
 					case 1:
 						startDate = moment(date).startOf('hour')
@@ -327,56 +214,56 @@ class DeviceData extends PureComponent {
 
 	renderType = () => {
 		const { display } = this.state
-		// const { t } = this.props
+		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device } = this.props
 		switch (display) {
 			case 0:
-				return this.state.roundDataSets ? <div style={{ maxHeight: 400 }}>
+				return roundDataSets ? <div style={{ maxHeight: 400 }}>
 					<PieChart
-						title={this.state.title}
+						title={title}
 						single //temporary
-						unit={this.timeTypes[this.props.timeType]}
+						unit={this.timeTypes[timeType]}
 						// onElementsClick={this.handleZoomOnData}
-						setHoverID={this.props.setHoverID}
-						data={this.state.roundDataSets}
+						setHoverID={setHoverID}
+						data={roundDataSets}
 					/>
 				</div>
 					: this.renderNoData()
 			case 1:
-				return this.state.roundDataSets ?
+				return roundDataSets ?
 					<div style={{ maxHeight: 400 }}>
 						<DoughnutChart
-							title={this.state.title}
+							title={title}
 							single //temporary
-							unit={this.timeTypes[this.props.timeType]}
+							unit={this.timeTypes[timeType]}
 							// onElementsClick={this.handleZoomOnData}
-							setHoverID={this.props.setHoverID}
-							data={this.state.roundDataSets}
+							setHoverID={setHoverID}
+							data={roundDataSets}
 						/></div>
 					: this.renderNoData()
 			case 2:
-				return this.state.barDataSets ? <div style={{ maxHeight: 400 }}>
+				return barDataSets ? <div style={{ maxHeight: 400 }}>
 					<BarChart
-						obj={this.props.device}
+						obj={device}
 						single
-						unit={this.timeTypes[this.props.timeType]}
+						unit={this.timeTypes[timeType]}
 						onElementsClick={this.handleZoomOnData}
-						setHoverID={this.props.setHoverID}
-						data={this.state.barDataSets}
-						t={this.props.t}
+						setHoverID={setHoverID}
+						data={barDataSets}
+						t={t}
 					/></div> : this.renderNoData()
 			case 3:
 				
-				return this.state.lineDataSets ?
+				return lineDataSets ?
 					<LineChart
 						hoverID={this.props.hoverID}
 						single
 						// getImage={this.getImage}
-						obj={this.props.device}
-						unit={this.timeTypes[this.props.timeType]}
+						obj={device}
+						unit={this.timeTypes[timeType]}
 						onElementsClick={this.handleZoomOnData}
-						setHoverID={this.props.setHoverID}
-						data={this.state.lineDataSets}
-						t={this.props.t}
+						setHoverID={setHoverID}
+						data={lineDataSets}
+						t={t}
 					/> : this.renderNoData()
 			default:
 				break;
@@ -507,8 +394,8 @@ class DeviceData extends PureComponent {
 	}
 
 	render() {
-		const { raw, t, loading, dataArr, to, from } = this.props
-		const {  openDownload } = this.state
+		const { raw, t, loading, to, from } = this.props
+		// const {  openDownload } = this.state
 		let displayTo = dateTimeFormatter(to)
 		let displayFrom = dateTimeFormatter(from)
 		return (
@@ -521,12 +408,12 @@ class DeviceData extends PureComponent {
 					topAction={this.renderMenu()}
 					content={
 						<Grid container>
-							<ExportModal
+							{/* <ExportModal
 								img={this.state.image}
 								open={openDownload}
 								handleClose={this.handleCloseDownloadModal}
 								t={t}
-							/>
+							/> */}
 							{loading ? <CircularLoader notCentered /> :
 								<Fragment>
 									{/* <ItemG xs={12} container direction={'column'} alignItems={'center'} justify={'center'}>
@@ -534,7 +421,7 @@ class DeviceData extends PureComponent {
 										<Caption className={classes.captionPading}>{`${displayFrom} - ${displayTo}`}</Caption>
 									</ItemG> */}
 									<ItemG xs={12}>
-										{dataArr.length > 0 ? this.renderType() : this.renderNoData() }
+										{ this.renderType() }
 									</ItemG>
 									{/* {this.props.hoverID} */}
 									{/* <img src={this.state.image} alt={'not loaded'}/> */}
@@ -542,7 +429,7 @@ class DeviceData extends PureComponent {
 								</Fragment>}
 						</Grid>}
 				/>
-				<div style={{ position: 'absolute', top: "-100%", width: 1000, height: 400 }}>
+				{/* <div style={{ position: 'absolute', top: "-100%", width: 1000, height: 400 }}>
 					{this.state.lineDataSets ?
 						<LineChart
 							single
@@ -551,7 +438,7 @@ class DeviceData extends PureComponent {
 							data={this.state.lineDataSets}
 							t={this.props.t}
 						/> : this.renderNoData()}
-				</div>
+				</div> */}
 			</Fragment >
 		);
 	}

@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { InfoCard, Caption, Dropdown, CircularLoader } from 'components';
 import { Map } from 'variables/icons'
 import { Grid, Checkbox } from '@material-ui/core';
 import { Maps } from 'components/Map/Maps';
 
-export default class DeviceMap extends Component {
+export default class DeviceMap extends PureComponent {
 	constructor(props) {
 	  super(props)
 	
