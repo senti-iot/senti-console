@@ -46,7 +46,6 @@ class LineChart extends PureComponent {
 						{
 							ticks: {
 								source: "labels",
-								autoSkipPadding: 10,
 								maxRotation: 0
 							},
 							id: "xAxis",
@@ -74,7 +73,6 @@ class LineChart extends PureComponent {
 									return value.charAt(0).toUpperCase() + value.slice(1);
 								},
 								source: "labels",
-								autoSkipPadding: 10,
 								maxRotation: 0
 							},
 							id: "xAxis-day",
@@ -239,7 +237,6 @@ class LineChart extends PureComponent {
 									return value.charAt(0).toUpperCase() + value.slice(1);
 								},
 								source: "labels",
-								autoSkipPadding: 10,
 								maxRotation: 0
 							},
 							id: "xAxis-day",
