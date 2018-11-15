@@ -14,7 +14,7 @@ import { getDataHourly, getDataMinutely, getDataSummary, getDataDaily } from 'va
 import { setHourlyData, setDailyData, setSummaryData, setMinutelyData } from 'components/Charts/DataModel';
 import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
-import { AssignmentTurnedIn, Timeline, Map, DataUsage, Person } from 'variables/icons';
+import { Timeline, Map, DataUsage, Person, LibraryBooks } from 'variables/icons';
 class Project extends Component {
 	constructor(props) {
 		super(props)
@@ -50,7 +50,7 @@ class Project extends Component {
 	}
 	format = "YYYY-MM-DD+HH:mm"
 	tabs = [
-		{ id: 0, title: "", label: <AssignmentTurnedIn />, url: `#details` },
+		{ id: 0, title: "", label: <LibraryBooks />, url: `#details` },
 		{ id: 1, title: "", label: <Timeline />, url: `#data` },
 		{ id: 3, title: "", label: <DataUsage />, url: `#collections` },
 		{ id: 2, title: "", label: <Map />, url: `#map` },
