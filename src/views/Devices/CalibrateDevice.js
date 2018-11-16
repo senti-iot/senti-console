@@ -8,6 +8,7 @@ import ImageUpload from './ImageUpload'
 import { NavigateNext, NavigateBefore, Done, Restore, MyLocation, Router, Devices } from 'variables/icons'
 import GridContainer from 'components/Grid/GridContainer';
 import { PlacesWithStandaloneSearchBox } from 'components/Map/SearchBox'
+import { CalibrateMap } from 'components/Map/CalibrateMaps';
 
 const styles = theme => ({
 	button: {
@@ -211,11 +212,23 @@ class CalibrateDevice extends Component {
 			</ItemGrid>
 		</Grid>
 	}
-
+	getLatLngFromMap = (e) => {
+		console.log(e.lat, e.long)
+		this.setState({
+			lat: e.lat,
+			long: e.long
+		})
+	}
 	renderDeviceLocation = () => {
 		const { t } = this.props
 		return <Grid container>
 			<ItemGrid xs={12}>
+				<div style={{ maxHeight: 400 }}>
+
+					<CalibrateMap
+						onClick={this.getLatLngFromMap}
+					/>
+				</div>
 				<PlacesWithStandaloneSearchBox address={this.state.address} handleChange={this.handleSetAddress} t={t}/>
 			</ItemGrid>
 			<ItemGrid xs={12}>
