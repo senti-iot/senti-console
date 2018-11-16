@@ -8,7 +8,7 @@ import DeviceTable from 'components/Devices/DeviceTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import { Maps } from 'components/Map/Maps';
 import GridContainer from 'components/Grid/GridContainer';
-import { ViewList, ViewModule, Map, Add, FilterList, Build, Business, DataUsage, Edit, LayersClear } from 'variables/icons'
+import { ViewList, ViewModule, Map, Add, FilterList, Build, Business, DataUsage, Edit, LayersClear, SignalWifi2Bar } from 'variables/icons'
 import Toolbar from 'components/Toolbar/Toolbar'
 import { filterItems, handleRequestSort } from 'variables/functions';
 import DeviceCard from 'components/Devices/DeviceCard'
@@ -128,7 +128,7 @@ class Devices extends Component {
 			deviceHeaders: [
 				{ id: "name", label: t("devices.fields.name") },
 				{ id: "id", label: t("devices.fields.id") },
-				{ id: "liveStatus", label: t("devices.fields.status") },
+				{ id: "liveStatus", checkbox: true, label: <ItemG container justify={'center'} title={t("devices.fields.status")}><SignalWifi2Bar/></ItemG> },
 				{ id: "address", label: t("devices.fields.address") },
 				{ id: "org.name", label: t("devices.fields.org") },
 				{ id: "project.id", label: t("devices.fields.availability") }

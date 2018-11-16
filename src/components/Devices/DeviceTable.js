@@ -9,7 +9,7 @@ import React, { Fragment } from "react";
 import { withRouter } from 'react-router-dom';
 import EnhancedTableHead from 'components/Table/TableHeader'
 import { connect } from 'react-redux'
-import { ItemGrid, Info, Caption, ItemG } from 'components';
+import { Info, Caption, ItemG } from 'components';
 import TC from 'components/Table/TC'
 import TP from 'components/Table/TP';
 
@@ -58,23 +58,17 @@ class EnhancedTable extends React.Component {
 		const { classes, t } = this.props
 		switch (status) {
 			case 1:
-				return <div title={t("devices.status.yellow")}>
-					<ItemG container justify={'center'}>
-						<SignalWifi2Bar className={classes.yellowSignal} />
-					</ItemG>
-				</div>
+				return <ItemG container justify={'center'} title={t("devices.status.yellow")}>
+					<SignalWifi2Bar className={classes.yellowSignal} />
+				</ItemG>
 			case 2:
-				return <div title={t("devices.status.green")}>
-					<ItemG container justify={'center'}>
-						<SignalWifi2Bar className={classes.greenSignal} />
-					</ItemG>
-				</div>
+				return <ItemG container justify={'center'} title={t("devices.status.green")}>
+					<SignalWifi2Bar className={classes.greenSignal} />
+				</ItemG>
 			case 0:
-				return <div title={t("devices.status.red")}>
-					<ItemG container justify={'center'}>
-						<SignalWifi2Bar className={classes.redSignal} />
-					</ItemG>
-				</div>
+				return <ItemG container justify={'center'} title={t("devices.status.red")}>
+					<SignalWifi2Bar className={classes.redSignal} />
+				</ItemG>
 			case null:
 				return <SignalWifi2BarLock />
 			default:
@@ -131,33 +125,27 @@ class EnhancedTable extends React.Component {
 										style={{ cursor: 'pointer' }}
 									>
 										<Hidden lgUp>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => handleClick(e, n.id)}>
-												<Checkbox checked={isSelected} />
-											</TableCell>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
-												{this.renderIcon(n.liveStatus)}
-											</TableCell>
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleClick(e, n.id)}/>} />
+											<TC checkbox content={this.renderIcon(n.liveStatus)}/>
 											<TC content={
-												<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+												<ItemG container alignItems={"center"}>
+													<ItemG xs={12}>
 														<Info noWrap paragraphCell={classes.noMargin}>
 															{n.name ? n.name : n.id}
 														</Info>
-													</ItemGrid>
-													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+													</ItemG>
+													<ItemG xs={12}>
 														<Caption noWrap className={classes.noMargin}>
 															{`${n.name ? n.id : t("devices.noName")} - ${n.org ? n.org.name : ''}`}
 														</Caption>
-													</ItemGrid>
-												</ItemGrid>} />
+													</ItemG>
+												</ItemG>} />
 										</Hidden>
 										<Hidden mdDown>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => handleClick(e, n.id)}>
-												<Checkbox checked={isSelected} />
-											</TableCell>
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleClick(e, n.id)}/>}/>
 											<TC label={n.name ? n.name : t("devices.noName")} />
 											<TC label={n.id} />
-											<TC content={<div className={classes.paragraphCell}> {this.renderIcon(n.liveStatus)}</div>} />
+											<TC content={this.renderIcon(n.liveStatus)} />
 											<TC label={n.address ? n.address : t("devices.noAddress")} />
 											<TC label={n.org ? n.org.name : t("devices.noProject")} />
 											<TC label={n.project.id > 0 ? t("devices.fields.notfree") : t("devices.fields.free")} />
