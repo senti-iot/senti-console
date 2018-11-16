@@ -123,11 +123,10 @@ class ProjectCollections extends Component {
 										</Hidden>
 									</TableRow>
 								</TableHead>
-								<TableBody>
+								<TableBody onMouseLeave={() => this.props.setHoverID(0)}>
 									{dataCollections ? dataCollections.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((n, i) => {
 										return (
 											<TableRow
-												onMouseLeave={() => this.props.setHoverID(0)}
 												onMouseOver={() => this.props.setHoverID(n.id)}
 												hover
 												onClick={e => { e.stopPropagation(); this.props.history.push({ pathname: '/collection/' + n.id, prevURL: `/project/${project.id}` }) }}

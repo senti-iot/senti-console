@@ -3,10 +3,10 @@ import { Bar } from 'react-chartjs-2';
 import { Typography, withStyles, Paper, Grow, CircularProgress } from '@material-ui/core';
 import { ItemG, WeatherIcon, Caption } from 'components';
 import { graphStyles } from './graphStyles';
+import { getWeather } from 'variables/dataDevices';
+import moment from 'moment'
 import { compose } from 'recompose';
 import { connect } from 'react-redux'
-import moment from 'moment'
-import { getWeather } from 'variables/dataDevices';
 import withLocalization from 'components/Localization/T';
 
 class BarChart extends PureComponent {
@@ -45,6 +45,10 @@ class BarChart extends PureComponent {
 					xAxes: [
 						{
 							offset: true,
+							ticks: {
+								source: "labels",
+								maxRotation: 0
+							},
 							id: "xAxis",
 							type: 'time',
 							time: {
@@ -75,9 +79,7 @@ class BarChart extends PureComponent {
 							type: 'time',
 							time: {
 								displayFormats: {
-									hour: "LT",
 									day: 'dddd',
-									minute: 'LT'
 								},
 								unit: props.unit.chart,
 								tooltipFormat: props.unit.format
@@ -122,7 +124,8 @@ class BarChart extends PureComponent {
 	setHours = (date) => {
 		if (this.props.unit.chart === 'day')
 			return moment(date).startOf('day').add(12, 'h')
-
+		else
+			return moment(date)
 	}
 	customTooltip = async (tooltipModel) => {
 		if (tooltipModel.opacity === 0) {
@@ -130,7 +133,7 @@ class BarChart extends PureComponent {
 			return
 		}
 		
-		
+
 		// let weatherData = null
 		let wDate = null
 		try {
@@ -178,15 +181,48 @@ class BarChart extends PureComponent {
 				...this.state.lineOptions,
 				scales: {
 					...this.state.lineOptions.scales,
-					xAxes: [...this.state.lineOptions.scales.xAxes,
+					xAxes: [
 						{
+							offset: true,
+							ticks: {
+								source: "labels",
+								maxRotation: 0
+							},
 							id: "xAxis",
 							type: 'time',
 							time: {
 								displayFormats: {
 									hour: 'LT',
-									day: 'll',
+									day: 'll dddd',
 									minute: 'LT'
+								},
+								unit: this.props.unit.chart,
+								tooltipFormat: this.props.unit.format
+							},
+							gridLines: {
+								offsetGridLines: true
+							}
+						},
+						{
+							display: this.props.unit.chart === 'day' ? true : false,
+							offset: true,
+							gridLines: {
+								offsetGridLines: true,
+								drawBorder: false,
+								drawTicks: false,
+							},
+							ticks: {
+								callback: function (value, index, values) {
+									return value.charAt(0).toUpperCase() + value.slice(1);
+								},
+								source: "labels",
+								maxRotation: 0
+							},
+							id: "xAxis-day",
+							type: 'time',
+							time: {
+								displayFormats: {
+									day: 'dddd',
 								},
 								unit: this.props.unit.chart,
 								tooltipFormat: this.props.unit.format

@@ -2,7 +2,7 @@ import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemTe
 import { Close } from 'variables/icons';
 import cx from "classnames";
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import { getAllCollections } from 'variables/dataCollections';
 // import { updateCollection } from 'variables/dataCollections'
 // import { updateCollection } from 'variables/dataCollections';
@@ -13,7 +13,7 @@ import { assignDeviceToCollection } from 'variables/dataCollections';
 import assignStyles from 'assets/jss/components/assign/assignStyles';
 
 
-class AssignDC extends React.Component {
+class AssignDC extends PureComponent {
 	constructor(props) {
 		super(props)
 

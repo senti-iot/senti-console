@@ -18,6 +18,8 @@ import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
 import { Timeline, DeviceHub, Map, DeveloperBoard } from 'variables/icons';
 import teal from '@material-ui/core/colors/teal'
+import { setHourlyData, setMinutelyData, setDailyData, setSummaryData } from 'components/Charts/DataModel';
+
 class Device extends Component {
 	constructor(props) {
 		super(props)
@@ -37,7 +39,7 @@ class Device extends Component {
 			openAssignOrg: false,
 			//End Assign/Unassign
 			//Map
-			loadingMap: false,
+			loadingMap: true,
 			heatData: null,
 			//End Map
 			device: null,
@@ -47,6 +49,12 @@ class Device extends Component {
 		}
 	}
 	format = "YYYY-MM-DD+HH:mm"
+	tabs = [
+		{ id: 0, title: "", label: <DeviceHub />, url: `#details` },
+		{ id: 1, title: "", label: <Timeline />, url: `#data` },
+		{ id: 2, title: "", label: <Map />, url: `#map` },
+		{ id: 3, title: "", label: <DeveloperBoard />, url: `#hardware` }
+	]
 	getDevice = async (id) => {
 		await getDevice(id).then(async rs => {
 			if (rs === null)
@@ -127,13 +135,6 @@ class Device extends Component {
 			data: data,
 			color: teal[500]
 		}
-		// dataArr.push(dataSet)
-
-		// dataArr = dataArr.reduce((newArr, d) => {
-		// 	if (d.data !== null)
-		// 		newArr.push(d)
-		// 	return newArr
-		// }, [])
 		this.setState({
 			heatData: dataSet,
 			loadingMap: false
@@ -214,9 +215,29 @@ class Device extends Component {
 				break;
 		}
 	}
+	// setSummaryData = () => {
+	// 	const { dataArr, from, to, hoverID } = this.props
+	// 	let newState = setSummaryData(dataArr, from, to, hoverID)
+	// 	this.setState({ ...this.state, ...newState })
+	// }
+	// setDailyData = () => {
+	// 	const { dataArr, from, to, hoverID } = this.props
+	// 	let newState = setDailyData(dataArr, from, to, hoverID)
+	// 	this.setState({ ...this.state, ...newState })
+	// }
+	// setHourlyData = () => {
+	// 	const { dataArr, from, to, hoverID } = this.props
+	// 	let newState = setHourlyData(dataArr, from, to, hoverID)
+	// 	this.setState({ ...this.state, ...newState })
+	// }
+	// setMinutelyData = () => {
+	// 	const { dataArr, from, to, hoverID } = this.props
+	// 	let newState = setMinutelyData(dataArr, from, to, hoverID)
+	// 	this.setState({ ...this.state, ...newState })
+	// }
 	getWifiHourly = async () => {
 		// const { device } = this.props
-		const { from, to, raw, device } = this.state
+		const { from, to, raw, device, hoverID } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		let dataArr = []
@@ -236,15 +257,17 @@ class Device extends Component {
 				newArr.push(d)
 			return newArr
 		}, [])
+		let newState = setHourlyData(dataArr, from, to, hoverID)
 		this.setState({
-			dataArr: dataArr,
+			...this.state,
+			// dataArr: dataArr,
 			loadingData: false,
-			timeType: 1
+			timeType: 1,
+			...newState
 		})
 	}
 	getWifiMinutely = async () => {
-		// const { device } = this.props
-		const { from, to, raw, device } = this.state
+		const { from, to, raw, device, hoverID } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		let dataArr = []
@@ -266,15 +289,17 @@ class Device extends Component {
 				newArr.push(d)
 			return newArr
 		}, [])
+		let newState = setMinutelyData(dataArr, from, to, hoverID)
 		this.setState({
-			dataArr: dataArr,
+			...this.state,
+			// dataArr: dataArr,
 			loadingData: false,
-			timeType: 0
+			timeType: 0,
+			...newState
 		})
 	}
 	getWifiDaily = async () => {
-		// const { device } = this.props
-		const { from, to, raw, device } = this.state
+		const { from, to, raw, device, hoverID } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		let dataArr = []
@@ -295,15 +320,17 @@ class Device extends Component {
 				newArr.push(d)
 			return newArr
 		}, [])
+		let newState = setDailyData(dataArr, from, to, hoverID)
 		this.setState({
-			dataArr: dataArr,
-			timeType: 2,
+			...this.state,
+			// dataArr: dataArr,
 			loadingData: false,
+			timeType: 2,
+			...newState
 		})
 	}
 	getWifiSum = async () => {
-		// const { device } = this.props
-		const { from, to, raw, device } = this.state
+		const { from, to, raw, device, hoverID } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		let dataArr = []
@@ -323,12 +350,16 @@ class Device extends Component {
 				newArr.push(d)
 			return newArr
 		}, [])
+		let newState = setSummaryData(dataArr, from, to, hoverID)
 		this.setState({
-			dataArr: dataArr,
-			timeType: 3,
+			...this.state,
+			// dataArr: dataArr,
 			loadingData: false,
+			timeType: 3,
+			...newState
 		})
 	}
+
 	snackBarMessages = (msg) => {
 		const { s, t } = this.props
 		const { device, oldCollection } = this.state
@@ -381,44 +412,7 @@ class Device extends Component {
 			}
 		}, 300))
 	}
-	handleZoomOnData = async (elements) => {
-		console.log(elements, "itGot where it had to get")
-		if (elements.length > 0) {
-			const { timeType } = this.state
-			let date = null
-			let startDate = null
-			let endDate = null
-			try {
-				console.log(this.state)
-				date = this.state.lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
-				switch (timeType) {
-					case 1:
-						startDate = moment(date).startOf('hour')
-						endDate = moment(date).endOf('hour')
-						this.setState({
-							from: startDate,
-							to: endDate,
-							dateOption: 6
-						}, await this.getWifiMinutely)
-						break
-					case 2:
-						startDate = moment(date).startOf('day')
-						endDate = moment(date).endOf('day')
-						this.setState({
-							from: startDate,
-							to: endDate,
-							dateOption: 6
-						}, await this.getWifiHourly)
-						break;
-					default:
-						break;
-				}
-			}
-			catch (error) {
-				console.log(error)
-			}
-		}
-	}
+
 	renderImageUpload = (dId) => {
 		const getPics = () => {
 			this.getAllPics(this.state.device.id)
@@ -486,6 +480,10 @@ class Device extends Component {
 		}
 	}
 
+	handleRawData = () => {
+		this.setState({ loadingData: true, raw: !this.state.raw }, () => this.handleSwitchDayHourSummary())
+	}
+
 	renderImageLoader = () => {
 		return <CircularLoader notCentered />
 	}
@@ -520,7 +518,6 @@ class Device extends Component {
 		</Dialog>
 	}
 
-
 	renderMenu = () => {
 		const { classes, t } = this.props
 		const { dateOption, to, from, timeType } = this.state
@@ -534,17 +531,6 @@ class Device extends Component {
 			handleSetDate={this.handleSetDate}
 			handleCustomDate={this.handleCustomDate}
 		/>
-	}
-
-	
-	tabs = [
-		{ id: 0, title: "", label: <DeviceHub />, url: `#details` },
-		{ id: 1, title: "", label: <Timeline />, url: `#data` },
-		{ id: 2, title: "", label: <Map />, url: `#map` },
-		{ id: 3, title: "", label: <DeveloperBoard />, url: `#hardware` }
-	]
-	handleRawData = () => {
-		this.setState({ loadingData: true, raw: !this.state.raw }, () => this.handleSwitchDayHourSummary())
 	}
 
 	render() {
@@ -591,13 +577,16 @@ class Device extends Component {
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id={"data"}>
 							<DeviceData
+								barDataSets={this.state.barDataSets}
+								roundDataSets={this.state.roundDataSets}
+								lineDataSets={this.state.lineDataSets}
 								handleSetDate={this.handleSetDate}
 								loading={loadingData}
-								dataArr={this.state.dataArr}
 								timeType={this.state.timeType}
 								from={this.state.from}
 								to={this.state.to}
 								device={device}
+								dateOption={this.state.dateOption}
 								raw={this.state.raw}
 								handleRawData={this.handleRawData}
 								history={this.props.history}
@@ -610,7 +599,7 @@ class Device extends Component {
 								classes={this.props.classes}
 								heatData={this.state.heatData}
 								loading={this.state.loadingMap}
-								device={device}
+								device={this.state.heatData}
 								weather={this.state.weather}
 								t={this.props.t}
 							/>

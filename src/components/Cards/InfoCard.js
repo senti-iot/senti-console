@@ -4,11 +4,11 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import withLocalization from 'components/Localization/T';
 import { ItemG } from 'components';
 
-class InfoCard extends React.Component {
+class InfoCard extends PureComponent {
 	constructor(props) {
 	  super(props)
 	

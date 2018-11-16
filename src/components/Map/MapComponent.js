@@ -39,7 +39,7 @@ class MapComponent extends Component {
 		let hArr = this.props.markers.map(point => (
 			{
 				location: new window.google.maps.LatLng(point.lat, point.long),
-				weight: (point.heatData.data / 100 )
+				weight: (point.data / 1000 )
 			}))
 		return hArr
 	}
@@ -60,7 +60,9 @@ class MapComponent extends Component {
 					id={i}
 					options={{
 						fillColor: colors[i],
-						strokeColor: colors[i]
+						strokeColor: colors[i],
+						strokeWeight: 0.5,
+						fillOpacity: 0.1
 					}}
 					defaultCenter={d.location}
 					radius={d.weight}

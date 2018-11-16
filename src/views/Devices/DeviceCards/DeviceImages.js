@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { PureComponent, Fragment } from 'react'
 import { getAllPictures, deletePicture } from 'variables/dataDevices';
 import { Grid, withStyles, Modal, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
 import InfoCard from 'components/Cards/InfoCard';
@@ -9,7 +9,7 @@ import CircularLoader from 'components/Loader/CircularLoader';
 import { Caption, Dropdown } from 'components';
 import DeviceImageUpload from 'views/Devices/ImageUpload';
 
-class DeviceImages extends Component {
+class DeviceImages extends PureComponent {
 	constructor(props) {
 		super(props)
 

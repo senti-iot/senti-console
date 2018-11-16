@@ -14,7 +14,7 @@ import { filterItems, handleRequestSort } from 'variables/functions';
 import DeviceCard from 'components/Devices/DeviceCard'
 import { boxShadow } from "assets/jss/material-dashboard-react";
 import { unassignDeviceFromCollection } from 'variables/dataCollections';
-import { Info, AssignDC, AssignOrg } from 'components';
+import { Info, AssignDC, AssignOrg, ItemG } from 'components';
 import TableToolbar from 'components/Table/TableToolbar';
 import { connect } from 'react-redux'
 
@@ -404,9 +404,11 @@ class Devices extends Component {
 	}
 	renderCards = () => {
 		const { loading } = this.state
-		return loading ? this.renderLoader() : <GridContainer container justify={ 'center' }>
+		return loading ? this.renderLoader() : <GridContainer spacing={8} justify={'center'}>
 			{ this.filterItems(this.state.devices).map((d, k) => {
-				return <DeviceCard key={k} t={ this.props.t } d={ d } />
+				return <ItemG container justify={'center'} xs={12} sm={6} md={4}>
+					<DeviceCard key={k} t={this.props.t} d={d} />
+				</ItemG>
 			}) }
 		</GridContainer>
 	}

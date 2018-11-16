@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { withStyles } from '@material-ui/core';
 import { ItemG, Info, Dropdown } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
@@ -6,7 +6,7 @@ import { Edit, DeveloperBoard } from 'variables/icons'
 import Caption from 'components/Typography/Caption';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 
-class DeviceHardware extends Component {
+class DeviceHardware extends PureComponent {
 	constructor(props) {
 	  super(props)
 	

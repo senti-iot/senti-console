@@ -9,7 +9,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { deleteCollection, getAllCollections, unassignDeviceFromCollection, getCollection } from 'variables/dataCollections';
 import { filterItems, handleRequestSort } from 'variables/functions';
 import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks, Add, LayersClear } from 'variables/icons';
-import { GridContainer, CircularLoader, AssignDevice, AssignProject } from 'components'
+import { GridContainer, CircularLoader, AssignDevice, AssignProject, ItemG } from 'components'
 import CollectionCard from 'components/Collections/CollectionCard';
 
 class Collections extends Component {
@@ -402,9 +402,11 @@ class Collections extends Component {
 
 	renderCards = () => {
 		const { loading } = this.state
-		return loading ? <CircularLoader /> : <GridContainer container justify={'center'}>
+		return loading ? <CircularLoader /> : <GridContainer spacing={8} justify={'center'}>
 			{this.filterItems(this.state.collections).map((d, k) => {
-				return <CollectionCard key={k} t={this.props.t} d={d} history={this.props.history} />
+				return <ItemG container justify={'center'} xs={12} sm={6} md={4}>
+					<CollectionCard key={k} t={this.props.t} d={d} history={this.props.history} />
+				</ItemG>
 			})}
 		</GridContainer>
 	}
