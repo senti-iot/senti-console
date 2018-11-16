@@ -75,8 +75,6 @@ class EnhancedTable extends React.Component {
 				break;
 		}
 	}
-
-
 	render() {
 		const { selected, classes, t, data, order, orderBy, handleClick, handleSelectAllClick  } = this.props;
 		const { rowsPerPage, page  } = this.state;

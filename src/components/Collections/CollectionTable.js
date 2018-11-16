@@ -33,10 +33,6 @@ class CollectionTable extends React.Component {
 		this.props.handleSelectAllClick(event, checked)
 	}
 
-	handleClick = (event, id) => {
-		this.props.handleClick(event, id)
-	}
-
 	handleChangePage = (event, page) => {
 		this.setState({ page });
 	}
@@ -84,7 +80,7 @@ class CollectionTable extends React.Component {
 	}
 
 	render() {
-		const { classes, t, order, orderBy, data, selected } = this.props
+		const { classes, t, order, orderBy, data, selected, handleClick } = this.props
 		const { rowsPerPage, page } = this.state
 		let emptyRows;
 		if (data)
@@ -125,7 +121,6 @@ class CollectionTable extends React.Component {
 									<TableRow
 										hover
 										onClick={e => { e.stopPropagation(); this.props.history.push('/collection/' + n.id) }}
-										// onContextMenu={this.handleToolbarMenuOpen}
 										role="checkbox"
 										aria-checked={isSelected}
 										tabIndex={-1}
@@ -134,10 +129,8 @@ class CollectionTable extends React.Component {
 										style={{ cursor: 'pointer' }}
 									>
 										<Hidden lgUp>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-												<Checkbox checked={isSelected} />
-											</TableCell>
-										
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleClick(e, n.id)} />} />
+											<TC checkbox content={n.activeDeviceStats ? this.renderIcon(n.activeDeviceStats.state) : null} />
 											<TC content={
 												<ItemG container alignItems={"center"}>
 													<ItemG>
@@ -153,9 +146,6 @@ class CollectionTable extends React.Component {
 												</ItemG>
 											}
 											/>
-											<TableCell className={classes.tablecellcheckbox}>
-												{n.activeDeviceStats ? this.renderIcon(n.activeDeviceStats.state) : null}
-											</TableCell>
 										</Hidden>
 										<Hidden mdDown>
 											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
