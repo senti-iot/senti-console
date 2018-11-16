@@ -69,6 +69,9 @@ class BarChart extends PureComponent {
 							offset: true,
 							ticks: {
 								source: "labels",
+								callback: function (value, index, values) {
+									return value.charAt(0).toUpperCase() + value.slice(1);
+								},
 							},
 							gridLines: {
 								offsetGridLines: true,
@@ -193,7 +196,7 @@ class BarChart extends PureComponent {
 							time: {
 								displayFormats: {
 									hour: 'LT',
-									day: 'll dddd',
+									day: 'll',
 									minute: 'LT'
 								},
 								unit: this.props.unit.chart,
@@ -290,6 +293,8 @@ class BarChart extends PureComponent {
 	render() {
 		const { classes } = this.props
 		const { tooltip, chartWidth, mobile } = this.state
+		let DayStr = tooltip.title[1] ? tooltip.title[1].charAt(0).toUpperCase() + tooltip.title[1].slice(1) : ""
+		let DateStr = tooltip.title[0] ? tooltip.title[0] : ""
 		return (
 			<div style={{ maxHeight: 400, position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
 				<Bar
@@ -312,15 +317,19 @@ class BarChart extends PureComponent {
 					<Grow in={tooltip.show} onExited={this.exitedTooltip} >
 						<Paper className={classes.paper}>
 							<ItemG container>
-								<ItemG container direction="row"
-									justify="space-between">
-									<Typography variant={'h6'} classes={{ root: classes.antialias }} >{`${tooltip.title[1]} (${tooltip.title[0]})`}</Typography>
-									{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : <CircularProgress size={37} />}
+								<ItemG container direction="row" justify="space-between">
+									<ItemG xs container direction="column">
+										<Typography variant={'h6'} classes={{ root: classes.antialias }} >{`${DayStr}`}</Typography>
+										<Caption> {`(${DateStr})`}</Caption>
+									</ItemG>
+									<ItemG xs={2}>
+										{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : <CircularProgress size={37} />}
+									</ItemG>
 								</ItemG>
-								<ItemG>
+								<ItemG >
 									<Caption>{this.props.t('devices.fields.weather')}: {this.state.weather ? this.state.weather.currently.summary : null}</Caption>
 									{/* <Info></Info> */}
-								</ItemG> 
+								</ItemG>
 								{this.state.tooltip.data.map((d, i) => {
 									return (
 										<ItemG key={i} container alignItems={'center'}>
