@@ -106,18 +106,16 @@ class CollectionTable extends React.Component {
 							classes={classes}
 							// mdDown={[0]} //Which Columns to display on small Screens
 							customColumn={
-								[
-								
-									{ id: "name", label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>
-										{t("collections.fields.collection")}
-									</Typography>
-									},
-									{
-										id: 'activeDeviceStats.state', label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>
-											{t("collections.fields.status")}
-										</Typography>
-									},
-								]}
+								[{ id: 'activeDeviceStats.state',
+									label: <ItemG container title={t("collections.fields.status")} justify={'center'}>
+										<SignalWifi2Bar />
+									</ItemG>, checkbox: true
+								},
+								{ id: "name", label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>
+									{t("collections.fields.collection")}
+								</Typography>
+								}]
+							}
 						/>
 
 						<TableBody>
