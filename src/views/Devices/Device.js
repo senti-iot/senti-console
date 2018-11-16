@@ -320,14 +320,15 @@ class Device extends Component {
 				newArr.push(d)
 			return newArr
 		}, [])
-		let newState = setDailyData(dataArr, from, to, hoverID)
+		let newState = { ...setDailyData(dataArr, from, to, hoverID), /* ...setPieData(dataArr, from, to, this.state.timeType) */ }
+		window.newState = newState
 		this.setState({
 			...this.state,
 			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 2,
 			...newState
-		})
+		}, () => window.state = this.state)
 	}
 	getWifiSum = async () => {
 		const { from, to, raw, device, hoverID } = this.state

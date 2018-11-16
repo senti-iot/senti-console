@@ -142,6 +142,8 @@ class DeviceData extends PureComponent {
 	renderType = () => {
 		const { display } = this.state
 		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device } = this.props
+
+		console.log(roundDataSets)
 		switch (display) {
 			case 0:
 				return roundDataSets ? <div style={{ maxHeight: 400 }}>
@@ -149,9 +151,9 @@ class DeviceData extends PureComponent {
 						title={title}
 						single //temporary
 						unit={this.timeTypes[timeType]}
-						// onElementsClick={this.handleZoomOnData}
 						setHoverID={setHoverID}
 						data={roundDataSets}
+						t={t}
 					/>
 				</div>
 					: this.renderNoData()
@@ -162,9 +164,9 @@ class DeviceData extends PureComponent {
 							title={title}
 							single //temporary
 							unit={this.timeTypes[timeType]}
-							// onElementsClick={this.handleZoomOnData}
 							setHoverID={setHoverID}
 							data={roundDataSets}
+							t={t}
 						/></div>
 					: this.renderNoData()
 			case 2:
