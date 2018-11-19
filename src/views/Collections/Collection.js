@@ -87,6 +87,11 @@ class Collection extends Component {
 				}
 				if (rs.activeDeviceStats) { 
 					await this.getActiveDevice(rs.activeDeviceStats.id)
+					this.getWifiDaily()
+					this.getHeatMapData()
+				}
+				else {
+					this.setState({ loading: false, loadingData: false })
 				}
 			}
 		})
@@ -97,8 +102,6 @@ class Collection extends Component {
 			let id = this.props.match.params.id
 			if (id) {
 				await this.getCollection(id)
-				this.getWifiDaily()
-				this.getHeatMapData()
 			}
 		}
 		else {

@@ -17,13 +17,13 @@ class CreateCollectionForm extends Component {
 		return <Slide direction="up" {...props} />;
 	}
 	renderSelectDevice = () => {
-		const { t, open, handleCloseDevice, devices, handleChangeDevice, classes } = this.props
+		const { t, openDevice, handleCloseDevice, devices, handleChangeDevice, classes } = this.props
 		const appBarClasses = cx({
 			[" " + classes['primary']]: 'primary'
 		});
 		return <Dialog
 			fullScreen
-			open={open}
+			open={openDevice}
 			onClose={handleCloseDevice}
 			TransitionComponent={this.transition}>
 			<AppBar className={classes.appBar + " " + appBarClasses}>
@@ -61,40 +61,40 @@ class CreateCollectionForm extends Component {
 			]}
 		/>
 	}
-	// renderSelectOrg = () => {
-	// 	const { t, open, handleCloseOrg, orgs, handleChangeOrg, classes } = this.props
-	// 	const appBarClasses = cx({
-	// 		[" " + classes['primary']]: 'primary'
-	// 	});
-	// 	return <Dialog
-	// 		fullScreen
-	// 		open={open}
-	// 		onClose={handleCloseOrg}
-	// 		TransitionComponent={this.transition}>
-	// 		<AppBar className={classes.appBar + " " + appBarClasses}>
-	// 			<Toolbar>
-	// 				<Typography variant="h6" color="inherit" className={classes.flex}>
-	// 					{t("orgs.pageTitle")}
-	// 				</Typography>
-	// 				<Button variant={'extendedFab'} color="primary" onClick={handleCloseOrg} aria-label="Close">
-	// 					<Close /> {t("actions.cancel")}
-	// 				</Button>
-	// 			</Toolbar>
-	// 		</AppBar>
-	// 		<List>
-	// 			{orgs ? orgs.map((o, i) => {
-	// 				return <Fragment key={i}>
-	// 					<ListItem button onClick={handleChangeOrg(o)}>
-	// 						<ListItemText primary={o.name} />
-	// 					</ListItem>
-	// 					<Divider />
-	// 				</Fragment>
-	// 			}) : null}
-	// 		</List>
-	// 	</Dialog>
-	// }
+	renderSelectOrg = () => {
+		const { t, openOrg, handleCloseOrg, orgs, handleChangeOrg, classes } = this.props
+		const appBarClasses = cx({
+			[" " + classes['primary']]: 'primary'
+		});
+		return <Dialog
+			fullScreen
+			open={openOrg}
+			onClose={handleCloseOrg}
+			TransitionComponent={this.transition}>
+			<AppBar className={classes.appBar + " " + appBarClasses}>
+				<Toolbar>
+					<Typography variant="h6" color="inherit" className={classes.flex}>
+						{t("devices.pageTitle")}
+					</Typography>
+					<Button variant={'extendedFab'} color="primary" onClick={handleCloseOrg} aria-label="Close">
+						<Close /> {t("actions.cancel")}
+					</Button>
+				</Toolbar>
+			</AppBar>
+			<List>
+				{orgs ? orgs.map((o, i) => {
+					return <Fragment key={i}>
+						<ListItem button onClick={handleChangeOrg(o)}>
+							<ListItemText primary={o.name} />
+						</ListItem>
+						<Divider />
+					</Fragment>
+				}) : null}
+			</List>
+		</Dialog>
+	}
 	render() {
-		const { t, handleChange, collection, classes, handleOpenDevice, handleCreate, device } = this.props
+		const { t, handleChange, collection, classes, handleOpenDevice, handleOpenOrg, handleCreate, device, org } = this.props
 		return (
 			<GridContainer>
 				<Paper className={classes.paper}>
@@ -121,25 +121,10 @@ class CreateCollectionForm extends Component {
 									
 								/>
 							</ItemGrid>
-							{/* <ItemGrid xs={12}>
-								{this.renderSelectOrg()}
-								<TextF
-									id={'collectionOrg'}
-									label={t("collections.fields.org")}
-									value={collection.org.name ? collection.org.name : t("collections.noOrg")}
-									handleClick={handleOpenOrg}
-									handleChange={() => { }}
-									
-									InputProps={{
-										func: handleOpenOrg,
-										readOnly: true
-									}}
-								/>
-							</ItemGrid> */}
 							<ItemGrid xs={12}>
 								{this.renderSelectDevice()}
 								<TextF
-									id={'collectionOrg'}
+									id={'collectionDevice'}
 									label={t("collections.fields.activeDevice")}
 									value={device.name}
 									handleClick={handleOpenDevice}
@@ -147,6 +132,21 @@ class CreateCollectionForm extends Component {
 									
 									InputProps={{
 										onChange: handleOpenDevice,
+										readOnly: true
+									}}
+								/>
+							</ItemGrid>
+							<ItemGrid xs={12}>
+								{this.renderSelectOrg()}
+								<TextF
+									id={'collectionOrg'}
+									label={t("collections.fields.org")}
+									value={org.name}
+									handleClick={handleOpenOrg}
+									handleChange={() => { }}
+
+									InputProps={{
+										onChange: handleOpenOrg,
 										readOnly: true
 									}}
 								/>
@@ -173,12 +173,10 @@ CreateCollectionForm.propTypes = {
 	handleChangeDevice: PropTypes.func.isRequired,
 	handleCloseDevice: PropTypes.func.isRequired,
 	handleOpenDevice: PropTypes.func.isRequired,
-	open: PropTypes.bool.isRequired,
-	devices: PropTypes.array.isRequired,
+	openDevice: PropTypes.bool.isRequired,
+	devices: PropTypes.array,
 	device: PropTypes.object.isRequired,
 	handleCreate: PropTypes.func.isRequired,
 	handleChange: PropTypes.func.isRequired,
-
-
 }
 export default withStyles(createprojectStyles)(CreateCollectionForm)
