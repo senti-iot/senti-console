@@ -82,12 +82,12 @@ class Devices extends Component {
 				{ label: t('menus.assign.deviceToOrg'), func: this.handleOpenAssignOrg, single: false, icon: Business },
 				{ label: t('menus.unassign.deviceFromCollection'), func: this.handleOpenUnassignDialog, single: false, icon: LayersClear },
 				{ label: t('menus.calibrate'), func: this.handleCalibrateFlow, single: true, icon: Build },
-				{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? this.removeFromFav : this.addToFav }
+				{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
 				// { label: t('menus.delete'), func: this.handleDeleteProjects, single: false, icon: Delete }, 
 			]
 		else {
 			return [
-				{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? this.removeFromFav : this.addToFav },
+				{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
 				{ label: t('menus.exportPDF'), func: () => { }, single: false }
 			]
 		}
@@ -113,25 +113,13 @@ class Devices extends Component {
 				break;
 		}
 	}
-	addToFav = () => {
-		const { device } = this.state
-		let favObj = {
-			id: device.id,
-			name: device.name,
-			type: 'device',
-			path: this.props.match.url
-		}
+	addToFav = (favObj) => {
 		this.props.addToFav(favObj)
+		this.setState({ anchorElMenu: null })
 	}
-	removeFromFav = () => {
-		const { device } = this.state
-		let favObj = {
-			id: device.id,
-			name: device.name,
-			type: 'device',
-			path: this.props.match.url
-		}
+	removeFromFav = (favObj) => {
 		this.props.removeFromFav(favObj)
+		this.setState({ anchorElMenu: null })
 	}
 	handleTabs = () => {
 		if (this.props.location.pathname.includes('/map'))
@@ -164,6 +152,20 @@ class Devices extends Component {
 				else {
 					this.setState({ route: 0 })
 				}
+			}
+		}
+		if (this.props.saved === true) {
+			const { devices, selected } = this.state
+			let device = devices[devices.findIndex(d => d.id === selected[0])]
+			if (this.props.isFav({ id: device.id, type: 'device' })) {
+				this.props.s('snackbars.favorite.saved', { name: device.name, type: this.props.t('favorites.types.device') })
+				this.props.finishedSaving()
+				this.setState({ selected: [] })
+			}
+			if (!this.props.isFav({ id: device.id, type: 'device' })) {
+				this.props.s('snackbars.favorite.removed', { name: device.name, type: this.props.t('favorites.types.device') })
+				this.props.finishedSaving()
+				this.setState({ selected: [] })
 			}
 		}
 	}
