@@ -17,8 +17,8 @@ import teal from '@material-ui/core/colors/teal'
 import { setHourlyData, setMinutelyData, setDailyData, setSummaryData } from 'components/Charts/DataModel';
 import { DataUsage, Timeline, Map, DeviceHub, History } from 'variables/icons';
 import Toolbar from 'components/Toolbar/Toolbar';
+import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 
-// import moment from 'moment'
 class Collection extends Component {
 	constructor(props) {
 		super(props)
@@ -96,7 +96,20 @@ class Collection extends Component {
 			}
 		})
 	}
-
+	componentDidUpdate = (prevProps, prevState) => {
+		
+		if (this.props.saved === true) {
+			const { collection } = this.state
+			if (this.props.isFav({ id: collection.id, type: 'collection' })) {
+				this.props.s('snackbars.favorite.saved', { name: collection.name, type: this.props.t('favorites.types.collection') })
+				this.props.finishedSaving()
+			}
+			if (!this.props.isFav({ id: collection.id, type: 'collection' })) {
+				this.props.s('snackbars.favorite.removed', { name: collection.name, type: this.props.t('favorites.types.collection') })
+				this.props.finishedSaving()
+			}
+		}
+	}
 	componentDidMount = async () => {
 		if (this.props.match) {
 			let id = this.props.match.params.id
@@ -107,6 +120,26 @@ class Collection extends Component {
 		else {
 			this.props.history.push('/404')
 		}
+	}
+	addToFav = () => {
+		const { collection } = this.state
+		let favObj = {
+			id: collection.id,
+			name: collection.name,
+			type: 'collection',
+			path: this.props.match.url
+		}
+		this.props.addToFav(favObj)
+	}
+	removeFromFav = () => {
+		const { collection } = this.state
+		let favObj = {
+			id: collection.id,
+			name: collection.name,
+			type: 'collection',
+			path: this.props.match.url
+		}
+		this.props.removeFromFav(favObj)
 	}
 	getHeatMapData = async () => {
 		// const { device } = this.props
@@ -291,6 +324,7 @@ class Collection extends Component {
 				newArr.push(d)
 			return newArr
 		}, [])
+		console.log(dataArr)
 		let newState = setDailyData(dataArr, from, to, hoverID)
 		this.setState({
 			...this.state,
@@ -604,6 +638,9 @@ class Collection extends Component {
 						{/* {this.renderAssignDevice()} */}
 						<ItemGrid xs={12} noMargin id='details'>
 							<CollectionDetails
+								isFav={this.props.isFav({ id: collection.id, type: 'collection' })}
+								addToFav={this.addToFav}
+								removeFromFav={this.removeFromFav}
 								collection={collection}
 								weather={weather}
 								history={this.props.history}
@@ -670,11 +707,16 @@ class Collection extends Component {
 }
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
-	language: state.settings.language
+	language: state.settings.language,
+	saved: state.favorites.saved
 })
 
-const mapDispatchToProps = {
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	addToFav: (favObj) => dispatch(addToFav(favObj)),
+	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
+	finishedSaving: () => dispatch(finishedSaving())
+})
 
-}
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(collectionStyles)(Collection))

@@ -5,7 +5,7 @@ import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { /* Business, */ DataUsage, Edit, DeviceHub, LibraryBooks, Close, LayersClear } from 'variables/icons';
+import { /* Business, */ DataUsage, Edit, DeviceHub, LibraryBooks, Close, LayersClear, Star, StarBorder } from 'variables/icons';
 // import React from 'react'
 
 
@@ -25,8 +25,8 @@ class DeviceDetails extends Component {
 	}
 
 	render() {
-		const { classes, collection, t, /* accessLevel ,*/ history, handleOpenDeleteDialog, weather } = this.props
-		
+		const { classes, collection, t, isFav, addToFav, removeFromFav, /* accessLevel ,*/ history, handleOpenDeleteDialog, weather } = this.props
+
 		return (
 			<InfoCard
 				title={collection.name ? collection.name : collection.id}
@@ -35,10 +35,12 @@ class DeviceDetails extends Component {
 					[
 						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/collection/${collection.id}/edit`, prevURL: `/collection/${collection.id}` }) },
 						{ label: t('menus.assign.deviceToCollection'), icon: <DeviceHub className={classes.leftIcon} />, func: this.props.handleOpenAssignDevice },
-						{ label: t('menus.unassign.deviceFromCollection'), icon: <LayersClear className={classes.leftIcon}/>, func: this.props.handleOpenUnassignDevice, dontShow: collection.activeDeviceStats ? false : true },
+						{ label: t('menus.unassign.deviceFromCollection'), icon: <LayersClear className={classes.leftIcon} />, func: this.props.handleOpenUnassignDevice, dontShow: collection.activeDeviceStats ? false : true },
 						// { label: collection.org.id > 0 ? t('menus.reassignOrg') : t('menus.assignOrg'), icon: <Business className={classes.leftIcon} />, func: this.props.handleOpenAssignOrg, dontShow: accessLevel.apisuperuser ? false : true },
 						{ label: collection.project ? collection.project.id ? t('menus.reassign.collectionToProject') : t('menus.assign.collectionToProject') : t('menus.assign.collectionToProject'), icon: <LibraryBooks className={classes.leftIcon} />, func: this.props.handleOpenAssignProject, /*  dontShow: collection.org.id > 0 ? false : true */ },
-						{ label: t('menus.delete'), icon: <Close className={classes.leftIcon} />, func: handleOpenDeleteDialog }
+						{ label: t('menus.delete'), icon: <Close className={classes.leftIcon} />, func: handleOpenDeleteDialog },
+						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav }
+
 					]
 				} />
 
@@ -87,7 +89,8 @@ class DeviceDetails extends Component {
 							<Info>{collection.project ?
 								<Link to={{
 									pathname: `/project/${collection.project.id}`,
-									prevURL: `/collection/${collection.id}` }}
+									prevURL: `/collection/${collection.id}`
+								}}
 								>
 									{collection.project.title}
 								</Link>

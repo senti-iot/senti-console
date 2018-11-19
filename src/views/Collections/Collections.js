@@ -8,9 +8,10 @@ import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { deleteCollection, getAllCollections, unassignDeviceFromCollection, getCollection } from 'variables/dataCollections';
 import { filterItems, handleRequestSort } from 'variables/functions';
-import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks, Add, LayersClear } from 'variables/icons';
+import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks, Add, LayersClear, Star, StarBorder, SignalWifi2Bar } from 'variables/icons';
 import { GridContainer, CircularLoader, AssignDevice, AssignProject, ItemG } from 'components'
 import CollectionCard from 'components/Collections/CollectionCard';
+import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 
 class Collections extends Component {
 	constructor(props) {
@@ -38,20 +39,50 @@ class Collections extends Component {
 	}
 	tabs = [
 		{ id: 0, title: this.props.t('devices.tabs.listView'), label: <ViewList />, url: `${this.props.match.url}/list` },
-		{ id: 2, title: this.props.t('devices.tabs.cardView'), label: <ViewModule />, url: `${this.props.match.url}/grid` },
+		{ id: 1, title: this.props.t('devices.tabs.cardView'), label: <ViewModule />, url: `${this.props.match.url}/grid` },
+		{ id: 2, title: this.props.t('devices.tabs.favorites'), label: <Star />, url: `${this.props.match.url}/favorites` }
 	]
+	collectionsHeader = () => {
+		const { t } = this.props
+		return [
+			{ id: 'id', label: t('collections.fields.dcID') },
+			{ id: 'name', label: t('collections.fields.name') },
+			{ id: 'activeDeviceStats.state', label: <ItemG container justify={'center'} title={t('devices.fields.status')}><SignalWifi2Bar /></ItemG>, checkbox: true },
+			{ id: 'created', label: t('collections.fields.created') },
+			{ id: 'devices[0].start', label: t('collections.fields.activeDeviceStartDate') },
+			{ id: 'org.name', label: t('collections.fields.org') }
+		]
+	}
 	options = () => {
-		const { t, /* accessLevel */ } = this.props
+		const { t, isFav } = this.props
 		const { selected, collections } = this.state
+		let collection = collections[collections.findIndex(d => d.id === selected[0])]
+		let favObj = {
+			id: collection.id,
+			name: collection.name,
+			type: 'collection',
+			path: `/collection/${collection.id}`
+		}
+		let isFavorite = isFav(favObj)
 		let allOptions = [
 			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
 			{ label: t('menus.assign.collectionToProject'), func: this.handleOpenAssignProject, single: false, icon: LibraryBooks },
 			{ label: t('menus.assign.deviceToCollection'), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
 			{ label: t('menus.unassign.deviceFromCollection'), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear, dontShow: collections[collections.findIndex(c => c.id === selected[0])].activeDeviceStats ? false : true },
 			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
-			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete }
+			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
+			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
+
 		]
 		return allOptions
+	}
+	addToFav = (favObj) => {
+		this.props.addToFav(favObj)
+		this.setState({ anchorElMenu: null })
+	}
+	removeFromFav = (favObj) => {
+		this.props.removeFromFav(favObj)
+		this.setState({ anchorElMenu: null })
 	}
 	handleEdit = () => {
 		const { selected } = this.state
@@ -84,19 +115,10 @@ class Collections extends Component {
 		await this.getData()
 	}
 	getData = async () => {
-		const { t } = this.props
 		let collections = await getAllCollections().then(rs => rs)
 		if (this._isMounted) {
 			this.setState({
-				collections: collections ? collections : [],
-				collectionsHeader: [
-					{ id: 'id', label: t('collections.fields.dcID') },
-					{ id: 'name', label: t('collections.fields.name') },
-					{ id: 'activeDeviceStats.state', label: t('collections.fields.status'), centered: true },
-					{ id: 'created', label: t('collections.fields.created') },
-					{ id: 'devices[0].start', label: t('collections.fields.activeDeviceStartDate') },
-					{ id: 'org.name', label: t('collections.fields.org') }
-				],
+				collections: collections ? collections : [],			
 				loading: false
 			}, () => this.handleRequestSort(null, 'name', 'asc'))
 
@@ -104,8 +126,39 @@ class Collections extends Component {
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
+		this.handleTabs()
 		await this.getData()
 
+	}
+	handleTabs = () => {
+		if (this.props.location.pathname.includes('grid'))
+			this.setState({ route: 1 })
+		else {
+			if (this.props.location.pathname.includes('favorites'))
+				this.setState({ route: 2 })
+			else {
+				this.setState({ route: 0 })
+			}
+		}
+	}
+	componentDidUpdate = (prevProps, prevState) => {
+		if (this.props.location.pathname !== prevProps.location.pathname) {
+			this.handleTabs()
+		}
+		if (this.props.saved === true) {
+			const { collections, selected } = this.state
+			let collection = collections[collections.findIndex(d => d.id === selected[0])]
+			if (this.props.isFav({ id: collection.id, type: 'collection' })) {
+				this.props.s('snackbars.favorite.saved', { name: collection.name, type: this.props.t('favorites.types.collection') })
+				this.props.finishedSaving()
+				this.setState({ selected: [] })
+			}
+			if (!this.props.isFav({ id: collection.id, type: 'collection' })) {
+				this.props.s('snackbars.favorite.removed', { name: collection.name, type: this.props.t('favorites.types.collection') })
+				this.props.finishedSaving()
+				this.setState({ selected: [] })
+			}
+		}
 	}
 	componentWillUnmount = () => {
 
@@ -170,7 +223,7 @@ class Collections extends Component {
 		this.setState({ selected: [] })
 	}
 
-	handleClick = (event, id) => {
+	handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
 		const { selected } = this.state;
 		const selectedIndex = selected.indexOf(id)
@@ -358,7 +411,62 @@ class Collections extends Component {
 			content={this.renderTableToolBarContent()}
 		/>
 	}
-
+	getFavs = () => {
+		let favorites = this.props.favorites.filter(f => f.type === 'collection')
+		let favCollections = favorites.map(f => {
+			return this.state.collections[this.state.collections.findIndex(d => d.id === f.id)]
+		})
+		return favCollections
+	}
+	renderFavTable = () => {
+		const { t } = this.props
+		const { order, orderBy, selected, openAssignDevice, openAssignProject } = this.state
+		let collectionOrg = this.state.collections.find(r => r.id === selected[0])
+		return <Fragment>
+			<AssignProject
+				multiple
+				collectionId={selected ? selected : []}
+				handleCancel={this.handleCancelAssignProject}
+				handleClose={this.handleCloseAssignProject}
+				open={openAssignProject}
+				t={t}
+			/>
+			<AssignDevice
+				collectionId={selected[0] ? selected[0] : 0}
+				orgId={collectionOrg ? collectionOrg.org.id : 0}
+				handleCancel={this.handleCancelAssignDevice}
+				handleClose={this.handleCloseAssignDevice}
+				open={openAssignDevice}
+				t={t}
+			/>
+			{selected.length > 0 ? this.renderDeviceUnassign() : null}
+			<CollectionTable
+				selected={selected}
+				handleClick={this.handleClick}
+				handleCheckboxClick={this.handleCheckboxClick}
+				handleSelectAllClick={this.handleSelectAllClick}
+				data={this.filterItems(this.getFavs())}
+				tableHead={this.collectionsHeader()}
+				handleFilterEndDate={this.handleFilterEndDate}
+				handleFilterKeyword={this.handleFilterKeyword}
+				handleFilterStartDate={this.handleFilterStartDate}
+				handleRequestSort={this.handleRequestSort}
+				handleOpenUnassignDevice={this.handleOpenUnassignDevice}
+				orderBy={orderBy}
+				order={order}
+				filters={this.state.filters}
+				t={t}
+			/>
+		</Fragment>
+	}
+	handleDeviceClick = id => e => {
+		e.stopPropagation()
+		this.props.history.push('/collection/' + id)
+	}
+	handleFavClick = id => e => {
+		e.stopPropagation()
+		this.props.history.push({ pathname: '/collection/' + id, prevURL: '/collections/favorites' })
+	}
 	renderTable = () => {
 		const { t } = this.props
 		const { order, orderBy, selected, openAssignDevice, openAssignProject } = this.state
@@ -384,9 +492,10 @@ class Collections extends Component {
 			<CollectionTable
 				selected={selected}
 				handleClick={this.handleClick}
+				handleCheckboxClick={this.handleCheckboxClick}
 				handleSelectAllClick={this.handleSelectAllClick}
 				data={this.filterItems(this.state.collections)}
-				tableHead={this.state.collectionsHeader}
+				tableHead={this.collectionsHeader()}
 				handleFilterEndDate={this.handleFilterEndDate}
 				handleFilterKeyword={this.handleFilterKeyword}
 				handleFilterStartDate={this.handleFilterStartDate}
@@ -410,7 +519,18 @@ class Collections extends Component {
 			})}
 		</GridContainer>
 	}
-
+	renderFavorites = () => {
+		const { classes } = this.props
+		const { loading } = this.state
+		return <GridContainer justify={'center'}>
+			{loading ? <CircularLoader /> : <Paper className={classes.root}>
+				{this.renderTableToolBar()}
+				{this.renderFavTable()}
+				{this.renderConfirmDelete()}
+			</Paper>
+			}
+		</GridContainer>
+	}
 	renderCollections = () => {
 		const { classes } = this.props
 		const { loading } = this.state
@@ -441,6 +561,7 @@ class Collections extends Component {
 				<Switch>
 					<Route path={`${this.props.match.path}/list`} render={() => this.renderCollections()} />
 					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} />
+					<Route path={`${this.props.match.path}/favorites`} render={() => this.renderFavorites()} />
 					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
 				</Switch>
 
@@ -450,11 +571,17 @@ class Collections extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	favorites: state.favorites.favorites,
+	saved: state.favorites.saved
 })
 
-const mapDispatchToProps = {
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	addToFav: (favObj) => dispatch(addToFav(favObj)),
+	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
+	finishedSaving: () => dispatch(finishedSaving())
+})
 
-}
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(projectStyles)(Collections))

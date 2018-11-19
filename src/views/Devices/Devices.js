@@ -144,15 +144,7 @@ class Devices extends Component {
 
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.location.pathname !== prevProps.location.pathname) {
-			if (this.props.location.pathname.includes('/map'))
-				this.setState({ route: 1 })
-			else {
-				if (this.props.location.pathname.includes('/grid'))
-					this.setState({ route: 2 })
-				else {
-					this.setState({ route: 0 })
-				}
-			}
+			this.handleTabs()
 		}
 		if (this.props.saved === true) {
 			const { devices, selected } = this.state

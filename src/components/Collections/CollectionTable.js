@@ -80,7 +80,7 @@ class CollectionTable extends React.Component {
 	}
 
 	render() {
-		const { classes, t, order, orderBy, data, selected, handleClick } = this.props
+		const { classes, t, order, orderBy, data, selected, handleCheckboxClick } = this.props
 		const { rowsPerPage, page } = this.state
 		let emptyRows;
 		if (data)
@@ -129,7 +129,7 @@ class CollectionTable extends React.Component {
 										style={{ cursor: 'pointer' }}
 									>
 										<Hidden lgUp>
-											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleClick(e, n.id)} />} />
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
 											<TC checkbox content={n.activeDeviceStats ? this.renderIcon(n.activeDeviceStats.state) : null} />
 											<TC content={
 												<ItemG container alignItems={'center'}>
@@ -148,14 +148,10 @@ class CollectionTable extends React.Component {
 											/>
 										</Hidden>
 										<Hidden mdDown>
-											<TableCell padding='checkbox' className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-												<Checkbox checked={isSelected} />
-											</TableCell>
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
 											<TC FirstC label={n.id} />
 											<TC FirstC label={n.name} />
-											<TableCell padding='checkbox' className={classes.tablecellcheckbox}>
-												{n.activeDeviceStats ? this.renderIcon(n.activeDeviceStats.state) : null}
-											</TableCell>
+											<TC content={this.renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : 0)} />
 											{/* <TC className={classes.tablecellcheckbox} FirstC content= /> */}
 											<TC label={dateFormatter(n.created)} />
 											<TC label={n.devices ? n.devices[0] ? dateFormatter(n.devices[0].start) : '' : ''} />
