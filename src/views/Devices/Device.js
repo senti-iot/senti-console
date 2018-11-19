@@ -113,11 +113,11 @@ class Device extends Component {
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.saved === true) {
 			if (this.props.isFav({ id: this.state.device.id, type: 'device' }))
-			{	this.props.s("snackbars.favoriteSaved", { name: this.state.device.name, type: this.props.t("favorites.types.device") })
+			{	this.props.s("snackbars.favorite.saved", { name: this.state.device.name, type: this.props.t("favorites.types.device") })
 				this.props.finishedSaving()
 			}
 			if (!this.props.isFav({ id: this.state.device.id, type: 'device' })) {
-				this.props.s("snackbars.favoriteDeleted", { name: this.state.device.name, type: this.props.t("favorites.types.device") })
+				this.props.s("snackbars.favorite.removed", { name: this.state.device.name, type: this.props.t("favorites.types.device") })
 				this.props.finishedSaving()
 			}
 		}

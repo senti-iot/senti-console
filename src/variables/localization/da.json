@@ -540,7 +540,7 @@
 	"snackbars": {
 		"favorite":{
 			"saved": "%{name} (%{type}) er blevet tilføjet til favoritter!",
-			"removed": "%{name} (%{type}) er blevet fjernet fram favoritter!"
+			"removed": "%{name} (%{type}) er blevet fjernet fra favoritter!"
 		},
 		"assign": {
 			"deviceToCollection": "Enhed %{device} tilknyttet til datasamling %{collection}",

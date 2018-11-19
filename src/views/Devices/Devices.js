@@ -67,6 +67,7 @@ class Devices extends Component {
 		const { t, accessLevel } = this.props
 		if (accessLevel.apisuperuser)
 			return [
+				{ label: t("menus.favorites.add"), func: this.addToFav, icon: Star },
 				{ label: t("menus.edit"), func: this.handleDeviceEdit, single: true, icon: Edit },
 				{ label: t("menus.assign.deviceToCollection"), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },
 				{ label: t("menus.assign.deviceToOrg"), func: this.handleOpenAssignOrg, single: false, icon: Business },
@@ -76,6 +77,7 @@ class Devices extends Component {
 			]
 		else {
 			return [
+				{ label: t("menus.favorites.add"), func: this.addToFav, icon: Star },
 				{ label: t("menus.exportPDF"), func: () => { }, single: false }
 			]
 		}
@@ -340,7 +342,7 @@ class Devices extends Component {
 	}
 	renderTableToolBarContent = () => {
 		const { classes, t } = this.props
-		const { anchorFilterMenu, deviceHeaders } = this.state
+		const { anchorFilterMenu } = this.state
 		return <Fragment>
 			<IconButton aria-label="Add new organisation" onClick={this.addNewOrg}>
 				<Add />
@@ -359,7 +361,7 @@ class Devices extends Component {
 				onClose={this.handleFilterMenuClose}
 				PaperProps={{ style: { width: 200, boxShadow: boxShadow } }}>
 
-				{deviceHeaders.map(option => {
+				{this.deviceHeaders().map(option => {
 					return <MenuItem key={option.id} onClick={this.handleFilter}>
 						{option.label}
 					</MenuItem>
