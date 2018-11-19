@@ -76,7 +76,7 @@ class EnhancedTable extends React.Component {
 		}
 	}
 	render() {
-		const { selected, classes, t, data, order, orderBy, handleClick, handleSelectAllClick  } = this.props;
+		const { selected, classes, t, data, order, orderBy, handleClick, handleCheckboxClick, handleSelectAllClick  } = this.props;
 		const { rowsPerPage, page  } = this.state;
 		let emptyRows
 		if (data)
@@ -114,7 +114,7 @@ class EnhancedTable extends React.Component {
 								return (
 									<TableRow
 										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push('/device/' + n.id) }}
+										onClick={handleClick(n.id)}
 										role="checkbox"
 										aria-checked={isSelected}
 										tabIndex={-1}
@@ -123,7 +123,7 @@ class EnhancedTable extends React.Component {
 										style={{ cursor: 'pointer' }}
 									>
 										<Hidden lgUp>
-											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleClick(e, n.id)}/>} />
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)}/>} />
 											<TC checkbox content={this.renderIcon(n.liveStatus)}/>
 											<TC content={
 												<ItemG container alignItems={"center"}>
@@ -140,7 +140,7 @@ class EnhancedTable extends React.Component {
 												</ItemG>} />
 										</Hidden>
 										<Hidden mdDown>
-											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleClick(e, n.id)}/>}/>
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)}/>}/>
 											<TC label={n.name ? n.name : t("devices.noName")} />
 											<TC label={n.id} />
 											<TC content={this.renderIcon(n.liveStatus)} />

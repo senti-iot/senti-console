@@ -356,6 +356,10 @@
 		"username": "Username"
 	},
 	"menus": {
+		"favorites": {
+			"add": "Add to favorites",
+			"remove": "Remove from favorites"
+		},
 		"assign": {
 			"collectionsToProject": "Assign data collections",
 			"collectionToProject": "Assign data collection",
@@ -524,7 +528,20 @@
 		"settings": "Settings",
 		"users": "Users"
 	},
+	"favorites": {
+		"types":{
+			"device": "Device",
+			"collection": "Data collection",
+			"project": "Project",
+			"org": "Organisation",
+			"user": "User"
+		}
+	},
 	"snackbars": {
+		"favorite":{
+			"saved": "%{name} (%{type}) has been added to favorites!",
+			"removed": "%{name} (%{type}) has been removed from favorites!"
+		},
 		"assign": {
 			"deviceToCollection": "Device %{device} assigned to collection %{collection}",
 			"deviceToOrg": "Device %{device} assigned to organisation %{org}",

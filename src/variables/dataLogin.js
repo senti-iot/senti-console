@@ -33,9 +33,9 @@ export const saveSettings = async (user) => {
 	var data = await api.put(`/core/user/${user.id}`, user).then(rs => rs.data)
 	return data
 }
-export const saveSettingsOnServer = async (settings) => {
-	var data = await api.post('senti/users/settings', JSON.stringify(settings)).then(rs => { 
-		return rs.data
-	})
-	return data
-}
+// export const saveSettingsOnServer = async (settings) => {
+// 	var data = await api.post('senti/users/settings', JSON.stringify(settings)).then(rs => { 
+// 		return rs.data
+// 	})
+// 	return data
+// }

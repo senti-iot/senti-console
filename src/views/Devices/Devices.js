@@ -1,14 +1,16 @@
 import React, { Component, Fragment } from 'react'
 import { getAllDevices, getDevice } from 'variables/dataDevices';
-import { withStyles, Paper, Dialog, DialogTitle, DialogContent,
-	DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem } from "@material-ui/core";
+import {
+	withStyles, Paper, Dialog, DialogTitle, DialogContent,
+	DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem
+} from "@material-ui/core";
 import { Switch, Route, Redirect } from 'react-router-dom'
 import projectStyles from 'assets/jss/views/projects';
 import DeviceTable from 'components/Devices/DeviceTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import { Maps } from 'components/Map/Maps';
 import GridContainer from 'components/Grid/GridContainer';
-import { ViewList, ViewModule, Map, Add, FilterList, Build, Business, DataUsage, Edit, LayersClear, SignalWifi2Bar } from 'variables/icons'
+import { ViewList, ViewModule, Map, Add, FilterList, Build, Business, DataUsage, Edit, LayersClear, SignalWifi2Bar, Star } from 'variables/icons'
 import Toolbar from 'components/Toolbar/Toolbar'
 import { filterItems, handleRequestSort } from 'variables/functions';
 import DeviceCard from 'components/Devices/DeviceCard'
@@ -47,8 +49,20 @@ class Devices extends Component {
 		{ id: 0, title: this.props.t("devices.tabs.listView"), label: <ViewList />, url: `${this.props.match.path}/list` },
 		{ id: 1, title: this.props.t("devices.tabs.mapView"), label: <Map />, url: `${this.props.match.path}/map` },
 		{ id: 2, title: this.props.t("devices.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.path}/grid` },
+		{ id: 3, title: this.props.t("favorites.favorites"), label: <Star />, url: `${this.props.match.path}/favorites` }
 	]
 
+	deviceHeaders = () => {
+		const { t } = this.props
+		return [
+			{ id: "name", label: t("devices.fields.name") },
+			{ id: "id", label: t("devices.fields.id") },
+			{ id: "liveStatus", checkbox: true, label: <ItemG container justify={'center'} title={t("devices.fields.status")}><SignalWifi2Bar /></ItemG> },
+			{ id: "address", label: t("devices.fields.address") },
+			{ id: "org.name", label: t("devices.fields.org") },
+			{ id: "project.id", label: t("devices.fields.availability") }
+		]
+	}
 	options = () => {
 		const { t, accessLevel } = this.props
 		if (accessLevel.apisuperuser)
@@ -69,15 +83,15 @@ class Devices extends Component {
 	snackBarMessages = (msg) => {
 		const { s, t } = this.props
 		switch (msg) {
-			case 1: 
-			//TODO
+			case 1:
+				//TODO
 				s("snackbars.assign.deviceToCollection", { device: "", collection: "" })
 				break
 			case 2:
 				//TODO
 				s("snackbars.assign.deviceToOrg", { device: "", org: "" })
 				break
-			case 3: 
+			case 3:
 				s("snackbars.unassignDevice", {
 					device: "",
 					what: t("collections.fields.id")
@@ -87,20 +101,25 @@ class Devices extends Component {
 				break;
 		}
 	}
-	componentDidMount = async () => {
-		this._isMounted = 1
-		await this.getDevices()
-		// No more bullcrap
-		// this.liveStatus = setInterval(this.getDevices, 10000);
+	handleTabs = () => {
 		if (this.props.location.pathname.includes('/map'))
 			this.setState({ route: 1 })
 		else {
 			if (this.props.location.pathname.includes('/grid'))
 				this.setState({ route: 2 })
+			if (this.props.location.pathname.includes('/favorites'))
+				this.setState({ route: 3 })
 			else {
 				this.setState({ route: 0 })
 			}
 		}
+	}
+	componentDidMount = async () => {
+		this._isMounted = 1
+		this.handleTabs()
+		await this.getDevices()
+		// No more bullcrap
+		// this.liveStatus = setInterval(this.getDevices, 10000);
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
@@ -122,17 +141,9 @@ class Devices extends Component {
 	}
 
 	getDevices = async () => {
-		const { t } = this.props
 		await getAllDevices().then(rs => this._isMounted ? this.setState({
 			devices: rs ? rs : [],
-			deviceHeaders: [
-				{ id: "name", label: t("devices.fields.name") },
-				{ id: "id", label: t("devices.fields.id") },
-				{ id: "liveStatus", checkbox: true, label: <ItemG container justify={'center'} title={t("devices.fields.status")}><SignalWifi2Bar/></ItemG> },
-				{ id: "address", label: t("devices.fields.address") },
-				{ id: "org.name", label: t("devices.fields.org") },
-				{ id: "project.id", label: t("devices.fields.availability") }
-			],
+
 			loading: false
 		}, () => this.handleRequestSort(null, "id", "asc")) : null)
 	}
@@ -186,11 +197,11 @@ class Devices extends Component {
 				this.snackBarMessages(2)
 			})
 		}
-		else { this.setState({ openAssignOrg: false  })}
+		else { this.setState({ openAssignOrg: false }) }
 	}
 
 	handleOpenAssignCollection = () => {
-		this.setState({ openAssignCollection: true, anchorElMenu: null  })
+		this.setState({ openAssignCollection: true, anchorElMenu: null })
 	}
 
 	handleCloseAssignCollection = async reload => {
@@ -200,7 +211,7 @@ class Devices extends Component {
 				this.snackBarMessages(1)
 			})
 		}
-		else { this.setState({ openAssignCollection: false,  }) }
+		else { this.setState({ openAssignCollection: false, }) }
 
 	}
 
@@ -222,7 +233,14 @@ class Devices extends Component {
 			}
 		})
 	}
-
+	handleDeviceClick = id => e => {
+		e.stopPropagation()
+		this.props.history.push('/device/' + id)
+	}
+	handleFavClick = id => e => {
+		e.stopPropagation()
+		this.props.history.push({ pathname: '/device/' + id, prevURL: '/devices/favorites' })
+	}
 	handleSelectAllClick = (event, checked) => {
 		if (checked) {
 			this.setState({ selected: this.state.devices.map(n => n.id) });
@@ -231,7 +249,7 @@ class Devices extends Component {
 		this.setState({ selected: [] });
 	};
 
-	handleClick = (event, id) => {
+	handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
 		const { selected } = this.state;
 		const selectedIndex = selected.indexOf(id);
@@ -349,9 +367,74 @@ class Devices extends Component {
 			</Menu>
 		</Fragment>
 	}
+	getFavs = () => {
+		let favorites = this.props.favorites.filter(f => f.type === 'device')
+		console.log(favorites)
+		let favDevices = favorites.map(f => {
+			return this.state.devices[this.state.devices.findIndex(d => d.id === f.id)]
+		})
+		console.log(favDevices)
+		return favDevices
+	}
+	renderFavorites = () => {
+		const { t, classes } = this.props
+		const { devices, loading, order, orderBy, selected, filters,
+			openAssignCollection, openAssignOrg } = this.state
+
+		return loading ? this.renderLoader() : <GridContainer justify={'center'}>
+			<Paper className={classes.root}>
+				<AssignDC
+					deviceId={selected[0] ? selected[0] : 0}
+					open={openAssignCollection}
+					handleClose={this.handleCloseAssignCollection}
+					handleCancel={this.handleCancelAssign}
+					t={this.props.t}
+				/>
+				<AssignOrg
+					devices
+					open={openAssignOrg}
+					handleClose={this.handleCloseAssignOrg}
+					deviceId={selected.map(s => devices[devices.findIndex(d => d.id === s)])}
+					t={t} />
+				{this.renderConfirmUnassign()}
+				<TableToolbar
+					// ft={this.ft()}
+					anchorElMenu={this.state.anchorElMenu}
+					handleToolbarMenuClose={this.handleToolbarMenuClose}
+					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+					numSelected={selected.length}
+					options={this.options}
+					t={t}
+					content={this.renderTableToolBarContent()}
+				/>
+				<DeviceTable
+					handleClick={this.handleFavClick}
+					handleOpenAssignCollection={this.handleOpenAssignCollection}
+					handleOpenAssignOrg={this.handleOpenAssignOrg}
+					handleOpenUnassignDialog={this.handleOpenUnassignDialog}
+					selected={selected}
+					filter={this.filter}
+					data={this.filterItems(this.getFavs())}
+					handleSelectAllClick={this.handleSelectAllClick}
+					tableHead={this.deviceHeaders()}
+					handleFilterEndDate={this.handleFilterEndDate}
+					handleFilterKeyword={this.handleFilterKeyword}
+					handleFilterStartDate={this.handleFilterStartDate}
+					handleRequestSort={this.handleRequestSort}
+					handleCheckboxClick={this.handleCheckboxClick}
+					order={order}
+					orderBy={orderBy}
+					filters={filters}
+					deleteProjects={this.deleteProjects}
+					t={t}
+				/>
+			</Paper>
+		</GridContainer>
+
+	}
 	renderList = () => {
 		const { t, classes } = this.props
-		const { devices, deviceHeaders, loading, order, orderBy, selected, filters,
+		const { devices, loading, order, orderBy, selected, filters,
 			openAssignCollection, openAssignOrg } = this.state
 		return loading ? this.renderLoader() : <GridContainer justify={'center'}>
 			<Paper className={classes.root}>
@@ -380,6 +463,7 @@ class Devices extends Component {
 					content={this.renderTableToolBarContent()}
 				/>
 				<DeviceTable
+					handleClick={this.handleDeviceClick}
 					handleOpenAssignCollection={this.handleOpenAssignCollection}
 					handleOpenAssignOrg={this.handleOpenAssignOrg}
 					handleOpenUnassignDialog={this.handleOpenUnassignDialog}
@@ -387,12 +471,12 @@ class Devices extends Component {
 					filter={this.filter}
 					data={this.filterItems(devices)}
 					handleSelectAllClick={this.handleSelectAllClick}
-					tableHead={deviceHeaders}
+					tableHead={this.deviceHeaders()}
 					handleFilterEndDate={this.handleFilterEndDate}
 					handleFilterKeyword={this.handleFilterKeyword}
 					handleFilterStartDate={this.handleFilterStartDate}
 					handleRequestSort={this.handleRequestSort}
-					handleClick={this.handleClick}
+					handleCheckboxClick={this.handleCheckboxClick}
 					order={order}
 					orderBy={orderBy}
 					filters={filters}
@@ -405,51 +489,54 @@ class Devices extends Component {
 	renderCards = () => {
 		const { loading } = this.state
 		return loading ? this.renderLoader() : <GridContainer spacing={8} justify={'center'}>
-			{ this.filterItems(this.state.devices).map((d, k) => {
-				return <ItemG container justify={'center'} xs={12} sm={6} md={4}>
+			{this.filterItems(this.state.devices).map((d, k) => {
+				return <ItemG key={k} container justify={'center'} xs={12} sm={6} md={4}>
 					<DeviceCard key={k} t={this.props.t} d={d} />
 				</ItemG>
-			}) }
+			})}
 		</GridContainer>
 	}
 	renderMap = () => {
 		const { devices, loading } = this.state
 		const { classes } = this.props
-		return loading ? <CircularLoader /> : <GridContainer container justify={ 'center' } >
-			<Paper className={ classes.paper }>
-				<Maps t={ this.props.t } isMarkerShown centerDenmark markers={ this.filterItems(devices) } /* zoom={10} */ />
+		return loading ? <CircularLoader /> : <GridContainer container justify={'center'} >
+			<Paper className={classes.paper}>
+				<Maps t={this.props.t} isMarkerShown centerDenmark markers={this.filterItems(devices)} /* zoom={10} */ />
 			</Paper>
 		</GridContainer>
 	}
 
-	render () {
+	render() {
 		const { devices, filters } = this.state
 		return (
 			<Fragment>
 				<Toolbar
-					data={ devices }
-					filters={ filters }
-					history={ this.props.history }
-					match={ this.props.match }
-					handleFilterKeyword={ this.handleFilterKeyword }
-					tabs={ this.tabs }
+					data={devices}
+					filters={filters}
+					history={this.props.history}
+					route={this.state.route}
+					match={this.props.match}
+					handleFilterKeyword={this.handleFilterKeyword}
+					tabs={this.tabs}
 				/>
 				<Switch>
-					<Route path={ `${this.props.match.path}/map` } render={ () => this.renderMap() } />
-					<Route path={ `${this.props.match.path}/list` } render={ () => this.renderList() } />
-					<Route path={ `${this.props.match.path}/grid` } render={ () => this.renderCards() } />
-					<Redirect path={ `${this.props.match.path}` } to={ `${this.props.match.path}/list` } />
+					<Route path={`${this.props.match.path}/map`} render={() => this.renderMap()} />
+					<Route path={`${this.props.match.path}/list`} render={() => this.renderList()} />
+					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} />
+					<Route path={`${this.props.match.path}/favorites`} render={() => this.renderFavorites()} />
+					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
 				</Switch>
 			</Fragment>
 		)
 	}
 }
 const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	favorites: state.favorites.favorites
 })
 
 const mapDispatchToProps = {
-  
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(projectStyles)(Devices))

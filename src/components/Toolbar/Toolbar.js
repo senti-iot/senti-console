@@ -60,7 +60,7 @@ class Toolbar extends PureComponent {
 	  super(props)
 	
 	  this.state = {
-			route: props.defaultRoute ? props.defaultRoute : 0	 
+			route: props.route ? props.route : 0	 
 	  }
 	}
 	handleTabsChange = (e, value) => {

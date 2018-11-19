@@ -19,6 +19,7 @@ import Toolbar from 'components/Toolbar/Toolbar';
 import { Timeline, DeviceHub, Map, DeveloperBoard } from 'variables/icons';
 import teal from '@material-ui/core/colors/teal'
 import { setHourlyData, setMinutelyData, setDailyData, setSummaryData } from 'components/Charts/DataModel';
+import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 
 class Device extends Component {
 	constructor(props) {
@@ -79,28 +80,18 @@ class Device extends Component {
 				this.setState({
 					device: {
 						...this.state.device,
-						project: {
-							id: 0
-						},
+						project: { id: 0 },
 						dataCollection: rs
 					},
-					loading: false
-				})
-			}
+					loading: false })}
 			else {
 				this.setState({
 					loading: false,
 					device: {
 						...this.state.device,
-						dataCollection: {
-							id: 0
-						},
-						project: {
-							id: 0
-						},
-					}
-				})
-			}
+						dataCollection: { id: 0 },
+						project: { id: 0 },
+					} })}
 		})
 	}
 	componentDidMount = async () => {
@@ -118,6 +109,36 @@ class Device extends Component {
 		else {
 			this.props.history.push('/404')
 		}
+	}
+	componentDidUpdate = (prevProps, prevState) => {
+		if (this.props.saved === true) {
+			if (this.props.isFav({ id: this.state.device.id, type: 'device' }))
+			{	this.props.s("snackbars.favoriteSaved", { name: this.state.device.name, type: this.props.t("favorites.types.device") })
+				this.props.finishedSaving()
+			}
+			if (!this.props.isFav({ id: this.state.device.id, type: 'device' })) {
+				this.props.s("snackbars.favoriteDeleted", { name: this.state.device.name, type: this.props.t("favorites.types.device") })
+				this.props.finishedSaving()
+			}
+		}
+	}
+	addToFav = () => {
+		const { device } = this.state
+		let favObj = {
+			id: device.id,
+			name: device.name,
+			type: 'device',
+			path: this.props.match.url }
+		this.props.addToFav(favObj)
+	}
+	removeFromFav = () => {
+		const { device } = this.state
+		let favObj = {
+			id: device.id,
+			name: device.name,
+			type: 'device',
+			path: this.props.match.url }
+		this.props.removeFromFav(favObj)
 	}
 	getHeatMapData = async () => {
 		// const { device } = this.props
@@ -215,26 +236,6 @@ class Device extends Component {
 				break;
 		}
 	}
-	// setSummaryData = () => {
-	// 	const { dataArr, from, to, hoverID } = this.props
-	// 	let newState = setSummaryData(dataArr, from, to, hoverID)
-	// 	this.setState({ ...this.state, ...newState })
-	// }
-	// setDailyData = () => {
-	// 	const { dataArr, from, to, hoverID } = this.props
-	// 	let newState = setDailyData(dataArr, from, to, hoverID)
-	// 	this.setState({ ...this.state, ...newState })
-	// }
-	// setHourlyData = () => {
-	// 	const { dataArr, from, to, hoverID } = this.props
-	// 	let newState = setHourlyData(dataArr, from, to, hoverID)
-	// 	this.setState({ ...this.state, ...newState })
-	// }
-	// setMinutelyData = () => {
-	// 	const { dataArr, from, to, hoverID } = this.props
-	// 	let newState = setMinutelyData(dataArr, from, to, hoverID)
-	// 	this.setState({ ...this.state, ...newState })
-	// }
 	getWifiHourly = async () => {
 		// const { device } = this.props
 		const { from, to, raw, device, hoverID } = this.state
@@ -522,6 +523,7 @@ class Device extends Component {
 	renderMenu = () => {
 		const { classes, t } = this.props
 		const { dateOption, to, from, timeType } = this.state
+	
 		return <DateFilterMenu
 			timeType={timeType}
 			dateOption={dateOption}
@@ -532,13 +534,14 @@ class Device extends Component {
 			handleSetDate={this.handleSetDate}
 			handleCustomDate={this.handleCustomDate}
 		/>
+
 	}
 
 	render() {
 		const { device, loading, loadingData } = this.state
 		
 		return (
-			<Fragment>
+			!loading ? <Fragment>
 				<Toolbar
 					noSearch
 					history={this.props.history}
@@ -546,92 +549,99 @@ class Device extends Component {
 					tabs={this.tabs}
 					content={this.renderMenu()}
 				/>
-				{!loading ?
-					<GridContainer justify={'center'} alignContent={'space-between'}>
-						<AssignDC
-							deviceId={device.id}
-							open={this.state.openAssignCollection}
-							handleClose={this.handleCloseAssign}
-							handleCancel={this.handleCancelAssign}
+			
+				<GridContainer justify={'center'} alignContent={'space-between'}>
+					<AssignDC
+						deviceId={device.id}
+						open={this.state.openAssignCollection}
+						handleClose={this.handleCloseAssign}
+						handleCancel={this.handleCancelAssign}
+						t={this.props.t}
+					/>
+					<AssignOrg
+						devices
+						deviceId={[this.state.device]}
+						open={this.state.openAssignOrg}
+						handleClose={this.handleCloseAssignOrg}
+						t={this.props.t}
+					/>
+					{device.dataCollection ? this.renderConfirmUnassign() : null}
+					<ItemGrid xs={12} noMargin id={"details"}>
+						<DeviceDetails
+							isFav={this.props.isFav({ id: device.id, type: "device" })}
+							addToFav={this.addToFav}
+							removeFromFav={this.removeFromFav}
+							weather={this.state.weather}
+							device={device}
+							history={this.props.history}
+							match={this.props.match}
+							handleOpenAssign={this.handleOpenAssign}
+							handleOpenUnassign={this.handleOpenUnassign}
+							handleOpenAssignOrg={this.handleOpenAssignOrg}
+							t={this.props.t}
+							accessLevel={this.props.accessLevel}
+						/>
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin id={"data"}>
+						<DeviceData
+							barDataSets={this.state.barDataSets}
+							roundDataSets={this.state.roundDataSets}
+							lineDataSets={this.state.lineDataSets}
+							handleSetDate={this.handleSetDate}
+							loading={loadingData}
+							timeType={this.state.timeType}
+							from={this.state.from}
+							to={this.state.to}
+							device={device}
+							dateOption={this.state.dateOption}
+							raw={this.state.raw}
+							handleRawData={this.handleRawData}
+							history={this.props.history}
+							match={this.props.match}
 							t={this.props.t}
 						/>
-						<AssignOrg
-							devices
-							deviceId={[this.state.device]}
-							open={this.state.openAssignOrg}
-							handleClose={this.handleCloseAssignOrg}
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin id={"map"}>
+						<DeviceMap
+							classes={this.props.classes}
+							heatData={this.state.heatData}
+							loading={this.state.loadingMap}
+							device={this.state.heatData}
+							weather={this.state.weather}
 							t={this.props.t}
 						/>
-						{device.dataCollection ? this.renderConfirmUnassign() : null}
-						<ItemGrid xs={12} noMargin id={"details"}>
-							<DeviceDetails
-								weather={this.state.weather}
-								device={device}
-								history={this.props.history}
-								match={this.props.match}
-								handleOpenAssign={this.handleOpenAssign}
-								handleOpenUnassign={this.handleOpenUnassign}
-								handleOpenAssignOrg={this.handleOpenAssignOrg}
-								t={this.props.t}
-								accessLevel={this.props.accessLevel}
-							/>
-						</ItemGrid>
-						<ItemGrid xs={12} noMargin id={"data"}>
-							<DeviceData
-								barDataSets={this.state.barDataSets}
-								roundDataSets={this.state.roundDataSets}
-								lineDataSets={this.state.lineDataSets}
-								handleSetDate={this.handleSetDate}
-								loading={loadingData}
-								timeType={this.state.timeType}
-								from={this.state.from}
-								to={this.state.to}
-								device={device}
-								dateOption={this.state.dateOption}
-								raw={this.state.raw}
-								handleRawData={this.handleRawData}
-								history={this.props.history}
-								match={this.props.match}
-								t={this.props.t}
-							/>
-						</ItemGrid>
-						<ItemGrid xs={12} noMargin id={"map"}>
-							<DeviceMap
-								classes={this.props.classes}
-								heatData={this.state.heatData}
-								loading={this.state.loadingMap}
-								device={this.state.heatData}
-								weather={this.state.weather}
-								t={this.props.t}
-							/>
-						</ItemGrid>
-						<ItemGrid xs={12} noMargin id={"images"}>
-							<DeviceImages
-								s={this.props.s}
-								t={this.props.t}
-								device={device} />
-						</ItemGrid>
-						<ItemGrid xs={12} noMargin id={"hardware"}>
-							<DeviceHardware
-								device={device}
-								history={this.props.history}
-								match={this.props.match}
-								t={this.props.t}
-							/>
-						</ItemGrid>
-					</GridContainer>
-					: this.renderLoader()}
-			</Fragment>
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin id={"images"}>
+						<DeviceImages
+							s={this.props.s}
+							t={this.props.t}
+							device={device} />
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin id={"hardware"}>
+						<DeviceHardware
+							device={device}
+							history={this.props.history}
+							match={this.props.match}
+							t={this.props.t}
+						/>
+					</ItemGrid>
+				</GridContainer>
+					
+			</Fragment> : this.renderLoader()
 		)
 	}
 }
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
-	language: state.settings.language
+	language: state.settings.language,
+	saved: state.favorites.saved
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	addToFav: (favObj) => dispatch(addToFav(favObj)),
+	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
+	finishedSaving: () => dispatch(finishedSaving())
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles)(Device))

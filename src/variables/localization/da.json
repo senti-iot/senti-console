@@ -356,6 +356,10 @@
 		"username": "Brugernavn"
 	},
 	"menus": {
+		"favorites": {
+			"add": "Tilføj til favoritter",
+			"remove": "Fjern fram favoritter"
+		},
 		"assign": {
 			"collectionsToProject": "Tilknyt datasamlinger",
 			"collectionToProject": "Tilknyt datasamling",
@@ -524,7 +528,20 @@
 		"settings": "Indstillinger",
 		"users": "Brugere"
 	},
+	"favorites": {
+		"types": {
+			"device": "Enhed",
+			"collection": "Datasamling",
+			"project": "Projekt",
+			"org": "Organisation",
+			"user": "Bruger"
+		}
+	},
 	"snackbars": {
+		"favorite":{
+			"saved": "%{name} (%{type}) er blevet tilføjet til favoritter!",
+			"removed": "%{name} (%{type}) er blevet fjernet fram favoritter!"
+		},
 		"assign": {
 			"deviceToCollection": "Enhed %{device} tilknyttet til datasamling %{collection}",
 			"deviceToOrg": "Enhed %{device} tilknyttet til organisation %{org}",

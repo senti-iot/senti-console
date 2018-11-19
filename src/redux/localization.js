@@ -6,9 +6,9 @@ var forEach = require('for-each');
 
 //Action types
 
-const changeLangAction = "LANG"
-const GETSETTINGS = "GET_SETTINGS"
-const NOSETTINGS = "NO_SETTINGS"
+const changeLangAction = "changeLanguage"
+const GETSETTINGS = "getSettings"
+const NOSETTINGS = "noSettings"
 //Actions
 export const changeLanguage = (code, noSave) => {
 	return async (dispatch, getState) => {

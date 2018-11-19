@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { Typography, withStyles, Button, CircularProgress } from '@material-ui/core';
 import { ItemG, Warning, P, Info, Caption, WeatherIcon } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
-import { SignalWifi2Bar, SignalWifi2BarLock, Build, /* LibraryBooks,  */Edit, DeviceHub, LayersClear, Business, DataUsage } from 'variables/icons'
+import { SignalWifi2Bar, SignalWifi2BarLock, Build, Star, StarBorder, Edit, DeviceHub, LayersClear, Business, DataUsage } from 'variables/icons'
 import { ConvertDDToDMS, dateFormat, dateFormatter } from 'variables/functions'
 import { Link } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';
@@ -47,19 +47,14 @@ class DeviceDetails extends Component {
 			{ id: 9, label: t("devices.locationTypes.office") },
 			{ id: 0, label: t("devices.locationTypes.unspecified") }]
 	}
-	componentDidMount = () => {
 
-	}
-	componentWillUpdate = () => {
-
-	}
 	renderDeviceLocType = () => {
 		const { device, t } = this.props
 		let deviceLoc = this.LocationTypes()[this.LocationTypes().findIndex(r => r.id === device.locationType)]
 		return deviceLoc ? deviceLoc.label : t("devices.noLocType")
 	}
 	render() {
-		const { classes, device, t, accessLevel, history, weather } = this.props
+		const { classes, device, t, accessLevel, history, weather, isFav, addToFav, removeFromFav } = this.props
 		return (
 			<InfoCard
 				title={device.name ? device.name : device.id}
@@ -70,7 +65,8 @@ class DeviceDetails extends Component {
 						{ label: t("menus.assign.deviceToCollection"), icon: <DataUsage className={classes.leftIcon} />, func: this.props.handleOpenAssign },
 						{ label: device.org.id > 0 ? t("menus.reassign.deviceToOrg") : t("menus.assign.deviceToOrg"), icon: <Business className={classes.leftIcon} />, func: this.props.handleOpenAssignOrg, dontShow: accessLevel.senticloud ? accessLevel.senticloud.editdeviceownership ? false : true : true },
 						{ label: t("menus.unassign.deviceFromCollection"), icon: <LayersClear className={classes.leftIcon} />, func: this.props.handleOpenUnassign, dontShow: device.dataCollection.id > 0 ? false : true },
-						{ label: !(device.lat > 0) && !(device.long > 0) ? t("menus.calibrate") : t("menus.recalibrate"), icon: <Build className={classes.leftIcon} />, func: () => this.props.history.push(`${this.props.match.url}/setup`) }
+						{ label: !(device.lat > 0) && !(device.long > 0) ? t("menus.calibrate") : t("menus.recalibrate"), icon: <Build className={classes.leftIcon} />, func: () => this.props.history.push(`${this.props.match.url}/setup`) },
+						{ label: isFav ? t("menus.favorites.remove") : t("menus.favorites.add"), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav }
 					]
 				} />
 
