@@ -17,7 +17,7 @@ class EditDeviceDetails extends Component {
 			updated: false
 		}
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/devices/list'
-		props.setHeader({ id: "devices.editDetailsTitle", options: { deviceId: props.match.params.id } }, true, prevURL, "devices")
+		props.setHeader({ id: 'devices.editDetailsTitle', options: { deviceId: props.match.params.id } }, true, prevURL, 'devices')
 	}
 	componentDidMount = async () => {
 		let id = this.props.match.params.id
@@ -51,16 +51,16 @@ class EditDeviceDetails extends Component {
 	LocationTypes = () => {
 		const { t } = this.props
 		return [
-			{ value: 0, label: t("devices.locationTypes.unspecified") },
-			{ value: 1, label: t("devices.locationTypes.pedStreet") },
-			{ value: 2, label: t("devices.locationTypes.park") },
-			{ value: 3, label: t("devices.locationTypes.path") },
-			{ value: 4, label: t("devices.locationTypes.square") },
-			{ value: 5, label: t("devices.locationTypes.crossroads") },
-			{ value: 6, label: t("devices.locationTypes.road") },
-			{ value: 7, label: t("devices.locationTypes.motorway") },
-			{ value: 8, label: t("devices.locationTypes.port") },
-			{ value: 9, label: t("devices.locationTypes.office") }]
+			{ value: 0, label: t('devices.locationTypes.unspecified') },
+			{ value: 1, label: t('devices.locationTypes.pedStreet') },
+			{ value: 2, label: t('devices.locationTypes.park') },
+			{ value: 3, label: t('devices.locationTypes.path') },
+			{ value: 4, label: t('devices.locationTypes.square') },
+			{ value: 5, label: t('devices.locationTypes.crossroads') },
+			{ value: 6, label: t('devices.locationTypes.road') },
+			{ value: 7, label: t('devices.locationTypes.motorway') },
+			{ value: 8, label: t('devices.locationTypes.port') },
+			{ value: 9, label: t('devices.locationTypes.office') }]
 	}
 	handleUpdateDevice = async () => {
 		const { device } = this.state
@@ -75,13 +75,13 @@ class EditDeviceDetails extends Component {
 	}
 	goToDevice = () => {
 		this.setState({ updated: true, updating: false })
-		this.props.s("snackbars.deviceUpdated", { device: this.state.device.id })
+		this.props.s('snackbars.deviceUpdated', { device: this.state.device.id })
 		this.props.history.push(`/device/${this.props.match.params.id}`)
 	}
 	render() {
 		const { classes, t } = this.props
 		const { loading, device } = this.state
-		// let mobile = isWidthUp("md", this.props.width)
+		// let mobile = isWidthUp('md', this.props.width)
 		return loading ? <CircularLoader /> : (
 			<GridContainer>
 				<Paper className={classes.paper}>
@@ -90,7 +90,7 @@ class EditDeviceDetails extends Component {
 							<ItemGrid xs={12}>
 								<TextF
 									id={'name'}
-									label={t("devices.fields.name")}
+									label={t('devices.fields.name')}
 									handleChange={this.handleInput('name')}
 									value={device.name}
 									autoFocus
@@ -130,17 +130,17 @@ class EditDeviceDetails extends Component {
 								{/* </ItemGrid> */}
 								{/* <ItemGrid> */}
 								<Button
-									variant="contained"
-									color="primary"
+									variant='contained'
+									color='primary'
 									disabled={this.state.updating || this.state.updated}
 									onClick={this.handleUpdateDevice}
 								>
 									{this.state.updated ? 
 										<Fragment>
-											<Check className={classes.leftIcon}/>{t("snackbars.redirect")}
+											<Check className={classes.leftIcon}/>{t('snackbars.redirect')}
 										</Fragment> : 
 										<Fragment>
-											<Save className={classes.leftIcon} />{t("calibration.texts.updateDevice")}
+											<Save className={classes.leftIcon} />{t('calibration.texts.updateDevice')}
 										</Fragment>}
 								</Button>
 								{/* </ItemGrid> */}

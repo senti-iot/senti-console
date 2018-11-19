@@ -1,14 +1,14 @@
 
-// import localizationJSON from "variables/localization"
+// import localizationJSON from 'variables/localization'
 import loc from 'variables/localization/index'
 import { saveSettingsOnServ } from './settings';
 var forEach = require('for-each');
 
 //Action types
 
-const changeLangAction = "changeLanguage"
-const GETSETTINGS = "getSettings"
-const NOSETTINGS = "noSettings"
+const changeLangAction = 'changeLanguage'
+const GETSETTINGS = 'getSettings'
+const NOSETTINGS = 'noSettings'
 //Actions
 export const changeLanguage = (code, noSave) => {
 	return async (dispatch, getState) => {
@@ -37,8 +37,8 @@ const extend = (morePhrases, prefix) => {
 
 //Reducer
 const initialState = {
-	language: "da",
-	s: extend(loc["da"])
+	language: 'da',
+	s: extend(loc['da'])
 }
 export const localization = (state = initialState, action) => {
 	switch (action.type) {

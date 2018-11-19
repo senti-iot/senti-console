@@ -127,7 +127,7 @@
 	},
 	"dashboard": {
 		"cardContent": {
-			"alerts": "Did you know that? … \n Get true intelligent rule-based alerts about the nature of the data you're collecting.",
+			"alerts": "Did you know that? … \n Get true intelligent rule-based alerts about the nature of the data you are collecting.",
 			"api": "SentiAPI allows you to build your own IoT Dashboards, Apps or Widgets. SentiAPI support access to your own Senti IoT device data or paid access to Senti Big Data based upon the crowd-sourced anonymised pool of Senti data.",
 			"data": "Get detailed lists and charts to measure and analyse your collected data. Create reports and export data in few easy steps.",
 			"devices": "Devices are the actual IoT hardware device deployed into your environment. Here you can configure and control the IoT devices used in your data collections.",
@@ -166,7 +166,7 @@
 	"devices": {
 		"calibrateButton": "Manual Calibration",
 		"calibration": {
-			"noAudioSupported": "Your browser doesn't support audio files! There will be no sound feedback! Try using a better browser."
+			"noAudioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a better browser."
 		},
 		"cards": {
 			"data": "Data",

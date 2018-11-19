@@ -26,14 +26,14 @@ class Dropdown extends Component {
 		return (
 			<ItemG>
 				<IconButton
-					aria-label="More"
+					aria-label='More'
 					aria-owns={actionAnchor ? 'long-menu' : null}
-					aria-haspopup="true"
+					aria-haspopup='true'
 					onClick={this.handleOpenActionsDetails}>
 					<MoreVert />
 				</IconButton>
 				<Menu
-					id="long-menu"
+					id='long-menu'
 					anchorEl={actionAnchor}
 					open={Boolean(actionAnchor)}
 					onClose={this.handleCloseActionsDetails}

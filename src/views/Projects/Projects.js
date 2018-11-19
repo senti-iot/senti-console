@@ -1,4 +1,4 @@
-import { IconButton, Paper, withStyles } from "@material-ui/core";
+import { IconButton, Paper, withStyles } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import GridContainer from 'components/Grid/GridContainer';
 import CircularLoader from 'components/Loader/CircularLoader';
@@ -25,8 +25,8 @@ class Projects extends Component {
 			openDelete: false,
 			loading: true,
 			route: 0,
-			order: "desc",
-			orderBy: "title",
+			order: 'desc',
+			orderBy: 'title',
 			openAssignDC: false,
 			filters: {
 				name: false,
@@ -36,21 +36,21 @@ class Projects extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader("projects.pageTitle", false, '', "projects")
+		props.setHeader('projects.pageTitle', false, '', 'projects')
 	}
 	options = () => {
 		const { t } = this.props
 		return [
-			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t("menus.assign.collectionsToProject"), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },
-			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
-			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
+			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
+			{ label: t('menus.assign.collectionsToProject'), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },
+			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
+			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
 	}
 	
 	tabs = [
-		{ id: 0, title: this.props.t("projects.tabs.listView"), label: <ViewList />, url: `${this.props.match.path}/list` },
-		{ id: 1, title: this.props.t("projects.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.path}/grid` },
+		{ id: 0, title: this.props.t('projects.tabs.listView'), label: <ViewList />, url: `${this.props.match.path}/list` },
+		{ id: 1, title: this.props.t('projects.tabs.cardView'), label: <ViewModule />, url: `${this.props.match.path}/grid` },
 	]
 
 	getData = async () => {
@@ -58,15 +58,15 @@ class Projects extends Component {
 		await getAllProjects().then(rs => this._isMounted ? this.setState({
 			projects: rs ? rs : [],
 			projectHeader: [
-				{ id: 'title', label: t("projects.projectsColumnTitle"), },
-				// { id: 'description', label: t("projects.projectsColumnDescription"), },
-				{ id: 'startDate', label: t("projects.projectsColumnStartDate"), },
-				{ id: 'endDate', label: t("projects.projectsColumnEndDate"), },
-				{ id: 'created', label: t("projects.projectsColumnCreated"), },
-				{ id: 'modified', label: t("projects.projectsColumnLastMod"), },
+				{ id: 'title', label: t('projects.projectsColumnTitle'), },
+				// { id: 'description', label: t('projects.projectsColumnDescription'), },
+				{ id: 'startDate', label: t('projects.projectsColumnStartDate'), },
+				{ id: 'endDate', label: t('projects.projectsColumnEndDate'), },
+				{ id: 'created', label: t('projects.projectsColumnCreated'), },
+				{ id: 'modified', label: t('projects.projectsColumnLastMod'), },
 			],
 			loading: false
-		}, () => this.handleRequestSort(null, "title")) : null)
+		}, () => this.handleRequestSort(null, 'title')) : null)
 	}
 
 	componentDidMount = async () => {
@@ -186,13 +186,13 @@ class Projects extends Component {
 		const { s } = this.props
 		switch (msg) {
 			case 1:
-				s("snackbars.deletedSuccess")
+				s('snackbars.deletedSuccess')
 				break;
 			case 2:
-				s("snackbars.exported")
+				s('snackbars.exported')
 				break;
 			case 3: 
-				s("snackbars.assign.collectionsToProject")
+				s('snackbars.assign.collectionsToProject')
 				break
 			default:
 				break;
@@ -225,7 +225,7 @@ class Projects extends Component {
 	
 	renderTableToolBarContent = () => {
 		return <Fragment>
-			<IconButton aria-label="Add new project" onClick={this.AddNewProject}>
+			<IconButton aria-label='Add new project' onClick={this.AddNewProject}>
 				<Add />
 			</IconButton>
 		</Fragment>
@@ -233,8 +233,8 @@ class Projects extends Component {
 	
 	ft = () => {
 		const { t } = this.props
-		return [{ id: 'title', name: t("projects.fields.name"), func: this.filter, type: "text" },
-			{ id: 'startDate', name: t("projects.fields.startDate"), func: this.filter, type: "date" }
+		return [{ id: 'title', name: t('projects.fields.name'), func: this.filter, type: 'text' },
+			{ id: 'startDate', name: t('projects.fields.startDate'), func: this.filter, type: 'date' }
 		]
 
 	}

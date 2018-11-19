@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import MarkerWithInfo from './MarkerWithInfo';
 import { GoogleMap,  Circle  } from 'react-google-maps';
-import MarkerClusterer from "react-google-maps/lib/components/addons/MarkerClusterer";
+import MarkerClusterer from 'react-google-maps/lib/components/addons/MarkerClusterer';
 // import { colors } from 'variables/colors';
 import { connect } from 'react-redux'
 import { colors } from 'variables/colors';

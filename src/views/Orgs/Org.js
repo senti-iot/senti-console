@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import { getOrg, getOrgUsers } from 'variables/dataOrgs';
 import OrgDetails from './OrgCards/OrgDetails';
-// var moment = require("moment")
+// var moment = require('moment')
 import { connect } from 'react-redux'
 import { deleteOrg } from 'variables/dataOrgs';
 import OrgUsers from 'views/Orgs/OrgCards/OrgUsers';
@@ -44,7 +44,7 @@ class Org extends Component {
 						history.push('/404')
 					else {
 						let prevURL = location.prevURL ? location.prevURL : '/orgs'						
-						setHeader(`${rs.name}`, true, prevURL, "users")
+						setHeader(`${rs.name}`, true, prevURL, 'users')
 						this.setState({ org: rs, loading: false })
 					}
 				})
@@ -81,22 +81,22 @@ class Org extends Component {
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">{t("orgs.orgDelete")}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('orgs.orgDelete')}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{t("orgs.orgDeleteConfirm", { org: this.state.org.name }) + "?"}
+				<DialogContentText id='alert-dialog-description'>
+					{t('orgs.orgDeleteConfirm', { org: this.state.org.name }) + '?'}
 				</DialogContentText>
 
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color="primary">
-					{t("actions.cancel")}
+				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
+					{t('actions.cancel')}
 				</Button>
-				<Button onClick={this.handleDeleteOrg} color="primary" autoFocus>
-					{t("actions.yes")}
+				<Button onClick={this.handleDeleteOrg} color='primary' autoFocus>
+					{t('actions.yes')}
 				</Button>
 			</DialogActions>
 		</Dialog>
@@ -105,7 +105,7 @@ class Org extends Component {
 		const { s } = this.props
 		switch (msg) {
 			case 1:
-				s("snackbars.orgDeleted")
+				s('snackbars.orgDeleted')
 				break
 			default:
 				break

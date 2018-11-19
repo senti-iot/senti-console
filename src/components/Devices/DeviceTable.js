@@ -1,11 +1,11 @@
 import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
 	TableRow, Typography, withStyles,
-} from "@material-ui/core";
+} from '@material-ui/core';
 import { SignalWifi2Bar, SignalWifi2BarLock, /* Delete, Build, Business, DataUsage, Edit, LayersClear */ } from 'variables/icons';
-import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
-import PropTypes from "prop-types";
-import React, { Fragment } from "react";
+import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
+import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import EnhancedTableHead from 'components/Table/TableHeader'
 import { connect } from 'react-redux'
@@ -58,15 +58,15 @@ class EnhancedTable extends React.Component {
 		const { classes, t } = this.props
 		switch (status) {
 			case 1:
-				return <ItemG container justify={'center'} title={t("devices.status.yellow")}>
+				return <ItemG container justify={'center'} title={t('devices.status.yellow')}>
 					<SignalWifi2Bar className={classes.yellowSignal} />
 				</ItemG>
 			case 2:
-				return <ItemG container justify={'center'} title={t("devices.status.green")}>
+				return <ItemG container justify={'center'} title={t('devices.status.green')}>
 					<SignalWifi2Bar className={classes.greenSignal} />
 				</ItemG>
 			case 0:
-				return <ItemG container justify={'center'} title={t("devices.status.red")}>
+				return <ItemG container justify={'center'} title={t('devices.status.red')}>
 					<SignalWifi2Bar className={classes.redSignal} />
 				</ItemG>
 			case null:
@@ -84,7 +84,7 @@ class EnhancedTable extends React.Component {
 		return (
 			<Fragment>
 				<div className={classes.tableWrapper}>
-					<Table className={classes.table} aria-labelledby="tableTitle">
+					<Table className={classes.table} aria-labelledby='tableTitle'>
 						<EnhancedTableHead
 							numSelected={selected.length}
 							order={order}
@@ -96,13 +96,13 @@ class EnhancedTable extends React.Component {
 							classes={classes}
 							customColumn={[
 								{
-									id: "liveStatus", label: <ItemG container justify={'center'}>
+									id: 'liveStatus', label: <ItemG container justify={'center'}>
 										<SignalWifi2Bar />
 									</ItemG>, checkbox: true
 								},
 								{
-									id: "id",
-									label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>
+									id: 'id',
+									label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
 										Device
 									</Typography>
 								}
@@ -115,7 +115,7 @@ class EnhancedTable extends React.Component {
 									<TableRow
 										hover
 										onClick={handleClick(n.id)}
-										role="checkbox"
+										role='checkbox'
 										aria-checked={isSelected}
 										tabIndex={-1}
 										key={n.id}
@@ -126,7 +126,7 @@ class EnhancedTable extends React.Component {
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)}/>} />
 											<TC checkbox content={this.renderIcon(n.liveStatus)}/>
 											<TC content={
-												<ItemG container alignItems={"center"}>
+												<ItemG container alignItems={'center'}>
 													<ItemG xs={12}>
 														<Info noWrap paragraphCell={classes.noMargin}>
 															{n.name ? n.name : n.id}
@@ -134,19 +134,19 @@ class EnhancedTable extends React.Component {
 													</ItemG>
 													<ItemG xs={12}>
 														<Caption noWrap className={classes.noMargin}>
-															{`${n.name ? n.id : t("devices.noName")} - ${n.org ? n.org.name : ''}`}
+															{`${n.name ? n.id : t('devices.noName')} - ${n.org ? n.org.name : ''}`}
 														</Caption>
 													</ItemG>
 												</ItemG>} />
 										</Hidden>
 										<Hidden mdDown>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)}/>}/>
-											<TC label={n.name ? n.name : t("devices.noName")} />
+											<TC label={n.name ? n.name : t('devices.noName')} />
 											<TC label={n.id} />
 											<TC content={this.renderIcon(n.liveStatus)} />
-											<TC label={n.address ? n.address : t("devices.noAddress")} />
-											<TC label={n.org ? n.org.name : t("devices.noProject")} />
-											<TC label={n.project.id > 0 ? t("devices.fields.notfree") : t("devices.fields.free")} />
+											<TC label={n.address ? n.address : t('devices.noAddress')} />
+											<TC label={n.org ? n.org.name : t('devices.noProject')} />
+											<TC label={n.project.id > 0 ? t('devices.fields.notfree') : t('devices.fields.free')} />
 										</Hidden>
 									</TableRow>
 								);

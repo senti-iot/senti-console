@@ -46,10 +46,10 @@ class BarChart extends PureComponent {
 						{
 							offset: true,
 							ticks: {
-								source: "labels",
+								source: 'labels',
 								maxRotation: 0
 							},
-							id: "xAxis",
+							id: 'xAxis',
 							type: 'time',
 							time: {
 								displayFormats: {
@@ -68,7 +68,7 @@ class BarChart extends PureComponent {
 							display: props.unit.chart === 'day' ? true : false,
 							offset: true,
 							ticks: {
-								source: "labels",
+								source: 'labels',
 								callback: function (value, index, values) {
 									return value.charAt(0).toUpperCase() + value.slice(1);
 								},
@@ -78,7 +78,7 @@ class BarChart extends PureComponent {
 								drawBorder: false,
 								drawTicks: false,
 							},
-							id: "xAxis-day",
+							id: 'xAxis-day',
 							type: 'time',
 							time: {
 								displayFormats: {
@@ -167,8 +167,8 @@ class BarChart extends PureComponent {
 			left = this.state.chartWidth / 2
 		}
 		let str = tooltipModel.title[0]
-		var rest = str.substring(0, str.lastIndexOf(" ") + 1);
-		var last = str.substring(str.lastIndexOf(" ") + 1, str.length);
+		var rest = str.substring(0, str.lastIndexOf(' ') + 1);
+		var last = str.substring(str.lastIndexOf(' ') + 1, str.length);
 		this.setTooltip({
 			top,
 			left,
@@ -188,10 +188,10 @@ class BarChart extends PureComponent {
 						{
 							offset: true,
 							ticks: {
-								source: "labels",
+								source: 'labels',
 								maxRotation: 0
 							},
-							id: "xAxis",
+							id: 'xAxis',
 							type: 'time',
 							time: {
 								displayFormats: {
@@ -218,10 +218,10 @@ class BarChart extends PureComponent {
 								callback: function (value, index, values) {
 									return value.charAt(0).toUpperCase() + value.slice(1);
 								},
-								source: "labels",
+								source: 'labels',
 								maxRotation: 0
 							},
-							id: "xAxis-day",
+							id: 'xAxis-day',
 							type: 'time',
 							time: {
 								displayFormats: {
@@ -293,13 +293,13 @@ class BarChart extends PureComponent {
 	render() {
 		const { classes } = this.props
 		const { tooltip, chartWidth, mobile } = this.state
-		let DayStr = tooltip.title[1] ? tooltip.title[1].charAt(0).toUpperCase() + tooltip.title[1].slice(1) : ""
-		let DateStr = tooltip.title[0] ? tooltip.title[0] : ""
+		let DayStr = tooltip.title[1] ? tooltip.title[1].charAt(0).toUpperCase() + tooltip.title[1].slice(1) : ''
+		let DateStr = tooltip.title[0] ? tooltip.title[0] : ''
 		return (
 			<div style={{ maxHeight: 400, position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
 				<Bar
 					data={this.props.data}
-					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
+					height={this.props.theme.breakpoints.width('md') < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
 					ref={r => this.chart = r}
 					options={this.state.lineOptions}
 					legend={this.legendOptions}
@@ -317,8 +317,8 @@ class BarChart extends PureComponent {
 					<Grow in={tooltip.show} onExited={this.exitedTooltip} >
 						<Paper className={classes.paper}>
 							<ItemG container>
-								<ItemG container direction="row" justify="space-between">
-									<ItemG xs container direction="column">
+								<ItemG container direction='row' justify='space-between'>
+									<ItemG xs container direction='column'>
 										<Typography variant={'h6'} classes={{ root: classes.antialias }} >{`${DayStr}`}</Typography>
 										<Caption> {`(${DateStr})`}</Caption>
 									</ItemG>

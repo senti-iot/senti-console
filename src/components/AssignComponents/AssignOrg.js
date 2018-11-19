@@ -1,6 +1,6 @@
-import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles, Hidden } from "@material-ui/core";
+import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles, Hidden } from '@material-ui/core';
 import { Close } from 'variables/icons';
-import cx from "classnames";
+import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment, PureComponent } from 'react';
 import { getAllOrgs } from 'variables/dataOrgs';
@@ -13,7 +13,7 @@ import assignStyles from 'assets/jss/components/assign/assignStyles';
 
 
 function Transition(props) {
-	return <Slide direction="up" {...props} />;
+	return <Slide direction='up' {...props} />;
 }
 
 class AssignOrg extends PureComponent {
@@ -74,7 +74,7 @@ class AssignOrg extends PureComponent {
 		const { orgs, filters } = this.state
 		const { classes, open, t } = this.props;
 		const appBarClasses = cx({
-			[" " + classes['primary']]: 'primary'
+			[' ' + classes['primary']]: 'primary'
 		});
 		return (
 			
@@ -89,11 +89,11 @@ class AssignOrg extends PureComponent {
 						<Hidden mdDown>
 							<ItemG container alignItems={'center'}>
 								<ItemG xs={2} container alignItems={'center'}>
-									<IconButton color="inherit" onClick={this.closeDialog} aria-label="Close">
+									<IconButton color='inherit' onClick={this.closeDialog} aria-label='Close'>
 										<Close />
 									</IconButton>
-									<Typography variant="h6" color="inherit" className={classes.flex}>
-										{t("orgs.pageTitle")}
+									<Typography variant='h6' color='inherit' className={classes.flex}>
+										{t('orgs.pageTitle')}
 									</Typography>
 								</ItemG>
 								<ItemG xs={8}>
@@ -106,8 +106,8 @@ class AssignOrg extends PureComponent {
 										searchValue={filters.keyword} />
 								</ItemG>
 								<ItemG xs={2}>
-									<Button color="inherit" onClick={this.assignOrg}>
-										{t("actions.save")}
+									<Button color='inherit' onClick={this.assignOrg}>
+										{t('actions.save')}
 									</Button>
 								</ItemG>
 							</ItemG>
@@ -115,14 +115,14 @@ class AssignOrg extends PureComponent {
 						<Hidden lgUp>
 							<ItemG container alignItems={'center'}>
 								<ItemG xs={12} container alignItems={'center'}>
-									<IconButton color={'inherit'} onClick={this.closeDialog} aria-label="Close">
+									<IconButton color={'inherit'} onClick={this.closeDialog} aria-label='Close'>
 										<Close />
 									</IconButton>
-									<Typography variant="h6" color="inherit" className={classes.flex}>
-										{t("orgs.pageTitle")}
+									<Typography variant='h6' color='inherit' className={classes.flex}>
+										{t('orgs.pageTitle')}
 									</Typography>
-									<Button variant={'contained'} color="primary" onClick={this.assignOrg}>
-										{t("actions.save")}
+									<Button variant={'contained'} color='primary' onClick={this.assignOrg}>
+										{t('actions.save')}
 									</Button>
 								</ItemG>
 								<ItemG xs={12} container alignItems={'center'} justify={'center'}>

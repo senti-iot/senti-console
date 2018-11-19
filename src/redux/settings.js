@@ -5,25 +5,25 @@ import { getUser, getValidSession } from 'variables/dataUsers'
 import 'moment/locale/da'
 import 'moment/locale/en-gb'
 import { saveSettings } from 'variables/dataLogin';
-var moment = require("moment")
+var moment = require('moment')
 
 
-const MENULOC = "sidebarLocation"
-const THEME = "theme"
-const TRP = "tableRowsPerPage"
-const CALTYPE = "calibrationType"
-const COUNT = "calibrationCount"
-const CALNOTIF = "calibrationNotify"
-const DISCSENT = "discoverSentiBanner"
-const ALERTS = "notifAlerts"
-const DIDKNOW = "notifDidYouKnow"
-const GETSETTINGS = "getSettings"
-const GETFAVS = "getFavorites"
-const SAVESETTINGS = "saveSettings"
-const changeLangAction = "changeLanguage"
-const CHARTTYPE = "chartType"
-const SAVED = "savedSettings"
-const NOSETTINGS = "noSettings"
+const MENULOC = 'sidebarLocation'
+const THEME = 'theme'
+const TRP = 'tableRowsPerPage'
+const CALTYPE = 'calibrationType'
+const COUNT = 'calibrationCount'
+const CALNOTIF = 'calibrationNotify'
+const DISCSENT = 'discoverSentiBanner'
+const ALERTS = 'notifAlerts'
+const DIDKNOW = 'notifDidYouKnow'
+const GETSETTINGS = 'getSettings'
+const GETFAVS = 'getFavorites'
+const SAVESETTINGS = 'saveSettings'
+const changeLangAction = 'changeLanguage'
+const CHARTTYPE = 'chartType'
+const SAVED = 'savedSettings'
+const NOSETTINGS = 'noSettings'
 
 export const saveSettingsOnServ = () => {
 	return async (dispatch, getState) => {
@@ -59,7 +59,7 @@ export const getSettings = async () => {
 		{
 			let vSession = await getValidSession(sessionCookie.userID).then(rs => rs.status)
 			if (vSession === 200) {
-				let exp = moment().add("1", "day")
+				let exp = moment().add('1', 'day')
 				cookie.save('SESSION', sessionCookie, { path: '/', expires: exp.toDate() })
 			}
 			else {
@@ -72,7 +72,7 @@ export const getSettings = async () => {
 		var settings = user ? user.aux ? user.aux.senti ? user.aux.senti.settings ? user.aux.senti.settings : null : null : null : null
 		var favorites = user ? user.aux ? user.aux.senti ? user.aux.senti.favorites ? user.aux.senti.favorites : null : null : null : null
 		// moment.locale('en', null)
-		moment.updateLocale("en-gb", {
+		moment.updateLocale('en-gb', {
 			week: {
 				dow: 1
 			}
@@ -233,7 +233,7 @@ export const finishedSaving = () => {
 	}
 }
 let initialState = {
-	language: "dk",
+	language: 'dk',
 	calibration: 1,
 	calNotifications: 0,
 	count: 200,

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { withStyles } from "@material-ui/core";
+import { withStyles } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import UserTable from 'components/User/UserTable';
 import CircularLoader from 'components/Loader/CircularLoader';
@@ -18,8 +18,8 @@ class Users extends Component {
 			userHeader: [],
 			loading: true,
 			route: 0,
-			order: "desc",
-			orderBy: "firstName",
+			order: 'desc',
+			orderBy: 'firstName',
 			filters: {
 				keyword: '',
 				startDate: null,
@@ -27,7 +27,7 @@ class Users extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader(props.t("users.pageTitle"), false, '', 'users')
+		props.setHeader(props.t('users.pageTitle'), false, '', 'users')
 	}
 
 	componentDidMount = async () => {
@@ -87,21 +87,21 @@ class Users extends Component {
 			this.setState({
 				users: users ? users : [],
 				userHeader: [
-					{ id: "avatar", label: "" },
-					{ id: "firstName", label: t("users.fields.name") },
-					{ id: "phone", label: t("users.fields.phone") },
-					{ id: "email", label: t("users.fields.email") },
-					{ id: "org.name", label: t("users.fields.organisation") },
-					{ id: "lastSignIng", label: t("users.fields.lastSignIn") }
+					{ id: 'avatar', label: '' },
+					{ id: 'firstName', label: t('users.fields.name') },
+					{ id: 'phone', label: t('users.fields.phone') },
+					{ id: 'email', label: t('users.fields.email') },
+					{ id: 'org.name', label: t('users.fields.organisation') },
+					{ id: 'lastSignIng', label: t('users.fields.lastSignIn') }
 				],
 				loading: false
-			}, () => this.handleRequestSort(null, "firstName", "asc"))
+			}, () => this.handleRequestSort(null, 'firstName', 'asc'))
 		}
 	}
 
 	tabs = [
-		{ id: 0, title: this.props.t("users.tabs.users"), label: <People />, url: `/users` },
-		{ id: 1, title: this.props.t("users.tabs.orgs"), label: <Business />, url: `/orgs` },
+		{ id: 0, title: this.props.t('users.tabs.users'), label: <People />, url: `/users` },
+		{ id: 1, title: this.props.t('users.tabs.orgs'), label: <Business />, url: `/orgs` },
 	]
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
@@ -110,10 +110,10 @@ class Users extends Component {
 		const { s } = this.props
 		switch (msg) {
 			case 1:
-				s("snackbars.deletedSuccess")
+				s('snackbars.deletedSuccess')
 				break
 			case 2:
-				s("snackbars.exported")
+				s('snackbars.exported')
 				break
 			default:
 				break;

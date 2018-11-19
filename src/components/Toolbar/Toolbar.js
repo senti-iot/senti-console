@@ -8,17 +8,17 @@ import { NavHashLink as Link } from 'react-router-hash-link';
 
 const styles = theme => ({
 	tab: {
-		// [theme.breakpoints.down("xs")]: {
+		// [theme.breakpoints.down('xs')]: {
 		// 	minWidth: 56
 		// }
 	},
 
 	appBar: {
 		display: 'flex',
-		flexFlow: "row",
+		flexFlow: 'row',
 		justifyContent: 'space-between',
-		maxWidth: "100%",
-		overflow: "hidden",
+		maxWidth: '100%',
+		overflow: 'visible',
 		// top: 70,
 		minHeight: 48,
 		height: 48,
@@ -26,8 +26,8 @@ const styles = theme => ({
 	},
 	contentToolbar: { 
 		// display: 'flex',
-		// alignItems: "flex-start",
-		// flexFlow: "row",
+		// alignItems: 'flex-start',
+		// flexFlow: 'row',
 		// justifyContent: 'space-between',
 		height: 41,
 		minHeight: 41,
@@ -36,19 +36,19 @@ const styles = theme => ({
 		// marginRight: 8,
 		// paddingLeft: 24,
 		marginLeft: 'auto',
-		// borderLeft: "1px solid rgb(255, 255, 255, 0.5)"
+		// borderLeft: '1px solid rgb(255, 255, 255, 0.5)'
 	},
 	dividerContainer: {
-		marginLeft: "auto",
-		display: "flex",
-		justifyContent: "center",
-		alignItems: "center",
+		marginLeft: 'auto',
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
 		height: 48,
 	},
 	divider: {
 		width: 2,
 		height: 32,
-		background: "rgb(255, 255, 255, 0.5)",
+		background: 'rgb(255, 255, 255, 0.5)',
 	},
 	noOverflow: {
 		overflow: 'hidden'
@@ -77,10 +77,10 @@ class Toolbar extends PureComponent {
 		const { classes, tabs, data, noSearch, filters, handleFilterKeyword, content, width } = this.props
 		return (
 			<AppBar position={'sticky'} classes={{ root: classes.appBar }}>
-				{tabs ? <Tabs value={this.state.route} scrollable={width === "xs" ? true : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
+				{tabs ? <Tabs value={this.state.route} scrollable={width === 'xs' ? true : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 					{tabs ? tabs.map((t, i) => {
 						return <Tab title={t.title}
-							component={(props) => <Link {...props} scroll={this.handleScroll } style={{ color: "#fff" }} />}
+							component={(props) => <Link {...props} scroll={this.handleScroll } style={{ color: '#fff' }} />}
 							id={t.id}
 							key={i}
 							smooth
@@ -91,7 +91,7 @@ class Toolbar extends PureComponent {
 							to={`${t.url}`} />
 					}) : null}
 				</Tabs> : null}
-				{width === "xs" ? <div className={classes.dividerContainer}>
+				{width === 'xs' ? <div className={classes.dividerContainer}>
 					<div className={classes.divider} />
 				</div> : null}
 				{noSearch ? null : <Search

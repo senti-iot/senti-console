@@ -2,19 +2,19 @@ import {
 	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
 	TableRow, withStyles, DialogTitle, Dialog, DialogContent,
 	DialogContentText, DialogActions, Button, /* MenuItem, Menu, */ IconButton, ListItem, ListItemIcon, ListItemText, List,
-} from "@material-ui/core"
+} from '@material-ui/core'
 import TC from 'components/Table/TC'
 import { Delete, Edit, PictureAsPdf, /* FilterList, */ Add } from 'variables/icons'
-import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
-import PropTypes from "prop-types"
-import React, { Fragment } from "react"
+import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
+import PropTypes from 'prop-types'
+import React, { Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 import EnhancedTableHead from 'components/Table/TableHeader'
 import EnhancedTableToolbar from 'components/Table/TableToolbar'
-import { Info, ItemG, Caption } from "components"
-import { connect } from "react-redux"
+import { Info, ItemG, Caption } from 'components'
+import { connect } from 'react-redux'
 import TP from 'components/Table/TP'
-var countries = require("i18n-iso-countries")
+var countries = require('i18n-iso-countries')
 
 class OrgTable extends React.Component {
 	constructor(props) {
@@ -115,14 +115,14 @@ class OrgTable extends React.Component {
 	options = () => {
 		const { t, accessLevel } = this.props
 		let allOptions = [
-			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
-			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
+			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
+			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
+			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
 		if (accessLevel.apiorg.edit)
 			return allOptions
 		else return [
-			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf }
+			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf }
 		]
 	}
 	addNewOrg = () => { this.props.history.push('/orgs/new') }
@@ -132,7 +132,7 @@ class OrgTable extends React.Component {
 		// const { anchorFilterMenu } = this.state
 		let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
 		return <Fragment>
-			{access ? <IconButton aria-label="Add new organisation" onClick={this.addNewOrg}>
+			{access ? <IconButton aria-label='Add new organisation' onClick={this.addNewOrg}>
 				<Add />
 			</IconButton> : null
 			}
@@ -144,13 +144,13 @@ renderConfirmDelete = () => {
 	return <Dialog
 		open={openDelete}
 		onClose={this.handleCloseDeleteDialog}
-		aria-labelledby="alert-dialog-title"
-		aria-describedby="alert-dialog-description"
+		aria-labelledby='alert-dialog-title'
+		aria-describedby='alert-dialog-description'
 	>
-		<DialogTitle id="alert-dialog-title">{t("orgs.orgsDelete")}</DialogTitle>
+		<DialogTitle id='alert-dialog-title'>{t('orgs.orgsDelete')}</DialogTitle>
 		<DialogContent>
-			<DialogContentText id="alert-dialog-description">
-				{t("orgs.orgsDeleteConfirm")}:
+			<DialogContentText id='alert-dialog-description'>
+				{t('orgs.orgsDeleteConfirm')}:
 			</DialogContentText>
 			<List>
 				{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
@@ -158,11 +158,11 @@ renderConfirmDelete = () => {
 			</List>
 		</DialogContent>
 		<DialogActions>
-			<Button onClick={this.handleCloseDeleteDialog} color="primary">
-				{t("actions.no")}
+			<Button onClick={this.handleCloseDeleteDialog} color='primary'>
+				{t('actions.no')}
 			</Button>
-			<Button onClick={this.handleDeleteOrg} color="primary" autoFocus>
-				{t("actions.yes")}
+			<Button onClick={this.handleDeleteOrg} color='primary' autoFocus>
+				{t('actions.yes')}
 			</Button>
 		</DialogActions>
 	</Dialog>
@@ -188,7 +188,7 @@ render() {
 				content={this.renderTableToolBarContent()}
 			/>
 			<div className={classes.tableWrapper}>
-				<Table className={classes.table} aria-labelledby="tableTitle">
+				<Table className={classes.table} aria-labelledby='tableTitle'>
 					<EnhancedTableHead // ./ProjectTableHeader
 						numSelected={selected.length}
 						order={order}
@@ -200,7 +200,7 @@ render() {
 						t={t}
 						classes={classes}
 						// mdDown={[0]} //Which Columns to display on small Screens
-						customColumn={[{ id: "name", label: t("orgs.fields.org") }]}
+						customColumn={[{ id: 'name', label: t('orgs.fields.org') }]}
 					/>
 					<TableBody>
 						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
@@ -210,7 +210,7 @@ render() {
 									hover
 									onClick={e => { e.stopPropagation(); this.props.history.push('/org/' + n.id) }}
 									// onContextMenu={this.handleToolbarMenuOpen}
-									role="checkbox"
+									role='checkbox'
 									aria-checked={isSelected}
 									tabIndex={-1}
 									key={n.id}
@@ -218,11 +218,11 @@ render() {
 									style={{ cursor: 'pointer' }}
 								>
 									<Hidden lgUp>
-										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+										<TableCell padding='checkbox' className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 											<Checkbox checked={isSelected} />
 										</TableCell>
 										<TC content={
-											<ItemG container alignItems={"center"}>
+											<ItemG container alignItems={'center'}>
 												<ItemG>
 													<Info noWrap paragraphCell={classes.noMargin}>
 														{n.name}
@@ -238,7 +238,7 @@ render() {
 										} />
 									</Hidden>
 									<Hidden mdDown>
-										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+										<TableCell padding='checkbox' className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 											<Checkbox checked={isSelected} />
 										</TableCell>
 										<TC FirstC label={n.name} />

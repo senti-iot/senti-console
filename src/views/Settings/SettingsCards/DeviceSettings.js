@@ -8,7 +8,7 @@ export default class DeviceSettings extends Component {
 			<InfoCard
 				noExpand
 				avatar={<Devices />}
-				title={t("settings.headers.devices")} />
+				title={t('settings.headers.devices')} />
 		)
 	}
 }

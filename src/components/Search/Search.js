@@ -69,12 +69,12 @@ class IntegrationAutosuggest extends React.PureComponent {
 
 	}
 	componentDidMount() {
-		// document.addEventListener("keydown", this.handleKeyPress, false);
+		// document.addEventListener('keydown', this.handleKeyPress, false);
 		if (this.props.focusOnMount && this.inputRef.current)
 			this.focusInput()
 	}
 	// componentWillUnmount() {
-	// 	document.removeEventListener("keydown", this.handleKeyPress, false);
+	// 	document.removeEventListener('keydown', this.handleKeyPress, false);
 	// }
 	handleResetSearch = () => {
 		this.handleChange(null, { newValue: '' })
@@ -85,11 +85,11 @@ class IntegrationAutosuggest extends React.PureComponent {
 		const parts = parse(suggestion.label, matches);
 
 		return (
-			<MenuItem selected={isHighlighted} component="div">
+			<MenuItem selected={isHighlighted} component='div'>
 				<div>
 					{parts.map((part, index) => {
 						return part.highlight ? (
-							<span key={String(index)} style={{ fontWeight: 300, maxWidth: "calc(100vw-100px)", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+							<span key={String(index)} style={{ fontWeight: 300, maxWidth: 'calc(100vw-100px)', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
 								{part.text} 
 							</span>
 						) : (
@@ -105,7 +105,7 @@ class IntegrationAutosuggest extends React.PureComponent {
 	handleSuggestionsFetchRequested = ({ value, reason }) => {
 		const { open } = this.state
 		const { searchValue } = this.props
-		if (open && searchValue === "" && reason === "escape-pressed") {
+		if (open && searchValue === '' && reason === 'escape-pressed') {
 			this.handleClose()
 		}
 		this.setState({
@@ -143,7 +143,7 @@ class IntegrationAutosuggest extends React.PureComponent {
 				<ClickAwayListener onClickAway={this.handleClose}>
 					<Autosuggest
 						theme={{
-							container: classes.container + " " + (right ? classes.right : ''),
+							container: classes.container + ' ' + (right ? classes.right : ''),
 							suggestionsContainerOpen: /* noAbsolute ? classes.suggestionsContainerOpenNoAbsolute : */ classes.suggestionsContainerOpen,
 							suggestionsList: classes.suggestionsList,
 							suggestion: classes.suggestion,

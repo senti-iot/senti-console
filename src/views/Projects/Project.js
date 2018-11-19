@@ -45,16 +45,16 @@ class Project extends Component {
 			hoverID: 0,
 		}
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/projects/list'
-		props.setHeader(props.t("collections.fields.project"), true, prevURL, "projects")
+		props.setHeader(props.t('collections.fields.project'), true, prevURL, 'projects')
 
 	}
-	format = "YYYY-MM-DD+HH:mm"
+	format = 'YYYY-MM-DD+HH:mm'
 	tabs = [
-		{ id: 0, title: "", label: <LibraryBooks />, url: `#details` },
-		{ id: 1, title: "", label: <Timeline />, url: `#data` },
-		{ id: 3, title: "", label: <DataUsage />, url: `#collections` },
-		{ id: 2, title: "", label: <Map />, url: `#map` },
-		{ id: 4, title: "", label: <Person />, url: `#contact` }
+		{ id: 0, title: '', label: <LibraryBooks />, url: `#details` },
+		{ id: 1, title: '', label: <Timeline />, url: `#data` },
+		{ id: 3, title: '', label: <DataUsage />, url: `#collections` },
+		{ id: 2, title: '', label: <Map />, url: `#map` },
+		{ id: 4, title: '', label: <Person />, url: `#contact` }
 	]
 	componentDidMount = async () => {
 		const { history, match } = this.props
@@ -318,13 +318,13 @@ class Project extends Component {
 		const { s } = this.props
 		switch (msg) {
 			case 1:
-				s("snackbars.projectDeleted")
+				s('snackbars.projectDeleted')
 				break
 			case 2:
-				s("snackbars.projectExported")
+				s('snackbars.projectExported')
 				break
 			case 3:
-				s("snackbars.assign.collectionsToProject")
+				s('snackbars.assign.collectionsToProject')
 				break
 			default:
 				break
@@ -403,22 +403,22 @@ class Project extends Component {
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">{t("projects.projectDelete")}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('projects.projectDelete')}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{t("projects.projectDeleteConfirm", { project: this.state.project.title }) + "?"}
+				<DialogContentText id='alert-dialog-description'>
+					{t('projects.projectDeleteConfirm', { project: this.state.project.title }) + '?'}
 				</DialogContentText>
 
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color="primary">
-					{t("actions.cancel")}
+				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
+					{t('actions.cancel')}
 				</Button>
-				<Button onClick={this.handleDeleteProject} color="primary" autoFocus>
-					{t("actions.yes")}
+				<Button onClick={this.handleDeleteProject} color='primary' autoFocus>
+					{t('actions.yes')}
 				</Button>
 			</DialogActions>
 		</Dialog>
@@ -459,7 +459,7 @@ class Project extends Component {
 				{!loading ?
 					<GridContainer justify={'center'} alignContent={'space-between'}>
 
-						<ItemGrid xs={12} noMargin id="details">
+						<ItemGrid xs={12} noMargin id='details'>
 							<ProjectDetails
 								t={t}
 								project={project} {...rp}
@@ -467,7 +467,7 @@ class Project extends Component {
 								handleOpenAssignCollection={this.handleOpenAssignCollection}
 							/>
 						</ItemGrid>
-						<ItemGrid xs={12} noMargin id="data">
+						<ItemGrid xs={12} noMargin id='data'>
 							<ProjectData
 								setHoverID={this.setHoverID} 
 								barDataSets={barDataSets}
@@ -487,21 +487,21 @@ class Project extends Component {
 								t={this.props.t}
 							/>
 						</ItemGrid>
-						<ItemGrid xs={12} noMargin id="collections">
+						<ItemGrid xs={12} noMargin id='collections'>
 							<ProjectCollections 
 								setHoverID={this.setHoverID} 
 								t={t}
 							 	project={project}
 							  	{...rp} />
 						</ItemGrid >
-						{project.devices ? <ItemGrid xs={12} noMargin id="map">
+						{project.devices ? <ItemGrid xs={12} noMargin id='map'>
 							<ProjectMap
 								devices={this.state.heatData}
 								t={t}
 							/>
 						</ItemGrid> : null
 						}
-						<ItemGrid xs={12} noMargin id="contact" >
+						<ItemGrid xs={12} noMargin id='contact' >
 							<ProjectContact
 								history={this.props.history}
 							  	t={t} 

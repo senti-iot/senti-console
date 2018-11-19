@@ -15,15 +15,15 @@ class TP extends Component {
 		const { count, rowsPerPage, rowsPerPageOptions, t, classes, page, width } = this.props
 		return (
 			<TablePagination
-				component="div"
+				component='div'
 				count={count}
 				rowsPerPage={rowsPerPage}
 				page={page}
 				backIconButtonProps={{
-					'aria-label': t("actions.nextPage"),
+					'aria-label': t('actions.nextPage'),
 				}}
 				nextIconButtonProps={{
-					'aria-label': t("actions.previousPage"),
+					'aria-label': t('actions.previousPage'),
 				}}
 				classes={{
 					spacer: classes.spacer,
@@ -32,7 +32,7 @@ class TP extends Component {
 				}}
 				onChangePage={this.handleChangePage}
 				onChangeRowsPerPage={this.handleChangeRowsPerPage}
-				labelRowsPerPage={isWidthUp("sm", width) ?  t("tables.rowsPerPage") : ""}
+				labelRowsPerPage={isWidthUp('sm', width) ?  t('tables.rowsPerPage') : ''}
 				rowsPerPageOptions={ rowsPerPageOptions}
 				SelectProps={{
 					classes: {

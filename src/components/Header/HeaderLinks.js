@@ -1,8 +1,8 @@
-import { Grid, IconButton, Menu, MenuItem, withStyles } from "@material-ui/core";
+import { Grid, IconButton, Menu, MenuItem, withStyles } from '@material-ui/core';
 import { AccountBox, Business, Lock } from 'variables/icons';
-import headerLinksStyle from "assets/jss/material-dashboard-react/headerLinksStyle";
-import React from "react";
-import cookie from "react-cookies";
+import headerLinksStyle from 'assets/jss/material-dashboard-react/headerLinksStyle';
+import React from 'react';
+import cookie from 'react-cookies';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Gravatar from 'react-gravatar'
@@ -28,7 +28,7 @@ class HeaderLinks extends React.Component {
 	}
 	logOut = async () => {
 		try {
-			await logOut().then(() => {	cookie.remove("SESSION", { path: '/' })})
+			await logOut().then(() => {	cookie.remove('SESSION', { path: '/' })})
 		}
 		catch (e) { 
 		}
@@ -45,24 +45,24 @@ class HeaderLinks extends React.Component {
 		return (
 			<Grid container classes={{ container: classes.headerMargin }}>
 				{/* <IconButton
-					color="inherit"
-					aria-label="Dashboard"
+					color='inherit'
+					aria-label='Dashboard'
 					className={classes.buttonLink}
 				>
 					<Dashboard className={classes.links} />
 				</IconButton> */}
 				<IconButton
 					aria-owns={openProfile ? 'menu-appbar' : null}
-					aria-haspopup="true"
+					aria-haspopup='true'
 					onClick={this.handleProfileOpen}
 					classes={{
 						root: classes.iconRoot
 					}}
 				>
-					{user ? user.img ? <img src={user.img} alt="UserProfile" className={classes.img} /> : <Gravatar default="mp" email={user.email} className={classes.img} size={36} /> : null}
+					{user ? user.img ? <img src={user.img} alt='UserProfile' className={classes.img} /> : <Gravatar default='mp' email={user.email} className={classes.img} size={36} /> : null}
 				</IconButton>
 				<Menu
-					id="menu-appbar"
+					id='menu-appbar'
 					anchorEl={anchorProfile}
 					anchorOrigin={{
 						vertical: 'top',
@@ -82,13 +82,13 @@ class HeaderLinks extends React.Component {
 					}}
 				>
 					<MenuItem onClick={this.handleRedirectToOwnProfile}>
-						<AccountBox className={classes.leftIcon}/>{t("users.menus.profile")}
+						<AccountBox className={classes.leftIcon}/>{t('users.menus.profile')}
 					</MenuItem>
 					<MenuItem onClick={this.handleProfileClose}>
-						<Business className={classes.leftIcon} />{t("users.menus.account")}
+						<Business className={classes.leftIcon} />{t('users.menus.account')}
 					</MenuItem>
 					<MenuItem onClick={this.logOut} className={classes.menuItem}>
-						<Lock className={classes.leftIcon} />{t("users.menus.signout")}
+						<Lock className={classes.leftIcon} />{t('users.menus.signout')}
 					 </MenuItem>
 				</Menu>
 			</Grid>

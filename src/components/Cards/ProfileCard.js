@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
 	withStyles,
 	Card,
@@ -6,10 +6,10 @@ import {
 	CardContent,
 	CardActions,
 	Typography
-} from "@material-ui/core";
-import PropTypes from "prop-types";
+} from '@material-ui/core';
+import PropTypes from 'prop-types';
 
-import profileCardStyle from "assets/jss/material-dashboard-react/profileCardStyle";
+import profileCardStyle from 'assets/jss/material-dashboard-react/profileCardStyle';
 
 function ProfileCard({ ...props }) {
 	const { classes, subtitle, title, description, footer, avatar } = props;
@@ -20,26 +20,26 @@ function ProfileCard({ ...props }) {
 					root: classes.cardHeader,
 					avatar: classes.cardAvatar
 				}}
-				avatar={<img src={avatar} alt="..." className={classes.img} />}
+				avatar={<img src={avatar} alt='...' className={classes.img} />}
 			/>
 			<CardContent className={classes.textAlign}>
 				{subtitle !== undefined ? (
-					<Typography component="h6" className={classes.cardSubtitle}>
+					<Typography component='h6' className={classes.cardSubtitle}>
 						{subtitle}
 					</Typography>
 				) : null}
 				{title !== undefined ? (
-					<Typography component="h4" className={classes.cardTitle}>
+					<Typography component='h4' className={classes.cardTitle}>
 						{title}
 					</Typography>
 				) : null}
 				{description !== undefined ? (
-					<Typography component="p" className={classes.cardDescription}>
+					<Typography component='p' className={classes.cardDescription}>
 						{description}
 					</Typography>
 				) : null}
 			</CardContent>
-			<CardActions className={classes.textAlign + " " + classes.cardActions}>
+			<CardActions className={classes.textAlign + ' ' + classes.cardActions}>
 				{footer}
 			</CardActions>
 		</Card>

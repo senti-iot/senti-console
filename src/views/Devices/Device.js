@@ -49,12 +49,12 @@ class Device extends Component {
 			img: null,
 		}
 	}
-	format = "YYYY-MM-DD+HH:mm"
+	format = 'YYYY-MM-DD+HH:mm'
 	tabs = [
-		{ id: 0, title: "", label: <DeviceHub />, url: `#details` },
-		{ id: 1, title: "", label: <Timeline />, url: `#data` },
-		{ id: 2, title: "", label: <Map />, url: `#map` },
-		{ id: 3, title: "", label: <DeveloperBoard />, url: `#hardware` }
+		{ id: 0, title: '', label: <DeviceHub />, url: `#details` },
+		{ id: 1, title: '', label: <Timeline />, url: `#data` },
+		{ id: 2, title: '', label: <Map />, url: `#map` },
+		{ id: 3, title: '', label: <DeveloperBoard />, url: `#hardware` }
 	]
 	getDevice = async (id) => {
 		await getDevice(id).then(async rs => {
@@ -96,7 +96,7 @@ class Device extends Component {
 	}
 	componentDidMount = async () => {
 		let prevURL = this.props.location.prevURL ? this.props.location.prevURL : '/devices/list'
-		this.props.setHeader(this.props.t("devices.device"), true, prevURL ? prevURL : '/devices/list', "devices")
+		this.props.setHeader(this.props.t('devices.device'), true, prevURL ? prevURL : '/devices/list', 'devices')
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {
@@ -113,11 +113,11 @@ class Device extends Component {
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.saved === true) {
 			if (this.props.isFav({ id: this.state.device.id, type: 'device' }))
-			{	this.props.s("snackbars.favorite.saved", { name: this.state.device.name, type: this.props.t("favorites.types.device") })
+			{	this.props.s('snackbars.favorite.saved', { name: this.state.device.name, type: this.props.t('favorites.types.device') })
 				this.props.finishedSaving()
 			}
 			if (!this.props.isFav({ id: this.state.device.id, type: 'device' })) {
-				this.props.s("snackbars.favorite.removed", { name: this.state.device.name, type: this.props.t("favorites.types.device") })
+				this.props.s('snackbars.favorite.removed', { name: this.state.device.name, type: this.props.t('favorites.types.device') })
 				this.props.finishedSaving()
 			}
 		}
@@ -365,20 +365,20 @@ class Device extends Component {
 	snackBarMessages = (msg) => {
 		const { s, t } = this.props
 		const { device, oldCollection } = this.state
-		let name = this.state.device.name ? this.state.device.name : t("devices.noName")
+		let name = this.state.device.name ? this.state.device.name : t('devices.noName')
 		let id = this.state.device.id
 		switch (msg) {
 			case 1:
-				s("snackbars.unassign.deviceFromCollection", { device: `${name}(${id})`, collection: `${oldCollection.name}(${oldCollection.id})` })
+				s('snackbars.unassign.deviceFromCollection', { device: `${name}(${id})`, collection: `${oldCollection.name}(${oldCollection.id})` })
 				break
 			case 2:
-				s("snackbars.assign.deviceToCollection", { device: `${name}(${id})`, collection: `${device.dataCollection.name}(${device.dataCollection.id})` })
+				s('snackbars.assign.deviceToCollection', { device: `${name}(${id})`, collection: `${device.dataCollection.name}(${device.dataCollection.id})` })
 				break
 			case 3:
-				s("snackbars.failedUnassign")
+				s('snackbars.failedUnassign')
 				break
 			case 4:
-				s("snackbars.assign.deviceToOrg", { device: `${name}(${id})`, org: `${device.org.name}` })
+				s('snackbars.assign.deviceToOrg', { device: `${name}(${id})`, org: `${device.org.name}` })
 				break
 			default:
 				break
@@ -432,7 +432,7 @@ class Device extends Component {
 		var filtered = arr.filter(c => {
 			var contains = keys.map(key => {
 				if (c[key] === null)
-					return searchStr === "null" ? true : false
+					return searchStr === 'null' ? true : false
 				if (c[key] instanceof Date) {
 					let date = dateFormatter(c[key])
 					return date.toLowerCase().includes(searchStr)
@@ -500,21 +500,21 @@ class Device extends Component {
 		return <Dialog
 			open={this.state.openUnassign}
 			onClose={this.handleCloseUnassign}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">{t("dialogs.unassign.title.deviceFromCollection", { what: t("collections.fields.id") })}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('dialogs.unassign.title.deviceFromCollection', { what: t('collections.fields.id') })}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{t("dialogs.unassign.message.deviceFromCollection", { device: `${device.name} (${device.id})`, collection: device.dataCollection.name })}
+				<DialogContentText id='alert-dialog-description'>
+					{t('dialogs.unassign.message.deviceFromCollection', { device: `${device.name} (${device.id})`, collection: device.dataCollection.name })}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseUnassign} color="primary">
-					{t("actions.no")}
+				<Button onClick={this.handleCloseUnassign} color='primary'>
+					{t('actions.no')}
 				</Button>
-				<Button onClick={this.handleUnassign} color="primary" autoFocus>
-					{t("actions.yes")}
+				<Button onClick={this.handleUnassign} color='primary' autoFocus>
+					{t('actions.yes')}
 				</Button>
 			</DialogActions>
 		</Dialog>
@@ -566,9 +566,9 @@ class Device extends Component {
 						t={this.props.t}
 					/>
 					{device.dataCollection ? this.renderConfirmUnassign() : null}
-					<ItemGrid xs={12} noMargin id={"details"}>
+					<ItemGrid xs={12} noMargin id={'details'}>
 						<DeviceDetails
-							isFav={this.props.isFav({ id: device.id, type: "device" })}
+							isFav={this.props.isFav({ id: device.id, type: 'device' })}
 							addToFav={this.addToFav}
 							removeFromFav={this.removeFromFav}
 							weather={this.state.weather}
@@ -582,7 +582,7 @@ class Device extends Component {
 							accessLevel={this.props.accessLevel}
 						/>
 					</ItemGrid>
-					<ItemGrid xs={12} noMargin id={"data"}>
+					<ItemGrid xs={12} noMargin id={'data'}>
 						<DeviceData
 							barDataSets={this.state.barDataSets}
 							roundDataSets={this.state.roundDataSets}
@@ -601,7 +601,7 @@ class Device extends Component {
 							t={this.props.t}
 						/>
 					</ItemGrid>
-					<ItemGrid xs={12} noMargin id={"map"}>
+					<ItemGrid xs={12} noMargin id={'map'}>
 						<DeviceMap
 							classes={this.props.classes}
 							heatData={this.state.heatData}
@@ -611,13 +611,13 @@ class Device extends Component {
 							t={this.props.t}
 						/>
 					</ItemGrid>
-					<ItemGrid xs={12} noMargin id={"images"}>
+					<ItemGrid xs={12} noMargin id={'images'}>
 						<DeviceImages
 							s={this.props.s}
 							t={this.props.t}
 							device={device} />
 					</ItemGrid>
-					<ItemGrid xs={12} noMargin id={"hardware"}>
+					<ItemGrid xs={12} noMargin id={'hardware'}>
 						<DeviceHardware
 							device={device}
 							history={this.props.history}

@@ -44,8 +44,8 @@ class Collection extends Component {
 			openDelete: false,
 			img: null,
 			filter: {
-				startDate: "",
-				endDate: ""
+				startDate: '',
+				endDate: ''
 			},
 			//Map
 			loadingMap: true,
@@ -53,15 +53,15 @@ class Collection extends Component {
 			//End Map
 		}
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/collections/list'
-		props.setHeader(props.t("collections.fields.collection"), true, prevURL, "collections")
+		props.setHeader(props.t('collections.fields.collection'), true, prevURL, 'collections')
 	}
-		format = "YYYY-MM-DD+HH:mm"
+		format = 'YYYY-MM-DD+HH:mm'
 	tabs = [
-		{ id: 0, title: "", label: <DataUsage />, url: `#details` },
-		{ id: 1, title: "", label: <Timeline />, url: `#data` },
-		{ id: 2, title: "", label: <Map />, url: `#map` },
-		{ id: 3, title: "", label: <DeviceHub />, url: `#active-device` },
-		{ id: 3, title: "", label: <History />, url: `#history` }
+		{ id: 0, title: '', label: <DataUsage />, url: `#details` },
+		{ id: 1, title: '', label: <Timeline />, url: `#data` },
+		{ id: 2, title: '', label: <Map />, url: `#map` },
+		{ id: 3, title: '', label: <DeviceHub />, url: `#active-device` },
+		{ id: 3, title: '', label: <History />, url: `#history` }
 	]
 	getActiveDevice = async (id) => {
 		let device = await getDevice(id)
@@ -332,23 +332,23 @@ class Collection extends Component {
 	}
 	snackBarMessages = (msg) => {
 		const { s, t } = this.props
-		let name = this.state.collection.name ? this.state.collection.name : t("collections.noName")
+		let name = this.state.collection.name ? this.state.collection.name : t('collections.noName')
 		let id = this.state.collection.id
 		switch (msg) {
 			case 1:
-				s(t("snackbars.unassign.deviceFromCollection", { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id }))
+				s(t('snackbars.unassign.deviceFromCollection', { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id }))
 				break
 			case 2:
-				s(t("snackbars.assign.collectionToOrg", { collection: `${name} (${id})`, org: this.state.collection.org.name }))
+				s(t('snackbars.assign.collectionToOrg', { collection: `${name} (${id})`, org: this.state.collection.org.name }))
 				break
 			case 5: 
-				s(t("snackbars.assign.collectionToProject", { collection: `${name} (${id})`, project: this.state.collection.project.title }))
+				s(t('snackbars.assign.collectionToProject', { collection: `${name} (${id})`, project: this.state.collection.project.title }))
 				break
 			case 6:
-				s(t("snackbars.assign.deviceToCollection", { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id }))
+				s(t('snackbars.assign.deviceToCollection', { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id }))
 				break
 			case 4:
-				s(t("snackbars.collectionDeleted"))
+				s(t('snackbars.collectionDeleted'))
 				break
 			default:
 				break
@@ -372,7 +372,7 @@ class Collection extends Component {
 				this.snackBarMessages(4)
 			}
 			else {
-				alert("Delete failed") //todo
+				alert('Delete failed') //todo
 			}
 				
 		})
@@ -435,7 +435,7 @@ class Collection extends Component {
 	// 	var filtered = arr.filter(c => {
 	// 		var contains = keys.map(key => {
 	// 			if (c[key] === null)
-	// 				return searchStr === "null" ? true : false
+	// 				return searchStr === 'null' ? true : false
 	// 			if (c[key] instanceof Date) {
 	// 				let date = dateFormatter(c[key])
 	// 				return date.toLowerCase().includes(searchStr)
@@ -488,8 +488,8 @@ class Collection extends Component {
 					<DialogActions>
 						<Search />
 					</DialogActions>
-					<DialogContentText id="alert-dialog-description">
-						{t("dialogs.unassign", { id: collection.id, name: collection.name, what: collection.org.name })}
+					<DialogContentText id='alert-dialog-description'>
+						{t('dialogs.unassign', { id: collection.id, name: collection.name, what: collection.org.name })}
 					</DialogContentText>
 				</DialogTitle>
 			</Dialog>
@@ -501,21 +501,21 @@ class Collection extends Component {
 		return <Dialog
 			open={this.state.openUnassignDevice}
 			onClose={this.handleCloseUnassignDevice}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">{t("dialogs.unassign.title.deviceFromCollection")}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('dialogs.unassign.title.deviceFromCollection')}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{t("dialogs.unassign.message.deviceFromCollection", { device: collection.activeDeviceStats.id, collection: collection.name })}
+				<DialogContentText id='alert-dialog-description'>
+					{t('dialogs.unassign.message.deviceFromCollection', { device: collection.activeDeviceStats.id, collection: collection.name })}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseUnassignDevice} color="primary">
-					{t("actions.no")}
+				<Button onClick={this.handleCloseUnassignDevice} color='primary'>
+					{t('actions.no')}
 				</Button>
-				<Button onClick={this.handleUnassignDevice} color="primary" autoFocus>
-					{t("actions.yes")}
+				<Button onClick={this.handleUnassignDevice} color='primary' autoFocus>
+					{t('actions.yes')}
 				</Button>
 			</DialogActions>
 		</Dialog>
@@ -527,22 +527,22 @@ class Collection extends Component {
 			<Dialog
 				open={openDelete}
 				onClose={this.handleCloseDeleteDialog}
-				aria-labelledby="alert-dialog-title"
-				aria-describedby="alert-dialog-description"
+				aria-labelledby='alert-dialog-title'
+				aria-describedby='alert-dialog-description'
 			>
-				<DialogTitle id="alert-dialog-title">{t("dialogs.delete.title.collection")}</DialogTitle>
+				<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.collection')}</DialogTitle>
 				<DialogContent>
-					<DialogContentText id="alert-dialog-description">
-						{t("dialogs.delete.message.collection", { collection: this.state.collection.name })}
+					<DialogContentText id='alert-dialog-description'>
+						{t('dialogs.delete.message.collection', { collection: this.state.collection.name })}
 					</DialogContentText>
 
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={this.handleCloseDeleteDialog} color="primary">
-						{t("actions.cancel")}
+					<Button onClick={this.handleCloseDeleteDialog} color='primary'>
+						{t('actions.cancel')}
 					</Button>
-					<Button onClick={this.handleDeleteCollection} color="primary" autoFocus>
-						{t("actions.yes")}
+					<Button onClick={this.handleDeleteCollection} color='primary' autoFocus>
+						{t('actions.yes')}
 					</Button>
 				</DialogActions>
 			</Dialog>
@@ -602,7 +602,7 @@ class Collection extends Component {
 						{collection.activeDeviceStats ? this.renderConfirmUnassign() : null}
 						{this.renderDeleteDialog()}
 						{/* {this.renderAssignDevice()} */}
-						<ItemGrid xs={12} noMargin id="details">
+						<ItemGrid xs={12} noMargin id='details'>
 							<CollectionDetails
 								collection={collection}
 								weather={weather}
@@ -617,7 +617,7 @@ class Collection extends Component {
 								accessLevel={this.props.accessLevel}
 							/>
 						</ItemGrid>
-						<ItemGrid xs={12} noMargin id="data">
+						<ItemGrid xs={12} noMargin id='data'>
 							<CollectionData
 								barDataSets={this.state.barDataSets}
 								roundDataSets={this.state.roundDataSets}
@@ -636,14 +636,14 @@ class Collection extends Component {
 								t={this.props.t}
 							/>
 						</ItemGrid>
-						{this.state.activeDevice ? <ItemGrid xs={12} noMargin id="map">
+						{this.state.activeDevice ? <ItemGrid xs={12} noMargin id='map'>
 							<ActiveDeviceMap
 								device={this.state.heatData}
 								weather={this.state.weather}
 								t={t}
 							/>
 						</ItemGrid> : null}
-						<ItemGrid xs={12} noMargin id={"active-device"}>
+						<ItemGrid xs={12} noMargin id={'active-device'}>
 							<CollectionActiveDevice
 								collection={collection}
 								history={history}
@@ -653,7 +653,7 @@ class Collection extends Component {
 								t={t}
 							/>
 						</ItemGrid>
-						<ItemGrid xs={12} noMargin id={"history"}>
+						<ItemGrid xs={12} noMargin id={'history'}>
 							<CollectionHistory
 								classes={classes}
 								collection={collection}

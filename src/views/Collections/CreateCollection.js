@@ -18,11 +18,11 @@ class CreateCollection extends Component {
 			loading: true,
 			openDevice: false,
 			openOrg: false,
-			device: { id: 0, name: props.t("collections.noDevice") },
-			org: { id: 0, name: props.t("users.fields.noOrg") }
+			device: { id: 0, name: props.t('collections.noDevice') },
+			org: { id: 0, name: props.t('users.fields.noOrg') }
 		}
 		this.id = props.match.params.id
-		// props.setHeader('', true, `/collections/list`, "collections")
+		// props.setHeader('', true, `/collections/list`, 'collections')
 	}
 	createDC = async () => {
 		let success = await createCollection(this.state.collection)
@@ -36,7 +36,7 @@ class CreateCollection extends Component {
 		let devices = await getAvailableDevices(orgId)
 
 		this.setState({
-			devices: devices ? [{ id: 0, name: t("collections.noDevice") }, ...devices] : [{ id: 0, name: t("collections.noDevice") }],
+			devices: devices ? [{ id: 0, name: t('collections.noDevice') }, ...devices] : [{ id: 0, name: t('collections.noDevice') }],
 			// loading: false
 		})
 	}
@@ -44,7 +44,7 @@ class CreateCollection extends Component {
 		const { t } = this.props
 		let orgs = await getAllOrgs()
 		this.setState({
-			orgs: orgs ? [{ id: 0, name: t("users.fields.noOrg") }, ...orgs] : [{ id: 0, name: t("users.fields.noOrg") }]
+			orgs: orgs ? [{ id: 0, name: t('users.fields.noOrg') }, ...orgs] : [{ id: 0, name: t('users.fields.noOrg') }]
 		})
 	}
 	getEmptyCollection = async () => {
@@ -121,17 +121,17 @@ class CreateCollection extends Component {
 					deviceId: device.id
 				})
 				if (assignRs) {
-					s(t("snackbars.collectionCreated"))
+					s(t('snackbars.collectionCreated'))
 					history.push(`/collection/${rs.id}`)
 				}
 			}
 			else {
-				s(t("snackbars.collectionCreated"))
+				s(t('snackbars.collectionCreated'))
 				history.push(`/collection/${rs.id}`)
 			}
 		}
 		else
-			s(t("snackbars.failed"))
+			s(t('snackbars.failed'))
 	}
 	render() {
 		const { t } = this.props

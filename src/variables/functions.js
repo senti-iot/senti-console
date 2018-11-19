@@ -67,7 +67,7 @@ export const datesToArr = (from, to) => {
 }
 export const dateFormat = (date) => {
 	let newDate = moment(date)
-	if (newDate.isBetween(moment().subtract(7, "day"), moment().add(7, "day")))
+	if (newDate.isBetween(moment().subtract(7, 'day'), moment().add(7, 'day')))
 		return moment(date).calendar()
 	else
 		return moment(date).fromNow()
@@ -106,7 +106,7 @@ export const filterItems = (data, filters) => {
 		var keys = Object.keys(arr[0])
 		var filtered = arr.filter(c => {
 			var contains = keys.map(key => {
-				return keyTester(c[key], keyword ? keyword : "")
+				return keyTester(c[key], keyword ? keyword : '')
 
 			})
 			return contains.indexOf(true) !== -1 ? true : false
@@ -145,8 +145,8 @@ export const keyTester = (obj, sstr) => {
 	return found
 }
 const sortFunc = (a, b, orderBy, way) => {
-	let newA = _.get(a, orderBy) ? _.get(a, orderBy) : ""
-	let newB = _.get(b, orderBy) ? _.get(b, orderBy) : ""
+	let newA = _.get(a, orderBy) ? _.get(a, orderBy) : ''
+	let newB = _.get(b, orderBy) ? _.get(b, orderBy) : ''
 	if (typeof newA === 'number')
 		if (way) {
 			return newB <= newA ? -1 : 1
@@ -201,29 +201,29 @@ export const pF = (phone) => {
 export const dateTimeFormatter = (date, withSeconds) => {
 	var dt
 	if (withSeconds)
-		dt = moment(date).format("DD MMMM YYYY HH:mm:ss")
+		dt = moment(date).format('DD MMMM YYYY HH:mm:ss')
 	else
-		dt = moment(date).format("lll")
+		dt = moment(date).format('lll')
 	return dt
 }
 /**
- * Short Date "ll" format
+ * Short Date 'll' format
  * @param {Date} date 
  */
 export const shortDateFormat = (date) => {
-	var a = moment(date).format("ll")
+	var a = moment(date).format('ll')
 	return a
 }
 /**
- * Date Formatter "LL" format
+ * Date Formatter 'LL' format
  * @param {Date} date 
  */
 export const dateFormatter = (date) => {
-	var a = moment(date).format("LL")
+	var a = moment(date).format('LL')
 	return a
 }
 export const timeFormatter = (date) => {
-	var a = moment(date).format("HH:mm")
+	var a = moment(date).format('HH:mm')
 	return a
 }
 export const ConvertDDToDMS = (D, lng) => {
@@ -256,6 +256,6 @@ export const suggestionGen = (arrayOfObjs) => {
 		arr.push(...suggestionSlicer(obj))
 		return ''
 	})
-	arr = _.uniqBy(arr, "label")
+	arr = _.uniqBy(arr, 'label')
 	return arr;
 }

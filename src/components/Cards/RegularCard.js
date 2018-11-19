@@ -1,9 +1,9 @@
-import React from "react";
-import { withStyles, Card, CardContent, CardHeader, CardActions } from "@material-ui/core";
-import PropTypes from "prop-types";
-import cx from "classnames";
+import React from 'react';
+import { withStyles, Card, CardContent, CardHeader, CardActions } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import cx from 'classnames';
 
-import regularCardStyle from "assets/jss/material-dashboard-react/regularCardStyle";
+import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
 
 function RegularCard({ ...props }) {
 	const {
@@ -16,10 +16,10 @@ function RegularCard({ ...props }) {
 		footer,
 	} = props;
 	const plainCardClasses = cx({
-		[" " + classes.cardPlain]: plainCard
+		[' ' + classes.cardPlain]: plainCard
 	});
 	const cardPlainHeaderClasses = cx({
-		[" " + classes.cardPlainHeader]: plainCard
+		[' ' + classes.cardPlainHeader]: plainCard
 	});
 	return (
 		<Card className={classes.card + plainCardClasses}>
@@ -27,8 +27,8 @@ function RegularCard({ ...props }) {
 				classes={{
 					root:
 						classes.cardHeader +
-						" " +
-						classes[headerColor + "CardHeader"] +
+						' ' +
+						classes[headerColor + 'CardHeader'] +
 						cardPlainHeaderClasses,
 					title: classes.cardTitle,
 					subheader: classes.cardSubtitle
@@ -45,13 +45,13 @@ function RegularCard({ ...props }) {
 }
 
 RegularCard.defaultProps = {
-	headerColor: "senti"
+	headerColor: 'senti'
 };
 
 RegularCard.propTypes = {
 	plainCard: PropTypes.bool,
 	classes: PropTypes.object.isRequired,
-	headerColor: PropTypes.oneOf(["orange", "green", "red", "blue", "purple", "primary", "senti"]),
+	headerColor: PropTypes.oneOf(['orange', 'green', 'red', 'blue', 'purple', 'primary', 'senti']),
 	cardTitle: PropTypes.node,
 	cardSubtitle: PropTypes.node,
 	content: PropTypes.node,

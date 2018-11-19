@@ -19,7 +19,7 @@ class PieChart extends PureComponent {
 			lineOptions: {
 				categoryPercentage: 0.5,
 				barPercentage: 0.5,
-				barThickness: "flex",
+				barThickness: 'flex',
 				gridLines: { offsetGridLines: false },
 				animation: {
 					duration: 500
@@ -27,25 +27,25 @@ class PieChart extends PureComponent {
 				display: true,
 				maintainAspectRatio: false,
 				tooltips: {
-					titleFontFamily: "inherit",
-					mode: "point",
+					titleFontFamily: 'inherit',
+					mode: 'point',
 					intersect: false,
 					enabled: false,
 					custom: this.customTooltip
 				},
 				hover: {
-					mode: "point"
+					mode: 'point'
 				},
 				// scales: {
 				// 	xAxes: [
 				// 		{
 				// 			display: false,
 				// 			offset: true,
-				// 			id: "day",
+				// 			id: 'day',
 				// 			type: 'time',
 				// 			time: {
 				// 				displayFormats: {
-				// 					hour: "LT",
+				// 					hour: 'LT',
 				// 					day: 'll'
 				// 				},
 				// 				unit: props.unit.chart,
@@ -66,7 +66,7 @@ class PieChart extends PureComponent {
 		}
 	}
 	legendOptions = {
-		position: "bottom",
+		position: 'bottom',
 		display: !this.props.single ? true : false,
 		onHover: !this.props.single ? (t, l) => {
 			this.props.setHoverID(this.props.data.datasets[l.datasetIndex].id)
@@ -108,7 +108,7 @@ class PieChart extends PureComponent {
 		const left = tooltipModel.caretX;
 		const top = tooltipModel.caretY;
 		let str = tooltipModel.body[0].lines[0]
-		var date = str.substring(0, str.lastIndexOf(":"));
+		var date = str.substring(0, str.lastIndexOf(':'));
 		date = date.charAt(0).toUpperCase() + date.slice(1)
 		this.setTooltip({
 			top,
@@ -162,8 +162,8 @@ class PieChart extends PureComponent {
 		const { tooltip, chartWidth } = this.state
 		;
 
-		// let DayStr = tooltip.title[1] ? tooltip.title[1].charAt(0).toUpperCase() + tooltip.title[1].slice(1) : ""
-		// let DateStr = tooltip.title[0] ? tooltip.title[0] : ""
+		// let DayStr = tooltip.title[1] ? tooltip.title[1].charAt(0).toUpperCase() + tooltip.title[1].slice(1) : ''
+		// let DateStr = tooltip.title[0] ? tooltip.title[0] : ''
 		return (
 			<div style={{ maxHeight: 400, position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
 				<Pie
@@ -186,8 +186,8 @@ class PieChart extends PureComponent {
 					<Grow in={tooltip.show} onExited={this.exitedTooltip} >
 						<Paper className={classes.paper}>
 							<ItemG container>
-								<ItemG container direction="row" justify="space-between">
-									<ItemG xs container direction="column">
+								<ItemG container direction='row' justify='space-between'>
+									<ItemG xs container direction='column'>
 										<Typography variant={'h6'} classes={{ root: classes.antialias }} >{`${tooltip.title}`}</Typography>
 										<Caption> {`(${tooltip.date})`}</Caption>
 									</ItemG>

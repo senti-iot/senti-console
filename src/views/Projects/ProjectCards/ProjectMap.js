@@ -17,7 +17,7 @@ export default class ProjectMap extends Component {
 		const { t } = this.props
 		return <Dropdown menuItems={
 			[
-				{ label: t("actions.heatMap"), icon: <Checkbox checked={this.state.heatMap} />, func: () => this.setState({ heatMap: !this.state.heatMap }) },
+				{ label: t('actions.heatMap'), icon: <Checkbox checked={this.state.heatMap} />, func: () => this.setState({ heatMap: !this.state.heatMap }) },
 			]
 		} />
 	}
@@ -25,13 +25,13 @@ export default class ProjectMap extends Component {
 		const { devices, t } = this.props
 		return (
 			<InfoCard
-				title={t("devices.cards.map")}
-				subheader={`Heatmap: ${this.state.heatMap ? "ON" : "OFF"}`}
+				title={t('devices.cards.map')}
+				subheader={`Heatmap: ${this.state.heatMap ? 'ON' : 'OFF'}`}
 				avatar={<Map />}
 				topAction={this.renderMenu()}
 				hiddenContent={
 					<Grid container justify={'center'}>
-						{devices.length > 0 ? <Maps t={t} heatMap={this.state.heatMap} isMarkerShown markers={devices} zoom={10} /> : <Caption>{t("projects.noAvailableDevices")}</Caption>}
+						{devices.length > 0 ? <Maps t={t} heatMap={this.state.heatMap} isMarkerShown markers={devices} zoom={10} /> : <Caption>{t('projects.noAvailableDevices')}</Caption>}
 					</Grid>
 				} />
 

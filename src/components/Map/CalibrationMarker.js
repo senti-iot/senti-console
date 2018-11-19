@@ -5,8 +5,8 @@ import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
 import { withStyles } from '@material-ui/core'
 import { red, green, yellow } from '@material-ui/core/colors'
 import { getDataSummary, getWeather } from 'variables/dataDevices';
-import { teal } from "@material-ui/core/colors"
-var moment = require("moment")
+import { teal } from '@material-ui/core/colors'
+var moment = require('moment')
 const styles = theme => ({ 
 	redSignal: {
 		color: red[700]
@@ -37,8 +37,8 @@ class CalibrationMarker extends Component {
 				let weather = await getWeather(m, moment(), lang)
 				this.setState({ weather: weather })
 			}
-			let OneMinuteAgo = moment().subtract(10, "minute").format("YYYY-MM-DD+HH:mm:ss")
-			let rs = await getDataSummary(this.props.m.id, OneMinuteAgo, moment().format("YYYY-MM-DD+HH:mm:ss"), false)
+			let OneMinuteAgo = moment().subtract(10, 'minute').format('YYYY-MM-DD+HH:mm:ss')
+			let rs = await getDataSummary(this.props.m.id, OneMinuteAgo, moment().format('YYYY-MM-DD+HH:mm:ss'), false)
 			this.setState({ isOpen: !isOpen, liveCount: rs })
 		}
 		else { 
@@ -49,13 +49,13 @@ class CalibrationMarker extends Component {
 		const { classes, t } = this.props
 		switch (status) {
 			case 1:
-				return <div title={t("devices.status.yellow")}><SignalWifi2Bar className={classes.yellowSignal} /></div>
+				return <div title={t('devices.status.yellow')}><SignalWifi2Bar className={classes.yellowSignal} /></div>
 			case 2:
-				return <div title={t("devices.status.green")}><SignalWifi2Bar className={classes.greenSignal} /></div>
+				return <div title={t('devices.status.green')}><SignalWifi2Bar className={classes.greenSignal} /></div>
 			case 0:
-				return <div title={t("devices.status.red")}><SignalWifi2Bar className={classes.redSignal} /></div>
+				return <div title={t('devices.status.red')}><SignalWifi2Bar className={classes.redSignal} /></div>
 			default:
-				return <div title={t("devices.status.red")}> <SignalWifi2BarLock className={classes.redSignal}/></div>
+				return <div title={t('devices.status.red')}> <SignalWifi2BarLock className={classes.redSignal}/></div>
 		}
 	}
 	render() {

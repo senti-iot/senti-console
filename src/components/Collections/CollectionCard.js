@@ -18,33 +18,33 @@ class CollectionCard extends Component {
 				title={d.name ? d.name : d.id}
 				avatar={<DataUsage />}
 				subheader={<ItemG container alignItems={'center'}>
-					<Caption>{t("collections.fields.id")}:</Caption>&nbsp;{d.id}
+					<Caption>{t('collections.fields.id')}:</Caption>&nbsp;{d.id}
 				</ItemG>}
 				topAction={
 					<Dropdown menuItems={
 						[
-							{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/collection/${d.id}/edit`, prevURL: `/collections/grid` }) },
+							{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/collection/${d.id}/edit`, prevURL: `/collections/grid` }) },
 						]
 					} />
 
 				}
 				content={<ItemGrid container>
 					<ItemG xs={6}>
-						<Caption>{t("collections.fields.status")}</Caption>
-						<Info>{d.state ? t('collections.fields.state.active') : t("collections.fields.state.inactive")}</Info>
+						<Caption>{t('collections.fields.status')}</Caption>
+						<Info>{d.state ? t('collections.fields.state.active') : t('collections.fields.state.inactive')}</Info>
 					</ItemG>
 					{d.description ? <ItemG xs={6}>
-						<Caption>{t("collections.fields.description")}:</Caption>
+						<Caption>{t('collections.fields.description')}:</Caption>
 						<Info>{d.description}</Info>
 					</ItemG> : null}
 					<ItemG xs={12}>
-						<Caption>{t("devices.fields.lastData")}:</Caption>
+						<Caption>{t('devices.fields.lastData')}:</Caption>
 						<Info title={dateFormatter(d.latestData)}>
 							{dateFormat(d.latestData)}
 						</Info>
 					</ItemG>
 					<ItemG xs={12}>
-						<Caption>{t("devices.fields.lastStats")}:</Caption>
+						<Caption>{t('devices.fields.lastStats')}:</Caption>
 						<Info title={dateFormatter(d.latestActivity)}>
 							{dateFormat(d.latestActivity)}
 						</Info>
@@ -52,14 +52,14 @@ class CollectionCard extends Component {
 				</ItemGrid>}
 				leftActions={
 							
-					d.activeDeviceStats ? <Button variant={'text'} color={"primary"} onClick={() => { history.push({ pathname: `/device/${d.activeDeviceStats.id}`, prevURL: '/collections/grid' }) }}>
-						{t("menus.seeDevice")}
+					d.activeDeviceStats ? <Button variant={'text'} color={'primary'} onClick={() => { history.push({ pathname: `/device/${d.activeDeviceStats.id}`, prevURL: '/collections/grid' }) }}>
+						{t('menus.seeDevice')}
 					</Button> : null
 				}
 				rightActions={
 					<Fragment>
-						<Button variant={'text'} color={"primary"} onClick={() => { history.push({ pathname: `/collection/${d.id}`, prevURL: '/collections/grid' }) }}>
-							{t("menus.seeMore")}
+						<Button variant={'text'} color={'primary'} onClick={() => { history.push({ pathname: `/collection/${d.id}`, prevURL: '/collections/grid' }) }}>
+							{t('menus.seeMore')}
 						</Button>
 					</Fragment>
 				}

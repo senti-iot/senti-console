@@ -55,7 +55,7 @@ class InfoCard extends PureComponent {
 			<Card className={classes.card + classes.plainCardClasses}>
 				<CardHeader
 					action={this.renderTopAction()}
-					avatar={noAvatar ? null : <Avatar aria-label="Avatar" className={classes.avatar}>{avatar}</Avatar>}
+					avatar={noAvatar ? null : <Avatar aria-label='Avatar' className={classes.avatar}>{avatar}</Avatar>}
 					title={title}
 					subheader={this.hasSubheader(subheader)}
 					classes={{
@@ -75,7 +75,7 @@ class InfoCard extends PureComponent {
 						{leftActionContent ? <CardContent classes={{ root: classes.root }}>
 							{leftActionContent}
 						</CardContent> : null}
-						<Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+						<Collapse in={this.state.expanded} timeout='auto' unmountOnExit>
 							<CardContent classes={{ root: classes.root }}>
 								{hiddenContent ? hiddenContent : null}
 							</CardContent>
@@ -87,10 +87,10 @@ class InfoCard extends PureComponent {
 								color={'primary'}
 								onClick={this.handleExpandClick}
 								aria-expanded={this.state.expanded}
-								aria-label="Show more"
+								aria-label='Show more'
 								className={classes.expandPosition}
 							>
-								{this.state.expanded ? t("menus.seeLess") : t("menus.seeMore")}
+								{this.state.expanded ? t('menus.seeLess') : t('menus.seeMore')}
 								<ExpandMore className={classnames(classes.expand, {
 									[classes.expandOpen]: this.state.expanded,
 								})} />

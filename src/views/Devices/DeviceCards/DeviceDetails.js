@@ -36,22 +36,22 @@ class DeviceDetails extends Component {
 	LocationTypes = () => {
 		const { t } = this.props
 		return [
-			{ id: 1, label: t("devices.locationTypes.pedStreet") },
-			{ id: 2, label: t("devices.locationTypes.park") },
-			{ id: 3, label: t("devices.locationTypes.path") },
-			{ id: 4, label: t("devices.locationTypes.square") },
-			{ id: 5, label: t("devices.locationTypes.crossroads") },
-			{ id: 6, label: t("devices.locationTypes.road") },
-			{ id: 7, label: t("devices.locationTypes.motorway") },
-			{ id: 8, label: t("devices.locationTypes.port") },
-			{ id: 9, label: t("devices.locationTypes.office") },
-			{ id: 0, label: t("devices.locationTypes.unspecified") }]
+			{ id: 1, label: t('devices.locationTypes.pedStreet') },
+			{ id: 2, label: t('devices.locationTypes.park') },
+			{ id: 3, label: t('devices.locationTypes.path') },
+			{ id: 4, label: t('devices.locationTypes.square') },
+			{ id: 5, label: t('devices.locationTypes.crossroads') },
+			{ id: 6, label: t('devices.locationTypes.road') },
+			{ id: 7, label: t('devices.locationTypes.motorway') },
+			{ id: 8, label: t('devices.locationTypes.port') },
+			{ id: 9, label: t('devices.locationTypes.office') },
+			{ id: 0, label: t('devices.locationTypes.unspecified') }]
 	}
 
 	renderDeviceLocType = () => {
 		const { device, t } = this.props
 		let deviceLoc = this.LocationTypes()[this.LocationTypes().findIndex(r => r.id === device.locationType)]
-		return deviceLoc ? deviceLoc.label : t("devices.noLocType")
+		return deviceLoc ? deviceLoc.label : t('devices.noLocType')
 	}
 	render() {
 		const { classes, device, t, accessLevel, history, weather, isFav, addToFav, removeFromFav } = this.props
@@ -61,12 +61,12 @@ class DeviceDetails extends Component {
 				avatar={<DeviceHub />}
 				topAction={<Dropdown menuItems={
 					[
-						{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/device/${device.id}/edit`, prevURL: `/device/${device.id}` }) },
-						{ label: t("menus.assign.deviceToCollection"), icon: <DataUsage className={classes.leftIcon} />, func: this.props.handleOpenAssign },
-						{ label: device.org.id > 0 ? t("menus.reassign.deviceToOrg") : t("menus.assign.deviceToOrg"), icon: <Business className={classes.leftIcon} />, func: this.props.handleOpenAssignOrg, dontShow: accessLevel.senticloud ? accessLevel.senticloud.editdeviceownership ? false : true : true },
-						{ label: t("menus.unassign.deviceFromCollection"), icon: <LayersClear className={classes.leftIcon} />, func: this.props.handleOpenUnassign, dontShow: device.dataCollection.id > 0 ? false : true },
-						{ label: !(device.lat > 0) && !(device.long > 0) ? t("menus.calibrate") : t("menus.recalibrate"), icon: <Build className={classes.leftIcon} />, func: () => this.props.history.push(`${this.props.match.url}/setup`) },
-						{ label: isFav ? t("menus.favorites.remove") : t("menus.favorites.add"), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav }
+						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/device/${device.id}/edit`, prevURL: `/device/${device.id}` }) },
+						{ label: t('menus.assign.deviceToCollection'), icon: <DataUsage className={classes.leftIcon} />, func: this.props.handleOpenAssign },
+						{ label: device.org.id > 0 ? t('menus.reassign.deviceToOrg') : t('menus.assign.deviceToOrg'), icon: <Business className={classes.leftIcon} />, func: this.props.handleOpenAssignOrg, dontShow: accessLevel.senticloud ? accessLevel.senticloud.editdeviceownership ? false : true : true },
+						{ label: t('menus.unassign.deviceFromCollection'), icon: <LayersClear className={classes.leftIcon} />, func: this.props.handleOpenUnassign, dontShow: device.dataCollection.id > 0 ? false : true },
+						{ label: !(device.lat > 0) && !(device.long > 0) ? t('menus.calibrate') : t('menus.recalibrate'), icon: <Build className={classes.leftIcon} />, func: () => this.props.history.push(`${this.props.match.url}/setup`) },
+						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav }
 					]
 				} />
 
@@ -80,36 +80,36 @@ class DeviceDetails extends Component {
 									<Warning>
 										<ItemG container xs={12}>
 											<P>
-												{t("devices.notCalibrated")}
+												{t('devices.notCalibrated')}
 											</P>
 										</ItemG>
 										<ItemG container xs={12}>
 											<Button
-												color={"default"}
+												color={'default'}
 												onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}
-												variant={"outlined"}>
-												{t("devices.calibrateButton")}
+												variant={'outlined'}>
+												{t('devices.calibrateButton')}
 											</Button>
 										</ItemG>
 									</Warning>
 								</ItemG>}
 						<ItemG xs={6} md={3} lg={3} xl={3}>
-							<Caption>{t("devices.fields.status")}:</Caption>
+							<Caption>{t('devices.fields.status')}:</Caption>
 							{this.renderStatus(device.liveStatus)}
 						</ItemG>
 						<ItemG xs={6} md={3} lg={3} xl={3}>
-							<Caption>{t("devices.fields.temp")}:</Caption>
+							<Caption>{t('devices.fields.temp')}:</Caption>
 							<Info>
 								{device.temperature} &#8451;
 							</Info>
 						</ItemG>
 						<ItemG container xs={6} md={3} lg={3} xl={3}>
-							{weather ? weather === "" ? <CircularProgress size={20} /> : <Fragment>
+							{weather ? weather === '' ? <CircularProgress size={20} /> : <Fragment>
 								<ItemG xs={5} sm={2} md={3} lg={2}>
 									<WeatherIcon icon={weather.currently.icon} /> 
 								</ItemG>
 								<ItemG xs={7} sm={10} md={9} lg={10}>
-									<Caption>{t("devices.fields.weather")}</Caption>
+									<Caption>{t('devices.fields.weather')}</Caption>
 									<Info>
 										{weather.currently.summary}
 									</Info>
@@ -118,21 +118,21 @@ class DeviceDetails extends Component {
 								: null}
 						</ItemG> 
 						<ItemG xs={6} md={3} lg={3} xl={3}>
-							<Caption>{t("devices.fields.locType")}:</Caption>
+							<Caption>{t('devices.fields.locType')}:</Caption>
 							<Info>{this.renderDeviceLocType()} </Info>
 						</ItemG>
 						<ItemG xs={12}>
-							<Caption>{t("devices.fields.description")}:</Caption>
-							<Info>{device.description ? device.description : ""}</Info>
+							<Caption>{t('devices.fields.description')}:</Caption>
+							<Info>{device.description ? device.description : ''}</Info>
 						</ItemG>
 						<ItemG xs={12} md={6} lg={6} xl={4}>
-							<Caption>{t("devices.fields.lastData")}:</Caption>
+							<Caption>{t('devices.fields.lastData')}:</Caption>
 							<Info title={dateFormatter(device.wifiLast)}>
 								{dateFormat(device.wifiLast)}
 							</Info>
 						</ItemG>
 						<ItemG xs={12} md={6} lg={6} xl={8}>
-							<Caption>{t("devices.fields.lastStats")}:</Caption>
+							<Caption>{t('devices.fields.lastStats')}:</Caption>
 							<Info title={dateFormatter(device.execLast)}>
 								{dateFormat(device.execLast)}
 							</Info>
@@ -140,33 +140,33 @@ class DeviceDetails extends Component {
 					
 					
 						<ItemG xs={12} md={6} lg={6} xl={4}>
-							<Caption>{t("devices.fields.address")}:</Caption>
+							<Caption>{t('devices.fields.address')}:</Caption>
 							<Info>{device.address} </Info>
 						</ItemG>
 						<ItemG xs={12} md={6} lg={6}>
-							<Caption>{t("devices.fields.coords")}:</Caption>
-							<Info><a title={t("links.googleMaps")} href={`https://www.google.com/maps/search/${device.lat}+${device.long}`} target={'_blank'}>
-								{ConvertDDToDMS(device.lat, false) + " " + ConvertDDToDMS(device.long, true)}</a>
+							<Caption>{t('devices.fields.coords')}:</Caption>
+							<Info><a title={t('links.googleMaps')} href={`https://www.google.com/maps/search/${device.lat}+${device.long}`} target={'_blank'}>
+								{ConvertDDToDMS(device.lat, false) + ' ' + ConvertDDToDMS(device.long, true)}</a>
 							</Info>
 						</ItemG>
 						
 					
 						<ItemG xs={12} md={3} lg={3}>
-							<Caption>{t("devices.fields.org")}:</Caption>
+							<Caption>{t('devices.fields.org')}:</Caption>
 							<Info>{device.org ?
 								<Link to={{ pathname: `/org/${device.org.id}`, prevURL: `/device/${device.id}` }} >
 									{device.org.name}
 								</Link>
-								: t("devices.noProject")}</Info>
+								: t('devices.noProject')}</Info>
 
 						</ItemG>
 						<ItemG xs={12} md={3} lg={3}>
-							<Caption>{t("collections.fields.id")}:</Caption>
-							<Info>{device.dataCollection.id > 0 ? <Link to={'/collection/' + device.dataCollection.id}>{device.dataCollection.name}</Link> : t("devices.noProject")}</Info>
+							<Caption>{t('collections.fields.id')}:</Caption>
+							<Info>{device.dataCollection.id > 0 ? <Link to={'/collection/' + device.dataCollection.id}>{device.dataCollection.name}</Link> : t('devices.noProject')}</Info>
 						</ItemG>
 						<ItemG xs={12} md={3} lg={3}>
-							<Caption>{t("devices.fields.availability")}:</Caption>
-							<Info>{device.dataCollection.id > 0 ? t("devices.fields.notfree") : t("devices.fields.free")}</Info>
+							<Caption>{t('devices.fields.availability')}:</Caption>
+							<Info>{device.dataCollection.id > 0 ? t('devices.fields.notfree') : t('devices.fields.free')}</Info>
 						</ItemG>
 				
 					</ItemG>} />

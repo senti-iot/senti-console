@@ -26,7 +26,7 @@ const styles = theme => ({
 		minWidth: 300
 	},
 	latlong: {
-		margin: theme.spacing.unit * 2 + "px 0px"
+		margin: theme.spacing.unit * 2 + 'px 0px'
 	},
 	buttonMargin: {
 		margin: theme.spacing.unit
@@ -39,8 +39,8 @@ const styles = theme => ({
 	},
 	paper: {
 		margin: '8px',
-		borderRadius: "3px",
-		overflow: "hidden"
+		borderRadius: '3px',
+		overflow: 'hidden'
 	}
 });
 
@@ -65,7 +65,7 @@ class CalibrateDevice extends Component {
 			locationType: 0,
 			address: ''
 		}
-		props.setHeader( { id: "calibration.header", options: { deviceId: props.match.params.id } }, true, `/device/${props.match.params.id}`, "devices")
+		props.setHeader( { id: 'calibration.header', options: { deviceId: props.match.params.id } }, true, `/device/${props.match.params.id}`, 'devices')
 	}
 	componentDidMount = async () => {
 		if (this.props.match) {
@@ -95,25 +95,25 @@ class CalibrateDevice extends Component {
 
 	getSteps() {
 		const { t } = this.props
-		return [t("calibration.stepheader.name"),
-			t("calibration.stepheader.location"),
-			t("calibration.stepheader.calibration"),
-			t("calibration.stepheader.images")]
+		return [t('calibration.stepheader.name'),
+			t('calibration.stepheader.location'),
+			t('calibration.stepheader.calibration'),
+			t('calibration.stepheader.images')]
 	}
 
 	getStepContent(step) {
 		const { t } = this.props
 		switch (step) {
 			case 0:
-				return t("calibration.steps.0")
+				return t('calibration.steps.0')
 			case 1:
-				return t("calibration.steps.1")
+				return t('calibration.steps.1')
 			case 2:
-				return t("calibration.steps.2")
+				return t('calibration.steps.2')
 			case 3:
-				return t("calibration.steps.3")
+				return t('calibration.steps.3')
 			default:
-				return t("calibration.steps.unknown")
+				return t('calibration.steps.unknown')
 		}
 	}
 
@@ -160,16 +160,16 @@ class CalibrateDevice extends Component {
 	LocationTypes = () => {
 		const { t } = this.props
 		return [
-			{ id: 1, label: t("devices.locationTypes.pedStreet") },
-			{ id: 2, label: t("devices.locationTypes.park") },
-			{ id: 3, label: t("devices.locationTypes.path") },
-			{ id: 4, label: t("devices.locationTypes.square") },
-			{ id: 5, label: t("devices.locationTypes.crossroads") },
-			{ id: 6, label: t("devices.locationTypes.road") },
-			{ id: 7, label: t("devices.locationTypes.motorway") },
-			{ id: 8, label: t("devices.locationTypes.port") },
-			{ id: 9, label: t("devices.locationTypes.office") },
-			{ id: 0, label: t("devices.locationTypes.unspecified") }]
+			{ id: 1, label: t('devices.locationTypes.pedStreet') },
+			{ id: 2, label: t('devices.locationTypes.park') },
+			{ id: 3, label: t('devices.locationTypes.path') },
+			{ id: 4, label: t('devices.locationTypes.square') },
+			{ id: 5, label: t('devices.locationTypes.crossroads') },
+			{ id: 6, label: t('devices.locationTypes.road') },
+			{ id: 7, label: t('devices.locationTypes.motorway') },
+			{ id: 8, label: t('devices.locationTypes.port') },
+			{ id: 9, label: t('devices.locationTypes.office') },
+			{ id: 0, label: t('devices.locationTypes.unspecified') }]
 	}
 
 	handleLocationTypeChange = (e) => {
@@ -186,7 +186,7 @@ class CalibrateDevice extends Component {
 			<ItemGrid xs={12}>
 				<TextField
 					required={true}
-					label={t("calibration.fields.deviceName")}
+					label={t('calibration.fields.deviceName')}
 					onChange={this.handleInput('name')}
 					value={this.state.name}
 					InputProps={{
@@ -200,7 +200,7 @@ class CalibrateDevice extends Component {
 				<TextField
 					multiline
 					rows={4}
-					label={t("calibration.fields.description")}
+					label={t('calibration.fields.description')}
 					onChange={this.handleInput('description')}
 					value={this.state.description}
 					InputProps={{
@@ -233,11 +233,11 @@ class CalibrateDevice extends Component {
 			</ItemGrid>
 			<ItemGrid xs={12}>
 				<FormControl className={this.props.classes.formControl}>
-					<InputLabel htmlFor="streetType-helper">{this.state.locationType ? '' : t("devices.fields.locType")}</InputLabel>
+					<InputLabel htmlFor='streetType-helper'>{this.state.locationType ? '' : t('devices.fields.locType')}</InputLabel>
 					<Select
 						value={this.state.locationType}
 						onChange={this.handleLocationTypeChange}
-						input={<Input name="streetType" id="streetType-helper" />}
+						input={<Input name='streetType' id='streetType-helper' />}
 					>
 						{this.LocationTypes().map((loc, i) => {
 							return <MenuItem key={i} value={loc.id}>
@@ -245,22 +245,22 @@ class CalibrateDevice extends Component {
 							</MenuItem>
 						})}
 					</Select>
-					<FormHelperText>{t("calibration.selectLocationType")} {this.state.name ? this.state.name : this.state.id}</FormHelperText>
+					<FormHelperText>{t('calibration.selectLocationType')} {this.state.name ? this.state.name : this.state.id}</FormHelperText>
 				</FormControl>
 				<div className={this.props.classes.latlong}>
 					<Caption>
-						{t("calibration.texts.lat")} &amp; {t("calibration.texts.long")}
+						{t('calibration.texts.lat')} &amp; {t('calibration.texts.long')}
 					</Caption>
 					<Info>
-						{this.state.lat + " " + this.state.long}
+						{this.state.lat + ' ' + this.state.long}
 					</Info>
 				</div>
 				<Button
-					variant="contained"
-					color="primary"
+					variant='contained'
+					color='primary'
 					onClick={this.getCoords}
 					className={this.props.classes.button}
-				> <MyLocation className={this.props.classes.iconButton} />{t("calibration.texts.getLocation")}</Button>
+				> <MyLocation className={this.props.classes.iconButton} />{t('calibration.texts.getLocation')}</Button>
 			</ItemGrid>
 		</Grid>
 	}
@@ -317,7 +317,7 @@ class CalibrateDevice extends Component {
 					activeStep: activeStep + 1,
 				});
 			else {
-				this.setState({ error: { message: this.props.t("calibration.texts.networkError") } })
+				this.setState({ error: { message: this.props.t('calibration.texts.networkError') } })
 			}
 
 		}	
@@ -378,7 +378,7 @@ class CalibrateDevice extends Component {
 
 				<Paper classes={{ root: classes.paper }}>
 					{device ?
-						<Stepper activeStep={activeStep} orientation="vertical" >
+						<Stepper activeStep={activeStep} orientation='vertical' >
 							{steps.map((label, index) => {
 								return (
 									<Step key={label}>
@@ -398,21 +398,21 @@ class CalibrateDevice extends Component {
 														onClick={this.handleBack}
 														className={classes.button}
 													>
-														<NavigateBefore className={classes.iconButton} />{t("calibration.texts.back")}
+														<NavigateBefore className={classes.iconButton} />{t('calibration.texts.back')}
 													</Button>
 													<Button
-														variant="contained"
-														color="primary"
+														variant='contained'
+														color='primary'
 														onClick={this.handleNext}
 														className={classes.button}
 														disabled={this.stepChecker()}
 													>
 														{activeStep === steps.length - 1 ? <Fragment>
 
-															<Done className={classes.iconButton} />{t("calibration.texts.finish")}
+															<Done className={classes.iconButton} />{t('calibration.texts.finish')}
 														</Fragment> :
 															<Fragment>
-																<NavigateNext className={classes.iconButton} />{t("calibration.texts.next")}
+																<NavigateNext className={classes.iconButton} />{t('calibration.texts.next')}
 															</Fragment>}
 													</Button>
 												</Grid>
@@ -424,22 +424,22 @@ class CalibrateDevice extends Component {
 						</Stepper> : null}
 					{activeStep === steps.length && device && (
 						<Paper square elevation={0} className={classes.resetContainer}>
-							<Typography variant={'h6'}>{t("calibration.texts.success")}</Typography>
+							<Typography variant={'h6'}>{t('calibration.texts.success')}</Typography>
 							<Typography paragraph>
-								{t("calibration.texts.successMessage")}
+								{t('calibration.texts.successMessage')}
 							</Typography>
 							<Grid container>
 								<ItemGrid xs>
-									<Button onClick={this.handleFinish} color={"primary"} variant={"contained"} className={classes.buttonMargin}>
-										<Router className={classes.iconButton} />{t("calibration.texts.viewDevice")} {device.id}
+									<Button onClick={this.handleFinish} color={'primary'} variant={'contained'} className={classes.buttonMargin}>
+										<Router className={classes.iconButton} />{t('calibration.texts.viewDevice')} {device.id}
 									</Button>
-									<Button onClick={this.handleGoToDeviceList} color={"primary"} variant={"contained"} className={classes.buttonMargin}>
-										<Devices className={classes.iconButton} />{t("calibration.texts.viewDeviceList")}
+									<Button onClick={this.handleGoToDeviceList} color={'primary'} variant={'contained'} className={classes.buttonMargin}>
+										<Devices className={classes.iconButton} />{t('calibration.texts.viewDeviceList')}
 									</Button>
 								</ItemGrid>
 								<ItemGrid xs>
 									<Button onClick={this.handleReset} className={classes.button} >
-										<Restore className={classes.iconButton} />{t("calibration.texts.reset")}
+										<Restore className={classes.iconButton} />{t('calibration.texts.reset')}
 									</Button>
 								</ItemGrid>
 							</Grid>

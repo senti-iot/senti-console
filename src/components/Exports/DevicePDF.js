@@ -77,15 +77,15 @@ class DevicePDF extends Component {
 		super(props)
 
 		this.state = {
-			url: ""
+			url: ''
 		}
 	}
 	render() {
 		
 		return (
-			<PDFDownloadLink document={<Doc img={this.props.img}/>} fileName="somename.pdf">
+			<PDFDownloadLink document={<Doc img={this.props.img}/>} fileName='somename.pdf'>
 				{({ blob, url, loading, error }) =>
-					loading ? null : <Button variant={'contained'} color={"primary"}>PDF</Button>
+					loading ? null : <Button variant={'contained'} color={'primary'}>PDF</Button>
 				}
 			</PDFDownloadLink>
 		)

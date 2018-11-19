@@ -1,6 +1,6 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core';
-import { ClearDay, ClearNight, Cloudy, Fog, PartlyCloudyDay, PartlyCloudyNight, Rain, Sleet, Snow, Wind, } from "variables/icons";
+import { ClearDay, ClearNight, Cloudy, Fog, PartlyCloudyDay, PartlyCloudyNight, Rain, Sleet, Snow, Wind, } from 'variables/icons';
 const styles = (theme) => ({
 	img: {
 		background: 'linear-gradient(60deg, #41A29B, #278881)',

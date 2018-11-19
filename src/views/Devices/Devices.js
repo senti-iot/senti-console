@@ -3,22 +3,23 @@ import { getAllDevices, getDevice } from 'variables/dataDevices';
 import {
 	withStyles, Paper, Dialog, DialogTitle, DialogContent,
 	DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem
-} from "@material-ui/core";
+} from '@material-ui/core';
 import { Switch, Route, Redirect } from 'react-router-dom'
 import projectStyles from 'assets/jss/views/projects';
 import DeviceTable from 'components/Devices/DeviceTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import { Maps } from 'components/Map/Maps';
 import GridContainer from 'components/Grid/GridContainer';
-import { ViewList, ViewModule, Map, Add, FilterList, Build, Business, DataUsage, Edit, LayersClear, SignalWifi2Bar, Star } from 'variables/icons'
+import { ViewList, ViewModule, Map, Add, FilterList, Build, Business, DataUsage, Edit, LayersClear, SignalWifi2Bar, Star, StarBorder } from 'variables/icons'
 import Toolbar from 'components/Toolbar/Toolbar'
 import { filterItems, handleRequestSort } from 'variables/functions';
 import DeviceCard from 'components/Devices/DeviceCard'
-import { boxShadow } from "assets/jss/material-dashboard-react";
+import { boxShadow } from 'assets/jss/material-dashboard-react';
 import { unassignDeviceFromCollection } from 'variables/dataCollections';
 import { Info, AssignDC, AssignOrg, ItemG } from 'components';
 import TableToolbar from 'components/Table/TableToolbar';
 import { connect } from 'react-redux'
+import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 
 class Devices extends Component {
 	constructor(props) {
@@ -43,42 +44,51 @@ class Devices extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader("devices.pageTitle", false, '', "devices")
+		props.setHeader('devices.pageTitle', false, '', 'devices')
 	}
 	tabs = [
-		{ id: 0, title: this.props.t("devices.tabs.listView"), label: <ViewList />, url: `${this.props.match.path}/list` },
-		{ id: 1, title: this.props.t("devices.tabs.mapView"), label: <Map />, url: `${this.props.match.path}/map` },
-		{ id: 2, title: this.props.t("devices.tabs.cardView"), label: <ViewModule />, url: `${this.props.match.path}/grid` },
-		{ id: 3, title: this.props.t("favorites.favorites"), label: <Star />, url: `${this.props.match.path}/favorites` }
+		{ id: 0, title: this.props.t('devices.tabs.listView'), label: <ViewList />, url: `${this.props.match.path}/list` },
+		{ id: 1, title: this.props.t('devices.tabs.mapView'), label: <Map />, url: `${this.props.match.path}/map` },
+		{ id: 2, title: this.props.t('devices.tabs.cardView'), label: <ViewModule />, url: `${this.props.match.path}/grid` },
+		{ id: 3, title: this.props.t('favorites.favorites'), label: <Star />, url: `${this.props.match.path}/favorites` }
 	]
 
 	deviceHeaders = () => {
 		const { t } = this.props
 		return [
-			{ id: "name", label: t("devices.fields.name") },
-			{ id: "id", label: t("devices.fields.id") },
-			{ id: "liveStatus", checkbox: true, label: <ItemG container justify={'center'} title={t("devices.fields.status")}><SignalWifi2Bar /></ItemG> },
-			{ id: "address", label: t("devices.fields.address") },
-			{ id: "org.name", label: t("devices.fields.org") },
-			{ id: "project.id", label: t("devices.fields.availability") }
+			{ id: 'name', label: t('devices.fields.name') },
+			{ id: 'id', label: t('devices.fields.id') },
+			{ id: 'liveStatus', checkbox: true, label: <ItemG container justify={'center'} title={t('devices.fields.status')}><SignalWifi2Bar /></ItemG> },
+			{ id: 'address', label: t('devices.fields.address') },
+			{ id: 'org.name', label: t('devices.fields.org') },
+			{ id: 'project.id', label: t('devices.fields.availability') }
 		]
 	}
 	options = () => {
-		const { t, accessLevel } = this.props
+		const { t, accessLevel, isFav } = this.props
+		const { devices, selected } =  this.state
+		let device = devices[devices.findIndex(d => d.id === selected[0])]
+		let favObj = {
+			id: device.id,
+			name: device.name,
+			type: 'device',
+			path: `/device/${device.id}`
+		}
+		let isFavorite = isFav(favObj)
 		if (accessLevel.apisuperuser)
 			return [
-				{ label: t("menus.favorites.add"), func: this.addToFav, icon: Star },
-				{ label: t("menus.edit"), func: this.handleDeviceEdit, single: true, icon: Edit },
-				{ label: t("menus.assign.deviceToCollection"), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },
-				{ label: t("menus.assign.deviceToOrg"), func: this.handleOpenAssignOrg, single: false, icon: Business },
-				{ label: t("menus.unassign.deviceFromCollection"), func: this.handleOpenUnassignDialog, single: false, icon: LayersClear },
-				{ label: t("menus.calibrate"), func: this.handleCalibrateFlow, single: true, icon: Build },
-				// { label: t("menus.delete"), func: this.handleDeleteProjects, single: false, icon: Delete }, 
+				{ label: t('menus.edit'), func: this.handleDeviceEdit, single: true, icon: Edit },
+				{ label: t('menus.assign.deviceToCollection'), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },
+				{ label: t('menus.assign.deviceToOrg'), func: this.handleOpenAssignOrg, single: false, icon: Business },
+				{ label: t('menus.unassign.deviceFromCollection'), func: this.handleOpenUnassignDialog, single: false, icon: LayersClear },
+				{ label: t('menus.calibrate'), func: this.handleCalibrateFlow, single: true, icon: Build },
+				{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? this.removeFromFav : this.addToFav }
+				// { label: t('menus.delete'), func: this.handleDeleteProjects, single: false, icon: Delete }, 
 			]
 		else {
 			return [
-				{ label: t("menus.favorites.add"), func: this.addToFav, icon: Star },
-				{ label: t("menus.exportPDF"), func: () => { }, single: false }
+				{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? this.removeFromFav : this.addToFav },
+				{ label: t('menus.exportPDF'), func: () => { }, single: false }
 			]
 		}
 	}
@@ -87,21 +97,41 @@ class Devices extends Component {
 		switch (msg) {
 			case 1:
 				//TODO
-				s("snackbars.assign.deviceToCollection", { device: "", collection: "" })
+				s('snackbars.assign.deviceToCollection', { device: '', collection: '' })
 				break
 			case 2:
 				//TODO
-				s("snackbars.assign.deviceToOrg", { device: "", org: "" })
+				s('snackbars.assign.deviceToOrg', { device: '', org: '' })
 				break
 			case 3:
-				s("snackbars.unassignDevice", {
-					device: "",
-					what: t("collections.fields.id")
+				s('snackbars.unassignDevice', {
+					device: '',
+					what: t('collections.fields.id')
 				})
 				break
 			default:
 				break;
 		}
+	}
+	addToFav = () => {
+		const { device } = this.state
+		let favObj = {
+			id: device.id,
+			name: device.name,
+			type: 'device',
+			path: this.props.match.url
+		}
+		this.props.addToFav(favObj)
+	}
+	removeFromFav = () => {
+		const { device } = this.state
+		let favObj = {
+			id: device.id,
+			name: device.name,
+			type: 'device',
+			path: this.props.match.url
+		}
+		this.props.removeFromFav(favObj)
 	}
 	handleTabs = () => {
 		if (this.props.location.pathname.includes('/map'))
@@ -147,7 +177,7 @@ class Devices extends Component {
 			devices: rs ? rs : [],
 
 			loading: false
-		}, () => this.handleRequestSort(null, "id", "asc")) : null)
+		}, () => this.handleRequestSort(null, 'id', 'asc')) : null)
 	}
 
 	componentWillUnmount = () => {
@@ -309,13 +339,13 @@ class Devices extends Component {
 		return <Dialog
 			open={openUnassign}
 			onClose={this.handleCloseUnassignDialog}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">{t("dialogs.unassign.title.devicesFromCollection")}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('dialogs.unassign.title.devicesFromCollection')}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{t("dialogs.unassign.message.devicesFromCollection")}
+				<DialogContentText id='alert-dialog-description'>
+					{t('dialogs.unassign.message.devicesFromCollection')}
 				</DialogContentText>
 				<div>
 					{selected.map(s => {
@@ -326,11 +356,11 @@ class Devices extends Component {
 				</div>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseUnassignDialog} color="primary">
-					{t("actions.no")}
+				<Button onClick={this.handleCloseUnassignDialog} color='primary'>
+					{t('actions.no')}
 				</Button>
-				<Button onClick={this.handleUnassignDevices} color="primary" autoFocus>
-					{t("actions.yes")}
+				<Button onClick={this.handleUnassignDevices} color='primary' autoFocus>
+					{t('actions.yes')}
 				</Button>
 			</DialogActions>
 		</Dialog>
@@ -344,18 +374,18 @@ class Devices extends Component {
 		const { classes, t } = this.props
 		const { anchorFilterMenu } = this.state
 		return <Fragment>
-			<IconButton aria-label="Add new organisation" onClick={this.addNewOrg}>
+			<IconButton aria-label='Add new organisation' onClick={this.addNewOrg}>
 				<Add />
 			</IconButton>
 			<IconButton
 				className={classes.secondAction}
-				aria-label={t("tables.filter")}
-				aria-owns={anchorFilterMenu ? "filter-menu" : null}
+				aria-label={t('tables.filter')}
+				aria-owns={anchorFilterMenu ? 'filter-menu' : null}
 				onClick={this.handleFilterMenuOpen}>
 				<FilterList />
 			</IconButton>
 			<Menu
-				id="filter-menu"
+				id='filter-menu'
 				anchorEl={anchorFilterMenu}
 				open={Boolean(anchorFilterMenu)}
 				onClose={this.handleFilterMenuClose}
@@ -534,11 +564,15 @@ class Devices extends Component {
 }
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
-	favorites: state.favorites.favorites
+	favorites: state.favorites.favorites,
+	saved: state.favorites.saved
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	addToFav: (favObj) => dispatch(addToFav(favObj)),
+	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
+	finishedSaving: () => dispatch(finishedSaving())
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(projectStyles)(Devices))

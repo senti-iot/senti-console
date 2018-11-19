@@ -1,8 +1,8 @@
 import { saveSettings } from 'variables/dataLogin';
 
-const SETFAV = "setFavorites"
-const GETFAVS = "getFavorites"
-const SAVEFAVORITES = "saveFavorites"
+const SETFAV = 'setFavorites'
+const GETFAVS = 'getFavorites'
+const SAVEFAVORITES = 'saveFavorites'
 
 export const isFav = (obj) => {
 	return (dispatch, getState) => {

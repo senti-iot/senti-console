@@ -6,7 +6,7 @@ import { Map, ExpandMore, DataUsage, SignalWifi2BarLock, SignalWifi2Bar } from '
 import { Maps } from 'components/Map/Maps';
 // import CollectionSimpleList from 'components/Collections/CollectionSimpleList';
 import classNames from 'classnames'
-import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
+import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
 import { dateFormatter } from 'variables/functions';
 import TP from 'components/Table/TP';
 import TC from 'components/Table/TC';
@@ -37,7 +37,7 @@ class ProjectCollections extends Component {
 		return <Button className={classes.leftActionButton} onClick={this.handleExtendMap}>
 			<Map className={classes.leftIcon} />
 			<Caption>
-				{this.state.mapExpanded ? t("projects.collections.hideMap") : t("projects.collections.seeMap")}
+				{this.state.mapExpanded ? t('projects.collections.hideMap') : t('projects.collections.seeMap')}
 			</Caption>
 			<ExpandMore className={classNames({
 				[classes.expandOpen]: this.state.mapExpanded,
@@ -46,13 +46,13 @@ class ProjectCollections extends Component {
 	}
 	renderMap = () => {
 		const { project, t } = this.props
-		return <Collapse in={this.state.mapExpanded} timeout="auto" unmountOnExit>
+		return <Collapse in={this.state.mapExpanded} timeout='auto' unmountOnExit>
 			<Maps markers={project.collections} t={t} />
 		</Collapse>
 	}
 	renderNoCollections = () => {
 		return <GridContainer justify={'center'}>
-			<Caption> {this.props.t("collections.noCollectionsAssigned")}</Caption>
+			<Caption> {this.props.t('collections.noCollectionsAssigned')}</Caption>
 		</GridContainer>
 	}
 	renderDeviceStatus = (status) => {
@@ -84,8 +84,8 @@ class ProjectCollections extends Component {
 		const { page, rowsPerPage } = this.state
 		
 		return (
-			<InfoCard title={t("collections.pageTitle")} avatar={<DataUsage />}
-				// subheader={project.dataCollections.length > 0 ? t("projects.collections.numCollections") + project.dataCollections.length : null}
+			<InfoCard title={t('collections.pageTitle')} avatar={<DataUsage />}
+				// subheader={project.dataCollections.length > 0 ? t('projects.collections.numCollections') + project.dataCollections.length : null}
 				noRightExpand
 				noPadding
 				content={
@@ -94,31 +94,31 @@ class ProjectCollections extends Component {
 							<Table>
 								<TableHead>
 									<TableRow >
-										<TableCell padding="checkbox" /* className={classes.tablecellcheckbox + " " + classes.paddingLeft} */>
+										<TableCell padding='checkbox' /* className={classes.tablecellcheckbox + ' ' + classes.paddingLeft} */>
 											<ItemG container justify={'center'}>
-												{t("collections.fields.ownState")}
+												{t('collections.fields.ownState')}
 											</ItemG>
 											<ItemG container justify={'center'}>
-												({t("collections.fields.collection")})
+												({t('collections.fields.collection')})
 											</ItemG>
 										</TableCell>
 										<TableCell /* classes={{ root: classes.tableCell }} */>
-											{t("collections.fields.name")}
+											{t('collections.fields.name')}
 										</TableCell>
 										<Hidden mdDown>
 											<TableCell padding={'checkbox'} /* classes={{ root: classes.tableCell }} */>
 												<ItemG container justify={'center'}>
-													{t("collections.fields.status")}
+													{t('collections.fields.status')}
 												</ItemG>
 												<ItemG container justify={'center'}>
-													({t("collections.fields.device")})
+													({t('collections.fields.device')})
 												</ItemG>
 											</TableCell>
 											<TableCell>
-												{t("collections.fields.created")}
+												{t('collections.fields.created')}
 											</TableCell>
 											<TableCell>
-												{t("collections.fields.org")}
+												{t('collections.fields.org')}
 											</TableCell>
 										</Hidden>
 									</TableRow>
@@ -134,15 +134,15 @@ class ProjectCollections extends Component {
 												style={{ cursor: 'pointer' }}
 											>
 												<Hidden lgUp>
-													<TableCell  padding="checkbox" className={classes.tablecellcheckbox + " " + classes.paddingLeft}>
-														<ItemG container justify={"center"} >
+													<TableCell  padding='checkbox' className={classes.tablecellcheckbox + ' ' + classes.paddingLeft}>
+														<ItemG container justify={'center'} >
 															<div style={{ color: n.color }}>
 																{this.renderStatus()}
 															</div>
 														</ItemG>
 													</TableCell>
 													<TableCell classes={{ root: classes.tableCell }}>
-														<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+														<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 															<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 																<Info noWrap paragraphCell={classes.noMargin}>
 																	{`${n.name}`}
@@ -150,22 +150,22 @@ class ProjectCollections extends Component {
 															</ItemGrid>
 															<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 																<Caption noWrap className={classes.noMargin}>
-																	{`${t("collections.fields.id")}: ${n.id}`}
+																	{`${t('collections.fields.id')}: ${n.id}`}
 																</Caption>
 															</ItemGrid>
 														</ItemGrid>
 													</TableCell>
 												</Hidden>
 												<Hidden mdDown>
-													<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
-														<ItemG container justify={"center"}>
+													<TableCell padding='checkbox' className={classes.tablecellcheckbox}>
+														<ItemG container justify={'center'}>
 															<div style={{ color: n.color }}>
 																{this.renderStatus()}
 															</div>
 														</ItemG>
 													</TableCell>
 													<TC /* FirstC */ label={n.name}/>
-													<TC FirstC content={n.activeDevice ? <ItemG container justify={"center"}>
+													<TC FirstC content={n.activeDevice ? <ItemG container justify={'center'}>
 														{this.renderDeviceStatus(n.activeDevice.liveStatus)}
 													</ItemG>
 												 : null

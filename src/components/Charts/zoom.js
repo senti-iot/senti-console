@@ -135,7 +135,7 @@ function zoomTimeScale(scale, zoom, center, zoomOptions) {
 		options.time.min = newMin;
 		options.time.max = newMax;
 	}
-	// , options.time.max.format("lll"))
+	// , options.time.max.format('lll'))
 	// return { startDate: options.time.min, endDate: options.time.max }
 }
 
@@ -189,11 +189,11 @@ function doZoom(chartInstance, zoom, center, whichAxes) {
 
 		helpers.each(chartInstance.scales, function(scale, id) {
 			if (scale.isHorizontal() && directionEnabled(zoomMode, 'x') && directionEnabled(_whichAxes, 'x')) {
-				zoomOptions.scaleAxes = "x";
+				zoomOptions.scaleAxes = 'x';
 				zoomScale(scale, zoom, center, zoomOptions);
 			} else if (!scale.isHorizontal() && directionEnabled(zoomMode, 'y') && directionEnabled(_whichAxes, 'y')) {
 				// Do Y zoom
-				zoomOptions.scaleAxes = "y";
+				zoomOptions.scaleAxes = 'y';
 				zoomScale(scale, zoom, center, zoomOptions);
 			}
 		});
@@ -268,10 +268,10 @@ function doPan(chartInstance, deltaX, deltaY) {
 
 		helpers.each(chartInstance.scales, function(scale, id) {
 			if (scale.isHorizontal() && directionEnabled(panMode, 'x') && deltaX !== 0) {
-				panOptions.scaleAxes = "x";
+				panOptions.scaleAxes = 'x';
 				panScale(scale, deltaX, panOptions);
 			} else if (!scale.isHorizontal() && directionEnabled(panMode, 'y') && deltaY !== 0) {
-				panOptions.scaleAxes = "y";
+				panOptions.scaleAxes = 'y';
 				panScale(scale, deltaY, panOptions);
 			}
 		});

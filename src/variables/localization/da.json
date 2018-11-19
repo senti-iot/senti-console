@@ -358,7 +358,7 @@
 	"menus": {
 		"favorites": {
 			"add": "Tilføj til favoritter",
-			"remove": "Fjern fram favoritter"
+			"remove": "Fjern fra favoritter"
 		},
 		"assign": {
 			"collectionsToProject": "Tilknyt datasamlinger",

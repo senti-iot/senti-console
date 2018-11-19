@@ -2,21 +2,21 @@ import {
 	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
 	TableRow, withStyles, DialogTitle, Dialog, DialogContent,
 	DialogContentText, DialogActions, Button, Typography, IconButton,
-} from "@material-ui/core"
+} from '@material-ui/core'
 import TC from 'components/Table/TC'
 import { Delete, Edit, PictureAsPdf, Add } from 'variables/icons'
-import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
-import PropTypes from "prop-types"
-import React, { Fragment } from "react"
+import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
+import PropTypes from 'prop-types'
+import React, { Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 import EnhancedTableHead from 'components/Table/TableHeader'
 import EnhancedTableToolbar from 'components/Table/TableToolbar'
-import { ItemGrid, Info, Caption } from "components"
-import { connect } from "react-redux"
+import { ItemGrid, Info, Caption } from 'components'
+import { connect } from 'react-redux'
 import { pF, dateFormat } from 'variables/functions';
 import Gravatar from 'react-gravatar'
 import TP from 'components/Table/TP';
-var moment = require("moment")
+var moment = require('moment')
 
 class UserTable extends React.Component {
 	constructor(props) {
@@ -126,9 +126,9 @@ class UserTable extends React.Component {
 	options = () => {
 		const { t } = this.props
 		return [
-			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
-			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
+			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
+			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
+			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
 	}
 
@@ -139,27 +139,27 @@ class UserTable extends React.Component {
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">{t("users.usersDelete")}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('users.usersDelete')}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{t("users.usersDeleteConfirm")}
+				<DialogContentText id='alert-dialog-description'>
+					{t('users.usersDeleteConfirm')}
 				</DialogContentText>
 				<div>
 					{selected.map(s => {
 						let u = data[data.findIndex(d => d.id === s)]
-						return <Info key={s}>&bull;{u.firstName + " " + u.lastName}</Info>})
+						return <Info key={s}>&bull;{u.firstName + ' ' + u.lastName}</Info>})
 					}
 				</div>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color="primary">
-					{t("actions.no")}
+				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
+					{t('actions.no')}
 				</Button>
-				<Button onClick={this.handleDeleteUsers} color="primary" autoFocus>
-					{t("actions.yes")}
+				<Button onClick={this.handleDeleteUsers} color='primary' autoFocus>
+					{t('actions.yes')}
 				</Button>
 			</DialogActions>
 		</Dialog>
@@ -171,7 +171,7 @@ class UserTable extends React.Component {
 		const { accessLevel } = this.props
 		let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
 		return <Fragment>
-			{access ? <IconButton aria-label="Add new user" onClick={this.addNewUser}>
+			{access ? <IconButton aria-label='Add new user' onClick={this.addNewUser}>
 				<Add />
 			</IconButton> : null
 			}
@@ -196,7 +196,7 @@ class UserTable extends React.Component {
 					content={this.renderTableToolBarContent()}
 				/>
 				<div className={classes.tableWrapper}>
-					<Table className={classes.table} aria-labelledby="tableTitle">
+					<Table className={classes.table} aria-labelledby='tableTitle'>
 						<EnhancedTableHead // ./ProjectTableHeader
 							numSelected={selected.length}
 							order={order}
@@ -207,19 +207,19 @@ class UserTable extends React.Component {
 							columnData={this.props.tableHead}
 							t={t}
 							classes={classes}
-							customColumn={[{ id: "avatar", label: "" }, {
-								id: "firstName", label: <Typography variant={"body1"} classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>Users</Typography>
+							customColumn={[{ id: 'avatar', label: '' }, {
+								id: 'firstName', label: <Typography variant={'body1'} classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>Users</Typography>
 							}]}
 						/>
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
-								const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? dateFormat(n.lastLoggedIn) : t("users.fields.neverLoggedIn")
+								const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? dateFormat(n.lastLoggedIn) : t('users.fields.neverLoggedIn')
 								return (
 									<TableRow
 										hover
 										onClick={e => { e.stopPropagation(); this.props.history.push('/user/' + n.id) }}
-										role="checkbox"
+										role='checkbox'
 										aria-checked={isSelected}
 										tabIndex={-1}
 										key={n.id}
@@ -227,16 +227,16 @@ class UserTable extends React.Component {
 										style={{ cursor: 'pointer' }}
 									>
 										<Hidden lgUp>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+											<TableCell padding='checkbox' className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
-												<ItemGrid container zeroMargin noPadding justify={"center"}>
-													{n.img ? <img src={n.img} alt="brken" className={classes.img} /> : <Gravatar default="mp" email={n.email} className={classes.img}/>}
+											<TableCell padding='checkbox' className={classes.tablecellcheckbox}>
+												<ItemGrid container zeroMargin noPadding justify={'center'}>
+													{n.img ? <img src={n.img} alt='brken' className={classes.img} /> : <Gravatar default='mp' email={n.email} className={classes.img}/>}
 												</ItemGrid>
 											</TableCell>
 											<TableCell classes={{ root: classes.tableCell }}>
-												<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+												<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Info noWrap paragraphCell={classes.noMargin}>
 															{`${n.firstName} ${n.lastName}`}
@@ -244,7 +244,7 @@ class UserTable extends React.Component {
 													</ItemGrid>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Caption noWrap className={classes.noMargin}>
-															{`${n.org ? n.org.name : t("users.fields.noOrg")} - ${n.email}`}
+															{`${n.org ? n.org.name : t('users.fields.noOrg')} - ${n.email}`}
 														</Caption>
 													</ItemGrid>
 													{/* </ItemGrid> */}
@@ -252,19 +252,19 @@ class UserTable extends React.Component {
 											</TableCell>
 										</Hidden>
 										<Hidden mdDown>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+											<TableCell padding='checkbox' className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
-												<ItemGrid container zeroMargin noPadding justify={"center"}>	
-													{n.img ? <img src={n.img} alt="brken" className={classes.img} /> : <Gravatar default="mp" email={n.email} className={classes.img} />}
+											<TableCell padding='checkbox' className={classes.tablecellcheckbox}>
+												<ItemGrid container zeroMargin noPadding justify={'center'}>	
+													{n.img ? <img src={n.img} alt='brken' className={classes.img} /> : <Gravatar default='mp' email={n.email} className={classes.img} />}
 												</ItemGrid>
 											</TableCell>
 											{/* <TC label={n.userName} /> */}
 											<TC FirstC label={`${n.firstName} ${n.lastName}`} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone, this.props.language) : n.phone}</a>} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`mailto:${n.email}`}>{n.email}</a>} />
-											<TC label={n.org ? n.org.name : t("users.noOrg")} />
+											<TC label={n.org ? n.org.name : t('users.noOrg')} />
 											<TC label={lastLoggedIn} />
 										</Hidden>
 									</TableRow>

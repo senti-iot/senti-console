@@ -18,19 +18,19 @@ class DateFilterMenu extends Component {
 		}
 	}
 	timeTypes = [
-		{ id: 0, format: "lll", chart: "minute" },
-		{ id: 1, format: "lll", chart: "hour" },
-		{ id: 2, format: "ll", chart: "day" },
-		{ id: 3, format: "ll", chart: "day" },
+		{ id: 0, format: 'lll', chart: 'minute' },
+		{ id: 1, format: 'lll', chart: 'hour' },
+		{ id: 2, format: 'll', chart: 'day' },
+		{ id: 3, format: 'll', chart: 'day' },
 	]
 	options = [
-		{ id: 0, label: this.props.t("filters.dateOptions.today") },
-		{ id: 1, label: this.props.t("filters.dateOptions.yesterday") },
-		{ id: 2, label: this.props.t("filters.dateOptions.thisWeek") },
-		{ id: 3, label: this.props.t("filters.dateOptions.7days") },
-		{ id: 4, label: this.props.t("filters.dateOptions.30days") },
-		{ id: 5, label: this.props.t("filters.dateOptions.90days") },
-		{ id: 6, label: this.props.t("filters.dateOptions.custom") },
+		{ id: 0, label: this.props.t('filters.dateOptions.today') },
+		{ id: 1, label: this.props.t('filters.dateOptions.yesterday') },
+		{ id: 2, label: this.props.t('filters.dateOptions.thisWeek') },
+		{ id: 3, label: this.props.t('filters.dateOptions.7days') },
+		{ id: 4, label: this.props.t('filters.dateOptions.30days') },
+		{ id: 5, label: this.props.t('filters.dateOptions.90days') },
+		{ id: 6, label: this.props.t('filters.dateOptions.custom') },
 	]
 	handleSetDate = (id) => {
 
@@ -132,16 +132,16 @@ class DateFilterMenu extends Component {
 		return (
 			<Fragment>
 				<IconButton				
-					aria-label="More"
+					aria-label='More'
 					aria-owns={actionAnchor ? 'long-menu' : null}
-					aria-haspopup="true"
+					aria-haspopup='true'
 					onClick={this.handleOpenMenu}>
-					<DateRange style={{ color: "#fff" }} />
+					<DateRange style={{ color: '#fff' }} />
 				</IconButton>
 				<Menu
 					disableAutoFocus
 					disableRestoreFocus
-					id="long-menu"
+					id='long-menu'
 					anchorEl={actionAnchor}
 					open={Boolean(actionAnchor)}
 					anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
@@ -152,21 +152,21 @@ class DateFilterMenu extends Component {
 							minWidth: 250
 						}
 					}}>
-					<ItemG container direction={"column"}>
+					<ItemG container direction={'column'}>
 						<ItemGrid>
 							<Caption>{this.options[this.options.findIndex(d => d.id === dateOption ? true : false)].label}</Caption>
 							<Info>{`${displayFrom} - ${displayTo}`}</Info>
 						</ItemGrid>
 						<Divider />
-						<MenuItem onClick={this.handleDateFilter} value={0}>{t("filters.dateOptions.today")}</MenuItem>
-						<MenuItem onClick={this.handleDateFilter} value={1}>{t("filters.dateOptions.yesterday")}</MenuItem>
-						<MenuItem onClick={this.handleDateFilter} value={2}>{t("filters.dateOptions.thisWeek")}</MenuItem>
-						<MenuItem onClick={this.handleDateFilter} value={3}>{t("filters.dateOptions.7days")}</MenuItem>
-						<MenuItem onClick={this.handleDateFilter} value={4}>{t("filters.dateOptions.30days")}</MenuItem>
-						<MenuItem onClick={this.handleDateFilter} value={5}>{t("filters.dateOptions.90days")}</MenuItem>
+						<MenuItem onClick={this.handleDateFilter} value={0}>{t('filters.dateOptions.today')}</MenuItem>
+						<MenuItem onClick={this.handleDateFilter} value={1}>{t('filters.dateOptions.yesterday')}</MenuItem>
+						<MenuItem onClick={this.handleDateFilter} value={2}>{t('filters.dateOptions.thisWeek')}</MenuItem>
+						<MenuItem onClick={this.handleDateFilter} value={3}>{t('filters.dateOptions.7days')}</MenuItem>
+						<MenuItem onClick={this.handleDateFilter} value={4}>{t('filters.dateOptions.30days')}</MenuItem>
+						<MenuItem onClick={this.handleDateFilter} value={5}>{t('filters.dateOptions.90days')}</MenuItem>
 			
 						<Divider />
-						<MenuItem onClick={this.handleDateFilter} value={6}>{t("filters.dateOptions.custom")}</MenuItem>
+						<MenuItem onClick={this.handleDateFilter} value={6}>{t('filters.dateOptions.custom')}</MenuItem>
 					</ItemG>
 					{this.renderCustomDateDialog()}
 				</Menu>

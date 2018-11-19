@@ -1,10 +1,10 @@
-import React from "react";
-import { withStyles, FormControl, InputLabel, Input } from "@material-ui/core";
-import { Clear, Check } from "@material-ui/icons";
-import PropTypes from "prop-types";
-import cx from "classnames";
+import React from 'react';
+import { withStyles, FormControl, InputLabel, Input } from '@material-ui/core';
+import { Clear, Check } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import cx from 'classnames';
 
-import customInputStyle from "assets/jss/material-dashboard-react/customInputStyle";
+import customInputStyle from 'assets/jss/material-dashboard-react/customInputStyle';
 
 function CustomInput({ ...props }) {
 	const {
@@ -19,8 +19,8 @@ function CustomInput({ ...props }) {
 		autoFocus,
 	} = props;
 	const labelClasses = cx({
-		[" " + classes.labelRootError]: error,
-		[" " + classes.labelRootSuccess]: success && !error
+		[' ' + classes.labelRootError]: error,
+		[' ' + classes.labelRootSuccess]: success && !error
 	});
 	const underlineClasses = cx({
 		[classes.underlineError]: error,
@@ -33,7 +33,7 @@ function CustomInput({ ...props }) {
 	return (
 		<FormControl
 			{...formControlProps}
-			className={formControlProps.className + " " + classes.formControl}
+			className={formControlProps.className + ' ' + classes.formControl}
 		>
 			{labelText !== undefined ? (
 				<InputLabel
@@ -56,9 +56,9 @@ function CustomInput({ ...props }) {
 				{...inputProps}
 			/>
 			{error ? (
-				<Clear className={classes.feedback + " " + classes.labelRootError} />
+				<Clear className={classes.feedback + ' ' + classes.labelRootError} />
 			) : success ? (
-				<Check className={classes.feedback + " " + classes.labelRootSuccess} />
+				<Check className={classes.feedback + ' ' + classes.labelRootSuccess} />
 			) : null}
 		</FormControl>
 	);

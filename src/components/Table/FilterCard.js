@@ -10,7 +10,7 @@ import { shortDateFormat } from 'variables/functions';
 const style = theme => ({
 	header: {
 		background: '#00897b',
-		color: "white"
+		color: 'white'
 	},
 	menu: {
 		width: 240,
@@ -26,13 +26,13 @@ class FilterCard extends Component {
 		super(props)
 
 		this.state = {
-			value: ""
+			value: ''
 		}
 	}
 	handleKeyPress = (key) => {
 		if (this.props.open)
 			switch (key.key) {
-				case "Enter":
+				case 'Enter':
 					this.handleButton()
 					break;
 
@@ -41,7 +41,7 @@ class FilterCard extends Component {
 			}
 	}
 	handleButton = () => {
-		this.props.handleButton(`${this.props.title}: "${this.state.value}"`)
+		this.props.handleButton(`${this.props.title}: '${this.state.value}'`)
 		this.props.handleClose()
 	}
 	handleInput = e => {
@@ -64,14 +64,14 @@ class FilterCard extends Component {
 				return <MuiPickersUtilsProvider utils={MomentUtils}>
 					<DatePicker
 						autoOk
-						label={t("filters.startDate")}
+						label={t('filters.startDate')}
 						clearable
 						ampm={false}
-						format="LL"
+						format='LL'
 						value={value}
 						onChange={this.handleCustomDate}
 						animateYearScrolling={false}
-						color="primary"
+						color='primary'
 						// disableFuture
 						dateRangeIcon={<DateRange />}
 						timeIcon={<AccessTime />}
@@ -82,7 +82,7 @@ class FilterCard extends Component {
 					/>
 				</MuiPickersUtilsProvider>
 			case 'text': 
-				return <TextField label={"Contains"} value={value} onChange={e => this.handleInput(e.target.value)} onKeyPress={this.handleKeyPress} />
+				return <TextField label={'Contains'} value={value} onChange={e => this.handleInput(e.target.value)} onKeyPress={this.handleKeyPress} />
 			default:
 				break;
 		}
@@ -112,7 +112,7 @@ class FilterCard extends Component {
 						<Grid container justify={'center'} zeroMinWidth>
 							<Grid item>
 								{this.renderType()}
-								{/* {content ? content : <TextField label={"Contains"} value={value} onChange={this.handleInput} onKeyPress={this.handleKeyPress} />} */}
+								{/* {content ? content : <TextField label={'Contains'} value={value} onChange={this.handleInput} onKeyPress={this.handleKeyPress} />} */}
 							</Grid>
 							<Grid item xs={12} container justify={'center'}>
 								<Button onClick={this.handleButton}>

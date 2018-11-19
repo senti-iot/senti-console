@@ -46,11 +46,11 @@ class DeviceCard extends Component {
 		const { classes, t } = this.props
 		switch (status) {
 			case 1:
-				return <div title={t("devices.status.yellow")}><SignalWifi2Bar className={classes.yellowSignal} /></div>
+				return <div title={t('devices.status.yellow')}><SignalWifi2Bar className={classes.yellowSignal} /></div>
 			case 2:
-				return <div title={t("devices.status.green")}><SignalWifi2Bar className={classes.greenSignal} /></div>
+				return <div title={t('devices.status.green')}><SignalWifi2Bar className={classes.greenSignal} /></div>
 			case 0:
-				return <div title={t("devices.status.red")}><SignalWifi2Bar className={classes.redSignal} /></div>
+				return <div title={t('devices.status.red')}><SignalWifi2Bar className={classes.redSignal} /></div>
 			case null:
 				return <SignalWifi2BarLock />
 			default:
@@ -70,14 +70,14 @@ class DeviceCard extends Component {
 				topAction={
 					<ItemGrid noMargin noPadding>
 						<IconButton
-							aria-label="More"
+							aria-label='More'
 							aria-owns={actionAnchor ? 'long-menu' : null}
-							aria-haspopup="true"
+							aria-haspopup='true'
 							onClick={this.handleOpenActionsDetails}>
 							<MoreVert />
 						</IconButton>
 						<Menu
-							id="long-menu"
+							id='long-menu'
 							anchorEl={actionAnchor}
 							open={Boolean(actionAnchor)}
 							onClose={this.handleCloseActionsDetails}
@@ -87,17 +87,17 @@ class DeviceCard extends Component {
 									minWidth: 200
 								}
 							}}>
-							<MenuItem component={Link} to={`/device/${d.id}/edit`} style={{ color: "black" }}>
-								<Edit className={classes.leftIcon} />{t("menus.edit")}
+							<MenuItem component={Link} to={`/device/${d.id}/edit`} style={{ color: 'black' }}>
+								<Edit className={classes.leftIcon} />{t('menus.edit')}
 							</MenuItem>
-							{/* <MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
-										<Devices className={classes.leftIcon} />{t("menus.assignDevices")}
+							{/* <MenuItem onClick={() => alert(t('dialogs.warnings.wip'))}>
+										<Devices className={classes.leftIcon} />{t('menus.assignDevices')}
 									</MenuItem>
-									<MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
-										<PictureAsPdf className={classes.leftIcon} />{t("menus.exportPDF")}
+									<MenuItem onClick={() => alert(t('dialogs.warnings.wip'))}>
+										<PictureAsPdf className={classes.leftIcon} />{t('menus.exportPDF')}
 									</MenuItem>
-									<MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
-										<Delete className={classes.leftIcon} />{t("menus.delete")}
+									<MenuItem onClick={() => alert(t('dialogs.warnings.wip'))}>
+										<Delete className={classes.leftIcon} />{t('menus.delete')}
 									</MenuItem> */}
 									))}
 						</Menu>
@@ -105,17 +105,17 @@ class DeviceCard extends Component {
 				}
 				content={<ItemGrid container>
 					<ItemG xs={6}>
-						<Caption>{t("devices.fields.temp")}</Caption>
+						<Caption>{t('devices.fields.temp')}</Caption>
 						<Info>{d.temperature} &#8451;</Info>
 					</ItemG>
 					<ItemG xs={12}>
-						<Caption>{t("devices.fields.address")}</Caption>
-						<Info>{d.address ? d.address : t("devices.noAddress")}</Info>
+						<Caption>{t('devices.fields.address')}</Caption>
+						<Info>{d.address ? d.address : t('devices.noAddress')}</Info>
 					</ItemG>
 				</ItemGrid>}
 				rightActions={
-					<Button variant={'text'} color={"primary"} component={Link} to={`/device/${d.id}`}>
-						{t("menus.seeMore")}
+					<Button variant={'text'} color={'primary'} component={Link} to={`/device/${d.id}`}>
+						{t('menus.seeMore')}
 					</Button>
 				}
 			/>

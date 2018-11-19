@@ -5,7 +5,7 @@ import teal from '@material-ui/core/colors/teal';
 
 const styles = {
 	title: {
-		fontSize: "1em",
+		fontSize: '1em',
 		fontWeight: 500
 	},
 	avatar: {
@@ -17,8 +17,8 @@ const styles = {
 		display: 'flex',
 		flexFlow: 'column',
 		flexGrow: 1
-		// justifyContent: "center",
-		// alignItems: "center"
+		// justifyContent: 'center',
+		// alignItems: 'center'
 	},
 	cardContent: {
 		// minHeight: 50,
@@ -29,10 +29,10 @@ const styles = {
 		paddingTop: '56.25%', // 16:9
 	},
 	rightAction: {
-		marginLeft: "auto"
+		marginLeft: 'auto'
 	},
 	whiteAvatar: {
-		background: "#FFF"
+		background: '#FFF'
 	}
 };
 
@@ -44,7 +44,7 @@ class SimpleMediaCard extends Component {
 			<Card className={classes.card}>
 				<CardHeader
 					action={topAction}
-					avatar={noAvatar ? null : <Avatar aria-label="Avatar" className={whiteAvatar ? classes.whiteAvatar : classes.avatar}>{avatar}</Avatar>}
+					avatar={noAvatar ? null : <Avatar aria-label='Avatar' className={whiteAvatar ? classes.whiteAvatar : classes.avatar}>{avatar}</Avatar>}
 					title={title}
 					subheader={subheader}
 					classes={{

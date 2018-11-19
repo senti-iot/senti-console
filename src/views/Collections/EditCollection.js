@@ -18,7 +18,7 @@ class EditCollection extends Component {
 			openOrg: false,
 		}
 		this.id = props.match.params.id
-		// props.setHeader('', true, `/collections/list`, "collections")
+		// props.setHeader('', true, `/collections/list`, 'collections')
 	}
 	postUpdate = async () => {
 		let success = await updateCollection(this.state.collection)
@@ -34,11 +34,11 @@ class EditCollection extends Component {
 		if (collection) {
 			this.setState({
 				collection: collection,
-				orgs: [{ id: 0, name: t("users.fields.noOrg") }, ...orgs],
+				orgs: [{ id: 0, name: t('users.fields.noOrg') }, ...orgs],
 				loading: false
 			})
 			let prevURL = location.prevURL ? location.prevURL : `/collection/${this.id}`
-			setHeader(`${t("menus.edit")} ${collection.name} `, true, prevURL, "collections")
+			setHeader(`${t('menus.edit')} ${collection.name} `, true, prevURL, 'collections')
 		}
 		else {
 			this.setState({
@@ -84,11 +84,11 @@ class EditCollection extends Component {
 		const { s, t, history } = this.props
 		let rs = await this.postUpdate()
 		if (rs) {
-			s(t("snackbars.collectionUpdated"))
+			s(t('snackbars.collectionUpdated'))
 			history.push(`/collection/${this.id}`)
 		}
 		else
-			s(t("snackbars.failed"))
+			s(t('snackbars.failed'))
 	}
 	render() {
 		const { t } = this.props

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
 	withStyles,
 	Card,
@@ -6,10 +6,10 @@ import {
 	CardHeader,
 	CardActions,
 	Typography
-} from "@material-ui/core";
-import PropTypes from "prop-types";
+} from '@material-ui/core';
+import PropTypes from 'prop-types';
 
-import statsCardStyle from "assets/jss/material-dashboard-react/statsCardStyle";
+import statsCardStyle from 'assets/jss/material-dashboard-react/statsCardStyle';
 
 function StatsCard({ ...props }) {
 	const {
@@ -26,21 +26,21 @@ function StatsCard({ ...props }) {
 		<Card className={classes.card}>
 			<CardHeader
 				classes={{
-					root: classes.cardHeader + " " + classes[iconColor + "CardHeader"],
+					root: classes.cardHeader + ' ' + classes[iconColor + 'CardHeader'],
 					avatar: classes.cardAvatar
 				}}
 				avatar={<props.icon className={classes.cardIcon} />}
 			/>
 			<CardContent className={classes.cardContent}>
-				<Typography component="p" className={classes.cardCategory}>
+				<Typography component='p' className={classes.cardCategory}>
 					{title}
 				</Typography>
 				<Typography
-					variant="headline"
-					component="h2"
+					variant='headline'
+					component='h2'
 					className={classes.cardTitle}
 				>
-					{description}{" "}
+					{description}{' '}
 					{small !== undefined ? (
 						<small className={classes.cardTitleSmall}>{small}</small>
 					) : null}
@@ -51,10 +51,10 @@ function StatsCard({ ...props }) {
 					{props.statIcon ? <props.statIcon
 						className={
 							classes.cardStatsIcon +
-							" " +
-							classes[statIconColor + "CardStatsIcon"]
+							' ' +
+							classes[statIconColor + 'CardStatsIcon']
 						}
-					/> : null}{" "}
+					/> : null}{' '}
 					{statLink !== undefined ? (
 						<a href={statLink.href} className={classes.cardStatsLink}>
 							{statLink.text}
@@ -69,26 +69,26 @@ function StatsCard({ ...props }) {
 }
 
 StatsCard.defaultProps = {
-	iconColor: "purple",
-	statIconColor: "gray"
+	iconColor: 'purple',
+	statIconColor: 'gray'
 };
 
 StatsCard.propTypes = {
 	classes: PropTypes.object.isRequired,
 	icon: PropTypes.func.isRequired,
-	iconColor: PropTypes.oneOf(["orange", "green", "red", "blue", "purple"]),
+	iconColor: PropTypes.oneOf(['orange', 'green', 'red', 'blue', 'purple']),
 	title: PropTypes.node,
 	description: PropTypes.node,
 	small: PropTypes.node,
 	statIcon: PropTypes.func,
 	statIconColor: PropTypes.oneOf([
-		"warning",
-		"primary",
-		"danger",
-		"success",
-		"info",
-		"rose",
-		"gray"
+		'warning',
+		'primary',
+		'danger',
+		'success',
+		'info',
+		'rose',
+		'gray'
 	]),
 	statLink: PropTypes.object,
 	statText: PropTypes.node

@@ -49,42 +49,42 @@ class ImageUpload extends Component {
 						<Fragment>
 							{success ?
 								<ItemGrid xs={12} zeroMargin container justify={'center'}>
-									{success === true ? <Success>{t("images.uploadSuccess")}</Success> :
+									{success === true ? <Success>{t('images.uploadSuccess')}</Success> :
 										success === false ?
-											<Warning>{t("images.uploadFailed")}</Warning>
+											<Warning>{t('images.uploadFailed')}</Warning>
 											: null}
 								</ItemGrid> : null}
 							<ItemGrid xs={6} noMargin container justify={'center'}>
-								<Button variant="contained" color={success ? "primary" : 'default'} component="span" className={classes.button} onClick={success ? this.finish : this.upload}>
+								<Button variant='contained' color={success ? 'primary' : 'default'} component='span' className={classes.button} onClick={success ? this.finish : this.upload}>
 									{!success ? <Fragment>
-										<CloudUpload className={classes.iconButton} />{t("images.upload")}
+										<CloudUpload className={classes.iconButton} />{t('images.upload')}
 									</Fragment>
 										: <Fragment>
-											<Check className={classes.iconButton} />{t("images.finish")}
+											<Check className={classes.iconButton} />{t('images.finish')}
 										</Fragment>}
 								</Button>
 							</ItemGrid>
 							<ItemGrid xs={6} noMargin container justify={'center'}>
-								<Button variant={"contained"} component="span" className={classes.button} onClick={this.handleReset}>
-									<Restore className={classes.iconButton} />{t("images.reset")}
+								<Button variant={'contained'} component='span' className={classes.button} onClick={this.handleReset}>
+									<Restore className={classes.iconButton} />{t('images.reset')}
 								</Button>
 							</ItemGrid>
 						</Fragment>
 						 :
 						<Fragment>
 							<input
-								accept="image/*"
+								accept='image/*'
 								className={classes.input}
-								id="contained-button-file"
+								id='contained-button-file'
 								multiple
-								type="file"
-								name="sentiFile"
-								encType="multipart/form-data"
+								type='file'
+								name='sentiFile'
+								encType='multipart/form-data'
 								onChange={this.tempUpload}
 							/>
-							<label htmlFor="contained-button-file">
-								<Button variant="contained" component="span" className={classes.button}>
-									<CloudUpload className={classes.iconButton} />{t("images.add")}
+							<label htmlFor='contained-button-file'>
+								<Button variant='contained' component='span' className={classes.button}>
+									<CloudUpload className={classes.iconButton} />{t('images.add')}
 								</Button>
 							</label>
 						</Fragment>

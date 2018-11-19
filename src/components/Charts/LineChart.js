@@ -32,28 +32,28 @@ class LineChart extends PureComponent {
 				display: true,
 				maintainAspectRatio: false,
 				tooltips: {
-					titleFontFamily: "inherit",
-					mode: "point",
+					titleFontFamily: 'inherit',
+					mode: 'point',
 					intersect: false,
 					enabled: false,
 					custom: this.customTooltip
 				},
 				hover: {
-					mode: "point"
+					mode: 'point'
 				},
 				scales: {
 					xAxes: [
 						{
 							ticks: {
-								source: "labels",
+								source: 'labels',
 								maxRotation: 0
 							},
-							id: "xAxis",
+							id: 'xAxis',
 							type: 'time',
 							// distribution: 'series',
 							time: {
 								displayFormats: {
-									hour: "LT",
+									hour: 'LT',
 									day: 'll',
 									minute: 'LT'
 								},
@@ -72,10 +72,10 @@ class LineChart extends PureComponent {
 								callback: function (value, index, values) {
 									return value.charAt(0).toUpperCase() + value.slice(1);
 								},
-								source: "labels",
+								source: 'labels',
 								maxRotation: 0
 							},
-							id: "xAxis-day",
+							id: 'xAxis-day',
 							type: 'time',
 							time: {
 								displayFormats: {
@@ -102,7 +102,7 @@ class LineChart extends PureComponent {
 		}
 	}
 	legendOptions = {
-		position: "bottom",
+		position: 'bottom',
 		display: !this.props.single ? true : false,
 		onHover: !this.props.single ? (t, l) => {
 			this.props.setHoverID(this.props.data.datasets[l.datasetIndex].id)
@@ -136,7 +136,7 @@ class LineChart extends PureComponent {
 		 *  1. In the onZoom function get the minMax from the xAxis scale
 		 *  2. Pass them to the same function as CustomSetRange used by the filter in Device.js
 		 *  3. Create a new function that based on the difference between the dates, sets the appropiate timeType (hour, minute, day, month, etc.)
-		 *  4. Set the "newData" without loading
+		 *  4. Set the 'newData' without loading
 		 * 	@debug 
 		 *  */
 	componentDidUpdate = (prevProps, prevState) => {
@@ -195,8 +195,8 @@ class LineChart extends PureComponent {
 			left = this.state.chartWidth / 2
 		}
 		let str = tooltipModel.title[0]
-		var rest = str.substring(0, str.lastIndexOf(" ") + 1);
-		var last = str.substring(str.lastIndexOf(" ") + 1, str.length);
+		var rest = str.substring(0, str.lastIndexOf(' ') + 1);
+		var last = str.substring(str.lastIndexOf(' ') + 1, str.length);
 		this.setTooltip({
 			top,
 			left,
@@ -214,7 +214,7 @@ class LineChart extends PureComponent {
 					...this.state.lineOptions.scales,
 					xAxes: [
 						{
-							id: "xAxis",
+							id: 'xAxis',
 							type: 'time',
 							time: {
 								displayFormats: {
@@ -236,10 +236,10 @@ class LineChart extends PureComponent {
 								callback: function (value, index, values) {
 									return value.charAt(0).toUpperCase() + value.slice(1);
 								},
-								source: "labels",
+								source: 'labels',
 								maxRotation: 0
 							},
-							id: "xAxis-day",
+							id: 'xAxis-day',
 							type: 'time',
 							time: {
 								displayFormats: {
@@ -329,13 +329,13 @@ class LineChart extends PureComponent {
 	render() {
 		const { classes } = this.props
 		const { tooltip, chartWidth, mobile } = this.state
-		let DayStr = tooltip.title[1] ? tooltip.title[1].charAt(0).toUpperCase() + tooltip.title[1].slice(1) : ""
-		let DateStr = tooltip.title[0] ? tooltip.title[0] : ""
+		let DayStr = tooltip.title[1] ? tooltip.title[1].charAt(0).toUpperCase() + tooltip.title[1].slice(1) : ''
+		let DateStr = tooltip.title[0] ? tooltip.title[0] : ''
 		return (
 			<div style={{ maxHeight: 400, position: 'relative', height: 400 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
 				<Line
 					data={this.props.data}
-					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
+					height={this.props.theme.breakpoints.width('md') < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
 					ref={r => this.chart = r}
 					options={this.state.lineOptions}
 					legend={this.legendOptions}
@@ -353,8 +353,8 @@ class LineChart extends PureComponent {
 					<Grow in={tooltip.show} onExited={this.exitedTooltip} >
 						<Paper className={classes.paper}>
 							<ItemG container>
-								<ItemG container direction="row" justify="space-between">
-									<ItemG xs container direction="column">
+								<ItemG container direction='row' justify='space-between'>
+									<ItemG xs container direction='column'>
 										<Typography variant={'h6'} classes={{ root: classes.antialias }} >{`${DayStr}`}</Typography>
 										<Caption> {`(${DateStr})`}</Caption>
 									</ItemG>

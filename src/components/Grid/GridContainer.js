@@ -1,18 +1,18 @@
-import { Grid, withStyles } from "@material-ui/core";
-import PropTypes from "prop-types";
-import React from "react";
+import { Grid, withStyles } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const style = theme => ({
 	grid: {
 
-		[theme.breakpoints.down("md")]: {
-			padding: "10px 10px 30px 10px",
+		[theme.breakpoints.down('md')]: {
+			padding: '10px 10px 30px 10px',
 		},
-		[theme.breakpoints.down("sm")]: {
-			padding: "8px 8px 30px 8px"
+		[theme.breakpoints.down('sm')]: {
+			padding: '8px 8px 30px 8px'
 		},
-		padding: "30px",
-		width: "auto",
+		padding: '30px',
+		width: 'auto',
 		margin: 0
 	}
 })
@@ -20,14 +20,14 @@ const style = theme => ({
 function GridContainer({ ...props }) {
 	const { classes, children, className, ...rest } = props;
 	return (
-		<Grid container {...rest} className={classes.grid + " " + className}>
+		<Grid container {...rest} className={classes.grid + ' ' + className}>
 			{children}
 		</Grid>
 	);
 }
 
 GridContainer.defaultProps = {
-	className: ""
+	className: ''
 };
 
 GridContainer.propTypes = {

@@ -2,16 +2,16 @@ import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
 	TableRow, Typography, withStyles, DialogTitle, Dialog, DialogContent,
 	DialogContentText, DialogActions, Button, List, ListItem, ListItemIcon, ListItemText
-} from "@material-ui/core"
+} from '@material-ui/core'
 // import { Delete, Devices, Edit, PictureAsPdf } from 'variables/icons'
-import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
-import PropTypes from "prop-types"
-import React, { Fragment } from "react"
+import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
+import PropTypes from 'prop-types'
+import React, { Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
-import { dateFormatter } from "variables/functions"
+import { dateFormatter } from 'variables/functions'
 import EnhancedTableHead from 'components/Table/TableHeader'
-import { ItemGrid, Info, Caption } from "components"
-import { connect } from "react-redux"
+import { ItemGrid, Info, Caption } from 'components'
+import { connect } from 'react-redux'
 import TP from 'components/Table/TP';
 
 class EnhancedTable extends React.Component {
@@ -114,13 +114,13 @@ class EnhancedTable extends React.Component {
 		return <Dialog
 			open={openDelete}
 			onClose={handleCloseDeleteDialog}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">{t("projects.projectDelete")}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('projects.projectDelete')}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{t("projects.projectDeleteConfirm")}
+				<DialogContentText id='alert-dialog-description'>
+					{t('projects.projectDeleteConfirm')}
 				</DialogContentText>
 				<List>
 					{selected.map(s => <ListItem key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
@@ -129,11 +129,11 @@ class EnhancedTable extends React.Component {
 				</List>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={handleCloseDeleteDialog} color="primary">
-					{t("actions.no")}
+				<Button onClick={handleCloseDeleteDialog} color='primary'>
+					{t('actions.no')}
 				</Button>
-				<Button onClick={this.handleDeleteProjects} color="primary" autoFocus>
-					{t("actions.yes")}
+				<Button onClick={this.handleDeleteProjects} color='primary' autoFocus>
+					{t('actions.yes')}
 				</Button>
 			</DialogActions>
 		</Dialog>
@@ -149,7 +149,7 @@ class EnhancedTable extends React.Component {
 		return (
 			<Fragment>
 				<div className={classes.tableWrapper}>
-					<Table className={classes.table} aria-labelledby="tableTitle">
+					<Table className={classes.table} aria-labelledby='tableTitle'>
 						<EnhancedTableHead // ./ProjectTableHeader
 							numSelected={selected.length}
 							order={order}
@@ -163,8 +163,8 @@ class EnhancedTable extends React.Component {
 							// mdDown={[0]}
 							customColumn={[
 								{
-									id: "title",
-									label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>
+									id: 'title',
+									label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
 										Projects
 									</Typography>
 								}
@@ -177,7 +177,7 @@ class EnhancedTable extends React.Component {
 									<TableRow
 										hover
 										onClick={e => { e.stopPropagation(); this.props.history.push('/project/' + n.id) }}
-										role="checkbox"
+										role='checkbox'
 										aria-checked={isSelected}
 										tabIndex={-1}
 										key={n.id}
@@ -185,11 +185,11 @@ class EnhancedTable extends React.Component {
 										style={{ cursor: 'pointer' }}
 									>
 										<Hidden lgUp>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.props.handleClick(e, n.id)}>
+											<TableCell padding='checkbox' className={classes.tablecellcheckbox} onClick={e => this.props.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
 											<TableCell classes={{ root: classes.tableCell }}>
-												<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+												<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Info noWrap paragraphCell={classes.noMargin}>
 															{n.title}
@@ -197,7 +197,7 @@ class EnhancedTable extends React.Component {
 													</ItemGrid>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Caption noWrap className={classes.noMargin}>
-															{`${n.org ? n.org.name : t("users.fields.noOrg")}` /* ${dateFormatter(n.startDate)} - ${dateFormatter(n.endDate)} */}
+															{`${n.org ? n.org.name : t('users.fields.noOrg')}` /* ${dateFormatter(n.startDate)} - ${dateFormatter(n.endDate)} */}
 														</Caption>
 													</ItemGrid>
 													{/* </ItemGrid> */}
@@ -206,10 +206,10 @@ class EnhancedTable extends React.Component {
 										</Hidden>
 
 										<Hidden mdDown>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.props.handleClick(e, n.id)}>
+											<TableCell padding='checkbox' className={classes.tablecellcheckbox} onClick={e => this.props.handleClick(e, n.id)}>
 												<Checkbox checked={isSelected} />
 											</TableCell>
-											<TableCell className={classes.tableCell + " " + classes.tableCellNoWidth}>
+											<TableCell className={classes.tableCell + ' ' + classes.tableCellNoWidth}>
 												<Typography paragraph classes={{ root: classes.paragraphCell }}>
 													{n.title}
 												</Typography>

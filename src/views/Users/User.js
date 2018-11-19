@@ -16,7 +16,7 @@ import { getUser, deleteUser, resendConfirmEmail } from 'variables/dataUsers';
 import { connect } from 'react-redux'
 import { setPassword } from 'variables/dataLogin';
 
-// var moment = require("moment")
+// var moment = require('moment')
 
 class User extends Component {
 	constructor(props) {
@@ -30,12 +30,12 @@ class User extends Component {
 			openChangePassword: false,
 			openResendConfirm: false,
 			pw: {
-				current: "",
-				newP: "",
-				confirm: ""
+				current: '',
+				newP: '',
+				confirm: ''
 			},
 			changePasswordError: false,
-			errorMessage: ""
+			errorMessage: ''
 		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
@@ -55,7 +55,7 @@ class User extends Component {
 						history.push('/404')
 					else {
 						let prevURL = location.prevURL ? location.prevURL : '/users'
-						setHeader(`${rs.firstName} ${rs.lastName}`, true, prevURL, "users")
+						setHeader(`${rs.firstName} ${rs.lastName}`, true, prevURL, 'users')
 						this.setState({ user: rs, loading: false })
 					}
 				})
@@ -101,10 +101,10 @@ class User extends Component {
 		const { s } = this.props
 		switch (msg) {
 			case 1:
-				s("snackbars.userDeleted", { user: this.state.user.firstName + " " + this.state.user.lastName })
+				s('snackbars.userDeleted', { user: this.state.user.firstName + ' ' + this.state.user.lastName })
 				break
 			case 2:
-				s("snackbars.userPasswordChanged")
+				s('snackbars.userPasswordChanged')
 				break
 			default:
 				break
@@ -151,11 +151,11 @@ class User extends Component {
 			if (success)
 				this.handleCloseChangePassword(success)()
 			else {
-				this.setState({ changePasswordError: true, errorMessage: t("confirmUser.networkError") })
+				this.setState({ changePasswordError: true, errorMessage: t('confirmUser.networkError') })
 			}
 		}
 		else {
-			this.setState({ changePasswordError: true, errorMessage: t("confirmUser.validation.passwordMismatch") })
+			this.setState({ changePasswordError: true, errorMessage: t('confirmUser.validation.passwordMismatch') })
 		}
 	}
 	renderChangePassword = () => {
@@ -164,17 +164,17 @@ class User extends Component {
 		return <Dialog
 			open={openChangePassword}
 			onClose={this.handleCloseChangePassword()}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">{t("menus.changePassword")}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('menus.changePassword')}</DialogTitle>
 			<DialogContent>
 				<Danger> {this.state.errorMessage} </Danger>
 				{accessLevel.apiorg.editusers ? null : <ItemG>
 					<TextF
 						id={'current'}
-						label={t("users.fields.currentPass")}
-						type={"password"}
+						label={t('users.fields.currentPass')}
+						type={'password'}
 						handleChange={this.handleInputChange}
 						value={this.state.pw.current}
 					/>
@@ -182,8 +182,8 @@ class User extends Component {
 				<ItemG>
 					<TextF
 						id={'newP'}
-						label={t("users.fields.newPass")}
-						type={"password"}
+						label={t('users.fields.newPass')}
+						type={'password'}
 						handleChange={this.handleInputChange}
 						value={this.state.pw.newP}
 					/>
@@ -191,19 +191,19 @@ class User extends Component {
 				<ItemG>
 					<TextF
 						id={'confirm'}
-						label={t("users.fields.confirmPass")}
-						type={"password"}
+						label={t('users.fields.confirmPass')}
+						type={'password'}
 						handleChange={this.handleInputChange}
 						value={this.state.pw.confirm}
 					/>
 				</ItemG>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseChangePassword(false)} color="primary">
-					{t("actions.cancel")}
+				<Button onClick={this.handleCloseChangePassword(false)} color='primary'>
+					{t('actions.cancel')}
 				</Button>
-				<Button onClick={this.handleChangePassword} color="primary" autoFocus>
-					{t("menus.changePassword")}
+				<Button onClick={this.handleChangePassword} color='primary' autoFocus>
+					{t('menus.changePassword')}
 				</Button>
 			</DialogActions>
 		</Dialog>
@@ -214,22 +214,22 @@ class User extends Component {
 		return <Dialog
 			open={openResendConfirm}
 			onClose={this.handleCloseDeleteDialog}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">{t("users.userResendEmail")}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('users.userResendEmail')}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{t("users.userResendConfirm", { user: (this.state.user.firstName + " " + this.state.user.lastName) }) + "?"}
+				<DialogContentText id='alert-dialog-description'>
+					{t('users.userResendConfirm', { user: (this.state.user.firstName + ' ' + this.state.user.lastName) }) + '?'}
 				</DialogContentText>
 
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color="primary">
-					{t("actions.cancel")}
+				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
+					{t('actions.cancel')}
 				</Button>
-				<Button onClick={this.resendConfirmEmail} color="primary" autoFocus>
-					{t("actions.yes")}
+				<Button onClick={this.resendConfirmEmail} color='primary' autoFocus>
+					{t('actions.yes')}
 				</Button>
 			</DialogActions>
 		</Dialog>
@@ -240,22 +240,22 @@ class User extends Component {
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">{t("users.userDelete")}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('users.userDelete')}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{t("users.userDeleteConfirm", { user: (this.state.user.firstName + " " + this.state.user.lastName) }) + "?"}
+				<DialogContentText id='alert-dialog-description'>
+					{t('users.userDeleteConfirm', { user: (this.state.user.firstName + ' ' + this.state.user.lastName) }) + '?'}
 				</DialogContentText>
 
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color="primary">
-					{t("actions.cancel")}
+				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
+					{t('actions.cancel')}
 				</Button>
-				<Button onClick={this.handleDeleteUser} color="primary" autoFocus>
-					{t("actions.yes")}
+				<Button onClick={this.handleDeleteUser} color='primary' autoFocus>
+					{t('actions.yes')}
 				</Button>
 			</DialogActions>
 		</Dialog>

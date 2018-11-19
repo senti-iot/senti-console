@@ -14,15 +14,15 @@ class EditUser extends Component {
 
 		this.state = {
 			user: {
-				userName: "",
-				firstName: "",
-				lastName: "",
-				phone: "",
-				email: "",
+				userName: '',
+				firstName: '',
+				lastName: '',
+				phone: '',
+				email: '',
 				image: null,
 				aux: {
 					odeum: {
-						language: "da"
+						language: 'da'
 					},
 					senti: {
 
@@ -30,13 +30,13 @@ class EditUser extends Component {
 				},
 				sysLang: 2,
 				org: {
-					id: "",
-					name: "Ingen organisation"
+					id: '',
+					name: 'Ingen organisation'
 				},
 				groups: {
-					"136550100000225": {
+					'136550100000225': {
 						id: 136550100000225,
-						name: "Senti User"
+						name: 'Senti User'
 					}
 				}
 			},
@@ -44,14 +44,14 @@ class EditUser extends Component {
 			creating: false,
 			created: false,
 			loading: true,
-			selectedGroup: "",
+			selectedGroup: '',
 		}
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
 		const { setHeader, location } = this.props
 		let prevURL = location.prevURL ? location.prevURL : '/users'
-		setHeader("users.editUser", true, prevURL, "users")
+		setHeader('users.editUser', true, prevURL, 'users')
 		if (this._isMounted) {
 			await this.getUser()
 			await this.getOrgs()
@@ -64,12 +64,12 @@ class EditUser extends Component {
 			let g = 0
 			let userGroups = Object.keys(user.groups)
 			userGroups.sort((a, b) => a > b ? 1 : -1)
-			if (userGroups.find(x => x === "136550100000211"))
-				g = "136550100000211"
-			if (userGroups.find(x => x === "136550100000225"))
-				g = "136550100000225"
-			if (userGroups.find(x => x === "136550100000143"))
-				g = "136550100000143"
+			if (userGroups.find(x => x === '136550100000211'))
+				g = '136550100000211'
+			if (userGroups.find(x => x === '136550100000225'))
+				g = '136550100000225'
+			if (userGroups.find(x => x === '136550100000143'))
+				g = '136550100000143'
 
 			this.setState({
 				selectedGroup: g,
@@ -106,14 +106,14 @@ class EditUser extends Component {
 		}
 		await editUser(newUser).then(rs => rs ?
 			this.close(rs) :
-			this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
+			this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t('orgs.validation.networkError') })
 
 		)
 	}
 	close = rs => {
 		this.setState({ created: true, creating: false, org: rs })
 		const { s, history } = this.props
-		s("snackbars.userUpdated", { user: `${rs.firstName} ${rs.lastName}` })
+		s('snackbars.userUpdated', { user: `${rs.firstName} ${rs.lastName}` })
 		history.push(`/user/${rs.id}`)
 	}
 
@@ -143,21 +143,21 @@ class EditUser extends Component {
 		const { t } = this.props
 		switch (code) {
 			case 0:
-				return t("users.validation.nouserName")
+				return t('users.validation.nouserName')
 			case 1:
-				return t("users.validation.nofirstName")
+				return t('users.validation.nofirstName')
 			case 2:
-				return t("users.validation.nolastName")
+				return t('users.validation.nolastName')
 			case 3:
-				return t("users.validation.nophone")
+				return t('users.validation.nophone')
 			case 4:
-				return t("users.validation.noemail")
+				return t('users.validation.noemail')
 			case 5:
-				return t("users.validation.noorg")
+				return t('users.validation.noorg')
 			case 6:
-				return t("users.validation.nogroup")
+				return t('users.validation.nogroup')
 			default:
-				return ""
+				return ''
 		}
 
 	}
@@ -205,13 +205,13 @@ class EditUser extends Component {
 		const { orgs, user, error } = this.state
 		const { org } = user
 		return accessLevel.apiorg.editusers ? <FormControl className={classes.formControl}>
-			<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
-				{t("users.fields.organisation")}
+			<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
+				{t('users.fields.organisation')}
 			</InputLabel>
 			<Select
 				error={error}
 				fullWidth={false}
-				color={"primary"}
+				color={'primary'}
 				value={org.id}
 				onChange={this.handleOrgChange}
 			// renderValue={value => value.name}
@@ -231,17 +231,17 @@ class EditUser extends Component {
 		const { t, classes } = this.props
 		const { error, user } = this.state
 		let languages = [
-			{ value: "en", label: t("settings.languages.en") },
-			{ value: "da", label: t("settings.languages.da") }
+			{ value: 'en', label: t('settings.languages.en') },
+			{ value: 'da', label: t('settings.languages.da') }
 		]
 		return <FormControl className={classes.formControl}>
-			<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
-				{t("users.fields.language")}
+			<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
+				{t('users.fields.language')}
 			</InputLabel>
 			<Select
 				error={error}
 				fullWidth={false}
-				color={"primary"}
+				color={'primary'}
 				value={user.aux.odeum.language}
 				onChange={this.handleLangChange}
 			// renderValue={value => languages[languages.findIndex(l => l.value === value)].label}
@@ -261,26 +261,26 @@ class EditUser extends Component {
 		const { accessLevel, t } = this.props
 		return [
 			{
-				id: "136550100000211",
-				appId: "1220",
-				name: t("users.groups.accountManager"),
+				id: '136550100000211',
+				appId: '1220',
+				name: t('users.groups.accountManager'),
 				show: accessLevel.apiorg.editusers ? true : false
-				// description: ""
+				// description: ''
 			},
 			{
-				id: "136550100000143",
-				appId: "1220",
-				name: t("users.groups.superUser"),
-				// description: "Senti Cloud group containing Super Users",
+				id: '136550100000143',
+				appId: '1220',
+				name: t('users.groups.superUser'),
+				// description: 'Senti Cloud group containing Super Users',
 				show: accessLevel.apisuperuser ? true : false
 
 			},
 			{
-				id: "136550100000225",
-				appId: "1220",
-				name: t("users.groups.user"),
+				id: '136550100000225',
+				appId: '1220',
+				name: t('users.groups.user'),
 				show: true
-				// description: "Senti Users"
+				// description: 'Senti Users'
 			}
 		]
 	}
@@ -292,13 +292,13 @@ class EditUser extends Component {
 			rend = true
 		}
 		return rend ? <FormControl className={classes.formControl}>
-			<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
-				{t("users.fields.accessLevel")}
+			<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
+				{t('users.fields.accessLevel')}
 			</InputLabel>
 			<Select
 				error={error}
 				fullWidth={false}
-				color={"primary"}
+				color={'primary'}
 				value={selectedGroup}
 				onChange={this.handleGroupChange}
 				// renderValue={value => value.name}
@@ -336,60 +336,60 @@ class EditUser extends Component {
 						{/* <ItemGrid container xs={12} md={6}>
     						<TextF
     							autoFocus
-    							id={"userName"}
-    							label={t("users.fields.userName")}
+    							id={'userName'}
+    							label={t('users.fields.userName')}
     							value={user.userName}
     							className={classes.textField}
-    							handleChange={this.handleChange("userName")}
-    							margin="normal"
+    							handleChange={this.handleChange('userName')}
+    							margin='normal'
     							
     							error={error}
     						/>
     					</ItemGrid> */}
 						<ItemGrid container xs={12} md={6}>
 							<TextF
-								id={"firstName"}
-								label={t("users.fields.firstName")}
+								id={'firstName'}
+								label={t('users.fields.firstName')}
 								value={user.firstName}
 								className={classes.textField}
-								handleChange={this.handleChange("firstName")}
-								margin="normal"
+								handleChange={this.handleChange('firstName')}
+								margin='normal'
 								
 								error={error}
 							/>
 						</ItemGrid>
 						<ItemGrid container xs={12} md={6}>
 							<TextF
-								id={"lastName"}
-								label={t("users.fields.lastName")}
+								id={'lastName'}
+								label={t('users.fields.lastName')}
 								value={user.lastName}
 								className={classes.textField}
-								handleChange={this.handleChange("lastName")}
-								margin="normal"
+								handleChange={this.handleChange('lastName')}
+								margin='normal'
 								
 								error={error}
 							/>
 						</ItemGrid>
 						<ItemGrid container xs={12} md={6}>
 							<TextF
-								id={"email"}
-								label={t("users.fields.email")}
+								id={'email'}
+								label={t('users.fields.email')}
 								value={user.email}
 								className={classes.textField}
-								handleChange={this.handleChange("email")}
-								margin="normal"
+								handleChange={this.handleChange('email')}
+								margin='normal'
 								
 								error={error}
 							/>
 						</ItemGrid>
 						<ItemGrid container xs={12} md={6}>
 							<TextF
-								id={"phone"}
-								label={t("users.fields.phone")}
+								id={'phone'}
+								label={t('users.fields.phone')}
 								value={user.phone}
 								className={classes.textField}
-								handleChange={this.handleChange("phone")}
-								margin="normal"
+								handleChange={this.handleChange('phone')}
+								margin='normal'
 								
 								error={error}
 							/>
@@ -406,21 +406,21 @@ class EditUser extends Component {
 
 					</form>
 					<ItemGrid xs={12} container justify={'center'}>
-						<Collapse in={this.state.creating} timeout="auto" unmountOnExit>
+						<Collapse in={this.state.creating} timeout='auto' unmountOnExit>
 							<CircularLoader notCentered />
 						</Collapse>
 					</ItemGrid>
-					<Grid container justify={"center"}>
+					<Grid container justify={'center'}>
 						<div className={classes.wrapper}>
 							<Button
-								variant="contained"
-								color="primary"
+								variant='contained'
+								color='primary'
 								className={buttonClassname}
 								disabled={this.state.creating || this.state.created}
 								onClick={this.handleEditUser}>
 								{this.state.created ?
-									<Fragment>{t("snackbars.redirect")}</Fragment>
-									: <Fragment><Save className={classes.leftIcon} />{t("users.editUser")}</Fragment>}
+									<Fragment>{t('snackbars.redirect')}</Fragment>
+									: <Fragment><Save className={classes.leftIcon} />{t('users.editUser')}</Fragment>}
 							</Button>
 						</div>
 					</Grid>

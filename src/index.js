@@ -1,7 +1,7 @@
-// import "@babel/polyfill";
+// import '@babel/polyfill';
 
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 import App from './App'
 import registerServiceWorker from './serviceWorker';
 // import NewContent from 'layouts/404/NewContent';
@@ -17,7 +17,7 @@ ReactDOM.render(<App />, rootEl)
 // 	whyDidYouUpdate(React, { exclude: [/^Connect/, /^Route/, /^NoSsr/] });
 // }
 //New Content Dialog Debug
-// var rootUpdate = document.getElementById("update")
+// var rootUpdate = document.getElementById('update')
 // ReactDOM.render(<NewContent />, rootUpdate)
 
 // Are we in development mode?

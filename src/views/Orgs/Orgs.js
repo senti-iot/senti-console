@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { withStyles } from "@material-ui/core";
+import { withStyles } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
@@ -27,7 +27,7 @@ class Orgs extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader("orgs.pageTitle", false, '', "users")
+		props.setHeader('orgs.pageTitle', false, '', 'users')
 	}
 	reload = async () => {
 		this.setState({ loading: true })
@@ -91,10 +91,10 @@ class Orgs extends Component {
 			this.setState({
 				orgs: orgs ? orgs : [],
 				orgsHeader: [
-					{ id: "name", label: t("orgs.fields.name") },
-					{ id: "address", label: t("orgs.fields.address") },
-					{ id: "city", label: t("orgs.fields.city") },
-					{ id: "url", label: t("orgs.fields.url") },
+					{ id: 'name', label: t('orgs.fields.name') },
+					{ id: 'address', label: t('orgs.fields.address') },
+					{ id: 'city', label: t('orgs.fields.city') },
+					{ id: 'url', label: t('orgs.fields.url') },
 				],
 				loading: false
 			}, () => this.handleRequestSort(null, 'name', 'asc'))
@@ -103,17 +103,17 @@ class Orgs extends Component {
 	}
 
 	tabs = [
-		{ id: 0, title: this.props.t("users.tabs.users"), label: <People />, url: `/users` },
-		{ id: 1, title: this.props.t("users.tabs.orgs"), label: <Business />, url: `/orgs` },
+		{ id: 0, title: this.props.t('users.tabs.users'), label: <People />, url: `/users` },
+		{ id: 1, title: this.props.t('users.tabs.orgs'), label: <Business />, url: `/orgs` },
 	]
 	snackBarMessages = (msg) => {
 		const { s } = this.props
 		switch (msg) {
 			case 1:
-				s("snackbars.deletedSuccess")
+				s('snackbars.deletedSuccess')
 				break;
 			case 2:
-				s("snackbars.exported")
+				s('snackbars.exported')
 				break;
 			default:
 				break;

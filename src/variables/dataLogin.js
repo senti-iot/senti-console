@@ -1,5 +1,5 @@
-import { loginApi, api } from "./data";
-import cookie from "react-cookies";
+import { loginApi, api } from './data';
+import cookie from 'react-cookies';
 
 export const loginUser = async (username, password) => {
 	var session = await loginApi.post('odeum/auth/basic', JSON.stringify({ username: username, password: password })).then(rs => rs.data)

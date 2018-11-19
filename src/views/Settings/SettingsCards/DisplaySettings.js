@@ -25,16 +25,16 @@ class DisplaySettings extends Component {
 	render() {
 		const { language, trp, sideBar, discSentiVal, theme, classes, t } = this.props
 		let discSenti = [
-			{ value: 1, label: t("actions.yes") },
-			{ value: 0, label: t("actions.no") }
+			{ value: 1, label: t('actions.yes') },
+			{ value: 0, label: t('actions.no') }
 		]
 		let languages = [
-			{ value: "en", label: t("settings.languages.en") },
-			{ value: "da", label: t("settings.languages.da") }
+			{ value: 'en', label: t('settings.languages.en') },
+			{ value: 'da', label: t('settings.languages.da') }
 		]
 		let themes = [
-			{ value: 1, label: t("settings.themes.dark") },
-			{ value: 0, label: t("settings.themes.light") }
+			{ value: 1, label: t('settings.themes.dark') },
+			{ value: 0, label: t('settings.themes.light') }
 		]
 		let trps = [
 			{ value: 5, label: 5 },
@@ -46,45 +46,45 @@ class DisplaySettings extends Component {
 			{ value: 100, label: 100 }
 		]
 		let sideBarLocs = [
-			{ value: 0, label: t("settings.sideBarLeft") },
-			{ value: 1, label: t("settings.sideBarRight") }
+			{ value: 0, label: t('settings.sideBarLeft') },
+			{ value: 1, label: t('settings.sideBarRight') }
 		]
 		return (
 			discSentiVal !== null && language !== null && trp !== null && sideBar !== null && theme !== null ? 
 				<InfoCard
 					noExpand
 					avatar={<Laptop />}
-					title={t("settings.headers.display")}
+					title={t('settings.headers.display')}
 					content={
 						<Grid container>
 							<List className={classes.list}>
 								<ListItem divider>
-									<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-										<ListItemText>{t("settings.discoverSenti")}</ListItemText>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{t('settings.discoverSenti')}</ListItemText>
 										<DSelect menuItems={discSenti} value={discSentiVal} onChange={this.changeDiscoverSenti} />
 									</ItemGrid>
 								</ListItem>
 								<ListItem divider>
-									<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-										<ListItemText>{t("settings.language")}</ListItemText>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{t('settings.language')}</ListItemText>
 										<DSelect menuItems={languages} value={language} onChange={this.changeLang} />
 									</ItemGrid>
 								</ListItem>
 								<ListItem divider>
-									<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-										<ListItemText>{t("settings.trp")}</ListItemText>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{t('settings.trp')}</ListItemText>
 										<DSelect menuItems={trps} value={trp} onChange={this.changeTRP} />
 									</ItemGrid>
 								</ListItem>
 								<ListItem divider>
-									<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-										<ListItemText>{t("settings.sideBarLoc")}</ListItemText>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{t('settings.sideBarLoc')}</ListItemText>
 										<DSelect menuItems={sideBarLocs} value={sideBar} onChange={this.changeSideBarLoc} />
 									</ItemGrid>
 								</ListItem>
 								<ListItem >
-									<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-										<ListItemText>{t("settings.theme")}</ListItemText>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{t('settings.theme')}</ListItemText>
 										<DSelect menuItems={themes} value={theme} onChange={this.changeTheme} />
 									</ItemGrid>
 								</ListItem>

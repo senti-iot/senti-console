@@ -1,10 +1,10 @@
-import React, { Fragment } from "react";
+import React, { Fragment } from 'react';
 // material-ui components
-import {/*  InputAdornment, */ withStyles, CardContent, Collapse, Button, Grid } from "@material-ui/core";
+import {/*  InputAdornment, */ withStyles, CardContent, Collapse, Button, Grid } from '@material-ui/core';
 
-import { GridContainer, ItemGrid, Info, Danger, ItemG, Success, CircularLoader, Card, CardBody, CardHeader, CardFooter } from "components";
-import loginPageStyle from "assets/jss/material-dashboard-react/loginPageStyle.js";
-import withLocalization from "components/Localization/T";
+import { GridContainer, ItemGrid, Info, Danger, ItemG, Success, CircularLoader, Card, CardBody, CardHeader, CardFooter } from 'components';
+import loginPageStyle from 'assets/jss/material-dashboard-react/loginPageStyle.js';
+import withLocalization from 'components/Localization/T';
 import { connect } from 'react-redux';
 import { getSettings } from 'redux/settings';
 import TextF from 'components/CustomInput/TextF';
@@ -12,13 +12,13 @@ import { changeLanguage } from 'redux/localization';
 import cookie from 'react-cookies';
 import { setToken } from 'variables/data';
 import { resetPassword, confirmPassword } from 'variables/dataLogin';
-// var passChecker = require("zxcvbn")
+// var passChecker = require('zxcvbn')
 
 class ResetPassword extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			cardAnimaton: "cardHidden",
+			cardAnimaton: 'cardHidden',
 			email: '',
 			password: '',
 			confirmPassword: '',
@@ -52,7 +52,7 @@ class ResetPassword extends React.Component {
 		}
 		setTimeout(
 			function () {
-				return this._isMounted ? this.setState({ cardAnimaton: "" }) : '';
+				return this._isMounted ? this.setState({ cardAnimaton: '' }) : '';
 			}.bind(this),
 			300
 		);
@@ -90,17 +90,17 @@ class ResetPassword extends React.Component {
 		const { t } = this.props
 		switch (code) {
 			case 0:
-				return t("confirmUser.validation.passwordEmpty")
+				return t('confirmUser.validation.passwordEmpty')
 			case 1:
-				return t("confirmUser.validation.passwordUnder8")
+				return t('confirmUser.validation.passwordUnder8')
 			case 2:
-				return t("confirmUser.validation.passwordMismatch")
+				return t('confirmUser.validation.passwordMismatch')
 			case 404: 
-				return t("confirmUser.validation.emailDoesntExist")
+				return t('confirmUser.validation.emailDoesntExist')
 			case 404.1: 
-				return t("confirmUser.validation.userDoesntExistAnymore")
+				return t('confirmUser.validation.userDoesntExistAnymore')
 			default:
-				return ""
+				return ''
 		}
 	}
 	confirmPass = async () => {
@@ -142,14 +142,14 @@ class ResetPassword extends React.Component {
 				if (session.isLoggedIn) {
 					if (setToken()) {
 						await this.props.getSettings()
-						this.props.history.push("/dashboard")
+						this.props.history.push('/dashboard')
 					}
 				}
 
 				else {
 					this.setState({
 						error: true,
-						errorMessage: t("confirmUser.networkError"),
+						errorMessage: t('confirmUser.networkError'),
 						loggingIn: false
 					})
 				}
@@ -185,17 +185,17 @@ class ResetPassword extends React.Component {
 				<div
 					className={classes.pageHeader}
 					style={{
-						backgroundColor: "#1a1b32",
-						backgroundSize: "cover",
-						backgroundPosition: "top center"
+						backgroundColor: '#1a1b32',
+						backgroundSize: 'cover',
+						backgroundPosition: 'top center'
 					}}
 				>
 					<div className={classes.container}>
-						<GridContainer justify="center">
+						<GridContainer justify='center'>
 							<ItemGrid xs={12} sm={6} md={3}>
 								<Card className={classes[this.state.cardAnimaton]}>
 									<form className={classes.form}>
-										<CardHeader color="primary" className={classes.cardHeader}>
+										<CardHeader color='primary' className={classes.cardHeader}>
 											<h4>Senti.Cloud</h4>
 										</CardHeader>
 										<CardBody>
@@ -203,7 +203,7 @@ class ResetPassword extends React.Component {
 												<Grid container>
 													<ItemG xs={12}>
 														<Collapse in={!error}>
-															{this.token ? null : <Info>{t("login.resetPasswordMessage")}</Info>}
+															{this.token ? null : <Info>{t('login.resetPasswordMessage')}</Info>}
 														</Collapse>
 														<Collapse in={error}>
 															{errorMessage}
@@ -211,14 +211,14 @@ class ResetPassword extends React.Component {
 													</ItemG>
 													<ItemG xs={12}>
 														{this.token ? null : <TextF
-															id={"email"}
+															id={'email'}
 															autoFocus
 															label={t('users.fields.email')}
 															value={email}
 															className={classes.textField}
 															// disabled={true}
-															handleChange={this.handleChange("email")}
-															margin="normal"
+															handleChange={this.handleChange('email')}
+															margin='normal'
 															
 															error={error}
 														/>}
@@ -227,13 +227,13 @@ class ResetPassword extends React.Component {
 													{this.token ? <Fragment>
 														<ItemG xs={12}>
 															<TextF
-																id={"password"}
+																id={'password'}
 																label={t('confirmUser.password')}
 																value={password}
 																className={classes.textField}
 																// disabled={true}
-																handleChange={this.handleChange("password")}
-																margin="normal"
+																handleChange={this.handleChange('password')}
+																margin='normal'
 																
 																error={error}
 																type={'password'}
@@ -242,13 +242,13 @@ class ResetPassword extends React.Component {
 														</ItemG>
 														<ItemG xs={12}>
 															<TextF
-																id={"confirmpassword"}
-																label={t("confirmUser.passwordConfirm")}
+																id={'confirmpassword'}
+																label={t('confirmUser.passwordConfirm')}
 																value={confirmPassword}
 																className={classes.textField}
 																// disabled={true}
-																handleChange={this.handleChange("confirmPassword")}
-																margin="normal"
+																handleChange={this.handleChange('confirmPassword')}
+																margin='normal'
 																
 																error={error}
 																type={'password'}
@@ -259,7 +259,7 @@ class ResetPassword extends React.Component {
 											</Collapse>
 											<Collapse in={passwordRequested}>
 												<ItemG xs={12}>
-													<Success>{t("login.resetPassRequestMessage")}</Success>
+													<Success>{t('login.resetPassRequestMessage')}</Success>
 												</ItemG>
 												
 											</Collapse>
@@ -269,24 +269,24 @@ class ResetPassword extends React.Component {
 												<ItemG xs={12} container justify={'center'}>
 													<Collapse in={!passwordRequested}>
 														{!this.token ? <Button variant={'contained'} color={'primary'} onClick={this.resetPass}>
-															{t("login.requestPasswordReset")}
+															{t('login.requestPasswordReset')}
 														</Button> :
 															<Button variant={'contained'} color={'primary'} onClick={this.confirmPass}>
-																{t("login.changePassword")}
+																{t('login.changePassword')}
 															</Button>}
 													</Collapse>
 												</ItemG>
 												<ItemG xs={12} container justify={'center'}>
 													<Collapse in={passwordRequested}>
 														<Button variant={'contained'} color={'primary'} onClick={() => this.props.history.push('/login')}>
-															{t("login.goToLogin")}
+															{t('login.goToLogin')}
 														</Button>
 													</Collapse>
 												</ItemG>
 											</ItemG>
 										</CardFooter>
 									</form>
-									<Collapse in={this.state.loggingIn} timeout="auto" unmountOnExit>
+									<Collapse in={this.state.loggingIn} timeout='auto' unmountOnExit>
 										<CardContent>
 											<CircularLoader notCentered />
 										</CardContent>

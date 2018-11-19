@@ -75,10 +75,10 @@ class DeviceImages extends PureComponent {
 		let msg = this.state.openSnackbar
 		switch (msg) {
 			case 1:
-				s("snackbars.pictureDeleted")
+				s('snackbars.pictureDeleted')
 				break
 			case 2:
-				s("snackbars.pictureNotDeleted")
+				s('snackbars.pictureNotDeleted')
 				break
 			default:
 				break;
@@ -91,20 +91,20 @@ class DeviceImages extends PureComponent {
 		return <Dialog
 			open={this.state.openDeleteImage}
 			onClose={this.handleCloseImageDelete}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">Delete Picture</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>Delete Picture</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
+				<DialogContentText id='alert-dialog-description'>
 					Are you sure you want to delete the picture?
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseDeletePictureDialog} color="primary">
+				<Button onClick={this.handleCloseDeletePictureDialog} color='primary'>
 					No
 				</Button>
-				<Button onClick={this.handleDeletePicture} color="primary" autoFocus>
+				<Button onClick={this.handleDeletePicture} color='primary' autoFocus>
 					Yes
 				</Button>
 			</DialogActions>
@@ -117,25 +117,25 @@ class DeviceImages extends PureComponent {
 		const { classes, device, t  } = this.props
 		return (
 			<InfoCard
-				title={t("devices.cards.pictures")}
+				title={t('devices.cards.pictures')}
 				avatar={<Image />}
 				topAction={
 					<Dropdown menuItems={
 						[
-							{ label: t("actions.uploadImages"), icon: <CloudUpload className={classes.leftIcon} />, func: this.handleOpenImageUpload },
-							{ label: t("actions.deletePicture"), icon: <Delete className={classes.leftIcon} />, func: this.handleOpenDeletePictureDialog },
+							{ label: t('actions.uploadImages'), icon: <CloudUpload className={classes.leftIcon} />, func: this.handleOpenImageUpload },
+							{ label: t('actions.deletePicture'), icon: <Delete className={classes.leftIcon} />, func: this.handleOpenDeletePictureDialog },
 						]
 					} />
 					// <ItemG>
 					// 	<IconButton
-					// 		aria-label="More"
+					// 		aria-label='More'
 					// 		aria-owns={actionAnchor ? 'long-menu' : null}
-					// 		aria-haspopup="true"
+					// 		aria-haspopup='true'
 					// 		onClick={this.handleOpenActionsImages}>
 					// 		<MoreVert />
 					// 	</IconButton>
 					// 	<Menu
-					// 		id="long-menu"
+					// 		id='long-menu'
 					// 		anchorEl={actionAnchor}
 					// 		open={Boolean(actionAnchor)}
 					// 		onClose={this.handleCloseActionsImages}
@@ -146,10 +146,10 @@ class DeviceImages extends PureComponent {
 					// 			}
 					// 		}}>
 					// 		<MenuItem onClick={this.handleOpenImageUpload}>
-					// 			<CloudUpload className={classes.leftIcon} />{t("actions.uploadImages")}
+					// 			<CloudUpload className={classes.leftIcon} />{t('actions.uploadImages')}
 					// 		</MenuItem>
 					// 		<MenuItem onClick={this.handleOpenDeletePictureDialog}>
-					// 			<Delete className={classes.leftIcon} />{t("actions.deletePicture")}
+					// 			<Delete className={classes.leftIcon} />{t('actions.deletePicture')}
 					// 		</MenuItem>
 					// 		))}
 					// 	</Menu>
@@ -169,10 +169,10 @@ class DeviceImages extends PureComponent {
 										images={img ? img.map(m => m.image) : null} />
 								</Grid>
 							</Fragment>
-							: <Grid container justify={'center'}> <Caption>{t("devices.noImages")}</Caption></Grid> : this.renderImageLoader()}
+							: <Grid container justify={'center'}> <Caption>{t('devices.noImages')}</Caption></Grid> : this.renderImageLoader()}
 						<Modal
-							aria-labelledby="simple-modal-title"
-							aria-describedby="simple-modal-description"
+							aria-labelledby='simple-modal-title'
+							aria-describedby='simple-modal-description'
 							open={openImageUpload}
 							onClose={this.handleCloseImageUpload}>
 							<div className={classes.modal}>

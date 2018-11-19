@@ -8,7 +8,7 @@ import { red, green, yellow } from '@material-ui/core/colors'
 import { Link } from 'react-router-dom'
 import { getDataSummary, getWeather } from 'variables/dataDevices';
 import WeatherIcon from 'components/Typography/WeatherIcon';
-var moment = require("moment")
+var moment = require('moment')
 const styles = theme => ({ 
 	redSignal: {
 		color: red[700]
@@ -39,8 +39,8 @@ class MarkerWithInfo extends Component {
 				let weather = await getWeather(m, moment(), lang)
 				this.setState({ weather: weather })
 			}
-			let OneMinuteAgo = moment().subtract(10, "minute").format("YYYY-MM-DD+HH:mm:ss")
-			let rs = await getDataSummary(this.props.m.id, OneMinuteAgo, moment().format("YYYY-MM-DD+HH:mm:ss"), false)
+			let OneMinuteAgo = moment().subtract(10, 'minute').format('YYYY-MM-DD+HH:mm:ss')
+			let rs = await getDataSummary(this.props.m.id, OneMinuteAgo, moment().format('YYYY-MM-DD+HH:mm:ss'), false)
 			this.setState({ isOpen: !isOpen, liveCount: rs })
 		}
 		else { 
@@ -51,13 +51,13 @@ class MarkerWithInfo extends Component {
 		const { classes, t } = this.props
 		switch (status) {
 			case 1:
-				return <div title={t("devices.status.yellow")}><SignalWifi2Bar className={classes.yellowSignal} /></div>
+				return <div title={t('devices.status.yellow')}><SignalWifi2Bar className={classes.yellowSignal} /></div>
 			case 2:
-				return <div title={t("devices.status.green")}><SignalWifi2Bar className={classes.greenSignal} /></div>
+				return <div title={t('devices.status.green')}><SignalWifi2Bar className={classes.greenSignal} /></div>
 			case 0:
-				return <div title={t("devices.status.red")}><SignalWifi2Bar className={classes.redSignal} /></div>
+				return <div title={t('devices.status.red')}><SignalWifi2Bar className={classes.redSignal} /></div>
 			default:
-				return <div title={t("devices.status.red")}> <SignalWifi2BarLock className={classes.redSignal}/></div>
+				return <div title={t('devices.status.red')}> <SignalWifi2BarLock className={classes.redSignal}/></div>
 		}
 	}
 	render() {
@@ -77,18 +77,18 @@ class MarkerWithInfo extends Component {
 					}}>
 					<ItemGrid container noMargin>
 						<ItemG xs={6}>
-							<Caption>{t("devices.fields.id")}</Caption>
+							<Caption>{t('devices.fields.id')}</Caption>
 							<Info>
 								{m.id}
 							</Info>
 						</ItemG>
 						<ItemG xs={6}>
-							<Caption>{t("devices.fields.status")}</Caption>
+							<Caption>{t('devices.fields.status')}</Caption>
 							{this.renderIcon(m.liveStatus)}
 						</ItemG>
 						{m.name ?
 							<ItemG xs={12}>
-								<Caption>{t("devices.fields.name")}</Caption>
+								<Caption>{t('devices.fields.name')}</Caption>
 								<Info>{m.name}</Info>
 							</ItemG>
 							: null}
@@ -104,7 +104,7 @@ class MarkerWithInfo extends Component {
 								<WeatherIcon icon={m.weather.currently.icon} />
 							</ItemG>
 							<ItemG xs={9}>
-								<Caption>{t("devices.fields.weather")}</Caption>
+								<Caption>{t('devices.fields.weather')}</Caption>
 								<Info>
 									 {m.weather.currently.summary}
 								</Info>
@@ -114,28 +114,28 @@ class MarkerWithInfo extends Component {
 								<WeatherIcon icon={this.state.weather.currently.icon} />
 							</ItemG>
 							<ItemG xs={9}>
-								<Caption>{t("devices.fields.weather")}</Caption>
+								<Caption>{t('devices.fields.weather')}</Caption>
 								<Info>
 									{this.state.weather.currently.summary}
 								</Info>
 							</ItemG>
 						</ItemG> : null}
 						<ItemG xs={6}>
-							<Caption>{t("devices.fields.temp")}</Caption>
+							<Caption>{t('devices.fields.temp')}</Caption>
 							<Info>{m.temperature} &#8451;</Info>
 						</ItemG>
 						<ItemG xs={12}>
-							<Caption>{t("devices.fields.address")}</Caption>
-							<Info>{m.address ? m.address : t("devices.noAddress")}</Info>
+							<Caption>{t('devices.fields.address')}</Caption>
+							<Info>{m.address ? m.address : t('devices.noAddress')}</Info>
 						</ItemG>
 						<ItemG xs={12}>
-							<Caption>{t("devices.liveCount")}</Caption>
+							<Caption>{t('devices.liveCount')}</Caption>
 							<Info>{this.state.liveCount}</Info>
 						</ItemG>
 						<ItemG xs={12}>
-							<Button variant={"text"} color={"primary"} component={Link} to={`/device/${m.id}`}>
+							<Button variant={'text'} color={'primary'} component={Link} to={`/device/${m.id}`}>
 								{/* <NavLink to={`/device/${m.id}`}> */}
-								{t("menus.seeMore")}
+								{t('menus.seeMore')}
 								{/* </NavLink> */}
 							</Button>
 						</ItemG>

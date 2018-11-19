@@ -1,8 +1,8 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom'
-import DashboardPage from "views/Dashboard/Dashboard";
-import { Dashboard, LibraryBooks, SettingsRounded, People, DeviceHub } from "variables/icons";
-import NotFound from "layouts/404/NotFound";
+import DashboardPage from 'views/Dashboard/Dashboard';
+import { Dashboard, LibraryBooks, SettingsRounded, People, DeviceHub } from 'variables/icons';
+import NotFound from 'layouts/404/NotFound';
 import Loadable from 'react-loadable';
 import AsyncLoader from 'components/Loader/AsyncLoader';
 import { DataUsage } from 'variables/icons';
@@ -16,129 +16,129 @@ const AsyncCollections = Loadable({
 	loading: AsyncLoader
 })
 const AsyncProjects = Loadable({
-	loader: () => import("routes/projects"),
+	loader: () => import('routes/projects'),
 	loading: AsyncLoader
 });
 const AsyncProject  = Loadable({
-	loader: () => import("routes/project"),
+	loader: () => import('routes/project'),
 	loading: AsyncLoader
 })
 const AsyncDevices  = Loadable({
-	loader: () => import("routes/devices"),
+	loader: () => import('routes/devices'),
 	loading: AsyncLoader
 })
 const AsyncDevice = Loadable({
-	loader: () => import("routes/device"),
+	loader: () => import('routes/device'),
 	loading: AsyncLoader
 })
 const AsyncUsers  = Loadable({
-	loader: () => import("routes/users"),
+	loader: () => import('routes/users'),
 	loading: AsyncLoader
 })
 const AsyncUser  = Loadable({
-	loader: () => import("routes/user"),
+	loader: () => import('routes/user'),
 	loading: AsyncLoader
 })
 const AsyncOrgs = Loadable({
-	loader: () => import("routes/orgs"),
+	loader: () => import('routes/orgs'),
 	loading: AsyncLoader
 })
 const AsyncOrg = Loadable({
-	loader: () => import("routes/org"),
+	loader: () => import('routes/org'),
 	loading: AsyncLoader
 })
 const AsyncSettings = Loadable({
-	loader: () => import("views/Settings/Settings"),
+	loader: () => import('views/Settings/Settings'),
 	loading: AsyncLoader
 })
 const dashboardRoutes = [
 	{
-		path: "/dashboard",
-		sidebarName: "sidebar.dashboard",
-		navbarName: "Senti Dashboard",
+		path: '/dashboard',
+		sidebarName: 'sidebar.dashboard',
+		navbarName: 'Senti Dashboard',
 		icon: Dashboard,
 		component: DashboardPage,
-		menuRoute: "dashboard"
+		menuRoute: 'dashboard'
 	},
 	{
-		path: "/project/:id",
+		path: '/project/:id',
 		component: AsyncProject,
 		hideFromSideBar: true,
-		menuRoute: "projects"
+		menuRoute: 'projects'
 	},
 	{
-		path: "/projects",
-		sidebarName: "sidebar.projects",
+		path: '/projects',
+		sidebarName: 'sidebar.projects',
 		icon: LibraryBooks,
 		component: AsyncProjects,
-		menuRoute: "projects"
+		menuRoute: 'projects'
 	},
 	{
-		path: "/collection/:id",
+		path: '/collection/:id',
 		component: AsyncCollection,
 		hideFromSideBar: true,
-		menuRoute: "collections"
+		menuRoute: 'collections'
 	},
 	{
-		path: "/collections",
-		sidebarName: "sidebar.collections",
+		path: '/collections',
+		sidebarName: 'sidebar.collections',
 		component: AsyncCollections,
 		icon: DataUsage,
-		menuRoute: "collections"
+		menuRoute: 'collections'
 	},
 	{
-		path: "/device/:id",
+		path: '/device/:id',
 		component: AsyncDevice,
 		hideFromSideBar: true,
-		menuRoute: "devices"
+		menuRoute: 'devices'
 	},
 	{
-		path: "/devices",
-		sidebarName: "sidebar.devices",
+		path: '/devices',
+		sidebarName: 'sidebar.devices',
 		icon: DeviceHub,
 		component: AsyncDevices,
-		menuRoute: "devices"
+		menuRoute: 'devices'
 	},
 	{
-		path: "/users",
-		sidebarName: "sidebar.users",
+		path: '/users',
+		sidebarName: 'sidebar.users',
 		icon: People,
 		component: AsyncUsers,
-		menuRoute: "users"
+		menuRoute: 'users'
 	},
 	{
-		path: "/user/:id",
+		path: '/user/:id',
 		component: AsyncUser,
 		hideFromSideBar: true,
-		menuRoute: "users"
+		menuRoute: 'users'
 	},
 	{
-		path: "/orgs",
+		path: '/orgs',
 		component: AsyncOrgs,
 		hideFromSideBar: true,
-		menuRoute: "users"
+		menuRoute: 'users'
 	},
 	{
-		path: "/org/:id",
+		path: '/org/:id',
 		component: AsyncOrg,
 		hideFromSideBar: true,
-		menuRoute: "users"
+		menuRoute: 'users'
 	},
 	{
-		path: "/settings",
-		sidebarName: "sidebar.settings",
+		path: '/settings',
+		sidebarName: 'sidebar.settings',
 		icon: SettingsRounded,
 		component: AsyncSettings,
-		menuRoute: "settings"
+		menuRoute: 'settings'
 	},
 	{
-		path: "/404",
-		sidebarName: "Error",
+		path: '/404',
+		sidebarName: 'Error',
 		component: NotFound,
 		hideFromSideBar: true,
 	},
 	{
-		path: "*",
+		path: '*',
 		component: () => <Redirect from={window.location.pathname} to={window.location.pathname === '/' ? '/dashboard' : '/404'} />,
 		hideFromSideBar: true
 	},

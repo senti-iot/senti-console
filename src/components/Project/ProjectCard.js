@@ -58,14 +58,14 @@ class ProjectCard extends Component {
 				topAction={
 					<ItemGrid noMargin noPadding>
 						<IconButton
-							aria-label="More"
+							aria-label='More'
 							aria-owns={actionAnchor ? 'long-menu' : null}
-							aria-haspopup="true"
+							aria-haspopup='true'
 							onClick={this.handleOpenActionsDetails}>
 							<MoreVert />
 						</IconButton>
 						<Menu
-							id="long-menu"
+							id='long-menu'
 							anchorEl={actionAnchor}
 							open={Boolean(actionAnchor)}
 							onClose={this.handleCloseActionsDetails}
@@ -76,16 +76,16 @@ class ProjectCard extends Component {
 								}
 							}}>
 							<MenuItem onClick={() => this.props.history.push(`/project/${p.id}/edit`)}>
-								<Edit className={classes.leftIcon} />{t("menus.edit")}									
+								<Edit className={classes.leftIcon} />{t('menus.edit')}									
 							</MenuItem>
-							{/* <MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
-										<Devices className={classes.leftIcon} />{t("menus.assignDevices")}
+							{/* <MenuItem onClick={() => alert(t('dialogs.warnings.wip'))}>
+										<Devices className={classes.leftIcon} />{t('menus.assignDevices')}
 									</MenuItem>
-									<MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
-										<PictureAsPdf className={classes.leftIcon} />{t("menus.exportPDF")}
+									<MenuItem onClick={() => alert(t('dialogs.warnings.wip'))}>
+										<PictureAsPdf className={classes.leftIcon} />{t('menus.exportPDF')}
 									</MenuItem>
-									<MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
-										<Delete className={classes.leftIcon} />{t("menus.delete")}
+									<MenuItem onClick={() => alert(t('dialogs.warnings.wip'))}>
+										<Delete className={classes.leftIcon} />{t('menus.delete')}
 									</MenuItem> */}
 									))}
 						</Menu>
@@ -94,7 +94,7 @@ class ProjectCard extends Component {
 				content={<Typography noWrap>{p.description}</Typography>}
 				rightActions={
 					<Button variant={'text'} color={'primary'} onClick={() => this.props.history.push(`/project/${p.id}`)}>
-						{t("menus.seeMore")}
+						{t('menus.seeMore')}
 					</Button>
 				}
 			/>

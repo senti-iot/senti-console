@@ -23,12 +23,12 @@ class Settings extends Component {
 		this.state = {
 
 		}
-		props.setHeader("settings.pageTitle", false, '', "settings")
+		props.setHeader('settings.pageTitle', false, '', 'settings')
 	}
 	
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.saved === true) {
-			this.props.s("snackbars.settingsSaved")
+			this.props.s('snackbars.settingsSaved')
 			this.props.finishedSaving()
 		}
 	}

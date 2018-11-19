@@ -23,7 +23,7 @@ import { colors } from 'variables/colors';
 			
 // 			break;
 // 	}
-// 	let newLabels = labels.map(l => moment(l).format("ll"))
+// 	let newLabels = labels.map(l => moment(l).format('ll'))
 // 	let displayTo = dateTimeFormatter(to)
 // 	let displayFrom = dateTimeFormatter(from)
 // 	let state = {

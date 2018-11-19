@@ -10,7 +10,7 @@ import {
 	PieChartRounded,
 	BarChart as BarChartIcon,
 	ExpandMore, Visibility, ShowChart, /* CloudDownload */
-} from "variables/icons"
+} from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
 	LineChart,
@@ -41,35 +41,35 @@ class ProjectData extends PureComponent {
 	}
 
 
-	displayFormat = "DD MMMM YYYY HH:mm"
+	displayFormat = 'DD MMMM YYYY HH:mm'
 	image = null
 	options = [
-		{ id: 0, label: this.props.t("filters.dateOptions.today") },
-		{ id: 1, label: this.props.t("filters.dateOptions.yesterday") },
-		{ id: 2, label: this.props.t("filters.dateOptions.thisWeek") },
-		{ id: 3, label: this.props.t("filters.dateOptions.7days") },
-		{ id: 4, label: this.props.t("filters.dateOptions.30days") },
-		{ id: 5, label: this.props.t("filters.dateOptions.90days") },
-		{ id: 6, label: this.props.t("filters.dateOptions.custom") },
+		{ id: 0, label: this.props.t('filters.dateOptions.today') },
+		{ id: 1, label: this.props.t('filters.dateOptions.yesterday') },
+		{ id: 2, label: this.props.t('filters.dateOptions.thisWeek') },
+		{ id: 3, label: this.props.t('filters.dateOptions.7days') },
+		{ id: 4, label: this.props.t('filters.dateOptions.30days') },
+		{ id: 5, label: this.props.t('filters.dateOptions.90days') },
+		{ id: 6, label: this.props.t('filters.dateOptions.custom') },
 	]
 	timeTypes = [
-		{ id: 0, format: "lll dddd", chart: "minute" },
-		{ id: 1, format: "lll dddd", chart: "hour" },
-		{ id: 2, format: "ll dddd", chart: "day" },
-		{ id: 3, format: "ll dddd", chart: "month" },
+		{ id: 0, format: 'lll dddd', chart: 'minute' },
+		{ id: 1, format: 'lll dddd', chart: 'hour' },
+		{ id: 2, format: 'll dddd', chart: 'day' },
+		{ id: 3, format: 'll dddd', chart: 'month' },
 	]
 	visibilityOptions = [
-		{ id: 0, icon: <PieChartRounded />, label: this.props.t("charts.type.pie") },
-		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t("charts.type.donut") },
-		{ id: 2, icon: <BarChartIcon />, label: this.props.t("charts.type.bar") },
-		{ id: 3, icon: <ShowChart />, label: this.props.t("charts.type.line") }
+		{ id: 0, icon: <PieChartRounded />, label: this.props.t('charts.type.pie') },
+		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t('charts.type.donut') },
+		{ id: 2, icon: <BarChartIcon />, label: this.props.t('charts.type.bar') },
+		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
 	]
 
 	getImage = () => {
-		// var canvas = document.getElementsByClassName("chartjs-render-monitor");
+		// var canvas = document.getElementsByClassName('chartjs-render-monitor');
 	
 		// if (canvas.length > 0) {
-		// 	this.image = canvas[1].toDataURL("image/png");
+		// 	this.image = canvas[1].toDataURL('image/png');
 		// 	this.setState({ image: this.image })
 			
 		// }
@@ -201,11 +201,11 @@ class ProjectData extends PureComponent {
 		return <Fragment>
 			<ItemG>
 				<Hidden smDown>
-					<IconButton title={"Chart Type"} variant={"fab"} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
+					<IconButton title={'Chart Type'} variant={'fab'} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
 						<Visibility />
 					</IconButton>
 					<Menu
-						id="long-menu"
+						id='long-menu'
 						anchorEl={actionAnchorVisibility}
 						open={Boolean(actionAnchorVisibility)}
 						onClose={() => this.setState({ actionAnchorVisibility: null })}
@@ -214,7 +214,7 @@ class ProjectData extends PureComponent {
 								// maxHeight: 300,
 								minWidth: 250
 							}
-						}}>					<List component="div" disablePadding>
+						}}>					<List component='div' disablePadding>
 							{this.visibilityOptions.map(op => {
 								return <ListItem key={op.id} value={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
 									<ListItemIcon>
@@ -229,15 +229,15 @@ class ProjectData extends PureComponent {
 			</ItemG>
 			<ItemG>
 				<IconButton
-					aria-label="More"
+					aria-label='More'
 					aria-owns={actionAnchor ? 'long-menu' : null}
-					aria-haspopup="true"
+					aria-haspopup='true'
 					onClick={this.handleOpenActionsDetails}>
 					<MoreVert />
 				</IconButton>
 			</ItemG>
 			 <Menu
-				id="long-menu"
+				id='long-menu'
 				anchorEl={actionAnchor}
 				open={Boolean(actionAnchor)}
 				onClose={this.handleCloseActionsDetails}
@@ -257,7 +257,7 @@ class ProjectData extends PureComponent {
 				</div> */}
 				{/* <ListItem button onClick={this.handleOpenDownloadModal}>
 					<ListItemIcon><CloudDownload /></ListItemIcon>
-					<ListItemText>{t("data.download")}</ListItemText>
+					<ListItemText>{t('data.download')}</ListItemText>
 				</ListItem> */}
 				<ListItem button onClick={this.props.handleRawData}>
 					<ListItemIcon>
@@ -268,7 +268,7 @@ class ProjectData extends PureComponent {
 						/>
 					</ListItemIcon>
 					<ListItemText>
-						{t("collections.rawData")}
+						{t('collections.rawData')}
 					</ListItemText>
 				</ListItem>
 				<div>
@@ -277,13 +277,13 @@ class ProjectData extends PureComponent {
 							<ListItemIcon>
 								<Visibility />
 							</ListItemIcon>
-							<ListItemText inset primary={t("filters.options.graphType")} />
+							<ListItemText inset primary={t('filters.options.graphType')} />
 							<ExpandMore className={classNames({
 								[classes.expandOpen]: this.state.visibility,
 							}, classes.expand)} />
 						</ListItem>
-						<Collapse in={this.state.visibility} timeout="auto" unmountOnExit>
-							<List component="div" disablePadding>
+						<Collapse in={this.state.visibility} timeout='auto' unmountOnExit>
+							<List component='div' disablePadding>
 								{this.visibilityOptions.map(op => {
 									return <ListItem key={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
 										<ListItemIcon>
@@ -301,7 +301,7 @@ class ProjectData extends PureComponent {
 	}
 	renderNoData = () => {
 		return <ItemG container justify={'center'}>
-			<Caption> {this.props.t("devices.noData")}</Caption>
+			<Caption> {this.props.t('devices.noData')}</Caption>
 		</ItemG>
 	}
 
@@ -313,8 +313,8 @@ class ProjectData extends PureComponent {
 		return (
 			<Fragment>
 				<InfoCard
-					title={t("collections.cards.data")}
-					subheader={`${this.options[dateOption].label}, ${raw ? t("collections.rawData") : t("collections.calibratedData")}, ${displayFrom} - ${displayTo}`}
+					title={t('collections.cards.data')}
+					subheader={`${this.options[dateOption].label}, ${raw ? t('collections.rawData') : t('collections.calibratedData')}, ${displayFrom} - ${displayTo}`}
 					avatar={<Timeline />}
 					noExpand
 					topAction={this.renderMenu()}
@@ -329,7 +329,7 @@ class ProjectData extends PureComponent {
 							{loading ? <CircularLoader notCentered /> :
 								<Fragment>
 									{/* <ItemG xs={12} container direction={'column'} alignItems={'center'} justify={'center'}>
-										<Caption className={classes.bigCaption2}>{raw ? t("collections.rawData") : t("collections.calibratedData")}</Caption>
+										<Caption className={classes.bigCaption2}>{raw ? t('collections.rawData') : t('collections.calibratedData')}</Caption>
 										<Caption className={classes.captionPading}>{`${displayFrom} - ${displayTo}`}</Caption>
 									</ItemG> */}
 									<ItemG xs={12}>
@@ -341,7 +341,7 @@ class ProjectData extends PureComponent {
 								</Fragment>}
 						</Grid>}
 				/>
-				{/* <div style={{ position: 'absolute', top: "-100%", width: 1000, height: 400 }}>
+				{/* <div style={{ position: 'absolute', top: '-100%', width: 1000, height: 400 }}>
 					{this.state.lineDataSets ?
 						<LineChart
 							single
