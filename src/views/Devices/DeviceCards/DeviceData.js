@@ -123,7 +123,7 @@ class DeviceData extends PureComponent {
 				}
 			}
 			catch (error) {
-				console.log(error)
+				
 			}
 		}
 	}
@@ -143,7 +143,7 @@ class DeviceData extends PureComponent {
 		const { display } = this.state
 		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device } = this.props
 
-		console.log(roundDataSets)
+		
 		switch (display) {
 			case 0:
 				return roundDataSets ? <div style={{ maxHeight: 400 }}>

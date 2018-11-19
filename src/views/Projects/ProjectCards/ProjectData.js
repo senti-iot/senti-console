@@ -123,7 +123,7 @@ class ProjectData extends PureComponent {
 				}
 			}
 			catch (error) {
-				console.log(error)
+				
 			}
 		}
 	}

@@ -135,7 +135,7 @@ function zoomTimeScale(scale, zoom, center, zoomOptions) {
 		options.time.min = newMin;
 		options.time.max = newMax;
 	}
-	// console.log(options.time.min.format("lll"), options.time.max.format("lll"))
+	// , options.time.max.format("lll"))
 	// return { startDate: options.time.min, endDate: options.time.max }
 }
 

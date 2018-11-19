@@ -371,11 +371,11 @@ class Devices extends Component {
 	}
 	getFavs = () => {
 		let favorites = this.props.favorites.filter(f => f.type === 'device')
-		console.log(favorites)
+		
 		let favDevices = favorites.map(f => {
 			return this.state.devices[this.state.devices.findIndex(d => d.id === f.id)]
 		})
-		console.log(favDevices)
+		
 		return favDevices
 	}
 	renderFavorites = () => {

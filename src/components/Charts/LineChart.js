@@ -96,7 +96,7 @@ class LineChart extends PureComponent {
 				// 	enabled: true,
 				// 	drag: true,
 				// 	mode: 'x',
-				// 	// onZoom: function (props) { console.log('zoomed'); console.log(props) }
+				// 	// onZoom: function (props) { ;  }
 				// }
 			}
 		}
@@ -137,7 +137,7 @@ class LineChart extends PureComponent {
 		 *  2. Pass them to the same function as CustomSetRange used by the filter in Device.js
 		 *  3. Create a new function that based on the difference between the dates, sets the appropiate timeType (hour, minute, day, month, etc.)
 		 *  4. Set the "newData" without loading
-		 * 	@debug console.log(this.chart.chartInstance.scales['xAxis'].options.time)
+		 * 	@debug 
 		 *  */
 	componentDidUpdate = (prevProps, prevState) => {
 	
@@ -284,7 +284,7 @@ class LineChart extends PureComponent {
 			await this.props.onElementsClick(elements)
 		}
 		catch (e) {
-			// console.log(e);
+			// ;
 		}
 		// }
 		this.hideTooltip()

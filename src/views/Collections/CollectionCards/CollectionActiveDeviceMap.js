@@ -20,7 +20,7 @@ export default class ActiveDeviceMap extends PureComponent {
 	}
 	render() {
 		const { device, weather, t, loading } = this.props
-		console.log(device)
+		
 		return (
 			<InfoCard
 				title={t("devices.cards.map")}

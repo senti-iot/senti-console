@@ -213,7 +213,7 @@ class CalibrateDevice extends Component {
 		</Grid>
 	}
 	getLatLngFromMap = (e) => {
-		console.log(e.lat, e.long)
+		
 		this.setState({
 			lat: e.lat,
 			long: e.long
