@@ -521,6 +521,7 @@
 		"trp": "Rows per page on lists"
 	},
 	"sidebar": {
+		"favorites": "Favorites",
 		"collections": "Data",
 		"dashboard": "Dashboard",
 		"devices": "Devices",
@@ -535,10 +536,16 @@
 			"project": "Project",
 			"org": "Organisation",
 			"user": "User"
+		},
+		"fields":{
+			"id":"ID",
+			"name":"Name",
+			"type": "Type"
 		}
 	},
 	"snackbars": {
 		"favorite":{
+			"manyRemoved": "Favorites have been removed!",
 			"saved": "%{name} (%{type}) has been added to favorites!",
 			"removed": "%{name} (%{type}) has been removed from favorites!"
 		},

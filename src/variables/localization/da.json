@@ -521,6 +521,7 @@
 		"trp": "Rækker per side i lister"
 	},
 	"sidebar": {
+		"favorites": "Favoritter",
 		"collections": "Data",
 		"dashboard": "Dashboard",
 		"devices": "Enheder",
@@ -529,16 +530,23 @@
 		"users": "Brugere"
 	},
 	"favorites": {
+		"type": "Type",
 		"types": {
 			"device": "Enhed",
 			"collection": "Datasamling",
 			"project": "Projekt",
 			"org": "Organisation",
 			"user": "Bruger"
+		},
+		"fields": {
+			"id": "ID",
+			"name": "Name",
+			"type": "Type"
 		}
 	},
 	"snackbars": {
-		"favorite":{
+		"favorite": {
+			"manyRemoved": "Favoritter er blevet fjernet!",
 			"saved": "%{name} (%{type}) er blevet tilføjet til favoritter!",
 			"removed": "%{name} (%{type}) er blevet fjernet fra favoritter!"
 		},
