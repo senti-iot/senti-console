@@ -4,7 +4,7 @@ import {
 	DialogContentText, DialogActions, Button, /* MenuItem, Menu, */ IconButton, ListItem, ListItemIcon, ListItemText, List,
 } from '@material-ui/core'
 import TC from 'components/Table/TC'
-import { Delete, Edit, PictureAsPdf, /* FilterList, */ Add } from 'variables/icons'
+import { Delete, Edit, PictureAsPdf, /* FilterList, */ Add, Star, StarBorder } from 'variables/icons'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
 import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
@@ -14,6 +14,9 @@ import EnhancedTableToolbar from 'components/Table/TableToolbar'
 import { Info, ItemG, Caption } from 'components'
 import { connect } from 'react-redux'
 import TP from 'components/Table/TP'
+import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
+import withSnackbar from 'components/Localization/S';
+
 var countries = require('i18n-iso-countries')
 
 class OrgTable extends React.Component {
@@ -29,7 +32,23 @@ class OrgTable extends React.Component {
 			openDelete: false,
 		}
 	}
-
+	componentDidUpdate = () => {
+		if (this.props.saved === true) {
+			const { data } = this.props
+			const { selected } = this.state
+			let org = data[data.findIndex(d => d.id === selected[0])]
+			if (this.props.isFav({ id: org.id, type: 'org' })) {
+				this.props.s('snackbars.favorite.saved', { name: org.name, type: this.props.t('favorites.types.org') })
+				this.props.finishedSaving()
+				this.setState({ selected: [] })
+			}
+			if (!this.props.isFav({ id: org.id, type: 'org' })) {
+				this.props.s('snackbars.favorite.removed', { name: org.name, type: this.props.t('favorites.types.org') })
+				this.props.finishedSaving()
+				this.setState({ selected: [] })
+			}
+		}
+	}
 	handleToolbarMenuOpen = e => {
 		e.stopPropagation()
 		this.setState({ anchorElMenu: e.currentTarget })
@@ -112,16 +131,35 @@ class OrgTable extends React.Component {
 	handleEdit = () => {
 		this.props.history.push(`/management/org/${this.state.selected[0]}/edit`)
 	}
+	addToFav = (favObj) => {
+		this.props.addToFav(favObj)
+		this.setState({ anchorElMenu: null })
+	}
+	removeFromFav = (favObj) => {
+		this.props.removeFromFav(favObj)
+		this.setState({ anchorElMenu: null })
+	}
 	options = () => {
-		const { t, accessLevel } = this.props
+		const { t, accessLevel, isFav, data } = this.props
+		const { selected } = this.state
+		let org = data[data.findIndex(d => d.id === selected[0])]
+		let favObj = {
+			id: org.id,
+			name: org.name,
+			type: 'org',
+			path: `/management/org/${org.id}`
+		}
+		let isFavorite = isFav(favObj)
 		let allOptions = [
 			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
+			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
 			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
 			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
 		if (accessLevel.apiorg.edit)
 			return allOptions
 		else return [
+			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
 			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf }
 		]
 	}
@@ -218,7 +256,6 @@ render() {
 								>
 									<Hidden lgUp>
 										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => this.handleClick(e, n.id)}/>} />
-
 										<TC content={
 											<ItemG container alignItems={'center'}>
 												<ItemG>
@@ -270,15 +307,20 @@ render() {
 const mapStateToProps = (state) => ({
 	rowsPerPage: state.settings.trp,
 	language: state.localization.language,
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	favorites: state.favorites.favorites,
+	saved: state.favorites.saved
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	addToFav: (favObj) => dispatch(addToFav(favObj)),
+	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
+	finishedSaving: () => dispatch(finishedSaving())
+})
 
 OrgTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(OrgTable)))
+export default withSnackbar()(withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(OrgTable))))

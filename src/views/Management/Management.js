@@ -40,7 +40,13 @@ class Management extends Component {
 		}
 		props.setHeader(props.t('users.pageTitle'), false, '', 'users')
 	}
+	tabs = [
+		{ id: 0, title: this.props.t('users.tabs.users'), label: <People />, url: `/management/users` },
+		{ id: 1, title: this.props.t('users.tabs.orgs'), label: <Business />, url: `/management/orgs` },
+		{ id: 3, title: this.props.t('sidebar.favorites'), label: <Star />, url: `/management/favorites` }
+	]
 	componentDidMount = async () => {
+		console.log(this.props.saved)
 		this.handleTabs()
 		await this.getData()
 	}
@@ -67,11 +73,28 @@ class Management extends Component {
 			}
 		})
 	}
-	tabs = [
-		{ id: 0, title: this.props.t('users.tabs.users'), label: <People />, url: `/management/users` },
-		{ id: 1, title: this.props.t('users.tabs.orgs'), label: <Business />, url: `/management/orgs` },
-		{ id: 3, title: this.props.t('sidebar.favorites'), label: <Star />, url: `/management/favorites` }
-	]
+	handleCheckboxClick = (event, id) => {
+		event.stopPropagation()
+		const { selected } = this.state;
+		const selectedIndex = selected.indexOf(id)
+		let newSelected = [];
+
+		if (selectedIndex === -1) {
+			newSelected = newSelected.concat(selected, id);
+		} else if (selectedIndex === 0) {
+			newSelected = newSelected.concat(selected.slice(1))
+		} else if (selectedIndex === selected.length - 1) {
+			newSelected = newSelected.concat(selected.slice(0, -1))
+		} else if (selectedIndex > 0) {
+			newSelected = newSelected.concat(
+				selected.slice(0, selectedIndex),
+				selected.slice(selectedIndex + 1),
+			);
+		}
+
+		this.setState({ selected: newSelected })
+	}
+	
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
 	}
@@ -85,6 +108,7 @@ class Management extends Component {
 			{ label: t('menus.favorites.remove'), icon: StarBorder, func: this.removeFromFavs }
 		]
 	}
+	
 	removeFromFavs = () => {
 		const { selected } = this.state
 		const { favorites } = this.props
@@ -112,6 +136,11 @@ class Management extends Component {
 		if (this.props.location.pathname !== prevProps.location.pathname) {
 			this.handleTabs()
 		}
+		if (this.props.saved === true) {
+			this.props.finishedSaving()
+			this.setState({ selected: [] })
+			this.props.s('snackbars.favorite.manyRemoved')
+		}
 	
 	}
 	favoritesHeaders = () => {
@@ -136,8 +165,11 @@ class Management extends Component {
 		this.setState({ anchorElMenu: null })
 	}
 	handleSelectAllClick = (event, checked) => {
+		const { favorites } = this.props
+
+		let usersAndOrgs = favorites.filter(f => f.type === 'user' || f.type === 'org')
 		if (checked) {
-			this.setState({ selected: this.props.favorites.map(n => n.id) })
+			this.setState({ selected: usersAndOrgs.map(n => n.id) })
 			return;
 		}
 		this.setState({ selected: [] })

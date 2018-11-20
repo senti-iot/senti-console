@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info, Dropdown } from 'components';
 import { Grid } from '@material-ui/core';
-import { Business, Edit, Delete } from 'variables/icons'
+import { Business, Edit, Delete, StarBorder, Star } from 'variables/icons'
 var countries = require('i18n-iso-countries')
 
 class OrgDetails extends Component {
@@ -26,14 +26,18 @@ class OrgDetails extends Component {
 	handleEdit = () => this.props.history.push({ pathname: `${this.props.match.url}/edit`, prevURL: `/management/org/${this.props.org.id}`  })
 
 	options = () => {
-		const { t, accessLevel, classes } = this.props
+		const { t, accessLevel, classes, isFav, addToFav, removeFromFav } = this.props
 		let allOptions = [
 			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: <Edit className={classes.leftIcon} /> },
-			{ label: t('menus.delete'), func: this.handleDeleteOrg, icon: <Delete className={classes.leftIcon} /> }
+			{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav },
+			{ label: t('menus.delete'), func: this.handleDeleteOrg, icon: <Delete className={classes.leftIcon} /> },
+
 		]
 		if (accessLevel.apiorg.edit)
 			return allOptions
 		else return [
+			{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav },
+
 		]
 	}
 
