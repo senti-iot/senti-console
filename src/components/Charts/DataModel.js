@@ -54,7 +54,7 @@ export const setSummaryData = (dataArr, from, to) => {
 		roundDataSets: null,
 		barDataSets: null
 	}
-	if (dataArr.length > 1) {
+	if (dataArr.length > 0) {
 		 state = {
 			title: `${displayFrom} - ${displayTo}`,
 			loading: false,
@@ -84,7 +84,7 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 		roundDataSets: null,
 		barDataSets: null
 	}
-	if (dataArr.length > 1) {
+	if (dataArr.length > 0) {
 		 state = {
 			loading: false,
 			timeType: 2,
@@ -141,7 +141,7 @@ export const setHourlyData = (dataArr, from, to, hoverID) => {
 		roundDataSets: null,
 		barDataSets: null
 	}
-	if (dataArr.length > 1) {
+	if (dataArr.length > 0) {
 		state = {
 			loading: false,
 			timeType: 1,
@@ -198,7 +198,7 @@ export const setMinutelyData = (dataArr, from, to, hoverID) => {
 		roundDataSets: null,
 		barDataSets: null
 	}
-	if (dataArr.length > 1) {
+	if (dataArr.length > 0) {
 		state = {
 			loading: false,
 			lineDataSets: {
