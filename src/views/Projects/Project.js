@@ -15,6 +15,10 @@ import { setHourlyData, setDailyData, setSummaryData, setMinutelyData } from 'co
 import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
 import { Timeline, Map, DataUsage, Person, LibraryBooks } from 'variables/icons';
+import { compose } from 'recompose';
+import { finishedSaving, removeFromFav, addToFav, isFav } from 'redux/favorites';
+import { connect } from 'react-redux'
+
 class Project extends Component {
 	constructor(props) {
 		super(props)
@@ -67,6 +71,20 @@ class Project extends Component {
 			else {
 				history.push('/404')
 			}
+	}
+	componentDidUpdate = (prevProps, prevState) => {
+		console.log(this.props.saved)
+		if (this.props.saved === true) {
+			const { project } = this.state
+			if (this.props.isFav({ id: project.id, type: 'project' })) {
+				this.props.s('snackbars.favorite.saved', { name: project.title, type: this.props.t('favorites.types.project') })
+				this.props.finishedSaving()
+			}
+			if (!this.props.isFav({ id: project.id, type: 'project' })) {
+				this.props.s('snackbars.favorite.removed', { name: project.title, type: this.props.t('favorites.types.project') })
+				this.props.finishedSaving()
+			}
+		}
 	}
 	getProject = async id => {
 		const { history } = this.props
@@ -363,6 +381,26 @@ class Project extends Component {
 	handleRawData = () => {
 		this.setState({ loadingData: true, raw: !this.state.raw }, () => this.handleSwitchDayHourSummary())
 	}
+	addToFav = () => {
+		const { project } = this.state
+		let favObj = {
+			id: project.id,
+			name: project.title,
+			type: 'project',
+			path: this.props.match.url
+		}
+		this.props.addToFav(favObj)
+	}
+	removeFromFav = () => {
+		const { project } = this.state
+		let favObj = {
+			id: project.id,
+			name: project.title,
+			type: 'project',
+			path: this.props.match.url
+		}
+		this.props.removeFromFav(favObj)
+	}
 	setHoverID = (id) => {
 		if (id !== this.state.hoverID)
 		{
@@ -461,6 +499,9 @@ class Project extends Component {
 
 						<ItemGrid xs={12} noMargin id='details'>
 							<ProjectDetails
+								isFav={this.props.isFav({ id: project.id, type: 'project' })}
+								addToFav={this.addToFav}
+								removeFromFav={this.removeFromFav}
 								t={t}
 								project={project} {...rp}
 								deleteProject={this.handleOpenDeleteDialog}
@@ -520,5 +561,17 @@ class Project extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	accessLevel: state.settings.user.privileges,
+	language: state.settings.language,
+	saved: state.favorites.saved
+})
 
-export default withStyles(deviceStyles)(Project)
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	addToFav: (favObj) => dispatch(addToFav(favObj)),
+	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
+	finishedSaving: () => dispatch(finishedSaving())
+})
+const ProjectComposed = compose(connect(mapStateToProps, mapDispatchToProps), withStyles(deviceStyles))(Project)
+export default ProjectComposed
