@@ -12,6 +12,7 @@ import withSnackbar from 'components/Localization/S';
 import { compose } from 'recompose';
 import { CircularLoader } from 'components';
 import { People, Business } from 'variables/icons';
+import { filterItems } from 'variables/functions';
 class Management extends Component {
 	constructor(props) {
 		super(props)
@@ -23,22 +24,33 @@ class Management extends Component {
 				endDate: null,
 				activeDateFilter: false
 			},
+			loading: true,
 			users: [],
 			orgs: []
 		}
 		props.setHeader(props.t('users.pageTitle'), false, '', 'users')
 	}
-
+	componentDidMount = async () => {
+		await this.getData()
+	}
 	getData = async () => {
 		let users = await getAllUsers().then(rs => rs)
 		let orgs = await getAllOrgs().then(rs => rs)
-		if (this._isMounted) {
-			this.setState({
-				users: users ? users : [],
-				orgs: orgs ? orgs : [],
-				loading: false
-			})
-		}
+
+		this.setState({
+			users: users ? users : [],
+			orgs: orgs ? orgs : [],
+			loading: false
+		})
+		
+	}
+	handleFilterKeyword = (value) => {
+		this.setState({
+			filters: {
+				...this.state.filters,
+				keyword: value
+			}
+		})
 	}
 	tabs = [
 		{ id: 0, title: this.props.t('users.tabs.users'), label: <People />, url: `/management/users` },
@@ -47,13 +59,18 @@ class Management extends Component {
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
 	}
+
+	filterItems = (data) => {
+		return filterItems(data, this.state.filters)
+	}
 	render() {
 		const { users, orgs, filters, loading } = this.state
-		console.log(this.props.match)
+		console.log(window.location.pathname.includes('users'))
+		console.log(users, orgs)
 		return (
 			!loading ? <Fragment>
 				<Toolbar
-					data={this.props.match.path.includes('users') ? users : orgs}
+					data={window.location.pathname.includes('users') ? users : orgs}
 					filters={filters}
 					history={this.props.history}
 					match={this.props.match}
