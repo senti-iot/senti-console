@@ -22,8 +22,8 @@ class ProjectCards extends Component {
 		return (
 			<GridContainer spacing={8} justify={'center'}>
 			
-				{projects.map(p =>
-					<ItemG container justify={'center'} xs={12} sm={6} md={4}><ProjectCard t={t} key={p.id} p={p} />	</ItemG>
+				{projects.map((p, i) =>
+					<ItemG container key={i} justify={'center'} xs={12} sm={6} md={4}><ProjectCard t={t} key={p.id} p={p} />	</ItemG>
 				)}
 			
 			</GridContainer>

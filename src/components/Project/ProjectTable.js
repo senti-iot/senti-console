@@ -13,8 +13,9 @@ import EnhancedTableHead from 'components/Table/TableHeader'
 import { ItemGrid, Info, Caption } from 'components'
 import { connect } from 'react-redux'
 import TP from 'components/Table/TP';
+import TC from 'components/Table/TC';
 
-class EnhancedTable extends React.Component {
+class ProjectTable extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -52,45 +53,6 @@ class EnhancedTable extends React.Component {
 	handleRequestSort = (event, property) => {
 		this.props.handleRequestSort(event, property)
 	}
-
-	// handleSelectAllPage = (event, checked) => {
-	// 	if (checked) {
-	// 		const { data } = this.props
-	// 		const { rowsPerPage, page } = this.state
-	// 		this.setState({ selected: data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => n.id) })
-	// 		return;
-	// 	}
-	// }
-
-	// handleSelectAllClick = (event, checked) => {
-	// 	if (checked) {
-	// 		this.setState({ selected: this.props.data.map(n => n.id) })
-	// 		return;
-	// 	}
-	// 	this.setState({ selected: [] })
-	// }
-
-	// handleClick = (event, id) => {
-	// 	event.stopPropagation()
-	// 	const { selected } = this.state;
-	// 	const selectedIndex = selected.indexOf(id)
-	// 	let newSelected = [];
-
-	// 	if (selectedIndex === -1) {
-	// 		newSelected = newSelected.concat(selected, id);
-	// 	} else if (selectedIndex === 0) {
-	// 		newSelected = newSelected.concat(selected.slice(1))
-	// 	} else if (selectedIndex === selected.length - 1) {
-	// 		newSelected = newSelected.concat(selected.slice(0, -1))
-	// 	} else if (selectedIndex > 0) {
-	// 		newSelected = newSelected.concat(
-	// 			selected.slice(0, selectedIndex),
-	// 			selected.slice(selectedIndex + 1),
-	// 		);
-	// 	}
-
-	// 	this.setState({ selected: newSelected })
-	// }
 
 	handleChangePage = (event, page) => {
 		this.setState({ page });
@@ -140,7 +102,7 @@ class EnhancedTable extends React.Component {
 	}
 
 	render() {
-		const { classes, selected, t, order, data, orderBy } = this.props
+		const { classes, selected, t, order, data, orderBy, handleCheckboxClick } = this.props
 		const { rowsPerPage, page } = this.state
 		let emptyRows;
 		if (data)
@@ -185,10 +147,8 @@ class EnhancedTable extends React.Component {
 										style={{ cursor: 'pointer' }}
 									>
 										<Hidden lgUp>
-											<TableCell padding='checkbox' className={classes.tablecellcheckbox} onClick={e => this.props.handleClick(e, n.id)}>
-												<Checkbox checked={isSelected} />
-											</TableCell>
-											<TableCell classes={{ root: classes.tableCell }}>
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+											<TC content={
 												<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Info noWrap paragraphCell={classes.noMargin}>
@@ -200,43 +160,17 @@ class EnhancedTable extends React.Component {
 															{`${n.org ? n.org.name : t('users.fields.noOrg')}` /* ${dateFormatter(n.startDate)} - ${dateFormatter(n.endDate)} */}
 														</Caption>
 													</ItemGrid>
-													{/* </ItemGrid> */}
 												</ItemGrid>
-											</TableCell>
+											}/>
 										</Hidden>
 
 										<Hidden mdDown>
-											<TableCell padding='checkbox' className={classes.tablecellcheckbox} onClick={e => this.props.handleClick(e, n.id)}>
-												<Checkbox checked={isSelected} />
-											</TableCell>
-											<TableCell className={classes.tableCell + ' ' + classes.tableCellNoWidth}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.title}
-												</Typography>
-											</TableCell>
-											{/* <TableCell className={classes.tableCell}>
-												<Typography paragraph title={n.description} classes={{ root: classes.paragraphCell }}>
-													{n.description}
-												</Typography>
-											</TableCell> */}
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{dateFormatter(n.startDate)}
-												</Typography>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{dateFormatter(n.endDate)}
-												</Typography>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{dateFormatter(n.created)}	</Typography>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{dateFormatter(n.modified)}	</Typography>
-											</TableCell>
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+											<TC FirstC label={n.title}/>
+											<TC label={dateFormatter(n.startDate)}/>
+											<TC label={dateFormatter(n.endDate)}/>
+											<TC label={dateFormatter(n.created)}/>
+											<TC label={dateFormatter(n.modified)}/>
 										</Hidden>
 									</TableRow>
 								)
@@ -271,8 +205,8 @@ const mapDispatchToProps = {
 
 }
 
-EnhancedTable.propTypes = {
+ProjectTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(EnhancedTable)))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(ProjectTable)))

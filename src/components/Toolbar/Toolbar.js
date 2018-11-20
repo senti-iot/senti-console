@@ -63,6 +63,10 @@ class Toolbar extends PureComponent {
 			route: props.route ? props.route : 0	 
 	  }
 	}
+	componentDidMount = () => {
+	  console.log(this.props.route)
+	}
+	
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
 	}
