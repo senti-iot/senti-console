@@ -65,16 +65,6 @@ class ProjectData extends PureComponent {
 		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
 	]
 
-	getImage = () => {
-		// var canvas = document.getElementsByClassName('chartjs-render-monitor');
-	
-		// if (canvas.length > 0) {
-		// 	this.image = canvas[1].toDataURL('image/png');
-		// 	this.setState({ image: this.image })
-			
-		// }
-	}
-
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}

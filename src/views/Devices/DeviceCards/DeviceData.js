@@ -64,7 +64,7 @@ class DeviceData extends PureComponent {
 		{ id: 2, icon: <BarChartIcon />, label: this.props.t('charts.type.bar') },
 		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
 	]
-	
+
 	getImage = () => {
 		// var canvas = document.getElementsByClassName('chartjs-render-monitor');
 	

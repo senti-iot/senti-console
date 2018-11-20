@@ -176,6 +176,7 @@ class OrgTable extends React.Component {
 			}
 		</Fragment>
 	}
+  
 renderConfirmDelete = () => {
 	const { openDelete, selected } = this.state
 	const { data, t, classes } = this.props

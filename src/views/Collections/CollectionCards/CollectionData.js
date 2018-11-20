@@ -66,13 +66,6 @@ class CollectionData extends PureComponent {
 	]
 
 	getImage = () => {
-		// var canvas = document.getElementsByClassName('chartjs-render-monitor');
-
-		// if (canvas.length > 0) {
-		// 	this.image = canvas[1].toDataURL('image/png');
-		// 	this.setState({ image: this.image })
-
-		// }
 	}
 
 	componentWillUnmount = () => {

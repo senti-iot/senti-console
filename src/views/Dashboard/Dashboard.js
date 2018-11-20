@@ -118,7 +118,7 @@ class Dashboard extends React.Component {
 					/></ItemG> */}
 					<ItemG container justify={'center'} xs={12}>
 						<Caption>
-							Alpha Senti.Cloud version {pj.version}
+							Beta Senti.Cloud version {pj.version}
 						</Caption>
 					</ItemG>
 				</GridContainer>

@@ -80,7 +80,6 @@ export const getSettings = async () => {
 		if (user) {
 			if (settings) {
 				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
-				// moment.locale(user.aux.odeum.language)
 				dispatch({
 					type: GETSETTINGS,
 					settings: {
