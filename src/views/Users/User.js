@@ -15,6 +15,7 @@ import { getUser, deleteUser, resendConfirmEmail } from 'variables/dataUsers';
 import { connect } from 'react-redux'
 import { setPassword } from 'variables/dataLogin';
 import { userStyles } from 'assets/jss/components/users/userStyles';
+import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 
 // var moment = require('moment')
 
@@ -39,13 +40,41 @@ class User extends Component {
 		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		if (prevProps.match && this.props.match.params)
+		if (prevProps.match && this.props.match.params) {
 			if (prevProps.match.params.id !== this.props.match.params.id) {
 				this.setState({ loading: true })
 				this.componentDidMount()
+			}}
+		if (this.props.saved === true) {
+			const { user } = this.state
+			if (this.props.isFav({ id: user.id, type: 'user' })) {
+				this.props.s('snackbars.favorite.saved', { name: `${user.firstName} ${user.lastName}`, type: this.props.t('favorites.types.user') })
+				this.props.finishedSaving()
 			}
+			if (!this.props.isFav({ id: user.id, type: 'user' })) {
+				this.props.s('snackbars.favorite.removed', { name: `${user.firstName} ${user.lastName}`, type: this.props.t('favorites.types.user') })
+				this.props.finishedSaving()
+			}
+		}
 	}
-
+	addToFav = () => {
+		const { user } = this.state
+		let favObj = {
+			id: user.id,
+			name: `${user.firstName} ${user.lastName}`,
+			type: 'user',
+			path: this.props.match.url }
+		this.props.addToFav(favObj)
+	}
+	removeFromFav = () => {
+		const { user } = this.state
+		let favObj = {
+			id: user.id,
+			name: `${user.firstName} ${user.lastName}`,
+			type: 'user',
+			path: this.props.match.url }
+		this.props.removeFromFav(favObj)
+	}
 	componentDidMount = async () => {
 		const { match, setHeader, history, location } = this.props
 		if (match) {
@@ -270,6 +299,9 @@ class User extends Component {
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<ItemGrid xs={12} noMargin>
 						<UserContact
+							isFav={this.props.isFav({ id: user.id, type: 'user' })}
+							addToFav={this.addToFav}
+							removeFromFav={this.removeFromFav}
 							t={t}
 							user={user}
 							classes={classes}
@@ -290,11 +322,15 @@ class User extends Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	saved: state.favorites.saved
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	addToFav: (favObj) => dispatch(addToFav(favObj)),
+	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
+	finishedSaving: () => dispatch(finishedSaving())
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(userStyles)(User))

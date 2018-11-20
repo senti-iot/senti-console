@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info } from 'components';
 import { Hidden } from '@material-ui/core';
 import { pF } from 'variables/functions';
-import { Person, Edit, Delete, LockOpen, Email } from 'variables/icons'
+import { Person, Edit, Delete, LockOpen, Email, Star, StarBorder } from 'variables/icons'
 import { Link } from 'react-router-dom'
 import Gravatar from 'react-gravatar'
 import { connect } from 'react-redux'
@@ -45,18 +45,20 @@ class UserContact extends Component {
 		return dontShow
 	}
 	renderTopAction = () => {
-		const { t, classes, user, history } = this.props
+		const { t, classes, user, history, isFav, addToFav, removeFromFav } = this.props
 		return <Dropdown menuItems={
 			[
 				{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `${this.props.match.url}/edit`, prevURL: `/management/user/${user.id}`  }) },
 				{ label: t('menus.changePassword'), icon: <LockOpen className={classes.leftIcon} />, func: this.props.changePass },
 				{ label: t('menus.userResendEmail'), icon: <Email className={classes.leftIcon} />, func: this.props.resendConfirmEmail, dontShow: user.suspended !== 2 },
+				{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav },
 				{
 					label: t('menus.delete'),
 					icon: <Delete className={classes.leftIcon} />,
 					func: this.deleteUser,
 					dontShow: this.canDelete()
-				}
+				},
+
 			]
 		}/>
 	}
