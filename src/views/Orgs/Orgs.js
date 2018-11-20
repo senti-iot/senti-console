@@ -17,7 +17,7 @@ class Orgs extends Component {
 		this.state = {
 			orgs: [],
 			loading: true,
-			route: 0,
+			route: 1,
 			order: 'desc',
 			orderBy: 'name',
 			filters: {
