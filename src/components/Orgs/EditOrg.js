@@ -117,7 +117,7 @@ class EditOrg extends Component {
 			loading: false
 		})
 		let prevURL = location.prevURL ? location.prevURL : null
-		this.props.setHeader('orgs.updateOrg', true, prevURL, 'users')
+		this.props.setHeader('orgs.updateOrg', true, prevURL, '/management/users')
 	}
 
 	componentWillUnmount = () => {
@@ -163,7 +163,7 @@ class EditOrg extends Component {
 	close = () => {
 		this.setState({ created: true, creating: false })
 		this.props.s('snackbars.orgUpdated', ({ org: this.state.org.name }))
-		this.props.history.push(`/org/${this.state.org.id}`)
+		this.props.history.push(`/management/org/${this.state.org.id}`)
 	}
 
 	handleUpdateOrg = () => {
@@ -183,7 +183,7 @@ class EditOrg extends Component {
 	}
 
 	goToOrg = () => {
-		this.props.history.push('/org/' + this.props.match.params.id)
+		this.props.history.push('/management/org/' + this.props.match.params.id)
 	}
 	handleOrgChange = e => {
 		this.setState({

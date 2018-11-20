@@ -110,7 +110,7 @@ class OrgTable extends React.Component {
 	isSelected = id => this.state.selected.indexOf(id) !== -1
 
 	handleEdit = () => {
-		this.props.history.push(`/org/${this.state.selected[0]}/edit`)
+		this.props.history.push(`/management/org/${this.state.selected[0]}/edit`)
 	}
 	options = () => {
 		const { t, accessLevel } = this.props
@@ -125,7 +125,7 @@ class OrgTable extends React.Component {
 			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf }
 		]
 	}
-	addNewOrg = () => { this.props.history.push('/orgs/new') }
+	addNewOrg = () => { this.props.history.push('/management/orgs/new') }
 
 	renderTableToolBarContent = () => {
 		const { accessLevel } = this.props
@@ -208,7 +208,7 @@ render() {
 							return (
 								<TableRow
 									hover
-									onClick={e => { e.stopPropagation(); this.props.history.push('/org/' + n.id) }}
+									onClick={e => { e.stopPropagation(); this.props.history.push('/management/org/' + n.id) }}
 									// onContextMenu={this.handleToolbarMenuOpen}
 									role='checkbox'
 									aria-checked={isSelected}

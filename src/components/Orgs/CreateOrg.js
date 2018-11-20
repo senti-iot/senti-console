@@ -42,8 +42,8 @@ class CreateOrg extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		const { t, accessLevel, setHeader, location } = this.props
-		let prevURL = location.prevURL ? location.prevURL : `/orgs`
-		setHeader('orgs.createOrg', true, prevURL, 'users')
+		let prevURL = location.prevURL ? location.prevURL : `/management/orgs`
+		setHeader('orgs.createOrg', true, prevURL, '/management/users')
 		await getAllOrgs().then(rs => {
 			if (this._isMounted) {
 				if (accessLevel.apisuperuser)
@@ -148,7 +148,7 @@ class CreateOrg extends Component {
 	close = (rs) => {
 		this.setState({ created: true, creating: false, org: rs })
 		this.props.s('snackbars.orgCreated', { org: this.state.org.name })
-		this.props.history.push(`/org/${this.state.org.id}`)
+		this.props.history.push(`/management/org/${this.state.org.id}`)
 	}
 	handleCreateOrg = () => {		
 		if (this.handleValidation()) {
@@ -175,7 +175,7 @@ class CreateOrg extends Component {
 	}
 
 	goToOrg = () => {
-		this.props.history.push('/org/' + this.props.match.params.id)
+		this.props.history.push('/management/org/' + this.props.match.params.id)
 	}
 
 	handleOrgChange = e => {

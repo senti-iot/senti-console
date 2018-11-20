@@ -86,7 +86,7 @@ class Dashboard extends React.Component {
 						header={t('dashboard.cardHeaders.users')}
 						content={t('dashboard.cardContent.users')}
 						leftAction={this.renderAction('actions.learnMore', '/')}
-						rightAction={this.renderAction('actions.startNow', '/users', true)}
+						rightAction={this.renderAction('actions.startNow', '/management/users', true)}
 					/></ItemG>
 					<ItemG container justify={'center'} xs={12} sm={6} md={4}>	<MediaCard
 						img={imgs.settings}

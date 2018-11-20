@@ -7,6 +7,10 @@ import Loadable from 'react-loadable';
 import AsyncLoader from 'components/Loader/AsyncLoader';
 import { DataUsage } from 'variables/icons';
 
+const AsyncManagement = Loadable({
+	loader: () => import('views/Management/Management'),
+	loading: AsyncLoader
+})
 const AsyncFavorites = Loadable({
 	loader: () => import('routes/favorites'),
 	loading: AsyncLoader
@@ -71,6 +75,7 @@ const dashboardRoutes = [
 		component: AsyncFavorites,
 		menuRoute: 'favorites'
 	},
+	
 	{
 		path: '/project/:id',
 		component: AsyncProject,
@@ -111,16 +116,30 @@ const dashboardRoutes = [
 		menuRoute: 'devices'
 	},
 	{
-		path: '/users',
-		sidebarName: 'sidebar.users',
-		icon: People,
-		component: AsyncUsers,
+		path: '/management/user/:id',
+		component: AsyncUser,
+		hideFromSideBar: true,
 		menuRoute: 'users'
 	},
 	{
-		path: '/user/:id',
-		component: AsyncUser,
+		path: '/management/org/:id',
+		component: AsyncOrg,
 		hideFromSideBar: true,
+		menuRoute: 'users'
+	},
+	{
+		path: '/management',
+		sidebarName: 'sidebar.users',
+		icon: People,
+		component: AsyncManagement,
+		menuRoute: 'users',
+	},
+	{
+		path: '/users',
+		sidebarName: 'sidebar.users',
+		icon: People,
+		hideFromSideBar: true,
+		component: AsyncUsers,
 		menuRoute: 'users'
 	},
 	{
@@ -129,12 +148,7 @@ const dashboardRoutes = [
 		hideFromSideBar: true,
 		menuRoute: 'users'
 	},
-	{
-		path: '/org/:id',
-		component: AsyncOrg,
-		hideFromSideBar: true,
-		menuRoute: 'users'
-	},
+
 	{
 		path: '/settings',
 		sidebarName: 'sidebar.settings',

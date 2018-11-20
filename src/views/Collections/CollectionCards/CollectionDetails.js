@@ -78,7 +78,7 @@ class DeviceDetails extends Component {
 						<ItemG>
 							<Caption>{t('collections.fields.org')}:</Caption>
 							<Info>{collection.org ?
-								<Link to={{ pathname: `/org/${collection.org.id}`, prevURL: `/collection/${collection.id}` }} >
+								<Link to={{ pathname: `/management/org/${collection.org.id}`, prevURL: `/collection/${collection.id}` }} >
 									{collection.org.name}
 								</Link>
 								: t('collections.noProject')}</Info>

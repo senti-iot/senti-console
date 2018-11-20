@@ -5,7 +5,7 @@ import UserTable from 'components/User/UserTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
 import { getAllUsers, deleteUser } from 'variables/dataUsers';
-import Toolbar from 'components/Toolbar/Toolbar'
+// import Toolbar from 'components/Toolbar/Toolbar'
 import { People, Business } from 'variables/icons';
 import { filterItems, handleRequestSort } from 'variables/functions';
 
@@ -29,18 +29,20 @@ class Users extends Component {
 		}
 		props.setHeader(props.t('users.pageTitle'), false, '', 'users')
 	}
-
+	userHeader = () => {
+		const { t } = this.props
+		return	[
+			{ id: 'avatar', label: '' },
+			{ id: 'firstName', label: t('users.fields.name') },
+			{ id: 'phone', label: t('users.fields.phone') },
+			{ id: 'email', label: t('users.fields.email') },
+			{ id: 'org.name', label: t('users.fields.organisation') },
+			{ id: 'lastSignIng', label: t('users.fields.lastSignIn') }
+		]
+	}
 	componentDidMount = async () => {
 		this._isMounted = 1
 		await this.getData()
-		if (this._isMounted) {
-			if (this.props.location.pathname.includes('/orgs')) {
-				this.setState({ route: 1 })
-			}
-			else {
-				this.setState({ route: 0 })
-			}
-		}
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
@@ -81,27 +83,26 @@ class Users extends Component {
 		})
 	}
 	getData = async () => {
-		const { t } = this.props
+		if (this.props.users) { 
+			this.setState({
+				users: this.props.users,
+				loading: false
+			}, () => this.handleRequestSort(null, 'firstName', 'asc'))
+			return
+		}
 		let users = await getAllUsers().then(rs => rs)
 		if (this._isMounted) {
 			this.setState({
 				users: users ? users : [],
-				userHeader: [
-					{ id: 'avatar', label: '' },
-					{ id: 'firstName', label: t('users.fields.name') },
-					{ id: 'phone', label: t('users.fields.phone') },
-					{ id: 'email', label: t('users.fields.email') },
-					{ id: 'org.name', label: t('users.fields.organisation') },
-					{ id: 'lastSignIng', label: t('users.fields.lastSignIn') }
-				],
+		
 				loading: false
 			}, () => this.handleRequestSort(null, 'firstName', 'asc'))
 		}
 	}
 
 	tabs = [
-		{ id: 0, title: this.props.t('users.tabs.users'), label: <People />, url: `/users` },
-		{ id: 1, title: this.props.t('users.tabs.orgs'), label: <Business />, url: `/orgs` },
+		{ id: 0, title: this.props.t('users.tabs.users'), label: <People />, url: `/management/users` },
+		{ id: 1, title: this.props.t('users.tabs.orgs'), label: <Business />, url: `/management/orgs` },
 	]
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
@@ -132,11 +133,11 @@ class Users extends Component {
 	}
 	renderUsers = () => {
 		const { t } = this.props
-		const { loading, order, orderBy, filters, userHeader } = this.state
+		const { loading, order, orderBy, filters } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <UserTable
 				data={this.filterItems(this.state.users)}
-				tableHead={userHeader}
+				tableHead={this.userHeader()}
 				handleFilterEndDate={this.handleFilterEndDate}
 				handleFilterKeyword={this.handleFilterKeyword}
 				handleFilterStartDate={this.handleFilterStartDate}
@@ -154,14 +155,14 @@ class Users extends Component {
 		const { users, filters } = this.state
 		return (
 			<Fragment>
-				<Toolbar
+				{/* <Toolbar
 					data={users}
 					filters={filters}
 					history={this.props.history}
 					match={this.props.match}
 					handleFilterKeyword={this.handleFilterKeyword}
 					tabs={this.tabs}
-				/>
+				/> */}
 				{this.renderUsers()}
 			</Fragment>
 		)

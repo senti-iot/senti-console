@@ -5,7 +5,7 @@ import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
 import { getAllOrgs } from 'variables/dataOrgs';
 import OrgTable from 'components/Orgs/OrgTable';
-import Toolbar from 'components/Toolbar/Toolbar'
+// import Toolbar from 'components/Toolbar/Toolbar'
 import { People, Business } from 'variables/icons';
 import { filterItems, handleRequestSort } from 'variables/functions'
 import { deleteOrg } from 'variables/dataOrgs';
@@ -37,7 +37,7 @@ class Orgs extends Component {
 		this._isMounted = 1
 		await this.getData()
 		if (this._isMounted) {
-			if (this.props.location.pathname.includes('/orgs')) {
+			if (this.props.location.pathname.includes('/management/orgs')) {
 				this.setState({ route: 1 })
 			}
 			else {
@@ -103,8 +103,8 @@ class Orgs extends Component {
 	}
 
 	tabs = [
-		{ id: 0, title: this.props.t('users.tabs.users'), label: <People />, url: `/users` },
-		{ id: 1, title: this.props.t('users.tabs.orgs'), label: <Business />, url: `/orgs` },
+		{ id: 0, title: this.props.t('users.tabs.users'), label: <People />, url: `/management/users` },
+		{ id: 1, title: this.props.t('users.tabs.orgs'), label: <Business />, url: `/management/orgs` },
 	]
 	snackBarMessages = (msg) => {
 		const { s } = this.props
@@ -149,10 +149,10 @@ class Orgs extends Component {
 		</GridContainer>
 	}
 	render() {
-		const { orgs, route, filters } = this.state
+		// const { orgs, route, filters } = this.state
 		return (
 			<Fragment>
-				<Toolbar
+				{/* <Toolbar
 					data={orgs}
 					route={route}
 					filters={filters}
@@ -161,7 +161,7 @@ class Orgs extends Component {
 					handleFilterKeyword={this.handleFilterKeyword}
 					tabs={this.tabs}
 					defaultRoute={1}
-				/>
+				/> */}
 				{this.renderOrgs()}
 			</Fragment>
 		)

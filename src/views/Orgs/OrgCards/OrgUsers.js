@@ -25,7 +25,7 @@ class OrgUsers extends Component {
 								return (
 									<TableRow
 										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push({ pathname: '/user/' + n.id, prevURL: `/org/${this.props.org.id}` }) }}
+										onClick={e => { e.stopPropagation(); this.props.history.push({ pathname: '/management/user/' + n.id, prevURL: `/management/org/${this.props.org.id}` }) }}
 										// tabIndex={-1}
 										key={i}
 										style={{ cursor: 'pointer' }}

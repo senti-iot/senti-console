@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react'
 import { GridContainer, ItemGrid, CircularLoader, ItemG, TextF, Danger } from 'components';
 import UserContact from './UserCards/UserContact';
 import { UserLog } from './UserCards/UserLog';
-import { userStyles } from 'assets/jss/components/users/userStyles';
 import {
 	withStyles, /* , Typography, Grid, Hidden */
 	Dialog,
@@ -15,6 +14,7 @@ import {
 import { getUser, deleteUser, resendConfirmEmail } from 'variables/dataUsers';
 import { connect } from 'react-redux'
 import { setPassword } from 'variables/dataLogin';
+import { userStyles } from 'assets/jss/components/users/userStyles';
 
 // var moment = require('moment')
 
@@ -54,8 +54,8 @@ class User extends Component {
 					if (rs.id === null)
 						history.push('/404')
 					else {
-						let prevURL = location.prevURL ? location.prevURL : '/users'
-						setHeader(`${rs.firstName} ${rs.lastName}`, true, prevURL, 'users')
+						let prevURL = location.prevURL ? location.prevURL : '/management/users'
+						setHeader(`${rs.firstName} ${rs.lastName}`, true, prevURL, '/management/users')
 						this.setState({ user: rs, loading: false })
 					}
 				})
@@ -95,7 +95,7 @@ class User extends Component {
 	close = (rs) => {
 		this.setState({ openDelete: false })
 		this.snackBarMessages(1)
-		this.props.history.push('/users')
+		this.props.history.push('/management/users')
 	}
 	snackBarMessages = (msg) => {
 		const { s } = this.props

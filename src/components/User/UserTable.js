@@ -121,7 +121,7 @@ class UserTable extends React.Component {
 	isSelected = id => this.state.selected.indexOf(id) !== -1
 
 	handleEdit = () => {
-		this.props.history.push(`/user/${this.state.selected[0]}/edit`)
+		this.props.history.push(`/management/user/${this.state.selected[0]}/edit`)
 	}
 	options = () => {
 		const { t } = this.props
@@ -165,7 +165,7 @@ class UserTable extends React.Component {
 		</Dialog>
 	}
 
-	addNewUser = () => { this.props.history.push('/users/new') }
+	addNewUser = () => { this.props.history.push('/management/users/new') }
 
 	renderTableToolBarContent = () => {
 		const { accessLevel } = this.props
@@ -218,7 +218,7 @@ class UserTable extends React.Component {
 								return (
 									<TableRow
 										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push('/user/' + n.id) }}
+										onClick={e => { e.stopPropagation(); this.props.history.push('/management/user/' + n.id) }}
 										role='checkbox'
 										aria-checked={isSelected}
 										tabIndex={-1}

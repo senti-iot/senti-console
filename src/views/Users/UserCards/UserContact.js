@@ -48,7 +48,7 @@ class UserContact extends Component {
 		const { t, classes, user, history } = this.props
 		return <Dropdown menuItems={
 			[
-				{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `${this.props.match.url}/edit`, prevURL: `/user/${user.id}`  }) },
+				{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `${this.props.match.url}/edit`, prevURL: `/management/user/${user.id}`  }) },
 				{ label: t('menus.changePassword'), icon: <LockOpen className={classes.leftIcon} />, func: this.props.changePass },
 				{ label: t('menus.userResendEmail'), icon: <Email className={classes.leftIcon} />, func: this.props.resendConfirmEmail, dontShow: user.suspended !== 2 },
 				{
@@ -96,7 +96,7 @@ class UserContact extends Component {
 							<ItemGrid>
 								<Caption>{t('users.fields.organisation')}</Caption>
 								<Info>
-									<Link to={{ pathname: `/org/${user.org.id}`, prevURL: `/user/${user.id}` }}>
+									<Link to={{ pathname: `/management/org/${user.org.id}`, prevURL: `/management/user/${user.id}` }}>
 										{user.org ? user.org.name : t('users.noOrg')}
 									</Link>
 								</Info>

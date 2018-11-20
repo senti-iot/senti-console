@@ -154,7 +154,7 @@ class DeviceDetails extends Component {
 						<ItemG xs={12} md={3} lg={3}>
 							<Caption>{t('devices.fields.org')}:</Caption>
 							<Info>{device.org ?
-								<Link to={{ pathname: `/org/${device.org.id}`, prevURL: `/device/${device.id}` }} >
+								<Link to={{ pathname: `/management/org/${device.org.id}`, prevURL: `/device/${device.id}` }} >
 									{device.org.name}
 								</Link>
 								: t('devices.noProject')}</Info>

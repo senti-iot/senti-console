@@ -9,6 +9,7 @@ import { compose } from 'recompose';
 
 
 const user = (props) => {
+	console.log('bing')
 	return (
 		<Switch>
 			<Route path={`${props.match.url}/edit`} render={(rp) => <EditUser {...rp} {...props}/>} />

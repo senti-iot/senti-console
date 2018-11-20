@@ -50,7 +50,7 @@ class EditUser extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		const { setHeader, location } = this.props
-		let prevURL = location.prevURL ? location.prevURL : '/users'
+		let prevURL = location.prevURL ? location.prevURL : '/management/users'
 		setHeader('users.editUser', true, prevURL, 'users')
 		if (this._isMounted) {
 			await this.getUser()
@@ -114,7 +114,7 @@ class EditUser extends Component {
 		this.setState({ created: true, creating: false, org: rs })
 		const { s, history } = this.props
 		s('snackbars.userUpdated', { user: `${rs.firstName} ${rs.lastName}` })
-		history.push(`/user/${rs.id}`)
+		history.push(`/management/user/${rs.id}`)
 	}
 
 	handleChange = prop => e => {

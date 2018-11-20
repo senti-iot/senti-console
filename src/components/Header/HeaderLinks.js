@@ -18,7 +18,7 @@ class HeaderLinks extends React.Component {
 	handleRedirectToOwnProfile = () => {
 		this.handleProfileClose()
 		if (this.props.user)
-			this.props.history.push(`/user/${this.props.user.id}`)
+			this.props.history.push(`/management/user/${this.props.user.id}`)
 		
 	}
 	handleProfileClose = () => {

@@ -43,7 +43,8 @@ class Org extends Component {
 					if (rs === null)
 						history.push('/404')
 					else {
-						let prevURL = location.prevURL ? location.prevURL : '/orgs'						
+						let prevURL = location.prevURL ? location.prevURL : '/management/orgs'
+						console.log(prevURL)			
 						setHeader(`${rs.name}`, true, prevURL, 'users')
 						this.setState({ org: rs, loading: false })
 					}
@@ -55,7 +56,7 @@ class Org extends Component {
 	}
 	close = () => {
 		this.snackBarMessages(1)
-		this.props.history.push('/orgs')
+		this.props.history.push('/management/orgs')
 	}
 	handleDeleteOrg = async () => {
 		await deleteOrg(this.state.org.id).then(rs => {

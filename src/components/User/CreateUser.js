@@ -50,7 +50,7 @@ class CreateUser extends Component {
     componentDidMount = async () => {
     	this._isMounted = 1
     	const { setHeader } = this.props
-    	setHeader('users.createUser', true, '/users', 'users')
+    	setHeader('users.createUser', true, '/management/users', 'users')
     	if (this._isMounted)
     		await this.getOrgs()
     }
@@ -82,7 +82,7 @@ class CreateUser extends Component {
 		this.setState({ created: true, creating: false, org: rs }) 
 		const { history, s } = this.props
 		s('snackbars.userCreated', { user: `${rs.firstName} ${rs.lastName}` })
-		history.push(`/user/${rs.id}`)
+		history.push(`/management/user/${rs.id}`)
 	}
 	handleChange = prop => e => {
 		const { error } = this.state
