@@ -207,8 +207,10 @@ class UserTable extends React.Component {
 							columnData={this.props.tableHead}
 							t={t}
 							classes={classes}
-							customColumn={[{ id: 'avatar', label: '' }, {
+							customColumn={[{
 								id: 'firstName', label: <Typography variant={'body1'} classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>Users</Typography>
+							}, {
+								id: 'avatar', label: ''
 							}]}
 						/>
 						<TableBody>
@@ -227,14 +229,11 @@ class UserTable extends React.Component {
 										style={{ cursor: 'pointer' }}
 									>
 										<Hidden lgUp>
-											<TableCell padding='checkbox' className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-												<Checkbox checked={isSelected} />
-											</TableCell>
-											<TableCell padding='checkbox' className={classes.tablecellcheckbox}>
-												<ItemGrid container zeroMargin noPadding justify={'center'}>
-													{n.img ? <img src={n.img} alt='brken' className={classes.img} /> : <Gravatar default='mp' email={n.email} className={classes.img}/>}
-												</ItemGrid>
-											</TableCell>
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => this.handleClick(e, n.id)} />} />
+											<TC checkbox content={<ItemGrid container zeroMargin justify={'center'}>
+												{n.img ? <img src={n.img} alt='brken' className={classes.img} /> : <Gravatar default='mp' email={n.email} className={classes.img} />}
+											</ItemGrid>}/>
+
 											<TableCell classes={{ root: classes.tableCell }}>
 												<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
@@ -252,14 +251,11 @@ class UserTable extends React.Component {
 											</TableCell>
 										</Hidden>
 										<Hidden mdDown>
-											<TableCell padding='checkbox' className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-												<Checkbox checked={isSelected} />
-											</TableCell>
-											<TableCell padding='checkbox' className={classes.tablecellcheckbox}>
-												<ItemGrid container zeroMargin noPadding justify={'center'}>	
-													{n.img ? <img src={n.img} alt='brken' className={classes.img} /> : <Gravatar default='mp' email={n.email} className={classes.img} />}
-												</ItemGrid>
-											</TableCell>
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => this.handleClick(e, n.id)}/>} />
+											<TC checkbox content={<ItemGrid container zeroMargin justify={'center'}>
+												{n.img ? <img src={n.img} alt='brken' className={classes.img} /> : <Gravatar default='mp' email={n.email} className={classes.img} />}
+											</ItemGrid>}/>
+
 											{/* <TC label={n.userName} /> */}
 											<TC FirstC label={`${n.firstName} ${n.lastName}`} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone, this.props.language) : n.phone}</a>} />

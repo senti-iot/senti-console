@@ -199,7 +199,6 @@ render() {
 						columnData={this.props.tableHead}
 						t={t}
 						classes={classes}
-						// mdDown={[0]} //Which Columns to display on small Screens
 						customColumn={[{ id: 'name', label: t('orgs.fields.org') }]}
 					/>
 					<TableBody>
@@ -218,9 +217,8 @@ render() {
 									style={{ cursor: 'pointer' }}
 								>
 									<Hidden lgUp>
-										<TableCell padding='checkbox' className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-											<Checkbox checked={isSelected} />
-										</TableCell>
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => this.handleClick(e, n.id)}/>} />
+
 										<TC content={
 											<ItemG container alignItems={'center'}>
 												<ItemG>
@@ -238,9 +236,7 @@ render() {
 										} />
 									</Hidden>
 									<Hidden mdDown>
-										<TableCell padding='checkbox' className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-											<Checkbox checked={isSelected} />
-										</TableCell>
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => this.handleClick(e, n.id)}/>} />
 										<TC FirstC label={n.name} />
 										<TC label={n.address} />
 										<TC label={`${n.zip} ${n.city}`} />

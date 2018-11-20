@@ -18,6 +18,7 @@ class Management extends Component {
 		super(props)
 
 		this.state = {
+			route: window.location.pathname.includes('orgs') ? 1 : 0,
 			filters: {
 				keyword: '',
 				startDate: null,
@@ -32,6 +33,17 @@ class Management extends Component {
 	}
 	componentDidMount = async () => {
 		await this.getData()
+		console.log(window.location.pathname.includes('orgs'))
+		if (window.location.pathname.includes('orgs'))
+		{
+			this.setState({
+				route: 1
+			})
+		}
+	}
+	reload = () => {
+		this.getData()
+		this.handleFilterKeyword('')
 	}
 	getData = async () => {
 		let users = await getAllUsers().then(rs => rs)
@@ -65,8 +77,6 @@ class Management extends Component {
 	}
 	render() {
 		const { users, orgs, filters, loading } = this.state
-		console.log(window.location.pathname.includes('users'))
-		console.log(users, orgs)
 		return (
 			!loading ? <Fragment>
 				<Toolbar
@@ -76,12 +86,13 @@ class Management extends Component {
 					match={this.props.match}
 					handleFilterKeyword={this.handleFilterKeyword}
 					tabs={this.tabs}
+					route={this.state.route}
 				/>
 				<Switch>
 					<Route path={'/management/users/new'} render={(rp) => <CreateUser {...this.props} />} />
-					<Route path={'/management/users'} render={(rp) => <Users {...this.props} />} />
+					<Route path={'/management/users'} render={(rp) => <Users {...this.props} reload={this.reload} users={this.filterItems(users)}/>} />
 					<Route path={'/management/orgs/new'} component={(rp) => <CreateOrg {...this.props} />} />
-					<Route path={'/management/orgs'} render={(rp) => <Orgs {...this.props} />} />
+					<Route path={'/management/orgs'} render={(rp) => <Orgs {...this.props} reload={this.reload} orgs={this.filterItems(orgs)}/>} />
 					<Redirect from={'/management'} to={'/management/users'} />
 				</Switch>
 			</Fragment > : <CircularLoader />

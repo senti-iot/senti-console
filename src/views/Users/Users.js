@@ -4,7 +4,7 @@ import projectStyles from 'assets/jss/views/projects';
 import UserTable from 'components/User/UserTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
-import { getAllUsers, deleteUser } from 'variables/dataUsers';
+import { /* getAllUsers, */ deleteUser } from 'variables/dataUsers';
 // import Toolbar from 'components/Toolbar/Toolbar'
 import { People, Business } from 'variables/icons';
 import { filterItems, handleRequestSort } from 'variables/functions';
@@ -47,7 +47,11 @@ class Users extends Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-
+	componentDidUpdate = async (prevState, prevProps) => {
+		if (prevProps.users !== this.props.users) {
+			this.setState({ users: this.props.users })
+		}
+	}
 	filterItems = (data) => {
 		return filterItems(data, this.state.filters)
 	}
@@ -90,14 +94,14 @@ class Users extends Component {
 			}, () => this.handleRequestSort(null, 'firstName', 'asc'))
 			return
 		}
-		let users = await getAllUsers().then(rs => rs)
-		if (this._isMounted) {
-			this.setState({
-				users: users ? users : [],
+		// let users = await getAllUsers().then(rs => rs)
+		// if (this._isMounted) {
+		// 	this.setState({
+		// 		users: users ? users : [],
 		
-				loading: false
-			}, () => this.handleRequestSort(null, 'firstName', 'asc'))
-		}
+		// 		loading: false
+		// 	}, () => this.handleRequestSort(null, 'firstName', 'asc'))
+		// }
 	}
 
 	tabs = [
@@ -122,13 +126,13 @@ class Users extends Component {
 	}
 	reload = async () => {
 		this.setState({ loading: true })
-		await this.getData()
+		await this.props.reload()
 	}
 	handleDeleteUsers = async (selected) => {
 		await selected.forEach(async u => {
 			await deleteUser(u)
 		})
-		this.getData()
+		await this.props.reload()
 		this.snackBarMessages(1)
 	}
 	renderUsers = () => {
@@ -152,7 +156,7 @@ class Users extends Component {
 	}
 
 	render() {
-		const { users, filters } = this.state
+		// const { users, filters } = this.state
 		return (
 			<Fragment>
 				{/* <Toolbar

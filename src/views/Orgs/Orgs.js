@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
-import { getAllOrgs } from 'variables/dataOrgs';
+// import { getAllOrgs } from 'variables/dataOrgs';
 import OrgTable from 'components/Orgs/OrgTable';
 // import Toolbar from 'components/Toolbar/Toolbar'
 import { People, Business } from 'variables/icons';
@@ -31,8 +31,17 @@ class Orgs extends Component {
 	}
 	reload = async () => {
 		this.setState({ loading: true })
-		await this.getData()
+		await this.props.reload()
 	}
+	orgsHeader = () => {
+		const { t } = this.props
+		return [
+			{ id: 'name', label: t('orgs.fields.name') },
+			{ id: 'address', label: t('orgs.fields.address') },
+			{ id: 'city', label: t('orgs.fields.city') },
+			{ id: 'url', label: t('orgs.fields.url') },
+		]
+	} 
 	componentDidMount = async () => {
 		this._isMounted = 1
 		await this.getData()
@@ -43,6 +52,11 @@ class Orgs extends Component {
 			else {
 				this.setState({ route: 0 })
 			}
+		}
+	}
+	componentDidUpdate = async (prevState, prevProps) => {
+		if (prevProps.orgs !== this.props.orgs) {
+			this.setState({ orgs: this.props.orgs })
 		}
 	}
 	componentWillUnmount = () => {
@@ -85,21 +99,24 @@ class Orgs extends Component {
 		})
 	}
 	getData = async () => {
-		const { t } = this.props
-		let orgs = await getAllOrgs().then(rs => rs)
-		if (this._isMounted) {
+		// const { t } = this.props
+		console.log(this.props)
+		if (this.props.orgs) { 
 			this.setState({
-				orgs: orgs ? orgs : [],
-				orgsHeader: [
-					{ id: 'name', label: t('orgs.fields.name') },
-					{ id: 'address', label: t('orgs.fields.address') },
-					{ id: 'city', label: t('orgs.fields.city') },
-					{ id: 'url', label: t('orgs.fields.url') },
-				],
+				orgs: this.props.orgs,
 				loading: false
 			}, () => this.handleRequestSort(null, 'name', 'asc'))
-
+			return
 		}
+		// let orgs = await getAllOrgs().then(rs => rs)
+		// if (this._isMounted) {
+		// 	this.setState({
+		// 		orgs: orgs ? orgs : [],
+			
+		// 		loading: false
+		// 	}, () => this.handleRequestSort(null, 'name', 'asc'))
+
+		// }
 	}
 
 	tabs = [
@@ -126,7 +143,7 @@ class Orgs extends Component {
 		await selected.forEach(async u => {
 			await deleteOrg(u)
 		})
-		this.getData()
+		await this.props.reload()
 		this.snackBarMessages(1)
 	}
 	renderOrgs = () => {
@@ -134,8 +151,8 @@ class Orgs extends Component {
 		const { loading, order, orderBy } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <OrgTable
-				data={this.filterItems(this.state.orgs)}
-				tableHead={this.state.orgsHeader}
+				data={this.state.orgs}
+				tableHead={this.orgsHeader()}
 				handleFilterEndDate={this.handleFilterEndDate}
 				handleFilterKeyword={this.handleFilterKeyword}
 				handleFilterStartDate={this.handleFilterStartDate}

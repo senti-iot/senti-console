@@ -116,7 +116,7 @@ class EditOrg extends Component {
 		this.setState({
 			loading: false
 		})
-		let prevURL = location.prevURL ? location.prevURL : null
+		let prevURL = location.prevURL ? location.prevURL : '/management/orgs'
 		this.props.setHeader('orgs.updateOrg', true, prevURL, '/management/users')
 	}
 
