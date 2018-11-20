@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TableCell, TableHead, TableRow, TableSortLabel, Checkbox, Hidden, Typography } from "@material-ui/core"
+import { TableCell, TableHead, TableRow, TableSortLabel, Checkbox, Hidden, Typography } from '@material-ui/core'
 import classNames from 'classnames'
 class EnhancedTableHead extends Component {
 	createSortHandler = property => event => {
@@ -12,8 +12,7 @@ class EnhancedTableHead extends Component {
 		return (
 			<TableHead>
 				<TableRow>
-					<TableCell padding="checkbox"
-						className={classes.header + " " + classes.tablecellcheckbox}>
+					<TableCell className={classes.header + ' ' + classes.tablecellcheckbox}>
 						<Checkbox
 							indeterminate={numSelected > 0 && numSelected < rowCount}
 							checked={numSelected === rowCount && numSelected > 0}
@@ -29,19 +28,21 @@ class EnhancedTableHead extends Component {
 									key={i}
 									padding={column.disablePadding ? 'none' : 'default'}
 									sortDirection={orderBy === column.id ? order : false}
-									className={`${classes.header} ${classes.tableCell} ${column.centered ? classes.centered : ''}`}
+									className={`${classes.header} ${classes.tableCell} ${column.centered ? classes.centered : ''} ${column.checkbox ? classes.tablecellcheckbox : ''}`}
 									numeric={column.numeric ? true : false}>
 									<TableSortLabel
 										active={orderBy === column.id}
 										direction={order}
-										// hideSortIcon={!orderBy === column.id}
 										disabled={rowCount === 0}
 										onClick={this.createSortHandler(column.id)}
 										classes={{
 											root: classes.HeaderLabelActive, active: classes.HeaderLabelActive, icon: classNames({
 												[classes.hideIcon]: !(orderBy === column.id) ? true : false
-											}) }}>
-										<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{column.label}</Typography>
+											}),
+											
+											
+										}}>
+										{column.checkbox ? column.label : <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>{column.label}</Typography>}
 									</TableSortLabel>
 								</TableCell>
 							);
@@ -54,7 +55,7 @@ class EnhancedTableHead extends Component {
 									key={columnData[c].id}
 									padding={columnData[c].disablePadding ? 'none' : 'default'}
 									sortDirection={orderBy === columnData[c].id ? order : false}
-									className={classes.header + " " + classes.tableCell}>
+									className={classes.header + ' ' + classes.tableCell}>
 									<TableSortLabel
 										active={orderBy === columnData[c].id}
 										direction={order}
@@ -64,7 +65,7 @@ class EnhancedTableHead extends Component {
 												[classes.hideIcon]: !(orderBy === columnData[c].id) ? true : false
 											})
 										}}>
-										<Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>{columnData[c].label}</Typography>
+										<Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>{columnData[c].label}</Typography>
 									</TableSortLabel>
 								</TableCell>
 							}) : customColumn ? customColumn.map(c => {
@@ -72,7 +73,7 @@ class EnhancedTableHead extends Component {
 									key={c.id}
 									padding={c.checkbox ? 'checkbox' : 'default'}
 									sortDirection={orderBy === c.id ? order : false}
-									className={c.checkbox ? classes.header + " " + classes.tablecellcheckbox : classes.header + " " + classes.tableCell}>
+									className={c.checkbox ? classes.header + ' ' + classes.tablecellcheckbox : classes.header + ' ' + classes.tableCell}>
 									<TableSortLabel
 										active={orderBy === c.id}
 										direction={order}
@@ -82,7 +83,7 @@ class EnhancedTableHead extends Component {
 												[classes.hideIcon]: !(orderBy === c.id) ? true : false
 											})
 										}}>
-										{/* <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}> */}{c.label}{/* </Typography> */}
+										{/* <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}> */}{c.label}{/* </Typography> */}
 									</TableSortLabel>
 								</TableCell>
 							}) : null

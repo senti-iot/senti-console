@@ -9,7 +9,7 @@ import createprojectStyles from 'assets/jss/components/projects/createprojectSty
 import { updateProject, getProject } from 'variables/dataProjects';
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
 // import { dateFormatter } from 'variables/functions';
-var moment = require("moment")
+var moment = require('moment')
 // const ITEM_HEIGHT = 32;
 // const ITEM_PADDING_TOP = 8;
 // const MenuProps = {
@@ -38,7 +38,7 @@ class EditProject extends Component {
 	handleValidation = () => {
 		let errorCode = [];
 		const { title, startDate, endDate } = this.state.project
-		if (title === "") {
+		if (title === '') {
 			errorCode.push(1)
 		}
 		if (!moment(startDate).isValid()) {
@@ -62,15 +62,15 @@ class EditProject extends Component {
 		const { t } = this.props
 		switch (code) {
 			case 1:
-				return t("projects.validation.noTitle")
+				return t('projects.validation.noTitle')
 			case 2:
-				return t("projects.validation.noStartDate")
+				return t('projects.validation.noStartDate')
 			case 3:
-				return t("projects.validation.noEndDate")
+				return t('projects.validation.noEndDate')
 			case 4:
-				return t("projects.validation.startDateBiggerThanEndDate")
+				return t('projects.validation.startDateBiggerThanEndDate')
 			default:
-				return ""
+				return ''
 		}
 	}
 	componentDidMount = async () => {
@@ -104,7 +104,7 @@ class EditProject extends Component {
 			loading: false
 		})
 		let prevURL = location.prevURL ? location.prevURL : '/projects/list'
-		this.props.setHeader("projects.updateProject", true, prevURL, "projects")
+		this.props.setHeader('projects.updateProject', true, prevURL, 'projects')
 	}
 
 	componentWillUnmount = () => {
@@ -119,13 +119,13 @@ class EditProject extends Component {
 
 	handleDateChange = id => value => {
 		// )
-		// .format("YYYY MM DD HH:ss"))
-		// .local().format("YYYY MM DD HH:ss"))
+		// .format('YYYY MM DD HH:ss'))
+		// .local().format('YYYY MM DD HH:ss'))
 		this.setState({
 			error: false,
 			project: {
 				...this.state.project,
-				[id]: moment(value).local().format("YYYY-MM-DDTHH:ss")
+				[id]: moment(value).local().format('YYYY-MM-DDTHH:ss')
 			}
 		})
 	}
@@ -149,7 +149,7 @@ class EditProject extends Component {
 		if (this.handleValidation())
 			return updateProject(newProject).then(rs => rs ?
 				this.close() :
-				this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("projects.validation.networkError") })
+				this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t('projects.validation.networkError') })
 			)
 		else {
 			this.setState({
@@ -162,7 +162,7 @@ class EditProject extends Component {
 	close = () => {
 		this.setState({ created: true, creating: false })
 		const { s, history } = this.props
-		s("snackbars.projectUpdated", { project: this.state.project.title })
+		s('snackbars.projectUpdated', { project: this.state.project.title })
 		history.push('/project/' + this.props.match.params.id)
 	}
 
@@ -191,27 +191,27 @@ class EditProject extends Component {
 								<ItemGrid container xs={12} md={6}>
 									<TextF
 										autoFocus
-										id={"title"}
-										label={t("projects.fields.name")}
+										id={'title'}
+										label={t('projects.fields.name')}
 										value={this.state.project.title}
 										className={classes.textField}
-										handleChange={this.handleChange("title")}
-										margin="normal"
+										handleChange={this.handleChange('title')}
+										margin='normal'
 										
 										error={error}
 									/>
 								</ItemGrid>
 								<ItemGrid xs={12} md={6} sm={12}>
 									<TextF
-										id={"multiline-flexible"}
-										label={t("projects.fields.description")}
+										id={'multiline-flexible'}
+										label={t('projects.fields.description')}
 										multiline
-										rows={"4"}
-										color={"secondary"}
+										rows={'4'}
+										color={'secondary'}
 										className={classes.textField}
 										value={this.state.project.description}
-										handleChange={this.handleChange("description")}
-										margin="normal"
+										handleChange={this.handleChange('description')}
+										margin='normal'
 										
 										error={error}
 									/>
@@ -220,15 +220,15 @@ class EditProject extends Component {
 									<DatePicker
 										autoOk
 										// ampm={false}
-										label={t("projects.fields.startDate")}
+										label={t('projects.fields.startDate')}
 										clearable
 										labelFunc={(date, invalidLabel) => date === null ? '' : moment(date).format('LL')}
-										format="YYYY-MM-DDTHH:mm"
-										// format="LL"
+										format='YYYY-MM-DDTHH:mm'
+										// format='LL'
 										value={this.state.project.startDate}
-										onChange={this.handleDateChange("startDate")}
+										onChange={this.handleDateChange('startDate')}
 										animateYearScrolling={false}
-										color="primary"
+										color='primary'
 										rightArrowIcon={<KeyArrRight />}
 										leftArrowIcon={<KeyArrLeft />}
 										InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
@@ -238,16 +238,16 @@ class EditProject extends Component {
 								</ItemGrid>
 								<ItemGrid xs={12} md={6}>
 									<DatePicker
-										color="primary"
+										color='primary'
 										// ampm={false}
 										autoOk
-										label={t("projects.fields.endDate")}
+										label={t('projects.fields.endDate')}
 										clearable
 										labelFunc={(date, invalidLabel) => date === null ?  '' : date.format('LL') }
-										format="YYYY-MM-DDTHH:mm"
-										// format="LL"
+										format='YYYY-MM-DDTHH:mm'
+										// format='LL'
 										value={this.state.project.endDate}
-										onChange={this.handleDateChange("endDate")}
+										onChange={this.handleDateChange('endDate')}
 										animateYearScrolling={false}
 										rightArrowIcon={<KeyArrRight />}
 										leftArrowIcon={<KeyArrLeft />}
@@ -259,15 +259,15 @@ class EditProject extends Component {
 								{/* <ItemGrid xs={12}>
 									<FormControl className={classes.formControl}>
 										<Fragment>
-											<InputLabel FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
-												{t("projects.fields.assignDevices")}
+											<InputLabel FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
+												{t('projects.fields.assignDevices')}
 											</InputLabel>
 											<Select
-												color={"primary"}
+												color={'primary'}
 												multiple
 												value={selectedDevices.map(d => d.id)}
 												onChange={this.handleDeviceChange}
-												input={<Input id="select-multiple-chip" classes={{ underline: classes.underline }} />}
+												input={<Input id='select-multiple-chip' classes={{ underline: classes.underline }} />}
 												renderValue={selected => (
 													<div className={classes.chips}>
 														{selected.map(value => {
@@ -295,7 +295,7 @@ class EditProject extends Component {
 																	? theme.typography.fontWeightRegular
 																	: theme.typography.fontWeightMedium,
 														}}>
-														{device.id + " - " + (device.name ? device.name : t("devices.noName"))}
+														{device.id + ' - ' + (device.name ? device.name : t('devices.noName'))}
 													</MenuItem>
 												))}
 											</Select>
@@ -304,21 +304,21 @@ class EditProject extends Component {
 								</ItemGrid> */}
 							</form>
 							<ItemGrid xs={12} container justify={'center'}>
-								<Collapse in={this.state.creating} timeout="auto" unmountOnExit>
+								<Collapse in={this.state.creating} timeout='auto' unmountOnExit>
 									<CircularLoader notCentered />
 								</Collapse>
 							</ItemGrid>
-							<Grid container justify={"center"}>
+							<Grid container justify={'center'}>
 								<div className={classes.wrapper}>
 									<Button
-										variant="contained"
-										color="primary"
+										variant='contained'
+										color='primary'
 										className={buttonClassname}
 										disabled={this.state.creating || this.state.created}
 										onClick={ this.handleUpdateProject}>
 										{this.state.created ?
-											<Fragment><Check className={classes.leftIcon} />{t("snackbars.redirect")}</Fragment>
-											: <Fragment><Save className={classes.leftIcon} />{t("projects.updateProject")}</Fragment>}
+											<Fragment><Check className={classes.leftIcon} />{t('snackbars.redirect')}</Fragment>
+											: <Fragment><Save className={classes.leftIcon} />{t('projects.updateProject')}</Fragment>}
 									</Button>
 								</div>
 							</Grid>

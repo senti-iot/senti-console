@@ -13,8 +13,8 @@ const styles = {
 		display: 'flex',
 		flexFlow: 'column',
 		flexGrow: 1
-		// justifyContent: "center",
-		// alignItems: "center"
+		// justifyContent: 'center',
+		// alignItems: 'center'
 	},
 	cardContent: {
 		minHeight: 150,
@@ -34,13 +34,13 @@ function MediaCard(props) {
 			<CardMedia
 				className={classes.media}
 				image={img}
-				title=""
+				title=''
 			/>
 			<CardContent classes={{ root: classes.cardContent }}>
-				<Typography gutterBottom variant="h5">
+				<Typography gutterBottom variant='h5'>
 					{header}
 				</Typography>
-				<Typography component="p">
+				<Typography component='p'>
 					{content}
 				</Typography>
 			</CardContent>

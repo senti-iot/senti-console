@@ -1,5 +1,5 @@
-import { api } from "./data";
-// import { getSimpleAddress } from "./dataDevices";
+import { api } from './data';
+// import { getSimpleAddress } from './dataDevices';
 
 export const getProjectImage = async (project) => {
 	

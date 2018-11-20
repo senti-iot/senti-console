@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Info, Caption } from 'components'
 import { Table, TableBody, TableRow, Hidden, TableCell, withStyles } from '@material-ui/core'
-import { People } from "@material-ui/icons"
+import { People } from '@material-ui/icons'
 import TC from 'components/Table/TC'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
 import Gravatar from 'react-gravatar'
@@ -13,7 +13,7 @@ class OrgUsers extends Component {
 		const { users, classes, t } = this.props
 		return (
 			<InfoCard
-				title={"Users"}
+				title={'Users'}
 				avatar={<People />}
 				noExpand
 				noPadding
@@ -21,23 +21,23 @@ class OrgUsers extends Component {
 					<Table>
 						<TableBody>
 							{users ? users.map((n, i) => {
-								const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? dateFormat(n.lastLoggedIn) : t("users.fields.neverLoggedIn")
+								const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? dateFormat(n.lastLoggedIn) : t('users.fields.neverLoggedIn')
 								return (
 									<TableRow
 										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push({ pathname: '/user/' + n.id, prevURL: `/org/${this.props.org.id}` }) }}
+										onClick={e => { e.stopPropagation(); this.props.history.push({ pathname: '/management/user/' + n.id, prevURL: `/management/org/${this.props.org.id}` }) }}
 										// tabIndex={-1}
 										key={i}
 										style={{ cursor: 'pointer' }}
 									>
 										<Hidden lgUp>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
-												<ItemGrid container zeroMargin noPadding justify={"center"}>
-													{n.img ? <img src={n.img} alt="brken" className={classes.img} /> : <Gravatar default="mp" email={n.email} className={classes.img} />}
+											<TableCell padding='checkbox' className={classes.tablecellcheckbox}>
+												<ItemGrid container zeroMargin noPadding justify={'center'}>
+													{n.img ? <img src={n.img} alt='brken' className={classes.img} /> : <Gravatar default='mp' email={n.email} className={classes.img} />}
 												</ItemGrid>
 											</TableCell>
 											<TableCell classes={{ root: classes.tableCell }}>
-												<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+												<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Info noWrap paragraphCell={classes.noMargin}>
 															{`${n.firstName} ${n.lastName}`}
@@ -45,7 +45,7 @@ class OrgUsers extends Component {
 													</ItemGrid>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Caption noWrap className={classes.noMargin}>
-															{`${n.org ? n.org.name : t("users.fields.noOrg")} - ${n.email}`}
+															{`${n.org ? n.org.name : t('users.fields.noOrg')} - ${n.email}`}
 														</Caption>
 													</ItemGrid>
 													{/* </ItemGrid> */}
@@ -53,9 +53,9 @@ class OrgUsers extends Component {
 											</TableCell>
 										</Hidden>
 										<Hidden mdDown>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
-												<ItemGrid container zeroMargin noPadding justify={"center"}>
-													{n.img ? <img src={n.img} alt="brken" className={classes.img} /> : <Gravatar default="mp" email={n.email} className={classes.img} />}
+											<TableCell padding='checkbox' className={classes.tablecellcheckbox}>
+												<ItemGrid container zeroMargin noPadding justify={'center'}>
+													{n.img ? <img src={n.img} alt='brken' className={classes.img} /> : <Gravatar default='mp' email={n.email} className={classes.img} />}
 												</ItemGrid>
 											</TableCell>
 											{/* <TC label={n.userName} /> */}

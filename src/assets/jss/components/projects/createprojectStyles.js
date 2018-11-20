@@ -3,7 +3,7 @@ import { hoverColor, primaryColor, headerColor } from 'assets/jss/material-dashb
 
 const createprojectStyles = theme => ({
 	appBar: {
-		position: 'relative',
+		position: 'sticky',
 		backgroundColor: headerColor,
 		boxShadow: "none",
 		borderBottom: "0",

@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Link, NavLink } from "react-router-dom";
-import cx from "classnames";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link, NavLink } from 'react-router-dom';
+import cx from 'classnames';
 import {
 	withStyles,
 	Drawer,
@@ -10,11 +10,11 @@ import {
 	ListItem,
 	ListItemIcon,
 	ListItemText,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
-import { HeaderLinks } from "components";
+import { HeaderLinks } from 'components';
 
-import sidebarStyle from "assets/jss/material-dashboard-react/sidebarStyle.js";
+import sidebarStyle from 'assets/jss/material-dashboard-react/sidebarStyle.js';
 
 const Sidebar = ({ ...props }) => {
 
@@ -30,16 +30,16 @@ const Sidebar = ({ ...props }) => {
 				if (prop.hideFromSideBar) return null;
 
 				const listItemClasses = cx({
-					[" " + classes[color]]: activeRoute(prop.menuRoute)
+					[' ' + classes[color]]: activeRoute(prop.menuRoute)
 				});
 				const whiteFontClasses = cx({
-					[" " + classes.whiteFont]: activeRoute(prop.menuRoute)
+					[' ' + classes.whiteFont]: activeRoute(prop.menuRoute)
 				});
 				return (
 					<NavLink
 						to={prop.path}
 						className={classes.item}
-						activeClassName="active"
+						activeClassName='active'
 						key={key}
 					>
 						<ListItem button className={classes.itemLink + listItemClasses} onClick={props.handleDrawerToggle}>
@@ -61,7 +61,7 @@ const Sidebar = ({ ...props }) => {
 		<div className={classes.logo}>
 			<Link to={'/'} className={classes.logoLink}>
 				<div className={classes.logoImage}>
-					<img src={logo} alt="logo" className={classes.img} />
+					<img src={logo} alt='logo' className={classes.img} />
 				</div>
 				{logoText}
 			</Link>
@@ -71,7 +71,7 @@ const Sidebar = ({ ...props }) => {
 		<div className={classes.logo}>
 			<Link to={'/'} onClick={props.handleDrawerToggle} className={classes.logoLink}>
 				<div className={classes.logoImage}>
-					<img src={logo} alt="logo" className={classes.img}/>
+					<img src={logo} alt='logo' className={classes.img}/>
 				</div>
 			</Link>
 		</div>
@@ -80,8 +80,8 @@ const Sidebar = ({ ...props }) => {
 		<div>
 			<Hidden lgUp>
 				<Drawer
-					variant="temporary"
-					anchor="right"
+					variant='temporary'
+					anchor='right'
 					open={props.open}
 					classes={{
 						paper: classes.drawerPaper
@@ -101,15 +101,15 @@ const Sidebar = ({ ...props }) => {
 					{image !== undefined ? (
 						<div
 							className={classes.background}
-							style={{ backgroundImage: "url(" + image + ")" }}
+							style={{ backgroundImage: 'url(' + image + ')' }}
 						/>
 					) : null}
 				</Drawer>
 			</Hidden>
 			<Hidden mdDown>
 				<Drawer
-					anchor="left"
-					variant="permanent"
+					anchor='left'
+					variant='permanent'
 					open
 					classes={{
 						paper: classes.drawerPaper
@@ -120,7 +120,7 @@ const Sidebar = ({ ...props }) => {
 					{image !== undefined ? (
 						<div
 							className={classes.background}
-							style={{ backgroundImage: "url(" + image + ")" }}
+							style={{ backgroundImage: 'url(' + image + ')' }}
 						/>
 					) : null}
 				</Drawer>

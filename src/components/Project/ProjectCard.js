@@ -49,59 +49,55 @@ class ProjectCard extends Component {
 		const { p, classes, t } = this.props
 		const { actionAnchor } = this.state
 		return (
-			<ItemGrid noPadding extraClass={classes.smallCardGrid} noMargin md={4}>
-				<div style={{
-					margin: 8, /* width: '100%', */ height: "100%" }}>
-					<SmallCard
-						avatar={<LibraryBooks />}
-						key={p.id}
-						title={p.title}
-						img={this.state.img}
-						topAction={
-							<ItemGrid noMargin noPadding>
-								<IconButton
-									aria-label="More"
-									aria-owns={actionAnchor ? 'long-menu' : null}
-									aria-haspopup="true"
-									onClick={this.handleOpenActionsDetails}>
-									<MoreVert />
-								</IconButton>
-								<Menu
-									id="long-menu"
-									anchorEl={actionAnchor}
-									open={Boolean(actionAnchor)}
-									onClose={this.handleCloseActionsDetails}
-									PaperProps={{
-										style: {
-											// maxHeight: 200,
-											minWidth: 200
-										}
-									}}>
-									<MenuItem onClick={() => this.props.history.push(`/project/${p.id}/edit`)}>
-										<Edit className={classes.leftIcon} />{t("menus.edit")}									
+			
+			<SmallCard
+				avatar={<LibraryBooks />}
+				key={p.id}
+				title={p.title}
+				img={this.state.img}
+				topAction={
+					<ItemGrid noMargin noPadding>
+						<IconButton
+							aria-label='More'
+							aria-owns={actionAnchor ? 'long-menu' : null}
+							aria-haspopup='true'
+							onClick={this.handleOpenActionsDetails}>
+							<MoreVert />
+						</IconButton>
+						<Menu
+							id='long-menu'
+							anchorEl={actionAnchor}
+							open={Boolean(actionAnchor)}
+							onClose={this.handleCloseActionsDetails}
+							PaperProps={{
+								style: {
+									// maxHeight: 200,
+									minWidth: 200
+								}
+							}}>
+							<MenuItem onClick={() => this.props.history.push(`/project/${p.id}/edit`)}>
+								<Edit className={classes.leftIcon} />{t('menus.edit')}									
+							</MenuItem>
+							{/* <MenuItem onClick={() => alert(t('dialogs.warnings.wip'))}>
+										<Devices className={classes.leftIcon} />{t('menus.assignDevices')}
 									</MenuItem>
-									{/* <MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
-										<Devices className={classes.leftIcon} />{t("menus.assignDevices")}
+									<MenuItem onClick={() => alert(t('dialogs.warnings.wip'))}>
+										<PictureAsPdf className={classes.leftIcon} />{t('menus.exportPDF')}
 									</MenuItem>
-									<MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
-										<PictureAsPdf className={classes.leftIcon} />{t("menus.exportPDF")}
-									</MenuItem>
-									<MenuItem onClick={() => alert(t("dialogs.warnings.wip"))}>
-										<Delete className={classes.leftIcon} />{t("menus.delete")}
+									<MenuItem onClick={() => alert(t('dialogs.warnings.wip'))}>
+										<Delete className={classes.leftIcon} />{t('menus.delete')}
 									</MenuItem> */}
 									))}
-								</Menu>
-							</ItemGrid>
-						}
-						content={<Typography noWrap>{p.description}</Typography>}
-						rightActions={
-							<Button variant={'text'} color={'primary'} onClick={() => this.props.history.push(`/project/${p.id}`)}>
-								{t("menus.seeMore")}
-							</Button>
-						}
-					/>
-				</div>
-			</ItemGrid>
+						</Menu>
+					</ItemGrid>
+				}
+				content={<Typography noWrap>{p.description}</Typography>}
+				rightActions={
+					<Button variant={'text'} color={'primary'} onClick={() => this.props.history.push(`/project/${p.id}`)}>
+						{t('menus.seeMore')}
+					</Button>
+				}
+			/>
 		)
 	}
 }

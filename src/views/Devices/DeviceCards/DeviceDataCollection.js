@@ -34,8 +34,8 @@ class DeviceDataCollection extends Component {
 			<InfoCard
 				noExpand
 				avatar={<DataUsage />}
-				title={t("collections.pageTitle")}
-				subheader={noDc ? "" : `${t("collections.fields.id")}: ${dc ? dc.id : ""}`}
+				title={t('collections.pageTitle')}
+				subheader={noDc ? '' : `${t('collections.fields.id')}: ${dc ? dc.id : ''}`}
 				content={
 					!loading ? <ItemGrid container>
 	
@@ -43,7 +43,7 @@ class DeviceDataCollection extends Component {
 							<Caption>{t(`collections.fields.name`)}</Caption>
 							<Info>{dc.name}</Info>
 						</ItemG>
-					</ItemGrid> : noDc ? <Caption>{t("devices.noDataCollection")}</Caption> : <CircularLoader />
+					</ItemGrid> : noDc ? <Caption>{t('devices.noDataCollection')}</Caption> : <CircularLoader />
 				}
 			/>
 		)

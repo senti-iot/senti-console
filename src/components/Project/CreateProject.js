@@ -42,9 +42,9 @@ class CreateProject extends Component {
 			created: false,
 			openSnackBar: false,
 			error: false,
-			errorMessage: ""
+			errorMessage: ''
 		}
-		props.setHeader("projects.new", true, "/projects/list", "projects")
+		props.setHeader('projects.new', true, '/projects/list', 'projects')
 	}
 
 	componentDidMount = () => {
@@ -76,7 +76,7 @@ class CreateProject extends Component {
 	handleValidation = () => {
 		let errorCode = [];
 		const { title, startDate, endDate } = this.state
-		if (title === "")
+		if (title === '')
 		{
 			errorCode.push(1)
 		}
@@ -104,15 +104,15 @@ class CreateProject extends Component {
 		const { t } = this.props
 		switch (code) {
 			case 1:
-				return t("projects.validation.noTitle")
+				return t('projects.validation.noTitle')
 			case 2: 
-				return t("projects.validation.noStartDate")
+				return t('projects.validation.noStartDate')
 			case 3: 
-				return t("projects.validation.noEndDate")
+				return t('projects.validation.noEndDate')
 			case 4:
-				return t("projects.validation.startDateBiggerThanEndDate")
+				return t('projects.validation.startDateBiggerThanEndDate')
 			default: 
-				return ""	
+				return ''	
 		}
 
 	}
@@ -127,7 +127,7 @@ class CreateProject extends Component {
 	handleDateChange = id => value => {
 		this.setState({
 			error: false,
-			[id]: moment(value).local().format("YYYY-MM-DDTHH:ss")
+			[id]: moment(value).local().format('YYYY-MM-DDTHH:ss')
 		})
 	}
 
@@ -140,7 +140,7 @@ class CreateProject extends Component {
 	}
 	handleFinishCreateProject = (rs) => {
 		this.setState({ created: true, id: rs.id })
-		this.props.s("snackbars.projectCreated", { project: this.state.title })			
+		this.props.s('snackbars.projectCreated', { project: this.state.title })			
 		this.props.history.push(`/project/${rs.id}`)
 	}
 	handleCreateProject = async () => {
@@ -196,12 +196,12 @@ class CreateProject extends Component {
 							<ItemGrid container xs={12}>
 								<TextF
 									autoFocus
-									id={"title"}
-									label={t("projects.fields.name")}
+									id={'title'}
+									label={t('projects.fields.name')}
 									value={this.state.title}
 									className={classes.textField}
-									handleChange={this.handleChange("title")}
-									margin="normal"
+									handleChange={this.handleChange('title')}
+									margin='normal'
 									
 									error={error}
 
@@ -209,16 +209,16 @@ class CreateProject extends Component {
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<TextF
-									id={"multiline-flexible"}
-									label={t("projects.fields.description")}
+									id={'multiline-flexible'}
+									label={t('projects.fields.description')}
 									multiline
-									rows={"4"}
-									// rowsMax={"4"}
-									color={"secondary"}
+									rows={'4'}
+									// rowsMax={'4'}
+									color={'secondary'}
 									className={classes.textField}
 									value={this.state.description}
-									handleChange={this.handleChange("description")}
-									margin="normal"
+									handleChange={this.handleChange('description')}
+									margin='normal'
 									
 									error={error}
 								/>
@@ -227,14 +227,14 @@ class CreateProject extends Component {
 								{/* <div className={classes.datepicker}> */}
 								<DatePicker
 									autoOk
-									label={t("projects.fields.startDate")}
+									label={t('projects.fields.startDate')}
 									clearable
 									labelFunc={(date, invalidLabel) => date === null ? '' : moment(date).format('LL')}
-									format="YYYY-MM-DDTHH:mm"
+									format='YYYY-MM-DDTHH:mm'
 									value={this.state.startDate}
-									onChange={this.handleDateChange("startDate")}
+									onChange={this.handleDateChange('startDate')}
 									animateYearScrolling={false}
-									color="primary"
+									color='primary'
 									rightArrowIcon={<KeyArrRight />}
 									leftArrowIcon={<KeyArrLeft />}
 									InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
@@ -247,14 +247,14 @@ class CreateProject extends Component {
 							<ItemGrid xs={12}>
 								{/* <div className={classes.datepicker}> */}
 								<DatePicker
-									color="primary"
+									color='primary'
 									autoOk
-									label={t("projects.fields.endDate")}
+									label={t('projects.fields.endDate')}
 									clearable
 									labelFunc={(date, invalidLabel) => date === null ? '' : moment(date).format('LL')}
-									format="YYYY-MM-DDTHH:mm"
+									format='YYYY-MM-DDTHH:mm'
 									value={this.state.endDate}
-									onChange={this.handleDateChange("endDate")}
+									onChange={this.handleDateChange('endDate')}
 									animateYearScrolling={false}
 									rightArrowIcon={<KeyArrRight />}
 									leftArrowIcon={<KeyArrLeft />}
@@ -271,13 +271,13 @@ class CreateProject extends Component {
 										<Fragment>
 											<InputLabel
 												FormLabelClasses={{ root: classes.label }}
-												color={"primary"}
-												htmlFor="select-org">
-												{t("projects.fields.selectOrganisation")}
+												color={'primary'}
+												htmlFor='select-org'>
+												{t('projects.fields.selectOrganisation')}
 											</InputLabel>
 
 											<Select
-												color={"primary"}
+												color={'primary'}
 												value={this.state.selectedOrg}
 												onChange={this.handleSelectedOrgs}
 												MenuProps={MenuProps}
@@ -306,14 +306,14 @@ class CreateProject extends Component {
 											<InputLabel FormLabelClasses={{
 												root: classes.label,
 												// focused: classes.focused
-											}} color={"primary"} htmlFor="select-multiple-chip">{t("projects.fields.assignDevices")}</InputLabel>
+											}} color={'primary'} htmlFor='select-multiple-chip'>{t('projects.fields.assignDevices')}</InputLabel>
 											<Select
-												color={"primary"}
+												color={'primary'}
 												multiple
 												value={this.state.devices}
 												// autoWidth
 												onChange={this.handleDeviceChange}
-												input={<Input id="select-multiple-chip" classes={{
+												input={<Input id='select-multiple-chip' classes={{
 													underline: classes.underline
 												}} />}
 												renderValue={selected => (
@@ -334,33 +334,33 @@ class CreateProject extends Component {
 																	: theme.typography.fontWeightMedium,
 														}}
 													>
-														{name.id + " - " + (name.name ? name.name : t("devices.noName"))}
+														{name.id + ' - ' + (name.name ? name.name : t('devices.noName'))}
 													</MenuItem>
 												))}
 											</Select>
-										</Fragment> : selectedOrg ? <Caption>{t("devices.noDevices")}</Caption> : <Caption>{t("projects.noOrganisationSelected")}</Caption>}
+										</Fragment> : selectedOrg ? <Caption>{t('devices.noDevices')}</Caption> : <Caption>{t('projects.noOrganisationSelected')}</Caption>}
 								</FormControl>
 							</ItemGrid> */}
 							{/* </Grid> */}
 
 						</form>
 						<ItemGrid xs={12} container justify={'center'}>
-							<Collapse in={this.state.creating} timeout="auto" unmountOnExit>
+							<Collapse in={this.state.creating} timeout='auto' unmountOnExit>
 								<CircularLoader notCentered />
 							</Collapse>
 						</ItemGrid>
-						<Grid container justify={"center"}>
+						<Grid container justify={'center'}>
 							<div className={classes.wrapper}>
 								<Button
-									variant="contained"
-									color="primary"
+									variant='contained'
+									color='primary'
 									className={buttonClassname}
 									disabled={this.state.creating || this.state.created}
 									onClick={this.handleCreateProject}
 								>
-									{this.state.created ? t("snackbars.redirect")
+									{this.state.created ? t('snackbars.redirect')
 										: <Fragment>
-											<Save className={classes.leftIcon} />{t("projects.new")}
+											<Save className={classes.leftIcon} />{t('projects.new')}
 										</Fragment>}
 								</Button>
 							</div>

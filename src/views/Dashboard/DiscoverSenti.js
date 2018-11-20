@@ -21,28 +21,28 @@ class DiscoverSenti extends Component {
 						<div className={classes.devicesPicture}>
 							<GridContainer>
 								<ItemGrid xs={12}>
-									<Typography variant={'h6'} style={{ color: "white" }}>{t("discoverSenti.welcome")}</Typography>
+									<Typography variant={'h6'} style={{ color: 'white' }}>{t('discoverSenti.welcome')}</Typography>
 								</ItemGrid>
 								<ItemGrid xs={12} sm={4} noMargin>
 									<DiscoverSentiCards img={StorageImg}
-										onClick={this.goTo("/projects/list")}
+										onClick={this.goTo('/projects/list')}
 										content={
-											<Typography variant={'h6'} style={{ color: "white", fontWeight: 400, textTransform: "none" }}>{t("discoverSenti.addProject")}</Typography>
+											<Typography variant={'h6'} style={{ color: 'white', fontWeight: 400, textTransform: 'none' }}>{t('discoverSenti.addProject')}</Typography>
 										}/>
 								</ItemGrid>
 								<ItemGrid xs={12} sm={4} noMargin>
 									<DiscoverSentiCards img={HostingImg}
-										onClick={this.goTo("/devices/list")}
+										onClick={this.goTo('/devices/list')}
 										content={
-											<Typography variant={'h6'} style={{ color: "white", fontWeight: 400, textTransform: "none" }}>{t("discoverSenti.onSiteSetup")}</Typography>
+											<Typography variant={'h6'} style={{ color: 'white', fontWeight: 400, textTransform: 'none' }}>{t('discoverSenti.onSiteSetup')}</Typography>
 
 										}/>
 								</ItemGrid>
 								<ItemGrid xs={12} sm={4} noMargin>
 									<DiscoverSentiCards img={AnalyticsImg}
-										onClick={this.goTo("/collections/list")}
+										onClick={this.goTo('/collections/list')}
 										content={
-											<Typography variant={'h6'} style={{ color: "white", fontWeight: 400, textTransform: "none" }}>{t("discoverSenti.startAnalyzeData")}</Typography>
+											<Typography variant={'h6'} style={{ color: 'white', fontWeight: 400, textTransform: 'none' }}>{t('discoverSenti.startAnalyzeData')}</Typography>
 										}
 									/>
 								</ItemGrid>

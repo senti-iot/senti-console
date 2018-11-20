@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react'
 import { Doughnut } from 'react-chartjs-2';
 import { Typography, withStyles, Paper, Grow } from '@material-ui/core';
-import { ItemG } from 'components';
+import { ItemG, Caption } from 'components';
 import { graphStyles } from './graphStyles';
+import { getWeather } from 'variables/dataDevices';
 class DoughnutChart extends PureComponent {
 	constructor(props) {
 		super(props)
@@ -16,13 +17,9 @@ class DoughnutChart extends PureComponent {
 				exited: false
 			},
 			lineOptions: {
-				title: {
-					display: true,
-					text: props.title,
-				},
 				categoryPercentage: 0.5,
 				barPercentage: 0.5,
-				barThickness: "flex",
+				barThickness: 'flex',
 				gridLines: { offsetGridLines: false },
 				animation: {
 					duration: 500
@@ -30,25 +27,25 @@ class DoughnutChart extends PureComponent {
 				display: true,
 				maintainAspectRatio: false,
 				tooltips: {
-					titleFontFamily: "inherit",
-					mode: "point",
+					titleFontFamily: 'inherit',
+					mode: 'point',
 					intersect: false,
 					enabled: false,
 					custom: this.customTooltip
 				},
 				hover: {
-					mode: "point"
+					mode: 'point'
 				},
 				// scales: {
 				// 	xAxes: [
 				// 		{
 				// 			display: false,
 				// 			offset: true,
-				// 			id: "day",
+				// 			id: 'day',
 				// 			type: 'time',
 				// 			time: {
 				// 				displayFormats: {
-				// 					hour: "LT",
+				// 					hour: 'LT',
 				// 					day: 'll'
 				// 				},
 				// 				unit: props.unit.chart,
@@ -69,7 +66,7 @@ class DoughnutChart extends PureComponent {
 		}
 	}
 	legendOptions = {
-		position: "bottom",
+		position: 'bottom',
 		display: !this.props.single ? true : false,
 		onHover: !this.props.single ? (t, l) => {
 			this.props.setHoverID(this.props.data.datasets[l.datasetIndex].id)
@@ -85,57 +82,44 @@ class DoughnutChart extends PureComponent {
 			this.hideTooltip()
 			return
 		}
+		let wDate = null
+		
+		try {
+			let lat = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].lat
+			let long = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].long
+			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
+			if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long)) {
+				this.setState({ weather: null })
+				getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then(rs => {
+					this.setState({
+						weatherDate: wDate,
+						weather: rs,
+						loc: {
+							lat: lat,
+							long: long
+						}
+					})
+				})
+			}
+		}
+		catch (err) {
+
+		}
 		const left = tooltipModel.caretX;
 		const top = tooltipModel.caretY;
-		// ;
-		// )
+		let str = tooltipModel.body[0].lines[0]
+		var date = str.substring(0, str.lastIndexOf(':'));
+		date = date.charAt(0).toUpperCase() + date.slice(1)
 		this.setTooltip({
 			top,
 			left,
-			title: tooltipModel.title,
-			data: tooltipModel.dataPoints.map((d, i) => ({
-				device: tooltipModel.body[i].lines[0].split(':')[0], count: tooltipModel.body[i].lines[0].split(':')[1], color: tooltipModel.labelColors[i].backgroundColor
-			}))
+			title: tooltipModel.body[0].lines[1],
+			date: date,
+			count: Math.round(parseInt(tooltipModel.body[0].lines[2], 10)),
+			color: tooltipModel.labelColors[0].backgroundColor
 		})
 	}
-	componentDidUpdate = (prevProps, prevState) => {
-		if (prevProps.unit !== this.props.unit) {
-			this.setState({
-				lineOptions: {
-					...this.state.lineOptions,
-
-					scales: {
-						...this.state.lineOptions.scales,
-						xAxes: [{
-							offset: true,
-							id: "day",
-							type: 'time',
-
-							time: {
-								displayFormats: {
-									hour: "LT"
-								},
-								unit: this.props.unit.chart,
-								tooltipFormat: this.props.unit.format
-							},
-						}]
-					}
-				}
-			})
-			this.chart.chartInstance.update()
-		}
-		if (prevProps.title !== this.props.title) {
-			this.setState({
-				lineOptions: {
-					...this.state.lineOptions,
-					title: {
-						display: true,
-						text: this.props.title
-					}
-				}
-			})
-		}
-	}
+	
 
 	setTooltip = (tooltip) => {
 		this.setState({
@@ -176,20 +160,23 @@ class DoughnutChart extends PureComponent {
 	render() {
 		const { classes } = this.props
 		const { tooltip, chartWidth } = this.state
+		;
+		
+		// let DayStr = tooltip.title[1] ? tooltip.title[1].charAt(0).toUpperCase() + tooltip.title[1].slice(1) : ''
+		// let DateStr = tooltip.title[0] ? tooltip.title[0] : ''
 		return (
 			<div style={{ maxHeight: 400, position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
 				<Doughnut
-					// redraw={true}
 					data={this.props.data}
 					height={400}
-					// height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerWidth / 4 : window.innerHeight - 200}
 					ref={r => this.chart = r}
 					options={this.state.lineOptions}
 					legend={this.legendOptions}
 					onElementsClick={this.elementClicked}
+					
 				/>
 				<div ref={r => this.tooltip = r} style={{
-					zIndex: tooltip.show ? 1300 : tooltip.exited ? -1 : 1300,
+					zIndex: tooltip.show ? 1200 : tooltip.exited ? -1 : 1200,
 					position: 'absolute',
 					top: Math.round(this.state.tooltip.top),
 					left: Math.round(this.state.tooltip.left),
@@ -198,19 +185,28 @@ class DoughnutChart extends PureComponent {
 				}}>
 					<Grow in={tooltip.show} onExited={this.exitedTooltip} >
 						<Paper className={classes.paper}>
-							<ItemG>
-								<Typography variant={'h6'}>{this.state.tooltip.title}</Typography>
-								{this.state.tooltip.data.map((d, i) => {
-									return (
-										<ItemG key={i} container alignItems={'center'}>
-											<div style={{ background: d.color, width: 15, height: 15, marginRight: 10 }} />
-											<Typography variant={'caption'}>{d.device}</Typography>
-											<Typography classes={{
-												root: classes.expand
-											}}>{Math.round(d.count)}</Typography>
-										</ItemG>
-									)
-								})}
+							<ItemG container>
+								<ItemG container direction='row' justify='space-between'>
+									<ItemG xs container direction='column'>
+										<Typography variant={'h6'} classes={{ root: classes.antialias }} >{`${tooltip.title}`}</Typography>
+										<Caption> {`(${tooltip.date})`}</Caption>
+									</ItemG>
+									{/* <ItemG xs={2}>
+										{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : <CircularProgress size={37} />}
+									</ItemG> */}
+								</ItemG>
+								{/* <ItemG >
+									<Caption>{this.props.t('devices.fields.weather')}: {this.state.weather ? this.state.weather.currently.summary : null}</Caption>
+								</ItemG> */}
+								<ItemG container alignItems={'center'}>
+									<ItemG xs={1}>
+										<div style={{ background: tooltip.color, width: 15, height: 15, marginRight: 8 }} />
+									</ItemG>
+									{/* <ItemG xs={8}><Typography noWrap variant={'caption'}>{tooltip.device}</Typography></ItemG> */}
+									<ItemG xs={3}><Typography variant={'caption'} classes={{
+										root: classes.expand
+									}}>{tooltip.count}</Typography></ItemG>
+								</ItemG>
 							</ItemG>
 						</Paper>
 					</Grow>

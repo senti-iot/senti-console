@@ -13,31 +13,31 @@ class NotificationSettings extends Component {
 		const { classes, t } = this.props
 		const { alerts, didKnow } = this.props
 		const alertVals = [
-			{ value: 1, label: t("actions.yes") },
-			{ value: 0, label: t("actions.no") }
+			{ value: 1, label: t('actions.yes') },
+			{ value: 0, label: t('actions.no') }
 		]
 		const didKnows = [
-			{ value: 1, label: t("actions.yes") },
-			{ value: 0, label: t("actions.no") }
+			{ value: 1, label: t('actions.yes') },
+			{ value: 0, label: t('actions.no') }
 		]
 		return (
 			<InfoCard
 				noExpand
 				avatar={<Notifications />}
-				title={t("settings.headers.notifications")}
-				subheader={"*Work in progress*"}
+				title={t('settings.headers.notifications')}
+				subheader={'*Work in progress*'}
 				content={
 					<Grid container>
 						<List className={classes.list}>
 							<ListItem divider>
-								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-									<ListItemText>{t("settings.alerts")}</ListItemText>
+								<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+									<ListItemText>{t('settings.alerts')}</ListItemText>
 									<DSelect menuItems={alertVals} value={alerts} onChange={this.changeAlerts} />
 								</ItemGrid>
 							</ListItem>
 							<ListItem>
-								<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-									<ListItemText>{t("settings.didYouKnow")}</ListItemText>
+								<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+									<ListItemText>{t('settings.didYouKnow')}</ListItemText>
 									<DSelect menuItems={didKnows} value={didKnow} onChange={this.changeDidKnow} />
 								</ItemGrid>
 							</ListItem>

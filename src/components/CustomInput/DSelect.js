@@ -12,7 +12,7 @@ const DSelect = (props) => {
 	const { classes, value, onChange, menuItems, label, theme } = props
 	let mobile = window.innerWidth < theme.breakpoints.values.md ? true : false
 	return <FormControl className={classes.formControl} fullWidth={mobile}>
-		{label ? <InputLabel FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
+		{label ? <InputLabel FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
 			{label}
 		</InputLabel> : null}
 		<Select

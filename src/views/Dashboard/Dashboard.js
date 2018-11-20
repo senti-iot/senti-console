@@ -1,12 +1,12 @@
-import { Button, withStyles } from "@material-ui/core";
+import { Button, withStyles } from '@material-ui/core';
 import imgs from 'assets/img/Squared';
-import dashboardStyle from "assets/jss/material-dashboard-react/dashboardStyle";
+import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import { Caption, ItemG } from 'components';
 import MediaCard from 'components/Cards/MediaCard';
-import GridContainer from "components/Grid/GridContainer";
-import withLocalization from "components/Localization/T";
-import PropTypes from "prop-types";
-import React, { Fragment } from "react";
+import GridContainer from 'components/Grid/GridContainer';
+import withLocalization from 'components/Localization/T';
+import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import DiscoverSenti from 'views/Dashboard/DiscoverSenti';
@@ -22,12 +22,12 @@ class Dashboard extends React.Component {
 			projects: [],
 			devices: 0
 		}
-		props.setHeader("Senti.Cloud", false, '', "dashboard")
+		props.setHeader('Senti.Cloud', false, '', 'dashboard')
 	}
 
 
 	componentDidMount = async () => {
-		this.props.setHeader("Senti.Cloud", false, '', "dashboard")
+		this.props.setHeader('Senti.Cloud', false, '', 'dashboard')
 	}
 
 	componentWillUnmount = () => {
@@ -44,7 +44,7 @@ class Dashboard extends React.Component {
 	
 	renderAction = (text, loc, right) => {
 		const { t, /* history */ } = this.props
-		return <Button size={"small"} color={"primary"} component={Link} to={loc} style={right ? { marginLeft: "auto" } : null}>{t(text)}</Button>
+		return <Button size={'small'} color={'primary'} component={Link} to={loc} style={right ? { marginLeft: 'auto' } : null}>{t(text)}</Button>
 	}
 
 	render() {
@@ -55,66 +55,66 @@ class Dashboard extends React.Component {
 				<GridContainer spacing={8} justify={'center'}>
 					<ItemG container justify={'center'} xs={12} sm={6} md={4}><MediaCard
 						img={imgs.hosting}
-						header={t("dashboard.cardHeaders.onSiteSetup")}
-						content={t("dashboard.cardContent.onSiteSetup")}
-						leftAction={this.renderAction("actions.learnMore", "/")}
-						rightAction={this.renderAction("actions.startNow", "/devices", true)}
+						header={t('dashboard.cardHeaders.onSiteSetup')}
+						content={t('dashboard.cardContent.onSiteSetup')}
+						leftAction={this.renderAction('actions.learnMore', '/')}
+						rightAction={this.renderAction('actions.startNow', '/devices', true)}
 					/></ItemG>
 					<ItemG container justify={'center'} xs={12} sm={6} md={4}><MediaCard
 						img={imgs.storage}
-						header={t("dashboard.cardHeaders.projects")}
-						content={t("dashboard.cardContent.projects")}
-						leftAction={this.renderAction("actions.learnMore", "/")}
-						rightAction={this.renderAction("actions.startNow", "/projects", true)}
+						header={t('dashboard.cardHeaders.projects')}
+						content={t('dashboard.cardContent.projects')}
+						leftAction={this.renderAction('actions.learnMore', '/')}
+						rightAction={this.renderAction('actions.startNow', '/projects', true)}
 					/></ItemG>
 					<ItemG container justify={'center'} xs={12} sm={6} md={4}><MediaCard
 						img={imgs.devices}
-						header={t("dashboard.cardHeaders.devices")}
-						content={t("dashboard.cardContent.devices")}
-						leftAction={this.renderAction("actions.learnMore", "/")}
-						rightAction={this.renderAction("actions.startNow", "/devices", true)}
+						header={t('dashboard.cardHeaders.devices')}
+						content={t('dashboard.cardContent.devices')}
+						leftAction={this.renderAction('actions.learnMore', '/')}
+						rightAction={this.renderAction('actions.startNow', '/devices', true)}
 					/></ItemG>
 					<ItemG container justify={'center'} xs={12} sm={6} md={4}><MediaCard
 						img={imgs.data}
-						header={t("dashboard.cardHeaders.data")}
-						content={t("dashboard.cardContent.data")}
-						leftAction={this.renderAction("actions.learnMore", "/")}
-						rightAction={this.renderAction("actions.startNow", "/collections/list", true)}
+						header={t('dashboard.cardHeaders.data')}
+						content={t('dashboard.cardContent.data')}
+						leftAction={this.renderAction('actions.learnMore', '/')}
+						rightAction={this.renderAction('actions.startNow', '/collections/list', true)}
 					/></ItemG>
 					<ItemG container justify={'center'} xs={12} sm={6} md={4}>	<MediaCard
 						img={imgs.users}
-						header={t("dashboard.cardHeaders.users")}
-						content={t("dashboard.cardContent.users")}
-						leftAction={this.renderAction("actions.learnMore", "/")}
-						rightAction={this.renderAction("actions.startNow", "/users", true)}
+						header={t('dashboard.cardHeaders.users')}
+						content={t('dashboard.cardContent.users')}
+						leftAction={this.renderAction('actions.learnMore', '/')}
+						rightAction={this.renderAction('actions.startNow', '/management/users', true)}
 					/></ItemG>
 					<ItemG container justify={'center'} xs={12} sm={6} md={4}>	<MediaCard
 						img={imgs.settings}
-						header={t("dashboard.cardHeaders.settings")}
-						content={t("dashboard.cardContent.settings")}
-						leftAction={this.renderAction("actions.learnMore", "/")}
-						rightAction={this.renderAction("actions.startNow", "/settings", true)}
+						header={t('dashboard.cardHeaders.settings')}
+						content={t('dashboard.cardContent.settings')}
+						leftAction={this.renderAction('actions.learnMore', '/')}
+						rightAction={this.renderAction('actions.startNow', '/settings', true)}
 					/></ItemG>
 					{/* <ItemG container justify={'center'} sm={6} md={4}>	<MediaCard
 						img={imgs.notifications}
-						header={t("dashboard.cardHeaders.notifications")}
-						content={t("dashboard.cardContent.notifications")}
-						leftAction={this.renderAction("actions.learnMore", "/")}
-						rightAction={this.renderAction("actions.startNow", "/settings", true)}
+						header={t('dashboard.cardHeaders.notifications')}
+						content={t('dashboard.cardContent.notifications')}
+						leftAction={this.renderAction('actions.learnMore', '/')}
+						rightAction={this.renderAction('actions.startNow', '/settings', true)}
 					/></ItemG> */}
 					{/* <ItemG container justify={'center'} sm={6} md={4}>	<MediaCard
 						img={imgs.predictions}
-						header={t("dashboard.cardHeaders.alerts")}
-						content={t("dashboard.cardContent.alerts")}
-						leftAction={this.renderAction("actions.learnMore", "/")}
-						rightAction={this.renderAction("actions.startNow", "/settings", true)}
+						header={t('dashboard.cardHeaders.alerts')}
+						content={t('dashboard.cardContent.alerts')}
+						leftAction={this.renderAction('actions.learnMore', '/')}
+						rightAction={this.renderAction('actions.startNow', '/settings', true)}
 					/></ItemG> */}
 					{/* <ItemG container justify={'center'} sm={6} md={4}>	<MediaCard
 						img={imgs.sharing}
-						header={t("dashboard.cardHeaders.api")}
-						content={t("dashboard.cardContent.api")}
-						leftAction={this.renderAction("actions.learnMore", "/")}
-						rightAction={this.renderAction("actions.startNow", "/", true)}
+						header={t('dashboard.cardHeaders.api')}
+						content={t('dashboard.cardContent.api')}
+						leftAction={this.renderAction('actions.learnMore', '/')}
+						rightAction={this.renderAction('actions.startNow', '/', true)}
 					/></ItemG> */}
 					<ItemG container justify={'center'} xs={12}>
 						<Caption>

@@ -1,5 +1,5 @@
-import { loginApi, api } from "./data";
-import cookie from "react-cookies";
+import { loginApi, api } from './data';
+import cookie from 'react-cookies';
 
 export const loginUser = async (username, password) => {
 	var session = await loginApi.post('odeum/auth/basic', JSON.stringify({ username: username, password: password })).then(rs => rs.data)
@@ -33,9 +33,9 @@ export const saveSettings = async (user) => {
 	var data = await api.put(`/core/user/${user.id}`, user).then(rs => rs.data)
 	return data
 }
-export const saveSettingsOnServer = async (settings) => {
-	var data = await api.post('senti/users/settings', JSON.stringify(settings)).then(rs => { 
-		return rs.data
-	})
-	return data
-}
+// export const saveSettingsOnServer = async (settings) => {
+// 	var data = await api.post('senti/users/settings', JSON.stringify(settings)).then(rs => { 
+// 		return rs.data
+// 	})
+// 	return data
+// }

@@ -58,7 +58,8 @@ const regularCardStyle = theme => ({
 		maxHeight: 500
 	},
 	smallCardCustomHeight: {
-		height: "calc(100% - 148px)"
+		// height: "calc(100% - 148px)"
+		flex: 1
 	},
 	alignCenter: {
 		display: "flex",
@@ -139,6 +140,10 @@ const regularCardStyle = theme => ({
 	purpleCardHeader,
 	primaryCardHeader,
 	sentiCardHeader,
+	title: {
+		fontSize: "1em",
+		fontWeight: 500
+	},
 	cardTitle: {
 		color: "#FFFFFF",
 		marginTop: "0",

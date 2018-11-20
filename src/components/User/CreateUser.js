@@ -14,15 +14,15 @@ class CreateUser extends Component {
 
 		this.state = {
 			user: {
-				userName: "",
-				firstName: "",
-				lastName: "",
-				phone: "",
-				email: "",
+				userName: '',
+				firstName: '',
+				lastName: '',
+				phone: '',
+				email: '',
 				image: null,
 				aux: {
 					odeum: {
-						language: "da"
+						language: 'da'
 					},
 					senti: {
 						
@@ -31,12 +31,12 @@ class CreateUser extends Component {
 				sysLang: 2,
 				org: {
 					id: 0,
-					name: "Ingen organisation"
+					name: 'Ingen organisation'
 				},
 				groups: {
 					136550100000225: {
 						id: 136550100000225,
-						name: "Senti User"
+						name: 'Senti User'
 					} 
 				}
 			},
@@ -50,7 +50,7 @@ class CreateUser extends Component {
     componentDidMount = async () => {
     	this._isMounted = 1
     	const { setHeader } = this.props
-    	setHeader("users.createUser", true, '/users', "users")
+    	setHeader('users.createUser', true, '/management/users', 'users')
     	if (this._isMounted)
     		await this.getOrgs()
     }
@@ -81,8 +81,8 @@ class CreateUser extends Component {
 	close = (rs) => {
 		this.setState({ created: true, creating: false, org: rs }) 
 		const { history, s } = this.props
-		s("snackbars.userCreated", { user: `${rs.firstName} ${rs.lastName}` })
-		history.push(`/user/${rs.id}`)
+		s('snackbars.userCreated', { user: `${rs.firstName} ${rs.lastName}` })
+		history.push(`/management/user/${rs.id}`)
 	}
 	handleChange = prop => e => {
 		const { error } = this.state
@@ -128,23 +128,23 @@ class CreateUser extends Component {
     	const { t } = this.props
     	switch (code) {
     		case 0:
-    			return t("users.validation.noUserName")
+    			return t('users.validation.noUserName')
     		case 1:
-    			return t("users.validation.noFirstName")
+    			return t('users.validation.noFirstName')
     		case 2:
-    			return t("users.validation.noLastName")
+    			return t('users.validation.noLastName')
     		case 3:
-    			return t("users.validation.noPhone")
+    			return t('users.validation.noPhone')
     		case 4:
-    			return t("users.validation.noEmail")
+    			return t('users.validation.noEmail')
     		case 5:
-    			return t("users.validation.noOrg")
+    			return t('users.validation.noOrg')
     		case 6: 
-    			return t("users.validation.noGroup")
+    			return t('users.validation.noGroup')
     		case 400: 
-    			return t("users.validation.userAlreadyExists")
+    			return t('users.validation.userAlreadyExists')
     		default:
-    			return ""
+    			return ''
     	}
 	
     }
@@ -190,13 +190,13 @@ class CreateUser extends Component {
     	const { orgs, user, error } = this.state
     	const { org } = user
     	return <FormControl className={classes.formControl}>
-    		<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
-    			{t("users.fields.organisation")}
+    		<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
+    			{t('users.fields.organisation')}
     		</InputLabel>
     		<Select
     			error={error}
     			fullWidth={false}
-    			color={"primary"}
+    			color={'primary'}
     			value={org.id}
     			onChange={this.handleOrgChange}
     			// renderValue={value => value.name}
@@ -216,17 +216,17 @@ class CreateUser extends Component {
     	const { t, classes } = this.props
     	const { error, user } = this.state
     	let languages = [
-    		{ value: "en", label: t("settings.languages.en") },
-    		{ value: "da", label: t("settings.languages.da") }
+    		{ value: 'en', label: t('settings.languages.en') },
+    		{ value: 'da', label: t('settings.languages.da') }
     	]
     	return <FormControl className={classes.formControl}>
-    		<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
-    			{t("users.fields.language")}
+    		<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
+    			{t('users.fields.language')}
     		</InputLabel>
     		<Select
     			error={error}
     			fullWidth={false}
-    			color={"primary"}
+    			color={'primary'}
     			value={user.aux.odeum.language}
     			onChange={this.handleLangChange}
     			// renderValue={value => languages[languages.findIndex(l => l.value === value)].label}
@@ -249,34 +249,34 @@ class CreateUser extends Component {
     		{
     			id: 136550100000211,
     			appId: 1220,
-    			name: t("users.groups.accountManager"),
+    			name: t('users.groups.accountManager'),
     			show: accessLevel.apiorg.editusers ? true : false
-    			// description: ""
+    			// description: ''
     		},
     		{
     			id: 136550100000143,
     			appId: 1220,
-    			name: t("users.groups.superUser"),
-    			// description: "Senti Cloud group containing Super Users",
+    			name: t('users.groups.superUser'),
+    			// description: 'Senti Cloud group containing Super Users',
     			show: accessLevel.apisuperuser ? true : false
 
     		},
     		{
     			id: 136550100000225,
     			appId: 1220,
-    			name: t("users.groups.user"),
+    			name: t('users.groups.user'),
     			show: true
-    			// description: "Senti Users"
+    			// description: 'Senti Users'
     		}
     	]
     	return <FormControl className={classes.formControl}>
-    		<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={"primary"} htmlFor="select-multiple-chip">
-    			{t("users.fields.accessLevel")}
+    		<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
+    			{t('users.fields.accessLevel')}
     		</InputLabel>
     		<Select
     			error={error}
     			fullWidth={false}
-    			color={"primary"}
+    			color={'primary'}
     			value={selectedGroup}
     			onChange={this.handleGroupChange}
     			// renderValue={value => value.name}
@@ -314,60 +314,60 @@ class CreateUser extends Component {
     					{/* <ItemGrid container xs={12} md={6}>
     						<TextF
     							autoFocus
-    							id={"userName"}
-    							label={t("users.fields.userName")}
+    							id={'userName'}
+    							label={t('users.fields.userName')}
     							value={user.userName}
     							className={classes.textField}
-    							handleChange={this.handleChange("userName")}
-    							margin="normal"
+    							handleChange={this.handleChange('userName')}
+    							margin='normal'
     							
     							error={error}
     						/>
     					</ItemGrid> */}
     					<ItemGrid container xs={12} md={6}>
     						<TextF
-    							id={"firstName"}
-    							label={t("users.fields.firstName")}
+    							id={'firstName'}
+    							label={t('users.fields.firstName')}
     							value={user.firstName}
     							className={classes.textField}
-    							handleChange={this.handleChange("firstName")}
-    							margin="normal"
+    							handleChange={this.handleChange('firstName')}
+    							margin='normal'
     							
     							error={error}
     						/>
     					</ItemGrid>
     					<ItemGrid container xs={12} md={6}>
     						<TextF
-    							id={"lastName"}
-    							label={t("users.fields.lastName")}
+    							id={'lastName'}
+    							label={t('users.fields.lastName')}
     							value={user.lastName}
     							className={classes.textField}
-    							handleChange={this.handleChange("lastName")}
-    							margin="normal"
+    							handleChange={this.handleChange('lastName')}
+    							margin='normal'
     							
     							error={error}
     						/>
     					</ItemGrid>
     					<ItemGrid container xs={12} md={6}>
     						<TextF
-    							id={"email"}
-    							label={t("users.fields.email")}
+    							id={'email'}
+    							label={t('users.fields.email')}
     							value={user.email}
     							className={classes.textField}
-    							handleChange={this.handleChange("email")}
-    							margin="normal"
+    							handleChange={this.handleChange('email')}
+    							margin='normal'
     							
     							error={error}
     						/>
     					</ItemGrid>
     					<ItemGrid container xs={12} md={6}>
     						<TextF
-    							id={"phone"}
-    							label={t("users.fields.phone")}
+    							id={'phone'}
+    							label={t('users.fields.phone')}
     							value={user.phone}
     							className={classes.textField}
-    							handleChange={this.handleChange("phone")}
-    							margin="normal"
+    							handleChange={this.handleChange('phone')}
+    							margin='normal'
     							
     							error={error}
     						/>
@@ -384,21 +384,21 @@ class CreateUser extends Component {
 						
     				</form>
     				<ItemGrid xs={12} container justify={'center'}>
-    					<Collapse in={this.state.creating} timeout="auto" unmountOnExit>
+    					<Collapse in={this.state.creating} timeout='auto' unmountOnExit>
     						<CircularLoader notCentered />
     					</Collapse>
     				</ItemGrid>
-    				<Grid container justify={"center"}>
+    				<Grid container justify={'center'}>
     					<div className={classes.wrapper}>
     						<Button
-    							variant="contained"
-    							color="primary"
+    							variant='contained'
+    							color='primary'
     							className={buttonClassname}
     							disabled={this.state.creating || this.state.created}
     							onClick={this.handleCreateUser}>
     							{this.state.created ?
-    								<Fragment>{t("snackbars.redirect")}</Fragment>
-    								: <Fragment><Save className={classes.leftIcon} />{t("users.createUser")}</Fragment>}
+    								<Fragment>{t('snackbars.redirect')}</Fragment>
+    								: <Fragment><Save className={classes.leftIcon} />{t('users.createUser')}</Fragment>}
     						</Button>
     					</div>
     				</Grid>

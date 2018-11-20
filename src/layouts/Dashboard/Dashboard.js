@@ -1,25 +1,25 @@
-import React, { Fragment } from "react";
-import PropTypes from "prop-types";
-import { Switch, Route, Redirect } from "react-router-dom";
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import { Switch, Route, Redirect } from 'react-router-dom';
 // creates a beautiful scrollbar
-import PerfectScrollbar from "perfect-scrollbar";
-import "perfect-scrollbar/css/perfect-scrollbar.css";
-import { withStyles, Snackbar, Button } from "@material-ui/core";
-import { Header, /* Footer, */ Sidebar, CircularLoader } from "components";
+import PerfectScrollbar from 'perfect-scrollbar';
+import 'perfect-scrollbar/css/perfect-scrollbar.css';
+import { withStyles, Snackbar, Button } from '@material-ui/core';
+import { Header, /* Footer, */ Sidebar, CircularLoader } from 'components';
 
-import dashboardRoutes from "routes/dashboard.js";
+import dashboardRoutes from 'routes/dashboard.js';
 
-import appStyle from "assets/jss/material-dashboard-react/appStyle.js";
+import appStyle from 'assets/jss/material-dashboard-react/appStyle.js';
 
-// import image from "assets/img/sidebar-2.jpg";
-import logo from "../../logo.svg";
-import cookie from "react-cookies";
-import withLocalization from "components/Localization/T";
-import { connect } from "react-redux"
+// import image from 'assets/img/sidebar-2.jpg';
+import logo from '../../logo.svg';
+import cookie from 'react-cookies';
+import withLocalization from 'components/Localization/T';
+import { connect } from 'react-redux'
 import { getSettings } from 'redux/settings';
 import withSnackbarHandler from 'components/Localization/SnackbarHandler';
 import {  Close } from 'variables/icons';
-// import GeoLocation from "components/Geolocation/Geolocation";
+// import GeoLocation from 'components/Geolocation/Geolocation';
 class App extends React.Component {
 	constructor(props) {
 		super(props)
@@ -72,7 +72,7 @@ class App extends React.Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		if (this._isMounted) {
-			this.handleSetHeaderTitle("Senti.Cloud", false, '', "dashboard")
+			this.handleSetHeaderTitle('Senti.Cloud', false, '', 'dashboard')
 		}
 
 		await this.props.getSettings().then(rs => {
@@ -92,7 +92,7 @@ class App extends React.Component {
 	componentDidUpdate = (prevProps, prevState) => {
 		if (prevState.headerTitle.id !== this.state.headerTitle.id && this.refs.mainPanel)
 			this.refs.mainPanel.scrollTop = 0
-		if (prevProps.sId !== this.props.sId && this.props.sId !== "")
+		if (prevProps.sId !== this.props.sId && this.props.sId !== '')
 			this.setState({ openSnackbar: true })
 	}
 	
@@ -100,7 +100,7 @@ class App extends React.Component {
 		const { classes, t, loading, sOpt, ...rest } = this.props;
 		return (
 			<div className={classes.wrapper}>
-				<div className={classes.mainPanel} ref={"mainPanel"}>
+				<div className={classes.mainPanel} ref={'mainPanel'}>
 					<Header
 						routes={dashboardRoutes}
 						handleDrawerToggle={this.handleDrawerToggle}
@@ -116,13 +116,13 @@ class App extends React.Component {
 							logo={logo}
 							handleDrawerToggle={this.handleDrawerToggle}
 							open={this.state.mobileOpen}
-							color="senti"
+							color='senti'
 							t={t}
 							menuRoute={this.state.menuRoute}
 							{...rest}
 						/>
 						{!loading ? <Fragment>
-							<div className={classes.container}>
+							<div className={classes.container} id={'container'}>
 								<Switch>
 									{cookie.load('SESSION') ?
 										dashboardRoutes.map((prop, key) => {
@@ -139,7 +139,7 @@ class App extends React.Component {
 								</Switch>
 							</div>
 							<Snackbar
-								anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+								anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 								open={this.props.sOpen}
 								onClose={this.props.sClose}
 								onExited={this.props.handleNextS}
@@ -153,8 +153,8 @@ class App extends React.Component {
 								autoHideDuration={3000}
 								message={<span>{t(this.props.sId, this.props.sOpt)}</span>}
 								action={
-									<Button size={"small"} variant={"text"} onClick={this.props.sClose} >
-										<Close style={{ color: "white" }}/>
+									<Button size={'small'} variant={'text'} onClick={this.props.sClose} >
+										<Close style={{ color: 'white' }}/>
 									</Button>
 								}
 							/>

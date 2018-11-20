@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { Grid, withStyles } from '@material-ui/core';
-import { LibraryBooks, Edit, Delete, DataUsage } from "@material-ui/icons"
+import { LibraryBooks, Edit, Delete, DataUsage, StarBorder, Star } from '@material-ui/icons'
 import { dateFormatter } from 'variables/functions';
 import { ItemGrid, Caption, Info, Dropdown } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
@@ -18,16 +18,18 @@ class ProjectDetails extends Component {
 		this.props.history.push({ pathname: `${this.props.match.url}/edit`, prevURL: `/project/${this.props.project.id}` })
 	}
 	render() {
-		const { project, classes, t } = this.props
+		const { project, classes, t, isFav, addToFav, removeFromFav } = this.props
 		return (
 			<InfoCard
 				title={project.title} avatar={<LibraryBooks />}
 				noExpand
 				topAction={<Dropdown
 					menuItems={[
-						{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: this.editProject },
-						{ label: t("menus.assign.collectionsToProject"), icon: <DataUsage className={classes.leftIcon} />, func: this.props.handleOpenAssignCollection },
-						{ label: t("menus.delete"), icon: <Delete className={classes.leftIcon} />, func: this.deleteProject },
+						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: this.editProject },
+						{ label: t('menus.assign.collectionsToProject'), icon: <DataUsage className={classes.leftIcon} />, func: this.props.handleOpenAssignCollection },
+						{ label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: this.deleteProject },
+						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav }
+
 					]
 					}
 				/>
@@ -35,24 +37,24 @@ class ProjectDetails extends Component {
 				content = {< Grid container>
 					<ItemGrid xs={12} container noMargin noPadding>
 						<ItemGrid>
-							<Caption>{t("projects.projectsColumnDescription")}:</Caption>
+							<Caption>{t('projects.projectsColumnDescription')}:</Caption>
 							<Info>{project.description}</Info>
 						</ItemGrid>
 					</ItemGrid>
 					<ItemGrid>
-						<Caption>{t("projects.projectsColumnStartDate")}:</Caption>
+						<Caption>{t('projects.projectsColumnStartDate')}:</Caption>
 						<Info>{dateFormatter(project.startDate)}</Info>
 					</ItemGrid>
 					<ItemGrid xs>
-						<Caption>{t("projects.projectsColumnEndDate")}:</Caption>
+						<Caption>{t('projects.projectsColumnEndDate')}:</Caption>
 						<Info>{dateFormatter(project.endDate)}</Info>
 					</ItemGrid>
 					<ItemGrid xs={12}>
-						<Caption>{t("projects.projectsColumnCreated")}:</Caption>
+						<Caption>{t('projects.projectsColumnCreated')}:</Caption>
 						<Info>{dateFormatter(project.created)}</Info>
 					</ItemGrid>
 					<ItemGrid xs={12}>
-						<Caption>{t("projects.projectsColumnLastMod")}:</Caption>
+						<Caption>{t('projects.projectsColumnLastMod')}:</Caption>
 						<Info>{dateFormatter(project.modified)}</Info>
 					</ItemGrid>
 				</Grid >}

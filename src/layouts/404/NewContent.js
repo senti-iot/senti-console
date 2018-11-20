@@ -33,17 +33,17 @@ class NewContent extends React.Component {
 				<Dialog
 					open={true}
 					onClose={this.handleClose}
-					aria-labelledby="alert-dialog-title"
-					aria-describedby="alert-dialog-description"
+					aria-labelledby='alert-dialog-title'
+					aria-describedby='alert-dialog-description'
 				>
-					<DialogTitle id="alert-dialog-title">Update Found</DialogTitle>
+					<DialogTitle id='alert-dialog-title'>Update Found</DialogTitle>
 					<DialogContent>
-						<DialogContentText id="alert-dialog-description">
+						<DialogContentText id='alert-dialog-description'>
 							New Content is available! Please reload the page!
 						</DialogContentText>
 					</DialogContent>
 					<DialogActions>
-						<ItemG container justify={"center"} alignItems={'center'}>
+						<ItemG container justify={'center'} alignItems={'center'}>
 							<Button onClick={this.handleClose} className={this.props.classes.button}>
 								Reload
 							</Button>

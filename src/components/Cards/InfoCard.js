@@ -4,11 +4,11 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import withLocalization from 'components/Localization/T';
 import { ItemG } from 'components';
 
-class InfoCard extends React.Component {
+class InfoCard extends PureComponent {
 	constructor(props) {
 	  super(props)
 	
@@ -55,13 +55,12 @@ class InfoCard extends React.Component {
 			<Card className={classes.card + classes.plainCardClasses}>
 				<CardHeader
 					action={this.renderTopAction()}
-					avatar={
-						noAvatar ? null : <Avatar aria-label="Avatar" className={classes.avatar}>
-							{avatar}
-						</Avatar>
-					}
+					avatar={noAvatar ? null : <Avatar aria-label='Avatar' className={classes.avatar}>{avatar}</Avatar>}
 					title={title}
 					subheader={this.hasSubheader(subheader)}
+					classes={{
+						title: classes.title
+					}}
 				>
 
 				</CardHeader>
@@ -76,7 +75,7 @@ class InfoCard extends React.Component {
 						{leftActionContent ? <CardContent classes={{ root: classes.root }}>
 							{leftActionContent}
 						</CardContent> : null}
-						<Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+						<Collapse in={this.state.expanded} timeout='auto' unmountOnExit>
 							<CardContent classes={{ root: classes.root }}>
 								{hiddenContent ? hiddenContent : null}
 							</CardContent>
@@ -88,10 +87,10 @@ class InfoCard extends React.Component {
 								color={'primary'}
 								onClick={this.handleExpandClick}
 								aria-expanded={this.state.expanded}
-								aria-label="Show more"
+								aria-label='Show more'
 								className={classes.expandPosition}
 							>
-								{this.state.expanded ? t("menus.seeLess") : t("menus.seeMore")}
+								{this.state.expanded ? t('menus.seeLess') : t('menus.seeMore')}
 								<ExpandMore className={classnames(classes.expand, {
 									[classes.expandOpen]: this.state.expanded,
 								})} />

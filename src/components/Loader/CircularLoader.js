@@ -15,7 +15,7 @@ class CircularLoader extends Component {
 	render() {
 		const { classes, notCentered } = this.props
 		return (
-			<Grid container justify={'center'} alignItems="center" className={ notCentered ? '' : classes.grid}><CircularProgress /></Grid>
+			<Grid container justify={'center'} alignItems='center' className={ notCentered ? '' : classes.grid}><CircularProgress /></Grid>
 		)
 	}
 }

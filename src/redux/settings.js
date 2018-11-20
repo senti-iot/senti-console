@@ -5,24 +5,25 @@ import { getUser, getValidSession } from 'variables/dataUsers'
 import 'moment/locale/da'
 import 'moment/locale/en-gb'
 import { saveSettings } from 'variables/dataLogin';
-var moment = require("moment")
+var moment = require('moment')
 
 
-const MENULOC = "SIDEBAR_LOCATION"
-const THEME = "THEME"
-const TRP = "TABLE_ROWS_PER_PAGE"
-const CALTYPE = "CALIBRATION_TYPE"
-const COUNT = "CALIBRATION_COUNT"
-const CALNOTIF = "CALIBRATION_NOTIFICATION"
-const DISCSENT = "DISCOVER_SENTI_PAGE"
-const ALERTS = "NOTIFICATION_ALERTS"
-const DIDKNOW = "NOTIFICATIOn_DIDYOUKNOW"
-const GETSETTINGS = "GET_SETTINGS"
-const SAVESETTINGS = "SAVE_SETTINGS"
-const changeLangAction = "LANG"
-const CHARTTYPE = "CHART_TYPE"
-const SAVED = "SAVED_SETTINGS"
-const NOSETTINGS = "NO_SETTINGS"
+const MENULOC = 'sidebarLocation'
+const THEME = 'theme'
+const TRP = 'tableRowsPerPage'
+const CALTYPE = 'calibrationType'
+const COUNT = 'calibrationCount'
+const CALNOTIF = 'calibrationNotify'
+const DISCSENT = 'discoverSentiBanner'
+const ALERTS = 'notifAlerts'
+const DIDKNOW = 'notifDidYouKnow'
+const GETSETTINGS = 'getSettings'
+const GETFAVS = 'getFavorites'
+const SAVESETTINGS = 'saveSettings'
+const changeLangAction = 'changeLanguage'
+const CHARTTYPE = 'chartType'
+const SAVED = 'savedSettings'
+const NOSETTINGS = 'noSettings'
 
 export const saveSettingsOnServ = () => {
 	return async (dispatch, getState) => {
@@ -58,7 +59,7 @@ export const getSettings = async () => {
 		{
 			let vSession = await getValidSession(sessionCookie.userID).then(rs => rs.status)
 			if (vSession === 200) {
-				let exp = moment().add("1", "day")
+				let exp = moment().add('1', 'day')
 				cookie.save('SESSION', sessionCookie, { path: '/', expires: exp.toDate() })
 			}
 			else {
@@ -69,7 +70,9 @@ export const getSettings = async () => {
 		var userId = cookie.load('SESSION') ? cookie.load('SESSION').userID : 0
 		var user = userId !== 0 ? await getUser(userId) : null
 		var settings = user ? user.aux ? user.aux.senti ? user.aux.senti.settings ? user.aux.senti.settings : null : null : null : null
-		moment.updateLocale("en-gb", {
+		var favorites = user ? user.aux ? user.aux.senti ? user.aux.senti.favorites ? user.aux.senti.favorites : null : null : null : null
+		// moment.locale('en', null)
+		moment.updateLocale('en-gb', {
 			week: {
 				dow: 1
 			}
@@ -85,8 +88,10 @@ export const getSettings = async () => {
 					},
 					user
 				})
-				return true
+				
+				// return true
 			}
+		
 			else {
 				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
 				let s = {
@@ -100,7 +105,15 @@ export const getSettings = async () => {
 					user,
 					settings: s
 				})
-				return false
+				// return false
+			}
+			if (favorites) { 
+				dispatch({
+					type: GETFAVS,
+					favorites: {
+						favorites: favorites
+					}
+				})
 			}
 		}
 		else {
@@ -219,7 +232,7 @@ export const finishedSaving = () => {
 	}
 }
 let initialState = {
-	language: "dk",
+	language: 'dk',
 	calibration: 1,
 	calNotifications: 0,
 	count: 200,

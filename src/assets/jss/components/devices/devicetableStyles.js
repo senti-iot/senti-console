@@ -76,6 +76,7 @@ const devicetableStyles = theme => ({
 		overflowX: 'auto',
 	},
 	header: {
+		padding: 0,
 		backgroundColor: grey[400],
 		// color: grey[200]
 	},
@@ -86,7 +87,11 @@ const devicetableStyles = theme => ({
 		},
 	},
 	checked: {},
+	headerButton: {
+		width: "100%"
+	},
 	HeaderLabelActive: {
+		width: "100%",
 		color: grey[800],
 		"&:hover": {
 			color: "black"
@@ -107,10 +112,16 @@ const devicetableStyles = theme => ({
 
 	},
 	tablecellcheckbox: {
+		[theme.breakpoints.down("sm")]: {
+			width: '35px'
+		},
+		[theme.breakpoints.down("md")]: {
+			width: '45px'
+		},
 		fontSize: '0.875rem',
 		borderTop: "1px solid rgba(224, 224, 224, 1)",
 		/*padding: 0, */
-		width: '50px'
+		width: '50px', 
 	},
 	paddingLeft: {
 		paddingLeft: 16

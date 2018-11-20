@@ -12,11 +12,11 @@ import {
 } from '@material-ui/core';
 import { getOrg, getOrgUsers } from 'variables/dataOrgs';
 import OrgDetails from './OrgCards/OrgDetails';
-// var moment = require("moment")
+// var moment = require('moment')
 import { connect } from 'react-redux'
 import { deleteOrg } from 'variables/dataOrgs';
 import OrgUsers from 'views/Orgs/OrgCards/OrgUsers';
-
+import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 class Org extends Component {
 	constructor(props) {
 		super(props)
@@ -33,6 +33,17 @@ class Org extends Component {
 		if (prevProps.match.params.id !== this.props.match.params.id) {
 			this.componentDidMount()
 		}
+		if (this.props.saved === true) {
+			const { org } = this.state
+			if (this.props.isFav({ id: org.id, type: 'org' })) {
+				this.props.s('snackbars.favorite.saved', { name: org.name, type: this.props.t('favorites.types.org') })
+				this.props.finishedSaving()
+			}
+			if (!this.props.isFav({ id: org.id, type: 'org' })) {
+				this.props.s('snackbars.favorite.removed', { name: org.name, type: this.props.t('favorites.types.org') })
+				this.props.finishedSaving()
+			}
+		}
 	}
 
 	componentDidMount = async () => {
@@ -43,8 +54,9 @@ class Org extends Component {
 					if (rs === null)
 						history.push('/404')
 					else {
-						let prevURL = location.prevURL ? location.prevURL : '/orgs'						
-						setHeader(`${rs.name}`, true, prevURL, "users")
+						let prevURL = location.prevURL ? location.prevURL : '/management/orgs'
+						console.log(prevURL)			
+						setHeader(`${rs.name}`, true, prevURL, 'users')
 						this.setState({ org: rs, loading: false })
 					}
 				})
@@ -53,9 +65,27 @@ class Org extends Component {
 				})
 			}
 	}
+	addToFav = () => {
+		const { org } = this.state
+		let favObj = {
+			id: org.id,
+			name: org.name,
+			type: 'org',
+			path: this.props.match.url }
+		this.props.addToFav(favObj)
+	}
+	removeFromFav = () => {
+		const { org } = this.state
+		let favObj = {
+			id: org.id,
+			name: org.name,
+			type: 'org',
+			path: this.props.match.url }
+		this.props.removeFromFav(favObj)
+	}
 	close = () => {
 		this.snackBarMessages(1)
-		this.props.history.push('/orgs')
+		this.props.history.push('/management/orgs')
 	}
 	handleDeleteOrg = async () => {
 		await deleteOrg(this.state.org.id).then(rs => {
@@ -81,22 +111,22 @@ class Org extends Component {
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">{t("orgs.orgDelete")}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('orgs.orgDelete')}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{t("orgs.orgDeleteConfirm", { org: this.state.org.name }) + "?"}
+				<DialogContentText id='alert-dialog-description'>
+					{t('orgs.orgDeleteConfirm', { org: this.state.org.name }) + '?'}
 				</DialogContentText>
 
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color="primary">
-					{t("actions.cancel")}
+				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
+					{t('actions.cancel')}
 				</Button>
-				<Button onClick={this.handleDeleteOrg} color="primary" autoFocus>
-					{t("actions.yes")}
+				<Button onClick={this.handleDeleteOrg} color='primary' autoFocus>
+					{t('actions.yes')}
 				</Button>
 			</DialogActions>
 		</Dialog>
@@ -105,7 +135,7 @@ class Org extends Component {
 		const { s } = this.props
 		switch (msg) {
 			case 1:
-				s("snackbars.orgDeleted")
+				s('snackbars.orgDeleted')
 				break
 			default:
 				break
@@ -120,6 +150,9 @@ class Org extends Component {
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<ItemGrid xs={12} noMargin>
 						<OrgDetails
+							isFav={this.props.isFav({ id: org.id, type: 'org' })}
+							addToFav={this.addToFav}
+							removeFromFav={this.removeFromFav}
 							deleteOrg={this.handleOpenDeleteDialog}
 							match={match}
 							history={history}
@@ -146,10 +179,15 @@ class Org extends Component {
 }
 const mapStateToProps = (state) => ({
 	language: state.localization.language,
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	saved: state.favorites.saved
 })
 
-const mapDispatchToProps = {
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	addToFav: (favObj) => dispatch(addToFav(favObj)),
+	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
+	finishedSaving: () => dispatch(finishedSaving())
+})
 
-}
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(userStyles)(Org))

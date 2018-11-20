@@ -1,10 +1,59 @@
 import React, { Component } from 'react'
-import { Document, Page, Text, View, PDFDownloadLink, Image } from '@react-pdf/renderer';
+// import { Document, Page, Text, View, PDFDownloadLink, Image } from '@react-pdf/renderer';
 import { Button } from '@material-ui/core';
+import Loadable from 'react-loadable';
+import AsyncLoader from 'components/Loader/AsyncLoader';
 
-
+const Document = Loadable({
+	loader: () => import('@react-pdf/renderer'),
+	render(loaded, props) { 
+		let Component = loaded.Document
+		return <Component {...props}/>
+	},
+	loading: AsyncLoader
+})
+const Page = Loadable({
+	loader: () => import('@react-pdf/renderer'),
+	render(loaded, props) {
+		let Component = loaded.Page
+		return < Component { ...props }/>
+	},
+	loading: AsyncLoader
+})
+const Text = Loadable({
+	loader: () => import('@react-pdf/renderer'),
+	render(loaded, props) { 
+		let Component = loaded.Text
+		return <Component {...props}/>
+	},
+	loading: AsyncLoader
+})
+const View = Loadable({
+	loader: () => import('@react-pdf/renderer'),
+	render(loaded, props) {
+		let Component = loaded.View
+		return < Component { ...props }/>
+	},
+	loading: AsyncLoader
+})
+const PDFDownloadLink = Loadable({
+	loader: () => import('@react-pdf/renderer'),
+	render(loaded, props) { 
+		let Component = loaded.PDFDownloadLink
+		return <Component {...props}/>
+	},
+	loading: AsyncLoader
+})
+const Image = Loadable({
+	loader: () => import('@react-pdf/renderer'),
+	render(loaded, props) {
+		let Component = loaded.Image
+		return < Component { ...props }/>
+	},
+	loading: AsyncLoader
+})
 const Doc = (props) => {
-	// console.log(props.img)
+	
 	return (<Document>
 		<Page wrap>
 			<Image style={{ maxHeight: 300 }} src={props.img}></Image>
@@ -28,15 +77,15 @@ class DevicePDF extends Component {
 		super(props)
 
 		this.state = {
-			url: ""
+			url: ''
 		}
 	}
 	render() {
-		// console.log(Template)
+		
 		return (
-			<PDFDownloadLink document={<Doc img={this.props.img}/>} fileName="somename.pdf">
+			<PDFDownloadLink document={<Doc img={this.props.img}/>} fileName='somename.pdf'>
 				{({ blob, url, loading, error }) =>
-					loading ? null : <Button variant={'contained'} color={"primary"}>PDF</Button>
+					loading ? null : <Button variant={'contained'} color={'primary'}>PDF</Button>
 				}
 			</PDFDownloadLink>
 		)

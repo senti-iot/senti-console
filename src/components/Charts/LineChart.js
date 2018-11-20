@@ -7,11 +7,12 @@ import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
 import { compose } from 'recompose';
 import { connect } from 'react-redux'
-
+// import './zoom';
 // import { getWeather } from 'variables/dataDevices';
 class LineChart extends PureComponent {
 	constructor(props) {
 		super(props)
+		
 		this.state = {
 			weatherDate: null,
 			tooltip: {
@@ -23,6 +24,7 @@ class LineChart extends PureComponent {
 				exited: false
 			},
 			lineOptions: {
+				// responsive: true,
 				animation: {
 					duration: 500,
 					onComplete: props.getImage ? props.getImage : null,
@@ -30,25 +32,54 @@ class LineChart extends PureComponent {
 				display: true,
 				maintainAspectRatio: false,
 				tooltips: {
-					titleFontFamily: "inherit",
-					mode: "point",
+					titleFontFamily: 'inherit',
+					mode: 'point',
 					intersect: false,
 					enabled: false,
 					custom: this.customTooltip
 				},
 				hover: {
-					mode: "point"
+					mode: 'point'
 				},
 				scales: {
 					xAxes: [
 						{
-							// id: "xAxis",
+							ticks: {
+								source: 'labels',
+								maxRotation: 0
+							},
+							id: 'xAxis',
+							type: 'time',
+							// distribution: 'series',
+							time: {
+								displayFormats: {
+									hour: 'LT',
+									day: 'll',
+									minute: 'LT'
+								},
+								unit: props.unit.chart,
+								tooltipFormat: props.unit.format
+							},
+						},
+						{
+							display: props.unit.chart === 'day' ? true : false,
+							gridLines: {
+								drawBorder: false,
+								drawTicks: false,
+							},
+							ticks: {
+							
+								callback: function (value, index, values) {
+									return value.charAt(0).toUpperCase() + value.slice(1);
+								},
+								source: 'labels',
+								maxRotation: 0
+							},
+							id: 'xAxis-day',
 							type: 'time',
 							time: {
 								displayFormats: {
-									hour: "LT",
-									day: 'll',
-									minute: 'LT'
+									day: 'dddd',
 								},
 								unit: props.unit.chart,
 								tooltipFormat: props.unit.format
@@ -60,12 +91,18 @@ class LineChart extends PureComponent {
 							labelString: 'value'
 						}
 					}]
-				}
+				},
+				// zoom: {
+				// 	enabled: true,
+				// 	drag: true,
+				// 	mode: 'x',
+				// 	// onZoom: function (props) { ;  }
+				// }
 			}
 		}
 	}
 	legendOptions = {
-		position: "bottom",
+		position: 'bottom',
 		display: !this.props.single ? true : false,
 		onHover: !this.props.single ? (t, l) => {
 			this.props.setHoverID(this.props.data.datasets[l.datasetIndex].id)
@@ -78,7 +115,6 @@ class LineChart extends PureComponent {
 			return true
 	}
 	componentDidMount = () => {
-		// console.log(this.chart.chartInstance.config.options.elements.point.radius)
 		this.chart.chartInstance.config.options.elements.point.radius = this.clickEvent() ? 3 : 5 
 		this.chart.chartInstance.config.options.elements.point.hitRadius = this.clickEvent() ? 3 : 5 
 		this.chart.chartInstance.config.options.elements.point.hoverRadius = this.clickEvent() ? 4 : 6 
@@ -90,7 +126,21 @@ class LineChart extends PureComponent {
 
 		})	
 	}
+
+	/**
+		 * 	How the damn zoom Works:
+		 *  1. Sets a min/max moment objects scale on the x axis
+		 *  2. Re renders the chart
+		 * 
+		 *  How to implement in our code:
+		 *  1. In the onZoom function get the minMax from the xAxis scale
+		 *  2. Pass them to the same function as CustomSetRange used by the filter in Device.js
+		 *  3. Create a new function that based on the difference between the dates, sets the appropiate timeType (hour, minute, day, month, etc.)
+		 *  4. Set the 'newData' without loading
+		 * 	@debug 
+		 *  */
 	componentDidUpdate = (prevProps, prevState) => {
+	
 		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID) {
 			this.setXAxis()
 		}
@@ -113,14 +163,14 @@ class LineChart extends PureComponent {
 			this.hideTooltip()
 			return
 		}
-		// console.log(tooltipModel)
-		// console.log(this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x)
+		
+		
 		// let weatherData = null
 		let wDate = null
 		try {
 			let lat = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].lat
 			let long = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].long
-			// console.log(lat, long)
+			
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
 			if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long)) {
 				this.setState({ weather: null })
@@ -137,15 +187,20 @@ class LineChart extends PureComponent {
 			}
 		}
 		catch (err) {
-			// console.log(err)
+			
 		}
-		const left = tooltipModel.caretX;
-		const top = tooltipModel.caretY;
-		// let deviceWeather = getWeather(device).then(rs => rs)
+		let left = tooltipModel.caretX;
+		let top = tooltipModel.caretY;
+		if (!this.clickEvent()) { 
+			left = this.state.chartWidth / 2
+		}
+		let str = tooltipModel.title[0]
+		var rest = str.substring(0, str.lastIndexOf(' ') + 1);
+		var last = str.substring(str.lastIndexOf(' ') + 1, str.length);
 		this.setTooltip({
 			top,
 			left,
-			title: tooltipModel.title,
+			title: [rest, last],
 			data: tooltipModel.dataPoints.map((d, i) => ({
 				device: tooltipModel.body[i].lines[0].split(':')[0], count: d.yLabel, color: tooltipModel.labelColors[i].backgroundColor
 			}))
@@ -157,19 +212,43 @@ class LineChart extends PureComponent {
 				...this.state.lineOptions,
 				scales: {
 					...this.state.lineOptions.scales,
-					xAxes: [{
-						// id: "day",
-						type: 'time',
-						time: {
-							displayFormats: {
-								hour: 'LT',
-								day: 'll',
-								minute: 'LT'
+					xAxes: [
+						{
+							id: 'xAxis',
+							type: 'time',
+							time: {
+								displayFormats: {
+									hour: 'LT',
+									day: 'll dddd',
+									minute: 'LT'
+								},
+								unit: this.props.unit.chart,
+								tooltipFormat: this.props.unit.format
 							},
-							unit: this.props.unit.chart,
-							tooltipFormat: this.props.unit.format
 						},
-					}]
+						{
+							display: this.props.unit.chart === 'day' ? true : false,
+							gridLines: {
+								drawBorder: false,
+								drawTicks: false,
+							},
+							ticks: {
+								callback: function (value, index, values) {
+									return value.charAt(0).toUpperCase() + value.slice(1);
+								},
+								source: 'labels',
+								maxRotation: 0
+							},
+							id: 'xAxis-day',
+							type: 'time',
+							time: {
+								displayFormats: {
+									day: 'dddd',
+								},
+								unit: this.props.unit.chart,
+								tooltipFormat: this.props.unit.format
+							},
+						}]
 				}
 			}
 		}, this.chart.chartInstance.update())
@@ -201,10 +280,13 @@ class LineChart extends PureComponent {
 		})
 	}
 	elementClicked = async (elements) => {
-		if (this.props.onElementsClick) {
+		try {
 			await this.props.onElementsClick(elements)
-
 		}
+		catch (e) {
+			// ;
+		}
+		// }
 		this.hideTooltip()
 	}
 	onMouseLeave = () => {
@@ -212,9 +294,14 @@ class LineChart extends PureComponent {
 		return !single ? () => this.props.setHoverID(0) : undefined
 	}
 	transformLoc = () => {
-		const { tooltip, chartWidth, chartHeight, mobile } = this.state
+		const { tooltip, chartWidth, chartHeight } = this.state
 		let x = 0
 		let y = 0
+		if (!this.clickEvent()) {
+			x = '-50%'
+			y = tooltip.top < (chartHeight / 2) ? '25%' : '-125%'
+			return `translate(${x}, ${y})`
+		}
 		if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
 			x = '-25%'
 			y = '25%'
@@ -225,7 +312,7 @@ class LineChart extends PureComponent {
 		}
 		if (tooltip.left > (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
 			x = '-80%'
-			y = '-125%'
+			y = '25%'
 		}
 		if (tooltip.left > (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
 			x = '-80%'
@@ -237,25 +324,25 @@ class LineChart extends PureComponent {
 		if (tooltip.left < chartWidth / 4) { 
 			x = '0%'
 		}
-		if (mobile)
-			x = '-50%'
 		return `translate(${x}, ${y})`
 	}
 	render() {
 		const { classes } = this.props
 		const { tooltip, chartWidth, mobile } = this.state
+		let DayStr = tooltip.title[1] ? tooltip.title[1].charAt(0).toUpperCase() + tooltip.title[1].slice(1) : ''
+		let DateStr = tooltip.title[0] ? tooltip.title[0] : ''
 		return (
-			<div style={{ maxHeight: 400, position: 'relative', height: '100%' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
+			<div style={{ maxHeight: 400, position: 'relative', height: 400 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
 				<Line
 					data={this.props.data}
-					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
+					height={this.props.theme.breakpoints.width('md') < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
 					ref={r => this.chart = r}
 					options={this.state.lineOptions}
 					legend={this.legendOptions}
 					onElementsClick={this.clickEvent() ? this.elementClicked : undefined}
 				/>
 				<div ref={r => this.tooltip = r} style={{
-					zIndex: tooltip.show ? 1300 : tooltip.exited ? -1 : 1300,
+					zIndex: tooltip.show ? 1200 : tooltip.exited ? -1 : 1200,
 					position: 'absolute',
 					top: Math.round(this.state.tooltip.top),
 					left: mobile ? '50%' : Math.round(this.state.tooltip.left),
@@ -266,12 +353,16 @@ class LineChart extends PureComponent {
 					<Grow in={tooltip.show} onExited={this.exitedTooltip} >
 						<Paper className={classes.paper}>
 							<ItemG container>
-								<ItemG container direction="row"
-									justify="space-between">
-									<Typography variant={'h6'} classes={{ root: classes.antialias }} >{this.state.tooltip.title}</Typography>
-									{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : <CircularProgress size={37} />}
+								<ItemG container direction='row' justify='space-between'>
+									<ItemG xs container direction='column'>
+										<Typography variant={'h6'} classes={{ root: classes.antialias }} >{`${DayStr}`}</Typography>
+										<Caption> {`(${DateStr})`}</Caption>
+									</ItemG>
+									<ItemG xs={2}>
+										{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : <CircularProgress size={37} />}
+									</ItemG>
 								</ItemG>
-								 <ItemG>
+								<ItemG >
 									<Caption>{this.props.t('devices.fields.weather')}: {this.state.weather ? this.state.weather.currently.summary : null}</Caption>
 									{/* <Info></Info> */}
 								</ItemG> 

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { withStyles } from '@material-ui/core';
 import { ItemG, Info, Dropdown } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
@@ -6,7 +6,7 @@ import { Edit, DeveloperBoard } from 'variables/icons'
 import Caption from 'components/Typography/Caption';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 
-class DeviceHardware extends Component {
+class DeviceHardware extends PureComponent {
 	constructor(props) {
 	  super(props)
 	
@@ -25,27 +25,27 @@ class DeviceHardware extends Component {
 		const { classes, device, t  } = this.props
 		return (
 			<InfoCard
-				title={t("devices.cards.hardware")}
+				title={t('devices.cards.hardware')}
 				avatar={<DeveloperBoard />}
 				subheader={''}
 				haveMargin
 				topAction={
 					<Dropdown menuItems={
 						[
-							{ label: t("menus.edit"), icon: <Edit className={classes.leftIcon} />, func: () => this.props.history.push(`${this.props.match.url}/edit-hardware`) },
-							// { label: t("actions.deletePicture"), icon: <Delete className={classes.leftIcon} />, func: this.handleOpenDeletePictureDialog },
+							{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => this.props.history.push(`${this.props.match.url}/edit-hardware`) },
+							// { label: t('actions.deletePicture'), icon: <Delete className={classes.leftIcon} />, func: this.handleOpenDeletePictureDialog },
 						]
 					} />
 					// <ItemG>
 					// 	<IconButton
-					// 		aria-label="More"
+					// 		aria-label='More'
 					// 		aria-owns={actionAnchor ? 'long-menu' : null}
-					// 		aria-haspopup="true"
+					// 		aria-haspopup='true'
 					// 		onClick={this.handleOpenActionsHardware}>
 					// 		<MoreVert />
 					// 	</IconButton>
 					// 	<Menu
-					// 		id="long-menu"
+					// 		id='long-menu'
 					// 		anchorEl={actionAnchor}
 					// 		open={Boolean(actionAnchor)}
 					// 		onClose={this.handleCloseActionsHardware}
@@ -65,24 +65,24 @@ class DeviceHardware extends Component {
 				content={
 					<ItemG container spacing={16}>
 						<ItemG>
-							<Caption>{t("devices.fields.pcModel")}:</Caption>
+							<Caption>{t('devices.fields.pcModel')}:</Caption>
 							<Info>{device.RPImodel}</Info>
 						</ItemG>
 						<ItemG>
-							<Caption>{t("devices.fields.memory")}:</Caption>
-							<Info>{device.memory + " - " + device.memoryModel}</Info>
+							<Caption>{t('devices.fields.memory')}:</Caption>
+							<Info>{device.memory + ' - ' + device.memoryModel}</Info>
 						</ItemG>
 						<ItemG>
-							<Caption>{t("devices.fields.adapter")}:</Caption>
+							<Caption>{t('devices.fields.adapter')}:</Caption>
 							<Info>{device.adapter}</Info>
 						</ItemG>
 					
 						<ItemG>
-							<Caption>{t("devices.fields.wifiModule")}:</Caption>
+							<Caption>{t('devices.fields.wifiModule')}:</Caption>
 							<Info>{device.wifiModule}</Info>
 						</ItemG>
 						<ItemG>
-							<Caption>{t("devices.fields.modemModel")}:</Caption>
+							<Caption>{t('devices.fields.modemModel')}:</Caption>
 							<Info>{device.modemModel}</Info>
 						</ItemG>
 					
@@ -90,19 +90,19 @@ class DeviceHardware extends Component {
 				}
 				hiddenContent={<ItemG container spacing={16}>
 					<ItemG>
-						<Caption>{t("devices.fields.cellNumber")}:</Caption>
+						<Caption>{t('devices.fields.cellNumber')}:</Caption>
 						<Info>{device.cellNumber}</Info>
 					</ItemG>
 					<ItemG>
-						<Caption>{t("devices.fields.simProvider")}:</Caption>
+						<Caption>{t('devices.fields.simProvider')}:</Caption>
 						<Info>{device.SIMProvider}</Info>
 					</ItemG>
 					<ItemG>
-						<Caption>{t("devices.fields.simCard")}:</Caption>
+						<Caption>{t('devices.fields.simCard')}:</Caption>
 						<Info>{device.SIMID}</Info>
 					</ItemG>
 					<ItemG>
-						<Caption>{t("devices.fields.modemIMEI")}:</Caption>
+						<Caption>{t('devices.fields.modemIMEI')}:</Caption>
 						<Info>{device.modemIMEI}</Info>
 					</ItemG>
 

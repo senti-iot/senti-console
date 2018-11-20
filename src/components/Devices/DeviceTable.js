@@ -1,15 +1,15 @@
 import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
 	TableRow, Typography, withStyles,
-} from "@material-ui/core";
+} from '@material-ui/core';
 import { SignalWifi2Bar, SignalWifi2BarLock, /* Delete, Build, Business, DataUsage, Edit, LayersClear */ } from 'variables/icons';
-import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
-import PropTypes from "prop-types";
-import React, { Fragment } from "react";
+import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
+import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import EnhancedTableHead from 'components/Table/TableHeader'
 import { connect } from 'react-redux'
-import { ItemGrid, Info, Caption, ItemG } from 'components';
+import { Info, Caption, ItemG } from 'components';
 import TC from 'components/Table/TC'
 import TP from 'components/Table/TP';
 
@@ -58,33 +58,25 @@ class EnhancedTable extends React.Component {
 		const { classes, t } = this.props
 		switch (status) {
 			case 1:
-				return <div title={t("devices.status.yellow")}>
-					<ItemG container justify={'center'}>
-						<SignalWifi2Bar className={classes.yellowSignal} />
-					</ItemG>
-				</div>
+				return <ItemG container justify={'center'} title={t('devices.status.yellow')}>
+					<SignalWifi2Bar className={classes.yellowSignal} />
+				</ItemG>
 			case 2:
-				return <div title={t("devices.status.green")}>
-					<ItemG container justify={'center'}>
-						<SignalWifi2Bar className={classes.greenSignal} />
-					</ItemG>
-				</div>
+				return <ItemG container justify={'center'} title={t('devices.status.green')}>
+					<SignalWifi2Bar className={classes.greenSignal} />
+				</ItemG>
 			case 0:
-				return <div title={t("devices.status.red")}>
-					<ItemG container justify={'center'}>
-						<SignalWifi2Bar className={classes.redSignal} />
-					</ItemG>
-				</div>
+				return <ItemG container justify={'center'} title={t('devices.status.red')}>
+					<SignalWifi2Bar className={classes.redSignal} />
+				</ItemG>
 			case null:
 				return <SignalWifi2BarLock />
 			default:
 				break;
 		}
 	}
-
-
 	render() {
-		const { selected, classes, t, data, order, orderBy, handleClick, handleSelectAllClick  } = this.props;
+		const { selected, classes, t, data, order, orderBy, handleClick, handleCheckboxClick, handleSelectAllClick  } = this.props;
 		const { rowsPerPage, page  } = this.state;
 		let emptyRows
 		if (data)
@@ -92,7 +84,7 @@ class EnhancedTable extends React.Component {
 		return (
 			<Fragment>
 				<div className={classes.tableWrapper}>
-					<Table className={classes.table} aria-labelledby="tableTitle">
+					<Table className={classes.table} aria-labelledby='tableTitle'>
 						<EnhancedTableHead
 							numSelected={selected.length}
 							order={order}
@@ -104,13 +96,13 @@ class EnhancedTable extends React.Component {
 							classes={classes}
 							customColumn={[
 								{
-									id: "liveStatus", label: <ItemG container justify={'center'}>
+									id: 'liveStatus', label: <ItemG container justify={'center'}>
 										<SignalWifi2Bar />
 									</ItemG>, checkbox: true
 								},
 								{
-									id: "id",
-									label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>
+									id: 'id',
+									label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
 										Device
 									</Typography>
 								}
@@ -122,8 +114,8 @@ class EnhancedTable extends React.Component {
 								return (
 									<TableRow
 										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push('/device/' + n.id) }}
-										role="checkbox"
+										onClick={handleClick(n.id)}
+										role='checkbox'
 										aria-checked={isSelected}
 										tabIndex={-1}
 										key={n.id}
@@ -131,36 +123,30 @@ class EnhancedTable extends React.Component {
 										style={{ cursor: 'pointer' }}
 									>
 										<Hidden lgUp>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => handleClick(e, n.id)}>
-												<Checkbox checked={isSelected} />
-											</TableCell>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
-												{this.renderIcon(n.liveStatus)}
-											</TableCell>
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)}/>} />
+											<TC checkbox content={this.renderIcon(n.liveStatus)}/>
 											<TC content={
-												<ItemGrid container zeroMargin noPadding alignItems={"center"}>
-													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+												<ItemG container alignItems={'center'}>
+													<ItemG xs={12}>
 														<Info noWrap paragraphCell={classes.noMargin}>
 															{n.name ? n.name : n.id}
 														</Info>
-													</ItemGrid>
-													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+													</ItemG>
+													<ItemG xs={12}>
 														<Caption noWrap className={classes.noMargin}>
-															{`${n.name ? n.id : t("devices.noName")} - ${n.org ? n.org.name : ''}`}
+															{`${n.name ? n.id : t('devices.noName')} - ${n.org ? n.org.name : ''}`}
 														</Caption>
-													</ItemGrid>
-												</ItemGrid>} />
+													</ItemG>
+												</ItemG>} />
 										</Hidden>
 										<Hidden mdDown>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => handleClick(e, n.id)}>
-												<Checkbox checked={isSelected} />
-											</TableCell>
-											<TC label={n.name ? n.name : t("devices.noName")} />
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)}/>}/>
+											<TC label={n.name ? n.name : t('devices.noName')} />
 											<TC label={n.id} />
-											<TC content={<div className={classes.paragraphCell}> {this.renderIcon(n.liveStatus)}</div>} />
-											<TC label={n.address ? n.address : t("devices.noAddress")} />
-											<TC label={n.org ? n.org.name : t("devices.noProject")} />
-											<TC label={n.project.id > 0 ? t("devices.fields.notfree") : t("devices.fields.free")} />
+											<TC content={this.renderIcon(n.liveStatus)} />
+											<TC label={n.address ? n.address : t('devices.noAddress')} />
+											<TC label={n.org ? n.org.name : t('devices.noProject')} />
+											<TC label={n.project.id > 0 ? t('devices.fields.notfree') : t('devices.fields.free')} />
 										</Hidden>
 									</TableRow>
 								);

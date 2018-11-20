@@ -13,6 +13,7 @@
 		"deletePicture": "Slet dette billede",
 		"finish": "Luk",
 		"goTo": "Går til",
+		"heatMap": "Heatmap",
 		"learnMore": "Lær mere",
 		"next": "Næste",
 		"nextPage": "Næste side",
@@ -355,6 +356,10 @@
 		"username": "Brugernavn"
 	},
 	"menus": {
+		"favorites": {
+			"add": "Tilføj til favoritter",
+			"remove": "Fjern fra favoritter"
+		},
 		"assign": {
 			"collectionsToProject": "Tilknyt datasamlinger",
 			"collectionToProject": "Tilknyt datasamling",
@@ -491,7 +496,7 @@
 		},
 		"defaultDataSet": "Standard datasæt for diagrammer",
 		"didYouKnow": "Viste du at?",
-		"discoverSenti": "Vis intro kort på Dashboard",
+		"discoverSenti": "Vis Velkommen til Senti på Dashboard",
 		"headers": {
 			"calibration": "Kalibrering",
 			"charts": "Diagrammer",
@@ -516,6 +521,7 @@
 		"trp": "Rækker per side i lister"
 	},
 	"sidebar": {
+		"favorites": "Favoritter",
 		"collections": "Data",
 		"dashboard": "Dashboard",
 		"devices": "Enheder",
@@ -523,7 +529,28 @@
 		"settings": "Indstillinger",
 		"users": "Brugere"
 	},
+	"favorites": {
+		"type": "Type",
+		"types": {
+			"device": "Enhed",
+			"collection": "Datasamling",
+			"project": "Projekt",
+			"org": "Organisation",
+			"user": "Bruger"
+		},
+		"fields": {
+			"id": "ID",
+			"name": "Navn",
+			"type": "Type"
+		}
+	},
 	"snackbars": {
+		"favorite": {
+			"updated": "Favoritter er blevet opdateret!",
+			"manyRemoved": "Favoritter er blevet fjernet!",
+			"saved": "%{name} (%{type}) er blevet tilføjet til favoritter!",
+			"removed": "%{name} (%{type}) er blevet fjernet fra favoritter!"
+		},
 		"assign": {
 			"deviceToCollection": "Enhed %{device} tilknyttet til datasamling %{collection}",
 			"deviceToOrg": "Enhed %{device} tilknyttet til organisation %{org}",

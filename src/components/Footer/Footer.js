@@ -1,7 +1,7 @@
-import { List, ListItem, withStyles } from "@material-ui/core";
-import footerStyle from "assets/jss/material-dashboard-react/footerStyle";
-import PropTypes from "prop-types";
-import React from "react";
+import { List, ListItem, withStyles } from '@material-ui/core';
+import footerStyle from 'assets/jss/material-dashboard-react/footerStyle';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 
 function Footer({ ...props }) {
@@ -12,22 +12,22 @@ function Footer({ ...props }) {
 				<div className={classes.left}>
 					<List className={classes.list}>
 						<ListItem className={classes.inlineBlock}>
-							<a href="#home" className={classes.block}>
+							<a href='#home' className={classes.block}>
 								Home
 							</a>
 						</ListItem>
 						<ListItem className={classes.inlineBlock}>
-							<a href="#company" className={classes.block}>
+							<a href='#company' className={classes.block}>
 								Company
 							</a>
 						</ListItem>
 						<ListItem className={classes.inlineBlock}>
-							<a href="#portfolio" className={classes.block}>
+							<a href='#portfolio' className={classes.block}>
 								Portfolio
 							</a>
 						</ListItem>
 						<ListItem className={classes.inlineBlock}>
-							<a href="#blog" className={classes.block}>
+							<a href='#blog' className={classes.block}>
 								Blog
 							</a>
 						</ListItem>
@@ -35,7 +35,7 @@ function Footer({ ...props }) {
 				</div>
 				<p className={classes.right}>
 					<span>
-						&copy; {1900 + new Date().getYear()}{" "}
+						&copy; {1900 + new Date().getYear()}{' '}
 						Web House
 					</span>
 				</p>

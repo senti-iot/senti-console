@@ -1,6 +1,6 @@
-import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles, Hidden } from "@material-ui/core";
+import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles, Hidden } from '@material-ui/core';
 import { Close } from 'variables/icons';
-import cx from "classnames";
+import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import { getAllCollections } from 'variables/dataCollections';
@@ -30,7 +30,7 @@ class AssignDCS extends React.Component {
 		}
 	}
 	Transition = (props) => {
-		return <Slide direction="up" {...props} />;
+		return <Slide direction='up' {...props} />;
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
@@ -84,7 +84,7 @@ class AssignDCS extends React.Component {
 		const { collections, filters } = this.state
 		const { classes, open, t } = this.props;
 		const appBarClasses = cx({
-			[" " + classes['primary']]: 'primary'
+			[' ' + classes['primary']]: 'primary'
 		});
 		return (
 			<div>
@@ -100,11 +100,11 @@ class AssignDCS extends React.Component {
 								<ItemG container alignItems={'center'}>
 									<ItemG xs={2} container alignItems={'center'}>
 										<IconButton color={'inherit'} onClick={() => this.props.handleClose(false)}
-											aria-label="CloseCollection">
+											aria-label='CloseCollection'>
 											<Close />
 										</IconButton>
-										<Typography variant="h6" color="inherit" className={classes.flex}>
-											{t("collections.pageTitle")}
+										<Typography variant='h6' color='inherit' className={classes.flex}>
+											{t('collections.pageTitle')}
 										</Typography>
 									</ItemG>
 									<ItemG xs={8}>
@@ -117,8 +117,8 @@ class AssignDCS extends React.Component {
 											searchValue={filters.keyword} />
 									</ItemG>
 									<ItemG xs={2}>
-										<Button color="inherit" onClick={this.assignCollection}>
-											{t("actions.save")}
+										<Button color='inherit' onClick={this.assignCollection}>
+											{t('actions.save')}
 										</Button>
 									</ItemG>
 								</ItemG>
@@ -126,14 +126,14 @@ class AssignDCS extends React.Component {
 							<Hidden lgUp>
 								<ItemG container alignItems={'center'}>
 									<ItemG xs={12} container alignItems={'center'}>
-										<IconButton color={'inherit'} onClick={() => this.props.handleClose(false)} aria-label="Close">
+										<IconButton color={'inherit'} onClick={() => this.props.handleClose(false)} aria-label='Close'>
 											<Close />
 										</IconButton>
-										<Typography variant="h6" color="inherit" className={classes.flex}>
-											{t("collections.pageTitle")}
+										<Typography variant='h6' color='inherit' className={classes.flex}>
+											{t('collections.pageTitle')}
 										</Typography>
-										<Button variant={'contained'} color="primary" onClick={this.assignCollection}>
-											{t("actions.save")}
+										<Button variant={'contained'} color='primary' onClick={this.assignCollection}>
+											{t('actions.save')}
 										</Button>
 									</ItemG>
 									<ItemG xs={12} container alignItems={'center'} justify={'center'}>
@@ -159,7 +159,7 @@ class AssignDCS extends React.Component {
 									<ListItemText
 										primaryTypographyProps={{ className: this.isSelected(p.id) ? classes.selectedItemText : null }}
 										secondaryTypographyProps={{ classes: { root: this.isSelected(p.id) ? classes.selectedItemText : null } }}
-										primary={p.name} secondary={`${t("collections.fields.id")}: ${p.id}`} />
+										primary={p.name} secondary={`${t('collections.fields.id')}: ${p.id}`} />
 								</ListItem>
 								<Divider />
 							</Fragment>

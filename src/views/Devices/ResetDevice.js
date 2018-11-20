@@ -21,26 +21,26 @@ export default class ResetDevice extends Component {
 	handleOpenResetDialog = () => { this.setState({ resetDialog: true }) }
 	handleCloseResetDialog = () => {
 		this.setState({ resetDialog: false })
-		this.props.s("snackbars.resetDeviceSuccess")
+		this.props.s('snackbars.resetDeviceSuccess')
 	}
 	renderResetDialog = () => {
 		return <Dialog
 			open={this.state.resetDialog}
 			onClose={this.handleCloseResetDialog}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">Reset Device?</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>Reset Device?</DialogTitle>
 			{/* <DialogContent>
-				<DialogContentText id="alert-dialog-description">
+				<DialogContentText id='alert-dialog-description'>
 				 ?
 				</DialogContentText>
 			</DialogContent> */}
 			<DialogActions>
-				<Button onClick={this.handleCloseResetDialog} color="primary">
+				<Button onClick={this.handleCloseResetDialog} color='primary'>
 					No
 				</Button>
-				<Button onClick={this.handleReset} color="primary" autoFocus>
+				<Button onClick={this.handleReset} color='primary' autoFocus>
 					Yes
 				</Button>
 			</DialogActions>
@@ -54,7 +54,7 @@ export default class ResetDevice extends Component {
 				<InfoCard
 					noAvatar
 					noExpand
-					title={"Reset device: " + this.props.match.params.id}
+					title={'Reset device: ' + this.props.match.params.id}
 					content={
 						<Button variant={'contained'} onClick={this.handleOpenResetDialog}>
 							Reset Device
