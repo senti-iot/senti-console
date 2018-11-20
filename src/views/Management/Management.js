@@ -136,11 +136,12 @@ class Management extends Component {
 		if (this.props.location.pathname !== prevProps.location.pathname) {
 			this.handleTabs()
 		}
-		if (this.props.saved === true) {
-			this.props.finishedSaving()
-			this.setState({ selected: [] })
-			this.props.s('snackbars.favorite.manyRemoved')
-		}
+		if (window.location.pathname.includes('favorites')) {
+			if (this.props.saved === true) {
+				this.props.finishedSaving()
+				this.setState({ selected: [] })
+				this.props.s('snackbars.favorite.manyRemoved')
+			}}
 	
 	}
 	favoritesHeaders = () => {
