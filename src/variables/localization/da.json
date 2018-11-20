@@ -540,7 +540,7 @@
 		},
 		"fields": {
 			"id": "ID",
-			"name": "Name",
+			"name": "Navn",
 			"type": "Type"
 		}
 	},
