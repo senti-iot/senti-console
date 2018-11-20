@@ -73,7 +73,6 @@ class Project extends Component {
 			}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		console.log(this.props.saved)
 		if (this.props.saved === true) {
 			const { project } = this.state
 			if (this.props.isFav({ id: project.id, type: 'project' })) {
@@ -191,7 +190,9 @@ class Project extends Component {
 				newArr.push(d)
 			return newArr
 		}, [])
+		console.log(dataArr)
 		let newState = setDailyData(dataArr, from, to, hoverID)
+		console.log(newState)
 		this.setState({
 			dataArr: dataArr,
 			loadingData: false,

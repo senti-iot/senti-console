@@ -546,6 +546,7 @@
 	},
 	"snackbars": {
 		"favorite": {
+			"updated": "Favoritter er blevet opdateret!",
 			"manyRemoved": "Favoritter er blevet fjernet!",
 			"saved": "%{name} (%{type}) er blevet tilføjet til favoritter!",
 			"removed": "%{name} (%{type}) er blevet fjernet fra favoritter!"

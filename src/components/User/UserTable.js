@@ -4,7 +4,7 @@ import {
 	DialogContentText, DialogActions, Button, Typography, IconButton,
 } from '@material-ui/core'
 import TC from 'components/Table/TC'
-import { Delete, Edit, PictureAsPdf, Add } from 'variables/icons'
+import { Delete, Edit, PictureAsPdf, Add, StarBorder, Star } from 'variables/icons'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
 import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
@@ -16,6 +16,8 @@ import { connect } from 'react-redux'
 import { pF, dateFormat } from 'variables/functions';
 import Gravatar from 'react-gravatar'
 import TP from 'components/Table/TP';
+import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
+import withSnackbar from 'components/Localization/S';
 var moment = require('moment')
 
 class UserTable extends React.Component {
@@ -33,7 +35,23 @@ class UserTable extends React.Component {
 		}
 	}
 	
-	
+	componentDidUpdate = () => {
+		if (this.props.saved === true) {
+			const { data } = this.props
+			const { selected } = this.state
+			let user = data[data.findIndex(d => d.id === selected[0])]
+			if (this.props.isFav({ id: user.id, type: 'user' })) {
+				this.props.s('snackbars.favorite.saved', { name: `${user.firstName} ${user.lastName}`, type: this.props.t('favorites.types.user') })
+				this.props.finishedSaving()
+				this.setState({ selected: [] })
+			}
+			if (!this.props.isFav({ id: user.id, type: 'user' })) {
+				this.props.s('snackbars.favorite.removed', { name: `${user.firstName} ${user.lastName}`, type: this.props.t('favorites.types.user') })
+				this.props.finishedSaving()
+				this.setState({ selected: [] })
+			}
+		}
+	}
 	handleToolbarMenuOpen = e => {
 		e.stopPropagation()
 		this.setState({ anchorElMenu: e.currentTarget })
@@ -123,10 +141,28 @@ class UserTable extends React.Component {
 	handleEdit = () => {
 		this.props.history.push(`/management/user/${this.state.selected[0]}/edit`)
 	}
+	addToFav = (favObj) => {
+		this.props.addToFav(favObj)
+		this.setState({ anchorElMenu: null })
+	}
+	removeFromFav = (favObj) => {
+		this.props.removeFromFav(favObj)
+		this.setState({ anchorElMenu: null })
+	}
 	options = () => {
-		const { t } = this.props
+		const { t, isFav, data } = this.props
+		const { selected } = this.state
+		let user = data[data.findIndex(d => d.id === selected[0])]
+		let favObj = {
+			id: user.id,
+			name: `${user.firstName} ${user.lastName}`,
+			type: 'user',
+			path: `/management/user/${user.id}`
+		}
+		let isFavorite = isFav(favObj)
 		return [
 			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
+			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
 			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
 			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
@@ -293,15 +329,21 @@ class UserTable extends React.Component {
 const mapStateToProps = (state) => ({
 	rowsPerPage: state.settings.trp,
 	accessLevel: state.settings.user.privileges,
-	language: state.settings.language
+	language: state.settings.language,
+	favorites: state.favorites.favorites,
+	saved: state.favorites.saved
 })
 
-const mapDispatchToProps = {
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	addToFav: (favObj) => dispatch(addToFav(favObj)),
+	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
+	finishedSaving: () => dispatch(finishedSaving())
+})
 
-}
 
 UserTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(UserTable)))
+export default withSnackbar()(withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(UserTable))))

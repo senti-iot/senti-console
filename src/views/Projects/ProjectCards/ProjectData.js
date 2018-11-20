@@ -198,6 +198,7 @@ class ProjectData extends PureComponent {
 	renderMenu = () => {
 		const { actionAnchor, actionAnchorVisibility } = this.state
 		const { classes, t } = this.props
+		console.log(this.props)
 		return <Fragment>
 			<ItemG>
 				<Hidden smDown>

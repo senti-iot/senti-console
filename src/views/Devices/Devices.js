@@ -50,7 +50,7 @@ class Devices extends Component {
 		{ id: 0, title: this.props.t('devices.tabs.listView'), label: <ViewList />, url: `${this.props.match.path}/list` },
 		{ id: 1, title: this.props.t('devices.tabs.mapView'), label: <Map />, url: `${this.props.match.path}/map` },
 		{ id: 2, title: this.props.t('devices.tabs.cardView'), label: <ViewModule />, url: `${this.props.match.path}/grid` },
-		{ id: 3, title: this.props.t('favorites.favorites'), label: <Star />, url: `${this.props.match.path}/favorites` }
+		{ id: 3, title: this.props.t('sidebar.favorites'), label: <Star />, url: `${this.props.match.path}/favorites` }
 	]
 
 	deviceHeaders = () => {

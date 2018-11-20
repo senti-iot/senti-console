@@ -545,6 +545,7 @@
 	},
 	"snackbars": {
 		"favorite":{
+			"updated": "Favorites have been updated!",
 			"manyRemoved": "Favorites have been removed!",
 			"saved": "%{name} (%{type}) has been added to favorites!",
 			"removed": "%{name} (%{type}) has been removed from favorites!"
