@@ -496,7 +496,7 @@
 		},
 		"defaultDataSet": "Default data set for charts",
 		"didYouKnow": "Intelligent Notifications",
-		"discoverSenti": "Show intro cards on Dashboard",
+		"discoverSenti": "Show Welcome to Senti on Dashboard",
 		"headers": {
 			"calibration": "Calibration",
 			"charts": "Charts",
