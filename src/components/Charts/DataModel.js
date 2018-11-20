@@ -99,7 +99,7 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 					borderWidth: hoverID === d.id ? 8 : 3,
 					fill: false,
 					label: [d.name],
-					data: Object.entries(d.data).map(d => d[1])
+					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
 				}))
 			},
 			barDataSets: {
@@ -130,6 +130,7 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 			}	
 		}
 	}
+	console.log(state)
 	return state
 }
 export const setHourlyData = (dataArr, from, to, hoverID) => {
