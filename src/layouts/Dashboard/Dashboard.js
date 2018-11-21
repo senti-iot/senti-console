@@ -10,6 +10,7 @@ import { Header, /* Footer, */ Sidebar, CircularLoader } from 'components';
 import dashboardRoutes from 'routes/dashboard.js';
 
 import appStyle from 'assets/jss/material-dashboard-react/appStyle.js';
+import { MuiThemeProvider } from '@material-ui/core/styles'
 
 // import image from 'assets/img/sidebar-2.jpg';
 import logo from '../../logo.svg';
@@ -19,6 +20,7 @@ import { connect } from 'react-redux'
 import { getSettings } from 'redux/settings';
 import withSnackbarHandler from 'components/Localization/SnackbarHandler';
 import {  Close } from 'variables/icons';
+import { lightTheme, darkTheme } from 'variables/themes'
 // import GeoLocation from 'components/Geolocation/Geolocation';
 class App extends React.Component {
 	constructor(props) {
@@ -99,69 +101,73 @@ class App extends React.Component {
 	render() {
 		const { classes, t, loading, sOpt, ...rest } = this.props;
 		return (
-			<div className={classes.wrapper}>
-				<div className={classes.mainPanel} ref={'mainPanel'}>
-					<Header
-						routes={dashboardRoutes}
-						handleDrawerToggle={this.handleDrawerToggle}
-						goBackButton={this.state.goBackButton}
-						gbbFunc={this.handleGoBackButton}
-						headerTitle={this.state.headerTitle}
-						t={t}
-						{...rest}
-					/>
-					<Fragment>
-						<Sidebar
+			<MuiThemeProvider theme={this.props.theme === 0 ? lightTheme : darkTheme }>
+
+				<div className={classes.wrapper + ' ' + (this.props.theme === 0 ? '' : classes.darkBackground) }>
+					<div className={classes.mainPanel} ref={'mainPanel'}>
+						<Header
 							routes={dashboardRoutes}
-							logo={logo}
 							handleDrawerToggle={this.handleDrawerToggle}
-							open={this.state.mobileOpen}
-							color='senti'
+							goBackButton={this.state.goBackButton}
+							gbbFunc={this.handleGoBackButton}
+							headerTitle={this.state.headerTitle}
 							t={t}
-							menuRoute={this.state.menuRoute}
 							{...rest}
 						/>
-						{!loading ? <Fragment>
-							<div className={classes.container} id={'container'}>
-								<Switch>
-									{cookie.load('SESSION') ?
-										dashboardRoutes.map((prop, key) => {
-											if (prop.redirect) {
-												return <Redirect from={prop.path} to={prop.to} key={key} />;
-											}
-											return <Route path={prop.path} render={(routeProps) => <prop.component {...routeProps} setHeader={this.handleSetHeaderTitle} />} key={key} />;
-										})
-										: <Redirect from={window.location.pathname} to={{
-											pathname: '/login', state: {
-												prevURL: window.location.pathname
-											}
-										}} />}
-								</Switch>
-							</div>
-							<Snackbar
-								anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-								open={this.props.sOpen}
-								onClose={this.props.sClose}
-								onExited={this.props.handleNextS}
-								ContentProps={{
-									'aria-describedby': 'message-id',
-								}}
-								ClickAwayListenerProps={{
-									mouseEvent: false,
-									touchEvent: false
-								}}
-								autoHideDuration={3000}
-								message={<span>{t(this.props.sId, this.props.sOpt)}</span>}
-								action={
-									<Button size={'small'} variant={'text'} onClick={this.props.sClose} >
-										<Close style={{ color: 'white' }}/>
-									</Button>
-								}
+						<Fragment>
+							<Sidebar
+								routes={dashboardRoutes}
+								logo={logo}
+								handleDrawerToggle={this.handleDrawerToggle}
+								open={this.state.mobileOpen}
+								color='senti'
+								t={t}
+								menuRoute={this.state.menuRoute}
+								{...rest}
 							/>
-						</Fragment> : <CircularLoader />}
-					</Fragment>
-				</div>
-			</div >
+							{!loading ? <Fragment>
+								<div className={classes.container} id={'container'}>
+									<Switch>
+										{cookie.load('SESSION') ?
+											dashboardRoutes.map((prop, key) => {
+												if (prop.redirect) {
+													return <Redirect from={prop.path} to={prop.to} key={key} />;
+												}
+												return <Route path={prop.path} render={(routeProps) => <prop.component {...routeProps} setHeader={this.handleSetHeaderTitle} />} key={key} />;
+											})
+											: <Redirect from={window.location.pathname} to={{
+												pathname: '/login', state: {
+													prevURL: window.location.pathname
+												}
+											}} />}
+									</Switch>
+								</div>
+								<Snackbar
+									anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+									open={this.props.sOpen}
+									onClose={this.props.sClose}
+									onExited={this.props.handleNextS}
+									ContentProps={{
+										'aria-describedby': 'message-id',
+									}}
+									ClickAwayListenerProps={{
+										mouseEvent: false,
+										touchEvent: false
+									}}
+									autoHideDuration={3000}
+									message={<span>{t(this.props.sId, this.props.sOpt)}</span>}
+									action={
+										<Button size={'small'} variant={'text'} onClick={this.props.sClose} >
+											<Close style={{ color: 'white' }}/>
+										</Button>
+									}
+								/>
+							</Fragment> : <CircularLoader />}
+						</Fragment>
+					</div>
+				</div >
+			</MuiThemeProvider>
+
 		);
 	}
 }
@@ -170,7 +176,8 @@ App.propTypes = {
 	classes: PropTypes.object.isRequired
 };
 const mapStateToProps = (state) => ({
-	loading: state.settings.loading
+	loading: state.settings.loading,
+	theme: state.settings.theme
 })
 
 const mapDispatchToProps = dispatch => ({

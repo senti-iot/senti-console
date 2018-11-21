@@ -55,7 +55,6 @@ class Org extends Component {
 						history.push('/404')
 					else {
 						let prevURL = location.prevURL ? location.prevURL : '/management/orgs'
-						console.log(prevURL)			
 						setHeader(`${rs.name}`, true, prevURL, 'users')
 						this.setState({ org: rs, loading: false })
 					}

@@ -100,7 +100,6 @@ class Orgs extends Component {
 	}
 	getData = async () => {
 		// const { t } = this.props
-		console.log(this.props)
 		if (this.props.orgs) { 
 			this.setState({
 				orgs: this.props.orgs,

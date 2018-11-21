@@ -190,9 +190,7 @@ class Project extends Component {
 				newArr.push(d)
 			return newArr
 		}, [])
-		console.log(dataArr)
 		let newState = setDailyData(dataArr, from, to, hoverID)
-		console.log(newState)
 		this.setState({
 			dataArr: dataArr,
 			loadingData: false,
