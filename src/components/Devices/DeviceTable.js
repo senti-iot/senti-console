@@ -146,7 +146,7 @@ class EnhancedTable extends React.Component {
 											<TC content={this.renderIcon(n.liveStatus)} />
 											<TC label={n.address ? n.address : t('devices.noAddress')} />
 											<TC label={n.org ? n.org.name : t('devices.noProject')} />
-											<TC label={n.project.id > 0 ? t('devices.fields.notfree') : t('devices.fields.free')} />
+											<TC label={n.dataCollection.id > 0 ? t('devices.fields.notfree') : t('devices.fields.free')} />
 										</Hidden>
 									</TableRow>
 								);
