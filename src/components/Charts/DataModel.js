@@ -130,7 +130,6 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 			}	
 		}
 	}
-	console.log(state)
 	return state
 }
 export const setHourlyData = (dataArr, from, to, hoverID) => {

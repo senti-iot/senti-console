@@ -18,8 +18,11 @@ ReactDOM.render(<App />, rootEl)
 // }
 //New Content Dialog Debug
 // var rootUpdate = document.getElementById('update')
-// ReactDOM.render(<NewContent />, rootUpdate)
-
+// ReactDOM.render(<NewContent installing/>, rootUpdate)
+// setTimeout(() => {
+// 	ReactDOM.unmountComponentAtNode(rootUpdate)
+// 	ReactDOM.render(<NewContent />, rootUpdate)
+// }, 4000);
 // Are we in development mode?
 if (module.hot) {
 	// Whenever a new version of App.js is available

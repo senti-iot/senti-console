@@ -193,7 +193,6 @@ class LoginPage extends React.Component {
 						</GridContainer>
 					</div>
 				</div>
-
 			</div>
 		);
 	}

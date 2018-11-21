@@ -46,7 +46,6 @@ class Management extends Component {
 		{ id: 3, title: this.props.t('sidebar.favorites'), label: <Star />, url: `/management/favorites` }
 	]
 	componentDidMount = async () => {
-		console.log(this.props.saved)
 		this.handleTabs()
 		await this.getData()
 	}
