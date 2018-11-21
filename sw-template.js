@@ -1,6 +1,6 @@
 /* eslint-disable */
 importScripts('/workbox-sw.js');
-workbox.setConfig({ debug: true });
+// workbox.setConfig({ debug: true });
 // workbox.core.setLogLevel(workbox.core.LOG_LEVELS.debug);
 workbox.skipWaiting();
 workbox.clientsClaim();
