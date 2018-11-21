@@ -1,6 +1,6 @@
 import React from 'react';
 // material-ui components
-import { InputAdornment, withStyles, CardContent, Collapse, Button, Grid, withWidth } from '@material-ui/core';
+import { InputAdornment, withStyles, CardContent, Collapse, Button, Grid, withWidth, MuiThemeProvider } from '@material-ui/core';
 import { LockOutlined, Person } from '@material-ui/icons';
 // core components
 import { GridContainer, ItemGrid, ItemG, TextF } from 'components';
@@ -20,6 +20,7 @@ import { connect } from 'react-redux';
 import { getSettings } from 'redux/settings';
 import { Link } from 'react-router-dom'
 import { compose } from 'recompose';
+import { lightTheme } from 'variables/themes';
 var moment = require('moment')
 
 class LoginPage extends React.Component {
@@ -109,7 +110,7 @@ class LoginPage extends React.Component {
 			[classes.iconError]: this.state.error
 		})
 		return (
-			<div>
+			<MuiThemeProvider theme={lightTheme}>
 				<div
 					className={classes.pageHeader}
 					style={{
@@ -194,7 +195,7 @@ class LoginPage extends React.Component {
 					</div>
 				</div>
 
-			</div>
+			</MuiThemeProvider>
 		);
 	}
 }
