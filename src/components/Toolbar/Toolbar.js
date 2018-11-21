@@ -62,9 +62,16 @@ class Toolbar extends PureComponent {
 	  this.state = {
 			route: props.route ? props.route : 0	 
 	  }
+		this.tabsRef = React.createRef()
+		
 	}
 	componentDidMount = () => {
-	  console.log(this.props.route)
+		if (this.props.width === 'xs') { 
+			this.tabsRef.tabsRef.scroll({ left: 100, behavior: 'smooth' }) 
+			setTimeout(() => {
+				this.tabsRef.tabsRef.scroll({ left: 0, behavior: 'smooth' }) 
+			}, 300);
+		}
 	}
 	
 	handleTabsChange = (e, value) => {
@@ -77,11 +84,12 @@ class Toolbar extends PureComponent {
 		container.scroll({ top: topOfElement, behavior: 'smooth' })
 		
 	}
+	
 	render() {
 		const { classes, tabs, data, noSearch, filters, handleFilterKeyword, content, width } = this.props
 		return (
 			<AppBar position={'sticky'} classes={{ root: classes.appBar }}>
-				{tabs ? <Tabs value={this.state.route} scrollable={width === 'xs' ? true : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
+				{tabs ? <Tabs innerRef={ref => this.tabsRef = ref} value={this.state.route} scrollable={width === 'xs' ? true : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 					{tabs ? tabs.map((t, i) => {
 						return <Tab title={t.title}
 							component={(props) => <Link {...props} scroll={this.handleScroll } style={{ color: '#fff' }} />}
@@ -95,9 +103,9 @@ class Toolbar extends PureComponent {
 							to={`${t.url}`} />
 					}) : null}
 				</Tabs> : null}
-				{width === 'xs' ? <div className={classes.dividerContainer}>
+				{/* {width === 'xs' ? <div className={classes.dividerContainer}>
 					<div className={classes.divider} />
-				</div> : null}
+				</div> : null} */}
 				{noSearch ? null : <Search
 					right
 					suggestions={data ? suggestionGen(data) : []}

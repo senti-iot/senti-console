@@ -43,10 +43,10 @@ export default function register() {
 				// Add some additional logging to localhost, pointing developers to the
 				// service worker/PWA documentation.
 				navigator.serviceWorker.ready.then(() => {
-					console.log(
-						'This web app is being served cache-first by a service ' +
-						'worker. To learn more, visit https://goo.gl/SC7cgQ'
-					);
+					// console.log(
+					// 	'This web app is being served cache-first by a service ' +
+					// 	'worker. To learn more, visit https://goo.gl/SC7cgQ'
+					// );
 				});
 			} else {
 				// Is not local host. Just register service worker
@@ -61,19 +61,20 @@ function registerValidSW(swUrl) {
 		.register(swUrl)
 		.then(registration => {
 			registration.onupdatefound = () => {
+				var rootUpdate = document.getElementById('update')
+				ReactDOM.render(<NewContent installing/>, rootUpdate)
 				registration.update()
 				const installingWorker = registration.installing;
 				installingWorker.onstatechange = () => {
 					if (installingWorker.state === 'installed') {
 						if (navigator.serviceWorker.controller) {
-							
 							// At this point, the old content will have been purged and
 							// the fresh content will have been added to the cache.
 							// It's the perfect time to display a 'New content is
 							// available; please refresh.' message in your web app.
-							;
 							// alert('New Content is available! To see the new content please close all the tabs regarding Senti and refresh the page');
 							var rootUpdate = document.getElementById('update')
+							ReactDOM.unmountComponentAtNode(rootUpdate)
 							ReactDOM.render(<NewContent />, rootUpdate)
 						} else {
 							// At this point, everything has been precached.

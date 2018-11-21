@@ -324,7 +324,6 @@ class Collection extends Component {
 				newArr.push(d)
 			return newArr
 		}, [])
-		console.log(dataArr)
 		let newState = setDailyData(dataArr, from, to, hoverID)
 		this.setState({
 			...this.state,

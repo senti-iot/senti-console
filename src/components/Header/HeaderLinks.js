@@ -1,5 +1,5 @@
 import { Grid, IconButton, Menu, MenuItem, withStyles } from '@material-ui/core';
-import { AccountBox, Business, Lock } from 'variables/icons';
+import { AccountBox, Business, Lock, SettingsRounded } from 'variables/icons';
 import headerLinksStyle from 'assets/jss/material-dashboard-react/headerLinksStyle';
 import React from 'react';
 import cookie from 'react-cookies';
@@ -19,24 +19,33 @@ class HeaderLinks extends React.Component {
 		this.handleProfileClose()
 		if (this.props.user)
 			this.props.history.push(`/management/user/${this.props.user.id}`)
-		
+
+	}
+	handleRedirectToOwnOrg = () => {
+		this.handleProfileClose()
+		if (this.props.user)
+			this.props.history.push(`/management/org/${this.props.user.org.id}`)
 	}
 	handleProfileClose = () => {
 		this.setState({ anchorProfile: null })
 		if (this.props.onClose)
-			this.props.onClose() 
+			this.props.onClose()
 	}
 	logOut = async () => {
 		try {
-			await logOut().then(() => {	cookie.remove('SESSION', { path: '/' })})
+			await logOut().then(() => { cookie.remove('SESSION', { path: '/' }) })
 		}
-		catch (e) { 
+		catch (e) {
 		}
-		if (!cookie.load('SESSION'))
-		{
+		if (!cookie.load('SESSION')) {
 			this.props.history.push('/login')
 		}
 		this.setState({ anchorProfile: null })
+	}
+	handleSettingsOpen = () => {
+		this.handleProfileClose()
+		if (this.props.user)
+			this.props.history.push(`/settings`)
 	}
 	render() {
 		const { classes, t, user } = this.props;
@@ -82,25 +91,29 @@ class HeaderLinks extends React.Component {
 					}}
 				>
 					<MenuItem onClick={this.handleRedirectToOwnProfile}>
-						<AccountBox className={classes.leftIcon}/>{t('users.menus.profile')}
+						<AccountBox className={classes.leftIcon} />{t('users.menus.profile')}
 					</MenuItem>
-					<MenuItem onClick={this.handleProfileClose}>
+					{user ? user.privileges.apiorg.editusers ? <MenuItem onClick={this.handleRedirectToOwnOrg}>
 						<Business className={classes.leftIcon} />{t('users.menus.account')}
+					</MenuItem> : null : null}
+					<MenuItem onClick={this.handleSettingsOpen}>
+						<SettingsRounded className={classes.leftIcon} />{t('sidebar.settings')}
 					</MenuItem>
 					<MenuItem onClick={this.logOut} className={classes.menuItem}>
 						<Lock className={classes.leftIcon} />{t('users.menus.signout')}
-					 </MenuItem>
+					</MenuItem>
 				</Menu>
 			</Grid>
 		);
 	}
 }
 const mapStateToProps = (state) => ({
-	user: state.settings.user
+	user: state.settings.user,
+
 })
 
 const mapDispatchToProps = {
-	
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(headerLinksStyle)(HeaderLinks)));

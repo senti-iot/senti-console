@@ -1,7 +1,7 @@
 import { Hidden, Typography, withStyles } from '@material-ui/core';
-import AnalyticsImg from 'assets/img/Rounded/analytics.png';
-import HostingImg from 'assets/img/Rounded/hosting.png';
-import StorageImg from 'assets/img/Rounded/storage.png';
+import AnalyticsImg from 'assets/img/Rounded/analytics.svg';
+import HostingImg from 'assets/img/Rounded/hosting.svg';
+import StorageImg from 'assets/img/Rounded/storage.svg';
 import discoverSentiStyle from 'assets/jss/material-dashboard-react/discoverSentiStyles';
 import { GridContainer, ItemGrid } from 'components';
 import DiscoverSentiCards from 'components/Cards/DiscoverSentiCards';

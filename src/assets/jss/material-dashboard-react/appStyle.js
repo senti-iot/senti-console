@@ -5,6 +5,9 @@
 import { drawerWidth, transition, container } from "assets/jss/material-dashboard-react.js";
 
 const appStyle = theme => ({
+	darkBackground: {
+		background: "#2e2e2e"
+	},
 	wrapper: {
 		position: "relative",
 		top: "0",

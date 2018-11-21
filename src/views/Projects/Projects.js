@@ -55,7 +55,7 @@ class Projects extends Component {
 			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
 			{ label: t('menus.assign.collectionsToProject'), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },
 			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
-			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
+			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
 			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
 	}
