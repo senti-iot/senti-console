@@ -106,7 +106,7 @@ class FavoriteTable extends React.Component {
 													</ItemG>
 													<ItemG xs={12}>
 														<Caption noWrap className={classes.noMargin}>
-															{`${n.id} - ${t(`favorites.types.${n.type}`)}`}
+															{`${t(`favorites.types.${n.type}`)}`}
 														</Caption>
 													</ItemG>
 												</ItemG>} />
