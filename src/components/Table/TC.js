@@ -17,10 +17,10 @@ const styles = theme => ({
 
 
 const TC = (props) => {
-	const { checkbox, classes, label, content } = props
+	const { checkbox, classes, label, content, className } = props
 	return (
 		<TableCell classes={{
-			root: checkbox ? classes.tableCellCheckbox + ' ' + classes.tableCell : classes.tableCell
+			root: className + ' ' + (checkbox ? classes.tableCellCheckbox + ' ' + classes.tableCell : classes.tableCell)
 		}}
 		
 		>

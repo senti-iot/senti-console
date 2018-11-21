@@ -2,6 +2,12 @@
 import { red, green, yellow, grey } from '@material-ui/core/colors'
 import { primaryColor } from 'assets/jss/material-dashboard-react'
 const devicetableStyles = theme => ({
+	orgUsersTD: {
+		[theme.breakpoints.down('xs')]: {
+			padding: '0 10px'
+		},
+		padding: '0 20px'
+	},
 	hideIcon: {
 		display: "none",
 		// position: 'absolute',
