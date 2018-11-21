@@ -14,6 +14,8 @@ import 'core-js/es6/set';
 import 'core-js/fn/array/find';
 import 'core-js/fn/array/includes';
 import 'core-js/fn/number/is-nan';
+import { MuiThemeProvider } from '@material-ui/core';
+import { lightTheme } from 'variables/themes';
 
 var countries = require('i18n-iso-countries')
 countries.registerLocale(require('i18n-iso-countries/langs/en.json'))
@@ -27,15 +29,15 @@ class App extends Component {
 		return (
 			<Provider store={store}>
 				<TProvider>
-					{/* <MuiThemeProvider theme={theme}> */}
-					<Router history={hist}>
-						<Switch>
-							{indexRoutes.map((prop, key) => {
-								return <Route path={prop.path} component={prop.component} key={key} exact={prop.exact ? true : false} />;
-							})}
-						</Switch>
-					</Router>
-					{/* </MuiThemeProvider> */}
+					<MuiThemeProvider theme={lightTheme}>
+						<Router history={hist}>
+							<Switch>
+								{indexRoutes.map((prop, key) => {
+									return <Route path={prop.path} component={prop.component} key={key} exact={prop.exact ? true : false} />;
+								})}
+							</Switch>
+						</Router>
+					</MuiThemeProvider>
 				</TProvider>
 			</Provider>
 		)
