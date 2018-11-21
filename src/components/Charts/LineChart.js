@@ -14,6 +14,7 @@ class LineChart extends PureComponent {
 		super(props)
 		
 		this.state = {
+			weather: '',
 			weatherDate: null,
 			tooltip: {
 				show: false,
@@ -173,17 +174,29 @@ class LineChart extends PureComponent {
 			
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
 			if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long)) {
-				this.setState({ weather: null })
-				getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then(rs => {
+				if (lat !== 0 && long !== 0) {
+					this.setState({ weather: "" })
+					getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then(rs => {
+						this.setState({
+							weatherDate: wDate,
+							weather: rs,
+							loc: {
+								lat: lat,
+								long: long
+							}
+						})
+					})
+				}
+				else { 
 					this.setState({
 						weatherDate: wDate,
-						weather: rs,
+						weather: null,
 						loc: {
-							lat: lat,
-							long: long
+							lat: 0,
+							long: 0
 						}
 					})
-				})
+				}
 			}
 		}
 		catch (err) {
@@ -359,11 +372,11 @@ class LineChart extends PureComponent {
 										<Caption> {`(${DateStr})`}</Caption>
 									</ItemG>
 									<ItemG xs={2}>
-										{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : <CircularProgress size={37} />}
+										{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : this.state.weather === null ? null : <CircularProgress size={37} />}
 									</ItemG>
 								</ItemG>
 								<ItemG >
-									<Caption>{this.props.t('devices.fields.weather')}: {this.state.weather ? this.state.weather.currently.summary : null}</Caption>
+									<Caption>{this.state.weather === null ? null : `${this.props.t('devices.fields.weather')}:`} {this.state.weather ? this.state.weather.currently.summary : null}</Caption>
 									{/* <Info></Info> */}
 								</ItemG> 
 								{this.state.tooltip.data.map((d, i) => {
