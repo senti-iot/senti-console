@@ -54,7 +54,7 @@ class LineChart extends PureComponent {
 							time: {
 								displayFormats: {
 									hour: 'LT',
-									day: 'll',
+									day: 'DD MMM',
 									minute: 'LT'
 								},
 								unit: props.unit.chart,

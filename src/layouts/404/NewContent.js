@@ -5,7 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { ItemG } from 'components';
+import { ItemG, CircularLoader } from 'components';
 import { primaryColor } from 'assets/jss/material-dashboard-react';
 import { withStyles } from '@material-ui/core';
 
@@ -44,9 +44,11 @@ class NewContent extends React.Component {
 					</DialogContent>
 					<DialogActions>
 						<ItemG container justify={'center'} alignItems={'center'}>
-							<Button onClick={this.handleClose} className={this.props.classes.button}>
-								Reload
-							</Button>
+							{ this.props.installing ? <CircularLoader notCentered/> :
+								<Button onClick={this.handleClose} className={this.props.classes.button}>
+									Reload
+								</Button>
+							}
 						</ItemG>
 					</DialogActions>
 				</Dialog>

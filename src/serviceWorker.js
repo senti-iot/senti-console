@@ -43,10 +43,10 @@ export default function register() {
 				// Add some additional logging to localhost, pointing developers to the
 				// service worker/PWA documentation.
 				navigator.serviceWorker.ready.then(() => {
-					console.log(
-						'This web app is being served cache-first by a service ' +
-						'worker. To learn more, visit https://goo.gl/SC7cgQ'
-					);
+					// console.log(
+					// 	'This web app is being served cache-first by a service ' +
+					// 	'worker. To learn more, visit https://goo.gl/SC7cgQ'
+					// );
 				});
 			} else {
 				// Is not local host. Just register service worker
@@ -61,9 +61,12 @@ function registerValidSW(swUrl) {
 		.register(swUrl)
 		.then(registration => {
 			registration.onupdatefound = () => {
+				var rootUpdate = document.getElementById('update')
+				ReactDOM.render(<NewContent installing/>, rootUpdate)
 				registration.update()
 				const installingWorker = registration.installing;
 				installingWorker.onstatechange = () => {
+					console.log('serviceWorkerState', installingWorker.state)
 					if (installingWorker.state === 'installed') {
 						if (navigator.serviceWorker.controller) {
 							
