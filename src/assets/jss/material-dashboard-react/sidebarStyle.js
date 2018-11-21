@@ -19,7 +19,6 @@ const sidebarStyle = theme => ({
 		bottom: "0",
 		left: "0",
 		zIndex: "1",
-		// overflow: 'auto',
 		...boxShadow,
 		width: drawerWidth,
 		[theme.breakpoints.up("lg")]: {
@@ -176,7 +175,8 @@ const sidebarStyle = theme => ({
 	sidebarWrapper: {
 		position: "relative",
 		height: "calc(100vh - 70px)",
-		// overflow: "auto",
+		overflowY: 'auto',
+		overflowX: 'hidden',
 		width: "260px",
 		zIndex: "4",
 		overflowScrolling: 'touch',

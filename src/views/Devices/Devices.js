@@ -61,7 +61,7 @@ class Devices extends Component {
 			{ id: 'liveStatus', checkbox: true, label: <ItemG container justify={'center'} title={t('devices.fields.status')}><SignalWifi2Bar /></ItemG> },
 			{ id: 'address', label: t('devices.fields.address') },
 			{ id: 'org.name', label: t('devices.fields.org') },
-			{ id: 'project.id', label: t('devices.fields.availability') }
+			{ id: 'dataCollection.id', label: t('devices.fields.availability') }
 		]
 	}
 	options = () => {
@@ -82,12 +82,12 @@ class Devices extends Component {
 				{ label: t('menus.assign.deviceToOrg'), func: this.handleOpenAssignOrg, single: false, icon: Business },
 				{ label: t('menus.unassign.deviceFromCollection'), func: this.handleOpenUnassignDialog, single: false, icon: LayersClear },
 				{ label: t('menus.calibrate'), func: this.handleCalibrateFlow, single: true, icon: Build },
-				{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
+				{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
 				// { label: t('menus.delete'), func: this.handleDeleteProjects, single: false, icon: Delete }, 
 			]
 		else {
 			return [
-				{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
+				{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
 				{ label: t('menus.exportPDF'), func: () => { }, single: false }
 			]
 		}
