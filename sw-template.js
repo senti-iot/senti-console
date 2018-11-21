@@ -1,20 +1,25 @@
 /* eslint-disable */
 importScripts('/workbox-sw.js');
-// workbox.setConfig({ debug: true });
+workbox.setConfig({ debug: true });
 // workbox.core.setLogLevel(workbox.core.LOG_LEVELS.debug);
 workbox.skipWaiting();
 workbox.clientsClaim();
 workbox.precaching.suppressWarnings();
 
-//This will precache everything, not optimal
+//This will precache everything
 workbox.precaching.precacheAndRoute([])
 
 //cache JS/CSS
-
 workbox.routing.registerRoute(
-	/\.(?:js|css)$/,
+	/\.(?:css)$/,
 	workbox.strategies.staleWhileRevalidate({
-		cacheName: 'static-resources',
+		cacheName: 'css-cache'
+	})
+);
+workbox.routing.registerRoute(
+	/\.(?:js)$/,
+	workbox.strategies.staleWhileRevalidate({
+		cacheName: 'js-cache'
 	})
 );
 
