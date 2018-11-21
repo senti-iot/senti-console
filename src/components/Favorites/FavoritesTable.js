@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 import { Info, Caption, ItemG } from 'components';
 import TC from 'components/Table/TC'
 import TP from 'components/Table/TP';
+import { LibraryBooks, DeviceHub, Person, Business, DataUsage } from 'variables/icons';
 
 class FavoriteTable extends React.Component {
 	constructor(props) {
@@ -52,7 +53,22 @@ class FavoriteTable extends React.Component {
 
 
 	isSelected = id => this.props.selected.indexOf(id) !== -1;
-
+	renderIcon = (type) => {
+		switch (type) {
+			case 'project':
+				return <LibraryBooks />
+			case 'device': 
+				return <DeviceHub />
+			case 'user': 
+				return <Person />
+			case 'org': 
+				return <Business />
+			case 'collection': 
+				return <DataUsage />
+			default:
+				break;
+		}
+	}
 	render() {
 		const { selected, classes, t, data, order, orderBy, handleClick, handleCheckboxClick, handleSelectAllClick } = this.props;
 		const { rowsPerPage, page } = this.state;
@@ -74,11 +90,16 @@ class FavoriteTable extends React.Component {
 							classes={classes}
 							customColumn={[
 								{
+									id: 'type',
+									label: <div style={{ width: 40 }}/>
+								},
+								{
 									id: 'id',
 									label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
 										{this.props.t("sidebar.favorites")}
 									</Typography>
 								}
+							
 							]}
 						/>
 						<TableBody>
@@ -97,6 +118,7 @@ class FavoriteTable extends React.Component {
 									>
 										<Hidden lgUp>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+											<TC checkbox content={<ItemG container /* justify={'center'} */>{this.renderIcon(n.type)}</ItemG>} />
 											<TC content={
 												<ItemG container alignItems={'center'}>
 													<ItemG xs={12}>
@@ -113,8 +135,8 @@ class FavoriteTable extends React.Component {
 										</Hidden>
 										<Hidden mdDown>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+											<TC checkbox content={<ItemG container /* justify={'center'} */>{this.renderIcon(n.type)}</ItemG>} />
 											<TC label={n.name ? n.name : t('devices.noName')} />
-											<TC label={n.id} />
 											<TC label={t(`favorites.types.${n.type}`)} />
 										</Hidden>
 									</TableRow>

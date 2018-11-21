@@ -46,8 +46,8 @@ class Favorites extends Component {
 	favoritesHeaders = () => { 
 		const { t } = this.props
 		return [
+			{ id: 'type', label: <div style={{ width: 40 }}/> },
 			{ id: 'name', label: t('favorites.fields.name') },
-			{ id: 'id', label: t('favorites.fields.id') },
 			{ id: 'type', label: t('favorites.fields.type') }
 		]
 	}
