@@ -45,7 +45,8 @@ const devicetableStyles = theme => ({
 	img: {
 		borderRadius: "50px",
 		height: "30px",
-		width: "30px"
+		width: "30px",
+		display: 'flex'
 	},
 	tableCellID: {
 		padding: "4px",
