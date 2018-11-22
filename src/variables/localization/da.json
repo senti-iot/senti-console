@@ -230,7 +230,7 @@
 		"noLocType": "Der er ingen placeringstype indstillet",
 		"noName": "Unavngivet",
 		"noProject": "Ikke tildelt",
-		"notCalibrated": "Enhed er ikke kalibreret!",
+		"notCalibrated": "Enhed er ikke kalibreret! Kort lokation og vejr data vil ikke være tilgængelige.",
 		"pageTitle": "Enheder",
 		"simpleList": {
 			"address": "Adresse",
