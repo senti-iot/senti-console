@@ -5,8 +5,10 @@ import MarkerClusterer from 'react-google-maps/lib/components/addons/MarkerClust
 // import { colors } from 'variables/colors';
 import { connect } from 'react-redux'
 import { colors } from 'variables/colors';
-import  darkMode from './mapStyle'
 import { withStyles } from '@material-ui/core';
+import darkMode from './mapStyle';
+
+
 class MapComponent extends Component {
 	constructor(props) {
 		super(props)
@@ -48,6 +50,7 @@ class MapComponent extends Component {
 		let props = this.props
 		let defaultLat = parseFloat(56.2639) //Denmark,
 		let defaultLng = parseFloat(9.5018) //Denmark
+		let darkModeMap = new window.google.maps.StyledMapType(...darkMode)
 		console.log(props.theme)
 		return <GoogleMap
 			defaultZoom={props.zoom ? props.zoom : 7}
@@ -65,7 +68,7 @@ class MapComponent extends Component {
 			}}
 			mapTypeId={this.props.theme.palette.type === 'dark' ? 'dark_mode' : 'roadmap'}
 			defaultExtraMapTypes={[
-				['dark_mode', darkMode]
+				['dark_mode', darkModeMap]
 			]}
 		>
 			{this.props.heatMap ? this.createHeatmapLayerPoints().map((d, i) => {
