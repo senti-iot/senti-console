@@ -16,7 +16,7 @@ import { unassignDeviceFromCollection, getCollection } from 'variables/dataColle
 import DeviceMap from './DeviceCards/DeviceMap';
 import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
-import { Timeline, DeviceHub, Map, DeveloperBoard } from 'variables/icons';
+import { Timeline, DeviceHub, Map, DeveloperBoard, Image } from 'variables/icons';
 import teal from '@material-ui/core/colors/teal'
 import { setHourlyData, setMinutelyData, setDailyData, setSummaryData } from 'components/Charts/DataModel';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
@@ -54,7 +54,8 @@ class Device extends Component {
 		{ id: 0, title: '', label: <DeviceHub />, url: `#details` },
 		{ id: 1, title: '', label: <Timeline />, url: `#data` },
 		{ id: 2, title: '', label: <Map />, url: `#map` },
-		{ id: 3, title: '', label: <DeveloperBoard />, url: `#hardware` }
+		{ id: 3, title: '', label: <Image />, url: `#images` },
+		{ id: 4, title: '', label: <DeveloperBoard />, url: `#hardware` }
 	]
 	getDevice = async (id) => {
 		await getDevice(id).then(async rs => {
