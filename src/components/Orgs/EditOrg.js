@@ -7,6 +7,7 @@ import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 
 import { connect } from 'react-redux'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
 import EditOrgAutoSuggest from './EditOrgAutoSuggest'
+import { updateFav, isFav } from 'redux/favorites';
 
 // var moment = require('moment')
 var countries = require('i18n-iso-countries');
@@ -161,6 +162,17 @@ class EditOrg extends Component {
 		}
 	}
 	close = () => {
+		const { isFav, updateFav } = this.props
+		const { org } = this.state
+		let favObj = {
+			id: org.id,
+			name: org.name,
+			type: 'org',
+			path: `/management/org/${org.id}`
+		}
+		if (isFav(favObj)) { 
+			updateFav(favObj)
+		}
 		this.setState({ created: true, creating: false })
 		this.props.s('snackbars.orgUpdated', ({ org: this.state.org.name }))
 		this.props.history.push(`/management/org/${this.state.org.id}`)
@@ -393,8 +405,9 @@ const mapStateToProps = (state) => ({
 	userOrg: state.settings.user.org
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	updateFav: (favObj) => dispatch(updateFav(favObj))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles, { withTheme: true })(EditOrg))

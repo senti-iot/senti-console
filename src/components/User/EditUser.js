@@ -7,6 +7,7 @@ import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel,
 import { Save } from 'variables/icons'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
+import { isFav, updateFav } from 'redux/favorites';
 
 class EditUser extends Component {
 	constructor(props) {
@@ -111,6 +112,17 @@ class EditUser extends Component {
 		)
 	}
 	close = rs => {
+		const { isFav, updateFav } = this.props
+		const { user } = this.state
+		let favObj = {
+			id: user.id,
+			name: `${rs.firstName} ${rs.lastName}`,
+			type: 'user',
+			path: `/management/user/${user.id}`
+		}
+		if (isFav(favObj)) {
+			updateFav(favObj)
+		}
 		this.setState({ created: true, creating: false, org: rs })
 		const { s, history } = this.props
 		s('snackbars.userUpdated', { user: `${rs.firstName} ${rs.lastName}` })
@@ -436,8 +448,9 @@ const mapStateToProps = (state) => ({
 
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	updateFav: (favObj) => dispatch(updateFav(favObj))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles)(EditUser))

@@ -6,6 +6,7 @@ import { CircularLoader } from 'components';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { getAllOrgs } from 'variables/dataOrgs';
+import { isFav, updateFav } from 'redux/favorites';
 
 
 class EditCollection extends Component {
@@ -22,8 +23,10 @@ class EditCollection extends Component {
 	}
 	postUpdate = async () => {
 		let success = await updateCollection(this.state.collection)
-		if (success)
+		if (success) { 
+
 			return true
+		}
 		else
 			return false
 	}
@@ -85,6 +88,17 @@ class EditCollection extends Component {
 		let rs = await this.postUpdate()
 		if (rs) {
 			s(t('snackbars.collectionUpdated'))
+			const { isFav, updateFav } = this.props
+			const { collection } = this.state
+			let favObj = {
+				id: collection.id,
+				name: collection.name,
+				type: 'collection',
+				path: `/collection/${collection.id}`
+			}
+			if (isFav(favObj)) {
+				updateFav(favObj)
+			}
 			history.push(`/collection/${this.id}`)
 		}
 		else
@@ -118,8 +132,9 @@ const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	updateFav: (favObj) => dispatch(updateFav(favObj))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditCollection)

@@ -9,6 +9,8 @@ import { NavigateNext, NavigateBefore, Done, Restore, MyLocation, Router, Device
 import GridContainer from 'components/Grid/GridContainer';
 import { PlacesWithStandaloneSearchBox } from 'components/Map/SearchBox'
 import { CalibrateMap } from 'components/Map/CalibrateMaps';
+import { isFav, updateFav } from 'redux/favorites';
+import { connect } from 'react-redux'
 
 const styles = theme => ({
 	button: {
@@ -337,13 +339,26 @@ class CalibrateDevice extends Component {
 	}
 
 	handleGoToDeviceList = () => {
+		this.handleFav()
 		this.props.history.push('/devices')
 	}
-
+	handleFav = () => {
+		const { isFav, updateFav } = this.props
+		const { name } = this.state
+		const { device } = this.state
+		let favObj = {
+			id: device.id,
+			name: name,
+			type: 'device',
+			path: `/device/${device.id}`
+		}
+		if (isFav(favObj)) {
+			updateFav(favObj)
+		}
+	}
 	handleFinish = () => {
-		
+		this.handleFav()
 		this.props.history.push('/device/' + this.state.device.id)
-		
 	}
 
 	handleReset = () => {
@@ -450,5 +465,13 @@ class CalibrateDevice extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+  
+})
 
-export default withStyles(styles)(CalibrateDevice)
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	updateFav: (favObj) => dispatch(updateFav(favObj))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CalibrateDevice))

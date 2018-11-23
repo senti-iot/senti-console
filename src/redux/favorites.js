@@ -4,6 +4,18 @@ const SETFAV = 'setFavorites'
 const GETFAVS = 'getFavorites'
 const SAVEFAVORITES = 'saveFavorites'
 
+export const updateFav = (obj) => {
+	return (dispatch, getState) => {
+		let uFav = getState().favorites.favorites.findIndex(f => f.id === obj.id)
+		let array = getState().favorites.favorites
+		array[uFav] = obj
+		dispatch({
+			type: SETFAV,
+			favorites: array
+		})
+		dispatch(saveFavorites(true))
+	}
+}
 export const isFav = (obj) => {
 	return (dispatch, getState) => {
 		let favs = getState().favorites.favorites
@@ -43,7 +55,7 @@ export const addToFav = (obj) => {
 	}
 }
 
-const saveFavorites = () => {
+const saveFavorites = (noConfirm) => {
 	return async (dispatch, getState) => {
 		let user = getState().settings.user
 		let f = getState().favorites.favorites
@@ -53,7 +65,7 @@ const saveFavorites = () => {
 		var saved = await saveSettings(user)
 		dispatch({
 			type: SAVEFAVORITES,
-			saved: saved ? true : false
+			saved: noConfirm ? false : saved ? true : false 
 		})
 	}
 }
