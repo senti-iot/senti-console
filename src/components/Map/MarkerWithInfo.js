@@ -10,6 +10,9 @@ import { getDataSummary, getWeather } from 'variables/dataDevices';
 import WeatherIcon from 'components/Typography/WeatherIcon';
 var moment = require('moment')
 const styles = theme => ({ 
+	paper: {
+		boxShadow: "none"
+	},
 	redSignal: {
 		color: red[700]
 	},
@@ -61,7 +64,7 @@ class MarkerWithInfo extends Component {
 		}
 	}
 	render() {
-		const { m, i, t } = this.props
+		const { m, i, t, classes } = this.props
 		const { isOpen } = this.state
 		return (
 			<Marker icon={{ url: `data:image/svg+xml,${MarkerIcon(m.color ? m.color : m.liveStatus)}` }} onClick={this.onToggleOpen} key={i} position={{ lat: m.lat, lng: m.long }}>
@@ -70,16 +73,10 @@ class MarkerWithInfo extends Component {
 					options={{
 						alignBottom: true,
 						maxWidth: 250,
-						boxStyle: {
-							// width: '300px'
-							background: "red",
-							color: "#FF0000"
-						},
-	
 						closeBoxURL: ``,
 						enableEventPropagation: true,
 					}}>
-					<Paper>
+					<Paper className={classes.paper}>
 						<ItemGrid container noMargin>
 							<ItemG xs={6}>
 								<Caption>{t('devices.fields.id')}</Caption>
