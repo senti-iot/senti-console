@@ -230,7 +230,7 @@
 		"noLocType": " No location type set",
 		"noName": "No name",
 		"noProject": "Unassigned",
-		"notCalibrated": "Device has not been calibrated!",
+		"notCalibrated": "Device has not been calibrated! No map location and weather data will be accessible.",
 		"pageTitle": "Devices",
 		"simpleList": {
 			"address": "Address",

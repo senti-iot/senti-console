@@ -153,6 +153,7 @@ const dashboardRoutes = [
 		path: '/settings',
 		sidebarName: 'sidebar.settings',
 		icon: SettingsRounded,
+		hideFromSideBar: true,
 		component: AsyncSettings,
 		menuRoute: 'settings'
 	},
