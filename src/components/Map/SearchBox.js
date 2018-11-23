@@ -43,7 +43,7 @@ export const PlacesWithStandaloneSearchBox = compose(
 		>
 			<TextF
 				id={'calibrate-address'}
-				placeholder={props.t('devices.fields.address')}
+				placeholder={props.t('actions.insertAddress')}
 				label={props.t('devices.fields.address')}
 				handleChange={props.handleChange}
 				value={props.address}

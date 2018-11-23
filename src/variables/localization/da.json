@@ -5,6 +5,7 @@
 	},
 	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
+		"insertAddress": "Indtast adresse",
 		"accept": "Accepter",
 		"apply": "Anvend",
 		"back": "Forrige",

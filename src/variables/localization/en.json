@@ -5,6 +5,7 @@
 	},
 	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
+		"insertAddress": "Enter an address",
 		"accept": "Accept",
 		"apply": "Apply",
 		"back": "Previous",
