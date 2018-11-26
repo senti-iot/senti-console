@@ -1,6 +1,6 @@
 import React from 'react'
-import { CircularLoader, GridContainer, ItemG } from 'components';
-import { Paper, Typography, withStyles } from '@material-ui/core';
+import { CircularLoader, GridContainer, ItemG } from 'components'
+import { Paper, Typography, withStyles } from '@material-ui/core'
 import CodeSplit from 'assets/img/404/CodeSplit.svg'
 const styles = (theme) => {
 	return ({
@@ -22,7 +22,7 @@ const styles = (theme) => {
 	})}
 const AsyncLoader = (props) => {
 	if (props.isLoading) {
-		return <CircularLoader />;
+		return <CircularLoader />
 	}
 	else if (props.error) {
 		console.log(props.error)
@@ -37,8 +37,8 @@ const AsyncLoader = (props) => {
 		</GridContainer>
 	}
 	else {
-		return null;
+		return null
 	}
-};
+}
 
 export default withStyles(styles)(AsyncLoader)
