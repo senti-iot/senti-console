@@ -407,6 +407,7 @@
 			"zip": "ZIP Code"
 		},
 		"pageTitle": "Organisations",
+		"organisation": "Organisation",
 		"updateOrg": "Edit Organisation",
 		"validation": {
 			"networkError": "Network Error!",

@@ -408,6 +408,7 @@
 			"zip": "Postnummer"
 		},
 		"pageTitle": "Organisationer",
+		"organisation": "Organisation",
 		"updateOrg": "Rediger Organisation",
 		"validation": {
 			"networkError": "Netværksfejl!",
