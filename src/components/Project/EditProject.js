@@ -207,7 +207,7 @@ class EditProject extends Component {
 										id={'multiline-flexible'}
 										label={t('projects.fields.description')}
 										multiline
-										rows={'4'}
+										rows={4}
 										color={'secondary'}
 										className={classes.textField}
 										value={this.state.project.description}

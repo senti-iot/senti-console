@@ -212,7 +212,7 @@ class CreateProject extends Component {
 									id={'multiline-flexible'}
 									label={t('projects.fields.description')}
 									multiline
-									rows={'4'}
+									rows={4}
 									// rowsMax={'4'}
 									color={'secondary'}
 									className={classes.textField}
