@@ -47,7 +47,8 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 		 state = {
 			loading: false,
 			timeType: 2,
-			lineDataSets: {
+			 lineDataSets: {
+				
 				labels: labels,
 				datasets: dataArr.map((d) => ({
 					id: d.id,

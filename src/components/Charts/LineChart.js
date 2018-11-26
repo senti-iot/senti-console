@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 class LineChart extends PureComponent {
 	constructor(props) {
 		super(props)
-		
+		console.log(props.theme)
 		this.state = {
 			weather: '',
 			weatherDate: null,
@@ -29,6 +29,7 @@ class LineChart extends PureComponent {
 					onComplete: props.getImage ? props.getImage : null,
 				},
 				display: true,
+
 				maintainAspectRatio: false,
 				tooltips: {
 					titleFontFamily: 'inherit',
@@ -43,9 +44,13 @@ class LineChart extends PureComponent {
 				scales: {
 					xAxes: [
 						{
+							gridLines: {
+								color: props.theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0,0,0,0.1)',
+							},
 							ticks: {
 								source: 'labels',
-								maxRotation: 0
+								maxRotation: 0,
+								fontColor: props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
 							},
 							id: 'xAxis',
 							type: 'time',
@@ -63,14 +68,16 @@ class LineChart extends PureComponent {
 						{
 							display: props.unit.chart === 'day' ? true : false,
 							gridLines: {
+								display: false,
 								drawBorder: false,
 								drawTicks: false,
 							},
 							ticks: {
-							
+
 								callback: function (value, index, values) {
 									return value.charAt(0).toUpperCase() + value.slice(1);
 								},
+								fontColor: props.theme.palette.type === 'dark' ? ['rgba(255, 255, 255, 1)'] : ["#000"],
 								source: 'labels',
 								maxRotation: 0
 							},
@@ -88,7 +95,13 @@ class LineChart extends PureComponent {
 						scaleLabel: {
 							display: false,
 							labelString: 'value'
-						}
+						},
+						ticks: {
+							fontColor: props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
+						},
+						gridLines: {
+							color: props.theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0,0,0,0.1)',
+						},
 					}]
 				},
 				// zoom: {
@@ -101,6 +114,9 @@ class LineChart extends PureComponent {
 		}
 	}
 	legendOptions = {
+		labels: {
+			fontColor: this.props.theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 1)' : undefined,
+		},
 		position: 'bottom',
 		display: !this.props.single ? true : false,
 		onHover: !this.props.single ? (t, l) => {
@@ -114,16 +130,16 @@ class LineChart extends PureComponent {
 			return true
 	}
 	componentDidMount = () => {
-		this.chart.chartInstance.config.options.elements.point.radius = this.clickEvent() ? 3 : 5 
-		this.chart.chartInstance.config.options.elements.point.hitRadius = this.clickEvent() ? 3 : 5 
-		this.chart.chartInstance.config.options.elements.point.hoverRadius = this.clickEvent() ? 4 : 6 
+		this.chart.chartInstance.config.options.elements.point.radius = this.clickEvent() ? 3 : 5
+		this.chart.chartInstance.config.options.elements.point.hitRadius = this.clickEvent() ? 3 : 5
+		this.chart.chartInstance.config.options.elements.point.hoverRadius = this.clickEvent() ? 4 : 6
 
 		this.setState({
 			chartWidth: parseInt(this.chart.chartInstance.canvas.style.width.substring(0, this.chart.chartInstance.canvas.style.width.length - 1), 10),
 			chartHeight: parseInt(this.chart.chartInstance.canvas.style.height.substring(0, this.chart.chartInstance.canvas.style.height.length - 1), 10),
 			mobile: window.innerWidth > 400 ? false : true
 
-		})	
+		})
 	}
 
 	/**
@@ -139,7 +155,7 @@ class LineChart extends PureComponent {
 		 * 	@debug 
 		 *  */
 	componentDidUpdate = (prevProps, prevState) => {
-	
+
 		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID) {
 			this.setXAxis()
 		}
@@ -154,7 +170,7 @@ class LineChart extends PureComponent {
 	setHours = (date) => {
 		if (this.props.unit.chart === 'day')
 			return moment(date).startOf('day').add(12, 'h')
-		else 
+		else
 			return moment(date)
 	}
 	customTooltip = async (tooltipModel) => {
@@ -162,14 +178,14 @@ class LineChart extends PureComponent {
 			this.hideTooltip()
 			return
 		}
-		
-		
+
+
 		// let weatherData = null
 		let wDate = null
 		try {
 			let lat = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].lat
 			let long = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].long
-			
+
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
 			if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long)) {
 				if (lat !== 0 && long !== 0) {
@@ -185,7 +201,7 @@ class LineChart extends PureComponent {
 						})
 					})
 				}
-				else { 
+				else {
 					this.setState({
 						weatherDate: wDate,
 						weather: null,
@@ -198,11 +214,11 @@ class LineChart extends PureComponent {
 			}
 		}
 		catch (err) {
-			
+
 		}
 		let left = tooltipModel.caretX;
 		let top = tooltipModel.caretY;
-		if (!this.clickEvent()) { 
+		if (!this.clickEvent()) {
 			left = this.state.chartWidth / 2
 		}
 		let str = tooltipModel.title[0]
@@ -329,10 +345,10 @@ class LineChart extends PureComponent {
 			x = '-80%'
 			y = '-125%'
 		}
-		if (tooltip.left > ((chartWidth / 4) * 3)) { 
+		if (tooltip.left > ((chartWidth / 4) * 3)) {
 			x = '-90%'
 		}
-		if (tooltip.left < chartWidth / 4) { 
+		if (tooltip.left < chartWidth / 4) {
 			x = '0%'
 		}
 		return `translate(${x}, ${y})`
@@ -359,7 +375,7 @@ class LineChart extends PureComponent {
 					left: mobile ? '50%' : Math.round(this.state.tooltip.left),
 					transform: this.transformLoc(),
 					width: mobile ? 200 : 300,
-					maxWidth: mobile ?  (chartWidth ? chartWidth : window.innerWidth - 250) : 300 
+					maxWidth: mobile ? (chartWidth ? chartWidth : window.innerWidth - 250) : 300
 				}}>
 					<Grow in={tooltip.show} onExited={this.exitedTooltip} >
 						<Paper className={classes.paper}>
@@ -376,7 +392,7 @@ class LineChart extends PureComponent {
 								<ItemG >
 									<Caption>{this.state.weather === null ? null : `${this.props.t('devices.fields.weather')}:`} {this.state.weather ? this.state.weather.currently.summary : null}</Caption>
 									{/* <Info></Info> */}
-								</ItemG> 
+								</ItemG>
 								{this.state.tooltip.data.map((d, i) => {
 									return (
 										<ItemG key={i} container alignItems={'center'}>
