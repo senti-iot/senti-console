@@ -33,7 +33,7 @@ class CollectionHistory extends React.Component {
 						);
 					})}
 				</TableBody>
-			</Table> : <Caption>{t('collections.noHistory')}</Caption>}
+			</Table> : <Caption>{t('no.history')}</Caption>}
 		/>
 	}
 }

@@ -53,7 +53,7 @@ class Collection extends Component {
 			//End Map
 		}
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/collections/list'
-		props.setHeader(props.t('collections.fields.collection'), true, prevURL, 'collections')
+		props.setHeader('collections.fields.collection', true, prevURL, 'collections')
 	}
 		format = 'YYYY-MM-DD+HH:mm'
 	tabs = [
@@ -370,19 +370,19 @@ class Collection extends Component {
 		let id = this.state.collection.id
 		switch (msg) {
 			case 1:
-				s(t('snackbars.unassign.deviceFromCollection', { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id }))
+				s('snackbars.unassign.deviceFromCollection', { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id })
 				break
 			case 2:
-				s(t('snackbars.assign.collectionToOrg', { collection: `${name} (${id})`, org: this.state.collection.org.name }))
+				s('snackbars.assign.collectionToOrg', { collection: `${name} (${id})`, org: this.state.collection.org.name })
 				break
 			case 5: 
-				s(t('snackbars.assign.collectionToProject', { collection: `${name} (${id})`, project: this.state.collection.project.title }))
+				s('snackbars.assign.collectionToProject', { collection: `${name} (${id})`, project: this.state.collection.project.title })
 				break
 			case 6:
-				s(t('snackbars.assign.deviceToCollection', { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id }))
+				s('snackbars.assign.deviceToCollection', { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id })
 				break
 			case 4:
-				s(t('snackbars.collectionDeleted'))
+				s('snackbars.collectionDeleted')
 				break
 			default:
 				break

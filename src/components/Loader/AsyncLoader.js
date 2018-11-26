@@ -3,7 +3,6 @@ import { CircularLoader, GridContainer, ItemG } from 'components';
 import { Paper, Typography, withStyles } from '@material-ui/core';
 import CodeSplit from 'assets/img/404/CodeSplit.svg'
 const styles = (theme) => {
-	console.log(theme)
 	return ({
 		paper: {
 			display: 'flex',
@@ -22,7 +21,6 @@ const styles = (theme) => {
 
 	})}
 const AsyncLoader = (props) => {
-	console.log(props)
 	// Handle the loading state
 	if (props.isLoading) {
 		return <CircularLoader />;

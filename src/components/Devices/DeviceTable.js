@@ -53,7 +53,6 @@ class EnhancedTable extends React.Component {
 
 
 	isSelected = id => {
-		console.log(this.props.selected.indexOf(id), id)
 		return this.props.selected.indexOf(id) !== -1;
 	}
 
@@ -148,7 +147,7 @@ class EnhancedTable extends React.Component {
 											<TC label={n.id} />
 											<TC content={this.renderIcon(n.liveStatus)} />
 											<TC label={n.address ? n.address : t('devices.noAddress')} />
-											<TC label={n.org ? n.org.name : t('devices.noProject')} />
+											<TC label={n.org ? n.org.name : t('no.org')} />
 											<TC label={n.dataCollection ? t('devices.fields.notfree') : t('devices.fields.free')} />
 										</Hidden>
 									</TableRow>

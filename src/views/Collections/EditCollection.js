@@ -41,7 +41,7 @@ class EditCollection extends Component {
 				loading: false
 			})
 			let prevURL = location.prevURL ? location.prevURL : `/collection/${this.id}`
-			setHeader(`${t('menus.edit')} ${collection.name} `, true, prevURL, 'collections')
+			setHeader('collections.editCollection', true, prevURL, 'collections')
 		}
 		else {
 			this.setState({
@@ -84,10 +84,10 @@ class EditCollection extends Component {
 		})
 	}
 	handleUpdate = async () => {
-		const { s, t, history } = this.props
+		const { s, history } = this.props
 		let rs = await this.postUpdate()
 		if (rs) {
-			s(t('snackbars.collectionUpdated'))
+			s('snackbars.collectionUpdated')
 			const { isFav, updateFav } = this.props
 			const { collection } = this.state
 			let favObj = {
@@ -102,7 +102,7 @@ class EditCollection extends Component {
 			history.push(`/collection/${this.id}`)
 		}
 		else
-			s(t('snackbars.failed'))
+			s('snackbars.failed')
 	}
 	render() {
 		const { t } = this.props

@@ -188,7 +188,7 @@ class CalibrateDevice extends Component {
 			<ItemGrid xs={12}>
 				<TextField
 					required={true}
-					label={t('calibration.fields.deviceName')}
+					label={t('devices.fields.name')}
 					onChange={this.handleInput('name')}
 					value={this.state.name}
 					InputProps={{
@@ -202,7 +202,7 @@ class CalibrateDevice extends Component {
 				<TextField
 					multiline
 					rows={4}
-					label={t('calibration.fields.description')}
+					label={t('devices.fields.description')}
 					onChange={this.handleInput('description')}
 					value={this.state.description}
 					InputProps={{
@@ -251,7 +251,7 @@ class CalibrateDevice extends Component {
 				</FormControl>
 				<div className={this.props.classes.latlong}>
 					<Caption>
-						{t('calibration.texts.lat')} &amp; {t('calibration.texts.long')}
+						{t('devices.fields.lat')} &amp; {t('devices.fields.long')}
 					</Caption>
 					<Info>
 						{this.state.lat + ' ' + this.state.long}
@@ -262,7 +262,7 @@ class CalibrateDevice extends Component {
 					color='primary'
 					onClick={this.getCoords}
 					className={this.props.classes.button}
-				> <MyLocation className={this.props.classes.iconButton} />{t('calibration.texts.getLocation')}</Button>
+				> <MyLocation className={this.props.classes.iconButton} />{t('actions.getLocation')}</Button>
 			</ItemGrid>
 		</Grid>
 	}
@@ -319,7 +319,7 @@ class CalibrateDevice extends Component {
 					activeStep: activeStep + 1,
 				});
 			else {
-				this.setState({ error: { message: this.props.t('calibration.texts.networkError') } })
+				this.setState({ error: { message: this.props.t('404.networkError') } })
 			}
 
 		}	
@@ -413,7 +413,7 @@ class CalibrateDevice extends Component {
 														onClick={this.handleBack}
 														className={classes.button}
 													>
-														<NavigateBefore className={classes.iconButton} />{t('calibration.texts.back')}
+														<NavigateBefore className={classes.iconButton} />{t('actions.back')}
 													</Button>
 													<Button
 														variant='contained'
@@ -424,10 +424,10 @@ class CalibrateDevice extends Component {
 													>
 														{activeStep === steps.length - 1 ? <Fragment>
 
-															<Done className={classes.iconButton} />{t('calibration.texts.finish')}
+															<Done className={classes.iconButton} />{t('actions.finish')}
 														</Fragment> :
 															<Fragment>
-																<NavigateNext className={classes.iconButton} />{t('calibration.texts.next')}
+																<NavigateNext className={classes.iconButton} />{t('actions.next')}
 															</Fragment>}
 													</Button>
 												</Grid>
@@ -446,15 +446,15 @@ class CalibrateDevice extends Component {
 							<Grid container>
 								<ItemGrid xs>
 									<Button onClick={this.handleFinish} color={'primary'} variant={'contained'} className={classes.buttonMargin}>
-										<Router className={classes.iconButton} />{t('calibration.texts.viewDevice')} {device.id}
+										<Router className={classes.iconButton} />{t('actions.viewDevice')} {device.id}
 									</Button>
 									<Button onClick={this.handleGoToDeviceList} color={'primary'} variant={'contained'} className={classes.buttonMargin}>
-										<Devices className={classes.iconButton} />{t('calibration.texts.viewDeviceList')}
+										<Devices className={classes.iconButton} />{t('actions.viewDeviceList')}
 									</Button>
 								</ItemGrid>
 								<ItemGrid xs>
 									<Button onClick={this.handleReset} className={classes.button} >
-										<Restore className={classes.iconButton} />{t('calibration.texts.reset')}
+										<Restore className={classes.iconButton} />{t('actions.reset')}
 									</Button>
 								</ItemGrid>
 							</Grid>

@@ -96,7 +96,7 @@ class CollectionActiveDevice extends Component {
 							</ItemGrid>
 						</ItemG>
 						: <ItemG container justify={'center'}>
-							<Caption>{t('collections.noActiveDevice')}</Caption>
+							<Caption>{t('no.activeDevice')}</Caption>
 						</ItemG>
 				} />)
 	}

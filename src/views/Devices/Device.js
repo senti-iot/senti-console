@@ -62,7 +62,10 @@ class Device extends Component {
 			if (rs === null)
 				this.props.history.push('/404')
 			else {
-				this.setState({ device: rs, loading: false })
+				this.setState({ device: rs, loading: false }, () => {
+					this.getWifiDaily()
+					this.getHeatMapData()
+				})
 				if (rs.dataCollection) {
 					await this.getDataCollection(rs.dataCollection)
 				}
@@ -97,14 +100,13 @@ class Device extends Component {
 	}
 	componentDidMount = async () => {
 		let prevURL = this.props.location.prevURL ? this.props.location.prevURL : '/devices/list'
-		this.props.setHeader(this.props.t('devices.device'), true, prevURL ? prevURL : '/devices/list', 'devices')
+		this.props.setHeader('devices.device', true, prevURL ? prevURL : '/devices/list', 'devices')
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {
 				// this.getAllPics(id)
 				await this.getDevice(id)
-				this.getWifiDaily()
-				this.getHeatMapData()
+			
 			}
 		}
 		else {

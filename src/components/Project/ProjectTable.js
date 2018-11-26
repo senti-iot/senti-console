@@ -79,10 +79,10 @@ class ProjectTable extends React.Component {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('projects.projectDelete')}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.projects')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
-					{t('projects.projectDeleteConfirm')}
+					{t('dialogs.delete.message.projects')}
 				</DialogContentText>
 				<List>
 					{selected.map(s => <ListItem key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>

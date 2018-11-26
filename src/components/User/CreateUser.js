@@ -50,7 +50,7 @@ class CreateUser extends Component {
     componentDidMount = async () => {
     	this._isMounted = 1
     	const { setHeader } = this.props
-    	setHeader('users.createUser', true, '/management/users', 'users')
+    	setHeader('menus.create.user', true, '/management/users', 'users')
     	if (this._isMounted)
     		await this.getOrgs()
     }
@@ -398,7 +398,7 @@ class CreateUser extends Component {
     							onClick={this.handleCreateUser}>
     							{this.state.created ?
     								<Fragment>{t('snackbars.redirect')}</Fragment>
-    								: <Fragment><Save className={classes.leftIcon} />{t('users.createUser')}</Fragment>}
+    								: <Fragment><Save className={classes.leftIcon} />{t('menus.create.user')}</Fragment>}
     						</Button>
     					</div>
     				</Grid>

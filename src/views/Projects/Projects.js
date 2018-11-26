@@ -78,12 +78,12 @@ class Projects extends Component {
 		await getAllProjects().then(rs => this._isMounted ? this.setState({
 			projects: rs ? rs : [],
 			projectHeader: [
-				{ id: 'title', label: t('projects.projectsColumnTitle'), },
-				// { id: 'description', label: t('projects.projectsColumnDescription'), },
-				{ id: 'startDate', label: t('projects.projectsColumnStartDate'), },
-				{ id: 'endDate', label: t('projects.projectsColumnEndDate'), },
-				{ id: 'created', label: t('projects.projectsColumnCreated'), },
-				{ id: 'modified', label: t('projects.projectsColumnLastMod'), },
+				{ id: 'title', label: t('projects.fields.title'), },
+				// { id: 'description', label: t('projects.fields.description'), },
+				{ id: 'startDate', label: t('projects.fields.startDate'), },
+				{ id: 'endDate', label: t('projects.fields.endDate'), },
+				{ id: 'created', label: t('projects.fields.created'), },
+				{ id: 'modified', label: t('projects.fields.lastUpdate'), },
 			],
 			loading: false
 		}, () => this.handleRequestSort(null, 'title')) : null)

@@ -91,16 +91,16 @@ class HeaderLinks extends React.Component {
 					}}
 				>
 					<MenuItem onClick={this.handleRedirectToOwnProfile}>
-						<AccountBox className={classes.leftIcon} />{t('users.menus.profile')}
+						<AccountBox className={classes.leftIcon} />{t('menus.user.profile')}
 					</MenuItem>
 					{user ? user.privileges.apiorg.editusers ? <MenuItem onClick={this.handleRedirectToOwnOrg}>
-						<Business className={classes.leftIcon} />{t('users.menus.account')}
+						<Business className={classes.leftIcon} />{t('menus.user.account')}
 					</MenuItem> : null : null}
 					<MenuItem onClick={this.handleSettingsOpen}>
 						<SettingsRounded className={classes.leftIcon} />{t('sidebar.settings')}
 					</MenuItem>
 					<MenuItem onClick={this.logOut} className={classes.menuItem}>
-						<Lock className={classes.leftIcon} />{t('users.menus.signout')}
+						<Lock className={classes.leftIcon} />{t('menus.user.signout')}
 					</MenuItem>
 				</Menu>
 			</Grid>

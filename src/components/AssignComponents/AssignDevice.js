@@ -172,7 +172,7 @@ class AssignDevice extends React.Component {
 						</Toolbar>
 					</AppBar>
 					{noData ? <div style={{ height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-						<Info>{t('devices.noDevices')}</Info>
+						<Info>{t('no.devices')}</Info>
 					</div> : <List>
 						{devices ? filterItems(devices, filters).map((p, i) => (
 							<Fragment key={i}>

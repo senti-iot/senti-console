@@ -44,7 +44,7 @@ class CreateProject extends Component {
 			error: false,
 			errorMessage: ''
 		}
-		props.setHeader('projects.new', true, '/projects/list', 'projects')
+		props.setHeader('menus.create.project', true, '/projects/list', 'projects')
 	}
 
 	componentDidMount = () => {
@@ -338,7 +338,7 @@ class CreateProject extends Component {
 													</MenuItem>
 												))}
 											</Select>
-										</Fragment> : selectedOrg ? <Caption>{t('devices.noDevices')}</Caption> : <Caption>{t('projects.noOrganisationSelected')}</Caption>}
+										</Fragment> : selectedOrg ? <Caption>{t('no.devices')}</Caption> : <Caption>{t('projects.noOrganisationSelected')}</Caption>}
 								</FormControl>
 							</ItemGrid> */}
 							{/* </Grid> */}
@@ -360,7 +360,7 @@ class CreateProject extends Component {
 								>
 									{this.state.created ? t('snackbars.redirect')
 										: <Fragment>
-											<Save className={classes.leftIcon} />{t('projects.new')}
+											<Save className={classes.leftIcon} />{t('menus.create.project')}
 										</Fragment>}
 								</Button>
 							</div>

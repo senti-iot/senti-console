@@ -178,10 +178,10 @@ class UserTable extends React.Component {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('users.usersDelete')}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.users')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
-					{t('users.usersDeleteConfirm')}
+					{t('dialogs.delete.message.users')}
 				</DialogContentText>
 				<div>
 					{selected.map(s => {

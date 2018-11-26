@@ -49,7 +49,7 @@ class Project extends Component {
 			hoverID: 0,
 		}
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/projects/list'
-		props.setHeader(props.t('collections.fields.project'), true, prevURL, 'projects')
+		props.setHeader('collections.fields.project', true, prevURL, 'projects')
 
 	}
 	format = 'YYYY-MM-DD+HH:mm'
@@ -443,10 +443,10 @@ class Project extends Component {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('projects.projectDelete')}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.project')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
-					{t('projects.projectDeleteConfirm', { project: this.state.project.title }) + '?'}
+					{t('dialogs.delete.message.project', { project: this.state.project.title }) + '?'}
 				</DialogContentText>
 
 			</DialogContent>

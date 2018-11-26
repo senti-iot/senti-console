@@ -170,13 +170,13 @@ class LoginPage extends React.Component {
 												<ItemG xs={12} zeroMinWidth container justify={'center'}>
 													{/* <Button variant={'text'} color={'primary'} className={classes.forgotPass}> */}
 													<Link to={`/password/reset/da`} className={classes.forgotPass}>
-														{t('login.forgotPass')}
+														{t('actions.forgotPass')}
 													</Link>
 													{/* </Button> */}
 												</ItemG>
 												<ItemG xs={12} zeroMinWidth container justify={'center'}>
 													<Button variant={'contained'} color={'primary'} /* className={classes.loginButton} */ onClick={this.loginUser}>
-														{t('login.button')}
+														{t('actions.login')}
 													</Button>
 												</ItemG>
 											</Grid>

@@ -52,7 +52,7 @@ class ProjectCollections extends Component {
 	}
 	renderNoCollections = () => {
 		return <GridContainer justify={'center'}>
-			<Caption> {this.props.t('collections.noCollectionsAssigned')}</Caption>
+			<Caption> {this.props.t('no.collections')}</Caption>
 		</GridContainer>
 	}
 	renderDeviceStatus = (status) => {

@@ -161,7 +161,7 @@ class EditDetails extends Component {
 										disabled={this.state.updating}
 										onClick={this.state.updated ? this.goToDevice : this.handleUpdateDevice}
 									>
-										{this.state.updated ? <Fragment><Check className={classes.leftIcon} />{t('actions.goTo')} {t('devices.device')} </Fragment> : <Fragment><Save className={classes.leftIcon} />{t('actions.updateDeviceHardware')}</Fragment>}
+										{this.state.updated ? <Fragment><Check className={classes.leftIcon} />{t('actions.goTo')} {t('devices.device')} </Fragment> : <Fragment><Save className={classes.leftIcon} />{t('actions.save')}</Fragment>}
 									</Button>
 								</ItemGrid>
 							</ItemGrid>

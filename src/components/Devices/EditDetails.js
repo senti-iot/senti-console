@@ -153,7 +153,7 @@ class EditDeviceDetails extends Component {
 											<Check className={classes.leftIcon}/>{t('snackbars.redirect')}
 										</Fragment> : 
 										<Fragment>
-											<Save className={classes.leftIcon} />{t('calibration.texts.updateDevice')}
+											<Save className={classes.leftIcon} />{t('actions.save')}
 										</Fragment>}
 								</Button>
 								{/* </ItemGrid> */}
