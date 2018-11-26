@@ -4,7 +4,6 @@ import { ItemGrid, SmallCard } from 'components'
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle'
 import { MoreVert, Edit, /* PictureAsPdf, Devices, Delete, */ LibraryBooks } from 'variables/icons'
 import { withRouter } from 'react-router-dom'
-import { getProjectImage } from 'variables/dataProjects'
 
 class ProjectCard extends Component {
 	constructor(props) {
@@ -16,21 +15,6 @@ class ProjectCard extends Component {
 	  }
 	}
 
-	componentDidMount = async () => {
-		this._isMounted = 1
-		const { p } = this.props
-		let img = await getProjectImage(p.id).then(rs => rs)
-		if (this._isMounted)
-		{
-			if (img)
-				this.setState({ img: URL.createObjectURL(img) })
-		}
-	}
-
-	componentWillUnmount = () => {
-	  this._isMounted = 0 
-	}
-	
 	handleOpenActionsDetails = event => {
 		this.setState({ actionAnchor: event.currentTarget });
 	}
