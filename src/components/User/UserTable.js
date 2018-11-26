@@ -280,14 +280,12 @@ class UserTable extends React.Component {
 															{`${n.org ? n.org.name : t('users.fields.noOrg')} - ${n.email}`}
 														</Caption>
 													</ItemGrid>
-													{/* </ItemGrid> */}
 												</ItemGrid>
 											}/>
 										</Hidden>
 										<Hidden mdDown>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => this.handleClick(e, n.id)}/>} />
 											<TC checkbox content={n.img ? <img src={n.img} alt='brken' className={classes.img} /> : <Gravatar default='mp' email={n.email} className={classes.img} />} />
-											{/* <TC label={n.userName} /> */}
 											<TC FirstC label={`${n.firstName} ${n.lastName}`} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone, this.props.language) : n.phone}</a>} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`mailto:${n.email}`}>{n.email}</a>} />
@@ -299,7 +297,7 @@ class UserTable extends React.Component {
 								)
 							}) : null}
 							{emptyRows > 0 && (
-								<TableRow style={{ height: 49 /* * emptyRows  */}}>
+								<TableRow style={{ height: 49 }}>
 									<TableCell colSpan={8} />
 								</TableRow>
 							)}

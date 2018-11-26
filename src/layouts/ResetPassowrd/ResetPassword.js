@@ -33,9 +33,10 @@ class ResetPassword extends React.Component {
 		this.input = React.createRef()
 	}
 	handleKeyPress = (event) => {
-		if (event.key === 'Enter') {
-			this.confirmPass()
-		}
+		if (this.props.match.params.token)
+			if (event.key === 'Enter') {
+				this.confirmPass()
+			}
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0

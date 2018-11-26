@@ -71,23 +71,12 @@ class ProjectCard extends Component {
 							onClose={this.handleCloseActionsDetails}
 							PaperProps={{
 								style: {
-									// maxHeight: 200,
 									minWidth: 200
 								}
 							}}>
 							<MenuItem onClick={() => this.props.history.push(`/project/${p.id}/edit`)}>
 								<Edit className={classes.leftIcon} />{t('menus.edit')}									
 							</MenuItem>
-							{/* <MenuItem onClick={() => alert(t('dialogs.warnings.wip'))}>
-										<Devices className={classes.leftIcon} />{t('menus.assignDevices')}
-									</MenuItem>
-									<MenuItem onClick={() => alert(t('dialogs.warnings.wip'))}>
-										<PictureAsPdf className={classes.leftIcon} />{t('menus.exportPDF')}
-									</MenuItem>
-									<MenuItem onClick={() => alert(t('dialogs.warnings.wip'))}>
-										<Delete className={classes.leftIcon} />{t('menus.delete')}
-									</MenuItem> */}
-									))}
 						</Menu>
 					</ItemGrid>
 				}

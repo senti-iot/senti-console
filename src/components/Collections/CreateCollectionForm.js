@@ -55,7 +55,6 @@ class CreateCollectionForm extends Component {
 			value={collection.state}
 			onChange={handleChange('state')}
 			menuItems={[
-				// { value: 0, label: t('collections.fields.status.deleted') },
 				{ value: 1, label: t('collections.fields.state.active') },
 				{ value: 2, label: t('collections.fields.state.inactive') }
 			]}

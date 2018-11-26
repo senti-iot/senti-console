@@ -6,8 +6,6 @@ import { dateFormat, dateFormatter } from 'variables/functions';
 import { DataUsage, Edit } from 'variables/icons';
 
 class CollectionCard extends Component {
-	handleDeleteProject = () => {
-	}
 	render() {
 		const { d, classes, t, history } = this.props
 		return (

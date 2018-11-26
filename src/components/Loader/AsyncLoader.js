@@ -21,11 +21,9 @@ const styles = (theme) => {
 
 	})}
 const AsyncLoader = (props) => {
-	// Handle the loading state
 	if (props.isLoading) {
 		return <CircularLoader />;
 	}
-	// Handle the error state
 	else if (props.error) {
 		console.log(props.error)
 		return <GridContainer>

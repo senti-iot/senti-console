@@ -28,9 +28,7 @@ class AssignDC extends PureComponent {
 			}
 		}
 	}
-	Transition = (props) => {
-		return <Slide direction='up' {...props} />;
-	}
+	//#region LifeCycle 
 	componentDidMount = async () => {
 		this._isMounted = 1
 		// const { orgId } = this.props
@@ -40,10 +38,10 @@ class AssignDC extends PureComponent {
 		this._isMounted = 0
 	}
 
-	handleClick = (e, pId) => {
-		e.preventDefault()
-		this.setState({ selectedCollections: pId })
-	}
+	//#endregion
+	
+	//#region External 
+
 	assignCollection = async () => {
 		const { deviceId } = this.props
 
@@ -51,8 +49,15 @@ class AssignDC extends PureComponent {
 			this.props.handleClose(true)
 		})
 	}
-	closeDialog = () => {
-		this.props.handleClose(false)
+	//#endregion
+	
+	//#region Handlers 
+	handleTransition = (props) => {
+		return <Slide direction='up' {...props} />;
+	}
+	handleClick = (e, pId) => {
+		e.preventDefault()
+		this.setState({ selectedCollections: pId })
 	}
 	handleFilterKeyword = value => {
 		this.setState({
@@ -63,6 +68,8 @@ class AssignDC extends PureComponent {
 		})
 	}
 	isSelected = id => this.state.selectedCollections === (id) ? true : false 
+	//#endregion
+	
 	render() {
 		const { collections, filters } = this.state
 		const { classes, open, t } = this.props;
@@ -75,7 +82,7 @@ class AssignDC extends PureComponent {
 				fullScreen
 				open={open}
 				onClose={() => this.props.handleClose(false)}
-				TransitionComponent={this.Transition}
+				TransitionComponent={this.handleTransition}
 			>
 				<AppBar className={classes.appBar + appBarClasses}>
 					<Toolbar>

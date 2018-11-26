@@ -29,19 +29,12 @@ class AssignOrg extends PureComponent {
 			}
 		}
 	}
-	Transition(props) {
-		return <Slide direction='up' {...props} />;
-	}
 	componentDidMount = async () => {
 		this._isMounted = 1
 		await getAllOrgs().then(rs => this._isMounted ? this.setState({ orgs: rs }) : null)
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
-	}
-	selectOrg = pId => e => {
-		e.preventDefault()
-		this.setState({ selectedOrg: pId })
 	}
 	assignOrg = async () => {
 		if (this.props.devices)
@@ -58,6 +51,13 @@ class AssignOrg extends PureComponent {
 			}
 			)
 		}
+	}
+	Transition(props) {
+		return <Slide direction='up' {...props} />;
+	}
+	selectOrg = pId => e => {
+		e.preventDefault()
+		this.setState({ selectedOrg: pId })
 	}
 	closeDialog = () => {
 		this.props.handleClose(false)

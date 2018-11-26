@@ -83,7 +83,6 @@ class EnhancedTableHead extends Component {
 												[classes.hideIcon]: !(orderBy === c.id) ? true : false
 											})
 										}}>
-										{/* <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}> */}{c.label}{/* </Typography> */}
 									</TableSortLabel>
 								</TableCell>
 							}) : null

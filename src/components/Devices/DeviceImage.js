@@ -43,7 +43,6 @@ class DeviceImage extends React.Component {
 		const { activeStep } = this.state;
 		
 		const maxSteps = images ? images.length ? images.length : 0 : 0;
-		// let blob = URL.createObjectURL(images[activeStep])
 		return (
 			<div className={classes.root}>
 				{images ? <Grid container justify={'center'} >

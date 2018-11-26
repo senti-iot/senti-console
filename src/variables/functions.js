@@ -1,8 +1,8 @@
 import { parsePhoneNumber } from 'libphonenumber-js'
 var moment = require('moment');
-// const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
-// var PNF = require('google-libphonenumber').PhoneNumberFormat
 var _ = require('lodash')
+
+
 export const dateDiff = (from, to) => {
 	let diff = moment.duration(from.diff(to)).asMinutes()
 	if (diff > 60 * 24 * 30)
@@ -33,6 +33,7 @@ export const minutesToArray = (from, to) => {
 	}
 	return arr
 }
+
 export const hoursToArr = (from, to) => {
 	let startDate = moment(from)
 	let endDate = moment(to)
@@ -48,10 +49,10 @@ export const hoursToArr = (from, to) => {
 	}
 	return arr
 }
+
 export const datesToArr = (from, to) => {
 	let startDate = moment(from)
 	let endDate = moment(to)
-	// , endDate.format('lll'))
 	let diff = moment.duration(endDate.diff(startDate)).asDays()
 	let amount = diff > 10 ? diff > 20 ? diff > 35 ? 15 : 5 : 3 : 1
 	if (window.innerWidth < 426)
@@ -65,6 +66,7 @@ export const datesToArr = (from, to) => {
 	// 
 	return arr
 }
+
 export const dateFormat = (date) => {
 	let newDate = moment(date)
 	if (newDate.isBetween(moment().subtract(7, 'day'), moment().add(7, 'day')))
@@ -72,9 +74,11 @@ export const dateFormat = (date) => {
 	else
 		return moment(date).fromNow()
 }
+
 const isObject = (obj) => {
 	return obj === Object(obj);
 }
+
 const filterByDate = (items, filters) => {
 	const { startDate, endDate } = filters
 	var arr = items
@@ -232,7 +236,6 @@ export const ConvertDDToDMS = (D, lng) => {
 
 const suggestionSlicer = (obj) => {
 	var arr = [];
-
 	for (var prop in obj) {
 		if (obj.hasOwnProperty(prop)) {
 			var innerObj = {};
@@ -250,6 +253,7 @@ const suggestionSlicer = (obj) => {
 	}
 	return arr;
 }
+
 export const suggestionGen = (arrayOfObjs) => {
 	let arr = [];
 	arrayOfObjs.map(obj => {

@@ -69,21 +69,17 @@ class IntegrationAutosuggest extends React.PureComponent {
 
 	}
 	componentDidMount() {
-		// document.addEventListener('keydown', this.handleKeyPress, false);
 		if (this.props.focusOnMount && this.inputRef.current)
 			this.focusInput()
 	}
-	// componentWillUnmount() {
-	// 	document.removeEventListener('keydown', this.handleKeyPress, false);
-	// }
+
 	handleResetSearch = () => {
 		this.handleChange(null, { newValue: '' })
-
 	}
+
 	renderSuggestion(suggestion, { query, isHighlighted }) {
 		const matches = match(suggestion.label, query);
 		const parts = parse(suggestion.label, matches);
-
 		return (
 			<MenuItem selected={isHighlighted} component='div'>
 				<div>
@@ -102,6 +98,7 @@ class IntegrationAutosuggest extends React.PureComponent {
 			</MenuItem>
 		);
 	}
+
 	handleSuggestionsFetchRequested = ({ value, reason }) => {
 		const { open } = this.state
 		const { searchValue } = this.props
@@ -110,27 +107,29 @@ class IntegrationAutosuggest extends React.PureComponent {
 		}
 		this.setState({
 			suggestions: getSuggestions(value, this.props.suggestions),
-		});
-	};
+		})
+	}
 
 	handleSuggestionsClearRequested = () => {
 		this.setState({
 			suggestions: [],
-		});
-	};
+		})
+	}
 
 	handleChange = (event, { newValue }) => {
-		
 		this.props.handleFilterKeyword(newValue)
-	};
+	}
+
 	focusInput = () => {
 		if (this.state.open || this.props.open)
 			this.inputRef.current.focus()
 	}
+
 	handleOpen = () => {
 		if (this.props.open === undefined)
 			this.setState({ open: !this.state.open }, this.focusInput)
 	}
+
 	handleClose = () => {
 		if (this.props.open === undefined)
 			this.setState({ open: false })
@@ -144,7 +143,7 @@ class IntegrationAutosuggest extends React.PureComponent {
 					<Autosuggest
 						theme={{
 							container: classes.container + ' ' + (right ? classes.right : ''),
-							suggestionsContainerOpen: /* noAbsolute ? classes.suggestionsContainerOpenNoAbsolute : */ classes.suggestionsContainerOpen,
+							suggestionsContainerOpen: classes.suggestionsContainerOpen,
 							suggestionsList: classes.suggestionsList,
 							suggestion: classes.suggestion,
 						}}
@@ -169,7 +168,6 @@ class IntegrationAutosuggest extends React.PureComponent {
 							handleOpen: this.handleOpen,
 							handleClose: this.handleClose,
 							handleResetSearch: this.handleResetSearch,
-							// onKeyPress: this.handleKeyPress,
 							t: this.props.t
 						}}
 					/>

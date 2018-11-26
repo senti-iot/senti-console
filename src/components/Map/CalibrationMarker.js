@@ -59,8 +59,7 @@ class CalibrationMarker extends Component {
 		}
 	}
 	render() {
-		const { m, i, /* t */ } = this.props
-		// const { isOpen } = this.state
+		const { m, i } = this.props
 		return (
 			<Marker icon={{ url: `data:image/svg+xml,${MarkerIcon(teal[500])}` }}
 				key={i}

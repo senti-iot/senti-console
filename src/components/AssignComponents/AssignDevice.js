@@ -31,6 +31,8 @@ class AssignDevice extends React.Component {
 		}
 	}
 
+	//#region Lifecycle
+
 	componentDidMount = async () => {
 		this._isMounted = 1
 		const { orgId } = this.props
@@ -41,7 +43,28 @@ class AssignDevice extends React.Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-	selectDevice = pId => e => {
+	
+	//#endregion
+
+	//#region External
+	
+	assignDevice = async () => {
+		const { collectionId } = this.props
+		const { selectedDevices } = this.state
+		await assignDeviceToCollection({
+			id: collectionId,
+			deviceId: selectedDevices
+		}).then(() => {
+			let device = this.state.devices[this.state.devices.findIndex(d => d.id === selectedDevices)].name
+			this.props.handleClose(true, device)
+		})
+	}
+	
+	//#endregion
+
+	//#region Handlers
+
+	handleSelectDevice = pId => e => {
 		e.preventDefault()
 		if (this.state.selectedDevices === pId)
 			this.setState({ selectedDevices: { id: 0 } })
@@ -70,28 +93,11 @@ class AssignDevice extends React.Component {
 		this.setState({ selectedDevices: newSelected })
 	}
 
-	assignDevice = async () => {
-		// if (this.props.devices)
-		const { collectionId } = this.props
-		const { selectedDevices } = this.state
-		// Promise.all([selectedDevices.forEach(e => {
-		// 	return assignDeviceToCollection({ id: collectionId, deviceId: e })
-		// })]).then(() => {
 
-		// 	this.props.handleClose(true)
-		// })
-		await assignDeviceToCollection({
-			id: collectionId,
-			deviceId: selectedDevices
-		}).then(() => {
-			let device = this.state.devices[this.state.devices.findIndex(d => d.id === selectedDevices)].name
-			this.props.handleClose(true, device)
-		}
-		)
-	}
-	closeDialog = () => {
+	handleCloseDialog = () => {
 		this.props.handleClose(false)
 	}
+
 	handleFilterKeyword = value => {
 		this.setState({
 			filters: {
@@ -100,8 +106,11 @@ class AssignDevice extends React.Component {
 			}
 		})
 	}
-	// isSelected = id => this.state.selectedDevices.indexOf(id) !== -1 ? true : false 
+	
 	isSelected = id => this.state.selectedDevices === id ? true : false
+	
+	//#endregion
+
 	render() {
 		const { devices, filters, noData } = this.state
 		const { classes, open, t } = this.props;
@@ -113,7 +122,7 @@ class AssignDevice extends React.Component {
 				<Dialog
 					fullScreen
 					open={open}
-					onClose={this.handleClose}
+					onClose={this.handleCloseDialog}
 					TransitionComponent={Transition}
 				>
 					<AppBar className={classes.appBar + appBarClasses}>
@@ -177,7 +186,7 @@ class AssignDevice extends React.Component {
 						{devices ? filterItems(devices, filters).map((p, i) => (
 							<Fragment key={i}>
 								<ListItem button
-									onClick={this.selectDevice(p.id)}
+									onClick={this.handleSelectDevice(p.id)}
 									classes={{ root: this.isSelected(p.id) ? classes.selectedItem : null }}>
 									<ListItemText
 										primaryTypographyProps={{ className: this.isSelected(p.id) ? classes.selectedItemText : null }}

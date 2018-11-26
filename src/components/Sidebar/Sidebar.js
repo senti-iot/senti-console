@@ -88,7 +88,7 @@ const Sidebar = ({ ...props }) => {
 					}}
 					onClose={props.handleDrawerToggle}
 					ModalProps={{
-						keepMounted: true // Better open performance on mobile.
+						keepMounted: true 
 					}}
 				>
 					{smallBrand}

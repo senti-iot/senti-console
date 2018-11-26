@@ -87,7 +87,6 @@ class CollectionTable extends React.Component {
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 		return (
 			<Fragment>
-				
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby='tableTitle'>
 						<EnhancedTableHead // ./ProjectTableHeader
@@ -100,7 +99,6 @@ class CollectionTable extends React.Component {
 							columnData={this.props.tableHead}
 							t={t}
 							classes={classes}
-							// mdDown={[0]} //Which Columns to display on small Screens
 							customColumn={
 								[{ id: 'activeDeviceStats.state',
 									label: <ItemG container title={t('collections.fields.status')} justify={'center'}>
@@ -113,7 +111,6 @@ class CollectionTable extends React.Component {
 								}]
 							}
 						/>
-
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
@@ -152,7 +149,6 @@ class CollectionTable extends React.Component {
 											<TC FirstC label={n.id} />
 											<TC FirstC label={n.name} />
 											<TC content={this.renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : 0)} />
-											{/* <TC className={classes.tablecellcheckbox} FirstC content= /> */}
 											<TC label={dateFormatter(n.created)} />
 											<TC label={n.devices ? n.devices[0] ? dateFormatter(n.devices[0].start) : '' : ''} />
 											<TC label={n.org ? n.org.name : ''} />
@@ -161,7 +157,7 @@ class CollectionTable extends React.Component {
 								)
 							}) : null}
 							{emptyRows > 0 && (
-								<TableRow style={{ height: 49 /* * emptyRows */ }}>
+								<TableRow style={{ height: 49 }}>
 									<TableCell colSpan={8} />
 								</TableRow>
 							)}

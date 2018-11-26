@@ -53,13 +53,6 @@ class HeaderLinks extends React.Component {
 		const openProfile = Boolean(anchorProfile)
 		return (
 			<Grid container classes={{ container: classes.headerMargin }}>
-				{/* <IconButton
-					color='inherit'
-					aria-label='Dashboard'
-					className={classes.buttonLink}
-				>
-					<Dashboard className={classes.links} />
-				</IconButton> */}
 				<IconButton
 					aria-owns={openProfile ? 'menu-appbar' : null}
 					aria-haspopup='true'

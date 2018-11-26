@@ -257,52 +257,6 @@ class EditProject extends Component {
 										error={error}
 									/>
 								</ItemGrid>
-								{/* <ItemGrid xs={12}>
-									<FormControl className={classes.formControl}>
-										<Fragment>
-											<InputLabel FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
-												{t('projects.fields.assignDevices')}
-											</InputLabel>
-											<Select
-												color={'primary'}
-												multiple
-												value={selectedDevices.map(d => d.id)}
-												onChange={this.handleDeviceChange}
-												input={<Input id='select-multiple-chip' classes={{ underline: classes.underline }} />}
-												renderValue={selected => (
-													<div className={classes.chips}>
-														{selected.map(value => {
-															if (availableDevices.findIndex(d => d.id === value) > -1)
-																return <Chip key={value}
-																	label={availableDevices[availableDevices.findIndex(d => d.id === value)].id}
-																	className={classes.chip} />
-															else
-															if (project.devices.findIndex(d => d.id === value) > -1)
-																return <Chip key={value}
-																	label={project.devices[project.devices.findIndex(d => d.id === value)].id}
-																	className={classes.chip} />
-															else return null
-														})}
-
-													</div>)}
-											>
-												{allDevices.map(device => (
-													<MenuItem
-														key={device.id}
-														value={device.id}
-														style={{
-															fontWeight:
-																this.state.project.devices.indexOf(device.id) === -1
-																	? theme.typography.fontWeightRegular
-																	: theme.typography.fontWeightMedium,
-														}}>
-														{device.id + ' - ' + (device.name ? device.name : t('devices.noName'))}
-													</MenuItem>
-												))}
-											</Select>
-										</Fragment>
-									</FormControl>
-								</ItemGrid> */}
 							</form>
 							<ItemGrid xs={12} container justify={'center'}>
 								<Collapse in={this.state.creating} timeout='auto' unmountOnExit>

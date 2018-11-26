@@ -9,18 +9,8 @@ import createprojectStyles from 'assets/jss/components/projects/createprojectSty
 import EditOrgAutoSuggest from './EditOrgAutoSuggest'
 import { updateFav, isFav } from 'redux/favorites';
 
-// var moment = require('moment')
 var countries = require('i18n-iso-countries');
 
-// // const ITEM_PADDING_TOP = 8;
-// const MenuProps = {
-// 	PaperProps: {
-// 		style: {
-// 			maxHeight: 300,
-// 			width: 250,
-// 		},
-// 	},
-// };
 
 class EditOrg extends Component {
 	constructor(props) {
@@ -35,7 +25,6 @@ class EditOrg extends Component {
 		}
 	}
 	handleValidation = () => {
-		/* Address, City, Postcode, Country, Region, Website. */
 		let errorCode = [];
 		const { name, address, city, zip, country } = this.state.org
 		if (name === '') {

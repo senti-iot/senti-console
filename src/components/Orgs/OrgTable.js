@@ -167,7 +167,6 @@ class OrgTable extends React.Component {
 
 	renderTableToolBarContent = () => {
 		const { accessLevel } = this.props
-		// const { anchorFilterMenu } = this.state
 		let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
 		return <Fragment>
 			{access ? <IconButton aria-label='Add new organisation' onClick={this.addNewOrg}>
@@ -247,7 +246,6 @@ render() {
 								<TableRow
 									hover
 									onClick={e => { e.stopPropagation(); this.props.history.push('/management/org/' + n.id) }}
-									// onContextMenu={this.handleToolbarMenuOpen}
 									role='checkbox'
 									aria-checked={isSelected}
 									tabIndex={-1}

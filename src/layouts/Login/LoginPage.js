@@ -4,7 +4,6 @@ import { InputAdornment, withStyles, CardContent, Collapse, Button, Grid, withWi
 import { LockOutlined, Person } from '@material-ui/icons';
 // core components
 import { GridContainer, ItemGrid, ItemG, TextF } from 'components';
-// import Button from 'components/CustomButtons/Button.js';
 import Card from 'components/Card/Card.js';
 import CardBody from 'components/Card/CardBody.js';
 import CardHeader from 'components/Card/CardHeader.js';
