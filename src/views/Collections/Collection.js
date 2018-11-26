@@ -83,7 +83,7 @@ class Collection extends Component {
 				this.setState({ collection: rs })
 		
 				if (rs.project.id) {
-					this.getCollectionProject(rs.project.id)
+					await this.getCollectionProject(rs.project.id)
 				}
 				if (rs.activeDeviceStats) { 
 					await this.getActiveDevice(rs.activeDeviceStats.id)
@@ -297,7 +297,6 @@ class Collection extends Component {
 		let newState = setMinutelyData(dataArr, from, to, hoverID)
 		this.setState({
 			...this.state,
-			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 0,
 			...newState
