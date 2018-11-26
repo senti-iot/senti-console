@@ -51,12 +51,12 @@ class CollectionActiveDevice extends Component {
 		const {/*  classes, */ device, t, /* accessLevel, */ history, collection } = this.props
 		return (
 			<InfoCard
-				title={t('collections.fields.activeDevice')}
+				title={device ? t('collections.fields.activeDevice') : t('no.activeDevice')}
 				avatar={<DeviceHub />}
 				// subheader={device ? device.id : ''}
-				subheader={<ItemG container alignItems={'center'}>
+				subheader={device ? <ItemG container alignItems={'center'}>
 					<Caption>{t('devices.fields.id')}:</Caption>&nbsp;{device ? device.id : ''}
-				</ItemG>}
+				</ItemG> : null}
 				noRightExpand
 				leftActions={
 					device ? <ItemG xs={12} container justify={'flex-end'}>
@@ -95,9 +95,10 @@ class CollectionActiveDevice extends Component {
 								</Info>
 							</ItemGrid>
 						</ItemG>
-						: <ItemG container justify={'center'}>
-							<Caption>{t('no.activeDevice')}</Caption>
-						</ItemG>
+						: null
+						// : <ItemG container justify={'center'}>
+						// 	<Caption>{t('no.activeDevice')}</Caption>
+						// </ItemG>
 				} />)
 	}
 }
