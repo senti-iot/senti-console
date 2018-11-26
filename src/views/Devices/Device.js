@@ -398,12 +398,11 @@ class Device extends Component {
 
 	handleCloseAssignOrg = async (reload) => {
 		if (reload) {
-			this.setState({ loading: true })
+			this.setState({ loading: true, openAssignOrg: false })
 			await this.getDevice(this.state.device.id).then(
 				() => this.snackBarMessages(4)
 			)
 		}
-		this.setState({ openAssignOrg: false })
 	}
 	handleOpenAssign = () => {
 		this.setState({ openAssignCollection: true, anchorEl: null })

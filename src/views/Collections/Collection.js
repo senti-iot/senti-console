@@ -441,7 +441,6 @@ class Collection extends Component {
 				this.snackBarMessages(2)
 			})
 		}
-		this.setState({ openAssignOrg: false })
 	}
 	handleOpenAssignProject = () => {
 		this.setState({ openAssign: true, anchorEl: null })
