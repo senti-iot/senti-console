@@ -17,15 +17,12 @@ class ProjectCards extends Component {
 	
 
 	render() {
-		// const { actionAnchor } = this.state
  		const { projects, t } = this.props
 		return (
-			<GridContainer spacing={8} justify={'center'}>
-			
+			<GridContainer spacing={8} justify={'center'}>			
 				{projects.map((p, i) =>
-					<ItemG container key={i} justify={'center'} xs={12} sm={6} md={4}><ProjectCard t={t} key={p.id} p={p} />	</ItemG>
+					<ItemG container key={i} justify={'center'} xs={12} sm={6} md={4}><ProjectCard t={t} key={p.id} p={p} /></ItemG>
 				)}
-			
 			</GridContainer>
 
 		)

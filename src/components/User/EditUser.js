@@ -7,6 +7,7 @@ import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel,
 import { Save } from 'variables/icons'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
+import { isFav, updateFav } from 'redux/favorites';
 
 class EditUser extends Component {
 	constructor(props) {
@@ -111,6 +112,17 @@ class EditUser extends Component {
 		)
 	}
 	close = rs => {
+		const { isFav, updateFav } = this.props
+		const { user } = this.state
+		let favObj = {
+			id: user.id,
+			name: `${rs.firstName} ${rs.lastName}`,
+			type: 'user',
+			path: `/management/user/${user.id}`
+		}
+		if (isFav(favObj)) {
+			updateFav(favObj)
+		}
 		this.setState({ created: true, creating: false, org: rs })
 		const { s, history } = this.props
 		s('snackbars.userUpdated', { user: `${rs.firstName} ${rs.lastName}` })
@@ -213,9 +225,7 @@ class EditUser extends Component {
 				fullWidth={false}
 				color={'primary'}
 				value={org.id}
-				onChange={this.handleOrgChange}
-			// renderValue={value => value.name}
-			>
+				onChange={this.handleOrgChange}>
 				{orgs ? orgs.map(org => (
 					<MenuItem
 						key={org.id}
@@ -243,9 +253,7 @@ class EditUser extends Component {
 				fullWidth={false}
 				color={'primary'}
 				value={user.aux.odeum.language}
-				onChange={this.handleLangChange}
-			// renderValue={value => languages[languages.findIndex(l => l.value === value)].label}
-			>
+				onChange={this.handleLangChange}>
 				{languages.map(l => (
 					<MenuItem
 						key={l.value}
@@ -300,14 +308,11 @@ class EditUser extends Component {
 				fullWidth={false}
 				color={'primary'}
 				value={selectedGroup}
-				onChange={this.handleGroupChange}
-				// renderValue={value => value.name}
-			>
+				onChange={this.handleGroupChange}>
 				{this.groups().map(g => g.show ? (
 					<MenuItem
 						key={g.id}
-						value={g.id}
-					>
+						value={g.id}>
 						{g.name}
 					</MenuItem>
 				) : null)}
@@ -333,19 +338,6 @@ class EditUser extends Component {
 								</Warning>
 							</Collapse>
 						</ItemGrid>
-						{/* <ItemGrid container xs={12} md={6}>
-    						<TextF
-    							autoFocus
-    							id={'userName'}
-    							label={t('users.fields.userName')}
-    							value={user.userName}
-    							className={classes.textField}
-    							handleChange={this.handleChange('userName')}
-    							margin='normal'
-    							
-    							error={error}
-    						/>
-    					</ItemGrid> */}
 						<ItemGrid container xs={12} md={6}>
 							<TextF
 								id={'firstName'}
@@ -354,7 +346,6 @@ class EditUser extends Component {
 								className={classes.textField}
 								handleChange={this.handleChange('firstName')}
 								margin='normal'
-								
 								error={error}
 							/>
 						</ItemGrid>
@@ -366,7 +357,6 @@ class EditUser extends Component {
 								className={classes.textField}
 								handleChange={this.handleChange('lastName')}
 								margin='normal'
-								
 								error={error}
 							/>
 						</ItemGrid>
@@ -378,7 +368,6 @@ class EditUser extends Component {
 								className={classes.textField}
 								handleChange={this.handleChange('email')}
 								margin='normal'
-								
 								error={error}
 							/>
 						</ItemGrid>
@@ -390,7 +379,6 @@ class EditUser extends Component {
 								className={classes.textField}
 								handleChange={this.handleChange('phone')}
 								margin='normal'
-								
 								error={error}
 							/>
 						</ItemGrid>
@@ -432,12 +420,12 @@ class EditUser extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges,
-
+	accessLevel: state.settings.user.privileges
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	updateFav: (favObj) => dispatch(updateFav(favObj))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles)(EditUser))

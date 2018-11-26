@@ -3,47 +3,6 @@ import { teal } from '@material-ui/core/colors'
 import moment from 'moment'
 import { colors } from 'variables/colors';
 
-// export const setPieData = (dataArr, from, to, timeType) => {
-	
-// 	let labels = []
-// 	switch (timeType) {
-// 		case 0:
-// 			labels = minutesToArray(from, to)
-// 			break;
-// 		case 1:
-// 			labels = hoursToArr(from, to)
-// 			break;
-// 		case 2:
-// 			labels = datesToArr(from, to)
-// 			break;
-// 		case 3:
-// 			labels = datesToArr(from, to)
-// 			break;
-// 		default:
-			
-// 			break;
-// 	}
-// 	let newLabels = labels.map(l => moment(l).format('ll'))
-// 	let displayTo = dateTimeFormatter(to)
-// 	let displayFrom = dateTimeFormatter(from)
-// 	let state = {
-// 		title: `${displayFrom} - ${displayTo}`,
-// 		loading: false,
-// 		roundDataSets: {
-// 			labels: newLabels,
-// 			datasets: dataArr.map((d, i) => ({
-// 				id: d.id,
-// 				lat: d.lat,
-// 				long: d.long,
-// 				backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
-// 				fill: false,
-// 				label: [d.name],
-// 				data: Object.entries(d.data).map(d => d[1] )
-// 			}))
-// 		}
-// 	}
-// 	return state
-// }
 export const setSummaryData = (dataArr, from, to) => {
 	let displayTo = dateTimeFormatter(to)
 	let displayFrom = dateTimeFormatter(from)
@@ -88,7 +47,8 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 		 state = {
 			loading: false,
 			timeType: 2,
-			lineDataSets: {
+			 lineDataSets: {
+				
 				labels: labels,
 				datasets: dataArr.map((d) => ({
 					id: d.id,

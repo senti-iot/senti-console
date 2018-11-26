@@ -44,7 +44,7 @@ class CreateProject extends Component {
 			error: false,
 			errorMessage: ''
 		}
-		props.setHeader('projects.new', true, '/projects/list', 'projects')
+		props.setHeader('menus.create.project', true, '/projects/list', 'projects')
 	}
 
 	componentDidMount = () => {
@@ -212,7 +212,7 @@ class CreateProject extends Component {
 									id={'multiline-flexible'}
 									label={t('projects.fields.description')}
 									multiline
-									rows={'4'}
+									rows={4}
 									// rowsMax={'4'}
 									color={'secondary'}
 									className={classes.textField}
@@ -224,7 +224,6 @@ class CreateProject extends Component {
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
-								{/* <div className={classes.datepicker}> */}
 								<DatePicker
 									autoOk
 									label={t('projects.fields.startDate')}
@@ -240,12 +239,9 @@ class CreateProject extends Component {
 									InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
 									InputProps={{ classes: { underline: classes.underline } }}
 									error={error}
-
 								/>
-								{/* </div> */}
 							</ItemGrid>
 							<ItemGrid xs={12}>
-								{/* <div className={classes.datepicker}> */}
 								<DatePicker
 									color='primary'
 									autoOk
@@ -261,9 +257,7 @@ class CreateProject extends Component {
 									InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
 									InputProps={{ classes: { underline: classes.underline } }}
 									error={error}
-
 								/>
-								{/* </div> */}
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<FormControl className={classes.formControl}>
@@ -299,50 +293,6 @@ class CreateProject extends Component {
 										</Fragment> : <CircularLoader notCentered />}
 								</FormControl>
 							</ItemGrid>
-							{/* <ItemGrid xs={12}>
-								<FormControl className={classes.formControl}>
-									{availableDevices ?
-										<Fragment>
-											<InputLabel FormLabelClasses={{
-												root: classes.label,
-												// focused: classes.focused
-											}} color={'primary'} htmlFor='select-multiple-chip'>{t('projects.fields.assignDevices')}</InputLabel>
-											<Select
-												color={'primary'}
-												multiple
-												value={this.state.devices}
-												// autoWidth
-												onChange={this.handleDeviceChange}
-												input={<Input id='select-multiple-chip' classes={{
-													underline: classes.underline
-												}} />}
-												renderValue={selected => (
-													<div className={classes.chips}>
-														{selected.map(value => { return <Chip key={value} label={availableDevices[availableDevices.findIndex(d => d.id === value)].name} className={classes.chip} /> })}
-													</div>
-												)}
-												MenuProps={MenuProps}
-											>
-												{availableDevices.map(name => (
-													<MenuItem
-														key={name.id}
-														value={name.id}
-														style={{
-															fontWeight:
-																this.state.devices.indexOf(name.id) === -1
-																	? theme.typography.fontWeightRegular
-																	: theme.typography.fontWeightMedium,
-														}}
-													>
-														{name.id + ' - ' + (name.name ? name.name : t('devices.noName'))}
-													</MenuItem>
-												))}
-											</Select>
-										</Fragment> : selectedOrg ? <Caption>{t('devices.noDevices')}</Caption> : <Caption>{t('projects.noOrganisationSelected')}</Caption>}
-								</FormControl>
-							</ItemGrid> */}
-							{/* </Grid> */}
-
 						</form>
 						<ItemGrid xs={12} container justify={'center'}>
 							<Collapse in={this.state.creating} timeout='auto' unmountOnExit>
@@ -360,14 +310,11 @@ class CreateProject extends Component {
 								>
 									{this.state.created ? t('snackbars.redirect')
 										: <Fragment>
-											<Save className={classes.leftIcon} />{t('projects.new')}
+											<Save className={classes.leftIcon} />{t('menus.create.project')}
 										</Fragment>}
 								</Button>
 							</div>
-
 						</Grid>
-
-
 					</MuiPickersUtilsProvider>
 				</Paper>
 			</GridContainer> 

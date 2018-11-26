@@ -55,7 +55,7 @@ class Org extends Component {
 						history.push('/404')
 					else {
 						let prevURL = location.prevURL ? location.prevURL : '/management/orgs'
-						setHeader(`${rs.name}`, true, prevURL, 'users')
+						setHeader('orgs.organisation', true, prevURL, 'users')
 						this.setState({ org: rs, loading: false })
 					}
 				})
@@ -113,12 +113,11 @@ class Org extends Component {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('orgs.orgDelete')}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.org')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
-					{t('orgs.orgDeleteConfirm', { org: this.state.org.name }) + '?'}
+					{t('dialogs.delete.message.org')}
 				</DialogContentText>
-
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={this.handleCloseDeleteDialog} color='primary'>

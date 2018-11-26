@@ -40,7 +40,7 @@ class Collections extends Component {
 	tabs = [
 		{ id: 0, title: this.props.t('devices.tabs.listView'), label: <ViewList />, url: `${this.props.match.url}/list` },
 		{ id: 1, title: this.props.t('devices.tabs.cardView'), label: <ViewModule />, url: `${this.props.match.url}/grid` },
-		{ id: 2, title: this.props.t('devices.tabs.favorites'), label: <Star />, url: `${this.props.match.url}/favorites` }
+		{ id: 2, title: '', label: <Star />, url: `${this.props.match.url}/favorites` }
 	]
 	collectionsHeader = () => {
 		const { t } = this.props

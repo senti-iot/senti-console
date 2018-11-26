@@ -18,6 +18,7 @@ const TextF = (props) => {
 	return (		
 		<TextField
 			autoFocus={props.autoFocus ? props.autoFocus : undefined}
+			placeholder={props.placeholder ? props.placeholder : undefined}
 			id={props.id}
 			label={props.label}
 			value={props.value}

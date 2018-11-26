@@ -4,7 +4,6 @@ import { InputAdornment, withStyles, CardContent, Collapse, Button, Grid, withWi
 import { LockOutlined, Person } from '@material-ui/icons';
 // core components
 import { GridContainer, ItemGrid, ItemG, TextF } from 'components';
-// import Button from 'components/CustomButtons/Button.js';
 import Card from 'components/Card/Card.js';
 import CardBody from 'components/Card/CardBody.js';
 import CardHeader from 'components/Card/CardHeader.js';
@@ -170,13 +169,13 @@ class LoginPage extends React.Component {
 												<ItemG xs={12} zeroMinWidth container justify={'center'}>
 													{/* <Button variant={'text'} color={'primary'} className={classes.forgotPass}> */}
 													<Link to={`/password/reset/da`} className={classes.forgotPass}>
-														{t('login.forgotPass')}
+														{t('actions.forgotPass')}
 													</Link>
 													{/* </Button> */}
 												</ItemG>
 												<ItemG xs={12} zeroMinWidth container justify={'center'}>
 													<Button variant={'contained'} color={'primary'} /* className={classes.loginButton} */ onClick={this.loginUser}>
-														{t('login.button')}
+														{t('actions.login')}
 													</Button>
 												</ItemG>
 											</Grid>

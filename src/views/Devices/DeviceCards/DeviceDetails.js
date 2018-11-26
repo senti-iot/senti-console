@@ -88,7 +88,7 @@ class DeviceDetails extends Component {
 												color={'default'}
 												onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}
 												variant={'outlined'}>
-												{t('devices.calibrateButton')}
+												{t('actions.manualCalibration')}
 											</Button>
 										</ItemG>
 									</Warning>
@@ -157,12 +157,12 @@ class DeviceDetails extends Component {
 								<Link to={{ pathname: `/management/org/${device.org.id}`, prevURL: `/device/${device.id}` }} >
 									{device.org.name}
 								</Link>
-								: t('devices.noProject')}</Info>
+								: t('no.org')}</Info>
 
 						</ItemG>
 						<ItemG xs={12} md={3} lg={3}>
 							<Caption>{t('collections.fields.id')}:</Caption>
-							<Info>{device.dataCollection.id > 0 ? <Link to={'/collection/' + device.dataCollection.id}>{device.dataCollection.name}</Link> : t('devices.noProject')}</Info>
+							<Info>{device.dataCollection.id > 0 ? <Link to={'/collection/' + device.dataCollection.id}>{device.dataCollection.name}</Link> : t('no.collection')}</Info>
 						</ItemG>
 						<ItemG xs={12} md={3} lg={3}>
 							<Caption>{t('devices.fields.availability')}:</Caption>

@@ -1,15 +1,12 @@
 
-// import localizationJSON from 'variables/localization'
 import loc from 'variables/localization/index'
 import { saveSettingsOnServ } from './settings';
 var forEach = require('for-each');
 
-//Action types
-
 const changeLangAction = 'changeLanguage'
 const GETSETTINGS = 'getSettings'
 const NOSETTINGS = 'noSettings'
-//Actions
+
 export const changeLanguage = (code, noSave) => {
 	return async (dispatch, getState) => {
 		dispatch(
@@ -22,6 +19,7 @@ export const changeLanguage = (code, noSave) => {
 }
 
 //Polyglot Code modified to be tied to Redux - http://airbnb.io/polyglot.js/
+
 let phrases = []
 const extend = (morePhrases, prefix) => {
 	forEach(morePhrases, function (phrase, key) {

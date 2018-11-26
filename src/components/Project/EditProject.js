@@ -3,23 +3,13 @@ import { Paper, withStyles, Grid, Collapse, Button } from '@material-ui/core';
 import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import { KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft, Save, Check } from 'variables/icons';
-// import { getAvailableDevices } from 'variables/dataDevices';
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { updateProject, getProject } from 'variables/dataProjects';
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
-// import { dateFormatter } from 'variables/functions';
+import { isFav, updateFav } from 'redux/favorites';
+import { connect } from 'react-redux'
 var moment = require('moment')
-// const ITEM_HEIGHT = 32;
-// const ITEM_PADDING_TOP = 8;
-// const MenuProps = {
-// 	PaperProps: {
-// 		style: {
-// 			maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-// 			width: 250,
-// 		},
-// 	},
-// };
 
 class EditProject extends Component {
 	constructor(props) {
@@ -160,6 +150,17 @@ class EditProject extends Component {
 	}
 
 	close = () => {
+		const { isFav, updateFav } = this.props
+		const { project } = this.state
+		let favObj = {
+			id: project.id,
+			name: project.title,
+			type: 'project',
+			path: `/project/${project.id}`
+		}
+		if (isFav(favObj)) {
+			updateFav(favObj)
+		}
 		this.setState({ created: true, creating: false })
 		const { s, history } = this.props
 		s('snackbars.projectUpdated', { project: this.state.project.title })
@@ -206,7 +207,7 @@ class EditProject extends Component {
 										id={'multiline-flexible'}
 										label={t('projects.fields.description')}
 										multiline
-										rows={'4'}
+										rows={4}
 										color={'secondary'}
 										className={classes.textField}
 										value={this.state.project.description}
@@ -256,52 +257,6 @@ class EditProject extends Component {
 										error={error}
 									/>
 								</ItemGrid>
-								{/* <ItemGrid xs={12}>
-									<FormControl className={classes.formControl}>
-										<Fragment>
-											<InputLabel FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
-												{t('projects.fields.assignDevices')}
-											</InputLabel>
-											<Select
-												color={'primary'}
-												multiple
-												value={selectedDevices.map(d => d.id)}
-												onChange={this.handleDeviceChange}
-												input={<Input id='select-multiple-chip' classes={{ underline: classes.underline }} />}
-												renderValue={selected => (
-													<div className={classes.chips}>
-														{selected.map(value => {
-															if (availableDevices.findIndex(d => d.id === value) > -1)
-																return <Chip key={value}
-																	label={availableDevices[availableDevices.findIndex(d => d.id === value)].id}
-																	className={classes.chip} />
-															else
-															if (project.devices.findIndex(d => d.id === value) > -1)
-																return <Chip key={value}
-																	label={project.devices[project.devices.findIndex(d => d.id === value)].id}
-																	className={classes.chip} />
-															else return null
-														})}
-
-													</div>)}
-											>
-												{allDevices.map(device => (
-													<MenuItem
-														key={device.id}
-														value={device.id}
-														style={{
-															fontWeight:
-																this.state.project.devices.indexOf(device.id) === -1
-																	? theme.typography.fontWeightRegular
-																	: theme.typography.fontWeightMedium,
-														}}>
-														{device.id + ' - ' + (device.name ? device.name : t('devices.noName'))}
-													</MenuItem>
-												))}
-											</Select>
-										</Fragment>
-									</FormControl>
-								</ItemGrid> */}
 							</form>
 							<ItemGrid xs={12} container justify={'center'}>
 								<Collapse in={this.state.creating} timeout='auto' unmountOnExit>
@@ -330,5 +285,13 @@ class EditProject extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+  
+})
 
-export default withStyles(createprojectStyles/* , { withTheme: true } */)(EditProject)
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	updateFav: (favObj) => dispatch(updateFav(favObj))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles)(EditProject))

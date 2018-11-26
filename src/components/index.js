@@ -11,10 +11,8 @@ import PieChart	 from './Charts/PieChart'
 // // // Cards
 // #############################
 
-import ChartCard from './Cards/ChartCard.js';
 import ProfileCard from './Cards/ProfileCard.js';
 import RegularCard from './Cards/RegularCard.js';
-import StatsCard from './Cards/StatsCard.js';
 import SmallCard from './Cards/SmallCard.js'
 import InfoCard from './Cards/InfoCard'
 
@@ -35,6 +33,8 @@ import Dropdown from './Dropdown/Dropdown'
 import CustomDateTime from './CustomInput/CustomDateTime'
 import CustomInput from './CustomInput/CustomInput.js';
 import DSelect from './CustomInput/DSelect'
+import DateFilterMenu from './CustomInput/DateFilterMenu'
+import ExportModal from './Exports/ExportModal'
 
 // ##############################
 // // // Footer
@@ -49,6 +49,7 @@ import Footer from './Footer/Footer.js';
 import ItemG from './Grid/ItemG'
 import ItemGrid from './Grid/ItemGrid.js';
 import GridContainer from './Grid/GridContainer'
+
 // ##############################
 // // // Header
 // #############################
@@ -89,8 +90,7 @@ import CardHeader from './Card/CardHeader';
 import CardFooter from './Card/CardFooter'
 import CardBody from './Card/CardBody'
 import WeatherIcon from './Typography/WeatherIcon'
-import DateFilterMenu from './CustomInput/DateFilterMenu'
-import ExportModal from './Exports/ExportModal'
+
 export {
 	ExportModal,
 	DateFilterMenu,
@@ -108,35 +108,23 @@ export {
 	CardFooter,
 	CardBody,
 	CustomDateTime,
-	// Cards
 	Dropdown,
 	ItemG,
 	GridContainer,
 	InfoCard,
 	TextF,
 	CircularLoader,
-	ChartCard,
 	SmallCard,
 	ProfileCard,
 	RegularCard,
-	StatsCard,
 	Caption,
-	// CustomButtons
-	// Button,
-	// IconButton,
-	// CustomInput
 	CustomInput,
 	DSelect,
-	// Footer
 	Footer,
-	// Grid
 	ItemGrid,
-	// Header
 	Header,
 	HeaderLinks,
-	// Sidebar
 	Sidebar,
-	//Text
 	P,
 	Quote,
 	Muted,

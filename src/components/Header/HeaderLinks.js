@@ -53,13 +53,6 @@ class HeaderLinks extends React.Component {
 		const openProfile = Boolean(anchorProfile)
 		return (
 			<Grid container classes={{ container: classes.headerMargin }}>
-				{/* <IconButton
-					color='inherit'
-					aria-label='Dashboard'
-					className={classes.buttonLink}
-				>
-					<Dashboard className={classes.links} />
-				</IconButton> */}
 				<IconButton
 					aria-owns={openProfile ? 'menu-appbar' : null}
 					aria-haspopup='true'
@@ -91,16 +84,16 @@ class HeaderLinks extends React.Component {
 					}}
 				>
 					<MenuItem onClick={this.handleRedirectToOwnProfile}>
-						<AccountBox className={classes.leftIcon} />{t('users.menus.profile')}
+						<AccountBox className={classes.leftIcon} />{t('menus.user.profile')}
 					</MenuItem>
 					{user ? user.privileges.apiorg.editusers ? <MenuItem onClick={this.handleRedirectToOwnOrg}>
-						<Business className={classes.leftIcon} />{t('users.menus.account')}
+						<Business className={classes.leftIcon} />{t('menus.user.account')}
 					</MenuItem> : null : null}
 					<MenuItem onClick={this.handleSettingsOpen}>
 						<SettingsRounded className={classes.leftIcon} />{t('sidebar.settings')}
 					</MenuItem>
 					<MenuItem onClick={this.logOut} className={classes.menuItem}>
-						<Lock className={classes.leftIcon} />{t('users.menus.signout')}
+						<Lock className={classes.leftIcon} />{t('menus.user.signout')}
 					</MenuItem>
 				</Menu>
 			</Grid>

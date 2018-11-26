@@ -40,14 +40,6 @@ class AssignProject extends React.Component {
 		this._isMounted = 0
 	}
 
-
-	selectProject = pId => e => {
-		e.preventDefault()
-		if (this.state.selectedProject === pId)
-			this.setState({ selectedProject: { id: 0 } })
-		else { this.setState({ selectedProject: pId }) }
-
-	}
 	assignProject = async () => {
 		const { selectedProject } = this.state
 		let newProject = await getProject(selectedProject.id)
@@ -72,6 +64,14 @@ class AssignProject extends React.Component {
 		 } })
 		})
 	}
+
+	selectProject = pId => e => {
+		e.preventDefault()
+		if (this.state.selectedProject === pId)
+			this.setState({ selectedProject: { id: 0 } })
+		else { this.setState({ selectedProject: pId }) }
+
+	}
 	
 	handleFilterKeyword = value => {
 		this.setState({
@@ -81,9 +81,7 @@ class AssignProject extends React.Component {
 			}
 		})
 	}
-	renderList = (projects) => {
-		
-	}
+
 	render() {
 		const { filters, projects } = this.state
 		const { classes, open, t, handleCancel } = this.props;

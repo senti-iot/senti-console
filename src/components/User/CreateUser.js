@@ -50,7 +50,7 @@ class CreateUser extends Component {
     componentDidMount = async () => {
     	this._isMounted = 1
     	const { setHeader } = this.props
-    	setHeader('users.createUser', true, '/management/users', 'users')
+    	setHeader('menus.create.user', true, '/management/users', 'users')
     	if (this._isMounted)
     		await this.getOrgs()
     }
@@ -106,7 +106,6 @@ class CreateUser extends Component {
 		}
 	}
     handleValidation = () => {
-    	/* Address, City, Postcode, Country, Region, Website. */
     	let errorCode = [];
     	const { email, org } = this.state.user
     	if (email === '') {
@@ -229,7 +228,6 @@ class CreateUser extends Component {
     			color={'primary'}
     			value={user.aux.odeum.language}
     			onChange={this.handleLangChange}
-    			// renderValue={value => languages[languages.findIndex(l => l.value === value)].label}
     		>
     			{languages.map(l => (
     				<MenuItem
@@ -257,7 +255,6 @@ class CreateUser extends Component {
     			id: 136550100000143,
     			appId: 1220,
     			name: t('users.groups.superUser'),
-    			// description: 'Senti Cloud group containing Super Users',
     			show: accessLevel.apisuperuser ? true : false
 
     		},
@@ -266,7 +263,6 @@ class CreateUser extends Component {
     			appId: 1220,
     			name: t('users.groups.user'),
     			show: true
-    			// description: 'Senti Users'
     		}
     	]
     	return <FormControl className={classes.formControl}>
@@ -279,7 +275,6 @@ class CreateUser extends Component {
     			color={'primary'}
     			value={selectedGroup}
     			onChange={this.handleGroupChange}
-    			// renderValue={value => value.name}
     		>
     			{groups.map(g => g.show ? (
     				<MenuItem
@@ -311,19 +306,6 @@ class CreateUser extends Component {
     							</Warning>
     						</Collapse>
     					</ItemGrid>
-    					{/* <ItemGrid container xs={12} md={6}>
-    						<TextF
-    							autoFocus
-    							id={'userName'}
-    							label={t('users.fields.userName')}
-    							value={user.userName}
-    							className={classes.textField}
-    							handleChange={this.handleChange('userName')}
-    							margin='normal'
-    							
-    							error={error}
-    						/>
-    					</ItemGrid> */}
     					<ItemGrid container xs={12} md={6}>
     						<TextF
     							id={'firstName'}
@@ -398,7 +380,7 @@ class CreateUser extends Component {
     							onClick={this.handleCreateUser}>
     							{this.state.created ?
     								<Fragment>{t('snackbars.redirect')}</Fragment>
-    								: <Fragment><Save className={classes.leftIcon} />{t('users.createUser')}</Fragment>}
+    								: <Fragment><Save className={classes.leftIcon} />{t('menus.create.user')}</Fragment>}
     						</Button>
     					</div>
     				</Grid>

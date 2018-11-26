@@ -4,6 +4,7 @@ import { Typography, withStyles, Paper, Grow } from '@material-ui/core';
 import { ItemG, Caption } from 'components';
 import { graphStyles } from './graphStyles';
 import { getWeather } from 'variables/dataDevices';
+
 class PieChart extends PureComponent {
 	constructor(props) {
 		super(props)

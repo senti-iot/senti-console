@@ -84,7 +84,7 @@ class User extends Component {
 						history.push('/404')
 					else {
 						let prevURL = location.prevURL ? location.prevURL : '/management/users'
-						setHeader(`${rs.firstName} ${rs.lastName}`, true, prevURL, '/management/users')
+						setHeader("users.user", true, prevURL, 'users')
 						this.setState({ user: rs, loading: false })
 					}
 				})
@@ -272,10 +272,10 @@ class User extends Component {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('users.userDelete')}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.users')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
-					{t('users.userDeleteConfirm', { user: (this.state.user.firstName + ' ' + this.state.user.lastName) }) + '?'}
+					{t('dialogs.delete.message.users', { user: (this.state.user.firstName + ' ' + this.state.user.lastName) }) + '?'}
 				</DialogContentText>
 
 			</DialogContent>

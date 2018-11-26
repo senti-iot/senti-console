@@ -20,6 +20,9 @@ const headerStyle = theme => ({
 		boxShadow: "none",
 		borderBottom: "0",
 		marginBottom: "0",
+		[theme.breakpoints.down('xs')]: {
+			height: 48
+		},
 		height: "70px",
 		// padding: "5px",
 		// paddingTop: "10px",
@@ -60,6 +63,9 @@ const headerStyle = theme => ({
 		maxWidth: "calc(100vw - 130px)",
 		// ...defaultFont,
 		fontWeight: 500,
+		[theme.breakpoints.down('sm')]: {
+			fontSize: "1rem",
+		},
 		lineHeight: "1.16667em",
 		fontSize: "1.3125rem",
 		borderRadius: "3px",

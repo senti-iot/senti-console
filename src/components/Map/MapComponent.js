@@ -51,7 +51,6 @@ class MapComponent extends Component {
 		let defaultLat = parseFloat(56.2639) //Denmark,
 		let defaultLng = parseFloat(9.5018) //Denmark
 		let darkModeMap = new window.google.maps.StyledMapType(...darkMode)
-		console.log(props.theme)
 		return <GoogleMap
 			defaultZoom={props.zoom ? props.zoom : 7}
 			defaultCenter={{ lat: defaultLat, lng: defaultLng }}

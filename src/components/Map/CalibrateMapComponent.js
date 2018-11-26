@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import CalibrationMarker from './CalibrationMarker';
 import { GoogleMap } from 'react-google-maps';
 import MarkerClusterer from 'react-google-maps/lib/components/addons/MarkerClusterer';
-// import { colors } from 'variables/colors';
 import { connect } from 'react-redux'
 
 class CalibrateMapComponent extends Component {
@@ -59,7 +58,6 @@ class CalibrateMapComponent extends Component {
 			defaultZoom={props.zoom ? props.zoom : 7}
 			defaultCenter={{ lat: defaultLat, lng: defaultLng }}
 			ref={this.map}
-			// onTilesLoaded={() => this.setCenterAndZoom()}
 		>
 			<MarkerClusterer
 				onClick={this.onMarkerClustererClick}

@@ -7,19 +7,10 @@ import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 
 import { connect } from 'react-redux'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
 import EditOrgAutoSuggest from './EditOrgAutoSuggest'
+import { updateFav, isFav } from 'redux/favorites';
 
-// var moment = require('moment')
 var countries = require('i18n-iso-countries');
 
-// // const ITEM_PADDING_TOP = 8;
-// const MenuProps = {
-// 	PaperProps: {
-// 		style: {
-// 			maxHeight: 300,
-// 			width: 250,
-// 		},
-// 	},
-// };
 
 class EditOrg extends Component {
 	constructor(props) {
@@ -34,7 +25,6 @@ class EditOrg extends Component {
 		}
 	}
 	handleValidation = () => {
-		/* Address, City, Postcode, Country, Region, Website. */
 		let errorCode = [];
 		const { name, address, city, zip, country } = this.state.org
 		if (name === '') {
@@ -161,6 +151,17 @@ class EditOrg extends Component {
 		}
 	}
 	close = () => {
+		const { isFav, updateFav } = this.props
+		const { org } = this.state
+		let favObj = {
+			id: org.id,
+			name: org.name,
+			type: 'org',
+			path: `/management/org/${org.id}`
+		}
+		if (isFav(favObj)) { 
+			updateFav(favObj)
+		}
 		this.setState({ created: true, creating: false })
 		this.props.s('snackbars.orgUpdated', ({ org: this.state.org.name }))
 		this.props.history.push(`/management/org/${this.state.org.id}`)
@@ -377,7 +378,7 @@ class EditOrg extends Component {
 									onClick={ this.state.created ? this.goToOrg : this.handleUpdateOrg }>
 									{ this.state.created ?
 										<Fragment><Check className={ classes.leftIcon } />{ t('snackbars.redirect') }</Fragment>
-										: <Fragment><Save className={ classes.leftIcon } />{ t('orgs.updateOrg') }</Fragment> }
+										: <Fragment><Save className={ classes.leftIcon } />{ t('actions.update') }</Fragment> }
 								</Button>
 							</div>
 						</Grid>
@@ -393,8 +394,9 @@ const mapStateToProps = (state) => ({
 	userOrg: state.settings.user.org
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	updateFav: (favObj) => dispatch(updateFav(favObj))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles, { withTheme: true })(EditOrg))

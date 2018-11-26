@@ -1,8 +1,6 @@
 import React from 'react'
 import { TableCell, Typography, withStyles } from '@material-ui/core'
 
-// import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
-
 const styles = theme => ({
 	tableCell: {
 		padding: 0,
