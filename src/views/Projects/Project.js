@@ -240,7 +240,7 @@ class Project extends Component {
 			let data = await getDataSummary(d.id, startDate, endDate, raw)
 			dataSet = {
 				name: d.name,
-				id: d.id,
+				id: d.activeDevice ? d.activeDevice.id : 0, 
 				data: data,
 				color: d.color,
 				lat: d.activeDevice ? d.activeDevice.lat : 0,
