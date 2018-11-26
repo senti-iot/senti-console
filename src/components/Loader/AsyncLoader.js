@@ -29,9 +29,9 @@ const AsyncLoader = (props) => {
 		return <GridContainer>
 			<Paper className={props.classes.paper}>
 				<ItemG container alignItems={'center'} direction={'column'}>
-					<Typography variant={'title'}>Uh..Oh.. We've lost a piece of the puzzle along the way...</Typography>
+					<Typography variant={'title'}>Uh..Oh.. We've lost a piece of the puzzle along the way ...</Typography>
 					<div className={props.classes.img}/>
-					<Typography variant={'body1'}>Try refreshing...If the issue persists,in the browser console there should be an error, copy it and send it to info@senti.cloud</Typography>
+					<Typography variant={'body1'}>Try refreshing ... If the issue persists, in the browser console there should be an error, copy it and send it to info@senti.cloud. Thanks for your support.</Typography>
 				</ItemG>
 			</Paper>
 		</GridContainer>
