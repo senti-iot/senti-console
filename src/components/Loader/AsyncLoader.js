@@ -1,6 +1,6 @@
 import React from 'react'
-import { CircularLoader, GridContainer, ItemG } from 'components';
-import { Paper, Typography, withStyles } from '@material-ui/core';
+import { CircularLoader, GridContainer, ItemG } from 'components'
+import { Paper, Typography, withStyles } from '@material-ui/core'
 import CodeSplit from 'assets/img/404/CodeSplit.svg'
 const styles = (theme) => {
 	return ({
@@ -22,23 +22,23 @@ const styles = (theme) => {
 	})}
 const AsyncLoader = (props) => {
 	if (props.isLoading) {
-		return <CircularLoader />;
+		return <CircularLoader />
 	}
 	else if (props.error) {
 		console.log(props.error)
 		return <GridContainer>
 			<Paper className={props.classes.paper}>
 				<ItemG container alignItems={'center'} direction={'column'}>
-					<Typography variant={'title'}>Uh..Oh.. We've lost a piece of the puzzle along the way...</Typography>
+					<Typography variant={'title'}>Uh..Oh.. We've lost a piece of the puzzle along the way ...</Typography>
 					<div className={props.classes.img}/>
-					<Typography variant={'body1'}>Try refreshing...If the issue persists,in the browser console there should be an error, copy it and send it to info@senti.cloud</Typography>
+					<Typography variant={'body1'}>Try refreshing ... If the issue persists, in the browser console there should be an error, copy it and send it to info@senti.cloud. Thanks for your support.</Typography>
 				</ItemG>
 			</Paper>
 		</GridContainer>
 	}
 	else {
-		return null;
+		return null
 	}
-};
+}
 
 export default withStyles(styles)(AsyncLoader)
