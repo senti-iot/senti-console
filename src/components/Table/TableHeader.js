@@ -83,6 +83,7 @@ class EnhancedTableHead extends Component {
 												[classes.hideIcon]: !(orderBy === c.id) ? true : false
 											})
 										}}>
+										{c.label}
 									</TableSortLabel>
 								</TableCell>
 							}) : null
