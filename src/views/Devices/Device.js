@@ -152,10 +152,7 @@ class Device extends Component {
 		let dataSet = null
 		let data = await getDataSummary(device.id, startDate, endDate, raw)
 		dataSet = {
-			name: device.name,
-			id: device.id,
-			lat: device.lat,
-			long: device.long,
+			...device,
 			data: data,
 			color: teal[500]
 		}
