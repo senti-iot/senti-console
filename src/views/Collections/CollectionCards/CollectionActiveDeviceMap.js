@@ -24,7 +24,7 @@ export default class ActiveDeviceMap extends PureComponent {
 		return (
 			<InfoCard
 				title={t('devices.cards.map')}
-				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat, long: device.long })}, Heatmap ${this.state.heatMap ? 'ON' : 'OFF'}` : null}
+				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat, long: device.long })}, Heatmap ${this.state.heatMap ? t('actions.on') : t('actions.off')}` : null}
 				avatar={<Map />}
 				topAction={device ? (device.lat && device.long ? this.renderMenu() : null) : null}
 				hiddenContent={
