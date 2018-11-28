@@ -1,34 +1,50 @@
 import { Avatar, Button, Card, CardActions, CardContent, CardHeader, Collapse, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { ExpandMore } from '@material-ui/icons';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
-import { Caption } from '..';
-import withLocalization from '../Localization/T';
+import React, { Fragment, PureComponent } from 'react';
+import withLocalization from 'components/Localization/T';
+import { ItemG } from 'components';
 
-
-class InfoCard extends React.Component {
-	state = { expanded: false, leftActions: false };
+class InfoCard extends PureComponent {
+	constructor(props) {
+	  super(props)
+	
+	  this.state = {
+		  expanded: false,
+		  leftActions: false,
+	  }
+	}
 
 	handleExpandClick = () => {
 		this.setState({ expanded: !this.state.expanded });
 	};
 	hasSubheader = (subheader) => subheader ? subheader.toString().length < 200 ? subheader ? subheader : null : null : null
 	renderSubHeader = () => {
-		const { subheader, t  } = this.props
+		const { subheader, subheaderTitle  } = this.props
 		return subheader ? subheader.toString().length > 200 ?
 			<Fragment>
 				<Typography variant={'caption'}>
-					{t("devices.fields.description")}
+					{subheaderTitle ? subheaderTitle : null}
 				</Typography>
-				<Typography paragraph>
+				<Typography>
 					{subheader ? subheader : null}
 				</Typography>
 			</Fragment>
 			: null : null
 
+	}
+	handleExpandCardClick = () => { 
+		this.setState({ cardExpanded: !this.state.cardExpanded })
+	}
+	renderTopAction = () => {
+		return <ItemG container justify={'flex-end'}>
+			 <ItemG container xs>
+				{this.props.topAction}
+			</ItemG>
+		</ItemG>
 	}
 	render() {
 		const { classes, title, subheader,
@@ -38,33 +54,28 @@ class InfoCard extends React.Component {
 		return (
 			<Card className={classes.card + classes.plainCardClasses}>
 				<CardHeader
-					action={this.props.topAction}
-					avatar={
-						noAvatar ? null : <Avatar aria-label="Avatar" className={classes.avatar}>
-							{avatar}
-						</Avatar>
-					}
+					action={this.renderTopAction()}
+					avatar={noAvatar ? null : <Avatar aria-label='Avatar' className={classes.avatar}>{avatar}</Avatar>}
 					title={title}
 					subheader={this.hasSubheader(subheader)}
+					classes={{
+						title: classes.title
+					}}
 				>
 
 				</CardHeader>
-
-				<Collapse in={this.props.hideFacts ? !this.state.expanded : true} timeout="auto" unmountOnExit>
-					<CardContent>
-						{this.renderSubHeader()}
-						{content ? content : null}
-					</CardContent>
-				</Collapse>
+				<CardContent className={classnames(
+					{ [classes.contentMedia]: this.props.noPadding },
+					{ [classes.noMargin]: this.props.noExpand ? false : this.props.haveMargin ? false : !this.state.expanded  })}>
+					{this.renderSubHeader()}
+					{content ? content : null}
+				</CardContent>
 				{!this.props.noExpand ?
 					<React.Fragment>
-						{/* <Collapse in={this.state.leftActions} timeout={'auto'} unmountOnExit> */}
 						{leftActionContent ? <CardContent classes={{ root: classes.root }}>
 							{leftActionContent}
-						</CardContent>
-							: null}
-						{/* </Collapse> */}
-						<Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+						</CardContent> : null}
+						<Collapse in={this.state.expanded} timeout='auto' unmountOnExit>
 							<CardContent classes={{ root: classes.root }}>
 								{hiddenContent ? hiddenContent : null}
 							</CardContent>
@@ -72,14 +83,15 @@ class InfoCard extends React.Component {
 						<CardActions className={classes.actions} disableActionSpacing>
 							{leftActions ? leftActions : null}
 							{!noRightExpand ? <Button
+								variant={'text'}
+								color={'primary'}
 								onClick={this.handleExpandClick}
 								aria-expanded={this.state.expanded}
-								aria-label="Show more"
+								aria-label='Show more'
 								className={classes.expandPosition}
 							>
-								<Caption>
-									{this.state.expanded ? t("menus.seeLess") : t("menus.seeMore")}
-								</Caption><ExpandMore className={classnames(classes.expand, {
+								{this.state.expanded ? t('menus.seeLess') : t('menus.seeMore')}
+								<ExpandMore className={classnames(classes.expand, {
 									[classes.expandOpen]: this.state.expanded,
 								})} />
 							</Button> : null}

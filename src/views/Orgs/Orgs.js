@@ -1,13 +1,14 @@
 import React, { Component, Fragment } from 'react'
-import { withStyles } from "@material-ui/core";
+import { withStyles } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
-import { getAllOrgs } from 'variables/dataOrgs';
+// import { getAllOrgs } from 'variables/dataOrgs';
 import OrgTable from 'components/Orgs/OrgTable';
-import Toolbar from 'components/Toolbar/Toolbar'
-import { People, Business } from '@material-ui/icons';
+// import Toolbar from 'components/Toolbar/Toolbar'
+import { People, Business } from 'variables/icons';
 import { filterItems, handleRequestSort } from 'variables/functions'
+import { deleteOrg } from 'variables/dataOrgs';
 
 class Orgs extends Component {
 	constructor(props) {
@@ -16,7 +17,7 @@ class Orgs extends Component {
 		this.state = {
 			orgs: [],
 			loading: true,
-			route: 0,
+			route: 1,
 			order: 'desc',
 			orderBy: 'name',
 			filters: {
@@ -26,22 +27,36 @@ class Orgs extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader("orgs.pageTitle", false, '', "users")
+		props.setHeader('orgs.pageTitle', false, '', 'users')
 	}
 	reload = async () => {
 		this.setState({ loading: true })
-		await this.getData()
+		await this.props.reload()
 	}
+	orgsHeader = () => {
+		const { t } = this.props
+		return [
+			{ id: 'name', label: t('orgs.fields.name') },
+			{ id: 'address', label: t('orgs.fields.address') },
+			{ id: 'city', label: t('orgs.fields.city') },
+			{ id: 'url', label: t('orgs.fields.url') },
+		]
+	} 
 	componentDidMount = async () => {
 		this._isMounted = 1
 		await this.getData()
 		if (this._isMounted) {
-			if (this.props.location.pathname.includes('/orgs')) {
+			if (this.props.location.pathname.includes('/management/orgs')) {
 				this.setState({ route: 1 })
 			}
 			else {
 				this.setState({ route: 0 })
 			}
+		}
+	}
+	componentDidUpdate = async (prevState, prevProps) => {
+		if (prevProps.orgs !== this.props.orgs) {
+			this.setState({ orgs: this.props.orgs })
 		}
 	}
 	componentWillUnmount = () => {
@@ -84,65 +99,86 @@ class Orgs extends Component {
 		})
 	}
 	getData = async () => {
-		const { t } = this.props
-		let orgs = await getAllOrgs().then(rs => rs)
-		if (this._isMounted) {
+		// const { t } = this.props
+		if (this.props.orgs) { 
 			this.setState({
-				orgs: orgs ? orgs : [],
-				orgsHeader: [
-					{ id: "name", label: t("orgs.fields.name") },
-					{ id: "address", label: t("orgs.fields.address") },
-					{ id: "city", label: t("orgs.fields.city") },
-					{ id: "url", label: t("orgs.fields.url") },
-				],
+				orgs: this.props.orgs,
 				loading: false
 			}, () => this.handleRequestSort(null, 'name', 'asc'))
-
+			return
 		}
+		// let orgs = await getAllOrgs().then(rs => rs)
+		// if (this._isMounted) {
+		// 	this.setState({
+		// 		orgs: orgs ? orgs : [],
+			
+		// 		loading: false
+		// 	}, () => this.handleRequestSort(null, 'name', 'asc'))
+
+		// }
 	}
 
 	tabs = [
-		{ id: 0, title: this.props.t("users.tabs.users"), label: <People />, url: `/users` },
-		{ id: 1, title: this.props.t("users.tabs.orgs"), label: <Business />, url: `/orgs` },
+		{ id: 0, title: this.props.t('users.tabs.users'), label: <People />, url: `/management/users` },
+		{ id: 1, title: this.props.t('users.tabs.orgs'), label: <Business />, url: `/management/orgs` },
 	]
+	snackBarMessages = (msg) => {
+		const { s } = this.props
+		switch (msg) {
+			case 1:
+				s('snackbars.deletedSuccess')
+				break;
+			case 2:
+				s('snackbars.exported')
+				break;
+			default:
+				break;
+		}
+	}
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
 	}
-
+	handleDeleteOrgs = async (selected) => {
+		await selected.forEach(async u => {
+			await deleteOrg(u)
+		})
+		await this.props.reload()
+		this.snackBarMessages(1)
+	}
 	renderOrgs = () => {
 		const { t } = this.props
 		const { loading, order, orderBy } = this.state
-		return <GridContainer justify={ 'center' }>
-			{ loading ? <CircularLoader /> : <OrgTable
-				data={ this.filterItems(this.state.orgs) }
-				tableHead={ this.state.orgsHeader }
-				handleFilterEndDate={ this.handleFilterEndDate }
-				handleFilterKeyword={ this.handleFilterKeyword }
-				handleFilterStartDate={ this.handleFilterStartDate }
-				handleRequestSort={ this.handleRequestSort }
-				orderBy={ orderBy }
-				order={ order }
-				filters={ this.state.filters }
-				reload={ this.reload }
-				t={ t }
-			/> }
+		return <GridContainer justify={'center'}>
+			{loading ? <CircularLoader /> : <OrgTable
+				data={this.state.orgs}
+				tableHead={this.orgsHeader()}
+				handleFilterEndDate={this.handleFilterEndDate}
+				handleFilterKeyword={this.handleFilterKeyword}
+				handleFilterStartDate={this.handleFilterStartDate}
+				handleRequestSort={this.handleRequestSort}
+				handleDeleteOrgs={this.handleDeleteOrgs}
+				orderBy={orderBy}
+				order={order}
+				filters={this.state.filters}
+				t={t}
+			/>}
 		</GridContainer>
 	}
-	render () {
-		const { orgs, route, filters } = this.state
+	render() {
+		// const { orgs, route, filters } = this.state
 		return (
 			<Fragment>
-				<Toolbar
-					data={ orgs }
-					route={ route }
-					filters={ filters }
-					history={ this.props.history }
-					match={ this.props.match }
-					handleFilterKeyword={ this.handleFilterKeyword }
-					tabs={ this.tabs }
-					defaultRoute={ 1 }
-				/>
-				{ this.renderOrgs() }
+				{/* <Toolbar
+					data={orgs}
+					route={route}
+					filters={filters}
+					history={this.props.history}
+					match={this.props.match}
+					handleFilterKeyword={this.handleFilterKeyword}
+					tabs={this.tabs}
+					defaultRoute={1}
+				/> */}
+				{this.renderOrgs()}
 			</Fragment>
 		)
 	}

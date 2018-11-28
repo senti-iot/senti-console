@@ -11,13 +11,17 @@ var has = require('has')
 
 class TProvider extends Component {
 	constructor(props) {
-	  super(props)
-	
-	  this.state = {
-		 
-	  }
+		super(props)
+
+		this.state = {
+			sMessage: {
+				sId: '',
+				sOpt: {}
+			},
+			sOpen: false
+		}
 	}
-	//Polyglot Code modified to be tied to Redux - http://airbnb.io/polyglot.js/
+	//#region Polyglot Code modified to be tied to Redux - http://airbnb.io/polyglot.js/
 	transformPhrase = (phrase, substitutions, tokenRegex) => {
 		if (typeof phrase !== 'string') {
 			throw new TypeError('TProvider.transformPhrase expects argument #1 to be string')
@@ -53,21 +57,59 @@ class TProvider extends Component {
 			var onMissingKey = this.onMissingKey
 			result = onMissingKey(key, opts, this.tokenRegex)
 		} else {
-			// console.log('Missing translation for key: "' + key + '"')
-			result = null
+			console.log('Missing translation for key: "' + key + '"')
+			result = key
 		}
 		if (typeof phrase === 'string') {
 			result = this.transformPhrase(phrase, opts, this.tokenRegex)
 		}
 		return result
 	}
-	//end polyglot code
+	//#endregion polyglot code
 
+	//#region Snackbar
+	queue = []
+	s = (sId, sOpt) => {
+		this.queue.push({ sId, sOpt })
+		if (this.state.sOpen) {
+			// immediately begin dismissing current message
+			// to start showing new one
+			this.setState({ sOpen: false });
+		} else {
+			this.processQueue();
+		}
+		// this.setState({ sOpen: true, sId, sOpt: sOpt })
+	}
+	processQueue = () => {
+		if (this.queue.length > 0) {
+			this.setState({
+				sMessage: this.queue.shift(),
+				sOpen: true
+			});
+		}
+	};
+	sClose = () => {
+		this.setState({
+			sOpen: false
+		})
+	}
+	handleNextS = () => {
+		this.processQueue()
+	}
+	//#endregion
 	getChildContext() {
-		return { t: this.t.bind(this) }
+		return {
+			sClose: this.sClose.bind(this),
+			sOpen: this.state.sOpen,
+			sOpt: this.state.sMessage.sOpt,
+			t: this.t.bind(this),
+			s: this.s.bind(this),
+			sId: this.state.sMessage.sId,
+			handleNextS: this.handleNextS.bind(this)
+		}
 	}
 	render() {
-		const children = this.props.children	
+		const children = this.props.children
 		return React.Children.only(children)
 	}
 }
@@ -80,7 +122,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
 	return {
 		changeLanguage: code => dispatch(changeLanguage(code))
-
 	}
 }
 TProvider.propTypes = {
@@ -89,5 +130,11 @@ TProvider.propTypes = {
 
 TProvider.childContextTypes = {
 	t: PropTypes.func.isRequired,
+	s: PropTypes.func.isRequired,
+	sId: PropTypes.string.isRequired,
+	sOpt: PropTypes.object,
+	sOpen: PropTypes.bool.isRequired,
+	sClose: PropTypes.func.isRequired,
+	handleNextS: PropTypes.func.isRequired
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TProvider)

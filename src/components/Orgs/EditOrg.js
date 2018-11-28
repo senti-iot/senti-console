@@ -1,25 +1,16 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, /*  FormControl, InputLabel, Select, Input, Chip,  MenuItem, */ Collapse, Button, Snackbar, MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
-import { Save, Check } from '@material-ui/icons';
+import { Paper, withStyles, Grid, Collapse, Button, MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
+import { Save, Check } from 'variables/icons';
 import classNames from 'classnames';
 import { getOrg, updateOrg, getAllOrgs } from 'variables/dataOrgs'
-import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from '..'
+import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
 import { connect } from 'react-redux'
-import createprojectStyles from '../../assets/jss/components/projects/createprojectStyles'
+import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
 import EditOrgAutoSuggest from './EditOrgAutoSuggest'
+import { updateFav, isFav } from 'redux/favorites';
 
-// var moment = require("moment")
-var countries = require("i18n-iso-countries");
+var countries = require('i18n-iso-countries');
 
-// // const ITEM_PADDING_TOP = 8;
-// const MenuProps = {
-// 	PaperProps: {
-// 		style: {
-// 			maxHeight: 300,
-// 			width: 250,
-// 		},
-// 	},
-// };
 
 class EditOrg extends Component {
 	constructor(props) {
@@ -31,26 +22,24 @@ class EditOrg extends Component {
 			creating: false,
 			created: false,
 			loading: true,
-			openSnackBar: false,
 		}
 	}
 	handleValidation = () => {
-		/* Address, City, Postcode, Country, Region, Website. */
 		let errorCode = [];
 		const { name, address, city, zip, country } = this.state.org
-		if (name === "") {
+		if (name === '') {
 			errorCode.push(0)
 		}
-		if (address === "") {
+		if (address === '') {
 			errorCode.push(1)
 		}
-		if (city === "") {
+		if (city === '') {
 			errorCode.push(2)
 		}
-		if (zip === "") {
+		if (zip === '') {
 			errorCode.push(3)
 		}
-		if (country === "") {
+		if (country === '') {
 			errorCode.push(4)
 		}
 		this.setState({
@@ -65,28 +54,30 @@ class EditOrg extends Component {
 		const { t } = this.props
 		switch (code) {
 			case 0:
-				return t("orgs.validation.noName")
+				return t('orgs.validation.noName')
 			case 1:
-				return t("orgs.validation.noAddress")
+				return t('orgs.validation.noAddress')
 			case 2:
-				return t("orgs.validation.noCity")
+				return t('orgs.validation.noCity')
 			case 3:
-				return t("orgs.validation.noZip")
+				return t('orgs.validation.noZip')
 			case 4:
-				return t("orgs.validation.noCountry")
+				return t('orgs.validation.noCountry')
 			default:
-				return ""
+				return ''
 		}
 	}
+	
+	
 	componentDidMount = async () => {
 		this._isMounted = 1
 		let id = this.props.match.params.id
-		const { accessLevel, t } = this.props
+		const { accessLevel, t, location } = this.props
 		await getOrg(id).then(rs => {
 			if (rs && this._isMounted) {
 				this.setState({
 					country: {
-						id: rs.country.length > 2 ? countries.getAlpha2Code(rs.country, "en") ? countries.getAlpha2Code(rs.country, "en") : countries.getAlpha2Code(rs.country, "da")
+						id: rs.country.length > 2 ? countries.getAlpha2Code(rs.country, 'en') ? countries.getAlpha2Code(rs.country, 'en') : countries.getAlpha2Code(rs.country, 'da')
 							: rs.country, label: countries.getName(rs.country, this.props.language) ? countries.getName(rs.country, this.props.language) : ''
 					},
 					org: {
@@ -94,12 +85,12 @@ class EditOrg extends Component {
 						aux: {
 							...rs.aux
 						},
-						country: rs.country.length > 2 ? countries.getAlpha2Code(rs.country, "en") ? countries.getAlpha2Code(rs.country, "en") : countries.getAlpha2Code(rs.country, "da")
+						country: rs.country.length > 2 ? countries.getAlpha2Code(rs.country, 'en') ? countries.getAlpha2Code(rs.country, 'en') : countries.getAlpha2Code(rs.country, 'da')
 							: rs.country
 					},
 					selectedOrg: {
 						id: rs.org.id > 0 ? rs.org.id : -1,
-						name: rs.org.name !== null ? rs.org.name : t("orgs.fields.topLevelOrg")
+						name: rs.org.name !== null ? rs.org.name : t('orgs.fields.topLevelOrg')
 					}
 				})
 			}
@@ -108,14 +99,15 @@ class EditOrg extends Component {
 		await getAllOrgs().then(rs => {
 			if (this._isMounted) {
 				if (accessLevel.apisuperuser)
-					rs.unshift({ id: -1, name: t("orgs.fields.topLevelOrg") })
+					rs.unshift({ id: -1, name: t('orgs.fields.topLevelOrg') })
 				this.setState({ orgs: rs, loading: false })
 			}
 		})
 		this.setState({
 			loading: false
 		})
-		this.props.setHeader("orgs.updateOrg", true, `/org/${id}`, "users")
+		let prevURL = location.prevURL ? location.prevURL : '/management/orgs'
+		this.props.setHeader('orgs.updateOrg', true, prevURL, '/management/users')
 	}
 
 	componentWillUnmount = () => {
@@ -126,10 +118,10 @@ class EditOrg extends Component {
 	handleCountryChange = value => {
 		this.setState({
 			error: false,
-			country: { id: value, label: countries.getName(value, this.props.language) },
+			country: { id: value, label: value },
 			org: {
 				...this.state.org,
-				country: countries.getName(value, this.props.language) ? value : ''
+				country: countries.getAlpha2Code(value, this.props.language) ? countries.getAlpha2Code(value, this.props.language) : ''
 			}
 		})
 	}
@@ -158,33 +150,41 @@ class EditOrg extends Component {
 			})
 		}
 	}
-	snackBarClose = () => {
-		this.setState({ openSnackBar: false })
-		this.redirect = setTimeout(async => {
-			this.props.history.push(`/org/${this.state.org.id}`)
-		}, 1e3)
+	close = () => {
+		const { isFav, updateFav } = this.props
+		const { org } = this.state
+		let favObj = {
+			id: org.id,
+			name: org.name,
+			type: 'org',
+			path: `/management/org/${org.id}`
+		}
+		if (isFav(favObj)) { 
+			updateFav(favObj)
+		}
+		this.setState({ created: true, creating: false })
+		this.props.s('snackbars.orgUpdated', ({ org: this.state.org.name }))
+		this.props.history.push(`/management/org/${this.state.org.id}`)
 	}
+
 	handleUpdateOrg = () => {
 		clearTimeout(this.timer)
-		this.timer = setTimeout(async () => {
-			if (this.handleValidation()) {
-				return updateOrg(this.state.org).then(rs => rs ?
-					this.setState({ created: true, creating: false, openSnackBar: true }) :
-					this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t("orgs.validation.networkError") })
-					, 2e3)
-			}
-			else {
-				this.setState({
-					creating: false,
-					error: true,
-				})
-			}
-		})
+		if (this.handleValidation()) {
+			return updateOrg(this.state.org).then(rs => rs ?
+				this.close() :
+				this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t('orgs.validation.networkError') })
+			)}
+		else {
+			this.setState({
+				creating: false,
+				error: true,
+			})
+		}
 
 	}
 
 	goToOrg = () => {
-		this.props.history.push('/org/' + this.props.match.params.id)
+		this.props.history.push('/management/org/' + this.props.match.params.id)
 	}
 	handleOrgChange = e => {
 		this.setState({
@@ -200,18 +200,16 @@ class EditOrg extends Component {
 		const { orgs, selectedOrg } = this.state
 
 		return <FormControl className={ classes.formControl }>
-			<InputLabel FormLabelClasses={ { root: classes.label } } color={ "primary" } htmlFor="select-multiple-chip">
-				{ t("orgs.fields.parentOrg") }
+			<InputLabel FormLabelClasses={ { root: classes.label } } color={ 'primary' } htmlFor='select-multiple-chip'>
+				{ t('orgs.fields.parentOrg') }
 			</InputLabel>
 			<Select
 				fullWidth={ false }
-				color={ "primary" }
-				value={ selectedOrg !== null ? selectedOrg : "" }
+				color={ 'primary' }
+				value={ selectedOrg !== null ? selectedOrg : '' }
 				onChange={ this.handleOrgChange }
 				renderValue={ value => value.name }
 			>
-				{/* { accessLevel.apisuperuser ? <MenuItem key={ 99 } value={ noOrg }>{ t("orgs.fields.topLevelOrg") }</MenuItem> : null } */ }
-
 				{ orgs ? orgs.map(org => (
 					<MenuItem
 						key={ org.id }
@@ -248,13 +246,13 @@ class EditOrg extends Component {
 							<ItemGrid container xs={ 12 } md={ 6 }>
 								<TextF
 									autoFocus
-									id={ "title" }
-									label={ t("orgs.fields.name") }
+									id={ 'title' }
+									label={ t('orgs.fields.name') }
 									value={ org.name }
 									className={ classes.textField }
-									handleChange={ this.handleChange("name") }
-									margin="normal"
-									noFullWidth
+									handleChange={ this.handleChange('name') }
+									margin='normal'
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -262,40 +260,40 @@ class EditOrg extends Component {
 							<ItemGrid container xs={ 12 } md={ 6 }>
 								<TextF
 
-									id={ "address" }
-									label={ t("orgs.fields.address") }
+									id={ 'address' }
+									label={ t('orgs.fields.address') }
 									value={ org.address }
 									className={ classes.textField }
-									handleChange={ this.handleChange("address") }
-									margin="normal"
-									noFullWidth
+									handleChange={ this.handleChange('address') }
+									margin='normal'
+									
 									error={ error }
 								/>
 							</ItemGrid>
 							<ItemGrid container xs={ 12 } md={ 6 }>
 								<TextF
-									id={ "postcode" }
-									label={ t("orgs.fields.zip") }
+									id={ 'postcode' }
+									label={ t('orgs.fields.zip') }
 									value={ org.zip }
 									className={ classes.textField }
-									handleChange={ this.handleChange("zip") }
-									margin="normal"
-									noFullWidth
+									handleChange={ this.handleChange('zip') }
+									margin='normal'
+									
 									error={ error }
-									type={ "number" }
-									pattern="[0-9]*"
+									type={ 'number' }
+									pattern='[0-9]*'
 								/>
 							</ItemGrid>
 							<ItemGrid container xs={ 12 } md={ 6 }>
 								<TextF
 
-									id={ "city" }
-									label={ t("orgs.fields.city") }
+									id={ 'city' }
+									label={ t('orgs.fields.city') }
 									value={ org.city }
 									className={ classes.textField }
-									handleChange={ this.handleChange("city") }
-									margin="normal"
-									noFullWidth
+									handleChange={ this.handleChange('city') }
+									margin='normal'
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -303,35 +301,36 @@ class EditOrg extends Component {
 							<ItemGrid container xs={ 12 } md={ 6 }>
 								<TextF
 
-									id={ "region" }
-									label={ t("orgs.fields.region") }
+									id={ 'region' }
+									label={ t('orgs.fields.region') }
 									value={ org.region }
 									className={ classes.textField }
-									handleChange={ this.handleChange("region") }
-									margin="normal"
-									noFullWidth
+									handleChange={ this.handleChange('region') }
+									margin='normal'
+									
 									error={ error }
 								/>
 							</ItemGrid>
 							<ItemGrid container xs={ 12 }>
 								<EditOrgAutoSuggest
 									t={ t }
-									country={ this.state.country.label ? this.state.country.label : this.state.country.id }
+									country={ this.state.country.label}
 									handleChange={ this.handleCountryChange }
 									suggestions={
-										Object.keys(countries.getNames(this.props.language)).map(
-											country => ({ value: country, label: countries.getName(country, this.props.language) })) } />
+										Object.entries(countries.getNames(this.props.language)).map(
+											country => ({ value: country[1], label: country[1] }))
+									} />
 							</ItemGrid>
 							<ItemGrid container xs={ 12 } md={ 6 }>
 								<TextF
 
-									id={ "website" }
-									label={ t("orgs.fields.url") }
+									id={ 'website' }
+									label={ t('orgs.fields.url') }
 									value={ org.url }
 									className={ classes.textField }
-									handleChange={ this.handleChange("url") }
-									margin="normal"
-									noFullWidth
+									handleChange={ this.handleChange('url') }
+									margin='normal'
+									
 									error={ error }
 								/>
 							</ItemGrid>
@@ -340,65 +339,50 @@ class EditOrg extends Component {
 							</ItemGrid>
 							<ItemGrid container xs={ 12 } md={ 6 }>
 								<TextF
-									id={ "cvr" }
-									label={ t("orgs.fields.CVR") }
+									id={ 'cvr' }
+									label={ t('orgs.fields.CVR') }
 									value={ org.aux.cvr }
 									className={ classes.textField }
-									handleChange={ this.handleAuxChange("cvr") }
-									margin="normal"
-									noFullWidth
+									handleChange={ this.handleAuxChange('cvr') }
+									margin='normal'
+									
 									error={ error }
 								/>
 							</ItemGrid>
 							<ItemGrid container xs={ 12 } md={ 6 }>
 								<TextF
 
-									id={ "ean" }
-									label={ t("orgs.fields.EAN") }
+									id={ 'ean' }
+									label={ t('orgs.fields.EAN') }
 									value={ org.aux.ean }
 									className={ classes.textField }
-									handleChange={ this.handleAuxChange("ean") }
-									margin="normal"
-									noFullWidth
+									handleChange={ this.handleAuxChange('ean') }
+									margin='normal'
+									
 									error={ error }
 								/>
 							</ItemGrid>
 						</form>
 						<ItemGrid xs={ 12 } container justify={ 'center' }>
-							<Collapse in={ this.state.creating } timeout="auto" unmountOnExit>
+							<Collapse in={ this.state.creating } timeout='auto' unmountOnExit>
 								<CircularLoader notCentered />
 							</Collapse>
 						</ItemGrid>
-						<Grid container justify={ "center" }>
+						<Grid container justify={ 'center' }>
 							<div className={ classes.wrapper }>
 								<Button
-									variant="contained"
-									color="primary"
+									variant='contained'
+									color='primary'
 									className={ buttonClassname }
 									disabled={ this.state.creating || this.state.created }
 									onClick={ this.state.created ? this.goToOrg : this.handleUpdateOrg }>
 									{ this.state.created ?
-										<Fragment><Check className={ classes.leftIcon } />{ t("snackbars.redirect") }</Fragment>
-										: <Fragment><Save className={ classes.leftIcon } />{ t("orgs.updateOrg") }</Fragment> }
+										<Fragment><Check className={ classes.leftIcon } />{ t('snackbars.redirect') }</Fragment>
+										: <Fragment><Save className={ classes.leftIcon } />{ t('actions.update') }</Fragment> }
 								</Button>
 							</div>
 						</Grid>
 					</Paper>
-					<Snackbar
-						anchorOrigin={ { vertical: "bottom", horizontal: "right" } }
-						open={ this.state.openSnackBar }
-						onClose={ this.snackBarClose }
-						ContentProps={ {
-							'aria-describedby': 'message-id',
-						} }
-						autoHideDuration={ 1500 }
-						message={
-							<ItemGrid zeroMargin noPadding justify={ 'center' } alignItems={ 'center' } container id="message-id">
-								<Check className={ classes.leftIcon } color={ 'primary' } />
-								{ t("snackbars.orgUpdated", { org: org.name }) }
-							</ItemGrid>
-						}
-					/>
 				</GridContainer>
 				: <CircularLoader />
 		)
@@ -410,8 +394,9 @@ const mapStateToProps = (state) => ({
 	userOrg: state.settings.user.org
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	updateFav: (favObj) => dispatch(updateFav(favObj))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles, { withTheme: true })(EditOrg))

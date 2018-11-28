@@ -3,18 +3,27 @@ import cookie from 'react-cookies'
 // https://betabackend.senti.cloud/
 // https://senti.cloud
 let backendHost;
-// const hostname = window && window.location && window.location.hostname;
 
-// if (hostname === 'console.senti.cloud') {
-backendHost = 'https://senti.cloud/rest/';
-// } else if (hostname === 'beta.senti.cloud') {
-// 	backendHost = 'https://betabackend.senti.cloud/rest/';
-// } else {
-// 	backendHost = 'https://betabackend.senti.cloud/rest/';
-// }
+const hostname = window && window.location && window.location.hostname;
+
+if (hostname === 'console.senti.cloud') {
+	backendHost = 'https://senti.cloud/rest/';
+} else if (hostname === 'beta.senti.cloud') {
+	backendHost = 'https://betabackend.senti.cloud/rest/';
+} else {
+	backendHost = 'https://betabackend.senti.cloud/rest/';
+}
 export const loginApi = create({
 	baseURL: backendHost,
 	timout: 30000,
+	headers: {
+		'Accept': 'application/json',
+		'Content-Type': 'application/json'
+	}
+})
+export const weatherApi = create({
+	baseURL: `https://api.senti.cloud/weather/v1/`,
+	timeout: 30000,
 	headers: {
 		'Accept': 'application/json',
 		'Content-Type': 'application/json'
@@ -38,8 +47,6 @@ export const imageApi = create({
 })
 export const api = create({
 	baseURL: backendHost,
-	// baseURL: 'http://api.dashboard.senti.cloud/web/',
-	// baseURL: 'http://localhost:80',
 	timeout: 30000,
 	headers: {
 		'Accept': 'application/json',

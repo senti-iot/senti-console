@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
-import { IconButton, Menu } from '@material-ui/core';
-import { ItemGrid } from '../index';
-import { MoreVert } from '@material-ui/icons';
+import { IconButton, Menu, MenuItem } from '@material-ui/core';
+import { ItemG } from 'components';
+import { MoreVert } from 'variables/icons';
 
 class Dropdown extends Component {
 	constructor(props) {
-	  super(props)
-	
-	  this.state = {
-		  actionAnchor: null
-	  }
+		super(props)
+
+		this.state = {
+			actionAnchor: null
+		}
 	}
-	
+
 	handleOpenActionsDetails = event => {
 		this.setState({ actionAnchor: event.currentTarget });
 	}
@@ -19,21 +19,21 @@ class Dropdown extends Component {
 	handleCloseActionsDetails = () => {
 		this.setState({ actionAnchor: null });
 	}
-	
+
 	render() {
 		const { actionAnchor } = this.state
 		const { menuItems } = this.props
 		return (
-			<ItemGrid noMargin noPadding>
+			<ItemG>
 				<IconButton
-					aria-label="More"
+					aria-label='More'
 					aria-owns={actionAnchor ? 'long-menu' : null}
-					aria-haspopup="true"
+					aria-haspopup='true'
 					onClick={this.handleOpenActionsDetails}>
 					<MoreVert />
 				</IconButton>
 				<Menu
-					id="long-menu"
+					id='long-menu'
 					anchorEl={actionAnchor}
 					open={Boolean(actionAnchor)}
 					onClose={this.handleCloseActionsDetails}
@@ -43,10 +43,16 @@ class Dropdown extends Component {
 							minWidth: 200
 						}
 					}}>
-					{menuItems}
+					{menuItems.map((m, i) => {
+						if (m.dontShow)
+							return null
+						return <MenuItem key={i} onClick={() => { m.func(); this.handleCloseActionsDetails()}}>
+							{m.icon} {m.label}
+						</MenuItem>
+					})}
 					))}
 				</Menu>
-			</ItemGrid>
+			</ItemG>
 		)
 	}
 }

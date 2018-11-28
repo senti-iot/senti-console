@@ -242,299 +242,321 @@
             "daily": "Hver dag",
             "hourly": "Hver time",
 			"today": "I dag",
-			"yesterday": "I går",
-			"thisWeek": "Denne uge"
-        },
-        "display": "Visning",
-        "endDate": "Slutdato",
-        "options": {
-            "graphType": "Diagramtype"
-        },
-        "search": "Søg",
-        "startDate": "Startdato"
-    },
-    "images": {
-        "add": "Tilføj billeder",
-        "finish": "Afslut",
-        "reset": "Nulstil",
-        "upload": "Upload",
-        "uploadFailed": "Biller blev ikke uploaded! Genindlæs sitet og prøv igen!",
-        "uploadSuccess": "Billeder blev uploaded med succes"
-    },
-    "links": {
-        "googleMaps": "Vis på Google Maps",
-        "mailTo": "Send mail til",
-        "phoneTo": "Ring til"
-    },
-    "login": {
-        "button": "Log ind",
-        "changePassword": "Skift kodeord",
-        "forgotPass": "Glemt kodeord?",
-        "pass": "Kodeord",
-        "requestPasswordReset": "Anmodning om nulstilling af kodeord",
-        "resetPassRequestMessage": "En Email er er blevet sendt med instruktioner for hvordan du nulstiller dit kodeord!",
-        "resetPasswordMessage": "Nulstil dit kodeord ved at indtaste din Email-adresse",
-        "username": "Brugernavn"
-    },
-    "menus": {
-        "assign": "Tilknyt projekt",
-        "assignDevices": "Tilknyt enheder",
-        "assignOrg": "Tilknyt organisation",
-        "calibrate": "Kalibrer",
-        "changePassword": "Skift kodeord",
-        "delete": "Slet",
-        "deleteOrg": "Slet",
-        "deleteProject": "Slet",
-        "edit": "Rediger",
-        "editOrg": "Rediger",
-        "editProject": "Rediger",
-        "exportPDF": "Exporter til PDF",
-        "hideMap": "Skjul kort",
-        "hideMore": "Skjul",
-        "more": "Mere",
-        "reassign": "Overflyt til andet projekt",
-        "reassignOrg": "Overflyt til anden organisation",
-        "recalibrate": "Re-kalibrer",
-        "seeLess": "Se mindre",
-        "seeMore": "Se mere",
-        "showMap": "Vis kort",
-        "showMore": "Vis mere",
-        "unassign": "Fjern tilknytning",
-        "unassignDevice": "Fjern tilknytning fra projekt",
-        "unassignProject": "Fjern enhed(er) fra projekt"
-    },
-    "orgs": {
-        "create": "Opret",
-        "createOrg": "Opret organisation",
-        "fields": {
-            "CVR": "CVR nummer",
-            "EAN": "EAN nummer",
-            "address": "Adresse",
-            "city": "By",
-            "country": "Land",
-            "name": "Organisationsnavn",
-            "org": "Organisation",
-            "parentOrg": "Organisatorisk tilhørsforhold",
-            "region": "Region",
-            "topLevelOrg": "Uden tilhørsforhold",
-            "url": "Website",
-            "zip": "Postnummer"
-        },
-        "orgDelete": "Slet organisation?",
-        "orgDeleteConfirm": "Er du sikker på du ønsker at slette %{org}",
-        "orgsDelete": "Slet organisationer",
-        "orgsDeleteConfirm": "Er du sikker på du ønsker at slette organisationer",
-        "pageTitle": "Organisationer",
-        "updateOrg": "Rediger",
-        "validation": {
-            "networkError": "Netværksfejl!",
-            "noAddress": "Mangler adresse",
-            "noCity": "Mangler by",
-            "noCountry": "Mangler land",
-            "noName": "Mangler navn",
-            "noParent": "Mangler organisatorisk tilhørsforhold",
-            "noZip": "Mangler postnummer"
-        }
-    },
-    "projects": {
-        "contact": {
-            "email": "Email:",
-            "name": "Navn:",
-            "organisation": "Organisation:",
-            "phone": "Telefon:",
-            "title": "Kontakt"
-        },
-        "devices": {
-            "hideMap": "Skjul kort",
-            "numDevices": "Antal enheder: ",
-            "seeMap": "Se kort",
-            "title": "Enheder"
-        },
-        "fields": {
-            "assignDevices": "Tilknyt enheder",
-            "description": "Beskrivelse",
-            "endDate": "Slutdato",
-            "name": "Projektnavn",
-            "selectOrganisation": "Organisation",
-            "startDate": "Startdato"
-        },
-        "infoCardProjectData": "Data",
-        "infoCardProjectDetails": "Detaljer for projekt",
-        "new": "Opret projekt",
-        "noOrganisationSelected": "Vælg en organisation for at se tilgængelige enheder",
-        "pageTitle": "Projekter",
-        "projectCreated": "Projektet er oprettet!",
-        "projectDelete": "Slet projekt?",
-        "projectDeleteConfirm": "Er du sikker på du ønsker at slette projektet ",
-        "projectDeleted": "Projektet er slettet!",
-        "projectExported": "Projektet er eksporteret!",
-        "projectRedirect": "Omdirigerer tilbage til liste over projekter",
-        "projectsColumnCreated": "Oprettet",
-        "projectsColumnDescription": "Beskrivelse",
-        "projectsColumnEndDate": "Slutdato",
-        "projectsColumnLastMod": "Senest opdateret",
-        "projectsColumnProgress": "",
-        "projectsColumnStartDate": "Startdato",
-        "projectsColumnTitle": "Navn",
-        "redirecting": "Redirecting",
-        "tabs": {
-            "cardView": "Gittervisning",
-            "listView": "Listevisning"
-        },
-        "updateProject": "Rediger projekt",
-        "validation": {
-            "noEndDate": "Manglende Slutdato",
-            "noStartDate": "Manglende Startdato",
-            "noTitle": "Manglende Projektnavn",
-            "startDateBiggerThanEndDate": "Startdato kan ikke være større end slutdato"
-        },
-        "viewProject": "Vis projekt"
-    },
-    "settings": {
-        "alerts": "Alarmeringer",
-        "calibration": {
-            "12months": "Hver 12. måned",
-            "3months": "Hver 3. måned",
-            "6months": "Hver 6. måned",
-            "9months": "Hver 9. måned",
-            "byCount": "Antal tællinger",
-            "byTime": "Antal minutter",
-            "count": "Antal tællinger",
-            "history": "Historik",
-            "minutes": "minutter",
-            "notification": "Notifikation",
-            "text": "Metode",
-            "time": "På tid"
-        },
-        "defaultDataSet": "Standard datasæt for diagrammer",
-        "didYouKnow": "“Viste du at?“",
-        "discoverSenti": "“Vis intro kort på Dashboard“",
-        "headers": {
-            "calibration": "Kalibrering",
-            "charts": "Diagrammer",
-            "devices": "Enheder",
-            "display": "Skærm",
-            "notifications": "Notifikationer"
-        },
-        "language": "Sprog",
-        "languages": {
-            "da": "Dansk",
-            "en": "Engelsk"
-        },
-        "pageTitle": "Instillinger",
-        "sideBarLeft": "Venstre",
-        "sideBarLoc": "Placering af menu",
-        "sideBarRight": "Højre",
-        "theme": "Tema",
-        "themes": {
-            "dark": "Mørkt",
-            "light": "Lyst"
-        },
-        "trp": "Rækker per side i lister"
-    },
-    "sidebar": {
-        "dashboard": "Dashboard",
-        "devices": "Enheder",
-        "projects": "Projekter",
-        "settings": "Indstillinger",
-        "users": "Brugere"
-    },
-    "snackbars": {
-        "assign": "Enhed tildelt succesfuldt",
-        "createdFail": "Oprettelse fejlede!",
-        "createdSuccess": "Oprettet!",
-        "creating": "Opretter ...",
-        "deletedFail": "Sletning fejlede!",
-        "deletedSuccess": "Slettet!",
-        "deleting": "Sletter ...",
-        "deviceUpdated": "Enhed %{device} er blevet opdateret!",
-        "exported": "Eksporteret!",
-        "orgCreated": "Organisation %{org} er succesfuldt opretted!",
-        "orgDeleted": "Organisation er succefuld slettet!",
-        "orgUpdated": "Organisation %{org} er succesfuldt opdateret!",
-        "projectUpdated": "Projekt %{project} er succesfuldt opdateret!",
-        "redirect": "Omdirigerer ...",
-        "settingsSaved": "Instillinger gemt!",
-        "unassign": "Enhed succesfuldt fjernet!",
-        "updatedFailed": "Opdatering fejlede!",
-        "updatedSuccess": "Opdateret!",
-        "updating": "Opdaterer ...",
-        "userCreated": "Bruger %{user} er succesfuldt opretted!",
-        "userDeleted": "Bruger %{user} er succesfuldt sletted!",
-        "userUpdated": "Bruger %{user} er succesfuldt opdateret!"
-    },
-    "tables": {
-        "addNewDevice": "Tilføj enhed",
-        "addNewProject": "Opret projekt",
-        "filter": "Filter",
-        "rowsPerPage": "Rækker pr. side",
-        "selected": "valgt"
-    },
-    "users": {
-        "actions": {
-            "addToGroups": "Tilføj til gruppe(r)",
-            "changeOrganisation": "Skift organisation",
-            "delete": "Slet",
-            "edit": "Rediger",
-            "import": "Importer",
-            "mailTo": "Send Email",
-            "new": "Opret ny",
-            "resetPassword": "Nulstil kodeord",
-            "suspend": "Suspender"
-        },
-        "createUser": "Opret bruger",
-        "editUser": "Opdater bruger",
-        "fields": {
-            "accessLevel": "Adgangsniveau",
-            "active": "Aktiv",
-            "created": "Opdateret",
-            "email": "Email",
-            "firstName": "Fornavn",
-            "group": "Gruppe",
-            "language": "System sprog",
-            "lastName": "Efternavn",
-            "lastSignIn": "Seneste login",
-            "loginSuspended": "Login suspendederet",
-            "name": "Navn",
-            "neverLoggedIn": "Aldrig logget ind",
-            "noOrg": "Uden Organisation",
-            "organisation": "Organisation",
-            "phone": "Telefon",
-            "profileImage": "Profilbillede",
-            "tags": "Tags",
-			"userName": "Brugernavn",
-			"currentPass": "Current password",
-			"newPass": "New password",
-			"confirmPass": "Confirm new password"
-        },
-        "groups": {
-            "136550100000143": "Superbruger",
-            "136550100000211": "Kontoansvarlig",
-            "136550100000225": "Bruger",
-            "accountManager": "Kontoansvarlig",
-            "superUser": "Superbruger",
-            "user": "Bruger"
-        },
-        "headers": {
-            "contact": "Contact",
-            "system": "Systemlog"
-        },
-        "menus": {
-            "account": "Min konto",
-            "profile": "Min profil",
-            "signout": "Log ud"
-        },
-        "messages": {},
-        "pageTitle": "Brugere",
-        "tabs": {
-            "orgs": "Organisationer",
-            "users": "Brugere"
+			"yesterday": "I går"
 		},
-		"userResendEmail": "Resend Confirm Email",
-		"userResendConfirm": "Are you sure you want to resend confirmation email?",
-        "userDelete": "Slet bruger",
-        "userDeleteConfirm": "Er du sikker på du vil slette denne bruger %{user} ?",
-        "usersDelete": "Slet brugere",
-        "usersDeleteConfirm": "Er du sikker på du vil slette de følgende brugere:"
-    }
+		"display": "Visning",
+		"endDate": "Slutdato",
+		"options": {
+			"graphType": "Diagramtype"
+		},
+		"search": "Søg",
+		"startDate": "Startdato"
+	},
+	"images": {
+		"add": "Tilføj billeder",
+		"finish": "Afslut",
+		"reset": "Nulstil",
+		"upload": "Overfør",
+		"uploadFailed": "Billeder ikke overført! Genindlæs sitet og prøv igen!",
+		"uploadSuccess": "Billeder overført"
+	},
+	"links": {
+		"googleMaps": "Vis på Google Maps",
+		"mailTo": "Send E-mail til",
+		"phoneTo": "Ring til"
+	},
+	"login": {
+		"pass": "Kodeord",
+		"username": "Brugernavn"
+	},
+	"menus": {
+		"user": {
+			"account": "Min konto",
+			"profile": "Min profil",
+			"signout": "Log ud"
+		},
+		"assign": {
+			"collectionToProject": "Tilknyt datasamling",
+			"collectionsToProject": "Tilknyt datasamlinger",
+			"deviceToCollection": "Tilknyt enhed",
+			"deviceToOrg": "Tilknyt enhed"
+		},
+		"create": {
+			"project": "Opret projekt",
+			"user": "Opret bruger"
+		},
+		"calibrate": "Kalibrer",
+		"changePassword": "Skift kodeord",
+		"delete": "Slet",
+		"edit": "Rediger",
+		"exportPDF": "Print som PDF",
+		"favorites": {
+			"add": "Tilføj til favoritter",
+			"remove": "Fjern fra favoritter"
+		},
+		"hideMap": "Skjul kort",
+		"hideMore": "Skjul",
+		"more": "Mere",
+		"reassign": {
+			"collectionToProject": "Overflyt til andet projekt",
+			"deviceToOrg": "Overflyt til anden organisation"
+		},
+		"recalibrate": "Rekalibrering",
+		"seeDevice": "Se enhed",
+		"seeLess": "Se mindre",
+		"seeMore": "Se mere",
+		"showMap": "Vis kort",
+		"showMore": "Vis mere",
+		"unassign": {
+			"collectionFromProject": "Frigør datasamling fra projekt",
+			"deviceFromCollection": "Frigør enhed fra datasamling",
+			"deviceFromOrg": "Frigør enhed fra organisation"
+		},
+		"userResendEmail": "Send bekræft e-mail igen"
+	},
+	"no": {
+		"audioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a different browser.",
+		"activeDevice": "Ingen aktiv enhed",
+		"collection": "Ikke tildelt til en datasamling",
+		"collections": "Ingen datasamlinger",
+		"device": "Ingen enhed",
+		"devices": "Ingen enheder",
+		"history": "Ingen logs",
+		"project": "Ingen projekt",
+		"projects": "Ingen projekter",
+		"org": "Ingen organisation"
+	},
+	"orgs": {
+		"create": "Opret",
+		"createOrg": "Opret organisation",
+		"fields": {
+			"CVR": "CVR nummer",
+			"EAN": "EAN nummer",
+			"address": "Adresse",
+			"city": "By",
+			"country": "Land",
+			"name": "Organisationsnavn",
+			"org": "Organisation",
+			"parentOrg": "Organisatorisk tilhørsforhold",
+			"region": "Region",
+			"topLevelOrg": "Uden tilhørsforhold",
+			"url": "Website",
+			"zip": "Postnummer"
+		},
+		"pageTitle": "Organisationer",
+		"organisation": "Organisation",
+		"updateOrg": "Rediger Organisation",
+		"validation": {
+			"networkError": "Netværksfejl!",
+			"noAddress": "Mangler adresse",
+			"noCity": "Mangler by",
+			"noCountry": "Mangler land",
+			"noName": "Mangler navn",
+			"noParent": "Mangler organisatorisk tilhørsforhold",
+			"noZip": "Mangler postnummer"
+		}
+	},
+	"projects": {
+		"contact": {
+			"email": "E-mail",
+			"name": "Navn",
+			"organisation": "Organisation",
+			"phone": "Telefon",
+			"title": "Kontakt"
+		},
+		"devices": {
+			"numDevices": "Antal enheder",
+			"title": "Enheder"
+		},
+		"fields": {
+			"assignDevices": "Tilknyt enheder",
+			"description": "Beskrivelse",
+			"endDate": "Slutdato",
+			"name": "Projektnavn",
+			"selectOrganisation": "Organisation",
+			"startDate": "Startdato",
+			"created": "Oprettet",
+			"title": "Navn",
+			"lastUpdate": "Senest opdateret"
+		},
+		"noAvailableDevices": "Der er ingen enheder kalibreret til visning",
+		"noOrganisationSelected": "Vælg en organisation for at se tilgængelige enheder",
+		"pageTitle": "Projekter",
+		"tabs": {
+			"cardView": "Gittervisning",
+			"listView": "Listevisning"
+		},
+		"updateProject": "Rediger projekt",
+		"validation": {
+			"noEndDate": "Manglende Slutdato",
+			"noStartDate": "Manglende Startdato",
+			"noTitle": "Manglende Projektnavn",
+			"startDateBiggerThanEndDate": "Startdato må ikke være senere end slutdato"
+		}
+	},
+	"settings": {
+		"alerts": "Alarmeringer",
+		"calibration": {
+			"12months": "Hver 12. måned",
+			"3months": "Hver 3. måned",
+			"6months": "Hver 6. måned",
+			"9months": "Hver 9. måned",
+			"byCount": "Antal tællinger",
+			"byTime": "Antal minutter",
+			"count": "Antal tællinger",
+			"history": "Historik",
+			"minutes": "minutter",
+			"notification": "Notifikation",
+			"text": "Metode",
+			"time": "På tid"
+		},
+		"chart": {
+			"defaultChart": "Standard diagram"
+		},
+		"defaultDataSet": "Standard datasæt for diagrammer",
+		"didYouKnow": "Viste du at?",
+		"discoverSenti": "Vis Velkommen til Senti på Dashboard",
+		"headers": {
+			"calibration": "Kalibrering",
+			"charts": "Diagrammer",
+			"devices": "Enheder",
+			"display": "Skærm",
+			"notifications": "Notifikationer"
+		},
+		"language": "Sprog",
+		"languages": {
+			"da": "Dansk",
+			"en": "Engelsk"
+		},
+		"pageTitle": "Instillinger",
+		"sideBarLeft": "Venstre",
+		"sideBarLoc": "Placering af menu",
+		"sideBarRight": "Højre",
+		"theme": "Tema",
+		"themes": {
+			"dark": "Mørkt",
+			"light": "Lyst"
+		},
+		"trp": "Rækker per side i lister"
+	},
+	"sidebar": {
+		"collections": "Data",
+		"dashboard": "Dashboard",
+		"devices": "Enheder",
+		"favorites": "Favoritter",
+		"projects": "Projekter",
+		"settings": "Indstillinger",
+		"users": "Brugere"
+	},
+	"snackbars": {
+		"assign": {
+			"collectionToOrg": "Datasamling %{collection} tilknyttet til organisation %{org}",
+			"collectionToProject": "Datasamling %{collection} tilknyttet til projekt %{project}",
+			"collectionsToProject": "Datasamlinger tilknyttet til projekt",
+			"deviceToCollection": "Enhed %{device} tilknyttet til datasamling %{collection}",
+			"deviceToOrg": "Enhed %{device} tilknyttet til organisation %{org}",
+			"projectToOrg": "Project %{project} tilknyttet til organisation %{org}"
+		},
+		"collectionCreated": "Datasamling er oppretet!",
+		"collectionDeleted": "Datasamling er slettet!",
+		"collectionUpdated": "Datasamling er opdateret!",
+		"createdFail": "Oprettelse fejlede!",
+		"createdSuccess": "Oprettet!",
+		"creating": "Opretter ...",
+		"deletedFail": "Sletning fejlede!",
+		"deletedSuccess": "Slettet!",
+		"deleting": "Sletter ...",
+		"deviceUpdated": "Enhed %{device} er blevet opdateret!",
+		"exported": "Eksporteret!",
+		"favorite": {
+			"manyRemoved": "Favoritter er blevet fjernet!",
+			"removed": "%{name} (%{type}) er blevet fjernet fra favoritter!",
+			"saved": "%{name} (%{type}) er blevet tilføjet til favoritter!",
+			"updated": "Favoritter er blevet opdateret!"
+		},
+		"orgCreated": "Organisation %{org} er  oprettet!",
+		"orgDeleted": "Organisation er slettet!",
+		"orgUpdated": "Organisation %{org} er opdateret!",
+		"pictureDeleted": "Billedet er slettet!",
+		"pictureNotDeleted": "Billedet blev ikke slettet!",
+		"projectCreated": "Projektet %{project} er oprettet!",
+		"projectDeleted": "Projekt(er) er slettet!",
+		"projectExported": "Projektet er eksporteret!",
+		"projectUpdated": "Projekt %{project} er opdateret!",
+		"redirect": "Omdirigerer ...",
+		"resetDeviceSuccess": "Enhed er blevet nulstillet",
+		"settingsSaved": "Indstillinger gemt!",
+		"unassign": {
+			"collectionFromProject": "Datasamlingen %{collection} er frigjort fra projektet %{project}",
+			"collectionsFromProject": "Datasamlinger frigjort fra projektet %{project}",
+			"deviceFromCollection": "Enheden %{device} er frigjort fra datasamlingen %{collection}",
+			"deviceFromOrg": "Enheden %{device} er frigjort fra organisationen %{org}"
+		},
+		"updatedFailed": "Opdatering fejlede!",
+		"updatedSuccess": "Opdateret!",
+		"updating": "Opdaterer ...",
+		"userCreated": "Bruger %{user} er opretted!",
+		"userDeleted": "Bruger %{user} er sletted!",
+		"userPasswordChanged": "Kodeord er skiftet!",
+		"userUpdated": "Bruger %{user} er opdateret!"
+	},
+	"tables": {
+		"addNewDevice": "Tilføj enhed",
+		"addNewProject": "Opret projekt",
+		"filter": "Filter",
+		"rowsPerPage": "Rækker pr. side",
+		"selected": "valgt"
+	},
+	"users": {
+		"editUser": "Opdater bruger",
+		"fields": {
+			"accessLevel": "Adgangsniveau",
+			"active": "Aktiv",
+			"confirmPass": "Bekræft nyt kodeord",
+			"created": "Opdateret",
+			"currentPass": "Nuværende kodeord",
+			"email": "E-mail",
+			"firstName": "Fornavn",
+			"group": "Gruppe",
+			"language": "System sprog",
+			"lastName": "Efternavn",
+			"lastSignIn": "Seneste login",
+			"loginSuspended": "Login suspendederet",
+			"name": "Navn",
+			"neverLoggedIn": "Aldrig logget ind",
+			"newPass": "Nyt kodeord",
+			"noOrg": "Uden Organisation",
+			"organisation": "Organisation",
+			"phone": "Telefon",
+			"profileImage": "Profilbillede",
+			"tags": "Tags",
+			"userName": "Brugernavn"
+		},
+		"groups": {
+			"136550100000143": "Superbruger",
+			"136550100000211": "Kontoansvarlig",
+			"136550100000225": "Bruger",
+			"accountManager": "Kontoansvarlig",
+			"superUser": "Superbruger",
+			"user": "Bruger"
+		},
+		"headers": {
+			"contact": "Kontakt",
+			"system": "Systemlog"
+		},
+		"messages": {},
+		"user": "Bruger",
+		"pageTitle": "Brugere",
+		"tabs": {
+			"orgs": "Organisationer",
+			"users": "Brugere"
+		},
+		"userResendConfirm": "Er du sikker på du ønsker at gensende bekræftelses E-mail?",
+		"userResendEmail": "Gensend bekræftelses E-mail",
+		"validation": {
+			"noEmail": "E-mail mangler",
+			"noOrg": "Organisation mangler",
+			"userAlreadyExists": "E-mail er allerede tilknyttet en anden bruger konto!"
+		}
+	}
 }

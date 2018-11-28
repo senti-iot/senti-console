@@ -1,23 +1,21 @@
-import React, { Component, Fragment } from 'react'
+import React, { PureComponent, Fragment } from 'react'
 import { getAllPictures, deletePicture } from 'variables/dataDevices';
-import { Grid, withStyles, Menu, MenuItem, IconButton, Modal, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Snackbar } from '@material-ui/core';
+import { Grid, withStyles, Modal, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
 import InfoCard from 'components/Cards/InfoCard';
-import { Image,  MoreVert, CloudUpload, Delete, Check } from '@material-ui/icons'
+import { Image, CloudUpload, Delete } from 'variables/icons'
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import DeviceImage from 'components/Devices/DeviceImage';
 import CircularLoader from 'components/Loader/CircularLoader';
-// import ImageUpload from '../ImageUpload';
-import { ItemGrid, Caption } from 'components';
-import DeviceImageUpload from '../ImageUpload';
+import { Caption, Dropdown } from 'components';
+import DeviceImageUpload from 'views/Devices/ImageUpload';
 
-class DeviceImages extends Component {
+class DeviceImages extends PureComponent {
 	constructor(props) {
 		super(props)
 
 		this.state = {
 			activeStep: 0,
 			img: null,
-			actionAnchor: null,
 			openImageUpload: false,
 			openDeleteImage: false,
 			deletingPicture: false,
@@ -47,17 +45,11 @@ class DeviceImages extends Component {
 	getAllPics = (id) => {
 		getAllPictures(id).then(rs => { return this.setState({ img: rs }) })
 	}
-	handleOpenActionsImages = e => {
-		this.setState({ actionAnchor: e.currentTarget })
-	}
-	handleCloseActionsImages = e => {
-		this.setState({ actionAnchor: null })
-	}
 	handleOpenImageUpload = () => {
-		this.setState({ openImageUpload: true, actionAnchor: null })
+		this.setState({ openImageUpload: true })
 	}
 	handleOpenDeletePictureDialog = () => {
-		this.setState({ openDeleteImage: true, actionAnchor: null })
+		this.setState({ openDeleteImage: true })
 	}
 	handleCloseDeletePictureDialog = () => {
 		this.setState({ openDeleteImage: false })
@@ -79,16 +71,15 @@ class DeviceImages extends Component {
 		}
 	}
 	snackBarMessages = () => {
+		const { s } = this.props
 		let msg = this.state.openSnackbar
 		switch (msg) {
 			case 1:
-				return <Fragment>
-					<Check className={this.props.classes.leftIcon} color={'primary'}/> Picture has been deleted
-				</Fragment>
+				s('snackbars.pictureDeleted')
+				break
 			case 2:
-				return <Fragment>
-					Error! Picture has not been deleted!
-				</Fragment>
+				s('snackbars.pictureNotDeleted')
+				break
 			default:
 				break;
 		}
@@ -100,77 +91,43 @@ class DeviceImages extends Component {
 		return <Dialog
 			open={this.state.openDeleteImage}
 			onClose={this.handleCloseImageDelete}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">Delete Picture</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>Delete Picture</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
+				<DialogContentText id='alert-dialog-description'>
 					Are you sure you want to delete the picture?
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseDeletePictureDialog} color="primary">
+				<Button onClick={this.handleCloseDeletePictureDialog} color='primary'>
 					No
 				</Button>
-				<Button onClick={this.handleDeletePicture} color="primary" autoFocus>
+				<Button onClick={this.handleDeletePicture} color='primary' autoFocus>
 					Yes
 				</Button>
 			</DialogActions>
 		</Dialog>
 	}
-	renderSnackbar = () => 
-		<Snackbar
-			anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-			open={this.state.openSnackbar !== 0 ? true : false}
-			onClose={() => { this.setState({ openSnackbar: 0 }) }}
-			autoHideDuration={5000}
-			message={
-				<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-					{this.snackBarMessages()}
-				</ItemGrid>
-			}
-		/>
+
 	
 	render() {
-		const { actionAnchor, openImageUpload, img } = this.state
+		const { openImageUpload, img } = this.state
 		const { classes, device, t  } = this.props
 		return (
 			<InfoCard
-				title={t("devices.cards.pictures")}
+				title={t('devices.cards.pictures')}
 				avatar={<Image />}
 				topAction={
-					<ItemGrid>
-						<IconButton
-							aria-label="More"
-							aria-owns={actionAnchor ? 'long-menu' : null}
-							aria-haspopup="true"
-							onClick={this.handleOpenActionsImages}>
-							<MoreVert />
-						</IconButton>
-						<Menu
-							id="long-menu"
-							anchorEl={actionAnchor}
-							open={Boolean(actionAnchor)}
-							onClose={this.handleCloseActionsImages}
-							PaperProps={{
-								style: {
-									maxHeight: 200,
-									minWidth: 200
-								}
-							}}>
-							<MenuItem onClick={this.handleOpenImageUpload}>
-								<CloudUpload className={classes.leftIcon} />{t("actions.uploadImages")}
-							</MenuItem>
-							<MenuItem onClick={this.handleOpenDeletePictureDialog}>
-								<Delete className={classes.leftIcon} />{t("actions.deletePicture")}
-							</MenuItem>
-							))}
-						</Menu>
-					</ItemGrid>
+					<Dropdown menuItems={
+						[
+							{ label: t('actions.uploadImages'), icon: <CloudUpload className={classes.leftIcon} />, func: this.handleOpenImageUpload },
+							{ label: t('actions.deletePicture'), icon: <Delete className={classes.leftIcon} />, func: this.handleOpenDeletePictureDialog },
+						]
+					} />
 				}
-				noExpand
-				content={
+				hiddenContent={
 					<Fragment>
 						{img !== null ? img !== 0 ?
 							<Fragment>
@@ -183,11 +140,10 @@ class DeviceImages extends Component {
 										images={img ? img.map(m => m.image) : null} />
 								</Grid>
 							</Fragment>
-							: <Grid container justify={'center'}> <Caption>{t("devices.noImages")}</Caption></Grid> : this.renderImageLoader()}
-						{this.renderSnackbar()}
+							: <Grid container justify={'center'}> <Caption>{t('devices.noImages')}</Caption></Grid> : this.renderImageLoader()}
 						<Modal
-							aria-labelledby="simple-modal-title"
-							aria-describedby="simple-modal-description"
+							aria-labelledby='simple-modal-title'
+							aria-describedby='simple-modal-description'
 							open={openImageUpload}
 							onClose={this.handleCloseImageUpload}>
 							<div className={classes.modal}>

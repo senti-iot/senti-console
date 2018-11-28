@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="83px" height="67px" viewBox="0 0 83 67" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.3 (67297) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_few_clouds_day</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" stop-opacity="0.5" offset="0%"></stop>
+            <stop stop-color="#000000" stop-opacity="0.5" offset="100%"></stop>
+        </linearGradient>
+        <polygon id="path-2" points="28.4754069 47.9834112 19.6760222 54.5698496 16.424461 44.0636491 5.4383188 44.2145298 8.9765668 33.8015788 0 27.4592705 8.9765668 21.1169622 5.4383188 10.7040112 16.424461 10.8548919 19.6760222 0.348691415 28.4754069 6.93512984 37.2747916 0.348691415 40.5263528 10.8548919 51.512495 10.7040112 47.974247 21.1169622 56.9508138 27.4592705 47.974247 33.8015788 51.512495 44.2145298 40.5263528 44.0636491 37.2747916 54.5698496"></polygon>
+        <ellipse id="path-3" cx="28.4754069" cy="27.4592705" rx="15.4241787" ry="15.4406145"></ellipse>
+        <filter x="-45.4%" y="-32.4%" width="190.8%" height="190.7%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="0" dy="4" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="4" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <path d="M40.3145802,54.7770373 C45.5592956,54.7770373 49.8314679,50.3798001 49.8314679,45.1540345 C49.8314679,40.7567973 46.9385475,37.0819669 42.8699767,35.8844463 C42.7622458,31.9657305 39.5110461,28.8375731 35.5067184,28.8375731 C34.3429283,28.8375731 33.2463464,29.1194285 32.267379,29.5925952 C30.5357779,25.5448783 26.4711605,22.7083122 21.7324837,22.7083122 C16.5653543,22.7083122 12.2012648,26.0900909 10.7884088,30.727319 C4.68085786,31.4541069 0,36.5041388 0,42.716642 C0,49.2256045 5.07274133,54.7770373 11.7673762,54.7770373 L40.3145802,54.7770373 Z" id="path-5"></path>
+        <filter x="-28.1%" y="-31.2%" width="156.2%" height="187.3%" filterUnits="objectBoundingBox" id="filter-6">
+            <feOffset dx="0" dy="4" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="4" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.14 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Weather-icons" transform="translate(-365.000000, -158.000000)">
+            <g id="icons" transform="translate(195.000000, 158.000000)">
+                <g id="icon_few_clouds_day" transform="translate(177.838886, 0.315619)">
+                    <g id="sun" transform="translate(17.797129, 0.000000)">
+                        <g id="Star">
+                            <use fill="#FCC02E" xlink:href="#path-2"></use>
+                            <use fill-opacity="0.3" fill="url(#linearGradient-1)" style="mix-blend-mode: overlay;" xlink:href="#path-2"></use>
+                        </g>
+                        <g id="Oval">
+                            <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                            <use fill="#FEE6AC" fill-rule="evenodd" xlink:href="#path-3"></use>
+                        </g>
+                    </g>
+                    <g id="cloud">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-6)" xlink:href="#path-5"></use>
+                        <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-5"></use>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

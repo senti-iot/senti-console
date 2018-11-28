@@ -1,39 +1,25 @@
-import React from "react";
-// material-ui components
-import {/*  InputAdornment, */ withStyles, CardContent, Collapse, Button, Grid } from "@material-ui/core";
-// @material-ui/icons
-// import { LockOutlined, Person } from "@material-ui/icons";
-// core components
-import { GridContainer, ItemGrid, Info, /* Warning,  */Danger, ItemG } from "components";
-// import Button from "components/CustomButtons/Button.js";
-import Card from "components/Card/Card.js";
-import CardBody from "components/Card/CardBody.js";
-import CardHeader from "components/Card/CardHeader.js";
-import CardFooter from "components/Card/CardFooter.js";
-// import CustomInput from "components/CustomInput/CustomInput.js";
-
-import loginPageStyle from "assets/jss/material-dashboard-react/loginPageStyle.js";
-// import { loginUser } from "variables/dataLogin";
-// import { setToken } from 'variables/data'
-// import cookie from "react-cookies";
-// import classNames from 'classnames';
-import CircularLoader from "components/Loader/CircularLoader";
-import withLocalization from "components/Localization/T";
+import React from 'react';
+import { withStyles, CardContent, Collapse, Button, Grid } from '@material-ui/core';
+import { GridContainer, ItemGrid, Info, Danger, ItemG, TextF } from 'components';
+import Card from 'components/Card/Card.js';
+import CardBody from 'components/Card/CardBody.js';
+import CardHeader from 'components/Card/CardHeader.js';
+import CardFooter from 'components/Card/CardFooter.js';
+import loginPageStyle from 'assets/jss/material-dashboard-react/loginPageStyle.js';
+import CircularLoader from 'components/Loader/CircularLoader';
+import withLocalization from 'components/Localization/T';
 import { connect } from 'react-redux';
 import { getSettings } from 'redux/settings';
-import TextF from '../../components/CustomInput/TextF';
 import { changeLanguage } from 'redux/localization';
 import { confirmUser } from 'variables/dataUsers';
 import cookie from 'react-cookies';
 import { setToken } from 'variables/data';
-var passChecker = require("zxcvbn")
 
 class ConfirmUser extends React.Component {
 	constructor(props) {
 		super(props);
-		// we use this to make the card to appear after the page has been rendered
 		this.state = {
-			cardAnimaton: "cardHidden",
+			cardAnimaton: 'cardHidden',
 			password: '',
 			confirmPassword: '',
 			loggingIn: false,
@@ -66,7 +52,7 @@ class ConfirmUser extends React.Component {
 		if (this.inputRef.current) { this.inputRef.current.focus() }
 		setTimeout(
 			function () {
-				return this._isMounted ? this.setState({ cardAnimaton: "" }) : '';
+				return this._isMounted ? this.setState({ cardAnimaton: '' }) : '';
 			}.bind(this),
 			300
 		);
@@ -104,26 +90,28 @@ class ConfirmUser extends React.Component {
 		const { t } = this.props
 		switch (code) {
 			case 0:
-				return t("confirmUser.validation.passwordEmpty")
+				return t('confirmUser.validation.passwordEmpty')
 			case 1:
-				return t("confirmUser.validation.passwordUnder8")
+				return t('confirmUser.validation.passwordUnder8')
 			case 2:
-				return t("confirmUser.validation.passwordMismatch")
+				return t('confirmUser.validation.passwordMismatch')
+			case 404: 
+				return t('confirmUser.validation.userDoesntExistAnymore')
 			default:
-				return ""
+				return ''
 		}
 	}
 	confirmUser = async () => {
 		if (this.handleValidation()) {
 			const { password } = this.state
-			const { t } = this.props
+			// const { t } = this.props
 			let session = await confirmUser({ newPassword: password, passwordToken: this.token })
-			if (session)
+			if (session !== 404 && session)
 				this.loginUser(session)
 			else {
 				this.setState({
 					error: true,
-					errorMessage: [<Danger >{t("confirmUser.networkError")}</Danger>]
+					errorMessage: [<Danger >{this.errorMessages(session)}</Danger>]
 				})
 			}
 		}
@@ -138,14 +126,14 @@ class ConfirmUser extends React.Component {
 				if (session.isLoggedIn) {
 					if (setToken()) {
 						await this.props.getSettings()
-						this.props.history.push("/dashboard")
+						this.props.history.push('/dashboard')
 					}
 				}
 
 				else {
 					this.setState({
 						error: true,
-						errorMessage: t("confirmUser.networkError"),
+						errorMessage: t('confirmUser.networkError'),
 						loggingIn: false
 					})
 				}
@@ -154,17 +142,8 @@ class ConfirmUser extends React.Component {
 
 
 	handleChange = prop => e => {
-		let score = 0 
-		let result = null
-		let pass = e.target.value
-		if (!(pass.length < this.state.minLength)) { 
-			result = passChecker(pass, [])
-			score = result.score
-		}
 		this.setState({
 			...this.state,
-			isValid: score >= this.state.minScore,
-			score,
 			[prop]: e.target.value
 		})
 		if (this.state.error)
@@ -183,25 +162,25 @@ class ConfirmUser extends React.Component {
 				<div
 					className={classes.pageHeader}
 					style={{
-						backgroundColor: "#1a1b32",
-						backgroundSize: "cover",
-						backgroundPosition: "top center"
+						backgroundColor: '#1a1b32',
+						backgroundSize: 'cover',
+						backgroundPosition: 'top center'
 					}}
 				>
 					<div className={classes.container}>
-						<GridContainer justify="center">
+						<GridContainer justify='center'>
 							<ItemGrid xs={12} sm={6} md={3}>
 								<Card className={classes[this.state.cardAnimaton]}>
 									<form className={classes.form}>
-										<CardHeader color="primary" className={classes.cardHeader}>
+										<CardHeader color='primary' className={classes.cardHeader}>
 											<h4>Senti.Cloud</h4>
 										</CardHeader>
 										<CardBody>
 											<Grid container>
 												<ItemG xs={12}>
 													<Collapse in={!error}>
-														<Info>{t("confirmUser.welcomeMessage")}</Info>
-														<Info>{t("confirmUser.lastStep")}</Info>
+														<Info>{t('confirmUser.welcomeMessage')}</Info>
+														<Info>{t('confirmUser.lastStep')}</Info>
 													</Collapse>
 													<Collapse in={error}>
 														{errorMessage.map(m => m)}
@@ -210,29 +189,26 @@ class ConfirmUser extends React.Component {
 												<ItemG xs={12}>
 													<TextF
 														autoFocus
-														id={"password"}
+														id={'password'}
 														label={t('confirmUser.password')}
 														value={password}
 														className={classes.textField}
 														// disabled={true}
-														handleChange={this.handleChange("password")}
-														margin="normal"
-														noFullWidth
+														handleChange={this.handleChange('password')}
+														margin='normal'
 														error={error}
 														type={'password'}
-													// helperText={<Danger>{this.state.score}</Danger>}
 													/>
 												</ItemG>
 												<ItemG xs={12}>
 													<TextF
-														id={"confirmpassword"}
-														label={t("confirmUser.passwordConfirm")}
+														id={'confirmpassword'}
+														label={t('confirmUser.passwordConfirm')}
 														value={confirmPassword}
 														className={classes.textField}
 														// disabled={true}
-														handleChange={this.handleChange("confirmPassword")}
-														margin="normal"
-														noFullWidth
+														handleChange={this.handleChange('confirmPassword')}
+														margin='normal'
 														error={error}
 														type={'password'}
 													/>
@@ -240,12 +216,12 @@ class ConfirmUser extends React.Component {
 											</Grid>
 										</CardBody>
 										<CardFooter className={classes.cardFooter}>
-											<Button variant={'contained'} color={'primary'} size="large" className={classes.loginButton} onClick={this.confirmUser}>
-												{t("confirmUser.button")}
+											<Button variant={'contained'} color={'primary'} size='large' className={classes.loginButton} onClick={this.confirmUser}>
+												{t('confirmUser.button')}
 											</Button>
 										</CardFooter>
 									</form>
-									<Collapse in={this.state.loggingIn} timeout="auto" unmountOnExit>
+									<Collapse in={this.state.loggingIn} timeout='auto' unmountOnExit>
 										<CardContent>
 											<CircularLoader notCentered />
 										</CardContent>

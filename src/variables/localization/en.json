@@ -1,6 +1,8 @@
 {
+	"": "",
 	"404": {
 		"errorMessage": "The resource requested has not been found! Please try again or contact support!",
+		"networkFail": "Request failed!",
 		"title": "404 Error - Page Not Found"
 	},
 	"Senti.Cloud": "Senti.Cloud",
@@ -13,7 +15,10 @@
 		"decline": "Decline",
 		"deletePicture": "Delete this picture",
 		"finish": "Finish",
+		"getLocation": "Get location",
 		"goTo": "Go to",
+		"heatMap": "Heatmap",
+		"insertAddress": "Enter an address",
 		"learnMore": "Learn more",
 		"next": "Next",
 		"nextPage": "Next page",
@@ -24,15 +29,12 @@
 		"save": "Save",
 		"start": "Start",
 		"startNow": "Start now",
-		"updateDeviceHardware": "Edit device hardware",
 		"uploadImages": "Upload images",
+		"viewDevice": "View device",
+		"viewDeviceList": "View device list",
 		"yes": "Yes"
 	},
 	"calibration": {
-		"fields": {
-			"description": "Description",
-			"deviceName": "Device name"
-		},
 		"header": "On-site setup %{deviceId}",
 		"selectLocationType": "Select a location type for ",
 		"stepheader": {
@@ -49,52 +51,78 @@
 			"unknown": "Unknown step"
 		},
 		"texts": {
-			"back": "Back",
-			"finish": "Finish",
-			"getLocation": "Get location",
-			"lat": "Latitude",
-			"long": "Longitude",
-			"networkError": "Network error!",
-			"next": "Next",
-			"reset": "Reset",
 			"success": "Success!",
-			"successMessage": "Your Senti device is now configured and calibrated and will produce better results when collecting data. To further enhance the accuracy of your data collection, return to the site of installation and do a new calibration on a regular basis. You can set a reminder for Device Calibration in Settings.",
-			"updateDevice": "Update device",
-			"viewDevice": "View device",
-			"viewDeviceList": "View device list"
+			"successMessage": "Your Senti device is now configured and calibrated and will produce better results when collecting data. To further enhance the accuracy of your data collection, return to the site of installation and do a new calibration on a regular basis. You can set a reminder for Device Calibration in Settings."
 		}
 	},
 	"charts": {
 		"type": {
 			"bar": "Bar",
 			"donut": "Donut",
+			"line": "Line",
 			"pie": "Pie"
 		}
 	},
+	"collections": {
+		"editCollection": "Edit collection",
+		"calibratedData": "Calibrated Data",
+		"cards": {
+			"data": "Data",
+			"log": "Device log"
+		},
+		"fields": {
+			"activated": "Activated",
+			"activeDevice": "Active Device",
+			"activeDeviceStartDate": "Data collection start",
+			"collection": "Data collection",
+			"created": "Created",
+			"dcID": "ID",
+			"description": "Description",
+			"device": "Device",
+			"deviceId": "Device ID",
+			"endOfService": "End of service",
+			"id": "Data Collection",
+			"modified": "Last modified",
+			"name": "Name",
+			"org": "Organisation",
+			"organisation": "Organisation",
+			"ownState": "Status",
+			"project": "Project",
+			"state": {
+				"active": "Active",
+				"inactive": "Inactive"
+			},
+			"status": "Device status"
+		},
+		"pageTitle": "Data Collections",
+		"rawData": "Raw data"
+	},
 	"confirmUser": {
 		"button": "Confirm password",
-		"lastStep": "Create your password to confirm your Senti.Cloud account.",
+		"lastStep": "Create your password to confirm your account.",
 		"networkError": "Network Error!",
 		"password": "Password",
 		"passwordConfirm": "Confirm and sign in",
 		"validation": {
+			"emailDoesntExist": "The E-mail provided is not assigned to an existing account!",
 			"passwordEmpty": "Password cannot be empty!",
 			"passwordMismatch": "The entered passwords are not identical!",
-			"passwordUnder8": "Password must contain at least 8 characters!"
+			"passwordUnder8": "Password must contain at least 8 characters!",
+			"userDoesntExistAnymore": "The user doesn't exist anymore or the token has expired!"
 		},
 		"welcomeMessage": "Welcome to Senti.Cloud!"
 	},
 	"dashboard": {
 		"cardContent": {
-			"alerts": "Did you know that? … \n Get true intelligent rule-based alerts about the nature of the data you're collecting.",
-			"api": "SentiAPI allows you to build your own Dashboards, Apps or Widgets. SentiAPI support access to your own Senti device data or paid access to Senti Big Data based upon the crowd-sourced anonymised pool of Senti data.",
+			"alerts": "Did you know that? … \n Get true intelligent rule-based alerts about the nature of the data you are collecting.",
+			"api": "SentiAPI allows you to build your own IoT Dashboards, Apps or Widgets. SentiAPI support access to your own Senti IoT device data or paid access to Senti Big Data based upon the crowd-sourced anonymised pool of Senti data.",
 			"data": "Get detailed lists and charts to measure and analyse your collected data. Create reports and export data in few easy steps.",
-			"devices": "Devices are the actual hardware device deployed into your environment. Here you can configure and control the devices used in your projects.",
+			"devices": "Devices are the actual IoT hardware device deployed into your environment. Here you can configure and control the IoT devices used in your data collections.",
 			"notifications": "See and manage notification messages and control how, when and where you want to engage your users with notifications.",
-			"onSiteSetup": "When you deploy your devices on-site, a simple configuration is required. Store device name, description, location information and calibrate the device for optimal accuracy.",
-			"projects": "Projects help you manage Senti devices for specific measuring tasks and data collection use cases. A project is a container for your devices and data across one or more locations.",
+			"onSiteSetup": "When you deploy your IoT devices on-site, a simple configuration is advantageous. Store device name, description, location information and calibrate the device for optimal accuracy.",
+			"projects": "Projects help you manage Senti IoT data collections for specific measuring tasks and use cases. A project is a container for your data collections and data across one or more locations.",
 			"settings": "The main control center for managing settings for Senti IoT devices and your Senti.Cloud Console.",
-			"users": "Authenticate and manage accounts for users and organisations, and allow access to projects, devices, collected data and API’s."
+			"users": "Authenticate and manage accounts for users and organisations, and allow access to projects, collected data, devices and API’s."
 		},
 		"cardHeaders": {
 			"alerts": "Intelligent Alerts",
@@ -107,26 +135,10 @@
 			"settings": "Settings",
 			"users": "Users"
 		},
-		"data": {
-			"s1": "Viewing your data can be done through lists, cards and different types of graphs.",
-			"s2": "You can create reports and export data with very few clicks."
-		},
-		"devices": {
-			"s1": "Devices are the actual physical device deployed into your environment.",
-			"s2": "Here you can name, configure and set up the devices used in your projects."
-		},
 		"pageTitle": "Senti.Cloud",
-		"projects": {
-			"s1": "Projects help you encapsulate Senti devices for at specific task and data collection use case.",
-			"s2": "You can create as many projects as you like, and you can bundle devices from all available locations."
-		},
 		"subtitle": "Senti.Cloud lets you control and manage all your Senti-in-a-Box Devices."
 	},
 	"devices": {
-		"calibrateButton": "Manual Calibration",
-		"calibration": {
-			"noAudioSupported": "Your browser doesn't support audio files! There will be no sound feedback! Try using a better browser."
-		},
 		"cards": {
 			"data": "Data",
 			"details": "Device details",
@@ -134,8 +146,6 @@
 			"map": "Map",
 			"pictures": "Images"
 		},
-		"confirmUnassignMessage": "Unassign the sellected devices from project:",
-		"confirmUnassignTitle": "Unassign devices",
 		"device": "Device",
 		"editDetailsTitle": "Edit %{deviceId}",
 		"editHardwareTitle": "Edit hardware for device %{deviceId}",
@@ -144,11 +154,13 @@
 			"address": "Address",
 			"availability": "Availability",
 			"cellNumber": "Phone number",
-			"coords": "Coordinate",
+			"coords": "Coordinates",
 			"coordsW": "Coordinates: %{lat} %{long}",
 			"description": "Description",
 			"free": "Free",
-			"id": "ID",
+			"id": "Device ID",
+			"lat": "Latitude",
+			"long": "Longitude",
 			"lastData": "Last time device sent data to server",
 			"lastStats": "Last time device was connected to server",
 			"locType": "Location type",
@@ -164,7 +176,8 @@
 			"simCard": "SIM-card ID",
 			"simProvider": "SIM-card provider",
 			"status": "Status",
-			"temp": "Temperature",
+			"temp": "CPU temperature",
+			"weather": "Weather",
 			"wifiModule": "Wi-Fi module"
 		},
 		"liveCount": "Live count (last 10 minutes)",
@@ -185,12 +198,10 @@
 		"noData": "There is no data!",
 		"noDataFilters": "There is no data available for the selected filters!",
 		"noDevices": "There are no available devices",
-		"noDevicesAssigned": "There are no devices assigned!",
 		"noImages": "There are no images uploaded!",
 		"noLocType": " No location type set",
 		"noName": "No name",
-		"noProject": "Unassigned",
-		"notCalibrated": "Device has not been calibrated!",
+		"notCalibrated": "Device has not been calibrated! No map location and weather data will be accessible.",
 		"pageTitle": "Devices",
 		"simpleList": {
 			"address": "Address",
@@ -213,25 +224,71 @@
 		}
 	},
 	"dialogs": {
-		"abort": "Abort",
-		"accept": "Accept",
-		"apply": "Apply",
-		"cancel": "Cancel",
-		"no": "No",
-		"unassign": "Are you sure you want to unassign %{deviceID} %{deviceName} from %{project}",
-		"unassignTitle": "Unassign ${what}?",
+		"login": {
+			"resetPassRequestMessage": "An E-mail has been sent with instructions on how to reset your password!",
+			"resetPasswordMessage": "Reset your password by entering your E-mail"
+		},
+		"delete": {
+			"message": {
+				"collection": "Are you sure you want to delete this data collection ( %{collection} )?",
+				"collections": "Are you sure you want to delete these data collections:",
+				"org": "Are you sure you want to delete this organisation?",
+				"orgs": "Are you sure you want to delete these organisations:",
+				"project": "Are you sure you want to delete this project?",
+				"projects": "Are you sure you want to delete these projects:",
+				"user": "Are you sure you want to delete this user?",
+				"users": "Are you sure you want to delete these users:"
+			},
+			"title": {
+				"collection": "Delete data collection?",
+				"collections": "Delete data collections?",
+				"org": "Delete organisation?",
+				"orgs": "Delete organisations?",
+				"project": "Delete project?",
+				"projects": "Delete projects?",
+				"user": "Delete user?",
+				"users": "Delete users?"
+			}
+		},
+		"unassign": {
+			"message": {
+				"collectionFromProject": "Unassign collection %{collection} from project %{project} ?",
+				"collectionsFromProject": "Unassign the following collections from project: ",
+				"deviceFromCollection": "Unassign device %{device} from collection %{collection}?",
+				"deviceFromOrg": "Unassign device %{device} from organisation %{organisation}?",
+				"devicesFromCollection": "Unassign the selected devices from their data collection:"
+			},
+			"title": {
+				"collectionFromProject": "Unassign collection from project?",
+				"collectionsFromProject": "Unassign colletions from project?",
+				"deviceFromCollection": "Unassign device from collection?",
+				"deviceFromOrg": "Unassign device from organisation?",
+				"devicesFromCollection": "Unassign devices from collection?"
+			}
+		},
 		"warnings": {
 			"notImplemented": "Not implemented",
 			"wip": "Work in progress"
 		},
-		"yes": "Yes"
+		"discoverSenti": {
+			"addProject": "Add data projects",
+			"onSiteSetup": "On-site setup of devices",
+			"startAnalyzeData": "Start analyzing your data",
+			"welcome": "Welcome to Senti.Cloud!"
+		}
 	},
-	"discoverSenti": {
-		"addProject": "Add data projects",
-		"getStarted": "Get started here",
-		"onSiteSetup": "On-site setup of devices",
-		"startAnalyzeData": "Start analyzing your data",
-		"welcome": "Welcome to Senti.Cloud!"
+	"favorites": {
+		"fields": {
+			"name": "Name",
+			"type": "Type"
+		},
+		"types": {
+			"collection": "Data collection",
+			"device": "Device",
+			"org": "Organisation",
+			"project": "Project",
+			"user": "User"
+		}
 	},
 	"filters": {
 		"dateOptions": {
@@ -241,14 +298,16 @@
 			"custom": "Custom range",
 			"daily": "Daily",
 			"hourly": "Hourly",
+			"minutely": "Minutely",
+			"summary": "Summary",
+			"thisWeek": "This week",
 			"today": "Today",
-			"yesterday": "Yesterday",
-			"thisWeek": "This week"
+			"yesterday": "Yesterday"
 		},
 		"display": "Display:",
 		"endDate": "End date",
 		"options": {
-			"graphType": "Graph type"
+			"graphType": "Chart type"
 		},
 		"search": "Search",
 		"startDate": "Start date"
@@ -259,7 +318,7 @@
 		"reset": "Reset",
 		"upload": "Upload",
 		"uploadFailed": "Images failed to upload! Please refresh browser and try again!",
-		"uploadSuccess": "Images was successfully uploaded"
+		"uploadSuccess": "Images was uploaded"
 	},
 	"links": {
 		"googleMaps": "Show on Google Maps",
@@ -267,41 +326,64 @@
 		"phoneTo": "Call"
 	},
 	"login": {
-		"button": "Sign in",
-		"changePassword": "Change password",
-		"forgotPass": "Forgot password?",
 		"pass": "Password",
-		"requestPasswordReset": "Request password reset",
-		"resetPassRequestMessage": "An Email has been sent with instructions on how to reset your password!",
-		"resetPasswordMessage": "Reset your password by entering your Email",
 		"username": "Username"
 	},
 	"menus": {
-		"assign": "Assign to project",
-		"assignDevices": "Assign devices",
-		"assignOrg": "Assign to organisation",
+		"user": {
+			"account": "My account",
+			"profile": "My profile",
+			"signout": "Sign out"
+		},
+		"assign": {
+			"collectionToProject": "Assign data collection",
+			"collectionsToProject": "Assign data collections",
+			"deviceToCollection": "Assign device",
+			"deviceToOrg": "Assign device"
+		},
+		"create": {
+			"project": "Create project",
+			"user": "Create user"
+		},
 		"calibrate": "Calibrate",
 		"changePassword": "Change password",
 		"delete": "Delete",
-		"deleteOrg": "Delete",
-		"deleteProject": "Delete",
 		"edit": "Edit",
-		"editOrg": "Edit",
-		"editProject": "Edit",
-		"exportPDF": "Export to PDF",
+		"exportPDF": "Print as PDF",
+		"favorites": {
+			"add": "Add to favorites",
+			"remove": "Remove from favorites"
+		},
 		"hideMap": "Hide map",
 		"hideMore": "Hide",
 		"more": "More",
-		"reassign": "Re-assign to another project",
-		"reassignOrg": "Re-assign to another organisation",
-		"recalibrate": "Re-calibrate",
+		"reassign": {
+			"collectionToProject": "Reassign to another project",
+			"deviceToOrg": "Reassign to another organisation"
+		},
+		"recalibrate": "Recalibrate",
+		"seeDevice": "See device",
 		"seeLess": "See less",
 		"seeMore": "See more",
 		"showMap": "Show map",
 		"showMore": "Show more",
-		"unassign": "Unassign",
-		"unassignDevice": "Unassign from project",
-		"unassignProject": "Unassign device(s) from project"
+		"unassign": {
+			"collectionFromProject": "Unassign device from project",
+			"deviceFromCollection": "Unassign device from collection",
+			"deviceFromOrg": "Unassign device from organisation"
+		},
+		"userResendEmail": "Resend Confirm Email"
+	},
+	"no": {
+		"audioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a different browser.",
+		"activeDevice": "No active device",
+		"collection": "No collection",
+		"collections": "No collections",
+		"device": "No device",
+		"devices": "No devices",
+		"history": "No history",
+		"project": "No project",
+		"projects": "No projects"
 	},
 	"orgs": {
 		"create": "Create",
@@ -320,12 +402,9 @@
 			"url": "Website",
 			"zip": "ZIP Code"
 		},
-		"orgDelete": "Delete organisation?",
-		"orgDeleteConfirm": "Are you sure you want to delete organisation %{org}",
-		"orgsDelete": "Delete organisations",
-		"orgsDeleteConfirm": "Are you sure you want to delete the following organisation",
-		"pageTitile": "Organisations",
-		"updateOrg": "Edit",
+		"pageTitle": "Organisations",
+		"organisation": "Organisation",
+		"updateOrg": "Edit Organisation",
 		"validation": {
 			"networkError": "Network Error!",
 			"noAddress": "Address missing",
@@ -338,16 +417,14 @@
 	},
 	"projects": {
 		"contact": {
-			"email": "Email:",
-			"name": "Name:",
-			"organisation": "Organisation:",
-			"phone": "Phone:",
+			"email": "E-mail",
+			"name": "Name",
+			"organisation": "Organisation",
+			"phone": "Phone",
 			"title": "Contact"
 		},
 		"devices": {
-			"hideMap": "Hide map",
-			"numDevices": "Number of devices: ",
-			"seeMap": "See map",
+			"numDevices": "Number of devices",
 			"title": "Devices"
 		},
 		"fields": {
@@ -356,39 +433,25 @@
 			"endDate": "End date",
 			"name": "Project name",
 			"selectOrganisation": "Organisation",
-			"startDate": "Start date"
+			"startDate": "Start date",
+			"created": "Created",
+			"title": "Name",
+			"lastUpdate": "Last modified"
 		},
-		"infoCardProjectData": "Data",
-		"infoCardProjectDetails": "Project details",
-		"new": "Create project",
+		"noAvailableDevices": "There are no devices calibrated to display",
 		"noOrganisationSelected": "Select an organisation to see available devices.",
 		"pageTitle": "Projects",
-		"projectCreated": "Project has been successfully created!",
-		"projectDelete": "Delete project?",
-		"projectDeleteConfirm": "Are you sure you want to delete project ",
-		"projectDeleted": "Project has been successfully deleted!",
-		"projectExported": "Project has been successfully exported!",
-		"projectRedirect": "Redirecting back to list of projects",
-		"projectsColumnCreated": "Created",
-		"projectsColumnDescription": "Description",
-		"projectsColumnEndDate": "End date",
-		"projectsColumnLastMod": "Last modified",
-		"projectsColumnProgress": "",
-		"projectsColumnStartDate": "Start date",
-		"projectsColumnTitle": "Title",
-		"redirecting": "Redirecting",
 		"tabs": {
 			"cardView": "Grid view",
 			"listView": "List view"
 		},
 		"updateProject": "Edit project",
 		"validation": {
-			"noEndDate": "Manglende Slutdato",
-			"noStartDate": "Manglende Startdato",
-			"noTitle": "Manglende Projektnavn",
-			"startDateBiggerThanEndDate": "Startdato kan ikke være større end slutdato"
-		},
-		"viewProject": "View project"
+			"noEndDate": "End date is missing",
+			"noStartDate": "Start date is missing",
+			"noTitle": "Project name is missing",
+			"startDateBiggerThanEndDate": "Start date can not be later than End date!"
+		}
 	},
 	"settings": {
 		"alerts": "Alerts",
@@ -406,9 +469,12 @@
 			"text": "Method",
 			"time": "By time"
 		},
+		"chart": {
+			"defaultChart": "Default chart type"
+		},
 		"defaultDataSet": "Default data set for charts",
-		"didYouKnow": "“Did you know?“",
-		"discoverSenti": "Show intro cards on Dashboard",
+		"didYouKnow": "Intelligent Notifications",
+		"discoverSenti": "Show Welcome to Senti on Dashboard",
 		"headers": {
 			"calibration": "Calibration",
 			"charts": "Charts",
@@ -433,35 +499,65 @@
 		"trp": "Rows per page on lists"
 	},
 	"sidebar": {
+		"collections": "Data",
 		"dashboard": "Dashboard",
 		"devices": "Devices",
+		"favorites": "Favorites",
 		"projects": "Projects",
 		"settings": "Settings",
 		"users": "Users"
 	},
 	"snackbars": {
-		"assign": "Device %{device} assigned successfully",
+		"assign": {
+			"collectionToOrg": "Data collection %{collection} assigned to organisation %{org}",
+			"collectionToProject": "Data collection %{collection} assigned to project %{project}",
+			"collectionsToProject": "Data collections assigned to project",
+			"deviceToCollection": "Device %{device} assigned to collection %{collection}",
+			"deviceToOrg": "Device %{device} assigned to organisation %{org}",
+			"projectToOrg": "Project %{project} assigned to organisation %{org}"
+		},
+		"collectionCreated": "Data Collection has been created!",
+		"collectionDeleted": "Data Collection has been deleted!",
+		"collectionUpdated": "Data Collection has been updated!",
 		"createdFail": "Creation failed!",
 		"createdSuccess": "Created!",
 		"creating": "Creating...",
 		"deletedFail": "Deletion failed!",
 		"deletedSuccess": "Deleted!",
 		"deleting": "Deleting...",
-		"deviceUpdated": "Device %{device} has been successfully updated!",
+		"deviceUpdated": "Device %{device} has been updated!",
 		"exported": "Exported!",
-		"orgCreated": "Organisation %{org} has been successfully created!",
-		"orgDeleted": "Organisation has been successfully deleted!",
-		"orgUpdated": "Organisation %{org} has been successfully updated!",
-		"projectUpdated": "Project %{project} has been successfully updated!",
+		"favorite": {
+			"manyRemoved": "Favorites have been removed!",
+			"removed": "%{name} (%{type}) has been removed from favorites!",
+			"saved": "%{name} (%{type}) has been added to favorites!",
+			"updated": "Favorites have been updated!"
+		},
+		"orgCreated": "Organisation %{org} has been created!",
+		"orgDeleted": "Organisation has been deleted!",
+		"orgUpdated": "Organisation %{org} has been updated!",
+		"pictureDeleted": "Picture has been deleted!",
+		"pictureNotDeleted": "Picture has not been deleted!",
+		"projectCreated": "Project %{project} has been created!",
+		"projectDeleted": "Project(s) has been deleted!",
+		"projectExported": "Project has been exported!",
+		"projectUpdated": "Project %{project} has been updated!",
 		"redirect": "Redirecting ...",
+		"resetDeviceSuccess": "Device has been reset",
 		"settingsSaved": "Settings saved!",
-		"unassign": "Device %{device} unassigned successfully",
+		"unassign": {
+			"collectionFromProject": "Data collection %{collection} unassigned from project %{project}",
+			"collectionsFromProject": "Data collections unassigned from %{project}",
+			"deviceFromCollection": "Device %{device} unassigned from collection %{collection}",
+			"deviceFromOrg": "Device %{device} unassigned from organisation %{org}"
+		},
 		"updatedFailed": "Update failed!",
 		"updatedSuccess": "Updated!",
 		"updating": "Updating...",
-		"userCreated": "User %{user} has been succesfully created!",
-		"userDeleted": "User %{user} has been succesfully deleted!",
-		"userUpdated": "User %{user} has been succesfully updated!"
+		"userCreated": "User %{user} has been created!",
+		"userDeleted": "User %{user} has been deleted!",
+		"userPasswordChanged": "Password has been changed!",
+		"userUpdated": "User %{user} has been updated!"
 	},
 	"tables": {
 		"addNewDevice": "Add device",
@@ -471,24 +567,14 @@
 		"selected": "selected"
 	},
 	"users": {
-		"actions": {
-			"addToGroups": "Add to groups",
-			"changeOrganisation": "Change organisation",
-			"delete": "Delete",
-			"edit": "Edit",
-			"import": "Import",
-			"mailTo": "Send Email",
-			"new": "Add new",
-			"resetPassword": "Reset password",
-			"suspend": "Suspend"
-		},
-		"createUser": "Create user",
 		"editUser": "Edit user",
 		"fields": {
 			"accessLevel": "Access Level",
 			"active": "Active",
+			"confirmPass": "Confirm new password",
 			"created": "Created",
-			"email": "Email",
+			"currentPass": "Current password",
+			"email": "E-mail",
 			"firstName": "First name",
 			"group": "Group",
 			"language": "System language",
@@ -497,15 +583,13 @@
 			"loginSuspended": "Login suspended",
 			"name": "Name",
 			"neverLoggedIn": "Never signed in",
+			"newPass": "New password",
 			"noOrg": "No Organisation",
 			"organisation": "Organisation",
 			"phone": "Phone",
 			"profileImage": "Profile image",
 			"tags": "Tags",
-			"userName": "Username",
-			"currentPass": "Current password",
-			"newPass": "New password",
-			"confirmPass": "Confirm new password"
+			"userName": "Username"
 		},
 		"groups": {
 			"136550100000143": "Super user",
@@ -519,22 +603,19 @@
 			"contact": "Contact",
 			"system": "System log"
 		},
-		"menus": {
-			"account": "My account",
-			"profile": "My profile",
-			"signout": "Sign out"
-		},
 		"messages": {},
 		"pageTitle": "Users",
+		"user": "User",
 		"tabs": {
 			"orgs": "Organisations",
 			"users": "Users"
 		},
-		"userResendEmail": "Resend Confirm Email",
-		"userResendConfirm": "Are you sure you want to resend confirmation email?",
-		"userDelete": "Delete user",
-		"userDeleteConfirm": "Are you sure you want to delete this user?",
-		"usersDelete": "Delete users",
-		"usersDeleteConfirm": "Are you sure you want to delete the following users?:"
+		"userResendConfirm": "Are you sure you want to resend confirmation E-mail",
+		"userResendEmail": "Resend Confirm E-mail",
+		"validation": {
+			"noEmail": "E-mail is missing",
+			"noOrg": "Organisation is missing",
+			"userAlreadyExists": "E-mail is already assigned to another user account!"
+		}
 	}
 }

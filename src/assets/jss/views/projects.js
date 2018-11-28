@@ -6,10 +6,16 @@ import { primaryColor } from "assets/jss/material-dashboard-react.js";
 // import regularCardStyle from "../material-dashboard-react/regularCardStyle";
 
 const projectStyles = theme => ({
+	root: {
+		width: '100%',
+		margin: theme.spacing.unit,
+		borderRadius: "3px",
+	},
 	noOverflow: {
 		overflow: 'visible'
 	},
 	appBar: {
+		top: "70px",
 		height: 48,
 		zIndex: 1000
 		// position: "relative"

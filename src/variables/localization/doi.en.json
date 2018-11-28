@@ -1,0 +1,22 @@
+{
+	"Black Friday": {
+		"date": "23-11-2018",
+		"time": null,
+		"repeat": "annualy"
+	},
+	"Christmas": {
+		"date": "24-12-2018",
+		"time": null,
+		"repeat": "annual"
+	},
+	"Christmas Day": {
+		"date": "25-12-2018",
+		"time": null,
+		"repeat": "annual"
+	},
+	"New Years Evening": {
+		"date": "31-12-2018",
+		"time": null,
+		"repeat": "annual"
+	}
+}

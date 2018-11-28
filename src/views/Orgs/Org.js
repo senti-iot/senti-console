@@ -9,15 +9,14 @@ import {
 	DialogContentText,
 	DialogActions,
 	Button,
-	Snackbar,
 } from '@material-ui/core';
 import { getOrg, getOrgUsers } from 'variables/dataOrgs';
 import OrgDetails from './OrgCards/OrgDetails';
-// var moment = require("moment")
+// var moment = require('moment')
 import { connect } from 'react-redux'
-import { deleteOrg } from '../../variables/dataOrgs';
+import { deleteOrg } from 'variables/dataOrgs';
 import OrgUsers from 'views/Orgs/OrgCards/OrgUsers';
-
+import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 class Org extends Component {
 	constructor(props) {
 		super(props)
@@ -27,24 +26,36 @@ class Org extends Component {
 			users: [],
 			loading: true,
 			loadingUsers: true,
-			openDelete: false,
-			openSnackbar: 0
+			openDelete: false
 		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
 		if (prevProps.match.params.id !== this.props.match.params.id) {
 			this.componentDidMount()
 		}
+		if (this.props.saved === true) {
+			const { org } = this.state
+			if (this.props.isFav({ id: org.id, type: 'org' })) {
+				this.props.s('snackbars.favorite.saved', { name: org.name, type: this.props.t('favorites.types.org') })
+				this.props.finishedSaving()
+			}
+			if (!this.props.isFav({ id: org.id, type: 'org' })) {
+				this.props.s('snackbars.favorite.removed', { name: org.name, type: this.props.t('favorites.types.org') })
+				this.props.finishedSaving()
+			}
+		}
 	}
 
 	componentDidMount = async () => {
-		if (this.props.match)
-			if (this.props.match.params.id) {
-				await getOrg(this.props.match.params.id).then(async rs => {
+		const { match, setHeader, location, history } = this.props
+		if (match)
+			if (match.params.id) {
+				await getOrg(match.params.id).then(async rs => {
 					if (rs === null)
-						this.props.history.push('/404')
+						history.push('/404')
 					else {
-						this.props.setHeader(`${rs.name}`, true, '/orgs', "users")
+						let prevURL = location.prevURL ? location.prevURL : '/management/orgs'
+						setHeader('orgs.organisation', true, prevURL, 'users')
 						this.setState({ org: rs, loading: false })
 					}
 				})
@@ -53,20 +64,35 @@ class Org extends Component {
 				})
 			}
 	}
+	addToFav = () => {
+		const { org } = this.state
+		let favObj = {
+			id: org.id,
+			name: org.name,
+			type: 'org',
+			path: this.props.match.url }
+		this.props.addToFav(favObj)
+	}
+	removeFromFav = () => {
+		const { org } = this.state
+		let favObj = {
+			id: org.id,
+			name: org.name,
+			type: 'org',
+			path: this.props.match.url }
+		this.props.removeFromFav(favObj)
+	}
+	close = () => {
+		this.snackBarMessages(1)
+		this.props.history.push('/management/orgs')
+	}
 	handleDeleteOrg = async () => {
 		await deleteOrg(this.state.org.id).then(rs => {
 			this.setState({
-				openSnackbar: 1,
 				openDelete: false
 			})
+			this.close()
 		})
-	}
-	redirect = () => {
-		setTimeout(() => {
-			this.setState({ openSnackbar: 3 })
-			setTimeout(() => this.props.history.push('/orgs'), 1e3)
-		}, 2e3)
-
 	}
 
 	handleOpenDeleteDialog = () => {
@@ -77,13 +103,6 @@ class Org extends Component {
 		this.setState({ openDelete: false })
 	}
 
-	closeSnackBar = () => {
-		if (this.state.openSnackbar === 1) {
-			this.setState({ openSnackbar: 0 }, () => this.redirect())
-		}
-		else
-			this.setState({ openSnackbar: 0 })
-	}
 
 	renderDeleteDialog = () => {
 		const { openDelete } = this.state
@@ -91,54 +110,36 @@ class Org extends Component {
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">{t("orgs.orgDelete")}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.org')}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{t("orgs.orgDeleteConfirm", { org: this.state.org.name }) + "?"}
+				<DialogContentText id='alert-dialog-description'>
+					{t('dialogs.delete.message.org')}
 				</DialogContentText>
-
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color="primary">
-					{t("actions.cancel")}
+				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
+					{t('actions.cancel')}
 				</Button>
-				<Button onClick={this.handleDeleteOrg} color="primary" autoFocus>
-					{t("actions.yes")}
+				<Button onClick={this.handleDeleteOrg} color='primary' autoFocus>
+					{t('actions.yes')}
 				</Button>
 			</DialogActions>
 		</Dialog>
 	}
-	snackBarMessages = () => {
-		const { t } = this.props
-		let msg = this.state.openSnackbar
+	snackBarMessages = (msg) => {
+		const { s } = this.props
 		switch (msg) {
 			case 1:
-				return t("snackbars.orgDeleted")
-			case 3:
-				return t("snackbars.redirect")
+				s('snackbars.orgDeleted')
+				break
 			default:
 				break
 		}
 	}
-	renderSnackBar = () => <Snackbar
-		autoHideDuration={3000}
-		anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-		open={this.state.openSnackbar !== 0 ? true : false}
-		onClose={() => {
-			if (this.state.openSnackbar === 1)
-				this.closeSnackBar()
-			else
-				this.setState({ openSnackbar: 0 })
-		}}
-		message={
-			<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-				{this.snackBarMessages()}
-			</ItemGrid>
-		}
-	/>
+
 	render() {
 		const { classes, t, history, match, language } = this.props
 		const { org, loading, loadingUsers } = this.state
@@ -147,6 +148,9 @@ class Org extends Component {
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<ItemGrid xs={12} noMargin>
 						<OrgDetails
+							isFav={this.props.isFav({ id: org.id, type: 'org' })}
+							addToFav={this.addToFav}
+							removeFromFav={this.removeFromFav}
 							deleteOrg={this.handleOpenDeleteDialog}
 							match={match}
 							history={history}
@@ -159,13 +163,13 @@ class Org extends Component {
 					<ItemGrid xs={12} noMargin>
 						{!loadingUsers ? <OrgUsers
 							t={t}
-							users={this.state.users}
+							org={org}
+							users={this.state.users ? this.state.users : []}
 							history={history}
 						/> :
 							<CircularLoader notCentered />}
 					</ItemGrid>
 				</GridContainer>
-				{this.renderSnackBar()}
 				{this.renderDeleteDialog()}
 			</Fragment>
 		)
@@ -173,10 +177,15 @@ class Org extends Component {
 }
 const mapStateToProps = (state) => ({
 	language: state.localization.language,
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	saved: state.favorites.saved
 })
 
-const mapDispatchToProps = {
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	addToFav: (favObj) => dispatch(addToFav(favObj)),
+	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
+	finishedSaving: () => dispatch(finishedSaving())
+})
 
-}
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(userStyles)(Org))

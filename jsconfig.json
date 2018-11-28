@@ -1,16 +1,17 @@
 {
-    "compilerOptions": {
-        "target": "ES6",
-        "module": "commonjs",
-        "baseUrl": "./src",
-        "allowSyntheticDefaultImports": true
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es2015",
+		"jsx":"react",
+		"baseUrl": "./src",
+		"allowSyntheticDefaultImports": true
 	},
 	"include": [
 		"src/**/*"
 	],
 	"exclude": [
-		"node_modules",
 		"dist",
-		"**/*.spec.ts"
+		"**/*.spec.ts",
+		"node_modules/react-google-maps/*"
 	]
 }

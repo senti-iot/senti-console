@@ -1,9 +1,9 @@
 import { Button, Collapse, Grid, Paper, withStyles } from '@material-ui/core';
-import { Check, Save } from '@material-ui/icons';
+import { Check, Save } from 'variables/icons';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import React, { Component, Fragment } from 'react';
 import { getDevice, updateDevice } from 'variables/dataDevices';
-import { ItemGrid, TextF, GridContainer, CircularLoader, } from '..';
+import { ItemGrid, TextF, GridContainer, CircularLoader, } from 'components';
 
 class EditDetails extends Component {
 	constructor(props) {
@@ -14,7 +14,8 @@ class EditDetails extends Component {
 			updating: false,
 			updated: false
 		}
-		props.setHeader({ id: "devices.editHardwareTitle", options: { deviceId: props.match.params.id } }, true, '/devices/list', "devices")
+		let prevURL = props.location.state ? props.location.prevURL : `/devices/list`
+		props.setHeader({ id: 'devices.editHardwareTitle', options: { deviceId: props.match.params.id } }, true, prevURL, 'devices')
 	}
 	componentDidMount = async () => {
 		let id = this.props.match.params.id
@@ -60,92 +61,92 @@ class EditDetails extends Component {
 							<ItemGrid xs={6}>
 								<TextF
 									id={'rpimodel'}
-									label={t("devices.fields.pcModel")}
+									label={t('devices.fields.pcModel')}
 									handleChange={this.handleInput('RPImodel')}
 									value={device.RPImodel}
-									noFullWidth
+									
 									autoFocus
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
 								<TextF
 									id={'memory'}
-									label={t("devices.fields.memory")}
+									label={t('devices.fields.memory')}
 									handleChange={this.handleInput('memory')}
 									value={device.memory}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
 								<TextF
 									id={'mm'}
-									label={t("devices.fields.memoryModel")}
+									label={t('devices.fields.memoryModel')}
 									handleChange={this.handleInput('memoryModel')}
 									value={device.memoryModel}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
 								<TextF
 									id={'powerAdapter'}
-									label={t("devices.fields.adapter")}
+									label={t('devices.fields.adapter')}
 									handleChange={this.handleInput('adapter')}
 									value={device.adapter}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
 								<TextF
 									id={'wifiModule'}
-									label={t("devices.fields.wifiModule")}
+									label={t('devices.fields.wifiModule')}
 									handleChange={this.handleInput('wifiModule')}
 									value={device.wifiModule}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
 								<TextF
 									id={'modemModel'}
-									label={t("devices.fields.modemModel")}
+									label={t('devices.fields.modemModel')}
 									handleChange={this.handleInput('modemModel')}
 									value={device.modemModel}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
 								<TextF
 									id={'modemIMEI'}
-									label={t("devices.fields.modemIMEI")}
+									label={t('devices.fields.modemIMEI')}
 									handleChange={this.handleInput('modemIMEI')}
 									value={device.modemIMEI.toString()}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
 								<TextF
 									id={'cellNumber'}
-									label={t("devices.fields.cellNumber")}
+									label={t('devices.fields.cellNumber')}
 									handleChange={this.handleInput('cellNumber')}
 									value={device.cellNumber.toString()}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
 								<TextF
 									id={'SIMID'}
-									label={t("devices.fields.simCard")}
+									label={t('devices.fields.simCard')}
 									handleChange={this.handleInput('SIMID')}
 									value={device.SIMID.toString()}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
 								<TextF
 									id={'SIMProvider'}
-									label={t("devices.fields.simProvider")}
+									label={t('devices.fields.simProvider')}
 									handleChange={this.handleInput('SIMProvider')}
 									value={device.SIMProvider}
-									noFullWidth
+									
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12} container justify={'center'}>
@@ -155,12 +156,12 @@ class EditDetails extends Component {
 								</Collapse>
 								<ItemGrid>
 									<Button
-										variant="contained"
-										color="primary"
+										variant='contained'
+										color='primary'
 										disabled={this.state.updating}
 										onClick={this.state.updated ? this.goToDevice : this.handleUpdateDevice}
 									>
-										{this.state.updated ? <Fragment><Check className={classes.leftIcon} />{t("actions.goTo")} {t("devices.device")} </Fragment> : <Fragment><Save className={classes.leftIcon} />{t("actions.updateDeviceHardware")}</Fragment>}
+										{this.state.updated ? <Fragment><Check className={classes.leftIcon} />{t('actions.goTo')} {t('devices.device')} </Fragment> : <Fragment><Save className={classes.leftIcon} />{t('actions.save')}</Fragment>}
 									</Button>
 								</ItemGrid>
 							</ItemGrid>

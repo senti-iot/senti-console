@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="103px" height="91px" viewBox="0 0 103 91" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.3 (67297) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_snow_day</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#000000" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#000000" stop-opacity="0.5" offset="100%"></stop>
+        </linearGradient>
+        <path d="M49.1859092,36.8199268 L84.2189258,36.8199268 C89.1841605,36.2791015 93.1383101,32.073644 93.1383101,26.9206606 C93.1383101,22.2533384 89.8961922,18.2074243 85.5955205,17.3296649 C84.4177672,7.60292198 76.3338335,0 66.5288927,0 C59.6332608,0 53.5889025,3.68951015 50.1975217,9.28326617 C50.1136602,9.28164369 50.0303261,9.2583882 49.9459371,9.2583882 C42.6747744,9.2583882 36.7807339,15.58334 36.7807339,23.0391575 C36.7807339,30.2332156 42.2686526,36.2791015 49.1859092,36.8199268" id="path-2"></path>
+        <path d="M16.5303618,51.6663289 L56.6323864,51.6663289 C63.9999628,51.6663289 70.0013478,45.4776248 70.0013478,38.1228435 C70.0013478,31.9341393 65.9374834,26.7621557 60.2221101,25.0767563 C60.0707739,19.5615268 55.5036123,15.1589348 49.8784854,15.1589348 C48.2436374,15.1589348 46.7032009,15.5556203 45.3279848,16.2215585 C42.8954975,10.5247717 37.1856778,6.53256766 30.5289653,6.53256766 C23.2703787,6.53256766 17.139872,11.292108 15.1551457,17.8185772 C6.5754908,18.8414639 0,25.9489162 0,34.6924392 C0,43.8532012 7.12599378,51.6663289 16.5303618,51.6663289" id="path-3"></path>
+        <filter x="-24.3%" y="-28.8%" width="148.6%" height="175.3%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="0" dy="4" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.14 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Weather-icons" transform="translate(-702.000000, -541.000000)">
+            <g id="icons" transform="translate(195.000000, 158.000000)">
+                <g id="icon_snow_day" transform="translate(516.318841, 383.921212)">
+                    <g id="cloud">
+                        <use fill="#2D6CB5" xlink:href="#path-2"></use>
+                        <use fill-opacity="0.200000018" fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+                    </g>
+                    <g id="cloud">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                        <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-3"></use>
+                    </g>
+                    <circle id="Oval-2-Copy" fill="#FFFFFF" cx="74.5" cy="55.5" r="4.5"></circle>
+                    <circle id="Oval-2-Copy-2" fill="#FFFFFF" cx="13.5" cy="76.5" r="4.5"></circle>
+                    <circle id="Oval-2-Copy-3" fill="#FFFFFF" cx="79.5" cy="87.5" r="2.5"></circle>
+                    <circle id="Oval-2-Copy-3" fill="#FFFFFF" cx="38.5" cy="60.5" r="2.5"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

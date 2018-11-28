@@ -15,8 +15,8 @@ function renderInputComponent(inputProps) {
 
 	return (
 		<TextField
-			// noFullWidth
-			margin="normal"
+			// 
+			margin='normal'
 			// className={classes.textField}
 			InputProps={{
 				inputRef: node => {
@@ -34,7 +34,7 @@ function renderSuggestion(suggestion, { query, isHighlighted }) {
 	const parts = parse(suggestion.label, matches);
 
 	return (
-		<MenuItem selected={isHighlighted} component="div">
+		<MenuItem selected={isHighlighted} component='div'>
 			<div>
 				{parts.map((part, index) => {
 					return part.highlight ? (
@@ -155,7 +155,7 @@ class EditOrgAutoSuggest extends React.Component {
 					inputProps={{
 						classes,
 						error: this.props.error,
-						label: this.props.t("orgs.fields.country"),
+						label: this.props.t('orgs.fields.country'),
 						value: this.props.country,
 						onChange: this.handleChange(),
 						onClick: this.clearInput

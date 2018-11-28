@@ -8,11 +8,14 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 const styles = {
 	card: {
-		maxWidth: 345,
-		margin: 8
+		margin: 8,
+		display: 'flex',
+		flexFlow: 'column',
+		flexGrow: 1
 	},
 	cardContent: {
 		minHeight: 150,
+		flexGrow: 1
 	},
 	media: {
 		height: 0,
@@ -28,13 +31,13 @@ function MediaCard(props) {
 			<CardMedia
 				className={classes.media}
 				image={img}
-				title=""
+				title=''
 			/>
 			<CardContent classes={{ root: classes.cardContent }}>
-				<Typography gutterBottom variant="headline" component="h2">
+				<Typography gutterBottom variant='h5'>
 					{header}
 				</Typography>
-				<Typography component="p">
+				<Typography component='p'>
 					{content}
 				</Typography>
 			</CardContent>

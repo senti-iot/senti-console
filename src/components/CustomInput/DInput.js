@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Popover, Input, MenuItem, withStyles, ClickAwayListener, Paper, MenuList, FormControl } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
-import { ArrowDropDown } from "@material-ui/icons"
+import { ArrowDropDown } from '@material-ui/icons'
 class DInput extends Component {
 	constructor(props) {
 		super(props)
@@ -11,7 +11,10 @@ class DInput extends Component {
 		}
 	}
 	handleMenuItem = (e) => {
-		this.props.func(e.target.value)
+		// console.trace(this.props.onChange(e.target.value))
+		this.props.onChange(e.target.value)
+		this.handleCloseActionsDetails()
+		
 	}
 	handleCloseActionsDetails = event => {
 		this.setState({ actionAnchor: null });

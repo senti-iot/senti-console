@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from 'react'
-import { GridContainer, ItemGrid, CircularLoader, ItemG, TextF } from 'components';
+import { GridContainer, ItemGrid, CircularLoader, ItemG, TextF, Danger } from 'components';
 import UserContact from './UserCards/UserContact';
 import { UserLog } from './UserCards/UserLog';
-import { userStyles } from 'assets/jss/components/users/userStyles';
 import {
 	withStyles, /* , Typography, Grid, Hidden */
 	Dialog,
@@ -10,14 +9,15 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogActions,
-	Button,
-	Snackbar
+	Button
 } from '@material-ui/core';
 import { getUser, deleteUser, resendConfirmEmail } from 'variables/dataUsers';
 import { connect } from 'react-redux'
 import { setPassword } from 'variables/dataLogin';
+import { userStyles } from 'assets/jss/components/users/userStyles';
+import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 
-// var moment = require("moment")
+// var moment = require('moment')
 
 class User extends Component {
 	constructor(props) {
@@ -31,35 +31,67 @@ class User extends Component {
 			openChangePassword: false,
 			openResendConfirm: false,
 			pw: {
-				current: "",
-				newP: "",
-				confirm: ""
-			}
+				current: '',
+				newP: '',
+				confirm: ''
+			},
+			changePasswordError: false,
+			errorMessage: ''
 		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		if (prevProps.match && this.props.match.params)
+		if (prevProps.match && this.props.match.params) {
 			if (prevProps.match.params.id !== this.props.match.params.id) {
 				this.setState({ loading: true })
 				this.componentDidMount()
+			}}
+		if (this.props.saved === true) {
+			const { user } = this.state
+			if (this.props.isFav({ id: user.id, type: 'user' })) {
+				this.props.s('snackbars.favorite.saved', { name: `${user.firstName} ${user.lastName}`, type: this.props.t('favorites.types.user') })
+				this.props.finishedSaving()
 			}
+			if (!this.props.isFav({ id: user.id, type: 'user' })) {
+				this.props.s('snackbars.favorite.removed', { name: `${user.firstName} ${user.lastName}`, type: this.props.t('favorites.types.user') })
+				this.props.finishedSaving()
+			}
+		}
 	}
-
-	componentDidMount = () => {
-		if (this.props.match) {
-			if (this.props.match.params.id) {
-				this.timer = setTimeout(async () => await getUser(this.props.match.params.id).then(async rs => {
+	addToFav = () => {
+		const { user } = this.state
+		let favObj = {
+			id: user.id,
+			name: `${user.firstName} ${user.lastName}`,
+			type: 'user',
+			path: this.props.match.url }
+		this.props.addToFav(favObj)
+	}
+	removeFromFav = () => {
+		const { user } = this.state
+		let favObj = {
+			id: user.id,
+			name: `${user.firstName} ${user.lastName}`,
+			type: 'user',
+			path: this.props.match.url }
+		this.props.removeFromFav(favObj)
+	}
+	componentDidMount = async () => {
+		const { match, setHeader, history, location } = this.props
+		if (match) {
+			if (match.params.id) {
+				await getUser(match.params.id).then(async rs => {
 					if (rs.id === null)
-						this.props.history.push('/404')
+						history.push('/404')
 					else {
-						this.props.setHeader(`${rs.firstName} ${rs.lastName}`, true, '/users', "users")
+						let prevURL = location.prevURL ? location.prevURL : '/management/users'
+						setHeader("users.user", true, prevURL, 'users')
 						this.setState({ user: rs, loading: false })
 					}
-				}))
+				})
 			}
 		}
 		else {
-			this.props.history.push('/404')
+			history.push('/404')
 		}
 	}
 	resendConfirmEmail = async () => {
@@ -67,10 +99,9 @@ class User extends Component {
 		let userId = {
 			id: user.id
 		}
-		let data = await resendConfirmEmail(userId).then(rs => rs)
-		console.log(data);
+		await resendConfirmEmail(userId).then(rs => rs)
 		this.setState({ openResendConfirm: false })
-		
+
 	}
 	handleOpenResend = () => {
 		this.setState({ openResendConfirm: true })
@@ -88,37 +119,47 @@ class User extends Component {
 		this.setState({ openDelete: false })
 	}
 	handleDeleteUser = async () => {
-		await deleteUser(this.state.user.id).then(rs => {
-			return rs ? this.setState({ openSnackbar: 1, openDelete: false }) : null;
-		})
+		await deleteUser(this.state.user.id).then(rs => rs ? this.close() : null)
 	}
-	snackBarMessages = () => {
-		const { t } = this.props
-		let msg = this.state.openSnackbar
+	close = (rs) => {
+		this.setState({ openDelete: false })
+		this.snackBarMessages(1)
+		this.props.history.push('/management/users')
+	}
+	snackBarMessages = (msg) => {
+		const { s } = this.props
 		switch (msg) {
 			case 1:
-				return t("snackbars.userDeleted", { user: this.state.user.firstName + " " + this.state.user.lastName })
+				s('snackbars.userDeleted', { user: this.state.user.firstName + ' ' + this.state.user.lastName })
+				break
+			case 2:
+				s('snackbars.userPasswordChanged')
+				break
 			default:
 				break
 		}
 	}
-	closeSnackBar = () => {
-		if (this.state.openSnackbar === 1) {
-			this.setState({ openSnackbar: 0 }, () => this.redirect())
-		}
-		else
-			this.setState({ openSnackbar: 0 })
-	}
-	redirect = () => {
-		setTimeout(() => this.props.history.push('/users'), 1000)
-	}
+
 	handleOpenChangePassword = () => {
 		this.setState({ openChangePassword: true })
 	}
-	handleCloseChangePassword = () => {
+
+	handleCloseChangePassword = success => e => {		
+		if (e) {
+			e.preventDefault()
+		}
+		if (success === true) {
+			this.snackBarMessages(2)
+		} //userPasswordChanged
 		this.setState({ openChangePassword: false })
 	}
+
 	handleInputChange = e => {
+		if (this.state.changePasswordError)
+			this.setState({
+				errorMessage: false,
+				changePasswordError: false
+			})
 		this.setState({
 			pw: {
 				...this.state.pw,
@@ -127,6 +168,7 @@ class User extends Component {
 		})
 	}
 	handleChangePassword = async () => {
+		const { t } = this.props
 		const { confirm, newP } = this.state.pw
 		if (confirm === newP) {
 			let newPassObj = {
@@ -134,8 +176,15 @@ class User extends Component {
 				oldPassword: this.state.pw.current,
 				newPassword: this.state.pw.newP
 			}
-			let data = await setPassword(newPassObj).then(rs => rs)
-			return data
+			let success = await setPassword(newPassObj).then(rs => rs)
+			if (success)
+				this.handleCloseChangePassword(success)()
+			else {
+				this.setState({ changePasswordError: true, errorMessage: t('confirmUser.networkError') })
+			}
+		}
+		else {
+			this.setState({ changePasswordError: true, errorMessage: t('confirmUser.validation.passwordMismatch') })
 		}
 	}
 	renderChangePassword = () => {
@@ -143,46 +192,47 @@ class User extends Component {
 		const { t, accessLevel } = this.props
 		return <Dialog
 			open={openChangePassword}
-			onClose={this.handleCloseChangePassword}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			onClose={this.handleCloseChangePassword()}
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">{t("menus.changePassword")}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('menus.changePassword')}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{/* {t("users.userDeleteConfirm", { user: (this.state.user.firstName + " " + this.state.user.lastName) }) + "?"} */}
-				</DialogContentText>
+				<Danger> {this.state.errorMessage} </Danger>
 				{accessLevel.apiorg.editusers ? null : <ItemG>
 					<TextF
 						id={'current'}
-						label={t("users.fields.currentPass")}
-						type={"password"}
+						label={t('users.fields.currentPass')}
+						type={'password'}
 						handleChange={this.handleInputChange}
+						value={this.state.pw.current}
 					/>
 				</ItemG>}
 				<ItemG>
 					<TextF
 						id={'newP'}
-						label={t("users.fields.newPass")}
-						type={"password"}
+						label={t('users.fields.newPass')}
+						type={'password'}
 						handleChange={this.handleInputChange}
+						value={this.state.pw.newP}
 					/>
 				</ItemG>
 				<ItemG>
 					<TextF
 						id={'confirm'}
-						label={t("users.fields.confirmPass")}
-						type={"password"}
+						label={t('users.fields.confirmPass')}
+						type={'password'}
 						handleChange={this.handleInputChange}
+						value={this.state.pw.confirm}
 					/>
 				</ItemG>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseChangePassword} color="primary">
-					{t("actions.cancel")}
+				<Button onClick={this.handleCloseChangePassword(false)} color='primary'>
+					{t('actions.cancel')}
 				</Button>
-				<Button onClick={this.handleChangePassword} color="primary" autoFocus>
-					{t("menus.changePassword")}
+				<Button onClick={this.handleChangePassword} color='primary' autoFocus>
+					{t('menus.changePassword')}
 				</Button>
 			</DialogActions>
 		</Dialog>
@@ -193,22 +243,22 @@ class User extends Component {
 		return <Dialog
 			open={openResendConfirm}
 			onClose={this.handleCloseDeleteDialog}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">{t("users.userResendEmail")}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('users.userResendEmail')}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{t("users.userResendConfirm", { user: (this.state.user.firstName + " " + this.state.user.lastName) }) + "?"}
+				<DialogContentText id='alert-dialog-description'>
+					{t('users.userResendConfirm', { user: (this.state.user.firstName + ' ' + this.state.user.lastName) }) + '?'}
 				</DialogContentText>
 
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color="primary">
-					{t("actions.cancel")}
+				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
+					{t('actions.cancel')}
 				</Button>
-				<Button onClick={this.resendConfirmEmail} color="primary" autoFocus>
-					{t("actions.yes")}
+				<Button onClick={this.resendConfirmEmail} color='primary' autoFocus>
+					{t('actions.yes')}
 				</Button>
 			</DialogActions>
 		</Dialog>
@@ -219,22 +269,22 @@ class User extends Component {
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">{t("users.userDelete")}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.users')}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{t("users.userDeleteConfirm", { user: (this.state.user.firstName + " " + this.state.user.lastName) }) + "?"}
+				<DialogContentText id='alert-dialog-description'>
+					{t('dialogs.delete.message.users', { user: (this.state.user.firstName + ' ' + this.state.user.lastName) }) + '?'}
 				</DialogContentText>
 
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color="primary">
-					{t("actions.cancel")}
+				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
+					{t('actions.cancel')}
 				</Button>
-				<Button onClick={this.handleDeleteUser} color="primary" autoFocus>
-					{t("actions.yes")}
+				<Button onClick={this.handleDeleteUser} color='primary' autoFocus>
+					{t('actions.yes')}
 				</Button>
 			</DialogActions>
 		</Dialog>
@@ -249,6 +299,9 @@ class User extends Component {
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<ItemGrid xs={12} noMargin>
 						<UserContact
+							isFav={this.props.isFav({ id: user.id, type: 'user' })}
+							addToFav={this.addToFav}
+							removeFromFav={this.removeFromFav}
 							t={t}
 							user={user}
 							classes={classes}
@@ -264,27 +317,20 @@ class User extends Component {
 				{this.renderDeleteDialog()}
 				{this.renderChangePassword()}
 				{this.renderConfirmEmail()}
-				<Snackbar
-					autoHideDuration={1000}
-					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-					open={this.state.openSnackbar !== 0 ? true : false}
-					onClose={this.closeSnackBar}
-					message={
-						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-							{this.snackBarMessages()}
-						</ItemGrid>
-					}
-				/>
 			</Fragment>
 		)
 	}
 }
 const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	saved: state.favorites.saved
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	addToFav: (favObj) => dispatch(addToFav(favObj)),
+	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
+	finishedSaving: () => dispatch(finishedSaving())
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(userStyles)(User))

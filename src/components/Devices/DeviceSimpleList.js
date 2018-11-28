@@ -1,13 +1,12 @@
-import React, { Fragment } from "react";
+import React, { Fragment } from 'react';
 import { Checkbox, Table, TableBody, TableCell, TablePagination, TableRow, withStyles } from '@material-ui/core';
 import EnhancedTableHead from 'components/Table/TableHeader';
 import EnhancedTableToolbar from 'components/Table/TableToolbar'
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import devicetableStyles from "assets/jss/components/devices/devicetableStyles";
-import { SignalWifi2Bar, SignalWifi2BarLock } from '@material-ui/icons'
-import { ItemGrid, Info, Caption } from '..';
-import AssignProject from './AssignProject'
+import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
+import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
+import { ItemGrid, Info, Caption, AssignProject } from 'components';
 
 class DeviceSimpleList extends React.Component {
 	constructor(props) {
@@ -20,7 +19,7 @@ class DeviceSimpleList extends React.Component {
 			page: 0,
 			rowsPerPage: 5,
 			anchorElMenu: null,
-			keyword: ""
+			keyword: ''
 		};
 	}
 	handleToolbarMenuOpen = e => {
@@ -79,11 +78,11 @@ class DeviceSimpleList extends React.Component {
 	options = () => {
 		const { t } = this.props
 		return [
-			{ label: t("menus.edit"), func: this.handleDeviceEdit, single: true },
-			{ label: t("menus.assign"), func: this.handleAssignToProject, single: false },
-			{ label: t("menus.exportPDF"), func: () => { }, single: false },
-			{ label: t("menus.calibrate"), func: this.handleCalibrateFlow, single: true },
-			{ label: t("menus.delete"), func: this.handleDeleteProjects, single: false },
+			{ label: t('menus.edit'), func: this.handleDeviceEdit, single: true },
+			{ label: t('menus.assign'), func: this.handleAssignToProject, single: false },
+			{ label: t('menus.exportPDF'), func: () => { }, single: false },
+			{ label: t('menus.calibrate'), func: this.handleCalibrateFlow, single: true },
+			{ label: t('menus.delete'), func: this.handleDeleteProjects, single: false },
 		]
 	}
 	handleDeviceEdit = () => {
@@ -126,7 +125,7 @@ class DeviceSimpleList extends React.Component {
 		const { order, orderBy, selected, rowsPerPage, page, openAssignProject } = this.state
 		const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 		const tableHead = [
-			{ id: "id", label: t("devices.pageTitle") }
+			{ id: 'id', label: t('devices.pageTitle') }
 		]
 		return (
 			<Fragment>
@@ -148,7 +147,7 @@ class DeviceSimpleList extends React.Component {
 					t={t}
 				/>
 				{/* <div className={classes.tableWrapper}> */}
-				<Table className={classes.table} aria-labelledby="tableTitle">
+				<Table className={classes.table} aria-labelledby='tableTitle'>
 					<EnhancedTableHead
 						numSelected={selected.length}
 						order={order}
@@ -169,18 +168,18 @@ class DeviceSimpleList extends React.Component {
 								<TableRow
 									hover
 									onClick={e => { e.stopPropagation(); this.props.history.push('/device/' + n.id)}}
-									role="checkbox"
+									role='checkbox'
 									aria-checked={isSelected}
 									tabIndex={-1}
 									key={i}
 									selected={isSelected}
 									style={{ cursor: 'pointer' }}
 								>
-									<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
+									<TableCell padding='checkbox' className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
 										<Checkbox checked={isSelected} />
 									</TableCell>
 									<TableCell classes={{ root: classes.tableCell }}>
-										<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+										<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 											<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 												<Info noWrap paragraphCell={classes.noMargin}>
 													{n.name ? n.name : n.id}
@@ -188,7 +187,7 @@ class DeviceSimpleList extends React.Component {
 											</ItemGrid>
 											<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 												<Caption noWrap className={classes.noMargin}>
-													{`${n.name ? n.id : t("devices.noName")} - ${n.org ? n.org.name : ''}`}
+													{`${n.name ? n.id : t('devices.noName')} - ${n.org ? n.org.name : ''}`}
 												</Caption>
 											</ItemGrid>
 										</ItemGrid>
@@ -205,7 +204,7 @@ class DeviceSimpleList extends React.Component {
 				</Table>
 				{/* </div> */}
 				<TablePagination
-					component="div"
+					component='div'
 					count={data.length}
 					rowsPerPage={rowsPerPage}
 					page={page}
@@ -222,7 +221,7 @@ class DeviceSimpleList extends React.Component {
 					}}
 					onChangePage={this.handleChangePage}
 					onChangeRowsPerPage={this.handleChangeRowsPerPage}
-					labelRowsPerPage={t("tables.rowsPerPage")}
+					labelRowsPerPage={t('tables.rowsPerPage')}
 					SelectProps={{
 						classes: {
 							select: classes.SelectIcon

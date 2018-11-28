@@ -1,11 +1,11 @@
 import { Button, Grid, MobileStepper, withStyles } from '@material-ui/core';
-import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
+import { KeyboardArrowLeft, KeyboardArrowRight } from 'variables/icons';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ExifOrientationImg from 'react-exif-orientation-img';
 import SwipeableViews from 'react-swipeable-views';
-import { Caption, ItemGrid } from '..';
+import { Caption, ItemGrid } from 'components';
 import imagecarouselStyles from 'assets/jss/components/image/imagecarouselStyles';
 
 class DeviceImage extends React.Component {
@@ -43,7 +43,6 @@ class DeviceImage extends React.Component {
 		const { activeStep } = this.state;
 		
 		const maxSteps = images ? images.length ? images.length : 0 : 0;
-		// let blob = URL.createObjectURL(images[activeStep])
 		return (
 			<div className={classes.root}>
 				{images ? <Grid container justify={'center'} >
@@ -64,24 +63,24 @@ class DeviceImage extends React.Component {
 							</ItemGrid>
 						})}
 					</SwipeableViews> :
-						<Caption>{t("devices.noImages")}</Caption>
+						<Caption>{t('devices.noImages')}</Caption>
 					}
 				</Grid> : null}
 				<MobileStepper
 					steps={maxSteps}
-					position="static"
+					position='static'
 					activeStep={activeStep}
 					className={classes.mobileStepper}
 					nextButton={
-						<Button size="small" onClick={this.handleNext} disabled={activeStep === maxSteps - 1 || maxSteps === 0}>
-							{t("actions.next")}
+						<Button size='small' onClick={this.handleNext} disabled={activeStep === maxSteps - 1 || maxSteps === 0}>
+							{t('actions.next')}
 							{theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
 						</Button>
 					}
 					backButton={
-						<Button size="small" onClick={this.handleBack} disabled={activeStep === 0}>
+						<Button size='small' onClick={this.handleBack} disabled={activeStep === 0}>
 							{theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-							{t("actions.back")}
+							{t('actions.back')}
 						</Button>
 					}
 				/>

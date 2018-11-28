@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { InfoCard } from 'components';
-import { Devices } from '@material-ui/icons'
+import { Devices } from 'variables/icons'
 export default class DeviceSettings extends Component {
 	render() {
 		const { t } = this.props
@@ -8,7 +8,7 @@ export default class DeviceSettings extends Component {
 			<InfoCard
 				noExpand
 				avatar={<Devices />}
-				title={t("settings.headers.devices")} />
+				title={t('settings.headers.devices')} />
 		)
 	}
 }

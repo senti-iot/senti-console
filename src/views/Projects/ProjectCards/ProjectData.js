@@ -1,495 +1,359 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types'
-import { Grid, IconButton, Menu, MenuItem, withStyles, /* Typography, */ Select, FormControl, FormHelperText, Divider, Dialog, DialogTitle, DialogContent, /* DialogContentText, */ Button, DialogActions, ListItem, ListItemIcon, ListItemText, Collapse, List, Hidden } from '@material-ui/core';
 import {
-	AccessTime, AssignmentTurnedIn, MoreVert,
-	DateRange, KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft,
-	DonutLargeRounded, PieChartRounded, BarChart, ExpandMore, Visibility
-} from "@material-ui/icons"
-// import { dateFormatter } from 'variables/functions';
-import { ItemGrid, CircularLoader, Caption, Info, ItemG, /* , Caption, Info */ } from 'components';
-import InfoCard from 'components/Cards/InfoCard';
+	Grid, IconButton, Menu, withStyles, ListItem,
+	ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox,
+} from '@material-ui/core';
+import {
+	Timeline, MoreVert,
+	DonutLargeRounded,
+	PieChartRounded,
+	BarChart as BarChartIcon,
+	ExpandMore, Visibility, ShowChart, /* CloudDownload */
+} from 'variables/icons'
+import {
+	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
+	LineChart,
+	DoughnutChart,
+	PieChart,
+	// ExportModal
+} from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
-import { Doughnut, Bar, Pie } from 'react-chartjs-2';
-import { getWifiSummary } from 'variables/dataDevices';
-import { colors } from 'variables/colors';
-import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
-import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+// import { getDataSummary, getDataDaily, getDataHourly, getDataMinutely, /* getDataHourly */ } from 'variables/dataDevices';
 import classNames from 'classnames';
-import { dateFormatter } from 'variables/functions';
-var moment = require('moment');
+import { connect } from 'react-redux'
+import moment from 'moment'
+import { dateTimeFormatter } from 'variables/functions'
+// import DevicePDF from 'components/Exports/DevicePDF';
 
-
-class ProjectData extends Component {
+class ProjectData extends PureComponent {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			from: moment().startOf('day'),
+			from: moment().subtract(7, 'd').startOf('day'),
 			to: moment().endOf('day'),
-			barDataSets: null,
-			roundDataSets: null,
 			actionAnchor: null,
-			loading: true,
-			dateFilterInputID: 0,
-			openCustomDate: false,
-			display: 2,
-			visibility: false
+			openDownload: false,
+			display: props.chartType ? props.chartType : 3,
+			visibility: false,
 		}
 	}
-	legendOpts = {
-		display: this.props.theme.breakpoints.width("md") < window.innerWidth ? true : false,
-		position: 'bottom',
-		fullWidth: true,
-		reverse: false,
-		labels: {
-			padding: 10
-		}
-	}
-	barOpts = {
-		display: false,
-		position: 'bottom',
-		fullWidth: true,
-		reverse: false,
-		labels: {
-			padding: 10
-		}
-	}
-	getWifiSum = async () => {
-		const { project } = this.props
-		const { from, to } = this.state
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
 
-		let dataArr = []
-		await Promise.all(project.devices.map(async d => {
-			let dataSet = null
-			await getWifiSummary(d.id, startDate, endDate).then(rs => dataSet = { nr: d.id, id: d.name + "(" + d.id + ")", data: rs, factor: d.wifiFactor })
-			return dataArr.push(dataSet)
-		}))
-		dataArr.sort((a, b) => a.nr - b.nr)
-		if (dataArr.length > 0)
-			this.setState({
-				loading: false,
-				calibrated: {
-					roundDataSets: {
-						labels: dataArr.map(rd => rd.id),
-						datasets: [{
-							label: "",
-							borderColor: "#FFF",
-							borderWidth: 1,
-							data: dataArr.map(rd => rd.factor > 0 ? parseInt(rd.data, 10) * rd.factor : parseInt(rd.data, 10)),
-							// backgroundColor: dataArr.map(() => getRandomColor())
-							backgroundColor: dataArr.map((rd, id) => colors[id])
-						}]
-					},
-				},
-				uncalibrated: {
 
-					roundDataSets: {
-						labels: dataArr.map(rd => rd.id),
-						datasets: [{
-							label: "",
-							borderColor: "#FFF",
-							borderWidth: 1,
-							data: dataArr.map(rd => parseInt(rd.data, 10)),
-							// backgroundColor: dataArr.map(() => getRandomColor())
-							backgroundColor: dataArr.map((rd, id) => colors[id])
-						}]
-					},
-				},
-				roundDataSets: {
-					labels: dataArr.map(da => da.id),
-					datasets: [{
-						label: "Raw data",
-						borderColor: "#FFF",
-						borderWidth: 1,
-						data: dataArr.map(d => parseInt(d.data, 10)),
-						backgroundColor: dataArr.map((rd, id) => colors[id])
-					}]
-				},
-				barDataSets: {
-					labels: dataArr.map(d => d.nr),
-					datasets: [{
-						label: "Raw data",
-						borderColor: "#FFF",
-						borderWidth: 1,
-						data: dataArr.map(d => d.data),
-						backgroundColor: dataArr.map((rd, id) => colors[id])
-					},
-					{
-						label: "Calibrated data",
-						borderColor: "#FFF",
-						borderWidth: 1,
-						data: dataArr.map(d => d.factor > 0 ? parseInt(d.data, 10) * parseInt(d.factor, 10) : d.data),
-						backgroundColor: dataArr.map((rd, id) => colors[id + 15])
-					}]
-				
-				}
-			})
-		else { 
-			this.setState({
-				loading: false,
-				noData: true
-			})
-		}
-	}
-	componentDidMount = async () => {
-		this._isMounted = 1
-		if (this._isMounted) {
-			this.getWifiSum()
-		}
-	}
+	displayFormat = 'DD MMMM YYYY HH:mm'
+	image = null
+	options = [
+		{ id: 0, label: this.props.t('filters.dateOptions.today') },
+		{ id: 1, label: this.props.t('filters.dateOptions.yesterday') },
+		{ id: 2, label: this.props.t('filters.dateOptions.thisWeek') },
+		{ id: 3, label: this.props.t('filters.dateOptions.7days') },
+		{ id: 4, label: this.props.t('filters.dateOptions.30days') },
+		{ id: 5, label: this.props.t('filters.dateOptions.90days') },
+		{ id: 6, label: this.props.t('filters.dateOptions.custom') },
+	]
+	timeTypes = [
+		{ id: 0, format: 'lll dddd', chart: 'minute' },
+		{ id: 1, format: 'lll dddd', chart: 'hour' },
+		{ id: 2, format: 'll dddd', chart: 'day' },
+		{ id: 3, format: 'll dddd', chart: 'month' },
+	]
+	visibilityOptions = [
+		{ id: 0, icon: <PieChartRounded />, label: this.props.t('charts.type.pie') },
+		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t('charts.type.donut') },
+		{ id: 2, icon: <BarChartIcon />, label: this.props.t('charts.type.bar') },
+		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
+	]
+
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
 
 	handleOpenActionsDetails = event => {
 		this.setState({ actionAnchor: event.currentTarget });
-	};
+	}
+
 	handleCloseActionsDetails = () => {
 		this.setState({ actionAnchor: null });
-	};
-	format = "YYYY-MM-DD+HH:mm"
-	displayFormat = "DD MMMM YYYY HH:mm"
-	handleSetDate = (id) => {
-		let to = null
-		let from = null
-		switch (id) {
-			case 0: // Today
-				from = moment().startOf('day')
-				to = moment().endOf('day')
-				break;
-			case 1: // Last 7 days
-				from = moment().subtract(7, 'd').startOf('day')
-				to = moment().endOf('day')
-				break;
-			case 2: // last 30 days
-				from = moment().subtract(30, 'd').startOf('day')
-				to = moment().endOf('day')
-				break;
-			case 3: // last 90 days
-				from = moment().subtract(90, 'd').startOf('day')
-				to = moment().endOf('day')
-				break;
-			case 5:
-				from = moment().subtract(1, 'd').startOf('day')
-				to = moment().endOf('day')
-				break;
-			case 6:
-				from = moment().startOf('week').startOf('day')
-				to = moment().endOf('day')
-				break;
-			default:
-				break;
-		}
-		this.setState({
-			dateFilterInputID: id,
-			to: to,
-			from: from,
-			loading: true,
-			roundDataSets: null,
-			barDataSets: null
-		}, this.getWifiSum)
 	}
-	handleVisibility = (event) => {
-		let id = event.target.value
-		this.setState({ display: id })
+
+	handleVisibility = id => (event) => {
+		if (event)
+			event.preventDefault()
+		this.setState({ display: id, loading: true, actionAnchorVisibility: null })
 	}
-	
-	handleDateFilter = (event) => {
-		let id = event.target.value
-		if (id !== 4) {
-			this.handleSetDate(id)
-		}
-		else { 
-			this.setState({ loading: true,  openCustomDate: true, dateFilterInputID: id })
-		}
-	}
-	
+
 	handleCustomDate = date => e => {
 		this.setState({
 			[date]: e
 		})
 	}
-	
-	options = [
-		{ id: 0, label: this.props.t("filters.dateOptions.today") },
-		{ id: 5, label: this.props.t("filters.dateOptions.yesterday") },
-		{ id: 6, label: this.props.t("filters.dateOptions.thisWeek") },
-		{ id: 1, label: this.props.t("filters.dateOptions.7days") },
-		{ id: 2, label: this.props.t("filters.dateOptions.30days") },
-		{ id: 3, label: this.props.t("filters.dateOptions.90days") },
-		{ id: 4, label: this.props.t("filters.dateOptions.custom") },
-	]
 
-	visibilityOptions = [
-		{ id: 0, icon: <PieChartRounded />, label: this.props.t("charts.type.pie") },
-		{ id: 1, icon: <DonutLargeRounded />, label: this.props.t("charts.type.donut") },
-		{ id: 2, icon: <BarChart />, label: this.props.t("charts.type.bar") },
-	]
-
-	handleCloseDialog = () => {
-		this.setState({ openCustomDate: false })
-		this.getWifiSum()
+	handleZoomOnData = async (elements) => {
+		if (elements.length > 0) {
+			const { timeType, lineDataSets } = this.props
+			let date = null
+			let startDate = null
+			let endDate = null
+			try {
+				date = lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
+				switch (timeType) {
+					case 1:
+						startDate = moment(date).startOf('hour')
+						endDate = moment(date).endOf('hour')
+						this.props.handleSetDate(6, endDate, startDate, 0, false)
+						break
+					case 2:
+						startDate = moment(date).startOf('day')
+						endDate = moment(date).endOf('day')
+						this.props.handleSetDate(6, endDate, startDate, 1, false)
+						break;
+					default:
+						break;
+				}
+			}
+			catch (error) {
+				
+			}
+		}
+	}
+	handleCancelCustomDate = () => {
+		this.setState({
+			loading: false, openCustomDate: false
+		})
+	}
+	handleOpenDownloadModal = () => {
+		this.setState({ openDownload: true, actionAnchor: null })
+	}
+	handleCloseDownloadModal = () => {
+		this.setState({ openDownload: false })
 	}
 
-	renderCustomDateDialog = () => {
-		const { classes, t } = this.props
-		return <MuiPickersUtilsProvider utils={MomentUtils}>
-		 <Dialog
-				open={this.state.openCustomDate}
-				onClose={this.handleCloseUnassign}
-				aria-labelledby="alert-dialog-title"
-				aria-describedby="alert-dialog-description">
-				<DialogTitle id="alert-dialog-title">{t("filters.dateOptions.custom")}</DialogTitle>
-				<DialogContent>
-					<ItemGrid>
-						<DateTimePicker
-							autoOk
-							label={t("filters.startDate")}
-							clearable
-							ampm={false}
-							format="LLL"
-							value={this.state.from}
-							onChange={this.handleCustomDate('from')}
-							animateYearScrolling={false}
-							color="primary"
-							disableFuture
-							dateRangeIcon={<DateRange />}
-							timeIcon={<AccessTime/>}
-							rightArrowIcon={<KeyArrRight />}
-							leftArrowIcon={<KeyArrLeft />}
-							InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-							InputProps={{ classes: { underline: classes.underline } }}
-						/>
-					</ItemGrid>
-					<ItemGrid>
-						<DateTimePicker
-							autoOk
-							disableFuture
-							label={t("filters.endDate")}
-							clearable
-							ampm={false}
-							format="LLL"
-							value={this.state.to}
-							onChange={this.handleCustomDate('to')}
-							animateYearScrolling={false}
-							dateRangeIcon={<DateRange />}
-							timeIcon={<AccessTime />}
-							color="primary"
-							rightArrowIcon={<KeyArrRight />}
-							leftArrowIcon={<KeyArrLeft />}
-							InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-							InputProps={{ classes: { underline: classes.underline } }}
-						/>
-					</ItemGrid>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={() => { this.setState({ loading: false, openCustomDate: false })}} color="primary">
-						{t("dialogs.cancel")}
-					</Button>
-					<Button onClick={this.handleCloseDialog} color="primary" autoFocus>
-						{t("dialogs.apply")}
-					</Button>
-				</DialogActions>
-			</Dialog>
-		</MuiPickersUtilsProvider>
-
-	}
 	renderType = () => {
 		const { display } = this.state
-		const { classes } = this.props
-
+		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device } = this.props
 		switch (display) {
 			case 0:
-				return this.state.calibrated.roundDataSets ? <ItemG container>
-					<ItemG xs={12}>
-						<Caption className={classes.bigCaption2}>Calibrated Data</Caption>
-						<Pie
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-							legend={this.legendOpts}
-							data={this.state.calibrated.roundDataSets}
-							options={{
-								maintainAspectRatio: false,
-							}}
-						/>
-					</ItemG>
-					<ItemG xs={12}>
-						<Caption className={classes.bigCaption2}>Raw Data</Caption>
-						<Pie
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-							legend={this.legendOpts}
-							data={this.state.uncalibrated.roundDataSets}
-							options={{
-								maintainAspectRatio: false,
-							}}
-						/>
-					</ItemG>
-				</ItemG> : this.renderNoDataFilters()
-
+				return roundDataSets ? <div style={{ maxHeight: 400 }}>
+					<PieChart
+						title={title}
+						single //temporary
+						unit={this.timeTypes[timeType]}
+						// onElementsClick={this.handleZoomOnData}
+						setHoverID={setHoverID}
+						data={roundDataSets}
+					/>
+				</div>
+					: this.renderNoData()
 			case 1:
-				return this.state.calibrated.roundDataSets ? <ItemG container>
-					<ItemG xs={12}>
-						<Caption className={classes.bigCaption2}>Calibrated Data</Caption>
-						<Doughnut
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-							legend={this.legendOpts}
-							options={{
-								maintainAspectRatio: false,
-							}}
-							data={this.state.calibrated.roundDataSets}
-						/>	</ItemG>
-					<ItemG xs={12}>
-						<Caption className={classes.bigCaption2}>Raw Data</Caption>
-						<Doughnut
-							height={this.props.theme.breakpoints.width("md") < window.innerWidth ? 400 : window.innerHeight - 200}
-							legend={this.legendOpts}
-							options={{
-								maintainAspectRatio: false,
-							}}
-							data={this.state.uncalibrated.roundDataSets}
-						/></ItemG>
-				</ItemG> : this.renderNoDataFilters()
+				return roundDataSets ?
+					<div style={{ maxHeight: 400 }}>
+						<DoughnutChart
+							title={title}
+							single //temporary
+							unit={this.timeTypes[timeType]}
+							// onElementsClick={this.handleZoomOnData}
+							setHoverID={setHoverID}
+							data={roundDataSets}
+						/></div>
+					: this.renderNoData()
 			case 2:
-				return this.state.barDataSets ? <Bar
-					data={this.state.barDataSets}
-					legend={this.barOpts}
-					height={this.props.theme.breakpoints.width("md") < window.innerWidth ? window.innerWidth / 4 : window.innerHeight - 200}
-					options={{
-						maintainAspectRatio: false,
-					}}
-				/> : null
+				return barDataSets ? <div style={{ maxHeight: 400 }}>
+					<BarChart
+						obj={device}
+						unit={this.timeTypes[timeType]}
+						onElementsClick={this.handleZoomOnData}
+						setHoverID={setHoverID}
+						data={barDataSets}
+						t={t}
+					/></div> : this.renderNoData()
+			case 3:
+				
+				return lineDataSets ?
+					<LineChart
+						hoverID={this.props.hoverID}
+						// getImage={this.getImage}
+						obj={device}
+						unit={this.timeTypes[timeType]}
+						onElementsClick={this.handleZoomOnData}
+						setHoverID={setHoverID}
+						data={lineDataSets}
+						t={t}
+					/> : this.renderNoData()
 			default:
 				break;
 		}
 	}
-	renderDateFilter = () => {
-		const { classes, t } = this.props
-		const { dateFilterInputID, to, from } = this.state
-		let displayTo = dateFormatter(to)
-		let displayFrom = dateFormatter(from)
-		return (
-			<div className={classes.root}>
-				<Hidden smDown>
-					<DateRange className={classes.leftIcon} />
-				</Hidden>
-				<FormControl className={classes.formControl}>
-					<Select
-						value={this.state.dateFilterInputID}
-						onChange={this.handleDateFilter}
-						inputProps={{
-							name: 'data-dateFilter',
-							id: 'data-dateFilterInput',
-						}}
-					>
-						<ItemGrid >
-							<Caption>{this.options[this.options.findIndex(d => d.id === dateFilterInputID ? true : false)].label}</Caption>
-							{/* <Info>{`${from.substr(0, 10)} - ${to.substr(0, 10)}`}</Info> */}
-							<Info>{`${displayFrom} - ${displayTo}`}</Info>
-						</ItemGrid>
-						<Divider />
-						<MenuItem value={0}>{t("filters.dateOptions.today")}</MenuItem>
-						<MenuItem value={5}>{t("filters.dateOptions.yesterday")}</MenuItem>
-						<MenuItem value={6}>{t("filters.dateOptions.thisWeek")}</MenuItem>
-						<MenuItem value={1}>{t("filters.dateOptions.7days")}</MenuItem>
-						<MenuItem value={2}>{t("filters.dateOptions.30days")}</MenuItem>
-						<MenuItem value={3}>{t("filters.dateOptions.90days")}</MenuItem>
-						<Divider />
-						<MenuItem value={4}>{t("filters.dateOptions.custom")}</MenuItem>
-					</Select>
-					<FormHelperText>{`${displayFrom} - ${displayTo}`}</FormHelperText>
-				</FormControl>
-			</div>
-		)
-	}
+
 	renderMenu = () => {
-		const { actionAnchor } = this.state
+		const { actionAnchor, actionAnchorVisibility } = this.state
 		const { classes, t } = this.props
-		return <ItemGrid container noMargin noPadding>
-			<Hidden smDown>
-				{this.renderDateFilter()}
-			</Hidden>
-			<IconButton
-				aria-label="More"
-				aria-owns={actionAnchor ? 'long-menu' : null}
-				aria-haspopup="true"
-				onClick={this.handleOpenActionsDetails}>
-				<MoreVert />
-			</IconButton>
-			<Menu
-				id="long-menu"
+		return <Fragment>
+			<ItemG>
+				<Hidden smDown>
+					<IconButton title={'Chart Type'} variant={'fab'} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
+						<Visibility />
+					</IconButton>
+					<Menu
+						id='long-menu'
+						anchorEl={actionAnchorVisibility}
+						open={Boolean(actionAnchorVisibility)}
+						onClose={() => this.setState({ actionAnchorVisibility: null })}
+						PaperProps={{
+							style: {
+								// maxHeight: 300,
+								minWidth: 250
+							}
+						}}>					<List component='div' disablePadding>
+							{this.visibilityOptions.map(op => {
+								return <ListItem key={op.id} value={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
+									<ListItemIcon>
+										{op.icon}
+									</ListItemIcon>
+									<ListItemText inset primary={op.label} />
+								</ListItem>
+							})}
+						</List>
+					</Menu>
+				</Hidden>
+			</ItemG>
+			<ItemG>
+				<IconButton
+					aria-label='More'
+					aria-owns={actionAnchor ? 'long-menu' : null}
+					aria-haspopup='true'
+					onClick={this.handleOpenActionsDetails}>
+					<MoreVert />
+				</IconButton>
+			</ItemG>
+			 <Menu
+				id='long-menu'
 				anchorEl={actionAnchor}
 				open={Boolean(actionAnchor)}
 				onClose={this.handleCloseActionsDetails}
 				onChange={this.handleVisibility}
 				PaperProps={{
 					style: {
-						maxHeight: 300,
+						// maxHeight: 300,
 						minWidth: 250
 					}
 				}}>
-				<div>
-					<Hidden lgUp>
+				{/*<div>
+					<Hidden mdUp>
 						<ListItem>
 							{this.renderDateFilter()}
 						</ListItem>
 					</Hidden>
-				</div>
-				<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
+				</div> */}
+				{/* <ListItem button onClick={this.handleOpenDownloadModal}>
+					<ListItemIcon><CloudDownload /></ListItemIcon>
+					<ListItemText>{t('data.download')}</ListItemText>
+				</ListItem> */}
+				<ListItem button onClick={this.props.handleRawData}>
 					<ListItemIcon>
-						<Visibility />
+						<Checkbox
+							checked={this.props.raw}
+							// disabled
+							className={classes.noPadding}
+						/>
 					</ListItemIcon>
-					<ListItemText inset primary={t("filters.options.graphType")} />
-					<ExpandMore className={classNames({
-						[classes.expandOpen]: this.state.visibility,
-					}, classes.expand)} />
+					<ListItemText>
+						{t('collections.rawData')}
+					</ListItemText>
 				</ListItem>
-				<Collapse in={this.state.visibility} timeout="auto" unmountOnExit>
-					<List component="div" disablePadding>
-						{this.visibilityOptions.map(op => {
-							return <ListItem key={op.id} button className={classes.nested} onClick={() => this.setState({ display: op.id })}>
-								<ListItemIcon>
-									{op.icon}
-								</ListItemIcon>
-								<ListItemText inset primary={op.label} />
-							</ListItem>
-						})}
-					</List>
-				</Collapse>
-				))}
+				<div>
+					<Hidden mdUp>
+						<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
+							<ListItemIcon>
+								<Visibility />
+							</ListItemIcon>
+							<ListItemText inset primary={t('filters.options.graphType')} />
+							<ExpandMore className={classNames({
+								[classes.expandOpen]: this.state.visibility,
+							}, classes.expand)} />
+						</ListItem>
+						<Collapse in={this.state.visibility} timeout='auto' unmountOnExit>
+							<List component='div' disablePadding>
+								{this.visibilityOptions.map(op => {
+									return <ListItem key={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
+										<ListItemIcon>
+											{op.icon}
+										</ListItemIcon>
+										<ListItemText inset primary={op.label} />
+									</ListItem>
+								})}
+							</List>
+						</Collapse>
+					</Hidden>
+				</div>
 			</Menu>
-		</ItemGrid>
+		</Fragment>
 	}
 	renderNoData = () => {
 		return <ItemG container justify={'center'}>
-			<Caption> {this.props.t("devices.noData")}</Caption>
+			<Caption> {this.props.t('devices.noData')}</Caption>
 		</ItemG>
 	}
 
 	render() {
-		const { t } = this.props
-		const { loading, noData } = this.state
+		const { raw, t, loading, to, from, dateOption } = this.props
+		// const {  openDownload } = this.state
+		let displayTo = dateTimeFormatter(to)
+		let displayFrom = dateTimeFormatter(from)
 		return (
-			<InfoCard
-				title={t("projects.infoCardProjectData")} avatar={<AssignmentTurnedIn />}
-				noExpand
-				topAction={noData ? null : this.renderMenu()}
-				content={
-					<Grid container>
-						{this.renderCustomDateDialog()}
-						{loading ? <CircularLoader notCentered /> :
-							<Fragment>
-								<ItemG xs={12} container>
-									{noData ? this.renderNoData() : this.renderType()}
-								</ItemG>
-							</Fragment>}
-					</Grid>}
-			/>
+			<Fragment>
+				<InfoCard
+					title={t('collections.cards.data')}
+					subheader={`${this.options[dateOption].label}, ${raw ? t('collections.rawData') : t('collections.calibratedData')}, ${displayFrom} - ${displayTo}`}
+					avatar={<Timeline />}
+					noExpand
+					topAction={this.renderMenu()}
+					content={
+						<Grid container>
+							{/* <ExportModal
+								img={this.state.image}
+								open={openDownload}
+								handleClose={this.handleCloseDownloadModal}
+								t={t}
+							/> */}
+							{loading ? <CircularLoader notCentered /> :
+								<Fragment>
+									{/* <ItemG xs={12} container direction={'column'} alignItems={'center'} justify={'center'}>
+										<Caption className={classes.bigCaption2}>{raw ? t('collections.rawData') : t('collections.calibratedData')}</Caption>
+										<Caption className={classes.captionPading}>{`${displayFrom} - ${displayTo}`}</Caption>
+									</ItemG> */}
+									<ItemG xs={12}>
+										{ this.renderType() }
+									</ItemG>
+									{/* {this.props.hoverID} */}
+									{/* <img src={this.state.image} alt={'not loaded'}/> */}
+									{/* <DevicePDF img={this.state.image}/> */}
+								</Fragment>}
+						</Grid>}
+				/>
+				{/* <div style={{ position: 'absolute', top: '-100%', width: 1000, height: 400 }}>
+					{this.state.lineDataSets ?
+						<LineChart
+							single
+							getImage={this.getImage}
+							unit={this.timeTypes[this.state.timeType]}
+							data={this.state.lineDataSets}
+							t={this.props.t}
+						/> : this.renderNoData()}
+				</div> */}
+			</Fragment >
 		);
 	}
 }
 ProjectData.propTypes = {
 	project: PropTypes.object.isRequired,
 }
-export default withStyles(deviceStyles, { withTheme: true })(ProjectData);
+const mapStateToProps = (state) => ({
+	chartType: state.settings.chartType
+})
+
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(ProjectData))

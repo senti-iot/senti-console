@@ -13,7 +13,7 @@
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
  */
-.ct-grid {
+/* .ct-grid {
     stroke: rgba(255, 255, 255, 0.2);
     stroke-width: 1px;
     stroke-dasharray: 2px;
@@ -52,7 +52,7 @@
 .ct-label {
     fill: rgba(0, 0, 0, 0.4);
     line-height: 1;
-}
+} */
 html * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -70,7 +70,7 @@ blockquote footer:before, blockquote small:before {
     content: '\2014 \00A0';
 }
 
-h1 {
+/* h1 {
     font-size: 3em;
     line-height: 1.15em;
 }
@@ -98,9 +98,8 @@ h5 {
 
 h6 {
     font-size: 1em;
-    text-transform: uppercase;
     font-weight: 500;
-}
+} */
 
 body {
     background-color: #EEEEEE;

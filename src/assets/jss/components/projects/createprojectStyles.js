@@ -1,6 +1,37 @@
 import teal from '@material-ui/core/colors/teal'
+import { hoverColor, primaryColor, headerColor } from 'assets/jss/material-dashboard-react';
 
 const createprojectStyles = theme => ({
+	appBar: {
+		position: 'sticky',
+		backgroundColor: headerColor,
+		boxShadow: "none",
+		borderBottom: "0",
+		marginBottom: "0",
+		width: "100%",
+		paddingTop: "10px",
+		zIndex: "1029",
+		color: "#ffffff",
+		border: "0",
+		// borderRadius: "3px",
+		padding: "10px 0",
+		transition: "all 150ms ease 0s",
+		minHeight: "50px",
+		display: "block"
+	},
+	flex: {
+		flex: 1,
+	},
+	selectedItem: {
+		background: primaryColor,
+		"&:hover": {
+			background: hoverColor
+		}
+		// color: "#fff"
+	},
+	selectedItemText: {
+		color: "#FFF"
+	},
 	leftIcon: {
 		marginRight: theme.spacing.unit
 	},
@@ -32,7 +63,7 @@ const createprojectStyles = theme => ({
 		marginTop: 16,
 		marginBottom: 8,
 		minWidth: 208,
-		width: 208
+		// width: 208
 	},
 	chips: {
 		display: 'flex',

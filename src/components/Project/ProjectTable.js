@@ -1,60 +1,27 @@
 import {
-	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
-	TableRow, Typography, withStyles, Snackbar, DialogTitle, Dialog, DialogContent,
-	DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem, List, ListItem, ListItemIcon, ListItemText
-} from "@material-ui/core"
-import { Delete, Devices, Edit, PictureAsPdf } from '@material-ui/icons'
-import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
-import PropTypes from "prop-types"
-import React, { Fragment } from "react"
+	Checkbox, Hidden, Table, TableBody, TableCell,
+	TableRow, Typography, withStyles, DialogTitle, Dialog, DialogContent,
+	DialogContentText, DialogActions, Button, List, ListItem, ListItemIcon, ListItemText
+} from '@material-ui/core'
+// import { Delete, Devices, Edit, PictureAsPdf } from 'variables/icons'
+import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
+import PropTypes from 'prop-types'
+import React, { Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
-import { dateFormatter } from "variables/functions"
-// import EnhancedTableHead from './ProjectTableHeader'
-import EnhancedTableHead from '../Table/TableHeader'
-import EnhancedTableToolbar from '../Table/TableToolbar'
-// import EnhancedTableToolbar from './TableToolBar'
-import { ItemGrid, Info, Caption } from ".."
-import { connect } from "react-redux"
-import { Add, FilterList } from '@material-ui/icons';
-import { boxShadow } from 'assets/jss/material-dashboard-react';
+import { dateFormatter } from 'variables/functions'
+import EnhancedTableHead from 'components/Table/TableHeader'
+import { ItemGrid, Info, Caption } from 'components'
+import { connect } from 'react-redux'
 import TP from 'components/Table/TP';
+import TC from 'components/Table/TC';
 
-class EnhancedTable extends React.Component {
+class ProjectTable extends React.Component {
 	constructor(props) {
 		super(props);
-
 		this.state = {
-			selected: [],
 			page: 0,
 			rowsPerPage: props.rowsPerPage,
-			anchorElMenu: null,
-			anchorFilterMenu: null,
-			openSnackbar: 0,
-			openDelete: false
 		}
-	}
-
-	snackBarMessages = () => {
-		let msg = this.state.openSnackbar
-		const { t } = this.props
-		switch (msg) {
-			case 1:
-				return t("snackbars.deletedSuccess")
-			case 2:
-				return t("snackbars.exported")
-			default:
-				break;
-		}
-	}
-
-	handleToolbarMenuOpen = e => {
-		e.stopPropagation()
-		this.setState({ anchorElMenu: e.currentTarget })
-	}
-
-	handleToolbarMenuClose = e => {
-		e.stopPropagation();
-		this.setState({ anchorElMenu: null })
 	}
 
 	handleFilterMenuOpen = e => {
@@ -67,7 +34,7 @@ class EnhancedTable extends React.Component {
 		this.setState({ anchorFilterMenu: null })
 	}
 
-	handleFilter = e => {
+	handleFilter = () => {
 	}
 
 	handleSearch = value => {
@@ -80,45 +47,6 @@ class EnhancedTable extends React.Component {
 		this.props.handleRequestSort(event, property)
 	}
 
-	handleSelectAllPage = (event, checked) => {
-		if (checked) {
-			const { data } = this.props
-			const { rowsPerPage, page } = this.state
-			this.setState({ selected: data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => n.id) })
-			return;
-		}
-	}
-
-	handleSelectAllClick = (event, checked) => {
-		if (checked) {
-			this.setState({ selected: this.props.data.map(n => n.id) })
-			return;
-		}
-		this.setState({ selected: [] })
-	}
-
-	handleClick = (event, id) => {
-		event.stopPropagation()
-		const { selected } = this.state;
-		const selectedIndex = selected.indexOf(id)
-		let newSelected = [];
-
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1))
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1))
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(
-				selected.slice(0, selectedIndex),
-				selected.slice(selectedIndex + 1),
-			);
-		}
-
-		this.setState({ selected: newSelected })
-	}
-
 	handleChangePage = (event, page) => {
 		this.setState({ page });
 	}
@@ -128,51 +56,23 @@ class EnhancedTable extends React.Component {
 	}
 
 	handleDeleteProjects = async () => {
-		await this.props.deleteProjects(this.state.selected)
-		this.setState({
-			selected: [],
-			anchorElMenu: null,
-			openSnackbar: 1,
-			openDelete: false
-		})
+		await this.props.deleteProjects(this.props.selected)
 	}
 
-	handleOpenDeleteDialog = () => {
-		this.setState({ openDelete: true, anchorElMenu: null })
-	}
-
-	handleCloseDeleteDialog = () => {
-		this.setState({ openDelete: false })
-	}
-
-	isSelected = id => this.state.selected.indexOf(id) !== -1
-
-	handleEdit = () => {
-		this.props.history.push(`/project/${this.state.selected[0]}/edit`)
-	}
-	options = () => {
-		const { t } = this.props
-		return [
-			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t("menus.assignDevices"), func: this.assignDevice, single: true, icon: Devices },
-			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
-			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
-		]
-	}
+	isSelected = id => this.props.selected.indexOf(id) !== -1
 
 	renderConfirmDelete = () => {
-		const { openDelete, selected } = this.state
-		const { data, t } = this.props
+		const { data, t, selected, handleCloseDeleteDialog, openDelete } = this.props
 		return <Dialog
 			open={openDelete}
-			onClose={this.handleCloseDeleteDialog}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			onClose={handleCloseDeleteDialog}
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">{t("projects.projectDelete")}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.projects')}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{t("projects.projectDeleteConfirm")}
+				<DialogContentText id='alert-dialog-description'>
+					{t('dialogs.delete.message.projects')}
 				</DialogContentText>
 				<List>
 					{selected.map(s => <ListItem key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
@@ -181,73 +81,32 @@ class EnhancedTable extends React.Component {
 				</List>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color="primary">
-					{t("actions.no")}
+				<Button onClick={handleCloseDeleteDialog} color='primary'>
+					{t('actions.no')}
 				</Button>
-				<Button onClick={this.handleDeleteProjects} color="primary" autoFocus>
-					{t("actions.yes")}
+				<Button onClick={this.handleDeleteProjects} color='primary' autoFocus>
+					{t('actions.yes')}
 				</Button>
 			</DialogActions>
 		</Dialog>
 	}
-	AddNewProject = () => this.props.history.push('/projects/new')
 
-	renderTableToolBarContent = () => {
-		const { classes, tableHead, t } = this.props
-		const { anchorFilterMenu } = this.state
-
-		return <Fragment>
-			<IconButton aria-label="Add new project" onClick={this.AddNewProject}>
-				<Add />
-			</IconButton>
-			<IconButton
-				className={classes.secondAction}
-				aria-label={t("tables.filter")}
-				aria-owns={anchorFilterMenu ? "filter-menu" : null}
-				onClick={this.handleFilterMenuOpen}>
-				<FilterList />
-			</IconButton>
-			<Menu
-				id="filter-menu"
-				anchorEl={anchorFilterMenu}
-				open={Boolean(anchorFilterMenu)}
-				onClose={this.handleFilterMenuClose}
-				PaperProps={{ style: { width: 200, boxShadow: boxShadow } }}>
-
-				{tableHead.map(option => {
-					return <MenuItem key={option.id} onClick={this.handleFilter}>
-						{option.label}
-					</MenuItem>
-				})}
-			</Menu>
-		</Fragment>
-	}
 	render() {
-		const { classes, t, order, data, orderBy } = this.props
-		const { selected, rowsPerPage, page } = this.state
+		const { classes, selected, t, order, data, orderBy, handleCheckboxClick } = this.props
+		const { rowsPerPage, page } = this.state
 		let emptyRows;
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 
 		return (
-
-			<Paper className={classes.root}>
-				<EnhancedTableToolbar
-					anchorElMenu={this.state.anchorElMenu}
-					handleToolbarMenuClose={this.handleToolbarMenuClose}
-					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
-					numSelected={selected.length}
-					options={this.options}
-					t={t}
-					content={this.renderTableToolBarContent()}
-				/>
+			<Fragment>
 				<div className={classes.tableWrapper}>
-					<Table className={classes.table} aria-labelledby="tableTitle">
+					<Table className={classes.table} aria-labelledby='tableTitle'>
 						<EnhancedTableHead // ./ProjectTableHeader
 							numSelected={selected.length}
 							order={order}
 							orderBy={orderBy}
-							onSelectAllClick={this.handleSelectAllClick}
+							onSelectAllClick={this.props.handleSelectAllClick}
 							onRequestSort={this.handleRequestSort}
 							rowCount={data ? data.length : 0}
 							columnData={this.props.tableHead}
@@ -256,12 +115,12 @@ class EnhancedTable extends React.Component {
 							// mdDown={[0]}
 							customColumn={[
 								{
-									id: "title",
-									label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>
+									id: 'title',
+									label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
 										Projects
 									</Typography>
 								}
-							]} //Which Columns to display on small Screens
+							]}
 						/>
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
@@ -270,7 +129,7 @@ class EnhancedTable extends React.Component {
 									<TableRow
 										hover
 										onClick={e => { e.stopPropagation(); this.props.history.push('/project/' + n.id) }}
-										role="checkbox"
+										role='checkbox'
 										aria-checked={isSelected}
 										tabIndex={-1}
 										key={n.id}
@@ -278,11 +137,9 @@ class EnhancedTable extends React.Component {
 										style={{ cursor: 'pointer' }}
 									>
 										<Hidden lgUp>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-												<Checkbox checked={isSelected} />
-											</TableCell>
-											<TableCell classes={{ root: classes.tableCell }}>
-												<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+											<TC content={
+												<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Info noWrap paragraphCell={classes.noMargin}>
 															{n.title}
@@ -290,52 +147,26 @@ class EnhancedTable extends React.Component {
 													</ItemGrid>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Caption noWrap className={classes.noMargin}>
-															{`${n.org ? n.org.name : t("users.fields.noOrg")}` /* ${dateFormatter(n.startDate)} - ${dateFormatter(n.endDate)} */}
+															{`${n.org ? n.org.name : t('users.fields.noOrg')}`}
 														</Caption>
 													</ItemGrid>
-													{/* </ItemGrid> */}
 												</ItemGrid>
-											</TableCell>
+											}/>
 										</Hidden>
 
 										<Hidden mdDown>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-												<Checkbox checked={isSelected} />
-											</TableCell>
-											<TableCell className={classes.tableCell + " " + classes.tableCellNoWidth}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{n.title}
-												</Typography>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph title={n.description} classes={{ root: classes.paragraphCell }}>
-													{n.description}
-												</Typography>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{dateFormatter(n.startDate)}
-												</Typography>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{dateFormatter(n.endDate)}
-												</Typography>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{dateFormatter(n.created)}	</Typography>
-											</TableCell>
-											<TableCell className={classes.tableCell}>
-												<Typography paragraph classes={{ root: classes.paragraphCell }}>
-													{dateFormatter(n.modified)}	</Typography>
-											</TableCell>
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+											<TC FirstC label={n.title}/>
+											<TC label={dateFormatter(n.startDate)}/>
+											<TC label={dateFormatter(n.endDate)}/>
+											<TC label={dateFormatter(n.created)}/>
+											<TC label={dateFormatter(n.modified)}/>
 										</Hidden>
 									</TableRow>
 								)
 							}) : null}
 							{emptyRows > 0 && (
-								<TableRow style={{ height: 49/*  * emptyRows  */ }}>
+								<TableRow style={{ height: 49 }}>
 									<TableCell colSpan={8} />
 								</TableRow>
 							)}
@@ -351,19 +182,8 @@ class EnhancedTable extends React.Component {
 					handleChangePage={this.handleChangePage}
 					handleChangeRowsPerPage={this.handleChangeRowsPerPage}
 				/>
-				<Snackbar
-					anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-					open={this.state.openSnackbar !== 0 ? true : false}
-					onClose={() => { this.setState({ openSnackbar: 0 }) }}
-					autoHideDuration={1000}
-					message={
-						<ItemGrid zeroMargin noPadding justify={'center'} alignItems={'center'} container id="message-id">
-							{this.snackBarMessages()}
-						</ItemGrid>
-					}
-				/>
 				{this.renderConfirmDelete()}
-			</Paper>
+			</Fragment>
 		)
 	}
 }
@@ -375,8 +195,8 @@ const mapDispatchToProps = {
 
 }
 
-EnhancedTable.propTypes = {
+ProjectTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(EnhancedTable)))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(ProjectTable)))
