@@ -148,7 +148,7 @@
         "cards": {
             "data": "Data",
             "details": "Device details",
-            "hardware": "Hardware",
+            "hardware": "Equipment",
             "map": "Map",
             "pictures": "Images"
         },
@@ -201,13 +201,13 @@
         },
         "new": "",
         "noAddress": "No Address",
-        "noData": "There is no data!",
-        "noDataFilters": "There is no data available for the selected filters!",
+        "noData": "There is currently no data available!",
+        "noDataFilters": "There is currently no data available for the selected filters!",
         "noDevices": "There are no available devices",
         "noImages": "There are no images uploaded!",
         "noLocType": " No location type set",
         "noName": "No name",
-        "notCalibrated": "Device has not been calibrated! No map location and weather data will be accessible.",
+        "notCalibrated": "Device has not been calibrated! No device location on maps or weather data will be accessible.",
         "pageTitle": "Devices",
         "simpleList": {
             "address": "Address",
