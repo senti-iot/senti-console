@@ -147,7 +147,6 @@ class Management extends Component {
 		const { t } = this.props
 		return [
 			{ id: 'name', label: t('favorites.fields.name') },
-			{ id: 'id', label: t('favorites.fields.id') },
 			{ id: 'type', label: t('favorites.fields.type') }
 		]
 	}
