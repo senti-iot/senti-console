@@ -5,6 +5,7 @@
     },
     "Senti.Cloud": "Senti.Cloud",
     "actions": {
+		"update": "Rediger",
         "accept": "Accepter",
         "apply": "Anvend",
         "back": "Forrige",
