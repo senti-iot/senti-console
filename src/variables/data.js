@@ -21,6 +21,14 @@ export const loginApi = create({
 		'Content-Type': 'application/json'
 	}
 })
+export const weatherApi = create({
+	baseURL: `https://api.senti.cloud/weather/v1/`,
+	timeout: 30000,
+	headers: {
+		'Accept': 'application/json',
+		'Content-Type': 'application/json'
+	}
+})
 export const mapApi = create({
 	baseURL: 'https://maps.googleapis.com/maps/api/geocode/',
 	timeout: 30000,
@@ -39,8 +47,6 @@ export const imageApi = create({
 })
 export const api = create({
 	baseURL: backendHost,
-	// baseURL: 'http://api.dashboard.senti.cloud/web/',
-	// baseURL: 'http://localhost:80',
 	timeout: 30000,
 	headers: {
 		'Accept': 'application/json',

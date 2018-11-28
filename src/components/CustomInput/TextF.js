@@ -18,6 +18,7 @@ const TextF = (props) => {
 	return (		
 		<TextField
 			autoFocus={props.autoFocus ? props.autoFocus : undefined}
+			placeholder={props.placeholder ? props.placeholder : undefined}
 			id={props.id}
 			label={props.label}
 			value={props.value}
@@ -26,12 +27,12 @@ const TextF = (props) => {
 			fullWidth={props.fullWidth || mobile ? true : false}
 			multiline={props.multiline ? props.multiline : undefined}
 			rows={props.rows ? props.rows : undefined}
-			className={props.classes.textField ? props.classes.textFields : ""}
+			className={props.classes.textField ? props.classes.textFields : ''}
 			error={props.error ? props.error : undefined}
 			type={props.type ? props.type : undefined}
-			pattern={props.pattern ? props.pattern : ""}
+			pattern={props.pattern ? props.pattern : ''}
 			disabled={props.disabled ? props.disabled : false}
-			margin="normal"
+			margin='normal'
 			helperText={props.helperText}
 			InputProps={props.InputProps ? props.InputProps : null}
 		/>

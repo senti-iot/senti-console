@@ -2,6 +2,12 @@
 import { red, green, yellow, grey } from '@material-ui/core/colors'
 import { primaryColor } from 'assets/jss/material-dashboard-react'
 const devicetableStyles = theme => ({
+	orgUsersTD: {
+		[theme.breakpoints.down('xs')]: {
+			padding: '0 10px'
+		},
+		padding: '0 20px'
+	},
 	hideIcon: {
 		display: "none",
 		// position: 'absolute',
@@ -32,13 +38,15 @@ const devicetableStyles = theme => ({
 		flex: 0,
 	},
 	noMargin: {
+		whiteSpace: "pre-line",
 		marginBottom: 0,
 		overflow: 'hidden'
 	},
 	img: {
 		borderRadius: "50px",
 		height: "30px",
-		width: "30px"
+		width: "30px",
+		display: 'flex'
 	},
 	tableCellID: {
 		padding: "4px",
@@ -75,6 +83,7 @@ const devicetableStyles = theme => ({
 		overflowX: 'auto',
 	},
 	header: {
+		padding: 0,
 		backgroundColor: grey[400],
 		// color: grey[200]
 	},
@@ -85,7 +94,11 @@ const devicetableStyles = theme => ({
 		},
 	},
 	checked: {},
+	headerButton: {
+		width: "100%"
+	},
 	HeaderLabelActive: {
+		width: "100%",
 		color: grey[800],
 		"&:hover": {
 			color: "black"
@@ -106,10 +119,16 @@ const devicetableStyles = theme => ({
 
 	},
 	tablecellcheckbox: {
+		[theme.breakpoints.down("sm")]: {
+			width: '35px'
+		},
+		[theme.breakpoints.down("md")]: {
+			width: '45px'
+		},
 		fontSize: '0.875rem',
 		borderTop: "1px solid rgba(224, 224, 224, 1)",
 		/*padding: 0, */
-		width: '50px'
+		width: '50px', 
 	},
 	paddingLeft: {
 		paddingLeft: 16

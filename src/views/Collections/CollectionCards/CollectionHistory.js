@@ -10,22 +10,22 @@ class CollectionHistory extends React.Component {
 		const { collection, t } = this.props
 		return <InfoCard
 			noExpand
-			title={t("collections.cards.log")}
+			title={t('collections.cards.log')}
 			avatar={<History />}
 			content={collection.devices.length > 0 ? <Table>
 				<TableHead>
 					<TableRow>
 						{/* <TableCell>Device Name</TableCell> */}
-						<TableCell>{t("collections.fields.deviceId")}</TableCell>
-						<TableCell>{t("collections.fields.activated")}</TableCell>
-						<TableCell>{t("collections.fields.endOfService")}</TableCell>
+						<TableCell>{t('collections.fields.deviceId')}</TableCell>
+						<TableCell>{t('collections.fields.activated')}</TableCell>
+						<TableCell>{t('collections.fields.endOfService')}</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
 					{collection.devices.map((c, i) => {
 						return (
 							<TableRow key={i}>
-								{/* <TableCell>{c.name ? c.name : this.props.t("devices.noName")} </TableCell> */}
+								{/* <TableCell>{c.name ? c.name : this.props.t('devices.noName')} </TableCell> */}
 								<TableCell>{c.id} </TableCell>
 								<TableCell>{dateTimeFormatter(c.start)} </TableCell>
 								<TableCell>{dateTimeFormatter(c.end)}</TableCell>
@@ -33,7 +33,7 @@ class CollectionHistory extends React.Component {
 						);
 					})}
 				</TableBody>
-			</Table> : <Caption>{t("collections.noHistory")}</Caption>}
+			</Table> : <Caption>{t('no.history')}</Caption>}
 		/>
 	}
 }

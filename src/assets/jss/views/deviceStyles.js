@@ -2,7 +2,9 @@ import { red, yellow, green, teal } from "@material-ui/core/colors";
 import { boxShadow } from '../material-dashboard-react';
 
 const deviceStyles = theme => ({
-	
+	captionPading: {
+		paddingBottom: 20
+	},
 	noPadding: {
 		padding: 0
 	},
@@ -15,7 +17,8 @@ const deviceStyles = theme => ({
 		fontWeight: 500,
 		fontSize: "1.1em",
 		paddingTop: 0,
-		padding: 30
+		paddingBottom: 5,
+		padding: 30,
 	},
 	bigCaption1: {
 		fontWeight: 500,
@@ -23,8 +26,9 @@ const deviceStyles = theme => ({
 		padding: 30
 	},
 	checkbox: {
-		width: 30,
-		height: 30
+		padding: 8
+		// width: 30,
+		// height: 30
 	},
 	label: {
 		'&$focused': {

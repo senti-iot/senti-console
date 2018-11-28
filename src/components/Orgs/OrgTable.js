@@ -2,19 +2,22 @@ import {
 	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
 	TableRow, withStyles, DialogTitle, Dialog, DialogContent,
 	DialogContentText, DialogActions, Button, /* MenuItem, Menu, */ IconButton, ListItem, ListItemIcon, ListItemText, List,
-} from "@material-ui/core"
+} from '@material-ui/core'
 import TC from 'components/Table/TC'
-import { Delete, Edit, PictureAsPdf, /* FilterList, */ Add } from 'variables/icons'
-import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
-import PropTypes from "prop-types"
-import React, { Fragment } from "react"
+import { Delete, Edit, PictureAsPdf, /* FilterList, */ Add, Star, StarBorder } from 'variables/icons'
+import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
+import PropTypes from 'prop-types'
+import React, { Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 import EnhancedTableHead from 'components/Table/TableHeader'
 import EnhancedTableToolbar from 'components/Table/TableToolbar'
-import { Info, ItemG, Caption } from "components"
-import { connect } from "react-redux"
+import { Info, ItemG, Caption } from 'components'
+import { connect } from 'react-redux'
 import TP from 'components/Table/TP'
-var countries = require("i18n-iso-countries")
+import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
+import withSnackbar from 'components/Localization/S';
+
+var countries = require('i18n-iso-countries')
 
 class OrgTable extends React.Component {
 	constructor(props) {
@@ -29,7 +32,23 @@ class OrgTable extends React.Component {
 			openDelete: false,
 		}
 	}
-
+	componentDidUpdate = () => {
+		if (this.props.saved === true) {
+			const { data } = this.props
+			const { selected } = this.state
+			let org = data[data.findIndex(d => d.id === selected[0])]
+			if (this.props.isFav({ id: org.id, type: 'org' })) {
+				this.props.s('snackbars.favorite.saved', { name: org.name, type: this.props.t('favorites.types.org') })
+				this.props.finishedSaving()
+				this.setState({ selected: [] })
+			}
+			if (!this.props.isFav({ id: org.id, type: 'org' })) {
+				this.props.s('snackbars.favorite.removed', { name: org.name, type: this.props.t('favorites.types.org') })
+				this.props.finishedSaving()
+				this.setState({ selected: [] })
+			}
+		}
+	}
 	handleToolbarMenuOpen = e => {
 		e.stopPropagation()
 		this.setState({ anchorElMenu: e.currentTarget })
@@ -110,29 +129,47 @@ class OrgTable extends React.Component {
 	isSelected = id => this.state.selected.indexOf(id) !== -1
 
 	handleEdit = () => {
-		this.props.history.push(`/org/${this.state.selected[0]}/edit`)
+		this.props.history.push(`/management/org/${this.state.selected[0]}/edit`)
+	}
+	addToFav = (favObj) => {
+		this.props.addToFav(favObj)
+		this.setState({ anchorElMenu: null })
+	}
+	removeFromFav = (favObj) => {
+		this.props.removeFromFav(favObj)
+		this.setState({ anchorElMenu: null })
 	}
 	options = () => {
-		const { t, accessLevel } = this.props
+		const { t, accessLevel, isFav, data } = this.props
+		const { selected } = this.state
+		let org = data[data.findIndex(d => d.id === selected[0])]
+		let favObj = {
+			id: org.id,
+			name: org.name,
+			type: 'org',
+			path: `/management/org/${org.id}`
+		}
+		let isFavorite = isFav(favObj)
 		let allOptions = [
-			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
-			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
+			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
+			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
+			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
+			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
 		if (accessLevel.apiorg.edit)
 			return allOptions
 		else return [
-			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf }
+			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
+			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf }
 		]
 	}
-	addNewOrg = () => { this.props.history.push('/orgs/new') }
+	addNewOrg = () => { this.props.history.push('/management/orgs/new') }
 
 	renderTableToolBarContent = () => {
 		const { accessLevel } = this.props
-		// const { anchorFilterMenu } = this.state
 		let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
 		return <Fragment>
-			{access ? <IconButton aria-label="Add new organisation" onClick={this.addNewOrg}>
+			{access ? <IconButton aria-label='Add new organisation' onClick={this.addNewOrg}>
 				<Add />
 			</IconButton> : null
 			}
@@ -145,13 +182,13 @@ renderConfirmDelete = () => {
 	return <Dialog
 		open={openDelete}
 		onClose={this.handleCloseDeleteDialog}
-		aria-labelledby="alert-dialog-title"
-		aria-describedby="alert-dialog-description"
+		aria-labelledby='alert-dialog-title'
+		aria-describedby='alert-dialog-description'
 	>
-		<DialogTitle id="alert-dialog-title">{t("orgs.orgsDelete")}</DialogTitle>
+		<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.orgs')}</DialogTitle>
 		<DialogContent>
-			<DialogContentText id="alert-dialog-description">
-				{t("orgs.orgsDeleteConfirm")}:
+			<DialogContentText id='alert-dialog-description'>
+				{t('dialogs.delete.message.orgs')}:
 			</DialogContentText>
 			<List>
 				{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
@@ -159,11 +196,11 @@ renderConfirmDelete = () => {
 			</List>
 		</DialogContent>
 		<DialogActions>
-			<Button onClick={this.handleCloseDeleteDialog} color="primary">
-				{t("actions.no")}
+			<Button onClick={this.handleCloseDeleteDialog} color='primary'>
+				{t('actions.no')}
 			</Button>
-			<Button onClick={this.handleDeleteOrg} color="primary" autoFocus>
-				{t("actions.yes")}
+			<Button onClick={this.handleDeleteOrg} color='primary' autoFocus>
+				{t('actions.yes')}
 			</Button>
 		</DialogActions>
 	</Dialog>
@@ -189,7 +226,7 @@ render() {
 				content={this.renderTableToolBarContent()}
 			/>
 			<div className={classes.tableWrapper}>
-				<Table className={classes.table} aria-labelledby="tableTitle">
+				<Table className={classes.table} aria-labelledby='tableTitle'>
 					<EnhancedTableHead // ./ProjectTableHeader
 						numSelected={selected.length}
 						order={order}
@@ -200,8 +237,7 @@ render() {
 						columnData={this.props.tableHead}
 						t={t}
 						classes={classes}
-						// mdDown={[0]} //Which Columns to display on small Screens
-						customColumn={[{ id: "name", label: t("orgs.fields.org") }]}
+						customColumn={[{ id: 'name', label: t('orgs.fields.org') }]}
 					/>
 					<TableBody>
 						{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
@@ -209,9 +245,8 @@ render() {
 							return (
 								<TableRow
 									hover
-									onClick={e => { e.stopPropagation(); this.props.history.push('/org/' + n.id) }}
-									// onContextMenu={this.handleToolbarMenuOpen}
-									role="checkbox"
+									onClick={e => { e.stopPropagation(); this.props.history.push('/management/org/' + n.id) }}
+									role='checkbox'
 									aria-checked={isSelected}
 									tabIndex={-1}
 									key={n.id}
@@ -219,11 +254,9 @@ render() {
 									style={{ cursor: 'pointer' }}
 								>
 									<Hidden lgUp>
-										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-											<Checkbox checked={isSelected} />
-										</TableCell>
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => this.handleClick(e, n.id)}/>} />
 										<TC content={
-											<ItemG container alignItems={"center"}>
+											<ItemG container alignItems={'center'}>
 												<ItemG>
 													<Info noWrap paragraphCell={classes.noMargin}>
 														{n.name}
@@ -239,9 +272,7 @@ render() {
 										} />
 									</Hidden>
 									<Hidden mdDown>
-										<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-											<Checkbox checked={isSelected} />
-										</TableCell>
+										<TC checkbox content={<Checkbox checked={isSelected} onClick={e => this.handleClick(e, n.id)}/>} />
 										<TC FirstC label={n.name} />
 										<TC label={n.address} />
 										<TC label={`${n.zip} ${n.city}`} />
@@ -275,15 +306,20 @@ render() {
 const mapStateToProps = (state) => ({
 	rowsPerPage: state.settings.trp,
 	language: state.localization.language,
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	favorites: state.favorites.favorites,
+	saved: state.favorites.saved
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	addToFav: (favObj) => dispatch(addToFav(favObj)),
+	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
+	finishedSaving: () => dispatch(finishedSaving())
+})
 
 OrgTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(OrgTable)))
+export default withSnackbar()(withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(OrgTable))))

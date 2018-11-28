@@ -1,17 +1,17 @@
 import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
 	TableRow, withStyles, Typography
-} from "@material-ui/core"
+} from '@material-ui/core'
 import TC from 'components/Table/TC'
-import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
-import PropTypes from "prop-types"
-import React, { Fragment } from "react"
+import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
+import PropTypes from 'prop-types'
+import React, { Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 import EnhancedTableHead from 'components/Table/TableHeader'
 // import EnhancedTableToolbar from 'components/Table/TableToolbar'
-import { connect } from "react-redux"
+import { connect } from 'react-redux'
 import TP from 'components/Table/TP'
-import { Info, Caption, ItemG } from "components";
+import { Info, Caption, ItemG } from 'components';
 import { dateFormatter } from 'variables/functions';
 import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
 class CollectionTable extends React.Component {
@@ -31,10 +31,6 @@ class CollectionTable extends React.Component {
 
 	handleSelectAllClick = (event, checked) => {
 		this.props.handleSelectAllClick(event, checked)
-	}
-
-	handleClick = (event, id) => {
-		this.props.handleClick(event, id)
 	}
 
 	handleChangePage = (event, page) => {
@@ -59,19 +55,19 @@ class CollectionTable extends React.Component {
 		const { classes, t } = this.props
 		switch (status) {
 			case 1:
-				return <div title={t("devices.status.yellow")}>
+				return <div title={t('devices.status.yellow')}>
 					<ItemG container justify={'center'}>
 						<SignalWifi2Bar className={classes.yellowSignal} />
 					</ItemG>
 				</div>
 			case 2:
-				return <div title={t("devices.status.green")}>
+				return <div title={t('devices.status.green')}>
 					<ItemG container justify={'center'}>
 						<SignalWifi2Bar className={classes.greenSignal} />
 					</ItemG>
 				</div>
 			case 0:
-				return <div title={t("devices.status.red")}>
+				return <div title={t('devices.status.red')}>
 					<ItemG container justify={'center'}>
 						<SignalWifi2Bar className={classes.redSignal} />
 					</ItemG>
@@ -84,16 +80,15 @@ class CollectionTable extends React.Component {
 	}
 
 	render() {
-		const { classes, t, order, orderBy, data, selected } = this.props
+		const { classes, t, order, orderBy, data, selected, handleCheckboxClick } = this.props
 		const { rowsPerPage, page } = this.state
 		let emptyRows;
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 		return (
 			<Fragment>
-				
 				<div className={classes.tableWrapper}>
-					<Table className={classes.table} aria-labelledby="tableTitle">
+					<Table className={classes.table} aria-labelledby='tableTitle'>
 						<EnhancedTableHead // ./ProjectTableHeader
 							numSelected={selected.length}
 							order={order}
@@ -104,22 +99,18 @@ class CollectionTable extends React.Component {
 							columnData={this.props.tableHead}
 							t={t}
 							classes={classes}
-							// mdDown={[0]} //Which Columns to display on small Screens
 							customColumn={
-								[
-								
-									{ id: "name", label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>
-										{t("collections.fields.collection")}
-									</Typography>
-									},
-									{
-										id: 'activeDeviceStats.state', label: <Typography paragraph classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>
-											{t("collections.fields.status")}
-										</Typography>
-									},
-								]}
+								[{ id: 'activeDeviceStats.state',
+									label: <ItemG container title={t('collections.fields.status')} justify={'center'}>
+										<SignalWifi2Bar />
+									</ItemG>, checkbox: true
+								},
+								{ id: 'name', label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
+									{t('collections.fields.collection')}
+								</Typography>
+								}]
+							}
 						/>
-
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
@@ -127,8 +118,7 @@ class CollectionTable extends React.Component {
 									<TableRow
 										hover
 										onClick={e => { e.stopPropagation(); this.props.history.push('/collection/' + n.id) }}
-										// onContextMenu={this.handleToolbarMenuOpen}
-										role="checkbox"
+										role='checkbox'
 										aria-checked={isSelected}
 										tabIndex={-1}
 										key={n.id}
@@ -136,48 +126,38 @@ class CollectionTable extends React.Component {
 										style={{ cursor: 'pointer' }}
 									>
 										<Hidden lgUp>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-												<Checkbox checked={isSelected} />
-											</TableCell>
-										
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+											<TC checkbox content={n.activeDeviceStats ? this.renderIcon(n.activeDeviceStats.state) : null} />
 											<TC content={
-												<ItemG container alignItems={"center"}>
+												<ItemG container alignItems={'center'}>
 													<ItemG>
 														<Info noWrap paragraphCell={classes.noMargin}>
 															{n.name}
 														</Info>
 														<ItemG container>
 															<Caption noWrap className={classes.noMargin}>
-																{`${n.org ? n.org.name : ""} `} 
+																{`${n.org ? n.org.name : ''} `} 
 															</Caption>
 														</ItemG>
 													</ItemG>
 												</ItemG>
 											}
 											/>
-											<TableCell className={classes.tablecellcheckbox}>
-												{n.activeDeviceStats ? this.renderIcon(n.activeDeviceStats.state) : null}
-											</TableCell>
 										</Hidden>
 										<Hidden mdDown>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-												<Checkbox checked={isSelected} />
-											</TableCell>
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
 											<TC FirstC label={n.id} />
 											<TC FirstC label={n.name} />
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
-												{n.activeDeviceStats ? this.renderIcon(n.activeDeviceStats.state) : null}
-											</TableCell>
-											{/* <TC className={classes.tablecellcheckbox} FirstC content= /> */}
+											<TC content={this.renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : 0)} />
 											<TC label={dateFormatter(n.created)} />
-											<TC label={n.devices ? n.devices[0] ? dateFormatter(n.devices[0].start) : "" : ""} />
-											<TC label={n.org ? n.org.name : ""} />
+											<TC label={n.devices ? n.devices[0] ? dateFormatter(n.devices[0].start) : '' : ''} />
+											<TC label={n.org ? n.org.name : ''} />
 										</Hidden>
 									</TableRow>
 								)
 							}) : null}
 							{emptyRows > 0 && (
-								<TableRow style={{ height: 49 /* * emptyRows */ }}>
+								<TableRow style={{ height: 49 }}>
 									<TableCell colSpan={8} />
 								</TableRow>
 							)}

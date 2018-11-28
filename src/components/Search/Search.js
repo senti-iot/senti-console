@@ -69,27 +69,23 @@ class IntegrationAutosuggest extends React.PureComponent {
 
 	}
 	componentDidMount() {
-		// document.addEventListener("keydown", this.handleKeyPress, false);
 		if (this.props.focusOnMount && this.inputRef.current)
 			this.focusInput()
 	}
-	// componentWillUnmount() {
-	// 	document.removeEventListener("keydown", this.handleKeyPress, false);
-	// }
+
 	handleResetSearch = () => {
 		this.handleChange(null, { newValue: '' })
-
 	}
+
 	renderSuggestion(suggestion, { query, isHighlighted }) {
 		const matches = match(suggestion.label, query);
 		const parts = parse(suggestion.label, matches);
-
 		return (
-			<MenuItem selected={isHighlighted} component="div">
+			<MenuItem selected={isHighlighted} component='div'>
 				<div>
 					{parts.map((part, index) => {
 						return part.highlight ? (
-							<span key={String(index)} style={{ fontWeight: 300, maxWidth: "calc(100vw-100px)", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+							<span key={String(index)} style={{ fontWeight: 300, maxWidth: 'calc(100vw-100px)', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
 								{part.text} 
 							</span>
 						) : (
@@ -102,35 +98,38 @@ class IntegrationAutosuggest extends React.PureComponent {
 			</MenuItem>
 		);
 	}
+
 	handleSuggestionsFetchRequested = ({ value, reason }) => {
 		const { open } = this.state
 		const { searchValue } = this.props
-		if (open && searchValue === "" && reason === "escape-pressed") {
+		if (open && searchValue === '' && reason === 'escape-pressed') {
 			this.handleClose()
 		}
 		this.setState({
 			suggestions: getSuggestions(value, this.props.suggestions),
-		});
-	};
+		})
+	}
 
 	handleSuggestionsClearRequested = () => {
 		this.setState({
 			suggestions: [],
-		});
-	};
+		})
+	}
 
 	handleChange = (event, { newValue }) => {
-		
 		this.props.handleFilterKeyword(newValue)
-	};
+	}
+
 	focusInput = () => {
 		if (this.state.open || this.props.open)
 			this.inputRef.current.focus()
 	}
+
 	handleOpen = () => {
 		if (this.props.open === undefined)
 			this.setState({ open: !this.state.open }, this.focusInput)
 	}
+
 	handleClose = () => {
 		if (this.props.open === undefined)
 			this.setState({ open: false })
@@ -143,8 +142,8 @@ class IntegrationAutosuggest extends React.PureComponent {
 				<ClickAwayListener onClickAway={this.handleClose}>
 					<Autosuggest
 						theme={{
-							container: classes.container + " " + (right ? classes.right : ''),
-							suggestionsContainerOpen: /* noAbsolute ? classes.suggestionsContainerOpenNoAbsolute : */ classes.suggestionsContainerOpen,
+							container: classes.container + ' ' + (right ? classes.right : ''),
+							suggestionsContainerOpen: classes.suggestionsContainerOpen,
 							suggestionsList: classes.suggestionsList,
 							suggestion: classes.suggestion,
 						}}
@@ -169,7 +168,6 @@ class IntegrationAutosuggest extends React.PureComponent {
 							handleOpen: this.handleOpen,
 							handleClose: this.handleClose,
 							handleResetSearch: this.handleResetSearch,
-							// onKeyPress: this.handleKeyPress,
 							t: this.props.t
 						}}
 					/>

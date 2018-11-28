@@ -2,21 +2,23 @@ import {
 	Checkbox, Hidden, Paper, Table, TableBody, TableCell,
 	TableRow, withStyles, DialogTitle, Dialog, DialogContent,
 	DialogContentText, DialogActions, Button, Typography, IconButton,
-} from "@material-ui/core"
+} from '@material-ui/core'
 import TC from 'components/Table/TC'
-import { Delete, Edit, PictureAsPdf, Add } from 'variables/icons'
-import devicetableStyles from "assets/jss/components/devices/devicetableStyles"
-import PropTypes from "prop-types"
-import React, { Fragment } from "react"
+import { Delete, Edit, PictureAsPdf, Add, StarBorder, Star } from 'variables/icons'
+import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
+import PropTypes from 'prop-types'
+import React, { Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 import EnhancedTableHead from 'components/Table/TableHeader'
 import EnhancedTableToolbar from 'components/Table/TableToolbar'
-import { ItemGrid, Info, Caption } from "components"
-import { connect } from "react-redux"
+import { ItemGrid, Info, Caption } from 'components'
+import { connect } from 'react-redux'
 import { pF, dateFormat } from 'variables/functions';
 import Gravatar from 'react-gravatar'
 import TP from 'components/Table/TP';
-var moment = require("moment")
+import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
+import withSnackbar from 'components/Localization/S';
+var moment = require('moment')
 
 class UserTable extends React.Component {
 	constructor(props) {
@@ -33,7 +35,23 @@ class UserTable extends React.Component {
 		}
 	}
 	
-	
+	componentDidUpdate = () => {
+		if (this.props.saved === true) {
+			const { data } = this.props
+			const { selected } = this.state
+			let user = data[data.findIndex(d => d.id === selected[0])]
+			if (this.props.isFav({ id: user.id, type: 'user' })) {
+				this.props.s('snackbars.favorite.saved', { name: `${user.firstName} ${user.lastName}`, type: this.props.t('favorites.types.user') })
+				this.props.finishedSaving()
+				this.setState({ selected: [] })
+			}
+			if (!this.props.isFav({ id: user.id, type: 'user' })) {
+				this.props.s('snackbars.favorite.removed', { name: `${user.firstName} ${user.lastName}`, type: this.props.t('favorites.types.user') })
+				this.props.finishedSaving()
+				this.setState({ selected: [] })
+			}
+		}
+	}
 	handleToolbarMenuOpen = e => {
 		e.stopPropagation()
 		this.setState({ anchorElMenu: e.currentTarget })
@@ -121,14 +139,32 @@ class UserTable extends React.Component {
 	isSelected = id => this.state.selected.indexOf(id) !== -1
 
 	handleEdit = () => {
-		this.props.history.push(`/user/${this.state.selected[0]}/edit`)
+		this.props.history.push(`/management/user/${this.state.selected[0]}/edit`)
+	}
+	addToFav = (favObj) => {
+		this.props.addToFav(favObj)
+		this.setState({ anchorElMenu: null })
+	}
+	removeFromFav = (favObj) => {
+		this.props.removeFromFav(favObj)
+		this.setState({ anchorElMenu: null })
 	}
 	options = () => {
-		const { t } = this.props
+		const { t, isFav, data } = this.props
+		const { selected } = this.state
+		let user = data[data.findIndex(d => d.id === selected[0])]
+		let favObj = {
+			id: user.id,
+			name: `${user.firstName} ${user.lastName}`,
+			type: 'user',
+			path: `/management/user/${user.id}`
+		}
+		let isFavorite = isFav(favObj)
 		return [
-			{ label: t("menus.edit"), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t("menus.exportPDF"), func: () => { }, icon: PictureAsPdf },
-			{ label: t("menus.delete"), func: this.handleOpenDeleteDialog, icon: Delete }
+			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
+			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
+			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
+			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
 	}
 
@@ -139,39 +175,39 @@ class UserTable extends React.Component {
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id="alert-dialog-title">{t("users.usersDelete")}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.users')}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					{t("users.usersDeleteConfirm")}
+				<DialogContentText id='alert-dialog-description'>
+					{t('dialogs.delete.message.users')}
 				</DialogContentText>
 				<div>
 					{selected.map(s => {
 						let u = data[data.findIndex(d => d.id === s)]
-						return <Info key={s}>&bull;{u.firstName + " " + u.lastName}</Info>})
+						return <Info key={s}>&bull;{u.firstName + ' ' + u.lastName}</Info>})
 					}
 				</div>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color="primary">
-					{t("actions.no")}
+				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
+					{t('actions.no')}
 				</Button>
-				<Button onClick={this.handleDeleteUsers} color="primary" autoFocus>
-					{t("actions.yes")}
+				<Button onClick={this.handleDeleteUsers} color='primary' autoFocus>
+					{t('actions.yes')}
 				</Button>
 			</DialogActions>
 		</Dialog>
 	}
 
-	addNewUser = () => { this.props.history.push('/users/new') }
+	addNewUser = () => { this.props.history.push('/management/users/new') }
 
 	renderTableToolBarContent = () => {
 		const { accessLevel } = this.props
 		let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
 		return <Fragment>
-			{access ? <IconButton aria-label="Add new user" onClick={this.addNewUser}>
+			{access ? <IconButton aria-label='Add new user' onClick={this.addNewUser}>
 				<Add />
 			</IconButton> : null
 			}
@@ -196,7 +232,7 @@ class UserTable extends React.Component {
 					content={this.renderTableToolBarContent()}
 				/>
 				<div className={classes.tableWrapper}>
-					<Table className={classes.table} aria-labelledby="tableTitle">
+					<Table className={classes.table} aria-labelledby='tableTitle'>
 						<EnhancedTableHead // ./ProjectTableHeader
 							numSelected={selected.length}
 							order={order}
@@ -207,19 +243,21 @@ class UserTable extends React.Component {
 							columnData={this.props.tableHead}
 							t={t}
 							classes={classes}
-							customColumn={[{ id: "avatar", label: "" }, {
-								id: "firstName", label: <Typography variant={"body1"} classes={{ root: classes.paragraphCell + " " + classes.headerCell }}>Users</Typography>
+							customColumn={[ {
+								id: 'avatar', label: <div style={{ width: 40 }}/>
+							}, {
+								id: 'firstName', label: <Typography variant={'body1'}>Users</Typography>
 							}]}
 						/>
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
-								const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? dateFormat(n.lastLoggedIn) : t("users.fields.neverLoggedIn")
+								const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? dateFormat(n.lastLoggedIn) : t('users.fields.neverLoggedIn')
 								return (
 									<TableRow
 										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push('/user/' + n.id) }}
-										role="checkbox"
+										onClick={e => { e.stopPropagation(); this.props.history.push('/management/user/' + n.id) }}
+										role='checkbox'
 										aria-checked={isSelected}
 										tabIndex={-1}
 										key={n.id}
@@ -227,16 +265,11 @@ class UserTable extends React.Component {
 										style={{ cursor: 'pointer' }}
 									>
 										<Hidden lgUp>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-												<Checkbox checked={isSelected} />
-											</TableCell>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
-												<ItemGrid container zeroMargin noPadding justify={"center"}>
-													{n.img ? <img src={n.img} alt="brken" className={classes.img} /> : <Gravatar default="mp" email={n.email} className={classes.img}/>}
-												</ItemGrid>
-											</TableCell>
-											<TableCell classes={{ root: classes.tableCell }}>
-												<ItemGrid container zeroMargin noPadding alignItems={"center"}>
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => this.handleClick(e, n.id)} />} />
+											<TC checkbox content={n.img ? <img src={n.img} alt='brken' className={classes.img} /> : <Gravatar default='mp' email={n.email} className={classes.img} />}/>
+
+											<TC content={
+												<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Info noWrap paragraphCell={classes.noMargin}>
 															{`${n.firstName} ${n.lastName}`}
@@ -244,27 +277,19 @@ class UserTable extends React.Component {
 													</ItemGrid>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Caption noWrap className={classes.noMargin}>
-															{`${n.org ? n.org.name : t("users.fields.noOrg")} - ${n.email}`}
+															{`${n.org ? n.org.name : t('users.fields.noOrg')} - ${n.email}`}
 														</Caption>
 													</ItemGrid>
-													{/* </ItemGrid> */}
 												</ItemGrid>
-											</TableCell>
+											}/>
 										</Hidden>
 										<Hidden mdDown>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox} onClick={e => this.handleClick(e, n.id)}>
-												<Checkbox checked={isSelected} />
-											</TableCell>
-											<TableCell padding="checkbox" className={classes.tablecellcheckbox}>
-												<ItemGrid container zeroMargin noPadding justify={"center"}>	
-													{n.img ? <img src={n.img} alt="brken" className={classes.img} /> : <Gravatar default="mp" email={n.email} className={classes.img} />}
-												</ItemGrid>
-											</TableCell>
-											{/* <TC label={n.userName} /> */}
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => this.handleClick(e, n.id)}/>} />
+											<TC checkbox content={n.img ? <img src={n.img} alt='brken' className={classes.img} /> : <Gravatar default='mp' email={n.email} className={classes.img} />} />
 											<TC FirstC label={`${n.firstName} ${n.lastName}`} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone, this.props.language) : n.phone}</a>} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`mailto:${n.email}`}>{n.email}</a>} />
-											<TC label={n.org ? n.org.name : t("users.noOrg")} />
+											<TC label={n.org ? n.org.name : t('users.noOrg')} />
 											<TC label={lastLoggedIn} />
 										</Hidden>
 									</TableRow>
@@ -272,7 +297,7 @@ class UserTable extends React.Component {
 								)
 							}) : null}
 							{emptyRows > 0 && (
-								<TableRow style={{ height: 49 /* * emptyRows  */}}>
+								<TableRow style={{ height: 49 }}>
 									<TableCell colSpan={8} />
 								</TableRow>
 							)}
@@ -297,15 +322,21 @@ class UserTable extends React.Component {
 const mapStateToProps = (state) => ({
 	rowsPerPage: state.settings.trp,
 	accessLevel: state.settings.user.privileges,
-	language: state.settings.language
+	language: state.settings.language,
+	favorites: state.favorites.favorites,
+	saved: state.favorites.saved
 })
 
-const mapDispatchToProps = {
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	addToFav: (favObj) => dispatch(addToFav(favObj)),
+	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
+	finishedSaving: () => dispatch(finishedSaving())
+})
 
-}
 
 UserTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(UserTable)))
+export default withSnackbar()(withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(UserTable))))

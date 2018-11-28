@@ -1,5 +1,21 @@
-import { api, imageApi, mapApi } from "./data";
+import { api, imageApi, mapApi, weatherApi } from './data';
+import moment from 'moment'
 
+//#region getWeather
+/**
+ * 
+ * @param {int} device 
+ * @param {Date} date 
+ * @param {String} lang 
+ */
+export const getWeather = async (device, date, lang) => {
+	let URL = `/${moment(date).format('YYYY-MM-DDTHH:mm:ss')}/${device.lat}/${device.long}/${lang}`
+	let response = await weatherApi.get(URL).then(rs => rs)
+	
+	return response.data
+}
+
+//#endregion
 //#region GetDeviceData
 
 /**
@@ -15,7 +31,6 @@ export const getDataDaily = async (id, from, to, raw) => {
 	let response = await api.get(URL)
 	return response.ok ? response.data : null
 }
-
 /**
  * Get Hourly Data 
  * @function
@@ -117,9 +132,14 @@ export const getAvailableDevices = async (orgId) => {
  * Get all Devices
  */
 export const getAllDevices = async () => {
-	var data = await api.get("senti/devices").then(rs => rs.data)
+	var data = await api.get('senti/devices').then(rs => rs.data)
 	return data
 }
+/**
+ * 
+ * @param {int} lat Latitude
+ * @param {int} long Longitute
+ */
 export const getSimpleAddress = async (lat, long) => {
 	var gaddress = await mapApi.get(`json?latlng=${parseFloat(lat)},${parseFloat(long)}`).then(rs => rs.data);
 	if (gaddress.status === 'OK')
@@ -133,16 +153,9 @@ export const getSimpleAddress = async (lat, long) => {
  */
 export const getDevice = async (id) => {
 	var data = await api.get('senti/device/' + id).then(rs => rs.data)
-	if (data.address)
-		return data
-	else {
-		let gaddress = await mapApi.get(`json?latlng=${parseFloat(data.lat)},${parseFloat(data.long)}`).then(rs => rs.data);
-		if (gaddress.status === 'OK') {
-			data.address = gaddress.results[0].formatted_address
-		}
-	}
 	return data
 }
+
 /**
  * Calibrate device
  * @param {object} device 
@@ -153,6 +166,7 @@ export const calibrateDevice = async (device) => {
 	})
 	return data
 }
+
 /**
  * Update device 
  * @param {object} device

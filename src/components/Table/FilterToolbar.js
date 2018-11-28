@@ -50,7 +50,7 @@ class FilterToolbar extends Component {
 					fullWidth
 				/>
 				<Menu
-					id="simple-menu"
+					id='simple-menu'
 					anchorEl={this.input}
 					open={this.state.openMenu}
 					onClose={this.handleClose}

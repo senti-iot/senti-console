@@ -1,6 +1,6 @@
 import React from 'react'
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
-import { Dialog, DialogTitle, DialogContent, FormControlLabel, Checkbox, DialogActions, Button } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, FormControlLabel, /* Checkbox, */ DialogActions, Button, RadioGroup, Radio, FormControl } from '@material-ui/core';
 import { ItemGrid, Caption } from 'components';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import { DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons';
@@ -13,21 +13,21 @@ const CustomDateTime = (props) => {
 		<Dialog
 			open={openCustomDate}
 			onClose={handleCancelCustomDate}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description">
-			<DialogTitle id="alert-dialog-title">{t("filters.dateOptions.custom")}</DialogTitle>
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'>
+			<DialogTitle id='alert-dialog-title'>{t('filters.dateOptions.custom')}</DialogTitle>
 			<DialogContent>
 				<ItemGrid>
 					<DateTimePicker
 						autoOk
 						ampm={false}
-						label={t("filters.startDate")}
+						label={t('filters.startDate')}
 						clearable
-						format="LLL"
+						format='LLL'
 						value={from}
 						onChange={handleCustomDate('from')}
 						animateYearScrolling={false}
-						color="primary"
+						color='primary'
 						disableFuture
 						dateRangeIcon={<DateRange />}
 						timeIcon={<AccessTime />}
@@ -42,15 +42,15 @@ const CustomDateTime = (props) => {
 						autoOk
 						disableFuture
 						ampm={false}
-						label={t("filters.endDate")}
+						label={t('filters.endDate')}
 						clearable
-						format="LLL"
+						format='LLL'
 						value={to}
 						onChange={handleCustomDate('to')}
 						animateYearScrolling={false}
 						dateRangeIcon={<DateRange />}
 						timeIcon={<AccessTime />}
-						color="primary"
+						color='primary'
 						rightArrowIcon={<KeyboardArrowRight />}
 						leftArrowIcon={<KeyboardArrowLeft />}
 						InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
@@ -59,68 +59,50 @@ const CustomDateTime = (props) => {
 				</ItemGrid>
 				<ItemGrid container>
 					<ItemGrid xs={12} noPadding zeroMargin>
-						<Caption>{t("filters.display")}</Caption>
+						<Caption>{t('filters.display')}</Caption>
 					</ItemGrid>
 					<ItemGrid xs={12} zeroMargin>
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={timeType === 0 ? true : false}
-									onChange={handleCustomCheckBox}
-									value={"0"}
-									className={classes.checkbox}
+						<FormControl component="fieldset" className={classes.formControl}>
+							<RadioGroup
+								aria-label={t('filters.display')}
+								name={t('filters.display')}
+								onChange={handleCustomCheckBox}
+								value={timeType.toString()}
+							>
+								<FormControlLabel
+									value={'0'}
+									control={<Radio className={classes.checkbox} />}
+									label={t('filters.dateOptions.minutely')}
 								/>
-							}
-							label={t("filters.dateOptions.minutely")}
-						/>
-					</ItemGrid>
-					<ItemGrid xs={12} zeroMargin>
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={timeType === 1 ? true : false}
-									onChange={handleCustomCheckBox}
-									value={"1"}
-									className={classes.checkbox}
+
+								<FormControlLabel
+									value={'1'}
+									control={<Radio className={classes.checkbox} />}
+									label={t('filters.dateOptions.hourly')}
 								/>
-							}
-							label={t("filters.dateOptions.hourly")}
-						/>
-					</ItemGrid>
-					<ItemGrid xs={12} zeroMargin>
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={timeType === 2 ? true : false}
-									onChange={handleCustomCheckBox}
-									value={"2"}
-									className={classes.checkbox}
+
+								<FormControlLabel
+									value={'2'}
+									control={<Radio className={classes.checkbox} />}
+									label={t('filters.dateOptions.daily')}
 								/>
-							}
-							label={t("filters.dateOptions.daily")}
-						/>
-					</ItemGrid>
-					<ItemGrid xs={12} zeroMargin>
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={timeType === 3 ? true : false}
-									onChange={handleCustomCheckBox}
-									value={"3"}
-									className={classes.checkbox}
+
+								<FormControlLabel
+									value={'3'}
+									control={<Radio className={classes.checkbox} />}
+									label={t('filters.dateOptions.summary')}
 								/>
-							}
-							label={t("filters.dateOptions.summary")}
-						/>
+							</RadioGroup>
+						</FormControl>
 					</ItemGrid>
 				</ItemGrid>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={handleCancelCustomDate} color="primary">
-					{t("actions.decline")}
+				<Button onClick={handleCancelCustomDate} color='primary'>
+					{t('actions.decline')}
 				</Button>
-				<Button onClick={handleCloseDialog} color="primary" autoFocus>
-					{t("actions.apply")}
+				<Button onClick={handleCloseDialog} color='primary' autoFocus>
+					{t('actions.apply')}
 				</Button>
 			</DialogActions>
 		</Dialog>

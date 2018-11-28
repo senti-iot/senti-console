@@ -3,7 +3,7 @@ import { Paper, Grid, Dialog, Slide, AppBar, Toolbar, List, ListItem, Divider, L
 import { GridContainer, TextF, ItemGrid } from 'components/index';
 import PropTypes from 'prop-types'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import cx from "classnames";
+import cx from 'classnames';
 import DSelect from 'components/CustomInput/DSelect';
 import { Close } from 'variables/icons';
 
@@ -18,38 +18,37 @@ import { Close } from 'variables/icons';
 */
 class EditCollectionForm extends Component {
 	transition = (props) => {
-		return <Slide direction="up" {...props} />;
+		return <Slide direction='up' {...props} />;
 	}
 	renderSelectState = () => {
 		const { t, collection, handleChange } = this.props
 		return <DSelect
-			label={t("collections.fields.status")}
+			label={t('collections.fields.status')}
 			value={collection.state}
-			onChange={handleChange("state")}
+			onChange={handleChange('state')}
 			menuItems={[
-				// { value: 0, label: t("collections.fields.status.deleted") },
-				{ value: 1, label: t("collections.fields.state.active") },
-				{ value: 2, label: t("collections.fields.state.inactive") }
+				{ value: 1, label: t('collections.fields.state.active') },
+				{ value: 2, label: t('collections.fields.state.inactive') }
 			]}
 		/>
 	}
 	renderSelectOrg = () => {
 		const { t, open, handleCloseOrg, orgs, handleChangeOrg, classes } = this.props
 		const appBarClasses = cx({
-			[" " + classes['primary']]: 'primary'
+			[' ' + classes['primary']]: 'primary'
 		});
 		return <Dialog
 			fullScreen
 			open={open}
 			onClose={handleCloseOrg}
 			TransitionComponent={this.transition}>
-			<AppBar className={classes.appBar + " " + appBarClasses}>
+			<AppBar className={classes.appBar + ' ' + appBarClasses}>
 				<Toolbar>
-					<Typography variant="h6" color="inherit" className={classes.flex}>
-						{t("orgs.pageTitle")}
+					<Typography variant='h6' color='inherit' className={classes.flex}>
+						{t('orgs.pageTitle')}
 					</Typography>
-					<Button variant={'extendedFab'} color="primary" onClick={handleCloseOrg} aria-label="Close">
-						<Close /> {t("actions.cancel")}
+					<Button variant={'extendedFab'} color='primary' onClick={handleCloseOrg} aria-label='Close'>
+						<Close /> {t('actions.cancel')}
 					</Button>
 				</Toolbar>
 			</AppBar>
@@ -75,8 +74,8 @@ class EditCollectionForm extends Component {
 							<ItemGrid xs={12}>
 								<TextF
 									id={'collectionName'}
-									label={t("collections.fields.name")}
-									handleChange={handleChange("name")}
+									label={t('collections.fields.name')}
+									handleChange={handleChange('name')}
 									value={collection.name}
 									autoFocus
 									
@@ -84,9 +83,9 @@ class EditCollectionForm extends Component {
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<TextF
-									id={"collectionDescription"}
-									label={t("collections.fields.description")}
-									handleChange={handleChange("description")}
+									id={'collectionDescription'}
+									label={t('collections.fields.description')}
+									handleChange={handleChange('description')}
 									value={collection.description}
 									multiline
 									rows={3}
@@ -97,8 +96,8 @@ class EditCollectionForm extends Component {
 								{this.renderSelectOrg()}
 								<TextF
 									id={'collectionOrg'}
-									label={t("collections.fields.org")}
-									value={collection.org.name ? collection.org.name : t("collections.noOrg")}
+									label={t('collections.fields.org')}
+									value={collection.org.name ? collection.org.name : t('collections.noOrg')}
 									handleClick={handleOpenOrg}
 									handleChange={() => { }}
 									
@@ -113,7 +112,7 @@ class EditCollectionForm extends Component {
 							</ItemGrid>
 							<ItemGrid xs={12} container justify={'center'}>
 								<Button onClick={handleUpdate} variant={'contained'} color={'primary'}>
-									{t("actions.save")}
+									{t('actions.save')}
 								</Button>
 							</ItemGrid> 
 						</Grid>

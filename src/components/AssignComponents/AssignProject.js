@@ -1,6 +1,6 @@
-import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles, Hidden } from "@material-ui/core";
+import { AppBar, Button, Dialog, Divider, IconButton, List, ListItem, ListItemText, Slide, Toolbar, Typography, withStyles, Hidden } from '@material-ui/core';
 import { Close } from 'variables/icons';
-import cx from "classnames";
+import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import { getAllProjects, updateProject, getProject } from 'variables/dataProjects';
@@ -11,7 +11,7 @@ import { ItemG } from 'components';
 import assignStyles from 'assets/jss/components/assign/assignStyles';
 
 function Transition(props) {
-	return <Slide direction="up" {...props} />;
+	return <Slide direction='up' {...props} />;
 }
 
 class AssignProject extends React.Component {
@@ -40,14 +40,6 @@ class AssignProject extends React.Component {
 		this._isMounted = 0
 	}
 
-
-	selectProject = pId => e => {
-		e.preventDefault()
-		if (this.state.selectedProject === pId)
-			this.setState({ selectedProject: { id: 0 } })
-		else { this.setState({ selectedProject: pId }) }
-
-	}
 	assignProject = async () => {
 		const { selectedProject } = this.state
 		let newProject = await getProject(selectedProject.id)
@@ -72,6 +64,14 @@ class AssignProject extends React.Component {
 		 } })
 		})
 	}
+
+	selectProject = pId => e => {
+		e.preventDefault()
+		if (this.state.selectedProject === pId)
+			this.setState({ selectedProject: { id: 0 } })
+		else { this.setState({ selectedProject: pId }) }
+
+	}
 	
 	handleFilterKeyword = value => {
 		this.setState({
@@ -81,14 +81,12 @@ class AssignProject extends React.Component {
 			}
 		})
 	}
-	renderList = (projects) => {
-		
-	}
+
 	render() {
 		const { filters, projects } = this.state
 		const { classes, open, t, handleCancel } = this.props;
 		const appBarClasses = cx({
-			[" " + classes['primary']]: 'primary'
+			[' ' + classes['primary']]: 'primary'
 		});
 		return (
 			<div>
@@ -102,12 +100,12 @@ class AssignProject extends React.Component {
 						<Toolbar>
 							<Hidden mdDown>
 								<ItemG container justify={'center'} alignItems={'center'}>
-									<ItemG xs={2} container alignItems={"center"}>
-										<IconButton color="inherit" onClick={handleCancel} aria-label="Close">
+									<ItemG xs={2} container alignItems={'center'}>
+										<IconButton color='inherit' onClick={handleCancel} aria-label='Close'>
 											<Close />
 										</IconButton>
-										<Typography variant="h6" color="inherit" className={classes.flex}>
-											{t("projects.pageTitle")}
+										<Typography variant='h6' color='inherit' className={classes.flex}>
+											{t('projects.pageTitle')}
 										</Typography>
 									</ItemG>
 									<ItemG xs={8}>
@@ -120,23 +118,23 @@ class AssignProject extends React.Component {
 											searchValue={filters.keyword} />
 									</ItemG>
 									<ItemG xs={2}>
-										<Button color="inherit" onClick={this.assignProject}>
-											{t("actions.save")}
+										<Button color='inherit' onClick={this.assignProject}>
+											{t('actions.save')}
 										</Button>
 									</ItemG>
 								</ItemG>
 							</Hidden>
 							<Hidden lgUp>
 								<ItemG container justify={'center'} alignItems={'center'}>
-									<ItemG xs container alignItems={"center"}>
-										<IconButton color="inherit" onClick={handleCancel} aria-label="Close">
+									<ItemG xs container alignItems={'center'}>
+										<IconButton color='inherit' onClick={handleCancel} aria-label='Close'>
 											<Close />
 										</IconButton>
-										<Typography variant="h6" color="inherit" className={classes.flex}>
-											{t("projects.pageTitle")}
+										<Typography variant='h6' color='inherit' className={classes.flex}>
+											{t('projects.pageTitle')}
 										</Typography>
-										<Button variant={'contained'} color="primary" onClick={this.assignProject}>
-											{t("actions.save")}
+										<Button variant={'contained'} color='primary' onClick={this.assignProject}>
+											{t('actions.save')}
 										</Button>
 									</ItemG>
 									<ItemG xs={12} container alignItems={'center'}>

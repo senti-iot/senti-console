@@ -8,27 +8,26 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { ItemGrid } from 'components';
-// import FilterToolbar from 'components/Table/FilterToolbar';
 import { ItemG } from 'components/index';
 
 let selectedRender = props => {
 	const { numSelected, t } = props;
 	return <Grid container justify={'space-between'} alignItems={'center'}>
 		<ItemGrid>
-			<Typography color="primary" variant="subtitle1">
-				{numSelected + " " + t("tables.selected")}
+			<Typography color='primary' variant='subtitle1'>
+				{numSelected + ' ' + t('tables.selected')}
 			</Typography>
 		</ItemGrid>
 		<ItemGrid>
 			<IconButton
-				aria-label={t("menus.more")}
+				aria-label={t('menus.more')}
 				aria-owns={props.anchorElMenu ? 'long-menu' : null}
-				aria-haspopup="true"
+				aria-haspopup='true'
 				onClick={props.handleToolbarMenuOpen}>
 				<MoreVertIcon />
 			</IconButton>
 			<Menu
-				id="long-menu"
+				id='long-menu'
 				anchorEl={props.anchorElMenu}
 				open={Boolean(props.anchorElMenu)}
 				onClose={props.handleToolbarMenuClose}
@@ -78,7 +77,7 @@ let TableToolbar = props => {
 						defaultRender(props)
 					}
 				</ItemG>
-				{/* <div style={{ width: "100%", background: "#ececec", height: 1, margin: 4 }}/> */}
+				{/* <div style={{ width: '100%', background: '#ececec', height: 1, margin: 4 }}/> */}
 				{/* <ItemG xs={12}>
 					<FilterToolbar filters={props.ft}/>
 				</ItemG> */}

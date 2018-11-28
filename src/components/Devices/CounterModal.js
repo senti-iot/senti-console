@@ -23,11 +23,10 @@ class CounterModal extends React.Component {
 		}
 		let canPlayMP3 = new Audio().canPlayType('audio/mp3');
 		if (!canPlayMP3 || canPlayMP3 === 'no') {
-			let msg = props.t("devices.calibration.noAudioSupported")
-			// let msg = 'Your browser doesn\'t support audio files! There will be no sound feedback! Try using Google Chrome.';
+			let msg = props.t('no.audioSupported')
 			alert(msg);
 		}
-		this.mp3File = new Audio("/assets/sound/pop.mp3").load()
+		this.mp3File = new Audio('/assets/sound/pop.mp3').load()
 		this.timeCounter = null
 	}
 	timer = () => {
@@ -35,13 +34,13 @@ class CounterModal extends React.Component {
 			if (this.state.count === 0) {
 				clearInterval(this.timeCounter)
 				this.timeCounter = null
-				this.setState({ timestampFinish: moment().format("YYYY-MM-DD HH:mm:ss"), finished: true })
+				this.setState({ timestampFinish: moment().format('YYYY-MM-DD HH:mm:ss'), finished: true })
 			}
 		})
 	}
 	handleStart = () => {
 		if (this.timeCounter === null) {
-			this.setState({ timestamp: moment().format("YYYY-MM-DD HH:mm:ss"), started: true })
+			this.setState({ timestamp: moment().format('YYYY-MM-DD HH:mm:ss'), started: true })
 			this.timeCounter = setInterval(() => this.timer(), 1000)
 		}
 	}
@@ -61,7 +60,7 @@ class CounterModal extends React.Component {
 		})
 	}
 	handleCount = async () => {
-		let playSound = new Audio("/assets/sound/pop.mp3");
+		let playSound = new Audio('/assets/sound/pop.mp3');
 		await playSound.play().then(
 			() => {
 				if (this.state.count === 1)
@@ -82,15 +81,15 @@ class CounterModal extends React.Component {
 		var mins = ~~((time % 3600) / 60);
 		var secs = time % 60;
 
-		// Output like "1:01" or "4:03:59" or "123:03:59"
-		var ret = "";
+		// Output like '1:01' or '4:03:59' or '123:03:59'
+		var ret = '';
 
 		if (hrs > 0) {
-			ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+			ret += '' + hrs + ':' + (mins < 10 ? '0' : '');
 		}
 
-		ret += "" + mins + ":" + (secs < 10 ? "0" : "");
-		ret += "" + secs;
+		ret += '' + mins + ':' + (secs < 10 ? '0' : '');
+		ret += '' + secs;
 		return ret;
 	}
 	handleFinish = () => {
@@ -117,28 +116,28 @@ class CounterModal extends React.Component {
 		return (
 			<div >
 				{/* <Typography gutterBottom>Click to get the full Modal experience!</Typography> */}
-				<Button variant={"outlined"} color={"primary"} onClick={this.handleOpen}>
-					<OpenInBrowser className={classes.iconButton} /> {t("actions.openCounter")}
+				<Button variant={'outlined'} color={'primary'} onClick={this.handleOpen}>
+					<OpenInBrowser className={classes.iconButton} /> {t('actions.openCounter')}
 				</Button>
 				<Modal
-					aria-labelledby="simple-modal-title"
-					aria-describedby="simple-modal-description"
+					aria-labelledby='simple-modal-title'
+					aria-describedby='simple-modal-description'
 					open={this.state.open}
 					onClose={this.timeCounter ? null : this.handleClose}
 				>
 					<Grid
-						container justify="space-between" className={classes.paper + " " + classes.modalWrapper}>
+						container justify='space-between' className={classes.paper + ' ' + classes.modalWrapper}>
 						<ItemGrid xs={12}>
 
-							<Typography variant="h6" id="modal-title" className={classes.text}>
+							<Typography variant='h6' id='modal-title' className={classes.text}>
 								{this.fancyTimeFormat(this.state.timer)}
 							</Typography>
 						</ItemGrid>
-						<ItemGrid xs={12} container justify={"center"}>
+						<ItemGrid xs={12} container justify={'center'}>
 							<div className={classes.wrapper}>
 								<Button
-									color={"primary"}
-									variant="fab"
+									color={'primary'}
+									variant='fab'
 									disableRipple
 									classes={{
 										root: classes.counterButton
@@ -156,23 +155,23 @@ class CounterModal extends React.Component {
 								<ItemGrid>
 									<Button
 										disabled={started}//change
-										color={"primary"}
-										variant="contained"
+										color={'primary'}
+										variant='contained'
 										onClick={this.state.count === 0 ? this.handleFinish : this.handleStart}>
 										{this.state.count === 0 ? <Fragment>
-											<Done className={classes.iconButton} />{t("actions.finish")}
+											<Done className={classes.iconButton} />{t('actions.finish')}
 										</Fragment> : <Fragment>
-											<Timer className={classes.iconButton} /> {t("actions.start")}
+											<Timer className={classes.iconButton} /> {t('actions.start')}
 										</Fragment>}
 									</Button>
 								</ItemGrid>
 								<ItemGrid>
 									<Button
-										color={"primary"}
-										variant="contained"
+										color={'primary'}
+										variant='contained'
 										disabled={this.resetButtonDisabled()}
 										onClick={this.handleReset}>
-										<Restore className={classes.iconButton} />{t("actions.reset")}
+										<Restore className={classes.iconButton} />{t('actions.reset')}
 									</Button>
 								</ItemGrid>
 							</div>

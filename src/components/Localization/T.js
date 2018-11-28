@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-// Higher order component (HOC) decorator for components that need `t`
 export default function withLocalization() {
 
 	return (WrappedComponent) => {
@@ -20,5 +19,4 @@ export default function withLocalization() {
 	}
 }
 
-// Inspiration from https://github.com/nayaabkhan/react-polyglot
 
