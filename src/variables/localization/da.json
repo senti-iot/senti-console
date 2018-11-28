@@ -236,6 +236,19 @@
 		"startAnalyzeData": "Analyser dine data",
 		"welcome": "Velkommen til Senti.Cloud!"
 	},
+	"favorites": {
+		"fields": {
+			"name": "Navn",
+			"type": "Type"
+		},
+		"types": {
+			"collection": "Datasamling",
+			"device": "Enhed",
+			"project": "Projekt",
+			"org": "Organisation",
+			"user": "Bruger"
+		}
+	},
 	"filters": {
 		"dateOptions": {
 			"30days": "Seneste 30 dage",
