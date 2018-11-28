@@ -388,8 +388,9 @@
         "device": "No device",
         "devices": "No devices",
         "history": "No history",
+		"org": "No organisation",
         "project": "No project",
-        "projects": "No projects"
+		"projects": "No projects"
     },
     "orgs": {
         "create": "Create",
@@ -408,8 +409,8 @@
             "url": "Website",
             "zip": "ZIP Code"
         },
-        "organisation": "Organisation",
         "pageTitle": "Organisations",
+        "organisation": "Organisation",
         "updateOrg": "Edit Organisation",
         "validation": {
             "networkError": "Network Error!",
