@@ -1,29 +1,23 @@
 {
-	"": "",
 	"404": {
 		"errorMessage": "Den ønskede ressource er ikke fundet! Prøv igen eller kontakt support!",
-		"networkError": "Netværksfejl!",
 		"title": "404 fejl - Siden ikke fundet"
 	},
 	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
-		"changePassword": "Skift kodeord",
-		"requestPasswordReset": "Nulstil kodeord",
-		"forgotPass": "Glemt kodeord?",
-		"goToLogin": "Gå til log ind",
-		"login": "Log ind",
-		"manualCalibration": "Manuel kalibrering",
+		"on": "Slået til",
+		"off": "Slået fra",
+		"update": "Rediger",
+		"accept": "Accepter",
 		"apply": "Anvend",
 		"back": "Forrige",
 		"cancel": "Anuller",
 		"decline": "Afvis",
 		"deletePicture": "Slet dette billede",
 		"finish": "Luk",
-		"getLocation": "Hent lokation",
 		"goTo": "Går til",
-		"heatMap": "Heatmap",
-		"insertAddress": "Indtast adresse",
 		"learnMore": "Lær mere",
+		"heatMap": "Heatmap",
 		"next": "Næste",
 		"nextPage": "Næste side",
 		"no": "Nej",
@@ -33,12 +27,15 @@
 		"save": "Gem",
 		"start": "Start",
 		"startNow": "Start nu",
+		"updateDeviceHardware": "Rediger hardware for enhed",
 		"uploadImages": "Upload billeder",
-		"viewDevice": "Vis enhed",
-		"viewDeviceList": "Vis liste over enheder",
 		"yes": "Ja"
 	},
 	"calibration": {
+		"fields": {
+			"description": "Beskrivelse",
+			"deviceName": "Navn på enhed"
+		},
 		"header": "Lokal opsætning",
 		"selectLocationType": "Vælg en lokationstype for ",
 		"stepheader": {
@@ -55,78 +52,52 @@
 			"unknown": "Ukendt skridt"
 		},
 		"texts": {
+			"back": "Tilbage",
+			"finish": "Afslut",
+			"getLocation": "Hent lokation",
+			"lat": "Breddegrad",
+			"long": "Længdegrad",
+			"networkError": "Network error!",
+			"next": "Næste",
+			"reset": "Nulstil",
 			"success": "Succes!",
-			"successMessage": "Din Senti enhed er nu konfigureret og kalibreret og vil nu producere bedre data under indsamling. For yderligere at forbedre nøjagtigheden af din dataopsamling, returner til opsætningsstedet og lav en ny kalibrering regelmæssigt. Du kan konfigurere en notifikation for kalibrering af enheder under Indstillinger."
+			"successMessage": "Din Senti enhed er nu konfigureret og kalibreret og vil nu producere bedre data under indsamling. For yderligere at forbedre nøjagtigheden af din dataopsamling, returner til opsætningsstedet og lav en ny kalibrering regelmæssigt. Du kan konfigurere en notifikation for kalibrering af enheder under Indstillinger.",
+			"updateDevice": "Opdater enhed",
+			"viewDevice": "Vis enhed",
+			"viewDeviceList": "Vis liste over enheder"
 		}
 	},
 	"charts": {
 		"type": {
 			"bar": "Søjle",
 			"donut": "Donut",
-			"line": "Linje",
 			"pie": "Lagkage"
 		}
 	},
-	"collections": {
-		"editCollection": "Rediger datasamling",
-		"calibratedData": "Kalibreret data",
-		"cards": {
-			"data": "Data",
-			"log": "Enhedslog"
-		},
-		"fields": {
-			"activated": "Aktiveret",
-			"activeDevice": "Aktiv enhed",
-			"activeDeviceStartDate": "Dataopsamling start",
-			"collection": "Datasamling",
-			"created": "Oprettet",
-			"dcID": "ID",
-			"description": "Beskrivelse",
-			"device": "Enhed",
-			"deviceId": "Enhed ID",
-			"endOfService": "Tjeneste afsluttet",
-			"id": "Datasamling",
-			"modified": "Opdateret",
-			"name": "Navn",
-			"org": "Organisation",
-			"organisation": "Organisation",
-			"ownState": "Status",
-			"project": "Projekt",
-			"state": {
-				"active": "Aktiv",
-				"inactive": "Inaktiv"
-			},
-			"status": "Status"
-		},
-		"pageTitle": "Datasamlinger",
-		"rawData": "Rådata"
-	},
 	"confirmUser": {
 		"button": "Bekræft og log ind",
-		"lastStep": "Indtast et kodeord for at bekræfte oprettelsen af din konto.",
+		"lastStep": "Indtast et kodeord for at bekræfte oprettelsen af din Senti.Cloud konto.",
 		"networkError": "Netværksfejl!",
 		"password": "Kodeord",
 		"passwordConfirm": "Bekræft kodeord",
 		"validation": {
-			"emailDoesntExist": "Den indtastede E-mail er ikke tilknyttet en eksisterende konto!",
-			"passwordEmpty": "Kodeord må ikke være blankt!",
-			"passwordMismatch": "De indtastede kodeord er ikke ens!",
-			"passwordUnder8": "Kodeord skal være på mindst 8 tegn!",
-			"userDoesntExistAnymore": "Brugeren eksisterer ikke længere, eller adgangen er udløbet!"
+			"passwordEmpty": "Kodeord kan ikke være tomt!",
+			"passwordMismatch": "Indtastede kodeord er ikke ens!",
+			"passwordUnder8": "Indtastede kodeord skal have mindst 8 tegn!"
 		},
 		"welcomeMessage": "Velkommen til Senti.Cloud!"
 	},
 	"dashboard": {
 		"cardContent": {
 			"alerts": "Vidste du, at? ... \n Modtag intelligente regelbaserede advarsler om arten af dine indsamlede data, og informationer om dine enheders tilgængelighed. ",
-			"api": "SentiAPI giver dig mulighed for at opbygge dine egne IoT Dashboards, Apps eller Widgets. SentiAPI giver adgang til dine egne Senti datasamlinger eller betalt adgang til Senti Big Data baseret på crowd-sourced anonymiserede Senti datasamlinger.",
+			"api": "SentiAPI giver dig mulighed for at opbygge dine egne Dashboards, Apps eller Widgets. SentiAPI giver adgang til dine egne Senti-enhedsdata eller betalt adgang til Senti Big Data baseret på crowd-sourced anonymiserede Senti data.",
 			"data": "Få detaljerede lister og diagrammer til at måle og analysere dine indsamlede data. Opret rapporter og eksporter data i få nemme trin.",
-			"devices": "Enheder er den fysiske IoT hardware enhed, der installeres i det ønskede miljø. Her kan du konfigurere og styre de IoT enheder, der bruges i dine datasamlinger.",
+			"devices": "Enheder er den fysiske hardware enhed, der installeres i det ønskede miljø. Her kan du konfigurere og styre de enheder, der bruges i dine projekter.",
 			"notifications": "Se og administrer notifikations-meddelelser og kontroller hvordan, hvornår, og hvor du vil engagere dine brugere med underretninger.",
-			"onSiteSetup": "Når du installerer dine IoT enheder i det ønskede miljø (on-site), er en simpel konfiguration en fordel. Gem enhedens navn, beskrivelse, placeringsoplysninger og kalibrer enheden for optimal nøjagtighed.",
-			"projects": "Projekter hjælper dig med at administrere Senti datasamlinger til specifikke måleopgaver og brugsscenarier. Et projekt er en container til at samle dine datasamlinger og data for en eller flere lokationer.",
+			"onSiteSetup": "Når du installerer dine enheder i det ønskede miljø (on-site), er en simpel konfiguration påkrævet. Gem enhedens navn, beskrivelse, placeringsoplysninger og kalibrer enheden for optimal nøjagtighed.",
+			"projects": "Projekter hjælper dig med at administrere Senti-enheder til specifikke måleopgaver og dataindsamling. Et projekt er en container til at samle dine enheder og data for en eller flere lokationer.",
 			"settings": "Kontrolcenter til styring af indstillinger for Senti IoT enheder, samt din Senti.Cloud konsol.",
-			"users": "Godkendelse og administration af konti til brugere og organisationer, samt tildeling af adgang til projekter, indsamlede data, enheder og API'er."
+			"users": "Godkendelse og administration af konti til brugere og organisationer, samt tildeling af adgang til projekter, enheder, indsamlede data og API'er."
 		},
 		"cardHeaders": {
 			"alerts": "Intelligente advarsler",
@@ -139,10 +110,26 @@
 			"settings": "Indstillinger",
 			"users": "Brugere"
 		},
+		"data": {
+			"s1": "",
+			"s2": ""
+		},
+		"devices": {
+			"s1": "",
+			"s2": ""
+		},
 		"pageTitle": "Senti.Cloud",
+		"projects": {
+			"s1": "",
+			"s2": ""
+		},
 		"subtitle": "Senti.Cloud tilbyder styring og kontrol af alle dine Senti IoT enheder."
 	},
 	"devices": {
+		"calibrateButton": "Manuel kalibrering",
+		"calibration": {
+			"noAudioSupported": "Din browser understøtter ikke lydfiler! Der vil derfor ikke være understøttende lyd! Prøv en bedre browser."
+		},
 		"cards": {
 			"data": "Data",
 			"details": "Detaljer for enhed",
@@ -150,6 +137,8 @@
 			"map": "Kort",
 			"pictures": "Billeder"
 		},
+		"confirmUnassignMessage": "Fjern de valgte enheder fra projekt:",
+		"confirmUnassignTitle": "Fjern tilknytning",
 		"device": "Enhed",
 		"editDetailsTitle": "Opdater %{deviceId}",
 		"editHardwareTitle": "Opdater hardware for enhed %{deviceId}",
@@ -162,9 +151,7 @@
 			"coordsW": "Koordinater: %{lat} %{long}",
 			"description": "Beskrivelse",
 			"free": "Ledig",
-			"id": "Enhed ID",
-			"lat": "Latitude",
-			"long": "Longitude",
+			"id": "ID",
 			"lastData": "Sidste gang enheden sendte data til server",
 			"lastStats": "Sidste gang enheden havde kontakt med server",
 			"locType": "Placeringstype",
@@ -180,8 +167,7 @@
 			"simCard": "SIM-kort ID",
 			"simProvider": "SIM-kort leverandør",
 			"status": "Status",
-			"temp": "CPU temperatur",
-			"weather": "Vejr",
+			"temp": "Temperatur",
 			"wifiModule": "Wi-Fi model"
 		},
 		"liveCount": "Live tælling (seneste 10 minutter)",
@@ -202,10 +188,12 @@
 		"noData": "Der er ingen data!",
 		"noDataFilters": "Der er ingen data tilgængelig for de valgte filtre!",
 		"noDevices": "Der er ingen tilgængelige enheder",
-		"noImages": "Der er ikke overført billeder!",
+		"noDevicesAssigned": "Der er ingen tildelte enheder!",
+		"noImages": "Der er ikke uploadet billeder!",
 		"noLocType": "Der er ingen placeringstype indstillet",
 		"noName": "Unavngivet",
-		"notCalibrated": "Enhed er ikke kalibreret! Kort lokation og vejr data vil ikke være tilgængelige.",
+		"noProject": "Ikke tildelt",
+		"notCalibrated": "Enhed er ikke kalibreret!",
 		"pageTitle": "Enheder",
 		"simpleList": {
 			"address": "Adresse",
@@ -228,71 +216,25 @@
 		}
 	},
 	"dialogs": {
-		"login": {
-			"resetPassRequestMessage": "En E-mail er er blevet sendt med instruktioner for hvordan du nulstiller dit kodeord!",
-			"resetPasswordMessage": "Nulstil dit kodeord ved at indtaste din E-mail adresse"
-		},
-		"delete": {
-			"message": {
-				"collection": "Er du sikker på du ønsker at slette denne datasamling ( %{collection} )?",
-				"collections": "Er du sikker på du ønsker at slette disse datasamlinger:",
-				"org": "Er du sikker på du ønsker at slette denne organisation ( %{org} )?",
-				"orgs": "Er du sikker på du ønsker at slette disse organisationer:",
-				"project": "Er du sikker på du ønsker at slette dette projekt ( %{project} )?",
-				"projects": "Er du sikker på du ønsker at slette disse projekter:",
-				"user": "Er du sikker på du ønsker at slette denne bruger?",
-				"users": "Er du sikker på du ønsker at slette disse brugere:"
-			},
-			"title": {
-				"collection": "Slet datasamling?",
-				"collections": "Slet datasamlinger?",
-				"org": "Slet organisation?",
-				"orgs": "Slet organisationer?",
-				"project": "Slet projekt?",
-				"projects": "Slet projekter?",
-				"user": "Slet bruger?",
-				"users": "Slet brugere?"
-			}
-		},
-		"unassign": {
-			"message": {
-				"collectionFromProject": "Frigør datasamling %{collection} fra projekt %{project} ?",
-				"collectionsFromProject": "Frigør disse datasamlinger fra projekt:",
-				"deviceFromCollection": "Frigør enhed %{device} fra datasamling %{collection}?",
-				"deviceFromOrg": "Frigør enhed %{device} fra organisation %{organisation}?",
-				"devicesFromCollection": "Frigør disse enheder fra deres datasamling:"
-			},
-			"title": {
-				"collectionFromProject": "Frigør datasamling fra projekt?",
-				"collectionsFromProject": "Frigør datasamlinger fra projekt?",
-				"deviceFromCollection": "Frigør enhed fra datasamling?",
-				"deviceFromOrg": "Frigør enhed fra organisation?",
-				"devicesFromCollection": "Frigør disse enheder fra deres datasamling?"
-			}
-		},
+		"abort": "Afbryd",
+		"accept": "Accepter",
+		"apply": "Anvend",
+		"cancel": "Afbryd",
+		"no": "Nej",
+		"unassign": "Er du sikker på at du vil fjerne tildelingen %{deviceID} %{deviceName} fra %{project} ?",
+		"unassignTitle": "Fjern tildeling %{what}?",
 		"warnings": {
 			"notImplemented": "Ikke implementeret",
 			"wip": "Under udvikling"
 		},
-		"discoverSenti": {
-			"addProject": "Opret data projekter",
-			"onSiteSetup": "Opsætning af enheder",
-			"startAnalyzeData": "Analyser dine data",
-			"welcome": "Velkommen til Senti.Cloud!"
-		}
+		"yes": "Ja"
 	},
-	"favorites": {
-		"fields": {
-			"name": "Navn",
-			"type": "Type"
-		},
-		"types": {
-			"collection": "Datasamling",
-			"device": "Enhed",
-			"org": "Organisation",
-			"project": "Projekt",
-			"user": "Bruger"
-		}
+	"discoverSenti": {
+		"addProject": "Opret data projekter",
+		"getStarted": "Start her",
+		"onSiteSetup": "Opsætning af enheder",
+		"startAnalyzeData": "Analyser dine data",
+		"welcome": "Velkommen til Senti.Cloud!"
 	},
 	"filters": {
 		"dateOptions": {
@@ -302,9 +244,6 @@
 			"custom": "Tilpasset interval",
 			"daily": "Hver dag",
 			"hourly": "Hver time",
-			"minutely": "Hver minut",
-			"summary": "Resumé",
-			"thisWeek": "Denne uge",
 			"today": "I dag",
 			"yesterday": "I går"
 		},
