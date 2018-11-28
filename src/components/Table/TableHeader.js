@@ -87,7 +87,6 @@ class EnhancedTableHead extends Component {
 									</TableSortLabel>
 								</TableCell>
 							}) : null
-						
 						}
 					</Hidden>
 
