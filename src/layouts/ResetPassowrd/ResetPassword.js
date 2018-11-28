@@ -33,9 +33,10 @@ class ResetPassword extends React.Component {
 		this.input = React.createRef()
 	}
 	handleKeyPress = (event) => {
-		if (event.key === 'Enter') {
-			this.confirmPass()
-		}
+		if (this.props.match.params.token)
+			if (event.key === 'Enter') {
+				this.confirmPass()
+			}
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
@@ -203,7 +204,7 @@ class ResetPassword extends React.Component {
 												<Grid container>
 													<ItemG xs={12}>
 														<Collapse in={!error}>
-															{this.token ? null : <Info>{t('login.resetPasswordMessage')}</Info>}
+															{this.token ? null : <Info>{t('dialogs.login.resetPasswordMessage')}</Info>}
 														</Collapse>
 														<Collapse in={error}>
 															{errorMessage}
@@ -259,7 +260,7 @@ class ResetPassword extends React.Component {
 											</Collapse>
 											<Collapse in={passwordRequested}>
 												<ItemG xs={12}>
-													<Success>{t('login.resetPassRequestMessage')}</Success>
+													<Success>{t('dialogs.login.resetPassRequestMessage')}</Success>
 												</ItemG>
 												
 											</Collapse>
@@ -269,17 +270,17 @@ class ResetPassword extends React.Component {
 												<ItemG xs={12} container justify={'center'}>
 													<Collapse in={!passwordRequested}>
 														{!this.token ? <Button variant={'contained'} color={'primary'} onClick={this.resetPass}>
-															{t('login.requestPasswordReset')}
+															{t('actions.requestPasswordReset')}
 														</Button> :
 															<Button variant={'contained'} color={'primary'} onClick={this.confirmPass}>
-																{t('login.changePassword')}
+																{t('actions.changePassword')}
 															</Button>}
 													</Collapse>
 												</ItemG>
 												<ItemG xs={12} container justify={'center'}>
 													<Collapse in={passwordRequested}>
 														<Button variant={'contained'} color={'primary'} onClick={() => this.props.history.push('/login')}>
-															{t('login.goToLogin')}
+															{t('actions.goToLogin')}
 														</Button>
 													</Collapse>
 												</ItemG>

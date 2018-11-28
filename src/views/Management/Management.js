@@ -38,7 +38,7 @@ class Management extends Component {
 			users: [],
 			orgs: []
 		}
-		props.setHeader(props.t('users.pageTitle'), false, '', 'users')
+		props.setHeader('users.pageTitle', false, '', 'users')
 	}
 	tabs = [
 		{ id: 0, title: this.props.t('users.tabs.users'), label: <People />, url: `/management/users` },
@@ -123,7 +123,7 @@ class Management extends Component {
 		else {
 			if (this.props.location.pathname.includes('/favorites')) {
 				this.setState({ route: 2 })
-				this.props.setHeader(this.props.t('sidebar.favorites'), false, '', 'users')
+				this.props.setHeader('sidebar.favorites', false, '', 'users')
 			}
 			else {
 				this.setState({ route: 0 })

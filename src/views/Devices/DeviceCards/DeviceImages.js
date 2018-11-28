@@ -126,37 +126,8 @@ class DeviceImages extends PureComponent {
 							{ label: t('actions.deletePicture'), icon: <Delete className={classes.leftIcon} />, func: this.handleOpenDeletePictureDialog },
 						]
 					} />
-					// <ItemG>
-					// 	<IconButton
-					// 		aria-label='More'
-					// 		aria-owns={actionAnchor ? 'long-menu' : null}
-					// 		aria-haspopup='true'
-					// 		onClick={this.handleOpenActionsImages}>
-					// 		<MoreVert />
-					// 	</IconButton>
-					// 	<Menu
-					// 		id='long-menu'
-					// 		anchorEl={actionAnchor}
-					// 		open={Boolean(actionAnchor)}
-					// 		onClose={this.handleCloseActionsImages}
-					// 		PaperProps={{
-					// 			style: {
-					// 				maxHeight: 200,
-					// 				minWidth: 200
-					// 			}
-					// 		}}>
-					// 		<MenuItem onClick={this.handleOpenImageUpload}>
-					// 			<CloudUpload className={classes.leftIcon} />{t('actions.uploadImages')}
-					// 		</MenuItem>
-					// 		<MenuItem onClick={this.handleOpenDeletePictureDialog}>
-					// 			<Delete className={classes.leftIcon} />{t('actions.deletePicture')}
-					// 		</MenuItem>
-					// 		))}
-					// 	</Menu>
-					// </ItemG>
 				}
-				noExpand
-				content={
+				hiddenContent={
 					<Fragment>
 						{img !== null ? img !== 0 ?
 							<Fragment>

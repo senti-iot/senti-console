@@ -45,7 +45,6 @@ class TP extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	// rowsPerPage: state.settings.trp,
 	rowsPerPageOptions: state.settings.rowsPerPageOptions,
 })
 

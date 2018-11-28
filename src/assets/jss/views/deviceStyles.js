@@ -26,8 +26,9 @@ const deviceStyles = theme => ({
 		padding: 30
 	},
 	checkbox: {
-		width: 30,
-		height: 30
+		padding: 8
+		// width: 30,
+		// height: 30
 	},
 	label: {
 		'&$focused': {

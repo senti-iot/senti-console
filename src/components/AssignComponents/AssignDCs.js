@@ -29,12 +29,10 @@ class AssignDCS extends React.Component {
 			}
 		}
 	}
-	Transition = (props) => {
-		return <Slide direction='up' {...props} />;
-	}
+	//#region Lifecycle
+
 	componentDidMount = async () => {
 		this._isMounted = 1
-		// const { orgId } = this.props
 		await getAllCollections().then(rs => this._isMounted ? this.setState({ collections: rs }) : this.setState({ collections: [] }))
 		await getProject(this.props.project).then(rs => this._isMounted ? this.setState({ project: rs, selectedCollections: rs ? rs.dataCollections.map(r => r.id) : [] }) : null)
 	}
@@ -42,11 +40,29 @@ class AssignDCS extends React.Component {
 		if (nextProps.project !== this.props.project)
 			await getProject(nextProps.project).then(rs => this._isMounted ? this.setState({ project: rs, selectedCollections: rs ? rs.dataCollections.map(r => r.id) : [] }) : null)
 	}
-	
+
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
 
+	//#endregion
+
+	//#region External
+
+	assignCollection = async () => {
+		const { selectedCollections, project } = this.state
+		await updateProject({ ...project, dataCollections: [...selectedCollections.map(c => ({ id: c }))] }).then(
+			() => this.props.handleClose(true)
+		)
+	}
+
+	//#endregion
+
+	//#region Handlers
+	
+	handleTransition = (props) => {
+		return <Slide direction='up' {...props} />;
+	}
 	handleClick = (event, id) => {
 		event.stopPropagation()
 		const { selectedCollections } = this.state;
@@ -55,22 +71,12 @@ class AssignDCS extends React.Component {
 		if (selectedIndex === -1) {
 			newSelected.push(id);
 		}
-		else { 
-			newSelected = newSelected.filter(c => c !== id )
+		else {
+			newSelected = newSelected.filter(c => c !== id)
 		}
 		this.setState({ selectedCollections: newSelected })
 	}
 
-	assignCollection = async () => {
-		const { selectedCollections, project } = this.state
-		await updateProject({ ...project, dataCollections: [...selectedCollections.map(c => ({ id: c }))] }).then(
-			() => this.props.handleClose(true)
-		)
-
-	}
-	closeDialog = () => {
-		this.props.handleClose(false)
-	}
 	handleFilterKeyword = value => {
 		this.setState({
 			filters: {
@@ -79,7 +85,10 @@ class AssignDCS extends React.Component {
 			}
 		})
 	}
-	isSelected = id => this.state.selectedCollections.findIndex(c => c === id ) !== -1 ? true : false 
+	isSelected = id => this.state.selectedCollections.findIndex(c => c === id) !== -1 ? true : false
+
+	//#endregion
+
 	render() {
 		const { collections, filters } = this.state
 		const { classes, open, t } = this.props;
@@ -92,7 +101,7 @@ class AssignDCS extends React.Component {
 					fullScreen
 					open={open}
 					onClose={() => this.props.handleClose(false)}
-					TransitionComponent={this.Transition}
+					TransitionComponent={this.handleTransition}
 				>
 					<AppBar className={classes.appBar + appBarClasses}>
 						<Toolbar>

@@ -23,8 +23,7 @@ class CounterModal extends React.Component {
 		}
 		let canPlayMP3 = new Audio().canPlayType('audio/mp3');
 		if (!canPlayMP3 || canPlayMP3 === 'no') {
-			let msg = props.t('devices.calibration.noAudioSupported')
-			// let msg = 'Your browser doesn\'t support audio files! There will be no sound feedback! Try using Google Chrome.';
+			let msg = props.t('no.audioSupported')
 			alert(msg);
 		}
 		this.mp3File = new Audio('/assets/sound/pop.mp3').load()

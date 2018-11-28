@@ -55,7 +55,6 @@ class CreateOrg extends Component {
 
 
 	handleValidation = () => {
-		/* Address, City, Postcode, Country, Region, Website. */
 		let errorCode = [];
 		const { name, address, city, zip, country } = this.state.org
 		const { selectedOrg } = this.state
@@ -198,7 +197,6 @@ class CreateOrg extends Component {
 				color={ 'primary' }
 				value={ selectedOrg }
 				onChange={ this.handleOrgChange }
-				// renderValue={ value => value.name }
 			>
 				{ orgs ? orgs.map(org => (
 					<MenuItem

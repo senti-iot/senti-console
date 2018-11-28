@@ -17,8 +17,6 @@ const style = {
 	grid: {
 		padding: '0 8px',
 		margin: '8px',
-		// justifyContent: 'center',
-		// alignItems: 'center'
 	}
 };
 

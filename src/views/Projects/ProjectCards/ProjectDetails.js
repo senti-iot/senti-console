@@ -37,24 +37,24 @@ class ProjectDetails extends Component {
 				content = {< Grid container>
 					<ItemGrid xs={12} container noMargin noPadding>
 						<ItemGrid>
-							<Caption>{t('projects.projectsColumnDescription')}:</Caption>
+							<Caption>{t('projects.fields.description')}:</Caption>
 							<Info>{project.description}</Info>
 						</ItemGrid>
 					</ItemGrid>
 					<ItemGrid>
-						<Caption>{t('projects.projectsColumnStartDate')}:</Caption>
+						<Caption>{t('projects.fields.startDate')}:</Caption>
 						<Info>{dateFormatter(project.startDate)}</Info>
 					</ItemGrid>
 					<ItemGrid xs>
-						<Caption>{t('projects.projectsColumnEndDate')}:</Caption>
+						<Caption>{t('projects.fields.endDate')}:</Caption>
 						<Info>{dateFormatter(project.endDate)}</Info>
 					</ItemGrid>
 					<ItemGrid xs={12}>
-						<Caption>{t('projects.projectsColumnCreated')}:</Caption>
+						<Caption>{t('projects.fields.created')}:</Caption>
 						<Info>{dateFormatter(project.created)}</Info>
 					</ItemGrid>
 					<ItemGrid xs={12}>
-						<Caption>{t('projects.projectsColumnLastMod')}:</Caption>
+						<Caption>{t('projects.fields.lastUpdate')}:</Caption>
 						<Info>{dateFormatter(project.modified)}</Info>
 					</ItemGrid>
 				</Grid >}

@@ -27,7 +27,7 @@ class Users extends Component {
 				activeDateFilter: false
 			}
 		}
-		props.setHeader(props.t('users.pageTitle'), false, '', 'users')
+		props.setHeader('users.pageTitle', false, '', 'users')
 	}
 	userHeader = () => {
 		const { t } = this.props

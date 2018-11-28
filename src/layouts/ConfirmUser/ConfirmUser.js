@@ -14,12 +14,10 @@ import { changeLanguage } from 'redux/localization';
 import { confirmUser } from 'variables/dataUsers';
 import cookie from 'react-cookies';
 import { setToken } from 'variables/data';
-// var passChecker = require('zxcvbn')
 
 class ConfirmUser extends React.Component {
 	constructor(props) {
 		super(props);
-		// we use this to make the card to appear after the page has been rendered
 		this.state = {
 			cardAnimaton: 'cardHidden',
 			password: '',
@@ -144,17 +142,8 @@ class ConfirmUser extends React.Component {
 
 
 	handleChange = prop => e => {
-		// let score = 0 
-		// let result = null
-		// let pass = e.target.value
-		// if (!(pass.length < this.state.minLength)) { 
-		// 	result = passChecker(pass, [])
-		// 	score = result.score
-		// }
 		this.setState({
 			...this.state,
-			// isValid: score >= this.state.minScore,
-			// score,
 			[prop]: e.target.value
 		})
 		if (this.state.error)
@@ -207,10 +196,8 @@ class ConfirmUser extends React.Component {
 														// disabled={true}
 														handleChange={this.handleChange('password')}
 														margin='normal'
-														
 														error={error}
 														type={'password'}
-													// helperText={<Danger>{this.state.score}</Danger>}
 													/>
 												</ItemG>
 												<ItemG xs={12}>
@@ -222,7 +209,6 @@ class ConfirmUser extends React.Component {
 														// disabled={true}
 														handleChange={this.handleChange('confirmPassword')}
 														margin='normal'
-														
 														error={error}
 														type={'password'}
 													/>

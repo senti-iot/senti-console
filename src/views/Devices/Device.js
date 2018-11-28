@@ -16,7 +16,7 @@ import { unassignDeviceFromCollection, getCollection } from 'variables/dataColle
 import DeviceMap from './DeviceCards/DeviceMap';
 import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
-import { Timeline, DeviceHub, Map, DeveloperBoard } from 'variables/icons';
+import { Timeline, DeviceHub, Map, DeveloperBoard, Image } from 'variables/icons';
 import teal from '@material-ui/core/colors/teal'
 import { setHourlyData, setMinutelyData, setDailyData, setSummaryData } from 'components/Charts/DataModel';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
@@ -54,14 +54,18 @@ class Device extends Component {
 		{ id: 0, title: '', label: <DeviceHub />, url: `#details` },
 		{ id: 1, title: '', label: <Timeline />, url: `#data` },
 		{ id: 2, title: '', label: <Map />, url: `#map` },
-		{ id: 3, title: '', label: <DeveloperBoard />, url: `#hardware` }
+		{ id: 3, title: '', label: <Image />, url: `#images` },
+		{ id: 4, title: '', label: <DeveloperBoard />, url: `#hardware` }
 	]
 	getDevice = async (id) => {
 		await getDevice(id).then(async rs => {
 			if (rs === null)
 				this.props.history.push('/404')
 			else {
-				this.setState({ device: rs, loading: false })
+				this.setState({ device: rs, loading: false }, () => {
+					this.getWifiDaily()
+					this.getHeatMapData()
+				})
 				if (rs.dataCollection) {
 					await this.getDataCollection(rs.dataCollection)
 				}
@@ -96,14 +100,13 @@ class Device extends Component {
 	}
 	componentDidMount = async () => {
 		let prevURL = this.props.location.prevURL ? this.props.location.prevURL : '/devices/list'
-		this.props.setHeader(this.props.t('devices.device'), true, prevURL ? prevURL : '/devices/list', 'devices')
+		this.props.setHeader('devices.device', true, prevURL ? prevURL : '/devices/list', 'devices')
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {
 				// this.getAllPics(id)
 				await this.getDevice(id)
-				this.getWifiDaily()
-				this.getHeatMapData()
+			
 			}
 		}
 		else {
@@ -395,12 +398,11 @@ class Device extends Component {
 
 	handleCloseAssignOrg = async (reload) => {
 		if (reload) {
-			this.setState({ loading: true })
+			this.setState({ loading: true, openAssignOrg: false })
 			await this.getDevice(this.state.device.id).then(
 				() => this.snackBarMessages(4)
 			)
 		}
-		this.setState({ openAssignOrg: false })
 	}
 	handleOpenAssign = () => {
 		this.setState({ openAssignCollection: true, anchorEl: null })

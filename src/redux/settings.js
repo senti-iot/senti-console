@@ -1,4 +1,3 @@
-// import { getSettingsFromServer, saveSettingsOnServer } from 'variables/dataLogin';
 import cookie from 'react-cookies';
 import { getUser, getValidSession } from 'variables/dataUsers'
 // import moment from 'moment'
@@ -71,7 +70,6 @@ export const getSettings = async () => {
 		var user = userId !== 0 ? await getUser(userId) : null
 		var settings = user ? user.aux ? user.aux.senti ? user.aux.senti.settings ? user.aux.senti.settings : null : null : null : null
 		var favorites = user ? user.aux ? user.aux.senti ? user.aux.senti.favorites ? user.aux.senti.favorites : null : null : null : null
-		// moment.locale('en', null)
 		moment.updateLocale('en-gb', {
 			week: {
 				dow: 1
@@ -88,8 +86,6 @@ export const getSettings = async () => {
 					},
 					user
 				})
-				
-				// return true
 			}
 		
 			else {
@@ -105,7 +101,6 @@ export const getSettings = async () => {
 					user,
 					settings: s
 				})
-				// return false
 			}
 			if (favorites) { 
 				dispatch({

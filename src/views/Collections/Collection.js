@@ -53,7 +53,7 @@ class Collection extends Component {
 			//End Map
 		}
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/collections/list'
-		props.setHeader(props.t('collections.fields.collection'), true, prevURL, 'collections')
+		props.setHeader('collections.fields.collection', true, prevURL, 'collections')
 	}
 		format = 'YYYY-MM-DD+HH:mm'
 	tabs = [
@@ -83,7 +83,7 @@ class Collection extends Component {
 				this.setState({ collection: rs })
 		
 				if (rs.project.id) {
-					this.getCollectionProject(rs.project.id)
+					await this.getCollectionProject(rs.project.id)
 				}
 				if (rs.activeDeviceStats) { 
 					await this.getActiveDevice(rs.activeDeviceStats.id)
@@ -143,19 +143,20 @@ class Collection extends Component {
 	}
 	getHeatMapData = async () => {
 		// const { device } = this.props
-		const { from, to, raw, collection } = this.state
+		const { from, to, raw, collection, activeDevice } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		// let dataArr = []
 		let dataSet = null
 		let data = await getDataSummary(collection.id, startDate, endDate, raw)
 		dataSet = {
-			name: collection.name,
-			id: collection.id,
+			name: activeDevice.name,
+			id: activeDevice.id,
 			data: data,
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
-			color: teal[500]
+			color: teal[500],
+			...activeDevice
 		}
 		this.setState({
 			heatData: dataSet,
@@ -296,7 +297,6 @@ class Collection extends Component {
 		let newState = setMinutelyData(dataArr, from, to, hoverID)
 		this.setState({
 			...this.state,
-			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 0,
 			...newState
@@ -369,19 +369,19 @@ class Collection extends Component {
 		let id = this.state.collection.id
 		switch (msg) {
 			case 1:
-				s(t('snackbars.unassign.deviceFromCollection', { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id }))
+				s('snackbars.unassign.deviceFromCollection', { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id })
 				break
 			case 2:
-				s(t('snackbars.assign.collectionToOrg', { collection: `${name} (${id})`, org: this.state.collection.org.name }))
+				s('snackbars.assign.collectionToOrg', { collection: `${name} (${id})`, org: this.state.collection.org.name })
 				break
 			case 5: 
-				s(t('snackbars.assign.collectionToProject', { collection: `${name} (${id})`, project: this.state.collection.project.title }))
+				s('snackbars.assign.collectionToProject', { collection: `${name} (${id})`, project: this.state.collection.project.title })
 				break
 			case 6:
-				s(t('snackbars.assign.deviceToCollection', { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id }))
+				s('snackbars.assign.deviceToCollection', { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id })
 				break
 			case 4:
-				s(t('snackbars.collectionDeleted'))
+				s('snackbars.collectionDeleted')
 				break
 			default:
 				break
@@ -440,7 +440,6 @@ class Collection extends Component {
 				this.snackBarMessages(2)
 			})
 		}
-		this.setState({ openAssignOrg: false })
 	}
 	handleOpenAssignProject = () => {
 		this.setState({ openAssign: true, anchorEl: null })

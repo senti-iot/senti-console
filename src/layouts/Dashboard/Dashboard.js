@@ -5,14 +5,11 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import PerfectScrollbar from 'perfect-scrollbar';
 import 'perfect-scrollbar/css/perfect-scrollbar.css';
 import { withStyles, Snackbar, Button } from '@material-ui/core';
-import { Header, /* Footer, */ Sidebar, CircularLoader } from 'components';
+import { Header, Sidebar, CircularLoader } from 'components';
 
 import dashboardRoutes from 'routes/dashboard.js';
-
 import appStyle from 'assets/jss/material-dashboard-react/appStyle.js';
 import { MuiThemeProvider } from '@material-ui/core/styles'
-
-// import image from 'assets/img/sidebar-2.jpg';
 import logo from '../../logo.svg';
 import cookie from 'react-cookies';
 import withLocalization from 'components/Localization/T';
@@ -21,7 +18,6 @@ import { getSettings } from 'redux/settings';
 import withSnackbarHandler from 'components/Localization/SnackbarHandler';
 import {  Close } from 'variables/icons';
 import { lightTheme, darkTheme } from 'variables/themes'
-// import GeoLocation from 'components/Geolocation/Geolocation';
 class App extends React.Component {
 	constructor(props) {
 		super(props)
@@ -32,9 +28,7 @@ class App extends React.Component {
 			goBackButton: false,
 			url: '',
 			menuRoute: 0,
-			// openSnackbar: false
 		}
-		// this.mainPanel = React.createRef()
 	}
 
 	handleDrawerToggle = () => {

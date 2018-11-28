@@ -12,9 +12,7 @@ import { suggestionGen, filterItems } from 'variables/functions';
 import assignStyles from 'assets/jss/components/assign/assignStyles';
 
 
-function Transition(props) {
-	return <Slide direction='up' {...props} />;
-}
+
 
 class AssignOrg extends PureComponent {
 	constructor(props) {
@@ -31,17 +29,12 @@ class AssignOrg extends PureComponent {
 			}
 		}
 	}
-
 	componentDidMount = async () => {
 		this._isMounted = 1
 		await getAllOrgs().then(rs => this._isMounted ? this.setState({ orgs: rs }) : null)
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
-	}
-	selectOrg = pId => e => {
-		e.preventDefault()
-		this.setState({ selectedOrg: pId })
 	}
 	assignOrg = async () => {
 		if (this.props.devices)
@@ -58,6 +51,13 @@ class AssignOrg extends PureComponent {
 			}
 			)
 		}
+	}
+	Transition(props) {
+		return <Slide direction='up' {...props} />;
+	}
+	selectOrg = pId => e => {
+		e.preventDefault()
+		this.setState({ selectedOrg: pId })
 	}
 	closeDialog = () => {
 		this.props.handleClose(false)
@@ -82,7 +82,7 @@ class AssignOrg extends PureComponent {
 				fullScreen
 				open={open}
 				onClose={this.handleClose}
-				TransitionComponent={Transition}
+				TransitionComponent={this.Transition}
 			>
 				<AppBar className={classes.appBar + appBarClasses}>
 					<Toolbar>

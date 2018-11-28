@@ -6,6 +6,8 @@ import { getDevice, updateDevice } from 'variables/dataDevices';
 import { CircularLoader, GridContainer, ItemGrid, TextF } from 'components';
 import { PlacesWithStandaloneSearchBox } from 'components/Map/SearchBox';
 import DSelect from 'components/CustomInput/DSelect';
+import { isFav, updateFav } from 'redux/favorites';
+import { connect } from 'react-redux'
 
 class EditDeviceDetails extends Component {
 	constructor(props) {
@@ -74,6 +76,17 @@ class EditDeviceDetails extends Component {
 		await updateDevice(updateD).then(rs =>  rs ?  this.goToDevice() : null )
 	}
 	goToDevice = () => {
+		const { isFav, updateFav } = this.props
+		const { device } = this.state
+		let favObj = {
+			id: device.id,
+			name: device.name,
+			type: 'device',
+			path: `/device/${device.id}`
+		}
+		if (isFav(favObj)) {
+			updateFav(favObj)
+		}
 		this.setState({ updated: true, updating: false })
 		this.props.s('snackbars.deviceUpdated', { device: this.state.device.id })
 		this.props.history.push(`/device/${this.props.match.params.id}`)
@@ -81,7 +94,6 @@ class EditDeviceDetails extends Component {
 	render() {
 		const { classes, t } = this.props
 		const { loading, device } = this.state
-		// let mobile = isWidthUp('md', this.props.width)
 		return loading ? <CircularLoader /> : (
 			<GridContainer>
 				<Paper className={classes.paper}>
@@ -140,7 +152,7 @@ class EditDeviceDetails extends Component {
 											<Check className={classes.leftIcon}/>{t('snackbars.redirect')}
 										</Fragment> : 
 										<Fragment>
-											<Save className={classes.leftIcon} />{t('calibration.texts.updateDevice')}
+											<Save className={classes.leftIcon} />{t('actions.save')}
 										</Fragment>}
 								</Button>
 								{/* </ItemGrid> */}
@@ -152,4 +164,12 @@ class EditDeviceDetails extends Component {
 		)
 	}
 }
-export default withStyles(createprojectStyles)(EditDeviceDetails)
+
+const mapStateToProps = (state) => ({ 
+
+})
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	updateFav: (favObj) => dispatch(updateFav(favObj))
+})
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles)(EditDeviceDetails))

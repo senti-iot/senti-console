@@ -39,25 +39,17 @@ export const PlacesWithStandaloneSearchBox = compose(
 			ref={props.onSearchBoxMounted}
 			bounds={props.bounds}
 			onPlacesChanged={props.onPlacesChanged}
+
 		>
 			<TextF
 				id={'calibrate-address'}
-				placeholder={''}
+				placeholder={props.t('actions.insertAddress')}
 				label={props.t('devices.fields.address')}
 				handleChange={props.handleChange}
 				value={props.address}
 			/>
 		
 		</StandaloneSearchBox>
-		{/* <ol> {/* //For debugging purposes
-			{props.places.map(({ place_id, formatted_address, geometry: { location } }) =>
-				<li key={place_id}>
-					{formatted_address}
-					{' at '}
-					({location.lat()}, {location.lng()})
-				</li>
-			)}
-		</ol> */}
 	</Fragment>
 }
 );

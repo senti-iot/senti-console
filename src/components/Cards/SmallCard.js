@@ -12,16 +12,12 @@ const styles = {
 		backgroundColor: teal[500],
 	},
 	card: {
-		// maxWidth: 345,
 		margin: 8,
 		display: 'flex',
 		flexFlow: 'column',
 		flexGrow: 1
-		// justifyContent: 'center',
-		// alignItems: 'center'
 	},
 	cardContent: {
-		// minHeight: 50,
 		flexGrow: 1
 	},
 	media: {

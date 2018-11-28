@@ -12,7 +12,6 @@ class SearchInput extends Component {
 		const { noAbsolute, t, classes, ref, open, handleClose, handleOpen, handleResetSearch, fullWidth, ...other } = this.props;
 		return (
 			<ItemGrid container noPadding alignItems={'center'} style={{ width: fullWidth ? '100%' : 'auto', margin: 0 }}>
-
 				<div className={className({ [classes.inputContainer]: !noAbsolute }, { [classes.inputContainerNoAbsolute]: noAbsolute }, { [fullWidth ? classes.inputContainerFullWidth : classes.inputContainerFocused ]: this.props.open }, { [classes.inputContainerUnfocused]: !this.props.open })}>
 					<Search className={className(classes.icon, { [classes.iconActive]: this.props.value !== '' ? true : false })} onClick={handleOpen}/>
 					<Input

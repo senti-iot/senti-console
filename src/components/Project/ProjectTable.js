@@ -18,18 +18,11 @@ import TC from 'components/Table/TC';
 class ProjectTable extends React.Component {
 	constructor(props) {
 		super(props);
-
 		this.state = {
-			// selected: [],
 			page: 0,
 			rowsPerPage: props.rowsPerPage,
-			// anchorElMenu: null,
-			// anchorFilterMenu: null,
-			// openDelete: false
 		}
 	}
-
-
 
 	handleFilterMenuOpen = e => {
 		e.stopPropagation()
@@ -66,12 +59,9 @@ class ProjectTable extends React.Component {
 		await this.props.deleteProjects(this.props.selected)
 	}
 
-
-
 	isSelected = id => this.props.selected.indexOf(id) !== -1
 
 	renderConfirmDelete = () => {
-		// const { openDelete } = this.state
 		const { data, t, selected, handleCloseDeleteDialog, openDelete } = this.props
 		return <Dialog
 			open={openDelete}
@@ -79,10 +69,10 @@ class ProjectTable extends React.Component {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('projects.projectDelete')}</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.projects')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
-					{t('projects.projectDeleteConfirm')}
+					{t('dialogs.delete.message.projects')}
 				</DialogContentText>
 				<List>
 					{selected.map(s => <ListItem key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
@@ -130,7 +120,7 @@ class ProjectTable extends React.Component {
 										Projects
 									</Typography>
 								}
-							]} //Which Columns to display on small Screens
+							]}
 						/>
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
@@ -157,7 +147,7 @@ class ProjectTable extends React.Component {
 													</ItemGrid>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Caption noWrap className={classes.noMargin}>
-															{`${n.org ? n.org.name : t('users.fields.noOrg')}` /* ${dateFormatter(n.startDate)} - ${dateFormatter(n.endDate)} */}
+															{`${n.org ? n.org.name : t('users.fields.noOrg')}`}
 														</Caption>
 													</ItemGrid>
 												</ItemGrid>
@@ -176,7 +166,7 @@ class ProjectTable extends React.Component {
 								)
 							}) : null}
 							{emptyRows > 0 && (
-								<TableRow style={{ height: 49/*  * emptyRows  */ }}>
+								<TableRow style={{ height: 49 }}>
 									<TableCell colSpan={8} />
 								</TableRow>
 							)}

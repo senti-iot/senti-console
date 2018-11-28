@@ -1,19 +1,28 @@
 {
+	"": "",
 	"404": {
 		"errorMessage": "Den ønskede ressource er ikke fundet! Prøv igen eller kontakt support!",
+		"networkError": "Netværksfejl!",
 		"title": "404 fejl - Siden ikke fundet"
 	},
 	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
-		"accept": "Accepter",
+		"changePassword": "Skift kodeord",
+		"requestPasswordReset": "Nulstil kodeord",
+		"forgotPass": "Glemt kodeord?",
+		"goToLogin": "Gå til log ind",
+		"login": "Log ind",
+		"manualCalibration": "Manuel kalibrering",
 		"apply": "Anvend",
 		"back": "Forrige",
 		"cancel": "Anuller",
 		"decline": "Afvis",
 		"deletePicture": "Slet dette billede",
 		"finish": "Luk",
+		"getLocation": "Hent lokation",
 		"goTo": "Går til",
 		"heatMap": "Heatmap",
+		"insertAddress": "Indtast adresse",
 		"learnMore": "Lær mere",
 		"next": "Næste",
 		"nextPage": "Næste side",
@@ -24,15 +33,12 @@
 		"save": "Gem",
 		"start": "Start",
 		"startNow": "Start nu",
-		"updateDeviceHardware": "Rediger hardware for enhed",
 		"uploadImages": "Upload billeder",
+		"viewDevice": "Vis enhed",
+		"viewDeviceList": "Vis liste over enheder",
 		"yes": "Ja"
 	},
 	"calibration": {
-		"fields": {
-			"description": "Beskrivelse",
-			"deviceName": "Navn på enhed"
-		},
 		"header": "Lokal opsætning",
 		"selectLocationType": "Vælg en lokationstype for ",
 		"stepheader": {
@@ -49,19 +55,8 @@
 			"unknown": "Ukendt skridt"
 		},
 		"texts": {
-			"back": "Tilbage",
-			"finish": "Afslut",
-			"getLocation": "Hent lokation",
-			"lat": "Breddegrad",
-			"long": "Længdegrad",
-			"networkError": "Netværksfejl!",
-			"next": "Næste",
-			"reset": "Nulstil",
 			"success": "Succes!",
-			"successMessage": "Din Senti enhed er nu konfigureret og kalibreret og vil nu producere bedre data under indsamling. For yderligere at forbedre nøjagtigheden af din dataopsamling, returner til opsætningsstedet og lav en ny kalibrering regelmæssigt. Du kan konfigurere en notifikation for kalibrering af enheder under Indstillinger.",
-			"updateDevice": "Opdater enhed",
-			"viewDevice": "Vis enhed",
-			"viewDeviceList": "Vis liste over enheder"
+			"successMessage": "Din Senti enhed er nu konfigureret og kalibreret og vil nu producere bedre data under indsamling. For yderligere at forbedre nøjagtigheden af din dataopsamling, returner til opsætningsstedet og lav en ny kalibrering regelmæssigt. Du kan konfigurere en notifikation for kalibrering af enheder under Indstillinger."
 		}
 	},
 	"charts": {
@@ -73,23 +68,24 @@
 		}
 	},
 	"collections": {
+		"editCollection": "Rediger datasamling",
 		"calibratedData": "Kalibreret data",
 		"cards": {
 			"data": "Data",
 			"log": "Enhedslog"
 		},
 		"fields": {
+			"activated": "Aktiveret",
 			"activeDevice": "Aktiv enhed",
 			"activeDeviceStartDate": "Dataopsamling start",
 			"collection": "Datasamling",
-			"device": "Enhed",
 			"created": "Oprettet",
-			"description": "Beskrivelse",
 			"dcID": "ID",
-			"id": "Datasamling",
+			"description": "Beskrivelse",
+			"device": "Enhed",
 			"deviceId": "Enhed ID",
-			"activated": "Aktiveret",
 			"endOfService": "Tjeneste afsluttet",
+			"id": "Datasamling",
 			"modified": "Opdateret",
 			"name": "Navn",
 			"org": "Organisation",
@@ -102,13 +98,8 @@
 			},
 			"status": "Status"
 		},
-		"noActiveDevice": "Ingen aktiv enhed",
-		"noDevice": "Ingen enhed",
-		"noProject": "Ingen projekt",
-		"noHistory": "Ingen logfiler",
 		"pageTitle": "Datasamlinger",
-		"rawData": "Rådata",
-		"noCollectionsAssigned": "Ingen datasamlinger tilknyttet!"
+		"rawData": "Rådata"
 	},
 	"confirmUser": {
 		"button": "Bekræft og log ind",
@@ -117,11 +108,11 @@
 		"password": "Kodeord",
 		"passwordConfirm": "Bekræft kodeord",
 		"validation": {
+			"emailDoesntExist": "Den indtastede E-mail er ikke tilknyttet en eksisterende konto!",
 			"passwordEmpty": "Kodeord må ikke være blankt!",
 			"passwordMismatch": "De indtastede kodeord er ikke ens!",
 			"passwordUnder8": "Kodeord skal være på mindst 8 tegn!",
-			"userDoesntExistAnymore": "Brugeren eksisterer ikke længere, eller adgangen er udløbet!",
-			"emailDoesntExist": "Den indtastede E-mail er ikke tilknyttet en eksisterende konto!"
+			"userDoesntExistAnymore": "Brugeren eksisterer ikke længere, eller adgangen er udløbet!"
 		},
 		"welcomeMessage": "Velkommen til Senti.Cloud!"
 	},
@@ -148,26 +139,10 @@
 			"settings": "Indstillinger",
 			"users": "Brugere"
 		},
-		"data": {
-			"s1": "",
-			"s2": ""
-		},
-		"devices": {
-			"s1": "",
-			"s2": ""
-		},
 		"pageTitle": "Senti.Cloud",
-		"projects": {
-			"s1": "",
-			"s2": ""
-		},
 		"subtitle": "Senti.Cloud tilbyder styring og kontrol af alle dine Senti IoT enheder."
 	},
 	"devices": {
-		"calibrateButton": "Manuel kalibrering",
-		"calibration": {
-			"noAudioSupported": "Din browser understøtter ikke lydfiler! Der vil derfor ikke være understøttende lyd! Prøv en bedre browser."
-		},
 		"cards": {
 			"data": "Data",
 			"details": "Detaljer for enhed",
@@ -179,7 +154,6 @@
 		"editDetailsTitle": "Opdater %{deviceId}",
 		"editHardwareTitle": "Opdater hardware for enhed %{deviceId}",
 		"fields": {
-			"weather": "Vejr",
 			"adapter": "Strømforsyning",
 			"address": "Adresse",
 			"availability": "Tilgængelighed",
@@ -189,6 +163,8 @@
 			"description": "Beskrivelse",
 			"free": "Ledig",
 			"id": "Enhed ID",
+			"lat": "Latitude",
+			"long": "Longitude",
 			"lastData": "Sidste gang enheden sendte data til server",
 			"lastStats": "Sidste gang enheden havde kontakt med server",
 			"locType": "Placeringstype",
@@ -205,6 +181,7 @@
 			"simProvider": "SIM-kort leverandør",
 			"status": "Status",
 			"temp": "CPU temperatur",
+			"weather": "Vejr",
 			"wifiModule": "Wi-Fi model"
 		},
 		"liveCount": "Live tælling (seneste 10 minutter)",
@@ -225,12 +202,10 @@
 		"noData": "Der er ingen data!",
 		"noDataFilters": "Der er ingen data tilgængelig for de valgte filtre!",
 		"noDevices": "Der er ingen tilgængelige enheder",
-		"noDevicesAssigned": "Der er ingen tildelte enheder!",
 		"noImages": "Der er ikke overført billeder!",
 		"noLocType": "Der er ingen placeringstype indstillet",
 		"noName": "Unavngivet",
-		"noProject": "Ikke tildelt",
-		"notCalibrated": "Enhed er ikke kalibreret!",
+		"notCalibrated": "Enhed er ikke kalibreret! Kort lokation og vejr data vil ikke være tilgængelige.",
 		"pageTitle": "Enheder",
 		"simpleList": {
 			"address": "Adresse",
@@ -253,61 +228,71 @@
 		}
 	},
 	"dialogs": {
-		"abort": "Afbryd",
-		"accept": "Accepter",
-		"apply": "Anvend",
-		"cancel": "Afbryd",
-		"no": "Nej",
+		"login": {
+			"resetPassRequestMessage": "En E-mail er er blevet sendt med instruktioner for hvordan du nulstiller dit kodeord!",
+			"resetPasswordMessage": "Nulstil dit kodeord ved at indtaste din E-mail adresse"
+		},
 		"delete": {
-			"title": {
-				"collection": "Slet datasamling?",
-				"collections": "Slet datasamlinger?",
-				"project": "Slet projekt?",
-				"projects": "Slet projekter?",
-				"org": "Slet organisation?",
-				"orgs": "Slet organisationer?",
-				"user": "Slet bruger?",
-				"users": "Slet brugere?"
-			},
 			"message": {
 				"collection": "Er du sikker på du ønsker at slette denne datasamling ( %{collection} )?",
 				"collections": "Er du sikker på du ønsker at slette disse datasamlinger:",
-				"project": "Er du sikker på du ønsker at slette dette projekt ( %{project} )?",
-				"projects": "Er du sikker på du ønsker at slette disse projekter:",
 				"org": "Er du sikker på du ønsker at slette denne organisation ( %{org} )?",
 				"orgs": "Er du sikker på du ønsker at slette disse organisationer:",
+				"project": "Er du sikker på du ønsker at slette dette projekt ( %{project} )?",
+				"projects": "Er du sikker på du ønsker at slette disse projekter:",
 				"user": "Er du sikker på du ønsker at slette denne bruger?",
 				"users": "Er du sikker på du ønsker at slette disse brugere:"
+			},
+			"title": {
+				"collection": "Slet datasamling?",
+				"collections": "Slet datasamlinger?",
+				"org": "Slet organisation?",
+				"orgs": "Slet organisationer?",
+				"project": "Slet projekt?",
+				"projects": "Slet projekter?",
+				"user": "Slet bruger?",
+				"users": "Slet brugere?"
 			}
 		},
 		"unassign": {
-			"title": {
-				"deviceFromCollection": "Frigør enhed fra datasamling?",
-				"deviceFromOrg": "Frigør enhed fra organisation?",
-				"devicesFromCollection": "Frigør disse enheder fra deres datasamling?",
-				"collectionFromProject": "Frigør datasamling fra projekt?",
-				"collectionsFromProject": "Frigør datasamlinger fra projekt?"
-			},
 			"message": {
+				"collectionFromProject": "Frigør datasamling %{collection} fra projekt %{project} ?",
+				"collectionsFromProject": "Frigør disse datasamlinger fra projekt:",
 				"deviceFromCollection": "Frigør enhed %{device} fra datasamling %{collection}?",
 				"deviceFromOrg": "Frigør enhed %{device} fra organisation %{organisation}?",
-				"devicesFromCollection": "Frigør disse enheder fra deres datasamling:",
-				"collectionFromProject": "Frigør datasamling %{collection} fra projekt %{project} ?",
-				"collectionsFromProject": "Frigør disse datasamlinger fra projekt:"
+				"devicesFromCollection": "Frigør disse enheder fra deres datasamling:"
+			},
+			"title": {
+				"collectionFromProject": "Frigør datasamling fra projekt?",
+				"collectionsFromProject": "Frigør datasamlinger fra projekt?",
+				"deviceFromCollection": "Frigør enhed fra datasamling?",
+				"deviceFromOrg": "Frigør enhed fra organisation?",
+				"devicesFromCollection": "Frigør disse enheder fra deres datasamling?"
 			}
 		},
 		"warnings": {
 			"notImplemented": "Ikke implementeret",
 			"wip": "Under udvikling"
 		},
-		"yes": "Ja"
+		"discoverSenti": {
+			"addProject": "Opret data projekter",
+			"onSiteSetup": "Opsætning af enheder",
+			"startAnalyzeData": "Analyser dine data",
+			"welcome": "Velkommen til Senti.Cloud!"
+		}
 	},
-	"discoverSenti": {
-		"addProject": "Opret data projekter",
-		"getStarted": "Start her",
-		"onSiteSetup": "Opsætning af enheder",
-		"startAnalyzeData": "Analyser dine data",
-		"welcome": "Velkommen til Senti.Cloud!"
+	"favorites": {
+		"fields": {
+			"name": "Navn",
+			"type": "Type"
+		},
+		"types": {
+			"collection": "Datasamling",
+			"device": "Enhed",
+			"org": "Organisation",
+			"project": "Projekt",
+			"user": "Bruger"
+		}
 	},
 	"filters": {
 		"dateOptions": {
@@ -345,51 +330,65 @@
 		"phoneTo": "Ring til"
 	},
 	"login": {
-		"button": "Log ind",
-		"changePassword": "Skift kodeord",
-		"forgotPass": "Glemt kodeord?",
-		"goToLogin": "Gå til log ind",
 		"pass": "Kodeord",
-		"requestPasswordReset": "Nulstil kodeord",
-		"resetPassRequestMessage": "En E-mail er er blevet sendt med instruktioner for hvordan du nulstiller dit kodeord!",
-		"resetPasswordMessage": "Nulstil dit kodeord ved at indtaste din E-mail adresse",
 		"username": "Brugernavn"
 	},
 	"menus": {
-		"favorites": {
-			"add": "Tilføj til favoritter",
-			"remove": "Fjern fra favoritter"
+		"user": {
+			"account": "Min konto",
+			"profile": "Min profil",
+			"signout": "Log ud"
 		},
 		"assign": {
-			"collectionsToProject": "Tilknyt datasamlinger",
 			"collectionToProject": "Tilknyt datasamling",
+			"collectionsToProject": "Tilknyt datasamlinger",
 			"deviceToCollection": "Tilknyt enhed",
 			"deviceToOrg": "Tilknyt enhed"
 		},
-		"reassign": {
-			"deviceToOrg": "Overflyt til anden organisation",
-			"collectionToProject": "Overflyt til andet projekt"
+		"create": {
+			"project": "Opret projekt",
+			"user": "Opret bruger"
 		},
 		"calibrate": "Kalibrer",
 		"changePassword": "Skift kodeord",
 		"delete": "Slet",
 		"edit": "Rediger",
 		"exportPDF": "Print som PDF",
+		"favorites": {
+			"add": "Tilføj til favoritter",
+			"remove": "Fjern fra favoritter"
+		},
 		"hideMap": "Skjul kort",
 		"hideMore": "Skjul",
 		"more": "Mere",
-		"recalibrate": "Rekalibring",
+		"reassign": {
+			"collectionToProject": "Overflyt til andet projekt",
+			"deviceToOrg": "Overflyt til anden organisation"
+		},
+		"recalibrate": "Rekalibrering",
+		"seeDevice": "Se enhed",
 		"seeLess": "Se mindre",
 		"seeMore": "Se mere",
-		"seeDevice": "Se enhed",
 		"showMap": "Vis kort",
 		"showMore": "Vis mere",
 		"unassign": {
-			"deviceFromCollection": "Frigør enhed fra datasamling",
 			"collectionFromProject": "Frigør datasamling fra projekt",
+			"deviceFromCollection": "Frigør enhed fra datasamling",
 			"deviceFromOrg": "Frigør enhed fra organisation"
 		},
 		"userResendEmail": "Send bekræft e-mail igen"
+	},
+	"no": {
+		"audioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a different browser.",
+		"activeDevice": "Ingen aktiv enhed",
+		"collection": "Ikke tildelt til en datasamling",
+		"collections": "Ingen datasamlinger",
+		"device": "Ingen enhed",
+		"devices": "Ingen enheder",
+		"history": "Ingen logs",
+		"project": "Ingen projekt",
+		"projects": "Ingen projekter",
+		"org": "Ingen organisation"
 	},
 	"orgs": {
 		"create": "Opret",
@@ -408,12 +407,9 @@
 			"url": "Website",
 			"zip": "Postnummer"
 		},
-		"orgDelete": "Slet organisation?",
-		"orgDeleteConfirm": "Er du sikker på du ønsker at slette %{org}",
-		"orgsDelete": "Slet organisationer",
-		"orgsDeleteConfirm": "Er du sikker på du ønsker at slette organisationer",
 		"pageTitle": "Organisationer",
-		"updateOrg": "Rediger",
+		"organisation": "Organisation",
+		"updateOrg": "Rediger Organisation",
 		"validation": {
 			"networkError": "Netværksfejl!",
 			"noAddress": "Mangler adresse",
@@ -426,16 +422,14 @@
 	},
 	"projects": {
 		"contact": {
-			"email": "E-mail:",
-			"name": "Navn:",
-			"organisation": "Organisation:",
-			"phone": "Telefon:",
+			"email": "E-mail",
+			"name": "Navn",
+			"organisation": "Organisation",
+			"phone": "Telefon",
 			"title": "Kontakt"
 		},
 		"devices": {
-			"hideMap": "Skjul kort",
-			"numDevices": "Antal enheder: ",
-			"seeMap": "Se kort",
+			"numDevices": "Antal enheder",
 			"title": "Enheder"
 		},
 		"fields": {
@@ -444,24 +438,14 @@
 			"endDate": "Slutdato",
 			"name": "Projektnavn",
 			"selectOrganisation": "Organisation",
-			"startDate": "Startdato"
+			"startDate": "Startdato",
+			"created": "Oprettet",
+			"title": "Navn",
+			"lastUpdate": "Senest opdateret"
 		},
-		"infoCardProjectData": "Data",
-		"infoCardProjectDetails": "Detaljer for projekt",
-		"new": "Opret projekt",
+		"noAvailableDevices": "Der er ingen enheder kalibreret til visning",
 		"noOrganisationSelected": "Vælg en organisation for at se tilgængelige enheder",
 		"pageTitle": "Projekter",
-		"noAvailableDevices": "Der er ingen enheder kalibreret til visning",
-		"projectDelete": "Slet projekt?",
-		"projectDeleteConfirm": "Er du sikker på du ønsker at slette projektet ",
-		"projectsColumnCreated": "Oprettet",
-		"projectsColumnDescription": "Beskrivelse",
-		"projectsColumnEndDate": "Slutdato",
-		"projectsColumnLastMod": "Senest opdateret",
-		"projectsColumnProgress": "",
-		"projectsColumnStartDate": "Startdato",
-		"projectsColumnTitle": "Navn",
-		"redirecting": "Omdirigerer",
 		"tabs": {
 			"cardView": "Gittervisning",
 			"listView": "Listevisning"
@@ -472,8 +456,7 @@
 			"noStartDate": "Manglende Startdato",
 			"noTitle": "Manglende Projektnavn",
 			"startDateBiggerThanEndDate": "Startdato må ikke være senere end slutdato"
-		},
-		"viewProject": "Vis projekt"
+		}
 	},
 	"settings": {
 		"alerts": "Alarmeringer",
@@ -521,49 +504,22 @@
 		"trp": "Rækker per side i lister"
 	},
 	"sidebar": {
-		"favorites": "Favoritter",
 		"collections": "Data",
 		"dashboard": "Dashboard",
 		"devices": "Enheder",
+		"favorites": "Favoritter",
 		"projects": "Projekter",
 		"settings": "Indstillinger",
 		"users": "Brugere"
 	},
-	"favorites": {
-		"type": "Type",
-		"types": {
-			"device": "Enhed",
-			"collection": "Datasamling",
-			"project": "Projekt",
-			"org": "Organisation",
-			"user": "Bruger"
-		},
-		"fields": {
-			"id": "ID",
-			"name": "Navn",
-			"type": "Type"
-		}
-	},
 	"snackbars": {
-		"favorite": {
-			"updated": "Favoritter er blevet opdateret!",
-			"manyRemoved": "Favoritter er blevet fjernet!",
-			"saved": "%{name} (%{type}) er blevet tilføjet til favoritter!",
-			"removed": "%{name} (%{type}) er blevet fjernet fra favoritter!"
-		},
 		"assign": {
-			"deviceToCollection": "Enhed %{device} tilknyttet til datasamling %{collection}",
-			"deviceToOrg": "Enhed %{device} tilknyttet til organisation %{org}",
+			"collectionToOrg": "Datasamling %{collection} tilknyttet til organisation %{org}",
 			"collectionToProject": "Datasamling %{collection} tilknyttet til projekt %{project}",
 			"collectionsToProject": "Datasamlinger tilknyttet til projekt",
-			"collectionToOrg": "Datasamling %{collection} tilknyttet til organisation %{org}",
+			"deviceToCollection": "Enhed %{device} tilknyttet til datasamling %{collection}",
+			"deviceToOrg": "Enhed %{device} tilknyttet til organisation %{org}",
 			"projectToOrg": "Project %{project} tilknyttet til organisation %{org}"
-		},
-		"unassign": {
-			"deviceFromCollection": "Enheden %{device} er frigjort fra datasamlingen %{collection}",
-			"deviceFromOrg": "Enheden %{device} er frigjort fra organisationen %{org}",
-			"collectionFromProject": "Datasamlingen %{collection} er frigjort fra projektet %{project}",
-			"collectionsFromProject": "Datasamlinger frigjort fra projektet %{project}"
 		},
 		"collectionCreated": "Datasamling er oppretet!",
 		"collectionDeleted": "Datasamling er slettet!",
@@ -576,6 +532,12 @@
 		"deleting": "Sletter ...",
 		"deviceUpdated": "Enhed %{device} er blevet opdateret!",
 		"exported": "Eksporteret!",
+		"favorite": {
+			"manyRemoved": "Favoritter er blevet fjernet!",
+			"removed": "%{name} (%{type}) er blevet fjernet fra favoritter!",
+			"saved": "%{name} (%{type}) er blevet tilføjet til favoritter!",
+			"updated": "Favoritter er blevet opdateret!"
+		},
 		"orgCreated": "Organisation %{org} er  oprettet!",
 		"orgDeleted": "Organisation er slettet!",
 		"orgUpdated": "Organisation %{org} er opdateret!",
@@ -588,6 +550,12 @@
 		"redirect": "Omdirigerer ...",
 		"resetDeviceSuccess": "Enhed er blevet nulstillet",
 		"settingsSaved": "Indstillinger gemt!",
+		"unassign": {
+			"collectionFromProject": "Datasamlingen %{collection} er frigjort fra projektet %{project}",
+			"collectionsFromProject": "Datasamlinger frigjort fra projektet %{project}",
+			"deviceFromCollection": "Enheden %{device} er frigjort fra datasamlingen %{collection}",
+			"deviceFromOrg": "Enheden %{device} er frigjort fra organisationen %{org}"
+		},
 		"updatedFailed": "Opdatering fejlede!",
 		"updatedSuccess": "Opdateret!",
 		"updating": "Opdaterer ...",
@@ -604,18 +572,6 @@
 		"selected": "valgt"
 	},
 	"users": {
-		"actions": {
-			"addToGroups": "Tilføj til gruppe(r)",
-			"changeOrganisation": "Skift organisation",
-			"delete": "Slet",
-			"edit": "Rediger",
-			"import": "Importer",
-			"mailTo": "Send E-mail",
-			"new": "Opret ny",
-			"resetPassword": "Nulstil kodeord",
-			"suspend": "Suspender"
-		},
-		"createUser": "Opret bruger",
 		"editUser": "Opdater bruger",
 		"fields": {
 			"accessLevel": "Adgangsniveau",
@@ -652,23 +608,15 @@
 			"contact": "Kontakt",
 			"system": "Systemlog"
 		},
-		"menus": {
-			"account": "Min konto",
-			"profile": "Min profil",
-			"signout": "Log ud"
-		},
 		"messages": {},
+		"user": "Bruger",
 		"pageTitle": "Brugere",
 		"tabs": {
 			"orgs": "Organisationer",
 			"users": "Brugere"
 		},
-		"userDelete": "Slet bruger",
-		"userDeleteConfirm": "Er du sikker på du vil slette denne bruger %{user} ?",
 		"userResendConfirm": "Er du sikker på du ønsker at gensende bekræftelses E-mail?",
 		"userResendEmail": "Gensend bekræftelses E-mail",
-		"usersDelete": "Slet brugere",
-		"usersDeleteConfirm": "Er du sikker på du vil slette følgende brugere:",
 		"validation": {
 			"noEmail": "E-mail mangler",
 			"noOrg": "Organisation mangler",

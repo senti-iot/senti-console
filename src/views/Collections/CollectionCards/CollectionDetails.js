@@ -81,7 +81,7 @@ class DeviceDetails extends Component {
 								<Link to={{ pathname: `/management/org/${collection.org.id}`, prevURL: `/collection/${collection.id}` }} >
 									{collection.org.name}
 								</Link>
-								: t('collections.noProject')}</Info>
+								: t('no.org')}</Info>
 
 						</ItemG>
 						<ItemG>
@@ -94,7 +94,7 @@ class DeviceDetails extends Component {
 								>
 									{collection.project.title}
 								</Link>
-								: t('collections.noProject')}</Info>
+								: t('no.project')}</Info>
 
 						</ItemG>
 					</ItemG>} />

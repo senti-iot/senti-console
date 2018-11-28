@@ -17,12 +17,6 @@ class DeviceCard extends Component {
 
 	componentDidMount = async () => {
 		this._isMounted = 1
-		// const { p } = this.props
-		// let img = await getProjectImage(p.id).then(rs => rs)
-		// if (this._isMounted) {
-		// 	if (img)
-		// 		this.setState({ img: URL.createObjectURL(img) })
-		// }
 	}
 
 	componentWillUnmount = () => {

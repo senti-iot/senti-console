@@ -167,7 +167,6 @@ class OrgTable extends React.Component {
 
 	renderTableToolBarContent = () => {
 		const { accessLevel } = this.props
-		// const { anchorFilterMenu } = this.state
 		let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
 		return <Fragment>
 			{access ? <IconButton aria-label='Add new organisation' onClick={this.addNewOrg}>
@@ -186,10 +185,10 @@ renderConfirmDelete = () => {
 		aria-labelledby='alert-dialog-title'
 		aria-describedby='alert-dialog-description'
 	>
-		<DialogTitle id='alert-dialog-title'>{t('orgs.orgsDelete')}</DialogTitle>
+		<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.orgs')}</DialogTitle>
 		<DialogContent>
 			<DialogContentText id='alert-dialog-description'>
-				{t('orgs.orgsDeleteConfirm')}:
+				{t('dialogs.delete.message.orgs')}:
 			</DialogContentText>
 			<List>
 				{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
@@ -247,7 +246,6 @@ render() {
 								<TableRow
 									hover
 									onClick={e => { e.stopPropagation(); this.props.history.push('/management/org/' + n.id) }}
-									// onContextMenu={this.handleToolbarMenuOpen}
 									role='checkbox'
 									aria-checked={isSelected}
 									tabIndex={-1}

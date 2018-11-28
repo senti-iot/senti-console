@@ -7,36 +7,22 @@ import { suggestionGen } from 'variables/functions'
 import { NavHashLink as Link } from 'react-router-hash-link';
 
 const styles = theme => ({
-	tab: {
-		// [theme.breakpoints.down('xs')]: {
-		// 	minWidth: 56
-		// }
-	},
-
 	appBar: {
 		display: 'flex',
 		flexFlow: 'row',
 		justifyContent: 'space-between',
 		maxWidth: '100%',
 		overflow: 'visible',
-		// top: 70,
 		minHeight: 48,
 		height: 48,
 		zIndex: 1300
 	},
 	contentToolbar: { 
-		// display: 'flex',
-		// alignItems: 'flex-start',
-		// flexFlow: 'row',
-		// justifyContent: 'space-between',
 		height: 41,
 		minHeight: 41,
 		maxHeight: 41,
 		paddingLeft: 0,
-		// marginRight: 8,
-		// paddingLeft: 24,
 		marginLeft: 'auto',
-		// borderLeft: '1px solid rgb(255, 255, 255, 0.5)'
 	},
 	dividerContainer: {
 		marginLeft: 'auto',
@@ -103,9 +89,6 @@ class Toolbar extends PureComponent {
 							to={`${t.url}`} />
 					}) : null}
 				</Tabs> : null}
-				{/* {width === 'xs' ? <div className={classes.dividerContainer}>
-					<div className={classes.divider} />
-				</div> : null} */}
 				{noSearch ? null : <Search
 					right
 					suggestions={data ? suggestionGen(data) : []}

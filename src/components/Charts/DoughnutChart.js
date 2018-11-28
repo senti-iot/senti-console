@@ -36,32 +36,6 @@ class DoughnutChart extends PureComponent {
 				hover: {
 					mode: 'point'
 				},
-				// scales: {
-				// 	xAxes: [
-				// 		{
-				// 			display: false,
-				// 			offset: true,
-				// 			id: 'day',
-				// 			type: 'time',
-				// 			time: {
-				// 				displayFormats: {
-				// 					hour: 'LT',
-				// 					day: 'll'
-				// 				},
-				// 				unit: props.unit.chart,
-				// 				tooltipFormat: props.unit.format
-				// 			},
-				// 			gridLines: {
-				// 				offsetGridLines: true
-				// 			}
-				// 		}],
-				//		 yAxes: [{
-				//		 	scaleLabel: {
-				//		 		display: true,
-				//		 		labelString: 'value'
-				//		 	}
-				//		 }]
-				// }
 			}
 		}
 	}

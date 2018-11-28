@@ -47,8 +47,6 @@ export const imageApi = create({
 })
 export const api = create({
 	baseURL: backendHost,
-	// baseURL: 'http://api.dashboard.senti.cloud/web/',
-	// baseURL: 'http://localhost:80',
 	timeout: 30000,
 	headers: {
 		'Accept': 'application/json',

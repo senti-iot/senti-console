@@ -118,7 +118,7 @@ class FavoriteTable extends React.Component {
 									>
 										<Hidden lgUp>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-											<TC checkbox content={<ItemG container /* justify={'center'} */>{this.renderIcon(n.type)}</ItemG>} />
+											<TC checkbox content={<ItemG container>{this.renderIcon(n.type)}</ItemG>} />
 											<TC content={
 												<ItemG container alignItems={'center'}>
 													<ItemG xs={12}>
@@ -135,7 +135,7 @@ class FavoriteTable extends React.Component {
 										</Hidden>
 										<Hidden mdDown>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-											<TC checkbox content={<ItemG container /* justify={'center'} */>{this.renderIcon(n.type)}</ItemG>} />
+											<TC checkbox content={<ItemG container>{this.renderIcon(n.type)}</ItemG>} />
 											<TC label={n.name ? n.name : t('devices.noName')} />
 											<TC label={t(`favorites.types.${n.type}`)} />
 										</Hidden>
