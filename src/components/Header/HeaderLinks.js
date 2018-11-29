@@ -68,8 +68,8 @@ class HeaderLinks extends React.Component {
 			if (moment().format('MM') === '11') {
 				let today = moment().format('DD')
 				console.log(today)
-				return <IconButton>
-					<img src={christmas[1]} className={classes.img} alt={'christmas'} />
+				return <IconButton onClick={this.handleRedirectToChristmas}>
+					<img src={christmas[0]} className={classes.img} alt={'christmas'} />
 				</IconButton>
 			}
 			return null

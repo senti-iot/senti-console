@@ -5,6 +5,9 @@ import moment from 'moment'
 import christmas from 'assets/img/christmas';
 
 const styles = theme => ({
+	title: {
+		marginBottom: 20
+	},
 	paper: {
 		width: '100%',
 		padding: 10,
@@ -15,6 +18,9 @@ const styles = theme => ({
 	}
 })
 class Holiday extends Component {
+	componentDidMount = () => { 
+		this.props.setHeader('christmas.pageTitle', false, false, '')
+	}
 	handleRedirectToChristmas = () => {
 		this.props.history.push(`/holiday`)
 	}
@@ -29,8 +35,7 @@ class Holiday extends Component {
 		}
 		else {
 			if (moment().format('MM') === '11') {
-				let today = moment().format('DD')
-				console.log(today)
+				// let today = moment().format('DD')
 				return <img src={christmas[0]} className={classes.img} alt={'christmas'} />
 			}
 			return null
@@ -38,18 +43,20 @@ class Holiday extends Component {
 
 	}
 	render() {
-		const { classes } = this.props
+		const { classes, t } = this.props
+		// let today = moment().format('YYYY-MM-DD')
+		let today = '2018-12-01'
 		return (
 			<GridContainer>
-				<ItemG container xs={6}>
+				<ItemG container justify={'center'} md={8}>
 					<Paper classes={{
 						root: classes.paper
 					}}>
-						<Typography variant={'display1'}>{moment().format('LL')}</Typography>
-						<Typography variant={'body1'}></Typography>
+						<Typography className={classes.title} variant={'h4'}>{t(`christmas.${today}.title`)}</Typography>
+						<Typography variant={'body1'}>{t(`christmas.${today}.content`)}</Typography>
 					</Paper>
 				</ItemG>
-				<ItemG container justify={'center'} xs={6}>
+				<ItemG container justify={'center'} xs={12} md={4}>
 					{this.renderChristmasIcon()}
 				</ItemG>
 			</GridContainer>
