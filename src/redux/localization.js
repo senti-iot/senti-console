@@ -38,6 +38,7 @@ const initialState = {
 	language: 'da',
 	s: extend(loc['da'])
 }
+console.log(extend(loc['da']))
 export const localization = (state = initialState, action) => {
 	switch (action.type) {
 		case NOSETTINGS:
