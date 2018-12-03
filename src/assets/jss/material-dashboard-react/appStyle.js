@@ -11,7 +11,7 @@ const appStyle = theme => ({
 	wrapper: {
 		position: "relative",
 		top: "0",
-		height: "100vh"
+		// height: "100vh"
 	},
 	mainPanel: {
 		// marginTop: 70,
@@ -22,7 +22,7 @@ const appStyle = theme => ({
 		position: "relative",
 		float: "right",
 		...transition,
-		maxHeight: "100%",
+		// maxHeight: "100%",
 		width: "100%",
 		
 	},
@@ -31,7 +31,7 @@ const appStyle = theme => ({
 		// marginTop: "70px",
 		// padding: "30px 30px",
 		// minHeight: "calc(100vh - 130px)",
-
+		// marginTop: 70,
 		// [theme.breakpoints.down("md")]: {
 		// 	padding: "10px 10px 30px 10px",
 		// },
@@ -40,9 +40,13 @@ const appStyle = theme => ({
 		// }
 	},
 	container: {
-		maxHeight: "calc(100vh - 70px)",	
-		overflow: 'auto',
-		overflowScrolling: 'touch',
+		// maxHeight: "calc(100vh - 70px)",	
+		// overflow: 'auto',
+		// overflowScrolling: 'touch',
+		marginTop: 70,
+		[theme.breakpoints.down('xs')]: {
+			marginTop: 48
+		},
 		[theme.breakpoints.up("lg")]: {
 			...container
 		},

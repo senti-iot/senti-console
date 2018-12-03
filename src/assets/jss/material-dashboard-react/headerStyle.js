@@ -20,6 +20,10 @@ const headerStyle = theme => ({
 		boxShadow: "none",
 		borderBottom: "0",
 		marginBottom: "0",
+		position: 'fixed',
+		[theme.breakpoints.up('lg')]: {
+			left: 260
+		},
 		[theme.breakpoints.down('xs')]: {
 			height: 48
 		},
@@ -34,7 +38,7 @@ const headerStyle = theme => ({
 		transition: "all 150ms ease 0s",
 		minHeight: "48px",
 		display: "block",
-		position: "sticky",
+		// position: "sticky",
 		// [theme.breakpoints.up("lg")]: {
 		// 	width: 'calc(100% - 260px)'
 		// }

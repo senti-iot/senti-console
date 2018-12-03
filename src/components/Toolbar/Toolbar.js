@@ -8,6 +8,14 @@ import { NavHashLink as Link } from 'react-router-hash-link';
 
 const styles = theme => ({
 	appBar: {
+		position: "fixed",
+		top: 70,
+		[theme.breakpoints.down('xs')]: {
+			top: 48
+		},
+		[theme.breakpoints.up('lg')]: {
+			left: 260
+		},
 		display: 'flex',
 		flexFlow: 'row',
 		justifyContent: 'space-between',
@@ -74,30 +82,32 @@ class Toolbar extends PureComponent {
 	render() {
 		const { classes, tabs, data, noSearch, filters, handleFilterKeyword, content, width } = this.props
 		return (
-			<AppBar position={'sticky'} classes={{ root: classes.appBar }}>
-				{tabs ? <Tabs innerRef={ref => this.tabsRef = ref} value={this.state.route} scrollable={width === 'xs' ? true : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
-					{tabs ? tabs.map((t, i) => {
-						return <Tab title={t.title}
-							component={(props) => <Link {...props} scroll={this.handleScroll } style={{ color: '#fff' }} />}
-							id={t.id}
-							key={i}
-							smooth
-							classes={{
-								root: classes.tab
-							}}
-							label={t.label}
-							to={`${t.url}`} />
-					}) : null}
-				</Tabs> : null}
-				{noSearch ? null : <Search
-					right
-					suggestions={data ? suggestionGen(data) : []}
-					handleFilterKeyword={handleFilterKeyword}
-					searchValue={filters.keyword} />}
-				{content ? <ToolBar classes={{ root: classes.contentToolbar }}>
-					{content}
-				</ToolBar> : null}
-			</AppBar>
+			<div style={{ height: 48 }}>
+				<AppBar  classes={{ root: classes.appBar }}>
+					{tabs ? <Tabs innerRef={ref => this.tabsRef = ref} value={this.state.route} scrollable={width === 'xs' ? true : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
+						{tabs ? tabs.map((t, i) => {
+							return <Tab title={t.title}
+								component={(props) => <Link {...props} scroll={this.handleScroll } style={{ color: '#fff' }} />}
+								id={t.id}
+								key={i}
+								smooth
+								classes={{
+									root: classes.tab
+								}}
+								label={t.label}
+								to={`${t.url}`} />
+						}) : null}
+					</Tabs> : null}
+					{noSearch ? null : <Search
+						right
+						suggestions={data ? suggestionGen(data) : []}
+						handleFilterKeyword={handleFilterKeyword}
+						searchValue={filters.keyword} />}
+					{content ? <ToolBar classes={{ root: classes.contentToolbar }}>
+						{content}
+					</ToolBar> : null}
+				</AppBar>
+			</div>
 		)
 	}
 }
