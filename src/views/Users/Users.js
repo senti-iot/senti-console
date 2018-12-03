@@ -4,8 +4,7 @@ import projectStyles from 'assets/jss/views/projects';
 import UserTable from 'components/User/UserTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
-import { /* getAllUsers, */ deleteUser } from 'variables/dataUsers';
-// import Toolbar from 'components/Toolbar/Toolbar'
+import { deleteUser } from 'variables/dataUsers';
 import { People, Business } from 'variables/icons';
 import { filterItems, handleRequestSort } from 'variables/functions';
 
@@ -49,7 +48,8 @@ class Users extends Component {
 	}
 	componentDidUpdate = async (prevState, prevProps) => {
 		if (prevProps.users !== this.props.users) {
-			this.setState({ users: this.props.users })
+			await this.getData()
+			// this.setState({ users: this.props.users })
 		}
 	}
 	filterItems = (data) => {
@@ -57,7 +57,7 @@ class Users extends Component {
 	}
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
-		let newData = handleRequestSort(property, order, this.state.users)
+		let newData = handleRequestSort(property, order, this.props.users)
 		this.setState({ users: newData, order, orderBy: property })
 	}
 	handleFilterStartDate = (value) => {
@@ -89,19 +89,10 @@ class Users extends Component {
 	getData = async () => {
 		if (this.props.users) { 
 			this.setState({
-				users: this.props.users,
 				loading: false
 			}, () => this.handleRequestSort(null, 'firstName', 'asc'))
 			return
 		}
-		// let users = await getAllUsers().then(rs => rs)
-		// if (this._isMounted) {
-		// 	this.setState({
-		// 		users: users ? users : [],
-		
-		// 		loading: false
-		// 	}, () => this.handleRequestSort(null, 'firstName', 'asc'))
-		// }
 	}
 
 	tabs = [
@@ -137,10 +128,10 @@ class Users extends Component {
 	}
 	renderUsers = () => {
 		const { t } = this.props
-		const { loading, order, orderBy, filters } = this.state
+		const { loading, order, orderBy, filters, users } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <UserTable
-				data={this.filterItems(this.state.users)}
+				data={users}
 				tableHead={this.userHeader()}
 				handleFilterEndDate={this.handleFilterEndDate}
 				handleFilterKeyword={this.handleFilterKeyword}
@@ -159,14 +150,6 @@ class Users extends Component {
 		// const { users, filters } = this.state
 		return (
 			<Fragment>
-				{/* <Toolbar
-					data={users}
-					filters={filters}
-					history={this.props.history}
-					match={this.props.match}
-					handleFilterKeyword={this.handleFilterKeyword}
-					tabs={this.tabs}
-				/> */}
 				{this.renderUsers()}
 			</Fragment>
 		)
