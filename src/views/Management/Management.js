@@ -56,7 +56,6 @@ class Management extends Component {
 	getData = async () => {
 		let users = await getAllUsers().then(rs => rs)
 		let orgs = await getAllOrgs().then(rs => rs)
-
 		this.setState({
 			users: users ? users : [],
 			orgs: orgs ? orgs : [],
@@ -93,7 +92,7 @@ class Management extends Component {
 
 		this.setState({ selected: newSelected })
 	}
-	
+
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
 	}
@@ -107,7 +106,7 @@ class Management extends Component {
 			{ label: t('menus.favorites.remove'), icon: StarBorder, func: this.removeFromFavs }
 		]
 	}
-	
+
 	removeFromFavs = () => {
 		const { selected } = this.state
 		const { favorites } = this.props
@@ -140,13 +139,13 @@ class Management extends Component {
 				this.props.finishedSaving()
 				this.setState({ selected: [] })
 				this.props.s('snackbars.favorite.manyRemoved')
-			}}
-	
+			}
+		}
 	}
 	favoritesHeaders = () => {
 		const { t } = this.props
 		return [
-			{ id: 'name', label: "" },
+			{ id: 'type', label: "" },
 			{ id: 'name', label: t('favorites.fields.name') },
 			{ id: 'type', label: t('favorites.fields.type') }
 		]
@@ -231,6 +230,7 @@ class Management extends Component {
 	render() {
 		const { users, orgs, filters, loading } = this.state
 		const { favorites } = this.props
+		const { classes, ...rest } = this.props
 		return (
 			!loading ? <Fragment>
 				<Toolbar
@@ -243,11 +243,11 @@ class Management extends Component {
 					route={this.state.route}
 				/>
 				<Switch>
-					<Route path={'/management/users/new'} render={(rp) => <CreateUser {...this.props} />} />
-					<Route path={'/management/users'} render={(rp) => <Users {...this.props} reload={this.reload} users={this.filterItems(users)} />} />
-					<Route path={'/management/orgs/new'} component={(rp) => <CreateOrg {...this.props} />} />
-					<Route path={'/management/orgs'} render={(rp) => <Orgs {...this.props} reload={this.reload} orgs={this.filterItems(orgs)} />} />
-					<Route path={'/management/favorites'} render={() => this.renderFavorites()} />
+					<Route path={`${this.props.match.url}/users/new`} render={(rp) => <CreateUser {...rest} />} />
+					<Route path={`${this.props.match.url}/users`} render={(rp) => <Users {...rest} reload={this.reload} users={this.filterItems(users)} />} />
+					<Route path={`${this.props.match.url}/orgs/new`} component={(rp) => <CreateOrg {...rest} />} />
+					<Route path={`${this.props.match.url}/orgs`} render={(rp) => <Orgs {...rest} reload={this.reload} orgs={this.filterItems(orgs)} />} />
+					<Route path={`${this.props.match.url}/favorites`} render={() => this.renderFavorites()} />
 					<Redirect from={'/management'} to={'/management/users'} />
 				</Switch>
 			</Fragment > : <CircularLoader />

@@ -321,7 +321,7 @@ class Device extends Component {
 				newArr.push(d)
 			return newArr
 		}, [])
-		let newState = { ...setDailyData(dataArr, from, to, hoverID), /* ...setPieData(dataArr, from, to, this.state.timeType) */ }
+		let newState = { ...setDailyData(dataArr, from, to, hoverID) }
 		window.newState = newState
 		this.setState({
 			...this.state,

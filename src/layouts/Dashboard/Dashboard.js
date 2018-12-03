@@ -72,6 +72,12 @@ class App extends React.Component {
 		}
 
 		await this.props.getSettings().then(rs => {
+			if (this.props.theme === 1) {
+				document.body.style = 'background: #2e2e2e;';
+			}
+			else {
+				document.body.style = 'background: #eee';
+			}
 			if (navigator.platform.indexOf('Win') > -1) {
 				if (!this.props.loading) {
 					if (this.refs.mainPanel) {
@@ -90,6 +96,14 @@ class App extends React.Component {
 			this.refs.mainPanel.scrollTop = 0
 		if (prevProps.sId !== this.props.sId && this.props.sId !== '')
 			this.setState({ openSnackbar: true })
+		if (this.props.theme !== prevProps.theme) {
+			if (this.props.theme === 1) {
+				document.body.style = 'background: #2e2e2e;';
+			}
+			else {
+				document.body.style = 'background: #eee';
+			}
+		}
 	}
 	
 	render() {
