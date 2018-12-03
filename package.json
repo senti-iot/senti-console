@@ -61,7 +61,12 @@
 		"sw": "node build-sw.js"
 	},
 	"keywords": [],
-	"author": "Christian Broberg",
+	"author": {
+		"name": "Christian Broberg",
+		"email": "apisupport@senti.cloud",
+		"url": "https://senti.cloud/"
+	},
+
 	"license": "MIT",
 	"browserslist": [
 		">0.2%",
