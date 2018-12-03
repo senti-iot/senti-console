@@ -260,6 +260,7 @@
             "welcome": "Velkommen til Senti.Cloud!"
         },
         "login": {
+			"passwordReseted": "Din adgangskode er blevet ændret!",
             "resetPassRequestMessage": "En E-mail er er blevet sendt med instruktioner for hvordan du nulstiller dit kodeord!",
             "resetPasswordMessage": "Nulstil dit kodeord ved at indtaste din E-mail adresse"
         },
@@ -410,7 +411,8 @@
             "url": "Website",
             "zip": "Postnummer"
         },
-        "pageTitle": "Organisationer",
+		"pageTitle": "Organisationer",
+		"organisation": "Organisation",
         "updateOrg": "Rediger Organisation",
         "validation": {
             "networkError": "Netværksfejl!",

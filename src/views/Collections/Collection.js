@@ -143,12 +143,12 @@ class Collection extends Component {
 	}
 	getHeatMapData = async () => {
 		// const { device } = this.props
-		const { from, to, raw, collection, activeDevice } = this.state
+		const { from, to, collection, activeDevice } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		// let dataArr = []
 		let dataSet = null
-		let data = await getDataSummary(collection.id, startDate, endDate, raw)
+		let data = await getDataSummary(collection.id, startDate, endDate, true)
 		dataSet = {
 			name: activeDevice.name,
 			id: activeDevice.id,

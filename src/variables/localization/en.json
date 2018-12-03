@@ -10,7 +10,7 @@
         "apply": "Apply",
         "back": "Previous",
         "cancel": "Cancel",
-        "changePassword": "Change password",
+        "changePassword": "Change Password",
         "decline": "Decline",
         "deletePicture": "Delete this picture",
         "finish": "Finish",
@@ -344,7 +344,6 @@
             "deviceToOrg": "Assign device"
         },
         "calibrate": "Calibrate",
-        "changePassword": "Change password",
         "create": {
             "project": "Create project",
             "user": "Create user"

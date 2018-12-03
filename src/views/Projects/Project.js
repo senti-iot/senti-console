@@ -231,18 +231,19 @@ class Project extends Component {
 	}
 	getHeatMapData = async () => {
 		// const { device } = this.props
-		const { from, to, raw, project } = this.state
+		const { from, to, project } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		let dataArr = []
 		await Promise.all(project.dataCollections.map(async d => {
 			let dataSet = null
-			let data = await getDataSummary(d.id, startDate, endDate, raw)
+			let data = await getDataSummary(d.id, startDate, endDate, true)
 			dataSet = {
 				name: d.name,
 				id: d.activeDevice ? d.activeDevice.id : 0, 
 				data: data,
 				color: d.color,
+				liveStatus: d.activeDevice ? d.activeDevice.liveStatus : 0,
 				lat: d.activeDevice ? d.activeDevice.lat : 0,
 				long: d.activeDevice ? d.activeDevice.long : 0
 			}
