@@ -75,8 +75,9 @@ class Toolbar extends PureComponent {
 	handleScroll = el => {
 		
 		let topOfElement = el.offsetTop - 130
-		let container = document.getElementById('container')
-		container.scroll({ top: topOfElement, behavior: 'smooth' })
+		console.log(topOfElement)
+		// let container = document.getElementById('container')
+		window.scroll({ top: topOfElement, behavior: 'smooth' })
 		
 	}
 	
