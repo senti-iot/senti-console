@@ -14,7 +14,8 @@ const styles = theme => ({
 			top: 48
 		},
 		[theme.breakpoints.up('lg')]: {
-			left: 260
+			left: 260,
+			width: "calc(100vw - 260px)"
 		},
 		display: 'flex',
 		flexFlow: 'row',
