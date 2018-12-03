@@ -60,7 +60,6 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 			loading: false,
 			timeType: 2,
 			 lineDataSets: {
-				
 				labels: labels,
 				datasets: dataArr.map((d, index) => ({
 					id: d.id,
@@ -68,8 +67,6 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 					long: d.long,
 					backgroundColor: d.color,
 					borderColor: d.color,
-					// pointBackgroundColor: Object.entries(d.data).map((e, i) => isWeekend(e[0]) ? '#FF0000' : d.color),
-					// pointBorderColor: Object.entries(d.data).map((e, i) => isWeekend(e[0]) ? '#FF0000' : d.color),
 					colors: linecolors(Object.entries(d.data), d.color, index),
 					borderWidth: hoverID === d.id ? 8 : 3,
 					fill: false,
@@ -79,11 +76,11 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 			},
 			barDataSets: {
 				labels: labels,
-				datasets: dataArr.map((d) => ({
+				datasets: dataArr.map((d, index) => ({
 					id: d.id,
 					lat: d.lat,
 					long: d.long,
-					backgroundColor: d.color,
+					backgroundColor: linecolors(Object.entries(d.data), d.color, index),
 					borderColor: teal[500],
 					borderWidth: hoverID === d.id ? 4 : 0,
 					fill: false,

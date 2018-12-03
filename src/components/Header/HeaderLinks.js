@@ -66,8 +66,7 @@ class HeaderLinks extends React.Component {
 		else
 		{
 			if (moment().format('MM') === '11') {
-				let today = moment().format('DD')
-				console.log(today)
+				// let today = moment().format('DD')
 				return <IconButton onClick={this.handleRedirectToChristmas}>
 					<img src={christmas[0]} className={classes.img} alt={'christmas'} />
 				</IconButton>
@@ -82,9 +81,9 @@ class HeaderLinks extends React.Component {
 		const openProfile = Boolean(anchorProfile)
 		return (
 			<Grid container classes={{ container: classes.headerMargin }}>
-				<ItemG>
+				{/* <ItemG>
 					{this.renderChristmasIcon()}
-				</ItemG>
+				</ItemG> */}
 				<ItemG>
 					<IconButton
 						aria-owns={openProfile ? 'menu-appbar' : null}

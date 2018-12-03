@@ -11,8 +11,7 @@ import { connect } from 'react-redux'
 Chart.defaults.multicolorLine = Chart.defaults.line;
 Chart.controllers.multicolorLine = Chart.controllers.line.extend({
 	draw: function (ease) {
-		var
-			startIndex = 0,
+		var startIndex = 0,
 			meta = this.getMeta(),
 			points = meta.data || [],
 			colors = this.getDataset().colors,
@@ -53,7 +52,6 @@ Chart.controllers.multicolorLine = Chart.controllers.line.extend({
 class LineChart extends PureComponent {
 	constructor(props) {
 		super(props)
-		console.log(props.theme)
 		this.state = {
 			weather: '',
 			weatherDate: null,
