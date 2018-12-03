@@ -145,12 +145,12 @@ class Device extends Component {
 	}
 	getHeatMapData = async () => {
 		// const { device } = this.props
-		const { from, to, raw, device } = this.state
+		const { from, to, device } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		// let dataArr = []
 		let dataSet = null
-		let data = await getDataSummary(device.id, startDate, endDate, raw)
+		let data = await getDataSummary(device.id, startDate, endDate, true)
 		dataSet = {
 			...device,
 			data: data,
@@ -321,7 +321,7 @@ class Device extends Component {
 				newArr.push(d)
 			return newArr
 		}, [])
-		let newState = { ...setDailyData(dataArr, from, to, hoverID), /* ...setPieData(dataArr, from, to, this.state.timeType) */ }
+		let newState = { ...setDailyData(dataArr, from, to, hoverID) }
 		window.newState = newState
 		this.setState({
 			...this.state,

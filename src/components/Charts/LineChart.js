@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Line } from 'react-chartjs-2';
+import ChartComponent, { Chart } from 'react-chartjs-2';
 import { Typography, withStyles, Paper, Grow, CircularProgress } from '@material-ui/core';
 import { ItemG, WeatherIcon, Caption } from 'components';
 import { graphStyles } from './graphStyles';
@@ -7,6 +7,49 @@ import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
 import { compose } from 'recompose';
 import { connect } from 'react-redux'
+
+Chart.defaults.multicolorLine = Chart.defaults.line;
+Chart.controllers.multicolorLine = Chart.controllers.line.extend({
+	draw: function (ease) {
+		var
+			startIndex = 0,
+			meta = this.getMeta(),
+			points = meta.data || [],
+			colors = this.getDataset().colors,
+			area = this.chart.chartArea,
+			originalDatasets = meta.dataset._children
+				.filter(function (data) {
+					return !isNaN(data._view.y);
+				});
+
+		function _setColor(newColor, meta) {
+			meta.dataset._view.borderColor = newColor;
+		}
+
+		if (!colors) {
+			Chart.controllers.line.prototype.draw.call(this, ease);
+			return;
+		}
+
+		for (var i = 2; i <= colors.length; i++) {
+			if (colors[i - 1] !== colors[i]) {
+				_setColor(colors[i - 1], meta);
+				meta.dataset._children = originalDatasets.slice(startIndex, i);
+				meta.dataset.draw();
+				startIndex = i - 1;
+			}
+		}
+
+		meta.dataset._children = originalDatasets.slice(startIndex);
+		meta.dataset.draw();
+		meta.dataset._children = originalDatasets;
+
+		points.forEach(function (point) {
+			point.draw(area);
+		});
+	}
+});
+
 class LineChart extends PureComponent {
 	constructor(props) {
 		super(props)
@@ -133,7 +176,8 @@ class LineChart extends PureComponent {
 		this.chart.chartInstance.config.options.elements.point.radius = this.clickEvent() ? 3 : 5
 		this.chart.chartInstance.config.options.elements.point.hitRadius = this.clickEvent() ? 3 : 5
 		this.chart.chartInstance.config.options.elements.point.hoverRadius = this.clickEvent() ? 4 : 6
-
+		// this.chart.chartInstance.config.data.datasets[0].backgroundColor[0] = "#87CEFA";
+		console.log(this.chart.chartInstance)
 		this.setState({
 			chartWidth: parseInt(this.chart.chartInstance.canvas.style.width.substring(0, this.chart.chartInstance.canvas.style.width.length - 1), 10),
 			chartHeight: parseInt(this.chart.chartInstance.canvas.style.height.substring(0, this.chart.chartInstance.canvas.style.height.length - 1), 10),
@@ -353,6 +397,8 @@ class LineChart extends PureComponent {
 		}
 		return `translate(${x}, ${y})`
 	}
+
+
 	render() {
 		const { classes } = this.props
 		const { tooltip, chartWidth, mobile } = this.state
@@ -360,7 +406,8 @@ class LineChart extends PureComponent {
 		let DateStr = tooltip.title[0] ? tooltip.title[0] : ''
 		return (
 			<div style={{ maxHeight: 400, position: 'relative', height: 400 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
-				<Line
+				<ChartComponent
+					type={'multicolorLine'}
 					data={this.props.data}
 					height={this.props.theme.breakpoints.width('md') < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
 					ref={r => this.chart = r}

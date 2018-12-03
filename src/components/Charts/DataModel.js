@@ -1,4 +1,4 @@
-import { dateTimeFormatter, datesToArr, hoursToArr, minutesToArray } from 'variables/functions';
+import { dateTimeFormatter, datesToArr, hoursToArr, minutesToArray, isWeekend, weekendColors } from 'variables/functions';
 import { teal } from '@material-ui/core/colors'
 import moment from 'moment'
 import { colors } from 'variables/colors';
@@ -34,6 +34,18 @@ export const setSummaryData = (dataArr, from, to) => {
 	}
 	return state
 }
+const linecolors = (data, defaultColor, id) => {
+	console.log(id + 1 * 100)
+	let colors = []
+	data.map(d => {
+		if (isWeekend(d[0])) {
+			return colors.push(weekendColors(id))
+		} else {
+			return colors.push(defaultColor)
+		}
+	})
+	return colors
+}
 export const setDailyData = (dataArr, from, to, hoverID) => {
 	let labels = datesToArr(from, to)
 	let state = {
@@ -50,12 +62,15 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 			 lineDataSets: {
 				
 				labels: labels,
-				datasets: dataArr.map((d) => ({
+				datasets: dataArr.map((d, index) => ({
 					id: d.id,
 					lat: d.lat,
 					long: d.long,
 					backgroundColor: d.color,
 					borderColor: d.color,
+					// pointBackgroundColor: Object.entries(d.data).map((e, i) => isWeekend(e[0]) ? '#FF0000' : d.color),
+					// pointBorderColor: Object.entries(d.data).map((e, i) => isWeekend(e[0]) ? '#FF0000' : d.color),
+					colors: linecolors(Object.entries(d.data), d.color, index),
 					borderWidth: hoverID === d.id ? 8 : 3,
 					fill: false,
 					label: [d.name],

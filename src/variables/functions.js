@@ -1,4 +1,5 @@
 import { parsePhoneNumber } from 'libphonenumber-js'
+import red from '@material-ui/core/colors/red'
 var moment = require('moment');
 var _ = require('lodash')
 
@@ -49,7 +50,9 @@ export const hoursToArr = (from, to) => {
 	}
 	return arr
 }
-
+export const isWeekend = (date) => {
+	return moment(date).day() === 6 || moment(date).day() === 0 ? true : false
+}
 export const datesToArr = (from, to) => {
 	let startDate = moment(from)
 	let endDate = moment(to)
@@ -66,7 +69,21 @@ export const datesToArr = (from, to) => {
 	// 
 	return arr
 }
-
+export const weekendColors = (id) => {
+	let redId = id % 4
+	switch (redId) {
+		case 0:
+			return red[300]
+		case 1:
+			return red[500]
+		case 2:
+			return red[700]
+		case 3:
+			return red[900]
+		default:
+			break;
+	}
+}
 export const dateFormat = (date) => {
 	let newDate = moment(date)
 	if (newDate.isBetween(moment().subtract(7, 'day'), moment().add(7, 'day')))
