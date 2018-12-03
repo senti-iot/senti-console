@@ -28,7 +28,8 @@ class ResetPassword extends React.Component {
 			score: 0,
 			minScore: 2,
 			minLength: 8,
-			passwordRequested: false
+			passwordRequested: false,
+			passwordReset: false
 		};
 		this.input = React.createRef()
 	}
@@ -109,7 +110,13 @@ class ResetPassword extends React.Component {
 			const { password } = this.state
 			let session = await confirmPassword({ newPassword: password, passwordToken: this.token })
 			if (session !== 404 && session)
-				this.loginUser(session)
+			{ 
+				this.setState({
+					passwordReset: true
+				})
+			}
+			// this.props.history.push('/login')
+			// this.loginUser(session)
 			else {
 				this.setState({
 					error: true,
@@ -180,7 +187,7 @@ class ResetPassword extends React.Component {
 	}
 	render() {
 		const { classes, t } = this.props;
-		const { error, email, errorMessage, password, confirmPassword, passwordRequested } = this.state
+		const { error, email, errorMessage, password, confirmPassword, passwordRequested, passwordReset } = this.state
 		return (
 			<div>
 				<div
@@ -202,7 +209,10 @@ class ResetPassword extends React.Component {
 										<CardBody>
 											<Collapse in={!passwordRequested}>
 												<Grid container>
-													<ItemG xs={12}>
+													<ItemG container justify={'center'} xs={12}>
+														<Collapse in={passwordReset}>
+															{this.token ? <Success>{t('dialogs.login.passwordReseted')}</Success> : null}
+														</Collapse>
 														<Collapse in={!error}>
 															{this.token ? null : <Info>{t('dialogs.login.resetPasswordMessage')}</Info>}
 														</Collapse>
@@ -210,6 +220,7 @@ class ResetPassword extends React.Component {
 															{errorMessage}
 														</Collapse>
 													</ItemG>
+												
 													<ItemG xs={12}>
 														{this.token ? null : <TextF
 															id={'email'}
@@ -224,45 +235,41 @@ class ResetPassword extends React.Component {
 															error={error}
 														/>}
 													</ItemG>
-
-													{this.token ? <Fragment>
-														<ItemG xs={12}>
-															<TextF
-																id={'password'}
-																label={t('confirmUser.password')}
-																value={password}
-																className={classes.textField}
-																// disabled={true}
-																handleChange={this.handleChange('password')}
-																margin='normal'
-																
-																error={error}
-																type={'password'}
-															// helperText={<Danger>{this.state.score}</Danger>}
-															/>
-														</ItemG>
-														<ItemG xs={12}>
-															<TextF
-																id={'confirmpassword'}
-																label={t('confirmUser.passwordConfirm')}
-																value={confirmPassword}
-																className={classes.textField}
-																// disabled={true}
-																handleChange={this.handleChange('confirmPassword')}
-																margin='normal'
-																
-																error={error}
-																type={'password'}
-															/>
-														</ItemG>
-													</Fragment> : null}
+													<Collapse in={!passwordReset}>
+														{this.token ? <Fragment>
+															<ItemG xs={12}>
+																<TextF
+																	id={'password'}
+																	label={t('confirmUser.password')}
+																	value={password}
+																	className={classes.textField}
+																	handleChange={this.handleChange('password')}
+																	margin='normal'
+																	error={error}
+																	type={'password'}
+																/>
+															</ItemG>
+															<ItemG xs={12}>
+																<TextF
+																	id={'confirmpassword'}
+																	label={t('confirmUser.passwordConfirm')}
+																	value={confirmPassword}
+																	className={classes.textField}
+																	// disabled={true}
+																	handleChange={this.handleChange('confirmPassword')}
+																	margin='normal'
+																	error={error}
+																	type={'password'}
+																/>
+															</ItemG>
+														</Fragment> : null}
+													</Collapse>
 												</Grid>
 											</Collapse>
 											<Collapse in={passwordRequested}>
 												<ItemG xs={12}>
 													<Success>{t('dialogs.login.resetPassRequestMessage')}</Success>
 												</ItemG>
-												
 											</Collapse>
 										</CardBody>
 										<CardFooter className={classes.cardFooter}>
@@ -271,10 +278,14 @@ class ResetPassword extends React.Component {
 													<Collapse in={!passwordRequested}>
 														{!this.token ? <Button variant={'contained'} color={'primary'} onClick={this.resetPass}>
 															{t('actions.requestPasswordReset')}
-														</Button> :
+														</Button> : !passwordReset ?
 															<Button variant={'contained'} color={'primary'} onClick={this.confirmPass}>
 																{t('actions.changePassword')}
-															</Button>}
+															</Button> : 
+															<Button variant={'contained'} color={'primary'} onClick={() => this.props.history.push('/login')}>
+																{t('actions.goToLogin')}
+															</Button>
+														}
 													</Collapse>
 												</ItemG>
 												<ItemG xs={12} container justify={'center'}>
@@ -283,6 +294,7 @@ class ResetPassword extends React.Component {
 															{t('actions.goToLogin')}
 														</Button>
 													</Collapse>
+												
 												</ItemG>
 											</ItemG>
 										</CardFooter>

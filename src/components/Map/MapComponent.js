@@ -42,7 +42,7 @@ class MapComponent extends Component {
 		let hArr = this.props.markers.map(point => (
 			{
 				location: new window.google.maps.LatLng(point.lat, point.long),
-				weight: (point.data / 1000 )
+				weight: (point.data / 100 )
 			}))
 		return hArr
 	}
