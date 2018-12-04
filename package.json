@@ -43,6 +43,7 @@
 		"react-swipeable-views": "^0.13.0",
 		"redux": "^4.0.0",
 		"redux-thunk": "^2.3.0",
+		"senti-apicore": "0.0.11",
 		"skycons": "^1.0.0",
 		"workbox-build": "^3.6.3"
 	},
@@ -66,7 +67,6 @@
 		"email": "apisupport@senti.cloud",
 		"url": "https://senti.cloud/"
 	},
-
 	"license": "MIT",
 	"browserslist": [
 		">0.2%",

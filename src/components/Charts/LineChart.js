@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import ChartComponent, { Chart } from 'react-chartjs-2';
-import { Typography, withStyles, Paper, Grow, CircularProgress } from '@material-ui/core';
-import { ItemG, WeatherIcon, Caption } from 'components';
+import { withStyles } from '@material-ui/core';
 import { graphStyles } from './graphStyles';
 import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
@@ -116,7 +115,7 @@ class LineChart extends PureComponent {
 							},
 							ticks: {
 
-								callback: function (value, index, values) {
+								callback: function (value) {
 									return value.charAt(0).toUpperCase() + value.slice(1);
 								},
 								fontColor: props.theme.palette.type === 'dark' ? ['rgba(255, 255, 255, 1)'] : ["#000"],
@@ -197,7 +196,7 @@ class LineChart extends PureComponent {
 		 *  4. Set the 'newData' without loading
 		 * 	@debug 
 		 *  */
-	componentDidUpdate = (prevProps, prevState) => {
+	componentDidUpdate = (prevProps) => {
 
 		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID) {
 			this.setXAxis()
@@ -303,7 +302,7 @@ class LineChart extends PureComponent {
 								drawTicks: false,
 							},
 							ticks: {
-								callback: function (value, index, values) {
+								callback: function (value) {
 									return value.charAt(0).toUpperCase() + value.slice(1);
 								},
 								source: 'labels',
@@ -427,47 +426,6 @@ class LineChart extends PureComponent {
 					chartWidth={chartWidth}
 					weather={weather}
 				/>
-				{/* <div ref={r => this.tooltip = r} style={{
-					zIndex: tooltip.show ? 1200 : tooltip.exited ? -1 : 1200,
-					position: 'absolute',
-					top: Math.round(this.state.tooltip.top),
-					left: mobile ? '50%' : Math.round(this.state.tooltip.left),
-					transform: this.transformLoc(),
-					width: mobile ? 200 : 300,
-					maxWidth: mobile ? (chartWidth ? chartWidth : window.innerWidth - 250) : 300
-				}}>
-					<Grow in={tooltip.show} onExited={this.exitedTooltip} >
-						<Paper className={classes.paper}>
-							<ItemG container>
-								<ItemG container direction='row' justify='space-between'>
-									<ItemG xs container direction='column'>
-										<Typography variant={'h6'} classes={{ root: classes.antialias }} >{`${DayStr}`}</Typography>
-										<Caption> {`(${DateStr})`}</Caption>
-									</ItemG>
-									<ItemG xs={2}>
-										{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : this.state.weather === null ? null : <CircularProgress size={37} />}
-									</ItemG>
-								</ItemG>
-								<ItemG >
-									<Caption>{this.state.weather === null ? null : `${this.props.t('devices.fields.weather')}:`} {this.state.weather ? this.state.weather.currently.summary : null}</Caption>
-								</ItemG>
-								{this.state.tooltip.data.map((d, i) => {
-									return (
-										<ItemG key={i} container alignItems={'center'}>
-											<ItemG xs={1}>
-												<div style={{ background: d.color, width: 15, height: 15, marginRight: 8 }} />
-											</ItemG>
-											<ItemG xs={8}><Typography noWrap variant={'caption'}>{d.device}</Typography></ItemG>
-											<ItemG xs={3}><Typography variant={'caption'} classes={{
-												root: classes.expand
-											}}>{Math.round(d.count)}</Typography></ItemG>
-										</ItemG>
-									)
-								})}
-							</ItemG>
-						</Paper>
-					</Grow>
-				</div> */}
 			</div>
 		)
 	}
