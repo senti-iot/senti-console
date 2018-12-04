@@ -1,4 +1,8 @@
 export const graphStyles = theme => ({
+	largeIcon: {
+		width: 40,
+		height: 40
+	},
 	antialias: {
 		webkitFontSmoothing: 'antialiased',
 		'-webkit-font-smoothing': 'antialiased'

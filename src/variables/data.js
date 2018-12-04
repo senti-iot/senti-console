@@ -1,6 +1,7 @@
 import { create } from 'apisauce'
 import cookie from 'react-cookies'
 import crypto from 'crypto'
+import moment from 'moment'
 
 // https://betabackend.senti.cloud/
 // https://senti.cloud
@@ -47,6 +48,12 @@ export const holidayApi = create({
 		'Content-Type': 'application/json'
 	}
 })
+export const getHolidays = async (lang) => {
+	let year = moment().format('YYYY')
+	let data = await holidayApi.get(`/${year}-01-01/${year}-12-31/${lang}`).then(rs => rs.data)
+	console.log(data)
+	return data
+}
 export const weatherApi = create({
 	baseURL: `https://api.senti.cloud/weather/v1/`,
 	timeout: 30000,

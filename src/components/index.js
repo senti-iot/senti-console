@@ -90,8 +90,9 @@ import CardHeader from './Card/CardHeader';
 import CardFooter from './Card/CardFooter'
 import CardBody from './Card/CardBody'
 import WeatherIcon from './Typography/WeatherIcon'
-
+import T from './Typography/T.js'
 export {
+	T,
 	ExportModal,
 	DateFilterMenu,
 	WeatherIcon,

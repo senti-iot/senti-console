@@ -4,6 +4,7 @@ import { ClearDay, ClearNight, Cloudy, Fog, PartlyCloudyDay, PartlyCloudyNight, 
 const styles = (theme) => ({
 	img: {
 		background: 'linear-gradient(60deg, #41A29B, #278881)',
+		margin: 5,
 		borderRadius: 50,
 		padding: 5
 	},
@@ -40,7 +41,7 @@ const WeatherIcon = (props) => {
 	}
 	return (
 		
-		<img className={props.classes.img} src={getIcon()} height={'27'} width={'27'} alt='' />
+		<img className={props.classes.img} src={getIcon()} height={'40'} width={'40'} alt='' />
 
 
 	)

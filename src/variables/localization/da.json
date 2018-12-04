@@ -63,6 +63,15 @@
         }
     },
     "charts": {
+		"fields": {
+			"date": "Dato",
+			"weather": "Vejr",
+			"temperature": "Temperatur",
+			"summary": "Vejr",
+			"windspeed": "Vindhastighed",
+			"humidity": "Fugtighed",
+			"pressure": "Tryk"
+		},
         "type": {
             "bar": "Søjle",
             "donut": "Donut",

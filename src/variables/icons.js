@@ -10,6 +10,7 @@ import Sleet from 'assets/weather/sleet.svg'
 import Snow from 'assets/weather/snow.svg'
 import Wind from 'assets/weather/wind.svg'
 //#endregion
+import Cake from '@material-ui/icons/Cake'
 import Star from '@material-ui/icons/Star'
 import StarBorder from '@material-ui/icons/StarBorder'
 import CloudDownload from '@material-ui/icons/CloudDownload'
@@ -76,6 +77,7 @@ import DeviceHub from '@material-ui/icons/DeviceHub'
 import Dashboard from '@material-ui/icons/Dashboard'
 import History from '@material-ui/icons/History'
 export {
+	Cake,
 	//Weather Icons
 	ClearDay,
 	ClearNight,

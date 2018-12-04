@@ -1,10 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Grow, Paper, Typography, CircularProgress } from '@material-ui/core';
+import { Grow, Paper, Typography, CircularProgress, Collapse } from '@material-ui/core';
 import ItemG from 'components/Grid/ItemG';
-import { Caption, WeatherIcon } from 'components';
+import { T, WeatherIcon } from 'components';
 import moment from 'moment'
+import { todayOfInterest } from 'redux/doi';
+import { DateRange, Cake } from 'variables/icons';
 class Tooltip extends Component {
 	clickEvent = () => {
 		if ('ontouchstart' in document.documentElement === true)
@@ -57,11 +59,14 @@ class Tooltip extends Component {
 		let completeDayStr = `${dayStr} (${hours})`
 		return completeDayStr
 	}
+	handleRawDate = () => {
+		const { tooltip } = this.props
+		return moment(tooltip.title[0], 'lll').format('YYYY-MM-DD')
+	}
 	render() {
-		const { t, classes, tooltip, weather, mobile, chartWidth,
-			getRef, handleCloseTooltip } = this.props
-		// let DateStr = tooltip.title[0] ? tooltip.title[0] : ''
-		this.handleDayTime()
+		const { t, classes, tooltip, weather, mobile,
+			getRef, handleCloseTooltip, todayOfInterest } = this.props
+		let doi = todayOfInterest(tooltip.title[0])
 		return (
 			<div ref={r => getRef(r)} style={{
 				zIndex: tooltip.show ? 1200 : tooltip.exited ? -1 : 1200,
@@ -84,43 +89,62 @@ class Tooltip extends Component {
 									{tooltip.data.map((d, i) => {
 										return (
 											<ItemG key={i} container direction='row' justify={'flex-end'} alignItems={'center'}>
-												{/*<ItemG xs={8}><Typography noWrap variant={'caption'}>{d.device}</Typography></ItemG> */}
 												<div style={{ background: d.color, width: 15, height: 15, marginLeft: 16, marginRight: 4 }} />
 												<Typography variant={'body1'}>{Math.round(d.count)}</Typography>
-
 											</ItemG>
 										)
 									})}
 								</ItemG>
 							</ItemG>
-							<ItemG container xs={6}>
-
-							</ItemG>
-							<ItemG container xs={6}>
-
-							</ItemG>
-							<ItemG container direction='row' justify='space-between'>
-
-								<ItemG xs={2}>
-									{weather ? <WeatherIcon icon={weather.currently.icon} /> : weather === null ? null : <CircularProgress size={37} />}
+							{doi.length > 0 ? <ItemG container xs={6} style={{ padding: 8 }}>
+								<ItemG xs={12}>{t('charts.fields.thisDay')}</ItemG>
+								<ItemG xs={2}><DateRange className={classes.largeIcon} /></ItemG>
+								<ItemG xs={10}>
+									{doi.map(d => <T>
+										{d.name}
+									</T>)}
 								</ItemG>
-							</ItemG>
-							<ItemG >
-								<Caption>{weather === null ? null : `${t('devices.fields.weather')}:`} {weather ? weather.currently.summary : null}</Caption>
-							</ItemG>
-							{tooltip.data.map((d, i) => {
-								return (
-									<ItemG key={i} container alignItems={'center'}>
-										<ItemG xs={1}>
-											<div style={{ background: d.color, width: 15, height: 15, marginRight: 8 }} />
+								<ItemG xs={2}><Cake className={classes.largeIcon} /></ItemG>
+								<ItemG xs={10}>
+									<T>
+										Some Birthday here
+									</T>
+								</ItemG>
+							</ItemG> : null}
+							<ItemG container xs style={{ padding: 8 }}>
+								<ItemG xs={12}>{t('charts.fields.weather')}:</ItemG>
+								{weather ? <ItemG xs={12}><WeatherIcon icon={weather.currently.icon} />	</ItemG> : weather === null ? null : <ItemG xs={12}><CircularProgress size={37} />	</ItemG>}
+								<Collapse in={weather ? weather === null ? false : true : false}>
+									<Fragment>
+										<ItemG container direction='row' xs={12}>
+											<T>
+												{t("charts.fields.summary")}: {weather ? weather.currently.summary : null}
+											</T>
 										</ItemG>
-										<ItemG xs={8}><Typography noWrap variant={'caption'}>{d.device}</Typography></ItemG>
-										<ItemG xs={3}><Typography variant={'caption'} classes={{
-											root: classes.expand
-										}}>{Math.round(d.count)}</Typography></ItemG>
-									</ItemG>
-								)
-							})}
+										<ItemG container direction='row' xs={12}>
+											<T>
+												{t("charts.fields.temperature")}: {weather ? weather.currently.temperature : null}
+											</T>
+										</ItemG>
+										<ItemG container direction='row' xs={12}>
+											<T>
+												{t("charts.fields.windspeed")}: {weather ? weather.currently.windSpeed : null}
+											</T>
+										</ItemG>
+										<ItemG container direction='row' xs={12}>
+											<T>
+												{t("charts.fields.humidity")}: {weather ? weather.currently.humidity : null}
+											</T>
+										</ItemG>
+										<ItemG container direction='row' xs={12}>
+											<T>
+												{t("charts.fields.pressure")}: {weather ? weather.currently.pressure : null}
+											</T>
+										</ItemG>
+									</Fragment>
+								</Collapse>
+							</ItemG>
+
 						</ItemG>
 					</Paper>
 				</Grow>
@@ -147,12 +171,13 @@ Tooltip.propTypes = {
 	//EndRedux
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, props) => ({
 
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = dispatch => ({
+	// getDateDoI: (date) => dispatch(') 
+	todayOfInterest: (date) => dispatch(todayOfInterest(moment(date, 'lll').format('YYYY-MM-DD')))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tooltip)
