@@ -7,6 +7,7 @@ import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
 import { compose } from 'recompose';
 import { connect } from 'react-redux'
+import Tooltip from './Tooltip';
 
 Chart.defaults.multicolorLine = Chart.defaults.line;
 Chart.controllers.multicolorLine = Chart.controllers.line.extend({
@@ -396,12 +397,14 @@ class LineChart extends PureComponent {
 		return `translate(${x}, ${y})`
 	}
 
-
+	getTooltipRef = (r) => {
+		this.tooltip = r
+	}
 	render() {
 		const { classes } = this.props
-		const { tooltip, chartWidth, mobile } = this.state
-		let DayStr = tooltip.title[1] ? tooltip.title[1].charAt(0).toUpperCase() + tooltip.title[1].slice(1) : ''
-		let DateStr = tooltip.title[0] ? tooltip.title[0] : ''
+		const { tooltip, chartWidth, chartHeight, mobile, weather } = this.state
+		// let DayStr = tooltip.title[1] ? tooltip.title[1].charAt(0).toUpperCase() + tooltip.title[1].slice(1) : ''
+		// let DateStr = tooltip.title[0] ? tooltip.title[0] : ''
 		return (
 			<div style={{ maxHeight: 400, position: 'relative', height: 400 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
 				<ChartComponent
@@ -413,7 +416,18 @@ class LineChart extends PureComponent {
 					legend={this.legendOptions}
 					onElementsClick={this.clickEvent() ? this.elementClicked : undefined}
 				/>
-				<div ref={r => this.tooltip = r} style={{
+				<Tooltip
+					getRef={this.getTooltipRef}
+					tooltip={tooltip}
+					handleCloseTooltip={this.exitedTooltip}
+					mobile={mobile}
+					classes={classes}
+					t={this.props.t}
+					chartHeight={chartHeight}
+					chartWidth={chartWidth}
+					weather={weather}
+				/>
+				{/* <div ref={r => this.tooltip = r} style={{
 					zIndex: tooltip.show ? 1200 : tooltip.exited ? -1 : 1200,
 					position: 'absolute',
 					top: Math.round(this.state.tooltip.top),
@@ -436,7 +450,6 @@ class LineChart extends PureComponent {
 								</ItemG>
 								<ItemG >
 									<Caption>{this.state.weather === null ? null : `${this.props.t('devices.fields.weather')}:`} {this.state.weather ? this.state.weather.currently.summary : null}</Caption>
-									{/* <Info></Info> */}
 								</ItemG>
 								{this.state.tooltip.data.map((d, i) => {
 									return (
@@ -454,7 +467,7 @@ class LineChart extends PureComponent {
 							</ItemG>
 						</Paper>
 					</Grow>
-				</div>
+				</div> */}
 			</div>
 		)
 	}

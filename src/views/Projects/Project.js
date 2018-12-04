@@ -410,29 +410,30 @@ class Project extends Component {
 	}
 	hoverGrow = () => {
 		const { timeType, dataArr, to, from, hoverID } = this.state
-		if (dataArr.findIndex(dc => dc.id === hoverID) !== -1 || hoverID === 0) {
-			let newState = {}
-			switch (timeType) {
-				case 0:
-					newState = setMinutelyData(dataArr, from, to, hoverID)
-					break;
-				case 1:
-					newState = setHourlyData(dataArr, from, to, hoverID)
-					break
-				case 2:
-					newState = setDailyData(dataArr, from, to, hoverID)
-					break
-				case 3:
-					newState = setSummaryData(dataArr, from, to, hoverID)
-					break
-				default:
-					break;
-			}
+		if (dataArr)
+			if (dataArr.findIndex(dc => dc.id === hoverID) !== -1 || hoverID === 0) {
+				let newState = {}
+				switch (timeType) {
+					case 0:
+						newState = setMinutelyData(dataArr, from, to, hoverID)
+						break;
+					case 1:
+						newState = setHourlyData(dataArr, from, to, hoverID)
+						break
+					case 2:
+						newState = setDailyData(dataArr, from, to, hoverID)
+						break
+					case 3:
+						newState = setSummaryData(dataArr, from, to, hoverID)
+						break
+					default:
+						break;
+				}
 
-			this.setState({
-				...newState
-			})
-		}
+				this.setState({
+					...newState
+				})
+			}
 		
 	}
 	renderDeleteDialog = () => {
