@@ -37,6 +37,8 @@ class ProjectData extends PureComponent {
 			openDownload: false,
 			display: props.chartType ? props.chartType : 3,
 			visibility: false,
+			resetZoom: false,
+			zoomDate: null
 		}
 	}
 
@@ -88,7 +90,38 @@ class ProjectData extends PureComponent {
 			[date]: e
 		})
 	}
+	handleReverseZoomOnData = async () => {
+		// if (elements.length > 0) {
+		const { timeType } = this.props
+		const { zoomDate } = this.state
+		// let date = zoomDate
+		let startDate = null
+		let endDate = null
+		try {
+			console.log(timeType, 'timeType')
+			// date = lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
+			switch (timeType) {
+				case 0:
+					startDate = zoomDate.length > 1 ? moment(zoomDate[1].from).startOf('day') : zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
+					endDate = zoomDate.length > 1 ? moment(zoomDate[1].to).endOf('day') : zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
+					console.log(startDate, endDate)
+					this.props.handleSetDate(6, endDate, startDate, 1, false)
+					break;
+				case 1:
+					startDate = zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
+					endDate = zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
+					this.setState({ resetZoom: false, zoomDate: null })
+					this.props.handleSetDate(6, endDate, startDate, 2, false)
+					break;
+				default:
+					break;
+			}
+		}
+		catch (e) {
 
+		}
+
+	}
 	handleZoomOnData = async (elements) => {
 		if (elements.length > 0) {
 			const { timeType, lineDataSets } = this.props
@@ -98,14 +131,27 @@ class ProjectData extends PureComponent {
 			try {
 				date = lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
 				switch (timeType) {
-					case 1:
+					case 1: // Minutely
 						startDate = moment(date).startOf('hour')
 						endDate = moment(date).endOf('hour')
+						console.log(date, this.props.from, this.props.to)
+						this.setState({
+							resetZoom: true, zoomDate: [...this.state.zoomDate, {
+								from: this.props.from,
+								to: moment(this.props.from, 'YYYY-MM-DD HH:mm').endOf('day')
+							}]
+						}, () => console.log(moment(this.props.from, 'YYYY-MM-DD HH:mm').endOf('day').format('YYYY-MM-DD HH:ss')))
 						this.props.handleSetDate(6, endDate, startDate, 0, false)
 						break
-					case 2:
+					case 2: //Hourly
 						startDate = moment(date).startOf('day')
 						endDate = moment(date).endOf('day')
+						this.setState({
+							resetZoom: true, zoomDate: [
+								{	from: this.props.from,
+									to: this.props.to }
+							]
+						})
 						this.props.handleSetDate(6, endDate, startDate, 1, false)
 						break;
 					default:
@@ -113,7 +159,7 @@ class ProjectData extends PureComponent {
 				}
 			}
 			catch (error) {
-				
+
 			}
 		}
 	}
@@ -168,11 +214,13 @@ class ProjectData extends PureComponent {
 						t={t}
 					/></div> : this.renderNoData()
 			case 3:
-				
+
 				return lineDataSets ?
 					<LineChart
 						hoverID={this.props.hoverID}
 						// getImage={this.getImage}
+						handleReverseZoomOnData={this.handleReverseZoomOnData}
+						resetZoom={this.state.resetZoom}
 						obj={device}
 						unit={this.timeTypes[timeType]}
 						onElementsClick={this.handleZoomOnData}
@@ -226,7 +274,7 @@ class ProjectData extends PureComponent {
 					<MoreVert />
 				</IconButton>
 			</ItemG>
-			 <Menu
+			<Menu
 				id='long-menu'
 				anchorEl={actionAnchor}
 				open={Boolean(actionAnchor)}
@@ -323,7 +371,7 @@ class ProjectData extends PureComponent {
 										<Caption className={classes.captionPading}>{`${displayFrom} - ${displayTo}`}</Caption>
 									</ItemG> */}
 									<ItemG xs={12}>
-										{ this.renderType() }
+										{this.renderType()}
 									</ItemG>
 									{/* {this.props.hoverID} */}
 									{/* <img src={this.state.image} alt={'not loaded'}/> */}

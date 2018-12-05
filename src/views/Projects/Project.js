@@ -270,8 +270,8 @@ class Project extends Component {
 	handleSetDate = (id, to, from, timeType, loading) => {
 		this.setState({
 			dateOption: id,
-			to: to,
-			from: from,
+			to: moment(to),
+			from: moment(from),
 			timeType: timeType,
 			loadingData: loading !== undefined ? loading : true,
 		}, this.handleSwitchDayHourSummary)
