@@ -6,7 +6,7 @@ import ItemG from 'components/Grid/ItemG';
 import { T, WeatherIcon } from 'components';
 import moment from 'moment'
 import { todayOfInterest } from 'redux/doi';
-import { DateRange, Cake } from 'variables/icons';
+import { DateRange, Cake, DeviceHub, DataUsage } from 'variables/icons';
 class Tooltip extends Component {
 	clickEvent = () => {
 		if ('ontouchstart' in document.documentElement === true)
@@ -89,7 +89,7 @@ class Tooltip extends Component {
 									{tooltip.data.map((d, i) => {
 										return (
 											<ItemG key={i} container direction='row' justify={'flex-end'} alignItems={'center'}>
-												<div style={{ background: d.color, width: 15, height: 15, marginLeft: 16, marginRight: 4 }} />
+												<DataUsage style={{ color: d.color, width: 24, height: 24, marginLeft: 16, marginRight: 4 }} />
 												<Typography variant={'body1'}>{Math.round(d.count)}</Typography>
 											</ItemG>
 										)
