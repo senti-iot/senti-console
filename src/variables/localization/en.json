@@ -52,14 +52,14 @@
 		},
 		"steps": {
 			"0": "To configure your Senti device, please enter a title and an informative description.",
-			"1": "To configure your Senti device you need to allow Senti.Cloud to store the location of the device. Accept this when prompted to allow to store the location of your mobile device. Secondly type in an address and select a location type to further pinpoint where your data is collected.",
-			"2": "To get the best data collection accuracy, you need to do a manual calibration. The calibration hit target is set to 200 so you need to count 200 individual entities. When you are ready to start counting press “OPEN COUNTING WINDOW” and press “START“. Push the large button to count. When you have reached your hit target of 200 hits the timer automatically stops.",
+			"1": "To configure your Senti device you need to allow Senti.Cloud to store the location of the device. Accept this when prompted to allow this from your mobile device. Secondly type in the actual physical address where the device is located, and select a location type to further pinpoint where your data is being collected.",
+			"2": "To get the best data collection accuracy, you need to do a manual calibration. In settings you can select the calibration method that suits your puspose. Start your manual count by pressing “OPEN COUNTER” and press “START“. Push the center button to count.",
 			"3": "You can store optional images of your device installation. This will enhance the Senti.Cloud experience, and serve as a help for Senti service technicians in case your device needs on-site service.",
 			"unknown": "Unknown step"
 		},
 		"texts": {
 			"success": "Success!",
-			"successMessage": "Your Senti device is now configured and calibrated and will produce better results when collecting data. To further enhance the accuracy of your data collection, return to the site of installation and do a new calibration on a regular basis. You can set a reminder for Device Calibration in Settings."
+			"successMessage": "Your Senti device is now configured and calibrated and will produce better results when collecting data. To further enhance the accuracy of your data collection, return to the site of installation and do a new calibration on a regular basis."
 		}
 	},
 	"charts": {

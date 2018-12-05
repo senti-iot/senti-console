@@ -28,7 +28,7 @@
 		"no": "Nej",
 		"off": "Slået fra",
 		"on": "Slået til",
-		"openCounter": "Åbn tæller vindue",
+		"openCounter": "Åbn tæller",
 		"previousPage": "Forrige side",
 		"requestPasswordReset": "Nulstil kodeord",
 		"reset": "Nulstil",
@@ -51,9 +51,9 @@
 			"name": "Enhedsnavn og beskrivelse"
 		},
 		"steps": {
-			"0": "For at konfigurere din Senti enhed, indtast et enhedsnavn og en informativ beskrivelse.",
-			"1": "For at konfigurere din Senti-enhed korrekt skal du tillade Senti.Cloud at gemme enhedens placering. Accepter dette, når du bliver bedt om at tillade at gemme placeringen af din mobilenhed. Indtast ligeledes en adresse og vælg en placeringstype for yderligere at specificere, hvor dine data er opsamlet.",
-			"2": "For at få den bedste nøjagtighed af din dataindsamling, skal du foretage en manuel kalibrering. Kalibreringsmålet er sat til 200, så du skal tælle 200 individuelle enheder. Når du er klar til at begynde at tælle, tryk på “ÅBEN TÆLLER VINDUE“ og tryk på “START“. Tryk den store knap for at tælle. Når du har nået dit hitmål på 200 hits, stopper timeren automatisk.",
+			"0": "Indtast et enhedsnavn og en informativ beskrivelse.",
+			"1": "For at supplere din konfiguration med en GPS lokation skal du tillade Senti.Cloud at gemme enhedens placering. Accepter dette, når du bliver bedt om at tillade at gemme placeringen fra din mobilenhed. Indtast ligeledes den fysiske adresse og vælg en placeringstype for yderligere at specificere, hvor dine data er opsamlet.",
+			"2": "For at få den bedste nøjagtighed af din dataindsamling, skal du foretage en manuel tælling. Under indstillinger kan du vælge den kalibrerings metode der passer dit formål. Tryk på “ÅBEN TÆLLER“ og tryk på “START“. Tryk den centrale knap for at tælle.",
 			"3": "Du kan valgfrit gemme billeder af din enhedsinstallation. Dette vil forbedre Senti.Cloud oplevelsen og tjene som en hjælp til Senti-serviceteknikere, såfremt din enhed har brug for on-site service.",
 			"unknown": "Ukendt skridt"
 		},
