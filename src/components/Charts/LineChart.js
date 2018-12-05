@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, Fragment } from 'react'
 import ChartComponent, { Chart } from 'react-chartjs-2';
 import { withStyles } from '@material-ui/core';
 import { graphStyles } from './graphStyles';
@@ -64,7 +64,7 @@ class LineChart extends PureComponent {
 				exited: false
 			},
 			lineOptions: {
-				// responsive: true,
+				responsive: true,
 				animation: {
 					duration: 500,
 					onComplete: props.getImage ? props.getImage : null,
@@ -174,12 +174,13 @@ class LineChart extends PureComponent {
 		this.chart.chartInstance.config.options.elements.point.radius = this.clickEvent() ? 3 : 5
 		this.chart.chartInstance.config.options.elements.point.hitRadius = this.clickEvent() ? 3 : 5
 		this.chart.chartInstance.config.options.elements.point.hoverRadius = this.clickEvent() ? 4 : 6
+		this.chart.chartInstance.generateLegend()
 		// this.chart.chartInstance.config.data.datasets[0].backgroundColor[0] = "#87CEFA";
-		console.log(this.chart.chartInstance)
+		// console.log(this.chart.chartInstance)
 		this.setState({
 			chartWidth: parseInt(this.chart.chartInstance.canvas.style.width.substring(0, this.chart.chartInstance.canvas.style.width.length - 1), 10),
 			chartHeight: parseInt(this.chart.chartInstance.canvas.style.height.substring(0, this.chart.chartInstance.canvas.style.height.length - 1), 10),
-			mobile: window.innerWidth > 400 ? false : true
+			mobile: window.innerWidth > 430 ? false : true
 
 		})
 	}
@@ -347,6 +348,7 @@ class LineChart extends PureComponent {
 				show: false
 			}
 		})
+
 	}
 	elementClicked = async (elements) => {
 		try {
@@ -368,7 +370,7 @@ class LineChart extends PureComponent {
 		let y = 0
 		if (!this.clickEvent()) {
 			x = '-50%'
-			y = tooltip.top < (chartHeight / 2) ? '25%' : '-125%'
+			y = tooltip.top < (chartHeight / 2) ? '5%' : '-105%'
 			return `translate(${x}, ${y})`
 		}
 		if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
@@ -400,33 +402,38 @@ class LineChart extends PureComponent {
 		this.tooltip = r
 	}
 	render() {
-		const { classes } = this.props
+		const { classes, unit } = this.props
 		const { tooltip, chartWidth, chartHeight, mobile, weather } = this.state
-		// let DayStr = tooltip.title[1] ? tooltip.title[1].charAt(0).toUpperCase() + tooltip.title[1].slice(1) : ''
-		// let DateStr = tooltip.title[0] ? tooltip.title[0] : ''
 		return (
-			<div style={{ maxHeight: 400, position: 'relative', height: 400 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
-				<ChartComponent
-					type={'multicolorLine'}
-					data={this.props.data}
-					height={this.props.theme.breakpoints.width('md') < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
-					ref={r => this.chart = r}
-					options={this.state.lineOptions}
-					legend={this.legendOptions}
-					onElementsClick={this.clickEvent() ? this.elementClicked : undefined}
-				/>
-				<Tooltip
-					getRef={this.getTooltipRef}
-					tooltip={tooltip}
-					handleCloseTooltip={this.exitedTooltip}
-					mobile={mobile}
-					classes={classes}
-					t={this.props.t}
-					chartHeight={chartHeight}
-					chartWidth={chartWidth}
-					weather={weather}
-				/>
-			</div>
+			<Fragment>
+				<div style={{ display: 'block', maxHeight: 400, position: 'relative', height: 400 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
+					<div style={{ display: 'block', height: 400, maxHeight: 400, width: '100%' }}>
+
+						<ChartComponent
+							type={'multicolorLine'}
+							data={this.props.data}
+							// height={this.props.theme.breakpoints.width('md') < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
+							// width={window.innerWidth - 20}
+							ref={r => this.chart = r}
+							options={this.state.lineOptions}
+							legend={this.legendOptions}
+							onElementsClick={this.clickEvent() ? this.elementClicked : () => {}}
+						/>
+					</div>
+					<Tooltip
+						getRef={this.getTooltipRef}
+						tooltip={tooltip}
+						handleCloseTooltip={this.exitedTooltip}
+						mobile={mobile}
+						classes={classes}
+						t={this.props.t}
+						chartHeight={chartHeight}
+						chartWidth={chartWidth}
+						weather={weather}
+						unit={unit}
+					/>
+				</div>
+			</Fragment>
 		)
 	}
 }

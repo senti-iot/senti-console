@@ -64,7 +64,9 @@
 	},
 	"charts": {
 		"fields": {
+			"thisDay": "Denne dag:",
 			"date": "Dato",
+			"range": "Interval",
 			"weather": "Vejr",
 			"temperature": "Temperatur",
 			"summary": "Vejr",
@@ -392,6 +394,8 @@
 		"userResendEmail": "Send bekræft e-mail igen"
 	},
 	"no": {
+		"birthdays": "Ingen fødselsdag i dag",
+		"doi": "ingen helligdage i dag",
 		"activeDevice": "Ingen aktiv enhed",
 		"audioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a different browser.",
 		"collection": "Ikke tildelt til en datasamling",

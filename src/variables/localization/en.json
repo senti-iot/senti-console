@@ -64,7 +64,9 @@
 	},
 	"charts": {
 		"fields": {
+			"thisDay": "On this day:",
 			"date": "Date",
+			"range": "Range",
 			"weather": "Weather",
 			"temperature": "Temperature",
 			"summary": "Weather",
@@ -390,6 +392,8 @@
 		"userResendEmail": "Resend Confirm Email"
 	},
 	"no": {
+		"birthdays": "No birthdays",
+		"doi":"No holidays today",
 		"activeDevice": "No active device",
 		"audioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a different browser.",
 		"collection": "No collection",

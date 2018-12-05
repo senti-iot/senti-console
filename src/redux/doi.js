@@ -20,7 +20,7 @@ export const getDaysOfInterest = (lang) => {
 	} 
 }
 const initialState = {
-	days: [{ "date": "2018-12-01", "name": "Testing", "nationalHoliday": true }]
+	days: [{ "date": "2018-12-01", "name": "Testing a very long name here today", "nationalHoliday": true }, { "date": "2018-12-01", "name": "Testing a very long name here today", "nationalHoliday": true }, { "date": "2018-12-01", "name": "Testing a very long name here today", "nationalHoliday": true }]
 }
 
 export const doi = (state = initialState, action) => {
