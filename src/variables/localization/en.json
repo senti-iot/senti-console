@@ -485,7 +485,8 @@
 			"time": "By time"
 		},
 		"chart": {
-			"defaultChart": "Default chart type"
+			"defaultChart": "Default chart type",
+			"rawData": "Raw data"
 		},
 		"defaultDataSet": "Default data set for charts",
 		"didYouKnow": "Intelligent Notifications",

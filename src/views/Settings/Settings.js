@@ -8,7 +8,7 @@ import CalibrationSettings from './SettingsCards/CalibrationSettings';
 import DisplaySettings from './SettingsCards/DisplaySettings';
 import { changeLanguage } from 'redux/localization';
 import withLocalization from 'components/Localization/T';
-import { changeTRP, changeTheme, changeChartType, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow, saveSettingsOnServ, finishedSaving } from 'redux/settings';
+import { changeTRP, changeTheme, changeChartType, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow, saveSettingsOnServ, finishedSaving, changeChartDataType } from 'redux/settings';
 import NotificationSettings from './SettingsCards/NotificationSettings';
 // import DeviceSettings from './SettingsCards/DeviceSettings';
 import ChartSettings from './SettingsCards/ChartSettings';
@@ -44,8 +44,8 @@ class Settings extends Component {
 	render() {
 		const { t } = this.props
 		const { language, sideBar, changeSideBarLoc, trp, changeTRP, theme, changeTheme, changeDiscoverSenti, discSentiVal, changeLanguage, changeChartType } = this.props
-		const { calibration, changeCalType, count, changeCount, calNotifications, changeCalNotif } = this.props
-		const { alerts, didKnow, changeAlerts, changeDidKnow, chartType } = this.props
+		const { calibration, changeCalType, count, changeCount, calNotifications, changeCalNotif, rawData } = this.props
+		const { alerts, didKnow, changeAlerts, changeDidKnow, chartType, changeChartDataType } = this.props
 		return (
 			<Fragment>
 				<Toolbar
@@ -92,7 +92,9 @@ class Settings extends Component {
 					<ItemGrid xs={12} noMargin id={'charts'}>
 						<ChartSettings
 							chartType={chartType}
+							chartDataType={rawData}
 							changeChartType={changeChartType}
+							changeChartDataType={changeChartDataType}
 							t={t}
 						/>
 					</ItemGrid>
@@ -119,11 +121,11 @@ const mapStateToProps = state => {
 		sideBar: s.sideBar,
 		discSentiVal: s.discSentiVal,
 		calibration: s.calibration,
-		
 		count: s.count,
 		calNotifications: s.calNotifications,
 		
 		chartType: s.chartType,
+		rawData: s.rawData,
 
 		alerts: s.alerts,
 		didKnow: s.didKnow
@@ -146,6 +148,7 @@ const mapDispatchToProps = (dispatch) => {
 		changeDidKnow: t => dispatch(changeDidKnow(t)),
 
 		changeChartType: type => dispatch(changeChartType(type)),
+		changeChartDataType: type => dispatch(changeChartDataType(type)),
 
 		saveSettings: () => dispatch(saveSettingsOnServ()),
 		finishedSaving: () => dispatch(finishedSaving())

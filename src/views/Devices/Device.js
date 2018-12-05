@@ -32,7 +32,7 @@ class Device extends Component {
 			from: moment().subtract(7, 'd').startOf('day'),
 			to: moment().endOf('day'),
 			timeType: 2,
-			raw: false,
+			raw: props.rawData ? props.rawData : false,
 			//End Date Filter Tools
 			//Assign/Unassign
 			openAssignCollection: false,
@@ -633,7 +633,8 @@ class Device extends Component {
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	language: state.settings.language,
-	saved: state.favorites.saved
+	saved: state.favorites.saved,
+	rawData: state.settings.rawData
 })
 
 const mapDispatchToProps = (dispatch) => ({

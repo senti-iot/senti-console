@@ -6,21 +6,28 @@ import 'moment/locale/en-gb'
 import { saveSettings } from 'variables/dataLogin';
 var moment = require('moment')
 
-
+//Display
 const MENULOC = 'sidebarLocation'
+const changeLangAction = 'changeLanguage'
 const THEME = 'theme'
 const TRP = 'tableRowsPerPage'
+const DISCSENT = 'discoverSentiBanner'
+const DIDKNOW = 'notifDidYouKnow'
+
+//Calibration
 const CALTYPE = 'calibrationType'
 const COUNT = 'calibrationCount'
 const CALNOTIF = 'calibrationNotify'
-const DISCSENT = 'discoverSentiBanner'
 const ALERTS = 'notifAlerts'
-const DIDKNOW = 'notifDidYouKnow'
-const GETSETTINGS = 'getSettings'
 const GETFAVS = 'getFavorites'
-const SAVESETTINGS = 'saveSettings'
-const changeLangAction = 'changeLanguage'
+
+//Charts
 const CHARTTYPE = 'chartType'
+const CHARTDATATYPE = 'chartDataType'
+
+//Get/Set Settings from server
+const GETSETTINGS = 'getSettings'
+const SAVESETTINGS = 'saveSettings'
 const SAVED = 'savedSettings'
 const NOSETTINGS = 'noSettings'
 
@@ -39,6 +46,7 @@ export const saveSettingsOnServ = () => {
 			trp: s.trp,
 			alerts: s.alerts,
 			didKnow: s.didKnow,
+			rawData: s.rawData
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -146,7 +154,15 @@ export const changeDidKnow = t => {
 		dispatch(saveSettingsOnServ())
 	}
 }
-
+export const changeChartDataType = t => {
+	return async (dispatch, getState) => {
+		dispatch({
+			type: CHARTDATATYPE,
+			t
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
 export const changeChartType = t => {
 	return async (dispatch, getState) => {
 		dispatch({
@@ -227,6 +243,7 @@ export const finishedSaving = () => {
 	}
 }
 let initialState = {
+	rawData: 0,
 	language: 'dk',
 	calibration: 1,
 	calNotifications: 0,
@@ -244,7 +261,8 @@ let initialState = {
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
-
+		case CHARTDATATYPE: 
+			return Object.assign({}, state, { rawData: action.t })
 		case SAVED:
 			return Object.assign({}, state, { saved: action.saved })
 		case DISCSENT:

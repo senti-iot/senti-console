@@ -15,9 +15,17 @@ class ChartSettings extends Component {
 		]
 
 	}
+	chartDataTypes = () => {
+		const { t } = this.props
+		return [
+			{ value: 0, icon: '', label: t('actions.off') },
+			{ value: 1, icon: '', label: t('actions.on') }
+		]
+	}
 	changeChartType = e => this.props.changeChartType(e.target.value)
+	changeChartDataType = e => this.props.changeChartDataType(e.target.value)
 	render() {
-		const { t, classes, chartType } = this.props
+		const { t, classes, chartType, chartDataType } = this.props
 		return (
 			<InfoCard
 				noExpand
@@ -26,15 +34,21 @@ class ChartSettings extends Component {
 				content={
 					<Grid container>
 						<List className={classes.list}>
-							<ListItem>
+							<ListItem divider>
 								<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 									<ListItemText>{t('settings.chart.defaultChart')}</ListItemText>
 									<DSelect menuItems={this.chartTypes()} value={chartType} onChange={this.changeChartType} />
 								</ItemGrid>
 							</ListItem>
+							<ListItem >
+								<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+									<ListItemText>{t('settings.chart.rawData')}</ListItemText>
+									<DSelect menuItems={this.chartDataTypes()} value={chartDataType} onChange={this.changeChartDataType} />
+								</ItemGrid>
+							</ListItem>
 						</List>
 					</Grid>
-				
+
 				}
 			/>
 		)
