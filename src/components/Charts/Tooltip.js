@@ -6,7 +6,7 @@ import ItemG from 'components/Grid/ItemG';
 import { T, WeatherIcon } from 'components';
 import moment from 'moment'
 import { todayOfInterest } from 'redux/doi';
-import { DateRange, Cake, DeviceHub, DataUsage } from 'variables/icons';
+import { DateRange, Cake, DataUsage } from 'variables/icons';
 class Tooltip extends Component {
 	clickEvent = () => {
 		if ('ontouchstart' in document.documentElement === true)
