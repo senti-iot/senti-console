@@ -4,12 +4,12 @@ export const graphStyles = theme => ({
 	largeIcon: {
 
 		color: theme.palette.type === 'dark' ? '#fff' : teal[500],
-		[theme.breakpoints.down('sm')]: {
-			width: 30,
-			height: 30
-		},
-		width: 40,
-		height: 40
+		// [theme.breakpoints.down('sm')]: {
+		// 	width: 24,
+		// 	height: 24
+		// },
+		width: 24,
+		height: 24
 	},
 	antialias: {
 		webkitFontSmoothing: 'antialiased',

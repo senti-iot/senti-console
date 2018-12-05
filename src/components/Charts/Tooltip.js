@@ -116,56 +116,54 @@ class Tooltip extends Component {
 									})}
 								</ItemG>
 							</ItemG>
-							<ItemG container xs style={{ padding: 8 }}>
-								{/* <ItemG xs={12}><Typography variant={'body1'}>{t('charts.fields.weather')}:</Typography></ItemG> */}
-								{weather ? <ItemG xs={12}><WeatherIcon icon={weather.currently.icon} />	</ItemG> : weather === null ? null : <ItemG xs={12}><CircularProgress size={37} />	</ItemG>}
-								<Collapse in={weather ? weather === null ? false : true : false}>
-									<Fragment>
-										<ItemG container direction='row' xs={12}>
-											<T>
-												{t("charts.fields.summary")}: {weather ? weather.currently.summary : null}
-											</T>
+							<Collapse in={weather ? weather === null ? false : true : false}>
+								<ItemG container>
+									<ItemG container xs={12} sm={6} md={6} lg={6} xl={6} style={{ padding: 8 }}>
+										{/* <ItemG xs={12}><Typography variant={'body1'}>{t('charts.fields.weather')}:</Typography></ItemG> */}
+										{weather ? <ItemG xs={12}><WeatherIcon icon={weather.currently.icon} />	</ItemG> : weather === null ? null : <ItemG xs={12}><CircularProgress size={37} />	</ItemG>}
+										<Fragment>
+											<ItemG container direction='row' xs={12}>
+												<T>
+													{t("charts.fields.summary")}: {weather ? weather.currently.summary : null}
+												</T>
+											</ItemG>
+											<ItemG container direction='row' xs={12}>
+												<T>
+													{t("charts.fields.temperature")}: {weather ? `${Math.round(weather.currently.temperature)} \u{2103}` : null} 
+												</T>
+											</ItemG>
+											<ItemG container direction='row' xs={12}>
+												<T>
+													{t("charts.fields.windspeed")}: {weather ? `${Math.round(weather.currently.windSpeed / 3.6)} m/s` : null}
+												</T>
+											</ItemG>
+											<ItemG container direction='row' xs={12}>
+												<T>
+													{t("charts.fields.humidity")}: {weather ? `${weather.currently.humidity * 100}%` : null}
+												</T>
+											</ItemG>
+											<ItemG container direction='row' xs={12}>
+												<T>
+													{t("charts.fields.pressure")}: {weather ? `${Math.round(weather.currently.pressure)} hPa` : null}
+												</T>
+											</ItemG>
+										</Fragment>
+									</ItemG>
+									{doi.length > 0 ? <ItemG container justify={'center'} xs={12} sm={6} md={6} lg={6} xl={6} style={{ padding: 8 }}>
+										{/* <ItemG xs={12}><Typography variant={'body1'}>{t('charts.fields.thisDay')}</Typography></ItemG> */}
+										<ItemG xs={2}><DateRange className={classes.largeIcon} /></ItemG>
+										<ItemG xs={10} style={{ paddingLeft: 4 }}>
+											{doi.length > 0 ? doi.map((d, i) => <T key={i}>
+												{`\u{2022}`}{d.name}
+											</T>) : <Muted>{t('no.doi')}</Muted>}
 										</ItemG>
-										<ItemG container direction='row' xs={12}>
-											<T>
-												{t("charts.fields.temperature")}: {weather ? `${Math.round(weather.currently.temperature)} \u{2103}` : null} 
-											</T>
+										<ItemG xs={2}><Cake className={classes.largeIcon} /></ItemG>
+										<ItemG xs={10} style={{ paddingLeft: 4 }}>
+											<Muted>{t('no.birthdays')}</Muted>
 										</ItemG>
-										<ItemG container direction='row' xs={12}>
-											<T>
-												{t("charts.fields.windspeed")}: {weather ? `${Math.round(weather.currently.windSpeed / 3.6)} m/s` : null}
-											</T>
-										</ItemG>
-										<ItemG container direction='row' xs={12}>
-											<T>
-												{t("charts.fields.humidity")}: {weather ? `${weather.currently.humidity * 100}%` : null}
-											</T>
-										</ItemG>
-										<ItemG container direction='row' xs={12}>
-											<T>
-												{t("charts.fields.pressure")}: {weather ? `${Math.round(weather.currently.pressure)} hPa` : null}
-											</T>
-										</ItemG>
-									</Fragment>
-								</Collapse>
-							</ItemG>
-							{doi.length > 0 ? <ItemG container justify={'center'} xs={12} sm={6} md={6} lg={6} style={{ padding: 8 }}>
-								<ItemG xs={12}><Typography variant={'body1'}>{t('charts.fields.thisDay')}</Typography></ItemG>
-								<ItemG xs={2} sm={2} md={3} lg={3}><DateRange className={classes.largeIcon} /></ItemG>
-								<ItemG xs={10} sm={10} md={9} lg={9} style={{ paddingLeft: 8 }}>
-									{doi.length > 0 ? doi.map((d, i) => <T key={i}>
-										{d.name}
-									</T>) : <Muted>{t('no.doi')}</Muted>}
+									</ItemG> : null}
 								</ItemG>
-								<ItemG xs={2} sm={2} md={3} lg={3}><Cake className={classes.largeIcon} /></ItemG>
-								<ItemG xs={10} sm={10} md={9} lg={9} style={{ paddingLeft: 8 }}>
-									{/* {doi.length > 0 ? doi.map(d => <T>
-										{d.name}
-									</T>) : <Muted>{t('no.birthdays')}</Muted>} */}
-									<Muted>{t('no.birthdays')}</Muted>
-								</ItemG>
-							</ItemG> : null}
-
+							</Collapse>
 						</ItemG>
 					</Paper>
 				</Grow>
