@@ -117,7 +117,7 @@ class Tooltip extends Component {
 								</ItemG>
 							</ItemG>
 							<ItemG container xs style={{ padding: 8 }}>
-								<ItemG xs={12}><Typography variant={'body1'}>{t('charts.fields.weather')}:</Typography></ItemG>
+								{/* <ItemG xs={12}><Typography variant={'body1'}>{t('charts.fields.weather')}:</Typography></ItemG> */}
 								{weather ? <ItemG xs={12}><WeatherIcon icon={weather.currently.icon} />	</ItemG> : weather === null ? null : <ItemG xs={12}><CircularProgress size={37} />	</ItemG>}
 								<Collapse in={weather ? weather === null ? false : true : false}>
 									<Fragment>
@@ -151,14 +151,14 @@ class Tooltip extends Component {
 							</ItemG>
 							{doi.length > 0 ? <ItemG container justify={'center'} xs={12} sm={6} md={6} lg={6} style={{ padding: 8 }}>
 								<ItemG xs={12}><Typography variant={'body1'}>{t('charts.fields.thisDay')}</Typography></ItemG>
-								<ItemG xs={2} sm={2} md={2} lg={2}><DateRange className={classes.largeIcon} /></ItemG>
-								<ItemG xs={10} sm={10} md={10} lg={10} style={{ paddingLeft: 8 }}>
+								<ItemG xs={2} sm={2} md={3} lg={3}><DateRange className={classes.largeIcon} /></ItemG>
+								<ItemG xs={10} sm={10} md={9} lg={9} style={{ paddingLeft: 8 }}>
 									{doi.length > 0 ? doi.map((d, i) => <T key={i}>
 										{d.name}
 									</T>) : <Muted>{t('no.doi')}</Muted>}
 								</ItemG>
-								<ItemG xs={2} sm={2} md={2} lg={2}><Cake className={classes.largeIcon} /></ItemG>
-								<ItemG xs={10} sm={10} md={10} lg={10} style={{ paddingLeft: 8 }}>
+								<ItemG xs={2} sm={2} md={3} lg={3}><Cake className={classes.largeIcon} /></ItemG>
+								<ItemG xs={10} sm={10} md={9} lg={9} style={{ paddingLeft: 8 }}>
 									{/* {doi.length > 0 ? doi.map(d => <T>
 										{d.name}
 									</T>) : <Muted>{t('no.birthdays')}</Muted>} */}
