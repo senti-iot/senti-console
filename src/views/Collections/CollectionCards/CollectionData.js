@@ -305,7 +305,7 @@ class CollectionData extends PureComponent {
 				<ListItem button onClick={this.props.handleRawData}>
 					<ListItemIcon>
 						<Checkbox
-							checked={this.props.raw}
+							checked={Boolean(this.props.raw)}
 							// disabled
 							className={classes.noPadding}
 						/>
