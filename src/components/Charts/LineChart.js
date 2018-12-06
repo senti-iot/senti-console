@@ -61,7 +61,7 @@ class LineChart extends PureComponent {
 				top: 0,
 				left: 0,
 				data: [],
-				exited: false
+				exited: true
 			},
 			lineOptions: {
 				responsive: true,
@@ -221,8 +221,25 @@ class LineChart extends PureComponent {
 			this.hideTooltip()
 			return
 		}
-
-
+		let left = tooltipModel.caretX;
+		let top = tooltipModel.caretY;
+		if (!this.clickEvent()) {
+			left = this.state.chartWidth / 2
+		}
+		let str = tooltipModel.title[0]
+		var rest = str.substring(0, str.lastIndexOf(' ') + 1);
+		var last = str.substring(str.lastIndexOf(' ') + 1, str.length);
+		if (top === this.state.tooltip.top && left === this.state.tooltip.left) {
+			return this.setState({
+				tooltip: {
+					...this.state.tooltip,
+					show: true,
+					showWeather: true,
+					exited: false
+				}
+			})
+		}
+			
 		// let weatherData = null
 		let wDate = null
 		try {
@@ -235,6 +252,10 @@ class LineChart extends PureComponent {
 					this.setState({ weather: "" })
 					getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then(rs => {
 						this.setState({
+							tooltip: {
+								...this.state.tooltip,
+								showWeather: true
+							},
 							weatherDate: wDate,
 							weather: rs,
 							loc: {
@@ -246,6 +267,10 @@ class LineChart extends PureComponent {
 				}
 				else {
 					this.setState({
+						tooltip: {
+							...this.state.tooltip,
+							showWeather: false
+						},
 						weatherDate: wDate,
 						weather: null,
 						loc: {
@@ -259,14 +284,7 @@ class LineChart extends PureComponent {
 		catch (err) {
 
 		}
-		let left = tooltipModel.caretX;
-		let top = tooltipModel.caretY;
-		if (!this.clickEvent()) {
-			left = this.state.chartWidth / 2
-		}
-		let str = tooltipModel.title[0]
-		var rest = str.substring(0, str.lastIndexOf(' ') + 1);
-		var last = str.substring(str.lastIndexOf(' ') + 1, str.length);
+
 		this.setTooltip({
 			top,
 			left,
@@ -329,6 +347,7 @@ class LineChart extends PureComponent {
 			tooltip: {
 				...tooltip,
 				show: true,
+				showWeather: false,
 				exited: false
 			}
 		})
@@ -345,7 +364,8 @@ class LineChart extends PureComponent {
 		this.setState({
 			tooltip: {
 				...this.state.tooltip,
-				show: false
+				show: false,
+				showWeather: false
 			}
 		})
 

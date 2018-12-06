@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Grow, Paper, Typography, CircularProgress, Collapse } from '@material-ui/core';
+import { Grow, Paper, Typography, Collapse } from '@material-ui/core';
 import ItemG from 'components/Grid/ItemG';
 import { T, WeatherIcon, Muted } from 'components';
 import moment from 'moment'
@@ -116,11 +116,10 @@ class Tooltip extends Component {
 									})}
 								</ItemG>
 							</ItemG>
-							<Collapse in={weather ? weather === null ? false : true : false}>
+							<Collapse in={tooltip.showWeather}>
 								<ItemG container>
 									<ItemG container xs={12} sm={6} md={6} lg={6} xl={6} style={{ padding: 8 }}>
-										{/* <ItemG xs={12}><Typography variant={'body1'}>{t('charts.fields.weather')}:</Typography></ItemG> */}
-										{weather ? <ItemG xs={12}><WeatherIcon icon={weather.currently.icon} />	</ItemG> : weather === null ? null : <ItemG xs={12}><CircularProgress size={37} />	</ItemG>}
+										{weather ? <ItemG xs={12}><WeatherIcon icon={weather.currently.icon} /></ItemG> : null}
 										<Fragment>
 											<ItemG container direction='row' xs={12}>
 												<T>
