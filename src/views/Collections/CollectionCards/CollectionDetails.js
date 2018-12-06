@@ -58,7 +58,7 @@ class DeviceDetails extends Component {
 						<ItemG container xs={12} sm={11} md={11} lg={11} xl={11}>
 							{weather === '' ? null : weather !== null ? <Fragment>
 								<ItemG xs={2} sm={1} md={1} lg={1} container justify={'center'}>
-									<WeatherIcon icon={weather.currently.icon} />
+									<WeatherIcon height={24} width={24} icon={weather.currently.icon} />
 								</ItemG>
 								<ItemG xs>
 									<Caption>{t('devices.fields.weather')}</Caption>
