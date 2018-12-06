@@ -134,7 +134,6 @@ class DateFilterMenu extends Component {
 	}
 	isSelected = (value) => value === this.state.id ? true : false
 	render() {
-		// const { dateFilterInputID } = this.state
 		const { to, from, t, dateOption, classes } = this.props
 		const { actionAnchor } = this.state
 		let displayTo = dateTimeFormatter(to)

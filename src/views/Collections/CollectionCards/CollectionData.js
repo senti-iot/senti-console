@@ -53,10 +53,10 @@ class CollectionData extends PureComponent {
 		{ id: 6, label: this.props.t('filters.dateOptions.custom') },
 	]
 	timeTypes = [
-		{ id: 0, format: 'lll dddd', chart: 'minute' },
-		{ id: 1, format: 'lll dddd', chart: 'hour' },
-		{ id: 2, format: 'll dddd', chart: 'day' },
-		{ id: 3, format: 'll dddd', chart: 'month' },
+		{ id: 0, format: 'lll dddd', chart: 'minute', tooltipFormat: 'LT' },
+		{ id: 1, format: 'lll dddd', chart: 'hour', tooltipFormat: 'LT' },
+		{ id: 2, format: 'll dddd', chart: 'day', tooltipFormat: 'll' },
+		{ id: 3, format: 'll dddd', chart: 'month', tooltipFormat: 'MMM YY' },
 	]
 	visibilityOptions = [
 		{ id: 0, icon: <PieChartRounded />, label: this.props.t('charts.type.pie') },
