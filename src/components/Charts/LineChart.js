@@ -1,6 +1,6 @@
 import React, { PureComponent, Fragment } from 'react'
 import ChartComponent, { Chart } from 'react-chartjs-2';
-import { withStyles, Button, Collapse } from '@material-ui/core';
+import { withStyles } from '@material-ui/core';
 import { graphStyles } from './graphStyles';
 import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
@@ -420,7 +420,7 @@ class LineChart extends PureComponent {
 		this.tooltip = r
 	}
 	render() {
-		const { classes, unit, resetZoom } = this.props
+		const { classes, unit } = this.props
 		const { tooltip, chartWidth, chartHeight, mobile, weather } = this.state
 		return (
 			<Fragment>
@@ -438,16 +438,6 @@ class LineChart extends PureComponent {
 							onElementsClick={this.clickEvent() ? this.elementClicked : () => {}}
 						/>
 					</div>
-					<Collapse in={resetZoom} style={{
-						position: 'absolute',
-						top: '-10%',
-						zIndex: 1030,
-						left: '90%'
-					}}>
-						<Button color={'primary'} variant={'contained'} onClick={this.props.handleReverseZoomOnData}>
-							Reset Zoom
-						</Button>
-					</Collapse>
 					<Tooltip
 						getRef={this.getTooltipRef}
 						tooltip={tooltip}

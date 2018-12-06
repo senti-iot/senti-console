@@ -1,4 +1,5 @@
-//#region weather Icons 
+import ZoomOut from '@material-ui/icons/ZoomOut'
+//#region weather Icons
 import ClearDay from 'assets/weather/clear_day.svg'
 import ClearNight from 'assets/weather/clear_night.svg'
 import Cloudy from 'assets/weather/cloudy.svg'
@@ -77,6 +78,7 @@ import DeviceHub from '@material-ui/icons/DeviceHub'
 import Dashboard from '@material-ui/icons/Dashboard'
 import History from '@material-ui/icons/History'
 export {
+	ZoomOut,
 	Cake,
 	//Weather Icons
 	ClearDay,

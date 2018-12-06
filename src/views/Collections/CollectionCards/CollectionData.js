@@ -9,7 +9,7 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart, /* CloudDownload */
+	ExpandMore, Visibility, ShowChart, ZoomOut, /* CloudDownload */
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
@@ -91,7 +91,34 @@ class CollectionData extends PureComponent {
 			[date]: e
 		})
 	}
-
+	handleReverseZoomOnData = async () => {
+		const { timeType } = this.props
+		const { zoomDate } = this.state
+		let startDate = null
+		let endDate = null
+		try {
+			switch (timeType) {
+				case 0:
+					startDate = zoomDate.length > 1 ? moment(zoomDate[1].from).startOf('day') : zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
+					endDate = zoomDate.length > 1 ? moment(zoomDate[1].to).endOf('day') : zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
+					if (zoomDate.length === 1) {
+						this.setState({ resetZoom: false, zoomDate: [] })
+					}
+					this.props.handleSetDate(6, endDate, startDate, 1, false)
+					break;
+				case 1:
+					startDate = zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
+					endDate = zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
+					this.setState({ resetZoom: false, zoomDate: [] })
+					this.props.handleSetDate(6, endDate, startDate, 2, false)
+					break;
+				default:
+					break;
+			}
+		}
+		catch (e) {
+		}
+	}
 	handleZoomOnData = async (elements) => {
 		if (elements.length > 0) {
 			const { timeType, lineDataSets } = this.props
@@ -101,14 +128,28 @@ class CollectionData extends PureComponent {
 			try {
 				date = lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
 				switch (timeType) {
-					case 1:
+					case 1: // Minutely
 						startDate = moment(date).startOf('hour')
 						endDate = moment(date).endOf('hour')
+						this.setState({
+							resetZoom: true, zoomDate: [...this.state.zoomDate, {
+								from: this.props.from,
+								to: moment(this.props.from, 'YYYY-MM-DD HH:mm').endOf('day')
+							}]
+						})
 						this.props.handleSetDate(6, endDate, startDate, 0, false)
 						break
-					case 2:
+					case 2: //Hourly
 						startDate = moment(date).startOf('day')
 						endDate = moment(date).endOf('day')
+						this.setState({
+							resetZoom: true, zoomDate: [
+								{
+									from: this.props.from,
+									to: this.props.to
+								}
+							]
+						})
 						this.props.handleSetDate(6, endDate, startDate, 1, false)
 						break;
 					default:
@@ -116,7 +157,7 @@ class CollectionData extends PureComponent {
 				}
 			}
 			catch (error) {
-				
+
 			}
 		}
 	}
@@ -191,9 +232,16 @@ class CollectionData extends PureComponent {
 	}
 
 	renderMenu = () => {
-		const { actionAnchor, actionAnchorVisibility } = this.state
+		const { actionAnchor, actionAnchorVisibility, resetZoom } = this.state
 		const { classes, t } = this.props
 		return <Fragment>
+			<ItemG>
+				<Collapse in={resetZoom}>
+					<IconButton title={'Reset zoom'} onClick={this.handleReverseZoomOnData}>
+						<ZoomOut />
+					</IconButton>
+				</Collapse>
+			</ItemG>
 			<ItemG>
 				<Hidden smDown>
 					<IconButton title={'Chart Type'} variant={'fab'} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>

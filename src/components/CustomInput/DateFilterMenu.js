@@ -23,7 +23,6 @@ class DateFilterMenu extends Component {
 		super(props)
 
 		this.state = {
-			id: 3,
 			timeType: props.timeType !== undefined ?  props.timeType : 2,
 		}
 	}
@@ -78,7 +77,6 @@ class DateFilterMenu extends Component {
 			default:
 				break;
 		}
-		this.setState({ id: id })
 		this.props.handleSetDate(id, to, from, this.state.timeType)
 	}
 	handleCustomDate = date => e => {
@@ -132,7 +130,7 @@ class DateFilterMenu extends Component {
 	onChange = (e) => {
 
 	}
-	isSelected = (value) => value === this.state.id ? true : false
+	isSelected = (value) => value === this.props.dateOption ? true : false
 	render() {
 		const { to, from, t, dateOption, classes } = this.props
 		const { actionAnchor } = this.state

@@ -582,12 +582,11 @@ class Collection extends Component {
 	}
 	
 	renderMenu = () => {
-		const { classes, t } = this.props
+		const { t } = this.props
 		const { dateOption, to, from, timeType } = this.state
 		return <DateFilterMenu
 			timeType={timeType}
 			dateOption={dateOption}
-			// classes={classes}
 			to={to}
 			from={from}
 			t={t}

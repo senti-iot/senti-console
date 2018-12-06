@@ -9,7 +9,7 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart, /* CloudDownload */
+	ExpandMore, Visibility, ShowChart, ZoomOut /* CloudDownload */
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
@@ -38,7 +38,7 @@ class ProjectData extends PureComponent {
 			display: props.chartType ? props.chartType : 3,
 			visibility: false,
 			resetZoom: false,
-			zoomDate: null
+			zoomDate: []
 		}
 	}
 
@@ -91,25 +91,24 @@ class ProjectData extends PureComponent {
 		})
 	}
 	handleReverseZoomOnData = async () => {
-		// if (elements.length > 0) {
 		const { timeType } = this.props
 		const { zoomDate } = this.state
-		// let date = zoomDate
 		let startDate = null
 		let endDate = null
 		try {
-		
-			// date = lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
 			switch (timeType) {
 				case 0:
 					startDate = zoomDate.length > 1 ? moment(zoomDate[1].from).startOf('day') : zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
 					endDate = zoomDate.length > 1 ? moment(zoomDate[1].to).endOf('day') : zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
+					if (zoomDate.length === 1) {
+						this.setState({ resetZoom: false, zoomDate: [] })
+					}
 					this.props.handleSetDate(6, endDate, startDate, 1, false)
 					break;
 				case 1:
 					startDate = zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
 					endDate = zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
-					this.setState({ resetZoom: false, zoomDate: null })
+					this.setState({ resetZoom: false, zoomDate: [] })
 					this.props.handleSetDate(6, endDate, startDate, 2, false)
 					break;
 				default:
@@ -117,9 +116,7 @@ class ProjectData extends PureComponent {
 			}
 		}
 		catch (e) {
-
 		}
-
 	}
 	handleZoomOnData = async (elements) => {
 		if (elements.length > 0) {
@@ -157,7 +154,6 @@ class ProjectData extends PureComponent {
 				}
 			}
 			catch (error) {
-
 			}
 		}
 	}
@@ -232,9 +228,16 @@ class ProjectData extends PureComponent {
 	}
 
 	renderMenu = () => {
-		const { actionAnchor, actionAnchorVisibility } = this.state
+		const { actionAnchor, actionAnchorVisibility, resetZoom } = this.state
 		const { classes, t } = this.props
 		return <Fragment>
+			<ItemG>
+				<Collapse in={resetZoom}>
+					<IconButton title={'Reset zoom'} /* color={'primary'} */ onClick={this.handleReverseZoomOnData}>
+						<ZoomOut />
+					</IconButton>
+				</Collapse>
+			</ItemG>
 			<ItemG>
 				<Hidden smDown>
 					<IconButton title={'Chart Type'} variant={'fab'} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
