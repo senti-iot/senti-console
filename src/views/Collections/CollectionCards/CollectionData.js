@@ -302,51 +302,25 @@ class CollectionData extends PureComponent {
 
 	render() {
 		const { raw, t, loading, to, from, dateOption } = this.props
-		// const {  openDownload } = this.state
 		let displayTo = dateTimeFormatter(to)
 		let displayFrom = dateTimeFormatter(from)
 		return (
-			<Fragment>
-				<InfoCard
-					title={t('collections.cards.data')}
-					subheader={`${this.options[dateOption].label}, ${raw ? t('collections.rawData') : t('collections.calibratedData')}, ${displayFrom} - ${displayTo}`}
-					avatar={<Timeline />}
-					noExpand
-					topAction={this.renderMenu()}
-					content={
-						<Grid container>
-							{/* <ExportModal
-								img={this.state.image}
-								open={openDownload}
-								handleClose={this.handleCloseDownloadModal}
-								t={t}
-							/> */}
-							{loading ? <CircularLoader notCentered /> :
-								<Fragment>
-									{/* <ItemG xs={12} container direction={'column'} alignItems={'center'} justify={'center'}>
-										<Caption className={classes.bigCaption2}>{raw ? t('collections.rawData') : t('collections.calibratedData')}</Caption>
-										<Caption className={classes.captionPading}>{`${displayFrom} - ${displayTo}`}</Caption>
-									</ItemG> */}
-									<ItemG xs={12}>
-										{this.renderType()}
-									</ItemG>
-									{/* {this.props.hoverID} */}
-									{/* <img src={this.state.image} alt={'not loaded'}/> */}
-									{/* <DevicePDF img={this.state.image}/> */}
-								</Fragment>}
-						</Grid>}
-				/>
-				{/* <div style={{ position: 'absolute', top: '-100%', width: 1000, height: 400 }}>
-					{this.state.lineDataSets ?
-						<LineChart
-							single
-							getImage={this.getImage}
-							unit={this.timeTypes[this.state.timeType]}
-							data={this.state.lineDataSets}
-							t={this.props.t}
-						/> : this.renderNoData()}
-				</div> */}
-			</Fragment >
+			<InfoCard
+				title={t('collections.cards.data')}
+				subheader={`${this.options[dateOption].label}, ${raw ? t('collections.rawData') : t('collections.calibratedData')}, ${displayFrom} - ${displayTo}`}
+				avatar={<Timeline />}
+				noExpand
+				topAction={this.renderMenu()}
+				content={
+					<Grid container>
+						{loading ? <CircularLoader notCentered /> :
+							<ItemG xs={12}>
+								{this.renderType()}
+							</ItemG>}
+					</Grid>}
+			/>
+				
+	
 		);
 	}
 }

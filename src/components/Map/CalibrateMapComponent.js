@@ -35,8 +35,6 @@ class CalibrateMapComponent extends Component {
 		})
 	}
 	dropPin = e => {
-		
-		window.pin = e
 		let pin = {
 			lat: e.latLng.lat(),
 			long: e.latLng.lng()

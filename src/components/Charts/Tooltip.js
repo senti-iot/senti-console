@@ -55,7 +55,6 @@ class Tooltip extends Component {
 	}
 	handleRange = () => {
 		const { tooltip, unit } = this.props
-		// console.log(unit)
 		let dateStr = tooltip.title[0] ? tooltip.title[0] : ''
 		let date = moment(dateStr, 'lll').isValid() ? moment(dateStr, 'lll') : null
 		if (date) {
@@ -85,7 +84,6 @@ class Tooltip extends Component {
 		const { t, classes, tooltip, weather, mobile,
 			getRef, handleCloseTooltip, todayOfInterest } = this.props
 		let doi = todayOfInterest(tooltip.title[0])
-		// console.log(weather)
 		return (
 			<div ref={r => getRef(r)} style={{
 				zIndex: tooltip.show ? 1028 : tooltip.exited ? -1 : 1028,

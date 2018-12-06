@@ -168,8 +168,6 @@ class Devices extends Component {
 
 	getDevices = async () => {
 		await getAllDevices().then(rs => {
-			window.devices = rs
-
 			return	this._isMounted ? this.setState({
 				devices: rs ? rs : [],
 				loading: false

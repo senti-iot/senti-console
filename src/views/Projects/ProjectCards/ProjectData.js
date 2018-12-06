@@ -98,13 +98,12 @@ class ProjectData extends PureComponent {
 		let startDate = null
 		let endDate = null
 		try {
-			console.log(timeType, 'timeType')
+		
 			// date = lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
 			switch (timeType) {
 				case 0:
 					startDate = zoomDate.length > 1 ? moment(zoomDate[1].from).startOf('day') : zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
 					endDate = zoomDate.length > 1 ? moment(zoomDate[1].to).endOf('day') : zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
-					console.log(startDate, endDate)
 					this.props.handleSetDate(6, endDate, startDate, 1, false)
 					break;
 				case 1:

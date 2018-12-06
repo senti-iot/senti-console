@@ -322,14 +322,13 @@ class Device extends Component {
 			return newArr
 		}, [])
 		let newState = { ...setDailyData(dataArr, from, to, hoverID) }
-		window.newState = newState
 		this.setState({
 			...this.state,
 			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 2,
 			...newState
-		}, () => window.state = this.state)
+		})
 	}
 	getWifiSum = async () => {
 		const { from, to, raw, device, hoverID } = this.state
@@ -520,13 +519,12 @@ class Device extends Component {
 	}
 
 	renderMenu = () => {
-		const { classes, t } = this.props
+		const { t } = this.props
 		const { dateOption, to, from, timeType } = this.state
 	
 		return <DateFilterMenu
 			timeType={timeType}
 			dateOption={dateOption}
-			classes={classes}
 			to={to}
 			from={from}
 			t={t}

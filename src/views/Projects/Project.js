@@ -98,7 +98,7 @@ class Project extends Component {
 						dataCollections: rs.dataCollections.map((dc, i) => ({ ...dc, color: colors[i] })),
 						devices: rs.dataCollections.filter(dc => dc.activeDevice ? true : false).map((dc, i) => dc.activeDevice ? { ...dc.activeDevice, color: colors[i] } : null)
 					}, loading: false
-				}, () => window.state = this.state)
+				})
 			}
 		})
 	}
@@ -467,12 +467,12 @@ class Project extends Component {
 	}
 
 	renderMenu = () => {
-		const { classes, t } = this.props
+		const { t } = this.props
 		const { dateOption, to, from, timeType } = this.state
 		return <DateFilterMenu
 			timeType={timeType}
 			dateOption={dateOption}
-			classes={classes}
+			// classes={classes}
 			to={to}
 			from={from}
 			t={t}

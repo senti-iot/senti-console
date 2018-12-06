@@ -175,8 +175,6 @@ class LineChart extends PureComponent {
 		this.chart.chartInstance.config.options.elements.point.hitRadius = this.clickEvent() ? 3 : 5
 		this.chart.chartInstance.config.options.elements.point.hoverRadius = this.clickEvent() ? 4 : 6
 		this.chart.chartInstance.generateLegend()
-		// this.chart.chartInstance.config.data.datasets[0].backgroundColor[0] = "#87CEFA";
-		// console.log(this.chart.chartInstance)
 		this.setState({
 			chartWidth: parseInt(this.chart.chartInstance.canvas.style.width.substring(0, this.chart.chartInstance.canvas.style.width.length - 1), 10),
 			chartHeight: parseInt(this.chart.chartInstance.canvas.style.height.substring(0, this.chart.chartInstance.canvas.style.height.length - 1), 10),

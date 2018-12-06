@@ -51,7 +51,6 @@ export const holidayApi = create({
 export const getHolidays = async (lang) => {
 	let year = moment().format('YYYY')
 	let data = await holidayApi.get(`/${year}-01-01/${year}-12-31/${lang}`).then(rs => rs.data)
-	console.log(data)
 	return data
 }
 export const weatherApi = create({

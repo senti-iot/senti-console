@@ -26,11 +26,8 @@ class Holiday extends Component {
 	}
 	renderChristmasIcon = () => {
 		const { classes } = this.props
-		// window.moment = moment
-		// console.log(moment().format('MM'))
 		if (moment().format('MM') === '12') {
 			let today = moment().format('DD')
-			console.log(today)
 			return <img src={christmas[today]} className={classes.img} alt={'christmas'}/>
 		}
 		else {

@@ -1,4 +1,4 @@
-import { red, yellow, green, teal } from "@material-ui/core/colors";
+import { red, yellow, green } from "@material-ui/core/colors";
 import { boxShadow } from '../material-dashboard-react';
 
 const deviceStyles = theme => ({
@@ -25,22 +25,6 @@ const deviceStyles = theme => ({
 		fontSize: "1.1em",
 		padding: 30
 	},
-	checkbox: {
-		padding: 8
-		// width: 30,
-		// height: 30
-	},
-	label: {
-		'&$focused': {
-			color: teal[500],
-		},
-	},
-	focused: {},
-	underline: {
-		'&:after': {
-			borderBottomColor: teal[500],
-		},
-	},
 	nested: {
 		paddingLeft: theme.spacing.unit * 4,
 	},
@@ -50,11 +34,6 @@ const deviceStyles = theme => ({
 		// flexFlow: "row nowrap",
 		justifyContent: "center",
 		alignItems: "center"
-	},
-	formControl: {
-
-		margin: theme.spacing.unit,
-		minWidth: 120,
 	},
 	selectEmpty: {
 		marginTop: theme.spacing.unit * 2,
@@ -89,11 +68,11 @@ const deviceStyles = theme => ({
 		color: green[700],
 		margin: 4
 	},
-	leftIcon: {
-		marginRight: theme.spacing.unit
-	},
 	yellowSignal: {
 		color: yellow[600]
+	},
+	leftIcon: {
+		marginRight: theme.spacing.unit
 	},
 	InfoSignal: {
 		marginBottom: '16px',

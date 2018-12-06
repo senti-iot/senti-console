@@ -1,7 +1,6 @@
 import { AppBar, Button, Hidden, IconButton, Toolbar, withStyles } from '@material-ui/core';
 import { KeyboardArrowLeft, Menu } from '@material-ui/icons';
 import headerStyle from 'assets/jss/material-dashboard-react/headerStyle.js';
-import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import HeaderLinks from './HeaderLinks';
@@ -10,12 +9,10 @@ import HeaderLinks from './HeaderLinks';
 
 
 function Header({ ...props }) {
-	const { classes, color, goBackButton, gbbFunc, t  } = props;
-	const appBarClasses = cx({
-		[' ' + classes[color]]: color
-	});
+	const { classes, goBackButton, gbbFunc, t  } = props;
+
 	return (
-		<AppBar className={classes.appBar + appBarClasses}>
+		<AppBar className={classes.appBar}>
 			<Toolbar className={classes.container}>
 				<div className={classes.flex}>
 					{goBackButton && <Button onClick={gbbFunc} variant={'fab'} className={classes.goBackButton}>

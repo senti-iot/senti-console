@@ -8,6 +8,7 @@ import { NavHashLink as Link } from 'react-router-hash-link';
 
 const styles = theme => ({
 	appBar: {
+		padding: "0 !important",
 		position: "fixed",
 		top: 70,
 		[theme.breakpoints.down('xs')]: {

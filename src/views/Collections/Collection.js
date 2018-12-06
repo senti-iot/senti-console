@@ -587,7 +587,7 @@ class Collection extends Component {
 		return <DateFilterMenu
 			timeType={timeType}
 			dateOption={dateOption}
-			classes={classes}
+			// classes={classes}
 			to={to}
 			from={from}
 			t={t}
