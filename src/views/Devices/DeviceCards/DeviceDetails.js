@@ -106,7 +106,7 @@ class DeviceDetails extends Component {
 						<ItemG container xs={6} md={3} lg={3} xl={3}>
 							{weather ? weather === '' ? <CircularProgress size={20} /> : <Fragment>
 								<ItemG xs={5} sm={2} md={3} lg={2}>
-									<WeatherIcon icon={weather.currently.icon} /> 
+									<WeatherIcon height={24} width={24} icon={weather.currently.icon} /> 
 								</ItemG>
 								<ItemG xs={7} sm={10} md={9} lg={10}>
 									<Caption>{t('devices.fields.weather')}</Caption>

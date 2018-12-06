@@ -41,7 +41,7 @@ const WeatherIcon = (props) => {
 	}
 	return (
 		
-		<img className={props.classes.img} src={getIcon()} height={'40'} width={'40'} alt='' />
+		<img className={props.classes.img} src={getIcon()} height={props.height ? props.height : '40'} width={props.width ? props.width : '40'} alt='' />
 
 
 	)
