@@ -133,13 +133,12 @@ class ProjectData extends PureComponent {
 					case 1: // Minutely
 						startDate = moment(date).startOf('hour')
 						endDate = moment(date).endOf('hour')
-						console.log(date, this.props.from, this.props.to)
 						this.setState({
 							resetZoom: true, zoomDate: [...this.state.zoomDate, {
 								from: this.props.from,
 								to: moment(this.props.from, 'YYYY-MM-DD HH:mm').endOf('day')
 							}]
-						}, () => console.log(moment(this.props.from, 'YYYY-MM-DD HH:mm').endOf('day').format('YYYY-MM-DD HH:ss')))
+						})
 						this.props.handleSetDate(6, endDate, startDate, 0, false)
 						break
 					case 2: //Hourly
