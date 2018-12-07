@@ -56,11 +56,8 @@ class HeaderLinks extends React.Component {
 	}
 	renderChristmasIcon = () => {
 		const { classes } = this.props
-		// window.moment = moment
-		// console.log(moment().format('MM'))
 		if (moment().format('MM') === '12') { 
 			let today = moment().format('DD')
-			console.log(today)
 			return today
 		}
 		else
@@ -108,12 +105,12 @@ class HeaderLinks extends React.Component {
 						}}
 						open={openProfile}
 						onClose={this.handleProfileClose}
-						className={classes.menuList}
-						MenuListProps={{
-							classes: {
-								padding: classes.menuList
-							}
-						}}
+						// className={classes.menuList}
+						// MenuListProps={{
+						// 	classes: {
+						// 		padding: classes.menuList
+						// 	}
+						// }}
 					>
 						<MenuItem onClick={this.handleRedirectToOwnProfile}>
 							<AccountBox className={classes.leftIcon} />{t('menus.user.profile')}

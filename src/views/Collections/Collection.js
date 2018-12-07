@@ -30,7 +30,7 @@ class Collection extends Component {
 			from: moment().subtract(7, 'd').startOf('day'),
 			to: moment().endOf('day'),
 			timeType: 2,
-			raw: false,
+			raw: props.rawData ? props.rawData : false,
 			//End Date Filter Tools
 			collection: null,
 			activeDevice: null,
@@ -582,12 +582,11 @@ class Collection extends Component {
 	}
 	
 	renderMenu = () => {
-		const { classes, t } = this.props
+		const { t } = this.props
 		const { dateOption, to, from, timeType } = this.state
 		return <DateFilterMenu
 			timeType={timeType}
 			dateOption={dateOption}
-			classes={classes}
 			to={to}
 			from={from}
 			t={t}
@@ -706,7 +705,8 @@ class Collection extends Component {
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	language: state.settings.language,
-	saved: state.favorites.saved
+	saved: state.favorites.saved,
+	rawData: state.settings.rawData
 })
 
 const mapDispatchToProps = (dispatch) => ({

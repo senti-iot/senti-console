@@ -8,14 +8,14 @@ import countermodalStyles from 'assets/jss/components/devices/countermodalStyles
 import { connect } from 'react-redux'
 
 
-class CounterModal extends React.Component {
+class TimeCounterModal extends React.Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			count: props.count,
+			count: 0,
 			open: false,
-			timer: 0,
+			timer: props.tcount ? props.tcount : 600,
 			timestamp: null,
 			timestampFinish: null,
 			started: false,
@@ -30,11 +30,11 @@ class CounterModal extends React.Component {
 		this.timeCounter = null
 	}
 	timer = () => {
-		this.setState({ timer: this.state.timer + 1 }, () => {
-			if (this.state.count === 0) {
+		this.setState({ timer: this.state.timer - 1 }, () => {
+			if (this.state.timer === 0) {
 				clearInterval(this.timeCounter)
 				this.timeCounter = null
-				this.setState({ timestampFinish: moment().format('YYYY-MM-DD HH:mm:ss'), finished: true })
+				this.setState({ timestampFinish: moment().format('YYYY-MM-DD HH:mm:ss'), finished: true, started: false })
 			}
 		})
 	}
@@ -52,8 +52,8 @@ class CounterModal extends React.Component {
 		clearInterval(this.timeCounter)
 		this.timeCounter = null
 		this.setState({
-			timer: 0,
-			count: this.props.count, 
+			timer: this.props.tcount ? this.props.tcount : 600,
+			count: 0,
 			timestamp: null,
 			started: false,
 			finished: false
@@ -63,19 +63,19 @@ class CounterModal extends React.Component {
 		let playSound = new Audio('/assets/sound/pop.mp3');
 		await playSound.play().then(
 			() => {
-				if (this.state.count === 1)
-					this.setState({ count: this.state.count - 1, finished: true, started: false })
-				else
-					this.setState({ count: this.state.count - 1 })
+				// if (this.state.count === 1)
+				this.setState({ count: this.state.count + 1 })
+				// else
+				// this.setState({ count: this.state.count - 1 })
 			}
-			
+
 		)
 		playSound = null
 	}
 	handleClose = () => {
 		this.setState({ open: false });
 	};
-	fancyTimeFormat = (time) => {
+	timeFormat = (time) => {
 		// Hours, minutes and seconds
 		var hrs = ~~(time / 3600);
 		var mins = ~~((time % 3600) / 60);
@@ -97,12 +97,12 @@ class CounterModal extends React.Component {
 			count: this.props.count,
 			timestamp: this.state.timestamp,
 			timestampFinish: this.state.timestampFinish,
-			timer: this.state.timer
+			timer: this.props.tcount
 		})
 		this.handleReset()
 		this.handleClose()
 	}
-	resetButtonDisabled = () => { 
+	resetButtonDisabled = () => {
 		const { started, finished } = this.state
 		if (started)
 			return false
@@ -130,7 +130,7 @@ class CounterModal extends React.Component {
 						<ItemGrid xs={12}>
 
 							<Typography variant='h6' id='modal-title' className={classes.text}>
-								{this.fancyTimeFormat(this.state.timer)}
+								{this.timeFormat(this.state.timer)}
 							</Typography>
 						</ItemGrid>
 						<ItemGrid xs={12} container justify={'center'}>
@@ -157,8 +157,8 @@ class CounterModal extends React.Component {
 										disabled={started}//change
 										color={'primary'}
 										variant='contained'
-										onClick={this.state.count === 0 ? this.handleFinish : this.handleStart}>
-										{this.state.count === 0 ? <Fragment>
+										onClick={this.state.timer === 0 ? this.handleFinish : this.handleStart}>
+										{this.state.timer === 0 ? <Fragment>
 											<Done className={classes.iconButton} />{t('actions.finish')}
 										</Fragment> : <Fragment>
 											<Timer className={classes.iconButton} /> {t('actions.start')}
@@ -185,16 +185,14 @@ class CounterModal extends React.Component {
 
 }
 
-CounterModal.propTypes = {
+TimeCounterModal.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-	count: state.settings.count
+	tcount: state.settings.tcount
 })
 
-const mapDispatchToProps = (dispatch) => {
-	return {}
-}
+const mapDispatchToProps = (dispatch) => ({})
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(countermodalStyles)(CounterModal));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(countermodalStyles)(TimeCounterModal));

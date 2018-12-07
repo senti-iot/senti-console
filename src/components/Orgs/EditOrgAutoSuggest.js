@@ -12,7 +12,6 @@ import { TextField } from '@material-ui/core'
 
 function renderInputComponent(inputProps) {
 	const { classes, inputRef = () => { }, ref, ...other } = inputProps;
-
 	return (
 		<TextField
 			// 

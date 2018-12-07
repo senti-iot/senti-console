@@ -7,13 +7,14 @@ import PropTypes from 'prop-types';
 import React, { Fragment, PureComponent } from 'react';
 import withLocalization from 'components/Localization/T';
 import { ItemG } from 'components';
+import { compose } from 'recompose';
 
 class InfoCard extends PureComponent {
 	constructor(props) {
 	  super(props)
 	
 	  this.state = {
-		  expanded: false,
+		  expanded: props.expanded ? props.expanded : false,
 		  leftActions: false,
 	  }
 	}
@@ -118,4 +119,5 @@ InfoCard.propTypes = {
 	hideFacts: PropTypes.bool,
 };
 
-export default withLocalization()(withStyles(regularCardStyle)(InfoCard));
+let InfoCardComposed = compose(withLocalization(), withStyles(regularCardStyle))(InfoCard)
+export default InfoCardComposed;

@@ -1,10 +1,17 @@
 import React from 'react'
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
-import { Dialog, DialogTitle, DialogContent, FormControlLabel, /* Checkbox, */ DialogActions, Button, RadioGroup, Radio, FormControl } from '@material-ui/core';
-import { ItemGrid, Caption } from 'components';
+import { Dialog, DialogTitle, DialogContent, FormControlLabel, /* Checkbox, */ DialogActions, Button, RadioGroup, Radio, FormControl, withStyles } from '@material-ui/core';
+import { ItemG, Caption } from 'components';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import { DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons';
-
+const styles = theme => ({
+	dialogWidth: {
+		maxWidth: 240,
+	},
+	checkbox: {
+		padding: 8
+	}
+})
 const CustomDateTime = (props) => {
 	const { classes, t, openCustomDate, handleCloseDialog, handleCustomDate, to, from,
 		timeType, handleCustomCheckBox, handleCancelCustomDate
@@ -16,53 +23,52 @@ const CustomDateTime = (props) => {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'>
 			<DialogTitle id='alert-dialog-title'>{t('filters.dateOptions.custom')}</DialogTitle>
-			<DialogContent>
-				<ItemGrid>
-					<DateTimePicker
-						autoOk
-						ampm={false}
-						label={t('filters.startDate')}
-						clearable
-						format='LLL'
-						value={from}
-						onChange={handleCustomDate('from')}
-						animateYearScrolling={false}
-						color='primary'
-						disableFuture
-						dateRangeIcon={<DateRange />}
-						timeIcon={<AccessTime />}
-						rightArrowIcon={<KeyboardArrowRight />}
-						leftArrowIcon={<KeyboardArrowLeft />}
-						InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-						InputProps={{ classes: { underline: classes.underline } }}
-					/>
-				</ItemGrid>
-				<ItemGrid>
-					<DateTimePicker
-						autoOk
-						disableFuture
-						ampm={false}
-						label={t('filters.endDate')}
-						clearable
-						format='LLL'
-						value={to}
-						onChange={handleCustomDate('to')}
-						animateYearScrolling={false}
-						dateRangeIcon={<DateRange />}
-						timeIcon={<AccessTime />}
-						color='primary'
-						rightArrowIcon={<KeyboardArrowRight />}
-						leftArrowIcon={<KeyboardArrowLeft />}
-						InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-						InputProps={{ classes: { underline: classes.underline } }}
-					/>
-				</ItemGrid>
-				<ItemGrid container>
-					<ItemGrid xs={12} noPadding zeroMargin>
+			<DialogContent className={classes.dialogWidth}>
+				<ItemG container spacing={8}>
+					<ItemG xs={12}>
+						<DateTimePicker
+							autoOk
+							ampm={false}
+							label={t('filters.startDate')}
+							clearable
+							format='LLL'
+							value={from}
+							onChange={handleCustomDate('from')}
+							animateYearScrolling={false}
+							color='primary'
+							disableFuture
+							dateRangeIcon={<DateRange />}
+							timeIcon={<AccessTime />}
+							rightArrowIcon={<KeyboardArrowRight />}
+							leftArrowIcon={<KeyboardArrowLeft />}
+					
+						/>
+					</ItemG>
+					<ItemG xs={12}>
+						<DateTimePicker
+							autoOk
+							disableFuture
+							ampm={false}
+							label={t('filters.endDate')}
+							clearable
+							format='LLL'
+							value={to}
+							onChange={handleCustomDate('to')}
+							animateYearScrolling={false}
+							dateRangeIcon={<DateRange />}
+							timeIcon={<AccessTime />}
+							color='primary'
+							rightArrowIcon={<KeyboardArrowRight />}
+							leftArrowIcon={<KeyboardArrowLeft />}
+					
+						/>
+					</ItemG>
+				
+					<ItemG style={{ marginTop: 20 }} xs={12}>
 						<Caption>{t('filters.display')}</Caption>
-					</ItemGrid>
-					<ItemGrid xs={12} zeroMargin>
-						<FormControl component="fieldset" className={classes.formControl}>
+					</ItemG>
+					<ItemG xs={12}>
+						<FormControl component="fieldset" /* className={classes.formControl} */>
 							<RadioGroup
 								aria-label={t('filters.display')}
 								name={t('filters.display')}
@@ -94,8 +100,8 @@ const CustomDateTime = (props) => {
 								/>
 							</RadioGroup>
 						</FormControl>
-					</ItemGrid>
-				</ItemGrid>
+					</ItemG>
+				</ItemG>
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={handleCancelCustomDate} color='primary'>
@@ -108,4 +114,4 @@ const CustomDateTime = (props) => {
 		</Dialog>
 	</MuiPickersUtilsProvider>
 }
-export default CustomDateTime
+export default withStyles(styles)(CustomDateTime)

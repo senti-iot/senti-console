@@ -11,7 +11,6 @@ class DInput extends Component {
 		}
 	}
 	handleMenuItem = (e) => {
-		// console.trace(this.props.onChange(e.target.value))
 		this.props.onChange(e.target.value)
 		this.handleCloseActionsDetails()
 		

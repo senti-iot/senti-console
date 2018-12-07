@@ -35,7 +35,6 @@ export const setSummaryData = (dataArr, from, to) => {
 	return state
 }
 const linecolors = (data, defaultColor, id) => {
-	console.log(id + 1 * 100)
 	let colors = []
 	data.map(d => {
 		if (isWeekend(d[0])) {

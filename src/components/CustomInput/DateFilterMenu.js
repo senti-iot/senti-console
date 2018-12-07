@@ -1,10 +1,19 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Divider, MenuItem, Menu, IconButton } from '@material-ui/core';
+import { Divider, MenuItem, Menu, IconButton, withStyles } from '@material-ui/core';
 import { ItemGrid, Caption, Info, CustomDateTime, ItemG } from 'components';
 import { dateTimeFormatter } from 'variables/functions';
 import moment from 'moment'
 import { DateRange } from 'variables/icons';
+import teal from '@material-ui/core/colors/teal'
+
+const styles = theme => ({
+	selected: {
+		backgroundColor: `${teal[500]} !important`,
+		color: "#fff"
+	},
+	
+})
 
 /**
 * @augments {Component<{	classes:object,	to:instanceOf(Date),	from:instanceOf(Date),	t:Function,	dateFilterInputID:number,	handleDateFilter:Function,>}
@@ -81,8 +90,7 @@ class DateFilterMenu extends Component {
 	handleDateFilter = (event) => {
 		let id = event.target.value
 		if (id !== 6) {
-			this.handleSetDate(id)
-			this.setState({ actionAnchor: null })
+			this.setState({ actionAnchor: null }, () => this.handleSetDate(id))
 		}
 		else {
 			this.setState({ openCustomDate: true })
@@ -99,7 +107,7 @@ class DateFilterMenu extends Component {
 		})
 	}
 	renderCustomDateDialog = () => {
-		const { classes, to, from, t } = this.props
+		const { to, from, t } = this.props
 		const { openCustomDate, timeType } = this.state
 		return openCustomDate ? <CustomDateTime
 			openCustomDate={openCustomDate}
@@ -111,7 +119,6 @@ class DateFilterMenu extends Component {
 			handleCustomCheckBox={this.handleCustomCheckBox}//
 			handleCancelCustomDate={this.handleCancelCustomDate}//
 			t={t}
-			classes={classes}
 		/> : null
 	}
 	handleOpenMenu = e => {
@@ -123,9 +130,9 @@ class DateFilterMenu extends Component {
 	onChange = (e) => {
 
 	}
+	isSelected = (value) => value === this.props.dateOption ? true : false
 	render() {
-		// const { dateFilterInputID } = this.state
-		const { to, from, t, dateOption } = this.props
+		const { to, from, t, dateOption, classes } = this.props
 		const { actionAnchor } = this.state
 		let displayTo = dateTimeFormatter(to)
 		let displayFrom = dateTimeFormatter(from)
@@ -158,15 +165,15 @@ class DateFilterMenu extends Component {
 							<Info>{`${displayFrom} - ${displayTo}`}</Info>
 						</ItemGrid>
 						<Divider />
-						<MenuItem onClick={this.handleDateFilter} value={0}>{t('filters.dateOptions.today')}</MenuItem>
-						<MenuItem onClick={this.handleDateFilter} value={1}>{t('filters.dateOptions.yesterday')}</MenuItem>
-						<MenuItem onClick={this.handleDateFilter} value={2}>{t('filters.dateOptions.thisWeek')}</MenuItem>
-						<MenuItem onClick={this.handleDateFilter} value={3}>{t('filters.dateOptions.7days')}</MenuItem>
-						<MenuItem onClick={this.handleDateFilter} value={4}>{t('filters.dateOptions.30days')}</MenuItem>
-						<MenuItem onClick={this.handleDateFilter} value={5}>{t('filters.dateOptions.90days')}</MenuItem>
+						<MenuItem selected={this.isSelected(0)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={0}>{t('filters.dateOptions.today')}</MenuItem>
+						<MenuItem selected={this.isSelected(1)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={1}>{t('filters.dateOptions.yesterday')}</MenuItem>
+						<MenuItem selected={this.isSelected(2)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={2}>{t('filters.dateOptions.thisWeek')}</MenuItem>
+						<MenuItem selected={this.isSelected(3)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={3}>{t('filters.dateOptions.7days')}</MenuItem>
+						<MenuItem selected={this.isSelected(4)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={4}>{t('filters.dateOptions.30days')}</MenuItem>
+						<MenuItem selected={this.isSelected(5)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={5}>{t('filters.dateOptions.90days')}</MenuItem>
 			
 						<Divider />
-						<MenuItem onClick={this.handleDateFilter} value={6}>{t('filters.dateOptions.custom')}</MenuItem>
+						<MenuItem selected={this.isSelected(6)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={6}>{t('filters.dateOptions.custom')}</MenuItem>
 					</ItemG>
 					{this.renderCustomDateDialog()}
 				</Menu>
@@ -182,4 +189,4 @@ DateFilterMenu.propTypes = {
 	dateFilterInputID: PropTypes.number,
 	handleDateFilter: PropTypes.func,
 }
-export default DateFilterMenu
+export default withStyles(styles)(DateFilterMenu)

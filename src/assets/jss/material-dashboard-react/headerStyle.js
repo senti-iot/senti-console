@@ -21,6 +21,7 @@ const headerStyle = theme => ({
 		borderBottom: "0",
 		marginBottom: "0",
 		position: 'fixed',
+		padding: "0 !important",
 		[theme.breakpoints.up('lg')]: {
 			left: 260,
 			width: "calc(100vw - 260px)",

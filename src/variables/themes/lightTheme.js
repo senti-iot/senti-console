@@ -8,6 +8,11 @@ const theme = createMuiTheme({
 		suppressDeprecationWarnings: true,
 	},
 	overrides: {
+		MuiCard: {
+			root: {
+				overflow: "visible"
+			}
+		},
 		MuiButton: {
 			text: {
 				textTransform: 'uppercase'

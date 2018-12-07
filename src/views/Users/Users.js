@@ -30,7 +30,7 @@ class Users extends Component {
 	}
 	userHeader = () => {
 		const { t } = this.props
-		return	[
+		return [
 			{ id: 'avatar', label: '' },
 			{ id: 'firstName', label: t('users.fields.name') },
 			{ id: 'phone', label: t('users.fields.phone') },
@@ -87,7 +87,7 @@ class Users extends Component {
 		})
 	}
 	getData = async () => {
-		if (this.props.users) { 
+		if (this.props.users) {
 			this.setState({
 				loading: false
 			}, () => this.handleRequestSort(null, 'firstName', 'asc'))

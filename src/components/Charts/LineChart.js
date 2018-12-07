@@ -1,12 +1,12 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, Fragment } from 'react'
 import ChartComponent, { Chart } from 'react-chartjs-2';
-import { Typography, withStyles, Paper, Grow, CircularProgress } from '@material-ui/core';
-import { ItemG, WeatherIcon, Caption } from 'components';
+import { withStyles } from '@material-ui/core';
 import { graphStyles } from './graphStyles';
 import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
 import { compose } from 'recompose';
 import { connect } from 'react-redux'
+import Tooltip from './Tooltip';
 
 Chart.defaults.multicolorLine = Chart.defaults.line;
 Chart.controllers.multicolorLine = Chart.controllers.line.extend({
@@ -61,10 +61,10 @@ class LineChart extends PureComponent {
 				top: 0,
 				left: 0,
 				data: [],
-				exited: false
+				exited: true
 			},
 			lineOptions: {
-				// responsive: true,
+				responsive: true,
 				animation: {
 					duration: 500,
 					onComplete: props.getImage ? props.getImage : null,
@@ -115,7 +115,7 @@ class LineChart extends PureComponent {
 							},
 							ticks: {
 
-								callback: function (value, index, values) {
+								callback: function (value) {
 									return value.charAt(0).toUpperCase() + value.slice(1);
 								},
 								fontColor: props.theme.palette.type === 'dark' ? ['rgba(255, 255, 255, 1)'] : ["#000"],
@@ -174,12 +174,11 @@ class LineChart extends PureComponent {
 		this.chart.chartInstance.config.options.elements.point.radius = this.clickEvent() ? 3 : 5
 		this.chart.chartInstance.config.options.elements.point.hitRadius = this.clickEvent() ? 3 : 5
 		this.chart.chartInstance.config.options.elements.point.hoverRadius = this.clickEvent() ? 4 : 6
-		// this.chart.chartInstance.config.data.datasets[0].backgroundColor[0] = "#87CEFA";
-		console.log(this.chart.chartInstance)
+		this.chart.chartInstance.generateLegend()
 		this.setState({
 			chartWidth: parseInt(this.chart.chartInstance.canvas.style.width.substring(0, this.chart.chartInstance.canvas.style.width.length - 1), 10),
 			chartHeight: parseInt(this.chart.chartInstance.canvas.style.height.substring(0, this.chart.chartInstance.canvas.style.height.length - 1), 10),
-			mobile: window.innerWidth > 400 ? false : true
+			mobile: window.innerWidth > 430 ? false : true
 
 		})
 	}
@@ -196,7 +195,7 @@ class LineChart extends PureComponent {
 		 *  4. Set the 'newData' without loading
 		 * 	@debug 
 		 *  */
-	componentDidUpdate = (prevProps, prevState) => {
+	componentDidUpdate = (prevProps) => {
 
 		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID) {
 			this.setXAxis()
@@ -220,8 +219,25 @@ class LineChart extends PureComponent {
 			this.hideTooltip()
 			return
 		}
-
-
+		let left = tooltipModel.caretX;
+		let top = tooltipModel.caretY;
+		if (!this.clickEvent()) {
+			left = this.state.chartWidth / 2
+		}
+		let str = tooltipModel.title[0]
+		var rest = str.substring(0, str.lastIndexOf(' ') + 1);
+		var last = str.substring(str.lastIndexOf(' ') + 1, str.length);
+		if (top === this.state.tooltip.top && left === this.state.tooltip.left) {
+			return this.setState({
+				tooltip: {
+					...this.state.tooltip,
+					show: true,
+					showWeather: true,
+					exited: false
+				}
+			})
+		}
+			
 		// let weatherData = null
 		let wDate = null
 		try {
@@ -234,6 +250,10 @@ class LineChart extends PureComponent {
 					this.setState({ weather: "" })
 					getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then(rs => {
 						this.setState({
+							tooltip: {
+								...this.state.tooltip,
+								showWeather: true
+							},
 							weatherDate: wDate,
 							weather: rs,
 							loc: {
@@ -245,6 +265,10 @@ class LineChart extends PureComponent {
 				}
 				else {
 					this.setState({
+						tooltip: {
+							...this.state.tooltip,
+							showWeather: false
+						},
 						weatherDate: wDate,
 						weather: null,
 						loc: {
@@ -258,14 +282,7 @@ class LineChart extends PureComponent {
 		catch (err) {
 
 		}
-		let left = tooltipModel.caretX;
-		let top = tooltipModel.caretY;
-		if (!this.clickEvent()) {
-			left = this.state.chartWidth / 2
-		}
-		let str = tooltipModel.title[0]
-		var rest = str.substring(0, str.lastIndexOf(' ') + 1);
-		var last = str.substring(str.lastIndexOf(' ') + 1, str.length);
+
 		this.setTooltip({
 			top,
 			left,
@@ -302,7 +319,7 @@ class LineChart extends PureComponent {
 								drawTicks: false,
 							},
 							ticks: {
-								callback: function (value, index, values) {
+								callback: function (value) {
 									return value.charAt(0).toUpperCase() + value.slice(1);
 								},
 								source: 'labels',
@@ -320,7 +337,7 @@ class LineChart extends PureComponent {
 						}]
 				}
 			}
-		}, this.chart.chartInstance.update())
+		}, () => this.chart ? this.chart.chartInstance.update() : {})
 	}
 
 	setTooltip = (tooltip) => {
@@ -328,6 +345,7 @@ class LineChart extends PureComponent {
 			tooltip: {
 				...tooltip,
 				show: true,
+				showWeather: false,
 				exited: false
 			}
 		})
@@ -344,9 +362,11 @@ class LineChart extends PureComponent {
 		this.setState({
 			tooltip: {
 				...this.state.tooltip,
-				show: false
+				show: false,
+				showWeather: false
 			}
 		})
+
 	}
 	elementClicked = async (elements) => {
 		try {
@@ -368,7 +388,7 @@ class LineChart extends PureComponent {
 		let y = 0
 		if (!this.clickEvent()) {
 			x = '-50%'
-			y = tooltip.top < (chartHeight / 2) ? '25%' : '-125%'
+			y = tooltip.top < (chartHeight / 2) ? '5%' : '-105%'
 			return `translate(${x}, ${y})`
 		}
 		if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
@@ -396,66 +416,42 @@ class LineChart extends PureComponent {
 		return `translate(${x}, ${y})`
 	}
 
-
+	getTooltipRef = (r) => {
+		this.tooltip = r
+	}
 	render() {
-		const { classes } = this.props
-		const { tooltip, chartWidth, mobile } = this.state
-		let DayStr = tooltip.title[1] ? tooltip.title[1].charAt(0).toUpperCase() + tooltip.title[1].slice(1) : ''
-		let DateStr = tooltip.title[0] ? tooltip.title[0] : ''
+		const { classes, unit } = this.props
+		const { tooltip, chartWidth, chartHeight, mobile, weather } = this.state
 		return (
-			<div style={{ maxHeight: 400, position: 'relative', height: 400 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
-				<ChartComponent
-					type={'multicolorLine'}
-					data={this.props.data}
-					height={this.props.theme.breakpoints.width('md') < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
-					ref={r => this.chart = r}
-					options={this.state.lineOptions}
-					legend={this.legendOptions}
-					onElementsClick={this.clickEvent() ? this.elementClicked : undefined}
-				/>
-				<div ref={r => this.tooltip = r} style={{
-					zIndex: tooltip.show ? 1200 : tooltip.exited ? -1 : 1200,
-					position: 'absolute',
-					top: Math.round(this.state.tooltip.top),
-					left: mobile ? '50%' : Math.round(this.state.tooltip.left),
-					transform: this.transformLoc(),
-					width: mobile ? 200 : 300,
-					maxWidth: mobile ? (chartWidth ? chartWidth : window.innerWidth - 250) : 300
-				}}>
-					<Grow in={tooltip.show} onExited={this.exitedTooltip} >
-						<Paper className={classes.paper}>
-							<ItemG container>
-								<ItemG container direction='row' justify='space-between'>
-									<ItemG xs container direction='column'>
-										<Typography variant={'h6'} classes={{ root: classes.antialias }} >{`${DayStr}`}</Typography>
-										<Caption> {`(${DateStr})`}</Caption>
-									</ItemG>
-									<ItemG xs={2}>
-										{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : this.state.weather === null ? null : <CircularProgress size={37} />}
-									</ItemG>
-								</ItemG>
-								<ItemG >
-									<Caption>{this.state.weather === null ? null : `${this.props.t('devices.fields.weather')}:`} {this.state.weather ? this.state.weather.currently.summary : null}</Caption>
-									{/* <Info></Info> */}
-								</ItemG>
-								{this.state.tooltip.data.map((d, i) => {
-									return (
-										<ItemG key={i} container alignItems={'center'}>
-											<ItemG xs={1}>
-												<div style={{ background: d.color, width: 15, height: 15, marginRight: 8 }} />
-											</ItemG>
-											<ItemG xs={8}><Typography noWrap variant={'caption'}>{d.device}</Typography></ItemG>
-											<ItemG xs={3}><Typography variant={'caption'} classes={{
-												root: classes.expand
-											}}>{Math.round(d.count)}</Typography></ItemG>
-										</ItemG>
-									)
-								})}
-							</ItemG>
-						</Paper>
-					</Grow>
+			<Fragment>
+				<div style={{ display: 'block', maxHeight: 400, position: 'relative', height: 400 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
+					<div style={{ display: 'block', height: 400, maxHeight: 400, width: '100%' }}>
+
+						<ChartComponent
+							type={'multicolorLine'}
+							data={this.props.data}
+							// height={this.props.theme.breakpoints.width('md') < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
+							// width={window.innerWidth - 20}
+							ref={r => this.chart = r}
+							options={this.state.lineOptions}
+							legend={this.legendOptions}
+							onElementsClick={this.clickEvent() ? this.elementClicked : () => {}}
+						/>
+					</div>
+					<Tooltip
+						getRef={this.getTooltipRef}
+						tooltip={tooltip}
+						handleCloseTooltip={this.exitedTooltip}
+						mobile={mobile}
+						classes={classes}
+						t={this.props.t}
+						chartHeight={chartHeight}
+						chartWidth={chartWidth}
+						weather={weather}
+						unit={unit}
+					/>
 				</div>
-			</div>
+			</Fragment>
 		)
 	}
 }

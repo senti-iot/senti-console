@@ -37,7 +37,6 @@ export const resetPassword = async(obj) => {
  */
 export const confirmPassword = async (obj) => {
 	let response = await api.post(`/core/user/forgotpassword/set`, obj).then(rs => rs)
-	console.log(response)
 	return response.ok ? response.data : response.status
 }
 /**

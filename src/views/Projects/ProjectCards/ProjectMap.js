@@ -27,6 +27,7 @@ export default class ProjectMap extends Component {
 			<InfoCard
 				title={t('devices.cards.map')}
 				subheader={`Heatmap: ${this.state.heatMap ? t('actions.on') : t('actions.off')}`}
+				expanded={true}
 				avatar={<Map />}
 				topAction={this.renderMenu()}
 				hiddenContent={
