@@ -145,7 +145,7 @@ class CounterModal extends React.Component {
 									onClick={this.handleCount}
 									disabled={!started || finished}
 								>
-									{this.state.count}
+									{this.state.count.toString()}
 								</Button>
 							</div>
 						</ItemGrid>

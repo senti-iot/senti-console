@@ -11,6 +11,7 @@ import { PlacesWithStandaloneSearchBox } from 'components/Map/SearchBox'
 import { CalibrateMap } from 'components/Map/CalibrateMaps';
 import { isFav, updateFav } from 'redux/favorites';
 import { connect } from 'react-redux'
+import TimeCounterModal from 'components/Devices/TimeCounterModal';
 
 const styles = theme => ({
 	button: {
@@ -40,6 +41,7 @@ const styles = theme => ({
 		marginLeft: theme.spacing.unit
 	},
 	paper: {
+		width: '100%',
 		margin: '8px',
 		borderRadius: '3px',
 		overflow: 'hidden'
@@ -268,7 +270,8 @@ class CalibrateDevice extends Component {
 	}
 
 	renderCalibration = () => {
-		return <CounterModal t={this.props.t} handleFinish={this.handleCalibration} />
+		const { calType, t } = this.props
+		return calType ? <CounterModal t={t} handleFinish={this.handleCalibration} /> : <TimeCounterModal t={t} handleFinish={this.handleCalibration}/>
 	}
 
 	renderImageUpload = () => {
@@ -466,7 +469,7 @@ class CalibrateDevice extends Component {
 	}
 }
 const mapStateToProps = (state) => ({
-  
+	calType: state.settings.calibration
 })
 
 const mapDispatchToProps = (dispatch) => ({
