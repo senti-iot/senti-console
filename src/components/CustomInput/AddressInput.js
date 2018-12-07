@@ -12,6 +12,10 @@ import { getAdresses } from 'variables/dataDevices';
 import withLocalization from 'components/Localization/T';
 
 const styles = theme => ({
+	listItem: {
+		cursor: 'pointer',
+		color: theme.palette.type === 'dark' ? '#fff' : 'inherit'
+	},
 	paperMenu: {
 		maxWidth: 300,
 		maxHeight: 200,
@@ -127,7 +131,7 @@ class AddressInput extends React.Component {
 		const matches = match(suggestion.label, query);
 		const parts = parse(suggestion.label, matches);
 		return (
-			<ListItem role={'option'} selected={isHighlighted}>
+			<ListItem role={'option'} selected={isHighlighted} className={this.props.classes.listItem}>
 				<div>
 					{parts.map((part, index) => {
 						return part.highlight ? (
