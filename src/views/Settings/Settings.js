@@ -8,7 +8,7 @@ import CalibrationSettings from './SettingsCards/CalibrationSettings';
 import DisplaySettings from './SettingsCards/DisplaySettings';
 import { changeLanguage } from 'redux/localization';
 import withLocalization from 'components/Localization/T';
-import { changeTRP, changeTheme, changeChartType, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow, saveSettingsOnServ, finishedSaving, changeChartDataType } from 'redux/settings';
+import { changeTRP, changeTheme, changeChartType, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow, saveSettingsOnServ, finishedSaving, changeChartDataType, changeTCount } from 'redux/settings';
 import NotificationSettings from './SettingsCards/NotificationSettings';
 // import DeviceSettings from './SettingsCards/DeviceSettings';
 import ChartSettings from './SettingsCards/ChartSettings';
@@ -44,8 +44,8 @@ class Settings extends Component {
 	render() {
 		const { t } = this.props
 		const { language, sideBar, changeSideBarLoc, trp, changeTRP, theme, changeTheme, changeDiscoverSenti, discSentiVal, changeLanguage, changeChartType } = this.props
-		const { calibration, changeCalType, count, changeCount, calNotifications, changeCalNotif, rawData } = this.props
-		const { alerts, didKnow, changeAlerts, changeDidKnow, chartType, changeChartDataType } = this.props
+		const { calibration, changeCalType, count, changeCount, changeTCount, calNotifications, changeCalNotif, rawData } = this.props
+		const { alerts, didKnow, changeAlerts, changeDidKnow, chartType, changeChartDataType, tcount } = this.props
 		return (
 			<Fragment>
 				<Toolbar
@@ -75,7 +75,9 @@ class Settings extends Component {
 							calibration={calibration}
 							changeCalType={changeCalType}
 							count={count}
+							tcount={tcount}
 							changeCount={changeCount}
+							changeTCount={changeTCount}
 							calNotifications={calNotifications}
 							changeCalNotif={changeCalNotif}
 							t={t} />
@@ -120,8 +122,10 @@ const mapStateToProps = state => {
 		trp: s.trp,
 		sideBar: s.sideBar,
 		discSentiVal: s.discSentiVal,
+
 		calibration: s.calibration,
 		count: s.count,
+		tcount: s.tcount,
 		calNotifications: s.calNotifications,
 		
 		chartType: s.chartType,
@@ -142,6 +146,7 @@ const mapDispatchToProps = (dispatch) => {
 
 		changeCalType: type => dispatch(changeCalType(type)),
 		changeCount: count => dispatch(changeCount(count)),
+		changeTCount: tcount => dispatch(changeTCount(tcount)),
 		changeCalNotif: type => dispatch(changeCalNotif(type)),
 
 		changeAlerts: t => dispatch(changeAlerts(t)),

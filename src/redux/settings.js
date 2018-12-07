@@ -17,6 +17,7 @@ const DIDKNOW = 'notifDidYouKnow'
 //Calibration
 const CALTYPE = 'calibrationType'
 const COUNT = 'calibrationCount'
+const TCOUNT = 'calibrationTimeCount'
 const CALNOTIF = 'calibrationNotify'
 const ALERTS = 'notifAlerts'
 const GETFAVS = 'getFavorites'
@@ -39,6 +40,7 @@ export const saveSettingsOnServ = () => {
 			calibration: s.calibration,
 			calNotifications: s.calNotifications,
 			count: s.count,
+			tcount: s.tcount,
 			chartType: s.chartType,
 			discSentiVal: s.discSentiVal,
 			sideBar: s.sideBar,
@@ -190,7 +192,15 @@ export const changeCalNotif = t => {
 		dispatch(saveSettingsOnServ())
 	}
 }
-
+export const changeTCount = tcount => {
+	return async (dispatch, getState) => {
+		dispatch({
+			type: TCOUNT,
+			tcount
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
 export const changeCount = count => {
 	return async (dispatch, getState) => {
 		dispatch({
@@ -248,6 +258,7 @@ let initialState = {
 	calibration: 1,
 	calNotifications: 0,
 	count: 200,
+	tcount: 600,
 	discSentiVal: 1,
 	sideBar: 0,
 	theme: 0,
@@ -305,6 +316,10 @@ export const settings = (state = initialState, action) => {
 		case COUNT:
 			return Object.assign({}, state, {
 				count: action.count
+			})
+		case TCOUNT:
+			return Object.assign({}, state, {
+				tcount: action.tcount
 			})
 		case CALNOTIF:
 			return Object.assign({}, state, {
