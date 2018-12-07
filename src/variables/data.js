@@ -38,6 +38,24 @@ export const loginApi = create({
 		'Content-Type': 'application/json'
 	}
 })
+//https://dawa.aws.dk/vejnavne/autocomplete?q=vibor
+export const dawaApi = create({
+	baseURL: `https://dawa.aws.dk`,
+	timeout: 30000,
+	header: {
+		'Accept': 'application/json',
+		'Content-Type': 'application/json'
+	}
+})
+export const customerDoIApi = create({
+	baseURL: `https://api.senti.cloud/annual/v1`,
+	timeout: 30000,
+	headers: {
+		'auth': encrypt(process.env.REACT_APP_ENCRYPTION_KEY),
+		'Accept': 'application/json',
+		'Content-Type': 'application/json'
+	}
+})
 // const apiRoute = '/holidays/v1/2018-01-01/2018-12-31/da'
 export const holidayApi = create({
 	baseURL: `https://api.senti.cloud/holidays/v1`,
@@ -51,7 +69,15 @@ export const holidayApi = create({
 export const getHolidays = async (lang) => {
 	let year = moment().format('YYYY')
 	let data = await holidayApi.get(`/${year}-01-01/${year}-12-31/${lang}`).then(rs => rs.data)
-	return data
+	let data2 = await customerDoIApi.get(`/${year}-01-01/${year}-12-31/${lang}`).then(rs => rs.data)
+	let newData = []
+	if (data2) { 
+		newData = data2.map(d => {
+			d.date = `${year}-${d.date}`
+			return d
+		})
+	}
+	return [...data, ...newData]
 }
 export const weatherApi = create({
 	baseURL: `https://api.senti.cloud/weather/v1/`,
