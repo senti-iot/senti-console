@@ -66,7 +66,7 @@
 		"fields": {
 			"thisDay": "On this day:",
 			"date": "Date",
-			"range": "Range",
+			"range": "Period of time",
 			"weather": "Weather",
 			"temperature": "Temperature",
 			"summary": "Weather",

@@ -66,7 +66,7 @@
 		"fields": {
 			"thisDay": "Denne dag:",
 			"date": "Dato",
-			"range": "Interval",
+			"range": "Tidsrum",
 			"weather": "Vejr",
 			"temperature": "Temperatur",
 			"summary": "Vejr",
