@@ -1,17 +1,18 @@
 import React, { Component, Fragment } from 'react'
 import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withStyles, Grid, TextField, FormControl, InputLabel, Select, Input, MenuItem, FormHelperText } from '@material-ui/core';
-import { ItemGrid, Info, Danger } from 'components'
+import { ItemGrid, Info, Danger, AddressInput } from 'components'
 import { getDevice, calibrateDevice, uploadPictures } from 'variables/dataDevices'
 import Caption from 'components/Typography/Caption'
 import CounterModal from 'components/Devices/CounterModal'
 import ImageUpload from './ImageUpload'
 import { NavigateNext, NavigateBefore, Done, Restore, MyLocation, Router, Devices } from 'variables/icons'
 import GridContainer from 'components/Grid/GridContainer';
-import { PlacesWithStandaloneSearchBox } from 'components/Map/SearchBox'
+// import { PlacesWithStandaloneSearchBox } from 'components/Map/SearchBox'
 import { CalibrateMap } from 'components/Map/CalibrateMaps';
 import { isFav, updateFav } from 'redux/favorites';
 import { connect } from 'react-redux'
 import TimeCounterModal from 'components/Devices/TimeCounterModal';
+
 
 const styles = theme => ({
 	button: {
@@ -181,6 +182,7 @@ class CalibrateDevice extends Component {
 	}
 
 	handleSetAddress = (e) => {
+		console.log(e)
 		this.setState({ address: e })
 	}
 
@@ -233,7 +235,8 @@ class CalibrateDevice extends Component {
 						onClick={this.getLatLngFromMap}
 					/>
 				</div>
-				<PlacesWithStandaloneSearchBox address={this.state.address} handleChange={this.handleSetAddress} t={t}/>
+				<AddressInput value={this.state.address} handleChange={this.handleSetAddress} />
+				{/* <PlacesWithStandaloneSearchBox address={this.state.address} handleChange={this.handleSetAddress} t={t}/> */}
 			</ItemGrid>
 			<ItemGrid xs={12}>
 				<FormControl className={this.props.classes.formControl}>

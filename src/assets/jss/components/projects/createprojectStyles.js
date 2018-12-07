@@ -90,9 +90,10 @@ const createprojectStyles = theme => ({
 		flexWrap: 'wrap',
 	},
 	paper: {
+		// overflow: 'visible',
 		width: '100%',
 		margin: '8px',
-		overflow: 'hidden',
+		// overflow: 'hidden',
 		borderRadius: '3px'
 	},
 	label: {

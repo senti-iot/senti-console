@@ -3,8 +3,8 @@ import { Check, Save } from 'variables/icons';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import React, { Component, Fragment } from 'react';
 import { getDevice, updateDevice } from 'variables/dataDevices';
-import { CircularLoader, GridContainer, ItemGrid, TextF } from 'components';
-import { PlacesWithStandaloneSearchBox } from 'components/Map/SearchBox';
+import { CircularLoader, GridContainer, ItemGrid, TextF, AddressInput } from 'components';
+// import { PlacesWithStandaloneSearchBox } from 'components/Map/SearchBox';
 import DSelect from 'components/CustomInput/DSelect';
 import { isFav, updateFav } from 'redux/favorites';
 import { connect } from 'react-redux'
@@ -32,7 +32,7 @@ class EditDeviceDetails extends Component {
 	componentWillUnmount = () => {
 		clearTimeout(this.timer);
 	}
-	handleGoogleInput = (address) => {
+	handleSetAddress = (address) => {
 		this.setState({
 			device: {
 				...this.state.device,
@@ -127,9 +127,10 @@ class EditDeviceDetails extends Component {
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
-								<PlacesWithStandaloneSearchBox
+								<AddressInput value={device.address} handleChange={this.handleSetAddress}/>
+								{/* <PlacesWithStandaloneSearchBox
 									address={device.address}
-									t={t} handleChange={this.handleGoogleInput} />
+									t={t} handleChange={this.handleGoogleInput} /> */}
 							</ItemGrid>
 							<ItemGrid xs={12} container justify={'center'}>
 								<Collapse in={this.state.updating} timeout={100} unmountOnExit>

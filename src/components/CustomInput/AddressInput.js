@@ -9,54 +9,15 @@ import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core'
-
-function renderInputComponent(inputProps) {
-	const { classes, inputRef = () => { }, ref, ...other } = inputProps;
-	return (
-		<TextField
-			// 
-			margin='normal'
-			// className={classes.textField}
-			InputProps={{
-				inputRef: node => {
-					ref(node);
-					inputRef(node);
-				}
-			}}
-			{...other}
-		/>
-	);
-}
-
-function renderSuggestion(suggestion, { query, isHighlighted }) {
-	const matches = match(suggestion.label, query);
-	const parts = parse(suggestion.label, matches);
-
-	return (
-		<MenuItem selected={isHighlighted} component='div'>
-			<div>
-				{parts.map((part, index) => {
-					return part.highlight ? (
-						<span key={String(index)} style={{ fontWeight: 500 }}>
-							{part.text}
-						</span>
-					) : (
-						<strong key={String(index)} style={{ fontWeight: 300 }}>
-							{part.text}
-						</strong>
-					);
-				})}
-			</div>
-		</MenuItem>
-	);
-}
-
-
-function getSuggestionValue(suggestion) {
-	return suggestion.value;
-}
+import { getAdresses } from 'variables/dataDevices';
+import withLocalization from 'components/Localization/T';
 
 const styles = theme => ({
+	paperMenu: {
+		maxWidth: 300,
+		maxHeight: 200,
+		overflow: 'auto'
+	},
 	textField: {
 		margin: theme.spacing.unit * 2
 	},
@@ -86,29 +47,35 @@ const styles = theme => ({
 	},
 });
 
-class EditOrgAutoSuggest extends React.Component {
+class AddressInput extends React.Component {
 	constructor(props) {
-	  super(props)
-	
-	  this.state = {
-		 suggestions: []
-	  }
+		super(props)
+
+		this.state = {
+			suggestions: []
+		}
 	}
-	
+	getSuggestionValue = s => s.value
+	handleGetAdresses = async (query) => {
+		getAdresses(query).then(rs => {
+			this.setState({ suggestions: rs.map(a => ({ label: a.tekst, value: a.tekst })) })
+		})
+
+	}
 	getSuggestions = (value) => {
 		const inputValue = deburr(value.trim()).toLowerCase();
 		const inputLength = inputValue.length;
 		let count = 0;
 		return inputLength === 0
 			? []
-			: this.props.suggestions.filter(suggestion => {
+			: this.state.suggestions.filter(suggestion => {
 				const keep =
 					count < 5 && suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
-
+				console.log(keep)
 				if (keep) {
 					count += 1;
 				}
-
+				console.log(count)
 				return keep;
 			});
 	}
@@ -128,24 +95,66 @@ class EditOrgAutoSuggest extends React.Component {
 			suggestions: [],
 		});
 	}
-	handleChange = name => (event, { newValue }) => {
-		// this.setState({
-		// 	[name]: newValue,
-		// });
+	handleChange = (event, { newValue, method }) => {		
+		this.setState({
+			query: typeof newValue !== 'undefined' ? newValue : '',
+		}, async () => {
+			if (method !== 'down' && method !== 'up' && method !== null && method !== undefined)
+				this.handleGetAdresses(newValue)
+		});
+
 		this.props.handleChange(newValue)
 	};
+	renderInputComponent = (inputProps) => {
+		const { classes, inputRef = () => { }, ref, ...other } = inputProps;
+		return (
+			<TextField
+				// 
+				margin='normal'
+				// className={classes.textField}
+				InputProps={{
+					inputRef: node => {
+						ref(node);
+						inputRef(node);
+						this.input = node
+					}
+				}}
+				{...other}
+			/>
+		);
+	}
 
+	renderSuggestion = (suggestion, { query, isHighlighted }) => {
+		const matches = match(suggestion.label, query);
+		const parts = parse(suggestion.label, matches);
+		return (
+			<MenuItem selected={isHighlighted} component='div'>
+				<div>
+					{parts.map((part, index) => {
+						return part.highlight ? (
+							<span key={String(index)} style={{ fontWeight: 500 }}>
+								{part.text}
+							</span>
+						) : (
+							<strong key={String(index)} style={{ fontWeight: 300 }}>
+								{part.text}
+							</strong>
+						);
+					})}
+				</div>
+			</MenuItem>
+		);
+	}
 	render() {
 		const { classes } = this.props;
-
 		const autosuggestProps = {
-			renderInputComponent,
+			renderInputComponent: this.renderInputComponent,
 			suggestions: this.state.suggestions,
 			onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
 			onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
-			getSuggestionValue,
-			renderSuggestion,
-
+			getSuggestionValue: this.getSuggestionValue,
+			renderSuggestion: this.renderSuggestion,
+			// onSuggestionHighlighted: ({ s }) => { console.log(s) }
 		};
 		return (
 			<div className={classes.root}>
@@ -153,10 +162,9 @@ class EditOrgAutoSuggest extends React.Component {
 					{...autosuggestProps}
 					inputProps={{
 						classes,
-						error: this.props.error,
-						label: this.props.t('orgs.fields.country'),
-						value: this.props.country,
-						onChange: this.handleChange(),
+						label: this.props.t('orgs.fields.address'),
+						value: this.props.value,
+						onChange: this.handleChange,
 						onClick: this.clearInput
 					}}
 					theme={{
@@ -166,7 +174,7 @@ class EditOrgAutoSuggest extends React.Component {
 						suggestion: classes.suggestion,
 					}}
 					renderSuggestionsContainer={options => (
-						<Paper {...options.containerProps} square>
+						<Paper {...options.containerProps} classes={{ root: classes.paperMenu }}>
 							{options.children}
 						</Paper>
 					)}
@@ -176,8 +184,8 @@ class EditOrgAutoSuggest extends React.Component {
 	}
 }
 
-EditOrgAutoSuggest.propTypes = {
+AddressInput.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(EditOrgAutoSuggest);
+export default withLocalization()(withStyles(styles)(AddressInput));
