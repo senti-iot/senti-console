@@ -392,8 +392,8 @@
 		"userResendEmail": "Resend Confirm Email"
 	},
 	"no": {
-		"birthdays": "No birthdays",
-		"doi":"No holidays today",
+		"birthdays": "No birthdays today",
+		"doi":"No Holidays today",
 		"activeDevice": "No active device",
 		"audioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a different browser.",
 		"collection": "No collection",
