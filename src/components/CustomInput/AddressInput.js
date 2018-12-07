@@ -6,9 +6,8 @@ import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 // import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
-import { TextField } from '@material-ui/core'
+import { TextField, ListItem } from '@material-ui/core'
 import { getAdresses } from 'variables/dataDevices';
 import withLocalization from 'components/Localization/T';
 
@@ -35,9 +34,11 @@ const styles = theme => ({
 		right: 0,
 	},
 	suggestion: {
-		display: 'block',
+		// display: 'block',
 	},
 	suggestionsList: {
+		maxHeight: 200,
+		// overflow: 'auto',
 		margin: 0,
 		padding: 0,
 		listStyleType: 'none',
@@ -71,11 +72,9 @@ class AddressInput extends React.Component {
 			: this.state.suggestions.filter(suggestion => {
 				const keep =
 					count < 5 && suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
-				console.log(keep)
 				if (keep) {
 					count += 1;
 				}
-				console.log(count)
 				return keep;
 			});
 	}
@@ -109,7 +108,7 @@ class AddressInput extends React.Component {
 		const { classes, inputRef = () => { }, ref, ...other } = inputProps;
 		return (
 			<TextField
-				// 
+				multiline
 				margin='normal'
 				// className={classes.textField}
 				InputProps={{
@@ -128,7 +127,7 @@ class AddressInput extends React.Component {
 		const matches = match(suggestion.label, query);
 		const parts = parse(suggestion.label, matches);
 		return (
-			<MenuItem selected={isHighlighted} component='div'>
+			<ListItem role={'option'} selected={isHighlighted}>
 				<div>
 					{parts.map((part, index) => {
 						return part.highlight ? (
@@ -142,7 +141,7 @@ class AddressInput extends React.Component {
 						);
 					})}
 				</div>
-			</MenuItem>
+			</ListItem>
 		);
 	}
 	render() {

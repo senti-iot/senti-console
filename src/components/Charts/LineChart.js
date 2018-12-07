@@ -337,7 +337,7 @@ class LineChart extends PureComponent {
 						}]
 				}
 			}
-		}, this.chart.chartInstance.update())
+		}, () => this.chart ? this.chart.chartInstance.update() : {})
 	}
 
 	setTooltip = (tooltip) => {
