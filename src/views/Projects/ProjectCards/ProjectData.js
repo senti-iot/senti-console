@@ -9,7 +9,8 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart, ZoomOut /* CloudDownload */
+	ExpandMore, Visibility, ShowChart, /* CloudDownload */
+	ArrowUpward
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
@@ -234,7 +235,7 @@ class ProjectData extends PureComponent {
 			<ItemG>
 				<Collapse in={resetZoom}>
 					<IconButton title={'Reset zoom'} /* color={'primary'} */ onClick={this.handleReverseZoomOnData}>
-						<ZoomOut />
+						<ArrowUpward />
 					</IconButton>
 				</Collapse>
 			</ItemG>

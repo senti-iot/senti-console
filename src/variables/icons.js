@@ -77,7 +77,9 @@ import DataUsage from '@material-ui/icons/DataUsage'
 import DeviceHub from '@material-ui/icons/DeviceHub'
 import Dashboard from '@material-ui/icons/Dashboard'
 import History from '@material-ui/icons/History'
+import ArrowUpward from '@material-ui/icons/ArrowUpward'
 export {
+	ArrowUpward,
 	ZoomOut,
 	Cake,
 	//Weather Icons
