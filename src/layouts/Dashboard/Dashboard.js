@@ -18,6 +18,7 @@ import { getSettings } from 'redux/settings';
 import withSnackbarHandler from 'components/Localization/SnackbarHandler';
 import {  Close } from 'variables/icons';
 import { lightTheme, darkTheme } from 'variables/themes'
+import { getDaysOfInterest } from 'redux/doi';
 class App extends React.Component {
 	constructor(props) {
 		super(props)
@@ -70,8 +71,15 @@ class App extends React.Component {
 		if (this._isMounted) {
 			this.handleSetHeaderTitle('Senti.Cloud', false, '', 'dashboard')
 		}
-
-		await this.props.getSettings().then(rs => {
+		
+		await this.props.getSettings().then(async rs => {
+			await this.props.getDaysOfIterest()
+			if (this.props.theme === 1) {
+				document.body.style = 'background: #2e2e2e;';
+			}
+			else {
+				document.body.style = 'background: #eee';
+			}
 			if (navigator.platform.indexOf('Win') > -1) {
 				if (!this.props.loading) {
 					if (this.refs.mainPanel) {
@@ -90,6 +98,14 @@ class App extends React.Component {
 			this.refs.mainPanel.scrollTop = 0
 		if (prevProps.sId !== this.props.sId && this.props.sId !== '')
 			this.setState({ openSnackbar: true })
+		if (this.props.theme !== prevProps.theme) {
+			if (this.props.theme === 1) {
+				document.body.style = 'background: #2e2e2e;';
+			}
+			else {
+				document.body.style = 'background: #eee';
+			}
+		}
 	}
 	
 	render() {
@@ -175,7 +191,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	getSettings: async () => dispatch(await getSettings())
+	getSettings: async () => dispatch(await getSettings()),
+	getDaysOfIterest: async () => dispatch(await getDaysOfInterest())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withSnackbarHandler()((withLocalization()(withStyles(appStyle)(App)))))

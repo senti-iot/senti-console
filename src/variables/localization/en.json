@@ -1,36 +1,41 @@
 {
-	"": "",
 	"404": {
 		"errorMessage": "The resource requested has not been found! Please try again or contact support!",
 		"networkFail": "Request failed!",
 		"title": "404 Error - Page Not Found"
 	},
+	"": "",
 	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
-		"on": "On",
-		"off": "Off",
-		"update": "Update",
-		"accept": "Accept",
 		"apply": "Apply",
 		"back": "Previous",
 		"cancel": "Cancel",
+		"changePassword": "Change Password",
 		"decline": "Decline",
 		"deletePicture": "Delete this picture",
 		"finish": "Finish",
+		"forgotPass": "Password Forgotten?",
 		"getLocation": "Get location",
 		"goTo": "Go to",
+		"goToLogin": "Go to Login Page",
 		"heatMap": "Heatmap",
 		"insertAddress": "Enter an address",
 		"learnMore": "Learn more",
+		"login": "Log in",
+		"manualCalibration": "Manual calibration",
 		"next": "Next",
 		"nextPage": "Next page",
 		"no": "No",
+		"off": "Off",
+		"on": "On",
 		"openCounter": "Open counter",
 		"previousPage": "Previous page",
+		"requestPasswordReset": "Reset password",
 		"reset": "Reset",
 		"save": "Save",
 		"start": "Start",
 		"startNow": "Start now",
+		"update": "Update",
 		"uploadImages": "Upload images",
 		"viewDevice": "View device",
 		"viewDeviceList": "View device list",
@@ -47,17 +52,28 @@
 		},
 		"steps": {
 			"0": "To configure your Senti device, please enter a title and an informative description.",
-			"1": "To configure your Senti device you need to allow Senti.Cloud to store the location of the device. Accept this when prompted to allow to store the location of your mobile device. Secondly type in an address and select a location type to further pinpoint where your data is collected.",
-			"2": "To get the best data collection accuracy, you need to do a manual calibration. The calibration hit target is set to 200 so you need to count 200 individual entities. When you are ready to start counting press “OPEN COUNTING WINDOW” and press “START“. Push the large button to count. When you have reached your hit target of 200 hits the timer automatically stops.",
+			"1": "To configure your Senti device you need to allow Senti.Cloud to store the location of the device. Accept this when prompted to allow this from your mobile device. Secondly type in the actual physical address where the device is located, and select a location type to further pinpoint where your data is being collected.",
+			"2": "To get the best data collection accuracy, you need to do a manual calibration. In settings you can select the calibration method that suits your puspose. Start your manual count by pressing “OPEN COUNTER” and press “START“. Push the center button to count.",
 			"3": "You can store optional images of your device installation. This will enhance the Senti.Cloud experience, and serve as a help for Senti service technicians in case your device needs on-site service.",
 			"unknown": "Unknown step"
 		},
 		"texts": {
 			"success": "Success!",
-			"successMessage": "Your Senti device is now configured and calibrated and will produce better results when collecting data. To further enhance the accuracy of your data collection, return to the site of installation and do a new calibration on a regular basis. You can set a reminder for Device Calibration in Settings."
+			"successMessage": "Your Senti device is now configured and calibrated and will produce better results when collecting data. To further enhance the accuracy of your data collection, return to the site of installation and do a new calibration on a regular basis."
 		}
 	},
 	"charts": {
+		"fields": {
+			"thisDay": "On this day:",
+			"date": "Date",
+			"range": "Period of time",
+			"weather": "Weather",
+			"temperature": "Temperature",
+			"summary": "Weather",
+			"windspeed": "Windspeed",
+			"humidity": "Humidity",
+			"pressure": "Pressure"
+		},
 		"type": {
 			"bar": "Bar",
 			"donut": "Donut",
@@ -66,12 +82,12 @@
 		}
 	},
 	"collections": {
-		"editCollection": "Edit collection",
 		"calibratedData": "Calibrated Data",
 		"cards": {
 			"data": "Data",
 			"log": "Device log"
 		},
+		"editCollection": "Edit collection",
 		"fields": {
 			"activated": "Activated",
 			"activeDevice": "Active Device",
@@ -144,7 +160,7 @@
 		"cards": {
 			"data": "Data",
 			"details": "Device details",
-			"hardware": "Hardware",
+			"hardware": "Equipment",
 			"map": "Map",
 			"pictures": "Images"
 		},
@@ -161,11 +177,11 @@
 			"description": "Description",
 			"free": "Free",
 			"id": "Device ID",
-			"lat": "Latitude",
-			"long": "Longitude",
 			"lastData": "Last time device sent data to server",
 			"lastStats": "Last time device was connected to server",
+			"lat": "Latitude",
 			"locType": "Location type",
+			"long": "Longitude",
 			"memory": "Memory",
 			"memoryModel": "Memory model",
 			"modemIMEI": "Modem IMEI",
@@ -197,13 +213,13 @@
 		},
 		"new": "",
 		"noAddress": "No Address",
-		"noData": "There is no data!",
-		"noDataFilters": "There is no data available for the selected filters!",
+		"noData": "There is currently no data available!",
+		"noDataFilters": "There is currently no data available for the selected filters!",
 		"noDevices": "There are no available devices",
 		"noImages": "There are no images uploaded!",
 		"noLocType": " No location type set",
 		"noName": "No name",
-		"notCalibrated": "Device has not been calibrated! No map location and weather data will be accessible.",
+		"notCalibrated": "Device has not been calibrated! No device location on maps or weather data will be accessible.",
 		"pageTitle": "Devices",
 		"simpleList": {
 			"address": "Address",
@@ -226,10 +242,6 @@
 		}
 	},
 	"dialogs": {
-		"login": {
-			"resetPassRequestMessage": "An E-mail has been sent with instructions on how to reset your password!",
-			"resetPasswordMessage": "Reset your password by entering your E-mail"
-		},
 		"delete": {
 			"message": {
 				"collection": "Are you sure you want to delete this data collection ( %{collection} )?",
@@ -252,6 +264,16 @@
 				"users": "Delete users?"
 			}
 		},
+		"discoverSenti": {
+			"addProject": "Add data projects",
+			"onSiteSetup": "On-site setup of devices",
+			"startAnalyzeData": "Start analyzing your data",
+			"welcome": "Welcome to Senti.Cloud!"
+		},
+		"login": {
+			"resetPassRequestMessage": "An E-mail has been sent with instructions on how to reset your password!",
+			"resetPasswordMessage": "Reset your password by entering your E-mail"
+		},
 		"unassign": {
 			"message": {
 				"collectionFromProject": "Unassign collection %{collection} from project %{project} ?",
@@ -271,12 +293,6 @@
 		"warnings": {
 			"notImplemented": "Not implemented",
 			"wip": "Work in progress"
-		},
-		"discoverSenti": {
-			"addProject": "Add data projects",
-			"onSiteSetup": "On-site setup of devices",
-			"startAnalyzeData": "Start analyzing your data",
-			"welcome": "Welcome to Senti.Cloud!"
 		}
 	},
 	"favorites": {
@@ -332,23 +348,17 @@
 		"username": "Username"
 	},
 	"menus": {
-		"user": {
-			"account": "My account",
-			"profile": "My profile",
-			"signout": "Sign out"
-		},
 		"assign": {
 			"collectionToProject": "Assign data collection",
 			"collectionsToProject": "Assign data collections",
 			"deviceToCollection": "Assign device",
 			"deviceToOrg": "Assign device"
 		},
+		"calibrate": "Calibrate",
 		"create": {
 			"project": "Create project",
 			"user": "Create user"
 		},
-		"calibrate": "Calibrate",
-		"changePassword": "Change password",
 		"delete": "Delete",
 		"edit": "Edit",
 		"exportPDF": "Print as PDF",
@@ -374,11 +384,18 @@
 			"deviceFromCollection": "Unassign device from collection",
 			"deviceFromOrg": "Unassign device from organisation"
 		},
+		"user": {
+			"account": "My account",
+			"profile": "My profile",
+			"signout": "Sign out"
+		},
 		"userResendEmail": "Resend Confirm Email"
 	},
 	"no": {
-		"audioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a different browser.",
+		"birthdays": "No birthdays today",
+		"doi":"No Holidays today",
 		"activeDevice": "No active device",
+		"audioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a different browser.",
 		"collection": "No collection",
 		"collections": "No collections",
 		"device": "No device",
@@ -404,8 +421,8 @@
 			"url": "Website",
 			"zip": "ZIP Code"
 		},
-		"pageTitle": "Organisations",
 		"organisation": "Organisation",
+		"pageTitle": "Organisations",
 		"updateOrg": "Edit Organisation",
 		"validation": {
 			"networkError": "Network Error!",
@@ -431,14 +448,14 @@
 		},
 		"fields": {
 			"assignDevices": "Assign devices",
+			"created": "Created",
 			"description": "Description",
 			"endDate": "End date",
+			"lastUpdate": "Last modified",
 			"name": "Project name",
 			"selectOrganisation": "Organisation",
 			"startDate": "Start date",
-			"created": "Created",
-			"title": "Name",
-			"lastUpdate": "Last modified"
+			"title": "Name"
 		},
 		"noAvailableDevices": "There are no devices calibrated to display",
 		"noOrganisationSelected": "Select an organisation to see available devices.",
@@ -472,7 +489,8 @@
 			"time": "By time"
 		},
 		"chart": {
-			"defaultChart": "Default chart type"
+			"defaultChart": "Default chart type",
+			"rawData": "Raw data"
 		},
 		"defaultDataSet": "Default data set for charts",
 		"didYouKnow": "Intelligent Notifications",
@@ -607,11 +625,11 @@
 		},
 		"messages": {},
 		"pageTitle": "Users",
-		"user": "User",
 		"tabs": {
 			"orgs": "Organisations",
 			"users": "Users"
 		},
+		"user": "User",
 		"userResendConfirm": "Are you sure you want to resend confirmation E-mail",
 		"userResendEmail": "Resend Confirm E-mail",
 		"validation": {

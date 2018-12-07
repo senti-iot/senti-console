@@ -44,10 +44,15 @@ class BarChart extends PureComponent {
 				scales: {
 					xAxes: [
 						{
+							gridLines: {
+								offsetGridLines: true,
+								color: props.theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0,0,0,0.1)',
+							},
 							offset: true,
 							ticks: {
 								source: 'labels',
-								maxRotation: 0
+								maxRotation: 0,
+								fontColor: props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
 							},
 							id: 'xAxis',
 							type: 'time',
@@ -59,19 +64,19 @@ class BarChart extends PureComponent {
 								},
 								unit: props.unit.chart,
 								tooltipFormat: props.unit.format
-							},
-							gridLines: {
-								offsetGridLines: true
 							}
 						},
 						{
 							display: props.unit.chart === 'day' ? true : false,
 							offset: true,
 							ticks: {
-								source: 'labels',
+
 								callback: function (value, index, values) {
 									return value.charAt(0).toUpperCase() + value.slice(1);
 								},
+								fontColor: props.theme.palette.type === 'dark' ? ['rgba(255, 255, 255, 1)'] : ["#000"],
+								source: 'labels',
+								maxRotation: 0
 							},
 							gridLines: {
 								offsetGridLines: true,
@@ -88,11 +93,27 @@ class BarChart extends PureComponent {
 								tooltipFormat: props.unit.format
 							},
 						}],
+					yAxes: [{
+						scaleLabel: {
+							display: false,
+							labelString: 'value'
+						},
+						ticks: {
+							fontColor: props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
+						},
+						gridLines: {
+							color: props.theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0,0,0,0.1)',
+						},
+					}]
+
 				}
 			}
 		}
 	}
 	legendOptions = {
+		labels: {
+			fontColor: this.props.theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 1)' : undefined,
+		},
 		position: 'bottom',
 		display: !this.props.single ? true : false,
 		onHover: !this.props.single ? (t, l) => {
@@ -145,17 +166,29 @@ class BarChart extends PureComponent {
 			
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
 			if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long)) {
-				this.setState({ weather: null })
-				getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then(rs => {
+				if (lat !== 0 && long !== 0) {
+					this.setState({ weather: "" })
+					getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then(rs => {
+						this.setState({
+							weatherDate: wDate,
+							weather: rs,
+							loc: {
+								lat: lat,
+								long: long
+							}
+						})
+					})
+				}
+				else {
 					this.setState({
 						weatherDate: wDate,
-						weather: rs,
+						weather: null,
 						loc: {
-							lat: lat,
-							long: long
+							lat: 0,
+							long: 0
 						}
 					})
-				})
+				}
 			}
 		}
 		catch (err) {
@@ -196,7 +229,7 @@ class BarChart extends PureComponent {
 							time: {
 								displayFormats: {
 									hour: 'LT',
-									day: 'll',
+									day: 'll dddd',
 									minute: 'LT'
 								},
 								unit: this.props.unit.chart,

@@ -57,42 +57,42 @@ class Dashboard extends React.Component {
 						img={imgs.hosting}
 						header={t('dashboard.cardHeaders.onSiteSetup')}
 						content={t('dashboard.cardContent.onSiteSetup')}
-						leftAction={this.renderAction('actions.learnMore', '/')}
+						//leftAction={this.renderAction('actions.learnMore', '/')}
 						rightAction={this.renderAction('actions.startNow', '/devices', true)}
 					/></ItemG>
 					<ItemG container justify={'center'} xs={12} sm={6} md={4}><MediaCard
 						img={imgs.storage}
 						header={t('dashboard.cardHeaders.projects')}
 						content={t('dashboard.cardContent.projects')}
-						leftAction={this.renderAction('actions.learnMore', '/')}
+						//leftAction={this.renderAction('actions.learnMore', '/')}
 						rightAction={this.renderAction('actions.startNow', '/projects', true)}
 					/></ItemG>
 					<ItemG container justify={'center'} xs={12} sm={6} md={4}><MediaCard
 						img={imgs.devices}
 						header={t('dashboard.cardHeaders.devices')}
 						content={t('dashboard.cardContent.devices')}
-						leftAction={this.renderAction('actions.learnMore', '/')}
+						//leftAction={this.renderAction('actions.learnMore', '/')}
 						rightAction={this.renderAction('actions.startNow', '/devices', true)}
 					/></ItemG>
 					<ItemG container justify={'center'} xs={12} sm={6} md={4}><MediaCard
 						img={imgs.data}
 						header={t('dashboard.cardHeaders.data')}
 						content={t('dashboard.cardContent.data')}
-						leftAction={this.renderAction('actions.learnMore', '/')}
+						//leftAction={this.renderAction('actions.learnMore', '/')}
 						rightAction={this.renderAction('actions.startNow', '/collections/list', true)}
 					/></ItemG>
 					<ItemG container justify={'center'} xs={12} sm={6} md={4}>	<MediaCard
 						img={imgs.users}
 						header={t('dashboard.cardHeaders.users')}
 						content={t('dashboard.cardContent.users')}
-						leftAction={this.renderAction('actions.learnMore', '/')}
+						//leftAction={this.renderAction('actions.learnMore', '/')}
 						rightAction={this.renderAction('actions.startNow', '/management/users', true)}
 					/></ItemG>
 					<ItemG container justify={'center'} xs={12} sm={6} md={4}>	<MediaCard
 						img={imgs.settings}
 						header={t('dashboard.cardHeaders.settings')}
 						content={t('dashboard.cardContent.settings')}
-						leftAction={this.renderAction('actions.learnMore', '/')}
+						//leftAction={this.renderAction('actions.learnMore', '/')}
 						rightAction={this.renderAction('actions.startNow', '/settings', true)}
 					/></ItemG>
 					{/* <ItemG container justify={'center'} sm={6} md={4}>	<MediaCard

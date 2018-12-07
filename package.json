@@ -20,6 +20,7 @@
 		"core-js": "^2.5.7",
 		"for-each": "^0.3.3",
 		"i18n-iso-countries": "^3.7.8",
+		"leaflet": "^1.3.4",
 		"libphonenumber-js": "^1.6.4",
 		"material-ui-pickers": "^1.0.1",
 		"moment": "^2.22.2",
@@ -33,6 +34,7 @@
 		"react-exif-orientation-img": "^0.1.5",
 		"react-google-maps": "^9.4.5",
 		"react-gravatar": "^2.6.3",
+		"react-leaflet": "^2.1.2",
 		"react-loadable": "^5.5.0",
 		"react-masonry-component": "^6.2.1",
 		"react-redux": "^5.1.0",
@@ -43,6 +45,7 @@
 		"react-swipeable-views": "^0.13.0",
 		"redux": "^4.0.0",
 		"redux-thunk": "^2.3.0",
+		"senti-apicore": "0.0.11",
 		"skycons": "^1.0.0",
 		"workbox-build": "^3.6.3"
 	},
@@ -61,7 +64,11 @@
 		"sw": "node build-sw.js"
 	},
 	"keywords": [],
-	"author": "Christian Broberg",
+	"author": {
+		"name": "Christian Broberg",
+		"email": "apisupport@senti.cloud",
+		"url": "https://senti.cloud/"
+	},
 	"license": "MIT",
 	"browserslist": [
 		">0.2%",

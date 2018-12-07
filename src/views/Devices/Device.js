@@ -32,7 +32,7 @@ class Device extends Component {
 			from: moment().subtract(7, 'd').startOf('day'),
 			to: moment().endOf('day'),
 			timeType: 2,
-			raw: false,
+			raw: props.rawData ? props.rawData : false,
 			//End Date Filter Tools
 			//Assign/Unassign
 			openAssignCollection: false,
@@ -145,17 +145,14 @@ class Device extends Component {
 	}
 	getHeatMapData = async () => {
 		// const { device } = this.props
-		const { from, to, raw, device } = this.state
+		const { from, to, device } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		// let dataArr = []
 		let dataSet = null
-		let data = await getDataSummary(device.id, startDate, endDate, raw)
+		let data = await getDataSummary(device.id, startDate, endDate, true)
 		dataSet = {
-			name: device.name,
-			id: device.id,
-			lat: device.lat,
-			long: device.long,
+			...device,
 			data: data,
 			color: teal[500]
 		}
@@ -324,15 +321,14 @@ class Device extends Component {
 				newArr.push(d)
 			return newArr
 		}, [])
-		let newState = { ...setDailyData(dataArr, from, to, hoverID), /* ...setPieData(dataArr, from, to, this.state.timeType) */ }
-		window.newState = newState
+		let newState = { ...setDailyData(dataArr, from, to, hoverID) }
 		this.setState({
 			...this.state,
 			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 2,
 			...newState
-		}, () => window.state = this.state)
+		})
 	}
 	getWifiSum = async () => {
 		const { from, to, raw, device, hoverID } = this.state
@@ -523,13 +519,12 @@ class Device extends Component {
 	}
 
 	renderMenu = () => {
-		const { classes, t } = this.props
+		const { t } = this.props
 		const { dateOption, to, from, timeType } = this.state
 	
 		return <DateFilterMenu
 			timeType={timeType}
 			dateOption={dateOption}
-			classes={classes}
 			to={to}
 			from={from}
 			t={t}
@@ -636,7 +631,8 @@ class Device extends Component {
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	language: state.settings.language,
-	saved: state.favorites.saved
+	saved: state.favorites.saved,
+	rawData: state.settings.rawData
 })
 
 const mapDispatchToProps = (dispatch) => ({

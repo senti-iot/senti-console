@@ -6,21 +6,29 @@ import 'moment/locale/en-gb'
 import { saveSettings } from 'variables/dataLogin';
 var moment = require('moment')
 
-
+//Display
 const MENULOC = 'sidebarLocation'
+const changeLangAction = 'changeLanguage'
 const THEME = 'theme'
 const TRP = 'tableRowsPerPage'
+const DISCSENT = 'discoverSentiBanner'
+const DIDKNOW = 'notifDidYouKnow'
+
+//Calibration
 const CALTYPE = 'calibrationType'
 const COUNT = 'calibrationCount'
+const TCOUNT = 'calibrationTimeCount'
 const CALNOTIF = 'calibrationNotify'
-const DISCSENT = 'discoverSentiBanner'
 const ALERTS = 'notifAlerts'
-const DIDKNOW = 'notifDidYouKnow'
-const GETSETTINGS = 'getSettings'
 const GETFAVS = 'getFavorites'
-const SAVESETTINGS = 'saveSettings'
-const changeLangAction = 'changeLanguage'
+
+//Charts
 const CHARTTYPE = 'chartType'
+const CHARTDATATYPE = 'chartDataType'
+
+//Get/Set Settings from server
+const GETSETTINGS = 'getSettings'
+const SAVESETTINGS = 'saveSettings'
 const SAVED = 'savedSettings'
 const NOSETTINGS = 'noSettings'
 
@@ -32,6 +40,7 @@ export const saveSettingsOnServ = () => {
 			calibration: s.calibration,
 			calNotifications: s.calNotifications,
 			count: s.count,
+			tcount: s.tcount,
 			chartType: s.chartType,
 			discSentiVal: s.discSentiVal,
 			sideBar: s.sideBar,
@@ -39,6 +48,7 @@ export const saveSettingsOnServ = () => {
 			trp: s.trp,
 			alerts: s.alerts,
 			didKnow: s.didKnow,
+			rawData: s.rawData
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -146,7 +156,15 @@ export const changeDidKnow = t => {
 		dispatch(saveSettingsOnServ())
 	}
 }
-
+export const changeChartDataType = t => {
+	return async (dispatch, getState) => {
+		dispatch({
+			type: CHARTDATATYPE,
+			t
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
 export const changeChartType = t => {
 	return async (dispatch, getState) => {
 		dispatch({
@@ -174,7 +192,15 @@ export const changeCalNotif = t => {
 		dispatch(saveSettingsOnServ())
 	}
 }
-
+export const changeTCount = tcount => {
+	return async (dispatch, getState) => {
+		dispatch({
+			type: TCOUNT,
+			tcount
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
 export const changeCount = count => {
 	return async (dispatch, getState) => {
 		dispatch({
@@ -227,10 +253,12 @@ export const finishedSaving = () => {
 	}
 }
 let initialState = {
+	rawData: 0,
 	language: 'dk',
 	calibration: 1,
 	calNotifications: 0,
 	count: 200,
+	tcount: 600,
 	discSentiVal: 1,
 	sideBar: 0,
 	theme: 0,
@@ -244,7 +272,8 @@ let initialState = {
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
-
+		case CHARTDATATYPE: 
+			return Object.assign({}, state, { rawData: action.t })
 		case SAVED:
 			return Object.assign({}, state, { saved: action.saved })
 		case DISCSENT:
@@ -287,6 +316,10 @@ export const settings = (state = initialState, action) => {
 		case COUNT:
 			return Object.assign({}, state, {
 				count: action.count
+			})
+		case TCOUNT:
+			return Object.assign({}, state, {
+				tcount: action.tcount
 			})
 		case CALNOTIF:
 			return Object.assign({}, state, {

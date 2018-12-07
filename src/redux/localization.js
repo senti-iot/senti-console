@@ -1,6 +1,7 @@
 
 import loc from 'variables/localization/index'
 import { saveSettingsOnServ } from './settings';
+import { getDaysOfInterest } from './doi';
 var forEach = require('for-each');
 
 const changeLangAction = 'changeLanguage'
@@ -14,7 +15,8 @@ export const changeLanguage = (code, noSave) => {
 				code
 			})
 		if (!noSave)
-		 	dispatch(saveSettingsOnServ())
+			dispatch(saveSettingsOnServ())
+		dispatch(getDaysOfInterest(code))
 	}
 }
 

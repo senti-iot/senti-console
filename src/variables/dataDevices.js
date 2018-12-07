@@ -1,6 +1,16 @@
-import { api, imageApi, mapApi, weatherApi } from './data';
+import { api, imageApi, mapApi, weatherApi, dawaApi } from './data';
 import moment from 'moment'
 
+
+/**
+ * 
+ * @param {String} q Adress query  
+ */
+export const getAdresses = async (q) => {
+	let URL = `/autocomplete?q=${q}`
+	let response = await dawaApi.get(URL).then(rs => rs)
+	return response.data
+}
 //#region getWeather
 /**
  * 

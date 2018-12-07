@@ -41,7 +41,7 @@ class Orgs extends Component {
 			{ id: 'city', label: t('orgs.fields.city') },
 			{ id: 'url', label: t('orgs.fields.url') },
 		]
-	} 
+	}
 	componentDidMount = async () => {
 		this._isMounted = 1
 		await this.getData()
@@ -56,7 +56,7 @@ class Orgs extends Component {
 	}
 	componentDidUpdate = async (prevState, prevProps) => {
 		if (prevProps.orgs !== this.props.orgs) {
-			this.setState({ orgs: this.props.orgs })
+			this.getData()
 		}
 	}
 	componentWillUnmount = () => {
@@ -64,7 +64,7 @@ class Orgs extends Component {
 	}
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
-		let newData = handleRequestSort(property, order, this.state.orgs)
+		let newData = handleRequestSort(property, order, this.props.orgs)
 		this.setState({ orgs: newData, order, orderBy: property })
 	}
 
@@ -99,23 +99,11 @@ class Orgs extends Component {
 		})
 	}
 	getData = async () => {
-		// const { t } = this.props
-		if (this.props.orgs) { 
+		if (this.props.orgs) {
 			this.setState({
-				orgs: this.props.orgs,
 				loading: false
 			}, () => this.handleRequestSort(null, 'name', 'asc'))
-			return
 		}
-		// let orgs = await getAllOrgs().then(rs => rs)
-		// if (this._isMounted) {
-		// 	this.setState({
-		// 		orgs: orgs ? orgs : [],
-			
-		// 		loading: false
-		// 	}, () => this.handleRequestSort(null, 'name', 'asc'))
-
-		// }
 	}
 
 	tabs = [
@@ -147,10 +135,10 @@ class Orgs extends Component {
 	}
 	renderOrgs = () => {
 		const { t } = this.props
-		const { loading, order, orderBy } = this.state
+		const { loading, order, orderBy, orgs, filters } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <OrgTable
-				data={this.state.orgs}
+				data={orgs}
 				tableHead={this.orgsHeader()}
 				handleFilterEndDate={this.handleFilterEndDate}
 				handleFilterKeyword={this.handleFilterKeyword}
@@ -159,7 +147,7 @@ class Orgs extends Component {
 				handleDeleteOrgs={this.handleDeleteOrgs}
 				orderBy={orderBy}
 				order={order}
-				filters={this.state.filters}
+				filters={filters}
 				t={t}
 			/>}
 		</GridContainer>

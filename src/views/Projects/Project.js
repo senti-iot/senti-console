@@ -28,7 +28,7 @@ class Project extends Component {
 			from: moment().subtract(7, 'd').startOf('day'),
 			to: moment().endOf('day'),
 			timeType: 2,
-			raw: false,
+			raw: props.rawData ? props.rawData : false,
 			project: {},
 			heatData: [],
 			openAssignDC: false,
@@ -98,7 +98,7 @@ class Project extends Component {
 						dataCollections: rs.dataCollections.map((dc, i) => ({ ...dc, color: colors[i] })),
 						devices: rs.dataCollections.filter(dc => dc.activeDevice ? true : false).map((dc, i) => dc.activeDevice ? { ...dc.activeDevice, color: colors[i] } : null)
 					}, loading: false
-				}, () => window.state = this.state)
+				})
 			}
 		})
 	}
@@ -231,18 +231,19 @@ class Project extends Component {
 	}
 	getHeatMapData = async () => {
 		// const { device } = this.props
-		const { from, to, raw, project } = this.state
+		const { from, to, project } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		let dataArr = []
 		await Promise.all(project.dataCollections.map(async d => {
 			let dataSet = null
-			let data = await getDataSummary(d.id, startDate, endDate, raw)
+			let data = await getDataSummary(d.id, startDate, endDate, true)
 			dataSet = {
 				name: d.name,
 				id: d.activeDevice ? d.activeDevice.id : 0, 
 				data: data,
 				color: d.color,
+				liveStatus: d.activeDevice ? d.activeDevice.liveStatus : 0,
 				lat: d.activeDevice ? d.activeDevice.lat : 0,
 				long: d.activeDevice ? d.activeDevice.long : 0
 			}
@@ -269,8 +270,8 @@ class Project extends Component {
 	handleSetDate = (id, to, from, timeType, loading) => {
 		this.setState({
 			dateOption: id,
-			to: to,
-			from: from,
+			to: moment(to),
+			from: moment(from),
 			timeType: timeType,
 			loadingData: loading !== undefined ? loading : true,
 		}, this.handleSwitchDayHourSummary)
@@ -409,29 +410,30 @@ class Project extends Component {
 	}
 	hoverGrow = () => {
 		const { timeType, dataArr, to, from, hoverID } = this.state
-		if (dataArr.findIndex(dc => dc.id === hoverID) !== -1 || hoverID === 0) {
-			let newState = {}
-			switch (timeType) {
-				case 0:
-					newState = setMinutelyData(dataArr, from, to, hoverID)
-					break;
-				case 1:
-					newState = setHourlyData(dataArr, from, to, hoverID)
-					break
-				case 2:
-					newState = setDailyData(dataArr, from, to, hoverID)
-					break
-				case 3:
-					newState = setSummaryData(dataArr, from, to, hoverID)
-					break
-				default:
-					break;
-			}
+		if (dataArr)
+			if (dataArr.findIndex(dc => dc.id === hoverID) !== -1 || hoverID === 0) {
+				let newState = {}
+				switch (timeType) {
+					case 0:
+						newState = setMinutelyData(dataArr, from, to, hoverID)
+						break;
+					case 1:
+						newState = setHourlyData(dataArr, from, to, hoverID)
+						break
+					case 2:
+						newState = setDailyData(dataArr, from, to, hoverID)
+						break
+					case 3:
+						newState = setSummaryData(dataArr, from, to, hoverID)
+						break
+					default:
+						break;
+				}
 
-			this.setState({
-				...newState
-			})
-		}
+				this.setState({
+					...newState
+				})
+			}
 		
 	}
 	renderDeleteDialog = () => {
@@ -465,12 +467,12 @@ class Project extends Component {
 	}
 
 	renderMenu = () => {
-		const { classes, t } = this.props
+		const { t } = this.props
 		const { dateOption, to, from, timeType } = this.state
 		return <DateFilterMenu
 			timeType={timeType}
 			dateOption={dateOption}
-			classes={classes}
+			// classes={classes}
 			to={to}
 			from={from}
 			t={t}
@@ -563,7 +565,8 @@ class Project extends Component {
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	language: state.settings.language,
-	saved: state.favorites.saved
+	saved: state.favorites.saved,
+	rawData: state.settings.rawData
 })
 
 const mapDispatchToProps = (dispatch) => ({

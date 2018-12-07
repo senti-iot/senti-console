@@ -19,6 +19,7 @@ import InfoCard from './Cards/InfoCard'
 // ##############################
 // // // AssignComponents
 // #############################
+import ExportModal from './Exports/ExportModal'
 
 import AssignOrg from './AssignComponents/AssignOrg'
 import AssignDevice from './AssignComponents/AssignDevice'
@@ -34,8 +35,7 @@ import CustomDateTime from './CustomInput/CustomDateTime'
 import CustomInput from './CustomInput/CustomInput.js';
 import DSelect from './CustomInput/DSelect'
 import DateFilterMenu from './CustomInput/DateFilterMenu'
-import ExportModal from './Exports/ExportModal'
-
+import AddressInput from './CustomInput/AddressInput'
 // ##############################
 // // // Footer
 // #############################
@@ -90,8 +90,11 @@ import CardHeader from './Card/CardHeader';
 import CardFooter from './Card/CardFooter'
 import CardBody from './Card/CardBody'
 import WeatherIcon from './Typography/WeatherIcon'
+import T from './Typography/T.js'
 
 export {
+	AddressInput,
+	T,
 	ExportModal,
 	DateFilterMenu,
 	WeatherIcon,

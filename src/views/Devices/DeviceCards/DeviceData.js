@@ -9,7 +9,7 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart, /* CloudDownload */
+	ExpandMore, Visibility, ShowChart, ArrowUpward, /* CloudDownload */
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
@@ -53,10 +53,10 @@ class DeviceData extends PureComponent {
 		{ id: 6, label: this.props.t('filters.dateOptions.custom') },
 	]
 	timeTypes = [
-		{ id: 0, format: 'lll dddd', chart: 'minute' },
-		{ id: 1, format: 'lll dddd', chart: 'hour' },
-		{ id: 2, format: 'll dddd', chart: 'day' },
-		{ id: 3, format: 'll dddd', chart: 'month' },
+		{ id: 0, format: 'lll dddd', chart: 'minute', tooltipFormat: 'LT' },
+		{ id: 1, format: 'lll dddd', chart: 'hour', tooltipFormat: 'LT' },
+		{ id: 2, format: 'll dddd', chart: 'day', tooltipFormat: 'll' },
+		{ id: 3, format: 'll dddd', chart: 'month', tooltipFormat: 'MMM YY' },
 	]
 	visibilityOptions = [
 		{ id: 0, icon: <PieChartRounded />, label: this.props.t('charts.type.pie') },
@@ -98,6 +98,34 @@ class DeviceData extends PureComponent {
 			[date]: e
 		})
 	}
+	handleReverseZoomOnData = async () => {
+		const { timeType } = this.props
+		const { zoomDate } = this.state
+		let startDate = null
+		let endDate = null
+		try {
+			switch (timeType) {
+				case 0:
+					startDate = zoomDate.length > 1 ? moment(zoomDate[1].from).startOf('day') : zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
+					endDate = zoomDate.length > 1 ? moment(zoomDate[1].to).endOf('day') : zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
+					if (zoomDate.length === 1) {
+						this.setState({ resetZoom: false, zoomDate: [] })
+					}
+					this.props.handleSetDate(6, endDate, startDate, 1, false)
+					break;
+				case 1:
+					startDate = zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
+					endDate = zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
+					this.setState({ resetZoom: false, zoomDate: [] })
+					this.props.handleSetDate(6, endDate, startDate, 2, false)
+					break;
+				default:
+					break;
+			}
+		}
+		catch (e) {
+		}
+	}
 
 	handleZoomOnData = async (elements) => {
 		if (elements.length > 0) {
@@ -108,14 +136,28 @@ class DeviceData extends PureComponent {
 			try {
 				date = lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
 				switch (timeType) {
-					case 1:
+					case 1: // Minutely
 						startDate = moment(date).startOf('hour')
 						endDate = moment(date).endOf('hour')
+						this.setState({
+							resetZoom: true, zoomDate: [...this.state.zoomDate, {
+								from: this.props.from,
+								to: moment(this.props.from, 'YYYY-MM-DD HH:mm').endOf('day')
+							}]
+						})
 						this.props.handleSetDate(6, endDate, startDate, 0, false)
 						break
-					case 2:
+					case 2: //Hourly
 						startDate = moment(date).startOf('day')
 						endDate = moment(date).endOf('day')
+						this.setState({
+							resetZoom: true, zoomDate: [
+								{
+									from: this.props.from,
+									to: this.props.to
+								}
+							]
+						})
 						this.props.handleSetDate(6, endDate, startDate, 1, false)
 						break;
 					default:
@@ -123,7 +165,7 @@ class DeviceData extends PureComponent {
 				}
 			}
 			catch (error) {
-				
+
 			}
 		}
 	}
@@ -200,9 +242,16 @@ class DeviceData extends PureComponent {
 	}
 
 	renderMenu = () => {
-		const { actionAnchor, actionAnchorVisibility } = this.state
+		const { actionAnchor, actionAnchorVisibility, resetZoom } = this.state
 		const { classes, t } = this.props
 		return <Fragment>
+			<ItemG>
+				<Collapse in={resetZoom}>
+					<IconButton title={'Reset zoom'} onClick={this.handleReverseZoomOnData}>
+						<ArrowUpward />
+					</IconButton>
+				</Collapse>
+			</ItemG>
 			<ItemG>
 				<Hidden smDown>
 					<IconButton title={'Chart Type'} variant={'fab'} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
@@ -266,7 +315,7 @@ class DeviceData extends PureComponent {
 				<ListItem button onClick={this.props.handleRawData}>
 					<ListItemIcon>
 						<Checkbox
-							checked={this.props.raw}
+							checked={Boolean(this.props.raw)}
 							// disabled
 							className={classes.noPadding}
 						/>
