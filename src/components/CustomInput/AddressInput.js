@@ -58,7 +58,7 @@ class AddressInput extends React.Component {
 	}
 	getSuggestionValue = s => s.value
 	handleGetAdresses = async (query) => {
-		if (query.legth < 100)
+		if (query.length < 100)
 			getAdresses(query).then(rs => {
 				return rs ? this.setState({ suggestions: rs.map(a => ({ label: a.tekst, value: a.tekst })) }) : null
 			})
