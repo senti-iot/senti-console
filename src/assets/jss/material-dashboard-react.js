@@ -51,8 +51,8 @@ const card = {
 	width: "100%",
 	boxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.14)",
 	borderRadius: "3px",
-	color: "rgba(0, 0, 0, 0.87)",
-	background: "#fff",
+	// color: "rgba(0, 0, 0, 0.87)",
+	// background: "#fff",
 	overflow: "visible"
 };
 
