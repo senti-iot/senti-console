@@ -53,7 +53,7 @@ class InfoCard extends PureComponent {
 			noAvatar, leftActions, leftActionContent, noRightExpand, t  } = this.props;
 
 		return (
-			<Card className={classes.card + classes.plainCardClasses}>
+			<Card className={classes.card + " " + classes.plainCardClasses}>
 				<CardHeader
 					action={this.renderTopAction()}
 					avatar={noAvatar ? null : <Avatar aria-label='Avatar' className={classes.avatar}>{avatar}</Avatar>}

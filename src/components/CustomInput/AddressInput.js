@@ -58,9 +58,10 @@ class AddressInput extends React.Component {
 	}
 	getSuggestionValue = s => s.value
 	handleGetAdresses = async (query) => {
-		getAdresses(query).then(rs => {
-			this.setState({ suggestions: rs.map(a => ({ label: a.tekst, value: a.tekst })) })
-		})
+		if (query.legth < 100)
+			getAdresses(query).then(rs => {
+				return rs ? this.setState({ suggestions: rs.map(a => ({ label: a.tekst, value: a.tekst })) }) : null
+			})
 
 	}
 	getSuggestions = (value) => {
@@ -110,7 +111,6 @@ class AddressInput extends React.Component {
 			<TextField
 				multiline
 				margin='normal'
-				// className={classes.textField}
 				InputProps={{
 					inputRef: node => {
 						ref(node);

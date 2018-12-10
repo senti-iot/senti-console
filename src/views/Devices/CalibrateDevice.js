@@ -1,13 +1,12 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withStyles, Grid, TextField, FormControl, InputLabel, Select, Input, MenuItem, FormHelperText } from '@material-ui/core';
-import { ItemGrid, Info, Danger, AddressInput } from 'components'
+import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withStyles, Grid, TextField, FormControl, InputLabel, Select, Input, MenuItem, FormHelperText, MobileStepper } from '@material-ui/core';
+import { ItemGrid, Info, Danger, AddressInput, ItemG, InfoCard, T } from 'components'
 import { getDevice, calibrateDevice, uploadPictures } from 'variables/dataDevices'
 import Caption from 'components/Typography/Caption'
 import CounterModal from 'components/Devices/CounterModal'
 import ImageUpload from './ImageUpload'
-import { NavigateNext, NavigateBefore, Done, Restore, MyLocation, Router, Devices } from 'variables/icons'
+import { NavigateNext, NavigateBefore, Done, Restore, MyLocation, Devices, DeviceHub } from 'variables/icons'
 import GridContainer from 'components/Grid/GridContainer';
-// import { PlacesWithStandaloneSearchBox } from 'components/Map/SearchBox'
 import { CalibrateMap } from 'components/Map/CalibrateMaps';
 import { isFav, updateFav } from 'redux/favorites';
 import { connect } from 'react-redux'
@@ -15,19 +14,13 @@ import TimeCounterModal from 'components/Devices/TimeCounterModal';
 
 
 const styles = theme => ({
-	button: {
-		marginTop: theme.spacing.unit,
-		marginRight: theme.spacing.unit,
-	},
+
 	actionsContainer: {
 		marginTop: theme.spacing.unit * 2,
 		// marginBottom: theme.spacing.unit * 2,
 	},
 	resetContainer: {
 		padding: theme.spacing.unit * 3,
-	},
-	input: {
-		minWidth: 300
 	},
 	latlong: {
 		margin: theme.spacing.unit * 2 + 'px 0px'
@@ -40,6 +33,12 @@ const styles = theme => ({
 	},
 	iconButtonRight: {
 		marginLeft: theme.spacing.unit
+	},
+	mobileStepper: {
+
+		padding: '8px 0px',
+		// maxWidth: 400,
+		// flexGrow: 1,
 	},
 	paper: {
 		width: '100%',
@@ -70,7 +69,7 @@ class CalibrateDevice extends Component {
 			locationType: 0,
 			address: ''
 		}
-		props.setHeader( { id: 'calibration.header', options: { deviceId: props.match.params.id } }, true, `/device/${props.match.params.id}`, 'devices')
+		props.setHeader({ id: 'calibration.header', options: { deviceId: props.match.params.id } }, true, `/device/${props.match.params.id}`, 'devices')
 	}
 	componentDidMount = async () => {
 		if (this.props.match) {
@@ -182,7 +181,6 @@ class CalibrateDevice extends Component {
 	}
 
 	handleSetAddress = (e) => {
-		console.log(e)
 		this.setState({ address: e })
 	}
 
@@ -219,7 +217,7 @@ class CalibrateDevice extends Component {
 		</Grid>
 	}
 	getLatLngFromMap = (e) => {
-		
+
 		this.setState({
 			lat: e.lat,
 			long: e.long
@@ -230,13 +228,11 @@ class CalibrateDevice extends Component {
 		return <Grid container>
 			<ItemGrid xs={12}>
 				<div style={{ maxHeight: 400 }}>
-
 					<CalibrateMap
 						onClick={this.getLatLngFromMap}
 					/>
 				</div>
 				<AddressInput value={this.state.address} handleChange={this.handleSetAddress} />
-				{/* <PlacesWithStandaloneSearchBox address={this.state.address} handleChange={this.handleSetAddress} t={t}/> */}
 			</ItemGrid>
 			<ItemGrid xs={12}>
 				<FormControl className={this.props.classes.formControl}>
@@ -274,11 +270,23 @@ class CalibrateDevice extends Component {
 
 	renderCalibration = () => {
 		const { calType, t } = this.props
-		return calType ? <CounterModal t={t} handleFinish={this.handleCalibration} /> : <TimeCounterModal t={t} handleFinish={this.handleCalibration}/>
+		return this.props.theme.breakpoints.width('sm') <= window.innerWidth ?
+			<ItemG container>
+				{calType ? <CounterModal t={t} handleFinish={this.handleCalibration} /> : <TimeCounterModal t={t} handleFinish={this.handleCalibration} />}
+			</ItemG> :
+			<ItemG container justify={'center'}>
+				{calType ? <CounterModal t={t} handleFinish={this.handleCalibration} /> : <TimeCounterModal t={t} handleFinish={this.handleCalibration} />}
+			</ItemG>
 	}
 
 	renderImageUpload = () => {
-		return <ImageUpload t={this.props.t} imgUpload={this.getImages} dId={this.state.device.id}/>
+		return this.props.theme.breakpoints.width('sm') <= window.innerWidth ?
+			<ItemG container>
+				<ImageUpload t={this.props.t} imgUpload={this.getImages} dId={this.state.device.id} />
+			</ItemG> :
+			<ItemG container justify={'center'}>
+				<ImageUpload t={this.props.t} imgUpload={this.getImages} dId={this.state.device.id} />
+			</ItemG>
 	}
 
 	renderStep = (step) => {
@@ -328,7 +336,7 @@ class CalibrateDevice extends Component {
 				this.setState({ error: { message: this.props.t('404.networkError') } })
 			}
 
-		}	
+		}
 		else {
 			this.setState({
 				activeStep: activeStep + 1,
@@ -374,6 +382,8 @@ class CalibrateDevice extends Component {
 	}
 
 	stepChecker = () => {
+		// Debug Purposes
+		// return false
 		/**
 		 * Return false to NOT disable the Next Step Button
 		 */
@@ -389,8 +399,40 @@ class CalibrateDevice extends Component {
 				break;
 		}
 	}
-
-	render() {
+	renderFinish = () => {
+		const { activeStep, device, error } = this.state
+		const { classes, t } = this.props
+		const steps = this.getSteps()
+		return activeStep === steps.length && device && (
+			<Paper square elevation={0} className={classes.resetContainer}>
+				{error ? <Danger >{error.message}</Danger> : <Fragment>
+					<Typography variant={'h6'}>{t('calibration.texts.success')}</Typography>
+					<Typography paragraph>
+						{t('calibration.texts.successMessage')}
+					</Typography>
+				</Fragment>}
+				<Grid container>
+					<ItemG container xs={12}>
+						<Button onClick={this.handleFinish} color={'primary'} variant={'contained'} className={classes.buttonMargin}>
+							<DeviceHub className={classes.iconButton} />{t('actions.viewDevice')} {device.id}
+						</Button>
+						<Button onClick={this.handleGoToDeviceList} color={'primary'} variant={'contained'} className={classes.buttonMargin}>
+							<Devices className={classes.iconButton} />{t('actions.viewDeviceList')}
+						</Button>
+					</ItemG>
+					{/* <ItemG xs={12} md={9} lg={6} xl={10}>
+						
+					</ItemG> */}
+					<ItemG xs={12}>
+						<Button variant={'outlined'} onClick={this.handleReset} className={classes.buttonMargin} >
+							<Restore className={classes.iconButton} />{t('actions.reset')}
+						</Button>
+					</ItemG>
+				</Grid>
+			</Paper>
+		)
+	}
+	renderDeviceCalibration = () => {
 		const { t, classes } = this.props;
 		const steps = this.getSteps();
 		const { activeStep, device, error } = this.state;
@@ -406,8 +448,6 @@ class CalibrateDevice extends Component {
 										<StepLabel>{label}</StepLabel>
 										<StepContent>
 											<Typography paragraph>{this.getStepContent(index)}</Typography>
-											{/* <Divider/> */}
-
 											<Grid>
 												{error ? <Danger >{error.message}</Danger> : null}
 												{this.renderStep(index)}
@@ -422,19 +462,18 @@ class CalibrateDevice extends Component {
 														<NavigateBefore className={classes.iconButton} />{t('actions.back')}
 													</Button>
 													<Button
-														variant='contained'
+														variant={activeStep === steps.length - 1 || activeStep === steps.length ? 'outlined' : 'contained'}
 														color='primary'
 														onClick={this.handleNext}
 														className={classes.button}
 														disabled={this.stepChecker()}
 													>
-														{activeStep === steps.length - 1 ? <Fragment>
-
+														{activeStep === steps.length - 1 || activeStep === steps.length ? <ItemG container alignItems={'center'} justify={'center'}>
 															<Done className={classes.iconButton} />{t('actions.finish')}
-														</Fragment> :
-															<Fragment>
+														</ItemG> :
+															<ItemG container justify={'center'} alignItems={'center'}>
 																<NavigateNext className={classes.iconButton} />{t('actions.next')}
-															</Fragment>}
+															</ItemG>}
 													</Button>
 												</Grid>
 											</div>
@@ -443,32 +482,83 @@ class CalibrateDevice extends Component {
 								);
 							})}
 						</Stepper> : null}
-					{activeStep === steps.length && device && (
-						<Paper square elevation={0} className={classes.resetContainer}>
-							<Typography variant={'h6'}>{t('calibration.texts.success')}</Typography>
-							<Typography paragraph>
-								{t('calibration.texts.successMessage')}
-							</Typography>
-							<Grid container>
-								<ItemGrid xs>
-									<Button onClick={this.handleFinish} color={'primary'} variant={'contained'} className={classes.buttonMargin}>
-										<Router className={classes.iconButton} />{t('actions.viewDevice')} {device.id}
-									</Button>
-									<Button onClick={this.handleGoToDeviceList} color={'primary'} variant={'contained'} className={classes.buttonMargin}>
-										<Devices className={classes.iconButton} />{t('actions.viewDeviceList')}
-									</Button>
-								</ItemGrid>
-								<ItemGrid xs>
-									<Button onClick={this.handleReset} className={classes.button} >
-										<Restore className={classes.iconButton} />{t('actions.reset')}
-									</Button>
-								</ItemGrid>
-							</Grid>
-						</Paper>
-					)}
+					{this.renderFinish()}
 				</Paper>
 			</GridContainer>
 		)
+	}
+	renderMobileCalibration = () => {
+		const { t, classes } = this.props
+		const steps = this.getSteps()
+		const { activeStep, device } = this.state
+		return (
+			device ?
+				<Fragment>
+					<ItemG style={{ marginBottom: 65 }}>
+						{activeStep === steps.length ? null : <GridContainer style={{ padding: 16 }}>
+							<InfoCard
+								noExpand
+								avatar={<T reversed>{activeStep + 1}</T>}
+								title={steps[activeStep]}
+								content={<Fragment>
+									<Typography paragraph>{this.getStepContent(activeStep)}</Typography>
+									{this.renderStep(activeStep)}
+								</Fragment>}
+							/>
+						</GridContainer>}
+						<GridContainer style={{ padding: 16 }}>
+							{this.renderFinish()}
+						</GridContainer>
+					</ItemG>
+	
+					<MobileStepper
+						variant="progress"
+						steps={steps.length}
+						position="bottom"
+						activeStep={activeStep}
+						className={classes.mobileStepper}
+						LinearProgressProps={{
+							style: {
+								flexGrow: 1,
+								maxWidth: '150px',
+								width: 'auto' 
+							}
+						}}
+						nextButton={
+							<Button
+								size={'small'}
+								color='primary'
+								onClick={this.handleNext}
+								className={classes.button}
+								disabled={this.stepChecker() || activeStep === steps.length}
+							>
+								{activeStep === steps.length - 1 ? <Fragment>
+									{t('actions.finish')} <Done className={classes.iconButtonRight} />
+								</Fragment> :
+									<Fragment>
+										{t('actions.next')}<NavigateNext className={classes.iconButtonRight} />
+									</Fragment>}
+							</Button>
+						}
+						backButton={
+							<Button
+								size={'small'}
+								disabled={activeStep === 0}
+								onClick={this.handleBack}
+								className={classes.button}
+							>
+								<NavigateBefore className={classes.iconButton} />{t('actions.back')}
+							</Button>
+						}
+						orientation='vertical' />
+				
+				</Fragment>
+				: null
+
+		)
+	}
+	render() {
+		return this.props.theme.breakpoints.width('sm') > window.innerWidth ? this.renderMobileCalibration() : this.renderDeviceCalibration()
 	}
 }
 const mapStateToProps = (state) => ({
@@ -480,4 +570,4 @@ const mapDispatchToProps = (dispatch) => ({
 	updateFav: (favObj) => dispatch(updateFav(favObj))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CalibrateDevice))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(CalibrateDevice))

@@ -8,8 +8,14 @@ const theme = createMuiTheme({
 		suppressDeprecationWarnings: true,
 	},
 	overrides: {
+		MuiPaper: {
+			root: {
+				width: '100%'
+			}
+		},
 		MuiCard: {
 			root: {
+				width: '100%',
 				overflow: "visible"
 			}
 		},
