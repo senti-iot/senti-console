@@ -83,7 +83,10 @@ class CalibrateDevice extends Component {
 						})
 					else {
 						this.setState({
-							device: rs,
+							device: {
+								...rs,
+								address: rs.address ? rs.address : ''
+							},
 							loading: false,
 							lat: rs.lat,
 							long: rs.long,
@@ -190,6 +193,8 @@ class CalibrateDevice extends Component {
 	renderDeviceNameDescriptionForms = () => {
 		const { classes, t } = this.props
 		return <Grid container>
+			<AddressInput value={this.state.address} handleChange={this.handleSetAddress} />
+
 			<ItemGrid xs={12}>
 				<TextField
 					required={true}

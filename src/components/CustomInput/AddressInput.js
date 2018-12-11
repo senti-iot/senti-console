@@ -7,11 +7,20 @@ import parse from 'autosuggest-highlight/parse';
 // import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
-import { TextField, ListItem } from '@material-ui/core'
+import { TextField } from '@material-ui/core'
 import { getAdresses } from 'variables/dataDevices';
 import withLocalization from 'components/Localization/T';
-
+import teal from '@material-ui/core/colors/teal'
 const styles = theme => ({
+	listItem: {
+		padding: theme.spacing.unit, 
+		cursor: 'pointer',
+		'&:hover': {
+			background: theme.palette.type === 'dark' ? "#333" : teal[500],
+			color: '#fff'
+		},
+		boxShadow: 'none'
+	 },
 	paperMenu: {
 		maxWidth: 300,
 		maxHeight: 200,
@@ -127,21 +136,19 @@ class AddressInput extends React.Component {
 		const matches = match(suggestion.label, query);
 		const parts = parse(suggestion.label, matches);
 		return (
-			<ListItem role={'option'} selected={isHighlighted}>
-				<div>
-					{parts.map((part, index) => {
-						return part.highlight ? (
-							<span key={String(index)} style={{ fontWeight: 500 }}>
-								{part.text}
-							</span>
-						) : (
-							<strong key={String(index)} style={{ fontWeight: 300 }}>
-								{part.text}
-							</strong>
-						);
-					})}
-				</div>
-			</ListItem>
+			<Paper square classes={{ root: this.props.classes.listItem }} /* role={'option'} selected={isHighlighted} */>
+				{parts.map((part, index) => {
+					return part.highlight ? (
+						<span key={String(index)} style={{ fontWeight: 500, color: this.props.theme.palette.type === 'dark' ? '#fff' : 'inherit' }}>
+							{part.text}
+						</span>
+					) : (
+						<strong key={String(index)} style={{ fontWeight: 300, color: this.props.theme.palette.type === 'dark' ? '#fff' : 'inherit' }}>
+							{part.text}
+						</strong>
+					);
+				})}
+			</Paper>
 		);
 	}
 	render() {
@@ -187,4 +194,4 @@ AddressInput.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withLocalization()(withStyles(styles)(AddressInput));
+export default withLocalization()(withStyles(styles, { withTheme: true })(AddressInput));
