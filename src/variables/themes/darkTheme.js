@@ -10,6 +10,7 @@ const theme = createMuiTheme({
 	overrides: {
 		MuiCard: {
 			root: {
+				width: '100%',
 				overflow: "visible"
 			}
 		},

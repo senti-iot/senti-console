@@ -55,7 +55,7 @@ class ImageUpload extends Component {
 											: null}
 								</ItemGrid> : null}
 							<ItemGrid xs={6} noMargin container justify={'center'}>
-								<Button variant='contained' color={success ? 'primary' : 'default'} component='span' className={classes.button} onClick={success ? this.finish : this.upload}>
+								<Button variant={success ? 'outlined' : 'contained'} color={"primary"} component='span' className={classes.button} onClick={success ? this.finish : this.upload}>
 									{!success ? <Fragment>
 										<CloudUpload className={classes.iconButton} />{t('images.upload')}
 									</Fragment>
@@ -65,7 +65,7 @@ class ImageUpload extends Component {
 								</Button>
 							</ItemGrid>
 							<ItemGrid xs={6} noMargin container justify={'center'}>
-								<Button variant={'contained'} component='span' className={classes.button} onClick={this.handleReset}>
+								<Button variant={'outlined'} component='span' className={classes.button} onClick={this.handleReset}>
 									<Restore className={classes.iconButton} />{t('images.reset')}
 								</Button>
 							</ItemGrid>
@@ -83,7 +83,7 @@ class ImageUpload extends Component {
 								onChange={this.tempUpload}
 							/>
 							<label htmlFor='contained-button-file'>
-								<Button variant='contained' component='span' className={classes.button}>
+								<Button variant='contained' color={'primary'} component='span' className={classes.button}>
 									<CloudUpload className={classes.iconButton} />{t('images.add')}
 								</Button>
 							</label>

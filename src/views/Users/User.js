@@ -81,7 +81,10 @@ class User extends Component {
 			if (match.params.id) {
 				await getUser(match.params.id).then(async rs => {
 					if (rs.id === null)
-						history.push('/404')
+						history.push({
+							pathname: '/404',
+							prevURL: window.location.pathname
+						})
 					else {
 						let prevURL = location.prevURL ? location.prevURL : '/management/users'
 						setHeader("users.user", true, prevURL, 'users')
@@ -91,7 +94,10 @@ class User extends Component {
 			}
 		}
 		else {
-			history.push('/404')
+			history.push({
+				pathname: '/404',
+				prevURL: window.location.pathname
+			})
 		}
 	}
 	resendConfirmEmail = async () => {

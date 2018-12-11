@@ -69,6 +69,11 @@ class EditProject extends Component {
 		const { location } = this.props
 		// let projectOrgID = 0
 		await getProject(id).then(p => {
+			if (p === null)
+				this.props.history.push({
+					pathname: '/404',
+					prevURL: window.location.pathname
+				})
 			if (p && this._isMounted) {
 				// projectOrgID = p.org.id
 				this.setState({

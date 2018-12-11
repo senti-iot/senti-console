@@ -114,9 +114,9 @@ class CounterModal extends React.Component {
 		const { classes, t } = this.props;
 		const { started, finished } = this.state
 		return (
-			<div >
+			<Fragment>
 				{/* <Typography gutterBottom>Click to get the full Modal experience!</Typography> */}
-				<Button variant={'outlined'} color={'primary'} onClick={this.handleOpen}>
+				<Button variant={'contained'} color={'primary'} onClick={this.handleOpen}>
 					<OpenInBrowser className={classes.iconButton} /> {t('actions.openCounter')}
 				</Button>
 				<Modal
@@ -179,7 +179,7 @@ class CounterModal extends React.Component {
 						{/* <SimpleModalWrapped /> */}
 					</Grid>
 				</Modal>
-			</div>
+			</Fragment>
 		);
 	}
 

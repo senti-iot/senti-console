@@ -118,8 +118,11 @@ class EditCollection extends Component {
 					handleOpenOrg={this.handleOpenOrg}
 					handleChangeOrg={this.handleChangeOrg}
 					handleUpdate={this.handleUpdate}
-					t={t}
-				/> : <Redirect to={'/404'} />
+					t={t} /> 
+					: <Redirect to={{
+						pathname: '/404', 
+						prevURL: window.location.pathname
+					}} />
 		)
 	}
 }

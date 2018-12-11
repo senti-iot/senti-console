@@ -114,9 +114,8 @@ class TimeCounterModal extends React.Component {
 		const { classes, t } = this.props;
 		const { started, finished } = this.state
 		return (
-			<div >
-				{/* <Typography gutterBottom>Click to get the full Modal experience!</Typography> */}
-				<Button variant={'outlined'} color={'primary'} onClick={this.handleOpen}>
+			<Fragment>
+				<Button variant='contained' color={'primary'} onClick={this.handleOpen}>
 					<OpenInBrowser className={classes.iconButton} /> {t('actions.openCounter')}
 				</Button>
 				<Modal
@@ -179,7 +178,7 @@ class TimeCounterModal extends React.Component {
 						{/* <SimpleModalWrapped /> */}
 					</Grid>
 				</Modal>
-			</div>
+			</Fragment>
 		);
 	}
 
