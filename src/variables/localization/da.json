@@ -1,6 +1,6 @@
 {
 	"404": {
-		"errorMessage": "Den ønskede ressource er ikke fundet! Prøv igen eller kontakt support!",
+		"errorMessage": "Den ønskede ressource er ikke fundet! Prøv igen eller kontakt support på support@senti.cloud!",
 		"networkError": "Netværksfejl!",
 		"title": "404 fejl - Siden ikke fundet"
 	},
@@ -397,7 +397,7 @@
 		"birthdays": "Ingen fødselsdage i dag",
 		"doi": "ingen helligdage i dag",
 		"activeDevice": "Ingen aktiv enhed",
-		"audioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a different browser.",
+		"audioSupported": "Din browser understøtter ikke lydfiler! Der er således ikke lyd respons! Forsøg igen med en anden browser.",
 		"collection": "Ikke tildelt til en datasamling",
 		"collections": "Ingen datasamlinger",
 		"device": "Ingen enhed",
