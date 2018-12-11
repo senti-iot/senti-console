@@ -48,7 +48,7 @@ export const dawaApi = create({
 	}
 })
 export const customerDoIApi = create({
-	baseURL: `https://dev.api.senti.cloud/annual/v1`,
+	baseURL: `https://api.senti.cloud/annual/v1`,
 	timeout: 30000,
 	headers: {
 		'auth': encrypt(process.env.REACT_APP_ENCRYPTION_KEY),
@@ -58,7 +58,7 @@ export const customerDoIApi = create({
 })
 // const apiRoute = '/holidays/v1/2018-01-01/2018-12-31/da'
 export const holidayApi = create({
-	baseURL: `https://dev.api.senti.cloud/holidays/v1`,
+	baseURL: `https://api.senti.cloud/holidays/v1`,
 	timeout: 30000,
 	headers: {
 		'auth': encrypt(process.env.REACT_APP_ENCRYPTION_KEY),
