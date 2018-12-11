@@ -193,8 +193,6 @@ class CalibrateDevice extends Component {
 	renderDeviceNameDescriptionForms = () => {
 		const { classes, t } = this.props
 		return <Grid container>
-			<AddressInput value={this.state.address} handleChange={this.handleSetAddress} />
-
 			<ItemGrid xs={12}>
 				<TextField
 					required={true}
