@@ -2,7 +2,8 @@ import React, { PureComponent } from 'react'
 import { InfoCard, Caption, Dropdown, CircularLoader } from 'components';
 import { Map } from 'variables/icons'
 import { Grid, Checkbox } from '@material-ui/core';
-import { Maps } from 'components/Map/Maps';
+// import { Maps } from 'components/Map/Maps';
+import OpenStreetMap from 'components/Map/OpenStreetMap';
 
 export default class DeviceMap extends PureComponent {
 	constructor(props) {
@@ -26,10 +27,11 @@ export default class DeviceMap extends PureComponent {
 				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat, long: device.long })}, Heatmap ${this.state.heatMap ? t('actions.on') : t('actions.off')}` : null}
 				avatar={<Map />}
 				topAction={device ? (device.lat && device.long ? this.renderMenu() : null) : null}
-				hiddenContent={
+				content={
 					loading ? <CircularLoader /> :  
 						<Grid container justify={'center'}>
-							{device.lat && device.long ? <Maps heatMap={this.state.heatMap} t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t('devices.notCalibrated')}</Caption>}
+							{/* {device.lat && device.long ? <Maps heatMap={this.state.heatMap} t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t('devices.notCalibrated')}</Caption>} */}
+							{device.lat && device.long ? <OpenStreetMap heatMap={this.state.heatMap} t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t('devices.notCalibrated')}</Caption>}
 						</Grid>
 				} />
 

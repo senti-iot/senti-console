@@ -6,7 +6,7 @@ import MarkerClusterer from 'react-google-maps/lib/components/addons/MarkerClust
 import { connect } from 'react-redux'
 import { colors } from 'variables/colors';
 import { withStyles } from '@material-ui/core';
-import darkMode from './mapStyle';
+import { darkMode } from './mapStyles';
 
 
 class MapComponent extends Component {
