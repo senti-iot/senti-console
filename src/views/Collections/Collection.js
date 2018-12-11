@@ -78,7 +78,11 @@ class Collection extends Component {
 	getCollection = async (id) => {
 		await getCollection(id).then(async rs => {
 			if (rs === null)
-				this.props.history.push('/404')
+			
+				this.props.history.push({
+					pathname: '/404',
+					prevURL: window.location.pathname
+				})
 			else {
 				this.setState({ collection: rs })
 		
@@ -118,7 +122,10 @@ class Collection extends Component {
 			}
 		}
 		else {
-			this.props.history.push('/404')
+			this.props.history.push({
+				pathname: '/404',
+				prevURL: window.location.pathname
+			})
 		}
 	}
 	addToFav = () => {

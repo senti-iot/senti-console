@@ -52,7 +52,10 @@ class Org extends Component {
 			if (match.params.id) {
 				await getOrg(match.params.id).then(async rs => {
 					if (rs === null)
-						history.push('/404')
+						history.push({
+							pathname: '/404',
+							prevURL: window.location.pathname
+						})
 					else {
 						let prevURL = location.prevURL ? location.prevURL : '/management/orgs'
 						setHeader('orgs.organisation', true, prevURL, 'users')

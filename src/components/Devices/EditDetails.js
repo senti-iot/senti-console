@@ -23,11 +23,17 @@ class EditDeviceDetails extends Component {
 	}
 	componentDidMount = async () => {
 		let id = this.props.match.params.id
-		await getDevice(id).then(rs =>
+		await getDevice(id).then(rs => {
+			if (rs === null)
+				this.props.history.push({
+					pathname: '/404',
+					prevURL: window.location.pathname
+				})
 			this.setState({
-				device: rs
-			}))
-		this.setState({ loading: false })
+				device: rs,
+				loading: false
+			})
+		})
 	}
 	componentWillUnmount = () => {
 		clearTimeout(this.timer);
@@ -73,7 +79,7 @@ class EditDeviceDetails extends Component {
 				id: 0
 			}
 		}
-		await updateDevice(updateD).then(rs =>  rs ?  this.goToDevice() : null )
+		await updateDevice(updateD).then(rs => rs ? this.goToDevice() : null)
 	}
 	goToDevice = () => {
 		const { isFav, updateFav } = this.props
@@ -123,11 +129,11 @@ class EditDeviceDetails extends Component {
 									rows={4}
 									handleChange={this.handleInput('description')}
 									value={device.description}
-						
+
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
-								<AddressInput value={device.address} handleChange={this.handleSetAddress}/>
+								<AddressInput value={device.address} handleChange={this.handleSetAddress} />
 								{/* <PlacesWithStandaloneSearchBox
 									address={device.address}
 									t={t} handleChange={this.handleGoogleInput} /> */}
@@ -139,7 +145,7 @@ class EditDeviceDetails extends Component {
 							</ItemGrid>
 							<ItemGrid xs={12} container justify={'center'}>
 								{/* <ItemGrid /* xs={12} > */}
-							
+
 								{/* </ItemGrid> */}
 								{/* <ItemGrid> */}
 								<Button
@@ -148,10 +154,10 @@ class EditDeviceDetails extends Component {
 									disabled={this.state.updating || this.state.updated}
 									onClick={this.handleUpdateDevice}
 								>
-									{this.state.updated ? 
+									{this.state.updated ?
 										<Fragment>
-											<Check className={classes.leftIcon}/>{t('snackbars.redirect')}
-										</Fragment> : 
+											<Check className={classes.leftIcon} />{t('snackbars.redirect')}
+										</Fragment> :
 										<Fragment>
 											<Save className={classes.leftIcon} />{t('actions.save')}
 										</Fragment>}
@@ -166,7 +172,7 @@ class EditDeviceDetails extends Component {
 	}
 }
 
-const mapStateToProps = (state) => ({ 
+const mapStateToProps = (state) => ({
 
 })
 const mapDispatchToProps = (dispatch) => ({

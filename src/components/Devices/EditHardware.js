@@ -19,10 +19,17 @@ class EditDetails extends Component {
 	}
 	componentDidMount = async () => {
 		let id = this.props.match.params.id
-		await getDevice(id).then(rs => this.setState({
-			device: rs
-		}))
-		this.setState({ loading: false })
+		await getDevice(id).then(rs => {
+			if (rs === null)
+				this.props.history.push({
+					pathname: '/404',
+					prevURL: window.location.pathname
+				})
+			this.setState({
+				device: rs,
+				loading: false
+			})
+		})
 	}
 	componentWillUnmount = () => {
 		clearTimeout(this.timer);

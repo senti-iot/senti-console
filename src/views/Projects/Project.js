@@ -69,7 +69,10 @@ class Project extends Component {
 				this.getHeatMapData()
 			}
 			else {
-				history.push('/404')
+				history.push({
+					pathname: '/404',
+					prevURL: window.location.pathname
+				})
 			}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
@@ -90,7 +93,10 @@ class Project extends Component {
 
 		await getProject(id).then(async rs => {
 			if (rs === null)
-				history.push('/404')
+				history.push({
+					pathname: '/404',
+					prevURL: window.location.pathname
+				})
 			else {
 				this.setState({
 					project: {
