@@ -61,7 +61,13 @@ class EditUser extends Component {
 	getUser = async () => {
 		let id = this.props.match.params.id
 		if (id) {
-			let user = await getUser(id).then(rs => rs)
+			let user = await getUser(id).then(rs => { 
+				if (rs === null)
+					this.props.history.push({
+						pathname: '/404',
+						prevURL: window.location.pathname
+					})
+				return rs})
 			let g = 0
 			let userGroups = Object.keys(user.groups)
 			userGroups.sort((a, b) => a > b ? 1 : -1)

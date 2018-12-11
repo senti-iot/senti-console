@@ -77,7 +77,10 @@ class CalibrateDevice extends Component {
 			if (id)
 				await getDevice(id).then(rs => {
 					if (rs === null)
-						this.props.history.push('/404')
+						this.props.history.push({
+							pathname: '/404',
+							prevURL: window.location.pathname
+						})
 					else {
 						this.setState({
 							device: rs,

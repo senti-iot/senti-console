@@ -10,6 +10,8 @@ class NotFound extends Component {
 	}
 
 	render() {
+		const { location } = this.props
+		let prevURL = location.prevURL ? location.prevURL : ""
 		return (
 			<GridContainer>
 				<Paper style={{ width: '100%', height: 'calc(100vh - 70px' }}>
@@ -19,7 +21,10 @@ class NotFound extends Component {
 								404
 							</Typography>
 						</ItemG>
-						<ItemG xs={12}>
+						<ItemG container justify={'center'} xs={12} variant={'title'} style={{ margin: 24 }}>
+							<Typography bold>{prevURL}</Typography>
+						</ItemG>
+						<ItemG container justify={'center'} xs={12}>
 							<Typography variant={'h6'} style={{ margin: 24 }}>
 								{this.props.t('404.errorMessage')}
 							</Typography>

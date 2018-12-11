@@ -74,6 +74,11 @@ class EditOrg extends Component {
 		let id = this.props.match.params.id
 		const { accessLevel, t, location } = this.props
 		await getOrg(id).then(rs => {
+			if (rs === null)
+				this.props.history.push({
+					pathname: '/404',
+					prevURL: window.location.pathname
+				})
 			if (rs && this._isMounted) {
 				this.setState({
 					country: {
