@@ -82,6 +82,7 @@ class CalibrateDevice extends Component {
 							prevURL: window.location.pathname
 						})
 					else {
+						console.log(rs.address)
 						this.setState({
 							device: {
 								...rs,
@@ -91,7 +92,7 @@ class CalibrateDevice extends Component {
 							lat: rs.lat,
 							long: rs.long,
 							locationType: rs.locationType,
-							address: rs.address,
+							address: rs.address ? rs.address : '',
 							name: rs.name ? rs.name : '',
 							description: rs.description ? rs.description : '',
 						})
