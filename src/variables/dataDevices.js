@@ -1,7 +1,12 @@
 import { api, imageApi, mapApi, weatherApi, dawaApi } from './data';
 import moment from 'moment'
 
-
+// http://dawa.aws.dk/
+export const getAddressByLocation = async (lat, long) => {
+	let URL = `adgangsadresser/reverse?x=${long}&y=${lat}&struktur=mini`
+	let response = await dawaApi.get(URL).then(rs => rs)
+	return response.data
+}
 /**
  * 
  * @param {String} q Adress query  

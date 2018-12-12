@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withStyles, Grid, TextField, FormControl, InputLabel, Select, Input, MenuItem, FormHelperText, MobileStepper } from '@material-ui/core';
 import { ItemGrid, Info, Danger, AddressInput, ItemG, InfoCard, T } from 'components'
-import { getDevice, calibrateDevice, uploadPictures } from 'variables/dataDevices'
+import { getDevice, calibrateDevice, uploadPictures, getAddressByLocation } from 'variables/dataDevices'
 import Caption from 'components/Typography/Caption'
 import CounterModal from 'components/Devices/CounterModal'
 import ImageUpload from './ImageUpload'
@@ -52,7 +52,7 @@ class CalibrateDevice extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			activeStep: 0,
+			activeStep: 1,
 			name: '',
 			description: '',
 			device: null,
@@ -127,12 +127,15 @@ class CalibrateDevice extends Component {
 		}
 	}
 
-	getCoords = () => {
+	getCoords = async () => {
 		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(rs => {
+			navigator.geolocation.getCurrentPosition(async rs => {
 				let lat = rs.coords.latitude
 				let long = rs.coords.longitude
-				this.setState({ lat, long, error: false })
+				let address = await getAddressByLocation(lat, long)
+				let addressStr = address.vejnavn + ' ' + address.husnr + ', ' + address.postnr + ' ' + address.postnrnavn
+				this.setState({ lat, long, error: false, address: addressStr })
+
 			}, err => { this.setState({ error: err }) })
 		}
 	}
@@ -143,7 +146,6 @@ class CalibrateDevice extends Component {
 			success = await uploadPictures({
 				id: this.state.device.id,
 				files: this.state.images,
-				// step: 3
 			}).then(rs => rs)
 		}
 		return success
@@ -232,15 +234,19 @@ class CalibrateDevice extends Component {
 	renderDeviceLocation = () => {
 		const { t } = this.props
 		return <Grid container>
-			<ItemGrid xs={12}>
-				<div style={{ maxHeight: 400 }}>
-					<CalibrateMap
-						onClick={this.getLatLngFromMap}
-					/>
-				</div>
+			<ItemG xs={12} container>
+				<Button
+					variant='contained'
+					color='primary'
+					onClick={this.getCoords}
+					className={this.props.classes.button}>
+					<MyLocation className={this.props.classes.iconButton} />{t('actions.getLocation')}
+				</Button>
+			</ItemG>
+			<ItemG xs={12}>
 				<AddressInput value={this.state.address} handleChange={this.handleSetAddress} />
-			</ItemGrid>
-			<ItemGrid xs={12}>
+			</ItemG>
+			<ItemG xs={12}>
 				<FormControl className={this.props.classes.formControl}>
 					<InputLabel htmlFor='streetType-helper'>{this.state.locationType ? '' : t('devices.fields.locType')}</InputLabel>
 					<Select
@@ -264,12 +270,13 @@ class CalibrateDevice extends Component {
 						{this.state.lat + ' ' + this.state.long}
 					</Info>
 				</div>
-				<Button
-					variant='contained'
-					color='primary'
-					onClick={this.getCoords}
-					className={this.props.classes.button}
-				> <MyLocation className={this.props.classes.iconButton} />{t('actions.getLocation')}</Button>
+			</ItemG>
+			<ItemGrid xs={12}>
+				<div style={{ maxHeight: 400 }}>
+					<CalibrateMap
+						onClick={this.getLatLngFromMap}
+					/>
+				</div>
 			</ItemGrid>
 		</Grid>
 	}
@@ -516,7 +523,7 @@ class CalibrateDevice extends Component {
 							{this.renderFinish()}
 						</GridContainer>
 					</ItemG>
-	
+
 					<MobileStepper
 						variant="progress"
 						steps={steps.length}
@@ -527,7 +534,7 @@ class CalibrateDevice extends Component {
 							style: {
 								flexGrow: 1,
 								maxWidth: '150px',
-								width: 'auto' 
+								width: 'auto'
 							}
 						}}
 						nextButton={
@@ -557,7 +564,7 @@ class CalibrateDevice extends Component {
 							</Button>
 						}
 						orientation='vertical' />
-				
+
 				</Fragment>
 				: null
 
