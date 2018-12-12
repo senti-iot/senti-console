@@ -11,6 +11,8 @@ import { CalibrateMap } from 'components/Map/CalibrateMaps';
 import { isFav, updateFav } from 'redux/favorites';
 import { connect } from 'react-redux'
 import TimeCounterModal from 'components/Devices/TimeCounterModal';
+import { changeCalType, changeCount, changeTCount } from 'redux/settings';
+import CalibrateDeviceSettings from './CalibrateDeviceSettings';
 
 
 const styles = theme => ({
@@ -282,14 +284,18 @@ class CalibrateDevice extends Component {
 	}
 
 	renderCalibration = () => {
-		const { calType, t } = this.props
-		return this.props.theme.breakpoints.width('sm') <= window.innerWidth ?
-			<ItemG container>
-				{calType ? <CounterModal t={t} handleFinish={this.handleCalibration} /> : <TimeCounterModal t={t} handleFinish={this.handleCalibration} />}
-			</ItemG> :
-			<ItemG container justify={'center'}>
-				{calType ? <CounterModal t={t} handleFinish={this.handleCalibration} /> : <TimeCounterModal t={t} handleFinish={this.handleCalibration} />}
-			</ItemG>
+		const { calType, t, calibration, count, tcount, changeCalType, changeCount, changeTCount  } = this.props
+		return <ItemG container justify={this.props.theme.breakpoints.width('sm') <= window.innerWidth ? 'flex-start' : 'center'}> 
+			<CalibrateDeviceSettings
+				calibration={calibration}
+				changeCalType={changeCalType}
+				count={count}
+				tcount={tcount}
+				changeCount={changeCount}
+				changeTCount={changeTCount}
+				t={t} />
+			{calType ? <CounterModal t={t} handleFinish={this.handleCalibration} /> : <TimeCounterModal t={t} handleFinish={this.handleCalibration} />}
+		</ItemG>
 	}
 
 	renderImageUpload = () => {
@@ -574,13 +580,23 @@ class CalibrateDevice extends Component {
 		return this.props.theme.breakpoints.width('sm') > window.innerWidth ? this.renderMobileCalibration() : this.renderDeviceCalibration()
 	}
 }
-const mapStateToProps = (state) => ({
-	calType: state.settings.calibration
-})
+const mapStateToProps = (state) => {
+	const s = state.settings
+	return {
+		calType: s.calibration,
+		calibration: s.calibration,
+		count: s.count,
+		tcount: s.tcount,
+	}
+}
 
 const mapDispatchToProps = (dispatch) => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
-	updateFav: (favObj) => dispatch(updateFav(favObj))
+	updateFav: (favObj) => dispatch(updateFav(favObj)),
+	
+	changeCalType: type => dispatch(changeCalType(type)),
+	changeCount: count => dispatch(changeCount(count)),
+	changeTCount: tcount => dispatch(changeTCount(tcount)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(CalibrateDevice))

@@ -29,6 +29,12 @@ class TimeCounterModal extends React.Component {
 		this.mp3File = new Audio('/assets/sound/pop.mp3').load()
 		this.timeCounter = null
 	}
+	componentDidUpdate = (prevProps, prevState) => {
+		if (prevProps.tcount !== this.props.tcount)
+			this.setState({
+				timer: this.props.tcount
+			})
+	}
 	timer = () => {
 		this.setState({ timer: this.state.timer - 1 }, () => {
 			if (this.state.timer === 0) {
@@ -115,7 +121,7 @@ class TimeCounterModal extends React.Component {
 		const { started, finished } = this.state
 		return (
 			<Fragment>
-				<Button variant='contained' color={'primary'} onClick={this.handleOpen}>
+				<Button variant='contained' color={'primary'} onClick={this.handleOpen} styles={{ marginTop: 16 }}>
 					<OpenInBrowser className={classes.iconButton} /> {t('actions.openCounter')}
 				</Button>
 				<Modal

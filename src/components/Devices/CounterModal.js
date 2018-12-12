@@ -29,6 +29,13 @@ class CounterModal extends React.Component {
 		this.mp3File = new Audio('/assets/sound/pop.mp3').load()
 		this.timeCounter = null
 	}
+	componentDidUpdate = (prevProps, prevState) => {
+		if (prevProps.count !== this.props.count)
+		  this.setState({
+			  count: this.props.count
+		  })
+	}
+	
 	timer = () => {
 		this.setState({ timer: this.state.timer + 1 }, () => {
 			if (this.state.count === 0) {
@@ -111,12 +118,13 @@ class CounterModal extends React.Component {
 		return true
 	}
 	render() {
+		console.log(this.props.count)
 		const { classes, t } = this.props;
 		const { started, finished } = this.state
 		return (
 			<Fragment>
 				{/* <Typography gutterBottom>Click to get the full Modal experience!</Typography> */}
-				<Button variant={'contained'} color={'primary'} onClick={this.handleOpen}>
+				<Button variant={'contained'} color={'primary'} onClick={this.handleOpen} styles={{ marginTop: 16 }}>
 					<OpenInBrowser className={classes.iconButton} /> {t('actions.openCounter')}
 				</Button>
 				<Modal
