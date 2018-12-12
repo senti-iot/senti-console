@@ -1,9 +1,6 @@
 import React from 'react';
 import {
-	Map, Marker, Popup, TileLayer, LayersControl, Circle,
-	FeatureGroup,
-	LayerGroup,
-	Rectangle
+	Map, Marker, Popup, TileLayer, LayersControl
 } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
@@ -21,8 +18,6 @@ const { BaseLayer, Overlay } = LayersControl
 // 	iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
 // 	shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
 // });
-const center = [51.505, -0.09]
-const rectangle = [[51.49, -0.08], [51.5, -0.06]]
 
 class OpenStreetMap extends React.Component {
 
