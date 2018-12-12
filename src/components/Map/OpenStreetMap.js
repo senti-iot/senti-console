@@ -1,5 +1,10 @@
 import React from 'react';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import {
+	Map, Marker, Popup, TileLayer, LayersControl, Circle,
+	FeatureGroup,
+	LayerGroup,
+	Rectangle
+} from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
 import { withStyles } from '@material-ui/core';
@@ -7,6 +12,8 @@ import { connect } from 'react-redux'
 import MarkerIcon from './MarkerIcon';
 import mapStyles from './mapStyles'
 import OpenPopup from './OpenPopup'
+const { BaseLayer, Overlay } = LayersControl
+
 // delete L.Icon.Default.prototype._getIconUrl;
 
 // L.Icon.Default.mergeOptions({
@@ -14,6 +21,8 @@ import OpenPopup from './OpenPopup'
 // 	iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
 // 	shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
 // });
+const center = [51.505, -0.09]
+const rectangle = [[51.49, -0.08], [51.5, -0.06]]
 
 class OpenStreetMap extends React.Component {
 
@@ -48,11 +57,72 @@ class OpenStreetMap extends React.Component {
 		const { markers, classes } = this.props
 		console.log(this.props)
 		return <Map center={[57.043271, 9.921155]} zoom={13} attributionControl={false} className={classes.map}>
-			<TileLayer
-				url={"https://gc2.io/mapcache/baselayers/tms/1.0.0/geodk.bright/{z}/{x}/{-y}.png?{s}" //"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-				} 
-			/>
+			<LayersControl>
+				<BaseLayer name={'Topografisk'}>
+					{/* <TileLayer
+						// url="https://geofyn.mapcentia.com/mapcache/geofyn/tms/1.0.0/tekster.adgangsadresseinfo/{z}/{x}/{-y}.png"
+						url="https://geofyn.mapcentia.com/mapcache/geofyn/tms/1.0.0/tekster.tekster_samlet_wms_web/{z}/{x}/{-y}.png"
+					/> */}
+					<TileLayer
+						url={"https://geofyn.mapcentia.com/mapcache/geofyn/tms/1.0.0/gc2_group._b_baggrundskort01.baggrundskort01/{z}/{x}/{-y}.png"}
+					/>
+				</BaseLayer>
+				<BaseLayer name='Dark mode'>
+					<TileLayer 
+						url={'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png'}
+					/>
+				</BaseLayer>
+				<BaseLayer checked name="OpenStreetMap.BlackAndWhite">
+					<TileLayer
+						attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+						url="https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
+					/>
+				</BaseLayer>
+				<BaseLayer checked name={'Luftphoto 2017'}>
+					<TileLayer
+						url={'https://gc2.io/mapcache/baselayers/tms/1.0.0/luftfotoserier.geodanmark_2017_12_5cm/{z}/{x}/{-y}.png'}
+					/>
+				</BaseLayer>
+				<Overlay name="Marker with popup">
+					<TileLayer
+						// url="https://geofyn.mapcentia.com/mapcache/geofyn/tms/1.0.0/tekster.adgangsadresseinfo/{z}/{x}/{-y}.png"
+						url="https://geofyn.mapcentia.com/mapcache/geofyn/tms/1.0.0/tekster.tekster_samlet_wms_web/{z}/{x}/{-y}.png"
+					/>
+				</Overlay>
+				<Overlay name="Layer group with circles">
+					<LayerGroup>
+						<Circle center={center} fillColor="blue" radius={200} />
+						<Circle
+							center={center}
+							fillColor="red"
+							radius={100}
+							stroke={false}
+						/>
+						<LayerGroup>
+							<Circle
+								center={[51.51, -0.08]}
+								color="green"
+								fillColor="green"
+								radius={100}
+							/>
+						</LayerGroup>
+					</LayerGroup>
+				</Overlay>
+				<Overlay name="Feature group">
+					<FeatureGroup color="purple">
+						<Popup>Popup in FeatureGroup</Popup>
+						<Circle center={[51.51, -0.06]} radius={200} />
+						<Rectangle bounds={rectangle} />
+					</FeatureGroup>
+				</Overlay>
+			</LayersControl>
+			{/*
 
+				<TileLayer
+			 //"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+			 url={"https://geofyn.mapcentia.com/mapcache/geofyn/tms/1.0.0/gc2_group._b_baggrundskort01.baggrundskort01/{z}/{x}/{-y}.png"}
+			 />
+			 */}
 			{markers.map((m, i) => { 
 				return <Marker position={[m.lat, m.long]} key={i} icon={this.returnSvgIcon(m.liveStatus)}>
 					<Popup>
