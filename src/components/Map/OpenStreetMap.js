@@ -56,7 +56,7 @@ class OpenStreetMap extends React.Component {
 	render() {
 		const { markers, classes } = this.props
 		console.log(this.props)
-		return <Map center={[57.043271, 9.921155]} zoom={13} attributionControl={false} className={classes.map}>
+		return <Map center={[57.043271, 9.921155]} zoom={13} maxZoom={18} /* attributionControl={false} */ className={classes.map}>
 			<LayersControl>
 				<BaseLayer name={'Topografisk'}>
 					{/* <TileLayer
@@ -78,7 +78,7 @@ class OpenStreetMap extends React.Component {
 						url="https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
 					/>
 				</BaseLayer>
-				<BaseLayer checked name={'Luftphoto 2017'}>
+				<BaseLayer name={'Luftphoto 2017'}>
 					<TileLayer
 						url={'https://gc2.io/mapcache/baselayers/tms/1.0.0/luftfotoserier.geodanmark_2017_12_5cm/{z}/{x}/{-y}.png'}
 					/>
@@ -89,40 +89,7 @@ class OpenStreetMap extends React.Component {
 						url="https://geofyn.mapcentia.com/mapcache/geofyn/tms/1.0.0/tekster.tekster_samlet_wms_web/{z}/{x}/{-y}.png"
 					/>
 				</Overlay>
-				<Overlay name="Layer group with circles">
-					<LayerGroup>
-						<Circle center={center} fillColor="blue" radius={200} />
-						<Circle
-							center={center}
-							fillColor="red"
-							radius={100}
-							stroke={false}
-						/>
-						<LayerGroup>
-							<Circle
-								center={[51.51, -0.08]}
-								color="green"
-								fillColor="green"
-								radius={100}
-							/>
-						</LayerGroup>
-					</LayerGroup>
-				</Overlay>
-				<Overlay name="Feature group">
-					<FeatureGroup color="purple">
-						<Popup>Popup in FeatureGroup</Popup>
-						<Circle center={[51.51, -0.06]} radius={200} />
-						<Rectangle bounds={rectangle} />
-					</FeatureGroup>
-				</Overlay>
 			</LayersControl>
-			{/*
-
-				<TileLayer
-			 //"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-			 url={"https://geofyn.mapcentia.com/mapcache/geofyn/tms/1.0.0/gc2_group._b_baggrundskort01.baggrundskort01/{z}/{x}/{-y}.png"}
-			 />
-			 */}
 			{markers.map((m, i) => { 
 				return <Marker position={[m.lat, m.long]} key={i} icon={this.returnSvgIcon(m.liveStatus)}>
 					<Popup>
