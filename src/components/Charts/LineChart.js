@@ -232,7 +232,6 @@ class LineChart extends PureComponent {
 				tooltip: {
 					...this.state.tooltip,
 					show: true,
-					showWeather: true,
 					exited: false
 				}
 			})
@@ -243,47 +242,58 @@ class LineChart extends PureComponent {
 		try {
 			let lat = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].lat
 			let long = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].long
-
+			let id = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].id
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
-			if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long)) {
-				if (lat !== 0 && long !== 0) {
-					this.setState({ weather: "" })
-					getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then(rs => {
-						this.setState({
-							tooltip: {
-								...this.state.tooltip,
-								showWeather: true
-							},
-							weatherDate: wDate,
-							weather: rs,
-							loc: {
-								lat: lat,
-								long: long
-							}
-						})
+			if (lat && long) {
+				if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long)) {
+					getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then((rs) => {						
+						if (this.state.id === id)
+							this.setState({
+								tooltip: {
+									...this.state.tooltip,
+									showWeather: true
+								},
+								weatherDate: wDate,
+								weather: rs,
+								loc: {
+									lat: lat,
+									long: long
+								}
+							})
 					})
 				}
 				else {
 					this.setState({
 						tooltip: {
 							...this.state.tooltip,
-							showWeather: false
-						},
-						weatherDate: wDate,
-						weather: null,
-						loc: {
-							lat: 0,
-							long: 0
+							showWeather: true
 						}
 					})
 				}
 			}
+			else {
+				this.setState({
+					tooltip: {
+						...this.state.tooltip,
+						showWeather: false
+					},
+					weatherDate: wDate,
+					weather: null,
+					loc: {
+						lat: 0,
+						long: 0
+					}
+				})
+			}
+			this.setState({ id: id })
 		}
+	
 		catch (err) {
-
+			console.log(err)
 		}
 
 		this.setTooltip({
+			...this.state.tooltip,
 			top,
 			left,
 			title: [rest, last],
@@ -345,7 +355,6 @@ class LineChart extends PureComponent {
 			tooltip: {
 				...tooltip,
 				show: true,
-				showWeather: false,
 				exited: false
 			}
 		})
@@ -354,7 +363,9 @@ class LineChart extends PureComponent {
 		this.setState({
 			tooltip: {
 				...this.state.tooltip,
-				exited: true
+				exited: true,
+				// weather: null,
+				// weatherDate: null
 			}
 		})
 	}

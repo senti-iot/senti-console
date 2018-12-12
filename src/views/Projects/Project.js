@@ -27,6 +27,8 @@ class Project extends Component {
 			dateOption: 3,
 			from: moment().subtract(7, 'd').startOf('day'),
 			to: moment().endOf('day'),
+			// from: moment().startOf('month'),
+			// to: moment().endOf('day'),
 			timeType: 2,
 			raw: props.rawData ? props.rawData : false,
 			project: {},
