@@ -1,14 +1,15 @@
 import React from 'react';
 import {
-	Map, Marker, Popup, TileLayer, LayersControl
+	Map, TileLayer, LayersControl, Marker
 } from 'react-leaflet'
+// import Marker from './Marker'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
 import { withStyles } from '@material-ui/core';
 import { connect } from 'react-redux'
-import MarkerIcon from './MarkerIcon';
-import mapStyles from './mapStyles'
-import OpenPopup from './OpenPopup'
+import MarkerIcon from 'components/Map/MarkerIcon';
+import mapStyles from 'components/Map/mapStyles'
+// import OpenPopup from 'components/Map/OpenPopup'
 const { BaseLayer, Overlay } = LayersControl
 
 // delete L.Icon.Default.prototype._getIconUrl;
@@ -19,7 +20,7 @@ const { BaseLayer, Overlay } = LayersControl
 // 	shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
 // });
 
-class OpenStreetMap extends React.Component {
+class CalibrateMap extends React.Component {
 
 
 
@@ -63,7 +64,7 @@ class OpenStreetMap extends React.Component {
 					/>
 				</BaseLayer>
 				<BaseLayer name='Dark mode'>
-					<TileLayer 
+					<TileLayer
 						url={'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png'}
 					/>
 				</BaseLayer>
@@ -85,13 +86,10 @@ class OpenStreetMap extends React.Component {
 					/>
 				</Overlay>
 			</LayersControl>
-			{markers.map((m, i) => { 
-				return <Marker position={[m.lat, m.long]} dragg key={i} icon={this.returnSvgIcon(m.liveStatus)}>
-					<Popup>
-						<OpenPopup m={m}/>
-					</Popup>
+			{markers ? markers.map((m, i) => {
+				return <Marker autoPan draggable position={[m.lat, m.long]} key={i} icon={this.returnSvgIcon(m.liveStatus)} onDragend={ this.props.getLatLng }>
 				</Marker>
-			})}
+			}) : null}
 		</Map>
 
 	}
@@ -104,4 +102,4 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
 
 }
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(mapStyles, { withTheme: true })(OpenStreetMap))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(mapStyles, { withTheme: true })(CalibrateMap))

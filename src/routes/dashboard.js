@@ -180,7 +180,7 @@ const dashboardRoutes = [
 		hideFromSideBar: true,
 	},
 	{
-		path: '/index.html',
+		path: '/index:ext',
 		hideFromSideBar: true,
 		component: () => <Redirect to={'/dashboard'}/>
 	},

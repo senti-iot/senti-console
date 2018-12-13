@@ -7,7 +7,7 @@ import CounterModal from 'components/Devices/CounterModal'
 import ImageUpload from './ImageUpload'
 import { NavigateNext, NavigateBefore, Done, Restore, MyLocation, Devices, DeviceHub } from 'variables/icons'
 import GridContainer from 'components/Grid/GridContainer';
-import { CalibrateMap } from 'components/Map/CalibrateMaps';
+import CalibrateMap from './Calibrate/Map';
 import { isFav, updateFav } from 'redux/favorites';
 import { connect } from 'react-redux'
 import TimeCounterModal from 'components/Devices/TimeCounterModal';
@@ -54,7 +54,7 @@ class CalibrateDevice extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			activeStep: 1,
+			activeStep: 0,
 			name: '',
 			description: '',
 			device: null,
@@ -134,6 +134,7 @@ class CalibrateDevice extends Component {
 			navigator.geolocation.getCurrentPosition(async rs => {
 				let lat = rs.coords.latitude
 				let long = rs.coords.longitude
+				// console.log(lat, long)
 				let address = await getAddressByLocation(lat, long)
 				let addressStr = address.vejnavn + ' ' + address.husnr + ', ' + address.postnr + ' ' + address.postnrnavn
 				this.setState({ lat, long, error: false, address: addressStr })
@@ -227,14 +228,22 @@ class CalibrateDevice extends Component {
 		</Grid>
 	}
 	getLatLngFromMap = (e) => {
-
+		console.log(e)
+		let lat = e.target._latlng.lat
+		let long = e.target._latlng.lng
 		this.setState({
-			lat: e.lat,
-			long: e.long
+			lat,
+			long
+		}, async () => { 
+			let address = await getAddressByLocation(lat, long)
+			let addressStr = address.vejnavn + ' ' + address.husnr + ', ' + address.postnr + ' ' + address.postnrnavn
+			this.setState({ error: false, address: addressStr })
 		})
+
 	}
 	renderDeviceLocation = () => {
 		const { t } = this.props
+		const { lat, long } = this.state
 		return <Grid container>
 			<ItemG xs={12} container>
 				<Button
@@ -273,19 +282,21 @@ class CalibrateDevice extends Component {
 					</Info>
 				</div>
 			</ItemG>
-			<ItemGrid xs={12}>
-				<div style={{ maxHeight: 400 }}>
-					<CalibrateMap
-						onClick={this.getLatLngFromMap}
-					/>
-				</div>
-			</ItemGrid>
+			<ItemG xs={12}>
+				{/* <div style={{ maxHeight: 400, overflow: 'hidden' }}> */}
+					
+				<CalibrateMap
+					markers={lat && long ? [{ lat, long }] : []}
+					getLatLng={this.getLatLngFromMap}
+				/>
+				{/* </div> */}
+			</ItemG>
 		</Grid>
 	}
 
 	renderCalibration = () => {
-		const { calType, t, calibration, count, tcount, changeCalType, changeCount, changeTCount  } = this.props
-		return <ItemG container justify={this.props.theme.breakpoints.width('sm') <= window.innerWidth ? 'flex-start' : 'center'}> 
+		const { calType, t, calibration, count, tcount, changeCalType, changeCount, changeTCount } = this.props
+		return <ItemG container justify={this.props.theme.breakpoints.width('sm') <= window.innerWidth ? 'flex-start' : 'center'}>
 			<CalibrateDeviceSettings
 				calibration={calibration}
 				changeCalType={changeCalType}
@@ -593,7 +604,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
 	updateFav: (favObj) => dispatch(updateFav(favObj)),
-	
+
 	changeCalType: type => dispatch(changeCalType(type)),
 	changeCount: count => dispatch(changeCount(count)),
 	changeTCount: tcount => dispatch(changeTCount(tcount)),

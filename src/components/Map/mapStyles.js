@@ -5,7 +5,7 @@ const mapStyles = theme => ({
 			height: window.innerHeight - 300
 		},
 		[theme.breakpoints.down('xs')]: {
-			height: 200
+			height: 300
 		}
 	}
 })
