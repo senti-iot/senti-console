@@ -8,6 +8,12 @@ const theme = createMuiTheme({
 		suppressDeprecationWarnings: true,
 	},
 	overrides: {
+		MuiMenuItem: {
+			selected: {
+				backgroundColor: `${teal[500]} !important`,
+				color: "#fff"
+			},
+		},
 		MuiCard: {
 			root: {
 				overflow: "visible"
