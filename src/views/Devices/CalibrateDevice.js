@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withStyles, Grid, TextField, FormControl, InputLabel, Select, Input, MenuItem, FormHelperText, MobileStepper } from '@material-ui/core';
-import { ItemGrid, Info, Danger, AddressInput, ItemG, InfoCard, T } from 'components'
+import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withStyles, Grid, FormControl, InputLabel, Select, Input, MenuItem, FormHelperText, MobileStepper } from '@material-ui/core';
+import { Info, Danger, AddressInput, ItemG, InfoCard, T, TextF } from 'components'
 import { getDevice, calibrateDevice, uploadPictures, getAddressByLocation } from 'variables/dataDevices'
 import Caption from 'components/Typography/Caption'
 import CounterModal from 'components/Devices/CounterModal'
@@ -197,9 +197,9 @@ class CalibrateDevice extends Component {
 
 	renderDeviceNameDescriptionForms = () => {
 		const { classes, t } = this.props
-		return <Grid container>
-			<ItemGrid xs={12}>
-				<TextField
+		return <Grid container spacing={8}>
+			<ItemG xs={12}>
+				<TextF
 					required={true}
 					label={t('devices.fields.name')}
 					onChange={this.handleInput('name')}
@@ -210,9 +210,9 @@ class CalibrateDevice extends Component {
 						}
 					}}
 				/>
-			</ItemGrid>
-			<ItemGrid xs={12}>
-				<TextField
+			</ItemG>
+			<ItemG xs={12}>
+				<TextF
 					multiline
 					rows={4}
 					label={t('devices.fields.description')}
@@ -224,11 +224,10 @@ class CalibrateDevice extends Component {
 						}
 					}}
 				/>
-			</ItemGrid>
+			</ItemG>
 		</Grid>
 	}
 	getLatLngFromMap = (e) => {
-		console.log(e)
 		let lat = e.target._latlng.lat
 		let long = e.target._latlng.lng
 		this.setState({
@@ -244,8 +243,8 @@ class CalibrateDevice extends Component {
 	renderDeviceLocation = () => {
 		const { t } = this.props
 		const { lat, long } = this.state
-		return <Grid container>
-			<ItemG xs={12} container>
+		return <Grid container spacing={8}>
+			<ItemG xs={12} container justify={this.props.theme.breakpoints.width('sm') <= window.innerWidth ? 'flex-start' : 'center'}>
 				<Button
 					variant='contained'
 					color='primary'
@@ -259,7 +258,7 @@ class CalibrateDevice extends Component {
 			</ItemG>
 			<ItemG xs={12}>
 				<FormControl className={this.props.classes.formControl}>
-					<InputLabel htmlFor='streetType-helper'>{this.state.locationType ? '' : t('devices.fields.locType')}</InputLabel>
+					<InputLabel htmlFor='streetType-helper'>{t('devices.fields.locType')}</InputLabel>
 					<Select
 						value={this.state.locationType}
 						onChange={this.handleLocationTypeChange}

@@ -12,17 +12,8 @@ import mapStyles from 'components/Map/mapStyles'
 // import OpenPopup from 'components/Map/OpenPopup'
 const { BaseLayer, Overlay } = LayersControl
 
-// delete L.Icon.Default.prototype._getIconUrl;
-
-// L.Icon.Default.mergeOptions({
-// 	iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-// 	iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-// 	shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-// });
 
 class CalibrateMap extends React.Component {
-
-
 
 	handleClick(event) {
 		const items = this.state.dataSet;
@@ -87,7 +78,7 @@ class CalibrateMap extends React.Component {
 				</Overlay>
 			</LayersControl>
 			{markers ? markers.map((m, i) => {
-				return <Marker autoPan draggable position={[m.lat, m.long]} key={i} icon={this.returnSvgIcon(m.liveStatus)} onDragend={ this.props.getLatLng }>
+				return <Marker autoPan draggable position={[m.lat, m.long]} key={i} icon={this.returnSvgIcon(2)} onDragend={ this.props.getLatLng }>
 				</Marker>
 			}) : null}
 		</Map>
