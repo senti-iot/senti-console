@@ -47,7 +47,7 @@ export default class DeviceMap extends PureComponent {
 						}
 					}}>
 					{this.visibilityOptions.map(op => {
-						return <MenuItem key={op.id} value={op.id} button onClick={this.handleVisibility(op.id)}>
+						return <MenuItem key={op.id} value={op.id} button onClick={this.handleVisibility(op.id)} selected={this.state.activeLayer === op.id ? true : false}>
 							<ListItemText primary={op.label} />
 						</MenuItem>
 					})}
