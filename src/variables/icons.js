@@ -61,6 +61,7 @@ import PieChartRounded from '@material-ui/icons/PieChartRounded'
 import BarChart from '@material-ui/icons/BarChart'
 import Visibility from '@material-ui/icons/Visibility'
 import Build from '@material-ui/icons/Build'
+import Layers from '@material-ui/icons/Layers'
 import LayersClear from '@material-ui/icons/LayersClear'
 import DeveloperBoard from '@material-ui/icons/DeveloperBoard'
 import CloudUpload from '@material-ui/icons/CloudUpload'
@@ -147,6 +148,7 @@ export {
 	BarChart,
 	Visibility,
 	Build,
+	Layers,
 	LayersClear,
 	DeveloperBoard,
 	CloudUpload,
