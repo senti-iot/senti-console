@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import {
-	Map, Marker, Popup, TileLayer
+	withLeaflet, Map, Marker, Popup, TileLayer
 } from 'react-leaflet'
-import 'leaflet/dist/leaflet.css'
+// import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
 import { withStyles } from '@material-ui/core';
 import { connect } from 'react-redux'
@@ -25,7 +25,8 @@ class OpenStreetMap extends React.Component {
 		{ id: 0, url: "https://tile-b.openstreetmap.fr/hot/{z}/{x}/{y}.png", label: "T1", maxZoom: 18 },
 		{ id: 1, url: "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", label: "T2", maxZoom: 18 },
 		{ id: 2, url: "http://a.tile.stamen.com/toner/{z}/{x}/{y}.png", label: "T3", maxZoom: 18 },
-		{ id: 3, url: "http://maps.stamen.com/#watercolor/12/37.7706/-122.3782", label: "T4", maxZoom: 18 },
+		{ id: 3, url: "http://b.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg", label: "T4", maxZoom: 18 },
+		{ id: 4, url: "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" }
 	]
 
 	handleClick = (event) => {
@@ -36,7 +37,9 @@ class OpenStreetMap extends React.Component {
 			dataSet: items,
 		})
 	}
-
+	componentDidMount = () => {
+	}
+	
 	returnSvgIcon = (state) => {
 		var CustomIcon = L.Icon.extend({
 			options: {
@@ -78,4 +81,4 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
 
 }
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(mapStyles, { withTheme: true })(OpenStreetMap))
+export default withLeaflet(connect(mapStateToProps, mapDispatchToProps)(withStyles(mapStyles, { withTheme: true })(OpenStreetMap)))
