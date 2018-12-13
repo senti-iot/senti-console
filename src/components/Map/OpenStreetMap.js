@@ -26,7 +26,8 @@ class OpenStreetMap extends React.Component {
 		{ id: 1, url: "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", label: "T2", maxZoom: 18 },
 		{ id: 2, url: "http://a.tile.stamen.com/toner/{z}/{x}/{y}.png", label: "T3", maxZoom: 18 },
 		{ id: 3, url: "http://b.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg", label: "T4", maxZoom: 18 },
-		{ id: 4, url: "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" }
+		{ id: 4, url: "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" },
+		{ id: 5, url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png" }
 	]
 
 	handleClick = (event) => {
