@@ -202,7 +202,7 @@ class CalibrateDevice extends Component {
 				<TextF
 					required={true}
 					label={t('devices.fields.name')}
-					onChange={this.handleInput('name')}
+					handleChange={this.handleInput('name')}
 					value={this.state.name}
 					InputProps={{
 						classes: {
@@ -216,7 +216,7 @@ class CalibrateDevice extends Component {
 					multiline
 					rows={4}
 					label={t('devices.fields.description')}
-					onChange={this.handleInput('description')}
+					handleChange={this.handleInput('description')}
 					value={this.state.description}
 					InputProps={{
 						classes: {

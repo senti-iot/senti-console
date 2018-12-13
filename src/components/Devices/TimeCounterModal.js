@@ -25,8 +25,9 @@ class TimeCounterModal extends React.Component {
 		if (!canPlayMP3 || canPlayMP3 === 'no') {
 			let msg = props.t('no.audioSupported')
 			alert(msg);
+			this.noSound = true
 		}
-		this.mp3File = new Audio('/assets/sound/pop.mp3').load()
+		this.mp3File = new Audio('/assets/sound/pop.mp3')
 		this.timeCounter = null
 	}
 	componentDidUpdate = (prevProps, prevState) => {
@@ -66,17 +67,15 @@ class TimeCounterModal extends React.Component {
 		})
 	}
 	handleCount = async () => {
-		let playSound = new Audio('/assets/sound/pop.mp3');
-		await playSound.play().then(
-			() => {
-				// if (this.state.count === 1)
-				this.setState({ count: this.state.count + 1 })
-				// else
-				// this.setState({ count: this.state.count - 1 })
-			}
-
-		)
-		playSound = null
+		if (this.noSound)
+		{	this.setState({ count: this.state.count + 1 })}
+		else {
+			await this.mp3File.play().then(
+				() => {
+					this.setState({ count: this.state.count + 1 })
+				}
+			)
+		}
 	}
 	handleClose = () => {
 		this.setState({ open: false });

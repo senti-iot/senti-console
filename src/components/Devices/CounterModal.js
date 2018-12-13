@@ -24,6 +24,7 @@ class CounterModal extends React.Component {
 		let canPlayMP3 = new Audio().canPlayType('audio/mp3');
 		if (!canPlayMP3 || canPlayMP3 === 'no') {
 			let msg = props.t('no.audioSupported')
+			this.noSound = true
 			alert(msg);
 		}
 		this.mp3File = new Audio('/assets/sound/pop.mp3')
@@ -68,16 +69,23 @@ class CounterModal extends React.Component {
 	}
 	handleCount = async () => {
 		// let playSound = new Audio('/assets/sound/pop.mp3');
-		await this.mp3File.play().then(
-			() => {
-				if (this.state.count === 1)
-					this.setState({ count: this.state.count - 1, finished: true, started: false })
-				else
-					this.setState({ count: this.state.count - 1 })
-			}
-			
-		)
-		// playSound = null
+		if (this.noSound) { 
+			if (this.state.count === 1)
+				this.setState({ count: this.state.count - 1, finished: true, started: false })
+			else
+				this.setState({ count: this.state.count - 1 })
+		}
+		else {
+			await this.mp3File.play().then(
+				() => {
+					if (this.state.count === 1)
+						this.setState({ count: this.state.count - 1, finished: true, started: false })
+					else
+						this.setState({ count: this.state.count - 1 })
+				}
+
+			)
+		}
 	}
 	handleClose = () => {
 		this.setState({ open: false });
