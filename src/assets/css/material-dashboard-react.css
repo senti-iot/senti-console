@@ -53,6 +53,20 @@
     fill: rgba(0, 0, 0, 0.4);
     line-height: 1;
 } */
+.custom .leaflet-popup-tip,
+.custom .leaflet-popup-content-wrapper {
+  background: #ffffff;
+  color: #000;
+  border-radius: 3px;
+}
+
+.customDark .leaflet-popup-tip,
+.customDark .leaflet-popup-content-wrapper {
+  background: #424242;
+  color: #ffffff;
+  border-radius: 3px;
+}
+
 html * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

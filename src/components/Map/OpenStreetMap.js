@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import {
-	withLeaflet, Map, Marker, Popup, TileLayer
+	withLeaflet, Map, Popup, TileLayer
 } from 'react-leaflet'
 // import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import MarkerIcon from './MarkerIcon';
 import mapStyles from './mapStyles'
 import OpenPopup from './OpenPopup'
+import LeafletM from './LeafletM';
 
 
 // delete L.Icon.Default.prototype._getIconUrl;
@@ -29,7 +30,7 @@ class OpenStreetMap extends React.Component {
 		{ id: 4, url: "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" },
 		{ id: 5, url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png", attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' }
 	]
-
+	
 	handleClick = (event) => {
 		const items = this.state.dataSet;
 		items[event.target.id].visible = !items[event.target.id].visible;
@@ -39,8 +40,12 @@ class OpenStreetMap extends React.Component {
 		})
 	}
 	componentDidMount = () => {
+		console.log(this.map)
+		this.map.leafletElement.addControl(new L.Control.Fullscreen());
 	}
-	
+	componentDidUpdate = () => {
+		console.log(this.map)
+	}
 	returnSvgIcon = (state) => {
 		var CustomIcon = L.Icon.extend({
 			options: {
@@ -58,16 +63,16 @@ class OpenStreetMap extends React.Component {
 
 	}
 	render() {
-		const { markers, classes } = this.props
+		const { markers, classes, theme } = this.props
 		return <Fragment>
-			<Map center={[57.043271, 9.921155]} zoom={13} maxZoom={18} className={classes.map} >
+			<Map ref={r => this.map = r} center={[57.043271, 9.921155]} zoom={13} maxZoom={18} className={classes.map} >
 				<TileLayer url={this.layers[this.props.activeLayer].url} attribution={this.layers[this.props.activeLayer].attribution}/>
 				{markers.map((m, i) => { 
-					return <Marker position={[m.lat, m.long]} dragg key={i} icon={this.returnSvgIcon(m.liveStatus)}>
-						<Popup>
+					return <LeafletM ref={(e) => this.marker = e} position={[m.lat, m.long]} dragg key={i} icon={this.returnSvgIcon(m.liveStatus)}>
+						<Popup className={theme.palette.type === 'dark' ? 'customDark' : 'custom'} ref={(e) => this.popup = e}>
 							<OpenPopup m={m}/>
 						</Popup>
-					</Marker>
+					</LeafletM>
 				})}
 			</Map>
 		</Fragment>
