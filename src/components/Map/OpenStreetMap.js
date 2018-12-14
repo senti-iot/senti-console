@@ -11,14 +11,8 @@ import mapStyles from './mapStyles'
 import OpenPopup from './OpenPopup'
 import LeafletM from './LeafletM';
 
+import 'variables/LeafletPlugins/fullscreen'
 
-// delete L.Icon.Default.prototype._getIconUrl;
-
-// L.Icon.Default.mergeOptions({
-// 	iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-// 	iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-// 	shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-// });
 
 class OpenStreetMap extends React.Component {
 	
@@ -65,7 +59,7 @@ class OpenStreetMap extends React.Component {
 	render() {
 		const { markers, classes, theme } = this.props
 		return <Fragment>
-			<Map ref={r => this.map = r} center={[57.043271, 9.921155]} zoom={13} maxZoom={18} className={classes.map} >
+			<Map fullscreenControl={{ pseudoFullscreen: true }} ref={r => this.map = r} center={[57.043271, 9.921155]} zoom={13} maxZoom={18} className={classes.map} >
 				<TileLayer url={this.layers[this.props.activeLayer].url} attribution={this.layers[this.props.activeLayer].attribution}/>
 				{markers.map((m, i) => { 
 					return <LeafletM ref={(e) => this.marker = e} position={[m.lat, m.long]} dragg key={i} icon={this.returnSvgIcon(m.liveStatus)}>
