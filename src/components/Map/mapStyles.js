@@ -2,7 +2,7 @@ const mapStyles = theme => ({
 	map: {
 		width: '100%',
 		[theme.breakpoints.up('sm')]: {
-			height: window.innerHeight - 300
+			height: window.innerHeight - 250
 		},
 		[theme.breakpoints.down('xs')]: {
 			height: 300
