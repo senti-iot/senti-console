@@ -59,7 +59,7 @@ class OpenStreetMap extends React.Component {
 	render() {
 		const { markers, classes, theme } = this.props
 		return <Fragment>
-			<Map fullscreenControl={{ pseudoFullscreen: true }} ref={r => this.map = r} center={[57.043271, 9.921155]} zoom={13} maxZoom={18} className={classes.map} >
+			<Map ref={r => this.map = r} center={[57.043271, 9.921155]} zoom={13} maxZoom={18} className={classes.map} >
 				<TileLayer url={this.layers[this.props.activeLayer].url} attribution={this.layers[this.props.activeLayer].attribution}/>
 				{markers.map((m, i) => { 
 					return <LeafletM ref={(e) => this.marker = e} position={[m.lat, m.long]} dragg key={i} icon={this.returnSvgIcon(m.liveStatus)}>
