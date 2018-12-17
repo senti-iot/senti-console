@@ -4,12 +4,15 @@ import L, { Control } from 'leaflet'
 import { MapControl, withLeaflet } from 'react-leaflet'
 import { withStyles, IconButton, MuiThemeProvider } from '@material-ui/core';
 import { FullscreenOutlined } from '@material-ui/icons';
+import teal from '@material-ui/core/colors/teal'
 
 const styles = theme => ({
 	fullscreenButton: {
 		background: theme.palette.type !== 'dark' ? '#fff' : "#424242",
+		color: theme.palette.type !== 'dark' ? 'inherit' : "#fff",
 		"&:hover": {
-			background: "rgba(100, 100, 100, 1)"
+			background: teal[500],
+			color: "#fff"
 		},
 		padding: 4,
 		borderRadius: 4,

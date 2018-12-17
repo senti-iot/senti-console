@@ -33,6 +33,7 @@ import SignalWifi2BarLock from '@material-ui/icons/SignalWifi2BarLock'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import Add from '@material-ui/icons/Add'
+import Remove from '@material-ui/icons/Remove'
 import FilterList from '@material-ui/icons/FilterList'
 import Save from '@material-ui/icons/Save'
 import Menu from '@material-ui/icons/Menu'
@@ -120,6 +121,7 @@ export {
 	KeyboardArrowLeft,
 	KeyboardArrowRight,
 	Add,
+	Remove,
 	FilterList,
 	Save,
 	Menu,
