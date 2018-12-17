@@ -288,6 +288,7 @@ class Project extends Component {
 		let id = this.state.dateOption
 		const { to, from } = this.state
 		let diff = moment.duration(to.diff(from)).days()
+		this.getHeatMapData()
 		switch (id) {
 			case 0:// Today
 				this.getWifiHourly();
@@ -546,7 +547,9 @@ class Project extends Component {
 						</ItemGrid >
 						{project.devices ? <ItemGrid xs={12} noMargin id='map'>
 							<ProjectMap
-								devices={this.state.heatData}
+								mapTheme={this.props.mapTheme}
+								devices={this.state.project.devices}
+								heatData={this.state.heatData}
 								t={t}
 							/>
 						</ItemGrid> : null
@@ -574,7 +577,8 @@ const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	language: state.settings.language,
 	saved: state.favorites.saved,
-	rawData: state.settings.rawData
+	rawData: state.settings.rawData,
+	mapTheme: state.settings.mapTheme
 })
 
 const mapDispatchToProps = (dispatch) => ({

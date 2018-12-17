@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { InfoCard, Caption, Dropdown } from 'components';
 import { Map } from 'variables/icons'
 import { Grid, Checkbox } from '@material-ui/core';
-import { Maps } from 'components/Map/Maps';
+import OpenStreetMap from 'components/Map/OpenStreetMap';
 
 export default class ProjectMap extends Component {
 	constructor(props) {
@@ -22,7 +22,7 @@ export default class ProjectMap extends Component {
 		} />
 	}
 	render() {
-		const { devices, t } = this.props
+		const { devices, t, mapTheme } = this.props
 		return (
 			<InfoCard
 				title={t('devices.cards.map')}
@@ -32,7 +32,7 @@ export default class ProjectMap extends Component {
 				topAction={this.renderMenu()}
 				hiddenContent={
 					<Grid container justify={'center'}>
-						{devices.length > 0 ? <Maps t={t} heatMap={this.state.heatMap} isMarkerShown markers={devices} zoom={10} /> : <Caption>{t('projects.noAvailableDevices')}</Caption>}
+						{devices.length > 0 ? <OpenStreetMap t={t} mapTheme={mapTheme} heatMap={this.state.heatMap} markers={devices} /> : <Caption>{t('projects.noAvailableDevices')}</Caption>}
 					</Grid>
 				} />
 
