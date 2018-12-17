@@ -53,7 +53,6 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 			},
 
 			_onFullscreenChange: function (e) {
-				console.log('triggered')
 				var fullscreenElement =
 					document.fullscreenElement ||
 					document.mozFullScreenElement ||
