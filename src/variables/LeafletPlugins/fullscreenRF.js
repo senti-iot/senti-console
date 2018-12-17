@@ -34,6 +34,7 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 
 	constructor(props, context) {
 		super(props)
+		this.map = context.map || this.props.leaflet.map;
 		this.container = L.DomUtil.create('div', 'leaflet-control-fullscreen leaflet-bar');
 		L.Map.include({
 			isFullscreen: function () {
@@ -48,9 +49,11 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 					L.DomUtil.removeClass(container, props.classes.fullscreenOn);
 				}
 				this.invalidateSize();
+				this.fire('fullscreenchange')
 			},
 
-			onFullscreenChange: function (e) {
+			_onFullscreenChange: function (e) {
+				console.log('triggered')
 				var fullscreenElement =
 					document.fullscreenElement ||
 					document.mozFullScreenElement ||
@@ -66,7 +69,30 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 				}
 			}
 		})
-		this.map = context.map || this.props.leaflet.map;
+		L.Map.addInitHook(function () {
+			var fullscreenchange;
+
+			if ('onfullscreenchange' in document) {
+				fullscreenchange = 'fullscreenchange';
+			} else if ('onmozfullscreenchange' in document) {
+				fullscreenchange = 'mozfullscreenchange';
+			} else if ('onwebkitfullscreenchange' in document) {
+				fullscreenchange = 'webkitfullscreenchange';
+			} else if ('onmsfullscreenchange' in document) {
+				fullscreenchange = 'MSFullscreenChange';
+			}
+			if (fullscreenchange) {
+				var onFullscreenChange = L.bind(this._onFullscreenChange, this);
+
+				this.whenReady(function () {
+					L.DomEvent.on(document, fullscreenchange, onFullscreenChange);
+				});
+
+				this.on('unload', function () {
+					L.DomEvent.off(document, fullscreenchange, onFullscreenChange);
+				});
+			}
+		})
 	
 	}
 
