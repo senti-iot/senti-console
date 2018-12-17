@@ -105,14 +105,10 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 	}
 	enablePseudoFullscreen = (container) => {
 		L.DomUtil.addClass(container, this.props.classes.pseudoFullscreen);
-		// this.map.setFullscreen(true);
-		// this.fire('fullscreenchange');
 	}
 
 	disablePseudoFullscreen = (container) => {
 		L.DomUtil.removeClass(container, this.props.classes.pseudoFullscreen);
-		// this.map.setFullscreen(false);
-		// this.fire('fullscreenchange');
 	}
 
 	createLeafletElement(props) {
