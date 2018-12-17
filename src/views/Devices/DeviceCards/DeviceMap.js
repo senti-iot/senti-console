@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react'
 import { InfoCard, Caption, Dropdown, CircularLoader, ItemG } from 'components';
 import { Map, Layers } from 'variables/icons'
-import { Grid, Checkbox, IconButton, Menu, ListItemText, MenuItem } from '@material-ui/core';
+import { Grid, Checkbox, IconButton, Menu, MenuItem } from '@material-ui/core';
 import OpenStreetMap from 'components/Map/OpenStreetMap';
 
 export default class DeviceMap extends PureComponent {
@@ -28,27 +28,35 @@ export default class DeviceMap extends PureComponent {
 		console.log('activeLayer', e)
 		this.setState({ activeLayer: e, actionAnchorVisibility: null })
 	}
+	handleOpenMenu = e => {
+		
+		this.setState({ actionAnchorVisibility: e.currentTarget })
+
+	}
+	handleCloseMenu = e => {
+		this.setState({ actionAnchorVisibility: null })
+	}
 	renderMenu = () => {
 		const { t } = this.props
-		const { actionAnchorVisibility } = this.state
+		const { actionAnchorVisibility, activeLayer } = this.state
 		return <Fragment>
 			<ItemG>
-				<IconButton title={'Map layer'} variant={'fab'} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
+				<IconButton title={'Map layer'} variant={'fab'} onClick={this.handleOpenMenu}>
 					<Layers />
 				</IconButton>
 				<Menu
 					id='long-menu2'
 					anchorEl={actionAnchorVisibility}
 					open={Boolean(actionAnchorVisibility)}
-					onClose={() => this.setState({ actionAnchorVisibility: null })}
+					onClose={this.handleCloseMenu}
 					PaperProps={{
 						style: {
 							minWidth: 250
 						}
 					}}>
 					{this.visibilityOptions.map(op => {
-						return <MenuItem key={op.id} value={op.id} button onClick={this.handleVisibility(op.id)} selected={this.state.activeLayer === op.id ? true : false}>
-							<ListItemText primary={op.label} />
+						return <MenuItem key={op.id} value={op.id} button onClick={this.handleVisibility(op.id)} selected={activeLayer === op.id ? true : false}>
+							{op.label}
 						</MenuItem>
 					})}
 					{/* </List> */}

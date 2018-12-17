@@ -270,10 +270,10 @@ class DeviceData extends PureComponent {
 						}}>					<List component='div' disablePadding>
 							{this.visibilityOptions.map(op => {
 								return <MenuItem selected={this.state.display === op.id ? true : false} key={op.id} value={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
-									<ListItemIcon>
+									<div style={{ marginRight: 24, display: "flex" }}>
 										{op.icon}
-									</ListItemIcon>
-									<ListItemText inset primary={op.label} />
+									</div>
+									{op.label}
 								</MenuItem>
 							})}
 						</List>
