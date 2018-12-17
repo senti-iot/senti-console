@@ -35,7 +35,7 @@ class OpenStreetMap extends React.Component {
 	}
 	componentDidMount = () => {
 		console.log(this.map)
-		this.map.leafletElement.addControl(new L.Control.Fullscreen());
+		// this.map.leafletElement.addControl(new L.Control.Fullscreen());
 	}
 	componentDidUpdate = () => {
 		console.log(this.map)

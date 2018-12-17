@@ -1,4 +1,3 @@
-// import L from 'leaflet'
 (function (factory) {
 	if (typeof module !== 'undefined') {
 		// Node/CommonJS
