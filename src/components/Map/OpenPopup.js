@@ -37,7 +37,6 @@ class OpenPopup extends Component {
 	}
 	render() {
 		const { classes, m, t } = this.props
-
 		return <Paper className={classes.paper}>
 			<ItemGrid container noMargin>
 				<ItemG xs={6}>
@@ -64,16 +63,6 @@ class OpenPopup extends Component {
 						<Caption>{t('devices.fields.weather')}</Caption>
 						<Info>
 							{m.weather.currently.summary}
-						</Info>
-					</ItemG>
-				</ItemG> : this.state.weather ? <ItemG xs={12} container>
-					<ItemG xs={3}>
-						<WeatherIcon icon={this.state.weather.currently.icon} />
-					</ItemG>
-					<ItemG xs={9}>
-						<Caption>{t('devices.fields.weather')}</Caption>
-						<Info>
-							{this.state.weather.currently.summary}
 						</Info>
 					</ItemG>
 				</ItemG> : null}

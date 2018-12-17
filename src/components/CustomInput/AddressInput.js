@@ -170,7 +170,7 @@ class AddressInput extends React.Component {
 					inputProps={{
 						classes,
 						label: this.props.t('orgs.fields.address'),
-						value: this.props.value,
+						value: this.props.value !== null ? this.props.value : '',
 						onChange: this.handleChange,
 						onClick: this.clearInput
 					}}

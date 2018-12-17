@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import {
-	withLeaflet, Map, Popup, TileLayer
+	withLeaflet, Map, Popup, TileLayer, Marker
 } from 'react-leaflet'
 // import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import MarkerIcon from './MarkerIcon';
 import mapStyles from './mapStyles'
 import OpenPopup from './OpenPopup'
-import LeafletM from './LeafletM';
+// import LeafletM from './LeafletM';
 
 import FullScreen from 'variables/LeafletPlugins/FullScreen'
 import ZoomControl from 'variables/LeafletPlugins/ZoomControl';
@@ -19,7 +19,7 @@ class OpenStreetMap extends React.Component {
 	  super(props)
 	
 	  this.state = {
-		 zoom: 13
+		 zoom: props.markers.length === 1 ? 17 : 13
 	  }
 	}
 	
@@ -40,14 +40,7 @@ class OpenStreetMap extends React.Component {
 			dataSet: items,
 		})
 	}
-	componentDidMount = () => {
-		console.log(this.map)
-		// fullscreenPlugin(this.props.classes)
-		// this.map.leafletElement.addControl(new L.Control.Fullscreen());
-	}
-	componentDidUpdate = () => {
-		console.log(this.map)
-	}
+
 	returnSvgIcon = (state) => {
 		var CustomIcon = L.Icon.extend({
 			options: {
@@ -69,25 +62,50 @@ class OpenStreetMap extends React.Component {
 			zoom: this.map.leafletElement.getZoom()
 		})
 	}
+	componentDidMount = () => {
+		if (this.props.markers.length > 1)
+		  this.centerOnAllMarkers()
+	}
+	
+	centerOnAllMarkers = () => { 
+		this.map.leafletElement.fitBounds([...this.props.markers.map(m => m.lat && m.long ? [m.lat, m.long] : null)])
+	}
+	getCenter = () => {
+		let center = []
+		let defaultLat = parseFloat(56.2639) //Denmark,
+		let defaultLng = parseFloat(9.5018) //Denmark
+
+
+		if (this.props.markers.length === 1)
+			center = [this.props.markers[0].lat, this.props.markers[0].long]
+		else { 
+			center = [defaultLat, defaultLng]
+
+		}
+		return center
+	}
 	render() {
 		const { markers, classes, theme, calibrate, mapTheme } = this.props
 		const { zoom } = this.state
 		return <Fragment>
-			<Map zoomControl={false} ref={r => this.map = r} center={[57.043271, 9.921155]} zoom={zoom} onzoomend={this.setZoom} maxZoom={this.layers[mapTheme].maxZoom} className={classes.map} >
+			<Map zoomControl={false} ref={r => this.map = r} center={this.getCenter()} zoom={zoom} onzoomend={this.setZoom} maxZoom={this.layers[mapTheme].maxZoom} className={classes.map} >
 				<FullScreen />
 				<ZoomControl/>
 				<TileLayer url={this.layers[mapTheme].url} attribution={this.layers[mapTheme].attribution}/>
 				{markers.map((m, i) => { 
-					return <LeafletM
-						autoPan={calibrate ? true : false}
-						draggable={calibrate ? true : false}
-						position={[m.lat, m.long]}
-						key={i}
-						icon={this.returnSvgIcon(m.liveStatus)}>
-						{calibrate ? null : <Popup className={theme.palette.type === 'dark' ? classes.popupDark : classes.popup }>
-							<OpenPopup m={m} />
-						</Popup>}
-					</LeafletM>
+					if (m.lat && m.long)
+						return <Marker
+							onDragend={calibrate ? this.props.getLatLng : null}
+							autoPan={calibrate ? true : false}
+							draggable={calibrate ? true : false}
+							position={[m.lat, m.long]}
+							key={i}
+							icon={this.returnSvgIcon(m.liveStatus)}>
+							{calibrate ? null : <Popup className={theme.palette.type === 'dark' ? classes.popupDark : classes.popup }>
+								<OpenPopup m={m} />
+							</Popup>}
+						</Marker>
+					return null
 				})}
 			</Map>
 		</Fragment>
