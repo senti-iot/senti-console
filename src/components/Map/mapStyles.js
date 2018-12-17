@@ -7,7 +7,17 @@ const mapStyles = theme => ({
 		[theme.breakpoints.down('xs')]: {
 			height: 300
 		}
-	}
+	},
+	popup: {
+		background: "#ffffff",
+		color: "#000",
+		borderRadius: 3,
+	},
+	popupDark: {
+		background: "#424242",
+		color: "#ffffff",
+		borderRadius: 3,
+	},
 })
 export var darkMode = [
 	[

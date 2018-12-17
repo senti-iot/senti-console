@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App'
 import registerServiceWorker from './serviceWorker';
+
 // import NewContent from 'layouts/404/NewContent';
 
 // serviceWorker.unregister();

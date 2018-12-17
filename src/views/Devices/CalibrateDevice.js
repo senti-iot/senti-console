@@ -7,12 +7,12 @@ import CounterModal from 'components/Devices/CounterModal'
 import ImageUpload from './ImageUpload'
 import { NavigateNext, NavigateBefore, Done, Restore, MyLocation, Devices, DeviceHub } from 'variables/icons'
 import GridContainer from 'components/Grid/GridContainer';
-import CalibrateMap from './Calibrate/Map';
 import { isFav, updateFav } from 'redux/favorites';
 import { connect } from 'react-redux'
 import TimeCounterModal from 'components/Devices/TimeCounterModal';
 import { changeCalType, changeCount, changeTCount } from 'redux/settings';
 import CalibrateDeviceSettings from './CalibrateDeviceSettings';
+import OpenStreetMap from 'components/Map/OpenStreetMap';
 
 
 const styles = theme => ({
@@ -200,6 +200,7 @@ class CalibrateDevice extends Component {
 		return <Grid container spacing={8}>
 			<ItemG xs={12}>
 				<TextF
+					id={'name'}
 					required={true}
 					label={t('devices.fields.name')}
 					handleChange={this.handleInput('name')}
@@ -213,6 +214,7 @@ class CalibrateDevice extends Component {
 			</ItemG>
 			<ItemG xs={12}>
 				<TextF
+					id={'description'}
 					multiline
 					rows={4}
 					label={t('devices.fields.description')}
@@ -284,7 +286,9 @@ class CalibrateDevice extends Component {
 			<ItemG xs={12}>
 				{/* <div style={{ maxHeight: 400, overflow: 'hidden' }}> */}
 					
-				<CalibrateMap
+				<OpenStreetMap
+					mapTheme={this.props.mapTheme}
+					calibrate
 					markers={lat && long ? [{ lat, long }] : []}
 					getLatLng={this.getLatLngFromMap}
 				/>
@@ -597,6 +601,7 @@ const mapStateToProps = (state) => {
 		calibration: s.calibration,
 		count: s.count,
 		tcount: s.tcount,
+		mapTheme: s.mapTheme
 	}
 }
 

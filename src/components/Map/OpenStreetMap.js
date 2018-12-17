@@ -15,14 +15,21 @@ import FullScreen from 'variables/LeafletPlugins/FullScreen'
 import ZoomControl from 'variables/LeafletPlugins/ZoomControl';
 
 class OpenStreetMap extends React.Component {
+	constructor(props) {
+	  super(props)
+	
+	  this.state = {
+		 zoom: 13
+	  }
+	}
 	
 	layers = [
-		{ id: 0, url: "https://tile-b.openstreetmap.fr/hot/{z}/{x}/{y}.png", label: "T1", maxZoom: 18 },
+		{ id: 0, url: "https://tile-b.openstreetmap.fr/hot/{z}/{x}/{y}.png", label: "T1", maxZoom: 20 },
 		{ id: 1, url: "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", label: "T2", maxZoom: 18 },
 		{ id: 2, url: "http://a.tile.stamen.com/toner/{z}/{x}/{y}.png", label: "T3", maxZoom: 18 },
 		{ id: 3, url: "http://b.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg", label: "T4", maxZoom: 18 },
-		{ id: 4, url: "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" },
-		{ id: 5, url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png", attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' }
+		{ id: 4, url: "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", maxZoom: 18 },
+		{ id: 5, url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png", attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', maxZoom: 18 }
 	]
 	
 	handleClick = (event) => {
@@ -57,18 +64,29 @@ class OpenStreetMap extends React.Component {
 		});
 
 	}
+	setZoom = () => { 
+		this.setState({
+			zoom: this.map.leafletElement.getZoom()
+		})
+	}
 	render() {
-		const { markers, classes, theme } = this.props
+		const { markers, classes, theme, calibrate, mapTheme } = this.props
+		const { zoom } = this.state
 		return <Fragment>
-			<Map zoomControl={false} ref={r => this.map = r} center={[57.043271, 9.921155]} zoom={13} maxZoom={18} className={classes.map} >
+			<Map zoomControl={false} ref={r => this.map = r} center={[57.043271, 9.921155]} zoom={zoom} onzoomend={this.setZoom} maxZoom={this.layers[mapTheme].maxZoom} className={classes.map} >
 				<FullScreen />
 				<ZoomControl/>
-				<TileLayer url={this.layers[this.props.activeLayer].url} attribution={this.layers[this.props.activeLayer].attribution}/>
+				<TileLayer url={this.layers[mapTheme].url} attribution={this.layers[mapTheme].attribution}/>
 				{markers.map((m, i) => { 
-					return <LeafletM ref={(e) => this.marker = e} position={[m.lat, m.long]} dragg key={i} icon={this.returnSvgIcon(m.liveStatus)}>
-						<Popup className={theme.palette.type === 'dark' ? 'customDark' : 'custom'} ref={(e) => this.popup = e}>
-							<OpenPopup m={m}/>
-						</Popup>
+					return <LeafletM
+						autoPan={calibrate ? true : false}
+						draggable={calibrate ? true : false}
+						position={[m.lat, m.long]}
+						key={i}
+						icon={this.returnSvgIcon(m.liveStatus)}>
+						{calibrate ? null : <Popup className={theme.palette.type === 'dark' ? classes.popupDark : classes.popup }>
+							<OpenPopup m={m} />
+						</Popup>}
 					</LeafletM>
 				})}
 			</Map>

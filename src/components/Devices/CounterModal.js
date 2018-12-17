@@ -126,7 +126,6 @@ class CounterModal extends React.Component {
 		return true
 	}
 	render() {
-		console.log(this.props.count)
 		const { classes, t } = this.props;
 		const { started, finished } = this.state
 		return (

@@ -11,7 +11,7 @@ export default class DeviceMap extends PureComponent {
 		this.state = {
 			heatMap: false,
 			actionAnchorVisibility: null,
-			activeLayer: 0
+			mapTheme: props.mapTheme
 		}
 	}
 	visibilityOptions = [
@@ -25,8 +25,7 @@ export default class DeviceMap extends PureComponent {
 	handleVisibility = e => (event) => {
 		if (event)
 			event.preventDefault()
-		console.log('activeLayer', e)
-		this.setState({ activeLayer: e, actionAnchorVisibility: null })
+		this.setState({ mapTheme: e, actionAnchorVisibility: null })
 	}
 	handleOpenMenu = e => {
 		
@@ -38,7 +37,7 @@ export default class DeviceMap extends PureComponent {
 	}
 	renderMenu = () => {
 		const { t } = this.props
-		const { actionAnchorVisibility, activeLayer } = this.state
+		const { actionAnchorVisibility, mapTheme } = this.state
 		return <Fragment>
 			<ItemG>
 				<IconButton title={'Map layer'} variant={'fab'} onClick={this.handleOpenMenu}>
@@ -55,7 +54,7 @@ export default class DeviceMap extends PureComponent {
 						}
 					}}>
 					{this.visibilityOptions.map(op => {
-						return <MenuItem key={op.id} value={op.id} button onClick={this.handleVisibility(op.id)} selected={activeLayer === op.id ? true : false}>
+						return <MenuItem key={op.id} value={op.id} button onClick={this.handleVisibility(op.id)} selected={mapTheme === op.id ? true : false}>
 							{op.label}
 						</MenuItem>
 					})}
@@ -69,7 +68,7 @@ export default class DeviceMap extends PureComponent {
 	}
 	render() {
 		const { device, weather, t, loading } = this.props
-		const { activeLayer } = this.state
+		const { mapTheme } = this.state
 		return (
 			<InfoCard
 				title={t('devices.cards.map')}
@@ -80,7 +79,7 @@ export default class DeviceMap extends PureComponent {
 					loading ? <CircularLoader /> :
 						<Grid container justify={'center'}>
 							{/* {device.lat && device.long ? <Maps heatMap={this.state.heatMap} t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t('devices.notCalibrated')}</Caption>} */}
-							{device.lat && device.long ? <OpenStreetMap activeLayer={activeLayer} heatMap={this.state.heatMap} t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t('devices.notCalibrated')}</Caption>}
+							{device.lat && device.long ? <OpenStreetMap mapTheme={mapTheme} heatMap={this.state.heatMap} t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t('devices.notCalibrated')}</Caption>}
 						</Grid>
 				} />
 

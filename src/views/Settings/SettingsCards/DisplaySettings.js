@@ -21,9 +21,10 @@ class DisplaySettings extends Component {
 	changeTheme = (e) => this.props.changeTheme(e.target.value)
 	changeSideBarLoc = (e) => this.props.changeSideBarLoc(e.target.value)
 	changeDiscoverSenti = e => this.props.changeDiscoverSenti(e.target.value)
+	changeMapTheme = e => this.props.changeMapTheme(e.target.value)
 
 	render() {
-		const { language, trp, sideBar, discSentiVal, theme, classes, t } = this.props
+		const { language, trp, sideBar, discSentiVal, theme, mapTheme, classes, t } = this.props
 		let discSenti = [
 			{ value: 1, label: t('actions.yes') },
 			{ value: 0, label: t('actions.no') }
@@ -32,6 +33,16 @@ class DisplaySettings extends Component {
 			{ value: 'en', label: t('settings.languages.en') },
 			{ value: 'da', label: t('settings.languages.da') }
 		]
+
+		let mapThemes = [
+			{ value: 0, label: "Humanitarian" },
+			{ value: 1, label: "Dark" },
+			{ value: 2, label: "Stamen Toner" },
+			{ value: 3, label: "Stamen Watercolor" },
+			{ value: 4, label: "Carto" },
+			{ value: 5, label: "OpenStreetMap" }
+		]
+
 		let themes = [
 			{ value: 1, label: t('settings.themes.dark') },
 			{ value: 0, label: t('settings.themes.light') }
@@ -45,10 +56,12 @@ class DisplaySettings extends Component {
 			{ value: 50, label: 50 },
 			{ value: 100, label: 100 }
 		]
+
 		let sideBarLocs = [
 			{ value: 0, label: t('settings.sideBarLeft') },
 			{ value: 1, label: t('settings.sideBarRight') }
 		]
+
 		return (
 			discSentiVal !== null && language !== null && trp !== null && sideBar !== null && theme !== null ? 
 				<InfoCard
@@ -82,10 +95,16 @@ class DisplaySettings extends Component {
 										<DSelect menuItems={sideBarLocs} value={sideBar} onChange={this.changeSideBarLoc} />
 									</ItemGrid>
 								</ListItem>
-								<ListItem >
+								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.theme')}</ListItemText>
 										<DSelect menuItems={themes} value={theme} onChange={this.changeTheme} />
+									</ItemGrid>
+								</ListItem>
+								<ListItem>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{`${t('devices.cards.map')} ${t('settings.theme')}`}</ListItemText>
+										<DSelect menuItems={mapThemes} value={mapTheme} onChange={this.changeMapTheme} />
 									</ItemGrid>
 								</ListItem>
 							</List>

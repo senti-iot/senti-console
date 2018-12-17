@@ -12,7 +12,8 @@ const changeLangAction = 'changeLanguage'
 const THEME = 'theme'
 const TRP = 'tableRowsPerPage'
 const DISCSENT = 'discoverSentiBanner'
-const DIDKNOW = 'notifDidYouKnow'
+const DidKnow = 'notifDidYouKnow'
+const MapTheme = 'mapTheme'
 
 //Calibration
 const CALTYPE = 'calibrationType'
@@ -48,7 +49,8 @@ export const saveSettingsOnServ = () => {
 			trp: s.trp,
 			alerts: s.alerts,
 			didKnow: s.didKnow,
-			rawData: s.rawData
+			rawData: s.rawData,
+			mapTheme: s.mapTheme
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -138,6 +140,17 @@ export const getSettings = async () => {
 
 
 }
+
+export const changeMapTheme = t => {
+	return async (dispatch, getState) => {
+		dispatch({
+			type: MapTheme,
+			t
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+
 export const changeAlerts = t => {
 	return async (dispatch, getState) => {
 		dispatch({
@@ -150,7 +163,7 @@ export const changeAlerts = t => {
 export const changeDidKnow = t => {
 	return async (dispatch, getState) => {
 		dispatch({
-			type: DIDKNOW,
+			type: DidKnow,
 			t
 		})
 		dispatch(saveSettingsOnServ())
@@ -253,6 +266,7 @@ export const finishedSaving = () => {
 	}
 }
 let initialState = {
+	mapTheme: 0,
 	rawData: 0,
 	language: 'dk',
 	calibration: 1,
@@ -329,13 +343,17 @@ export const settings = (state = initialState, action) => {
 			return Object.assign({}, state, {
 				alerts: action.t
 			})
-		case DIDKNOW:
+		case DidKnow:
 			return Object.assign({}, state, {
 				didKnow: action.t
 			})
 		case CHARTTYPE: 
 			return Object.assign({}, state, {
 				chartType: action.t
+			})
+		case MapTheme: 
+			return Object.assign({}, state, {
+				mapTheme: action.t
 			})
 		default:
 			return state

@@ -606,11 +606,12 @@ class Device extends Component {
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'map'}>
 						<DeviceMap
-							classes={this.props.classes}
-							heatData={this.state.heatData}
-							loading={this.state.loadingMap}
+							mapTheme={this.props.mapTheme}
 							device={this.state.heatData}
+							loading={this.state.loadingMap}
 							weather={this.state.weather}
+							heatData={this.state.heatData}
+							classes={this.props.classes}
 							t={this.props.t}
 						/>
 					</ItemGrid>
@@ -638,7 +639,8 @@ const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	language: state.settings.language,
 	saved: state.favorites.saved,
-	rawData: state.settings.rawData
+	rawData: state.settings.rawData,
+	mapTheme: state.settings.mapTheme
 })
 
 const mapDispatchToProps = (dispatch) => ({
