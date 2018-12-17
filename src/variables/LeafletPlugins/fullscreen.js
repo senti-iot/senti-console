@@ -13,7 +13,7 @@
 import L from 'leaflet'
 
 
-export default (classes ) => {
+export default (classes) => {
 	//CreateLeafletElement
 	L.Control.Fullscreen = L.Control.extend({
 		options: {

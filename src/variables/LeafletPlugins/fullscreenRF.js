@@ -2,24 +2,36 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import L, { Control } from 'leaflet'
 import { MapControl, withLeaflet } from 'react-leaflet'
-import { withStyles, IconButton } from '@material-ui/core';
+import { withStyles, IconButton, MuiThemeProvider } from '@material-ui/core';
 import { FullscreenOutlined } from '@material-ui/icons';
 
 const styles = theme => ({
-	zoomButton: {
-		background: 'red',
-		width: 50,
-		height: 50
+	fullscreenButton: {
+		background: theme.palette.type !== 'dark' ? '#fff' : "#424242",
+		"&:hover": {
+			background: "rgba(100, 100, 100, 1)"
+		},
+		padding: 4,
+		borderRadius: 4,
+	},
+	fullscreenOn: {
+		width: '100%!important',
+		height: '100%!important'
+	},
+	pseudoFullscreen: {
+		position: "fixed!important",
+		width: "100%!important",
+		height: "100%!important",
+		top: "0!important",
+		left: "0!important",
+		zIndex: 99999,
 	}
 })
-export default withLeaflet(withStyles(styles)(class Fullscreen extends MapControl {
+export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscreen extends MapControl {
 
 	constructor(props, context) {
 		super(props)
 		this.container = L.DomUtil.create('div', 'leaflet-control-fullscreen leaflet-bar');
-		// this.link = L.DomUtil.create('a', `leaflet-control-fullscreen-button leaflet-bar-part ${this.props.classes.zoomButton}`, container);
-		
-		// this.link.href = '#';
 		L.Map.include({
 			isFullscreen: function () {
 				return this._isFullscreen || false;
@@ -28,9 +40,9 @@ export default withLeaflet(withStyles(styles)(class Fullscreen extends MapContro
 				this._isFullscreen = fullscreen;
 				var container = this.getContainer();
 				if (fullscreen) {
-					L.DomUtil.addClass(container, 'leaflet-fullscreen-on');
+					L.DomUtil.addClass(container, props.classes.fullscreenOn);
 				} else {
-					L.DomUtil.removeClass(container, 'leaflet-fullscreen-on');
+					L.DomUtil.removeClass(container, props.classes.fullscreenOn);
 				}
 				this.invalidateSize();
 			},
@@ -57,39 +69,12 @@ export default withLeaflet(withStyles(styles)(class Fullscreen extends MapContro
 
 	componentDidMount() {
 		super.componentDidMount();
-		// this.link.addEventListener('click', e => {
-		// 	L.DomEvent.stopPropagation(e);
-		// 	L.DomEvent.preventDefault(e);
-		// 	this.toggleFullscreen(this.map.options)
-		// 	// this.map.toggleFullscreen(this.map.options)
-		// })
-		console.log(this.map.isFullscreen())
-		// this.changeZoomInfoAuto();
-		// this.input.addEventListener('change', () => {
-		// 	if (this.input.value !== '') {
-		// 		if (this.input.value < 0) { this.input.value = 0; }
-		// 		if (typeof this.map.options.minZoom !== 'undefined' && this.input.value < this.map.options.minZoom) {
-		// 			this.map.setZoom(this.map.options.minZoom);
-		// 			if ( this.map.getZoom() == this.map.options.minZoom) {
-		// 				this.input.value = this.map.options.minZoom
-		// 			}
-		// 		}
-		// 		if (typeof this.map.options.maxZoom !== 'undefined' && this.input.value > this.map.options.maxZoom) {
-		// 			this.map.setZoom(this.map.options.maxZoom);
-		// 			if ( this.map.getZoom() == this.map.options.maxZoom) {
-		// 				this.input.value = this.map.options.maxZoom
-		// 			}
-		// 		} else {
-		// 			this.map.setZoom(this.input.value);
-		// 		}
-		// 	}
-		// })
 	}
 	toggleFullscreen = (options) => {
 		var container = this.map.getContainer();
 		if (this.map.isFullscreen()) {
 			if (options && options.pseudoFullscreen) {
-				this._disablePseudoFullscreen(container);
+				this.disablePseudoFullscreen(container);
 			} else if (document.exitFullscreen) {
 				document.exitFullscreen();
 			} else if (document.mozCancelFullScreen) {
@@ -99,11 +84,11 @@ export default withLeaflet(withStyles(styles)(class Fullscreen extends MapContro
 			} else if (document.msExitFullscreen) {
 				document.msExitFullscreen();
 			} else {
-				this._disablePseudoFullscreen(container);
+				this.disablePseudoFullscreen(container);
 			}
 		} else {
 			if (options && options.pseudoFullscreen) {
-				this._enablePseudoFullscreen(container);
+				this.enablePseudoFullscreen(container);
 			} else if (container.requestFullscreen) {
 				container.requestFullscreen();
 			} else if (container.mozRequestFullScreen) {
@@ -113,44 +98,41 @@ export default withLeaflet(withStyles(styles)(class Fullscreen extends MapContro
 			} else if (container.msRequestFullscreen) {
 				container.msRequestFullscreen();
 			} else {
-				this._enablePseudoFullscreen(container);
+				this.enablePseudoFullscreen(container);
 			}
 		}
 		this.map.setFullscreen(!this.map.isFullscreen())
 	}
 	enablePseudoFullscreen = (container) => {
-		L.DomUtil.addClass(container, 'leaflet-pseudo-fullscreen');
-		this.map.setFullscreen(true);
-		this.fire('fullscreenchange');
+		L.DomUtil.addClass(container, this.props.classes.pseudoFullscreen);
+		// this.map.setFullscreen(true);
+		// this.fire('fullscreenchange');
 	}
 
 	disablePseudoFullscreen = (container) => {
-		L.DomUtil.removeClass(container, 'leaflet-pseudo-fullscreen');
-		this.map.setFullscreen(false);
-		this.fire('fullscreenchange');
+		L.DomUtil.removeClass(container, this.props.classes.pseudoFullscreen);
+		// this.map.setFullscreen(false);
+		// this.fire('fullscreenchange');
 	}
 
 	createLeafletElement(props) {
 		const Fullscreen = Control.extend({
 			options: {
 				position: this.props.position || 'topright',
-				// title: {
-				// 	'false': 'View Fullscreen',
-				// 	'true': 'Exit Fullscreen'
-				// }
 			},
 			onAdd: () => {
 				const jsx = (
-					<IconButton
-						onClick={() => this.toggleFullscreen(this.map.options)}
-						color={'primary'}
-						style={{ padding: 4, background: '#fff', borderRadius: 4 }}>
-						<FullscreenOutlined />
-					</IconButton>
+					<MuiThemeProvider theme={this.props.theme}>
+						<IconButton
+							className={this.props.classes.fullscreenButton}
+							onClick={() => this.toggleFullscreen(this.map.options)}
+							color={'primary'}>
+							<FullscreenOutlined />
+						</IconButton>
+					</MuiThemeProvider>
 				)
 				ReactDOM.render(jsx, this.container)
 				return this.container
-				// this.link
 			}
 		})
 		return new Fullscreen(props)
