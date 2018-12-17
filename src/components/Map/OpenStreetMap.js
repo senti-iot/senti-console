@@ -11,8 +11,7 @@ import mapStyles from './mapStyles'
 import OpenPopup from './OpenPopup'
 import LeafletM from './LeafletM';
 
-import 'variables/LeafletPlugins/fullscreen'
-
+import FullscreenPlugin from 'variables/LeafletPlugins/fullscreenRF'
 
 class OpenStreetMap extends React.Component {
 	
@@ -35,6 +34,7 @@ class OpenStreetMap extends React.Component {
 	}
 	componentDidMount = () => {
 		console.log(this.map)
+		// fullscreenPlugin(this.props.classes)
 		// this.map.leafletElement.addControl(new L.Control.Fullscreen());
 	}
 	componentDidUpdate = () => {
@@ -60,6 +60,7 @@ class OpenStreetMap extends React.Component {
 		const { markers, classes, theme } = this.props
 		return <Fragment>
 			<Map ref={r => this.map = r} center={[57.043271, 9.921155]} zoom={13} maxZoom={18} className={classes.map} >
+				<FullscreenPlugin/>
 				<TileLayer url={this.layers[this.props.activeLayer].url} attribution={this.layers[this.props.activeLayer].attribution}/>
 				{markers.map((m, i) => { 
 					return <LeafletM ref={(e) => this.marker = e} position={[m.lat, m.long]} dragg key={i} icon={this.returnSvgIcon(m.liveStatus)}>

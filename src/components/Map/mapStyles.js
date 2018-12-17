@@ -1,4 +1,8 @@
 const mapStyles = theme => ({
+	leafletFullscreenOn: {
+		width: "100%!important",
+		height: "100%!important",
+	},
 	map: {
 		width: '100%',
 		[theme.breakpoints.up('sm')]: {

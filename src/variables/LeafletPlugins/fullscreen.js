@@ -1,15 +1,20 @@
-(function (factory) {
-	if (typeof module !== 'undefined') {
-		// Node/CommonJS
-		module.exports = factory(require('leaflet'));
-	} else {
-		// Browser globals
-		if (typeof window.L === 'undefined') {
-			throw new Error('Leaflet must be loaded first');
-		}
-		factory(window.L);
-	}
-}(function (L) {
+// (function (factory) {
+// 	if (typeof module !== 'undefined') {
+// 		// Node/CommonJS
+// 		module.exports = factory(require('leaflet'));
+// 	} else {
+// 		// Browser globals
+// 		if (typeof window.L === 'undefined') {
+// 			throw new Error('Leaflet must be loaded first');
+// 		}
+// 		factory(window.L);
+// 	}
+// }(function (L) {
+import L from 'leaflet'
+
+
+export default (classes ) => {
+	//CreateLeafletElement
 	L.Control.Fullscreen = L.Control.extend({
 		options: {
 			position: 'topright',
@@ -18,7 +23,7 @@
 				'true': 'Exit Fullscreen'
 			}
 		},
-
+		//constructor
 		onAdd: function (map) {
 			var container = L.DomUtil.create('div', 'leaflet-control-fullscreen leaflet-bar leaflet-control');
 							
@@ -33,7 +38,7 @@
 
 			return container;
 		},
-
+		// CDM - this.button.addEventListener click
 		_click: function (e) {
 			L.DomEvent.stopPropagation(e);
 			L.DomEvent.preventDefault(e);
@@ -162,4 +167,6 @@
 	L.control.fullscreen = function (options) {
 		return new L.Control.Fullscreen(options);
 	};
-}));
+}
+
+// }));
