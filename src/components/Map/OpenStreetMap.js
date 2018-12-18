@@ -13,6 +13,8 @@ import OpenPopup from './OpenPopup'
 
 import FullScreen from 'variables/LeafletPlugins/FullScreen'
 import ZoomControl from 'variables/LeafletPlugins/ZoomControl';
+import HeatLayer from 'variables/LeafletPlugins/HeatLayer';
+import NewHeatMapLayer from 'variables/LeafletPlugins/NewHeatMapLayer';
 
 class OpenStreetMap extends React.Component {
 	constructor(props) {
@@ -30,7 +32,7 @@ class OpenStreetMap extends React.Component {
 		{ id: 3, url: "http://a.tile.stamen.com/toner/{z}/{x}/{y}.png", label: "T3", maxZoom: 18 },
 		{ id: 4, url: "http://b.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg", label: "T4", maxZoom: 18 },
 		{ id: 5, url: "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", maxZoom: 18 },
-		{ id: 6, url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png", attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', maxZoom: 18 }
+		{ id: 6, url: "https://{s}.tile.osm.org/{z}/{x}/{y}.png", attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', maxZoom: 18 }
 	]
 	
 	handleClick = (event) => {
@@ -59,6 +61,7 @@ class OpenStreetMap extends React.Component {
 
 	}
 	setZoom = () => { 
+		console.log(this.map.leafletElement.getZoomScale(), this.map.leafletElement.getZoom())
 		this.setState({
 			zoom: this.map.leafletElement.getZoom()
 		})
@@ -88,8 +91,28 @@ class OpenStreetMap extends React.Component {
 	render() {
 		const { markers, classes, theme, calibrate, mapTheme } = this.props
 		const { zoom } = this.state
+		console.log(zoom, 'render')
 		return <Fragment>
 			<Map zoomControl={false} ref={r => this.map = r} center={this.getCenter()} zoom={zoom} onzoomend={this.setZoom} maxZoom={this.layers[mapTheme].maxZoom} className={classes.map} >
+				<NewHeatMapLayer
+				/* 	fitBoundsOnLoad
+					points={
+						markers.map((m, i) => {
+							if (m.lat && m.long)
+								return [m.lat, m.long, (m.data / 100000)]
+						})
+					}
+					longitudeExtractor={m => m[1]}
+					latitudeExtractor={m => m[0]}
+					intensityExtractor={m => { return parseFloat(m[2]) }}
+					radius={10 * (this.layers[mapTheme].maxZoom - zoom) }
+					gradient={{
+						0.1: 'blue',
+						0.3: 'lime',
+						0.6: 'yellow',
+						0.8: 'red'
+					}} */
+				/>
 				<FullScreen />
 				<ZoomControl/>
 				<TileLayer url={this.layers[mapTheme].url} attribution={this.layers[mapTheme].attribution}/>
