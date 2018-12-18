@@ -1,96 +1,39 @@
-import React from 'react';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
-import 'leaflet/dist/leaflet.css'
+import React, { Fragment } from 'react';
+import {
+	withLeaflet, Map, Popup, TileLayer, Marker
+} from 'react-leaflet'
+// import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
-delete L.Icon.Default.prototype._getIconUrl;
+import { withStyles } from '@material-ui/core';
+import { connect } from 'react-redux'
+import MarkerIcon from './MarkerIcon';
+import mapStyles from './mapStyles'
+import OpenPopup from './OpenPopup'
+// import LeafletM from './LeafletM';
 
-L.Icon.Default.mergeOptions({
-	iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-	iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-	shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-});
-
-const data = [
-	{
-		coords: [
-			[57.043271, 9.921155],
-			[56.043271, 8.921155],
-			[55.043271, 10.521155],
-			[57.043271, 9.94921155],
-		],
-		title: 'Påske',
-		description: 'Det er ikke sikkert de hedningekristne menigheder fejrede påske, da hver søndag i forvejen var tilegnet mindet om Kristi opstandelse. I slutningen af det 2. århundrede opstod en strid om festen',
-		color: 'Blue',
-		visible: true,
-	},
-	{
-		coords: [
-			[57.036866, 9.827677],
-			[56.946344, 9.762445],
-			[56.968808, 10.113321],
-			[56.899876, 10.03161],
-		],
-		title: 'Christmas carnival',
-		description: 'On Thursday (Nov 9) the grooviest road in town is getting a bit of a tune-up. The famously fashionable Carnaby Street will celebrate the festive.',
-		color: 'Orange',
-		visible: true,
-	},
-	{
-		coords: [
-			[55.597091, 12.626523],
-			[55.63458, 12.594345],
-			[55.695892, 12.615736],
-			[55.850429, 11.617637],
-		],
-		title: 'Pub crawl',
-		description: 'A pub crawl is the act of drinking in multiple pubs or bars in a single night, normally travelling by foot or public transport to each destination and occasionally by cycle.',
-		color: 'Green',
-		visible: true,
-	},
-	{
-		coords: [
-			[56.099795, 8.630588],
-			[54.868639, 9.074428],
-			[55.64104, 11.65533],
-			[55.614621, 12.637527],
-		],
-		title: 'Summer festival',
-		description: 'Copenhagen Summer Festival præsenterer klassisk kammermusik med unge talenter og prisvindere på højeste niveau fra ind- og udland.',
-		color: 'Red',
-		visible: true,
-	}
-]
+import FullScreen from 'variables/LeafletPlugins/FullScreen'
+import ZoomControl from 'variables/LeafletPlugins/ZoomControl';
 
 class OpenStreetMap extends React.Component {
 	constructor(props) {
-		super(props);
-
-		this.state = {
-			mapType: '1',
-			dataSet: data,
-		}
-
-		this.changeMapType = this.changeMapType.bind(this);
-		this.changeColor = this.changeColor.bind(this);
-		this.handleClick = this.handleClick.bind(this);
+	  super(props)
+	
+	  this.state = {
+		 zoom: props.markers.length === 1 ? 17 : 13
+	  }
 	}
-
-	changeMapType(event) {
-		this.setState({
-			mapType: event.currentTarget.id,
-		});
-	}
-
-	changeColor(event) {
-		const items = this.state.dataSet;
-		items[event.target.id].color = event.target.value;
-
-		this.setState({
-			dataSet: items,
-		});
-	}
-
-	handleClick(event) {
+	
+	layers = [
+		{ id: 0, url: "https://tile-b.openstreetmap.fr/hot/{z}/{x}/{y}.png", label: "T1", maxZoom: 20 },
+		{ id: 1, url: "https://gc2.io/mapcache/baselayers/tms/1.0.0/luftfotoserier.quickorto_2018_16cm/{z}/{x}/{-y}.png", label: "LuftPhoto", maxZoom: 18 },
+		{ id: 2, url: "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", label: "T2", maxZoom: 18 },
+		{ id: 3, url: "http://a.tile.stamen.com/toner/{z}/{x}/{y}.png", label: "T3", maxZoom: 18 },
+		{ id: 4, url: "http://b.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg", label: "T4", maxZoom: 18 },
+		{ id: 5, url: "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", maxZoom: 18 },
+		{ id: 6, url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png", attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', maxZoom: 18 }
+	]
+	
+	handleClick = (event) => {
 		const items = this.state.dataSet;
 		items[event.target.id].visible = !items[event.target.id].visible;
 
@@ -99,101 +42,83 @@ class OpenStreetMap extends React.Component {
 		})
 	}
 
-	render() {
-		const { mapType, dataSet } = this.state;
+	returnSvgIcon = (state) => {
+		var CustomIcon = L.Icon.extend({
+			options: {
+				iconSize: [25, 41],
+				iconAnchor: [12, 41],
+				popupAnchor: [1, -34],
+			}
+		});
 
-		function setColor(color) {
-			return (
-				`<?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
- "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
- width="50.000000pt" height="82.000000pt" viewBox="0 0 50.000000 82.000000"
- preserveAspectRatio="xMidYMid meet">
-<g transform="translate(0.000000,82.000000) scale(0.050000,-0.050000)"
-fill="${color}" stroke="none">
-<path d="M340 1578 c-238 -94 -371 -335 -317 -575 29 -128 441 -953 477 -953
-32 0 412 751 462 914 117 382 -262 756 -622 614z m271 -347 c150 -150 -69
--374 -223 -229 -102 95 -28 278 112 278 39 0 80 -18 111 -49z"/>
-</g>
-</svg>
-`)
-		}
-
-		function returnSvgIcon(color) {
-			var CustomIcon = L.Icon.extend({
-				options: {
-					iconSize: [25, 41],
-					iconAnchor: [12, 41],
-					popupAnchor: [1, -34],
-				}
-			});
-
-			const icon = setColor(color);
-			return new CustomIcon({
-				iconUrl: encodeURI("data:image/svg+xml," + icon)
-			});
-
-		}
-
-		return (
-			<div>
-				<div style={{ 'position': 'absolute', 'zIndex': '2', 'paddingLeft': '600px' }}>
-					<button id={1} onClick={this.changeMapType}>Simple</button>
-					<button id={2} onClick={this.changeMapType}>Satellite</button>
-					<button id={3} onClick={this.changeMapType}>Hybrid</button>
-				</div>
-				<div /* style={{ 'zIndex': '10', 'paddingLeft': '800px', 'paddingTop': '100px', 'position': 'absolute' }} */>
-					{dataSet.map(function (item, index) {
-						return (
-							<div key={index}>
-								<button id={index} onClick={this.handleClick}>Project {index} </button>
-								<select id={index} value={item.color} onChange={this.changeColor}>
-									<option value='Green'>Green</option>
-									<option value='Red'>Red</option>
-									<option value='Yellow'>Yellow</option>
-									<option value='Blue'>Blue</option>
-									<option value='Brown'>Brown</option>
-									<option value='Purple'>Purple</option>
-									<option value='Orange'>Orange</option>
-									<option value='Grey'>Grey</option>
-								</select>
-							</div>)
-					}, this)}
-				</div>
-				<Map center={[57.043271, 9.921155]} zoom={13} attributionControl={false} style={{
-					'height': '600px',
-					'width': '800px',
-					'margin': '0 auto',
-					'zIndex': '1',
-					'borderRadius': '5px',
-				}}>
-					<TileLayer
-						url={mapType === '1' ? "https://gc2.io/mapcache/baselayers/tms/1.0.0/geodk.bright/{z}/{x}/{-y}.png?{s}" ://"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" :
-							mapType === '2' ? "http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}&s=Ga" :
-								"http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}&s=Ga"} />
-					{dataSet.map(function (item, i) {
-						return (
-							item.coords.map( (coord, index) => {
-								if (item.visible) return (
-									<Marker position={coord} key={index} icon={returnSvgIcon(item.color)}>
-										<Popup>
-											<div>
-												<h2>{item.title}</h2>
-												<h3>{item.description}</h3>
-											</div>
-										</Popup>
-									</Marker>
-								)
-								else return null
-							})
-						)
-					})}
-				</Map>
-			</div>
-		)
+		const icon = MarkerIcon(state);
+		var iconUrl = 'data:image/svg+xml;base64,' + btoa(icon);
+		return new CustomIcon({
+			iconUrl: iconUrl
+		});
 
 	}
-}
+	setZoom = () => { 
+		this.setState({
+			zoom: this.map.leafletElement.getZoom()
+		})
+	}
+	componentDidMount = () => {
+		if (this.props.markers.length > 1)
+		  this.centerOnAllMarkers()
+	}
+	
+	centerOnAllMarkers = () => { 
+		this.map.leafletElement.fitBounds([...this.props.markers.map(m => m.lat && m.long ? [m.lat, m.long] : null)])
+	}
+	getCenter = () => {
+		let center = []
+		let defaultLat = parseFloat(56.2639) //Denmark,
+		let defaultLng = parseFloat(9.5018) //Denmark
 
-export default OpenStreetMap
+
+		if (this.props.markers.length === 1)
+			center = [this.props.markers[0].lat, this.props.markers[0].long]
+		else { 
+			center = [defaultLat, defaultLng]
+
+		}
+		return center
+	}
+	render() {
+		const { markers, classes, theme, calibrate, mapTheme } = this.props
+		const { zoom } = this.state
+		return <Fragment>
+			<Map zoomControl={false} ref={r => this.map = r} center={this.getCenter()} zoom={zoom} onzoomend={this.setZoom} maxZoom={this.layers[mapTheme].maxZoom} className={classes.map} >
+				<FullScreen />
+				<ZoomControl/>
+				<TileLayer url={this.layers[mapTheme].url} attribution={this.layers[mapTheme].attribution}/>
+				{markers.map((m, i) => { 
+					if (m.lat && m.long)
+						return <Marker
+							onDragend={calibrate ? this.props.getLatLng : null}
+							autoPan={calibrate ? true : false}
+							draggable={calibrate ? true : false}
+							position={[m.lat, m.long]}
+							key={i}
+							icon={this.returnSvgIcon(m.liveStatus)}>
+							{calibrate ? null : <Popup className={theme.palette.type === 'dark' ? classes.popupDark : classes.popup }>
+								<OpenPopup m={m} />
+							</Popup>}
+						</Marker>
+					return null
+				})}
+			</Map>
+		</Fragment>
+
+	}
+
+}
+const mapStateToProps = (state) => ({
+	language: state.settings.language
+})
+
+const mapDispatchToProps = {
+
+}
+export default withLeaflet(connect(mapStateToProps, mapDispatchToProps)(withStyles(mapStyles, { withTheme: true })(OpenStreetMap)))

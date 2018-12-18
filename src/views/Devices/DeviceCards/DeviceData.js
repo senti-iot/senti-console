@@ -2,7 +2,7 @@ import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types'
 import {
 	Grid, IconButton, Menu, withStyles, ListItem,
-	ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox,
+	ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox, MenuItem,
 } from '@material-ui/core';
 import {
 	Timeline, MoreVert,
@@ -269,12 +269,12 @@ class DeviceData extends PureComponent {
 							}
 						}}>					<List component='div' disablePadding>
 							{this.visibilityOptions.map(op => {
-								return <ListItem key={op.id} value={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
-									<ListItemIcon>
+								return <MenuItem selected={this.state.display === op.id ? true : false} key={op.id} value={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
+									<div style={{ marginRight: 24, display: "flex" }}>
 										{op.icon}
-									</ListItemIcon>
-									<ListItemText inset primary={op.label} />
-								</ListItem>
+									</div>
+									{op.label}
+								</MenuItem>
 							})}
 						</List>
 					</Menu>

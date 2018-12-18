@@ -1,16 +1,18 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withStyles, Grid, TextField, FormControl, InputLabel, Select, Input, MenuItem, FormHelperText, MobileStepper } from '@material-ui/core';
-import { ItemGrid, Info, Danger, AddressInput, ItemG, InfoCard, T } from 'components'
-import { getDevice, calibrateDevice, uploadPictures } from 'variables/dataDevices'
+import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withStyles, Grid, FormControl, InputLabel, Select, Input, MenuItem, FormHelperText, MobileStepper } from '@material-ui/core';
+import { Info, Danger, AddressInput, ItemG, InfoCard, T, TextF } from 'components'
+import { getDevice, calibrateDevice, uploadPictures, getAddressByLocation } from 'variables/dataDevices'
 import Caption from 'components/Typography/Caption'
 import CounterModal from 'components/Devices/CounterModal'
 import ImageUpload from './ImageUpload'
 import { NavigateNext, NavigateBefore, Done, Restore, MyLocation, Devices, DeviceHub } from 'variables/icons'
 import GridContainer from 'components/Grid/GridContainer';
-import { CalibrateMap } from 'components/Map/CalibrateMaps';
 import { isFav, updateFav } from 'redux/favorites';
 import { connect } from 'react-redux'
 import TimeCounterModal from 'components/Devices/TimeCounterModal';
+import { changeCalType, changeCount, changeTCount } from 'redux/settings';
+import CalibrateDeviceSettings from './CalibrateDeviceSettings';
+import OpenStreetMap from 'components/Map/OpenStreetMap';
 
 
 const styles = theme => ({
@@ -127,12 +129,16 @@ class CalibrateDevice extends Component {
 		}
 	}
 
-	getCoords = () => {
+	getCoords = async () => {
 		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(rs => {
+			navigator.geolocation.getCurrentPosition(async rs => {
 				let lat = rs.coords.latitude
 				let long = rs.coords.longitude
-				this.setState({ lat, long, error: false })
+				// console.log(lat, long)
+				let address = await getAddressByLocation(lat, long)
+				let addressStr = address.vejnavn + ' ' + address.husnr + ', ' + address.postnr + ' ' + address.postnrnavn
+				this.setState({ lat, long, error: false, address: addressStr })
+
 			}, err => { this.setState({ error: err }) })
 		}
 	}
@@ -143,7 +149,6 @@ class CalibrateDevice extends Component {
 			success = await uploadPictures({
 				id: this.state.device.id,
 				files: this.state.images,
-				// step: 3
 			}).then(rs => rs)
 		}
 		return success
@@ -192,14 +197,13 @@ class CalibrateDevice extends Component {
 
 	renderDeviceNameDescriptionForms = () => {
 		const { classes, t } = this.props
-		return <Grid container>
-			<AddressInput value={this.state.address} handleChange={this.handleSetAddress} />
-
-			<ItemGrid xs={12}>
-				<TextField
+		return <Grid container spacing={8}>
+			<ItemG xs={12}>
+				<TextF
+					id={'name'}
 					required={true}
 					label={t('devices.fields.name')}
-					onChange={this.handleInput('name')}
+					handleChange={this.handleInput('name')}
 					value={this.state.name}
 					InputProps={{
 						classes: {
@@ -207,13 +211,14 @@ class CalibrateDevice extends Component {
 						}
 					}}
 				/>
-			</ItemGrid>
-			<ItemGrid xs={12}>
-				<TextField
+			</ItemG>
+			<ItemG xs={12}>
+				<TextF
+					id={'description'}
 					multiline
 					rows={4}
 					label={t('devices.fields.description')}
-					onChange={this.handleInput('description')}
+					handleChange={this.handleInput('description')}
 					value={this.state.description}
 					InputProps={{
 						classes: {
@@ -221,30 +226,41 @@ class CalibrateDevice extends Component {
 						}
 					}}
 				/>
-			</ItemGrid>
+			</ItemG>
 		</Grid>
 	}
 	getLatLngFromMap = (e) => {
-
+		let lat = e.target._latlng.lat
+		let long = e.target._latlng.lng
 		this.setState({
-			lat: e.lat,
-			long: e.long
+			lat,
+			long
+		}, async () => { 
+			let address = await getAddressByLocation(lat, long)
+			let addressStr = address.vejnavn + ' ' + address.husnr + ', ' + address.postnr + ' ' + address.postnrnavn
+			this.setState({ error: false, address: addressStr })
 		})
+
 	}
 	renderDeviceLocation = () => {
 		const { t } = this.props
-		return <Grid container>
-			<ItemGrid xs={12}>
-				<div style={{ maxHeight: 400 }}>
-					<CalibrateMap
-						onClick={this.getLatLngFromMap}
-					/>
-				</div>
+		const { lat, long } = this.state
+		return <Grid container spacing={8}>
+			<ItemG xs={12} container justify={this.props.theme.breakpoints.width('sm') <= window.innerWidth ? 'flex-start' : 'center'}>
+				<Button
+					variant='contained'
+					color='primary'
+					onClick={this.getCoords}
+					className={this.props.classes.button}>
+					<MyLocation className={this.props.classes.iconButton} />{t('actions.getLocation')}
+				</Button>
+			</ItemG>
+			<ItemG xs={12}>
 				<AddressInput value={this.state.address} handleChange={this.handleSetAddress} />
-			</ItemGrid>
-			<ItemGrid xs={12}>
+			</ItemG>
+			<ItemG xs={12}>
 				<FormControl className={this.props.classes.formControl}>
-					<InputLabel htmlFor='streetType-helper'>{this.state.locationType ? '' : t('devices.fields.locType')}</InputLabel>
+					<InputLabel htmlFor='streetType-helper'>{t('devices.fields.locType')}</InputLabel>
 					<Select
 						value={this.state.locationType}
 						onChange={this.handleLocationTypeChange}
@@ -266,25 +282,34 @@ class CalibrateDevice extends Component {
 						{this.state.lat + ' ' + this.state.long}
 					</Info>
 				</div>
-				<Button
-					variant='contained'
-					color='primary'
-					onClick={this.getCoords}
-					className={this.props.classes.button}
-				> <MyLocation className={this.props.classes.iconButton} />{t('actions.getLocation')}</Button>
-			</ItemGrid>
+			</ItemG>
+			<ItemG xs={12}>
+				{/* <div style={{ maxHeight: 400, overflow: 'hidden' }}> */}
+					
+				<OpenStreetMap
+					mapTheme={this.props.mapTheme}
+					calibrate
+					markers={lat && long ? [{ lat, long }] : []}
+					getLatLng={this.getLatLngFromMap}
+				/>
+				{/* </div> */}
+			</ItemG>
 		</Grid>
 	}
 
 	renderCalibration = () => {
-		const { calType, t } = this.props
-		return this.props.theme.breakpoints.width('sm') <= window.innerWidth ?
-			<ItemG container>
-				{calType ? <CounterModal t={t} handleFinish={this.handleCalibration} /> : <TimeCounterModal t={t} handleFinish={this.handleCalibration} />}
-			</ItemG> :
-			<ItemG container justify={'center'}>
-				{calType ? <CounterModal t={t} handleFinish={this.handleCalibration} /> : <TimeCounterModal t={t} handleFinish={this.handleCalibration} />}
-			</ItemG>
+		const { calType, t, calibration, count, tcount, changeCalType, changeCount, changeTCount } = this.props
+		return <ItemG container justify={this.props.theme.breakpoints.width('sm') <= window.innerWidth ? 'flex-start' : 'center'}>
+			<CalibrateDeviceSettings
+				calibration={calibration}
+				changeCalType={changeCalType}
+				count={count}
+				tcount={tcount}
+				changeCount={changeCount}
+				changeTCount={changeTCount}
+				t={t} />
+			{calType ? <CounterModal t={t} handleFinish={this.handleCalibration} /> : <TimeCounterModal t={t} handleFinish={this.handleCalibration} />}
+		</ItemG>
 	}
 
 	renderImageUpload = () => {
@@ -518,7 +543,7 @@ class CalibrateDevice extends Component {
 							{this.renderFinish()}
 						</GridContainer>
 					</ItemG>
-	
+
 					<MobileStepper
 						variant="progress"
 						steps={steps.length}
@@ -529,7 +554,7 @@ class CalibrateDevice extends Component {
 							style: {
 								flexGrow: 1,
 								maxWidth: '150px',
-								width: 'auto' 
+								width: 'auto'
 							}
 						}}
 						nextButton={
@@ -559,7 +584,7 @@ class CalibrateDevice extends Component {
 							</Button>
 						}
 						orientation='vertical' />
-				
+
 				</Fragment>
 				: null
 
@@ -569,13 +594,24 @@ class CalibrateDevice extends Component {
 		return this.props.theme.breakpoints.width('sm') > window.innerWidth ? this.renderMobileCalibration() : this.renderDeviceCalibration()
 	}
 }
-const mapStateToProps = (state) => ({
-	calType: state.settings.calibration
-})
+const mapStateToProps = (state) => {
+	const s = state.settings
+	return {
+		calType: s.calibration,
+		calibration: s.calibration,
+		count: s.count,
+		tcount: s.tcount,
+		mapTheme: s.mapTheme
+	}
+}
 
 const mapDispatchToProps = (dispatch) => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
-	updateFav: (favObj) => dispatch(updateFav(favObj))
+	updateFav: (favObj) => dispatch(updateFav(favObj)),
+
+	changeCalType: type => dispatch(changeCalType(type)),
+	changeCount: count => dispatch(changeCount(count)),
+	changeTCount: tcount => dispatch(changeTCount(tcount)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(CalibrateDevice))

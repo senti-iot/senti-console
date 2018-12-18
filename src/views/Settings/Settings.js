@@ -8,7 +8,7 @@ import CalibrationSettings from './SettingsCards/CalibrationSettings';
 import DisplaySettings from './SettingsCards/DisplaySettings';
 import { changeLanguage } from 'redux/localization';
 import withLocalization from 'components/Localization/T';
-import { changeTRP, changeTheme, changeChartType, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow, saveSettingsOnServ, finishedSaving, changeChartDataType, changeTCount } from 'redux/settings';
+import { changeTRP, changeTheme, changeChartType, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow, saveSettingsOnServ, finishedSaving, changeChartDataType, changeTCount, changeMapTheme } from 'redux/settings';
 import NotificationSettings from './SettingsCards/NotificationSettings';
 // import DeviceSettings from './SettingsCards/DeviceSettings';
 import ChartSettings from './SettingsCards/ChartSettings';
@@ -45,7 +45,8 @@ class Settings extends Component {
 		const { t } = this.props
 		const { language, sideBar, changeSideBarLoc, trp, changeTRP, theme, changeTheme, changeDiscoverSenti, discSentiVal, changeLanguage, changeChartType } = this.props
 		const { calibration, changeCalType, count, changeCount, changeTCount, calNotifications, changeCalNotif, rawData } = this.props
-		const { alerts, didKnow, changeAlerts, changeDidKnow, chartType, changeChartDataType, tcount } = this.props
+		const { alerts, didKnow, changeAlerts, changeDidKnow, chartType, changeChartDataType, tcount, mapTheme, changeMapTheme } = this.props
+		console.log('mapTheme', mapTheme)
 		return (
 			<Fragment>
 				<Toolbar
@@ -67,6 +68,8 @@ class Settings extends Component {
 							changeSideBarLoc={changeSideBarLoc}
 							discSentiVal={discSentiVal}
 							changeDiscoverSenti={changeDiscoverSenti}
+							mapTheme={mapTheme}
+							changeMapTheme={changeMapTheme}
 							t={t}
 						/>
 					</ItemGrid>
@@ -122,6 +125,7 @@ const mapStateToProps = state => {
 		trp: s.trp,
 		sideBar: s.sideBar,
 		discSentiVal: s.discSentiVal,
+		mapTheme: s.mapTheme,
 
 		calibration: s.calibration,
 		count: s.count,
@@ -143,6 +147,7 @@ const mapDispatchToProps = (dispatch) => {
 		changeTRP: nr => dispatch(changeTRP(nr)),
 		changeTheme: t => dispatch(changeTheme(t)),
 		changeSideBarLoc: loc => dispatch(changeSideBarLoc(loc)),
+		changeMapTheme: t => dispatch(changeMapTheme(t)),
 
 		changeCalType: type => dispatch(changeCalType(type)),
 		changeCount: count => dispatch(changeCount(count)),

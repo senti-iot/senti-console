@@ -679,6 +679,7 @@ class Collection extends Component {
 						</ItemGrid>
 						{this.state.activeDevice ? <ItemGrid xs={12} noMargin id='map'>
 							<ActiveDeviceMap
+								mapTheme={this.props.mapTheme}
 								device={this.state.heatData}
 								weather={this.state.weather}
 								t={t}
@@ -713,7 +714,8 @@ const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	language: state.settings.language,
 	saved: state.favorites.saved,
-	rawData: state.settings.rawData
+	rawData: state.settings.rawData,
+	mapTheme: state.settings.mapTheme
 })
 
 const mapDispatchToProps = (dispatch) => ({

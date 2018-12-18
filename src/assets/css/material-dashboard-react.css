@@ -1,58 +1,23 @@
-/*!
 
- =========================================================
- * Material Dashboard React - v1.2.0 based on Material Dashboard - v1.2.0
- =========================================================
-
- * Product Page: http://www.creative-tim.com/product/material-dashboard-react
- * Copyright 2018 Creative Tim (http://www.creative-tim.com)
- * Licensed under MIT (https://github.com/creativetimofficial/material-dashboard-react/blob/master/LICENSE.md)
-
- =========================================================
-
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
- */
-/* .ct-grid {
-    stroke: rgba(255, 255, 255, 0.2);
-    stroke-width: 1px;
-    stroke-dasharray: 2px;
+.leaflet-touch .leaflet-bar {
+	border: none!important;
+	box-shadow: 0 1px 5px rgba(0,0,0,0.65)!important;
 }
 
-.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {
-    stroke: rgba(255, 255, 255, 0.8);
+.custom .leaflet-popup-tip,
+.custom .leaflet-popup-content-wrapper {
+  background: #ffffff;
+  color: #000;
+  border-radius: 3px;
 }
 
-.ct-label.ct-horizontal.ct-end {
-    -webkit-box-align: flex-start;
-    -webkit-align-items: flex-start;
-    -ms-flex-align: flex-start;
-    align-items: flex-start;
-    -webkit-box-pack: flex-start;
-    -webkit-justify-content: flex-start;
-    -ms-flex-pack: flex-start;
-    justify-content: flex-start;
-    text-align: left;
-    text-anchor: start;
+.customDark .leaflet-popup-tip,
+.customDark .leaflet-popup-content-wrapper {
+  background: #424242;
+  color: #ffffff;
+  border-radius: 3px;
 }
 
-.ct-label {
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.ct-chart-line .ct-label, .ct-chart-bar .ct-label {
-    display: block;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-}
-
-.ct-label {
-    fill: rgba(0, 0, 0, 0.4);
-    line-height: 1;
-} */
 html * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

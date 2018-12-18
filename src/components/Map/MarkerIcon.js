@@ -12,13 +12,13 @@ const colorFunc = (status) => {
 			return { primary: green[700], secondary: green[100] }
 		}
 		default:
-			return { primary: status, secondary: '#fefefe' }
+			return { primary: green[700], secondary: green[100] }
 	}
 }
 
 export const MarkerIcon = (status) => {
 	let color = colorFunc(status)
-	return escape(`<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+	return (`<?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <svg
    xmlns:dc='http://purl.org/dc/elements/1.1/'
    xmlns:cc='http://creativecommons.org/ns#'

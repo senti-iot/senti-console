@@ -1,5 +1,25 @@
-
-var darkMode = [
+const mapStyles = theme => ({
+	map: {
+		width: '100%',
+		[theme.breakpoints.up('sm')]: {
+			height: window.innerHeight - 250
+		},
+		[theme.breakpoints.down('xs')]: {
+			height: 300
+		}
+	},
+	popup: {
+		background: "#ffffff",
+		color: "#000",
+		borderRadius: 3,
+	},
+	popupDark: {
+		background: "#424242",
+		color: "#ffffff",
+		borderRadius: 3,
+	},
+})
+export var darkMode = [
 	[
 		{ elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
 		{ elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] },
@@ -80,4 +100,4 @@ var darkMode = [
 			stylers: [{ color: '#17263c' }]
 		}
 	], { name: 'Dark Mode' }];
-export default darkMode
+export default mapStyles

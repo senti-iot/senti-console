@@ -179,7 +179,11 @@ const dashboardRoutes = [
 		component: NotFound,
 		hideFromSideBar: true,
 	},
-	
+	{
+		path: '/index:ext',
+		hideFromSideBar: true,
+		component: () => <Redirect to={'/dashboard'}/>
+	},
 	{
 		path: '*',
 		component: () => <Redirect from={window.location.pathname} to={{ pathname: window.location.pathname === '/' ? '/dashboard' : '/404', prevURL: window.location.pathname }} />,

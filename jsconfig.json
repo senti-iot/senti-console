@@ -10,6 +10,7 @@
 		"src/**/*"
 	],
 	"exclude": [
+		"node_modules/**/*",
 		"dist",
 		"**/*.spec.ts",
 		"node_modules/react-google-maps/*"

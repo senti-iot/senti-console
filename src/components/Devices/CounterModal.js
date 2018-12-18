@@ -24,11 +24,19 @@ class CounterModal extends React.Component {
 		let canPlayMP3 = new Audio().canPlayType('audio/mp3');
 		if (!canPlayMP3 || canPlayMP3 === 'no') {
 			let msg = props.t('no.audioSupported')
+			this.noSound = true
 			alert(msg);
 		}
-		this.mp3File = new Audio('/assets/sound/pop.mp3').load()
+		this.mp3File = new Audio('/assets/sound/pop.mp3')
 		this.timeCounter = null
 	}
+	componentDidUpdate = (prevProps, prevState) => {
+		if (prevProps.count !== this.props.count)
+		  this.setState({
+			  count: this.props.count
+		  })
+	}
+	
 	timer = () => {
 		this.setState({ timer: this.state.timer + 1 }, () => {
 			if (this.state.count === 0) {
@@ -60,17 +68,24 @@ class CounterModal extends React.Component {
 		})
 	}
 	handleCount = async () => {
-		let playSound = new Audio('/assets/sound/pop.mp3');
-		await playSound.play().then(
-			() => {
-				if (this.state.count === 1)
-					this.setState({ count: this.state.count - 1, finished: true, started: false })
-				else
-					this.setState({ count: this.state.count - 1 })
-			}
-			
-		)
-		playSound = null
+		// let playSound = new Audio('/assets/sound/pop.mp3');
+		if (this.noSound) { 
+			if (this.state.count === 1)
+				this.setState({ count: this.state.count - 1, finished: true, started: false })
+			else
+				this.setState({ count: this.state.count - 1 })
+		}
+		else {
+			await this.mp3File.play().then(
+				() => {
+					if (this.state.count === 1)
+						this.setState({ count: this.state.count - 1, finished: true, started: false })
+					else
+						this.setState({ count: this.state.count - 1 })
+				}
+
+			)
+		}
 	}
 	handleClose = () => {
 		this.setState({ open: false });
@@ -116,7 +131,7 @@ class CounterModal extends React.Component {
 		return (
 			<Fragment>
 				{/* <Typography gutterBottom>Click to get the full Modal experience!</Typography> */}
-				<Button variant={'contained'} color={'primary'} onClick={this.handleOpen}>
+				<Button variant={'contained'} color={'primary'} onClick={this.handleOpen} styles={{ marginTop: 16 }}>
 					<OpenInBrowser className={classes.iconButton} /> {t('actions.openCounter')}
 				</Button>
 				<Modal
