@@ -143,12 +143,14 @@ export const getSettings = async () => {
 
 export const changeMapTheme = t => {
 	return async (dispatch, getState) => {
+		console.log(t)
 		dispatch({
 			type: MapTheme,
 			t
 		})
 		dispatch(saveSettingsOnServ())
 	}
+
 }
 
 export const changeAlerts = t => {

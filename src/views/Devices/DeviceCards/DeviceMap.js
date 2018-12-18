@@ -16,11 +16,12 @@ export default class DeviceMap extends PureComponent {
 	}
 	visibilityOptions = [
 		{ id: 0, icon: "", label: "Humanitarian" },
-		{ id: 1, icon: "", label: "Dark" },
-		{ id: 2, icon: "", label: "Stamen Toner" },
-		{ id: 3, icon: "", label: "Stamen Watercolor" },
-		{ id: 4, icon: "", label: "Carto" },
-		{ id: 5, icon: "", label: "OpenStreetMap" }
+		{ id: 1, icon: "", label: "Luftphoto 2018" },
+		{ id: 2, icon: "", label: "Dark" },
+		{ id: 3, icon: "", label: "Stamen Toner" },
+		{ id: 4, icon: "", label: "Stamen Watercolor" },
+		{ id: 5, icon: "", label: "Carto" },
+		{ id: 6, icon: "", label: "OpenStreetMap" }
 	]
 	handleVisibility = e => (event) => {
 		if (event)
