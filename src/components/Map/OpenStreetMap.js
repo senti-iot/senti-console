@@ -14,6 +14,7 @@ import OpenPopup from './OpenPopup'
 /**
  * Plugins
  */
+import layers from 'variables/LeafletPlugins/leafletMaps.json'
 import FullScreen from 'variables/LeafletPlugins/FullScreen'
 import ZoomControl from 'variables/LeafletPlugins/ZoomControl';
 import HeatLayer from 'variables/LeafletPlugins/HeatLayer';
@@ -28,51 +29,6 @@ class OpenStreetMap extends React.Component {
 			zoom: props.markers.length === 1 ? 17 : 13
 		}
 	}
-	//Request URL: 17/69319/89866.png
-
-	layers = [
-		{
-			id: 0, url: "https://tile-b.openstreetmap.fr/hot/{z}/{x}/{y}.png",
-			attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-			maxZoom: 20
-		},
-		{
-			id: 1,
-			url: "https://gc2.io/mapcache/baselayers/tms/1.0.0/luftfotoserier.geodanmark_2017_12_5cm/{z}/{x}/{-y}.png",
-			attribution: 'Map Tiles by <a target="_blank" href="http://www.mapcentia.com/">MapCentia</a>',
-			maxZoom: 18
-		},
-		{
-			id: 2,
-			url: "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
-			attribution: 'Map Tiles by <a target="_blank" href="https://carto.com/attribution/">CARTO</a>',
-			maxZoom: 18
-		},
-		{
-			id: 3,
-			url: "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
-			attribution: 'Map Tiles by <a target="_blank" href="https://carto.com/attribution/">CARTO</a>',
-			maxZoom: 18
-		},
-		{
-			id: 4,
-			url: "https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg",
-			attribution: 'Map tiles by <a target="_blank" href="http://stamen.com">Stamen Design</a>, under <a target="_blank" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a target="_blank" href="http://openstreetmap.org">OpenStreetMap</a>, under <a target="_blank" href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.',
-			maxZoom: 16
-		},
-		{
-			id: 5,
-			url: "https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png",
-			attribution: 'Map tiles by <a target="_blank" href="http://stamen.com">Stamen Design</a>, under <a target="_blank" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a target="_blank" href="http://openstreetmap.org">OpenStreetMap</a>, under <a target="_blank" href="http://www.openstreetmap.org/copyright">ODbL</a>.',
-			maxZoom: 18
-		},
-		{
-			id: 6,
-			url: "https://{s}.tile.osm.org/{z}/{x}/{y}.png",
-			attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-			maxZoom: 18
-		}
-	]
 
 	handleClick = (event) => {
 		const items = this.state.dataSet;
@@ -110,7 +66,7 @@ class OpenStreetMap extends React.Component {
 	}
 	componentDidUpdate = (prevProps, prevState) => {
 		if (prevProps.mapTheme !== this.props.mapTheme)
-			this.map.leafletElement.setMaxZoom(this.layers[this.props.mapTheme].maxZoom)
+			this.map.leafletElement.setMaxZoom(layers[this.props.mapTheme].maxZoom)
 	}
 
 	centerOnAllMarkers = () => {
@@ -134,12 +90,12 @@ class OpenStreetMap extends React.Component {
 		const { markers, classes, theme, calibrate, mapTheme, heatData, heatMap } = this.props
 		const { zoom } = this.state
 		return <Fragment>
-			<Map zoomControl={false} attribution={this.layers[mapTheme].attribution} ref={r => this.map = r} center={this.getCenter()} zoom={zoom} onzoomend={this.setZoom} maxZoom={this.layers[mapTheme].maxZoom} className={classes.map} >
+			<Map zoomControl={false} attribution={layers[mapTheme].attribution} ref={r => this.map = r} center={this.getCenter()} zoom={zoom} onzoomend={this.setZoom} maxZoom={layers[mapTheme].maxZoom} className={classes.map} >
 				{heatMap ? <HeatLayer data={heatData ? heatData.map(m => ({ lat: m.lat, lng: m.long, count: m.data })) : null} /> : null}
 				{heatMap ? <HeatMapLegend /> : null}
 				<FullScreen />
 				<ZoomControl />
-				<TileLayer url={this.layers[mapTheme].url} attribution={this.layers[mapTheme].attribution} />
+				<TileLayer url={layers[mapTheme].url} attribution={layers[mapTheme].attribution} />
 				{markers.map((m, i) => {
 					if (m.lat && m.long)
 						return <Marker
