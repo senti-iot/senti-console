@@ -13,8 +13,8 @@ import OpenPopup from './OpenPopup'
 
 import FullScreen from 'variables/LeafletPlugins/FullScreen'
 import ZoomControl from 'variables/LeafletPlugins/ZoomControl';
-import HeatLayer from 'variables/LeafletPlugins/HeatLayer';
-import NewHeatMapLayer from 'variables/LeafletPlugins/NewHeatMapLayer';
+// import HeatLayer from 'variables/LeafletPlugins/HeatLayer';
+// import NewHeatMapLayer from 'variables/LeafletPlugins/NewHeatMapLayer';
 
 class OpenStreetMap extends React.Component {
 	constructor(props) {
@@ -24,10 +24,11 @@ class OpenStreetMap extends React.Component {
 		 zoom: props.markers.length === 1 ? 17 : 13
 	  }
 	}
-	
+	//Request URL: 17/69319/89866.png
+
 	layers = [
 		{ id: 0, url: "https://tile-b.openstreetmap.fr/hot/{z}/{x}/{y}.png", label: "T1", maxZoom: 20 },
-		{ id: 1, url: "https://gc2.io/mapcache/baselayers/tms/1.0.0/luftfotoserier.quickorto_2018_16cm/{z}/{x}/{-y}.png", label: "LuftPhoto", maxZoom: 18 },
+		{ id: 1, url: "https://gc2.io/mapcache/baselayers/tms/1.0.0/luftfotoserier.geodanmark_2017_12_5cm/{z}/{x}/{-y}.png", label: "LuftPhoto", maxZoom: 18 },
 		{ id: 2, url: "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", label: "T2", maxZoom: 18 },
 		{ id: 3, url: "http://a.tile.stamen.com/toner/{z}/{x}/{y}.png", label: "T3", maxZoom: 18 },
 		{ id: 4, url: "http://b.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg", label: "T4", maxZoom: 18 },
@@ -94,8 +95,8 @@ class OpenStreetMap extends React.Component {
 		console.log(zoom, 'render')
 		return <Fragment>
 			<Map zoomControl={false} ref={r => this.map = r} center={this.getCenter()} zoom={zoom} onzoomend={this.setZoom} maxZoom={this.layers[mapTheme].maxZoom} className={classes.map} >
-				<NewHeatMapLayer
-				/* 	fitBoundsOnLoad
+				{/*<NewHeatMapLayer
+				 	fitBoundsOnLoad
 					points={
 						markers.map((m, i) => {
 							if (m.lat && m.long)
@@ -111,8 +112,8 @@ class OpenStreetMap extends React.Component {
 						0.3: 'lime',
 						0.6: 'yellow',
 						0.8: 'red'
-					}} */
-				/>
+					}} 
+				/> */}
 				<FullScreen />
 				<ZoomControl/>
 				<TileLayer url={this.layers[mapTheme].url} attribution={this.layers[mapTheme].attribution}/>
