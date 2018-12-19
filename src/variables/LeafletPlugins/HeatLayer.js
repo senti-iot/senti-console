@@ -40,12 +40,12 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 			// enter n keys between 0 and 1 here
 			// for gradient color customization
 			'0': 'white',
-			'.05': blue[200],
-			'.1': blue[400],
-			'.2': teal[400],
-			'.5': yellow[600],
+			'.1': blue[200],
+			'.2': blue[400],
+			'.4': teal[400],
+			'.6': yellow[600],
 			'.8': orange[500],
-			'.95': red[700]
+			'1.0': red[700]
 		}
 	}
 	createLeafletElement() {

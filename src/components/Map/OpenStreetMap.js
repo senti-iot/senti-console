@@ -17,6 +17,7 @@ import OpenPopup from './OpenPopup'
 import FullScreen from 'variables/LeafletPlugins/FullScreen'
 import ZoomControl from 'variables/LeafletPlugins/ZoomControl';
 import HeatLayer from 'variables/LeafletPlugins/HeatLayer';
+import HeatMapLegend from 'variables/LeafletPlugins/HeatMapLegend';
 
 
 class OpenStreetMap extends React.Component {
@@ -97,6 +98,7 @@ class OpenStreetMap extends React.Component {
 		return <Fragment>
 			<Map zoomControl={false} attribution={this.layers[mapTheme].attribution} ref={r => this.map = r} center={this.getCenter()} zoom={zoom} onzoomend={this.setZoom} maxZoom={this.layers[mapTheme].maxZoom} className={classes.map} >
 				{this.props.heatMap ? <HeatLayer data={this.props.heatData.map(m => ({ lat: m.lat, lng: m.long, count: m.data }))} /> : null}
+				{this.props.heatMap ? <HeatMapLegend /> : null}
 				<FullScreen />
 				<ZoomControl/>
 				<TileLayer url={this.layers[mapTheme].url} attribution={this.layers[mapTheme].attribution}/>
