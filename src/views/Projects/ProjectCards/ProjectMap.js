@@ -77,7 +77,7 @@ export default class ProjectMap extends Component {
 				topAction={this.renderMenu()}
 				hiddenContent={
 					<Grid container justify={'center'}>
-						{devices.length > 0 ? <OpenStreetMap t={t} mapTheme={mapTheme} heatMap={this.state.heatMap} markers={devices} /> : <Caption>{t('projects.noAvailableDevices')}</Caption>}
+						{devices.length > 0 ? <OpenStreetMap t={t} mapTheme={mapTheme} heatMap={this.state.heatMap} heatData={this.props.heatData} markers={devices} /> : <Caption>{t('projects.noAvailableDevices')}</Caption>}
 					</Grid>
 				} />
 

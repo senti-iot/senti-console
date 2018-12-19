@@ -2,6 +2,7 @@
 import L from 'leaflet'
 import { MapLayer, withLeaflet } from 'react-leaflet'
 import HeatmapJS from 'heatmap.js'
+import { blue, teal, yellow, red, orange } from '@material-ui/core/colors';
 
 
 
@@ -31,22 +32,28 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 		lngField: "lng",
 		valueField: "count",
 		container: this._el,
-		radius: 1,
-		maxOpacity: .5,
-		minOpacity: .3,
+		radius: 10,
+		maxOpacity: .8,
+		minOpacity: 0,
 		blur: .2,
 		gradient: {
 			// enter n keys between 0 and 1 here
 			// for gradient color customization
-			'.05': 'lightblue',
-			'.1': 'blue',
-			'.2': 'teal',
-			'.5': 'yellow',
-			'.95': 'red'
+			'0': 'white',
+			'.05': blue[200],
+			'.1': blue[400],
+			'.2': teal[400],
+			'.5': yellow[600],
+			'.8': orange[500],
+			'.95': red[700]
 		}
 	}
 	createLeafletElement() {
 		return null
+	}
+	componentDidUpdate = () => { 
+		console.log('updated HeatLayer')
+		this.setData(this.props.data)
 	}
 	componentDidMount = () => {
 		const Heatmap = L.Layer.extend({
@@ -65,6 +72,7 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 				this.heatmap = HeatmapJS.create(this.defaultConfig)
 				if (this.heatmap) {
 					this.setData(this.props.data)
+					console.log(this.props.data)
 					this.map.on('moveend', this.reset, this.map)
 				}
 			},
@@ -101,13 +109,10 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 			d.push(dataObj);
 		}
 		this.data = d;
-		console.log(this.data)
 		this.draw();
 	}
 	draw = () => {
-		console.log('entered')
 		if (!this.map) { return; }
-		console.log('continued')
 		var mapPane = this.map.getPanes().mapPane;
 		var point = mapPane._leaflet_pos;
 
@@ -198,9 +203,9 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 
 		// Assuming distance only depends on latitude
 		var distanceX = latLngC.distanceTo(latLngX);
+		console.log(distanceX)
 		// 100 meters is the fixed distance here
 		var pixels = this.defaultConfig.radiusMeters / distanceX;
-
 		return pixels >= 1 ? pixels : 1;
 	}
 	reset = () => {
