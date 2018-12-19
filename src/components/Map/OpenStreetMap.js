@@ -93,12 +93,12 @@ class OpenStreetMap extends React.Component {
 		return center
 	}
 	render() {
-		const { markers, classes, theme, calibrate, mapTheme } = this.props
+		const { markers, classes, theme, calibrate, mapTheme, heatData, heatMap } = this.props
 		const { zoom } = this.state
 		return <Fragment>
 			<Map zoomControl={false} attribution={this.layers[mapTheme].attribution} ref={r => this.map = r} center={this.getCenter()} zoom={zoom} onzoomend={this.setZoom} maxZoom={this.layers[mapTheme].maxZoom} className={classes.map} >
-				{this.props.heatMap ? <HeatLayer data={this.props.heatData.map(m => ({ lat: m.lat, lng: m.long, count: m.data }))} /> : null}
-				{this.props.heatMap ? <HeatMapLegend /> : null}
+				{heatMap ? <HeatLayer data={heatData ? heatData.map(m => ({ lat: m.lat, lng: m.long, count: m.data })) : null} /> : null}
+				{heatMap ? <HeatMapLegend /> : null}
 				<FullScreen />
 				<ZoomControl/>
 				<TileLayer url={this.layers[mapTheme].url} attribution={this.layers[mapTheme].attribution}/>

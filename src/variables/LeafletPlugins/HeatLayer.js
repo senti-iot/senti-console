@@ -81,36 +81,8 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 		this.setData(this.props.data)
 	}
 	componentDidMount = () => {
-		// const Heatmap = L.Layer.extend({
-		// 	initialize: function (config) {
-		// 		//CFG  = this.props
-		// 		// this.cfg = _this.defaultConfig;
-		// 		// this._data = [];
-		// 		// this._max = 1;
-		// 		// this._min = 0;
-		// 	},
-		// 	onAdd: () => {
-		// 		this.map.getPanes().overlayPane.appendChild(this._el)
-		// 		this.defaultConfig.container = this._el
-		// 		this.heatmap = HeatmapJS.create(this.defaultConfig)
-		// 		if (this.heatmap) {
-		// 			this.setData(this.props.data)
-		// 			this.map.on('moveend', this.reset, this.map)
-		// 		}
-		// 	},
-		// 	addTo: (map) => {
-		// 		map.addLayer(this)
-		// 		return this
-		// 	},
-		// 	onRemove: (map) => {
-		// 		map.getPanes().overlayPane.removeChild(this._el)
-		// 	},
-
-		// })
-		// this.leafletElement = new Heatmap();
 		this.leafletElement._origin = this.map.layerPointToLatLng(new L.Point(0, 0));
 		super.componentDidMount();
-
 	}
 	setData = (data) => {
 		var latField = this.defaultConfig.latField || 'lat';

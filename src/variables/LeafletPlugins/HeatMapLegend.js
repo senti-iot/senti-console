@@ -67,8 +67,8 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class HeatMap
 							<div className={this.props.classes.gradientBar} /> 
 							<ItemG container justify={'space-between'}>
 								<div style={{ width: 40 }}>0</div>
-								<div style={{ width: 40 }}>25000</div>
-								<div style={{ width: 40 }}>50000+</div>
+								<div style={{ width: 40 }}>25.000</div>
+								<div style={{ width: 40 }}>50.000+</div>
 							</ItemG>
 						</Paper>
 					

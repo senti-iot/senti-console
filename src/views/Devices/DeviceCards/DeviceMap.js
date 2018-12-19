@@ -76,11 +76,11 @@ export default class DeviceMap extends PureComponent {
 				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat, long: device.long })}, Heatmap ${this.state.heatMap ? t('actions.on') : t('actions.off')}` : null}
 				avatar={<Map />}
 				topAction={device ? (device.lat && device.long ? this.renderMenu() : null) : null}
-				content={
+				hiddenContent={
 					loading ? <CircularLoader /> :
 						<Grid container justify={'center'}>
 							{/* {device.lat && device.long ? <Maps heatMap={this.state.heatMap} t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t('devices.notCalibrated')}</Caption>} */}
-							{device.lat && device.long ? <OpenStreetMap mapTheme={mapTheme} heatMap={this.state.heatMap} t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t('devices.notCalibrated')}</Caption>}
+							{device.lat && device.long ? <OpenStreetMap mapTheme={mapTheme} heatMap={this.state.heatMap} heatData={[{ ...device, weather: weather }]} t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t('devices.notCalibrated')}</Caption>}
 						</Grid>
 				} />
 
