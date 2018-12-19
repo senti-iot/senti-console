@@ -21,7 +21,7 @@ class DisplaySettings extends Component {
 	changeTheme = (e) => this.props.changeTheme(e.target.value)
 	changeSideBarLoc = (e) => this.props.changeSideBarLoc(e.target.value)
 	changeDiscoverSenti = e => this.props.changeDiscoverSenti(e.target.value)
-	changeMapTheme = e => { console.log(e);this.props.changeMapTheme(e.target.value) }
+	changeMapTheme = e => this.props.changeMapTheme(e.target.value)
 
 	render() {
 		const { language, trp, sideBar, discSentiVal, theme, mapTheme, classes, t } = this.props

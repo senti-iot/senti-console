@@ -46,7 +46,6 @@ class Settings extends Component {
 		const { language, sideBar, changeSideBarLoc, trp, changeTRP, theme, changeTheme, changeDiscoverSenti, discSentiVal, changeLanguage, changeChartType } = this.props
 		const { calibration, changeCalType, count, changeCount, changeTCount, calNotifications, changeCalNotif, rawData } = this.props
 		const { alerts, didKnow, changeAlerts, changeDidKnow, chartType, changeChartDataType, tcount, mapTheme, changeMapTheme } = this.props
-		console.log('mapTheme', mapTheme)
 		return (
 			<Fragment>
 				<Toolbar

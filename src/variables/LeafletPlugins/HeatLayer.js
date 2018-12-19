@@ -49,13 +49,6 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 		}
 	}
 	createLeafletElement() {
-		return null
-	}
-	componentDidUpdate = () => { 
-		console.log('updated HeatLayer')
-		this.setData(this.props.data)
-	}
-	componentDidMount = () => {
 		const Heatmap = L.Layer.extend({
 			initialize: function (config) {
 				//CFG  = this.props
@@ -66,13 +59,10 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 			},
 			onAdd: () => {
 				this.map.getPanes().overlayPane.appendChild(this._el)
-				// console.log(this._el)
 				this.defaultConfig.container = this._el
-				// console.log(this.defaultConfig)
 				this.heatmap = HeatmapJS.create(this.defaultConfig)
 				if (this.heatmap) {
 					this.setData(this.props.data)
-					console.log(this.props.data)
 					this.map.on('moveend', this.reset, this.map)
 				}
 			},
@@ -85,7 +75,39 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 			},
 
 		})
-		this.leafletElement = new Heatmap();
+		return new Heatmap()
+	}
+	componentDidUpdate = () => { 
+		this.setData(this.props.data)
+	}
+	componentDidMount = () => {
+		// const Heatmap = L.Layer.extend({
+		// 	initialize: function (config) {
+		// 		//CFG  = this.props
+		// 		// this.cfg = _this.defaultConfig;
+		// 		// this._data = [];
+		// 		// this._max = 1;
+		// 		// this._min = 0;
+		// 	},
+		// 	onAdd: () => {
+		// 		this.map.getPanes().overlayPane.appendChild(this._el)
+		// 		this.defaultConfig.container = this._el
+		// 		this.heatmap = HeatmapJS.create(this.defaultConfig)
+		// 		if (this.heatmap) {
+		// 			this.setData(this.props.data)
+		// 			this.map.on('moveend', this.reset, this.map)
+		// 		}
+		// 	},
+		// 	addTo: (map) => {
+		// 		map.addLayer(this)
+		// 		return this
+		// 	},
+		// 	onRemove: (map) => {
+		// 		map.getPanes().overlayPane.removeChild(this._el)
+		// 	},
+
+		// })
+		// this.leafletElement = new Heatmap();
 		this.leafletElement._origin = this.map.layerPointToLatLng(new L.Point(0, 0));
 		super.componentDidMount();
 
@@ -203,7 +225,6 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 
 		// Assuming distance only depends on latitude
 		var distanceX = latLngC.distanceTo(latLngX);
-		console.log(distanceX)
 		// 100 meters is the fixed distance here
 		var pixels = this.defaultConfig.radiusMeters / distanceX;
 		return pixels >= 1 ? pixels : 1;
@@ -218,7 +239,6 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 
 			this._el.style.width = this.leafletElement._width + 'px';
 			this._el.style.height = this.leafletElement._height + 'px';
-			console.log(this.heatmap)
 			this.heatmap._renderer.setDimensions(this.leafletElement._width, this.leafletElement._height);
 		}
 		this.draw();
