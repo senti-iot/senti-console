@@ -33,7 +33,7 @@ export default withLeaflet(class NewHeatMapLayer extends MapLayer {
 		container: this._el,
 		radius: 1,
 		maxOpacity: .5,
-		minOpacity: .1,
+		minOpacity: .3,
 		blur: .2,
 		gradient: {
 			// enter n keys between 0 and 1 here
