@@ -50,8 +50,8 @@ class OpenStreetMap extends React.Component {
 		},
 		{
 			id: 3,
-			url: "https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png",
-			attribution: 'Map tiles by <a target="_blank" href="http://stamen.com">Stamen Design</a>, under <a target="_blank" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a target="_blank" href="http://openstreetmap.org">OpenStreetMap</a>, under <a target="_blank" href="http://www.openstreetmap.org/copyright">ODbL</a>.',
+			url: "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+			attribution: 'Map Tiles by <a target="_blank" href="https://carto.com/attribution/">CARTO</a>',
 			maxZoom: 18
 		},
 		{
@@ -62,8 +62,8 @@ class OpenStreetMap extends React.Component {
 		},
 		{
 			id: 5,
-			url: "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
-			attribution: 'Map Tiles by <a target="_blank" href="https://carto.com/attribution/">CARTO</a>',
+			url: "https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png",
+			attribution: 'Map tiles by <a target="_blank" href="http://stamen.com">Stamen Design</a>, under <a target="_blank" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a target="_blank" href="http://openstreetmap.org">OpenStreetMap</a>, under <a target="_blank" href="http://www.openstreetmap.org/copyright">ODbL</a>.',
 			maxZoom: 18
 		},
 		{
