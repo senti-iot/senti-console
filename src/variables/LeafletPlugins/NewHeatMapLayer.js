@@ -7,7 +7,7 @@ import HeatmapJS from 'heatmap.js'
 
 export default withLeaflet(class NewHeatMapLayer extends MapLayer {
 	constructor(props, context) {
-	  super(props)
+		super(props)
 		this.map = context.map || props.leaflet.map
 		this._el = L.DomUtil.create('div', 'leaflet-zoom-hide')
 		var size = this.map.getSize();
@@ -21,31 +21,33 @@ export default withLeaflet(class NewHeatMapLayer extends MapLayer {
 		this._el.style.position = 'absolute';
 
 	}
-	max = 1000
+	max = 50000
 	min = 0
 	defaultConfig = {
 		fixedRadius: true,
 		// radiusMeters: true,
-		radiusMeters: 100,
+		radiusMeters: 50,
 		latField: "lat",
 		lngField: "lng",
 		valueField: "count",
-	 	container: this._el,
-	 	radius: 1,
-	 	maxOpacity: .5,
-	 	minOpacity: .1,
-	 	blur: .2,
-	 	gradient: {
-	 		// enter n keys between 0 and 1 here
-	 		// for gradient color customization
-	 		'.5': 'blue',
-	 		'.8': 'yellow',
-	 		'.95': 'red'
-	 	}
-	 }
-	 createLeafletElement() { 
-	 	return null
-	 }
+		container: this._el,
+		radius: 1,
+		maxOpacity: .5,
+		minOpacity: .1,
+		blur: .2,
+		gradient: {
+			// enter n keys between 0 and 1 here
+			// for gradient color customization
+			'.05': 'lightblue',
+			'.1': 'blue',
+			'.2': 'teal',
+			'.5': 'yellow',
+			'.95': 'red'
+		}
+	}
+	createLeafletElement() {
+		return null
+	}
 	componentDidMount = () => {
 		const Heatmap = L.Layer.extend({
 			initialize: function (config) {
@@ -61,7 +63,7 @@ export default withLeaflet(class NewHeatMapLayer extends MapLayer {
 				this.defaultConfig.container = this._el
 				// console.log(this.defaultConfig)
 				this.heatmap = HeatmapJS.create(this.defaultConfig)
-				if (this.heatmap) { 
+				if (this.heatmap) {
 					this.setData(this.props.data)
 					this.map.on('moveend', this.reset, this.map)
 				}
@@ -78,7 +80,7 @@ export default withLeaflet(class NewHeatMapLayer extends MapLayer {
 		this.leafletElement = new Heatmap();
 		this.leafletElement._origin = this.map.layerPointToLatLng(new L.Point(0, 0));
 		super.componentDidMount();
-	
+
 	}
 	setData = (data) => {
 		var latField = this.defaultConfig.latField || 'lat';
@@ -124,7 +126,7 @@ export default withLeaflet(class NewHeatMapLayer extends MapLayer {
 		// zoom = this.map.getZoom();
 		// crs = this.map.options.crs
 		// scale = crs.scale(zoom);7
-		
+
 		// scale = Math.pow(2, zoom);
 		// var radiusMultiplier = this.defaultConfig.scaleRadius ? scale : 1;
 
@@ -201,7 +203,7 @@ export default withLeaflet(class NewHeatMapLayer extends MapLayer {
 
 		return pixels >= 1 ? pixels : 1;
 	}
-	reset = () =>  {
+	reset = () => {
 		this.leafletElement._origin = this.map.layerPointToLatLng(new L.Point(0, 0));
 
 		var size = this.map.getSize();
