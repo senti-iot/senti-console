@@ -1,16 +1,20 @@
-/*
-* Leaflet Heatmap Overlay
-*
-* Copyright (c) 2008-2016, Patrick Wied (https://www.patrick-wied.at)
-* Dual-licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
-* and the Beerware (http://en.wikipedia.org/wiki/Beerware) license.
-*/
-import L from 'leaflet'
 
-var HeatmapOverlay = L.Layer.extend({
+/*
+ * Leaflet Heatmap Overlay
+ *
+ * Copyright (c) 2008-2016, Patrick Wied (https://www.patrick-wied.at)
+ * Dual-licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
+ * and the Beerware (http://en.wikipedia.org/wiki/Beerware) license.
+ *
+ *
+ * 2018 <danwild@y7mail.com> Modified to handle radiusMeters.
+ */
+
+import h337 from 'heatmap.js';
+
+const HeatmapOverlay = (L.Layer ? L.Layer : L.Class).extend({
 
 	initialize: function (config) {
-		//CFG  = this.props
 		this.cfg = config;
 		this._el = L.DomUtil.create('div', 'leaflet-zoom-hide');
 		this._data = [];
@@ -56,6 +60,7 @@ var HeatmapOverlay = L.Layer.extend({
 
 		map.off('moveend', this._reset, this);
 	},
+
 	_draw: function () {
 		if (!this._map) { return; }
 
@@ -64,12 +69,32 @@ var HeatmapOverlay = L.Layer.extend({
 
 		// reposition the layer
 		this._el.style[HeatmapOverlay.CSS_TRANSFORM] = 'translate(' +
-				-Math.round(point.x) + 'px,' +
-				-Math.round(point.y) + 'px)';
+			-Math.round(point.x) + 'px,' +
+			-Math.round(point.y) + 'px)';
 
 		this._update();
 	},
+
+	_getPixelRadius: function () {
+
+		var centerLatLng = this._map.getCenter();
+		var pointC = this._map.latLngToContainerPoint(centerLatLng);
+		var pointX = [pointC.x + 1, pointC.y];
+
+		// convert containerpoints to latlng's
+		var latLngC = this._map.containerPointToLatLng(pointC);
+		var latLngX = this._map.containerPointToLatLng(pointX);
+
+		// Assuming distance only depends on latitude
+		var distanceX = latLngC.distanceTo(latLngX);
+		// 100 meters is the fixed distance here
+		var pixels = this.cfg.radiusMeters / distanceX;
+
+		return pixels >= 1 ? pixels : 1;
+	},
+
 	_update: function () {
+
 		var bounds, zoom, scale;
 		var generatedData = { max: this._max, min: this._min, data: [] };
 
@@ -83,7 +108,6 @@ var HeatmapOverlay = L.Layer.extend({
 			}
 			return;
 		}
-
 
 		var latLngPoints = [];
 		var radiusMultiplier = this.cfg.scaleRadius ? scale : 1;
@@ -112,7 +136,9 @@ var HeatmapOverlay = L.Layer.extend({
 
 			var radius;
 
-			if (entry.radius) {
+			if (this.cfg.fixedRadius && this.cfg.radiusMeters) {
+				radius = this._getPixelRadius();
+			} else if (entry.radius) {
 				radius = entry.radius * radiusMultiplier;
 			} else {
 				radius = (this.cfg.radius || 2) * radiusMultiplier;
@@ -126,7 +152,6 @@ var HeatmapOverlay = L.Layer.extend({
 		}
 
 		generatedData.data = latLngPoints;
-
 		this._heatmap.setData(generatedData);
 	},
 	setData: function (data) {
@@ -217,4 +242,6 @@ HeatmapOverlay.CSS_TRANSFORM = (function () {
 	return props[0];
 })();
 
-return HeatmapOverlay;
+export default function heatmapOverlay(options) {
+	return new HeatmapOverlay(options);
+};

@@ -13,6 +13,7 @@ import OpenPopup from './OpenPopup'
 
 import FullScreen from 'variables/LeafletPlugins/FullScreen'
 import ZoomControl from 'variables/LeafletPlugins/ZoomControl';
+import NewHeatMapLayer from 'variables/LeafletPlugins/NewHeatMapLayer';
 // import HeatLayer from 'variables/LeafletPlugins/HeatLayer';
 // import NewHeatMapLayer from 'variables/LeafletPlugins/NewHeatMapLayer';
 
@@ -49,7 +50,7 @@ class OpenStreetMap extends React.Component {
 		var CustomIcon = L.Icon.extend({
 			options: {
 				iconSize: [25, 41],
-				iconAnchor: [12, 41],
+				iconAnchor: [12, 20],
 				popupAnchor: [1, -34],
 			}
 		});
@@ -95,25 +96,7 @@ class OpenStreetMap extends React.Component {
 		console.log(zoom, 'render')
 		return <Fragment>
 			<Map zoomControl={false} ref={r => this.map = r} center={this.getCenter()} zoom={zoom} onzoomend={this.setZoom} maxZoom={this.layers[mapTheme].maxZoom} className={classes.map} >
-				{/*<NewHeatMapLayer
-				 	fitBoundsOnLoad
-					points={
-						markers.map((m, i) => {
-							if (m.lat && m.long)
-								return [m.lat, m.long, (m.data / 100000)]
-						})
-					}
-					longitudeExtractor={m => m[1]}
-					latitudeExtractor={m => m[0]}
-					intensityExtractor={m => { return parseFloat(m[2]) }}
-					radius={10 * (this.layers[mapTheme].maxZoom - zoom) }
-					gradient={{
-						0.1: 'blue',
-						0.3: 'lime',
-						0.6: 'yellow',
-						0.8: 'red'
-					}} 
-				/> */}
+				<NewHeatMapLayer data={this.props.markers.map(m => ({ lat: m.lat, lng: m.long, count: m.data }))}/>
 				<FullScreen />
 				<ZoomControl/>
 				<TileLayer url={this.layers[mapTheme].url} attribution={this.layers[mapTheme].attribution}/>
