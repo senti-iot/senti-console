@@ -1,374 +1,243 @@
-import { map, reduce, filter, min, max, isNumber } from 'lodash'
-import L from 'leaflet';
-import { MapLayer, withLeaflet } from 'react-leaflet';
-import simpleheat from 'simpleheat';
-import PropTypes from 'prop-types';
 
-function isInvalid(num) {
-	return !isNumber(num) && !num;
-}
+import L from 'leaflet'
+import { MapLayer, withLeaflet } from 'react-leaflet'
+import HeatmapJS from 'heatmap.js'
 
-function isValid(num) {
-	return !isInvalid(num);
-}
 
-function isValidLatLngArray(arr) {
-	return filter(arr, isValid).length === arr.length;
-}
 
-function isInvalidLatLngArray(arr) {
-	return !isValidLatLngArray(arr);
-}
-
-function safeRemoveLayer(leafletMap, el) {
-	const { overlayPane } = leafletMap.getPanes();
-	if (overlayPane && overlayPane.contains(el)) {
-		overlayPane.removeChild(el);
-	}
-}
-
-function shouldIgnoreLocation(loc) {
-	return isInvalid(loc.lng) || isInvalid(loc.lat);
-}
-
-export default withLeaflet(class HeatmapLayer extends MapLayer {
-	static propTypes = {
-		points: PropTypes.array.isRequired,
-		longitudeExtractor: PropTypes.func.isRequired,
-		latitudeExtractor: PropTypes.func.isRequired,
-		intensityExtractor: PropTypes.func.isRequired,
-		fitBoundsOnLoad: PropTypes.bool,
-		fitBoundsOnUpdate: PropTypes.bool,
-		onStatsUpdate: PropTypes.func,
-		/* props controlling heatmap generation */
-		max: PropTypes.number,
-		radius: PropTypes.number,
-		maxZoom: PropTypes.number,
-		minOpacity: PropTypes.number,
-		blur: PropTypes.number,
-		gradient: PropTypes.object
-	};
+export default withLeaflet(class HeatLayer extends MapLayer {
 	constructor(props, context) {
-	  super(props)
-	
-	  this.state = {
-		 
-	  }
-		this.map = context.map || this.props.leaflet.map;
+		super(props)
+		this.map = context.map || props.leaflet.map
+		this._el = L.DomUtil.create('div', 'leaflet-zoom-hide')
+		var size = this.map.getSize();
+		this._width = size.x;
+		this._height = size.y;
+
+		this._el.style.width = size.x + 'px';
+		this._el.style.height = size.y + 'px';
+		// this._el.style.opacity = 1;
+		// this._el.style.backgroundColor = "red"
+		this._el.style.position = 'absolute';
 
 	}
-	
+	max = 50000
+	min = 0
+	defaultConfig = {
+		fixedRadius: true,
+		// radiusMeters: true,
+		radiusMeters: 50,
+		latField: "lat",
+		lngField: "lng",
+		valueField: "count",
+		container: this._el,
+		radius: 1,
+		maxOpacity: .5,
+		minOpacity: .3,
+		blur: .2,
+		gradient: {
+			// enter n keys between 0 and 1 here
+			// for gradient color customization
+			'.05': 'lightblue',
+			'.1': 'blue',
+			'.2': 'teal',
+			'.5': 'yellow',
+			'.95': 'red'
+		}
+	}
 	createLeafletElement() {
-		return null;
+		return null
 	}
-
-	componentDidMount() {
-		const canAnimate = this.props.leaflet.map.options.zoomAnimation && L.Browser.any3d;
-		const zoomClass = `leaflet-zoom-${canAnimate ? 'animated' : 'hide'}`;
-		const mapSize = this.props.leaflet.map.getSize();
-		const transformProp = L.DomUtil.testProp(
-			['transformOrigin', 'WebkitTransformOrigin', 'msTransformOrigin']
-		);
-
-		//initCanvas
-		this._el = L.DomUtil.create('canvas', zoomClass);
-		this._el.style[transformProp] = '50% 50%';
-		this._el.width = mapSize.x;
-		this._el.height = mapSize.y;
-
-		const el = this._el;
-
+	componentDidMount = () => {
 		const Heatmap = L.Layer.extend({
-			onAdd: (leafletMap) => leafletMap.getPanes().overlayPane.appendChild(el),
-			addTo: (leafletMap) => {
-				leafletMap.addLayer(this);
-				return this;
+			initialize: function (config) {
+				//CFG  = this.props
+				// this.cfg = _this.defaultConfig;
+				// this._data = [];
+				// this._max = 1;
+				// this._min = 0;
 			},
-			onRemove: (leafletMap) => safeRemoveLayer(leafletMap, el)
-		});
+			onAdd: () => {
+				this.map.getPanes().overlayPane.appendChild(this._el)
+				// console.log(this._el)
+				this.defaultConfig.container = this._el
+				// console.log(this.defaultConfig)
+				this.heatmap = HeatmapJS.create(this.defaultConfig)
+				if (this.heatmap) {
+					this.setData(this.props.data)
+					this.map.on('moveend', this.reset, this.map)
+				}
+			},
+			addTo: (map) => {
+				map.addLayer(this)
+				return this
+			},
+			onRemove: (map) => {
+				map.getPanes().overlayPane.removeChild(this._el)
+			},
 
+		})
 		this.leafletElement = new Heatmap();
+		this.leafletElement._origin = this.map.layerPointToLatLng(new L.Point(0, 0));
 		super.componentDidMount();
-		this._heatmap = simpleheat(this._el);
-		this.reset();
 
-		if (this.props.fitBoundsOnLoad) {
-			this.fitBounds();
+	}
+	setData = (data) => {
+		var latField = this.defaultConfig.latField || 'lat';
+		var lngField = this.defaultConfig.lngField || 'lng';
+		var valueField = this.defaultConfig.valueField || 'count';
+
+		var len = data.length;
+		var d = [];
+
+		while (len--) {
+			var entry = data[len];
+			var latlng = new L.LatLng(entry[latField], entry[lngField]);
+			var dataObj = { latlng: latlng };
+			dataObj[valueField] = entry[valueField];
+			if (entry.radius) {
+				dataObj.radius = entry.radius;
+			}
+			d.push(dataObj);
 		}
-		this.attachEvents();
-		this.updateHeatmapProps(this.getHeatmapProps(this.props));
+		this.data = d;
+		console.log(this.data)
+		this.draw();
+	}
+	draw = () => {
+		console.log('entered')
+		if (!this.map) { return; }
+		console.log('continued')
+		var mapPane = this.map.getPanes().mapPane;
+		var point = mapPane._leaflet_pos;
+
+		// reposition the layer
+		this._el.style[this.CSS_TRANSFORM] = 'translate(' +
+			-Math.round(point.x) + 'px,' +
+			-Math.round(point.y) + 'px)';
+		this.update();
 	}
 
-	getMax(props) {
-		return props.max || 3.0;
-	}
+	update = () => {
+		var bounds /* zoom */ /* scale */
+		var generatedData = { max: this.max, min: this.min, data: [] };
 
-	getRadius(props) {
-		return props.radius || 30;
-	}
+		bounds = this.map.getBounds();
+		// zoom = this.map.getZoom();
+		// crs = this.map.options.crs
+		// scale = crs.scale(zoom);7
 
-	getMaxZoom(props) {
-		return props.maxZoom || 18;
-	}
+		// scale = Math.pow(2, zoom);
+		// var radiusMultiplier = this.defaultConfig.scaleRadius ? scale : 1;
 
-	getMinOpacity(props) {
-		return props.minOpacity || 0.01;
-	}
-
-	getBlur(props) {
-		return props.blur || 15;
-	}
-
-	getHeatmapProps(props) {
-		return {
-			minOpacity: this.getMinOpacity(props),
-			maxZoom: this.getMaxZoom(props),
-			radius: this.getRadius(props),
-			blur: this.getBlur(props),
-			max: this.getMax(props),
-			gradient: props.gradient
-		};
-	}
-
-	componentWillReceiveProps(nextProps) {
-		const currentProps = this.props;
-		const nextHeatmapProps = this.getHeatmapProps(nextProps);
-
-		this.updateHeatmapGradient(nextHeatmapProps.gradient);
-
-		const hasRadiusUpdated = nextHeatmapProps.radius !== currentProps.radius;
-		const hasBlurUpdated = nextHeatmapProps.blur !== currentProps.blur;
-
-		if (hasRadiusUpdated || hasBlurUpdated) {
-			this.updateHeatmapRadius(nextHeatmapProps.radius, nextHeatmapProps.blur);
-		}
-
-		if (nextHeatmapProps.max !== currentProps.max) {
-			this.updateHeatmapMax(nextHeatmapProps.max);
-		}
-
-	}
-
-	/**
-	 * Update various heatmap properties like radius, gradient, and max
-	 */
-	updateHeatmapProps(props) {
-		this.updateHeatmapRadius(props.radius, props.blur);
-		this.updateHeatmapGradient(props.gradient);
-		this.updateHeatmapMax(props.max);
-	}
-
-	/**
-	 * Update the heatmap's radius and blur (blur is optional)
-	 */
-	updateHeatmapRadius(radius, blur) {
-		if (radius) {
-			this._heatmap.radius(radius, blur);
-		}
-	}
-
-	/**
-	 * Update the heatmap's gradient
-	 */
-	updateHeatmapGradient(gradient) {
-		if (gradient) {
-			this._heatmap.gradient(gradient);
-		}
-	}
-
-	/**
-	 * Update the heatmap's maximum
-	 */
-	updateHeatmapMax(maximum) {
-		if (maximum) {
-			this._heatmap.max(maximum);
-		}
-	}
-
-	componentWillUnmount() {
-		safeRemoveLayer(this.props.leaflet.map, this._el);
-	}
-
-	fitBounds() {
-		const points = this.props.points;
-		const lngs = map(points, this.props.longitudeExtractor);
-		const lats = map(points, this.props.latitudeExtractor);
-		const ne = { lng: max(lngs), lat: max(lats) };
-		const sw = { lng: min(lngs), lat: min(lats) };
-
-		if (shouldIgnoreLocation(ne) || shouldIgnoreLocation(sw)) {
+		//If there is no data do not render anything on the heatmap
+		if (this.props.data.length === 0) {
+			if (this.heatmap) {
+				this.heatmap.setData(generatedData);
+			}
 			return;
 		}
 
-		this.props.leaflet.map.fitBounds(L.latLngBounds(L.latLng(sw), L.latLng(ne)));
-	}
 
-	componentDidUpdate() {
-		this.props.leaflet.map.invalidateSize();
-		if (this.props.fitBoundsOnUpdate) {
-			this.fitBounds();
-		}
-		this.reset();
-	}
+		var latLngPoints = [];
+		// var radiusMultiplier = this.defaultConfig.scaleRadius ? scale : 1;
+		var localMax = 0;
+		var localMin = 0;
+		var valueField = this.defaultConfig.valueField;
+		var len = this.data.length;
 
-	shouldComponentUpdate() {
-		return true;
-	}
-
-	attachEvents() {
-		const leafletMap = this.props.leaflet.map;
-		leafletMap.on('viewreset', () => this.reset());
-		leafletMap.on('moveend', () => this.reset());
-		if (leafletMap.options.zoomAnimation && L.Browser.any3d) {
-			leafletMap.on('zoomanim', this._animateZoom, this);
-		}
-	}
+		while (len--) {
+			var entry = this.data[len];
+			var value = entry[valueField];
+			var latlng = entry.latlng;
 
 
-	_animateZoom(e) {
-		const scale = this.props.leaflet.map.getZoomScale(e.zoom);
-		const offset = this.props.leaflet.map
-			._getCenterOffset(e.center)
-			._multiplyBy(-scale)
-			.subtract(this.props.leaflet.map._getMapPanePos());
-
-		if (L.DomUtil.setTransform) {
-			L.DomUtil.setTransform(this._el, offset, scale);
-		} else {
-			this._el.style[L.DomUtil.TRANSFORM] =
-				`${L.DomUtil.getTranslateString(offset)} scale(${scale})`;
-		}
-	}
-
-	reset() {
-
-		// var mapPane = this.props.leaflet.map.getPanes().mapPane;
-		// var point = mapPane._leaflet_pos;
-
-		// this._el.style[this._heatmap.CSS_TRANSFORM] = 'translate(' + -Math.round(point.x) + 'px,' + -Math.round(point.y) + 'px)';
-
-		const topLeft = this.props.leaflet.map.containerPointToLayerPoint([0, 0]);
-		L.DomUtil.setPosition(this._el, topLeft);
-
-		const size = this.props.leaflet.map.getSize();
-
-		if (this._heatmap._width !== size.x) {
-			this._el.width = this._heatmap._width = size.x;
-		}
-		if (this._heatmap._height !== size.y) {
-			this._el.height = this._heatmap._height = size.y;
-		}
-
-		if (this._heatmap && !this._frame && !this.props.leaflet.map._animating) {
-			this._frame = L.Util.requestAnimFrame(this.redraw, this);
-		}
-
-		this.redraw();
-	}
-
-	redraw() {
-		const r = this._heatmap._r;
-		const size = this.props.leaflet.map.getSize();
-
-		const maxIntensity = this.props.max === undefined
-			? 1
-			: this.getMax(this.props);
-
-		const maxZoom = this.props.maxZoom === undefined
-			? this.props.leaflet.map.getMaxZoom()
-			: this.getMaxZoom(this.props);
-
-		const v = 1 / Math.pow(
-			2,
-			Math.max(0, Math.min(maxZoom - this.props.leaflet.map.getZoom(), 12)) / 2
-		);
-
-		const cellSize = r / 2;
-		const panePos = this.props.leaflet.map._getMapPanePos();
-		const offsetX = panePos.x % cellSize;
-		const offsetY = panePos.y % cellSize;
-		const getLat = this.props.latitudeExtractor;
-		const getLng = this.props.longitudeExtractor;
-		const getIntensity = this.props.intensityExtractor;
-
-		const inBounds = (p, bounds) => bounds.contains(p);
-
-		const filterUndefined = (row) => filter(row, c => c !== undefined);
-
-		const roundResults = (results) => reduce(results, (result, row) =>
-			map(filterUndefined(row), (cell) => [
-				Math.round(cell[0]),
-				Math.round(cell[1]),
-				Math.min(cell[2], maxIntensity),
-				cell[3]
-			]).concat(result),
-		[]
-		);
-
-		const accumulateInGrid = (points, leafletMap, bounds) => reduce(points, (grid, point) => {
-			const latLng = [getLat(point), getLng(point)];
-			if (isInvalidLatLngArray(latLng)) { //skip invalid points
-				return grid;
+			// we don't wanna render points that are not even on the map ;-)
+			if (!bounds.contains(latlng)) {
+				continue;
 			}
+			// local max is the maximum within current bounds
+			localMax = Math.max(value, localMax);
+			localMin = Math.min(value, localMin);
 
-			const p = leafletMap.latLngToContainerPoint(latLng);
+			var point = this.map.latLngToContainerPoint(latlng);
+			var latlngPoint = { x: Math.round(point.x), y: Math.round(point.y) };
+			latlngPoint[valueField] = value;
 
-			if (!inBounds(p, bounds)) {
-				return grid;
-			}
+			var radius;
+			radius = this.getPixelRadius();
+			// if (this.defaultConfig.fixedRadius && this.defaultConfig.radiusMeters) {
+			// } 
+			// if (entry.radius) {
+			// 	radius = entry.radius * radiusMultiplier;
+			// } else {
+			// 	radius = (this.defaultConfig.radius || 2) * radiusMultiplier;
 
-			const x = Math.floor((p.x - offsetX) / cellSize) + 2;
-			const y = Math.floor((p.y - offsetY) / cellSize) + 2;
-
-			grid[y] = grid[y] || [];
-			const cell = grid[y][x];
-
-			const alt = getIntensity(point);
-			const k = alt * v;
-
-			if (!cell) {
-				grid[y][x] = [p.x, p.y, k, 1];
-			} else {
-				cell[0] = (cell[0] * cell[2] + p.x * k) / (cell[2] + k); // x
-				cell[1] = (cell[1] * cell[2] + p.y * k) / (cell[2] + k); // y
-				cell[2] += k; // accumulated intensity value
-				cell[3] += 1;
-			}
-
-			return grid;
-		}, []);
-
-		const getBounds = () => new L.Bounds(L.point([-r, -r]), size.add([r, r]));
-
-		const getDataForHeatmap = (points, leafletMap) => roundResults(
-			accumulateInGrid(
-				points,
-				leafletMap,
-				getBounds(leafletMap)
-			)
-		);
-
-		const data = getDataForHeatmap(this.props.points, this.props.leaflet.map);
-
-		this._heatmap.clear();
-		this._heatmap.data(data).draw(this.getMinOpacity(this.props));
-
-		this._frame = null;
-
-		if (this.props.onStatsUpdate && this.props.points && this.props.points.length > 0) {
-			this.props.onStatsUpdate(
-				reduce(data, (stats, point) => {
-					stats.max = point[3] > stats.max ? point[3] : stats.max;
-					stats.min = point[3] < stats.min ? point[3] : stats.min;
-					return stats;
-				}, { min: Infinity, max: -Infinity })
-			);
+			// }
+			latlngPoint.radius = radius;
+			latLngPoints.push(latlngPoint);
 		}
+		if (this.defaultConfig.useLocalExtrema) {
+			generatedData.max = localMax;
+			generatedData.min = localMin;
+		}
+
+		generatedData.data = latLngPoints;
+
+		this.heatmap.setData(generatedData);
 	}
+	getPixelRadius = () => {
 
+		var centerLatLng = this.map.getCenter();
+		var pointC = this.map.latLngToContainerPoint(centerLatLng);
+		var pointX = [pointC.x + 1, pointC.y];
 
+		// convert containerpoints to latlng's
+		var latLngC = this.map.containerPointToLatLng(pointC);
+		var latLngX = this.map.containerPointToLatLng(pointX);
+
+		// Assuming distance only depends on latitude
+		var distanceX = latLngC.distanceTo(latLngX);
+		// 100 meters is the fixed distance here
+		var pixels = this.defaultConfig.radiusMeters / distanceX;
+
+		return pixels >= 1 ? pixels : 1;
+	}
+	reset = () => {
+		this.leafletElement._origin = this.map.layerPointToLatLng(new L.Point(0, 0));
+
+		var size = this.map.getSize();
+		if (this.leafletElement._width !== size.x || this.leafletElement._height !== size.y) {
+			this.leafletElement._width = size.x;
+			this.leafletElement._height = size.y;
+
+			this._el.style.width = this.leafletElement._width + 'px';
+			this._el.style.height = this.leafletElement._height + 'px';
+			console.log(this.heatmap)
+			this.heatmap._renderer.setDimensions(this.leafletElement._width, this.leafletElement._height);
+		}
+		this.draw();
+	}
+	CSS_TRANSFORM = (function () {
+		var div = document.createElement('div');
+		var props = [
+			'transform',
+			'WebkitTransform',
+			'MozTransform',
+			'OTransform',
+			'msTransform'
+		];
+
+		for (var i = 0; i < props.length; i++) {
+			var prop = props[i];
+			if (div.style[prop] !== undefined) {
+				return prop;
+			}
+		}
+		return props[0];
+	})();
 	render() {
-		return null;
+		return null
 	}
+})
 
-});

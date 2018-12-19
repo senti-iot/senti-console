@@ -11,11 +11,13 @@ import mapStyles from './mapStyles'
 import OpenPopup from './OpenPopup'
 // import LeafletM from './LeafletM';
 
+/**
+ * Plugins
+ */
 import FullScreen from 'variables/LeafletPlugins/FullScreen'
 import ZoomControl from 'variables/LeafletPlugins/ZoomControl';
-import NewHeatMapLayer from 'variables/LeafletPlugins/NewHeatMapLayer';
-// import HeatLayer from 'variables/LeafletPlugins/HeatLayer';
-// import NewHeatMapLayer from 'variables/LeafletPlugins/NewHeatMapLayer';
+import HeatLayer from 'variables/LeafletPlugins/HeatLayer';
+
 
 class OpenStreetMap extends React.Component {
 	constructor(props) {
@@ -28,13 +30,13 @@ class OpenStreetMap extends React.Component {
 	//Request URL: 17/69319/89866.png
 
 	layers = [
-		{ id: 0, url: "https://tile-b.openstreetmap.fr/hot/{z}/{x}/{y}.png", label: "T1", maxZoom: 20 },
-		{ id: 1, url: "https://gc2.io/mapcache/baselayers/tms/1.0.0/luftfotoserier.geodanmark_2017_12_5cm/{z}/{x}/{-y}.png", label: "LuftPhoto", maxZoom: 18 },
-		{ id: 2, url: "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", label: "T2", maxZoom: 18 },
-		{ id: 3, url: "http://a.tile.stamen.com/toner/{z}/{x}/{y}.png", label: "T3", maxZoom: 18 },
-		{ id: 4, url: "http://b.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg", label: "T4", maxZoom: 18 },
-		{ id: 5, url: "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", maxZoom: 18 },
-		{ id: 6, url: "https://{s}.tile.osm.org/{z}/{x}/{y}.png", attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', maxZoom: 18 }
+		{ id: 0, url: "https://tile-b.openstreetmap.fr/hot/{z}/{x}/{y}.png", attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors', maxZoom: 20 },
+		{ id: 1, url: "https://gc2.io/mapcache/baselayers/tms/1.0.0/luftfotoserier.geodanmark_2017_12_5cm/{z}/{x}/{-y}.png", attribution: 'Map Tiles by <a target="_blank" href="http://www.mapcentia.com/">MapCentia</a>', maxZoom: 18 },
+		{ id: 2, url: "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", attribution: 'Map Tiles by <a target="_blank" href="https://carto.com/attribution/">CARTO</a>', maxZoom: 18 },
+		{ id: 3, url: "http://a.tile.stamen.com/toner/{z}/{x}/{y}.png", attribution: 'Map Tiles by <a target="_blank" href="http://maps.stamen.com">Stamen Design</a>', maxZoom: 18 },
+		{ id: 4, url: "http://b.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg", attribution: 'Map Tiles by <a target="_blank" href="http://maps.stamen.com">Stamen Design</a>', maxZoom: 18 },
+		{ id: 5, url: "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", attribution: 'Map Tiles by <a target="_blank" href="https://carto.com/attribution/">CARTO</a>', maxZoom: 18 },
+		{ id: 6, url: "https://{s}.tile.osm.org/{z}/{x}/{y}.png", attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors', maxZoom: 18 }
 	]
 	
 	handleClick = (event) => {
@@ -93,8 +95,8 @@ class OpenStreetMap extends React.Component {
 		const { markers, classes, theme, calibrate, mapTheme } = this.props
 		const { zoom } = this.state
 		return <Fragment>
-			<Map zoomControl={false} ref={r => this.map = r} center={this.getCenter()} zoom={zoom} onzoomend={this.setZoom} maxZoom={this.layers[mapTheme].maxZoom} className={classes.map} >
-				{this.props.heatMap ? <NewHeatMapLayer data={this.props.markers.map(m => ({ lat: m.lat, lng: m.long, count: m.data }))} /> : null}
+			<Map zoomControl={false} attribution={this.layers[mapTheme].attribution} ref={r => this.map = r} center={this.getCenter()} zoom={zoom} onzoomend={this.setZoom} maxZoom={this.layers[mapTheme].maxZoom} className={classes.map} >
+				{this.props.heatMap ? <HeatLayer data={this.props.markers.map(m => ({ lat: m.lat, lng: m.long, count: m.data }))} /> : null}
 				<FullScreen />
 				<ZoomControl/>
 				<TileLayer url={this.layers[mapTheme].url} attribution={this.layers[mapTheme].attribution}/>
