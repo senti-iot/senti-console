@@ -2,14 +2,12 @@ import React, { Fragment } from 'react';
 import {
 	withLeaflet, Map, Popup, TileLayer, Marker
 } from 'react-leaflet'
-// import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
 import { withStyles } from '@material-ui/core';
 import { connect } from 'react-redux'
 import MarkerIcon from './MarkerIcon';
 import mapStyles from './mapStyles'
 import OpenPopup from './OpenPopup'
-// import LeafletM from './LeafletM';
 
 /**
  * Plugins

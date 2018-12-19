@@ -80,7 +80,13 @@ export default class DeviceMap extends PureComponent {
 					loading ? <CircularLoader /> :
 						<Grid container justify={'center'}>
 							{/* {device.lat && device.long ? <Maps heatMap={this.state.heatMap} t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t('devices.notCalibrated')}</Caption>} */}
-							{device.lat && device.long ? <OpenStreetMap mapTheme={mapTheme} heatMap={this.state.heatMap} heatData={[{ ...device, weather: weather }]} t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t('devices.notCalibrated')}</Caption>}
+							{device.lat && device.long ? <OpenStreetMap
+								mapTheme={mapTheme}
+								heatMap={this.state.heatMap}
+								heatData={[{ ...device, weather: weather }]}
+								t={t}
+								markers={[{ ...device, weather: weather }]}
+							/> : <Caption>{t('devices.notCalibrated')}</Caption>}
 						</Grid>
 				} />
 
