@@ -69,12 +69,14 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 				layer: undefined,
 				setView: 'untilPanOrZoom',
 				keepCurrentZoomLevel: false,
-				flyTo: false,
+				flyTo: true,
+				cacheLocation: true,
 				clickBehaviour: {
 					inView: 'stop',
 					outOfView: 'setView',
 					inViewNotFollowing: 'inView'
 				},
+				metric: true,
 				returnToPrevBounds: false,
 				locateOptions: {
 					maxZoom: Infinity,
@@ -114,7 +116,7 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 					<MuiThemeProvider theme={this.props.theme}>
 						<IconButton
 							buttonRef={r => this.button = r}
-							className={this.props.classes.fullscreenButton}
+							className={this.props.classes.locButton}
 							onClick={this.onClick}
 							color={'primary'}>
 							<LocationOn />
@@ -126,6 +128,10 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 			}
 		})
 		return new MyLocationControl(props)
+	}
+	onLocationOutsideMapBounds = (control) => {
+		control.stop();
+		alert(control.options.strings.outsideMapBoundsMsg);
 	}
 	isFollowing = () => {
 		let le = this.leafletElement
@@ -141,6 +147,9 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 			return !le._userPanned && !le._userZoomed;
 		}
 	}
+	stop = () => {
+		console.log('stopped')
+	}
 	onClick = () => {
 		let le = this.leafletElement
 		this.leafletElement._justClicked = true;
@@ -148,40 +157,44 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 		this.leafletElement._userPanned = false;
 		this.leafletElement._userZoomed = false;
 
-		if (le._active && !le._event) {
-		// click while requesting
+		if (le.active && !le._event) {
+			// click while requesting
 			this.stop();
-		} else if (le._active && le._event !== undefined) {
-			var behaviors = le.options.clickBehavior;
-			var behavior = behaviors.outOfView;
-			if (this.map.getBounds().contains(le._event.latlng)) {
-				behavior = wasFollowing ? behaviors.inView : behaviors.inViewNotFollowing;
-			}
-
-			// Allow inheriting from another behavior
-			if (behaviors[behavior]) {
-				behavior = behaviors[behavior];
-			}
-
-			switch (behavior) {
-				case 'setView':
-					this.setView();
-					break;
-				case 'stop':
-					this.stop();
-					if (le.options.returnToPrevBounds) {
-						var f = le.options.flyTo ? this.map.flyToBounds : this.map.fitBounds;
-						f.bind(this.map)(le.prevBounds);
-					}
-					break;
-				default:
-					break;
-			}
 		} else {
-			if (le.options.returnToPrevBounds) {
-				this.leafletElement.prevBounds = this.map.getBounds();
+			console.log('active && event', le.active, le._event)
+			if (le.active && le._event !== undefined) {
+				var behaviors = le.options.clickBehaviour;
+				var behavior = behaviors.outOfView;
+				console.log(this.map.getBounds().contains(le._event.latlng))
+				if (this.map.getBounds().contains(le._event.latlng)) {
+					behavior = wasFollowing ? behaviors.inView : behaviors.inViewNotFollowing;
+				}
+
+				// Allow inheriting from another behavior
+				if (behaviors[behavior]) {
+					behavior = behaviors[behavior];
+				}
+
+				switch (behavior) {
+					case 'setView':
+						this.setView();
+						break;
+					case 'stop':
+						this.stop();
+						if (le.options.returnToPrevBounds) {
+							var f = le.options.flyTo ? this.map.flyToBounds : this.map.fitBounds;
+							f.bind(this.map)(le.prevBounds);
+						}
+						break;
+					default:
+						break;
+				}
+			} else {
+				if (le.options.returnToPrevBounds) {
+					this.leafletElement.prevBounds = this.map.getBounds();
+				}
+				this.start();
 			}
-			this.start();
 		}
 
 		this.updateContainerStyle();
@@ -190,7 +203,7 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 		return locationEvent.bounds
 	}
 	start = () => {
-	    this.activate()
+		this.activate()
 		if (this.leafletElement._event) {
 			this.drawMarker(this.map)
 		}
@@ -230,7 +243,7 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 		this.drawMarker()
 		this.updateContainerStyle()
 
-		switch (this.leafletElement.options) {
+		switch (this.leafletElement.options.setView) {
 			case 'once':
 				if (this.leafletElement._justClicked) {
 					this.setView();
@@ -339,14 +352,16 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 	})
 	drawMarker = () => {
 		let ev = this.leafletElement._event
-		console.log('drawMarker', this.leafletElement)
 		let options = this.leafletElement.options
 		let le = this.leafletElement
+
 		if (ev.accuracy === undefined) {
 			ev.accuracy = 0
 		}
+
 		var radius = ev.accuracy
 		var latlng = ev.latlng
+
 		if (options.drawCircle) {
 			var style = options.circleStyle
 			if (!le._circle) {
@@ -435,12 +450,19 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 			addClasses(this.button, this.options.icon);
 		}
 	}
+	isOutsideMapBounds = () => {
+		if (this._event === undefined) {
+			return false;
+		}
+		return this.map.options.maxBounds &&
+			!this.map.options.maxBounds.contains(this.leafletElement._event.latlng);
+	}
 	setView = () => {
 		let le = this.leafletElement
 		this.drawMarker();
-		if (le._isOutsideMapBounds()) {
-			le._event = undefined;  // clear the current location so we can get back into the bounds
-			le.options.onLocationOutsideMapBounds(this);
+		if (this.isOutsideMapBounds()) {
+			this.leafletElement._event = undefined;  // clear the current location so we can get back into the bounds
+			this.onLocationOutsideMapBounds(this.leafletElement);
 		} else {
 			if (le.options.keepCurrentZoomLevel) {
 				var f = le.options.flyTo ? this.map.flyTo : this.map.panTo;
@@ -449,7 +471,7 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 				var df = le.options.flyTo ? this.map.flyToBounds : this.map.fitBounds;
 				// Ignore zoom events while setting the viewport as these would stop following
 				le._ignoreEvent = true;
-				df.bind(this._map)(le.options.getLocationBounds(le._event), {
+				df.bind(this.map)(this.getLocationBounds(le._event), {
 					padding: le.options.circlePadding,
 					maxZoom: le.options.locateOptions.maxZoom
 				});
