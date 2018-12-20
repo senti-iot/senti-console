@@ -15,16 +15,25 @@ const styles = theme => ({
 		'0%': {
 			background: theme.palette.type !== 'dark' ? '#fff' : "#424242",
 		},
-		'100%': {
+		'50%': {
 			background: teal[500],
-		}
+		},
+		'100%': {
+			background: theme.palette.type !== 'dark' ? '#fff' : "#424242",
+		},
 	},
 	locButton: {
 		background: theme.palette.type !== 'dark' ? '#fff' : "#424242",
 		color: theme.palette.type !== 'dark' ? 'inherit' : "#fff",
+		[theme.breakpoints.up('sm')]: {
+			"&:hover": {
+				background: teal[500],
+				color: "#fff"
+			},
+		},
 		"&:hover": {
-			background: teal[500],
-			color: "#fff"
+			background: theme.palette.type !== 'dark' ? '#fff' : "#424242",
+			color: theme.palette.type !== 'dark' ? 'inherit' : "#fff",
 		},
 		padding: 4,
 		borderRadius: 4,
@@ -117,17 +126,6 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 					weight: 3,
 					opacity: 1,
 					radius: 9
-				},
-				/** Compass */
-				compassStyle: {
-					fillColor: '#2A93EE',
-					fillOpacity: 1,
-					weight: 0,
-					color: '#fff',
-					opacity: 1,
-					radius: 9, // How far is the arrow is from the center of of the marker
-					width: 9, // Width of the arrow
-					depth: 6  // Length of the arrow
 				}
 			},
 			onAdd: () => {
@@ -163,7 +161,7 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 		} else if (le.options.setView === 'untilPan') {
 			return !le._userPanned;
 		} else if (le.options.setView === 'untilPanOrZoom') {
-			return !le._userPanned && !le._userZoomed;
+			return !le._userPanned || !le._userZoomed;
 		}
 	}
 	stop = () => {
@@ -323,13 +321,28 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 		alert('Location error')
 	}
 	onDrag = () => {
-
+		if (this.leafletElement._event && !this.leafletElement._ignoreEvent) {
+			this.leafletElement._userZoomed = true;
+			this.updateContainerStyle();
+			this.drawMarker();
+		}
 	}
 	onZoom = () => {
-
+		if (this.leafletElement._event && !this.leafletElement._ignoreEvent) {
+			this.leafletElement._userZoomed = true;
+			this.updateContainerStyle();
+			this.drawMarker();
+		}
 	}
 	onZoomEnd = () => {
 
+		if (this.leafletElement._event && !this.leafletElement._ignoreEvent) {
+			if (!this.map.getBounds().pad(-.3).contains(this.leafletElement._marker.getLatLng())) {
+				this.leafletElement._userPanned = true;
+				this.updateContainerStyle();
+				this.drawMarker();
+			}
+		}
 	}
 	LocationMarker = L.Marker.extend({
 		initialize: function (latlng, options) {
@@ -338,9 +351,6 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 			this.createIcon();
 		},
 
-		/**
-			 * Create a styled circle location marker
-			 */
 		createIcon: function () {
 			var opt = this.options;
 
@@ -373,11 +383,6 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 			this.setIcon(this._locationIcon);
 		},
 
-		/**
-			 * Return the raw svg for the shape
-			 *
-			 * Split so can be easily overridden
-			 */
 		_getIconSVG: function (options, style) {
 			var r = options.radius;
 			var w = options.weight;
@@ -421,17 +426,6 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 				this.leafletElement._circle.setLatLng(latlng).setRadius(radius).setStyle(style)
 			}
 		}
-
-		// var distance, unit;
-		// if (options.metric) {
-		// 	distance = radius.toFixed(0)
-		// 	unit = options.strings.metersUnit
-		// }
-		// else { 
-		// 	distance = (radius * 3.2808399).toFixed(0);
-		// 	unit = options.strings.feetUnit;
-		// }
-		window.map = this.map
 		if (options.drawMarker) {
 			var mStyle = options.markerStyle
 			if (!le._marker) {
@@ -465,7 +459,6 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 		if (!this.container) {
 			return;
 		}
-		console.log('Testing Styles')
 		if (le.active && !le._event) {
 			// active but don't have a location yet
 			this.setClasses('requesting');
