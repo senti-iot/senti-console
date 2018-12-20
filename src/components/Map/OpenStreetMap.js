@@ -17,6 +17,7 @@ import FullScreen from 'variables/LeafletPlugins/FullScreen'
 import ZoomControl from 'variables/LeafletPlugins/ZoomControl';
 import HeatLayer from 'variables/LeafletPlugins/HeatLayer';
 import HeatMapLegend from 'variables/LeafletPlugins/HeatMapLegend';
+import MyLocationControl from 'variables/LeafletPlugins/MyLocationControl';
 
 
 class OpenStreetMap extends React.Component {
@@ -93,7 +94,8 @@ class OpenStreetMap extends React.Component {
 				{heatMap ? <HeatMapLegend /> : null}
 				<FullScreen />
 				<ZoomControl />
-				<TileLayer url={layers[mapTheme].url} attribution={layers[mapTheme].attribution} />
+				<MyLocationControl mapLayer={this.layer}/>
+				<TileLayer ref={r => this.layer = r} url={layers[mapTheme].url} attribution={layers[mapTheme].attribution} />
 				{markers.map((m, i) => {
 					if (m.lat && m.long)
 						return <Marker

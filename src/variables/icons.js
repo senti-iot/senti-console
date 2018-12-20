@@ -1,4 +1,5 @@
 import ZoomOut from '@material-ui/icons/ZoomOut'
+import LocationOn from '@material-ui/icons/LocationOn'
 //#region weather Icons
 import ClearDay from 'assets/weather/clear_day.svg'
 import ClearNight from 'assets/weather/clear_night.svg'
@@ -81,6 +82,7 @@ import Dashboard from '@material-ui/icons/Dashboard'
 import History from '@material-ui/icons/History'
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
 export {
+	LocationOn,
 	ArrowUpward,
 	ZoomOut,
 	Cake,
