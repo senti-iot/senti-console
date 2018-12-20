@@ -142,8 +142,7 @@ export const getSettings = async () => {
 }
 
 export const changeMapTheme = t => {
-	return async (dispatch, getState) => {
-		console.log(t)
+	return async (dispatch, getState) => {		
 		dispatch({
 			type: MapTheme,
 			t

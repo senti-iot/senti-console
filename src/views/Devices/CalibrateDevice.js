@@ -134,7 +134,6 @@ class CalibrateDevice extends Component {
 			navigator.geolocation.getCurrentPosition(async rs => {
 				let lat = rs.coords.latitude
 				let long = rs.coords.longitude
-				// console.log(lat, long)
 				let address = await getAddressByLocation(lat, long)
 				let addressStr = address.vejnavn + ' ' + address.husnr + ', ' + address.postnr + ' ' + address.postnrnavn
 				this.setState({ lat, long, error: false, address: addressStr })

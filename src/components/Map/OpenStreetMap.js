@@ -2,37 +2,33 @@ import React, { Fragment } from 'react';
 import {
 	withLeaflet, Map, Popup, TileLayer, Marker
 } from 'react-leaflet'
-// import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
 import { withStyles } from '@material-ui/core';
 import { connect } from 'react-redux'
 import MarkerIcon from './MarkerIcon';
 import mapStyles from './mapStyles'
 import OpenPopup from './OpenPopup'
-// import LeafletM from './LeafletM';
 
+/**
+ * Plugins
+ */
+import layers from 'variables/LeafletPlugins/leafletMaps.json'
 import FullScreen from 'variables/LeafletPlugins/FullScreen'
 import ZoomControl from 'variables/LeafletPlugins/ZoomControl';
+import HeatLayer from 'variables/LeafletPlugins/HeatLayer';
+import HeatMapLegend from 'variables/LeafletPlugins/HeatMapLegend';
+import MyLocationControl from 'variables/LeafletPlugins/MyLocationControl';
+
 
 class OpenStreetMap extends React.Component {
 	constructor(props) {
-	  super(props)
-	
-	  this.state = {
-		 zoom: props.markers.length === 1 ? 17 : 13
-	  }
+		super(props)
+
+		this.state = {
+			zoom: props.markers.length === 1 ? 17 : 13
+		}
 	}
-	
-	layers = [
-		{ id: 0, url: "https://tile-b.openstreetmap.fr/hot/{z}/{x}/{y}.png", label: "T1", maxZoom: 20 },
-		{ id: 1, url: "https://gc2.io/mapcache/baselayers/tms/1.0.0/luftfotoserier.quickorto_2018_16cm/{z}/{x}/{-y}.png", label: "LuftPhoto", maxZoom: 18 },
-		{ id: 2, url: "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", label: "T2", maxZoom: 18 },
-		{ id: 3, url: "http://a.tile.stamen.com/toner/{z}/{x}/{y}.png", label: "T3", maxZoom: 18 },
-		{ id: 4, url: "http://b.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg", label: "T4", maxZoom: 18 },
-		{ id: 5, url: "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", maxZoom: 18 },
-		{ id: 6, url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png", attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', maxZoom: 18 }
-	]
-	
+
 	handleClick = (event) => {
 		const items = this.state.dataSet;
 		items[event.target.id].visible = !items[event.target.id].visible;
@@ -46,7 +42,7 @@ class OpenStreetMap extends React.Component {
 		var CustomIcon = L.Icon.extend({
 			options: {
 				iconSize: [25, 41],
-				iconAnchor: [12, 41],
+				iconAnchor: [12, 20],
 				popupAnchor: [1, -34],
 			}
 		});
@@ -58,17 +54,21 @@ class OpenStreetMap extends React.Component {
 		});
 
 	}
-	setZoom = () => { 
+	setZoom = () => {
 		this.setState({
 			zoom: this.map.leafletElement.getZoom()
 		})
 	}
 	componentDidMount = () => {
 		if (this.props.markers.length > 1)
-		  this.centerOnAllMarkers()
+			this.centerOnAllMarkers()
 	}
-	
-	centerOnAllMarkers = () => { 
+	componentDidUpdate = (prevProps, prevState) => {
+		if (prevProps.mapTheme !== this.props.mapTheme)
+			this.map.leafletElement.setMaxZoom(layers[this.props.mapTheme].maxZoom)
+	}
+
+	centerOnAllMarkers = () => {
 		this.map.leafletElement.fitBounds([...this.props.markers.map(m => m.lat && m.long ? [m.lat, m.long] : null)])
 	}
 	getCenter = () => {
@@ -79,21 +79,24 @@ class OpenStreetMap extends React.Component {
 
 		if (this.props.markers.length === 1)
 			center = [this.props.markers[0].lat, this.props.markers[0].long]
-		else { 
+		else {
 			center = [defaultLat, defaultLng]
 
 		}
 		return center
 	}
 	render() {
-		const { markers, classes, theme, calibrate, mapTheme } = this.props
+		const { markers, classes, theme, calibrate, mapTheme, heatData, heatMap } = this.props
 		const { zoom } = this.state
 		return <Fragment>
-			<Map zoomControl={false} ref={r => this.map = r} center={this.getCenter()} zoom={zoom} onzoomend={this.setZoom} maxZoom={this.layers[mapTheme].maxZoom} className={classes.map} >
+			<Map zoomControl={false} attribution={layers[mapTheme].attribution} ref={r => this.map = r} center={this.getCenter()} zoom={zoom} onzoomend={this.setZoom} maxZoom={layers[mapTheme].maxZoom} className={classes.map} >
+				{heatMap ? <HeatLayer data={heatData ? heatData.map(m => ({ lat: m.lat, lng: m.long, count: m.data })) : null} /> : null}
+				{heatMap ? <HeatMapLegend /> : null}
 				<FullScreen />
-				<ZoomControl/>
-				<TileLayer url={this.layers[mapTheme].url} attribution={this.layers[mapTheme].attribution}/>
-				{markers.map((m, i) => { 
+				<ZoomControl />
+				<MyLocationControl mapLayer={this.layer}/>
+				<TileLayer ref={r => this.layer = r} url={layers[mapTheme].url} attribution={layers[mapTheme].attribution} />
+				{markers.map((m, i) => {
 					if (m.lat && m.long)
 						return <Marker
 							onDragend={calibrate ? this.props.getLatLng : null}
@@ -102,7 +105,7 @@ class OpenStreetMap extends React.Component {
 							position={[m.lat, m.long]}
 							key={i}
 							icon={this.returnSvgIcon(m.liveStatus)}>
-							{calibrate ? null : <Popup className={theme.palette.type === 'dark' ? classes.popupDark : classes.popup }>
+							{calibrate ? null : <Popup className={theme.palette.type === 'dark' ? classes.popupDark : classes.popup}>
 								<OpenPopup m={m} />
 							</Popup>}
 						</Marker>

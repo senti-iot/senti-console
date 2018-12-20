@@ -39,63 +39,61 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 		L.Map.include({
 			isFullscreen: function () {
 				return this._isFullscreen || false;
-			},
-			setFullscreen: function (fullscreen) {
-				this._isFullscreen = fullscreen;
-				var container = this.getContainer();
-				if (fullscreen) {
-					L.DomUtil.addClass(container, props.classes.fullscreenOn);
-				} else {
-					L.DomUtil.removeClass(container, props.classes.fullscreenOn);
-				}
-				this.invalidateSize();
-				this.fire('fullscreenchange')
-			},
-
-			_onFullscreenChange: function (e) {
-				var fullscreenElement =
-					document.fullscreenElement ||
-					document.mozFullScreenElement ||
-					document.webkitFullscreenElement ||
-					document.msFullscreenElement;
-
-				if (fullscreenElement === this.getContainer() && !this._isFullscreen) {
-					this.setFullscreen(true);
-					this.fire('fullscreenchange');
-				} else if (fullscreenElement !== this.getContainer() && this._isFullscreen) {
-					this.setFullscreen(false);
-					this.fire('fullscreenchange');
-				}
 			}
 		})
-		L.Map.addInitHook(function () {
-			var fullscreenchange;
 
-			if ('onfullscreenchange' in document) {
-				fullscreenchange = 'fullscreenchange';
-			} else if ('onmozfullscreenchange' in document) {
-				fullscreenchange = 'mozfullscreenchange';
-			} else if ('onwebkitfullscreenchange' in document) {
-				fullscreenchange = 'webkitfullscreenchange';
-			} else if ('onmsfullscreenchange' in document) {
-				fullscreenchange = 'MSFullscreenChange';
-			}
-			if (fullscreenchange) {
-				var onFullscreenChange = L.bind(this._onFullscreenChange, this);
-
-				this.whenReady(function () {
-					L.DomEvent.on(document, fullscreenchange, onFullscreenChange);
-				});
-
-				this.on('unload', function () {
-					L.DomEvent.off(document, fullscreenchange, onFullscreenChange);
-				});
-			}
-		})
-	
 	}
+	setFullscreen = (fullscreen) => {
+		this.map._isFullscreen = fullscreen;
+		var container = this.map.getContainer();
+		if (fullscreen) {
+			L.DomUtil.addClass(container, this.props.classes.fullscreenOn);
+		} else {
+			L.DomUtil.removeClass(container, this.props.classes.fullscreenOn);
+		}
+		this.map.invalidateSize();
+		this.map.fire('fullscreenchange')
+	}
+	onFullscreenChange = (e) => {
+		var fullscreenElement =
+			document.fullscreenElement ||
+			document.mozFullScreenElement ||
+			document.webkitFullscreenElement ||
+			document.msFullscreenElement;
 
+		if (fullscreenElement === this.map.getContainer() && !this.map._isFullscreen) {
+			this.setFullscreen(true);
+			this.map.fire('fullscreenchange');
+		} else if (fullscreenElement !== this.map.getContainer() && this.map._isFullscreen) {
+			this.setFullscreen(false);
+			this.map.fire('fullscreenchange');
+		}
+	}
+	documentOnFullScreenChange = () => { 
+		var fullscreenchange;
+		if ('onfullscreenchange' in document) {
+			fullscreenchange = 'fullscreenchange';
+		} else if ('onmozfullscreenchange' in document) {
+			fullscreenchange = 'mozfullscreenchange';
+		} else if ('onwebkitfullscreenchange' in document) {
+			fullscreenchange = 'webkitfullscreenchange';
+		} else if ('onmsfullscreenchange' in document) {
+			fullscreenchange = 'MSFullscreenChange';
+		}
+		if (fullscreenchange) {
+			var onFullscreenChange = L.bind(this.onFullscreenChange, this.map);
+
+			this.map.whenReady(function () {
+				L.DomEvent.on(document, fullscreenchange, onFullscreenChange);
+			});
+
+			this.map.on('unload', function () {
+				L.DomEvent.off(document, fullscreenchange, onFullscreenChange);
+			});
+		}
+	}
 	componentDidMount() {
+		this.documentOnFullScreenChange()
 		super.componentDidMount();
 	}
 	toggleFullscreen = (options) => {
@@ -129,7 +127,7 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 				this.enablePseudoFullscreen(container);
 			}
 		}
-		this.map.setFullscreen(!this.map.isFullscreen())
+		this.setFullscreen(!this.map._isFullscreen)
 	}
 	enablePseudoFullscreen = (container) => {
 		L.DomUtil.addClass(container, this.props.classes.pseudoFullscreen);

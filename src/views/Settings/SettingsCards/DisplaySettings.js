@@ -21,7 +21,7 @@ class DisplaySettings extends Component {
 	changeTheme = (e) => this.props.changeTheme(e.target.value)
 	changeSideBarLoc = (e) => this.props.changeSideBarLoc(e.target.value)
 	changeDiscoverSenti = e => this.props.changeDiscoverSenti(e.target.value)
-	changeMapTheme = e => { console.log(e);this.props.changeMapTheme(e.target.value) }
+	changeMapTheme = e => this.props.changeMapTheme(e.target.value)
 
 	render() {
 		const { language, trp, sideBar, discSentiVal, theme, mapTheme, classes, t } = this.props
@@ -35,13 +35,13 @@ class DisplaySettings extends Component {
 		]
 
 		let mapThemes = [
-			{ value: 0, label: "Humanitarian" },
-			{ value: 1, label: "Luftphoto 2018" },
-			{ value: 2, label: "Dark" },
-			{ value: 3, label: "Stamen Toner" },
-			{ value: 4, label: "Stamen Watercolor" },
-			{ value: 5, label: "Carto" },
-			{ value: 6, label: "OpenStreetMap" }
+			{ value: 0, label: this.props.t("map.themes.0") },
+			{ value: 1, label: this.props.t("map.themes.1") },
+			{ value: 2, label: this.props.t("map.themes.2") },
+			{ value: 3, label: this.props.t("map.themes.3") },
+			{ value: 4, label: this.props.t("map.themes.4") },
+			{ value: 5, label: this.props.t("map.themes.5") },
+			{ value: 6, label: this.props.t("map.themes.6") }
 		]
 
 		let themes = [

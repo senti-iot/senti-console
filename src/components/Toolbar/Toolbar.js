@@ -62,12 +62,13 @@ class Toolbar extends PureComponent {
 		
 	}
 	componentDidMount = () => {
-		if (this.props.width === 'xs') { 
-			this.tabsRef.tabsRef.scroll({ left: 100, behavior: 'smooth' }) 
-			setTimeout(() => {
-				this.tabsRef.tabsRef.scroll({ left: 0, behavior: 'smooth' }) 
-			}, 300);
-		}
+		// if (this.props.width === 'xs') { 
+		// 	if (this.tabsRef)
+		// 	{this.tabsRef.tabsRef.scroll({ left: 100, behavior: 'smooth' }) 
+		// 		setTimeout(() => {
+		// 			this.tabsRef.tabsRef.scroll({ left: 0, behavior: 'smooth' }) 
+		// 		}, 300);}
+		// }
 	}
 	
 	handleTabsChange = (e, value) => {

@@ -190,6 +190,7 @@ class Device extends Component {
 		let id = this.state.dateOption
 		const { to, from } = this.state
 		let diff = moment.duration(to.diff(from)).days()
+		this.getHeatMapData()
 		switch (id) {
 			case 0:// Today
 				this.getWifiHourly();

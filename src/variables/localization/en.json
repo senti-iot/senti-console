@@ -1,4 +1,15 @@
 {
+	"map": {
+		"themes": {
+			"0": "Humanitarian",
+			"1": "Luftphoto 2018",
+			"2": "Carto Dark",
+			"3": "Carto",
+			"4": "Stamen Watercolor",
+			"5": "Stamen Toner",
+			"6": "OpenStreetMap"
+		}
+	},
 	"404": {
 		"errorMessage": "The resource requested has not been found! Please try again or contact support on support@senti.cloud!",
 		"networkFail": "Request failed!",
@@ -393,7 +404,7 @@
 	},
 	"no": {
 		"birthdays": "No birthdays today",
-		"doi":"No Holidays today",
+		"doi": "No Holidays today",
 		"activeDevice": "No active device",
 		"audioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a different browser.",
 		"collection": "No collection",

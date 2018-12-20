@@ -14,7 +14,6 @@ class Marker extends MapLayer {
 	}
 
 	updateLeafletElement(fromProps, toProps) {
-		console.log(this)
 		if (toProps.position !== fromProps.position) {
 			this.leafletElement.setLatLng(toProps.position)
 			if (this.props.getLatLng) {

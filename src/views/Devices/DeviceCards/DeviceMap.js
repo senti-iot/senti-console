@@ -15,13 +15,13 @@ export default class DeviceMap extends PureComponent {
 		}
 	}
 	visibilityOptions = [
-		{ id: 0, icon: "", label: "Humanitarian" },
-		{ id: 1, icon: "", label: "Luftphoto 2018" },
-		{ id: 2, icon: "", label: "Dark" },
-		{ id: 3, icon: "", label: "Stamen Toner" },
-		{ id: 4, icon: "", label: "Stamen Watercolor" },
-		{ id: 5, icon: "", label: "Carto" },
-		{ id: 6, icon: "", label: "OpenStreetMap" }
+		{ id: 0, label: this.props.t("map.themes.0") },
+		{ id: 1, label: this.props.t("map.themes.1") },
+		{ id: 2, label: this.props.t("map.themes.2") },
+		{ id: 3, label: this.props.t("map.themes.3") },
+		{ id: 4, label: this.props.t("map.themes.4") },
+		{ id: 5, label: this.props.t("map.themes.5") },
+		{ id: 6, label: this.props.t("map.themes.6") }
 	]
 	handleVisibility = e => (event) => {
 		if (event)
@@ -80,7 +80,13 @@ export default class DeviceMap extends PureComponent {
 					loading ? <CircularLoader /> :
 						<Grid container justify={'center'}>
 							{/* {device.lat && device.long ? <Maps heatMap={this.state.heatMap} t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t('devices.notCalibrated')}</Caption>} */}
-							{device.lat && device.long ? <OpenStreetMap mapTheme={mapTheme} heatMap={this.state.heatMap} t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t('devices.notCalibrated')}</Caption>}
+							{device.lat && device.long ? <OpenStreetMap
+								mapTheme={mapTheme}
+								heatMap={this.state.heatMap}
+								heatData={[{ ...device, weather: weather }]}
+								t={t}
+								markers={[{ ...device, weather: weather }]}
+							/> : <Caption>{t('devices.notCalibrated')}</Caption>}
 						</Grid>
 				} />
 
