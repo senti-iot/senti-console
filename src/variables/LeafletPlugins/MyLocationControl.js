@@ -7,17 +7,18 @@ import { LocationOn } from 'variables/icons'
 import teal from '@material-ui/core/colors/teal'
 // import LocationMarker from './LocationMarker';
 
-var LDomUtilApplyClassesMethod = function (method, element, classNames) {
-	classNames = classNames.split(' ');
-	classNames.forEach(function (className) {
-		L.DomUtil[method].call(this, element, className);
-	});
-};
-
-var addClasses = function (el, names) { LDomUtilApplyClassesMethod('addClass', el, names); };
-var removeClasses = function (el, names) { LDomUtilApplyClassesMethod('removeClass', el, names); };
-
 const styles = theme => ({
+	locRequesting: {
+		animation: `loc-request 1000ms ${theme.transitions.easing.easeInOut} infinite`
+	},
+	"@keyframes loc-request": {
+		'0%': {
+			background: theme.palette.type !== 'dark' ? '#fff' : "#424242",
+		},
+		'100%': {
+			background: teal[500],
+		}
+	},
 	locButton: {
 		background: theme.palette.type !== 'dark' ? '#fff' : "#424242",
 		color: theme.palette.type !== 'dark' ? 'inherit' : "#fff",
@@ -59,6 +60,24 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 		this.container = L.DomUtil.create('div', 'leaflet-control-locate');
 
 
+	}
+	setClasses = (state) => {
+		if (state === 'requesting') {
+
+			this.addClasses(this.button, this.props.classes.locRequesting)
+
+			// this.removeClasses(this.button, this.props.classes.locActiveButton);
+			// this.addClasses(this.button, this.options.iconLoading);
+		} else if (state === 'active') {
+			this.removeClasses(this.button, this.props.classes.locRequesting)
+			this.addClasses(this.button, this.props.classes.locActiveButton)
+		} else if (state === 'following') {
+			// this.removeClasses(this.container, "requesting");
+			// this.addClasses(this.container, "active following");
+
+			// this.removeClasses(this.button, this.options.iconLoading);
+			// this.addClasses(this.button, this.options.icon);
+		}
 	}
 	createLeafletElement(props) {
 		const MyLocationControl = Control.extend({
@@ -148,7 +167,38 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 		}
 	}
 	stop = () => {
-		console.log('stopped')
+		this.deactivate();
+		this.cleanClasses();
+		this.resetVariables();
+		this.removeMarker();
+	}
+	deactivate = () => {
+		this.map.stopLocate()
+		this.leafletElement.active = false
+		if (!this.leafletElement.options.cacheLocation) {
+			this.leafletElement._event = undefined;
+		}
+		this.map.off('locationfound', this.onLocationFound, this.leafletElement)
+		this.map.off('locationerror', this.onLocationError, this.leafletElement)
+		this.map.off('dragstart', this.onDrag, this.leafletElement)
+		this.map.off('zoomstart', this.onZoom, this.leafletElement)
+		this.map.off('zoomend', this.onZoomEnd, this.leafletElement)
+	}
+	cleanClasses = () => {
+		L.DomUtil.removeClass(this.button, this.props.classes.locActiveButton)
+		L.DomUtil.removeClass(this.button, this.props.classes.locRequesting)
+	}
+	resetVariables = () => {
+		this.leafletElement.active = false
+		this.leafletElement._justClicked = false
+		this.leafletElement._userPanned = false
+		this.leafletElement._userZoomed = false
+	}
+	removeMarker = () => {
+		this.map.removeLayer(this.leafletElement._circle)
+		this.map.removeLayer(this.leafletElement._marker)
+		this.leafletElement._circle = undefined
+		this.leafletElement._marker = undefined
 	}
 	onClick = () => {
 		let le = this.leafletElement
@@ -161,11 +211,11 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 			// click while requesting
 			this.stop();
 		} else {
-			console.log('active && event', le.active, le._event)
+			// console.log('active && event', le.active, le._event)
 			if (le.active && le._event !== undefined) {
 				var behaviors = le.options.clickBehaviour;
 				var behavior = behaviors.outOfView;
-				console.log(this.map.getBounds().contains(le._event.latlng))
+				// console.log(this.map.getBounds().contains(le._event.latlng))
 				if (this.map.getBounds().contains(le._event.latlng)) {
 					behavior = wasFollowing ? behaviors.inView : behaviors.inViewNotFollowing;
 				}
@@ -239,7 +289,7 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 			return;
 		}
 		this.leafletElement._event = e
-		console.log(this.leafletElement._event, e)
+
 		this.drawMarker()
 		this.updateContainerStyle()
 
@@ -263,7 +313,6 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 				this.setView();
 				break;
 			case false:
-				// don't set the view
 				break;
 			default:
 				break;
@@ -366,7 +415,7 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 			var style = options.circleStyle
 			if (!le._circle) {
 				this.leafletElement._circle = L.circle(latlng, radius, style).addTo(this.map)
-				console.log('circle', this.leafletElement._circle)
+				// console.log('circle', this.leafletElement._circle)
 			}
 			else {
 				this.leafletElement._circle.setLatLng(latlng).setRadius(radius).setStyle(style)
@@ -416,40 +465,30 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 		if (!this.container) {
 			return;
 		}
-
-		if (le._active && !le._event) {
+		console.log('Testing Styles')
+		if (le.active && !le._event) {
 			// active but don't have a location yet
 			this.setClasses('requesting');
 		} else if (this.isFollowing()) {
 			this.setClasses('following');
-		} else if (le._active) {
+		} else if (le.active) {
 			this.setClasses('active');
 		} else {
 			// this.cleanClasses();s
 		}
 	}
-	setClasses = (state) => {
 
-		if (state === 'requesting') {
-			removeClasses(this.container, "active following");
-			addClasses(this.container, "requesting");
+	LDomUtilApplyClassesMethod = (method, element, classNames) => {
+		classNames = classNames.split(' ');
+		classNames.forEach((className) => {
+			L.DomUtil[method].call(this.leafletElement, element, className);
+		});
+	};
 
-			removeClasses(this.button, this.options.icon);
-			addClasses(this.button, this.options.iconLoading);
-		} else if (state === 'active') {
-			removeClasses(this.container, "requesting following");
-			addClasses(this.container, "active");
+	addClasses = (el, names) => { this.LDomUtilApplyClassesMethod('addClass', el, names); };
+	removeClasses = (el, names) => { this.LDomUtilApplyClassesMethod('removeClass', el, names); };
 
-			removeClasses(this.button, this.options.iconLoading);
-			addClasses(this.button, this.options.icon);
-		} else if (state === 'following') {
-			removeClasses(this.container, "requesting");
-			addClasses(this.container, "active following");
 
-			removeClasses(this.button, this.options.iconLoading);
-			addClasses(this.button, this.options.icon);
-		}
-	}
 	isOutsideMapBounds = () => {
 		if (this._event === undefined) {
 			return false;
