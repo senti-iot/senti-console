@@ -364,7 +364,6 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 		createIcon: function () {
 			
 			var opt = this.options;
-			console.log(opt.className)
 			
 			var style = '';
 
