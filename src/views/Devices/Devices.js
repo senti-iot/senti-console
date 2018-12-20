@@ -8,7 +8,6 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import projectStyles from 'assets/jss/views/projects';
 import DeviceTable from 'components/Devices/DeviceTable';
 import CircularLoader from 'components/Loader/CircularLoader';
-import { Maps } from 'components/Map/Maps';
 import GridContainer from 'components/Grid/GridContainer';
 import { ViewList, ViewModule, Map, Add, FilterList, Build, Business, DataUsage, Edit, LayersClear, SignalWifi2Bar, Star, StarBorder } from 'variables/icons'
 import Toolbar from 'components/Toolbar/Toolbar'
@@ -20,6 +19,7 @@ import { Info, AssignDC, AssignOrg, ItemG } from 'components';
 import TableToolbar from 'components/Table/TableToolbar';
 import { connect } from 'react-redux'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
+import OpenStreetMap from 'components/Map/OpenStreetMap';
 
 class Devices extends Component {
 	constructor(props) {
@@ -527,7 +527,10 @@ class Devices extends Component {
 		const { classes } = this.props
 		return loading ? <CircularLoader /> : <GridContainer container justify={'center'} >
 			<Paper className={classes.paper}>
-				<Maps t={this.props.t} isMarkerShown centerDenmark markers={this.filterItems(devices)} /* zoom={10} */ />
+				<OpenStreetMap
+					t={this.props.t}
+					mapTheme={this.props.mapTheme}
+					markers={this.filterItems(devices)} /* zoom={10} */ />
 			</Paper>
 		</GridContainer>
 	}
@@ -559,7 +562,8 @@ class Devices extends Component {
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	favorites: state.favorites.favorites,
-	saved: state.favorites.saved
+	saved: state.favorites.saved,
+	mapTheme: state.settings.mapTheme
 })
 
 const mapDispatchToProps = (dispatch) => ({

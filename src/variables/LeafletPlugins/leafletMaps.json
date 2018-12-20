@@ -1,0 +1,44 @@
+[
+	{
+			"id": 0,
+			"url": "https://tile-b.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+			"attribution": "&copy; <a target='_blank' href='http://osm.org/copyright'>OpenStreetMap</a> contributors",
+			"maxZoom": 20
+	},
+	{
+			"id": 1,
+			"url": "https://gc2.io/mapcache/baselayers/tms/1.0.0/luftfotoserier.geodanmark_2017_12_5cm/{z}/{x}/{-y}.png",
+			"attribution": "Map Tiles by <a target='_blank' href='http://www.mapcentia.com/'>MapCentia</a>",
+			"maxZoom": 18
+	},
+	{
+			"id": 2,
+			"url": "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
+			"attribution": "Map Tiles by <a target='_blank' href='https://carto.com/attribution/'>CARTO</a>",
+			"maxZoom": 18
+	},
+	{
+			"id": 3,
+			"url": "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+			"attribution": "Map Tiles by <a target='_blank' href='https://carto.com/attribution/'>CARTO</a>",
+			"maxZoom": 18
+	},
+	{
+			"id": 4,
+			"url": "https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg",
+			"attribution": "Map tiles by <a target='_blank' href='http://stamen.com'>Stamen Design</a>, under <a target='_blank' href='http://creativecommons.org/licenses/by/3.0'>CC BY 3.0</a>. Data by <a target='_blank' href='http://openstreetmap.org'>OpenStreetMap</a>, under <a target='_blank' href='http://creativecommons.org/licenses/by-sa/3.0'>CC BY SA</a>.",
+			"maxZoom": 16
+	},
+	{
+			"id": 5,
+			"url": "https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png",
+			"attribution": "Map tiles by <a target='_blank' href='http://stamen.com'>Stamen Design</a>, under <a target='_blank' href='http://creativecommons.org/licenses/by/3.0'>CC BY 3.0</a>. Data by <a target='_blank' href='http://openstreetmap.org'>OpenStreetMap</a>, under <a target='_blank' href='http://www.openstreetmap.org/copyright'>ODbL</a>.",
+			"maxZoom": 18
+	},
+	{
+			"id": 6,
+			"url": "https://{s}.tile.osm.org/{z}/{x}/{y}.png",
+			"attribution": "&copy; <a target='_blank' href='http://osm.org/copyright'>OpenStreetMap</a> contributors",
+			"maxZoom": 18
+	}
+]

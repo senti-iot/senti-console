@@ -1,4 +1,5 @@
 import ZoomOut from '@material-ui/icons/ZoomOut'
+import LocationOn from '@material-ui/icons/LocationOn'
 //#region weather Icons
 import ClearDay from 'assets/weather/clear_day.svg'
 import ClearNight from 'assets/weather/clear_night.svg'
@@ -33,6 +34,7 @@ import SignalWifi2BarLock from '@material-ui/icons/SignalWifi2BarLock'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import Add from '@material-ui/icons/Add'
+import Remove from '@material-ui/icons/Remove'
 import FilterList from '@material-ui/icons/FilterList'
 import Save from '@material-ui/icons/Save'
 import Menu from '@material-ui/icons/Menu'
@@ -61,6 +63,7 @@ import PieChartRounded from '@material-ui/icons/PieChartRounded'
 import BarChart from '@material-ui/icons/BarChart'
 import Visibility from '@material-ui/icons/Visibility'
 import Build from '@material-ui/icons/Build'
+import Layers from '@material-ui/icons/Layers'
 import LayersClear from '@material-ui/icons/LayersClear'
 import DeveloperBoard from '@material-ui/icons/DeveloperBoard'
 import CloudUpload from '@material-ui/icons/CloudUpload'
@@ -79,6 +82,7 @@ import Dashboard from '@material-ui/icons/Dashboard'
 import History from '@material-ui/icons/History'
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
 export {
+	LocationOn,
 	ArrowUpward,
 	ZoomOut,
 	Cake,
@@ -119,6 +123,7 @@ export {
 	KeyboardArrowLeft,
 	KeyboardArrowRight,
 	Add,
+	Remove,
 	FilterList,
 	Save,
 	Menu,
@@ -147,6 +152,7 @@ export {
 	BarChart,
 	Visibility,
 	Build,
+	Layers,
 	LayersClear,
 	DeveloperBoard,
 	CloudUpload,

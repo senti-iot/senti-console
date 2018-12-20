@@ -25,9 +25,16 @@ class TimeCounterModal extends React.Component {
 		if (!canPlayMP3 || canPlayMP3 === 'no') {
 			let msg = props.t('no.audioSupported')
 			alert(msg);
+			this.noSound = true
 		}
-		this.mp3File = new Audio('/assets/sound/pop.mp3').load()
+		this.mp3File = new Audio('/assets/sound/pop.mp3')
 		this.timeCounter = null
+	}
+	componentDidUpdate = (prevProps, prevState) => {
+		if (prevProps.tcount !== this.props.tcount)
+			this.setState({
+				timer: this.props.tcount
+			})
 	}
 	timer = () => {
 		this.setState({ timer: this.state.timer - 1 }, () => {
@@ -60,17 +67,15 @@ class TimeCounterModal extends React.Component {
 		})
 	}
 	handleCount = async () => {
-		let playSound = new Audio('/assets/sound/pop.mp3');
-		await playSound.play().then(
-			() => {
-				// if (this.state.count === 1)
-				this.setState({ count: this.state.count + 1 })
-				// else
-				// this.setState({ count: this.state.count - 1 })
-			}
-
-		)
-		playSound = null
+		if (this.noSound)
+		{	this.setState({ count: this.state.count + 1 })}
+		else {
+			await this.mp3File.play().then(
+				() => {
+					this.setState({ count: this.state.count + 1 })
+				}
+			)
+		}
 	}
 	handleClose = () => {
 		this.setState({ open: false });
@@ -115,7 +120,7 @@ class TimeCounterModal extends React.Component {
 		const { started, finished } = this.state
 		return (
 			<Fragment>
-				<Button variant='contained' color={'primary'} onClick={this.handleOpen}>
+				<Button variant='contained' color={'primary'} onClick={this.handleOpen} styles={{ marginTop: 16 }}>
 					<OpenInBrowser className={classes.iconButton} /> {t('actions.openCounter')}
 				</Button>
 				<Modal

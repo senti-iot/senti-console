@@ -6,6 +6,8 @@ import { store } from './redux/store'
 import indexRoutes from 'routes/index.js'
 // import { MuiThemeProvider } from '@material-ui/core/styles'
 import 'assets/css/material-dashboard-react.css?v=1.2.0'
+import 'assets/css/leaflet.css'
+
 import TProvider from 'components/Localization/TProvider'
 
 import 'core-js/fn/set'; 
