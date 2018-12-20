@@ -8,6 +8,14 @@ import teal from '@material-ui/core/colors/teal'
 // import LocationMarker from './LocationMarker';
 
 const styles = theme => ({
+	locationMarker: {
+		animation: `leaflet-control-locate-throb 4s ease infinite`
+	},
+	"@keyframes leaflet-control-locate-throb": {
+		"0%": { r: 9, strokeWidth: 1 },
+		"50%": { r: 7, strokeWidth: 3 },
+		"100%": { r: 9, strokeWidth: 1 },
+	},
 	locRequesting: {
 		animation: `loc-request 1000ms ${theme.transitions.easing.easeInOut} infinite`
 	},
@@ -114,14 +122,15 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 				circleStyle: {
 					className: 'leaflet-control-locate-circle',
 					color: '#136AEC',
-					fillColor: '#136AEC',
+					// fillColor: '#136AEC',
+					fillColor: teal[500],
 					fillOpacity: 0.15,
 					weight: 0
 				},
 				markerStyle: {
-					className: 'leaflet-control-locate-marker',
 					color: '#fff',
-					fillColor: '#2A93EE',
+					// fillColor: '#2A93EE',
+					fillColor: teal[500],
 					fillOpacity: 1,
 					weight: 3,
 					opacity: 1,
@@ -344,16 +353,19 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 			}
 		}
 	}
+	_this = this
 	LocationMarker = L.Marker.extend({
 		initialize: function (latlng, options) {
 			L.Util.setOptions(this, options);
 			this._latlng = latlng;
-			this.createIcon();
+			this.createIcon(options.className);
 		},
 
 		createIcon: function () {
+			
 			var opt = this.options;
-
+			console.log(opt.className)
+			
 			var style = '';
 
 			if (opt.color !== undefined) {
@@ -372,10 +384,10 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 				style += 'opacity:' + opt.opacity + ';';
 			}
 
-			var icon = this._getIconSVG(opt, style);
+			var icon = this._getIconSVG(opt, style, opt.className);
 
 			this._locationIcon = L.divIcon({
-				className: icon.className,
+				className: opt.className,
 				html: icon.svg,
 				iconSize: [icon.w, icon.h],
 			});
@@ -383,16 +395,16 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 			this.setIcon(this._locationIcon);
 		},
 
-		_getIconSVG: function (options, style) {
+		_getIconSVG: function (options, style, className) {
 			var r = options.radius;
 			var w = options.weight;
 			var s = r + w;
 			var s2 = s * 2;
 			var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + s2 + '" height="' + s2 + '" version="1.1" viewBox="-' + s + ' -' + s + ' ' + s2 + ' ' + s2 + '">' +
-				'<circle r="' + r + '" style="' + style + '" />' +
+				'<circle r="' + r + '" style="' + style + '" class="' + className + '" />' +
 				'</svg>';
 			return {
-				className: 'leafet-control-locate-location',
+				className: className,
 				svg: svg,
 				w: s2,
 				h: s2
@@ -429,7 +441,7 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 		if (options.drawMarker) {
 			var mStyle = options.markerStyle
 			if (!le._marker) {
-				this.leafletElement._marker = new this.LocationMarker(latlng, mStyle).addTo(this.map)
+				this.leafletElement._marker = new this.LocationMarker(latlng, { ...mStyle, className: this.props.classes.locationMarker }).addTo(this.map)
 			}
 			else {
 				this.leafletElement._marker.setLatLng(latlng)
