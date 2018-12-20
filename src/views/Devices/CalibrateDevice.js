@@ -84,7 +84,6 @@ class CalibrateDevice extends Component {
 							prevURL: window.location.pathname
 						})
 					else {
-						console.log(rs.address)
 						this.setState({
 							device: {
 								...rs,
