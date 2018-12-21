@@ -19,6 +19,7 @@
 	"": "",
 	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
+		"goToDevice": "Går til enhed(er)",
 		"apply": "Anvend",
 		"back": "Forrige",
 		"cancel": "Anuller",

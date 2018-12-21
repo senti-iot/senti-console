@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { InfoCard, Caption, Dropdown, ItemG } from 'components';
-import { Map, Layers } from 'variables/icons'
+import { Map, Layers, DeviceHub } from 'variables/icons'
 import { Grid, Checkbox, MenuItem, Menu, IconButton } from '@material-ui/core';
 import OpenStreetMap from 'components/Map/OpenStreetMap';
 
@@ -61,9 +61,19 @@ export default class ProjectMap extends Component {
 					{/* </List> */}
 				</Menu>
 			</ItemG><Dropdown menuItems={
-				[{ label: t('actions.heatMap'), icon: <Checkbox checked={this.state.heatMap} />, func: () => this.setState({ heatMap: !this.state.heatMap }) }, ]
+				[{ label: t('actions.heatMap'), icon: <Checkbox checked={this.state.heatMap} />, func: () => this.setState({ heatMap: !this.state.heatMap }) },
+					{ label: t('actions.goToDevice'), icon: <DeviceHub style={{ padding: "0px 12px" }} />, func: () => this.flyToMarkers() } ]
 			} />
 		</Fragment>
+	}
+	getRef = (ref) => {
+		this.map = ref
+	}
+	flyToMarkers = () => {
+		const { devices } = this.props
+		if (this.map) {
+			this.map.leafletElement.flyToBounds(devices.map(d => d.lat && d.long ? [d.lat, d.long] : null))
+		}
 	}
 	render() {
 		const { devices, t } = this.props
@@ -78,7 +88,13 @@ export default class ProjectMap extends Component {
 				topAction={this.renderMenu()}
 				hiddenContent={
 					<Grid container justify={'center'}>
-						{devices.length > 0 ? <OpenStreetMap t={t} mapTheme={mapTheme} heatMap={this.state.heatMap} heatData={this.props.heatData} markers={devices} /> : <Caption>{t('projects.noAvailableDevices')}</Caption>}
+						{devices.length > 0 ? <OpenStreetMap
+							iRef={this.getRef}
+							t={t}
+							mapTheme={mapTheme}
+							heatMap={this.state.heatMap}
+							heatData={this.props.heatData}
+							markers={devices} /> : <Caption>{t('projects.noAvailableDevices')}</Caption>}
 					</Grid>
 				} />
 

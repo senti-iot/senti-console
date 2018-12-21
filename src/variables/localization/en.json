@@ -19,6 +19,7 @@
 	"": "",
 	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
+		"goToDevice": "Go to device(s)",
 		"apply": "Apply",
 		"back": "Previous",
 		"cancel": "Cancel",

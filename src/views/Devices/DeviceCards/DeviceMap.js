@@ -1,6 +1,6 @@
 import React, { PureComponent, Fragment } from 'react'
 import { InfoCard, Caption, Dropdown, CircularLoader, ItemG } from 'components';
-import { Map, Layers } from 'variables/icons'
+import { Map, Layers, Smartphone } from 'variables/icons'
 import { Grid, Checkbox, IconButton, Menu, MenuItem } from '@material-ui/core';
 import OpenStreetMap from 'components/Map/OpenStreetMap';
 
@@ -64,9 +64,19 @@ export default class DeviceMap extends PureComponent {
 				</Menu>
 			</ItemG>
 			<Dropdown menuItems={
-				[{ label: t('actions.heatMap'), icon: <Checkbox checked={this.state.heatMap} />, func: () => this.setState({ heatMap: !this.state.heatMap }) }]
+				[{ label: t('actions.heatMap'), icon: <Checkbox checked={this.state.heatMap} />, func: () => this.setState({ heatMap: !this.state.heatMap }) },
+					{ label: t('actions.goToDevice'), icon: <Smartphone style={{ padding: "0px 12px" }} />, func: () => this.flyToMarkers() }]
 			} />
 		</Fragment>
+	}
+	getRef = (r) => { 
+		this.map = r
+	}
+	flyToMarkers = () => { 
+		const { device } = this.props
+		if (this.map) { 
+			this.map.leafletElement.flyToBounds([[device.lat, device.long]])
+		}
 	}
 	render() {
 		const { device, weather, t, loading } = this.props
@@ -82,6 +92,7 @@ export default class DeviceMap extends PureComponent {
 						<Grid container justify={'center'}>
 							{/* {device.lat && device.long ? <Maps heatMap={this.state.heatMap} t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t('devices.notCalibrated')}</Caption>} */}
 							{device.lat && device.long ? <OpenStreetMap
+								iRef={this.getRef}
 								mapTheme={mapTheme}
 								heatMap={this.state.heatMap}
 								heatData={[{ ...device, weather: weather }]}

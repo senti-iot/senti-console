@@ -18,7 +18,7 @@ import ZoomControl from 'variables/LeafletPlugins/ZoomControl';
 import HeatLayer from 'variables/LeafletPlugins/HeatLayer';
 import HeatMapLegend from 'variables/LeafletPlugins/HeatMapLegend';
 import MyLocationControl from 'variables/LeafletPlugins/MyLocationControl';
-import PZtoMarkers from 'variables/LeafletPlugins/PZtoMarkers';
+// import PZtoMarkers from 'variables/LeafletPlugins/PZtoMarkers';
 
 
 class OpenStreetMap extends React.Component {
@@ -63,6 +63,10 @@ class OpenStreetMap extends React.Component {
 	componentDidMount = () => {
 		if (this.props.markers.length > 1)
 			this.centerOnAllMarkers()
+		if (this.props.iRef) {
+			this.props.iRef(this.map)
+			// console.log('called iRef')
+		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
 		if (prevProps.mapTheme !== this.props.mapTheme)
@@ -95,7 +99,7 @@ class OpenStreetMap extends React.Component {
 				{heatMap ? <HeatMapLegend /> : null}
 				<FullScreen />
 				<ZoomControl />
-				<PZtoMarkers markers={markers}/>
+				{/* <PZtoMarkers markers={markers}/> */}
 				<MyLocationControl mapLayer={this.layer}/>
 				<TileLayer ref={r => this.layer = r} url={layers[mapTheme].url} attribution={heatMap ? false : layers[mapTheme].attribution} />
 				{layers[mapTheme].extraLayers ? layers[mapTheme].extraLayers.map(l => (
