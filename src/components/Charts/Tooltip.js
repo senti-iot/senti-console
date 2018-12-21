@@ -58,8 +58,8 @@ class Tooltip extends Component {
 		let dateStr = tooltip.title[0] ? tooltip.title[0] : ''
 		let date = moment(dateStr, 'lll').isValid() ? moment(dateStr, 'lll') : null
 		if (date) {
-			let plusOne = moment(date).add(1, unit.chart)
-			let finalStr = `${moment(date).format(unit.tooltipFormat)} - ${moment(plusOne).format(unit.tooltipFormat)}` 
+			let plusOne = moment(date).subtract(1, unit.chart)
+			let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment(date).format(unit.tooltipFormat)} ` 
 			return finalStr
 		}
 		return moment(dateStr, 'lll').isValid() ? moment(dateStr, 'lll').format('ll') : dateStr

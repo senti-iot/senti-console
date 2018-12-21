@@ -45,6 +45,14 @@ const linecolors = (data, defaultColor, id) => {
 	})
 	return colors
 }
+const endDate = (d) => { 
+	// console.log(d, moment(d).diff(moment(), 'day'))
+	if (moment(d).diff(moment(), 'day') >= 0) { 
+		console.log(moment(d).diff(moment(), 'day'))
+		return moment()
+	}
+	return moment(d).add(1, 'day')
+}
 export const setDailyData = (dataArr, from, to, hoverID) => {
 	let labels = datesToArr(from, to)
 	let state = {
@@ -54,6 +62,7 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 		roundDataSets: null,
 		barDataSets: null
 	}
+
 	if (dataArr.length > 0) {
 		 state = {
 			loading: false,
@@ -70,7 +79,7 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 					borderWidth: hoverID === d.id ? 8 : 3,
 					fill: false,
 					label: [d.name],
-					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
+					data: Object.entries(d.data).map(d => ({ x: endDate(d[0]), y: d[1] }))
 				}))
 			},
 			barDataSets: {

@@ -182,6 +182,7 @@ class Project extends Component {
 		await Promise.all(project.dataCollections.map(async d => {
 			let dataSet = null
 			let data = await getDataDaily(d.id, startDate, endDate, raw)
+			console.log(data)
 			dataSet = {
 				name: d.name,
 				id: d.id,
