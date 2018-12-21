@@ -98,6 +98,9 @@ class OpenStreetMap extends React.Component {
 				<PZtoMarkers markers={markers}/>
 				<MyLocationControl mapLayer={this.layer}/>
 				<TileLayer ref={r => this.layer = r} url={layers[mapTheme].url} attribution={heatMap ? false : layers[mapTheme].attribution} />
+				{layers[mapTheme].extraLayers ? layers[mapTheme].extraLayers.map(l => (
+					<TileLayer url={l} />
+				)) : null}
 				{markers.map((m, i) => {
 					if (m.lat && m.long)
 						return <Marker

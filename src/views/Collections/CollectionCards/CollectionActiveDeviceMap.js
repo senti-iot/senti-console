@@ -22,7 +22,8 @@ export default class ActiveDeviceMap extends PureComponent {
 		{ id: 3, label: this.props.t("map.themes.3") },
 		{ id: 4, label: this.props.t("map.themes.4") },
 		{ id: 5, label: this.props.t("map.themes.5") },
-		{ id: 6, label: this.props.t("map.themes.6") }
+		{ id: 6, label: this.props.t("map.themes.6") },
+		{ id: 7, label: this.props.t('map.themes.7') }
 	]
 	handleVisibility = e => (event) => {
 		if (event)
