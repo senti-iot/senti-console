@@ -103,10 +103,10 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 				drawCircle: true,
 				position: this.props.position || 'topleft',
 				layer: undefined,
-				setView: 'untilPanOrZoom',
+				setView: 'untilPan',
 				keepCurrentZoomLevel: false,
 				flyTo: true,
-				cacheLocation: true,
+				cacheLocation: false,
 				clickBehaviour: {
 					inView: 'stop',
 					outOfView: 'setView',
@@ -364,7 +364,6 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 		createIcon: function () {
 			
 			var opt = this.options;
-			console.log(opt.className)
 			
 			var style = '';
 

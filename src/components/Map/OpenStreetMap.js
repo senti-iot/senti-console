@@ -18,6 +18,7 @@ import ZoomControl from 'variables/LeafletPlugins/ZoomControl';
 import HeatLayer from 'variables/LeafletPlugins/HeatLayer';
 import HeatMapLegend from 'variables/LeafletPlugins/HeatMapLegend';
 import MyLocationControl from 'variables/LeafletPlugins/MyLocationControl';
+// import PZtoMarkers from 'variables/LeafletPlugins/PZtoMarkers';
 
 
 class OpenStreetMap extends React.Component {
@@ -62,6 +63,10 @@ class OpenStreetMap extends React.Component {
 	componentDidMount = () => {
 		if (this.props.markers.length > 1)
 			this.centerOnAllMarkers()
+		if (this.props.iRef) {
+			this.props.iRef(this.map)
+			// console.log('called iRef')
+		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
 		if (prevProps.mapTheme !== this.props.mapTheme)
@@ -89,13 +94,17 @@ class OpenStreetMap extends React.Component {
 		const { markers, classes, theme, calibrate, mapTheme, heatData, heatMap } = this.props
 		const { zoom } = this.state
 		return <Fragment>
-			<Map zoomControl={false} attribution={layers[mapTheme].attribution} ref={r => this.map = r} center={this.getCenter()} zoom={zoom} onzoomend={this.setZoom} maxZoom={layers[mapTheme].maxZoom} className={classes.map} >
+			<Map attributionControl={heatMap ? false : true} zoomControl={false} ref={r => this.map = r} center={this.getCenter()} zoom={zoom} onzoomend={this.setZoom} maxZoom={layers[mapTheme].maxZoom} className={classes.map} >
 				{heatMap ? <HeatLayer data={heatData ? heatData.map(m => ({ lat: m.lat, lng: m.long, count: m.data })) : null} /> : null}
 				{heatMap ? <HeatMapLegend /> : null}
 				<FullScreen />
 				<ZoomControl />
+				{/* <PZtoMarkers markers={markers}/> */}
 				<MyLocationControl mapLayer={this.layer}/>
-				<TileLayer ref={r => this.layer = r} url={layers[mapTheme].url} attribution={layers[mapTheme].attribution} />
+				<TileLayer ref={r => this.layer = r} url={layers[mapTheme].url} attribution={heatMap ? false : layers[mapTheme].attribution} />
+				{layers[mapTheme].extraLayers ? layers[mapTheme].extraLayers.map(l => (
+					<TileLayer url={l} />
+				)) : null}
 				{markers.map((m, i) => {
 					if (m.lat && m.long)
 						return <Marker

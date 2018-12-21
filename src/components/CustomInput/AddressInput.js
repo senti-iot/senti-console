@@ -161,7 +161,6 @@ class AddressInput extends React.Component {
 			onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
 			getSuggestionValue: this.getSuggestionValue,
 			renderSuggestion: this.renderSuggestion,
-			// onSuggestionHighlighted: ({ s }) => { console.log(s) }
 		};
 		return (
 			<div className={classes.root}>
