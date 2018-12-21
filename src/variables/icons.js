@@ -81,7 +81,9 @@ import DeviceHub from '@material-ui/icons/DeviceHub'
 import Dashboard from '@material-ui/icons/Dashboard'
 import History from '@material-ui/icons/History'
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
+import Smartphone from '@material-ui/icons/Smartphone'
 export {
+	Smartphone,
 	LocationOn,
 	ArrowUpward,
 	ZoomOut,
