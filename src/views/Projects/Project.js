@@ -183,6 +183,9 @@ class Project extends Component {
 					if (unit === 'day' && moment(dt).diff(moment(), 'days') === 0) {
 						data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
 					}
+					if (unit === 'minute' && moment(dt).diff(moment(), 'minute') === 0) { 
+						data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
+					}
 					else { 
 						data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
 					}
@@ -206,7 +209,6 @@ class Project extends Component {
 		await Promise.all(project.dataCollections.map(async d => {
 			let dataSet = null
 			let data = await getDataDaily(d.id, startDate, endDate, raw)
-			console.log(data)
 			dataSet = {
 				name: d.name,
 				id: d.id,
