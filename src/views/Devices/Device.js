@@ -72,7 +72,7 @@ class Device extends Component {
 				if (rs.dataCollection) {
 					await this.getDataCollection(rs.dataCollection)
 				}
-				if (rs.lat && rs.long) { 
+				if (rs.lat && rs.long) {
 					let data = await getWeather(rs, moment(), this.props.language)
 					this.setState({ weather: data })
 				}
@@ -90,7 +90,9 @@ class Device extends Component {
 						project: { id: 0 },
 						dataCollection: rs
 					},
-					loading: false })}
+					loading: false
+				})
+			}
 			else {
 				this.setState({
 					loading: false,
@@ -98,7 +100,9 @@ class Device extends Component {
 						...this.state.device,
 						dataCollection: { id: 0 },
 						project: { id: 0 },
-					} })}
+					}
+				})
+			}
 		})
 	}
 	componentDidMount = async () => {
@@ -109,7 +113,7 @@ class Device extends Component {
 			if (id) {
 				// this.getAllPics(id)
 				await this.getDevice(id)
-			
+
 			}
 		}
 		else {
@@ -121,8 +125,8 @@ class Device extends Component {
 	}
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.saved === true) {
-			if (this.props.isFav({ id: this.state.device.id, type: 'device' }))
-			{	this.props.s('snackbars.favorite.saved', { name: this.state.device.name, type: this.props.t('favorites.types.device') })
+			if (this.props.isFav({ id: this.state.device.id, type: 'device' })) {
+				this.props.s('snackbars.favorite.saved', { name: this.state.device.name, type: this.props.t('favorites.types.device') })
 				this.props.finishedSaving()
 			}
 			if (!this.props.isFav({ id: this.state.device.id, type: 'device' })) {
@@ -137,7 +141,8 @@ class Device extends Component {
 			id: device.id,
 			name: device.name,
 			type: 'device',
-			path: this.props.match.url }
+			path: this.props.match.url
+		}
 		this.props.addToFav(favObj)
 	}
 	removeFromFav = () => {
@@ -146,7 +151,8 @@ class Device extends Component {
 			id: device.id,
 			name: device.name,
 			type: 'device',
-			path: this.props.match.url }
+			path: this.props.match.url
+		}
 		this.props.removeFromFav(favObj)
 	}
 	getHeatMapData = async () => {
@@ -185,7 +191,7 @@ class Device extends Component {
 			loadingData: loading !== undefined ? loading : true,
 		}, this.handleSwitchDayHourSummary)
 	}
-	
+
 	handleSwitchDayHourSummary = () => {
 		let id = this.state.dateOption
 		const { to, from } = this.state
@@ -253,7 +259,12 @@ class Device extends Component {
 						data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
 					}
 					else {
-						data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
+						if (unit === 'minute' && moment(dt).diff(moment(), 'minute') === 0) {
+							data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
+						}
+						else {
+							data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
+						}
 					}
 					return true
 				}
@@ -552,7 +563,7 @@ class Device extends Component {
 	renderMenu = () => {
 		const { t } = this.props
 		const { dateOption, to, from, timeType } = this.state
-	
+
 		return <DateFilterMenu
 			timeType={timeType}
 			dateOption={dateOption}
@@ -567,7 +578,7 @@ class Device extends Component {
 
 	render() {
 		const { device, loading, loadingData } = this.state
-		
+
 		return (
 			!loading ? <Fragment>
 				<Toolbar
@@ -577,7 +588,7 @@ class Device extends Component {
 					tabs={this.tabs}
 					content={this.renderMenu()}
 				/>
-			
+
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<AssignDC
 						deviceId={device.id}
@@ -655,7 +666,7 @@ class Device extends Component {
 						/>
 					</ItemGrid>
 				</GridContainer>
-					
+
 			</Fragment> : this.renderLoader()
 		)
 	}

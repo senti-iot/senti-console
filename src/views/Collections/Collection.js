@@ -160,6 +160,7 @@ class Collection extends Component {
 			name: activeDevice.name,
 			id: activeDevice.id,
 			data: data,
+			// data: this.regenerateData(data, 'hour'),
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500],
@@ -247,6 +248,35 @@ class Collection extends Component {
 				break;
 		}
 	}
+	regenerateData = (d, unit) => {
+		if (d) {
+			let data = {}
+			Object.keys(d).map((dt, i) => {
+				if (i === Object.keys(d).length - 1) {
+					//Today Handling
+					if (unit === 'day' && moment(dt).diff(moment(), 'days') === 0) {
+						data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
+					}
+					else {
+						if (unit === 'minute' && moment(dt).diff(moment(), 'minute') === 0) {
+							data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
+						}
+						else {
+							data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
+						}
+					}
+					return true
+				}
+				else {
+					//Normal ones
+					data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
+					return true
+				}
+			})
+			return data
+		}
+		else return null
+	}
 	getWifiHourly = async () => {
 		// const { device } = this.props
 		const { from, to, raw, collection, hoverID } = this.state
@@ -258,7 +288,7 @@ class Collection extends Component {
 		dataSet = {
 			name: collection.name,
 			id: collection.id,
-			data: data,
+			data: this.regenerateData(data, 'hour'),
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500]
@@ -289,7 +319,7 @@ class Collection extends Component {
 		dataSet = {
 			name: collection.name,
 			id: collection.id,
-			data: data,
+			data: this.regenerateData(data, 'minute'),
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500]
@@ -319,7 +349,7 @@ class Collection extends Component {
 		dataSet = {
 			name: collection.name,
 			id: collection.id,
-			data: data,
+			data: this.regenerateData(data, 'day'),
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500]
@@ -350,7 +380,7 @@ class Collection extends Component {
 		dataSet = {
 			name: collection.name,
 			id: collection.id,
-			data: data,
+			data: this.regenerateData(data, 'day'),
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500]

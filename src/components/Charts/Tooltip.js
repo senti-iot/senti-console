@@ -51,15 +51,42 @@ class Tooltip extends Component {
 		const { tooltip, unit } = this.props
 		let dateStr = tooltip.title[0] ? tooltip.title[0] : ''
 		let date = moment(dateStr, 'lll').isValid() ? moment(dateStr, 'lll') : null
+		console.log(unit.chart)
 		if (date) {
-			//If Today && last hour of today
-			if (moment(date).diff(moment(), 'days') === 0 && moment(date).diff(moment(), 'hours') === 0) {
-				//If last hour/minutes for today
-				// if (moment(date).diff(moment(), unit.chart) >= 0) {
-				let plusOne = moment(date).startOf(unit.chart)
-				let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment().format(unit.tooltipFormat)} `
-				return finalStr
-				// }
+			//If Today
+			if (moment(date).diff(moment(), 'days') === 0) {
+				console.log('it is today')
+				if (unit.chart === 'day') {
+					//Handle Days and Hours
+					console.log('it is days', unit.chart)
+					if (moment(date).diff(moment(), 'hours') === 0) {	
+						//If last hour
+						// if (moment(date).diff(moment(), unit.chart) >= 0) {
+						let plusOne = moment(date).startOf(unit.chart)
+						let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment().format(unit.tooltipFormat)} `
+						return finalStr
+					}
+					// }
+				}
+				if (unit.chart === 'hour') { 
+					console.log(date)
+					if (moment().diff(moment(date), 'minutes') <= 60) {
+						//If last hour
+						// if (moment(date).diff(moment(), unit.chart) >= 0) {
+						let plusOne = moment(date).startOf(unit.chart)
+						let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment().format(unit.tooltipFormat)} `
+						return finalStr
+					}
+				}
+				if (unit.chart === 'minute') { 
+					console.log('it is minutes', unit.chart)
+					//Handle Minutes
+					if (moment().diff(moment(date), 'minutes') <= 60) {
+						let plusOne = moment(date).startOf('hour')
+						let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment().format(unit.tooltipFormat)} `
+						return finalStr
+					}
+				}
 			}
 			// console.log(2, date)
 			//Normal Date

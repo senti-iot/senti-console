@@ -176,6 +176,7 @@ class Project extends Component {
 	}
 	regenerateData = (d, unit) => {
 		if (d) { 
+			console.log(d)
 			let data = {}
 			Object.keys(d).map((dt, i) => {
 				if (i === Object.keys(d).length - 1) {
@@ -183,11 +184,14 @@ class Project extends Component {
 					if (unit === 'day' && moment(dt).diff(moment(), 'days') === 0) {
 						data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
 					}
-					if (unit === 'minute' && moment(dt).diff(moment(), 'minute') === 0) { 
-						data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
-					}
 					else { 
-						data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
+						console.log(unit, moment().diff(moment(dt), 'minute'), (unit === 'minute' || unit === 'hour') && moment().diff(moment(dt), 'minute') <= 60)
+						if ((unit === 'minute' || unit === 'hour') && moment().diff(moment(dt), 'minute') <= 60) { 
+							data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
+						}
+						else { 
+							data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
+						}
 					}
 					return true
 				}
@@ -197,6 +201,7 @@ class Project extends Component {
 					return true
 				}
 			})
+			console.log(data)
 			return data
 		}
 		else return null
