@@ -177,30 +177,23 @@ class Project extends Component {
 	regenerateData = (d, unit) => {
 		if (d) { 
 			let data = {}
-			console.group('regenData')
 			Object.keys(d).map((dt, i) => {
 				if (i === Object.keys(d).length - 1) {
-					//Last one
+					//Today Handling
 					if (unit === 'day' && moment(dt).diff(moment(), 'days') === 0) {
-						console.log(dt)
-						console.log(moment().format('YYYY-MM-DD HH:mm'), d[dt])
 						data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
 					}
 					else { 
-						console.log(moment(dt).format('YYYY-MM-DD HH:mm'), d[dt])
 						data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
 					}
 					return true
 				}
 				else {
 					//Normal ones
-					console.log(unit)
 					data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt] 
-					console.log(moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm'), d[dt])
 					return true
 				}
 			})
-			console.groupEnd()
 			return data
 		}
 		else return null

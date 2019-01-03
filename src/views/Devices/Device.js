@@ -243,6 +243,30 @@ class Device extends Component {
 				break;
 		}
 	}
+	regenerateData = (d, unit) => {
+		if (d) {
+			let data = {}
+			Object.keys(d).map((dt, i) => {
+				if (i === Object.keys(d).length - 1) {
+					//Today Handling
+					if (unit === 'day' && moment(dt).diff(moment(), 'days') === 0) {
+						data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
+					}
+					else {
+						data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
+					}
+					return true
+				}
+				else {
+					//Normal ones
+					data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
+					return true
+				}
+			})
+			return data
+		}
+		else return null
+	}
 	getWifiHourly = async () => {
 		// const { device } = this.props
 		const { from, to, raw, device, hoverID } = this.state
@@ -256,7 +280,7 @@ class Device extends Component {
 			id: device.id,
 			lat: device.lat,
 			long: device.long,
-			data: data,
+			data: this.regenerateData(data, 'hour'),
 			color: teal[500]
 		}
 		dataArr.push(dataSet)
@@ -285,7 +309,7 @@ class Device extends Component {
 		dataSet = {
 			name: device.name,
 			id: device.id,
-			data: data,
+			data: this.regenerateData(data, 'minute'),
 			lat: device.lat,
 			long: device.long,
 			color: teal[500]
@@ -318,7 +342,7 @@ class Device extends Component {
 			id: device.id,
 			lat: device.lat,
 			long: device.long,
-			data: data,
+			data: this.regenerateData(data, 'day'),
 			color: teal[500]
 		}
 		dataArr.push(dataSet)
