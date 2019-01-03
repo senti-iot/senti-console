@@ -42,7 +42,7 @@ class Tooltip extends Component {
 		if (tooltip.left > chartWidth / 2) {
 			x = '-100%'
 		}
-		else { 
+		else {
 			x = '5%'
 		}
 		return `translate(${x}, ${y})`
@@ -50,52 +50,59 @@ class Tooltip extends Component {
 	handleRange = () => {
 		const { tooltip, unit } = this.props
 		let dateStr = tooltip.title[0] ? tooltip.title[0] : ''
+		console.log(dateStr)
 		let date = moment(dateStr, 'lll').isValid() ? moment(dateStr, 'lll') : null
-		console.log(unit.chart)
+		// console.log(unit.chart)
 		if (date) {
-			//If Today
-			if (moment(date).diff(moment(), 'days') === 0) {
-				console.log('it is today')
-				if (unit.chart === 'day') {
-					//Handle Days and Hours
-					console.log('it is days', unit.chart)
-					if (moment(date).diff(moment(), 'hours') === 0) {	
-						//If last hour
-						// if (moment(date).diff(moment(), unit.chart) >= 0) {
+			if (tooltip.lastPoint) {
+
+				//If Today
+				if (moment(date).diff(moment(), 'days') === 0) {
+					if (unit.chart === 'day') {
+						//Handle Days
+						// if (moment(date).diff(moment(), 'hours') === 0) {
+						// 	console.log(date.format('DD-MM HH:mm'))
+						// 	//If last hour
 						let plusOne = moment(date).startOf(unit.chart)
 						let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment().format(unit.tooltipFormat)} `
 						return finalStr
 					}
-					// }
+					// else {
+					// 	let plusOne = moment(date).startOf('day')
+					// 	let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment().format(unit.tooltipFormat)} `
+					// 	return finalStr
 				}
-				if (unit.chart === 'hour') { 
-					console.log(date)
-					if (moment().diff(moment(date), 'minutes') <= 60) {
-						//If last hour
-						// if (moment(date).diff(moment(), unit.chart) >= 0) {
-						let plusOne = moment(date).startOf(unit.chart)
-						let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment().format(unit.tooltipFormat)} `
-						return finalStr
-					}
-				}
-				if (unit.chart === 'minute') { 
-					console.log('it is minutes', unit.chart)
-					//Handle Minutes
-					if (moment().diff(moment(date), 'minutes') <= 60) {
-						let plusOne = moment(date).startOf('hour')
-						let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment().format(unit.tooltipFormat)} `
-						return finalStr
-					}
+				// }
+			}
+			if (unit.chart === 'hour') {
+				// console.log(date)
+				if (moment().diff(moment(date), 'minutes') <= 60) {
+					//If last hour
+					// if (moment(date).diff(moment(), unit.chart) >= 0) {
+					let plusOne = moment(date).startOf(unit.chart)
+					let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment().format(unit.tooltipFormat)} `
+					return finalStr
 				}
 			}
-			// console.log(2, date)
-			//Normal Date
-			let plusOne = moment(date).subtract(1, unit.chart)
-			let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment(date).format(unit.tooltipFormat)} `
-			return finalStr
+			if (unit.chart === 'minute') {
+				// console.log('it is minutes', unit.chart)
+				//Handle Minutes
+				if (moment().diff(moment(date), 'minutes') <= 60) {
+					let plusOne = moment(date).startOf('hour')
+					let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment().format(unit.tooltipFormat)} `
+					return finalStr
+				}
+			}
+
 		}
-	
-		return moment(dateStr, 'lll').isValid() ? moment(dateStr, 'lll').format('ll') : dateStr
+
+		// console.log(2, date)
+		//Normal Date
+		let plusOne = moment(date).subtract(1, unit.chart)
+		let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment(date).format(unit.tooltipFormat)} `
+		return finalStr
+
+		// return moment(dateStr, 'lll').isValid() ? moment(dateStr, 'lll').format('ll') : dateStr
 	}
 	handleDate = () => {
 		const { tooltip } = this.props
@@ -159,7 +166,7 @@ class Tooltip extends Component {
 											</ItemG>
 											<ItemG container direction='row' xs={12}>
 												<T>
-													{t("charts.fields.temperature")}: {weather ? `${Math.round(weather.currently.temperature)} \u{2103}` : null} 
+													{t("charts.fields.temperature")}: {weather ? `${Math.round(weather.currently.temperature)} \u{2103}` : null}
 												</T>
 											</ItemG>
 											<ItemG container direction='row' xs={12}>

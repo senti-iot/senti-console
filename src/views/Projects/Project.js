@@ -175,21 +175,23 @@ class Project extends Component {
 		})
 	}
 	regenerateData = (d, unit) => {
-		if (d) { 
-			console.log(d)
+		console.log(d)
+		if (d) {
+			// console.log(d)
 			let data = {}
 			Object.keys(d).map((dt, i) => {
 				if (i === Object.keys(d).length - 1) {
 					//Today Handling
-					if (unit === 'day' && moment(dt).diff(moment(), 'days') === 0) {
+					if (unit === 'day' && moment(dt).diff(moment(), 'days') === 0 && moment(dt).diff(moment(), 'minutes') <= 60) {
 						data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
 					}
-					else { 
-						console.log(unit, moment().diff(moment(dt), 'minute'), (unit === 'minute' || unit === 'hour') && moment().diff(moment(dt), 'minute') <= 60)
-						if ((unit === 'minute' || unit === 'hour') && moment().diff(moment(dt), 'minute') <= 60) { 
+					else {
+						// console.log(unit, moment().diff(moment(dt), 'minute'), (unit === 'minute' || unit === 'hour') && moment().diff(moment(dt), 'minute') <= 60)
+						console.log(moment().diff(moment(dt), 'minute'), dt)
+						if ((unit === 'minute' || unit === 'hour') && moment().diff(moment(dt), 'minute') <= 60) {
 							data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
 						}
-						else { 
+						else {
 							data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
 						}
 					}
@@ -197,7 +199,7 @@ class Project extends Component {
 				}
 				else {
 					//Normal ones
-					data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt] 
+					data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
 					return true
 				}
 			})
@@ -280,7 +282,7 @@ class Project extends Component {
 			let data = await getDataSummary(d.id, startDate, endDate, true)
 			dataSet = {
 				name: d.name,
-				id: d.activeDevice ? d.activeDevice.id : 0, 
+				id: d.activeDevice ? d.activeDevice.id : 0,
 				data: data,
 				color: d.color,
 				liveStatus: d.activeDevice ? d.activeDevice.liveStatus : 0,
@@ -443,11 +445,10 @@ class Project extends Component {
 		this.props.removeFromFav(favObj)
 	}
 	setHoverID = (id) => {
-		if (id !== this.state.hoverID)
-		{
+		if (id !== this.state.hoverID) {
 			this.setState({ hoverID: id }, this.hoverGrow)
 		}
-		
+
 	}
 	hoverGrow = () => {
 		const { timeType, dataArr, to, from, hoverID } = this.state
@@ -475,7 +476,7 @@ class Project extends Component {
 					...newState
 				})
 			}
-		
+
 	}
 	renderDeleteDialog = () => {
 		const { openDelete } = this.state
@@ -552,7 +553,7 @@ class Project extends Component {
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id='data'>
 							<ProjectData
-								setHoverID={this.setHoverID} 
+								setHoverID={this.setHoverID}
 								barDataSets={barDataSets}
 								roundDataSets={roundDataSets}
 								lineDataSets={lineDataSets}
@@ -571,11 +572,11 @@ class Project extends Component {
 							/>
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id='collections'>
-							<ProjectCollections 
-								setHoverID={this.setHoverID} 
+							<ProjectCollections
+								setHoverID={this.setHoverID}
 								t={t}
-							 	project={project}
-							  	{...rp} />
+								project={project}
+								{...rp} />
 						</ItemGrid >
 						{project.devices ? <ItemGrid xs={12} noMargin id='map'>
 							<ProjectMap
@@ -589,8 +590,8 @@ class Project extends Component {
 						<ItemGrid xs={12} noMargin id='contact' >
 							<ProjectContact
 								history={this.props.history}
-							  	t={t} 
-							  	project={project} />
+								t={t}
+								project={project} />
 						</ItemGrid>
 						{this.renderDeleteDialog()}
 						<AssignDCs

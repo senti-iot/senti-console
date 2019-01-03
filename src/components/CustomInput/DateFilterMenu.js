@@ -48,7 +48,7 @@ class DateFilterMenu extends Component {
 		switch (id) {
 			case 0: // Today
 				from = moment().startOf('day')
-				to = moment().endOf('day')
+				to = moment()
 				break;
 			case 1: // Yesterday
 				from = moment().subtract(1, 'd').startOf('day')
@@ -56,19 +56,19 @@ class DateFilterMenu extends Component {
 				break;
 			case 2: // This week
 				from = moment().startOf('week').startOf('day')
-				to = moment().endOf('day')
+				to = moment()
 				break;
 			case 3: // Last 7 days
 				from = moment().subtract(7, 'd').startOf('day')
-				to = moment().endOf('day')
+				to = moment()
 				break;
 			case 4: // last 30 days
 				from = moment().subtract(30, 'd').startOf('day')
-				to = moment().endOf('day')
+				to = moment()
 				break;
 			case 5: // last 90 days
 				from = moment().subtract(90, 'd').startOf('day')
-				to = moment().endOf('day')
+				to = moment()
 				break;
 			case 6:
 				from = this.props.from

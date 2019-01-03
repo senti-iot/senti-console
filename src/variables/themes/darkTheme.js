@@ -9,7 +9,7 @@ const theme = createMuiTheme({
 	},
 	overrides: {
 		MuiMenuItem: {
-			selected: {
+			"&$selected": {
 				backgroundColor: `${teal[500]} !important`,
 				color: "#fff"
 			},
