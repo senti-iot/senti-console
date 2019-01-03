@@ -250,25 +250,20 @@ class Device extends Component {
 		}
 	}
 	regenerateData = (d, unit) => {
-		console.log(d)
 		if (d) {
 			let data = {}
 			Object.keys(d).map((dt, i) => {
 				// console.log(dt, d[dt], Object.keys(d))
 				if (i === Object.keys(d).length - 1) {
 					//Today Handling
-					console.log(dt, d[dt], moment(dt).diff(moment(), 'minutes') <= 60, moment().diff(moment(dt), 'minutes'))
 					if (unit === 'day' && moment(dt).diff(moment(), 'days') === 0) {
 						if (moment().diff(moment(dt), 'minutes') <= 60) { 
-							console.log(dt)
 							data[moment(dt).format('YYYY-MM-DD HH:mm')] = d[dt]
 						}
 						else 
 							data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
 					}
 					else {
-						// console.log(unit, moment().diff(moment(dt), 'minute'), (unit === 'minute' || unit === 'hour') && moment().diff(moment(dt), 'minute') <= 60)
-						console.log(moment().diff(moment(dt), 'minute'), dt)
 						if ((unit === 'minute' || unit === 'hour') && moment().diff(moment(dt), 'minute') <= 60) {
 							data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
 						}
