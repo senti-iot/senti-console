@@ -122,7 +122,7 @@ class Project extends Component {
 			dataSet = {
 				name: d.name,
 				id: d.id,
-				data: data,
+				data: this.regenerateData(data, 'hour'),
 				color: d.color,
 				lat: d.activeDevice ? d.activeDevice.lat : 0,
 				long: d.activeDevice ? d.activeDevice.long : 0
@@ -154,7 +154,7 @@ class Project extends Component {
 			dataSet = {
 				name: d.name,
 				id: d.id,
-				data: data,
+				data: this.regenerateData(data, 'minute'),
 				color: d.color,
 				lat: d.activeDevice ? d.activeDevice.lat : 0,
 				long: d.activeDevice ? d.activeDevice.long : 0
@@ -174,6 +174,21 @@ class Project extends Component {
 			...newState
 		})
 	}
+	regenerateData = (d, unit) => {
+		if (d) { 
+			let data = {}
+			Object.keys(d).map((dt, i) => {
+				if (i === Object.keys(d).length - 1) {
+					return data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
+				}
+				else {
+					return 	data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt] 
+				}
+			})
+			return data
+		}
+		else return null
+	}
 	getWifiDaily = async () => {
 		const { from, to, raw, project, hoverID } = this.state
 		let startDate = moment(from).format(this.format)
@@ -186,7 +201,7 @@ class Project extends Component {
 			dataSet = {
 				name: d.name,
 				id: d.id,
-				data: data,
+				data: this.regenerateData(data, 'day'),
 				color: d.color,
 				lat: d.activeDevice ? d.activeDevice.lat : 0,
 				long: d.activeDevice ? d.activeDevice.long : 0
