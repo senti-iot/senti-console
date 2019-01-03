@@ -39,12 +39,6 @@ class Tooltip extends Component {
 			// x = '-70%'
 			y = '-105%'
 		}
-		// if (tooltip.left > ((chartWidth / 4) * 3)) {
-		// 	x = '-90%'
-		// }
-		// if (tooltip.left < chartWidth / 4) {
-		// 	x = '0%'
-		// }
 		if (tooltip.left > chartWidth / 2) {
 			x = '-100%'
 		}
@@ -58,15 +52,22 @@ class Tooltip extends Component {
 		let dateStr = tooltip.title[0] ? tooltip.title[0] : ''
 		let date = moment(dateStr, 'lll').isValid() ? moment(dateStr, 'lll') : null
 		if (date) {
-			if (moment(date).diff(moment(), 'hours') >= 0) { 
+			//If Today && last hour of today
+			if (moment(date).diff(moment(), 'days') === 0 && moment(date).diff(moment(), 'hours') === 0) {
+				//If last hour/minutes for today
+				// if (moment(date).diff(moment(), unit.chart) >= 0) {
 				let plusOne = moment(date).startOf(unit.chart)
 				let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment().format(unit.tooltipFormat)} `
 				return finalStr
+				// }
 			}
+			// console.log(2, date)
+			//Normal Date
 			let plusOne = moment(date).subtract(1, unit.chart)
-			let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment(date).format(unit.tooltipFormat)} ` 
+			let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment(date).format(unit.tooltipFormat)} `
 			return finalStr
 		}
+	
 		return moment(dateStr, 'lll').isValid() ? moment(dateStr, 'lll').format('ll') : dateStr
 	}
 	handleDate = () => {
