@@ -254,7 +254,7 @@ class DeviceData extends PureComponent {
 			</ItemG>
 			<ItemG>
 				<Hidden smDown>
-					<IconButton title={'Chart Type'} variant={'fab'} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
+					<IconButton title={'Chart Type'} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
 						<Visibility />
 					</IconButton>
 					<Menu

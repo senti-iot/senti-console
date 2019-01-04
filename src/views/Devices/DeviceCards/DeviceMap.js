@@ -1,17 +1,21 @@
 import React, { PureComponent, Fragment } from 'react'
-import { InfoCard, Caption, Dropdown, CircularLoader, ItemG } from 'components';
-import { Map, Layers, Smartphone } from 'variables/icons'
-import { Grid, Checkbox, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { InfoCard, Caption, Dropdown, CircularLoader, ItemG, TextF, AddressInput } from 'components';
+import { Map, Layers, Smartphone, Save, Clear } from 'variables/icons'
+import { Grid, Checkbox, IconButton, Menu, MenuItem, Collapse, Dialog, DialogContent, DialogTitle, DialogActions, Button } from '@material-ui/core';
+import { red, teal } from "@material-ui/core/colors"
 import OpenStreetMap from 'components/Map/OpenStreetMap';
+import { getAddressByLocation, updateDevice } from 'variables/dataDevices';
 
 export default class DeviceMap extends PureComponent {
 	constructor(props) {
 		super(props)
-
 		this.state = {
 			heatMap: false,
 			actionAnchorVisibility: null,
-			mapTheme: props.mapTheme
+			mapTheme: props.mapTheme,
+			editLocation: false,
+			openModalEditLocation: false,
+			markers: []
 		}
 	}
 	visibilityOptions = [
@@ -24,23 +28,72 @@ export default class DeviceMap extends PureComponent {
 		{ id: 6, label: this.props.t("map.themes.6") },
 		{ id: 7, label: this.props.t('map.themes.7') }
 	]
+	componentDidUpdate = (prevProps, prevState) => {
+		if (this.props.device && prevProps.device !== this.props.device) { 
+			this.setState({
+				markers: [{ ...this.props.device, weather: this.props.weather }]
+			})
+		}
+	}
+	
 	handleVisibility = e => (event) => {
 		if (event)
 			event.preventDefault()
 		this.setState({ mapTheme: e, actionAnchorVisibility: null })
 	}
+	handleSaveEditAddress = async () => {
+		let device = this.state.markers[0]
+		delete device['weather']
+		device.project = {
+			id: 0
+		}
+		let saved = await updateDevice(device)
+		if (saved)
+			window.location.reload()
+	}
 	handleOpenMenu = e => {
-		
 		this.setState({ actionAnchorVisibility: e.currentTarget })
-
 	}
 	handleCloseMenu = e => {
 		this.setState({ actionAnchorVisibility: null })
+	}
+	handleEditLocation = () => {
+		this.setState({ editLocation: !this.state.editLocation })
+	}
+	handleCancelConfirmEditLocation = () => {
+		this.setState({
+			openModalEditLocation: false
+		})
+	}
+	handleCancelEditLocation = () => {
+		this.setState({
+			editLocation: false,
+			markers: [{ ...this.props.device, weather: this.props.weather }]
+		})
+	}
+	handleOpenConfirmEditLocation = () => { 
+		this.setState({
+			openModalEditLocation: true
+		})
 	}
 	renderMenu = () => {
 		const { t } = this.props
 		const { actionAnchorVisibility, mapTheme } = this.state
 		return <Fragment>
+			<Collapse in={this.state.editLocation}>
+				<ItemG container>
+					<ItemG>
+						<IconButton onClick={this.handleOpenConfirmEditLocation}>
+							<Save style={{ color: teal[500] }}/>
+						</IconButton>
+					</ItemG>
+					<ItemG>
+						<IconButton onClick={this.handleCancelEditLocation}>
+							<Clear style={{ color: red[400] }}/>
+						</IconButton>
+					</ItemG>
+				</ItemG>
+			</Collapse>
 			<ItemG>
 				<IconButton title={'Map layer'} variant={'fab'} onClick={this.handleOpenMenu}>
 					<Layers />
@@ -63,10 +116,14 @@ export default class DeviceMap extends PureComponent {
 					{/* </List> */}
 				</Menu>
 			</ItemG>
+			
 			<Dropdown menuItems={
-				[{ label: t('actions.heatMap'), icon: <Checkbox checked={this.state.heatMap} />, func: () => this.setState({ heatMap: !this.state.heatMap }) },
-					{ label: t('actions.goToDevice'), icon: <Smartphone style={{ padding: "0px 12px" }} />, func: () => this.flyToMarkers() }]
+				[
+					{ label: t('actions.heatMap'), icon: <Checkbox checked={this.state.heatMap} />, func: () => this.setState({ heatMap: !this.state.heatMap }) },
+					{ label: t('actions.goToDevice'), icon: <Smartphone style={{ padding: "0px 12px" }} />, func: () => this.flyToMarkers() },
+					{ label: t('actions.editLocation'), icon: <Checkbox checked={this.state.editLocation}/>, func: () => this.handleEditLocation() }]
 			} />
+
 		</Fragment>
 	}
 	getRef = (r) => { 
@@ -78,8 +135,63 @@ export default class DeviceMap extends PureComponent {
 			this.map.leafletElement.flyToBounds([[device.lat, device.long]])
 		}
 	}
+	getLatLngFromMap = async (e) => {
+		let lat = e.target._latlng.lat
+		let long = e.target._latlng.lng
+		let address = await getAddressByLocation(lat, long)
+		let addressStr = address.vejnavn + ' ' + address.husnr + ', ' + address.postnr + ' ' + address.postnrnavn
+		this.setState({
+			markers: [{
+				...this.props.device,
+				address: addressStr,
+				lat,
+				long,
+				 weather: this.props.weather
+			}]
+		})
+	}
+	handleChangeAddress = e => {
+		this.setState({
+			markers: [{
+				...this.state.markers[0],
+				address: e
+			}]
+		})
+	}
+	renderModal = () => {
+		const { t } = this.props
+		const { openModalEditLocation, markers } = this.state
+		return <Dialog
+			onClose={this.handleCancelConfirmEditLocation}
+			open={openModalEditLocation}
+			PaperProps={{
+				style: {
+					overflowY: "visible"
+				}
+			}}
+		>
+			<DialogTitle> </DialogTitle>
+			<DialogContent style={{ overflowY: "visible" }}>
+				{markers.length > 0 ? markers.map(m =>
+					<ItemG key={m.id} container direction={'column'}>
+						<TextF id={'lat'} label={'Latitude'} value={m.lat ? m.lat.toString() : ""} disabled />
+						<TextF id={'long'} label={'Longitude'} value={m.long ? m.long.toString() : ""} disabled />
+						<AddressInput value={m.address} handleChange={this.handleChangeAddress} />
+					</ItemG>) : null
+				}
+			</DialogContent>
+			<DialogActions>
+				<Button onClick={this.handleSaveEditAddress}>
+					<Save /> {t('actions.save')}
+				</Button>
+				<Button onClick={this.handleCancelConfirmEditLocation}>
+					<Clear /> {t('actions.cancel')}
+				</Button>
+			</DialogActions>
+		</Dialog>
+	}
 	render() {
-		const { device, weather, t, loading } = this.props
+		const { device, t, loading } = this.props
 		const { mapTheme } = this.state
 		return (
 			<InfoCard
@@ -90,14 +202,17 @@ export default class DeviceMap extends PureComponent {
 				content={
 					loading ? <CircularLoader /> :
 						<Grid container justify={'center'}>
+							{this.renderModal()}
 							{/* {device.lat && device.long ? <Maps heatMap={this.state.heatMap} t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t('devices.notCalibrated')}</Caption>} */}
-							{device.lat && device.long ? <OpenStreetMap
+							{this.state.markers.length > 0 ? <OpenStreetMap
+								calibrate={this.state.editLocation}
+								getLatLng={this.getLatLngFromMap}
 								iRef={this.getRef}
 								mapTheme={mapTheme}
 								heatMap={this.state.heatMap}
-								heatData={[{ ...device, weather: weather }]}
+								heatData={this.state.markers}
 								t={t}
-								markers={[{ ...device, weather: weather }]}
+								markers={this.state.markers}
 							/> : <Caption>{t('devices.notCalibrated')}</Caption>}
 						</Grid>
 				} />
