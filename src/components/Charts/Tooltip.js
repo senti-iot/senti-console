@@ -50,9 +50,7 @@ class Tooltip extends Component {
 	handleRange = () => {
 		const { tooltip, unit } = this.props
 		let dateStr = tooltip.title[0] ? tooltip.title[0] : ''
-		console.log(dateStr)
 		let date = moment(dateStr, 'lll').isValid() ? moment(dateStr, 'lll') : null
-		// console.log(unit.chart)
 		if (date) {
 			if (tooltip.lastPoint) {
 
@@ -61,7 +59,6 @@ class Tooltip extends Component {
 					if (unit.chart === 'day') {
 						//Handle Days
 						// if (moment(date).diff(moment(), 'hours') === 0) {
-						// 	console.log(date.format('DD-MM HH:mm'))
 						// 	//If last hour
 						let plusOne = moment(date).startOf(unit.chart)
 						let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment().format(unit.tooltipFormat)} `
@@ -75,7 +72,6 @@ class Tooltip extends Component {
 				// }
 			
 				if (unit.chart === 'hour') {
-				// console.log(date)
 					if (moment().diff(moment(date), 'minutes') <= 60) {
 					//If last hour
 					// if (moment(date).diff(moment(), unit.chart) >= 0) {

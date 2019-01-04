@@ -37,13 +37,11 @@ export default class ActiveDeviceMap extends PureComponent {
 		this.setState({ actionAnchorVisibility: null })
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-	  console.log(this.map)
 	}
 	
 	renderMenu = () => {
 		const { t } = this.props
 		const { actionAnchorVisibility, mapTheme } = this.state
-		console.log(this.map)
 		return <Fragment>
 			
 			<ItemG>
