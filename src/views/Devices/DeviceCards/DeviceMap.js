@@ -1,5 +1,5 @@
 import React, { PureComponent, Fragment } from 'react'
-import { InfoCard, Caption, Dropdown, CircularLoader, ItemG, TextF, AddressInput } from 'components';
+import { InfoCard, Caption, Dropdown, CircularLoader, ItemG, TextF, AddressInput, Danger } from 'components';
 import { Map, Layers, Smartphone, Save, Clear } from 'variables/icons'
 import { Grid, Checkbox, IconButton, Menu, MenuItem, Collapse, Dialog, DialogContent, DialogTitle, DialogActions, Button } from '@material-ui/core';
 import { red, teal } from "@material-ui/core/colors"
@@ -50,6 +50,9 @@ export default class DeviceMap extends PureComponent {
 		let saved = await updateDevice(device)
 		if (saved)
 			window.location.reload()
+		else { 
+			this.setState({ error: true })
+		}
 	}
 	handleOpenMenu = e => {
 		this.setState({ actionAnchorVisibility: e.currentTarget })
@@ -160,7 +163,7 @@ export default class DeviceMap extends PureComponent {
 	}
 	renderModal = () => {
 		const { t } = this.props
-		const { openModalEditLocation, markers } = this.state
+		const { openModalEditLocation, markers, error } = this.state
 		return <Dialog
 			onClose={this.handleCancelConfirmEditLocation}
 			open={openModalEditLocation}
@@ -172,6 +175,7 @@ export default class DeviceMap extends PureComponent {
 		>
 			<DialogTitle> </DialogTitle>
 			<DialogContent style={{ overflowY: "visible" }}>
+				{error ? <Danger>{t('404.networkError')}</Danger> : null}
 				{markers.length > 0 ? markers.map(m =>
 					<ItemG key={m.id} container direction={'column'}>
 						<TextF id={'lat'} label={'Latitude'} value={m.lat ? m.lat.toString() : ""} disabled />
