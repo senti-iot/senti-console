@@ -311,7 +311,7 @@ class DeviceData extends PureComponent {
 				</div> */}
 				<ListItem button onClick={this.handleOpenDownloadModal}>
 					<ListItemIcon><CloudDownload /></ListItemIcon>
-					<ListItemText>{t('data.download')}</ListItemText>
+					<ListItemText>{t('menus.export')}</ListItemText>
 				</ListItem>
 				<ListItem button onClick={this.props.handleRawData}>
 					<ListItemIcon>
