@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom'
 import L, { Control } from 'leaflet'
 import { MapControl, withLeaflet } from 'react-leaflet'
 import { withStyles, IconButton, MuiThemeProvider } from '@material-ui/core';
-import { LocationOn } from 'variables/icons'
 import teal from '@material-ui/core/colors/teal'
+import { MyLocation } from '@material-ui/icons';
 // import LocationMarker from './LocationMarker';
 
 const styles = theme => ({
@@ -145,7 +145,7 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 							className={this.props.classes.locButton}
 							onClick={this.onClick}
 							color={'primary'}>
-							<LocationOn />
+							<MyLocation />
 						</IconButton>
 					</MuiThemeProvider>
 				)

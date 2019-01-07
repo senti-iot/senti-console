@@ -11,7 +11,7 @@ import { colors } from 'variables/colors';
 import ProjectMap from './ProjectCards/ProjectMap';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { getDataHourly, getDataMinutely, getDataSummary, getDataDaily } from 'variables/dataCollections';
-import { setHourlyData, setDailyData, setSummaryData, setMinutelyData } from 'components/Charts/DataModel';
+import { setHourlyData, setDailyData, setSummaryData, setMinutelyData, setExportData } from 'components/Charts/DataModel';
 import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
 import { Timeline, Map, DataUsage, Person, LibraryBooks } from 'variables/icons';
@@ -120,9 +120,13 @@ class Project extends Component {
 			let dataSet = null
 			let data = await getDataHourly(d.id, startDate, endDate, raw)
 			dataSet = {
+				dcId: d.id,
+				dcName: d.name,
+				project: project ? project.name : "",
+				org: d.org ? d.org.name : "",
 				name: d.name,
-				id: d.id,
-				data: data,
+				id: d.activeDevice ? d.activeDevice.id : d.id,
+				data: this.regenerateData(data, 'hour'),
 				color: d.color,
 				lat: d.activeDevice ? d.activeDevice.lat : 0,
 				long: d.activeDevice ? d.activeDevice.long : 0
@@ -151,10 +155,15 @@ class Project extends Component {
 		await Promise.all(project.dataCollections.map(async d => {
 			let dataSet = null
 			let data = await getDataMinutely(d.id, startDate, endDate, raw)
+			
 			dataSet = {
+				dcId: d.id,
+				dcName: d.name,
+				project: project ? project.name : "",
+				org: d.org ? d.org.name : "",
 				name: d.name,
-				id: d.id,
-				data: data,
+				id: d.activeDevice ? d.activeDevice.id : d.id,
+				data: this.regenerateData(data, 'minute'),
 				color: d.color,
 				lat: d.activeDevice ? d.activeDevice.lat : 0,
 				long: d.activeDevice ? d.activeDevice.long : 0
@@ -167,12 +176,43 @@ class Project extends Component {
 			return newArr
 		}, [])
 		let newState = setMinutelyData(dataArr, from, to, hoverID)
+		let exportData = setExportData(dataArr, 'minute')
 		this.setState({
+			exportData: exportData,
 			dataArr: dataArr,
 			loadingData: false,
 			timeType: 0,
 			...newState
 		})
+	}
+	regenerateData = (d, unit) => {
+		if (d) {
+			let data = {}
+			Object.keys(d).map((dt, i) => {
+				if (i === Object.keys(d).length - 1) {
+					//Today Handling
+					if (unit === 'day' && moment(dt).diff(moment(), 'days') === 0 && moment(dt).diff(moment(), 'minutes') <= 60) {
+						data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
+					}
+					else {
+						if ((unit === 'minute' || unit === 'hour') && moment().diff(moment(dt), 'minute') <= 60) {
+							data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
+						}
+						else {
+							data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
+						}
+					}
+					return true
+				}
+				else {
+					//Normal ones
+					data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
+					return true
+				}
+			})
+			return data
+		}
+		else return null
 	}
 	getWifiDaily = async () => {
 		const { from, to, raw, project, hoverID } = this.state
@@ -183,9 +223,13 @@ class Project extends Component {
 			let dataSet = null
 			let data = await getDataDaily(d.id, startDate, endDate, raw)
 			dataSet = {
+				dcId: d.id,
+				dcName: d.name,
+				project: project ? project.title : "",
+				org: d.org ? d.org.name : "",
 				name: d.name,
-				id: d.id,
-				data: data,
+				id: d.activeDevice ? d.activeDevice.id : d.id,
+				data: this.regenerateData(data, 'day'),
 				color: d.color,
 				lat: d.activeDevice ? d.activeDevice.lat : 0,
 				long: d.activeDevice ? d.activeDevice.long : 0
@@ -199,7 +243,9 @@ class Project extends Component {
 			return newArr
 		}, [])
 		let newState = setDailyData(dataArr, from, to, hoverID)
+		let exportData = setExportData(dataArr, 'day')
 		this.setState({
+			exportData: exportData,
 			dataArr: dataArr,
 			loadingData: false,
 			timeType: 2,
@@ -230,7 +276,9 @@ class Project extends Component {
 			return newArr
 		}, [])
 		let newState = setSummaryData(dataArr, from, to, hoverID)
+		let exportData = setExportData(dataArr, 'day')
 		this.setState({
+			exportData: exportData,
 			dataArr: dataArr,
 			loadingData: false,
 			timeType: 3,
@@ -248,7 +296,7 @@ class Project extends Component {
 			let data = await getDataSummary(d.id, startDate, endDate, true)
 			dataSet = {
 				name: d.name,
-				id: d.activeDevice ? d.activeDevice.id : 0, 
+				id: d.activeDevice ? d.activeDevice.id : 0,
 				data: data,
 				color: d.color,
 				liveStatus: d.activeDevice ? d.activeDevice.liveStatus : 0,
@@ -411,11 +459,10 @@ class Project extends Component {
 		this.props.removeFromFav(favObj)
 	}
 	setHoverID = (id) => {
-		if (id !== this.state.hoverID)
-		{
+		if (id !== this.state.hoverID) {
 			this.setState({ hoverID: id }, this.hoverGrow)
 		}
-		
+
 	}
 	hoverGrow = () => {
 		const { timeType, dataArr, to, from, hoverID } = this.state
@@ -443,7 +490,7 @@ class Project extends Component {
 					...newState
 				})
 			}
-		
+
 	}
 	renderDeleteDialog = () => {
 		const { openDelete } = this.state
@@ -520,7 +567,8 @@ class Project extends Component {
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id='data'>
 							<ProjectData
-								setHoverID={this.setHoverID} 
+								exportData={this.state.exportData}
+								setHoverID={this.setHoverID}
 								barDataSets={barDataSets}
 								roundDataSets={roundDataSets}
 								lineDataSets={lineDataSets}
@@ -539,11 +587,11 @@ class Project extends Component {
 							/>
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id='collections'>
-							<ProjectCollections 
-								setHoverID={this.setHoverID} 
+							<ProjectCollections
+								setHoverID={this.setHoverID}
 								t={t}
-							 	project={project}
-							  	{...rp} />
+								project={project}
+								{...rp} />
 						</ItemGrid >
 						{project.devices ? <ItemGrid xs={12} noMargin id='map'>
 							<ProjectMap
@@ -557,8 +605,8 @@ class Project extends Component {
 						<ItemGrid xs={12} noMargin id='contact' >
 							<ProjectContact
 								history={this.props.history}
-							  	t={t} 
-							  	project={project} />
+								t={t}
+								project={project} />
 						</ItemGrid>
 						{this.renderDeleteDialog()}
 						<AssignDCs

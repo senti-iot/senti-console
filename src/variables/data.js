@@ -77,7 +77,10 @@ export const getHolidays = async (lang) => {
 			return d
 		})
 	}
-	return [...data, ...newData]
+	if (data && newData)
+		return [...data, ...newData]
+	else 
+		return []
 }
 export const weatherApi = create({
 	baseURL: `https://api.senti.cloud/weather/v1/`,

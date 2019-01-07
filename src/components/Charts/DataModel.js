@@ -3,6 +3,34 @@ import { teal } from '@material-ui/core/colors'
 import moment from 'moment'
 import { colors } from 'variables/colors';
 
+export const setExportData = (dataArr, unit) => {
+	let dataSets = dataArr
+	let newData = []
+	if (dataSets)
+	{
+		// let devices = .map(d => ({ id: d.id, dcId: d.id, data:=> ({ x: d[0], y: d[1] })) }))
+		dataSets.map(d =>  
+			Object.entries(d.data).map((dt, i) => 
+			{
+				return newData.push({
+					dcId: d.dcId,
+					dcName: d.dcName,
+					org: d.org,
+					project: d.project,
+					lat: d.lat,
+					long: d.long,
+					id: d.id,
+					startDate: d.data.length - 1 === i && moment().diff(moment(dt[0]), unit) === 0 ? moment(dt[0]).startOf(unit).format('DD-MM-YYYY HH:mm') : moment(dt[0]).subtract(1, unit).format('DD-MM-YYYY HH:mm'),
+					endDate: moment(dt[0]).format('DD-MM-YYYY HH:mm'),
+					count: dt[1]
+				})	
+			}
+			)
+		)
+	}
+	return newData
+	
+}
 export const setSummaryData = (dataArr, from, to) => {
 	let displayTo = dateTimeFormatter(to)
 	let displayFrom = dateTimeFormatter(from)
@@ -14,7 +42,7 @@ export const setSummaryData = (dataArr, from, to) => {
 		barDataSets: null
 	}
 	if (dataArr.length > 0) {
-		 state = {
+		state = {
 			title: `${displayFrom} - ${displayTo}`,
 			loading: false,
 			timeType: 3,
@@ -28,7 +56,7 @@ export const setSummaryData = (dataArr, from, to) => {
 					label: [d.name],
 					data: Object.entries(d.data).map(d => d[1])
 				}))
-		
+
 			}
 		}
 	}
@@ -45,6 +73,7 @@ const linecolors = (data, defaultColor, id) => {
 	})
 	return colors
 }
+
 export const setDailyData = (dataArr, from, to, hoverID) => {
 	let labels = datesToArr(from, to)
 	let state = {
@@ -54,11 +83,12 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 		roundDataSets: null,
 		barDataSets: null
 	}
+
 	if (dataArr.length > 0) {
-		 state = {
+		state = {
 			loading: false,
 			timeType: 2,
-			 lineDataSets: {
+			lineDataSets: {
 				labels: labels,
 				datasets: dataArr.map((d, index) => ({
 					id: d.id,
@@ -98,7 +128,7 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 					data: Object.entries(d.data).map(d => d[1])
 				}))
 
-			}	
+			}
 		}
 	}
 	return state

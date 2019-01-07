@@ -15,9 +15,9 @@ function Header({ ...props }) {
 		<AppBar className={classes.appBar}>
 			<Toolbar className={classes.container}>
 				<div className={classes.flex}>
-					{goBackButton && <Button onClick={gbbFunc} variant={'fab'} className={classes.goBackButton}>
+					{goBackButton && <IconButton onClick={gbbFunc} variant={'fab'} className={classes.goBackButton}>
 						<KeyboardArrowLeft width={40} height={40} />
-					</Button>}
+					</IconButton>}
 					<Button className={classes.title}>
 						{props.headerTitle ? t(props.headerTitle.id, props.headerTitle.options) ? t(props.headerTitle.id, props.headerTitle.options) : props.headerTitle.id : ''}
 					</Button>

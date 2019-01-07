@@ -18,7 +18,7 @@ import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
 import { Timeline, DeviceHub, Map, DeveloperBoard, Image } from 'variables/icons';
 import teal from '@material-ui/core/colors/teal'
-import { setHourlyData, setMinutelyData, setDailyData, setSummaryData } from 'components/Charts/DataModel';
+import { setHourlyData, setMinutelyData, setDailyData, setSummaryData, setExportData } from 'components/Charts/DataModel';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 
 class Device extends Component {
@@ -65,18 +65,19 @@ class Device extends Component {
 					prevURL: window.location.pathname
 				})
 			else {
-				this.setState({ device: rs, loading: false }, () => {
+				this.setState({ device: rs, loading: false }, async () => {
+					if (rs.dataCollection) {
+						await this.getDataCollection(rs.dataCollection)
+					}
 					this.getWifiDaily()
 					this.getHeatMapData()
-				})
-				if (rs.dataCollection) {
-					await this.getDataCollection(rs.dataCollection)
-				}
-				if (rs.lat && rs.long) { 
-					let data = await getWeather(rs, moment(), this.props.language)
-					this.setState({ weather: data })
-				}
+					if (rs.lat && rs.long) {
+						let data = await getWeather(rs, moment(), this.props.language)
+						this.setState({ weather: data })
+					}
 
+				})
+		
 			}
 		})
 	}
@@ -90,7 +91,9 @@ class Device extends Component {
 						project: { id: 0 },
 						dataCollection: rs
 					},
-					loading: false })}
+					loading: false
+				})
+			}
 			else {
 				this.setState({
 					loading: false,
@@ -98,7 +101,9 @@ class Device extends Component {
 						...this.state.device,
 						dataCollection: { id: 0 },
 						project: { id: 0 },
-					} })}
+					}
+				})
+			}
 		})
 	}
 	componentDidMount = async () => {
@@ -109,7 +114,7 @@ class Device extends Component {
 			if (id) {
 				// this.getAllPics(id)
 				await this.getDevice(id)
-			
+
 			}
 		}
 		else {
@@ -121,8 +126,8 @@ class Device extends Component {
 	}
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.saved === true) {
-			if (this.props.isFav({ id: this.state.device.id, type: 'device' }))
-			{	this.props.s('snackbars.favorite.saved', { name: this.state.device.name, type: this.props.t('favorites.types.device') })
+			if (this.props.isFav({ id: this.state.device.id, type: 'device' })) {
+				this.props.s('snackbars.favorite.saved', { name: this.state.device.name, type: this.props.t('favorites.types.device') })
 				this.props.finishedSaving()
 			}
 			if (!this.props.isFav({ id: this.state.device.id, type: 'device' })) {
@@ -137,7 +142,8 @@ class Device extends Component {
 			id: device.id,
 			name: device.name,
 			type: 'device',
-			path: this.props.match.url }
+			path: this.props.match.url
+		}
 		this.props.addToFav(favObj)
 	}
 	removeFromFav = () => {
@@ -146,7 +152,8 @@ class Device extends Component {
 			id: device.id,
 			name: device.name,
 			type: 'device',
-			path: this.props.match.url }
+			path: this.props.match.url
+		}
 		this.props.removeFromFav(favObj)
 	}
 	getHeatMapData = async () => {
@@ -185,7 +192,7 @@ class Device extends Component {
 			loadingData: loading !== undefined ? loading : true,
 		}, this.handleSwitchDayHourSummary)
 	}
-	
+
 	handleSwitchDayHourSummary = () => {
 		let id = this.state.dateOption
 		const { to, from } = this.state
@@ -243,6 +250,39 @@ class Device extends Component {
 				break;
 		}
 	}
+	regenerateData = (d, unit) => {
+		if (d) {
+			let data = {}
+			Object.keys(d).map((dt, i) => {
+				if (i === Object.keys(d).length - 1) {
+					//Today Handling
+					if (unit === 'day' && moment(dt).diff(moment(), 'days') === 0) {
+						if (moment().diff(moment(dt), 'minutes') <= 60) { 
+							data[moment(dt).format('YYYY-MM-DD HH:mm')] = d[dt]
+						}
+						else 
+							data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
+					}
+					else {
+						if ((unit === 'minute' || unit === 'hour') && moment().diff(moment(dt), 'minute') <= 60) {
+							data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
+						}
+						else {
+							data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
+						}
+					}
+					return true
+				}
+				else {
+					//Normal ones
+					data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
+					return true
+				}
+			})
+			return data
+		}
+		else return null
+	}
 	getWifiHourly = async () => {
 		// const { device } = this.props
 		const { from, to, raw, device, hoverID } = this.state
@@ -256,8 +296,9 @@ class Device extends Component {
 			id: device.id,
 			lat: device.lat,
 			long: device.long,
-			data: data,
-			color: teal[500]
+			org: device.org ? device.org.name : "",
+			data: this.regenerateData(data, 'hour'),
+			color: teal[500],
 		}
 		dataArr.push(dataSet)
 		dataArr = dataArr.reduce((newArr, d) => {
@@ -266,8 +307,10 @@ class Device extends Component {
 			return newArr
 		}, [])
 		let newState = setHourlyData(dataArr, from, to, hoverID)
+		let exportData = setExportData(dataArr, 'hour')
 		this.setState({
 			...this.state,
+			exportData: exportData,
 			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 1,
@@ -285,9 +328,10 @@ class Device extends Component {
 		dataSet = {
 			name: device.name,
 			id: device.id,
-			data: data,
+			data: this.regenerateData(data, 'minute'),
 			lat: device.lat,
 			long: device.long,
+			org: device.org ? device.org.name : "",
 			color: teal[500]
 		}
 		dataArr.push(dataSet)
@@ -298,8 +342,10 @@ class Device extends Component {
 			return newArr
 		}, [])
 		let newState = setMinutelyData(dataArr, from, to, hoverID)
+		let exportData = setExportData(dataArr, 'minute')
 		this.setState({
 			...this.state,
+			exportData: exportData,
 			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 0,
@@ -315,22 +361,27 @@ class Device extends Component {
 		let data = await getDataDaily(device.id, startDate, endDate, raw)
 		dataSet = {
 			name: device.name,
+			dcId: device.dataCollection ? device.dataCollection.id : "",
+			dcName: device.dataCollection ? device.dataCollection.name : "",
 			id: device.id,
 			lat: device.lat,
 			long: device.long,
-			data: data,
+			org: device.org ? device.org.name : "",
+			data: this.regenerateData(data, 'day'),
 			color: teal[500]
 		}
 		dataArr.push(dataSet)
-
+		
 		dataArr = dataArr.reduce((newArr, d) => {
 			if (d.data !== null)
 				newArr.push(d)
 			return newArr
 		}, [])
 		let newState = { ...setDailyData(dataArr, from, to, hoverID) }
+		let exportData = setExportData(dataArr, 'day')
 		this.setState({
 			...this.state,
+			exportData: exportData,
 			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 2,
@@ -349,6 +400,7 @@ class Device extends Component {
 			id: device.id,
 			lat: device.lat,
 			long: device.long,
+			org: device.org ? device.org.name : "",
 			data: data,
 			color: teal[500]
 		}
@@ -386,6 +438,9 @@ class Device extends Component {
 			case 4:
 				s('snackbars.assign.deviceToOrg', { device: `${name}(${id})`, org: `${device.org.name}` })
 				break
+			case 5: 
+				s('snackbars.deviceUpdated', { device: `${name}(${id})` })
+				break
 			default:
 				break
 		}
@@ -398,7 +453,13 @@ class Device extends Component {
 	handleOpenAssignOrg = () => {
 		this.setState({ openAssignOrg: true, anchorEl: null })
 	}
-
+	reload = async (msgId) => { 
+		this.snackBarMessages(msgId)
+		this.setState({
+			loading: true
+		})
+		await this.getDevice(this.state.device.id)
+	}
 	handleCloseAssignOrg = async (reload) => {
 		if (reload) {
 			this.setState({ loading: true, openAssignOrg: false })
@@ -528,7 +589,7 @@ class Device extends Component {
 	renderMenu = () => {
 		const { t } = this.props
 		const { dateOption, to, from, timeType } = this.state
-	
+
 		return <DateFilterMenu
 			timeType={timeType}
 			dateOption={dateOption}
@@ -543,7 +604,7 @@ class Device extends Component {
 
 	render() {
 		const { device, loading, loadingData } = this.state
-		
+
 		return (
 			!loading ? <Fragment>
 				<Toolbar
@@ -553,7 +614,7 @@ class Device extends Component {
 					tabs={this.tabs}
 					content={this.renderMenu()}
 				/>
-			
+
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<AssignDC
 						deviceId={device.id}
@@ -588,6 +649,7 @@ class Device extends Component {
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'data'}>
 						<DeviceData
+							exportData={this.state.exportData}
 							barDataSets={this.state.barDataSets}
 							roundDataSets={this.state.roundDataSets}
 							lineDataSets={this.state.lineDataSets}
@@ -607,6 +669,7 @@ class Device extends Component {
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'map'}>
 						<DeviceMap
+							reload={this.reload}
 							mapTheme={this.props.mapTheme}
 							device={this.state.heatData}
 							loading={this.state.loadingMap}
@@ -631,7 +694,7 @@ class Device extends Component {
 						/>
 					</ItemGrid>
 				</GridContainer>
-					
+
 			</Fragment> : this.renderLoader()
 		)
 	}

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { InfoCard, Caption, Dropdown, ItemG } from 'components';
-import { Map, Layers, DeviceHub } from 'variables/icons'
-import { Grid, Checkbox, MenuItem, Menu, IconButton } from '@material-ui/core';
+import { Map, Layers, DeviceHub, WhatsHot } from 'variables/icons'
+import { Grid, /* Checkbox,  */MenuItem, Menu, IconButton } from '@material-ui/core';
 import OpenStreetMap from 'components/Map/OpenStreetMap';
 
 export default class ProjectMap extends Component {
@@ -60,9 +60,9 @@ export default class ProjectMap extends Component {
 					})}
 					{/* </List> */}
 				</Menu>
-			</ItemG><Dropdown menuItems={
-				[{ label: t('actions.heatMap'), icon: <Checkbox checked={this.state.heatMap} />, func: () => this.setState({ heatMap: !this.state.heatMap }) },
-					{ label: t('actions.goToDevice'), icon: <DeviceHub style={{ padding: "0px 12px" }} />, func: () => this.flyToMarkers() } ]
+			</ItemG><Dropdown menuItems={[
+				{ label: t('actions.heatMap'), selected: this.state.heatMap, icon: <WhatsHot style={{ padding: "0px 12px" }}/>, func: () => this.setState({ heatMap: !this.state.heatMap }) },
+				{ label: t('actions.goToDevice'), icon: <DeviceHub style={{ padding: "0px 12px" }} />, func: () => this.flyToMarkers() } ]
 			} />
 		</Fragment>
 	}

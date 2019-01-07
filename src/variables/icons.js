@@ -82,7 +82,12 @@ import Dashboard from '@material-ui/icons/Dashboard'
 import History from '@material-ui/icons/History'
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import Smartphone from '@material-ui/icons/Smartphone'
+import EditLocation from '@material-ui/icons/EditLocation'
+import WhatsHot from '@material-ui/icons/Whatshot'
 export {
+	WhatsHot,
+	MyLocation,
+	EditLocation,
 	Smartphone,
 	LocationOn,
 	ArrowUpward,
@@ -143,7 +148,6 @@ export {
 	SettingsRounded,
 	NavigateNext,
 	NavigateBefore,
-	MyLocation,
 	Router,
 	Map,
 	AccessTime,

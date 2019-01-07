@@ -29,7 +29,8 @@ class EnhancedTableHead extends Component {
 									padding={column.disablePadding ? 'none' : 'default'}
 									sortDirection={orderBy === column.id ? order : false}
 									className={`${classes.header} ${classes.tableCell} ${column.centered ? classes.centered : ''} ${column.checkbox ? classes.tablecellcheckbox : ''}`}
-									numeric={column.numeric ? true : false}>
+								// numeric={column.numeric ? true : false}
+								>
 									<TableSortLabel
 										active={orderBy === column.id}
 										direction={order}

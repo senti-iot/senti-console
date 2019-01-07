@@ -2,13 +2,13 @@
 	"map": {
 		"themes": {
 			"0": "Humanitarian",
-			"1": "Aerial Map 2018",
+			"1": "Ortho",
 			"2": "Carto Dark",
 			"3": "Carto",
-			"4": "Stamen Watercolor",
-			"5": "Stamen Toner",
+			"4": "Watercolor",
+			"5": "Toner",
 			"6": "OpenStreetMap",
-			"7": "Topographical Map"
+			"7": "Topographic"
 		}
 	},
 	"404": {
@@ -29,6 +29,7 @@
 		"finish": "Finish",
 		"forgotPass": "Password Forgotten?",
 		"getLocation": "Get location",
+		"editLocation": "Edit location",
 		"goTo": "Go to",
 		"goToLogin": "Go to Login Page",
 		"heatMap": "Heatmap",

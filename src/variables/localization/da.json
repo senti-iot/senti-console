@@ -2,13 +2,13 @@
 	"map": {
 		"themes": {
 			"0": "Humanitarian",
-			"1": "Luftfoto 2018",
-			"2": "Carto Dark",
+			"1": "Luftfoto",
+			"2": "Carto Mørk",
 			"3": "Carto",
-			"4": "Stamen Watercolor",
-			"5": "Stamen Toner",
+			"4": "Vandfarver",
+			"5": "Gråtoner",
 			"6": "OpenStreetMap",
-			"7": "Topografisk kort"
+			"7": "Topografisk"
 		}
 	},
 	"404": {
@@ -19,7 +19,7 @@
 	"": "",
 	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
-		"goToDevice": "Går til enhed(er)",
+		"goToDevice": "Gå til enhed(er)",
 		"apply": "Anvend",
 		"back": "Forrige",
 		"cancel": "Anuller",
@@ -29,7 +29,8 @@
 		"finish": "Luk",
 		"forgotPass": "Glemt kodeord?",
 		"getLocation": "Hent lokation",
-		"goTo": "Går til",
+		"editLocation": "Rediger lokation",
+		"goTo": "Gå til",
 		"goToLogin": "Gå til log ind",
 		"heatMap": "Heatmap",
 		"insertAddress": "Indtast adresse",
@@ -283,6 +284,9 @@
 			"startAnalyzeData": "Analyser dine data",
 			"welcome": "Velkommen til Senti.Cloud!"
 		},
+		"export": {
+			"message": "Data detaljer:"
+		},
 		"login": {
 			"passwordReseted": "Din adgangskode er blevet ændret!",
 			"resetPassRequestMessage": "En E-mail er er blevet sendt med instruktioner for hvordan du nulstiller dit kodeord!",
@@ -376,6 +380,7 @@
 		},
 		"delete": "Slet",
 		"edit": "Rediger",
+		"export": "Eksporter data",
 		"exportPDF": "Print som PDF",
 		"favorites": {
 			"add": "Tilføj til favoritter",

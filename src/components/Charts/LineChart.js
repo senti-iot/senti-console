@@ -224,6 +224,12 @@ class LineChart extends PureComponent {
 		if (!this.clickEvent()) {
 			left = this.state.chartWidth / 2
 		}
+		let total = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data.length
+		let lastPoint = false
+		if (total - 1 === tooltipModel.dataPoints[0].index) { 
+			lastPoint = true
+		}
+
 		let str = tooltipModel.title[0]
 		var rest = str.substring(0, str.lastIndexOf(' ') + 1);
 		var last = str.substring(str.lastIndexOf(' ') + 1, str.length);
@@ -232,12 +238,11 @@ class LineChart extends PureComponent {
 				tooltip: {
 					...this.state.tooltip,
 					show: true,
+					showWeather: this.state.weather ? true : false,
 					exited: false
 				}
 			})
 		}
-			
-		// let weatherData = null
 		let wDate = null
 		try {
 			let lat = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].lat
@@ -245,7 +250,7 @@ class LineChart extends PureComponent {
 			let id = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].id
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
 			if (lat && long) {
-				if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long)) {
+				if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long) || this.state.tooltip.lastPoint !== lastPoint) {
 					getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then((rs) => {						
 						if (this.state.id === id)
 							this.setState({
@@ -296,6 +301,7 @@ class LineChart extends PureComponent {
 			...this.state.tooltip,
 			top,
 			left,
+			lastPoint,
 			title: [rest, last],
 			data: tooltipModel.dataPoints.map((d, i) => ({
 				device: tooltipModel.body[i].lines[0].split(':')[0], count: d.yLabel, color: tooltipModel.labelColors[i].backgroundColor

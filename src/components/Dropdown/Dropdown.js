@@ -46,7 +46,7 @@ class Dropdown extends Component {
 					{menuItems.map((m, i) => {
 						if (m.dontShow)
 							return null
-						return <MenuItem key={i} onClick={() => { m.func(); this.handleCloseActionsDetails()}}>
+						return <MenuItem selected={m.selected} key={i} onClick={() => { m.func(); this.handleCloseActionsDetails()}}>
 							{m.icon} {m.label}
 						</MenuItem>
 					})}

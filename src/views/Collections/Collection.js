@@ -14,7 +14,7 @@ import { getDevice, getWeather } from 'variables/dataDevices';
 import ActiveDeviceMap from './CollectionCards/CollectionActiveDeviceMap';
 import moment from 'moment'
 import teal from '@material-ui/core/colors/teal'
-import { setHourlyData, setMinutelyData, setDailyData, setSummaryData } from 'components/Charts/DataModel';
+import { setHourlyData, setMinutelyData, setDailyData, setSummaryData, setExportData } from 'components/Charts/DataModel';
 import { DataUsage, Timeline, Map, DeviceHub, History } from 'variables/icons';
 import Toolbar from 'components/Toolbar/Toolbar';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
@@ -160,6 +160,7 @@ class Collection extends Component {
 			name: activeDevice.name,
 			id: activeDevice.id,
 			data: data,
+			// data: this.regenerateData(data, 'hour'),
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500],
@@ -247,6 +248,35 @@ class Collection extends Component {
 				break;
 		}
 	}
+	regenerateData = (d, unit) => {
+		if (d) {
+			let data = {}
+			Object.keys(d).map((dt, i) => {
+				if (i === Object.keys(d).length - 1) {
+					//Today Handling
+					if (unit === 'day' && moment(dt).diff(moment(), 'days') === 0) {
+						data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
+					}
+					else {
+						if (unit === 'minute' && moment(dt).diff(moment(), 'minute') === 0) {
+							data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
+						}
+						else {
+							data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
+						}
+					}
+					return true
+				}
+				else {
+					//Normal ones
+					data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
+					return true
+				}
+			})
+			return data
+		}
+		else return null
+	}
 	getWifiHourly = async () => {
 		// const { device } = this.props
 		const { from, to, raw, collection, hoverID } = this.state
@@ -256,9 +286,13 @@ class Collection extends Component {
 		let dataSet = null
 		let data = await getDataHourly(collection.id, startDate, endDate, raw)
 		dataSet = {
+			dcId: collection.id,
+			dcName: collection.name,
+			project: collection.project ? collection.project.title : "",
+			org: collection.org ? collection.org.name : "",
 			name: collection.name,
-			id: collection.id,
-			data: data,
+			id: collection.activeDevice ? collection.activeDevice.id : collection.id,
+			data: this.regenerateData(data, 'hour'),
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500]
@@ -270,8 +304,10 @@ class Collection extends Component {
 			return newArr
 		}, [])
 		let newState = setHourlyData(dataArr, from, to, hoverID)
+		let exportData = setExportData(dataArr, 'hour')
 		this.setState({
 			...this.state,
+			exportData: exportData,
 			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 1,
@@ -287,9 +323,13 @@ class Collection extends Component {
 		let dataSet = null
 		let data = await getDataMinutely(collection.id, startDate, endDate, raw)
 		dataSet = {
+			dcId: collection.id,
+			dcName: collection.name,
+			project: collection.project ? collection.project.title : "",
+			org: collection.org ? collection.org.name : "",
 			name: collection.name,
-			id: collection.id,
-			data: data,
+			id: collection.activeDevice ? collection.activeDevice.id : collection.id,
+			data: this.regenerateData(data, 'minute'),
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500]
@@ -302,8 +342,10 @@ class Collection extends Component {
 			return newArr
 		}, [])
 		let newState = setMinutelyData(dataArr, from, to, hoverID)
+		let exportData = setExportData(dataArr, 'minute')
 		this.setState({
 			...this.state,
+			exportData: exportData,
 			loadingData: false,
 			timeType: 0,
 			...newState
@@ -317,9 +359,13 @@ class Collection extends Component {
 		let dataSet = null
 		let data = await getDataDaily(collection.id, startDate, endDate, raw)
 		dataSet = {
+			dcId: collection.id,
+			dcName: collection.name,
+			project: collection.project ? collection.project.title : "",
+			org: collection.org ? collection.org.name : "",
 			name: collection.name,
-			id: collection.id,
-			data: data,
+			id: collection.activeDevice ? collection.activeDevice.id : collection.id,
+			data: this.regenerateData(data, 'day'),
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500]
@@ -332,8 +378,10 @@ class Collection extends Component {
 			return newArr
 		}, [])
 		let newState = setDailyData(dataArr, from, to, hoverID)
+		let exportData = setExportData(dataArr, 'day')
 		this.setState({
 			...this.state,
+			exportData: exportData,
 			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 2,
@@ -350,7 +398,7 @@ class Collection extends Component {
 		dataSet = {
 			name: collection.name,
 			id: collection.id,
-			data: data,
+			data: this.regenerateData(data, 'day'),
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500]
@@ -660,6 +708,7 @@ class Collection extends Component {
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id='data'>
 							<CollectionData
+								exportData={this.state.exportData}
 								barDataSets={this.state.barDataSets}
 								roundDataSets={this.state.roundDataSets}
 								lineDataSets={this.state.lineDataSets}
