@@ -9,13 +9,14 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart, ArrowUpward, /* CloudDownload */
+	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, /* CloudDownload */
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
 	LineChart,
 	DoughnutChart,
 	PieChart,
+	ExportModal,
 	// ExportModal
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
@@ -308,10 +309,10 @@ class DeviceData extends PureComponent {
 						</ListItem>
 					</Hidden>
 				</div> */}
-				{/* <ListItem button onClick={this.handleOpenDownloadModal}>
+				<ListItem button onClick={this.handleOpenDownloadModal}>
 					<ListItemIcon><CloudDownload /></ListItemIcon>
 					<ListItemText>{t('data.download')}</ListItemText>
-				</ListItem> */}
+				</ListItem>
 				<ListItem button onClick={this.props.handleRawData}>
 					<ListItemIcon>
 						<Checkbox
@@ -360,7 +361,7 @@ class DeviceData extends PureComponent {
 
 	render() {
 		const { raw, t, loading, to, from, dateOption } = this.props
-		// const {  openDownload } = this.state
+		const {  openDownload } = this.state
 		let displayTo = dateTimeFormatter(to)
 		let displayFrom = dateTimeFormatter(from)
 		return (
@@ -373,12 +374,13 @@ class DeviceData extends PureComponent {
 					topAction={this.renderMenu()}
 					content={
 						<Grid container>
-							{/* <ExportModal
+							<ExportModal
+								data={this.props.exportData}
 								img={this.state.image}
 								open={openDownload}
 								handleClose={this.handleCloseDownloadModal}
 								t={t}
-							/> */}
+							/>
 							{loading ? <CircularLoader notCentered /> :
 								<Fragment>
 									{/* <ItemG xs={12} container direction={'column'} alignItems={'center'} justify={'center'}>

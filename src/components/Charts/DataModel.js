@@ -3,6 +3,32 @@ import { teal } from '@material-ui/core/colors'
 import moment from 'moment'
 import { colors } from 'variables/colors';
 
+export const setExportData = (dataArr, from, to, unit) => {
+	// let headers = [
+	// 	{ label: 'Device ID', key: 'id' },
+	// 	{ label: 'Start Date', key: 'startDate' },
+	// 	{ label: 'End Date', key: 'endDate' },
+	// 	{ label: 'Count', key: 'count' }
+	// ]
+	let dataSets = dataArr.datasets
+	let newData = []
+	if (dataSets)
+	{
+		let devices = dataSets.map(d => ({ id: d.id, data: d.data }))
+		devices.map(d =>  
+			d.data.map((dt, i) => 
+				newData.push({
+					id: d.id,
+					startDate: moment(dt.x).subtract(1, unit).format('DD-MM-YYYY HH:mm'),
+					endDate: moment(dt.x).format('DD-MM-YYYY HH:mm'),
+					count: dt.y
+				})	
+			)
+		)
+	}
+	return newData
+	
+}
 export const setSummaryData = (dataArr, from, to) => {
 	let displayTo = dateTimeFormatter(to)
 	let displayFrom = dateTimeFormatter(from)
@@ -14,7 +40,7 @@ export const setSummaryData = (dataArr, from, to) => {
 		barDataSets: null
 	}
 	if (dataArr.length > 0) {
-		 state = {
+		state = {
 			title: `${displayFrom} - ${displayTo}`,
 			loading: false,
 			timeType: 3,
@@ -28,7 +54,7 @@ export const setSummaryData = (dataArr, from, to) => {
 					label: [d.name],
 					data: Object.entries(d.data).map(d => d[1])
 				}))
-		
+
 			}
 		}
 	}
@@ -57,10 +83,10 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 	}
 
 	if (dataArr.length > 0) {
-		 state = {
+		state = {
 			loading: false,
 			timeType: 2,
-			 lineDataSets: {
+			lineDataSets: {
 				labels: labels,
 				datasets: dataArr.map((d, index) => ({
 					id: d.id,
@@ -100,7 +126,7 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 					data: Object.entries(d.data).map(d => d[1])
 				}))
 
-			}	
+			}
 		}
 	}
 	return state

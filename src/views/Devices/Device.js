@@ -18,7 +18,7 @@ import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
 import { Timeline, DeviceHub, Map, DeveloperBoard, Image } from 'variables/icons';
 import teal from '@material-ui/core/colors/teal'
-import { setHourlyData, setMinutelyData, setDailyData, setSummaryData } from 'components/Charts/DataModel';
+import { setHourlyData, setMinutelyData, setDailyData, setSummaryData, setExportData } from 'components/Charts/DataModel';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 
 class Device extends Component {
@@ -291,6 +291,7 @@ class Device extends Component {
 		let endDate = moment(to).format(this.format)
 		let dataArr = []
 		let dataSet = null
+		setExportData()
 		let data = await getDataHourly(device.id, startDate, endDate, raw)
 		dataSet = {
 			name: device.name,
@@ -363,15 +364,17 @@ class Device extends Component {
 			color: teal[500]
 		}
 		dataArr.push(dataSet)
-
+		
 		dataArr = dataArr.reduce((newArr, d) => {
 			if (d.data !== null)
 				newArr.push(d)
 			return newArr
 		}, [])
 		let newState = { ...setDailyData(dataArr, from, to, hoverID) }
+		let exportData = setExportData(newState.lineDataSets, from, to, 'day')
 		this.setState({
 			...this.state,
+			exportData: exportData,
 			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 2,
@@ -638,6 +641,7 @@ class Device extends Component {
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'data'}>
 						<DeviceData
+							exportData={this.state.exportData}
 							barDataSets={this.state.barDataSets}
 							roundDataSets={this.state.roundDataSets}
 							lineDataSets={this.state.lineDataSets}
