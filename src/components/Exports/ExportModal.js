@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from 'react'
-import { Dialog, Button } from '@material-ui/core';
-import { GridContainer, ItemG, Info } from 'components';
+import { Dialog, Button } from '@material-ui/core'
+import { GridContainer, ItemG, Info } from 'components'
 import { CSVLink } from 'react-csv'
 import moment from 'moment'
+import zipcelx from 'zipcelx'
+
 // import DevicePDF from './DevicePDF';
 
 class ExportModal extends Component {
@@ -18,6 +20,27 @@ class ExportModal extends Component {
 		var blob = new Blob([json], { type: "application/json" });
 		var url = URL.createObjectURL(blob);
 		return url
+	}
+	exportToXLSX = () => {
+		var data = this.props.data
+		let config = {
+			filename: `senti.cloud-data-${moment().format('DD-MM-YYYY')}`,
+			sheet: {
+				data: [
+					[
+						{ type: 'string', value: 'Device ID' },
+						{ type: 'string', value: 'Start Date' },
+						{ type: 'string', value: 'End Date' },
+						{ type: 'string', value: 'Count' },
+					], ...data.map(d => [
+						{ type: 'string', value: d.id },
+						{ type: 'date', value: d.startDate },
+						{ type: 'date', value: d.endDate },
+						{ type: 'number', value: d.count },
+					])]
+			}
+		}
+		zipcelx(config)
 	}
 	render() {
 		const { open, handleClose, t, data } = this.props
@@ -46,7 +69,7 @@ class ExportModal extends Component {
 									</Button>
 								</ItemG>
 								<ItemG>
-									<Button color={'primary'} variant={'contained'}>
+									<Button color={'primary'} variant={'contained'} onClick={this.exportToXLSX}>
 										XLSX
 									</Button>
 								</ItemG>

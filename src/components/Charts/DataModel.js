@@ -4,12 +4,6 @@ import moment from 'moment'
 import { colors } from 'variables/colors';
 
 export const setExportData = (dataArr, from, to, unit) => {
-	// let headers = [
-	// 	{ label: 'Device ID', key: 'id' },
-	// 	{ label: 'Start Date', key: 'startDate' },
-	// 	{ label: 'End Date', key: 'endDate' },
-	// 	{ label: 'Count', key: 'count' }
-	// ]
 	let dataSets = dataArr.datasets
 	let newData = []
 	if (dataSets)
@@ -19,7 +13,7 @@ export const setExportData = (dataArr, from, to, unit) => {
 			d.data.map((dt, i) => 
 				newData.push({
 					id: d.id,
-					startDate: moment(dt.x).subtract(1, unit).format('DD-MM-YYYY HH:mm'),
+					startDate: d.data.length - 1 === i ? moment(dt.x).startOf(unit).format('DD-MM-YYYY HH:mm') : moment(dt.x).subtract(1, unit).format('DD-MM-YYYY HH:mm'),
 					endDate: moment(dt.x).format('DD-MM-YYYY HH:mm'),
 					count: dt.y
 				})	
