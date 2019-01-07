@@ -11,7 +11,7 @@ import { colors } from 'variables/colors';
 import ProjectMap from './ProjectCards/ProjectMap';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { getDataHourly, getDataMinutely, getDataSummary, getDataDaily } from 'variables/dataCollections';
-import { setHourlyData, setDailyData, setSummaryData, setMinutelyData } from 'components/Charts/DataModel';
+import { setHourlyData, setDailyData, setSummaryData, setMinutelyData, setExportData } from 'components/Charts/DataModel';
 import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
 import { Timeline, Map, DataUsage, Person, LibraryBooks } from 'variables/icons';
@@ -121,7 +121,7 @@ class Project extends Component {
 			let data = await getDataHourly(d.id, startDate, endDate, raw)
 			dataSet = {
 				name: d.name,
-				id: d.id,
+				id: d.activeDevice.id ? d.activeDevice.id : d.id,
 				data: this.regenerateData(data, 'hour'),
 				color: d.color,
 				lat: d.activeDevice ? d.activeDevice.lat : 0,
@@ -151,9 +151,10 @@ class Project extends Component {
 		await Promise.all(project.dataCollections.map(async d => {
 			let dataSet = null
 			let data = await getDataMinutely(d.id, startDate, endDate, raw)
+			
 			dataSet = {
 				name: d.name,
-				id: d.id,
+				id: d.activeDevice.id ? d.activeDevice.id : d.id,
 				data: this.regenerateData(data, 'minute'),
 				color: d.color,
 				lat: d.activeDevice ? d.activeDevice.lat : 0,
@@ -167,7 +168,9 @@ class Project extends Component {
 			return newArr
 		}, [])
 		let newState = setMinutelyData(dataArr, from, to, hoverID)
+		let exportData = setExportData(newState.lineDataSets, 'minute')
 		this.setState({
+			exportData: exportData,
 			dataArr: dataArr,
 			loadingData: false,
 			timeType: 0,
@@ -213,7 +216,7 @@ class Project extends Component {
 			let data = await getDataDaily(d.id, startDate, endDate, raw)
 			dataSet = {
 				name: d.name,
-				id: d.id,
+				id: d.activeDevice.id ? d.activeDevice.id : d.id,
 				data: this.regenerateData(data, 'day'),
 				color: d.color,
 				lat: d.activeDevice ? d.activeDevice.lat : 0,
@@ -228,7 +231,9 @@ class Project extends Component {
 			return newArr
 		}, [])
 		let newState = setDailyData(dataArr, from, to, hoverID)
+		let exportData = setExportData(newState.lineDataSets, 'day')
 		this.setState({
+			exportData: exportData,
 			dataArr: dataArr,
 			loadingData: false,
 			timeType: 2,
@@ -259,7 +264,9 @@ class Project extends Component {
 			return newArr
 		}, [])
 		let newState = setSummaryData(dataArr, from, to, hoverID)
+		let exportData = setExportData(newState.lineDataSets, 'hour')
 		this.setState({
+			exportData: exportData,
 			dataArr: dataArr,
 			loadingData: false,
 			timeType: 3,
@@ -548,6 +555,7 @@ class Project extends Component {
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id='data'>
 							<ProjectData
+								exportData={this.state.exportData}
 								setHoverID={this.setHoverID}
 								barDataSets={barDataSets}
 								roundDataSets={roundDataSets}
