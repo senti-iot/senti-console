@@ -1,6 +1,6 @@
 import React, { PureComponent, Fragment } from 'react'
 import { InfoCard, Caption, Dropdown, CircularLoader, ItemG, TextF, AddressInput, Danger } from 'components';
-import { Map, Layers, Smartphone, Save, Clear } from 'variables/icons'
+import { Map, Layers, Smartphone, Save, Clear, EditLocation } from 'variables/icons'
 import { Grid, Checkbox, IconButton, Menu, MenuItem, Collapse, Dialog, DialogContent, DialogTitle, DialogActions, Button } from '@material-ui/core';
 import { red, teal } from "@material-ui/core/colors"
 import OpenStreetMap from 'components/Map/OpenStreetMap';
@@ -125,7 +125,7 @@ export default class DeviceMap extends PureComponent {
 				[
 					{ label: t('actions.heatMap'), icon: <Checkbox checked={this.state.heatMap} />, func: () => this.setState({ heatMap: !this.state.heatMap }) },
 					{ label: t('actions.goToDevice'), icon: <Smartphone style={{ padding: "0px 12px" }} />, func: () => this.flyToMarkers() },
-					{ label: t('actions.editLocation'), icon: <Checkbox checked={this.state.editLocation}/>, func: () => this.handleEditLocation() }]
+					{ label: t('actions.editLocation'), selected: this.state.editLocation, icon: <EditLocation style={{ padding: '0px 12px' }}/>, func: () => this.handleEditLocation() }]
 			} />
 
 		</Fragment>
