@@ -85,7 +85,6 @@ class Device extends Component {
 	getDataCollection = async (id) => {
 		await getCollection(id).then(rs => {
 			if (rs) {
-				console.log(rs)
 				this.setState({
 					device: {
 						...this.state.device,
@@ -297,8 +296,9 @@ class Device extends Component {
 			id: device.id,
 			lat: device.lat,
 			long: device.long,
+			org: device.org ? device.org.name : "",
 			data: this.regenerateData(data, 'hour'),
-			color: teal[500]
+			color: teal[500],
 		}
 		dataArr.push(dataSet)
 		dataArr = dataArr.reduce((newArr, d) => {
@@ -331,6 +331,7 @@ class Device extends Component {
 			data: this.regenerateData(data, 'minute'),
 			lat: device.lat,
 			long: device.long,
+			org: device.org ? device.org.name : "",
 			color: teal[500]
 		}
 		dataArr.push(dataSet)
@@ -353,7 +354,6 @@ class Device extends Component {
 	}
 	getWifiDaily = async () => {
 		const { from, to, raw, device, hoverID } = this.state
-		console.log(device)
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		let dataArr = []
@@ -366,6 +366,7 @@ class Device extends Component {
 			id: device.id,
 			lat: device.lat,
 			long: device.long,
+			org: device.org ? device.org.name : "",
 			data: this.regenerateData(data, 'day'),
 			color: teal[500]
 		}
@@ -399,6 +400,7 @@ class Device extends Component {
 			id: device.id,
 			lat: device.lat,
 			long: device.long,
+			org: device.org ? device.org.name : "",
 			data: data,
 			color: teal[500]
 		}

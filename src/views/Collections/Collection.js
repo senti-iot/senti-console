@@ -286,8 +286,12 @@ class Collection extends Component {
 		let dataSet = null
 		let data = await getDataHourly(collection.id, startDate, endDate, raw)
 		dataSet = {
+			dcId: collection.id,
+			dcName: collection.name,
+			project: collection.project ? collection.project.title : "",
+			org: collection.org ? collection.org.name : "",
 			name: collection.name,
-			id: collection.id,
+			id: collection.activeDevice ? collection.activeDevice.id : collection.id,
 			data: this.regenerateData(data, 'hour'),
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
@@ -300,7 +304,7 @@ class Collection extends Component {
 			return newArr
 		}, [])
 		let newState = setHourlyData(dataArr, from, to, hoverID)
-		let exportData = setExportData(newState.lineDataSets, 'hour')
+		let exportData = setExportData(dataArr, 'hour')
 		this.setState({
 			...this.state,
 			exportData: exportData,
@@ -319,8 +323,12 @@ class Collection extends Component {
 		let dataSet = null
 		let data = await getDataMinutely(collection.id, startDate, endDate, raw)
 		dataSet = {
+			dcId: collection.id,
+			dcName: collection.name,
+			project: collection.project ? collection.project.title : "",
+			org: collection.org ? collection.org.name : "",
 			name: collection.name,
-			id: collection.id,
+			id: collection.activeDevice ? collection.activeDevice.id : collection.id,
 			data: this.regenerateData(data, 'minute'),
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
@@ -334,7 +342,7 @@ class Collection extends Component {
 			return newArr
 		}, [])
 		let newState = setMinutelyData(dataArr, from, to, hoverID)
-		let exportData = setExportData(newState.lineDataSets, 'minute')
+		let exportData = setExportData(dataArr, 'minute')
 		this.setState({
 			...this.state,
 			exportData: exportData,
@@ -351,8 +359,12 @@ class Collection extends Component {
 		let dataSet = null
 		let data = await getDataDaily(collection.id, startDate, endDate, raw)
 		dataSet = {
+			dcId: collection.id,
+			dcName: collection.name,
+			project: collection.project ? collection.project.title : "",
+			org: collection.org ? collection.org.name : "",
 			name: collection.name,
-			id: collection.id,
+			id: collection.activeDevice ? collection.activeDevice.id : collection.id,
 			data: this.regenerateData(data, 'day'),
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
@@ -366,7 +378,7 @@ class Collection extends Component {
 			return newArr
 		}, [])
 		let newState = setDailyData(dataArr, from, to, hoverID)
-		let exportData = setExportData(newState.lineDataSets, 'day')
+		let exportData = setExportData(dataArr, 'day')
 		this.setState({
 			...this.state,
 			exportData: exportData,

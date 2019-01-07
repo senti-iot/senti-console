@@ -71,10 +71,6 @@ class OpenStreetMap extends React.Component {
 	componentDidUpdate = (prevProps, prevState) => {
 		if (prevProps.mapTheme !== this.props.mapTheme)
 			this.map.leafletElement.setMaxZoom(layers[this.props.mapTheme].maxZoom)
-		if (prevProps.calibrate !== this.props.calibrate)
-			this.map.leafletElement.eachLayer((layer) => { 
-				console.log(layer)
-			})
 	}
 
 	centerOnAllMarkers = () => {

@@ -9,7 +9,6 @@ export const setExportData = (dataArr, unit) => {
 	if (dataSets)
 	{
 		// let devices = .map(d => ({ id: d.id, dcId: d.id, data:=> ({ x: d[0], y: d[1] })) }))
-		console.log(dataSets)
 		dataSets.map(d =>  
 			Object.entries(d.data).map((dt, i) => 
 			{
