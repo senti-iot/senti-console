@@ -8,6 +8,18 @@ import zipcelx from 'zipcelx'
 // import DevicePDF from './DevicePDF';
 
 class ExportModal extends Component {
+	newHeaders = [
+		{ label: 'Data Collection ID', key: 'id' },
+		{ label: 'Data Collection Name', key: 'dcName' },
+		{ label: 'Lat', key: 'lat' },
+		{ label: 'Long', key: 'long' },
+		{ label: 'Time granulation', key: 'unit' },
+		{ label: 'Start Date', key: 'startDate' },
+		{ label: 'End Date', key: 'endDate' },
+		{ label: 'Count', key: 'count' },
+		{ label: 'Project Name', key: 'projectName' },
+		{ label: 'Organization', key: 'org' }
+	]
 	CSVHeaders = [
 		{ label: 'Device ID', key: 'id' },
 		{ label: 'Start Date', key: 'startDate' },
@@ -43,7 +55,7 @@ class ExportModal extends Component {
 		zipcelx(config)
 	}
 	render() {
-		const { open, handleClose, t, data, to, from } = this.props
+		const { open, handleClose, t, data, to, from, raw } = this.props
 		return (
 			<Dialog
 				open={open}
@@ -52,11 +64,17 @@ class ExportModal extends Component {
 				<GridContainer>
 					{data &&
 						<Fragment>
+							
 							<ItemG xs={12}>
 								<Info>{t('dialogs.export.message')}</Info>
 							</ItemG>
 							<ItemG xs={12}>
-								<Info>{`${from} - ${to}`}</Info>
+								<Info noParagraph>
+									{raw ? t('collections.rawData') : t('collections.calibratedData')}
+								</Info>
+								<Info>
+									{`${from} - ${to}`}
+								</Info>
 							</ItemG>
 							<ItemG container spacing={8} justify={'center'} >
 								<ItemG>

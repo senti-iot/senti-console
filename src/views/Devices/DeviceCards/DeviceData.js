@@ -375,6 +375,7 @@ class DeviceData extends PureComponent {
 					content={
 						<Grid container>
 							<ExportModal
+								raw={raw}
 								to={displayTo}
 								from={displayFrom}
 								data={this.props.exportData}
