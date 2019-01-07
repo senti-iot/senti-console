@@ -43,21 +43,22 @@ class ExportModal extends Component {
 		zipcelx(config)
 	}
 	render() {
-		const { open, handleClose, t, data } = this.props
-
+		const { open, handleClose, t, data, to, from } = this.props
 		return (
 			<Dialog
 				open={open}
 				onClose={handleClose}
 			>
-
 				<GridContainer>
 					{data &&
 						<Fragment>
 							<ItemG xs={12}>
 								<Info>{t('dialogs.export.message')}</Info>
 							</ItemG>
-							<ItemG container spacing={8} >
+							<ItemG xs={12}>
+								<Info>{`${from} - ${to}`}</Info>
+							</ItemG>
+							<ItemG container spacing={8} justify={'center'} >
 								<ItemG>
 									<Button filename={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.csv`} data={data} headers={this.CSVHeaders} component={CSVLink} color={'primary'} variant={'contained'}>
 										CSV

@@ -253,7 +253,6 @@ class Device extends Component {
 		if (d) {
 			let data = {}
 			Object.keys(d).map((dt, i) => {
-				// console.log(dt, d[dt], Object.keys(d))
 				if (i === Object.keys(d).length - 1) {
 					//Today Handling
 					if (unit === 'day' && moment(dt).diff(moment(), 'days') === 0) {
@@ -279,7 +278,6 @@ class Device extends Component {
 					return true
 				}
 			})
-			console.log(data)
 			return data
 		}
 		else return null
@@ -291,7 +289,6 @@ class Device extends Component {
 		let endDate = moment(to).format(this.format)
 		let dataArr = []
 		let dataSet = null
-		setExportData()
 		let data = await getDataHourly(device.id, startDate, endDate, raw)
 		dataSet = {
 			name: device.name,
@@ -308,8 +305,10 @@ class Device extends Component {
 			return newArr
 		}, [])
 		let newState = setHourlyData(dataArr, from, to, hoverID)
+		let exportData = setExportData(newState.lineDataSets, 'hour')
 		this.setState({
 			...this.state,
+			exportData: exportData,
 			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 1,
@@ -340,8 +339,11 @@ class Device extends Component {
 			return newArr
 		}, [])
 		let newState = setMinutelyData(dataArr, from, to, hoverID)
+		console.log(newState)
+		let exportData = setExportData(newState.lineDataSets, 'minute')
 		this.setState({
 			...this.state,
+			exportData: exportData,
 			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 0,
@@ -371,7 +373,7 @@ class Device extends Component {
 			return newArr
 		}, [])
 		let newState = { ...setDailyData(dataArr, from, to, hoverID) }
-		let exportData = setExportData(newState.lineDataSets, from, to, 'day')
+		let exportData = setExportData(newState.lineDataSets, 'day')
 		this.setState({
 			...this.state,
 			exportData: exportData,

@@ -375,6 +375,8 @@ class DeviceData extends PureComponent {
 					content={
 						<Grid container>
 							<ExportModal
+								to={displayTo}
+								from={displayFrom}
 								data={this.props.exportData}
 								img={this.state.image}
 								open={openDownload}

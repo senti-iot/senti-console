@@ -285,7 +285,7 @@
 			"welcome": "Velkommen til Senti.Cloud!"
 		},
 		"export": {
-			"message": ""
+			"message": "Periode:"
 		},
 		"login": {
 			"passwordReseted": "Din adgangskode er blevet ændret!",
