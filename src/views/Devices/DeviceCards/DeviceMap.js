@@ -29,7 +29,7 @@ export default class DeviceMap extends PureComponent {
 		{ id: 7, label: this.props.t('map.themes.7') }
 	]
 	componentDidUpdate = (prevProps, prevState) => {
-		if (this.props.device && prevProps.device !== this.props.device) { 
+		if (this.props.device && prevProps.device !== this.props.device && this.props.device.lat && this.props.device.long) {
 			this.setState({
 				markers: [{ ...this.props.device, weather: this.props.weather }]
 			})
