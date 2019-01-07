@@ -4,19 +4,28 @@ import moment from 'moment'
 import { colors } from 'variables/colors';
 
 export const setExportData = (dataArr, unit) => {
-	let dataSets = dataArr.datasets
+	let dataSets = dataArr
 	let newData = []
 	if (dataSets)
 	{
-		let devices = dataSets.map(d => ({ id: d.id, data: d.data }))
-		devices.map(d =>  
-			d.data.map((dt, i) => 
-				newData.push({
+		// let devices = .map(d => ({ id: d.id, dcId: d.id, data:=> ({ x: d[0], y: d[1] })) }))
+		console.log(dataSets)
+		dataSets.map(d =>  
+			Object.entries(d.data).map((dt, i) => 
+			{
+				return newData.push({
+					dcId: d.dcId,
+					dcName: d.dcName,
+					org: d.org,
+					project: d.project,
+					lat: d.lat,
+					long: d.long,
 					id: d.id,
-					startDate: d.data.length - 1 === i && moment().diff(moment(dt.x), unit) === 0 ? moment(dt.x).startOf(unit).format('DD-MM-YYYY HH:mm') : moment(dt.x).subtract(1, unit).format('DD-MM-YYYY HH:mm'),
-					endDate: moment(dt.x).format('DD-MM-YYYY HH:mm'),
-					count: dt.y
+					startDate: d.data.length - 1 === i && moment().diff(moment(dt[0]), unit) === 0 ? moment(dt[0]).startOf(unit).format('DD-MM-YYYY HH:mm') : moment(dt[0]).subtract(1, unit).format('DD-MM-YYYY HH:mm'),
+					endDate: moment(dt[0]).format('DD-MM-YYYY HH:mm'),
+					count: dt[1]
 				})	
+			}
 			)
 		)
 	}

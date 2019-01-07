@@ -65,18 +65,19 @@ class Device extends Component {
 					prevURL: window.location.pathname
 				})
 			else {
-				this.setState({ device: rs, loading: false }, () => {
+				this.setState({ device: rs, loading: false }, async () => {
+					if (rs.dataCollection) {
+						await this.getDataCollection(rs.dataCollection)
+					}
 					this.getWifiDaily()
 					this.getHeatMapData()
-				})
-				if (rs.dataCollection) {
-					await this.getDataCollection(rs.dataCollection)
-				}
-				if (rs.lat && rs.long) {
-					let data = await getWeather(rs, moment(), this.props.language)
-					this.setState({ weather: data })
-				}
+					if (rs.lat && rs.long) {
+						let data = await getWeather(rs, moment(), this.props.language)
+						this.setState({ weather: data })
+					}
 
+				})
+		
 			}
 		})
 	}
@@ -84,6 +85,7 @@ class Device extends Component {
 	getDataCollection = async (id) => {
 		await getCollection(id).then(rs => {
 			if (rs) {
+				console.log(rs)
 				this.setState({
 					device: {
 						...this.state.device,
@@ -305,7 +307,7 @@ class Device extends Component {
 			return newArr
 		}, [])
 		let newState = setHourlyData(dataArr, from, to, hoverID)
-		let exportData = setExportData(newState.lineDataSets, 'hour')
+		let exportData = setExportData(dataArr, 'hour')
 		this.setState({
 			...this.state,
 			exportData: exportData,
@@ -339,8 +341,7 @@ class Device extends Component {
 			return newArr
 		}, [])
 		let newState = setMinutelyData(dataArr, from, to, hoverID)
-		console.log(newState)
-		let exportData = setExportData(newState.lineDataSets, 'minute')
+		let exportData = setExportData(dataArr, 'minute')
 		this.setState({
 			...this.state,
 			exportData: exportData,
@@ -352,6 +353,7 @@ class Device extends Component {
 	}
 	getWifiDaily = async () => {
 		const { from, to, raw, device, hoverID } = this.state
+		console.log(device)
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		let dataArr = []
@@ -359,6 +361,8 @@ class Device extends Component {
 		let data = await getDataDaily(device.id, startDate, endDate, raw)
 		dataSet = {
 			name: device.name,
+			dcId: device.dataCollection ? device.dataCollection.id : "",
+			dcName: device.dataCollection ? device.dataCollection.name : "",
 			id: device.id,
 			lat: device.lat,
 			long: device.long,
@@ -373,7 +377,7 @@ class Device extends Component {
 			return newArr
 		}, [])
 		let newState = { ...setDailyData(dataArr, from, to, hoverID) }
-		let exportData = setExportData(newState.lineDataSets, 'day')
+		let exportData = setExportData(dataArr, 'day')
 		this.setState({
 			...this.state,
 			exportData: exportData,

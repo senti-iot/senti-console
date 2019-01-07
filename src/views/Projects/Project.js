@@ -120,8 +120,12 @@ class Project extends Component {
 			let dataSet = null
 			let data = await getDataHourly(d.id, startDate, endDate, raw)
 			dataSet = {
+				dcId: d.id,
+				dcName: d.name,
+				project: project ? project.name : "",
+				org: d.org ? d.org.name : "",
 				name: d.name,
-				id: d.activeDevice.id ? d.activeDevice.id : d.id,
+				id: d.activeDevice ? d.activeDevice.id : d.id,
 				data: this.regenerateData(data, 'hour'),
 				color: d.color,
 				lat: d.activeDevice ? d.activeDevice.lat : 0,
@@ -153,8 +157,12 @@ class Project extends Component {
 			let data = await getDataMinutely(d.id, startDate, endDate, raw)
 			
 			dataSet = {
+				dcId: d.id,
+				dcName: d.name,
+				project: project ? project.name : "",
+				org: d.org ? d.org.name : "",
 				name: d.name,
-				id: d.activeDevice.id ? d.activeDevice.id : d.id,
+				id: d.activeDevice ? d.activeDevice.id : d.id,
 				data: this.regenerateData(data, 'minute'),
 				color: d.color,
 				lat: d.activeDevice ? d.activeDevice.lat : 0,
@@ -168,7 +176,7 @@ class Project extends Component {
 			return newArr
 		}, [])
 		let newState = setMinutelyData(dataArr, from, to, hoverID)
-		let exportData = setExportData(newState.lineDataSets, 'minute')
+		let exportData = setExportData(dataArr, 'minute')
 		this.setState({
 			exportData: exportData,
 			dataArr: dataArr,
@@ -215,8 +223,12 @@ class Project extends Component {
 			let dataSet = null
 			let data = await getDataDaily(d.id, startDate, endDate, raw)
 			dataSet = {
+				dcId: d.id,
+				dcName: d.name,
+				project: project ? project.title : "",
+				org: d.org ? d.org.name : "",
 				name: d.name,
-				id: d.activeDevice.id ? d.activeDevice.id : d.id,
+				id: d.activeDevice ? d.activeDevice.id : d.id,
 				data: this.regenerateData(data, 'day'),
 				color: d.color,
 				lat: d.activeDevice ? d.activeDevice.lat : 0,
@@ -231,7 +243,7 @@ class Project extends Component {
 			return newArr
 		}, [])
 		let newState = setDailyData(dataArr, from, to, hoverID)
-		let exportData = setExportData(newState.lineDataSets, 'day')
+		let exportData = setExportData(dataArr, 'day')
 		this.setState({
 			exportData: exportData,
 			dataArr: dataArr,
@@ -264,7 +276,7 @@ class Project extends Component {
 			return newArr
 		}, [])
 		let newState = setSummaryData(dataArr, from, to, hoverID)
-		let exportData = setExportData(newState.lineDataSets, 'hour')
+		let exportData = setExportData(dataArr, 'day')
 		this.setState({
 			exportData: exportData,
 			dataArr: dataArr,
