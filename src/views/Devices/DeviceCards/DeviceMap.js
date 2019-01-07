@@ -44,12 +44,13 @@ export default class DeviceMap extends PureComponent {
 	handleSaveEditAddress = async () => {
 		let device = this.state.markers[0]
 		delete device['weather']
+		//obsolete, will be removed in future version
 		device.project = {
 			id: 0
 		}
 		let saved = await updateDevice(device)
 		if (saved)
-			window.location.reload()
+			this.props.reload(5)//msgId = 5 - Device Updated
 		else { 
 			this.setState({ error: true })
 		}

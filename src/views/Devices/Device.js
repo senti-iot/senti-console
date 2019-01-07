@@ -427,6 +427,9 @@ class Device extends Component {
 			case 4:
 				s('snackbars.assign.deviceToOrg', { device: `${name}(${id})`, org: `${device.org.name}` })
 				break
+			case 5: 
+				s('snackbars.deviceUpdated', { device: `${name}(${id})` })
+				break
 			default:
 				break
 		}
@@ -439,7 +442,13 @@ class Device extends Component {
 	handleOpenAssignOrg = () => {
 		this.setState({ openAssignOrg: true, anchorEl: null })
 	}
-
+	reload = async (msgId) => { 
+		this.snackBarMessages(msgId)
+		this.setState({
+			loading: true
+		})
+		await this.getDevice(this.state.device.id)
+	}
 	handleCloseAssignOrg = async (reload) => {
 		if (reload) {
 			this.setState({ loading: true, openAssignOrg: false })
@@ -648,6 +657,7 @@ class Device extends Component {
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'map'}>
 						<DeviceMap
+							reload={this.reload}
 							mapTheme={this.props.mapTheme}
 							device={this.state.heatData}
 							loading={this.state.loadingMap}
