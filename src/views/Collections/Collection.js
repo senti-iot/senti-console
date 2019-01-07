@@ -14,7 +14,7 @@ import { getDevice, getWeather } from 'variables/dataDevices';
 import ActiveDeviceMap from './CollectionCards/CollectionActiveDeviceMap';
 import moment from 'moment'
 import teal from '@material-ui/core/colors/teal'
-import { setHourlyData, setMinutelyData, setDailyData, setSummaryData } from 'components/Charts/DataModel';
+import { setHourlyData, setMinutelyData, setDailyData, setSummaryData, setExportData } from 'components/Charts/DataModel';
 import { DataUsage, Timeline, Map, DeviceHub, History } from 'variables/icons';
 import Toolbar from 'components/Toolbar/Toolbar';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
@@ -300,8 +300,10 @@ class Collection extends Component {
 			return newArr
 		}, [])
 		let newState = setHourlyData(dataArr, from, to, hoverID)
+		let exportData = setExportData(newState.lineDataSets, 'hour')
 		this.setState({
 			...this.state,
+			exportData: exportData,
 			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 1,
@@ -332,8 +334,10 @@ class Collection extends Component {
 			return newArr
 		}, [])
 		let newState = setMinutelyData(dataArr, from, to, hoverID)
+		let exportData = setExportData(newState.lineDataSets, 'minute')
 		this.setState({
 			...this.state,
+			exportData: exportData,
 			loadingData: false,
 			timeType: 0,
 			...newState
@@ -362,8 +366,10 @@ class Collection extends Component {
 			return newArr
 		}, [])
 		let newState = setDailyData(dataArr, from, to, hoverID)
+		let exportData = setExportData(newState.lineDataSets, 'day')
 		this.setState({
 			...this.state,
+			exportData: exportData,
 			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 2,
@@ -690,6 +696,7 @@ class Collection extends Component {
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id='data'>
 							<CollectionData
+								exportData={this.state.exportData}
 								barDataSets={this.state.barDataSets}
 								roundDataSets={this.state.roundDataSets}
 								lineDataSets={this.state.lineDataSets}
