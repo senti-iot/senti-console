@@ -203,7 +203,7 @@ export default class ActiveDeviceMap extends PureComponent {
 				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat, long: device.long })}, Heatmap ${this.state.heatMap ? t('actions.on') : t('actions.off')}` : null}
 				avatar={<Map />}
 				topAction={device ? (device.lat && device.long ? this.renderMenu() : null) : null}
-				content={
+				hiddenContent={
 					loading ? <CircularLoader /> :
 						<Grid container justify={'center'}>
 							{this.renderModal()}
