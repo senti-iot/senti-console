@@ -14,6 +14,7 @@ import { Add, Delete, Edit, PictureAsPdf, ViewList, ViewModule, DataUsage, Star,
 import AssignDCs from 'components/AssignComponents/AssignDCs';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { connect } from 'react-redux'
+import { customFilterItems } from 'variables/Filters';
 
 class Projects extends Component {
 	constructor(props) {
@@ -31,11 +32,11 @@ class Projects extends Component {
 			orderBy: 'title',
 			openAssignDC: false,
 			filters: {
-				name: false,
 				keyword: '',
 				startDate: null,
 				endDate: null,
-				activeDateFilter: false
+				activeDateFilter: false,
+				custom: []
 			}
 		}
 		props.setHeader('projects.pageTitle', false, '', 'projects')
@@ -135,7 +136,8 @@ class Projects extends Component {
 	}
 
 	filterItems = (data) => {
-		return filterItems(data, this.state.filters)
+		let { filters } = this.state
+		return customFilterItems(filterItems(data, filters), filters.custom)
 	}
 
 	handleEdit = () => {
@@ -278,11 +280,37 @@ class Projects extends Component {
 			</IconButton>
 		</Fragment>
 	}
-	
+	addFilter = (f) => {
+		let cFilters = this.state.filters.custom
+		let id = cFilters.length
+		cFilters.push({ value: f.value, id: id, key: f.key })
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+		return id
+	}
+	removeFilter = (fId) => {
+		let cFilters = this.state.filters.custom
+		cFilters = cFilters.reduce((newFilters, f) => { 
+			if (f.id !== fId) {
+				newFilters.push(f)
+			}
+			return newFilters
+		}, [])
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+	}
 	ft = () => {
 		const { t } = this.props
-		return [{ id: 'title', name: t('projects.fields.name'), func: this.filter, type: 'text' },
-			{ id: 'startDate', name: t('projects.fields.startDate'), func: this.filter, type: 'date' }
+		return [{ key: 'title', name: t('projects.fields.name'), type: 'text' },
+			{ key: 'startDate', name: t('projects.fields.startDate'), type: 'date' }
 		]
 
 	}
@@ -306,6 +334,8 @@ class Projects extends Component {
 				/> : null}
 				<EnhancedTableToolbar
 					ft={this.ft()}//filters List
+					addFilter={this.addFilter}
+					removeFilter={this.removeFilter}
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
@@ -349,6 +379,8 @@ class Projects extends Component {
 				/> : null}
 				<EnhancedTableToolbar
 					ft={this.ft()}
+					addFilter={this.addFilter}
+					removeFilter={this.removeFilter}
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}

@@ -34,6 +34,11 @@ class ExportModal extends Component {
 		var json = JSON.stringify(data);
 		var blob = new Blob([json], { type: "application/json" });
 		var url = URL.createObjectURL(blob);
+		var reader = new FileReader()
+		reader.onload = function (e) { 
+			window.location.href = reader.result
+		}
+		reader.readAsDataURL(blob)
 		return url
 	}
 	exportToXLSX = () => {
@@ -108,7 +113,6 @@ class ExportModal extends Component {
 				<GridContainer>
 					{data &&
 						<Fragment>
-							
 							<ItemG xs={12}>
 								<Info>{t('dialogs.export.message')}</Info>
 							</ItemG>
@@ -122,12 +126,12 @@ class ExportModal extends Component {
 							</ItemG>
 							<ItemG container spacing={8} justify={'center'} >
 								<ItemG>
-									<Button filename={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.csv`} data={data} headers={deviceHeaders ? this.CSVHeaders : this.newHeaders} component={CSVLink} color={'primary'} variant={'contained'}>
+									<Button target={'_self'} download={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.csv`} filename={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.csv`} data={data} headers={deviceHeaders ? this.CSVHeaders : this.newHeaders} component={CSVLink} color={'primary'} variant={'contained'}>
 										CSV
 									</Button>
 								</ItemG>
 								<ItemG>
-									<Button component={'a'} download={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.json`} href={this.exportToJson()} target={'_blank'} color={'primary'} variant={'contained'}>
+									<Button download={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.json`} onClick={this.exportToJson} target={'_self'} color={'primary'} variant={'contained'}>
 										JSON
 									</Button>
 								</ItemG>

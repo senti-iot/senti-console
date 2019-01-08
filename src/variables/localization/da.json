@@ -19,6 +19,7 @@
 	"": "",
 	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
+		"addFilter": "Tilføj filter",
 		"goToDevice": "Gå til enhed(er)",
 		"apply": "Anvend",
 		"back": "Forrige",

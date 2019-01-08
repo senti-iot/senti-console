@@ -4,10 +4,11 @@ import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import Chip from '@material-ui/core/Chip'
 import withStyles from '@material-ui/core/styles/withStyles'
-import blue from '@material-ui/core/colors/blue'
+import teal from '@material-ui/core/colors/blue'
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import cx from 'classnames'
+import { Add } from 'variables/icons';
 
 const styles = (theme) => {
 	const light = theme.palette.type === 'light'
@@ -407,6 +408,7 @@ class FilterInput extends Component {
 			required,
 			rootRef,
 			value,
+			t,
 			...other
 		} = this.props
 
@@ -416,7 +418,6 @@ class FilterInput extends Component {
 		const shrinkFloatingLabel = InputLabelProps.shrink != null
 			? InputLabelProps.shrink
 			: (label != null && (hasInput || this.state.isFocused))
-
 		return (
 			<FormControl
 				ref={rootRef}
@@ -451,7 +452,7 @@ class FilterInput extends Component {
 					})}
 				>
 					{chips.length > 0 ? chips.map((tag, i) => {
-						const value = dataSourceConfig ? tag[dataSourceConfig.value] : tag
+						const value = dataSourceConfig ? tag[dataSourceConfig.id] : tag
 						return chipRenderer({
 							value,
 							text: dataSourceConfig ? tag[dataSourceConfig.text] : tag,
@@ -463,9 +464,10 @@ class FilterInput extends Component {
 							className: classes.chip
 						}, i)
 					}) : chipRenderer({
-						value: 'Add filter',
-						text: 'Add filter',
-						chip: 'Add filter',
+						value: t('actions.addFilter'),
+						text: t('actions.addFilter'),
+						chip: t('actions.addFilter'),
+						icon: <Add />,
 						isDisabled: !!disabled,
 						isFocused: false,
 						className: classes.chip
@@ -566,11 +568,12 @@ FilterInput.defaultProps = {
 
 export default withStyles(styles)(FilterInput)
 
-export const defaultChipRenderer = ({ value, text, isFocused, isDisabled, handleClick, handleDelete, className }, key) => (
+export const defaultChipRenderer = ({ value, text, isFocused, isDisabled, handleClick, handleDelete, className, icon }, key) => (
 	<Chip
 		key={key}
 		className={className}
-		style={{ pointerEvents: isDisabled ? 'none' : undefined, backgroundColor: isFocused ? blue[300] : undefined }}
+		icon={icon}
+		style={{ pointerEvents: isDisabled ? 'none' : undefined, backgroundColor: isFocused ? teal[400] : undefined }}
 		onClick={handleClick}
 		onDelete={handleDelete}
 		label={text}

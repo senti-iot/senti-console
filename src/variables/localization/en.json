@@ -19,6 +19,7 @@
 	"": "",
 	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
+		"addFilter": "Add filter",
 		"goToDevice": "Go to device(s)",
 		"apply": "Apply",
 		"back": "Previous",

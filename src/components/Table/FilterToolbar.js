@@ -23,31 +23,41 @@ class FilterToolbar extends Component {
 		return chip.length >= 3
 	}
 
-	handleAdd = (chip) => {
+	handleAdd = (chip, value, key) => {
+		let id = this.props.addFilter({ value: value, key: key })
+		let chipObj = {
+			id: id,
+			value: chip
+		}
+		// chip.id = id
 		this.setState({
-			chips: [...this.state.chips, chip]
+			chips: [...this.state.chips, chipObj]
 		})
+		
 	}
 
-	handleDelete = (deletedChip) => {
-	
+	handleDelete = (deletedChip, i) => {
+		this.props.removeFilter(deletedChip)
 		this.setState({
-			chips: this.state.chips.filter((c) => c !== deletedChip)
+			chips: this.state.chips.filter((c) => c.id !== deletedChip)
 		})
 	
 	}
 	render() {
+		const { t } = this.props
 		return (
 			<Fragment>
 				<FilterInput
-					{...this.props}
+					// {...this.props}
 					inputRef={ref => this.input = ref}
 					value={this.state.chips}
 					onBeforeAdd={(chip) => this.onBeforeAdd(chip)}
 					onAdd={(chip) => this.handleAdd(chip)}
-					onDelete={(deletedChip) => this.handleDelete(deletedChip)}
+					onDelete={(deletedChip, i) => this.handleDelete(deletedChip, i)}
 					onClick={this.handleClick}
+					dataSourceConfig={{ id: 'id', text: 'value', value: 'value' }}
 					fullWidth
+					t={t}
 				/>
 				<Menu
 					id='simple-menu'
@@ -55,8 +65,8 @@ class FilterToolbar extends Component {
 					open={this.state.openMenu}
 					onClose={this.handleClose}
 				>
-					{this.props.filters ? this.props.filters.map(ft => {
-						return <MenuItem key={ft.id} onClick={() => { this.setState({ [ft.name]: true, openMenu: false }) }}>
+					{this.props.filters ? this.props.filters.map((ft, i) => {
+						return <MenuItem key={i} onClick={() => { this.setState({ [ft.name]: true, openMenu: false }) }}>
 							{ft.name}
 						</MenuItem>
 					}) : null}
@@ -70,7 +80,7 @@ class FilterToolbar extends Component {
 						title={ft.name}
 						type={ft.type}
 						content={ft.content}
-						handleButton={(value) => { this.handleAdd(value); ft.func(ft.name) }}
+						handleButton={(title, value) => { this.handleAdd(title, value, ft.key) }}
 						handleClose={() => this.setState({ [ft.name]: false })}
 					/>
 				}) : null}
