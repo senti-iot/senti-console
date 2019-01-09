@@ -31,8 +31,8 @@ class FilterToolbar extends Component {
 		return chip.length >= 3
 	}
 
-	handleAdd = (displayValue, value, key) => {
-		let id = this.props.addFilter({ value: value, key: key })
+	handleAdd = (displayValue, value, key, type) => {
+		let id = this.props.addFilter({ value, key, type })
 		let chipObj = {
 			id: id,
 			value: displayValue
@@ -75,10 +75,11 @@ class FilterToolbar extends Component {
 						anchorEl={actionAnchor}
 						transition
 						disablePortal
+						style={{ zIndex: 1050 }}
 					>
 						{({ TransitionProps }) => (
 							<Grow {...TransitionProps} timeout={350}>
-								<Paper>
+								<Paper onClick={e => e.stopPropagation()} >
 									<MenuList>
 										{this.props.filters ? this.props.filters.map((ft, i) => {
 											return <MenuItem key={i} onClick={() => { this.setState({ [ft.name]: true, openMenu: false }) }}>
@@ -97,7 +98,7 @@ class FilterToolbar extends Component {
 							title={ft.name}
 							type={ft.type}
 							content={ft.content}
-							handleButton={(displayValue, value) => { this.handleAdd(displayValue, value, ft.key) }}
+							handleButton={(displayValue, value) => { this.handleAdd(displayValue, value, ft.key, ft.type) }}
 							handleClose={() => this.setState({ [ft.name]: false })}
 						/>
 					}) : null}

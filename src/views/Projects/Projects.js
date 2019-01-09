@@ -283,7 +283,7 @@ class Projects extends Component {
 	addFilter = (f) => {
 		let cFilters = this.state.filters.custom
 		let id = cFilters.length
-		cFilters.push({ value: f.value, id: id, key: f.key })
+		cFilters.push({ value: f.value, id: id, key: f.key, type: f.type })
 		this.setState({
 			filters: {
 				...this.state.filters,
@@ -309,7 +309,8 @@ class Projects extends Component {
 	}
 	ft = () => {
 		const { t } = this.props
-		return [{ key: 'title', name: t('projects.fields.name'), type: 'text' },
+		return [{ key: 'title', name: t('projects.fields.name'), type: 'string' },
+			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
 			{ key: 'startDate', name: t('projects.fields.startDate'), type: 'date' }
 		]
 

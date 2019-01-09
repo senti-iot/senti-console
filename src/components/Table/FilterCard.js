@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 
-import { Card, IconButton, CardContent, withStyles, Button, Popover, Typography, CardActions } from '@material-ui/core';
+import { Card, IconButton, CardContent, withStyles, Button, Popover, Typography, CardActions, Checkbox } from '@material-ui/core';
 // import Close from '@material-ui/icons/Close';
 import withLocalization from 'components/Localization/T';
-import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
+import { MuiPickersUtilsProvider,  DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import { Close, DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons';
-import { shortDateFormat } from 'variables/functions';
+import {  dateTimeFormatter } from 'variables/functions';
 import { TextF } from 'components';
 import ItemG from 'components/Grid/ItemG';
+import moment from 'moment'
 
 const style = theme => ({
 	header: {
@@ -31,7 +32,10 @@ class FilterCard extends Component {
 		super(props)
 
 		this.state = {
-			value: ''
+			value: '',
+			date: moment(),
+			after: false,
+			// endDate: moment()
 		}
 	}
 	handleKeyPress = (key) => {
@@ -46,49 +50,64 @@ class FilterCard extends Component {
 			}
 	}
 	handleButton = () => {
-		this.props.handleButton(`${this.props.title}: '${this.state.value}'`, this.state.value)
-		this.setState({ value: '' })
-		this.props.handleClose()
+		const { value, date, after } = this.state
+		const { type, handleButton, handleClose, title } = this.props
+		if (type === 'string')
+			handleButton(`${title}: '${value}'`, value)
+		if (type === 'date')
+			handleButton(`${title} ${after ? 'after' : 'before'}: '${dateTimeFormatter(date)}'`, { date, after })
+		this.setState({ value: '', date: moment(), endDate: moment() })
+		handleClose()
 	}
 	handleInput = e => {
 		this.setState({
 			value: e
 		})
 	}
-	handleCustomDate = e => {
-		var newDate = shortDateFormat(e)
+	handleCustomDate = (e, key) => {
+		// console.log(e)
+		// var newDate = shortDateFormat(e)
 		this.setState({
-			value: newDate
+			[key]: e
 		})
 	}
 	
 	renderType = () => {
-		const { t, classes } = this.props
-		const { value } = this.state
+		const { /* t, */ classes } = this.props
+		const { startDate, value, after } = this.state
 		switch (this.props.type) {
 			case 'date':
-				return <MuiPickersUtilsProvider utils={MomentUtils}>
-					<DatePicker
-						autoOk
-						label={t('filters.startDate')}
-						clearable
-						ampm={false}
-						format='LL'
-						value={value}
-						autoFocus
-						onChange={this.handleCustomDate}
-						animateYearScrolling={false}
-						color='primary'
-						// disableFuture
-						dateRangeIcon={<DateRange />}
-						timeIcon={<AccessTime />}
-						rightArrowIcon={<KeyboardArrowRight />}
-						leftArrowIcon={<KeyboardArrowLeft />}
-						InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-						InputProps={{ classes: { underline: classes.underline } }}
-					/>
-				</MuiPickersUtilsProvider>
-			case 'text': 
+				return <ItemG container>  
+					<ItemG xs={12} container alignItems={'center'}>
+						<Checkbox checked={after} onClick={() => this.setState({ after: !after })} />
+						<Typography>After date</Typography>
+					</ItemG>
+					<ItemG>
+						<MuiPickersUtilsProvider utils={MomentUtils}>
+							<DateTimePicker
+								id={'date'}
+								autoOk
+								// label={t('filters.startDate')}
+								clearable
+								ampm={false}
+								format='LL'
+								value={startDate}
+								autoFocus
+								onChange={val => this.handleCustomDate(val, 'date')}
+								animateYearScrolling={false}
+								color='primary'
+								// disableFuture
+								dateRangeIcon={<DateRange />}
+								timeIcon={<AccessTime />}
+								rightArrowIcon={<KeyboardArrowRight />}
+								leftArrowIcon={<KeyboardArrowLeft />}
+								InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
+								InputProps={{ classes: { underline: classes.underline } }}
+							/>
+						</MuiPickersUtilsProvider>
+					</ItemG>
+				</ItemG>
+			case 'string': 
 				return <TextF id={'filter-text'} autoFocus label={'Contains'} value={value} handleChange={e => this.handleInput(e.target.value)} onKeyPress={this.handleKeyPress} />
 			default:
 				break;
