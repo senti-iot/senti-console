@@ -2,18 +2,16 @@ import React, { Component, Fragment } from 'react'
 import { getAllDevices, getDevice } from 'variables/dataDevices';
 import {
 	withStyles, Paper, Dialog, DialogTitle, DialogContent,
-	DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem
-} from '@material-ui/core';
+	DialogContentText, DialogActions, Button } from '@material-ui/core';
 import { Switch, Route, Redirect } from 'react-router-dom'
 import projectStyles from 'assets/jss/views/projects';
 import DeviceTable from 'components/Devices/DeviceTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
-import { ViewList, ViewModule, Map, Add, FilterList, Build, Business, DataUsage, Edit, LayersClear, SignalWifi2Bar, Star, StarBorder } from 'variables/icons'
+import { ViewList, ViewModule, Map, Build, Business, DataUsage, Edit, LayersClear, SignalWifi2Bar, Star, StarBorder } from 'variables/icons'
 import Toolbar from 'components/Toolbar/Toolbar'
 import { filterItems, handleRequestSort } from 'variables/functions';
 import DeviceCard from 'components/Devices/DeviceCard'
-import { boxShadow } from 'assets/jss/material-dashboard-react';
 import { unassignDeviceFromCollection } from 'variables/dataCollections';
 import { Info, AssignDC, AssignOrg, ItemG } from 'components';
 import TableToolbar from 'components/Table/TableToolbar';
@@ -186,7 +184,7 @@ class Devices extends Component {
 		// this.liveStatus = setInterval(this.getDevices, 10000);
 	}
 
-	componentDidUpdate = (prevProps, prevState) => {
+	componentDidUpdate = (prevProps) => {
 		if (this.props.location.pathname !== prevProps.location.pathname) {
 			this.handleTabs()
 		}
@@ -264,7 +262,7 @@ class Devices extends Component {
 	handleCloseAssignOrg = async reload => {
 		if (reload) {
 			this.setState({ loading: true, openAssignOrg: false })
-			await this.getDevices().then(rs => {
+			await this.getDevices().then(() => {
 				this.snackBarMessages(2)
 			})
 		}
@@ -278,7 +276,7 @@ class Devices extends Component {
 	handleCloseAssignCollection = async reload => {
 		if (reload) {
 			this.setState({ loading: true, openAssignCollection: false })
-			await this.getDevices().then(rs => {
+			await this.getDevices().then(() => {
 				this.snackBarMessages(1)
 			})
 		}
@@ -410,33 +408,14 @@ class Devices extends Component {
 		return <CircularLoader />
 	}
 	renderTableToolBarContent = () => {
-		const { classes, t } = this.props
-		const { anchorFilterMenu } = this.state
-		return <Fragment>
-			<IconButton aria-label='Add new organisation' onClick={this.addNewOrg}>
-				<Add />
-			</IconButton>
-			<IconButton
-				className={classes.secondAction}
-				aria-label={t('tables.filter')}
-				aria-owns={anchorFilterMenu ? 'filter-menu' : null}
-				onClick={this.handleFilterMenuOpen}>
-				<FilterList />
-			</IconButton>
-			<Menu
-				id='filter-menu'
-				anchorEl={anchorFilterMenu}
-				open={Boolean(anchorFilterMenu)}
-				onClose={this.handleFilterMenuClose}
-				PaperProps={{ style: { width: 200, boxShadow: boxShadow } }}>
-
-				{this.deviceHeaders().map(option => {
-					return <MenuItem key={option.id} onClick={this.handleFilter}>
-						{option.label}
-					</MenuItem>
-				})}
-			</Menu>
-		</Fragment>
+		return null
+		// const { classes, t } = this.props
+		// const { anchorFilterMenu } = this.state
+		// return <Fragment>
+		// 	<IconButton aria-label='Add new organisation' onClick={this.addNewOrg}>
+		// 		<Add />
+		// 	</IconButton>
+		// </Fragment>
 	}
 	getFavs = () => {
 		let favorites = this.props.favorites.filter(f => f.type === 'device')
