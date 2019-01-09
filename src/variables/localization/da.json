@@ -328,6 +328,9 @@
 		}
 	},
 	"filters": {
+		"afterDate": "Efter dato",
+		"after": "efter",
+		"before": "før",
 		"dateOptions": {
 			"30days": "Seneste 30 dage",
 			"7days": "Seneste 7 dage",

@@ -51,11 +51,11 @@ class FilterCard extends Component {
 	}
 	handleButton = () => {
 		const { value, date, after } = this.state
-		const { type, handleButton, handleClose, title } = this.props
+		const { type, handleButton, handleClose, title, t } = this.props
 		if (type === 'string')
 			handleButton(`${title}: '${value}'`, value)
 		if (type === 'date')
-			handleButton(`${title} ${after ? 'after' : 'before'}: '${dateTimeFormatter(date)}'`, { date, after })
+			handleButton(`${title} ${after ? t('filters.after') : t('filters.before')}: '${dateTimeFormatter(date)}'`, { date, after })
 		this.setState({ value: '', date: moment(), endDate: moment() })
 		handleClose()
 	}
@@ -73,14 +73,14 @@ class FilterCard extends Component {
 	}
 	
 	renderType = () => {
-		const { /* t, */ classes } = this.props
+		const { t, classes } = this.props
 		const { startDate, value, after } = this.state
 		switch (this.props.type) {
 			case 'date':
 				return <ItemG container>  
 					<ItemG xs={12} container alignItems={'center'}>
 						<Checkbox checked={after} onClick={() => this.setState({ after: !after })} />
-						<Typography>After date</Typography>
+						<Typography>{t('filters.afterDate')}</Typography>
 					</ItemG>
 					<ItemG>
 						<MuiPickersUtilsProvider utils={MomentUtils}>

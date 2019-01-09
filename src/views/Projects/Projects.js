@@ -311,7 +311,9 @@ class Projects extends Component {
 		const { t } = this.props
 		return [{ key: 'title', name: t('projects.fields.name'), type: 'string' },
 			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
-			{ key: 'startDate', name: t('projects.fields.startDate'), type: 'date' }
+			{ key: 'startDate', name: t('projects.fields.startDate'), type: 'date' },
+			{ key: 'endDate', name: t('projects.fields.endDate'), type: 'date' },
+			{ key: 'created', name: t('projects.fields.created'), type: 'date' }
 		]
 
 	}
