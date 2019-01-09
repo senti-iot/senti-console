@@ -24,7 +24,7 @@ export const customFilterItems = (items, keyValues) => {
 			return items = items.reduce((newArr, d) => {
 				let objVal = index(d, k.key)
 				if (objVal)
-					if (objVal.toString().includes(k.value))
+					if (objVal.toString().toLowerCase().includes(k.value.toLowerCase()))
 						newArr.push(d)
 				return newArr
 			}, [])

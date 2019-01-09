@@ -107,7 +107,7 @@ class FilterCard extends Component {
 				<Card>
 					<ItemG container alignItems={'center'} className={classes.header}>
 						<ItemG xs>
-							<Typography variant={'title'}>{title}</Typography>
+							<Typography variant={'h6'}>{title}</Typography>
 						</ItemG>
 						<ItemG>
 							<IconButton onClick={handleClose}>
@@ -119,9 +119,7 @@ class FilterCard extends Component {
 						<ItemG container justify={'center'}>
 							<ItemG xs={12}>
 								{this.renderType()}
-								{/* {content ? content : <TextField label={'Contains'} value={value} onChange={this.handleInput} onKeyPress={this.handleKeyPress} />} */}
 							</ItemG>
-							
 						</ItemG>
 					</CardContent>
 					<CardActions>

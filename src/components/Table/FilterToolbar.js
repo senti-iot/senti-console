@@ -73,10 +73,6 @@ class FilterToolbar extends Component {
 					<Popper
 						open={actionAnchor ? true : false}
 						anchorEl={actionAnchor}
-						anchorOrigin={{
-							vertical: 'center',
-							horizontal: 'right',
-						}}
 						transition
 						disablePortal
 					>
