@@ -67,9 +67,11 @@ export const holidayApi = create({
 	}
 })
 export const getHolidays = async (lang) => {
+	let lastYear = moment().subtract(1, 'year').format('YYYY')
+	let nextYear = moment().add(1, 'year').format('YYYY')
 	let year = moment().format('YYYY')
-	let data = await holidayApi.get(`/${year}-01-01/${year}-12-31/${lang}`).then(rs => rs.data)
-	let data2 = await customerDoIApi.get(`/${year}-01-01/${year}-12-31/${lang}`).then(rs => rs.data)
+	let data = await holidayApi.get(`/${lastYear}-01-01/${nextYear}-12-31/${lang}`).then(rs => rs.data)
+	let data2 = await customerDoIApi.get(`/${lastYear}-01-01/${nextYear}-12-31/${lang}`).then(rs => rs.data)
 	let newData = []
 	if (data2) { 
 		newData = data2.map(d => {
@@ -77,6 +79,7 @@ export const getHolidays = async (lang) => {
 			return d
 		})
 	}
+	console.log(data)
 	if (data && newData)
 		return [...data, ...newData]
 	else 
