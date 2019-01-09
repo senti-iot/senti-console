@@ -456,6 +456,7 @@ class FilterInput extends Component {
 							value,
 							text: dataSourceConfig ? tag[dataSourceConfig.text] : tag,
 							chip: tag,
+							icon: tag.icon,
 							isDisabled: !!disabled,
 							isFocused: this.state.focusedChip === i,
 							handleClick: () => this.setState({ focusedChip: i }),

@@ -20,6 +20,7 @@ import TableToolbar from 'components/Table/TableToolbar';
 import { connect } from 'react-redux'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import OpenStreetMap from 'components/Map/OpenStreetMap';
+import { customFilterItems } from 'variables/Filters';
 
 class Devices extends Component {
 	constructor(props) {
@@ -41,7 +42,8 @@ class Devices extends Component {
 				keyword: '',
 				startDate: null,
 				endDate: null,
-				activeDateFilter: false
+				activeDateFilter: false,
+				custom: []
 			}
 		}
 		props.setHeader('devices.pageTitle', false, '', 'devices')
@@ -52,7 +54,49 @@ class Devices extends Component {
 		{ id: 2, title: this.props.t('devices.tabs.cardView'), label: <ViewModule />, url: `${this.props.match.path}/grid` },
 		{ id: 3, title: this.props.t('sidebar.favorites'), label: <Star />, url: `${this.props.match.path}/favorites` }
 	]
-
+	liveStatus = () => {
+		const { t } = this.props
+		return [
+			{ value: 0, label: t("devices.status.redShort"), icon: <SignalWifi2Bar className={this.props.classes.redSignal} /> },
+			{ value: 1, label: t("devices.status.yellowShort"), icon: <SignalWifi2Bar className={this.props.classes.yellowSignal} /> },
+			{ value: 2, label: t("devices.status.greenShort"), icon: <SignalWifi2Bar className={this.props.classes.greenSignal} /> }
+		]
+	}
+	ft = () => {
+		const { t } = this.props
+		return [{ key: 'name', name: t('devices.fields.name'), type: 'string' },
+			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
+			{ key: 'address', name: t('devices.fields.address'), type: 'string' },
+			{ key: 'liveStatus', name: t('devices.fields.status'), type: 'dropDown', options: this.liveStatus() }
+		]
+	}
+	addFilter = (f) => {
+		let cFilters = this.state.filters.custom
+		let id = cFilters.length
+		cFilters.push({ value: f.value, id: id, key: f.key, type: f.type })
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+		return id
+	}
+	removeFilter = (fId) => {
+		let cFilters = this.state.filters.custom
+		cFilters = cFilters.reduce((newFilters, f) => {
+			if (f.id !== fId) {
+				newFilters.push(f)
+			}
+			return newFilters
+		}, [])
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+	}
 	deviceHeaders = () => {
 		const { t } = this.props
 		return [
@@ -163,7 +207,8 @@ class Devices extends Component {
 	}
 
 	filterItems = (data) => {
-		return filterItems(data, this.state.filters)
+		let { filters } = this.state
+		return customFilterItems(filterItems(data, filters), filters.custom)
 	}
 
 	getDevices = async () => {
@@ -479,7 +524,9 @@ class Devices extends Component {
 					t={t} />
 				{this.renderConfirmUnassign()}
 				<TableToolbar
-					// ft={this.ft()}
+					ft={this.ft()}
+					addFilter={this.addFilter}
+					removeFilter={this.removeFilter}
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}

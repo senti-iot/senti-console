@@ -31,10 +31,11 @@ class FilterToolbar extends Component {
 		return chip.length >= 3
 	}
 
-	handleAdd = (displayValue, value, key, type) => {
+	handleAdd = (displayValue, value, key, type, icon) => {
 		let id = this.props.addFilter({ value, key, type })
 		let chipObj = {
 			id: id,
+			icon: icon,
 			value: displayValue
 		}
 		// chip.id = id
@@ -97,8 +98,9 @@ class FilterToolbar extends Component {
 							anchorEl={this.input}
 							title={ft.name}
 							type={ft.type}
+							options={ft.options}
 							content={ft.content}
-							handleButton={(displayValue, value) => { this.handleAdd(displayValue, value, ft.key, ft.type) }}
+							handleButton={(displayValue, value, icon) => { this.handleAdd(displayValue, value, ft.key, ft.type, icon) }}
 							handleClose={() => this.setState({ [ft.name]: false })}
 						/>
 					}) : null}

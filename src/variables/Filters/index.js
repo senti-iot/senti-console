@@ -37,16 +37,18 @@ const filterByString = (items, k) => {
 	else
 		return items = items.reduce((newArr, d) => {
 			let objVal = index(d, k.key)
-			if (objVal)
-				if (objVal.toString().toLowerCase().includes(k.value.toLowerCase()))
+			if (objVal !== null)
+				if (objVal.toString().toLowerCase().includes(k.value.toString().toLowerCase()))
 					newArr.push(d)
 			return newArr
 		}, [])
 }
 export const customFilterItems = (items, keyValues) => {
 	keyValues.forEach(k => {
+		console.log(k)
 		switch (k.type) {
 			case 'string':
+			case 'dropDown':
 				items = filterByString(items, k)
 				break;
 			case 'date':

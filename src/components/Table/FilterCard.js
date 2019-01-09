@@ -7,7 +7,7 @@ import { MuiPickersUtilsProvider,  DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import { Close, DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons';
 import {  dateTimeFormatter } from 'variables/functions';
-import { TextF } from 'components';
+import { TextF, DSelect } from 'components';
 import ItemG from 'components/Grid/ItemG';
 import moment from 'moment'
 
@@ -35,6 +35,10 @@ class FilterCard extends Component {
 			value: '',
 			date: moment(),
 			after: false,
+			dropdown: {
+				value: 0,
+				label: ""
+			}
 			// endDate: moment()
 		}
 	}
@@ -50,8 +54,10 @@ class FilterCard extends Component {
 			}
 	}
 	handleButton = () => {
-		const { value, date, after } = this.state
+		const { value, date, after, dropdown } = this.state
 		const { type, handleButton, handleClose, title, t } = this.props
+		if (type === 'dropDown')
+			handleButton(`${title}: ${dropdown.label}`, dropdown.value, dropdown.icon)
 		if (type === 'string')
 			handleButton(`${title}: '${value}'`, value)
 		if (type === 'date')
@@ -71,11 +77,30 @@ class FilterCard extends Component {
 			[key]: e
 		})
 	}
-	
+	handleChangeDropDown = (o) => e => {
+		const { options } = this.props
+		// console.log(options, options.findIndex(o => o.value === e.target.value))
+		this.setState({
+			[o]: {
+				value: e.target.value,
+				icon: options[options.findIndex(o => o.value === e.target.value)].icon,
+				label: options[options.findIndex(o => o.value === e.target.value)].label
+			}
+		})
+	}
 	renderType = () => {
-		const { t, classes } = this.props
-		const { startDate, value, after } = this.state
+		const { t, classes, title, options } = this.props
+		const { startDate, value, after, dropdown } = this.state
 		switch (this.props.type) {
+			case 'dropDown': 
+				return 	<DSelect 
+					label={title}
+					value={dropdown.value}
+					onChange={this.handleChangeDropDown('dropdown')}
+					menuItems={
+						options.map(o => ({ value: o.value, label: o.label, icon: o.icon } 
+						))
+					} />
 			case 'date':
 				return <ItemG container>  
 					<ItemG xs={12} container alignItems={'center'}>
