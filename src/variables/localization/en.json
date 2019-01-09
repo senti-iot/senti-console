@@ -248,7 +248,10 @@
 		"status": {
 			"green": "The device is connected and data is received",
 			"red": "The device is not connected, and no data is received",
-			"yellow": "The device is connected, but no data is received"
+			"yellow": "The device is connected, but no data is received",
+			"greenShort": "Connected and data received",
+			"redShort": "Disconnected",
+			"yellowShort": "Connected, but no data received"
 		},
 		"tabs": {
 			"cardView": "Card view",
