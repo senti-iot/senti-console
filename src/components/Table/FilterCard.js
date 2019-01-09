@@ -12,6 +12,10 @@ import ItemG from 'components/Grid/ItemG';
 import moment from 'moment'
 
 const style = theme => ({
+	headerText: {
+		// background: '#00897b',
+		color: 'white',
+	},
 	header: {
 		background: '#00897b',
 		color: 'white',
@@ -151,11 +155,11 @@ class FilterCard extends Component {
 				<Card>
 					<ItemG container alignItems={'center'} className={classes.header}>
 						<ItemG xs>
-							<Typography variant={'h6'}>{title}</Typography>
+							<Typography className={classes.headerText} variant={'h6'}>{title}</Typography>
 						</ItemG>
 						<ItemG>
 							<IconButton onClick={handleClose}>
-								<Close />
+								<Close className={classes.headerText}/>
 							</IconButton>
 						</ItemG>
 					</ItemG>
