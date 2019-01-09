@@ -81,7 +81,6 @@ class Tooltip extends Component {
 					}
 				}
 				if (unit.chart === 'minute') {
-				// console.log('it is minutes', unit.chart)
 				//Handle Minutes
 					if (moment().diff(moment(date), 'minutes') <= 60) {
 						let plusOne = moment(date).startOf('hour')
@@ -92,7 +91,6 @@ class Tooltip extends Component {
 			}
 		}
 
-		// console.log(2, date)
 		//Normal Date
 		let plusOne = moment(date).subtract(1, unit.chart)
 		let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment(date).format(unit.tooltipFormat)} `

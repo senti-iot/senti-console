@@ -1,33 +1,41 @@
 import React, { Component, Fragment } from 'react'
 import FilterInput from 'components/Table/FilterInput';
 import FilterCard from 'components/Table/FilterCard';
-import { Menu, MenuItem } from '@material-ui/core'
+import { MenuItem, MenuList, ClickAwayListener, Paper, Popper, Grow } from '@material-ui/core'
 class FilterToolbar extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			chips: [],
-			openMenu: false
+			openMenu: false,
+			actionAnchor: null
 		}
-		this.input = React.createRef()
+		// this.input = React.createRef()
 	}
-	handleClick = () => {
-		this.setState({  openMenu: true });
+	
+	handleClick = e => {
+		if (this.state.actionAnchor === null) {
+			this.setState({ actionAnchor: this.input });
+			this.input.focus()
+		}
+		else { 
+			this.setState({ actionAnchor: null })
+		}
 	};
 
 	handleClose = () => {
-		this.setState({ openMenu: false });
+		this.setState({ actionAnchor: null });
 	};
 
 	onBeforeAdd(chip) {
 		return chip.length >= 3
 	}
 
-	handleAdd = (chip, value, key) => {
+	handleAdd = (displayValue, value, key) => {
 		let id = this.props.addFilter({ value: value, key: key })
 		let chipObj = {
 			id: id,
-			value: chip
+			value: displayValue
 		}
 		// chip.id = id
 		this.setState({
@@ -45,46 +53,60 @@ class FilterToolbar extends Component {
 	}
 	render() {
 		const { t } = this.props
+		const { actionAnchor } = this.state
 		return (
-			<Fragment>
-				<FilterInput
+			<ClickAwayListener onClickAway={this.handleClose}>
+				<Fragment>
+					<FilterInput
 					// {...this.props}
-					inputRef={ref => this.input = ref}
-					value={this.state.chips}
-					onBeforeAdd={(chip) => this.onBeforeAdd(chip)}
-					onAdd={(chip) => this.handleAdd(chip)}
-					onDelete={(deletedChip, i) => this.handleDelete(deletedChip, i)}
-					onClick={this.handleClick}
-					dataSourceConfig={{ id: 'id', text: 'value', value: 'value' }}
-					fullWidth
-					t={t}
-				/>
-				<Menu
-					id='simple-menu'
-					anchorEl={this.input}
-					open={this.state.openMenu}
-					onClose={this.handleClose}
-				>
-					{this.props.filters ? this.props.filters.map((ft, i) => {
-						return <MenuItem key={i} onClick={() => { this.setState({ [ft.name]: true, openMenu: false }) }}>
-							{ft.name}
-						</MenuItem>
-					}) : null}
-				</Menu>
-
-				{this.props.filters ? this.props.filters.map(ft => {
-					return <FilterCard
-						key={ft.id}
-						open={this.state[ft.name]}
-						anchorEl={this.input}
-						title={ft.name}
-						type={ft.type}
-						content={ft.content}
-						handleButton={(title, value) => { this.handleAdd(title, value, ft.key) }}
-						handleClose={() => this.setState({ [ft.name]: false })}
+						inputRef={ref => this.input = ref}
+						value={this.state.chips}
+						// onBeforeAdd={(chip) => this.onBeforeAdd(chip)}
+						onAdd={(displayValue, value, key) => this.handleAdd(displayValue, value, key)}
+						onDelete={(deletedChip, i) => this.handleDelete(deletedChip, i)}
+						onClick={this.handleClick}
+						// onBlur={this.handleClose}
+						dataSourceConfig={{ id: 'id', text: 'value', value: 'value' }}
+						fullWidth
+						t={t}
 					/>
-				}) : null}
-			</Fragment>
+					<Popper
+						open={actionAnchor ? true : false}
+						anchorEl={actionAnchor}
+						anchorOrigin={{
+							vertical: 'center',
+							horizontal: 'right',
+						}}
+						transition
+						disablePortal
+					>
+						{({ TransitionProps }) => (
+							<Grow {...TransitionProps} timeout={350}>
+								<Paper>
+									<MenuList>
+										{this.props.filters ? this.props.filters.map((ft, i) => {
+											return <MenuItem key={i} onClick={() => { this.setState({ [ft.name]: true, openMenu: false }) }}>
+												{ft.name}
+											</MenuItem>
+										}) : null}
+									</MenuList>
+								</Paper>
+							</Grow>)}
+					</Popper>
+					{this.props.filters ? this.props.filters.map((ft, i) => {
+						return <FilterCard
+							key={i}
+							open={this.state[ft.name]}
+							anchorEl={this.input}
+							title={ft.name}
+							type={ft.type}
+							content={ft.content}
+							handleButton={(displayValue, value) => { this.handleAdd(displayValue, value, ft.key) }}
+							handleClose={() => this.setState({ [ft.name]: false })}
+						/>
+					}) : null}
+				</Fragment>
+			</ClickAwayListener>
 		)
 	}
 }

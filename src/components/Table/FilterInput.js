@@ -20,7 +20,7 @@ const styles = (theme) => {
 		root: {},
 		inputRoot: {
 			display: 'inline-block',
-			marginTop: 0
+			marginTop: 0,
 		},
 		input: {
 			display: 'inline-block',
@@ -206,9 +206,8 @@ class FilterInput extends Component {
 				return
 			}
 		}
-
 		if (this.props.newChipKeyCodes.indexOf(event.keyCode) >= 0) {
-			let result = this.handleAddChip(event.target.value)
+			let result = this.handleAddChip({ key: "", value: event.target.value })
 			if (result !== false) {
 				event.preventDefault()
 			}
@@ -293,7 +292,7 @@ class FilterInput extends Component {
 
 			if (this.props.allowDuplicates || !chips.some((c) => c[this.props.dataSourceConfig.value] === chip[this.props.dataSourceConfig.value])) {
 				if (this.props.value && this.props.onAdd) {
-					this.props.onAdd(chip)
+					this.props.onAdd(chip.value, chip.value, chip.key)
 				} else {
 					this.setState({ chips: [...this.state.chips, chip] })
 					if (this.props.onChange) {
@@ -422,7 +421,7 @@ class FilterInput extends Component {
 			<FormControl
 				ref={rootRef}
 				fullWidth={fullWidth}
-				className={cx(className, classes.root)}
+				className={cx(className, classes.root, classes.formControl)}
 				error={error}
 				required={required}
 				onClick={this.focus}

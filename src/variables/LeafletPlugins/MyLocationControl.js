@@ -218,11 +218,9 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 			// click while requesting
 			this.stop();
 		} else {
-			// console.log('active && event', le.active, le._event)
 			if (le.active && le._event !== undefined) {
 				var behaviors = le.options.clickBehaviour;
 				var behavior = behaviors.outOfView;
-				// console.log(this.map.getBounds().contains(le._event.latlng))
 				if (this.map.getBounds().contains(le._event.latlng)) {
 					behavior = wasFollowing ? behaviors.inView : behaviors.inViewNotFollowing;
 				}
@@ -431,7 +429,6 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 			var style = options.circleStyle
 			if (!le._circle) {
 				this.leafletElement._circle = L.circle(latlng, radius, style).addTo(this.map)
-				// console.log('circle', this.leafletElement._circle)
 			}
 			else {
 				this.leafletElement._circle.setLatLng(latlng).setRadius(radius).setStyle(style)

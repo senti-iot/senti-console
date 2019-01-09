@@ -65,7 +65,6 @@ class OpenStreetMap extends React.Component {
 			this.centerOnAllMarkers()
 		if (this.props.iRef) {
 			this.props.iRef(this.map)
-			// console.log('called iRef')
 		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
