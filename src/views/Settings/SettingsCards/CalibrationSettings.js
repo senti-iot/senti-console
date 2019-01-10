@@ -20,7 +20,7 @@ class CalibrationSettings extends Component {
 
 	render() {
 		const { classes, t } = this.props
-		const { calibration, count, tcount, calNotifications } = this.props
+		const { calibration, count, tcount, /* calNotifications */ } = this.props
 		const calibrations = [
 			{ value: 0, label: t('settings.calibration.time') },
 			{ value: 1, label: t('settings.calibration.count') }
@@ -32,12 +32,12 @@ class CalibrationSettings extends Component {
 			{ value: 1200, label: `20 ${t('settings.calibration.minutes')}` },
 			{ value: 1800, label: '30 ' + t('settings.calibration.minutes') }
 		]
-		const notifications = [
-			{ value: 0, label: t('settings.calibration.3months') },
-			{ value: 1, label: t('settings.calibration.6months') },
-			{ value: 2, label: t('settings.calibration.9months') },
-			{ value: 3, label: t('settings.calibration.12months') }
-		]
+		// const notifications = [
+		// 	{ value: 0, label: t('settings.calibration.3months') },
+		// 	{ value: 1, label: t('settings.calibration.6months') },
+		// 	{ value: 2, label: t('settings.calibration.9months') },
+		// 	{ value: 3, label: t('settings.calibration.12months') }
+		// ]
 		return (
 			<InfoCard
 				noExpand
@@ -68,12 +68,12 @@ class CalibrationSettings extends Component {
 									</ItemGrid>
 								</ListItem>
 							</Collapse>
-							<ListItem divider>
+							{/* <ListItem divider>
 								<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 									<ListItemText>{t('settings.calibration.notification')}</ListItemText>
 									<DSelect menuItems={notifications} value={calNotifications} onChange={this.changeCalNotif} />
 								</ItemGrid>
-							</ListItem>
+							</ListItem> */}
 							{/* <ListItem >
 								<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 									<ListItemText>{t('settings.calibration.history')}</ListItemText>

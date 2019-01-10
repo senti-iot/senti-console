@@ -104,7 +104,7 @@ class DisplaySettings extends Component {
 								</ListItem>
 								<ListItem>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
-										<ListItemText>{`${t('devices.cards.map')} ${t('settings.theme')}`}</ListItemText>
+										<ListItemText>{t('settings.map')}</ListItemText>
 										<DSelect menuItems={mapThemes} value={mapTheme} onChange={this.changeMapTheme} />
 									</ItemGrid>
 								</ListItem>

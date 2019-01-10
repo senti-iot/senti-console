@@ -510,6 +510,7 @@
 			"defaultChart": "Default chart type",
 			"rawData": "Raw data"
 		},
+		"map": "Map theme",
 		"defaultDataSet": "Default data set for charts",
 		"didYouKnow": "Intelligent Notifications",
 		"discoverSenti": "Show Welcome to Senti on Dashboard",
