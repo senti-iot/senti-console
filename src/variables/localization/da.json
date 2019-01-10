@@ -505,6 +505,8 @@
 		}
 	},
 	"settings": {
+		"default": "Standard",
+		"notDefault": "Ikke standard",
 		"alerts": "Alarmeringer",
 		"calibration": {
 			"12months": "Hver 12. måned",

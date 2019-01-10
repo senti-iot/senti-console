@@ -491,6 +491,8 @@
 		}
 	},
 	"settings": {
+		"default": "Default",
+		"notDefault": "Not default",
 		"alerts": "Alerts",
 		"calibration": {
 			"12months": "Every 12 months",

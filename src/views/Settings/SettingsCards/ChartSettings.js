@@ -18,8 +18,8 @@ class ChartSettings extends Component {
 	chartDataTypes = () => {
 		const { t } = this.props
 		return [
-			{ value: 0, icon: '', label: t('actions.off') },
-			{ value: 1, icon: '', label: t('actions.on') }
+			{ value: 0, icon: '', label: t('settings.notDefault') },
+			{ value: 1, icon: '', label: t('settings.default') }
 		]
 	}
 	changeChartType = e => this.props.changeChartType(e.target.value)
