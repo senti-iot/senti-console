@@ -52,7 +52,7 @@ class Devices extends Component {
 		{ id: 2, title: this.props.t('devices.tabs.cardView'), label: <ViewModule />, url: `${this.props.match.path}/grid` },
 		{ id: 3, title: this.props.t('sidebar.favorites'), label: <Star />, url: `${this.props.match.path}/favorites` }
 	]
-	liveStatus = () => {
+	dLiveStatus = () => {
 		const { t } = this.props
 		return [
 			{ value: 0, label: t("devices.status.redShort"), icon: <SignalWifi2Bar className={this.props.classes.redSignal} /> },
@@ -60,18 +60,41 @@ class Devices extends Component {
 			{ value: 2, label: t("devices.status.greenShort"), icon: <SignalWifi2Bar className={this.props.classes.greenSignal} /> }
 		]
 	}
+	dCalibrated = () => { 
+		const { t } = this.props
+		return [
+			{ value: true, label: t("filters.devices.calibrated") },
+			{ value: false, label: t("filters.devices.notCalibrated") }
+		]
+	}
+	dLocationPlace = () => {
+		const { t } = this.props
+		return [
+			{ value: 1, label: t('devices.locationTypes.pedStreet') },
+			{ value: 2, label: t('devices.locationTypes.park') },
+			{ value: 3, label: t('devices.locationTypes.path') },
+			{ value: 4, label: t('devices.locationTypes.square') },
+			{ value: 5, label: t('devices.locationTypes.crossroads') },
+			{ value: 6, label: t('devices.locationTypes.road') },
+			{ value: 7, label: t('devices.locationTypes.motorway') },
+			{ value: 8, label: t('devices.locationTypes.port') },
+			{ value: 9, label: t('devices.locationTypes.office') },
+			{ value: 0, label: t('devices.locationTypes.unspecified') }]
+	}
 	ft = () => {
 		const { t } = this.props
 		return [{ key: 'name', name: t('devices.fields.name'), type: 'string' },
 			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
 			{ key: 'address', name: t('devices.fields.address'), type: 'string' },
-			{ key: 'liveStatus', name: t('devices.fields.status'), type: 'dropDown', options: this.liveStatus() }
+			{ key: 'liveStatus', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
+			{ key: 'locationType', name: t('devices.fields.locType'), type: 'dropDown', options: this.dLocationPlace() },
+			{ key: 'lat', name: t('calibration.stepheader.calibration'), type: 'diff', options: { dropdown: this.dCalibrated(), values: { false: [0] } } }
 		]
 	}
 	addFilter = (f) => {
 		let cFilters = this.state.filters.custom
 		let id = cFilters.length
-		cFilters.push({ value: f.value, id: id, key: f.key, type: f.type })
+		cFilters.push({ ...f, id: id })
 		this.setState({
 			filters: {
 				...this.state.filters,

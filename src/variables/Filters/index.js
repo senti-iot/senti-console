@@ -43,6 +43,25 @@ const filterByString = (items, k) => {
 			return newArr
 		}, [])
 }
+const filterByDiff = (items, k) => { 
+	console.log(k)
+	items = items.reduce((newArr, d) => { 
+		let objVal = index(d, k.key)
+		if (objVal !== null) { 
+			if (k.value.diff) {
+				if (k.value.values.false.indexOf(objVal) === -1)
+					newArr.push(d)
+			}
+			else { 
+				if (k.value.values.false.indexOf(objVal) !== -1)
+					newArr.push(d)
+			}
+		}
+		return newArr
+	}, [])
+	console.log(items)
+	return items
+}
 export const customFilterItems = (items, keyValues) => {
 	keyValues.forEach(k => {
 		console.log(k)
@@ -53,6 +72,9 @@ export const customFilterItems = (items, keyValues) => {
 				break;
 			case 'date':
 				items = filterByDate(items, k)
+				break;
+			case 'diff':
+				items = filterByDiff(items, k)
 				break;
 			default:
 				break;

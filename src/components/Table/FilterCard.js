@@ -3,10 +3,10 @@ import React, { Component } from 'react'
 import { Card, IconButton, CardContent, withStyles, Button, Popover, Typography, CardActions, Checkbox } from '@material-ui/core';
 // import Close from '@material-ui/icons/Close';
 import withLocalization from 'components/Localization/T';
-import { MuiPickersUtilsProvider,  DateTimePicker } from 'material-ui-pickers';
+import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import { Close, DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons';
-import {  dateTimeFormatter } from 'variables/functions';
+import { dateTimeFormatter } from 'variables/functions';
 import { TextF, DSelect } from 'components';
 import ItemG from 'components/Grid/ItemG';
 import moment from 'moment'
@@ -39,6 +39,10 @@ class FilterCard extends Component {
 			value: '',
 			date: moment(),
 			after: false,
+			diff: {
+				value: 0,
+				label: ""
+			},
 			dropdown: {
 				value: 0,
 				label: ""
@@ -58,15 +62,29 @@ class FilterCard extends Component {
 			}
 	}
 	handleButton = () => {
-		const { value, date, after, dropdown } = this.state
-		const { type, handleButton, handleClose, title, t } = this.props
+		const { value, date, after, dropdown, diff } = this.state
+		const { type, handleButton, handleClose, title, t, options } = this.props
 		if (type === 'dropDown')
 			handleButton(`${title}: ${dropdown.label}`, dropdown.value, dropdown.icon)
 		if (type === 'string')
 			handleButton(`${title}: '${value}'`, value)
 		if (type === 'date')
 			handleButton(`${title} ${after ? t('filters.after') : t('filters.before')}: '${dateTimeFormatter(date)}'`, { date, after })
-		this.setState({ value: '', date: moment(), endDate: moment() })
+		if (type === 'diff')
+			handleButton(`${title}: ${diff.label}`, { diff: diff.value, values: options.values })
+		this.setState({
+			value: '',
+			date: moment(),
+			endDate: moment(),
+			diff: {
+				value: 0,
+				label: ""
+			},
+			dropdown: {
+				value: 0,
+				label: ""
+			}
+		})
 		handleClose()
 	}
 	handleInput = e => {
@@ -92,21 +110,39 @@ class FilterCard extends Component {
 			}
 		})
 	}
+	handleChangeDiff = e => {
+		const { options } = this.props
+		this.setState({
+			diff: {
+				value: e.target.value,
+				icon: options.dropdown[options.dropdown.findIndex(o => o.value === e.target.value)].icon,
+				label: options.dropdown[options.dropdown.findIndex(o => o.value === e.target.value)].label
+			}
+		})
+	}
 	renderType = () => {
 		const { t, classes, title, options } = this.props
-		const { startDate, value, after, dropdown } = this.state
+		const { startDate, value, after, dropdown, diff } = this.state
 		switch (this.props.type) {
-			case 'dropDown': 
-				return 	<DSelect 
+			case 'diff':
+				return <DSelect
+					label={title}
+					value={diff.value}
+					onChange={this.handleChangeDiff}
+					menuItems={
+						options.dropdown.map(o => ({ value: o.value, label: o.label, icon: o.icon }))
+					} />
+			case 'dropDown':
+				return <DSelect
 					label={title}
 					value={dropdown.value}
 					onChange={this.handleChangeDropDown('dropdown')}
 					menuItems={
-						options.map(o => ({ value: o.value, label: o.label, icon: o.icon } 
+						options.map(o => ({ value: o.value, label: o.label, icon: o.icon }
 						))
 					} />
 			case 'date':
-				return <ItemG container>  
+				return <ItemG container>
 					<ItemG xs={12} container alignItems={'center'}>
 						<Checkbox checked={after} onClick={() => this.setState({ after: !after })} />
 						<Typography>{t('filters.afterDate')}</Typography>
@@ -136,7 +172,7 @@ class FilterCard extends Component {
 						</MuiPickersUtilsProvider>
 					</ItemG>
 				</ItemG>
-			case 'string': 
+			case 'string':
 				return <TextF id={'filter-text'} autoFocus label={'Contains'} value={value} handleChange={e => this.handleInput(e.target.value)} onKeyPress={this.handleKeyPress} />
 			default:
 				break;
@@ -159,7 +195,7 @@ class FilterCard extends Component {
 						</ItemG>
 						<ItemG>
 							<IconButton onClick={handleClose}>
-								<Close className={classes.headerText}/>
+								<Close className={classes.headerText} />
 							</IconButton>
 						</ItemG>
 					</ItemG>
