@@ -50,6 +50,14 @@ class FilterCard extends Component {
 			// endDate: moment()
 		}
 	}
+	componentDidMount = () => {
+		window.addEventListener('keypress', this.handleKeyPress, false)
+
+	}
+	componentWillUnmount = () => {
+	  window.removeEventListener('keypress', this.handleKeyPress, false)
+	}
+	
 	handleKeyPress = (key) => {
 		if (this.props.open)
 			switch (key.key) {
@@ -144,7 +152,7 @@ class FilterCard extends Component {
 			case 'date':
 				return <Fragment>
 					<ItemG xs={12} container alignItems={'center'}>
-						<Checkbox checked={after} onClick={() => this.setState({ after: !after })} style={{ padding: "12px 12px 12px 0px" }}/>
+						<Checkbox checked={after} onClick={() => this.setState({ after: !after })} style={{ padding: "12px 12px 12px 0px" }} />
 						<Typography>{t('filters.afterDate')}</Typography>
 					</ItemG>
 					<ItemG>
@@ -173,14 +181,13 @@ class FilterCard extends Component {
 					</ItemG>
 				</Fragment>
 			case 'string':
-				return <TextF id={'filter-text'} autoFocus label={'Contains'} value={value} handleChange={e => this.handleInput(e.target.value)} onKeyPress={this.handleKeyPress} />
+				return <TextF id={'filter-text'} autoFocus label={t('filters.contains')} value={value} handleChange={e => this.handleInput(e.target.value)} />
 			default:
 				break;
 		}
 	}
 	render() {
 		const { title, open, handleClose, classes, anchorEl, t } = this.props
-		// const { value } = this.state
 		return (
 			<Popover
 				anchorEl={anchorEl}

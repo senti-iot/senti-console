@@ -327,6 +327,7 @@
 		}
 	},
 	"filters": {
+		"contains": "Contains",
 		"dateOptions": {
 			"30days": "Last 30 days",
 			"7days": "Last 7 days",

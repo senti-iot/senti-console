@@ -331,6 +331,7 @@
 		}
 	},
 	"filters": {
+		"contains": "Indeholder",
 		"afterDate": "Efter dato",
 		"after": "efter",
 		"before": "før",
