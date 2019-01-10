@@ -249,8 +249,8 @@
 			"green": "Enheden er tilsluttet og modtager data",
 			"red": "Enheden er ikke tilsluttet og modtager ingen data",
 			"yellow": "Enheden er tilsluttet, men modtager ingen data",
-			"greenShort": "Tilsluttet og modtager data",
-			"redShort": "Afsluttet",
+			"greenShort": "Modtager data",
+			"redShort": "Forbindelse afbrudt",
 			"yellowShort": "Modtager ingen data"
 		},
 		"tabs": {
