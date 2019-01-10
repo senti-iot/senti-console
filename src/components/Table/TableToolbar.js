@@ -61,12 +61,12 @@ let defaultRender = props => {
 	const { content } = props
 	return <Fragment>
 		<ItemG xs container alignItems={'center'}>
-			<FilterToolbar
+			{props.ft ? <FilterToolbar
 				addFilter={props.addFilter}
 				removeFilter={props.removeFilter}
 				filters={props.ft}
 				t={props.t}
-			/>
+			/> : null}
 		</ItemG>
 		<ItemG xs={2} container justify={'flex-end'} alignItems={'center'}>
 			{content ? content : null}
