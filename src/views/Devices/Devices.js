@@ -81,6 +81,13 @@ class Devices extends Component {
 			{ value: 9, label: t('devices.locationTypes.office') },
 			{ value: 0, label: t('devices.locationTypes.unspecified') }]
 	}
+	dAvailable = () => { 
+		const { t } = this.props
+		return [
+			{ value: true, label: t('devices.fields.notfree') },
+			{ value: false, label: t('devices.fields.free') }
+		]
+	}
 	ft = () => {
 		const { t } = this.props
 		return [{ key: 'name', name: t('devices.fields.name'), type: 'string' },
@@ -88,7 +95,8 @@ class Devices extends Component {
 			{ key: 'address', name: t('devices.fields.address'), type: 'string' },
 			{ key: 'liveStatus', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
 			{ key: 'locationType', name: t('devices.fields.locType'), type: 'dropDown', options: this.dLocationPlace() },
-			{ key: 'lat', name: t('calibration.stepheader.calibration'), type: 'diff', options: { dropdown: this.dCalibrated(), values: { false: [0] } } }
+			{ key: 'lat', name: t('calibration.stepheader.calibration'), type: 'diff', options: { dropdown: this.dCalibrated(), values: { false: [0] } } },
+			{ key: 'dataCollection', name: t('devices.fields.availability'), type: 'dropDown', options: this.dAvailable() }
 		]
 	}
 	addFilter = (f) => {

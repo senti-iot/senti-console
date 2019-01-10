@@ -15,10 +15,12 @@ const styles = (theme) => {
 	const bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)'
 
 	return {
-		formControl: {},
+		formControl: {
+		},
 		chips: {},
 		root: {},
 		inputRoot: {
+			position: 'absolute',
 			display: 'inline-block',
 			marginTop: 0,
 		},
@@ -29,6 +31,8 @@ const styles = (theme) => {
 			float: 'left'
 		},
 		chipContainer: {
+			// display: "flex",
+			// alignItems: "center",
 			cursor: 'text',
 			marginBottom: -2,
 			minHeight: 40,

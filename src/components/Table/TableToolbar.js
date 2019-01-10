@@ -5,7 +5,7 @@ import { boxShadow } from 'assets/jss/material-dashboard-react';
 import toolbarStyles from 'assets/jss/material-dashboard-react/tableToolBarStyle';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { ItemGrid } from 'components';
 import { ItemG } from 'components/index';
@@ -59,8 +59,8 @@ let selectedRender = props => {
 }
 let defaultRender = props => {
 	const { content } = props
-	return <ItemG container alignItems={'center'}>
-		<ItemG xs container>
+	return <Fragment>
+		<ItemG xs container alignItems={'center'}>
 			<FilterToolbar
 				addFilter={props.addFilter}
 				removeFilter={props.removeFilter}
@@ -68,10 +68,10 @@ let defaultRender = props => {
 				t={props.t}
 			/>
 		</ItemG>
-		<ItemG xs container justify={'flex-end'} alignItems={'center'}>
+		<ItemG xs={2} container justify={'flex-end'} alignItems={'center'}>
 			{content ? content : null}
 		</ItemG>
-	</ItemG>
+	</Fragment>
 }
 let TableToolbar = props => {
 	const { numSelected, classes } = props;
@@ -80,16 +80,15 @@ let TableToolbar = props => {
 			className={classNames(classes.root, {
 				[classes.highlight]: numSelected > 0,
 			})}>
+
 			<ItemG container>
-				<ItemG xs={12}>
-					{numSelected > 0 ? (
-						selectedRender(props)
-					) :
-						defaultRender(props)
-					}
-				</ItemG>
-			
+				{numSelected > 0 ? (
+					selectedRender(props)
+				) :
+					defaultRender(props)
+				}
 			</ItemG>
+			
 		</Toolbar>
 	);
 };
