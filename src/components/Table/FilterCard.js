@@ -122,7 +122,7 @@ class FilterCard extends Component {
 	}
 	renderType = () => {
 		const { t, classes, title, options } = this.props
-		const { startDate, value, after, dropdown, diff } = this.state
+		const { date, value, after, dropdown, diff } = this.state
 		switch (this.props.type) {
 			case 'diff':
 				return <DSelect
@@ -156,7 +156,7 @@ class FilterCard extends Component {
 								clearable
 								ampm={false}
 								format='LL'
-								value={startDate}
+								value={date}
 								autoFocus
 								onChange={val => this.handleCustomDate(val, 'date')}
 								animateYearScrolling={false}

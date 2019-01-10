@@ -1,19 +1,9 @@
 import { filterItems } from 'variables/functions';
 import moment from 'moment'
-
-function index(obj, is, value) {
-	if (is)
-		if (typeof is == 'string')
-			return index(obj, is.split('.'), value);
-		else if (is.length === 1 && value !== undefined)
-			return obj[is[0]] = value;
-		else if (is.length === 0)
-			return obj;
-		else
-			return index(obj[is[0]], is.slice(1), value);
-	else {
-		return null
-	}
+const _ = require('lodash')
+const index = (obj, is, value) => {
+	let newA = _.get(obj, is) !== undefined ? _.get(obj, is) : null
+	return newA
 }
 const filterByDate = (items, k) => {
 	return items = items.reduce((newArr, d) => {
@@ -38,13 +28,13 @@ const filterByString = (items, k) => {
 		return items = items.reduce((newArr, d) => {
 			let objVal = index(d, k.key)
 			if (objVal !== null)
+			{
 				if (objVal.toString().toLowerCase().includes(k.value.toString().toLowerCase()))
-					newArr.push(d)
+					newArr.push(d)}
 			return newArr
 		}, [])
 }
 const filterByDiff = (items, k) => { 
-	console.log(k)
 	items = items.reduce((newArr, d) => { 
 		let objVal = index(d, k.key)
 		if (objVal !== null) { 
@@ -64,7 +54,6 @@ const filterByDiff = (items, k) => {
 }
 export const customFilterItems = (items, keyValues) => {
 	keyValues.forEach(k => {
-		console.log(k)
 		switch (k.type) {
 			case 'string':
 			case 'dropDown':

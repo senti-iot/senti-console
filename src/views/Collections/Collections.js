@@ -12,6 +12,7 @@ import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBoo
 import { GridContainer, CircularLoader, AssignDevice, AssignProject, ItemG } from 'components'
 import CollectionCard from 'components/Collections/CollectionCard';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
+import { customFilterItems } from 'variables/Filters';
 
 class Collections extends Component {
 	constructor(props) {
@@ -30,19 +31,28 @@ class Collections extends Component {
 			orderBy: 'name',
 			filters: {
 				keyword: '',
-				startDate: null,
-				endDate: null,
-				activeDateFilter: false
+				custom: [],
+				// activeDateFilter: false
 			}
 		}
 		props.setHeader('collections.pageTitle', false, '', 'collections')
 	}
+	dLiveStatus = () => {
+		const { t } = this.props
+		return [
+			{ value: 0, label: t("devices.status.redShort"), icon: <SignalWifi2Bar className={this.props.classes.redSignal} /> },
+			{ value: 1, label: t("devices.status.yellowShort"), icon: <SignalWifi2Bar className={this.props.classes.yellowSignal} /> },
+			{ value: 2, label: t("devices.status.greenShort"), icon: <SignalWifi2Bar className={this.props.classes.greenSignal} /> }
+		]
+	}
 	ft = () => {
 		const { t } = this.props
 		return [
-			{ key: 'name', name: t('devices.fields.name'), type: 'string' },
+			{ key: 'name', name: t('collections.fields.name'), type: 'string' },
 			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
-			
+			{ key: 'devices[0].start', name: t('collections.fields.activeDeviceStartDate'), type: 'date' },
+			{ key: 'created', name: t('collections.fields.created'), type: 'date' },
+			{ key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() }
 			// { key: 'address', name: t('devices.fields.address'), type: 'string' },
 			// { key: 'liveStatus', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
 			// { key: 'locationType', name: t('devices.fields.locType'), type: 'dropDown', options: this.dLocationPlace() },
@@ -211,7 +221,8 @@ class Collections extends Component {
 	}
 
 	filterItems = (data) => {
-		return filterItems(data, this.state.filters)
+		const { filters } = this.state
+		return customFilterItems(filterItems(data, filters), filters.custom)
 	}
 
 	handleFilterStartDate = (value) => {
@@ -442,6 +453,9 @@ class Collections extends Component {
 		const { t } = this.props
 		const { selected } = this.state
 		return <TableToolbar //	./TableToolbar.js
+			ft={this.ft()}
+			addFilter={this.addFilter}
+			removeFilter={this.removeFilter}
 			anchorElMenu={this.state.anchorElMenu}
 			handleToolbarMenuClose={this.handleToolbarMenuClose}
 			handleToolbarMenuOpen={this.handleToolbarMenuOpen}

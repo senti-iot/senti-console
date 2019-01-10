@@ -79,7 +79,6 @@ export const getHolidays = async (lang) => {
 			return d
 		})
 	}
-	console.log(data)
 	if (data && newData)
 		return [...data, ...newData]
 	else 
