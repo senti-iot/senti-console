@@ -41,7 +41,8 @@ class DisplaySettings extends Component {
 			{ value: 3, label: this.props.t("map.themes.3") },
 			{ value: 4, label: this.props.t("map.themes.4") },
 			{ value: 5, label: this.props.t("map.themes.5") },
-			{ value: 6, label: this.props.t("map.themes.6") }
+			{ value: 6, label: this.props.t("map.themes.6") },
+			{ value: 7, label: this.props.t("map.themes.7") }
 		]
 
 		let themes = [
