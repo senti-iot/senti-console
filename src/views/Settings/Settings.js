@@ -9,7 +9,7 @@ import DisplaySettings from './SettingsCards/DisplaySettings';
 import { changeLanguage } from 'redux/localization';
 import withLocalization from 'components/Localization/T';
 import { changeTRP, changeTheme, changeChartType, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow, saveSettingsOnServ, finishedSaving, changeChartDataType, changeTCount, changeMapTheme } from 'redux/settings';
-import NotificationSettings from './SettingsCards/NotificationSettings';
+// import NotificationSettings from './SettingsCards/NotificationSettings';
 // import DeviceSettings from './SettingsCards/DeviceSettings';
 import ChartSettings from './SettingsCards/ChartSettings';
 import withSnackbar from 'components/Localization/S';
@@ -45,7 +45,7 @@ class Settings extends Component {
 		const { t } = this.props
 		const { language, sideBar, changeSideBarLoc, trp, changeTRP, theme, changeTheme, changeDiscoverSenti, discSentiVal, changeLanguage, changeChartType } = this.props
 		const { calibration, changeCalType, count, changeCount, changeTCount, calNotifications, changeCalNotif, rawData } = this.props
-		const { alerts, didKnow, changeAlerts, changeDidKnow, chartType, changeChartDataType, tcount, mapTheme, changeMapTheme } = this.props
+		const { /* alerts, didKnow, changeAlerts, changeDidKnow, */ chartType, changeChartDataType, tcount, mapTheme, changeMapTheme } = this.props
 		return (
 			<Fragment>
 				<Toolbar
@@ -84,7 +84,7 @@ class Settings extends Component {
 							changeCalNotif={changeCalNotif}
 							t={t} />
 					</ItemGrid>
-					<ItemGrid xs={12} noMargin id={'notifications'}>
+					{/* <ItemGrid xs={12} noMargin id={'notifications'}>
 						<NotificationSettings
 							didKnow={didKnow}
 							changeDidKnow={changeDidKnow}
@@ -92,7 +92,7 @@ class Settings extends Component {
 							changeAlerts={changeAlerts}
 							t={t}
 						/>
-					</ItemGrid>
+					</ItemGrid> */}
 					<ItemGrid xs={12} noMargin id={'charts'}>
 						<ChartSettings
 							chartType={chartType}

@@ -37,6 +37,46 @@ class Collections extends Component {
 		}
 		props.setHeader('collections.pageTitle', false, '', 'collections')
 	}
+	ft = () => {
+		const { t } = this.props
+		return [
+			{ key: 'name', name: t('devices.fields.name'), type: 'string' },
+			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
+			
+			// { key: 'address', name: t('devices.fields.address'), type: 'string' },
+			// { key: 'liveStatus', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
+			// { key: 'locationType', name: t('devices.fields.locType'), type: 'dropDown', options: this.dLocationPlace() },
+			// { key: 'lat', name: t('calibration.stepheader.calibration'), type: 'diff', options: { dropdown: this.dCalibrated(), values: { false: [0] } } },
+			// { key: 'dataCollection', name: t('devices.fields.availability'), type: 'dropDown', options: this.dAvailable() }
+		]
+	}
+	addFilter = (f) => {
+		let cFilters = this.state.filters.custom
+		let id = cFilters.length
+		cFilters.push({ ...f, id: id })
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+		return id
+	}
+	removeFilter = (fId) => {
+		let cFilters = this.state.filters.custom
+		cFilters = cFilters.reduce((newFilters, f) => {
+			if (f.id !== fId) {
+				newFilters.push(f)
+			}
+			return newFilters
+		}, [])
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+	}
 	tabs = [
 		{ id: 0, title: this.props.t('devices.tabs.listView'), label: <ViewList />, url: `${this.props.match.url}/list` },
 		{ id: 1, title: this.props.t('devices.tabs.cardView'), label: <ViewModule />, url: `${this.props.match.url}/grid` },
@@ -99,11 +139,11 @@ class Collections extends Component {
 				s('snackbars.exported')
 				break;
 			case 3:
-			//TODO
+				//TODO
 				s('snackbars.assign.deviceToCollection', { collection: ``, what: 'Device' })
 				break;
 			case 6:
-			//TODO
+				//TODO
 				s('snackbars.assign.deviceToCollection', { collection: `${collections[collections.findIndex(c => c.id === selected[0])].name}`, device: display })
 				break
 			default:
@@ -118,7 +158,7 @@ class Collections extends Component {
 		let collections = await getAllCollections().then(rs => rs)
 		if (this._isMounted) {
 			this.setState({
-				collections: collections ? collections : [],			
+				collections: collections ? collections : [],
 				loading: false
 			}, () => this.handleRequestSort(null, 'name', 'asc'))
 
@@ -326,7 +366,7 @@ class Collections extends Component {
 		else {
 			//The Collection doesn't have a device assigned to it...
 			this.handleCloseUnassignDevice()
-		 }
+		}
 	}
 
 	renderDeviceUnassign = () => {
@@ -359,7 +399,7 @@ class Collections extends Component {
 	}
 	renderConfirmDelete = () => {
 		const { openDelete, collections, selected } = this.state
-		const { t, classes  } = this.props
+		const { t, classes } = this.props
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
@@ -392,7 +432,7 @@ class Collections extends Component {
 		// const { anchorFilterMenu } = this.state
 		// let access = accessLevel.apicollection ? accessLevel.apicollection.edit ? true : false : false
 		return <Fragment>
-			 <IconButton aria-label='Add new collection' onClick={this.addNewCollection}>
+			<IconButton aria-label='Add new collection' onClick={this.addNewCollection}>
 				<Add />
 			</IconButton>
 		</Fragment>

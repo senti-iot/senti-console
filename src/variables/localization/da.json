@@ -505,6 +505,8 @@
 		}
 	},
 	"settings": {
+		"default": "Standard",
+		"notDefault": "Ikke standard",
 		"alerts": "Alarmeringer",
 		"calibration": {
 			"12months": "Hver 12. måned",
@@ -543,6 +545,7 @@
 		"sideBarLeft": "Venstre",
 		"sideBarLoc": "Placering af menu",
 		"sideBarRight": "Højre",
+		"map": "Baggrundkort",
 		"theme": "Tema",
 		"themes": {
 			"dark": "Mørkt",
