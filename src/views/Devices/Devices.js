@@ -126,7 +126,7 @@ class Devices extends Component {
 			{ id: 'liveStatus', checkbox: true, label: <ItemG container justify={'center'} title={t('devices.fields.status')}><SignalWifi2Bar /></ItemG> },
 			{ id: 'address', label: t('devices.fields.address') },
 			{ id: 'org.name', label: t('devices.fields.org') },
-			{ id: 'dataCollection[0].id', label: t('devices.fields.availability') }
+			{ id: 'dataCollection', label: t('devices.fields.availability') }
 		]
 	}
 	options = () => {
