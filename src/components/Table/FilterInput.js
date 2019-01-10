@@ -20,7 +20,7 @@ const styles = (theme) => {
 		chips: {},
 		root: {},
 		inputRoot: {
-			position: 'absolute',
+			position: 'absolute !important',
 			display: 'inline-block',
 			marginTop: 0,
 		},

@@ -81,7 +81,7 @@ let TableToolbar = props => {
 				[classes.highlight]: numSelected > 0,
 			})}>
 
-			<ItemG container>
+			<ItemG container alignItems={'center'}>
 				{numSelected > 0 ? (
 					selectedRender(props)
 				) :

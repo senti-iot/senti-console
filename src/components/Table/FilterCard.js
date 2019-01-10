@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 
 import { Card, IconButton, CardContent, withStyles, Button, Popover, Typography, CardActions, Checkbox } from '@material-ui/core';
 // import Close from '@material-ui/icons/Close';
@@ -142,9 +142,9 @@ class FilterCard extends Component {
 						))
 					} />
 			case 'date':
-				return <ItemG container>
+				return <Fragment>
 					<ItemG xs={12} container alignItems={'center'}>
-						<Checkbox checked={after} onClick={() => this.setState({ after: !after })} />
+						<Checkbox checked={after} onClick={() => this.setState({ after: !after })} style={{ padding: "12px 12px 12px 0px" }}/>
 						<Typography>{t('filters.afterDate')}</Typography>
 					</ItemG>
 					<ItemG>
@@ -171,7 +171,7 @@ class FilterCard extends Component {
 							/>
 						</MuiPickersUtilsProvider>
 					</ItemG>
-				</ItemG>
+				</Fragment>
 			case 'string':
 				return <TextF id={'filter-text'} autoFocus label={'Contains'} value={value} handleChange={e => this.handleInput(e.target.value)} onKeyPress={this.handleKeyPress} />
 			default:

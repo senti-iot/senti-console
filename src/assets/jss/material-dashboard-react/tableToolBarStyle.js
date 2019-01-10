@@ -15,6 +15,8 @@ const toolbarStyles = theme => ({
 		width: '100%'
 	},
 	root: {
+		display: 'flex',
+		justifyContent: 'center',
 		paddingRight: theme.spacing.unit,
 		margin: '4px 0px',
 		paddingLeft: "16px",
