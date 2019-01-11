@@ -328,6 +328,11 @@
 	},
 	"filters": {
 		"contains": "Contains",
+		"orgs": {
+			"parentOrg": "With/Without parent organisation",
+			"hasParentOrg": "With parent organisation",
+			"noParentOrg": "Without parent organisation"
+		},
 		"dateOptions": {
 			"30days": "Last 30 days",
 			"7days": "Last 7 days",
