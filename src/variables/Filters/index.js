@@ -2,7 +2,7 @@ import { filterItems } from 'variables/functions';
 import moment from 'moment'
 const _ = require('lodash')
 const index = (obj, is, value) => {
-	let newA = _.get(obj, is) !== undefined ? _.get(obj, is) : null
+	let newA = _.get(obj, is) !== undefined ? _.get(obj, is) : undefined
 	return newA
 }
 const filterByDate = (items, k) => {
@@ -37,7 +37,7 @@ const filterByString = (items, k) => {
 const filterByDiff = (items, k) => { 
 	items = items.reduce((newArr, d) => { 
 		let objVal = index(d, k.key)
-		if (objVal !== null) { 
+		if (objVal !== undefined) { 
 			if (k.value.diff) {
 				if (k.value.values.false.indexOf(objVal) === -1)
 					newArr.push(d)
@@ -49,7 +49,6 @@ const filterByDiff = (items, k) => {
 		}
 		return newArr
 	}, [])
-	console.log(items)
 	return items
 }
 export const customFilterItems = (items, keyValues) => {

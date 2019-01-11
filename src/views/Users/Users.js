@@ -32,14 +32,39 @@ class Users extends Component {
 		}
 		props.setHeader('users.pageTitle', false, '', 'users')
 	}
+	dSuspended = () => { 
+		const { t } = this.props
+		return [
+			{ value: 0, label: t('users.fields.active') },
+			{ value: 1, label: t('users.fields.loginSuspended') },
+		]
+	} 
+	dHasLoggedIn = () => { 
+		const { t } = this.props 
+		return [
+			{ value: true, label: t('filters.users.hasLoggedIn') },
+			{ value: false, label: t('filters.users.neverLoggedIn') }
+		] 
+	}
+	dLang = () => { 
+		const { t } = this.props
+		return [
+			{ value: 'da', label: t('settings.languages.da') },
+			{ value: 'en', label: t('settings.languages.en') }
+		]
+	}
 	ftUsers = () => {
 		const { t } = this.props
+		console.log(this.props.users)
 		return [
 			{ key: 'firstName', name: t('users.fields.firstName'), type: 'string' },
 			{ key: 'lastName', name: t('users.fields.lastName'), type: 'string' },
 			{ key: 'email', name: t('users.fields.email'), type: 'string' },
 			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' }, 
-			// { key: 'devices[0].start', name: t('collections.fields.activeDeviceStartDate'), type: 'date' },
+			{ key: 'lastLoggedIn', name: t('users.fields.lastSignIn'), type: 'date' },
+			{ key: 'suspended', name: t('users.fields.loginSuspended'), type: 'dropDown', options: this.dSuspended() },
+			{ key: 'lastLoggedIn', name: t('filters.users.hasLogged'), type: 'diff', options: { dropdown: this.dHasLoggedIn(), values: { false: [null] } } },
+			{ key: 'aux.odeum.language', name: t('users.fields.language'), type: 'dropDown', options: this.dLang() }
 			// { key: 'created', name: t('collections.fields.created'), type: 'date' },
 			// { key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() }
 			// { key: 'address', name: t('devices.fields.address'), type: 'string' },
