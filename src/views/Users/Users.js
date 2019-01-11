@@ -55,7 +55,6 @@ class Users extends Component {
 	}
 	ftUsers = () => {
 		const { t } = this.props
-		console.log(this.props.users)
 		return [
 			{ key: 'firstName', name: t('users.fields.firstName'), type: 'string' },
 			{ key: 'lastName', name: t('users.fields.lastName'), type: 'string' },
@@ -65,11 +64,6 @@ class Users extends Component {
 			{ key: 'suspended', name: t('users.fields.loginSuspended'), type: 'dropDown', options: this.dSuspended() },
 			{ key: 'lastLoggedIn', name: t('filters.users.hasLogged'), type: 'diff', options: { dropdown: this.dHasLoggedIn(), values: { false: [null] } } },
 			{ key: 'aux.odeum.language', name: t('users.fields.language'), type: 'dropDown', options: this.dLang() }
-			// { key: 'created', name: t('collections.fields.created'), type: 'date' },
-			// { key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() }
-			// { key: 'address', name: t('devices.fields.address'), type: 'string' },
-			// { key: 'locationType', name: t('devices.fields.locType'), type: 'dropDown', options: this.dLocationPlace() },
-			// { key: 'lat', name: t('calibration.stepheader.calibration'), type: 'diff', options: { dropdown: this.dCalibrated(), values: { false: [0] } } },
 		]
 	}
 	addFilter = (f) => {

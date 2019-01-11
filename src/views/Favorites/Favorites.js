@@ -1,15 +1,18 @@
 import React, { Component, Fragment } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import Toolbar from 'components/Toolbar/Toolbar';
-import { ViewList, StarBorder } from 'variables/icons';
-import TableToolbar from 'components/Table/TableToolbar';
-import FavoritesTable from 'components/Favorites/FavoritesTable';
-import { GridContainer, CircularLoader } from 'components';
-import { Paper, withStyles } from '@material-ui/core';
-import projectStyles from 'assets/jss/views/projects';
-import { filterItems, handleRequestSort } from 'variables/functions';
-import { finishedSaving, removeFromFav, addToFav, isFav } from 'redux/favorites';
+import Toolbar from 'components/Toolbar/Toolbar'
+import { ViewList, StarBorder } from 'variables/icons'
+import TableToolbar from 'components/Table/TableToolbar'
+import FavoritesTable from 'components/Favorites/FavoritesTable'
+import { GridContainer, CircularLoader } from 'components'
+import { Paper, withStyles } from '@material-ui/core'
+import projectStyles from 'assets/jss/views/projects'
+import { filterItems, handleRequestSort } from 'variables/functions'
+import { finishedSaving, removeFromFav, addToFav, isFav } from 'redux/favorites'
+import { LibraryBooks, DeviceHub, Person, Business, DataUsage } from 'variables/icons';
+import { customFilterItems } from 'variables/Filters';
+
 class Favorites extends Component {
 	constructor(props) {
 		super(props)
@@ -21,9 +24,7 @@ class Favorites extends Component {
 			route: 0,
 			filters: {
 				keyword: '',
-				startDate: null,
-				endDate: null,
-				activeDateFilter: false
+				custom: []
 			}
 		}
 		props.setHeader('sidebar.favorites', false, '', 'favorites')
@@ -46,7 +47,7 @@ class Favorites extends Component {
 	favoritesHeaders = () => { 
 		const { t } = this.props
 		return [
-			{ id: 'type', label: <div style={{ width: 40 }}/> },
+			{ id: 'type', label: '' },
 			{ id: 'name', label: t('favorites.fields.name') },
 			{ id: 'type', label: t('favorites.fields.type') }
 		]
@@ -54,8 +55,52 @@ class Favorites extends Component {
 	tabs = () => {
 		return [{ id: 0, title: this.props.t('devices.tabs.listView'), label: <ViewList />, url: `${this.props.match.path}/list` }]
 	}
+	dTypes = () => { 
+		const { t } = this.props
+		return [
+			{ value: 'project', label: t('favorites.types.project'), icon: <LibraryBooks/> },
+			{ value: 'collection', label: t('favorites.types.collection'), icon: <DataUsage/> },
+			{ value: 'device', label: t('favorites.types.device'), icon: <DeviceHub/> },
+			{ value: 'user', label: t('favorites.types.user'), icon: <Person/> },
+			{ value: 'org', label: t('favorites.types.org'), icon: <Business/> },
+		]
+	}
+	ft = () => {
+		const { t } = this.props
+		return [
+			{ key: 'type', name: t('favorites.fields.type'), type: 'dropDown', options: this.dTypes() }
+		]
+	}
+	addFilter = (f) => {
+		let cFilters = this.state.filters.custom
+		let id = cFilters.length
+		cFilters.push({ ...f, id: id })
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+		return id
+	}
+	removeFilter = (fId) => {
+		let cFilters = this.state.filters.custom
+		cFilters = cFilters.reduce((newFilters, f) => {
+			if (f.id !== fId) {
+				newFilters.push(f)
+			}
+			return newFilters
+		}, [])
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+	}
 	filterItems = (data) => {
-		return filterItems(data, this.state.filters)
+		const { filters } = this.state
+		return customFilterItems(filterItems(data, filters), filters.custom)
 	}
 	componentDidMount = () => {
 		this.handleRequestSort(null, 'name', 'asc')
@@ -127,6 +172,9 @@ class Favorites extends Component {
 		const { t } = this.props
 		const { selected } = this.state
 		return <TableToolbar //	./TableToolbar.js
+			ft={this.ft()}
+			addFilter={this.addFilter}
+			removeFilter={this.removeFilter}
 			anchorElMenu={this.state.anchorElMenu}
 			handleToolbarMenuClose={this.handleToolbarMenuClose}
 			handleToolbarMenuOpen={this.handleToolbarMenuOpen}
