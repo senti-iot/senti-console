@@ -7,9 +7,10 @@ import GridContainer from 'components/Grid/GridContainer';
 import OrgTable from 'components/Orgs/OrgTable';
 // import Toolbar from 'components/Toolbar/Toolbar'
 import { People, Business, PictureAsPdf, Delete, Edit, Star, StarBorder, Add } from 'variables/icons';
-import { filterItems, handleRequestSort } from 'variables/functions'
+import { handleRequestSort } from 'variables/functions'
 import { deleteOrg } from 'variables/dataOrgs';
 import TableToolbar from 'components/Table/TableToolbar';
+import { customFilterItems } from 'variables/Filters';
 
 class Orgs extends Component {
 	constructor(props) {
@@ -58,19 +59,22 @@ class Orgs extends Component {
 			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf }
 		]
 	}
-	ftUsers = () => {
+	dHasOrgParent = () => {
 		const { t } = this.props
 		return [
-			{ key: 'firstName', name: t('users.fields.firstName'), type: 'string' },
-			{ key: 'lastName', name: t('users.fields.lastName'), type: 'string' },
-			{ key: 'email', name: t('users.fields.email'), type: 'string' },
-			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
-			// { key: 'devices[0].start', name: t('collections.fields.activeDeviceStartDate'), type: 'date' },
-			// { key: 'created', name: t('collections.fields.created'), type: 'date' },
-			// { key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() }
-			// { key: 'address', name: t('devices.fields.address'), type: 'string' },
-			// { key: 'locationType', name: t('devices.fields.locType'), type: 'dropDown', options: this.dLocationPlace() },
-			// { key: 'lat', name: t('calibration.stepheader.calibration'), type: 'diff', options: { dropdown: this.dCalibrated(), values: { false: [0] } } },
+			{ value: true, label: t("filters.orgs.hasParentOrg") },
+			{ value: false, label: t("filters.orgs.noParentOrg") }
+		]
+	 }
+	ftOrgs = () => {
+		const { t } = this.props
+		return [
+			{ key: 'name', name: t('orgs.fields.name'), type: 'string' },
+			{ key: 'address', name: t('orgs.fields.address'), type: 'string' },
+			{ key: 'city', name: t('orgs.fields.city'), type: 'string' },
+			{ key: 'zip', name: t('orgs.fields.zip'), type: 'string' },
+			{ key: 'org.name', name: t('orgs.fields.parentOrg'), type: 'string' },
+			{ key: 'org.id', name: t('filters.orgs.parentOrg'), type: 'diff', options: { dropdown: this.dHasOrgParent(), values: { false: [-1] } } }
 		]
 	}
 	addFilter = (f) => {
@@ -200,7 +204,8 @@ class Orgs extends Component {
 	}
 
 	filterItems = (data) => {
-		return filterItems(data, this.state.filters)
+		const { filters } = this.state
+		return customFilterItems(data, filters.custom)
 	}
 
 	handleFilterStartDate = (value) => {
@@ -316,6 +321,9 @@ class Orgs extends Component {
 				<Paper className={classes.root}>
 					{this.renderConfirmDelete()}
 					<TableToolbar //	./TableToolbar.js
+						ft={this.ftOrgs()}
+						addFilter={this.addFilter}
+						removeFilter={this.removeFilter}
 						anchorElMenu={this.state.anchorElMenu}
 						handleToolbarMenuClose={this.handleToolbarMenuClose}
 						handleToolbarMenuOpen={this.handleToolbarMenuOpen}
@@ -325,7 +333,7 @@ class Orgs extends Component {
 						content={this.renderTableToolBarContent()}
 					/>
 					<OrgTable
-						data={orgs}
+						data={this.filterItems(orgs)}
 						tableHead={this.orgsHeader()}
 						handleFilterEndDate={this.handleFilterEndDate}
 						handleFilterKeyword={this.handleFilterKeyword}

@@ -331,6 +331,11 @@
 		}
 	},
 	"filters": {
+		"orgs": {
+			"parentOrg" : "Med/uden organisatorisk tilhørsforhold",
+			"hasParentOrg": "Med organisatorisk tilhørsforhold",
+			"noParentOrg": "Uden organisatiorisk tilhørsforhold"
+		},
 		"contains": "Indeholder",
 		"afterDate": "Efter dato",
 		"after": "efter",

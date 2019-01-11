@@ -70,8 +70,6 @@ class OrgTable extends React.Component {
 
 	isSelected = id => this.props.selected.indexOf(id) !== -1
 
-
-
 	render() {
 		const { classes, t, order, orderBy, data, handleCheckboxClick, selected, handleSelectAllClick } = this.props
 		const { rowsPerPage, page } = this.state
