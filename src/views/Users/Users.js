@@ -137,24 +137,7 @@ class Users extends Component {
 		let newData = handleRequestSort(property, order, this.props.users)
 		this.setState({ users: newData, order, orderBy: property })
 	}
-	handleFilterStartDate = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				startDate: value,
-				activeDateFilter: value !== null ? true : false
-			}
-		})
-	}
-	handleFilterEndDate = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				endDate: value,
-				activeDateFilter: value !== null ? true : false
-			}
-		})
-	}
+
 	handleFilterKeyword = (value) => {
 		this.setState({
 			filters: {
