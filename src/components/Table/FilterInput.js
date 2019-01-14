@@ -216,9 +216,12 @@ class FilterInput extends Component {
 				event.preventDefault()
 			}
 		} else if (event.keyCode === 8 || event.keyCode === 46) {
+			if (this.props.onBeforeDelete) { 
+				this.props.onBeforeDelete()
+			}
 			if (event.target.value === '') {
 				const chips = this.props.value || this.state.chips
-				if (focusedChip == null && event.keyCode === 8) {
+				if (focusedChip === null && event.keyCode === 8) {
 					this.setState({ focusedChip: chips.length - 1 })
 				} else if (focusedChip != null) {
 					const chips = this.props.value || this.state.chips
@@ -464,7 +467,7 @@ class FilterInput extends Component {
 							isDisabled: !!disabled,
 							isFocused: this.state.focusedChip === i,
 							handleClick: () => this.setState({ focusedChip: i }),
-							handleDelete: () => this.handleDeleteChip(value, i),
+							handleDelete: () => this.handleDeleteChip({ id: value }, i),
 							className: classes.chip
 						}, i)
 					}) : chipRenderer({

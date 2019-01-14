@@ -46,9 +46,9 @@ class FilterToolbar extends Component {
 	}
 
 	handleDelete = (deletedChip, i) => {
-		this.props.removeFilter(deletedChip)
+		this.props.removeFilter(deletedChip.id)
 		this.setState({
-			chips: this.state.chips.filter((c) => c.id !== deletedChip)
+			chips: this.state.chips.filter((c) => c.id !== deletedChip.id)
 		})
 	
 	}
@@ -62,11 +62,11 @@ class FilterToolbar extends Component {
 					// {...this.props}
 						inputRef={ref => this.input = ref}
 						value={this.state.chips}
-						// onBeforeAdd={(chip) => this.onBeforeAdd(chip)}
+						onBeforeAdd={(chip) => this.onBeforeAdd(chip)}
+						onBeforeDelete={this.handleClose}
 						onAdd={(displayValue, value, key) => this.handleAdd(displayValue, value, key)}
 						onDelete={(deletedChip, i) => this.handleDelete(deletedChip, i)}
 						onClick={this.handleClick}
-						// onBlur={this.handleClose}
 						dataSourceConfig={{ id: 'id', text: 'value', value: 'value' }}
 						fullWidth
 						t={t}
