@@ -4,7 +4,7 @@ import { Card, IconButton, CardContent, withStyles, Button, Popover, Typography,
 // import Close from '@material-ui/icons/Close';
 import withLocalization from 'components/Localization/T';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
-import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import MomentUtils from '@date-io/moment';
 import { Close, DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons';
 import { dateTimeFormatter } from 'variables/functions';
 import { TextF, DSelect } from 'components';

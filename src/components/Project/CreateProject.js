@@ -3,7 +3,7 @@ import { KeyboardArrowLeft as KeyArrLeft, KeyboardArrowRight as KeyArrRight, Sav
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
 import classNames from 'classnames'
 import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers'
-import MomentUtils from 'material-ui-pickers/utils/moment-utils'
+import MomentUtils from '@date-io/moment'
 import React, { Component, Fragment } from 'react'
 import { createProject } from 'variables/dataProjects'
 import { /* Caption, */ CircularLoader, GridContainer, ItemGrid, TextF, Danger, Warning } from 'components'
