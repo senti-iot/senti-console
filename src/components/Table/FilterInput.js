@@ -4,7 +4,7 @@ import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import Chip from '@material-ui/core/Chip'
 import withStyles from '@material-ui/core/styles/withStyles'
-import teal from '@material-ui/core/colors/blue'
+import teal from '@material-ui/core/colors/teal'
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import cx from 'classnames'
@@ -70,7 +70,8 @@ const styles = (theme) => {
 				transform: 'scaleX(1)'
 			}
 		},
-		focused: {},
+		focused: {
+		},
 		disabled: {},
 		underline: {
 			'&:before': {
@@ -107,7 +108,10 @@ const styles = (theme) => {
 		},
 		chip: {
 			margin: '0 8px 8px 0',
-			float: 'left'
+			float: 'left',
+			'&:focused': {
+				background: theme.palette.primary[light ? 'dark' : 'light']
+			}
 		}
 	}
 }
@@ -265,7 +269,8 @@ class FilterInput extends Component {
 
 	handleKeyPress = (event) => {
 		this.setState({ keyPressed: true })
-		if (this.props.onKeyPress) { this.props.onKeyPress(event) }
+		if (this.props.onBeforeDelete) { this.props.onBeforeDelete() }
+		if (this.props.onKeyPress) { this.props.onKeyPress(event, { key: '', value: this.state.inputValue }) }
 	}
 
 	handleUpdateInput = (e) => {
@@ -282,7 +287,7 @@ class FilterInput extends Component {
 	 * @returns True if the chip was added (or at least `onAdd` was called), false if adding the chip was prevented
 	 */
 	handleAddChip(chip) {
-		if (this.props.onBeforeAdd && !this.props.onBeforeAdd(chip)) {
+		if (this.props.onBeforeAdd && !this.props.onBeforeAdd(chip.value)) {
 			this.setState({ preventChipCreation: true })
 			return false
 		}
@@ -393,6 +398,7 @@ class FilterInput extends Component {
 			FormHelperTextProps,
 			fullWidth,
 			fullWidthInput,
+			onBeforeDelete,
 			helperText,
 			id,
 			InputProps,
@@ -468,7 +474,10 @@ class FilterInput extends Component {
 							isFocused: this.state.focusedChip === i,
 							handleClick: () => this.setState({ focusedChip: i }),
 							handleDelete: () => this.handleDeleteChip({ id: value }, i),
-							className: classes.chip
+							className: classes.chip,
+							classes: {
+
+							}
 						}, i)
 					}) : chipRenderer({
 						value: t('actions.addFilter'),
@@ -577,10 +586,11 @@ export default withStyles(styles)(FilterInput)
 
 export const defaultChipRenderer = ({ value, text, isFocused, isDisabled, handleClick, handleDelete, className, icon }, key) => (
 	<Chip
+		color={'default'}
 		key={key}
 		className={className}
 		icon={icon}
-		style={{ pointerEvents: isDisabled ? 'none' : undefined, backgroundColor: isFocused ? teal[400] : undefined }}
+		style={{ pointerEvents: isDisabled ? 'none' : undefined, background: isFocused ? teal[500] : '' }}
 		onClick={handleClick}
 		onDelete={handleDelete}
 		label={text}

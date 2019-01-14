@@ -56,6 +56,7 @@ export const customFilterItems = (items, keyValues) => {
 		switch (k.type) {
 			case 'string':
 			case 'dropDown':
+			case null:
 				items = filterByString(items, k)
 				break;
 			case 'date':

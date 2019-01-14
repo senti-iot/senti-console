@@ -50,13 +50,14 @@ class FilterCard extends Component {
 			// endDate: moment()
 		}
 	}
-	componentDidMount = () => {
-		window.addEventListener('keypress', this.handleKeyPress, false)
-
-	}
-	componentWillUnmount = () => {
-	  window.removeEventListener('keypress', this.handleKeyPress, false)
-	}
+	// componentDidUpdate = () => {
+	// 	if (this.props.open && this.button)
+	// 		this.button.addEventListener('keypress', this.handleKeyPress, false)
+	// }
+	// componentWillUnmount = () => {
+	// 	if (this.button)
+	// 		this.button.removeEventListener('keypress', this.handleKeyPress, false)
+	// }
 	
 	handleKeyPress = (key) => {
 		if (this.props.open)
@@ -137,6 +138,7 @@ class FilterCard extends Component {
 					label={title}
 					value={diff.value}
 					onChange={this.handleChangeDiff}
+					onKeyPress={this.handleKeyPress}
 					menuItems={
 						options.dropdown.map(o => ({ value: o.value, label: o.label, icon: o.icon }))
 					} />
@@ -144,6 +146,7 @@ class FilterCard extends Component {
 				return <DSelect
 					label={title}
 					value={dropdown.value}
+					onKeyPress={this.handleKeyPress}
 					onChange={this.handleChangeDropDown('dropdown')}
 					menuItems={
 						options.map(o => ({ value: o.value, label: o.label, icon: o.icon }
@@ -181,7 +184,7 @@ class FilterCard extends Component {
 					</ItemG>
 				</Fragment>
 			case 'string':
-				return <TextF id={'filter-text'} autoFocus label={t('filters.contains')} value={value} handleChange={e => this.handleInput(e.target.value)} />
+				return <TextF id={'filter-text'} onKeyPress={this.handleKeyPress} autoFocus label={t('filters.contains')} value={value} handleChange={e => this.handleInput(e.target.value)} />
 			default:
 				break;
 		}
