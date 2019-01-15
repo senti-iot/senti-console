@@ -53,11 +53,6 @@ class Collections extends Component {
 			{ key: 'devices[0].start', name: t('collections.fields.activeDeviceStartDate'), type: 'date' },
 			{ key: 'created', name: t('collections.fields.created'), type: 'date' },
 			{ key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() }
-			// { key: 'address', name: t('devices.fields.address'), type: 'string' },
-			// { key: 'liveStatus', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
-			// { key: 'locationType', name: t('devices.fields.locType'), type: 'dropDown', options: this.dLocationPlace() },
-			// { key: 'lat', name: t('calibration.stepheader.calibration'), type: 'diff', options: { dropdown: this.dCalibrated(), values: { false: [0] } } },
-			// { key: 'dataCollection', name: t('devices.fields.availability'), type: 'dropDown', options: this.dAvailable() }
 		]
 	}
 	addFilter = (f) => {
@@ -71,6 +66,17 @@ class Collections extends Component {
 			}
 		})
 		return id
+	}
+	editFilter = (f) => {
+		let cFilters = this.state.filters.custom
+		let filterIndex = cFilters.findIndex(fi => fi.id === f.id)
+		cFilters[filterIndex] = f
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
 	}
 	removeFilter = (fId) => {
 		let cFilters = this.state.filters.custom
@@ -455,6 +461,7 @@ class Collections extends Component {
 		return <TableToolbar //	./TableToolbar.js
 			ft={this.ft()}
 			addFilter={this.addFilter}
+			editFilter={this.editFilter}
 			removeFilter={this.removeFilter}
 			anchorElMenu={this.state.anchorElMenu}
 			handleToolbarMenuClose={this.handleToolbarMenuClose}

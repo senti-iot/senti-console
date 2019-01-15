@@ -378,7 +378,11 @@ class FilterInput extends Component {
 			this.props.inputRef(ref)
 		}
 	}
-
+	handleDoubleClick = (chip) => {
+		console.log(chip)
+		if (this.props.handleDoubleClick)
+			this.props.handleDoubleClick(chip)
+	 }
 	render() {
 		const {
 			allowDuplicates,
@@ -421,6 +425,7 @@ class FilterInput extends Component {
 			rootRef,
 			value,
 			t,
+			handleDoubleClick,
 			...other
 		} = this.props
 
@@ -474,6 +479,7 @@ class FilterInput extends Component {
 							isFocused: this.state.focusedChip === i,
 							handleClick: () => this.setState({ focusedChip: i }),
 							handleDelete: () => this.handleDeleteChip({ id: value }, i),
+							handleDoubleClick: () => this.handleDoubleClick({ id: value }),
 							className: classes.chip,
 							classes: {
 
@@ -584,7 +590,7 @@ FilterInput.defaultProps = {
 
 export default withStyles(styles)(FilterInput)
 
-export const defaultChipRenderer = ({ value, text, isFocused, isDisabled, handleClick, handleDelete, className, icon }, key) => (
+export const defaultChipRenderer = ({ value, handleDoubleClick, text, isFocused, isDisabled, handleClick, handleDelete, className, icon }, key) => (
 	<Chip
 		color={'default'}
 		key={key}
@@ -592,6 +598,7 @@ export const defaultChipRenderer = ({ value, text, isFocused, isDisabled, handle
 		icon={icon}
 		style={{ pointerEvents: isDisabled ? 'none' : undefined, background: isFocused ? teal[500] : '' }}
 		onClick={handleClick}
+		onDoubleClick={handleDoubleClick}
 		onDelete={handleDelete}
 		label={text}
 	/>

@@ -58,6 +58,37 @@ class FilterCard extends Component {
 	// 	if (this.button)
 	// 		this.button.removeEventListener('keypress', this.handleKeyPress, false)
 	// }
+	componentDidMount = (prevProps, prevState) => {
+		const { edit, type, value } = this.props
+		if (edit)
+			switch (type) {
+				case 'dropDown':
+					this.setState({ dropdown: {
+						value: value
+					} })
+					break;
+				case 'diff':
+					this.setState({
+						diff: { value: value }
+					})
+					break;
+				case 'date':
+					this.setState({
+						date: moment(value)
+					})
+					break;
+				case 'string':
+				case undefined:
+				case '':
+				case null:
+					this.setState({
+						value: value
+					})
+					break;
+				default:
+					break;
+			}
+	}
 	
 	handleKeyPress = (key) => {
 		if (this.props.open)
@@ -190,7 +221,7 @@ class FilterCard extends Component {
 		}
 	}
 	render() {
-		const { title, open, handleClose, classes, anchorEl, t } = this.props
+		const { title, open, handleClose, classes, anchorEl, t, edit } = this.props
 		return (
 			<Popover
 				anchorEl={anchorEl}
@@ -219,7 +250,7 @@ class FilterCard extends Component {
 					<CardActions>
 						<ItemG xs={12} container justify={'center'}>
 							<Button onClick={this.handleButton}>
-								{t('actions.addFilter')}
+								{!edit ? t('actions.addFilter') : t('actions.editFilter')}
 							</Button>
 						</ItemG>
 					</CardActions>

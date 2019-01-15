@@ -111,6 +111,17 @@ class Devices extends Component {
 		})
 		return id
 	}
+	editFilter = (f) => {
+		let cFilters = this.state.filters.custom
+		let filterIndex = cFilters.findIndex(fi => fi.id === f.id)
+		cFilters[filterIndex] = f
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+	}
 	removeFilter = (fId) => {
 		let cFilters = this.state.filters.custom
 		cFilters = cFilters.reduce((newFilters, f) => {
@@ -536,6 +547,7 @@ class Devices extends Component {
 				<TableToolbar
 					ft={this.ft()}
 					addFilter={this.addFilter}
+					editFilter={this.editFilter}
 					removeFilter={this.removeFilter}
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}

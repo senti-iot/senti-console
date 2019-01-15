@@ -35,9 +35,17 @@ class FilterToolbar extends Component {
 	onBeforeAdd(chip) {
 		return chip.length >= 3
 	}
+	handleDoubleClick = chip => {
+		const { filters } = this.props
+		console.log(chip)
+		let chips = this.state.chips
+		let editChip = chips[chips.findIndex(c => c.id === chip.id)]
+		let editFilter = filters[filters.findIndex(f => f.key === editChip.key)]
+		console.log(editFilter)
+		this.setState({ editFilter: editFilter, editChip })
+	}
 	handleMenuNav = e => {
 		// console.log(e)
-		console.log(e.keyCode)
 		if (this.state.actionAnchor !== null)
 		{
 			const { filters } = this.props
@@ -67,20 +75,34 @@ class FilterToolbar extends Component {
 		}
 	}
 	handleAdd = (displayValue, value, key, type, icon) => {
-		console.log(displayValue, value, key, type, icon)
 		let id = this.props.addFilter({ value, key, type: type ? type : null })
 		let chipObj = {
+			key: key, 
+			type: type,
 			id: id,
 			icon: icon,
-			value: displayValue
+			value: displayValue,
+			actualVal: value
 		}
 		// chip.id = id
 		this.setState({
 			chips: [...this.state.chips, chipObj]
 		})
-
 	}
-
+	handleEdit = (displayValue, value, key, type, icon, id) => { 
+		this.props.editFilter({ id, value, key, type: type ? type : null })
+		let chips = this.state.chips
+		let chipIndex = chips.findIndex(c => c.id === id)
+		chips[chipIndex] = {
+			key: key,
+			type: type,
+			id: id,
+			icon: icon,
+			value: displayValue,
+			actualVal: value
+		}
+		this.setState({ chips })
+	}
 	handleDelete = (deletedChip, i) => {
 		this.props.removeFilter(deletedChip.id)
 		this.setState({
@@ -90,8 +112,9 @@ class FilterToolbar extends Component {
 	}
 	isSelected = id => this.state.focusedMenu === id ? true : false
 	render() {
-		const { t } = this.props
-		const { actionAnchor } = this.state
+		const { t, filters } = this.props
+		const { actionAnchor, editChip, editFilter } = this.state
+		// console.log(editChip, editFilter)
 		return (
 			<ClickAwayListener onClickAway={this.handleClose}>
 				<Fragment>
@@ -100,6 +123,7 @@ class FilterToolbar extends Component {
 						value={this.state.chips}
 						onBeforeAdd={(chip) => this.onBeforeAdd(chip)}
 						onBeforeDelete={this.handleClose}
+						handleDoubleClick={this.handleDoubleClick}
 						// onKeyPress={(e, ) => this.handleAdd(chip.value, chip.value, chip.id)}
 						onAdd={(displayValue, value, key) => this.handleAdd(displayValue, value, key)}
 						onDelete={(deletedChip, i) => this.handleDelete(deletedChip, i)}
@@ -128,6 +152,18 @@ class FilterToolbar extends Component {
 								</Paper>
 							</Grow>)}
 					</Popper>
+					{editFilter ? <FilterCard
+						open={editFilter ? true : false}
+						anchorEl={this.input}
+						title={editFilter.name}
+						type={editFilter.type}
+						options={editFilter.options}
+						content={editFilter.content}
+						edit
+						value={editChip.actualVal}
+						handleButton={(displayValue, value, icon) => { this.handleEdit(displayValue, value, editFilter.key, editFilter.type, icon, editChip.id) }}
+						handleClose={() => this.setState({ editFilter: false, editChip: null })}
+					/> : null}
 					{this.props.filters ? this.props.filters.map((ft, i) => {
 						return <FilterCard
 							key={i}

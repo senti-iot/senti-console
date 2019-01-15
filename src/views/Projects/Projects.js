@@ -4,7 +4,7 @@ import GridContainer from 'components/Grid/GridContainer';
 import CircularLoader from 'components/Loader/CircularLoader';
 import ProjectCards from 'components/Project/ProjectCards';
 import ProjectTable from 'components/Project/ProjectTable';
-import EnhancedTableToolbar from 'components/Table/TableToolbar';
+import TableToolbar from 'components/Table/TableToolbar';
 import Toolbar from 'components/Toolbar/Toolbar';
 import React, { Component, Fragment } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -292,6 +292,17 @@ class Projects extends Component {
 		})
 		return id
 	}
+	editFilter = (f) => {
+		let cFilters = this.state.filters.custom
+		let filterIndex = cFilters.findIndex(fi => fi.id === f.id)
+		cFilters[filterIndex] = f
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+	}
 	removeFilter = (fId) => {
 		let cFilters = this.state.filters.custom
 		cFilters = cFilters.reduce((newFilters, f) => { 
@@ -335,9 +346,10 @@ class Projects extends Component {
 					project={selected[0]}
 					t={t}
 				/> : null}
-				<EnhancedTableToolbar
+				<TableToolbar
 					ft={this.ft()}//filters List
 					addFilter={this.addFilter}
+					editFilter={this.editFilter}
 					removeFilter={this.removeFilter}
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
@@ -380,9 +392,10 @@ class Projects extends Component {
 					project={selected[0]}
 					t={t}
 				/> : null}
-				<EnhancedTableToolbar
+				<TableToolbar
 					ft={this.ft()}
 					addFilter={this.addFilter}
+					editFilter={this.editFilter}
 					removeFilter={this.removeFilter}
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}

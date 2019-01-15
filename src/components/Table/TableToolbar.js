@@ -63,6 +63,7 @@ let defaultRender = props => {
 		<ItemG xs container alignItems={'center'}>
 			{props.ft ? <FilterToolbar
 				addFilter={props.addFilter}
+				editFilter={props.editFilter}
 				removeFilter={props.removeFilter}
 				filters={props.ft}
 				t={props.t}
