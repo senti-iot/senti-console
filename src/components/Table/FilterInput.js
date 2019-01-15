@@ -214,10 +214,19 @@ class FilterInput extends Component {
 				return
 			}
 		}
+		if (event.keyCode === 37) { 
+			if (this.props.onBeforeDelete)
+				this.props.onBeforeDelete()
+		}
 		if (this.props.newChipKeyCodes.indexOf(event.keyCode) >= 0) {
-			let result = this.handleAddChip({ key: "", value: event.target.value })
-			if (result !== false) {
-				event.preventDefault()
+			if (focusedChip !== null) { 
+				this.handleDoubleClick({ id: focusedChip })
+			}
+			else {
+				let result = this.handleAddChip({ key: "", value: event.target.value })
+				if (result !== false) {
+					event.preventDefault()
+				}
 			}
 		} else if (event.keyCode === 8 || event.keyCode === 46) {
 			if (this.props.onBeforeDelete) { 
@@ -330,7 +339,7 @@ class FilterInput extends Component {
 	}
 
 	handleDeleteChip(chip, i) {
-		if (this.props.value) {
+		if (this.props.value && chip) {
 			if (this.props.onDelete) {
 				this.props.onDelete(chip, i)
 			}
@@ -379,7 +388,7 @@ class FilterInput extends Component {
 		}
 	}
 	handleDoubleClick = (chip) => {
-		console.log(chip)
+		// console.log(chip)
 		if (this.props.handleDoubleClick)
 			this.props.handleDoubleClick(chip)
 	 }
@@ -476,8 +485,8 @@ class FilterInput extends Component {
 							chip: tag,
 							icon: tag.icon,
 							isDisabled: !!disabled,
-							isFocused: this.state.focusedChip === i,
-							handleClick: () => this.setState({ focusedChip: i }),
+							isFocused: this.state.focusedChip === value,
+							handleClick: () => this.setState({ focusedChip: value }),
 							handleDelete: () => this.handleDeleteChip({ id: value }, i),
 							handleDoubleClick: () => this.handleDoubleClick({ id: value }),
 							className: classes.chip,

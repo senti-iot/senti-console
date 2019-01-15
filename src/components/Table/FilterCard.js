@@ -90,10 +90,10 @@ class FilterCard extends Component {
 			}
 	}
 	
-	handleKeyPress = (key) => {
+	handleKeyDown = (key) => {
 		if (this.props.open)
-			switch (key.key) {
-				case 'Enter':
+			switch (key.keyCode) {
+				case 13:
 					this.handleButton()
 					break;
 
@@ -169,7 +169,7 @@ class FilterCard extends Component {
 					label={title}
 					value={diff.value}
 					onChange={this.handleChangeDiff}
-					onKeyPress={this.handleKeyPress}
+					onKeyDown={this.handleKeyDown}
 					menuItems={
 						options.dropdown.map(o => ({ value: o.value, label: o.label, icon: o.icon }))
 					} />
@@ -177,7 +177,7 @@ class FilterCard extends Component {
 				return <DSelect
 					label={title}
 					value={dropdown.value}
-					onKeyPress={this.handleKeyPress}
+					onKeyDown={this.handleKeyDown}
 					onChange={this.handleChangeDropDown('dropdown')}
 					menuItems={
 						options.map(o => ({ value: o.value, label: o.label, icon: o.icon }
@@ -215,7 +215,7 @@ class FilterCard extends Component {
 					</ItemG>
 				</Fragment>
 			case 'string':
-				return <TextF id={'filter-text'} onKeyPress={this.handleKeyPress} autoFocus label={t('filters.contains')} value={value} handleChange={e => this.handleInput(e.target.value)} />
+				return <TextF id={'filter-text'} onKeyDown={this.handleKeyDown} autoFocus label={t('filters.contains')} value={value} handleChange={e => this.handleInput(e.target.value)} />
 			default:
 				break;
 		}

@@ -37,11 +37,11 @@ class FilterToolbar extends Component {
 	}
 	handleDoubleClick = chip => {
 		const { filters } = this.props
-		console.log(chip)
+		// console.log(chip)
 		let chips = this.state.chips
 		let editChip = chips[chips.findIndex(c => c.id === chip.id)]
 		let editFilter = filters[filters.findIndex(f => f.key === editChip.key)]
-		console.log(editFilter)
+		// console.log(editFilter)
 		this.setState({ editFilter: editFilter, editChip })
 	}
 	handleMenuNav = e => {
@@ -137,13 +137,13 @@ class FilterToolbar extends Component {
 						anchorEl={actionAnchor}
 						transition
 						disablePortal
-						style={{ zIndex: 1050 }}
+						style={{ zIndex: 1028 }}
 					>
 						{({ TransitionProps }) => (
 							<Grow {...TransitionProps} timeout={350}>
 								<Paper onClick={e => e.stopPropagation()} >
 									<MenuList>
-										{this.props.filters ? this.props.filters.map((ft, i) => {
+										{filters ? filters.map((ft, i) => {
 											return <MenuItem selected={this.isSelected(i)} key={i} onClick={() => { this.setState({ [ft.name]: true, openMenu: false }) }}>
 												{ft.name}
 											</MenuItem>
