@@ -116,7 +116,7 @@ class FilterToolbar extends Component {
 		const { actionAnchor, editChip, editFilter } = this.state
 		// console.log(editChip, editFilter)
 		return (
-			<ClickAwayListener onClickAway={this.handleClose}>
+			<ClickAwayListener onClickAway={this.handleClose} style={{ margin: '4px 0px' }}>
 				<Fragment>
 					<FilterInput
 						inputRef={ref => this.input = ref}

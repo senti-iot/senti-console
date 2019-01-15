@@ -18,7 +18,7 @@ const toolbarStyles = theme => ({
 		display: 'flex',
 		justifyContent: 'center',
 		paddingRight: theme.spacing.unit,
-		margin: '4px 0px',
+		// margin: `4px 0px`,
 		paddingLeft: "16px",
 		[theme.breakpoints.down('sm')]: {
 			flexFlow: 'column nowrap'
