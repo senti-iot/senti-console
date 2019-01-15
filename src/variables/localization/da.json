@@ -7,7 +7,8 @@
     "": "",
     "Senti.Cloud": "Senti.Cloud",
     "actions": {
-        "addFilter": "Tilføj filter",
+		"addFilter": "Tilføj filter",
+		"editFilter": "Rediger filter",
         "apply": "Anvend",
         "back": "Forrige",
         "cancel": "Anuller",
