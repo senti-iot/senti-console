@@ -35,6 +35,8 @@ const TextF = (props) => {
 			margin='normal'
 			helperText={props.helperText}
 			InputProps={props.InputProps ? props.InputProps : null}
+			onKeyPress={props.onKeyPress}
+			onKeyDown={props.onKeyDown}
 		/>
 
 	)

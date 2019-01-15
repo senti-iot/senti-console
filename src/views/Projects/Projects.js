@@ -4,7 +4,7 @@ import GridContainer from 'components/Grid/GridContainer';
 import CircularLoader from 'components/Loader/CircularLoader';
 import ProjectCards from 'components/Project/ProjectCards';
 import ProjectTable from 'components/Project/ProjectTable';
-import EnhancedTableToolbar from 'components/Table/TableToolbar';
+import TableToolbar from 'components/Table/TableToolbar';
 import Toolbar from 'components/Toolbar/Toolbar';
 import React, { Component, Fragment } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -14,6 +14,7 @@ import { Add, Delete, Edit, PictureAsPdf, ViewList, ViewModule, DataUsage, Star,
 import AssignDCs from 'components/AssignComponents/AssignDCs';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { connect } from 'react-redux'
+import { customFilterItems } from 'variables/Filters';
 
 class Projects extends Component {
 	constructor(props) {
@@ -31,11 +32,11 @@ class Projects extends Component {
 			orderBy: 'title',
 			openAssignDC: false,
 			filters: {
-				name: false,
 				keyword: '',
 				startDate: null,
 				endDate: null,
-				activeDateFilter: false
+				activeDateFilter: false,
+				custom: []
 			}
 		}
 		props.setHeader('projects.pageTitle', false, '', 'projects')
@@ -135,7 +136,8 @@ class Projects extends Component {
 	}
 
 	filterItems = (data) => {
-		return filterItems(data, this.state.filters)
+		let { filters } = this.state
+		return customFilterItems(filterItems(data, filters), filters.custom)
 	}
 
 	handleEdit = () => {
@@ -278,11 +280,51 @@ class Projects extends Component {
 			</IconButton>
 		</Fragment>
 	}
-	
+	addFilter = (f) => {
+		let cFilters = this.state.filters.custom
+		let id = cFilters.length
+		cFilters.push({ value: f.value, id: id, key: f.key, type: f.type })
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+		return id
+	}
+	editFilter = (f) => {
+		let cFilters = this.state.filters.custom
+		let filterIndex = cFilters.findIndex(fi => fi.id === f.id)
+		cFilters[filterIndex] = f
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+	}
+	removeFilter = (fId) => {
+		let cFilters = this.state.filters.custom
+		cFilters = cFilters.reduce((newFilters, f) => { 
+			if (f.id !== fId) {
+				newFilters.push(f)
+			}
+			return newFilters
+		}, [])
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+	}
 	ft = () => {
 		const { t } = this.props
-		return [{ id: 'title', name: t('projects.fields.name'), func: this.filter, type: 'text' },
-			{ id: 'startDate', name: t('projects.fields.startDate'), func: this.filter, type: 'date' }
+		return [{ key: 'title', name: t('projects.fields.name'), type: 'string' },
+			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
+			{ key: 'startDate', name: t('projects.fields.startDate'), type: 'date' },
+			{ key: 'endDate', name: t('projects.fields.endDate'), type: 'date' },
+			{ key: 'created', name: t('projects.fields.created'), type: 'date' }
 		]
 
 	}
@@ -304,8 +346,11 @@ class Projects extends Component {
 					project={selected[0]}
 					t={t}
 				/> : null}
-				<EnhancedTableToolbar
+				<TableToolbar
 					ft={this.ft()}//filters List
+					addFilter={this.addFilter}
+					editFilter={this.editFilter}
+					removeFilter={this.removeFilter}
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
@@ -347,8 +392,11 @@ class Projects extends Component {
 					project={selected[0]}
 					t={t}
 				/> : null}
-				<EnhancedTableToolbar
+				<TableToolbar
 					ft={this.ft()}
+					addFilter={this.addFilter}
+					editFilter={this.editFilter}
+					removeFilter={this.removeFilter}
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}

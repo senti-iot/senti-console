@@ -5,16 +5,17 @@ import { boxShadow } from 'assets/jss/material-dashboard-react';
 import toolbarStyles from 'assets/jss/material-dashboard-react/tableToolBarStyle';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { ItemGrid } from 'components';
 import { ItemG } from 'components/index';
+import FilterToolbar from './FilterToolbar';
 
 let selectedRender = props => {
 	const { numSelected, t } = props;
 	return <Grid container justify={'space-between'} alignItems={'center'}>
 		<ItemGrid>
-			<Typography color='primary' variant='subtitle1'>
+			<Typography variant='subtitle1'>
 				{numSelected + ' ' + t('tables.selected')}
 			</Typography>
 		</ItemGrid>
@@ -35,7 +36,7 @@ let selectedRender = props => {
 					style: {
 						// maxHeight: ITEM_HEIGHT * 4.5,
 						// width: 200,
-						boxShadow: boxShadow
+						boxShadow: boxShadow,
 					}
 				}}
 			>
@@ -58,9 +59,20 @@ let selectedRender = props => {
 }
 let defaultRender = props => {
 	const { content } = props
-	return <ItemGrid container justify={'flex-end'} alignItems={'center'}>
-		{content ? content : null}
-	</ItemGrid>
+	return <Fragment>
+		<ItemG xs container alignItems={'center'}>
+			{props.ft ? <FilterToolbar
+				addFilter={props.addFilter}
+				editFilter={props.editFilter}
+				removeFilter={props.removeFilter}
+				filters={props.ft}
+				t={props.t}
+			/> : null}
+		</ItemG>
+		<ItemG xs={2} container justify={'flex-end'} alignItems={'center'}>
+			{content ? content : null}
+		</ItemG>
+	</Fragment>
 }
 let TableToolbar = props => {
 	const { numSelected, classes } = props;
@@ -69,19 +81,15 @@ let TableToolbar = props => {
 			className={classNames(classes.root, {
 				[classes.highlight]: numSelected > 0,
 			})}>
-			<ItemG container>
-				<ItemG xs={12}>
-					{numSelected > 0 ? (
-						selectedRender(props)
-					) :
-						defaultRender(props)
-					}
-				</ItemG>
-				{/* <div style={{ width: '100%', background: '#ececec', height: 1, margin: 4 }}/> */}
-				{/* <ItemG xs={12}>
-					<FilterToolbar filters={props.ft}/>
-				</ItemG> */}
+
+			<ItemG container alignItems={'center'}>
+				{numSelected > 0 ? (
+					selectedRender(props)
+				) :
+					defaultRender(props)
+				}
 			</ItemG>
+			
 		</Toolbar>
 	);
 };

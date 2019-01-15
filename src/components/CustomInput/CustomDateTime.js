@@ -2,7 +2,7 @@ import React from 'react'
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import { Dialog, DialogTitle, DialogContent, FormControlLabel, /* Checkbox, */ DialogActions, Button, RadioGroup, Radio, FormControl, withStyles } from '@material-ui/core';
 import { ItemG, Caption } from 'components';
-import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import MomentUtils from '@date-io/moment';
 import { DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons';
 const styles = theme => ({
 	dialogWidth: {

@@ -12,6 +12,7 @@ import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBoo
 import { GridContainer, CircularLoader, AssignDevice, AssignProject, ItemG } from 'components'
 import CollectionCard from 'components/Collections/CollectionCard';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
+import { customFilterItems } from 'variables/Filters';
 
 class Collections extends Component {
 	constructor(props) {
@@ -30,12 +31,67 @@ class Collections extends Component {
 			orderBy: 'name',
 			filters: {
 				keyword: '',
-				startDate: null,
-				endDate: null,
-				activeDateFilter: false
+				custom: [],
+				// activeDateFilter: false
 			}
 		}
 		props.setHeader('collections.pageTitle', false, '', 'collections')
+	}
+	dLiveStatus = () => {
+		const { t } = this.props
+		return [
+			{ value: 0, label: t("devices.status.redShort"), icon: <SignalWifi2Bar className={this.props.classes.redSignal} /> },
+			{ value: 1, label: t("devices.status.yellowShort"), icon: <SignalWifi2Bar className={this.props.classes.yellowSignal} /> },
+			{ value: 2, label: t("devices.status.greenShort"), icon: <SignalWifi2Bar className={this.props.classes.greenSignal} /> }
+		]
+	}
+	ft = () => {
+		const { t } = this.props
+		return [
+			{ key: 'name', name: t('collections.fields.name'), type: 'string' },
+			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
+			{ key: 'devices[0].start', name: t('collections.fields.activeDeviceStartDate'), type: 'date' },
+			{ key: 'created', name: t('collections.fields.created'), type: 'date' },
+			{ key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() }
+		]
+	}
+	addFilter = (f) => {
+		let cFilters = this.state.filters.custom
+		let id = cFilters.length
+		cFilters.push({ ...f, id: id })
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+		return id
+	}
+	editFilter = (f) => {
+		let cFilters = this.state.filters.custom
+		let filterIndex = cFilters.findIndex(fi => fi.id === f.id)
+		cFilters[filterIndex] = f
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+	}
+	removeFilter = (fId) => {
+		let cFilters = this.state.filters.custom
+		cFilters = cFilters.reduce((newFilters, f) => {
+			if (f.id !== fId) {
+				newFilters.push(f)
+			}
+			return newFilters
+		}, [])
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
 	}
 	tabs = [
 		{ id: 0, title: this.props.t('devices.tabs.listView'), label: <ViewList />, url: `${this.props.match.url}/list` },
@@ -99,11 +155,11 @@ class Collections extends Component {
 				s('snackbars.exported')
 				break;
 			case 3:
-			//TODO
+				//TODO
 				s('snackbars.assign.deviceToCollection', { collection: ``, what: 'Device' })
 				break;
 			case 6:
-			//TODO
+				//TODO
 				s('snackbars.assign.deviceToCollection', { collection: `${collections[collections.findIndex(c => c.id === selected[0])].name}`, device: display })
 				break
 			default:
@@ -118,7 +174,7 @@ class Collections extends Component {
 		let collections = await getAllCollections().then(rs => rs)
 		if (this._isMounted) {
 			this.setState({
-				collections: collections ? collections : [],			
+				collections: collections ? collections : [],
 				loading: false
 			}, () => this.handleRequestSort(null, 'name', 'asc'))
 
@@ -171,7 +227,8 @@ class Collections extends Component {
 	}
 
 	filterItems = (data) => {
-		return filterItems(data, this.state.filters)
+		const { filters } = this.state
+		return customFilterItems(filterItems(data, filters), filters.custom)
 	}
 
 	handleFilterStartDate = (value) => {
@@ -326,7 +383,7 @@ class Collections extends Component {
 		else {
 			//The Collection doesn't have a device assigned to it...
 			this.handleCloseUnassignDevice()
-		 }
+		}
 	}
 
 	renderDeviceUnassign = () => {
@@ -359,7 +416,7 @@ class Collections extends Component {
 	}
 	renderConfirmDelete = () => {
 		const { openDelete, collections, selected } = this.state
-		const { t, classes  } = this.props
+		const { t, classes } = this.props
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
@@ -392,7 +449,7 @@ class Collections extends Component {
 		// const { anchorFilterMenu } = this.state
 		// let access = accessLevel.apicollection ? accessLevel.apicollection.edit ? true : false : false
 		return <Fragment>
-			 <IconButton aria-label='Add new collection' onClick={this.addNewCollection}>
+			<IconButton aria-label='Add new collection' onClick={this.addNewCollection}>
 				<Add />
 			</IconButton>
 		</Fragment>
@@ -402,6 +459,10 @@ class Collections extends Component {
 		const { t } = this.props
 		const { selected } = this.state
 		return <TableToolbar //	./TableToolbar.js
+			ft={this.ft()}
+			addFilter={this.addFilter}
+			editFilter={this.editFilter}
+			removeFilter={this.removeFilter}
 			anchorElMenu={this.state.anchorElMenu}
 			handleToolbarMenuClose={this.handleToolbarMenuClose}
 			handleToolbarMenuOpen={this.handleToolbarMenuOpen}

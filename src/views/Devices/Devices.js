@@ -2,24 +2,23 @@ import React, { Component, Fragment } from 'react'
 import { getAllDevices, getDevice } from 'variables/dataDevices';
 import {
 	withStyles, Paper, Dialog, DialogTitle, DialogContent,
-	DialogContentText, DialogActions, Button, IconButton, Menu, MenuItem
-} from '@material-ui/core';
+	DialogContentText, DialogActions, Button } from '@material-ui/core';
 import { Switch, Route, Redirect } from 'react-router-dom'
 import projectStyles from 'assets/jss/views/projects';
 import DeviceTable from 'components/Devices/DeviceTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
-import { ViewList, ViewModule, Map, Add, FilterList, Build, Business, DataUsage, Edit, LayersClear, SignalWifi2Bar, Star, StarBorder } from 'variables/icons'
+import { ViewList, ViewModule, Map, Build, Business, DataUsage, Edit, LayersClear, SignalWifi2Bar, Star, StarBorder } from 'variables/icons'
 import Toolbar from 'components/Toolbar/Toolbar'
 import { filterItems, handleRequestSort } from 'variables/functions';
 import DeviceCard from 'components/Devices/DeviceCard'
-import { boxShadow } from 'assets/jss/material-dashboard-react';
 import { unassignDeviceFromCollection } from 'variables/dataCollections';
 import { Info, AssignDC, AssignOrg, ItemG } from 'components';
 import TableToolbar from 'components/Table/TableToolbar';
 import { connect } from 'react-redux'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import OpenStreetMap from 'components/Map/OpenStreetMap';
+import { customFilterItems } from 'variables/Filters';
 
 class Devices extends Component {
 	constructor(props) {
@@ -41,7 +40,8 @@ class Devices extends Component {
 				keyword: '',
 				startDate: null,
 				endDate: null,
-				activeDateFilter: false
+				activeDateFilter: false,
+				custom: []
 			}
 		}
 		props.setHeader('devices.pageTitle', false, '', 'devices')
@@ -52,7 +52,91 @@ class Devices extends Component {
 		{ id: 2, title: this.props.t('devices.tabs.cardView'), label: <ViewModule />, url: `${this.props.match.path}/grid` },
 		{ id: 3, title: this.props.t('sidebar.favorites'), label: <Star />, url: `${this.props.match.path}/favorites` }
 	]
-
+	dLiveStatus = () => {
+		const { t } = this.props
+		return [
+			{ value: 0, label: t("devices.status.redShort"), icon: <SignalWifi2Bar className={this.props.classes.redSignal} /> },
+			{ value: 1, label: t("devices.status.yellowShort"), icon: <SignalWifi2Bar className={this.props.classes.yellowSignal} /> },
+			{ value: 2, label: t("devices.status.greenShort"), icon: <SignalWifi2Bar className={this.props.classes.greenSignal} /> }
+		]
+	}
+	dCalibrated = () => { 
+		const { t } = this.props
+		return [
+			{ value: true, label: t("filters.devices.calibrated") },
+			{ value: false, label: t("filters.devices.notCalibrated") }
+		]
+	}
+	dLocationPlace = () => {
+		const { t } = this.props
+		return [
+			{ value: 1, label: t('devices.locationTypes.pedStreet') },
+			{ value: 2, label: t('devices.locationTypes.park') },
+			{ value: 3, label: t('devices.locationTypes.path') },
+			{ value: 4, label: t('devices.locationTypes.square') },
+			{ value: 5, label: t('devices.locationTypes.crossroads') },
+			{ value: 6, label: t('devices.locationTypes.road') },
+			{ value: 7, label: t('devices.locationTypes.motorway') },
+			{ value: 8, label: t('devices.locationTypes.port') },
+			{ value: 9, label: t('devices.locationTypes.office') },
+			{ value: 0, label: t('devices.locationTypes.unspecified') }]
+	}
+	dAvailable = () => { 
+		const { t } = this.props
+		return [
+			{ value: true, label: t('devices.fields.notfree') },
+			{ value: false, label: t('devices.fields.free') }
+		]
+	}
+	ft = () => {
+		const { t } = this.props
+		return [{ key: 'name', name: t('devices.fields.name'), type: 'string' },
+			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
+			{ key: 'address', name: t('devices.fields.address'), type: 'string' },
+			{ key: 'liveStatus', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
+			{ key: 'locationType', name: t('devices.fields.locType'), type: 'dropDown', options: this.dLocationPlace() },
+			{ key: 'lat', name: t('calibration.stepheader.calibration'), type: 'diff', options: { dropdown: this.dCalibrated(), values: { false: [0] } } },
+			{ key: 'dataCollection', name: t('devices.fields.availability'), type: 'dropDown', options: this.dAvailable() }
+		]
+	}
+	addFilter = (f) => {
+		let cFilters = this.state.filters.custom
+		let id = cFilters.length
+		cFilters.push({ ...f, id: id })
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+		return id
+	}
+	editFilter = (f) => {
+		let cFilters = this.state.filters.custom
+		let filterIndex = cFilters.findIndex(fi => fi.id === f.id)
+		cFilters[filterIndex] = f
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+	}
+	removeFilter = (fId) => {
+		let cFilters = this.state.filters.custom
+		cFilters = cFilters.reduce((newFilters, f) => {
+			if (f.id !== fId) {
+				newFilters.push(f)
+			}
+			return newFilters
+		}, [])
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+	}
 	deviceHeaders = () => {
 		const { t } = this.props
 		return [
@@ -61,7 +145,7 @@ class Devices extends Component {
 			{ id: 'liveStatus', checkbox: true, label: <ItemG container justify={'center'} title={t('devices.fields.status')}><SignalWifi2Bar /></ItemG> },
 			{ id: 'address', label: t('devices.fields.address') },
 			{ id: 'org.name', label: t('devices.fields.org') },
-			{ id: 'dataCollection[0].id', label: t('devices.fields.availability') }
+			{ id: 'dataCollection', label: t('devices.fields.availability') }
 		]
 	}
 	options = () => {
@@ -142,7 +226,7 @@ class Devices extends Component {
 		// this.liveStatus = setInterval(this.getDevices, 10000);
 	}
 
-	componentDidUpdate = (prevProps, prevState) => {
+	componentDidUpdate = (prevProps) => {
 		if (this.props.location.pathname !== prevProps.location.pathname) {
 			this.handleTabs()
 		}
@@ -163,7 +247,8 @@ class Devices extends Component {
 	}
 
 	filterItems = (data) => {
-		return filterItems(data, this.state.filters)
+		let { filters } = this.state
+		return customFilterItems(filterItems(data, filters), filters.custom)
 	}
 
 	getDevices = async () => {
@@ -219,7 +304,7 @@ class Devices extends Component {
 	handleCloseAssignOrg = async reload => {
 		if (reload) {
 			this.setState({ loading: true, openAssignOrg: false })
-			await this.getDevices().then(rs => {
+			await this.getDevices().then(() => {
 				this.snackBarMessages(2)
 			})
 		}
@@ -233,7 +318,7 @@ class Devices extends Component {
 	handleCloseAssignCollection = async reload => {
 		if (reload) {
 			this.setState({ loading: true, openAssignCollection: false })
-			await this.getDevices().then(rs => {
+			await this.getDevices().then(() => {
 				this.snackBarMessages(1)
 			})
 		}
@@ -365,33 +450,14 @@ class Devices extends Component {
 		return <CircularLoader />
 	}
 	renderTableToolBarContent = () => {
-		const { classes, t } = this.props
-		const { anchorFilterMenu } = this.state
-		return <Fragment>
-			<IconButton aria-label='Add new organisation' onClick={this.addNewOrg}>
-				<Add />
-			</IconButton>
-			<IconButton
-				className={classes.secondAction}
-				aria-label={t('tables.filter')}
-				aria-owns={anchorFilterMenu ? 'filter-menu' : null}
-				onClick={this.handleFilterMenuOpen}>
-				<FilterList />
-			</IconButton>
-			<Menu
-				id='filter-menu'
-				anchorEl={anchorFilterMenu}
-				open={Boolean(anchorFilterMenu)}
-				onClose={this.handleFilterMenuClose}
-				PaperProps={{ style: { width: 200, boxShadow: boxShadow } }}>
-
-				{this.deviceHeaders().map(option => {
-					return <MenuItem key={option.id} onClick={this.handleFilter}>
-						{option.label}
-					</MenuItem>
-				})}
-			</Menu>
-		</Fragment>
+		return null
+		// const { classes, t } = this.props
+		// const { anchorFilterMenu } = this.state
+		// return <Fragment>
+		// 	<IconButton aria-label='Add new organisation' onClick={this.addNewOrg}>
+		// 		<Add />
+		// 	</IconButton>
+		// </Fragment>
 	}
 	getFavs = () => {
 		let favorites = this.props.favorites.filter(f => f.type === 'device')
@@ -479,7 +545,10 @@ class Devices extends Component {
 					t={t} />
 				{this.renderConfirmUnassign()}
 				<TableToolbar
-					// ft={this.ft()}
+					ft={this.ft()}
+					addFilter={this.addFilter}
+					editFilter={this.editFilter}
+					removeFilter={this.removeFilter}
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}

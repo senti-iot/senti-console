@@ -18,6 +18,7 @@ import FavoritesTable from 'components/Favorites/FavoritesTable';
 import { Paper, withStyles } from '@material-ui/core';
 import TableToolbar from 'components/Table/TableToolbar';
 import projectStyles from 'assets/jss/views/projects';
+import { customFilterItems } from 'variables/Filters';
 
 class Management extends Component {
 	constructor(props) {
@@ -30,9 +31,7 @@ class Management extends Component {
 			selected: [],
 			filters: {
 				keyword: '',
-				startDate: null,
-				endDate: null,
-				activeDateFilter: false
+				custom: []
 			},
 			loading: true,
 			users: [],
@@ -63,6 +62,20 @@ class Management extends Component {
 		})
 
 	}
+	ftOrgs = () => {
+		const { t } = this.props
+		return [
+			{ key: 'name', name: t('collections.fields.name'), type: 'string' },
+			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
+			{ key: 'devices[0].start', name: t('collections.fields.activeDeviceStartDate'), type: 'date' },
+			{ key: 'created', name: t('collections.fields.created'), type: 'date' },
+			// { key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() }
+			// { key: 'address', name: t('devices.fields.address'), type: 'string' },
+			// { key: 'locationType', name: t('devices.fields.locType'), type: 'dropDown', options: this.dLocationPlace() },
+			// { key: 'lat', name: t('calibration.stepheader.calibration'), type: 'diff', options: { dropdown: this.dCalibrated(), values: { false: [0] } } },
+		]
+	}
+
 	handleFilterKeyword = (value) => {
 		this.setState({
 			filters: {
@@ -98,7 +111,8 @@ class Management extends Component {
 	}
 
 	filterItems = (data) => {
-		return filterItems(data, this.state.filters)
+		const { filters } = this.state
+		return customFilterItems(filterItems(data, filters), filters.custom)
 	}
 	options = () => {
 		const { t } = this.props
@@ -181,8 +195,11 @@ class Management extends Component {
 	}
 	renderTableToolBar = () => {
 		const { t } = this.props
-		const { selected } = this.state
+		const { selected, route } = this.state
 		return <TableToolbar //	./TableToolbar.js
+			ft={route === 1 ? this.ftOrgs() : route === 0 ? this.ftUsers() : null}
+			addFilter={this.addFilter}
+			removeFilter={this.removeFilter}
 			anchorElMenu={this.state.anchorElMenu}
 			handleToolbarMenuClose={this.handleToolbarMenuClose}
 			handleToolbarMenuOpen={this.handleToolbarMenuOpen}

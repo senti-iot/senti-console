@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Paper, withStyles, Grid, Collapse, Button } from '@material-ui/core';
 import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
-import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import MomentUtils from '@date-io/moment';
 import { KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft, Save, Check } from 'variables/icons';
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';

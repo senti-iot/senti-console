@@ -87,7 +87,7 @@ class Toolbar extends PureComponent {
 		return (
 			<div style={{ height: 48 }}>
 				<AppBar  classes={{ root: classes.appBar }}>
-					{tabs ? <Tabs innerRef={ref => this.tabsRef = ref} value={this.state.route} scrollable={width === 'xs' ? true : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
+					{tabs ? <Tabs innerRef={ref => this.tabsRef = ref} value={this.state.route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 						{tabs ? tabs.map((t, i) => {
 							return <Tab title={t.title}
 								component={(props) => <Link {...props} scroll={this.handleScroll } style={{ color: '#fff' }} />}
