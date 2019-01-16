@@ -38,10 +38,6 @@ class Devices extends Component {
 			orderBy: 'id',
 			filters: {
 				keyword: '',
-				startDate: null,
-				endDate: null,
-				activeDateFilter: false,
-				custom: []
 			}
 		}
 		props.setHeader('devices.pageTitle', false, '', 'devices')
@@ -98,44 +94,6 @@ class Devices extends Component {
 			{ key: 'lat', name: t('calibration.stepheader.calibration'), type: 'diff', options: { dropdown: this.dCalibrated(), values: { false: [0] } } },
 			{ key: 'dataCollection', name: t('devices.fields.availability'), type: 'dropDown', options: this.dAvailable() }
 		]
-	}
-	addFilter = (f) => {
-		let cFilters = this.state.filters.custom
-		let id = cFilters.length
-		cFilters.push({ ...f, id: id })
-		this.setState({
-			filters: {
-				...this.state.filters,
-				custom: cFilters
-			}
-		})
-		return id
-	}
-	editFilter = (f) => {
-		let cFilters = this.state.filters.custom
-		let filterIndex = cFilters.findIndex(fi => fi.id === f.id)
-		cFilters[filterIndex] = f
-		this.setState({
-			filters: {
-				...this.state.filters,
-				custom: cFilters
-			}
-		})
-	}
-	removeFilter = (fId) => {
-		let cFilters = this.state.filters.custom
-		cFilters = cFilters.reduce((newFilters, f) => {
-			if (f.id !== fId) {
-				newFilters.push(f)
-			}
-			return newFilters
-		}, [])
-		this.setState({
-			filters: {
-				...this.state.filters,
-				custom: cFilters
-			}
-		})
 	}
 	deviceHeaders = () => {
 		const { t } = this.props
@@ -247,8 +205,9 @@ class Devices extends Component {
 	}
 
 	filterItems = (data) => {
+		const rFilters = this.props.filters
 		let { filters } = this.state
-		return customFilterItems(filterItems(data, filters), filters.custom)
+		return customFilterItems(filterItems(data, filters), rFilters)
 	}
 
 	getDevices = async () => {
@@ -490,7 +449,8 @@ class Devices extends Component {
 					t={t} />
 				{this.renderConfirmUnassign()}
 				<TableToolbar
-					// ft={this.ft()}
+					ft={this.ft()}
+					reduxKey={'devices'}
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
@@ -546,9 +506,7 @@ class Devices extends Component {
 				{this.renderConfirmUnassign()}
 				<TableToolbar
 					ft={this.ft()}
-					addFilter={this.addFilter}
-					editFilter={this.editFilter}
-					removeFilter={this.removeFilter}
+					reduxKey={'devices'}
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
@@ -632,7 +590,8 @@ const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	favorites: state.favorites.favorites,
 	saved: state.favorites.saved,
-	mapTheme: state.settings.mapTheme
+	mapTheme: state.settings.mapTheme,
+	filters: state.appState.filters.devices
 })
 
 const mapDispatchToProps = (dispatch) => ({

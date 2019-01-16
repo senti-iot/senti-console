@@ -91,6 +91,7 @@ class Projects extends Component {
 	}
 
 	componentDidMount = async () => {
+		window.filters = this.props.filters
 		this._isMounted = 1
 		this.handleTabs()
 		await this.getData()
@@ -112,6 +113,7 @@ class Projects extends Component {
 			}
 		}
 	}
+
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.location.pathname !== prevProps.location.pathname) {
 			this.handleTabs()
@@ -137,7 +139,7 @@ class Projects extends Component {
 
 	filterItems = (data) => {
 		let { filters } = this.state
-		return customFilterItems(filterItems(data, filters), filters.custom)
+		return customFilterItems(filterItems(data, filters), this.props.filters)
 	}
 
 	handleEdit = () => {
@@ -272,51 +274,12 @@ class Projects extends Component {
 		e.stopPropagation();
 		this.setState({ anchorElMenu: null })
 	}
-	
 	renderTableToolBarContent = () => {
 		return <Fragment>
 			<IconButton aria-label='Add new project' onClick={this.AddNewProject}>
 				<Add />
 			</IconButton>
 		</Fragment>
-	}
-	addFilter = (f) => {
-		let cFilters = this.state.filters.custom
-		let id = cFilters.length
-		cFilters.push({ value: f.value, id: id, key: f.key, type: f.type })
-		this.setState({
-			filters: {
-				...this.state.filters,
-				custom: cFilters
-			}
-		})
-		return id
-	}
-	editFilter = (f) => {
-		let cFilters = this.state.filters.custom
-		let filterIndex = cFilters.findIndex(fi => fi.id === f.id)
-		cFilters[filterIndex] = f
-		this.setState({
-			filters: {
-				...this.state.filters,
-				custom: cFilters
-			}
-		})
-	}
-	removeFilter = (fId) => {
-		let cFilters = this.state.filters.custom
-		cFilters = cFilters.reduce((newFilters, f) => { 
-			if (f.id !== fId) {
-				newFilters.push(f)
-			}
-			return newFilters
-		}, [])
-		this.setState({
-			filters: {
-				...this.state.filters,
-				custom: cFilters
-			}
-		})
 	}
 	ft = () => {
 		const { t } = this.props
@@ -348,9 +311,7 @@ class Projects extends Component {
 				/> : null}
 				<TableToolbar
 					ft={this.ft()}//filters List
-					addFilter={this.addFilter}
-					editFilter={this.editFilter}
-					removeFilter={this.removeFilter}
+					reduxKey={'projects'}
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
@@ -394,9 +355,7 @@ class Projects extends Component {
 				/> : null}
 				<TableToolbar
 					ft={this.ft()}
-					addFilter={this.addFilter}
-					editFilter={this.editFilter}
-					removeFilter={this.removeFilter}
+					reduxKey={'projects'}
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
@@ -473,15 +432,18 @@ class Projects extends Component {
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	favorites: state.favorites.favorites,
-	saved: state.favorites.saved
+	saved: state.favorites.saved,
+	
+	//Filters
+	filters: state.appState.filters.projects
 })
 
 const mapDispatchToProps = (dispatch) => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving())
+	finishedSaving: () => dispatch(finishedSaving()),
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(projectStyles)(Projects))
+export default withStyles(projectStyles)(connect(mapStateToProps, mapDispatchToProps)((Projects)))

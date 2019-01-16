@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from 'react'
 import FilterInput from 'components/Table/FilterInput';
 import FilterCard from 'components/Table/FilterCard';
+import { connect } from 'react-redux'
 import { MenuItem, MenuList, ClickAwayListener, Paper, Popper, Grow } from '@material-ui/core'
+import { addFilter, editFilter, removeFilter } from 'redux/appState';
 class FilterToolbar extends Component {
 	constructor(props) {
 		super(props)
@@ -75,36 +77,40 @@ class FilterToolbar extends Component {
 		}
 	}
 	handleAdd = (displayValue, value, key, type, icon) => {
-		let id = this.props.addFilter({ value, key, type: type ? type : null })
-		let chipObj = {
-			key: key, 
-			type: type,
-			id: id,
-			icon: icon,
-			value: displayValue,
-			actualVal: value
-		}
-		// chip.id = id
-		this.setState({
-			chips: [...this.state.chips, chipObj]
-		})
+		const { addFilter, reduxKey } = this.props
+		addFilter({ value, key, type: type ? type : null, icon, displayValue: displayValue }, reduxKey)
+		/* let id = */ 
+		// let chipObj = {
+		// 	key: key, 
+		// 	type: type,
+		// 	id: id,
+		// 	icon: icon,
+		// 	value: displayValue,
+		// 	actualVal: value
+		// }
+		// // chip.id = id
+		// this.setState({
+		// 	chips: [...this.state.chips, chipObj]
+		// })
 	}
 	handleEdit = (displayValue, value, key, type, icon, id) => { 
-		this.props.editFilter({ id, value, key, type: type ? type : null })
-		let chips = this.state.chips
-		let chipIndex = chips.findIndex(c => c.id === id)
-		chips[chipIndex] = {
-			key: key,
-			type: type,
-			id: id,
-			icon: icon,
-			value: displayValue,
-			actualVal: value
-		}
-		this.setState({ chips })
+		const { editFilter, reduxKey } = this.props
+		editFilter({ id, value, key, type: type ? type : null, icon, displayValue: displayValue }, reduxKey)
+		// let chips = this.state.chips
+		// let chipIndex = chips.findIndex(c => c.id === id)
+		// chips[chipIndex] = {
+		// 	key: key,
+		// 	type: type,
+		// 	id: id,
+		// 	icon: icon,
+		// 	value: displayValue,
+		// 	actualVal: value
+		// }
+		// this.setState({ chips })
 	}
 	handleDelete = (deletedChip, i) => {
-		this.props.removeFilter(deletedChip.id)
+		const { removeFilter, reduxKey } = this.props
+		removeFilter(deletedChip.id, reduxKey)
 		this.setState({
 			chips: this.state.chips.filter((c) => c.id !== deletedChip.id)
 		})
@@ -112,7 +118,7 @@ class FilterToolbar extends Component {
 	}
 	isSelected = id => this.state.focusedMenu === id ? true : false
 	render() {
-		const { t, filters } = this.props
+		const { t, filters, reduxKey } = this.props
 		const { actionAnchor, editChip, editFilter } = this.state
 		// console.log(editChip, editFilter)
 		return (
@@ -120,7 +126,7 @@ class FilterToolbar extends Component {
 				<Fragment>
 					<FilterInput
 						inputRef={ref => this.input = ref}
-						value={this.state.chips}
+						value={this.props.chips[reduxKey]}
 						onBeforeAdd={(chip) => this.onBeforeAdd(chip)}
 						onBeforeDelete={this.handleClose}
 						handleDoubleClick={this.handleDoubleClick}
@@ -164,7 +170,7 @@ class FilterToolbar extends Component {
 						handleButton={(displayValue, value, icon) => { this.handleEdit(displayValue, value, editFilter.key, editFilter.type, icon, editChip.id) }}
 						handleClose={() => this.setState({ editFilter: false, editChip: null })}
 					/> : null}
-					{this.props.filters ? this.props.filters.map((ft, i) => {
+					{filters ? filters.map((ft, i) => {
 						return <FilterCard
 							key={i}
 							open={this.state[ft.name]}
@@ -182,5 +188,15 @@ class FilterToolbar extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	chips: state.appState.filters
+})
 
-export default FilterToolbar
+
+const mapDispatchToProps = (dispatch) => ({
+	addFilter: (filter, type) => dispatch(addFilter(filter, type)),
+	editFilter: (filter, type) => dispatch(editFilter(filter, type)),
+	removeFilter: (filter, type) => dispatch(removeFilter(filter, type))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterToolbar)

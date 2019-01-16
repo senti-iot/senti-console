@@ -62,9 +62,7 @@ let defaultRender = props => {
 	return <Fragment>
 		<ItemG xs container alignItems={'center'}>
 			{props.ft ? <FilterToolbar
-				addFilter={props.addFilter}
-				editFilter={props.editFilter}
-				removeFilter={props.removeFilter}
+				reduxKey={props.reduxKey}
 				filters={props.ft}
 				t={props.t}
 			/> : null}

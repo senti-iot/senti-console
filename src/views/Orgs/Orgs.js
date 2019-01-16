@@ -26,7 +26,6 @@ class Orgs extends Component {
 			orderBy: 'name',
 			filters: {
 				keyword: '',
-				custom: []
 			}
 		}
 		props.setHeader('orgs.pageTitle', false, '', 'users')
@@ -76,44 +75,6 @@ class Orgs extends Component {
 			{ key: 'org.name', name: t('orgs.fields.parentOrg'), type: 'string' },
 			{ key: 'org.id', name: t('filters.orgs.parentOrg'), type: 'diff', options: { dropdown: this.dHasOrgParent(), values: { false: [-1] } } }
 		]
-	}
-	addFilter = (f) => {
-		let cFilters = this.state.filters.custom
-		let id = cFilters.length
-		cFilters.push({ ...f, id: id })
-		this.setState({
-			filters: {
-				...this.state.filters,
-				custom: cFilters
-			}
-		})
-		return id
-	}
-	editFilter = (f) => {
-		let cFilters = this.state.filters.custom
-		let filterIndex = cFilters.findIndex(fi => fi.id === f.id)
-		cFilters[filterIndex] = f
-		this.setState({
-			filters: {
-				...this.state.filters,
-				custom: cFilters
-			}
-		})
-	}
-	removeFilter = (fId) => {
-		let cFilters = this.state.filters.custom
-		cFilters = cFilters.reduce((newFilters, f) => {
-			if (f.id !== fId) {
-				newFilters.push(f)
-			}
-			return newFilters
-		}, [])
-		this.setState({
-			filters: {
-				...this.state.filters,
-				custom: cFilters
-			}
-		})
 	}
 	handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
@@ -215,36 +176,10 @@ class Orgs extends Component {
 	}
 
 	filterItems = (data) => {
-		const { filters } = this.state
-		return customFilterItems(data, filters.custom)
+		const rFilters = this.props.filters
+		return customFilterItems(data, rFilters)
 	}
 
-	handleFilterStartDate = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				startDate: value,
-				activeDateFilter: value !== null ? true : false
-			}
-		})
-	}
-	handleFilterEndDate = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				endDate: value,
-				activeDateFilter: value !== null ? true : false
-			}
-		})
-	}
-	handleFilterKeyword = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				keyword: value
-			}
-		})
-	}
 	getData = async () => {
 		if (this.props.orgs) {
 			this.setState({
@@ -333,9 +268,7 @@ class Orgs extends Component {
 					{this.renderConfirmDelete()}
 					<TableToolbar //	./TableToolbar.js
 						ft={this.ftOrgs()}
-						addFilter={this.addFilter}
-						editFilter={this.editFilter}
-						removeFilter={this.removeFilter}
+						reduxKey={'orgs'}
 						anchorElMenu={this.state.anchorElMenu}
 						handleToolbarMenuClose={this.handleToolbarMenuClose}
 						handleToolbarMenuOpen={this.handleToolbarMenuOpen}
@@ -347,9 +280,6 @@ class Orgs extends Component {
 					<OrgTable
 						data={this.filterItems(orgs)}
 						tableHead={this.orgsHeader()}
-						handleFilterEndDate={this.handleFilterEndDate}
-						handleFilterKeyword={this.handleFilterKeyword}
-						handleFilterStartDate={this.handleFilterStartDate}
 						handleRequestSort={this.handleRequestSort}
 						handleDeleteOrgs={this.handleDeleteOrgs}
 						handleCheckboxClick={this.handleCheckboxClick}
@@ -363,19 +293,8 @@ class Orgs extends Component {
 		</GridContainer>
 	}
 	render() {
-		// const { orgs, route, filters } = this.state
 		return (
 			<Fragment>
-				{/* <Toolbar
-					data={orgs}
-					route={route}
-					filters={filters}
-					history={this.props.history}
-					match={this.props.match}
-					handleFilterKeyword={this.handleFilterKeyword}
-					tabs={this.tabs}
-					defaultRoute={1}
-				/> */}
 				{this.renderOrgs()}
 			</Fragment>
 		)

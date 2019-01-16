@@ -25,10 +25,6 @@ class Users extends Component {
 			route: 0,
 			order: 'desc',
 			orderBy: 'firstName',
-			filters: {
-				keyword: '',
-				custom: []
-			}
 		}
 		props.setHeader('users.pageTitle', false, '', 'users')
 	}
@@ -65,44 +61,6 @@ class Users extends Component {
 			{ key: 'lastLoggedIn', name: t('filters.users.hasLogged'), type: 'diff', options: { dropdown: this.dHasLoggedIn(), values: { false: [null] } } },
 			{ key: 'aux.odeum.language', name: t('users.fields.language'), type: 'dropDown', options: this.dLang() }
 		]
-	}
-	addFilter = (f) => {
-		let cFilters = this.state.filters.custom
-		let id = cFilters.length
-		cFilters.push({ ...f, id: id })
-		this.setState({
-			filters: {
-				...this.state.filters,
-				custom: cFilters
-			}
-		})
-		return id
-	}
-	editFilter = (f) => {
-		let cFilters = this.state.filters.custom
-		let filterIndex = cFilters.findIndex(fi => fi.id === f.id)
-		cFilters[filterIndex] = f
-		this.setState({
-			filters: {
-				...this.state.filters,
-				custom: cFilters
-			}
-		})
-	}
-	removeFilter = (fId) => {
-		let cFilters = this.state.filters.custom
-		cFilters = cFilters.reduce((newFilters, f) => {
-			if (f.id !== fId) {
-				newFilters.push(f)
-			}
-			return newFilters
-		}, [])
-		this.setState({
-			filters: {
-				...this.state.filters,
-				custom: cFilters
-			}
-		})
 	}
 	handleEdit = () => {
 		this.props.history.push(`/management/user/${this.state.selected[0]}/edit`)
@@ -154,13 +112,12 @@ class Users extends Component {
 	componentDidUpdate = async (prevState, prevProps) => {
 		if (prevProps.users !== this.props.users) {
 			await this.getData()
-			// this.setState({ users: this.props.users })
 		}
 	}
 
 	filterItems = (data) => {
-		const { filters } = this.state
-		return customFilterItems(data, filters.custom)
+		const rFilters = this.props.filters
+		return customFilterItems(data, rFilters)
 	}
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
@@ -168,14 +125,6 @@ class Users extends Component {
 		this.setState({ users: newData, order, orderBy: property })
 	}
 
-	handleFilterKeyword = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				keyword: value
-			}
-		})
-	}
 	getData = async () => {
 		if (this.props.users) {
 			this.setState({
@@ -306,9 +255,7 @@ class Users extends Component {
 				{this.renderConfirmDelete()}
 				<TableToolbar
 					ft={this.ftUsers()}
-					addFilter={this.addFilter}
-					editFilter={this.editFilter}
-					removeFilter={this.removeFilter}
+					reduxKey={'users'}
 					anchorElMenu={this.state.anchorElMenu}
 					handleToolbarMenuClose={this.handleToolbarMenuClose}
 					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
@@ -321,9 +268,6 @@ class Users extends Component {
 					selected={selected}
 					tableHead={this.userHeader()}
 					handleSelectAllClick={this.handleSelectAllClick}
-					handleFilterEndDate={this.handleFilterEndDate}
-					handleFilterKeyword={this.handleFilterKeyword}
-					handleFilterStartDate={this.handleFilterStartDate}
 					handleRequestSort={this.handleRequestSort}
 					handleDeleteUsers={this.handleDeleteUsers}
 					handleCheckboxClick={this.handleCheckboxClick}
