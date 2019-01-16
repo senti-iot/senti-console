@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { createBrowserHistory } from 'history'
 import { Router, Route, Switch } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import { store } from './redux/store'
+import store from './redux/store'
 import indexRoutes from 'routes/index.js'
 // import { MuiThemeProvider } from '@material-ui/core/styles'
 import 'assets/css/material-dashboard-react.css?v=1.2.0'
@@ -10,7 +10,7 @@ import 'assets/css/leaflet.css'
 
 import TProvider from 'components/Localization/TProvider'
 
-import 'core-js/fn/set'; 
+import 'core-js/fn/set';
 import 'core-js/es6/map';
 import 'core-js/es6/set';
 import 'core-js/fn/array/find';
