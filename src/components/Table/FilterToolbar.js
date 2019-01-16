@@ -38,8 +38,9 @@ class FilterToolbar extends Component {
 	}
 
 	handleDoubleClick = chip => {
-		const { filters, chips } = this.props
-		let editChip = chips[chips.findIndex(c => c.id === chip.id)]
+		const { filters, chips, reduxKey } = this.props
+		let allChips = chips[reduxKey]
+		let editChip = allChips[chips.findIndex(c => c.id === chip.id)]
 		let editFilter = filters[filters.findIndex(f => f.key === editChip.key)]
 		this.setState({ editFilter: editFilter, editChip })
 	}
