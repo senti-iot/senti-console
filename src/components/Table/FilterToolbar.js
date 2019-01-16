@@ -9,7 +9,6 @@ class FilterToolbar extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			chips: [],
 			openMenu: false,
 			actionAnchor: null,
 			focusedMenu: -1
@@ -39,8 +38,7 @@ class FilterToolbar extends Component {
 	}
 
 	handleDoubleClick = chip => {
-		const { filters } = this.props
-		let chips = this.state.chips
+		const { filters, chips } = this.props
 		let editChip = chips[chips.findIndex(c => c.id === chip.id)]
 		let editFilter = filters[filters.findIndex(f => f.key === editChip.key)]
 		this.setState({ editFilter: editFilter, editChip })
@@ -85,9 +83,6 @@ class FilterToolbar extends Component {
 	handleDelete = (deletedChip, i) => {
 		const { removeFilter, reduxKey } = this.props
 		removeFilter(deletedChip.id, reduxKey)
-		this.setState({
-			chips: this.state.chips.filter((c) => c.id !== deletedChip.id)
-		})
 
 	}
 	isSelected = id => this.state.focusedMenu === id ? true : false
