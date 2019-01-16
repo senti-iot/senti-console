@@ -15,7 +15,6 @@ export const getUser = async (userId) => {
 }
 export const createUser = async (user) => {
 	let response = await api.post(`core/user`, user).then(rs => rs)
-	// response.status
 	return response.data ? response.data : response.status
 }
 export const resendConfirmEmail = async (user) => {

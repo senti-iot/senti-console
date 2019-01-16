@@ -4,11 +4,6 @@ import { InfoCard, ItemGrid, DSelect, CircularLoader } from 'components';
 import { Laptop } from 'variables/icons'
 import { Grid, ListItem, List, ListItemText, withStyles } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
-// Discover Senti
-//List rows per page on Tables
-// Menu Location
-// Dark Mode
-// Themes?
 
 class DisplaySettings extends Component {
 

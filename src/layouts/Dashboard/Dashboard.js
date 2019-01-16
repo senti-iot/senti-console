@@ -1,9 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
-// creates a beautiful scrollbar
-// import PerfectScrollbar from 'perfect-scrollbar';
-// import 'perfect-scrollbar/css/perfect-scrollbar.css';
 import { withStyles, Snackbar, Button } from '@material-ui/core';
 import { Header, Sidebar, CircularLoader } from 'components';
 
@@ -80,14 +77,14 @@ class App extends React.Component {
 			else {
 				document.body.style = 'background: #eee';
 			}
-			if (navigator.platform.indexOf('Win') > -1) {
+			/* if (navigator.platform.indexOf('Win') > -1) {
 				if (!this.props.loading) {
 					if (this.refs.mainPanel) {
-						//eslint-disable-next-line
-						// const ps = new PerfectScrollbar(this.refs.mainPanel);
+						eslint-disable-next-line
+						const ps = new PerfectScrollbar(this.refs.mainPanel);
 					}
 				}
-			}
+			} */
 		})
 	}
 	componentWillUnmount = () => {

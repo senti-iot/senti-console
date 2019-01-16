@@ -66,7 +66,6 @@ export const datesToArr = (from, to) => {
 		arr.push(d.toDate())
 		d = d.clone().add(amount, 'd')
 	}
-	// 
 	return arr
 }
 export const weekendColors = (id) => {

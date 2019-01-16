@@ -7,7 +7,6 @@ import cx from 'classnames';
 import DSelect from 'components/CustomInput/DSelect';
 import { Close } from 'variables/icons';
 
-
 /**
 * @augments {Component<{	t:Function.isRequired,	collection:object.isRequired,	handleChangeDevice:Function.isRequired,	handleCloseDevice:Function.isRequired,	handleOpenDevice:Function.isRequired,	open:boolean.isRequired,	devices:array.isRequired,	device:object.isRequired,	handleCreate:Function.isRequired,	handleChange:Function.isRequired,>}
 */

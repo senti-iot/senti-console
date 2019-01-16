@@ -1,7 +1,7 @@
 import { getHolidays } from 'variables/data';
 
-// const getDoI = 'getDoI'
 const setDoI = 'setDoI'
+
 export const todayOfInterest = (date) => { 
 	return (dispatch, getState) => {
 		let DoI = getState().doi.days

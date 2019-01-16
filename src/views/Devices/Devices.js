@@ -125,7 +125,6 @@ class Devices extends Component {
 				{ label: t('menus.unassign.deviceFromCollection'), func: this.handleOpenUnassignDialog, single: false, icon: LayersClear },
 				{ label: t('menus.calibrate'), func: this.handleCalibrateFlow, single: true, icon: Build },
 				{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
-				// { label: t('menus.delete'), func: this.handleDeleteProjects, single: false, icon: Delete }, 
 			]
 		else {
 			return [
@@ -180,8 +179,6 @@ class Devices extends Component {
 		this._isMounted = 1
 		this.handleTabs()
 		await this.getDevices()
-		// No more bullcrap
-		// this.liveStatus = setInterval(this.getDevices, 10000);
 	}
 
 	componentDidUpdate = (prevProps) => {
@@ -342,7 +339,6 @@ class Devices extends Component {
 	};
 
 	handleUnassignDevices = async () => {
-		// const { data } = this.props
 		const { selected } = this.state
 		let devices = []
 		devices = await Promise.all(selected.map(s => getDevice(s))).then(rs => rs)
@@ -404,19 +400,11 @@ class Devices extends Component {
 		</Dialog>
 	}
 	renderLoader = () => {
-		// const { classes } = this.props
 
 		return <CircularLoader />
 	}
 	renderTableToolBarContent = () => {
 		return null
-		// const { classes, t } = this.props
-		// const { anchorFilterMenu } = this.state
-		// return <Fragment>
-		// 	<IconButton aria-label='Add new organisation' onClick={this.addNewOrg}>
-		// 		<Add />
-		// 	</IconButton>
-		// </Fragment>
 	}
 	getFavs = () => {
 		let favorites = this.props.favorites.filter(f => f.type === 'device')

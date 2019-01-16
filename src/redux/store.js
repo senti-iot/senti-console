@@ -7,13 +7,15 @@ import { appState } from './appState'
 import thunk from 'redux-thunk';
 
 let reducers = combineReducers({ settings, localization, favorites, doi, appState })
-//Debugging purposes
-// const logger = store => next => action => {
-// 	console.log('dispatching', action)
-// 	let result = next(action)
-// 	console.log('next state', store.getState())
-// 	return result
-// }
+/**
+*	 Debugging purposes
+**/ 
+/* const logger = store => next => action => {
+	console.log('dispatching', action)
+	let result = next(action)
+	console.log('next state', store.getState())
+	return result
+}  */
 
 let composeMiddleware = compose(
 	applyMiddleware(thunk, /* logger */),

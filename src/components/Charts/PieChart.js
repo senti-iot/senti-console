@@ -37,32 +37,6 @@ class PieChart extends PureComponent {
 				hover: {
 					mode: 'point'
 				},
-				// scales: {
-				// 	xAxes: [
-				// 		{
-				// 			display: false,
-				// 			offset: true,
-				// 			id: 'day',
-				// 			type: 'time',
-				// 			time: {
-				// 				displayFormats: {
-				// 					hour: 'LT',
-				// 					day: 'll'
-				// 				},
-				// 				unit: props.unit.chart,
-				// 				tooltipFormat: props.unit.format
-				// 			},
-				// 			gridLines: {
-				// 				offsetGridLines: true
-				// 			}
-				// 		}],
-				//		 yAxes: [{
-				//		 	scaleLabel: {
-				//		 		display: true,
-				//		 		labelString: 'value'
-				//		 	}
-				//		 }]
-				// }
 			}
 		}
 	}
@@ -161,10 +135,6 @@ class PieChart extends PureComponent {
 	render() {
 		const { classes } = this.props
 		const { tooltip, chartWidth } = this.state
-		;
-
-		// let DayStr = tooltip.title[1] ? tooltip.title[1].charAt(0).toUpperCase() + tooltip.title[1].slice(1) : ''
-		// let DateStr = tooltip.title[0] ? tooltip.title[0] : ''
 		return (
 			<div style={{ maxHeight: 400, position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
 				<Pie

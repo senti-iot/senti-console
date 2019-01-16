@@ -3,13 +3,12 @@ import {
 	TableRow, Typography, withStyles, DialogTitle, Dialog, DialogContent,
 	DialogContentText, DialogActions, Button, List, ListItem, ListItemIcon, ListItemText
 } from '@material-ui/core'
-// import { Delete, Devices, Edit, PictureAsPdf } from 'variables/icons'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
 import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 import { dateFormatter } from 'variables/functions'
-import EnhancedTableHead from 'components/Table/TableHeader'
+import TableHeader from 'components/Table/TableHeader'
 import { ItemGrid, Info, Caption } from 'components'
 import { connect } from 'react-redux'
 import TP from 'components/Table/TP';
@@ -22,25 +21,6 @@ class ProjectTable extends React.Component {
 			page: 0,
 			rowsPerPage: props.rowsPerPage,
 		}
-	}
-
-	handleFilterMenuOpen = e => {
-		e.stopPropagation()
-		this.setState({ anchorFilterMenu: e.currentTarget })
-	}
-
-	handleFilterMenuClose = e => {
-		e.stopPropagation()
-		this.setState({ anchorFilterMenu: null })
-	}
-
-	handleFilter = () => {
-	}
-
-	handleSearch = value => {
-		this.setState({
-			searchFilter: value
-		})
 	}
 
 	handleRequestSort = (event, property) => {
@@ -102,7 +82,7 @@ class ProjectTable extends React.Component {
 			<Fragment>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby='tableTitle'>
-						<EnhancedTableHead // ./ProjectTableHeader
+						<TableHeader
 							numSelected={selected.length}
 							order={order}
 							orderBy={orderBy}
@@ -112,7 +92,6 @@ class ProjectTable extends React.Component {
 							columnData={this.props.tableHead}
 							t={t}
 							classes={classes}
-							// mdDown={[0]}
 							customColumn={[
 								{
 									id: 'title',

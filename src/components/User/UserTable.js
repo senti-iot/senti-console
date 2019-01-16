@@ -7,7 +7,7 @@ import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
 import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
-import EnhancedTableHead from 'components/Table/TableHeader'
+import TableHeader from 'components/Table/TableHeader'
 import { ItemGrid, Info, Caption } from 'components'
 import { connect } from 'react-redux'
 import { pF, dateFormat } from 'variables/functions';
@@ -83,7 +83,7 @@ class UserTable extends React.Component {
 			<Fragment>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby='tableTitle'>
-						<EnhancedTableHead // ./ProjectTableHeader
+						<TableHeader
 							numSelected={selected.length}
 							order={order}
 							orderBy={orderBy}

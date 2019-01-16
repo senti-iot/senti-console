@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TableCell, TableHead, TableRow, TableSortLabel, Checkbox, Hidden, Typography } from '@material-ui/core'
 import classNames from 'classnames'
-class EnhancedTableHead extends Component {
+
+class TableHeader extends Component {
 	createSortHandler = property => event => {
 		this.props.onRequestSort(event, property);
 	};
@@ -29,7 +30,6 @@ class EnhancedTableHead extends Component {
 									padding={column.disablePadding ? 'none' : 'default'}
 									sortDirection={orderBy === column.id ? order : false}
 									className={`${classes.header} ${classes.tableCell} ${column.centered ? classes.centered : ''} ${column.checkbox ? classes.tablecellcheckbox : ''}`}
-								// numeric={column.numeric ? true : false}
 								>
 									<TableSortLabel
 										active={orderBy === column.id}
@@ -97,7 +97,7 @@ class EnhancedTableHead extends Component {
 	}
 }
 
-EnhancedTableHead.propTypes = {
+TableHeader.propTypes = {
 	numSelected: PropTypes.number.isRequired,
 	onRequestSort: PropTypes.func.isRequired,
 	onSelectAllClick: PropTypes.func.isRequired,
@@ -108,4 +108,4 @@ EnhancedTableHead.propTypes = {
 	classes: PropTypes.object.isRequired 
 };
 
-export default EnhancedTableHead
+export default TableHeader

@@ -1,6 +1,5 @@
 import { Grid, IconButton, Menu, MenuItem, Toolbar, Typography, withStyles } from '@material-ui/core';
 import { MoreVert as MoreVertIcon } from 'variables/icons';
-// import FilterListIcon from '@material-ui/icons/FilterList';
 import { boxShadow } from 'assets/jss/material-dashboard-react';
 import toolbarStyles from 'assets/jss/material-dashboard-react/tableToolBarStyle';
 import classNames from 'classnames';
@@ -32,13 +31,7 @@ let selectedRender = props => {
 				anchorEl={props.anchorElMenu}
 				open={Boolean(props.anchorElMenu)}
 				onClose={props.handleToolbarMenuClose}
-				PaperProps={{
-					style: {
-						// maxHeight: ITEM_HEIGHT * 4.5,
-						// width: 200,
-						boxShadow: boxShadow,
-					}
-				}}
+				PaperProps={{ style: { boxShadow: boxShadow } }}
 			>
 				{props.options().map((option, i) => {
 					if (option.dontShow)

@@ -34,13 +34,10 @@ class TProvider extends Component {
 		var result = phrase
 		var interpolationRegex = tokenRegex || defaultTokenRegex
 
-		// allow number as a pluralization shortcut
 		var options = typeof substitutions === 'number' ? { smart_count: substitutions } : substitutions
 
-		// Interpolate: Creates a `RegExp` object for each interpolation placeholder.
 		result = replace.call(result, interpolationRegex, function (expression, argument) {
 			if (!has(options, argument) || options[argument] == null) { return expression }
-			// Ensure replacement value is escaped to prevent special $-prefixed regex replace tokens.
 			return replace.call(options[argument], dollarRegex, dollarBillsYall)
 		})
 
@@ -53,7 +50,7 @@ class TProvider extends Component {
 			phrase = this.props.langStrings[key]
 		} else if (typeof opts._ === 'string') {
 			phrase = opts._
-		} else if (this.onMissingKey) { //TODO: Create Fallback
+		} else if (this.onMissingKey) {
 			var onMissingKey = this.onMissingKey
 			result = onMissingKey(key, opts, this.tokenRegex)
 		} else {
@@ -72,13 +69,10 @@ class TProvider extends Component {
 	s = (sId, sOpt) => {
 		this.queue.push({ sId, sOpt })
 		if (this.state.sOpen) {
-			// immediately begin dismissing current message
-			// to start showing new one
 			this.setState({ sOpen: false });
 		} else {
 			this.processQueue();
 		}
-		// this.setState({ sOpen: true, sId, sOpt: sOpt })
 	}
 	processQueue = () => {
 		if (this.queue.length > 0) {

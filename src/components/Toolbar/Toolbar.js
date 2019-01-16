@@ -61,25 +61,14 @@ class Toolbar extends PureComponent {
 		this.tabsRef = React.createRef()
 		
 	}
-	componentDidMount = () => {
-		// if (this.props.width === 'xs') { 
-		// 	if (this.tabsRef)
-		// 	{this.tabsRef.tabsRef.scroll({ left: 100, behavior: 'smooth' }) 
-		// 		setTimeout(() => {
-		// 			this.tabsRef.tabsRef.scroll({ left: 0, behavior: 'smooth' }) 
-		// 		}, 300);}
-		// }
-	}
 	
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
 	}
+	
 	handleScroll = el => {
-		
 		let topOfElement = el.offsetTop - 130
-		// let container = document.getElementById('container')
 		window.scroll({ top: topOfElement, behavior: 'smooth' })
-		
 	}
 	
 	render() {
@@ -94,9 +83,7 @@ class Toolbar extends PureComponent {
 								id={t.id}
 								key={i}
 								smooth
-								classes={{
-									root: classes.tab
-								}}
+								classes={{ root: classes.tab }}
 								label={t.label}
 								to={`${t.url}`} />
 						}) : null}

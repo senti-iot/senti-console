@@ -4,7 +4,6 @@ import { Router, Route, Switch } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import store from './redux/store'
 import indexRoutes from 'routes/index.js'
-// import { MuiThemeProvider } from '@material-ui/core/styles'
 import 'assets/css/material-dashboard-react.css?v=1.2.0'
 import 'assets/css/leaflet.css'
 

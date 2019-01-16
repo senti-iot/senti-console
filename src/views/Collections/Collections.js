@@ -31,8 +31,6 @@ class Collections extends Component {
 			orderBy: 'name',
 			filters: {
 				keyword: '',
-				custom: [],
-				// activeDateFilter: false
 			}
 		}
 		props.setHeader('collections.pageTitle', false, '', 'collections')
@@ -54,44 +52,6 @@ class Collections extends Component {
 			{ key: 'created', name: t('collections.fields.created'), type: 'date' },
 			{ key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() }
 		]
-	}
-	addFilter = (f) => {
-		let cFilters = this.state.filters.custom
-		let id = cFilters.length
-		cFilters.push({ ...f, id: id })
-		this.setState({
-			filters: {
-				...this.state.filters,
-				custom: cFilters
-			}
-		})
-		return id
-	}
-	editFilter = (f) => {
-		let cFilters = this.state.filters.custom
-		let filterIndex = cFilters.findIndex(fi => fi.id === f.id)
-		cFilters[filterIndex] = f
-		this.setState({
-			filters: {
-				...this.state.filters,
-				custom: cFilters
-			}
-		})
-	}
-	removeFilter = (fId) => {
-		let cFilters = this.state.filters.custom
-		cFilters = cFilters.reduce((newFilters, f) => {
-			if (f.id !== fId) {
-				newFilters.push(f)
-			}
-			return newFilters
-		}, [])
-		this.setState({
-			filters: {
-				...this.state.filters,
-				custom: cFilters
-			}
-		})
 	}
 	tabs = [
 		{ id: 0, title: this.props.t('devices.tabs.listView'), label: <ViewList />, url: `${this.props.match.url}/list` },
@@ -217,9 +177,9 @@ class Collections extends Component {
 		}
 	}
 	componentWillUnmount = () => {
-
 		this._isMounted = 0
 	}
+
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
 		let newData = handleRequestSort(property, order, this.state.collections)
@@ -232,24 +192,6 @@ class Collections extends Component {
 		return customFilterItems(filterItems(data, filters), rFilters)
 	}
 
-	handleFilterStartDate = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				startDate: value,
-				activeDateFilter: value !== null ? true : false
-			}
-		})
-	}
-	handleFilterEndDate = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				endDate: value,
-				activeDateFilter: value !== null ? true : false
-			}
-		})
-	}
 	handleFilterKeyword = (value) => {
 		this.setState({
 			filters: {
@@ -444,11 +386,10 @@ class Collections extends Component {
 			</DialogActions>
 		</Dialog>
 	}
+
 	addNewCollection = () => this.props.history.push(`/collections/new`)
+
 	renderTableToolBarContent = () => {
-		// const { accessLevel } = this.props
-		// const { anchorFilterMenu } = this.state
-		// let access = accessLevel.apicollection ? accessLevel.apicollection.edit ? true : false : false
 		return <Fragment>
 			<IconButton aria-label='Add new collection' onClick={this.addNewCollection}>
 				<Add />
@@ -459,7 +400,7 @@ class Collections extends Component {
 	renderTableToolBar = () => {
 		const { t } = this.props
 		const { selected } = this.state
-		return <TableToolbar //	./TableToolbar.js
+		return <TableToolbar
 			ft={this.ft()}
 			reduxKey={'collections'}
 			anchorElMenu={this.state.anchorElMenu}
@@ -507,9 +448,6 @@ class Collections extends Component {
 				handleSelectAllClick={this.handleSelectAllClick}
 				data={this.filterItems(this.getFavs())}
 				tableHead={this.collectionsHeader()}
-				handleFilterEndDate={this.handleFilterEndDate}
-				handleFilterKeyword={this.handleFilterKeyword}
-				handleFilterStartDate={this.handleFilterStartDate}
 				handleRequestSort={this.handleRequestSort}
 				handleOpenUnassignDevice={this.handleOpenUnassignDevice}
 				orderBy={orderBy}
@@ -556,14 +494,10 @@ class Collections extends Component {
 				handleSelectAllClick={this.handleSelectAllClick}
 				data={this.filterItems(this.state.collections)}
 				tableHead={this.collectionsHeader()}
-				handleFilterEndDate={this.handleFilterEndDate}
-				handleFilterKeyword={this.handleFilterKeyword}
-				handleFilterStartDate={this.handleFilterStartDate}
 				handleRequestSort={this.handleRequestSort}
 				handleOpenUnassignDevice={this.handleOpenUnassignDevice}
 				orderBy={orderBy}
 				order={order}
-				filters={this.state.filters}
 				t={t}
 			/>
 		</Fragment>

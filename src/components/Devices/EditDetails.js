@@ -4,7 +4,6 @@ import createprojectStyles from 'assets/jss/components/projects/createprojectSty
 import React, { Component, Fragment } from 'react';
 import { getDevice, updateDevice } from 'variables/dataDevices';
 import { CircularLoader, GridContainer, ItemGrid, TextF, AddressInput } from 'components';
-// import { PlacesWithStandaloneSearchBox } from 'components/Map/SearchBox';
 import DSelect from 'components/CustomInput/DSelect';
 import { isFav, updateFav } from 'redux/favorites';
 import { connect } from 'react-redux'

@@ -9,23 +9,19 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, /* CloudDownload */
+	ExpandMore, Visibility, ShowChart, ArrowUpward,
 } from 'variables/icons'
 import {
-	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
+	CircularLoader, Caption, ItemG, InfoCard, BarChart,
 	LineChart,
 	DoughnutChart,
 	PieChart,
-	ExportModal,
-	// ExportModal
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
-// import { getDataSummary, getDataDaily, getDataHourly, getDataMinutely, /* getDataHourly */ } from 'variables/dataDevices';
 import classNames from 'classnames';
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
-// import DevicePDF from 'components/Exports/DevicePDF';
 
 class DeviceData extends PureComponent {
 	constructor(props) {
@@ -35,7 +31,6 @@ class DeviceData extends PureComponent {
 			from: moment().subtract(7, 'd').startOf('day'),
 			to: moment().endOf('day'),
 			actionAnchor: null,
-			openDownload: false,
 			display: props.chartType ? props.chartType : 3,
 			visibility: false,
 		}
@@ -65,16 +60,6 @@ class DeviceData extends PureComponent {
 		{ id: 2, icon: <BarChartIcon />, label: this.props.t('charts.type.bar') },
 		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
 	]
-
-	getImage = () => {
-		// var canvas = document.getElementsByClassName('chartjs-render-monitor');
-	
-		// if (canvas.length > 0) {
-		// 	this.image = canvas[1].toDataURL('image/png');
-		// 	this.setState({ image: this.image })
-			
-		// }
-	}
 
 	componentWillUnmount = () => {
 		this._isMounted = 0
@@ -137,7 +122,7 @@ class DeviceData extends PureComponent {
 			try {
 				date = lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
 				switch (timeType) {
-					case 1: // Minutely
+					case 1:
 						startDate = moment(date).startOf('hour')
 						endDate = moment(date).endOf('hour')
 						this.setState({
@@ -175,18 +160,9 @@ class DeviceData extends PureComponent {
 			loading: false, openCustomDate: false
 		})
 	}
-	handleOpenDownloadModal = () => {
-		this.setState({ openDownload: true, actionAnchor: null })
-	}
-	handleCloseDownloadModal = () => {
-		this.setState({ openDownload: false })
-	}
-
 	renderType = () => {
 		const { display } = this.state
 		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device } = this.props
-
-		
 		switch (display) {
 			case 0:
 				return roundDataSets ? <div style={{ maxHeight: 400 }}>
@@ -229,7 +205,6 @@ class DeviceData extends PureComponent {
 					<LineChart
 						hoverID={this.props.hoverID}
 						single
-						// getImage={this.getImage}
 						obj={device}
 						unit={this.timeTypes[timeType]}
 						onElementsClick={this.handleZoomOnData}
@@ -265,7 +240,6 @@ class DeviceData extends PureComponent {
 						onClose={() => this.setState({ actionAnchorVisibility: null })}
 						PaperProps={{
 							style: {
-								// maxHeight: 300,
 								minWidth: 250
 							}
 						}}>					<List component='div' disablePadding>
@@ -298,26 +272,13 @@ class DeviceData extends PureComponent {
 				onChange={this.handleVisibility}
 				PaperProps={{
 					style: {
-						// maxHeight: 300,
 						minWidth: 250
 					}
 				}}>
-				{/*<div>
-					<Hidden mdUp>
-						<ListItem>
-							{this.renderDateFilter()}
-						</ListItem>
-					</Hidden>
-				</div> */}
-				<ListItem button onClick={this.handleOpenDownloadModal}>
-					<ListItemIcon><CloudDownload /></ListItemIcon>
-					<ListItemText>{t('menus.export')}</ListItemText>
-				</ListItem>
 				<ListItem button onClick={this.props.handleRawData}>
 					<ListItemIcon>
 						<Checkbox
 							checked={Boolean(this.props.raw)}
-							// disabled
 							className={classes.noPadding}
 						/>
 					</ListItemIcon>
@@ -361,7 +322,6 @@ class DeviceData extends PureComponent {
 
 	render() {
 		const { raw, t, loading, to, from, dateOption } = this.props
-		const {  openDownload } = this.state
 		let displayTo = dateTimeFormatter(to)
 		let displayFrom = dateTimeFormatter(from)
 		return (
@@ -374,17 +334,6 @@ class DeviceData extends PureComponent {
 					topAction={this.renderMenu()}
 					content={
 						<Grid container>
-							<ExportModal
-								deviceHeaders
-								raw={raw}
-								to={displayTo}
-								from={displayFrom}
-								data={this.props.exportData}
-								img={this.state.image}
-								open={openDownload}
-								handleClose={this.handleCloseDownloadModal}
-								t={t}
-							/>
 							{loading ? <CircularLoader notCentered /> :
 								<Fragment>
 									{/* <ItemG xs={12} container direction={'column'} alignItems={'center'} justify={'center'}>

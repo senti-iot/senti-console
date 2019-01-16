@@ -29,7 +29,6 @@ class CreateProject extends Component {
 		super(props)
 
 		this.state = {
-			// project: {},
 			title: '',
 			description: '',
 			startDate: null,
@@ -121,8 +120,6 @@ class CreateProject extends Component {
 	}
 	handleSelectedOrgs = async e => {
 		this.setState({ selectedOrg: e.target.value })
-		// var devices = await getAvailableDevices(e.target.value).then(rs => rs)
-		// this.setState({ availableDevices: devices ? devices : null, devices: [] })
 	}
 	handleDateChange = id => value => {
 		this.setState({
@@ -144,12 +141,11 @@ class CreateProject extends Component {
 		this.props.history.push(`/project/${rs.id}`)
 	}
 	handleCreateProject = async () => {
-		const { /* availableDevices, */ title, description, startDate, endDate } = this.state
+		const { title, description, startDate, endDate } = this.state
 		this.setState({ creating: true })
 		if (this.handleValidation())
 		{
 			await getCreateProject().then(async rs => {
-				// let isCreated = false
 				if (this._isMounted) {
 					let newProject = {
 						...rs,
@@ -157,7 +153,6 @@ class CreateProject extends Component {
 						description: description,
 						startDate: startDate,
 						endDate: endDate,
-						// devices: availableDevices ? availableDevices.filter(a => this.state.devices.some(b => a.id === b)) : []
 					}
 					await createProject(newProject).then(rs => rs ? this.handleFinishCreateProject(rs) : this.setState({ create: false, creating: false, id: 0 })
 					)
@@ -213,7 +208,6 @@ class CreateProject extends Component {
 									label={t('projects.fields.description')}
 									multiline
 									rows={4}
-									// rowsMax={'4'}
 									color={'secondary'}
 									className={classes.textField}
 									value={this.state.description}

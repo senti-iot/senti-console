@@ -91,7 +91,6 @@ class EditUser extends Component {
 		this._isMounted = 0
 	}
 	getOrgs = async () => {
-		// const { orgs } = this.state
 		let orgs = await getAllOrgs().then(rs => rs)
 		this.setState({
 			orgs: orgs,
@@ -279,13 +278,11 @@ class EditUser extends Component {
 				appId: '1220',
 				name: t('users.groups.accountManager'),
 				show: accessLevel.apiorg.editusers ? true : false
-				// description: ''
 			},
 			{
 				id: '136550100000143',
 				appId: '1220',
 				name: t('users.groups.superUser'),
-				// description: 'Senti Cloud group containing Super Users',
 				show: accessLevel.apisuperuser ? true : false
 
 			},
@@ -294,7 +291,6 @@ class EditUser extends Component {
 				appId: '1220',
 				name: t('users.groups.user'),
 				show: true
-				// description: 'Senti Users'
 			}
 		]
 	}

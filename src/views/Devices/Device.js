@@ -26,23 +26,17 @@ class Device extends Component {
 		super(props)
 
 		this.state = {
-			//Date Filter stuff
 			dateOption: 3,
 			loadingData: true,
 			from: moment().subtract(7, 'd').startOf('day'),
 			to: moment().endOf('day'),
 			timeType: 2,
 			raw: props.rawData ? props.rawData : false,
-			//End Date Filter Tools
-			//Assign/Unassign
 			openAssignCollection: false,
 			openUnassign: false,
 			openAssignOrg: false,
-			//End Assign/Unassign
-			//Map
 			loadingMap: true,
 			heatData: null,
-			//End Map
 			device: null,
 			loading: true,
 			anchorElHardware: null,
@@ -112,9 +106,7 @@ class Device extends Component {
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {
-				// this.getAllPics(id)
 				await this.getDevice(id)
-
 			}
 		}
 		else {
@@ -157,11 +149,9 @@ class Device extends Component {
 		this.props.removeFromFav(favObj)
 	}
 	getHeatMapData = async () => {
-		// const { device } = this.props
 		const { from, to, device } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
-		// let dataArr = []
 		let dataSet = null
 		let data = await getDataSummary(device.id, startDate, endDate, true)
 		dataSet = {
@@ -205,7 +195,7 @@ class Device extends Component {
 			case 1:// Yesterday
 				this.getWifiHourly();
 				break;
-			case 2://this week
+			case 2:// This week
 				parseInt(diff, 10) > 1 ? this.getWifiDaily() : this.getWifiHourly()
 				break;
 			case 3:
@@ -284,7 +274,6 @@ class Device extends Component {
 		else return null
 	}
 	getWifiHourly = async () => {
-		// const { device } = this.props
 		const { from, to, raw, device, hoverID } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
@@ -311,7 +300,6 @@ class Device extends Component {
 		this.setState({
 			...this.state,
 			exportData: exportData,
-			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 1,
 			...newState
@@ -346,7 +334,6 @@ class Device extends Component {
 		this.setState({
 			...this.state,
 			exportData: exportData,
-			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 0,
 			...newState
@@ -382,7 +369,6 @@ class Device extends Component {
 		this.setState({
 			...this.state,
 			exportData: exportData,
-			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 2,
 			...newState
@@ -413,7 +399,6 @@ class Device extends Component {
 		let newState = setSummaryData(dataArr, from, to, hoverID)
 		this.setState({
 			...this.state,
-			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 3,
 			...newState

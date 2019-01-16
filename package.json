@@ -9,7 +9,6 @@
 		"@date-io/moment": "^1.0.1",
 		"@material-ui/core": "^3.8.1",
 		"@material-ui/icons": "^3.0.1",
-		"@react-pdf/renderer": "^1.1.1",
 		"@types/googlemaps": "^3.30.16",
 		"@types/markerclustererplus": "^2.1.33",
 		"@types/react": "^16.7.18",

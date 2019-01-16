@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-// import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { TablePagination, withWidth } from '@material-ui/core'
 import { isWidthUp } from '@material-ui/core/withWidth'

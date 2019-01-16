@@ -193,7 +193,6 @@ class Favorites extends Component {
 			numSelected={selected.length}
 			options={this.options}
 			t={t}
-			// content={this.renderTableToolBarContent()}
 		/>
 	}
 	renderTable = () => {
@@ -235,7 +234,6 @@ class Favorites extends Component {
 		return (
 			<Fragment>
 				<Toolbar
-					// noSearch
 					data={favorites}
 					filters={filters}
 					history={this.props.history}

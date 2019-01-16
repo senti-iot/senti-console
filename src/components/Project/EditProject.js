@@ -67,7 +67,6 @@ class EditProject extends Component {
 		this._isMounted = 1
 		let id = this.props.match.params.id
 		const { location } = this.props
-		// let projectOrgID = 0
 		await getProject(id).then(p => {
 			if (p === null)
 				this.props.history.push({
@@ -75,26 +74,11 @@ class EditProject extends Component {
 					prevURL: window.location.pathname
 				})
 			if (p && this._isMounted) {
-				// projectOrgID = p.org.id
 				this.setState({
 					project: p,
-					// devices: p.devices,
-					// selectedDevices: p.devices,
 				})
 			}
 		})
-		// await getAvailableDevices(projectOrgID).then(rs => {
-		// 	if (this._isMounted) {
-		// 		let allDev = []
-		// 		allDev = this.state.project.devices ? allDev.concat(this.state.project.devices) : allDev
-		// 		allDev = rs ? allDev.concat(rs) : allDev
-		// 		this.setState({
-		// 			availableDevices: rs ? rs : [],
-		// 			allDevices: allDev
-		// 		})
-
-		// 	}
-		// })
 		this.setState({
 			loading: false
 		})
@@ -108,14 +92,10 @@ class EditProject extends Component {
 	}
 
 	handleDeviceChange = event => {
-		// let newDevices = this.state.selectedDevices.push({ id: event.target.value })
 		this.setState({ selectedDevices: event.target.value.map(d => ({ id: d })) });
 	};
 
 	handleDateChange = id => value => {
-		// )
-		// .format('YYYY MM DD HH:ss'))
-		// .local().format('YYYY MM DD HH:ss'))
 		this.setState({
 			error: false,
 			project: {
@@ -173,8 +153,8 @@ class EditProject extends Component {
 	}
 
 	render() {
-		const { classes, /* theme, */ t } = this.props
-		const { /* availableDevices, */ created, error, loading, /* selectedDevices, project, allDevices */ } = this.state
+		const { classes, t } = this.props
+		const { created, error, loading } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
@@ -225,12 +205,10 @@ class EditProject extends Component {
 								<ItemGrid xs={12} md={6}>
 									<DatePicker
 										autoOk
-										// ampm={false}
 										label={t('projects.fields.startDate')}
 										clearable
 										labelFunc={(date, invalidLabel) => date === null ? '' : moment(date).format('LL')}
 										format='YYYY-MM-DDTHH:mm'
-										// format='LL'
 										value={this.state.project.startDate}
 										onChange={this.handleDateChange('startDate')}
 										animateYearScrolling={false}
@@ -245,13 +223,11 @@ class EditProject extends Component {
 								<ItemGrid xs={12} md={6}>
 									<DatePicker
 										color='primary'
-										// ampm={false}
 										autoOk
 										label={t('projects.fields.endDate')}
 										clearable
 										labelFunc={(date, invalidLabel) => date === null ?  '' : date.format('LL') }
 										format='YYYY-MM-DDTHH:mm'
-										// format='LL'
 										value={this.state.project.endDate}
 										onChange={this.handleDateChange('endDate')}
 										animateYearScrolling={false}

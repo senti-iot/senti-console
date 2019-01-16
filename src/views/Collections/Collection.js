@@ -149,18 +149,15 @@ class Collection extends Component {
 		this.props.removeFromFav(favObj)
 	}
 	getHeatMapData = async () => {
-		// const { device } = this.props
 		const { from, to, collection, activeDevice } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
-		// let dataArr = []
 		let dataSet = null
 		let data = await getDataSummary(collection.id, startDate, endDate, true)
 		dataSet = {
 			name: activeDevice.name,
 			id: activeDevice.id,
 			data: data,
-			// data: this.regenerateData(data, 'hour'),
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500],
@@ -203,7 +200,7 @@ class Collection extends Component {
 			case 1:// Yesterday
 				this.getWifiHourly();
 				break;
-			case 2://this week
+			case 2:// This week
 				parseInt(diff, 10) > 1 ? this.getWifiDaily() : this.getWifiHourly()
 				break;
 			case 3:
@@ -278,7 +275,6 @@ class Collection extends Component {
 		else return null
 	}
 	getWifiHourly = async () => {
-		// const { device } = this.props
 		const { from, to, raw, collection, hoverID } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
@@ -308,7 +304,6 @@ class Collection extends Component {
 		this.setState({
 			...this.state,
 			exportData: exportData,
-			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 1,
 			...newState
@@ -382,7 +377,6 @@ class Collection extends Component {
 		this.setState({
 			...this.state,
 			exportData: exportData,
-			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 2,
 			...newState
@@ -412,7 +406,6 @@ class Collection extends Component {
 		let newState = setSummaryData(dataArr, from, to, hoverID)
 		this.setState({
 			...this.state,
-			// dataArr: dataArr,
 			loadingData: false,
 			timeType: 3,
 			...newState
@@ -454,7 +447,6 @@ class Collection extends Component {
 			this.setState({
 				openDelete: false
 			})
-			// this.close()
 			if (rs) { 
 				this.props.history.push('/collections/list')
 				this.snackBarMessages(4)
@@ -509,31 +501,7 @@ class Collection extends Component {
 				this.snackBarMessages(5)
 			})
 		}
-		// this.setState({ openAssign: false })
 	}
-
-
-	// filterItems = (projects, keyword) => {
-	// 	var searchStr = keyword.toLowerCase()
-	// 	var arr = projects
-	// 	if (arr[0] === undefined)
-	// 		return []
-	// 	var keys = Object.keys(arr[0])
-	// 	var filtered = arr.filter(c => {
-	// 		var contains = keys.map(key => {
-	// 			if (c[key] === null)
-	// 				return searchStr === 'null' ? true : false
-	// 			if (c[key] instanceof Date) {
-	// 				let date = dateFormatter(c[key])
-	// 				return date.toLowerCase().includes(searchStr)
-	// 			}
-	// 			else
-	// 				return c[key].toString().toLowerCase().includes(searchStr)
-	// 		})
-	// 		return contains.indexOf(true) !== -1 ? true : false
-	// 	})
-	// 	return filtered
-	// }
 
 	handleOpenUnassignDevice = () => {
 		this.setState({

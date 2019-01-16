@@ -11,7 +11,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import DiscoverSenti from 'views/Dashboard/DiscoverSenti';
 import pj from '../../../package.json';
-// const Skycons = require('skycons')(window)
 
 class Dashboard extends React.Component {
 	constructor(props) {

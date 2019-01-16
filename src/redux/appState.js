@@ -1,29 +1,11 @@
-import { shallowEqual } from 'recompose';
-
 const updateFilters = 'updateFilters'
-/*
 
-removeFilter = (fId) => {
-	let cFilters = this.state.filters.custom
-	cFilters = cFilters.reduce((newFilters, f) => {
-		if (f.id !== fId) {
-			newFilters.push(f)
-		}
-		return newFilters
-	}, [])
-	this.setState({
-		filters: {
-			...this.state.filters,
-			custom: cFilters
-		}
-	})
-} */
 export const addFilter = (f, type) => {
 	return (dispatch, getState) => {
 		let filters = []
 		filters = [...getState().appState.filters[type]]
 		let id = filters.length
-		filters.push({ value: f.value, id: id, key: f.key, type: f.type })
+		filters.push({ ...f })
 		dispatch({
 			type: updateFilters,
 			filters: {
@@ -84,11 +66,7 @@ export const appState = (state = initialState, action) => {
 	switch (action.type) {
 
 		case updateFilters:
-			// let stat = Object.assign({}, state, { ...action.filters })
-			let stat = { ...state, filters: { ...state.filters, ...action.filters } }
-			console.log(state, stat, shallowEqual(state, stat))
-			return stat
-
+			return Object.assign({}, state, { filters: { ...state.filters, ...action.filters } })
 		default:
 			return state
 	}

@@ -19,7 +19,6 @@ const styles = theme => ({
 
 	actionsContainer: {
 		marginTop: theme.spacing.unit * 2,
-		// marginBottom: theme.spacing.unit * 2,
 	},
 	resetContainer: {
 		padding: theme.spacing.unit * 3,
@@ -37,10 +36,7 @@ const styles = theme => ({
 		marginLeft: theme.spacing.unit
 	},
 	mobileStepper: {
-
 		padding: '8px 0px',
-		// maxWidth: 400,
-		// flexGrow: 1,
 	},
 	paper: {
 		width: '100%',
@@ -414,11 +410,6 @@ class CalibrateDevice extends Component {
 	}
 
 	stepChecker = () => {
-		// Debug Purposes
-		// return false
-		/**
-		 * Return false to NOT disable the Next Step Button
-		 */
 		const { activeStep, lat, long, name, calibration, address } = this.state;
 		switch (activeStep) {
 			case 0:

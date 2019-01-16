@@ -104,7 +104,6 @@ class ConfirmUser extends React.Component {
 	confirmUser = async () => {
 		if (this.handleValidation()) {
 			const { password } = this.state
-			// const { t } = this.props
 			let session = await confirmUser({ newPassword: password, passwordToken: this.token })
 			if (session !== 404 && session)
 				this.loginUser(session)
@@ -193,7 +192,6 @@ class ConfirmUser extends React.Component {
 														label={t('confirmUser.password')}
 														value={password}
 														className={classes.textField}
-														// disabled={true}
 														handleChange={this.handleChange('password')}
 														margin='normal'
 														error={error}
@@ -206,7 +204,6 @@ class ConfirmUser extends React.Component {
 														label={t('confirmUser.passwordConfirm')}
 														value={confirmPassword}
 														className={classes.textField}
-														// disabled={true}
 														handleChange={this.handleChange('confirmPassword')}
 														margin='normal'
 														error={error}

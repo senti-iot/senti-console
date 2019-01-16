@@ -54,7 +54,6 @@ const theme = createMuiTheme({
 			}
 		},
 		MuiInput: {
-			// Name of the styleSheet
 			underline: {
 				'&:hover:not($disabled):not($focused):not($error):before': {
 					borderBottom: '2px solid #4db6ac' /* + primaryColor */,
@@ -68,15 +67,12 @@ const theme = createMuiTheme({
 		}
 	},
 	palette: {
-		// type: 'dark',
 		primary: {
-			// light: will be calculated from palette.primary.main,
 			main: primaryColor
 		},
 		secondary: {
 			main: secondaryColor,
 			light: hoverColor,
-			// dark: will be calculated from palette.secondary.main,
 		},
 		error: {
 			main: red[400]

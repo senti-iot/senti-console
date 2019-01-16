@@ -31,8 +31,6 @@ const styles = (theme) => {
 			float: 'left'
 		},
 		chipContainer: {
-			// display: "flex",
-			// alignItems: "center",
 			cursor: 'text',
 			marginBottom: -2,
 			minHeight: 40,
@@ -75,7 +73,6 @@ const styles = (theme) => {
 		disabled: {},
 		underline: {
 			'&:before': {
-				// backgroundColor: bottomLineColor,
 				left: 0,
 				bottom: 0,
 				content: '""',
@@ -89,7 +86,6 @@ const styles = (theme) => {
 				pointerEvents: 'none'
 			},
 			'&:hover:not($disabled):before': {
-				// backgroundColor: theme.palette.text.primary,
 				height: 0
 			},
 			'&$disabled:before': {
@@ -141,9 +137,6 @@ class FilterInput extends Component {
 		if (nextProps.disabled) {
 			this.setState({ focusedChip: null })
 		}
-
-		// Lets assume that if the chips have changed, the inputValue should be empty
-		// otherwise, we would need to make inputValue a controlled value. which is quite messy
 		if (nextProps.value && this.props.clearInputValueOnChange && nextProps.value.length !== this.props.value.length) {
 			this.setState({ inputValue: '' })
 		}
@@ -162,7 +155,6 @@ class FilterInput extends Component {
 	 * @public
 	 */
 	focus = () => {
-		// this.actualInput.focus()
 		if (this.state.focusedChip != null) {
 			this.setState({ focusedChip: null })
 		}
@@ -177,9 +169,6 @@ class FilterInput extends Component {
 			this.setState({ focusedChip: null })
 		}
 		if (this.props.blurBehavior === 'add') {
-			// Lets assume that we only want to add the existing content as chip, when
-			// another event has not added a chip within 200ms .
-			// e.g. onSelection Callback in Autocomplete case
 			let numChipsBefore = (this.props.value || this.state.chips).length
 			let value = event.target.value
 			this.inputBlurTimeout = setTimeout(() => {
@@ -206,10 +195,7 @@ class FilterInput extends Component {
 		const { focusedChip } = this.state
 		this.setState({ keyPressed: false, preventChipCreation: false })
 		if (this.props.onKeyDown) {
-			// Needed for arrow controls on menu in autocomplete scenario
 			this.props.onKeyDown(event)
-			// Check if the callback marked the event as isDefaultPrevented() and skip further actions
-			// enter key for example should not always add the current value of the inputField
 			if (event.isDefaultPrevented()) {
 				return
 			}
@@ -345,7 +331,7 @@ class FilterInput extends Component {
 			}
 		} else {
 			const chips = this.state.chips.slice()
-			const changed = chips.splice(i, 1) // remove the chip at index i
+			const changed = chips.splice(i, 1)
 			if (changed) {
 				let focusedChip = this.state.focusedChip
 				if (this.state.focusedChip === i) {
@@ -388,7 +374,6 @@ class FilterInput extends Component {
 		}
 	}
 	handleDoubleClick = (chip) => {
-		// console.log(chip)
 		if (this.props.handleDoubleClick)
 			this.props.handleDoubleClick(chip)
 	 }

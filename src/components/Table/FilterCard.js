@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
 
 import { Card, IconButton, CardContent, withStyles, Button, Popover, Typography, CardActions, Checkbox } from '@material-ui/core';
-// import Close from '@material-ui/icons/Close';
 import withLocalization from 'components/Localization/T';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
@@ -13,7 +12,6 @@ import moment from 'moment'
 
 const style = theme => ({
 	headerText: {
-		// background: '#00897b',
 		color: 'white',
 	},
 	header: {
@@ -22,12 +20,10 @@ const style = theme => ({
 		padding: 8
 	},
 	menu: {
-		// width: 240,
 		padding: 0,
 		background: '#00897b'
 	},
 	content: {
-		// maxWidth: 240,
 		height: '100%'
 	}
 })
@@ -47,17 +43,9 @@ class FilterCard extends Component {
 				value: 0,
 				label: ""
 			}
-			// endDate: moment()
 		}
 	}
-	// componentDidUpdate = () => {
-	// 	if (this.props.open && this.button)
-	// 		this.button.addEventListener('keypress', this.handleKeyPress, false)
-	// }
-	// componentWillUnmount = () => {
-	// 	if (this.button)
-	// 		this.button.removeEventListener('keypress', this.handleKeyPress, false)
-	// }
+
 	componentDidMount = (prevProps, prevState) => {
 		const { edit, type, value } = this.props
 		if (edit)
@@ -133,15 +121,12 @@ class FilterCard extends Component {
 		})
 	}
 	handleCustomDate = (e, key) => {
-		// console.log(e)
-		// var newDate = shortDateFormat(e)
 		this.setState({
 			[key]: e
 		})
 	}
 	handleChangeDropDown = (o) => e => {
 		const { options } = this.props
-		// console.log(options, options.findIndex(o => o.value === e.target.value))
 		this.setState({
 			[o]: {
 				value: e.target.value,
@@ -194,7 +179,6 @@ class FilterCard extends Component {
 							<DateTimePicker
 								id={'date'}
 								autoOk
-								// label={t('filters.startDate')}
 								clearable
 								ampm={false}
 								format='LL'
@@ -203,7 +187,6 @@ class FilterCard extends Component {
 								onChange={val => this.handleCustomDate(val, 'date')}
 								animateYearScrolling={false}
 								color='primary'
-								// disableFuture
 								dateRangeIcon={<DateRange />}
 								timeIcon={<AccessTime />}
 								rightArrowIcon={<KeyboardArrowRight />}

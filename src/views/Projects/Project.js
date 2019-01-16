@@ -27,8 +27,6 @@ class Project extends Component {
 			dateOption: 3,
 			from: moment().subtract(7, 'd').startOf('day'),
 			to: moment().endOf('day'),
-			// from: moment().startOf('month'),
-			// to: moment().endOf('day'),
 			timeType: 2,
 			raw: props.rawData ? props.rawData : false,
 			project: {},
@@ -111,7 +109,6 @@ class Project extends Component {
 		})
 	}
 	getWifiHourly = async () => {
-		// const { device } = this.props
 		const { from, to, raw, project, hoverID } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
@@ -286,7 +283,6 @@ class Project extends Component {
 		})
 	}
 	getHeatMapData = async () => {
-		// const { device } = this.props
 		const { from, to, project } = this.state
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
@@ -528,7 +524,6 @@ class Project extends Component {
 		return <DateFilterMenu
 			timeType={timeType}
 			dateOption={dateOption}
-			// classes={classes}
 			to={to}
 			from={from}
 			t={t}

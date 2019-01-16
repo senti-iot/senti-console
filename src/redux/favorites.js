@@ -33,7 +33,6 @@ export const finishedSaving = () => {
 }
 export const removeFromFav = (obj) => {
 	return async (dispatch, getState) => {
-		// let arr = []
 		let favs = getState().favorites.favorites
 		favs = favs.filter(f => f.id !== obj.id)
 		dispatch({

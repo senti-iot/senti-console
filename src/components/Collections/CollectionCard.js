@@ -11,7 +11,6 @@ class CollectionCard extends Component {
 		return (
 
 			<SmallCard
-				// whiteAvatar
 				key={d.id}
 				title={d.name ? d.name : d.id}
 				avatar={<DataUsage />}

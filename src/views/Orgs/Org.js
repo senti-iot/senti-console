@@ -1,22 +1,14 @@
 import React, { Component, Fragment } from 'react'
 import { GridContainer, ItemGrid, CircularLoader } from 'components';
 import { userStyles } from 'assets/jss/components/users/userStyles';
-import {
-	withStyles, /* , Typography, Grid, Hidden */
-	Dialog,
-	DialogTitle,
-	DialogContent,
-	DialogContentText,
-	DialogActions,
-	Button,
-} from '@material-ui/core';
+import { withStyles, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
 import { getOrg, getOrgUsers } from 'variables/dataOrgs';
 import OrgDetails from './OrgCards/OrgDetails';
-// var moment = require('moment')
 import { connect } from 'react-redux'
 import { deleteOrg } from 'variables/dataOrgs';
 import OrgUsers from 'views/Orgs/OrgCards/OrgUsers';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
+
 class Org extends Component {
 	constructor(props) {
 		super(props)

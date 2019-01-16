@@ -4,8 +4,6 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import { getAllCollections } from 'variables/dataCollections';
-// import { updateCollection } from 'variables/dataCollections'
-// import { updateCollection } from 'variables/dataCollections';
 import { ItemG, CircularLoader } from 'components';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
@@ -183,7 +181,6 @@ class AssignDCS extends React.Component {
 
 AssignDCS.propTypes = {
 	classes: PropTypes.object.isRequired,
-	// deviceId: PropTypes.number.isRequired,
 };
 
 export default withStyles(assignStyles)(AssignDCS);

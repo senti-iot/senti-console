@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react'
 import { withStyles, Button } from '@material-ui/core';
 import { CloudUpload, Restore, Check } from 'variables/icons'
 import { ItemGrid, Success, Warning } from 'components';
-// import ImageCarousel from 'components/Devices/ImageCarousel';
 import { uploadPictures } from 'variables/dataDevices';
 import GridContainer from 'components/Grid/GridContainer';
 import DeviceImage from 'components/Devices/DeviceImage';
@@ -33,7 +32,6 @@ class ImageUpload extends Component {
 		this.setState({ images: [] })
 		if (this.props.callBack)
 			this.props.callBack()
-		// return this.props.callBack ? this.props.callBack() : ''
 	}
 	handleReset = () => { this.setState({ images: [] }) }
 	render() {

@@ -7,7 +7,7 @@ import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
 import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
-import EnhancedTableHead from 'components/Table/TableHeader'
+import TableHeader from 'components/Table/TableHeader'
 import { Info, ItemG, Caption } from 'components'
 import { connect } from 'react-redux'
 import TP from 'components/Table/TP'
@@ -32,7 +32,6 @@ class OrgTable extends React.Component {
 	componentDidUpdate = () => {
 		if (this.props.saved === true) {
 			const { data, selected } = this.props
-			// const {  } = this.state
 			let org = data[data.findIndex(d => d.id === selected[0])]
 			if (this.props.isFav({ id: org.id, type: 'org' })) {
 				this.props.s('snackbars.favorite.saved', { name: org.name, type: this.props.t('favorites.types.org') })
@@ -82,7 +81,7 @@ class OrgTable extends React.Component {
 			<Fragment>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby='tableTitle'>
-						<EnhancedTableHead // ./ProjectTableHeader
+						<TableHeader
 							numSelected={selected.length}
 							order={order}
 							orderBy={orderBy}

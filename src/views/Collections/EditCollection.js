@@ -19,7 +19,6 @@ class EditCollection extends Component {
 			openOrg: false,
 		}
 		this.id = props.match.params.id
-		// props.setHeader('', true, `/collections/list`, 'collections')
 	}
 	postUpdate = async () => {
 		let success = await updateCollection(this.state.collection)
@@ -74,8 +73,6 @@ class EditCollection extends Component {
 		})
 	}
 	handleChange = (what) => e => {
-		// if (e)
-		// 	e.preventDefault()
 		this.setState({
 			collection: {
 				...this.state.collection,

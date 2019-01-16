@@ -7,13 +7,13 @@ import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
 import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
-import EnhancedTableHead from 'components/Table/TableHeader'
-// import EnhancedTableToolbar from 'components/Table/TableToolbar'
+import TableHeader from 'components/Table/TableHeader'
 import { connect } from 'react-redux'
 import TP from 'components/Table/TP'
 import { Info, Caption, ItemG } from 'components';
 import { dateFormatter } from 'variables/functions';
 import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
+
 class CollectionTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -89,7 +89,7 @@ class CollectionTable extends React.Component {
 			<Fragment>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby='tableTitle'>
-						<EnhancedTableHead // ./ProjectTableHeader
+						<TableHeader
 							numSelected={selected.length}
 							order={order}
 							orderBy={orderBy}

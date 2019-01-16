@@ -68,11 +68,7 @@ class Management extends Component {
 			{ key: 'name', name: t('collections.fields.name'), type: 'string' },
 			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
 			{ key: 'devices[0].start', name: t('collections.fields.activeDeviceStartDate'), type: 'date' },
-			{ key: 'created', name: t('collections.fields.created'), type: 'date' },
-			// { key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() }
-			// { key: 'address', name: t('devices.fields.address'), type: 'string' },
-			// { key: 'locationType', name: t('devices.fields.locType'), type: 'dropDown', options: this.dLocationPlace() },
-			// { key: 'lat', name: t('calibration.stepheader.calibration'), type: 'diff', options: { dropdown: this.dCalibrated(), values: { false: [0] } } },
+			{ key: 'created', name: t('collections.fields.created'), type: 'date' }
 		]
 	}
 
@@ -206,7 +202,6 @@ class Management extends Component {
 			numSelected={selected.length}
 			options={this.options}
 			t={t}
-		// content={this.renderTableToolBarContent()}
 		/>
 	}
 	renderTable = () => {
@@ -220,14 +215,9 @@ class Management extends Component {
 			handleSelectAllClick={this.handleSelectAllClick}
 			data={this.filterItems(usersAndOrgs)}
 			tableHead={this.favoritesHeaders()}
-			handleFilterEndDate={this.handleFilterEndDate}
-			handleFilterKeyword={this.handleFilterKeyword}
-			handleFilterStartDate={this.handleFilterStartDate}
 			handleRequestSort={this.handleRequestSort}
-			handleOpenUnassignDevice={this.handleOpenUnassignDevice}
 			orderBy={orderBy}
 			order={order}
-			filters={this.state.filters}
 			t={t}
 		/>
 	}
@@ -238,7 +228,6 @@ class Management extends Component {
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
 				{this.renderTableToolBar()}
 				{this.renderTable()}
-				{/* {this.renderConfirmDelete()} */}
 			</Paper>
 			}
 		</GridContainer>

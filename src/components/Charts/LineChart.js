@@ -95,7 +95,6 @@ class LineChart extends PureComponent {
 							},
 							id: 'xAxis',
 							type: 'time',
-							// distribution: 'series',
 							time: {
 								displayFormats: {
 									hour: 'LT',
@@ -145,12 +144,6 @@ class LineChart extends PureComponent {
 						},
 					}]
 				},
-				// zoom: {
-				// 	enabled: true,
-				// 	drag: true,
-				// 	mode: 'x',
-				// 	// onZoom: function (props) { ;  }
-				// }
 			}
 		}
 	}
@@ -370,8 +363,6 @@ class LineChart extends PureComponent {
 			tooltip: {
 				...this.state.tooltip,
 				exited: true,
-				// weather: null,
-				// weatherDate: null
 			}
 		})
 	}
@@ -390,9 +381,8 @@ class LineChart extends PureComponent {
 			await this.props.onElementsClick(elements)
 		}
 		catch (e) {
-			// ;
+			console.log(e)
 		}
-		// }
 		this.hideTooltip()
 	}
 	onMouseLeave = () => {
@@ -447,8 +437,6 @@ class LineChart extends PureComponent {
 						<ChartComponent
 							type={'multicolorLine'}
 							data={this.props.data}
-							// height={this.props.theme.breakpoints.width('md') < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
-							// width={window.innerWidth - 20}
 							ref={r => this.chart = r}
 							options={this.state.lineOptions}
 							legend={this.legendOptions}
@@ -481,5 +469,5 @@ const mapDispatchToProps = {
 }
 
 let LineChartCompose = compose(connect(mapStateToProps, mapDispatchToProps), withStyles(graphStyles, { withTheme: true }))(LineChart)
-// export default withStyles(graphStyles, { withTheme: true })(LineChart)
+
 export default LineChartCompose

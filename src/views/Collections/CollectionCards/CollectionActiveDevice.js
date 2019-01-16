@@ -1,7 +1,6 @@
 import { Button, Typography } from '@material-ui/core';
 import { Caption, Info, InfoCard, ItemG, ItemGrid } from 'components/index';
 import React, { Component } from 'react';
-// import { Link } from 'react-router-dom';
 import { dateFormat, dateFormatter } from 'variables/functions';
 import { DeviceHub, SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons';
 
@@ -53,7 +52,6 @@ class CollectionActiveDevice extends Component {
 			<InfoCard
 				title={device ? t('collections.fields.activeDevice') : t('no.activeDevice')}
 				avatar={<DeviceHub />}
-				// subheader={device ? device.id : ''}
 				subheader={device ? <ItemG container alignItems={'center'}>
 					<Caption>{t('devices.fields.id')}:</Caption>&nbsp;{device ? device.id : ''}
 				</ItemG> : null}
@@ -96,9 +94,6 @@ class CollectionActiveDevice extends Component {
 							</ItemGrid>
 						</ItemG>
 						: null
-						// : <ItemG container justify={'center'}>
-						// 	<Caption>{t('no.activeDevice')}</Caption>
-						// </ItemG>
 				} />)
 	}
 }

@@ -80,7 +80,6 @@ class Projects extends Component {
 			projects: rs ? rs : [],
 			projectHeader: [
 				{ id: 'title', label: t('projects.fields.title'), },
-				// { id: 'description', label: t('projects.fields.description'), },
 				{ id: 'startDate', label: t('projects.fields.startDate'), },
 				{ id: 'endDate', label: t('projects.fields.endDate'), },
 				{ id: 'created', label: t('projects.fields.created'), },

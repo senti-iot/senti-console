@@ -3,9 +3,7 @@ import { withStyles, Paper, Button, DialogActions, ListItemText, ListItem, List,
 import projectStyles from 'assets/jss/views/projects';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
-// import { getAllOrgs } from 'variables/dataOrgs';
 import OrgTable from 'components/Orgs/OrgTable';
-// import Toolbar from 'components/Toolbar/Toolbar'
 import { People, Business, PictureAsPdf, Delete, Edit, Star, StarBorder, Add } from 'variables/icons';
 import { handleRequestSort } from 'variables/functions'
 import { deleteOrg } from 'variables/dataOrgs';
@@ -261,12 +259,12 @@ class Orgs extends Component {
 
 	renderOrgs = () => {
 		const { t, classes } = this.props
-		const { loading, order, orderBy, orgs, filters, selected } = this.state
+		const { loading, order, orderBy, orgs, selected } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> :
 				<Paper className={classes.root}>
 					{this.renderConfirmDelete()}
-					<TableToolbar //	./TableToolbar.js
+					<TableToolbar
 						ft={this.ftOrgs()}
 						reduxKey={'orgs'}
 						anchorElMenu={this.state.anchorElMenu}
@@ -287,7 +285,6 @@ class Orgs extends Component {
 						orderBy={orderBy}
 						selected={selected}
 						order={order}
-						filters={filters}
 						t={t}
 					/></Paper>}
 		</GridContainer>

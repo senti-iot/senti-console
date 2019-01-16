@@ -1,6 +1,5 @@
 import cookie from 'react-cookies';
 import { getUser, getValidSession } from 'variables/dataUsers'
-// import moment from 'moment'
 import 'moment/locale/da'
 import 'moment/locale/en-gb'
 import { saveSettings } from 'variables/dataLogin';

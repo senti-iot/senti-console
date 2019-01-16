@@ -17,8 +17,6 @@ import { setPassword } from 'variables/dataLogin';
 import { userStyles } from 'assets/jss/components/users/userStyles';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 
-// var moment = require('moment')
-
 class User extends Component {
 	constructor(props) {
 		super(props)

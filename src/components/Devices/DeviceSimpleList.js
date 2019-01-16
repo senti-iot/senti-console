@@ -80,7 +80,6 @@ class DeviceSimpleList extends React.Component {
 		return [
 			{ label: t('menus.edit'), func: this.handleDeviceEdit, single: true },
 			{ label: t('menus.assign'), func: this.handleAssignToProject, single: false },
-			{ label: t('menus.exportPDF'), func: () => { }, single: false },
 			{ label: t('menus.calibrate'), func: this.handleCalibrateFlow, single: true },
 			{ label: t('menus.delete'), func: this.handleDeleteProjects, single: false },
 		]

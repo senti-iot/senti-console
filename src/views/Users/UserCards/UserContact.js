@@ -64,7 +64,6 @@ class UserContact extends Component {
 	}
 	render() {
 		const { t, user, classes } = this.props
-		// const { actionAnchor } = this.state
 		return (
 			<InfoCard
 				title={`${user.firstName} ${user.lastName}`}

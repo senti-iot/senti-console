@@ -1,9 +1,10 @@
 import React from 'react'
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
-import { Dialog, DialogTitle, DialogContent, FormControlLabel, /* Checkbox, */ DialogActions, Button, RadioGroup, Radio, FormControl, withStyles } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, FormControlLabel, DialogActions, Button, RadioGroup, Radio, FormControl, withStyles } from '@material-ui/core';
 import { ItemG, Caption } from 'components';
 import MomentUtils from '@date-io/moment';
 import { DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons';
+
 const styles = theme => ({
 	dialogWidth: {
 		maxWidth: 240,
@@ -12,6 +13,7 @@ const styles = theme => ({
 		padding: 8
 	}
 })
+
 const CustomDateTime = (props) => {
 	const { classes, t, openCustomDate, handleCloseDialog, handleCustomDate, to, from,
 		timeType, handleCustomCheckBox, handleCancelCustomDate
