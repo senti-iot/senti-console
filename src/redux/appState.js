@@ -32,11 +32,9 @@ export const editFilter = (f, type) => {
 }
 export const removeFilter = (f, type) => {
 	return (dispatch, getState) => {
-		console.log(f)
 		let filters = []
 		filters = [...getState().appState.filters[type]]
 		filters = filters.filter(filter => filter.id !== f)
-		console.log(filters)
 		dispatch({
 			type: updateFilters,
 			filters: {

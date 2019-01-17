@@ -29,7 +29,7 @@ export const assignDeviceToCollection = async (obj) => {
  */
 export const unassignDeviceFromCollection = async (obj) => {
 	let response = await api.post(`/senti/datacollection/unassigndevice`, obj)
-	return response.data ? response.data : response.status
+	return response.data ? response.data : null
 }
 /**
  * @function

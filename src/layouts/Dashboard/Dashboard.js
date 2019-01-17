@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { withStyles, Snackbar, Button } from '@material-ui/core';
+import { withStyles, Snackbar, IconButton } from '@material-ui/core';
 import { Header, Sidebar, CircularLoader } from 'components';
 
 import dashboardRoutes from 'routes/dashboard.js';
@@ -164,9 +164,9 @@ class App extends React.Component {
 									autoHideDuration={3000}
 									message={<span>{t(this.props.sId, this.props.sOpt)}</span>}
 									action={
-										<Button size={'small'} variant={'text'} onClick={this.props.sClose} >
-											<Close style={{ color: 'white' }}/>
-										</Button>
+										<IconButton color={'primary'} size={'small'} /* variant={'text'} */ onClick={this.props.sClose} >
+											<Close />
+										</IconButton>
 									}
 								/>
 							</Fragment> : <CircularLoader />}

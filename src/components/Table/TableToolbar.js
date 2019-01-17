@@ -4,7 +4,7 @@ import { boxShadow } from 'assets/jss/material-dashboard-react';
 import toolbarStyles from 'assets/jss/material-dashboard-react/tableToolBarStyle';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { ItemGrid } from 'components';
 import { ItemG } from 'components/index';
@@ -12,6 +12,7 @@ import FilterToolbar from './FilterToolbar';
 
 let selectedRender = props => {
 	const { numSelected, t } = props;
+	const [anchor, setAnchor] = useState(null)
 	return <Grid container justify={'space-between'} alignItems={'center'}>
 		<ItemGrid>
 			<Typography variant='subtitle1'>
@@ -21,16 +22,16 @@ let selectedRender = props => {
 		<ItemGrid>
 			<IconButton
 				aria-label={t('menus.more')}
-				aria-owns={props.anchorElMenu ? 'long-menu' : null}
+				aria-owns={anchor ? 'long-menu' : null}
 				aria-haspopup='true'
-				onClick={props.handleToolbarMenuOpen}>
+				onClick={e => setAnchor(e.target)}>
 				<MoreVertIcon />
 			</IconButton>
 			<Menu
 				id='long-menu'
-				anchorEl={props.anchorElMenu}
-				open={Boolean(props.anchorElMenu)}
-				onClose={props.handleToolbarMenuClose}
+				anchorEl={anchor}
+				open={Boolean(anchor)}
+				onClose={e => setAnchor(null)}
 				PaperProps={{ style: { boxShadow: boxShadow } }}
 			>
 				{props.options().map((option, i) => {

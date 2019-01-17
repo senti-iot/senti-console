@@ -133,23 +133,31 @@ class Devices extends Component {
 			]
 		}
 	}
+	getDeviceNames = () => { 
+		const { devices, selected } = this.state
+		let deviceNames = []
+		deviceNames = selected.map(s => devices[devices.findIndex(d => d.id === s)].name)
+		deviceNames = deviceNames.join(", ")
+		return deviceNames
+	}
 	snackBarMessages = (msg) => {
-		const { s, t } = this.props
+		const { s } = this.props
 		switch (msg) {
 			case 1:
-				//TODO
-				s('snackbars.assign.deviceToCollection', { device: '', collection: '' })
+				s('snackbars.assign.deviceToCollection', { device: this.getDeviceNames(), collection: '' })
 				break
 			case 2:
-				//TODO
-				s('snackbars.assign.deviceToOrg', { device: '', org: '' })
+				s('snackbars.assign.deviceToOrg', { device: this.getDeviceNames(), org: '' })
 				break
 			case 3:
-				s('snackbars.unassignDevice', {
-					device: '',
-					what: t('collections.fields.id')
+				s('snackbars.unassign.deviceFromCollection', {
+					device: this.getDeviceNames(),
+					collection: ""
 				})
 				break
+			case 4:
+				s('snackbars.error')
+				break;
 			default:
 				break;
 		}
@@ -178,7 +186,7 @@ class Devices extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		this.handleTabs()
-		await this.getDevices()
+		await this.getData()
 	}
 
 	componentDidUpdate = (prevProps) => {
@@ -207,7 +215,7 @@ class Devices extends Component {
 		return customFilterItems(filterItems(data, filters), rFilters)
 	}
 
-	getDevices = async () => {
+	getData = async () => {
 		await getAllDevices().then(rs => {
 			return	this._isMounted ? this.setState({
 				devices: rs ? rs : [],
@@ -243,16 +251,6 @@ class Devices extends Component {
 		this.setState({ anchorElMenu: null })
 	}
 
-	handleFilterStartDate = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				startDate: value,
-				activeDateFilter: value !== null ? true : false
-			}
-		})
-	}
-
 	handleOpenAssignOrg = () => {
 		this.setState({ openAssignOrg: true, anchorElMenu: null })
 	}
@@ -260,7 +258,7 @@ class Devices extends Component {
 	handleCloseAssignOrg = async reload => {
 		if (reload) {
 			this.setState({ loading: true, openAssignOrg: false })
-			await this.getDevices().then(() => {
+			await this.getData().then(() => {
 				this.snackBarMessages(2)
 			})
 		}
@@ -274,7 +272,7 @@ class Devices extends Component {
 	handleCloseAssignCollection = async reload => {
 		if (reload) {
 			this.setState({ loading: true, openAssignCollection: false })
-			await this.getDevices().then(() => {
+			await this.getData().then(() => {
 				this.snackBarMessages(1)
 			})
 		}
@@ -345,7 +343,9 @@ class Devices extends Component {
 		await Promise.all(devices.map(d => unassignDeviceFromCollection({
 			id: d.dataCollection,
 			deviceId: d.id
-		}))).then(() => this.handleCloseUnassignDialog)
+		}))).catch((e) => {
+			this.snackBarMessages(4)
+		}).then(() => { this.handleCloseUnassignDialog() })
 	}
 
 	handleOpenUnassignDialog = () => {
@@ -354,9 +354,8 @@ class Devices extends Component {
 
 	handleCloseUnassignDialog = async () => {
 		this.setState({ openUnassign: false })
-		await this.getData().then(() => {
-			this.snackBarMessages(3)
-		})
+		this.snackBarMessages(3)
+		await this.getData()
 	}
 
 	handleRequestSort = (event, property, way) => {
@@ -415,115 +414,80 @@ class Devices extends Component {
 		
 		return favDevices
 	}
+	renderAssignDC = () => { 
+		const { selected, openAssignCollection } = this.state
+		const { t } = this.props
+		return <AssignDC
+			deviceId={selected[0] ? selected[0] : 0}
+			open={openAssignCollection}
+			handleClose={this.handleCloseAssignCollection}
+			t={t}
+		/>
+	}
+	renderAssignOrg = () => { 
+		const { selected, openAssignOrg, devices } = this.state
+		const { t } = this.props
+		return <AssignOrg
+			devices
+			open={openAssignOrg}
+			handleClose={this.handleCloseAssignOrg}
+			deviceId={selected.map(s => devices[devices.findIndex(d => d.id === s)])}
+			t={t} />
+	}
+	renderTable = (items) => { 
+		const { selected, order, orderBy } = this.state
+		const { t } = this.props
+		return <DeviceTable
+			handleClick={this.handleFavClick}
+			selected={selected}
+			data={this.filterItems(items)}
+			handleSelectAllClick={this.handleSelectAllClick}
+			tableHead={this.deviceHeaders()}
+			handleRequestSort={this.handleRequestSort}
+			handleCheckboxClick={this.handleCheckboxClick}
+			order={order}
+			orderBy={orderBy}
+			t={t}
+		/>
+	}
+	renderTableToolbar = () => { 
+		const { selected } = this.state
+		const { t } = this.props
+
+		return 	<TableToolbar
+			ft={this.ft()}
+			reduxKey={'devices'}
+			numSelected={selected.length}
+			options={this.options}
+			t={t}
+			content={this.renderTableToolBarContent()}
+		/>
+	}
 	renderFavorites = () => {
-		const { t, classes } = this.props
-		const { devices, loading, order, orderBy, selected, filters,
-			openAssignCollection, openAssignOrg } = this.state
+		const { classes } = this.props
+		const { loading } = this.state
 
 		return loading ? this.renderLoader() : <GridContainer justify={'center'}>
 			<Paper className={classes.root}>
-				<AssignDC
-					deviceId={selected[0] ? selected[0] : 0}
-					open={openAssignCollection}
-					handleClose={this.handleCloseAssignCollection}
-					handleCancel={this.handleCancelAssign}
-					t={this.props.t}
-				/>
-				<AssignOrg
-					devices
-					open={openAssignOrg}
-					handleClose={this.handleCloseAssignOrg}
-					deviceId={selected.map(s => devices[devices.findIndex(d => d.id === s)])}
-					t={t} />
+				{this.renderAssignDC()}
+				{this.renderAssignOrg()}
 				{this.renderConfirmUnassign()}
-				<TableToolbar
-					ft={this.ft()}
-					reduxKey={'devices'}
-					anchorElMenu={this.state.anchorElMenu}
-					handleToolbarMenuClose={this.handleToolbarMenuClose}
-					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
-					numSelected={selected.length}
-					options={this.options}
-					t={t}
-					content={this.renderTableToolBarContent()}
-				/>
-				<DeviceTable
-					handleClick={this.handleFavClick}
-					handleOpenAssignCollection={this.handleOpenAssignCollection}
-					handleOpenAssignOrg={this.handleOpenAssignOrg}
-					handleOpenUnassignDialog={this.handleOpenUnassignDialog}
-					selected={selected}
-					filter={this.filter}
-					data={this.filterItems(this.getFavs())}
-					handleSelectAllClick={this.handleSelectAllClick}
-					tableHead={this.deviceHeaders()}
-					handleFilterEndDate={this.handleFilterEndDate}
-					handleFilterKeyword={this.handleFilterKeyword}
-					handleFilterStartDate={this.handleFilterStartDate}
-					handleRequestSort={this.handleRequestSort}
-					handleCheckboxClick={this.handleCheckboxClick}
-					order={order}
-					orderBy={orderBy}
-					filters={filters}
-					deleteProjects={this.deleteProjects}
-					t={t}
-				/>
+				{this.renderTableToolbar()}
+				{this.renderTable(this.getFavs())}
 			</Paper>
 		</GridContainer>
 
 	}
 	renderList = () => {
-		const { t, classes } = this.props
-		const { devices, loading, order, orderBy, selected, filters,
-			openAssignCollection, openAssignOrg } = this.state
+		const { classes } = this.props
+		const { devices, loading } = this.state
 		return loading ? this.renderLoader() : <GridContainer justify={'center'}>
 			<Paper className={classes.root}>
-				<AssignDC
-					deviceId={selected[0] ? selected[0] : 0}
-					open={openAssignCollection}
-					handleClose={this.handleCloseAssignCollection}
-					handleCancel={this.handleCancelAssign}
-					t={this.props.t}
-				/>
-				<AssignOrg
-					devices
-					open={openAssignOrg}
-					handleClose={this.handleCloseAssignOrg}
-					deviceId={selected.map(s => devices[devices.findIndex(d => d.id === s)])}
-					t={t} />
+				{this.renderAssignDC()}
+				{this.renderAssignOrg()}
 				{this.renderConfirmUnassign()}
-				<TableToolbar
-					ft={this.ft()}
-					reduxKey={'devices'}
-					anchorElMenu={this.state.anchorElMenu}
-					handleToolbarMenuClose={this.handleToolbarMenuClose}
-					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
-					numSelected={selected.length}
-					options={this.options}
-					t={t}
-					content={this.renderTableToolBarContent()}
-				/>
-				<DeviceTable
-					handleClick={this.handleDeviceClick}
-					handleOpenAssignCollection={this.handleOpenAssignCollection}
-					handleOpenAssignOrg={this.handleOpenAssignOrg}
-					handleOpenUnassignDialog={this.handleOpenUnassignDialog}
-					selected={selected}
-					filter={this.filter}
-					data={this.filterItems(devices)}
-					handleSelectAllClick={this.handleSelectAllClick}
-					tableHead={this.deviceHeaders()}
-					handleFilterEndDate={this.handleFilterEndDate}
-					handleFilterKeyword={this.handleFilterKeyword}
-					handleFilterStartDate={this.handleFilterStartDate}
-					handleRequestSort={this.handleRequestSort}
-					handleCheckboxClick={this.handleCheckboxClick}
-					order={order}
-					orderBy={orderBy}
-					filters={filters}
-					deleteProjects={this.deleteProjects}
-					t={t}
-				/>
+				{this.renderTableToolbar()}
+				{this.renderTable(devices)}
 			</Paper>
 		</GridContainer>
 	}

@@ -20,9 +20,6 @@ class AssignDC extends PureComponent {
 			selectedCollections: [],
 			filters: {
 				keyword: '',
-				startDate: null,
-				endDate: null,
-				activeDateFilter: false
 			}
 		}
 	}

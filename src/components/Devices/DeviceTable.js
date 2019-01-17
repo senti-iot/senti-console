@@ -18,10 +18,8 @@ class DeviceTable extends React.Component {
 		super(props);
 
 		this.state = {
-			selected: [],
 			page: 0,
 			rowsPerPage: props.rowsPerPage,
-			anchorElMenu: null,
 		};
 	}
 	

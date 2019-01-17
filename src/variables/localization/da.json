@@ -392,8 +392,8 @@
         "assign": {
             "collectionToProject": "Tilknyt datasamling",
             "collectionsToProject": "Tilknyt datasamlinger",
-            "deviceToCollection": "Tilknyt enhed",
-            "deviceToOrg": "Tilknyt enhed"
+            "deviceToCollection": "Tilknyt enhed til datasamlinger",
+            "deviceToOrg": "Tilknyt enhed til organisation"
         },
         "calibrate": "Kalibrer",
         "changePassword": "Skift kodeord",
