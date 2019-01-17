@@ -30,9 +30,7 @@ class Devices extends Component {
 			openAssignCollection: false,
 			openAssignOrg: false,
 			openUnassign: false,
-			deviceHeaders: [],
 			loading: true,
-			anchorElMenu: null,
 			route: 0,
 			order: 'desc',
 			orderBy: 'id',
@@ -42,18 +40,22 @@ class Devices extends Component {
 		}
 		props.setHeader('devices.pageTitle', false, '', 'devices')
 	}
-	tabs = [
-		{ id: 0, title: this.props.t('devices.tabs.listView'), label: <ViewList />, url: `${this.props.match.path}/list` },
-		{ id: 1, title: this.props.t('devices.tabs.mapView'), label: <Map />, url: `${this.props.match.path}/map` },
-		{ id: 2, title: this.props.t('devices.tabs.cardView'), label: <ViewModule />, url: `${this.props.match.path}/grid` },
-		{ id: 3, title: this.props.t('sidebar.favorites'), label: <Star />, url: `${this.props.match.path}/favorites` }
-	]
-	dLiveStatus = () => {
-		const { t } = this.props
+	tabs = () => {
+		const { t, match } = this.props
 		return [
-			{ value: 0, label: t("devices.status.redShort"), icon: <SignalWifi2Bar className={this.props.classes.redSignal} /> },
-			{ value: 1, label: t("devices.status.yellowShort"), icon: <SignalWifi2Bar className={this.props.classes.yellowSignal} /> },
-			{ value: 2, label: t("devices.status.greenShort"), icon: <SignalWifi2Bar className={this.props.classes.greenSignal} /> }
+			{ id: 0, title: t('devices.tabs.listView'), label: <ViewList />, url: `${match.path}/list` },
+			{ id: 1, title: t('devices.tabs.mapView'), label: <Map />, url: `${match.path}/map` },
+			{ id: 2, title: t('devices.tabs.cardView'), label: <ViewModule />, url: `${match.path}/grid` },
+			{ id: 3, title: t('sidebar.favorites'), label: <Star />, url: `${match.path}/favorites` }
+		]
+	}
+		
+	dLiveStatus = () => {
+		const { t, classes } = this.props
+		return [
+			{ value: 0, label: t("devices.status.redShort"), icon: <SignalWifi2Bar className={classes.redSignal} /> },
+			{ value: 1, label: t("devices.status.yellowShort"), icon: <SignalWifi2Bar className={classes.yellowSignal} /> },
+			{ value: 2, label: t("devices.status.greenShort"), icon: <SignalWifi2Bar className={classes.greenSignal} /> }
 		]
 	}
 	dCalibrated = () => { 
@@ -133,13 +135,6 @@ class Devices extends Component {
 			]
 		}
 	}
-	getDeviceNames = () => { 
-		const { devices, selected } = this.state
-		let deviceNames = []
-		deviceNames = selected.map(s => devices[devices.findIndex(d => d.id === s)].name)
-		deviceNames = deviceNames.join(", ")
-		return deviceNames
-	}
 	snackBarMessages = (msg) => {
 		const { s } = this.props
 		switch (msg) {
@@ -150,10 +145,7 @@ class Devices extends Component {
 				s('snackbars.assign.deviceToOrg', { device: this.getDeviceNames(), org: '' })
 				break
 			case 3:
-				s('snackbars.unassign.deviceFromCollection', {
-					device: this.getDeviceNames(),
-					collection: ""
-				})
+				s('snackbars.unassign.deviceFromCollection', { device: this.getDeviceNames(), collection: "" })
 				break
 			case 4:
 				s('snackbars.error')
@@ -161,7 +153,25 @@ class Devices extends Component {
 			default:
 				break;
 		}
+		this.setState({ selected: [] })
 	}
+	getFavs = () => {
+		const { devices } = this.state
+		const { favorites } = this.props
+		let favs = favorites.filter(f => f.type === 'device')
+		let favDevices = favs.map(f => {
+			return devices[devices.findIndex(d => d.id === f.id)]
+		})
+		return favDevices
+	}
+	getDeviceNames = () => { 
+		const { devices, selected } = this.state
+		let deviceNames = []
+		deviceNames = selected.map(s => devices[devices.findIndex(d => d.id === s)].name)
+		deviceNames = deviceNames.join(", ")
+		return deviceNames
+	}
+	
 	addToFav = (favObj) => {
 		this.props.addToFav(favObj)
 		this.setState({ anchorElMenu: null })
@@ -170,19 +180,22 @@ class Devices extends Component {
 		this.props.removeFromFav(favObj)
 		this.setState({ anchorElMenu: null })
 	}
-	handleTabs = () => {
-		if (this.props.location.pathname.includes('/map'))
-			this.setState({ route: 1 })
-		else {
-			if (this.props.location.pathname.includes('/grid'))
-				this.setState({ route: 2 })
-			if (this.props.location.pathname.includes('/favorites'))
-				this.setState({ route: 3 })
-			else {
-				this.setState({ route: 0 })
-			}
-		}
+
+	filterItems = (data) => {
+		const rFilters = this.props.filters
+		let { filters } = this.state
+		return customFilterItems(filterItems(data, filters), rFilters)
 	}
+
+	getData = async () => {
+		await getAllDevices().then(rs => {
+			return this._isMounted ? this.setState({
+				devices: rs ? rs : [],
+				loading: false
+			}, () => this.handleRequestSort(null, 'id', 'asc')) : null
+		})
+	}
+
 	componentDidMount = async () => {
 		this._isMounted = 1
 		this.handleTabs()
@@ -209,25 +222,27 @@ class Devices extends Component {
 		}
 	}
 
-	filterItems = (data) => {
-		const rFilters = this.props.filters
-		let { filters } = this.state
-		return customFilterItems(filterItems(data, filters), rFilters)
-	}
 
-	getData = async () => {
-		await getAllDevices().then(rs => {
-			return	this._isMounted ? this.setState({
-				devices: rs ? rs : [],
-				loading: false
-			}, () => this.handleRequestSort(null, 'id', 'asc')) : null})
-	}
 
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
 
 	//region Handlers
+
+	handleTabs = () => {
+		if (this.props.location.pathname.includes('/map'))
+			this.setState({ route: 1 })
+		else {
+			if (this.props.location.pathname.includes('/grid'))
+				this.setState({ route: 2 })
+			if (this.props.location.pathname.includes('/favorites'))
+				this.setState({ route: 3 })
+			else {
+				this.setState({ route: 0 })
+			}
+		}
+	}
 
 	handleCalibrateFlow = () => {
 		this.props.history.push(`/device/${this.state.selected[0]}/setup`)
@@ -239,16 +254,6 @@ class Devices extends Component {
 			pathname: `/device/${selected[0]}/edit`,
 			prevURL: '/devices/list'
 		})
-	}
-
-	handleToolbarMenuOpen = e => {
-		e.stopPropagation()
-		this.setState({ anchorElMenu: e.currentTarget });
-	}
-
-	handleToolbarMenuClose = e => {
-		e.stopPropagation();
-		this.setState({ anchorElMenu: null })
 	}
 
 	handleOpenAssignOrg = () => {
@@ -398,22 +403,15 @@ class Devices extends Component {
 			</DialogActions>
 		</Dialog>
 	}
-	renderLoader = () => {
 
+	renderLoader = () => {
 		return <CircularLoader />
 	}
+
 	renderTableToolBarContent = () => {
 		return null
 	}
-	getFavs = () => {
-		let favorites = this.props.favorites.filter(f => f.type === 'device')
-		
-		let favDevices = favorites.map(f => {
-			return this.state.devices[this.state.devices.findIndex(d => d.id === f.id)]
-		})
-		
-		return favDevices
-	}
+
 	renderAssignDC = () => { 
 		const { selected, openAssignCollection } = this.state
 		const { t } = this.props
@@ -424,6 +422,7 @@ class Devices extends Component {
 			t={t}
 		/>
 	}
+
 	renderAssignOrg = () => { 
 		const { selected, openAssignOrg, devices } = this.state
 		const { t } = this.props
@@ -434,6 +433,7 @@ class Devices extends Component {
 			deviceId={selected.map(s => devices[devices.findIndex(d => d.id === s)])}
 			t={t} />
 	}
+
 	renderTable = (items) => { 
 		const { selected, order, orderBy } = this.state
 		const { t } = this.props
@@ -450,6 +450,7 @@ class Devices extends Component {
 			t={t}
 		/>
 	}
+
 	renderTableToolbar = () => { 
 		const { selected } = this.state
 		const { t } = this.props
@@ -463,6 +464,7 @@ class Devices extends Component {
 			content={this.renderTableToolBarContent()}
 		/>
 	}
+
 	renderFavorites = () => {
 		const { classes } = this.props
 		const { loading } = this.state
@@ -478,6 +480,7 @@ class Devices extends Component {
 		</GridContainer>
 
 	}
+
 	renderList = () => {
 		const { classes } = this.props
 		const { devices, loading } = this.state
@@ -491,48 +494,52 @@ class Devices extends Component {
 			</Paper>
 		</GridContainer>
 	}
+
 	renderCards = () => {
 		const { loading } = this.state
+		const { t } = this.props 
 		return loading ? this.renderLoader() : <GridContainer spacing={8} justify={'center'}>
 			{this.filterItems(this.state.devices).map((d, k) => {
 				return <ItemG key={k} container justify={'center'} xs={12} sm={6} md={4}>
-					<DeviceCard key={k} t={this.props.t} d={d} />
+					<DeviceCard key={k} t={t} d={d} />
 				</ItemG>
 			})}
 		</GridContainer>
 	}
+
 	renderMap = () => {
 		const { devices, loading } = this.state
-		const { classes } = this.props
+		const { classes, mapTheme, t } = this.props
 		return loading ? <CircularLoader /> : <GridContainer container justify={'center'} >
 			<Paper className={classes.paper}>
 				<OpenStreetMap
-					t={this.props.t}
-					mapTheme={this.props.mapTheme}
-					markers={this.filterItems(devices)} /* zoom={10} */ />
+					t={t}
+					mapTheme={mapTheme}
+					markers={this.filterItems(devices)} />
 			</Paper>
 		</GridContainer>
 	}
 
 	render() {
-		const { devices, filters } = this.state
+		const { devices, filters, route } = this.state
+		const { history, match } = this.props
 		return (
 			<Fragment>
 				<Toolbar
 					data={devices}
 					filters={filters}
-					history={this.props.history}
-					route={this.state.route}
-					match={this.props.match}
+					history={history}
+					route={route}
+					match={match}
 					handleFilterKeyword={this.handleFilterKeyword}
-					tabs={this.tabs}
+					tabs={this.tabs()}
 				/>
 				<Switch>
-					<Route path={`${this.props.match.path}/map`} render={() => this.renderMap()} />
-					<Route path={`${this.props.match.path}/list`} render={() => this.renderList()} />
-					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} />
-					<Route path={`${this.props.match.path}/favorites`} render={() => this.renderFavorites()} />
-					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
+					<Route path={`${match.path}/map`} render={() => this.renderMap()} />
+					<Route path={`${match.path}/list`} render={() => this.renderList()} />
+					<Route path={`${match.path}/grid`} render={() => this.renderCards()} />
+					<Route path={`${match.path}/favorites`} render={() => this.renderFavorites()} />
+					<Redirect path={`${match.path}`} to={`${match.path}/list`} />
 				</Switch>
 			</Fragment>
 		)
