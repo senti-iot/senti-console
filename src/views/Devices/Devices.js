@@ -438,16 +438,16 @@ class Devices extends Component {
 		const { selected, order, orderBy } = this.state
 		const { t } = this.props
 		return <DeviceTable
-			handleClick={this.handleFavClick}
-			selected={selected}
 			data={this.filterItems(items)}
-			handleSelectAllClick={this.handleSelectAllClick}
-			tableHead={this.deviceHeaders()}
-			handleRequestSort={this.handleRequestSort}
 			handleCheckboxClick={this.handleCheckboxClick}
+			handleClick={this.handleFavClick}
+			handleRequestSort={this.handleRequestSort}
+			handleSelectAllClick={this.handleSelectAllClick}
 			order={order}
 			orderBy={orderBy}
+			selected={selected}
 			t={t}
+			tableHead={this.deviceHeaders()}
 		/>
 	}
 
