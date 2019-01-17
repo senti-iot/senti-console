@@ -1,4 +1,6 @@
-import { IconButton, Paper, withStyles } from '@material-ui/core';
+import {
+	IconButton, Paper, withStyles, DialogTitle, Dialog, DialogContent,
+	DialogContentText, DialogActions, Button, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import GridContainer from 'components/Grid/GridContainer';
 import CircularLoader from 'components/Loader/CircularLoader';
@@ -23,8 +25,6 @@ class Projects extends Component {
 		this.state = {
 			selected: [],
 			projects: [],
-			projectHeader: [],
-			anchorElMenu: null,
 			openDelete: false,
 			loading: true,
 			route: 0,
@@ -33,10 +33,6 @@ class Projects extends Component {
 			openAssignDC: false,
 			filters: {
 				keyword: '',
-				startDate: null,
-				endDate: null,
-				activeDateFilter: false,
-				custom: []
 			}
 		}
 		props.setHeader('projects.pageTitle', false, '', 'projects')
@@ -53,7 +49,7 @@ class Projects extends Component {
 		}
 		let isFavorite = isFav(favObj)
 		return [
-			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
+			{ label: t('menus.edit'), func: this.handleEditProject, single: true, icon: Edit },
 			{ label: t('menus.assign.collectionsToProject'), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },
 			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
 			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
@@ -61,56 +57,105 @@ class Projects extends Component {
 		]
 	}
 	
-	tabs = [
-		{ id: 0, title: this.props.t('projects.tabs.listView'), label: <ViewList />, url: `${this.props.match.path}/list` },
-		{ id: 1, title: this.props.t('projects.tabs.cardView'), label: <ViewModule />, url: `${this.props.match.path}/grid` },
-		{ id: 2, title: "", label: <Star />, url: `${this.props.match.path}/favorites` },
-	]
+	tabs = () => {
+		const { t, match } = this.props
+		return [
+			{ id: 0, title: t('projects.tabs.listView'), label: <ViewList />, url: `${match.path}/list` },
+			{ id: 1, title: t('projects.tabs.cardView'), label: <ViewModule />, url: `${match.path}/grid` },
+			{ id: 2, title: "", label: <Star />, url: `${match.path}/favorites` },
+		]
+	}
+	ft = () => {
+		const { t } = this.props
+		return [{ key: 'title', name: t('projects.fields.name'), type: 'string' },
+			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
+			{ key: 'startDate', name: t('projects.fields.startDate'), type: 'date' },
+			{ key: 'endDate', name: t('projects.fields.endDate'), type: 'date' },
+			{ key: 'created', name: t('projects.fields.created'), type: 'date' }
+		]
+
+	}
+	projectHeader = () => {
+		const { t } = this.props
+		return [
+			{ id: 'title', label: t('projects.fields.title'), },
+			{ id: 'startDate', label: t('projects.fields.startDate'), },
+			{ id: 'endDate', label: t('projects.fields.endDate'), },
+			{ id: 'created', label: t('projects.fields.created'), },
+			{ id: 'modified', label: t('projects.fields.lastUpdate'), },
+		]
+	}
+	//#endregion
+
+	//#region Functions
+
+	getFavs = () => {
+		let favorites = this.props.favorites.filter(f => f.type === 'project')
+		let favProjects = favorites.map(f => {
+			return this.state.projects[this.state.projects.findIndex(d => d.id === f.id)]
+		})
+		return favProjects
+	}
+
 	addToFav = (favObj) => {
 		this.props.addToFav(favObj)
 		this.setState({ anchorElMenu: null })
 	}
+
 	removeFromFav = (favObj) => {
 		this.props.removeFromFav(favObj)
 		this.setState({ anchorElMenu: null })
 	}
+
 	getData = async () => {
-		const { t } = this.props
 		await getAllProjects().then(rs => this._isMounted ? this.setState({
 			projects: rs ? rs : [],
-			projectHeader: [
-				{ id: 'title', label: t('projects.fields.title'), },
-				{ id: 'startDate', label: t('projects.fields.startDate'), },
-				{ id: 'endDate', label: t('projects.fields.endDate'), },
-				{ id: 'created', label: t('projects.fields.created'), },
-				{ id: 'modified', label: t('projects.fields.lastUpdate'), },
-			],
 			loading: false
-		}, () => this.handleRequestSort(null, 'title')) : null)
+		}, () => this.handleRequestSort(null, 'title', 'asc')) : null)
 	}
+
+	filterItems = (data) => {
+		let { filters } = this.state
+		return customFilterItems(filterItems(data, filters), this.props.filters)
+	}
+
+	snackBarMessages = (msg) => {
+		const { s } = this.props
+		switch (msg) {
+			case 1:
+				s('snackbars.deletedSuccess')
+				break;
+			case 2:
+				s('snackbars.exported')
+				break;
+			case 3: 
+				s('snackbars.assign.collectionsToProject')
+				break
+			default:
+				break;
+		}
+	}
+
+	deleteProjects = async (projects) => {
+		const { selected } = this.state
+		Promise.all ([selected.map(s => {
+			return deleteProject(s)
+		})]).then(async () => {
+			this.setState({ loading: true, openDelete: false, selected: [] })
+			this.snackBarMessages(1)
+			await this.getData()
+		})
+	}
+
+	//#endregion
+
+	//#region Life Cycle
 
 	componentDidMount = async () => {
 		window.filters = this.props.filters
 		this._isMounted = 1
 		this.handleTabs()
 		await this.getData()
-	}
-
-	handleTabs = () => {
-		if (this.props.location.pathname.includes('grid')) {
-			this.setState({ route: 1 })
-			return 1
-		}
-		else {
-			if (this.props.location.pathname.includes('favorites')) {
-				this.setState({ route: 2 })
-				return 2
-			}
-			else {
-				this.setState({ route: 0 })
-				return 0
-			}
-		}
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
@@ -135,15 +180,30 @@ class Projects extends Component {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
+	
+	//#endregion
 
-	filterItems = (data) => {
-		let { filters } = this.state
-		return customFilterItems(filterItems(data, filters), this.props.filters)
-	}
+	//#region Handlers
 
-	handleEdit = () => {
-		this.props.history.push(`/project/${this.state.selected[0]}/edit`)
+	handleTabs = () => {
+		if (this.props.location.pathname.includes('grid')) {
+			this.setState({ route: 1 })
+			return 1
+		}
+		else {
+			if (this.props.location.pathname.includes('favorites')) {
+				this.setState({ route: 2 })
+				return 2
+			}
+			else {
+				this.setState({ route: 0 })
+				return 0
+			}
+		}
 	}
+	handleAddProject = () => this.props.history.push('/projects/new')
+
+	handleEditProject = () => this.props.history.push(`/project/${this.state.selected[0]}/edit`)
 
 	handleOpenDeleteDialog = () => {
 		this.setState({ openDelete: true, anchorElMenu: null })
@@ -168,30 +228,11 @@ class Projects extends Component {
 			this.setState({ openAssignDC: false })
 		}
 	}
+
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
 		let newData = handleRequestSort(property, order, this.state.projects)
 		this.setState({ projects: newData, order, orderBy: property })
-	}
-
-	handleFilterStartDate = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				startDate: value,
-				activeDateFilter: value !== null ? true : false
-			}
-		})
-	}
-
-	handleFilterEndDate = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				endDate: value,
-				activeDateFilter: value !== null ? true : false
-			}
-		})
 	}
 
 	handleFilterKeyword = (value) => {
@@ -233,156 +274,92 @@ class Projects extends Component {
 		this.setState({ selected: newSelected })
 	}
 
-	snackBarMessages = (msg) => {
-		const { s } = this.props
-		switch (msg) {
-			case 1:
-				s('snackbars.deletedSuccess')
-				break;
-			case 2:
-				s('snackbars.exported')
-				break;
-			case 3: 
-				s('snackbars.assign.collectionsToProject')
-				break
-			default:
-				break;
-		}
-	}
-	
-	deleteProjects = async (projects) => {
-		await deleteProject(projects).then(() => {
-			this.snackBarMessages(1)
-			this.getData()
-			this.setState({
-				selected: [],
-				anchorElMenu: null,
-				openDelete: false
-			})
-		})
-	}
-	
-	AddNewProject = () => this.props.history.push('/projects/new')
-	
-	handleToolbarMenuOpen = e => {
-		e.stopPropagation()
-		this.setState({ anchorElMenu: e.currentTarget })
-	}
+	//#endregion
 
-	handleToolbarMenuClose = e => {
-		e.stopPropagation();
-		this.setState({ anchorElMenu: null })
+	//#region Render
+	renderConfirmDelete = () => {
+		const { selected, openDelete, projects } = this.state
+		const { t, handleCloseDeleteDialog } = this.props
+		return <Dialog
+			open={openDelete}
+			onClose={this.handleCloseDeleteDialog}
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
+		>
+			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.projects')}</DialogTitle>
+			<DialogContent>
+				<DialogContentText id='alert-dialog-description'>
+					{t('dialogs.delete.message.projects')}
+				</DialogContentText>
+				<List>
+					{selected.map(s => <ListItem key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
+						<ListItemText primary={projects[projects.findIndex(d => d.id === s)].title} /></ListItem>)}
+
+				</List>
+			</DialogContent>
+			<DialogActions>
+				<Button onClick={handleCloseDeleteDialog} color='primary'>
+					{t('actions.no')}
+				</Button>
+				<Button onClick={this.deleteProjects} color='primary' autoFocus>
+					{t('actions.yes')}
+				</Button>
+			</DialogActions>
+		</Dialog>
 	}
 	renderTableToolBarContent = () => {
 		return <Fragment>
-			<IconButton aria-label='Add new project' onClick={this.AddNewProject}>
+			<IconButton aria-label='Add new project' onClick={this.handleAddProject}>
 				<Add />
 			</IconButton>
 		</Fragment>
 	}
-	ft = () => {
+	renderTable = (items) => {
 		const { t } = this.props
-		return [{ key: 'title', name: t('projects.fields.name'), type: 'string' },
-			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
-			{ key: 'startDate', name: t('projects.fields.startDate'), type: 'date' },
-			{ key: 'endDate', name: t('projects.fields.endDate'), type: 'date' },
-			{ key: 'created', name: t('projects.fields.created'), type: 'date' }
-		]
-
+		const {  order, orderBy, selected } = this.state
+		return <ProjectTable
+			selected={selected}
+			data={this.filterItems(items)}
+			handleSelectAllClick={this.handleSelectAllClick}
+			tableHead={this.projectHeader()}
+			handleRequestSort={this.handleRequestSort}
+			handleCheckboxClick={this.handleCheckboxClick}
+			order={order}
+			orderBy={orderBy}
+			t={t}
+		/>
 	}
-	getFavs = () => {
-		let favorites = this.props.favorites.filter(f => f.type === 'project')
-		let favProjects = favorites.map(f => {
-			return this.state.projects[this.state.projects.findIndex(d => d.id === f.id)]
-		})
-		return favProjects
+	renderAssignDCs = () => {
+		const { selected, openAssignDC } = this.state
+		const { t } = this.props
+		return selected[0] ? <AssignDCs
+			open={openAssignDC}
+			handleClose={this.handleCloseAssignCollection}
+			project={selected[0]}
+			t={t}
+		/> : null
 	}
-	renderFavTable = () => {
-		const { t, classes } = this.props
-		const { openDelete, openAssignDC, loading, order, orderBy, projectHeader, filters, selected } = this.state
-		return loading ? <CircularLoader /> :
-			<Paper className={classes.root}>
-				{selected[0] ? <AssignDCs
-					open={openAssignDC}
-					handleClose={this.handleCloseAssignCollection}
-					project={selected[0]}
-					t={t}
-				/> : null}
-				<TableToolbar
-					ft={this.ft()}//filters List
-					reduxKey={'projects'}
-					anchorElMenu={this.state.anchorElMenu}
-					handleToolbarMenuClose={this.handleToolbarMenuClose}
-					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
-					numSelected={selected.length}
-					options={this.options}
-					t={t}
-					content={this.renderTableToolBarContent()}
-				/><ProjectTable
-					openDelete={openDelete}
-					handleOpenDeleteDialog={this.handleOpenDeleteDialog}
-					handleCloseDeleteDialog={this.handleCloseDeleteDialog}
-					selected={selected}
-					filter={this.filter}
-					data={this.filterItems(this.getFavs())}
-					handleSelectAllClick={this.handleSelectAllClick}
-					tableHead={projectHeader}
-					handleFilterEndDate={this.handleFilterEndDate}
-					handleFilterKeyword={this.handleFilterKeyword}
-					handleFilterStartDate={this.handleFilterStartDate}
-					handleRequestSort={this.handleRequestSort}
-					handleClick={this.handleClick}
-					handleCheckboxClick={this.handleCheckboxClick}
-					order={order}
-					orderBy={orderBy}
-					filters={filters}
-					deleteProjects={this.deleteProjects}
-					t={t}
-				/>
-			</Paper>
+	renderTableToolbar = () => {
+		const { selected } = this.state
+		const { t } = this.props
+		return 	<TableToolbar
+			ft={this.ft()}
+			reduxKey={'projects'}
+			numSelected={selected.length}
+			options={this.options}
+			t={t}
+			content={this.renderTableToolBarContent()} 
+		/>
 	}
 	renderAllProjects = () => {
-		const { t, classes } = this.props
-		const { openDelete, openAssignDC, loading, order, orderBy, projects, projectHeader, filters, selected } = this.state
+		const { classes } = this.props
+		const { loading, projects } = this.state
 		return loading ? <CircularLoader /> :
 			<Paper className={classes.root}>
-				{selected[0] ? <AssignDCs
-					open={openAssignDC}
-					handleClose={this.handleCloseAssignCollection}
-					project={selected[0]}
-					t={t}
-				/> : null}
-				<TableToolbar
-					ft={this.ft()}
-					reduxKey={'projects'}
-					anchorElMenu={this.state.anchorElMenu}
-					handleToolbarMenuClose={this.handleToolbarMenuClose}
-					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
-					numSelected={selected.length}
-					options={this.options}
-					t={t}
-					content={this.renderTableToolBarContent()}
-				/><ProjectTable
-					openDelete={openDelete}
-					handleOpenDeleteDialog={this.handleOpenDeleteDialog}
-					handleCloseDeleteDialog={this.handleCloseDeleteDialog}
-					selected={selected}
-					filter={this.filter}
-					data={this.filterItems(projects)}
-					handleSelectAllClick={this.handleSelectAllClick}
-					tableHead={projectHeader}
-					handleFilterEndDate={this.handleFilterEndDate}
-					handleFilterKeyword={this.handleFilterKeyword}
-					handleFilterStartDate={this.handleFilterStartDate}
-					handleRequestSort={this.handleRequestSort}
-					handleClick={this.handleClick}
-					handleCheckboxClick={this.handleCheckboxClick}
-					order={order}
-					orderBy={orderBy}
-					filters={filters}
-					deleteProjects={this.deleteProjects}
-					t={t}
-				/>
+				{this.renderConfirmDelete()}
+				{this.renderAssignDCs()}
+				{this.renderTableToolbar()}
+				{this.renderTable(projects)}
 			</Paper>
 	}
 	
@@ -392,9 +369,15 @@ class Projects extends Component {
 		</GridContainer>
 	}
 	renderFavorites = () => {
+		const { classes } = this.props
 		const { loading } = this.state
 		return <GridContainer justify={'center'}>
-			{loading ? <CircularLoader /> : this.renderFavTable()}
+			{loading ? <CircularLoader /> : <Paper className={classes.root}>
+				{this.renderConfirmDelete()}
+				{this.renderAssignDCs()}
+				{this.renderTableToolbar()}
+				{this.renderTable(this.getFavs())}
+			</Paper>}
 		</GridContainer>
 	}
 	renderCards = () => {
@@ -405,23 +388,24 @@ class Projects extends Component {
 		
 	}
 	render() {
-		const { projects, filters } = this.state
+		const { projects, filters, route } = this.state
+		const { history, match } = this.props
 		return (
 			<Fragment>
 				<Toolbar
-					route={this.state.route}
+					route={route}
 					data={projects}
 					filters={filters}
-					history={this.props.history}
-					match={this.props.match}
+					history={history}
+					match={match}
 					handleFilterKeyword={this.handleFilterKeyword}
-					tabs={this.tabs}
+					tabs={this.tabs()}
 				/>
 				<Switch>
-					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} />
-					<Route path={`${this.props.match.path}/list`} render={() => this.renderList()} />
-					<Route path={`${this.props.match.path}/favorites`} render={() => this.renderFavorites()}/>
-					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
+					<Route path={`${match.path}/grid`} render={() => this.renderCards()} />
+					<Route path={`${match.path}/list`} render={() => this.renderList()} />
+					<Route path={`${match.path}/favorites`} render={() => this.renderFavorites()}/>
+					<Redirect path={`${match.path}`} to={`${match.path}/list`} />
 				</Switch>
 			</Fragment>
 		)

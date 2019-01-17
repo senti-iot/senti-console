@@ -40,6 +40,9 @@ class Devices extends Component {
 		}
 		props.setHeader('devices.pageTitle', false, '', 'devices')
 	}
+	
+	//#region Constants
+
 	tabs = () => {
 		const { t, match } = this.props
 		return [
@@ -135,6 +138,9 @@ class Devices extends Component {
 			]
 		}
 	}
+	//#endregion
+
+	//#region Functions
 	snackBarMessages = (msg) => {
 		const { s } = this.props
 		switch (msg) {
@@ -195,6 +201,9 @@ class Devices extends Component {
 			}, () => this.handleRequestSort(null, 'id', 'asc')) : null
 		})
 	}
+	//#endregion
+
+	//#region Life Cycle
 
 	componentDidMount = async () => {
 		this._isMounted = 1
@@ -222,13 +231,13 @@ class Devices extends Component {
 		}
 	}
 
-
-
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
 
-	//region Handlers
+	//#endregion
+
+	//#region Handlers
 
 	handleTabs = () => {
 		if (this.props.location.pathname.includes('/map'))
@@ -369,7 +378,7 @@ class Devices extends Component {
 		this.setState({ devices: newData, order, orderBy: property })
 	}
 
-	//endregion
+	//#endregion
 
 	renderConfirmUnassign = () => {
 		const { openUnassign, selected, devices } = this.state

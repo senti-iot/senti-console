@@ -1,7 +1,6 @@
 import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
-	TableRow, Typography, withStyles, DialogTitle, Dialog, DialogContent,
-	DialogContentText, DialogActions, Button, List, ListItem, ListItemIcon, ListItemText
+	TableRow, Typography, withStyles,
 } from '@material-ui/core'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
 import PropTypes from 'prop-types'
@@ -35,41 +34,7 @@ class ProjectTable extends React.Component {
 		this.setState({ rowsPerPage: event.target.value })
 	}
 
-	handleDeleteProjects = async () => {
-		await this.props.deleteProjects(this.props.selected)
-	}
-
 	isSelected = id => this.props.selected.indexOf(id) !== -1
-
-	renderConfirmDelete = () => {
-		const { data, t, selected, handleCloseDeleteDialog, openDelete } = this.props
-		return <Dialog
-			open={openDelete}
-			onClose={handleCloseDeleteDialog}
-			aria-labelledby='alert-dialog-title'
-			aria-describedby='alert-dialog-description'
-		>
-			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.projects')}</DialogTitle>
-			<DialogContent>
-				<DialogContentText id='alert-dialog-description'>
-					{t('dialogs.delete.message.projects')}
-				</DialogContentText>
-				<List>
-					{selected.map(s => <ListItem key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
-						<ListItemText primary={data[data.findIndex(d => d.id === s)].title} /></ListItem>)}
-
-				</List>
-			</DialogContent>
-			<DialogActions>
-				<Button onClick={handleCloseDeleteDialog} color='primary'>
-					{t('actions.no')}
-				</Button>
-				<Button onClick={this.handleDeleteProjects} color='primary' autoFocus>
-					{t('actions.yes')}
-				</Button>
-			</DialogActions>
-		</Dialog>
-	}
 
 	render() {
 		const { classes, selected, t, order, data, orderBy, handleCheckboxClick } = this.props
@@ -161,7 +126,6 @@ class ProjectTable extends React.Component {
 					handleChangePage={this.handleChangePage}
 					handleChangeRowsPerPage={this.handleChangeRowsPerPage}
 				/>
-				{this.renderConfirmDelete()}
 			</Fragment>
 		)
 	}
