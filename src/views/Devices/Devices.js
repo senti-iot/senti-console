@@ -314,7 +314,7 @@ class Devices extends Component {
 	}
 	handleDeviceClick = id => e => {
 		e.stopPropagation()
-		this.props.history.push('/device/' + id)
+		this.props.history.push({ pathname: '/device/' + id, prevURL: '/devices/list' })
 	}
 	handleFavClick = id => e => {
 		e.stopPropagation()
@@ -443,13 +443,13 @@ class Devices extends Component {
 			t={t} />
 	}
 
-	renderTable = (items) => { 
+	renderTable = (items, handleClick) => { 
 		const { selected, order, orderBy } = this.state
 		const { t } = this.props
 		return <DeviceTable
 			data={this.filterItems(items)}
 			handleCheckboxClick={this.handleCheckboxClick}
-			handleClick={this.handleFavClick}
+			handleClick={handleClick}
 			handleRequestSort={this.handleRequestSort}
 			handleSelectAllClick={this.handleSelectAllClick}
 			order={order}
@@ -484,7 +484,7 @@ class Devices extends Component {
 				{this.renderAssignOrg()}
 				{this.renderConfirmUnassign()}
 				{this.renderTableToolbar()}
-				{this.renderTable(this.getFavs())}
+				{this.renderTable(this.getFavs(), this.handleFavClick)}
 			</Paper>
 		</GridContainer>
 
@@ -499,7 +499,7 @@ class Devices extends Component {
 				{this.renderAssignOrg()}
 				{this.renderConfirmUnassign()}
 				{this.renderTableToolbar()}
-				{this.renderTable(devices)}
+				{this.renderTable(devices, this.handleDeviceClick)}
 			</Paper>
 		</GridContainer>
 	}
