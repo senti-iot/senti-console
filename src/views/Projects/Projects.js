@@ -184,7 +184,16 @@ class Projects extends Component {
 	//#endregion
 
 	//#region Handlers
+	handleProjectClick = id => e => {
+		e.stopPropagation()
+		this.props.history.push({ pathname: `/project/${id}`, prevURL: '/projects' })
+	}
 
+	handleFavClick = id => e => {
+		e.stopPropagation()
+		this.props.history.push({ pathname: `/project/${id}`, prevURL: '/projects/favorites' })
+	}
+	
 	handleTabs = () => {
 		if (this.props.location.pathname.includes('grid')) {
 			this.setState({ route: 1 })
@@ -314,7 +323,7 @@ class Projects extends Component {
 			</IconButton>
 		</Fragment>
 	}
-	renderTable = (items) => {
+	renderTable = (items, handleClick) => {
 		const { t } = this.props
 		const {  order, orderBy, selected } = this.state
 		return <ProjectTable
@@ -322,6 +331,7 @@ class Projects extends Component {
 			data={this.filterItems(items)}
 			handleSelectAllClick={this.handleSelectAllClick}
 			tableHead={this.projectHeader()}
+			handleClick={handleClick}
 			handleRequestSort={this.handleRequestSort}
 			handleCheckboxClick={this.handleCheckboxClick}
 			order={order}
@@ -359,7 +369,7 @@ class Projects extends Component {
 				{this.renderConfirmDelete()}
 				{this.renderAssignDCs()}
 				{this.renderTableToolbar()}
-				{this.renderTable(projects)}
+				{this.renderTable(projects, this.handleProjectClick)}
 			</Paper>
 	}
 	
@@ -376,16 +386,15 @@ class Projects extends Component {
 				{this.renderConfirmDelete()}
 				{this.renderAssignDCs()}
 				{this.renderTableToolbar()}
-				{this.renderTable(this.getFavs())}
+				{this.renderTable(this.getFavs(), this.handleFavClick)}
 			</Paper>}
 		</GridContainer>
 	}
 	renderCards = () => {
-		const { loading } = this.state
+		const { loading, projects } = this.state
 		const { t } = this.props
 		return loading ? <CircularLoader /> :
-			<ProjectCards t={t} projects={this.filterItems(this.state.projects)} />
-		
+			<ProjectCards t={t} projects={this.filterItems(projects)} />
 	}
 	render() {
 		const { projects, filters, route } = this.state

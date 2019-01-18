@@ -20,8 +20,6 @@ class CollectionTable extends React.Component {
 
 		this.state = {
 			page: 0,
-			rowsPerPage: props.rowsPerPage,
-			anchorFilterMenu: null,
 		}
 	}
 
@@ -37,19 +35,7 @@ class CollectionTable extends React.Component {
 		this.setState({ page });
 	}
 
-	handleChangeRowsPerPage = event => {
-		this.setState({ rowsPerPage: event.target.value })
-	}
-
-
 	isSelected = id => this.props.selected.indexOf(id) !== -1
-
-	handleEdit = () => {
-		this.props.history.push(`/collection/${this.state.selected[0]}/edit`)
-	}
-	
-	addNewCollection = () => { this.props.history.push('/collections/new') }
-
 
 	renderIcon = (status) => {
 		const { classes, t } = this.props
@@ -80,8 +66,8 @@ class CollectionTable extends React.Component {
 	}
 
 	render() {
-		const { classes, t, order, orderBy, data, selected, handleCheckboxClick } = this.props
-		const { rowsPerPage, page } = this.state
+		const { rowsPerPage, handleClick, classes, t, order, orderBy, data, selected, handleCheckboxClick } = this.props
+		const { page } = this.state
 		let emptyRows;
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
@@ -117,7 +103,7 @@ class CollectionTable extends React.Component {
 								return (
 									<TableRow
 										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push('/collection/' + n.id) }}
+										onClick={handleClick(n.id)}
 										role='checkbox'
 										aria-checked={isSelected}
 										tabIndex={-1}
@@ -171,7 +157,6 @@ class CollectionTable extends React.Component {
 					page={page}
 					t={t}
 					handleChangePage={this.handleChangePage}
-					handleChangeRowsPerPage={this.handleChangeRowsPerPage}
 				/>
 			</Fragment>
 
@@ -179,7 +164,7 @@ class CollectionTable extends React.Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	rowsPerPage: state.settings.trp,
+	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,	
 	language: state.localization.language,
 	accessLevel: state.settings.user.privileges
 })

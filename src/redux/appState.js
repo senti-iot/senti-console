@@ -1,5 +1,10 @@
 const updateFilters = 'updateFilters'
-
+const changeTRP = 'changeTableRows'
+export const changeTableRows = (val) => { 
+	return (dispatch, getState) => { 
+		dispatch({ type: changeTRP, trp: val })
+	}
+}
 export const addFilter = (f, type) => {
 	return (dispatch, getState) => {
 		let filters = []
@@ -44,13 +49,7 @@ export const removeFilter = (f, type) => {
 	}
 }
 const initialState = {
-	chips: {
-		devices: [],
-		collections: [],
-		projects: [],
-		orgs: [],
-		users: []
-	},
+	trp: null,
 	filters: {
 		projects: [],
 		devices: [],
@@ -62,7 +61,8 @@ const initialState = {
 
 export const appState = (state = initialState, action) => {
 	switch (action.type) {
-
+		case changeTRP: 
+			return Object.assign({}, state, { trp: action.trp })
 		case updateFilters:
 			return Object.assign({}, state, { filters: { ...state.filters, ...action.filters } })
 		default:

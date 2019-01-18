@@ -2,10 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { TablePagination, withWidth } from '@material-ui/core'
 import { isWidthUp } from '@material-ui/core/withWidth'
+import { changeTableRows } from 'redux/appState';
 
 class TP extends Component {
+	
 	handleChangeRowsPerPage = e => {
-		this.props.handleChangeRowsPerPage(e)
+		this.props.handleChangeRowsPerPage(e.target.value)
 	}
 	handleChangePage = (e, page) => {
 		this.props.handleChangePage(e, page)
@@ -45,10 +47,11 @@ class TP extends Component {
 
 const mapStateToProps = (state) => ({
 	rowsPerPageOptions: state.settings.rowsPerPageOptions,
+	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = (dispatch) => ({
+	handleChangeRowsPerPage: (value) => dispatch(changeTableRows(value)),
+})
 
 export default withWidth()(connect(mapStateToProps, mapDispatchToProps)(TP))

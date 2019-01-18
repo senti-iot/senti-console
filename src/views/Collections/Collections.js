@@ -216,7 +216,7 @@ class Collections extends Component {
 		this.setState({ collections: newData, order, orderBy: property })
 	}
 
-	handleDeviceClick = id => e => {
+	handleCollectionClick = id => e => {
 		e.stopPropagation()
 		this.props.history.push('/collection/' + id)
 	}
@@ -460,13 +460,13 @@ class Collections extends Component {
 		/>
 	}
 
-	renderTable = (items) => {
+	renderTable = (items, handleClick) => {
 		const { t } = this.props
 		const { order, orderBy, selected } = this.state
 		return <CollectionTable
 			data={this.filterItems(items)}
 			handleCheckboxClick={this.handleCheckboxClick}
-			handleClick={this.handleClick}
+			handleClick={handleClick}
 			handleRequestSort={this.handleRequestSort}
 			handleSelectAllClick={this.handleSelectAllClick}
 			order={order}
@@ -498,7 +498,7 @@ class Collections extends Component {
 				{this.renderAssignDevice()}
 				{selected.length > 0 ? this.renderDeviceUnassign() : null}
 				{this.renderTableToolBar()}
-				{this.renderTable(this.getFavs())}
+				{this.renderTable(this.getFavs(), this.handleFavClick)}
 				{this.renderConfirmDelete()}
 			</Paper>
 			}
@@ -514,7 +514,7 @@ class Collections extends Component {
 				{this.renderAssignDevice()}
 				{selected.length > 0 ? this.renderDeviceUnassign() : null}
 				{this.renderTableToolBar()}
-				{this.renderTable(collections)}
+				{this.renderTable(collections, this.handleCollectionClick)}
 				{this.renderConfirmDelete()}
 			</Paper>
 			}

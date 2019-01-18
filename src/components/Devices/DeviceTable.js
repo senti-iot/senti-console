@@ -19,7 +19,6 @@ class DeviceTable extends React.Component {
 
 		this.state = {
 			page: 0,
-			rowsPerPage: props.rowsPerPage,
 		};
 	}
 	
@@ -29,10 +28,6 @@ class DeviceTable extends React.Component {
 
 	handleChangePage = (event, page) => {
 		this.setState({ page });
-	};
-
-	handleChangeRowsPerPage = event => {
-		this.setState({ rowsPerPage: event.target.value });
 	};
 
 	isSelected = id => {
@@ -61,8 +56,8 @@ class DeviceTable extends React.Component {
 		}
 	}
 	render() {
-		const { selected, classes, t, data, order, orderBy, handleClick, handleCheckboxClick, handleSelectAllClick  } = this.props;
-		const { rowsPerPage, page  } = this.state;
+		const { selected, classes, t, data, order, orderBy, handleClick, handleCheckboxClick, handleSelectAllClick, rowsPerPage  } = this.props;
+		const { page  } = this.state;
 		let emptyRows
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
@@ -88,7 +83,7 @@ class DeviceTable extends React.Component {
 								{
 									id: 'id',
 									label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
-										Device
+										{t('collections.fields.device')}
 									</Typography>
 								}
 							]}
@@ -147,11 +142,10 @@ class DeviceTable extends React.Component {
 				<TP
 					count={data ? data.length : 0}
 					classes={classes}
-					rowsPerPage={rowsPerPage}
+					// rowsPerPage={rowsPerPage}
 					page={page}
 					t={t}
 					handleChangePage={this.handleChangePage}
-					handleChangeRowsPerPage={this.handleChangeRowsPerPage}
 				/>
 			</Fragment>
 		);
@@ -162,7 +156,7 @@ DeviceTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 const mapStateToProps = (state) => ({
-	rowsPerPage: state.settings.trp,
+	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,
 	accessLevel: state.settings.user.privileges
 })
 

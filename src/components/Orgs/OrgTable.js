@@ -23,7 +23,6 @@ class OrgTable extends React.Component {
 		this.state = {
 			selected: [],
 			page: 0,
-			rowsPerPage: props.rowsPerPage,
 			anchorElMenu: null,
 			anchorFilterMenu: null,
 			openDelete: false,
@@ -50,21 +49,9 @@ class OrgTable extends React.Component {
 		this.props.handleRequestSort(event, property)
 	}
 
-	handleSelectAllPage = (event, checked) => {
-		if (checked) {
-			const { data } = this.props
-			const { rowsPerPage, page } = this.state
-			this.setState({ selected: data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => n.id) })
-			return;
-		}
-	}
 
 	handleChangePage = (event, page) => {
 		this.setState({ page });
-	}
-
-	handleChangeRowsPerPage = event => {
-		this.setState({ rowsPerPage: event.target.value })
 	}
 
 	isSelected = id => this.props.selected.indexOf(id) !== -1
@@ -157,7 +144,7 @@ class OrgTable extends React.Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	rowsPerPage: state.settings.trp,
+	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,	
 	language: state.localization.language,
 	accessLevel: state.settings.user.privileges,
 	favorites: state.favorites.favorites,
