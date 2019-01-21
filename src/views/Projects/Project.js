@@ -24,24 +24,10 @@ class Project extends Component {
 		super(props)
 
 		this.state = {
-			dateOption: 3,
-			from: moment().subtract(7, 'd').startOf('day'),
-			to: moment().endOf('day'),
-			timeType: 2,
 			raw: props.rawData ? props.rawData : false,
 			project: {},
 			heatData: [],
 			openAssignDC: false,
-			regFilters: {
-				keyword: '',
-				startDate: '',
-				endDate: ''
-			},
-			deviceFilters: {
-				keyword: '',
-				startDate: '',
-				endDate: ''
-			},
 			loading: true,
 			loadingData: true,
 			openSnackbar: 0,
@@ -181,39 +167,7 @@ class Project extends Component {
 			...newState
 		})
 	}
-	getWifiSum = async () => {
-		// const { from, to, raw, project, hoverID } = this.state
-		// let startDate = moment(from).format(this.format)
-		// let endDate = moment(to).format(this.format)
-		// let dataArr = []
-		// await Promise.all(project.dataCollections.map(async d => {
-		// 	let dataSet = null
-		// 	let data = await getDataSummary(d.id, startDate, endDate, raw)
-		// 	dataSet = {
-		// 		name: d.name,
-		// 		id: d.id,
-		// 		data: data,
-		// 		color: d.color,
-		// 		lat: d.activeDevice ? d.activeDevice.lat : 0,
-		// 		long: d.activeDevice ? d.activeDevice.long : 0
-		// 	}
-		// 	return dataArr.push(dataSet)
-		// }))
-		// dataArr = dataArr.reduce((newArr, d) => {
-		// 	if (d.data !== null)
-		// 		newArr.push(d)
-		// 	return newArr
-		// }, [])
-		// let newState = setSummaryData(dataArr, from, to, hoverID)
-		// let exportData = setExportData(dataArr, 'day')
-		// this.setState({
-		// 	exportData: exportData,
-		// 	dataArr: dataArr,
-		// 	loadingData: false,
-		// 	timeType: 3,
-		// 	...newState
-		// })
-	}
+
 	getHeatMapData = async () => {
 		const { from, to, project } = this.state
 		let startDate = moment(from).format(this.format)
@@ -243,44 +197,22 @@ class Project extends Component {
 			loadingMap: false
 		})
 	}
-	/**
-	 * This is the callback from the Date Filter
-	 * @function
-	 * @param id Date Option id (Today, yesterday, 7 days...)
-	 * @param to Date end Date
-	 * @param from Date 
-	 * @param timeType 
-	 */
-	handleSetDate = (id, to, from, timeType, loading) => {
-		this.setState({
-			dateOption: id,
-			to: moment(to),
-			from: moment(from),
-			timeType: timeType,
-			loadingData: loading !== undefined ? loading : true,
-		}, this.handleSwitchDayHourSummary)
-	}
+	
 	handleSwitchDayHourSummary = () => {
 		const { to, from, id } = this.props
 		let diff = moment.duration(to.diff(from)).days()
 		this.getHeatMapData()
 		switch (id) {
 			case 0:// Today
-				this.getWifiHourly();
-				break;
 			case 1:// Yesterday
 				this.getWifiHourly();
 				break;
-			case 2://this week
+			case 2:// This week
 				parseInt(diff, 10) > 1 ? this.getWifiDaily() : this.getWifiHourly()
 				break;
-			case 3:
-				this.getWifiDaily();
-				break;
-			case 4:
-				this.getWifiDaily();
-				break
-			case 5:
+			case 3:// Last 7 days
+			case 4:// 30 days
+			case 5:// 90 Days
 				this.getWifiDaily();
 				break
 			case 6:
@@ -291,11 +223,7 @@ class Project extends Component {
 				break;
 		}
 	}
-	handleCustomDate = date => e => {
-		this.setState({
-			[date]: e
-		})
-	}
+	
 	handleSetCustomRange = () => {
 		const { timeType } = this.state
 		switch (timeType) {
@@ -352,6 +280,7 @@ class Project extends Component {
 			this.setState({ openAssignDC: false })
 		}
 	}
+
 	handleOpenAssignCollection = () => {
 		this.setState({ openAssignDC: true, anchorElMenu: null })
 	}
@@ -359,12 +288,15 @@ class Project extends Component {
 	handleOpenDeleteDialog = () => {
 		this.setState({ openDelete: true })
 	}
+
 	handleCloseDeleteDialog = () => {
 		this.setState({ openDelete: false })
 	}
+
 	handleRawData = () => {
 		this.setState({ loadingData: true, raw: !this.state.raw }, () => this.handleSwitchDayHourSummary())
 	}
+
 	addToFav = () => {
 		const { project } = this.state
 		let favObj = {
@@ -375,6 +307,7 @@ class Project extends Component {
 		}
 		this.props.addToFav(favObj)
 	}
+
 	removeFromFav = () => {
 		const { project } = this.state
 		let favObj = {
@@ -385,6 +318,7 @@ class Project extends Component {
 		}
 		this.props.removeFromFav(favObj)
 	}
+	
 	setHoverID = (id) => {
 		if (id !== this.state.hoverID) {
 			this.setState({ hoverID: id }, this.hoverGrow)
@@ -445,16 +379,16 @@ class Project extends Component {
 			</DialogActions>
 		</Dialog>
 	}
+
 	renderLoader = () => {
 		return <CircularLoader />
 	}
 
 	renderMenu = () => {
 		const { t } = this.props
-		return <DateFilterMenu
-			t={t}
-		/>
+		return <DateFilterMenu t={t} />
 	}
+
 	render() {
 		const { project, loading, openAssignDC, loadingData } = this.state
 		const { barDataSets, roundDataSets, lineDataSets, raw } = this.state
@@ -555,5 +489,7 @@ const mapDispatchToProps = (dispatch) => ({
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
 	finishedSaving: () => dispatch(finishedSaving())
 })
+
 const ProjectComposed = compose(connect(mapStateToProps, mapDispatchToProps), withStyles(deviceStyles))(Project)
+
 export default ProjectComposed

@@ -25,11 +25,7 @@ class Collection extends Component {
 
 		this.state = {
 			//Date Filter stuff
-			dateOption: 3,
 			loadingData: true,
-			from: moment().subtract(7, 'd').startOf('day'),
-			to: moment().endOf('day'),
-			timeType: 2,
 			raw: props.rawData ? props.rawData : false,
 			//End Date Filter Tools
 			collection: null,
@@ -42,11 +38,6 @@ class Collection extends Component {
 			openAssignOrg: false,
 			openAssignDevice: false,
 			openDelete: false,
-			img: null,
-			filter: {
-				startDate: '',
-				endDate: ''
-			},
 			//Map
 			loadingMap: true,
 			heatData: null,
@@ -55,7 +46,8 @@ class Collection extends Component {
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/collections/list'
 		props.setHeader('collections.fields.collection', true, prevURL, 'collections')
 	}
-		format = 'YYYY-MM-DD+HH:mm'
+	
+	format = 'YYYY-MM-DD+HH:mm'
 	tabs = [
 		{ id: 0, title: '', label: <DataUsage />, url: `#details` },
 		{ id: 1, title: '', label: <Timeline />, url: `#data` },
@@ -176,23 +168,18 @@ class Collection extends Component {
 	handleSwitchDayHourSummary = () => {
 		const { to, from, id } = this.props
 		let diff = moment.duration(to.diff(from)).days()
+		this.getHeatMapData()
 		switch (id) {
 			case 0:// Today
-				this.getWifiHourly();
-				break;
 			case 1:// Yesterday
 				this.getWifiHourly();
 				break;
 			case 2:// This week
 				parseInt(diff, 10) > 1 ? this.getWifiDaily() : this.getWifiHourly()
 				break;
-			case 3:
-				this.getWifiDaily();
-				break;
-			case 4:
-				this.getWifiDaily();
-				break
-			case 5:
+			case 3:// Last 7 days
+			case 4:// 30 days
+			case 5:// 90 Days
 				this.getWifiDaily();
 				break
 			case 6:
@@ -202,11 +189,6 @@ class Collection extends Component {
 				this.getWifiDaily();
 				break;
 		}
-	}
-	handleCustomDate = date => e => {
-		this.setState({
-			[date]: e
-		})
 	}
 
 	handleSetCustomRange = () => {
@@ -228,6 +210,7 @@ class Collection extends Component {
 				break;
 		}
 	}
+
 	getWifiHourly = async () => {
 		const { raw, collection, hoverID } = this.state
 		const { from, to } = this.props
@@ -249,6 +232,7 @@ class Collection extends Component {
 			...newState
 		})
 	}
+
 	getWifiMinutely = async () => {
 		const { raw, collection, hoverID } = this.state
 		const { from, to } = this.props
@@ -270,6 +254,7 @@ class Collection extends Component {
 			...newState
 		})
 	}
+
 	getWifiDaily = async () => {
 		const { raw, collection, hoverID } = this.state
 		const { from, to } = this.props
@@ -291,6 +276,7 @@ class Collection extends Component {
 			...newState
 		})
 	}
+
 	getWifiSum = async () => {
 		const { from, to, raw, collection, hoverID } = this.state
 		let startDate = moment(from).format(this.format)
@@ -320,6 +306,7 @@ class Collection extends Component {
 			...newState
 		})
 	}
+
 	snackBarMessages = (msg) => {
 		const { s, t } = this.props
 		let name = this.state.collection.name ? this.state.collection.name : t('collections.noName')
@@ -344,6 +331,7 @@ class Collection extends Component {
 				break
 		}
 	}
+
 	handleOpenDeleteDialog = () => {
 		this.setState({ openDelete: true })
 	}
@@ -351,6 +339,7 @@ class Collection extends Component {
 	handleCloseDeleteDialog = () => {
 		this.setState({ openDelete: false })
 	}
+
 	handleDeleteCollection = async () => {
 		await deleteCollection(this.state.collection.id).then(rs => {
 			this.setState({
@@ -366,12 +355,15 @@ class Collection extends Component {
 				
 		})
 	}
+
 	handleOpenAssignDevice = () => {
 		this.setState({ openAssignDevice: true, anchorEl: null })
 	}
+
 	handleCancelAssignDevice = () => {
 		this.setState({ openAssignDevice: false })
 	}
+
 	handleCloseAssignDevice = async (reload) => {
 		if (reload) { 
 			this.setState({ loading: true, openAssignDevice: false })
@@ -383,12 +375,15 @@ class Collection extends Component {
 			this.setState({ openAssignDevice: false })
 		}
 	}
+
 	handleOpenAssignOrg = () => {
 		this.setState({ openAssignOrg: true, anchorEl: null })
 	}
+
 	handleCancelAssignOrg = () => {
 		this.setState({ openAssignOrg: false })
 	}
+
 	handleCloseAssignOrg = async (reload) => {
 		if (reload) {
 			this.setState({ loading: true, openAssignOrg: false })
@@ -397,12 +392,15 @@ class Collection extends Component {
 			})
 		}
 	}
+
 	handleOpenAssignProject = () => {
 		this.setState({ openAssign: true, anchorEl: null })
 	}
+
 	handleCancelAssignProject = () => {
 		this.setState({ openAssign: false })
 	}
+
 	handleCloseAssignProject = async (reload) => {
 		if (reload) {
 			this.setState({ loading: true, anchorEl: null, openAssign: false })
@@ -440,6 +438,7 @@ class Collection extends Component {
 	renderLoader = () => {
 		return <CircularLoader />
 	}
+
 	renderAssignDevice = () => {
 		const { t } = this.props
 		const { collection, openAssignDevice } = this.state
@@ -459,6 +458,7 @@ class Collection extends Component {
 			</Dialog>
 		)
 	}
+
 	renderConfirmUnassign = () => {
 		const { t } = this.props
 		const { collection } = this.state
@@ -484,6 +484,7 @@ class Collection extends Component {
 			</DialogActions>
 		</Dialog>
 	}
+
 	renderDeleteDialog = () => {
 		const { openDelete } = this.state
 		const { t } = this.props
@@ -526,38 +527,38 @@ class Collection extends Component {
 		/>
 	}
 	render() {
-		const { history, t, classes, accessLevel, from, to, id, timeType } = this.props
-		const { collection, loading, loadingData, activeDevice, weather } = this.state
+		const { history, match,  t, classes, accessLevel, from, to, id, timeType } = this.props
+		const { collection, loading, loadingData, activeDevice, weather, openAssign, openAssignOrg, exportData, lineDataSets, barDataSets, roundDataSets, raw } = this.state
 		return (
 			<Fragment>
 				<Toolbar
 					noSearch
-					history={this.props.history}
-					match={this.props.match}
+					history={history}
+					match={match}
 					tabs={this.tabs}
 					content={this.renderMenu()}
 				/>
 				{!loading ?
 					<GridContainer justify={'center'} alignContent={'space-between'}>
 						<AssignDevice
-							collectionId={this.state.collection.id}
-							orgId={this.state.collection.org.id}
+							collectionId={collection.id}
+							orgId={collection.org.id}
 							handleCancel={this.handleCancelAssignDevice}
 							handleClose={this.handleCloseAssignDevice}
 							open={this.state.openAssignDevice}
 							t={t}
 						/>
 						<AssignProject
-							collectionId={[this.state.collection]}
-							open={this.state.openAssign}
+							collectionId={[collection]}
+							open={openAssign}
 							handleClose={this.handleCloseAssignProject}
 							handleCancel={this.handleCancelAssignProject}
 							t={t}
 						/>
 						<AssignOrg
 							collections
-							collectionId={[this.state.collection]}
-							open={this.state.openAssignOrg}
+							collectionId={[collection]}
+							open={openAssignOrg}
 							handleClose={this.handleCloseAssignOrg}
 							t={t}
 						/>
@@ -571,23 +572,23 @@ class Collection extends Component {
 								removeFromFav={this.removeFromFav}
 								collection={collection}
 								weather={weather}
-								history={this.props.history}
-								match={this.props.match}
+								history={history}
+								match={match}
 								handleOpenAssignProject={this.handleOpenAssignProject}
 								handleOpenUnassignDevice={this.handleOpenUnassignDevice}
 								handleOpenAssignOrg={this.handleOpenAssignOrg}
 								handleOpenDeleteDialog={this.handleOpenDeleteDialog}
 								handleOpenAssignDevice={this.handleOpenAssignDevice}
 								t={t}
-								accessLevel={this.props.accessLevel}
+								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
 						<ItemGrid xs={12} noMargin id='data'>
 							<CollectionData
-								exportData={this.state.exportData}
-								barDataSets={this.state.barDataSets}
-								roundDataSets={this.state.roundDataSets}
-								lineDataSets={this.state.lineDataSets}
+								exportData={exportData}
+								barDataSets={barDataSets}
+								roundDataSets={roundDataSets}
+								lineDataSets={lineDataSets}
 								handleSetDate={this.handleSetDate}
 								loading={loadingData}
 								timeType={timeType}
@@ -595,11 +596,11 @@ class Collection extends Component {
 								to={to}
 								device={activeDevice}
 								dateOption={id}
-								raw={this.state.raw}
+								raw={raw}
 								handleRawData={this.handleRawData}
-								history={this.props.history}
-								match={this.props.match}
-								t={this.props.t}
+								history={history}
+								match={match}
+								t={t}
 							/>
 						</ItemGrid>
 						{this.state.activeDevice ? <ItemGrid xs={12} noMargin id='map'>
