@@ -3,7 +3,6 @@ import moment from 'moment'
 const ChangeDate = 'changeDate'
 
 export const changeDate = (id, to, from, timeType) => { 
-	console.log(id, to, from, timeType)
 	return (dispatch, getState) => { 
 		dispatch({
 			type: ChangeDate,

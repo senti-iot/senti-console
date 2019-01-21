@@ -23,6 +23,7 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeChartType } from 'redux/appState'
+import { changeDate } from 'redux/dateTime'
 
 class ProjectData extends PureComponent {
 	constructor(props) {
@@ -343,7 +344,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	changeChartType: (val) => dispatch(changeChartType(val))
+	changeChartType: (val) => dispatch(changeChartType(val)),
+	handleSetDate: (id, to, from, timeType) => dispatch(changeDate(id, to, from, timeType))
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(ProjectData))

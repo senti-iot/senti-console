@@ -113,7 +113,6 @@ class Project extends Component {
 				long: d.activeDevice ? d.activeDevice.long : 0
 			}
 		})
-		console.log(dcs)
 		let newState = await getWifiHourly('collection', dcs, from, to, hoverID, raw)
 		this.setState({
 			loadingData: false,

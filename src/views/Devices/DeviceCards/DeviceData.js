@@ -23,6 +23,7 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeChartType } from 'redux/appState'
+import { changeDate } from 'redux/dateTime'
 
 class DeviceData extends PureComponent {
 	constructor(props) {
@@ -94,13 +95,13 @@ class DeviceData extends PureComponent {
 					if (zoomDate.length === 1) {
 						this.setState({ resetZoom: false, zoomDate: [] })
 					}
-					this.props.handleSetDate(6, endDate, startDate, 1, false)
+					this.props.handleSetDate(6, endDate, startDate, 1)
 					break;
 				case 1:
 					startDate = zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
 					endDate = zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
 					this.setState({ resetZoom: false, zoomDate: [] })
-					this.props.handleSetDate(6, endDate, startDate, 2, false)
+					this.props.handleSetDate(6, endDate, startDate, 2)
 					break;
 				default:
 					break;
@@ -345,7 +346,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	changeChartType: (val) => dispatch(changeChartType(val))
+	changeChartType: (val) => dispatch(changeChartType(val)),
+	handleSetDate: (id, to, from, timeType) => dispatch(changeDate(id, to, from, timeType))
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(DeviceData))
