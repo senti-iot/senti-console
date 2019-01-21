@@ -72,7 +72,7 @@ class CreateCollectionForm extends Component {
 			<AppBar className={classes.appBar + ' ' + appBarClasses}>
 				<Toolbar>
 					<Typography variant='h6' color='inherit' className={classes.flex}>
-						{t('devices.pageTitle')}
+						{t('orgs.pageTitle')}
 					</Typography>
 					<Button variant={'extendedFab'} color='primary' onClick={handleCloseOrg} aria-label='Close'>
 						<Close /> {t('actions.cancel')}
