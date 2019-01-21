@@ -70,7 +70,7 @@ export const removeFilter = (f, type) => {
 	}
 }
 const initialState = {
-	heatMap: null,
+	heatMap: false,
 	chartType: null,
 	mapTheme: null, 
 	trp: null,
