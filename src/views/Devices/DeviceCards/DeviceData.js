@@ -22,6 +22,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
+import { changeChartType } from 'redux/appState'
 
 class DeviceData extends PureComponent {
 	constructor(props) {
@@ -31,7 +32,6 @@ class DeviceData extends PureComponent {
 			from: moment().subtract(7, 'd').startOf('day'),
 			to: moment().endOf('day'),
 			actionAnchor: null,
-			display: props.chartType ? props.chartType : 3,
 			visibility: false,
 		}
 	}
@@ -76,14 +76,11 @@ class DeviceData extends PureComponent {
 	handleVisibility = id => (event) => {
 		if (event)
 			event.preventDefault()
-		this.setState({ display: id, loading: true, actionAnchorVisibility: null })
+		//Change to Redux
+		this.props.changeChartType(id)
+		this.setState({ actionAnchorVisibility: null })
 	}
 
-	handleCustomDate = date => e => {
-		this.setState({
-			[date]: e
-		})
-	}
 	handleReverseZoomOnData = async () => {
 		const { timeType } = this.props
 		const { zoomDate } = this.state
@@ -155,16 +152,9 @@ class DeviceData extends PureComponent {
 			}
 		}
 	}
-	handleCancelCustomDate = () => {
-		this.setState({
-			loading: false, openCustomDate: false
-		})
-	}
 	renderType = () => {
-		const { display } = this.state
-		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device } = this.props
-		console.log(timeType, this.timeTypes[timeType])
-		switch (display) {
+		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device, chartType } = this.props
+		switch (chartType) {
 			case 0:
 				return roundDataSets ? <div style={{ maxHeight: 400 }}>
 					<PieChart
@@ -220,7 +210,7 @@ class DeviceData extends PureComponent {
 
 	renderMenu = () => {
 		const { actionAnchor, actionAnchorVisibility, resetZoom } = this.state
-		const { classes, t } = this.props
+		const { classes, t, chartType } = this.props
 		return <Fragment>
 			<ItemG>
 				<Collapse in={resetZoom}>
@@ -245,7 +235,7 @@ class DeviceData extends PureComponent {
 							}
 						}}>					<List component='div' disablePadding>
 							{this.visibilityOptions.map(op => {
-								return <MenuItem selected={this.state.display === op.id ? true : false} key={op.id} value={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
+								return <MenuItem selected={chartType === op.id ? true : false} key={op.id} value={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
 									<div style={{ marginRight: 24, display: "flex" }}>
 										{op.icon}
 									</div>
@@ -351,11 +341,11 @@ DeviceData.propTypes = {
 	device: PropTypes.object.isRequired,
 }
 const mapStateToProps = (state) => ({
-	chartType: state.settings.chartType
+	chartType: state.appState.chartType ? state.appState.chartType : state.settings.chartType
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = dispatch => ({
+	changeChartType: (val) => dispatch(changeChartType(val))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(DeviceData))

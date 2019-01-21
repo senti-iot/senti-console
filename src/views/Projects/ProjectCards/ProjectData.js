@@ -22,6 +22,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
+import { changeChartType } from 'redux/appState'
 
 class ProjectData extends PureComponent {
 	constructor(props) {
@@ -79,14 +80,10 @@ class ProjectData extends PureComponent {
 	handleVisibility = id => (event) => {
 		if (event)
 			event.preventDefault()
-		this.setState({ display: id, loading: true, actionAnchorVisibility: null })
+		this.props.changeChartType(id)
+		this.setState({ actionAnchorVisibility: null })
 	}
 
-	handleCustomDate = date => e => {
-		this.setState({
-			[date]: e
-		})
-	}
 	handleReverseZoomOnData = async () => {
 		const { timeType } = this.props
 		const { zoomDate } = this.state
@@ -115,6 +112,7 @@ class ProjectData extends PureComponent {
 		catch (e) {
 		}
 	}
+
 	handleZoomOnData = async (elements) => {
 		if (elements.length > 0) {
 			const { timeType, lineDataSets } = this.props
@@ -154,11 +152,6 @@ class ProjectData extends PureComponent {
 			}
 		}
 	}
-	handleCancelCustomDate = () => {
-		this.setState({
-			loading: false, openCustomDate: false
-		})
-	}
 	handleOpenDownloadModal = () => {
 		this.setState({ openDownload: true, actionAnchor: null })
 	}
@@ -167,9 +160,8 @@ class ProjectData extends PureComponent {
 	}
 
 	renderType = () => {
-		const { display } = this.state
-		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device } = this.props
-		switch (display) {
+		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device, chartType } = this.props
+		switch (chartType) {
 			case 0:
 				return roundDataSets ? <div style={{ maxHeight: 400 }}>
 					<PieChart
@@ -347,11 +339,11 @@ ProjectData.propTypes = {
 	project: PropTypes.object.isRequired,
 }
 const mapStateToProps = (state) => ({
-	chartType: state.settings.chartType
+	chartType: state.appState.chartType ? state.appState.chartType : state.settings.chartType
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = dispatch => ({
+	changeChartType: (val) => dispatch(changeChartType(val))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(ProjectData))

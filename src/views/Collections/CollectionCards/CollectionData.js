@@ -22,17 +22,15 @@ import classNames from 'classnames';
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
+import { changeChartType } from 'redux/appState'
 
 class CollectionData extends PureComponent {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			from: moment().subtract(7, 'd').startOf('day'),
-			to: moment().endOf('day'),
 			actionAnchor: null,
 			openDownload: false,
-			display: props.chartType ? props.chartType : 3,
 			visibility: false,
 		}
 	}
@@ -77,14 +75,10 @@ class CollectionData extends PureComponent {
 	handleVisibility = id => (event) => {
 		if (event)
 			event.preventDefault()
-		this.setState({ display: id, loading: true, actionAnchorVisibility: null })
+		this.props.changeChartType(id)
+		this.setState({ actionAnchorVisibility: null })
 	}
 
-	handleCustomDate = date => e => {
-		this.setState({
-			[date]: e
-		})
-	}
 	handleReverseZoomOnData = async () => {
 		const { timeType } = this.props
 		const { zoomDate } = this.state
@@ -155,16 +149,10 @@ class CollectionData extends PureComponent {
 			}
 		}
 	}
-	handleCancelCustomDate = () => {
-		this.setState({
-			loading: false, openCustomDate: false
-		})
-	}
 
 	renderType = () => {
-		const { display } = this.state
-		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device } = this.props
-		switch (display) {
+		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device, chartType } = this.props
+		switch (chartType) {
 			case 0:
 				return roundDataSets ? <div style={{ maxHeight: 400 }}>
 					<PieChart
@@ -340,11 +328,12 @@ CollectionData.propTypes = {
 	device: PropTypes.object,
 }
 const mapStateToProps = (state) => ({
-	chartType: state.settings.chartType
+	chartType: state.appState.chartType ? state.appState.chartType : state.settings.chartType
 })
 
-const mapDispatchToProps = {
+const mapDispatchToProps = dispatch => ({
+	changeChartType: (val) => dispatch(changeChartType(val))
+})
 
-}
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(CollectionData))

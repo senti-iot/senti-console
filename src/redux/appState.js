@@ -1,7 +1,19 @@
 const updateFilters = 'updateFilters'
 const changeTRP = 'changeTableRows'
 const changeMT = 'changeMapTheme'
+const changeCT = 'changeChartType'
+const changeHM = 'changeHeatMap'
 
+export const changeHeatMap = (val) => {
+	return (dispatch) => {
+		dispatch({ type: changeHM, heatMap: val })
+	}
+}
+export const changeChartType = (val) => {
+	return (dispatch) => {
+		dispatch({ type: changeCT, chartType: val })
+	}
+} 
 export const changeMapTheme = (val) => {
 	return (dispatch) => {
 		dispatch({ type: changeMT, mapTheme: val })
@@ -58,6 +70,8 @@ export const removeFilter = (f, type) => {
 	}
 }
 const initialState = {
+	heatMap: null,
+	chartType: null,
 	mapTheme: null, 
 	trp: null,
 	filters: {
@@ -71,6 +85,10 @@ const initialState = {
 
 export const appState = (state = initialState, action) => {
 	switch (action.type) {
+		case changeHM: 
+			return Object.assign({}, state, { heatMap: action.heatMap })
+		case changeCT: 
+			return Object.assign({}, state, { chartType: action.chartType })
 		case changeMT: 
 			return Object.assign({}, state, { mapTheme: action.mapTheme })
 		case changeTRP: 
