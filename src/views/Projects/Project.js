@@ -10,8 +10,8 @@ import AssignDCs from 'components/AssignComponents/AssignDCs';
 import { colors } from 'variables/colors';
 import ProjectMap from './ProjectCards/ProjectMap';
 import deviceStyles from 'assets/jss/views/deviceStyles';
-import { getDataHourly, getDataMinutely, getDataSummary, getDataDaily } from 'variables/dataCollections';
-import { setHourlyData, setDailyData, setSummaryData, setMinutelyData, setExportData } from 'components/Charts/DataModel';
+import { getDataSummary } from 'variables/dataCollections';
+import { getWifiDaily, getWifiMinutely, getWifiHourly } from 'components/Charts/DataModel';
 import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
 import { Timeline, Map, DataUsage, Person, LibraryBooks } from 'variables/icons';
@@ -75,7 +75,9 @@ class Project extends Component {
 				})
 			}
 	}
-	componentDidUpdate = (prevProps, prevState) => {
+	componentDidUpdate = (prevProps) => {
+		if (this.props.id !== prevProps.id)
+			this.handleSwitchDayHourSummary()
 		if (this.props.saved === true) {
 			const { project } = this.state
 			if (this.props.isFav({ id: project.id, type: 'project' })) {
@@ -109,178 +111,108 @@ class Project extends Component {
 		})
 	}
 	getWifiHourly = async () => {
-		const { from, to, raw, project, hoverID } = this.state
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataArr = []
-		await Promise.all(project.dataCollections.map(async d => {
-			let dataSet = null
-			let data = await getDataHourly(d.id, startDate, endDate, raw)
-			dataSet = {
-				dcId: d.id,
-				dcName: d.name,
-				project: project ? project.name : "",
-				org: d.org ? d.org.name : "",
-				name: d.name,
-				id: d.activeDevice ? d.activeDevice.id : d.id,
-				data: this.regenerateData(data, 'hour'),
-				color: d.color,
-				lat: d.activeDevice ? d.activeDevice.lat : 0,
-				long: d.activeDevice ? d.activeDevice.long : 0
-			}
-			return dataArr.push(dataSet)
-		}))
-		dataArr = dataArr.reduce((newArr, d) => {
-			if (d.data !== null)
-				newArr.push(d)
-			return newArr
-		}, [])
-		let newState = setHourlyData(dataArr, from, to, hoverID)
-		this.setState({
-			dataArr: dataArr,
-			loadingData: false,
-			timeType: 1,
-			...newState
-		})
-	}
-	getWifiMinutely = async () => {
-		const { from, to, raw, project, hoverID } = this.state
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataArr = []
+		const { raw, project, hoverID } = this.state
+		const { from, to } = this.props
 
-		await Promise.all(project.dataCollections.map(async d => {
-			let dataSet = null
-			let data = await getDataMinutely(d.id, startDate, endDate, raw)
-			
-			dataSet = {
-				dcId: d.id,
-				dcName: d.name,
-				project: project ? project.name : "",
-				org: d.org ? d.org.name : "",
-				name: d.name,
-				id: d.activeDevice ? d.activeDevice.id : d.id,
-				data: this.regenerateData(data, 'minute'),
-				color: d.color,
-				lat: d.activeDevice ? d.activeDevice.lat : 0,
-				long: d.activeDevice ? d.activeDevice.long : 0
-			}
-			return dataArr.push(dataSet)
-		}))
-		dataArr = dataArr.reduce((newArr, d) => {
-			if (d.data !== null)
-				newArr.push(d)
-			return newArr
-		}, [])
-		let newState = setMinutelyData(dataArr, from, to, hoverID)
-		let exportData = setExportData(dataArr, 'minute')
-		this.setState({
-			exportData: exportData,
-			dataArr: dataArr,
-			loadingData: false,
-			timeType: 0,
-			...newState
-		})
-	}
-	regenerateData = (d, unit) => {
-		if (d) {
-			let data = {}
-			Object.keys(d).map((dt, i) => {
-				if (i === Object.keys(d).length - 1) {
-					//Today Handling
-					if (unit === 'day' && moment(dt).diff(moment(), 'days') === 0 && moment(dt).diff(moment(), 'minutes') <= 60) {
-						data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
-					}
-					else {
-						if ((unit === 'minute' || unit === 'hour') && moment().diff(moment(dt), 'minute') <= 60) {
-							data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
-						}
-						else {
-							data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
-						}
-					}
-					return true
-				}
-				else {
-					//Normal ones
-					data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
-					return true
-				}
-			})
-			return data
-		}
-		else return null
-	}
-	getWifiDaily = async () => {
-		const { from, to, raw, project, hoverID } = this.state
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataArr = []
-		await Promise.all(project.dataCollections.map(async d => {
-			let dataSet = null
-			let data = await getDataDaily(d.id, startDate, endDate, raw)
-			dataSet = {
+		let dcs = project.dataCollections.map(d => {
+			return {
 				dcId: d.id,
 				dcName: d.name,
 				project: project ? project.title : "",
 				org: d.org ? d.org.name : "",
 				name: d.name,
 				id: d.activeDevice ? d.activeDevice.id : d.id,
-				data: this.regenerateData(data, 'day'),
 				color: d.color,
 				lat: d.activeDevice ? d.activeDevice.lat : 0,
 				long: d.activeDevice ? d.activeDevice.long : 0
 			}
-			return dataArr.push(dataSet)
-		}))
-
-		dataArr = dataArr.reduce((newArr, d) => {
-			if (d.data !== null)
-				newArr.push(d)
-			return newArr
-		}, [])
-		let newState = setDailyData(dataArr, from, to, hoverID)
-		let exportData = setExportData(dataArr, 'day')
+		})
+		console.log(dcs)
+		let newState = await getWifiHourly('collection', dcs, from, to, hoverID, raw)
 		this.setState({
-			exportData: exportData,
-			dataArr: dataArr,
 			loadingData: false,
-			timeType: 2,
+			...newState
+		})
+	}
+	getWifiMinutely = async () => {
+		const { raw, project, hoverID } = this.state
+		const { from, to } = this.props
+
+		let dcs = project.dataCollections.map(d => {
+			return {
+				dcId: d.id,
+				dcName: d.name,
+				project: project ? project.title : "",
+				org: d.org ? d.org.name : "",
+				name: d.name,
+				id: d.activeDevice ? d.activeDevice.id : d.id,
+				color: d.color,
+				lat: d.activeDevice ? d.activeDevice.lat : 0,
+				long: d.activeDevice ? d.activeDevice.long : 0
+			}
+		})
+		let newState = await getWifiMinutely('collection', dcs, from, to, hoverID, raw)
+		this.setState({
+			loadingData: false,
+			...newState
+		})
+	}
+
+	getWifiDaily = async () => {
+		const { raw, project, hoverID } = this.state
+		const { from, to } = this.props
+		
+		let dcs = project.dataCollections.map(d => {
+			return {
+				dcId: d.id,
+				dcName: d.name,
+				project: project ? project.title : "",
+				org: d.org ? d.org.name : "",
+				name: d.name,
+				id: d.activeDevice ? d.activeDevice.id : d.id,
+				color: d.color,
+				lat: d.activeDevice ? d.activeDevice.lat : 0,
+				long: d.activeDevice ? d.activeDevice.long : 0
+			}
+		})
+		let newState = await getWifiDaily('collection', dcs, from, to, hoverID, raw)
+		this.setState({
+			loadingData: false,
 			...newState
 		})
 	}
 	getWifiSum = async () => {
-		const { from, to, raw, project, hoverID } = this.state
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataArr = []
-		await Promise.all(project.dataCollections.map(async d => {
-			let dataSet = null
-			let data = await getDataSummary(d.id, startDate, endDate, raw)
-			dataSet = {
-				name: d.name,
-				id: d.id,
-				data: data,
-				color: d.color,
-				lat: d.activeDevice ? d.activeDevice.lat : 0,
-				long: d.activeDevice ? d.activeDevice.long : 0
-			}
-			return dataArr.push(dataSet)
-		}))
-		dataArr = dataArr.reduce((newArr, d) => {
-			if (d.data !== null)
-				newArr.push(d)
-			return newArr
-		}, [])
-		let newState = setSummaryData(dataArr, from, to, hoverID)
-		let exportData = setExportData(dataArr, 'day')
-		this.setState({
-			exportData: exportData,
-			dataArr: dataArr,
-			loadingData: false,
-			timeType: 3,
-			...newState
-		})
+		// const { from, to, raw, project, hoverID } = this.state
+		// let startDate = moment(from).format(this.format)
+		// let endDate = moment(to).format(this.format)
+		// let dataArr = []
+		// await Promise.all(project.dataCollections.map(async d => {
+		// 	let dataSet = null
+		// 	let data = await getDataSummary(d.id, startDate, endDate, raw)
+		// 	dataSet = {
+		// 		name: d.name,
+		// 		id: d.id,
+		// 		data: data,
+		// 		color: d.color,
+		// 		lat: d.activeDevice ? d.activeDevice.lat : 0,
+		// 		long: d.activeDevice ? d.activeDevice.long : 0
+		// 	}
+		// 	return dataArr.push(dataSet)
+		// }))
+		// dataArr = dataArr.reduce((newArr, d) => {
+		// 	if (d.data !== null)
+		// 		newArr.push(d)
+		// 	return newArr
+		// }, [])
+		// let newState = setSummaryData(dataArr, from, to, hoverID)
+		// let exportData = setExportData(dataArr, 'day')
+		// this.setState({
+		// 	exportData: exportData,
+		// 	dataArr: dataArr,
+		// 	loadingData: false,
+		// 	timeType: 3,
+		// 	...newState
+		// })
 	}
 	getHeatMapData = async () => {
 		const { from, to, project } = this.state
@@ -329,8 +261,7 @@ class Project extends Component {
 		}, this.handleSwitchDayHourSummary)
 	}
 	handleSwitchDayHourSummary = () => {
-		let id = this.state.dateOption
-		const { to, from } = this.state
+		const { to, from, id } = this.props
 		let diff = moment.duration(to.diff(from)).days()
 		this.getHeatMapData()
 		switch (id) {
@@ -413,7 +344,7 @@ class Project extends Component {
 	handleCloseAssignCollection = async (reload) => {
 		if (reload) {
 			this.setState({ loading: true, openAssignDC: false })
-			await this.componentDidMount().then(rs => {
+			await this.componentDidMount().then(() => {
 				this.snackBarMessages(3)
 			})
 		}
@@ -461,31 +392,31 @@ class Project extends Component {
 
 	}
 	hoverGrow = () => {
-		const { timeType, dataArr, to, from, hoverID } = this.state
-		if (dataArr)
-			if (dataArr.findIndex(dc => dc.id === hoverID) !== -1 || hoverID === 0) {
-				let newState = {}
-				switch (timeType) {
-					case 0:
-						newState = setMinutelyData(dataArr, from, to, hoverID)
-						break;
-					case 1:
-						newState = setHourlyData(dataArr, from, to, hoverID)
-						break
-					case 2:
-						newState = setDailyData(dataArr, from, to, hoverID)
-						break
-					case 3:
-						newState = setSummaryData(dataArr, from, to, hoverID)
-						break
-					default:
-						break;
-				}
+		// const { timeType, dataArr, to, from, hoverID } = this.state
+		// if (dataArr)
+		// 	if (dataArr.findIndex(dc => dc.id === hoverID) !== -1 || hoverID === 0) {
+		// 		let newState = {}
+		// 		switch (timeType) {
+		// 			case 0:
+		// 				newState = setMinutelyData(dataArr, from, to, hoverID)
+		// 				break;
+		// 			case 1:
+		// 				newState = setHourlyData(dataArr, from, to, hoverID)
+		// 				break
+		// 			case 2:
+		// 				newState = setDailyData(dataArr, from, to, hoverID)
+		// 				break
+		// 			case 3:
+		// 				newState = setSummaryData(dataArr, from, to, hoverID)
+		// 				break
+		// 			default:
+		// 				break;
+		// 		}
 
-				this.setState({
-					...newState
-				})
-			}
+		// 		this.setState({
+		// 			...newState
+		// 		})
+		// 	}
 
 	}
 	renderDeleteDialog = () => {
@@ -520,23 +451,15 @@ class Project extends Component {
 
 	renderMenu = () => {
 		const { t } = this.props
-		const { dateOption, to, from, timeType } = this.state
 		return <DateFilterMenu
-			timeType={timeType}
-			dateOption={dateOption}
-			to={to}
-			from={from}
 			t={t}
-			handleSetDate={this.handleSetDate}
-			handleCustomDate={this.handleCustomDate}
 		/>
 	}
 	render() {
 		const { project, loading, openAssignDC, loadingData } = this.state
-		const { barDataSets, roundDataSets, lineDataSets, from, to, raw, timeType } = this.state
-		const { t } = this.props
+		const { barDataSets, roundDataSets, lineDataSets, raw } = this.state
+		const { t, from, to, id, timeType } = this.props
 		const rp = { history: this.props.history, match: this.props.match }
-
 		return (
 			<Fragment>
 				<Toolbar
@@ -567,17 +490,15 @@ class Project extends Component {
 								barDataSets={barDataSets}
 								roundDataSets={roundDataSets}
 								lineDataSets={lineDataSets}
-								handleSetDate={this.handleSetDate}
 								loading={loadingData}
 								timeType={timeType}
 								from={from}
 								to={to}
 								project={project}
 								raw={raw}
-								dateOption={this.state.dateOption}
+								dateOption={id}
 								handleRawData={this.handleRawData}
-								history={this.props.history}
-								match={this.props.match}
+								{...rp}
 								t={this.props.t}
 							/>
 						</ItemGrid>
@@ -621,7 +542,11 @@ const mapStateToProps = (state) => ({
 	language: state.settings.language,
 	saved: state.favorites.saved,
 	rawData: state.settings.rawData,
-	mapTheme: state.settings.mapTheme
+	mapTheme: state.settings.mapTheme,
+	id: state.dateTime.id,
+	to: state.dateTime.to,
+	from: state.dateTime.from,
+	timeType: state.dateTime.timeType
 })
 
 const mapDispatchToProps = (dispatch) => ({

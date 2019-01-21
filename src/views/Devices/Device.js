@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { getDevice, getAllPictures, getWeather, getDataHourly, getDataMinutely, getDataDaily, getDataSummary, /* getWeather */ } from 'variables/dataDevices'
+import { getDevice, getAllPictures, getWeather, getDataSummary } from 'variables/dataDevices'
 import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
 import { ItemGrid, AssignOrg, AssignDC, DateFilterMenu } from 'components'
 import deviceStyles from 'assets/jss/views/deviceStyles'
@@ -18,7 +18,7 @@ import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
 import { Timeline, DeviceHub, Map, DeveloperBoard, Image } from 'variables/icons';
 import teal from '@material-ui/core/colors/teal'
-import { setHourlyData, setMinutelyData, setDailyData, setSummaryData, setExportData } from 'components/Charts/DataModel';
+import { getWifiHourly, getWifiDaily, getWifiMinutely } from 'components/Charts/DataModel';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 
 class Device extends Component {
@@ -26,11 +26,7 @@ class Device extends Component {
 		super(props)
 
 		this.state = {
-			dateOption: 3,
 			loadingData: true,
-			from: moment().subtract(7, 'd').startOf('day'),
-			to: moment().endOf('day'),
-			timeType: 2,
 			raw: props.rawData ? props.rawData : false,
 			openAssignCollection: false,
 			openUnassign: false,
@@ -117,6 +113,8 @@ class Device extends Component {
 		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
+		if (this.props.id !== prevProps.id)
+			this.handleSwitchDayHourSummary()
 		if (this.props.saved === true) {
 			if (this.props.isFav({ id: this.state.device.id, type: 'device' })) {
 				this.props.s('snackbars.favorite.saved', { name: this.state.device.name, type: this.props.t('favorites.types.device') })
@@ -149,7 +147,8 @@ class Device extends Component {
 		this.props.removeFromFav(favObj)
 	}
 	getHeatMapData = async () => {
-		const { from, to, device } = this.state
+		const {  device } = this.state
+		const { from, to } = this.props
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		let dataSet = null
@@ -184,10 +183,12 @@ class Device extends Component {
 	}
 
 	handleSwitchDayHourSummary = () => {
-		let id = this.state.dateOption
-		const { to, from } = this.state
+		// let id = this.state.dateOption
+		// let id = this.props.id
+		const { to, from, id } = this.props
 		let diff = moment.duration(to.diff(from)).days()
 		this.getHeatMapData()
+		console.log(id)
 		switch (id) {
 			case 0:// Today
 				this.getWifiHourly();
@@ -215,14 +216,9 @@ class Device extends Component {
 				break;
 		}
 	}
-	handleCustomDate = date => e => {
-		this.setState({
-			[date]: e
-		})
-	}
 
 	handleSetCustomRange = () => {
-		const { timeType } = this.state
+		const { timeType } = this.props
 		switch (timeType) {
 			case 0:
 				this.getWifiMinutely()
@@ -274,133 +270,76 @@ class Device extends Component {
 		else return null
 	}
 	getWifiHourly = async () => {
-		const { from, to, raw, device, hoverID } = this.state
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataArr = []
-		let dataSet = null
-		let data = await getDataHourly(device.id, startDate, endDate, raw)
-		dataSet = {
+		const { raw, device, hoverID } = this.state
+		const { from, to } = this.props
+		let newState = await getWifiHourly('device', [{
 			name: device.name,
 			id: device.id,
 			lat: device.lat,
 			long: device.long,
 			org: device.org ? device.org.name : "",
-			data: this.regenerateData(data, 'hour'),
-			color: teal[500],
-		}
-		dataArr.push(dataSet)
-		dataArr = dataArr.reduce((newArr, d) => {
-			if (d.data !== null)
-				newArr.push(d)
-			return newArr
-		}, [])
-		let newState = setHourlyData(dataArr, from, to, hoverID)
-		let exportData = setExportData(dataArr, 'hour')
+			color: teal[500]
+		}], from, to, hoverID, raw)
+
 		this.setState({
 			...this.state,
-			exportData: exportData,
 			loadingData: false,
-			timeType: 1,
 			...newState
 		})
 	}
 	getWifiMinutely = async () => {
-		const { from, to, raw, device, hoverID } = this.state
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataArr = []
-
-		let dataSet = null
-		let data = await getDataMinutely(device.id, startDate, endDate, raw)
-		dataSet = {
+		const { raw, device, hoverID } = this.state
+		const { from, to } = this.props
+		let newState = await getWifiMinutely('device', [{
 			name: device.name,
 			id: device.id,
-			data: this.regenerateData(data, 'minute'),
 			lat: device.lat,
 			long: device.long,
 			org: device.org ? device.org.name : "",
 			color: teal[500]
-		}
-		dataArr.push(dataSet)
+		}], from, to, hoverID, raw)
 
-		dataArr = dataArr.reduce((newArr, d) => {
-			if (d.data !== null)
-				newArr.push(d)
-			return newArr
-		}, [])
-		let newState = setMinutelyData(dataArr, from, to, hoverID)
-		let exportData = setExportData(dataArr, 'minute')
 		this.setState({
 			...this.state,
-			exportData: exportData,
 			loadingData: false,
-			timeType: 0,
 			...newState
 		})
 	}
 	getWifiDaily = async () => {
-		const { from, to, raw, device, hoverID } = this.state
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataArr = []
-		let dataSet = null
-		let data = await getDataDaily(device.id, startDate, endDate, raw)
-		dataSet = {
+		const { raw, device, hoverID } = this.state
+		const { from, to } = this.props
+
+		let newState = await getWifiDaily('device', [{
 			name: device.name,
-			dcId: device.dataCollection ? device.dataCollection.id : "",
-			dcName: device.dataCollection ? device.dataCollection.name : "",
 			id: device.id,
 			lat: device.lat,
 			long: device.long,
 			org: device.org ? device.org.name : "",
-			data: this.regenerateData(data, 'day'),
 			color: teal[500]
-		}
-		dataArr.push(dataSet)
-		
-		dataArr = dataArr.reduce((newArr, d) => {
-			if (d.data !== null)
-				newArr.push(d)
-			return newArr
-		}, [])
-		let newState = { ...setDailyData(dataArr, from, to, hoverID) }
-		let exportData = setExportData(dataArr, 'day')
+		}], from, to, hoverID, raw)
+
 		this.setState({
 			...this.state,
-			exportData: exportData,
 			loadingData: false,
-			timeType: 2,
 			...newState
 		})
 	}
 	getWifiSum = async () => {
-		const { from, to, raw, device, hoverID } = this.state
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataArr = []
-		let dataSet = null
-		let data = await getDataSummary(device.id, startDate, endDate, raw)
-		dataSet = {
+		const { raw, device, hoverID } = this.state
+		const { from, to } = this.props
+
+		let newState = await getWifiDaily('device', [{
 			name: device.name,
 			id: device.id,
 			lat: device.lat,
 			long: device.long,
 			org: device.org ? device.org.name : "",
-			data: data,
 			color: teal[500]
-		}
-		dataArr.push(dataSet)
-		dataArr = dataArr.reduce((newArr, d) => {
-			if (d.data !== null)
-				newArr.push(d)
-			return newArr
-		}, [])
-		let newState = setSummaryData(dataArr, from, to, hoverID)
+		}], from, to, hoverID, raw)
+
 		this.setState({
 			...this.state,
 			loadingData: false,
-			timeType: 3,
 			...newState
 		})
 	}
@@ -573,16 +512,10 @@ class Device extends Component {
 
 	renderMenu = () => {
 		const { t } = this.props
-		const { dateOption, to, from, timeType } = this.state
+		// const { dateOption, to, from, timeType } = this.state
 
 		return <DateFilterMenu
-			timeType={timeType}
-			dateOption={dateOption}
-			to={to}
-			from={from}
 			t={t}
-			handleSetDate={this.handleSetDate}
-			handleCustomDate={this.handleCustomDate}
 		/>
 
 	}
@@ -640,11 +573,11 @@ class Device extends Component {
 							lineDataSets={this.state.lineDataSets}
 							handleSetDate={this.handleSetDate}
 							loading={loadingData}
-							timeType={this.state.timeType}
-							from={this.state.from}
-							to={this.state.to}
+							timeType={this.props.timeType}
+							from={this.props.from}
+							to={this.props.to}
 							device={device}
-							dateOption={this.state.dateOption}
+							dateOption={this.props.id}
 							raw={this.state.raw}
 							handleRawData={this.handleRawData}
 							history={this.props.history}
@@ -689,7 +622,11 @@ const mapStateToProps = (state) => ({
 	language: state.settings.language,
 	saved: state.favorites.saved,
 	rawData: state.settings.rawData,
-	mapTheme: state.settings.mapTheme
+	mapTheme: state.settings.mapTheme,
+	id: state.dateTime.id,
+	to: state.dateTime.to,
+	from: state.dateTime.from,
+	timeType: state.dateTime.timeType
 })
 
 const mapDispatchToProps = (dispatch) => ({

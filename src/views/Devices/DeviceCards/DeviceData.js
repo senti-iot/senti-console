@@ -163,6 +163,7 @@ class DeviceData extends PureComponent {
 	renderType = () => {
 		const { display } = this.state
 		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device } = this.props
+		console.log(timeType, this.timeTypes[timeType])
 		switch (display) {
 			case 0:
 				return roundDataSets ? <div style={{ maxHeight: 400 }}>
@@ -336,29 +337,12 @@ class DeviceData extends PureComponent {
 						<Grid container>
 							{loading ? <CircularLoader notCentered /> :
 								<Fragment>
-									{/* <ItemG xs={12} container direction={'column'} alignItems={'center'} justify={'center'}>
-										<Caption className={classes.bigCaption2}>{raw ? t('collections.rawData') : t('collections.calibratedData')}</Caption>
-										<Caption className={classes.captionPading}>{`${displayFrom} - ${displayTo}`}</Caption>
-									</ItemG> */}
 									<ItemG xs={12}>
 										{ this.renderType() }
 									</ItemG>
-									{/* {this.props.hoverID} */}
-									{/* <img src={this.state.image} alt={'not loaded'}/> */}
-									{/* <DevicePDF img={this.state.image}/> */}
 								</Fragment>}
 						</Grid>}
 				/>
-				{/* <div style={{ position: 'absolute', top: '-100%', width: 1000, height: 400 }}>
-					{this.state.lineDataSets ?
-						<LineChart
-							single
-							getImage={this.getImage}
-							unit={this.timeTypes[this.state.timeType]}
-							data={this.state.lineDataSets}
-							t={this.props.t}
-						/> : this.renderNoData()}
-				</div> */}
 			</Fragment >
 		);
 	}
