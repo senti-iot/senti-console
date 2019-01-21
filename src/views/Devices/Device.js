@@ -502,7 +502,6 @@ class Device extends Component {
 					<ItemGrid xs={12} noMargin id={'map'}>
 						<DeviceMap
 							reload={this.reload}
-							mapTheme={this.props.mapTheme}
 							device={this.state.heatData}
 							loading={this.state.loadingMap}
 							weather={this.state.weather}
@@ -536,7 +535,6 @@ const mapStateToProps = (state) => ({
 	language: state.settings.language,
 	saved: state.favorites.saved,
 	rawData: state.settings.rawData,
-	mapTheme: state.settings.mapTheme,
 	id: state.dateTime.id,
 	to: state.dateTime.to,
 	from: state.dateTime.from,

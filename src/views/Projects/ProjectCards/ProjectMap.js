@@ -3,8 +3,10 @@ import { InfoCard, Caption, Dropdown, ItemG } from 'components';
 import { Map, Layers, DeviceHub, WhatsHot } from 'variables/icons'
 import { Grid, /* Checkbox,  */MenuItem, Menu, IconButton } from '@material-ui/core';
 import OpenStreetMap from 'components/Map/OpenStreetMap';
+import { connect } from 'react-redux'
+import { changeMapTheme } from 'redux/appState';
 
-export default class ProjectMap extends Component {
+class ProjectMap extends Component {
 	constructor(props) {
 		super(props)
 
@@ -27,6 +29,7 @@ export default class ProjectMap extends Component {
 	handleVisibility = e => (event) => {
 		if (event)
 			event.preventDefault()
+		this.props.changeMapTheme(e)
 		this.setState({ mapTheme: e, actionAnchorVisibility: null })
 	}
 	handleOpenMenu = e => {
@@ -36,8 +39,8 @@ export default class ProjectMap extends Component {
 		this.setState({ actionAnchorVisibility: null })
 	}
 	renderMenu = () => {
-		const { t } = this.props
-		const { actionAnchorVisibility, mapTheme } = this.state
+		const { t, mapTheme } = this.props
+		const { actionAnchorVisibility } = this.state
 		return <Fragment>
 			<ItemG>
 				<IconButton title={'Map layer'} variant={'fab'} onClick={this.handleOpenMenu}>
@@ -101,3 +104,12 @@ export default class ProjectMap extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	mapTheme: state.appState.mapTheme ? state.appState.mapTheme : state.settings.mapTheme
+})
+
+const mapDispatchToProps = (dispatch) => ({
+	changeMapTheme: (value) => dispatch(changeMapTheme(value))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectMap)
