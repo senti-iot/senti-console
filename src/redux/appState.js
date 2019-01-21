@@ -1,10 +1,19 @@
 const updateFilters = 'updateFilters'
 const changeTRP = 'changeTableRows'
+const changeMT = 'changeMapTheme'
+
+export const changeMapTheme = (val) => {
+	return (dispatch) => {
+		dispatch({ type: changeMT, mapTheme: val })
+	}
+}
+
 export const changeTableRows = (val) => { 
 	return (dispatch, getState) => { 
 		dispatch({ type: changeTRP, trp: val })
 	}
 }
+
 export const addFilter = (f, type) => {
 	return (dispatch, getState) => {
 		let filters = []
@@ -49,6 +58,7 @@ export const removeFilter = (f, type) => {
 	}
 }
 const initialState = {
+	mapTheme: null, 
 	trp: null,
 	filters: {
 		projects: [],
@@ -61,6 +71,8 @@ const initialState = {
 
 export const appState = (state = initialState, action) => {
 	switch (action.type) {
+		case changeMT: 
+			return Object.assign({}, state, { mapTheme: action.mapTheme })
 		case changeTRP: 
 			return Object.assign({}, state, { trp: action.trp })
 		case updateFilters:

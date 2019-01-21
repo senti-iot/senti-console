@@ -5,14 +5,15 @@ import { Grid, Checkbox, IconButton, Menu, MenuItem, Collapse, Dialog, DialogCon
 import { red, teal } from "@material-ui/core/colors"
 import OpenStreetMap from 'components/Map/OpenStreetMap';
 import { getAddressByLocation, updateDevice } from 'variables/dataDevices';
+import { connect } from 'react-redux'
+import { changeMapTheme } from 'redux/appState';
 
-export default class ActiveDeviceMap extends PureComponent {
+class ActiveDeviceMap extends PureComponent {
 	constructor(props) {
 		super(props)
 		this.state = {
 			heatMap: false,
 			actionAnchorVisibility: null,
-			mapTheme: props.mapTheme,
 			editLocation: false,
 			openModalEditLocation: false,
 			markers: []
@@ -39,7 +40,8 @@ export default class ActiveDeviceMap extends PureComponent {
 	handleVisibility = e => (event) => {
 		if (event)
 			event.preventDefault()
-		this.setState({ mapTheme: e, actionAnchorVisibility: null })
+		this.props.changeMapTheme(e)
+		this.setState({ actionAnchorVisibility: null })
 	}
 	handleSaveEditAddress = async () => {
 		let device = this.state.markers[0]
@@ -80,8 +82,8 @@ export default class ActiveDeviceMap extends PureComponent {
 		})
 	}
 	renderMenu = () => {
-		const { t } = this.props
-		const { actionAnchorVisibility, mapTheme } = this.state
+		const { t, mapTheme } = this.props
+		const { actionAnchorVisibility } = this.state
 		return <Fragment>
 			<Collapse in={this.state.editLocation}>
 				<ItemG container>
@@ -195,8 +197,7 @@ export default class ActiveDeviceMap extends PureComponent {
 		</Dialog>
 	}
 	render() {
-		const { device, t, loading } = this.props
-		const { mapTheme } = this.state
+		const { device, t, loading, mapTheme } = this.props
 		return (
 			<InfoCard
 				title={t('devices.cards.map')}
@@ -224,3 +225,12 @@ export default class ActiveDeviceMap extends PureComponent {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	mapTheme: state.appState.mapTheme ? state.appState.mapTheme : state.settings.mapTheme
+})
+
+const mapDispatchToProps = (dispatch) => ({
+	changeMapTheme: (value) => dispatch(changeMapTheme(value))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActiveDeviceMap)
