@@ -161,7 +161,6 @@ class Project extends Component {
 			}
 		})
 		let newState = await getWifiDaily('collection', dcs, from, to, hoverID, raw)
-		console.log()
 		this.setState({
 			loadingData: false,
 			...newState
@@ -201,7 +200,6 @@ class Project extends Component {
 	handleSwitchDayHourSummary = () => {
 		const { to, from, id } = this.props
 		let diff = moment.duration(to.diff(from)).days()
-		console.log(diff)
 		this.getHeatMapData()
 		switch (id) {
 			case 0:// Today
