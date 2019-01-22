@@ -90,7 +90,8 @@
         "cards": {
             "data": "Data",
             "log": "Device log"
-        },
+		},
+		"createCollection": "Create collection",
         "editCollection": "Edit collection",
         "fields": {
             "activated": "Activated",

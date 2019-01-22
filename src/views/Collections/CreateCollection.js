@@ -21,7 +21,10 @@ class CreateCollection extends Component {
 			org: { id: 0, name: props.t('users.fields.noOrg') }
 		}
 		this.id = props.match.params.id
+		let prevURL = props.location.prevURL ? props.location.prevURL : '/collections/list'
+		props.setHeader('collections.createCollection', true, prevURL, '')
 	}
+	
 	createDC = async () => {
 		let success = await createCollection(this.state.collection)
 		if (success)

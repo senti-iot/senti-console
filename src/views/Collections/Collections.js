@@ -133,7 +133,7 @@ class Collections extends Component {
 	//#endregion
 
 	//#region Functions
-	addNewCollection = () => this.props.history.push(`/collections/new`)
+	addNewCollection = () => this.props.history.push({ pathname: `/collections/new`, prevURL: '/collections/list' })
 	
 	getFavs = () => {
 		let favorites = this.props.favorites.filter(f => f.type === 'collection')

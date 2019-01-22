@@ -90,7 +90,8 @@
         "cards": {
             "data": "Data",
             "log": "Enhedslog"
-        },
+		},
+		"createCollection": "Nyt datasamling",
         "editCollection": "Rediger datasamling",
         "fields": {
             "activated": "Aktiveret",
