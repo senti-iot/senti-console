@@ -9,13 +9,14 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart,  ArrowUpward
+	ExpandMore, Visibility, ShowChart,  ArrowUpward, CloudDownload
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
 	LineChart,
 	DoughnutChart,
 	PieChart,
+	ExportModal,
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import classNames from 'classnames';
@@ -68,6 +69,14 @@ class ProjectData extends PureComponent {
 
 	componentWillUnmount = () => {
 		this._isMounted = 0
+	}
+	
+	handleOpenDownloadModal = () => {
+		this.setState({ openDownload: true, actionAnchor: null })
+	}
+
+	handleCloseDownloadModal = () => {
+		this.setState({ openDownload: false })
 	}
 
 	handleOpenActionsDetails = event => {
@@ -265,6 +274,10 @@ class ProjectData extends PureComponent {
 				onClose={this.handleCloseActionsDetails}
 				onChange={this.handleVisibility}
 				PaperProps={{ style: { minWidth: 250 } }}>
+				<ListItem button onClick={this.handleOpenDownloadModal}>
+					<ListItemIcon><CloudDownload /></ListItemIcon>
+					<ListItemText>{t('menus.export')}</ListItemText>
+				</ListItem>
 				<ListItem button onClick={this.props.handleRawData}>
 					<ListItemIcon>
 						<Checkbox
@@ -311,7 +324,8 @@ class ProjectData extends PureComponent {
 	}
 
 	render() {
-		const { raw, t, loading, to, from, dateOption } = this.props
+		const { raw, t, loading, to, from, dateOption, exportData } = this.props
+		const { openDownload } = this.state
 		let displayTo = dateTimeFormatter(to)
 		let displayFrom = dateTimeFormatter(from)
 		return (
@@ -324,6 +338,15 @@ class ProjectData extends PureComponent {
 					topAction={this.renderMenu()}
 					content={
 						<Grid container>
+							<ExportModal
+								raw={raw}
+								to={displayTo}
+								from={displayFrom}
+								data={exportData}
+								open={openDownload}
+								handleClose={this.handleCloseDownloadModal}
+								t={t}
+							/>
 							{loading ? <CircularLoader notCentered /> :
 								<Fragment>
 									<ItemG xs={12}>

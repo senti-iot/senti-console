@@ -135,7 +135,7 @@ class CollectionTable extends React.Component {
 											/>
 										</Hidden>
 										<Hidden mdDown >
-											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e)} />} />
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
 											<TC FirstC label={n.id} />
 											<TC FirstC label={n.name} />
 											<TC content={this.renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : null)} />

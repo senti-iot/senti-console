@@ -18,9 +18,10 @@ import InfoCard from './Cards/InfoCard'
 
 
 // ##############################
-// // // Table
+// // // Export
 // #############################
 
+import ExportModal from './Exports/ExportModal'
 
 // ##############################
 // // // AssignComponents
@@ -41,6 +42,7 @@ import CustomInput from './CustomInput/CustomInput.js';
 import DSelect from './CustomInput/DSelect'
 import DateFilterMenu from './CustomInput/DateFilterMenu'
 import AddressInput from './CustomInput/AddressInput'
+
 // ##############################
 // // // Footer
 // #############################
@@ -100,7 +102,7 @@ import T from './Typography/T.js'
 export {
 	AddressInput,
 	T,
-	// ExportModal,
+	ExportModal,
 	DateFilterMenu,
 	WeatherIcon,
 	BarChart,

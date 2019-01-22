@@ -161,6 +161,7 @@ class Project extends Component {
 			}
 		})
 		let newState = await getWifiDaily('collection', dcs, from, to, hoverID, raw)
+		console.log(newState)
 		this.setState({
 			loadingData: false,
 			...newState

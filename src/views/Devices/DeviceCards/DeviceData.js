@@ -9,13 +9,14 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart, ArrowUpward,
+	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload,
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, InfoCard, BarChart,
 	LineChart,
 	DoughnutChart,
 	PieChart,
+	ExportModal,
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import classNames from 'classnames';
@@ -64,6 +65,14 @@ class DeviceData extends PureComponent {
 
 	componentWillUnmount = () => {
 		this._isMounted = 0
+	}
+
+	handleOpenDownloadModal = () => {
+		this.setState({ openDownload: true, actionAnchor: null })
+	}
+
+	handleCloseDownloadModal = () => {
+		this.setState({ openDownload: false })
 	}
 
 	handleOpenActionsDetails = event => {
@@ -230,11 +239,9 @@ class DeviceData extends PureComponent {
 						anchorEl={actionAnchorVisibility}
 						open={Boolean(actionAnchorVisibility)}
 						onClose={() => this.setState({ actionAnchorVisibility: null })}
-						PaperProps={{
-							style: {
-								minWidth: 250
-							}
-						}}>					<List component='div' disablePadding>
+						PaperProps={{ style: { minWidth: 250 } }}>
+
+						<List component='div' disablePadding>
 							{this.visibilityOptions.map(op => {
 								return <MenuItem selected={chartType === op.id ? true : false} key={op.id} value={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
 									<div style={{ marginRight: 24, display: "flex" }}>
@@ -267,6 +274,10 @@ class DeviceData extends PureComponent {
 						minWidth: 250
 					}
 				}}>
+				<ListItem button onClick={this.handleOpenDownloadModal}>
+					<ListItemIcon><CloudDownload /></ListItemIcon>
+					<ListItemText>{t('menus.export')}</ListItemText>
+				</ListItem>
 				<ListItem button onClick={this.props.handleRawData}>
 					<ListItemIcon>
 						<Checkbox
@@ -313,7 +324,9 @@ class DeviceData extends PureComponent {
 	}
 
 	render() {
-		const { raw, t, loading, to, from, dateOption } = this.props
+		const { raw, t, loading, to, from, dateOption, exportData } = this.props
+		const { openDownload } = this.state
+
 		let displayTo = dateTimeFormatter(to)
 		let displayFrom = dateTimeFormatter(from)
 		return (
@@ -326,6 +339,15 @@ class DeviceData extends PureComponent {
 					topAction={this.renderMenu()}
 					content={
 						<Grid container>
+							<ExportModal
+								raw={raw}
+								to={displayTo}
+								from={displayFrom}
+								data={exportData}
+								open={openDownload}
+								handleClose={this.handleCloseDownloadModal}
+								t={t}
+							/>
 							{loading ? <CircularLoader notCentered /> :
 								<Fragment>
 									<ItemG xs={12}>
