@@ -52,7 +52,7 @@ class CreateProject extends Component {
 						availableDevices: devices ? devices : null,
 						devices: [], 
 						orgs: rs,
-						selectedOrg: this.props.userOrg
+						org: this.props.userOrg
 					})
 				}
 			}
