@@ -9,8 +9,31 @@ import { dateTimeFormatter } from 'variables/functions';
 import { TextF, DSelect } from 'components';
 import ItemG from 'components/Grid/ItemG';
 import moment from 'moment'
+import cx from 'classnames'
 
 const style = theme => ({
+	error: {
+		animation: "shake 0.82s cubic-bezier(.36,.07,.19,.97) both",
+		transform: "translate3d(0, 0, 0)",
+		backfaceVisibility: "hidden",
+		perspective: 1000,
+	},
+	"@keyframes shake": {
+		"10%, 90%": {
+			transform: "translate3d(-1px, 0, 0)",
+		},
+  
+		"20%, 80%": {
+			transform: "translate3d(2px, 0, 0)",  },
+
+		"30%, 50%, 70%": {
+			transform: "translate3d(-4px, 0, 0)",  },
+
+		"40%, 60%": {
+			transform: "translate3d(4px, 0, 0)",
+		}
+	},
+
 	headerText: {
 		color: 'white',
 	},
@@ -70,7 +93,7 @@ class FilterCard extends Component {
 				case '':
 				case null:
 					this.setState({
-						value: value
+						value: value,
 					})
 					break;
 				default:
@@ -91,7 +114,7 @@ class FilterCard extends Component {
 	}
 	handleButton = () => {
 		const { value, date, after, dropdown, diff } = this.state
-		const { type, handleButton, handleClose, title, t, options } = this.props
+		const { type, handleButton, title, t, options } = this.props
 		if (type === 'dropDown')
 			handleButton(`${title}: ${dropdown.label}`, dropdown.value, dropdown.icon)
 		if (type === 'string')
@@ -113,12 +136,11 @@ class FilterCard extends Component {
 				label: ""
 			}
 		})
-		handleClose()
 	}
 	handleInput = e => {
 		this.setState({
-			value: e
-		})
+			value: e,
+		}, () => this.props.error ? this.props.resetError() : {})
 	}
 	handleCustomDate = (e, key) => {
 		this.setState({
@@ -204,7 +226,10 @@ class FilterCard extends Component {
 		}
 	}
 	render() {
-		const { title, open, handleClose, classes, anchorEl, t, edit } = this.props
+		const { title, open, handleClose, classes, anchorEl, t, edit, error } = this.props
+		const errorClassname = cx({
+			[classes.error]: error
+		})
 		return (
 			<Popover
 				anchorEl={anchorEl}
@@ -212,7 +237,7 @@ class FilterCard extends Component {
 				onClose={handleClose}
 				PaperProps={{ classes: { root: classes.menu } }}
 			>
-				<Card>
+				<Card classes={{ root: errorClassname }}>
 					<ItemG container alignItems={'center'} className={classes.header}>
 						<ItemG xs>
 							<Typography className={classes.headerText} variant={'h6'}>{title}</Typography>

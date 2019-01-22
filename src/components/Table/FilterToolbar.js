@@ -11,7 +11,8 @@ class FilterToolbar extends Component {
 		this.state = {
 			openMenu: false,
 			actionAnchor: null,
-			focusedMenu: -1
+			focusedMenu: -1,
+			error: false
 		}
 	}
 	componentWillUnmount = () => {
@@ -34,7 +35,12 @@ class FilterToolbar extends Component {
 	}
 
 	onBeforeAdd(chip) {
-		return chip.length >= 3
+		if (chip.length >= 3)
+			return true
+		else { 
+			this.setState({ error: true })
+			return false
+		}
 	}
 
 	handleDoubleClick = chip => {
@@ -73,9 +79,12 @@ class FilterToolbar extends Component {
 				this.handleClick()
 		}
 	}
-	handleAdd = (displayValue, value, key, type, icon) => {
+	handleAdd = (displayValue, value, key, type, icon, name) => {
 		const { addFilter, reduxKey } = this.props
-		addFilter({ value, key, type: type ? type : null, icon, displayValue: displayValue }, reduxKey)
+		if (this.onBeforeAdd(value)) { 
+			this.setState({ [name]: false })
+			addFilter({ value, key, type: type ? type : null, icon, displayValue: displayValue }, reduxKey)
+		}
 	}
 	handleEdit = (displayValue, value, key, type, icon, id) => { 
 		const { editFilter, reduxKey } = this.props
@@ -140,6 +149,8 @@ class FilterToolbar extends Component {
 					/> : null}
 					{filters ? filters.map((ft, i) => {
 						return <FilterCard
+							resetError={() => {console.log('error reset');this.setState({ error: false })}}
+							error={this.state.error}
 							key={i}
 							open={this.state[ft.name]}
 							anchorEl={this.input}
@@ -147,7 +158,7 @@ class FilterToolbar extends Component {
 							type={ft.type}
 							options={ft.options}
 							content={ft.content}
-							handleButton={(displayValue, value, icon) => { this.handleAdd(displayValue, value, ft.key, ft.type, icon) }}
+							handleButton={(displayValue, value, icon) => { this.handleAdd(displayValue, value, ft.key, ft.type, icon, ft.name) }}
 							handleClose={() => this.setState({ [ft.name]: false })}
 						/>
 					}) : null}
