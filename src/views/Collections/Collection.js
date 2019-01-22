@@ -93,7 +93,7 @@ class Collection extends Component {
 		})
 	}
 	componentDidUpdate = (prevProps) => {
-		if (this.props.id !== prevProps.id)
+		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from)
 			this.handleSwitchDayHourSummary()
 		if (this.props.saved === true) {
 			const { collection } = this.state
@@ -148,8 +148,8 @@ class Collection extends Component {
 		let dataSet = null
 		let data = await getDataSummary(collection.id, startDate, endDate, true)
 		dataSet = {
-			name: activeDevice.name,
-			id: activeDevice.id,
+			name: collection.name,
+			id: collection.id,
 			data: data,
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,

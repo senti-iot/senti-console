@@ -14,7 +14,7 @@
 		"@types/react": "^16.7.18",
 		"apisauce": "^0.16.0",
 		"autosuggest-highlight": "^3.1.1",
-		"chart.js": "^2.7.2",
+		"chart.js": "^2.7.3",
 		"chartjs-plugin-zoom": "^0.6.6",
 		"classnames": "^2.2.6",
 		"core-js": "^2.6.1",

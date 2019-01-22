@@ -62,7 +62,7 @@ class Project extends Component {
 			}
 	}
 	componentDidUpdate = (prevProps) => {
-		if (this.props.id !== prevProps.id)
+		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from)
 			this.handleSwitchDayHourSummary()
 		if (this.props.saved === true) {
 			const { project } = this.state
@@ -224,7 +224,7 @@ class Project extends Component {
 	}
 	
 	handleSetCustomRange = () => {
-		const { timeType } = this.state
+		const { timeType } = this.props
 		switch (timeType) {
 			case 0:
 				this.getWifiMinutely()

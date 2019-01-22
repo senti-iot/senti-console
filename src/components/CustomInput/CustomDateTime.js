@@ -116,7 +116,7 @@ const CustomDateTime = (props) => {
 				<Button onClick={handleCancelCustomDate} color='primary'>
 					{t('actions.decline')}
 				</Button>
-				<Button onClick={() => handleCloseDialog(to, from, time)} color='primary' autoFocus>
+				<Button onClick={() => handleCloseDialog(to, from, parseInt(time, 10))} color='primary' autoFocus>
 					{t('actions.apply')}
 				</Button>
 			</DialogActions>

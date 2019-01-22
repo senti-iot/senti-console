@@ -43,51 +43,54 @@ class DateFilterMenu extends Component {
 		{ id: 5, label: this.props.t('filters.dateOptions.90days') },
 		{ id: 6, label: this.props.t('filters.dateOptions.custom') },
 	]
-	handleSetDate = (id, to, from) => {
-		let timeType = 0
+	handleSetDate = (id, to, from, timeType) => {
+		let defaultT = 0
 		switch (id) {
 			case 0: // Today
 				from = moment().startOf('day')
 				to = moment()
-				timeType = 1
+				defaultT = 1
 				break;
 			case 1: // Yesterday
 				from = moment().subtract(1, 'd').startOf('day')
 				to = moment().subtract(1, 'd').endOf('day')
-				timeType = 1
+				defaultT = 1
 				break;
 			case 2: // This week
 				from = moment().startOf('week').startOf('day')
 				to = moment()
-				timeType = 2
+				defaultT = 2
 				break;
 			case 3: // Last 7 days
 				from = moment().subtract(7, 'd').startOf('day')
 				to = moment()
-				timeType = 2
+				defaultT = 2
 				break;
 			case 4: // last 30 days
 				from = moment().subtract(30, 'd').startOf('day')
 				to = moment()
-				timeType = 2
+				defaultT = 2
 				break;
 			case 5: // last 90 days
 				from = moment().subtract(90, 'd').startOf('day')
 				to = moment()
-				timeType = 2
+				defaultT = 2
 				break;
 			case 6:
-				//custom
+				from = moment(from)
+				to = moment(to)
+				defaultT = timeType
 				break;
 			default:
 				break;
 		}
-		this.props.handleSetDate(id, to, from, timeType)
+
+		this.props.handleSetDate(id, to, from, defaultT)
 	}
 
 	handleCloseDialog = (to, from, timeType) => {
 		this.setState({ openCustomDate: false, actionAnchor: null })
-		this.handleSetDate(6, to, from)
+		this.handleSetDate(6, to, from, timeType)
 	}
 	/**
 	 * Menu Handling, close the menu and set the date or open Custom Date

@@ -112,7 +112,7 @@ class Device extends Component {
 		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		if (this.props.id !== prevProps.id || this.props.timeType !== prevProps.timeType)
+		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from)
 			this.handleSwitchDayHourSummary()
 		if (this.props.saved === true) {
 			if (this.props.isFav({ id: this.state.device.id, type: 'device' })) {

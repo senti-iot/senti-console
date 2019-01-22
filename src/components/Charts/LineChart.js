@@ -193,13 +193,14 @@ class LineChart extends PureComponent {
 		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID) {
 			this.setXAxis()
 		}
-		if (this.chart.chartInstance)
-			if (this.chart.chartInstance.canvas.style.width !== this.state.chartWidth || this.state.chartHeight !== this.chart.chartInstance.canvas.style.height) {
-				this.setState({
-					chartWidth: parseInt(this.chart.chartInstance.canvas.style.width.substring(0, this.chart.chartInstance.canvas.style.width.length - 1), 10),
-					chartHeight: parseInt(this.chart.chartInstance.canvas.style.height.substring(0, this.chart.chartInstance.canvas.style.height.length - 1), 10)
-				})
-			}
+		// console.log(this.chart.chartInstance)
+		// if (this.chart.chartInstance)
+		// 	if (this.chart.chartInstance.canvas.style.width !== this.state.chartWidth || this.state.chartHeight !== this.chart.chartInstance.canvas.style.height) {
+		// 		this.setState({
+		// 			chartWidth: parseInt(this.chart.chartInstance.canvas.style.width.substring(0, this.chart.chartInstance.canvas.style.width.length - 1), 10),
+		// 			chartHeight: parseInt(this.chart.chartInstance.canvas.style.height.substring(0, this.chart.chartInstance.canvas.style.height.length - 1), 10)
+		// 		})
+		// 	}
 	}
 
 	setHours = (date) => {
@@ -347,7 +348,7 @@ class LineChart extends PureComponent {
 						}]
 				}
 			}
-		}, () => this.chart ? this.chart.chartInstance.update() : {})
+		}, () => this.chart ? this.chart.chartInstance ? this.chart.chartInstance.update() : {} : {})
 	}
 
 	setTooltip = (tooltip) => {

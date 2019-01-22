@@ -75,6 +75,7 @@ const initialState = {
 	mapTheme: null, 
 	trp: null,
 	filters: {
+		favorites: [],
 		projects: [],
 		devices: [],
 		collections: [],
