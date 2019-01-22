@@ -1,28 +1,14 @@
-import { Button, /* Chip, */ Collapse, FormControl, Grid, /* Input, */ InputLabel, MenuItem, Paper, Select, withStyles } from '@material-ui/core'
-import { KeyboardArrowLeft as KeyArrLeft, KeyboardArrowRight as KeyArrRight, Save } from 'variables/icons'
+import { withStyles } from '@material-ui/core'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
-import classNames from 'classnames'
-import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers'
-import MomentUtils from '@date-io/moment'
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { createProject } from 'variables/dataProjects'
-import { /* Caption, */ CircularLoader, GridContainer, ItemGrid, TextF, Danger, Warning } from 'components'
+import { Danger } from 'components'
 import { getAllOrgs } from 'variables/dataOrgs';
 import { getAvailableDevices } from 'variables/dataDevices';
 import { getCreateProject } from 'variables/dataProjects'
 import { connect } from 'react-redux'
 import moment from 'moment';
-
-const ITEM_HEIGHT = 32
-const ITEM_PADDING_TOP = 8
-const MenuProps = {
-	PaperProps: {
-		style: {
-			maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-			width: 250,
-		},
-	},
-}
+import CreateProjectForm from './CreateProjectForm';
 
 class CreateProject extends Component {
 	constructor(props) {
@@ -41,7 +27,11 @@ class CreateProject extends Component {
 			created: false,
 			openSnackBar: false,
 			error: false,
-			errorMessage: ''
+			errorMessage: '',
+			org: {
+				name: "",
+				id: -1
+			}
 		}
 		props.setHeader('menus.create.project', true, '/projects/list', 'projects')
 	}
@@ -54,7 +44,7 @@ class CreateProject extends Component {
 				if (rs.length === 1)
 					this.setState({
 						orgs: rs,
-						selectedOrg: rs[0].id
+						org: rs[0]
 					})
 				else {
 					var devices = await getAvailableDevices(this.props.userOrg.id).then(rs => rs)
@@ -141,7 +131,7 @@ class CreateProject extends Component {
 		this.props.history.push(`/project/${rs.id}`)
 	}
 	handleCreateProject = async () => {
-		const { title, description, startDate, endDate } = this.state
+		const { title, description, startDate, endDate, org } = this.state
 		this.setState({ creating: true })
 		if (this.handleValidation())
 		{
@@ -153,6 +143,7 @@ class CreateProject extends Component {
 						description: description,
 						startDate: startDate,
 						endDate: endDate,
+						org: org							
 					}
 					await createProject(newProject).then(rs => rs ? this.handleFinishCreateProject(rs) : this.setState({ create: false, creating: false, id: 0 })
 					)
@@ -166,152 +157,46 @@ class CreateProject extends Component {
 			})
 		}
 	}
-
-	render() {
-		const { classes, theme, t } = this.props
-		const { /* availableDevices, */ created, orgs, selectedOrg, error } = this.state
-		const buttonClassname = classNames({
-			[classes.buttonSuccess]: created,
+	handleOpenOrg = () => {
+		this.setState({
+			openOrg: true
 		})
+	}
+	handleCloseOrg = () => {
+		this.setState({
+			openOrg: false
+		})
+	}
+	handleChangeOrg = (o) => () => {
+		this.setState({
+			org: o,
+			openOrg: false
+		})
+	}
+	render() {
+		const { created, orgs, org, error,
+			title, description, creating, startDate, endDate, openOrg } = this.state
+
 		return (
-			<GridContainer justify={'center'}>
-				<Paper className={classes.paper}> : 
-					<MuiPickersUtilsProvider utils={MomentUtils}>
-					
-						<form className={classes.form}>
-							<ItemGrid xs={12}>
-								<Collapse in={this.state.error}>
-									<Warning>
-										<Danger>
-											{this.state.errorMessage}
-										</Danger>
-									</Warning>
-								</Collapse>
-							</ItemGrid>
-							<ItemGrid container xs={12}>
-								<TextF
-									autoFocus
-									id={'title'}
-									label={t('projects.fields.name')}
-									value={this.state.title}
-									className={classes.textField}
-									handleChange={this.handleChange('title')}
-									margin='normal'
-									
-									error={error}
-
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<TextF
-									id={'multiline-flexible'}
-									label={t('projects.fields.description')}
-									multiline
-									rows={4}
-									color={'secondary'}
-									className={classes.textField}
-									value={this.state.description}
-									handleChange={this.handleChange('description')}
-									margin='normal'
-									
-									error={error}
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<DatePicker
-									autoOk
-									label={t('projects.fields.startDate')}
-									clearable
-									labelFunc={(date, invalidLabel) => date === null ? '' : moment(date).format('LL')}
-									format='YYYY-MM-DDTHH:mm'
-									value={this.state.startDate}
-									onChange={this.handleDateChange('startDate')}
-									animateYearScrolling={false}
-									color='primary'
-									rightArrowIcon={<KeyArrRight />}
-									leftArrowIcon={<KeyArrLeft />}
-									InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-									InputProps={{ classes: { underline: classes.underline } }}
-									error={error}
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<DatePicker
-									color='primary'
-									autoOk
-									label={t('projects.fields.endDate')}
-									clearable
-									labelFunc={(date, invalidLabel) => date === null ? '' : moment(date).format('LL')}
-									format='YYYY-MM-DDTHH:mm'
-									value={this.state.endDate}
-									onChange={this.handleDateChange('endDate')}
-									animateYearScrolling={false}
-									rightArrowIcon={<KeyArrRight />}
-									leftArrowIcon={<KeyArrLeft />}
-									InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-									InputProps={{ classes: { underline: classes.underline } }}
-									error={error}
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<FormControl className={classes.formControl}>
-									{orgs ?
-										<Fragment>
-											<InputLabel
-												FormLabelClasses={{ root: classes.label }}
-												color={'primary'}
-												htmlFor='select-org'>
-												{t('projects.fields.selectOrganisation')}
-											</InputLabel>
-
-											<Select
-												color={'primary'}
-												value={this.state.selectedOrg}
-												onChange={this.handleSelectedOrgs}
-												MenuProps={MenuProps}
-												inputProps={{
-													name: 'org',
-													id: 'select-org',
-												}}
-											>
-												{orgs.map(org =>
-													<MenuItem
-														key={org.id}
-														value={org.id}
-														style={{ fontWeight: selectedOrg === org.id ? theme.typography.fontWeightMedium : theme.typography.fontWeightRegular }}>
-														{org.name}
-													</MenuItem>
-
-												)}
-											</Select>
-										</Fragment> : <CircularLoader notCentered />}
-								</FormControl>
-							</ItemGrid>
-						</form>
-						<ItemGrid xs={12} container justify={'center'}>
-							<Collapse in={this.state.creating} timeout='auto' unmountOnExit>
-								<CircularLoader notCentered />
-							</Collapse>
-						</ItemGrid>
-						<Grid container justify={'center'}>
-							<div className={classes.wrapper}>
-								<Button
-									variant='contained'
-									color='primary'
-									className={buttonClassname}
-									disabled={this.state.creating || this.state.created}
-									onClick={this.handleCreateProject}
-								>
-									{this.state.created ? t('snackbars.redirect')
-										: <Fragment>
-											<Save className={classes.leftIcon} />{t('menus.create.project')}
-										</Fragment>}
-								</Button>
-							</div>
-						</Grid>
-					</MuiPickersUtilsProvider>
-				</Paper>
-			</GridContainer> 
+			<CreateProjectForm
+				error={error}
+				created={created}
+				creating={creating}
+				errorMessage
+				title={title}
+				handleChange={this.handleChange}
+				handleDateChange={this.handleDateChange}
+				description={description}
+				startDate={startDate}
+				endDate={endDate}
+				orgs={orgs}
+				org={org}
+				handleOpenOrg={this.handleOpenOrg}
+				handleCloseOrg={this.handleCloseOrg}
+				handleChangeOrg={this.handleChangeOrg}
+				openOrg={openOrg}
+				handleCreateProject={this.handleCreateProject}
+			/>
 		)
 	}
 }
