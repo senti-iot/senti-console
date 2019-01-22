@@ -173,7 +173,7 @@ class Device extends Component {
 				this.getWifiHourly();
 				break;
 			case 2:// This week
-				parseInt(diff, 10) > 1 ? this.getWifiDaily() : this.getWifiHourly()
+				parseInt(diff, 10) > 0 ? this.getWifiDaily() : this.getWifiHourly()
 				break;
 			case 3:// Last 7 days
 			case 4:// 30 days
