@@ -258,7 +258,6 @@ class Collections extends Component {
 
 	handleCheckboxClick = (event, id) => {
 		event.stopPropagation()
-		console.log(event, id)
 		const { selected } = this.state;
 		const selectedIndex = selected.indexOf(id)
 		let newSelected = [];

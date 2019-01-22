@@ -149,7 +149,7 @@ class FilterToolbar extends Component {
 					/> : null}
 					{filters ? filters.map((ft, i) => {
 						return <FilterCard
-							resetError={() => {console.log('error reset');this.setState({ error: false })}}
+							resetError={() => this.setState({ error: false })}
 							error={this.state.error}
 							key={i}
 							open={this.state[ft.name]}
