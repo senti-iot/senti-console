@@ -50,7 +50,7 @@ class CreateProjectForm extends Component {
 					<Hidden mdDown>
 						<ItemG container alignItems={'center'}>
 							<ItemG xs={2} container alignItems={'center'}>
-								<IconButton color='inherit' onClick={this.handleCloseOrg} aria-label='Close'>
+								<IconButton color='inherit' onClick={handleCloseOrg} aria-label='Close'>
 									<Close />
 								</IconButton>
 								<Typography variant='h6' color='inherit' className={classes.flex}>
@@ -71,7 +71,7 @@ class CreateProjectForm extends Component {
 					<Hidden lgUp>
 						<ItemG container alignItems={'center'}>
 							<ItemG xs={4} container alignItems={'center'}>
-								<IconButton color={'inherit'} onClick={this.handleCloseOrg} aria-label='Close'>
+								<IconButton color={'inherit'} onClick={handleCloseOrg} aria-label='Close'>
 									<Close />
 								</IconButton>
 								<Typography variant='h6' color='inherit' className={classes.flex}>
