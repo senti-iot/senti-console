@@ -11,7 +11,7 @@ import { colors } from 'variables/colors';
 import ProjectMap from './ProjectCards/ProjectMap';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { getDataSummary } from 'variables/dataCollections';
-import { getWifiDaily, getWifiMinutely, getWifiHourly } from 'components/Charts/DataModel';
+import { getWifiDaily, getWifiMinutely, getWifiHourly, setMinutelyData, setHourlyData, setDailyData, setSummaryData } from 'components/Charts/DataModel';
 import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
 import { Timeline, Map, DataUsage, Person, LibraryBooks } from 'variables/icons';
@@ -107,7 +107,7 @@ class Project extends Component {
 				project: project ? project.title : "",
 				org: d.org ? d.org.name : "",
 				name: d.name,
-				id: d.activeDevice ? d.activeDevice.id : d.id,
+				id: d.id,
 				color: d.color,
 				lat: d.activeDevice ? d.activeDevice.lat : 0,
 				long: d.activeDevice ? d.activeDevice.long : 0
@@ -130,7 +130,7 @@ class Project extends Component {
 				project: project ? project.title : "",
 				org: d.org ? d.org.name : "",
 				name: d.name,
-				id: d.activeDevice ? d.activeDevice.id : d.id,
+				id: d.id,
 				color: d.color,
 				lat: d.activeDevice ? d.activeDevice.lat : 0,
 				long: d.activeDevice ? d.activeDevice.long : 0
@@ -154,13 +154,14 @@ class Project extends Component {
 				project: project ? project.title : "",
 				org: d.org ? d.org.name : "",
 				name: d.name,
-				id: d.activeDevice ? d.activeDevice.id : d.id,
+				id: d.id,
 				color: d.color,
 				lat: d.activeDevice ? d.activeDevice.lat : 0,
 				long: d.activeDevice ? d.activeDevice.long : 0
 			}
 		})
 		let newState = await getWifiDaily('collection', dcs, from, to, hoverID, raw)
+		console.log()
 		this.setState({
 			loadingData: false,
 			...newState
@@ -200,6 +201,7 @@ class Project extends Component {
 	handleSwitchDayHourSummary = () => {
 		const { to, from, id } = this.props
 		let diff = moment.duration(to.diff(from)).days()
+		console.log(diff)
 		this.getHeatMapData()
 		switch (id) {
 			case 0:// Today
@@ -207,7 +209,7 @@ class Project extends Component {
 				this.getWifiHourly();
 				break;
 			case 2:// This week
-				parseInt(diff, 10) > 1 ? this.getWifiDaily() : this.getWifiHourly()
+				parseInt(diff, 10) > 0 ? this.getWifiDaily() : this.getWifiHourly()
 				break;
 			case 3:// Last 7 days
 			case 4:// 30 days
@@ -320,36 +322,36 @@ class Project extends Component {
 	
 	setHoverID = (id) => {
 		if (id !== this.state.hoverID) {
-			this.setState({ hoverID: id }, this.hoverGrow)
+			this.setState({ hoverID: id }, () => this.hoverGrow())
 		}
 
 	}
 	hoverGrow = () => {
-		// const { timeType, dataArr, to, from, hoverID } = this.state
-		// if (dataArr)
-		// 	if (dataArr.findIndex(dc => dc.id === hoverID) !== -1 || hoverID === 0) {
-		// 		let newState = {}
-		// 		switch (timeType) {
-		// 			case 0:
-		// 				newState = setMinutelyData(dataArr, from, to, hoverID)
-		// 				break;
-		// 			case 1:
-		// 				newState = setHourlyData(dataArr, from, to, hoverID)
-		// 				break
-		// 			case 2:
-		// 				newState = setDailyData(dataArr, from, to, hoverID)
-		// 				break
-		// 			case 3:
-		// 				newState = setSummaryData(dataArr, from, to, hoverID)
-		// 				break
-		// 			default:
-		// 				break;
-		// 		}
-
-		// 		this.setState({
-		// 			...newState
-		// 		})
-		// 	}
+		const { dataArr, hoverID } = this.state
+		const { timeType, to, from } = this.props
+		if (dataArr)
+			if (dataArr.findIndex(dc => dc.id === hoverID) !== -1 || hoverID === 0) {
+				let newState = {}
+				switch (timeType) {
+					case 0:
+						newState = setMinutelyData(dataArr, from, to, hoverID)
+						break;
+					case 1:
+						newState = setHourlyData(dataArr, from, to, hoverID)
+						break
+					case 2:
+						newState = setDailyData(dataArr, from, to, hoverID)
+						break
+					case 3:
+						newState = setSummaryData(dataArr, from, to, hoverID)
+						break
+					default:
+						break;
+				}
+				this.setState({
+					...newState
+				})
+			}
 
 	}
 	renderDeleteDialog = () => {

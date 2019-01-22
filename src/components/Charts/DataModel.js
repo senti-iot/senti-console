@@ -132,7 +132,7 @@ export const getWifiDaily = async (type, objArr, from, to, hoverId, raw) => {
 			lat: o.lat,
 			long: o.long,
 			org: o.orgName,
-			data: regenerateData(data, 'hour'),
+			data: regenerateData(data, 'day'),
 			...o,
 		}
 		return dataArr.push(dataSet)
@@ -145,10 +145,10 @@ export const getWifiDaily = async (type, objArr, from, to, hoverId, raw) => {
 	}, [])
 	let newState = setDailyData(dataArr, from, to, hoverId)
 	let exportData = setExportData(dataArr, 'day')
-	return { ...newState, exportData }
+	return { ...newState, exportData, dataArr }
 }
 
-const setDailyData = (dataArr, from, to, hoverID) => {
+export const setDailyData = (dataArr, from, to, hoverID) => {
 	let labels = datesToArr(from, to)
 	let state = {
 		loading: false,
@@ -239,10 +239,10 @@ export const getWifiHourly = async (type, objArr, from, to, hoverId, raw) => {
 	}, [])
 	let newState = setHourlyData(dataArr, from, to, hoverId)
 	let exportData = setExportData(dataArr, 'hour')
-	return { ...newState, exportData }
+	return { ...newState, exportData, dataArr }
 }
 
-const setHourlyData = (dataArr, from, to, hoverID) => {
+export const setHourlyData = (dataArr, from, to, hoverID) => {
 	let labels = hoursToArr(from, to)
 	let state = {
 		loading: false,
@@ -318,7 +318,7 @@ export const getWifiMinutely = async (type, objArr, from, to, hoverId, raw) => {
 			lat: o.lat,
 			long: o.long,
 			org: o.orgName,
-			data: regenerateData(data, 'hour'),
+			data: regenerateData(data, 'minute'),
 			...o,
 		}
 		return dataArr.push(dataSet)
@@ -331,10 +331,10 @@ export const getWifiMinutely = async (type, objArr, from, to, hoverId, raw) => {
 	}, [])
 	let newState = setMinutelyData(dataArr, from, to, hoverId)
 	let exportData = setExportData(dataArr, 'minute')
-	return { ...newState, exportData }
+	return { ...newState, exportData, dataArr }
 }
 
-const setMinutelyData = (dataArr, from, to, hoverID) => {
+export const setMinutelyData = (dataArr, from, to, hoverID) => {
 	let labels = minutesToArray(from, to)
 	let state = {
 		loading: false,
