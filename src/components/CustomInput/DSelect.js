@@ -1,6 +1,9 @@
 import React from 'react'
 import { FormControl, withStyles, Select, Input, MenuItem, InputLabel } from '@material-ui/core';
 import { ItemG } from 'components';
+
+// Replace withStyles with withTheme, remove styles
+
 const styles = theme => ({
 	formControl: {
 		marginTop: 16,

@@ -24,7 +24,6 @@ class Favorites extends Component {
 			route: 0,
 			filters: {
 				keyword: '',
-				custom: []
 			}
 		}
 		props.setHeader('sidebar.favorites', false, '', 'favorites')
@@ -110,8 +109,9 @@ class Favorites extends Component {
 		})
 	}
 	filterItems = (data) => {
+		const rFilters = this.props.filters
 		const { filters } = this.state
-		return customFilterItems(filterItems(data, filters), filters.custom)
+		return customFilterItems(filterItems(data, filters), rFilters)
 	}
 	componentDidMount = () => {
 		this.handleRequestSort(null, 'name', 'asc')
@@ -182,18 +182,18 @@ class Favorites extends Component {
 	renderTableToolBar = () => {
 		const { t } = this.props
 		const { selected } = this.state
-		return <TableToolbar //	./TableToolbar.js
+		return <TableToolbar
 			ft={this.ft()}
 			addFilter={this.addFilter}
 			editFilter={this.editFilter}
 			removeFilter={this.removeFilter}
+			reduxKey={'favorites'}
 			anchorElMenu={this.state.anchorElMenu}
 			handleToolbarMenuClose={this.handleToolbarMenuClose}
 			handleToolbarMenuOpen={this.handleToolbarMenuOpen}
 			numSelected={selected.length}
 			options={this.options}
 			t={t}
-			// content={this.renderTableToolBarContent()}
 		/>
 	}
 	renderTable = () => {
@@ -235,7 +235,6 @@ class Favorites extends Component {
 		return (
 			<Fragment>
 				<Toolbar
-					// noSearch
 					data={favorites}
 					filters={filters}
 					history={this.props.history}
@@ -256,7 +255,8 @@ class Favorites extends Component {
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	favorites: state.favorites.favorites,
-	saved: state.favorites.saved
+	saved: state.favorites.saved,
+	filters: state.appState.filters.favorites
 })
 
 const mapDispatchToProps = (dispatch) => ({

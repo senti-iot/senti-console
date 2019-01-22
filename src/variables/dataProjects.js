@@ -23,9 +23,7 @@ export const getProject = async (projectId) => {
 	return data
 }
 
-export const deleteProject = async (projectIds) => {
-	for (let i = 0; i < projectIds.length; i++) {
-		var res = await api.delete('senti/project/' + projectIds[i])
-	}
-	return res
+export const deleteProject = async (projectId) => {
+	var data = await api.delete('senti/project/' + projectId)
+	return data
 }

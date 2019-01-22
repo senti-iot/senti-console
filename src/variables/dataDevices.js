@@ -1,7 +1,7 @@
 import { api, imageApi, mapApi, weatherApi, dawaApi } from './data';
 import moment from 'moment'
 
-// http://dawa.aws.dk/
+/* http://dawa.aws.dk/ */
 export const getAddressByLocation = async (lat, long) => {
 	let URL = `adgangsadresser/reverse?x=${long}&y=${lat}&struktur=mini`
 	let response = await dawaApi.get(URL).then(rs => rs)
@@ -114,12 +114,10 @@ export const getAllPictures = async (deviceId) => {
  */
 export const uploadPictures = async (device) => {
 	const form = new FormData();
-	// var fles = device.files;
 	[...device.files].map((img, index) => form.append('sentiFile[]', device.files[index]))
 	var config = {
 		onUploadProgress: function (progressEvent) {
-			// var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-			//TODO: return percent
+
 		}
 	};
 	var data = await imageApi.post('senti/device/image/' + device.id, form, config).then(rs => rs.data)

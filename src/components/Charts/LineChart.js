@@ -95,7 +95,6 @@ class LineChart extends PureComponent {
 							},
 							id: 'xAxis',
 							type: 'time',
-							// distribution: 'series',
 							time: {
 								displayFormats: {
 									hour: 'LT',
@@ -145,12 +144,6 @@ class LineChart extends PureComponent {
 						},
 					}]
 				},
-				// zoom: {
-				// 	enabled: true,
-				// 	drag: true,
-				// 	mode: 'x',
-				// 	// onZoom: function (props) { ;  }
-				// }
 			}
 		}
 	}
@@ -200,12 +193,14 @@ class LineChart extends PureComponent {
 		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID) {
 			this.setXAxis()
 		}
-		if (this.chart.chartInstance.canvas.style.width !== this.state.chartWidth || this.state.chartHeight !== this.chart.chartInstance.canvas.style.height) {
-			this.setState({
-				chartWidth: parseInt(this.chart.chartInstance.canvas.style.width.substring(0, this.chart.chartInstance.canvas.style.width.length - 1), 10),
-				chartHeight: parseInt(this.chart.chartInstance.canvas.style.height.substring(0, this.chart.chartInstance.canvas.style.height.length - 1), 10)
-			})
-		}
+		// console.log(this.chart.chartInstance)
+		// if (this.chart.chartInstance)
+		// 	if (this.chart.chartInstance.canvas.style.width !== this.state.chartWidth || this.state.chartHeight !== this.chart.chartInstance.canvas.style.height) {
+		// 		this.setState({
+		// 			chartWidth: parseInt(this.chart.chartInstance.canvas.style.width.substring(0, this.chart.chartInstance.canvas.style.width.length - 1), 10),
+		// 			chartHeight: parseInt(this.chart.chartInstance.canvas.style.height.substring(0, this.chart.chartInstance.canvas.style.height.length - 1), 10)
+		// 		})
+		// 	}
 	}
 
 	setHours = (date) => {
@@ -321,7 +316,7 @@ class LineChart extends PureComponent {
 							time: {
 								displayFormats: {
 									hour: 'LT',
-									day: 'll dddd',
+									day: 'DD MMM',
 									minute: 'LT'
 								},
 								unit: this.props.unit.chart,
@@ -353,7 +348,7 @@ class LineChart extends PureComponent {
 						}]
 				}
 			}
-		}, () => this.chart ? this.chart.chartInstance.update() : {})
+		}, () => this.chart ? this.chart.chartInstance ? this.chart.chartInstance.update() : {} : {})
 	}
 
 	setTooltip = (tooltip) => {
@@ -370,8 +365,6 @@ class LineChart extends PureComponent {
 			tooltip: {
 				...this.state.tooltip,
 				exited: true,
-				// weather: null,
-				// weatherDate: null
 			}
 		})
 	}
@@ -390,9 +383,8 @@ class LineChart extends PureComponent {
 			await this.props.onElementsClick(elements)
 		}
 		catch (e) {
-			// ;
+			console.log(e)
 		}
-		// }
 		this.hideTooltip()
 	}
 	onMouseLeave = () => {
@@ -447,8 +439,6 @@ class LineChart extends PureComponent {
 						<ChartComponent
 							type={'multicolorLine'}
 							data={this.props.data}
-							// height={this.props.theme.breakpoints.width('md') < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
-							// width={window.innerWidth - 20}
 							ref={r => this.chart = r}
 							options={this.state.lineOptions}
 							legend={this.legendOptions}
@@ -481,5 +471,5 @@ const mapDispatchToProps = {
 }
 
 let LineChartCompose = compose(connect(mapStateToProps, mapDispatchToProps), withStyles(graphStyles, { withTheme: true }))(LineChart)
-// export default withStyles(graphStyles, { withTheme: true })(LineChart)
+
 export default LineChartCompose

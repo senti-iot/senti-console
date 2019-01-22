@@ -1,11 +1,5 @@
 import React from 'react'
-import { /* Switch, Route, withRouter, */ Redirect } from 'react-router-dom'
-// import Users from 'views/Users/Users';
-// import CreateProject from 'components/Project/CreateProject';
-// import withLocalization from 'components/Localization/T';
-// import CreateUser from 'components/User/CreateUser';
-// import withSnackbar from 'components/Localization/S';
-// import { compose } from 'recompose';
+import { Redirect } from 'react-router-dom'
 
 const users = (props) => {
 	return (

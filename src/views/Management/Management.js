@@ -68,11 +68,7 @@ class Management extends Component {
 			{ key: 'name', name: t('collections.fields.name'), type: 'string' },
 			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
 			{ key: 'devices[0].start', name: t('collections.fields.activeDeviceStartDate'), type: 'date' },
-			{ key: 'created', name: t('collections.fields.created'), type: 'date' },
-			// { key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() }
-			// { key: 'address', name: t('devices.fields.address'), type: 'string' },
-			// { key: 'locationType', name: t('devices.fields.locType'), type: 'dropDown', options: this.dLocationPlace() },
-			// { key: 'lat', name: t('calibration.stepheader.calibration'), type: 'diff', options: { dropdown: this.dCalibrated(), values: { false: [0] } } },
+			{ key: 'created', name: t('collections.fields.created'), type: 'date' }
 		]
 	}
 
@@ -206,7 +202,6 @@ class Management extends Component {
 			numSelected={selected.length}
 			options={this.options}
 			t={t}
-		// content={this.renderTableToolBarContent()}
 		/>
 	}
 	renderTable = () => {
@@ -220,14 +215,9 @@ class Management extends Component {
 			handleSelectAllClick={this.handleSelectAllClick}
 			data={this.filterItems(usersAndOrgs)}
 			tableHead={this.favoritesHeaders()}
-			handleFilterEndDate={this.handleFilterEndDate}
-			handleFilterKeyword={this.handleFilterKeyword}
-			handleFilterStartDate={this.handleFilterStartDate}
 			handleRequestSort={this.handleRequestSort}
-			handleOpenUnassignDevice={this.handleOpenUnassignDevice}
 			orderBy={orderBy}
 			order={order}
-			filters={this.state.filters}
 			t={t}
 		/>
 	}
@@ -238,7 +228,6 @@ class Management extends Component {
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
 				{this.renderTableToolBar()}
 				{this.renderTable()}
-				{/* {this.renderConfirmDelete()} */}
 			</Paper>
 			}
 		</GridContainer>
@@ -247,7 +236,7 @@ class Management extends Component {
 	render() {
 		const { users, orgs, filters, loading } = this.state
 		const { favorites } = this.props
-		const { classes, ...rest } = this.props
+		const { classes, filtersOrgs, filtersUsers, ...rest } = this.props
 		return (
 			!loading ? <Fragment>
 				<Toolbar
@@ -261,9 +250,9 @@ class Management extends Component {
 				/>
 				<Switch>
 					<Route path={`${this.props.match.url}/users/new`} render={(rp) => <CreateUser {...rest} />} />
-					<Route path={`${this.props.match.url}/users`} render={(rp) => <Users {...rest} reload={this.reload} users={this.filterItems(users)} />} />
+					<Route path={`${this.props.match.url}/users`} render={(rp) => <Users filters={filtersUsers} {...rest} reload={this.reload} users={this.filterItems(users)} />} />
 					<Route path={`${this.props.match.url}/orgs/new`} component={(rp) => <CreateOrg {...rest} />} />
-					<Route path={`${this.props.match.url}/orgs`} render={(rp) => <Orgs {...rest} reload={this.reload} orgs={this.filterItems(orgs)} />} />
+					<Route path={`${this.props.match.url}/orgs`} render={(rp) => <Orgs filters={filtersOrgs} {...rest} reload={this.reload} orgs={this.filterItems(orgs)} />} />
 					<Route path={`${this.props.match.url}/favorites`} render={() => this.renderFavorites()} />
 					<Redirect from={'/management'} to={'/management/users'} />
 				</Switch>
@@ -275,7 +264,9 @@ class Management extends Component {
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	favorites: state.favorites.favorites,
-	saved: state.favorites.saved
+	saved: state.favorites.saved,
+	filtersOrgs: state.appState.filters.orgs,
+	filtersUsers: state.appState.filters.users
 })
 
 const mapDispatchToProps = (dispatch) => ({

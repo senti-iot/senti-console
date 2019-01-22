@@ -4,7 +4,6 @@ import deburr from 'lodash/deburr';
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-// import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
@@ -14,9 +13,7 @@ function renderInputComponent(inputProps) {
 	const { classes, inputRef = () => { }, ref, ...other } = inputProps;
 	return (
 		<TextField
-			// 
 			margin='normal'
-			// className={classes.textField}
 			InputProps={{
 				inputRef: node => {
 					ref(node);
@@ -129,9 +126,6 @@ class EditOrgAutoSuggest extends React.Component {
 		});
 	}
 	handleChange = name => (event, { newValue }) => {
-		// this.setState({
-		// 	[name]: newValue,
-		// });
 		this.props.handleChange(newValue)
 	};
 

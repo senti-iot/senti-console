@@ -37,14 +37,12 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class ZoomCon
 
 	constructor(props, context) {
 		super(props)
-		// this.container = L.DomUtil.create('div', 'leaflet-control')
 		this.zoomContainer = L.DomUtil.create('div', 'leaflet-control-zoom');
 		this.map = context.map || this.props.leaflet.map;
 	}
 
 	componentDidMount() {
 		super.componentDidMount();
-		// this.zoomContainer.addEventListener('dblclick', )
 	}
 
 	zoomIn = (e) => {

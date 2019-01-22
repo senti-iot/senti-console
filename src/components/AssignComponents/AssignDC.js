@@ -4,8 +4,6 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment, PureComponent } from 'react';
 import { getAllCollections } from 'variables/dataCollections';
-// import { updateCollection } from 'variables/dataCollections'
-// import { updateCollection } from 'variables/dataCollections';
 import { ItemG, CircularLoader } from 'components';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
@@ -22,16 +20,12 @@ class AssignDC extends PureComponent {
 			selectedCollections: [],
 			filters: {
 				keyword: '',
-				startDate: null,
-				endDate: null,
-				activeDateFilter: false
 			}
 		}
 	}
 	//#region LifeCycle 
 	componentDidMount = async () => {
 		this._isMounted = 1
-		// const { orgId } = this.props
 		await getAllCollections().then(rs => this._isMounted ? this.setState({ collections: rs }) : this.setState({ collections: [] }))
 	}
 	componentWillUnmount = () => {

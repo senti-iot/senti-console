@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
 
 import { Card, IconButton, CardContent, withStyles, Button, Popover, Typography, CardActions, Checkbox } from '@material-ui/core';
-// import Close from '@material-ui/icons/Close';
 import withLocalization from 'components/Localization/T';
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
@@ -10,10 +9,32 @@ import { dateTimeFormatter } from 'variables/functions';
 import { TextF, DSelect } from 'components';
 import ItemG from 'components/Grid/ItemG';
 import moment from 'moment'
+import cx from 'classnames'
 
 const style = theme => ({
+	error: {
+		animation: "shake 0.82s cubic-bezier(.36,.07,.19,.97) both",
+		transform: "translate3d(0, 0, 0)",
+		backfaceVisibility: "hidden",
+		perspective: 1000,
+	},
+	"@keyframes shake": {
+		"10%, 90%": {
+			transform: "translate3d(-1px, 0, 0)",
+		},
+  
+		"20%, 80%": {
+			transform: "translate3d(2px, 0, 0)",  },
+
+		"30%, 50%, 70%": {
+			transform: "translate3d(-4px, 0, 0)",  },
+
+		"40%, 60%": {
+			transform: "translate3d(4px, 0, 0)",
+		}
+	},
+
 	headerText: {
-		// background: '#00897b',
 		color: 'white',
 	},
 	header: {
@@ -22,12 +43,10 @@ const style = theme => ({
 		padding: 8
 	},
 	menu: {
-		// width: 240,
 		padding: 0,
 		background: '#00897b'
 	},
 	content: {
-		// maxWidth: 240,
 		height: '100%'
 	}
 })
@@ -47,17 +66,9 @@ class FilterCard extends Component {
 				value: 0,
 				label: ""
 			}
-			// endDate: moment()
 		}
 	}
-	// componentDidUpdate = () => {
-	// 	if (this.props.open && this.button)
-	// 		this.button.addEventListener('keypress', this.handleKeyPress, false)
-	// }
-	// componentWillUnmount = () => {
-	// 	if (this.button)
-	// 		this.button.removeEventListener('keypress', this.handleKeyPress, false)
-	// }
+
 	componentDidMount = (prevProps, prevState) => {
 		const { edit, type, value } = this.props
 		if (edit)
@@ -82,7 +93,7 @@ class FilterCard extends Component {
 				case '':
 				case null:
 					this.setState({
-						value: value
+						value: value,
 					})
 					break;
 				default:
@@ -103,7 +114,7 @@ class FilterCard extends Component {
 	}
 	handleButton = () => {
 		const { value, date, after, dropdown, diff } = this.state
-		const { type, handleButton, handleClose, title, t, options } = this.props
+		const { type, handleButton, title, t, options } = this.props
 		if (type === 'dropDown')
 			handleButton(`${title}: ${dropdown.label}`, dropdown.value, dropdown.icon)
 		if (type === 'string')
@@ -125,23 +136,19 @@ class FilterCard extends Component {
 				label: ""
 			}
 		})
-		handleClose()
 	}
 	handleInput = e => {
 		this.setState({
-			value: e
-		})
+			value: e,
+		}, () => this.props.error ? this.props.resetError() : {})
 	}
 	handleCustomDate = (e, key) => {
-		// console.log(e)
-		// var newDate = shortDateFormat(e)
 		this.setState({
 			[key]: e
 		})
 	}
 	handleChangeDropDown = (o) => e => {
 		const { options } = this.props
-		// console.log(options, options.findIndex(o => o.value === e.target.value))
 		this.setState({
 			[o]: {
 				value: e.target.value,
@@ -194,7 +201,6 @@ class FilterCard extends Component {
 							<DateTimePicker
 								id={'date'}
 								autoOk
-								// label={t('filters.startDate')}
 								clearable
 								ampm={false}
 								format='LL'
@@ -203,7 +209,6 @@ class FilterCard extends Component {
 								onChange={val => this.handleCustomDate(val, 'date')}
 								animateYearScrolling={false}
 								color='primary'
-								// disableFuture
 								dateRangeIcon={<DateRange />}
 								timeIcon={<AccessTime />}
 								rightArrowIcon={<KeyboardArrowRight />}
@@ -221,7 +226,10 @@ class FilterCard extends Component {
 		}
 	}
 	render() {
-		const { title, open, handleClose, classes, anchorEl, t, edit } = this.props
+		const { title, open, handleClose, classes, anchorEl, t, edit, error } = this.props
+		const errorClassname = cx({
+			[classes.error]: error
+		})
 		return (
 			<Popover
 				anchorEl={anchorEl}
@@ -229,7 +237,7 @@ class FilterCard extends Component {
 				onClose={handleClose}
 				PaperProps={{ classes: { root: classes.menu } }}
 			>
-				<Card>
+				<Card classes={{ root: errorClassname }}>
 					<ItemG container alignItems={'center'} className={classes.header}>
 						<ItemG xs>
 							<Typography className={classes.headerText} variant={'h6'}>{title}</Typography>

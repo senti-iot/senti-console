@@ -9,23 +9,22 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, /* CloudDownload */
+	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload,
 } from 'variables/icons'
 import {
-	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
+	CircularLoader, Caption, ItemG, InfoCard, BarChart,
 	LineChart,
 	DoughnutChart,
 	PieChart,
 	ExportModal,
-	// ExportModal
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
-// import { getDataSummary, getDataDaily, getDataHourly, getDataMinutely, /* getDataHourly */ } from 'variables/dataDevices';
 import classNames from 'classnames';
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
-// import DevicePDF from 'components/Exports/DevicePDF';
+import { changeChartType } from 'redux/appState'
+import { changeDate } from 'redux/dateTime'
 
 class DeviceData extends PureComponent {
 	constructor(props) {
@@ -35,8 +34,6 @@ class DeviceData extends PureComponent {
 			from: moment().subtract(7, 'd').startOf('day'),
 			to: moment().endOf('day'),
 			actionAnchor: null,
-			openDownload: false,
-			display: props.chartType ? props.chartType : 3,
 			visibility: false,
 		}
 	}
@@ -66,18 +63,16 @@ class DeviceData extends PureComponent {
 		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
 	]
 
-	getImage = () => {
-		// var canvas = document.getElementsByClassName('chartjs-render-monitor');
-	
-		// if (canvas.length > 0) {
-		// 	this.image = canvas[1].toDataURL('image/png');
-		// 	this.setState({ image: this.image })
-			
-		// }
-	}
-
 	componentWillUnmount = () => {
 		this._isMounted = 0
+	}
+
+	handleOpenDownloadModal = () => {
+		this.setState({ openDownload: true, actionAnchor: null })
+	}
+
+	handleCloseDownloadModal = () => {
+		this.setState({ openDownload: false })
 	}
 
 	handleOpenActionsDetails = event => {
@@ -91,14 +86,11 @@ class DeviceData extends PureComponent {
 	handleVisibility = id => (event) => {
 		if (event)
 			event.preventDefault()
-		this.setState({ display: id, loading: true, actionAnchorVisibility: null })
+		//Change to Redux
+		this.props.changeChartType(id)
+		this.setState({ actionAnchorVisibility: null })
 	}
 
-	handleCustomDate = date => e => {
-		this.setState({
-			[date]: e
-		})
-	}
 	handleReverseZoomOnData = async () => {
 		const { timeType } = this.props
 		const { zoomDate } = this.state
@@ -112,13 +104,13 @@ class DeviceData extends PureComponent {
 					if (zoomDate.length === 1) {
 						this.setState({ resetZoom: false, zoomDate: [] })
 					}
-					this.props.handleSetDate(6, endDate, startDate, 1, false)
+					this.props.handleSetDate(6, endDate, startDate, 1)
 					break;
 				case 1:
 					startDate = zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
 					endDate = zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
 					this.setState({ resetZoom: false, zoomDate: [] })
-					this.props.handleSetDate(6, endDate, startDate, 2, false)
+					this.props.handleSetDate(6, endDate, startDate, 2)
 					break;
 				default:
 					break;
@@ -137,7 +129,7 @@ class DeviceData extends PureComponent {
 			try {
 				date = lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
 				switch (timeType) {
-					case 1: // Minutely
+					case 1:
 						startDate = moment(date).startOf('hour')
 						endDate = moment(date).endOf('hour')
 						this.setState({
@@ -170,24 +162,9 @@ class DeviceData extends PureComponent {
 			}
 		}
 	}
-	handleCancelCustomDate = () => {
-		this.setState({
-			loading: false, openCustomDate: false
-		})
-	}
-	handleOpenDownloadModal = () => {
-		this.setState({ openDownload: true, actionAnchor: null })
-	}
-	handleCloseDownloadModal = () => {
-		this.setState({ openDownload: false })
-	}
-
 	renderType = () => {
-		const { display } = this.state
-		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device } = this.props
-
-		
-		switch (display) {
+		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device, chartType } = this.props
+		switch (chartType) {
 			case 0:
 				return roundDataSets ? <div style={{ maxHeight: 400 }}>
 					<PieChart
@@ -229,7 +206,6 @@ class DeviceData extends PureComponent {
 					<LineChart
 						hoverID={this.props.hoverID}
 						single
-						// getImage={this.getImage}
 						obj={device}
 						unit={this.timeTypes[timeType]}
 						onElementsClick={this.handleZoomOnData}
@@ -244,7 +220,7 @@ class DeviceData extends PureComponent {
 
 	renderMenu = () => {
 		const { actionAnchor, actionAnchorVisibility, resetZoom } = this.state
-		const { classes, t } = this.props
+		const { classes, t, chartType } = this.props
 		return <Fragment>
 			<ItemG>
 				<Collapse in={resetZoom}>
@@ -263,14 +239,11 @@ class DeviceData extends PureComponent {
 						anchorEl={actionAnchorVisibility}
 						open={Boolean(actionAnchorVisibility)}
 						onClose={() => this.setState({ actionAnchorVisibility: null })}
-						PaperProps={{
-							style: {
-								// maxHeight: 300,
-								minWidth: 250
-							}
-						}}>					<List component='div' disablePadding>
+						PaperProps={{ style: { minWidth: 250 } }}>
+
+						<List component='div' disablePadding>
 							{this.visibilityOptions.map(op => {
-								return <MenuItem selected={this.state.display === op.id ? true : false} key={op.id} value={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
+								return <MenuItem selected={chartType === op.id ? true : false} key={op.id} value={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
 									<div style={{ marginRight: 24, display: "flex" }}>
 										{op.icon}
 									</div>
@@ -298,17 +271,9 @@ class DeviceData extends PureComponent {
 				onChange={this.handleVisibility}
 				PaperProps={{
 					style: {
-						// maxHeight: 300,
 						minWidth: 250
 					}
 				}}>
-				{/*<div>
-					<Hidden mdUp>
-						<ListItem>
-							{this.renderDateFilter()}
-						</ListItem>
-					</Hidden>
-				</div> */}
 				<ListItem button onClick={this.handleOpenDownloadModal}>
 					<ListItemIcon><CloudDownload /></ListItemIcon>
 					<ListItemText>{t('menus.export')}</ListItemText>
@@ -317,7 +282,6 @@ class DeviceData extends PureComponent {
 					<ListItemIcon>
 						<Checkbox
 							checked={Boolean(this.props.raw)}
-							// disabled
 							className={classes.noPadding}
 						/>
 					</ListItemIcon>
@@ -360,8 +324,9 @@ class DeviceData extends PureComponent {
 	}
 
 	render() {
-		const { raw, t, loading, to, from, dateOption } = this.props
-		const {  openDownload } = this.state
+		const { raw, t, loading, to, from, dateOption, exportData } = this.props
+		const { openDownload } = this.state
+
 		let displayTo = dateTimeFormatter(to)
 		let displayFrom = dateTimeFormatter(from)
 		return (
@@ -375,41 +340,22 @@ class DeviceData extends PureComponent {
 					content={
 						<Grid container>
 							<ExportModal
-								deviceHeaders
 								raw={raw}
 								to={displayTo}
 								from={displayFrom}
-								data={this.props.exportData}
-								img={this.state.image}
+								data={exportData}
 								open={openDownload}
 								handleClose={this.handleCloseDownloadModal}
 								t={t}
 							/>
 							{loading ? <CircularLoader notCentered /> :
 								<Fragment>
-									{/* <ItemG xs={12} container direction={'column'} alignItems={'center'} justify={'center'}>
-										<Caption className={classes.bigCaption2}>{raw ? t('collections.rawData') : t('collections.calibratedData')}</Caption>
-										<Caption className={classes.captionPading}>{`${displayFrom} - ${displayTo}`}</Caption>
-									</ItemG> */}
 									<ItemG xs={12}>
 										{ this.renderType() }
 									</ItemG>
-									{/* {this.props.hoverID} */}
-									{/* <img src={this.state.image} alt={'not loaded'}/> */}
-									{/* <DevicePDF img={this.state.image}/> */}
 								</Fragment>}
 						</Grid>}
 				/>
-				{/* <div style={{ position: 'absolute', top: '-100%', width: 1000, height: 400 }}>
-					{this.state.lineDataSets ?
-						<LineChart
-							single
-							getImage={this.getImage}
-							unit={this.timeTypes[this.state.timeType]}
-							data={this.state.lineDataSets}
-							t={this.props.t}
-						/> : this.renderNoData()}
-				</div> */}
 			</Fragment >
 		);
 	}
@@ -418,11 +364,13 @@ DeviceData.propTypes = {
 	device: PropTypes.object.isRequired,
 }
 const mapStateToProps = (state) => ({
-	chartType: state.settings.chartType
+	chartType: state.appState.chartType ? state.appState.chartType : state.settings.chartType
 })
 
-const mapDispatchToProps = {
+const mapDispatchToProps = dispatch => ({
+	changeChartType: (val) => dispatch(changeChartType(val)),
+	handleSetDate: (id, to, from, timeType) => dispatch(changeDate(id, to, from, timeType))
 
-}
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(DeviceData))

@@ -198,7 +198,6 @@ class CreateUser extends Component {
     			color={'primary'}
     			value={org.id}
     			onChange={this.handleOrgChange}
-    			// renderValue={value => value.name}
     		>
     			{orgs ? orgs.map(org => (
     				<MenuItem
@@ -249,7 +248,6 @@ class CreateUser extends Component {
     			appId: 1220,
     			name: t('users.groups.accountManager'),
     			show: accessLevel.apiorg.editusers ? true : false
-    			// description: ''
     		},
     		{
     			id: 136550100000143,

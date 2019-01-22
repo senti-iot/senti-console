@@ -156,9 +156,6 @@ class BarChart extends PureComponent {
 			this.hideTooltip()
 			return
 		}
-		
-
-		// let weatherData = null
 		let wDate = null
 		try {
 			let lat = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].lat
@@ -393,6 +390,5 @@ const mapDispatchToProps = {
 }
 
 let BarChartCompose = compose(connect(mapStateToProps, mapDispatchToProps), withStyles(graphStyles, { withTheme: true }), withLocalization())(BarChart)
-// export default withStyles(graphStyles, { withTheme: true })(BarChart)
 
 export default BarChartCompose

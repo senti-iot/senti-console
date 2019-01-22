@@ -90,7 +90,8 @@
         "cards": {
             "data": "Data",
             "log": "Enhedslog"
-        },
+		},
+		"createCollection": "Nyt datasamling",
         "editCollection": "Rediger datasamling",
         "fields": {
             "activated": "Aktiveret",
@@ -235,6 +236,7 @@
             "totalcount": "Tællinger total"
         },
         "status": {
+			"noDevice": "Ingen enhed tilknyttet",
             "green": "Enheden er tilsluttet og modtager data",
             "greenShort": "Modtager data",
             "red": "Enheden er ikke tilsluttet og modtager ingen data",
@@ -392,8 +394,8 @@
         "assign": {
             "collectionToProject": "Tilknyt datasamling",
             "collectionsToProject": "Tilknyt datasamlinger",
-            "deviceToCollection": "Tilknyt enhed",
-            "deviceToOrg": "Tilknyt enhed"
+            "deviceToCollection": "Tilknyt enhed til datasamlinger",
+            "deviceToOrg": "Tilknyt enhed til organisation"
         },
         "calibrate": "Kalibrer",
         "changePassword": "Skift kodeord",

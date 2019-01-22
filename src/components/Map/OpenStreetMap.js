@@ -18,8 +18,6 @@ import ZoomControl from 'variables/LeafletPlugins/ZoomControl';
 import HeatLayer from 'variables/LeafletPlugins/HeatLayer';
 import HeatMapLegend from 'variables/LeafletPlugins/HeatMapLegend';
 import MyLocationControl from 'variables/LeafletPlugins/MyLocationControl';
-// import PZtoMarkers from 'variables/LeafletPlugins/PZtoMarkers';
-
 
 class OpenStreetMap extends React.Component {
 	constructor(props) {

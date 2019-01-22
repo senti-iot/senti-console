@@ -90,7 +90,8 @@
         "cards": {
             "data": "Data",
             "log": "Device log"
-        },
+		},
+		"createCollection": "Create collection",
         "editCollection": "Edit collection",
         "fields": {
             "activated": "Activated",
@@ -235,6 +236,7 @@
             "totalcount": "Total count"
         },
         "status": {
+			"noDevice": "No device attached",
             "green": "Device is connected and data is received",
             "greenShort": "Receives data",
             "red": "Device is disconnected, and no data is received",
@@ -383,10 +385,10 @@
     },
     "menus": {
         "assign": {
-            "collectionToProject": "Assign data collection",
-            "collectionsToProject": "Assign data collections",
-            "deviceToCollection": "Assign device",
-            "deviceToOrg": "Assign device"
+            "collectionToProject": "Assign Data Collection to Project",
+            "collectionsToProject": "Assign Data Collections to Project",
+            "deviceToCollection": "Assign Device to Data Collection",
+            "deviceToOrg": "Assign Device to Organisation"
         },
         "calibrate": "Calibrate",
         "create": {

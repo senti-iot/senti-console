@@ -42,7 +42,6 @@ class OrgDetails extends Component {
 	}
 
 	render() {
-		// const { } = this.state
 		const { t, org } = this.props
 		return (
 			<InfoCard title={org.name} avatar={<Business />} subheader={''}

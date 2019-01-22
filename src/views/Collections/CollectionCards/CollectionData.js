@@ -9,34 +9,30 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, /* CloudDownload */
+	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload,
 } from 'variables/icons'
 import {
-	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
+	CircularLoader, Caption, ItemG, InfoCard, BarChart,
 	LineChart,
 	DoughnutChart,
 	PieChart,
-	ExportModal,
-	// ExportModal
+	ExportModal
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
-// import { getDataSummary, getDataDaily, getDataHourly, getDataMinutely, /* getDataHourly */ } from 'variables/dataDevices';
 import classNames from 'classnames';
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
-// import DevicePDF from 'components/Exports/DevicePDF';
+import { changeChartType } from 'redux/appState'
+import { changeDate } from 'redux/dateTime'
 
 class CollectionData extends PureComponent {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			from: moment().subtract(7, 'd').startOf('day'),
-			to: moment().endOf('day'),
 			actionAnchor: null,
 			openDownload: false,
-			display: props.chartType ? props.chartType : 3,
 			visibility: false,
 		}
 	}
@@ -66,11 +62,16 @@ class CollectionData extends PureComponent {
 		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
 	]
 
-	getImage = () => {
-	}
-
 	componentWillUnmount = () => {
 		this._isMounted = 0
+	}
+
+	handleOpenDownloadModal = () => {
+		this.setState({ openDownload: true, actionAnchor: null })
+	}
+
+	handleCloseDownloadModal = () => {
+		this.setState({ openDownload: false })
 	}
 
 	handleOpenActionsDetails = event => {
@@ -84,14 +85,10 @@ class CollectionData extends PureComponent {
 	handleVisibility = id => (event) => {
 		if (event)
 			event.preventDefault()
-		this.setState({ display: id, loading: true, actionAnchorVisibility: null })
+		this.props.changeChartType(id)
+		this.setState({ actionAnchorVisibility: null })
 	}
 
-	handleCustomDate = date => e => {
-		this.setState({
-			[date]: e
-		})
-	}
 	handleReverseZoomOnData = async () => {
 		const { timeType } = this.props
 		const { zoomDate } = this.state
@@ -129,7 +126,7 @@ class CollectionData extends PureComponent {
 			try {
 				date = lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
 				switch (timeType) {
-					case 1: // Minutely
+					case 1:
 						startDate = moment(date).startOf('hour')
 						endDate = moment(date).endOf('hour')
 						this.setState({
@@ -140,7 +137,7 @@ class CollectionData extends PureComponent {
 						})
 						this.props.handleSetDate(6, endDate, startDate, 0, false)
 						break
-					case 2: //Hourly
+					case 2: 
 						startDate = moment(date).startOf('day')
 						endDate = moment(date).endOf('day')
 						this.setState({
@@ -162,29 +159,16 @@ class CollectionData extends PureComponent {
 			}
 		}
 	}
-	handleCancelCustomDate = () => {
-		this.setState({
-			loading: false, openCustomDate: false
-		})
-	}
-	handleOpenDownloadModal = () => {
-		this.setState({ openDownload: true, actionAnchor: null })
-	}
-	handleCloseDownloadModal = () => {
-		this.setState({ openDownload: false })
-	}
 
 	renderType = () => {
-		const { display } = this.state
-		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device } = this.props
-		switch (display) {
+		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device, chartType } = this.props
+		switch (chartType) {
 			case 0:
 				return roundDataSets ? <div style={{ maxHeight: 400 }}>
 					<PieChart
 						title={title}
 						single //temporary
 						unit={this.timeTypes[timeType]}
-						// onElementsClick={this.handleZoomOnData}
 						setHoverID={setHoverID}
 						data={roundDataSets}
 					/>
@@ -197,7 +181,6 @@ class CollectionData extends PureComponent {
 							title={title}
 							single //temporary
 							unit={this.timeTypes[timeType]}
-							// onElementsClick={this.handleZoomOnData}
 							setHoverID={setHoverID}
 							data={roundDataSets}
 						/></div>
@@ -219,7 +202,6 @@ class CollectionData extends PureComponent {
 					<LineChart
 						hoverID={this.props.hoverID}
 						single
-						// getImage={this.getImage}
 						obj={device}
 						unit={this.timeTypes[timeType]}
 						onElementsClick={this.handleZoomOnData}
@@ -253,12 +235,8 @@ class CollectionData extends PureComponent {
 						anchorEl={actionAnchorVisibility}
 						open={Boolean(actionAnchorVisibility)}
 						onClose={() => this.setState({ actionAnchorVisibility: null })}
-						PaperProps={{
-							style: {
-								// maxHeight: 300,
-								minWidth: 250
-							}
-						}}>					<List component='div' disablePadding>
+						PaperProps={{ style: { minWidth: 250 } }}>				
+						<List component='div' disablePadding>
 							{this.visibilityOptions.map(op => {
 								return <ListItem key={op.id} value={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
 									<ListItemIcon>
@@ -286,19 +264,7 @@ class CollectionData extends PureComponent {
 				open={Boolean(actionAnchor)}
 				onClose={this.handleCloseActionsDetails}
 				onChange={this.handleVisibility}
-				PaperProps={{
-					style: {
-						// maxHeight: 300,
-						minWidth: 250
-					}
-				}}>
-				{/*<div>
-					<Hidden mdUp>
-						<ListItem>
-							{this.renderDateFilter()}
-						</ListItem>
-					</Hidden>
-				</div> */}
+				PaperProps={{ style: { minWidth: 250 } }}>
 				<ListItem button onClick={this.handleOpenDownloadModal}>
 					<ListItemIcon><CloudDownload /></ListItemIcon>
 					<ListItemText>{t('menus.export')}</ListItemText>
@@ -307,7 +273,6 @@ class CollectionData extends PureComponent {
 					<ListItemIcon>
 						<Checkbox
 							checked={Boolean(this.props.raw)}
-							// disabled
 							className={classes.noPadding}
 						/>
 					</ListItemIcon>
@@ -350,7 +315,7 @@ class CollectionData extends PureComponent {
 	}
 
 	render() {
-		const { raw, t, loading, to, from, dateOption } = this.props
+		const { raw, t, loading, to, from, dateOption, exportData } = this.props
 		const { openDownload } = this.state
 		let displayTo = dateTimeFormatter(to)
 		let displayFrom = dateTimeFormatter(from)
@@ -367,8 +332,7 @@ class CollectionData extends PureComponent {
 							raw={raw}
 							to={displayTo}
 							from={displayFrom}
-							data={this.props.exportData}
-							img={this.state.image}
+							data={exportData}
 							open={openDownload}
 							handleClose={this.handleCloseDownloadModal}
 							t={t}
@@ -388,11 +352,13 @@ CollectionData.propTypes = {
 	device: PropTypes.object,
 }
 const mapStateToProps = (state) => ({
-	chartType: state.settings.chartType
+	chartType: state.appState.chartType ? state.appState.chartType : state.settings.chartType
 })
 
-const mapDispatchToProps = {
+const mapDispatchToProps = dispatch => ({
+	changeChartType: (val) => dispatch(changeChartType(val)),
+	handleSetDate: (id, to, from, timeType) => dispatch(changeDate(id, to, from, timeType))
+})
 
-}
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(CollectionData))

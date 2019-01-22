@@ -37,12 +37,7 @@ class Dropdown extends Component {
 					anchorEl={actionAnchor}
 					open={Boolean(actionAnchor)}
 					onClose={this.handleCloseActionsDetails}
-					PaperProps={{
-						style: {
-							// maxHeight: 208,
-							minWidth: 200
-						}
-					}}>
+					PaperProps={{ style: { minWidth: 200 } }}>
 					{menuItems.map((m, i) => {
 						if (m.dontShow)
 							return null

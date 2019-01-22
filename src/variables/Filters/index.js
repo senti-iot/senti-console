@@ -27,7 +27,7 @@ const filterByString = (items, k) => {
 	else
 		return items = items.reduce((newArr, d) => {
 			let objVal = index(d, k.key)
-			if (objVal !== null)
+			if (objVal !== null && objVal !== undefined)
 			{
 				if (objVal.toString().toLowerCase().includes(k.value.toString().toLowerCase()))
 					newArr.push(d)}

@@ -7,7 +7,7 @@ import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
 import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
-import EnhancedTableHead from 'components/Table/TableHeader'
+import TableHeader from 'components/Table/TableHeader'
 import { Info, ItemG, Caption } from 'components'
 import { connect } from 'react-redux'
 import TP from 'components/Table/TP'
@@ -23,7 +23,6 @@ class OrgTable extends React.Component {
 		this.state = {
 			selected: [],
 			page: 0,
-			rowsPerPage: props.rowsPerPage,
 			anchorElMenu: null,
 			anchorFilterMenu: null,
 			openDelete: false,
@@ -32,7 +31,6 @@ class OrgTable extends React.Component {
 	componentDidUpdate = () => {
 		if (this.props.saved === true) {
 			const { data, selected } = this.props
-			// const {  } = this.state
 			let org = data[data.findIndex(d => d.id === selected[0])]
 			if (this.props.isFav({ id: org.id, type: 'org' })) {
 				this.props.s('snackbars.favorite.saved', { name: org.name, type: this.props.t('favorites.types.org') })
@@ -51,21 +49,9 @@ class OrgTable extends React.Component {
 		this.props.handleRequestSort(event, property)
 	}
 
-	handleSelectAllPage = (event, checked) => {
-		if (checked) {
-			const { data } = this.props
-			const { rowsPerPage, page } = this.state
-			this.setState({ selected: data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => n.id) })
-			return;
-		}
-	}
 
 	handleChangePage = (event, page) => {
 		this.setState({ page });
-	}
-
-	handleChangeRowsPerPage = event => {
-		this.setState({ rowsPerPage: event.target.value })
 	}
 
 	isSelected = id => this.props.selected.indexOf(id) !== -1
@@ -82,7 +68,7 @@ class OrgTable extends React.Component {
 			<Fragment>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby='tableTitle'>
-						<EnhancedTableHead // ./ProjectTableHeader
+						<TableHeader
 							numSelected={selected.length}
 							order={order}
 							orderBy={orderBy}
@@ -158,7 +144,7 @@ class OrgTable extends React.Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	rowsPerPage: state.settings.trp,
+	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,	
 	language: state.localization.language,
 	accessLevel: state.settings.user.privileges,
 	favorites: state.favorites.favorites,

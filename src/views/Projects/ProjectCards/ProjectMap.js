@@ -3,15 +3,15 @@ import { InfoCard, Caption, Dropdown, ItemG } from 'components';
 import { Map, Layers, DeviceHub, WhatsHot } from 'variables/icons'
 import { Grid, /* Checkbox,  */MenuItem, Menu, IconButton } from '@material-ui/core';
 import OpenStreetMap from 'components/Map/OpenStreetMap';
+import { connect } from 'react-redux'
+import { changeMapTheme, changeHeatMap } from 'redux/appState';
 
-export default class ProjectMap extends Component {
+class ProjectMap extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			heatMap: false,
 			actionAnchorVisibility: null,
-			mapTheme: props.mapTheme
 		}
 	}
 	visibilityOptions = [
@@ -27,7 +27,8 @@ export default class ProjectMap extends Component {
 	handleVisibility = e => (event) => {
 		if (event)
 			event.preventDefault()
-		this.setState({ mapTheme: e, actionAnchorVisibility: null })
+		this.props.changeMapTheme(e)
+		this.setState({ actionAnchorVisibility: null })
 	}
 	handleOpenMenu = e => {
 		this.setState({ actionAnchorVisibility: e.currentTarget })
@@ -36,8 +37,8 @@ export default class ProjectMap extends Component {
 		this.setState({ actionAnchorVisibility: null })
 	}
 	renderMenu = () => {
-		const { t } = this.props
-		const { actionAnchorVisibility, mapTheme } = this.state
+		const { t, mapTheme } = this.props
+		const { actionAnchorVisibility } = this.state
 		return <Fragment>
 			<ItemG>
 				<IconButton title={'Map layer'} variant={'fab'} onClick={this.handleOpenMenu}>
@@ -61,7 +62,7 @@ export default class ProjectMap extends Component {
 					{/* </List> */}
 				</Menu>
 			</ItemG><Dropdown menuItems={[
-				{ label: t('actions.heatMap'), selected: this.state.heatMap, icon: <WhatsHot style={{ padding: "0px 12px" }}/>, func: () => this.setState({ heatMap: !this.state.heatMap }) },
+				{ label: t('actions.heatMap'), selected: this.props.heatMap, icon: <WhatsHot style={{ padding: "0px 12px" }}/>, func: () => this.props.changeHeatMap( !this.props.heatMap ) },
 				{ label: t('actions.goToDevice'), icon: <DeviceHub style={{ padding: "0px 12px" }} />, func: () => this.flyToMarkers() } ]
 			} />
 		</Fragment>
@@ -76,13 +77,12 @@ export default class ProjectMap extends Component {
 		}
 	}
 	render() {
-		const { devices, t } = this.props
-		const { mapTheme } = this.state
+		const { devices, t, heatMap, mapTheme } = this.props
 
 		return (
 			<InfoCard
 				title={t('devices.cards.map')}
-				subheader={`Heatmap: ${this.state.heatMap ? t('actions.on') : t('actions.off')}`}
+				subheader={`Heatmap: ${heatMap ? t('actions.on') : t('actions.off')}`}
 				expanded={true}
 				avatar={<Map />}
 				topAction={this.renderMenu()}
@@ -92,7 +92,7 @@ export default class ProjectMap extends Component {
 							iRef={this.getRef}
 							t={t}
 							mapTheme={mapTheme}
-							heatMap={this.state.heatMap}
+							heatMap={heatMap}
 							heatData={this.props.heatData}
 							markers={devices} /> : <Caption>{t('projects.noAvailableDevices')}</Caption>}
 					</Grid>
@@ -101,3 +101,14 @@ export default class ProjectMap extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	mapTheme: state.appState.mapTheme ? state.appState.mapTheme : state.settings.mapTheme,
+	heatMap: state.appState.heatMap ? state.appState.heatMap : false
+})
+
+const mapDispatchToProps = (dispatch) => ({
+	changeMapTheme: value => dispatch(changeMapTheme(value)),
+	changeHeatMap: value => dispatch(changeHeatMap(value))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectMap)

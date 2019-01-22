@@ -63,7 +63,6 @@ class HeaderLinks extends React.Component {
 		else
 		{
 			if (moment().format('MM') === '11') {
-				// let today = moment().format('DD')
 				return <IconButton onClick={this.handleRedirectToChristmas}>
 					<img src={christmas[0]} className={classes.img} alt={'christmas'} />
 				</IconButton>
@@ -105,12 +104,6 @@ class HeaderLinks extends React.Component {
 						}}
 						open={openProfile}
 						onClose={this.handleProfileClose}
-						// className={classes.menuList}
-						// MenuListProps={{
-						// 	classes: {
-						// 		padding: classes.menuList
-						// 	}
-						// }}
 					>
 						<MenuItem onClick={this.handleRedirectToOwnProfile}>
 							<AccountBox className={classes.leftIcon} />{t('menus.user.profile')}

@@ -1,8 +1,6 @@
 import React from 'react';
-// material-ui components
 import { InputAdornment, withStyles, CardContent, Collapse, Button, Grid, withWidth } from '@material-ui/core';
 import { LockOutlined, Person } from '@material-ui/icons';
-// core components
 import { GridContainer, ItemGrid, ItemG, TextF } from 'components';
 import Card from 'components/Card/Card.js';
 import CardBody from 'components/Card/CardBody.js';
@@ -24,7 +22,6 @@ var moment = require('moment')
 class LoginPage extends React.Component {
 	constructor(props) {
 		super(props);
-		// we use this to make the card to appear after the page has been rendered
 		this.state = {
 			cardAnimaton: 'cardHidden',
 			user: '',

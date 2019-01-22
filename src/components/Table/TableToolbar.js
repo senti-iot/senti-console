@@ -1,11 +1,10 @@
 import { Grid, IconButton, Menu, MenuItem, Toolbar, Typography, withStyles } from '@material-ui/core';
 import { MoreVert as MoreVertIcon } from 'variables/icons';
-// import FilterListIcon from '@material-ui/icons/FilterList';
 import { boxShadow } from 'assets/jss/material-dashboard-react';
 import toolbarStyles from 'assets/jss/material-dashboard-react/tableToolBarStyle';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { ItemGrid } from 'components';
 import { ItemG } from 'components/index';
@@ -13,6 +12,7 @@ import FilterToolbar from './FilterToolbar';
 
 let selectedRender = props => {
 	const { numSelected, t } = props;
+	const [anchor, setAnchor] = useState(null)
 	return <Grid container justify={'space-between'} alignItems={'center'}>
 		<ItemGrid>
 			<Typography variant='subtitle1'>
@@ -22,23 +22,17 @@ let selectedRender = props => {
 		<ItemGrid>
 			<IconButton
 				aria-label={t('menus.more')}
-				aria-owns={props.anchorElMenu ? 'long-menu' : null}
+				aria-owns={anchor ? 'long-menu' : null}
 				aria-haspopup='true'
-				onClick={props.handleToolbarMenuOpen}>
+				onClick={e => setAnchor(e.target)}>
 				<MoreVertIcon />
 			</IconButton>
 			<Menu
 				id='long-menu'
-				anchorEl={props.anchorElMenu}
-				open={Boolean(props.anchorElMenu)}
-				onClose={props.handleToolbarMenuClose}
-				PaperProps={{
-					style: {
-						// maxHeight: ITEM_HEIGHT * 4.5,
-						// width: 200,
-						boxShadow: boxShadow,
-					}
-				}}
+				anchorEl={anchor}
+				open={Boolean(anchor)}
+				onClose={e => setAnchor(null)}
+				PaperProps={{ style: { boxShadow: boxShadow } }}
 			>
 				{props.options().map((option, i) => {
 					if (option.dontShow)
@@ -62,9 +56,7 @@ let defaultRender = props => {
 	return <Fragment>
 		<ItemG xs container alignItems={'center'}>
 			{props.ft ? <FilterToolbar
-				addFilter={props.addFilter}
-				editFilter={props.editFilter}
-				removeFilter={props.removeFilter}
+				reduxKey={props.reduxKey}
 				filters={props.ft}
 				t={props.t}
 			/> : null}

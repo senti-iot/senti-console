@@ -11,7 +11,6 @@ import deviceStyles from 'assets/jss/views/deviceStyles';
 class ProjectDetails extends Component {
 
 	deleteProject = () => {
-		// this.handleCloseActionsDetails()
 		this.props.deleteProject()
 	}
 	editProject = () => {

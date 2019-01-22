@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
-// import PropTypes from 'prop-types'
-import { InfoCard, ItemGrid, DSelect, /* Caption */ } from 'components';
+import { InfoCard, ItemGrid, DSelect } from 'components';
 import { Build } from 'variables/icons'
 import { Grid, ListItem, List, ListItemText, withStyles, Collapse } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 import DInput from 'components/CustomInput/DInput';
 
-//Method ( Time/ Hits) + how many minutes/hits
-//Notifications
-//
 class CalibrationSettings extends Component {
 
 	changeCalType = e => {
@@ -32,12 +28,6 @@ class CalibrationSettings extends Component {
 			{ value: 1200, label: `20 ${t('settings.calibration.minutes')}` },
 			{ value: 1800, label: '30 ' + t('settings.calibration.minutes') }
 		]
-		// const notifications = [
-		// 	{ value: 0, label: t('settings.calibration.3months') },
-		// 	{ value: 1, label: t('settings.calibration.6months') },
-		// 	{ value: 2, label: t('settings.calibration.9months') },
-		// 	{ value: 3, label: t('settings.calibration.12months') }
-		// ]
 		return (
 			<InfoCard
 				noExpand
@@ -68,18 +58,6 @@ class CalibrationSettings extends Component {
 									</ItemGrid>
 								</ListItem>
 							</Collapse>
-							{/* <ListItem divider>
-								<ItemGrid container zeroMargin noPadding alignItems={'center'}>
-									<ListItemText>{t('settings.calibration.notification')}</ListItemText>
-									<DSelect menuItems={notifications} value={calNotifications} onChange={this.changeCalNotif} />
-								</ItemGrid>
-							</ListItem> */}
-							{/* <ListItem >
-								<ItemGrid container zeroMargin noPadding alignItems={'center'}>
-									<ListItemText>{t('settings.calibration.history')}</ListItemText>
-									<Caption>*Work in progress*</Caption>
-								</ItemGrid>
-							</ListItem> */}
 						</List>
 					</Grid>
 				}

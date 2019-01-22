@@ -6,6 +6,8 @@ import { dateTimeFormatter } from 'variables/functions';
 import moment from 'moment'
 import { DateRange } from 'variables/icons';
 import teal from '@material-ui/core/colors/teal'
+import { connect } from 'react-redux'
+import { changeDate } from 'redux/dateTime';
 
 const styles = theme => ({
 	selected: {
@@ -41,52 +43,58 @@ class DateFilterMenu extends Component {
 		{ id: 5, label: this.props.t('filters.dateOptions.90days') },
 		{ id: 6, label: this.props.t('filters.dateOptions.custom') },
 	]
-	handleSetDate = (id) => {
-
-		let to = null
-		let from = null
+	handleSetDate = (id, to, from, timeType) => {
+		let defaultT = 0
 		switch (id) {
 			case 0: // Today
 				from = moment().startOf('day')
 				to = moment()
+				defaultT = 1
 				break;
 			case 1: // Yesterday
 				from = moment().subtract(1, 'd').startOf('day')
 				to = moment().subtract(1, 'd').endOf('day')
+				defaultT = 1
 				break;
 			case 2: // This week
 				from = moment().startOf('week').startOf('day')
 				to = moment()
+				defaultT = 2
 				break;
 			case 3: // Last 7 days
 				from = moment().subtract(7, 'd').startOf('day')
 				to = moment()
+				defaultT = 2
 				break;
 			case 4: // last 30 days
 				from = moment().subtract(30, 'd').startOf('day')
 				to = moment()
+				defaultT = 2
 				break;
 			case 5: // last 90 days
 				from = moment().subtract(90, 'd').startOf('day')
 				to = moment()
+				defaultT = 2
 				break;
 			case 6:
-				from = this.props.from
-				to = this.props.to
+				from = moment(from)
+				to = moment(to)
+				defaultT = timeType
 				break;
 			default:
 				break;
 		}
-		this.props.handleSetDate(id, to, from, this.state.timeType)
-	}
-	handleCustomDate = date => e => {
-		this.props.handleCustomDate(date)(e)
+
+		this.props.handleSetDate(id, to, from, defaultT)
 	}
 
-	handleCloseDialog = () => {
+	handleCloseDialog = (to, from, timeType) => {
 		this.setState({ openCustomDate: false, actionAnchor: null })
-		this.handleSetDate(6)
+		this.handleSetDate(6, to, from, timeType)
 	}
+	/**
+	 * Menu Handling, close the menu and set the date or open Custom Date
+	 */
 	handleDateFilter = (event) => {
 		let id = event.target.value
 		if (id !== 6) {
@@ -107,12 +115,11 @@ class DateFilterMenu extends Component {
 		})
 	}
 	renderCustomDateDialog = () => {
-		const { to, from, t } = this.props
-		const { openCustomDate, timeType } = this.state
+		const { to, from, t, timeType } = this.props
+		const { openCustomDate } = this.state
 		return openCustomDate ? <CustomDateTime
 			openCustomDate={openCustomDate}
 			handleCloseDialog={this.handleCloseDialog}//
-			handleCustomDate={this.handleCustomDate}
 			to={to}
 			from={from}
 			timeType={timeType}
@@ -127,12 +134,11 @@ class DateFilterMenu extends Component {
 	handleCloseMenu= e => {
 		this.setState({ actionAnchor: null })
 	}
-	onChange = (e) => {
-
-	}
-	isSelected = (value) => value === this.props.dateOption ? true : false
+	
+	isSelected = (value) => value === this.props.id ? true : false
+	
 	render() {
-		const { to, from, t, dateOption, classes } = this.props
+		const { to, from, t, id, classes } = this.props
 		const { actionAnchor } = this.state
 		let displayTo = dateTimeFormatter(to)
 		let displayFrom = dateTimeFormatter(from)
@@ -161,7 +167,7 @@ class DateFilterMenu extends Component {
 					}}>
 					<ItemG container direction={'column'}>
 						<ItemGrid>
-							<Caption>{this.options[this.options.findIndex(d => d.id === dateOption ? true : false)].label}</Caption>
+							<Caption>{this.options[this.options.findIndex(d => d.id === id ? true : false)].label}</Caption>
 							<Info>{`${displayFrom} - ${displayTo}`}</Info>
 						</ItemGrid>
 						<Divider />
@@ -189,4 +195,16 @@ DateFilterMenu.propTypes = {
 	dateFilterInputID: PropTypes.number,
 	handleDateFilter: PropTypes.func,
 }
-export default withStyles(styles)(DateFilterMenu)
+
+const mapStateToProps = (state) => ({
+	id: state.dateTime.id,
+	to: state.dateTime.to,
+	from: state.dateTime.from,
+	timeType: state.dateTime.timeType
+})
+
+const mapDispatchToProps = (dispatch) => ({
+	handleSetDate: (id, to, from, timeType) => dispatch(changeDate(id, to, from, timeType))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DateFilterMenu))

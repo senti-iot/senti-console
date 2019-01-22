@@ -3,11 +3,9 @@ import cookie from 'react-cookies'
 import crypto from 'crypto'
 import moment from 'moment'
 
-// https://betabackend.senti.cloud/
-// https://senti.cloud
 
-const { REACT_APP_ENCRYPTION_KEY } = process.env // Must be 256 bytes (32 characters)
-const IV_LENGTH = 16 // For AES, this is always 16
+const { REACT_APP_ENCRYPTION_KEY } = process.env
+const IV_LENGTH = 16 
 
 const encrypt = (text) => {
 	let iv = crypto.randomBytes(IV_LENGTH)
@@ -56,7 +54,7 @@ export const customerDoIApi = create({
 		'Content-Type': 'application/json'
 	}
 })
-// const apiRoute = '/holidays/v1/2018-01-01/2018-12-31/da'
+/* const apiRoute = '/holidays/v1/2018-01-01/2018-12-31/da' */
 export const holidayApi = create({
 	baseURL: `https://api.senti.cloud/holidays/v1`,
 	timeout: 30000,

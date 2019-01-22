@@ -32,7 +32,6 @@ class Holiday extends Component {
 		}
 		else {
 			if (moment().format('MM') === '11') {
-				// let today = moment().format('DD')
 				return <img src={christmas[0]} className={classes.img} alt={'christmas'} />
 			}
 			return null
@@ -41,7 +40,6 @@ class Holiday extends Component {
 	}
 	render() {
 		const { classes, t } = this.props
-		// let today = moment().format('YYYY-MM-DD')
 		let today = '2018-12-01'
 		return (
 			<GridContainer>

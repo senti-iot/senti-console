@@ -4,13 +4,13 @@ import deburr from 'lodash/deburr';
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-// import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core'
 import { getAdresses } from 'variables/dataDevices';
 import withLocalization from 'components/Localization/T';
 import teal from '@material-ui/core/colors/teal'
+
 const styles = theme => ({
 	listItem: {
 		padding: theme.spacing.unit, 
@@ -44,11 +44,9 @@ const styles = theme => ({
 		right: 0,
 	},
 	suggestion: {
-		// display: 'block',
 	},
 	suggestionsList: {
 		maxHeight: 200,
-		// overflow: 'auto',
 		margin: 0,
 		padding: 0,
 		listStyleType: 'none',

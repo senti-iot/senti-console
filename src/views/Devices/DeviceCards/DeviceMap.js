@@ -5,14 +5,14 @@ import { Grid/*,  Checkbox, */, IconButton, Menu, MenuItem, Collapse, Dialog, Di
 import { red, teal } from "@material-ui/core/colors"
 import OpenStreetMap from 'components/Map/OpenStreetMap';
 import { getAddressByLocation, updateDevice } from 'variables/dataDevices';
+import { connect } from 'react-redux'
+import { changeMapTheme, changeHeatMap } from 'redux/appState';
 
-export default class DeviceMap extends PureComponent {
+class DeviceMap extends PureComponent {
 	constructor(props) {
 		super(props)
 		this.state = {
-			heatMap: false,
 			actionAnchorVisibility: null,
-			mapTheme: props.mapTheme,
 			editLocation: false,
 			openModalEditLocation: false,
 			markers: []
@@ -39,7 +39,8 @@ export default class DeviceMap extends PureComponent {
 	handleVisibility = e => (event) => {
 		if (event)
 			event.preventDefault()
-		this.setState({ mapTheme: e, actionAnchorVisibility: null })
+		this.props.changeMapTheme(e)
+		this.setState({ actionAnchorVisibility: null })
 	}
 	handleSaveEditAddress = async () => {
 		let device = this.state.markers[0]
@@ -81,8 +82,8 @@ export default class DeviceMap extends PureComponent {
 		})
 	}
 	renderMenu = () => {
-		const { t } = this.props
-		const { actionAnchorVisibility, mapTheme } = this.state
+		const { t, mapTheme } = this.props
+		const { actionAnchorVisibility } = this.state
 		return <Fragment>
 			<Collapse in={this.state.editLocation}>
 				<ItemG container>
@@ -123,7 +124,7 @@ export default class DeviceMap extends PureComponent {
 			
 			<Dropdown menuItems={
 				[
-					{ label: t('actions.heatMap'), selected: this.state.heatMap, icon: <WhatsHot style={{ padding: "0px 12px" }}/>, func: () => this.setState({ heatMap: !this.state.heatMap }) },
+					{ label: t('actions.heatMap'), selected: this.props.heatMap, icon: <WhatsHot style={{ padding: "0px 12px" }}/>, func: () => this.props.changeHeatMap( !this.props.heatMap ) },
 					{ label: t('actions.goToDevice'), icon: <Smartphone style={{ padding: "0px 12px" }} />, func: () => this.flyToMarkers() },
 					{ label: t('actions.editLocation'), selected: this.state.editLocation, icon: <EditLocation style={{ padding: '0px 12px' }}/>, func: () => this.handleEditLocation() }]
 			} />
@@ -196,12 +197,11 @@ export default class DeviceMap extends PureComponent {
 		</Dialog>
 	}
 	render() {
-		const { device, t, loading } = this.props
-		const { mapTheme } = this.state
+		const { device, t, loading, mapTheme, heatMap } = this.props
 		return (
 			<InfoCard
 				title={t('devices.cards.map')}
-				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat, long: device.long })}, Heatmap ${this.state.heatMap ? t('actions.on') : t('actions.off')}` : null}
+				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat, long: device.long })}, Heatmap ${heatMap ? t('actions.on') : t('actions.off')}` : null}
 				avatar={<Map />}
 				topAction={device ? (device.lat && device.long ? this.renderMenu() : null) : null}
 				hiddenContent={
@@ -214,7 +214,7 @@ export default class DeviceMap extends PureComponent {
 								getLatLng={this.getLatLngFromMap}
 								iRef={this.getRef}
 								mapTheme={mapTheme}
-								heatMap={this.state.heatMap}
+								heatMap={heatMap}
 								heatData={this.state.markers}
 								t={t}
 								markers={this.state.markers}
@@ -225,3 +225,14 @@ export default class DeviceMap extends PureComponent {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	mapTheme: state.appState.mapTheme ? state.appState.mapTheme : state.settings.mapTheme,
+	heatMap: state.appState.heatMap ? state.appState.heatMap : false
+})
+
+const mapDispatchToProps = (dispatch) => ({
+	changeMapTheme: (value) => dispatch(changeMapTheme(value)),
+	changeHeatMap: (value) => dispatch(changeHeatMap(value))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeviceMap)

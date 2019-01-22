@@ -60,7 +60,6 @@ class DeviceCard extends Component {
 				key={d.id}
 				title={d.name ? d.name : d.id}
 				avatar={this.renderIcon(d.liveStatus)}
-				// img={this.state.img}
 				topAction={
 					<ItemGrid noMargin noPadding>
 						<IconButton
@@ -75,25 +74,10 @@ class DeviceCard extends Component {
 							anchorEl={actionAnchor}
 							open={Boolean(actionAnchor)}
 							onClose={this.handleCloseActionsDetails}
-							PaperProps={{
-								style: {
-									// maxHeight: 200,
-									minWidth: 200
-								}
-							}}>
+							PaperProps={{ style: { minWidth: 200 } }}>
 							<MenuItem component={Link} to={`/device/${d.id}/edit`} style={{ color: 'black' }}>
 								<Edit className={classes.leftIcon} />{t('menus.edit')}
 							</MenuItem>
-							{/* <MenuItem onClick={() => alert(t('dialogs.warnings.wip'))}>
-										<Devices className={classes.leftIcon} />{t('menus.assignDevices')}
-									</MenuItem>
-									<MenuItem onClick={() => alert(t('dialogs.warnings.wip'))}>
-										<PictureAsPdf className={classes.leftIcon} />{t('menus.exportPDF')}
-									</MenuItem>
-									<MenuItem onClick={() => alert(t('dialogs.warnings.wip'))}>
-										<Delete className={classes.leftIcon} />{t('menus.delete')}
-									</MenuItem> */}
-									))}
 						</Menu>
 					</ItemGrid>
 				}

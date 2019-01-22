@@ -134,10 +134,6 @@ class DoughnutChart extends PureComponent {
 	render() {
 		const { classes } = this.props
 		const { tooltip, chartWidth } = this.state
-		;
-		
-		// let DayStr = tooltip.title[1] ? tooltip.title[1].charAt(0).toUpperCase() + tooltip.title[1].slice(1) : ''
-		// let DateStr = tooltip.title[0] ? tooltip.title[0] : ''
 		return (
 			<div style={{ maxHeight: 400, position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
 				<Doughnut

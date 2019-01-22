@@ -68,7 +68,6 @@ class CounterModal extends React.Component {
 		})
 	}
 	handleCount = async () => {
-		// let playSound = new Audio('/assets/sound/pop.mp3');
 		if (this.noSound) { 
 			if (this.state.count === 1)
 				this.setState({ count: this.state.count - 1, finished: true, started: false })
@@ -91,12 +90,10 @@ class CounterModal extends React.Component {
 		this.setState({ open: false });
 	};
 	fancyTimeFormat = (time) => {
-		// Hours, minutes and seconds
 		var hrs = ~~(time / 3600);
 		var mins = ~~((time % 3600) / 60);
 		var secs = time % 60;
 
-		// Output like '1:01' or '4:03:59' or '123:03:59'
 		var ret = '';
 
 		if (hrs > 0) {
@@ -130,7 +127,6 @@ class CounterModal extends React.Component {
 		const { started, finished } = this.state
 		return (
 			<Fragment>
-				{/* <Typography gutterBottom>Click to get the full Modal experience!</Typography> */}
 				<Button variant={'contained'} color={'primary'} onClick={this.handleOpen} styles={{ marginTop: 16 }}>
 					<OpenInBrowser className={classes.iconButton} /> {t('actions.openCounter')}
 				</Button>
@@ -169,7 +165,7 @@ class CounterModal extends React.Component {
 
 								<ItemGrid>
 									<Button
-										disabled={started}//change
+										disabled={started}
 										color={'primary'}
 										variant='contained'
 										onClick={this.state.count === 0 ? this.handleFinish : this.handleStart}>
@@ -191,7 +187,6 @@ class CounterModal extends React.Component {
 								</ItemGrid>
 							</div>
 						</ItemGrid>
-						{/* <SimpleModalWrapped /> */}
 					</Grid>
 				</Modal>
 			</Fragment>
@@ -208,8 +203,7 @@ const mapStateToProps = (state) => ({
 	count: state.settings.count
 })
 
-const mapDispatchToProps = (dispatch) => {
-	return {}
-}
+const mapDispatchToProps = (dispatch) => ({
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(countermodalStyles)(CounterModal));

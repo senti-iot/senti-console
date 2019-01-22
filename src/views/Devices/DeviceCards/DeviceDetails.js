@@ -7,8 +7,6 @@ import { ConvertDDToDMS, dateFormat, dateFormatter } from 'variables/functions'
 import { Link } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import Dropdown from 'components/Dropdown/Dropdown'
-// import teal from '@material-ui/core/colors/teal'
-// const Skycons = require('skycons')(window)
 
 class DeviceDetails extends Component {
 

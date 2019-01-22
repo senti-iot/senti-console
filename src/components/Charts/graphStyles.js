@@ -2,12 +2,7 @@ import teal from '@material-ui/core/colors/teal'
 
 export const graphStyles = theme => ({
 	largeIcon: {
-
 		color: theme.palette.type === 'dark' ? '#fff' : teal[500],
-		// [theme.breakpoints.down('sm')]: {
-		// 	width: 24,
-		// 	height: 24
-		// },
 		width: 24,
 		height: 24
 	},

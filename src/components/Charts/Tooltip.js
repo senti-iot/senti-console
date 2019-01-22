@@ -24,19 +24,15 @@ class Tooltip extends Component {
 			return `translate(${x}, ${y})`
 		}
 		if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
-			// x = '-15%'
 			y = '5%'
 		}
 		if (tooltip.left < (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
-			// x = '-15%'
 			y = '-105%'
 		}
 		if (tooltip.left > (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
-			// x = '-70%'
 			y = '5%'
 		}
 		if (tooltip.left > (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
-			// x = '-70%'
 			y = '-105%'
 		}
 		if (tooltip.left > chartWidth / 2) {
@@ -53,35 +49,21 @@ class Tooltip extends Component {
 		let date = moment(dateStr, 'lll').isValid() ? moment(dateStr, 'lll') : null
 		if (date) {
 			if (tooltip.lastPoint) {
-
-				//If Today
 				if (moment(date).diff(moment(), 'days') === 0) {
 					if (unit.chart === 'day') {
-						//Handle Days
-						// if (moment(date).diff(moment(), 'hours') === 0) {
-						// 	//If last hour
 						let plusOne = moment(date).startOf(unit.chart)
 						let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment().format(unit.tooltipFormat)} `
 						return finalStr
 					}
-					// else {
-					// 	let plusOne = moment(date).startOf('day')
-					// 	let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment().format(unit.tooltipFormat)} `
-					// 	return finalStr
-				}
-				// }
-			
+				}			
 				if (unit.chart === 'hour') {
 					if (moment().diff(moment(date), 'minutes') <= 60) {
-					//If last hour
-					// if (moment(date).diff(moment(), unit.chart) >= 0) {
 						let plusOne = moment(date).startOf(unit.chart)
 						let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment().format(unit.tooltipFormat)} `
 						return finalStr
 					}
 				}
 				if (unit.chart === 'minute') {
-				//Handle Minutes
 					if (moment().diff(moment(date), 'minutes') <= 60) {
 						let plusOne = moment(date).startOf('hour')
 						let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment().format(unit.tooltipFormat)} `
@@ -90,13 +72,9 @@ class Tooltip extends Component {
 				}
 			}
 		}
-
-		//Normal Date
 		let plusOne = moment(date).subtract(1, unit.chart)
 		let finalStr = `${moment(plusOne).format(unit.tooltipFormat)} - ${moment(date).format(unit.tooltipFormat)} `
 		return finalStr
-	
-		// return moment(dateStr, 'lll').isValid() ? moment(dateStr, 'lll').format('ll') : dateStr
 	}
 handleDate = () => {
 	const { tooltip } = this.props
@@ -181,7 +159,6 @@ render() {
 									</Fragment>
 								</ItemG>
 								{doi.length > 0 ? <ItemG container justify={'center'} xs={12} sm={6} md={6} lg={6} xl={6} style={{ padding: 8 }}>
-									{/* <ItemG xs={12}><Typography variant={'body1'}>{t('charts.fields.thisDay')}</Typography></ItemG> */}
 									<ItemG xs={2}><DateRange className={classes.largeIcon} /></ItemG>
 									<ItemG xs={10} style={{ paddingLeft: 4 }}>
 										{doi.length > 0 ? doi.map((d, i) => <T key={i}>
@@ -204,11 +181,8 @@ render() {
 }
 
 Tooltip.propTypes = {
-	//functions
 	getRef: PropTypes.func.isRequired,
 	handleCloseTooltip: PropTypes.func.isRequired,
-
-	//vars
 	tooltip: PropTypes.object.isRequired,
 	weather: PropTypes.oneOfType([
 		PropTypes.object,
@@ -216,9 +190,6 @@ Tooltip.propTypes = {
 	]),
 	chartWidth: PropTypes.number,
 	chartHeight: PropTypes.number,
-	//Redux
-	// daysOfInterest: PropTypes.object.isRequired,
-	//EndRedux
 }
 
 const mapStateToProps = (state, props) => ({
@@ -226,7 +197,6 @@ const mapStateToProps = (state, props) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	// getDateDoI: (date) => dispatch(') 
 	todayOfInterest: (date) => dispatch(todayOfInterest(moment(date, 'lll').format('YYYY-MM-DD')))
 })
 

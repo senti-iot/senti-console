@@ -28,9 +28,8 @@ export const assignDeviceToCollection = async (obj) => {
  * @param {Date} obj.end - Date
  */
 export const unassignDeviceFromCollection = async (obj) => {
-	// let obj = date ? { id: dcId, deviceId: dId, end: date } : { id: dcId, deviceId: dId }
 	let response = await api.post(`/senti/datacollection/unassigndevice`, obj)
-	return response.data ? response.data : response.status
+	return response.data ? response.data : null
 }
 /**
  * @function
