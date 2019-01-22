@@ -12,7 +12,7 @@ import { connect } from 'react-redux'
 import TP from 'components/Table/TP'
 import { Info, Caption, ItemG } from 'components';
 import { dateFormatter } from 'variables/functions';
-import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
+import { SignalWifi2Bar } from 'variables/icons'
 
 class CollectionTable extends React.Component {
 	constructor(props) {
@@ -40,6 +40,12 @@ class CollectionTable extends React.Component {
 	renderIcon = (status) => {
 		const { classes, t } = this.props
 		switch (status) {
+			case 0:
+				return <div title={t('devices.status.red')}>
+					<ItemG container justify={'center'}>
+						<SignalWifi2Bar className={classes.redSignal} />
+					</ItemG>
+				</div>
 			case 1:
 				return <div title={t('devices.status.yellow')}>
 					<ItemG container justify={'center'}>
@@ -52,14 +58,12 @@ class CollectionTable extends React.Component {
 						<SignalWifi2Bar className={classes.greenSignal} />
 					</ItemG>
 				</div>
-			case 0:
-				return <div title={t('devices.status.red')}>
+			case null: 
+				return <div title={t('devices.status.noDevice')}>
 					<ItemG container justify={'center'}>
-						<SignalWifi2Bar className={classes.redSignal} />
+						<SignalWifi2Bar />
 					</ItemG>
 				</div>
-			case null:
-				return <SignalWifi2BarLock />
 			default:
 				break;
 		}
@@ -113,7 +117,7 @@ class CollectionTable extends React.Component {
 									>
 										<Hidden lgUp>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-											<TC checkbox content={n.activeDeviceStats ? this.renderIcon(n.activeDeviceStats.state) : null} />
+											<TC checkbox content={this.renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : null)} />
 											<TC content={
 												<ItemG container alignItems={'center'}>
 													<ItemG>
@@ -130,11 +134,11 @@ class CollectionTable extends React.Component {
 											}
 											/>
 										</Hidden>
-										<Hidden mdDown>
-											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+										<Hidden mdDown >
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e)} />} />
 											<TC FirstC label={n.id} />
 											<TC FirstC label={n.name} />
-											<TC content={this.renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : 0)} />
+											<TC content={this.renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : null)} />
 											<TC label={dateFormatter(n.created)} />
 											<TC label={n.devices ? n.devices[0] ? dateFormatter(n.devices[0].start) : '' : ''} />
 											<TC label={n.org ? n.org.name : ''} />

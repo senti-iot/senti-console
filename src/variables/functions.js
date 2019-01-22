@@ -165,14 +165,15 @@ export const keyTester = (obj, sstr) => {
 	return found
 }
 const sortFunc = (a, b, orderBy, way) => {
-	let newA = _.get(a, orderBy) ? _.get(a, orderBy) : ''
-	let newB = _.get(b, orderBy) ? _.get(b, orderBy) : ''
-	if (typeof newA === 'number')
+	let newA =  _.get(a, orderBy) 
+	let newB =  _.get(b, orderBy)
+	console.log(typeof newA)
+	if (typeof newA === 'number' || typeof newA === 'undefined')
 		if (way) {
-			return newB <= newA ? -1 : 1
+			return -(newA > newB) || +(newA < newB) || (newA === null || newA === undefined) - (newB === null || newB === undefined);
 		}
 		else {
-			return newA < newB ? -1 : 1
+			return (newA === null || newA === undefined) - (newB === null || newB === undefined) || +(newA > newB) || -(newA < newB);
 		}
 	else {
 		if (way) {
@@ -181,7 +182,7 @@ const sortFunc = (a, b, orderBy, way) => {
 		else {
 			return newA.toString().toLowerCase() < newB.toString().toLowerCase() ? -1 : 1
 		}
-	}
+	} 
 }
 /**
  * Handle Sorting
