@@ -35,11 +35,15 @@ class FilterToolbar extends Component {
 	}
 
 	onBeforeAdd(chip) {
-		if (chip.length >= 3)
-			return true
+		if (typeof chip === 'string')
+			if (chip.length >= 3)
+				return true
+			else {
+				this.setState({ error: true })
+				return false
+			}
 		else { 
-			this.setState({ error: true })
-			return false
+			return true
 		}
 	}
 

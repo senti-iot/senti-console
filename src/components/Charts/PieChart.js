@@ -1,21 +1,29 @@
 import React, { PureComponent } from 'react'
 import { Pie } from 'react-chartjs-2';
-import { Typography, withStyles, Paper, Grow } from '@material-ui/core';
-import { ItemG, Caption } from 'components';
+import { withStyles } from '@material-ui/core';
 import { graphStyles } from './graphStyles';
 import { getWeather } from 'variables/dataDevices';
+import moment from 'moment'
+import PieTooltip from './PieTooltip';
+import { compose } from 'recompose';
+import { connect } from 'react-redux'
+
 
 class PieChart extends PureComponent {
 	constructor(props) {
 		super(props)
 		this.state = {
+			loc: {
+				lat: 0,
+				long: 0
+			},
 			tooltip: {
 				show: false,
 				title: '',
 				top: 0,
 				left: 0,
 				data: [],
-				exited: false
+				exited: true
 			},
 			lineOptions: {
 				categoryPercentage: 0.5,
@@ -58,15 +66,24 @@ class PieChart extends PureComponent {
 			return
 		}
 		let wDate = null
-		
+		let total = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data.length
+		let lastPoint = false
+		if (total - 1 === tooltipModel.dataPoints[0].index) { 
+			lastPoint = true
+		}
 		try {
+
 			let lat = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].lat
 			let long = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].long
-			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
+			wDate = moment(tooltipModel.body[0].lines[1]).format('YYYY-MM-DD HH:ss')
 			if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long)) {
 				this.setState({ weather: null })
 				getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then(rs => {
 					this.setState({
+						tooltip: {
+							...this.state.tooltip,
+							showWeather: true
+						},
 						weatherDate: wDate,
 						weather: rs,
 						loc: {
@@ -78,20 +95,19 @@ class PieChart extends PureComponent {
 			}
 		}
 		catch (err) {
-
+			console.log(err)
 		}
 		const left = tooltipModel.caretX;
 		const top = tooltipModel.caretY;
-		let str = tooltipModel.body[0].lines[0]
-		var date = str.substring(0, str.lastIndexOf(':'));
-		date = date.charAt(0).toUpperCase() + date.slice(1)
+		//Use tooltipModel.body[0].lines[1] for Date (moment Obj)
+		//Use tooltipModel.body[0].lines[2] for count (int)
 		this.setTooltip({
 			top,
 			left,
-			title: tooltipModel.body[0].lines[1],
-			date: date,
-			count: Math.round(parseInt(tooltipModel.body[0].lines[2], 10)),
-			color: tooltipModel.labelColors[0].backgroundColor
+			date: tooltipModel.body[0].lines[1],
+			count: tooltipModel.body[0].lines[2],
+			color: this.props.data.color,
+			lastPoint: lastPoint
 		})
 	}
 
@@ -128,63 +144,59 @@ class PieChart extends PureComponent {
 		}
 		this.hideTooltip()
 	}
+	setHours = (date) => {
+		if (this.props.unit.chart === 'day')
+			return moment(date).startOf('day').add(12, 'h')
+		else
+			return moment(date)
+	}
 	onMouseLeave = () => {
 		const { single } = this.props
 		return !single ? () => this.props.setHoverID(0) : undefined
 	}
+
+	getTooltipRef = (r) => {
+		this.tooltip = r
+	}
+
 	render() {
-		const { classes } = this.props
-		const { tooltip, chartWidth } = this.state
+		const { classes, unit, height } = this.props
+		const { tooltip, chartWidth, chartHeight, mobile, weather } = this.state
 		return (
-			<div style={{ maxHeight: 400, position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
+			<div style={{ maxHeight: height ? height : 200, position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
 				<Pie
 					data={this.props.data}
-					height={400}
+					height={height ? height : 200}
 					ref={r => this.chart = r}
 					options={this.state.lineOptions}
 					legend={this.legendOptions}
 					onElementsClick={this.elementClicked}
-
+				
 				/>
-				<div ref={r => this.tooltip = r} style={{
-					zIndex: tooltip.show ? 1200 : tooltip.exited ? -1 : 1200,
-					position: 'absolute',
-					top: Math.round(this.state.tooltip.top),
-					left: Math.round(this.state.tooltip.left),
-					transform: (tooltip.left) > (chartWidth / 2) ? 'translate(-105%, -50%)' : 'translate(5%, -50%)',
-					minWidth: 300
-				}}>
-					<Grow in={tooltip.show} onExited={this.exitedTooltip} >
-						<Paper className={classes.paper}>
-							<ItemG container>
-								<ItemG container direction='row' justify='space-between'>
-									<ItemG xs container direction='column'>
-										<Typography variant={'h6'} classes={{ root: classes.antialias }} >{`${tooltip.title}`}</Typography>
-										<Caption> {`(${tooltip.date})`}</Caption>
-									</ItemG>
-									{/* <ItemG xs={2}>
-										{this.state.weather ? <WeatherIcon icon={this.state.weather.currently.icon} /> : <CircularProgress size={37} />}
-									</ItemG> */}
-								</ItemG>
-								{/* <ItemG >
-									<Caption>{this.props.t('devices.fields.weather')}: {this.state.weather ? this.state.weather.currently.summary : null}</Caption>
-								</ItemG> */}
-								<ItemG container alignItems={'center'}>
-									<ItemG xs={1}>
-										<div style={{ background: tooltip.color, width: 15, height: 15, marginRight: 8 }} />
-									</ItemG>
-									{/* <ItemG xs={8}><Typography noWrap variant={'caption'}>{tooltip.device}</Typography></ItemG> */}
-									<ItemG xs={3}><Typography variant={'caption'} classes={{
-										root: classes.expand
-									}}>{tooltip.count}</Typography></ItemG>
-								</ItemG>
-							</ItemG>
-						</Paper>
-					</Grow>
-				</div>
+				<PieTooltip
+					getRef={this.getTooltipRef}
+					tooltip={tooltip}
+					handleCloseTooltip={this.exitedTooltip}
+					mobile={mobile}
+					classes={classes}
+					t={this.props.t}
+					chartHeight={chartHeight}
+					chartWidth={chartWidth}
+					weather={weather}
+					unit={unit}
+				/>
 			</div>
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	lang: state.settings.language
+})
 
-export default withStyles(graphStyles, { withTheme: true })(PieChart)
+const mapDispatchToProps = {
+  
+}
+
+let PieChartCompose = compose(connect(mapStateToProps, mapDispatchToProps), withStyles(graphStyles, { withTheme: true }))(PieChart)
+
+export default PieChartCompose

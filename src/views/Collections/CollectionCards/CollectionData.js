@@ -2,7 +2,7 @@ import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types'
 import {
 	Grid, IconButton, Menu, withStyles, ListItem,
-	ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox,
+	ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox, Typography,
 } from '@material-ui/core';
 import {
 	Timeline, MoreVert,
@@ -164,26 +164,46 @@ class CollectionData extends PureComponent {
 		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device, chartType } = this.props
 		switch (chartType) {
 			case 0:
-				return roundDataSets ? <div style={{ maxHeight: 400 }}>
-					<PieChart
-						title={title}
-						single //temporary
-						unit={this.timeTypes[timeType]}
-						setHoverID={setHoverID}
-						data={roundDataSets}
-					/>
-				</div>
+				return roundDataSets ?
+					<ItemG container >
+						{roundDataSets.map((d, i) => {
+							return <ItemG key={i} xs={12} direction={'column'} container justify={'center'}>
+								<div style={{ maxHeight: 300 }}>
+									<PieChart
+										height={300}
+										title={title}
+										single
+										unit={this.timeTypes[timeType]}
+										setHoverID={setHoverID}
+										data={d}
+										t={t}
+									/>
+								</div>
+								<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
+							</ItemG>
+						})}
+					</ItemG>
 					: this.renderNoData()
 			case 1:
 				return roundDataSets ?
-					<div style={{ maxHeight: 400 }}>
-						<DoughnutChart
-							title={title}
-							single //temporary
-							unit={this.timeTypes[timeType]}
-							setHoverID={setHoverID}
-							data={roundDataSets}
-						/></div>
+					<ItemG container >
+						{roundDataSets.map(d => {
+							return <ItemG key={d.id} xs={12} direction={'column'} container justify={'center'}>
+								<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
+								<div style={{ maxHeight: 300 }}>
+									<DoughnutChart
+										height={300}
+										title={title}
+										single
+										unit={this.timeTypes[timeType]}
+										setHoverID={setHoverID}
+										data={d}
+										t={t}
+									/>	
+								</div>
+							</ItemG>
+						})}
+					</ItemG>
 					: this.renderNoData()
 			case 2:
 				return barDataSets ? <div style={{ maxHeight: 400 }}>
@@ -352,7 +372,7 @@ CollectionData.propTypes = {
 	device: PropTypes.object,
 }
 const mapStateToProps = (state) => ({
-	chartType: state.appState.chartType ? state.appState.chartType : state.settings.chartType
+	chartType: state.appState.chartType !== null ? state.appState.chartType : state.settings.chartType
 })
 
 const mapDispatchToProps = dispatch => ({

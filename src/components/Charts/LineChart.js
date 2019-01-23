@@ -63,6 +63,10 @@ class LineChart extends PureComponent {
 				data: [],
 				exited: true
 			},
+			loc: {
+				lat: 0,
+				long: 0
+			},
 			lineOptions: {
 				responsive: true,
 				animation: {

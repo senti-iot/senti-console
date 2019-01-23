@@ -58,7 +58,7 @@ class Device extends Component {
 					if (rs.dataCollection) {
 						await this.getDataCollection(rs.dataCollection)
 					}
-					this.getWifiDaily()
+					this.handleSwitchDayHourSummary()
 					this.getHeatMapData()
 					if (rs.lat && rs.long) {
 						let data = await getWeather(rs, moment(), this.props.language)

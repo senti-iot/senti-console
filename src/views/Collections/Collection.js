@@ -83,7 +83,7 @@ class Collection extends Component {
 				}
 				if (rs.activeDeviceStats) { 
 					await this.getActiveDevice(rs.activeDeviceStats.id)
-					this.getWifiDaily()
+					this.handleSwitchDayHourSummary()
 					this.getHeatMapData()
 				}
 				else {
