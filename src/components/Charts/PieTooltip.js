@@ -128,7 +128,7 @@ class PieTooltip extends Component {
 							<Collapse in={tooltip.showWeather}>
 								<ItemG container>
 									<ItemG container xs={12} sm={6} md={6} lg={6} xl={6} style={{ padding: 8 }}>
-										{weather ? <ItemG xs={12}><WeatherIcon icon={weather.currently.icon} /></ItemG> : null}
+										{typeof weather === 'object' ? <ItemG xs={12}><WeatherIcon icon={weather.currently.icon} /></ItemG> : null}
 										<Fragment>
 											<ItemG container direction='row' xs={12}>
 												<T>

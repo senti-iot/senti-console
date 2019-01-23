@@ -80,6 +80,7 @@ export const allDatesToArr = (from, to) => {
 		arr.push(d.toDate())
 		d = d.clone().add(1, 'd')
 	}
+	return arr
 }
 export const datesToArr = (from, to) => {
 	let startDate = moment(from)
