@@ -169,7 +169,6 @@ class DeviceData extends PureComponent {
 					<ItemG container >
 						{roundDataSets.map((d, i) => {
 							return <ItemG key={i} xs={12} direction={'column'} container justify={'center'}>
-								<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
 								<div style={{ maxHeight: 300 }}>
 									<PieChart
 										height={300}
@@ -181,6 +180,7 @@ class DeviceData extends PureComponent {
 										t={t}
 									/>
 								</div>
+								<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
 							</ItemG>
 						})}
 					</ItemG>

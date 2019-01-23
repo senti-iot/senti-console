@@ -173,8 +173,7 @@ class ProjectData extends PureComponent {
 				return roundDataSets ?
 					<ItemG container >
 						{roundDataSets.map((d, i) => {
-							return <ItemG key={i} xs direction={'column'} container justify={'center'}>
-								<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
+							return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md={roundDataSets.length >= 2 ? 6 : 12} direction={'column'} container justify={'center'}>
 								<div style={{ maxHeight: 300 }}>
 									<PieChart
 										height={300}
@@ -186,6 +185,7 @@ class ProjectData extends PureComponent {
 										t={t}
 									/>
 								</div>
+								<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
 							</ItemG>
 						})}
 					</ItemG>
@@ -193,9 +193,8 @@ class ProjectData extends PureComponent {
 			case 1:
 				return roundDataSets ?
 					<ItemG container >
-						{roundDataSets.map(d => {
-							return <ItemG key={d.id} xs={6} direction={'column'} container justify={'center'}>
-								<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
+						{roundDataSets.map((d, i) => {
+							return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md={roundDataSets.length >= 2 ? 6 : 12} direction={'column'} container justify={'center'}>
 								<div style={{ maxHeight: 300 }}>
 									<DoughnutChart
 										height={300}
@@ -205,7 +204,9 @@ class ProjectData extends PureComponent {
 										setHoverID={setHoverID}
 										data={d}
 										t={t}
-									/>	</div>
+									/>
+								</div>
+								<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
 							</ItemG>
 						})}
 					</ItemG>
