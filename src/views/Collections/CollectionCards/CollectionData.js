@@ -167,7 +167,7 @@ class CollectionData extends PureComponent {
 				return roundDataSets ?
 					<ItemG container >
 						{roundDataSets.map((d, i) => {
-							return <ItemG key={i} xs={6} direction={'column'} container justify={'center'}>
+							return <ItemG key={i} xs={12} direction={'column'} container justify={'center'}>
 								<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
 								<div style={{ maxHeight: 300 }}>
 									<PieChart
@@ -188,7 +188,7 @@ class CollectionData extends PureComponent {
 				return roundDataSets ?
 					<ItemG container >
 						{roundDataSets.map(d => {
-							return <ItemG key={d.id} xs={6} direction={'column'} container justify={'center'}>
+							return <ItemG key={d.id} xs={12} direction={'column'} container justify={'center'}>
 								<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
 								<div style={{ maxHeight: 300 }}>
 									<DoughnutChart
