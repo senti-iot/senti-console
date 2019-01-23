@@ -7,6 +7,7 @@ import moment from 'moment'
 import PieTooltip from './PieTooltip';
 import { compose } from 'recompose';
 import { connect } from 'react-redux'
+import SummaryTooltip from './SummaryTooltip';
 
 
 class DoughnutChart extends PureComponent {
@@ -65,12 +66,14 @@ class DoughnutChart extends PureComponent {
 			this.hideTooltip()
 			return
 		}
-		let wDate = null
+
 		let total = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data.length
 		let lastPoint = false
 		if (total - 1 === tooltipModel.dataPoints[0].index) {
 			lastPoint = true
 		}
+
+		let wDate = null
 		try {
 
 			let lat = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].lat
@@ -100,7 +103,21 @@ class DoughnutChart extends PureComponent {
 		const left = tooltipModel.caretX;
 		const top = tooltipModel.caretY;
 		//Use tooltipModel.body[0].lines[1] for Date (moment Obj)
-		//Use tooltipModel.body[0].lines[2] for count (int)
+		//Use tooltipModel.body[0].lines[2] for count (int)\
+		if (this.props.timeType === 3) {
+			let from = this.props.data.from
+			let to = this.props.data.to
+			return this.setTooltip({
+				to,
+				from,
+				top,
+				left,
+				name: tooltipModel.body[0].lines[1],
+				count: tooltipModel.body[0].lines[2],
+				color: tooltipModel.labelColors[0].backgroundColor,
+				lastPoint: lastPoint
+			})
+		}
 		this.setTooltip({
 			top,
 			left,
@@ -109,6 +126,7 @@ class DoughnutChart extends PureComponent {
 			color: this.props.data.color,
 			lastPoint: lastPoint
 		})
+
 	}
 
 
@@ -125,7 +143,14 @@ class DoughnutChart extends PureComponent {
 		this.setState({
 			tooltip: {
 				...this.state.tooltip,
-				exited: true
+				exited: true,
+
+				show: false,
+				title: '',
+				top: 0,
+				left: 0,
+				data: [],
+
 			}
 		})
 	}
@@ -160,7 +185,7 @@ class DoughnutChart extends PureComponent {
 	}
 
 	render() {
-		const { classes, unit, height } = this.props
+		const { classes, unit, height, timeType } = this.props
 		const { tooltip, chartWidth, chartHeight, mobile, weather } = this.state
 		return (
 			<div style={{ maxHeight: height ? height : 200, position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
@@ -173,7 +198,7 @@ class DoughnutChart extends PureComponent {
 					onElementsClick={this.elementClicked}
 
 				/>
-				<PieTooltip
+				{timeType === 3 ? <SummaryTooltip
 					getRef={this.getTooltipRef}
 					tooltip={tooltip}
 					handleCloseTooltip={this.exitedTooltip}
@@ -182,16 +207,33 @@ class DoughnutChart extends PureComponent {
 					t={this.props.t}
 					chartHeight={chartHeight}
 					chartWidth={chartWidth}
-					weather={weather}
 					unit={unit}
-				/>
+				/> :
+
+					<PieTooltip
+						getRef={this.getTooltipRef}
+						tooltip={tooltip}
+						handleCloseTooltip={this.exitedTooltip}
+						mobile={mobile}
+						classes={classes}
+						t={this.props.t}
+						chartHeight={chartHeight}
+						chartWidth={chartWidth}
+						weather={weather}
+						unit={unit}
+					/>
+				}
 			</div>
 		)
 	}
 }
-const mapStateToProps = (state) => ({
-	lang: state.settings.language
-})
+const mapStateToProps = (state) => {
+	console.log(state)
+	return ({
+		lang: state.settings.language,
+		timeType: state.dateTime.timeType
+	})
+}
 
 const mapDispatchToProps = {
 

@@ -17,7 +17,7 @@ import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
 import { Timeline, DeviceHub, Map, DeveloperBoard, Image } from 'variables/icons';
 import teal from '@material-ui/core/colors/teal'
-import { getWifiHourly, getWifiDaily, getWifiMinutely } from 'components/Charts/DataModel';
+import { getWifiHourly, getWifiDaily, getWifiMinutely, getWifiSummary } from 'components/Charts/DataModel';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 
 class Device extends Component {
@@ -202,11 +202,29 @@ class Device extends Component {
 				this.getWifiDaily()
 				break
 			case 3:
-				this.getWifiSum()
+				this.getWifiSummary()
 				break
 			default:
 				break;
 		}
+	}
+	getWifiSummary= async () => {
+		const { raw, device, hoverID } = this.state
+		const { from, to } = this.props
+		let newState = await getWifiSummary('device', [{
+			name: device.name,
+			id: device.id,
+			lat: device.lat,
+			long: device.long,
+			org: device.org ? device.org.name : "",
+			color: teal[500]
+		}], from, to, hoverID, raw)
+
+		this.setState({
+			...this.state,
+			loadingData: false,
+			...newState
+		})
 	}
 	getWifiHourly = async () => {
 		const { raw, device, hoverID } = this.state
