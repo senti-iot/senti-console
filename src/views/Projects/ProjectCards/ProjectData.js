@@ -55,7 +55,7 @@ class ProjectData extends PureComponent {
 		{ id: 0, format: 'lll dddd', chart: 'minute', tooltipFormat: 'LT' },
 		{ id: 1, format: 'lll dddd', chart: 'hour', tooltipFormat: 'LT' },
 		{ id: 2, format: 'lll dddd', chart: 'day', tooltipFormat: 'lll' },
-		{ id: 3, format: 'll dddd', chart: 'month', tooltipFormat: 'MMM YY' },
+		{ id: 3, format: 'll dddd', chart: 'month', tooltipFormat: 'll' },
 	]
 	visibilityOptions = [
 		{ id: 0, icon: <PieChartRounded />, label: this.props.t('charts.type.pie') },
@@ -168,6 +168,7 @@ class ProjectData extends PureComponent {
 
 	renderType = () => {
 		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device, chartType } = this.props
+		console.log(roundDataSets)
 		switch (chartType) {
 			case 0:
 				return roundDataSets ?
@@ -187,7 +188,10 @@ class ProjectData extends PureComponent {
 								</div>
 								<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
 							</ItemG>
+							 
 						})}
+							
+						
 					</ItemG>
 					: this.renderNoData()
 			case 1:
@@ -330,7 +334,7 @@ class ProjectData extends PureComponent {
 							</List>
 						</Collapse>
 					</Hidden>
-				</div>
+				</div>appState
 			</Menu>
 		</Fragment>
 	}
@@ -380,7 +384,8 @@ ProjectData.propTypes = {
 	project: PropTypes.object.isRequired,
 }
 const mapStateToProps = (state) => ({
-	chartType: state.appState.chartType !== null ? state.appState.chartType : state.settings.chartType
+	chartType: state.appState.chartType !== null ? state.appState.chartType : state.settings.chartType,
+	timeType: state.dateTime.timeType
 })
 
 const mapDispatchToProps = dispatch => ({

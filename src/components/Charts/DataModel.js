@@ -1,13 +1,14 @@
-import { dateTimeFormatter, datesToArr, hoursToArr, minutesToArray, isWeekend, weekendColors } from 'variables/functions';
+import { datesToArr, hoursToArr, minutesToArray, isWeekend, weekendColors } from 'variables/functions';
 import { teal } from '@material-ui/core/colors'
 import moment from 'moment'
 import { colors } from 'variables/colors';
 import {
 	getDataHourly as getDeviceDataHourly,
 	getDataDaily as getDeviceDataDaily,
-	getDataMinutely as getDeviceDataMinutely
+	getDataMinutely as getDeviceDataMinutely,
+	getDataSummary as getDeviceDataSummary
 } from 'variables/dataDevices';
-import { getDataHourly, getDataDaily, getDataMinutely } from 'variables/dataCollections';
+import { getDataHourly, getDataDaily, getDataMinutely, getDataSummary } from 'variables/dataCollections';
 
 const format = 'YYYY-MM-DD+HH:mm'
 
@@ -82,37 +83,122 @@ export const setExportData = (dataArr, unit) => {
 	return newData
 
 }
-export const setSummaryData = (dataArr, from, to) => {
-	let displayTo = dateTimeFormatter(to)
-	let displayFrom = dateTimeFormatter(from)
-	let state = {
-		loading: false,
-		timeType: 2,
-		lineDataSets: null,
-		roundDataSets: null,
-		barDataSets: null
-	}
+
+export const getWifiSummary = async (type, objArr, from, to, hoverId, raw) => {
+	let startDate = moment(from).format(format)
+	let endDate = moment(to).format(format)
+	let dataArr = []
+	let dataSet = null
+	let data = null
+	await Promise.all(objArr.map(async o => {
+		if (type === 'device')
+			data = await getDeviceDataSummary(o.id, startDate, endDate, raw)
+		else {
+			data = await getDataSummary(o.id, startDate, endDate, raw)
+		}
+		dataSet = {
+			name: o.name,
+			id: o.id,
+			lat: o.lat,
+			long: o.long,
+			org: o.orgName,
+			data: [data],
+			...o,
+		}
+		return dataArr.push(dataSet)
+	}))
+	//Filter nulls
+	dataArr = dataArr.reduce((newArr, d) => {
+		if (d.data !== null)
+			newArr.push(d)
+		return newArr
+	}, [])
+	let newState = setSummaryData(dataArr, from, to, hoverId)
+	let exportData = setExportData(dataArr, 'day')
+	return { ...newState, exportData, dataArr }
+}
+
+export const setSummaryData = (dataArr, from, to, hoverID) => {
+	let state = null
+	let labels = [from, to]
 	if (dataArr.length > 0) {
 		state = {
-			title: `${displayFrom} - ${displayTo}`,
 			loading: false,
-			timeType: 3,
-			roundDataSets: {
-				labels: Object.entries(dataArr[0].data).map(l => [moment(l[0]).format('ll'), moment(l[0]).format('dddd'), l[1]]),
-				datasets: dataArr.map((d) => ({
+			timeType: 2,
+			lineDataSets: {
+				labels: labels,
+				datasets: dataArr.map((d, index) => ({
 					id: d.id,
 					lat: d.lat,
 					long: d.long,
-					backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
+					backgroundColor: d.color,
+					borderColor: d.color,
+					// colors: linecolors(Object.entries(d.data), d.color, index),
+					borderWidth: hoverID === d.id ? 8 : 3,
+					fill: false,
 					label: [d.name],
-					data: Object.entries(d.data).map(d => d[1])
+					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
 				}))
+			},
+			barDataSets: {
+				labels: labels,
+				datasets: dataArr.map((d, index) => ({
+					id: d.id,
+					lat: d.lat,
+					long: d.long,
+					// backgroundColor: linecolors(Object.entries(d.data), d.color, index),
+					borderColor: teal[500],
+					borderWidth: hoverID === d.id ? 4 : 0,
+					fill: false,
+					label: [d.name],
+					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
+				}))
+			},
+			roundDataSets: [{
+				from: from,
+				to: to,
+				labels: dataArr.map(d => [d.name, d.name, d.data[0]] ),
+				datasets: [{
+					data: dataArr.map(d => d.data[0]),
+					backgroundColor: dataArr.map(d => d.color),
+				}]
+			}]
 
-			}
 		}
+		return state
 	}
-	return state
 }
+// export const setSummaryData = (dataArr, from, to) => {
+// 	let displayTo = dateTimeFormatter(to)
+// 	let displayFrom = dateTimeFormatter(from)
+// 	let state = {
+// 		loading: false,
+// 		timeType: 2,
+// 		lineDataSets: null,
+// 		roundDataSets: null,
+// 		barDataSets: null
+// 	}
+// 	if (dataArr.length > 0) {
+// 		state = {
+// 			title: `${displayFrom} - ${displayTo}`,
+// 			loading: false,
+// 			timeType: 3,
+// 			roundDataSets: {
+// 				labels: Object.entries(dataArr[0].data).map(l => [moment(l[0]).format('ll'), moment(l[0]).format('dddd'), l[1]]),
+// 				datasets: dataArr.map((d) => ({
+// 					id: d.id,
+// 					lat: d.lat,
+// 					long: d.long,
+// 					backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
+// 					label: [d.name],
+// 					data: Object.entries(d.data).map(d => d[1])
+// 				}))
+
+// 			}
+// 		}
+// 	}
+// 	return state
+// }
 
 export const getWifiDaily = async (type, objArr, from, to, hoverId, raw) => {
 	let startDate = moment(from).format(format)
@@ -205,18 +291,6 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 					}]
 				}))
 		}
-		// roundDataSets: {
-		// 	labels: Object.entries(dataArr[0].data).map(l => [moment(l[0]).format('ll'), moment(l[0]).format('dddd'), l[1]]),
-		// 	datasets: dataArr.map((d) => ({
-		// 		id: d.id,
-		// 		lat: d.lat,
-		// 		long: d.long,
-		// 		backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
-		// 		label: [d.name],
-		// 		data: Object.entries(d.data).map(d => d[1])
-		// 	}))
-
-		// }
 	}
 
 	return state

@@ -14,7 +14,7 @@ import { getDevice, getWeather } from 'variables/dataDevices';
 import ActiveDeviceMap from './CollectionCards/CollectionActiveDeviceMap';
 import moment from 'moment'
 import teal from '@material-ui/core/colors/teal'
-import { setSummaryData, getWifiDaily, getWifiMinutely, getWifiHourly } from 'components/Charts/DataModel';
+import { getWifiDaily, getWifiMinutely, getWifiHourly, getWifiSummary } from 'components/Charts/DataModel';
 import { DataUsage, Timeline, Map, DeviceHub, History } from 'variables/icons';
 import Toolbar from 'components/Toolbar/Toolbar';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
@@ -192,7 +192,7 @@ class Collection extends Component {
 	}
 
 	handleSetCustomRange = () => {
-		const { timeType } = this.state
+		const { timeType } = this.props
 		switch (timeType) {
 			case 0:
 				this.getWifiMinutely()
@@ -204,13 +204,33 @@ class Collection extends Component {
 				this.getWifiDaily()
 				break
 			case 3:
-				this.getWifiSum()
+				this.getWifiSummary()
 				break
 			default:
 				break;
 		}
 	}
+	getWifiSummary = async () => {
+		const { raw, collection, hoverID } = this.state
+		const { from, to } = this.props
 
+		let newState = await getWifiSummary('collection', [{
+			dcId: collection.id,
+			dcName: collection.name,
+			project: collection.project ? collection.project.title : "",
+			org: collection.org ? collection.org.name : "",
+			name: collection.name,
+			id: collection.activeDevice ? collection.activeDevice.id : collection.id,
+			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
+			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
+			color: teal[500]
+		}], from, to, hoverID, raw)
+
+		this.setState({
+			loadingData: false,
+			...newState
+		})
+	}
 	getWifiHourly = async () => {
 		const { raw, collection, hoverID } = this.state
 		const { from, to } = this.props
@@ -242,7 +262,7 @@ class Collection extends Component {
 			project: collection.project ? collection.project.title : "",
 			org: collection.org ? collection.org.name : "",
 			name: collection.name,
-			id: collection.activeDevice ? collection.activeDevice.id : collection.id,
+			id: collection.id,
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500]
@@ -264,7 +284,7 @@ class Collection extends Component {
 			project: collection.project ? collection.project.title : "",
 			org: collection.org ? collection.org.name : "",
 			name: collection.name,
-			id: collection.activeDevice ? collection.activeDevice.id : collection.id,
+			id: collection.id,
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500]
@@ -273,36 +293,6 @@ class Collection extends Component {
 		this.setState({
 			...this.state,
 			loadingData: false,
-			...newState
-		})
-	}
-
-	getWifiSum = async () => {
-		const { from, to, raw, collection, hoverID } = this.state
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataArr = []
-		let dataSet = null
-		let data = await getDataSummary(collection.id, startDate, endDate, raw)
-		dataSet = {
-			name: collection.name,
-			id: collection.id,
-			data: this.regenerateData(data, 'day'),
-			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
-			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
-			color: teal[500]
-		}
-		dataArr.push(dataSet)
-		dataArr = dataArr.reduce((newArr, d) => {
-			if (d.data !== null)
-				newArr.push(d)
-			return newArr
-		}, [])
-		let newState = setSummaryData(dataArr, from, to, hoverID)
-		this.setState({
-			...this.state,
-			loadingData: false,
-			timeType: 3,
 			...newState
 		})
 	}

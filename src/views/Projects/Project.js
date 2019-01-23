@@ -11,7 +11,7 @@ import { colors } from 'variables/colors';
 import ProjectMap from './ProjectCards/ProjectMap';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { getDataSummary } from 'variables/dataCollections';
-import { getWifiDaily, getWifiMinutely, getWifiHourly, setMinutelyData, setHourlyData, setDailyData, setSummaryData } from 'components/Charts/DataModel';
+import { getWifiDaily, getWifiMinutely, getWifiHourly, setMinutelyData, setHourlyData, setDailyData, setSummaryData, getWifiSummary } from 'components/Charts/DataModel';
 import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
 import { Timeline, Map, DataUsage, Person, LibraryBooks } from 'variables/icons';
@@ -62,6 +62,9 @@ class Project extends Component {
 			}
 	}
 	componentDidUpdate = (prevProps) => {
+		if (prevProps.roundDataSets !== this.props.roundDataSets) { 
+			console.log(prevProps.roundDataSets, this.props.roundDataSets)
+		}
 		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from)
 			this.handleSwitchDayHourSummary()
 		if (this.props.saved === true) {
@@ -166,7 +169,29 @@ class Project extends Component {
 			...newState
 		})
 	}
+	getWifiSummary = async () => { 
+		const { raw, project, hoverID } = this.state
+		const { from, to } = this.props
 
+		let dcs = project.dataCollections.map(d => {
+			return {
+				dcId: d.id,
+				dcName: d.name,
+				project: project ? project.title : "",
+				org: d.org ? d.org.name : "",
+				name: d.name,
+				id: d.id,
+				color: d.color,
+				lat: d.activeDevice ? d.activeDevice.lat : 0,
+				long: d.activeDevice ? d.activeDevice.long : 0
+			}
+		})
+		let newState = await getWifiSummary('collection', dcs, from, to, hoverID, raw)
+		this.setState({
+			loadingData: false,
+			...newState
+		})
+	}
 	getHeatMapData = async () => {
 		const { from, to, project } = this.state
 		let startDate = moment(from).format(this.format)
@@ -236,7 +261,7 @@ class Project extends Component {
 				this.getWifiDaily()
 				break
 			case 3:
-				this.getWifiSum()
+				this.getWifiSummary()
 				break
 			default:
 				break;
