@@ -364,7 +364,7 @@ DeviceData.propTypes = {
 	device: PropTypes.object.isRequired,
 }
 const mapStateToProps = (state) => ({
-	chartType: state.appState.chartType ? state.appState.chartType : state.settings.chartType
+	chartType: state.appState.chartType !== null ? state.appState.chartType : state.settings.chartType
 })
 
 const mapDispatchToProps = dispatch => ({

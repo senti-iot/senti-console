@@ -2,7 +2,7 @@ import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types'
 import {
 	Grid, IconButton, Menu, withStyles, ListItem,
-	ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox,
+	ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox, Typography,
 } from '@material-ui/core';
 import {
 	Timeline, MoreVert,
@@ -164,15 +164,26 @@ class CollectionData extends PureComponent {
 		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device, chartType } = this.props
 		switch (chartType) {
 			case 0:
-				return roundDataSets ? <div style={{ maxHeight: 400 }}>
-					<PieChart
-						title={title}
-						single //temporary
-						unit={this.timeTypes[timeType]}
-						setHoverID={setHoverID}
-						data={roundDataSets}
-					/>
-				</div>
+				return roundDataSets ? <ItemG container >
+					{roundDataSets.datasets.map(d => {
+						let dataSet = {
+							labels: roundDataSets.labels,
+							datasets: [d]
+						}
+						return <ItemG key={d.id} xs={4} container justify={'center'}>
+							<Typography variant={'subtitle1'}>{d.label}</Typography>
+							<div style={{ maxHeight: 200 }}>
+								<PieChart
+									title={title}
+									single
+									unit={this.timeTypes[timeType]}
+									setHoverID={setHoverID}
+									data={dataSet}
+								/>
+							</div>
+						</ItemG>
+					})}
+				</ItemG>
 					: this.renderNoData()
 			case 1:
 				return roundDataSets ?
@@ -352,7 +363,7 @@ CollectionData.propTypes = {
 	device: PropTypes.object,
 }
 const mapStateToProps = (state) => ({
-	chartType: state.appState.chartType ? state.appState.chartType : state.settings.chartType
+	chartType: state.appState.chartType !== null ? state.appState.chartType : state.settings.chartType
 })
 
 const mapDispatchToProps = dispatch => ({
