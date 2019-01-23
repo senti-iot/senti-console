@@ -35,10 +35,10 @@ class NewContent extends React.Component {
 					aria-labelledby='alert-dialog-title'
 					aria-describedby='alert-dialog-description'
 				>
-					<DialogTitle id='alert-dialog-title'>Update Found</DialogTitle>
+					<DialogTitle id='alert-dialog-title'>Senti.Cloud Update Found</DialogTitle>
 					<DialogContent>
 						<Typography id='alert-dialog-description'>
-							New Content is available! {this.props.installing ? `Updating...` : `Please reload the page!`}
+							Senti.Cloud update is available! {this.props.installing ? `Updating...` : `Please reload the page to access updates!`}
 						</Typography>
 					</DialogContent>
 					<DialogActions>
