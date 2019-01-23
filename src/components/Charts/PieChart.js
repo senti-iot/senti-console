@@ -112,7 +112,7 @@ class PieChart extends PureComponent {
 				from,
 				top,
 				left,
-				date: tooltipModel.body[0].lines[1],
+				name: tooltipModel.body[0].lines[1],
 				count: tooltipModel.body[0].lines[2],
 				color: tooltipModel.labelColors[0].backgroundColor,
 				lastPoint: lastPoint
@@ -143,7 +143,14 @@ class PieChart extends PureComponent {
 		this.setState({
 			tooltip: {
 				...this.state.tooltip,
-				exited: true
+				exited: true,
+			
+				show: false,
+				title: '',
+				top: 0,
+				left: 0,
+				data: [],
+
 			}
 		})
 	}

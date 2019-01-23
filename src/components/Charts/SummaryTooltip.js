@@ -85,7 +85,7 @@ class PieTooltip extends Component {
 						<ItemG container>
 							<ItemG container id={'header'} xs={12}>
 								<ItemG xs={9} container direction='column'>
-									<Typography variant={'h5'}>{tooltip.date}</Typography>
+									<Typography variant={'h5'}>{tooltip.name}</Typography>
 									<Typography variant={'body1'}> {`${t('charts.fields.range')}: ${this.handleRange()}`}</Typography>
 								</ItemG>
 								<ItemG container xs={3}>

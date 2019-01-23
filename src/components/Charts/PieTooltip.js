@@ -99,6 +99,7 @@ class PieTooltip extends Component {
 		const { t, classes, tooltip, weather, mobile,
 			getRef, handleCloseTooltip, todayOfInterest } = this.props
 		let doi = todayOfInterest(tooltip.date)
+		console.log(weather)
 		return (
 			<div ref={r => getRef(r)} style={{
 				zIndex: tooltip.show ? 1028 : tooltip.exited ? -1 : 1028,
@@ -128,7 +129,7 @@ class PieTooltip extends Component {
 							<Collapse in={tooltip.showWeather}>
 								<ItemG container>
 									<ItemG container xs={12} sm={6} md={6} lg={6} xl={6} style={{ padding: 8 }}>
-										{typeof weather === 'object' ? <ItemG xs={12}><WeatherIcon icon={weather.currently.icon} /></ItemG> : null}
+										{typeof weather === 'object' && weather !== null ? <ItemG xs={12}><WeatherIcon icon={weather.currently.icon} /></ItemG> : null}
 										<Fragment>
 											<ItemG container direction='row' xs={12}>
 												<T>

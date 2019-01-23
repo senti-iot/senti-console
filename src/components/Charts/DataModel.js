@@ -64,7 +64,6 @@ export const setExportData = (dataArr, unit) => {
 	if (dataSets) {
 		dataSets.map(d =>
 			Object.entries(d.data).map((dt, i) => {
-				console.log(dt)
 				return newData.push({
 					dcId: d.dcId,
 					dcName: d.dcName,
