@@ -191,20 +191,34 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
 				}))
 			},
-			roundDataSets: {
-				labels: Object.entries(dataArr[0].data).map(l => [moment(l[0]).format('ll'), moment(l[0]).format('dddd'), l[1]]),
-				datasets: dataArr.map((d) => ({
-					id: d.id,
-					lat: d.lat,
-					long: d.long,
-					backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
-					label: [d.name],
-					data: Object.entries(d.data).map(d => d[1])
+			roundDataSets:
+				dataArr.map(d => ({
+					name: d.name,
+					color: d.color,
+					labels: Object.entries(d.data).map(l => ['', moment(l[0]), l[1]]),
+					datasets: [{
+						id: d.id,
+						lat: d.lat,
+						long: d.long,
+						backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
+						data: Object.entries(d.data).map(d => d[1])
+					}]
 				}))
-
-			}
 		}
+		// roundDataSets: {
+		// 	labels: Object.entries(dataArr[0].data).map(l => [moment(l[0]).format('ll'), moment(l[0]).format('dddd'), l[1]]),
+		// 	datasets: dataArr.map((d) => ({
+		// 		id: d.id,
+		// 		lat: d.lat,
+		// 		long: d.long,
+		// 		backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
+		// 		label: [d.name],
+		// 		data: Object.entries(d.data).map(d => d[1])
+		// 	}))
+
+		// }
 	}
+
 	return state
 }
 
@@ -284,18 +298,19 @@ export const setHourlyData = (dataArr, from, to, hoverID) => {
 					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
 				}))
 			},
-			roundDataSets: {
-				labels: Object.entries(dataArr[0].data).map(l => [moment(l[0]).format('HH:mm'), moment(l[0]).format('dddd'), l[1]]),
-				datasets: dataArr.map((d, i) => ({
-					id: d.id,
-					lat: d.lat,
-					long: d.long,
-					backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
-					fill: false,
-					label: [d.name],
-					data: Object.entries(d.data).map(d => d[1])
+			roundDataSets:
+				dataArr.map(d => ({
+					name: d.name,
+					color: d.color,
+					labels: Object.entries(d.data).map(l => ['', moment(l[0]), l[1]]),
+					datasets: [{
+						id: d.id,
+						lat: d.lat,
+						long: d.long,
+						backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
+						data: Object.entries(d.data).map(d => d[1])
+					}]
 				}))
-			},
 		}
 	}
 	return state
@@ -374,18 +389,19 @@ export const setMinutelyData = (dataArr, from, to, hoverID) => {
 						data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
 					}))
 				},
-				roundDataSets: {
-					labels: Object.entries(dataArr[0].data).map(l => [moment(l[0]).format('HH:mm'), moment(l[0]).format('dddd'), l[1]]),
-					datasets: dataArr.map((d, i) => ({
-						id: d.id,
-						lat: d.lat,
-						long: d.long,
-						backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
-						fill: false,
-						label: [d.name],
-						data: Object.entries(d.data).map(d => d[1])
+				roundDataSets:
+					dataArr.map(d => ({
+						name: d.name,
+						color: d.color,
+						labels: Object.entries(d.data).map(l => ['', moment(l[0]), l[1]]),
+						datasets: [{
+							id: d.id,
+							lat: d.lat,
+							long: d.long,
+							backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
+							data: Object.entries(d.data).map(d => d[1])
+						}]
 					}))
-				},
 			}
 		}
 	}

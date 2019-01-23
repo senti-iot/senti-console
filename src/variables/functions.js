@@ -18,7 +18,16 @@ export const dateDiff = (from, to) => {
 		return 0
 	}
 }
-
+export const allMinutesToArr = (from, to) => { 
+	let startDate = moment(from)
+	let endDate = moment(to)
+	let arr = []
+	let d = startDate.clone()
+	while (d <= endDate) {
+		arr.push(d.toDate())
+		d = d.clone().add(1, 'm')
+	}
+}
 export const minutesToArray = (from, to) => {
 	let startDate = moment(from)
 	let endDate = moment(to)
@@ -34,7 +43,16 @@ export const minutesToArray = (from, to) => {
 	}
 	return arr
 }
-
+export const allHoursToArr = (from, to) => {
+	let startDate = moment(from)
+	let endDate = moment(to)
+	let arr = []
+	let d = startDate.clone()
+	while (d <= endDate) {
+		arr.push(d.toDate())
+		d = d.clone().add(1, 'h')
+	}
+}
 export const hoursToArr = (from, to) => {
 	let startDate = moment(from)
 	let endDate = moment(to)
@@ -52,6 +70,16 @@ export const hoursToArr = (from, to) => {
 }
 export const isWeekend = (date) => {
 	return moment(date).day() === 6 || moment(date).day() === 0 ? true : false
+}
+export const allDatesToArr = (from, to) => { 
+	let startDate = moment(from)
+	let endDate = moment(to)
+	let arr = []
+	let d = startDate.clone()
+	while (d <= endDate) {
+		arr.push(d.toDate())
+		d = d.clone().add(1, 'd')
+	}
 }
 export const datesToArr = (from, to) => {
 	let startDate = moment(from)

@@ -31,8 +31,6 @@ class ProjectData extends PureComponent {
 		super(props)
 
 		this.state = {
-			from: moment().subtract(7, 'd').startOf('day'),
-			to: moment().endOf('day'),
 			actionAnchor: null,
 			openDownload: false,
 			visibility: false,
@@ -170,25 +168,22 @@ class ProjectData extends PureComponent {
 
 	renderType = () => {
 		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device, chartType } = this.props
-		console.log(chartType)
 		switch (chartType) {
 			case 0:
 				return roundDataSets ?
 					<ItemG container >
-						{roundDataSets.datasets.map(d => {
-							let dataSet = {
-								labels: roundDataSets.labels,
-								datasets: [d]
-							}
-							return <ItemG key={d.id} xs={4} container justify={'center'}>
-								<Typography variant={'subtitle1'}>{d.label}</Typography>
-								<div style={{ maxHeight: 200 }}>
+						{roundDataSets.map((d, i) => {
+							return <ItemG key={i} xs={6} direction={'column'} container justify={'center'}>
+								<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
+								<div style={{ maxHeight: 300 }}>
 									<PieChart
+										height={300}
 										title={title}
 										single
 										unit={this.timeTypes[timeType]}
 										setHoverID={setHoverID}
-										data={dataSet}
+										data={d}
+										t={t}
 									/>
 								</div>
 							</ItemG>
@@ -197,14 +192,23 @@ class ProjectData extends PureComponent {
 					: this.renderNoData()
 			case 1:
 				return roundDataSets ?
-					<div style={{ maxHeight: 400 }}>
-						<DoughnutChart
-							title={title}
-							single
-							unit={this.timeTypes[timeType]}
-							setHoverID={setHoverID}
-							data={roundDataSets}
-						/></div>
+					<ItemG container >
+						{roundDataSets.map(d => {
+							return <ItemG key={d.id} xs={6} direction={'column'} container justify={'center'}>
+								<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
+								<div style={{ maxHeight: 300 }}>
+									<DoughnutChart
+										height={300}
+										title={title}
+										single
+										unit={this.timeTypes[timeType]}
+										setHoverID={setHoverID}
+										data={d}
+										t={t}
+									/>	</div>
+							</ItemG>
+						})}
+					</ItemG>
 					: this.renderNoData()
 			case 2:
 				return barDataSets ? <div style={{ maxHeight: 400 }}>

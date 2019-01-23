@@ -51,7 +51,7 @@ class Project extends Component {
 		if (match)
 			if (match.params.id) {
 				await this.getProject(match.params.id)
-				this.getWifiDaily()
+				this.handleSwitchDayHourSummary()
 				this.getHeatMapData()
 			}
 			else {

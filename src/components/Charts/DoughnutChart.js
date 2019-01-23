@@ -132,13 +132,13 @@ class DoughnutChart extends PureComponent {
 		return !single ? () => this.props.setHoverID(0) : undefined
 	}
 	render() {
-		const { classes } = this.props
+		const { classes, height } = this.props
 		const { tooltip, chartWidth } = this.state
 		return (
-			<div style={{ maxHeight: 400, position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
+			<div style={{ maxHeight: height ? height : 200, position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
 				<Doughnut
 					data={this.props.data}
-					height={400}
+					height={height ? height : 200}
 					ref={r => this.chart = r}
 					options={this.state.lineOptions}
 					legend={this.legendOptions}
