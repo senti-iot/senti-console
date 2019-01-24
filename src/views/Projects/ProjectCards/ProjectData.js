@@ -168,7 +168,6 @@ class ProjectData extends PureComponent {
 
 	renderType = () => {
 		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device, chartType } = this.props
-		console.log(roundDataSets)
 		switch (chartType) {
 			case 0:
 				return roundDataSets ?

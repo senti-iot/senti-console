@@ -61,7 +61,6 @@ class LineChart extends PureComponent {
 				top: 0,
 				left: 0,
 				data: [],
-				exited: true
 			},
 			loc: {
 				lat: 0,
@@ -215,8 +214,7 @@ class LineChart extends PureComponent {
 	}
 	customTooltip = async (tooltipModel) => {
 		if (tooltipModel.opacity === 0) {
-			this.hideTooltip()
-			return
+			return !this.clickEvent() ? null : this.hideTooltip()
 		}
 		let left = tooltipModel.caretX;
 		let top = tooltipModel.caretY;
@@ -225,7 +223,7 @@ class LineChart extends PureComponent {
 		}
 		let total = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data.length
 		let lastPoint = false
-		if (total - 1 === tooltipModel.dataPoints[0].index) { 
+		if (total - 1 === tooltipModel.dataPoints[0].index) {
 			lastPoint = true
 		}
 
@@ -238,7 +236,6 @@ class LineChart extends PureComponent {
 					...this.state.tooltip,
 					show: true,
 					showWeather: this.state.weather ? true : false,
-					exited: false
 				}
 			})
 		}
@@ -250,7 +247,7 @@ class LineChart extends PureComponent {
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
 			if (lat && long) {
 				if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long) || this.state.tooltip.lastPoint !== lastPoint) {
-					getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then((rs) => {						
+					getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then((rs) => {
 						if (this.state.id === id)
 							this.setState({
 								tooltip: {
@@ -291,7 +288,7 @@ class LineChart extends PureComponent {
 			}
 			this.setState({ id: id })
 		}
-	
+
 		catch (err) {
 			console.log(err)
 		}
@@ -359,8 +356,7 @@ class LineChart extends PureComponent {
 		this.setState({
 			tooltip: {
 				...tooltip,
-				show: true,
-				exited: false
+				show: !this.clickEvent() ? false : true,
 			}
 		})
 	}
@@ -368,7 +364,8 @@ class LineChart extends PureComponent {
 		this.setState({
 			tooltip: {
 				...this.state.tooltip,
-				exited: true,
+				show: false, 
+				showWeather: false,
 			}
 		})
 	}
@@ -377,19 +374,28 @@ class LineChart extends PureComponent {
 			tooltip: {
 				...this.state.tooltip,
 				show: false,
-				showWeather: false
 			}
 		})
 
 	}
 	elementClicked = async (elements) => {
-		try {
-			await this.props.onElementsClick(elements)
+		if (!this.clickEvent())
+		{this.setState({
+			tooltip: {
+				...this.state.tooltip,
+				show: true
+			}
+		})
 		}
-		catch (e) {
-			console.log(e)
+		else {
+			try {
+				await this.props.onElementsClick(elements)
+			}
+			catch (e) {
+				console.log(e)
+			}
+			this.hideTooltip()
 		}
-		this.hideTooltip()
 	}
 	onMouseLeave = () => {
 		const { single } = this.props
@@ -446,7 +452,7 @@ class LineChart extends PureComponent {
 							ref={r => this.chart = r}
 							options={this.state.lineOptions}
 							legend={this.legendOptions}
-							onElementsClick={this.clickEvent() ? this.elementClicked : () => {}}
+							onElementsClick={this.elementClicked}
 						/>
 					</div>
 					<Tooltip

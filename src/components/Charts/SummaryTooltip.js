@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Grow, Paper, Typography } from '@material-ui/core';
+import { Grow, Paper, Typography, Dialog, DialogContent } from '@material-ui/core';
 import ItemG from 'components/Grid/ItemG';
 import moment from 'moment'
 import { todayOfInterest } from 'redux/doi';
@@ -66,39 +66,54 @@ class PieTooltip extends Component {
 		const { tooltip } = this.props
 		return moment(tooltip.title[0], 'lll').format('YYYY-MM-DD')
 	}
-	
-	render() {
-		const { t, classes, tooltip, mobile,
-			getRef, handleCloseTooltip } = this.props
-		return (
-			<div ref={r => getRef(r)} style={{
-				zIndex: tooltip.show ? 1028 : tooltip.exited ? -1 : 1028,
-				position: 'absolute',
-				top: Math.round(tooltip.top),
-				left: mobile ? '50%' : Math.round(tooltip.left),
-				transform: this.transformLoc(),
-				width: mobile ? 300 : 400,
-				maxWidth: mobile ? 300 : 500
-			}}>
-				<Grow in={tooltip.show} onExited={handleCloseTooltip} >
-					<Paper className={classes.paper}>
-						<ItemG container>
-							<ItemG container id={'header'} xs={12}>
-								<ItemG xs={9} container direction='column'>
-									<Typography variant={'h5'}>{tooltip.name}</Typography>
-									<Typography variant={'body1'}> {`${t('charts.fields.range')}: ${this.handleRange()}`}</Typography>
-								</ItemG>
-								<ItemG container xs={3}>
-									<ItemG container direction='row' justify={'flex-end'} alignItems={'center'}>
-										<DataUsage style={{ color: tooltip.color, width: 24, height: 24, marginLeft: 16, marginRight: 4 }} />
-										<Typography variant={'body1'}>{tooltip.count}</Typography>
-									</ItemG>
-								</ItemG>
+	renderTooltip = () => { 
+		const { t, classes, tooltip, handleCloseTooltip } = this.props
+		return <Grow in={tooltip.show} onExited={handleCloseTooltip} >
+			<Paper className={classes.paper}>
+				<ItemG container>
+					<ItemG container id={'header'} xs={12}>
+						<ItemG xs={9} container direction='column'>
+							<Typography variant={'h5'}>{tooltip.name}</Typography>
+							<Typography variant={'body1'}> {`${t('charts.fields.range')}: ${this.handleRange()}`}</Typography>
+						</ItemG>
+						<ItemG container xs={3}>
+							<ItemG container direction='row' justify={'flex-end'} alignItems={'center'}>
+								<DataUsage style={{ color: tooltip.color, width: 24, height: 24, marginLeft: 16, marginRight: 4 }} />
+								<Typography variant={'body1'}>{tooltip.count}</Typography>
 							</ItemG>
 						</ItemG>
-					</Paper>
-				</Grow>
-			</div>
+					</ItemG>
+				</ItemG>
+			</Paper>
+		</Grow>
+	}
+	render() {
+		const { tooltip, mobile, getRef, handleCloseTooltip } = this.props
+		return (
+			this.clickEvent() ?
+				<div ref={r => getRef(r)} style={{
+					zIndex: tooltip.show ? 1028 : tooltip.exited ? -1 : 1028,
+					// zIndex: 1028,
+					position: 'absolute',
+					top: Math.round(tooltip.top),
+					left: mobile ? '50%' : Math.round(tooltip.left),
+					transform: this.transformLoc(),
+					width: mobile ? 300 : 400,
+					maxWidth: mobile ? 300 : 500
+				}}>
+					{this.renderTooltip()}
+				</div> :
+				<Dialog
+					// open={true}
+					open={tooltip.show}
+					onClose={e => { e.stopPropagation(); handleCloseTooltip() }}
+					TransitionComponent={this.handleTransition}
+				>
+
+					<DialogContent style={{ padding: 0 }}>
+						{this.renderTooltip()}
+					</DialogContent>
+				</Dialog>
 		)
 	}
 }
