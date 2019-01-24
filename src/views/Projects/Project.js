@@ -286,6 +286,8 @@ class Project extends Component {
 	}
 
 	handleDeleteProject = async () => {
+		if (this.props.isFav(this.state.project.id))
+			this.removeFromFav()
 		await deleteProject([this.state.project.id]).then(() => {
 			this.setState({ openDelete: false })
 			this.snackBarMessages(1)

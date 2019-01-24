@@ -155,7 +155,9 @@ export const filterItems = (data, filters) => {
 		var keys = Object.keys(arr[0])
 		var filtered = arr.filter(c => {
 			var contains = keys.map(key => {
-				return keyTester(c[key], keyword ? keyword : '')
+				if (c) 
+					return keyTester(c[key], keyword ? keyword : '')
+				return false
 
 			})
 			return contains.indexOf(true) !== -1 ? true : false

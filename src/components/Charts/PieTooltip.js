@@ -16,7 +16,7 @@ class PieTooltip extends Component {
 			return true
 	}
 	transformLoc = () => {
-		const { tooltip, chartWidth, chartHeight } = this.props
+		const { tooltip, chartHeight } = this.props
 		let x = 0
 		let y = 0
 		if (!this.clickEvent()) {
@@ -24,24 +24,26 @@ class PieTooltip extends Component {
 			y = tooltip.top < (chartHeight / 2) ? '25%' : '-125%'
 			return `translate(${x}, ${y})`
 		}
-		if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
-			y = '5%'
-		}
-		if (tooltip.left < (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
-			y = '-105%'
-		}
-		if (tooltip.left > (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
-			y = '5%'
-		}
-		if (tooltip.left > (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
-			y = '-105%'
-		}
-		if (tooltip.left > chartWidth / 2) {
-			x = '-100%'
-		}
-		else {
-			x = '5%'
-		}
+		y = '5%'
+		x = '-105%'
+		// if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
+		// 	y = '5%'
+		// }
+		// if (tooltip.left < (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
+		// 	y = '-105%'
+		// }
+		// if (tooltip.left > (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
+		// 	y = '5%'
+		// }
+		// if (tooltip.left > (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
+		// 	y = '-105%'
+		// }
+		// if (tooltip.left > chartWidth / 2) {
+		// 	x = '-100%'
+		// }
+		// else {
+		// 	x = '5%'
+		// }
 		return `translate(${x}, ${y})`
 	}
 	handleRange = () => {
@@ -99,10 +101,10 @@ class PieTooltip extends Component {
 		const { t, classes, tooltip, weather, mobile,
 			getRef, handleCloseTooltip, todayOfInterest } = this.props
 		let doi = todayOfInterest(tooltip.date)
-		console.log(weather)
 		return (
 			<div ref={r => getRef(r)} style={{
 				zIndex: tooltip.show ? 1028 : tooltip.exited ? -1 : 1028,
+				// zIndex: 1028,
 				position: 'absolute',
 				top: Math.round(tooltip.top),
 				left: mobile ? '50%' : Math.round(tooltip.left),

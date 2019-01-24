@@ -31,11 +31,6 @@ class DeviceCard extends Component {
 		this.setState({ actionAnchor: null });
 	}
 
-	handleEdit = () => {
-	}
-
-	handleDeleteProject = () => {
-	}
 	renderIcon = (status) => {
 		const { classes, t } = this.props
 		switch (status) {

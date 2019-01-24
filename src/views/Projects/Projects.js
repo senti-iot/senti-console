@@ -138,7 +138,8 @@ class Projects extends Component {
 
 	deleteProjects = async (projects) => {
 		const { selected } = this.state
-		Promise.all ([selected.map(s => {
+		Promise.all([selected.map(s => {
+			this.removeFromFav({ id: s })
 			return deleteProject(s)
 		})]).then(async () => {
 			this.setState({ loading: true, openDelete: false, selected: [] })
