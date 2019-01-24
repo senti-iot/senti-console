@@ -52,8 +52,8 @@ class CollectionData extends PureComponent {
 	timeTypes = [
 		{ id: 0, format: 'lll dddd', chart: 'minute', tooltipFormat: 'LT' },
 		{ id: 1, format: 'lll dddd', chart: 'hour', tooltipFormat: 'LT' },
-		{ id: 2, format: 'll dddd', chart: 'day', tooltipFormat: 'll' },
-		{ id: 3, format: 'll dddd', chart: 'month', tooltipFormat: 'll' },
+		{ id: 2, format: 'lll dddd', chart: 'day', tooltipFormat: 'll' },
+		{ id: 3, format: 'lll dddd', chart: 'month', tooltipFormat: 'll' },
 	]
 	visibilityOptions = [
 		{ id: 0, icon: <PieChartRounded />, label: this.props.t('charts.type.pie') },

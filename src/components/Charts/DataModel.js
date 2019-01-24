@@ -159,16 +159,17 @@ export const setSummaryData = (dataArr, from, to, hoverID) => {
 				}))
 			},
 			barDataSets: {
-				labels: labels,
+				labels: [`${moment(from).format('lll')} - ${moment(to).format('lll')}`],
 				datasets: dataArr.map((d, index) => ({
 					id: d.id,
 					lat: d.lat,
 					long: d.long,
+					backgroundColor: d.color,
 					borderColor: teal[500],
 					borderWidth: hoverID === d.id ? 4 : 0,
 					fill: false,
 					label: [d.name],
-					data: [{ x: from, y: 0 }, { x: to, y: d.data }],
+					data: [d.data],
 				}))
 			},
 			roundDataSets: [{

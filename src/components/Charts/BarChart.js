@@ -58,7 +58,7 @@ class BarChart extends PureComponent {
 								fontColor: props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
 							},
 							id: 'xAxis',
-							type: 'time',
+							type: this.props.timeType === 3 ? 'category' : 'time',
 							time: {
 								displayFormats: {
 									hour: 'LT',
@@ -70,12 +70,15 @@ class BarChart extends PureComponent {
 							}
 						},
 						{
-							display: props.unit.chart === 'day' ? true : false,
+							display: props.unit.chart === 'day' ? this.props.timeType === 3 ? false : true : false,
 							offset: true,
 							ticks: {
 
-								callback: function (value, index, values) {
-									return value.charAt(0).toUpperCase() + value.slice(1);
+								callback: (value) => {
+									if (this.props.timeType === 3)
+										return value
+									else
+										return value.charAt(0).toUpperCase() + value.slice(1);
 								},
 								fontColor: props.theme.palette.type === 'dark' ? ['rgba(255, 255, 255, 1)'] : ["#000"],
 								source: 'labels',
@@ -87,7 +90,7 @@ class BarChart extends PureComponent {
 								drawTicks: false,
 							},
 							id: 'xAxis-day',
-							type: 'time',
+							type: this.props.timeType === 3 ? 'category' : 'time',
 							time: {
 								displayFormats: {
 									day: 'dddd',
@@ -137,7 +140,7 @@ class BarChart extends PureComponent {
 		})
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID) {
+		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID || this.props.timeType !== prevProps.timeType) {
 			this.setXAxis()
 		}
 		if (this.chart.chartInstance.canvas.style.width !== this.state.chartWidth || this.state.chartHeight !== this.chart.chartInstance.canvas.style.height) {
@@ -262,7 +265,7 @@ class BarChart extends PureComponent {
 								maxRotation: 0
 							},
 							id: 'xAxis',
-							type: 'time',
+							type: this.props.timeType === 3 ? 'category' : 'time',
 							time: {
 								displayFormats: {
 									hour: 'LT',
@@ -285,14 +288,17 @@ class BarChart extends PureComponent {
 								drawTicks: false,
 							},
 							ticks: {
-								callback: function (value, index, values) {
-									return value.charAt(0).toUpperCase() + value.slice(1);
+								callback: (value, index, values) => {
+									if (this.props.timeType !== 3)
+										return value.charAt(0).toUpperCase() + value.slice(1);
+									else 
+										return value
 								},
 								source: 'labels',
 								maxRotation: 0
 							},
 							id: 'xAxis-day',
-							type: 'time',
+							type: this.props.timeType === 3 ? 'category' : 'time',
 							time: {
 								displayFormats: {
 									day: 'dddd',
@@ -401,7 +407,8 @@ class BarChart extends PureComponent {
 	}
 }
 const mapStateToProps = (state) => ({
-	lang: state.settings.language
+	lang: state.settings.language,
+	timeType: state.dateTime.timeType
 })
 
 const mapDispatchToProps = {

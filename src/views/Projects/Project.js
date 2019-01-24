@@ -62,9 +62,6 @@ class Project extends Component {
 			}
 	}
 	componentDidUpdate = (prevProps) => {
-		if (prevProps.roundDataSets !== this.props.roundDataSets) { 
-			console.log(prevProps.roundDataSets, this.props.roundDataSets)
-		}
 		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from)
 			this.handleSwitchDayHourSummary()
 		if (this.props.saved === true) {
