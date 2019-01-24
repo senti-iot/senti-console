@@ -357,7 +357,8 @@ class LineChart extends PureComponent {
 		this.setState({
 			tooltip: {
 				...this.state.tooltip,
-				show: true
+				show: true,
+				exited: false
 			}
 		})
 	}
@@ -374,6 +375,7 @@ class LineChart extends PureComponent {
 				...this.state.tooltip,
 				show: false, 
 				showWeather: false,
+				exited: true
 			}
 		})
 	}
@@ -405,40 +407,6 @@ class LineChart extends PureComponent {
 		const { single } = this.props
 		return !single ? () => this.props.setHoverID(0) : undefined
 	}
-	transformLoc = () => {
-		const { tooltip, chartWidth, chartHeight } = this.state
-		let x = 0
-		let y = 0
-		if (!this.clickEvent()) {
-			x = '-50%'
-			y = tooltip.top < (chartHeight / 2) ? '5%' : '-105%'
-			return `translate(${x}, ${y})`
-		}
-		if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
-			x = '-25%'
-			y = '25%'
-		}
-		if (tooltip.left < (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
-			x = '-25%'
-			y = '-125%'
-		}
-		if (tooltip.left > (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
-			x = '-80%'
-			y = '25%'
-		}
-		if (tooltip.left > (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
-			x = '-80%'
-			y = '-125%'
-		}
-		if (tooltip.left > ((chartWidth / 4) * 3)) {
-			x = '-90%'
-		}
-		if (tooltip.left < chartWidth / 4) {
-			x = '0%'
-		}
-		return `translate(${x}, ${y})`
-	}
-
 	getTooltipRef = (r) => {
 		this.tooltip = r
 	}

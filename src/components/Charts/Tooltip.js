@@ -7,6 +7,7 @@ import { T, WeatherIcon, Muted } from 'components';
 import moment from 'moment'
 import { todayOfInterest } from 'redux/doi';
 import { DateRange, Cake, DataUsage } from 'variables/icons';
+
 class Tooltip extends Component {
 	clickEvent = () => {
 		if ('ontouchstart' in document.documentElement === true)
@@ -24,22 +25,22 @@ class Tooltip extends Component {
 			return `translate(${x}, ${y})`
 		}
 		if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
-			y = '5%'
+			y = '15%'
 		}
 		if (tooltip.left < (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
 			y = '-105%'
 		}
 		if (tooltip.left > (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
-			y = '5%'
+			y = '15%'
 		}
 		if (tooltip.left > (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
 			y = '-105%'
 		}
 		if (tooltip.left > chartWidth / 2) {
-			x = '-100%'
+			x = '-110%'
 		}
 		else {
-			x = '5%'
+			x = '15%'
 		}
 		return `translate(${x}, ${y})`
 	}
