@@ -185,9 +185,9 @@ class Tooltip extends Component {
 				:
 				<Dialog
 					open={tooltip.show}
-					onClose={e => { console.log(e); e.stopPropagation(); handleCloseTooltip() }}
+					onClose={e => { e.stopPropagation(); handleCloseTooltip() }}
 					TransitionComponent={this.handleTransition}
-					onBackdropClick={e => e.stopPropagation()}
+					// onBackdropClick={e => e.stopPropagation()}
 				>
 
 					<DialogContent style={{ padding: 0 }}>

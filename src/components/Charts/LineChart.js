@@ -303,6 +303,8 @@ class LineChart extends PureComponent {
 				device: tooltipModel.body[i].lines[0].split(':')[0], count: d.yLabel, color: tooltipModel.labelColors[i].backgroundColor
 			}))
 		})
+		if (this.clickEvent())
+			this.showTooltip()
 	}
 	setXAxis = () => {
 		this.setState({
@@ -351,12 +353,18 @@ class LineChart extends PureComponent {
 			}
 		}, () => this.chart ? this.chart.chartInstance ? this.chart.chartInstance.update() : {} : {})
 	}
-
+	showTooltip = () => {
+		this.setState({
+			tooltip: {
+				...this.state.tooltip,
+				show: true
+			}
+		})
+	}
 	setTooltip = (tooltip) => {
 		this.setState({
 			tooltip: {
 				...tooltip,
-				show: !this.clickEvent() ? false : true,
 			}
 		})
 	}
@@ -379,13 +387,9 @@ class LineChart extends PureComponent {
 
 	}
 	elementClicked = async (elements) => {
-		if (!this.clickEvent())
-		{this.setState({
-			tooltip: {
-				...this.state.tooltip,
-				show: true
-			}
-		})
+		if (!this.clickEvent()) {
+			if (elements.length > 0)
+				this.showTooltip()
 		}
 		else {
 			try {
