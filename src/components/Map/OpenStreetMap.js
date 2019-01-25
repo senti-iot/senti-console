@@ -64,6 +64,13 @@ class OpenStreetMap extends React.Component {
 		if (this.props.iRef) {
 			this.props.iRef(this.map)
 		}
+		this.map.leafletElement.on('popupopen', (e) => {
+			var px = this.map.leafletElement.project(e.popup._latlng); // find the pixel location on the map where the popup anchor is
+			// px.y -= e.popup._container.clientHeight * 2 // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
+			px.y -= 336 / 2 // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
+			this.map.leafletElement.flyTo(this.map.leafletElement.unproject(px)); // pan to new center
+
+		});
 	}
 	componentDidUpdate = (prevProps, prevState) => {
 		if (prevProps.mapTheme !== this.props.mapTheme)
