@@ -311,7 +311,7 @@ class Device extends Component {
 				s('snackbars.unassign.deviceFromCollection', { device: `${name}(${id})`, collection: `${oldCollection.name}(${oldCollection.id})` })
 				break
 			case 2:
-				s('snackbars.assign.deviceToCollection', { device: `${name}(${id})`, collection: `${device.dataCollection.name}(${device.dataCollection.id})` })
+				s('snackbars.assign.deviceToCollection', { device: `${name}(${id})`, collection: '' /* `${device.dataCollection.name}(${device.dataCollection.id})` */ })
 				break
 			case 3:
 				s('snackbars.failedUnassign')
