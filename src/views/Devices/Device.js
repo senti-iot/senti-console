@@ -350,6 +350,9 @@ class Device extends Component {
 				() => this.snackBarMessages(4)
 			)
 		}
+		else { 
+			this.setState({ openAssignOrg: false })
+		}
 	}
 
 	handleOpenAssign = () => {
