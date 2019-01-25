@@ -93,11 +93,11 @@ class FilterToolbar extends Component {
 	handleEdit = (displayValue, value, key, type, icon, id) => { 
 		const { editFilter, reduxKey } = this.props
 		editFilter({ id, value, key, type: type ? type : null, icon, displayValue: displayValue }, reduxKey)
+		this.setState({ editFilter: false, editChip: null })
 	}
-	handleDelete = (deletedChip, i) => {
+	handleDelete = (deletedChip) => {
 		const { removeFilter, reduxKey } = this.props
-		removeFilter(deletedChip.id, reduxKey)
-
+		removeFilter(deletedChip, reduxKey)
 	}
 	isSelected = id => this.state.focusedMenu === id ? true : false
 	render() {

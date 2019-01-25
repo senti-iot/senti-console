@@ -31,7 +31,7 @@ export const addFilter = (f, type) => {
 		let filters = []
 		filters = [...getState().appState.filters[type]]
 		let id = filters.length
-		filters.push({ ...f })
+		filters.push({ ...f, id })
 		dispatch({
 			type: updateFilters,
 			filters: {
@@ -60,7 +60,10 @@ export const removeFilter = (f, type) => {
 	return (dispatch, getState) => {
 		let filters = []
 		filters = [...getState().appState.filters[type]]
-		filters = filters.filter(filter => filter.id !== f)
+		
+		filters = filters.filter(filter => {
+			return filter.id !== f.id
+		})
 		dispatch({
 			type: updateFilters,
 			filters: {
