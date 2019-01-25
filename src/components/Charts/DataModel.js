@@ -58,27 +58,47 @@ const regenerateData = (d, unit) => {
 	else return null
 }
 
-export const setExportData = (dataArr, unit) => {
+export const setExportData = (dataArr, unit, type, from, to) => {
 	let dataSets = dataArr
 	let newData = []
-	if (dataSets) {
-		dataSets.map(d =>
-			Object.entries(d.data).map((dt, i) => {
-				return newData.push({
-					dcId: d.dcId,
-					dcName: d.dcName,
-					org: d.org,
-					project: d.project,
-					lat: d.lat,
-					long: d.long,
-					id: d.id,
-					startDate: d.data.length - 1 === i && moment().diff(moment(dt[0]), unit) === 0 ? moment(dt[0]).startOf(unit).format('DD-MM-YYYY HH:mm') : moment(dt[0]).subtract(1, unit).format('DD-MM-YYYY HH:mm'),
-					endDate: moment(dt[0]).format('DD-MM-YYYY HH:mm'),
-					count: dt[1]
-				})
-			}
+	if (type === 'summary')
+	{
+		if (dataSets) {
+			dataSets.map(d => newData.push({
+				dcId: d.dcId,
+				dcName: d.name,
+				org: d.org,
+				project: d.project,
+				lat: d.lat,
+				long: d.long,
+				id: d.id,
+				startDate: moment(from).format('DD-MM-YYYY HH:mm'),
+				endDate: moment(to).format('DD-MM-YYYY HH:mm'),
+				count: d.data
+			})
 			)
-		)
+		}
+	}
+	else {
+		if (dataSets) {
+			dataSets.map(d =>
+				Object.entries(d.data).map((dt, i) => {
+					return newData.push({
+						dcId: d.dcId,
+						dcName: d.name,
+						org: d.org,
+						project: d.project,
+						lat: d.lat,
+						long: d.long,
+						id: d.id,
+						startDate: d.data.length - 1 === i && moment().diff(moment(dt[0]), unit) === 0 ? moment(dt[0]).startOf(unit).format('DD-MM-YYYY HH:mm') : moment(dt[0]).subtract(1, unit).format('DD-MM-YYYY HH:mm'),
+						endDate: moment(dt[0]).format('DD-MM-YYYY HH:mm'),
+						count: dt[1]
+					})
+				}
+				)
+			)
+		}
 	}
 	return newData
 
@@ -114,7 +134,7 @@ export const getWifiSummary = async (type, objArr, from, to, hoverId, raw) => {
 		return newArr
 	}, [])
 	let newState = setSummaryData(dataArr, from, to, hoverId)
-	let exportData = setExportData(dataArr, 'day')
+	let exportData = setExportData(dataArr, 'day', 'summary', from, to)
 	return { ...newState, exportData, dataArr }
 }
 
@@ -124,7 +144,6 @@ export const setSummaryData = (dataArr, from, to, hoverID) => {
 	if (dataArr.length > 0) {
 		state = {
 			loading: false,
-			timeType: 2,
 			lineDataSets: {
 				labels: labels,
 				datasets: dataArr.map((d, index) => ({
@@ -133,25 +152,24 @@ export const setSummaryData = (dataArr, from, to, hoverID) => {
 					long: d.long,
 					backgroundColor: d.color,
 					borderColor: d.color,
-					// colors: linecolors(Object.entries(d.data), d.color, index),
 					borderWidth: hoverID === d.id ? 8 : 3,
 					fill: false,
 					label: [d.name],
-					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
+					data: [{ x: from, y: 0 }, { x: to, y: d.data }],
 				}))
 			},
 			barDataSets: {
-				labels: labels,
+				labels: [`${moment(from).format('lll')} - ${moment(to).format('lll')}`],
 				datasets: dataArr.map((d, index) => ({
 					id: d.id,
 					lat: d.lat,
 					long: d.long,
-					// backgroundColor: linecolors(Object.entries(d.data), d.color, index),
+					backgroundColor: d.color,
 					borderColor: teal[500],
 					borderWidth: hoverID === d.id ? 4 : 0,
 					fill: false,
 					label: [d.name],
-					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
+					data: [d.data],
 				}))
 			},
 			roundDataSets: [{

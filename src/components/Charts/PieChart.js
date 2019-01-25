@@ -61,10 +61,15 @@ class PieChart extends PureComponent {
 			chartWidth: this.chart.chartInstance.canvas.width
 		})
 	}
+	clickEvent = () => {
+		if ('ontouchstart' in document.documentElement === true)
+			return false
+		else
+			return true
+	}
 	customTooltip = (tooltipModel) => {
 		if (tooltipModel.opacity === 0) {
-			this.hideTooltip()
-			return
+			return !this.clickEvent() ? null : this.hideTooltip()
 		}
 	
 		let total = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data.length
@@ -96,6 +101,16 @@ class PieChart extends PureComponent {
 					})
 				})
 			}
+			else { 
+				if (this.state.weather) { 
+					this.setState({
+						tooltip: {
+							...this.state.tooltip,
+							showWeather: true
+						}
+					})
+				}
+			}
 		}
 		catch (err) {
 			console.log(err)
@@ -124,7 +139,8 @@ class PieChart extends PureComponent {
 			date: tooltipModel.body[0].lines[1],
 			count: tooltipModel.body[0].lines[2],
 			color: this.props.data.color,
-			lastPoint: lastPoint
+			lastPoint: lastPoint,
+			showWeather: this.state.weather ? true : false
 		})
 
 	}
@@ -134,22 +150,19 @@ class PieChart extends PureComponent {
 		this.setState({
 			tooltip: {
 				...tooltip,
-				show: true,
+				show: !this.clickEvent() ?  false : true,
 				exited: false
 			}
 		})
 	}
-	exitedTooltip = () => {
+	exitedTooltip = e => {
 		this.setState({
 			tooltip: {
 				...this.state.tooltip,
 				exited: true,
-			
 				show: false,
-				title: '',
 				top: 0,
 				left: 0,
-				data: [],
 
 			}
 		})
@@ -163,11 +176,20 @@ class PieChart extends PureComponent {
 		})
 	}
 	elementClicked = async (elements) => {
+		if (!this.clickEvent())
+			this.setState({
+				tooltip: {
+					...this.state.tooltip,
+					show: true
+				}
+			})
+		else { 
+			this.hideTooltip()
+		}
 		if (this.props.onElementsClick) {
 			await this.props.onElementsClick(elements)
-
 		}
-		this.hideTooltip()
+		// this.hideTooltip()
 	}
 	setHours = (date) => {
 		if (this.props.unit.chart === 'day')
@@ -196,6 +218,7 @@ class PieChart extends PureComponent {
 					options={this.state.lineOptions}
 					legend={this.legendOptions}
 					onElementsClick={this.elementClicked}
+					// getElementAtEvent={e => console.log(e)}
 				
 				/>
 				{ timeType === 3 ? <SummaryTooltip
@@ -228,7 +251,6 @@ class PieChart extends PureComponent {
 	}
 }
 const mapStateToProps = (state) => {
-	console.log(state)
 	return ({
 		lang: state.settings.language,
 		timeType: state.dateTime.timeType

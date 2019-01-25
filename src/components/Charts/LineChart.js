@@ -61,7 +61,6 @@ class LineChart extends PureComponent {
 				top: 0,
 				left: 0,
 				data: [],
-				exited: true
 			},
 			loc: {
 				lat: 0,
@@ -215,8 +214,7 @@ class LineChart extends PureComponent {
 	}
 	customTooltip = async (tooltipModel) => {
 		if (tooltipModel.opacity === 0) {
-			this.hideTooltip()
-			return
+			return !this.clickEvent() ? null : this.hideTooltip()
 		}
 		let left = tooltipModel.caretX;
 		let top = tooltipModel.caretY;
@@ -225,7 +223,7 @@ class LineChart extends PureComponent {
 		}
 		let total = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data.length
 		let lastPoint = false
-		if (total - 1 === tooltipModel.dataPoints[0].index) { 
+		if (total - 1 === tooltipModel.dataPoints[0].index) {
 			lastPoint = true
 		}
 
@@ -238,7 +236,6 @@ class LineChart extends PureComponent {
 					...this.state.tooltip,
 					show: true,
 					showWeather: this.state.weather ? true : false,
-					exited: false
 				}
 			})
 		}
@@ -250,7 +247,7 @@ class LineChart extends PureComponent {
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
 			if (lat && long) {
 				if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long) || this.state.tooltip.lastPoint !== lastPoint) {
-					getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then((rs) => {						
+					getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then((rs) => {
 						if (this.state.id === id)
 							this.setState({
 								tooltip: {
@@ -291,7 +288,7 @@ class LineChart extends PureComponent {
 			}
 			this.setState({ id: id })
 		}
-	
+
 		catch (err) {
 			console.log(err)
 		}
@@ -306,6 +303,8 @@ class LineChart extends PureComponent {
 				device: tooltipModel.body[i].lines[0].split(':')[0], count: d.yLabel, color: tooltipModel.labelColors[i].backgroundColor
 			}))
 		})
+		if (this.clickEvent())
+			this.showTooltip()
 	}
 	setXAxis = () => {
 		this.setState({
@@ -354,13 +353,19 @@ class LineChart extends PureComponent {
 			}
 		}, () => this.chart ? this.chart.chartInstance ? this.chart.chartInstance.update() : {} : {})
 	}
-
+	showTooltip = () => {
+		this.setState({
+			tooltip: {
+				...this.state.tooltip,
+				show: true,
+				exited: false
+			}
+		})
+	}
 	setTooltip = (tooltip) => {
 		this.setState({
 			tooltip: {
 				...tooltip,
-				show: true,
-				exited: false
 			}
 		})
 	}
@@ -368,7 +373,9 @@ class LineChart extends PureComponent {
 		this.setState({
 			tooltip: {
 				...this.state.tooltip,
-				exited: true,
+				show: false, 
+				showWeather: false,
+				exited: true
 			}
 		})
 	}
@@ -377,58 +384,29 @@ class LineChart extends PureComponent {
 			tooltip: {
 				...this.state.tooltip,
 				show: false,
-				showWeather: false
 			}
 		})
 
 	}
 	elementClicked = async (elements) => {
-		try {
-			await this.props.onElementsClick(elements)
+		if (!this.clickEvent()) {
+			if (elements.length > 0)
+				this.showTooltip()
 		}
-		catch (e) {
-			console.log(e)
+		else {
+			try {
+				await this.props.onElementsClick(elements)
+			}
+			catch (e) {
+				console.log(e)
+			}
+			this.hideTooltip()
 		}
-		this.hideTooltip()
 	}
 	onMouseLeave = () => {
 		const { single } = this.props
 		return !single ? () => this.props.setHoverID(0) : undefined
 	}
-	transformLoc = () => {
-		const { tooltip, chartWidth, chartHeight } = this.state
-		let x = 0
-		let y = 0
-		if (!this.clickEvent()) {
-			x = '-50%'
-			y = tooltip.top < (chartHeight / 2) ? '5%' : '-105%'
-			return `translate(${x}, ${y})`
-		}
-		if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
-			x = '-25%'
-			y = '25%'
-		}
-		if (tooltip.left < (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
-			x = '-25%'
-			y = '-125%'
-		}
-		if (tooltip.left > (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
-			x = '-80%'
-			y = '25%'
-		}
-		if (tooltip.left > (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
-			x = '-80%'
-			y = '-125%'
-		}
-		if (tooltip.left > ((chartWidth / 4) * 3)) {
-			x = '-90%'
-		}
-		if (tooltip.left < chartWidth / 4) {
-			x = '0%'
-		}
-		return `translate(${x}, ${y})`
-	}
-
 	getTooltipRef = (r) => {
 		this.tooltip = r
 	}
@@ -446,7 +424,7 @@ class LineChart extends PureComponent {
 							ref={r => this.chart = r}
 							options={this.state.lineOptions}
 							legend={this.legendOptions}
-							onElementsClick={this.clickEvent() ? this.elementClicked : () => {}}
+							onElementsClick={this.elementClicked}
 						/>
 					</div>
 					<Tooltip

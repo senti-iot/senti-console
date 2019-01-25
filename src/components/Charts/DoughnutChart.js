@@ -61,10 +61,15 @@ class DoughnutChart extends PureComponent {
 			chartWidth: this.chart.chartInstance.canvas.width
 		})
 	}
+	clickEvent = () => {
+		if ('ontouchstart' in document.documentElement === true)
+			return false
+		else
+			return true
+	}
 	customTooltip = (tooltipModel) => {
 		if (tooltipModel.opacity === 0) {
-			this.hideTooltip()
-			return
+			return !this.clickEvent() ? null : this.hideTooltip()
 		}
 
 		let total = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data.length
@@ -79,21 +84,47 @@ class DoughnutChart extends PureComponent {
 			let lat = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].lat
 			let long = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].long
 			wDate = moment(tooltipModel.body[0].lines[1]).format('YYYY-MM-DD HH:ss')
-			if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long)) {
-				this.setState({ weather: null })
-				getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then(rs => {
-					this.setState({
-						tooltip: {
-							...this.state.tooltip,
-							showWeather: true
-						},
-						weatherDate: wDate,
-						weather: rs,
-						loc: {
-							lat: lat,
-							long: long
-						}
+			if (lat && long) {
+				if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long)) {
+					this.setState({ weather: null })
+					getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then(rs => {
+						this.setState({
+							tooltip: {
+								...this.state.tooltip,
+								showWeather: true
+							},
+							weatherDate: wDate,
+							weather: rs,
+							loc: {
+								lat: lat,
+								long: long
+							}
+						})
 					})
+				}
+				else {
+					if (this.state.weather) {
+						this.setState({
+							tooltip: {
+								...this.state.tooltip,
+								showWeather: true
+							}
+						})
+					}
+				}
+			}
+			else {
+				this.setState({
+					tooltip: {
+						...this.state.tooltip,
+						showWeather: false
+					},
+					weatherDate: wDate,
+					weather: null,
+					loc: {
+						lat: 0,
+						long: 0
+					}
 				})
 			}
 		}
@@ -124,7 +155,8 @@ class DoughnutChart extends PureComponent {
 			date: tooltipModel.body[0].lines[1],
 			count: tooltipModel.body[0].lines[2],
 			color: this.props.data.color,
-			lastPoint: lastPoint
+			lastPoint: lastPoint,
+			showWeather: this.state.weather ? true : false
 		})
 
 	}
@@ -134,23 +166,17 @@ class DoughnutChart extends PureComponent {
 		this.setState({
 			tooltip: {
 				...tooltip,
-				show: true,
+				show: !this.clickEvent() ? false : true,
 				exited: false
 			}
 		})
 	}
-	exitedTooltip = () => {
+	exitedTooltip = e => {
 		this.setState({
 			tooltip: {
 				...this.state.tooltip,
 				exited: true,
-
-				show: false,
-				title: '',
-				top: 0,
-				left: 0,
-				data: [],
-
+				show: false
 			}
 		})
 	}
@@ -163,11 +189,20 @@ class DoughnutChart extends PureComponent {
 		})
 	}
 	elementClicked = async (elements) => {
+		if (!this.clickEvent())
+			this.setState({
+				tooltip: {
+					...this.state.tooltip,
+					show: true
+				}
+			})
+		else {
+			this.hideTooltip()
+		}
 		if (this.props.onElementsClick) {
 			await this.props.onElementsClick(elements)
-
 		}
-		this.hideTooltip()
+		// this.hideTooltip()
 	}
 	setHours = (date) => {
 		if (this.props.unit.chart === 'day')
@@ -196,7 +231,6 @@ class DoughnutChart extends PureComponent {
 					options={this.state.lineOptions}
 					legend={this.legendOptions}
 					onElementsClick={this.elementClicked}
-
 				/>
 				{timeType === 3 ? <SummaryTooltip
 					getRef={this.getTooltipRef}
@@ -228,7 +262,6 @@ class DoughnutChart extends PureComponent {
 	}
 }
 const mapStateToProps = (state) => {
-	console.log(state)
 	return ({
 		lang: state.settings.language,
 		timeType: state.dateTime.timeType
