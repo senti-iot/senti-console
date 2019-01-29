@@ -67,6 +67,7 @@ class Favorites extends Component {
 	ft = () => {
 		const { t } = this.props
 		return [
+			{ key: 'name', name: t('favorites.fields.name'), type: 'string' },
 			{ key: 'type', name: t('favorites.fields.type'), type: 'dropDown', options: this.dTypes() }
 		]
 	}

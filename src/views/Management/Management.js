@@ -10,7 +10,7 @@ import Orgs from 'views/Orgs/Orgs';
 import withLocalization from 'components/Localization/T';
 import withSnackbar from 'components/Localization/S';
 import { CircularLoader, GridContainer } from 'components';
-import { People, Business, StarBorder, Star } from 'variables/icons';
+import { People, Business, StarBorder, Star, Person } from 'variables/icons';
 import { filterItems, handleRequestSort } from 'variables/functions';
 import { finishedSaving, removeFromFav, addToFav, isFav } from 'redux/favorites';
 import { connect } from 'react-redux'
@@ -62,13 +62,18 @@ class Management extends Component {
 		})
 
 	}
-	ftOrgs = () => {
+	dTypes = () => {
 		const { t } = this.props
 		return [
-			{ key: 'name', name: t('collections.fields.name'), type: 'string' },
-			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
-			{ key: 'devices[0].start', name: t('collections.fields.activeDeviceStartDate'), type: 'date' },
-			{ key: 'created', name: t('collections.fields.created'), type: 'date' }
+			{ value: 'user', label: t('favorites.types.user'), icon: <Person /> },
+			{ value: 'org', label: t('favorites.types.org'), icon: <Business /> },
+		]
+	}
+	ft = () => {
+		const { t } = this.props
+		return [
+			{ key: 'name', name: t('favorites.fields.name'), type: 'string' },
+			{ key: 'type', name: t('favorites.fields.type'), type: 'dropDown', options: this.dTypes() }
 		]
 	}
 
@@ -191,9 +196,9 @@ class Management extends Component {
 	}
 	renderTableToolBar = () => {
 		const { t } = this.props
-		const { selected, route } = this.state
+		const { selected } = this.state
 		return <TableToolbar //	./TableToolbar.js
-			ft={route === 1 ? this.ftOrgs() : route === 0 ? this.ftUsers() : null}
+			ft={this.ft()}
 			addFilter={this.addFilter}
 			removeFilter={this.removeFilter}
 			anchorElMenu={this.state.anchorElMenu}
