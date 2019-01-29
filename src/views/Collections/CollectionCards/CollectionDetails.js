@@ -5,7 +5,7 @@ import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { DataUsage, Edit, DeviceHub, LibraryBooks, Close, LayersClear, Star, StarBorder } from 'variables/icons';
+import { DataUsage, Edit, DeviceHub, LibraryBooks, LayersClear, Star, StarBorder, Delete } from 'variables/icons';
 
 class DeviceDetails extends Component {
 
@@ -34,7 +34,7 @@ class DeviceDetails extends Component {
 						{ label: t('menus.assign.deviceToCollection'), icon: <DeviceHub className={classes.leftIcon} />, func: this.props.handleOpenAssignDevice },
 						{ label: t('menus.unassign.deviceFromCollection'), icon: <LayersClear className={classes.leftIcon} />, func: this.props.handleOpenUnassignDevice, dontShow: collection.activeDeviceStats ? false : true },
 						{ label: collection.project ? collection.project.id ? t('menus.reassign.collectionToProject') : t('menus.assign.collectionToProject') : t('menus.assign.collectionToProject'), icon: <LibraryBooks className={classes.leftIcon} />, func: this.props.handleOpenAssignProject, /*  dontShow: collection.org.id > 0 ? false : true */ },
-						{ label: t('menus.delete'), icon: <Close className={classes.leftIcon} />, func: handleOpenDeleteDialog },
+						{ label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeleteDialog },
 						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav }
 
 					]

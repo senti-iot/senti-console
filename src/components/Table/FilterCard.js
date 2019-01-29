@@ -22,12 +22,14 @@ const style = theme => ({
 		"10%, 90%": {
 			transform: "translate3d(-1px, 0, 0)",
 		},
-  
+
 		"20%, 80%": {
-			transform: "translate3d(2px, 0, 0)",  },
+			transform: "translate3d(2px, 0, 0)",
+		},
 
 		"30%, 50%, 70%": {
-			transform: "translate3d(-4px, 0, 0)",  },
+			transform: "translate3d(-4px, 0, 0)",
+		},
 
 		"40%, 60%": {
 			transform: "translate3d(4px, 0, 0)",
@@ -53,19 +55,37 @@ const style = theme => ({
 class FilterCard extends Component {
 	constructor(props) {
 		super(props)
-
 		this.state = {
 			value: '',
 			date: moment(),
 			after: false,
 			diff: {
 				value: 0,
-				label: ""
+				icon: '',
+				label: ''
 			},
 			dropdown: {
 				value: 0,
-				label: ""
+				icon: '',
+				label: ''
 			}
+		}
+	}
+	componentDidUpdate = (prevProps, prevState) => {
+		const { type, options } = this.props
+		if (this.props.open && prevProps.open !== this.props.open) {
+			this.setState({
+				diff: {
+					value: 0,
+					icon: type === 'diff' ? options.dropdown ? options.dropdown[options.dropdown.findIndex(d => d.value === 0 || d.value === false)].icon : null : null,
+					label: type === 'diff' ? options.dropdown ? options.dropdown[options.dropdown.findIndex(d => d.value === 0 || d.value === false)].label : null : null
+				},
+				dropdown: {
+					value: 0,
+					icon: type === 'dropDown' ? options ? options[options.findIndex(d => d.value === 0 || d.value === false)].icon : null : null,
+					label: type === 'dropDown' ? options ? options[options.findIndex(d => d.value === 0 || d.value === false)].label : null : null
+				}
+			})
 		}
 	}
 
@@ -74,9 +94,11 @@ class FilterCard extends Component {
 		if (edit)
 			switch (type) {
 				case 'dropDown':
-					this.setState({ dropdown: {
-						value: value
-					} })
+					this.setState({
+						dropdown: {
+							value: value
+						}
+					})
 					break;
 				case 'diff':
 					this.setState({
@@ -100,7 +122,7 @@ class FilterCard extends Component {
 					break;
 			}
 	}
-	
+
 	handleKeyDown = (key) => {
 		if (this.props.open)
 			switch (key.keyCode) {
@@ -115,8 +137,10 @@ class FilterCard extends Component {
 	handleButton = () => {
 		const { value, date, after, dropdown, diff } = this.state
 		const { type, handleButton, title, t, options } = this.props
-		if (type === 'dropDown')
+		if (type === 'dropDown') {
+			console.log(dropdown)
 			handleButton(`${title}: ${dropdown.label}`, dropdown.value, dropdown.icon)
+		}
 		if (type === 'string')
 			handleButton(`${title}: '${value}'`, value)
 		if (type === 'date')

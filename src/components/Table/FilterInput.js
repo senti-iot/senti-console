@@ -224,8 +224,8 @@ class FilterInput extends Component {
 					this.setState({ focusedChip: chips.length - 1 })
 				} else if (focusedChip != null) {
 					const chips = this.props.value || this.state.chips
-					const value = chips[focusedChip]
-					this.handleDeleteChip(value, focusedChip)
+					const chip = chips[focusedChip]
+					this.handleDeleteChip(chip)
 					if (event.keyCode === 8 && focusedChip > 0) {
 						this.setState({ focusedChip: focusedChip - 1 })
 					} else if (event.keyCode === 46 && focusedChip <= chips.length - 1) {
@@ -327,7 +327,7 @@ class FilterInput extends Component {
 	handleDeleteChip(chip, i) {
 		if (this.props.value && chip) {
 			if (this.props.onDelete) {
-				this.props.onDelete(chip, i)
+				this.props.onDelete({ ...chip })
 			}
 		} else {
 			const chips = this.state.chips.slice()
@@ -472,7 +472,7 @@ class FilterInput extends Component {
 							isDisabled: !!disabled,
 							isFocused: this.state.focusedChip === value,
 							handleClick: () => this.setState({ focusedChip: value }),
-							handleDelete: () => this.handleDeleteChip({ id: value }, i),
+							handleDelete: () => this.handleDeleteChip({ id: value }),
 							handleDoubleClick: () => this.handleDoubleClick({ id: value }),
 							className: classes.chip,
 							classes: {
