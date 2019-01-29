@@ -229,6 +229,7 @@ class Device extends Component {
 	getWifiHourly = async () => {
 		const { raw, device, hoverID } = this.state
 		const { from, to } = this.props
+		this.setState({ loadingData: true })
 		let newState = await getWifiHourly('device', [{
 			name: device.name,
 			id: device.id,
@@ -247,6 +248,7 @@ class Device extends Component {
 	getWifiMinutely = async () => {
 		const { raw, device, hoverID } = this.state
 		const { from, to } = this.props
+		this.setState({ loadingData: true })
 		let newState = await getWifiMinutely('device', [{
 			name: device.name,
 			id: device.id,
@@ -265,7 +267,7 @@ class Device extends Component {
 	getWifiDaily = async () => {
 		const { raw, device, hoverID } = this.state
 		const { from, to } = this.props
-
+		this.setState({ loadingData: true })
 		let newState = await getWifiDaily('device', [{
 			name: device.name,
 			id: device.id,
@@ -284,7 +286,7 @@ class Device extends Component {
 	getWifiSum = async () => {
 		const { raw, device, hoverID } = this.state
 		const { from, to } = this.props
-
+		this.setState({ loadingData: true })
 		let newState = await getWifiDaily('device', [{
 			name: device.name,
 			id: device.id,
