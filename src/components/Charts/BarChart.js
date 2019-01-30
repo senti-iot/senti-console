@@ -237,7 +237,6 @@ class BarChart extends PureComponent {
 		catch (err) {
 			console.log(err)
 		}
-
 		this.setTooltip({
 			...this.state.tooltip,
 			top,

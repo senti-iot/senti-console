@@ -31,7 +31,7 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 		container: this._el,
 		radius: 10,
 		maxOpacity: .8,
-		minOpacity: 0,
+		minOpacity: .3,
 		blur: .2,
 		gradient: {
 			'0': 'white',
