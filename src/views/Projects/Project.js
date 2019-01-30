@@ -99,7 +99,7 @@ class Project extends Component {
 	getWifiHourly = async () => {
 		const { raw, project, hoverID } = this.state
 		const { from, to } = this.props
-
+		this.setState({ loadingData: true })
 		let dcs = project.dataCollections.map(d => {
 			return {
 				dcId: d.id,
@@ -122,7 +122,7 @@ class Project extends Component {
 	getWifiMinutely = async () => {
 		const { raw, project, hoverID } = this.state
 		const { from, to } = this.props
-
+		this.setState({ loadingData: true })
 		let dcs = project.dataCollections.map(d => {
 			return {
 				dcId: d.id,
@@ -146,7 +146,7 @@ class Project extends Component {
 	getWifiDaily = async () => {
 		const { raw, project, hoverID } = this.state
 		const { from, to } = this.props
-		
+		this.setState({ loadingData: true })
 		let dcs = project.dataCollections.map(d => {
 			return {
 				dcId: d.id,
@@ -169,7 +169,7 @@ class Project extends Component {
 	getWifiSummary = async () => { 
 		const { raw, project, hoverID } = this.state
 		const { from, to } = this.props
-
+		this.setState({ loadingData: true })
 		let dcs = project.dataCollections.map(d => {
 			return {
 				dcId: d.id,

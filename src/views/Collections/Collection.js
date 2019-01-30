@@ -213,7 +213,7 @@ class Collection extends Component {
 	getWifiSummary = async () => {
 		const { raw, collection, hoverID } = this.state
 		const { from, to } = this.props
-
+		this.setState({ loadingData: true })
 		let newState = await getWifiSummary('collection', [{
 			dcId: collection.id,
 			dcName: collection.name,
@@ -234,6 +234,7 @@ class Collection extends Component {
 	getWifiHourly = async () => {
 		const { raw, collection, hoverID } = this.state
 		const { from, to } = this.props
+		this.setState({ loadingData: true })
 		let newState = await getWifiHourly('collection', [{
 			dcId: collection.id,
 			dcName: collection.name,
@@ -256,6 +257,7 @@ class Collection extends Component {
 	getWifiMinutely = async () => {
 		const { raw, collection, hoverID } = this.state
 		const { from, to } = this.props
+		this.setState({ loadingData: true })
 		let newState = await getWifiMinutely('collection', [{
 			dcId: collection.id,
 			dcName: collection.name,
@@ -278,6 +280,7 @@ class Collection extends Component {
 	getWifiDaily = async () => {
 		const { raw, collection, hoverID } = this.state
 		const { from, to } = this.props
+		this.setState({ loadingData: true })
 		let newState = await getWifiDaily('collection', [{
 			dcId: collection.id,
 			dcName: collection.name,
