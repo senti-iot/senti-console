@@ -148,12 +148,12 @@ class Device extends Component {
 		this.props.removeFromFav(favObj)
 	}
 	getHeatMapData = async () => {
-		const { device } = this.state
+		const { device, raw } = this.state
 		const { from, to } = this.props
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		let dataSet = null
-		let data = await getDataSummary(device.id, startDate, endDate, true)
+		let data = await getDataSummary(device.id, startDate, endDate, raw)
 		dataSet = {
 			...device,
 			data: data,
