@@ -93,8 +93,10 @@ class Collection extends Component {
 		})
 	}
 	componentDidUpdate = (prevProps) => {
-		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from)
+		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
 			this.handleSwitchDayHourSummary()
+			this.getHeatMapData()
+		}
 		if (this.props.saved === true) {
 			const { collection } = this.state
 			if (this.props.isFav({ id: collection.id, type: 'collection' })) {
@@ -142,7 +144,8 @@ class Collection extends Component {
 		this.props.removeFromFav(favObj)
 	}
 	getHeatMapData = async () => {
-		const { from, to, collection, activeDevice } = this.state
+		const { collection, activeDevice } = this.state
+		const { from, to } = this.props
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		let dataSet = null

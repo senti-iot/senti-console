@@ -66,7 +66,7 @@ class Device extends Component {
 					}
 
 				})
-		
+
 			}
 		})
 	}
@@ -112,8 +112,10 @@ class Device extends Component {
 		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from)
+		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
 			this.handleSwitchDayHourSummary()
+			this.getHeatMapData()
+		}
 		if (this.props.saved === true) {
 			if (this.props.isFav({ id: this.state.device.id, type: 'device' })) {
 				this.props.s('snackbars.favorite.saved', { name: this.state.device.name, type: this.props.t('favorites.types.device') })
@@ -146,7 +148,7 @@ class Device extends Component {
 		this.props.removeFromFav(favObj)
 	}
 	getHeatMapData = async () => {
-		const {  device } = this.state
+		const { device } = this.state
 		const { from, to } = this.props
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
@@ -208,7 +210,7 @@ class Device extends Component {
 				break;
 		}
 	}
-	getWifiSummary= async () => {
+	getWifiSummary = async () => {
 		const { raw, device, hoverID } = this.state
 		const { from, to } = this.props
 		let newState = await getWifiSummary('device', [{
@@ -321,7 +323,7 @@ class Device extends Component {
 			case 4:
 				s('snackbars.assign.deviceToOrg', { device: `${name}(${id})`, org: `${device.org.name}` })
 				break
-			case 5: 
+			case 5:
 				s('snackbars.deviceUpdated', { device: `${name}(${id})` })
 				break
 			default:
@@ -337,7 +339,7 @@ class Device extends Component {
 		this.setState({ openAssignOrg: true, anchorEl: null })
 	}
 
-	reload = async (msgId) => { 
+	reload = async (msgId) => {
 		this.snackBarMessages(msgId)
 		this.setState({
 			loading: true
@@ -352,7 +354,7 @@ class Device extends Component {
 				() => this.snackBarMessages(4)
 			)
 		}
-		else { 
+		else {
 			this.setState({ openAssignOrg: false })
 		}
 	}

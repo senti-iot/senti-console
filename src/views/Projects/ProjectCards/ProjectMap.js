@@ -77,8 +77,8 @@ class ProjectMap extends Component {
 		}
 	}
 	render() {
-		const { devices, t, heatMap, mapTheme } = this.props
-
+		const { devices, t, heatMap, mapTheme, heatData } = this.props
+		console.log(heatData)
 		return (
 			<InfoCard
 				title={t('devices.cards.map')}
@@ -93,7 +93,7 @@ class ProjectMap extends Component {
 							t={t}
 							mapTheme={mapTheme}
 							heatMap={heatMap}
-							heatData={this.props.heatData}
+							heatData={heatData}
 							markers={devices} /> : <Caption>{t('projects.noAvailableDevices')}</Caption>}
 					</Grid>
 				} />

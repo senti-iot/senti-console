@@ -62,8 +62,10 @@ class Project extends Component {
 			}
 	}
 	componentDidUpdate = (prevProps) => {
-		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from)
+		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
 			this.handleSwitchDayHourSummary()
+			this.getHeatMapData()
+		}
 		if (this.props.saved === true) {
 			const { project } = this.state
 			if (this.props.isFav({ id: project.id, type: 'project' })) {
@@ -166,7 +168,7 @@ class Project extends Component {
 			...newState
 		})
 	}
-	getWifiSummary = async () => { 
+	getWifiSummary = async () => {
 		const { raw, project, hoverID } = this.state
 		const { from, to } = this.props
 		this.setState({ loadingData: true })
@@ -190,7 +192,8 @@ class Project extends Component {
 		})
 	}
 	getHeatMapData = async () => {
-		const { from, to, project } = this.state
+		const { project } = this.state
+		const { from, to } = this.props
 		let startDate = moment(from).format(this.format)
 		let endDate = moment(to).format(this.format)
 		let dataArr = []
@@ -218,7 +221,7 @@ class Project extends Component {
 			loadingMap: false
 		})
 	}
-	
+
 	handleSwitchDayHourSummary = () => {
 		const { to, from, id } = this.props
 		let diff = moment.duration(to.diff(from)).days()
@@ -244,7 +247,7 @@ class Project extends Component {
 				break;
 		}
 	}
-	
+
 	handleSetCustomRange = () => {
 		const { timeType } = this.props
 		switch (timeType) {
@@ -341,7 +344,7 @@ class Project extends Component {
 		}
 		this.props.removeFromFav(favObj)
 	}
-	
+
 	setHoverID = (id) => {
 		if (id !== this.state.hoverID) {
 			this.setState({ hoverID: id }, () => this.hoverGrow())
