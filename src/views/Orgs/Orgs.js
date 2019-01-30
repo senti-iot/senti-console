@@ -276,7 +276,7 @@ class Orgs extends Component {
 						content={this.renderTableToolBarContent()}
 					/>
 					<OrgTable
-						data={this.filterItems(orgs)}
+						data={orgs}
 						tableHead={this.orgsHeader()}
 						handleRequestSort={this.handleRequestSort}
 						handleDeleteOrgs={this.handleDeleteOrgs}

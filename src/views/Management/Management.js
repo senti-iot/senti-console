@@ -18,7 +18,6 @@ import FavoritesTable from 'components/Favorites/FavoritesTable';
 import { Paper, withStyles } from '@material-ui/core';
 import TableToolbar from 'components/Table/TableToolbar';
 import projectStyles from 'assets/jss/views/projects';
-import { customFilterItems } from 'variables/Filters';
 
 class Management extends Component {
 	constructor(props) {
@@ -108,7 +107,7 @@ class Management extends Component {
 
 	filterItems = (data) => {
 		const { filters } = this.state
-		return customFilterItems(filterItems(data, filters), filters.custom)
+		return filterItems(data, filters)
 	}
 	options = () => {
 		const { t } = this.props
