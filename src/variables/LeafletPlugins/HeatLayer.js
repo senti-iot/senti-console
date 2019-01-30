@@ -31,9 +31,9 @@ class HeatLayer extends MapLayer {
 		valueField: "count",
 		container: this._el,
 		radius: 10,
-		maxOpacity: .8,
+		maxOpacity: .5,
 		minOpacity: .3,
-		blur: .2,
+		blur: 0,
 		gradient: {
 			'0': 'white',
 			'.1': blue[200],
