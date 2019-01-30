@@ -47,15 +47,28 @@ class HeatLayer extends MapLayer {
 	setMaxValues = () => {
 		const { from, to, timeType } = this.props
 		// console.log(from, to, timeType)
+		let diff = -1
 		switch (timeType) {
 			case 0:
 				this.max = this.defaultValue
 				break
-			case 1: 
-				this.max = this.defaultValue * 60
+			case 1:
+				diff = moment(to).diff(from, 'hours')
+				if (diff >= 1) {
+					this.max = this.defaultValue * 60 * diff
+				}
+				else {
+					this.max = this.defaultValue * 60
+				}
 				break
 			case 2:
-				this.max = this.defaultValue * 1440 * moment(to).diff(from, 'days')
+			case 3:
+				diff = moment(to).diff(from, 'days')
+				if (diff >= 1)
+					this.max = this.defaultValue * 1440 * diff
+				else {
+					this.max = this.defaultValue * 1440
+				}
 				break
 			default:
 				break
@@ -86,7 +99,7 @@ class HeatLayer extends MapLayer {
 		})
 		return new Heatmap()
 	}
-	componentDidUpdate = () => { 
+	componentDidUpdate = () => {
 		this.setData(this.props.data)
 	}
 	componentDidMount = () => {
@@ -128,7 +141,6 @@ class HeatLayer extends MapLayer {
 	update = () => {
 		var bounds /* zoom */ /* scale */
 		this.setMaxValues()
-		console.log(this.max)
 		var generatedData = { max: this.max, min: this.min, data: [] };
 
 		bounds = this.map.getBounds();
@@ -236,7 +248,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withLeaflet(HeatLayer))

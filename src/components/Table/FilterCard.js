@@ -138,7 +138,6 @@ class FilterCard extends Component {
 		const { value, date, after, dropdown, diff } = this.state
 		const { type, handleButton, title, t, options } = this.props
 		if (type === 'dropDown') {
-			console.log(dropdown)
 			handleButton(`${title}: ${dropdown.label}`, dropdown.value, dropdown.icon)
 		}
 		if (type === 'string')

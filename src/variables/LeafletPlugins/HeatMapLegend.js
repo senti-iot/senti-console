@@ -63,7 +63,6 @@ class HeatMapLegend extends MapControl {
 			default:
 				break
 		}
-		console.log(max)
 		return this.numberWithCommas(half ? max / 2 : max)
 
 	}

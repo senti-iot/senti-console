@@ -78,7 +78,6 @@ class ProjectMap extends Component {
 	}
 	render() {
 		const { devices, t, heatMap, mapTheme, heatData } = this.props
-		console.log(heatData)
 		return (
 			<InfoCard
 				title={t('devices.cards.map')}
