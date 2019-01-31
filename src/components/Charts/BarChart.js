@@ -233,7 +233,6 @@ class BarChart extends PureComponent {
 			}
 			this.setState({ id: id })
 		}
-
 		catch (err) {
 			console.log(err)
 		}
@@ -244,7 +243,7 @@ class BarChart extends PureComponent {
 			lastPoint,
 			title: [rest, last],
 			data: tooltipModel.dataPoints.map((d, i) => ({
-				device: tooltipModel.body[i].lines[0].split(':')[0], count: d.yLabel, color: tooltipModel.labelColors[i].backgroundColor
+				device: tooltipModel.body[i].lines[0].split(':')[0], count: d.yLabel, color: this.props.data.datasets[tooltipModel.dataPoints[i].datasetIndex].color
 			}))
 		})
 		if (this.clickEvent())
