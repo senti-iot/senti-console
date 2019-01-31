@@ -74,16 +74,23 @@ class FilterCard extends Component {
 	componentDidUpdate = (prevProps, prevState) => {
 		const { type, options } = this.props
 		if (this.props.open && prevProps.open !== this.props.open) {
+			let obj = null
+			if (type === 'diff') {
+				obj = options.dropdown[options.dropdown.findIndex(d => d.value === 0 || d.value === false)]
+			}
+			if (type === 'dropdown') { 
+				obj = options[options.findIndex(d => d.value === 0 || d.value === false)]
+			}
 			this.setState({
 				diff: {
 					value: 0,
-					icon: type === 'diff' ? options.dropdown ? options.dropdown[options.dropdown.findIndex(d => d.value === 0 || d.value === false)].icon : null : null,
-					label: type === 'diff' ? options.dropdown ? options.dropdown[options.dropdown.findIndex(d => d.value === 0 || d.value === false)].label : null : null
+					icon: type === 'diff' ? obj ? obj.icon ? obj.icon : null : null : null, 
+					label: type === 'diff' ? obj ? obj.label ? obj.label : null : null : null
 				},
 				dropdown: {
 					value: 0,
-					icon: type === 'dropDown' ? options ? options[options.findIndex(d => d.value === 0 || d.value === false)].icon : null : null,
-					label: type === 'dropDown' ? options ? options[options.findIndex(d => d.value === 0 || d.value === false)].label : null : null
+					icon: type === 'dropDown' ? obj ? obj.icon ? obj.icon : null : null : null,
+					label: type === 'dropDown' ? obj ? obj.label ? obj.label : null : null : null
 				}
 			})
 		}
