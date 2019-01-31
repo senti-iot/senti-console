@@ -47,12 +47,19 @@ class Project extends Component {
 		{ id: 4, title: '', label: <Person />, url: `#contact` }
 	]
 	componentDidMount = async () => {
-		const { history, match } = this.props
+		const { history, match/* , location */ } = this.props
+
 		if (match)
 			if (match.params.id) {
 				await this.getProject(match.params.id)
-				this.handleSwitchDayHourSummary()
+				await this.handleSwitchDayHourSummary()
 				this.getHeatMapData()
+				// if (location.hash.length > 0) {
+				// 	let str = location.hash.split('#')
+				// 	let element = document.getElementById(str[1])
+				// 	element.scrollIntoView()
+				// 	// console.log(str)
+				// }
 			}
 			else {
 				history.push({
@@ -222,14 +229,14 @@ class Project extends Component {
 		})
 	}
 
-	handleSwitchDayHourSummary = () => {
+	handleSwitchDayHourSummary = async () => {
 		const { to, from, id } = this.props
 		let diff = moment.duration(to.diff(from)).days()
 		this.getHeatMapData()
 		switch (id) {
 			case 0:// Today
 			case 1:// Yesterday
-				this.getWifiHourly();
+				await this.getWifiHourly();
 				break;
 			case 2:// This week
 				parseInt(diff, 10) > 0 ? this.getWifiDaily() : this.getWifiHourly()
@@ -237,13 +244,13 @@ class Project extends Component {
 			case 3:// Last 7 days
 			case 4:// 30 days
 			case 5:// 90 Days
-				this.getWifiDaily();
+				await this.getWifiDaily();
 				break
 			case 6:
-				this.handleSetCustomRange()
+				await this.handleSetCustomRange()
 				break
 			default:
-				this.getWifiDaily();
+				await this.getWifiDaily();
 				break;
 		}
 	}
