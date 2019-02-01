@@ -9,6 +9,7 @@ import { getCreateProject } from 'variables/dataProjects'
 import { connect } from 'react-redux'
 import moment from 'moment';
 import CreateProjectForm from './CreateProjectForm';
+import { getAllUsers } from 'variables/dataUsers';
 
 class CreateProject extends Component {
 	constructor(props) {
@@ -22,6 +23,8 @@ class CreateProject extends Component {
 			devices: [],
 			orgs: [],
 			selectedOrg: '',
+			openOrg: false,
+			openUser: false,
 			availableDevices: null,
 			creating: false,
 			created: false,
@@ -31,6 +34,11 @@ class CreateProject extends Component {
 			org: {
 				name: "",
 				id: -1
+			},
+			user: {
+				firstName: "",
+				lastName: "",
+				id: -1
 			}
 		}
 		props.setHeader('menus.create.project', true, '/projects/list', 'projects')
@@ -38,7 +46,14 @@ class CreateProject extends Component {
 
 	componentDidMount = () => {
 		this._isMounted = 1
-
+		getAllUsers().then(async rs => { 
+			if (this._isMounted) { 
+				this.setState({
+					users: rs,
+					user: this.props.user
+				})
+			}
+		})
 		getAllOrgs().then(async rs => {
 			if (this._isMounted) {
 				if (rs.length === 1)
@@ -52,7 +67,10 @@ class CreateProject extends Component {
 						availableDevices: devices ? devices : null,
 						devices: [], 
 						orgs: rs,
-						org: this.props.userOrg
+						org: {
+							id: this.props.userOrg.id,
+							name: this.props.userOrg.name
+						}
 					})
 				}
 			}
@@ -131,7 +149,7 @@ class CreateProject extends Component {
 		this.props.history.push(`/project/${rs.id}`)
 	}
 	handleCreateProject = async () => {
-		const { title, description, startDate, endDate, org } = this.state
+		const { title, description, startDate, endDate, org, user } = this.state
 		this.setState({ creating: true })
 		if (this.handleValidation())
 		{
@@ -143,10 +161,10 @@ class CreateProject extends Component {
 						description: description,
 						startDate: startDate,
 						endDate: endDate,
-						org: org							
+						org: org,
+						user: user
 					}
-					await createProject(newProject).then(rs => rs ? this.handleFinishCreateProject(rs) : this.setState({ create: false, creating: false, id: 0 })
-					)
+					await createProject(newProject).then(rs => rs ? this.handleFinishCreateProject(rs) : this.setState({ create: false, creating: false, id: 0 }))
 				}
 			})
 		}
@@ -173,9 +191,27 @@ class CreateProject extends Component {
 			openOrg: false
 		})
 	}
+	handleOpenUser = () => {
+		this.setState({
+			openUser: true
+		})
+	}
+	handleCloseUser = () => {
+		this.setState({
+			openUser: false
+		})
+	}
+	handleChangeUser = (o) => () => {
+		this.setState({
+			user: o,
+			openUser: false,
+			org: this.state.org.id === o.org.id ? this.state.org : o.org
+		})
+	}
 	render() {
 		const { created, orgs, org, error,
-			title, description, creating, startDate, endDate, openOrg } = this.state
+			title, description, creating, startDate, endDate, openOrg,
+			users, user, openUser } = this.state
 
 		return (
 			<CreateProjectForm
@@ -195,13 +231,20 @@ class CreateProject extends Component {
 				handleCloseOrg={this.handleCloseOrg}
 				handleChangeOrg={this.handleChangeOrg}
 				openOrg={openOrg}
+				users={users}
+				user={user}
+				handleOpenUser={this.handleOpenUser}
+				handleCloseUser={this.handleCloseUser}
+				handleChangeUser={this.handleChangeUser}
+				openUser={openUser}
 				handleCreateProject={this.handleCreateProject}
 			/>
 		)
 	}
 }
 const mapStateToProps = (state) => ({
-	userOrg: state.settings.user.org.id
+	userOrg: state.settings.user.org,
+	user: state.settings.user
 })
 
 const mapDispatchToProps = {

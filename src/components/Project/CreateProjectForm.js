@@ -12,6 +12,7 @@ import moment from 'moment';
 import withLocalization from 'components/Localization/T';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
+import Gravatar from 'react-gravatar'
 
 class CreateProjectForm extends Component {
 	constructor(props) {
@@ -33,6 +34,77 @@ class CreateProjectForm extends Component {
 				keyword: value
 			}
 		})
+	}
+	renderSelectUser = () => {
+		const { t, openUser, handleCloseUser, users, handleChangeUser, classes } = this.props
+		const { filters } = this.state
+		const appBarClasses = cx({
+			[' ' + classes['primary']]: 'primary'
+		});
+		return <Dialog
+			fullScreen
+			open={openUser}
+			onClose={handleCloseUser}
+			TransitionComponent={this.transition}>
+			<AppBar className={classes.appBar + ' ' + appBarClasses}>
+				<Toolbar>
+					<Hidden mdDown>
+						<ItemG container alignItems={'center'}>
+							<ItemG xs={2} container alignItems={'center'}>
+								<IconButton color='inherit' onClick={handleCloseUser} aria-label='Close'>
+									<Close />
+								</IconButton>
+								<Typography variant='h6' color='inherit' className={classes.flex}>
+									{t('users.pageTitle')}
+								</Typography>
+							</ItemG>
+							<ItemG xs={8}>
+								<Search
+									fullWidth
+									open={true}
+									focusOnMount
+									suggestions={users ? suggestionGen(users) : []}
+									handleFilterKeyword={this.handleFilterKeyword}
+									searchValue={filters.keyword} />
+							</ItemG>
+						</ItemG>
+					</Hidden>
+					<Hidden lgUp>
+						<ItemG container alignItems={'center'}>
+							<ItemG xs={4} container alignItems={'center'}>
+								<IconButton color={'inherit'} onClick={handleCloseUser} aria-label='Close'>
+									<Close />
+								</IconButton>
+								<Typography variant='h6' color='inherit' className={classes.flex}>
+									{t('orgs.pageTitle')}
+								</Typography>
+							</ItemG>
+							<ItemG xs={8} container alignItems={'center'} justify={'center'}>
+								<Search
+									noAbsolute
+									fullWidth
+									open={true}
+									focusOnMount
+									suggestions={users ? suggestionGen(users) : []}
+									handleFilterKeyword={this.handleFilterKeyword}
+									searchValue={filters.keyword} />
+							</ItemG>
+						</ItemG>
+					</Hidden>
+				</Toolbar>
+			</AppBar>
+			<List>
+				{users ? filterItems(users, filters).map((o, i) => {
+					return <Fragment key={i}>
+						<ListItem button onClick={handleChangeUser(o)}>
+							<Gravatar default='mp' email={o.email} className={classes.img} />}
+							<ListItemText primary={`${o.firstName} ${o.lastName}`} secondary={o.org.name}/>
+						</ListItem>
+						<Divider />
+					</Fragment>
+				}) : null}
+			</List>
+		</Dialog>
 	}
 	renderSelectOrg = () => {
 		const { t, openOrg, handleCloseOrg, orgs, handleChangeOrg, classes } = this.props
@@ -108,7 +180,7 @@ class CreateProjectForm extends Component {
 		const { t, classes, errorMessage, error,
 			created, title, handleChange, handleDateChange, 
 			description, startDate, endDate, creating, handleOpenOrg, org,
-			handleCreateProject
+			handleCreateProject, handleOpenUser, user
 		} = this.props
 		const buttonClassname = cx({
 			[classes.buttonSuccess]: created,
@@ -194,6 +266,20 @@ class CreateProjectForm extends Component {
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
+								{this.renderSelectUser()}
+								<TextF
+									id={'contactPerson'}
+									label={t('projects.contact.title')}
+									value={`${user.firstName} ${user.lastName}`}
+									handleClick={handleOpenUser}
+									handleChange={() => { }}
+									InputProps={{
+										onChange: handleOpenUser,
+										readOnly: true
+									}}
+								/>
+							</ItemGrid>
+							<ItemGrid xs={12}>
 								{this.renderSelectOrg()}
 								<TextF
 									id={'collectionOrg'}
@@ -208,6 +294,7 @@ class CreateProjectForm extends Component {
 									}}
 								/>
 							</ItemGrid>
+							
 						</form>
 						<ItemGrid xs={12} container justify={'center'}>
 							<Collapse in={creating} timeout='auto' unmountOnExit>

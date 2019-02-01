@@ -153,7 +153,6 @@ class Projects extends Component {
 	//#region Life Cycle
 
 	componentDidMount = async () => {
-		window.filters = this.props.filters
 		this._isMounted = 1
 		this.handleTabs()
 		await this.getData()
@@ -166,15 +165,17 @@ class Projects extends Component {
 		if (this.props.saved === true) {
 			const { projects, selected } = this.state
 			let project = projects[projects.findIndex(d => d.id === selected[0])]
-			if (this.props.isFav({ id: project.id, type: 'project' })) {
-				this.props.s('snackbars.favorite.saved', { name: project.title, type: this.props.t('favorites.types.project') })
-				this.props.finishedSaving()
-				this.setState({ selected: [] })
-			}
-			if (!this.props.isFav({ id: project.id, type: 'project' })) {
-				this.props.s('snackbars.favorite.removed', { name: project.title, type: this.props.t('favorites.types.project') })
-				this.props.finishedSaving()
-				this.setState({ selected: [] })
+			if (project) {	
+				if (this.props.isFav({ id: project.id, type: 'project' })) {
+					this.props.s('snackbars.favorite.saved', { name: project.title, type: this.props.t('favorites.types.project') })
+					this.props.finishedSaving()
+					this.setState({ selected: [] })
+				}
+				if (!this.props.isFav({ id: project.id, type: 'project' })) {
+					this.props.s('snackbars.favorite.removed', { name: project.title, type: this.props.t('favorites.types.project') })
+					this.props.finishedSaving()
+					this.setState({ selected: [] })
+				}
 			}
 		}
 	}
