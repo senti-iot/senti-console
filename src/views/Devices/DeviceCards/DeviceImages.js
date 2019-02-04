@@ -128,7 +128,7 @@ class DeviceImages extends PureComponent {
 						]
 					} />
 				}
-				content={
+				hiddenContent={
 					<Fragment>
 						{img !== null ? img !== 0 ?
 							<Fragment>

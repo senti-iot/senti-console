@@ -119,7 +119,7 @@ class OpenStreetMap extends React.Component {
 							key={i}
 							icon={this.returnSvgIcon(m.liveStatus)}>
 							{calibrate ? null : <Popup className={theme.palette.type === 'dark' ? classes.popupDark : classes.popup}>
-								<OpenPopup m={m} />
+								<OpenPopup m={m} noSeeMore={markers.length === 1} />
 							</Popup>}
 						</Marker>
 					return null

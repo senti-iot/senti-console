@@ -68,7 +68,7 @@ class OpenPopup extends Component {
 	}
 	
 	render() {
-		const { classes, m, t } = this.props
+		const { classes, m, t, noSeeMore } = this.props
 		const { weather } = this.state
 		return <Paper className={classes.paper}>
 			<ItemG container>
@@ -128,11 +128,11 @@ class OpenPopup extends Component {
 						</ItemG>
 					</ItemG>
 				</Collapse>
-				<ItemG xs={12} container justify={'flex-end'}>
+				{noSeeMore ? null : <ItemG xs={12} container justify={'flex-end'}>
 					<Button variant={'text'} style={{ color: teal[500] }} component={Link} to={`/device/${m.id}`}>
 						{t('menus.seeMore')}
 					</Button>
-				</ItemG>
+				</ItemG>}
 			</ItemG>
 		</Paper>
 
