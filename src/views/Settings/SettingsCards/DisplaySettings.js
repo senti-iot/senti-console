@@ -17,9 +17,17 @@ class DisplaySettings extends Component {
 	changeSideBarLoc = (e) => this.props.changeSideBarLoc(e.target.value)
 	changeDiscoverSenti = e => this.props.changeDiscoverSenti(e.target.value)
 	changeMapTheme = e => this.props.changeMapTheme(e.target.value)
-
+	changeDefaultRoute = e => this.props.changeDefaultRoute(e.target.value)
+	
 	render() {
-		const { language, trp, sideBar, discSentiVal, theme, mapTheme, classes, t } = this.props
+		const { language, trp, sideBar, discSentiVal, theme, mapTheme, classes, t, defaultRoute } = this.props
+		let defaultRoutes = [
+			{ value: '/favorites', label: t('sidebar.favorites') },
+			{ value: '/dashboard', label: t('sidebar.dashboard') },
+			{ value: '/projects', label: t('sidebar.projects') },
+			{ value: '/devices', label: t('sidebar.devices') },
+			{ value: '/collections', label: t('sidebar.collections') }
+		]
 		let discSenti = [
 			{ value: 1, label: t('actions.yes') },
 			{ value: 0, label: t('actions.no') }
@@ -72,6 +80,12 @@ class DisplaySettings extends Component {
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.discoverSenti')}</ListItemText>
 										<DSelect menuItems={discSenti} value={discSentiVal} onChange={this.changeDiscoverSenti} />
+									</ItemGrid>
+								</ListItem>
+								<ListItem divider>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{t('settings.defaultRoute')}</ListItemText>
+										<DSelect menuItems={defaultRoutes} value={defaultRoute} onChange={this.changeDefaultRoute} />
 									</ItemGrid>
 								</ListItem>
 								<ListItem divider>

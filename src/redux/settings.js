@@ -13,6 +13,7 @@ const TRP = 'tableRowsPerPage'
 const DISCSENT = 'discoverSentiBanner'
 const DidKnow = 'notifDidYouKnow'
 const MapTheme = 'mapTheme'
+const changeDR = 'changeDefaultRoute'
 
 //Calibration
 const CALTYPE = 'calibrationType'
@@ -49,7 +50,8 @@ export const saveSettingsOnServ = () => {
 			alerts: s.alerts,
 			didKnow: s.didKnow,
 			rawData: s.rawData,
-			mapTheme: s.mapTheme
+			mapTheme: s.mapTheme,
+			defaultRoute: s.defaultRoute
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -139,7 +141,15 @@ export const getSettings = async () => {
 
 
 }
-
+export const changeDefaultRoute = route => {
+	return async(dispatch) => {
+		dispatch({
+			type: changeDR,
+			defaultRoute: route
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
 export const changeMapTheme = t => {
 	return async (dispatch, getState) => {		
 		dispatch({
@@ -266,6 +276,7 @@ export const finishedSaving = () => {
 	}
 }
 let initialState = {
+	defaultRoute: '/dashboard',
 	mapTheme: 0,
 	rawData: 0,
 	language: 'dk',
@@ -287,6 +298,8 @@ let initialState = {
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
+		case changeDR: 
+			return Object.assign({}, state, { defaultRoute: action.defaultRoute })
 		case CHARTDATATYPE: 
 			return Object.assign({}, state, { rawData: action.t })
 		case SAVED:

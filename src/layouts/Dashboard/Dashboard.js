@@ -16,6 +16,7 @@ import withSnackbarHandler from 'components/Localization/SnackbarHandler';
 import {  Close } from 'variables/icons';
 import { lightTheme, darkTheme } from 'variables/themes'
 import { getDaysOfInterest } from 'redux/doi';
+
 class App extends React.Component {
 	constructor(props) {
 		super(props)

@@ -311,6 +311,7 @@
 		}
 	},
 	"favorites": {
+		"pageTitle": "Favorites",
 		"fields": {
 			"name": "Name",
 			"type": "Type"
@@ -524,6 +525,7 @@
 	},
 	"settings": {
 		"alerts": "Alerts",
+		"defaultRoute": "Entry Point",
 		"calibration": {
 			"12months": "Every 12 months",
 			"3months": "Every 3 months",

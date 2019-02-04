@@ -81,7 +81,7 @@ class LoginPage extends React.Component {
 							{
 								await this.props.getSettings()
 								var prevURL = this.props.location.state ? this.props.location.state.prevURL : null
-								this.props.history.push(prevURL ? prevURL : '/dashboard')
+								this.props.history.push(prevURL ? prevURL : this.props.defaultRoute) //Aici
 							}
 						}
 					}
@@ -194,7 +194,7 @@ class LoginPage extends React.Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	
+	defaultRoute: state.settings.defaultRoute
 })
 
 const mapDispatchToProps = dispatch => ({

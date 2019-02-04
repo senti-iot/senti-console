@@ -311,7 +311,8 @@
         }
     },
     "favorites": {
-        "fields": {
+		"pageTitle": "Favoritter",
+		"fields": {
             "name": "Navn",
             "type": "Type"
         },
@@ -523,7 +524,8 @@
         }
     },
     "settings": {
-        "alerts": "Alarmeringer",
+		"alerts": "Alarmeringer",
+		"defaultRoute": "Indgangspunkt",
         "calibration": {
             "12months": "Hver 12. måned",
             "3months": "Hver 3. måned",
