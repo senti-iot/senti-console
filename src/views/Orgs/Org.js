@@ -111,7 +111,7 @@ class Org extends Component {
 			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.org')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
-					{t('dialogs.delete.message.org')}
+					{t('dialogs.delete.message.org', { org: this.state.org.name })}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
