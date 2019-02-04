@@ -260,7 +260,8 @@
                 "project": "Are you sure you want to delete this project?",
                 "projects": "Are you sure you want to delete these projects:",
                 "user": "Are you sure you want to delete this user?",
-                "users": "Are you sure you want to delete these users:"
+				"users": "Are you sure you want to delete these users:",
+				"deviceImage": "Are you sure you want to delete this picture?"
             },
             "title": {
                 "collection": "Delete data collection?",
@@ -270,7 +271,8 @@
                 "project": "Delete project?",
                 "projects": "Delete projects?",
                 "user": "Delete user?",
-                "users": "Delete users?"
+				"users": "Delete users?",
+				"deviceImage": "Delete this picture?"
             }
         },
         "discoverSenti": {
