@@ -640,7 +640,8 @@
         "addNewDevice": "Tilføj enhed",
         "addNewProject": "Opret projekt",
         "filter": "Filter",
-        "rowsPerPage": "Rækker pr. side",
+		"rowsPerPage": "Rækker pr. side",
+		"cardsPerPage": "Kort per side",
         "selected": "valgt"
     },
     "users": {

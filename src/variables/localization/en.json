@@ -641,6 +641,7 @@
 		"addNewProject": "Add project",
 		"filter": "Filter",
 		"rowsPerPage": "Rows per page",
+		"cardsPerPage": "Cards per page",
 		"selected": "selected"
 	},
 	"users": {

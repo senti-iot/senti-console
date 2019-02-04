@@ -282,7 +282,8 @@ let initialState = {
 	didKnow: 0,
 	loading: true,
 	saved: false,
-	rowsPerPageOptions: [ 5, 10, 15, 20, 25, 50, 100 ]
+	rowsPerPageOptions: [ 5, 10, 15, 20, 25, 50, 100 ],
+	cardsPerPageOptions: [2, 3, 4, 6, 8, 9]
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {

@@ -11,7 +11,7 @@ import GridContainer from 'components/Grid/GridContainer';
 import { ViewList, ViewModule, Map, Build, Business, DataUsage, Edit, LayersClear, SignalWifi2Bar, Star, StarBorder } from 'variables/icons'
 import Toolbar from 'components/Toolbar/Toolbar'
 import { filterItems, handleRequestSort } from 'variables/functions';
-import DeviceCard from 'components/Devices/DeviceCard'
+import DevicesCards from './DevicesCards'
 import { unassignDeviceFromCollection } from 'variables/dataCollections';
 import { Info, AssignDC, AssignOrg, ItemG } from 'components';
 import TableToolbar from 'components/Table/TableToolbar';
@@ -507,13 +507,7 @@ class Devices extends Component {
 	renderCards = () => {
 		const { loading } = this.state
 		const { t } = this.props 
-		return loading ? this.renderLoader() : <GridContainer spacing={8} justify={'center'}>
-			{this.filterItems(this.state.devices).map((d, k) => {
-				return <ItemG key={k} container justify={'center'} xs={12} sm={6} md={4}>
-					<DeviceCard key={k} t={t} d={d} />
-				</ItemG>
-			})}
-		</GridContainer>
+		return loading ? this.renderLoader() : <DevicesCards t={t} devices={this.filterItems(this.state.devices)}/> 
 	}
 
 	renderMap = () => {
