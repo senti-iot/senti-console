@@ -41,12 +41,17 @@ const deviceStyles = theme => ({
 	modal: {
 		[theme.breakpoints.up('md')]: {
 			width: theme.spacing.unit * 50,
+			height: theme.spacing.unit * 50,
+			maxHeight: 'calc(100vh - 60px)'
 		},
 		[theme.breakpoints.down('sm')]: {
 			width: 'calc(100vw - 10px)',
+			height: 'calc(100vh - 30px)',
 			padding: 0,
 			maxHeight: 'calc(100vh - 60px)'
 		},
+		display: "flex",
+		justifyContent: "center",
 		position: 'absolute',
 		backgroundColor: theme.palette.background.paper,
 		boxShadow: theme.shadows[5],
