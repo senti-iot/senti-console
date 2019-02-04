@@ -525,7 +525,7 @@
     },
     "settings": {
 		"alerts": "Alarmeringer",
-		"defaultRoute": "Indgangspunkt",
+		"defaultRoute": "Indgangsside",
         "calibration": {
             "12months": "Hver 12. måned",
             "3months": "Hver 3. måned",
