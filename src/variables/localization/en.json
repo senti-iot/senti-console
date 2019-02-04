@@ -539,6 +539,10 @@
 			"time": "By time"
 		},
 		"chart": {
+			"YAxis": {
+				"logarithmic": "Logarithmic scale",
+				"linear": "Linear scale"
+			},
 			"defaultChart": "Default chart type",
 			"rawData": "Raw data"
 		},

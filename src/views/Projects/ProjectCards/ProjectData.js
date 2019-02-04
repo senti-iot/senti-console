@@ -9,7 +9,7 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart,  ArrowUpward, CloudDownload
+	ExpandMore, Visibility, ShowChart,  ArrowUpward, CloudDownload, LinearScale
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
@@ -23,7 +23,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
-import { changeChartType } from 'redux/appState'
+import { changeChartType, changeYAxis } from 'redux/appState'
 import { changeDate } from 'redux/dateTime'
 
 class ProjectData extends PureComponent {
@@ -309,6 +309,14 @@ class ProjectData extends PureComponent {
 						{t('collections.rawData')}
 					</ListItemText>
 				</ListItem>
+				<ListItem button onClick={() => this.props.changeYAxis(this.props.chartYAxis === 'linear' ? 'logarithmic' : 'linear')}>
+					<ListItemIcon>
+						{this.props.chartYAxis !== 'linear' ? <LinearScale /> : <Timeline/> }
+					</ListItemIcon>
+					<ListItemText>
+						{t(this.props.chartYAxis !== 'linear' ? 'settings.chart.YAxis.linear' : 'settings.chart.YAxis.logarithmic')}
+					</ListItemText>
+				</ListItem>
 				<div>
 					<Hidden mdUp>
 						<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
@@ -384,13 +392,14 @@ ProjectData.propTypes = {
 }
 const mapStateToProps = (state) => ({
 	chartType: state.appState.chartType !== null ? state.appState.chartType : state.settings.chartType,
-	timeType: state.dateTime.timeType
+	timeType: state.dateTime.timeType,
+	chartYAxis: state.appState.chartYAxis
 })
 
 const mapDispatchToProps = dispatch => ({
 	changeChartType: (val) => dispatch(changeChartType(val)),
-	handleSetDate: (id, to, from, timeType) => dispatch(changeDate(id, to, from, timeType))
-
+	handleSetDate: (id, to, from, timeType) => dispatch(changeDate(id, to, from, timeType)),
+	changeYAxis: (val) => dispatch(changeYAxis(val))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(ProjectData))

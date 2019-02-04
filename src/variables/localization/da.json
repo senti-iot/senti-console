@@ -539,6 +539,10 @@
             "time": "På tid"
         },
         "chart": {
+			"YAxis": {
+				"logarithmic": "Logaritmisk skala",
+				"linear": "Lineær skala"
+			},
             "defaultChart": "Standard diagram",
             "rawData": "Rådata"
         },

@@ -3,7 +3,13 @@ const changeTRP = 'changeTableRows'
 const changeMT = 'changeMapTheme'
 const changeCT = 'changeChartType'
 const changeHM = 'changeHeatMap'
+const changeYAXIS = 'changeYAxis'
 
+export const changeYAxis = (val) => { 
+	return (dispatch) => { 
+		dispatch({ type: changeYAXIS, chartYAxis: val })
+	}
+}
 export const changeHeatMap = (val) => {
 	return (dispatch) => {
 		dispatch({ type: changeHM, heatMap: val })
@@ -73,6 +79,7 @@ export const removeFilter = (f, type) => {
 	}
 }
 const initialState = {
+	chartYAxis: 'linear',
 	heatMap: false,
 	chartType: null,
 	mapTheme: null, 
@@ -89,6 +96,8 @@ const initialState = {
 
 export const appState = (state = initialState, action) => {
 	switch (action.type) {
+		case changeYAXIS:
+			return Object.assign({}, state, { chartYAxis: action.chartYAxis })
 		case changeHM: 
 			return Object.assign({}, state, { heatMap: action.heatMap })
 		case changeCT: 

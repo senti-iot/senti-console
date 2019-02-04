@@ -104,6 +104,7 @@ class BarChart extends PureComponent {
 							display: false,
 							labelString: 'value'
 						},
+						type: props.chartYAxis,
 						ticks: {
 							fontColor: props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
 						},
@@ -140,7 +141,7 @@ class BarChart extends PureComponent {
 		})
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID || this.props.timeType !== prevProps.timeType) {
+		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID || this.props.timeType !== prevProps.timeType || prevProps.chartYAxis !== this.props.chartYAxis) {
 			this.setXAxis()
 		}
 		if (this.chart.chartInstance.canvas.style.width !== this.state.chartWidth || this.state.chartHeight !== this.chart.chartInstance.canvas.style.height) {
@@ -304,7 +305,20 @@ class BarChart extends PureComponent {
 								unit: this.props.unit.chart,
 								tooltipFormat: this.props.unit.format
 							},
-						}]
+						}],
+					yAxes: [{
+						scaleLabel: {
+							display: false,
+							labelString: 'value'
+						},
+						type: this.props.chartYAxis,
+						ticks: {
+							fontColor: this.props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
+						},
+						gridLines: {
+							color: this.props.theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0,0,0,0.1)',
+						},
+					}]
 				}
 			}
 		}, this.chart.chartInstance.update())
@@ -406,7 +420,8 @@ class BarChart extends PureComponent {
 }
 const mapStateToProps = (state) => ({
 	lang: state.settings.language,
-	timeType: state.dateTime.timeType
+	timeType: state.dateTime.timeType,
+	chartYAxis: state.appState.chartYAxis
 })
 
 const mapDispatchToProps = {

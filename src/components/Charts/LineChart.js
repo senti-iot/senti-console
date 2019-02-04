@@ -139,6 +139,7 @@ class LineChart extends PureComponent {
 							display: false,
 							labelString: 'value'
 						},
+						type: props.chartYAxis,
 						ticks: {
 							fontColor: props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
 						},
@@ -193,7 +194,7 @@ class LineChart extends PureComponent {
 		 *  */
 	componentDidUpdate = (prevProps) => {
 
-		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID) {
+		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID || prevProps.chartYAxis !== this.props.chartYAxis) {
 			this.setXAxis()
 		}
 		// console.log(this.chart.chartInstance)
@@ -348,7 +349,20 @@ class LineChart extends PureComponent {
 								unit: this.props.unit.chart,
 								tooltipFormat: this.props.unit.format
 							},
-						}]
+						}],
+					yAxes: [{
+						scaleLabel: {
+							display: false,
+							labelString: 'value'
+						},
+						type: this.props.chartYAxis,
+						ticks: {
+							fontColor: this.props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
+						},
+						gridLines: {
+							color: this.props.theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0,0,0,0.1)',
+						},
+					}]
 				}
 			}
 		}, () => this.chart ? this.chart.chartInstance ? this.chart.chartInstance.update() : {} : {})
@@ -445,7 +459,8 @@ class LineChart extends PureComponent {
 	}
 }
 const mapStateToProps = (state) => ({
-	lang: state.settings.language
+	lang: state.settings.language,
+	chartYAxis: state.appState.chartYAxis
 })
 
 const mapDispatchToProps = {
