@@ -53,6 +53,7 @@ class DeviceDetails extends Component {
 	}
 	render() {
 		const { classes, device, t, accessLevel, history, weather, isFav, addToFav, removeFromFav } = this.props
+		console.log(device)
 		return (
 			<InfoCard
 				title={device.name ? device.name : device.id}
@@ -63,7 +64,7 @@ class DeviceDetails extends Component {
 						{ label: t('menus.assign.deviceToCollection'), icon: <DataUsage className={classes.leftIcon} />, func: this.props.handleOpenAssign },
 						{ label: device.org.id > 0 ? t('menus.reassign.deviceToOrg') : t('menus.assign.deviceToOrg'), icon: <Business className={classes.leftIcon} />, func: this.props.handleOpenAssignOrg, dontShow: accessLevel.senticloud ? accessLevel.senticloud.editdeviceownership ? false : true : true },
 						{ label: t('menus.unassign.deviceFromCollection'), icon: <LayersClear className={classes.leftIcon} />, func: this.props.handleOpenUnassign, dontShow: device.dataCollection.id > 0 ? false : true },
-						{ label: !(device.lat > 0) && !(device.long > 0) ? t('menus.calibrate') : t('menus.recalibrate'), icon: <Build className={classes.leftIcon} />, func: () => this.props.history.push(`${this.props.match.url}/setup`) },
+						{ label: !(device.lat > 0) && !(device.long > 0) ? t('menus.calibrate') : t('menus.recalibrate'), icon: <Build className={classes.leftIcon} />, dontShow: device.liveStatus === 0, func: () => this.props.history.push(`${this.props.match.url}/setup`) },
 						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav }
 					]
 				} />
