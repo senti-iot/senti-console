@@ -531,7 +531,7 @@
 	},
 	"settings": {
 		"alerts": "Alerts",
-		"defaultRoute": "Entry page",
+		"defaultRoute": "Start page",
 		"calibration": {
 			"12months": "Every 12 months",
 			"3months": "Every 3 months",
