@@ -95,9 +95,10 @@ class Tooltip extends Component {
 	}
 	renderTooltip = () => {
 		const { t, classes, tooltip, weather,
-			handleCloseTooltip, todayOfInterest } = this.props
+			handleCloseTooltip, todayOfInterest, mobile } = this.props
 		let doi = todayOfInterest(tooltip.title[0])
-
+		let birthdays = doi.birthdays
+		let days = doi.days
 		return <Grow in={tooltip.show} onExited={handleCloseTooltip} >
 			<Paper className={classes.paper}>
 				<ItemG container>
@@ -118,9 +119,9 @@ class Tooltip extends Component {
 							})}
 						</ItemG>
 					</ItemG>
-					<Collapse in={tooltip.showWeather}>
-						<ItemG container>
-							<ItemG container xs={12} sm={6} md={6} lg={6} xl={6} style={{ padding: 8 }}>
+					<ItemG container>
+						<ItemG container xs={12} sm={6} md={6} lg={6} xl={6} style={{ padding: 8 }}>
+							<Collapse in={tooltip.showWeather}>
 								{weather ? <ItemG xs={12}><WeatherIcon icon={weather.currently.icon} /></ItemG> : null}
 								<Fragment>
 									<ItemG container direction='row' xs={12}>
@@ -149,21 +150,25 @@ class Tooltip extends Component {
 										</T>
 									</ItemG>
 								</Fragment>
-							</ItemG>
-							{doi.length > 0 ? <ItemG container justify={'center'} xs={12} sm={6} md={6} lg={6} xl={6} style={{ padding: 8 }}>
+							</Collapse>
+						</ItemG>
+						{days.length > 0 || birthdays.length > 0 ? 
+							<ItemG container alignItems={'center'} justify={'center'} xs={12} sm={6} md={6} lg={6} xl={6} style={{ padding: 8 }}>
 								<ItemG xs={2}><DateRange className={classes.largeIcon} /></ItemG>
-								<ItemG xs={10} style={{ paddingLeft: 4 }}>
-									{doi.length > 0 ? doi.map((d, i) => <T key={i}>
+								<ItemG xs={10} style={{ paddingLeft: 4 }} container alignItems={mobile ? 'center' : ''}>
+									{days.length > 0 ? days.map((d, i) => <T key={i}>
 										{`\u{2022}`}{d.name}
 									</T>) : <Muted>{t('no.doi')}</Muted>}
 								</ItemG>
 								<ItemG xs={2}><Cake className={classes.largeIcon} /></ItemG>
-								<ItemG xs={10} style={{ paddingLeft: 4 }}>
-									<Muted>{t('no.birthdays')}</Muted>
+								<ItemG xs={10} style={{ paddingLeft: 4 }} container alignItems={mobile ? 'center' : ''}>
+									{birthdays.length > 0 ? birthdays.map((d, i) => <T key={i}>
+										{`\u{2022} ${d.name}`}
+									</T>) : <Muted>{t('no.birthdays')}</Muted>}
 								</ItemG>
-							</ItemG> : null}
-						</ItemG>
-					</Collapse>
+							</ItemG> 
+							: null}
+					</ItemG>
 				</ItemG>
 			</Paper>
 		</Grow>

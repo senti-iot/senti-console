@@ -4,8 +4,9 @@ const setDoI = 'setDoI'
 export const todayOfInterest = (date) => { 
 	return (dispatch, getState) => {
 		let DoI = getState().doi.days
-		let days = DoI.filter(d => d.date === date)
-		return days
+		let days = DoI.filter(d => d.date === date && !(d.birthday))
+		let birthdays = DoI.filter(d => d.date === date && d.birthday === true)
+		return { days, birthdays }
 	}
 }
 export const setDaysOfInterest = (daysOfInterest) => ({
