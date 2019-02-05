@@ -141,6 +141,17 @@ class FilterCard extends Component {
 					break;
 			}
 	}
+	handleKeyPress = (key) => {
+		if (this.props.open)
+			switch (key.keyCode) {
+				case 13:
+					this.handleButton()
+					break;
+
+				default:
+					break;
+			}
+	}
 	handleButton = () => {
 		const { value, date, after, dropdown, diff } = this.state
 		const { type, handleButton, title, t, options } = this.props
@@ -250,7 +261,7 @@ class FilterCard extends Component {
 					</ItemG>
 				</Fragment>
 			case 'string':
-				return <TextF id={'filter-text'} onKeyDown={this.handleKeyDown} autoFocus label={t('filters.contains')} value={value} handleChange={e => this.handleInput(e.target.value)} />
+				return <TextF id={'filter-text'} autoFocus onKeyDown={this.handleKeyDown} label={t('filters.contains')} value={value} handleChange={e => this.handleInput(e.target.value)} />
 			default:
 				break;
 		}
@@ -287,7 +298,7 @@ class FilterCard extends Component {
 					</CardContent>
 					<CardActions>
 						<ItemG xs={12} container justify={'center'}>
-							<Button onClick={this.handleButton}>
+							<Button onClick={this.handleButton} onKeyPress={this.handleKeyPress}>
 								{!edit ? t('actions.addFilter') : t('actions.editFilter')}
 							</Button>
 						</ItemG>

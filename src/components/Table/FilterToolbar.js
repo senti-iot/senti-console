@@ -16,20 +16,23 @@ class FilterToolbar extends Component {
 		}
 	}
 	componentWillUnmount = () => {
-		this.input.removeEventListener('keypress', this.handleMenuNav, false)
+		window.removeEventListener('keydown', this.handleMenuNav, false)
 	}
 	
 	handleClick = e => {
 		if (this.state.actionAnchor === null) {
 			this.setState({ actionAnchor: this.input });
-			this.input.addEventListener('keypress', this.handleMenuNav, false)
+			window.addEventListener('keydown', this.handleMenuNav, false)
 			this.input.focus()
 		}
 		else {
+			window.removeEventListener('keydown', this.handleMenuNav, false)
 			this.setState({ actionAnchor: null })
 		}
 	}
-
+	handleBlur = () => { 
+		window.removeEventListener('keydown', this.handleMenuNav, false)
+	}
 	handleClose = () => {
 		this.setState({ actionAnchor: null });
 	}
@@ -40,6 +43,9 @@ class FilterToolbar extends Component {
 				return true
 			else {
 				this.setState({ error: true })
+				setTimeout(() => {
+					this.setState({ error: false })
+				}, 500);
 				return false
 			}
 		else { 
@@ -58,7 +64,7 @@ class FilterToolbar extends Component {
 		if (this.state.actionAnchor !== null)
 		{
 			const { filters } = this.props
-			const { focusedMenu } = this.state
+			const { focusedMenu, actionAnchor } = this.state
 			switch (e.keyCode) {
 				case 13:
 					const ft = filters[focusedMenu]
@@ -75,8 +81,12 @@ class FilterToolbar extends Component {
 					this.setState({ actionAnchor: null, focusedMenu: -1 })
 					break;
 				default:
+					if (actionAnchor !== null) {
+						this.setState({ actionAnchor: null })
+					}
 					break;
 			}
+			e.stopPropagation()
 		}
 		else {
 			if ( e.keyCode === 40)
@@ -107,6 +117,7 @@ class FilterToolbar extends Component {
 			<ClickAwayListener onClickAway={this.handleClose} style={{ margin: '4px 0px' }}>
 				<Fragment>
 					<FilterInput
+						onBlur={this.handleBlur}
 						inputRef={ref => this.input = ref}
 						value={this.props.chips[reduxKey]}
 						onBeforeAdd={(chip) => this.onBeforeAdd(chip)}
