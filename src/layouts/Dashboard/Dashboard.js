@@ -183,7 +183,7 @@ class App extends React.Component {
 												{t('actions.accept')}
 											</Button>
 											<Button color={'primary'} size={'small'}>
-												{t('actions.learnMore')}
+												{t('actions.readMore')}
 											</Button>
 										</ItemG>
 									}

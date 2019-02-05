@@ -7,7 +7,7 @@
     "": "",
     "Senti.Cloud": "Senti.Cloud",
     "actions": {
-		"accept": "Godkende",
+		"accept": "Godkend",
         "addFilter": "Tilføj filter",
         "apply": "Anvend",
         "back": "Forrige",
@@ -25,7 +25,8 @@
         "goToLogin": "Gå til log ind",
         "heatMap": "Heatmap",
         "insertAddress": "Indtast adresse",
-        "learnMore": "Lær mere",
+		"learnMore": "Lær mere",
+		"readMore": "Læs mere",
         "login": "Log ind",
         "manualCalibration": "Manuel kalibrering",
         "next": "Næste",
@@ -655,6 +656,14 @@
     "users": {
         "editUser": "Opdater bruger",
         "fields": {
+			"bio": "Bio",
+			"newsletter": "Nyhedsbrev",
+			"position": "Stilling",
+			"location": "Placering",
+			"recoveryEmail": "Gendannelses email",
+			"linkedInURL": "LinkedIn",
+			"twitterURL": "Twitter",
+			"birthday": "Fodselsdag",
             "accessLevel": "Adgangsniveau",
             "active": "Aktiv",
             "confirmPass": "Bekræft nyt kodeord",

@@ -26,6 +26,7 @@
 		"heatMap": "Heatmap",
 		"insertAddress": "Enter an address",
 		"learnMore": "Learn more",
+		"readMore": "Read more",
 		"login": "Log in",
 		"manualCalibration": "Manual calibration",
 		"next": "Next",
@@ -655,6 +656,14 @@
 	"users": {
 		"editUser": "Edit user",
 		"fields": {
+			"bio": "Bio",
+			"newsletter": "Newsletter",
+			"position": "Position",
+			"location": "Location",
+			"recoveryEmail": "Recovery email",
+			"linkedInURL": "LinkedIn",
+			"twitterURL": "Twitter",
+			"birthday": "Birthday",
 			"accessLevel": "Access Level",
 			"active": "Active",
 			"confirmPass": "Confirm new password",
