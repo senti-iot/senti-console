@@ -1,5 +1,5 @@
 import { getHolidays } from 'variables/data';
-
+// import moment from 'moment'
 const setDoI = 'setDoI'
 
 export const todayOfInterest = (date) => { 
@@ -27,7 +27,7 @@ export const doi = (state = initialState, action) => {
 	switch (action.type) {
 
 		case setDoI:
-			return Object.assign({}, state, { days: [...initialState.days, ...action.days] })
+			return Object.assign({}, state, { days: [...action.days] })
 
 		default:
 			return state

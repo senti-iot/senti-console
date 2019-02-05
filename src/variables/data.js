@@ -72,11 +72,20 @@ export const getHolidays = async (lang) => {
 	let data2 = await customerDoIApi.get(`/${lastYear}-01-01/${nextYear}-12-31/${lang}`).then(rs => rs.data)
 	let newData = []
 	if (data2) { 
-		newData = data2.map(d => {
-			d.date = `${year}-${d.date}`
+		newData = data2.map((d, i) => {
+			if (i < data2.length / 3)
+				d.date = `${lastYear}-${d.date}`
+			else {	
+				if (i > data2.length / 3 && i <= 2 * data2.length / 3 )
+				{ d.date = `${year}-${d.date}` }
+				else {
+					d.date = `${nextYear}-${d.date}`
+				}
+			}
 			return d
 		})
 	}
+	console.log(newData)
 	if (data && newData)
 		return [...data, ...newData]
 	else 
