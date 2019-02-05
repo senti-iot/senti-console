@@ -155,13 +155,13 @@ class Tooltip extends Component {
 						{days.length > 0 || birthdays.length > 0 ? 
 							<ItemG container alignItems={'center'} justify={'center'} xs={12} sm={6} md={6} lg={6} xl={6} style={{ padding: 8 }}>
 								<ItemG xs={2}><DateRange className={classes.largeIcon} /></ItemG>
-								<ItemG xs={10} style={{ paddingLeft: 4 }} container alignItems={mobile ? 'center' : ''}>
+								<ItemG xs={10} style={{ paddingLeft: 4 }} container alignItems={mobile ? 'center' : undefined}>
 									{days.length > 0 ? days.map((d, i) => <T key={i}>
 										{`\u{2022}`}{d.name}
 									</T>) : <Muted>{t('no.doi')}</Muted>}
 								</ItemG>
 								<ItemG xs={2}><Cake className={classes.largeIcon} /></ItemG>
-								<ItemG xs={10} style={{ paddingLeft: 4 }} container alignItems={mobile ? 'center' : ''}>
+								<ItemG xs={10} style={{ paddingLeft: 4 }} container alignItems={mobile ? 'center' : undefined}>
 									{birthdays.length > 0 ? birthdays.map((d, i) => <T key={i}>
 										{`\u{2022} ${d.name}`}
 									</T>) : <Muted>{t('no.birthdays')}</Muted>}
