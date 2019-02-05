@@ -532,7 +532,7 @@
     },
     "settings": {
 		"alerts": "Alarmeringer",
-		"defaultRoute": "Indgangsside",
+		"defaultRoute": "Startside",
         "calibration": {
             "12months": "Hver 12. måned",
             "3months": "Hver 3. måned",
