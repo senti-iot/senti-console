@@ -7,6 +7,7 @@
 	"": "",
 	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
+		"accept": "Accept",
 		"addFilter": "Add filter",
 		"apply": "Apply",
 		"back": "Previous",
@@ -251,6 +252,11 @@
 		}
 	},
 	"dialogs": {
+		"cookies": {
+			"message": {
+				"snackbar": "Senti.cloud uses cookies for functional purposes. For more information please read our cookies policy."
+			}
+		},
 		"delete": {
 			"message": {
 				"collection": "Are you sure you want to delete this data collection ( %{collection} )?",
@@ -402,7 +408,7 @@
 			"deviceToOrg": "Assign Device to Organisation"
 		},
 		"calibrate": "Calibrate",
-		"changePassword": "Change Password", 
+		"changePassword": "Change Password",
 		"create": {
 			"project": "Create project",
 			"user": "Create user"

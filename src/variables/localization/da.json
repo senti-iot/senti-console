@@ -7,6 +7,7 @@
     "": "",
     "Senti.Cloud": "Senti.Cloud",
     "actions": {
+		"accept": "Godkende",
         "addFilter": "Tilføj filter",
         "apply": "Anvend",
         "back": "Forrige",
@@ -251,6 +252,11 @@
         }
     },
     "dialogs": {
+		"cookies": {
+			"message": {
+				"snackbar": "Senti.cloud bruger cookies til funktionelle formål. For mere information, læs venligst vores cookies politik."
+			}
+		},
         "delete": {
             "message": {
                 "collection": "Er du sikker på du ønsker at slette denne datasamling ( %{collection} )?",

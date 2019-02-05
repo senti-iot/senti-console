@@ -5,6 +5,8 @@ import 'moment/locale/en-gb'
 import { saveSettings } from 'variables/dataLogin';
 var moment = require('moment')
 
+const acceptCookies = 'acceptCookies'
+
 //Display
 const MENULOC = 'sidebarLocation'
 const changeLangAction = 'changeLanguage'
@@ -51,7 +53,8 @@ export const saveSettingsOnServ = () => {
 			didKnow: s.didKnow,
 			rawData: s.rawData,
 			mapTheme: s.mapTheme,
-			defaultRoute: s.defaultRoute
+			defaultRoute: s.defaultRoute,
+			cookies: s.cookies
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -140,6 +143,15 @@ export const getSettings = async () => {
 	}
 
 
+}
+export const acceptCookiesFunc = (val) => {
+	return async dispatch => {
+		dispatch({
+			type: acceptCookies,
+			acceptCookies: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
 }
 export const changeDefaultRoute = route => {
 	return async(dispatch) => {
@@ -276,6 +288,7 @@ export const finishedSaving = () => {
 	}
 }
 let initialState = {
+	cookies: false,
 	defaultRoute: '/dashboard',
 	mapTheme: 0,
 	rawData: 0,
@@ -298,6 +311,8 @@ let initialState = {
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
+		case acceptCookies: 
+			return Object.assign({}, state, { cookies: action.acceptCookies })
 		case changeDR: 
 			return Object.assign({}, state, { defaultRoute: action.defaultRoute })
 		case CHARTDATATYPE: 
