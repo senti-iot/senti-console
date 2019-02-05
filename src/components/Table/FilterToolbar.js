@@ -17,6 +17,10 @@ class FilterToolbar extends Component {
 	}
 	componentWillUnmount = () => {
 		window.removeEventListener('keydown', this.handleMenuNav, false)
+		window.removeEventListener('keydown', this.handleWindowKeyPress, false)
+	}
+	componentDidMount = () => {
+		window.addEventListener('keydown', this.handleWindowKeyPress, false)
 	}
 	
 	handleClick = e => {
@@ -36,7 +40,13 @@ class FilterToolbar extends Component {
 	handleClose = () => {
 		this.setState({ actionAnchor: null });
 	}
-
+	handleWindowKeyPress = e => { 
+		const { actionAnchor } = this.state
+		if (actionAnchor === null && e.keyCode === 70) { 
+			e.preventDefault()
+			this.handleClick()
+		} 
+	}
 	onBeforeAdd(chip) {
 		if (typeof chip === 'string')
 			if (chip.length >= 2)
@@ -91,6 +101,10 @@ class FilterToolbar extends Component {
 		else {
 			if ( e.keyCode === 40)
 				this.handleClick()
+			if (e.keyCode === 27) {
+				this.input.blur()
+				this.handleBlur()
+			}
 		}
 	}
 	handleAdd = (displayValue, value, key, type, icon, name) => {

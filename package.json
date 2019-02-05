@@ -21,6 +21,7 @@
 		"for-each": "^0.3.3",
 		"heatmap.js": "^2.0.5",
 		"i18n-iso-countries": "^3.7.8",
+		"in-view": "^0.6.1",
 		"leaflet": "^1.4.0",
 		"leaflet-fullscreen": "^1.0.2",
 		"libphonenumber-js": "^1.7.7",

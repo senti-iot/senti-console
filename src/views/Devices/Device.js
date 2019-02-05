@@ -96,6 +96,7 @@ class Device extends Component {
 		})
 	}
 	componentDidMount = async () => {
+
 		let prevURL = this.props.location.prevURL ? this.props.location.prevURL : '/devices/list'
 		this.props.setHeader('devices.device', true, prevURL ? prevURL : '/devices/list', 'devices')
 		if (this.props.match) {
