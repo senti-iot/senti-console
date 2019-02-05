@@ -76,7 +76,7 @@ export const getHolidays = async (lang) => {
 			if (i < data2.length / 3)
 				d.date = `${lastYear}-${d.date}`
 			else {	
-				if (i > data2.length / 3 && i <= 2 * data2.length / 3 )
+				if (i >= data2.length / 3 && i < 2 * data2.length / 3 )
 				{ d.date = `${year}-${d.date}` }
 				else {
 					d.date = `${nextYear}-${d.date}`

@@ -1,5 +1,4 @@
 import { getHolidays } from 'variables/data';
-// import moment from 'moment'
 const setDoI = 'setDoI'
 
 export const todayOfInterest = (date) => { 
