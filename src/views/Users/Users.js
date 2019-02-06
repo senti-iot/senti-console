@@ -28,6 +28,14 @@ class Users extends Component {
 		}
 		props.setHeader('users.pageTitle', false, '', 'users')
 	}
+	dUserGroup = () => { 
+		const { t } = this.props
+		return [
+			{ value: 136550100000143, label: t("users.groups.superUser") },
+			{ value: 136550100000211, label: t("users.groups.accountManager") },
+			{ value: 136550100000225, label: t("users.groups.user") },
+		]
+	}
 	dSuspended = () => { 
 		const { t } = this.props
 		return [
@@ -56,6 +64,7 @@ class Users extends Component {
 			{ key: 'lastName', name: t('users.fields.lastName'), type: 'string' },
 			{ key: 'email', name: t('users.fields.email'), type: 'string' },
 			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' }, 
+			{ key: 'groups', name: t('users.fields.group'), type: 'dropDown', options: this.dUserGroup() },
 			{ key: 'lastLoggedIn', name: t('users.fields.lastSignIn'), type: 'date' },
 			{ key: 'suspended', name: t('users.fields.loginSuspended'), type: 'dropDown', options: this.dSuspended() },
 			{ key: 'lastLoggedIn', name: t('filters.users.hasLogged'), type: 'diff', options: { dropdown: this.dHasLoggedIn(), values: { false: [null] } } },

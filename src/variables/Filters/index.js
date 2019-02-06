@@ -27,10 +27,16 @@ const filterByString = (items, k) => {
 	else
 		return items = items.reduce((newArr, d) => {
 			let objVal = index(d, k.key)
-			if (objVal !== null && objVal !== undefined)
-			{
+			if (objVal !== null && objVal !== undefined) {
 				if (objVal.toString().toLowerCase().includes(k.value.toString().toLowerCase()))
-					newArr.push(d)}
+					newArr.push(d)
+				else {
+					if (objVal.hasOwnProperty(k.value)) {
+						newArr.push(d)
+					}
+				}
+			}
+		
 			return newArr
 		}, [])
 }
