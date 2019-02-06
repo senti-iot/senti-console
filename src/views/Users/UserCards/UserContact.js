@@ -119,49 +119,50 @@ class UserContact extends Component {
 					</ItemGrid>
 				}
 				hiddenContent={
+					
 					<ItemG container>
 						<ItemGrid xs={12}>
 							<Caption>{t('users.fields.bio')}</Caption>
 							<Info>
-								{extended.bio ? extended.bio : null}
+								{extended ? extended.bio ? extended.bio : null : null}
 							</Info>
 						</ItemGrid>
 						<ItemGrid xs={12} md={2}>
 							<Caption>{t('users.fields.position')}</Caption>
 							<Info>
-								{extended.position ? extended.position : null}
+								{extended ? extended.position ? extended.position : null : null}
 							</Info>
 						</ItemGrid>
 						<ItemGrid xs={12} md={9}>
 							<Caption>{t('users.fields.location')}</Caption>
 							<Info>
-								{extended.location ? extended.location : null}
+								{extended ? extended.location ? extended.location : null : null}
 							</Info>
 						</ItemGrid>
 						<ItemGrid xs={12} md={2}>
 							<Caption>{t('users.fields.linkedInURL')}</Caption>
 							<Info>
-								{extended.linkedInURL ? 
+								{extended ? extended.linkedInURL ?
 									<a target='_blank' rel="noopener noreferrer" href={`${extended.linkedInURL}`}>
 										{`${user.firstName} ${user.lastName}`}
 									</a>
-									: null}
+									: null : null}
 							</Info>
 						</ItemGrid>
 						<ItemGrid xs={12} md={8}>
 							<Caption>{t('users.fields.twitterURL')}</Caption>
 							<Info>
-								{extended.twitterURL ?
+								{extended ? extended.twitterURL ?
 									<a target='_blank' rel="noopener noreferrer" href={`${extended.twitterURL}`}>
 										{`${user.firstName} ${user.lastName}`}
 									</a>
-									: null}
+									: null : null}
 							</Info>
 						</ItemGrid>
 						<ItemGrid xs={10}>
 							<Caption>{t('users.fields.birthday')}</Caption>
 							<Info>
-								{extended.birthday ? dateFormatter(extended.birthday) : null}
+								{extended ? extended.birthday ? dateFormatter(extended.birthday) : null : null}
 							</Info>
 						</ItemGrid>
 					</ItemG>
