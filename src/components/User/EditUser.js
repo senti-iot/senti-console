@@ -559,7 +559,7 @@ class EditUser extends Component {
 							{this.renderExtendedProfile()}
 						</ItemG>
 						<ItemGrid container xs={12} md={12}>
-							<Button onClick={() => this.setState({ openExtended: !this.state.openExtended })}>Extended Profile</Button>
+							<Button color={'primary'} onClick={() => this.setState({ openExtended: !this.state.openExtended })}>{t('actions.extendProfile')}</Button>
 						</ItemGrid>
 					</form>
 					<ItemGrid xs={12} container justify={'center'}>

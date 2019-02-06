@@ -45,7 +45,8 @@
 		"uploadImages": "Upload images",
 		"viewDevice": "View device",
 		"viewDeviceList": "View device list",
-		"yes": "Yes"
+		"yes": "Yes",
+		"extendProfile": "Extend Profile"
 	},
 	"calibration": {
 		"header": "On-site setup %{deviceId}",

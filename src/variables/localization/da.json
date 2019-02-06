@@ -1,661 +1,662 @@
 {
-    "404": {
-        "errorMessage": "Den ønskede ressource er ikke fundet! Prøv igen eller kontakt support på support@senti.cloud!",
-        "networkError": "Netværksfejl!",
-        "title": "404 fejl - Siden ikke fundet"
-    },
-    "": "",
-    "Senti.Cloud": "Senti.Cloud",
-    "actions": {
+	"404": {
+		"errorMessage": "Den ønskede ressource er ikke fundet! Prøv igen eller kontakt support på support@senti.cloud!",
+		"networkError": "Netværksfejl!",
+		"title": "404 fejl - Siden ikke fundet"
+	},
+	"": "",
+	"Senti.Cloud": "Senti.Cloud",
+	"actions": {
 		"accept": "Godkend",
-        "addFilter": "Tilføj filter",
-        "apply": "Anvend",
-        "back": "Forrige",
-        "cancel": "Anuller",
-        "changePassword": "Skift kodeord",
-        "decline": "Afvis",
-        "deletePicture": "Slet dette billede",
-        "editFilter": "Rediger filter",
-        "editLocation": "Rediger lokation",
-        "finish": "Luk",
-        "forgotPass": "Glemt kodeord?",
-        "getLocation": "Hent lokation",
-        "goTo": "Gå til",
-        "goToDevice": "Gå til enhed(er)",
-        "goToLogin": "Gå til log ind",
-        "heatMap": "Heatmap",
-        "insertAddress": "Indtast adresse",
+		"addFilter": "Tilføj filter",
+		"apply": "Anvend",
+		"back": "Forrige",
+		"cancel": "Anuller",
+		"changePassword": "Skift kodeord",
+		"decline": "Afvis",
+		"deletePicture": "Slet dette billede",
+		"editFilter": "Rediger filter",
+		"editLocation": "Rediger lokation",
+		"finish": "Luk",
+		"forgotPass": "Glemt kodeord?",
+		"getLocation": "Hent lokation",
+		"goTo": "Gå til",
+		"goToDevice": "Gå til enhed(er)",
+		"goToLogin": "Gå til log ind",
+		"heatMap": "Heatmap",
+		"insertAddress": "Indtast adresse",
 		"learnMore": "Lær mere",
 		"readMore": "Læs mere",
-        "login": "Log ind",
-        "manualCalibration": "Manuel kalibrering",
-        "next": "Næste",
-        "nextPage": "Næste side",
-        "no": "Nej",
-        "off": "Slået fra",
-        "on": "Slået til",
-        "openCounter": "Åbn tæller",
-        "previousPage": "Forrige side",
-        "requestPasswordReset": "Nulstil kodeord",
-        "reset": "Nulstil",
-        "save": "Gem",
-        "start": "Start",
-        "startNow": "Start nu",
-        "update": "Rediger",
-        "uploadImages": "Upload billeder",
-        "viewDevice": "Vis enhed",
-        "viewDeviceList": "Vis liste over enheder",
-        "yes": "Ja"
-    },
-    "calibration": {
-        "header": "Lokal opsætning",
-        "selectLocationType": "Vælg en lokationstype for ",
-        "stepheader": {
-            "calibration": "Kalibrering",
-            "images": "Billeder af installation",
-            "location": "Lokation for enhed",
-            "name": "Enhedsnavn og beskrivelse"
-        },
-        "steps": {
-            "0": "Indtast et enhedsnavn og en informativ beskrivelse.",
-            "1": "For at supplere din konfiguration med en GPS lokation skal du tillade Senti.Cloud at gemme enhedens placering. Accepter dette, når du bliver bedt om at tillade at gemme placeringen fra din mobilenhed. Indtast ligeledes den fysiske adresse og vælg en placeringstype for yderligere at specificere, hvor dine data er opsamlet.",
-            "2": "For at få den bedste nøjagtighed af din dataindsamling, skal du foretage en manuel tælling. Vælg den kalibrerings metode der passer dit formål herunder. Tryk på “ÅBEN TÆLLER“ og tryk på “START“. Tryk den centrale knap for at tælle.",
-            "3": "Du kan valgfrit gemme billeder af din enhedsinstallation. Dette vil forbedre Senti.Cloud oplevelsen og tjene som en hjælp til Senti-serviceteknikere, såfremt din enhed har brug for on-site service.",
-            "unknown": "Ukendt skridt"
-        },
-        "texts": {
-            "success": "Succes!",
-            "successMessage": "Din Senti enhed er nu konfigureret og kalibreret og vil nu producere bedre data under indsamling. For yderligere at forbedre nøjagtigheden af din dataopsamling, returner til opsætningsstedet og lav en ny kalibrering regelmæssigt. Du kan konfigurere en notifikation for kalibrering af enheder under Indstillinger."
-        }
-    },
-    "charts": {
-        "fields": {
-            "date": "Dato",
-            "humidity": "Fugtighed",
-            "pressure": "Tryk",
-            "range": "Tidsrum",
-            "summary": "Vejr",
-            "temperature": "Temperatur",
-            "thisDay": "Denne dag:",
-            "weather": "Vejr",
-            "windspeed": "Vindhastighed"
-        },
-        "type": {
-            "bar": "Søjle",
-            "donut": "Donut",
-            "line": "Linje",
-            "pie": "Lagkage"
-        }
-    },
-    "collections": {
-        "calibratedData": "Kalibreret data",
-        "cards": {
-            "data": "Data",
-            "log": "Enhedslog"
-        },
-        "createCollection": "Nyt datasamling",
-        "editCollection": "Rediger datasamling",
-        "fields": {
-            "activated": "Aktiveret",
-            "activeDevice": "Aktiv enhed",
-            "activeDeviceStartDate": "Dataopsamling start",
-            "collection": "Datasamling",
-            "created": "Oprettet",
-            "dcID": "ID",
-            "description": "Beskrivelse",
-            "device": "Enhed",
-            "deviceId": "Enhed ID",
-            "endOfService": "Tjeneste afsluttet",
-            "id": "Datasamling",
-            "modified": "Opdateret",
-            "name": "Navn",
-            "org": "Organisation",
-            "organisation": "Organisation",
-            "ownState": "Status",
-            "project": "Projekt",
-            "state": {
-                "active": "Aktiv",
-                "inactive": "Inaktiv"
-            },
-            "status": "Status"
-        },
-        "pageTitle": "Datasamlinger",
-        "rawData": "Rådata"
-    },
-    "confirmUser": {
-        "button": "Bekræft og log ind",
-        "lastStep": "Indtast et kodeord for at bekræfte oprettelsen af din konto.",
-        "networkError": "Netværksfejl!",
-        "password": "Kodeord",
-        "passwordConfirm": "Bekræft kodeord",
-        "validation": {
-            "emailDoesntExist": "Den indtastede E-mail er ikke tilknyttet en eksisterende konto!",
-            "passwordEmpty": "Kodeord må ikke være blankt!",
-            "passwordMismatch": "De indtastede kodeord er ikke ens!",
-            "passwordUnder8": "Kodeord skal være på mindst 8 tegn!",
-            "userDoesntExistAnymore": "Brugeren eksisterer ikke længere, eller adgangen er udløbet!"
-        },
-        "welcomeMessage": "Velkommen til Senti.Cloud!"
-    },
-    "dashboard": {
-        "cardContent": {
-            "alerts": "Vidste du, at? ... \n Modtag intelligente regelbaserede advarsler om arten af dine indsamlede data, og informationer om dine enheders tilgængelighed. ",
-            "api": "SentiAPI giver dig mulighed for at opbygge dine egne IoT Dashboards, Apps eller Widgets. SentiAPI giver adgang til dine egne Senti datasamlinger eller betalt adgang til Senti Big Data baseret på crowd-sourced anonymiserede Senti datasamlinger.",
-            "data": "Få detaljerede lister og diagrammer til at måle og analysere dine indsamlede data. Opret rapporter og eksporter data i få nemme trin.",
-            "devices": "Enheder er den fysiske IoT hardware enhed, der installeres i det ønskede miljø. Her kan du konfigurere og styre de IoT enheder, der bruges i dine datasamlinger.",
-            "notifications": "Se og administrer notifikations-meddelelser og kontroller hvordan, hvornår, og hvor du vil engagere dine brugere med underretninger.",
-            "onSiteSetup": "Når du installerer dine IoT enheder i det ønskede miljø (on-site), er en simpel konfiguration en fordel. Gem enhedens navn, beskrivelse, placeringsoplysninger og kalibrer enheden for optimal nøjagtighed.",
-            "projects": "Projekter hjælper dig med at administrere Senti datasamlinger til specifikke måleopgaver og brugsscenarier. Et projekt er en container til at samle dine datasamlinger og data for en eller flere lokationer.",
-            "settings": "Kontrolcenter til styring af indstillinger for Senti IoT enheder, samt din Senti.Cloud konsol.",
-            "users": "Godkendelse og administration af konti til brugere og organisationer, samt tildeling af adgang til projekter, indsamlede data, enheder og API'er."
-        },
-        "cardHeaders": {
-            "alerts": "Intelligente advarsler",
-            "api": "API (kommer snart)",
-            "data": "Data",
-            "devices": "Enheder",
-            "notifications": "Notifikationer",
-            "onSiteSetup": "Lokal opsætning (on-site)",
-            "projects": "Projekter",
-            "settings": "Indstillinger",
-            "users": "Brugere"
-        },
-        "pageTitle": "Senti.Cloud",
-        "subtitle": "Senti.Cloud tilbyder styring og kontrol af alle dine Senti IoT enheder."
-    },
-    "devices": {
-        "cards": {
-            "data": "Data",
-            "details": "Detaljer for enhed",
-            "hardware": "Udstyr",
-            "map": "Kort",
-            "pictures": "Billeder"
-        },
-        "device": "Enhed",
-        "editDetailsTitle": "Opdater %{deviceId}",
-        "editHardwareTitle": "Opdater hardware for enhed %{deviceId}",
-        "fields": {
-            "adapter": "Strømforsyning",
-            "address": "Adresse",
-            "availability": "Tilgængelighed",
-            "cellNumber": "Mobilnummer",
-            "coords": "Koordinater",
-            "coordsW": "Koordinater: %{lat} %{long}",
-            "description": "Beskrivelse",
-            "free": "Ledig",
-            "id": "Enhed ID",
-            "lastData": "Sidste gang enheden sendte data til server",
-            "lastStats": "Sidste gang enheden havde kontakt med server",
-            "lat": "Latitude",
-            "locType": "Placeringstype",
-            "long": "Longitude",
-            "memory": "Hukommelse",
-            "memoryModel": "Hukommelse model",
-            "modemIMEI": "Modem IMEI",
-            "modemModel": "Modem model",
-            "name": "Navn",
-            "notfree": "Optaget",
-            "org": "Organisation",
-            "pcModel": "Enhedsmodel",
-            "project": "Projekt",
-            "simCard": "SIM-kort ID",
-            "simProvider": "SIM-kort leverandør",
-            "status": "Status",
-            "temp": "CPU temperatur",
-            "weather": "Vejr",
-            "wifiModule": "Wi-Fi model"
-        },
-        "liveCount": "Live tælling (seneste 10 minutter)",
-        "locationTypes": {
-            "crossroads": "Vejkryds",
-            "motorway": "Motorvej",
-            "office": "Kontor",
-            "park": "Park",
-            "path": "Sti",
-            "pedStreet": "Gågade",
-            "port": "Havn",
-            "road": "Vej",
-            "square": "Plads",
-            "unspecified": "Uspecificeret"
-        },
-        "new": "",
-        "noAddress": "Uden adresse",
-        "noData": "Der er ingen data!",
-        "noDataFilters": "Der er ingen data tilgængelig for de valgte filtre!",
-        "noDevices": "Der er ingen tilgængelige enheder",
-        "noImages": "Der er ikke overført billeder!",
-        "noLocType": "Der er ingen placeringstype indstillet",
-        "noName": "Unavngivet",
-        "notCalibrated": "Enhed er ikke kalibreret! Kort lokation og vejr data vil ikke være tilgængelige.",
-        "pageTitle": "Enheder",
-        "simpleList": {
-            "address": "Adresse",
-            "id": "ID",
-            "name": "Navn",
-            "status": "Status",
-            "tableCellAddress": "Ingen adresse",
-            "tableCellDeviceName": "Unavngivet",
-            "totalcount": "Tællinger total"
-        },
-        "status": {
-            "green": "Enheden er tilsluttet og modtager data",
-            "greenShort": "Modtager data",
-            "noDevice": "Ingen enhed tilknyttet",
-            "red": "Enheden er ikke tilsluttet og modtager ingen data",
-            "redShort": "Forbindelse afbrudt",
-            "yellow": "Enheden er tilsluttet, men modtager ingen data",
-            "yellowShort": "Modtager ingen data"
-        },
-        "tabs": {
-            "cardView": "Gittervisning",
-            "listView": "Listevisning",
-            "mapView": "Kortvisning"
-        }
-    },
-    "dialogs": {
+		"login": "Log ind",
+		"manualCalibration": "Manuel kalibrering",
+		"next": "Næste",
+		"nextPage": "Næste side",
+		"no": "Nej",
+		"off": "Slået fra",
+		"on": "Slået til",
+		"openCounter": "Åbn tæller",
+		"previousPage": "Forrige side",
+		"requestPasswordReset": "Nulstil kodeord",
+		"reset": "Nulstil",
+		"save": "Gem",
+		"start": "Start",
+		"startNow": "Start nu",
+		"update": "Rediger",
+		"uploadImages": "Upload billeder",
+		"viewDevice": "Vis enhed",
+		"viewDeviceList": "Vis liste over enheder",
+		"yes": "Ja",
+		"extendProfile": "Udvide profil"
+	},
+	"calibration": {
+		"header": "Lokal opsætning",
+		"selectLocationType": "Vælg en lokationstype for ",
+		"stepheader": {
+			"calibration": "Kalibrering",
+			"images": "Billeder af installation",
+			"location": "Lokation for enhed",
+			"name": "Enhedsnavn og beskrivelse"
+		},
+		"steps": {
+			"0": "Indtast et enhedsnavn og en informativ beskrivelse.",
+			"1": "For at supplere din konfiguration med en GPS lokation skal du tillade Senti.Cloud at gemme enhedens placering. Accepter dette, når du bliver bedt om at tillade at gemme placeringen fra din mobilenhed. Indtast ligeledes den fysiske adresse og vælg en placeringstype for yderligere at specificere, hvor dine data er opsamlet.",
+			"2": "For at få den bedste nøjagtighed af din dataindsamling, skal du foretage en manuel tælling. Vælg den kalibrerings metode der passer dit formål herunder. Tryk på “ÅBEN TÆLLER“ og tryk på “START“. Tryk den centrale knap for at tælle.",
+			"3": "Du kan valgfrit gemme billeder af din enhedsinstallation. Dette vil forbedre Senti.Cloud oplevelsen og tjene som en hjælp til Senti-serviceteknikere, såfremt din enhed har brug for on-site service.",
+			"unknown": "Ukendt skridt"
+		},
+		"texts": {
+			"success": "Succes!",
+			"successMessage": "Din Senti enhed er nu konfigureret og kalibreret og vil nu producere bedre data under indsamling. For yderligere at forbedre nøjagtigheden af din dataopsamling, returner til opsætningsstedet og lav en ny kalibrering regelmæssigt. Du kan konfigurere en notifikation for kalibrering af enheder under Indstillinger."
+		}
+	},
+	"charts": {
+		"fields": {
+			"date": "Dato",
+			"humidity": "Fugtighed",
+			"pressure": "Tryk",
+			"range": "Tidsrum",
+			"summary": "Vejr",
+			"temperature": "Temperatur",
+			"thisDay": "Denne dag:",
+			"weather": "Vejr",
+			"windspeed": "Vindhastighed"
+		},
+		"type": {
+			"bar": "Søjle",
+			"donut": "Donut",
+			"line": "Linje",
+			"pie": "Lagkage"
+		}
+	},
+	"collections": {
+		"calibratedData": "Kalibreret data",
+		"cards": {
+			"data": "Data",
+			"log": "Enhedslog"
+		},
+		"createCollection": "Nyt datasamling",
+		"editCollection": "Rediger datasamling",
+		"fields": {
+			"activated": "Aktiveret",
+			"activeDevice": "Aktiv enhed",
+			"activeDeviceStartDate": "Dataopsamling start",
+			"collection": "Datasamling",
+			"created": "Oprettet",
+			"dcID": "ID",
+			"description": "Beskrivelse",
+			"device": "Enhed",
+			"deviceId": "Enhed ID",
+			"endOfService": "Tjeneste afsluttet",
+			"id": "Datasamling",
+			"modified": "Opdateret",
+			"name": "Navn",
+			"org": "Organisation",
+			"organisation": "Organisation",
+			"ownState": "Status",
+			"project": "Projekt",
+			"state": {
+				"active": "Aktiv",
+				"inactive": "Inaktiv"
+			},
+			"status": "Status"
+		},
+		"pageTitle": "Datasamlinger",
+		"rawData": "Rådata"
+	},
+	"confirmUser": {
+		"button": "Bekræft og log ind",
+		"lastStep": "Indtast et kodeord for at bekræfte oprettelsen af din konto.",
+		"networkError": "Netværksfejl!",
+		"password": "Kodeord",
+		"passwordConfirm": "Bekræft kodeord",
+		"validation": {
+			"emailDoesntExist": "Den indtastede E-mail er ikke tilknyttet en eksisterende konto!",
+			"passwordEmpty": "Kodeord må ikke være blankt!",
+			"passwordMismatch": "De indtastede kodeord er ikke ens!",
+			"passwordUnder8": "Kodeord skal være på mindst 8 tegn!",
+			"userDoesntExistAnymore": "Brugeren eksisterer ikke længere, eller adgangen er udløbet!"
+		},
+		"welcomeMessage": "Velkommen til Senti.Cloud!"
+	},
+	"dashboard": {
+		"cardContent": {
+			"alerts": "Vidste du, at? ... \n Modtag intelligente regelbaserede advarsler om arten af dine indsamlede data, og informationer om dine enheders tilgængelighed. ",
+			"api": "SentiAPI giver dig mulighed for at opbygge dine egne IoT Dashboards, Apps eller Widgets. SentiAPI giver adgang til dine egne Senti datasamlinger eller betalt adgang til Senti Big Data baseret på crowd-sourced anonymiserede Senti datasamlinger.",
+			"data": "Få detaljerede lister og diagrammer til at måle og analysere dine indsamlede data. Opret rapporter og eksporter data i få nemme trin.",
+			"devices": "Enheder er den fysiske IoT hardware enhed, der installeres i det ønskede miljø. Her kan du konfigurere og styre de IoT enheder, der bruges i dine datasamlinger.",
+			"notifications": "Se og administrer notifikations-meddelelser og kontroller hvordan, hvornår, og hvor du vil engagere dine brugere med underretninger.",
+			"onSiteSetup": "Når du installerer dine IoT enheder i det ønskede miljø (on-site), er en simpel konfiguration en fordel. Gem enhedens navn, beskrivelse, placeringsoplysninger og kalibrer enheden for optimal nøjagtighed.",
+			"projects": "Projekter hjælper dig med at administrere Senti datasamlinger til specifikke måleopgaver og brugsscenarier. Et projekt er en container til at samle dine datasamlinger og data for en eller flere lokationer.",
+			"settings": "Kontrolcenter til styring af indstillinger for Senti IoT enheder, samt din Senti.Cloud konsol.",
+			"users": "Godkendelse og administration af konti til brugere og organisationer, samt tildeling af adgang til projekter, indsamlede data, enheder og API'er."
+		},
+		"cardHeaders": {
+			"alerts": "Intelligente advarsler",
+			"api": "API (kommer snart)",
+			"data": "Data",
+			"devices": "Enheder",
+			"notifications": "Notifikationer",
+			"onSiteSetup": "Lokal opsætning (on-site)",
+			"projects": "Projekter",
+			"settings": "Indstillinger",
+			"users": "Brugere"
+		},
+		"pageTitle": "Senti.Cloud",
+		"subtitle": "Senti.Cloud tilbyder styring og kontrol af alle dine Senti IoT enheder."
+	},
+	"devices": {
+		"cards": {
+			"data": "Data",
+			"details": "Detaljer for enhed",
+			"hardware": "Udstyr",
+			"map": "Kort",
+			"pictures": "Billeder"
+		},
+		"device": "Enhed",
+		"editDetailsTitle": "Opdater %{deviceId}",
+		"editHardwareTitle": "Opdater hardware for enhed %{deviceId}",
+		"fields": {
+			"adapter": "Strømforsyning",
+			"address": "Adresse",
+			"availability": "Tilgængelighed",
+			"cellNumber": "Mobilnummer",
+			"coords": "Koordinater",
+			"coordsW": "Koordinater: %{lat} %{long}",
+			"description": "Beskrivelse",
+			"free": "Ledig",
+			"id": "Enhed ID",
+			"lastData": "Sidste gang enheden sendte data til server",
+			"lastStats": "Sidste gang enheden havde kontakt med server",
+			"lat": "Latitude",
+			"locType": "Placeringstype",
+			"long": "Longitude",
+			"memory": "Hukommelse",
+			"memoryModel": "Hukommelse model",
+			"modemIMEI": "Modem IMEI",
+			"modemModel": "Modem model",
+			"name": "Navn",
+			"notfree": "Optaget",
+			"org": "Organisation",
+			"pcModel": "Enhedsmodel",
+			"project": "Projekt",
+			"simCard": "SIM-kort ID",
+			"simProvider": "SIM-kort leverandør",
+			"status": "Status",
+			"temp": "CPU temperatur",
+			"weather": "Vejr",
+			"wifiModule": "Wi-Fi model"
+		},
+		"liveCount": "Live tælling (seneste 10 minutter)",
+		"locationTypes": {
+			"crossroads": "Vejkryds",
+			"motorway": "Motorvej",
+			"office": "Kontor",
+			"park": "Park",
+			"path": "Sti",
+			"pedStreet": "Gågade",
+			"port": "Havn",
+			"road": "Vej",
+			"square": "Plads",
+			"unspecified": "Uspecificeret"
+		},
+		"new": "",
+		"noAddress": "Uden adresse",
+		"noData": "Der er ingen data!",
+		"noDataFilters": "Der er ingen data tilgængelig for de valgte filtre!",
+		"noDevices": "Der er ingen tilgængelige enheder",
+		"noImages": "Der er ikke overført billeder!",
+		"noLocType": "Der er ingen placeringstype indstillet",
+		"noName": "Unavngivet",
+		"notCalibrated": "Enhed er ikke kalibreret! Kort lokation og vejr data vil ikke være tilgængelige.",
+		"pageTitle": "Enheder",
+		"simpleList": {
+			"address": "Adresse",
+			"id": "ID",
+			"name": "Navn",
+			"status": "Status",
+			"tableCellAddress": "Ingen adresse",
+			"tableCellDeviceName": "Unavngivet",
+			"totalcount": "Tællinger total"
+		},
+		"status": {
+			"green": "Enheden er tilsluttet og modtager data",
+			"greenShort": "Modtager data",
+			"noDevice": "Ingen enhed tilknyttet",
+			"red": "Enheden er ikke tilsluttet og modtager ingen data",
+			"redShort": "Forbindelse afbrudt",
+			"yellow": "Enheden er tilsluttet, men modtager ingen data",
+			"yellowShort": "Modtager ingen data"
+		},
+		"tabs": {
+			"cardView": "Gittervisning",
+			"listView": "Listevisning",
+			"mapView": "Kortvisning"
+		}
+	},
+	"dialogs": {
 		"cookies": {
 			"message": {
 				"snackbar": "Senti.cloud bruger cookies til funktionelle formål. For mere information, læs venligst vores cookies politik."
 			}
 		},
-        "delete": {
-            "message": {
-                "collection": "Er du sikker på du ønsker at slette denne datasamling ( %{collection} )?",
-                "collections": "Er du sikker på du ønsker at slette disse datasamlinger:",
-                "deviceImage": "Er du sikker på du ønsker at slette dette billede?",
-                "org": "Er du sikker på du ønsker at slette denne organisation ( %{org} )?",
-                "orgs": "Er du sikker på du ønsker at slette disse organisationer:",
-                "project": "Er du sikker på du ønsker at slette dette projekt ( %{project} )?",
-                "projects": "Er du sikker på du ønsker at slette disse projekter:",
-                "user": "Er du sikker på du ønsker at slette denne bruger?",
-                "users": "Er du sikker på du ønsker at slette disse brugere:"
-            },
-            "title": {
-                "collection": "Slet datasamling?",
-                "collections": "Slet datasamlinger?",
-                "deviceImage": "Slette dette billede?",
-                "org": "Slet organisation?",
-                "orgs": "Slet organisationer?",
-                "project": "Slet projekt?",
-                "projects": "Slet projekter?",
-                "user": "Slet bruger?",
-                "users": "Slet brugere?"
-            }
-        },
-        "discoverSenti": {
-            "addProject": "Opret data projekter",
-            "onSiteSetup": "Opsætning af enheder",
-            "startAnalyzeData": "Analyser dine data",
-            "welcome": "Velkommen til Senti.Cloud!"
-        },
-        "export": {
-            "message": "Data detaljer:"
-        },
-        "login": {
-            "passwordReseted": "Din adgangskode er blevet ændret!",
-            "resetPassRequestMessage": "En E-mail er er blevet sendt med instruktioner for hvordan du nulstiller dit kodeord!",
-            "resetPasswordMessage": "Nulstil dit kodeord ved at indtaste din E-mail adresse"
-        },
-        "unassign": {
-            "message": {
-                "collectionFromProject": "Frigør datasamling %{collection} fra projekt %{project} ?",
-                "collectionsFromProject": "Frigør disse datasamlinger fra projekt:",
-                "deviceFromCollection": "Frigør enhed %{device} fra datasamling %{collection}?",
-                "deviceFromOrg": "Frigør enhed %{device} fra organisation %{organisation}?",
-                "devicesFromCollection": "Frigør disse enheder fra deres datasamling:"
-            },
-            "title": {
-                "collectionFromProject": "Frigør datasamling fra projekt?",
-                "collectionsFromProject": "Frigør datasamlinger fra projekt?",
-                "deviceFromCollection": "Frigør enhed fra datasamling?",
-                "deviceFromOrg": "Frigør enhed fra organisation?",
-                "devicesFromCollection": "Frigør disse enheder fra deres datasamling?"
-            }
-        },
-        "warnings": {
-            "notImplemented": "Ikke implementeret",
-            "wip": "Under udvikling"
-        }
-    },
-    "favorites": {
+		"delete": {
+			"message": {
+				"collection": "Er du sikker på du ønsker at slette denne datasamling ( %{collection} )?",
+				"collections": "Er du sikker på du ønsker at slette disse datasamlinger:",
+				"deviceImage": "Er du sikker på du ønsker at slette dette billede?",
+				"org": "Er du sikker på du ønsker at slette denne organisation ( %{org} )?",
+				"orgs": "Er du sikker på du ønsker at slette disse organisationer:",
+				"project": "Er du sikker på du ønsker at slette dette projekt ( %{project} )?",
+				"projects": "Er du sikker på du ønsker at slette disse projekter:",
+				"user": "Er du sikker på du ønsker at slette denne bruger?",
+				"users": "Er du sikker på du ønsker at slette disse brugere:"
+			},
+			"title": {
+				"collection": "Slet datasamling?",
+				"collections": "Slet datasamlinger?",
+				"deviceImage": "Slette dette billede?",
+				"org": "Slet organisation?",
+				"orgs": "Slet organisationer?",
+				"project": "Slet projekt?",
+				"projects": "Slet projekter?",
+				"user": "Slet bruger?",
+				"users": "Slet brugere?"
+			}
+		},
+		"discoverSenti": {
+			"addProject": "Opret data projekter",
+			"onSiteSetup": "Opsætning af enheder",
+			"startAnalyzeData": "Analyser dine data",
+			"welcome": "Velkommen til Senti.Cloud!"
+		},
+		"export": {
+			"message": "Data detaljer:"
+		},
+		"login": {
+			"passwordReseted": "Din adgangskode er blevet ændret!",
+			"resetPassRequestMessage": "En E-mail er er blevet sendt med instruktioner for hvordan du nulstiller dit kodeord!",
+			"resetPasswordMessage": "Nulstil dit kodeord ved at indtaste din E-mail adresse"
+		},
+		"unassign": {
+			"message": {
+				"collectionFromProject": "Frigør datasamling %{collection} fra projekt %{project} ?",
+				"collectionsFromProject": "Frigør disse datasamlinger fra projekt:",
+				"deviceFromCollection": "Frigør enhed %{device} fra datasamling %{collection}?",
+				"deviceFromOrg": "Frigør enhed %{device} fra organisation %{organisation}?",
+				"devicesFromCollection": "Frigør disse enheder fra deres datasamling:"
+			},
+			"title": {
+				"collectionFromProject": "Frigør datasamling fra projekt?",
+				"collectionsFromProject": "Frigør datasamlinger fra projekt?",
+				"deviceFromCollection": "Frigør enhed fra datasamling?",
+				"deviceFromOrg": "Frigør enhed fra organisation?",
+				"devicesFromCollection": "Frigør disse enheder fra deres datasamling?"
+			}
+		},
+		"warnings": {
+			"notImplemented": "Ikke implementeret",
+			"wip": "Under udvikling"
+		}
+	},
+	"favorites": {
 		"pageTitle": "Favoritter",
 		"fields": {
-            "name": "Navn",
-            "type": "Type"
-        },
-        "types": {
-            "collection": "Datasamling",
-            "device": "Enhed",
-            "org": "Organisation",
-            "project": "Projekt",
-            "user": "Bruger"
-        }
-    },
-    "filters": {
-        "after": "efter",
-        "afterDate": "Efter dato",
+			"name": "Navn",
+			"type": "Type"
+		},
+		"types": {
+			"collection": "Datasamling",
+			"device": "Enhed",
+			"org": "Organisation",
+			"project": "Projekt",
+			"user": "Bruger"
+		}
+	},
+	"filters": {
+		"after": "efter",
+		"afterDate": "Efter dato",
 		"before": "før",
 		"beforeDate": "Før dato",
-        "contains": "Indeholder",
-        "dateOptions": {
-            "30days": "Seneste 30 dage",
-            "7days": "Seneste 7 dage",
-            "90days": "Seneste 90 dage",
-            "custom": "Tilpasset interval",
-            "daily": "Hver dag",
-            "hourly": "Hver time",
-            "minutely": "Hver minut",
-            "summary": "Resumé",
-            "thisWeek": "Denne uge",
-            "today": "I dag",
-            "yesterday": "I går"
-        },
-        "devices": {
-            "calibrated": "Kalibreret",
-            "notCalibrated": "Ikke kalibreret"
-        },
-        "display": "Visning",
-        "endDate": "Slutdato",
-        "options": {
-            "graphType": "Diagramtype"
-        },
-        "orgs": {
-            "hasParentOrg": "Med organisatorisk tilhørsforhold",
-            "noParentOrg": "Uden organisatiorisk tilhørsforhold",
-            "parentOrg": "Med/uden organisatorisk tilhørsforhold"
-        },
-        "search": "Søg",
-        "startDate": "Startdato",
-        "users": {
-            "hasLogged": "Ever logged in",
-            "hasLoggedIn": "Has logged in",
-            "neverLoggedIn": "Never logged in"
-        }
-    },
-    "images": {
-        "add": "Tilføj billeder",
-        "finish": "Afslut",
-        "reset": "Nulstil",
-        "upload": "Overfør",
-        "uploadFailed": "Billeder ikke overført! Genindlæs sitet og prøv igen!",
-        "uploadSuccess": "Billeder overført"
-    },
-    "links": {
-        "googleMaps": "Vis på Google Maps",
-        "mailTo": "Send E-mail til",
-        "phoneTo": "Ring til"
-    },
-    "login": {
-        "pass": "Kodeord",
-        "username": "Brugernavn"
-    },
-    "map": {
-        "themes": {
-            "0": "Humanitarian",
-            "1": "Luftfoto",
-            "2": "Carto Mørk",
-            "3": "Carto",
-            "4": "Vandfarver",
-            "5": "Gråtoner",
-            "6": "OpenStreetMap",
-            "7": "Topografisk"
-        }
-    },
-    "menus": {
-        "assign": {
-            "collectionToProject": "Tilknyt datasamling",
-            "collectionsToProject": "Tilknyt datasamlinger",
-            "deviceToCollection": "Tilknyt enhed til datasamlinger",
-            "deviceToOrg": "Tilknyt enhed til organisation"
-        },
-        "calibrate": "Kalibrer",
-        "changePassword": "Skift kodeord",
-        "create": {
-            "project": "Opret projekt",
-            "user": "Opret bruger"
-        },
-        "delete": "Slet",
-        "edit": "Rediger",
-        "export": "Eksporter data",
-        "exportPDF": "Print som PDF",
-        "favorites": {
-            "add": "Tilføj til favoritter",
-            "remove": "Fjern fra favoritter"
-        },
-        "hideMap": "Skjul kort",
-        "hideMore": "Skjul",
-        "more": "Mere",
-        "reassign": {
-            "collectionToProject": "Overflyt til andet projekt",
-            "deviceToOrg": "Overflyt til anden organisation"
-        },
-        "recalibrate": "Rekalibrering",
-        "seeDevice": "Se enhed",
-        "seeLess": "Se mindre",
-        "seeMore": "Se mere",
-        "showMap": "Vis kort",
-        "showMore": "Vis mere",
-        "unassign": {
-            "collectionFromProject": "Frigør datasamling fra projekt",
-            "deviceFromCollection": "Frigør enhed fra datasamling",
-            "deviceFromOrg": "Frigør enhed fra organisation"
-        },
-        "user": {
-            "account": "Min konto",
-            "profile": "Min profil",
-            "signout": "Log ud"
-        },
-        "userResendEmail": "Send bekræft e-mail igen"
-    },
-    "no": {
-        "activeDevice": "Ingen aktiv enhed",
-        "audioSupported": "Din browser understøtter ikke lydfiler! Der er således ikke lyd respons! Forsøg igen med en anden browser.",
-        "birthdays": "Ingen fødselsdage i dag",
-        "collection": "Ikke tildelt til en datasamling",
-        "collections": "Ingen datasamlinger",
-        "device": "Ingen enhed",
-        "devices": "Ingen enheder",
-        "doi": "ingen helligdage i dag",
-        "history": "Ingen logs",
-        "org": "Ingen organisation",
-        "project": "Ingen projekt",
-        "projects": "Ingen projekter"
-    },
-    "orgs": {
-        "create": "Opret",
-        "createOrg": "Opret organisation",
-        "fields": {
-            "CVR": "CVR nummer",
-            "EAN": "EAN nummer",
-            "address": "Adresse",
-            "city": "By",
-            "country": "Land",
-            "name": "Organisationsnavn",
-            "org": "Organisation",
-            "parentOrg": "Organisatorisk tilhørsforhold",
-            "region": "Region",
-            "topLevelOrg": "Uden tilhørsforhold",
-            "url": "Website",
-            "zip": "Postnummer"
-        },
-        "organisation": "Organisation",
-        "pageTitle": "Organisationer",
-        "updateOrg": "Rediger Organisation",
-        "validation": {
-            "networkError": "Netværksfejl!",
-            "noAddress": "Mangler adresse",
-            "noCity": "Mangler by",
-            "noCountry": "Mangler land",
-            "noName": "Mangler navn",
-            "noParent": "Mangler organisatorisk tilhørsforhold",
-            "noZip": "Mangler postnummer",
-            "notWebsite": "Ugyldig URL"
-        }
-    },
-    "projects": {
-        "contact": {
-            "email": "E-mail",
-            "name": "Navn",
-            "organisation": "Organisation",
-            "phone": "Telefon",
-            "title": "Kontakt"
-        },
-        "devices": {
-            "numDevices": "Antal enheder",
-            "title": "Enheder"
-        },
-        "fields": {
-            "assignDevices": "Tilknyt enheder",
-            "created": "Oprettet",
-            "description": "Beskrivelse",
-            "endDate": "Slutdato",
-            "lastUpdate": "Senest opdateret",
-            "name": "Projektnavn",
-            "selectOrganisation": "Organisation",
-            "startDate": "Startdato",
-            "title": "Navn"
-        },
-        "noAvailableDevices": "Der er ingen enheder kalibreret til visning",
-        "noOrganisationSelected": "Vælg en organisation for at se tilgængelige enheder",
-        "pageTitle": "Projekter",
-        "tabs": {
-            "cardView": "Gittervisning",
-            "listView": "Listevisning"
-        },
-        "updateProject": "Rediger projekt",
-        "validation": {
-            "noEndDate": "Manglende Slutdato",
-            "noStartDate": "Manglende Startdato",
-            "noTitle": "Manglende Projektnavn",
-            "startDateBiggerThanEndDate": "Startdato må ikke være senere end slutdato"
-        }
-    },
-    "settings": {
+		"contains": "Indeholder",
+		"dateOptions": {
+			"30days": "Seneste 30 dage",
+			"7days": "Seneste 7 dage",
+			"90days": "Seneste 90 dage",
+			"custom": "Tilpasset interval",
+			"daily": "Hver dag",
+			"hourly": "Hver time",
+			"minutely": "Hver minut",
+			"summary": "Resumé",
+			"thisWeek": "Denne uge",
+			"today": "I dag",
+			"yesterday": "I går"
+		},
+		"devices": {
+			"calibrated": "Kalibreret",
+			"notCalibrated": "Ikke kalibreret"
+		},
+		"display": "Visning",
+		"endDate": "Slutdato",
+		"options": {
+			"graphType": "Diagramtype"
+		},
+		"orgs": {
+			"hasParentOrg": "Med organisatorisk tilhørsforhold",
+			"noParentOrg": "Uden organisatiorisk tilhørsforhold",
+			"parentOrg": "Med/uden organisatorisk tilhørsforhold"
+		},
+		"search": "Søg",
+		"startDate": "Startdato",
+		"users": {
+			"hasLogged": "Ever logged in",
+			"hasLoggedIn": "Has logged in",
+			"neverLoggedIn": "Never logged in"
+		}
+	},
+	"images": {
+		"add": "Tilføj billeder",
+		"finish": "Afslut",
+		"reset": "Nulstil",
+		"upload": "Overfør",
+		"uploadFailed": "Billeder ikke overført! Genindlæs sitet og prøv igen!",
+		"uploadSuccess": "Billeder overført"
+	},
+	"links": {
+		"googleMaps": "Vis på Google Maps",
+		"mailTo": "Send E-mail til",
+		"phoneTo": "Ring til"
+	},
+	"login": {
+		"pass": "Kodeord",
+		"username": "Brugernavn"
+	},
+	"map": {
+		"themes": {
+			"0": "Humanitarian",
+			"1": "Luftfoto",
+			"2": "Carto Mørk",
+			"3": "Carto",
+			"4": "Vandfarver",
+			"5": "Gråtoner",
+			"6": "OpenStreetMap",
+			"7": "Topografisk"
+		}
+	},
+	"menus": {
+		"assign": {
+			"collectionToProject": "Tilknyt datasamling",
+			"collectionsToProject": "Tilknyt datasamlinger",
+			"deviceToCollection": "Tilknyt enhed til datasamlinger",
+			"deviceToOrg": "Tilknyt enhed til organisation"
+		},
+		"calibrate": "Kalibrer",
+		"changePassword": "Skift kodeord",
+		"create": {
+			"project": "Opret projekt",
+			"user": "Opret bruger"
+		},
+		"delete": "Slet",
+		"edit": "Rediger",
+		"export": "Eksporter data",
+		"exportPDF": "Print som PDF",
+		"favorites": {
+			"add": "Tilføj til favoritter",
+			"remove": "Fjern fra favoritter"
+		},
+		"hideMap": "Skjul kort",
+		"hideMore": "Skjul",
+		"more": "Mere",
+		"reassign": {
+			"collectionToProject": "Overflyt til andet projekt",
+			"deviceToOrg": "Overflyt til anden organisation"
+		},
+		"recalibrate": "Rekalibrering",
+		"seeDevice": "Se enhed",
+		"seeLess": "Se mindre",
+		"seeMore": "Se mere",
+		"showMap": "Vis kort",
+		"showMore": "Vis mere",
+		"unassign": {
+			"collectionFromProject": "Frigør datasamling fra projekt",
+			"deviceFromCollection": "Frigør enhed fra datasamling",
+			"deviceFromOrg": "Frigør enhed fra organisation"
+		},
+		"user": {
+			"account": "Min konto",
+			"profile": "Min profil",
+			"signout": "Log ud"
+		},
+		"userResendEmail": "Send bekræft e-mail igen"
+	},
+	"no": {
+		"activeDevice": "Ingen aktiv enhed",
+		"audioSupported": "Din browser understøtter ikke lydfiler! Der er således ikke lyd respons! Forsøg igen med en anden browser.",
+		"birthdays": "Ingen fødselsdage i dag",
+		"collection": "Ikke tildelt til en datasamling",
+		"collections": "Ingen datasamlinger",
+		"device": "Ingen enhed",
+		"devices": "Ingen enheder",
+		"doi": "ingen helligdage i dag",
+		"history": "Ingen logs",
+		"org": "Ingen organisation",
+		"project": "Ingen projekt",
+		"projects": "Ingen projekter"
+	},
+	"orgs": {
+		"create": "Opret",
+		"createOrg": "Opret organisation",
+		"fields": {
+			"CVR": "CVR nummer",
+			"EAN": "EAN nummer",
+			"address": "Adresse",
+			"city": "By",
+			"country": "Land",
+			"name": "Organisationsnavn",
+			"org": "Organisation",
+			"parentOrg": "Organisatorisk tilhørsforhold",
+			"region": "Region",
+			"topLevelOrg": "Uden tilhørsforhold",
+			"url": "Website",
+			"zip": "Postnummer"
+		},
+		"organisation": "Organisation",
+		"pageTitle": "Organisationer",
+		"updateOrg": "Rediger Organisation",
+		"validation": {
+			"networkError": "Netværksfejl!",
+			"noAddress": "Mangler adresse",
+			"noCity": "Mangler by",
+			"noCountry": "Mangler land",
+			"noName": "Mangler navn",
+			"noParent": "Mangler organisatorisk tilhørsforhold",
+			"noZip": "Mangler postnummer",
+			"notWebsite": "Ugyldig URL"
+		}
+	},
+	"projects": {
+		"contact": {
+			"email": "E-mail",
+			"name": "Navn",
+			"organisation": "Organisation",
+			"phone": "Telefon",
+			"title": "Kontakt"
+		},
+		"devices": {
+			"numDevices": "Antal enheder",
+			"title": "Enheder"
+		},
+		"fields": {
+			"assignDevices": "Tilknyt enheder",
+			"created": "Oprettet",
+			"description": "Beskrivelse",
+			"endDate": "Slutdato",
+			"lastUpdate": "Senest opdateret",
+			"name": "Projektnavn",
+			"selectOrganisation": "Organisation",
+			"startDate": "Startdato",
+			"title": "Navn"
+		},
+		"noAvailableDevices": "Der er ingen enheder kalibreret til visning",
+		"noOrganisationSelected": "Vælg en organisation for at se tilgængelige enheder",
+		"pageTitle": "Projekter",
+		"tabs": {
+			"cardView": "Gittervisning",
+			"listView": "Listevisning"
+		},
+		"updateProject": "Rediger projekt",
+		"validation": {
+			"noEndDate": "Manglende Slutdato",
+			"noStartDate": "Manglende Startdato",
+			"noTitle": "Manglende Projektnavn",
+			"startDateBiggerThanEndDate": "Startdato må ikke være senere end slutdato"
+		}
+	},
+	"settings": {
 		"alerts": "Alarmeringer",
 		"defaultRoute": "Startside",
-        "calibration": {
-            "12months": "Hver 12. måned",
-            "3months": "Hver 3. måned",
-            "6months": "Hver 6. måned",
-            "9months": "Hver 9. måned",
-            "byCount": "Antal tællinger",
-            "byTime": "Antal minutter",
-            "count": "Antal tællinger",
-            "history": "Historik",
-            "minutes": "minutter",
-            "notification": "Notifikation",
-            "text": "Metode",
-            "time": "På tid"
-        },
-        "chart": {
+		"calibration": {
+			"12months": "Hver 12. måned",
+			"3months": "Hver 3. måned",
+			"6months": "Hver 6. måned",
+			"9months": "Hver 9. måned",
+			"byCount": "Antal tællinger",
+			"byTime": "Antal minutter",
+			"count": "Antal tællinger",
+			"history": "Historik",
+			"minutes": "minutter",
+			"notification": "Notifikation",
+			"text": "Metode",
+			"time": "På tid"
+		},
+		"chart": {
 			"YAxis": {
 				"logarithmic": "Logaritmisk skala",
 				"linear": "Lineær skala"
 			},
-            "defaultChart": "Standard diagram",
-            "rawData": "Rådata"
-        },
-        "default": "Standard",
-        "defaultDataSet": "Standard datasæt for diagrammer",
-        "didYouKnow": "Viste du at?",
-        "discoverSenti": "Vis Velkommen til Senti på Dashboard",
-        "headers": {
-            "calibration": "Kalibrering",
-            "charts": "Diagrammer",
-            "devices": "Enheder",
-            "display": "Skærm",
-            "notifications": "Notifikationer"
-        },
-        "language": "Sprog",
-        "languages": {
-            "da": "Dansk",
-            "en": "Engelsk"
-        },
-        "map": "Baggrundkort",
-        "notDefault": "Ikke standard",
-        "pageTitle": "Instillinger",
-        "sideBarLeft": "Venstre",
-        "sideBarLoc": "Placering af menu",
-        "sideBarRight": "Højre",
-        "theme": "Tema",
-        "themes": {
-            "dark": "Mørkt",
-            "light": "Lyst"
-        },
-        "trp": "Rækker per side i lister"
-    },
-    "sidebar": {
-        "collections": "Data",
-        "dashboard": "Dashboard",
-        "devices": "Enheder",
-        "favorites": "Favoritter",
-        "projects": "Projekter",
-        "settings": "Indstillinger",
-        "users": "Brugere"
-    },
-    "snackbars": {
-        "assign": {
-            "collectionToOrg": "Datasamling %{collection} tilknyttet til organisation %{org}",
-            "collectionToProject": "Datasamling %{collection} tilknyttet til projekt %{project}",
-            "collectionsToProject": "Datasamlinger tilknyttet til projekt",
-            "deviceToCollection": "Enhed %{device} tilknyttet til datasamling %{collection}",
-            "deviceToOrg": "Enhed %{device} tilknyttet til organisation %{org}",
-            "projectToOrg": "Project %{project} tilknyttet til organisation %{org}"
-        },
-        "collectionCreated": "Datasamling er oppretet!",
-        "collectionDeleted": "Datasamling er slettet!",
-        "collectionUpdated": "Datasamling er opdateret!",
-        "createdFail": "Oprettelse fejlede!",
-        "createdSuccess": "Oprettet!",
-        "creating": "Opretter ...",
-        "deletedFail": "Sletning fejlede!",
-        "deletedSuccess": "Slettet!",
-        "deleting": "Sletter ...",
-        "deviceUpdated": "Enhed %{device} er blevet opdateret!",
-        "exported": "Eksporteret!",
-        "favorite": {
-            "manyRemoved": "Favoritter er blevet fjernet!",
-            "removed": "%{name} (%{type}) er blevet fjernet fra favoritter!",
-            "saved": "%{name} (%{type}) er blevet tilføjet til favoritter!",
-            "updated": "Favoritter er blevet opdateret!"
-        },
-        "orgCreated": "Organisation %{org} er  oprettet!",
-        "orgDeleted": "Organisation er slettet!",
-        "orgUpdated": "Organisation %{org} er opdateret!",
-        "pictureDeleted": "Billedet er slettet!",
-        "pictureNotDeleted": "Billedet blev ikke slettet!",
-        "projectCreated": "Projektet %{project} er oprettet!",
-        "projectDeleted": "Projekt(er) er slettet!",
-        "projectExported": "Projektet er eksporteret!",
-        "projectUpdated": "Projekt %{project} er opdateret!",
-        "redirect": "Omdirigerer ...",
-        "resetDeviceSuccess": "Enhed er blevet nulstillet",
-        "settingsSaved": "Indstillinger gemt!",
-        "unassign": {
-            "collectionFromProject": "Datasamlingen %{collection} er frigjort fra projektet %{project}",
-            "collectionsFromProject": "Datasamlinger frigjort fra projektet %{project}",
-            "deviceFromCollection": "Enheden %{device} er frigjort fra datasamlingen %{collection}",
-            "deviceFromOrg": "Enheden %{device} er frigjort fra organisationen %{org}"
-        },
-        "updatedFailed": "Opdatering fejlede!",
-        "updatedSuccess": "Opdateret!",
-        "updating": "Opdaterer ...",
-        "userCreated": "Bruger %{user} er opretted!",
-        "userDeleted": "Bruger %{user} er sletted!",
-        "userPasswordChanged": "Kodeord er skiftet!",
-        "userUpdated": "Bruger %{user} er opdateret!"
-    },
-    "tables": {
-        "addNewDevice": "Tilføj enhed",
-        "addNewProject": "Opret projekt",
-        "filter": "Filter",
+			"defaultChart": "Standard diagram",
+			"rawData": "Rådata"
+		},
+		"default": "Standard",
+		"defaultDataSet": "Standard datasæt for diagrammer",
+		"didYouKnow": "Viste du at?",
+		"discoverSenti": "Vis Velkommen til Senti på Dashboard",
+		"headers": {
+			"calibration": "Kalibrering",
+			"charts": "Diagrammer",
+			"devices": "Enheder",
+			"display": "Skærm",
+			"notifications": "Notifikationer"
+		},
+		"language": "Sprog",
+		"languages": {
+			"da": "Dansk",
+			"en": "Engelsk"
+		},
+		"map": "Baggrundkort",
+		"notDefault": "Ikke standard",
+		"pageTitle": "Instillinger",
+		"sideBarLeft": "Venstre",
+		"sideBarLoc": "Placering af menu",
+		"sideBarRight": "Højre",
+		"theme": "Tema",
+		"themes": {
+			"dark": "Mørkt",
+			"light": "Lyst"
+		},
+		"trp": "Rækker per side i lister"
+	},
+	"sidebar": {
+		"collections": "Data",
+		"dashboard": "Dashboard",
+		"devices": "Enheder",
+		"favorites": "Favoritter",
+		"projects": "Projekter",
+		"settings": "Indstillinger",
+		"users": "Brugere"
+	},
+	"snackbars": {
+		"assign": {
+			"collectionToOrg": "Datasamling %{collection} tilknyttet til organisation %{org}",
+			"collectionToProject": "Datasamling %{collection} tilknyttet til projekt %{project}",
+			"collectionsToProject": "Datasamlinger tilknyttet til projekt",
+			"deviceToCollection": "Enhed %{device} tilknyttet til datasamling %{collection}",
+			"deviceToOrg": "Enhed %{device} tilknyttet til organisation %{org}",
+			"projectToOrg": "Project %{project} tilknyttet til organisation %{org}"
+		},
+		"collectionCreated": "Datasamling er oppretet!",
+		"collectionDeleted": "Datasamling er slettet!",
+		"collectionUpdated": "Datasamling er opdateret!",
+		"createdFail": "Oprettelse fejlede!",
+		"createdSuccess": "Oprettet!",
+		"creating": "Opretter ...",
+		"deletedFail": "Sletning fejlede!",
+		"deletedSuccess": "Slettet!",
+		"deleting": "Sletter ...",
+		"deviceUpdated": "Enhed %{device} er blevet opdateret!",
+		"exported": "Eksporteret!",
+		"favorite": {
+			"manyRemoved": "Favoritter er blevet fjernet!",
+			"removed": "%{name} (%{type}) er blevet fjernet fra favoritter!",
+			"saved": "%{name} (%{type}) er blevet tilføjet til favoritter!",
+			"updated": "Favoritter er blevet opdateret!"
+		},
+		"orgCreated": "Organisation %{org} er  oprettet!",
+		"orgDeleted": "Organisation er slettet!",
+		"orgUpdated": "Organisation %{org} er opdateret!",
+		"pictureDeleted": "Billedet er slettet!",
+		"pictureNotDeleted": "Billedet blev ikke slettet!",
+		"projectCreated": "Projektet %{project} er oprettet!",
+		"projectDeleted": "Projekt(er) er slettet!",
+		"projectExported": "Projektet er eksporteret!",
+		"projectUpdated": "Projekt %{project} er opdateret!",
+		"redirect": "Omdirigerer ...",
+		"resetDeviceSuccess": "Enhed er blevet nulstillet",
+		"settingsSaved": "Indstillinger gemt!",
+		"unassign": {
+			"collectionFromProject": "Datasamlingen %{collection} er frigjort fra projektet %{project}",
+			"collectionsFromProject": "Datasamlinger frigjort fra projektet %{project}",
+			"deviceFromCollection": "Enheden %{device} er frigjort fra datasamlingen %{collection}",
+			"deviceFromOrg": "Enheden %{device} er frigjort fra organisationen %{org}"
+		},
+		"updatedFailed": "Opdatering fejlede!",
+		"updatedSuccess": "Opdateret!",
+		"updating": "Opdaterer ...",
+		"userCreated": "Bruger %{user} er opretted!",
+		"userDeleted": "Bruger %{user} er sletted!",
+		"userPasswordChanged": "Kodeord er skiftet!",
+		"userUpdated": "Bruger %{user} er opdateret!"
+	},
+	"tables": {
+		"addNewDevice": "Tilføj enhed",
+		"addNewProject": "Opret projekt",
+		"filter": "Filter",
 		"rowsPerPage": "Rækker pr. side",
 		"cardsPerPage": "Kort per side",
-        "selected": "valgt"
-    },
-    "users": {
-        "editUser": "Opdater bruger",
-        "fields": {
+		"selected": "valgt"
+	},
+	"users": {
+		"editUser": "Opdater bruger",
+		"fields": {
 			"bio": "Bio",
 			"newsletter": "Nyhedsbrev",
 			"position": "Stilling",
@@ -664,53 +665,53 @@
 			"linkedInURL": "LinkedIn",
 			"twitterURL": "Twitter",
 			"birthday": "Fodselsdag",
-            "accessLevel": "Adgangsniveau",
-            "active": "Aktiv",
-            "confirmPass": "Bekræft nyt kodeord",
-            "created": "Opdateret",
-            "currentPass": "Nuværende kodeord",
-            "email": "E-mail",
-            "firstName": "Fornavn",
-            "group": "Gruppe",
-            "language": "System sprog",
-            "lastName": "Efternavn",
-            "lastSignIn": "Seneste login",
-            "loginSuspended": "Login suspendederet",
-            "name": "Navn",
-            "neverLoggedIn": "Aldrig logget ind",
-            "newPass": "Nyt kodeord",
-            "noOrg": "Uden Organisation",
-            "organisation": "Organisation",
-            "phone": "Telefon",
-            "profileImage": "Profilbillede",
-            "tags": "Tags",
-            "userName": "Brugernavn"
-        },
-        "groups": {
-            "136550100000143": "Superbruger",
-            "136550100000211": "Kontoansvarlig",
-            "136550100000225": "Bruger",
-            "accountManager": "Kontoansvarlig",
-            "superUser": "Superbruger",
-            "user": "Bruger"
-        },
-        "headers": {
-            "contact": "Kontakt",
-            "system": "Systemlog"
-        },
-        "messages": {},
-        "pageTitle": "Brugere",
-        "tabs": {
-            "orgs": "Organisationer",
-            "users": "Brugere"
-        },
-        "user": "Bruger",
-        "userResendConfirm": "Er du sikker på du ønsker at gensende bekræftelses E-mail?",
-        "userResendEmail": "Gensend bekræftelses E-mail",
-        "validation": {
-            "noEmail": "E-mail mangler",
-            "noOrg": "Organisation mangler",
-            "userAlreadyExists": "E-mail er allerede tilknyttet en anden bruger konto!"
-        }
-    }
+			"accessLevel": "Adgangsniveau",
+			"active": "Aktiv",
+			"confirmPass": "Bekræft nyt kodeord",
+			"created": "Opdateret",
+			"currentPass": "Nuværende kodeord",
+			"email": "E-mail",
+			"firstName": "Fornavn",
+			"group": "Gruppe",
+			"language": "System sprog",
+			"lastName": "Efternavn",
+			"lastSignIn": "Seneste login",
+			"loginSuspended": "Login suspendederet",
+			"name": "Navn",
+			"neverLoggedIn": "Aldrig logget ind",
+			"newPass": "Nyt kodeord",
+			"noOrg": "Uden Organisation",
+			"organisation": "Organisation",
+			"phone": "Telefon",
+			"profileImage": "Profilbillede",
+			"tags": "Tags",
+			"userName": "Brugernavn"
+		},
+		"groups": {
+			"136550100000143": "Superbruger",
+			"136550100000211": "Kontoansvarlig",
+			"136550100000225": "Bruger",
+			"accountManager": "Kontoansvarlig",
+			"superUser": "Superbruger",
+			"user": "Bruger"
+		},
+		"headers": {
+			"contact": "Kontakt",
+			"system": "Systemlog"
+		},
+		"messages": {},
+		"pageTitle": "Brugere",
+		"tabs": {
+			"orgs": "Organisationer",
+			"users": "Brugere"
+		},
+		"user": "Bruger",
+		"userResendConfirm": "Er du sikker på du ønsker at gensende bekræftelses E-mail?",
+		"userResendEmail": "Gensend bekræftelses E-mail",
+		"validation": {
+			"noEmail": "E-mail mangler",
+			"noOrg": "Organisation mangler",
+			"userAlreadyExists": "E-mail er allerede tilknyttet en anden bruger konto!"
+		}
+	}
 }
