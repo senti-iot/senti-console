@@ -1,17 +1,173 @@
-import React, { Component } from 'react'
-import { InfoCard, ItemGrid, Caption, Info } from 'components';
-import { Grid } from '@material-ui/core';
-import { Person } from 'variables/icons'
+import React, { Component, Fragment } from 'react'
+import { InfoCard, ItemGrid, Caption, Info, Dropdown, ItemG } from 'components';
+import { Grid, Typography, IconButton, Hidden, Toolbar, AppBar, Dialog, List, ListItem, ListItemText, Slide, Button } from '@material-ui/core';
+import { Person, Edit, Close } from 'variables/icons'
 import { Link } from 'react-router-dom'
+import { suggestionGen, filterItems } from 'variables/functions';
+import { getAllUsers } from 'variables/dataUsers';
+import Gravatar from 'react-gravatar'
+import classNames from 'classnames'
+import Search from 'components/Search/Search';
+import { updateProject } from 'variables/dataProjects';
 
 export class ProjectContact extends Component {
+	constructor(props) {
+	  super(props)
+	
+	  this.state = {
+		 openEditContact: false,
+		  filters: {
+			  keyword: ""
+		  },
+		  selectedUser: {
+			  id: -1
+		  }
+	  }
+	}
+	componentDidMount = async () => { 
+		await getAllUsers().then(rs => this.setState({ users: rs }))
+
+	}
+	handleOpenEditContact = () => { 
+		this.setState({
+			openEditContact: true
+		})
+	}
+	handleCloseEditContact = () => { 
+		this.setState({
+			openEditContact: false
+		})
+	}
+	transition = (props) => {
+		return <Slide direction='up' {...props} />;
+	}
+	handleFilterKeyword = value => {
+		this.setState({
+			filters: {
+				keyword: value
+			}
+		})
+	}
+	handleChangeUser = o => { 
+		this.setState({
+			selectedUser: o
+		})
+	}
+	handleChangeContactPerson = async () => { 
+		let newProject = {
+			...this.props.project,
+			user: this.state.selectedUser
+		}
+		await updateProject(newProject).then(() => {
+			this.handleCloseEditContact()
+			this.props.reload()
+		})
+	}
+	renderEditContact = () => { 
+		const { t, classes } = this.props
+		const { filters, users, openEditContact } = this.state
+		const appBarClasses = classNames({
+			[' ' + classes['primary']]: 'primary'
+		});
+		return users ? <Dialog
+			fullScreen
+			open={openEditContact}
+			onClose={this.handleCloseEditContact}
+			TransitionComponent={this.transition}>
+			<AppBar className={classes.appBar + ' ' + appBarClasses}>
+				<Toolbar>
+					<Hidden mdDown>
+						<ItemG container alignItems={'center'}>
+							<ItemG xs={2} container alignItems={'center'}>
+								<IconButton color='inherit' onClick={this.handleCloseEditContact} aria-label='Close'>
+									<Close />
+								</IconButton>
+								<Typography variant='h6' color='inherit' className={classes.flex}>
+									{t('users.pageTitle')}
+								</Typography>
+							</ItemG>
+							<ItemG xs={8}>
+								<Search
+									fullWidth
+									open={true}
+									focusOnMount
+									suggestions={users ? suggestionGen(users) : []}
+									handleFilterKeyword={this.handleFilterKeyword}
+									searchValue={filters.keyword} />
+							</ItemG>
+							<ItemG>
+								<Button color={'inherit'} onClick={this.handleChangeContactPerson}>
+									{t('actions.save')}
+								</Button>
+							</ItemG>
+						</ItemG>
+					</Hidden>
+					<Hidden lgUp>
+						<ItemG container alignItems={'center'}>
+							<ItemG xs={4} container alignItems={'center'}>
+								<IconButton color={'inherit'} onClick={this.handleCloseEditContact} aria-label='Close'>
+									<Close />
+								</IconButton>
+								<Typography variant='h6' color='inherit' className={classes.flex}>
+									{t('orgs.pageTitle')}
+								</Typography>
+							</ItemG>
+							<ItemG xs={8} container alignItems={'center'} justify={'center'}>
+								<Search
+									noAbsolute
+									fullWidth
+									open={true}
+									focusOnMount
+									suggestions={users ? suggestionGen(users) : []}
+									handleFilterKeyword={this.handleFilterKeyword}
+									searchValue={filters.keyword} />
+							</ItemG>
+							<ItemG>
+								<Button color={'inherit'} onClick={this.handleChangeContactPerson}>
+									{t('actions.save')}
+								</Button>
+							</ItemG>
+						</ItemG>
+					</Hidden>
+				</Toolbar>
+			</AppBar>
+			<List>
+				{users ? filterItems(users, filters).map((o, i) => {
+					return <Fragment key={i}>
+						<ListItem button
+							classes={{ root: o.id === this.state.selectedUser.id ? classes.selectedItem : null }}
+							// selected={o.id === this.state.selectedUser.id}
+							divider
+							onClick={() => this.handleChangeUser(o)}>
+							<Gravatar default='mp' email={o.email} className={classes.img} />
+							<ListItemText
+								primaryTypographyProps={{ className: o.id === this.state.selectedUser.id ? classes.selectedItemText : null }}
+								secondaryTypographyProps={{ classes: { root: o.id === this.state.selectedUser.id ? classes.selectedItemText : null } }}
+								primary={`${o.firstName} ${o.lastName}`} secondary={o.org.name} />
+						</ListItem>
+					</Fragment>
+				}) : null}
+			</List>
+		</Dialog> : null	
+	}
 	render() {
-		const { t, project } = this.props
+		const { t, project, classes } = this.props
 		return (
-			<InfoCard title={t('projects.contact.title')} avatar={<Person />} subheader={''}
+			<InfoCard
+				title={t('projects.contact.title')}
+				avatar={<Person />}
+				subheader={''}
 				noExpand
+				topAction={<Dropdown
+					menuItems={[
+						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: this.handleOpenEditContact },
+					]
+					}
+				/>
+				}
 				content={
 					<Grid container>
+						{this.renderEditContact()}
 						<ItemGrid>
 							<Caption>
 								{t('projects.contact.name')}

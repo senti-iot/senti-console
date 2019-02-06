@@ -301,7 +301,9 @@ class Project extends Component {
 			this.props.history.push('/projects/list')
 		})
 	}
-
+	reload = () => {
+		this.componentDidMount()
+	}
 	handleCloseAssignCollection = async (reload) => {
 		if (reload) {
 			this.setState({ loading: true, openAssignDC: false })
@@ -425,7 +427,7 @@ class Project extends Component {
 	render() {
 		const { project, loading, openAssignDC, loadingData } = this.state
 		const { barDataSets, roundDataSets, lineDataSets, raw } = this.state
-		const { t, from, to, id, timeType } = this.props
+		const { t, from, to, id, timeType, classes } = this.props
 		const rp = { history: this.props.history, match: this.props.match }
 		return (
 			<Fragment>
@@ -487,6 +489,8 @@ class Project extends Component {
 						}
 						<ItemGrid xs={12} noMargin id='contact' >
 							<ProjectContact
+								reload={this.reload}
+								classes={classes}
 								history={this.props.history}
 								t={t}
 								project={project} />
