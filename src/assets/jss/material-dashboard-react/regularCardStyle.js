@@ -86,7 +86,8 @@ const regularCardStyle = theme => ({
 	root: {
 		// height: "100%",
 		paddingTop: 0,
-		marginTop: 0
+		marginTop: 0,
+		padding: 0,
 	},
 	media: {
 		height: 0,

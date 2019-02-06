@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { InfoCard, ItemGrid, Caption, Info } from 'components';
+import { InfoCard, ItemGrid, Caption, Info, ItemG } from 'components';
 import { Hidden } from '@material-ui/core';
-import { pF } from 'variables/functions';
+import { pF, dateFormatter } from 'variables/functions';
 import { Person, Edit, Delete, LockOpen, Email, Star, StarBorder } from 'variables/icons'
 import { Link } from 'react-router-dom'
 import Gravatar from 'react-gravatar'
@@ -64,10 +64,10 @@ class UserContact extends Component {
 	}
 	render() {
 		const { t, user, classes } = this.props
+		const extended = user.aux.senti.extendedProfile
 		return (
 			<InfoCard
 				title={`${user.firstName} ${user.lastName}`}
-				noExpand
 				avatar={<Person />}
 				topAction={this.renderTopActionPriv()}
 				content={
@@ -117,6 +117,54 @@ class UserContact extends Component {
 							</ItemGrid>
 						</Hidden>
 					</ItemGrid>
+				}
+				hiddenContent={
+					<ItemG container>
+						<ItemGrid xs={12}>
+							<Caption>{t('users.fields.bio')}</Caption>
+							<Info>
+								{extended.bio}
+							</Info>
+						</ItemGrid>
+						<ItemGrid xs={12} md={2}>
+							<Caption>{t('users.fields.position')}</Caption>
+							<Info>
+								{extended.position}
+							</Info>
+						</ItemGrid>
+						<ItemGrid xs={12} md={9}>
+							<Caption>{t('users.fields.location')}</Caption>
+							<Info>
+								{extended.location}
+							</Info>
+						</ItemGrid>
+						<ItemGrid xs={12} md={2}>
+							<Caption>{t('users.fields.linkedInURL')}</Caption>
+							<Info>
+								{extended.linkedInURL ? 
+									<a target='_blank' rel="noopener noreferrer" href={`${extended.linkedInURL}`}>
+										{`${user.firstName} ${user.lastName}`}
+									</a>
+									: null}
+							</Info>
+						</ItemGrid>
+						<ItemGrid xs={12} md={8}>
+							<Caption>{t('users.fields.twitterURL')}</Caption>
+							<Info>
+								{extended.twitterURL ?
+									<a target='_blank' rel="noopener noreferrer" href={`${extended.twitterURL}`}>
+										{`${user.firstName} ${user.lastName}`}
+									</a>
+									: null}
+							</Info>
+						</ItemGrid>
+						<ItemGrid xs={10}>
+							<Caption>{t('users.fields.birthday')}</Caption>
+							<Info>
+								{dateFormatter(extended.birthday)}
+							</Info>
+						</ItemGrid>
+					</ItemG>
 				}
 			/>
 
