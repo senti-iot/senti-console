@@ -5,6 +5,7 @@ import { AppBar, Tabs, Tab, withStyles, Toolbar as ToolBar, withWidth } from '@m
 import Search from 'components/Search/Search';
 import { suggestionGen } from 'variables/functions'
 import { NavHashLink as Link } from 'react-router-hash-link';
+import inView from 'in-view'
 
 const styles = theme => ({
 	appBar: {
@@ -27,7 +28,7 @@ const styles = theme => ({
 		height: 48,
 		zIndex: 1300
 	},
-	contentToolbar: { 
+	contentToolbar: {
 		height: 41,
 		minHeight: 41,
 		maxHeight: 41,
@@ -53,33 +54,68 @@ const styles = theme => ({
 
 class Toolbar extends PureComponent {
 	constructor(props) {
-	  super(props)
-	
-	  this.state = {
-			route: props.route ? props.route : 0	 
-	  }
+		super(props)
+
+		this.state = {
+			route: props.route ? props.route : 0
+		}
 		this.tabsRef = React.createRef()
-		
+
 	}
-	
+	componentDidUpdate = () => {
+		const { tabs } = this.props
+		if (tabs)
+			tabs.map(t => {
+				if (t.url.includes('#')) {
+					return inView(t.url).on('enter', el =>  {
+						this.setState({ route: t.id })
+					})
+				}
+				else
+					return null
+			})
+	}
+	componentDidMount = () => {
+		inView.offset({
+			top: 118,
+			right: 0,
+			// bottom: 300,
+			bottom: 0,
+			left: 0
+		});
+		// inView.threshold(0.85)
+		// const { tabs } = this.props
+		// if (tabs)
+		// 	tabs.map(t => {
+		// 		console.log(this.state.route)
+		// 		if (t.url.includes('#')) {
+		// 			console.log(document.getElementById(t.url.substring(1, t.url.length)))
+		// 			// console.log(inView.is(document.getElementById(t.url.substring(1, t.url.length))))
+		// 			return inView(t.url).on('enter', () => this.setState({ route: t.id }));
+		// 		}
+		// 		else
+		// 			return null
+		// 	})
+	}
+
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
 	}
-	
+
 	handleScroll = el => {
 		let topOfElement = el.offsetTop - 130
 		window.scroll({ top: topOfElement, behavior: 'smooth' })
 	}
-	
+
 	render() {
 		const { classes, tabs, data, noSearch, filters, handleFilterKeyword, content, width } = this.props
 		return (
 			<div style={{ height: 48 }}>
-				<AppBar  classes={{ root: classes.appBar }}>
+				<AppBar classes={{ root: classes.appBar }}>
 					{tabs ? <Tabs innerRef={ref => this.tabsRef = ref} value={this.state.route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 						{tabs ? tabs.map((t, i) => {
 							return <Tab title={t.title}
-								component={(props) => <Link {...props} scroll={this.handleScroll } style={{ color: '#fff' }} />}
+								component={(props) => <Link {...props} scroll={this.handleScroll} style={{ color: '#fff' }} />}
 								id={t.id}
 								key={i}
 								smooth

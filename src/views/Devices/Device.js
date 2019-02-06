@@ -472,7 +472,7 @@ class Device extends Component {
 					tabs={this.tabs}
 					content={this.renderMenu()}
 				/>
-
+				{/* <div style={{ position: "absolute", background: 'red', width: 1000, height: 30, zIndex: 10000 }}></div> */}
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<AssignDC
 						deviceId={device.id}

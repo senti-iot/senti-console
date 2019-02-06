@@ -42,8 +42,8 @@ class Project extends Component {
 	tabs = [
 		{ id: 0, title: '', label: <LibraryBooks />, url: `#details` },
 		{ id: 1, title: '', label: <Timeline />, url: `#data` },
-		{ id: 3, title: '', label: <DataUsage />, url: `#collections` },
-		{ id: 2, title: '', label: <Map />, url: `#map` },
+		{ id: 2, title: '', label: <DataUsage />, url: `#collections` },
+		{ id: 3, title: '', label: <Map />, url: `#map` },
 		{ id: 4, title: '', label: <Person />, url: `#contact` }
 	]
 	componentDidMount = async () => {
