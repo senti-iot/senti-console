@@ -12,7 +12,8 @@ class FilterToolbar extends Component {
 			openMenu: false,
 			actionAnchor: null,
 			focusedMenu: -1,
-			error: false
+			error: false,
+			openFilterCard: false
 		}
 	}
 	componentWillUnmount = () => {
@@ -24,25 +25,26 @@ class FilterToolbar extends Component {
 	}
 	
 	handleClick = e => {
+		window.removeEventListener('keydown', this.handleWindowKeyPress, false)
 		if (this.state.actionAnchor === null) {
 			this.setState({ actionAnchor: this.input });
 			window.addEventListener('keydown', this.handleMenuNav, false)
 			this.input.focus()
 		}
 		else {
-			window.removeEventListener('keydown', this.handleMenuNav, false)
 			this.setState({ actionAnchor: null })
 		}
 	}
-	handleBlur = () => { 
+	handleBlur = () => {
 		window.removeEventListener('keydown', this.handleMenuNav, false)
+		window.addEventListener('keydown', this.handleWindowKeyPress, false)
 	}
 	handleClose = () => {
 		this.setState({ actionAnchor: null });
 	}
 	handleWindowKeyPress = e => { 
-		const { actionAnchor } = this.state
-		if (actionAnchor === null && e.keyCode === 70) { 
+		const { actionAnchor, openFilterCard } = this.state
+		if (actionAnchor === null && e.keyCode === 70 && !openFilterCard) { 
 			e.preventDefault()
 			this.handleClick()
 		} 
@@ -79,7 +81,7 @@ class FilterToolbar extends Component {
 				case 13:
 					const ft = filters[focusedMenu]
 					if (ft)
-						this.setState({ [ft.name]: true, actionAnchor: null, focusedMenu: -1 })
+						this.setState({ [ft.name]: true, actionAnchor: null, focusedMenu: -1, openFilterCard: true })
 					break;
 				case 40: //keyboard down
 					this.setState({ focusedMenu: focusedMenu === filters.length - 1  ?  0 : focusedMenu + 1 })
@@ -110,8 +112,9 @@ class FilterToolbar extends Component {
 	handleAdd = (displayValue, value, key, type, icon, name) => {
 		const { addFilter, reduxKey } = this.props
 		if (this.onBeforeAdd(value)) { 
-			this.setState({ [name]: false })
+			this.setState({ [name]: false, openFilterCard: false })
 			addFilter({ value, key, type: type ? type : null, icon, displayValue: displayValue }, reduxKey)
+			
 		}
 	}
 	handleEdit = (displayValue, value, key, type, icon, id) => { 
@@ -123,7 +126,12 @@ class FilterToolbar extends Component {
 		const { removeFilter, reduxKey } = this.props
 		removeFilter(deletedChip, reduxKey)
 	}
+	handleMenuItem = ft => {
+		this.setState({ [ft]: true, openMenu: false, openFilterCard: true })
+	}
+
 	isSelected = id => this.state.focusedMenu === id ? true : false
+
 	render() {
 		const { t, filters, reduxKey } = this.props
 		const { actionAnchor, editChip, editFilter } = this.state
@@ -156,7 +164,7 @@ class FilterToolbar extends Component {
 								<Paper onClick={e => e.stopPropagation()} >
 									<MenuList>
 										{filters ? filters.map((ft, i) => {
-											return <MenuItem selected={this.isSelected(i)} key={i} onClick={() => { this.setState({ [ft.name]: true, openMenu: false }) }}>
+											return <MenuItem selected={this.isSelected(i)} key={i} onClick={() => this.handleMenuItem(ft.name)}>
 												{ft.name}
 											</MenuItem>
 										}) : null}
@@ -188,7 +196,7 @@ class FilterToolbar extends Component {
 							options={ft.options}
 							content={ft.content}
 							handleButton={(displayValue, value, icon) => { this.handleAdd(displayValue, value, ft.key, ft.type, icon, ft.name) }}
-							handleClose={() => this.setState({ [ft.name]: false })}
+							handleClose={() => this.setState({ [ft.name]: false, openFilterCard: false })}
 						/>
 					}) : null}
 				</Fragment>
