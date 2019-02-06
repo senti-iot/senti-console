@@ -46,7 +46,7 @@
 		"viewDevice": "Vis enhed",
 		"viewDeviceList": "Vis liste over enheder",
 		"yes": "Ja",
-		"extendProfile": "Udvide profil"
+		"extendProfile": "Udvidet profil"
 	},
 	"calibration": {
 		"header": "Lokal opsætning",
@@ -657,14 +657,14 @@
 	"users": {
 		"editUser": "Opdater bruger",
 		"fields": {
-			"bio": "Bio",
+			"bio": "Biografi",
 			"newsletter": "Nyhedsbrev",
 			"position": "Stilling",
 			"location": "Placering",
-			"recoveryEmail": "Gendannelses email",
+			"recoveryEmail": "Gendannelses E-mail",
 			"linkedInURL": "LinkedIn",
 			"twitterURL": "Twitter",
-			"birthday": "Fodselsdag",
+			"birthday": "Fødselsdag",
 			"accessLevel": "Adgangsniveau",
 			"active": "Aktiv",
 			"confirmPass": "Bekræft nyt kodeord",

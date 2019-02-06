@@ -46,7 +46,7 @@
 		"viewDevice": "View device",
 		"viewDeviceList": "View device list",
 		"yes": "Yes",
-		"extendProfile": "Extend Profile"
+		"extendProfile": "Extended Profile"
 	},
 	"calibration": {
 		"header": "On-site setup %{deviceId}",
