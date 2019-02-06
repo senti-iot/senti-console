@@ -123,19 +123,19 @@ class UserContact extends Component {
 						<ItemGrid xs={12}>
 							<Caption>{t('users.fields.bio')}</Caption>
 							<Info>
-								{extended.bio}
+								{extended.bio ? extended.bio : null}
 							</Info>
 						</ItemGrid>
 						<ItemGrid xs={12} md={2}>
 							<Caption>{t('users.fields.position')}</Caption>
 							<Info>
-								{extended.position}
+								{extended.position ? extended.position : null}
 							</Info>
 						</ItemGrid>
 						<ItemGrid xs={12} md={9}>
 							<Caption>{t('users.fields.location')}</Caption>
 							<Info>
-								{extended.location}
+								{extended.location ? extended.location : null}
 							</Info>
 						</ItemGrid>
 						<ItemGrid xs={12} md={2}>
@@ -161,7 +161,7 @@ class UserContact extends Component {
 						<ItemGrid xs={10}>
 							<Caption>{t('users.fields.birthday')}</Caption>
 							<Info>
-								{dateFormatter(extended.birthday)}
+								{extended.birthday ? dateFormatter(extended.birthday) : null}
 							</Info>
 						</ItemGrid>
 					</ItemG>
