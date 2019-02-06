@@ -62,9 +62,13 @@ class Toolbar extends PureComponent {
 		this.tabsRef = React.createRef()
 
 	}
+	componentWillUnmount = () => {
+	  this._isMounted = 0
+	}
+	
 	componentDidUpdate = () => {
 		const { tabs } = this.props
-		if (tabs)
+		if (tabs && this._isMounted)
 			tabs.map(t => {
 				if (t.url.includes('#')) {
 					return inView(t.url).on('enter', el =>  {
@@ -79,10 +83,10 @@ class Toolbar extends PureComponent {
 		inView.offset({
 			top: 118,
 			right: 0,
-			// bottom: 300,
 			bottom: 0,
 			left: 0
 		});
+		this._isMounted = 1
 		// inView.threshold(0.85)
 		// const { tabs } = this.props
 		// if (tabs)
