@@ -10,5 +10,11 @@ export const settingsStyles = theme => ({
 	iconColor: {
 		fill: "rgba(0, 0, 0, 0.54)",
 		cursor: "pointer"
+	},
+	p: {
+		marginBottom: theme.spacing.unit
+	},
+	title: {
+		fontWeight: 500
 	}
 })

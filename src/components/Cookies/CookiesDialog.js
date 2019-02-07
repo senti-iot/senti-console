@@ -32,7 +32,7 @@ const CookiesDialog = (props) => {
 				<T className={classes.p}>{t('cookies.p.10')}</T>
 			</DialogContent>
 			<DialogActions>
-				{readOnly ? <Button onClick={handleClose}>{t('actions.OK')}</Button>
+				{readOnly ? <Button color={'primary'} onClick={handleClose}>OK</Button>
 					:
 					<Fragment>
 						<Button onClick={handleClose} color="primary">

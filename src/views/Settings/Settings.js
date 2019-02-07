@@ -10,7 +10,8 @@ import ChartSettings from './SettingsCards/ChartSettings';
 import withSnackbar from 'components/Localization/S';
 import { compose } from 'recompose';
 import Toolbar from 'components/Toolbar/Toolbar';
-import { Laptop, Build, Notifications, BarChart } from 'variables/icons';
+import { Laptop, Build, Notifications, BarChart, Assignment } from 'variables/icons';
+import TermsAndConditionsSettings from './SettingsCards/TermsAndConditionsSettings';
 
 class Settings extends Component {
 	constructor(props) {
@@ -26,6 +27,7 @@ class Settings extends Component {
 		{ id: 1, title: '', label: <Build />, url: `#calibration` },
 		{ id: 2, title: '', label: <Notifications />, url: `#notifications` },
 		{ id: 3, title: '', label: <BarChart />, url: `#charts` },
+		{ id: 4, title: '', label: <Assignment />, url: '#terms&conditions' }
 	]
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.saved === true) {
@@ -87,6 +89,9 @@ class Settings extends Component {
 							changeChartDataType={changeChartDataType}
 							t={t}
 						/>
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin id={'terms&conditions'}>
+						<TermsAndConditionsSettings t={t}/>
 					</ItemGrid>
 				</GridContainer>
 			</Fragment>

@@ -1,6 +1,7 @@
 import ZoomOut from '@material-ui/icons/ZoomOut'
 import LocationOn from '@material-ui/icons/LocationOn'
 import LinearScale from '@material-ui/icons/LinearScale'
+import Assignment from '@material-ui/icons/Assignment'
 //#region weather Icons
 import ClearDay from 'assets/weather/clear_day.svg'
 import ClearNight from 'assets/weather/clear_night.svg'
@@ -86,6 +87,7 @@ import Smartphone from '@material-ui/icons/Smartphone'
 import EditLocation from '@material-ui/icons/EditLocation'
 import WhatsHot from '@material-ui/icons/Whatshot'
 export {
+	Assignment,
 	LinearScale,
 	WhatsHot,
 	MyLocation,
