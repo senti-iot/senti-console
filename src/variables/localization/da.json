@@ -1,4 +1,20 @@
 {
+	"cookies": {
+		"title": "Senti.Cloud Cookie Politik",
+		"subtitle": "Sådan anvender Senti.Cloud cookies",
+		"p": {
+			"1": "Senti.Cloud respekterer brugernes privatliv og er forpligtede til at beskytte alle former for personlige oplysninger, som brugerne har sendt til Senti.Cloud.",
+			"2": "Ved at skaffe sig adgang til, browse på og/eller bruge Senti.Cloud, anerkender du, at du har læst, forstået og er enig i at være omfattet af denne cokiepolitiks vilkår og betingelser og indvilliger derfor i at bruge cookies i henhold til disse vilkår.",
+			"3": "I almindelighed kan vores brugere besøge Senti.Cloud uden at fortælle os, hvem de er, og uden at afsløre nogen former for personlige oplysninger. Senti.Cloud bruger cookies for at sikre den bedste brugeroplevelse. Cookies er små tekstfiler, der er placeret i brugerens browser til at spore brugsspor og registrere præferencer. Vores cookies indeholder ikke oplysninger, som kan identificere personer.",
+			"4": "Cookies kan enten være ”persistent”-cookies eller ”session”-cookies: En persistent-cookie opbevares af en browser og gælder, indtil dens indstillede udløbsdato, hvis den ikke slettes af brugeren før udløbsdatoen. En session-cookie udløber derimod ved afslutningen af et bruger besøg, når browseren lukkes. Vi bruger både session- og persistent-cookies på Senti.Cloud.",
+			"5": "Vi bruger også Google Analytics til at analysere brugen af Senti.Cloud. Vores udbyder af analysetjenester genererer statistik og andre oplysninger om hjemmesidebrug ved hjælp af cookies. De cookies til webanalyse, som vi bruger på Senti.Cloud, har følgende navne: _ga, _gat.",
+			"6": "De oplysninger, der frembringes i relation til Senti.Cloud, bruges til at skabe rapporter om brugen af Senti.Cloud.",
+			"7": "Vores udbyder af analysetjenesters persondatapolitik er tilgængelig på: ",
+			"8": "Brugere kan administrere og/eller slette cookies – for flere oplysninger, se venligst",
+			"9": "At blokere eller slette alle cookies har en negativ indflydelse på mange hjemmesiders stabilitet. Hvis brugere vælger at blokere vores cookies, er de ikke i stand til at bruge alle hjemmesidens egenskaber.",
+			"10": "Politikken kan fra tid til anden blive opdateret, f.eks. på grund af modificeringer af relevant lovgivning eller ændringer i vores virksomhedsstruktur. Vi tilskynder alle vores brugere til med jævne mellemrum at genlæse denne side for de seneste oplysninger om vores databeskyttelsespraksis."
+		}
+	},
 	"404": {
 		"errorMessage": "Den ønskede ressource er ikke fundet! Prøv igen eller kontakt support på support@senti.cloud!",
 		"networkError": "Netværksfejl!",

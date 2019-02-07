@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { withStyles, Snackbar, IconButton, Button } from '@material-ui/core';
-import { Header, Sidebar, CircularLoader, ItemG } from 'components';
+import { withStyles, Snackbar, IconButton } from '@material-ui/core';
+import { Header, Sidebar, CircularLoader } from 'components';
 
 import dashboardRoutes from 'routes/dashboard.js';
 import appStyle from 'assets/jss/material-dashboard-react/appStyle.js';
@@ -11,11 +11,12 @@ import logo from '../../logo.svg';
 import cookie from 'react-cookies';
 import withLocalization from 'components/Localization/T';
 import { connect } from 'react-redux'
-import { getSettings, acceptCookiesFunc } from 'redux/settings';
+import { getSettings } from 'redux/settings';
 import withSnackbarHandler from 'components/Localization/SnackbarHandler';
 import {  Close } from 'variables/icons';
 import { lightTheme, darkTheme } from 'variables/themes'
 import { getDaysOfInterest } from 'redux/doi';
+import Cookies from 'components/Cookies/Cookies';
 
 class App extends React.Component {
 	constructor(props) {
@@ -151,6 +152,7 @@ class App extends React.Component {
 											}} />}
 									</Switch>
 								</div>
+								<Cookies/>
 								<Snackbar
 									anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 									open={this.props.sOpen}
@@ -166,29 +168,12 @@ class App extends React.Component {
 									autoHideDuration={3000}
 									message={<span>{t(this.props.sId, this.props.sOpt)}</span>}
 									action={
-										<IconButton color={'primary'} size={'small'} /* variant={'text'} */ onClick={this.props.sClose} >
+										<IconButton color={'primary'} size={'small'} onClick={this.props.sClose} >
 											<Close />
 										</IconButton>
 									}
 								/>
-								<Snackbar
-									open={!this.props.cookies}
-									ContentProps={{
-										style: { width: '100%' },
-										'aria-describedby': 'message-id',
-									}}
-									message={<span id="message-id">{t('dialogs.cookies.message.snackbar')}</span>}
-									action={
-										<ItemG container justify={'space-between'}>
-											<Button color={'primary'} size={'small'} onClick={() => this.props.acceptCookies(true)}>
-												{t('actions.accept')}
-											</Button>
-											<Button color={'primary'} size={'small'}>
-												{t('actions.readMore')}
-											</Button>
-										</ItemG>
-									}
-								/>
+							
 							</Fragment> : <CircularLoader />}
 						</Fragment>
 					</div>
@@ -206,14 +191,14 @@ App.propTypes = {
 const mapStateToProps = (state) => ({
 	loading: state.settings.loading,
 	theme: state.settings.theme,
-	cookies: state.settings.cookies,
+	// cookies: state.settings.cookies,
 	defaultRoute: state.settings.defaultRoute
 })
 
 const mapDispatchToProps = dispatch => ({
 	getSettings: async () => dispatch(await getSettings()),
 	getDaysOfIterest: async () => dispatch(await getDaysOfInterest()),
-	acceptCookies: async (val) => dispatch(await acceptCookiesFunc(val))
+	// acceptCookies: async (val) => dispatch(await acceptCookiesFunc(val))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withSnackbarHandler()((withLocalization()(withStyles(appStyle)(App)))))

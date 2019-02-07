@@ -11,7 +11,7 @@ const T = (props) => {
 		[props.classes.reversed]: props.reversed
 	})
 	return (
-		<Typography className={classNames} variant={'body2'}>
+		<Typography className={props.className + ' ' + classNames} variant={props.variant ? props.variant : 'body2'}>
 			{props.children}
 		</Typography>
 	)
