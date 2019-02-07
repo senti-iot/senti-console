@@ -5,6 +5,8 @@ import ItemG from 'components/Grid/ItemG';
 import withLocalization from 'components/Localization/T';
 import { acceptCookiesFunc } from 'redux/settings';
 import CookiesDialog from './CookiesDialog';
+import withSnackbar from 'components/Localization/S';
+import { finishedSaving } from 'redux/settings';
 
 const styles = theme => ({
 	p: {
@@ -22,6 +24,12 @@ class Cookies extends Component {
 		 open: false,
 		 showSnackBar: true,
 	  }
+	}
+	componentDidUpdate = (prevProps, prevState) => {
+		if (this.props.saved === true) {
+			this.props.s('snackbars.settingsSaved')
+			this.props.finishedSaving()
+		}
 	}
 	handleAcceptCookies = () => { 
 		this.handleClose()
@@ -72,11 +80,14 @@ class Cookies extends Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	cookies: state.settings.cookies
+	cookies: state.settings.cookies,
+	saved: state.settings.saved
 })
 
 const mapDispatchToProps = dispatch => ({
-	acceptCookies: async (val) => dispatch(await acceptCookiesFunc(val))
+	acceptCookies: async (val) => dispatch(await acceptCookiesFunc(val)),
+	finishedSaving: () => dispatch(finishedSaving())
+
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(styles)(Cookies)))
+export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(styles)(withSnackbar()(Cookies))))
