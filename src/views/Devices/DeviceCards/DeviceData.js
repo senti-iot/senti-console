@@ -25,6 +25,7 @@ import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeChartType, changeYAxis } from 'redux/appState'
 import { changeDate } from 'redux/dateTime'
+import TableData from 'components/Table/TableData';
 
 class DeviceData extends PureComponent {
 	constructor(props) {
@@ -200,7 +201,7 @@ class DeviceData extends PureComponent {
 										setHoverID={setHoverID}
 										data={d}
 										t={t}
-									/>	
+									/>
 								</div>
 							</ItemG>
 						})}
@@ -218,7 +219,7 @@ class DeviceData extends PureComponent {
 						t={t}
 					/></div> : this.renderNoData()
 			case 3:
-				
+
 				return lineDataSets ?
 					<LineChart
 						hoverID={this.props.hoverID}
@@ -280,7 +281,7 @@ class DeviceData extends PureComponent {
 					<MoreVert />
 				</IconButton>
 			</ItemG>
-			 <Menu
+			<Menu
 				id='long-menu'
 				anchorEl={actionAnchor}
 				open={Boolean(actionAnchor)}
@@ -347,7 +348,32 @@ class DeviceData extends PureComponent {
 			<Caption> {this.props.t('devices.noData')}</Caption>
 		</ItemG>
 	}
-
+	renderDataTable = () => {
+		const { selected, order, orderBy, handleRequestSort, handleSelectAllClick } = this.props
+		const { t, lineDataSets } = this.props
+		if (lineDataSets)
+		{
+			let data = lineDataSets.datasets.map(d => d.data.map(data => ({
+				id: d.id,
+				interval: data.x,
+				count: data.y
+			})))
+			return <TableData
+				data={data[0]}
+				handleCheckboxClick={this.handleCheckboxClick}//
+				handleClick={() => alert('clicked')}//
+				handleRequestSort={handleRequestSort}//
+				handleSelectAllClick={handleSelectAllClick}//
+				order={order}
+				orderBy={orderBy}
+				selected={selected}
+				t={t}
+				// tableHead={this.deviceHeaders()}
+			/>}
+		else {
+			return null
+		}
+	}
 	render() {
 		const { raw, t, loading, to, from, dateOption, exportData } = this.props
 		const { openDownload } = this.state
@@ -360,7 +386,7 @@ class DeviceData extends PureComponent {
 					title={t('collections.cards.data')}
 					subheader={`${this.options[dateOption].label}, ${raw ? t('collections.rawData') : t('collections.calibratedData')}, ${displayFrom} - ${displayTo}`}
 					avatar={<Timeline />}
-					noExpand
+					hiddenContent={this.renderDataTable()}
 					topAction={this.renderMenu()}
 					content={
 						<Grid container>
@@ -376,7 +402,7 @@ class DeviceData extends PureComponent {
 							{loading ? <CircularLoader notCentered /> :
 								<Fragment>
 									<ItemG xs={12}>
-										{ this.renderType() }
+										{this.renderType()}
 									</ItemG>
 								</Fragment>}
 						</Grid>}

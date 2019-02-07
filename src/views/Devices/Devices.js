@@ -294,16 +294,6 @@ class Devices extends Component {
 
 	}
 
-	handleFilterEndDate = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				endDate: value,
-				activeDateFilter: value !== null ? true : false
-			}
-		})
-	}
-
 	handleFilterKeyword = (value) => {
 		this.setState({
 			filters: {
@@ -448,10 +438,10 @@ class Devices extends Component {
 		const { t } = this.props
 		return <DeviceTable
 			data={this.filterItems(items)}
-			handleCheckboxClick={this.handleCheckboxClick}
-			handleClick={handleClick}
-			handleRequestSort={this.handleRequestSort}
-			handleSelectAllClick={this.handleSelectAllClick}
+			handleCheckboxClick={this.handleCheckboxClick}//
+			handleClick={handleClick}//
+			handleRequestSort={this.handleRequestSort}//
+			handleSelectAllClick={this.handleSelectAllClick}//
 			order={order}
 			orderBy={orderBy}
 			selected={selected}

@@ -19,6 +19,7 @@ import { Timeline, DeviceHub, Map, DeveloperBoard, Image } from 'variables/icons
 import teal from '@material-ui/core/colors/teal'
 import { getWifiHourly, getWifiDaily, getWifiMinutely, getWifiSummary } from 'components/Charts/DataModel';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
+import { handleRequestSort } from 'variables/functions';
 
 class Device extends Component {
 	constructor(props) {
@@ -36,6 +37,10 @@ class Device extends Component {
 			loading: true,
 			anchorElHardware: null,
 			img: null,
+			//Data Table
+			selected: [],
+			order: 'desc',
+			orderBy: 'id'
 		}
 	}
 	format = 'YYYY-MM-DD+HH:mm'
@@ -70,7 +75,44 @@ class Device extends Component {
 			}
 		})
 	}
+	//#region Data Table func
+	handleRequestSort = (event, property, way) => {
+		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		let newData = handleRequestSort(property, order, this.state.devices)
+		this.setState({ devices: newData, order, orderBy: property })
+	}
 
+	handleSelectAllClick = (event, checked) => {
+		if (checked) {
+			this.setState({ selected: this.state.devices.map(n => n.id) });
+			return;
+		}
+		this.setState({ selected: [] });
+	};
+
+	handleCheckboxClick = (event, id) => {
+		event.stopPropagation()
+		const { selected } = this.state;
+		const selectedIndex = selected.indexOf(id);
+		let newSelected = [];
+
+		if (selectedIndex === -1) {
+			newSelected = newSelected.concat(selected, id);
+		} else if (selectedIndex === 0) {
+			newSelected = newSelected.concat(selected.slice(1));
+		} else if (selectedIndex === selected.length - 1) {
+			newSelected = newSelected.concat(selected.slice(0, -1));
+		} else if (selectedIndex > 0) {
+			newSelected = newSelected.concat(
+				selected.slice(0, selectedIndex),
+				selected.slice(selectedIndex + 1),
+			);
+		}
+
+		this.setState({ selected: newSelected });
+	};
+
+	//#endregion
 	getDataCollection = async (id) => {
 		await getCollection(id).then(rs => {
 			if (rs) {
@@ -461,7 +503,7 @@ class Device extends Component {
 	}
 
 	render() {
-		const { device, loading, loadingData } = this.state
+		const { device, loading, loadingData, selected, order, orderBy } = this.state
 
 		return (
 			!loading ? <Fragment>
@@ -523,6 +565,14 @@ class Device extends Component {
 							history={this.props.history}
 							match={this.props.match}
 							t={this.props.t}
+							//DeviceTable
+							handleCheckboxClick={this.handleCheckboxClick}//
+							// handleClick={handleClick}//
+							handleRequestSort={this.handleRequestSort}//
+							handleSelectAllClick={this.handleSelectAllClick}//
+							order={order}
+							orderBy={orderBy}
+							selected={selected}
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'map'}>
