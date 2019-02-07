@@ -34,7 +34,7 @@ class TermsAndConditions extends Component {
 							<ListItem>
 								<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 									<ListItemText>{t('settings.t&c.cookiesPolicy')}</ListItemText>
-									<Button onClick={this.handleOpenCP}>{t('actions.readMore')}</Button>
+									<Button color={'primary'} onClick={this.handleOpenCP}>{t('actions.read')}</Button>
 								</ItemGrid>
 							</ListItem>
 						</List>
