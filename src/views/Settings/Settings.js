@@ -27,7 +27,7 @@ class Settings extends Component {
 		{ id: 1, title: '', label: <Build />, url: `#calibration` },
 		{ id: 2, title: '', label: <Notifications />, url: `#notifications` },
 		{ id: 3, title: '', label: <BarChart />, url: `#charts` },
-		{ id: 4, title: '', label: <Assignment />, url: '#terms&conditions' }
+		{ id: 4, title: '', label: <Assignment />, url: '#termsAndConditions' }
 	]
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.saved === true) {
@@ -90,7 +90,7 @@ class Settings extends Component {
 							t={t}
 						/>
 					</ItemGrid>
-					<ItemGrid xs={12} noMargin id={'terms&conditions'}>
+					<ItemGrid xs={12} noMargin id={'termsAndConditions'}>
 						<TermsAndConditionsSettings t={t}/>
 					</ItemGrid>
 				</GridContainer>

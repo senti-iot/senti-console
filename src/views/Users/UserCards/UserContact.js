@@ -71,13 +71,13 @@ class UserContact extends Component {
 				avatar={<Person />}
 				topAction={this.renderTopActionPriv()}
 				content={
-					<ItemG zeroMargin noPadding container >
+					<ItemG  container >
 						<Hidden lgUp>
 							<ItemG container justify={'center'}>
 								{user.img ? <img src={user.img} alt='UserAvatar' className={classes.img} /> : <Gravatar size={250} default='mp' email={user.email} className={classes.img} />}
 							</ItemG>
 						</Hidden>
-						<ItemG zeroMargin noPadding lg={9} md={12}>
+						<ItemG lg={9} md={12}>
 							<ItemG>
 								<Caption>{t('users.fields.email')}</Caption>
 								<Info>

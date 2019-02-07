@@ -12,6 +12,7 @@ import MomentUtils from '@date-io/moment';
 // import moment from 'moment'
 import { DateTimePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
 import moment from 'moment'
+import { getSettings } from 'redux/settings';
 
 class EditUser extends Component {
 	constructor(props) {
@@ -129,32 +130,32 @@ class EditUser extends Component {
 			groups: groups
 		}
 		if (openExtended) {
-			console.log('created Extended')
 			newUser.aux.senti.extendedProfile = this.state.extended
 		}
-		console.log(newUser)
 		await editUser(newUser).then(rs => rs ?
-			this.close(rs) :
+			this.close() :
 			this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t('orgs.validation.networkError') })
 
 		)
 	}
-	close = rs => {
+	close = async () => {
+		// console.log(rs)
 		const { isFav, updateFav } = this.props
 		const { user } = this.state
 		let favObj = {
 			id: user.id,
-			name: `${rs.firstName} ${rs.lastName}`,
+			name: `${user.firstName} ${user.lastName}`,
 			type: 'user',
 			path: `/management/user/${user.id}`
 		}
+		await this.props.getSettings()
 		if (isFav(favObj)) {
 			updateFav(favObj)
 		}
-		this.setState({ created: true, creating: false, org: rs })
+		this.setState({ created: true, creating: false })
 		const { s, history } = this.props
-		s('snackbars.userUpdated', { user: `${rs.firstName} ${rs.lastName}` })
-		history.push(`/management/user/${rs.id}`)
+		s('snackbars.userUpdated', { user: `${user.firstName} ${user.lastName}` })
+		history.push(`/management/user/${user.id}`)
 	}
 
 	handleChange = prop => e => {
@@ -376,8 +377,6 @@ class EditUser extends Component {
 	}
 	renderExtendedProfile = () => {
 		const { openExtended, error, extended } = this.state
-		console.log(this.state)
-		// const  = this.state.user.aux.senti.extendedProfile
 		const { classes, t } = this.props
 		return <Collapse in={openExtended}>
 			<ItemGrid container xs={12} md={6}>
@@ -594,7 +593,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
-	updateFav: (favObj) => dispatch(updateFav(favObj))
+	updateFav: (favObj) => dispatch(updateFav(favObj)),
+	getSettings: async () => dispatch(await getSettings()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles)(EditUser))
