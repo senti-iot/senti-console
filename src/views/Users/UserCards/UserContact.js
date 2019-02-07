@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { InfoCard, ItemGrid, Caption, Info, ItemG } from 'components';
+import { InfoCard, ItemG, Caption, Info } from 'components';
 import { Hidden } from '@material-ui/core';
 import { pF, dateFormatter } from 'variables/functions';
 import { Person, Edit, Delete, LockOpen, Email, Star, StarBorder } from 'variables/icons'
@@ -71,75 +71,75 @@ class UserContact extends Component {
 				avatar={<Person />}
 				topAction={this.renderTopActionPriv()}
 				content={
-					<ItemGrid zeroMargin noPadding container >
+					<ItemG zeroMargin noPadding container >
 						<Hidden lgUp>
-							<ItemGrid container justify={'center'}>
+							<ItemG container justify={'center'}>
 								{user.img ? <img src={user.img} alt='UserAvatar' className={classes.img} /> : <Gravatar size={250} default='mp' email={user.email} className={classes.img} />}
-							</ItemGrid>
+							</ItemG>
 						</Hidden>
-						<ItemGrid zeroMargin noPadding lg={9} md={12}>
-							<ItemGrid>
+						<ItemG zeroMargin noPadding lg={9} md={12}>
+							<ItemG>
 								<Caption>{t('users.fields.email')}</Caption>
 								<Info>
 									<a title={t('links.mailTo')} href={`mailto:${user.email}`}>
 										{user.email}
 									</a>
 								</Info>
-							</ItemGrid>
-							<ItemGrid>
+							</ItemG>
+							<ItemG>
 								<Caption>{t('users.fields.phone')}</Caption>
 								<Info>
 									<a title={t('links.phoneTo')} href={`tel:${user.phone}`}>
 										{user.phone ? pF(user.phone) : user.phone}
 									</a>
 								</Info>
-							</ItemGrid>
-							<ItemGrid>
+							</ItemG>
+							<ItemG>
 								<Caption>{t('users.fields.organisation')}</Caption>
 								<Info>
 									<Link to={{ pathname: `/management/org/${user.org.id}`, prevURL: `/management/user/${user.id}` }}>
 										{user.org ? user.org.name : t('users.noOrg')}
 									</Link>
 								</Info>
-							</ItemGrid>
-							<ItemGrid>
+							</ItemG>
+							<ItemG>
 								<Caption>{t('users.fields.language')}</Caption>
 								<Info>{user.aux.odeum.language === 'en' ? t('settings.languages.en') : user.aux.odeum.language === 'da' ? t('settings.languages.da') : ''}</Info>
-							</ItemGrid>
-							<ItemGrid>
+							</ItemG>
+							<ItemG>
 								<Caption>{t('users.fields.accessLevel')}</Caption>
 								<Info>{this.renderUserGroup()}</Info>
-							</ItemGrid>
-						</ItemGrid>
+							</ItemG>
+						</ItemG>
 						<Hidden mdDown>
-							<ItemGrid >
+							<ItemG >
 								{user.img ? <img src={user.img} alt='UserAvatar' className={classes.img} /> : <Gravatar default='mp' size={250} email={user.email} className={classes.img} />}
-							</ItemGrid>
+							</ItemG>
 						</Hidden>
-					</ItemGrid>
+					</ItemG>
 				}
 				hiddenContent={
 					
 					<ItemG container>
-						<ItemGrid xs={12}>
+						<ItemG xs={12}>
 							<Caption>{t('users.fields.bio')}</Caption>
 							<Info>
 								{extended ? extended.bio ? extended.bio : null : null}
 							</Info>
-						</ItemGrid>
-						<ItemGrid xs={12} md={2}>
+						</ItemG>
+						<ItemG xs={12} md={2}>
 							<Caption>{t('users.fields.position')}</Caption>
 							<Info>
 								{extended ? extended.position ? extended.position : null : null}
 							</Info>
-						</ItemGrid>
-						<ItemGrid xs={12} md={9}>
+						</ItemG>
+						<ItemG xs={12} md={9}>
 							<Caption>{t('users.fields.location')}</Caption>
 							<Info>
 								{extended ? extended.location ? extended.location : null : null}
 							</Info>
-						</ItemGrid>
-						<ItemGrid xs={12} md={2}>
+						</ItemG>
+						<ItemG xs={12} md={2}>
 							<Caption>{t('users.fields.linkedInURL')}</Caption>
 							<Info>
 								{extended ? extended.linkedInURL ?
@@ -148,8 +148,8 @@ class UserContact extends Component {
 									</a>
 									: null : null}
 							</Info>
-						</ItemGrid>
-						<ItemGrid xs={12} md={8}>
+						</ItemG>
+						<ItemG xs={12} md={8}>
 							<Caption>{t('users.fields.twitterURL')}</Caption>
 							<Info>
 								{extended ? extended.twitterURL ?
@@ -158,13 +158,13 @@ class UserContact extends Component {
 									</a>
 									: null : null}
 							</Info>
-						</ItemGrid>
-						<ItemGrid xs={10}>
+						</ItemG>
+						<ItemG xs={10}>
 							<Caption>{t('users.fields.birthday')}</Caption>
 							<Info>
 								{extended ? extended.birthday ? dateFormatter(extended.birthday) : null : null}
 							</Info>
-						</ItemGrid>
+						</ItemG>
 					</ItemG>
 				}
 			/>
