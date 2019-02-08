@@ -87,16 +87,21 @@ class Users extends Component {
 		const { t, isFav, users } = this.props
 		const { selected } = this.state
 		let user = users[users.findIndex(d => d.id === selected[0])]
-		let favObj = {
-			id: user.id,
-			name: `${user.firstName} ${user.lastName}`,
-			type: 'user',
-			path: `/management/user/${user.id}`
+		let favObj
+		let isFavorite = false
+		if (user) {
+			favObj = {
+				id: user.id,
+				name: `${user.firstName} ${user.lastName}`,
+				type: 'user',
+				path: `/management/user/${user.id}`
+			}
+			isFavorite = isFav(favObj)
 		}
-		let isFavorite = isFav(favObj)
 		return [
 			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
 			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
+			// { label: t('menus.copyEmails'), icon: Edit, func: this.handleCopyEmailsSelected },
 			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
 			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
@@ -122,6 +127,8 @@ class Users extends Component {
 	}
 	componentDidUpdate = async (prevState, prevProps) => {
 		if (prevProps.users !== this.props.users) {
+			if (this.state.selected.length > 0)
+				this.setState({ selected: [] })
 			await this.getData()
 		}
 	}

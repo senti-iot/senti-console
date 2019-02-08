@@ -122,7 +122,7 @@ class DeviceTable extends React.Component {
 										<Hidden mdDown>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)}/>}/>
 											<TC label={n.name ? n.name : t('devices.noName')} />
-											<TC numeric label={n.id} />
+											<TC label={n.id} />
 											<TC content={this.renderIcon(n.liveStatus)} />
 											<TC label={n.address ? n.address : t('devices.noAddress')} />
 											<TC label={n.org ? n.org.name : t('no.org')} />
