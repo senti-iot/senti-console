@@ -3,7 +3,12 @@ import { TableCell, Typography, withStyles } from '@material-ui/core'
 
 const styles = theme => ({
 	tableCell: {
-		padding: 0,
+		// paddingRight: "8px",
+		// padding: 0,
+		[theme.breakpoints.down('sm')]: {
+			paddingRight: 4,
+			padding: 0,
+		},
 		'&:last-child': {
 			paddingRight: 8
 		}
@@ -15,9 +20,9 @@ const styles = theme => ({
 
 
 const TC = (props) => {
-	const { checkbox, classes, label, content, className } = props
+	const { checkbox, classes, label, content, className, numeric } = props
 	return (
-		<TableCell classes={{
+		<TableCell numeric={numeric} classes={{
 			root: className + ' ' + (checkbox ? classes.tableCellCheckbox + ' ' + classes.tableCell : classes.tableCell)
 		}}
 		

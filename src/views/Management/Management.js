@@ -59,12 +59,12 @@ class Management extends Component {
 	renderUserGroup = (user) => {
 		const { t } = this.props
 		if (user.groups) {
-			if (user.groups[137180100000023])
-				return t('users.groups.137180100000023')
-			if (user.groups[137180100000026])
-				return t('users.groups.137180100000026')
-			if (user.groups[137180100000025])
-				return t('users.groups.137180100000025')
+			if (user.groups[136550100000143])
+				return t("users.groups.superUser")
+			if (user.groups[136550100000211])
+				return t("users.groups.accountManager")
+			if (user.groups[136550100000225])
+				return t("users.groups.user")
 		}
 		return ''
 	}
