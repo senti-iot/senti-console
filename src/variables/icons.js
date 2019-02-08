@@ -1,3 +1,4 @@
+import Mail from '@material-ui/icons/Mail'
 import ZoomOut from '@material-ui/icons/ZoomOut'
 import LocationOn from '@material-ui/icons/LocationOn'
 import LinearScale from '@material-ui/icons/LinearScale'
@@ -87,6 +88,7 @@ import Smartphone from '@material-ui/icons/Smartphone'
 import EditLocation from '@material-ui/icons/EditLocation'
 import WhatsHot from '@material-ui/icons/Whatshot'
 export {
+	Mail,
 	Assignment,
 	LinearScale,
 	WhatsHot,

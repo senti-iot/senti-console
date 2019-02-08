@@ -421,6 +421,7 @@
 		}
 	},
 	"menus": {
+		"copyEmails": "Kopier mail adresser",
 		"assign": {
 			"collectionToProject": "Tilknyt datasamling",
 			"collectionsToProject": "Tilknyt datasamlinger",
@@ -617,6 +618,7 @@
 		"users": "Brugere"
 	},
 	"snackbars": {
+		"emailsCopied": "Mail adresser kopieret til klippebord",
 		"assign": {
 			"collectionToOrg": "Datasamling %{collection} tilknyttet til organisation %{org}",
 			"collectionToProject": "Datasamling %{collection} tilknyttet til projekt %{project}",

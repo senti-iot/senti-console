@@ -5,8 +5,8 @@ import UserTable from 'components/User/UserTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
 import { deleteUser } from 'variables/dataUsers';
-import { People, Business, Add, Delete, PictureAsPdf, Edit, Star, StarBorder } from 'variables/icons';
-import { handleRequestSort } from 'variables/functions';
+import { People, Business, Add, Delete, PictureAsPdf, Edit, Star, StarBorder, Mail } from 'variables/icons';
+import { handleRequestSort, copyToClipboard } from 'variables/functions';
 import TableToolbar from 'components/Table/TableToolbar';
 import { Info } from 'components';
 import { customFilterItems } from 'variables/Filters';
@@ -69,6 +69,7 @@ class Users extends Component {
 			{ key: 'suspended', name: t('users.fields.loginSuspended'), type: 'dropDown', options: this.dSuspended() },
 			{ key: 'lastLoggedIn', name: t('filters.users.hasLogged'), type: 'diff', options: { dropdown: this.dHasLoggedIn(), values: { false: [null] } } },
 			{ key: 'aux.odeum.language', name: t('users.fields.language'), type: 'dropDown', options: this.dLang() },
+			
 			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 		]
 	}
@@ -82,6 +83,22 @@ class Users extends Component {
 	removeFromFav = (favObj) => {
 		this.props.removeFromFav(favObj)
 		this.setState({ anchorElMenu: null })
+	}
+	handleCopyEmailsSelected = () => {
+		const { selected } = this.state
+		const { users } = this.props
+		let fUsers = users.filter((el) => {
+			return selected.some((f) => {
+				return f === el.id
+			});
+		});
+		let emails = fUsers.map(u => u.email).join(';')
+		// this.setState({})
+		// console.log(emails)
+		copyToClipboard(emails)
+		this.props.s('snackbars.emailsCopied')
+		// this.setState({ anchorElMenu: null })
+
 	}
 	options = () => {
 		const { t, isFav, users } = this.props
@@ -101,7 +118,7 @@ class Users extends Component {
 		return [
 			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
 			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
-			// { label: t('menus.copyEmails'), icon: Edit, func: this.handleCopyEmailsSelected },
+			{ label: t('menus.copyEmails'), icon: Mail, func: this.handleCopyEmailsSelected },
 			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
 			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete }
 		]

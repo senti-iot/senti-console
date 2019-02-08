@@ -421,6 +421,7 @@
 		}
 	},
 	"menus": {
+		"copyEmails": "Copy e-mails to clipboard",
 		"assign": {
 			"collectionToProject": "Assign Data Collection to Project",
 			"collectionsToProject": "Assign Data Collections to Project",
@@ -617,6 +618,7 @@
 		"users": "Users"
 	},
 	"snackbars": {
+		"emailsCopied": "E-mail adresses copied to clipboard",
 		"assign": {
 			"collectionToOrg": "Data collection %{collection} assigned to organisation %{org}",
 			"collectionToProject": "Data collection %{collection} assigned to project %{project}",

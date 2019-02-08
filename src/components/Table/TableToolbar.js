@@ -28,6 +28,7 @@ let selectedRender = props => {
 				<MoreVertIcon />
 			</IconButton>
 			<Menu
+				disableEnforceFocus
 				id='long-menu'
 				anchorEl={anchor}
 				open={Boolean(anchor)}
