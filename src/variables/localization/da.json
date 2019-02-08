@@ -350,6 +350,7 @@
 		}
 	},
 	"filters": {
+		"freeText": "Fri tekst",
 		"after": "efter",
 		"afterDate": "Efter dato",
 		"before": "før",

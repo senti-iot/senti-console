@@ -18,6 +18,7 @@ import FavoritesTable from 'components/Favorites/FavoritesTable';
 import { Paper, withStyles } from '@material-ui/core';
 import TableToolbar from 'components/Table/TableToolbar';
 import projectStyles from 'assets/jss/views/projects';
+import { customFilterItems } from 'variables/Filters';
 
 class Management extends Component {
 	constructor(props) {
@@ -38,29 +39,45 @@ class Management extends Component {
 		}
 		props.setHeader('users.pageTitle', false, '', 'users')
 	}
+
 	tabs = [
 		{ id: 0, title: this.props.t('users.tabs.users'), label: <People />, url: `/management/users` },
 		{ id: 1, title: this.props.t('users.tabs.orgs'), label: <Business />, url: `/management/orgs` },
 		{ id: 3, title: this.props.t('sidebar.favorites'), label: <Star />, url: `/management/favorites` }
 	]
+
 	componentDidMount = async () => {
 		this.handleTabs()
 		await this.getData()
 	}
+
 	reload = () => {
 		this.getData()
 		this.handleFilterKeyword('')
+	}
+
+	renderUserGroup = (user) => {
+		const { t } = this.props
+		if (user.groups) {
+			if (user.groups[137180100000023])
+				return t('users.groups.137180100000023')
+			if (user.groups[137180100000026])
+				return t('users.groups.137180100000026')
+			if (user.groups[137180100000025])
+				return t('users.groups.137180100000025')
+		}
+		return ''
 	}
 	getData = async () => {
 		let users = await getAllUsers().then(rs => rs)
 		let orgs = await getAllOrgs().then(rs => rs)
 		this.setState({
-			users: users ? users : [],
+			users: users ? users.map(u => ({ ...u, group: this.renderUserGroup(u) })) : [],
 			orgs: orgs ? orgs : [],
 			loading: false
 		})
-
 	}
+
 	dTypes = () => {
 		const { t } = this.props
 		return [
@@ -68,9 +85,11 @@ class Management extends Component {
 			{ value: 'org', label: t('favorites.types.org'), icon: <Business /> },
 		]
 	}
+
 	ft = () => {
 		const { t } = this.props
 		return [
+			{ key: "", name: t('filters.freeText'), type: 'string', hidden: true },
 			{ key: 'name', name: t('favorites.fields.name'), type: 'string' },
 			{ key: 'type', name: t('favorites.fields.type'), type: 'dropDown', options: this.dTypes() }
 		]
@@ -109,7 +128,11 @@ class Management extends Component {
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
 	}
-
+	filterFavorites = (data) => {
+		const { filters } = this.state
+		const rFilters = this.props.filtersFavorites
+		return customFilterItems(this.filterItems(data, filters), rFilters)
+	}
 	filterItems = (data) => {
 		const { filters } = this.state
 		return filterItems(data, filters)
@@ -193,11 +216,12 @@ class Management extends Component {
 		handleRequestSort(property, order, this.props.favorites)
 		this.setState({ order, orderBy: property })
 	}
-	renderTableToolBar = () => {
+	renderTableToolBar = (reduxKey) => {
 		const { t } = this.props
 		const { selected } = this.state
 		return <TableToolbar //	./TableToolbar.js
 			ft={this.ft()}
+			reduxKey={reduxKey}
 			addFilter={this.addFilter}
 			removeFilter={this.removeFilter}
 			anchorElMenu={this.state.anchorElMenu}
@@ -217,7 +241,7 @@ class Management extends Component {
 			handleClick={this.handleClick}
 			handleCheckboxClick={this.handleCheckboxClick}
 			handleSelectAllClick={this.handleSelectAllClick}
-			data={this.filterItems(usersAndOrgs)}
+			data={this.filterFavorites(usersAndOrgs)}
 			tableHead={this.favoritesHeaders()}
 			handleRequestSort={this.handleRequestSort}
 			orderBy={orderBy}
@@ -230,7 +254,7 @@ class Management extends Component {
 		const { loading } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
-				{this.renderTableToolBar()}
+				{this.renderTableToolBar('favorites')}
 				{this.renderTable()}
 			</Paper>
 			}
@@ -270,7 +294,8 @@ const mapStateToProps = (state) => ({
 	favorites: state.favorites.favorites,
 	saved: state.favorites.saved,
 	filtersOrgs: state.appState.filters.orgs,
-	filtersUsers: state.appState.filters.users
+	filtersUsers: state.appState.filters.users,
+	filtersFavorites: state.appState.filters.favorites
 })
 
 const mapDispatchToProps = (dispatch) => ({

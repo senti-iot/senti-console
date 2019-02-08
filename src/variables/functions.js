@@ -198,6 +198,9 @@ export const keyTester = (obj, sstr) => {
 const sortFunc = (a, b, orderBy, way) => {
 	let newA =  _.get(a, orderBy) 
 	let newB =  _.get(b, orderBy)
+	if (moment(newA).isValid() && moment(newB).isValid()) { 
+		return moment(newA).diff(newB)
+	}
 	if (typeof newA === 'number' || typeof newA === 'undefined')
 		if (way) {
 			return -(newA > newB) || +(newA < newB) || (newA === null || newA === undefined) - (newB === null || newB === undefined);

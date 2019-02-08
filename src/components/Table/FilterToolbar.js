@@ -23,7 +23,7 @@ class FilterToolbar extends Component {
 	componentDidMount = () => {
 		window.addEventListener('keydown', this.handleWindowKeyPress, false)
 	}
-	
+
 	handleClick = e => {
 		window.removeEventListener('keydown', this.handleWindowKeyPress, false)
 		if (this.state.actionAnchor === null) {
@@ -42,12 +42,12 @@ class FilterToolbar extends Component {
 	handleClose = () => {
 		this.setState({ actionAnchor: null });
 	}
-	handleWindowKeyPress = e => { 
+	handleWindowKeyPress = e => {
 		const { actionAnchor, openFilterCard } = this.state
-		if (actionAnchor === null && e.keyCode === 70 && !openFilterCard) { 
+		if (actionAnchor === null && e.keyCode === 70 && !openFilterCard) {
 			e.preventDefault()
 			this.handleClick()
-		} 
+		}
 	}
 	onBeforeAdd(chip) {
 		if (typeof chip === 'string')
@@ -60,7 +60,7 @@ class FilterToolbar extends Component {
 				}, 500);
 				return false
 			}
-		else { 
+		else {
 			return true
 		}
 	}
@@ -69,12 +69,13 @@ class FilterToolbar extends Component {
 		const { filters, chips, reduxKey } = this.props
 		let allChips = chips[reduxKey]
 		let editChip = allChips[allChips.findIndex(c => c.id === chip.id)]
-		let editFilter = filters[filters.findIndex(f => f.key === editChip.key)]
+		let editFilter = filters[filters.findIndex(f => {
+			return f.key === editChip.key
+		})]
 		this.setState({ editFilter: editFilter, editChip })
 	}
 	handleMenuNav = e => {
-		if (this.state.actionAnchor !== null)
-		{
+		if (this.state.actionAnchor !== null) {
 			const { filters } = this.props
 			const { focusedMenu, actionAnchor } = this.state
 			switch (e.keyCode) {
@@ -84,7 +85,7 @@ class FilterToolbar extends Component {
 						this.setState({ [ft.name]: true, actionAnchor: null, focusedMenu: -1, openFilterCard: true })
 					break;
 				case 40: //keyboard down
-					this.setState({ focusedMenu: focusedMenu === filters.length - 1  ?  0 : focusedMenu + 1 })
+					this.setState({ focusedMenu: focusedMenu === filters.length - 1 ? 0 : focusedMenu + 1 })
 					break;
 				case 38: //keyboard up
 					this.setState({ focusedMenu: focusedMenu === 0 ? filters.length - 1 : focusedMenu - 1 })
@@ -101,7 +102,7 @@ class FilterToolbar extends Component {
 			e.stopPropagation()
 		}
 		else {
-			if ( e.keyCode === 40)
+			if (e.keyCode === 40)
 				this.handleClick()
 			if (e.keyCode === 27) {
 				this.input.blur()
@@ -111,13 +112,13 @@ class FilterToolbar extends Component {
 	}
 	handleAdd = (displayValue, value, key, type, icon, name) => {
 		const { addFilter, reduxKey } = this.props
-		if (this.onBeforeAdd(value)) { 
+		if (this.onBeforeAdd(value)) {
 			this.setState({ [name]: false, openFilterCard: false })
 			addFilter({ value, key, type: type ? type : null, icon, displayValue: displayValue }, reduxKey)
-			
+
 		}
 	}
-	handleEdit = (displayValue, value, key, type, icon, id) => { 
+	handleEdit = (displayValue, value, key, type, icon, id) => {
 		const { editFilter, reduxKey } = this.props
 		editFilter({ id, value, key, type: type ? type : null, icon, displayValue: displayValue }, reduxKey)
 		this.setState({ editFilter: false, editChip: null })
@@ -163,11 +164,12 @@ class FilterToolbar extends Component {
 							<Grow {...TransitionProps} timeout={350}>
 								<Paper onClick={e => e.stopPropagation()} >
 									<MenuList>
-										{filters ? filters.map((ft, i) => {
-											return <MenuItem selected={this.isSelected(i)} key={i} onClick={() => this.handleMenuItem(ft.name)}>
-												{ft.name}
-											</MenuItem>
-										}) : null}
+										{filters ? filters.map((ft, i) =>
+											ft.hidden ? null :
+												<MenuItem selected={this.isSelected(i)} key={i} onClick={() => this.handleMenuItem(ft.name)}>
+													{ft.name}
+												</MenuItem>
+										) : null}
 									</MenuList>
 								</Paper>
 							</Grow>)}
@@ -179,6 +181,7 @@ class FilterToolbar extends Component {
 						type={editFilter.type}
 						options={editFilter.options}
 						content={editFilter.content}
+						hidden={editFilter.hidden}
 						edit
 						value={editChip.value}
 						handleButton={(displayValue, value, icon) => { this.handleEdit(displayValue, value, editFilter.key, editFilter.type, icon, editChip.id) }}
@@ -192,6 +195,7 @@ class FilterToolbar extends Component {
 							open={this.state[ft.name]}
 							anchorEl={this.input}
 							title={ft.name}
+							hidden={ft.hidden}
 							type={ft.type}
 							options={ft.options}
 							content={ft.content}

@@ -68,7 +68,8 @@ class Users extends Component {
 			{ key: 'lastLoggedIn', name: t('users.fields.lastSignIn'), type: 'date' },
 			{ key: 'suspended', name: t('users.fields.loginSuspended'), type: 'dropDown', options: this.dSuspended() },
 			{ key: 'lastLoggedIn', name: t('filters.users.hasLogged'), type: 'diff', options: { dropdown: this.dHasLoggedIn(), values: { false: [null] } } },
-			{ key: 'aux.odeum.language', name: t('users.fields.language'), type: 'dropDown', options: this.dLang() }
+			{ key: 'aux.odeum.language', name: t('users.fields.language'), type: 'dropDown', options: this.dLang() },
+			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 		]
 	}
 	handleEdit = () => {
@@ -108,7 +109,8 @@ class Users extends Component {
 			{ id: 'phone', label: t('users.fields.phone') },
 			{ id: 'email', label: t('users.fields.email') },
 			{ id: 'org.name', label: t('users.fields.organisation') },
-			{ id: 'lastSignIng', label: t('users.fields.lastSignIn') }
+			{ id: 'group', label: t('users.fields.group') },
+			{ id: 'lastLoggedIn', label: t('users.fields.lastSignIn') }
 		]
 	}
 	componentDidMount = async () => {

@@ -350,6 +350,7 @@
 		}
 	},
 	"filters": {
+		"freeText": "Free text",
 		"after": "after",
 		"afterDate": "After date",
 		"before": "before",
