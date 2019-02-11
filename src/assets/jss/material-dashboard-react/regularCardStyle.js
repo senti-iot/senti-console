@@ -28,6 +28,10 @@ const regularCardStyle = theme => ({
 		margin: 0,
 		// padding: 0
 	},
+	noPadding: {
+		paddingLeft: 0,
+		paddingRight: 0
+	},
 	leftActions: {
 		marginRight: "auto",
 	},

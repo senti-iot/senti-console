@@ -77,7 +77,9 @@ class InfoCard extends PureComponent {
 							{leftActionContent}
 						</CardContent> : null}
 						<Collapse in={this.state.expanded} timeout='auto' unmountOnExit>
-							<CardContent classes={{ root: classes.root }}>
+							<CardContent className={classnames(
+								{ [classes.contentMedia]: this.props.noPadding },
+								{ [classes.noPadding]: this.props.noHiddenPadding ? true : false })} /* classes={{ root: classes.root }} */>
 								{hiddenContent ? hiddenContent : null}
 							</CardContent>
 						</Collapse>

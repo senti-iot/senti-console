@@ -58,7 +58,7 @@ class CollectionTable extends React.Component {
 						<SignalWifi2Bar className={classes.greenSignal} />
 					</ItemG>
 				</div>
-			case null: 
+			case null:
 				return <div title={t('devices.status.noDevice')}>
 					<ItemG container justify={'center'}>
 						<SignalWifi2Bar />
@@ -90,14 +90,16 @@ class CollectionTable extends React.Component {
 							t={t}
 							classes={classes}
 							customColumn={
-								[{ id: 'activeDeviceStats.state',
+								[{
+									id: 'activeDeviceStats.state',
 									label: <ItemG container title={t('collections.fields.status')} justify={'center'}>
 										<SignalWifi2Bar />
 									</ItemG>, checkbox: true
 								},
-								{ id: 'name', label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
-									{t('collections.fields.collection')}
-								</Typography>
+								{
+									id: 'name', label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
+										{t('collections.fields.collection')}
+									</Typography>
 								}]
 							}
 						/>
@@ -126,7 +128,7 @@ class CollectionTable extends React.Component {
 														</Info>
 														<ItemG container>
 															<Caption noWrap className={classes.noMargin}>
-																{`${n.org ? n.org.name : ''} `} 
+																{`${n.org ? n.org.name : ''} `}
 															</Caption>
 														</ItemG>
 													</ItemG>
@@ -136,7 +138,7 @@ class CollectionTable extends React.Component {
 										</Hidden>
 										<Hidden mdDown >
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-											<TC FirstC label={n.id} />
+											<TC label={n.id} />
 											<TC FirstC label={n.name} />
 											<TC content={this.renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : null)} />
 											<TC label={dateFormatter(n.created)} />
@@ -168,7 +170,7 @@ class CollectionTable extends React.Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,	
+	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,
 	language: state.localization.language,
 	accessLevel: state.settings.user.privileges
 })

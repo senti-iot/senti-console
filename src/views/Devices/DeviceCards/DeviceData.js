@@ -383,6 +383,7 @@ class DeviceData extends PureComponent {
 		return (
 			<Fragment>
 				<InfoCard
+					noHiddenPadding
 					title={t('collections.cards.data')}
 					subheader={`${this.options[dateOption].label}, ${raw ? t('collections.rawData') : t('collections.calibratedData')}, ${displayFrom} - ${displayTo}`}
 					avatar={<Timeline />}
