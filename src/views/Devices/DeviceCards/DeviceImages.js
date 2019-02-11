@@ -118,6 +118,8 @@ class DeviceImages extends PureComponent {
 		const { classes, device, t  } = this.props
 		return (
 			<InfoCard
+				noHiddenPadding
+				noPadding
 				title={t('devices.cards.pictures')}
 				avatar={<Image />}
 				topAction={

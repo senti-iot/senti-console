@@ -200,6 +200,7 @@ class DeviceMap extends PureComponent {
 		const { device, t, loading, mapTheme, heatMap } = this.props
 		return (
 			<InfoCard
+				noPadding
 				noHiddenPadding
 				title={t('devices.cards.map')}
 				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat, long: device.long })}, Heatmap ${heatMap ? t('actions.on') : t('actions.off')}` : null}

@@ -80,6 +80,7 @@ class ProjectMap extends Component {
 		const { devices, t, heatMap, mapTheme, heatData } = this.props
 		return (
 			<InfoCard
+				noPadding
 				title={t('devices.cards.map')}
 				subheader={`Heatmap: ${heatMap ? t('actions.on') : t('actions.off')}`}
 				expanded={true}
