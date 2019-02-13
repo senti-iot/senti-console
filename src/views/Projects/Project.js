@@ -439,7 +439,7 @@ class Project extends Component {
 					content={this.renderMenu()}
 				/>
 				{!loading ?
-					<GridContainer justify={'center'} alignContent={'space-between'}>
+					<GridContainer  justify={'center'} alignContent={'space-between'}>
 
 						<ItemGrid xs={12} noMargin id='details'>
 							<ProjectDetails

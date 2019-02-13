@@ -5,7 +5,7 @@ import { AppBar, Tabs, Tab, withStyles, Toolbar as ToolBar, withWidth } from '@m
 import Search from 'components/Search/Search';
 import { suggestionGen } from 'variables/functions'
 import { NavHashLink as Link } from 'react-router-hash-link';
-import inView from 'in-view'
+// import inView from 'in-view'
 
 const styles = theme => ({
 	appBar: {
@@ -63,43 +63,58 @@ class Toolbar extends PureComponent {
 
 	}
 	componentWillUnmount = () => {
-	  this._isMounted = 0
+		this._isMounted = 0
 	}
-	
-	componentDidUpdate = () => {
-		const { tabs } = this.props
-		if (tabs && this._isMounted)
-			tabs.map(t => {
-				if (t.url.includes('#')) {
-					return inView(t.url).on('enter', el =>  {
-						this.setState({ route: t.id })
-					})
-				}
-				else
-					return null
+	handleObserverUpdate = (entries, observer) => {
+		// console.log(observer)
+		// console.log(entries)
+		let el = entries[entries.findIndex(f => f.intersectionRatio > .5)]
+		// console.log(el)
+		if (el)
+			this.setState({
+				route: this.props.tabs.findIndex(f => f.url.includes(el.target.id))
 			})
+		// if ([top, bottom, left, right].some(Boolean)) {
+		// 	// console.log('Showing', entries[0])
+		// 	this.setState({
+		// 		route: this.props.tabs.findIndex(f => f.url.includes(entries[0].target.id))
+		// 	})
+		
+	};
+	componentWillUnmount = () => { 
+		// tabs.forEach(t => { 
+
+		// })
+		// this.obs.unobserve()
+		window.removeEventListener('scroll', this.update, false)
+		this.obs.disconnect()
+	}
+	componentDidUpdate = () => {
+
+	}
+	update = () => { 
+		// console.log('bing')
+		const { tabs } = this.props
+		tabs.forEach(t => {
+			if (t.url.includes('#')) {
+				let el = document.getElementById(t.url.substr(1, t.url.length))
+				if (el && this.obs) {
+					this.obs.observe(el)
+				}
+			}
+		})
+		// console.log(document.getElementById('tabs'))
+		this.obs.observe(document.getElementById('tabs'))
 	}
 	componentDidMount = () => {
-		inView.offset({
-			top: 118,
-			right: 0,
-			bottom: 0,
-			left: 0
-		});
+		const { tabs } = this.props
+		// window.addEventListener('scroll', () => alert('test'), false)
+		// console.log(tabs)
 		this._isMounted = 1
-		// inView.threshold(0.85)
-		// const { tabs } = this.props
-		// if (tabs)
-		// 	tabs.map(t => {
-		// 		console.log(this.state.route)
-		// 		if (t.url.includes('#')) {
-		// 			console.log(document.getElementById(t.url.substring(1, t.url.length)))
-		// 			// console.log(inView.is(document.getElementById(t.url.substring(1, t.url.length))))
-		// 			return inView(t.url).on('enter', () => this.setState({ route: t.id }));
-		// 		}
-		// 		else
-		// 			return null
-		// 	})
+		if (tabs && this._isMounted) {
+			this.obs = new IntersectionObserver(this.handleObserverUpdate, { rootMargin: '-150px 0px -350px 0px', threshold: [0.5] })
+			window.addEventListener('scroll', this.update, false)
+		}
 	}
 
 	handleTabsChange = (e, value) => {
@@ -116,7 +131,7 @@ class Toolbar extends PureComponent {
 		return (
 			<div style={{ height: 48 }}>
 				<AppBar classes={{ root: classes.appBar }}>
-					{tabs ? <Tabs innerRef={ref => this.tabsRef = ref} value={this.state.route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
+					{tabs ? <Tabs id={'tabs'} value={this.state.route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 						{tabs ? tabs.map((t, i) => {
 							return <Tab title={t.title}
 								component={(props) => <Link {...props} scroll={this.handleScroll} style={{ color: '#fff' }} />}
