@@ -20,6 +20,17 @@ class FilterToolbar extends Component {
 		window.removeEventListener('keydown', this.handleMenuNav, false)
 		window.removeEventListener('keydown', this.handleWindowKeyPress, false)
 	}
+	componentDidUpdate = (prevProps, prevState) => {
+		if (prevProps.eH !== this.props.eH) { 
+			if (this.props.eH) {
+				window.addEventListener('keydown', this.handleWindowKeyPress, false)
+			}
+			else { 
+				window.removeEventListener('keydown', this.handleWindowKeyPress, false)
+			}
+		}
+	}
+	
 	componentDidMount = () => {
 		window.addEventListener('keydown', this.handleWindowKeyPress, false)
 	}
@@ -209,7 +220,8 @@ class FilterToolbar extends Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	chips: state.appState.filters
+	chips: state.appState.filters,
+	eH: state.appState.EH
 })
 
 
