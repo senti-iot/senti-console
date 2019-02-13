@@ -168,7 +168,10 @@ class Orgs extends Component {
 	componentDidUpdate = async (prevState, prevProps) => {
 		if (prevProps.orgs !== this.props.orgs) {
 			if (this.state.selected.length > 0)
-				this.setState({ selected: [] })
+				if (this.state.selected.length > 0) {
+					let newSelected = this.state.selected.filter(s => this.props.orgs.findIndex(u => u.id === s) !== -1 ? true : false)
+					this.setState({ selected: newSelected })
+				}
 			this.getData()
 		}
 	}

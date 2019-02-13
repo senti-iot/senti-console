@@ -98,7 +98,6 @@ class Management extends Component {
 	handleFilterKeyword = (value) => {
 		this.setState({
 			filters: {
-				...this.state.filters,
 				keyword: value
 			}
 		})

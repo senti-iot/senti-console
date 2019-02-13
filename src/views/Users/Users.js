@@ -143,9 +143,11 @@ class Users extends Component {
 		this._isMounted = 0
 	}
 	componentDidUpdate = async (prevState, prevProps) => {
-		if (prevProps.users !== this.props.users) {
-			if (this.state.selected.length > 0)
-				this.setState({ selected: [] })
+		if (prevProps.users.length !== this.props.users.length) {
+			if (this.state.selected.length > 0) {
+				let newSelected = this.state.selected.filter(s => this.props.users.findIndex(u => u.id === s) !== -1 ? true : false)
+				this.setState({ selected: newSelected })
+			}
 			await this.getData()
 		}
 	}
@@ -251,8 +253,8 @@ class Users extends Component {
 	renderConfirmDelete = () => {
 		const { openDelete, selected } = this.state
 		const { users, t } = this.props
-
 		return <Dialog
+			keepMounted={false}
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
 			aria-labelledby='alert-dialog-title'
@@ -264,11 +266,11 @@ class Users extends Component {
 					{t('dialogs.delete.message.users')}
 				</DialogContentText>
 				<div>
-					{selected.map(s => {
+					{openDelete ? selected.map(s => {
 						let u = users[users.findIndex(d => d.id === s)]
 						return <Info key={s}>&bull;{u.firstName + ' ' + u.lastName}</Info>
 					})
-					}
+					 : null}
 				</div>
 			</DialogContent>
 			<DialogActions>
