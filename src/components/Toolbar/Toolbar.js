@@ -86,35 +86,35 @@ class Toolbar extends PureComponent {
 
 		// })
 		// this.obs.unobserve()
-		window.removeEventListener('scroll', this.update, false)
-		this.obs.disconnect()
+		// window.removeEventListener('scroll', this.update, false)
+		// this.obs.disconnect()
 	}
 	componentDidUpdate = () => {
 
 	}
-	update = () => { 
-		// console.log('bing')
-		const { tabs } = this.props
-		tabs.forEach(t => {
-			if (t.url.includes('#')) {
-				let el = document.getElementById(t.url.substr(1, t.url.length))
-				if (el && this.obs) {
-					this.obs.observe(el)
-				}
-			}
-		})
-		// console.log(document.getElementById('tabs'))
-		this.obs.observe(document.getElementById('tabs'))
-	}
+	// update = () => { 
+	// 	// console.log('bing')
+	// 	// const { tabs } = this.props
+	// 	// tabs.forEach(t => {
+	// 	// 	if (t.url.includes('#')) {
+	// 	// 		let el = document.getElementById(t.url.substr(1, t.url.length))
+	// 	// 		if (el && this.obs) {
+	// 	// 			this.obs.observe(el)
+	// 	// 		}
+	// 	// 	}
+	// 	// })
+	// 	// console.log(document.getElementById('tabs'))
+	// 	// this.obs.observe(document.getElementById('tabs'))
+	// }
 	componentDidMount = () => {
-		const { tabs } = this.props
+		// const { tabs } = this.props
 		// window.addEventListener('scroll', () => alert('test'), false)
 		// console.log(tabs)
 		this._isMounted = 1
-		if (tabs && this._isMounted) {
-			this.obs = new IntersectionObserver(this.handleObserverUpdate, { rootMargin: '-150px 0px -350px 0px', threshold: [0.5] })
-			window.addEventListener('scroll', this.update, false)
-		}
+		// if (tabs && this._isMounted) {
+		// this.obs = new IntersectionObserver(this.handleObserverUpdate, { rootMargin: '-150px 0px -350px 0px', threshold: [0.5] })
+		// window.addEventListener('scroll', this.update, false)
+		// }
 	}
 
 	handleTabsChange = (e, value) => {
