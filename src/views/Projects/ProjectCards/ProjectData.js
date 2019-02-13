@@ -9,7 +9,7 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, LinearScale
+	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, LinearScale, Clear
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
@@ -25,7 +25,7 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeChartType, changeYAxis } from 'redux/appState'
-import { changeDate, addCompare } from 'redux/dateTime'
+import { changeDate, addCompare, removeCompare, removeCompares } from 'redux/dateTime'
 import { getWifiDaily, getWifiHourly, getWifiMinutely, getWifiSummary } from 'components/Charts/DataModel';
 
 class ProjectData extends PureComponent {
@@ -146,10 +146,13 @@ class ProjectData extends PureComponent {
 						startDate = moment(date).startOf('hour')
 						endDate = moment(date).endOf('hour')
 						this.setState({
-							resetZoom: true, zoomDate: [...this.state.zoomDate, {
-								from: this.props.from,
-								to: moment(this.props.from, 'YYYY-MM-DD HH:mm').endOf('day')
-							}]
+							resetZoom: true,
+							zoomDate: [
+								...this.state.zoomDate,
+								{
+									from: this.props.from,
+									to: moment(this.props.from, 'YYYY-MM-DD HH:mm').endOf('day')
+								}]
 						})
 						this.props.handleSetDate(6, endDate, startDate, 0, false)
 						break
@@ -157,12 +160,11 @@ class ProjectData extends PureComponent {
 						startDate = moment(date).startOf('day')
 						endDate = moment(date).endOf('day')
 						this.setState({
-							resetZoom: true, zoomDate: [
-								{
-									from: this.props.from,
-									to: this.props.to
-								}
-							]
+							resetZoom: true,
+							zoomDate: [{
+								from: this.props.from,
+								to: this.props.to
+							}]
 						})
 						this.props.handleSetDate(6, endDate, startDate, 1, false)
 						break;
@@ -178,6 +180,7 @@ class ProjectData extends PureComponent {
 		const { raw, project } = this.props
 		this.setState({ loadingCompare: true }, this.handleCloseCompareModal)
 		let dcs = project.dataCollections.map(d => {
+			console.log(d.color)
 			return {
 				dcId: d.id,
 				dcName: d.name,
@@ -214,8 +217,7 @@ class ProjectData extends PureComponent {
 	}
 	renderCompares = () => {
 		const { title, timeType, setHoverID, t, device, chartType, compares } = this.props
-		return compares.map(c => {
-
+		return compares.length > 0 ? compares.map(c => {
 			switch (chartType) {
 				case 0:
 					return c.roundDataSets ?
@@ -267,7 +269,7 @@ class ProjectData extends PureComponent {
 						<BarChart
 							obj={device}
 							unit={this.timeTypes[timeType]}
-							onElementsClick={this.handleZoomOnData}
+							// onElementsClick={this.handleZoomOnData}
 							setHoverID={setHoverID}
 							data={c.barDataSets}
 							t={t}
@@ -281,7 +283,7 @@ class ProjectData extends PureComponent {
 							resetZoom={this.state.resetZoom}
 							obj={device}
 							unit={this.timeTypes[timeType]}
-							onElementsClick={this.handleZoomOnData}
+							// onElementsClick={this.handleZoomOnData}
 							setHoverID={setHoverID}
 							data={c.lineDataSets}
 							t={t}
@@ -289,7 +291,7 @@ class ProjectData extends PureComponent {
 				default:
 					return null
 			}
-		})
+		}) : null
 	}
 	renderType = () => {
 		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device, chartType } = this.props
@@ -371,14 +373,19 @@ class ProjectData extends PureComponent {
 	renderMenu = () => {
 		const { actionAnchor, actionAnchorVisibility, resetZoom } = this.state
 		const { classes, t } = this.props
-		return <Fragment>
+		return <ItemG container>
 			<ItemG>
-				<Collapse in={resetZoom}>
-					<IconButton title={'Reset zoom'} /* color={'primary'} */ onClick={this.handleReverseZoomOnData}>
-						<ArrowUpward />
-					</IconButton>
+				<Collapse in={this.props.compares.length > 0 ? true : false}>
+					<IconButton title={'Clear compares'} onClick={this.props.removeCompares}>
+						<Clear />
+					</IconButton>	
 				</Collapse>
 			</ItemG>
+			<Collapse in={resetZoom}>
+				<IconButton title={'Reset zoom'} onClick={this.handleReverseZoomOnData}>
+					<ArrowUpward />
+				</IconButton>
+			</Collapse>
 			<ItemG>
 				<Hidden smDown>
 					<IconButton title={'Chart Type'} variant={'fab'} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
@@ -472,7 +479,7 @@ class ProjectData extends PureComponent {
 					</Hidden>
 				</div>appState
 			</Menu>
-		</Fragment>
+		</ItemG>
 	}
 	renderNoData = () => {
 		return <ItemG container justify={'center'}>
@@ -540,7 +547,9 @@ const mapDispatchToProps = dispatch => ({
 	changeChartType: (val) => dispatch(changeChartType(val)),
 	handleSetDate: (id, to, from, timeType) => dispatch(changeDate(id, to, from, timeType)),
 	changeYAxis: (val) => dispatch(changeYAxis(val)),
-	addCompare: (compare) => dispatch(addCompare(compare))
+	addCompare: (compare) => dispatch(addCompare(compare)),
+	removeCompare: (cId) => dispatch(removeCompare(cId)),
+	removeCompares: () => dispatch(removeCompares())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(ProjectData))

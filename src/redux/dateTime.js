@@ -3,6 +3,14 @@ import moment from 'moment'
 const ChangeDate = 'changeDate'
 const changeCompares = 'changeCompares'
 
+export const removeCompares = () => {
+	return (dispatch) => {
+		dispatch({
+			type: changeCompares,
+			payload: []
+		})
+	}
+}
 export const removeCompare = (cId) => { 
 	return (dispatch, getState) => { 
 		let newCompares = []
