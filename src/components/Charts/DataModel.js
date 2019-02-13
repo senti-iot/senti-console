@@ -121,7 +121,7 @@ export const getWifiSummary = async (type, objArr, from, to, hoverId, raw) => {
 			id: o.id,
 			lat: o.lat,
 			long: o.long,
-			org: o.orgName,
+			org: o.org,
 			data: [data],
 			...o,
 		}
@@ -235,7 +235,7 @@ export const getWifiDaily = async (type, objArr, from, to, hoverId, raw) => {
 			id: o.id,
 			lat: o.lat,
 			long: o.long,
-			org: o.orgName,
+			org: o.org,
 			data: regenerateData(data, 'day'),
 			...o,
 		}
@@ -333,7 +333,7 @@ export const getWifiHourly = async (type, objArr, from, to, hoverId, raw) => {
 			id: o.id,
 			lat: o.lat,
 			long: o.long,
-			org: o.orgName,
+			org: o.org,
 			data: regenerateData(data, 'hour'),
 			...o,
 		}
@@ -426,7 +426,7 @@ export const getWifiMinutely = async (type, objArr, from, to, hoverId, raw) => {
 			id: o.id,
 			lat: o.lat,
 			long: o.long,
-			org: o.orgName,
+			org: o.org,
 			data: regenerateData(data, 'minute'),
 			...o,
 		}

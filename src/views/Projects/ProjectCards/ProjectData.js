@@ -9,7 +9,7 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart,  ArrowUpward, CloudDownload, LinearScale
+	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, LinearScale
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
@@ -17,6 +17,7 @@ import {
 	DoughnutChart,
 	PieChart,
 	ExportModal,
+	CustomDateTime,
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import classNames from 'classnames';
@@ -24,18 +25,21 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeChartType, changeYAxis } from 'redux/appState'
-import { changeDate } from 'redux/dateTime'
+import { changeDate, addCompare } from 'redux/dateTime'
+import { getWifiDaily, getWifiHourly, getWifiMinutely, getWifiSummary } from 'components/Charts/DataModel';
 
 class ProjectData extends PureComponent {
 	constructor(props) {
 		super(props)
 
 		this.state = {
+			openCompare: false,
 			actionAnchor: null,
 			openDownload: false,
 			visibility: false,
 			resetZoom: false,
-			zoomDate: []
+			zoomDate: [],
+			loadingCompare: null,
 		}
 	}
 
@@ -63,19 +67,28 @@ class ProjectData extends PureComponent {
 		{ id: 2, icon: <BarChartIcon />, label: this.props.t('charts.type.bar') },
 		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
 	]
+	componentDidMount = () => {
+		if (this.props.compares.length > 0) { 
+			this.setState({ loadingCompare: false })
+		}
+	}
 
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-	
-	handleOpenDownloadModal = () => {
-		this.setState({ openDownload: true, actionAnchor: null })
+	handleCloseCompareModal = () => {
+		this.setState({ actionAnchor: null, openCompare: false })
+	}
+	handleOpenCompareModal = () => {
+		this.setState({ actionAnchor: null, openCompare: true })
 	}
 
 	handleCloseDownloadModal = () => {
 		this.setState({ openDownload: false })
 	}
-
+	handleOpenDownloadModal = () => {
+		this.setState({ openDownload: true, actionAnchor: null })
+	}
 	handleOpenActionsDetails = event => {
 		this.setState({ actionAnchor: event.currentTarget });
 	}
@@ -145,8 +158,10 @@ class ProjectData extends PureComponent {
 						endDate = moment(date).endOf('day')
 						this.setState({
 							resetZoom: true, zoomDate: [
-								{	from: this.props.from,
-									to: this.props.to }
+								{
+									from: this.props.from,
+									to: this.props.to
+								}
 							]
 						})
 						this.props.handleSetDate(6, endDate, startDate, 1, false)
@@ -159,13 +174,123 @@ class ProjectData extends PureComponent {
 			}
 		}
 	}
-	handleOpenDownloadModal = () => {
-		this.setState({ openDownload: true, actionAnchor: null })
+	handleAddCompare = async (to, from, timeType) => {
+		const { raw, project } = this.props
+		this.setState({ loadingCompare: true }, this.handleCloseCompareModal)
+		let dcs = project.dataCollections.map(d => {
+			return {
+				dcId: d.id,
+				dcName: d.name,
+				project: project ? project.title : "",
+				org: d.org ? d.org.name : "",
+				name: d.name,
+				id: d.id,
+				color: d.color,
+				lat: d.activeDevice ? d.activeDevice.lat : 0,
+				long: d.activeDevice ? d.activeDevice.long : 0
+			}
+		})
+		let newState
+		switch (timeType) {
+			case 0:
+				newState = await getWifiMinutely('collection', dcs, from, to, -1, raw)
+				break;
+			case 1:
+				newState = await getWifiHourly('collection', dcs, from, to, -1, raw)
+				break
+			case 2:
+				newState = await getWifiDaily('collection', dcs, from, to, -1, raw)
+				break
+			case 3:
+				newState = await getWifiSummary('collection', dcs, from, to, -1, raw)
+				break
+			default:
+				break;
+		}
+		this.props.addCompare(newState)
+		this.setState({
+			loadingCompare: false,
+		})
 	}
-	handleCloseDownloadModal = () => {
-		this.setState({ openDownload: false })
-	}
+	renderCompares = () => {
+		const { title, timeType, setHoverID, t, device, chartType, compares } = this.props
+		return compares.map(c => {
 
+			switch (chartType) {
+				case 0:
+					return c.roundDataSets ?
+						<ItemG container >
+							{c.roundDataSets.map((d, i) => {
+								return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md={c.roundDataSets.length >= 2 ? 6 : 12} direction={'column'} container justify={'center'}>
+									<div style={{ maxHeight: 300 }}>
+										<PieChart
+											height={300}
+											title={title}
+											single
+											unit={this.timeTypes[timeType]}
+											setHoverID={setHoverID}
+											data={d}
+											t={t}
+										/>
+									</div>
+									<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
+								</ItemG>
+
+							})}
+
+
+						</ItemG>
+						: this.renderNoData()
+				case 1:
+					return c.roundDataSets ?
+						<ItemG container >
+							{c.roundDataSets.map((d, i) => {
+								return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md={c.roundDataSets.length >= 2 ? 6 : 12} direction={'column'} container justify={'center'}>
+									<div style={{ maxHeight: 300 }}>
+										<DoughnutChart
+											height={300}
+											title={title}
+											single
+											unit={this.timeTypes[timeType]}
+											setHoverID={setHoverID}
+											data={d}
+											t={t}
+										/>
+									</div>
+									<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
+								</ItemG>
+							})}
+						</ItemG>
+						: this.renderNoData()
+				case 2:
+					return c.barDataSets ? <div style={{ maxHeight: 400 }}>
+						<BarChart
+							obj={device}
+							unit={this.timeTypes[timeType]}
+							onElementsClick={this.handleZoomOnData}
+							setHoverID={setHoverID}
+							data={c.barDataSets}
+							t={t}
+						/></div> : this.renderNoData()
+				case 3:
+
+					return c.lineDataSets ?
+						<LineChart
+							hoverID={this.props.hoverID}
+							handleReverseZoomOnData={this.handleReverseZoomOnData}
+							resetZoom={this.state.resetZoom}
+							obj={device}
+							unit={this.timeTypes[timeType]}
+							onElementsClick={this.handleZoomOnData}
+							setHoverID={setHoverID}
+							data={c.lineDataSets}
+							t={t}
+						/> : this.renderNoData()
+				default:
+					return null
+			}
+		})
+	}
 	renderType = () => {
 		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device, chartType } = this.props
 		switch (chartType) {
@@ -187,10 +312,10 @@ class ProjectData extends PureComponent {
 								</div>
 								<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
 							</ItemG>
-							 
+
 						})}
-							
-						
+
+
 					</ItemG>
 					: this.renderNoData()
 			case 1:
@@ -264,7 +389,7 @@ class ProjectData extends PureComponent {
 						anchorEl={actionAnchorVisibility}
 						open={Boolean(actionAnchorVisibility)}
 						onClose={() => this.setState({ actionAnchorVisibility: null })}
-						PaperProps={{ style: { minWidth: 250 } }}>	
+						PaperProps={{ style: { minWidth: 250 } }}>
 						<List component='div' disablePadding>
 							{this.visibilityOptions.map(op => {
 								return <ListItem key={op.id} value={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
@@ -298,6 +423,10 @@ class ProjectData extends PureComponent {
 					<ListItemIcon><CloudDownload /></ListItemIcon>
 					<ListItemText>{t('menus.export')}</ListItemText>
 				</ListItem>
+				<ListItem button onClick={this.handleOpenCompareModal}>
+					<ListItemIcon></ListItemIcon>
+					<ListItemText>{t('menus.charts.compare')}</ListItemText>
+				</ListItem>
 				<ListItem button onClick={this.props.handleRawData}>
 					<ListItemIcon>
 						<Checkbox
@@ -311,7 +440,7 @@ class ProjectData extends PureComponent {
 				</ListItem>
 				<ListItem button onClick={() => this.props.changeYAxis(this.props.chartYAxis === 'linear' ? 'logarithmic' : 'linear')}>
 					<ListItemIcon>
-						{this.props.chartYAxis !== 'linear' ? <LinearScale /> : <Timeline/> }
+						{this.props.chartYAxis !== 'linear' ? <LinearScale /> : <Timeline />}
 					</ListItemIcon>
 					<ListItemText>
 						{t(this.props.chartYAxis !== 'linear' ? 'settings.chart.YAxis.linear' : 'settings.chart.YAxis.logarithmic')}
@@ -352,8 +481,8 @@ class ProjectData extends PureComponent {
 	}
 
 	render() {
-		const { raw, t, loading, to, from, dateOption, exportData } = this.props
-		const { openDownload } = this.state
+		const { raw, t, loading, to, from, dateOption, exportData, timeType } = this.props
+		const { openDownload, loadingCompare } = this.state
 		let displayTo = dateTimeFormatter(to)
 		let displayFrom = dateTimeFormatter(from)
 		return (
@@ -366,6 +495,13 @@ class ProjectData extends PureComponent {
 					topAction={this.renderMenu()}
 					content={
 						<Grid container>
+							<CustomDateTime
+								handleCancelCustomDate={this.handleCloseCompareModal}
+								timeType={timeType}
+								t={t}
+								openCustomDate={this.state.openCompare}
+								handleCloseDialog={this.handleAddCompare}
+							/>
 							<ExportModal
 								raw={raw}
 								to={displayTo}
@@ -380,6 +516,9 @@ class ProjectData extends PureComponent {
 									<ItemG xs={12}>
 										{this.renderType()}
 									</ItemG>
+									<ItemG xs={12}>
+										{loadingCompare === false ? this.renderCompares() : loadingCompare === true ? <CircularLoader notCentered /> : null}
+									</ItemG>
 								</Fragment>}
 						</Grid>}
 				/>
@@ -393,13 +532,15 @@ ProjectData.propTypes = {
 const mapStateToProps = (state) => ({
 	chartType: state.appState.chartType !== null ? state.appState.chartType : state.settings.chartType,
 	timeType: state.dateTime.timeType,
-	chartYAxis: state.appState.chartYAxis
+	chartYAxis: state.appState.chartYAxis,
+	compares: state.dateTime.compares
 })
 
 const mapDispatchToProps = dispatch => ({
 	changeChartType: (val) => dispatch(changeChartType(val)),
 	handleSetDate: (id, to, from, timeType) => dispatch(changeDate(id, to, from, timeType)),
-	changeYAxis: (val) => dispatch(changeYAxis(val))
+	changeYAxis: (val) => dispatch(changeYAxis(val)),
+	addCompare: (compare) => dispatch(addCompare(compare))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(ProjectData))
