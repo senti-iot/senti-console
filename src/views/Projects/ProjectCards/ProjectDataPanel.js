@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { InfoCard, ItemG } from 'components';
+import { InfoCard, ItemG, DateFilterMenu } from 'components';
 import { IconButton } from '@material-ui/core';
 import { Add, Visibility, Clear, EventNote } from 'variables/icons';
+import { connect } from 'react-redux'
 
 class ProjectDataPanel extends Component {
 	render() {
-		const { t } = this.props
+		const { t, periods } = this.props
 		return (
 			<InfoCard
 				title={t('collections.cards.data') + ' Control Panel'}
@@ -16,11 +17,15 @@ class ProjectDataPanel extends Component {
 				content={null}
 				topAction={
 					<ItemG container>
-						<ItemG>
-							<IconButton>
+						{periods.length < 5 && <ItemG>
+							<DateFilterMenu
+								icon={<Add />}
+								t={t}
+							/>
+							{/* <IconButton>
 								<Add />
-							</IconButton>
-						</ItemG>
+							</IconButton> */}
+						</ItemG>}
 						<ItemG>
 							<IconButton>
 								<Visibility />
@@ -37,5 +42,9 @@ class ProjectDataPanel extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	periods: state.dateTime.periods
+})
 
-export default ProjectDataPanel
+
+export default connect(mapStateToProps)(ProjectDataPanel)

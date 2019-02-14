@@ -9,7 +9,7 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, LinearScale,
+	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, LinearScale, Clear,
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
@@ -25,7 +25,7 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeChartType, changeYAxis } from 'redux/appState'
-import { changeDate } from 'redux/dateTime'
+import { changeDate, removePeriod } from 'redux/dateTime'
 
 class ProjectData extends PureComponent {
 	constructor(props) {
@@ -338,6 +338,14 @@ class ProjectData extends PureComponent {
 						{t(this.props.chartYAxis !== 'linear' ? 'settings.chart.YAxis.linear' : 'settings.chart.YAxis.logarithmic')}
 					</ListItemText>
 				</ListItem>
+				<ListItem button onClick={() => { this.handleCloseActionsDetails(); this.props.removePeriod(period.id) }}>
+					<ListItemIcon>
+						<Clear />
+					</ListItemIcon>
+					<ListItemText>
+						{t('menus.charts.deleteThisPeriod')}
+					</ListItemText>
+				</ListItem>
 				<div>
 					<Hidden mdUp>
 						<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
@@ -420,7 +428,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = dispatch => ({
 	changeChartType: (val) => dispatch(changeChartType(val)),
 	handleSetDate: (id, to, from, timeType) => dispatch(changeDate(id, to, from, timeType)),
-	changeYAxis: (val) => dispatch(changeYAxis(val))
+	changeYAxis: (val) => dispatch(changeYAxis(val)),
+	removePeriod: (pId) => dispatch(removePeriod(pId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(ProjectData))

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Divider, MenuItem, Menu, IconButton, withStyles } from '@material-ui/core';
-import { ItemGrid, Caption, Info, CustomDateTime, ItemG } from 'components';
+import { ItemGrid, Info, CustomDateTime, ItemG } from 'components';
 import { dateTimeFormatter } from 'variables/functions';
 import moment from 'moment'
 import { DateRange } from 'variables/icons';
@@ -14,7 +14,7 @@ const styles = theme => ({
 		backgroundColor: `${teal[500]} !important`,
 		color: "#fff"
 	},
-	
+
 })
 
 /**
@@ -25,7 +25,7 @@ class DateFilterMenu extends Component {
 		super(props)
 
 		this.state = {
-			timeType: props.timeType !== undefined ?  props.timeType : 2,
+			timeType: props.period !== undefined ? props.period.timeType : 2,
 		}
 	}
 	timeTypes = [
@@ -86,12 +86,13 @@ class DateFilterMenu extends Component {
 				break;
 		}
 
-		this.props.handleSetDate(id, to, from, defaultT, period.id)
+		this.props.handleSetDate(id, to, from, defaultT, period ? period.id : -1)
 	}
 
 	handleCloseDialog = (to, from, timeType) => {
+		const { period } = this.props
 		this.setState({ openCustomDate: false, actionAnchor: null })
-		this.handleSetDate(6, to, from, timeType, 0)
+		this.handleSetDate(6, to, from, timeType, period.id)
 	}
 	/**
 	 * Menu Handling, close the menu and set the date or open Custom Date
@@ -116,14 +117,14 @@ class DateFilterMenu extends Component {
 		})
 	}
 	renderCustomDateDialog = () => {
-		const { to, from, t, timeType } = this.props
+		const { period, t } = this.props
 		const { openCustomDate } = this.state
 		return openCustomDate ? <CustomDateTime
 			openCustomDate={openCustomDate}
 			handleCloseDialog={this.handleCloseDialog}//
-			to={to}
-			from={from}
-			timeType={timeType}
+			to={period.to}
+			from={period.from}
+			timeType={period.timeType}
 			handleCustomCheckBox={this.handleCustomCheckBox}//
 			handleCancelCustomDate={this.handleCancelCustomDate}//
 			t={t}
@@ -132,25 +133,25 @@ class DateFilterMenu extends Component {
 	handleOpenMenu = e => {
 		this.setState({ actionAnchor: e.currentTarget })
 	}
-	handleCloseMenu= e => {
+	handleCloseMenu = e => {
 		this.setState({ actionAnchor: null })
 	}
-	
-	isSelected = (value) => value === this.props.period.menuId ? true : false
-	
+
+	isSelected = (value) => value === this.props.period ? this.props.period.menuId ? true : false : false
+
 	render() {
-		const { period, t, id, classes } = this.props
+		const { period, t, classes, icon } = this.props
 		const { actionAnchor } = this.state
-		let displayTo = dateTimeFormatter(period.to)
-		let displayFrom = dateTimeFormatter(period.from)
+		let displayTo = period ? dateTimeFormatter(period.to) : ""
+		let displayFrom = period ? dateTimeFormatter(period.from) : ""
 		return (
 			<Fragment>
-				<IconButton				
+				<IconButton
 					aria-label='More'
 					aria-owns={actionAnchor ? 'long-menu' : null}
 					aria-haspopup='true'
 					onClick={this.handleOpenMenu}>
-					<DateRange />
+					{icon ? icon : <DateRange />}
 				</IconButton>
 				<Menu
 					disableAutoFocus
@@ -167,18 +168,20 @@ class DateFilterMenu extends Component {
 						}
 					}}>
 					<ItemG container direction={'column'}>
-						<ItemGrid>
-							<Caption>{this.options[this.options.findIndex(d => d.id === id ? true : false)].label}</Caption>
-							<Info>{`${displayFrom} - ${displayTo}`}</Info>
-						</ItemGrid>
-						<Divider />
+						{period && <Fragment>
+							<ItemGrid>
+								<Info>{this.options[this.options.findIndex(d => d.id === period.menuId ? true : false)].label}</Info>
+								<Info>{`${displayFrom} - ${displayTo}`}</Info>
+							</ItemGrid>
+							<Divider />
+						</Fragment>}
 						<MenuItem selected={this.isSelected(0)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={0}>{t('filters.dateOptions.today')}</MenuItem>
 						<MenuItem selected={this.isSelected(1)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={1}>{t('filters.dateOptions.yesterday')}</MenuItem>
 						<MenuItem selected={this.isSelected(2)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={2}>{t('filters.dateOptions.thisWeek')}</MenuItem>
 						<MenuItem selected={this.isSelected(3)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={3}>{t('filters.dateOptions.7days')}</MenuItem>
 						<MenuItem selected={this.isSelected(4)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={4}>{t('filters.dateOptions.30days')}</MenuItem>
 						<MenuItem selected={this.isSelected(5)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={5}>{t('filters.dateOptions.90days')}</MenuItem>
-			
+
 						<Divider />
 						<MenuItem selected={this.isSelected(6)} classes={{ selected: classes.selected }} onClick={this.handleDateFilter} value={6}>{t('filters.dateOptions.custom')}</MenuItem>
 					</ItemG>
@@ -198,10 +201,6 @@ DateFilterMenu.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-	id: state.dateTime.id,
-	to: state.dateTime.to,
-	from: state.dateTime.from,
-	timeType: state.dateTime.timeType
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -25,13 +25,13 @@ export const removeCompares = () => {
 		})
 	}
 }
-export const removeCompare = (cId) => { 
+export const removePeriod = (cId) => { 
 	return (dispatch, getState) => { 
 		let newCompares = []
-		newCompares.push(...getState().dateTime.compares)
+		newCompares.push(...getState().dateTime.periods)
 		newCompares = newCompares.filter(c => c.id !== cId)
 		dispatch({
-			type: changeCompares,
+			type: ChangeDate,
 			payload: newCompares
 		})
 	}
@@ -53,8 +53,14 @@ export const changeDate = (menuId, to, from, timeType, id) => {
 	return (dispatch, getState) => {
 		let periods = []
 		periods = [...getState().dateTime.periods]
-		let c = periods.findIndex(f => f.id === id)
-		periods[c] = { ...periods[c],
+		let c
+		if (id === -1) {
+			 c = periods.length
+		}
+		else { 
+			 c = periods.findIndex(f => f.id === id)
+		}
+		periods[c] = { id: c,
 			menuId, to, from, timeType, 
 		}
 		dispatch({
