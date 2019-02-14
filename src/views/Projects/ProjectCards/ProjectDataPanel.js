@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemG } from 'components';
 import { IconButton } from '@material-ui/core';
-import { Add, Visibility, Clear, Timeline } from 'variables/icons';
+import { Add, Visibility, Clear, EventNote } from 'variables/icons';
 
 class ProjectDataPanel extends Component {
 	render() {
@@ -9,7 +9,7 @@ class ProjectDataPanel extends Component {
 		return (
 			<InfoCard
 				title={t('collections.cards.data') + ' Control Panel'}
-				avatar={<Timeline />}
+				avatar={<EventNote />}
 				noExpand
 				noMargin
 				noPadding

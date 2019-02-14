@@ -1,5 +1,5 @@
 import { Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, /* IconButton, */ withStyles } from '@material-ui/core'
-import { ItemGrid, GridContainer, CircularLoader, DateFilterMenu } from 'components'
+import { ItemGrid, GridContainer, CircularLoader } from 'components'
 import React, { Component, Fragment } from 'react'
 import { getProject, deleteProject } from 'variables/dataProjects'
 import ProjectData from './ProjectCards/ProjectData'
@@ -30,7 +30,6 @@ class Project extends Component {
 			heatData: [],
 			openAssignDC: false,
 			loading: true,
-			// loadingData: props.periods.map(p => ({ id: p.id, l: true })),
 			openSnackbar: 0,
 			openDelete: false,
 			hoverID: 0,
@@ -397,16 +396,11 @@ class Project extends Component {
 		return <CircularLoader />
 	}
 
-	renderMenu = () => {
-		const { t } = this.props
-		return <DateFilterMenu t={t} />
-	}
+
 
 	render() {
 		const { project, loading, openAssignDC } = this.state
-		// console.log(this.state.data, this.state.loadingData)
-		// const { barDataSets, roundDataSets, lineDataSets, raw } = this.state
-		const { t, /* from, to, id, timeType, */ classes } = this.props
+		const { t, classes } = this.props
 		const rp = { history: this.props.history, match: this.props.match }
 		return (
 			<Fragment>
@@ -415,11 +409,9 @@ class Project extends Component {
 					history={rp.history}
 					match={rp.match}
 					tabs={this.tabs}
-					content={this.renderMenu()}
 				/>
 				{!loading ?
 					<GridContainer justify={'center'} alignContent={'space-between'}>
-
 						<ItemGrid xs={12} noMargin id='details'>
 							<ProjectDetails
 								isFav={this.props.isFav({ id: project.id, type: 'project' })}
@@ -437,10 +429,10 @@ class Project extends Component {
 								t={t}
 							/>
 						</ItemGrid>
-						{this.state.data ? this.props.periods.map((p, i) => {
+						{this.state.data ? this.props.periods.map((period, i) => {
 							return <ItemGrid xs={i === this.props.periods.length - 1 ? i % 2 === 0 ? 12 : 6 : 6} noMargin key={i}>
 								<ProjectData
-									p={p}
+									period={period}
 									getData={this.handleSwitchDayHourSummary}
 									setHoverID={this.setHoverID}
 									project={project}

@@ -17,6 +17,7 @@ import {
 	DoughnutChart,
 	PieChart,
 	ExportModal,
+	DateFilterMenu,
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import classNames from 'classnames';
@@ -66,22 +67,22 @@ class ProjectData extends PureComponent {
 		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
 	]
 	componentDidMount = async () => {
-		const { p } = this.props
+		const { period } = this.props
 		const { loading } = this.state
-		if (p && loading) {
-			let newState = await this.props.getData(p)
+		if (period && loading) {
+			let newState = await this.props.getData(period)
 			this.setState({ ...newState, loading: false })
 		}
 	}
 	componentDidUpdate = async (prevProps, prevState) => {
-		if (prevProps.p !== this.props.p) {
+		if (prevProps.period !== this.props.period) {
 			this.setState({ loading: true }, async () => {
-				let newState = await this.props.getData(this.props.p)
+				let newState = await this.props.getData(this.props.period)
 				this.setState({ ...newState, loading: false })
 			})
 		}
 	}
-	
+
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
@@ -181,7 +182,7 @@ class ProjectData extends PureComponent {
 	}
 
 	renderType = () => {
-		const { title, setHoverID, t, device, chartType, p } = this.props
+		const { title, setHoverID, t, device, chartType, period } = this.props
 		const { loading } = this.state
 		if (!loading) {
 			const { roundDataSets, lineDataSets, barDataSets } = this.state
@@ -196,7 +197,7 @@ class ProjectData extends PureComponent {
 											height={300}
 											title={title}
 											single
-											unit={this.timeTypes[p.timeType]}
+											unit={this.timeTypes[period.timeType]}
 											setHoverID={setHoverID}
 											data={d}
 											t={t}
@@ -220,7 +221,7 @@ class ProjectData extends PureComponent {
 											height={300}
 											title={title}
 											single
-											unit={this.timeTypes[p.timeType]}
+											unit={this.timeTypes[period.timeType]}
 											setHoverID={setHoverID}
 											data={d}
 											t={t}
@@ -235,7 +236,7 @@ class ProjectData extends PureComponent {
 					return barDataSets ? <div style={{ maxHeight: 400 }}>
 						<BarChart
 							obj={device}
-							unit={this.timeTypes[p.timeType]}
+							unit={this.timeTypes[period.timeType]}
 							onElementsClick={this.handleZoomOnData}
 							setHoverID={setHoverID}
 							data={barDataSets}
@@ -249,7 +250,7 @@ class ProjectData extends PureComponent {
 							handleReverseZoomOnData={this.handleReverseZoomOnData}
 							resetZoom={this.state.resetZoom}
 							obj={device}
-							unit={this.timeTypes[p.timeType]}
+							unit={this.timeTypes[period.timeType]}
 							onElementsClick={this.handleZoomOnData}
 							setHoverID={setHoverID}
 							data={lineDataSets}
@@ -264,8 +265,11 @@ class ProjectData extends PureComponent {
 
 	renderMenu = () => {
 		const { actionAnchor, actionAnchorVisibility, resetZoom } = this.state
-		const { classes, t } = this.props
+		const { classes, t, period } = this.props
 		return <ItemG container>
+			<ItemG>
+				<DateFilterMenu period={period} t={t} />
+			</ItemG>
 			<Collapse in={resetZoom}>
 				{resetZoom && <IconButton title={'Reset zoom'} onClick={this.handleReverseZoomOnData}>
 					<ArrowUpward />
@@ -369,15 +373,15 @@ class ProjectData extends PureComponent {
 	}
 
 	render() {
-		const { raw, t, p } = this.props
+		const { raw, t, period } = this.props
 		const { openDownload, loading, exportData } = this.state
-		let displayTo = dateTimeFormatter(p.to)
-		let displayFrom = dateTimeFormatter(p.from)
+		let displayTo = dateTimeFormatter(period.to)
+		let displayFrom = dateTimeFormatter(period.from)
 		return (
 			<Fragment>
 				<InfoCard
 					title={`${displayFrom} - ${displayTo}`}
-					subheader={`${this.options[p.menuId].label}, ${raw ? t('collections.rawData') : t('collections.calibratedData')}`}
+					subheader={`${this.options[period.menuId].label}, ${raw ? t('collections.rawData') : t('collections.calibratedData')}`}
 					avatar={<Timeline />}
 					noExpand
 					topAction={this.renderMenu()}

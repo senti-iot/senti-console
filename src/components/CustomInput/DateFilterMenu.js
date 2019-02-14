@@ -44,6 +44,7 @@ class DateFilterMenu extends Component {
 		{ id: 6, label: this.props.t('filters.dateOptions.custom') },
 	]
 	handleSetDate = (id, to, from, timeType) => {
+		const { period } = this.props
 		let defaultT = 0
 		switch (id) {
 			case 0: // Today
@@ -85,7 +86,7 @@ class DateFilterMenu extends Component {
 				break;
 		}
 
-		this.props.handleSetDate(id, to, from, defaultT, 0)
+		this.props.handleSetDate(id, to, from, defaultT, period.id)
 	}
 
 	handleCloseDialog = (to, from, timeType) => {
@@ -135,13 +136,13 @@ class DateFilterMenu extends Component {
 		this.setState({ actionAnchor: null })
 	}
 	
-	isSelected = (value) => value === this.props.id ? true : false
+	isSelected = (value) => value === this.props.period.menuId ? true : false
 	
 	render() {
-		const { to, from, t, id, classes } = this.props
+		const { period, t, id, classes } = this.props
 		const { actionAnchor } = this.state
-		let displayTo = dateTimeFormatter(to)
-		let displayFrom = dateTimeFormatter(from)
+		let displayTo = dateTimeFormatter(period.to)
+		let displayFrom = dateTimeFormatter(period.from)
 		return (
 			<Fragment>
 				<IconButton				
@@ -149,7 +150,7 @@ class DateFilterMenu extends Component {
 					aria-owns={actionAnchor ? 'long-menu' : null}
 					aria-haspopup='true'
 					onClick={this.handleOpenMenu}>
-					<DateRange style={{ color: '#fff' }} />
+					<DateRange />
 				</IconButton>
 				<Menu
 					disableAutoFocus
