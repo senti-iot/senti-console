@@ -22,7 +22,7 @@ class Dropdown extends Component {
 
 	render() {
 		const { actionAnchor } = this.state
-		const { menuItems } = this.props
+		const { menuItems, icon } = this.props
 		return (
 			<ItemG>
 				<IconButton
@@ -30,7 +30,7 @@ class Dropdown extends Component {
 					aria-owns={actionAnchor ? 'long-menu' : null}
 					aria-haspopup='true'
 					onClick={this.handleOpenActionsDetails}>
-					<MoreVert />
+					{icon ? icon : <MoreVert />}
 				</IconButton>
 				<Menu
 					id='long-menu'

@@ -428,6 +428,9 @@
 			"deviceToCollection": "Assign Device to Data Collection",
 			"deviceToOrg": "Assign Device to Organisation"
 		},
+		"charts": {
+			"compare": "Compare with another period"
+		},
 		"calibrate": "Calibrate",
 		"changePassword": "Change Password",
 		"create": {

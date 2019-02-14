@@ -85,12 +85,12 @@ class DateFilterMenu extends Component {
 				break;
 		}
 
-		this.props.handleSetDate(id, to, from, defaultT)
+		this.props.handleSetDate(id, to, from, defaultT, 0)
 	}
 
 	handleCloseDialog = (to, from, timeType) => {
 		this.setState({ openCustomDate: false, actionAnchor: null })
-		this.handleSetDate(6, to, from, timeType)
+		this.handleSetDate(6, to, from, timeType, 0)
 	}
 	/**
 	 * Menu Handling, close the menu and set the date or open Custom Date
@@ -204,7 +204,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-	handleSetDate: (id, to, from, timeType) => dispatch(changeDate(id, to, from, timeType))
+	handleSetDate: (id, to, from, timeType, pId) => dispatch(changeDate(id, to, from, timeType, pId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DateFilterMenu))

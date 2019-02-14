@@ -18,6 +18,7 @@ import { Timeline, Map, DataUsage, Person, LibraryBooks } from 'variables/icons'
 import { compose } from 'recompose';
 import { finishedSaving, removeFromFav, addToFav, isFav } from 'redux/favorites';
 import { connect } from 'react-redux'
+import ProjectDataPanel from './ProjectCards/ProjectDataPanel';
 
 class Project extends Component {
 	constructor(props) {
@@ -29,10 +30,11 @@ class Project extends Component {
 			heatData: [],
 			openAssignDC: false,
 			loading: true,
-			loadingData: true,
+			// loadingData: props.periods.map(p => ({ id: p.id, l: true })),
 			openSnackbar: 0,
 			openDelete: false,
 			hoverID: 0,
+			data: []
 		}
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/projects/list'
 		props.setHeader('collections.fields.project', true, prevURL, 'projects')
@@ -52,14 +54,8 @@ class Project extends Component {
 		if (match)
 			if (match.params.id) {
 				await this.getProject(match.params.id)
-				await this.handleSwitchDayHourSummary()
-				this.getHeatMapData()
-				// if (location.hash.length > 0) {
-				// 	let str = location.hash.split('#')
-				// 	let element = document.getElementById(str[1])
-				// 	element.scrollIntoView()
-				// 	// console.log(str)
-				// }
+				// await this.handleSwitchDayHourSummary()
+				// this.getHeatMapData()
 			}
 			else {
 				history.push({
@@ -70,7 +66,7 @@ class Project extends Component {
 	}
 	componentDidUpdate = (prevProps) => {
 		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
-			this.handleSwitchDayHourSummary()
+			// this.handleSwitchDayHourSummary()
 			this.getHeatMapData()
 		}
 		if (this.props.saved === true) {
@@ -105,10 +101,8 @@ class Project extends Component {
 			}
 		})
 	}
-	getWifiHourly = async () => {
+	getWifiHourly = async (p) => {
 		const { raw, project, hoverID } = this.state
-		const { from, to } = this.props
-		this.setState({ loadingData: true })
 		let dcs = project.dataCollections.map(d => {
 			return {
 				dcId: d.id,
@@ -122,16 +116,12 @@ class Project extends Component {
 				long: d.activeDevice ? d.activeDevice.long : 0
 			}
 		})
-		let newState = await getWifiHourly('collection', dcs, from, to, hoverID, raw)
-		this.setState({
-			loadingData: false,
-			...newState
-		})
+		let newState = await getWifiHourly('collection', dcs, p.from, p.to, hoverID, raw)
+		return newState
 	}
-	getWifiMinutely = async () => {
+	getWifiMinutely = async (p) => {
 		const { raw, project, hoverID } = this.state
-		const { from, to } = this.props
-		this.setState({ loadingData: true })
+		// this.setState({ loadingData: true })
 		let dcs = project.dataCollections.map(d => {
 			return {
 				dcId: d.id,
@@ -145,17 +135,12 @@ class Project extends Component {
 				long: d.activeDevice ? d.activeDevice.long : 0
 			}
 		})
-		let newState = await getWifiMinutely('collection', dcs, from, to, hoverID, raw)
-		this.setState({
-			loadingData: false,
-			...newState
-		})
+		let newState = await getWifiMinutely('collection', dcs, p.from, p.to, hoverID, raw)
+		return newState
 	}
 
-	getWifiDaily = async () => {
+	getWifiDaily = async (p) => {
 		const { raw, project, hoverID } = this.state
-		const { from, to } = this.props
-		this.setState({ loadingData: true })
 		let dcs = project.dataCollections.map(d => {
 			return {
 				dcId: d.id,
@@ -169,16 +154,12 @@ class Project extends Component {
 				long: d.activeDevice ? d.activeDevice.long : 0
 			}
 		})
-		let newState = await getWifiDaily('collection', dcs, from, to, hoverID, raw)
-		this.setState({
-			loadingData: false,
-			...newState
-		})
+		let newState = await getWifiDaily('collection', dcs, p.from, p.to, hoverID, raw)
+		return newState
 	}
 	getWifiSummary = async () => {
 		const { raw, project, hoverID } = this.state
 		const { from, to } = this.props
-		this.setState({ loadingData: true })
 		let dcs = project.dataCollections.map(d => {
 			return {
 				dcId: d.id,
@@ -193,10 +174,7 @@ class Project extends Component {
 			}
 		})
 		let newState = await getWifiSummary('collection', dcs, from, to, hoverID, raw)
-		this.setState({
-			loadingData: false,
-			...newState
-		})
+		return newState
 	}
 	getHeatMapData = async () => {
 		const { project, raw } = this.state
@@ -229,29 +207,29 @@ class Project extends Component {
 		})
 	}
 
-	handleSwitchDayHourSummary = async () => {
-		const { to, from, id } = this.props
-		let diff = moment.duration(to.diff(from)).days()
-		this.getHeatMapData()
-		switch (id) {
+	handleSwitchDayHourSummary = async (p) => {
+		let diff = moment.duration(p.to.diff(p.from)).days()
+		// this.getHeatMapData()
+	
+		switch (p.menuId) {
 			case 0:// Today
 			case 1:// Yesterday
-				await this.getWifiHourly();
-				break;
+				return await this.getWifiHourly(p);
+				
 			case 2:// This week
-				parseInt(diff, 10) > 0 ? this.getWifiDaily() : this.getWifiHourly()
-				break;
+				return parseInt(diff, 10) > 0 ? this.getWifiDaily(p) : this.getWifiHourly(p)
+				
 			case 3:// Last 7 days
 			case 4:// 30 days
 			case 5:// 90 Days
-				await this.getWifiDaily();
-				break
+				return await this.getWifiDaily(p);
+				
 			case 6:
-				await this.handleSetCustomRange()
-				break
+				return await this.handleSetCustomRange()
+			
 			default:
-				await this.getWifiDaily();
-				break;
+				return await this.getWifiDaily(p);
+			
 		}
 	}
 
@@ -425,9 +403,10 @@ class Project extends Component {
 	}
 
 	render() {
-		const { project, loading, openAssignDC, loadingData } = this.state
-		const { barDataSets, roundDataSets, lineDataSets, raw } = this.state
-		const { t, from, to, id, timeType, classes } = this.props
+		const { project, loading, openAssignDC } = this.state
+		// console.log(this.state.data, this.state.loadingData)
+		// const { barDataSets, roundDataSets, lineDataSets, raw } = this.state
+		const { t, /* from, to, id, timeType, */ classes } = this.props
 		const rp = { history: this.props.history, match: this.props.match }
 		return (
 			<Fragment>
@@ -439,7 +418,7 @@ class Project extends Component {
 					content={this.renderMenu()}
 				/>
 				{!loading ?
-					<GridContainer  justify={'center'} alignContent={'space-between'}>
+					<GridContainer justify={'center'} alignContent={'space-between'}>
 
 						<ItemGrid xs={12} noMargin id='details'>
 							<ProjectDetails
@@ -452,25 +431,25 @@ class Project extends Component {
 								handleOpenAssignCollection={this.handleOpenAssignCollection}
 							/>
 						</ItemGrid>
-						<ItemGrid xs={12} noMargin id='data'>
-							<ProjectData
-								exportData={this.state.exportData}
-								setHoverID={this.setHoverID}
-								barDataSets={barDataSets}
-								roundDataSets={roundDataSets}
-								lineDataSets={lineDataSets}
-								loading={loadingData}
-								timeType={timeType}
-								from={from}
-								to={to}
-								project={project}
-								raw={raw}
-								dateOption={id}
-								handleRawData={this.handleRawData}
-								{...rp}
-								t={this.props.t}
+
+						<ItemGrid xs={12} noMargin id={'data'}>
+							<ProjectDataPanel
+								t={t}
 							/>
 						</ItemGrid>
+						{this.state.data ? this.props.periods.map((p, i) => {
+							return <ItemGrid xs={i === this.props.periods.length - 1 ? i % 2 === 0 ? 12 : 6 : 6} noMargin key={i}>
+								<ProjectData
+									p={p}
+									getData={this.handleSwitchDayHourSummary}
+									setHoverID={this.setHoverID}
+									project={project}
+									{...rp}
+									t={this.props.t}
+								/></ItemGrid> 
+						}) : null
+						}
+
 						<ItemGrid xs={12} noMargin id='collections'>
 							<ProjectCollections
 								setHoverID={this.setHoverID}
@@ -517,7 +496,8 @@ const mapStateToProps = (state) => ({
 	id: state.dateTime.id,
 	to: state.dateTime.to,
 	from: state.dateTime.from,
-	timeType: state.dateTime.timeType
+	timeType: state.dateTime.timeType,
+	periods: state.dateTime.periods
 })
 
 const mapDispatchToProps = (dispatch) => ({

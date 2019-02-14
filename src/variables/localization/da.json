@@ -428,6 +428,9 @@
 			"deviceToCollection": "Tilknyt enhed til datasamlinger",
 			"deviceToOrg": "Tilknyt enhed til organisation"
 		},
+		"charts": {
+			"compare": "Sammenlign med en anden periode"
+		},
 		"calibrate": "Kalibrer",
 		"changePassword": "Skift kodeord",
 		"create": {

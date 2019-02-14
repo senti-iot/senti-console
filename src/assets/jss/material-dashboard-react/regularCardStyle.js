@@ -23,6 +23,9 @@ const regularCardStyle = theme => ({
 	contentMedia: {
 		width: "100%",
 		padding: 0,
+		'&:last-child': {
+			padding: 0
+		}
 	},
 	noMargin: {
 		margin: 0,

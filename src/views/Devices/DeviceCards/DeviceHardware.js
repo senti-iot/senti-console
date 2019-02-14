@@ -32,7 +32,11 @@ class DeviceHardware extends PureComponent {
 				topAction={
 					<Dropdown menuItems={
 						[
-							{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => this.props.history.push(`${this.props.match.url}/edit-hardware`) },
+							{
+								label: t('menus.edit'),
+								icon: <Edit className={classes.leftIcon} />, 
+								func: () => this.props.history.push(`${this.props.match.url}/edit-hardware`)
+							},
 						]
 					} />
 				}

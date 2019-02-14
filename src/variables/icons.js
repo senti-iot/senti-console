@@ -87,7 +87,9 @@ import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import Smartphone from '@material-ui/icons/Smartphone'
 import EditLocation from '@material-ui/icons/EditLocation'
 import WhatsHot from '@material-ui/icons/Whatshot'
+import Compare from '@material-ui/icons/Compare'
 export {
+	Compare,
 	Mail,
 	Assignment,
 	LinearScale,
