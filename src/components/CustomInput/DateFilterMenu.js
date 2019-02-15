@@ -44,7 +44,7 @@ class DateFilterMenu extends Component {
 		{ id: 6, label: this.props.t('filters.dateOptions.custom') },
 	]
 	handleSetDate = (id, to, from, timeType) => {
-		const { period, periods } = this.props
+		const { period } = this.props
 		let defaultT = 0
 		switch (id) {
 			case 0: // Today
@@ -202,7 +202,6 @@ DateFilterMenu.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-	periods: state.dateTime.periods
 })
 
 const mapDispatchToProps = (dispatch) => ({

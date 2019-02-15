@@ -49,6 +49,18 @@ export const addCompare = (compare) => {
 
 	}
 }
+export const changeChartType = (period, chartType) => { 
+	return (dispatch, getState) => { 
+		let periods = []
+		periods = [...getState().dateTime.periods]
+		let p = periods.findIndex(f => f.id === period.id)
+		periods[p] = { ...period, chartType: chartType }
+		dispatch({
+			type: ChangeDate,
+			payload: periods
+		})
+	}
+}
 export const changeDate = (menuId, to, from, timeType, id) => { 
 	return (dispatch, getState) => {
 		let periods = []
@@ -70,25 +82,29 @@ export const changeDate = (menuId, to, from, timeType, id) => {
 
 	}
 }
+/**
+ * ChartType: 
+ * 0 - Pie
+ * 1 - Doughnut
+ * 2 - Bar
+ * 3 - Line
+ */
 const initialState = {
 	periods: [{
 		id: 0,
 		menuId: 0,
 		to: moment(),
 		from: moment().startOf('day'),
-		timeType: 0
+		timeType: 0,
+		chartType: 3
 	}, {
 		id: 1,
 		menuId: 2,
 		to: moment(),
 		from: moment().subtract(7, 'days'),
-		timeType: 2
-	}],
-	compares: [],
-	id: 2,
-	to: moment(),
-	from: moment().subtract(7, 'days'),
-	timeType: 2
+		timeType: 2,
+		chartType: 3
+	}]
 }
 
 export const dateTime = (state = initialState, { type, payload }) => {

@@ -24,8 +24,8 @@ import classNames from 'classnames';
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
-import { changeChartType, changeYAxis } from 'redux/appState'
-import { changeDate, removePeriod } from 'redux/dateTime'
+import { changeYAxis } from 'redux/appState'
+import { changeDate, removePeriod, changeChartType } from 'redux/dateTime'
 
 class ProjectData extends PureComponent {
 	constructor(props) {
@@ -104,7 +104,7 @@ class ProjectData extends PureComponent {
 	handleVisibility = id => (event) => {
 		if (event)
 			event.preventDefault()
-		this.props.changeChartType(id)
+		this.props.changeChartType(this.props.period, id)
 		this.setState({ actionAnchorVisibility: null })
 	}
 
@@ -182,11 +182,11 @@ class ProjectData extends PureComponent {
 	}
 
 	renderType = () => {
-		const { title, setHoverID, t, device, chartType, period } = this.props
+		const { title, setHoverID, t, device, period } = this.props
 		const { loading } = this.state
 		if (!loading) {
 			const { roundDataSets, lineDataSets, barDataSets } = this.state
-			switch (chartType) {
+			switch (period.chartType) {
 				case 0:
 					return roundDataSets ?
 						<ItemG container >
@@ -205,10 +205,7 @@ class ProjectData extends PureComponent {
 									</div>
 									<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
 								</ItemG>
-
 							})}
-
-
 						</ItemG>
 						: this.renderNoData()
 				case 1:
@@ -426,10 +423,10 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	changeChartType: (val) => dispatch(changeChartType(val)),
 	handleSetDate: (id, to, from, timeType) => dispatch(changeDate(id, to, from, timeType)),
 	changeYAxis: (val) => dispatch(changeYAxis(val)),
-	removePeriod: (pId) => dispatch(removePeriod(pId))
+	removePeriod: (pId) => dispatch(removePeriod(pId)),
+	changeChartType: (p, chartId) => dispatch(changeChartType(p, chartId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(ProjectData))

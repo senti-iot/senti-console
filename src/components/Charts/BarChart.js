@@ -389,11 +389,11 @@ class BarChart extends PureComponent {
 
 		return (
 			<Fragment>
-				<div style={{ display: 'block', maxHeight: 400, position: 'relative', height: 400 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
-					<div style={{ display: 'block', height: 400, maxHeight: 400, width: '100%' }}>					
+				<div style={{ display: 'block', maxHeight: 300, position: 'relative', height: 300 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
+					<div style={{ display: 'block', height: 300, maxHeight: 300, width: '100%' }}>					
 					
 						<Bar
-							height={400}
+							height={300}
 							data={this.props.data}
 							ref={r => this.chart = r}
 							options={this.state.lineOptions}
