@@ -429,7 +429,8 @@
 			"deviceToOrg": "Assign Device to Organisation"
 		},
 		"charts": {
-			"compare": "Compare with another period"
+			"deleteThisPeriod": "Delete this period",
+			"hideThisPeriod": "Hide this period"
 		},
 		"calibrate": "Calibrate",
 		"changePassword": "Change Password",

@@ -1,4 +1,4 @@
-import { Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, /* IconButton, */ withStyles } from '@material-ui/core'
+import { Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, withStyles } from '@material-ui/core'
 import { ItemGrid, GridContainer, CircularLoader } from 'components'
 import React, { Component, Fragment } from 'react'
 import { getProject, deleteProject } from 'variables/dataProjects'
@@ -53,8 +53,7 @@ class Project extends Component {
 		if (match)
 			if (match.params.id) {
 				await this.getProject(match.params.id)
-				// await this.handleSwitchDayHourSummary()
-				// this.getHeatMapData()
+
 			}
 			else {
 				history.push({
@@ -78,6 +77,13 @@ class Project extends Component {
 				this.props.s('snackbars.favorite.removed', { name: project.title, type: this.props.t('favorites.types.project') })
 				this.props.finishedSaving()
 			}
+		}
+		if (prevProps.periods.length < this.props.periods.length) {
+			let el = document.getElementById(this.props.periods.length - 1)
+			setTimeout(() => {
+				let topOfElement = el.offsetTop - 130
+				window.scroll({ top: topOfElement, behavior: 'smooth' })
+			}, 300);
 		}
 	}
 	getProject = async id => {
@@ -208,27 +214,25 @@ class Project extends Component {
 
 	handleSwitchDayHourSummary = async (p) => {
 		let diff = moment.duration(p.to.diff(p.from)).days()
-		// this.getHeatMapData()
-	
 		switch (p.menuId) {
 			case 0:// Today
 			case 1:// Yesterday
 				return await this.getWifiHourly(p);
-				
+
 			case 2:// This week
 				return parseInt(diff, 10) > 0 ? this.getWifiDaily(p) : this.getWifiHourly(p)
-				
+
 			case 3:// Last 7 days
 			case 4:// 30 days
 			case 5:// 90 Days
 				return await this.getWifiDaily(p);
-				
+
 			case 6:
 				return await this.handleSetCustomRange()
-			
+
 			default:
 				return await this.getWifiDaily(p);
-			
+
 		}
 	}
 
@@ -430,7 +434,7 @@ class Project extends Component {
 							/>
 						</ItemGrid>
 						{this.state.data ? this.props.periods.map((period, i) => {
-							return <ItemGrid xs={i === this.props.periods.length - 1 ? i % 2 === 0 ? 12 : 6 : 6} noMargin key={i}>
+							return <ItemGrid xs={i === this.props.periods.length - 1 ? i % 2 === 0 ? 12 : 6 : 6} noMargin key={i} id={i}>
 								<ProjectData
 									period={period}
 									getData={this.handleSwitchDayHourSummary}
@@ -438,7 +442,8 @@ class Project extends Component {
 									project={project}
 									{...rp}
 									t={this.props.t}
-								/></ItemGrid> 
+								/>
+							</ItemGrid>
 						}) : null
 						}
 

@@ -22,9 +22,6 @@ class ProjectDataPanel extends Component {
 								icon={<Add />}
 								t={t}
 							/>
-							{/* <IconButton>
-								<Add />
-							</IconButton> */}
 						</ItemG>}
 						<ItemG>
 							<IconButton>

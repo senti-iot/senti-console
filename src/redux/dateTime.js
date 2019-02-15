@@ -55,7 +55,7 @@ export const changeDate = (menuId, to, from, timeType, id) => {
 		periods = [...getState().dateTime.periods]
 		let c
 		if (id === -1) {
-			 c = periods.length
+			c = periods.length
 		}
 		else { 
 			 c = periods.findIndex(f => f.id === id)
@@ -67,6 +67,7 @@ export const changeDate = (menuId, to, from, timeType, id) => {
 			type: ChangeDate,
 			payload: periods
 		})
+
 	}
 }
 const initialState = {

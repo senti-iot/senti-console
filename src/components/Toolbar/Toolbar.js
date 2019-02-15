@@ -135,7 +135,7 @@ class Toolbar extends PureComponent {
 						{tabs ? tabs.map((t, i) => {
 							return <Tab title={t.title}
 								component={(props) => <Link {...props} scroll={this.handleScroll} style={{ color: '#fff' }} />}
-								id={t.id}
+								value={t.id}
 								key={i}
 								smooth
 								classes={{ root: classes.tab }}
