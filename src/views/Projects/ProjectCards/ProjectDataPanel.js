@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemG, DateFilterMenu } from 'components';
 import { IconButton } from '@material-ui/core';
-import { Add, Visibility, Clear, EventNote } from 'variables/icons';
+import { Add, Visibility, Clear, Timeline } from 'variables/icons';
 import { connect } from 'react-redux'
 
 class ProjectDataPanel extends Component {
@@ -10,7 +10,7 @@ class ProjectDataPanel extends Component {
 		return (
 			<InfoCard
 				title={t('collections.cards.data') + ' Control Panel'}
-				avatar={<EventNote />}
+				avatar={<Timeline />}
 				noExpand
 				noMargin
 				noPadding

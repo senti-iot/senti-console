@@ -73,7 +73,7 @@ export const changeDate = (menuId, to, from, timeType, id) => {
 			 c = periods.findIndex(f => f.id === id)
 		}
 		periods[c] = { id: c,
-			menuId, to, from, timeType, 
+			menuId, to, from, timeType, chartType: id === -1 ? 3 : periods[c].chartType
 		}
 		dispatch({
 			type: ChangeDate,

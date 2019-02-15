@@ -377,6 +377,21 @@ class ProjectData extends PureComponent {
 		</ItemG>
 	}
 
+	renderIcon = () => { 
+		const { period } = this.props
+		switch (period.chartType) {
+			case 0:
+				return <PieChartRounded />
+			case 1: 
+				return <DonutLargeRounded />
+			case 2: 
+				return <BarChartIcon />
+			case 3: 
+				return <ShowChart />
+			default:
+				break;
+		}
+	}
 	render() {
 		const { raw, t, period } = this.props
 		const { openDownload, loading, exportData } = this.state
@@ -387,7 +402,7 @@ class ProjectData extends PureComponent {
 				<InfoCard
 					title={`${displayFrom} - ${displayTo}`}
 					subheader={`${this.options[period.menuId].label}, ${raw ? t('collections.rawData') : t('collections.calibratedData')}`}
-					avatar={<Timeline />}
+					avatar={this.renderIcon()}
 					noExpand
 					topAction={this.renderMenu()}
 					content={

@@ -390,8 +390,7 @@ class BarChart extends PureComponent {
 		return (
 			<Fragment>
 				<div style={{ display: 'block', maxHeight: 300, position: 'relative', height: 300 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
-					<div style={{ display: 'block', height: 300, maxHeight: 300, width: '100%' }}>					
-					
+					<div style={{ display: 'block', height: 300, maxHeight: 300, width: '100%' }}>
 						<Bar
 							height={300}
 							data={this.props.data}

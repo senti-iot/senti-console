@@ -255,7 +255,7 @@ export const getWifiDaily = async (type, objArr, from, to, hoverId, raw, simple)
 }
 
 export const setDailyData = (dataArr, from, to, hoverID, extra) => {
-	console.log(dataArr, from, to, hoverID)
+	console.log(dataArr, from, to, hoverID, dataArr.map((d, index) => linecolors(Object.entries(d.data), d.color, index)))
 	let labels = datesToArr(from, to)
 	let state = {
 		loading: false,
@@ -295,7 +295,7 @@ export const setDailyData = (dataArr, from, to, hoverID, extra) => {
 					color: d.color,
 					backgroundColor: linecolors(Object.entries(d.data), d.color, index),
 					borderColor: teal[500],
-					borderWidth: hoverID === d.id ? 4 : 0,
+					// borderWidth: hoverID === d.id ? 4 : 0,
 					fill: false,
 					label: [d.name],
 					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
