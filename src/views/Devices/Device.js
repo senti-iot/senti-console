@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { getDevice, getAllPictures, getWeather, getDataSummary } from 'variables/dataDevices'
 import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
-import { ItemGrid, AssignOrg, AssignDC, DateFilterMenu } from 'components'
+import { ItemGrid, AssignOrg, AssignDC, /* DateFilterMenu */ } from 'components'
 import deviceStyles from 'assets/jss/views/deviceStyles'
 import ImageUpload from './ImageUpload'
 import CircularLoader from 'components/Loader/CircularLoader'
@@ -20,6 +20,7 @@ import teal from '@material-ui/core/colors/teal'
 import { getWifiHourly, getWifiDaily, getWifiMinutely, getWifiSummary } from 'components/Charts/DataModel';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 import { handleRequestSort } from 'variables/functions';
+import ProjectDataPanel from 'views/Projects/ProjectCards/ProjectDataPanel';
 
 class Device extends Component {
 	constructor(props) {
@@ -63,8 +64,8 @@ class Device extends Component {
 					if (rs.dataCollection) {
 						await this.getDataCollection(rs.dataCollection)
 					}
-					this.handleSwitchDayHourSummary()
-					this.getHeatMapData()
+					// this.handleSwitchDayHourSummary()
+					// this.getHeatMapData()
 					if (rs.lat && rs.long) {
 						let data = await getWeather(rs, moment(), this.props.language)
 						this.setState({ weather: data })
@@ -156,8 +157,8 @@ class Device extends Component {
 	}
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
-			this.handleSwitchDayHourSummary()
-			this.getHeatMapData()
+			// this.handleSwitchDayHourSummary()
+			// this.getHeatMapData()
 		}
 		if (this.props.saved === true) {
 			if (this.props.isFav({ id: this.state.device.id, type: 'device' })) {
@@ -168,6 +169,13 @@ class Device extends Component {
 				this.props.s('snackbars.favorite.removed', { name: this.state.device.name, type: this.props.t('favorites.types.device') })
 				this.props.finishedSaving()
 			}
+		}
+		if (prevProps.periods.length < this.props.periods.length) {
+			let el = document.getElementById(this.props.periods.length - 1)
+			setTimeout(() => {
+				let topOfElement = el.offsetTop - 130
+				window.scroll({ top: topOfElement, behavior: 'smooth' })
+			}, 300);
 		}
 	}
 	addToFav = () => {
@@ -208,54 +216,48 @@ class Device extends Component {
 		})
 	}
 
-	handleSwitchDayHourSummary = () => {
-		const { to, from, id } = this.props
-		let diff = moment.duration(to.diff(from)).days()
-		this.getHeatMapData()
-		switch (id) {
+	handleSwitchDayHourSummary = async (p) => {
+		// const { to, from, id } = this.props
+		console.log(p)
+		let diff = moment.duration(p.to.diff(p.from)).days()
+		// this.getHeatMapData()
+		switch (p.menuId) {
 			case 0:// Today
 			case 1:// Yesterday
-				this.getWifiHourly();
-				break;
+				return await this.getWifiHourly(p);
 			case 2:// This week
-				parseInt(diff, 10) > 0 ? this.getWifiDaily() : this.getWifiHourly()
-				break;
+				return await parseInt(diff, 10) > 0 ? this.getWifiDaily(p) : this.getWifiHourly(p)
 			case 3:// Last 7 days
 			case 4:// 30 days
 			case 5:// 90 Days
-				this.getWifiDaily();
-				break
+				return await this.getWifiDaily(p);
 			case 6:
-				this.handleSetCustomRange()
-				break
+				return await this.handleSetCustomRange(p)
 			default:
-				this.getWifiDaily();
-				break;
+				return await this.getWifiDaily(p);
 		}
 	}
 
-	handleSetCustomRange = () => {
-		const { timeType } = this.props
-		switch (timeType) {
+	handleSetCustomRange = (p) => {
+		switch (p.timeType) {
 			case 0:
-				this.getWifiMinutely()
+				this.getWifiMinutely(p)
 				break;
 			case 1:
-				this.getWifiHourly()
+				this.getWifiHourly(p)
 				break
 			case 2:
-				this.getWifiDaily()
+				this.getWifiDaily(p)
 				break
 			case 3:
-				this.getWifiSummary()
+				this.getWifiSummary(p)
 				break
 			default:
 				break;
 		}
 	}
-	getWifiSummary = async () => {
+	getWifiSummary = async (p) => {
 		const { raw, device, hoverID } = this.state
-		const { from, to } = this.props
 		let newState = await getWifiSummary('device', [{
 			name: device.name,
 			id: device.id,
@@ -263,17 +265,11 @@ class Device extends Component {
 			long: device.long,
 			org: device.org ? device.org.name : "",
 			color: teal[500]
-		}], from, to, hoverID, raw)
-
-		this.setState({
-			...this.state,
-			loadingData: false,
-			...newState
-		})
+		}], p.from, p.to, hoverID, raw)
+		return newState
 	}
-	getWifiHourly = async () => {
+	getWifiHourly = async (p) => {
 		const { raw, device, hoverID } = this.state
-		const { from, to } = this.props
 		this.setState({ loadingData: true })
 		let newState = await getWifiHourly('device', [{
 			name: device.name,
@@ -282,18 +278,11 @@ class Device extends Component {
 			long: device.long,
 			org: device.org ? device.org.name : "",
 			color: teal[500]
-		}], from, to, hoverID, raw)
-
-		this.setState({
-			...this.state,
-			loadingData: false,
-			...newState
-		})
+		}], p.from, p.to, hoverID, raw)
+		return newState
 	}
-	getWifiMinutely = async () => {
+	getWifiMinutely = async (p) => {
 		const { raw, device, hoverID } = this.state
-		const { from, to } = this.props
-		this.setState({ loadingData: true })
 		let newState = await getWifiMinutely('device', [{
 			name: device.name,
 			id: device.id,
@@ -301,18 +290,18 @@ class Device extends Component {
 			long: device.long,
 			org: device.org ? device.org.name : "",
 			color: teal[500]
-		}], from, to, hoverID, raw)
+		}], p.from, p.to, hoverID, raw)
+		return newState
 
-		this.setState({
-			...this.state,
-			loadingData: false,
-			...newState
-		})
+		// this.setState({
+		// 	...this.state,
+		// 	loadingData: false,
+		// 	...newState
+		// })
 	}
-	getWifiDaily = async () => {
+	getWifiDaily = async (p) => {
 		const { raw, device, hoverID } = this.state
-		const { from, to } = this.props
-		this.setState({ loadingData: true })
+
 		let newState = await getWifiDaily('device', [{
 			name: device.name,
 			id: device.id,
@@ -320,13 +309,14 @@ class Device extends Component {
 			long: device.long,
 			org: device.org ? device.org.name : "",
 			color: teal[500]
-		}], from, to, hoverID, raw)
+		}], p.from, p.to, hoverID, raw)
+		return newState
 
-		this.setState({
-			...this.state,
-			loadingData: false,
-			...newState
-		})
+		// this.setState({
+		// 	...this.state,
+		// 	loadingData: false,
+		// 	...newState
+		// })
 	}
 	getWifiSum = async () => {
 		const { raw, device, hoverID } = this.state
@@ -497,13 +487,13 @@ class Device extends Component {
 		</Dialog>
 	}
 
-	renderMenu = () => {
-		const { t } = this.props
-		return <DateFilterMenu t={t} />
-	}
+	// renderMenu = () => {
+	// 	const { t } = this.props
+	// 	return <DateFilterMenu t={t} />
+	// }
 
 	render() {
-		const { device, loading, loadingData, selected, order, orderBy } = this.state
+		const { device, loading, selected, order, orderBy } = this.state
 
 		return (
 			!loading ? <Fragment>
@@ -512,7 +502,7 @@ class Device extends Component {
 					history={this.props.history}
 					match={this.props.match}
 					tabs={this.tabs}
-					content={this.renderMenu()}
+				// content={this.renderMenu()}
 				/>
 				{/* <div style={{ position: "absolute", background: 'red', width: 1000, height: 30, zIndex: 10000 }}></div> */}
 				<GridContainer justify={'center'} alignContent={'space-between'}>
@@ -548,33 +538,26 @@ class Device extends Component {
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'data'}>
-						<DeviceData
-							exportData={this.state.exportData}
-							barDataSets={this.state.barDataSets}
-							roundDataSets={this.state.roundDataSets}
-							lineDataSets={this.state.lineDataSets}
-							handleSetDate={this.handleSetDate}
-							loading={loadingData}
-							timeType={this.props.timeType}
-							from={this.props.from}
-							to={this.props.to}
-							device={device}
-							dateOption={this.props.id}
-							raw={this.state.raw}
-							handleRawData={this.handleRawData}
-							history={this.props.history}
-							match={this.props.match}
-							t={this.props.t}
-							//DeviceTable
-							handleCheckboxClick={this.handleCheckboxClick}//
-							// handleClick={handleClick}//
-							handleRequestSort={this.handleRequestSort}//
-							handleSelectAllClick={this.handleSelectAllClick}//
-							order={order}
-							orderBy={orderBy}
-							selected={selected}
-						/>
+						<ProjectDataPanel t={this.props.t}/>
 					</ItemGrid>
+					{this.props.periods.map((period, i) =>
+						<ItemGrid xs={i === this.props.periods.length - 1 ? i % 2 === 0 ? 12 : 6 : 6} noMargin id={period.id} key={period.id}>
+							<DeviceData
+								getData={this.handleSwitchDayHourSummary}
+								period={period}
+								device={device}
+								history={this.props.history}
+								match={this.props.match}
+								t={this.props.t}
+								handleCheckboxClick={this.handleCheckboxClick}//
+								handleRequestSort={this.handleRequestSort}//
+								handleSelectAllClick={this.handleSelectAllClick}//
+								order={order}
+								orderBy={orderBy}
+								selected={selected}
+							/>
+						</ItemGrid>)}
+
 					<ItemGrid xs={12} noMargin id={'map'}>
 						<DeviceMap
 							reload={this.reload}
@@ -611,10 +594,7 @@ const mapStateToProps = (state) => ({
 	language: state.settings.language,
 	saved: state.favorites.saved,
 	rawData: state.settings.rawData,
-	id: state.dateTime.id,
-	to: state.dateTime.to,
-	from: state.dateTime.from,
-	timeType: state.dateTime.timeType
+	periods: state.dateTime.periods
 })
 
 const mapDispatchToProps = (dispatch) => ({

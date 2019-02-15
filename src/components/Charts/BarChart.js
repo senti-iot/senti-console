@@ -25,9 +25,8 @@ class BarChart extends PureComponent {
 				long: 0
 			},
 			lineOptions: {
-				categoryPercentage: 0.5,
-				barPercentage: 0.5,
-				barThickness: 'flex',
+				categoryPercentage: 1,
+				barPercentage: 1,
 				gridLines: { offsetGridLines: false },	
 				animation: {
 					duration: 500

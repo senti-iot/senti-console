@@ -32,7 +32,6 @@ class ProjectData extends PureComponent {
 		super(props)
 
 		this.state = {
-			openCompare: false,
 			actionAnchor: null,
 			openDownload: false,
 			visibility: false,
@@ -41,8 +40,7 @@ class ProjectData extends PureComponent {
 			loading: true,
 		}
 	}
-
-
+	
 	displayFormat = 'DD MMMM YYYY HH:mm'
 	image = null
 	options = [

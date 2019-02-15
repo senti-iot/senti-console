@@ -65,7 +65,7 @@ class Project extends Component {
 	componentDidUpdate = (prevProps) => {
 		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
 			// this.handleSwitchDayHourSummary()
-			this.getHeatMapData()
+			// this.getHeatMapData()
 		}
 		if (this.props.saved === true) {
 			const { project } = this.state
@@ -162,9 +162,8 @@ class Project extends Component {
 		let newState = await getWifiDaily('collection', dcs, p.from, p.to, hoverID, raw)
 		return newState
 	}
-	getWifiSummary = async () => {
+	getWifiSummary = async (p) => {
 		const { raw, project, hoverID } = this.state
-		const { from, to } = this.props
 		let dcs = project.dataCollections.map(d => {
 			return {
 				dcId: d.id,
@@ -178,7 +177,7 @@ class Project extends Component {
 				long: d.activeDevice ? d.activeDevice.long : 0
 			}
 		})
-		let newState = await getWifiSummary('collection', dcs, from, to, hoverID, raw)
+		let newState = await getWifiSummary('collection', dcs, p.from, p.to, hoverID, raw)
 		return newState
 	}
 	getHeatMapData = async () => {
@@ -228,7 +227,7 @@ class Project extends Component {
 				return await this.getWifiDaily(p);
 
 			case 6:
-				return await this.handleSetCustomRange()
+				return await this.handleSetCustomRange(p)
 
 			default:
 				return await this.getWifiDaily(p);
@@ -236,20 +235,19 @@ class Project extends Component {
 		}
 	}
 
-	handleSetCustomRange = () => {
-		const { timeType } = this.props
-		switch (timeType) {
+	handleSetCustomRange = (p) => {
+		switch (p.timeType) {
 			case 0:
-				this.getWifiMinutely()
+				this.getWifiMinutely(p)
 				break;
 			case 1:
-				this.getWifiHourly()
+				this.getWifiHourly(p)
 				break
 			case 2:
-				this.getWifiDaily()
+				this.getWifiDaily(p)
 				break
 			case 3:
-				this.getWifiSummary()
+				this.getWifiSummary(p)
 				break
 			default:
 				break;
@@ -433,7 +431,7 @@ class Project extends Component {
 								t={t}
 							/>
 						</ItemGrid>
-						{this.state.data ? this.props.periods.map((period, i) => {
+						{this.props.periods.map((period, i) => {
 							return <ItemGrid xs={i === this.props.periods.length - 1 ? i % 2 === 0 ? 12 : 6 : 6} noMargin key={i} id={i}>
 								<ProjectData
 									period={period}
@@ -444,7 +442,7 @@ class Project extends Component {
 									t={this.props.t}
 								/>
 							</ItemGrid>
-						}) : null
+						})
 						}
 
 						<ItemGrid xs={12} noMargin id='collections'>
@@ -490,10 +488,6 @@ const mapStateToProps = (state) => ({
 	saved: state.favorites.saved,
 	rawData: state.settings.rawData,
 	mapTheme: state.settings.mapTheme,
-	id: state.dateTime.id,
-	to: state.dateTime.to,
-	from: state.dateTime.from,
-	timeType: state.dateTime.timeType,
 	periods: state.dateTime.periods
 })
 

@@ -9,7 +9,7 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, LinearScale,
+	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, LinearScale, Clear,
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, InfoCard, BarChart,
@@ -17,15 +17,16 @@ import {
 	DoughnutChart,
 	PieChart,
 	ExportModal,
+	DateFilterMenu,
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import classNames from 'classnames';
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
-import { changeChartType, changeYAxis } from 'redux/appState'
-import { changeDate } from 'redux/dateTime'
-import TableData from 'components/Table/TableData';
+import { changeYAxis } from 'redux/appState'
+import { changeChartType, changeDate, removePeriod } from 'redux/dateTime'
+// import TableData from 'components/Table/TableData';
 
 class DeviceData extends PureComponent {
 	constructor(props) {
@@ -35,9 +36,11 @@ class DeviceData extends PureComponent {
 			actionAnchor: null,
 			visibility: false,
 			openDownload: false,
+			resetZoom: false,
+			zoomDate: [],
+			loading: true
 		}
 	}
-
 
 	displayFormat = 'DD MMMM YYYY HH:mm'
 	image = null
@@ -62,7 +65,22 @@ class DeviceData extends PureComponent {
 		{ id: 2, icon: <BarChartIcon />, label: this.props.t('charts.type.bar') },
 		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
 	]
-
+	componentDidMount = async () => {
+		const { period } = this.props
+		const { loading } = this.state
+		if (period && loading) {
+			let newState = await this.props.getData(period)
+			this.setState({ ...newState, loading: false })
+		}
+	}
+	componentDidUpdate = async (prevProps, prevState) => {
+		if (prevProps.period !== this.props.period) {
+			this.setState({ loading: true }, async () => {
+				let newState = await this.props.getData(this.props.period)
+				this.setState({ ...newState, loading: false })
+			})
+		}
+	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
@@ -86,8 +104,7 @@ class DeviceData extends PureComponent {
 	handleVisibility = id => (event) => {
 		if (event)
 			event.preventDefault()
-		//Change to Redux
-		this.props.changeChartType(id)
+		this.props.changeChartType(this.props.period, id)
 		this.setState({ actionAnchorVisibility: null })
 	}
 
@@ -162,91 +179,100 @@ class DeviceData extends PureComponent {
 			}
 		}
 	}
-	renderType = () => {
-		const { roundDataSets, lineDataSets, barDataSets, title, timeType, setHoverID, t, device, chartType } = this.props
-		switch (chartType) {
-			case 0:
-				return roundDataSets ?
-					<ItemG container >
-						{roundDataSets.map((d, i) => {
-							return <ItemG key={i} xs={12} direction={'column'} container justify={'center'}>
-								<div style={{ maxHeight: 300 }}>
-									<PieChart
-										height={300}
-										title={title}
-										single
-										unit={this.timeTypes[timeType]}
-										setHoverID={setHoverID}
-										data={d}
-										t={t}
-									/>
-								</div>
-								<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
-							</ItemG>
-						})}
-					</ItemG>
-					: this.renderNoData()
-			case 1:
-				return roundDataSets ?
-					<ItemG container >
-						{roundDataSets.map(d => {
-							return <ItemG key={d.id} xs={12} direction={'column'} container justify={'center'}>
-								<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
-								<div style={{ maxHeight: 300 }}>
-									<DoughnutChart
-										height={300}
-										title={title}
-										single
-										unit={this.timeTypes[timeType]}
-										setHoverID={setHoverID}
-										data={d}
-										t={t}
-									/>
-								</div>
-							</ItemG>
-						})}
-					</ItemG>
-					: this.renderNoData()
-			case 2:
-				return barDataSets ? <div style={{ maxHeight: 400 }}>
-					<BarChart
-						obj={device}
-						single
-						unit={this.timeTypes[timeType]}
-						onElementsClick={this.handleZoomOnData}
-						setHoverID={setHoverID}
-						data={barDataSets}
-						t={t}
-					/></div> : this.renderNoData()
-			case 3:
 
-				return lineDataSets ?
-					<LineChart
-						hoverID={this.props.hoverID}
-						single
-						obj={device}
-						unit={this.timeTypes[timeType]}
-						onElementsClick={this.handleZoomOnData}
-						setHoverID={setHoverID}
-						data={lineDataSets}
-						t={t}
-					/> : this.renderNoData()
-			default:
-				break;
+	renderType = () => {
+		const { title, setHoverID, t, device, period } = this.props
+		const { loading } = this.state
+		if (!loading) {
+			const { roundDataSets, lineDataSets, barDataSets } = this.state
+
+			switch (period.chartType) {
+				case 0:
+					return roundDataSets ?
+						<ItemG container >
+							{roundDataSets.map((d, i) => {
+								return <ItemG key={i} xs={12} direction={'column'} container justify={'center'}>
+									<div style={{ maxHeight: 300 }}>
+										<PieChart
+											height={300}
+											title={title}
+											single
+											unit={this.timeTypes[period.timeType]}
+											setHoverID={setHoverID}
+											data={d}
+											t={t}
+										/>
+									</div>
+									<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
+								</ItemG>
+							})}
+						</ItemG>
+						: this.renderNoData()
+				case 1:
+					return roundDataSets ?
+						<ItemG container >
+							{roundDataSets.map(d => {
+								return <ItemG key={d.id} xs={12} direction={'column'} container justify={'center'}>
+									<Typography align={'center'} variant={'subtitle1'}>{d.name}</Typography>
+									<div style={{ maxHeight: 300 }}>
+										<DoughnutChart
+											height={300}
+											title={title}
+											single
+											unit={this.timeTypes[period.timeType]}
+											setHoverID={setHoverID}
+											data={d}
+											t={t}
+										/>
+									</div>
+								</ItemG>
+							})}
+						</ItemG>
+						: this.renderNoData()
+				case 2:
+					return barDataSets ? <div style={{ maxHeight: 400 }}>
+						<BarChart
+							obj={device}
+							single
+							unit={this.timeTypes[period.timeType]}
+							onElementsClick={this.handleZoomOnData}
+							setHoverID={setHoverID}
+							data={barDataSets}
+							t={t}
+						/></div> : this.renderNoData()
+				case 3:
+
+					return lineDataSets ?
+						<LineChart
+							hoverID={this.props.hoverID}
+							single
+							obj={device}
+							unit={this.timeTypes[period.timeType]}
+							onElementsClick={this.handleZoomOnData}
+							setHoverID={setHoverID}
+							data={lineDataSets}
+							t={t}
+						/> : this.renderNoData()
+				default:
+					break;
+			}
 		}
+		else return this.renderNoData()
+
 	}
 
 	renderMenu = () => {
 		const { actionAnchor, actionAnchorVisibility, resetZoom } = this.state
-		const { classes, t, chartType } = this.props
+		const { classes, t, chartType, period } = this.props
 		return <Fragment>
 			<ItemG>
-				<Collapse in={resetZoom}>
-					<IconButton title={'Reset zoom'} onClick={this.handleReverseZoomOnData}>
-						<ArrowUpward />
-					</IconButton>
-				</Collapse>
+				<DateFilterMenu period={period} t={t} />
 			</ItemG>
+			<Collapse in={resetZoom}>
+				{resetZoom && <IconButton title={'Reset zoom'} onClick={this.handleReverseZoomOnData}>
+					<ArrowUpward />
+				</IconButton>}
+			</Collapse>
 			<ItemG>
 				<Hidden smDown>
 					<IconButton title={'Chart Type'} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
@@ -315,6 +341,14 @@ class DeviceData extends PureComponent {
 						{t(this.props.chartYAxis !== 'linear' ? 'settings.chart.YAxis.linear' : 'settings.chart.YAxis.logarithmic')}
 					</ListItemText>
 				</ListItem>
+				<ListItem button onClick={() => { this.handleCloseActionsDetails(); this.props.removePeriod(period.id) }}>
+					<ListItemIcon>
+						<Clear />
+					</ListItemIcon>
+					<ListItemText>
+						{t('menus.charts.deleteThisPeriod')}
+					</ListItemText>
+				</ListItem>
 				<div>
 					<Hidden mdUp>
 						<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
@@ -348,46 +382,62 @@ class DeviceData extends PureComponent {
 			<Caption> {this.props.t('devices.noData')}</Caption>
 		</ItemG>
 	}
-	renderDataTable = () => {
-		const { selected, order, orderBy, handleRequestSort, handleSelectAllClick } = this.props
-		const { t, lineDataSets } = this.props
-		if (lineDataSets)
-		{
-			let data = lineDataSets.datasets.map(d => d.data.map(data => ({
-				id: d.id,
-				interval: data.x,
-				count: data.y
-			})))
-			return <TableData
-				data={data[0]}
-				handleCheckboxClick={this.handleCheckboxClick}//
-				handleClick={() => alert('clicked')}//
-				handleRequestSort={handleRequestSort}//
-				handleSelectAllClick={handleSelectAllClick}//
-				order={order}
-				orderBy={orderBy}
-				selected={selected}
-				t={t}
-				// tableHead={this.deviceHeaders()}
-			/>}
-		else {
-			return null
+	// renderDataTable = () => {
+	// 	const { selected, order, orderBy, handleRequestSort, handleSelectAllClick } = this.props
+	// 	const { t, lineDataSets } = this.props
+	// 	if (lineDataSets)
+	// 	{
+	// 		let data = lineDataSets.datasets.map(d => d.data.map(data => ({
+	// 			id: d.id,
+	// 			interval: data.x,
+	// 			count: data.y
+	// 		})))
+	// 		return <TableData
+	// 			data={data[0]}
+	// 			handleCheckboxClick={this.handleCheckboxClick}//
+	// 			handleClick={() => alert('clicked')}//
+	// 			handleRequestSort={handleRequestSort}//
+	// 			handleSelectAllClick={handleSelectAllClick}//
+	// 			order={order}
+	// 			orderBy={orderBy}
+	// 			selected={selected}
+	// 			t={t}
+	// 		/>}
+	// 	else {
+	// 		return null
+	// 	}
+	// }
+	renderIcon = () => {
+		const { period } = this.props
+		switch (period.chartType) {
+			case 0:
+				return <PieChartRounded />
+			case 1:
+				return <DonutLargeRounded />
+			case 2:
+				return <BarChartIcon />
+			case 3:
+				return <ShowChart />
+			default:
+				break;
 		}
 	}
 	render() {
-		const { raw, t, loading, to, from, dateOption, exportData } = this.props
-		const { openDownload } = this.state
+		const { raw, t, period } = this.props
+		const { openDownload, loading, exportData } = this.state
 
-		let displayTo = dateTimeFormatter(to)
-		let displayFrom = dateTimeFormatter(from)
+		let displayTo = dateTimeFormatter(period.to)
+		let displayFrom = dateTimeFormatter(period.from)
 		return (
 			<Fragment>
 				<InfoCard
+					title={`${displayFrom} - ${displayTo}`}
 					noHiddenPadding
-					title={t('collections.cards.data')}
-					subheader={`${this.options[dateOption].label}, ${raw ? t('collections.rawData') : t('collections.calibratedData')}, ${displayFrom} - ${displayTo}`}
-					avatar={<Timeline />}
-					hiddenContent={this.renderDataTable()}
+					// title={t('collections.cards.data')}
+					subheader={`${this.options[period.menuId].label}, ${raw ? t('collections.rawData') : t('collections.calibratedData')}`}
+					avatar={this.renderIcon()}
+					noExpand
+					// hiddenContent={this.renderDataTable()}
 					topAction={this.renderMenu()}
 					content={
 						<Grid container>
@@ -421,9 +471,10 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	changeChartType: (val) => dispatch(changeChartType(val)),
+	changeChartType: (period, val) => dispatch(changeChartType(period, val)),
 	handleSetDate: (id, to, from, timeType) => dispatch(changeDate(id, to, from, timeType)),
-	changeYAxis: (val) => dispatch(changeYAxis(val))
+	changeYAxis: (val) => dispatch(changeYAxis(val)),
+	removePeriod: (pId) => dispatch(removePeriod(pId))
 
 })
 
