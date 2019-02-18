@@ -2,7 +2,6 @@ import { Button, DialogActions, DialogContentText, DialogContent, Dialog, Dialog
 import { ItemGrid, GridContainer, CircularLoader } from 'components'
 import React, { Component, Fragment } from 'react'
 import { getProject, deleteProject } from 'variables/dataProjects'
-import ProjectData from './ProjectCards/ProjectData'
 import ProjectDetails from './ProjectCards/ProjectDetails'
 import ProjectCollections from './ProjectCards/ProjectCollections'
 import { ProjectContact } from './ProjectCards/ProjectContact'
@@ -18,7 +17,8 @@ import { Timeline, Map, DataUsage, Person, LibraryBooks } from 'variables/icons'
 import { compose } from 'recompose';
 import { finishedSaving, removeFromFav, addToFav, isFav } from 'redux/favorites';
 import { connect } from 'react-redux'
-import ProjectDataPanel from './ProjectCards/ProjectDataPanel';
+import ChartData from 'views/Charts/ChartData';
+import ChartDataPanel from 'views/Charts/ChartDataPanel';
 
 class Project extends Component {
 	constructor(props) {
@@ -436,14 +436,12 @@ class Project extends Component {
 						</ItemGrid>
 
 						<ItemGrid xs={12} noMargin id={'data'}>
-							<ProjectDataPanel
-								t={t}
-							/>
+							<ChartDataPanel />
 						</ItemGrid>
 						{this.props.periods.map((period, i) => {
 							if (period.hide) { return null }
 							return <ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
-								<ProjectData
+								<ChartData
 									period={period}
 									getData={this.handleSwitchDayHourSummary}
 									setHoverID={this.setHoverID}

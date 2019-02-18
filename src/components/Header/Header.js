@@ -1,5 +1,5 @@
 import { AppBar, Button, Hidden, IconButton, Toolbar, withStyles } from '@material-ui/core';
-import { KeyboardArrowLeft, Menu } from '@material-ui/icons';
+import { KeyboardArrowLeft, Menu } from 'variables/icons';
 import headerStyle from 'assets/jss/material-dashboard-react/headerStyle.js';
 import PropTypes from 'prop-types';
 import React from 'react';

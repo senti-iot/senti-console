@@ -90,8 +90,10 @@ import EditLocation from '@material-ui/icons/EditLocation'
 import WhatsHot from '@material-ui/icons/Whatshot'
 import Compare from '@material-ui/icons/Compare'
 import EventNote from '@material-ui/icons/EventNote'
+import FullscreenOutlined from '@material-ui/icons/FullscreenOutlined'
 
 export {
+	FullscreenOutlined,
 	EventNote,
 	Compare,
 	Mail,

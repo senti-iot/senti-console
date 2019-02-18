@@ -1,5 +1,4 @@
 import React, { Fragment, PureComponent } from 'react';
-import PropTypes from 'prop-types'
 import {
 	Grid, IconButton, Menu, withStyles, ListItem,
 	ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox, Typography,
@@ -27,7 +26,7 @@ import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeDate, removePeriod, changeChartType } from 'redux/dateTime'
 
-class ProjectData extends PureComponent {
+class ChartData extends PureComponent {
 	constructor(props) {
 		super(props)
 
@@ -443,4 +442,4 @@ const mapDispatchToProps = dispatch => ({
 	changeChartType: (p, chartId) => dispatch(changeChartType(p, chartId))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(ProjectData))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(ChartData))

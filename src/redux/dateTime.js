@@ -80,7 +80,7 @@ const initialState = {
 		menuId: 0,
 		to: moment(),
 		from: moment().startOf('day'),
-		timeType: 0,
+		timeType: 1,
 		chartType: 3,
 		hide: false
 	}, {

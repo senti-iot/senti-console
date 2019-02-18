@@ -9,7 +9,6 @@ import GridContainer from 'components/Grid/GridContainer'
 import DeviceDetails from './DeviceCards/DeviceDetails'
 import DeviceHardware from './DeviceCards/DeviceHardware'
 import DeviceImages from './DeviceCards/DeviceImages'
-import DeviceData from './DeviceCards/DeviceData'
 import { connect } from 'react-redux';
 import { unassignDeviceFromCollection, getCollection } from 'variables/dataCollections';
 import DeviceMap from './DeviceCards/DeviceMap';
@@ -21,6 +20,7 @@ import { getWifiHourly, getWifiDaily, getWifiMinutely, getWifiSummary } from 'co
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 import { handleRequestSort } from 'variables/functions';
 import ProjectDataPanel from 'views/Projects/ProjectCards/ProjectDataPanel';
+import ChartData from 'views/Charts/ChartData';
 
 class Device extends Component {
 	constructor(props) {
@@ -485,13 +485,18 @@ class Device extends Component {
 		</Dialog>
 	}
 
-	// renderMenu = () => {
-	// 	const { t } = this.props
-	// 	return <DateFilterMenu t={t} />
-	// }
+	handleDataSize = (i) => {
+		let visiblePeriods = 0
+		this.props.periods.forEach(p => p.hide === false ? visiblePeriods += 1 : visiblePeriods)
+		if (visiblePeriods === 1)
+			return 12
+		if (i === this.props.periods.length - 1 && visiblePeriods % 2 !== 0 && visiblePeriods > 2)
+			return 12
+		return 6
+	}
 
 	render() {
-		const { device, loading, selected, order, orderBy } = this.state
+		const { device, loading, /* selected, order, orderBy */ } = this.state
 
 		return (
 			!loading ? <Fragment>
@@ -500,9 +505,7 @@ class Device extends Component {
 					history={this.props.history}
 					match={this.props.match}
 					tabs={this.tabs}
-				// content={this.renderMenu()}
 				/>
-				{/* <div style={{ position: "absolute", background: 'red', width: 1000, height: 30, zIndex: 10000 }}></div> */}
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<AssignDC
 						deviceId={device.id}
@@ -538,23 +541,20 @@ class Device extends Component {
 					<ItemGrid xs={12} noMargin id={'data'}>
 						<ProjectDataPanel t={this.props.t} />
 					</ItemGrid>
-					{this.props.periods.map((period, i) =>
-						<ItemGrid xs={i === this.props.periods.length - 1 ? i % 2 === 0 ? 12 : 6 : 6} noMargin id={period.id} key={period.id}>
-							<DeviceData
+					{this.props.periods.map((period, i) => {
+						if (period.hide) { return null }
+						return <ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
+							<ChartData
+								single
 								getData={this.handleSwitchDayHourSummary}
 								period={period}
 								device={device}
 								history={this.props.history}
 								match={this.props.match}
 								t={this.props.t}
-								handleCheckboxClick={this.handleCheckboxClick}//
-								handleRequestSort={this.handleRequestSort}//
-								handleSelectAllClick={this.handleSelectAllClick}//
-								order={order}
-								orderBy={orderBy}
-								selected={selected}
 							/>
-						</ItemGrid>)}
+						</ItemGrid>
+					})}
 
 					<ItemGrid xs={12} noMargin id={'map'}>
 						<DeviceMap

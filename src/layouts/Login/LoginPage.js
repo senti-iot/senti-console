@@ -1,6 +1,6 @@
 import React from 'react';
 import { InputAdornment, withStyles, CardContent, Collapse, Button, Grid, withWidth } from '@material-ui/core';
-import { LockOutlined, Person } from '@material-ui/icons';
+import { LockOutlined, Person } from 'variables/icons';
 import { GridContainer, ItemGrid, ItemG, TextF } from 'components';
 import Card from 'components/Card/Card.js';
 import CardBody from 'components/Card/CardBody.js';
