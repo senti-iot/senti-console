@@ -19,6 +19,7 @@ import { finishedSaving, removeFromFav, addToFav, isFav } from 'redux/favorites'
 import { connect } from 'react-redux'
 import ChartData from 'views/Charts/ChartData';
 import ChartDataPanel from 'views/Charts/ChartDataPanel';
+import Maps from 'views/Maps';
 
 class Project extends Component {
 	constructor(props) {
@@ -461,9 +462,9 @@ class Project extends Component {
 								{...rp} />
 						</ItemGrid >
 						{project.devices ? <ItemGrid xs={12} noMargin id='map'>
-							<ProjectMap
+							<Maps
 								mapTheme={this.props.mapTheme}
-								devices={this.state.project.devices}
+								markers={this.state.project.devices}
 								heatData={this.state.heatData}
 								t={t}
 							/>

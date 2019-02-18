@@ -11,7 +11,6 @@ import DeviceHardware from './DeviceCards/DeviceHardware'
 import DeviceImages from './DeviceCards/DeviceImages'
 import { connect } from 'react-redux';
 import { unassignDeviceFromCollection, getCollection } from 'variables/dataCollections';
-import DeviceMap from './DeviceCards/DeviceMap';
 import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
 import { Timeline, DeviceHub, Map, DeveloperBoard, Image } from 'variables/icons';
@@ -21,6 +20,7 @@ import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites'
 import { handleRequestSort } from 'variables/functions';
 import ProjectDataPanel from 'views/Projects/ProjectCards/ProjectDataPanel';
 import ChartData from 'views/Charts/ChartData';
+import Maps from 'views/Maps';
 
 class Device extends Component {
 	constructor(props) {
@@ -64,7 +64,7 @@ class Device extends Component {
 					if (rs.dataCollection) {
 						await this.getDataCollection(rs.dataCollection)
 					}
-					this.getHeatMapData()
+					await this.getHeatMapData()
 					if (rs.lat && rs.long) {
 						let data = await getWeather(rs, moment(), this.props.language)
 						this.setState({ weather: data })
@@ -209,6 +209,7 @@ class Device extends Component {
 			data: data,
 			color: teal[500]
 		}
+		console.log(dataSet)
 		this.setState({
 			heatData: dataSet,
 			loadingMap: false
@@ -497,7 +498,7 @@ class Device extends Component {
 
 	render() {
 		const { device, loading, /* selected, order, orderBy */ } = this.state
-
+		console.log(this.state.heatData)
 		return (
 			!loading ? <Fragment>
 				<Toolbar
@@ -557,13 +558,13 @@ class Device extends Component {
 					})}
 
 					<ItemGrid xs={12} noMargin id={'map'}>
-						<DeviceMap
+						<Maps
 							reload={this.reload}
 							device={this.state.heatData}
+							markers={this.state.device ? [this.state.device] : []}
 							loading={this.state.loadingMap}
 							weather={this.state.weather}
 							heatData={this.state.heatData}
-							classes={this.props.classes}
 							t={this.props.t}
 						/>
 					</ItemGrid>

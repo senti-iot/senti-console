@@ -8,14 +8,14 @@ import { getAddressByLocation, updateDevice } from 'variables/dataDevices';
 import { connect } from 'react-redux'
 import { changeMapTheme, changeHeatMap } from 'redux/appState';
 
-class DeviceMap extends PureComponent {
+class MapCard extends PureComponent {
 	constructor(props) {
 		super(props)
 		this.state = {
 			actionAnchorVisibility: null,
 			editLocation: false,
 			openModalEditLocation: false,
-			markers: []
+			markers: props.markers
 		}
 	}
 	visibilityOptions = [
@@ -28,14 +28,7 @@ class DeviceMap extends PureComponent {
 		{ id: 6, label: this.props.t("map.themes.6") },
 		{ id: 7, label: this.props.t('map.themes.7') }
 	]
-	componentDidUpdate = (prevProps, prevState) => {
-		if (this.props.device && prevProps.device !== this.props.device && this.props.device.lat && this.props.device.long) {
-			this.setState({
-				markers: [{ ...this.props.device, weather: this.props.weather }]
-			})
-		}
-	}
-	
+
 	handleVisibility = e => (event) => {
 		if (event)
 			event.preventDefault()
@@ -52,7 +45,7 @@ class DeviceMap extends PureComponent {
 		let saved = await updateDevice(device)
 		if (saved)
 			this.props.reload(5)//msgId = 5 - Device Updated
-		else { 
+		else {
 			this.setState({ error: true })
 		}
 	}
@@ -76,29 +69,29 @@ class DeviceMap extends PureComponent {
 			markers: [{ ...this.props.device, weather: this.props.weather }]
 		})
 	}
-	handleOpenConfirmEditLocation = () => { 
+	handleOpenConfirmEditLocation = () => {
 		this.setState({
 			openModalEditLocation: true
 		})
 	}
 	renderMenu = () => {
-		const { t, mapTheme } = this.props
+		const { t, mapTheme, device } = this.props
 		const { actionAnchorVisibility } = this.state
 		return <Fragment>
-			<Collapse in={this.state.editLocation}>
+			{device && <Collapse in={this.state.editLocation}>
 				<ItemG container>
 					<ItemG>
 						<IconButton onClick={this.handleOpenConfirmEditLocation}>
-							<Save style={{ color: teal[500] }}/>
+							<Save style={{ color: teal[500] }} />
 						</IconButton>
 					</ItemG>
 					<ItemG>
 						<IconButton onClick={this.handleCancelEditLocation}>
-							<Clear style={{ color: red[400] }}/>
+							<Clear style={{ color: red[400] }} />
 						</IconButton>
 					</ItemG>
 				</ItemG>
-			</Collapse>
+			</Collapse>}
 			<ItemG>
 				<IconButton title={'Map layer'} variant={'fab'} onClick={this.handleOpenMenu}>
 					<Layers />
@@ -121,23 +114,23 @@ class DeviceMap extends PureComponent {
 					{/* </List> */}
 				</Menu>
 			</ItemG>
-			
+
 			<Dropdown menuItems={
 				[
-					{ label: t('actions.heatMap'), selected: this.props.heatMap, icon: <WhatsHot style={{ padding: "0px 12px" }}/>, func: () => this.props.changeHeatMap( !this.props.heatMap ) },
+					{ label: t('actions.heatMap'), selected: this.props.heatMap, icon: <WhatsHot style={{ padding: "0px 12px" }} />, func: () => this.props.changeHeatMap(!this.props.heatMap) },
 					{ label: t('actions.goToDevice'), icon: <Smartphone style={{ padding: "0px 12px" }} />, func: () => this.flyToMarkers() },
-					{ label: t('actions.editLocation'), selected: this.state.editLocation, icon: <EditLocation style={{ padding: '0px 12px' }}/>, func: () => this.handleEditLocation() }]
+					{ dontShow: device ? false : true, label: t('actions.editLocation'), selected: this.state.editLocation, icon: <EditLocation style={{ padding: '0px 12px' }} />, func: () => this.handleEditLocation() }]
 			} />
 
 		</Fragment>
 	}
-	getRef = (r) => { 
+	getRef = (r) => {
 		this.map = r
 	}
-	flyToMarkers = () => { 
-		const { device } = this.props
-		if (this.map) { 
-			this.map.leafletElement.flyToBounds([[device.lat, device.long]])
+	flyToMarkers = () => {
+		const { markers } = this.state
+		if (this.map) {
+			this.map.leafletElement.flyToBounds(markers.map(d => d.lat && d.long ? [d.lat, d.long] : null))
 		}
 	}
 	getLatLngFromMap = async (e) => {
@@ -147,11 +140,11 @@ class DeviceMap extends PureComponent {
 		let addressStr = address.vejnavn + ' ' + address.husnr + ', ' + address.postnr + ' ' + address.postnrnavn
 		this.setState({
 			markers: [{
-				...this.props.device,
+				...this.state.markers[0],
 				address: addressStr,
 				lat,
 				long,
-				 weather: this.props.weather
+				weather: this.props.weather
 			}]
 		})
 	}
@@ -164,8 +157,9 @@ class DeviceMap extends PureComponent {
 		})
 	}
 	renderModal = () => {
-		const { t } = this.props
+		const { t, loading } = this.props
 		const { openModalEditLocation, markers, error } = this.state
+		console.log(markers, loading)
 		return <Dialog
 			onClose={this.handleCancelConfirmEditLocation}
 			open={openModalEditLocation}
@@ -178,13 +172,12 @@ class DeviceMap extends PureComponent {
 			<DialogTitle> </DialogTitle>
 			<DialogContent style={{ overflowY: "visible" }}>
 				{error ? <Danger>{t('404.networkError')}</Danger> : null}
-				{markers.length > 0 ? markers.map(m => {
-					return <ItemG key={m.id} container direction={'column'}>
+				{markers.length > 0 ? markers.map(m =>
+					<ItemG key={m.id} container direction={'column'}>
 						<TextF id={'lat'} label={'Latitude'} value={m.lat ? m.lat.toString() : ""} disabled />
 						<TextF id={'long'} label={'Longitude'} value={m.long ? m.long.toString() : ""} disabled />
 						<AddressInput value={m.address} handleChange={this.handleChangeAddress} />
-					</ItemG>
-				}) : null
+					</ItemG>) : null
 				}
 			</DialogContent>
 			<DialogActions>
@@ -206,11 +199,11 @@ class DeviceMap extends PureComponent {
 				title={t('devices.cards.map')}
 				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat, long: device.long })}, Heatmap ${heatMap ? t('actions.on') : t('actions.off')}` : null}
 				avatar={<Map />}
-				topAction={device ? (device.lat && device.long ? this.renderMenu() : null) : null}
+				topAction={this.renderMenu()}
 				hiddenContent={
 					loading ? <CircularLoader /> :
 						<Grid container justify={'center'}>
-							{this.renderModal()}
+							{device ? this.renderModal() : false}
 							{this.state.markers.length > 0 ?
 								<OpenStreetMap
 									calibrate={this.state.editLocation}
@@ -238,4 +231,4 @@ const mapDispatchToProps = (dispatch) => ({
 	changeHeatMap: (value) => dispatch(changeHeatMap(value))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(DeviceMap)
+export default connect(mapStateToProps, mapDispatchToProps)(MapCard)

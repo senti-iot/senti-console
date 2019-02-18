@@ -89,13 +89,14 @@ class ProjectMap extends Component {
 				topAction={this.renderMenu()}
 				hiddenContent={
 					<Grid container justify={'center'}>
-						{devices.length > 0 ? <OpenStreetMap
-							iRef={this.getRef}
-							t={t}
-							mapTheme={mapTheme}
-							heatMap={heatMap}
-							heatData={heatData}
-							markers={devices} /> : <Caption>{t('projects.noAvailableDevices')}</Caption>}
+						{devices.length > 0 ?
+							<OpenStreetMap
+								iRef={this.getRef}
+								t={t}
+								mapTheme={mapTheme}
+								heatMap={heatMap}
+								heatData={heatData}
+								markers={devices} /> : <Caption>{t('projects.noAvailableDevices')}</Caption>}
 					</Grid>
 				} />
 
