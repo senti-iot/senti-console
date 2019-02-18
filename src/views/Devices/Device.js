@@ -497,7 +497,6 @@ class Device extends Component {
 
 	render() {
 		const { device, loading, /* selected, order, orderBy */ } = this.state
-		console.log(this.state.heatData)
 		return (
 			!loading ? <Fragment>
 				<Toolbar

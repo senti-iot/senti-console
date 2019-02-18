@@ -236,7 +236,6 @@ class MapCard extends PureComponent {
 	}
 	render() {
 		const { device, t, loading, mapTheme, heatMap, period } = this.props
-		console.log(this.state.heatData)
 		return (
 			<InfoCard
 				noPadding
