@@ -294,6 +294,7 @@ class ProjectData extends PureComponent {
 					</Menu>
 				</Hidden>
 			</ItemG>
+			
 			<ItemG>
 				<IconButton
 					aria-label='More'
@@ -310,6 +311,31 @@ class ProjectData extends PureComponent {
 				onClose={this.handleCloseActionsDetails}
 				onChange={this.handleVisibility}
 				PaperProps={{ style: { minWidth: 250 } }}>
+				<div>
+					<Hidden mdUp>
+						<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
+							<ListItemIcon>
+								<Visibility />
+							</ListItemIcon>
+							<ListItemText inset primary={t('filters.options.graphType')} />
+							<ExpandMore className={classNames({
+								[classes.expandOpen]: this.state.visibility,
+							}, classes.expand)} />
+						</ListItem>
+						<Collapse in={this.state.visibility} timeout='auto' unmountOnExit>
+							<List component='div' disablePadding>
+								{this.visibilityOptions.map(op => {
+									return <ListItem key={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
+										<ListItemIcon>
+											{op.icon}
+										</ListItemIcon>
+										<ListItemText inset primary={op.label} />
+									</ListItem>
+								})}
+							</List>
+						</Collapse>
+					</Hidden>
+				</div>
 				<ListItem button onClick={this.handleOpenDownloadModal}>
 					<ListItemIcon><CloudDownload /></ListItemIcon>
 					<ListItemText>{t('menus.export')}</ListItemText>
@@ -341,31 +367,7 @@ class ProjectData extends PureComponent {
 						{t('menus.charts.deleteThisPeriod')}
 					</ListItemText>
 				</ListItem>
-				<div>
-					<Hidden mdUp>
-						<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
-							<ListItemIcon>
-								<Visibility />
-							</ListItemIcon>
-							<ListItemText inset primary={t('filters.options.graphType')} />
-							<ExpandMore className={classNames({
-								[classes.expandOpen]: this.state.visibility,
-							}, classes.expand)} />
-						</ListItem>
-						<Collapse in={this.state.visibility} timeout='auto' unmountOnExit>
-							<List component='div' disablePadding>
-								{this.visibilityOptions.map(op => {
-									return <ListItem key={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
-										<ListItemIcon>
-											{op.icon}
-										</ListItemIcon>
-										<ListItemText inset primary={op.label} />
-									</ListItem>
-								})}
-							</List>
-						</Collapse>
-					</Hidden>
-				</div>
+	
 			</Menu>
 		</ItemG>
 	}
