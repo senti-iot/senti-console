@@ -49,7 +49,6 @@ class Project extends Component {
 	]
 	componentDidMount = async () => {
 		const { history, match/* , location */ } = this.props
-
 		if (match)
 			if (match.params.id) {
 				await this.getProject(match.params.id)
@@ -102,7 +101,7 @@ class Project extends Component {
 						dataCollections: rs.dataCollections.map((dc, i) => ({ ...dc, color: colors[i] })),
 						devices: rs.dataCollections.filter(dc => dc.activeDevice ? true : false).map((dc, i) => dc.activeDevice ? { ...dc.activeDevice, color: colors[i] } : null)
 					}, loading: false
-				}, () => { 		
+				}, () => {
 					this.getHeatMapData()
 				})
 			}
@@ -401,7 +400,15 @@ class Project extends Component {
 	}
 
 
-
+	handleDataSize = (i) => {
+		let visiblePeriods = 0
+		this.props.periods.forEach(p => p.hide === false ? visiblePeriods += 1 : visiblePeriods)
+		if (visiblePeriods === 1)
+			return 12
+		if (i === this.props.periods.length - 1 && visiblePeriods % 2 !== 0 && visiblePeriods > 2)
+			return 12
+		return 6
+	}
 	render() {
 		const { project, loading, openAssignDC } = this.state
 		const { t, classes } = this.props
@@ -434,7 +441,8 @@ class Project extends Component {
 							/>
 						</ItemGrid>
 						{this.props.periods.map((period, i) => {
-							return <ItemGrid xs={i === this.props.periods.length - 1 ? i % 2 === 0 ? 12 : 6 : 6} noMargin key={i} id={i}>
+							if (period.hide) { return null }
+							return <ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
 								<ProjectData
 									period={period}
 									getData={this.handleSwitchDayHourSummary}

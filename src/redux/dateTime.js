@@ -1,27 +1,24 @@
 import moment from 'moment'
 
-const ChangeDate = 'changeDate'
-const changeCompares = 'changeCompares'
+const changePeriods = 'changeDate'
 
-export const hideCompare = (cId) => { 
+export const hideShowPeriod = (pId) => { 
 	return (dispatch, getState) => {
-		console.log('cId', cId)
 		let newCompares = []
-		newCompares.push(...getState().dateTime.compares)
-		let c = newCompares.findIndex(c => c.id === cId)
-		newCompares[c] = { ...newCompares[c], display: !newCompares[c].display }
-		console.log('cId', c, newCompares[c])
+		newCompares.push(...getState().dateTime.periods)
+		let c = newCompares.findIndex(c => c.id === pId)
+		newCompares[c] = { ...newCompares[c], hide: !newCompares[c].hide }
 		dispatch({
-			type: changeCompares,
+			type: changePeriods,
 			payload: newCompares
 		})
 	}
 }
-export const removeCompares = () => {
+export const resetToDefault = () => {
 	return (dispatch) => {
 		dispatch({
-			type: changeCompares,
-			payload: []
+			type: changePeriods,
+			payload: initialState.periods
 		})
 	}
 }
@@ -31,24 +28,12 @@ export const removePeriod = (cId) => {
 		newCompares.push(...getState().dateTime.periods)
 		newCompares = newCompares.filter(c => c.id !== cId)
 		dispatch({
-			type: ChangeDate,
+			type: changePeriods,
 			payload: newCompares
 		})
 	}
 }
 
-export const addCompare = (compare) => { 
-	return (dispatch, getState) => {
-		let newCompares = []
-		compare.forEach((c, i) => c.id = getState().dateTime.compares.length + i)
-		newCompares.push( ...getState().dateTime.compares,  ...compare)
-		dispatch({
-			type: changeCompares,
-			payload: newCompares
-		})
-
-	}
-}
 export const changeChartType = (period, chartType) => { 
 	return (dispatch, getState) => { 
 		let periods = []
@@ -56,7 +41,7 @@ export const changeChartType = (period, chartType) => {
 		let p = periods.findIndex(f => f.id === period.id)
 		periods[p] = { ...period, chartType: chartType }
 		dispatch({
-			type: ChangeDate,
+			type: changePeriods,
 			payload: periods
 		})
 	}
@@ -73,10 +58,10 @@ export const changeDate = (menuId, to, from, timeType, id) => {
 			 c = periods.findIndex(f => f.id === id)
 		}
 		periods[c] = { id: c,
-			menuId, to, from, timeType, chartType: id === -1 ? 3 : periods[c].chartType
+			menuId, to, from, timeType, chartType: id === -1 ? 3 : periods[c].chartType, hide: false
 		}
 		dispatch({
-			type: ChangeDate,
+			type: changePeriods,
 			payload: periods
 		})
 
@@ -96,22 +81,22 @@ const initialState = {
 		to: moment(),
 		from: moment().startOf('day'),
 		timeType: 0,
-		chartType: 3
+		chartType: 3,
+		hide: false
 	}, {
 		id: 1,
 		menuId: 2,
 		to: moment(),
 		from: moment().subtract(7, 'days'),
 		timeType: 2,
-		chartType: 3
+		chartType: 3,
+		hide: false
 	}]
 }
 
 export const dateTime = (state = initialState, { type, payload }) => {
 	switch (type) {
-		case changeCompares:
-			return Object.assign({}, state, { compares: payload })
-		case ChangeDate:
+		case changePeriods:
 			return Object.assign({}, state, { periods: payload })
 		
 		default:

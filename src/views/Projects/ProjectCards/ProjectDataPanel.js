@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { InfoCard, ItemG, DateFilterMenu } from 'components';
-import { IconButton } from '@material-ui/core';
+import { InfoCard, ItemG, DateFilterMenu, Dropdown } from 'components';
+import { IconButton, Checkbox } from '@material-ui/core';
 import { Add, Visibility, Clear, Timeline } from 'variables/icons';
 import { connect } from 'react-redux'
+import { hideShowPeriod } from 'redux/dateTime';
+import { dateTimeFormatter } from 'variables/functions';
 
 class ProjectDataPanel extends Component {
 	render() {
@@ -24,9 +26,14 @@ class ProjectDataPanel extends Component {
 							/>
 						</ItemG>}
 						<ItemG>
-							<IconButton>
-								<Visibility />
-							</IconButton>
+							<Dropdown icon={<Visibility />} menuItems={
+								periods.map(p => ({ 
+									label: `${dateTimeFormatter(p.from)} - ${dateTimeFormatter(p.to)}`,
+									icon: <Checkbox checked={p.hide} />,
+									func: () => this.props.hideShowPeriod(p.id)
+								}))
+							
+							} />
 						</ItemG>
 						<ItemG>
 							<IconButton>
@@ -43,5 +50,9 @@ const mapStateToProps = (state) => ({
 	periods: state.dateTime.periods
 })
 
+const mapDispatchToProps = dispatch => ({ 
+	hideShowPeriod: pId => dispatch(hideShowPeriod(pId))
+})
 
-export default connect(mapStateToProps)(ProjectDataPanel)
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectDataPanel)
