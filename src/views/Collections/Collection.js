@@ -25,7 +25,7 @@ class Collection extends Component {
 		super(props)
 
 		this.state = {
-			//Date Filter stuff
+			//Date Filter
 			raw: props.rawData ? props.rawData : false,
 			//End Date Filter Tools
 			collection: null,
@@ -319,9 +319,6 @@ class Collection extends Component {
 			if (rs) { 
 				this.props.history.push('/collections/list')
 				this.snackBarMessages(4)
-			}
-			else {
-				alert('Delete failed') //todo
 			}
 				
 		})

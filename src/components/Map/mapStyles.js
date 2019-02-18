@@ -2,10 +2,10 @@ const mapStyles = theme => ({
 	map: {
 		width: '100%',
 		[theme.breakpoints.up('sm')]: {
-			height: window.innerHeight - 250
+			height: window.innerHeight - 350
 		},
 		[theme.breakpoints.down('xs')]: {
-			height: 300
+			height: 500
 		}
 	},
 	popup: {
