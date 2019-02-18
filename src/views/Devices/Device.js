@@ -209,7 +209,6 @@ class Device extends Component {
 			data: data,
 			color: teal[500]
 		}
-		console.log(dataSet)
 		this.setState({
 			heatData: dataSet,
 			loadingMap: false

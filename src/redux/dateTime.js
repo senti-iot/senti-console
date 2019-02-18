@@ -1,7 +1,16 @@
 import moment from 'moment'
 
 const changePeriods = 'changeDate'
+const changeHeatmapDate = 'changeHeatMapDate'
 
+export const changeHeatMapDate = (menuId, to, from, timeType) => { 
+	return (dispatch, getState) => { 
+		dispatch({
+			type: changeHeatmapDate,
+			payload: { menuId, to, from, timeType }
+		})
+	}
+}
 export const hideShowPeriod = (pId) => { 
 	return (dispatch, getState) => {
 		let newCompares = []
@@ -75,6 +84,12 @@ export const changeDate = (menuId, to, from, timeType, id) => {
  * 3 - Line
  */
 const initialState = {
+	heatMap: {
+		to: moment(),
+		from: moment().subtract(7, 'days'),
+		timeType: 2,
+		menuId: 3,
+	},
 	periods: [{
 		id: 0,
 		menuId: 0,
@@ -98,7 +113,11 @@ export const dateTime = (state = initialState, { type, payload }) => {
 	switch (type) {
 		case changePeriods:
 			return Object.assign({}, state, { periods: payload })
-		
+		case changeHeatmapDate:
+			return Object.assign({}, state, {
+				heatMap: {
+					...payload
+				} })
 		default:
 			return state
 	}

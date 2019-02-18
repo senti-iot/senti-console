@@ -129,9 +129,9 @@ class HeatMapLegend extends MapControl {
 	}
 }
 const mapStateToProps = (state) => ({
-	to: state.dateTime.periods[0].to,
-	from: state.dateTime.periods[0].from,
-	timeType: state.dateTime.periods[0].timeType
+	to: state.dateTime.heatMap.to,
+	from: state.dateTime.heatMap.from,
+	timeType: state.dateTime.heatMap.timeType
 })
 
 const mapDispatchToProps = {

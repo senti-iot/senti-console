@@ -7,7 +7,7 @@ import moment from 'moment'
 import { DateRange } from 'variables/icons';
 import teal from '@material-ui/core/colors/teal'
 import { connect } from 'react-redux'
-import { changeDate } from 'redux/dateTime';
+import { changeDate, changeHeatMapDate } from 'redux/dateTime';
 
 const styles = theme => ({
 	selected: {
@@ -85,8 +85,12 @@ class DateFilterMenu extends Component {
 			default:
 				break;
 		}
-
-		this.props.handleSetDate(id, to, from, defaultT, period ? period.id : -1)
+		if (this.props.heatmap) {
+			this.props.handleSetHeatmapDate(id, to, from, defaultT)
+		}
+		else { 
+			this.props.handleSetDate(id, to, from, defaultT, period ? period.id : -1)
+		}
 
 	}
 
@@ -213,7 +217,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-	handleSetDate: (id, to, from, timeType, pId) => dispatch(changeDate(id, to, from, timeType, pId))
+	handleSetDate: (id, to, from, timeType, pId) => dispatch(changeDate(id, to, from, timeType, pId)),
+	handleSetHeatmapDate: (id, to, from, timeType) => dispatch(changeHeatMapDate(id, to, from, timeType))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DateFilterMenu))

@@ -1,5 +1,5 @@
 import React, { PureComponent, Fragment } from 'react'
-import { InfoCard, Caption, Dropdown, CircularLoader, ItemG, TextF, AddressInput, Danger } from 'components';
+import { InfoCard, Caption, Dropdown, CircularLoader, ItemG, TextF, AddressInput, Danger, DateFilterMenu } from 'components';
 import { Map, Layers, Smartphone, Save, Clear, EditLocation, WhatsHot } from 'variables/icons'
 import { Grid/*,  Checkbox, */, IconButton, Menu, MenuItem, Collapse, Dialog, DialogContent, DialogTitle, DialogActions, Button } from '@material-ui/core';
 import { red, teal } from "@material-ui/core/colors"
@@ -7,15 +7,17 @@ import OpenStreetMap from 'components/Map/OpenStreetMap';
 import { getAddressByLocation, updateDevice } from 'variables/dataDevices';
 import { connect } from 'react-redux'
 import { changeMapTheme, changeHeatMap } from 'redux/appState';
-
+import moment from 'moment'
+import { getDataSummary as getDeviceDataSummary } from 'variables/dataDevices'
+import { dateTimeFormatter } from 'variables/functions';
 class MapCard extends PureComponent {
-	constructor(props) {
+ 	constructor(props) {
 		super(props)
 		this.state = {
 			actionAnchorVisibility: null,
 			editLocation: false,
 			openModalEditLocation: false,
-			markers: props.markers
+			markers: props.markers,
 		}
 	}
 	visibilityOptions = [
@@ -28,7 +30,13 @@ class MapCard extends PureComponent {
 		{ id: 6, label: this.props.t("map.themes.6") },
 		{ id: 7, label: this.props.t('map.themes.7') }
 	]
-
+	componentDidMount = async () => {
+		await this.getHeatMapData()
+	}
+	componentDidUpdate = async (prevProps) => {
+		if (prevProps.period !== this.props.period)
+			await this.getHeatMapData()
+	}
 	handleVisibility = e => (event) => {
 		if (event)
 			event.preventDefault()
@@ -74,6 +82,37 @@ class MapCard extends PureComponent {
 			openModalEditLocation: true
 		})
 	}
+	getHeatMapData = async () => {
+		const { period } = this.props
+		const { markers } = this.state
+		let startDate = moment(period.from).format(this.format)
+		let endDate = moment(period.to).format(this.format)
+		let dataArr = []
+		await Promise.all(markers.map(async d => {
+			let dataSet = null
+			let data = null
+			data = await getDeviceDataSummary(d.id, startDate, endDate, true)
+			dataSet = {
+				name: d.name,
+				id: d.id,
+				data: data,
+				color: d.color ? d.color : teal[500],
+				liveStatus: d.liveStatus,
+				lat: d.lat,
+				long: d.long
+			}
+			return dataArr.push(dataSet)
+		}))
+		dataArr = dataArr.reduce((newArr, d) => {
+			if (d.data !== null)
+				newArr.push(d)
+			return newArr
+		}, [])
+		this.setState({
+			heatData: dataArr,
+			loadingHeatMap: false
+		})
+	}
 	renderMenu = () => {
 		const { t, mapTheme, device } = this.props
 		const { actionAnchorVisibility } = this.state
@@ -91,6 +130,12 @@ class MapCard extends PureComponent {
 						</IconButton>
 					</ItemG>
 				</ItemG>
+			</Collapse>}
+			{this.props.heatMap && <Collapse in={this.props.heatMap}>
+				<DateFilterMenu
+					heatmap
+					t={t}
+				/>
 			</Collapse>}
 			<ItemG>
 				<IconButton title={'Map layer'} variant={'fab'} onClick={this.handleOpenMenu}>
@@ -157,9 +202,8 @@ class MapCard extends PureComponent {
 		})
 	}
 	renderModal = () => {
-		const { t, loading } = this.props
+		const { t } = this.props
 		const { openModalEditLocation, markers, error } = this.state
-		console.log(markers, loading)
 		return <Dialog
 			onClose={this.handleCancelConfirmEditLocation}
 			open={openModalEditLocation}
@@ -191,13 +235,14 @@ class MapCard extends PureComponent {
 		</Dialog>
 	}
 	render() {
-		const { device, t, loading, mapTheme, heatMap } = this.props
+		const { device, t, loading, mapTheme, heatMap, period } = this.props
+		console.log(this.state.heatData)
 		return (
 			<InfoCard
 				noPadding
 				noHiddenPadding
 				title={t('devices.cards.map')}
-				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat, long: device.long })}, Heatmap ${heatMap ? t('actions.on') : t('actions.off')}` : null}
+				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat.toString().substring(0, device.lat.toString().indexOf('.') + 6), long: device.long.toString().substring(0, device.long.toString().indexOf('.') + 6) })},\nHeatmap: ${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)},` : ""} ${heatMap ? t('actions.on') : t('actions.off')}` : null}
 				avatar={<Map />}
 				topAction={this.renderMenu()}
 				hiddenContent={
@@ -211,7 +256,7 @@ class MapCard extends PureComponent {
 									iRef={this.getRef}
 									mapTheme={mapTheme}
 									heatMap={heatMap}
-									heatData={this.state.markers}
+									heatData={this.state.heatData}
 									t={t}
 									markers={this.state.markers}
 								/> : <Caption>{t('devices.notCalibrated')}</Caption>}
@@ -223,12 +268,13 @@ class MapCard extends PureComponent {
 }
 const mapStateToProps = (state) => ({
 	mapTheme: state.appState.mapTheme ? state.appState.mapTheme : state.settings.mapTheme,
-	heatMap: state.appState.heatMap ? state.appState.heatMap : false
+	heatMap: state.appState.heatMap ? state.appState.heatMap : false,
+	period: state.dateTime.heatMap
 })
 
 const mapDispatchToProps = (dispatch) => ({
 	changeMapTheme: (value) => dispatch(changeMapTheme(value)),
-	changeHeatMap: (value) => dispatch(changeHeatMap(value))
+	changeHeatMap: (value) => dispatch(changeHeatMap(value)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapCard)

@@ -59,7 +59,8 @@ class InfoCard extends PureComponent {
 					subheader={this.hasSubheader(subheader)}
 					classes={{
 						title: classes.title,
-						action: classes.actions
+						action: classes.actions,
+						subheader: classes.subheader
 					}}
 				>
 
