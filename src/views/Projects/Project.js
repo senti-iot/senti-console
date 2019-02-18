@@ -65,7 +65,7 @@ class Project extends Component {
 	componentDidUpdate = (prevProps) => {
 		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
 			// this.handleSwitchDayHourSummary()
-			// this.getHeatMapData()
+			this.getHeatMapData()
 		}
 		if (this.props.saved === true) {
 			const { project } = this.state
@@ -102,6 +102,8 @@ class Project extends Component {
 						dataCollections: rs.dataCollections.map((dc, i) => ({ ...dc, color: colors[i] })),
 						devices: rs.dataCollections.filter(dc => dc.activeDevice ? true : false).map((dc, i) => dc.activeDevice ? { ...dc.activeDevice, color: colors[i] } : null)
 					}, loading: false
+				}, () => { 		
+					this.getHeatMapData()
 				})
 			}
 		})

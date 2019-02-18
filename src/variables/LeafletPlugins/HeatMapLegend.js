@@ -63,6 +63,7 @@ class HeatMapLegend extends MapControl {
 			default:
 				break
 		}
+		console.log(max)
 		return this.numberWithCommas(half ? max / 2 : max)
 
 	}
@@ -129,9 +130,9 @@ class HeatMapLegend extends MapControl {
 	}
 }
 const mapStateToProps = (state) => ({
-	to: state.dateTime.to,
-	from: state.dateTime.from,
-	timeType: state.dateTime.timeType
+	to: state.dateTime.periods[0].to,
+	from: state.dateTime.periods[0].from,
+	timeType: state.dateTime.periods[0].timeType
 })
 
 const mapDispatchToProps = {

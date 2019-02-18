@@ -64,8 +64,7 @@ class Device extends Component {
 					if (rs.dataCollection) {
 						await this.getDataCollection(rs.dataCollection)
 					}
-					// this.handleSwitchDayHourSummary()
-					// this.getHeatMapData()
+					this.getHeatMapData()
 					if (rs.lat && rs.long) {
 						let data = await getWeather(rs, moment(), this.props.language)
 						this.setState({ weather: data })
@@ -158,7 +157,7 @@ class Device extends Component {
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
 			// this.handleSwitchDayHourSummary()
-			// this.getHeatMapData()
+			this.getHeatMapData()
 		}
 		if (this.props.saved === true) {
 			if (this.props.isFav({ id: this.state.device.id, type: 'device' })) {
@@ -218,7 +217,6 @@ class Device extends Component {
 
 	handleSwitchDayHourSummary = async (p) => {
 		// const { to, from, id } = this.props
-		console.log(p)
 		let diff = moment.duration(p.to.diff(p.from)).days()
 		// this.getHeatMapData()
 		switch (p.menuId) {
@@ -538,7 +536,7 @@ class Device extends Component {
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'data'}>
-						<ProjectDataPanel t={this.props.t}/>
+						<ProjectDataPanel t={this.props.t} />
 					</ItemGrid>
 					{this.props.periods.map((period, i) =>
 						<ItemGrid xs={i === this.props.periods.length - 1 ? i % 2 === 0 ? 12 : 6 : 6} noMargin id={period.id} key={period.id}>

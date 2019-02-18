@@ -241,9 +241,9 @@ class HeatLayer extends MapLayer {
 
 const mapStateToProps = (state) => {
 	return ({
-		from: state.dateTime.from,
-		to: state.dateTime.to,
-		timeType: state.dateTime.timeType
+		to: state.dateTime.periods[0].to,
+		from: state.dateTime.periods[0].from,
+		timeType: state.dateTime.periods[0].timeType
 	})
 }
 

@@ -210,7 +210,6 @@ class DeviceMap extends PureComponent {
 					loading ? <CircularLoader /> :
 						<Grid container justify={'center'}>
 							{this.renderModal()}
-							{/* {device.lat && device.long ? <Maps heatMap={this.state.heatMap} t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t('devices.notCalibrated')}</Caption>} */}
 							{this.state.markers.length > 0 ? <OpenStreetMap
 								calibrate={this.state.editLocation}
 								getLatLng={this.getLatLngFromMap}
