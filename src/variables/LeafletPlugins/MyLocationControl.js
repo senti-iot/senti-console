@@ -134,7 +134,7 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 					<MuiThemeProvider theme={this.props.theme}>
 						<IconButton
 							buttonRef={r => this.button = r}
-							className={this.props.classes.locButton}
+							className={this.props.classes.locButton + " leaflet-touch leaflet-bar" }
 							onClick={this.onClick}
 							color={'primary'}>
 							<MyLocation />
