@@ -219,7 +219,6 @@ export const setSummaryData = (dataArr, from, to, hoverID) => {
 // }
 
 export const getWifiDaily = async (type, objArr, from, to, hoverId, raw, simple) => {
-	console.log('getWifiDaily', type, objArr, from, to, hoverId, raw, simple)
 	let startDate = moment(from).format(format)
 	let endDate = moment(to).format(format)
 	let dataArr = []
@@ -358,7 +357,6 @@ export const getWifiHourly = async (type, objArr, from, to, hoverId, raw, simple
 
 export const setHourlyData = (dataArr, from, to, hoverID) => {
 	let labels = hoursToArr(from, to)
-	console.log(labels)
 	let state = {
 		loading: false,
 		timeType: 2,

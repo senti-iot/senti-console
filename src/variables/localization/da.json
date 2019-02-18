@@ -429,6 +429,9 @@
 			"deviceToOrg": "Tilknyt enhed til organisation"
 		},
 		"charts": {
+			"addAPeriod":"Tilføj en periode",
+			"resetToDefault": "Nulstil til standard",
+			"showHidePeriods": "Vis / Skjul en periode",
 			"deleteThisPeriod": "Slet denne periode",
 			"hideThisPeriod": "Skjul denne periode"
 		},

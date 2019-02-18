@@ -26,9 +26,7 @@ export const confirmUser = async (obj) => {
 	return response.ok ? response.data : response.status 
 }
 export const editUser = async (user) => {
-	console.trace()
 	let data = await api.put(`core/user/${user.id}`, user).then(rs => rs.data)
-	console.log(data)
 	return data
 }
 

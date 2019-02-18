@@ -65,6 +65,7 @@ import DonutLargeRounded from '@material-ui/icons/DonutLargeRounded'
 import PieChartRounded from '@material-ui/icons/PieChartRounded'
 import BarChart from '@material-ui/icons/BarChart'
 import Visibility from '@material-ui/icons/Visibility'
+import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import Build from '@material-ui/icons/Build'
 import Layers from '@material-ui/icons/Layers'
 import LayersClear from '@material-ui/icons/LayersClear'
@@ -168,6 +169,7 @@ export {
 	PieChartRounded,
 	BarChart,
 	Visibility,
+	VisibilityOff,
 	Build,
 	Layers,
 	LayersClear,

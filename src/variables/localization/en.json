@@ -429,6 +429,9 @@
 			"deviceToOrg": "Assign Device to Organisation"
 		},
 		"charts": {
+			"addAPeriod": "Add a period",
+			"resetToDefault": "Reset to default",
+			"showHidePeriods": "Show / Hide a period",
 			"deleteThisPeriod": "Delete this period",
 			"hideThisPeriod": "Hide this period"
 		},

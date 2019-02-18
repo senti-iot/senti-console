@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Divider, MenuItem, Menu, IconButton, withStyles } from '@material-ui/core';
+import { Divider, MenuItem, Menu, IconButton, withStyles, Button } from '@material-ui/core';
 import { ItemGrid, Info, CustomDateTime, ItemG } from 'components';
 import { dateTimeFormatter } from 'variables/functions';
 import moment from 'moment'
@@ -141,19 +141,27 @@ class DateFilterMenu extends Component {
 	isSelected = (value) => value === this.props.period ? this.props.period.menuId ? true : false : false
 
 	render() {
-		const { period, t, classes, icon } = this.props
+		const { period, t, classes, icon, button } = this.props
 		const { actionAnchor } = this.state
 		let displayTo = period ? dateTimeFormatter(period.to) : ""
 		let displayFrom = period ? dateTimeFormatter(period.from) : ""
 		return (
 			<Fragment>
-				<IconButton
+				{button && <Button
+					aria-label='More'
+					aria-owns={actionAnchor ? 'long-menu' : null}
+					aria-haspopup='true'
+					style={{ color: 'rgba(0, 0, 0, 0.54)' }}
+					onClick={this.handleOpenMenu}>
+					{icon ? icon : <DateRange />}
+				</Button>}
+				{!button && <IconButton
 					aria-label='More'
 					aria-owns={actionAnchor ? 'long-menu' : null}
 					aria-haspopup='true'
 					onClick={this.handleOpenMenu}>
 					{icon ? icon : <DateRange />}
-				</IconButton>
+				</IconButton>}
 				<Menu
 					disableAutoFocus
 					disableRestoreFocus

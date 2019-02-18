@@ -61,7 +61,8 @@ class ProjectMap extends Component {
 					})}
 					{/* </List> */}
 				</Menu>
-			</ItemG><Dropdown menuItems={[
+			</ItemG>
+			<Dropdown menuItems={[
 				{ label: t('actions.heatMap'), selected: this.props.heatMap, icon: <WhatsHot style={{ padding: "0px 12px" }}/>, func: () => this.props.changeHeatMap( !this.props.heatMap ) },
 				{ label: t('actions.goToDevice'), icon: <DeviceHub style={{ padding: "0px 12px" }} />, func: () => this.flyToMarkers() } ]
 			} />

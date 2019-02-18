@@ -138,7 +138,6 @@ class IntegrationAutosuggest extends React.PureComponent {
 	}
 
 	render() {
-		console.log(this.props)
 		const { classes, right } = this.props;
 		return (
 			<div className={classes.suggestContainer}>

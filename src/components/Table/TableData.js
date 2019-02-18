@@ -40,7 +40,6 @@ class TableData extends Component {
 		const { page } = this.state
 		const { classes, t, data } = this.props
 		const { selected, order, orderBy, handleClick, handleCheckboxClick, handleSelectAllClick, rowsPerPage } = this.props
-		console.log(data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage))
 		return (
 			<Fragment>
 				<div className={classes.tableWrapper}>

@@ -42,9 +42,7 @@ class InfoCard extends PureComponent {
 	}
 	renderTopAction = () => {
 		return <ItemG container justify={'flex-end'}>
-			 <ItemG container xs>
-				{this.props.topAction}
-			</ItemG>
+			{this.props.topAction}
 		</ItemG>
 	}
 	render() {
@@ -60,7 +58,8 @@ class InfoCard extends PureComponent {
 					title={title}
 					subheader={this.hasSubheader(subheader)}
 					classes={{
-						title: classes.title
+						title: classes.title,
+						action: classes.actions
 					}}
 				>
 

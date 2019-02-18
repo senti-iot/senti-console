@@ -101,7 +101,8 @@ const regularCardStyle = theme => ({
 		paddingTop: '56.25%', // 16:9
 	},
 	actions: {
-		display: 'flex',
+		// display: 'flex',
+		alignSelf: 'center',
 		padding: "4px"
 	},
 	expandPosition: {

@@ -273,7 +273,7 @@ class ProjectData extends PureComponent {
 			<ItemG>
 				<Hidden smDown>
 					<IconButton title={'Chart Type'} variant={'fab'} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
-						<Visibility />
+						{this.renderIcon()}
 					</IconButton>
 					<Menu
 						id='long-menu'
