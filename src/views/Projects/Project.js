@@ -7,7 +7,6 @@ import ProjectCollections from './ProjectCards/ProjectCollections'
 import { ProjectContact } from './ProjectCards/ProjectContact'
 import AssignDCs from 'components/AssignComponents/AssignDCs';
 import { colors } from 'variables/colors';
-import ProjectMap from './ProjectCards/ProjectMap';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { getDataSummary } from 'variables/dataCollections';
 import { getWifiDaily, getWifiMinutely, getWifiHourly, setMinutelyData, setHourlyData, setDailyData, setSummaryData, getWifiSummary } from 'components/Charts/DataModel';
