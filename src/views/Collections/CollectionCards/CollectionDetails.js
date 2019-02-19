@@ -23,7 +23,6 @@ class DeviceDetails extends Component {
 
 	render() {
 		const { classes, collection, t, isFav, addToFav, removeFromFav, /* accessLevel ,*/ history, handleOpenDeleteDialog, weather } = this.props
-
 		return (
 			<InfoCard
 				title={collection.name ? collection.name : collection.id}
@@ -52,7 +51,7 @@ class DeviceDetails extends Component {
 							<Info>{this.collectionState()}</Info>
 						</ItemG>
 						<ItemG container xs={12} sm={11} md={11} lg={11} xl={11}>
-							{weather === '' ? null : weather !== null ? <Fragment>
+							{weather === '' || weather === undefined ? null : weather !== null ? <Fragment>
 								<ItemG xs={2} sm={1} md={1} lg={1} container justify={'center'}>
 									<WeatherIcon height={24} width={24} icon={weather.currently.icon} />
 								</ItemG>
