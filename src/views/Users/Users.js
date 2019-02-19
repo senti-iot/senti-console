@@ -28,7 +28,7 @@ class Users extends Component {
 		}
 		props.setHeader('users.pageTitle', false, '', 'users')
 	}
-	dUserGroup = () => { 
+	dUserGroup = () => {
 		const { t } = this.props
 		return [
 			{ value: 136550100000143, label: t("users.groups.superUser") },
@@ -36,25 +36,32 @@ class Users extends Component {
 			{ value: 136550100000225, label: t("users.groups.user") },
 		]
 	}
-	dSuspended = () => { 
+	dSuspended = () => {
 		const { t } = this.props
 		return [
 			{ value: 0, label: t('users.fields.active') },
 			{ value: 1, label: t('users.fields.loginSuspended') },
 		]
-	} 
-	dHasLoggedIn = () => { 
-		const { t } = this.props 
+	}
+	dHasLoggedIn = () => {
+		const { t } = this.props
 		return [
 			{ value: true, label: t('filters.users.hasLoggedIn') },
 			{ value: false, label: t('filters.users.neverLoggedIn') }
-		] 
+		]
 	}
-	dLang = () => { 
+	dLang = () => {
 		const { t } = this.props
 		return [
 			{ value: 'da', label: t('settings.languages.da') },
 			{ value: 'en', label: t('settings.languages.en') }
+		]
+	}
+	dNewsletter = () => {
+		const { t } = this.props
+		return [
+			{ value: true, label: t('actions.yes') },
+			{ value: false, label: t('actions.no') }
 		]
 	}
 	ftUsers = () => {
@@ -63,13 +70,13 @@ class Users extends Component {
 			{ key: 'firstName', name: t('users.fields.firstName'), type: 'string' },
 			{ key: 'lastName', name: t('users.fields.lastName'), type: 'string' },
 			{ key: 'email', name: t('users.fields.email'), type: 'string' },
-			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' }, 
+			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
 			{ key: 'groups', name: t('users.fields.group'), type: 'dropDown', options: this.dUserGroup() },
 			{ key: 'lastLoggedIn', name: t('users.fields.lastSignIn'), type: 'date' },
 			{ key: 'suspended', name: t('users.fields.loginSuspended'), type: 'dropDown', options: this.dSuspended() },
 			{ key: 'lastLoggedIn', name: t('filters.users.hasLogged'), type: 'diff', options: { dropdown: this.dHasLoggedIn(), values: { false: [null] } } },
 			{ key: 'aux.odeum.language', name: t('users.fields.language'), type: 'dropDown', options: this.dLang() },
-			
+			{ key: 'aux.senti.extendedProfile.newsletter', name: t('users.fields.newsletter'), type: 'diff', options: { dropdown: this.dNewsletter(), values: { false: [null, undefined] } } },
 			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 		]
 	}
@@ -94,7 +101,6 @@ class Users extends Component {
 		});
 		let emails = fUsers.map(u => u.email).join(';')
 		// this.setState({})
-		// console.log(emails)
 		copyToClipboard(emails)
 		this.props.s('snackbars.emailsCopied')
 		// this.setState({ anchorElMenu: null })
@@ -270,7 +276,7 @@ class Users extends Component {
 						let u = users[users.findIndex(d => d.id === s)]
 						return <Info key={s}>&bull;{u.firstName + ' ' + u.lastName}</Info>
 					})
-					 : null}
+						: null}
 				</div>
 			</DialogContent>
 			<DialogActions>

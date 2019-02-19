@@ -73,10 +73,8 @@ class ChartData extends PureComponent {
 	}
 	componentDidUpdate = async (prevProps, prevState) => {
 		if (prevProps.period !== this.props.period || prevProps.period.timeType !== this.props.period.timeType) {
-			console.log('Entered')
 			this.setState({ loading: true }, async () => {
 				let newState = await this.props.getData(this.props.period)
-				console.log(newState)
 				this.setState({ ...newState, loading: false })
 			})
 		}

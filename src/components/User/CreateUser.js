@@ -40,7 +40,7 @@ class CreateUser extends Component {
 					},
 					senti: {
 						extendedProfile: {
-
+							newsletter: true,
 						}
 					}
 				},

@@ -48,7 +48,7 @@ class UserContact extends Component {
 		const { t, classes, user, history, isFav, addToFav, removeFromFav } = this.props
 		return <Dropdown menuItems={
 			[
-				{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `${this.props.match.url}/edit`, prevURL: `/management/user/${user.id}`  }) },
+				{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `${this.props.match.url}/edit`, prevURL: `/management/user/${user.id}` }) },
 				{ label: t('menus.changePassword'), icon: <LockOpen className={classes.leftIcon} />, func: this.props.changePass },
 				{ label: t('menus.userResendEmail'), icon: <Email className={classes.leftIcon} />, func: this.props.resendConfirmEmail, dontShow: user.suspended !== 2 },
 				{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav },
@@ -60,7 +60,7 @@ class UserContact extends Component {
 				},
 
 			]
-		}/>
+		} />
 	}
 	render() {
 		const { t, user, classes } = this.props
@@ -71,7 +71,7 @@ class UserContact extends Component {
 				avatar={<Person />}
 				topAction={this.renderTopActionPriv()}
 				content={
-					<ItemG  container >
+					<ItemG container >
 						<Hidden lgUp>
 							<ItemG container justify={'center'}>
 								{user.img ? <img src={user.img} alt='UserAvatar' className={classes.img} /> : <Gravatar size={250} default='mp' email={user.email} className={classes.img} />}
@@ -119,7 +119,7 @@ class UserContact extends Component {
 					</ItemG>
 				}
 				hiddenContent={
-					
+
 					<ItemG container>
 						<ItemG xs={12}>
 							<Caption>{t('users.fields.bio')}</Caption>
@@ -163,6 +163,12 @@ class UserContact extends Component {
 							<Caption>{t('users.fields.birthday')}</Caption>
 							<Info>
 								{extended ? extended.birthday ? dateFormatter(extended.birthday) : null : null}
+							</Info>
+						</ItemG>
+						<ItemG xs={12}>
+							<Caption>{t('users.fields.newsletter')}</Caption>
+							<Info>
+								{extended ? extended.newsletter ? t('actions.yes') : t('actions.no') : t('actions.no')}
 							</Info>
 						</ItemG>
 					</ItemG>

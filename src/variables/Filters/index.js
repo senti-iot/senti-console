@@ -43,15 +43,13 @@ const filterByString = (items, k) => {
 const filterByDiff = (items, k) => { 
 	items = items.reduce((newArr, d) => { 
 		let objVal = index(d, k.key)
-		if (objVal !== undefined) { 
-			if (k.value.diff) {
-				if (k.value.values.false.indexOf(objVal) === -1)
-					newArr.push(d)
-			}
-			else { 
-				if (k.value.values.false.indexOf(objVal) !== -1)
-					newArr.push(d)
-			}
+		if (k.value.diff) {
+			if (k.value.values.false.indexOf(objVal) === -1)
+				newArr.push(d)
+		}
+		else {
+			if (k.value.values.false.indexOf(objVal) !== -1)
+				newArr.push(d)
 		}
 		return newArr
 	}, [])

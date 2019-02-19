@@ -77,13 +77,14 @@ class EditUser extends Component {
 	getUser = async () => {
 		let id = this.props.match.params.id
 		if (id) {
-			let user = await getUser(id).then(rs => { 
+			let user = await getUser(id).then(rs => {
 				if (rs === null)
 					this.props.history.push({
 						pathname: '/404',
 						prevURL: window.location.pathname
 					})
-				return rs})
+				return rs
+			})
 			let g = 0
 			let userGroups = Object.keys(user.groups)
 			userGroups.sort((a, b) => a > b ? 1 : -1)
@@ -322,7 +323,7 @@ class EditUser extends Component {
 		const { t, classes, accessLevel } = this.props
 		const { error, selectedGroup, user } = this.state
 		let rend = false
-		if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers && !user.privileges.apisuperuser)) { 
+		if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers && !user.privileges.apisuperuser)) {
 			rend = true
 		}
 		return rend ? <FormControl className={classes.formControl}>
@@ -357,6 +358,14 @@ class EditUser extends Component {
 			extended: {
 				...this.state.extended,
 				[prop]: e
+			}
+		})
+	}
+	handleExtendedNewsletter = () => {
+		this.setState({
+			extended: {
+				...this.state.extended,
+				newsletter: !this.state.extended.newsletter
 			}
 		})
 	}
@@ -472,8 +481,7 @@ class EditUser extends Component {
 					control={
 						<Checkbox
 							checked={extended.newsletter}
-							onChange={this.handleExtendedChange('newsletter')}
-							value="checkedB"
+							onChange={this.handleExtendedNewsletter}
 							color="primary"
 						/>
 					}
@@ -488,7 +496,7 @@ class EditUser extends Component {
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
-		return !loading ? 
+		return !loading ?
 			<GridContainer justify={'center'}>
 				<Paper className={classes.paper}>
 					<form className={classes.form}>
@@ -583,7 +591,7 @@ class EditUser extends Component {
 				</Paper>
 
 			</GridContainer> : <CircularLoader />
-		
+
 	}
 }
 
