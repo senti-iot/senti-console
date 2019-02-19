@@ -388,6 +388,7 @@ class LineChart extends PureComponent {
 
 	}
 	elementClicked = async (elements) => {
+		console.log(elements)
 		if (!this.clickEvent()) {
 			if (elements.length > 0)
 				this.showTooltip()

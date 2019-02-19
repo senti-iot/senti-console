@@ -130,6 +130,7 @@ const regularCardStyle = theme => ({
 	},
 	card: {
 		...card,
+		height: "100%",
 		// display: 'flex'
 	},
 

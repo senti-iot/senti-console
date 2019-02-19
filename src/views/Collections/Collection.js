@@ -190,17 +190,13 @@ class Collection extends Component {
 	handleSetCustomRange = (p) => {
 		switch (p.timeType) {
 			case 0:
-				this.getWifiMinutely(p)
-				break;
+				return this.getWifiMinutely(p)
 			case 1:
-				this.getWifiHourly(p)
-				break
+				return this.getWifiHourly(p)
 			case 2:
-				this.getWifiDaily(p)
-				break
+				return this.getWifiDaily(p)
 			case 3:
-				this.getWifiSummary(p)
-				break
+				return this.getWifiSummary(p)
 			default:
 				break;
 		}

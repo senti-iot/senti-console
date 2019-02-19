@@ -39,7 +39,7 @@ class ChartData extends PureComponent {
 			loading: true,
 		}
 	}
-	
+
 	displayFormat = 'DD MMMM YYYY HH:mm'
 	image = null
 	options = [
@@ -72,9 +72,11 @@ class ChartData extends PureComponent {
 		}
 	}
 	componentDidUpdate = async (prevProps, prevState) => {
-		if (prevProps.period !== this.props.period) {
+		if (prevProps.period !== this.props.period || prevProps.period.timeType !== this.props.period.timeType) {
+			console.log('Entered')
 			this.setState({ loading: true }, async () => {
 				let newState = await this.props.getData(this.props.period)
+				console.log(newState)
 				this.setState({ ...newState, loading: false })
 			})
 		}
@@ -106,25 +108,25 @@ class ChartData extends PureComponent {
 	}
 
 	handleReverseZoomOnData = async () => {
-		const { timeType } = this.props
+		const { period } = this.props
 		const { zoomDate } = this.state
 		let startDate = null
 		let endDate = null
 		try {
-			switch (timeType) {
+			switch (period.timeType) {
 				case 0:
 					startDate = zoomDate.length > 1 ? moment(zoomDate[1].from).startOf('day') : zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
 					endDate = zoomDate.length > 1 ? moment(zoomDate[1].to).endOf('day') : zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
 					if (zoomDate.length === 1) {
 						this.setState({ resetZoom: false, zoomDate: [] })
 					}
-					this.props.handleSetDate(6, endDate, startDate, 1, false)
+					this.props.handleSetDate(6, endDate, startDate, 1, period.id)
 					break;
 				case 1:
 					startDate = zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
 					endDate = zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
 					this.setState({ resetZoom: false, zoomDate: [] })
-					this.props.handleSetDate(6, endDate, startDate, 2, false)
+					this.props.handleSetDate(6, endDate, startDate, 2, period.id)
 					break;
 				default:
 					break;
@@ -136,38 +138,39 @@ class ChartData extends PureComponent {
 
 	handleZoomOnData = async (elements) => {
 		if (elements.length > 0) {
-			const { timeType, lineDataSets } = this.props
+			const { period } = this.props
+			const { lineDataSets } = this.state
 			let date = null
 			let startDate = null
 			let endDate = null
 			try {
 				date = lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
-				switch (timeType) {
+				switch (period.timeType) {
 					case 1:
 						startDate = moment(date).startOf('hour')
-						endDate = moment(date).endOf('hour')
+						endDate = moment(date).endOf('hour').diff(moment(), 'hour') >= 0 ? moment() : moment(date).endOf('hour')
 						this.setState({
 							resetZoom: true,
 							zoomDate: [
 								...this.state.zoomDate,
 								{
-									from: this.props.from,
-									to: moment(this.props.from, 'YYYY-MM-DD HH:mm').endOf('day')
+									from: period.from,
+									to: period.to
 								}]
 						})
-						this.props.handleSetDate(6, endDate, startDate, 0, false)
+						this.props.handleSetDate(6, endDate, startDate,  0, period.id)
 						break
 					case 2:
 						startDate = moment(date).startOf('day')
-						endDate = moment(date).endOf('day')
+						endDate = moment(date).endOf('day').diff(moment(), 'hour') >= 0 ? moment() : moment(date).endOf('day')
 						this.setState({
 							resetZoom: true,
 							zoomDate: [{
-								from: this.props.from,
-								to: this.props.to
+								from: period.from,
+								to: period.to
 							}]
 						})
-						this.props.handleSetDate(6, endDate, startDate, 1, false)
+						this.props.handleSetDate(6, endDate, startDate, 1, period.id)
 						break;
 					default:
 						break;
@@ -295,7 +298,7 @@ class ChartData extends PureComponent {
 					</Menu>
 				</Hidden>
 			</ItemG>
-			
+
 			<ItemG>
 				<IconButton
 					aria-label='More'
@@ -368,7 +371,7 @@ class ChartData extends PureComponent {
 						{t('menus.charts.deleteThisPeriod')}
 					</ListItemText>
 				</ListItem>
-	
+
 			</Menu>
 		</ItemG>
 	}
@@ -378,16 +381,16 @@ class ChartData extends PureComponent {
 		</ItemG>
 	}
 
-	renderIcon = () => { 
+	renderIcon = () => {
 		const { period } = this.props
 		switch (period.chartType) {
 			case 0:
 				return <PieChartRounded />
-			case 1: 
+			case 1:
 				return <DonutLargeRounded />
-			case 2: 
+			case 2:
 				return <BarChartIcon />
-			case 3: 
+			case 3:
 				return <ShowChart />
 			default:
 				break;
@@ -436,7 +439,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	handleSetDate: (id, to, from, timeType) => dispatch(changeDate(id, to, from, timeType)),
+	handleSetDate: (id, to, from, timeType, pId) => dispatch(changeDate(id, to, from, timeType, pId)),
 	changeYAxis: (val) => dispatch(changeYAxis(val)),
 	removePeriod: (pId) => dispatch(removePeriod(pId)),
 	changeChartType: (p, chartId) => dispatch(changeChartType(p, chartId))

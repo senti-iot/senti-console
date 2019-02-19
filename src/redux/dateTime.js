@@ -56,19 +56,25 @@ export const changeChartType = (period, chartType) => {
 	}
 }
 export const changeDate = (menuId, to, from, timeType, id) => { 
+	console.log(menuId, moment(to).format('YYYY/MM/DD HH:mm'), moment(from).format('YYYY/MM/DD HH:mm'), timeType, id)
 	return (dispatch, getState) => {
+		console.log('a')
 		let periods = []
 		periods = [...getState().dateTime.periods]
 		let c
+		console.log('b')
 		if (id === -1) {
 			c = periods.length
 		}
 		else { 
 			 c = periods.findIndex(f => f.id === id)
 		}
+		console.log(c, periods, periods[c], 'c')
 		periods[c] = { id: c,
 			menuId, to, from, timeType, chartType: id === -1 ? 3 : periods[c].chartType, hide: false
 		}
+		console.log(periods)
+		console.log('d', dispatch)
 		dispatch({
 			type: changePeriods,
 			payload: periods
