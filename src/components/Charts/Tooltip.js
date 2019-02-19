@@ -17,32 +17,60 @@ class Tooltip extends Component {
 	}
 	transformLoc = () => {
 		const { tooltip, chartWidth, chartHeight } = this.props
+		let screenWidth = window.innerWidth
+
 		let x = 0
 		let y = 0
-		if (!this.clickEvent()) {
-			x = '-50%'
-			y = tooltip.top < (chartHeight / 2) ? '25%' : '-125%'
-			return `translate(${x}, ${y})`
-		}
-		if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
-			y = '15%'
-		}
-		if (tooltip.left < (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
-			y = '-105%'
-		}
-		if (tooltip.left > (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
-			y = '15%'
-		}
-		if (tooltip.left > (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
-			y = '-105%'
-		}
-		if (tooltip.left > chartWidth / 2) {
-			x = '-110%'
-		}
-		else {
-			x = '15%'
+		
+		x = '-50%'
+		y = tooltip.top < (chartHeight / 2) ? '15%' : '-115%'
+		
+		if (chartWidth > screenWidth / 2) { 
+			if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
+				y = '15%'
+			}
+			if (tooltip.left < (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
+				y = '-105%'
+			}
+			if (tooltip.left > (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
+				y = '15%'
+			}
+			if (tooltip.left > (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
+				y = '-105%'
+			}
+			if (tooltip.left > chartWidth / 2) {
+				x = '-110%'
+			}
+			else {
+				x = '15%'
+			}
 		}
 		return `translate(${x}, ${y})`
+		// }
+		//If tooltip is in the left side move to right by 15%
+		// if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
+		// 	if ((tooltip.left + 400) * 2 > screenWidth)
+		// 		y = '-105%'
+		// 	else
+		// 		y = '15%'
+		// }
+		// //If tooltip is in the right side move to left by 105%
+		// if (tooltip.left < (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
+		// 	y = '-105%'
+		// }
+		// if (tooltip.left > (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
+		// 	y = '15%'
+		// }
+		// if (tooltip.left > (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
+		// 	y = '-105%'
+		// }
+		// if (tooltip.left > chartWidth / 2) {
+		// 	x = '-110%'
+		// }
+		// else {
+		// 	x = '15%'
+		// }
+		// return `translate(${x}, ${y})`
 	}
 	handleRange = () => {
 		const { tooltip, unit } = this.props
@@ -174,14 +202,16 @@ class Tooltip extends Component {
 		</Grow>
 	}
 	render() {
-		const { tooltip, mobile, getRef, handleCloseTooltip } = this.props
+		const { tooltip, mobile, getRef, handleCloseTooltip, chartWidth } = this.props
+		let screenWidth = window.innerWidth
 		return (
 			this.clickEvent() ?
 				<div ref={r => getRef(r)} style={{
 					zIndex: tooltip.show ? 1028 : tooltip.exited ? -1 : 1028,
 					position: 'absolute',
 					top: Math.round(tooltip.top),
-					left: mobile ? '50%' : Math.round(tooltip.left),
+					left: chartWidth > screenWidth / 2 ? Math.round(tooltip.left) : '50%',
+					// left: mobile ? '50%' : Math.round(tooltip.left),
 					transform: this.transformLoc(),
 					width: mobile ? 300 : 400,
 					maxWidth: mobile ? 300 : 500
@@ -217,7 +247,7 @@ Tooltip.propTypes = {
 }
 
 const mapStateToProps = (state, props) => ({
-
+	periods: state.dateTime.periods
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -66,16 +66,13 @@ class Toolbar extends PureComponent {
 		this._isMounted = 0
 	}
 	handleObserverUpdate = (entries, observer) => {
-		// console.log(observer)
-		// console.log(entries)
+
 		let el = entries[entries.findIndex(f => f.intersectionRatio > .5)]
-		// console.log(el)
 		if (el)
 			this.setState({
 				route: this.props.tabs.findIndex(f => f.url.includes(el.target.id))
 			})
 		// if ([top, bottom, left, right].some(Boolean)) {
-		// 	// console.log('Showing', entries[0])
 		// 	this.setState({
 		// 		route: this.props.tabs.findIndex(f => f.url.includes(entries[0].target.id))
 		// 	})
@@ -93,7 +90,6 @@ class Toolbar extends PureComponent {
 
 	}
 	// update = () => { 
-	// 	// console.log('bing')
 	// 	// const { tabs } = this.props
 	// 	// tabs.forEach(t => {
 	// 	// 	if (t.url.includes('#')) {
@@ -103,13 +99,11 @@ class Toolbar extends PureComponent {
 	// 	// 		}
 	// 	// 	}
 	// 	// })
-	// 	// console.log(document.getElementById('tabs'))
 	// 	// this.obs.observe(document.getElementById('tabs'))
 	// }
 	componentDidMount = () => {
 		// const { tabs } = this.props
 		// window.addEventListener('scroll', () => alert('test'), false)
-		// console.log(tabs)
 		this._isMounted = 1
 		// if (tabs && this._isMounted) {
 		// this.obs = new IntersectionObserver(this.handleObserverUpdate, { rootMargin: '-150px 0px -350px 0px', threshold: [0.5] })
