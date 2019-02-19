@@ -129,7 +129,7 @@ class Orgs extends Component {
 	}
 	handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			this.setState({ selected: this.props.orgs.map(n => n.id) })
+			this.setState({ selected: this.filterItems(this.props.orgs).map(n => n.id) })
 			return;
 		}
 		this.setState({ selected: [] })
