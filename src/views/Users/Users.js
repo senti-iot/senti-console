@@ -234,7 +234,7 @@ class Users extends Component {
 	}
 	handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			this.setState({ selected: this.props.users.map(n => n.id) })
+			this.setState({ selected: this.filterItems(this.props.users).map(n => n.id) })
 			return;
 		}
 		this.setState({ selected: [] })
