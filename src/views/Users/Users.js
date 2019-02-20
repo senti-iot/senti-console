@@ -76,7 +76,7 @@ class Users extends Component {
 			{ key: 'suspended', name: t('users.fields.loginSuspended'), type: 'dropDown', options: this.dSuspended() },
 			{ key: 'lastLoggedIn', name: t('filters.users.hasLogged'), type: 'diff', options: { dropdown: this.dHasLoggedIn(), values: { false: [null] } } },
 			{ key: 'aux.odeum.language', name: t('users.fields.language'), type: 'dropDown', options: this.dLang() },
-			{ key: 'aux.senti.extendedProfile.newsletter', name: t('users.fields.newsletter'), type: 'diff', options: { dropdown: this.dNewsletter(), values: { false: [null, undefined] } } },
+			{ key: 'aux.senti.extendedProfile.newsletter', name: t('users.fields.newsletter'), type: 'diff', options: { dropdown: this.dNewsletter(), values: { false: [false, null, undefined] } } },
 			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 		]
 	}
