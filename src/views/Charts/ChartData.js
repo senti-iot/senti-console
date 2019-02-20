@@ -24,7 +24,7 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
-import { changeDate, removePeriod, changeChartType } from 'redux/dateTime'
+import { changeDate, removePeriod, changeChartType, changeRawData } from 'redux/dateTime'
 
 class ChartData extends PureComponent {
 	constructor(props) {
@@ -73,7 +73,8 @@ class ChartData extends PureComponent {
 		}
 	}
 	componentDidUpdate = async (prevProps, prevState) => {
-		if (prevProps.period !== this.props.period || prevProps.period.timeType !== this.props.period.timeType) {
+		console.log(prevProps.period.raw, this.props.period.raw, prevProps.period.raw !== this.props.period.raw)
+		if (prevProps.period !== this.props.period || prevProps.period.timeType !== this.props.period.timeType || prevProps.period.raw !== this.props.period.raw) {
 			this.setState({ loading: true }, async () => {
 				let newState = await this.props.getData(this.props.period)
 				this.setState({ ...newState, loading: false })
@@ -348,10 +349,10 @@ class ChartData extends PureComponent {
 					<ListItemIcon><CloudDownload /></ListItemIcon>
 					<ListItemText>{t('menus.export')}</ListItemText>
 				</ListItem>
-				<ListItem button onClick={this.props.handleRawData}>
+				<ListItem button onClick={() => this.props.changeRawData(period)}>
 					<ListItemIcon>
 						<Checkbox
-							checked={Boolean(this.props.raw)}
+							checked={period.raw}
 							className={classes.noPadding}
 						/>
 					</ListItemIcon>
@@ -409,7 +410,7 @@ class ChartData extends PureComponent {
 			<Fragment>
 				<InfoCard
 					title={`${displayFrom} - ${displayTo}`}
-					subheader={`${this.options[period.menuId].label}, ${raw ? t('collections.rawData') : t('collections.calibratedData')}`}
+					subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
 					avatar={this.renderIcon()}
 					noExpand
 					topAction={this.renderMenu()}
@@ -437,16 +438,14 @@ class ChartData extends PureComponent {
 	}
 }
 const mapStateToProps = (state) => ({
-	// chartType: state.appState.chartType !== null ? state.appState.chartType : state.settings.chartType,
-	timeType: state.dateTime.timeType,
-	chartYAxis: state.appState.chartYAxis,
 })
 
 const mapDispatchToProps = dispatch => ({
 	handleSetDate: (id, to, from, timeType, pId) => dispatch(changeDate(id, to, from, timeType, pId)),
 	changeYAxis: (val) => dispatch(changeYAxis(val)),
 	removePeriod: (pId) => dispatch(removePeriod(pId)),
-	changeChartType: (p, chartId) => dispatch(changeChartType(p, chartId))
+	changeChartType: (p, chartId) => dispatch(changeChartType(p, chartId)),
+	changeRawData: (p) => dispatch(changeRawData(p))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(ChartData))

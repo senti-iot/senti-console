@@ -28,7 +28,6 @@ class Device extends Component {
 
 		this.state = {
 			loadingData: true,
-			raw: props.rawData ? props.rawData : false,
 			openAssignCollection: false,
 			openUnassign: false,
 			openAssignOrg: false,
@@ -154,10 +153,6 @@ class Device extends Component {
 		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		// if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
-		// 	// this.handleSwitchDayHourSummary()
-		// 	// this.getHeatMapData()
-		// }
 		if (this.props.saved === true) {
 			if (this.props.isFav({ id: this.state.device.id, type: 'device' })) {
 				this.props.s('snackbars.favorite.saved', { name: this.state.device.name, type: this.props.t('favorites.types.device') })
@@ -196,23 +191,6 @@ class Device extends Component {
 		}
 		this.props.removeFromFav(favObj)
 	}
-	// getHeatMapData = async () => {
-	// 	const { device, raw } = this.state
-	// 	const { from, to } = this.props
-	// 	let startDate = moment(from).format(this.format)
-	// 	let endDate = moment(to).format(this.format)
-	// 	let dataSet = null
-	// 	let data = await getDataSummary(device.id, startDate, endDate, raw)
-	// 	dataSet = {
-	// 		...device,
-	// 		data: data,
-	// 		color: teal[500]
-	// 	}
-	// 	this.setState({
-	// 		heatData: dataSet,
-	// 		loadingMap: false
-	// 	})
-	// }
 
 	handleSwitchDayHourSummary = async (p) => {
 		// const { to, from, id } = this.props
@@ -250,7 +228,7 @@ class Device extends Component {
 		}
 	}
 	getWifiSummary = async (p) => {
-		const { raw, device, hoverID } = this.state
+		const { device, hoverID } = this.state
 		let newState = await getWifiSummary('device', [{
 			name: device.name,
 			id: device.id,
@@ -258,11 +236,11 @@ class Device extends Component {
 			long: device.long,
 			org: device.org ? device.org.name : "",
 			color: teal[500]
-		}], p.from, p.to, hoverID, raw)
+		}], p.from, p.to, hoverID, p.raw)
 		return newState
 	}
 	getWifiHourly = async (p) => {
-		const { raw, device, hoverID } = this.state
+		const { device, hoverID } = this.state
 		this.setState({ loadingData: true })
 		let newState = await getWifiHourly('device', [{
 			name: device.name,
@@ -271,11 +249,11 @@ class Device extends Component {
 			long: device.long,
 			org: device.org ? device.org.name : "",
 			color: teal[500]
-		}], p.from, p.to, hoverID, raw)
+		}], p.from, p.to, hoverID, p.raw)
 		return newState
 	}
 	getWifiMinutely = async (p) => {
-		const { raw, device, hoverID } = this.state
+		const { device, hoverID } = this.state
 		let newState = await getWifiMinutely('device', [{
 			name: device.name,
 			id: device.id,
@@ -283,17 +261,11 @@ class Device extends Component {
 			long: device.long,
 			org: device.org ? device.org.name : "",
 			color: teal[500]
-		}], p.from, p.to, hoverID, raw)
+		}], p.from, p.to, hoverID, p.raw)
 		return newState
-
-		// this.setState({
-		// 	...this.state,
-		// 	loadingData: false,
-		// 	...newState
-		// })
 	}
 	getWifiDaily = async (p) => {
-		const { raw, device, hoverID } = this.state
+		const { device, hoverID } = this.state
 
 		let newState = await getWifiDaily('device', [{
 			name: device.name,
@@ -302,33 +274,9 @@ class Device extends Component {
 			long: device.long,
 			org: device.org ? device.org.name : "",
 			color: teal[500]
-		}], p.from, p.to, hoverID, raw)
+		}], p.from, p.to, hoverID, p.raw)
 		return newState
 
-		// this.setState({
-		// 	...this.state,
-		// 	loadingData: false,
-		// 	...newState
-		// })
-	}
-	getWifiSum = async () => {
-		const { raw, device, hoverID } = this.state
-		const { from, to } = this.props
-		this.setState({ loadingData: true })
-		let newState = await getWifiDaily('device', [{
-			name: device.name,
-			id: device.id,
-			lat: device.lat,
-			long: device.long,
-			org: device.org ? device.org.name : "",
-			color: teal[500]
-		}], from, to, hoverID, raw)
-
-		this.setState({
-			...this.state,
-			loadingData: false,
-			...newState
-		})
 	}
 
 	snackBarMessages = (msg) => {
@@ -442,9 +390,6 @@ class Device extends Component {
 		}
 	}
 
-	handleRawData = () => {
-		this.setState({ loadingData: true, raw: !this.state.raw }, () => this.handleSwitchDayHourSummary())
-	}
 
 	renderImageLoader = () => {
 		return <CircularLoader notCentered />
@@ -585,7 +530,6 @@ const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	language: state.settings.language,
 	saved: state.favorites.saved,
-	rawData: state.settings.rawData,
 	periods: state.dateTime.periods
 })
 

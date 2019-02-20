@@ -73,6 +73,22 @@ export const changeChartType = (period, chartType) => {
 		})
 	}
 }
+export const changeRawData = p => { 
+	return (dispatch, getState) => { 
+		let periods = []
+		periods = [...getState().dateTime.periods]
+		let c = periods.findIndex(f => f.id === p.id)
+		periods[c] = {
+			...periods[c],
+			raw: !periods[c].raw
+		}
+		console.log(c, periods[c])
+		dispatch({
+			type: changePeriods,
+			payload: periods
+		})
+	}
+}
 export const changeDate = (menuId, to, from, timeType, id) => { 
 	return (dispatch, getState) => {
 		let periods = []
@@ -91,7 +107,6 @@ export const changeDate = (menuId, to, from, timeType, id) => {
 			type: changePeriods,
 			payload: periods
 		})
-
 	}
 }
 /**
@@ -112,6 +127,7 @@ const initialState = {
 	periods: [{
 		id: 0,
 		menuId: 0,
+		raw: false,
 		to: moment(),
 		from: moment().startOf('day'),
 		timeType: 1,
@@ -120,6 +136,7 @@ const initialState = {
 	}, {
 		id: 1,
 		menuId: 2,
+		raw: false,
 		to: moment(),
 		from: moment().subtract(7, 'days'),
 		timeType: 2,
