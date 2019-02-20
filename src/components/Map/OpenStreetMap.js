@@ -73,7 +73,6 @@ class OpenStreetMap extends React.Component {
 		});
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		console.log('OSM updated')
 		if (prevProps.mapTheme !== this.props.mapTheme)
 			this.map.leafletElement.setMaxZoom(layers[this.props.mapTheme].maxZoom)
 	}
@@ -115,7 +114,6 @@ class OpenStreetMap extends React.Component {
 				)) : null}
 				{markers.map((m, i) => {
 					if (m.lat && m.long) {
-						console.log('markerRerender')
 						return <Marker
 							onDragend={calibrate ? this.props.getLatLng : null}
 							autoPan={calibrate ? true : false}
