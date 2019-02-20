@@ -115,7 +115,7 @@ class MapCard extends PureComponent {
 			return newArr
 		}, [])
 		let newMarkers = markers.map(m => {
-			m.count = dataArr ? dataArr[dataArr.findIndex(f => f.id === m.id)].data : 0
+			m.count = dataArr ? dataArr[dataArr.findIndex(f => f.id === m.id)] ? dataArr[dataArr.findIndex(f => f.id === m.id)].data : 0 : 0
 			return m
 		})
 		this.setState({
