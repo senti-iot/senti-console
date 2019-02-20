@@ -253,7 +253,7 @@
 			"status": "Status",
 			"tableCellAddress": "Ingen adresse",
 			"tableCellDeviceName": "Unavngivet",
-			"totalcount": "Tællinger total"
+			"totalCount": "Tællinger total"
 		},
 		"status": {
 			"green": "Enheden er tilsluttet og modtager data",

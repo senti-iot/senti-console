@@ -253,7 +253,7 @@
 			"status": "Status",
 			"tableCellAddress": "No address",
 			"tableCellDeviceName": "No name",
-			"totalcount": "Total count"
+			"totalCount": "Total count"
 		},
 		"status": {
 			"green": "Device is connected and data is received",

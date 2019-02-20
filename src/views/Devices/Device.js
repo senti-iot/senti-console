@@ -20,7 +20,7 @@ import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites'
 import { handleRequestSort } from 'variables/functions';
 import ChartDataPanel from 'views/Charts/ChartDataPanel';
 import ChartData from 'views/Charts/ChartData';
-import Maps from 'views/Maps';
+import Maps from 'views/Maps/MapCard';
 
 class Device extends Component {
 	constructor(props) {
@@ -32,7 +32,6 @@ class Device extends Component {
 			openAssignCollection: false,
 			openUnassign: false,
 			openAssignOrg: false,
-			loadingMap: true,
 			heatData: null,
 			device: null,
 			loading: true,
@@ -556,7 +555,7 @@ class Device extends Component {
 							reload={this.reload}
 							device={this.state.heatData}
 							markers={this.state.device ? [this.state.device] : []}
-							loading={this.state.loadingMap}
+							loading={this.state.loading}
 							weather={this.state.weather}
 							heatData={this.state.heatData}
 							t={this.props.t}

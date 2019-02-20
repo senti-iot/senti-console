@@ -10,14 +10,17 @@ import { changeMapTheme, changeHeatMap } from 'redux/appState';
 import moment from 'moment'
 import { getDataSummary as getDeviceDataSummary } from 'variables/dataDevices'
 import { dateTimeFormatter } from 'variables/functions';
+import { storeHeatData } from 'redux/dateTime';
+
 class MapCard extends PureComponent {
- 	constructor(props) {
+	constructor(props) {
 		super(props)
 		this.state = {
 			actionAnchorVisibility: null,
 			editLocation: false,
 			openModalEditLocation: false,
 			markers: props.markers,
+			heatData: []
 		}
 	}
 	visibilityOptions = [
@@ -34,8 +37,11 @@ class MapCard extends PureComponent {
 		await this.getHeatMapData()
 	}
 	componentDidUpdate = async (prevProps) => {
-		if (prevProps.period !== this.props.period)
-			await this.getHeatMapData()
+		if (prevProps.period !== this.props.period) {
+			this.setState({ loadingHeatMap: true })
+			await this.getHeatMapData().then(() => this.setState({ loadingHeatMap: false })
+			)
+		}
 	}
 	handleVisibility = e => (event) => {
 		if (event)
@@ -108,10 +114,16 @@ class MapCard extends PureComponent {
 				newArr.push(d)
 			return newArr
 		}, [])
+		let newMarkers = markers.map(m => {
+			m.count = dataArr ? dataArr[dataArr.findIndex(f => f.id === m.id)].data : 0
+			return m
+		})
 		this.setState({
+			markers: newMarkers,
 			heatData: dataArr,
 			loadingHeatMap: false
 		})
+		this.props.storeHeatData(dataArr)
 	}
 	renderMenu = () => {
 		const { t, mapTheme, device } = this.props
@@ -243,6 +255,7 @@ class MapCard extends PureComponent {
 				title={t('devices.cards.map')}
 				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat.toString().substring(0, device.lat.toString().indexOf('.') + 6), long: device.long.toString().substring(0, device.long.toString().indexOf('.') + 6) })},\nHeatmap: ${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)},` : ""} ${heatMap ? t('actions.on') : t('actions.off')}` : null}
 				avatar={<Map />}
+				expanded
 				topAction={this.renderMenu()}
 				hiddenContent={
 					loading ? <CircularLoader /> :
@@ -274,6 +287,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 	changeMapTheme: (value) => dispatch(changeMapTheme(value)),
 	changeHeatMap: (value) => dispatch(changeHeatMap(value)),
+	storeHeatData: (heatData) => dispatch(storeHeatData(heatData))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapCard)

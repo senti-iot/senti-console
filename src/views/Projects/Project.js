@@ -17,7 +17,7 @@ import { finishedSaving, removeFromFav, addToFav, isFav } from 'redux/favorites'
 import { connect } from 'react-redux'
 import ChartData from 'views/Charts/ChartData';
 import ChartDataPanel from 'views/Charts/ChartDataPanel';
-import Maps from 'views/Maps';
+import Maps from 'views/Maps/MapCard';
 
 class Project extends Component {
 	constructor(props) {

@@ -100,7 +100,7 @@ class HeatLayer extends MapLayer {
 		return new Heatmap()
 	}
 	componentDidUpdate = () => {
-		this.setData(this.props.data)
+		this.setData(this.props.data ? this.props.data : [])
 	}
 	componentDidMount = () => {
 		this.leafletElement._origin = this.map.layerPointToLatLng(new L.Point(0, 0));

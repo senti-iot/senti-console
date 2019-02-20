@@ -2,7 +2,25 @@ import moment from 'moment'
 
 const changePeriods = 'changeDate'
 const changeHeatmapDate = 'changeHeatMapDate'
+const changeDataT = 'changeDataTable'
+const changeHeatData = 'changeHeatData'
 
+export const storeHeatData = (heatData) => { 
+	return dispatch => { 
+		dispatch({
+			type: changeHeatData,
+			payload: heatData
+		})
+	}
+}
+export const changeDataTable = (period) => { 
+	return (dispatch) => { 
+		dispatch({
+			type: changeDataT,
+			payload: period
+		})
+	}
+}
 export const changeHeatMapDate = (menuId, to, from, timeType) => { 
 	return (dispatch, getState) => { 
 		dispatch({
@@ -84,6 +102,7 @@ export const changeDate = (menuId, to, from, timeType, id) => {
  * 3 - Line
  */
 const initialState = {
+	heatData: [],
 	heatMap: {
 		to: moment(),
 		from: moment().subtract(7, 'days'),
@@ -117,7 +136,12 @@ export const dateTime = (state = initialState, { type, payload }) => {
 			return Object.assign({}, state, {
 				heatMap: {
 					...payload
-				} })
+				}
+			})
+		case changeHeatData: 
+			return Object.assign({}, state, {
+				heatData: payload
+			})
 		default:
 			return state
 	}

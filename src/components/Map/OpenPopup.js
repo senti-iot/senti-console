@@ -66,9 +66,8 @@ class OpenPopup extends Component {
 	componentDidMount =async () => {
 		await this.getWeather()
 	}
-	
 	render() {
-		const { classes, m, t, noSeeMore } = this.props
+		const { classes, m, t, noSeeMore, heatMap } = this.props
 		const { weather } = this.state
 		return <Paper className={classes.paper}>
 			<ItemG container>
@@ -81,18 +80,22 @@ class OpenPopup extends Component {
 						{this.renderIcon(m.liveStatus)}
 					</ItemG>
 				</ItemG>
-				<ItemG xs={6}>
+				<ItemG xs={12}>
 					<Typography variant={'body1'}> {`${t('charts.fields.date')}: ${moment().format('lll')}`}</Typography>
-				</ItemG>
-				<ItemG xs={6}>
-					<Caption>{t('devices.fields.temp')}</Caption>
-					<Info>{m.temperature} &#8451;</Info>
 				</ItemG>
 			
 				<ItemG xs={12}>
 					<Caption>{t('devices.fields.address')}</Caption>
 					<Info>{m.address ? m.address : t('devices.noAddress')}</Info>
 				</ItemG>
+				<ItemG xs={6}>
+					<Caption>{t('devices.fields.temp')}</Caption>
+					<Info>{m.temperature ? `${m.temperature}\u2103` : `-\u2103`}</Info>
+				</ItemG>
+				{heatMap ? <ItemG xs={6}>
+					<Caption>{t('devices.simpleList.totalCount')}</Caption>
+					<Info>{m.count ? m.count : 0}</Info>
+				</ItemG> : null}
 				<Collapse in={Boolean(weather)}>
 					<ItemG container>
 						<ItemG container xs={12}>
@@ -139,7 +142,8 @@ class OpenPopup extends Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	lang: state.settings.language
+	lang: state.settings.language,
+	heatData: state.dateTime.heatData
 })
 
 const mapDispatchToProps = {

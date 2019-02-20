@@ -18,7 +18,7 @@ import Toolbar from 'components/Toolbar/Toolbar';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import ChartDataPanel from 'views/Charts/ChartDataPanel';
 import ChartData from 'views/Charts/ChartData';
-import Maps from 'views/Maps';
+import Maps from 'views/Maps/MapCard';
 
 class Collection extends Component {
 	constructor(props) {
