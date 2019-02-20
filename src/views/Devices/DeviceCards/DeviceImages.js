@@ -28,7 +28,11 @@ class DeviceImages extends PureComponent {
 		this.setState({ activeStep });
 	};
 	componentDidMount = async () => {
+		this._isMounted = 1
 		await this.getAllPics(this.props.device.id)
+	}
+	componentWillUnmount = () => { 
+		this._isMounted = 0
 	}
 	getPicsCallBack = () => {
 		this.getAllPics(this.props.device.id)
@@ -43,7 +47,7 @@ class DeviceImages extends PureComponent {
 		/>
 	}
 	getAllPics = (id) => {
-		getAllPictures(id).then(rs => { return this.setState({ img: rs }) })
+		getAllPictures(id).then(rs => { return this._isMounted ? this.setState({ img: rs }) : null})
 	}
 	handleOpenImageUpload = () => {
 		this.setState({ openImageUpload: true })
