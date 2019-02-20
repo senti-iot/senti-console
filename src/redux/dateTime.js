@@ -82,7 +82,6 @@ export const changeRawData = p => {
 			...periods[c],
 			raw: !periods[c].raw
 		}
-		console.log(c, periods[c])
 		dispatch({
 			type: changePeriods,
 			payload: periods
@@ -101,7 +100,7 @@ export const changeDate = (menuId, to, from, timeType, id) => {
 			 c = periods.findIndex(f => f.id === id)
 		}
 		periods[c] = { id: c,
-			menuId, to, from, timeType, chartType: id === -1 ? 3 : periods[c].chartType, hide: false
+			menuId, to, from, timeType, chartType: id === -1 ? 3 : periods[c].chartType, hide: false, raw: false
 		}
 		dispatch({
 			type: changePeriods,

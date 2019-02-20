@@ -24,7 +24,6 @@ class Project extends Component {
 		super(props)
 
 		this.state = {
-			raw: props.rawData ? props.rawData : false,
 			project: {},
 			heatData: [],
 			openAssignDC: false,
@@ -107,7 +106,7 @@ class Project extends Component {
 		})
 	}
 	getWifiHourly = async (p) => {
-		const { raw, project, hoverID } = this.state
+		const { project, hoverID } = this.state
 		let dcs = project.dataCollections.map(d => {
 			return {
 				dcId: d.id,
@@ -121,11 +120,11 @@ class Project extends Component {
 				long: d.activeDevice ? d.activeDevice.long : 0
 			}
 		})
-		let newState = await getWifiHourly('collection', dcs, p.from, p.to, hoverID, raw)
+		let newState = await getWifiHourly('collection', dcs, p.from, p.to, hoverID, p.raw)
 		return newState
 	}
 	getWifiMinutely = async (p) => {
-		const { raw, project, hoverID } = this.state
+		const { project, hoverID } = this.state
 		// this.setState({ loadingData: true })
 		let dcs = project.dataCollections.map(d => {
 			return {
@@ -140,12 +139,12 @@ class Project extends Component {
 				long: d.activeDevice ? d.activeDevice.long : 0
 			}
 		})
-		let newState = await getWifiMinutely('collection', dcs, p.from, p.to, hoverID, raw)
+		let newState = await getWifiMinutely('collection', dcs, p.from, p.to, hoverID, p.raw)
 		return newState
 	}
 
 	getWifiDaily = async (p) => {
-		const { raw, project, hoverID } = this.state
+		const { project, hoverID } = this.state
 		let dcs = project.dataCollections.map(d => {
 			return {
 				dcId: d.id,
@@ -159,11 +158,11 @@ class Project extends Component {
 				long: d.activeDevice ? d.activeDevice.long : 0
 			}
 		})
-		let newState = await getWifiDaily('collection', dcs, p.from, p.to, hoverID, raw)
+		let newState = await getWifiDaily('collection', dcs, p.from, p.to, hoverID, p.raw)
 		return newState
 	}
 	getWifiSummary = async (p) => {
-		const { raw, project, hoverID } = this.state
+		const { project, hoverID } = this.state
 		let dcs = project.dataCollections.map(d => {
 			return {
 				dcId: d.id,
@@ -177,39 +176,9 @@ class Project extends Component {
 				long: d.activeDevice ? d.activeDevice.long : 0
 			}
 		})
-		let newState = await getWifiSummary('collection', dcs, p.from, p.to, hoverID, raw)
+		let newState = await getWifiSummary('collection', dcs, p.from, p.to, hoverID, p.raw)
 		return newState
 	}
-	// getHeatMapData = async () => {
-	// 	const { project, raw } = this.state
-	// 	const { from, to } = this.props
-	// 	let startDate = moment(from).format(this.format)
-	// 	let endDate = moment(to).format(this.format)
-	// 	let dataArr = []
-	// 	await Promise.all(project.dataCollections.map(async d => {
-	// 		let dataSet = null
-	// 		let data = await getDataSummary(d.id, startDate, endDate, raw)
-	// 		dataSet = {
-	// 			name: d.name,
-	// 			id: d.activeDevice ? d.activeDevice.id : 0,
-	// 			data: data,
-	// 			color: d.color,
-	// 			liveStatus: d.activeDevice ? d.activeDevice.liveStatus : 0,
-	// 			lat: d.activeDevice ? d.activeDevice.lat : 0,
-	// 			long: d.activeDevice ? d.activeDevice.long : 0
-	// 		}
-	// 		return dataArr.push(dataSet)
-	// 	}))
-	// 	dataArr = dataArr.reduce((newArr, d) => {
-	// 		if (d.data !== null)
-	// 			newArr.push(d)
-	// 		return newArr
-	// 	}, [])
-	// 	this.setState({
-	// 		heatData: dataArr,
-	// 		loadingMap: false
-	// 	})
-	// }
 
 	handleSwitchDayHourSummary = async (p) => {
 		let diff = moment.duration(p.to.diff(p.from)).days()
@@ -301,10 +270,6 @@ class Project extends Component {
 
 	handleCloseDeleteDialog = () => {
 		this.setState({ openDelete: false })
-	}
-
-	handleRawData = () => {
-		this.setState({ loadingData: true, raw: !this.state.raw }, () => this.handleSwitchDayHourSummary())
 	}
 
 	addToFav = () => {
@@ -488,7 +453,6 @@ const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	language: state.settings.language,
 	saved: state.favorites.saved,
-	rawData: state.settings.rawData,
 	mapTheme: state.settings.mapTheme,
 	periods: state.dateTime.periods
 })

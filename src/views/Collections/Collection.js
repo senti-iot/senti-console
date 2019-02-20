@@ -26,7 +26,6 @@ class Collection extends Component {
 
 		this.state = {
 			//Date Filter
-			raw: props.rawData ? props.rawData : false,
 			//End Date Filter Tools
 			collection: null,
 			activeDevice: null,
@@ -142,31 +141,6 @@ class Collection extends Component {
 		}
 		this.props.removeFromFav(favObj)
 	}
-	// getHeatMapData = async () => {
-	// 	const { collection, activeDevice, raw } = this.state
-	// 	const { from, to } = this.props
-	// 	let startDate = moment(from).format(this.format)
-	// 	let endDate = moment(to).format(this.format)
-	// 	let dataSet = null
-	// 	let data = await getDataSummary(collection.id, startDate, endDate, raw)
-	// 	dataSet = {
-	// 		name: collection.name,
-	// 		id: collection.id,
-	// 		data: data,
-	// 		lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
-	// 		long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
-	// 		color: teal[500],
-	// 		...activeDevice
-	// 	}
-	// 	this.setState({
-	// 		heatData: dataSet,
-	// 		loadingMap: false
-	// 	})
-	// }
-
-	handleRawData = () => {
-		this.setState({ loadingData: true, raw: !this.state.raw }/*  () => this.handleSwitchDayHourSummary() */)
-	}
 
 	handleSwitchDayHourSummary = async (p) => {
 		let diff = moment.duration(p.to.diff(p.from)).days()
@@ -203,7 +177,7 @@ class Collection extends Component {
 	}
 
 	getWifiSummary = async (p) => {
-		const { raw, collection, hoverID } = this.state
+		const {  collection, hoverID } = this.state
 		this.setState({ loadingData: true })
 		let newState = await getWifiSummary('collection', [{
 			dcId: collection.id,
@@ -215,12 +189,12 @@ class Collection extends Component {
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500]
-		}], p.from, p.to, hoverID, raw)
+		}], p.from, p.to, hoverID, p.raw)
 
 		return newState
 	}
 	getWifiHourly = async (p) => {
-		const { raw, collection, hoverID } = this.state
+		const {  collection, hoverID } = this.state
 		this.setState({ loadingData: true })
 		let newState = await getWifiHourly('collection', [{
 			dcId: collection.id,
@@ -232,13 +206,13 @@ class Collection extends Component {
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500]
-		}], p.from, p.to, hoverID, raw)
+		}], p.from, p.to, hoverID, p.raw)
 
 		return newState
 	}
 
 	getWifiMinutely = async (p) => {
-		const { raw, collection, hoverID } = this.state
+		const {  collection, hoverID } = this.state
 		this.setState({ loadingData: true })
 		let newState = await getWifiMinutely('collection', [{
 			dcId: collection.id,
@@ -250,14 +224,14 @@ class Collection extends Component {
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500]
-		}], p.from, p.to, hoverID, raw)
+		}], p.from, p.to, hoverID, p.raw)
 
 		return newState
 
 	}
 
 	getWifiDaily = async (p) => {
-		const { raw, collection, hoverID } = this.state
+		const {  collection, hoverID } = this.state
 		this.setState({ loadingData: true })
 		let newState = await getWifiDaily('collection', [{
 			dcId: collection.id,
@@ -269,7 +243,7 @@ class Collection extends Component {
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500]
-		}], p.from, p.to, hoverID, raw)
+		}], p.from, p.to, hoverID, p.raw)
 
 		return newState
 	}
@@ -600,7 +574,6 @@ const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	language: state.settings.language,
 	saved: state.favorites.saved,
-	rawData: state.settings.rawData,
 	mapTheme: state.settings.mapTheme,
 	periods: state.dateTime.periods
 })
