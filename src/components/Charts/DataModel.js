@@ -121,7 +121,7 @@ export const getWifiSummary = async (type, objArr, from, to, hoverId, raw) => {
 			id: o.id,
 			lat: o.lat,
 			long: o.long,
-			org: o.orgName,
+			org: o.org,
 			data: [data],
 			...o,
 		}
@@ -218,7 +218,7 @@ export const setSummaryData = (dataArr, from, to, hoverID) => {
 // 	return state
 // }
 
-export const getWifiDaily = async (type, objArr, from, to, hoverId, raw) => {
+export const getWifiDaily = async (type, objArr, from, to, hoverId, raw, simple) => {
 	let startDate = moment(from).format(format)
 	let endDate = moment(to).format(format)
 	let dataArr = []
@@ -235,7 +235,7 @@ export const getWifiDaily = async (type, objArr, from, to, hoverId, raw) => {
 			id: o.id,
 			lat: o.lat,
 			long: o.long,
-			org: o.orgName,
+			org: o.org,
 			data: regenerateData(data, 'day'),
 			...o,
 		}
@@ -247,12 +247,14 @@ export const getWifiDaily = async (type, objArr, from, to, hoverId, raw) => {
 			newArr.push(d)
 		return newArr
 	}, [])
+	if (simple)
+		return dataArr
 	let newState = setDailyData(dataArr, from, to, hoverId)
 	let exportData = setExportData(dataArr, 'day')
 	return { ...newState, exportData, dataArr }
 }
 
-export const setDailyData = (dataArr, from, to, hoverID) => {
+export const setDailyData = (dataArr, from, to, hoverID, extra) => {
 	let labels = datesToArr(from, to)
 	let state = {
 		loading: false,
@@ -264,6 +266,7 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 
 	if (dataArr.length > 0) {
 		state = {
+			...extra,
 			loading: false,
 			timeType: 2,
 			lineDataSets: {
@@ -287,9 +290,11 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 					id: d.id,
 					lat: d.lat,
 					long: d.long,
+					// backgroundColor: d.color,
+					color: d.color,
 					backgroundColor: linecolors(Object.entries(d.data), d.color, index),
 					borderColor: teal[500],
-					borderWidth: hoverID === d.id ? 4 : 0,
+					// borderWidth: hoverID === d.id ? 4 : 0,
 					fill: false,
 					label: [d.name],
 					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
@@ -314,7 +319,7 @@ export const setDailyData = (dataArr, from, to, hoverID) => {
 	return state
 }
 
-export const getWifiHourly = async (type, objArr, from, to, hoverId, raw) => {
+export const getWifiHourly = async (type, objArr, from, to, hoverId, raw, simple) => {
 	let startDate = moment(from).format(format)
 	let endDate = moment(to).format(format)
 	let dataArr = []
@@ -331,7 +336,7 @@ export const getWifiHourly = async (type, objArr, from, to, hoverId, raw) => {
 			id: o.id,
 			lat: o.lat,
 			long: o.long,
-			org: o.orgName,
+			org: o.org,
 			data: regenerateData(data, 'hour'),
 			...o,
 		}
@@ -343,6 +348,8 @@ export const getWifiHourly = async (type, objArr, from, to, hoverId, raw) => {
 			newArr.push(d)
 		return newArr
 	}, [])
+	if (simple)
+		return dataArr
 	let newState = setHourlyData(dataArr, from, to, hoverId)
 	let exportData = setExportData(dataArr, 'hour')
 	return { ...newState, exportData, dataArr }
@@ -407,7 +414,7 @@ export const setHourlyData = (dataArr, from, to, hoverID) => {
 	}
 	return state
 }
-export const getWifiMinutely = async (type, objArr, from, to, hoverId, raw) => {
+export const getWifiMinutely = async (type, objArr, from, to, hoverId, raw, simple) => {
 	let startDate = moment(from).format(format)
 	let endDate = moment(to).format(format)
 	let dataArr = []
@@ -424,7 +431,7 @@ export const getWifiMinutely = async (type, objArr, from, to, hoverId, raw) => {
 			id: o.id,
 			lat: o.lat,
 			long: o.long,
-			org: o.orgName,
+			org: o.org,
 			data: regenerateData(data, 'minute'),
 			...o,
 		}
@@ -436,6 +443,8 @@ export const getWifiMinutely = async (type, objArr, from, to, hoverId, raw) => {
 			newArr.push(d)
 		return newArr
 	}, [])
+	if (simple)
+		return dataArr
 	let newState = setMinutelyData(dataArr, from, to, hoverId)
 	let exportData = setExportData(dataArr, 'minute')
 	return { ...newState, exportData, dataArr }

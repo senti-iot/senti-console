@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom'
 import L, { Control } from 'leaflet'
 import { MapControl, withLeaflet } from 'react-leaflet'
 import { withStyles, MuiThemeProvider, Paper } from '@material-ui/core';
-
+import moment from 'moment'
 import { ItemG } from 'components';
+import { connect } from 'react-redux'
 
 const styles = theme => ({
 	fullscreenButton: {
@@ -38,18 +39,44 @@ const styles = theme => ({
 		zIndex: 99999,
 	}
 })
-export default withLeaflet(withStyles(styles, { withTheme: true })(class HeatMapLegend extends MapControl {
+class HeatMapLegend extends MapControl {
 
 	constructor(props, context) {
 		super(props)
 		this.map = context.map || this.props.leaflet.map;
 		this.container = L.DomUtil.create('div', 'leaflet-control-heatbar leaflet-bar');
 	}
+	defaultValue = 25
+	setMaxValue = (half) => { 
+		const { to, from, timeType } = this.props
+		let max = 0
+		switch (timeType) {
+			case 0:
+				max = this.defaultValue
+				break
+			case 1:
+				max = this.defaultValue * 60
+				break
+			case 2:
+				max = this.defaultValue * 1440 * moment(to).diff(from, 'days')
+				break
+			default:
+				break
+		}
+		return this.numberWithCommas(half ? max / 2 : max)
 
+	}
 	componentDidMount() {
 		super.componentDidMount();
 	}
-
+	componentDidUpdate() { 
+		this.leafletElement.remove()
+		this.leafletElement.addTo(this.map)
+	}
+	numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	}
+	
 	createLeafletElement(props) {
 		const HeatMapLegend = Control.extend({
 			options: {
@@ -59,14 +86,14 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class HeatMap
 				const jsx = (
 					<MuiThemeProvider theme={this.props.theme}>
 						<Paper classes={{ root: this.props.classes.fullscreenButton }}>
-							<div className={this.props.classes.gradientBar} /> 
+							<div className={this.props.classes.gradientBar} />
 							<ItemG container justify={'space-between'}>
-								<div style={{ width: 40 }}>0</div>
-								<div style={{ width: 40 }}>25.000</div>
-								<div style={{ width: 40 }}>50.000+</div>
+								<ItemG xs={4} style={{ textAlign: 'left' }}>0</ItemG>
+								<ItemG xs={4} style={{ textAlign: 'center' }}>{this.setMaxValue(true)}</ItemG>
+								<ItemG xs={4} style={{ textAlign: 'right' }}>{this.setMaxValue(false)}+</ItemG>
 							</ItemG>
 						</Paper>
-					
+
 					</MuiThemeProvider>
 				)
 				ReactDOM.render(jsx, this.container)
@@ -75,4 +102,40 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class HeatMap
 		})
 		return new HeatMapLegend(props)
 	}
-}))
+	updateLeafletElement = (props) => {
+		HeatMapLegend = Control.extend({
+			options: {
+				position: this.props.position || 'bottomleft',
+			},
+			onAdd: () => {
+				const jsx = (
+					<MuiThemeProvider theme={this.props.theme}>
+						<Paper classes={{ root: this.props.classes.fullscreenButton }}>
+							<div className={this.props.classes.gradientBar} />
+							<ItemG container justify={'space-between'}>
+								<div style={{ width: 40 }}>0</div>
+								<div style={{ width: 40 }}>{this.setMaxValue(true)}</div>
+								<div style={{ width: 40 }}>{this.setMaxValue(false)}+</div>
+							</ItemG>
+						</Paper>
+
+					</MuiThemeProvider>
+				)
+				ReactDOM.render(jsx, this.container)
+				return this.container
+			}
+		})
+		return new HeatMapLegend(props)
+	}
+}
+const mapStateToProps = (state) => ({
+	to: state.dateTime.heatMap.to,
+	from: state.dateTime.heatMap.from,
+	timeType: state.dateTime.heatMap.timeType
+})
+
+const mapDispatchToProps = {
+  
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withLeaflet(withStyles(styles, { withTheme: true })(HeatMapLegend)))

@@ -1,6 +1,6 @@
 import React from 'react';
 import { InputAdornment, withStyles, CardContent, Collapse, Button, Grid, withWidth } from '@material-ui/core';
-import { LockOutlined, Person } from '@material-ui/icons';
+import { LockOutlined, Person } from 'variables/icons';
 import { GridContainer, ItemGrid, ItemG, TextF } from 'components';
 import Card from 'components/Card/Card.js';
 import CardBody from 'components/Card/CardBody.js';
@@ -81,7 +81,7 @@ class LoginPage extends React.Component {
 							{
 								await this.props.getSettings()
 								var prevURL = this.props.location.state ? this.props.location.state.prevURL : null
-								this.props.history.push(prevURL ? prevURL : '/dashboard')
+								this.props.history.push(prevURL ? prevURL : this.props.defaultRoute) //Aici
 							}
 						}
 					}
@@ -189,16 +189,36 @@ class LoginPage extends React.Component {
 						</GridContainer>
 					</div>
 				</div>
+				{/* <Snackbar
+					open={true}
+					// onClose={this.handleClose}
+					style={{ width: 800 }}
+					ContentProps={{
+						style: { width: '100%' },
+						'aria-describedby': 'message-id',
+					}}
+					message={<span id="message-id">Cookies</span>}
+					action={
+						<Fragment>
+							<Button color={'primary'} size={'small'}>
+								OK
+							</Button>
+							<Button color={'primary'} size={'small'}>
+								Learn more
+							</Button>
+						</Fragment>
+					}
+				/> */}
 			</div>
 		);
 	}
 }
 const mapStateToProps = (state) => ({
-	
+	defaultRoute: state.settings.defaultRoute
 })
 
 const mapDispatchToProps = dispatch => ({
 	getSettings: async () => dispatch(await getSettings())
 })
 
-export default compose( connect(mapStateToProps, mapDispatchToProps), withLocalization(), withWidth(), withStyles(loginPageStyle))(LoginPage);
+export default compose(connect(mapStateToProps, mapDispatchToProps), withLocalization(), withWidth(), withStyles(loginPageStyle))(LoginPage);

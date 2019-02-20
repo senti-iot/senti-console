@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import L, { Control } from 'leaflet'
 import { MapControl, withLeaflet } from 'react-leaflet'
 import { withStyles, IconButton, MuiThemeProvider } from '@material-ui/core';
-import { FullscreenOutlined } from '@material-ui/icons';
+import { FullscreenOutlined } from 'variables/icons';
 import teal from '@material-ui/core/colors/teal'
 
 const styles = theme => ({

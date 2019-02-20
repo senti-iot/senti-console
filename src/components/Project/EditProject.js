@@ -2,13 +2,20 @@ import React, { Component, Fragment } from 'react'
 import { Paper, withStyles, Grid, Collapse, Button } from '@material-ui/core';
 import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
-import { KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft, Save, Check } from 'variables/icons';
+import cx from 'classnames'
+import Gravatar from 'react-gravatar'
+import { KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft, Save, Check, Close } from 'variables/icons';
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { updateProject, getProject } from 'variables/dataProjects';
-import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
+import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning, ItemG } from 'components'
 import { isFav, updateFav } from 'redux/favorites';
 import { connect } from 'react-redux'
+import { getAllUsers } from 'variables/dataUsers';
+import { Dialog, AppBar, Toolbar, Typography, List, ListItem, ListItemText, Divider, Slide, Hidden, IconButton } from '@material-ui/core';
+import Search from 'components/Search/Search';
+import { suggestionGen, filterItems } from 'variables/functions';
+
 var moment = require('moment')
 
 class EditProject extends Component {
@@ -22,8 +29,21 @@ class EditProject extends Component {
 			allDevices: [],
 			creating: false,
 			created: false,
-			loading: true
+			loading: true,
+			filters: {
+				keyword: ''
+			},
+			user: {
+				firstName: "",
+				lastName: "",
+				id: -1
+			},
+			users: [],
+			openUser: false
 		}
+	}
+	transition = (props) => {
+		return <Slide direction='up' {...props} />;
 	}
 	handleValidation = () => {
 		let errorCode = [];
@@ -67,6 +87,13 @@ class EditProject extends Component {
 		this._isMounted = 1
 		let id = this.props.match.params.id
 		const { location } = this.props
+		getAllUsers().then(async rs => {
+			if (this._isMounted) {
+				this.setState({
+					users: rs
+				})
+			}
+		})
 		await getProject(id).then(p => {
 			if (p === null)
 				this.props.history.push({
@@ -76,6 +103,7 @@ class EditProject extends Component {
 			if (p && this._isMounted) {
 				this.setState({
 					project: p,
+					user: p.user
 				})
 			}
 		})
@@ -119,6 +147,7 @@ class EditProject extends Component {
 		let newProject = {
 			...this.state.project,
 			devices: this.state.selectedDevices,
+			user: this.state.user
 		}
 		this.setState({ creating: true })
 		if (this.handleValidation())
@@ -133,7 +162,22 @@ class EditProject extends Component {
 			})
 		}
 	}
-
+	handleOpenUser = () => {
+		this.setState({
+			openUser: true
+		})
+	}
+	handleCloseUser = () => {
+		this.setState({
+			openUser: false
+		})
+	}
+	handleChangeUser = (o) => () => {
+		this.setState({
+			user: o,
+			openUser: false,
+		})
+	}
 	close = () => {
 		const { isFav, updateFav } = this.props
 		const { project } = this.state
@@ -151,10 +195,88 @@ class EditProject extends Component {
 		s('snackbars.projectUpdated', { project: this.state.project.title })
 		history.push('/project/' + this.props.match.params.id)
 	}
+	handleFilterKeyword = value => {
+		this.setState({
+			filters: {
+				keyword: value
+			}
+		})
+	}
+	renderSelectUser = () => {
+		const { t, classes } = this.props
+		const { openUser, users, filters } = this.state
+		const appBarClasses = cx({
+			[' ' + classes['primary']]: 'primary'
+		});
+		return <Dialog
+			fullScreen
+			open={openUser}
+			onClose={this.handleCloseUser}
+			TransitionComponent={this.transition}>
+			<AppBar className={classes.appBar + ' ' + appBarClasses}>
+				<Toolbar>
+					<Hidden mdDown>
+						<ItemG container alignItems={'center'}>
+							<ItemG xs={2} container alignItems={'center'}>
+								<IconButton color='inherit' onClick={this.handleCloseUser} aria-label='Close'>
+									<Close />
+								</IconButton>
+								<Typography variant='h6' color='inherit' className={classes.flex}>
+									{t('users.pageTitle')}
+								</Typography>
+							</ItemG>
+							<ItemG xs={8}>
+								<Search
+									fullWidth
+									open={true}
+									focusOnMount
+									suggestions={users ? suggestionGen(users) : []}
+									handleFilterKeyword={this.handleFilterKeyword}
+									searchValue={filters.keyword} />
+							</ItemG>
+						</ItemG>
+					</Hidden>
+					<Hidden lgUp>
+						<ItemG container alignItems={'center'}>
+							<ItemG xs={4} container alignItems={'center'}>
+								<IconButton color={'inherit'} onClick={this.handleCloseUser} aria-label='Close'>
+									<Close />
+								</IconButton>
+								<Typography variant='h6' color='inherit' className={classes.flex}>
+									{t('orgs.pageTitle')}
+								</Typography>
+							</ItemG>
+							<ItemG xs={8} container alignItems={'center'} justify={'center'}>
+								<Search
+									noAbsolute
+									fullWidth
+									open={true}
+									focusOnMount
+									suggestions={users ? suggestionGen(users) : []}
+									handleFilterKeyword={this.handleFilterKeyword}
+									searchValue={filters.keyword} />
+							</ItemG>
+						</ItemG>
+					</Hidden>
+				</Toolbar>
+			</AppBar>
+			<List>
+				{users ? filterItems(users, filters).map((o, i) => {
+					return <Fragment key={i}>
+						<ListItem button onClick={this.handleChangeUser(o)}>
+							<Gravatar default='mp' email={o.email} className={classes.img} />}
+							<ListItemText primary={`${o.firstName} ${o.lastName}`} secondary={o.org.name} />
+						</ListItem>
+						<Divider />
+					</Fragment>
+				}) : null}
+			</List>
+		</Dialog>
+	}
 
 	render() {
 		const { classes, t } = this.props
-		const { created, error, loading } = this.state
+		const { created, error, loading, user } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
@@ -238,6 +360,20 @@ class EditProject extends Component {
 										error={error}
 									/>
 								</ItemGrid>
+								<ItemGrid xs={12}>
+									{this.renderSelectUser()}
+									<TextF
+										id={'contactPerson'}
+										label={t('projects.contact.title')}
+										value={`${user.firstName} ${user.lastName}`}
+										handleClick={this.handleOpenUser}
+										handleChange={() => { }}
+										InputProps={{
+											onChange: this.handleOpenUser,
+											readOnly: true
+										}}
+									/>
+								</ItemGrid>
 							</form>
 							<ItemGrid xs={12} container justify={'center'}>
 								<Collapse in={this.state.creating} timeout='auto' unmountOnExit>
@@ -267,7 +403,6 @@ class EditProject extends Component {
 	}
 }
 const mapStateToProps = (state) => ({
-  
 })
 
 const mapDispatchToProps = (dispatch) => ({

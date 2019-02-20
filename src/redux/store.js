@@ -6,20 +6,20 @@ import { doi } from './doi'
 import { appState } from './appState'
 import { dateTime } from './dateTime'
 import thunk from 'redux-thunk';
-
-let reducers = combineReducers({ settings, localization, favorites, doi, appState, dateTime })
+// import zendesk from 'lib/stores/ChatStore'
+let reducers = combineReducers({ settings, localization, favorites, doi, appState, dateTime, /* zendesk */ })
 /**
 *	 Debugging purposes
 **/ 
-const logger = store => next => action => {
-	// console.log('dispatching', action)
-	let result = next(action)
-	// console.log('next state', store.getState())
-	return result
-} 
+// const logger = store => next => action => {
+//  console.log('dispatching', action)
+// 	let result = next(action)
+// 	console.log('next state', store.getState())
+// 	return result
+// } 
 
 let composeMiddleware = compose(
-	applyMiddleware(thunk, logger),
+	applyMiddleware(thunk, /* logger */),
 	window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
 )
 const store = createStore(reducers, composeMiddleware)

@@ -17,32 +17,60 @@ class Tooltip extends Component {
 	}
 	transformLoc = () => {
 		const { tooltip, chartWidth, chartHeight } = this.props
+		let screenWidth = window.innerWidth
+
 		let x = 0
 		let y = 0
-		if (!this.clickEvent()) {
-			x = '-50%'
-			y = tooltip.top < (chartHeight / 2) ? '25%' : '-125%'
-			return `translate(${x}, ${y})`
-		}
-		if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
-			y = '15%'
-		}
-		if (tooltip.left < (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
-			y = '-105%'
-		}
-		if (tooltip.left > (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
-			y = '15%'
-		}
-		if (tooltip.left > (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
-			y = '-105%'
-		}
-		if (tooltip.left > chartWidth / 2) {
-			x = '-110%'
-		}
-		else {
-			x = '15%'
+		
+		x = '-50%'
+		y = tooltip.top < (chartHeight / 2) ? '15%' : '-115%'
+		
+		if (chartWidth > screenWidth / 2) { 
+			if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
+				y = '15%'
+			}
+			if (tooltip.left < (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
+				y = '-105%'
+			}
+			if (tooltip.left > (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
+				y = '15%'
+			}
+			if (tooltip.left > (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
+				y = '-105%'
+			}
+			if (tooltip.left > chartWidth / 2) {
+				x = '-110%'
+			}
+			else {
+				x = '15%'
+			}
 		}
 		return `translate(${x}, ${y})`
+		// }
+		//If tooltip is in the left side move to right by 15%
+		// if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
+		// 	if ((tooltip.left + 400) * 2 > screenWidth)
+		// 		y = '-105%'
+		// 	else
+		// 		y = '15%'
+		// }
+		// //If tooltip is in the right side move to left by 105%
+		// if (tooltip.left < (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
+		// 	y = '-105%'
+		// }
+		// if (tooltip.left > (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
+		// 	y = '15%'
+		// }
+		// if (tooltip.left > (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
+		// 	y = '-105%'
+		// }
+		// if (tooltip.left > chartWidth / 2) {
+		// 	x = '-110%'
+		// }
+		// else {
+		// 	x = '15%'
+		// }
+		// return `translate(${x}, ${y})`
 	}
 	handleRange = () => {
 		const { tooltip, unit } = this.props
@@ -95,9 +123,10 @@ class Tooltip extends Component {
 	}
 	renderTooltip = () => {
 		const { t, classes, tooltip, weather,
-			handleCloseTooltip, todayOfInterest } = this.props
+			handleCloseTooltip, todayOfInterest, mobile } = this.props
 		let doi = todayOfInterest(tooltip.title[0])
-
+		let birthdays = doi.birthdays
+		let days = doi.days
 		return <Grow in={tooltip.show} onExited={handleCloseTooltip} >
 			<Paper className={classes.paper}>
 				<ItemG container>
@@ -118,9 +147,9 @@ class Tooltip extends Component {
 							})}
 						</ItemG>
 					</ItemG>
-					<Collapse in={tooltip.showWeather}>
-						<ItemG container>
-							<ItemG container xs={12} sm={6} md={6} lg={6} xl={6} style={{ padding: 8 }}>
+					<ItemG container>
+						<ItemG container xs={12} sm={6} md={6} lg={6} xl={6} style={{ padding: 8 }}>
+							<Collapse in={tooltip.showWeather}>
 								{weather ? <ItemG xs={12}><WeatherIcon icon={weather.currently.icon} /></ItemG> : null}
 								<Fragment>
 									<ItemG container direction='row' xs={12}>
@@ -149,34 +178,40 @@ class Tooltip extends Component {
 										</T>
 									</ItemG>
 								</Fragment>
-							</ItemG>
-							{doi.length > 0 ? <ItemG container justify={'center'} xs={12} sm={6} md={6} lg={6} xl={6} style={{ padding: 8 }}>
+							</Collapse>
+						</ItemG>
+						{days.length > 0 || birthdays.length > 0 ? 
+							<ItemG container alignItems={'center'} justify={'center'} xs={12} sm={6} md={6} lg={6} xl={6} style={{ padding: 8 }}>
 								<ItemG xs={2}><DateRange className={classes.largeIcon} /></ItemG>
-								<ItemG xs={10} style={{ paddingLeft: 4 }}>
-									{doi.length > 0 ? doi.map((d, i) => <T key={i}>
+								<ItemG xs={10} style={{ paddingLeft: 4 }} container alignItems={mobile ? 'center' : undefined}>
+									{days.length > 0 ? days.map((d, i) => <T key={i}>
 										{`\u{2022}`}{d.name}
 									</T>) : <Muted>{t('no.doi')}</Muted>}
 								</ItemG>
 								<ItemG xs={2}><Cake className={classes.largeIcon} /></ItemG>
-								<ItemG xs={10} style={{ paddingLeft: 4 }}>
-									<Muted>{t('no.birthdays')}</Muted>
+								<ItemG xs={10} style={{ paddingLeft: 4 }} container alignItems={mobile ? 'center' : undefined}>
+									{birthdays.length > 0 ? birthdays.map((d, i) => <T key={i}>
+										{`\u{2022} ${d.name}`}
+									</T>) : <Muted>{t('no.birthdays')}</Muted>}
 								</ItemG>
-							</ItemG> : null}
-						</ItemG>
-					</Collapse>
+							</ItemG> 
+							: null}
+					</ItemG>
 				</ItemG>
 			</Paper>
 		</Grow>
 	}
 	render() {
-		const { tooltip, mobile, getRef, handleCloseTooltip } = this.props
+		const { tooltip, mobile, getRef, handleCloseTooltip, chartWidth } = this.props
+		let screenWidth = window.innerWidth
 		return (
 			this.clickEvent() ?
 				<div ref={r => getRef(r)} style={{
 					zIndex: tooltip.show ? 1028 : tooltip.exited ? -1 : 1028,
 					position: 'absolute',
 					top: Math.round(tooltip.top),
-					left: mobile ? '50%' : Math.round(tooltip.left),
+					left: chartWidth > screenWidth / 2 ? Math.round(tooltip.left) : '50%',
+					// left: mobile ? '50%' : Math.round(tooltip.left),
 					transform: this.transformLoc(),
 					width: mobile ? 300 : 400,
 					maxWidth: mobile ? 300 : 500
@@ -212,7 +247,7 @@ Tooltip.propTypes = {
 }
 
 const mapStateToProps = (state, props) => ({
-
+	periods: state.dateTime.periods
 })
 
 const mapDispatchToProps = dispatch => ({

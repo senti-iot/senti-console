@@ -83,7 +83,10 @@ const devicetableStyles = theme => ({
 		overflowX: 'auto',
 	},
 	header: {
-		padding: 0,
+		[theme.breakpoints.down('sm')]: {
+			paddingRight: 4,
+			padding: 0,
+		},
 		backgroundColor: grey[400],
 		// color: grey[200]
 	},

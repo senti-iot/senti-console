@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import {
-	withLeaflet, Map, Popup, TileLayer, Marker
+	withLeaflet, Map, TileLayer, Marker, Popup
 } from 'react-leaflet'
 import L from 'leaflet';
 import { withStyles } from '@material-ui/core';
@@ -27,7 +27,7 @@ class OpenStreetMap extends React.Component {
 			zoom: props.markers.length === 1 ? 17 : 13
 		}
 	}
-
+	popups=[]
 	handleClick = (event) => {
 		const items = this.state.dataSet;
 		items[event.target.id].visible = !items[event.target.id].visible;
@@ -99,18 +99,21 @@ class OpenStreetMap extends React.Component {
 		const { zoom } = this.state
 		return <Fragment>
 			<Map attributionControl={heatMap ? false : true} zoomControl={false} ref={r => this.map = r} center={this.getCenter()} zoom={zoom} onzoomend={this.setZoom} maxZoom={layers[mapTheme].maxZoom} className={classes.map} >
-				{heatMap ? <HeatLayer data={heatData ? heatData.map(m => ({ lat: m.lat, lng: m.long, count: m.data })) : null} /> : null}
+				{heatMap ? <HeatLayer data={heatData ? heatData.map(m => {
+					return ({ lat: m.lat, lng: m.long, count: m.data })
+				})
+					: null} /> : null}
 				{heatMap ? <HeatMapLegend /> : null}
 				<FullScreen />
 				<ZoomControl />
 				{/* <PZtoMarkers markers={markers}/> */}
-				<MyLocationControl mapLayer={this.layer}/>
+				<MyLocationControl mapLayer={this.layer} />
 				<TileLayer ref={r => this.layer = r} url={layers[mapTheme].url} attribution={heatMap ? false : layers[mapTheme].attribution} />
 				{layers[mapTheme].extraLayers ? layers[mapTheme].extraLayers.map(l => (
 					<TileLayer url={l} />
 				)) : null}
 				{markers.map((m, i) => {
-					if (m.lat && m.long)
+					if (m.lat && m.long) {
 						return <Marker
 							onDragend={calibrate ? this.props.getLatLng : null}
 							autoPan={calibrate ? true : false}
@@ -118,10 +121,11 @@ class OpenStreetMap extends React.Component {
 							position={[m.lat, m.long]}
 							key={i}
 							icon={this.returnSvgIcon(m.liveStatus)}>
-							{calibrate ? null : <Popup className={theme.palette.type === 'dark' ? classes.popupDark : classes.popup}>
-								<OpenPopup m={m} />
+							{calibrate ? null : <Popup ref={r => window.r = r} className={theme.palette.type === 'dark' ? classes.popupDark : classes.popup}>
+								<OpenPopup m={m} noSeeMore={markers.length === 1} heatMap={heatMap} />
 							</Popup>}
 						</Marker>
+					}
 					return null
 				})}
 			</Map>

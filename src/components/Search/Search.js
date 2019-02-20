@@ -10,6 +10,8 @@ import searchStyles from 'assets/jss/components/search/searchStyles';
 import SearchInput from './SearchInput';
 import { ClickAwayListener } from '@material-ui/core';
 import withLocalization from 'components/Localization/T';
+import { connect } from 'react-redux'
+import { changeEH } from 'redux/appState';
 
 function renderInput(inputProps) {
 	return (
@@ -86,7 +88,7 @@ class IntegrationAutosuggest extends React.PureComponent {
 					{parts.map((part, index) => {
 						return part.highlight ? (
 							<span key={String(index)} style={{ fontWeight: 300, maxWidth: 'calc(100vw-100px)', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-								{part.text} 
+								{part.text}
 							</span>
 						) : (
 							<strong key={String(index)} style={{ fontWeight: 500 }}>
@@ -157,7 +159,11 @@ class IntegrationAutosuggest extends React.PureComponent {
 						renderSuggestionsContainer={renderSuggestionsContainer}
 						getSuggestionValue={getSuggestionValue}
 						renderSuggestion={this.renderSuggestion}
+						onFocus={this.props.disableEH}
+						onBlur={this.props.enableEH}
 						inputProps={{
+							onFocus: this.props.disableEH,
+							onBlur: this.props.enableEH,
 							noAbsolute: this.props.noAbsolute,
 							classes,
 							fullWidth: this.props.fullWidth,
@@ -184,5 +190,13 @@ IntegrationAutosuggest.propTypes = {
 	suggestions: PropTypes.array.isRequired,
 	handleFilterKeyword: PropTypes.func.isRequired,
 };
+const mapStateToProps = (state) => ({
 
-export default withLocalization()(withStyles(searchStyles)(IntegrationAutosuggest));
+})
+
+const mapDispatchToProps = dispatch => ({
+	disableEH: () => dispatch(changeEH(false)),
+	enableEH: () => dispatch(changeEH(true))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(searchStyles)(IntegrationAutosuggest)));

@@ -25,9 +25,8 @@ class BarChart extends PureComponent {
 				long: 0
 			},
 			lineOptions: {
-				categoryPercentage: 0.5,
-				barPercentage: 0.5,
-				barThickness: 'flex',
+				categoryPercentage: 1,
+				barPercentage: 1,
 				gridLines: { offsetGridLines: false },	
 				animation: {
 					duration: 500
@@ -104,6 +103,7 @@ class BarChart extends PureComponent {
 							display: false,
 							labelString: 'value'
 						},
+						type: props.chartYAxis,
 						ticks: {
 							fontColor: props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
 						},
@@ -140,7 +140,7 @@ class BarChart extends PureComponent {
 		})
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID || this.props.timeType !== prevProps.timeType) {
+		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID || this.props.timeType !== prevProps.timeType || prevProps.chartYAxis !== this.props.chartYAxis) {
 			this.setXAxis()
 		}
 		if (this.chart.chartInstance.canvas.style.width !== this.state.chartWidth || this.state.chartHeight !== this.chart.chartInstance.canvas.style.height) {
@@ -233,11 +233,9 @@ class BarChart extends PureComponent {
 			}
 			this.setState({ id: id })
 		}
-
 		catch (err) {
 			console.log(err)
 		}
-
 		this.setTooltip({
 			...this.state.tooltip,
 			top,
@@ -245,7 +243,7 @@ class BarChart extends PureComponent {
 			lastPoint,
 			title: [rest, last],
 			data: tooltipModel.dataPoints.map((d, i) => ({
-				device: tooltipModel.body[i].lines[0].split(':')[0], count: d.yLabel, color: tooltipModel.labelColors[i].backgroundColor
+				device: tooltipModel.body[i].lines[0].split(':')[0], count: d.yLabel, color: this.props.data.datasets[tooltipModel.dataPoints[i].datasetIndex].color
 			}))
 		})
 		if (this.clickEvent())
@@ -306,7 +304,20 @@ class BarChart extends PureComponent {
 								unit: this.props.unit.chart,
 								tooltipFormat: this.props.unit.format
 							},
-						}]
+						}],
+					yAxes: [{
+						scaleLabel: {
+							display: false,
+							labelString: 'value'
+						},
+						type: this.props.chartYAxis,
+						ticks: {
+							fontColor: this.props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
+						},
+						gridLines: {
+							color: this.props.theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0,0,0,0.1)',
+						},
+					}]
 				}
 			}
 		}, this.chart.chartInstance.update())
@@ -377,11 +388,10 @@ class BarChart extends PureComponent {
 
 		return (
 			<Fragment>
-				<div style={{ display: 'block', maxHeight: 400, position: 'relative', height: 400 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
-					<div style={{ display: 'block', height: 400, maxHeight: 400, width: '100%' }}>					
-					
+				<div style={{ display: 'block', maxHeight: 300, position: 'relative', height: 300 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
+					<div style={{ display: 'block', height: 300, maxHeight: 300, width: '100%' }}>
 						<Bar
-							height={400}
+							height={300}
 							data={this.props.data}
 							ref={r => this.chart = r}
 							options={this.state.lineOptions}
@@ -408,7 +418,8 @@ class BarChart extends PureComponent {
 }
 const mapStateToProps = (state) => ({
 	lang: state.settings.language,
-	timeType: state.dateTime.timeType
+	timeType: state.dateTime.timeType,
+	chartYAxis: state.appState.chartYAxis
 })
 
 const mapDispatchToProps = {

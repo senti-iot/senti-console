@@ -1,5 +1,5 @@
 import { red, yellow, green } from "@material-ui/core/colors";
-import { boxShadow } from '../material-dashboard-react';
+import { boxShadow, headerColor, primaryColor, hoverColor } from '../material-dashboard-react';
 
 const deviceStyles = theme => ({
 	captionPading: {
@@ -41,12 +41,17 @@ const deviceStyles = theme => ({
 	modal: {
 		[theme.breakpoints.up('md')]: {
 			width: theme.spacing.unit * 50,
+			height: theme.spacing.unit * 50,
+			maxHeight: 'calc(100vh - 60px)'
 		},
 		[theme.breakpoints.down('sm')]: {
 			width: 'calc(100vw - 10px)',
+			height: 'calc(100vh - 30px)',
 			padding: 0,
 			maxHeight: 'calc(100vh - 60px)'
 		},
+		display: "flex",
+		justifyContent: "center",
 		position: 'absolute',
 		backgroundColor: theme.palette.background.paper,
 		boxShadow: theme.shadows[5],
@@ -87,6 +92,39 @@ const deviceStyles = theme => ({
 	},
 	expandOpen: {
 		transform: 'rotate(180deg)',
-	}
+	},
+	img: {
+		borderRadius: "50px",
+		height: "40px",
+		width: "40px",
+		display: 'flex'
+	},
+	selectedItem: {
+		background: primaryColor,
+		"&:hover": {
+			background: hoverColor
+		}
+		// color: "#fff"
+	},
+	selectedItemText: {
+		color: "#FFF"
+	},
+	appBar: {
+		position: 'sticky',
+		backgroundColor: headerColor,
+		boxShadow: "none",
+		borderBottom: "0",
+		marginBottom: "0",
+		width: "100%",
+		paddingTop: "10px",
+		zIndex: "1029",
+		color: "#ffffff",
+		border: "0",
+		// borderRadius: "3px",
+		padding: "10px 0",
+		transition: "all 150ms ease 0s",
+		minHeight: "50px",
+		display: "block"
+	},
 })
 export default deviceStyles

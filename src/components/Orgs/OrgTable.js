@@ -57,12 +57,12 @@ class OrgTable extends React.Component {
 	isSelected = id => this.props.selected.indexOf(id) !== -1
 
 	render() {
-		const { classes, t, order, orderBy, data, handleCheckboxClick, selected, handleSelectAllClick } = this.props
-		const { rowsPerPage, page } = this.state
+		const { rowsPerPage, classes, t, order, orderBy, data, handleCheckboxClick, selected, handleSelectAllClick } = this.props
+		const { page } = this.state
 		let emptyRows;
-		if (data)
+		if (data) {
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
-
+		}
 		return (
 
 			<Fragment>
@@ -95,7 +95,7 @@ class OrgTable extends React.Component {
 										style={{ cursor: 'pointer' }}
 									>
 										<Hidden lgUp>
-											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)}/>} />
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
 											<TC content={
 												<ItemG container alignItems={'center'}>
 													<ItemG>
@@ -113,7 +113,7 @@ class OrgTable extends React.Component {
 											} />
 										</Hidden>
 										<Hidden mdDown>
-											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)}/>} />
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
 											<TC FirstC label={n.name} />
 											<TC label={n.address} />
 											<TC label={`${n.zip} ${n.city}`} />
@@ -144,7 +144,7 @@ class OrgTable extends React.Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,	
+	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,
 	language: state.localization.language,
 	accessLevel: state.settings.user.privileges,
 	favorites: state.favorites.favorites,

@@ -5,12 +5,13 @@ import CalibrationSettings from './SettingsCards/CalibrationSettings';
 import DisplaySettings from './SettingsCards/DisplaySettings';
 import { changeLanguage } from 'redux/localization';
 import withLocalization from 'components/Localization/T';
-import { changeTRP, changeTheme, changeChartType, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow, saveSettingsOnServ, finishedSaving, changeChartDataType, changeTCount, changeMapTheme } from 'redux/settings';
+import { changeTRP, changeDefaultRoute, changeTheme, changeChartType, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow, saveSettingsOnServ, finishedSaving, changeChartDataType, changeTCount, changeMapTheme } from 'redux/settings';
 import ChartSettings from './SettingsCards/ChartSettings';
 import withSnackbar from 'components/Localization/S';
 import { compose } from 'recompose';
 import Toolbar from 'components/Toolbar/Toolbar';
-import { Laptop, Build, Notifications, BarChart } from 'variables/icons';
+import { Laptop, Build, Notifications, BarChart, Assignment } from 'variables/icons';
+import TermsAndConditionsSettings from './SettingsCards/TermsAndConditionsSettings';
 
 class Settings extends Component {
 	constructor(props) {
@@ -26,6 +27,7 @@ class Settings extends Component {
 		{ id: 1, title: '', label: <Build />, url: `#calibration` },
 		{ id: 2, title: '', label: <Notifications />, url: `#notifications` },
 		{ id: 3, title: '', label: <BarChart />, url: `#charts` },
+		{ id: 4, title: '', label: <Assignment />, url: '#termsAndConditions' }
 	]
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.saved === true) {
@@ -37,7 +39,7 @@ class Settings extends Component {
 	render() {
 		const { t } = this.props
 		const { language, sideBar, changeSideBarLoc, trp, changeTRP, theme, changeTheme, changeDiscoverSenti, discSentiVal, changeLanguage, changeChartType } = this.props
-		const { calibration, changeCalType, count, changeCount, changeTCount, calNotifications, changeCalNotif, rawData } = this.props
+		const { calibration, changeCalType, count, changeCount, changeTCount, calNotifications, changeCalNotif, rawData, changeDefaultRoute, defaultRoute } = this.props
 		const { /* alerts, didKnow, changeAlerts, changeDidKnow, */ chartType, changeChartDataType, tcount, mapTheme, changeMapTheme } = this.props
 		return (
 			<Fragment>
@@ -50,6 +52,8 @@ class Settings extends Component {
 				<GridContainer>
 					<ItemGrid xs={12} noMargin id={'display'}>
 						<DisplaySettings
+							changeDefaultRoute={changeDefaultRoute}
+							defaultRoute={defaultRoute}
 							trp={trp}
 							changeTRP={changeTRP}
 							theme={theme}
@@ -86,6 +90,9 @@ class Settings extends Component {
 							t={t}
 						/>
 					</ItemGrid>
+					<ItemGrid xs={12} noMargin id={'termsAndConditions'}>
+						<TermsAndConditionsSettings t={t}/>
+					</ItemGrid>
 				</GridContainer>
 			</Fragment>
 
@@ -104,6 +111,7 @@ const mapStateToProps = state => {
 		sideBar: s.sideBar,
 		discSentiVal: s.discSentiVal,
 		mapTheme: s.mapTheme,
+		defaultRoute: s.defaultRoute,
 
 		calibration: s.calibration,
 		count: s.count,
@@ -126,6 +134,7 @@ const mapDispatchToProps = (dispatch) => {
 		changeTheme: t => dispatch(changeTheme(t)),
 		changeSideBarLoc: loc => dispatch(changeSideBarLoc(loc)),
 		changeMapTheme: t => dispatch(changeMapTheme(t)),
+		changeDefaultRoute: route => dispatch(changeDefaultRoute(route)),
 
 		changeCalType: type => dispatch(changeCalType(type)),
 		changeCount: count => dispatch(changeCount(count)),

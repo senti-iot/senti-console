@@ -2,17 +2,31 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { createUser } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
-import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader } from 'components';
-import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Grid, Button } from '@material-ui/core';
-import { Save } from 'variables/icons'
+import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader, ItemG } from 'components';
+import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Grid, Button, FormControlLabel, Checkbox } from '@material-ui/core';
+import { Save, DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
+import { DateTimePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
+import MomentUtils from '@date-io/moment';
+import moment from 'moment'
 
 class CreateUser extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
+			openExtended: false,
+			extended: {
+				bio: "",
+				position: "",
+				location: "",
+				recoveryEmail: "",
+				linkedInURL: "",
+				twitterURL: "",
+				birthday: moment('01011990', 'DDMMYYYY'),
+				newsletter: true,
+			},
 			user: {
 				userName: '',
 				firstName: '',
@@ -25,7 +39,9 @@ class CreateUser extends Component {
 						language: 'da'
 					},
 					senti: {
-						
+						extendedProfile: {
+							newsletter: true,
+						}
 					}
 				},
 				sysLang: 2,
@@ -65,11 +81,13 @@ class CreateUser extends Component {
     	})
     } 
     handleCreateUser = async () => {
-    	const { user } = this.state
+    	const { user, openExtended } = this.state
     	let newUser = {
     		...this.state.user,
     		userName: user.email
     	}
+    	if (openExtended)
+    		newUser.aux.senti.extendedProfile = this.state.extended
     	if (this.handleValidation()) {
     		await createUser(newUser).then(rs => {
     		return rs !== 400 ?
@@ -83,6 +101,38 @@ class CreateUser extends Component {
 		const { history, s } = this.props
 		s('snackbars.userCreated', { user: `${rs.firstName} ${rs.lastName}` })
 		history.push(`/management/user/${rs.id}`)
+	}
+	handleExtendedBirthdayChange = prop => e => {
+
+		const { error } = this.state
+		if (error) {
+			this.setState({
+				error: false,
+				errorMessage: []
+			})
+		}
+		this.setState({
+			extended: {
+				...this.state.extended,
+				[prop]: e
+			}
+		})
+	}
+	handleExtendedChange = prop => e => { 
+	
+		const { error } = this.state
+		if (error) { 
+			this.setState({
+				error: false,
+				errorMessage: []
+			})
+		}
+		this.setState({
+			extended: {
+				...this.state.extended,
+				[prop]: e.target.value
+			}
+		})
 	}
 	handleChange = prop => e => {
 		const { error } = this.state
@@ -123,6 +173,7 @@ class CreateUser extends Component {
     		this.setState({ error: true })
     		return false
     }
+
     errorMessages = code => {
     	const { t } = this.props
     	switch (code) {
@@ -285,7 +336,114 @@ class CreateUser extends Component {
     		</Select>
     	</FormControl>
     }
-    render() {
+	renderExtendedProfile = () => {
+		const { openExtended, extended, error } = this.state
+		const { classes, t } = this.props
+		return <Collapse in={openExtended}>
+			<ItemGrid container xs={12} md={6}>
+    			<TextF
+    				id={'bio'}
+    				label={t('users.fields.bio')}
+					value={extended.bio}
+					multiline
+					rows={4}
+    				className={classes.textField}
+    				handleChange={this.handleExtendedChange('bio')}
+    				margin='normal'
+    				error={error}
+    						/>
+    		</ItemGrid>
+			<ItemGrid container xs={12} md={6}>
+    			<TextF
+    				id={'position'}
+    				label={t('users.fields.position')}
+    				value={extended.position}
+    				className={classes.textField}
+    				handleChange={this.handleExtendedChange('position')}
+    				margin='normal'
+    				error={error}
+    						/>
+    		</ItemGrid>
+			<ItemGrid container xs={12} md={6}>
+    			<TextF
+    				id={'location'}
+    				label={t('users.fields.location')}
+    				value={extended.location}
+    				className={classes.textField}
+    				handleChange={this.handleExtendedChange('location')}
+    				margin='normal'
+    				error={error}
+    						/>
+    		</ItemGrid>
+			<ItemGrid container xs={12} md={6}>
+    			<TextF
+    				id={'recoveryEmail'}
+    				label={t('users.fields.recoveryEmail')}
+    				value={extended.recoveryEmail}
+    				className={classes.textField}
+    				handleChange={this.handleExtendedChange('recoveryEmail')}
+    				margin='normal'
+    				error={error}
+    						/>
+    		</ItemGrid>
+			<ItemGrid container xs={12} md={6}>
+    			<TextF
+					id={'linkedInURL'}
+    				label={t('users.fields.linkedInURL')}
+    				value={extended.linkedInURL}
+    				className={classes.textField}
+					handleChange={this.handleExtendedChange('linkedInURL')}
+    				margin='normal'
+    				error={error}
+    						/>
+    		</ItemGrid>
+			<ItemGrid container xs={12} md={6}>
+    			<TextF
+    				id={'twitterURL'}
+    				label={t('users.fields.twitterURL')}
+    				value={extended.twitterURL}
+    				className={classes.textField}
+    				handleChange={this.handleExtendedChange('twitterURL')}
+    				margin='normal'
+    				error={error}
+    						/>
+    		</ItemGrid>
+			<ItemGrid container xs={12} md={6}>
+				<MuiPickersUtilsProvider utils={MomentUtils}>
+					<DateTimePicker
+						autoOk
+						ampm={false}
+						label={t('users.fields.birthday')}
+						clearable
+						format='ll'
+						value={extended.birthday}
+						onChange={this.handleExtendedBirthdayChange('birthday')}
+						animateYearScrolling={false}
+						color='primary'
+						disableFuture
+						dateRangeIcon={<DateRange />}
+						timeIcon={<AccessTime />}
+						rightArrowIcon={<KeyboardArrowRight />}
+						leftArrowIcon={<KeyboardArrowLeft />}
+					/>
+				</MuiPickersUtilsProvider>
+    		</ItemGrid>
+			<ItemGrid container xs={12} md={6}>
+				<FormControlLabel
+					control={
+						<Checkbox
+							checked={extended.newsletter}
+							onChange={this.handleExtendedChange('newsletter')}
+							value="checkedB"
+							color="primary"
+						/>
+					}
+					label={t('users.fields.newsletter')}
+				/> 
+    		</ItemGrid>
+		</Collapse>
+	}
+	render() {
     	const { error, errorMessage, user, created } = this.state
     	const { classes, t } = this.props
     	const buttonClassname = classNames({
@@ -312,7 +470,6 @@ class CreateUser extends Component {
     							className={classes.textField}
     							handleChange={this.handleChange('firstName')}
     							margin='normal'
-    							
     							error={error}
     						/>
     					</ItemGrid>
@@ -324,7 +481,6 @@ class CreateUser extends Component {
     							className={classes.textField}
     							handleChange={this.handleChange('lastName')}
     							margin='normal'
-    							
     							error={error}
     						/>
     					</ItemGrid>
@@ -336,7 +492,6 @@ class CreateUser extends Component {
     							className={classes.textField}
     							handleChange={this.handleChange('email')}
     							margin='normal'
-    							
     							error={error}
     						/>
     					</ItemGrid>
@@ -348,7 +503,6 @@ class CreateUser extends Component {
     							className={classes.textField}
     							handleChange={this.handleChange('phone')}
     							margin='normal'
-    							
     							error={error}
     						/>
     					</ItemGrid>
@@ -360,8 +514,13 @@ class CreateUser extends Component {
     					</ItemGrid>
     					<ItemGrid container xs={12} md={6}>
     						{this.renderAccess()}
+						</ItemGrid>
+						<ItemG xs={12}>
+							{this.renderExtendedProfile()}
+						</ItemG>
+						<ItemGrid container xs={12} md={12}>
+							<Button color={'primary'} onClick={() => this.setState({ openExtended: !this.state.openExtended })}>{t('actions.extendProfile')}</Button>
     					</ItemGrid>
-						
     				</form>
     				<ItemGrid xs={12} container justify={'center'}>
     					<Collapse in={this.state.creating} timeout='auto' unmountOnExit>
@@ -385,7 +544,7 @@ class CreateUser extends Component {
     			</Paper>
     		</GridContainer>
     	)
-    }
+	}
 }
 
 const mapStateToProps = (state) => ({

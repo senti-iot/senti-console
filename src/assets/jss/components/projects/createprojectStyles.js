@@ -2,6 +2,12 @@ import teal from '@material-ui/core/colors/teal'
 import { hoverColor, primaryColor, headerColor } from 'assets/jss/material-dashboard-react';
 
 const createprojectStyles = theme => ({
+	img: {
+		borderRadius: "50px",
+		height: "40px",
+		width: "40px",
+		display: 'flex'
+	},
 	appBar: {
 		position: 'sticky',
 		backgroundColor: headerColor,

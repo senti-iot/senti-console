@@ -11,7 +11,7 @@ import GridContainer from 'components/Grid/GridContainer';
 import { ViewList, ViewModule, Map, Build, Business, DataUsage, Edit, LayersClear, SignalWifi2Bar, Star, StarBorder } from 'variables/icons'
 import Toolbar from 'components/Toolbar/Toolbar'
 import { filterItems, handleRequestSort } from 'variables/functions';
-import DeviceCard from 'components/Devices/DeviceCard'
+import DevicesCards from './DevicesCards'
 import { unassignDeviceFromCollection } from 'variables/dataCollections';
 import { Info, AssignDC, AssignOrg, ItemG } from 'components';
 import TableToolbar from 'components/Table/TableToolbar';
@@ -128,7 +128,7 @@ class Devices extends Component {
 				{ label: t('menus.assign.deviceToCollection'), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },
 				{ label: t('menus.assign.deviceToOrg'), func: this.handleOpenAssignOrg, single: false, icon: Business },
 				{ label: t('menus.unassign.deviceFromCollection'), func: this.handleOpenUnassignDialog, single: false, icon: LayersClear },
-				{ label: t('menus.calibrate'), func: this.handleCalibrateFlow, single: true, icon: Build },
+				{ label: t('menus.calibrate'), func: this.handleCalibrateFlow, single: true, icon: Build, dontShow: device ? device.liveStatus === 0 ? true : false : false },
 				{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
 			]
 		else {
@@ -294,16 +294,6 @@ class Devices extends Component {
 
 	}
 
-	handleFilterEndDate = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				endDate: value,
-				activeDateFilter: value !== null ? true : false
-			}
-		})
-	}
-
 	handleFilterKeyword = (value) => {
 		this.setState({
 			filters: {
@@ -448,10 +438,10 @@ class Devices extends Component {
 		const { t } = this.props
 		return <DeviceTable
 			data={this.filterItems(items)}
-			handleCheckboxClick={this.handleCheckboxClick}
-			handleClick={handleClick}
-			handleRequestSort={this.handleRequestSort}
-			handleSelectAllClick={this.handleSelectAllClick}
+			handleCheckboxClick={this.handleCheckboxClick}//
+			handleClick={handleClick}//
+			handleRequestSort={this.handleRequestSort}//
+			handleSelectAllClick={this.handleSelectAllClick}//
 			order={order}
 			orderBy={orderBy}
 			selected={selected}
@@ -507,13 +497,7 @@ class Devices extends Component {
 	renderCards = () => {
 		const { loading } = this.state
 		const { t } = this.props 
-		return loading ? this.renderLoader() : <GridContainer spacing={8} justify={'center'}>
-			{this.filterItems(this.state.devices).map((d, k) => {
-				return <ItemG key={k} container justify={'center'} xs={12} sm={6} md={4}>
-					<DeviceCard key={k} t={t} d={d} />
-				</ItemG>
-			})}
-		</GridContainer>
+		return loading ? this.renderLoader() : <DevicesCards t={t} devices={this.filterItems(this.state.devices)}/> 
 	}
 
 	renderMap = () => {

@@ -9,7 +9,8 @@ const styles = {
 		fontWeight: 500
 	},
 	avatar: {
-		backgroundColor: teal[500],
+		backgroundColor: 'transparent',
+		color: teal[500]
 	},
 	card: {
 		margin: 8,

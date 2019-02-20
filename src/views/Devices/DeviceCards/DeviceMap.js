@@ -178,12 +178,13 @@ class DeviceMap extends PureComponent {
 			<DialogTitle> </DialogTitle>
 			<DialogContent style={{ overflowY: "visible" }}>
 				{error ? <Danger>{t('404.networkError')}</Danger> : null}
-				{markers.length > 0 ? markers.map(m =>
-					<ItemG key={m.id} container direction={'column'}>
+				{markers.length > 0 ? markers.map(m => {
+					return <ItemG key={m.id} container direction={'column'}>
 						<TextF id={'lat'} label={'Latitude'} value={m.lat ? m.lat.toString() : ""} disabled />
 						<TextF id={'long'} label={'Longitude'} value={m.long ? m.long.toString() : ""} disabled />
 						<AddressInput value={m.address} handleChange={this.handleChangeAddress} />
-					</ItemG>) : null
+					</ItemG>
+				}) : null
 				}
 			</DialogContent>
 			<DialogActions>
@@ -200,6 +201,8 @@ class DeviceMap extends PureComponent {
 		const { device, t, loading, mapTheme, heatMap } = this.props
 		return (
 			<InfoCard
+				noPadding
+				noHiddenPadding
 				title={t('devices.cards.map')}
 				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat, long: device.long })}, Heatmap ${heatMap ? t('actions.on') : t('actions.off')}` : null}
 				avatar={<Map />}
@@ -208,17 +211,17 @@ class DeviceMap extends PureComponent {
 					loading ? <CircularLoader /> :
 						<Grid container justify={'center'}>
 							{this.renderModal()}
-							{/* {device.lat && device.long ? <Maps heatMap={this.state.heatMap} t={t} isMarkerShown markers={[{ ...device, weather: weather }]} zoom={10} /> : <Caption>{t('devices.notCalibrated')}</Caption>} */}
-							{this.state.markers.length > 0 ? <OpenStreetMap
-								calibrate={this.state.editLocation}
-								getLatLng={this.getLatLngFromMap}
-								iRef={this.getRef}
-								mapTheme={mapTheme}
-								heatMap={heatMap}
-								heatData={this.state.markers}
-								t={t}
-								markers={this.state.markers}
-							/> : <Caption>{t('devices.notCalibrated')}</Caption>}
+							{this.state.markers.length > 0 ?
+								<OpenStreetMap
+									calibrate={this.state.editLocation}
+									getLatLng={this.getLatLngFromMap}
+									iRef={this.getRef}
+									mapTheme={mapTheme}
+									heatMap={heatMap}
+									heatData={this.state.markers}
+									t={t}
+									markers={this.state.markers}
+								/> : <Caption>{t('devices.notCalibrated')}</Caption>}
 						</Grid>
 				} />
 

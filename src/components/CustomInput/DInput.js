@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Popover, Input, MenuItem, withStyles, ClickAwayListener, Paper, MenuList, FormControl } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
-import { ArrowDropDown } from '@material-ui/icons'
+import { ArrowDropDown } from 'variables/icons'
 
 class DInput extends Component {
 	constructor(props) {

@@ -2,18 +2,34 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { editUser, getUser } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
-import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader } from 'components';
-import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Grid, Button } from '@material-ui/core';
-import { Save } from 'variables/icons'
+import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader, ItemG } from 'components';
+import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Grid, Button, FormControlLabel, Checkbox } from '@material-ui/core';
+import { Save, DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { isFav, updateFav } from 'redux/favorites';
+import MomentUtils from '@date-io/moment';
+// import moment from 'moment'
+import { DateTimePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
+import moment from 'moment'
+import { getSettings } from 'redux/settings';
 
 class EditUser extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
+			openExtended: false,
+			extended: {
+				bio: "",
+				position: "",
+				location: "",
+				recoveryEmail: "",
+				linkedInURL: "",
+				twitterURL: "",
+				birthday: moment('01011990', 'DDMMYYYY'),
+				newsletter: true,
+			},
 			user: {
 				userName: '',
 				firstName: '',
@@ -61,13 +77,14 @@ class EditUser extends Component {
 	getUser = async () => {
 		let id = this.props.match.params.id
 		if (id) {
-			let user = await getUser(id).then(rs => { 
+			let user = await getUser(id).then(rs => {
 				if (rs === null)
 					this.props.history.push({
 						pathname: '/404',
 						prevURL: window.location.pathname
 					})
-				return rs})
+				return rs
+			})
 			let g = 0
 			let userGroups = Object.keys(user.groups)
 			userGroups.sort((a, b) => a > b ? 1 : -1)
@@ -83,6 +100,9 @@ class EditUser extends Component {
 				user: {
 					...user,
 					groups: Object.keys(user.groups).map(g => ({ id: g, name: user.groups[g].name, appId: user.groups[g].appId }))
+				},
+				extended: {
+					...user.aux.senti.extendedProfile
 				}
 			})
 		}
@@ -98,7 +118,7 @@ class EditUser extends Component {
 		})
 	}
 	handleEditUser = async () => {
-		const { user } = this.state
+		const { user, openExtended } = this.state
 		let groups = {}
 		this.state.user.groups.forEach(x => {
 			groups[x.id] = {
@@ -110,28 +130,33 @@ class EditUser extends Component {
 			userName: user.email,
 			groups: groups
 		}
+		if (openExtended) {
+			newUser.aux.senti.extendedProfile = this.state.extended
+		}
 		await editUser(newUser).then(rs => rs ?
-			this.close(rs) :
+			this.close() :
 			this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t('orgs.validation.networkError') })
 
 		)
 	}
-	close = rs => {
+	close = async () => {
+		// console.log(rs)
 		const { isFav, updateFav } = this.props
 		const { user } = this.state
 		let favObj = {
 			id: user.id,
-			name: `${rs.firstName} ${rs.lastName}`,
+			name: `${user.firstName} ${user.lastName}`,
 			type: 'user',
 			path: `/management/user/${user.id}`
 		}
+		await this.props.getSettings()
 		if (isFav(favObj)) {
 			updateFav(favObj)
 		}
-		this.setState({ created: true, creating: false, org: rs })
+		this.setState({ created: true, creating: false })
 		const { s, history } = this.props
-		s('snackbars.userUpdated', { user: `${rs.firstName} ${rs.lastName}` })
-		history.push(`/management/user/${rs.id}`)
+		s('snackbars.userUpdated', { user: `${user.firstName} ${user.lastName}` })
+		history.push(`/management/user/${user.id}`)
 	}
 
 	handleChange = prop => e => {
@@ -298,7 +323,7 @@ class EditUser extends Component {
 		const { t, classes, accessLevel } = this.props
 		const { error, selectedGroup, user } = this.state
 		let rend = false
-		if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers && !user.privileges.apisuperuser)) { 
+		if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers && !user.privileges.apisuperuser)) {
 			rend = true
 		}
 		return rend ? <FormControl className={classes.formControl}>
@@ -321,13 +346,157 @@ class EditUser extends Component {
 			</Select>
 		</FormControl> : null
 	}
+	handleExtendedBirthdayChange = prop => e => {
+		const { error } = this.state
+		if (error) {
+			this.setState({
+				error: false,
+				errorMessage: []
+			})
+		}
+		this.setState({
+			extended: {
+				...this.state.extended,
+				[prop]: e
+			}
+		})
+	}
+	handleExtendedNewsletter = () => {
+		this.setState({
+			extended: {
+				...this.state.extended,
+				newsletter: !this.state.extended.newsletter
+			}
+		})
+	}
+	handleExtendedChange = prop => e => {
+		const { error } = this.state
+		if (error) {
+			this.setState({
+				error: false,
+				errorMessage: []
+			})
+		}
+		this.setState({
+			extended: {
+				...this.state.extended,
+				[prop]: e.target.value
+			}
+		})
+	}
+	renderExtendedProfile = () => {
+		const { openExtended, error, extended } = this.state
+		const { classes, t } = this.props
+		return <Collapse in={openExtended}>
+			<ItemGrid container xs={12} md={6}>
+				<TextF
+					id={'bio'}
+					label={t('users.fields.bio')}
+					value={extended.bio}
+					multiline
+					rows={4}
+					className={classes.textField}
+					handleChange={this.handleExtendedChange('bio')}
+					margin='normal'
+					error={error}
+				/>
+			</ItemGrid>
+			<ItemGrid container xs={12} md={6}>
+				<TextF
+					id={'position'}
+					label={t('users.fields.position')}
+					value={extended.position}
+					className={classes.textField}
+					handleChange={this.handleExtendedChange('position')}
+					margin='normal'
+					error={error}
+				/>
+			</ItemGrid>
+			<ItemGrid container xs={12} md={6}>
+				<TextF
+					id={'location'}
+					label={t('users.fields.location')}
+					value={extended.location}
+					className={classes.textField}
+					handleChange={this.handleExtendedChange('location')}
+					margin='normal'
+					error={error}
+				/>
+			</ItemGrid>
+			<ItemGrid container xs={12} md={6}>
+				<TextF
+					id={'recoveryEmail'}
+					label={t('users.fields.recoveryEmail')}
+					value={extended.recoveryEmail}
+					className={classes.textField}
+					handleChange={this.handleExtendedChange('recoveryEmail')}
+					margin='normal'
+					error={error}
+				/>
+			</ItemGrid>
+			<ItemGrid container xs={12} md={6}>
+				<TextF
+					id={'linkedInURL'}
+					label={t('users.fields.linkedInURL')}
+					value={extended.linkedInURL}
+					className={classes.textField}
+					handleChange={this.handleExtendedChange('linkedInURL')}
+					margin='normal'
+					error={error}
+				/>
+			</ItemGrid>
+			<ItemGrid container xs={12} md={6}>
+				<TextF
+					id={'twitterURL'}
+					label={t('users.fields.twitterURL')}
+					value={extended.twitterURL}
+					className={classes.textField}
+					handleChange={this.handleExtendedChange('twitterURL')}
+					margin='normal'
+					error={error}
+				/>
+			</ItemGrid>
+			<ItemGrid container xs={12} md={6}>
+				<MuiPickersUtilsProvider utils={MomentUtils}>
+					<DateTimePicker
+						autoOk
+						ampm={false}
+						label={t('users.fields.birthday')}
+						clearable
+						format='ll'
+						value={extended.birthday}
+						onChange={this.handleExtendedBirthdayChange('birthday')}
+						animateYearScrolling={false}
+						color='primary'
+						disableFuture
+						dateRangeIcon={<DateRange />}
+						timeIcon={<AccessTime />}
+						rightArrowIcon={<KeyboardArrowRight />}
+						leftArrowIcon={<KeyboardArrowLeft />}
+					/>
+				</MuiPickersUtilsProvider>
+			</ItemGrid>
+			<ItemGrid container xs={12} md={6}>
+				<FormControlLabel
+					control={
+						<Checkbox
+							checked={extended.newsletter}
+							onChange={this.handleExtendedNewsletter}
+							color="primary"
+						/>
+					}
+					label={t('users.fields.newsletter')}
+				/>
+			</ItemGrid>
+		</Collapse>
+	}
 	render() {
 		const { error, errorMessage, user, created, loading } = this.state
 		const { classes, t } = this.props
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
-		return !loading ? 
+		return !loading ?
 			<GridContainer justify={'center'}>
 				<Paper className={classes.paper}>
 					<form className={classes.form}>
@@ -393,7 +562,12 @@ class EditUser extends Component {
 						<ItemGrid container xs={12} md={6}>
 							{this.renderAccess()}
 						</ItemGrid>
-
+						<ItemG xs={12}>
+							{this.renderExtendedProfile()}
+						</ItemG>
+						<ItemGrid container xs={12} md={12}>
+							<Button color={'primary'} onClick={() => this.setState({ openExtended: !this.state.openExtended })}>{t('actions.extendProfile')}</Button>
+						</ItemGrid>
 					</form>
 					<ItemGrid xs={12} container justify={'center'}>
 						<Collapse in={this.state.creating} timeout='auto' unmountOnExit>
@@ -417,7 +591,7 @@ class EditUser extends Component {
 				</Paper>
 
 			</GridContainer> : <CircularLoader />
-		
+
 	}
 }
 
@@ -427,7 +601,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
-	updateFav: (favObj) => dispatch(updateFav(favObj))
+	updateFav: (favObj) => dispatch(updateFav(favObj)),
+	getSettings: async () => dispatch(await getSettings()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles)(EditUser))

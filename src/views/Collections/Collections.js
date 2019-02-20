@@ -10,7 +10,7 @@ import { deleteCollection, getAllCollections, unassignDeviceFromCollection, getC
 import { filterItems, handleRequestSort } from 'variables/functions';
 import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks, Add, LayersClear, Star, StarBorder, SignalWifi2Bar } from 'variables/icons';
 import { GridContainer, CircularLoader, AssignDevice, AssignProject, ItemG } from 'components'
-import CollectionCard from 'components/Collections/CollectionCard';
+import CollectionsCards from './CollectionsCards';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
 
@@ -480,13 +480,8 @@ class Collections extends Component {
 	renderCards = () => {
 		const { loading } = this.state
 		const { t, history } = this.props
-		return loading ? <CircularLoader /> : <GridContainer spacing={8} justify={'center'}>
-			{this.filterItems(this.state.collections).map((d, k) => {
-				return <ItemG container justify={'center'} xs={12} sm={6} md={4}>
-					<CollectionCard key={k} t={t} d={d} history={history} />
-				</ItemG>
-			})}
-		</GridContainer>
+		return loading ? <CircularLoader /> : 
+			<CollectionsCards collections={this.filterItems(this.state.collections)} t={t} history={history} />
 	}
 
 	renderFavorites = () => {

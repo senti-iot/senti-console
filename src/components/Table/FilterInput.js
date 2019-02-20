@@ -209,10 +209,11 @@ class FilterInput extends Component {
 				this.handleDoubleClick({ id: focusedChip })
 			}
 			else {
-				let result = this.handleAddChip({ key: "", value: event.target.value })
-				if (result !== false) {
-					event.preventDefault()
-				}
+				if (event.target.value)
+				{	let result = this.handleAddChip({ key: "", value: event.target.value })
+					if (result !== false) {
+						event.preventDefault()
+					}}
 			}
 		} else if (event.keyCode === 8 || event.keyCode === 46) {
 			if (this.props.onBeforeDelete) { 
@@ -328,6 +329,7 @@ class FilterInput extends Component {
 		if (this.props.value && chip) {
 			if (this.props.onDelete) {
 				this.props.onDelete({ ...chip })
+				this.setState({ focusedChip: null })
 			}
 		} else {
 			const chips = this.state.chips.slice()
@@ -496,7 +498,7 @@ class FilterInput extends Component {
 						value={this.state.inputValue}
 						onChange={this.handleUpdateInput}
 						onKeyDown={this.handleKeyDown}
-						onKeyPress={this.handleKeyPress}
+						// onKeyPress={this.handleKeyPress}
 						onKeyUp={this.handleKeyUp}
 						onFocus={this.handleInputFocus}
 						onBlur={this.handleInputBlur}
@@ -590,7 +592,7 @@ export const defaultChipRenderer = ({ value, handleDoubleClick, text, isFocused,
 		key={key}
 		className={className}
 		icon={icon}
-		style={{ pointerEvents: isDisabled ? 'none' : undefined, background: isFocused ? teal[500] : '' }}
+		style={{ pointerEvents: isDisabled ? 'none' : undefined, background: isFocused ? teal[500] : '', color: isFocused ? '#fff' : "inherit" }}
 		onClick={handleClick}
 		onDoubleClick={handleDoubleClick}
 		onDelete={handleDelete}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Info, Caption } from 'components'
 import { Table, TableBody, TableRow, Hidden, withStyles } from '@material-ui/core'
-import { People } from '@material-ui/icons'
+import { People } from 'variables/icons'
 import TC from 'components/Table/TC'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
 import Gravatar from 'react-gravatar'

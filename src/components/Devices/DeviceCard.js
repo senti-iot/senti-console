@@ -51,7 +51,7 @@ class DeviceCard extends Component {
 		const { actionAnchor } = this.state
 		return (
 			<SmallCard
-				whiteAvatar
+				// whiteAvatar
 				key={d.id}
 				title={d.name ? d.name : d.id}
 				avatar={this.renderIcon(d.liveStatus)}

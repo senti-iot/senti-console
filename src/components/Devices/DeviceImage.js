@@ -1,12 +1,13 @@
-import { Button, Grid, MobileStepper, withStyles } from '@material-ui/core';
+import { Button, MobileStepper, withStyles } from '@material-ui/core';
 import { KeyboardArrowLeft, KeyboardArrowRight } from 'variables/icons';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ExifOrientationImg from 'react-exif-orientation-img';
 import SwipeableViews from 'react-swipeable-views';
-import { Caption, ItemGrid } from 'components';
+import { Caption } from 'components';
 import imagecarouselStyles from 'assets/jss/components/image/imagecarouselStyles';
+import ItemG from 'components/Grid/ItemG';
 
 class DeviceImage extends React.Component {
 	state = {
@@ -34,9 +35,10 @@ class DeviceImage extends React.Component {
 		this.swipeHeight = e
 	}
 	fixHeight = () => {
-		this.swipeHeight.updateHeight()
 		if (this.swipeHeight)
+		{
 			this.swipeHeight.updateHeight()
+		}
 	}
 	render() {
 		const { classes, theme, images, t } = this.props;
@@ -45,7 +47,7 @@ class DeviceImage extends React.Component {
 		const maxSteps = images ? images.length ? images.length : 0 : 0;
 		return (
 			<div className={classes.root}>
-				{images ? <Grid container justify={'center'} >
+				{images ? <ItemG container justify={'center'} >
 					{images.length > 0 ? <SwipeableViews
 						axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
 						index={this.state.activeStep}
@@ -56,16 +58,14 @@ class DeviceImage extends React.Component {
 						{images.map((step, i) => {
 							let blob = step
 							if (typeof step === 'object') { blob = URL.createObjectURL(step) }
-							return <ItemGrid key={i} zeroMargin noPadding container justify={'center'}>
-								<ExifOrientationImg className={classNames(classes.deviceImg, {
-									[classes.activeImage]: this.state.activeStep === i ? false : true
-								})} src={blob} alt={'Senti Device'} onLoad={this.fixHeight} />
-							</ItemGrid>
+							return <ExifOrientationImg className={classNames(classes.deviceImg, {
+								[classes.activeImage]: this.state.activeStep === i ? false : true
+							})} src={blob} alt={'Senti Device'} onLoad={this.fixHeight} />
 						})}
 					</SwipeableViews> :
 						<Caption>{t('devices.noImages')}</Caption>
 					}
-				</Grid> : null}
+				</ItemG> : null}
 				<MobileStepper
 					steps={maxSteps}
 					position='static'

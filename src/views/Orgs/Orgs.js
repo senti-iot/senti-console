@@ -36,13 +36,18 @@ class Orgs extends Component {
 		const { t, accessLevel, isFav, orgs } = this.props
 		const { selected } = this.state
 		let org = orgs[orgs.findIndex(d => d.id === selected[0])]
-		let favObj = {
-			id: org.id,
-			name: org.name,
-			type: 'org',
-			path: `/management/org/${org.id}`
+		let favObj
+		let isFavorite = false
+		if (org) {
+			favObj = {
+			   id: org.id,
+			   name: org.name,
+			   type: 'org',
+			   path: `/management/org/${org.id}`
+		   }
+			isFavorite = isFav(favObj)
 		}
-		let isFavorite = isFav(favObj)
+
 		let allOptions = [
 			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
 			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
@@ -71,7 +76,8 @@ class Orgs extends Component {
 			{ key: 'city', name: t('orgs.fields.city'), type: 'string' },
 			{ key: 'zip', name: t('orgs.fields.zip'), type: 'string' },
 			{ key: 'org.name', name: t('orgs.fields.parentOrg'), type: 'string' },
-			{ key: 'org.id', name: t('filters.orgs.parentOrg'), type: 'diff', options: { dropdown: this.dHasOrgParent(), values: { false: [-1] } } }
+			{ key: 'org.id', name: t('filters.orgs.parentOrg'), type: 'diff', options: { dropdown: this.dHasOrgParent(), values: { false: [-1] } } },
+			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 		]
 	}
 	handleCheckboxClick = (event, id) => {
@@ -123,7 +129,7 @@ class Orgs extends Component {
 	}
 	handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			this.setState({ selected: this.props.orgs.map(n => n.id) })
+			this.setState({ selected: this.filterItems(this.props.orgs).map(n => n.id) })
 			return;
 		}
 		this.setState({ selected: [] })
@@ -161,6 +167,11 @@ class Orgs extends Component {
 	}
 	componentDidUpdate = async (prevState, prevProps) => {
 		if (prevProps.orgs !== this.props.orgs) {
+			if (this.state.selected.length > 0)
+				if (this.state.selected.length > 0) {
+					let newSelected = this.state.selected.filter(s => this.props.orgs.findIndex(u => u.id === s) !== -1 ? true : false)
+					this.setState({ selected: newSelected })
+				}
 			this.getData()
 		}
 	}

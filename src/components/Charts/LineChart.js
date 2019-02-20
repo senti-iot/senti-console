@@ -61,6 +61,7 @@ class LineChart extends PureComponent {
 				top: 0,
 				left: 0,
 				data: [],
+				exited: true
 			},
 			loc: {
 				lat: 0,
@@ -139,6 +140,7 @@ class LineChart extends PureComponent {
 							display: false,
 							labelString: 'value'
 						},
+						type: props.chartYAxis,
 						ticks: {
 							fontColor: props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
 						},
@@ -179,31 +181,12 @@ class LineChart extends PureComponent {
 		})
 	}
 
-	/**
-		 * 	How the damn zoom Works:
-		 *  1. Sets a min/max moment objects scale on the x axis
-		 *  2. Re renders the chart
-		 * 
-		 *  How to implement in our code:
-		 *  1. In the onZoom function get the minMax from the xAxis scale
-		 *  2. Pass them to the same function as CustomSetRange used by the filter in Device.js
-		 *  3. Create a new function that based on the difference between the dates, sets the appropiate timeType (hour, minute, day, month, etc.)
-		 *  4. Set the 'newData' without loading
-		 * 	@debug 
-		 *  */
 	componentDidUpdate = (prevProps) => {
 
-		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID) {
+		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID || prevProps.chartYAxis !== this.props.chartYAxis) {
 			this.setXAxis()
 		}
-		// console.log(this.chart.chartInstance)
-		// if (this.chart.chartInstance)
-		// 	if (this.chart.chartInstance.canvas.style.width !== this.state.chartWidth || this.state.chartHeight !== this.chart.chartInstance.canvas.style.height) {
-		// 		this.setState({
-		// 			chartWidth: parseInt(this.chart.chartInstance.canvas.style.width.substring(0, this.chart.chartInstance.canvas.style.width.length - 1), 10),
-		// 			chartHeight: parseInt(this.chart.chartInstance.canvas.style.height.substring(0, this.chart.chartInstance.canvas.style.height.length - 1), 10)
-		// 		})
-		// 	}
+
 	}
 
 	setHours = (date) => {
@@ -212,6 +195,7 @@ class LineChart extends PureComponent {
 		else
 			return moment(date)
 	}
+
 	customTooltip = async (tooltipModel) => {
 		if (tooltipModel.opacity === 0) {
 			return !this.clickEvent() ? null : this.hideTooltip()
@@ -295,6 +279,8 @@ class LineChart extends PureComponent {
 
 		this.setTooltip({
 			...this.state.tooltip,
+			xAlign: tooltipModel.xAlign,
+			yAlign: tooltipModel.yAlign,
 			top,
 			left,
 			lastPoint,
@@ -348,7 +334,20 @@ class LineChart extends PureComponent {
 								unit: this.props.unit.chart,
 								tooltipFormat: this.props.unit.format
 							},
-						}]
+						}],
+					yAxes: [{
+						scaleLabel: {
+							display: false,
+							labelString: 'value'
+						},
+						type: this.props.chartYAxis,
+						ticks: {
+							fontColor: this.props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
+						},
+						gridLines: {
+							color: this.props.theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0,0,0,0.1)',
+						},
+					}]
 				}
 			}
 		}, () => this.chart ? this.chart.chartInstance ? this.chart.chartInstance.update() : {} : {})
@@ -389,6 +388,7 @@ class LineChart extends PureComponent {
 
 	}
 	elementClicked = async (elements) => {
+		console.log(elements)
 		if (!this.clickEvent()) {
 			if (elements.length > 0)
 				this.showTooltip()
@@ -415,8 +415,8 @@ class LineChart extends PureComponent {
 		const { tooltip, chartWidth, chartHeight, mobile, weather } = this.state
 		return (
 			<Fragment>
-				<div style={{ display: 'block', maxHeight: 400, position: 'relative', height: 400 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
-					<div style={{ display: 'block', height: 400, maxHeight: 400, width: '100%' }}>
+				<div style={{ display: 'block', maxHeight: 300, position: 'relative', height: 300 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
+					<div style={{ display: 'block', height: 300, maxHeight: 300, width: '100%' }}>
 
 						<ChartComponent
 							type={'multicolorLine'}
@@ -445,7 +445,8 @@ class LineChart extends PureComponent {
 	}
 }
 const mapStateToProps = (state) => ({
-	lang: state.settings.language
+	lang: state.settings.language,
+	// chartYAxis: state.appState.chartYAxis
 })
 
 const mapDispatchToProps = {

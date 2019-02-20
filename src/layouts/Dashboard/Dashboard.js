@@ -16,6 +16,8 @@ import withSnackbarHandler from 'components/Localization/SnackbarHandler';
 import {  Close } from 'variables/icons';
 import { lightTheme, darkTheme } from 'variables/themes'
 import { getDaysOfInterest } from 'redux/doi';
+import Cookies from 'components/Cookies/Cookies';
+
 class App extends React.Component {
 	constructor(props) {
 		super(props)
@@ -106,7 +108,7 @@ class App extends React.Component {
 	}
 	
 	render() {
-		const { classes, t, loading, sOpt, ...rest } = this.props;
+		const { classes, t, loading, sOpt, defaultRoute, ...rest } = this.props;
 		return (
 			<MuiThemeProvider theme={this.props.theme === 0 ? lightTheme : darkTheme }>
 
@@ -123,6 +125,7 @@ class App extends React.Component {
 						/>
 						<Fragment>
 							<Sidebar
+								defaultRoute={defaultRoute}
 								routes={dashboardRoutes}
 								logo={logo}
 								handleDrawerToggle={this.handleDrawerToggle}
@@ -149,6 +152,7 @@ class App extends React.Component {
 											}} />}
 									</Switch>
 								</div>
+								<Cookies/>
 								<Snackbar
 									anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 									open={this.props.sOpen}
@@ -164,14 +168,16 @@ class App extends React.Component {
 									autoHideDuration={3000}
 									message={<span>{t(this.props.sId, this.props.sOpt)}</span>}
 									action={
-										<IconButton color={'primary'} size={'small'} /* variant={'text'} */ onClick={this.props.sClose} >
+										<IconButton color={'primary'} size={'small'} onClick={this.props.sClose} >
 											<Close />
 										</IconButton>
 									}
 								/>
+							
 							</Fragment> : <CircularLoader />}
 						</Fragment>
 					</div>
+				
 				</div >
 			</MuiThemeProvider>
 
@@ -184,12 +190,15 @@ App.propTypes = {
 };
 const mapStateToProps = (state) => ({
 	loading: state.settings.loading,
-	theme: state.settings.theme
+	theme: state.settings.theme,
+	// cookies: state.settings.cookies,
+	defaultRoute: state.settings.defaultRoute
 })
 
 const mapDispatchToProps = dispatch => ({
 	getSettings: async () => dispatch(await getSettings()),
-	getDaysOfIterest: async () => dispatch(await getDaysOfInterest())
+	getDaysOfIterest: async () => dispatch(await getDaysOfInterest()),
+	// acceptCookies: async (val) => dispatch(await acceptCookiesFunc(val))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withSnackbarHandler()((withLocalization()(withStyles(appStyle)(App)))))

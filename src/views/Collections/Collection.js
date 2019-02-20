@@ -1,36 +1,34 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, withStyles } from '@material-ui/core';
 import collectionStyles from 'assets/jss/views/deviceStyles';
-import { CircularLoader, GridContainer, ItemGrid, AssignOrg, AssignProject, AssignDevice, DateFilterMenu } from 'components';
+import { CircularLoader, GridContainer, ItemGrid, AssignOrg, AssignProject, AssignDevice } from 'components';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { getCollection, deleteCollection, unassignDeviceFromCollection,  getDataSummary } from 'variables/dataCollections';
+import { getCollection, deleteCollection, unassignDeviceFromCollection } from 'variables/dataCollections';
 import CollectionActiveDevice from 'views/Collections/CollectionCards/CollectionActiveDevice';
-import CollectionData from 'views/Collections/CollectionCards/CollectionData';
 import CollectionDetails from 'views/Collections/CollectionCards/CollectionDetails';
 import CollectionHistory from 'views/Collections/CollectionCards/CollectionHistory';
 import { getProject } from 'variables/dataProjects';
 import Search from 'components/Search/Search';
 import { getDevice, getWeather } from 'variables/dataDevices';
-import ActiveDeviceMap from './CollectionCards/CollectionActiveDeviceMap';
 import moment from 'moment'
 import teal from '@material-ui/core/colors/teal'
 import { getWifiDaily, getWifiMinutely, getWifiHourly, getWifiSummary } from 'components/Charts/DataModel';
 import { DataUsage, Timeline, Map, DeviceHub, History } from 'variables/icons';
 import Toolbar from 'components/Toolbar/Toolbar';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
+import ChartDataPanel from 'views/Charts/ChartDataPanel';
+import ChartData from 'views/Charts/ChartData';
+import Maps from 'views/Maps/MapCard';
 
 class Collection extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			//Date Filter stuff
-			loadingData: true,
-			raw: props.rawData ? props.rawData : false,
+			//Date Filter
 			//End Date Filter Tools
 			collection: null,
 			activeDevice: null,
-			weather: '',
 			loading: true,
 			anchorElHardware: null,
 			openAssign: false,
@@ -46,7 +44,7 @@ class Collection extends Component {
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/collections/list'
 		props.setHeader('collections.fields.collection', true, prevURL, 'collections')
 	}
-	
+
 	format = 'YYYY-MM-DD+HH:mm'
 	tabs = [
 		{ id: 0, title: '', label: <DataUsage />, url: `#details` },
@@ -70,21 +68,21 @@ class Collection extends Component {
 	getCollection = async (id) => {
 		await getCollection(id).then(async rs => {
 			if (rs === null)
-			
+
 				this.props.history.push({
 					pathname: '/404',
 					prevURL: window.location.pathname
 				})
 			else {
 				this.setState({ collection: rs })
-		
+
 				if (rs.project.id) {
 					await this.getCollectionProject(rs.project.id)
 				}
-				if (rs.activeDeviceStats) { 
+				if (rs.activeDeviceStats) {
 					await this.getActiveDevice(rs.activeDeviceStats.id)
-					this.handleSwitchDayHourSummary()
-					this.getHeatMapData()
+					// this.handleSwitchDayHourSummary()
+					// this.getHeatMapData()
 				}
 				else {
 					this.setState({ loading: false, loadingData: false })
@@ -93,8 +91,10 @@ class Collection extends Component {
 		})
 	}
 	componentDidUpdate = (prevProps) => {
-		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from)
-			this.handleSwitchDayHourSummary()
+		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
+			// this.handleSwitchDayHourSummary()
+			// this.getHeatMapData()
+		}
 		if (this.props.saved === true) {
 			const { collection } = this.state
 			if (this.props.isFav({ id: collection.id, type: 'collection' })) {
@@ -141,79 +141,44 @@ class Collection extends Component {
 		}
 		this.props.removeFromFav(favObj)
 	}
-	getHeatMapData = async () => {
-		const { from, to, collection, activeDevice } = this.state
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataSet = null
-		let data = await getDataSummary(collection.id, startDate, endDate, true)
-		dataSet = {
-			name: collection.name,
-			id: collection.id,
-			data: data,
-			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
-			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
-			color: teal[500],
-			...activeDevice
-		}
-		this.setState({
-			heatData: dataSet,
-			loadingMap: false
-		})
-	}
 
-	handleRawData = () => {
-		this.setState({ loadingData: true, raw: !this.state.raw }, () => this.handleSwitchDayHourSummary())
-	}
-	handleSwitchDayHourSummary = () => {
-		const { to, from, id } = this.props
-		let diff = moment.duration(to.diff(from)).days()
-		this.getHeatMapData()
-		switch (id) {
+	handleSwitchDayHourSummary = async (p) => {
+		let diff = moment.duration(p.to.diff(p.from)).days()
+		switch (p.menuId) {
 			case 0:// Today
 			case 1:// Yesterday
-				this.getWifiHourly();
-				break;
+				return await this.getWifiHourly(p);
 			case 2:// This week
-				parseInt(diff, 10) > 0 ? this.getWifiDaily() : this.getWifiHourly()
-				break;
+				return parseInt(diff, 10) > 0 ? this.getWifiDaily(p) : this.getWifiHourly(p)
 			case 3:// Last 7 days
 			case 4:// 30 days
 			case 5:// 90 Days
-				this.getWifiDaily();
-				break
+				return await this.getWifiDaily(p);
 			case 6:
-				this.handleSetCustomRange()
-				break
+				return await this.handleSetCustomRange(p)
 			default:
-				this.getWifiDaily();
-				break;
+				return await this.getWifiDaily(p);
 		}
 	}
 
-	handleSetCustomRange = () => {
-		const { timeType } = this.props
-		switch (timeType) {
+	handleSetCustomRange = (p) => {
+		switch (p.timeType) {
 			case 0:
-				this.getWifiMinutely()
-				break;
+				return this.getWifiMinutely(p)
 			case 1:
-				this.getWifiHourly()
-				break
+				return this.getWifiHourly(p)
 			case 2:
-				this.getWifiDaily()
-				break
+				return this.getWifiDaily(p)
 			case 3:
-				this.getWifiSummary()
-				break
+				return this.getWifiSummary(p)
 			default:
 				break;
 		}
 	}
-	getWifiSummary = async () => {
-		const { raw, collection, hoverID } = this.state
-		const { from, to } = this.props
 
+	getWifiSummary = async (p) => {
+		const {  collection, hoverID } = this.state
+		this.setState({ loadingData: true })
 		let newState = await getWifiSummary('collection', [{
 			dcId: collection.id,
 			dcName: collection.name,
@@ -224,16 +189,13 @@ class Collection extends Component {
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500]
-		}], from, to, hoverID, raw)
+		}], p.from, p.to, hoverID, p.raw)
 
-		this.setState({
-			loadingData: false,
-			...newState
-		})
+		return newState
 	}
-	getWifiHourly = async () => {
-		const { raw, collection, hoverID } = this.state
-		const { from, to } = this.props
+	getWifiHourly = async (p) => {
+		const {  collection, hoverID } = this.state
+		this.setState({ loadingData: true })
 		let newState = await getWifiHourly('collection', [{
 			dcId: collection.id,
 			dcName: collection.name,
@@ -244,18 +206,14 @@ class Collection extends Component {
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500]
-		}], from, to, hoverID, raw)
+		}], p.from, p.to, hoverID, p.raw)
 
-		this.setState({
-			...this.state,
-			loadingData: false,
-			...newState
-		})
+		return newState
 	}
 
-	getWifiMinutely = async () => {
-		const { raw, collection, hoverID } = this.state
-		const { from, to } = this.props
+	getWifiMinutely = async (p) => {
+		const {  collection, hoverID } = this.state
+		this.setState({ loadingData: true })
 		let newState = await getWifiMinutely('collection', [{
 			dcId: collection.id,
 			dcName: collection.name,
@@ -266,18 +224,15 @@ class Collection extends Component {
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500]
-		}], from, to, hoverID, raw)
+		}], p.from, p.to, hoverID, p.raw)
 
-		this.setState({
-			...this.state,
-			loadingData: false,
-			...newState
-		})
+		return newState
+
 	}
 
-	getWifiDaily = async () => {
-		const { raw, collection, hoverID } = this.state
-		const { from, to } = this.props
+	getWifiDaily = async (p) => {
+		const {  collection, hoverID } = this.state
+		this.setState({ loadingData: true })
 		let newState = await getWifiDaily('collection', [{
 			dcId: collection.id,
 			dcName: collection.name,
@@ -288,13 +243,9 @@ class Collection extends Component {
 			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
 			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
 			color: teal[500]
-		}], from, to, hoverID, raw)
-		
-		this.setState({
-			...this.state,
-			loadingData: false,
-			...newState
-		})
+		}], p.from, p.to, hoverID, p.raw)
+
+		return newState
 	}
 
 	snackBarMessages = (msg) => {
@@ -308,7 +259,7 @@ class Collection extends Component {
 			case 2:
 				s('snackbars.assign.collectionToOrg', { collection: `${name} (${id})`, org: this.state.collection.org.name })
 				break
-			case 5: 
+			case 5:
 				s('snackbars.assign.collectionToProject', { collection: `${name} (${id})`, project: this.state.collection.project.title })
 				break
 			case 6:
@@ -335,14 +286,11 @@ class Collection extends Component {
 			this.setState({
 				openDelete: false
 			})
-			if (rs) { 
+			if (rs) {
 				this.props.history.push('/collections/list')
 				this.snackBarMessages(4)
 			}
-			else {
-				alert('Delete failed') //todo
-			}
-				
+
 		})
 	}
 
@@ -355,9 +303,9 @@ class Collection extends Component {
 	}
 
 	handleCloseAssignDevice = async (reload) => {
-		if (reload) { 
+		if (reload) {
 			this.setState({ loading: true, openAssignDevice: false })
-			await this.getCollection(this.state.collection.id).then(() => { 
+			await this.getCollection(this.state.collection.id).then(() => {
 				this.snackBarMessages(6)
 			})
 		}
@@ -435,7 +383,7 @@ class Collection extends Component {
 		return (
 			<Dialog
 				open={openAssignDevice}
-				onClose={this.handleCloseAssignDevice}	
+				onClose={this.handleCloseAssignDevice}
 			>
 				<DialogTitle>
 					<DialogActions>
@@ -503,22 +451,19 @@ class Collection extends Component {
 			</Dialog>
 		)
 	}
-	
-	renderMenu = () => {
-		const { t } = this.props
-		const { dateOption, to, from, timeType } = this.state
-		return <DateFilterMenu
-			timeType={timeType}
-			dateOption={dateOption}
-			to={to}
-			from={from}
-			t={t}
-			handleSetDate={this.handleSetDate}
-		/>
+
+	handleDataSize = (i) => {
+		let visiblePeriods = 0
+		this.props.periods.forEach(p => p.hide === false ? visiblePeriods += 1 : visiblePeriods)
+		if (visiblePeriods === 1)
+			return 12
+		if (i === this.props.periods.length - 1 && visiblePeriods % 2 !== 0 && visiblePeriods > 2)
+			return 12
+		return 6
 	}
 	render() {
-		const { history, match,  t, classes, accessLevel, from, to, id, timeType } = this.props
-		const { collection, loading, loadingData, activeDevice, weather, openAssign, openAssignOrg, exportData, lineDataSets, barDataSets, roundDataSets, raw } = this.state
+		const { history, match, t, classes, accessLevel } = this.props
+		const { collection, loading, activeDevice, weather, openAssign, openAssignOrg, } = this.state
 		return (
 			<Fragment>
 				<Toolbar
@@ -526,7 +471,7 @@ class Collection extends Component {
 					history={history}
 					match={match}
 					tabs={this.tabs}
-					content={this.renderMenu()}
+				// content={this.renderMenu()}
 				/>
 				{!loading ?
 					<GridContainer justify={'center'} alignContent={'space-between'}>
@@ -573,31 +518,30 @@ class Collection extends Component {
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
-						<ItemGrid xs={12} noMargin id='data'>
-							<CollectionData
-								exportData={exportData}
-								barDataSets={barDataSets}
-								roundDataSets={roundDataSets}
-								lineDataSets={lineDataSets}
-								handleSetDate={this.handleSetDate}
-								loading={loadingData}
-								timeType={timeType}
-								from={from}
-								to={to}
-								device={activeDevice}
-								dateOption={id}
-								raw={raw}
-								handleRawData={this.handleRawData}
-								history={history}
-								match={match}
-								t={t}
-							/>
+						<ItemGrid xs={12} noMargin id={'data'}>
+							<ChartDataPanel />
 						</ItemGrid>
+						{this.props.periods.map((period, i) => {
+							if (period.hide) { return null }
+							return <ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
+								<ChartData
+									period={period}
+									single
+									getData={this.handleSwitchDayHourSummary}
+									device={activeDevice}
+									history={history}
+									match={match}
+									t={t}
+								/>
+							</ItemGrid>
+						})}
 						{this.state.activeDevice ? <ItemGrid xs={12} noMargin id='map'>
-							<ActiveDeviceMap
+							<Maps
 								mapTheme={this.props.mapTheme}
-								device={this.state.heatData}
+								markers={this.state.activeDevice ? [this.state.activeDevice] : []}
 								weather={this.state.weather}
+								loading={this.state.loadingMap}
+								heatData={this.state.heatData}
 								t={t}
 							/>
 						</ItemGrid> : null}
@@ -630,12 +574,8 @@ const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	language: state.settings.language,
 	saved: state.favorites.saved,
-	rawData: state.settings.rawData,
 	mapTheme: state.settings.mapTheme,
-	id: state.dateTime.id,
-	to: state.dateTime.to,
-	from: state.dateTime.from,
-	timeType: state.dateTime.timeType
+	periods: state.dateTime.periods
 })
 
 const mapDispatchToProps = (dispatch) => ({

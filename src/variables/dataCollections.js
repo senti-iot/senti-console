@@ -133,7 +133,7 @@ export const getDataMinutely = async (id, from, to, raw) => {
 export const getDataSummary = async (id, from, to, raw) => {
 	let URL = raw ? `/senti/sentiwi/summary/raw/${id}/${from}/${to}` : `/senti/sentiwi/summary/${id}/${from}/${to}`
 	let response = await api.get(URL)
-	return response.data ? response.data : null
+	return response.data ? response.data : response
 }
 
 //#endregion

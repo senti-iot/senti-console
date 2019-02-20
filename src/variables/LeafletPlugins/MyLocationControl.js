@@ -4,7 +4,7 @@ import L, { Control } from 'leaflet'
 import { MapControl, withLeaflet } from 'react-leaflet'
 import { withStyles, IconButton, MuiThemeProvider } from '@material-ui/core';
 import teal from '@material-ui/core/colors/teal'
-import { MyLocation } from '@material-ui/icons';
+import { MyLocation } from 'variables/icons';
 
 const styles = theme => ({
 	locationMarker: {
@@ -134,7 +134,7 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 					<MuiThemeProvider theme={this.props.theme}>
 						<IconButton
 							buttonRef={r => this.button = r}
-							className={this.props.classes.locButton}
+							className={this.props.classes.locButton + " leaflet-touch leaflet-bar" }
 							onClick={this.onClick}
 							color={'primary'}>
 							<MyLocation />

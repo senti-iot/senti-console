@@ -20,14 +20,19 @@ class AssignDC extends PureComponent {
 			selectedCollections: [],
 			filters: {
 				keyword: '',
-			}
+			},
 		}
 	}
 	//#region LifeCycle 
 	componentDidMount = async () => {
 		this._isMounted = 1
-		await getAllCollections().then(rs => this._isMounted ? this.setState({ collections: rs }) : this.setState({ collections: [] }))
 	}
+	componentDidUpdate = async (prevProps, prevState) => {
+		if (prevProps.open !== this.props.open && this.props.open === true) { 
+			await getAllCollections().then(rs => rs ? this.setState({ collections: rs }) : this.setState({ collections: [] }))
+		}
+	}
+	
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}

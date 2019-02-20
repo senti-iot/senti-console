@@ -5,8 +5,8 @@ import UserTable from 'components/User/UserTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
 import { deleteUser } from 'variables/dataUsers';
-import { People, Business, Add, Delete, PictureAsPdf, Edit, Star, StarBorder } from 'variables/icons';
-import { handleRequestSort } from 'variables/functions';
+import { People, Business, Add, Delete, PictureAsPdf, Edit, Star, StarBorder, Mail } from 'variables/icons';
+import { handleRequestSort, copyToClipboard } from 'variables/functions';
 import TableToolbar from 'components/Table/TableToolbar';
 import { Info } from 'components';
 import { customFilterItems } from 'variables/Filters';
@@ -28,25 +28,40 @@ class Users extends Component {
 		}
 		props.setHeader('users.pageTitle', false, '', 'users')
 	}
-	dSuspended = () => { 
+	dUserGroup = () => {
+		const { t } = this.props
+		return [
+			{ value: 136550100000143, label: t("users.groups.superUser") },
+			{ value: 136550100000211, label: t("users.groups.accountManager") },
+			{ value: 136550100000225, label: t("users.groups.user") },
+		]
+	}
+	dSuspended = () => {
 		const { t } = this.props
 		return [
 			{ value: 0, label: t('users.fields.active') },
 			{ value: 1, label: t('users.fields.loginSuspended') },
 		]
-	} 
-	dHasLoggedIn = () => { 
-		const { t } = this.props 
+	}
+	dHasLoggedIn = () => {
+		const { t } = this.props
 		return [
 			{ value: true, label: t('filters.users.hasLoggedIn') },
 			{ value: false, label: t('filters.users.neverLoggedIn') }
-		] 
+		]
 	}
-	dLang = () => { 
+	dLang = () => {
 		const { t } = this.props
 		return [
 			{ value: 'da', label: t('settings.languages.da') },
 			{ value: 'en', label: t('settings.languages.en') }
+		]
+	}
+	dNewsletter = () => {
+		const { t } = this.props
+		return [
+			{ value: true, label: t('actions.yes') },
+			{ value: false, label: t('actions.no') }
 		]
 	}
 	ftUsers = () => {
@@ -55,11 +70,14 @@ class Users extends Component {
 			{ key: 'firstName', name: t('users.fields.firstName'), type: 'string' },
 			{ key: 'lastName', name: t('users.fields.lastName'), type: 'string' },
 			{ key: 'email', name: t('users.fields.email'), type: 'string' },
-			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' }, 
+			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
+			{ key: 'groups', name: t('users.fields.group'), type: 'dropDown', options: this.dUserGroup() },
 			{ key: 'lastLoggedIn', name: t('users.fields.lastSignIn'), type: 'date' },
 			{ key: 'suspended', name: t('users.fields.loginSuspended'), type: 'dropDown', options: this.dSuspended() },
 			{ key: 'lastLoggedIn', name: t('filters.users.hasLogged'), type: 'diff', options: { dropdown: this.dHasLoggedIn(), values: { false: [null] } } },
-			{ key: 'aux.odeum.language', name: t('users.fields.language'), type: 'dropDown', options: this.dLang() }
+			{ key: 'aux.odeum.language', name: t('users.fields.language'), type: 'dropDown', options: this.dLang() },
+			{ key: 'aux.senti.extendedProfile.newsletter', name: t('users.fields.newsletter'), type: 'diff', options: { dropdown: this.dNewsletter(), values: { false: [false, null, undefined] } } },
+			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 		]
 	}
 	handleEdit = () => {
@@ -73,20 +91,40 @@ class Users extends Component {
 		this.props.removeFromFav(favObj)
 		this.setState({ anchorElMenu: null })
 	}
+	handleCopyEmailsSelected = () => {
+		const { selected } = this.state
+		const { users } = this.props
+		let fUsers = users.filter((el) => {
+			return selected.some((f) => {
+				return f === el.id
+			});
+		});
+		let emails = fUsers.map(u => u.email).join(';')
+		// this.setState({})
+		copyToClipboard(emails)
+		this.props.s('snackbars.emailsCopied')
+		// this.setState({ anchorElMenu: null })
+
+	}
 	options = () => {
 		const { t, isFav, users } = this.props
 		const { selected } = this.state
 		let user = users[users.findIndex(d => d.id === selected[0])]
-		let favObj = {
-			id: user.id,
-			name: `${user.firstName} ${user.lastName}`,
-			type: 'user',
-			path: `/management/user/${user.id}`
+		let favObj
+		let isFavorite = false
+		if (user) {
+			favObj = {
+				id: user.id,
+				name: `${user.firstName} ${user.lastName}`,
+				type: 'user',
+				path: `/management/user/${user.id}`
+			}
+			isFavorite = isFav(favObj)
 		}
-		let isFavorite = isFav(favObj)
 		return [
 			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
 			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
+			{ label: t('menus.copyEmails'), icon: Mail, func: this.handleCopyEmailsSelected },
 			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
 			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
@@ -99,7 +137,8 @@ class Users extends Component {
 			{ id: 'phone', label: t('users.fields.phone') },
 			{ id: 'email', label: t('users.fields.email') },
 			{ id: 'org.name', label: t('users.fields.organisation') },
-			{ id: 'lastSignIng', label: t('users.fields.lastSignIn') }
+			{ id: 'group', label: t('users.fields.group') },
+			{ id: 'lastLoggedIn', label: t('users.fields.lastSignIn') }
 		]
 	}
 	componentDidMount = async () => {
@@ -110,7 +149,11 @@ class Users extends Component {
 		this._isMounted = 0
 	}
 	componentDidUpdate = async (prevState, prevProps) => {
-		if (prevProps.users !== this.props.users) {
+		if (prevProps.users.length !== this.props.users.length) {
+			if (this.state.selected.length > 0) {
+				let newSelected = this.state.selected.filter(s => this.props.users.findIndex(u => u.id === s) !== -1 ? true : false)
+				this.setState({ selected: newSelected })
+			}
 			await this.getData()
 		}
 	}
@@ -191,7 +234,7 @@ class Users extends Component {
 	}
 	handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			this.setState({ selected: this.props.users.map(n => n.id) })
+			this.setState({ selected: this.filterItems(this.props.users).map(n => n.id) })
 			return;
 		}
 		this.setState({ selected: [] })
@@ -216,8 +259,8 @@ class Users extends Component {
 	renderConfirmDelete = () => {
 		const { openDelete, selected } = this.state
 		const { users, t } = this.props
-
 		return <Dialog
+			keepMounted={false}
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
 			aria-labelledby='alert-dialog-title'
@@ -229,11 +272,11 @@ class Users extends Component {
 					{t('dialogs.delete.message.users')}
 				</DialogContentText>
 				<div>
-					{selected.map(s => {
+					{openDelete ? selected.map(s => {
 						let u = users[users.findIndex(d => d.id === s)]
 						return <Info key={s}>&bull;{u.firstName + ' ' + u.lastName}</Info>
 					})
-					}
+						: null}
 				</div>
 			</DialogContent>
 			<DialogActions>

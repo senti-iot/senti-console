@@ -5,6 +5,8 @@ import 'moment/locale/en-gb'
 import { saveSettings } from 'variables/dataLogin';
 var moment = require('moment')
 
+const acceptCookies = 'acceptCookies'
+
 //Display
 const MENULOC = 'sidebarLocation'
 const changeLangAction = 'changeLanguage'
@@ -13,6 +15,7 @@ const TRP = 'tableRowsPerPage'
 const DISCSENT = 'discoverSentiBanner'
 const DidKnow = 'notifDidYouKnow'
 const MapTheme = 'mapTheme'
+const changeDR = 'changeDefaultRoute'
 
 //Calibration
 const CALTYPE = 'calibrationType'
@@ -49,7 +52,9 @@ export const saveSettingsOnServ = () => {
 			alerts: s.alerts,
 			didKnow: s.didKnow,
 			rawData: s.rawData,
-			mapTheme: s.mapTheme
+			mapTheme: s.mapTheme,
+			defaultRoute: s.defaultRoute,
+			cookies: s.cookies
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -139,7 +144,24 @@ export const getSettings = async () => {
 
 
 }
-
+export const acceptCookiesFunc = (val) => {
+	return async dispatch => {
+		dispatch({
+			type: acceptCookies,
+			acceptCookies: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeDefaultRoute = route => {
+	return async(dispatch) => {
+		dispatch({
+			type: changeDR,
+			defaultRoute: route
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
 export const changeMapTheme = t => {
 	return async (dispatch, getState) => {		
 		dispatch({
@@ -266,6 +288,8 @@ export const finishedSaving = () => {
 	}
 }
 let initialState = {
+	cookies: false,
+	defaultRoute: '/dashboard',
 	mapTheme: 0,
 	rawData: 0,
 	language: 'dk',
@@ -282,10 +306,15 @@ let initialState = {
 	didKnow: 0,
 	loading: true,
 	saved: false,
-	rowsPerPageOptions: [ 5, 10, 15, 20, 25, 50, 100 ]
+	rowsPerPageOptions: [ 5, 10, 15, 20, 25, 50, 100 ],
+	cardsPerPageOptions: [2, 3, 4, 6, 8, 9]
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
+		case acceptCookies: 
+			return Object.assign({}, state, { cookies: action.acceptCookies })
+		case changeDR: 
+			return Object.assign({}, state, { defaultRoute: action.defaultRoute })
 		case CHARTDATATYPE: 
 			return Object.assign({}, state, { rawData: action.t })
 		case SAVED:
