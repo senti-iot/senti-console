@@ -37,6 +37,7 @@ class ChartData extends PureComponent {
 			resetZoom: false,
 			zoomDate: [],
 			loading: true,
+			chartType: 'linear'
 		}
 	}
 
@@ -83,7 +84,11 @@ class ChartData extends PureComponent {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-
+	handleChangeChartType = (type) => { 
+		this.setState({
+			chartType: type
+		})
+	}
 	handleCloseDownloadModal = () => {
 		this.setState({ openDownload: false })
 	}
@@ -242,6 +247,7 @@ class ChartData extends PureComponent {
 
 					return lineDataSets ?
 						<LineChart
+							chartYAxis={this.state.chartType}
 							single={single}
 							hoverID={this.props.hoverID}
 							handleReverseZoomOnData={this.handleReverseZoomOnData}
@@ -353,12 +359,12 @@ class ChartData extends PureComponent {
 						{t('collections.rawData')}
 					</ListItemText>
 				</ListItem>
-				<ListItem button onClick={() => this.props.changeYAxis(this.props.chartYAxis === 'linear' ? 'logarithmic' : 'linear')}>
+				<ListItem button onClick={() => this.handleChangeChartType(this.state.chartType === 'linear' ? 'logarithmic' : 'linear')}>
 					<ListItemIcon>
-						{this.props.chartYAxis !== 'linear' ? <LinearScale /> : <Timeline />}
+						{this.state.chartType !== 'linear' ? <LinearScale /> : <Timeline />}
 					</ListItemIcon>
 					<ListItemText>
-						{t(this.props.chartYAxis !== 'linear' ? 'settings.chart.YAxis.linear' : 'settings.chart.YAxis.logarithmic')}
+						{t(this.state.chartType !== 'linear' ? 'settings.chart.YAxis.linear' : 'settings.chart.YAxis.logarithmic')}
 					</ListItemText>
 				</ListItem>
 				<ListItem button onClick={() => { this.handleCloseActionsDetails(); this.props.removePeriod(period.id) }}>
@@ -431,7 +437,7 @@ class ChartData extends PureComponent {
 	}
 }
 const mapStateToProps = (state) => ({
-	chartType: state.appState.chartType !== null ? state.appState.chartType : state.settings.chartType,
+	// chartType: state.appState.chartType !== null ? state.appState.chartType : state.settings.chartType,
 	timeType: state.dateTime.timeType,
 	chartYAxis: state.appState.chartYAxis,
 })

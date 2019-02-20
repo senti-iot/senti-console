@@ -446,7 +446,7 @@ class LineChart extends PureComponent {
 }
 const mapStateToProps = (state) => ({
 	lang: state.settings.language,
-	chartYAxis: state.appState.chartYAxis
+	// chartYAxis: state.appState.chartYAxis
 })
 
 const mapDispatchToProps = {
