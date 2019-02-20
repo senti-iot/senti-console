@@ -87,6 +87,7 @@
 		}
 	},
 	"charts": {
+		"controlPanel": "Data kontrolpanel",
 		"fields": {
 			"date": "Dato",
 			"humidity": "Fugtighed",

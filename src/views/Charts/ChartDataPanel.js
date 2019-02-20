@@ -20,7 +20,7 @@ class ChartDataPanel extends Component {
 		let mobile = isWidthUp('md', width)
 		return (
 			<InfoCard
-				title={t('collections.cards.data') + ' Control Panel'}
+				title={t('charts.controlPanel')}
 				avatar={<Timeline />}
 				noExpand
 				noMargin

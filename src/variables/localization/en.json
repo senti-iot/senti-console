@@ -87,6 +87,7 @@
 		}
 	},
 	"charts": {
+		"controlPanel": "Data control panel",
 		"fields": {
 			"date": "Date",
 			"humidity": "Humidity",
