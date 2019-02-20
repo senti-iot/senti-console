@@ -8,7 +8,6 @@ import { ProjectContact } from './ProjectCards/ProjectContact'
 import AssignDCs from 'components/AssignComponents/AssignDCs';
 import { colors } from 'variables/colors';
 import deviceStyles from 'assets/jss/views/deviceStyles';
-import { getDataSummary } from 'variables/dataCollections';
 import { getWifiDaily, getWifiMinutely, getWifiHourly, setMinutelyData, setHourlyData, setDailyData, setSummaryData, getWifiSummary } from 'components/Charts/DataModel';
 import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
@@ -62,10 +61,10 @@ class Project extends Component {
 			}
 	}
 	componentDidUpdate = (prevProps) => {
-		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
-			// this.handleSwitchDayHourSummary()
-			this.getHeatMapData()
-		}
+		// if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
+		// 	// this.handleSwitchDayHourSummary()
+		// 	// this.getHeatMapData()
+		// }
 		if (this.props.saved === true) {
 			const { project } = this.state
 			if (this.props.isFav({ id: project.id, type: 'project' })) {
@@ -101,9 +100,9 @@ class Project extends Component {
 						dataCollections: rs.dataCollections.map((dc, i) => ({ ...dc, color: colors[i] })),
 						devices: rs.dataCollections.filter(dc => dc.activeDevice ? true : false).map((dc, i) => dc.activeDevice ? { ...dc.activeDevice, color: colors[i] } : null)
 					}, loading: false
-				}, () => {
+				}/*,  () => {
 					this.getHeatMapData()
-				})
+				} */)
 			}
 		})
 	}
@@ -181,36 +180,36 @@ class Project extends Component {
 		let newState = await getWifiSummary('collection', dcs, p.from, p.to, hoverID, raw)
 		return newState
 	}
-	getHeatMapData = async () => {
-		const { project, raw } = this.state
-		const { from, to } = this.props
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataArr = []
-		await Promise.all(project.dataCollections.map(async d => {
-			let dataSet = null
-			let data = await getDataSummary(d.id, startDate, endDate, raw)
-			dataSet = {
-				name: d.name,
-				id: d.activeDevice ? d.activeDevice.id : 0,
-				data: data,
-				color: d.color,
-				liveStatus: d.activeDevice ? d.activeDevice.liveStatus : 0,
-				lat: d.activeDevice ? d.activeDevice.lat : 0,
-				long: d.activeDevice ? d.activeDevice.long : 0
-			}
-			return dataArr.push(dataSet)
-		}))
-		dataArr = dataArr.reduce((newArr, d) => {
-			if (d.data !== null)
-				newArr.push(d)
-			return newArr
-		}, [])
-		this.setState({
-			heatData: dataArr,
-			loadingMap: false
-		})
-	}
+	// getHeatMapData = async () => {
+	// 	const { project, raw } = this.state
+	// 	const { from, to } = this.props
+	// 	let startDate = moment(from).format(this.format)
+	// 	let endDate = moment(to).format(this.format)
+	// 	let dataArr = []
+	// 	await Promise.all(project.dataCollections.map(async d => {
+	// 		let dataSet = null
+	// 		let data = await getDataSummary(d.id, startDate, endDate, raw)
+	// 		dataSet = {
+	// 			name: d.name,
+	// 			id: d.activeDevice ? d.activeDevice.id : 0,
+	// 			data: data,
+	// 			color: d.color,
+	// 			liveStatus: d.activeDevice ? d.activeDevice.liveStatus : 0,
+	// 			lat: d.activeDevice ? d.activeDevice.lat : 0,
+	// 			long: d.activeDevice ? d.activeDevice.long : 0
+	// 		}
+	// 		return dataArr.push(dataSet)
+	// 	}))
+	// 	dataArr = dataArr.reduce((newArr, d) => {
+	// 		if (d.data !== null)
+	// 			newArr.push(d)
+	// 		return newArr
+	// 	}, [])
+	// 	this.setState({
+	// 		heatData: dataArr,
+	// 		loadingMap: false
+	// 	})
+	// }
 
 	handleSwitchDayHourSummary = async (p) => {
 		let diff = moment.duration(p.to.diff(p.from)).days()
@@ -362,7 +361,6 @@ class Project extends Component {
 					...newState
 				})
 			}
-
 	}
 	renderDeleteDialog = () => {
 		const { openDelete } = this.state

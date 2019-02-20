@@ -3,7 +3,7 @@ import collectionStyles from 'assets/jss/views/deviceStyles';
 import { CircularLoader, GridContainer, ItemGrid, AssignOrg, AssignProject, AssignDevice } from 'components';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { getCollection, deleteCollection, unassignDeviceFromCollection, getDataSummary } from 'variables/dataCollections';
+import { getCollection, deleteCollection, unassignDeviceFromCollection } from 'variables/dataCollections';
 import CollectionActiveDevice from 'views/Collections/CollectionCards/CollectionActiveDevice';
 import CollectionDetails from 'views/Collections/CollectionCards/CollectionDetails';
 import CollectionHistory from 'views/Collections/CollectionCards/CollectionHistory';
@@ -83,7 +83,7 @@ class Collection extends Component {
 				if (rs.activeDeviceStats) {
 					await this.getActiveDevice(rs.activeDeviceStats.id)
 					// this.handleSwitchDayHourSummary()
-					this.getHeatMapData()
+					// this.getHeatMapData()
 				}
 				else {
 					this.setState({ loading: false, loadingData: false })
@@ -94,7 +94,7 @@ class Collection extends Component {
 	componentDidUpdate = (prevProps) => {
 		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
 			// this.handleSwitchDayHourSummary()
-			this.getHeatMapData()
+			// this.getHeatMapData()
 		}
 		if (this.props.saved === true) {
 			const { collection } = this.state
@@ -142,27 +142,27 @@ class Collection extends Component {
 		}
 		this.props.removeFromFav(favObj)
 	}
-	getHeatMapData = async () => {
-		const { collection, activeDevice, raw } = this.state
-		const { from, to } = this.props
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataSet = null
-		let data = await getDataSummary(collection.id, startDate, endDate, raw)
-		dataSet = {
-			name: collection.name,
-			id: collection.id,
-			data: data,
-			lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
-			long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
-			color: teal[500],
-			...activeDevice
-		}
-		this.setState({
-			heatData: dataSet,
-			loadingMap: false
-		})
-	}
+	// getHeatMapData = async () => {
+	// 	const { collection, activeDevice, raw } = this.state
+	// 	const { from, to } = this.props
+	// 	let startDate = moment(from).format(this.format)
+	// 	let endDate = moment(to).format(this.format)
+	// 	let dataSet = null
+	// 	let data = await getDataSummary(collection.id, startDate, endDate, raw)
+	// 	dataSet = {
+	// 		name: collection.name,
+	// 		id: collection.id,
+	// 		data: data,
+	// 		lat: collection.activeDeviceStats ? collection.activeDeviceStats.lat : 0,
+	// 		long: collection.activeDeviceStats ? collection.activeDeviceStats.long : 0,
+	// 		color: teal[500],
+	// 		...activeDevice
+	// 	}
+	// 	this.setState({
+	// 		heatData: dataSet,
+	// 		loadingMap: false
+	// 	})
+	// }
 
 	handleRawData = () => {
 		this.setState({ loadingData: true, raw: !this.state.raw }/*  () => this.handleSwitchDayHourSummary() */)

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { getDevice, getAllPictures, getWeather, getDataSummary } from 'variables/dataDevices'
+import { getDevice, getAllPictures, getWeather } from 'variables/dataDevices'
 import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
 import { ItemGrid, AssignOrg, AssignDC, /* DateFilterMenu */ } from 'components'
 import deviceStyles from 'assets/jss/views/deviceStyles'
@@ -18,7 +18,7 @@ import teal from '@material-ui/core/colors/teal'
 import { getWifiHourly, getWifiDaily, getWifiMinutely, getWifiSummary } from 'components/Charts/DataModel';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 import { handleRequestSort } from 'variables/functions';
-import ProjectDataPanel from 'views/Projects/ProjectCards/ProjectDataPanel';
+import ChartDataPanel from 'views/Charts/ChartDataPanel';
 import ChartData from 'views/Charts/ChartData';
 import Maps from 'views/Maps';
 
@@ -64,7 +64,7 @@ class Device extends Component {
 					if (rs.dataCollection) {
 						await this.getDataCollection(rs.dataCollection)
 					}
-					await this.getHeatMapData()
+					// await this.getHeatMapData()
 					if (rs.lat && rs.long) {
 						let data = await getWeather(rs, moment(), this.props.language)
 						this.setState({ weather: data })
@@ -155,10 +155,10 @@ class Device extends Component {
 		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
-			// this.handleSwitchDayHourSummary()
-			this.getHeatMapData()
-		}
+		// if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
+		// 	// this.handleSwitchDayHourSummary()
+		// 	// this.getHeatMapData()
+		// }
 		if (this.props.saved === true) {
 			if (this.props.isFav({ id: this.state.device.id, type: 'device' })) {
 				this.props.s('snackbars.favorite.saved', { name: this.state.device.name, type: this.props.t('favorites.types.device') })
@@ -197,23 +197,23 @@ class Device extends Component {
 		}
 		this.props.removeFromFav(favObj)
 	}
-	getHeatMapData = async () => {
-		const { device, raw } = this.state
-		const { from, to } = this.props
-		let startDate = moment(from).format(this.format)
-		let endDate = moment(to).format(this.format)
-		let dataSet = null
-		let data = await getDataSummary(device.id, startDate, endDate, raw)
-		dataSet = {
-			...device,
-			data: data,
-			color: teal[500]
-		}
-		this.setState({
-			heatData: dataSet,
-			loadingMap: false
-		})
-	}
+	// getHeatMapData = async () => {
+	// 	const { device, raw } = this.state
+	// 	const { from, to } = this.props
+	// 	let startDate = moment(from).format(this.format)
+	// 	let endDate = moment(to).format(this.format)
+	// 	let dataSet = null
+	// 	let data = await getDataSummary(device.id, startDate, endDate, raw)
+	// 	dataSet = {
+	// 		...device,
+	// 		data: data,
+	// 		color: teal[500]
+	// 	}
+	// 	this.setState({
+	// 		heatData: dataSet,
+	// 		loadingMap: false
+	// 	})
+	// }
 
 	handleSwitchDayHourSummary = async (p) => {
 		// const { to, from, id } = this.props
@@ -534,7 +534,7 @@ class Device extends Component {
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'data'}>
-						<ProjectDataPanel t={this.props.t} />
+						<ChartDataPanel t={this.props.t} />
 					</ItemGrid>
 					{this.props.periods.map((period, i) => {
 						if (period.hide) { return null }
