@@ -73,7 +73,6 @@ class ChartData extends PureComponent {
 		}
 	}
 	componentDidUpdate = async (prevProps, prevState) => {
-		console.log(prevProps.period.raw, this.props.period.raw, prevProps.period.raw !== this.props.period.raw)
 		if (prevProps.period !== this.props.period || prevProps.period.timeType !== this.props.period.timeType || prevProps.period.raw !== this.props.period.raw) {
 			this.setState({ loading: true }, async () => {
 				let newState = await this.props.getData(this.props.period)
@@ -188,7 +187,6 @@ class ChartData extends PureComponent {
 	renderType = () => {
 		const { title, setHoverID, t, device, period, single } = this.props
 		const { loading } = this.state
-		console.log(this.state)
 		if (!loading) {
 			const { roundDataSets, lineDataSets, barDataSets } = this.state
 			switch (period.chartType) {
