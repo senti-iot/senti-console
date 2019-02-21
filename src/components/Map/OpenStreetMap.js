@@ -27,7 +27,6 @@ class OpenStreetMap extends React.Component {
 			zoom: props.markers.length === 1 ? 17 : 13
 		}
 	}
-	popups=[]
 	handleClick = (event) => {
 		const items = this.state.dataSet;
 		items[event.target.id].visible = !items[event.target.id].visible;
