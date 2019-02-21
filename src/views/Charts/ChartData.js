@@ -188,6 +188,7 @@ class ChartData extends PureComponent {
 	renderType = () => {
 		const { title, setHoverID, t, device, period, single } = this.props
 		const { loading } = this.state
+		console.log(this.state)
 		if (!loading) {
 			const { roundDataSets, lineDataSets, barDataSets } = this.state
 			switch (period.chartType) {
@@ -402,7 +403,7 @@ class ChartData extends PureComponent {
 		}
 	}
 	render() {
-		const { raw, t, period } = this.props
+		const { t, period } = this.props
 		const { openDownload, loading, exportData } = this.state
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
@@ -417,7 +418,7 @@ class ChartData extends PureComponent {
 					content={
 						<Grid container>
 							<ExportModal
-								raw={raw}
+								raw={period.raw}
 								to={displayTo}
 								from={displayFrom}
 								data={exportData}

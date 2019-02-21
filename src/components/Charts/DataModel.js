@@ -74,7 +74,7 @@ export const setExportData = (dataArr, unit, type, from, to) => {
 				id: d.id,
 				startDate: moment(from).format('DD-MM-YYYY HH:mm'),
 				endDate: moment(to).format('DD-MM-YYYY HH:mm'),
-				count: d.data
+				count: Math.round(d.data)
 			})
 			)
 		}
@@ -93,7 +93,7 @@ export const setExportData = (dataArr, unit, type, from, to) => {
 						id: d.id,
 						startDate: d.data.length - 1 === i && moment().diff(moment(dt[0]), unit) === 0 ? moment(dt[0]).startOf(unit).format('DD-MM-YYYY HH:mm') : moment(dt[0]).subtract(1, unit).format('DD-MM-YYYY HH:mm'),
 						endDate: moment(dt[0]).format('DD-MM-YYYY HH:mm'),
-						count: dt[1]
+						count: Math.round(dt[1])
 					})
 				}
 				)
