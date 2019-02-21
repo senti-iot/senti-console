@@ -13,8 +13,14 @@ import { dateTimeFormatter } from 'variables/functions';
 import { storeHeatData } from 'redux/dateTime';
 
 const styles = theme => ({
+	drawerContainer: {
+		[theme.breakpoints.down('sm')]: {
+			width: '100%'
+		}
+	},
 	drawer: {
-		zIndex: 2000
+		zIndex: 2000,
+
 	}
 })
 class MapCard extends PureComponent {
@@ -79,14 +85,19 @@ class MapCard extends PureComponent {
 	}
 	handleCancelConfirmEditLocation = () => {
 		this.setState({
-			markers: [{
-				...this.state.markers[0],
-				lat: this.state.oldLat,
-				long: this.state.oldLong,
-			}],
 			openModalEditLocation: false,
 			editLocation: false,
 		})
+		if (this.state.oldLat && this.state.oldLong) {
+			this.setState({
+				markers: [{
+					...this.state.markers[0],
+					lat: this.state.oldLat,
+					long: this.state.oldLong,
+				}]
+			})
+		}
+	
 	}
 	handleCancelEditLocation = () => {
 		this.setState({
@@ -251,9 +262,13 @@ class MapCard extends PureComponent {
 	renderModal = () => {
 		const { t, classes } = this.props
 		const { openModalEditLocation, markers, error } = this.state
+		console.log(openModalEditLocation)
 		return <Drawer
+			classes={{
+				paper: classes.drawerContainer
+			}}
 			className={classes.drawer}
-			variant="persistent"
+			variant="temporary"
 			anchor="right"
 			onClose={this.handleCancelConfirmEditLocation}
 			open={openModalEditLocation}
