@@ -128,6 +128,7 @@ class MapCard extends PureComponent {
 	renderMenu = () => {
 		const { t, mapTheme, device } = this.props
 		const { actionAnchorVisibility } = this.state
+		console.log(device)
 		return <Fragment>
 			{device && <Collapse in={this.state.editLocation}>
 				<ItemG container>

@@ -498,7 +498,7 @@ class Device extends Component {
 					<ItemGrid xs={12} noMargin id={'map'}>
 						<Maps
 							reload={this.reload}
-							device={this.state.heatData}
+							device={this.state.device}
 							markers={this.state.device ? [this.state.device] : []}
 							loading={this.state.loading}
 							weather={this.state.weather}
