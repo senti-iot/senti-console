@@ -27,7 +27,6 @@ class OpenStreetMap extends React.Component {
 			zoom: props.markers.length === 1 ? 17 : 13
 		}
 	}
-	popups=[]
 	handleClick = (event) => {
 		const items = this.state.dataSet;
 		items[event.target.id].visible = !items[event.target.id].visible;
@@ -75,6 +74,9 @@ class OpenStreetMap extends React.Component {
 	componentDidUpdate = (prevProps, prevState) => {
 		if (prevProps.mapTheme !== this.props.mapTheme)
 			this.map.leafletElement.setMaxZoom(layers[this.props.mapTheme].maxZoom)
+		if (this.props.calibrate) { 
+			this.map.leafletElement.off("click")
+		}
 	}
 
 	centerOnAllMarkers = () => {
@@ -93,6 +95,13 @@ class OpenStreetMap extends React.Component {
 
 		}
 		return center
+	}
+	onDragEnd = (e) => {
+		console.log(e)
+		L.DomEvent.preventDefault(e);
+		L.DomEvent.stopPropagation(e);
+		// e.stopPropagation()
+		this.props.getLatLng(e)
 	}
 	render() {
 		const { markers, classes, theme, calibrate, mapTheme, heatData, heatMap } = this.props
@@ -115,14 +124,15 @@ class OpenStreetMap extends React.Component {
 				{markers.map((m, i) => {
 					if (m.lat && m.long) {
 						return <Marker
-							onDragend={calibrate ? this.props.getLatLng : null}
+							onDragend={calibrate ? this.onDragEnd : null}
 							autoPan={calibrate ? true : false}
 							draggable={calibrate ? true : false}
 							position={[m.lat, m.long]}
+							onClick={calibrate ? undefined : ''}
 							key={i}
 							icon={this.returnSvgIcon(m.liveStatus)}>
-							{calibrate ? null : <Popup ref={r => window.r = r} className={theme.palette.type === 'dark' ? classes.popupDark : classes.popup}>
-								<OpenPopup m={m} noSeeMore={markers.length === 1} heatMap={heatMap} />
+							{calibrate ? null : <Popup className={theme.palette.type === 'dark' ? classes.popupDark : classes.popup}>
+								<OpenPopup dontShow={calibrate} m={m} noSeeMore={markers.length === 1} heatMap={heatMap} />
 							</Popup>}
 						</Marker>
 					}

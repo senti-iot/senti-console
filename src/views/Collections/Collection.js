@@ -528,7 +528,7 @@ class Collection extends Component {
 									period={period}
 									single
 									getData={this.handleSwitchDayHourSummary}
-									device={activeDevice}
+									// device={activeDevice}
 									history={history}
 									match={match}
 									t={t}
@@ -537,10 +537,11 @@ class Collection extends Component {
 						})}
 						{this.state.activeDevice ? <ItemGrid xs={12} noMargin id='map'>
 							<Maps
+								device={activeDevice}
 								mapTheme={this.props.mapTheme}
 								markers={this.state.activeDevice ? [this.state.activeDevice] : []}
 								weather={this.state.weather}
-								loading={this.state.loadingMap}
+								loading={this.state.loading}
 								heatData={this.state.heatData}
 								t={t}
 							/>
@@ -549,7 +550,7 @@ class Collection extends Component {
 							<CollectionActiveDevice
 								collection={collection}
 								history={history}
-								device={collection.activeDeviceStats ? collection.activeDeviceStats : null}
+								device={activeDevice}
 								accessLevel={accessLevel}
 								classes={classes}
 								t={t}

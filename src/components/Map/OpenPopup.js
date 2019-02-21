@@ -67,9 +67,9 @@ class OpenPopup extends Component {
 		await this.getWeather()
 	}
 	render() {
-		const { classes, m, t, noSeeMore, heatMap } = this.props
+		const { classes, m, t, noSeeMore, heatMap, dontShow } = this.props
 		const { weather } = this.state
-		return <Paper className={classes.paper}>
+		return !dontShow ? <Paper className={classes.paper}>
 			<ItemG container>
 				<ItemG xs={10} container direction={'column'}>
 					<Typography variant={'h5'}>{m.name ? m.name : m.id}</Typography>
@@ -137,7 +137,7 @@ class OpenPopup extends Component {
 					</Button>
 				</ItemG>}
 			</ItemG>
-		</Paper>
+		</Paper> : null
 
 	}
 }

@@ -46,7 +46,6 @@ class HeatLayer extends MapLayer {
 	}
 	setMaxValues = () => {
 		const { from, to, timeType } = this.props
-		// console.log(from, to, timeType)
 		let diff = -1
 		switch (timeType) {
 			case 0:

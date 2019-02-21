@@ -2,7 +2,7 @@ import { Button, Collapse, Grid, Paper, withStyles } from '@material-ui/core';
 import { Check, Save } from 'variables/icons';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import React, { Component, Fragment } from 'react';
-import { getDevice, updateDevice } from 'variables/dataDevices';
+import { getDevice, updateDevice, getGeoByAddress, getAddress } from 'variables/dataDevices';
 import { CircularLoader, GridContainer, ItemGrid, TextF, AddressInput } from 'components';
 import DSelect from 'components/CustomInput/DSelect';
 import { isFav, updateFav } from 'redux/favorites';
@@ -33,6 +33,28 @@ class EditDeviceDetails extends Component {
 				loading: false
 			})
 		})
+	}
+	setMapCoords = (data) => {
+		let coords = { lat: data.adgangsadresse.vejpunkt.koordinater[1], long: data.adgangsadresse.vejpunkt.koordinater[0] }
+		if (coords) {
+			this.setState({
+				device: {
+					...this.state.device,
+					lat: coords.lat,
+					long: coords.long,
+				}
+			})
+		}
+	}
+	getLatLng = async (suggestion) => {
+		let data = await getGeoByAddress(suggestion.id)
+		if (data) {
+			return this.setMapCoords(data)
+		}
+		else {
+			data = await getAddress(this.state.device.address)
+			return this.setMapCoords(data)
+		}
 	}
 	componentWillUnmount = () => {
 		clearTimeout(this.timer);
@@ -132,10 +154,11 @@ class EditDeviceDetails extends Component {
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
-								<AddressInput value={device.address} handleChange={this.handleSetAddress} />
-								{/* <PlacesWithStandaloneSearchBox
-									address={device.address}
-									t={t} handleChange={this.handleGoogleInput} /> */}
+								<AddressInput
+									onBlur={this.getLatLng}
+									handleSuggestionSelected={this.getLatLng}
+									value={device.address}
+									handleChange={this.handleSetAddress} />
 							</ItemGrid>
 							<ItemGrid xs={12} container justify={'center'}>
 								<Collapse in={this.state.updating} timeout={100} unmountOnExit>
@@ -143,10 +166,6 @@ class EditDeviceDetails extends Component {
 								</Collapse>
 							</ItemGrid>
 							<ItemGrid xs={12} container justify={'center'}>
-								{/* <ItemGrid /* xs={12} > */}
-
-								{/* </ItemGrid> */}
-								{/* <ItemGrid> */}
 								<Button
 									variant='contained'
 									color='primary'
@@ -161,7 +180,6 @@ class EditDeviceDetails extends Component {
 											<Save className={classes.leftIcon} />{t('actions.save')}
 										</Fragment>}
 								</Button>
-								{/* </ItemGrid> */}
 							</ItemGrid>
 						</Grid>
 					</form>

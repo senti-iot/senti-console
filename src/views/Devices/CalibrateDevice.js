@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withStyles, Grid, FormControl, InputLabel, Select, Input, MenuItem, FormHelperText, MobileStepper } from '@material-ui/core';
 import { Info, Danger, AddressInput, ItemG, InfoCard, T, TextF } from 'components'
-import { getDevice, calibrateDevice, uploadPictures, getAddressByLocation } from 'variables/dataDevices'
+import { getDevice, calibrateDevice, uploadPictures, getAddressByLocation, getGeoByAddress, getAddress } from 'variables/dataDevices'
 import Caption from 'components/Typography/Caption'
 import CounterModal from 'components/Devices/CounterModal'
 import ImageUpload from './ImageUpload'
@@ -230,12 +230,27 @@ class CalibrateDevice extends Component {
 		this.setState({
 			lat,
 			long
-		}, async () => { 
-			let address = await getAddressByLocation(lat, long)
-			let addressStr = address.vejnavn + ' ' + address.husnr + ', ' + address.postnr + ' ' + address.postnrnavn
-			this.setState({ error: false, address: addressStr })
 		})
 
+	}
+	setMapCoords = (data) => { 
+		let coords = { lat: data.adgangsadresse.vejpunkt.koordinater[1], long: data.adgangsadresse.vejpunkt.koordinater[0] }
+		if (coords) {
+			this.setState({
+				lat: coords.lat,
+				long: coords.long
+			})
+		}
+	}
+	getLatLng = async (suggestion) => {
+		let data = await getGeoByAddress(suggestion.id)
+		if (data) {
+			return this.setMapCoords(data)
+		}
+		else { 
+			data = await getAddress(this.state.address)
+			return this.setMapCoords(data)
+		}
 	}
 	renderDeviceLocation = () => {
 		const { t } = this.props
@@ -251,7 +266,7 @@ class CalibrateDevice extends Component {
 				</Button>
 			</ItemG>
 			<ItemG xs={12}>
-				<AddressInput value={this.state.address} handleChange={this.handleSetAddress} />
+				<AddressInput onBlur={this.getLatLng} handleSuggestionSelected={this.getLatLng} value={this.state.address} handleChange={this.handleSetAddress} />
 			</ItemG>
 			<ItemG xs={12}>
 				<FormControl className={this.props.classes.formControl}>
@@ -280,7 +295,7 @@ class CalibrateDevice extends Component {
 			</ItemG>
 			<ItemG xs={12}>
 				{/* <div style={{ maxHeight: 400, overflow: 'hidden' }}> */}
-					
+
 				<OpenStreetMap
 					mapTheme={this.props.mapTheme}
 					calibrate

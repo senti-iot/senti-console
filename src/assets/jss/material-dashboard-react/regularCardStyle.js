@@ -19,9 +19,7 @@ import {
 import teal from '@material-ui/core/colors/teal';
 
 const regularCardStyle = theme => ({
-	subheader: {
-		whiteSpace: 'pre'
-	},
+
 	...deviceStatus,
 	contentMedia: {
 		width: "100%",

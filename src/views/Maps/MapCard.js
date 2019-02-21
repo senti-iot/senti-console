@@ -1,10 +1,10 @@
 import React, { PureComponent, Fragment } from 'react'
 import { InfoCard, Caption, Dropdown, CircularLoader, ItemG, TextF, AddressInput, Danger, DateFilterMenu } from 'components';
 import { Map, Layers, Smartphone, Save, Clear, EditLocation, WhatsHot } from 'variables/icons'
-import { Grid/*,  Checkbox, */, IconButton, Menu, MenuItem, Collapse, Dialog, DialogContent, DialogTitle, DialogActions, Button } from '@material-ui/core';
+import { Grid/*,  Checkbox, */, IconButton, Menu, MenuItem, Collapse, DialogContent, DialogTitle, DialogActions, Button, Drawer, withStyles } from '@material-ui/core';
 import { red, teal } from "@material-ui/core/colors"
 import OpenStreetMap from 'components/Map/OpenStreetMap';
-import { getAddressByLocation, updateDevice } from 'variables/dataDevices';
+import { updateDevice, getAddress, getGeoByAddress } from 'variables/dataDevices';
 import { connect } from 'react-redux'
 import { changeMapTheme, changeHeatMap } from 'redux/appState';
 import moment from 'moment'
@@ -12,6 +12,20 @@ import { getDataSummary as getDeviceDataSummary } from 'variables/dataDevices'
 import { dateTimeFormatter } from 'variables/functions';
 import { storeHeatData } from 'redux/dateTime';
 
+const styles = theme => ({
+	drawer: {
+		zIndex: 2000,
+	},
+	drawerContainer: {
+		[theme.breakpoints.down('sm')]: {
+			width: '100%',
+			height: '100%',
+			display: 'flex',
+			flexFlow: 'column',
+			flex: 1
+		}
+	},
+})
 class MapCard extends PureComponent {
 	constructor(props) {
 		super(props)
@@ -74,8 +88,19 @@ class MapCard extends PureComponent {
 	}
 	handleCancelConfirmEditLocation = () => {
 		this.setState({
-			openModalEditLocation: false
+			openModalEditLocation: false,
+			editLocation: false,
 		})
+		if (this.state.oldLat && this.state.oldLong) {
+			this.setState({
+				markers: [{
+					...this.state.markers[0],
+					lat: this.state.oldLat,
+					long: this.state.oldLong,
+				}]
+			})
+		}
+	
 	}
 	handleCancelEditLocation = () => {
 		this.setState({
@@ -85,6 +110,7 @@ class MapCard extends PureComponent {
 	}
 	handleOpenConfirmEditLocation = () => {
 		this.setState({
+			editLocation: true,
 			openModalEditLocation: true
 		})
 	}
@@ -129,7 +155,7 @@ class MapCard extends PureComponent {
 		const { t, mapTheme, device } = this.props
 		const { actionAnchorVisibility } = this.state
 		return <Fragment>
-			{device && <Collapse in={this.state.editLocation}>
+			{/* {device && <Collapse in={this.state.editLocation}>
 				<ItemG container>
 					<ItemG>
 						<IconButton onClick={this.handleOpenConfirmEditLocation}>
@@ -142,7 +168,7 @@ class MapCard extends PureComponent {
 						</IconButton>
 					</ItemG>
 				</ItemG>
-			</Collapse>}
+			</Collapse>} */}
 			{this.props.heatMap && <Collapse in={this.props.heatMap}>
 				<DateFilterMenu
 					heatmap
@@ -176,7 +202,7 @@ class MapCard extends PureComponent {
 				[
 					{ label: t('actions.heatMap'), selected: this.props.heatMap, icon: <WhatsHot style={{ padding: "0px 12px" }} />, func: () => this.props.changeHeatMap(!this.props.heatMap) },
 					{ label: t('actions.goToDevice'), icon: <Smartphone style={{ padding: "0px 12px" }} />, func: () => this.flyToMarkers() },
-					{ dontShow: device ? false : true, label: t('actions.editLocation'), selected: this.state.editLocation, icon: <EditLocation style={{ padding: '0px 12px' }} />, func: () => this.handleEditLocation() }]
+					{ dontShow: device ? false : true, label: t('actions.editLocation'), selected: this.state.editLocation, icon: <EditLocation style={{ padding: '0px 12px' }} />, func: () => this.handleOpenConfirmEditLocation() }]
 			} />
 
 		</Fragment>
@@ -193,12 +219,11 @@ class MapCard extends PureComponent {
 	getLatLngFromMap = async (e) => {
 		let lat = e.target._latlng.lat
 		let long = e.target._latlng.lng
-		let address = await getAddressByLocation(lat, long)
-		let addressStr = address.vejnavn + ' ' + address.husnr + ', ' + address.postnr + ' ' + address.postnrnavn
 		this.setState({
+			oldLong: this.state.markers[0].long,
+			oldLat: this.state.markers[0].lat,
 			markers: [{
 				...this.state.markers[0],
-				address: addressStr,
 				lat,
 				long,
 				weather: this.props.weather
@@ -213,13 +238,44 @@ class MapCard extends PureComponent {
 			}]
 		})
 	}
+	setMapCoords = (data) => {
+		let coords = { lat: data.adgangsadresse.vejpunkt.koordinater[1], long: data.adgangsadresse.vejpunkt.koordinater[0] }
+		if (coords) {
+			this.setState({
+				oldLong: this.state.markers[0].long,
+				oldLat: this.state.markers[0].lat,
+				markers: [{
+					...this.state.markers[0],
+					lat: coords.lat,
+					long: coords.long,
+				}]
+			})
+		}
+	}
+	getLatLng = async (suggestion) => {
+		let data = await getGeoByAddress(suggestion.id)
+		if (data) {
+			return this.setMapCoords(data)
+		}
+		else {
+			data = await getAddress(this.state.markers[0].address)
+			return this.setMapCoords(data)
+		}
+	}
 	renderModal = () => {
-		const { t } = this.props
+		const { t, classes } = this.props
 		const { openModalEditLocation, markers, error } = this.state
-		return <Dialog
+		return <Drawer
+			className={classes.drawer}
+			classes={{
+				paper: window.innerWidth < 400 ? classes.drawerContainer : undefined,
+			}}
+			variant={window.innerWidth < 400 ? "temporary" : "persistent"}
+			anchor="right"
 			onClose={this.handleCancelConfirmEditLocation}
 			open={openModalEditLocation}
 			PaperProps={{
+				// className: window.innerWidth < 400 ? classes.drawerContainer : undefined,
 				style: {
 					overflowY: "visible"
 				}
@@ -232,19 +288,24 @@ class MapCard extends PureComponent {
 					<ItemG key={m.id} container direction={'column'}>
 						<TextF id={'lat'} label={'Latitude'} value={m.lat ? m.lat.toString() : ""} disabled />
 						<TextF id={'long'} label={'Longitude'} value={m.long ? m.long.toString() : ""} disabled />
-						<AddressInput value={m.address} handleChange={this.handleChangeAddress} />
+						<AddressInput
+							fullWidth={window.innerWidth < 425 ? true : false}
+							value={m.address}
+							onBlur={this.getLatLng}
+							handleSuggestionSelected={this.getLatLng}
+							handleChange={this.handleChangeAddress} />
 					</ItemG>) : null
 				}
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleSaveEditAddress}>
+				<Button style={{ color: teal[500] }} onClick={this.handleSaveEditAddress}>
 					<Save /> {t('actions.save')}
 				</Button>
-				<Button onClick={this.handleCancelConfirmEditLocation}>
-					<Clear /> {t('actions.cancel')}
+				<Button style={{ color: red[400] }} onClick={this.handleCancelConfirmEditLocation}>
+					<Clear  /> {t('actions.cancel')}
 				</Button>
 			</DialogActions>
-		</Dialog>
+		</Drawer>
 	}
 	render() {
 		const { device, t, loading, mapTheme, heatMap, period } = this.props
@@ -253,7 +314,7 @@ class MapCard extends PureComponent {
 				noPadding
 				noHiddenPadding
 				title={t('devices.cards.map')}
-				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat.toString().substring(0, device.lat.toString().indexOf('.') + 6), long: device.long.toString().substring(0, device.long.toString().indexOf('.') + 6) })},\nHeatmap: ${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)},` : ""} ${heatMap ? t('actions.on') : t('actions.off')}` : `Heatmap:${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)},` : ''} ${heatMap ? t('actions.on') : t('actions.off')}`}
+				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat.toString().substring(0, device.lat.toString().indexOf('.') + 6), long: device.long.toString().substring(0, device.long.toString().indexOf('.') + 6) })},\n${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)}, ` : ""}Heatmap:${heatMap ? t('actions.on') : t('actions.off')}` : `${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)}, ` : ''}Heatmap:${heatMap ? t('actions.on') : t('actions.off')}`}
 				avatar={<Map />}
 				expanded
 				topAction={this.renderMenu()}
@@ -263,7 +324,7 @@ class MapCard extends PureComponent {
 							{device ? this.renderModal() : false}
 							{this.state.markers.length > 0 ?
 								<OpenStreetMap
-									calibrate={this.state.editLocation}
+									calibrate={this.state.openModalEditLocation}
 									getLatLng={this.getLatLngFromMap}
 									iRef={this.getRef}
 									mapTheme={mapTheme}
@@ -290,4 +351,4 @@ const mapDispatchToProps = (dispatch) => ({
 	storeHeatData: (heatData) => dispatch(storeHeatData(heatData))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(MapCard)
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(MapCard))

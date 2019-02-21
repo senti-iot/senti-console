@@ -73,7 +73,6 @@ class ChartData extends PureComponent {
 		}
 	}
 	componentDidUpdate = async (prevProps, prevState) => {
-		console.log(prevProps.period.raw, this.props.period.raw, prevProps.period.raw !== this.props.period.raw)
 		if (prevProps.period !== this.props.period || prevProps.period.timeType !== this.props.period.timeType || prevProps.period.raw !== this.props.period.raw) {
 			this.setState({ loading: true }, async () => {
 				let newState = await this.props.getData(this.props.period)
@@ -402,7 +401,7 @@ class ChartData extends PureComponent {
 		}
 	}
 	render() {
-		const { raw, t, period } = this.props
+		const { t, period } = this.props
 		const { openDownload, loading, exportData } = this.state
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
@@ -417,7 +416,7 @@ class ChartData extends PureComponent {
 					content={
 						<Grid container>
 							<ExportModal
-								raw={raw}
+								raw={period.raw}
 								to={displayTo}
 								from={displayFrom}
 								data={exportData}

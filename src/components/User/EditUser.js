@@ -140,7 +140,6 @@ class EditUser extends Component {
 		)
 	}
 	close = async () => {
-		// console.log(rs)
 		const { isFav, updateFav } = this.props
 		const { user } = this.state
 		let favObj = {
