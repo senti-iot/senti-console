@@ -79,6 +79,11 @@ class MapCard extends PureComponent {
 	}
 	handleCancelConfirmEditLocation = () => {
 		this.setState({
+			markers: [{
+				...this.state.markers[0],
+				lat: this.state.oldLat,
+				long: this.state.oldLong,
+			}],
 			openModalEditLocation: false,
 			editLocation: false,
 		})
@@ -200,9 +205,9 @@ class MapCard extends PureComponent {
 	getLatLngFromMap = async (e) => {
 		let lat = e.target._latlng.lat
 		let long = e.target._latlng.lng
-		// let address = await getAddressByLocation(lat, long)
-		// let addressStr = address.vejnavn + ' ' + address.husnr + ', ' + address.postnr + ' ' + address.postnrnavn
 		this.setState({
+			oldLong: this.state.markers[0].long,
+			oldLat: this.state.markers[0].lat,
 			markers: [{
 				...this.state.markers[0],
 				lat,
@@ -223,10 +228,12 @@ class MapCard extends PureComponent {
 		let coords = { lat: data.adgangsadresse.vejpunkt.koordinater[1], long: data.adgangsadresse.vejpunkt.koordinater[0] }
 		if (coords) {
 			this.setState({
+				oldLong: this.state.markers[0].long,
+				oldLat: this.state.markers[0].lat,
 				markers: [{
 					...this.state.markers[0],
 					lat: coords.lat,
-					long: coords.long
+					long: coords.long,
 				}]
 			})
 		}
@@ -298,7 +305,7 @@ class MapCard extends PureComponent {
 							{device ? this.renderModal() : false}
 							{this.state.markers.length > 0 ?
 								<OpenStreetMap
-									calibrate={this.state.editLocation}
+									calibrate={this.state.openModalEditLocation}
 									getLatLng={this.getLatLngFromMap}
 									iRef={this.getRef}
 									mapTheme={mapTheme}
