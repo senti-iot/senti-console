@@ -4,7 +4,7 @@ import { Map, Layers, Smartphone, Save, Clear, EditLocation, WhatsHot } from 'va
 import { Grid/*,  Checkbox, */, IconButton, Menu, MenuItem, Collapse, DialogContent, DialogTitle, DialogActions, Button, Drawer, withStyles } from '@material-ui/core';
 import { red, teal } from "@material-ui/core/colors"
 import OpenStreetMap from 'components/Map/OpenStreetMap';
-import { getAddressByLocation, updateDevice, getAddress, getGeoByAddress } from 'variables/dataDevices';
+import { updateDevice, getAddress, getGeoByAddress } from 'variables/dataDevices';
 import { connect } from 'react-redux'
 import { changeMapTheme, changeHeatMap } from 'redux/appState';
 import moment from 'moment'
@@ -79,7 +79,8 @@ class MapCard extends PureComponent {
 	}
 	handleCancelConfirmEditLocation = () => {
 		this.setState({
-			openModalEditLocation: false
+			openModalEditLocation: false,
+			editLocation: false,
 		})
 	}
 	handleCancelEditLocation = () => {
@@ -90,6 +91,7 @@ class MapCard extends PureComponent {
 	}
 	handleOpenConfirmEditLocation = () => {
 		this.setState({
+			editLocation: true,
 			openModalEditLocation: true
 		})
 	}
@@ -134,7 +136,7 @@ class MapCard extends PureComponent {
 		const { t, mapTheme, device } = this.props
 		const { actionAnchorVisibility } = this.state
 		return <Fragment>
-			{device && <Collapse in={this.state.editLocation}>
+			{/* {device && <Collapse in={this.state.editLocation}>
 				<ItemG container>
 					<ItemG>
 						<IconButton onClick={this.handleOpenConfirmEditLocation}>
@@ -147,7 +149,7 @@ class MapCard extends PureComponent {
 						</IconButton>
 					</ItemG>
 				</ItemG>
-			</Collapse>}
+			</Collapse>} */}
 			{this.props.heatMap && <Collapse in={this.props.heatMap}>
 				<DateFilterMenu
 					heatmap
@@ -181,7 +183,7 @@ class MapCard extends PureComponent {
 				[
 					{ label: t('actions.heatMap'), selected: this.props.heatMap, icon: <WhatsHot style={{ padding: "0px 12px" }} />, func: () => this.props.changeHeatMap(!this.props.heatMap) },
 					{ label: t('actions.goToDevice'), icon: <Smartphone style={{ padding: "0px 12px" }} />, func: () => this.flyToMarkers() },
-					{ dontShow: device ? false : true, label: t('actions.editLocation'), selected: this.state.editLocation, icon: <EditLocation style={{ padding: '0px 12px' }} />, func: () => this.handleEditLocation() }]
+					{ dontShow: device ? false : true, label: t('actions.editLocation'), selected: this.state.editLocation, icon: <EditLocation style={{ padding: '0px 12px' }} />, func: () => this.handleOpenConfirmEditLocation() }]
 			} />
 
 		</Fragment>
@@ -198,12 +200,11 @@ class MapCard extends PureComponent {
 	getLatLngFromMap = async (e) => {
 		let lat = e.target._latlng.lat
 		let long = e.target._latlng.lng
-		let address = await getAddressByLocation(lat, long)
-		let addressStr = address.vejnavn + ' ' + address.husnr + ', ' + address.postnr + ' ' + address.postnrnavn
+		// let address = await getAddressByLocation(lat, long)
+		// let addressStr = address.vejnavn + ' ' + address.husnr + ', ' + address.postnr + ' ' + address.postnrnavn
 		this.setState({
 			markers: [{
 				...this.state.markers[0],
-				address: addressStr,
 				lat,
 				long,
 				weather: this.props.weather
@@ -271,11 +272,11 @@ class MapCard extends PureComponent {
 				}
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleSaveEditAddress}>
+				<Button style={{ color: teal[500] }} onClick={this.handleSaveEditAddress}>
 					<Save /> {t('actions.save')}
 				</Button>
-				<Button onClick={this.handleCancelConfirmEditLocation}>
-					<Clear /> {t('actions.cancel')}
+				<Button style={{ color: red[400] }} onClick={this.handleCancelConfirmEditLocation}>
+					<Clear  /> {t('actions.cancel')}
 				</Button>
 			</DialogActions>
 		</Drawer>
