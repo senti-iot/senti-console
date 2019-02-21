@@ -1,8 +1,11 @@
 const mapStyles = theme => ({
 	map: {
 		width: '100%',
-		[theme.breakpoints.up('sm')]: {
+		[theme.breakpoints.up('md')]: {
 			height: window.innerHeight - 350
+		},
+		[theme.breakpoints.up('sm')]: {
+			height: 530
 		},
 		[theme.breakpoints.down('xs')]: {
 			height: 500

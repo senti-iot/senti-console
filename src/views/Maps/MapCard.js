@@ -253,7 +253,7 @@ class MapCard extends PureComponent {
 				noPadding
 				noHiddenPadding
 				title={t('devices.cards.map')}
-				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat.toString().substring(0, device.lat.toString().indexOf('.') + 6), long: device.long.toString().substring(0, device.long.toString().indexOf('.') + 6) })},\nHeatmap: ${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)},` : ""} ${heatMap ? t('actions.on') : t('actions.off')}` : `Heatmap:${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)},` : ''} ${heatMap ? t('actions.on') : t('actions.off')}`}
+				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat.toString().substring(0, device.lat.toString().indexOf('.') + 6), long: device.long.toString().substring(0, device.long.toString().indexOf('.') + 6) })},\n${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)}, ` : ""}Heatmap:${heatMap ? t('actions.on') : t('actions.off')}` : `${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)}, ` : ''}Heatmap:${heatMap ? t('actions.on') : t('actions.off')}`}
 				avatar={<Map />}
 				expanded
 				topAction={this.renderMenu()}
