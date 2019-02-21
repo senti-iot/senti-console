@@ -70,8 +70,8 @@ class FavoriteTable extends React.Component {
 		}
 	}
 	render() {
-		const { selected, classes, t, data, order, orderBy, handleClick, handleCheckboxClick, handleSelectAllClick } = this.props;
-		const { rowsPerPage, page } = this.state;
+		const { selected, classes, t, data, order, orderBy, handleClick, handleCheckboxClick, handleSelectAllClick, rowsPerPage } = this.props;
+		const { page } = this.state;
 		let emptyRows
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
@@ -168,7 +168,7 @@ FavoriteTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 const mapStateToProps = (state) => ({
-	rowsPerPage: state.settings.trp,
+	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,
 	accessLevel: state.settings.user.privileges
 })
 
