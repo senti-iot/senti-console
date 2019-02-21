@@ -244,7 +244,7 @@ class MapCard extends PureComponent {
 			return this.setMapCoords(data)
 		}
 		else {
-			data = await getAddress(this.state.address)
+			data = await getAddress(this.state.markers[0].address)
 			return this.setMapCoords(data)
 		}
 	}
