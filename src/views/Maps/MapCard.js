@@ -13,15 +13,18 @@ import { dateTimeFormatter } from 'variables/functions';
 import { storeHeatData } from 'redux/dateTime';
 
 const styles = theme => ({
-	drawerContainer: {
-		[theme.breakpoints.down('sm')]: {
-			width: '100%'
-		}
-	},
 	drawer: {
 		zIndex: 2000,
-
-	}
+	},
+	drawerContainer: {
+		[theme.breakpoints.down('sm')]: {
+			width: '100%',
+			height: '100%',
+			display: 'flex',
+			flexFlow: 'column',
+			flex: 1
+		}
+	},
 })
 class MapCard extends PureComponent {
 	constructor(props) {
@@ -262,17 +265,17 @@ class MapCard extends PureComponent {
 	renderModal = () => {
 		const { t, classes } = this.props
 		const { openModalEditLocation, markers, error } = this.state
-		console.log(openModalEditLocation)
 		return <Drawer
-			classes={{
-				paper: classes.drawerContainer
-			}}
 			className={classes.drawer}
-			variant="temporary"
+			classes={{
+				paper: window.innerWidth < 400 ? classes.drawerContainer : undefined,
+			}}
+			variant={window.innerWidth < 400 ? "temporary" : "persistent"}
 			anchor="right"
 			onClose={this.handleCancelConfirmEditLocation}
 			open={openModalEditLocation}
 			PaperProps={{
+				// className: window.innerWidth < 400 ? classes.drawerContainer : undefined,
 				style: {
 					overflowY: "visible"
 				}
@@ -286,6 +289,7 @@ class MapCard extends PureComponent {
 						<TextF id={'lat'} label={'Latitude'} value={m.lat ? m.lat.toString() : ""} disabled />
 						<TextF id={'long'} label={'Longitude'} value={m.long ? m.long.toString() : ""} disabled />
 						<AddressInput
+							fullWidth={window.innerWidth < 425 ? true : false}
 							value={m.address}
 							onBlur={this.getLatLng}
 							handleSuggestionSelected={this.getLatLng}
