@@ -1,10 +1,10 @@
 import React, { PureComponent, Fragment } from 'react'
 import { InfoCard, Caption, Dropdown, CircularLoader, ItemG, TextF, AddressInput, Danger, DateFilterMenu } from 'components';
 import { Map, Layers, Smartphone, Save, Clear, EditLocation, WhatsHot } from 'variables/icons'
-import { Grid/*,  Checkbox, */, IconButton, Menu, MenuItem, Collapse, Dialog, DialogContent, DialogTitle, DialogActions, Button } from '@material-ui/core';
+import { Grid/*,  Checkbox, */, IconButton, Menu, MenuItem, Collapse, DialogContent, DialogTitle, DialogActions, Button, Drawer, withStyles } from '@material-ui/core';
 import { red, teal } from "@material-ui/core/colors"
 import OpenStreetMap from 'components/Map/OpenStreetMap';
-import { getAddressByLocation, updateDevice } from 'variables/dataDevices';
+import { getAddressByLocation, updateDevice, getAddress, getGeoByAddress } from 'variables/dataDevices';
 import { connect } from 'react-redux'
 import { changeMapTheme, changeHeatMap } from 'redux/appState';
 import moment from 'moment'
@@ -12,6 +12,11 @@ import { getDataSummary as getDeviceDataSummary } from 'variables/dataDevices'
 import { dateTimeFormatter } from 'variables/functions';
 import { storeHeatData } from 'redux/dateTime';
 
+const styles = theme => ({
+	drawer: {
+		zIndex: 2000
+	}
+})
 class MapCard extends PureComponent {
 	constructor(props) {
 		super(props)
@@ -213,10 +218,35 @@ class MapCard extends PureComponent {
 			}]
 		})
 	}
+	setMapCoords = (data) => {
+		let coords = { lat: data.adgangsadresse.vejpunkt.koordinater[1], long: data.adgangsadresse.vejpunkt.koordinater[0] }
+		if (coords) {
+			this.setState({
+				markers: [{
+					...this.state.markers[0],
+					lat: coords.lat,
+					long: coords.long
+				}]
+			})
+		}
+	}
+	getLatLng = async (suggestion) => {
+		let data = await getGeoByAddress(suggestion.id)
+		if (data) {
+			return this.setMapCoords(data)
+		}
+		else {
+			data = await getAddress(this.state.address)
+			return this.setMapCoords(data)
+		}
+	}
 	renderModal = () => {
-		const { t } = this.props
+		const { t, classes } = this.props
 		const { openModalEditLocation, markers, error } = this.state
-		return <Dialog
+		return <Drawer
+			className={classes.drawer}
+			variant="persistent"
+			anchor="right"
 			onClose={this.handleCancelConfirmEditLocation}
 			open={openModalEditLocation}
 			PaperProps={{
@@ -232,7 +262,11 @@ class MapCard extends PureComponent {
 					<ItemG key={m.id} container direction={'column'}>
 						<TextF id={'lat'} label={'Latitude'} value={m.lat ? m.lat.toString() : ""} disabled />
 						<TextF id={'long'} label={'Longitude'} value={m.long ? m.long.toString() : ""} disabled />
-						<AddressInput value={m.address} handleChange={this.handleChangeAddress} />
+						<AddressInput
+							value={m.address}
+							onBlur={this.getLatLng}
+							handleSuggestionSelected={this.getLatLng}
+							handleChange={this.handleChangeAddress} />
 					</ItemG>) : null
 				}
 			</DialogContent>
@@ -244,7 +278,7 @@ class MapCard extends PureComponent {
 					<Clear /> {t('actions.cancel')}
 				</Button>
 			</DialogActions>
-		</Dialog>
+		</Drawer>
 	}
 	render() {
 		const { device, t, loading, mapTheme, heatMap, period } = this.props
@@ -290,4 +324,4 @@ const mapDispatchToProps = (dispatch) => ({
 	storeHeatData: (heatData) => dispatch(storeHeatData(heatData))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(MapCard)
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(MapCard))
