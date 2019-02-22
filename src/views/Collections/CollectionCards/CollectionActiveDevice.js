@@ -66,6 +66,7 @@ class CollectionActiveDevice extends Component {
 				content={
 					device ?
 						<ItemG container>
+								
 							<ItemGrid>
 								<Caption>{t('devices.fields.status')}:</Caption>
 								{this.renderStatus(device.state)}
@@ -73,8 +74,12 @@ class CollectionActiveDevice extends Component {
 							<ItemGrid>
 								<Caption>{t('devices.fields.temp')}:</Caption>
 								<Info>
-									{device.temperature} &#8451;
+									<Info>{device.temperature ? `${device.temperature}\u2103` : `-\u2103`}</Info>
 								</Info>
+							</ItemGrid>
+							<ItemGrid xs={12}>
+								<Caption>{t('devices.fields.address')}</Caption>
+								<Info>{device.address}</Info>
 							</ItemGrid>
 							{/* <ItemGrid xs={12}>
 								<Caption>{t('devices.fields.description')}:</Caption>
