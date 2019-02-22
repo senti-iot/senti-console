@@ -71,8 +71,15 @@ class MapCard extends PureComponent {
 			id: 0
 		}
 		let saved = await updateDevice(device)
-		if (saved)
-			this.props.reload(5)//msgId = 5 - Device Updated
+		if (saved) {
+			this.props.reload(5)
+			this.setState({
+				openModalEditLocation: false,
+				editLocation: false,
+			})
+			// this.handleCancelConfirmEditLocation()
+			//msgId = 5 - Device Updated
+		}
 		else {
 			this.setState({ error: true })
 		}
@@ -100,7 +107,7 @@ class MapCard extends PureComponent {
 				}]
 			})
 		}
-	
+
 	}
 	handleCancelEditLocation = () => {
 		this.setState({
@@ -253,9 +260,12 @@ class MapCard extends PureComponent {
 		}
 	}
 	getLatLng = async (suggestion) => {
-		let data = await getGeoByAddress(suggestion.id)
-		if (data) {
-			return this.setMapCoords(data)
+		let data
+		if (suggestion.id) {
+			data = await getGeoByAddress(suggestion.id)
+			if (data) {
+				return this.setMapCoords(data)
+			}
 		}
 		else {
 			data = await getAddress(this.state.markers[0].address)
@@ -302,7 +312,7 @@ class MapCard extends PureComponent {
 					<Save /> {t('actions.save')}
 				</Button>
 				<Button style={{ color: red[400] }} onClick={this.handleCancelConfirmEditLocation}>
-					<Clear  /> {t('actions.cancel')}
+					<Clear /> {t('actions.cancel')}
 				</Button>
 			</DialogActions>
 		</Drawer>

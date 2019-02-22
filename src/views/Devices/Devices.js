@@ -122,21 +122,16 @@ class Devices extends Component {
 			path: `/device/${device.id}`
 		}
 		let isFavorite = isFav(favObj)
-		if (accessLevel.apisuperuser)
-			return [
-				{ label: t('menus.edit'), func: this.handleDeviceEdit, single: true, icon: Edit },
-				{ label: t('menus.assign.deviceToCollection'), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },
-				{ label: t('menus.assign.deviceToOrg'), func: this.handleOpenAssignOrg, single: false, icon: Business },
-				{ label: t('menus.unassign.deviceFromCollection'), func: this.handleOpenUnassignDialog, single: false, icon: LayersClear },
-				{ label: t('menus.calibrate'), func: this.handleCalibrateFlow, single: true, icon: Build, dontShow: device ? device.liveStatus === 0 ? true : false : false },
-				{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
-			]
-		else {
-			return [
-				{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
-				{ label: t('menus.exportPDF'), func: () => { }, single: false }
-			]
-		}
+		console.log(accessLevel)
+		return [
+			{ dontShow: !accessLevel.senticloud.editdevice, label: t('menus.edit'), func: this.handleDeviceEdit, single: true, icon: Edit },
+			{ dontShow: !accessLevel.senticloud.assigndevicetodatacollection, label: t('menus.assign.deviceToCollection'), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },
+			{ dontShow: !accessLevel.senticloud.editdeviceownership, label: t('menus.assign.deviceToOrg'), func: this.handleOpenAssignOrg, single: false, icon: Business },
+			{ dontShow: !accessLevel.senticloud.editdeviceownership, label: t('menus.unassign.deviceFromCollection'), func: this.handleOpenUnassignDialog, single: false, icon: LayersClear },
+			{ dontShow: !accessLevel.senticloud.editdevice, label: t('menus.calibrate'), func: this.handleCalibrateFlow, single: true, icon: Build },
+			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
+		]
+	
 	}
 	//#endregion
 

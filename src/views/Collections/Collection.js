@@ -61,6 +61,10 @@ class Collection extends Component {
 		}
 		return device ? this.setState({ activeDevice: device, loading: false }) : this.setState({ loading: false })
 	}
+	reload = (msgId) => { 
+		this.snackBarMessages(msgId)
+		this.getActiveDevice(this.state.activeDevice.id)
+	}
 	getCollectionProject = async (rs) => {
 		let project = await getProject(rs)
 		this.setState({ collection: { ...this.state.collection, project: project }, loadingProject: false })
@@ -251,6 +255,8 @@ class Collection extends Component {
 	snackBarMessages = (msg) => {
 		const { s, t } = this.props
 		let name = this.state.collection.name ? this.state.collection.name : t('collections.noName')
+		let deviceName = this.state.activeDevice.name
+		let deviceId = this.state.activeDevice.id
 		let id = this.state.collection.id
 		switch (msg) {
 			case 1:
@@ -259,7 +265,10 @@ class Collection extends Component {
 			case 2:
 				s('snackbars.assign.collectionToOrg', { collection: `${name} (${id})`, org: this.state.collection.org.name })
 				break
-			case 5:
+			case 5: 
+				s('snackbars.deviceUpdated', { device: `${deviceName}(${deviceId})` })
+				break;
+			case 7:
 				s('snackbars.assign.collectionToProject', { collection: `${name} (${id})`, project: this.state.collection.project.title })
 				break
 			case 6:
@@ -343,7 +352,7 @@ class Collection extends Component {
 		if (reload) {
 			this.setState({ loading: true, anchorEl: null, openAssign: false })
 			await this.getCollection(this.state.collection.id).then(() => {
-				this.snackBarMessages(5)
+				this.snackBarMessages(7)
 			})
 		}
 	}
@@ -537,6 +546,7 @@ class Collection extends Component {
 						})}
 						{this.state.activeDevice ? <ItemGrid xs={12} noMargin id='map'>
 							<Maps
+								reload={this.reload}
 								device={activeDevice}
 								mapTheme={this.props.mapTheme}
 								markers={this.state.activeDevice ? [this.state.activeDevice] : []}

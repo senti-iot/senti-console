@@ -97,7 +97,6 @@ class OpenStreetMap extends React.Component {
 		return center
 	}
 	onDragEnd = (e) => {
-		console.log(e)
 		L.DomEvent.preventDefault(e);
 		L.DomEvent.stopPropagation(e);
 		// e.stopPropagation()
