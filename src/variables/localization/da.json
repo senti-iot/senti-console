@@ -504,7 +504,8 @@
 			"region": "Region",
 			"topLevelOrg": "Uden tilhørsforhold",
 			"url": "Website",
-			"zip": "Postnummer"
+			"zip": "Postnummer",
+			"deviceCount": "Antal enheder"
 		},
 		"organisation": "Organisation",
 		"pageTitle": "Organisationer",

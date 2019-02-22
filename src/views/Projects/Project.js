@@ -375,6 +375,7 @@ class Project extends Component {
 		return (
 			<Fragment>
 				<Toolbar
+					hashLinks
 					noSearch
 					history={rp.history}
 					match={rp.match}

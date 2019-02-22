@@ -440,6 +440,7 @@ class Device extends Component {
 		return (
 			!loading ? <Fragment>
 				<Toolbar
+					hashLinks
 					noSearch
 					history={this.props.history}
 					match={this.props.match}

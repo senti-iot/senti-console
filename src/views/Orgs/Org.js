@@ -10,6 +10,8 @@ import OrgUsers from 'views/Orgs/OrgCards/OrgUsers';
 import OrgDevices from 'views/Orgs/OrgCards/OrgDevices';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 import { getAllDevices } from 'variables/dataDevices';
+import Toolbar from 'components/Toolbar/Toolbar';
+import { Business, DeviceHub, People } from 'variables/icons';
 
 class Org extends Component {
 	constructor(props) {
@@ -142,14 +144,25 @@ class Org extends Component {
 				break
 		}
 	}
-
+	tabs = [
+		{ id: 0, title: '', label: <Business />, url: `#details` },
+		{ id: 1, title: '', label: <People />, url: `#users` },
+		{ id: 2, title: '', label: <DeviceHub />, url: `#devices` },
+	]
 	render() {
 		const { classes, t, history, match, language } = this.props
 		const { org, loading, loadingUsers, loadingDevices, users, devices } = this.state
 		return (
 			loading ? <CircularLoader /> : <Fragment>
+				<Toolbar
+					hashLinks
+					noSearch
+					history={this.props.history}
+					match={this.props.match}
+					tabs={this.tabs}
+				/>
 				<GridContainer justify={'center'} alignContent={'space-between'}>
-					<ItemGrid xs={12} noMargin>
+					<ItemGrid xs={12} noMargin id={'details'}> 
 						<OrgDetails
 							isFav={this.props.isFav({ id: org.id, type: 'org' })}
 							addToFav={this.addToFav}
@@ -163,7 +176,7 @@ class Org extends Component {
 							language={language}
 							accessLevel={this.props.accessLevel} />
 					</ItemGrid>
-					<ItemGrid xs={12} noMargin>
+					<ItemGrid xs={12} noMargin id={'users'}>
 						{!loadingUsers ? <OrgUsers
 							t={t}
 							org={org}
@@ -172,7 +185,7 @@ class Org extends Component {
 						/> :
 							<CircularLoader notCentered />}
 					</ItemGrid>
-					<ItemGrid xs={12} noMargin>
+					<ItemGrid xs={12} noMargin id={'devices'}>
 						{!loadingDevices ? <OrgDevices
 							t={t}
 							org={org}

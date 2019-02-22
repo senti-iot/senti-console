@@ -34,6 +34,7 @@ class OrgDevices extends Component {
 			return (
 				<InfoCard
 					title={t('devices.pageTitle')}
+					subheader={`${t('orgs.fields.deviceCount')}: ${devices.length}`}
 					avatar={<DeviceHub />}
 					noExpand
 					noPadding
@@ -71,12 +72,8 @@ class OrgDevices extends Component {
 											</Hidden>
 											<Hidden mdDown>
 												<TC checkbox className={classes.orgUsersTD} content={this.renderIcon(n.liveStatus)} />
-												<TC label={n.userName} />
+												<TC checkbox label={n.id} />
 												<TC label={n.name} />
-												<TC label={n.id} />
-												{/* <TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone) : n.phone}</a>} />
-											<TC label={<a onClick={e => e.stopPropagation()} href={`mailto:${n.email}`}>{n.email}</a>} /> */}
-												{/* <TC label={lastLoggedIn} /> */}
 											</Hidden>
 										</TableRow>
 

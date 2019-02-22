@@ -504,7 +504,8 @@
 			"region": "Region",
 			"topLevelOrg": "No Parent Organisation",
 			"url": "Website",
-			"zip": "ZIP Code"
+			"zip": "ZIP Code",
+			"deviceCount": "Number of devices"
 		},
 		"organisation": "Organisation",
 		"pageTitle": "Organisations",

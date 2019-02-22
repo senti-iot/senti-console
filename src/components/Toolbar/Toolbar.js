@@ -57,7 +57,7 @@ class Toolbar extends PureComponent {
 		super(props)
 
 		this.state = {
-			route: props.route ? props.route : 0
+			route: props.route ? props.route : props.hashLinks ? -1 : 0
 		}
 		this.tabsRef = React.createRef()
 
@@ -112,6 +112,9 @@ class Toolbar extends PureComponent {
 	}
 
 	handleTabsChange = (e, value) => {
+		if (this.props.hashLinks) { 
+			return null
+		}
 		this.setState({ route: value })
 	}
 
