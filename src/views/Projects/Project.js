@@ -99,12 +99,9 @@ class Project extends Component {
 						dataCollections: rs.dataCollections.map((dc, i) => ({ ...dc, color: colors[i] })),
 						devices: rs.dataCollections.filter(dc => dc.activeDevice ? true : false).map((dc, i) => dc.activeDevice ? { ...dc.activeDevice, color: colors[i] } : null)
 					}, loading: false
-				}/*,  () => {
-					this.getHeatMapData()
-				} */)
+				})
 			}
 		})
-		console.log(this.state)
 	}
 	getWifiHourly = async (p) => {
 		const { project, hoverID } = this.state
