@@ -55,9 +55,9 @@ class ProjectCollections extends Component {
 	renderDeviceStatus = (status) => {
 		const { classes } = this.props
 		switch (status) {
-			case 2:
-				return <SignalWifi2Bar className={classes.yellowSignal} />
 			case 1:
+				return <SignalWifi2Bar className={classes.yellowSignal} />
+			case 2:
 				return <SignalWifi2Bar className={classes.greenSignal} />
 			case 0:
 				return <SignalWifi2Bar className={classes.redSignal} />

@@ -6,7 +6,7 @@ const devicetableStyles = theme => ({
 		[theme.breakpoints.down('xs')]: {
 			padding: '0 10px'
 		},
-		padding: '0 20px'
+		padding: '0 16px'
 	},
 	hideIcon: {
 		display: "none",

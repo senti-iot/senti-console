@@ -40,7 +40,13 @@ export const changeMapTheme = (val) => {
 
 export const changeTableRows = (val) => { 
 	return (dispatch, getState) => { 
-		dispatch({ type: changeTRP, trp: val })
+		let trp = val
+		if (val === 'auto') {
+			let height = window.innerHeight
+			let rows = Math.round((height - 70 - 48 - 30 - 64 - 56 - 30 - 56 - 30) / 49)
+			trp = rows
+		}
+		dispatch({ type: changeTRP, trp: trp, trpStr: val })
 	}
 }
 
@@ -94,6 +100,7 @@ const initialState = {
 	eH: true,
 	CPP: 9,
 	chartYAxis: 'linear',
+	trpStr: null,
 	heatMap: false,
 	chartType: null,
 	mapTheme: null, 

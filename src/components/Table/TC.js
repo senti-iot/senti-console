@@ -25,7 +25,6 @@ const TC = (props) => {
 		<TableCell classes={{
 			root: className + ' ' + (checkbox ? classes.tableCellCheckbox + ' ' + classes.tableCell : classes.tableCell)
 		}}
-		
 		>
 			{label ? <Typography variant={'body1'} classes={{ root: classes.paragraphCell }}>
 				{label}

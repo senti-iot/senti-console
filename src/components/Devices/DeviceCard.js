@@ -79,7 +79,7 @@ class DeviceCard extends Component {
 				content={<ItemGrid container>
 					<ItemG xs={6}>
 						<Caption>{t('devices.fields.temp')}</Caption>
-						<Info>{d.temperature} &#8451;</Info>
+						<Info>{d.temperature ? `${d.temperature}\u2103` : `-\u2103`}</Info>
 					</ItemG>
 					<ItemG xs={12}>
 						<Caption>{t('devices.fields.address')}</Caption>

@@ -99,9 +99,7 @@ class Project extends Component {
 						dataCollections: rs.dataCollections.map((dc, i) => ({ ...dc, color: colors[i] })),
 						devices: rs.dataCollections.filter(dc => dc.activeDevice ? true : false).map((dc, i) => dc.activeDevice ? { ...dc.activeDevice, color: colors[i] } : null)
 					}, loading: false
-				}/*,  () => {
-					this.getHeatMapData()
-				} */)
+				})
 			}
 		})
 	}
@@ -375,6 +373,7 @@ class Project extends Component {
 		return (
 			<Fragment>
 				<Toolbar
+					hashLinks
 					noSearch
 					history={rp.history}
 					match={rp.match}

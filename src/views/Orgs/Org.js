@@ -7,7 +7,11 @@ import OrgDetails from './OrgCards/OrgDetails';
 import { connect } from 'react-redux'
 import { deleteOrg } from 'variables/dataOrgs';
 import OrgUsers from 'views/Orgs/OrgCards/OrgUsers';
+import OrgDevices from 'views/Orgs/OrgCards/OrgDevices';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
+import { getAllDevices } from 'variables/dataDevices';
+import Toolbar from 'components/Toolbar/Toolbar';
+import { Business, DeviceHub, People } from 'variables/icons';
 
 class Org extends Component {
 	constructor(props) {
@@ -57,6 +61,10 @@ class Org extends Component {
 				await getOrgUsers(this.props.match.params.id).then(rs => {
 					this.setState({ users: rs, loadingUsers: false })
 				})
+				await getAllDevices().then(rs => { 
+					let devices = rs.filter(f => f.org.id === this.state.org.id)
+					this.setState({ devices: devices, loadingDevices: false })
+				})
 			}
 	}
 	addToFav = () => {
@@ -65,7 +73,8 @@ class Org extends Component {
 			id: org.id,
 			name: org.name,
 			type: 'org',
-			path: this.props.match.url }
+			path: this.props.match.url
+		}
 		this.props.addToFav(favObj)
 	}
 	removeFromFav = () => {
@@ -74,7 +83,8 @@ class Org extends Component {
 			id: org.id,
 			name: org.name,
 			type: 'org',
-			path: this.props.match.url }
+			path: this.props.match.url
+		}
 		this.props.removeFromFav(favObj)
 	}
 	close = () => {
@@ -134,14 +144,25 @@ class Org extends Component {
 				break
 		}
 	}
-
+	tabs = [
+		{ id: 0, title: '', label: <Business />, url: `#details` },
+		{ id: 1, title: '', label: <People />, url: `#users` },
+		{ id: 2, title: '', label: <DeviceHub />, url: `#devices` },
+	]
 	render() {
 		const { classes, t, history, match, language } = this.props
-		const { org, loading, loadingUsers } = this.state
+		const { org, loading, loadingUsers, loadingDevices, users, devices } = this.state
 		return (
 			loading ? <CircularLoader /> : <Fragment>
+				<Toolbar
+					hashLinks
+					noSearch
+					history={this.props.history}
+					match={this.props.match}
+					tabs={this.tabs}
+				/>
 				<GridContainer justify={'center'} alignContent={'space-between'}>
-					<ItemGrid xs={12} noMargin>
+					<ItemGrid xs={12} noMargin id={'details'}> 
 						<OrgDetails
 							isFav={this.props.isFav({ id: org.id, type: 'org' })}
 							addToFav={this.addToFav}
@@ -155,14 +176,24 @@ class Org extends Component {
 							language={language}
 							accessLevel={this.props.accessLevel} />
 					</ItemGrid>
-					<ItemGrid xs={12} noMargin>
+					<ItemGrid xs={12} noMargin id={'users'}>
 						{!loadingUsers ? <OrgUsers
 							t={t}
 							org={org}
-							users={this.state.users ? this.state.users : []}
+							users={users ? users : []}
 							history={history}
 						/> :
 							<CircularLoader notCentered />}
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin id={'devices'}>
+						{!loadingDevices ? <OrgDevices
+							t={t}
+							org={org}
+							devices={devices ? devices : []}
+							history={history} />
+							:
+							<CircularLoader notCentered />
+						}
 					</ItemGrid>
 				</GridContainer>
 				{this.renderDeleteDialog()}

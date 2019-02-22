@@ -476,6 +476,7 @@ class Collection extends Component {
 		return (
 			<Fragment>
 				<Toolbar
+					hashLinks
 					noSearch
 					history={history}
 					match={match}

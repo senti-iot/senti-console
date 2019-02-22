@@ -124,7 +124,7 @@ class MarkerWithInfo extends Component {
 							</ItemG> : null}
 							<ItemG xs={6}>
 								<Caption>{t('devices.fields.temp')}</Caption>
-								<Info>{m.temperature} &#8451;</Info>
+								<Info>{m.temperature ? `${m.temperature}\u2103` : `-\u2103`}</Info>
 							</ItemG>
 							<ItemG xs={12}>
 								<Caption>{t('devices.fields.address')}</Caption>

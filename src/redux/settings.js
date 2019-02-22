@@ -265,9 +265,15 @@ export const changeSideBarLoc = loc => {
 }
 export const changeTRP = (nr) => {
 	return async (dispatch, getState) => {
+		let trp = nr
+		if (nr === 'auto') {
+			let height = window.innerHeight
+			let rows = Math.round(height - 70 - 48 - 30 - 64 - 56 / 49)
+			trp = rows
+		}
 		dispatch({
 			type: TRP,
-			nr
+			nr: trp
 		})
 		dispatch(saveSettingsOnServ())
 	}
@@ -306,7 +312,7 @@ let initialState = {
 	didKnow: 0,
 	loading: true,
 	saved: false,
-	rowsPerPageOptions: [ 5, 7, 8, 10, 15, 20, 25, 50, 100 ],
+	rowsPerPageOptions: ['auto', 5, 7, 8, 10, 15, 20, 25, 50, 100 ],
 	cardsPerPageOptions: [2, 3, 4, 6, 8, 9]
 }
 export const settings = (state = initialState, action) => {
