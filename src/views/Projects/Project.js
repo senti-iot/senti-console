@@ -104,6 +104,7 @@ class Project extends Component {
 				} */)
 			}
 		})
+		console.log(this.state)
 	}
 	getWifiHourly = async (p) => {
 		const { project, hoverID } = this.state
