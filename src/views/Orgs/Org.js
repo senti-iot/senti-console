@@ -7,7 +7,9 @@ import OrgDetails from './OrgCards/OrgDetails';
 import { connect } from 'react-redux'
 import { deleteOrg } from 'variables/dataOrgs';
 import OrgUsers from 'views/Orgs/OrgCards/OrgUsers';
+import OrgDevices from 'views/Orgs/OrgCards/OrgDevices';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
+import { getAllDevices } from 'variables/dataDevices';
 
 class Org extends Component {
 	constructor(props) {
@@ -57,6 +59,10 @@ class Org extends Component {
 				await getOrgUsers(this.props.match.params.id).then(rs => {
 					this.setState({ users: rs, loadingUsers: false })
 				})
+				await getAllDevices().then(rs => { 
+					let devices = rs.filter(f => f.org.id === this.state.org.id)
+					this.setState({ devices: devices, loadingDevices: false })
+				})
 			}
 	}
 	addToFav = () => {
@@ -65,7 +71,8 @@ class Org extends Component {
 			id: org.id,
 			name: org.name,
 			type: 'org',
-			path: this.props.match.url }
+			path: this.props.match.url
+		}
 		this.props.addToFav(favObj)
 	}
 	removeFromFav = () => {
@@ -74,7 +81,8 @@ class Org extends Component {
 			id: org.id,
 			name: org.name,
 			type: 'org',
-			path: this.props.match.url }
+			path: this.props.match.url
+		}
 		this.props.removeFromFav(favObj)
 	}
 	close = () => {
@@ -137,7 +145,7 @@ class Org extends Component {
 
 	render() {
 		const { classes, t, history, match, language } = this.props
-		const { org, loading, loadingUsers } = this.state
+		const { org, loading, loadingUsers, loadingDevices, users, devices } = this.state
 		return (
 			loading ? <CircularLoader /> : <Fragment>
 				<GridContainer justify={'center'} alignContent={'space-between'}>
@@ -159,10 +167,20 @@ class Org extends Component {
 						{!loadingUsers ? <OrgUsers
 							t={t}
 							org={org}
-							users={this.state.users ? this.state.users : []}
+							users={users ? users : []}
 							history={history}
 						/> :
 							<CircularLoader notCentered />}
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin>
+						{!loadingDevices ? <OrgDevices
+							t={t}
+							org={org}
+							devices={devices ? devices : []}
+							history={history} />
+							:
+							<CircularLoader notCentered />
+						}
 					</ItemGrid>
 				</GridContainer>
 				{this.renderDeleteDialog()}
