@@ -47,9 +47,12 @@ class EditDeviceDetails extends Component {
 		}
 	}
 	getLatLng = async (suggestion) => {
-		let data = await getGeoByAddress(suggestion.id)
-		if (data) {
-			return this.setMapCoords(data)
+		let data
+		if (suggestion.id) {
+			data = await getGeoByAddress(suggestion.id)
+			if (data) {
+				return this.setMapCoords(data)
+			}
 		}
 		else {
 			data = await getAddress(this.state.device.address)

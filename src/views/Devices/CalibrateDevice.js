@@ -243,11 +243,14 @@ class CalibrateDevice extends Component {
 		}
 	}
 	getLatLng = async (suggestion) => {
-		let data = await getGeoByAddress(suggestion.id)
-		if (data) {
-			return this.setMapCoords(data)
+		let data
+		if (suggestion.id) {
+			data = await getGeoByAddress(suggestion.id)
+			if (data) {
+				return this.setMapCoords(data)
+			}
 		}
-		else { 
+		else {
 			data = await getAddress(this.state.address)
 			return this.setMapCoords(data)
 		}
