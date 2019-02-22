@@ -71,91 +71,94 @@ class MapCard extends PureComponent {
 			id: 0
 		}
 		let saved = await updateDevice(device)
-		if (saved)
-			this.props.reload(5)//msgId = 5 - Device Updated
+		if (saved) {
+			this.props.reload(5)
+			this.handleCancelConfirmEditLocation()
+			//msgId = 5 - Device Updated
+		}
 		else {
 			this.setState({ error: true })
 		}
 	}
-	handleOpenMenu = e => {
-		this.setState({ actionAnchorVisibility: e.currentTarget })
-	}
-	handleCloseMenu = e => {
-		this.setState({ actionAnchorVisibility: null })
-	}
-	handleEditLocation = () => {
-		this.setState({ editLocation: !this.state.editLocation })
-	}
-	handleCancelConfirmEditLocation = () => {
-		this.setState({
-			openModalEditLocation: false,
-			editLocation: false,
-		})
-		if (this.state.oldLat && this.state.oldLong) {
+		handleOpenMenu = e => {
+			this.setState({ actionAnchorVisibility: e.currentTarget })
+		}
+		handleCloseMenu = e => {
+			this.setState({ actionAnchorVisibility: null })
+		}
+		handleEditLocation = () => {
+			this.setState({ editLocation: !this.state.editLocation })
+		}
+		handleCancelConfirmEditLocation = () => {
 			this.setState({
-				markers: [{
-					...this.state.markers[0],
-					lat: this.state.oldLat,
-					long: this.state.oldLong,
-				}]
+				openModalEditLocation: false,
+				editLocation: false,
+			})
+			if (this.state.oldLat && this.state.oldLong) {
+				this.setState({
+					markers: [{
+						...this.state.markers[0],
+						lat: this.state.oldLat,
+						long: this.state.oldLong,
+					}]
+				})
+			}
+
+		}
+		handleCancelEditLocation = () => {
+			this.setState({
+				editLocation: false,
+				markers: [{ ...this.props.device, weather: this.props.weather }]
 			})
 		}
-	
-	}
-	handleCancelEditLocation = () => {
-		this.setState({
-			editLocation: false,
-			markers: [{ ...this.props.device, weather: this.props.weather }]
-		})
-	}
-	handleOpenConfirmEditLocation = () => {
-		this.setState({
-			editLocation: true,
-			openModalEditLocation: true
-		})
-	}
-	getHeatMapData = async () => {
-		const { period } = this.props
-		const { markers } = this.state
-		let startDate = moment(period.from).format(this.format)
-		let endDate = moment(period.to).format(this.format)
-		let dataArr = []
-		await Promise.all(markers.map(async d => {
-			let dataSet = null
-			let data = null
-			data = await getDeviceDataSummary(d.id, startDate, endDate, true)
-			dataSet = {
-				name: d.name,
-				id: d.id,
-				data: data,
-				color: d.color ? d.color : teal[500],
-				liveStatus: d.liveStatus,
-				lat: d.lat,
-				long: d.long
-			}
-			return dataArr.push(dataSet)
-		}))
-		dataArr = dataArr.reduce((newArr, d) => {
-			if (d.data !== null)
-				newArr.push(d)
-			return newArr
-		}, [])
-		let newMarkers = markers.map(m => {
-			m.count = dataArr ? dataArr[dataArr.findIndex(f => f.id === m.id)] ? dataArr[dataArr.findIndex(f => f.id === m.id)].data : 0 : 0
-			return m
-		})
-		this.setState({
-			markers: newMarkers,
-			heatData: dataArr,
-			loadingHeatMap: false
-		})
-		this.props.storeHeatData(dataArr)
-	}
-	renderMenu = () => {
-		const { t, mapTheme, device } = this.props
-		const { actionAnchorVisibility } = this.state
-		return <Fragment>
-			{/* {device && <Collapse in={this.state.editLocation}>
+		handleOpenConfirmEditLocation = () => {
+			this.setState({
+				editLocation: true,
+				openModalEditLocation: true
+			})
+		}
+		getHeatMapData = async () => {
+			const { period } = this.props
+			const { markers } = this.state
+			let startDate = moment(period.from).format(this.format)
+			let endDate = moment(period.to).format(this.format)
+			let dataArr = []
+			await Promise.all(markers.map(async d => {
+				let dataSet = null
+				let data = null
+				data = await getDeviceDataSummary(d.id, startDate, endDate, true)
+				dataSet = {
+					name: d.name,
+					id: d.id,
+					data: data,
+					color: d.color ? d.color : teal[500],
+					liveStatus: d.liveStatus,
+					lat: d.lat,
+					long: d.long
+				}
+				return dataArr.push(dataSet)
+			}))
+			dataArr = dataArr.reduce((newArr, d) => {
+				if (d.data !== null)
+					newArr.push(d)
+				return newArr
+			}, [])
+			let newMarkers = markers.map(m => {
+				m.count = dataArr ? dataArr[dataArr.findIndex(f => f.id === m.id)] ? dataArr[dataArr.findIndex(f => f.id === m.id)].data : 0 : 0
+				return m
+			})
+			this.setState({
+				markers: newMarkers,
+				heatData: dataArr,
+				loadingHeatMap: false
+			})
+			this.props.storeHeatData(dataArr)
+		}
+		renderMenu = () => {
+			const { t, mapTheme, device } = this.props
+			const { actionAnchorVisibility } = this.state
+			return <Fragment>
+				{/* {device && <Collapse in={this.state.editLocation}>
 				<ItemG container>
 					<ItemG>
 						<IconButton onClick={this.handleOpenConfirmEditLocation}>
@@ -169,175 +172,175 @@ class MapCard extends PureComponent {
 					</ItemG>
 				</ItemG>
 			</Collapse>} */}
-			{this.props.heatMap && <Collapse in={this.props.heatMap}>
-				<DateFilterMenu
-					heatmap
-					t={t}
-				/>
-			</Collapse>}
-			<ItemG>
-				<IconButton title={'Map layer'} variant={'fab'} onClick={this.handleOpenMenu}>
-					<Layers />
-				</IconButton>
-				<Menu
-					id='long-menu2'
-					anchorEl={actionAnchorVisibility}
-					open={Boolean(actionAnchorVisibility)}
-					onClose={this.handleCloseMenu}
-					PaperProps={{
-						style: {
-							minWidth: 250
-						}
-					}}>
-					{this.visibilityOptions.map(op => {
-						return <MenuItem key={op.id} value={op.id} button onClick={this.handleVisibility(op.id)} selected={mapTheme === op.id ? true : false}>
-							{op.label}
-						</MenuItem>
-					})}
-					{/* </List> */}
-				</Menu>
-			</ItemG>
+				{this.props.heatMap && <Collapse in={this.props.heatMap}>
+					<DateFilterMenu
+						heatmap
+						t={t}
+					/>
+				</Collapse>}
+				<ItemG>
+					<IconButton title={'Map layer'} variant={'fab'} onClick={this.handleOpenMenu}>
+						<Layers />
+					</IconButton>
+					<Menu
+						id='long-menu2'
+						anchorEl={actionAnchorVisibility}
+						open={Boolean(actionAnchorVisibility)}
+						onClose={this.handleCloseMenu}
+						PaperProps={{
+							style: {
+								minWidth: 250
+							}
+						}}>
+						{this.visibilityOptions.map(op => {
+							return <MenuItem key={op.id} value={op.id} button onClick={this.handleVisibility(op.id)} selected={mapTheme === op.id ? true : false}>
+								{op.label}
+							</MenuItem>
+						})}
+						{/* </List> */}
+					</Menu>
+				</ItemG>
 
-			<Dropdown menuItems={
-				[
-					{ label: t('actions.heatMap'), selected: this.props.heatMap, icon: <WhatsHot style={{ padding: "0px 12px" }} />, func: () => this.props.changeHeatMap(!this.props.heatMap) },
-					{ label: t('actions.goToDevice'), icon: <Smartphone style={{ padding: "0px 12px" }} />, func: () => this.flyToMarkers() },
-					{ dontShow: device ? false : true, label: t('actions.editLocation'), selected: this.state.editLocation, icon: <EditLocation style={{ padding: '0px 12px' }} />, func: () => this.handleOpenConfirmEditLocation() }]
-			} />
+				<Dropdown menuItems={
+					[
+						{ label: t('actions.heatMap'), selected: this.props.heatMap, icon: <WhatsHot style={{ padding: "0px 12px" }} />, func: () => this.props.changeHeatMap(!this.props.heatMap) },
+						{ label: t('actions.goToDevice'), icon: <Smartphone style={{ padding: "0px 12px" }} />, func: () => this.flyToMarkers() },
+						{ dontShow: device ? false : true, label: t('actions.editLocation'), selected: this.state.editLocation, icon: <EditLocation style={{ padding: '0px 12px' }} />, func: () => this.handleOpenConfirmEditLocation() }]
+				} />
 
-		</Fragment>
-	}
-	getRef = (r) => {
-		this.map = r
-	}
-	flyToMarkers = () => {
-		const { markers } = this.state
-		if (this.map) {
-			this.map.leafletElement.flyToBounds(markers.map(d => d.lat && d.long ? [d.lat, d.long] : null))
+			</Fragment>
 		}
-	}
-	getLatLngFromMap = async (e) => {
-		let lat = e.target._latlng.lat
-		let long = e.target._latlng.lng
-		this.setState({
-			oldLong: this.state.markers[0].long,
-			oldLat: this.state.markers[0].lat,
-			markers: [{
-				...this.state.markers[0],
-				lat,
-				long,
-				weather: this.props.weather
-			}]
-		})
-	}
-	handleChangeAddress = e => {
-		this.setState({
-			markers: [{
-				...this.state.markers[0],
-				address: e
-			}]
-		})
-	}
-	setMapCoords = (data) => {
-		let coords = { lat: data.adgangsadresse.vejpunkt.koordinater[1], long: data.adgangsadresse.vejpunkt.koordinater[0] }
-		if (coords) {
+		getRef = (r) => {
+			this.map = r
+		}
+		flyToMarkers = () => {
+			const { markers } = this.state
+			if (this.map) {
+				this.map.leafletElement.flyToBounds(markers.map(d => d.lat && d.long ? [d.lat, d.long] : null))
+			}
+		}
+		getLatLngFromMap = async (e) => {
+			let lat = e.target._latlng.lat
+			let long = e.target._latlng.lng
 			this.setState({
 				oldLong: this.state.markers[0].long,
 				oldLat: this.state.markers[0].lat,
 				markers: [{
 					...this.state.markers[0],
-					lat: coords.lat,
-					long: coords.long,
+					lat,
+					long,
+					weather: this.props.weather
 				}]
 			})
 		}
-	}
-	getLatLng = async (suggestion) => {
-		let data = await getGeoByAddress(suggestion.id)
-		if (data) {
-			return this.setMapCoords(data)
+		handleChangeAddress = e => {
+			this.setState({
+				markers: [{
+					...this.state.markers[0],
+					address: e
+				}]
+			})
 		}
-		else {
-			data = await getAddress(this.state.markers[0].address)
-			return this.setMapCoords(data)
+		setMapCoords = (data) => {
+			let coords = { lat: data.adgangsadresse.vejpunkt.koordinater[1], long: data.adgangsadresse.vejpunkt.koordinater[0] }
+			if (coords) {
+				this.setState({
+					oldLong: this.state.markers[0].long,
+					oldLat: this.state.markers[0].lat,
+					markers: [{
+						...this.state.markers[0],
+						lat: coords.lat,
+						long: coords.long,
+					}]
+				})
+			}
 		}
-	}
-	renderModal = () => {
-		const { t, classes } = this.props
-		const { openModalEditLocation, markers, error } = this.state
-		return <Drawer
-			className={classes.drawer}
-			classes={{
-				paper: window.innerWidth < 400 ? classes.drawerContainer : undefined,
-			}}
-			variant={window.innerWidth < 400 ? "temporary" : "persistent"}
-			anchor="right"
-			onClose={this.handleCancelConfirmEditLocation}
-			open={openModalEditLocation}
-			PaperProps={{
-				// className: window.innerWidth < 400 ? classes.drawerContainer : undefined,
-				style: {
-					overflowY: "visible"
-				}
-			}}
-		>
-			<DialogTitle> </DialogTitle>
-			<DialogContent style={{ overflowY: "visible" }}>
-				{error ? <Danger>{t('404.networkError')}</Danger> : null}
-				{markers.length > 0 ? markers.map(m =>
-					<ItemG key={m.id} container direction={'column'}>
-						<TextF id={'lat'} label={'Latitude'} value={m.lat ? m.lat.toString() : ""} disabled />
-						<TextF id={'long'} label={'Longitude'} value={m.long ? m.long.toString() : ""} disabled />
-						<AddressInput
-							fullWidth={window.innerWidth < 425 ? true : false}
-							value={m.address}
-							onBlur={this.getLatLng}
-							handleSuggestionSelected={this.getLatLng}
-							handleChange={this.handleChangeAddress} />
-					</ItemG>) : null
-				}
-			</DialogContent>
-			<DialogActions>
-				<Button style={{ color: teal[500] }} onClick={this.handleSaveEditAddress}>
-					<Save /> {t('actions.save')}
-				</Button>
-				<Button style={{ color: red[400] }} onClick={this.handleCancelConfirmEditLocation}>
-					<Clear  /> {t('actions.cancel')}
-				</Button>
-			</DialogActions>
-		</Drawer>
-	}
-	render() {
-		const { device, t, loading, mapTheme, heatMap, period } = this.props
-		return (
-			<InfoCard
-				noPadding
-				noHiddenPadding
-				title={t('devices.cards.map')}
-				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat.toString().substring(0, device.lat.toString().indexOf('.') + 6), long: device.long.toString().substring(0, device.long.toString().indexOf('.') + 6) })},\n${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)}, ` : ""}Heatmap:${heatMap ? t('actions.on') : t('actions.off')}` : `${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)}, ` : ''}Heatmap:${heatMap ? t('actions.on') : t('actions.off')}`}
-				avatar={<Map />}
-				expanded
-				topAction={this.renderMenu()}
-				hiddenContent={
-					loading ? <CircularLoader /> :
-						<Grid container justify={'center'}>
-							{device ? this.renderModal() : false}
-							{this.state.markers.length > 0 ?
-								<OpenStreetMap
-									calibrate={this.state.openModalEditLocation}
-									getLatLng={this.getLatLngFromMap}
-									iRef={this.getRef}
-									mapTheme={mapTheme}
-									heatMap={heatMap}
-									heatData={this.state.heatData}
-									t={t}
-									markers={this.state.markers}
-								/> : <Caption>{t('devices.notCalibrated')}</Caption>}
-						</Grid>
-				} />
+		getLatLng = async (suggestion) => {
+			let data = await getGeoByAddress(suggestion.id)
+			if (data) {
+				return this.setMapCoords(data)
+			}
+			else {
+				data = await getAddress(this.state.markers[0].address)
+				return this.setMapCoords(data)
+			}
+		}
+		renderModal = () => {
+			const { t, classes } = this.props
+			const { openModalEditLocation, markers, error } = this.state
+			return <Drawer
+				className={classes.drawer}
+				classes={{
+					paper: window.innerWidth < 400 ? classes.drawerContainer : undefined,
+				}}
+				variant={window.innerWidth < 400 ? "temporary" : "persistent"}
+				anchor="right"
+				onClose={this.handleCancelConfirmEditLocation}
+				open={openModalEditLocation}
+				PaperProps={{
+					// className: window.innerWidth < 400 ? classes.drawerContainer : undefined,
+					style: {
+						overflowY: "visible"
+					}
+				}}
+			>
+				<DialogTitle> </DialogTitle>
+				<DialogContent style={{ overflowY: "visible" }}>
+					{error ? <Danger>{t('404.networkError')}</Danger> : null}
+					{markers.length > 0 ? markers.map(m =>
+						<ItemG key={m.id} container direction={'column'}>
+							<TextF id={'lat'} label={'Latitude'} value={m.lat ? m.lat.toString() : ""} disabled />
+							<TextF id={'long'} label={'Longitude'} value={m.long ? m.long.toString() : ""} disabled />
+							<AddressInput
+								fullWidth={window.innerWidth < 425 ? true : false}
+								value={m.address}
+								onBlur={this.getLatLng}
+								handleSuggestionSelected={this.getLatLng}
+								handleChange={this.handleChangeAddress} />
+						</ItemG>) : null
+					}
+				</DialogContent>
+				<DialogActions>
+					<Button style={{ color: teal[500] }} onClick={this.handleSaveEditAddress}>
+						<Save /> {t('actions.save')}
+					</Button>
+					<Button style={{ color: red[400] }} onClick={this.handleCancelConfirmEditLocation}>
+						<Clear /> {t('actions.cancel')}
+					</Button>
+				</DialogActions>
+			</Drawer>
+		}
+		render() {
+			const { device, t, loading, mapTheme, heatMap, period } = this.props
+			return (
+				<InfoCard
+					noPadding
+					noHiddenPadding
+					title={t('devices.cards.map')}
+					subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat.toString().substring(0, device.lat.toString().indexOf('.') + 6), long: device.long.toString().substring(0, device.long.toString().indexOf('.') + 6) })},\n${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)}, ` : ""}Heatmap:${heatMap ? t('actions.on') : t('actions.off')}` : `${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)}, ` : ''}Heatmap:${heatMap ? t('actions.on') : t('actions.off')}`}
+					avatar={<Map />}
+					expanded
+					topAction={this.renderMenu()}
+					hiddenContent={
+						loading ? <CircularLoader /> :
+							<Grid container justify={'center'}>
+								{device ? this.renderModal() : false}
+								{this.state.markers.length > 0 ?
+									<OpenStreetMap
+										calibrate={this.state.openModalEditLocation}
+										getLatLng={this.getLatLngFromMap}
+										iRef={this.getRef}
+										mapTheme={mapTheme}
+										heatMap={heatMap}
+										heatData={this.state.heatData}
+										t={t}
+										markers={this.state.markers}
+									/> : <Caption>{t('devices.notCalibrated')}</Caption>}
+							</Grid>
+					} />
 
-		)
-	}
+			)
+		}
 }
 const mapStateToProps = (state) => ({
 	mapTheme: state.appState.mapTheme ? state.appState.mapTheme : state.settings.mapTheme,
