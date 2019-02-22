@@ -20,11 +20,12 @@ const styles = theme => ({
  */
 const CustomDateTime = (props) => {
 	const { classes, t, openCustomDate, handleCloseDialog,
-		timeType, handleCancelCustomDate
+		timeType, handleCancelCustomDate, from, to
 	} = props
-	const [to, setTo] = useState(moment())
-	const [from, setFrom] = useState(moment().subtract(7, 'days'))
-	const [time, setTime] = useState(timeType)
+	const [endDate, setEndDate] = useState(to ? moment(to) : moment())
+	const [startDate, setStartDate] = useState(from ? moment(from) : moment().subtract(7, 'days'))
+	const [time, setTime] = useState(timeType !== undefined ? timeType : 2)
+
 	return <MuiPickersUtilsProvider utils={MomentUtils}>
 		<Dialog
 			open={openCustomDate}
@@ -41,8 +42,8 @@ const CustomDateTime = (props) => {
 							label={t('filters.startDate')}
 							clearable
 							format='LLL'
-							value={from}
-							onChange={e => setFrom(e)}
+							value={startDate}
+							onChange={e => setStartDate(e)}
 							animateYearScrolling={false}
 							color='primary'
 							disableFuture
@@ -50,7 +51,7 @@ const CustomDateTime = (props) => {
 							timeIcon={<AccessTime />}
 							rightArrowIcon={<KeyboardArrowRight />}
 							leftArrowIcon={<KeyboardArrowLeft />}
-					
+
 						/>
 					</ItemG>
 					<ItemG xs={12}>
@@ -61,18 +62,18 @@ const CustomDateTime = (props) => {
 							label={t('filters.endDate')}
 							clearable
 							format='LLL'
-							value={to}
-							onChange={e => setTo(e)}
+							value={endDate}
+							onChange={e => setEndDate(e)}
 							animateYearScrolling={false}
 							dateRangeIcon={<DateRange />}
 							timeIcon={<AccessTime />}
 							color='primary'
 							rightArrowIcon={<KeyboardArrowRight />}
 							leftArrowIcon={<KeyboardArrowLeft />}
-					
+
 						/>
 					</ItemG>
-				
+
 					<ItemG style={{ marginTop: 20 }} xs={12}>
 						<Caption>{t('filters.display')}</Caption>
 					</ItemG>
@@ -116,7 +117,7 @@ const CustomDateTime = (props) => {
 				<Button onClick={handleCancelCustomDate} color='primary'>
 					{t('actions.decline')}
 				</Button>
-				<Button onClick={() => handleCloseDialog(to, from, parseInt(time, 10))} color='primary' autoFocus>
+				<Button onClick={() => handleCloseDialog(endDate, startDate, parseInt(time, 10))} color='primary' autoFocus>
 					{t('actions.apply')}
 				</Button>
 			</DialogActions>

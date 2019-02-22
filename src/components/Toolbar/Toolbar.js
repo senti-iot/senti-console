@@ -57,7 +57,7 @@ class Toolbar extends PureComponent {
 		super(props)
 
 		this.state = {
-			route: props.route ? props.route : props.hashLinks ? -1 : 0
+			route: props.route ? props.route : 0
 		}
 		this.tabsRef = React.createRef()
 
@@ -112,9 +112,6 @@ class Toolbar extends PureComponent {
 	}
 
 	handleTabsChange = (e, value) => {
-		if (this.props.hashLinks) { 
-			return null
-		}
 		this.setState({ route: value })
 	}
 
@@ -124,11 +121,11 @@ class Toolbar extends PureComponent {
 	}
 
 	render() {
-		const { classes, tabs, data, noSearch, filters, handleFilterKeyword, content, width } = this.props
+		const { classes, tabs, data, noSearch, filters, handleFilterKeyword, content, width, hashLinks } = this.props
 		return (
 			<div style={{ height: 48 }}>
 				<AppBar classes={{ root: classes.appBar }}>
-					{tabs ? <Tabs id={'tabs'} value={this.state.route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
+					{tabs ? <Tabs TabIndicatorProps={{ style: { opacity: hashLinks ? 0 : 1 } }} id={'tabs'} value={this.state.route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 						{tabs ? tabs.map((t, i) => {
 							return <Tab title={t.title}
 								component={(props) => <Link {...props} scroll={this.handleScroll} style={{ color: '#fff' }} />}

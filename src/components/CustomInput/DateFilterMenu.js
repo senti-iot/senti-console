@@ -89,15 +89,16 @@ class DateFilterMenu extends Component {
 			this.props.handleSetHeatmapDate(id, to, from, defaultT)
 		}
 		else { 
+			console.log()
 			this.props.handleSetDate(id, to, from, defaultT, period ? period.id : -1)
 		}
 
 	}
 
 	handleCloseDialog = (to, from, timeType) => {
-		const { period } = this.props
+		// const { period } = this.props
 		this.setState({ openCustomDate: false, actionAnchor: null })
-		this.handleSetDate(6, to, from, timeType, period.id)
+		this.handleSetDate(6, to, from, timeType)
 	}
 	/**
 	 * Menu Handling, close the menu and set the date or open Custom Date
@@ -127,9 +128,9 @@ class DateFilterMenu extends Component {
 		return openCustomDate ? <CustomDateTime
 			openCustomDate={openCustomDate}
 			handleCloseDialog={this.handleCloseDialog}//
-			to={period.to}
-			from={period.from}
-			timeType={period.timeType}
+			to={period ? period.to : undefined}
+			from={period ? period.from : undefined}
+			timeType={period ? period.timeType : undefined}
 			handleCustomCheckBox={this.handleCustomCheckBox}//
 			handleCancelCustomDate={this.handleCancelCustomDate}//
 			t={t}
