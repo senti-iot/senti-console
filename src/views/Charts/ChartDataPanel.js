@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { InfoCard, DateFilterMenu, Dropdown, T } from 'components';
-import { withStyles, Button, IconButton } from '@material-ui/core';
+import { withStyles, Button, IconButton, Typography } from '@material-ui/core';
 import { Add, Visibility, VisibilityOff, Clear, Timeline } from 'variables/icons';
 import { connect } from 'react-redux'
 import { hideShowPeriod, resetToDefault } from 'redux/dateTime';
@@ -10,7 +10,8 @@ import withLocalization from 'components/Localization/T';
 
 const styles = theme => ({
 	icon: {
-		color: 'rgba(0, 0, 0, 0.54)',
+		
+		color: theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.54)' : '#fff',
 		marginRight: 4
 	}
 })
@@ -31,13 +32,13 @@ class ChartDataPanel extends Component {
 						{periods.length < 5 &&
 							<DateFilterMenu
 								button={mobile}
-								icon={<Fragment><Add className={classes.icon} />{!mobile ? null : t('menus.charts.addAPeriod')}</Fragment>}
+								icon={<Fragment><Add className={classes.icon} />{!mobile ? null : <Typography>{t('menus.charts.addAPeriod')}</Typography>}</Fragment>}
 								t={t}
 							/>
 						}
 
 						<Dropdown
-							icon={<Fragment><Visibility className={classes.icon} />{!mobile ? null : t('menus.charts.showHidePeriods')}</Fragment>}
+							icon={<Fragment><Visibility className={classes.icon} />{!mobile ? null : <Typography>{t('menus.charts.showHidePeriods')}</Typography>}</Fragment>}
 							button={mobile}
 							divider
 							menuItems={
@@ -48,9 +49,9 @@ class ChartDataPanel extends Component {
 								}))}
 						/>
 						{mobile ?
-							<Button onClick={this.props.resetToDefault} style={{ color: 'rgba(0, 0, 0, 0.54)' }}>
+							<Button onClick={this.props.resetToDefault}>
 								<Clear className={classes.icon} />
-								{t('menus.charts.resetToDefault')}
+								<Typography>{t('menus.charts.resetToDefault')}</Typography>
 							</Button>
 							: <IconButton onClick={this.props.resetToDefault}>
 								<Clear className={classes.icon} />
