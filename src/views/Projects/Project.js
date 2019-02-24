@@ -294,7 +294,7 @@ class Project extends Component {
 
 	setHoverID = (id) => {
 		if (id !== this.state.hoverID) {
-			this.setState({ hoverID: id }, () => console.log(id))
+			this.setState({ hoverID: id })
 		}
 
 	}
