@@ -97,9 +97,7 @@ class DeviceDetails extends Component {
 						</ItemG>
 						<ItemG xs={6} md={3} lg={3} xl={3}>
 							<Caption>{t('devices.fields.temp')}:</Caption>
-							<Info>
-								<Info>{device.temperature ? `${device.temperature}\u2103` : `-\u2103`}</Info>
-							</Info>
+							<Info>{device.temperature ? `${device.temperature}\u2103` : `-\u2103`}</Info>
 						</ItemG>
 						<ItemG container xs={6} md={3} lg={3} xl={3}>
 							{weather ? weather === '' ? <CircularProgress size={20} /> : <Fragment>
