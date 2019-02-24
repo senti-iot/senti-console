@@ -185,7 +185,7 @@ class ChartData extends PureComponent {
 	}
 
 	renderType = () => {
-		const { title, setHoverID, t, device, period, single } = this.props
+		const { title, setHoverID, t, device, period, single, hoverID } = this.props
 		const { loading } = this.state
 		if (!loading) {
 			const { roundDataSets, lineDataSets, barDataSets } = this.state
@@ -240,6 +240,7 @@ class ChartData extends PureComponent {
 							unit={this.timeTypes[period.timeType]}
 							onElementsClick={this.handleZoomOnData}
 							setHoverID={setHoverID}
+							hoverID={hoverID}
 							data={barDataSets}
 							t={t}
 						/></div> : this.renderNoData()

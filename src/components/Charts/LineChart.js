@@ -180,9 +180,29 @@ class LineChart extends PureComponent {
 
 		})
 	}
-
+	updateHover = () => { 
+		const { hoverID } = this.props
+		let dId = this.chart.chartInstance.data.datasets.findIndex(d => d.id === hoverID)
+		// let dId = 0
+		if (dId > -1) {
+			let dataset = this.chart.chartInstance.data.datasets[dId]
+			dataset.borderWidth = 7
+		}
+		else { 
+			this.chart.chartInstance.data.datasets.forEach(d => {
+				d.borderWidth = 3
+			})
+		}
+		this.setState({ updateHover: false })
+		this.chart.chartInstance.update()
+	}
 	componentDidUpdate = (prevProps) => {
-
+		if (prevProps.hoverID !== this.props.hoverID) { 
+			this.setState({ updateHover: true })
+		}
+		if (this.state.updateHover) { 
+			this.updateHover()
+		}
 		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID || prevProps.chartYAxis !== this.props.chartYAxis) {
 			this.setXAxis()
 		}
@@ -418,6 +438,7 @@ class LineChart extends PureComponent {
 					<div style={{ display: 'block', height: 300, maxHeight: 300, width: '100%' }}>
 
 						<ChartComponent
+							// redraw={this.state.updateHover}
 							type={'multicolorLine'}
 							data={this.props.data}
 							ref={r => this.chart = r}

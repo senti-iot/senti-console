@@ -367,7 +367,7 @@ class Project extends Component {
 		return 6
 	}
 	render() {
-		const { project, loading, openAssignDC } = this.state
+		const { project, loading, openAssignDC, hoverID } = this.state
 		const { t, classes } = this.props
 		const rp = { history: this.props.history, match: this.props.match }
 		return (
@@ -404,6 +404,7 @@ class Project extends Component {
 									getData={this.handleSwitchDayHourSummary}
 									setHoverID={this.setHoverID}
 									project={project}
+									hoverID={hoverID}
 									{...rp}
 									t={this.props.t}
 								/>
