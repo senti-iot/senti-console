@@ -89,7 +89,6 @@ class DateFilterMenu extends Component {
 			this.props.handleSetHeatmapDate(id, to, from, defaultT)
 		}
 		else { 
-			console.log()
 			this.props.handleSetDate(id, to, from, defaultT, period ? period.id : -1)
 		}
 

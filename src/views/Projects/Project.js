@@ -8,7 +8,7 @@ import { ProjectContact } from './ProjectCards/ProjectContact'
 import AssignDCs from 'components/AssignComponents/AssignDCs';
 import { colors } from 'variables/colors';
 import deviceStyles from 'assets/jss/views/deviceStyles';
-import { getWifiDaily, getWifiMinutely, getWifiHourly, setMinutelyData, setHourlyData, setDailyData, setSummaryData, getWifiSummary } from 'components/Charts/DataModel';
+import { getWifiDaily, getWifiMinutely, getWifiHourly, getWifiSummary } from 'components/Charts/DataModel';
 import moment from 'moment'
 import Toolbar from 'components/Toolbar/Toolbar';
 import { Timeline, Map, DataUsage, Person, LibraryBooks } from 'variables/icons';
@@ -294,36 +294,9 @@ class Project extends Component {
 
 	setHoverID = (id) => {
 		if (id !== this.state.hoverID) {
-			this.setState({ hoverID: id }, () => this.hoverGrow())
+			this.setState({ hoverID: id })
 		}
 
-	}
-	hoverGrow = () => {
-		const { dataArr, hoverID } = this.state
-		const { timeType, to, from } = this.props
-		if (dataArr)
-			if (dataArr.findIndex(dc => dc.id === hoverID) !== -1 || hoverID === 0) {
-				let newState = {}
-				switch (timeType) {
-					case 0:
-						newState = setMinutelyData(dataArr, from, to, hoverID)
-						break;
-					case 1:
-						newState = setHourlyData(dataArr, from, to, hoverID)
-						break
-					case 2:
-						newState = setDailyData(dataArr, from, to, hoverID)
-						break
-					case 3:
-						newState = setSummaryData(dataArr, from, to, hoverID)
-						break
-					default:
-						break;
-				}
-				this.setState({
-					...newState
-				})
-			}
 	}
 	renderDeleteDialog = () => {
 		const { openDelete } = this.state
@@ -367,7 +340,7 @@ class Project extends Component {
 		return 6
 	}
 	render() {
-		const { project, loading, openAssignDC } = this.state
+		const { project, loading, openAssignDC, hoverID } = this.state
 		const { t, classes } = this.props
 		const rp = { history: this.props.history, match: this.props.match }
 		return (
@@ -404,6 +377,7 @@ class Project extends Component {
 									getData={this.handleSwitchDayHourSummary}
 									setHoverID={this.setHoverID}
 									project={project}
+									hoverID={hoverID}
 									{...rp}
 									t={this.props.t}
 								/>

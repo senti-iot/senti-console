@@ -122,7 +122,6 @@ class Devices extends Component {
 			path: `/device/${device.id}`
 		}
 		let isFavorite = isFav(favObj)
-		console.log(accessLevel)
 		return [
 			{ dontShow: !accessLevel.senticloud.editdevice, label: t('menus.edit'), func: this.handleDeviceEdit, single: true, icon: Edit },
 			{ dontShow: !accessLevel.senticloud.assigndevicetodatacollection, label: t('menus.assign.deviceToCollection'), func: this.handleOpenAssignCollection, single: true, icon: DataUsage },

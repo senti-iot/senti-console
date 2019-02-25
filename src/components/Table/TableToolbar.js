@@ -36,7 +36,6 @@ let selectedRender = props => {
 				PaperProps={{ style: { boxShadow: boxShadow } }}
 			>
 				{props.options().map((option, i) => {
-					console.log(option)
 					if (option.dontShow)
 						return null
 					if (option.single)

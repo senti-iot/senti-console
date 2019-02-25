@@ -1,4 +1,4 @@
-import { datesToArr, hoursToArr, minutesToArray, isWeekend, weekendColors } from 'variables/functions';
+import { datesToArr, hoursToArr, minutesToArray, isWeekend, weekendColors, handleRequestSort } from 'variables/functions';
 import { teal } from '@material-ui/core/colors'
 import moment from 'moment'
 import { colors } from 'variables/colors';
@@ -247,6 +247,7 @@ export const getWifiDaily = async (type, objArr, from, to, hoverId, raw, simple)
 			newArr.push(d)
 		return newArr
 	}, [])
+	dataArr = handleRequestSort('name', 'asc', dataArr)
 	if (simple)
 		return dataArr
 	let newState = setDailyData(dataArr, from, to, hoverId)
@@ -348,6 +349,7 @@ export const getWifiHourly = async (type, objArr, from, to, hoverId, raw, simple
 			newArr.push(d)
 		return newArr
 	}, [])
+	dataArr = handleRequestSort('name', 'asc', dataArr)
 	if (simple)
 		return dataArr
 	let newState = setHourlyData(dataArr, from, to, hoverId)
@@ -443,6 +445,7 @@ export const getWifiMinutely = async (type, objArr, from, to, hoverId, raw, simp
 			newArr.push(d)
 		return newArr
 	}, [])
+	dataArr = handleRequestSort('name', 'asc', dataArr)
 	if (simple)
 		return dataArr
 	let newState = setMinutelyData(dataArr, from, to, hoverId)
