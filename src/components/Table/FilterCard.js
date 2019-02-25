@@ -83,12 +83,12 @@ class FilterCard extends Component {
 			}
 			this.setState({
 				diff: {
-					value: 0,
+					value: type === 'diff' ? obj ? obj.value !== undefined || null ? obj.value : null : null : null,
 					icon: type === 'diff' ? obj ? obj.icon ? obj.icon : null : null : null, 
 					label: type === 'diff' ? obj ? obj.label ? obj.label : null : null : null
 				},
 				dropdown: {
-					value: 0,
+					value: type === 'dropDown' ? obj ? obj.value !== undefined || null ? obj.value : null : null : null,
 					icon: type === 'dropDown' ? obj ? obj.icon ? obj.icon : null : null : null,
 					label: type === 'dropDown' ? obj ? obj.label ? obj.label : null : null : null
 				}
@@ -113,8 +113,10 @@ class FilterCard extends Component {
 					})
 					break;
 				case 'date':
+					console.log(value)
 					this.setState({
-						date: moment(value, 'lll')
+						date: moment(value.date, 'lll'),
+						after: value.after
 					})
 					break;
 				case 'string':
@@ -250,8 +252,9 @@ class FilterCard extends Component {
 								id={'date'}
 								autoOk
 								clearable
+								disableFuture
 								ampm={false}
-								format='LL'
+								format='LLL'
 								value={date}
 								autoFocus
 								onChange={val => this.handleCustomDate(val, 'date')}

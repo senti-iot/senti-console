@@ -81,7 +81,7 @@ class FilterToolbar extends Component {
 		let allChips = chips[reduxKey]
 		let editChip = allChips[allChips.findIndex(c => c.id === chip.id)]
 		let editFilter = filters[filters.findIndex(f => {
-			return f.key === editChip.key
+			return f.key === editChip.key && f.type === editChip.type
 		})]
 		this.setState({ editFilter: editFilter, editChip }, () => { this.props.disableEH()})
 	}
