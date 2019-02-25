@@ -17,9 +17,9 @@ const ExpansionPanelDetails = withStyles(theme => ({
 	},
 }))(MuiExpansionPanelDetails);
 
-const ExpansionPanel = withStyles({
+const ExpansionPanel = withStyles(theme => ({
 	root: {
-		borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
+		borderBottom: theme.palette.type === 'light' ? '1px solid rgba(0, 0, 0, 0.12)' : '1px solid rgba(255, 255, 255, 0.12)',
 		boxShadow: 'none',
 		// '&:not(:last-child)': {
 		// 	borderBottom: 0,
@@ -31,12 +31,10 @@ const ExpansionPanel = withStyles({
 	expanded: {
 		margin: 'auto',
 	},
-})(MuiExpansionPanel);
+}))(MuiExpansionPanel);
 
 const ExpansionPanelSummary = withStyles({
 	root: {
-		// backgroundColor: 'rgba(0,0,0,.03)',
-		// borderBottom: '1px solid rgba(0,0,0,.125)',
 		padding: '0px 16px',
 
 		boxShadow: 'none',
