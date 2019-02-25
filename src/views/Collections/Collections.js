@@ -59,7 +59,8 @@ class Collections extends Component {
 			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
 			{ key: 'devices[0].start', name: t('collections.fields.activeDeviceStartDate'), type: 'date' },
 			{ key: 'created', name: t('collections.fields.created'), type: 'date' },
-			{ key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() }
+			{ key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
+			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 		]
 	}
 	collectionsHeader = () => {

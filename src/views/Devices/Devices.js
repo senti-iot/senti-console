@@ -97,7 +97,8 @@ class Devices extends Component {
 			{ key: 'liveStatus', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
 			{ key: 'locationType', name: t('devices.fields.locType'), type: 'dropDown', options: this.dLocationPlace() },
 			{ key: 'lat', name: t('calibration.stepheader.calibration'), type: 'diff', options: { dropdown: this.dCalibrated(), values: { false: [0] } } },
-			{ key: 'dataCollection', name: t('devices.fields.availability'), type: 'dropDown', options: this.dAvailable() }
+			{ key: 'dataCollection', name: t('devices.fields.availability'), type: 'dropDown', options: this.dAvailable() },
+			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 		]
 	}
 	deviceHeaders = () => {

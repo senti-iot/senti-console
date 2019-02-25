@@ -154,12 +154,19 @@ class FilterCard extends Component {
 	}
 	handleButton = () => {
 		const { value, date, after, dropdown, diff } = this.state
-		const { type, handleButton, title, t, options } = this.props
+		const { type, handleButton, title, t, options, hidden } = this.props
 		if (type === 'dropDown') {
 			handleButton(`${title}: ${dropdown.label}`, dropdown.value, dropdown.icon)
 		}
 		if (type === 'string')
-			handleButton(`${title}: '${value}'`, value)
+		{
+			if (hidden) {
+				handleButton(`${value}`, value)
+			}
+			else {
+				handleButton(`${title}: '${value}'`, value)
+			}
+		}
 		if (type === 'date')
 			handleButton(`${title} ${after ? t('filters.after') : t('filters.before')}: '${dateTimeFormatter(date)}'`, { date, after })
 		if (type === 'diff')

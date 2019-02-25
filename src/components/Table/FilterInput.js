@@ -209,8 +209,8 @@ class FilterInput extends Component {
 				this.handleDoubleClick({ id: focusedChip })
 			}
 			else {
-				if (event.target.value)
-				{	let result = this.handleAddChip({ key: "", value: event.target.value })
+				if (event.target.value) {
+					let result = this.handleAddChip({ key: "", value: event.target.value })
 					if (result !== false) {
 						event.preventDefault()
 					}}
