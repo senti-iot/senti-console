@@ -1,5 +1,5 @@
 import { datesToArr, hoursToArr, minutesToArray, isWeekend, weekendColors, handleRequestSort } from 'variables/functions';
-import { teal } from '@material-ui/core/colors'
+// import { teal } from '@material-ui/core/colors'
 import moment from 'moment'
 import { colors } from 'variables/colors';
 import {
@@ -165,7 +165,7 @@ export const setSummaryData = (dataArr, from, to, hoverID) => {
 					lat: d.lat,
 					long: d.long,
 					backgroundColor: d.color,
-					borderColor: teal[500],
+					borderColor: d.color,
 					borderWidth: hoverID === d.id ? 4 : 0,
 					fill: false,
 					label: [d.name],
@@ -291,10 +291,9 @@ export const setDailyData = (dataArr, from, to, hoverID, extra) => {
 					id: d.id,
 					lat: d.lat,
 					long: d.long,
-					// backgroundColor: d.color,
 					color: d.color,
 					backgroundColor: linecolors(Object.entries(d.data), d.color, index),
-					borderColor: teal[500],
+					borderColor: d.color,
 					// borderWidth: hoverID === d.id ? 4 : 0,
 					fill: false,
 					label: [d.name],

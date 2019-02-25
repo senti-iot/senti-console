@@ -15,6 +15,7 @@ class BarChart extends PureComponent {
 		this.state = {
 			tooltip: {
 				show: false,
+				exited: true,
 				title: '',
 				top: 0,
 				left: 0,
@@ -27,7 +28,7 @@ class BarChart extends PureComponent {
 			lineOptions: {
 				categoryPercentage: 1,
 				barPercentage: 1,
-				gridLines: { offsetGridLines: false },	
+				gridLines: { offsetGridLines: false },
 				animation: {
 					duration: 500
 				},
@@ -140,7 +141,12 @@ class BarChart extends PureComponent {
 		})
 	}
 	componentDidUpdate = (prevProps) => {
-		console.log('Updated', this.props.chartYAxis, prevProps.chartYAxis)
+		if (prevProps.hoverID !== this.props.hoverID) {
+			this.setState({ updateHover: true })
+		}
+		if (this.state.updateHover) {
+			this.updateHover()
+		}
 		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID || this.props.timeType !== prevProps.timeType || prevProps.chartYAxis !== this.props.chartYAxis) {
 			this.setXAxis()
 		}
@@ -151,7 +157,22 @@ class BarChart extends PureComponent {
 			})
 		}
 	}
-
+	updateHover = () => {
+		const { hoverID } = this.props
+		let dId = this.chart.chartInstance.data.datasets.findIndex(d => d.id === hoverID)
+		// let dId = 0
+		if (dId > -1) {
+			let dataset = this.chart.chartInstance.data.datasets[dId]
+			dataset.borderWidth = 5
+		}
+		else {
+			this.chart.chartInstance.data.datasets.forEach(d => {
+				d.borderWidth = 4
+			})
+		}
+		this.setState({ updateHover: false })
+		this.chart.chartInstance.update()
+	}
 	setHours = (date) => {
 		if (this.props.unit.chart === 'day')
 			return moment(date).startOf('day').add(12, 'h')
@@ -290,7 +311,7 @@ class BarChart extends PureComponent {
 								callback: (value, index, values) => {
 									if (this.props.timeType !== 3)
 										return value.charAt(0).toUpperCase() + value.slice(1);
-									else 
+									else
 										return value
 								},
 								source: 'labels',
@@ -344,7 +365,7 @@ class BarChart extends PureComponent {
 		this.setState({
 			tooltip: {
 				...this.state.tooltip,
-				show: false, 
+				show: false,
 				showWeather: false,
 				exited: true
 			}
@@ -378,7 +399,7 @@ class BarChart extends PureComponent {
 		const { single } = this.props
 		return !single ? () => this.props.setHoverID(0) : undefined
 	}
-	
+
 	getTooltipRef = (r) => {
 		this.tooltip = r
 	}

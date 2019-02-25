@@ -21,14 +21,15 @@ const styles = theme => ({
 	gradientBar: {
 		width: 250,
 		height: 20,
-		background: "rgb(255,255,255)",
 		// eslint-disable-next-line no-dupe-keys
-		background: "-moz-linear-gradient(left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 0%, rgba(144, 202, 249, 1) 10%, rgba(66, 165, 245, 1) 20%, rgba(38, 166, 154, 1) 40%, rgba(253, 216, 53, 1) 60%, rgba(245, 124, 0, 1) 80%, rgba(211, 47, 47, 1) 100%)",
+		background: '#90caf9',
 		// eslint-disable-next-line no-dupe-keys
-		background: "-webkit - linear - gradient(left, rgba(255, 255, 255, 1) 0 %, rgba(255, 255, 255, 1) 0 %, rgba(144, 202, 249, 1) 10 %, rgba(66, 165, 245, 1) 20 %, rgba(38, 166, 154, 1) 40 %, rgba(253, 216, 53, 1) 60 %, rgba(245, 124, 0, 1) 80 %, rgba(211, 47, 47, 1) 100 %)",
+		background: '-moz-linear-gradient(left, #90caf9 0%, #42a5f5 20%, #26a69a 40%, #fdd835 60%, #f57c00 80%, #d32f2f 100%)',
 		// eslint-disable-next-line no-dupe-keys
-		background: "linear-gradient(to right, rgba(255,255,255,1) 0%,rgba(255,255,255,1) 0%,rgba(144,202,249,1) 10%,rgba(66,165,245,1) 20%,rgba(38,166,154,1) 40%,rgba(253,216,53,1) 60%,rgba(245,124,0,1) 80%,rgba(211,47,47,1) 100%)",
-		filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr="#ffffff", endColorstr="#d32f2f",GradientType=1 )'
+		background: '-webkit-linear-gradient(left, #90caf9 0%,#42a5f5 20%,#26a69a 40%,#fdd835 60%,#f57c00 80%,#d32f2f 100%)',
+		// eslint-disable-next-line no-dupe-keys
+		background: 'linear-gradient(to right, #90caf9 0%,#42a5f5 20%,#26a69a 40%,#fdd835 60%,#f57c00 80%,#d32f2f 100%)',
+		filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#90caf9\', endColorstr=\'#d32f2f\',GradientType=1 )',
 	},
 	pseudoFullscreen: {
 		position: "fixed!important",
@@ -47,7 +48,7 @@ class HeatMapLegend extends MapControl {
 		this.container = L.DomUtil.create('div', 'leaflet-control-heatbar leaflet-bar');
 	}
 	defaultValue = 25
-	setMaxValue = (half) => { 
+	setMaxValue = (half) => {
 		const { to, from, timeType } = this.props
 		let max = 0
 		switch (timeType) {
@@ -69,14 +70,14 @@ class HeatMapLegend extends MapControl {
 	componentDidMount() {
 		super.componentDidMount();
 	}
-	componentDidUpdate() { 
+	componentDidUpdate() {
 		this.leafletElement.remove()
 		this.leafletElement.addTo(this.map)
 	}
 	numberWithCommas(x) {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 	}
-	
+
 	createLeafletElement(props) {
 		const HeatMapLegend = Control.extend({
 			options: {
@@ -135,7 +136,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withLeaflet(withStyles(styles, { withTheme: true })(HeatMapLegend)))
