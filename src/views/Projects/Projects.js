@@ -244,6 +244,9 @@ class Projects extends Component {
 
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		if (property !== this.state.orderBy) {
+			order = 'asc'
+		}
 		let newData = handleRequestSort(property, order, this.state.projects)
 		this.setState({ projects: newData, order, orderBy: property })
 	}

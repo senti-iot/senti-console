@@ -32,7 +32,7 @@ class Devices extends Component {
 			openUnassign: false,
 			loading: true,
 			route: 0,
-			order: 'desc',
+			order: 'asc',
 			orderBy: 'id',
 			filters: {
 				keyword: '',
@@ -359,6 +359,9 @@ class Devices extends Component {
 
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		if (property !== this.state.orderBy) { 
+			order = 'asc'
+		}
 		let newData = handleRequestSort(property, order, this.state.devices)
 		this.setState({ devices: newData, order, orderBy: property })
 	}

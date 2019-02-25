@@ -164,6 +164,9 @@ class Users extends Component {
 	}
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		if (property !== this.state.orderBy) {
+			order = 'asc'
+		}
 		let newData = handleRequestSort(property, order, this.props.users)
 		this.setState({ users: newData, order, orderBy: property })
 	}

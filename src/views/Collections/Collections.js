@@ -212,10 +212,12 @@ class Collections extends Component {
 	}
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		if (property !== this.state.orderBy) {
+			order = 'asc'
+		}
 		let newData = handleRequestSort(property, order, this.state.collections)
 		this.setState({ collections: newData, order, orderBy: property })
 	}
-
 	handleCollectionClick = id => e => {
 		e.stopPropagation()
 		this.props.history.push('/collection/' + id)

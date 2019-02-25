@@ -144,9 +144,13 @@ class Favorites extends Component {
 
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		if (property !== this.state.orderBy) {
+			order = 'asc'
+		}
 		handleRequestSort(property, order, this.props.favorites)
 		this.setState({ order, orderBy: property })
 	}
+
 	handleFilterKeyword = (value) => {
 		this.setState({
 			filters: {

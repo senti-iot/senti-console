@@ -76,6 +76,9 @@ class Device extends Component {
 	//#region Data Table func
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		if (property !== this.state.orderBy) {
+			order = 'asc'
+		}
 		let newData = handleRequestSort(property, order, this.state.devices)
 		this.setState({ devices: newData, order, orderBy: property })
 	}
