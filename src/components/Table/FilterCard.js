@@ -113,7 +113,6 @@ class FilterCard extends Component {
 					})
 					break;
 				case 'date':
-					console.log(value)
 					this.setState({
 						date: moment(value.date, 'lll'),
 						after: value.after
@@ -223,6 +222,7 @@ class FilterCard extends Component {
 		switch (this.props.type) {
 			case 'diff':
 				return <DSelect
+					fullWidth
 					label={title}
 					value={diff.value}
 					onChange={this.handleChangeDiff}
@@ -232,6 +232,7 @@ class FilterCard extends Component {
 					} />
 			case 'dropDown':
 				return <DSelect
+					fullWidth
 					label={title}
 					value={dropdown.value}
 					onKeyDown={this.handleKeyDown}
@@ -251,6 +252,7 @@ class FilterCard extends Component {
 							<DateTimePicker
 								id={'date'}
 								autoOk
+								fullWidth
 								clearable
 								disableFuture
 								ampm={false}
@@ -271,7 +273,7 @@ class FilterCard extends Component {
 					</ItemG>
 				</Fragment>
 			case 'string':
-				return <TextF id={'filter-text'} autoFocus onKeyDown={this.handleKeyDown} label={t('filters.contains')} value={value} handleChange={e => this.handleInput(e.target.value)} />
+				return <TextF fullWidth id={'filter-text'} autoFocus onKeyDown={this.handleKeyDown} label={t('filters.contains')} value={value} handleChange={e => this.handleInput(e.target.value)} />
 			default:
 				break;
 		}
