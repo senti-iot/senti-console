@@ -180,10 +180,12 @@ class Orgs extends Component {
 	}
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		if (property !== this.state.orderBy) {
+			order = 'asc'
+		}
 		let newData = handleRequestSort(property, order, this.props.orgs)
 		this.setState({ orgs: newData, order, orderBy: property })
 	}
-
 	filterItems = (data) => {
 		const rFilters = this.props.filters
 		return customFilterItems(data, rFilters)

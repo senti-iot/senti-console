@@ -68,7 +68,8 @@ class Favorites extends Component {
 		const { t } = this.props
 		return [
 			{ key: 'name', name: t('favorites.fields.name'), type: 'string' },
-			{ key: 'type', name: t('favorites.fields.type'), type: 'dropDown', options: this.dTypes() }
+			{ key: 'type', name: t('favorites.fields.type'), type: 'dropDown', options: this.dTypes() },
+			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 		]
 	}
 	addFilter = (f) => {
@@ -143,9 +144,13 @@ class Favorites extends Component {
 
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		if (property !== this.state.orderBy) {
+			order = 'asc'
+		}
 		handleRequestSort(property, order, this.props.favorites)
 		this.setState({ order, orderBy: property })
 	}
+
 	handleFilterKeyword = (value) => {
 		this.setState({
 			filters: {

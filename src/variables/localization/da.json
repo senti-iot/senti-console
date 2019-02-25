@@ -430,7 +430,7 @@
 			"deviceToOrg": "Tilknyt enhed til organisation"
 		},
 		"charts": {
-			"addAPeriod":"Tilføj en periode",
+			"addAPeriod": "Tilføj en periode",
 			"resetToDefault": "Nulstil til standard",
 			"showHidePeriods": "Vis / Skjul en periode",
 			"deleteThisPeriod": "Slet denne periode",
@@ -577,6 +577,8 @@
 			"time": "På tid"
 		},
 		"chart": {
+			"period": "Periode",
+			"periods": "Perioder",
 			"YAxis": {
 				"logarithmic": "Logaritmisk skala",
 				"linear": "Lineær skala"
@@ -636,6 +638,7 @@
 			"deviceToOrg": "Enhed %{device} tilknyttet til organisation %{org}",
 			"projectToOrg": "Project %{project} tilknyttet til organisation %{org}"
 		},
+		"assignFailed": "Tilknytning fejlede!",
 		"collectionCreated": "Datasamling er oppretet!",
 		"collectionDeleted": "Datasamling er slettet!",
 		"collectionUpdated": "Datasamling er opdateret!",

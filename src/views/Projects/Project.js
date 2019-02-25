@@ -179,7 +179,7 @@ class Project extends Component {
 	}
 
 	handleSwitchDayHourSummary = async (p) => {
-		let diff = moment.duration(p.to.diff(p.from)).days()
+		let diff = moment.duration(moment(p.to).diff(moment(p.from))).days()
 		switch (p.menuId) {
 			case 0:// Today
 			case 1:// Yesterday

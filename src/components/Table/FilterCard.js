@@ -60,12 +60,12 @@ class FilterCard extends Component {
 			date: moment(),
 			after: false,
 			diff: {
-				value: 0,
+				value: -1,
 				icon: '',
 				label: ''
 			},
 			dropdown: {
-				value: 0,
+				value: -1,
 				icon: '',
 				label: ''
 			}
@@ -78,17 +78,17 @@ class FilterCard extends Component {
 			if (type === 'diff') {
 				obj = options.dropdown[options.dropdown.findIndex(d => d.value === 0 || d.value === false)]
 			}
-			if (type === 'dropdown') { 
+			if (type === 'dropDown') { 
 				obj = options[options.findIndex(d => d.value === 0 || d.value === false)]
 			}
 			this.setState({
 				diff: {
-					value: 0,
+					value: type === 'diff' ? obj ? obj.value !== undefined || null ? obj.value : null : null : null,
 					icon: type === 'diff' ? obj ? obj.icon ? obj.icon : null : null : null, 
 					label: type === 'diff' ? obj ? obj.label ? obj.label : null : null : null
 				},
 				dropdown: {
-					value: 0,
+					value: type === 'dropDown' ? obj ? obj.value !== undefined || null ? obj.value : null : null : null,
 					icon: type === 'dropDown' ? obj ? obj.icon ? obj.icon : null : null : null,
 					label: type === 'dropDown' ? obj ? obj.label ? obj.label : null : null : null
 				}
@@ -114,7 +114,8 @@ class FilterCard extends Component {
 					break;
 				case 'date':
 					this.setState({
-						date: moment(value)
+						date: moment(value.date, 'lll'),
+						after: value.after
 					})
 					break;
 				case 'string':
@@ -154,12 +155,19 @@ class FilterCard extends Component {
 	}
 	handleButton = () => {
 		const { value, date, after, dropdown, diff } = this.state
-		const { type, handleButton, title, t, options } = this.props
+		const { type, handleButton, title, t, options, hidden } = this.props
 		if (type === 'dropDown') {
 			handleButton(`${title}: ${dropdown.label}`, dropdown.value, dropdown.icon)
 		}
 		if (type === 'string')
-			handleButton(`${title}: '${value}'`, value)
+		{
+			if (hidden) {
+				handleButton(`${value}`, value)
+			}
+			else {
+				handleButton(`${title}: '${value}'`, value)
+			}
+		}
 		if (type === 'date')
 			handleButton(`${title} ${after ? t('filters.after') : t('filters.before')}: '${dateTimeFormatter(date)}'`, { date, after })
 		if (type === 'diff')
@@ -214,6 +222,7 @@ class FilterCard extends Component {
 		switch (this.props.type) {
 			case 'diff':
 				return <DSelect
+					fullWidth
 					label={title}
 					value={diff.value}
 					onChange={this.handleChangeDiff}
@@ -223,6 +232,7 @@ class FilterCard extends Component {
 					} />
 			case 'dropDown':
 				return <DSelect
+					fullWidth
 					label={title}
 					value={dropdown.value}
 					onKeyDown={this.handleKeyDown}
@@ -242,9 +252,11 @@ class FilterCard extends Component {
 							<DateTimePicker
 								id={'date'}
 								autoOk
+								fullWidth
 								clearable
+								disableFuture
 								ampm={false}
-								format='LL'
+								format='LLL'
 								value={date}
 								autoFocus
 								onChange={val => this.handleCustomDate(val, 'date')}
@@ -261,7 +273,7 @@ class FilterCard extends Component {
 					</ItemG>
 				</Fragment>
 			case 'string':
-				return <TextF id={'filter-text'} autoFocus onKeyDown={this.handleKeyDown} label={t('filters.contains')} value={value} handleChange={e => this.handleInput(e.target.value)} />
+				return <TextF fullWidth id={'filter-text'} autoFocus onKeyDown={this.handleKeyDown} label={t('filters.contains')} value={value} handleChange={e => this.handleInput(e.target.value)} />
 			default:
 				break;
 		}

@@ -76,6 +76,9 @@ class Device extends Component {
 	//#region Data Table func
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		if (property !== this.state.orderBy) {
+			order = 'asc'
+		}
 		let newData = handleRequestSort(property, order, this.state.devices)
 		this.setState({ devices: newData, order, orderBy: property })
 	}
@@ -194,7 +197,7 @@ class Device extends Component {
 
 	handleSwitchDayHourSummary = async (p) => {
 		// const { to, from, id } = this.props
-		let diff = moment.duration(p.to.diff(p.from)).days()
+		let diff = moment.duration(moment(p.to).diff(moment(p.from))).days()
 		// this.getHeatMapData()
 		switch (p.menuId) {
 			case 0:// Today
@@ -292,7 +295,7 @@ class Device extends Component {
 				s('snackbars.assign.deviceToCollection', { device: `${name}(${id})`, collection: '' /* `${device.dataCollection.name}(${device.dataCollection.id})` */ })
 				break
 			case 3:
-				s('snackbars.failedUnassign')
+				s('snackbars.assignFailed')
 				break
 			case 4:
 				s('snackbars.assign.deviceToOrg', { device: `${name}(${id})`, org: `${device.org.name}` })

@@ -8,6 +8,7 @@ import { DateRange } from 'variables/icons';
 import teal from '@material-ui/core/colors/teal'
 import { connect } from 'react-redux'
 import { changeDate, changeHeatMapDate } from 'redux/dateTime';
+import { changeSettingsDate } from 'redux/settings';
 
 const styles = theme => ({
 	selected: {
@@ -85,12 +86,13 @@ class DateFilterMenu extends Component {
 			default:
 				break;
 		}
+		if (this.props.settings) {
+			return this.props.handleSetSettingsPeriod(id, to, from, defaultT, period ? period.id : -1)
+		}
 		if (this.props.heatmap) {
-			this.props.handleSetHeatmapDate(id, to, from, defaultT)
+			return this.props.handleSetHeatmapDate(id, to, from, defaultT)
 		}
-		else { 
-			this.props.handleSetDate(id, to, from, defaultT, period ? period.id : -1)
-		}
+		this.props.handleSetDate(id, to, from, defaultT, period ? period.id : -1)
 
 	}
 
@@ -145,7 +147,7 @@ class DateFilterMenu extends Component {
 	isSelected = (value) => value === this.props.period ? this.props.period.menuId ? true : false : false
 
 	render() {
-		const { period, t, classes, icon, button } = this.props
+		const { period, t, classes, icon, button, settings } = this.props
 		const { actionAnchor } = this.state
 		let displayTo = period ? dateTimeFormatter(period.to) : ""
 		let displayFrom = period ? dateTimeFormatter(period.from) : ""
@@ -181,7 +183,7 @@ class DateFilterMenu extends Component {
 						}
 					}}>
 					<ItemG container direction={'column'}>
-						{period && <Fragment>
+						{!settings && period && <Fragment>
 							<ItemGrid>
 								<Info>{this.options[this.options.findIndex(d => d.id === period.menuId ? true : false)].label}</Info>
 								<Info>{`${displayFrom} - ${displayTo}`}</Info>
@@ -218,6 +220,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	handleSetDate: (id, to, from, timeType, pId) => dispatch(changeDate(id, to, from, timeType, pId)),
+	handleSetSettingsPeriod: (id, to, from, timeType, pId) => dispatch(changeSettingsDate(id, to, from, timeType, pId)),
 	handleSetHeatmapDate: (id, to, from, timeType) => dispatch(changeHeatMapDate(id, to, from, timeType))
 })
 

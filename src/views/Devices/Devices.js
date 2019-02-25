@@ -32,7 +32,7 @@ class Devices extends Component {
 			openUnassign: false,
 			loading: true,
 			route: 0,
-			order: 'desc',
+			order: 'asc',
 			orderBy: 'id',
 			filters: {
 				keyword: '',
@@ -97,7 +97,8 @@ class Devices extends Component {
 			{ key: 'liveStatus', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
 			{ key: 'locationType', name: t('devices.fields.locType'), type: 'dropDown', options: this.dLocationPlace() },
 			{ key: 'lat', name: t('calibration.stepheader.calibration'), type: 'diff', options: { dropdown: this.dCalibrated(), values: { false: [0] } } },
-			{ key: 'dataCollection', name: t('devices.fields.availability'), type: 'dropDown', options: this.dAvailable() }
+			{ key: 'dataCollection', name: t('devices.fields.availability'), type: 'dropDown', options: this.dAvailable() },
+			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 		]
 	}
 	deviceHeaders = () => {
@@ -358,6 +359,9 @@ class Devices extends Component {
 
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		if (property !== this.state.orderBy) { 
+			order = 'asc'
+		}
 		let newData = handleRequestSort(property, order, this.state.devices)
 		this.setState({ devices: newData, order, orderBy: property })
 	}

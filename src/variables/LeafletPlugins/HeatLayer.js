@@ -35,8 +35,8 @@ class HeatLayer extends MapLayer {
 		minOpacity: .3,
 		blur: 0,
 		gradient: {
-			'0': 'white',
-			'.1': blue[200],
+			'0': blue[200],
+			'.1': blue[300],
 			'.2': blue[400],
 			'.4': teal[400],
 			'.6': yellow[600],

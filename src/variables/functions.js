@@ -234,10 +234,10 @@ const sortFunc = (a, b, orderBy, way) => {
 		}
 	else {
 		if (way) {
-			return newB.toString().toLowerCase() <= newA.toString().toLowerCase() ? -1 : 1
+			return newA.toString().toLowerCase() < newB.toString().toLowerCase() ? -1 : 1
 		}
 		else {
-			return newA.toString().toLowerCase() < newB.toString().toLowerCase() ? -1 : 1
+			return newB.toString().toLowerCase() <= newA.toString().toLowerCase() ? -1 : 1
 		}
 	} 
 }
@@ -253,8 +253,8 @@ export const handleRequestSort = (property, way, data) => {
 	let newData = []
 	newData =
 		order === 'desc'
-			? data.sort((a, b) => sortFunc(a, b, orderBy, true))
-			: data.sort((a, b) => sortFunc(a, b, orderBy, false))
+			? data.sort((a, b) => sortFunc(a, b, orderBy, false))
+			: data.sort((a, b) => sortFunc(a, b, orderBy, true))
 	return newData
 }
 /**

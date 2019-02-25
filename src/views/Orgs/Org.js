@@ -174,7 +174,9 @@ class Org extends Component {
 							t={t}
 							org={org}
 							language={language}
-							accessLevel={this.props.accessLevel} />
+							accessLevel={this.props.accessLevel}
+							devices={devices ? devices.length : 0}
+						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'users'}>
 						{!loadingUsers ? <OrgUsers

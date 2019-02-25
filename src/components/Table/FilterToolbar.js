@@ -3,7 +3,7 @@ import FilterInput from 'components/Table/FilterInput'
 import FilterCard from 'components/Table/FilterCard'
 import { connect } from 'react-redux'
 import { MenuItem, MenuList, ClickAwayListener, Paper, Popper, Grow } from '@material-ui/core'
-import { addFilter, editFilter, removeFilter } from 'redux/appState'
+import { addFilter, editFilter, removeFilter, changeEH } from 'redux/appState'
 
 class FilterToolbar extends Component {
 	constructor(props) {
@@ -81,9 +81,9 @@ class FilterToolbar extends Component {
 		let allChips = chips[reduxKey]
 		let editChip = allChips[allChips.findIndex(c => c.id === chip.id)]
 		let editFilter = filters[filters.findIndex(f => {
-			return f.key === editChip.key
+			return f.key === editChip.key && f.type === editChip.type
 		})]
-		this.setState({ editFilter: editFilter, editChip })
+		this.setState({ editFilter: editFilter, editChip }, () => { this.props.disableEH()})
 	}
 	handleMenuNav = e => {
 		if (this.state.actionAnchor !== null) {
@@ -126,13 +126,12 @@ class FilterToolbar extends Component {
 		if (this.onBeforeAdd(value)) {
 			this.setState({ [name]: false, openFilterCard: false })
 			addFilter({ value, key, type: type ? type : null, icon, displayValue: displayValue }, reduxKey)
-
 		}
 	}
 	handleEdit = (displayValue, value, key, type, icon, id) => {
 		const { editFilter, reduxKey } = this.props
 		editFilter({ id, value, key, type: type ? type : null, icon, displayValue: displayValue }, reduxKey)
-		this.setState({ editFilter: false, editChip: null })
+		this.setState({ editFilter: false, editChip: null }, () => { this.props.enableEH()})
 	}
 	handleDelete = (deletedChip) => {
 		const { removeFilter, reduxKey } = this.props
@@ -228,7 +227,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 	addFilter: (filter, type) => dispatch(addFilter(filter, type)),
 	editFilter: (filter, type) => dispatch(editFilter(filter, type)),
-	removeFilter: (filter, type) => dispatch(removeFilter(filter, type))
+	removeFilter: (filter, type) => dispatch(removeFilter(filter, type)),
+	disableEH: () => dispatch(changeEH(false)),
+	enableEH: () => dispatch(changeEH(true))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterToolbar)

@@ -103,6 +103,7 @@ const styles = (theme) => {
 			}
 		},
 		chip: {
+			color: theme.palette.type === 'light' ? 'inherit' : '#fff',
 			margin: '0 8px 8px 0',
 			float: 'left',
 			'&:focused': {
@@ -209,8 +210,8 @@ class FilterInput extends Component {
 				this.handleDoubleClick({ id: focusedChip })
 			}
 			else {
-				if (event.target.value)
-				{	let result = this.handleAddChip({ key: "", value: event.target.value })
+				if (event.target.value) {
+					let result = this.handleAddChip({ key: "", value: event.target.value })
 					if (result !== false) {
 						event.preventDefault()
 					}}
@@ -588,11 +589,10 @@ export default withStyles(styles)(FilterInput)
 
 export const defaultChipRenderer = ({ value, handleDoubleClick, text, isFocused, isDisabled, handleClick, handleDelete, className, icon }, key) => (
 	<Chip
-		color={'default'}
 		key={key}
 		className={className}
 		icon={icon}
-		style={{ pointerEvents: isDisabled ? 'none' : undefined, background: isFocused ? teal[500] : '', color: isFocused ? '#fff' : "inherit" }}
+		style={{ pointerEvents: isDisabled ? 'none' : undefined, background: isFocused ? teal[500] : '', color: isFocused ? '#fff' : undefined }}
 		onClick={handleClick}
 		onDoubleClick={handleDoubleClick}
 		onDelete={handleDelete}

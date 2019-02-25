@@ -1,10 +1,86 @@
-import React, { Component } from 'react'
-import { BarChart, PieChartRounded, ShowChart, DonutLargeRounded } from 'variables/icons'
-import { InfoCard, DSelect, ItemGrid } from 'components';
-import { ListItemText, ListItem, List, Grid, withStyles } from '@material-ui/core';
+import React, { Component, Fragment } from 'react'
+import { BarChart, PieChartRounded, ShowChart, DonutLargeRounded, Add, Clear, Edit, ExpandMore } from 'variables/icons'
+import { InfoCard, DSelect, ItemGrid, DateFilterMenu, ItemG, T, Caption, Info } from 'components';
+import { ListItemText, ListItem, List, Grid, withStyles, Typography, Button, ExpansionPanelActions, Checkbox } from '@material-ui/core';
+import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
+import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
+import { dateTimeFormatter } from 'variables/functions';
+// import { dateTimeFormatter } from 'variables/functions';
 
+const ExpansionPanelDetails = withStyles(theme => ({
+	root: {
+		// padding: theme.spacing.unit * 2,
+		padding: '8px 24px 0px 24px',
+		backgroundColor: '#42424200'
+	},
+}))(MuiExpansionPanelDetails);
+
+const ExpansionPanel = withStyles(theme => ({
+	root: {
+		borderBottom: theme.palette.type === 'light' ? '1px solid rgba(0, 0, 0, 0.12)' : '1px solid rgba(255, 255, 255, 0.12)',
+		boxShadow: 'none',
+		// '&:not(:last-child)': {
+		// 	borderBottom: 0,
+		// },
+		'&:before': {
+			display: 'none',
+		},
+	},
+	expanded: {
+		margin: 'auto',
+	},
+}))(MuiExpansionPanel);
+
+const ExpansionPanelSummary = withStyles({
+	root: {
+		padding: '0px 16px',
+
+		boxShadow: 'none',
+		marginBottom: -1,
+		minHeight: 56,
+		'&$expanded': {
+			minHeight: 56,
+		},
+	},
+	content: {
+		'&$expanded': {
+			margin: '12px 0',
+		},
+	},
+	expanded: {},
+})(props => <MuiExpansionPanelSummary {...props} />);
+
+ExpansionPanelSummary.muiName = 'ExpansionPanelSummary';
 class ChartSettings extends Component {
+	constructor(props) {
+	  super(props)
+	
+	  this.state = {
+		 expanded: false
+	  }
+	}
+	handleChange = panel => (event, expanded) => {
+		this.setState({
+			expanded: expanded ? panel : false,
+		});
+	};
+	timeTypes = [
+		{ id: 0, label: this.props.t('filters.dateOptions.minutely') },
+		{ id: 1, label: this.props.t('filters.dateOptions.hourly') },
+		{ id: 2, label: this.props.t('filters.dateOptions.daily') },
+		{ id: 3, label: this.props.t('filters.dateOptions.summary') },
+	]
+	options = [
+		{ id: 0, label: this.props.t('filters.dateOptions.today') },
+		{ id: 1, label: this.props.t('filters.dateOptions.yesterday') },
+		{ id: 2, label: this.props.t('filters.dateOptions.thisWeek') },
+		{ id: 3, label: this.props.t('filters.dateOptions.7days') },
+		{ id: 4, label: this.props.t('filters.dateOptions.30days') },
+		{ id: 5, label: this.props.t('filters.dateOptions.90days') },
+		{ id: 6, label: this.props.t('filters.dateOptions.custom') },
+	]
 	chartTypes = () => {
 		const { t } = this.props
 		return [
@@ -25,7 +101,8 @@ class ChartSettings extends Component {
 	changeChartType = e => this.props.changeChartType(e.target.value)
 	changeChartDataType = e => this.props.changeChartDataType(e.target.value)
 	render() {
-		const { t, classes, chartType, chartDataType } = this.props
+		const { t, classes, chartType, periods, updateChartPeriod, removeChartPeriod } = this.props
+		const { expanded } = this.state;
 		return (
 			<InfoCard
 				noExpand
@@ -40,12 +117,76 @@ class ChartSettings extends Component {
 									<DSelect menuItems={this.chartTypes()} value={chartType} onChange={this.changeChartType} />
 								</ItemGrid>
 							</ListItem>
-							<ListItem >
+							{/* <ListItem divider>
 								<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 									<ListItemText>{t('settings.chart.rawData')}</ListItemText>
 									<DSelect menuItems={this.chartDataTypes()} value={chartDataType} onChange={this.changeChartDataType} />
 								</ItemGrid>
+							</ListItem> */}
+							<ListItem divider>
+								<ItemGrid xs={12} container zeroMargin noPadding alignItems={'center'}>
+									<ListItemText>
+										{t('settings.chart.periods')}
+									</ListItemText>
+									<DateFilterMenu
+										button
+										settings
+										icon={<Fragment><Add className={classes.icon} /><Typography>{t('menus.charts.addAPeriod')}</Typography></Fragment>}
+										t={t}
+									/>
+								</ItemGrid>
 							</ListItem>
+							{periods.map((p, i) => {
+								return <ExpansionPanel
+									key={i}
+									square
+									expanded={expanded === p.id}
+									onChange={this.handleChange(p.id)}
+								>
+									<ExpansionPanelSummary expandIcon={<ExpandMore className={classes.icon} />}>
+										<Typography>{`${t('settings.chart.period')}: ${this.options[p.menuId].label}`}</Typography>
+									</ExpansionPanelSummary>
+									<ExpansionPanelDetails>
+										<ItemG container spacing={8}>
+											<ItemG>
+												<Caption>{t('filters.startDate')}</Caption>
+												<Info>{dateTimeFormatter(p.from)}</Info>
+											</ItemG>
+											<ItemG>
+												<Caption>{t('filters.endDate')}</Caption>
+												<Info>{dateTimeFormatter(p.to)}</Info>
+											</ItemG>
+											<ItemG>
+												<Caption>{t('filters.display')}</Caption>
+												<Info>{this.timeTypes[p.timeType].label}</Info>
+											</ItemG>
+											<ItemG xs={12} container alignItems={'center'}>
+												<Caption>{t('collections.rawData')}</Caption>
+												<Checkbox
+													style={{ padding: 8 }}
+													checked={p.raw}
+													onClick={() => updateChartPeriod(p)}
+												/>
+											</ItemG>
+										</ItemG>
+									</ExpansionPanelDetails>
+									<ExpansionPanelActions style={{ paddingTop: 0, padding: '8px 16px' }}>
+										<DateFilterMenu 
+											settings={true}
+											button 
+											period={p}
+											icon={
+												<Fragment>
+													<Edit className={classes.icon} /><T>{t('menus.edit')}</T>
+												</Fragment>
+											} t={t} />
+										<Button size={'small'} onClick={() => removeChartPeriod(p.id)}>
+											<Clear className={classes.icon} /><T>{t('menus.delete')}</T>
+										</Button>
+									</ExpansionPanelActions>
+								</ExpansionPanel>
+							})}
+					
 						</List>
 					</Grid>
 

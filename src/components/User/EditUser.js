@@ -4,13 +4,13 @@ import { editUser, getUser } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
 import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader, ItemG } from 'components';
 import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Grid, Button, FormControlLabel, Checkbox } from '@material-ui/core';
-import { Save, DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons'
+import { Save, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { isFav, updateFav } from 'redux/favorites';
 import MomentUtils from '@date-io/moment';
 // import moment from 'moment'
-import { DateTimePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
+import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
 import moment from 'moment'
 import { getSettings } from 'redux/settings';
 
@@ -426,7 +426,7 @@ class EditUser extends Component {
 				<TextF
 					id={'recoveryEmail'}
 					label={t('users.fields.recoveryEmail')}
-					value={extended.recoveryEmail}
+					value={extended.recoveryEmail ? extended.recoveryEmail : ""}
 					className={classes.textField}
 					handleChange={this.handleExtendedChange('recoveryEmail')}
 					margin='normal'
@@ -457,9 +457,8 @@ class EditUser extends Component {
 			</ItemGrid>
 			<ItemGrid container xs={12} md={6}>
 				<MuiPickersUtilsProvider utils={MomentUtils}>
-					<DateTimePicker
+					<DatePicker
 						autoOk
-						ampm={false}
 						label={t('users.fields.birthday')}
 						clearable
 						format='ll'
@@ -468,8 +467,6 @@ class EditUser extends Component {
 						animateYearScrolling={false}
 						color='primary'
 						disableFuture
-						dateRangeIcon={<DateRange />}
-						timeIcon={<AccessTime />}
 						rightArrowIcon={<KeyboardArrowRight />}
 						leftArrowIcon={<KeyboardArrowLeft />}
 					/>
