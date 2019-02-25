@@ -8,7 +8,7 @@ export const settingsStyles = theme => ({
 		minWidth: 208,
 	},
 	iconColor: {
-		fill: "rgba(0, 0, 0, 0.54)",
+		fill: theme.palette.type === 'light' ? "rgba(0, 0, 0, 0.54)" : '#fff',
 		cursor: "pointer"
 	},
 	p: {
