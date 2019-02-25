@@ -28,9 +28,10 @@ const GETFAVS = 'getFavorites'
 //Charts
 const CHARTTYPE = 'chartType'
 const CHARTDATATYPE = 'chartDataType'
+const addPeriod = 'chartAddPeriod'
 
 //Get/Set Settings from server
-const GETSETTINGS = 'getSettings'
+const GetSettings = 'getSettings'
 const SAVESETTINGS = 'saveSettings'
 const SAVED = 'savedSettings'
 const NOSETTINGS = 'noSettings'
@@ -54,7 +55,8 @@ export const saveSettingsOnServ = () => {
 			rawData: s.rawData,
 			mapTheme: s.mapTheme,
 			defaultRoute: s.defaultRoute,
-			cookies: s.cookies
+			cookies: s.cookies,
+			periods: s.periods
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -95,7 +97,7 @@ export const getSettings = async () => {
 			if (settings) {
 				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
 				dispatch({
-					type: GETSETTINGS,
+					type: GetSettings,
 					settings: {
 						...user.aux.senti.settings,
 						language: user.aux.odeum.language
@@ -144,6 +146,7 @@ export const getSettings = async () => {
 
 
 }
+
 export const acceptCookiesFunc = (val) => {
 	return async dispatch => {
 		dispatch({
@@ -172,7 +175,6 @@ export const changeMapTheme = t => {
 	}
 
 }
-
 export const changeAlerts = t => {
 	return async (dispatch, getState) => {
 		dispatch({
@@ -278,6 +280,55 @@ export const changeTRP = (nr) => {
 		dispatch(saveSettingsOnServ())
 	}
 }
+export const changeSettingsDate = (menuId, to, from, timeType, id) => {
+	return async (dispatch, getState) => {
+		let periods = []
+		periods = [...getState().settings.periods]
+		let c
+		if (id === -1) {
+			c = periods.length
+		}
+		else {
+			c = periods.findIndex(f => f.id === id)
+		}
+		periods[c] = {
+			id: c,
+			menuId, to, from, timeType, chartType: id === -1 ? 3 : periods[c].chartType, hide: false, raw: false
+		}
+		dispatch({
+			type: addPeriod,
+			periods: periods
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const removeChartPeriod = pId => {
+	return async (dispatch, getState) => {
+		let periods = []
+		periods = [...getState().settings.periods]
+		periods.splice(periods.findIndex(f => f.id === pId), 1)
+		dispatch({
+			type: addPeriod,
+			periods: periods
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const updateChartPeriod = p => {
+	return async (dispatch, getState) => {
+		let periods = []
+		periods = [...getState().settings.periods]
+		let id = periods.findIndex(f => f.id === p.id)
+		if (id > -1) {
+			periods[id].raw = !p.raw
+		}
+		dispatch({
+			type: addPeriod,
+			periods: periods
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
 export const changeTheme = (code) => {
 	return async (dispatch, getState) => {
 		dispatch({
@@ -294,6 +345,25 @@ export const finishedSaving = () => {
 	}
 }
 let initialState = {
+	periods: [{
+		id: 0,
+		menuId: 0,
+		raw: true,
+		to: moment(),
+		from: moment().startOf('day'),
+		timeType: 1,
+		chartType: 3,
+		hide: false
+	}, {
+		id: 1,
+		menuId: 2,
+		raw: false,
+		to: moment(),
+		from: moment().subtract(7, 'days'),
+		timeType: 2,
+		chartType: 3,
+		hide: false
+	}],
 	cookies: false,
 	defaultRoute: '/dashboard',
 	mapTheme: 0,
@@ -317,6 +387,8 @@ let initialState = {
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
+		case addPeriod: 
+			return Object.assign({}, state, { periods: action.periods })
 		case acceptCookies: 
 			return Object.assign({}, state, { cookies: action.acceptCookies })
 		case changeDR: 
@@ -331,7 +403,7 @@ export const settings = (state = initialState, action) => {
 		{
 			return Object.assign({}, state, { ...action.settings, loading: false, user: action.user })
 		}
-		case GETSETTINGS:
+		case GetSettings:
 		{
 			return Object.assign({}, state, { ...action.settings, user: action.user, loading: false })
 		}

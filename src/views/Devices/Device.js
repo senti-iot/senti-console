@@ -194,7 +194,8 @@ class Device extends Component {
 
 	handleSwitchDayHourSummary = async (p) => {
 		// const { to, from, id } = this.props
-		let diff = moment.duration(p.to.diff(p.from)).days()
+		console.log(p)
+		let diff = moment.duration(moment(p.to).diff(moment(p.from))).days()
 		// this.getHeatMapData()
 		switch (p.menuId) {
 			case 0:// Today

@@ -5,7 +5,7 @@ import CalibrationSettings from './SettingsCards/CalibrationSettings';
 import DisplaySettings from './SettingsCards/DisplaySettings';
 import { changeLanguage } from 'redux/localization';
 import withLocalization from 'components/Localization/T';
-import { changeTRP, changeDefaultRoute, changeTheme, changeChartType, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow, saveSettingsOnServ, finishedSaving, changeChartDataType, changeTCount, changeMapTheme } from 'redux/settings';
+import { changeTRP, changeDefaultRoute, changeTheme, changeChartType, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow, saveSettingsOnServ, finishedSaving, changeChartDataType, changeTCount, changeMapTheme, removeChartPeriod, updateChartPeriod } from 'redux/settings';
 import ChartSettings from './SettingsCards/ChartSettings';
 import withSnackbar from 'components/Localization/S';
 import { compose } from 'recompose';
@@ -40,7 +40,7 @@ class Settings extends Component {
 		const { t } = this.props
 		const { language, sideBar, changeSideBarLoc, trp, changeTRP, theme, changeTheme, changeDiscoverSenti, discSentiVal, changeLanguage, changeChartType } = this.props
 		const { calibration, changeCalType, count, changeCount, changeTCount, calNotifications, changeCalNotif, rawData, changeDefaultRoute, defaultRoute } = this.props
-		const { /* alerts, didKnow, changeAlerts, changeDidKnow, */ chartType, changeChartDataType, tcount, mapTheme, changeMapTheme } = this.props
+		const { updateChartPeriod, removeChartPeriod, chartType, changeChartDataType, tcount, mapTheme, changeMapTheme, periods } = this.props
 		return (
 			<Fragment>
 				<Toolbar
@@ -87,7 +87,10 @@ class Settings extends Component {
 							chartDataType={rawData}
 							changeChartType={changeChartType}
 							changeChartDataType={changeChartDataType}
+							updateChartPeriod={updateChartPeriod}
+							removeChartPeriod={removeChartPeriod}
 							t={t}
+							periods={periods}
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'termsAndConditions'}>
@@ -120,6 +123,7 @@ const mapStateToProps = state => {
 		
 		chartType: s.chartType,
 		rawData: s.rawData,
+		periods: s.periods,
 
 		alerts: s.alerts,
 		didKnow: s.didKnow
@@ -146,6 +150,9 @@ const mapDispatchToProps = (dispatch) => {
 
 		changeChartType: type => dispatch(changeChartType(type)),
 		changeChartDataType: type => dispatch(changeChartDataType(type)),
+		
+		removeChartPeriod: pId => dispatch(removeChartPeriod(pId)),
+		updateChartPeriod: p => dispatch(updateChartPeriod(p)),
 
 		saveSettings: () => dispatch(saveSettingsOnServ()),
 		finishedSaving: () => dispatch(finishedSaving())

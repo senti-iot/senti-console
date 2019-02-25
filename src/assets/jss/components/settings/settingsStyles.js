@@ -16,5 +16,9 @@ export const settingsStyles = theme => ({
 	},
 	title: {
 		fontWeight: 500
+	},
+	icon: {
+		color: theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.54)' : '#fff',
+		marginRight: 4
 	}
 })

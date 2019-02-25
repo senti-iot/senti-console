@@ -4,12 +4,15 @@ const changePeriods = 'changeDate'
 const changeHeatmapDate = 'changeHeatMapDate'
 const changeDataT = 'changeDataTable'
 const changeHeatData = 'changeHeatData'
+const GetSettings = 'getSettings'
+const addPeriod = 'chartAddPeriod'
+// const removePeriod = 'chartRemovePeriod'
 
 export const storeHeatData = (heatData) => { 
 	return dispatch => { 
 		dispatch({
 			type: changeHeatData,
-			payload: heatData
+			periods: heatData
 		})
 	}
 }
@@ -17,7 +20,7 @@ export const changeDataTable = (period) => {
 	return (dispatch) => { 
 		dispatch({
 			type: changeDataT,
-			payload: period
+			periods: period
 		})
 	}
 }
@@ -25,7 +28,7 @@ export const changeHeatMapDate = (menuId, to, from, timeType) => {
 	return (dispatch, getState) => { 
 		dispatch({
 			type: changeHeatmapDate,
-			payload: { menuId, to, from, timeType }
+			periods: { menuId, to, from, timeType }
 		})
 	}
 }
@@ -37,26 +40,26 @@ export const hideShowPeriod = (pId) => {
 		newCompares[c] = { ...newCompares[c], hide: !newCompares[c].hide }
 		dispatch({
 			type: changePeriods,
-			payload: newCompares
+			periods: newCompares
 		})
 	}
 }
 export const resetToDefault = () => {
-	return (dispatch) => {
+	return (dispatch, getState) => {
 		dispatch({
 			type: changePeriods,
-			payload: initialState.periods
+			periods: getState().settings.periods
 		})
 	}
 }
-export const removePeriod = (cId) => { 
+export const removeChartPeriod = (cId) => { 
 	return (dispatch, getState) => { 
 		let newCompares = []
 		newCompares.push(...getState().dateTime.periods)
 		newCompares = newCompares.filter(c => c.id !== cId)
 		dispatch({
 			type: changePeriods,
-			payload: newCompares
+			periods: newCompares
 		})
 	}
 }
@@ -69,7 +72,7 @@ export const changeChartType = (period, chartType) => {
 		periods[p] = { ...period, chartType: chartType }
 		dispatch({
 			type: changePeriods,
-			payload: periods
+			periods: periods
 		})
 	}
 }
@@ -84,7 +87,7 @@ export const changeRawData = p => {
 		}
 		dispatch({
 			type: changePeriods,
-			payload: periods
+			periods: periods
 		})
 	}
 }
@@ -104,7 +107,7 @@ export const changeDate = (menuId, to, from, timeType, id) => {
 		}
 		dispatch({
 			type: changePeriods,
-			payload: periods
+			periods: periods
 		})
 	}
 }
@@ -123,40 +126,26 @@ const initialState = {
 		timeType: 2,
 		menuId: 3,
 	},
-	periods: [{
-		id: 0,
-		menuId: 0,
-		raw: false,
-		to: moment(),
-		from: moment().startOf('day'),
-		timeType: 1,
-		chartType: 3,
-		hide: false
-	}, {
-		id: 1,
-		menuId: 2,
-		raw: false,
-		to: moment(),
-		from: moment().subtract(7, 'days'),
-		timeType: 2,
-		chartType: 3,
-		hide: false
-	}]
+	periods: []
 }
 
-export const dateTime = (state = initialState, { type, payload }) => {
-	switch (type) {
+export const dateTime = (state = initialState, action) => {
+	switch (action.type) {
+
+		case GetSettings: 
+			return Object.assign({}, state, { periods: action.settings.periods ? action.settings.periods : state.periods  })
 		case changePeriods:
-			return Object.assign({}, state, { periods: payload })
+		case addPeriod:
+			return Object.assign({}, state, { periods: action.periods })
 		case changeHeatmapDate:
 			return Object.assign({}, state, {
 				heatMap: {
-					...payload
+					...action.periods
 				}
 			})
 		case changeHeatData: 
 			return Object.assign({}, state, {
-				heatData: payload
+				heatData: action.periods
 			})
 		default:
 			return state

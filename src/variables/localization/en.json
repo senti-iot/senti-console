@@ -577,6 +577,8 @@
 			"time": "By time"
 		},
 		"chart": {
+			"period": "Period",
+			"periods": "Periods",
 			"YAxis": {
 				"logarithmic": "Logarithmic scale",
 				"linear": "Linear scale"

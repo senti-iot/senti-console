@@ -24,13 +24,14 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
-import { changeDate, removePeriod, changeChartType, changeRawData } from 'redux/dateTime'
+import { changeDate, changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTime'
 
 class ChartData extends PureComponent {
 	constructor(props) {
 		super(props)
 
 		this.state = {
+			raw: props.raw ? props.raw : false,
 			actionAnchor: null,
 			openDownload: false,
 			visibility: false,
@@ -438,12 +439,13 @@ class ChartData extends PureComponent {
 	}
 }
 const mapStateToProps = (state) => ({
+	raw: state.settings.rawData ? true : false
 })
 
 const mapDispatchToProps = dispatch => ({
 	handleSetDate: (id, to, from, timeType, pId) => dispatch(changeDate(id, to, from, timeType, pId)),
 	changeYAxis: (val) => dispatch(changeYAxis(val)),
-	removePeriod: (pId) => dispatch(removePeriod(pId)),
+	removePeriod: (pId) => dispatch(removeChartPeriod(pId)),
 	changeChartType: (p, chartId) => dispatch(changeChartType(p, chartId)),
 	changeRawData: (p) => dispatch(changeRawData(p))
 })
