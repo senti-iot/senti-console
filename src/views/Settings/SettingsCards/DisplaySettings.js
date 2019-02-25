@@ -4,11 +4,6 @@ import { InfoCard, ItemGrid, DSelect, CircularLoader } from 'components';
 import { Laptop } from 'variables/icons'
 import { Grid, ListItem, List, ListItemText, withStyles } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
-// Discover Senti
-//List rows per page on Tables
-// Menu Location
-// Dark Mode
-// Themes?
 
 class DisplaySettings extends Component {
 
@@ -22,9 +17,17 @@ class DisplaySettings extends Component {
 	changeSideBarLoc = (e) => this.props.changeSideBarLoc(e.target.value)
 	changeDiscoverSenti = e => this.props.changeDiscoverSenti(e.target.value)
 	changeMapTheme = e => this.props.changeMapTheme(e.target.value)
-
+	changeDefaultRoute = e => this.props.changeDefaultRoute(e.target.value)
+	
 	render() {
-		const { language, trp, sideBar, discSentiVal, theme, mapTheme, classes, t } = this.props
+		const { language, trp, sideBar, discSentiVal, theme, mapTheme, classes, t, defaultRoute } = this.props
+		let defaultRoutes = [
+			{ value: '/favorites', label: t('sidebar.favorites') },
+			{ value: '/dashboard', label: t('sidebar.dashboard') },
+			{ value: '/projects', label: t('sidebar.projects') },
+			{ value: '/devices', label: t('sidebar.devices') },
+			{ value: '/collections', label: t('sidebar.collections') }
+		]
 		let discSenti = [
 			{ value: 1, label: t('actions.yes') },
 			{ value: 0, label: t('actions.no') }
@@ -41,7 +44,8 @@ class DisplaySettings extends Component {
 			{ value: 3, label: this.props.t("map.themes.3") },
 			{ value: 4, label: this.props.t("map.themes.4") },
 			{ value: 5, label: this.props.t("map.themes.5") },
-			{ value: 6, label: this.props.t("map.themes.6") }
+			{ value: 6, label: this.props.t("map.themes.6") },
+			{ value: 7, label: this.props.t("map.themes.7") }
 		]
 
 		let themes = [
@@ -50,6 +54,8 @@ class DisplaySettings extends Component {
 		]
 		let trps = [
 			{ value: 5, label: 5 },
+			{ value: 7, label: 7 },
+			{ value: 8, label: 8 },
 			{ value: 10, label: 10 },
 			{ value: 15, label: 15 },
 			{ value: 20, label: 20 },
@@ -80,6 +86,12 @@ class DisplaySettings extends Component {
 								</ListItem>
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{t('settings.defaultRoute')}</ListItemText>
+										<DSelect menuItems={defaultRoutes} value={defaultRoute} onChange={this.changeDefaultRoute} />
+									</ItemGrid>
+								</ListItem>
+								<ListItem divider>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.language')}</ListItemText>
 										<DSelect menuItems={languages} value={language} onChange={this.changeLang} />
 									</ItemGrid>
@@ -104,7 +116,7 @@ class DisplaySettings extends Component {
 								</ListItem>
 								<ListItem>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
-										<ListItemText>{`${t('devices.cards.map')} ${t('settings.theme')}`}</ListItemText>
+										<ListItemText>{t('settings.map')}</ListItemText>
 										<DSelect menuItems={mapThemes} value={mapTheme} onChange={this.changeMapTheme} />
 									</ItemGrid>
 								</ListItem>

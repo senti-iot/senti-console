@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
-import { Dialog, DialogTitle, DialogContent, FormControlLabel, /* Checkbox, */ DialogActions, Button, RadioGroup, Radio, FormControl, withStyles } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, FormControlLabel, DialogActions, Button, RadioGroup, Radio, FormControl, withStyles } from '@material-ui/core';
 import { ItemG, Caption } from 'components';
-import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import MomentUtils from '@date-io/moment';
+import moment from 'moment'
 import { DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons';
+
 const styles = theme => ({
 	dialogWidth: {
 		maxWidth: 240,
@@ -12,10 +14,18 @@ const styles = theme => ({
 		padding: 8
 	}
 })
+/**
+ * TODO: React Hooks for to and from, 
+ * on end call handleSetDate and remove handleCustomSetDate
+ */
 const CustomDateTime = (props) => {
-	const { classes, t, openCustomDate, handleCloseDialog, handleCustomDate, to, from,
-		timeType, handleCustomCheckBox, handleCancelCustomDate
+	const { classes, t, openCustomDate, handleCloseDialog,
+		timeType, handleCancelCustomDate, from, to
 	} = props
+	const [endDate, setEndDate] = useState(to ? moment(to) : moment())
+	const [startDate, setStartDate] = useState(from ? moment(from) : moment().subtract(7, 'days'))
+	const [time, setTime] = useState(timeType !== undefined ? timeType : 2)
+
 	return <MuiPickersUtilsProvider utils={MomentUtils}>
 		<Dialog
 			open={openCustomDate}
@@ -32,8 +42,8 @@ const CustomDateTime = (props) => {
 							label={t('filters.startDate')}
 							clearable
 							format='LLL'
-							value={from}
-							onChange={handleCustomDate('from')}
+							value={startDate}
+							onChange={e => setStartDate(e)}
 							animateYearScrolling={false}
 							color='primary'
 							disableFuture
@@ -41,7 +51,7 @@ const CustomDateTime = (props) => {
 							timeIcon={<AccessTime />}
 							rightArrowIcon={<KeyboardArrowRight />}
 							leftArrowIcon={<KeyboardArrowLeft />}
-					
+
 						/>
 					</ItemG>
 					<ItemG xs={12}>
@@ -52,18 +62,18 @@ const CustomDateTime = (props) => {
 							label={t('filters.endDate')}
 							clearable
 							format='LLL'
-							value={to}
-							onChange={handleCustomDate('to')}
+							value={endDate}
+							onChange={e => setEndDate(e)}
 							animateYearScrolling={false}
 							dateRangeIcon={<DateRange />}
 							timeIcon={<AccessTime />}
 							color='primary'
 							rightArrowIcon={<KeyboardArrowRight />}
 							leftArrowIcon={<KeyboardArrowLeft />}
-					
+
 						/>
 					</ItemG>
-				
+
 					<ItemG style={{ marginTop: 20 }} xs={12}>
 						<Caption>{t('filters.display')}</Caption>
 					</ItemG>
@@ -72,8 +82,8 @@ const CustomDateTime = (props) => {
 							<RadioGroup
 								aria-label={t('filters.display')}
 								name={t('filters.display')}
-								onChange={handleCustomCheckBox}
-								value={timeType.toString()}
+								onChange={e => setTime(e.target.value)}
+								value={time.toString()}
 							>
 								<FormControlLabel
 									value={'0'}
@@ -107,11 +117,12 @@ const CustomDateTime = (props) => {
 				<Button onClick={handleCancelCustomDate} color='primary'>
 					{t('actions.decline')}
 				</Button>
-				<Button onClick={handleCloseDialog} color='primary' autoFocus>
+				<Button onClick={() => handleCloseDialog(endDate, startDate, parseInt(time, 10))} color='primary' autoFocus>
 					{t('actions.apply')}
 				</Button>
 			</DialogActions>
 		</Dialog>
 	</MuiPickersUtilsProvider>
 }
+
 export default withStyles(styles)(CustomDateTime)

@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Collapse, /* Grid, */ withStyles, TableRow, TableBody, Table, Hidden, TableCell, Typography, TableHead } from '@material-ui/core';
+import { Button, Collapse, withStyles, TableRow, TableBody, Table, Hidden, TableCell, Typography, TableHead } from '@material-ui/core';
 import { Caption, InfoCard, ItemG, ItemGrid, Info, GridContainer } from 'components';
 import { Map, ExpandMore, DataUsage, SignalWifi2BarLock, SignalWifi2Bar } from 'variables/icons'
 import { Maps } from 'components/Map/Maps';
-// import CollectionSimpleList from 'components/Collections/CollectionSimpleList';
 import classNames from 'classnames'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
 import { dateFormatter } from 'variables/functions';
@@ -14,8 +13,6 @@ import TC from 'components/Table/TC';
 class ProjectCollections extends Component {
 	constructor(props) {
 		super(props)
-
-		// const { t } = props
 		this.state = {
 			mapExpanded: false,
 			openUnassign: false,
@@ -58,9 +55,9 @@ class ProjectCollections extends Component {
 	renderDeviceStatus = (status) => {
 		const { classes } = this.props
 		switch (status) {
-			case 2:
-				return <SignalWifi2Bar className={classes.yellowSignal} />
 			case 1:
+				return <SignalWifi2Bar className={classes.yellowSignal} />
+			case 2:
 				return <SignalWifi2Bar className={classes.greenSignal} />
 			case 0:
 				return <SignalWifi2Bar className={classes.redSignal} />
@@ -85,7 +82,6 @@ class ProjectCollections extends Component {
 		
 		return (
 			<InfoCard title={t('collections.pageTitle')} avatar={<DataUsage />}
-				// subheader={project.dataCollections.length > 0 ? t('projects.collections.numCollections') + project.dataCollections.length : null}
 				noRightExpand
 				noPadding
 				content={
@@ -94,7 +90,7 @@ class ProjectCollections extends Component {
 							<Table>
 								<TableHead>
 									<TableRow >
-										<TableCell padding='checkbox' /* className={classes.tablecellcheckbox + ' ' + classes.paddingLeft} */>
+										<TableCell padding='checkbox'>
 											<ItemG container justify={'center'}>
 												{t('collections.fields.ownState')}
 											</ItemG>
@@ -102,11 +98,11 @@ class ProjectCollections extends Component {
 												({t('collections.fields.collection')})
 											</ItemG>
 										</TableCell>
-										<TableCell /* classes={{ root: classes.tableCell }} */>
+										<TableCell>
 											{t('collections.fields.name')}
 										</TableCell>
 										<Hidden mdDown>
-											<TableCell padding={'checkbox'} /* classes={{ root: classes.tableCell }} */>
+											<TableCell padding={'checkbox'}>
 												<ItemG container justify={'center'}>
 													{t('collections.fields.status')}
 												</ItemG>

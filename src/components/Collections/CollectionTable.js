@@ -7,21 +7,19 @@ import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
 import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
-import EnhancedTableHead from 'components/Table/TableHeader'
-// import EnhancedTableToolbar from 'components/Table/TableToolbar'
+import TableHeader from 'components/Table/TableHeader'
 import { connect } from 'react-redux'
 import TP from 'components/Table/TP'
 import { Info, Caption, ItemG } from 'components';
 import { dateFormatter } from 'variables/functions';
-import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
+import { SignalWifi2Bar } from 'variables/icons'
+
 class CollectionTable extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			page: 0,
-			rowsPerPage: props.rowsPerPage,
-			anchorFilterMenu: null,
 		}
 	}
 
@@ -37,23 +35,17 @@ class CollectionTable extends React.Component {
 		this.setState({ page });
 	}
 
-	handleChangeRowsPerPage = event => {
-		this.setState({ rowsPerPage: event.target.value })
-	}
-
-
 	isSelected = id => this.props.selected.indexOf(id) !== -1
-
-	handleEdit = () => {
-		this.props.history.push(`/collection/${this.state.selected[0]}/edit`)
-	}
-	
-	addNewCollection = () => { this.props.history.push('/collections/new') }
-
 
 	renderIcon = (status) => {
 		const { classes, t } = this.props
 		switch (status) {
+			case 0:
+				return <div title={t('devices.status.red')}>
+					<ItemG container justify={'center'}>
+						<SignalWifi2Bar className={classes.redSignal} />
+					</ItemG>
+				</div>
 			case 1:
 				return <div title={t('devices.status.yellow')}>
 					<ItemG container justify={'center'}>
@@ -66,22 +58,20 @@ class CollectionTable extends React.Component {
 						<SignalWifi2Bar className={classes.greenSignal} />
 					</ItemG>
 				</div>
-			case 0:
-				return <div title={t('devices.status.red')}>
+			case null:
+				return <div title={t('devices.status.noDevice')}>
 					<ItemG container justify={'center'}>
-						<SignalWifi2Bar className={classes.redSignal} />
+						<SignalWifi2Bar />
 					</ItemG>
 				</div>
-			case null:
-				return <SignalWifi2BarLock />
 			default:
 				break;
 		}
 	}
 
 	render() {
-		const { classes, t, order, orderBy, data, selected, handleCheckboxClick } = this.props
-		const { rowsPerPage, page } = this.state
+		const { rowsPerPage, handleClick, classes, t, order, orderBy, data, selected, handleCheckboxClick } = this.props
+		const { page } = this.state
 		let emptyRows;
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
@@ -89,7 +79,7 @@ class CollectionTable extends React.Component {
 			<Fragment>
 				<div className={classes.tableWrapper}>
 					<Table className={classes.table} aria-labelledby='tableTitle'>
-						<EnhancedTableHead // ./ProjectTableHeader
+						<TableHeader
 							numSelected={selected.length}
 							order={order}
 							orderBy={orderBy}
@@ -100,14 +90,16 @@ class CollectionTable extends React.Component {
 							t={t}
 							classes={classes}
 							customColumn={
-								[{ id: 'activeDeviceStats.state',
+								[{
+									id: 'activeDeviceStats.state',
 									label: <ItemG container title={t('collections.fields.status')} justify={'center'}>
 										<SignalWifi2Bar />
 									</ItemG>, checkbox: true
 								},
-								{ id: 'name', label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
-									{t('collections.fields.collection')}
-								</Typography>
+								{
+									id: 'name', label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
+										{t('collections.fields.collection')}
+									</Typography>
 								}]
 							}
 						/>
@@ -117,7 +109,7 @@ class CollectionTable extends React.Component {
 								return (
 									<TableRow
 										hover
-										onClick={e => { e.stopPropagation(); this.props.history.push('/collection/' + n.id) }}
+										onClick={handleClick(n.id)}
 										role='checkbox'
 										aria-checked={isSelected}
 										tabIndex={-1}
@@ -127,7 +119,7 @@ class CollectionTable extends React.Component {
 									>
 										<Hidden lgUp>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-											<TC checkbox content={n.activeDeviceStats ? this.renderIcon(n.activeDeviceStats.state) : null} />
+											<TC checkbox content={this.renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : null)} />
 											<TC content={
 												<ItemG container alignItems={'center'}>
 													<ItemG>
@@ -136,7 +128,7 @@ class CollectionTable extends React.Component {
 														</Info>
 														<ItemG container>
 															<Caption noWrap className={classes.noMargin}>
-																{`${n.org ? n.org.name : ''} `} 
+																{`${n.org ? n.org.name : ''} `}
 															</Caption>
 														</ItemG>
 													</ItemG>
@@ -144,11 +136,11 @@ class CollectionTable extends React.Component {
 											}
 											/>
 										</Hidden>
-										<Hidden mdDown>
+										<Hidden mdDown >
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-											<TC FirstC label={n.id} />
+											<TC label={n.id} />
 											<TC FirstC label={n.name} />
-											<TC content={this.renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : 0)} />
+											<TC content={this.renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : null)} />
 											<TC label={dateFormatter(n.created)} />
 											<TC label={n.devices ? n.devices[0] ? dateFormatter(n.devices[0].start) : '' : ''} />
 											<TC label={n.org ? n.org.name : ''} />
@@ -171,7 +163,6 @@ class CollectionTable extends React.Component {
 					page={page}
 					t={t}
 					handleChangePage={this.handleChangePage}
-					handleChangeRowsPerPage={this.handleChangeRowsPerPage}
 				/>
 			</Fragment>
 
@@ -179,7 +170,7 @@ class CollectionTable extends React.Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	rowsPerPage: state.settings.trp,
+	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,
 	language: state.localization.language,
 	accessLevel: state.settings.user.privileges
 })

@@ -5,7 +5,6 @@ import { MapControl, withLeaflet } from 'react-leaflet'
 import { withStyles, IconButton, MuiThemeProvider } from '@material-ui/core';
 import { Smartphone, DeviceHub } from 'variables/icons'
 import teal from '@material-ui/core/colors/teal'
-// import LocationMarker from './LocationMarker';
 
 const styles = theme => ({
 	locationMarker: {

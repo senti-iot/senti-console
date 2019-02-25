@@ -42,8 +42,7 @@ class OrgDetails extends Component {
 	}
 
 	render() {
-		// const { } = this.state
-		const { t, org } = this.props
+		const { t, org, devices } = this.props
 		return (
 			<InfoCard title={org.name} avatar={<Business />} subheader={''}
 				noExpand
@@ -77,6 +76,7 @@ class OrgDetails extends Component {
 								{org.city}
 							</Info>
 						</ItemGrid>
+						
 						<ItemGrid xs={12} />
 						<ItemGrid>
 							<Caption>
@@ -103,6 +103,14 @@ class OrgDetails extends Component {
 								<a href={org.url} target={'_blank'}>
 									{org.url}
 								</a>
+							</Info>
+						</ItemGrid>
+						<ItemGrid xs={12}>
+							<Caption>
+								{t('orgs.fields.deviceCount')}
+							</Caption>
+							<Info>
+								{devices}
 							</Info>
 						</ItemGrid>
 						{/* {org.org.id > 0 ?

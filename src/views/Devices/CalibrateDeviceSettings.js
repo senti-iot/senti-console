@@ -1,13 +1,9 @@
 import React, { Component } from 'react'
-// import PropTypes from 'prop-types'
-import { ItemGrid, DSelect, /* Caption */ } from 'components';
+import { ItemGrid, DSelect } from 'components';
 import { Grid, ListItem, List, ListItemText, withStyles, Collapse } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 import DInput from 'components/CustomInput/DInput';
 
-//Method ( Time/ Hits) + how many minutes/hits
-//Notifications
-//
 class CalibrateDeviceSettings extends Component {
 
 	changeCalType = e => {

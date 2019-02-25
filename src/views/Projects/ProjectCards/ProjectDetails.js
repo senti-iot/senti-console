@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { Grid, withStyles } from '@material-ui/core';
-import { LibraryBooks, Edit, Delete, DataUsage, StarBorder, Star } from '@material-ui/icons'
+import { LibraryBooks, Edit, Delete, DataUsage, StarBorder, Star } from 'variables/icons'
 import { dateFormatter } from 'variables/functions';
 import { ItemGrid, Caption, Info, Dropdown } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
@@ -11,7 +11,6 @@ import deviceStyles from 'assets/jss/views/deviceStyles';
 class ProjectDetails extends Component {
 
 	deleteProject = () => {
-		// this.handleCloseActionsDetails()
 		this.props.deleteProject()
 	}
 	editProject = () => {

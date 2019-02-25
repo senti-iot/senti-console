@@ -4,22 +4,25 @@ import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import Chip from '@material-ui/core/Chip'
 import withStyles from '@material-ui/core/styles/withStyles'
-import blue from '@material-ui/core/colors/blue'
+import teal from '@material-ui/core/colors/teal'
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import cx from 'classnames'
+import { Add } from 'variables/icons';
 
 const styles = (theme) => {
 	const light = theme.palette.type === 'light'
 	const bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)'
 
 	return {
-		formControl: {},
+		formControl: {
+		},
 		chips: {},
 		root: {},
 		inputRoot: {
+			position: 'absolute !important',
 			display: 'inline-block',
-			marginTop: 0
+			marginTop: 0,
 		},
 		input: {
 			display: 'inline-block',
@@ -65,11 +68,11 @@ const styles = (theme) => {
 				transform: 'scaleX(1)'
 			}
 		},
-		focused: {},
+		focused: {
+		},
 		disabled: {},
 		underline: {
 			'&:before': {
-				// backgroundColor: bottomLineColor,
 				left: 0,
 				bottom: 0,
 				content: '""',
@@ -83,7 +86,6 @@ const styles = (theme) => {
 				pointerEvents: 'none'
 			},
 			'&:hover:not($disabled):before': {
-				// backgroundColor: theme.palette.text.primary,
 				height: 0
 			},
 			'&$disabled:before': {
@@ -101,8 +103,12 @@ const styles = (theme) => {
 			}
 		},
 		chip: {
+			color: theme.palette.type === 'light' ? 'inherit' : '#fff',
 			margin: '0 8px 8px 0',
-			float: 'left'
+			float: 'left',
+			'&:focused': {
+				background: theme.palette.primary[light ? 'dark' : 'light']
+			}
 		}
 	}
 }
@@ -132,9 +138,6 @@ class FilterInput extends Component {
 		if (nextProps.disabled) {
 			this.setState({ focusedChip: null })
 		}
-
-		// Lets assume that if the chips have changed, the inputValue should be empty
-		// otherwise, we would need to make inputValue a controlled value. which is quite messy
 		if (nextProps.value && this.props.clearInputValueOnChange && nextProps.value.length !== this.props.value.length) {
 			this.setState({ inputValue: '' })
 		}
@@ -153,7 +156,6 @@ class FilterInput extends Component {
 	 * @public
 	 */
 	focus = () => {
-		// this.actualInput.focus()
 		if (this.state.focusedChip != null) {
 			this.setState({ focusedChip: null })
 		}
@@ -168,9 +170,6 @@ class FilterInput extends Component {
 			this.setState({ focusedChip: null })
 		}
 		if (this.props.blurBehavior === 'add') {
-			// Lets assume that we only want to add the existing content as chip, when
-			// another event has not added a chip within 200ms .
-			// e.g. onSelection Callback in Autocomplete case
 			let numChipsBefore = (this.props.value || this.state.chips).length
 			let value = event.target.value
 			this.inputBlurTimeout = setTimeout(() => {
@@ -197,29 +196,38 @@ class FilterInput extends Component {
 		const { focusedChip } = this.state
 		this.setState({ keyPressed: false, preventChipCreation: false })
 		if (this.props.onKeyDown) {
-			// Needed for arrow controls on menu in autocomplete scenario
 			this.props.onKeyDown(event)
-			// Check if the callback marked the event as isDefaultPrevented() and skip further actions
-			// enter key for example should not always add the current value of the inputField
 			if (event.isDefaultPrevented()) {
 				return
 			}
 		}
-
+		if (event.keyCode === 37) { 
+			if (this.props.onBeforeDelete)
+				this.props.onBeforeDelete()
+		}
 		if (this.props.newChipKeyCodes.indexOf(event.keyCode) >= 0) {
-			let result = this.handleAddChip(event.target.value)
-			if (result !== false) {
-				event.preventDefault()
+			if (focusedChip !== null) { 
+				this.handleDoubleClick({ id: focusedChip })
+			}
+			else {
+				if (event.target.value) {
+					let result = this.handleAddChip({ key: "", value: event.target.value })
+					if (result !== false) {
+						event.preventDefault()
+					}}
 			}
 		} else if (event.keyCode === 8 || event.keyCode === 46) {
+			if (this.props.onBeforeDelete) { 
+				this.props.onBeforeDelete()
+			}
 			if (event.target.value === '') {
 				const chips = this.props.value || this.state.chips
-				if (focusedChip == null && event.keyCode === 8) {
+				if (focusedChip === null && event.keyCode === 8) {
 					this.setState({ focusedChip: chips.length - 1 })
 				} else if (focusedChip != null) {
 					const chips = this.props.value || this.state.chips
-					const value = chips[focusedChip]
-					this.handleDeleteChip(value, focusedChip)
+					const chip = chips[focusedChip]
+					this.handleDeleteChip(chip)
 					if (event.keyCode === 8 && focusedChip > 0) {
 						this.setState({ focusedChip: focusedChip - 1 })
 					} else if (event.keyCode === 46 && focusedChip <= chips.length - 1) {
@@ -258,7 +266,8 @@ class FilterInput extends Component {
 
 	handleKeyPress = (event) => {
 		this.setState({ keyPressed: true })
-		if (this.props.onKeyPress) { this.props.onKeyPress(event) }
+		if (this.props.onBeforeDelete) { this.props.onBeforeDelete() }
+		if (this.props.onKeyPress) { this.props.onKeyPress(event, { key: '', value: this.state.inputValue }) }
 	}
 
 	handleUpdateInput = (e) => {
@@ -275,7 +284,7 @@ class FilterInput extends Component {
 	 * @returns True if the chip was added (or at least `onAdd` was called), false if adding the chip was prevented
 	 */
 	handleAddChip(chip) {
-		if (this.props.onBeforeAdd && !this.props.onBeforeAdd(chip)) {
+		if (this.props.onBeforeAdd && !this.props.onBeforeAdd(chip.value)) {
 			this.setState({ preventChipCreation: true })
 			return false
 		}
@@ -292,7 +301,7 @@ class FilterInput extends Component {
 
 			if (this.props.allowDuplicates || !chips.some((c) => c[this.props.dataSourceConfig.value] === chip[this.props.dataSourceConfig.value])) {
 				if (this.props.value && this.props.onAdd) {
-					this.props.onAdd(chip)
+					this.props.onAdd(chip.value, chip.value, chip.key)
 				} else {
 					this.setState({ chips: [...this.state.chips, chip] })
 					if (this.props.onChange) {
@@ -318,13 +327,14 @@ class FilterInput extends Component {
 	}
 
 	handleDeleteChip(chip, i) {
-		if (this.props.value) {
+		if (this.props.value && chip) {
 			if (this.props.onDelete) {
-				this.props.onDelete(chip, i)
+				this.props.onDelete({ ...chip })
+				this.setState({ focusedChip: null })
 			}
 		} else {
 			const chips = this.state.chips.slice()
-			const changed = chips.splice(i, 1) // remove the chip at index i
+			const changed = chips.splice(i, 1)
 			if (changed) {
 				let focusedChip = this.state.focusedChip
 				if (this.state.focusedChip === i) {
@@ -366,7 +376,10 @@ class FilterInput extends Component {
 			this.props.inputRef(ref)
 		}
 	}
-
+	handleDoubleClick = (chip) => {
+		if (this.props.handleDoubleClick)
+			this.props.handleDoubleClick(chip)
+	 }
 	render() {
 		const {
 			allowDuplicates,
@@ -386,6 +399,7 @@ class FilterInput extends Component {
 			FormHelperTextProps,
 			fullWidth,
 			fullWidthInput,
+			onBeforeDelete,
 			helperText,
 			id,
 			InputProps,
@@ -407,6 +421,8 @@ class FilterInput extends Component {
 			required,
 			rootRef,
 			value,
+			t,
+			handleDoubleClick,
 			...other
 		} = this.props
 
@@ -416,12 +432,11 @@ class FilterInput extends Component {
 		const shrinkFloatingLabel = InputLabelProps.shrink != null
 			? InputLabelProps.shrink
 			: (label != null && (hasInput || this.state.isFocused))
-
 		return (
 			<FormControl
 				ref={rootRef}
 				fullWidth={fullWidth}
-				className={cx(className, classes.root)}
+				className={cx(className, classes.root, classes.formControl)}
 				error={error}
 				required={required}
 				onClick={this.focus}
@@ -451,21 +466,27 @@ class FilterInput extends Component {
 					})}
 				>
 					{chips.length > 0 ? chips.map((tag, i) => {
-						const value = dataSourceConfig ? tag[dataSourceConfig.value] : tag
+						const value = dataSourceConfig ? tag[dataSourceConfig.id] : tag
 						return chipRenderer({
 							value,
 							text: dataSourceConfig ? tag[dataSourceConfig.text] : tag,
 							chip: tag,
+							icon: tag.icon,
 							isDisabled: !!disabled,
-							isFocused: this.state.focusedChip === i,
-							handleClick: () => this.setState({ focusedChip: i }),
-							handleDelete: () => this.handleDeleteChip(value, i),
-							className: classes.chip
+							isFocused: this.state.focusedChip === value,
+							handleClick: () => this.setState({ focusedChip: value }),
+							handleDelete: () => this.handleDeleteChip({ id: value }),
+							handleDoubleClick: () => this.handleDoubleClick({ id: value }),
+							className: classes.chip,
+							classes: {
+
+							}
 						}, i)
 					}) : chipRenderer({
-						value: 'Add filter',
-						text: 'Add filter',
-						chip: 'Add filter',
+						value: t('actions.addFilter'),
+						text: t('actions.addFilter'),
+						chip: t('actions.addFilter'),
+						icon: <Add />,
 						isDisabled: !!disabled,
 						isFocused: false,
 						className: classes.chip
@@ -478,7 +499,7 @@ class FilterInput extends Component {
 						value={this.state.inputValue}
 						onChange={this.handleUpdateInput}
 						onKeyDown={this.handleKeyDown}
-						onKeyPress={this.handleKeyPress}
+						// onKeyPress={this.handleKeyPress}
 						onKeyUp={this.handleKeyUp}
 						onFocus={this.handleInputFocus}
 						onBlur={this.handleInputBlur}
@@ -566,12 +587,14 @@ FilterInput.defaultProps = {
 
 export default withStyles(styles)(FilterInput)
 
-export const defaultChipRenderer = ({ value, text, isFocused, isDisabled, handleClick, handleDelete, className }, key) => (
+export const defaultChipRenderer = ({ value, handleDoubleClick, text, isFocused, isDisabled, handleClick, handleDelete, className, icon }, key) => (
 	<Chip
 		key={key}
 		className={className}
-		style={{ pointerEvents: isDisabled ? 'none' : undefined, backgroundColor: isFocused ? blue[300] : undefined }}
+		icon={icon}
+		style={{ pointerEvents: isDisabled ? 'none' : undefined, background: isFocused ? teal[500] : '', color: isFocused ? '#fff' : undefined }}
 		onClick={handleClick}
+		onDoubleClick={handleDoubleClick}
 		onDelete={handleDelete}
 		label={text}
 	/>

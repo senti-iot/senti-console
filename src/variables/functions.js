@@ -3,6 +3,29 @@ import red from '@material-ui/core/colors/red'
 var moment = require('moment');
 var _ = require('lodash')
 
+export const copyToClipboard = str => {
+	let el = document.createElement('textarea');  // Create a <textarea> element
+	el.value = str;                                 // Set its value to the string that you want copied
+	// el.value = 'andrei@webhouse.dk'
+	el.setAttribute('readonly', '');                // Make it readonly to be tamper-proof
+	el.style.position = 'absolute';
+	// el.style.left = '-9999px';
+	el.style.background = '#fff'
+	el.style.zIndex = '-999'                      // Move outside the screen to make it invisible
+	document.body.appendChild(el);                  // Append the <textarea> element to the HTML document
+	const selected =
+		document.getSelection().rangeCount > 0        // Check if there is any content selected previously
+			? document.getSelection().getRangeAt(0)     // Store selection if found
+			: false;                                    // Mark as false to know no selection existed before
+	el.focus()
+	el.select();                                    // Select the <textarea> content
+	document.execCommand('copy');                   // Copy - only works as a result of a user action (e.g. click events)
+	document.body.removeChild(el);                  // Remove the <textarea> element
+	if (selected) {                                 // If a selection existed before copying
+		document.getSelection().removeAllRanges();    // Unselect everything on the HTML document
+		document.getSelection().addRange(selected);   // Restore the original selection
+	}
+};
 
 export const dateDiff = (from, to) => {
 	let diff = moment.duration(from.diff(to)).asMinutes()
@@ -18,7 +41,16 @@ export const dateDiff = (from, to) => {
 		return 0
 	}
 }
-
+export const allMinutesToArr = (from, to) => { 
+	let startDate = moment(from)
+	let endDate = moment(to)
+	let arr = []
+	let d = startDate.clone()
+	while (d <= endDate) {
+		arr.push(d.toDate())
+		d = d.clone().add(1, 'm')
+	}
+}
 export const minutesToArray = (from, to) => {
 	let startDate = moment(from)
 	let endDate = moment(to)
@@ -34,12 +66,22 @@ export const minutesToArray = (from, to) => {
 	}
 	return arr
 }
-
+export const allHoursToArr = (from, to) => {
+	let startDate = moment(from)
+	let endDate = moment(to)
+	let arr = []
+	let d = startDate.clone()
+	while (d <= endDate) {
+		arr.push(d.toDate())
+		d = d.clone().add(1, 'h')
+	}
+}
 export const hoursToArr = (from, to) => {
 	let startDate = moment(from)
 	let endDate = moment(to)
 	let diff = moment.duration(endDate.diff(startDate)).asHours()
-	let amount = diff > 10 ? diff > 20 ? diff > 35 ? 30 : 5 : 3 : 1
+	let amount = 1 
+	amount = diff > 10 ? diff > 20 ? diff > 35 ? 30 : 5 : 3 : 1
 	if (window.innerWidth < 426)
 		amount = diff > 5 ? diff > 10 ? diff > 20 ? diff > 35 ? 30 : 5 : 3 : 3 : 1
 	let arr = []
@@ -52,6 +94,17 @@ export const hoursToArr = (from, to) => {
 }
 export const isWeekend = (date) => {
 	return moment(date).day() === 6 || moment(date).day() === 0 ? true : false
+}
+export const allDatesToArr = (from, to) => { 
+	let startDate = moment(from)
+	let endDate = moment(to)
+	let arr = []
+	let d = startDate.clone()
+	while (d <= endDate) {
+		arr.push(d.toDate())
+		d = d.clone().add(1, 'd')
+	}
+	return arr
 }
 export const datesToArr = (from, to) => {
 	let startDate = moment(from)
@@ -66,7 +119,6 @@ export const datesToArr = (from, to) => {
 		arr.push(d.toDate())
 		d = d.clone().add(amount, 'd')
 	}
-	// 
 	return arr
 }
 export const weekendColors = (id) => {
@@ -127,7 +179,9 @@ export const filterItems = (data, filters) => {
 		var keys = Object.keys(arr[0])
 		var filtered = arr.filter(c => {
 			var contains = keys.map(key => {
-				return keyTester(c[key], keyword ? keyword : '')
+				if (c) 
+					return keyTester(c[key], keyword ? keyword : '')
+				return false
 
 			})
 			return contains.indexOf(true) !== -1 ? true : false
@@ -166,23 +220,26 @@ export const keyTester = (obj, sstr) => {
 	return found
 }
 const sortFunc = (a, b, orderBy, way) => {
-	let newA = _.get(a, orderBy) ? _.get(a, orderBy) : ''
-	let newB = _.get(b, orderBy) ? _.get(b, orderBy) : ''
-	if (typeof newA === 'number')
+	let newA =  _.get(a, orderBy) 
+	let newB =  _.get(b, orderBy)
+	if (moment(new Date(newA)).isValid() || moment(new Date(newB)).isValid()) {
+		return way ? moment(new Date(newA)).diff(new Date(newB)) : moment(new Date(newB)).diff(new Date(newA))
+	}
+	if (typeof newA === 'number' || typeof newA === 'undefined')
 		if (way) {
-			return newB <= newA ? -1 : 1
+			return -(newA > newB) || +(newA < newB) || (newA === null || newA === undefined) - (newB === null || newB === undefined);
 		}
 		else {
-			return newA < newB ? -1 : 1
+			return (newA === null || newA === undefined) - (newB === null || newB === undefined) || +(newA > newB) || -(newA < newB);
 		}
 	else {
 		if (way) {
-			return newB.toString().toLowerCase() <= newA.toString().toLowerCase() ? -1 : 1
-		}
-		else {
 			return newA.toString().toLowerCase() < newB.toString().toLowerCase() ? -1 : 1
 		}
-	}
+		else {
+			return newB.toString().toLowerCase() <= newA.toString().toLowerCase() ? -1 : 1
+		}
+	} 
 }
 /**
  * Handle Sorting
@@ -196,8 +253,8 @@ export const handleRequestSort = (property, way, data) => {
 	let newData = []
 	newData =
 		order === 'desc'
-			? data.sort((a, b) => sortFunc(a, b, orderBy, true))
-			: data.sort((a, b) => sortFunc(a, b, orderBy, false))
+			? data.sort((a, b) => sortFunc(a, b, orderBy, false))
+			: data.sort((a, b) => sortFunc(a, b, orderBy, true))
 	return newData
 }
 /**

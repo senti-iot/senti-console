@@ -1,38 +1,151 @@
-import React, { Component } from 'react'
-import { Card, CardHeader, IconButton, CardContent, withStyles, Button, Popover, Grid, TextField } from '@material-ui/core';
-// import Close from '@material-ui/icons/Close';
+import React, { Component, Fragment } from 'react'
+
+import { Card, IconButton, CardContent, withStyles, Button, Popover, Typography, CardActions, Checkbox } from '@material-ui/core';
 import withLocalization from 'components/Localization/T';
-import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
-import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import { MuiPickersUtilsProvider, DateTimePicker } from 'material-ui-pickers';
+import MomentUtils from '@date-io/moment';
 import { Close, DateRange, AccessTime, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons';
-import { shortDateFormat } from 'variables/functions';
+import { dateTimeFormatter } from 'variables/functions';
+import { TextF, DSelect } from 'components';
+import ItemG from 'components/Grid/ItemG';
+import moment from 'moment'
+import cx from 'classnames'
 
 const style = theme => ({
+	error: {
+		animation: "shake 0.82s cubic-bezier(.36,.07,.19,.97) both",
+		transform: "translate3d(0, 0, 0)",
+		backfaceVisibility: "hidden",
+		perspective: 1000,
+	},
+	"@keyframes shake": {
+		"10%, 90%": {
+			transform: "translate3d(-1px, 0, 0)",
+		},
+
+		"20%, 80%": {
+			transform: "translate3d(2px, 0, 0)",
+		},
+
+		"30%, 50%, 70%": {
+			transform: "translate3d(-4px, 0, 0)",
+		},
+
+		"40%, 60%": {
+			transform: "translate3d(4px, 0, 0)",
+		}
+	},
+
+	headerText: {
+		color: 'white',
+	},
 	header: {
 		background: '#00897b',
-		color: 'white'
+		color: 'white',
+		padding: 8
 	},
 	menu: {
-		width: 240,
 		padding: 0,
 		background: '#00897b'
 	},
 	content: {
-		maxWidth: 240
+		height: '100%'
 	}
 })
 class FilterCard extends Component {
 	constructor(props) {
 		super(props)
-
 		this.state = {
-			value: ''
+			value: '',
+			date: moment(),
+			after: false,
+			diff: {
+				value: -1,
+				icon: '',
+				label: ''
+			},
+			dropdown: {
+				value: -1,
+				icon: '',
+				label: ''
+			}
 		}
+	}
+	componentDidUpdate = (prevProps, prevState) => {
+		const { type, options } = this.props
+		if (this.props.open && prevProps.open !== this.props.open) {
+			let obj = null
+			if (type === 'diff') {
+				obj = options.dropdown[options.dropdown.findIndex(d => d.value === 0 || d.value === false)]
+			}
+			if (type === 'dropDown') { 
+				obj = options[options.findIndex(d => d.value === 0 || d.value === false)]
+			}
+			this.setState({
+				diff: {
+					value: type === 'diff' ? obj ? obj.value !== undefined || null ? obj.value : null : null : null,
+					icon: type === 'diff' ? obj ? obj.icon ? obj.icon : null : null : null, 
+					label: type === 'diff' ? obj ? obj.label ? obj.label : null : null : null
+				},
+				dropdown: {
+					value: type === 'dropDown' ? obj ? obj.value !== undefined || null ? obj.value : null : null : null,
+					icon: type === 'dropDown' ? obj ? obj.icon ? obj.icon : null : null : null,
+					label: type === 'dropDown' ? obj ? obj.label ? obj.label : null : null : null
+				}
+			})
+		}
+	}
+
+	componentDidMount = (prevProps, prevState) => {
+		const { edit, type, value } = this.props
+		if (edit)
+			switch (type) {
+				case 'dropDown':
+					this.setState({
+						dropdown: {
+							value: value
+						}
+					})
+					break;
+				case 'diff':
+					this.setState({
+						diff: { value: value }
+					})
+					break;
+				case 'date':
+					this.setState({
+						date: moment(value.date, 'lll'),
+						after: value.after
+					})
+					break;
+				case 'string':
+				case undefined:
+				case '':
+				case null:
+					this.setState({
+						value: value,
+					})
+					break;
+				default:
+					break;
+			}
+	}
+
+	handleKeyDown = (key) => {
+		if (this.props.open)
+			switch (key.keyCode) {
+				case 13:
+					this.handleButton()
+					break;
+
+				default:
+					break;
+			}
 	}
 	handleKeyPress = (key) => {
 		if (this.props.open)
-			switch (key.key) {
-				case 'Enter':
+			switch (key.keyCode) {
+				case 13:
 					this.handleButton()
 					break;
 
@@ -41,55 +154,135 @@ class FilterCard extends Component {
 			}
 	}
 	handleButton = () => {
-		this.props.handleButton(`${this.props.title}: '${this.state.value}'`)
-		this.props.handleClose()
+		const { value, date, after, dropdown, diff } = this.state
+		const { type, handleButton, title, t, options, hidden } = this.props
+		if (type === 'dropDown') {
+			handleButton(`${title}: ${dropdown.label}`, dropdown.value, dropdown.icon)
+		}
+		if (type === 'string')
+		{
+			if (hidden) {
+				handleButton(`${value}`, value)
+			}
+			else {
+				handleButton(`${title}: '${value}'`, value)
+			}
+		}
+		if (type === 'date')
+			handleButton(`${title} ${after ? t('filters.after') : t('filters.before')}: '${dateTimeFormatter(date)}'`, { date, after })
+		if (type === 'diff')
+			handleButton(`${title}: ${diff.label}`, { diff: diff.value, values: options.values })
+		this.setState({
+			value: '',
+			date: moment(),
+			endDate: moment(),
+			diff: {
+				value: 0,
+				label: ""
+			},
+			dropdown: {
+				value: 0,
+				label: ""
+			}
+		})
 	}
 	handleInput = e => {
 		this.setState({
-			value: e
-		})
+			value: e,
+		}, () => this.props.error ? this.props.resetError() : {})
 	}
-	handleCustomDate = e => {
-		var newDate = shortDateFormat(e)
+	handleCustomDate = (e, key) => {
 		this.setState({
-			value: newDate
+			[key]: e
 		})
 	}
-
+	handleChangeDropDown = (o) => e => {
+		const { options } = this.props
+		this.setState({
+			[o]: {
+				value: e.target.value,
+				icon: options[options.findIndex(o => o.value === e.target.value)].icon,
+				label: options[options.findIndex(o => o.value === e.target.value)].label
+			}
+		})
+	}
+	handleChangeDiff = e => {
+		const { options } = this.props
+		this.setState({
+			diff: {
+				value: e.target.value,
+				icon: options.dropdown[options.dropdown.findIndex(o => o.value === e.target.value)].icon,
+				label: options.dropdown[options.dropdown.findIndex(o => o.value === e.target.value)].label
+			}
+		})
+	}
 	renderType = () => {
-		const { t, classes } = this.props
-		const { value } = this.state
+		const { t, classes, title, options } = this.props
+		const { date, value, after, dropdown, diff } = this.state
 		switch (this.props.type) {
+			case 'diff':
+				return <DSelect
+					fullWidth
+					label={title}
+					value={diff.value}
+					onChange={this.handleChangeDiff}
+					onKeyDown={this.handleKeyDown}
+					menuItems={
+						options.dropdown.map(o => ({ value: o.value, label: o.label, icon: o.icon }))
+					} />
+			case 'dropDown':
+				return <DSelect
+					fullWidth
+					label={title}
+					value={dropdown.value}
+					onKeyDown={this.handleKeyDown}
+					onChange={this.handleChangeDropDown('dropdown')}
+					menuItems={
+						options.map(o => ({ value: o.value, label: o.label, icon: o.icon }
+						))
+					} />
 			case 'date':
-				return <MuiPickersUtilsProvider utils={MomentUtils}>
-					<DatePicker
-						autoOk
-						label={t('filters.startDate')}
-						clearable
-						ampm={false}
-						format='LL'
-						value={value}
-						onChange={this.handleCustomDate}
-						animateYearScrolling={false}
-						color='primary'
-						// disableFuture
-						dateRangeIcon={<DateRange />}
-						timeIcon={<AccessTime />}
-						rightArrowIcon={<KeyboardArrowRight />}
-						leftArrowIcon={<KeyboardArrowLeft />}
-						InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-						InputProps={{ classes: { underline: classes.underline } }}
-					/>
-				</MuiPickersUtilsProvider>
-			case 'text': 
-				return <TextField label={'Contains'} value={value} onChange={e => this.handleInput(e.target.value)} onKeyPress={this.handleKeyPress} />
+				return <Fragment>
+					<ItemG xs={12} container alignItems={'center'}>
+						<Checkbox checked={after} onClick={() => this.setState({ after: !after })} style={{ padding: "12px 12px 12px 0px" }} />
+						<Typography>{t('filters.afterDate')}</Typography>
+					</ItemG>
+					<ItemG>
+						<MuiPickersUtilsProvider utils={MomentUtils}>
+							<DateTimePicker
+								id={'date'}
+								autoOk
+								fullWidth
+								clearable
+								disableFuture
+								ampm={false}
+								format='LLL'
+								value={date}
+								autoFocus
+								onChange={val => this.handleCustomDate(val, 'date')}
+								animateYearScrolling={false}
+								color='primary'
+								dateRangeIcon={<DateRange />}
+								timeIcon={<AccessTime />}
+								rightArrowIcon={<KeyboardArrowRight />}
+								leftArrowIcon={<KeyboardArrowLeft />}
+								InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
+								InputProps={{ classes: { underline: classes.underline } }}
+							/>
+						</MuiPickersUtilsProvider>
+					</ItemG>
+				</Fragment>
+			case 'string':
+				return <TextF fullWidth id={'filter-text'} autoFocus onKeyDown={this.handleKeyDown} label={t('filters.contains')} value={value} handleChange={e => this.handleInput(e.target.value)} />
 			default:
 				break;
 		}
 	}
 	render() {
-		const { title, open, handleClose, classes, anchorEl } = this.props
-		// const { value } = this.state
+		const { title, open, handleClose, classes, anchorEl, t, edit, error } = this.props
+		const errorClassname = cx({
+			[classes.error]: error
+		})
 		return (
 			<Popover
 				anchorEl={anchorEl}
@@ -97,30 +290,31 @@ class FilterCard extends Component {
 				onClose={handleClose}
 				PaperProps={{ classes: { root: classes.menu } }}
 			>
-				<Card>
-					<CardHeader
-						classes={{
-							root: classes.header,
-							title: classes.header
-						}}
-						title={title}
-						action={<IconButton onClick={handleClose}>
-							<Close />
-						</IconButton>}
-					/>
+				<Card classes={{ root: errorClassname }}>
+					<ItemG container alignItems={'center'} className={classes.header}>
+						<ItemG xs>
+							<Typography className={classes.headerText} variant={'h6'}>{title}</Typography>
+						</ItemG>
+						<ItemG>
+							<IconButton onClick={handleClose}>
+								<Close className={classes.headerText} />
+							</IconButton>
+						</ItemG>
+					</ItemG>
 					<CardContent className={classes.content}>
-						<Grid container justify={'center'} zeroMinWidth>
-							<Grid item>
+						<ItemG container justify={'center'}>
+							<ItemG xs={12}>
 								{this.renderType()}
-								{/* {content ? content : <TextField label={'Contains'} value={value} onChange={this.handleInput} onKeyPress={this.handleKeyPress} />} */}
-							</Grid>
-							<Grid item xs={12} container justify={'center'}>
-								<Button onClick={this.handleButton}>
-									Add Filter
-								</Button>
-							</Grid>
-						</Grid>
+							</ItemG>
+						</ItemG>
 					</CardContent>
+					<CardActions>
+						<ItemG xs={12} container justify={'center'}>
+							<Button onClick={this.handleButton} onKeyPress={this.handleKeyPress}>
+								{!edit ? t('actions.addFilter') : t('actions.editFilter')}
+							</Button>
+						</ItemG>
+					</CardActions>
 				</Card>
 			</Popover>
 		)

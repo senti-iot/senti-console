@@ -10,7 +10,7 @@ import Orgs from 'views/Orgs/Orgs';
 import withLocalization from 'components/Localization/T';
 import withSnackbar from 'components/Localization/S';
 import { CircularLoader, GridContainer } from 'components';
-import { People, Business, StarBorder, Star } from 'variables/icons';
+import { People, Business, StarBorder, Star, Person } from 'variables/icons';
 import { filterItems, handleRequestSort } from 'variables/functions';
 import { finishedSaving, removeFromFav, addToFav, isFav } from 'redux/favorites';
 import { connect } from 'react-redux'
@@ -18,6 +18,7 @@ import FavoritesTable from 'components/Favorites/FavoritesTable';
 import { Paper, withStyles } from '@material-ui/core';
 import TableToolbar from 'components/Table/TableToolbar';
 import projectStyles from 'assets/jss/views/projects';
+import { customFilterItems } from 'variables/Filters';
 
 class Management extends Component {
 	constructor(props) {
@@ -30,9 +31,7 @@ class Management extends Component {
 			selected: [],
 			filters: {
 				keyword: '',
-				startDate: null,
-				endDate: null,
-				activeDateFilter: false
+				custom: []
 			},
 			loading: true,
 			users: [],
@@ -40,33 +39,65 @@ class Management extends Component {
 		}
 		props.setHeader('users.pageTitle', false, '', 'users')
 	}
+
 	tabs = [
 		{ id: 0, title: this.props.t('users.tabs.users'), label: <People />, url: `/management/users` },
 		{ id: 1, title: this.props.t('users.tabs.orgs'), label: <Business />, url: `/management/orgs` },
 		{ id: 3, title: this.props.t('sidebar.favorites'), label: <Star />, url: `/management/favorites` }
 	]
+
 	componentDidMount = async () => {
 		this.handleTabs()
 		await this.getData()
 	}
+
 	reload = () => {
 		this.getData()
 		this.handleFilterKeyword('')
+	}
+
+	renderUserGroup = (user) => {
+		const { t } = this.props
+		if (user.groups) {
+			if (user.groups[136550100000143])
+				return t("users.groups.superUser")
+			if (user.groups[136550100000211])
+				return t("users.groups.accountManager")
+			if (user.groups[136550100000225])
+				return t("users.groups.user")
+		}
+		return ''
 	}
 	getData = async () => {
 		let users = await getAllUsers().then(rs => rs)
 		let orgs = await getAllOrgs().then(rs => rs)
 		this.setState({
-			users: users ? users : [],
+			users: users ? users.map(u => ({ ...u, group: this.renderUserGroup(u) })) : [],
 			orgs: orgs ? orgs : [],
 			loading: false
 		})
-
 	}
+
+	dTypes = () => {
+		const { t } = this.props
+		return [
+			{ value: 'user', label: t('favorites.types.user'), icon: <Person /> },
+			{ value: 'org', label: t('favorites.types.org'), icon: <Business /> },
+		]
+	}
+
+	ft = () => {
+		const { t } = this.props
+		return [
+			{ key: "", name: t('filters.freeText'), type: 'string', hidden: true },
+			{ key: 'name', name: t('favorites.fields.name'), type: 'string' },
+			{ key: 'type', name: t('favorites.fields.type'), type: 'dropDown', options: this.dTypes() }
+		]
+	}
+
 	handleFilterKeyword = (value) => {
 		this.setState({
 			filters: {
-				...this.state.filters,
 				keyword: value
 			}
 		})
@@ -96,9 +127,14 @@ class Management extends Component {
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
 	}
-
+	filterFavorites = (data) => {
+		const { filters } = this.state
+		const rFilters = this.props.filtersFavorites
+		return customFilterItems(this.filterItems(data, filters), rFilters)
+	}
 	filterItems = (data) => {
-		return filterItems(data, this.state.filters)
+		const { filters } = this.state
+		return filterItems(data, filters)
 	}
 	options = () => {
 		const { t } = this.props
@@ -176,20 +212,26 @@ class Management extends Component {
 
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		if (property !== this.state.orderBy) {
+			order = 'asc'
+		}
 		handleRequestSort(property, order, this.props.favorites)
 		this.setState({ order, orderBy: property })
 	}
-	renderTableToolBar = () => {
+	renderTableToolBar = (reduxKey) => {
 		const { t } = this.props
 		const { selected } = this.state
 		return <TableToolbar //	./TableToolbar.js
+			ft={this.ft()}
+			reduxKey={reduxKey}
+			addFilter={this.addFilter}
+			removeFilter={this.removeFilter}
 			anchorElMenu={this.state.anchorElMenu}
 			handleToolbarMenuClose={this.handleToolbarMenuClose}
 			handleToolbarMenuOpen={this.handleToolbarMenuOpen}
 			numSelected={selected.length}
 			options={this.options}
 			t={t}
-		// content={this.renderTableToolBarContent()}
 		/>
 	}
 	renderTable = () => {
@@ -201,16 +243,11 @@ class Management extends Component {
 			handleClick={this.handleClick}
 			handleCheckboxClick={this.handleCheckboxClick}
 			handleSelectAllClick={this.handleSelectAllClick}
-			data={this.filterItems(usersAndOrgs)}
+			data={this.filterFavorites(usersAndOrgs)}
 			tableHead={this.favoritesHeaders()}
-			handleFilterEndDate={this.handleFilterEndDate}
-			handleFilterKeyword={this.handleFilterKeyword}
-			handleFilterStartDate={this.handleFilterStartDate}
 			handleRequestSort={this.handleRequestSort}
-			handleOpenUnassignDevice={this.handleOpenUnassignDevice}
 			orderBy={orderBy}
 			order={order}
-			filters={this.state.filters}
 			t={t}
 		/>
 	}
@@ -219,9 +256,8 @@ class Management extends Component {
 		const { loading } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
-				{this.renderTableToolBar()}
+				{this.renderTableToolBar('favorites')}
 				{this.renderTable()}
-				{/* {this.renderConfirmDelete()} */}
 			</Paper>
 			}
 		</GridContainer>
@@ -230,7 +266,7 @@ class Management extends Component {
 	render() {
 		const { users, orgs, filters, loading } = this.state
 		const { favorites } = this.props
-		const { classes, ...rest } = this.props
+		const { classes, filtersOrgs, filtersUsers, ...rest } = this.props
 		return (
 			!loading ? <Fragment>
 				<Toolbar
@@ -244,9 +280,9 @@ class Management extends Component {
 				/>
 				<Switch>
 					<Route path={`${this.props.match.url}/users/new`} render={(rp) => <CreateUser {...rest} />} />
-					<Route path={`${this.props.match.url}/users`} render={(rp) => <Users {...rest} reload={this.reload} users={this.filterItems(users)} />} />
+					<Route path={`${this.props.match.url}/users`} render={(rp) => <Users filters={filtersUsers} {...rest} reload={this.reload} users={this.filterItems(users)} />} />
 					<Route path={`${this.props.match.url}/orgs/new`} component={(rp) => <CreateOrg {...rest} />} />
-					<Route path={`${this.props.match.url}/orgs`} render={(rp) => <Orgs {...rest} reload={this.reload} orgs={this.filterItems(orgs)} />} />
+					<Route path={`${this.props.match.url}/orgs`} render={(rp) => <Orgs filters={filtersOrgs} {...rest} reload={this.reload} orgs={this.filterItems(orgs)} />} />
 					<Route path={`${this.props.match.url}/favorites`} render={() => this.renderFavorites()} />
 					<Redirect from={'/management'} to={'/management/users'} />
 				</Switch>
@@ -258,7 +294,10 @@ class Management extends Component {
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	favorites: state.favorites.favorites,
-	saved: state.favorites.saved
+	saved: state.favorites.saved,
+	filtersOrgs: state.appState.filters.orgs,
+	filtersUsers: state.appState.filters.users,
+	filtersFavorites: state.appState.filters.favorites
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -22,7 +22,7 @@ const Sidebar = ({ ...props }) => {
 		return props.menuRoute === routeName ? true : false;
 	}
 
-	const { classes, color, logo, image, logoText, routes, t  } = props;
+	const { classes, color, logo, image, logoText, routes, t, defaultRoute } = props;
 	var links = (
 		<List className={classes.list}>
 			{routes.map((prop, key) => {
@@ -59,7 +59,7 @@ const Sidebar = ({ ...props }) => {
 	);
 	var brand = (
 		<div className={classes.logo}>
-			<Link to={'/'} className={classes.logoLink}>
+			<Link to={defaultRoute ? defaultRoute : '/'} className={classes.logoLink}>
 				<div className={classes.logoImage}>
 					<img src={logo} alt='logo' className={classes.img} />
 				</div>
@@ -69,7 +69,7 @@ const Sidebar = ({ ...props }) => {
 	);
 	var smallBrand = (
 		<div className={classes.logo}>
-			<Link to={'/'} onClick={props.handleDrawerToggle} className={classes.logoLink}>
+			<Link to={defaultRoute ? defaultRoute : '/'} onClick={props.handleDrawerToggle} className={classes.logoLink}>
 				<div className={classes.logoImage}>
 					<img src={logo} alt='logo' className={classes.img}/>
 				</div>

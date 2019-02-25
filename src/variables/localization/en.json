@@ -1,14 +1,18 @@
 {
-	"map": {
-		"themes": {
-			"0": "Humanitarian",
-			"1": "Ortho",
-			"2": "Carto Dark",
-			"3": "Carto",
-			"4": "Watercolor",
-			"5": "Toner",
-			"6": "OpenStreetMap",
-			"7": "Topographic"
+	"cookies": {
+		"title": "Senti.Cloud Cookie Policy",
+		"subtitle": "How to use Senti.Cloud cookies",
+		"p": {
+			"1": "Senti.Cloud respects the privacy of our users and is committed to protecting all forms of personal information that users have sent to Senti.Cloud.",
+			"2": "By accessing, browsing and/or using Senti.Cloud, you acknowledge that you have read, understood and agree to be subject to the terms and conditions of this cookie policy and therefore agree to use cookies in accordance with these terms.",
+			"3": "In general, our users can visit Senti.Cloud without telling us who they are and without disclosing any kind of personal information. Senti.Cloud uses cookies to ensure the best user experience. Cookies are small text files that are located in the user's browser to track usage traces and store preferences. Our cookies do not contain information that can identify people.",
+			"4": "Cookies can be either ”persistent” cookies or ”session” cookies: A persistent cookie is stored by a browser and is valid until its set expiration date if it is not deleted by the user before the expiration date. However, a session cookie expires at the end of a user visit when the browser is closed. We use both session and persistent cookies at Senti.Cloud.",
+			"5": "We also use Google Analytics to analyze the use of Senti.Cloud. Our analytics service provider generates statistics and other website usage information through cookies. The cookies for web analytics that we use at Senti.Cloud have the following names: _ga, _gat, _gid.",
+			"6": "The information generated in relation to Senti.Cloud is used to create reports on the use of Senti.Cloud.",
+			"7": "Our Analytics Services Privacy Policy Provider is available at: ",
+			"8": "Users can manage and/or delete cookies - for more information, please see ",
+			"9": "Blocking or deleting all cookies has a negative influence on the stability of many websites. If users choose to block our cookies, they are not able to use all of the website's properties.",
+			"10": "The policy may be updated from time to time, e.g. due to modifications of relevant legislation or changes in our corporate structure. We encourage all our users to periodically re-read this page for the latest information on our data protection practices."
 		}
 	},
 	"404": {
@@ -19,21 +23,27 @@
 	"": "",
 	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
-		"goToDevice": "Go to device(s)",
+		"accept": "Accept",
+		"addFilter": "Add filter",
 		"apply": "Apply",
 		"back": "Previous",
 		"cancel": "Cancel",
 		"changePassword": "Change Password",
 		"decline": "Decline",
 		"deletePicture": "Delete this picture",
+		"editFilter": "Edit filter",
+		"editLocation": "Edit location",
 		"finish": "Finish",
 		"forgotPass": "Password Forgotten?",
 		"getLocation": "Get location",
 		"goTo": "Go to",
+		"goToDevice": "Go to device(s)",
 		"goToLogin": "Go to Login Page",
 		"heatMap": "Heatmap",
 		"insertAddress": "Enter an address",
 		"learnMore": "Learn more",
+		"readMore": "Read more",
+		"read": "Read",
 		"login": "Log in",
 		"manualCalibration": "Manual calibration",
 		"next": "Next",
@@ -52,7 +62,8 @@
 		"uploadImages": "Upload images",
 		"viewDevice": "View device",
 		"viewDeviceList": "View device list",
-		"yes": "Yes"
+		"yes": "Yes",
+		"extendProfile": "Extended Profile"
 	},
 	"calibration": {
 		"header": "On-site setup %{deviceId}",
@@ -76,16 +87,17 @@
 		}
 	},
 	"charts": {
+		"controlPanel": "Data control panel",
 		"fields": {
-			"thisDay": "On this day:",
 			"date": "Date",
-			"range": "Period of time",
-			"weather": "Weather",
-			"temperature": "Temperature",
-			"summary": "Weather",
-			"windspeed": "Windspeed",
 			"humidity": "Humidity",
-			"pressure": "Pressure"
+			"pressure": "Pressure",
+			"range": "Period of time",
+			"summary": "Weather",
+			"temperature": "Temperature",
+			"thisDay": "On this day:",
+			"weather": "Weather",
+			"windspeed": "Windspeed"
 		},
 		"type": {
 			"bar": "Bar",
@@ -100,6 +112,7 @@
 			"data": "Data",
 			"log": "Device log"
 		},
+		"createCollection": "Create collection",
 		"editCollection": "Edit collection",
 		"fields": {
 			"activated": "Activated",
@@ -241,12 +254,16 @@
 			"status": "Status",
 			"tableCellAddress": "No address",
 			"tableCellDeviceName": "No name",
-			"totalcount": "Total count"
+			"totalCount": "Total count"
 		},
 		"status": {
-			"green": "The device is connected and data is received",
-			"red": "The device is not connected, and no data is received",
-			"yellow": "The device is connected, but no data is received"
+			"green": "Device is connected and data is received",
+			"greenShort": "Receives data",
+			"noDevice": "No device attached",
+			"red": "Device is disconnected, and no data is received",
+			"redShort": "Disconnected",
+			"yellow": "Device is connected, but no data is received",
+			"yellowShort": "Receives no data"
 		},
 		"tabs": {
 			"cardView": "Card view",
@@ -255,10 +272,16 @@
 		}
 	},
 	"dialogs": {
+		"cookies": {
+			"message": {
+				"snackbar": "Senti.cloud uses cookies for functional purposes. For more information please read our cookies policy."
+			}
+		},
 		"delete": {
 			"message": {
 				"collection": "Are you sure you want to delete this data collection ( %{collection} )?",
 				"collections": "Are you sure you want to delete these data collections:",
+				"deviceImage": "Are you sure you want to delete this picture?",
 				"org": "Are you sure you want to delete this organisation?",
 				"orgs": "Are you sure you want to delete these organisations:",
 				"project": "Are you sure you want to delete this project?",
@@ -269,6 +292,7 @@
 			"title": {
 				"collection": "Delete data collection?",
 				"collections": "Delete data collections?",
+				"deviceImage": "Delete this picture?",
 				"org": "Delete organisation?",
 				"orgs": "Delete organisations?",
 				"project": "Delete project?",
@@ -283,7 +307,11 @@
 			"startAnalyzeData": "Start analyzing your data",
 			"welcome": "Welcome to Senti.Cloud!"
 		},
+		"export": {
+			"message": "Data details:"
+		},
 		"login": {
+			"passwordReseted": "Your password has been resetted!",
 			"resetPassRequestMessage": "An E-mail has been sent with instructions on how to reset your password!",
 			"resetPasswordMessage": "Reset your password by entering your E-mail"
 		},
@@ -309,6 +337,7 @@
 		}
 	},
 	"favorites": {
+		"pageTitle": "Favorites",
 		"fields": {
 			"name": "Name",
 			"type": "Type"
@@ -322,6 +351,12 @@
 		}
 	},
 	"filters": {
+		"freeText": "Free text",
+		"after": "after",
+		"afterDate": "After date",
+		"before": "before",
+		"beforeDate": "Before date",
+		"contains": "Contains",
 		"dateOptions": {
 			"30days": "Last 30 days",
 			"7days": "Last 7 days",
@@ -335,13 +370,27 @@
 			"today": "Today",
 			"yesterday": "Yesterday"
 		},
+		"devices": {
+			"calibrated": "Calibrated",
+			"notCalibrated": "Not calibrated"
+		},
 		"display": "Display:",
 		"endDate": "End date",
 		"options": {
 			"graphType": "Chart type"
 		},
+		"orgs": {
+			"hasParentOrg": "With parent organisation",
+			"noParentOrg": "Without parent organisation",
+			"parentOrg": "With/Without parent organisation"
+		},
 		"search": "Search",
-		"startDate": "Start date"
+		"startDate": "Start date",
+		"users": {
+			"hasLogged": "Ever logged in",
+			"hasLoggedIn": "Has logged in",
+			"neverLoggedIn": "Never logged in"
+		}
 	},
 	"images": {
 		"add": "Add images",
@@ -360,20 +409,42 @@
 		"pass": "Password",
 		"username": "Username"
 	},
+	"map": {
+		"themes": {
+			"0": "Humanitarian",
+			"1": "Ortho",
+			"2": "Carto Dark",
+			"3": "Carto",
+			"4": "Watercolor",
+			"5": "Toner",
+			"6": "OpenStreetMap",
+			"7": "Topographic"
+		}
+	},
 	"menus": {
+		"copyEmails": "Copy e-mails to clipboard",
 		"assign": {
-			"collectionToProject": "Assign data collection",
-			"collectionsToProject": "Assign data collections",
-			"deviceToCollection": "Assign device",
-			"deviceToOrg": "Assign device"
+			"collectionToProject": "Assign Data Collection to Project",
+			"collectionsToProject": "Assign Data Collections to Project",
+			"deviceToCollection": "Assign Device to Data Collection",
+			"deviceToOrg": "Assign Device to Organisation"
+		},
+		"charts": {
+			"addAPeriod": "Add a period",
+			"resetToDefault": "Reset to default",
+			"showHidePeriods": "Show / Hide a period",
+			"deleteThisPeriod": "Delete this period",
+			"hideThisPeriod": "Hide this period"
 		},
 		"calibrate": "Calibrate",
+		"changePassword": "Change Password",
 		"create": {
 			"project": "Create project",
 			"user": "Create user"
 		},
 		"delete": "Delete",
 		"edit": "Edit",
+		"export": "Export data",
 		"exportPDF": "Print as PDF",
 		"favorites": {
 			"add": "Add to favorites",
@@ -405,14 +476,15 @@
 		"userResendEmail": "Resend Confirm Email"
 	},
 	"no": {
-		"birthdays": "No birthdays today",
-		"doi": "No Holidays today",
 		"activeDevice": "No active device",
 		"audioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a different browser.",
+		"birthdays": "No birthdays today",
 		"collection": "No collection",
 		"collections": "No collections",
 		"device": "No device",
 		"devices": "No devices",
+		"doi": "No Holidays today",
+		"org": "No organisation",
 		"history": "No history",
 		"project": "No project",
 		"projects": "No projects"
@@ -432,12 +504,14 @@
 			"region": "Region",
 			"topLevelOrg": "No Parent Organisation",
 			"url": "Website",
-			"zip": "ZIP Code"
+			"zip": "ZIP Code",
+			"deviceCount": "Number of devices"
 		},
 		"organisation": "Organisation",
 		"pageTitle": "Organisations",
 		"updateOrg": "Edit Organisation",
 		"validation": {
+			"notWebsite": "Not a valid URL",
 			"networkError": "Network Error!",
 			"noAddress": "Address missing",
 			"noCity": "City missing",
@@ -487,6 +561,7 @@
 	},
 	"settings": {
 		"alerts": "Alerts",
+		"defaultRoute": "Start page",
 		"calibration": {
 			"12months": "Every 12 months",
 			"3months": "Every 3 months",
@@ -502,9 +577,16 @@
 			"time": "By time"
 		},
 		"chart": {
+			"period": "Period",
+			"periods": "Periods",
+			"YAxis": {
+				"logarithmic": "Logarithmic scale",
+				"linear": "Linear scale"
+			},
 			"defaultChart": "Default chart type",
 			"rawData": "Raw data"
 		},
+		"default": "Default",
 		"defaultDataSet": "Default data set for charts",
 		"didYouKnow": "Intelligent Notifications",
 		"discoverSenti": "Show Welcome to Senti on Dashboard",
@@ -515,11 +597,17 @@
 			"display": "Display",
 			"notifications": "Notifications"
 		},
+		"t&c": {
+			"title": "Terms and conditions",
+			"cookiesPolicy": "Cookies policy"
+		},
 		"language": "Language",
 		"languages": {
 			"da": "Danish",
 			"en": "English"
 		},
+		"map": "Map theme",
+		"notDefault": "Not default",
 		"pageTitle": "Settings",
 		"sideBarLeft": "Left",
 		"sideBarLoc": "Menu location",
@@ -541,6 +629,7 @@
 		"users": "Users"
 	},
 	"snackbars": {
+		"emailsCopied": "E-mail adresses copied to clipboard",
 		"assign": {
 			"collectionToOrg": "Data collection %{collection} assigned to organisation %{org}",
 			"collectionToProject": "Data collection %{collection} assigned to project %{project}",
@@ -549,6 +638,7 @@
 			"deviceToOrg": "Device %{device} assigned to organisation %{org}",
 			"projectToOrg": "Project %{project} assigned to organisation %{org}"
 		},
+		"assignFailed": "Assignment failed!",
 		"collectionCreated": "Data Collection has been created!",
 		"collectionDeleted": "Data Collection has been deleted!",
 		"collectionUpdated": "Data Collection has been updated!",
@@ -597,11 +687,20 @@
 		"addNewProject": "Add project",
 		"filter": "Filter",
 		"rowsPerPage": "Rows per page",
+		"cardsPerPage": "Cards per page",
 		"selected": "selected"
 	},
 	"users": {
 		"editUser": "Edit user",
 		"fields": {
+			"bio": "Bio",
+			"newsletter": "Newsletter",
+			"position": "Position",
+			"location": "Location",
+			"recoveryEmail": "Recovery email",
+			"linkedInURL": "LinkedIn",
+			"twitterURL": "Twitter",
+			"birthday": "Birthday",
 			"accessLevel": "Access Level",
 			"active": "Active",
 			"confirmPass": "Confirm new password",

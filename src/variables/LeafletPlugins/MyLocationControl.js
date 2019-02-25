@@ -3,9 +3,8 @@ import ReactDOM from 'react-dom'
 import L, { Control } from 'leaflet'
 import { MapControl, withLeaflet } from 'react-leaflet'
 import { withStyles, IconButton, MuiThemeProvider } from '@material-ui/core';
-import { LocationOn } from 'variables/icons'
 import teal from '@material-ui/core/colors/teal'
-// import LocationMarker from './LocationMarker';
+import { MyLocation } from 'variables/icons';
 
 const styles = theme => ({
 	locationMarker: {
@@ -83,17 +82,12 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 
 			this.addClasses(this.button, this.props.classes.locRequesting)
 
-			// this.removeClasses(this.button, this.props.classes.locActiveButton);
-			// this.addClasses(this.button, this.options.iconLoading);
+		
 		} else if (state === 'active') {
 			this.removeClasses(this.button, this.props.classes.locRequesting)
 			this.addClasses(this.button, this.props.classes.locActiveButton)
 		} else if (state === 'following') {
-			// this.removeClasses(this.container, "requesting");
-			// this.addClasses(this.container, "active following");
 
-			// this.removeClasses(this.button, this.options.iconLoading);
-			// this.addClasses(this.button, this.options.icon);
 		}
 	}
 	createLeafletElement(props) {
@@ -116,20 +110,18 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 				returnToPrevBounds: false,
 				locateOptions: {
 					maxZoom: Infinity,
-					watch: true,  // if you overwrite this, visualization cannot be updated
-					setView: false // have to set this to false because we have to do setView manually
+					watch: true,
+					setView: false
 				},
 				circleStyle: {
 					className: 'leaflet-control-locate-circle',
 					color: '#136AEC',
-					// fillColor: '#136AEC',
 					fillColor: teal[500],
 					fillOpacity: 0.15,
 					weight: 0
 				},
 				markerStyle: {
 					color: '#fff',
-					// fillColor: '#2A93EE',
 					fillColor: teal[500],
 					fillOpacity: 1,
 					weight: 3,
@@ -142,10 +134,10 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 					<MuiThemeProvider theme={this.props.theme}>
 						<IconButton
 							buttonRef={r => this.button = r}
-							className={this.props.classes.locButton}
+							className={this.props.classes.locButton + " leaflet-touch leaflet-bar" }
 							onClick={this.onClick}
 							color={'primary'}>
-							<LocationOn />
+							<MyLocation />
 						</IconButton>
 					</MuiThemeProvider>
 				)
@@ -215,19 +207,15 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 		this.leafletElement._userZoomed = false;
 
 		if (le.active && !le._event) {
-			// click while requesting
 			this.stop();
 		} else {
-			// console.log('active && event', le.active, le._event)
 			if (le.active && le._event !== undefined) {
 				var behaviors = le.options.clickBehaviour;
 				var behavior = behaviors.outOfView;
-				// console.log(this.map.getBounds().contains(le._event.latlng))
 				if (this.map.getBounds().contains(le._event.latlng)) {
 					behavior = wasFollowing ? behaviors.inView : behaviors.inViewNotFollowing;
 				}
 
-				// Allow inheriting from another behavior
 				if (behaviors[behavior]) {
 					behavior = behaviors[behavior];
 				}
@@ -264,9 +252,6 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 		if (this.leafletElement._event) {
 			this.drawMarker(this.map)
 		}
-		// if (this.leafletElement.options.setView) {
-		// 	this.setView()
-		// }
 		this.updateContainerStyle()
 	}
 	activate = () => {
@@ -431,7 +416,6 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 			var style = options.circleStyle
 			if (!le._circle) {
 				this.leafletElement._circle = L.circle(latlng, radius, style).addTo(this.map)
-				// console.log('circle', this.leafletElement._circle)
 			}
 			else {
 				this.leafletElement._circle.setLatLng(latlng).setRadius(radius).setStyle(style)
@@ -471,14 +455,12 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 			return;
 		}
 		if (le.active && !le._event) {
-			// active but don't have a location yet
 			this.setClasses('requesting');
 		} else if (this.isFollowing()) {
 			this.setClasses('following');
 		} else if (le.active) {
 			this.setClasses('active');
 		} else {
-			// this.cleanClasses();s
 		}
 	}
 
@@ -504,7 +486,7 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 		let le = this.leafletElement
 		this.drawMarker();
 		if (this.isOutsideMapBounds()) {
-			this.leafletElement._event = undefined;  // clear the current location so we can get back into the bounds
+			this.leafletElement._event = undefined; 
 			this.onLocationOutsideMapBounds(this.leafletElement);
 		} else {
 			if (le.options.keepCurrentZoomLevel) {
@@ -512,14 +494,12 @@ export default withLeaflet(withStyles(styles, { withTheme: true })(class Fullscr
 				f.bind(this.map)([le._event.latitude, le._event.longitude]);
 			} else {
 				var df = le.options.flyTo ? this.map.flyToBounds : this.map.fitBounds;
-				// Ignore zoom events while setting the viewport as these would stop following
 				le._ignoreEvent = true;
 				df.bind(this.map)(this.getLocationBounds(le._event), {
 					padding: le.options.circlePadding,
 					maxZoom: le.options.locateOptions.maxZoom
 				});
 				L.Util.requestAnimFrame(function () {
-					// Wait until after the next animFrame because the flyTo can be async
 					le._ignoreEvent = false;
 				}, this.leafletElement);
 

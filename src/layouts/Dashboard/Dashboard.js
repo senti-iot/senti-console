@@ -1,10 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
-// creates a beautiful scrollbar
-import PerfectScrollbar from 'perfect-scrollbar';
-import 'perfect-scrollbar/css/perfect-scrollbar.css';
-import { withStyles, Snackbar, Button } from '@material-ui/core';
+import { withStyles, Snackbar, IconButton } from '@material-ui/core';
 import { Header, Sidebar, CircularLoader } from 'components';
 
 import dashboardRoutes from 'routes/dashboard.js';
@@ -19,6 +16,8 @@ import withSnackbarHandler from 'components/Localization/SnackbarHandler';
 import {  Close } from 'variables/icons';
 import { lightTheme, darkTheme } from 'variables/themes'
 import { getDaysOfInterest } from 'redux/doi';
+import Cookies from 'components/Cookies/Cookies';
+
 class App extends React.Component {
 	constructor(props) {
 		super(props)
@@ -80,14 +79,14 @@ class App extends React.Component {
 			else {
 				document.body.style = 'background: #eee';
 			}
-			if (navigator.platform.indexOf('Win') > -1) {
+			/* if (navigator.platform.indexOf('Win') > -1) {
 				if (!this.props.loading) {
 					if (this.refs.mainPanel) {
-						//eslint-disable-next-line
+						eslint-disable-next-line
 						const ps = new PerfectScrollbar(this.refs.mainPanel);
 					}
 				}
-			}
+			} */
 		})
 	}
 	componentWillUnmount = () => {
@@ -109,7 +108,7 @@ class App extends React.Component {
 	}
 	
 	render() {
-		const { classes, t, loading, sOpt, ...rest } = this.props;
+		const { classes, t, loading, sOpt, defaultRoute, ...rest } = this.props;
 		return (
 			<MuiThemeProvider theme={this.props.theme === 0 ? lightTheme : darkTheme }>
 
@@ -126,6 +125,7 @@ class App extends React.Component {
 						/>
 						<Fragment>
 							<Sidebar
+								defaultRoute={defaultRoute}
 								routes={dashboardRoutes}
 								logo={logo}
 								handleDrawerToggle={this.handleDrawerToggle}
@@ -152,6 +152,7 @@ class App extends React.Component {
 											}} />}
 									</Switch>
 								</div>
+								<Cookies/>
 								<Snackbar
 									anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 									open={this.props.sOpen}
@@ -167,14 +168,16 @@ class App extends React.Component {
 									autoHideDuration={3000}
 									message={<span>{t(this.props.sId, this.props.sOpt)}</span>}
 									action={
-										<Button size={'small'} variant={'text'} onClick={this.props.sClose} >
-											<Close style={{ color: 'white' }}/>
-										</Button>
+										<IconButton color={'primary'} size={'small'} onClick={this.props.sClose} >
+											<Close />
+										</IconButton>
 									}
 								/>
+							
 							</Fragment> : <CircularLoader />}
 						</Fragment>
 					</div>
+				
 				</div >
 			</MuiThemeProvider>
 
@@ -187,12 +190,15 @@ App.propTypes = {
 };
 const mapStateToProps = (state) => ({
 	loading: state.settings.loading,
-	theme: state.settings.theme
+	theme: state.settings.theme,
+	// cookies: state.settings.cookies,
+	defaultRoute: state.settings.defaultRoute
 })
 
 const mapDispatchToProps = dispatch => ({
 	getSettings: async () => dispatch(await getSettings()),
-	getDaysOfIterest: async () => dispatch(await getDaysOfInterest())
+	getDaysOfIterest: async () => dispatch(await getDaysOfInterest()),
+	// acceptCookies: async (val) => dispatch(await acceptCookiesFunc(val))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withSnackbarHandler()((withLocalization()(withStyles(appStyle)(App)))))

@@ -9,7 +9,8 @@ const styles = {
 		fontWeight: 500
 	},
 	avatar: {
-		backgroundColor: teal[500],
+		backgroundColor: 'transparent',
+		color: teal[500]
 	},
 	card: {
 		margin: 8,
@@ -22,7 +23,7 @@ const styles = {
 	},
 	media: {
 		height: 0,
-		paddingTop: '56.25%', // 16:9
+		paddingTop: '56.25%',
 	},
 	rightAction: {
 		marginLeft: 'auto'

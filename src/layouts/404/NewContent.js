@@ -3,9 +3,8 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-// import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { ItemG, /* CircularLoader */ } from 'components';
+import { ItemG } from 'components';
 import { primaryColor } from 'assets/jss/material-dashboard-react';
 import { withStyles, CircularProgress, Typography } from '@material-ui/core';
 
@@ -36,10 +35,10 @@ class NewContent extends React.Component {
 					aria-labelledby='alert-dialog-title'
 					aria-describedby='alert-dialog-description'
 				>
-					<DialogTitle id='alert-dialog-title'>Update Found</DialogTitle>
+					<DialogTitle id='alert-dialog-title'>Senti.Cloud Update Found</DialogTitle>
 					<DialogContent>
 						<Typography id='alert-dialog-description'>
-							New Content is available! {this.props.installing ? `Updating...` : `Please reload the page!`}
+							Update is available! {this.props.installing ? `Updating...` : `Please reload the page to access updates!`}
 						</Typography>
 					</DialogContent>
 					<DialogActions>

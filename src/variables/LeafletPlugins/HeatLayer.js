@@ -3,10 +3,10 @@ import L from 'leaflet'
 import { MapLayer, withLeaflet } from 'react-leaflet'
 import HeatmapJS from 'heatmap.js'
 import { blue, teal, yellow, red, orange } from '@material-ui/core/colors';
+import { connect } from 'react-redux'
+import moment from 'moment'
 
-
-
-export default withLeaflet(class HeatLayer extends MapLayer {
+class HeatLayer extends MapLayer {
 	constructor(props, context) {
 		super(props)
 		this.map = context.map || props.leaflet.map
@@ -17,30 +17,26 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 
 		this._el.style.width = size.x + 'px';
 		this._el.style.height = size.y + 'px';
-		// this._el.style.opacity = 1;
-		// this._el.style.backgroundColor = "red"
 		this._el.style.position = 'absolute';
 
 	}
+	defaultValue = 25
 	max = 50000
 	min = 0
 	defaultConfig = {
 		fixedRadius: true,
-		// radiusMeters: true,
 		radiusMeters: 50,
 		latField: "lat",
 		lngField: "lng",
 		valueField: "count",
 		container: this._el,
 		radius: 10,
-		maxOpacity: .8,
-		minOpacity: 0,
-		blur: .2,
+		maxOpacity: .5,
+		minOpacity: .3,
+		blur: 0,
 		gradient: {
-			// enter n keys between 0 and 1 here
-			// for gradient color customization
-			'0': 'white',
-			'.1': blue[200],
+			'0': blue[200],
+			'.1': blue[300],
 			'.2': blue[400],
 			'.4': teal[400],
 			'.6': yellow[600],
@@ -48,18 +44,43 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 			'1.0': red[700]
 		}
 	}
+	setMaxValues = () => {
+		const { from, to, timeType } = this.props
+		let diff = -1
+		switch (timeType) {
+			case 0:
+				this.max = this.defaultValue
+				break
+			case 1:
+				diff = moment(to).diff(from, 'hours')
+				if (diff >= 1) {
+					this.max = this.defaultValue * 60 * diff
+				}
+				else {
+					this.max = this.defaultValue * 60
+				}
+				break
+			case 2:
+			case 3:
+				diff = moment(to).diff(from, 'days')
+				if (diff >= 1)
+					this.max = this.defaultValue * 1440 * diff
+				else {
+					this.max = this.defaultValue * 1440
+				}
+				break
+			default:
+				break
+		}
+	}
 	createLeafletElement() {
 		const Heatmap = L.Layer.extend({
 			initialize: function (config) {
-				//CFG  = this.props
-				// this.cfg = _this.defaultConfig;
-				// this._data = [];
-				// this._max = 1;
-				// this._min = 0;
 			},
 			onAdd: () => {
 				this.map.getPanes().overlayPane.appendChild(this._el)
 				this.defaultConfig.container = this._el
+				this.setMaxValues()
 				this.heatmap = HeatmapJS.create(this.defaultConfig)
 				if (this.heatmap) {
 					this.setData(this.props.data)
@@ -77,8 +98,8 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 		})
 		return new Heatmap()
 	}
-	componentDidUpdate = () => { 
-		this.setData(this.props.data)
+	componentDidUpdate = () => {
+		this.setData(this.props.data ? this.props.data : [])
 	}
 	componentDidMount = () => {
 		this.leafletElement._origin = this.map.layerPointToLatLng(new L.Point(0, 0));
@@ -110,7 +131,6 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 		var mapPane = this.map.getPanes().mapPane;
 		var point = mapPane._leaflet_pos;
 
-		// reposition the layer
 		this._el.style[this.CSS_TRANSFORM] = 'translate(' +
 			-Math.round(point.x) + 'px,' +
 			-Math.round(point.y) + 'px)';
@@ -119,17 +139,10 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 
 	update = () => {
 		var bounds /* zoom */ /* scale */
+		this.setMaxValues()
 		var generatedData = { max: this.max, min: this.min, data: [] };
 
 		bounds = this.map.getBounds();
-		// zoom = this.map.getZoom();
-		// crs = this.map.options.crs
-		// scale = crs.scale(zoom);7
-
-		// scale = Math.pow(2, zoom);
-		// var radiusMultiplier = this.defaultConfig.scaleRadius ? scale : 1;
-
-		//If there is no data do not render anything on the heatmap
 		if (this.props.data.length === 0) {
 			if (this.heatmap) {
 				this.heatmap.setData(generatedData);
@@ -139,7 +152,6 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 
 
 		var latLngPoints = [];
-		// var radiusMultiplier = this.defaultConfig.scaleRadius ? scale : 1;
 		var localMax = 0;
 		var localMin = 0;
 		var valueField = this.defaultConfig.valueField;
@@ -151,11 +163,9 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 			var latlng = entry.latlng;
 
 
-			// we don't wanna render points that are not even on the map ;-)
 			if (!bounds.contains(latlng)) {
 				continue;
 			}
-			// local max is the maximum within current bounds
 			localMax = Math.max(value, localMax);
 			localMin = Math.min(value, localMin);
 
@@ -165,14 +175,6 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 
 			var radius;
 			radius = this.getPixelRadius();
-			// if (this.defaultConfig.fixedRadius && this.defaultConfig.radiusMeters) {
-			// } 
-			// if (entry.radius) {
-			// 	radius = entry.radius * radiusMultiplier;
-			// } else {
-			// 	radius = (this.defaultConfig.radius || 2) * radiusMultiplier;
-
-			// }
 			latlngPoint.radius = radius;
 			latLngPoints.push(latlngPoint);
 		}
@@ -191,14 +193,12 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 		var pointC = this.map.latLngToContainerPoint(centerLatLng);
 		var pointX = [pointC.x + 1, pointC.y];
 
-		// convert containerpoints to latlng's
 		var latLngC = this.map.containerPointToLatLng(pointC);
 		var latLngX = this.map.containerPointToLatLng(pointX);
 
-		// Assuming distance only depends on latitude
 		var distanceX = latLngC.distanceTo(latLngX);
-		// 100 meters is the fixed distance here
 		var pixels = this.defaultConfig.radiusMeters / distanceX;
+
 		return pixels >= 1 ? pixels : 1;
 	}
 	reset = () => {
@@ -236,5 +236,18 @@ export default withLeaflet(class HeatLayer extends MapLayer {
 	render() {
 		return null
 	}
-})
+}
 
+const mapStateToProps = (state) => {
+	return ({
+		to: state.dateTime.heatMap.to,
+		from: state.dateTime.heatMap.from,
+		timeType: state.dateTime.heatMap.timeType
+	})
+}
+
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withLeaflet(HeatLayer))

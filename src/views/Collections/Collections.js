@@ -10,8 +10,9 @@ import { deleteCollection, getAllCollections, unassignDeviceFromCollection, getC
 import { filterItems, handleRequestSort } from 'variables/functions';
 import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks, Add, LayersClear, Star, StarBorder, SignalWifi2Bar } from 'variables/icons';
 import { GridContainer, CircularLoader, AssignDevice, AssignProject, ItemG } from 'components'
-import CollectionCard from 'components/Collections/CollectionCard';
+import CollectionsCards from './CollectionsCards';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
+import { customFilterItems } from 'variables/Filters';
 
 class Collections extends Component {
 	constructor(props) {
@@ -30,18 +31,38 @@ class Collections extends Component {
 			orderBy: 'name',
 			filters: {
 				keyword: '',
-				startDate: null,
-				endDate: null,
-				activeDateFilter: false
 			}
 		}
 		props.setHeader('collections.pageTitle', false, '', 'collections')
 	}
-	tabs = [
-		{ id: 0, title: this.props.t('devices.tabs.listView'), label: <ViewList />, url: `${this.props.match.url}/list` },
-		{ id: 1, title: this.props.t('devices.tabs.cardView'), label: <ViewModule />, url: `${this.props.match.url}/grid` },
-		{ id: 2, title: '', label: <Star />, url: `${this.props.match.url}/favorites` }
-	]
+	//#region Constants
+	tabs = () => {
+		const { t, match } = this.props
+		return [
+			{ id: 0, title: t('devices.tabs.listView'), label: <ViewList />, url: `${match.url}/list` },
+			{ id: 1, title: t('devices.tabs.cardView'), label: <ViewModule />, url: `${match.url}/grid` },
+			{ id: 2, title: '', label: <Star />, url: `${match.url}/favorites` }
+		]
+	}
+	dLiveStatus = () => {
+		const { t, classes } = this.props
+		return [
+			{ value: 0, label: t("devices.status.redShort"), icon: <SignalWifi2Bar className={classes.redSignal} /> },
+			{ value: 1, label: t("devices.status.yellowShort"), icon: <SignalWifi2Bar className={classes.yellowSignal} /> },
+			{ value: 2, label: t("devices.status.greenShort"), icon: <SignalWifi2Bar className={classes.greenSignal} /> }
+		]
+	}
+	ft = () => {
+		const { t } = this.props
+		return [
+			{ key: 'name', name: t('collections.fields.name'), type: 'string' },
+			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
+			{ key: 'devices[0].start', name: t('collections.fields.activeDeviceStartDate'), type: 'date' },
+			{ key: 'created', name: t('collections.fields.created'), type: 'date' },
+			{ key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
+			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
+		]
+	}
 	collectionsHeader = () => {
 		const { t } = this.props
 		return [
@@ -72,9 +93,54 @@ class Collections extends Component {
 			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
 			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
 			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
-
 		]
 		return allOptions
+	}
+	//#endregion
+
+	//#region Life Cycle
+	componentDidMount = async () => {
+		this._isMounted = 1
+		this.handleTabs()
+		await this.getData()
+
+	}
+
+	componentDidUpdate = (prevProps, prevState) => {
+		const { t, location, saved, s, isFav, finishedSaving } = this.props
+
+		if (location.pathname !== prevProps.location.pathname) {
+			this.handleTabs()
+		}
+		if (saved === true) {
+			const { collections, selected } = this.state
+			let collection = collections[collections.findIndex(d => d.id === selected[0])]
+			if (isFav({ id: collection.id, type: 'collection' })) {
+				s('snackbars.favorite.saved', { name: collection.name, type: t('favorites.types.collection') })
+				finishedSaving()
+				this.setState({ selected: [] })
+			}
+			if (!isFav({ id: collection.id, type: 'collection' })) {
+				s('snackbars.favorite.removed', { name: collection.name, type: t('favorites.types.collection') })
+				finishedSaving()
+				this.setState({ selected: [] })
+			}
+		}
+	}
+	componentWillUnmount = () => {
+		this._isMounted = 0
+	}
+	//#endregion
+
+	//#region Functions
+	addNewCollection = () => this.props.history.push({ pathname: `/collections/new`, prevURL: '/collections/list' })
+	
+	getFavs = () => {
+		let favorites = this.props.favorites.filter(f => f.type === 'collection')
+		let favCollections = favorites.map(f => {
+			return this.state.collections[this.state.collections.findIndex(d => d.id === f.id)]
+		})
+		return favCollections
 	}
 	addToFav = (favObj) => {
 		this.props.addToFav(favObj)
@@ -84,9 +150,10 @@ class Collections extends Component {
 		this.props.removeFromFav(favObj)
 		this.setState({ anchorElMenu: null })
 	}
-	handleEdit = () => {
-		const { selected } = this.state
-		this.props.history.push({ pathname: `/collection/${selected[0]}/edit`, prevURL: `/collections/list` })
+	filterItems = (data) => {
+		const rFilters  = this.props.filters
+		const { filters } = this.state
+		return customFilterItems(filterItems(data, filters), rFilters)
 	}
 	snackBarMessages = (msg, display) => {
 		const { s } = this.props
@@ -99,11 +166,9 @@ class Collections extends Component {
 				s('snackbars.exported')
 				break;
 			case 3:
-			//TODO
 				s('snackbars.assign.deviceToCollection', { collection: ``, what: 'Device' })
 				break;
 			case 6:
-			//TODO
 				s('snackbars.assign.deviceToCollection', { collection: `${collections[collections.findIndex(c => c.id === selected[0])].name}`, device: display })
 				break
 			default:
@@ -118,79 +183,49 @@ class Collections extends Component {
 		let collections = await getAllCollections().then(rs => rs)
 		if (this._isMounted) {
 			this.setState({
-				collections: collections ? collections : [],			
+				collections: collections ? collections : [],
 				loading: false
 			}, () => this.handleRequestSort(null, 'name', 'asc'))
 
 		}
 	}
-	componentDidMount = async () => {
-		this._isMounted = 1
-		this.handleTabs()
-		await this.getData()
+	//#endregion
 
+	//#region Handlers
+	
+	handleEdit = () => {
+		const { selected } = this.state
+		this.props.history.push({ pathname: `/collection/${selected[0]}/edit`, prevURL: `/collections/list` })
 	}
+
 	handleTabs = () => {
-		if (this.props.location.pathname.includes('grid'))
+		const { location } = this.props
+		if (location.pathname.includes('grid'))
 			this.setState({ route: 1 })
 		else {
-			if (this.props.location.pathname.includes('favorites'))
+			if (location.pathname.includes('favorites'))
 				this.setState({ route: 2 })
 			else {
 				this.setState({ route: 0 })
 			}
 		}
 	}
-	componentDidUpdate = (prevProps, prevState) => {
-		if (this.props.location.pathname !== prevProps.location.pathname) {
-			this.handleTabs()
-		}
-		if (this.props.saved === true) {
-			const { collections, selected } = this.state
-			let collection = collections[collections.findIndex(d => d.id === selected[0])]
-			if (this.props.isFav({ id: collection.id, type: 'collection' })) {
-				this.props.s('snackbars.favorite.saved', { name: collection.name, type: this.props.t('favorites.types.collection') })
-				this.props.finishedSaving()
-				this.setState({ selected: [] })
-			}
-			if (!this.props.isFav({ id: collection.id, type: 'collection' })) {
-				this.props.s('snackbars.favorite.removed', { name: collection.name, type: this.props.t('favorites.types.collection') })
-				this.props.finishedSaving()
-				this.setState({ selected: [] })
-			}
-		}
-	}
-	componentWillUnmount = () => {
-
-		this._isMounted = 0
-	}
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		if (property !== this.state.orderBy) {
+			order = 'asc'
+		}
 		let newData = handleRequestSort(property, order, this.state.collections)
 		this.setState({ collections: newData, order, orderBy: property })
 	}
-
-	filterItems = (data) => {
-		return filterItems(data, this.state.filters)
+	handleCollectionClick = id => e => {
+		e.stopPropagation()
+		this.props.history.push('/collection/' + id)
 	}
 
-	handleFilterStartDate = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				startDate: value,
-				activeDateFilter: value !== null ? true : false
-			}
-		})
-	}
-	handleFilterEndDate = (value) => {
-		this.setState({
-			filters: {
-				...this.state.filters,
-				endDate: value,
-				activeDateFilter: value !== null ? true : false
-			}
-		})
+	handleFavClick = id => e => {
+		e.stopPropagation()
+		this.props.history.push({ pathname: '/collection/' + id, prevURL: '/collections/favorites' })
 	}
 	handleFilterKeyword = (value) => {
 		this.setState({
@@ -279,16 +314,6 @@ class Collections extends Component {
 		}
 	}
 
-	handleToolbarMenuOpen = e => {
-		e.stopPropagation()
-		this.setState({ anchorElMenu: e.currentTarget })
-	}
-
-	handleToolbarMenuClose = e => {
-		e.stopPropagation();
-		this.setState({ anchorElMenu: null })
-	}
-
 	handleOpenDeleteDialog = () => {
 		this.setState({ openDelete: true, anchorElMenu: null })
 	}
@@ -326,8 +351,9 @@ class Collections extends Component {
 		else {
 			//The Collection doesn't have a device assigned to it...
 			this.handleCloseUnassignDevice()
-		 }
+		}
 	}
+	//#endregion
 
 	renderDeviceUnassign = () => {
 		const { t } = this.props
@@ -359,7 +385,7 @@ class Collections extends Component {
 	}
 	renderConfirmDelete = () => {
 		const { openDelete, collections, selected } = this.state
-		const { t, classes  } = this.props
+		const { t, classes } = this.props
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
@@ -386,13 +412,11 @@ class Collections extends Component {
 			</DialogActions>
 		</Dialog>
 	}
-	addNewCollection = () => this.props.history.push(`/collections/new`)
+
+
 	renderTableToolBarContent = () => {
-		// const { accessLevel } = this.props
-		// const { anchorFilterMenu } = this.state
-		// let access = accessLevel.apicollection ? accessLevel.apicollection.edit ? true : false : false
 		return <Fragment>
-			 <IconButton aria-label='Add new collection' onClick={this.addNewCollection}>
+			<IconButton aria-label='Add new collection' onClick={this.addNewCollection}>
 				<Add />
 			</IconButton>
 		</Fragment>
@@ -401,143 +425,93 @@ class Collections extends Component {
 	renderTableToolBar = () => {
 		const { t } = this.props
 		const { selected } = this.state
-		return <TableToolbar //	./TableToolbar.js
-			anchorElMenu={this.state.anchorElMenu}
-			handleToolbarMenuClose={this.handleToolbarMenuClose}
-			handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+		return <TableToolbar
+			ft={this.ft()}
+			reduxKey={'collections'}
 			numSelected={selected.length}
 			options={this.options}
 			t={t}
 			content={this.renderTableToolBarContent()}
 		/>
 	}
-	getFavs = () => {
-		let favorites = this.props.favorites.filter(f => f.type === 'collection')
-		let favCollections = favorites.map(f => {
-			return this.state.collections[this.state.collections.findIndex(d => d.id === f.id)]
-		})
-		return favCollections
-	}
-	renderFavTable = () => {
+
+	renderAssignProject = () => {
+		const { selected, openAssignProject } = this.state
 		const { t } = this.props
-		const { order, orderBy, selected, openAssignDevice, openAssignProject } = this.state
-		let collectionOrg = this.state.collections.find(r => r.id === selected[0])
-		return <Fragment>
-			<AssignProject
-				multiple
-				collectionId={selected ? selected : []}
-				handleCancel={this.handleCancelAssignProject}
-				handleClose={this.handleCloseAssignProject}
-				open={openAssignProject}
-				t={t}
-			/>
-			<AssignDevice
-				collectionId={selected[0] ? selected[0] : 0}
-				orgId={collectionOrg ? collectionOrg.org.id : 0}
-				handleCancel={this.handleCancelAssignDevice}
-				handleClose={this.handleCloseAssignDevice}
-				open={openAssignDevice}
-				t={t}
-			/>
-			{selected.length > 0 ? this.renderDeviceUnassign() : null}
-			<CollectionTable
-				selected={selected}
-				handleClick={this.handleClick}
-				handleCheckboxClick={this.handleCheckboxClick}
-				handleSelectAllClick={this.handleSelectAllClick}
-				data={this.filterItems(this.getFavs())}
-				tableHead={this.collectionsHeader()}
-				handleFilterEndDate={this.handleFilterEndDate}
-				handleFilterKeyword={this.handleFilterKeyword}
-				handleFilterStartDate={this.handleFilterStartDate}
-				handleRequestSort={this.handleRequestSort}
-				handleOpenUnassignDevice={this.handleOpenUnassignDevice}
-				orderBy={orderBy}
-				order={order}
-				filters={this.state.filters}
-				t={t}
-			/>
-		</Fragment>
+		return <AssignProject
+			multiple
+			collectionId={selected ? selected : []}
+			handleCancel={this.handleCancelAssignProject}
+			handleClose={this.handleCloseAssignProject}
+			open={openAssignProject}
+			t={t}
+		/>
 	}
-	handleDeviceClick = id => e => {
-		e.stopPropagation()
-		this.props.history.push('/collection/' + id)
-	}
-	handleFavClick = id => e => {
-		e.stopPropagation()
-		this.props.history.push({ pathname: '/collection/' + id, prevURL: '/collections/favorites' })
-	}
-	renderTable = () => {
+
+	renderAssignDevice = () => {
+		const { selected, openAssignDevice } = this.state
 		const { t } = this.props
-		const { order, orderBy, selected, openAssignDevice, openAssignProject } = this.state
 		let collectionOrg = this.state.collections.find(r => r.id === selected[0])
-		return <Fragment>
-			<AssignProject
-				multiple
-				collectionId={selected ? selected : []}
-				handleCancel={this.handleCancelAssignProject}
-				handleClose={this.handleCloseAssignProject}
-				open={openAssignProject}
-				t={t}
-			/>
-			<AssignDevice
-				collectionId={selected[0] ? selected[0] : 0}
-				orgId={collectionOrg ? collectionOrg.org.id : 0}
-				handleCancel={this.handleCancelAssignDevice}
-				handleClose={this.handleCloseAssignDevice}
-				open={openAssignDevice}
-				t={t}
-			/>
-			{selected.length > 0 ? this.renderDeviceUnassign() : null}
-			<CollectionTable
-				selected={selected}
-				handleClick={this.handleClick}
-				handleCheckboxClick={this.handleCheckboxClick}
-				handleSelectAllClick={this.handleSelectAllClick}
-				data={this.filterItems(this.state.collections)}
-				tableHead={this.collectionsHeader()}
-				handleFilterEndDate={this.handleFilterEndDate}
-				handleFilterKeyword={this.handleFilterKeyword}
-				handleFilterStartDate={this.handleFilterStartDate}
-				handleRequestSort={this.handleRequestSort}
-				handleOpenUnassignDevice={this.handleOpenUnassignDevice}
-				orderBy={orderBy}
-				order={order}
-				filters={this.state.filters}
-				t={t}
-			/>
-		</Fragment>
+		return <AssignDevice
+			collectionId={selected[0] ? selected[0] : 0}
+			orgId={collectionOrg ? collectionOrg.org.id : 0}
+			handleCancel={this.handleCancelAssignDevice}
+			handleClose={this.handleCloseAssignDevice}
+			open={openAssignDevice}
+			t={t}
+		/>
+	}
+
+	renderTable = (items, handleClick) => {
+		const { t } = this.props
+		const { order, orderBy, selected } = this.state
+		return <CollectionTable
+			data={this.filterItems(items)}
+			handleCheckboxClick={this.handleCheckboxClick}
+			handleClick={handleClick}
+			handleRequestSort={this.handleRequestSort}
+			handleSelectAllClick={this.handleSelectAllClick}
+			order={order}
+			orderBy={orderBy}
+			selected={selected}
+			t={t}
+			tableHead={this.collectionsHeader()}
+		/>
 	}
 
 	renderCards = () => {
 		const { loading } = this.state
-		return loading ? <CircularLoader /> : <GridContainer spacing={8} justify={'center'}>
-			{this.filterItems(this.state.collections).map((d, k) => {
-				return <ItemG container justify={'center'} xs={12} sm={6} md={4}>
-					<CollectionCard key={k} t={this.props.t} d={d} history={this.props.history} />
-				</ItemG>
-			})}
-		</GridContainer>
+		const { t, history } = this.props
+		return loading ? <CircularLoader /> : 
+			<CollectionsCards collections={this.filterItems(this.state.collections)} t={t} history={history} />
 	}
+
 	renderFavorites = () => {
 		const { classes } = this.props
-		const { loading } = this.state
+		const { loading, selected } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
+				{this.renderAssignProject()}
+				{this.renderAssignDevice()}
+				{selected.length > 0 ? this.renderDeviceUnassign() : null}
 				{this.renderTableToolBar()}
-				{this.renderFavTable()}
+				{this.renderTable(this.getFavs(), this.handleFavClick)}
 				{this.renderConfirmDelete()}
 			</Paper>
 			}
 		</GridContainer>
 	}
+
 	renderCollections = () => {
 		const { classes } = this.props
-		const { loading } = this.state
+		const { loading, selected, collections } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
+				{this.renderAssignProject()}
+				{this.renderAssignDevice()}
+				{selected.length > 0 ? this.renderDeviceUnassign() : null}
 				{this.renderTableToolBar()}
-				{this.renderTable()}
+				{this.renderTable(collections, this.handleCollectionClick)}
 				{this.renderConfirmDelete()}
 			</Paper>
 			}
@@ -546,23 +520,24 @@ class Collections extends Component {
 
 	render() {
 		const { collections, route, filters } = this.state
+		const { history, match } = this.props
 		return (
 			<Fragment>
 				<Toolbar
 					data={collections}
 					route={route}
 					filters={filters}
-					history={this.props.history}
-					match={this.props.match}
+					history={history}
+					match={match}
 					handleFilterKeyword={this.handleFilterKeyword}
-					tabs={this.tabs}
+					tabs={this.tabs()}
 					defaultRoute={0}
 				/>
 				<Switch>
-					<Route path={`${this.props.match.path}/list`} render={() => this.renderCollections()} />
-					<Route path={`${this.props.match.path}/grid`} render={() => this.renderCards()} />
-					<Route path={`${this.props.match.path}/favorites`} render={() => this.renderFavorites()} />
-					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />
+					<Route path={`${match.path}/list`} render={() => this.renderCollections()} />
+					<Route path={`${match.path}/grid`} render={() => this.renderCards()} />
+					<Route path={`${match.path}/favorites`} render={() => this.renderFavorites()} />
+					<Redirect path={`${match.path}`} to={`${match.path}/list`} />
 				</Switch>
 
 			</Fragment>
@@ -573,7 +548,8 @@ class Collections extends Component {
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	favorites: state.favorites.favorites,
-	saved: state.favorites.saved
+	saved: state.favorites.saved,
+	filters: state.appState.filters.collections
 })
 
 const mapDispatchToProps = (dispatch) => ({

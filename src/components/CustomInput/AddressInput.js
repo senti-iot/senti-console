@@ -4,13 +4,13 @@ import deburr from 'lodash/deburr';
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-// import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core'
 import { getAdresses } from 'variables/dataDevices';
 import withLocalization from 'components/Localization/T';
 import teal from '@material-ui/core/colors/teal'
+
 const styles = theme => ({
 	listItem: {
 		padding: theme.spacing.unit, 
@@ -44,11 +44,9 @@ const styles = theme => ({
 		right: 0,
 	},
 	suggestion: {
-		// display: 'block',
 	},
 	suggestionsList: {
 		maxHeight: 200,
-		// overflow: 'auto',
 		margin: 0,
 		padding: 0,
 		listStyleType: 'none',
@@ -63,26 +61,25 @@ class AddressInput extends React.Component {
 		super(props)
 
 		this.state = {
-			suggestions: []
+			suggestions: [], 
 		}
 	}
 	getSuggestionValue = s => s.value
 	handleGetAdresses = async (query) => {
 		if (query.length < 100)
 			getAdresses(query).then(rs => {
-				return rs ? this.setState({ suggestions: rs.map(a => ({ label: a.tekst, value: a.tekst })) }) : null
+				return rs ? this.setState({ suggestions: rs.map(a => ({ label: a.tekst, value: a.tekst, id: a.data.id })) }) : null
 			})
-
 	}
-	getSuggestions = (value) => {
-		const inputValue = deburr(value.trim()).toLowerCase();
+	getSuggestions = (string) => {
+		const inputValue = deburr(string.trim()).toLowerCase();
 		const inputLength = inputValue.length;
 		let count = 0;
 		return inputLength === 0
 			? []
 			: this.state.suggestions.filter(suggestion => {
 				const keep =
-					count < 5 && suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
+					count < 5 && suggestion.value.slice(0, inputLength).toLowerCase() === inputValue;
 				if (keep) {
 					count += 1;
 				}
@@ -105,20 +102,24 @@ class AddressInput extends React.Component {
 			suggestions: [],
 		});
 	}
-	handleChange = (event, { newValue, method }) => {		
+	handleChange = (event, { newValue, method }) => {	
 		this.setState({
 			query: typeof newValue !== 'undefined' ? newValue : '',
 		}, async () => {
 			if (method !== 'down' && method !== 'up' && method !== null && method !== undefined)
 				this.handleGetAdresses(newValue)
 		});
-
-		this.props.handleChange(newValue)
+		if (this.props.handleChange)
+			this.props.handleChange(newValue) 
 	};
+	handleSuggestionSelected = (e, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
+		return this.props.handleSuggestionSelected ? this.props.handleSuggestionSelected(suggestion) : null
+	}
 	renderInputComponent = (inputProps) => {
 		const { classes, inputRef = () => { }, ref, ...other } = inputProps;
 		return (
 			<TextField
+				fullWidth={this.props.fullWidth}
 				multiline
 				margin='normal'
 				InputProps={{
@@ -159,6 +160,7 @@ class AddressInput extends React.Component {
 			suggestions: this.state.suggestions,
 			onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
 			onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
+			onSuggestionSelected: this.handleSuggestionSelected,
 			getSuggestionValue: this.getSuggestionValue,
 			renderSuggestion: this.renderSuggestion,
 		};
@@ -171,7 +173,8 @@ class AddressInput extends React.Component {
 						label: this.props.t('orgs.fields.address'),
 						value: this.props.value !== null ? this.props.value : '',
 						onChange: this.handleChange,
-						onClick: this.clearInput
+						onClick: this.clearInput,
+						onBlur: this.props.onBlur
 					}}
 					theme={{
 						container: classes.container,

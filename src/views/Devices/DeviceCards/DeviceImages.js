@@ -28,7 +28,11 @@ class DeviceImages extends PureComponent {
 		this.setState({ activeStep });
 	};
 	componentDidMount = async () => {
+		this._isMounted = 1
 		await this.getAllPics(this.props.device.id)
+	}
+	componentWillUnmount = () => { 
+		this._isMounted = 0
 	}
 	getPicsCallBack = () => {
 		this.getAllPics(this.props.device.id)
@@ -43,7 +47,7 @@ class DeviceImages extends PureComponent {
 		/>
 	}
 	getAllPics = (id) => {
-		getAllPictures(id).then(rs => { return this.setState({ img: rs }) })
+		getAllPictures(id).then(rs => { return this._isMounted ? this.setState({ img: rs }) : null})
 	}
 	handleOpenImageUpload = () => {
 		this.setState({ openImageUpload: true })
@@ -88,24 +92,25 @@ class DeviceImages extends PureComponent {
 		return <CircularLoader notCentered />
 	}
 	renderDeleteDialog = () => {
+		const { t } = this.props
 		return <Dialog
 			open={this.state.openDeleteImage}
 			onClose={this.handleCloseImageDelete}
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>Delete Picture</DialogTitle>
+			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.deviceImage')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
-					Are you sure you want to delete the picture?
+					{t('dialogs.delete.message.deviceImage')}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={this.handleCloseDeletePictureDialog} color='primary'>
-					No
+					{t('actions.no')}
 				</Button>
 				<Button onClick={this.handleDeletePicture} color='primary' autoFocus>
-					Yes
+					{t('actions.yes')}
 				</Button>
 			</DialogActions>
 		</Dialog>
@@ -117,6 +122,8 @@ class DeviceImages extends PureComponent {
 		const { classes, device, t  } = this.props
 		return (
 			<InfoCard
+				noHiddenPadding
+				noPadding
 				title={t('devices.cards.pictures')}
 				avatar={<Image />}
 				topAction={

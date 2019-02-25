@@ -1,5 +1,8 @@
+import Mail from '@material-ui/icons/Mail'
 import ZoomOut from '@material-ui/icons/ZoomOut'
 import LocationOn from '@material-ui/icons/LocationOn'
+import LinearScale from '@material-ui/icons/LinearScale'
+import Assignment from '@material-ui/icons/Assignment'
 //#region weather Icons
 import ClearDay from 'assets/weather/clear_day.svg'
 import ClearNight from 'assets/weather/clear_night.svg'
@@ -62,6 +65,7 @@ import DonutLargeRounded from '@material-ui/icons/DonutLargeRounded'
 import PieChartRounded from '@material-ui/icons/PieChartRounded'
 import BarChart from '@material-ui/icons/BarChart'
 import Visibility from '@material-ui/icons/Visibility'
+import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import Build from '@material-ui/icons/Build'
 import Layers from '@material-ui/icons/Layers'
 import LayersClear from '@material-ui/icons/LayersClear'
@@ -82,7 +86,22 @@ import Dashboard from '@material-ui/icons/Dashboard'
 import History from '@material-ui/icons/History'
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import Smartphone from '@material-ui/icons/Smartphone'
+import EditLocation from '@material-ui/icons/EditLocation'
+import WhatsHot from '@material-ui/icons/Whatshot'
+import Compare from '@material-ui/icons/Compare'
+import EventNote from '@material-ui/icons/EventNote'
+import FullscreenOutlined from '@material-ui/icons/FullscreenOutlined'
+
 export {
+	FullscreenOutlined,
+	EventNote,
+	Compare,
+	Mail,
+	Assignment,
+	LinearScale,
+	WhatsHot,
+	MyLocation,
+	EditLocation,
 	Smartphone,
 	LocationOn,
 	ArrowUpward,
@@ -143,7 +162,6 @@ export {
 	SettingsRounded,
 	NavigateNext,
 	NavigateBefore,
-	MyLocation,
 	Router,
 	Map,
 	AccessTime,
@@ -153,6 +171,7 @@ export {
 	PieChartRounded,
 	BarChart,
 	Visibility,
+	VisibilityOff,
 	Build,
 	Layers,
 	LayersClear,

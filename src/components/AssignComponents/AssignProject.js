@@ -4,7 +4,6 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import { getAllProjects, updateProject, getProject } from 'variables/dataProjects';
-// import { updateDevice } from 'variables/dataDevices'
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import { ItemG } from 'components';

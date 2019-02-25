@@ -81,12 +81,9 @@ class TimeCounterModal extends React.Component {
 		this.setState({ open: false });
 	};
 	timeFormat = (time) => {
-		// Hours, minutes and seconds
 		var hrs = ~~(time / 3600);
 		var mins = ~~((time % 3600) / 60);
 		var secs = time % 60;
-
-		// Output like '1:01' or '4:03:59' or '123:03:59'
 		var ret = '';
 
 		if (hrs > 0) {

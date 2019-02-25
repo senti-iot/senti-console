@@ -63,6 +63,10 @@ class LineChart extends PureComponent {
 				data: [],
 				exited: true
 			},
+			loc: {
+				lat: 0,
+				long: 0
+			},
 			lineOptions: {
 				responsive: true,
 				animation: {
@@ -95,7 +99,6 @@ class LineChart extends PureComponent {
 							},
 							id: 'xAxis',
 							type: 'time',
-							// distribution: 'series',
 							time: {
 								displayFormats: {
 									hour: 'LT',
@@ -137,6 +140,7 @@ class LineChart extends PureComponent {
 							display: false,
 							labelString: 'value'
 						},
+						type: props.chartYAxis,
 						ticks: {
 							fontColor: props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
 						},
@@ -145,12 +149,6 @@ class LineChart extends PureComponent {
 						},
 					}]
 				},
-				// zoom: {
-				// 	enabled: true,
-				// 	drag: true,
-				// 	mode: 'x',
-				// 	// onZoom: function (props) { ;  }
-				// }
 			}
 		}
 	}
@@ -182,30 +180,33 @@ class LineChart extends PureComponent {
 
 		})
 	}
-
-	/**
-		 * 	How the damn zoom Works:
-		 *  1. Sets a min/max moment objects scale on the x axis
-		 *  2. Re renders the chart
-		 * 
-		 *  How to implement in our code:
-		 *  1. In the onZoom function get the minMax from the xAxis scale
-		 *  2. Pass them to the same function as CustomSetRange used by the filter in Device.js
-		 *  3. Create a new function that based on the difference between the dates, sets the appropiate timeType (hour, minute, day, month, etc.)
-		 *  4. Set the 'newData' without loading
-		 * 	@debug 
-		 *  */
-	componentDidUpdate = (prevProps) => {
-
-		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID) {
-			this.setXAxis()
+	updateHover = () => { 
+		const { hoverID } = this.props
+		let dId = this.chart.chartInstance.data.datasets.findIndex(d => d.id === hoverID)
+		// let dId = 0
+		if (dId > -1) {
+			let dataset = this.chart.chartInstance.data.datasets[dId]
+			dataset.borderWidth = 7
 		}
-		if (this.chart.chartInstance.canvas.style.width !== this.state.chartWidth || this.state.chartHeight !== this.chart.chartInstance.canvas.style.height) {
-			this.setState({
-				chartWidth: parseInt(this.chart.chartInstance.canvas.style.width.substring(0, this.chart.chartInstance.canvas.style.width.length - 1), 10),
-				chartHeight: parseInt(this.chart.chartInstance.canvas.style.height.substring(0, this.chart.chartInstance.canvas.style.height.length - 1), 10)
+		else { 
+			this.chart.chartInstance.data.datasets.forEach(d => {
+				d.borderWidth = 3
 			})
 		}
+		this.setState({ updateHover: false })
+		this.chart.chartInstance.update()
+	}
+	componentDidUpdate = (prevProps) => {
+		if (prevProps.hoverID !== this.props.hoverID) { 
+			this.setState({ updateHover: true })
+		}
+		if (this.state.updateHover) { 
+			this.updateHover()
+		}
+		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID || prevProps.chartYAxis !== this.props.chartYAxis) {
+			this.setXAxis()
+		}
+
 	}
 
 	setHours = (date) => {
@@ -214,16 +215,22 @@ class LineChart extends PureComponent {
 		else
 			return moment(date)
 	}
+
 	customTooltip = async (tooltipModel) => {
 		if (tooltipModel.opacity === 0) {
-			this.hideTooltip()
-			return
+			return !this.clickEvent() ? null : this.hideTooltip()
 		}
 		let left = tooltipModel.caretX;
 		let top = tooltipModel.caretY;
 		if (!this.clickEvent()) {
 			left = this.state.chartWidth / 2
 		}
+		let total = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data.length
+		let lastPoint = false
+		if (total - 1 === tooltipModel.dataPoints[0].index) {
+			lastPoint = true
+		}
+
 		let str = tooltipModel.title[0]
 		var rest = str.substring(0, str.lastIndexOf(' ') + 1);
 		var last = str.substring(str.lastIndexOf(' ') + 1, str.length);
@@ -232,12 +239,10 @@ class LineChart extends PureComponent {
 				tooltip: {
 					...this.state.tooltip,
 					show: true,
-					exited: false
+					showWeather: this.state.weather ? true : false,
 				}
 			})
 		}
-			
-		// let weatherData = null
 		let wDate = null
 		try {
 			let lat = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].lat
@@ -245,8 +250,8 @@ class LineChart extends PureComponent {
 			let id = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].id
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
 			if (lat && long) {
-				if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long)) {
-					getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then((rs) => {						
+				if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long) || this.state.tooltip.lastPoint !== lastPoint) {
+					getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then((rs) => {
 						if (this.state.id === id)
 							this.setState({
 								tooltip: {
@@ -287,20 +292,25 @@ class LineChart extends PureComponent {
 			}
 			this.setState({ id: id })
 		}
-	
+
 		catch (err) {
 			console.log(err)
 		}
 
 		this.setTooltip({
 			...this.state.tooltip,
+			xAlign: tooltipModel.xAlign,
+			yAlign: tooltipModel.yAlign,
 			top,
 			left,
+			lastPoint,
 			title: [rest, last],
 			data: tooltipModel.dataPoints.map((d, i) => ({
 				device: tooltipModel.body[i].lines[0].split(':')[0], count: d.yLabel, color: tooltipModel.labelColors[i].backgroundColor
 			}))
 		})
+		if (this.clickEvent())
+			this.showTooltip()
 	}
 	setXAxis = () => {
 		this.setState({
@@ -315,7 +325,7 @@ class LineChart extends PureComponent {
 							time: {
 								displayFormats: {
 									hour: 'LT',
-									day: 'll dddd',
+									day: 'DD MMM',
 									minute: 'LT'
 								},
 								unit: this.props.unit.chart,
@@ -344,18 +354,37 @@ class LineChart extends PureComponent {
 								unit: this.props.unit.chart,
 								tooltipFormat: this.props.unit.format
 							},
-						}]
+						}],
+					yAxes: [{
+						scaleLabel: {
+							display: false,
+							labelString: 'value'
+						},
+						type: this.props.chartYAxis,
+						ticks: {
+							fontColor: this.props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
+						},
+						gridLines: {
+							color: this.props.theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0,0,0,0.1)',
+						},
+					}]
 				}
 			}
-		}, () => this.chart ? this.chart.chartInstance.update() : {})
+		}, () => this.chart ? this.chart.chartInstance ? this.chart.chartInstance.update() : {} : {})
 	}
-
+	showTooltip = () => {
+		this.setState({
+			tooltip: {
+				...this.state.tooltip,
+				show: true,
+				exited: false
+			}
+		})
+	}
 	setTooltip = (tooltip) => {
 		this.setState({
 			tooltip: {
 				...tooltip,
-				show: true,
-				exited: false
 			}
 		})
 	}
@@ -363,9 +392,9 @@ class LineChart extends PureComponent {
 		this.setState({
 			tooltip: {
 				...this.state.tooltip,
-				exited: true,
-				// weather: null,
-				// weatherDate: null
+				show: false, 
+				showWeather: false,
+				exited: true
 			}
 		})
 	}
@@ -374,59 +403,29 @@ class LineChart extends PureComponent {
 			tooltip: {
 				...this.state.tooltip,
 				show: false,
-				showWeather: false
 			}
 		})
 
 	}
 	elementClicked = async (elements) => {
-		try {
-			await this.props.onElementsClick(elements)
+		if (!this.clickEvent()) {
+			if (elements.length > 0)
+				this.showTooltip()
 		}
-		catch (e) {
-			// ;
+		else {
+			try {
+				await this.props.onElementsClick(elements)
+			}
+			catch (e) {
+				console.log(e)
+			}
+			this.hideTooltip()
 		}
-		// }
-		this.hideTooltip()
 	}
 	onMouseLeave = () => {
 		const { single } = this.props
 		return !single ? () => this.props.setHoverID(0) : undefined
 	}
-	transformLoc = () => {
-		const { tooltip, chartWidth, chartHeight } = this.state
-		let x = 0
-		let y = 0
-		if (!this.clickEvent()) {
-			x = '-50%'
-			y = tooltip.top < (chartHeight / 2) ? '5%' : '-105%'
-			return `translate(${x}, ${y})`
-		}
-		if (tooltip.left < (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
-			x = '-25%'
-			y = '25%'
-		}
-		if (tooltip.left < (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
-			x = '-25%'
-			y = '-125%'
-		}
-		if (tooltip.left > (chartWidth / 2) && tooltip.top < (chartHeight / 2)) {
-			x = '-80%'
-			y = '25%'
-		}
-		if (tooltip.left > (chartWidth / 2) && tooltip.top > (chartHeight / 2)) {
-			x = '-80%'
-			y = '-125%'
-		}
-		if (tooltip.left > ((chartWidth / 4) * 3)) {
-			x = '-90%'
-		}
-		if (tooltip.left < chartWidth / 4) {
-			x = '0%'
-		}
-		return `translate(${x}, ${y})`
-	}
-
 	getTooltipRef = (r) => {
 		this.tooltip = r
 	}
@@ -435,18 +434,17 @@ class LineChart extends PureComponent {
 		const { tooltip, chartWidth, chartHeight, mobile, weather } = this.state
 		return (
 			<Fragment>
-				<div style={{ display: 'block', maxHeight: 400, position: 'relative', height: 400 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
-					<div style={{ display: 'block', height: 400, maxHeight: 400, width: '100%' }}>
+				<div style={{ display: 'block', maxHeight: 300, position: 'relative', height: 300 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
+					<div style={{ display: 'block', height: 300, maxHeight: 300, width: '100%' }}>
 
 						<ChartComponent
+							// redraw={this.state.updateHover}
 							type={'multicolorLine'}
 							data={this.props.data}
-							// height={this.props.theme.breakpoints.width('md') < window.innerWidth ? window.innerHeight / 4 : window.innerHeight - 200}
-							// width={window.innerWidth - 20}
 							ref={r => this.chart = r}
 							options={this.state.lineOptions}
 							legend={this.legendOptions}
-							onElementsClick={this.clickEvent() ? this.elementClicked : () => {}}
+							onElementsClick={this.elementClicked}
 						/>
 					</div>
 					<Tooltip
@@ -467,7 +465,8 @@ class LineChart extends PureComponent {
 	}
 }
 const mapStateToProps = (state) => ({
-	lang: state.settings.language
+	lang: state.settings.language,
+	// chartYAxis: state.appState.chartYAxis
 })
 
 const mapDispatchToProps = {
@@ -475,5 +474,5 @@ const mapDispatchToProps = {
 }
 
 let LineChartCompose = compose(connect(mapStateToProps, mapDispatchToProps), withStyles(graphStyles, { withTheme: true }))(LineChart)
-// export default withStyles(graphStyles, { withTheme: true })(LineChart)
+
 export default LineChartCompose

@@ -2,10 +2,11 @@
 // // // Projects View Styles
 // #############################
 
-import { primaryColor } from "assets/jss/material-dashboard-react.js";
+import { primaryColor, deviceStatus } from "assets/jss/material-dashboard-react.js";
 // import regularCardStyle from "../material-dashboard-react/regularCardStyle";
 
 const projectStyles = theme => ({
+	...deviceStatus,
 	root: {
 		width: '100%',
 		margin: theme.spacing.unit,

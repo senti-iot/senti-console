@@ -32,35 +32,13 @@ class DeviceHardware extends PureComponent {
 				topAction={
 					<Dropdown menuItems={
 						[
-							{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => this.props.history.push(`${this.props.match.url}/edit-hardware`) },
-							// { label: t('actions.deletePicture'), icon: <Delete className={classes.leftIcon} />, func: this.handleOpenDeletePictureDialog },
+							{
+								label: t('menus.edit'),
+								icon: <Edit className={classes.leftIcon} />, 
+								func: () => this.props.history.push(`${this.props.match.url}/edit-hardware`)
+							},
 						]
 					} />
-					// <ItemG>
-					// 	<IconButton
-					// 		aria-label='More'
-					// 		aria-owns={actionAnchor ? 'long-menu' : null}
-					// 		aria-haspopup='true'
-					// 		onClick={this.handleOpenActionsHardware}>
-					// 		<MoreVert />
-					// 	</IconButton>
-					// 	<Menu
-					// 		id='long-menu'
-					// 		anchorEl={actionAnchor}
-					// 		open={Boolean(actionAnchor)}
-					// 		onClose={this.handleCloseActionsHardware}
-					// 		PaperProps={{
-					// 			style: {
-					// 				maxHeight: 200,
-					// 				minWidth: 200
-					// 			}
-					// 		}}>
-					// 		<MenuItem onClick={() => this.props.history.push(`${this.props.match.url}/edit-hardware`)}>
-					// 			<Edit className={classes.leftIcon} />Edit hardware info
-					// 		</MenuItem>
-					// 		))}
-					// 	</Menu>
-					// </ItemG>
 				}
 				content={
 					<ItemG container spacing={16}>

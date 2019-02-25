@@ -1,14 +1,18 @@
 {
-	"map": {
-		"themes": {
-			"0": "Humanitarian",
-			"1": "Luftfoto",
-			"2": "Carto Mørk",
-			"3": "Carto",
-			"4": "Vandfarver",
-			"5": "Gråtoner",
-			"6": "OpenStreetMap",
-			"7": "Topografisk"
+	"cookies": {
+		"title": "Senti.Cloud Cookie Politik",
+		"subtitle": "Sådan anvender Senti.Cloud cookies",
+		"p": {
+			"1": "Senti.Cloud respekterer brugernes privatliv og er forpligtede til at beskytte alle former for personlige oplysninger, som brugerne har sendt til Senti.Cloud.",
+			"2": "Ved at skaffe sig adgang til, browse på og/eller bruge Senti.Cloud, anerkender du, at du har læst, forstået og er enig i at være omfattet af denne cokiepolitiks vilkår og betingelser og indvilliger derfor i at bruge cookies i henhold til disse vilkår.",
+			"3": "I almindelighed kan vores brugere besøge Senti.Cloud uden at fortælle os, hvem de er, og uden at afsløre nogen former for personlige oplysninger. Senti.Cloud bruger cookies for at sikre den bedste brugeroplevelse. Cookies er små tekstfiler, der er placeret i brugerens browser til at spore brugsspor og registrere præferencer. Vores cookies indeholder ikke oplysninger, som kan identificere personer.",
+			"4": "Cookies kan enten være ”persistent”-cookies eller ”session”-cookies: En persistent-cookie opbevares af en browser og gælder, indtil dens indstillede udløbsdato, hvis den ikke slettes af brugeren før udløbsdatoen. En session-cookie udløber derimod ved afslutningen af et bruger besøg, når browseren lukkes. Vi bruger både session- og persistent-cookies på Senti.Cloud.",
+			"5": "Vi bruger også Google Analytics til at analysere brugen af Senti.Cloud. Vores udbyder af analysetjenester genererer statistik og andre oplysninger om hjemmesidebrug ved hjælp af cookies. De cookies til webanalyse, som vi bruger på Senti.Cloud, har følgende navne: _ga, _gat, _gid.",
+			"6": "De oplysninger, der frembringes i relation til Senti.Cloud, bruges til at skabe rapporter om brugen af Senti.Cloud.",
+			"7": "Vores udbyder af analysetjenesters persondatapolitik er tilgængelig på: ",
+			"8": "Brugere kan administrere og/eller slette cookies – for flere oplysninger, se venligst",
+			"9": "At blokere eller slette alle cookies har en negativ indflydelse på mange hjemmesiders stabilitet. Hvis brugere vælger at blokere vores cookies, er de ikke i stand til at bruge alle hjemmesidens egenskaber.",
+			"10": "Politikken kan fra tid til anden blive opdateret, f.eks. på grund af modificeringer af relevant lovgivning eller ændringer i vores virksomhedsstruktur. Vi tilskynder alle vores brugere til med jævne mellemrum at genlæse denne side for de seneste oplysninger om vores databeskyttelsespraksis."
 		}
 	},
 	"404": {
@@ -19,21 +23,27 @@
 	"": "",
 	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
-		"goToDevice": "Gå til enhed(er)",
+		"accept": "Godkend",
+		"addFilter": "Tilføj filter",
 		"apply": "Anvend",
 		"back": "Forrige",
 		"cancel": "Anuller",
 		"changePassword": "Skift kodeord",
 		"decline": "Afvis",
 		"deletePicture": "Slet dette billede",
+		"editFilter": "Rediger filter",
+		"editLocation": "Rediger lokation",
 		"finish": "Luk",
 		"forgotPass": "Glemt kodeord?",
 		"getLocation": "Hent lokation",
 		"goTo": "Gå til",
+		"goToDevice": "Gå til enhed(er)",
 		"goToLogin": "Gå til log ind",
 		"heatMap": "Heatmap",
 		"insertAddress": "Indtast adresse",
 		"learnMore": "Lær mere",
+		"readMore": "Læs mere",
+		"read": "Læs",
 		"login": "Log ind",
 		"manualCalibration": "Manuel kalibrering",
 		"next": "Næste",
@@ -52,7 +62,8 @@
 		"uploadImages": "Upload billeder",
 		"viewDevice": "Vis enhed",
 		"viewDeviceList": "Vis liste over enheder",
-		"yes": "Ja"
+		"yes": "Ja",
+		"extendProfile": "Udvidet profil"
 	},
 	"calibration": {
 		"header": "Lokal opsætning",
@@ -76,16 +87,17 @@
 		}
 	},
 	"charts": {
+		"controlPanel": "Data kontrolpanel",
 		"fields": {
-			"thisDay": "Denne dag:",
 			"date": "Dato",
-			"range": "Tidsrum",
-			"weather": "Vejr",
-			"temperature": "Temperatur",
-			"summary": "Vejr",
-			"windspeed": "Vindhastighed",
 			"humidity": "Fugtighed",
-			"pressure": "Tryk"
+			"pressure": "Tryk",
+			"range": "Tidsrum",
+			"summary": "Vejr",
+			"temperature": "Temperatur",
+			"thisDay": "Denne dag:",
+			"weather": "Vejr",
+			"windspeed": "Vindhastighed"
 		},
 		"type": {
 			"bar": "Søjle",
@@ -100,6 +112,7 @@
 			"data": "Data",
 			"log": "Enhedslog"
 		},
+		"createCollection": "Nyt datasamling",
 		"editCollection": "Rediger datasamling",
 		"fields": {
 			"activated": "Aktiveret",
@@ -241,12 +254,16 @@
 			"status": "Status",
 			"tableCellAddress": "Ingen adresse",
 			"tableCellDeviceName": "Unavngivet",
-			"totalcount": "Tællinger total"
+			"totalCount": "Tællinger total"
 		},
 		"status": {
 			"green": "Enheden er tilsluttet og modtager data",
+			"greenShort": "Modtager data",
+			"noDevice": "Ingen enhed tilknyttet",
 			"red": "Enheden er ikke tilsluttet og modtager ingen data",
-			"yellow": "Enheden er tilsluttet, men modtager ingen data"
+			"redShort": "Forbindelse afbrudt",
+			"yellow": "Enheden er tilsluttet, men modtager ingen data",
+			"yellowShort": "Modtager ingen data"
 		},
 		"tabs": {
 			"cardView": "Gittervisning",
@@ -255,10 +272,16 @@
 		}
 	},
 	"dialogs": {
+		"cookies": {
+			"message": {
+				"snackbar": "Senti.cloud bruger cookies til funktionelle formål. For mere information, læs venligst vores cookies politik."
+			}
+		},
 		"delete": {
 			"message": {
 				"collection": "Er du sikker på du ønsker at slette denne datasamling ( %{collection} )?",
 				"collections": "Er du sikker på du ønsker at slette disse datasamlinger:",
+				"deviceImage": "Er du sikker på du ønsker at slette dette billede?",
 				"org": "Er du sikker på du ønsker at slette denne organisation ( %{org} )?",
 				"orgs": "Er du sikker på du ønsker at slette disse organisationer:",
 				"project": "Er du sikker på du ønsker at slette dette projekt ( %{project} )?",
@@ -269,6 +292,7 @@
 			"title": {
 				"collection": "Slet datasamling?",
 				"collections": "Slet datasamlinger?",
+				"deviceImage": "Slette dette billede?",
 				"org": "Slet organisation?",
 				"orgs": "Slet organisationer?",
 				"project": "Slet projekt?",
@@ -282,6 +306,9 @@
 			"onSiteSetup": "Opsætning af enheder",
 			"startAnalyzeData": "Analyser dine data",
 			"welcome": "Velkommen til Senti.Cloud!"
+		},
+		"export": {
+			"message": "Data detaljer:"
 		},
 		"login": {
 			"passwordReseted": "Din adgangskode er blevet ændret!",
@@ -310,6 +337,7 @@
 		}
 	},
 	"favorites": {
+		"pageTitle": "Favoritter",
 		"fields": {
 			"name": "Navn",
 			"type": "Type"
@@ -323,6 +351,12 @@
 		}
 	},
 	"filters": {
+		"freeText": "Fri tekst",
+		"after": "efter",
+		"afterDate": "Efter dato",
+		"before": "før",
+		"beforeDate": "Før dato",
+		"contains": "Indeholder",
 		"dateOptions": {
 			"30days": "Seneste 30 dage",
 			"7days": "Seneste 7 dage",
@@ -336,13 +370,27 @@
 			"today": "I dag",
 			"yesterday": "I går"
 		},
+		"devices": {
+			"calibrated": "Kalibreret",
+			"notCalibrated": "Ikke kalibreret"
+		},
 		"display": "Visning",
 		"endDate": "Slutdato",
 		"options": {
 			"graphType": "Diagramtype"
 		},
+		"orgs": {
+			"hasParentOrg": "Med organisatorisk tilhørsforhold",
+			"noParentOrg": "Uden organisatiorisk tilhørsforhold",
+			"parentOrg": "Med/uden organisatorisk tilhørsforhold"
+		},
 		"search": "Søg",
-		"startDate": "Startdato"
+		"startDate": "Startdato",
+		"users": {
+			"hasLogged": "Ever logged in",
+			"hasLoggedIn": "Has logged in",
+			"neverLoggedIn": "Never logged in"
+		}
 	},
 	"images": {
 		"add": "Tilføj billeder",
@@ -361,12 +409,32 @@
 		"pass": "Kodeord",
 		"username": "Brugernavn"
 	},
+	"map": {
+		"themes": {
+			"0": "Humanitarian",
+			"1": "Luftfoto",
+			"2": "Carto Mørk",
+			"3": "Carto",
+			"4": "Vandfarver",
+			"5": "Gråtoner",
+			"6": "OpenStreetMap",
+			"7": "Topografisk"
+		}
+	},
 	"menus": {
+		"copyEmails": "Kopier mail adresser",
 		"assign": {
 			"collectionToProject": "Tilknyt datasamling",
 			"collectionsToProject": "Tilknyt datasamlinger",
-			"deviceToCollection": "Tilknyt enhed",
-			"deviceToOrg": "Tilknyt enhed"
+			"deviceToCollection": "Tilknyt enhed til datasamlinger",
+			"deviceToOrg": "Tilknyt enhed til organisation"
+		},
+		"charts": {
+			"addAPeriod": "Tilføj en periode",
+			"resetToDefault": "Nulstil til standard",
+			"showHidePeriods": "Vis / Skjul en periode",
+			"deleteThisPeriod": "Slet denne periode",
+			"hideThisPeriod": "Skjul denne periode"
 		},
 		"calibrate": "Kalibrer",
 		"changePassword": "Skift kodeord",
@@ -376,6 +444,7 @@
 		},
 		"delete": "Slet",
 		"edit": "Rediger",
+		"export": "Eksporter data",
 		"exportPDF": "Print som PDF",
 		"favorites": {
 			"add": "Tilføj til favoritter",
@@ -407,14 +476,14 @@
 		"userResendEmail": "Send bekræft e-mail igen"
 	},
 	"no": {
-		"birthdays": "Ingen fødselsdage i dag",
-		"doi": "ingen helligdage i dag",
 		"activeDevice": "Ingen aktiv enhed",
 		"audioSupported": "Din browser understøtter ikke lydfiler! Der er således ikke lyd respons! Forsøg igen med en anden browser.",
+		"birthdays": "Ingen fødselsdage i dag",
 		"collection": "Ikke tildelt til en datasamling",
 		"collections": "Ingen datasamlinger",
 		"device": "Ingen enhed",
 		"devices": "Ingen enheder",
+		"doi": "ingen helligdage i dag",
 		"history": "Ingen logs",
 		"org": "Ingen organisation",
 		"project": "Ingen projekt",
@@ -435,10 +504,11 @@
 			"region": "Region",
 			"topLevelOrg": "Uden tilhørsforhold",
 			"url": "Website",
-			"zip": "Postnummer"
+			"zip": "Postnummer",
+			"deviceCount": "Antal enheder"
 		},
-		"pageTitle": "Organisationer",
 		"organisation": "Organisation",
+		"pageTitle": "Organisationer",
 		"updateOrg": "Rediger Organisation",
 		"validation": {
 			"networkError": "Netværksfejl!",
@@ -447,7 +517,8 @@
 			"noCountry": "Mangler land",
 			"noName": "Mangler navn",
 			"noParent": "Mangler organisatorisk tilhørsforhold",
-			"noZip": "Mangler postnummer"
+			"noZip": "Mangler postnummer",
+			"notWebsite": "Ugyldig URL"
 		}
 	},
 	"projects": {
@@ -490,6 +561,7 @@
 	},
 	"settings": {
 		"alerts": "Alarmeringer",
+		"defaultRoute": "Startside",
 		"calibration": {
 			"12months": "Hver 12. måned",
 			"3months": "Hver 3. måned",
@@ -505,9 +577,16 @@
 			"time": "På tid"
 		},
 		"chart": {
+			"period": "Periode",
+			"periods": "Perioder",
+			"YAxis": {
+				"logarithmic": "Logaritmisk skala",
+				"linear": "Lineær skala"
+			},
 			"defaultChart": "Standard diagram",
 			"rawData": "Rådata"
 		},
+		"default": "Standard",
 		"defaultDataSet": "Standard datasæt for diagrammer",
 		"didYouKnow": "Viste du at?",
 		"discoverSenti": "Vis Velkommen til Senti på Dashboard",
@@ -518,11 +597,17 @@
 			"display": "Skærm",
 			"notifications": "Notifikationer"
 		},
+		"t&c": {
+			"title": "Vilkår og betingelser",
+			"cookiesPolicy": "Cookie politik"
+		},
 		"language": "Sprog",
 		"languages": {
 			"da": "Dansk",
 			"en": "Engelsk"
 		},
+		"map": "Baggrundkort",
+		"notDefault": "Ikke standard",
 		"pageTitle": "Instillinger",
 		"sideBarLeft": "Venstre",
 		"sideBarLoc": "Placering af menu",
@@ -544,6 +629,7 @@
 		"users": "Brugere"
 	},
 	"snackbars": {
+		"emailsCopied": "Mail adresser kopieret til klippebord",
 		"assign": {
 			"collectionToOrg": "Datasamling %{collection} tilknyttet til organisation %{org}",
 			"collectionToProject": "Datasamling %{collection} tilknyttet til projekt %{project}",
@@ -552,6 +638,7 @@
 			"deviceToOrg": "Enhed %{device} tilknyttet til organisation %{org}",
 			"projectToOrg": "Project %{project} tilknyttet til organisation %{org}"
 		},
+		"assignFailed": "Tilknytning fejlede!",
 		"collectionCreated": "Datasamling er oppretet!",
 		"collectionDeleted": "Datasamling er slettet!",
 		"collectionUpdated": "Datasamling er opdateret!",
@@ -590,7 +677,7 @@
 		"updatedFailed": "Opdatering fejlede!",
 		"updatedSuccess": "Opdateret!",
 		"updating": "Opdaterer ...",
-		"userCreated": "Bruger %{user} er opretted!",
+		"userCreated": "Bruger %{user} er oprettet!",
 		"userDeleted": "Bruger %{user} er sletted!",
 		"userPasswordChanged": "Kodeord er skiftet!",
 		"userUpdated": "Bruger %{user} er opdateret!"
@@ -600,11 +687,20 @@
 		"addNewProject": "Opret projekt",
 		"filter": "Filter",
 		"rowsPerPage": "Rækker pr. side",
+		"cardsPerPage": "Kort per side",
 		"selected": "valgt"
 	},
 	"users": {
 		"editUser": "Opdater bruger",
 		"fields": {
+			"bio": "Biografi",
+			"newsletter": "Nyhedsbrev",
+			"position": "Stilling",
+			"location": "Placering",
+			"recoveryEmail": "Gendannelses E-mail",
+			"linkedInURL": "LinkedIn",
+			"twitterURL": "Twitter",
+			"birthday": "Fødselsdag",
 			"accessLevel": "Adgangsniveau",
 			"active": "Aktiv",
 			"confirmPass": "Bekræft nyt kodeord",

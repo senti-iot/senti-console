@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { createCollection, getEmptyCollection, assignDeviceToCollection } from 'variables/dataCollections';
 import { connect } from 'react-redux'
-// import { getAllOrgs } from 'variables/dataOrgs';
 import CreateCollectionForm from 'components/Collections/CreateCollectionForm';
 import { CircularLoader } from 'components';
 import { getAvailableDevices } from 'variables/dataDevices';
@@ -22,8 +21,10 @@ class CreateCollection extends Component {
 			org: { id: 0, name: props.t('users.fields.noOrg') }
 		}
 		this.id = props.match.params.id
-		// props.setHeader('', true, `/collections/list`, 'collections')
+		let prevURL = props.location.prevURL ? props.location.prevURL : '/collections/list'
+		props.setHeader('collections.createCollection', true, prevURL, '')
 	}
+	
 	createDC = async () => {
 		let success = await createCollection(this.state.collection)
 		if (success)
@@ -37,7 +38,6 @@ class CreateCollection extends Component {
 
 		this.setState({
 			devices: devices ? [{ id: 0, name: t('no.device') }, ...devices] : [{ id: 0, name: t('no.device') }],
-			// loading: false
 		})
 	}
 	getOrgs = async () => {
@@ -100,8 +100,6 @@ class CreateCollection extends Component {
 		})
 	}
 	handleChange = (what) => e => {
-		// if (e)
-		// 	e.preventDefault()
 		this.setState({
 			collection: {
 				...this.state.collection,

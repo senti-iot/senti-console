@@ -1,23 +1,40 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, Grid, Dialog, Slide, AppBar, Toolbar, List, ListItem, Divider, ListItemText, withStyles, Button, Typography } from '@material-ui/core'
-import { GridContainer, TextF, ItemGrid } from 'components/index';
 import PropTypes from 'prop-types'
-import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import cx from 'classnames';
-import DSelect from 'components/CustomInput/DSelect';
+import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Slide, Hidden, IconButton } from '@material-ui/core';
 import { Close } from 'variables/icons';
-
-
+import cx from 'classnames'
+import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
+import { Grid, Paper } from '@material-ui/core'
+import { GridContainer, ItemGrid, TextF, ItemG, DSelect } from 'components'
+import Search from 'components/Search/Search';
+import { suggestionGen, filterItems } from 'variables/functions';
 /**
 * @augments {Component<{	t:Function.isRequired,	collection:object.isRequired,	handleChangeDevice:Function.isRequired,	handleCloseDevice:Function.isRequired,	handleOpenDevice:Function.isRequired,	open:boolean.isRequired,	devices:array.isRequired,	device:object.isRequired,	handleCreate:Function.isRequired,	handleChange:Function.isRequired,>}
 */
 class CreateCollectionForm extends Component {
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			filters: {
+				keyword: ''
+			}
+		}
+	}
 
 	transition = (props) => {
 		return <Slide direction='up' {...props} />;
 	}
+	handleFilterKeyword = value => {
+		this.setState({
+			filters: {
+				keyword: value
+			}
+		})
+	}
 	renderSelectDevice = () => {
 		const { t, openDevice, handleCloseDevice, devices, handleChangeDevice, classes } = this.props
+		const { filters } = this.state
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
@@ -28,16 +45,53 @@ class CreateCollectionForm extends Component {
 			TransitionComponent={this.transition}>
 			<AppBar className={classes.appBar + ' ' + appBarClasses}>
 				<Toolbar>
-					<Typography variant='h6' color='inherit' className={classes.flex}>
-						{t('devices.pageTitle')}
-					</Typography>
-					<Button variant={'extendedFab'} color='primary' onClick={handleCloseDevice} aria-label='Close'>
-						<Close /> {t('actions.cancel')}
-					</Button>
+					<Hidden mdDown>
+						<ItemG container alignItems={'center'}>
+							<ItemG xs={2} container alignItems={'center'}>
+								<IconButton color='inherit' onClick={handleCloseDevice} aria-label='Close'>
+									<Close />
+								</IconButton>
+								<Typography variant='h6' color='inherit' className={classes.flex}>
+									{t('devices.pageTitle')}
+								</Typography>
+							</ItemG>
+							<ItemG xs={8}>
+								<Search
+									fullWidth
+									open={true}
+									focusOnMount
+									suggestions={devices ? suggestionGen(devices) : []}
+									handleFilterKeyword={this.handleFilterKeyword}
+									searchValue={filters.keyword} />
+							</ItemG>
+						</ItemG>
+					</Hidden>
+					<Hidden lgUp>
+						<ItemG container alignItems={'center'}>
+							<ItemG xs={4} container alignItems={'center'}>
+								<IconButton color={'inherit'} onClick={this.handleCloseOrg} aria-label='Close'>
+									<Close />
+								</IconButton>
+								<Typography variant='h6' color='inherit' className={classes.flex}>
+									{t('orgs.pageTitle')}
+								</Typography>
+							</ItemG>
+							<ItemG xs={8} container alignItems={'center'} justify={'center'}>
+								<Search
+									noAbsolute
+									fullWidth
+									open={true}
+									focusOnMount
+									suggestions={devices ? suggestionGen(devices) : []}
+									handleFilterKeyword={this.handleFilterKeyword}
+									searchValue={filters.keyword} />
+							</ItemG>
+						</ItemG>
+					</Hidden>
 				</Toolbar>
 			</AppBar>
 			<List>
-				{devices ? devices.map((o, i) => {
+				{devices ? filterItems(devices, filters).map((o, i) => {
 					return <Fragment key={i}>
 						<ListItem button onClick={handleChangeDevice(o)}>
 							<ListItemText primary={o.name} />
@@ -62,6 +116,7 @@ class CreateCollectionForm extends Component {
 	}
 	renderSelectOrg = () => {
 		const { t, openOrg, handleCloseOrg, orgs, handleChangeOrg, classes } = this.props
+		const { filters } = this.state
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
@@ -72,16 +127,53 @@ class CreateCollectionForm extends Component {
 			TransitionComponent={this.transition}>
 			<AppBar className={classes.appBar + ' ' + appBarClasses}>
 				<Toolbar>
-					<Typography variant='h6' color='inherit' className={classes.flex}>
-						{t('devices.pageTitle')}
-					</Typography>
-					<Button variant={'extendedFab'} color='primary' onClick={handleCloseOrg} aria-label='Close'>
-						<Close /> {t('actions.cancel')}
-					</Button>
+					<Hidden mdDown>
+						<ItemG container alignItems={'center'}>
+							<ItemG xs={2} container alignItems={'center'}>
+								<IconButton color='inherit' onClick={handleCloseOrg} aria-label='Close'>
+									<Close />
+								</IconButton>
+								<Typography variant='h6' color='inherit' className={classes.flex}>
+									{t('orgs.pageTitle')}
+								</Typography>
+							</ItemG>
+							<ItemG xs={8}>
+								<Search
+									fullWidth
+									open={true}
+									focusOnMount
+									suggestions={orgs ? suggestionGen(orgs) : []}
+									handleFilterKeyword={this.handleFilterKeyword}
+									searchValue={filters.keyword} />
+							</ItemG>
+						</ItemG>
+					</Hidden>
+					<Hidden lgUp>
+						<ItemG container alignItems={'center'}>
+							<ItemG xs={4} container alignItems={'center'}>
+								<IconButton color={'inherit'} onClick={handleCloseOrg} aria-label='Close'>
+									<Close />
+								</IconButton>
+								<Typography variant='h6' color='inherit' className={classes.flex}>
+									{t('orgs.pageTitle')}
+								</Typography>
+							</ItemG>
+							<ItemG xs={8} container alignItems={'center'} justify={'center'}>
+								<Search
+									noAbsolute
+									fullWidth
+									open={true}
+									focusOnMount
+									suggestions={orgs ? suggestionGen(orgs) : []}
+									handleFilterKeyword={this.handleFilterKeyword}
+									searchValue={filters.keyword} />
+							</ItemG>
+						</ItemG>
+					</Hidden>
 				</Toolbar>
 			</AppBar>
 			<List>
-				{orgs ? orgs.map((o, i) => {
+				{orgs ? filterItems(orgs, filters).map((o, i) => {
 					return <Fragment key={i}>
 						<ListItem button onClick={handleChangeOrg(o)}>
 							<ListItemText primary={o.name} />

@@ -7,8 +7,6 @@ import { ConvertDDToDMS, dateFormat, dateFormatter } from 'variables/functions'
 import { Link } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import Dropdown from 'components/Dropdown/Dropdown'
-// import teal from '@material-ui/core/colors/teal'
-// const Skycons = require('skycons')(window)
 
 class DeviceDetails extends Component {
 
@@ -65,7 +63,7 @@ class DeviceDetails extends Component {
 						{ label: t('menus.assign.deviceToCollection'), icon: <DataUsage className={classes.leftIcon} />, func: this.props.handleOpenAssign },
 						{ label: device.org.id > 0 ? t('menus.reassign.deviceToOrg') : t('menus.assign.deviceToOrg'), icon: <Business className={classes.leftIcon} />, func: this.props.handleOpenAssignOrg, dontShow: accessLevel.senticloud ? accessLevel.senticloud.editdeviceownership ? false : true : true },
 						{ label: t('menus.unassign.deviceFromCollection'), icon: <LayersClear className={classes.leftIcon} />, func: this.props.handleOpenUnassign, dontShow: device.dataCollection.id > 0 ? false : true },
-						{ label: !(device.lat > 0) && !(device.long > 0) ? t('menus.calibrate') : t('menus.recalibrate'), icon: <Build className={classes.leftIcon} />, func: () => this.props.history.push(`${this.props.match.url}/setup`) },
+						{ label: !(device.lat > 0) && !(device.long > 0) ? t('menus.calibrate') : t('menus.recalibrate'), icon: <Build className={classes.leftIcon} />, /* dontShow: device.liveStatus === 0, */ func: () => this.props.history.push(`${this.props.match.url}/setup`) },
 						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav }
 					]
 				} />
@@ -99,9 +97,7 @@ class DeviceDetails extends Component {
 						</ItemG>
 						<ItemG xs={6} md={3} lg={3} xl={3}>
 							<Caption>{t('devices.fields.temp')}:</Caption>
-							<Info>
-								{device.temperature} &#8451;
-							</Info>
+							<Info>{device.temperature ? `${device.temperature}\u2103` : `-\u2103`}</Info>
 						</ItemG>
 						<ItemG container xs={6} md={3} lg={3} xl={3}>
 							{weather ? weather === '' ? <CircularProgress size={20} /> : <Fragment>
@@ -162,7 +158,13 @@ class DeviceDetails extends Component {
 						</ItemG>
 						<ItemG xs={12} md={3} lg={3}>
 							<Caption>{t('collections.fields.id')}:</Caption>
-							<Info>{device.dataCollection.id > 0 ? <Link to={'/collection/' + device.dataCollection.id}>{device.dataCollection.name}</Link> : t('no.collection')}</Info>
+							<Info>{device.dataCollection.id > 0 ?
+								<Link to={{
+									pathname: `/collection/${device.dataCollection.id}`,
+									prevURL: `/device/${device.id}`
+								}}>
+									{device.dataCollection.name}
+								</Link> : t('no.collection')}</Info>
 						</ItemG>
 						<ItemG xs={12} md={3} lg={3}>
 							<Caption>{t('devices.fields.availability')}:</Caption>

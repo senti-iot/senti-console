@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
-// material-ui components
-import {/*  InputAdornment, */ withStyles, CardContent, Collapse, Button, Grid } from '@material-ui/core';
+import { withStyles, CardContent, Collapse, Button, Grid } from '@material-ui/core';
 
 import { GridContainer, ItemGrid, Info, Danger, ItemG, Success, CircularLoader, Card, CardBody, CardHeader, CardFooter } from 'components';
 import loginPageStyle from 'assets/jss/material-dashboard-react/loginPageStyle.js';
@@ -12,7 +11,6 @@ import { changeLanguage } from 'redux/localization';
 import cookie from 'react-cookies';
 import { setToken } from 'variables/data';
 import { resetPassword, confirmPassword } from 'variables/dataLogin';
-// var passChecker = require('zxcvbn')
 
 class ResetPassword extends React.Component {
 	constructor(props) {
@@ -115,8 +113,6 @@ class ResetPassword extends React.Component {
 					passwordReset: true
 				})
 			}
-			// this.props.history.push('/login')
-			// this.loginUser(session)
 			else {
 				this.setState({
 					error: true,
@@ -166,17 +162,9 @@ class ResetPassword extends React.Component {
 
 
 	handleChange = prop => e => {
-		// let score = 0
-		// let result = null
-		// let pass = e.target.value
-		// if (!(pass.length < this.state.minLength)) {
-		// 	result = passChecker(pass, [])
-		// 	score = result.score
-		// }
+
 		this.setState({
 			...this.state,
-			// isValid: score >= this.state.minScore,
-			// score,
 			[prop]: e.target.value
 		})
 		if (this.state.error)
@@ -228,7 +216,6 @@ class ResetPassword extends React.Component {
 															label={t('users.fields.email')}
 															value={email}
 															className={classes.textField}
-															// disabled={true}
 															handleChange={this.handleChange('email')}
 															margin='normal'
 															
@@ -255,7 +242,6 @@ class ResetPassword extends React.Component {
 																	label={t('confirmUser.passwordConfirm')}
 																	value={confirmPassword}
 																	className={classes.textField}
-																	// disabled={true}
 																	handleChange={this.handleChange('confirmPassword')}
 																	margin='normal'
 																	error={error}

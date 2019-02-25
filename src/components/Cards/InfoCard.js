@@ -1,6 +1,6 @@
 import { Avatar, Button, Card, CardActions, CardContent, CardHeader, Collapse, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+import { ExpandMore } from 'variables/icons';
 import regularCardStyle from 'assets/jss/material-dashboard-react/regularCardStyle';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
@@ -42,9 +42,7 @@ class InfoCard extends PureComponent {
 	}
 	renderTopAction = () => {
 		return <ItemG container justify={'flex-end'}>
-			 <ItemG container xs>
-				{this.props.topAction}
-			</ItemG>
+			{this.props.topAction}
 		</ItemG>
 	}
 	render() {
@@ -60,14 +58,16 @@ class InfoCard extends PureComponent {
 					title={title}
 					subheader={this.hasSubheader(subheader)}
 					classes={{
-						title: classes.title
+						title: classes.title,
+						action: classes.actions,
+						subheader: classes.subheader
 					}}
 				>
 
 				</CardHeader>
 				<CardContent className={classnames(
 					{ [classes.contentMedia]: this.props.noPadding },
-					{ [classes.noMargin]: this.props.noExpand ? false : this.props.haveMargin ? false : !this.state.expanded  })}>
+					{ [classes.noMargin]: this.props.noExpand ? false : this.props.haveMargin ? false : !this.state.expanded })}>
 					{this.renderSubHeader()}
 					{content ? content : null}
 				</CardContent>
@@ -77,7 +77,9 @@ class InfoCard extends PureComponent {
 							{leftActionContent}
 						</CardContent> : null}
 						<Collapse in={this.state.expanded} timeout='auto' unmountOnExit>
-							<CardContent classes={{ root: classes.root }}>
+							<CardContent className={classnames(
+								{ [classes.contentMedia]: this.props.noPadding },
+								{ [classes.noPadding]: this.props.noHiddenPadding ? true : false })} /* classes={{ root: classes.root }} */>
 								{hiddenContent ? hiddenContent : null}
 							</CardContent>
 						</Collapse>

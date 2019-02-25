@@ -1,15 +1,18 @@
 import React, { Component, Fragment } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import Toolbar from 'components/Toolbar/Toolbar';
-import { ViewList, StarBorder } from 'variables/icons';
-import TableToolbar from 'components/Table/TableToolbar';
-import FavoritesTable from 'components/Favorites/FavoritesTable';
-import { GridContainer, CircularLoader } from 'components';
-import { Paper, withStyles } from '@material-ui/core';
-import projectStyles from 'assets/jss/views/projects';
-import { filterItems, handleRequestSort } from 'variables/functions';
-import { finishedSaving, removeFromFav, addToFav, isFav } from 'redux/favorites';
+import Toolbar from 'components/Toolbar/Toolbar'
+import { ViewList, StarBorder } from 'variables/icons'
+import TableToolbar from 'components/Table/TableToolbar'
+import FavoritesTable from 'components/Favorites/FavoritesTable'
+import { GridContainer, CircularLoader } from 'components'
+import { Paper, withStyles } from '@material-ui/core'
+import projectStyles from 'assets/jss/views/projects'
+import { filterItems, handleRequestSort } from 'variables/functions'
+import { finishedSaving, removeFromFav, addToFav, isFav } from 'redux/favorites'
+import { LibraryBooks, DeviceHub, Person, Business, DataUsage } from 'variables/icons';
+import { customFilterItems } from 'variables/Filters';
+
 class Favorites extends Component {
 	constructor(props) {
 		super(props)
@@ -21,9 +24,6 @@ class Favorites extends Component {
 			route: 0,
 			filters: {
 				keyword: '',
-				startDate: null,
-				endDate: null,
-				activeDateFilter: false
 			}
 		}
 		props.setHeader('sidebar.favorites', false, '', 'favorites')
@@ -46,7 +46,7 @@ class Favorites extends Component {
 	favoritesHeaders = () => { 
 		const { t } = this.props
 		return [
-			{ id: 'type', label: <div style={{ width: 40 }}/> },
+			{ id: 'type', label: '' },
 			{ id: 'name', label: t('favorites.fields.name') },
 			{ id: 'type', label: t('favorites.fields.type') }
 		]
@@ -54,8 +54,66 @@ class Favorites extends Component {
 	tabs = () => {
 		return [{ id: 0, title: this.props.t('devices.tabs.listView'), label: <ViewList />, url: `${this.props.match.path}/list` }]
 	}
+	dTypes = () => { 
+		const { t } = this.props
+		return [
+			{ value: 'project', label: t('favorites.types.project'), icon: <LibraryBooks/> },
+			{ value: 'collection', label: t('favorites.types.collection'), icon: <DataUsage/> },
+			{ value: 'device', label: t('favorites.types.device'), icon: <DeviceHub/> },
+			{ value: 'user', label: t('favorites.types.user'), icon: <Person/> },
+			{ value: 'org', label: t('favorites.types.org'), icon: <Business/> },
+		]
+	}
+	ft = () => {
+		const { t } = this.props
+		return [
+			{ key: 'name', name: t('favorites.fields.name'), type: 'string' },
+			{ key: 'type', name: t('favorites.fields.type'), type: 'dropDown', options: this.dTypes() },
+			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
+		]
+	}
+	addFilter = (f) => {
+		let cFilters = this.state.filters.custom
+		let id = cFilters.length
+		cFilters.push({ ...f, id: id })
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+		return id
+	}
+	editFilter = (f) => {
+		let cFilters = this.state.filters.custom
+		let filterIndex = cFilters.findIndex(fi => fi.id === f.id)
+		cFilters[filterIndex] = f
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+	}
+	removeFilter = (fId) => {
+		let cFilters = this.state.filters.custom
+		cFilters = cFilters.reduce((newFilters, f) => {
+			if (f.id !== fId) {
+				newFilters.push(f)
+			}
+			return newFilters
+		}, [])
+		this.setState({
+			filters: {
+				...this.state.filters,
+				custom: cFilters
+			}
+		})
+	}
 	filterItems = (data) => {
-		return filterItems(data, this.state.filters)
+		const rFilters = this.props.filters
+		const { filters } = this.state
+		return customFilterItems(filterItems(data, filters), rFilters)
 	}
 	componentDidMount = () => {
 		this.handleRequestSort(null, 'name', 'asc')
@@ -86,9 +144,13 @@ class Favorites extends Component {
 
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
+		if (property !== this.state.orderBy) {
+			order = 'asc'
+		}
 		handleRequestSort(property, order, this.props.favorites)
 		this.setState({ order, orderBy: property })
 	}
+
 	handleFilterKeyword = (value) => {
 		this.setState({
 			filters: {
@@ -126,14 +188,18 @@ class Favorites extends Component {
 	renderTableToolBar = () => {
 		const { t } = this.props
 		const { selected } = this.state
-		return <TableToolbar //	./TableToolbar.js
+		return <TableToolbar
+			ft={this.ft()}
+			addFilter={this.addFilter}
+			editFilter={this.editFilter}
+			removeFilter={this.removeFilter}
+			reduxKey={'favorites'}
 			anchorElMenu={this.state.anchorElMenu}
 			handleToolbarMenuClose={this.handleToolbarMenuClose}
 			handleToolbarMenuOpen={this.handleToolbarMenuOpen}
 			numSelected={selected.length}
 			options={this.options}
 			t={t}
-			// content={this.renderTableToolBarContent()}
 		/>
 	}
 	renderTable = () => {
@@ -175,7 +241,6 @@ class Favorites extends Component {
 		return (
 			<Fragment>
 				<Toolbar
-					// noSearch
 					data={favorites}
 					filters={filters}
 					history={this.props.history}
@@ -196,7 +261,8 @@ class Favorites extends Component {
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	favorites: state.favorites.favorites,
-	saved: state.favorites.saved
+	saved: state.favorites.saved,
+	filters: state.appState.filters.favorites
 })
 
 const mapDispatchToProps = (dispatch) => ({

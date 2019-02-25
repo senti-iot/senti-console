@@ -31,11 +31,6 @@ class DeviceCard extends Component {
 		this.setState({ actionAnchor: null });
 	}
 
-	handleEdit = () => {
-	}
-
-	handleDeleteProject = () => {
-	}
 	renderIcon = (status) => {
 		const { classes, t } = this.props
 		switch (status) {
@@ -56,11 +51,10 @@ class DeviceCard extends Component {
 		const { actionAnchor } = this.state
 		return (
 			<SmallCard
-				whiteAvatar
+				// whiteAvatar
 				key={d.id}
 				title={d.name ? d.name : d.id}
 				avatar={this.renderIcon(d.liveStatus)}
-				// img={this.state.img}
 				topAction={
 					<ItemGrid noMargin noPadding>
 						<IconButton
@@ -75,32 +69,17 @@ class DeviceCard extends Component {
 							anchorEl={actionAnchor}
 							open={Boolean(actionAnchor)}
 							onClose={this.handleCloseActionsDetails}
-							PaperProps={{
-								style: {
-									// maxHeight: 200,
-									minWidth: 200
-								}
-							}}>
+							PaperProps={{ style: { minWidth: 200 } }}>
 							<MenuItem component={Link} to={`/device/${d.id}/edit`} style={{ color: 'black' }}>
 								<Edit className={classes.leftIcon} />{t('menus.edit')}
 							</MenuItem>
-							{/* <MenuItem onClick={() => alert(t('dialogs.warnings.wip'))}>
-										<Devices className={classes.leftIcon} />{t('menus.assignDevices')}
-									</MenuItem>
-									<MenuItem onClick={() => alert(t('dialogs.warnings.wip'))}>
-										<PictureAsPdf className={classes.leftIcon} />{t('menus.exportPDF')}
-									</MenuItem>
-									<MenuItem onClick={() => alert(t('dialogs.warnings.wip'))}>
-										<Delete className={classes.leftIcon} />{t('menus.delete')}
-									</MenuItem> */}
-									))}
 						</Menu>
 					</ItemGrid>
 				}
 				content={<ItemGrid container>
 					<ItemG xs={6}>
 						<Caption>{t('devices.fields.temp')}</Caption>
-						<Info>{d.temperature} &#8451;</Info>
+						<Info>{d.temperature ? `${d.temperature}\u2103` : `-\u2103`}</Info>
 					</ItemG>
 					<ItemG xs={12}>
 						<Caption>{t('devices.fields.address')}</Caption>

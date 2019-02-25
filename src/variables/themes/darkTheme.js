@@ -8,10 +8,17 @@ const theme = createMuiTheme({
 		suppressDeprecationWarnings: true,
 	},
 	overrides: {
+		MuiListItem: {
+			button: {
+				transition: 'all 150ms cubic- bezier(0.4, 0, 0.2, 1) 0ms'
+			}
+		},
 		MuiMenuItem: {
-			selected: {
-				backgroundColor: `${teal[500]} !important`,
-				color: "#fff"
+			root: {
+				"&$selected": {
+					backgroundColor: `${teal[500]} !important`,
+					color: "#fff"
+				}
 			},
 		},
 		MuiCard: {
@@ -53,10 +60,9 @@ const theme = createMuiTheme({
 			}
 		},
 		MuiInput: {
-			// Name of the styleSheet
 			underline: {
 				'&:hover:not($disabled):not($focused):not($error):before': {
-					borderBottom: '2px solid #4db6ac' /* + primaryColor */,
+					borderBottom: '2px solid #4db6ac',
 				},
 				'&:after': {
 					borderBottomColor: teal[500],
@@ -69,13 +75,11 @@ const theme = createMuiTheme({
 	palette: {
 		type: 'dark',
 		primary: {
-			// light: will be calculated from palette.primary.main,
 			main: primaryColor
 		},
 		secondary: {
 			main: secondaryColor,
 			light: hoverColor,
-			// dark: will be calculated from palette.secondary.main,
 		},
 		error: {
 			main: red[400]

@@ -78,7 +78,6 @@ Geolocation.propTypes = {
 	maximumAge: PropTypes.number,
 	onSuccess: PropTypes.func,
 	onError: PropTypes.func,
-	// Do not call getCurrentPosition on mount
 	lazy: PropTypes.bool
 }
 

@@ -1,5 +1,3 @@
-// @flow
-
 import { Marker as LeafletMarker } from 'leaflet'
 import React from 'react'
 

@@ -3,11 +3,9 @@ import cookie from 'react-cookies'
 import crypto from 'crypto'
 import moment from 'moment'
 
-// https://betabackend.senti.cloud/
-// https://senti.cloud
 
-const { REACT_APP_ENCRYPTION_KEY } = process.env // Must be 256 bytes (32 characters)
-const IV_LENGTH = 16 // For AES, this is always 16
+const { REACT_APP_ENCRYPTION_KEY } = process.env
+const IV_LENGTH = 16 
 
 const encrypt = (text) => {
 	let iv = crypto.randomBytes(IV_LENGTH)
@@ -56,7 +54,7 @@ export const customerDoIApi = create({
 		'Content-Type': 'application/json'
 	}
 })
-// const apiRoute = '/holidays/v1/2018-01-01/2018-12-31/da'
+/* const apiRoute = '/holidays/v1/2018-01-01/2018-12-31/da' */
 export const holidayApi = create({
 	baseURL: `https://api.senti.cloud/holidays/v1`,
 	timeout: 30000,
@@ -67,17 +65,30 @@ export const holidayApi = create({
 	}
 })
 export const getHolidays = async (lang) => {
+	let lastYear = moment().subtract(1, 'year').format('YYYY')
+	let nextYear = moment().add(1, 'year').format('YYYY')
 	let year = moment().format('YYYY')
-	let data = await holidayApi.get(`/${year}-01-01/${year}-12-31/${lang}`).then(rs => rs.data)
-	let data2 = await customerDoIApi.get(`/${year}-01-01/${year}-12-31/${lang}`).then(rs => rs.data)
+	let data = await holidayApi.get(`/${lastYear}-01-01/${nextYear}-12-31/${lang}`).then(rs => rs.data)
+	let data2 = await customerDoIApi.get(`/${lastYear}-01-01/${nextYear}-12-31/${lang}`).then(rs => rs.data)
 	let newData = []
 	if (data2) { 
-		newData = data2.map(d => {
-			d.date = `${year}-${d.date}`
+		newData = data2.map((d, i) => {
+			if (i < data2.length / 3)
+				d.date = `${lastYear}-${d.date}`
+			else {	
+				if (i >= data2.length / 3 && i < 2 * data2.length / 3 )
+				{ d.date = `${year}-${d.date}` }
+				else {
+					d.date = `${nextYear}-${d.date}`
+				}
+			}
 			return d
 		})
 	}
-	return [...data, ...newData]
+	if (data && newData)
+		return [...data, ...newData]
+	else 
+		return []
 }
 export const weatherApi = create({
 	baseURL: `https://api.senti.cloud/weather/v1/`,

@@ -1,4 +1,7 @@
 --- 
+branches:
+  except:
+  - alpha-react-pdf
 addons: 
   ssh_known_hosts: kanata.webhouse.net
 cache: npm

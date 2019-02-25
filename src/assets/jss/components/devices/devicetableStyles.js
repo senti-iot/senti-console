@@ -6,7 +6,7 @@ const devicetableStyles = theme => ({
 		[theme.breakpoints.down('xs')]: {
 			padding: '0 10px'
 		},
-		padding: '0 20px'
+		padding: '0 16px'
 	},
 	hideIcon: {
 		display: "none",
@@ -83,7 +83,10 @@ const devicetableStyles = theme => ({
 		overflowX: 'auto',
 	},
 	header: {
-		padding: 0,
+		[theme.breakpoints.down('sm')]: {
+			paddingRight: 4,
+			padding: 0,
+		},
 		backgroundColor: grey[400],
 		// color: grey[200]
 	},
