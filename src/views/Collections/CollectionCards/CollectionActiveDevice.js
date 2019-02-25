@@ -73,9 +73,7 @@ class CollectionActiveDevice extends Component {
 							</ItemGrid>
 							<ItemGrid>
 								<Caption>{t('devices.fields.temp')}:</Caption>
-								<Info>
-									<Info>{device.temperature ? `${device.temperature}\u2103` : `-\u2103`}</Info>
-								</Info>
+								<Info>{device.temperature ? `${device.temperature}\u2103` : `-\u2103`}</Info>
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<Caption>{t('devices.fields.address')}</Caption>
