@@ -60,12 +60,12 @@ class FilterCard extends Component {
 			date: moment(),
 			after: false,
 			diff: {
-				value: 0,
+				value: -1,
 				icon: '',
 				label: ''
 			},
 			dropdown: {
-				value: 0,
+				value: -1,
 				icon: '',
 				label: ''
 			}
@@ -78,7 +78,7 @@ class FilterCard extends Component {
 			if (type === 'diff') {
 				obj = options.dropdown[options.dropdown.findIndex(d => d.value === 0 || d.value === false)]
 			}
-			if (type === 'dropdown') { 
+			if (type === 'dropDown') { 
 				obj = options[options.findIndex(d => d.value === 0 || d.value === false)]
 			}
 			this.setState({
@@ -114,7 +114,7 @@ class FilterCard extends Component {
 					break;
 				case 'date':
 					this.setState({
-						date: moment(value)
+						date: moment(value, 'lll')
 					})
 					break;
 				case 'string':
