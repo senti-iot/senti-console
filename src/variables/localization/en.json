@@ -638,6 +638,7 @@
 			"deviceToOrg": "Device %{device} assigned to organisation %{org}",
 			"projectToOrg": "Project %{project} assigned to organisation %{org}"
 		},
+		"assignFailed": "Assignment failed!",
 		"collectionCreated": "Data Collection has been created!",
 		"collectionDeleted": "Data Collection has been deleted!",
 		"collectionUpdated": "Data Collection has been updated!",

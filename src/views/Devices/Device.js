@@ -295,7 +295,7 @@ class Device extends Component {
 				s('snackbars.assign.deviceToCollection', { device: `${name}(${id})`, collection: '' /* `${device.dataCollection.name}(${device.dataCollection.id})` */ })
 				break
 			case 3:
-				s('snackbars.failedUnassign')
+				s('snackbars.assignFailed')
 				break
 			case 4:
 				s('snackbars.assign.deviceToOrg', { device: `${name}(${id})`, org: `${device.org.name}` })
