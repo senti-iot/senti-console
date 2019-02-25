@@ -139,7 +139,8 @@ class BarChart extends PureComponent {
 			mobile: window.innerWidth > 430 ? false : true
 		})
 	}
-	componentDidUpdate = (prevProps, prevState) => {
+	componentDidUpdate = (prevProps) => {
+		console.log('Updated', this.props.chartYAxis, prevProps.chartYAxis)
 		if (prevProps.unit !== this.props.unit || prevProps.hoverID !== this.props.hoverID || this.props.timeType !== prevProps.timeType || prevProps.chartYAxis !== this.props.chartYAxis) {
 			this.setXAxis()
 		}
@@ -419,7 +420,6 @@ class BarChart extends PureComponent {
 const mapStateToProps = (state) => ({
 	lang: state.settings.language,
 	timeType: state.dateTime.timeType,
-	chartYAxis: state.appState.chartYAxis
 })
 
 const mapDispatchToProps = {

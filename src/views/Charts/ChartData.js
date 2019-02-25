@@ -86,6 +86,7 @@ class ChartData extends PureComponent {
 		this._isMounted = 0
 	}
 	handleChangeChartType = (type) => { 
+		console.log(type)
 		this.setState({
 			chartType: type
 		})
@@ -234,17 +235,18 @@ class ChartData extends PureComponent {
 						</ItemG>
 						: this.renderNoData()
 				case 2:
-					return barDataSets ? <div style={{ maxHeight: 400 }}>
+					return barDataSets ? 
 						<BarChart
+							chartYAxis={this.state.chartType}
 							single={single}
+							hoverID={hoverID}
 							obj={device}
 							unit={this.timeTypes[period.timeType]}
 							onElementsClick={this.handleZoomOnData}
 							setHoverID={setHoverID}
-							hoverID={hoverID}
 							data={barDataSets}
 							t={t}
-						/></div> : this.renderNoData()
+						/> : this.renderNoData()
 				case 3:
 
 					return lineDataSets ?
