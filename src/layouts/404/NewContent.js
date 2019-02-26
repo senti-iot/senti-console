@@ -25,7 +25,6 @@ class NewContent extends React.Component {
 	};
 	render() {
 		const { timedOut } = this.state
-		console.log(timedOut)
 		return (
 			<div>
 				<Dialog
