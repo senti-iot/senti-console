@@ -66,8 +66,7 @@ function registerValidSW(swUrl) {
 				registration.update()
 				const installingWorker = registration.installing;
 				installingWorker.onstatechange = () => {
-					console.log(installingWorker.state)
-					if (installingWorker.state === 'installed') {
+					if (installingWorker.state === 'installed' || installingWorker.state === 'activated') {
 						if (navigator.serviceWorker.controller) {
 							// At this point, the old content will have been purged and
 							// the fresh content will have been added to the cache.
@@ -78,7 +77,7 @@ function registerValidSW(swUrl) {
 							ReactDOM.unmountComponentAtNode(rootUpdate)
 							ReactDOM.render(<NewContent />, rootUpdate)
 						} else {
-
+							console.log('Content is cached')
 							// At this point, everything has been precached.
 							// It's the perfect time to display a
 							// 'Content is cached for offline use.' message.
