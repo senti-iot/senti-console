@@ -14,17 +14,10 @@ const styles = {
 	}
 }
 class NewContent extends React.Component {
-	state = {
-		timedOut: false
-	};
-	componentDidMount = () => { 
-		setTimeout(() => {this.setState({ timedOut: true }) }, 15000);
-	}
 	handleClose = () => {
 		window.location.reload()
 	};
 	render() {
-		const { timedOut } = this.state
 		return (
 			<div>
 				<Dialog
@@ -36,21 +29,21 @@ class NewContent extends React.Component {
 					<DialogTitle id='alert-dialog-title'>Senti.Cloud Update Found</DialogTitle>
 					<DialogContent>
 						<Typography id='alert-dialog-description'>
-							Update is available! {this.props.installing || timedOut ? `Updating...` : `Please reload the page to access updates!`}
+							Update is available! {this.props.installing ? `Updating...` : `Please reload the page to access updates!`}
 						</Typography>
 					</DialogContent>
 					<DialogActions>
 						<ItemG container justify={'center'} alignItems={'center'}>
 							
 							<Button
-								disabled={this.props.installing || !timedOut}
+								disabled={this.props.installing}
 								classes={{
 									label: this.props.classes.button,
 									root: this.props.classes.button,
 									disabled: this.props.classes.button
 								}}
 								onClick={this.handleClose} className={this.props.classes.button}>
-								{this.props.installing || !timedOut ? <CircularProgress  color={'inherit'}/> : 'Reload'}
+								{this.props.installing ? <CircularProgress  color={'inherit'}/> : 'Reload'}
 							</Button>
 						
 						</ItemG>
