@@ -16,9 +16,11 @@
 		}
 	},
 	"404": {
-		"errorMessage": "Den ønskede ressource er ikke fundet! Prøv igen eller kontakt support på support@senti.cloud!",
+		"errorMessage": "Den ønskede ressource er ikke fundet!",
+		"contactSupport": "Prøv igen eller kontakt support på support@senti.cloud!",
 		"networkError": "Netværksfejl!",
-		"title": "404 fejl - Siden ikke fundet"
+		"title": "Siden ikke fundet",
+		"goHome": "Gå til Dashboard"
 	},
 	"": "",
 	"Senti.Cloud": "Senti.Cloud",

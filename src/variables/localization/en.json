@@ -16,9 +16,11 @@
 		}
 	},
 	"404": {
-		"errorMessage": "The resource requested has not been found! Please try again or contact support on support@senti.cloud!",
+		"errorMessage": "The resource requested has not been found!",
+		"contactSupport": "Please try again or contact support on support@senti.cloud!",
 		"networkFail": "Request failed!",
-		"title": "404 Error - Page Not Found"
+		"title": "Page Not Found",
+		"goHome": "Go to Dashboard"
 	},
 	"": "",
 	"Senti.Cloud": "Senti.Cloud",

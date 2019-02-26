@@ -37,7 +37,7 @@ class NewContent extends React.Component {
 					<DialogTitle id='alert-dialog-title'>Senti.Cloud Update Found</DialogTitle>
 					<DialogContent>
 						<Typography id='alert-dialog-description'>
-							Update is available! {this.props.installing ? `Updating...` : `Please reload the page to access updates!`}
+							Update is available! {this.props.installing || timedOut ? `Updating...` : `Please reload the page to access updates!`}
 						</Typography>
 					</DialogContent>
 					<DialogActions>
