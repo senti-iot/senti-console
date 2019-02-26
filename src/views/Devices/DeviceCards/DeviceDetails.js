@@ -168,7 +168,7 @@ class DeviceDetails extends Component {
 						</ItemG>
 						<ItemG xs={12} md={3} lg={3}>
 							<Caption>{t('devices.fields.availability')}:</Caption>
-							<Info>{device.dataCollection.id > 0 ? t('devices.fields.notfree') : t('devices.fields.free')}</Info>
+							<Info>{device.dataCollection ? t('devices.fields.notfree') : t('devices.fields.free')}</Info>
 						</ItemG>
 				
 					</ItemG>} />

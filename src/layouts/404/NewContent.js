@@ -15,18 +15,17 @@ const styles = {
 }
 class NewContent extends React.Component {
 	state = {
-		open: false,
+		timedOut: false
 	};
-
-	handleClickOpen = () => {
-		this.setState({ open: true });
-	};
-
+	componentDidMount = () => { 
+		setTimeout(() => {this.setState({ timedOut: true }) }, 15000);
+	}
 	handleClose = () => {
 		window.location.reload()
 	};
-
 	render() {
+		const { timedOut } = this.state
+		console.log(timedOut)
 		return (
 			<div>
 				<Dialog
@@ -45,14 +44,14 @@ class NewContent extends React.Component {
 						<ItemG container justify={'center'} alignItems={'center'}>
 							
 							<Button
-								disabled={this.props.installing}
+								disabled={this.props.installing || !timedOut}
 								classes={{
 									label: this.props.classes.button,
 									root: this.props.classes.button,
 									disabled: this.props.classes.button
 								}}
 								onClick={this.handleClose} className={this.props.classes.button}>
-								{this.props.installing ? <CircularProgress  color={'inherit'}/> : 'Reload'}
+								{this.props.installing || !timedOut ? <CircularProgress  color={'inherit'}/> : 'Reload'}
 							</Button>
 						
 						</ItemG>
