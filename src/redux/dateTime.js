@@ -182,7 +182,8 @@ export const dateTime = (state = initialState, action) => {
 			return Object.assign({}, state, { periods: periods ? periods : state.periods  })
 		case changePeriods:
 		case addPeriod:
-			return Object.assign({}, state, { periods: action.periods })
+			let newPeriods = setDates(action.periods)
+			return Object.assign({}, state, { periods: newPeriods })
 		case changeHeatmapDate:
 			return Object.assign({}, state, {
 				heatMap: {

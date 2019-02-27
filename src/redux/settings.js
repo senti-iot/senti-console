@@ -30,6 +30,7 @@ const GETFAVS = 'getFavorites'
 const CHARTTYPE = 'chartType'
 const CHARTDATATYPE = 'chartDataType'
 const addPeriod = 'chartAddPeriod'
+const weekendColor = 'changeWeekendColor'
 
 //Get/Set Settings from server
 const GetSettings = 'getSettings'
@@ -143,8 +144,6 @@ export const getSettings = async () => {
 			return false
 		}
 	}
-
-
 }
 
 export const acceptCookiesFunc = (val) => {
@@ -293,7 +292,7 @@ export const changeSettingsDate = (menuId, to, from, timeType, id) => {
 		}
 		periods[c] = {
 			id: c,
-			menuId, to: to ? to : undefined, from: from ? from : undefined, timeType, chartType: id === -1 ? 3 : periods[c].chartType, hide: false, raw: periods[c] ? periods[c].raw : false
+			menuId, to: to ? to : undefined, from: from ? from : undefined, timeType, chartType: id === -1 ? 3 : periods[c].chartType, hide: false, raw: id !== -1 ? periods[c].raw : false
 		}
 		dispatch({
 			type: addPeriod,
@@ -338,6 +337,14 @@ export const changeTheme = (code) => {
 		dispatch(saveSettingsOnServ())
 	}
 }
+export const changeWeekendColor = (id) => { 
+	return async (dispatch, getState) => { 
+		dispatch({
+			type: weekendColor,
+			id
+		})
+	}
+}
 export const finishedSaving = () => {
 	return {
 		type: SAVED,
@@ -345,6 +352,7 @@ export const finishedSaving = () => {
 	}
 }
 let initialState = {
+	weekendColor: 0,
 	periods: [{
 		id: 0,
 		menuId: 0,
@@ -383,9 +391,10 @@ let initialState = {
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
+		case weekendColor:
+			return Object.assign({}, state, { weekendColor: action.id })
 		case addPeriod:
 			let periods = setDates(action.periods)
-			console.log(periods)
 			return Object.assign({}, state, { periods: periods })
 		case acceptCookies:
 			return Object.assign({}, state, { cookies: action.acceptCookies })
