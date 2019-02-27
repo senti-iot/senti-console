@@ -6,7 +6,10 @@ import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
 import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
-import { dateTimeFormatter } from 'variables/functions';
+import { dateTimeFormatter, weekendColorsDropdown } from 'variables/functions';
+import { connect } from 'react-redux'
+import { changeChartType } from 'redux/appState';
+import { changeChartDataType, removeChartPeriod, updateChartPeriod, changeWeekendColor } from 'redux/settings';
 // import { dateTimeFormatter } from 'variables/functions';
 
 const ExpansionPanelDetails = withStyles(theme => ({
@@ -98,10 +101,15 @@ class ChartSettings extends Component {
 			{ value: 1, icon: '', label: t('settings.default') }
 		]
 	}
+	
 	changeChartType = e => this.props.changeChartType(e.target.value)
 	changeChartDataType = e => this.props.changeChartDataType(e.target.value)
+	changeWeekendColor = e => this.props.changeWeekendColor(e.target.value)
+
 	render() {
-		const { t, classes, chartType, periods, updateChartPeriod, removeChartPeriod } = this.props
+		const { t, classes, chartType, periods,
+			updateChartPeriod, removeChartPeriod,
+			weekendColor } = this.props
 		const { expanded } = this.state;
 		return (
 			<InfoCard
@@ -114,15 +122,15 @@ class ChartSettings extends Component {
 							<ListItem divider>
 								<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 									<ListItemText>{t('settings.chart.defaultChart')}</ListItemText>
-									<DSelect menuItems={this.chartTypes()} value={chartType} onChange={this.changeChartType} />
+									<DSelect leftIcon menuItems={this.chartTypes()} value={chartType} onChange={this.changeChartType} />
 								</ItemGrid>
 							</ListItem>
-							{/* <ListItem divider>
+							<ListItem divider>
 								<ItemGrid container zeroMargin noPadding alignItems={'center'}>
-									<ListItemText>{t('settings.chart.rawData')}</ListItemText>
-									<DSelect menuItems={this.chartDataTypes()} value={chartDataType} onChange={this.changeChartDataType} />
+									<ListItemText>{t('settings.chart.weekendColor')}</ListItemText>
+									<DSelect leftIcon menuItems={weekendColorsDropdown(t)} value={weekendColor} onChange={this.changeWeekendColor} />
 								</ItemGrid>
-							</ListItem> */}
+							</ListItem>
 							<ListItem divider>
 								<ItemGrid xs={12} container zeroMargin noPadding alignItems={'center'}>
 									<ListItemText>
@@ -195,5 +203,25 @@ class ChartSettings extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => {
+	const s = state.settings
+	return ({
+		chartType: s.chartType,
+		periods: s.periods,
+		weekendColor: s.weekendColor
+	})
+}
 
-export default withStyles(settingsStyles)(ChartSettings)
+const mapDispatchToProps = (dispatch) => {
+	return {
+		changeChartType: type => dispatch(changeChartType(type)),
+		changeChartDataType: type => dispatch(changeChartDataType(type)),
+
+		removeChartPeriod: pId => dispatch(removeChartPeriod(pId)),
+		updateChartPeriod: p => dispatch(updateChartPeriod(p)),
+
+		changeWeekendColor: color => dispatch(changeWeekendColor(color))
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(settingsStyles)(ChartSettings))

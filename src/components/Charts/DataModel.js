@@ -12,11 +12,11 @@ import { getDataHourly, getDataDaily, getDataMinutely, getDataSummary } from 'va
 
 const format = 'YYYY-MM-DD+HH:mm'
 
-const linecolors = (data, defaultColor, id) => {
+const linecolors = (data, defaultColor, id, color) => {
 	let colors = []
 	data.map(d => {
 		if (isWeekend(d[0])) {
-			return colors.push(weekendColors(id))
+			return colors.push(weekendColors(id, color))
 		} else {
 			return colors.push(defaultColor)
 		}

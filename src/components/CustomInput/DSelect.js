@@ -13,7 +13,7 @@ const styles = theme => ({
 });
 
 const DSelect = (props) => {
-	const { classes, value, onKeyPress, onChange, menuItems, label, theme, fullWidth } = props
+	const { classes, value, onKeyPress, onChange, menuItems, label, theme, fullWidth, leftIcon } = props
 	let mobile = window.innerWidth < theme.breakpoints.values.md ? true : false
 	return <FormControl className={classes.formControl} fullWidth={mobile || fullWidth}>
 		{label ? <InputLabel FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
@@ -29,8 +29,9 @@ const DSelect = (props) => {
 			{menuItems.map((m, i) => {
 				return <MenuItem key={i} value={m.value}>
 					<ItemG container justify={'space-between'} alignItems={'center'}>
+						{leftIcon ? <ItemG style={{ display: 'flex', marginRight: 8 }}>{m.icon ? m.icon : null}</ItemG> : null}
 						<ItemG xs>{m.label}</ItemG>
-						<ItemG>{m.icon ?  m.icon : null}</ItemG>
+						{!leftIcon ? <ItemG>{m.icon ? m.icon : null}</ItemG> : null}
 					</ItemG>
 				</MenuItem>
 			})}

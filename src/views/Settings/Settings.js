@@ -5,7 +5,7 @@ import CalibrationSettings from './SettingsCards/CalibrationSettings';
 import DisplaySettings from './SettingsCards/DisplaySettings';
 import { changeLanguage } from 'redux/localization';
 import withLocalization from 'components/Localization/T';
-import { changeTRP, changeDefaultRoute, changeTheme, changeChartType, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow, saveSettingsOnServ, finishedSaving, changeChartDataType, changeTCount, changeMapTheme, removeChartPeriod, updateChartPeriod } from 'redux/settings';
+import { changeTRP, changeDefaultRoute, changeTheme, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow, saveSettingsOnServ, finishedSaving, changeTCount, changeMapTheme } from 'redux/settings';
 import ChartSettings from './SettingsCards/ChartSettings';
 import withSnackbar from 'components/Localization/S';
 import { compose } from 'recompose';
@@ -29,7 +29,7 @@ class Settings extends Component {
 		{ id: 3, title: '', label: <BarChart />, url: `#charts` },
 		{ id: 4, title: '', label: <Assignment />, url: '#termsAndConditions' }
 	]
-	componentDidUpdate = (prevProps, prevState) => {
+	componentDidUpdate = () => {
 		if (this.props.saved === true) {
 			this.props.s('snackbars.settingsSaved')
 			this.props.finishedSaving()
@@ -148,11 +148,11 @@ const mapDispatchToProps = (dispatch) => {
 		changeAlerts: t => dispatch(changeAlerts(t)),
 		changeDidKnow: t => dispatch(changeDidKnow(t)),
 
-		changeChartType: type => dispatch(changeChartType(type)),
-		changeChartDataType: type => dispatch(changeChartDataType(type)),
+		// changeChartType: type => dispatch(changeChartType(type)),
+		// changeChartDataType: type => dispatch(changeChartDataType(type)),
 		
-		removeChartPeriod: pId => dispatch(removeChartPeriod(pId)),
-		updateChartPeriod: p => dispatch(updateChartPeriod(p)),
+		// removeChartPeriod: pId => dispatch(removeChartPeriod(pId)),
+		// updateChartPeriod: p => dispatch(updateChartPeriod(p)),
 
 		saveSettings: () => dispatch(saveSettingsOnServ()),
 		finishedSaving: () => dispatch(finishedSaving())

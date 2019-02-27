@@ -579,8 +579,27 @@
 			"time": "På tid"
 		},
 		"chart": {
+			"weekendColor": "Weekend farve",
 			"period": "Periode",
 			"periods": "Perioder",
+			"weekendColors": {
+				"lightBlue": "Lyseblå",
+				"cyan": "Cyan",
+				"teal": "Krikand",
+				"green": "Grøn",
+				"lightGreen": "Lysegrøn",
+				"lime": "Citron",
+				"yellow": "Gul",
+				"amber": "Rav",
+				"orange": "Orange",
+				"deepOrange": "Dyb orange",
+				"red": "Rød",
+				"pink": "Lyserød",
+				"purple": "Lilla",
+				"deepPurple": "Mørke lilla",
+				"indigo": "Indigo",
+				"blue": "Blå"
+			},
 			"YAxis": {
 				"logarithmic": "Logaritmisk skala",
 				"linear": "Lineær skala"

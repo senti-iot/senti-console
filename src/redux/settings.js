@@ -43,6 +43,7 @@ export const saveSettingsOnServ = () => {
 		let user = getState().settings.user
 		let s = getState().settings
 		let settings = {
+			weekendColor: s.weekendColor,
 			calibration: s.calibration,
 			calNotifications: s.calNotifications,
 			count: s.count,
@@ -343,6 +344,7 @@ export const changeWeekendColor = (id) => {
 			type: weekendColor,
 			id
 		})
+		dispatch(saveSettingsOnServ())
 	}
 }
 export const finishedSaving = () => {
@@ -352,7 +354,7 @@ export const finishedSaving = () => {
 	}
 }
 let initialState = {
-	weekendColor: 0,
+	weekendColor: 'red',
 	periods: [{
 		id: 0,
 		menuId: 0,
