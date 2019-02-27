@@ -314,6 +314,22 @@ export const removeChartPeriod = pId => {
 		dispatch(saveSettingsOnServ())
 	}
 }
+export const changePeriodChartType = (type, p) => { 
+	return async (dispatch, getState) => { 
+		let periods = []
+		periods = [...getState().settings.periods]
+		let id = periods.findIndex(f => f.id === p.id)
+		if (id > -1) {
+			periods[id].chartType = type
+		}
+		dispatch({
+			type: addPeriod,
+			periods
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+
 export const updateChartPeriod = p => {
 	return async (dispatch, getState) => {
 		let periods = []

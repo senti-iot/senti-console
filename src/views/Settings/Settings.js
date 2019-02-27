@@ -38,9 +38,9 @@ class Settings extends Component {
 
 	render() {
 		const { t } = this.props
-		const { language, sideBar, changeSideBarLoc, trp, changeTRP, theme, changeTheme, changeDiscoverSenti, discSentiVal, changeLanguage, changeChartType } = this.props
-		const { calibration, changeCalType, count, changeCount, changeTCount, calNotifications, changeCalNotif, rawData, changeDefaultRoute, defaultRoute } = this.props
-		const { updateChartPeriod, removeChartPeriod, chartType, changeChartDataType, tcount, mapTheme, changeMapTheme, periods } = this.props
+		const { language, sideBar, changeSideBarLoc, trp, changeTRP, theme, changeTheme, changeDiscoverSenti, discSentiVal, changeLanguage } = this.props
+		const { calibration, changeCalType, count, changeCount, changeTCount, calNotifications, changeCalNotif,  changeDefaultRoute, defaultRoute } = this.props
+		const { tcount, mapTheme, changeMapTheme } = this.props
 		return (
 			<Fragment>
 				<Toolbar
@@ -83,14 +83,8 @@ class Settings extends Component {
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'charts'}>
 						<ChartSettings
-							chartType={chartType}
-							chartDataType={rawData}
-							changeChartType={changeChartType}
-							changeChartDataType={changeChartDataType}
-							updateChartPeriod={updateChartPeriod}
-							removeChartPeriod={removeChartPeriod}
+		
 							t={t}
-							periods={periods}
 						/>
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'termsAndConditions'}>
@@ -120,10 +114,6 @@ const mapStateToProps = state => {
 		count: s.count,
 		tcount: s.tcount,
 		calNotifications: s.calNotifications,
-		
-		chartType: s.chartType,
-		rawData: s.rawData,
-		periods: s.periods,
 
 		alerts: s.alerts,
 		didKnow: s.didKnow

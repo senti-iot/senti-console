@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { BarChart, PieChartRounded, ShowChart, DonutLargeRounded, Add, Clear, Edit, ExpandMore } from 'variables/icons'
-import { InfoCard, DSelect, ItemGrid, DateFilterMenu, ItemG, T, Caption, Info } from 'components';
+import { BarChart, PieChartRounded, ShowChart, DonutLargeRounded, Add, Clear, DateRange, ExpandMore } from 'variables/icons'
+import { InfoCard, DSelect, ItemGrid, DateFilterMenu, ItemG, T, Caption, Info, Dropdown } from 'components';
 import { ListItemText, ListItem, List, Grid, withStyles, Typography, Button, ExpansionPanelActions, Checkbox } from '@material-ui/core';
 import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
 import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -9,7 +9,7 @@ import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 import { dateTimeFormatter, weekendColorsDropdown } from 'variables/functions';
 import { connect } from 'react-redux'
 import { changeChartType } from 'redux/appState';
-import { changeChartDataType, removeChartPeriod, updateChartPeriod, changeWeekendColor } from 'redux/settings';
+import { changeChartDataType, removeChartPeriod, updateChartPeriod, changeWeekendColor, changePeriodChartType } from 'redux/settings';
 // import { dateTimeFormatter } from 'variables/functions';
 
 const ExpansionPanelDetails = withStyles(theme => ({
@@ -58,39 +58,60 @@ const ExpansionPanelSummary = withStyles({
 ExpansionPanelSummary.muiName = 'ExpansionPanelSummary';
 class ChartSettings extends Component {
 	constructor(props) {
-	  super(props)
-	
-	  this.state = {
-		 expanded: false
-	  }
+		super(props)
+
+		this.state = {
+			expanded: false
+		}
+	}
+	renderIcon = (chartType) => {
+		const { classes } = this.props
+		switch (chartType) {
+			case 0:
+				return <PieChartRounded className={classes.icon}/>
+			case 1:
+				return <DonutLargeRounded className={classes.icon}/>
+			case 2:
+				return <BarChart className={classes.icon}/>
+			case 3:
+				return <ShowChart className={classes.icon}/>
+			default:
+				break;
+		}
 	}
 	handleChange = panel => (event, expanded) => {
 		this.setState({
 			expanded: expanded ? panel : false,
 		});
 	};
-	timeTypes = [
-		{ id: 0, label: this.props.t('filters.dateOptions.minutely') },
-		{ id: 1, label: this.props.t('filters.dateOptions.hourly') },
-		{ id: 2, label: this.props.t('filters.dateOptions.daily') },
-		{ id: 3, label: this.props.t('filters.dateOptions.summary') },
-	]
-	options = [
-		{ id: 0, label: this.props.t('filters.dateOptions.today') },
-		{ id: 1, label: this.props.t('filters.dateOptions.yesterday') },
-		{ id: 2, label: this.props.t('filters.dateOptions.thisWeek') },
-		{ id: 3, label: this.props.t('filters.dateOptions.7days') },
-		{ id: 4, label: this.props.t('filters.dateOptions.30days') },
-		{ id: 5, label: this.props.t('filters.dateOptions.90days') },
-		{ id: 6, label: this.props.t('filters.dateOptions.custom') },
-	]
-	chartTypes = () => {
+	timeTypes = () => {
 		const { t } = this.props
 		return [
-			{ value: 0, icon: <PieChartRounded />, label: t('charts.type.pie') },
-			{ value: 1, icon: <DonutLargeRounded />, label: t('charts.type.donut') },
-			{ value: 2, icon: <BarChart />, label: t('charts.type.bar') },
-			{ value: 3, icon: <ShowChart />, label: t('charts.type.line') }
+			{ id: 0, label: t('filters.dateOptions.minutely') },
+			{ id: 1, label: t('filters.dateOptions.hourly') },
+			{ id: 2, label: t('filters.dateOptions.daily') },
+			{ id: 3, label: t('filters.dateOptions.summary') },
+		]
+	}
+	options = () => {
+		const { t } = this.props
+		return [
+			{ id: 0, label: t('filters.dateOptions.today') },
+			{ id: 1, label: t('filters.dateOptions.yesterday') },
+			{ id: 2, label: t('filters.dateOptions.thisWeek') },
+			{ id: 3, label: t('filters.dateOptions.7days') },
+			{ id: 4, label: t('filters.dateOptions.30days') },
+			{ id: 5, label: t('filters.dateOptions.90days') },
+			{ id: 6, label: t('filters.dateOptions.custom') },
+		]
+	}
+	chartTypes = (p) => {
+		const { t } = this.props
+		return [
+			{ value: 0, icon: <PieChartRounded />, label: t('charts.type.pie'), func: this.changePeriodChartType(p, 0) },
+			{ value: 1, icon: <DonutLargeRounded />, label: t('charts.type.donut'), func: this.changePeriodChartType(p, 1) },
+			{ value: 2, icon: <BarChart />, label: t('charts.type.bar'), func: this.changePeriodChartType(p, 2) },
+			{ value: 3, icon: <ShowChart />, label: t('charts.type.line'), func: this.changePeriodChartType(p, 3) },
 		]
 
 	}
@@ -101,10 +122,14 @@ class ChartSettings extends Component {
 			{ value: 1, icon: '', label: t('settings.default') }
 		]
 	}
-	
+
 	changeChartType = e => this.props.changeChartType(e.target.value)
 	changeChartDataType = e => this.props.changeChartDataType(e.target.value)
 	changeWeekendColor = e => this.props.changeWeekendColor(e.target.value)
+	changePeriodChartType = (p, val) => () => {
+		// e.preventDefault()
+		this.props.changePeriodChartType(val, p)
+	}
 
 	render() {
 		const { t, classes, chartType, periods,
@@ -152,10 +177,10 @@ class ChartSettings extends Component {
 									onChange={this.handleChange(p.id)}
 								>
 									<ExpansionPanelSummary expandIcon={<ExpandMore className={classes.icon} />}>
-										<Typography>{`${t('settings.chart.period')}: ${this.options[p.menuId].label}`}</Typography>
+										<Typography>{`${t('settings.chart.period')}: ${this.options()[p.menuId].label}`}</Typography>
 									</ExpansionPanelSummary>
 									<ExpansionPanelDetails>
-										<ItemG container spacing={8}>
+										<ItemG container spacing={16} alignItems={'center'}>
 											<ItemG>
 												<Caption>{t('filters.startDate')}</Caption>
 												<Info>{dateTimeFormatter(p.from)}</Info>
@@ -166,35 +191,54 @@ class ChartSettings extends Component {
 											</ItemG>
 											<ItemG>
 												<Caption>{t('filters.display')}</Caption>
-												<Info>{this.timeTypes[p.timeType].label}</Info>
+												<Info>{this.timeTypes()[p.timeType].label}</Info>
 											</ItemG>
-											<ItemG xs={12} container alignItems={'center'}>
+											{/* <ItemG container alignItems={'center'}>
 												<Caption>{t('collections.rawData')}</Caption>
 												<Checkbox
 													style={{ padding: 8 }}
 													checked={p.raw}
 													onClick={() => updateChartPeriod(p)}
 												/>
-											</ItemG>
+											</ItemG> */}
 										</ItemG>
 									</ExpansionPanelDetails>
 									<ExpansionPanelActions style={{ paddingTop: 0, padding: '8px 16px' }}>
-										<DateFilterMenu 
-											settings={true}
-											button 
-											period={p}
-											icon={
-												<Fragment>
-													<Edit className={classes.icon} /><T>{t('menus.edit')}</T>
+										<ItemG container alignItems={'center'} justify={'flex-end'}>
+											<Button size={'small'} onClick={() => updateChartPeriod(p)} >
+												<Checkbox
+													style={{ padding: 4 }}
+													className={classes.icon}
+													checked={p.raw}
+												/>
+												<T>{t('collections.rawData')}</T>
+											</Button>
+											<Dropdown
+												button
+												icon={<Fragment>
+													{this.renderIcon(p.chartType)}<T>{this.chartTypes()[this.chartTypes().findIndex(f => f.value === p.chartType)].label}</T>
 												</Fragment>
-											} t={t} />
-										<Button size={'small'} onClick={() => removeChartPeriod(p.id)}>
-											<Clear className={classes.icon} /><T>{t('menus.delete')}</T>
-										</Button>
+												}
+												menuItems={this.chartTypes(p)}
+												value={chartType}
+												onChange={this.changeChartType} />
+											<DateFilterMenu
+												settings={true}
+												button
+												period={p}
+												icon={
+													<Fragment>
+														<DateRange className={classes.icon} /><T>{t('menus.edit')}</T>
+													</Fragment>
+												} t={t} />
+											<Button size={'small'} style={{ padding: 4 }} onClick={() => removeChartPeriod(p.id)}>
+												<Clear className={classes.icon} /><T>{t('menus.delete')}</T>
+											</Button>
+										</ItemG>
 									</ExpansionPanelActions>
 								</ExpansionPanel>
 							})}
-					
+
 						</List>
 					</Grid>
 
@@ -220,7 +264,8 @@ const mapDispatchToProps = (dispatch) => {
 		removeChartPeriod: pId => dispatch(removeChartPeriod(pId)),
 		updateChartPeriod: p => dispatch(updateChartPeriod(p)),
 
-		changeWeekendColor: color => dispatch(changeWeekendColor(color))
+		changeWeekendColor: color => dispatch(changeWeekendColor(color)),
+		changePeriodChartType: (type, p) => dispatch(changePeriodChartType(type, p))
 	}
 }
 

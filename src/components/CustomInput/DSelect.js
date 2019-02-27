@@ -5,9 +5,12 @@ import { ItemG } from 'components';
 // Replace withStyles with withTheme, remove styles
 
 const styles = theme => ({
+	label: {
+		color: theme.palette.type === 'dark' ? "#fff" : undefined
+	},
 	formControl: {
-		marginTop: 16,
-		marginBottom: 8,
+		// marginTop: 16,
+		// marginBottom: 8,
 		minWidth: 230
 	},
 });
@@ -20,6 +23,7 @@ const DSelect = (props) => {
 			{label}
 		</InputLabel> : null}
 		<Select
+
 			fullWidth={mobile || fullWidth}
 			value={value}
 			onChange={onChange}

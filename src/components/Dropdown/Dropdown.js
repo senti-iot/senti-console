@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { IconButton, Menu, MenuItem, Button } from '@material-ui/core';
 import { ItemG } from 'components';
 import { MoreVert } from 'variables/icons';
@@ -24,7 +24,7 @@ class Dropdown extends Component {
 		const { actionAnchor } = this.state
 		const { menuItems, icon, button, divider } = this.props
 		return (
-			<ItemG>
+			<Fragment>
 				{button && <Button
 					aria-label='More'
 					aria-owns={actionAnchor ? 'long-menu' : null}
@@ -50,12 +50,15 @@ class Dropdown extends Component {
 						if (m.dontShow)
 							return null
 						return <MenuItem divider={divider ? i === menuItems.length - 1 ? false : true : false} selected={m.selected} key={i} onClick={() => { m.func(); this.handleCloseActionsDetails() }}>
-							{m.icon} {m.label}
+							<ItemG container justify={'space-between'} alignItems={'center'}>
+								{m.icon ? <ItemG style={{ display: 'flex', marginRight: 8 }}>{m.icon}</ItemG> : null}
+								<ItemG xs>{m.label}</ItemG>
+							</ItemG>
 						</MenuItem>
 					})}
 					))}
 				</Menu>
-			</ItemG>
+			</Fragment>
 		)
 	}
 }
