@@ -86,7 +86,6 @@ class ChartData extends PureComponent {
 		this._isMounted = 0
 	}
 	handleChangeChartType = (type) => { 
-		console.log(type)
 		this.setState({
 			chartType: type
 		})
@@ -187,7 +186,7 @@ class ChartData extends PureComponent {
 	}
 
 	renderType = () => {
-		const { title, setHoverID, t, device, period, single, hoverID } = this.props
+		const { title, setHoverID, t, device, period, single, hoverID, periods } = this.props
 		const { loading } = this.state
 		if (!loading) {
 			const { roundDataSets, lineDataSets, barDataSets } = this.state
@@ -196,7 +195,7 @@ class ChartData extends PureComponent {
 					return roundDataSets ?
 						<ItemG container >
 							{roundDataSets.map((d, i) => {
-								return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md={roundDataSets.length >= 2 ? 6 : 12} direction={'column'} container justify={'center'}>
+								return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md={roundDataSets.length >= 2 ? periods.length > 2 ? 12 :  6 : 12} direction={'column'} container justify={'center'}>
 									<div style={{ maxHeight: 300 }}>
 										<PieChart
 											height={300}
@@ -217,7 +216,7 @@ class ChartData extends PureComponent {
 					return roundDataSets ?
 						<ItemG container >
 							{roundDataSets.map((d, i) => {
-								return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md={roundDataSets.length >= 2 ? 6 : 12} direction={'column'} container justify={'center'}>
+								return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md={roundDataSets.length >= 2 ? periods.length > 2 ? 12 : 6 : 12} direction={'column'} container justify={'center'}>
 									<div style={{ maxHeight: 300 }}>
 										<DoughnutChart
 											height={300}
@@ -441,7 +440,7 @@ class ChartData extends PureComponent {
 	}
 }
 const mapStateToProps = (state) => ({
-	raw: state.settings.rawData ? true : false
+	periods: state.dateTime.periods
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -87,7 +87,6 @@ class DateFilterMenu extends Component {
 				break;
 		}
 		if (this.props.settings) {
-			console.log(period)
 			if (menuId === 6)
 				return this.props.handleSetSettingsPeriod(menuId, to, from, defaultT, period ? period.id : -1)
 			return this.props.handleSetSettingsPeriod(menuId, undefined, undefined, defaultT, period ? period.id : -1)
