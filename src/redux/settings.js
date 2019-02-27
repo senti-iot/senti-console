@@ -3,6 +3,7 @@ import { getUser, getValidSession } from 'variables/dataUsers'
 import 'moment/locale/da'
 import 'moment/locale/en-gb'
 import { saveSettings } from 'variables/dataLogin';
+import { setDates } from './dateTime';
 var moment = require('moment')
 
 const acceptCookies = 'acceptCookies'
@@ -72,8 +73,7 @@ export const saveSettingsOnServ = () => {
 export const getSettings = async () => {
 	return async (dispatch, getState) => {
 		var sessionCookie = cookie.load('SESSION') ? cookie.load('SESSION') : null
-		if (sessionCookie)
-		{
+		if (sessionCookie) {
 			let vSession = await getValidSession(sessionCookie.userID).then(rs => rs.status)
 			if (vSession === 200) {
 				let exp = moment().add('1', 'day')
@@ -105,7 +105,7 @@ export const getSettings = async () => {
 					user
 				})
 			}
-		
+
 			else {
 				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
 				let s = {
@@ -120,7 +120,7 @@ export const getSettings = async () => {
 					settings: s
 				})
 			}
-			if (favorites) { 
+			if (favorites) {
 				dispatch({
 					type: GETFAVS,
 					favorites: {
@@ -157,7 +157,7 @@ export const acceptCookiesFunc = (val) => {
 	}
 }
 export const changeDefaultRoute = route => {
-	return async(dispatch) => {
+	return async (dispatch) => {
 		dispatch({
 			type: changeDR,
 			defaultRoute: route
@@ -166,7 +166,7 @@ export const changeDefaultRoute = route => {
 	}
 }
 export const changeMapTheme = t => {
-	return async (dispatch, getState) => {		
+	return async (dispatch, getState) => {
 		dispatch({
 			type: MapTheme,
 			t
@@ -293,7 +293,7 @@ export const changeSettingsDate = (menuId, to, from, timeType, id) => {
 		}
 		periods[c] = {
 			id: c,
-			menuId, to, from, timeType, chartType: id === -1 ? 3 : periods[c].chartType, hide: false, raw: false
+			menuId, to: to ? to : undefined, from: from ? from : undefined, timeType, chartType: id === -1 ? 3 : periods[c].chartType, hide: false, raw: periods[c] ? periods[c].raw : false
 		}
 		dispatch({
 			type: addPeriod,
@@ -349,8 +349,6 @@ let initialState = {
 		id: 0,
 		menuId: 0,
 		raw: true,
-		to: moment(),
-		from: moment().startOf('day'),
 		timeType: 1,
 		chartType: 3,
 		hide: false
@@ -358,8 +356,6 @@ let initialState = {
 		id: 1,
 		menuId: 2,
 		raw: false,
-		to: moment(),
-		from: moment().subtract(7, 'days'),
 		timeType: 2,
 		chartType: 3,
 		hide: false
@@ -382,18 +378,20 @@ let initialState = {
 	didKnow: 0,
 	loading: true,
 	saved: false,
-	rowsPerPageOptions: ['auto', 5, 7, 8, 10, 15, 20, 25, 50, 100 ],
+	rowsPerPageOptions: ['auto', 5, 7, 8, 10, 15, 20, 25, 50, 100],
 	cardsPerPageOptions: [2, 3, 4, 6, 8, 9]
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
-		case addPeriod: 
-			return Object.assign({}, state, { periods: action.periods })
-		case acceptCookies: 
+		case addPeriod:
+			let periods = setDates(action.periods)
+			console.log(periods)
+			return Object.assign({}, state, { periods: periods })
+		case acceptCookies:
 			return Object.assign({}, state, { cookies: action.acceptCookies })
-		case changeDR: 
+		case changeDR:
 			return Object.assign({}, state, { defaultRoute: action.defaultRoute })
-		case CHARTDATATYPE: 
+		case CHARTDATATYPE:
 			return Object.assign({}, state, { rawData: action.t })
 		case SAVED:
 			return Object.assign({}, state, { saved: action.saved })
@@ -405,7 +403,9 @@ export const settings = (state = initialState, action) => {
 		}
 		case GetSettings:
 		{
-			return Object.assign({}, state, { ...action.settings, user: action.user, loading: false })
+			// console.log(action.settings)
+			let periods = setDates(action.settings.periods)
+			return Object.assign({}, state, { ...action.settings, periods: periods, user: action.user, loading: false })
 		}
 		case changeLangAction:
 		{
@@ -454,11 +454,11 @@ export const settings = (state = initialState, action) => {
 			return Object.assign({}, state, {
 				didKnow: action.t
 			})
-		case CHARTTYPE: 
+		case CHARTTYPE:
 			return Object.assign({}, state, {
 				chartType: action.t
 			})
-		case MapTheme: 
+		case MapTheme:
 			return Object.assign({}, state, {
 				mapTheme: action.t
 			})

@@ -7,7 +7,52 @@ const changeHeatData = 'changeHeatData'
 const GetSettings = 'getSettings'
 const addPeriod = 'chartAddPeriod'
 // const removePeriod = 'chartRemovePeriod'
-
+const menuSelect = (p) => { 
+	let to, from;
+	switch (p.menuId) {
+		case 0: // Today
+			from = moment().startOf('day')
+			to = moment()
+			break;
+		case 1: // Yesterday
+			from = moment().subtract(1, 'd').startOf('day')
+			to = moment().subtract(1, 'd').endOf('day')
+			break;
+		case 2: // This week
+			from = moment().startOf('week').startOf('day')
+			to = moment()
+			break;
+		case 3: // Last 7 days
+			from = moment().subtract(7, 'd').startOf('day')
+			to = moment()
+			break;
+		case 4: // last 30 days
+			from = moment().subtract(30, 'd').startOf('day')
+			to = moment()
+			break;
+		case 5: // last 90 days
+			from = moment().subtract(90, 'd').startOf('day')
+			to = moment()
+			break;
+		case 6:
+			from = moment(p.from)
+			to = moment(p.to)
+			break;
+		default:
+			break;
+	}
+	return { to, from }
+}
+export const setDates = (periods) => {
+	let newPeriods = periods
+	if (newPeriods.length > 0)
+		newPeriods.forEach(p => { 
+			let toFrom = menuSelect(p)
+			p.from = toFrom.from
+			p.to = toFrom.to
+		})
+	return newPeriods
+}
 export const storeHeatData = (heatData) => { 
 	return dispatch => { 
 		dispatch({
@@ -132,8 +177,9 @@ const initialState = {
 export const dateTime = (state = initialState, action) => {
 	switch (action.type) {
 
-		case GetSettings: 
-			return Object.assign({}, state, { periods: action.settings.periods ? action.settings.periods : state.periods  })
+		case GetSettings:
+			let periods = setDates(action.settings.periods)
+			return Object.assign({}, state, { periods: periods ? periods : state.periods  })
 		case changePeriods:
 		case addPeriod:
 			return Object.assign({}, state, { periods: action.periods })
