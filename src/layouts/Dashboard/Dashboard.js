@@ -154,7 +154,7 @@ class App extends React.Component {
 								</div>
 								<Cookies/>
 								<Snackbar
-									anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+									anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
 									open={this.props.sOpen}
 									onClose={this.props.sClose}
 									onExited={this.props.handleNextS}
