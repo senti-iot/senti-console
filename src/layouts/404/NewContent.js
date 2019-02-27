@@ -7,8 +7,12 @@ import Button from '@material-ui/core/Button';
 // import { ItemG } from 'components';
 import { primaryColor } from 'assets/jss/material-dashboard-react';
 import { withStyles, /*  CircularProgress, Typography, */ Snackbar, /* IconButton */ } from '@material-ui/core';
+import { teal } from '@material-ui/core/colors';
 
 const styles = {
+	snackbar: {
+		backgroundColor: teal[500]
+	},
 	button: {
 		color: primaryColor
 	}
@@ -18,24 +22,25 @@ class NewContent extends React.Component {
 		window.location.reload()
 	};
 	render() {
+		const { classes } = this.props
 		return (
 			<div>
 				<Snackbar 
-				
 					anchorOrigin={{
-						vertical: 'bottom',
-						horizontal: 'left',
+						vertical: 'top',
+						horizontal: 'center',
 					}}
 					open={true}
 					ContentProps={{
 						'aria-describedby': 'message-id',
+						className: classes.snackbar
 					}}
-					message={<span id="message-id">Update Available</span>}
-					action={[
+					message={<span id="message-id">{this.props.installing ? 'Caching application ...' : 'Update Available'} </span>}
+					action={ !this.props.installing ? [
 						<Button key="undo" style={{ color: 'yellow' }} size="small" onClick={this.handleClose}>
 							REFRESH
 						</Button>,
-					]}/>
+					] : null}/>
 				{/* <Dialog
 					open={true}
 					onClose={this.handleClose}
