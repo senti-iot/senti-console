@@ -46,7 +46,7 @@
 		"react-redux": "^5.1.1",
 		"react-router-dom": "^4.3.1",
 		"react-router-hash-link": "^1.2.1",
-		"react-scripts": "^2.1.3",
+		"react-scripts": "^2.1.5",
 		"react-sound": "^1.2.0",
 		"react-swipeable-views": "^0.13.1",
 		"redux": "^4.0.0",
@@ -60,12 +60,15 @@
 	},
 	"devDependencies": {
 		"babel-plugin-transform-imports": "^1.5.1",
+		"cra-build-watch": "^1.4.0",
+		"nodemon": "^1.18.10",
 		"source-map-explorer": "^1.6.0",
 		"why-did-you-update": "^0.1.1"
 	},
 	"scripts": {
 		"start": "react-scripts start ",
 		"analyze": "source-map-explorer build/static/js/*",
+		"watch": "cra-build-watch",
 		"start-ssh": "HTTPS=true react-scripts start",
 		"build": "react-scripts build && cp ./build/index.html ./build/200.html && cp ./src/assets/sound/pop.mp3 ./build/assets/sound/pop.mp3 && npm run-script sw",
 		"test": "react-scripts test --env=jsdom",

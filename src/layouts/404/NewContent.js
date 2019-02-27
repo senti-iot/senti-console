@@ -1,12 +1,12 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { ItemG } from 'components';
+// import Dialog from '@material-ui/core/Dialog';
+// import DialogActions from '@material-ui/core/DialogActions';
+// import DialogContent from '@material-ui/core/DialogContent';
+// import DialogTitle from '@material-ui/core/DialogTitle';
+// import { ItemG } from 'components';
 import { primaryColor } from 'assets/jss/material-dashboard-react';
-import { withStyles, CircularProgress, Typography } from '@material-ui/core';
+import { withStyles, /*  CircularProgress, Typography, */ Snackbar, /* IconButton */ } from '@material-ui/core';
 
 const styles = {
 	button: {
@@ -20,7 +20,23 @@ class NewContent extends React.Component {
 	render() {
 		return (
 			<div>
-				<Dialog
+				<Snackbar 
+				
+					anchorOrigin={{
+						vertical: 'bottom',
+						horizontal: 'left',
+					}}
+					open={true}
+					ContentProps={{
+						'aria-describedby': 'message-id',
+					}}
+					message={<span id="message-id">Update Available</span>}
+					action={[
+						<Button key="undo" style={{ color: 'yellow' }} size="small" onClick={this.handleClose}>
+							REFRESH
+						</Button>,
+					]}/>
+				{/* <Dialog
 					open={true}
 					onClose={this.handleClose}
 					aria-labelledby='alert-dialog-title'
@@ -48,7 +64,7 @@ class NewContent extends React.Component {
 						
 						</ItemG>
 					</DialogActions>
-				</Dialog>
+				</Dialog> */}
 			</div>
 		);
 	}
