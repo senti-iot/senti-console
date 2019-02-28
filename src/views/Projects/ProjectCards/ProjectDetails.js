@@ -25,8 +25,8 @@ class ProjectDetails extends Component {
 				avatar={<LibraryBooks />}
 				// noExpand
 				noPadding
-				noRightExpand
-				menuExpand			
+				// noRightExpand
+				// menuExpand			
 				expanded={Boolean(detailsPanel)}
 				topAction={<Dropdown
 					menuItems={[

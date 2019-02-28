@@ -29,8 +29,8 @@ class DeviceDetails extends Component {
 				title={collection.name ? collection.name : collection.id}
 				avatar={<DataUsage />}
 				noPadding
-				noRightExpand
-				menuExpand
+				// noRightExpand
+				// menuExpand
 				expanded={Boolean(detailsPanel)}
 				topAction={<Dropdown menuItems={
 					[
