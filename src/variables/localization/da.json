@@ -633,6 +633,16 @@
 		"sideBarLeft": "Venstre",
 		"sideBarLoc": "Placering af menu",
 		"sideBarRight": "Højre",
+		"snackbarLocation": "Notifikation placering",
+		"snackbarLocations": {
+			"left": "Venstre",
+			"right": "Højre"
+		},
+		"detailsPanel": "Detaljer panel",
+		"detailsPanelPos": {
+			"open": "Åben",
+			"closed": "Lukket"
+		},
 		"theme": "Tema",
 		"themes": {
 			"dark": "Mørkt",

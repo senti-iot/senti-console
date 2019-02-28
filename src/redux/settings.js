@@ -17,6 +17,8 @@ const DISCSENT = 'discoverSentiBanner'
 const DidKnow = 'notifDidYouKnow'
 const MapTheme = 'mapTheme'
 const changeDR = 'changeDefaultRoute'
+const changeSB = 'changeSnackbarLocation'
+const changeDP = 'changeDetailsPanelState'
 
 //Calibration
 const CALTYPE = 'calibrationType'
@@ -59,7 +61,9 @@ export const saveSettingsOnServ = () => {
 			mapTheme: s.mapTheme,
 			defaultRoute: s.defaultRoute,
 			cookies: s.cookies,
-			periods: s.periods
+			periods: s.periods,
+			snackbarLocation: s.snackbarLocation,
+			detailsPanel: s.detailsPanel
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -146,7 +150,24 @@ export const getSettings = async () => {
 		}
 	}
 }
-
+export const changeSnackbarLocation = (val) => {
+	return async dispatch => {
+		dispatch({
+			type: changeSB,
+			snackbarLocation: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeDetailsPanel = (val) => {
+	return async dispatch => {
+		dispatch({
+			type: changeDP,
+			detailsPanel: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
 export const acceptCookiesFunc = (val) => {
 	return async dispatch => {
 		dispatch({
@@ -405,10 +426,16 @@ let initialState = {
 	loading: true,
 	saved: false,
 	rowsPerPageOptions: ['auto', 5, 7, 8, 10, 15, 20, 25, 50, 100],
-	cardsPerPageOptions: [2, 3, 4, 6, 8, 9]
+	cardsPerPageOptions: [2, 3, 4, 6, 8, 9],
+	snackbarLocation: 'left',
+	detailsPanel: 0
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
+		case changeSB:
+			return Object.assign({}, state, { snackbarLocation: action.snackbarLocation })
+		case changeDP:
+			return Object.assign({}, state, { detailsPanel: action.detailsPanel })
 		case weekendColor:
 			return Object.assign({}, state, { weekendColor: action.id })
 		case addPeriod:

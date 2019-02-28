@@ -6,6 +6,7 @@ import { dateFormatter } from 'variables/functions';
 import { ItemG, Caption, Info, Dropdown } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import deviceStyles from 'assets/jss/views/deviceStyles';
+import { connect } from 'react-redux'
 
 
 class ProjectDetails extends Component {
@@ -17,7 +18,7 @@ class ProjectDetails extends Component {
 		this.props.history.push({ pathname: `${this.props.match.url}/edit`, prevURL: `/project/${this.props.project.id}` })
 	}
 	render() {
-		const { project, classes, t, isFav, addToFav, removeFromFav } = this.props
+		const { project, classes, t, isFav, addToFav, removeFromFav, detailsPanel } = this.props
 		return (
 			<InfoCard
 				title={project.title}
@@ -25,7 +26,8 @@ class ProjectDetails extends Component {
 				// noExpand
 				noPadding
 				noRightExpand
-				menuExpand
+				menuExpand			
+				expanded={Boolean(detailsPanel)}
 				topAction={<Dropdown
 					menuItems={[
 						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: this.editProject },
@@ -72,5 +74,8 @@ ProjectDetails.propTypes = {
 	match: PropTypes.any.isRequired,
 	project: PropTypes.object.isRequired,
 }
+const mapStateToProps = (state) => ({
+	detailsPanel: state.settings.detailsPanel
+})
 
-export default withStyles(deviceStyles)(ProjectDetails);
+export default connect(mapStateToProps)(withStyles(deviceStyles)(ProjectDetails))

@@ -7,6 +7,7 @@ import { ConvertDDToDMS, dateFormat, dateFormatter } from 'variables/functions'
 import { Link } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import Dropdown from 'components/Dropdown/Dropdown'
+import { connect } from 'react-redux'
 
 class DeviceDetails extends Component {
 
@@ -52,7 +53,7 @@ class DeviceDetails extends Component {
 		return deviceLoc ? deviceLoc.label : t('devices.noLocType')
 	}
 	render() {
-		const { classes, device, t, accessLevel, history, weather, isFav, addToFav, removeFromFav } = this.props
+		const { classes, device, t, accessLevel, history, weather, isFav, addToFav, removeFromFav, detailsPanel } = this.props
 		return (
 			<InfoCard
 				whiteAvatar
@@ -60,6 +61,7 @@ class DeviceDetails extends Component {
 				avatar={this.renderStatus(device.liveStatus)}
 				noRightExpand
 				menuExpand
+				expanded={Boolean(detailsPanel)}
 				topAction={<Dropdown menuItems={
 					[
 						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/device/${device.id}/edit`, prevURL: `/device/${device.id}` }) },
@@ -78,20 +80,22 @@ class DeviceDetails extends Component {
 				hiddenContent={
 					<ItemG container>
 						{!(device.lat > 0) && !(device.long > 0) &&
-							<ItemG xs={12}>
+							<ItemG xs={12} justify={'center'} style={{ marginBottom: 24 }}>
 								<Warning>
-									<ItemG container xs={12}>
-										<P>
-											{t('devices.notCalibrated')}
-										</P>
-									</ItemG>
-									<ItemG container xs={12}>
-										<Button
-											color={'default'}
-											onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}
-											variant={'outlined'}>
-											{t('actions.manualCalibration')}
-										</Button>
+									<ItemG xs={12} alignItems={'center'} container>
+										<ItemG xs={12} container justify={'center'}>
+											<P>
+												{t('devices.notCalibrated')}
+											</P>
+										</ItemG>
+										<ItemG xs={12} container justify={'center'}>
+											<Button
+												color={'default'}
+												onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}
+												variant={'outlined'}>
+												{t('actions.manualCalibration')}
+											</Button>
+										</ItemG>
 									</ItemG>
 								</Warning>
 							</ItemG>}
@@ -180,4 +184,9 @@ class DeviceDetails extends Component {
 	}
 }
 
-export default withStyles(deviceStyles)(DeviceDetails)
+const mapStateToProps = (state) => ({
+	detailsPanel: state.settings.detailsPanel
+})
+
+
+export default connect(mapStateToProps)(withStyles(deviceStyles)(DeviceDetails))

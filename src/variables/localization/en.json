@@ -633,6 +633,16 @@
 		"sideBarLeft": "Left",
 		"sideBarLoc": "Menu location",
 		"sideBarRight": "Right",
+		"snackbarLocation": "Notification placing",
+		"snackbarLocations": {
+			"left": "Left",
+			"right": "Right"
+		},
+		"detailsPanel": "Details panel",
+		"detailsPanelPos": {
+			"open": "Open",
+			"closed": "Closed"
+		},
 		"theme": "Theme",
 		"themes": {
 			"dark": "Dark",

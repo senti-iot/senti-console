@@ -6,6 +6,7 @@ import Dropdown from 'components/Dropdown/Dropdown';
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { DataUsage, Edit, DeviceHub, LibraryBooks, LayersClear, Star, StarBorder, Delete } from 'variables/icons';
+import { connect } from 'react-redux'
 
 class DeviceDetails extends Component {
 
@@ -22,7 +23,7 @@ class DeviceDetails extends Component {
 	}
 
 	render() {
-		const { classes, collection, t, isFav, addToFav, removeFromFav, /* accessLevel ,*/ history, handleOpenDeleteDialog, weather } = this.props
+		const { classes, collection, t, isFav, addToFav, removeFromFav, detailsPanel, /* accessLevel ,*/ history, handleOpenDeleteDialog, weather } = this.props
 		return (
 			<InfoCard
 				title={collection.name ? collection.name : collection.id}
@@ -30,6 +31,7 @@ class DeviceDetails extends Component {
 				noPadding
 				noRightExpand
 				menuExpand
+				expanded={Boolean(detailsPanel)}
 				topAction={<Dropdown menuItems={
 					[
 						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/collection/${collection.id}/edit`, prevURL: `/collection/${collection.id}` }) },
@@ -99,4 +101,8 @@ class DeviceDetails extends Component {
 	}
 }
 
-export default withStyles(collectionStyles)(DeviceDetails)
+const mapStateToProps = (state) => ({
+	detailsPanel: state.settings.detailsPanel
+})
+
+export default connect(mapStateToProps)(withStyles(collectionStyles)(DeviceDetails))
