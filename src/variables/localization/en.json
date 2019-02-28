@@ -609,6 +609,12 @@
 		},
 		"default": "Default",
 		"defaultDataSet": "Default data set for charts",
+		"defaultView": "Default view",
+		"defaultViews": {
+			"list": "List",
+			"grid": "Grid",
+			"favorites": "Favorites"
+		},
 		"didYouKnow": "Intelligent Notifications",
 		"discoverSenti": "Show Welcome to Senti on Dashboard",
 		"headers": {

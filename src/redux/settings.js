@@ -16,11 +16,15 @@ const TRP = 'tableRowsPerPage'
 const DISCSENT = 'discoverSentiBanner'
 const DidKnow = 'notifDidYouKnow'
 const MapTheme = 'mapTheme'
-const changeDR = 'changeDefaultRoute'
 const changeSB = 'changeSnackbarLocation'
 const changeDP = 'changeDetailsPanelState'
+//Navigation
+
+const changeDR = 'changeDefaultRoute'
+const changeDV = 'changeDefaultView'
 
 //Calibration
+
 const CALTYPE = 'calibrationType'
 const COUNT = 'calibrationCount'
 const TCOUNT = 'calibrationTimeCount'
@@ -29,12 +33,14 @@ const ALERTS = 'notifAlerts'
 const GETFAVS = 'getFavorites'
 
 //Charts
+
 const CHARTTYPE = 'chartType'
 const CHARTDATATYPE = 'chartDataType'
 const addPeriod = 'chartAddPeriod'
 const weekendColor = 'changeWeekendColor'
 
 //Get/Set Settings from server
+
 const GetSettings = 'getSettings'
 const SAVESETTINGS = 'saveSettings'
 const SAVED = 'savedSettings'
@@ -173,6 +179,15 @@ export const acceptCookiesFunc = (val) => {
 		dispatch({
 			type: acceptCookies,
 			acceptCookies: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeDefaultView = route => {
+	return async (dispatch) => {
+		dispatch({
+			type: changeDV,
+			defaultView: route
 		})
 		dispatch(saveSettingsOnServ())
 	}
@@ -409,6 +424,7 @@ let initialState = {
 	}],
 	cookies: false,
 	defaultRoute: '/dashboard',
+	defaultView: '/list',
 	mapTheme: 0,
 	rawData: 0,
 	language: 'dk',
@@ -445,6 +461,8 @@ export const settings = (state = initialState, action) => {
 			return Object.assign({}, state, { cookies: action.acceptCookies })
 		case changeDR:
 			return Object.assign({}, state, { defaultRoute: action.defaultRoute })
+		case changeDV:
+			return Object.assign({}, state, { defaultView: action.defaultView })
 		case CHARTDATATYPE:
 			return Object.assign({}, state, { rawData: action.t })
 		case SAVED:

@@ -20,18 +20,11 @@ class DisplaySettings extends Component {
 	changeSideBarLoc = (e) => this.props.changeSideBarLoc(e.target.value)
 	changeDiscoverSenti = e => this.props.changeDiscoverSenti(e.target.value)
 	changeMapTheme = e => this.props.changeMapTheme(e.target.value)
-	changeDefaultRoute = e => this.props.changeDefaultRoute(e.target.value)
 	changeSnackbarLocation = e => this.props.changeSnackbarLocation(e.target.value) 
-	changeDetailsPanel = e => this.props.changeDetailsPanel(e.target.value) 
+	changeDetailsPanel = e => this.props.changeDetailsPanel(e.target.value)
+
 	render() {
-		const { language, trp, sideBar, discSentiVal, theme, mapTheme, classes, t, defaultRoute, snackbarLocation, detailsPanel } = this.props
-		let defaultRoutes = [
-			{ value: '/favorites', label: t('sidebar.favorites') },
-			{ value: '/dashboard', label: t('sidebar.dashboard') },
-			{ value: '/projects', label: t('sidebar.projects') },
-			{ value: '/devices', label: t('sidebar.devices') },
-			{ value: '/collections', label: t('sidebar.collections') }
-		]
+		const { language, trp, sideBar, discSentiVal, theme, mapTheme, classes, t, snackbarLocation, detailsPanel } = this.props
 		let discSenti = [
 			{ value: 1, label: t('actions.yes') },
 			{ value: 0, label: t('actions.no') }
@@ -95,12 +88,12 @@ class DisplaySettings extends Component {
 										<DSelect menuItems={discSenti} value={discSentiVal} onChange={this.changeDiscoverSenti} />
 									</ItemGrid>
 								</ListItem>
-								<ListItem divider>
+								{/* <ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.defaultRoute')}</ListItemText>
 										<DSelect menuItems={defaultRoutes} value={defaultRoute} onChange={this.changeDefaultRoute} />
 									</ItemGrid>
-								</ListItem>
+								</ListItem> */}
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.language')}</ListItemText>
@@ -159,7 +152,6 @@ const mapStateToProps = state => {
 		sideBar: s.sideBar,
 		discSentiVal: s.discSentiVal,
 		mapTheme: s.mapTheme,
-		defaultRoute: s.defaultRoute,
 		snackbarLocation: s.snackbarLocation,
 		detailsPanel: s.detailsPanel
 	})
@@ -172,7 +164,6 @@ const mapDispatchToProps = (dispatch) => {
 		changeTheme: t => dispatch(changeTheme(t)),
 		changeSideBarLoc: loc => dispatch(changeSideBarLoc(loc)),
 		changeMapTheme: t => dispatch(changeMapTheme(t)),
-		changeDefaultRoute: route => dispatch(changeDefaultRoute(route)),
 		changeSnackbarLocation: val => dispatch(changeSnackbarLocation(val)),
 		changeDetailsPanel: val => dispatch(changeDetailsPanel(val)),
 	}

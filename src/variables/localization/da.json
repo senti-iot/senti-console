@@ -609,6 +609,12 @@
 		},
 		"default": "Standard",
 		"defaultDataSet": "Standard datasæt for diagrammer",
+		"defaultView": "Standardvisning",
+		"defaultViews": {
+			"list": "Liste",
+			"grid": "Gitter",
+			"favorites": "Favoritter"
+		},
 		"didYouKnow": "Viste du at?",
 		"discoverSenti": "Vis Velkommen til Senti på Dashboard",
 		"headers": {

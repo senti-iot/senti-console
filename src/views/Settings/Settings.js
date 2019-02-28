@@ -11,6 +11,7 @@ import { compose } from 'recompose';
 import Toolbar from 'components/Toolbar/Toolbar';
 import { Laptop, Build, Notifications, BarChart, Assignment } from 'variables/icons';
 import TermsAndConditionsSettings from './SettingsCards/TermsAndConditionsSettings';
+import NavigationSettings from './SettingsCards/NavigationSettings';
 
 class Settings extends Component {
 	constructor(props) {
@@ -50,6 +51,10 @@ class Settings extends Component {
 				<GridContainer>
 					<ItemGrid xs={12} noMargin id={'display'}>
 						<DisplaySettings
+							t={t}/>
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin id={'navigation'}>
+						<NavigationSettings
 							t={t}
 						/>
 					</ItemGrid>

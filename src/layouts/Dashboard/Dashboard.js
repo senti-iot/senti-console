@@ -108,7 +108,7 @@ class App extends React.Component {
 	}
 	
 	render() {
-		const { classes, t, loading, sOpt, defaultRoute, snackbarLocation, ...rest } = this.props;
+		const { classes, t, loading, sOpt, defaultRoute, snackbarLocation, defaultView, ...rest } = this.props;
 		return (
 			<MuiThemeProvider theme={this.props.theme === 0 ? lightTheme : darkTheme }>
 
@@ -125,6 +125,7 @@ class App extends React.Component {
 						/>
 						<Fragment>
 							<Sidebar
+								defaultView={defaultView}
 								defaultRoute={defaultRoute}
 								routes={dashboardRoutes}
 								logo={logo}
@@ -193,6 +194,7 @@ const mapStateToProps = (state) => ({
 	theme: state.settings.theme,
 	// cookies: state.settings.cookies,
 	defaultRoute: state.settings.defaultRoute,
+	defaultView: state.settings.defaultView,
 	snackbarLocation: state.settings.snackbarLocation
 })
 
