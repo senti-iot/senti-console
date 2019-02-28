@@ -724,6 +724,7 @@
 		"addNewDevice": "Add device",
 		"addNewProject": "Add project",
 		"filter": "Filter",
+		"of": "of",
 		"rowsPerPage": "Rows per page",
 		"cardsPerPage": "Cards per page",
 		"selected": "selected"
