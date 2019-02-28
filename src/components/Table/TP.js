@@ -31,6 +31,7 @@ class TP extends Component {
 					input: classes.spaceBetween,
 					caption: classes.tablePaginationCaption
 				}}
+				labelDisplayedRows={({ from, to, count }) => `${from}-${to} ${t('tables.of')} ${count}`}
 				onChangePage={this.handleChangePage}
 				onChangeRowsPerPage={this.handleChangeRowsPerPage}
 				labelRowsPerPage={isWidthUp('sm', width) ?  t('tables.rowsPerPage') : ''}

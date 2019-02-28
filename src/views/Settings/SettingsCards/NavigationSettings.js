@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, DSelect } from 'components';
-import { Laptop } from 'variables/icons'
+import { Public } from 'variables/icons'
 import { Grid, ListItem, List, ListItemText, withStyles } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 import { connect } from 'react-redux'
@@ -28,8 +28,8 @@ class NavigationSettings extends Component {
 		return (
 			<InfoCard
 				noExpand
-				avatar={<Laptop />}
-				title={t('settings.headers.display')}
+				avatar={<Public />}
+				title={t('settings.headers.navigation')}
 				content={
 					<Grid container>
 						<List className={classes.list}>

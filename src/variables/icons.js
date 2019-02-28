@@ -3,6 +3,7 @@ import ZoomOut from '@material-ui/icons/ZoomOut'
 import LocationOn from '@material-ui/icons/LocationOn'
 import LinearScale from '@material-ui/icons/LinearScale'
 import Assignment from '@material-ui/icons/Assignment'
+import Public from '@material-ui/icons/Public'
 //#region weather Icons
 import ClearDay from 'assets/weather/clear_day.svg'
 import ClearNight from 'assets/weather/clear_night.svg'
@@ -93,6 +94,7 @@ import EventNote from '@material-ui/icons/EventNote'
 import FullscreenOutlined from '@material-ui/icons/FullscreenOutlined'
 
 export {
+	Public,
 	FullscreenOutlined,
 	EventNote,
 	Compare,

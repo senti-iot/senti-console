@@ -622,7 +622,8 @@
 			"charts": "Charts",
 			"devices": "Devices",
 			"display": "Display",
-			"notifications": "Notifications"
+			"notifications": "Notifications",
+			"navigation": "Navigation"
 		},
 		"t&c": {
 			"title": "Terms and conditions",
@@ -723,6 +724,7 @@
 		"addNewDevice": "Add device",
 		"addNewProject": "Add project",
 		"filter": "Filter",
+		"of": "of",
 		"rowsPerPage": "Rows per page",
 		"cardsPerPage": "Cards per page",
 		"selected": "selected"
