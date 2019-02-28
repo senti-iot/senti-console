@@ -622,7 +622,8 @@
 			"charts": "Charts",
 			"devices": "Devices",
 			"display": "Display",
-			"notifications": "Notifications"
+			"notifications": "Notifications",
+			"navigation": "Navigation"
 		},
 		"t&c": {
 			"title": "Terms and conditions",
