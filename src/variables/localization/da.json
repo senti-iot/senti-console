@@ -622,7 +622,8 @@
 			"charts": "Diagrammer",
 			"devices": "Enheder",
 			"display": "Skærm",
-			"notifications": "Notifikationer"
+			"notifications": "Notifikationer",
+			"navigation": "Navigation"
 		},
 		"t&c": {
 			"title": "Vilkår og betingelser",
@@ -724,6 +725,7 @@
 		"addNewProject": "Opret projekt",
 		"filter": "Filter",
 		"rowsPerPage": "Rækker pr. side",
+		"of": "af",
 		"cardsPerPage": "Kort per side",
 		"selected": "valgt"
 	},

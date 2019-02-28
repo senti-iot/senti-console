@@ -9,7 +9,7 @@ import ChartSettings from './SettingsCards/ChartSettings';
 import withSnackbar from 'components/Localization/S';
 import { compose } from 'recompose';
 import Toolbar from 'components/Toolbar/Toolbar';
-import { Laptop, Build, Notifications, BarChart, Assignment } from 'variables/icons';
+import { Laptop, Build, /* Notifications, */ BarChart, Assignment, Public } from 'variables/icons';
 import TermsAndConditionsSettings from './SettingsCards/TermsAndConditionsSettings';
 import NavigationSettings from './SettingsCards/NavigationSettings';
 
@@ -24,8 +24,9 @@ class Settings extends Component {
 	}
 	tabs = [
 		{ id: 0, title: '', label: <Laptop />, url: `#display` },
-		{ id: 1, title: '', label: <Build />, url: `#calibration` },
-		{ id: 2, title: '', label: <Notifications />, url: `#notifications` },
+		{ id: 1, title: '', label: <Public />, url: `#navigation` },
+		{ id: 2, title: '', label: <Build />, url: `#calibration` },
+		// { id: 2, title: '', label: <Notifications />, url: `#notifications` },
 		{ id: 3, title: '', label: <BarChart />, url: `#charts` },
 		{ id: 4, title: '', label: <Assignment />, url: '#termsAndConditions' }
 	]
@@ -43,6 +44,7 @@ class Settings extends Component {
 		return (
 			<Fragment>
 				<Toolbar
+					hashLinks
 					noSearch
 					history={this.props.history}
 					match={this.props.match}
