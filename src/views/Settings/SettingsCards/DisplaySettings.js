@@ -5,7 +5,7 @@ import { Laptop } from 'variables/icons'
 import { Grid, ListItem, List, ListItemText, withStyles } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 import { connect } from 'react-redux'
-import { changeTRP, changeDefaultRoute, changeTheme, changeSideBarLoc, changeDiscoverSenti, changeMapTheme, changeDetailsPanel, changeSnackbarLocation } from 'redux/settings';
+import { changeTRP, changeTheme, changeSideBarLoc, changeDiscoverSenti, changeMapTheme, changeDetailsPanel, changeSnackbarLocation } from 'redux/settings';
 import { changeLanguage } from 'redux/localization';
 
 class DisplaySettings extends Component {
