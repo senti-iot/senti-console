@@ -198,7 +198,6 @@ class Project extends Component {
 
 			default:
 				return await this.getWifiDaily(p);
-
 		}
 	}
 

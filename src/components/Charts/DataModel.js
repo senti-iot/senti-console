@@ -9,14 +9,15 @@ import {
 	getDataSummary as getDeviceDataSummary
 } from 'variables/dataDevices';
 import { getDataHourly, getDataDaily, getDataMinutely, getDataSummary } from 'variables/dataCollections';
-
+import store from 'redux/store';
+// import store from ''
 const format = 'YYYY-MM-DD+HH:mm'
 
-const linecolors = (data, defaultColor, id) => {
+const linecolors = (data, defaultColor, id, color) => {
 	let colors = []
 	data.map(d => {
 		if (isWeekend(d[0])) {
-			return colors.push(weekendColors(id))
+			return colors.push(weekendColors(id, store.getState().settings.weekendColor))
 		} else {
 			return colors.push(defaultColor)
 		}
@@ -186,37 +187,7 @@ export const setSummaryData = (dataArr, from, to, hoverID) => {
 		return state
 	}
 }
-// export const setSummaryData = (dataArr, from, to) => {
-// 	let displayTo = dateTimeFormatter(to)
-// 	let displayFrom = dateTimeFormatter(from)
-// 	let state = {
-// 		loading: false,
-// 		timeType: 2,
-// 		lineDataSets: null,
-// 		roundDataSets: null,
-// 		barDataSets: null
-// 	}
-// 	if (dataArr.length > 0) {
-// 		state = {
-// 			title: `${displayFrom} - ${displayTo}`,
-// 			loading: false,
-// 			timeType: 3,
-// 			roundDataSets: {
-// 				labels: Object.entries(dataArr[0].data).map(l => [moment(l[0]).format('ll'), moment(l[0]).format('dddd'), l[1]]),
-// 				datasets: dataArr.map((d) => ({
-// 					id: d.id,
-// 					lat: d.lat,
-// 					long: d.long,
-// 					backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
-// 					label: [d.name],
-// 					data: Object.entries(d.data).map(d => d[1])
-// 				}))
 
-// 			}
-// 		}
-// 	}
-// 	return state
-// }
 
 export const getWifiDaily = async (type, objArr, from, to, hoverId, raw, simple) => {
 	let startDate = moment(from).format(format)

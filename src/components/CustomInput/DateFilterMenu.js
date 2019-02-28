@@ -44,10 +44,10 @@ class DateFilterMenu extends Component {
 		{ id: 5, label: this.props.t('filters.dateOptions.90days') },
 		{ id: 6, label: this.props.t('filters.dateOptions.custom') },
 	]
-	handleSetDate = (id, to, from, timeType) => {
+	handleSetDate = (menuId, to, from, timeType) => {
 		const { period } = this.props
 		let defaultT = 0
-		switch (id) {
+		switch (menuId) {
 			case 0: // Today
 				from = moment().startOf('day')
 				to = moment()
@@ -87,12 +87,14 @@ class DateFilterMenu extends Component {
 				break;
 		}
 		if (this.props.settings) {
-			return this.props.handleSetSettingsPeriod(id, to, from, defaultT, period ? period.id : -1)
+			if (menuId === 6)
+				return this.props.handleSetSettingsPeriod(menuId, to, from, defaultT, period ? period.id : -1)
+			return this.props.handleSetSettingsPeriod(menuId, undefined, undefined, defaultT, period ? period.id : -1)
 		}
 		if (this.props.heatmap) {
-			return this.props.handleSetHeatmapDate(id, to, from, defaultT)
+			return this.props.handleSetHeatmapDate(menuId, to, from, defaultT)
 		}
-		this.props.handleSetDate(id, to, from, defaultT, period ? period.id : -1)
+		this.props.handleSetDate(menuId, to, from, defaultT, period ? period.id : -1)
 
 	}
 

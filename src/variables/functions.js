@@ -1,5 +1,6 @@
+import React from 'react'
 import { parsePhoneNumber } from 'libphonenumber-js'
-import red from '@material-ui/core/colors/red'
+import { colors } from '@material-ui/core';
 var moment = require('moment');
 var _ = require('lodash')
 
@@ -41,7 +42,7 @@ export const dateDiff = (from, to) => {
 		return 0
 	}
 }
-export const allMinutesToArr = (from, to) => { 
+export const allMinutesToArr = (from, to) => {
 	let startDate = moment(from)
 	let endDate = moment(to)
 	let arr = []
@@ -80,7 +81,7 @@ export const hoursToArr = (from, to) => {
 	let startDate = moment(from)
 	let endDate = moment(to)
 	let diff = moment.duration(endDate.diff(startDate)).asHours()
-	let amount = 1 
+	let amount = 1
 	amount = diff > 10 ? diff > 20 ? diff > 35 ? 30 : 5 : 3 : 1
 	if (window.innerWidth < 426)
 		amount = diff > 5 ? diff > 10 ? diff > 20 ? diff > 35 ? 30 : 5 : 3 : 3 : 1
@@ -95,7 +96,7 @@ export const hoursToArr = (from, to) => {
 export const isWeekend = (date) => {
 	return moment(date).day() === 6 || moment(date).day() === 0 ? true : false
 }
-export const allDatesToArr = (from, to) => { 
+export const allDatesToArr = (from, to) => {
 	let startDate = moment(from)
 	let endDate = moment(to)
 	let arr = []
@@ -121,17 +122,40 @@ export const datesToArr = (from, to) => {
 	}
 	return arr
 }
-export const weekendColors = (id) => {
-	let redId = id % 4
-	switch (redId) {
+const renderColor = (color) => {
+	return <div style={{ background: color[500], width: 24, height: 24, borderRadius: 4 }} />
+}
+export const weekendColorsDropdown = (t) => {
+	return [
+		{ value: 'lightBlue', label: t('settings.chart.weekendColors.lightBlue'), icon: renderColor(colors.lightBlue) },
+		{ value: 'cyan', label: t('settings.chart.weekendColors.cyan'), icon: renderColor(colors.cyan) },
+		{ value: 'teal', label: t('settings.chart.weekendColors.teal'), icon: renderColor(colors.teal) },
+		{ value: 'green', label: t('settings.chart.weekendColors.green'), icon: renderColor(colors.green) },
+		{ value: 'lightGreen', label: t('settings.chart.weekendColors.lightGreen'), icon: renderColor(colors.lightGreen) },
+		{ value: 'lime', label: t('settings.chart.weekendColors.lime'), icon: renderColor(colors.lime) },
+		{ value: 'yellow', label: t('settings.chart.weekendColors.yellow'), icon: renderColor(colors.yellow) },
+		{ value: 'amber', label: t('settings.chart.weekendColors.amber'), icon: renderColor(colors.amber) },
+		{ value: 'orange', label: t('settings.chart.weekendColors.orange'), icon: renderColor(colors.orange) },
+		{ value: 'deepOrange', label: t('settings.chart.weekendColors.deepOrange'), icon: renderColor(colors.deepOrange) },
+		{ value: 'red', label: t('settings.chart.weekendColors.red'), icon: renderColor(colors.red) },
+		{ value: 'pink', label: t('settings.chart.weekendColors.pink'), icon: renderColor(colors.pink) },
+		{ value: 'purple', label: t('settings.chart.weekendColors.purple'), icon: renderColor(colors.purple) },
+		{ value: 'deepPurple', label: t('settings.chart.weekendColors.deepPurple'), icon: renderColor(colors.deepPurple) },
+		{ value: 'indigo', label: t('settings.chart.weekendColors.indigo'), icon: renderColor(colors.indigo) },
+		{ value: 'blue', label: t('settings.chart.weekendColors.blue'), icon: renderColor(colors.blue) },
+	]
+}
+export const weekendColors = (id, colorStr) => {
+	// return red[400]
+	switch (id % 4) {
 		case 0:
-			return red[300]
+			return colors[colorStr][300]
 		case 1:
-			return red[500]
+			return colors[colorStr][500]
 		case 2:
-			return red[700]
+			return colors[colorStr][700]
 		case 3:
-			return red[900]
+			return colors[colorStr][900]
 		default:
 			break;
 	}
@@ -179,7 +203,7 @@ export const filterItems = (data, filters) => {
 		var keys = Object.keys(arr[0])
 		var filtered = arr.filter(c => {
 			var contains = keys.map(key => {
-				if (c) 
+				if (c)
 					return keyTester(c[key], keyword ? keyword : '')
 				return false
 
@@ -220,8 +244,8 @@ export const keyTester = (obj, sstr) => {
 	return found
 }
 const sortFunc = (a, b, orderBy, way) => {
-	let newA =  _.get(a, orderBy) 
-	let newB =  _.get(b, orderBy)
+	let newA = _.get(a, orderBy)
+	let newB = _.get(b, orderBy)
 	if (moment(new Date(newA)).isValid() || moment(new Date(newB)).isValid()) {
 		return way ? moment(new Date(newA)).diff(new Date(newB)) : moment(new Date(newB)).diff(new Date(newA))
 	}
@@ -239,7 +263,7 @@ const sortFunc = (a, b, orderBy, way) => {
 		else {
 			return newB.toString().toLowerCase() <= newA.toString().toLowerCase() ? -1 : 1
 		}
-	} 
+	}
 }
 /**
  * Handle Sorting

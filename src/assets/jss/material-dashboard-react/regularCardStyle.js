@@ -19,7 +19,10 @@ import {
 import teal from '@material-ui/core/colors/teal';
 
 const regularCardStyle = theme => ({
-
+	icon: {
+		color: theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.54)' : '#fff',
+		marginRight: 4
+	},
 	...deviceStatus,
 	contentMedia: {
 		width: "100%",
@@ -95,7 +98,7 @@ const regularCardStyle = theme => ({
 		// height: "100%",
 		paddingTop: 0,
 		marginTop: 0,
-		padding: 0,
+		// padding: 0,
 	},
 	media: {
 		height: 0,

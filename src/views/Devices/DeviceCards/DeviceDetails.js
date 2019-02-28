@@ -2,11 +2,12 @@ import React, { Component, Fragment } from 'react'
 import { Typography, withStyles, Button, CircularProgress } from '@material-ui/core';
 import { ItemG, Warning, P, Info, Caption, WeatherIcon } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
-import { SignalWifi2Bar, SignalWifi2BarLock, Build, Star, StarBorder, Edit, DeviceHub, LayersClear, Business, DataUsage } from 'variables/icons'
+import { SignalWifi2Bar, SignalWifi2BarLock, Build, Star, StarBorder, Edit, /* DeviceHub, */ LayersClear, Business, DataUsage } from 'variables/icons'
 import { ConvertDDToDMS, dateFormat, dateFormatter } from 'variables/functions'
 import { Link } from 'react-router-dom'
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import Dropdown from 'components/Dropdown/Dropdown'
+import { connect } from 'react-redux'
 
 class DeviceDetails extends Component {
 
@@ -52,11 +53,15 @@ class DeviceDetails extends Component {
 		return deviceLoc ? deviceLoc.label : t('devices.noLocType')
 	}
 	render() {
-		const { classes, device, t, accessLevel, history, weather, isFav, addToFav, removeFromFav } = this.props
+		const { classes, device, t, accessLevel, history, weather, isFav, addToFav, removeFromFav, detailsPanel } = this.props
 		return (
 			<InfoCard
+				whiteAvatar
 				title={device.name ? device.name : device.id}
-				avatar={<DeviceHub />}
+				avatar={this.renderStatus(device.liveStatus)}
+				noRightExpand
+				menuExpand
+				expanded={Boolean(detailsPanel)}
 				topAction={<Dropdown menuItems={
 					[
 						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/device/${device.id}/edit`, prevURL: `/device/${device.id}` }) },
@@ -70,18 +75,20 @@ class DeviceDetails extends Component {
 
 				}
 				subheader={device.id}
-				noExpand
-				content={
-					<ItemG container spacing={16}>
+				// noExpand
+				noPadding
+				hiddenContent={
+					<ItemG container>
 						{!(device.lat > 0) && !(device.long > 0) &&
-								<ItemG xs={12}>
-									<Warning>
-										<ItemG container xs={12}>
+							<ItemG xs={12} justify={'center'} style={{ marginBottom: 24 }}>
+								<Warning>
+									<ItemG xs={12} alignItems={'center'} container>
+										<ItemG xs={12} container justify={'center'}>
 											<P>
 												{t('devices.notCalibrated')}
 											</P>
 										</ItemG>
-										<ItemG container xs={12}>
+										<ItemG xs={12} container justify={'center'}>
 											<Button
 												color={'default'}
 												onClick={() => this.props.history.push(`${this.props.match.url}/setup`)}
@@ -89,12 +96,13 @@ class DeviceDetails extends Component {
 												{t('actions.manualCalibration')}
 											</Button>
 										</ItemG>
-									</Warning>
-								</ItemG>}
-						<ItemG xs={6} md={3} lg={3} xl={3}>
+									</ItemG>
+								</Warning>
+							</ItemG>}
+						{/* <ItemG xs={6} md={3} lg={3} xl={3}>
 							<Caption>{t('devices.fields.status')}:</Caption>
 							{this.renderStatus(device.liveStatus)}
-						</ItemG>
+						</ItemG> */}
 						<ItemG xs={6} md={3} lg={3} xl={3}>
 							<Caption>{t('devices.fields.temp')}:</Caption>
 							<Info>{device.temperature ? `${device.temperature}\u2103` : `-\u2103`}</Info>
@@ -102,7 +110,7 @@ class DeviceDetails extends Component {
 						<ItemG container xs={6} md={3} lg={3} xl={3}>
 							{weather ? weather === '' ? <CircularProgress size={20} /> : <Fragment>
 								<ItemG xs={5} sm={2} md={3} lg={3} xl={2}>
-									<WeatherIcon height={24} width={24} icon={weather.currently.icon} /> 
+									<WeatherIcon height={24} width={24} icon={weather.currently.icon} />
 								</ItemG>
 								<ItemG xs={7} sm={10} md={9} lg={9} xl={10}>
 									<Caption>{t('devices.fields.weather')}</Caption>
@@ -112,7 +120,7 @@ class DeviceDetails extends Component {
 								</ItemG>
 							</Fragment>
 								: null}
-						</ItemG> 
+						</ItemG>
 						<ItemG xs={6} md={3} lg={3} xl={3}>
 							<Caption>{t('devices.fields.locType')}:</Caption>
 							<Info>{this.renderDeviceLocType()} </Info>
@@ -133,8 +141,8 @@ class DeviceDetails extends Component {
 								{dateFormat(device.execLast)}
 							</Info>
 						</ItemG>
-					
-					
+
+
 						<ItemG xs={12} md={6} lg={6} xl={4}>
 							<Caption>{t('devices.fields.address')}:</Caption>
 							<Info>{device.address} </Info>
@@ -145,8 +153,8 @@ class DeviceDetails extends Component {
 								{ConvertDDToDMS(device.lat, false) + ' ' + ConvertDDToDMS(device.long, true)}</a>
 							</Info>
 						</ItemG>
-						
-					
+
+
 						<ItemG xs={12} md={3} lg={3}>
 							<Caption>{t('devices.fields.org')}:</Caption>
 							<Info>{device.org ?
@@ -168,12 +176,17 @@ class DeviceDetails extends Component {
 						</ItemG>
 						<ItemG xs={12} md={3} lg={3}>
 							<Caption>{t('devices.fields.availability')}:</Caption>
-							<Info>{device.dataCollection.id > 0 ? t('devices.fields.notfree') : t('devices.fields.free')}</Info>
+							<Info>{device.dataCollection ? t('devices.fields.notfree') : t('devices.fields.free')}</Info>
 						</ItemG>
-				
+
 					</ItemG>} />
 		)
 	}
 }
 
-export default withStyles(deviceStyles)(DeviceDetails)
+const mapStateToProps = (state) => ({
+	detailsPanel: state.settings.detailsPanel
+})
+
+
+export default connect(mapStateToProps)(withStyles(deviceStyles)(DeviceDetails))

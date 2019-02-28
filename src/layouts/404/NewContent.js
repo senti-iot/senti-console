@@ -1,35 +1,60 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { ItemG } from 'components';
-import { primaryColor } from 'assets/jss/material-dashboard-react';
-import { withStyles, CircularProgress, Typography } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles'
+import Snackbar from '@material-ui/core/Snackbar'
+import Warning from '@material-ui/icons/Warning'
+import { amber } from '@material-ui/core/colors';
 
 const styles = {
+	icon: {
+		fontSize: 16,
+		opacity: 0.9,
+		marginRight: 8,
+	},
+	snackbar: {
+		// backgroundColor: teal[500]
+		background: amber[700],
+
+	},
 	button: {
-		color: primaryColor
-	}
+		color: '#fff',
+		// color: teal[500],
+		background: amber[700],
+		'&:hover': {
+			color: '#fff',
+			background: amber[500]
+		}
+	},
+	message: {
+		display: 'flex',
+		alignItems: 'center',
+	},
 }
 class NewContent extends React.Component {
-	state = {
-		open: false,
-	};
-
-	handleClickOpen = () => {
-		this.setState({ open: true });
-	};
-
 	handleClose = () => {
 		window.location.reload()
 	};
-
 	render() {
+		const { classes } = this.props
 		return (
 			<div>
-				<Dialog
+				<Snackbar
+					anchorOrigin={{
+						vertical: 'top',
+						horizontal: 'center',
+					}}
+					open={true}
+					ContentProps={{
+						'aria-describedby': 'message-id',
+						className: classes.snackbar
+					}}
+					message={<span className={classes.message} id="message-id"><Warning className={classes.icon} />{this.props.installing ? 'Caching application ...' : 'Update Available'} </span>}
+					action={!this.props.installing ? [
+						<Button key="undo" className={classes.button} size="small" onClick={this.handleClose}>
+							REFRESH
+						</Button>,
+					] : null} />
+				{/* <Dialog
 					open={true}
 					onClose={this.handleClose}
 					aria-labelledby='alert-dialog-title'
@@ -57,7 +82,7 @@ class NewContent extends React.Component {
 						
 						</ItemG>
 					</DialogActions>
-				</Dialog>
+				</Dialog> */}
 			</div>
 		);
 	}
