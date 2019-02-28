@@ -27,6 +27,8 @@ class DeviceDetails extends Component {
 			<InfoCard
 				title={collection.name ? collection.name : collection.id}
 				avatar={<DataUsage />}
+				noPadding
+				noRightExpand
 				topAction={<Dropdown menuItems={
 					[
 						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/collection/${collection.id}/edit`, prevURL: `/collection/${collection.id}` }) },
@@ -43,8 +45,7 @@ class DeviceDetails extends Component {
 				subheader={<ItemG container alignItems={'center'}>
 					<Caption>{t('collections.fields.id')}:</Caption>&nbsp;{collection.id}
 				</ItemG>}
-				noExpand
-				content={
+				hiddenContent={
 					<ItemG container spacing={16}>
 						<ItemG xs={12} sm={1} md={1} lg={1} xl={1}>
 							<Caption>{t('collections.fields.status')}:</Caption>

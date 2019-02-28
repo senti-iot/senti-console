@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import { Grid, withStyles } from '@material-ui/core';
+import { withStyles } from '@material-ui/core';
 import { LibraryBooks, Edit, Delete, DataUsage, StarBorder, Star } from 'variables/icons'
 import { dateFormatter } from 'variables/functions';
-import { ItemGrid, Caption, Info, Dropdown } from 'components';
+import { ItemG, Caption, Info, Dropdown } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 
@@ -20,8 +20,11 @@ class ProjectDetails extends Component {
 		const { project, classes, t, isFav, addToFav, removeFromFav } = this.props
 		return (
 			<InfoCard
-				title={project.title} avatar={<LibraryBooks />}
-				noExpand
+				title={project.title}
+				avatar={<LibraryBooks />}
+				// noExpand
+				noPadding
+				noRightExpand
 				topAction={<Dropdown
 					menuItems={[
 						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: this.editProject },
@@ -33,30 +36,30 @@ class ProjectDetails extends Component {
 					}
 				/>
 				}
-				content = {< Grid container>
-					<ItemGrid xs={12} container noMargin noPadding>
-						<ItemGrid>
+				hiddenContent={<ItemG container spacing={8}>
+					<ItemG xs={12}>
+						<ItemG>
 							<Caption>{t('projects.fields.description')}:</Caption>
 							<Info>{project.description}</Info>
-						</ItemGrid>
-					</ItemGrid>
-					<ItemGrid>
+						</ItemG>
+					</ItemG>
+					<ItemG>
 						<Caption>{t('projects.fields.startDate')}:</Caption>
 						<Info>{dateFormatter(project.startDate)}</Info>
-					</ItemGrid>
-					<ItemGrid xs>
+					</ItemG>
+					<ItemG xs>
 						<Caption>{t('projects.fields.endDate')}:</Caption>
 						<Info>{dateFormatter(project.endDate)}</Info>
-					</ItemGrid>
-					<ItemGrid xs={12}>
+					</ItemG>
+					<ItemG xs={12}>
 						<Caption>{t('projects.fields.created')}:</Caption>
 						<Info>{dateFormatter(project.created)}</Info>
-					</ItemGrid>
-					<ItemGrid xs={12}>
+					</ItemG>
+					<ItemG xs={12}>
 						<Caption>{t('projects.fields.lastUpdate')}:</Caption>
 						<Info>{dateFormatter(project.modified)}</Info>
-					</ItemGrid>
-				</Grid >}
+					</ItemG>
+				</ItemG>}
 			/>
 
 		);
