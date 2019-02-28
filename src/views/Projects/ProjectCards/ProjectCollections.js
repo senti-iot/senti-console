@@ -91,12 +91,12 @@ class ProjectCollections extends Component {
 								<TableHead>
 									<TableRow >
 										<TableCell padding='checkbox'>
-											<ItemG container justify={'center'}>
+											{/* <ItemG container justify={'center'}>
 												{t('collections.fields.ownState')}
 											</ItemG>
 											<ItemG container justify={'center'}>
 												({t('collections.fields.collection')})
-											</ItemG>
+											</ItemG> */}
 										</TableCell>
 										<TableCell>
 											{t('collections.fields.name')}
@@ -105,9 +105,6 @@ class ProjectCollections extends Component {
 											<TableCell padding={'checkbox'}>
 												<ItemG container justify={'center'}>
 													{t('collections.fields.status')}
-												</ItemG>
-												<ItemG container justify={'center'}>
-													({t('collections.fields.device')})
 												</ItemG>
 											</TableCell>
 											<TableCell>
