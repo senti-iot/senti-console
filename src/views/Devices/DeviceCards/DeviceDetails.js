@@ -59,6 +59,7 @@ class DeviceDetails extends Component {
 				title={device.name ? device.name : device.id}
 				avatar={this.renderStatus(device.liveStatus)}
 				noRightExpand
+				menuExpand
 				topAction={<Dropdown menuItems={
 					[
 						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/device/${device.id}/edit`, prevURL: `/device/${device.id}` }) },

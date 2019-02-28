@@ -25,6 +25,7 @@ class ProjectDetails extends Component {
 				// noExpand
 				noPadding
 				noRightExpand
+				menuExpand
 				topAction={<Dropdown
 					menuItems={[
 						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: this.editProject },

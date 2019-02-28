@@ -40,10 +40,10 @@ class InfoCard extends PureComponent {
 		this.setState({ cardExpanded: !this.state.cardExpanded })
 	}
 	renderTopAction = () => {
-		const { content, classes } = this.props
+		const { menuExpand, classes } = this.props
 		return <ItemG container justify={'flex-end'}>
 			{this.props.topAction}
-			{content ? null : <IconButton variant={'text'}
+			{!menuExpand ? null : <IconButton variant={'text'}
 				onClick={this.handleExpandClick}
 				aria-expanded={this.state.expanded}
 				aria-label='Show more'

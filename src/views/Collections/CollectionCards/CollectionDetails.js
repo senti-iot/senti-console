@@ -29,6 +29,7 @@ class DeviceDetails extends Component {
 				avatar={<DataUsage />}
 				noPadding
 				noRightExpand
+				menuExpand
 				topAction={<Dropdown menuItems={
 					[
 						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/collection/${collection.id}/edit`, prevURL: `/collection/${collection.id}` }) },
