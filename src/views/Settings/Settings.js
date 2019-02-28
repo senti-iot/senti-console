@@ -3,9 +3,8 @@ import { connect } from 'react-redux'
 import { GridContainer, ItemGrid } from 'components';
 import CalibrationSettings from './SettingsCards/CalibrationSettings';
 import DisplaySettings from './SettingsCards/DisplaySettings';
-import { changeLanguage } from 'redux/localization';
 import withLocalization from 'components/Localization/T';
-import { changeTRP, changeDefaultRoute, changeTheme, changeCalType, changeSideBarLoc, changeCount, changeCalNotif, changeDiscoverSenti, changeAlerts, changeDidKnow, saveSettingsOnServ, finishedSaving, changeTCount, changeMapTheme } from 'redux/settings';
+import { changeCalType, changeCount, changeCalNotif, changeAlerts, changeDidKnow, saveSettingsOnServ, finishedSaving, changeTCount } from 'redux/settings';
 import ChartSettings from './SettingsCards/ChartSettings';
 import withSnackbar from 'components/Localization/S';
 import { compose } from 'recompose';
@@ -38,9 +37,8 @@ class Settings extends Component {
 
 	render() {
 		const { t } = this.props
-		const { language, sideBar, changeSideBarLoc, trp, changeTRP, theme, changeTheme, changeDiscoverSenti, discSentiVal, changeLanguage } = this.props
-		const { calibration, changeCalType, count, changeCount, changeTCount, calNotifications, changeCalNotif,  changeDefaultRoute, defaultRoute } = this.props
-		const { tcount, mapTheme, changeMapTheme } = this.props
+		const { calibration, changeCalType, count, changeCount, changeTCount, calNotifications, changeCalNotif } = this.props
+		const { tcount } = this.props
 		return (
 			<Fragment>
 				<Toolbar
@@ -52,20 +50,6 @@ class Settings extends Component {
 				<GridContainer>
 					<ItemGrid xs={12} noMargin id={'display'}>
 						<DisplaySettings
-							changeDefaultRoute={changeDefaultRoute}
-							defaultRoute={defaultRoute}
-							trp={trp}
-							changeTRP={changeTRP}
-							theme={theme}
-							changeTheme={changeTheme}
-							language={language}
-							changeLanguage={changeLanguage}
-							sideBar={sideBar}
-							changeSideBarLoc={changeSideBarLoc}
-							discSentiVal={discSentiVal}
-							changeDiscoverSenti={changeDiscoverSenti}
-							mapTheme={mapTheme}
-							changeMapTheme={changeMapTheme}
 							t={t}
 						/>
 					</ItemGrid>
@@ -83,7 +67,6 @@ class Settings extends Component {
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'charts'}>
 						<ChartSettings
-		
 							t={t}
 						/>
 					</ItemGrid>
@@ -101,14 +84,6 @@ const mapStateToProps = state => {
 	const s = state.settings
 	return {
 		saved: s.saved,
-		settings: s,
-		language: state.localization.language,
-		theme: s.theme,
-		trp: s.trp,
-		sideBar: s.sideBar,
-		discSentiVal: s.discSentiVal,
-		mapTheme: s.mapTheme,
-		defaultRoute: s.defaultRoute,
 
 		calibration: s.calibration,
 		count: s.count,
@@ -122,13 +97,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		changeDiscoverSenti: val => dispatch(changeDiscoverSenti(val)),
-		changeLanguage: code => dispatch(changeLanguage(code)),
-		changeTRP: nr => dispatch(changeTRP(nr)),
-		changeTheme: t => dispatch(changeTheme(t)),
-		changeSideBarLoc: loc => dispatch(changeSideBarLoc(loc)),
-		changeMapTheme: t => dispatch(changeMapTheme(t)),
-		changeDefaultRoute: route => dispatch(changeDefaultRoute(route)),
+		// changeDiscoverSenti: val => dispatch(changeDiscoverSenti(val)),
+		// changeLanguage: code => dispatch(changeLanguage(code)),
+		// changeTRP: nr => dispatch(changeTRP(nr)),
+		// changeTheme: t => dispatch(changeTheme(t)),
+		// changeSideBarLoc: loc => dispatch(changeSideBarLoc(loc)),
+		// changeMapTheme: t => dispatch(changeMapTheme(t)),
+		// changeDefaultRoute: route => dispatch(changeDefaultRoute(route)),
 
 		changeCalType: type => dispatch(changeCalType(type)),
 		changeCount: count => dispatch(changeCount(count)),

@@ -4,6 +4,9 @@ import { InfoCard, ItemGrid, DSelect, CircularLoader } from 'components';
 import { Laptop } from 'variables/icons'
 import { Grid, ListItem, List, ListItemText, withStyles } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
+import { connect } from 'react-redux'
+import { changeTRP, changeDefaultRoute, changeTheme, changeSideBarLoc, changeDiscoverSenti, changeMapTheme } from 'redux/settings';
+import { changeLanguage } from 'redux/localization';
 
 class DisplaySettings extends Component {
 
@@ -127,4 +130,27 @@ class DisplaySettings extends Component {
 		)
 	}
 }
-export default withStyles(settingsStyles)(DisplaySettings)
+const mapStateToProps = state => {
+	const s = state.settings
+	return ({
+		language: state.localization.language,
+		theme: s.theme,
+		trp: s.trp,
+		sideBar: s.sideBar,
+		discSentiVal: s.discSentiVal,
+		mapTheme: s.mapTheme,
+		defaultRoute: s.defaultRoute,
+	})
+}
+const mapDispatchToProps = (dispatch) => {
+	return {
+		changeDiscoverSenti: val => dispatch(changeDiscoverSenti(val)),
+		changeLanguage: code => dispatch(changeLanguage(code)),
+		changeTRP: nr => dispatch(changeTRP(nr)),
+		changeTheme: t => dispatch(changeTheme(t)),
+		changeSideBarLoc: loc => dispatch(changeSideBarLoc(loc)),
+		changeMapTheme: t => dispatch(changeMapTheme(t)),
+		changeDefaultRoute: route => dispatch(changeDefaultRoute(route)),
+	}
+}
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(settingsStyles)(DisplaySettings))
