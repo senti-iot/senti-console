@@ -4,6 +4,9 @@ import { InfoCard, ItemGrid, DSelect, CircularLoader } from 'components';
 import { Laptop } from 'variables/icons'
 import { Grid, ListItem, List, ListItemText, withStyles } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
+import { connect } from 'react-redux'
+import { changeTRP, changeTheme, changeSideBarLoc, changeDiscoverSenti, changeMapTheme, changeDetailsPanel, changeSnackbarLocation } from 'redux/settings';
+import { changeLanguage } from 'redux/localization';
 
 class DisplaySettings extends Component {
 
@@ -17,17 +20,11 @@ class DisplaySettings extends Component {
 	changeSideBarLoc = (e) => this.props.changeSideBarLoc(e.target.value)
 	changeDiscoverSenti = e => this.props.changeDiscoverSenti(e.target.value)
 	changeMapTheme = e => this.props.changeMapTheme(e.target.value)
-	changeDefaultRoute = e => this.props.changeDefaultRoute(e.target.value)
-	
+	changeSnackbarLocation = e => this.props.changeSnackbarLocation(e.target.value) 
+	changeDetailsPanel = e => this.props.changeDetailsPanel(e.target.value)
+
 	render() {
-		const { language, trp, sideBar, discSentiVal, theme, mapTheme, classes, t, defaultRoute } = this.props
-		let defaultRoutes = [
-			{ value: '/favorites', label: t('sidebar.favorites') },
-			{ value: '/dashboard', label: t('sidebar.dashboard') },
-			{ value: '/projects', label: t('sidebar.projects') },
-			{ value: '/devices', label: t('sidebar.devices') },
-			{ value: '/collections', label: t('sidebar.collections') }
-		]
+		const { language, trp, sideBar, discSentiVal, theme, mapTheme, classes, t, snackbarLocation, detailsPanel } = this.props
 		let discSenti = [
 			{ value: 1, label: t('actions.yes') },
 			{ value: 0, label: t('actions.no') }
@@ -68,7 +65,14 @@ class DisplaySettings extends Component {
 			{ value: 0, label: t('settings.sideBarLeft') },
 			{ value: 1, label: t('settings.sideBarRight') }
 		]
-
+		let snackbarLocations = [
+			{ value: 'left', label: t('settings.snackbarLocations.left') },
+			{ value: 'right', label: t('settings.snackbarLocations.right') }
+		]
+		let detailsPanelState = [
+			{ value: 0, label: t('settings.detailsPanelPos.closed') },
+			{ value: 1, label: t('settings.detailsPanelPos.open') }
+		]
 		return (
 			discSentiVal !== null && language !== null && trp !== null && sideBar !== null && theme !== null ? 
 				<InfoCard
@@ -84,12 +88,12 @@ class DisplaySettings extends Component {
 										<DSelect menuItems={discSenti} value={discSentiVal} onChange={this.changeDiscoverSenti} />
 									</ItemGrid>
 								</ListItem>
-								<ListItem divider>
+								{/* <ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.defaultRoute')}</ListItemText>
 										<DSelect menuItems={defaultRoutes} value={defaultRoute} onChange={this.changeDefaultRoute} />
 									</ItemGrid>
-								</ListItem>
+								</ListItem> */}
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.language')}</ListItemText>
@@ -114,10 +118,22 @@ class DisplaySettings extends Component {
 										<DSelect menuItems={themes} value={theme} onChange={this.changeTheme} />
 									</ItemGrid>
 								</ListItem>
-								<ListItem>
+								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.map')}</ListItemText>
 										<DSelect menuItems={mapThemes} value={mapTheme} onChange={this.changeMapTheme} />
+									</ItemGrid>
+								</ListItem>
+								<ListItem divider>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{t('settings.snackbarLocation')}</ListItemText>
+										<DSelect menuItems={snackbarLocations} value={snackbarLocation} onChange={this.changeSnackbarLocation} />
+									</ItemGrid>
+								</ListItem>
+								<ListItem>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{t('settings.detailsPanel')}</ListItemText>
+										<DSelect menuItems={detailsPanelState} value={detailsPanel} onChange={this.changeDetailsPanel} />
 									</ItemGrid>
 								</ListItem>
 							</List>
@@ -127,4 +143,29 @@ class DisplaySettings extends Component {
 		)
 	}
 }
-export default withStyles(settingsStyles)(DisplaySettings)
+const mapStateToProps = state => {
+	const s = state.settings
+	return ({
+		language: state.localization.language,
+		theme: s.theme,
+		trp: s.trp,
+		sideBar: s.sideBar,
+		discSentiVal: s.discSentiVal,
+		mapTheme: s.mapTheme,
+		snackbarLocation: s.snackbarLocation,
+		detailsPanel: s.detailsPanel
+	})
+}
+const mapDispatchToProps = (dispatch) => {
+	return {
+		changeDiscoverSenti: val => dispatch(changeDiscoverSenti(val)),
+		changeLanguage: code => dispatch(changeLanguage(code)),
+		changeTRP: nr => dispatch(changeTRP(nr)),
+		changeTheme: t => dispatch(changeTheme(t)),
+		changeSideBarLoc: loc => dispatch(changeSideBarLoc(loc)),
+		changeMapTheme: t => dispatch(changeMapTheme(t)),
+		changeSnackbarLocation: val => dispatch(changeSnackbarLocation(val)),
+		changeDetailsPanel: val => dispatch(changeDetailsPanel(val)),
+	}
+}
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(settingsStyles)(DisplaySettings))

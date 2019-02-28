@@ -235,15 +235,18 @@ class Devices extends Component {
 	//#region Handlers
 
 	handleTabs = () => {
-		if (this.props.location.pathname.includes('/map'))
-			this.setState({ route: 1 })
+		if (this.props.location.pathname.includes('grid')) {
+			this.setState({ route: 2 })
+			return 2
+		}
 		else {
-			if (this.props.location.pathname.includes('/grid'))
-				this.setState({ route: 2 })
-			if (this.props.location.pathname.includes('/favorites'))
+			if (this.props.location.pathname.includes('favorites')) {
 				this.setState({ route: 3 })
+				return 3
+			}
 			else {
 				this.setState({ route: 0 })
+				return 0
 			}
 		}
 	}

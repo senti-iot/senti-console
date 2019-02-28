@@ -16,9 +16,11 @@
 		}
 	},
 	"404": {
-		"errorMessage": "Den ønskede ressource er ikke fundet! Prøv igen eller kontakt support på support@senti.cloud!",
+		"errorMessage": "Den ønskede ressource er ikke fundet!",
+		"contactSupport": "Prøv igen eller kontakt support på support@senti.cloud!",
 		"networkError": "Netværksfejl!",
-		"title": "404 fejl - Siden ikke fundet"
+		"title": "Siden ikke fundet",
+		"goHome": "Gå til Dashboard"
 	},
 	"": "",
 	"Senti.Cloud": "Senti.Cloud",
@@ -138,7 +140,7 @@
 			},
 			"status": "Status"
 		},
-		"pageTitle": "Datasamlinger",
+		"pageTitle": "Data",
 		"rawData": "Rådata"
 	},
 	"confirmUser": {
@@ -577,8 +579,27 @@
 			"time": "På tid"
 		},
 		"chart": {
+			"weekendColor": "Weekend farve",
 			"period": "Periode",
 			"periods": "Perioder",
+			"weekendColors": {
+				"lightBlue": "Lyseblå",
+				"cyan": "Cyan",
+				"teal": "Krikand",
+				"green": "Grøn",
+				"lightGreen": "Lysegrøn",
+				"lime": "Citron",
+				"yellow": "Gul",
+				"amber": "Rav",
+				"orange": "Orange",
+				"deepOrange": "Dyb orange",
+				"red": "Rød",
+				"pink": "Lyserød",
+				"purple": "Lilla",
+				"deepPurple": "Mørke lilla",
+				"indigo": "Indigo",
+				"blue": "Blå"
+			},
 			"YAxis": {
 				"logarithmic": "Logaritmisk skala",
 				"linear": "Lineær skala"
@@ -588,6 +609,12 @@
 		},
 		"default": "Standard",
 		"defaultDataSet": "Standard datasæt for diagrammer",
+		"defaultView": "Standardvisning",
+		"defaultViews": {
+			"list": "Liste",
+			"grid": "Gitter",
+			"favorites": "Favoritter"
+		},
 		"didYouKnow": "Viste du at?",
 		"discoverSenti": "Vis Velkommen til Senti på Dashboard",
 		"headers": {
@@ -612,6 +639,16 @@
 		"sideBarLeft": "Venstre",
 		"sideBarLoc": "Placering af menu",
 		"sideBarRight": "Højre",
+		"snackbarLocation": "Notifikation placering",
+		"snackbarLocations": {
+			"left": "Venstre",
+			"right": "Højre"
+		},
+		"detailsPanel": "Detaljer panel",
+		"detailsPanelPos": {
+			"open": "Åben",
+			"closed": "Lukket"
+		},
 		"theme": "Tema",
 		"themes": {
 			"dark": "Mørkt",

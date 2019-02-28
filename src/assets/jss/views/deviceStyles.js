@@ -66,15 +66,30 @@ const deviceStyles = theme => ({
 		maxHeight: 24
 	},
 	redSignal: {
-		color: red[700],
-		marginRight: 4
+		color: red[500],
+		// background: theme.palette.type === 'light' ? '#fff' : '#424242',
+		// borderRadius: 100,
+		padding: 4,
+		width: 30,
+		height: 30
+		// marginRight: 4
 	},
 	greenSignal: {
-		color: green[700],
-		margin: 4
+		color: green[500],
+		// background: theme.palette.type === 'light' ? '#fff' : '#424242',
+		// borderRadius: 100,
+		padding: 4,
+		width: 30,
+		height: 30
+		// margin: 4
 	},
 	yellowSignal: {
-		color: yellow[600]
+		color: yellow[600],
+		// background: theme.palette.type === 'light' ? '#fff' : '#424242',
+		// borderRadius: 100,
+		padding: 4,
+		width: 30,
+		height: 30
 	},
 	leftIcon: {
 		marginRight: theme.spacing.unit

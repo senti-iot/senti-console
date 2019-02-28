@@ -22,7 +22,7 @@ const Sidebar = ({ ...props }) => {
 		return props.menuRoute === routeName ? true : false;
 	}
 
-	const { classes, color, logo, image, logoText, routes, t, defaultRoute } = props;
+	const { classes, color, logo, image, logoText, routes, t, defaultRoute, defaultView } = props;
 	var links = (
 		<List className={classes.list}>
 			{routes.map((prop, key) => {
@@ -37,7 +37,7 @@ const Sidebar = ({ ...props }) => {
 				});
 				return (
 					<NavLink
-						to={prop.path}
+						to={prop.path + defaultView}
 						className={classes.item}
 						activeClassName='active'
 						key={key}

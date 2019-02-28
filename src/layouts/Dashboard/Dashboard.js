@@ -108,7 +108,7 @@ class App extends React.Component {
 	}
 	
 	render() {
-		const { classes, t, loading, sOpt, defaultRoute, ...rest } = this.props;
+		const { classes, t, loading, sOpt, defaultRoute, snackbarLocation, defaultView, ...rest } = this.props;
 		return (
 			<MuiThemeProvider theme={this.props.theme === 0 ? lightTheme : darkTheme }>
 
@@ -125,6 +125,7 @@ class App extends React.Component {
 						/>
 						<Fragment>
 							<Sidebar
+								defaultView={defaultView}
 								defaultRoute={defaultRoute}
 								routes={dashboardRoutes}
 								logo={logo}
@@ -154,7 +155,7 @@ class App extends React.Component {
 								</div>
 								<Cookies/>
 								<Snackbar
-									anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+									anchorOrigin={{ vertical: 'bottom', horizontal: snackbarLocation }}
 									open={this.props.sOpen}
 									onClose={this.props.sClose}
 									onExited={this.props.handleNextS}
@@ -192,7 +193,9 @@ const mapStateToProps = (state) => ({
 	loading: state.settings.loading,
 	theme: state.settings.theme,
 	// cookies: state.settings.cookies,
-	defaultRoute: state.settings.defaultRoute
+	defaultRoute: state.settings.defaultRoute,
+	defaultView: state.settings.defaultView,
+	snackbarLocation: state.settings.snackbarLocation
 })
 
 const mapDispatchToProps = dispatch => ({

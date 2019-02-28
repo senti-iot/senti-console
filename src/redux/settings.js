@@ -3,6 +3,7 @@ import { getUser, getValidSession } from 'variables/dataUsers'
 import 'moment/locale/da'
 import 'moment/locale/en-gb'
 import { saveSettings } from 'variables/dataLogin';
+import { setDates } from './dateTime';
 var moment = require('moment')
 
 const acceptCookies = 'acceptCookies'
@@ -15,9 +16,15 @@ const TRP = 'tableRowsPerPage'
 const DISCSENT = 'discoverSentiBanner'
 const DidKnow = 'notifDidYouKnow'
 const MapTheme = 'mapTheme'
+const changeSB = 'changeSnackbarLocation'
+const changeDP = 'changeDetailsPanelState'
+//Navigation
+
 const changeDR = 'changeDefaultRoute'
+const changeDV = 'changeDefaultView'
 
 //Calibration
+
 const CALTYPE = 'calibrationType'
 const COUNT = 'calibrationCount'
 const TCOUNT = 'calibrationTimeCount'
@@ -26,11 +33,14 @@ const ALERTS = 'notifAlerts'
 const GETFAVS = 'getFavorites'
 
 //Charts
+
 const CHARTTYPE = 'chartType'
 const CHARTDATATYPE = 'chartDataType'
 const addPeriod = 'chartAddPeriod'
+const weekendColor = 'changeWeekendColor'
 
 //Get/Set Settings from server
+
 const GetSettings = 'getSettings'
 const SAVESETTINGS = 'saveSettings'
 const SAVED = 'savedSettings'
@@ -41,6 +51,7 @@ export const saveSettingsOnServ = () => {
 		let user = getState().settings.user
 		let s = getState().settings
 		let settings = {
+			weekendColor: s.weekendColor,
 			calibration: s.calibration,
 			calNotifications: s.calNotifications,
 			count: s.count,
@@ -56,7 +67,9 @@ export const saveSettingsOnServ = () => {
 			mapTheme: s.mapTheme,
 			defaultRoute: s.defaultRoute,
 			cookies: s.cookies,
-			periods: s.periods
+			periods: s.periods,
+			snackbarLocation: s.snackbarLocation,
+			detailsPanel: s.detailsPanel
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -72,8 +85,7 @@ export const saveSettingsOnServ = () => {
 export const getSettings = async () => {
 	return async (dispatch, getState) => {
 		var sessionCookie = cookie.load('SESSION') ? cookie.load('SESSION') : null
-		if (sessionCookie)
-		{
+		if (sessionCookie) {
 			let vSession = await getValidSession(sessionCookie.userID).then(rs => rs.status)
 			if (vSession === 200) {
 				let exp = moment().add('1', 'day')
@@ -105,7 +117,7 @@ export const getSettings = async () => {
 					user
 				})
 			}
-		
+
 			else {
 				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
 				let s = {
@@ -120,7 +132,7 @@ export const getSettings = async () => {
 					settings: s
 				})
 			}
-			if (favorites) { 
+			if (favorites) {
 				dispatch({
 					type: GETFAVS,
 					favorites: {
@@ -143,10 +155,25 @@ export const getSettings = async () => {
 			return false
 		}
 	}
-
-
 }
-
+export const changeSnackbarLocation = (val) => {
+	return async dispatch => {
+		dispatch({
+			type: changeSB,
+			snackbarLocation: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeDetailsPanel = (val) => {
+	return async dispatch => {
+		dispatch({
+			type: changeDP,
+			detailsPanel: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
 export const acceptCookiesFunc = (val) => {
 	return async dispatch => {
 		dispatch({
@@ -156,8 +183,17 @@ export const acceptCookiesFunc = (val) => {
 		dispatch(saveSettingsOnServ())
 	}
 }
+export const changeDefaultView = route => {
+	return async (dispatch) => {
+		dispatch({
+			type: changeDV,
+			defaultView: route
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
 export const changeDefaultRoute = route => {
-	return async(dispatch) => {
+	return async (dispatch) => {
 		dispatch({
 			type: changeDR,
 			defaultRoute: route
@@ -166,7 +202,7 @@ export const changeDefaultRoute = route => {
 	}
 }
 export const changeMapTheme = t => {
-	return async (dispatch, getState) => {		
+	return async (dispatch, getState) => {
 		dispatch({
 			type: MapTheme,
 			t
@@ -293,7 +329,7 @@ export const changeSettingsDate = (menuId, to, from, timeType, id) => {
 		}
 		periods[c] = {
 			id: c,
-			menuId, to, from, timeType, chartType: id === -1 ? 3 : periods[c].chartType, hide: false, raw: false
+			menuId, to: to ? to : undefined, from: from ? from : undefined, timeType, chartType: id === -1 ? 3 : periods[c].chartType, hide: false, raw: id !== -1 ? periods[c].raw : false
 		}
 		dispatch({
 			type: addPeriod,
@@ -314,6 +350,22 @@ export const removeChartPeriod = pId => {
 		dispatch(saveSettingsOnServ())
 	}
 }
+export const changePeriodChartType = (type, p) => { 
+	return async (dispatch, getState) => { 
+		let periods = []
+		periods = [...getState().settings.periods]
+		let id = periods.findIndex(f => f.id === p.id)
+		if (id > -1) {
+			periods[id].chartType = type
+		}
+		dispatch({
+			type: addPeriod,
+			periods
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+
 export const updateChartPeriod = p => {
 	return async (dispatch, getState) => {
 		let periods = []
@@ -338,6 +390,15 @@ export const changeTheme = (code) => {
 		dispatch(saveSettingsOnServ())
 	}
 }
+export const changeWeekendColor = (id) => { 
+	return async (dispatch, getState) => { 
+		dispatch({
+			type: weekendColor,
+			id
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
 export const finishedSaving = () => {
 	return {
 		type: SAVED,
@@ -345,12 +406,11 @@ export const finishedSaving = () => {
 	}
 }
 let initialState = {
+	weekendColor: 'red',
 	periods: [{
 		id: 0,
 		menuId: 0,
 		raw: true,
-		to: moment(),
-		from: moment().startOf('day'),
 		timeType: 1,
 		chartType: 3,
 		hide: false
@@ -358,14 +418,13 @@ let initialState = {
 		id: 1,
 		menuId: 2,
 		raw: false,
-		to: moment(),
-		from: moment().subtract(7, 'days'),
 		timeType: 2,
 		chartType: 3,
 		hide: false
 	}],
 	cookies: false,
 	defaultRoute: '/dashboard',
+	defaultView: '/list',
 	mapTheme: 0,
 	rawData: 0,
 	language: 'dk',
@@ -382,18 +441,29 @@ let initialState = {
 	didKnow: 0,
 	loading: true,
 	saved: false,
-	rowsPerPageOptions: ['auto', 5, 7, 8, 10, 15, 20, 25, 50, 100 ],
-	cardsPerPageOptions: [2, 3, 4, 6, 8, 9]
+	rowsPerPageOptions: ['auto', 5, 7, 8, 10, 15, 20, 25, 50, 100],
+	cardsPerPageOptions: [2, 3, 4, 6, 8, 9],
+	snackbarLocation: 'left',
+	detailsPanel: 0
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
-		case addPeriod: 
-			return Object.assign({}, state, { periods: action.periods })
-		case acceptCookies: 
+		case changeSB:
+			return Object.assign({}, state, { snackbarLocation: action.snackbarLocation })
+		case changeDP:
+			return Object.assign({}, state, { detailsPanel: action.detailsPanel })
+		case weekendColor:
+			return Object.assign({}, state, { weekendColor: action.id })
+		case addPeriod:
+			let periods = setDates(action.periods)
+			return Object.assign({}, state, { periods: periods })
+		case acceptCookies:
 			return Object.assign({}, state, { cookies: action.acceptCookies })
-		case changeDR: 
+		case changeDR:
 			return Object.assign({}, state, { defaultRoute: action.defaultRoute })
-		case CHARTDATATYPE: 
+		case changeDV:
+			return Object.assign({}, state, { defaultView: action.defaultView })
+		case CHARTDATATYPE:
 			return Object.assign({}, state, { rawData: action.t })
 		case SAVED:
 			return Object.assign({}, state, { saved: action.saved })
@@ -405,7 +475,9 @@ export const settings = (state = initialState, action) => {
 		}
 		case GetSettings:
 		{
-			return Object.assign({}, state, { ...action.settings, user: action.user, loading: false })
+			// console.log(action.settings)
+			let periods = setDates(action.settings.periods)
+			return Object.assign({}, state, { ...action.settings, periods: periods, user: action.user, loading: false })
 		}
 		case changeLangAction:
 		{
@@ -454,11 +526,11 @@ export const settings = (state = initialState, action) => {
 			return Object.assign({}, state, {
 				didKnow: action.t
 			})
-		case CHARTTYPE: 
+		case CHARTTYPE:
 			return Object.assign({}, state, {
 				chartType: action.t
 			})
-		case MapTheme: 
+		case MapTheme:
 			return Object.assign({}, state, {
 				mapTheme: action.t
 			})

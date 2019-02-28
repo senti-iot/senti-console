@@ -16,9 +16,11 @@
 		}
 	},
 	"404": {
-		"errorMessage": "The resource requested has not been found! Please try again or contact support on support@senti.cloud!",
+		"errorMessage": "The resource requested has not been found!",
+		"contactSupport": "Please try again or contact support on support@senti.cloud!",
 		"networkFail": "Request failed!",
-		"title": "404 Error - Page Not Found"
+		"title": "Page Not Found",
+		"goHome": "Go to Dashboard"
 	},
 	"": "",
 	"Senti.Cloud": "Senti.Cloud",
@@ -138,7 +140,7 @@
 			},
 			"status": "Device status"
 		},
-		"pageTitle": "Data Collections",
+		"pageTitle": "Data",
 		"rawData": "Raw data"
 	},
 	"confirmUser": {
@@ -577,6 +579,25 @@
 			"time": "By time"
 		},
 		"chart": {
+			"weekendColor": "Weekend colors",
+			"weekendColors": {
+				"lightBlue": "Light Blue",
+				"cyan": "Cyan",
+				"teal": "Teal",
+				"green": "Green",
+				"lightGreen": "Light Green",
+				"lime": "Lime",
+				"yellow": "Yellow",
+				"amber": "Amber",
+				"orange": "Orange",
+				"deepOrange": "Deep Orange",
+				"red": "Red",
+				"pink": "Pink",
+				"purple": "Purple",
+				"deepPurple": "Deep Purple",
+				"indigo": "Indigo",
+				"blue": "Blue"
+			},
 			"period": "Period",
 			"periods": "Periods",
 			"YAxis": {
@@ -588,6 +609,12 @@
 		},
 		"default": "Default",
 		"defaultDataSet": "Default data set for charts",
+		"defaultView": "Default view",
+		"defaultViews": {
+			"list": "List",
+			"grid": "Grid",
+			"favorites": "Favorites"
+		},
 		"didYouKnow": "Intelligent Notifications",
 		"discoverSenti": "Show Welcome to Senti on Dashboard",
 		"headers": {
@@ -612,6 +639,16 @@
 		"sideBarLeft": "Left",
 		"sideBarLoc": "Menu location",
 		"sideBarRight": "Right",
+		"snackbarLocation": "Notification placing",
+		"snackbarLocations": {
+			"left": "Left",
+			"right": "Right"
+		},
+		"detailsPanel": "Details panel",
+		"detailsPanelPos": {
+			"open": "Open",
+			"closed": "Closed"
+		},
 		"theme": "Theme",
 		"themes": {
 			"dark": "Dark",

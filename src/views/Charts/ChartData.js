@@ -86,7 +86,6 @@ class ChartData extends PureComponent {
 		this._isMounted = 0
 	}
 	handleChangeChartType = (type) => { 
-		console.log(type)
 		this.setState({
 			chartType: type
 		})
@@ -196,10 +195,10 @@ class ChartData extends PureComponent {
 					return roundDataSets ?
 						<ItemG container >
 							{roundDataSets.map((d, i) => {
-								return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md={roundDataSets.length >= 2 ? 6 : 12} direction={'column'} container justify={'center'}>
-									<div style={{ maxHeight: 300 }}>
+								return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md/* md={roundDataSets.length >= 2 ? periods.length > 2 ? 12 : 6 : 12} */ direction={'column'} container justify={'center'}>
+									<div style={{ maxHeight: 200 }}>
 										<PieChart
-											height={300}
+											height={200}
 											title={title}
 											single
 											unit={this.timeTypes[period.timeType]}
@@ -217,10 +216,10 @@ class ChartData extends PureComponent {
 					return roundDataSets ?
 						<ItemG container >
 							{roundDataSets.map((d, i) => {
-								return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md={roundDataSets.length >= 2 ? 6 : 12} direction={'column'} container justify={'center'}>
-									<div style={{ maxHeight: 300 }}>
+								return <ItemG style={{ marginBottom: 30 }} key={i} xs={12} md direction={'column'} container justify={'center'}>
+									<div style={{ maxHeight: 200 }}>
 										<DoughnutChart
-											height={300}
+											height={200}
 											title={title}
 											single
 											unit={this.timeTypes[period.timeType]}
@@ -441,7 +440,6 @@ class ChartData extends PureComponent {
 	}
 }
 const mapStateToProps = (state) => ({
-	raw: state.settings.rawData ? true : false
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -11,6 +11,7 @@ import moment from 'moment'
 class OrgUsers extends Component {
 	render() {
 		const { users, classes, t } = this.props
+		console.log(users)
 		return (
 			<InfoCard
 				title={t('users.pageTitle')}
@@ -22,6 +23,7 @@ class OrgUsers extends Component {
 						<TableBody style={{ padding: "0 24px" }}>
 							{users ? users.map((n, i) => {
 								const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? dateFormat(n.lastLoggedIn) : t('users.fields.neverLoggedIn')
+								console.log(lastLoggedIn, n.firstName, n.lastLoggedIn)
 								return (
 									<TableRow
 										hover
