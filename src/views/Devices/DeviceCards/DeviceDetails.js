@@ -59,8 +59,8 @@ class DeviceDetails extends Component {
 				whiteAvatar
 				title={device.name ? device.name : device.id}
 				avatar={this.renderStatus(device.liveStatus)}
-				noRightExpand
-				menuExpand
+				// noRightExpand
+				// menuExpand
 				expanded={Boolean(detailsPanel)}
 				topAction={<Dropdown menuItems={
 					[
