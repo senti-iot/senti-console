@@ -6,7 +6,6 @@ import NotFound from 'layouts/404/NotFound';
 import Loadable from 'react-loadable';
 import AsyncLoader from 'components/Loader/AsyncLoader';
 import { DataUsage } from 'variables/icons';
-import OpenStreetMap from 'components/Map/OpenStreetMap';
 
 const AsyncHoliday = Loadable({
 	loader: () => import('routes/holiday'),
@@ -74,11 +73,6 @@ const dashboardRoutes = [
 		menuRoute: 'dashboard'
 	},
 	{
-		path: '/osm',
-		component: OpenStreetMap,
-		hideFromSideBar: true
-	},
-	{
 		path: '/favorites',
 		sidebarName: 'sidebar.favorites',
 		icon: Star,
@@ -97,7 +91,8 @@ const dashboardRoutes = [
 		sidebarName: 'sidebar.projects',
 		icon: LibraryBooks,
 		component: AsyncProjects,
-		menuRoute: 'projects'
+		menuRoute: 'projects',
+		defaultView: true,
 	},
 	{
 		path: '/collection/:id',
@@ -110,7 +105,8 @@ const dashboardRoutes = [
 		sidebarName: 'sidebar.collections',
 		component: AsyncCollections,
 		icon: DataUsage,
-		menuRoute: 'collections'
+		menuRoute: 'collections',
+		defaultView: true,
 	},
 	{
 		path: '/device/:id',
@@ -123,7 +119,8 @@ const dashboardRoutes = [
 		sidebarName: 'sidebar.devices',
 		icon: DeviceHub,
 		component: AsyncDevices,
-		menuRoute: 'devices'
+		menuRoute: 'devices',
+		defaultView: true,
 	},
 	{
 		path: '/management/user/:id',

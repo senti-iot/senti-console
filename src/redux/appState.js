@@ -6,7 +6,16 @@ const changeHM = 'changeHeatMap'
 const changeYAXIS = 'changeYAxis'
 const changeCPP = 'changeCardsPerPage'
 const changeEventHandler = 'changeEH'
+const changeSM = 'changeSmallmenu'
 
+export const changeSmallMenu = (val) => { 
+	return dispatch => { 
+		dispatch({
+			type: changeSM,
+			smallMenu: val
+		})
+	}
+}
 export const changeEH = (bool) => { 
 	return dispatch => { 
 		dispatch({ type: changeEventHandler, EH: bool })
@@ -104,6 +113,7 @@ const initialState = {
 	heatMap: false,
 	chartType: null,
 	mapTheme: null, 
+	smallMenu: false,
 	trp: null,
 	filters: {
 		favorites: [],
@@ -117,6 +127,8 @@ const initialState = {
 
 export const appState = (state = initialState, action) => {
 	switch (action.type) {
+		case changeSM: 
+			return Object.assign({}, state, { smallMenu: action.smallMenu })
 		case changeEventHandler: 
 			return Object.assign({}, state, { EH: action.EH })
 		case changeCPP: 

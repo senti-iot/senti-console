@@ -2,7 +2,8 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { withStyles, Snackbar, IconButton } from '@material-ui/core';
-import { Header, Sidebar, CircularLoader } from 'components';
+import { Header, /* Sidebar, */ CircularLoader } from 'components';
+import cx from 'classnames'
 
 import dashboardRoutes from 'routes/dashboard.js';
 import appStyle from 'assets/jss/material-dashboard-react/appStyle.js';
@@ -17,6 +18,8 @@ import {  Close } from 'variables/icons';
 import { lightTheme, darkTheme } from 'variables/themes'
 import { getDaysOfInterest } from 'redux/doi';
 import Cookies from 'components/Cookies/Cookies';
+import NewSidebar from 'components/Sidebar/NewSidebar';
+// import { transition } from 'assets/jss/material-dashboard-react';
 
 class App extends React.Component {
 	constructor(props) {
@@ -108,23 +111,29 @@ class App extends React.Component {
 	}
 	
 	render() {
-		const { classes, t, loading, sOpt, defaultRoute, snackbarLocation, defaultView, ...rest } = this.props;
+		const { classes, t, loading, sOpt, defaultRoute, snackbarLocation, defaultView, smallMenu, ...rest } = this.props;
 		return (
 			<MuiThemeProvider theme={this.props.theme === 0 ? lightTheme : darkTheme }>
 
 				<div className={classes.wrapper + ' ' + (this.props.theme === 0 ? '' : classes.darkBackground) }>
-					<div className={classes.mainPanel} ref={'mainPanel'}>
-						<Header
-							routes={dashboardRoutes}
-							handleDrawerToggle={this.handleDrawerToggle}
-							goBackButton={this.state.goBackButton}
-							gbbFunc={this.handleGoBackButton}
-							headerTitle={this.state.headerTitle}
-							t={t}
-							{...rest}
-						/>
+					<Header
+						defaultRoute={defaultRoute}
+						logo={logo}
+						routes={dashboardRoutes}
+						handleDrawerToggle={this.handleDrawerToggle}
+						goBackButton={this.state.goBackButton}
+						gbbFunc={this.handleGoBackButton}
+						headerTitle={this.state.headerTitle}
+						t={t}
+						{...rest}
+					/>
+					<div className={cx({ 
+						[classes.mainPanelDrawerClosed]: !smallMenu,
+						[classes.mainPanelDrawerOpen]: smallMenu,
+						[classes.mainPanel]: true
+					})} ref={'mainPanel'}>
 						<Fragment>
-							<Sidebar
+							<NewSidebar
 								defaultView={defaultView}
 								defaultRoute={defaultRoute}
 								routes={dashboardRoutes}
@@ -195,7 +204,8 @@ const mapStateToProps = (state) => ({
 	// cookies: state.settings.cookies,
 	defaultRoute: state.settings.defaultRoute,
 	defaultView: state.settings.defaultView,
-	snackbarLocation: state.settings.snackbarLocation
+	snackbarLocation: state.settings.snackbarLocation,
+	smallMenu: state.appState.smallMenu
 })
 
 const mapDispatchToProps = dispatch => ({

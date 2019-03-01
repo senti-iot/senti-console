@@ -5,30 +5,42 @@
 import {
 	drawerWidth,
 	transition,
-	boxShadow,
+	// boxShadow,
 	defaultFont,
 	primaryColor,
 	hoverColor
 } from "assets/jss/material-dashboard-react.js";
 
 const sidebarStyle = theme => ({
+	drawerPaperSmall: {
+		width: "70px !important"
+	},
 	drawerPaper: {
+		backgroundColor: "#434351",
 		border: "none",
-		position: "fixed",
+		// position: "fixed",
 		top: "0",
 		bottom: "0",
 		left: "0",
 		zIndex: "1",
-		...boxShadow,
+		...transition,
+		// ...boxShadow,
 		width: drawerWidth,
 		[theme.breakpoints.up("lg")]: {
-			width: drawerWidth,
+			maxWidth: drawerWidth,
 			position: "fixed",
-			height: "100%"
+			height: "100%",
+			[theme.breakpoints.up('lg')]: {
+				top: 70
+			},
+			
+		},
+		[theme.breakpoints.down('sm')]: {
+			top: 48
 		},
 		[theme.breakpoints.down("md")]: {
 			width: drawerWidth,
-			...boxShadow,
+			// ...boxShadow,
 			position: "fixed",
 			display: "block",
 			top: "0",
@@ -43,7 +55,7 @@ const sidebarStyle = theme => ({
 			paddingRight: "0px",
 			paddingLeft: "0",
 			transform: `translate3d(${drawerWidth}px, 0, 0)`,
-			...transition
+			// ...transition
 		}
 	},
 	logo: {
@@ -128,16 +140,17 @@ const sidebarStyle = theme => ({
 	},
 	item: {
 		position: "relative",
-		display: "block",
+		// display: "block",
 		textDecoration: "none",
 	},
+
 	itemLink: {
-		width: 'auto',
+		width: 'calc(260px - 24px)',
 		transition: "all 300ms linear",
-		margin: "10px 15px 0",
+		margin: "10px 12px 0",
 		borderRadius: "3px",
 		position: "relative",
-		display: "block",
+		// display: "block",
 		padding: "10px 15px",
 		backgroundColor: "transparent",
 		...defaultFont
@@ -184,7 +197,7 @@ const sidebarStyle = theme => ({
 		// "#767684"
 	},
 	appBarWrapper: {
-		backgroundColor: "#767684"	
+		backgroundColor: "#767684"
 	}
 });
 

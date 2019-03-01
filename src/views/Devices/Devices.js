@@ -516,7 +516,7 @@ class Devices extends Component {
 
 	render() {
 		const { devices, filters, route } = this.state
-		const { history, match } = this.props
+		const { history, match,  } = this.props
 		return (
 			<Fragment>
 				<Toolbar
@@ -544,7 +544,7 @@ const mapStateToProps = (state) => ({
 	favorites: state.favorites.favorites,
 	saved: state.favorites.saved,
 	mapTheme: state.settings.mapTheme,
-	filters: state.appState.filters.devices
+	filters: state.appState.filters.devices,
 })
 
 const mapDispatchToProps = (dispatch) => ({

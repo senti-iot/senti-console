@@ -21,7 +21,7 @@ import { red, green, yellow } from "@material-ui/core/colors"
 const drawerWidth = 260;
 
 const transition = {
-	transition: "all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1)"
+	transition: "all 0.22s cubic-bezier(0.685, 0.0473, 0.346, 1)"
 };
 
 const deviceStatus = {
@@ -39,8 +39,10 @@ const container = {
 	// padding: "8px",
 	// paddingRight: "15px",
 	// paddingLeft: "15px",
-	marginRight: "auto",
-	marginLeft: "auto"
+	// marginRight: "auto",
+	// marginLeft: "auto"
+	// paddingLeft: 16,
+	// paddingRight: 16
 };
 
 const boxShadow = "0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12)";
