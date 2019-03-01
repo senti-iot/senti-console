@@ -17,10 +17,18 @@ const styles = theme => ({
 			width: "calc(100vw - 260px)",
 		}
 	},
-	appBarDrawerClosed: {
+	appBarDrawerPermClosed: {
 		[theme.breakpoints.up('lg')]: {
+			
 			width: 'calc(100vw - 60px)',
 			left: 60
+		}
+	},
+	appBarDrawerPersClosed: {
+
+		[theme.breakpoints.up('lg')]: {
+			width: 'calc(100vw)',
+			left: 0
 		}
 	},
 	appBar: {
@@ -95,13 +103,14 @@ class Toolbar extends PureComponent {
 	}
 
 	render() {
-		const { classes, tabs, data, noSearch, filters, handleFilterKeyword, content, width, hashLinks, smallMenu } = this.props
+		const { classes, tabs, data, noSearch, filters, handleFilterKeyword, content, width, hashLinks, smallMenu, drawer  } = this.props
 		return (
 			<div style={{ height: 48 }}>
 				<AppBar classes={{
 					root: cx({
 						[classes.appBar]: true,
-						[classes.appBarDrawerClosed]: !smallMenu,
+						[classes.appBarDrawerPermClosed]: !smallMenu && drawer === 'permanent',
+						[classes.appBarDrawerPersClosed]: !smallMenu && drawer === 'persistent',
 						[classes.appBarDrawerOpen]: smallMenu,
 					})
 				}}>
@@ -126,16 +135,17 @@ class Toolbar extends PureComponent {
 						{content}
 					</ToolBar> : null}
 				</AppBar>
-			</div>
+			</div >
 		)
 	}
 }
 const mapStateToProps = (state) => ({
-	smallMenu: state.appState.smallMenu
+	smallMenu: state.appState.smallMenu,
+	drawer: state.settings.drawer
 })
 
 const mapDispatchToProps = {
-  
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withWidth()(withStyles(styles)(Toolbar)))

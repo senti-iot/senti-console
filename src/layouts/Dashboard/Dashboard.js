@@ -111,7 +111,7 @@ class App extends React.Component {
 	}
 	
 	render() {
-		const { classes, t, loading, sOpt, defaultRoute, snackbarLocation, defaultView, smallMenu, ...rest } = this.props;
+		const { classes, t, loading, sOpt, defaultRoute, snackbarLocation, defaultView, smallMenu, drawer, ...rest } = this.props;
 		return (
 			<MuiThemeProvider theme={this.props.theme === 0 ? lightTheme : darkTheme }>
 
@@ -128,7 +128,8 @@ class App extends React.Component {
 						{...rest}
 					/>
 					<div className={cx({ 
-						[classes.mainPanelDrawerClosed]: !smallMenu,
+						[classes.mainPanelDrawerPersClosed]: !smallMenu && drawer === 'persistent',
+						[classes.mainPanelDrawerPermClosed]: !smallMenu && drawer === 'permanent',
 						[classes.mainPanelDrawerOpen]: smallMenu,
 						[classes.mainPanel]: true
 					})} ref={'mainPanel'}>
@@ -205,7 +206,8 @@ const mapStateToProps = (state) => ({
 	defaultRoute: state.settings.defaultRoute,
 	defaultView: state.settings.defaultView,
 	snackbarLocation: state.settings.snackbarLocation,
-	smallMenu: state.appState.smallMenu
+	smallMenu: state.appState.smallMenu,
+	drawer: state.settings.drawer
 })
 
 const mapDispatchToProps = dispatch => ({

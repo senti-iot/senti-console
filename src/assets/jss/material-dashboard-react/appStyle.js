@@ -13,11 +13,15 @@ const appStyle = theme => ({
 		position: "relative",
 		top: "0",
 	},
-	mainPanelDrawerClosed: {
+	mainPanelDrawerPersClosed: {
+		width: '100%',
+		transition: "transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms"
+	},
+	mainPanelDrawerPermClosed: {
 		width: 'calc(100% - 60px)'
 	},
 	mainPanelDrawerOpen: {
-		width: 'calc(100% - 260px + 16px)'
+		width: 'calc(100% - 260px)'
 	},
 	mainPanel: {
 		[theme.breakpoints.down('md')]: {

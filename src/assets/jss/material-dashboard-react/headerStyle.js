@@ -15,10 +15,16 @@ import {
 } from "assets/jss/material-dashboard-react.js";
 
 const headerStyle = theme => ({
+	drawerButton: {
+		color: '#fff',
+		'&:hover': {
+			background: '#FFFFFF22'
+		}
+	},
 	logoContainer: {
-		width: 256,
+		width: 195,
 		display: "flex",
-		justifyContent: "center",
+		paddingLeft: '12px',
 		borderRadius: 4,
 		height: 48,
 		[theme.breakpoints.down('xs')]: {
@@ -78,17 +84,6 @@ const headerStyle = theme => ({
 		}
 	},
 	focusVisible: {},
-	imageButton: {
-		position: "absolute",
-		left: 0,
-		right: 0,
-		top: 0,
-		bottom: 0,
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "center",
-		color: theme.palette.common.white
-	},
 	imageSrc: {
 		position: "absolute",
 		left: 0,
@@ -97,7 +92,7 @@ const headerStyle = theme => ({
 		bottom: 0,
 		backgroundSize: "100px 50px",
 		backgroundRepeat: "no-repeat",
-		backgroundPosition: "40% 40%",
+		backgroundPosition: "50% 50%",
 	},
 	imageBackdrop: {
 		position: "absolute",

@@ -18,6 +18,9 @@ const DidKnow = 'notifDidYouKnow'
 const MapTheme = 'mapTheme'
 const changeSB = 'changeSnackbarLocation'
 const changeDP = 'changeDetailsPanelState'
+const changeDT = 'changeDrawerType'
+const changeDS = 'changeDrawerState'
+
 //Navigation
 
 const changeDR = 'changeDefaultRoute'
@@ -69,7 +72,9 @@ export const saveSettingsOnServ = () => {
 			cookies: s.cookies,
 			periods: s.periods,
 			snackbarLocation: s.snackbarLocation,
-			detailsPanel: s.detailsPanel
+			detailsPanel: s.detailsPanel,
+			drawer: s.drawer,
+			drawerState: s.drawerState
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -161,6 +166,25 @@ export const changeSnackbarLocation = (val) => {
 		dispatch({
 			type: changeSB,
 			snackbarLocation: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeDrawerState = val => {
+	return async dispatch => { 
+		dispatch({
+			type: changeDS,
+			drawerState: val
+		})
+		dispatch(saveSettingsOnServ())
+
+	}
+}
+export const changeDrawerType = (val) => {
+	return async dispatch => {
+		dispatch({
+			type: changeDT,
+			drawer: val
 		})
 		dispatch(saveSettingsOnServ())
 	}
@@ -399,6 +423,7 @@ export const changeWeekendColor = (id) => {
 		dispatch(saveSettingsOnServ())
 	}
 }
+
 export const finishedSaving = () => {
 	return {
 		type: SAVED,
@@ -444,10 +469,16 @@ let initialState = {
 	rowsPerPageOptions: ['auto', 5, 7, 8, 10, 15, 20, 25, 50, 100],
 	cardsPerPageOptions: [2, 3, 4, 6, 8, 9],
 	snackbarLocation: 'left',
-	detailsPanel: 0
+	detailsPanel: 0,
+	drawer: 'permanent',
+	drawerState: true
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
+		case changeDS: 
+			return Object.assign({}, state, { drawerState: action.drawerState })
+		case changeDT: 
+			return Object.assign({}, state, { drawer: action.drawer })
 		case changeSB:
 			return Object.assign({}, state, { snackbarLocation: action.snackbarLocation })
 		case changeDP:

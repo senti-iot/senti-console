@@ -8,6 +8,8 @@ const changeCPP = 'changeCardsPerPage'
 const changeEventHandler = 'changeEH'
 const changeSM = 'changeSmallmenu'
 
+const getSettings = 'getSettings'
+
 export const changeSmallMenu = (val) => { 
 	return dispatch => { 
 		dispatch({
@@ -127,6 +129,8 @@ const initialState = {
 
 export const appState = (state = initialState, action) => {
 	switch (action.type) {
+		case getSettings: 
+			return Object.assign({}, state, { smallMenu: action.settings.drawerState !== undefined ? action.settings.drawerState : true })
 		case changeSM: 
 			return Object.assign({}, state, { smallMenu: action.smallMenu })
 		case changeEventHandler: 

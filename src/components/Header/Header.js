@@ -20,7 +20,7 @@ function Header({ ...props }) {
 			className={classes.image}
 			focusVisibleClassName={classes.focusVisible}
 			style={{
-				width: '150px'
+				width: '120px'
 			}}
 			onClick={() => props.history.push(defaultRoute ? defaultRoute : '/')}
 		// component={Link}
@@ -38,15 +38,15 @@ function Header({ ...props }) {
 		// 	<span style={{ backgroundImage: `url(${logo})` }} alt='logo' className={classes.imageButton}/>
 		// </ButtonBase> */}
 	);
-	// const changeSmallMenu = () => props.changeSmallMenu(!props.smallMenu)
+	const changeSmallMenu = () => props.changeSmallMenu(!props.smallMenu)
 	return (
 		<AppBar className={classes.appBar} >
 		
 			<Toolbar className={classes.container}>
+				<IconButton onClick={changeSmallMenu} className={classes.drawerButton}>
+					<Menu />
+				</IconButton>
 				{/* 
-					<IconButton onClick={changeSmallMenu}>
-						<Menu />
-					</IconButton>
 
 				</Hidden> */}
 				<Hidden mdDown>

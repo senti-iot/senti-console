@@ -615,6 +615,16 @@
 			"grid": "Grid",
 			"favorites": "Favorites"
 		},
+		"drawerType": "Menu",
+		"drawerTypes":{
+			"persistent": "Completely hidden",
+			"permanent": "Hidden with icons"
+		},
+		"drawerState": "Hide Menu",
+		"drawerStates": {
+			"hidden": "Hidden",
+			"open": "Open"
+		},
 		"didYouKnow": "Intelligent Notifications",
 		"discoverSenti": "Show Welcome to Senti on Dashboard",
 		"headers": {
