@@ -7,9 +7,22 @@ import { suggestionGen } from 'variables/functions'
 import { NavHashLink as Link } from 'react-router-hash-link';
 import { connect } from 'react-redux'
 import { transition } from 'assets/jss/material-dashboard-react';
+import cx from 'classnames'
 // import inView from 'in-view'
 
 const styles = theme => ({
+	appBarDrawerOpen: {
+		[theme.breakpoints.up('lg')]: {
+			left: 260,
+			width: "calc(100vw - 260px)",
+		}
+	},
+	appBarDrawerClosed: {
+		[theme.breakpoints.up('lg')]: {
+			width: 'calc(100vw - 60px)',
+			left: 60
+		}
+	},
 	appBar: {
 		padding: "0 !important",
 		position: "fixed",
@@ -17,10 +30,9 @@ const styles = theme => ({
 		[theme.breakpoints.down('xs')]: {
 			top: 48
 		},
-		[theme.breakpoints.up('lg')]: {
-			left: 260,
-			width: "calc(100vw - 260px)"
-		},
+		// [theme.breakpoints.up('lg')]: {
+
+		// },
 		display: 'flex',
 		flexFlow: 'row',
 		justifyContent: 'space-between',
@@ -29,7 +41,8 @@ const styles = theme => ({
 		minHeight: 48,
 		height: 48,
 		zIndex: 1300,
-		boxShadow: 'none'
+		boxShadow: 'none',
+		...transition
 	},
 	contentToolbar: {
 		height: 41,
@@ -85,7 +98,13 @@ class Toolbar extends PureComponent {
 		const { classes, tabs, data, noSearch, filters, handleFilterKeyword, content, width, hashLinks, smallMenu } = this.props
 		return (
 			<div style={{ height: 48 }}>
-				<AppBar style={{ ...transition, width: !smallMenu ? 'calc(100% - 60px)' : undefined, left: !smallMenu ? 60 : undefined }} classes={{ root: classes.appBar }}>
+				<AppBar classes={{
+					root: cx({
+						[classes.appBar]: true,
+						[classes.appBarDrawerClosed]: !smallMenu,
+						[classes.appBarDrawerOpen]: smallMenu,
+					})
+				}}>
 					{tabs ? <Tabs TabIndicatorProps={{ style: { opacity: hashLinks ? 0 : 1 } }} id={'tabs'} value={this.state.route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 						{tabs ? tabs.map((t, i) => {
 							return <Tab title={t.title}

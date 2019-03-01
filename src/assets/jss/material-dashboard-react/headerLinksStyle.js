@@ -16,13 +16,14 @@ const headerLinksStyle = theme => ({
 		width: 36
 	},
 	headerMargin: {
-		marginLeft: 18
+		marginLeft: 10
 	},
 	leftIcon: {
 		marginRight: theme.spacing.unit
 	},
 	iconRoot: {
-		color: "#FFF"
+		color: "#FFF",
+		// padding: "12px 2px"
 	},
 	menuItem: {
 		maxHeight: 20	

@@ -133,7 +133,8 @@ const headerStyle = theme => ({
 		flex: 1,
 		display: 'flex',
 		flexFlow: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		marginLeft: 16
 		// minWidth: 53
 		// whiteSpace: 'nowrap'
 	},

@@ -53,14 +53,15 @@ function Header({ ...props }) {
 					<div className={classes.logoContainer}>
 						{brand}
 					</div>
+					<div style={{ height: 'calc(100% - 30%)', width: 1, background: '#555555' }}/>
 				</Hidden>
-				<div style={{ height: 'calc(100% - 30%)', width: 1, background: '#555555' }}/>
 				<div className={classes.flex}>
-					<div style={{ minWidth: 53, display: 'flex', alignItems: 'center' }}>
-						{goBackButton && <IconButton onClick={gbbFunc} variant={'fab'} className={classes.goBackButton}>
-							<KeyboardArrowLeft width={40} height={40} />
-						</IconButton>}
-					</div>
+
+					{/* <div style={{ minWidth: 53, display: 'flex', alignItems: 'center' }}> */}
+					{goBackButton && <IconButton onClick={gbbFunc} variant={'fab'} className={classes.goBackButton}>
+						<KeyboardArrowLeft width={40} height={40} />
+					</IconButton>}
+					{/* </div> */}
 					<Button className={classes.title}>
 						{props.headerTitle ? t(props.headerTitle.id, props.headerTitle.options) ? t(props.headerTitle.id, props.headerTitle.options) : props.headerTitle.id : ''}
 					</Button>

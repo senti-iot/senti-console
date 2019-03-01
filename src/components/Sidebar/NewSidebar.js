@@ -15,6 +15,9 @@ import { Menu } from 'variables/icons';
 import { HeaderLinks } from 'components';
 
 const styles = theme => ({
+	appBarWrapper: {
+		backgroundColor: "#767684"
+	},
 	root: {
 		display: 'flex',
 	},
@@ -87,7 +90,7 @@ const styles = theme => ({
 	logo: {
 		backgroundColor: '#1a1b32',
 		position: "relative",
-		padding: "15px 15px",
+		padding: "8px 24px",
 		minHeight: "40px",
 		zIndex: "4",
 		display: 'flex',
@@ -131,7 +134,7 @@ const styles = theme => ({
 		// width: "35px",
 		top: "10px",
 		height: "50px",
-		position: "absolute",
+		// position: "absolute",
 		verticalAlign: "middle",
 		border: "0"
 	},
@@ -147,9 +150,9 @@ class NewSidebar extends Component {
 		var smallBrand = (
 			<div className={classes.logo}>
 				<Link to={defaultRoute ? defaultRoute : '/'} onClick={props.handleDrawerToggle} className={classes.logoLink}>
-					<div className={classes.logoImage}>
-						<img src={logo} alt='logo' className={classes.img} />
-					</div>
+					{/* <div className={classes.logoImage}> */}
+					<img src={logo} alt='logo' className={classes.img} />
+					{/* </div> */}
 				</Link>
 			</div>
 		)
@@ -178,7 +181,7 @@ class NewSidebar extends Component {
 						</div>
 						<Divider />
 						<List style={{
-							margin: '8px 8px',
+							margin: '8px',
 							paddingTop: 0,
 						}}>
 							{routes.map((route, index) => {
@@ -224,7 +227,7 @@ class NewSidebar extends Component {
 							</div>
 							<Divider/>
 							<List style={{
-								margin: '4px 4px',
+								margin: '16px',
 								paddingTop: 0,
 							}}>
 								{routes.map((route, index) => {
@@ -233,6 +236,7 @@ class NewSidebar extends Component {
 									return <ListItem component={NavLink}
 										button
 										to={route.path + (route.defaultView ? defaultView : '')}
+										onClick={this.props.handleDrawerToggle}
 										key={index}
 										classes={{
 											button: classNames({
