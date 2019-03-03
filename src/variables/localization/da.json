@@ -615,14 +615,14 @@
 			"grid": "Gitter",
 			"favorites": "Favoritter"
 		},
-		"drawerState":"Menu visning",
-		"drawerStates":{
-			"open":"Åben",
-			"hidden":"Skjult"
+		"drawerState":"Vis menu",
+		"drawerStates": {
+			"open":"Vis",
+			"hidden":"Skjul"
 		},
-		"drawerType":"Menu lukning",
-		"drawerTypes":{
-			"persistent":"Helt skjult",
+		"drawerType":"Skjul menu",
+		"drawerTypes": {
+			"persistent":"Skjul helt",
 			"permanent":"Skjul med ikoner"
 		},
 		"didYouKnow": "Viste du at?",
