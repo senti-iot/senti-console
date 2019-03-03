@@ -615,15 +615,15 @@
 			"grid": "Gitter",
 			"favorites": "Favoritter"
 		},
-		"drawerState":"Vis menu",
+		"drawerState": "Vis menu",
 		"drawerStates": {
-			"open":"Vis",
-			"hidden":"Skjul"
+			"open": "Vis",
+			"hidden": "Skjul"
 		},
-		"drawerType":"Skjul menu",
+		"drawerType": "Skjul menu",
 		"drawerTypes": {
-			"persistent":"Skjul helt",
-			"permanent":"Skjul med ikoner"
+			"persistent": "Skjul helt",
+			"permanent": "Skjul med ikoner"
 		},
 		"didYouKnow": "Viste du at?",
 		"discoverSenti": "Vis Velkommen til Senti på Dashboard",
