@@ -149,10 +149,6 @@ class App extends React.Component {
 							/>
 							{!loading ? <Fragment>
 								<div className={classes.container} id={'container'}>
-									{/* <Toolbar
-										tabs={tabs}
-										noSearch
-									/> */}
 									<Switch>
 										{cookie.load('SESSION') ?
 											dashboardRoutes.map((prop, key) => {

@@ -262,10 +262,10 @@ class NewSidebar extends Component {
 		</Drawer>
 	}
 	renderMobileDrawer = () => { 
-		const { open, classes, handleDrawerToggle, t, routes, defaultView } = this.props
+		const { open, classes, handleDrawerToggle, t, routes, defaultView, sideBar } = this.props
 		return <Drawer
 			variant='temporary'
-			anchor='right'
+			anchor={sideBar ? 'right' : 'left'}
 			open={open}
 			classes={{
 				// paper: classes.drawerPaper
@@ -337,7 +337,8 @@ const mapStateToProps = (state) => ({
 	smallMenu: state.appState.smallMenu,
 	drawer: state.settings.drawer,
 	drawerCloseOnNav: state.settings.drawerCloseOnNav,
-	headerBorder: state.settings.headerBorder
+	headerBorder: state.settings.headerBorder,
+	sideBar: state.settings.sideBar
 })
 
 const mapDispatchToProps = dispatch => ({
