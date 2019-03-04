@@ -679,13 +679,15 @@
 		"trp": "Rækker per side i lister"
 	},
 	"sidebar": {
+		"home": "Hjem",
 		"collections": "Data",
 		"dashboard": "Dashboard",
 		"devices": "Enheder",
 		"favorites": "Favoritter",
 		"projects": "Projekter",
 		"settings": "Indstillinger",
-		"users": "Brugere"
+		"users": "Brugere",
+		"orgs": "Organisationer"
 	},
 	"snackbars": {
 		"emailsCopied": "Mail adresser kopieret til klippebord",
@@ -802,12 +804,12 @@
 			"users": "Brugere"
 		},
 		"user": "Bruger",
-		"userResendConfirm": "Er du sikker på du ønsker at gensende bekræftelses E-mail?",
+		"userResendConfirm": "Er du sikker på du ønsker at gensende bekræftelses E-mail",
 		"userResendEmail": "Gensend bekræftelses E-mail",
 		"validation": {
 			"noEmail": "E-mail mangler",
 			"noOrg": "Organisation mangler",
-			"userAlreadyExists": "E-mail er allerede tilknyttet en anden bruger konto!"
+			"userAlreadyExists": "E-mail er allerede tilknyttet en bruger konto!"
 		}
 	}
 }
