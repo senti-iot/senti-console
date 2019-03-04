@@ -633,7 +633,7 @@
 			}
 		},
 		"header": {
-			"border": "Overskrift grænsen"
+			"border": "Opsplitningslinier"
 		},
 		"didYouKnow": "Viste du at?",
 		"discoverSenti": "Vis Velkommen til Senti på Dashboard",

@@ -633,7 +633,7 @@
 			}
 		},
 		"header": {
-			"border": "Header border"
+			"border": "Divider Lines"
 		},
 		"didYouKnow": "Intelligent Notifications",
 		"discoverSenti": "Show Welcome to Senti on Dashboard",
