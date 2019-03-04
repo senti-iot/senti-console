@@ -99,7 +99,10 @@ const styles = theme => ({
 		borderRadius: "50%"
 	},
 	buttonActiveRoute: {
-		background: primaryColor
+		background: primaryColor,
+		"&:focus": {
+			background: primaryColor
+		}
 	},
 	logo: {
 		backgroundColor: '#1a1b32',
