@@ -564,6 +564,7 @@
 	"settings": {
 		"alerts": "Alarmeringer",
 		"defaultRoute": "Startside",
+		"justForMobile": "Kun på mobiltelefoner",
 		"calibration": {
 			"12months": "Hver 12. måned",
 			"3months": "Hver 3. måned",
@@ -658,7 +659,7 @@
 		"notDefault": "Ikke standard",
 		"pageTitle": "Instillinger",
 		"sideBarLeft": "Venstre",
-		"sideBarLoc": "Placering af menu",
+		"sideBarLoc": "Placering af menu knap" ,
 		"sideBarRight": "Højre",
 		"snackbarLocation": "Notifikation placering",
 		"snackbarLocations": {

@@ -7,7 +7,7 @@ const changeYAXIS = 'changeYAxis'
 const changeCPP = 'changeCardsPerPage'
 const changeEventHandler = 'changeEH'
 const changeSM = 'changeSmallmenu'
-
+const changeT = 'changeTabs'
 const getSettings = 'getSettings'
 
 export const changeSmallMenu = (val) => { 
@@ -107,7 +107,16 @@ export const removeFilter = (f, type) => {
 		})
 	}
 }
+export const changeTabs = tabs => { 
+	return dispatch => { 
+		dispatch({
+			type: changeT,
+			tabs: tabs
+		})
+	}
+}
 const initialState = {
+	tabs: [],
 	eH: true,
 	CPP: 9,
 	chartYAxis: 'linear',
@@ -129,6 +138,8 @@ const initialState = {
 
 export const appState = (state = initialState, action) => {
 	switch (action.type) {
+		case changeT:
+			return Object.assign({}, state, { tabs: action.tabs })
 		case getSettings: 
 			return Object.assign({}, state, { smallMenu: action.settings.drawerState !== undefined ? action.settings.drawerState : true })
 		case changeSM: 

@@ -11,7 +11,7 @@ import { changeSmallMenu } from 'redux/appState';
 
 
 function Header({ ...props }) {
-	const { classes, goBackButton, gbbFunc, defaultRoute, logo, t, headerBorder } = props;
+	const { classes, goBackButton, gbbFunc, defaultRoute, logo, t, headerBorder, menuPos } = props;
 	var brand = (
 		<ButtonBase
 			focusRipple
@@ -31,23 +31,27 @@ function Header({ ...props }) {
 				}}
 			/>
 		</ButtonBase>
-		// {/* 			
-		// <ButtonBase className={classes.image} component={Link} to={defaultRoute ? defaultRoute : '/'}>
-		// 	<span style={{ backgroundImage: `url(${logo})` }} alt='logo' className={classes.imageButton}/>
-		// </ButtonBase> */}
 	);
 	const changeSmallMenu = () => props.changeSmallMenu(!props.smallMenu)
 	return (
 		<AppBar className={classes.appBar} >
 		
 			<Toolbar className={classes.container}>
-				<IconButton onClick={changeSmallMenu} className={classes.drawerButton}>
-					<Menu />
-				</IconButton>
-				{/* 
-
-				</Hidden> */}
+				{!menuPos ? <Hidden lgUp>
+					<IconButton
+						className={classes.appResponsive}
+						color='primary'
+						aria-label='open drawer'
+						onClick={props.handleDrawerToggle}
+					>
+						<Menu />
+					</IconButton>
+				</Hidden> :  null
+				}
 				<Hidden mdDown>
+					<IconButton onClick={changeSmallMenu} className={classes.drawerButton}>
+						<Menu />
+					</IconButton>
 					<div className={classes.logoContainer}>
 						{brand}
 					</div>
@@ -64,10 +68,10 @@ function Header({ ...props }) {
 						{props.headerTitle ? t(props.headerTitle.id, props.headerTitle.options) ? t(props.headerTitle.id, props.headerTitle.options) : props.headerTitle.id : ''}
 					</Button>
 				</div>
-				<Hidden mdDown implementation='css'>
+				 <Hidden mdDown implementation='css'>
 					<HeaderLinks t={t} />
-				</Hidden>
-				<Hidden lgUp>
+				</Hidden> 
+				{menuPos ? <Hidden lgUp>
 					<IconButton
 						className={classes.appResponsive}
 						color='primary'
@@ -76,7 +80,8 @@ function Header({ ...props }) {
 					>
 						<Menu />
 					</IconButton>
-				</Hidden>
+				</Hidden> : null
+				}
 			</Toolbar>
 		</AppBar>
 	);
@@ -88,7 +93,8 @@ Header.propTypes = {
 };
 const mapStateToProps = (state) => ({
 	smallMenu: state.appState.smallMenu,
-	headerBorder: state.settings.headerBorder
+	headerBorder: state.settings.headerBorder,
+	menuPos: state.settings.sideBar
 })
 
 const mapDispatchToProps = dispatch => ({

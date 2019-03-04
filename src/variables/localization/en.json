@@ -564,6 +564,7 @@
 	"settings": {
 		"alerts": "Alerts",
 		"defaultRoute": "Start page",
+		"justForMobile": "Only on mobile",
 		"calibration": {
 			"12months": "Every 12 months",
 			"3months": "Every 3 months",
@@ -658,7 +659,7 @@
 		"notDefault": "Not default",
 		"pageTitle": "Settings",
 		"sideBarLeft": "Left",
-		"sideBarLoc": "Menu location",
+		"sideBarLoc": "Menu button location",
 		"sideBarRight": "Right",
 		"snackbarLocation": "Notification placing",
 		"snackbarLocations": {

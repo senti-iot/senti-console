@@ -122,7 +122,7 @@ class DisplaySettings extends Component {
 								</ListItem>
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
-										<ListItemText>{t('settings.sideBarLoc')}</ListItemText>
+										<ListItemText secondary={t('settings.justForMobile')}>{t('settings.sideBarLoc')}</ListItemText>
 										<DSelect menuItems={sideBarLocs} value={sideBar} onChange={this.changeSideBarLoc} />
 									</ItemGrid>
 								</ListItem>

@@ -135,7 +135,7 @@ class Toolbar extends PureComponent {
 						{content}
 					</ToolBar> : null}
 				</AppBar>
-			</div >
+			</div>
 		)
 	}
 }
