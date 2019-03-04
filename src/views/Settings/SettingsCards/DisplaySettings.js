@@ -5,7 +5,7 @@ import { Laptop } from 'variables/icons'
 import { Grid, ListItem, List, ListItemText, withStyles } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 import { connect } from 'react-redux'
-import { changeTRP, changeTheme, changeDrawerState, changeSideBarLoc, changeDiscoverSenti, changeMapTheme, changeDetailsPanel, changeSnackbarLocation, changeDrawerType } from 'redux/settings';
+import { changeTRP, changeTheme, changeDrawerState, changeSideBarLoc, changeDiscoverSenti, changeMapTheme, changeDetailsPanel, changeSnackbarLocation, changeDrawerType, changeDrawerCloseOnNav, changeHeaderBorder } from 'redux/settings';
 import { changeLanguage } from 'redux/localization';
 
 class DisplaySettings extends Component {
@@ -24,9 +24,11 @@ class DisplaySettings extends Component {
 	changeDetailsPanel = e => this.props.changeDetailsPanel(e.target.value)
 	changeDrawerType = e => this.props.changeDrawerType(e.target.value)
 	changeDrawerState = e => this.props.changeDrawerState(e.target.value)
+	changeDrawerCloseOnNav = e => this.props.changeDrawerCloseOnNav(e.target.value)
+	changeHeaderBorder = e => this.props.changeHeaderBorder(e.target.value)
 
 	render() {
-		const { language, trp, sideBar, discSentiVal, theme, mapTheme, classes, t, snackbarLocation, detailsPanel, drawer, drawerState } = this.props
+		const { language, trp, sideBar, discSentiVal, theme, mapTheme, classes, t, snackbarLocation, detailsPanel, drawer, drawerState, drawerCloseOnNav, headerBorder } = this.props
 		let discSenti = [
 			{ value: 1, label: t('actions.yes') },
 			{ value: 0, label: t('actions.no') }
@@ -76,12 +78,20 @@ class DisplaySettings extends Component {
 			{ value: 1, label: t('settings.detailsPanelPos.open') }
 		]
 		let drawerTypes = [
-			{ value: 'permanent', label: t('settings.drawerTypes.permanent') },
-			{ value: 'persistent', label: t('settings.drawerTypes.persistent') }
+			{ value: 'permanent', label: t('settings.drawer.types.permanent') },
+			{ value: 'persistent', label: t('settings.drawer.types.persistent') }
 		]
 		let drawerStates = [
-			{ value: false, label: t('settings.drawerStates.hidden') },
-			{ value: true, label: t('settings.drawerStates.open') }
+			{ value: false, label: t('settings.drawer.states.hidden') },
+			{ value: true, label: t('settings.drawer.states.open') }
+		]
+		let closeOnNavOpts = [
+			{ value: true, label: t('settings.drawer.callbacks.closeOnNav') },
+			{ value: false, label: t('settings.drawer.callbacks.notCloseOnNav') }
+		]
+		let headerBorders = [
+			{ value: true, label: t('actions.on') },
+			{ value: false, label: t('actions.off') }
 		]
 		return (
 			discSentiVal !== null && language !== null && trp !== null && sideBar !== null && theme !== null ? 
@@ -142,14 +152,26 @@ class DisplaySettings extends Component {
 								</ListItem>
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
-										<ListItemText>{t('settings.drawerState')}</ListItemText>
+										<ListItemText>{t('settings.drawer.state')}</ListItemText>
 										<DSelect menuItems={drawerStates} value={drawerState} onChange={this.changeDrawerState} />
+									</ItemGrid>
+								</ListItem>
+								<ListItem divider>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{t('settings.drawer.type')}</ListItemText>
+										<DSelect menuItems={drawerTypes} value={drawer} onChange={this.changeDrawerType} />
+									</ItemGrid>
+								</ListItem>
+								<ListItem divider>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{t('settings.drawer.callback')}</ListItemText>
+										<DSelect menuItems={closeOnNavOpts} value={drawerCloseOnNav} onChange={this.changeDrawerCloseOnNav} />
 									</ItemGrid>
 								</ListItem>
 								<ListItem>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
-										<ListItemText>{t('settings.drawerType')}</ListItemText>
-										<DSelect menuItems={drawerTypes} value={drawer} onChange={this.changeDrawerType} />
+										<ListItemText>{t('settings.header.border')}</ListItemText>
+										<DSelect menuItems={headerBorders} value={headerBorder} onChange={this.changeHeaderBorder} />
 									</ItemGrid>
 								</ListItem>
 							</List>
@@ -171,7 +193,9 @@ const mapStateToProps = state => {
 		snackbarLocation: s.snackbarLocation,
 		detailsPanel: s.detailsPanel,
 		drawer: s.drawer,
-		drawerState: s.drawerState
+		drawerState: s.drawerState,
+		drawerCloseOnNav: s.drawerCloseOnNav,
+		headerBorder: s.headerBorder
 	})
 }
 const mapDispatchToProps = (dispatch) => {
@@ -185,7 +209,9 @@ const mapDispatchToProps = (dispatch) => {
 		changeSnackbarLocation: val => dispatch(changeSnackbarLocation(val)),
 		changeDetailsPanel: val => dispatch(changeDetailsPanel(val)),
 		changeDrawerType: val => dispatch(changeDrawerType(val)),
-		changeDrawerState: val => dispatch(changeDrawerState(val))
+		changeDrawerState: val => dispatch(changeDrawerState(val)),
+		changeDrawerCloseOnNav: val => dispatch(changeDrawerCloseOnNav(val)),
+		changeHeaderBorder: val => dispatch(changeHeaderBorder(val))
 	}
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(settingsStyles)(DisplaySettings))

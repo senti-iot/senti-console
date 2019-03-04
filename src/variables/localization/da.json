@@ -615,15 +615,25 @@
 			"grid": "Gitter",
 			"favorites": "Favoritter"
 		},
-		"drawerState":"Menu visning",
-		"drawerStates":{
-			"open":"Åben",
-			"hidden":"Skjult"
+		"drawer": {
+			"state": "Menu visning",
+			"states": {
+				"open": "Åben",
+				"hidden": "Skjult"
+			},
+			"type": "Menu lukning",
+			"types": {
+				"persistent": "Helt skjult",
+				"permanent": "Skjul med ikoner"
+			},
+			"callback": "Skjul menu på navigation",
+			"callbacks": {
+				"closeOnNav": "Skjul på navigation",
+				"notCloseOnNav": "Hold åben"
+			}
 		},
-		"drawerType":"Menu lukning",
-		"drawerTypes":{
-			"persistent":"Helt skjult",
-			"permanent":"Skjul med ikoner"
+		"header": {
+			"border": "Overskrift grænsen"
 		},
 		"didYouKnow": "Viste du at?",
 		"discoverSenti": "Vis Velkommen til Senti på Dashboard",

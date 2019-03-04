@@ -615,15 +615,25 @@
 			"grid": "Grid",
 			"favorites": "Favorites"
 		},
-		"drawerType": "Menu",
-		"drawerTypes":{
-			"persistent": "Completely hidden",
-			"permanent": "Hidden with icons"
+		"drawer": {
+			"type": "Menu",
+			"types":{
+				"persistent": "Completely hidden",
+				"permanent": "Hidden with icons"
+			},
+			"state": "Hide Menu",
+			"states": {
+				"hidden": "Hidden",
+				"open": "Open"
+			},
+			"callback": "Hide menu on navigation",
+			"callbacks": {
+				"closeOnNav": "Hide on navigation",
+				"notCloseOnNav": "Hold open"
+			}
 		},
-		"drawerState": "Hide Menu",
-		"drawerStates": {
-			"hidden": "Hidden",
-			"open": "Open"
+		"header": {
+			"border": "Header border"
 		},
 		"didYouKnow": "Intelligent Notifications",
 		"discoverSenti": "Show Welcome to Senti on Dashboard",

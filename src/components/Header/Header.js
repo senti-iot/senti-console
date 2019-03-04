@@ -11,10 +11,8 @@ import { changeSmallMenu } from 'redux/appState';
 
 
 function Header({ ...props }) {
-	const { classes, goBackButton, gbbFunc, defaultRoute, logo, t } = props;
+	const { classes, goBackButton, gbbFunc, defaultRoute, logo, t, headerBorder } = props;
 	var brand = (
-
-
 		<ButtonBase
 			focusRipple
 			className={classes.image}
@@ -53,7 +51,7 @@ function Header({ ...props }) {
 					<div className={classes.logoContainer}>
 						{brand}
 					</div>
-					<div style={{ height: 'calc(100% - 30%)', width: 1, background: '#555555' }}/>
+					{headerBorder && <div style={{ height: 'calc(100% - 30%)', width: 1, background: '#555555' }} />}
 				</Hidden>
 				<div className={classes.flex}>
 
@@ -89,7 +87,8 @@ Header.propTypes = {
 	color: PropTypes.oneOf(['primary', 'info', 'success', 'warning', 'danger'])
 };
 const mapStateToProps = (state) => ({
-	smallMenu: state.appState.smallMenu
+	smallMenu: state.appState.smallMenu,
+	headerBorder: state.settings.headerBorder
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -20,11 +20,13 @@ const changeSB = 'changeSnackbarLocation'
 const changeDP = 'changeDetailsPanelState'
 const changeDT = 'changeDrawerType'
 const changeDS = 'changeDrawerState'
+const changeHB = 'changeHeaderBorder'
 
 //Navigation
 
 const changeDR = 'changeDefaultRoute'
 const changeDV = 'changeDefaultView'
+const changeDCON = 'changeDrawerCloseOnNav'
 
 //Calibration
 
@@ -74,7 +76,9 @@ export const saveSettingsOnServ = () => {
 			snackbarLocation: s.snackbarLocation,
 			detailsPanel: s.detailsPanel,
 			drawer: s.drawer,
-			drawerState: s.drawerState
+			drawerState: s.drawerState,
+			drawerCloseOnNav: s.drawerCloseOnNav,
+			headerBorder: s.headerBorder
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -185,6 +189,24 @@ export const changeDrawerType = (val) => {
 		dispatch({
 			type: changeDT,
 			drawer: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeDrawerCloseOnNav = (val) => { 
+	return async  dispatch => { 
+		dispatch({
+			type: changeDCON,
+			drawerCloseOnNav: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeHeaderBorder = (val) => {
+	return async dispatch => { 
+		dispatch({
+			type: changeHB,
+			headerBorder: val
 		})
 		dispatch(saveSettingsOnServ())
 	}
@@ -471,10 +493,16 @@ let initialState = {
 	snackbarLocation: 'left',
 	detailsPanel: 0,
 	drawer: 'permanent',
-	drawerState: true
+	drawerState: true,
+	drawerCloseOnNav: true,
+	headerBorder: true,
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
+		case changeHB:
+			return Object.assign({}, state, { headerBorder: action.headerBorder })
+		case changeDCON: 
+			return Object.assign({}, state, { drawerCloseOnNav: action.drawerCloseOnNav })
 		case changeDS: 
 			return Object.assign({}, state, { drawerState: action.drawerState })
 		case changeDT: 

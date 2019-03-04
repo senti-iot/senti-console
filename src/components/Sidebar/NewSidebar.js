@@ -149,7 +149,13 @@ const styles = theme => ({
 class NewSidebar extends Component {
 
 	activeRoute = (routeName) => this.props.menuRoute === routeName ? true : false;
-	changeSmallMenu = () => this.props.changeSmallMenu(!this.props.smallMenu)
+	changeSmallMenu = () => {
+		console.log('bing')
+		this.props.changeSmallMenu(!this.props.smallMenu)
+	}
+	closeDrawer = () => { 
+		this.props.changeSmallMenu(false)
+	}
 	renderPersistentDrawer = () => { 
 		const { classes, smallMenu, routes, defaultView, t } = this.props
 		return <Drawer
@@ -180,6 +186,7 @@ class NewSidebar extends Component {
 						button
 						to={route.path + (route.defaultView ? defaultView : '')}
 						key={index}
+						onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
 						classes={{
 							button: classNames({
 								// [classes.buttonOpen]: smallMenu,
@@ -204,6 +211,8 @@ class NewSidebar extends Component {
 				[classes.drawerOpen]: smallMenu,
 				[classes.drawerClose]: !smallMenu,
 			})}
+			// onMouseEnter={() => this.props.changeSmallMenu(true)}
+			// onMouseLeave={() => this.props.changeSmallMenu(false)}
 			classes={{
 				paper: classNames({
 					[classes.drawerOpen]: smallMenu,
@@ -215,15 +224,18 @@ class NewSidebar extends Component {
 		>
 			<div className={classes.toolbar}>
 			</div>
-			<List style={{
-				margin: '8px',
-				paddingTop: 0,
-			}}>
+			<List
+				// onMouseLeave={this.props.changeSmallMenu(false)}
+				style={{
+					margin: '8px',
+					paddingTop: 0,
+				}}>
 				{routes.map((route, index) => {
 					if (route.redirect) return null;
 					if (route.hideFromSideBar) return null;
 					return <ListItem component={NavLink}
 						button
+						onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
 						to={route.path + (route.defaultView ? defaultView : '')}
 						key={index}
 						classes={{
@@ -315,7 +327,8 @@ class NewSidebar extends Component {
 }
 const mapStateToProps = (state) => ({
 	smallMenu: state.appState.smallMenu,
-	drawer: state.settings.drawer
+	drawer: state.settings.drawer,
+	drawerCloseOnNav: state.settings.drawerCloseOnNav
 })
 
 const mapDispatchToProps = dispatch => ({
