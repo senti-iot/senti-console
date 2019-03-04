@@ -35,7 +35,7 @@ function Header({ ...props }) {
 	const changeSmallMenu = () => props.changeSmallMenu(!props.smallMenu)
 	return (
 		<AppBar className={classes.appBar} >
-		
+
 			<Toolbar className={classes.container}>
 				{!menuPos ? <Hidden lgUp>
 					<IconButton
