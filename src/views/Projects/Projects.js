@@ -36,6 +36,7 @@ class Projects extends Component {
 			}
 		}
 		props.setHeader('projects.pageTitle', false, '', 'projects')
+		props.setBC('projects')
 	}
 	options = () => {
 		const { t, isFav } = this.props

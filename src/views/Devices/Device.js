@@ -146,6 +146,7 @@ class Device extends Component {
 			let id = this.props.match.params.id
 			if (id) {
 				await this.getDevice(id)
+				this.props.setBC('device', this.state.device.name)
 			}
 		}
 		else {

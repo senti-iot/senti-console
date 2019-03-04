@@ -105,7 +105,7 @@ class Toolbar extends PureComponent {
 	render() {
 		const { classes, tabs, data, noSearch, filters, handleFilterKeyword, content, width, hashLinks, smallMenu, drawer  } = this.props
 		return (
-			<div style={{ height: 48 }}>
+			<div>
 				<AppBar classes={{
 					root: cx({
 						[classes.appBar]: true,

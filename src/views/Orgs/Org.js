@@ -43,7 +43,7 @@ class Org extends Component {
 	}
 
 	componentDidMount = async () => {
-		const { match, setHeader, location, history } = this.props
+		const { match, setHeader, location, history, setBC } = this.props
 		if (match)
 			if (match.params.id) {
 				await getOrg(match.params.id).then(async rs => {
@@ -58,6 +58,7 @@ class Org extends Component {
 						this.setState({ org: rs, loading: false })
 					}
 				})
+				setBC('org', this.state.org.name)
 				await getOrgUsers(this.props.match.params.id).then(rs => {
 					this.setState({ users: rs, loadingUsers: false })
 				})

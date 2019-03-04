@@ -24,6 +24,7 @@ class FavoriteTable extends React.Component {
 			anchorElMenu: null,
 			anchorFilterMenu: null,
 		};
+		// props.setBC(props.t('sidebar.favorites'), 'favorites')
 	}
 
 	handleFilterMenuOpen = e => {

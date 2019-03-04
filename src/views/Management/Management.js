@@ -43,7 +43,7 @@ class Management extends Component {
 	tabs = [
 		{ id: 0, title: this.props.t('users.tabs.users'), label: <People />, url: `/management/users` },
 		{ id: 1, title: this.props.t('users.tabs.orgs'), label: <Business />, url: `/management/orgs` },
-		{ id: 3, title: this.props.t('sidebar.favorites'), label: <Star />, url: `/management/favorites` }
+		{ id: 2, title: this.props.t('sidebar.favorites'), label: <Star />, url: `/management/favorites` }
 	]
 
 	componentDidMount = async () => {
@@ -238,6 +238,7 @@ class Management extends Component {
 		const { t, favorites } = this.props
 		let usersAndOrgs = favorites.filter(f => f.type === 'user' || f.type === 'org')
 		const { selected, orderBy, order } = this.state
+		this.props.setBC('favorites')
 		return <FavoritesTable
 			selected={selected}
 			handleClick={this.handleClick}

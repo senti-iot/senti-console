@@ -27,6 +27,7 @@ class Orgs extends Component {
 			}
 		}
 		props.setHeader('orgs.pageTitle', false, '', 'users')
+		props.setBC('orgs')
 	}
 	reload = async () => {
 		this.setState({ loading: true })

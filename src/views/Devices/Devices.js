@@ -39,6 +39,7 @@ class Devices extends Component {
 			}
 		}
 		props.setHeader('devices.pageTitle', false, '', 'devices')
+		props.setBC('devices')
 	}
 	
 	//#region Constants

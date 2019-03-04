@@ -34,6 +34,7 @@ class Collections extends Component {
 			}
 		}
 		props.setHeader('collections.pageTitle', false, '', 'collections')
+		props.setBC('collections')
 	}
 	//#region Constants
 	tabs = () => {
