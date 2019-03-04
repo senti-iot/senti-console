@@ -26,6 +26,7 @@ class Favorites extends Component {
 				keyword: '',
 			}
 		}
+		props.setBC('favorites')
 		props.setHeader('sidebar.favorites', false, '', 'favorites')
 	}
 	options = () => {

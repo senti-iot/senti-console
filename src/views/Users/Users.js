@@ -27,6 +27,7 @@ class Users extends Component {
 			orderBy: 'firstName',
 		}
 		props.setHeader('users.pageTitle', false, '', 'users')
+		props.setBC('users')
 	}
 	dUserGroup = () => {
 		const { t } = this.props

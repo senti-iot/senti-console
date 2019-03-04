@@ -116,6 +116,7 @@ class Collection extends Component {
 			let id = this.props.match.params.id
 			if (id) {
 				await this.getCollection(id)
+				this.props.setBC('collection', this.state.collection.name)
 			}
 		}
 		else {

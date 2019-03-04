@@ -679,13 +679,15 @@
 		"trp": "Rows per page on lists"
 	},
 	"sidebar": {
+		"home": "Home",
 		"collections": "Data",
 		"dashboard": "Dashboard",
 		"devices": "Devices",
 		"favorites": "Favorites",
 		"projects": "Projects",
 		"settings": "Settings",
-		"users": "Users"
+		"users": "Users",
+		"orgs": "Organisations"
 	},
 	"snackbars": {
 		"emailsCopied": "E-mail adresses copied to clipboard",

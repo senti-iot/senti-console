@@ -74,7 +74,7 @@ class User extends Component {
 		this.props.removeFromFav(favObj)
 	}
 	componentDidMount = async () => {
-		const { match, setHeader, history, location } = this.props
+		const { match, setHeader, history, location, setBC } = this.props
 		if (match) {
 			if (match.params.id) {
 				await getUser(match.params.id).then(async rs => {
@@ -89,6 +89,7 @@ class User extends Component {
 						this.setState({ user: rs, loading: false })
 					}
 				})
+				setBC('user', this.state.user.firstName + ' ' + this.state.user.lastName)
 			}
 		}
 		else {

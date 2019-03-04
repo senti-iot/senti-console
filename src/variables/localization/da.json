@@ -679,13 +679,15 @@
 		"trp": "Rækker per side i lister"
 	},
 	"sidebar": {
+		"home": "Hjem",
 		"collections": "Data",
 		"dashboard": "Dashboard",
 		"devices": "Enheder",
 		"favorites": "Favoritter",
 		"projects": "Projekter",
 		"settings": "Indstillinger",
-		"users": "Brugere"
+		"users": "Brugere",
+		"orgs": "Organisationer"
 	},
 	"snackbars": {
 		"emailsCopied": "Mail adresser kopieret til klippebord",
