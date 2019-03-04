@@ -616,14 +616,14 @@
 			"favorites": "Favoritter"
 		},
 		"drawer": {
-			"state": "Menu visning",
+			"state": "Vis menu",
 			"states": {
-				"open": "Åben",
+				"open": "Vis",
 				"hidden": "Skjult"
 			},
-			"type": "Menu lukning",
+			"type": "Skjul menu",
 			"types": {
-				"persistent": "Helt skjult",
+				"persistent": "Skjult helt",
 				"permanent": "Skjul med ikoner"
 			},
 			"callback": "Skjul menu på navigation",

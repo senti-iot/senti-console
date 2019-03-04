@@ -616,15 +616,15 @@
 			"favorites": "Favorites"
 		},
 		"drawer": {
-			"type": "Menu",
+			"type": "Hide menu",
 			"types":{
-				"persistent": "Completely hidden",
-				"permanent": "Hidden with icons"
+				"persistent": "Hide completely",
+				"permanent": "Hide with icons"
 			},
-			"state": "Hide Menu",
+			"state": "Show Menu",
 			"states": {
-				"hidden": "Hidden",
-				"open": "Open"
+				"hidden": "Hide",
+				"open": "Show"
 			},
 			"callback": "Hide menu on navigation",
 			"callbacks": {
