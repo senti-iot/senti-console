@@ -809,7 +809,7 @@
 		"validation": {
 			"noEmail": "E-mail is missing",
 			"noOrg": "Organisation is missing",
-			"userAlreadyExists": "E-mail is already assigned to another user account!"
+			"userAlreadyExists": "E-mail is already assigned to a user account!"
 		}
 	}
 }
