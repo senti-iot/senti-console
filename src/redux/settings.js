@@ -18,10 +18,15 @@ const DidKnow = 'notifDidYouKnow'
 const MapTheme = 'mapTheme'
 const changeSB = 'changeSnackbarLocation'
 const changeDP = 'changeDetailsPanelState'
+const changeDT = 'changeDrawerType'
+const changeDS = 'changeDrawerState'
+const changeHB = 'changeHeaderBorder'
+
 //Navigation
 
 const changeDR = 'changeDefaultRoute'
 const changeDV = 'changeDefaultView'
+const changeDCON = 'changeDrawerCloseOnNav'
 
 //Calibration
 
@@ -69,7 +74,11 @@ export const saveSettingsOnServ = () => {
 			cookies: s.cookies,
 			periods: s.periods,
 			snackbarLocation: s.snackbarLocation,
-			detailsPanel: s.detailsPanel
+			detailsPanel: s.detailsPanel,
+			drawer: s.drawer,
+			drawerState: s.drawerState,
+			drawerCloseOnNav: s.drawerCloseOnNav,
+			headerBorder: s.headerBorder
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -161,6 +170,43 @@ export const changeSnackbarLocation = (val) => {
 		dispatch({
 			type: changeSB,
 			snackbarLocation: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeDrawerState = val => {
+	return async dispatch => { 
+		dispatch({
+			type: changeDS,
+			drawerState: val
+		})
+		dispatch(saveSettingsOnServ())
+
+	}
+}
+export const changeDrawerType = (val) => {
+	return async dispatch => {
+		dispatch({
+			type: changeDT,
+			drawer: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeDrawerCloseOnNav = (val) => { 
+	return async  dispatch => { 
+		dispatch({
+			type: changeDCON,
+			drawerCloseOnNav: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeHeaderBorder = (val) => {
+	return async dispatch => { 
+		dispatch({
+			type: changeHB,
+			headerBorder: val
 		})
 		dispatch(saveSettingsOnServ())
 	}
@@ -399,6 +445,7 @@ export const changeWeekendColor = (id) => {
 		dispatch(saveSettingsOnServ())
 	}
 }
+
 export const finishedSaving = () => {
 	return {
 		type: SAVED,
@@ -444,10 +491,22 @@ let initialState = {
 	rowsPerPageOptions: ['auto', 5, 7, 8, 10, 15, 20, 25, 50, 100],
 	cardsPerPageOptions: [2, 3, 4, 6, 8, 9],
 	snackbarLocation: 'left',
-	detailsPanel: 0
+	detailsPanel: 0,
+	drawer: 'permanent',
+	drawerState: true,
+	drawerCloseOnNav: true,
+	headerBorder: true,
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
+		case changeHB:
+			return Object.assign({}, state, { headerBorder: action.headerBorder })
+		case changeDCON: 
+			return Object.assign({}, state, { drawerCloseOnNav: action.drawerCloseOnNav })
+		case changeDS: 
+			return Object.assign({}, state, { drawerState: action.drawerState })
+		case changeDT: 
+			return Object.assign({}, state, { drawer: action.drawer })
 		case changeSB:
 			return Object.assign({}, state, { snackbarLocation: action.snackbarLocation })
 		case changeDP:

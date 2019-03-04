@@ -5,7 +5,7 @@ import { Laptop } from 'variables/icons'
 import { Grid, ListItem, List, ListItemText, withStyles } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 import { connect } from 'react-redux'
-import { changeTRP, changeTheme, changeSideBarLoc, changeDiscoverSenti, changeMapTheme, changeDetailsPanel, changeSnackbarLocation } from 'redux/settings';
+import { changeTRP, changeTheme, changeDrawerState, changeSideBarLoc, changeDiscoverSenti, changeMapTheme, changeDetailsPanel, changeSnackbarLocation, changeDrawerType, changeDrawerCloseOnNav, changeHeaderBorder } from 'redux/settings';
 import { changeLanguage } from 'redux/localization';
 
 class DisplaySettings extends Component {
@@ -22,9 +22,13 @@ class DisplaySettings extends Component {
 	changeMapTheme = e => this.props.changeMapTheme(e.target.value)
 	changeSnackbarLocation = e => this.props.changeSnackbarLocation(e.target.value) 
 	changeDetailsPanel = e => this.props.changeDetailsPanel(e.target.value)
+	changeDrawerType = e => this.props.changeDrawerType(e.target.value)
+	changeDrawerState = e => this.props.changeDrawerState(e.target.value)
+	changeDrawerCloseOnNav = e => this.props.changeDrawerCloseOnNav(e.target.value)
+	changeHeaderBorder = e => this.props.changeHeaderBorder(e.target.value)
 
 	render() {
-		const { language, trp, sideBar, discSentiVal, theme, mapTheme, classes, t, snackbarLocation, detailsPanel } = this.props
+		const { language, trp, sideBar, discSentiVal, theme, mapTheme, classes, t, snackbarLocation, detailsPanel, drawer, drawerState, drawerCloseOnNav, headerBorder } = this.props
 		let discSenti = [
 			{ value: 1, label: t('actions.yes') },
 			{ value: 0, label: t('actions.no') }
@@ -73,6 +77,22 @@ class DisplaySettings extends Component {
 			{ value: 0, label: t('settings.detailsPanelPos.closed') },
 			{ value: 1, label: t('settings.detailsPanelPos.open') }
 		]
+		let drawerTypes = [
+			{ value: 'permanent', label: t('settings.drawer.types.permanent') },
+			{ value: 'persistent', label: t('settings.drawer.types.persistent') }
+		]
+		let drawerStates = [
+			{ value: false, label: t('settings.drawer.states.hidden') },
+			{ value: true, label: t('settings.drawer.states.open') }
+		]
+		let closeOnNavOpts = [
+			{ value: true, label: t('settings.drawer.callbacks.closeOnNav') },
+			{ value: false, label: t('settings.drawer.callbacks.notCloseOnNav') }
+		]
+		let headerBorders = [
+			{ value: true, label: t('actions.on') },
+			{ value: false, label: t('actions.off') }
+		]
 		return (
 			discSentiVal !== null && language !== null && trp !== null && sideBar !== null && theme !== null ? 
 				<InfoCard
@@ -88,12 +108,6 @@ class DisplaySettings extends Component {
 										<DSelect menuItems={discSenti} value={discSentiVal} onChange={this.changeDiscoverSenti} />
 									</ItemGrid>
 								</ListItem>
-								{/* <ListItem divider>
-									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
-										<ListItemText>{t('settings.defaultRoute')}</ListItemText>
-										<DSelect menuItems={defaultRoutes} value={defaultRoute} onChange={this.changeDefaultRoute} />
-									</ItemGrid>
-								</ListItem> */}
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.language')}</ListItemText>
@@ -108,7 +122,7 @@ class DisplaySettings extends Component {
 								</ListItem>
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
-										<ListItemText>{t('settings.sideBarLoc')}</ListItemText>
+										<ListItemText secondary={t('settings.justForMobile')}>{t('settings.sideBarLoc')}</ListItemText>
 										<DSelect menuItems={sideBarLocs} value={sideBar} onChange={this.changeSideBarLoc} />
 									</ItemGrid>
 								</ListItem>
@@ -130,10 +144,34 @@ class DisplaySettings extends Component {
 										<DSelect menuItems={snackbarLocations} value={snackbarLocation} onChange={this.changeSnackbarLocation} />
 									</ItemGrid>
 								</ListItem>
-								<ListItem>
+								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.detailsPanel')}</ListItemText>
 										<DSelect menuItems={detailsPanelState} value={detailsPanel} onChange={this.changeDetailsPanel} />
+									</ItemGrid>
+								</ListItem>
+								<ListItem divider>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{t('settings.drawer.state')}</ListItemText>
+										<DSelect menuItems={drawerStates} value={drawerState} onChange={this.changeDrawerState} />
+									</ItemGrid>
+								</ListItem>
+								<ListItem divider>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{t('settings.drawer.type')}</ListItemText>
+										<DSelect menuItems={drawerTypes} value={drawer} onChange={this.changeDrawerType} />
+									</ItemGrid>
+								</ListItem>
+								<ListItem divider>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{t('settings.drawer.callback')}</ListItemText>
+										<DSelect menuItems={closeOnNavOpts} value={drawerCloseOnNav} onChange={this.changeDrawerCloseOnNav} />
+									</ItemGrid>
+								</ListItem>
+								<ListItem>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{t('settings.header.border')}</ListItemText>
+										<DSelect menuItems={headerBorders} value={headerBorder} onChange={this.changeHeaderBorder} />
 									</ItemGrid>
 								</ListItem>
 							</List>
@@ -153,7 +191,11 @@ const mapStateToProps = state => {
 		discSentiVal: s.discSentiVal,
 		mapTheme: s.mapTheme,
 		snackbarLocation: s.snackbarLocation,
-		detailsPanel: s.detailsPanel
+		detailsPanel: s.detailsPanel,
+		drawer: s.drawer,
+		drawerState: s.drawerState,
+		drawerCloseOnNav: s.drawerCloseOnNav,
+		headerBorder: s.headerBorder
 	})
 }
 const mapDispatchToProps = (dispatch) => {
@@ -166,6 +208,10 @@ const mapDispatchToProps = (dispatch) => {
 		changeMapTheme: t => dispatch(changeMapTheme(t)),
 		changeSnackbarLocation: val => dispatch(changeSnackbarLocation(val)),
 		changeDetailsPanel: val => dispatch(changeDetailsPanel(val)),
+		changeDrawerType: val => dispatch(changeDrawerType(val)),
+		changeDrawerState: val => dispatch(changeDrawerState(val)),
+		changeDrawerCloseOnNav: val => dispatch(changeDrawerCloseOnNav(val)),
+		changeHeaderBorder: val => dispatch(changeHeaderBorder(val))
 	}
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(settingsStyles)(DisplaySettings))

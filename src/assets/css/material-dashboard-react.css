@@ -23,6 +23,8 @@ html * {
     -moz-osx-font-smoothing: grayscale;
 }
 body {
+	padding: 0px !important;
+	overflow: auto !important;
     background-color: #EEEEEE;
     color: #3C4858;
     margin: 0;

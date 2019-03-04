@@ -564,6 +564,7 @@
 	"settings": {
 		"alerts": "Alarmeringer",
 		"defaultRoute": "Startside",
+		"justForMobile": "Kun på mobiltelefoner",
 		"calibration": {
 			"12months": "Hver 12. måned",
 			"3months": "Hver 3. måned",
@@ -615,6 +616,26 @@
 			"grid": "Gitter",
 			"favorites": "Favoritter"
 		},
+		"drawer": {
+			"state": "Vis menu",
+			"states": {
+				"open": "Vis",
+				"hidden": "Skjult"
+			},
+			"type": "Skjul menu",
+			"types": {
+				"persistent": "Skjult helt",
+				"permanent": "Skjul med ikoner"
+			},
+			"callback": "Skjul menu ved navigation",
+			"callbacks": {
+				"closeOnNav": "Skjul ved navigation",
+				"notCloseOnNav": "Hold åben"
+			}
+		},
+		"header": {
+			"border": "Opsplitningslinier"
+		},
 		"didYouKnow": "Viste du at?",
 		"discoverSenti": "Vis Velkommen til Senti på Dashboard",
 		"headers": {
@@ -638,7 +659,7 @@
 		"notDefault": "Ikke standard",
 		"pageTitle": "Instillinger",
 		"sideBarLeft": "Venstre",
-		"sideBarLoc": "Placering af menu",
+		"sideBarLoc": "Placering af menu knap" ,
 		"sideBarRight": "Højre",
 		"snackbarLocation": "Notifikation placering",
 		"snackbarLocations": {
@@ -658,13 +679,15 @@
 		"trp": "Rækker per side i lister"
 	},
 	"sidebar": {
+		"home": "Hjem",
 		"collections": "Data",
 		"dashboard": "Dashboard",
 		"devices": "Enheder",
 		"favorites": "Favoritter",
 		"projects": "Projekter",
 		"settings": "Indstillinger",
-		"users": "Brugere"
+		"users": "Brugere",
+		"orgs": "Organisationer"
 	},
 	"snackbars": {
 		"emailsCopied": "Mail adresser kopieret til klippebord",
@@ -781,12 +804,12 @@
 			"users": "Brugere"
 		},
 		"user": "Bruger",
-		"userResendConfirm": "Er du sikker på du ønsker at gensende bekræftelses E-mail?",
+		"userResendConfirm": "Er du sikker på du ønsker at gensende bekræftelses E-mail",
 		"userResendEmail": "Gensend bekræftelses E-mail",
 		"validation": {
 			"noEmail": "E-mail mangler",
 			"noOrg": "Organisation mangler",
-			"userAlreadyExists": "E-mail er allerede tilknyttet en anden bruger konto!"
+			"userAlreadyExists": "E-mail er allerede tilknyttet en bruger konto!"
 		}
 	}
 }

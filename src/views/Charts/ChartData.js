@@ -287,6 +287,7 @@ class ChartData extends PureComponent {
 						{this.renderIcon()}
 					</IconButton>
 					<Menu
+						marginThreshold={24}
 						id='long-menu'
 						anchorEl={actionAnchorVisibility}
 						open={Boolean(actionAnchorVisibility)}
@@ -316,6 +317,7 @@ class ChartData extends PureComponent {
 				</IconButton>
 			</ItemG>
 			<Menu
+				marginThreshold={24}
 				id='long-menu'
 				anchorEl={actionAnchor}
 				open={Boolean(actionAnchor)}

@@ -564,6 +564,7 @@
 	"settings": {
 		"alerts": "Alerts",
 		"defaultRoute": "Start page",
+		"justForMobile": "Only on mobile",
 		"calibration": {
 			"12months": "Every 12 months",
 			"3months": "Every 3 months",
@@ -615,6 +616,26 @@
 			"grid": "Grid",
 			"favorites": "Favorites"
 		},
+		"drawer": {
+			"type": "Hide menu",
+			"types":{
+				"persistent": "Hide completely",
+				"permanent": "Hide with icons"
+			},
+			"state": "Show Menu",
+			"states": {
+				"hidden": "Hide",
+				"open": "Show"
+			},
+			"callback": "Hide menu on navigation",
+			"callbacks": {
+				"closeOnNav": "Hide on navigation",
+				"notCloseOnNav": "Hold open"
+			}
+		},
+		"header": {
+			"border": "Divider Lines"
+		},
 		"didYouKnow": "Intelligent Notifications",
 		"discoverSenti": "Show Welcome to Senti on Dashboard",
 		"headers": {
@@ -638,7 +659,7 @@
 		"notDefault": "Not default",
 		"pageTitle": "Settings",
 		"sideBarLeft": "Left",
-		"sideBarLoc": "Menu location",
+		"sideBarLoc": "Menu button location",
 		"sideBarRight": "Right",
 		"snackbarLocation": "Notification placing",
 		"snackbarLocations": {
@@ -658,13 +679,15 @@
 		"trp": "Rows per page on lists"
 	},
 	"sidebar": {
+		"home": "Home",
 		"collections": "Data",
 		"dashboard": "Dashboard",
 		"devices": "Devices",
 		"favorites": "Favorites",
 		"projects": "Projects",
 		"settings": "Settings",
-		"users": "Users"
+		"users": "Users",
+		"orgs": "Organisations"
 	},
 	"snackbars": {
 		"emailsCopied": "E-mail adresses copied to clipboard",
@@ -786,7 +809,7 @@
 		"validation": {
 			"noEmail": "E-mail is missing",
 			"noOrg": "Organisation is missing",
-			"userAlreadyExists": "E-mail is already assigned to another user account!"
+			"userAlreadyExists": "E-mail is already assigned to a user account!"
 		}
 	}
 }
