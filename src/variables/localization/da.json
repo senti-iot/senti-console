@@ -626,9 +626,9 @@
 				"persistent": "Skjult helt",
 				"permanent": "Skjul med ikoner"
 			},
-			"callback": "Skjul menu på navigation",
+			"callback": "Skjul menu ved navigation",
 			"callbacks": {
-				"closeOnNav": "Skjul på navigation",
+				"closeOnNav": "Skjul ved navigation",
 				"notCloseOnNav": "Hold åben"
 			}
 		},
