@@ -63,12 +63,17 @@ const styles = theme => ({
 		fontSize: "14px",
 		// color: "#FFFFFF"
 	},
+	border: {
+		width: '100%',
+		background: '#555',
+		height: 1
+	},
 	toolbar: {
 		display: 'flex',
 		alignItems: 'center',
 		// justifyContent: 'flex-end',
 		// marginLeft: 4,
-		borderBottom: '1px solid #555',
+		// borderBottom: '1px solid #555',
 		// padding: '0 8px',
 		minHeight: 48,
 		// ...theme.mixins.toolbar,
@@ -203,7 +208,7 @@ class NewSidebar extends Component {
 		</Drawer>
 	}
 	renderPermanentDrawer = () => { 
-		const { classes, smallMenu, routes, defaultView, t } = this.props
+		const { classes, smallMenu, routes, defaultView, t, headerBorder } = this.props
 
 		return <Drawer
 			variant="permanent"
@@ -222,8 +227,8 @@ class NewSidebar extends Component {
 			}}
 			open={smallMenu}
 		>
-			<div className={classes.toolbar}>
-			</div>
+			<div className={classes.toolbar} />
+			{headerBorder && <div className={classes.border} />}
 			<List
 				// onMouseLeave={this.props.changeSmallMenu(false)}
 				style={{
@@ -328,7 +333,8 @@ class NewSidebar extends Component {
 const mapStateToProps = (state) => ({
 	smallMenu: state.appState.smallMenu,
 	drawer: state.settings.drawer,
-	drawerCloseOnNav: state.settings.drawerCloseOnNav
+	drawerCloseOnNav: state.settings.drawerCloseOnNav,
+	headerBorder: state.settings.headerBorder
 })
 
 const mapDispatchToProps = dispatch => ({
