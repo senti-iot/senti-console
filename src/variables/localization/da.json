@@ -700,7 +700,7 @@
 			"projectToOrg": "Project %{project} tilknyttet til organisation %{org}"
 		},
 		"assignFailed": "Tilknytning fejlede!",
-		"collectionCreated": "Datasamling er oppretet!",
+		"collectionCreated": "Datasamling er oprettet!",
 		"collectionDeleted": "Datasamling er slettet!",
 		"collectionUpdated": "Datasamling er opdateret!",
 		"createdFail": "Oprettelse fejlede!",
