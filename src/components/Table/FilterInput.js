@@ -427,6 +427,8 @@ class FilterInput extends Component {
 			value,
 			t,
 			handleDoubleClick,
+			handleClick,
+			chipRef,
 			...other
 		} = this.props
 
@@ -477,8 +479,8 @@ class FilterInput extends Component {
 						isDisabled: !!disabled,
 						isFocused: false,
 						className: classes.chip,
-						iRef: this.props.chipRef,
-						handleClick: this.props.handleClick
+						iRef: chipRef,
+						handleClick: handleClick
 					})}
 					{chips.length > 0 ? chips.map((tag, i) => {
 						const value = dataSourceConfig ? tag[dataSourceConfig.id] : tag
