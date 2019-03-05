@@ -16,6 +16,7 @@ import { connect } from 'react-redux'
 import { setPassword } from 'variables/dataLogin';
 import { userStyles } from 'assets/jss/components/users/userStyles';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
+import { Person, FolderShared } from 'variables/icons';
 
 class User extends Component {
 	constructor(props) {
@@ -73,8 +74,15 @@ class User extends Component {
 			path: this.props.match.url }
 		this.props.removeFromFav(favObj)
 	}
+	tabs = () => {
+		const { t } = this.props
+		return [
+			{ id: 0, title: t('devices.tabs.listView'), label: <Person />, url: `#contact` },
+			{ id: 1, title: t('devices.tabs.mapView'), label: <FolderShared/>, url: `#log` },
+		]
+	}
 	componentDidMount = async () => {
-		const { match, setHeader, history, location, setBC } = this.props
+		const { match, setHeader, history, location, setBC, setTabs } = this.props
 		if (match) {
 			if (match.params.id) {
 				await getUser(match.params.id).then(async rs => {
@@ -86,6 +94,11 @@ class User extends Component {
 					else {
 						let prevURL = location.prevURL ? location.prevURL : '/management/users'
 						setHeader("users.user", true, prevURL, 'users')
+						setTabs({
+							id: 'user',
+							tabs: this.tabs(),
+							route: 0
+						})
 						this.setState({ user: rs, loading: false })
 					}
 				})
@@ -302,7 +315,7 @@ class User extends Component {
 		return (
 			loading ? <CircularLoader /> : <Fragment>
 				<GridContainer justify={'center'} alignContent={'space-between'}>
-					<ItemGrid xs={12} noMargin>
+					<ItemGrid xs={12} noMargin id={'contact'}>
 						<UserContact
 							isFav={this.props.isFav({ id: user.id, type: 'user' })}
 							addToFav={this.addToFav}
@@ -315,7 +328,7 @@ class User extends Component {
 							resendConfirmEmail={this.handleOpenResend}
 							{...rp} />
 					</ItemGrid>
-					<ItemGrid xs={12} noMargin>
+					<ItemGrid xs={12} noMargin id={'log'}>
 						<UserLog t={t} user={user} />
 					</ItemGrid>
 				</GridContainer>
