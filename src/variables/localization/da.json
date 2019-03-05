@@ -338,6 +338,11 @@
             "wip": "Under udvikling"
         }
     },
+    "exports": {
+        "columns": "Kolonne",
+        "customColumns": "Tilpasset kolonne",
+        "standardColumns": "Standard kolonne"
+    },
     "favorites": {
         "fields": {
             "name": "Navn",

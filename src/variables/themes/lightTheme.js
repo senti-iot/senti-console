@@ -8,6 +8,13 @@ const theme = createMuiTheme({
 		suppressDeprecationWarnings: true,
 	},
 	overrides: {
+		MuiDialogTitle: {
+			root: {
+				backgroundColor: primaryColor,
+				color: 'white',
+				padding: 16
+			}
+		},
 		MuiListItem: {
 			button: {
 				transition: 'all 150ms cubic- bezier(0.4, 0, 0.2, 1) 0ms'
@@ -34,7 +41,7 @@ const theme = createMuiTheme({
 		MuiTypography: {
 			body1: {
 				fontSize: '0.875rem',
-			}	
+			}
 		},
 		MuiFormControl: {
 			root: {
@@ -62,13 +69,13 @@ const theme = createMuiTheme({
 			underline: {
 				'&:hover:not($disabled):not($focused):not($error):before': {
 					borderBottom: '2px solid #4db6ac' /* + primaryColor */,
-				},	
+				},
 				'&:after': {
 					borderBottomColor: teal[500],
 				},
 			}
-			
-			
+
+
 		}
 	},
 	palette: {

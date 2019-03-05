@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from 'react'
-import { Dialog, Collapse, Radio, Button } from '@material-ui/core'
-import { GridContainer, ItemG, Info, Caption } from 'components'
+import React, { Component } from 'react'
+import { Dialog, Collapse, Radio, Button, DialogTitle, DialogActions, Typography, DialogContent } from '@material-ui/core'
+import { ItemG, Info, Caption } from 'components'
 import moment from 'moment'
 import zipcelx from 'zipcelx'
 import _ from 'lodash'
@@ -131,93 +131,93 @@ class ExportUsers extends Component {
 		});
 	};
 	render() {
-		const { open, handleClose, data } = this.props
+		const { open, handleClose, t } = this.props
 		const { custom, customHeaders } = this.state
 		return (
 			<Dialog
 				open={open}
 				onClose={handleClose}
 			>
-				<GridContainer>
-					{data &&
-						<Fragment>
-							<ItemG container>
-								<ItemG xs={12} container justify={'center'}>
-									<ItemG>
-										<Radio
-											checked={Boolean(!custom)}
-											value={0}
-											onChange={this.changeHeader}
-										/>
-									</ItemG>
-									<ItemG xs container alignItems={'center'}>
-										<Info noParagraph>
-											Normal Headers
-										</Info>
-									</ItemG>
-									<ItemG xs={12}>
-										<Collapse in={Boolean(!custom)}>
-											<div style={{ marginLeft: 48 }}>
-												<Caption>
-													{this.defaultUserHeaders().map((d, i) => i === this.defaultUserHeaders().length - 1 ? d.label : `${d.label}, `)}
-												</Caption>
-											</div>
-										</Collapse>
-									</ItemG>
-								</ItemG>
-								<ItemG xs={12} container justify={'center'}>
-									<ItemG>
-										<Radio
-											checked={Boolean(custom)}
-											value={1}
-											onChange={this.changeHeader}
-										/>
-									</ItemG>
-									<ItemG xs container alignItems={'center'}>
-										<Info noParagraph>
-											Custom Headers
-										</Info>
-									</ItemG>
-									<ItemG xs={12}>
-										<Collapse in={Boolean(custom)}>
-											<div style={{ marginLeft: 48 }}>
-												<ItemG>
-													<DMultiSelect
-														label={'Headers'}
-														checkbox
-														value={customHeaders}
-														onChange={this.handleChangeMultiple}
-														menuItems={this.defaultUserHeaders().map(d => ({
-															value: d.id, label: d.label
-														}))}
-													/>
+				<DialogTitle disableTypography>
+					<Typography variant={'h6'} style={{ color: 'inherit' }}>
+						{t('menus.exportUsers')}
+					</Typography>
 
-												</ItemG>
-											</div>
-										</Collapse>
-									</ItemG>
-								</ItemG>
-								<ItemG container justify={'center'}>
-									{/* <ItemG xs={4}> */}
-									<Button style={{ margin: 16, marginTop: 24 }} filename={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.csv`} data={this.exportToCSV()} headers={this.CSVHeaders} component={CSVLink} color={'primary'} variant={'contained'}>
-										CSV
-									</Button>
-									{/* </ItemG> */}
-									{/* <ItemG xs={4}> */}
-									<Button style={{ margin: 16, marginTop: 24 }} component={'a'} download={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.json`} href={this.exportToJson()} target={'_blank'} color={'primary'} variant={'contained'}>
-										JSON
-									</Button>
-									{/* </ItemG> */}
-									{/* <ItemG xs={4}> */}
-									<Button style={{ margin: 16, marginTop: 24 }} color={'primary'} variant={'contained'} onClick={this.exportToXLSX}>
-										XLSX
-									</Button>
-									{/* </ItemG> */}
-								</ItemG>
+				</DialogTitle>
+
+				<DialogContent>
+					<ItemG container>
+						<ItemG xs={12} container justify={'center'}>
+							<ItemG>
+								<Radio
+									checked={Boolean(!custom)}
+									value={0}
+									onChange={this.changeHeader}
+								/>
 							</ItemG>
-						</Fragment>
-					}
-				</GridContainer>
+							<ItemG xs container alignItems={'center'}>
+								<Info noParagraph>
+									{t('exports.standardColumns')}
+								</Info>
+							</ItemG>
+							<ItemG xs={12}>
+								<Collapse in={Boolean(!custom)}>
+									<div style={{ marginLeft: 48 }}>
+										<Caption>
+											{this.defaultUserHeaders().map((d, i) => i === this.defaultUserHeaders().length - 1 ? d.label : `${d.label}, `)}
+										</Caption>
+									</div>
+								</Collapse>
+							</ItemG>
+						</ItemG>
+						<ItemG xs={12} container justify={'center'}>
+							<ItemG>
+								<Radio
+									checked={Boolean(custom)}
+									value={1}
+									onChange={this.changeHeader}
+								/>
+							</ItemG>
+							<ItemG xs container alignItems={'center'}>
+								<Info noParagraph>
+									{t('exports.customColumns')}
+								</Info>
+							</ItemG>
+							<ItemG xs={12}>
+								<Collapse in={Boolean(custom)}>
+									<div style={{ marginLeft: 48 }}>
+										<ItemG>
+											<DMultiSelect
+												label={t('exports.columns')}
+												checkbox
+												value={customHeaders}
+												onChange={this.handleChangeMultiple}
+												menuItems={this.defaultUserHeaders().map(d => ({
+													value: d.id, label: d.label
+												}))}
+											/>
+
+										</ItemG>
+									</div>
+								</Collapse>
+							</ItemG>
+						</ItemG>
+					</ItemG>
+				</DialogContent>
+				<DialogActions>
+					<ItemG container justify={'flex-end'}>
+						<Button style={{ margin: 8 }} filename={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.csv`} data={this.exportToCSV()} headers={this.CSVHeaders} component={CSVLink} color={'primary'} variant={'contained'}>
+							CSV
+						</Button>
+						<Button style={{ margin: 8 }} component={'a'} download={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.json`} href={this.exportToJson()} target={'_blank'} color={'primary'} variant={'contained'}>
+							JSON
+						</Button>
+						<Button style={{ margin: 8 }} color={'primary'} variant={'contained'} onClick={this.exportToXLSX}>
+							XLSX
+						</Button>
+					</ItemG>
+				</DialogActions>
+
 			</Dialog>
 		)
 	}

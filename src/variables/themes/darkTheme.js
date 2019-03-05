@@ -8,6 +8,14 @@ const theme = createMuiTheme({
 		suppressDeprecationWarnings: true,
 	},
 	overrides: {
+		MuiDialogTitle: {
+			root: {
+				backgroundColor: primaryColor,
+				color: 'white',
+				padding: 16
+			},
+
+		},
 		MuiListItem: {
 			button: {
 				transition: 'all 150ms cubic- bezier(0.4, 0, 0.2, 1) 0ms'

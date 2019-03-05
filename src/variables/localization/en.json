@@ -338,6 +338,11 @@
             "wip": "Work in progress"
         }
     },
+    "exports": {
+        "columns": "Columns",
+        "customColumns": "Custom Columns",
+        "standardColumns": "Default Columns"
+    },
     "favorites": {
         "fields": {
             "name": "Name",
