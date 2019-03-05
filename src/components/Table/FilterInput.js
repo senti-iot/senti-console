@@ -28,7 +28,11 @@ const styles = (theme) => {
 			display: 'inline-block',
 			appearance: 'none',
 			WebkitTapHighlightColor: 'rgba(0,0,0,0)',
-			float: 'left'
+			float: 'left',
+			"&::placeholder": {
+				textOverflow: 'elipsis',
+				fontSize: "0.8125rem"
+			}
 		},
 		chipContainer: {
 			cursor: 'text',
