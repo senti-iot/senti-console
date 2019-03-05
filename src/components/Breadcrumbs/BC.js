@@ -14,7 +14,6 @@ class BC extends Component {
 	render() {
 		const { defaultRoute, bc, t, classes } = this.props
 		const bcs = breadcrumbs(t, bc.name)[bc.id]
-		console.log(bc)
 		return (
 			<Breadcrumbs separator="›" arial-label="Breadcrumb" className={classes.breadcrumbs}>
 				<Link color="inherit" to={defaultRoute}>

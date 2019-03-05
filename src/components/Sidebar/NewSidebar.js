@@ -158,7 +158,6 @@ class NewSidebar extends Component {
 
 	activeRoute = (routeName) => this.props.menuRoute === routeName ? true : false;
 	changeSmallMenu = () => {
-		console.log('bing')
 		this.props.changeSmallMenu(!this.props.smallMenu)
 	}
 	closeDrawer = () => { 

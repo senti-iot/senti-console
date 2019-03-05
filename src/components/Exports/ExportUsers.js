@@ -48,7 +48,6 @@ class ExportUsers extends Component {
 				})
 				result.push(obj)
 			})
-			console.log(result)
 			return result
 		}
 		else {

@@ -534,7 +534,6 @@ export const settings = (state = initialState, action) => {
 		}
 		case GetSettings:
 		{
-			// console.log(action.settings)
 			let periods = setDates(action.settings.periods)
 			return Object.assign({}, state, { ...action.settings, periods: periods, user: action.user, loading: false })
 		}
