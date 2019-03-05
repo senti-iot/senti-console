@@ -160,6 +160,7 @@ class FilterToolbar extends Component {
 						onDelete={(deletedChip, i) => this.handleDelete(deletedChip, i)}
 						onClick={this.handleClick}
 						dataSourceConfig={{ id: 'id', text: 'displayValue', value: 'displayValue' }}
+						placeholder={t('actions.search')}
 						fullWidth
 						t={t}
 					/>

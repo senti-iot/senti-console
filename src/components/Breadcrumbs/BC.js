@@ -6,7 +6,10 @@ import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
 
 const styles = theme => ({
 	breadcrumbs: {
-		margin: "134px 24px 0px 24px"
+		margin: "134px 24px 0px 24px", 
+		[theme.breakpoints.down('md')]: {
+			margin: "106px 8px 0px 8px"
+		}
 	},
 })
 
@@ -15,7 +18,7 @@ class BC extends Component {
 		const { defaultRoute, bc, t, classes } = this.props
 		const bcs = breadcrumbs(t, bc.name)[bc.id]
 		return (
-			<Breadcrumbs separator="›" arial-label="Breadcrumb" className={classes.breadcrumbs}>
+			bc.dontShow ? null : <Breadcrumbs separator="›" arial-label="Breadcrumb" className={classes.breadcrumbs}>
 				<Link color="inherit" to={defaultRoute}>
 					{t(`sidebar.home`)}
 				</Link>}

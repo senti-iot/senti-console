@@ -19,6 +19,9 @@ import { getDaysOfInterest } from 'redux/doi';
 import Cookies from 'components/Cookies/Cookies';
 import NewSidebar from 'components/Sidebar/NewSidebar';
 import BC from 'components/Breadcrumbs/BC';
+import { changeTabs } from 'redux/appState';
+import Toolbar from 'components/Toolbar/Toolbar';
+// import _ from 'lodash'
 
 class App extends React.Component {
 	constructor(props) {
@@ -43,13 +46,14 @@ class App extends React.Component {
 	handleDrawerToggle = () => {
 		this.setState({ mobileOpen: !this.state.mobileOpen });
 	};
-	handleSetBreadCrumb = (id, name) => { 
+	handleSetBreadCrumb = (id, name, dontShow) => {
 		const { bc } = this.state
-		if (bc.id !== id)
+		if (bc.id !== id || name !== bc.name)
 			this.setState({
 				bc: {
 					id: id,
 					name: name,
+					dontShow: dontShow
 				}
 			})
 	}
@@ -118,7 +122,11 @@ class App extends React.Component {
 			}
 		}
 	}
-
+	setTabs = (tabs) => {
+		if (tabs.id !== this.props.tabs.id) {
+			this.props.changeTabs(tabs)
+		}
+	}
 	render() {
 		const { classes, t, loading, sOpt, defaultRoute, snackbarLocation, defaultView, smallMenu, drawer, tabs, ...rest } = this.props;
 		return (
@@ -157,7 +165,8 @@ class App extends React.Component {
 							/>
 							{!loading ? <Fragment>
 								<div className={classes.container} id={'container'}>
-									<BC 
+									<Toolbar history={this.props.history} {...tabs}/>
+									<BC
 										defaultRoute={defaultRoute}
 										bc={this.state.bc}
 										t={t}
@@ -168,7 +177,13 @@ class App extends React.Component {
 												if (prop.redirect) {
 													return <Redirect from={prop.path} to={prop.to} key={key} />;
 												}
-												return <Route path={prop.path} render={(routeProps) => <prop.component {...routeProps} setBC={this.handleSetBreadCrumb} setHeader={this.handleSetHeaderTitle} />} key={key} />;
+												return <Route path={prop.path}
+													render={(routeProps) =>
+														<prop.component {...routeProps}
+															setBC={this.handleSetBreadCrumb}
+															setHeader={this.handleSetHeaderTitle}
+															setTabs={this.setTabs}
+														/>} key={key} />;
 											})
 											: <Redirect from={window.location.pathname} to={{
 												pathname: '/login', state: {
@@ -217,7 +232,6 @@ App.propTypes = {
 const mapStateToProps = (state) => ({
 	loading: state.settings.loading,
 	theme: state.settings.theme,
-	// cookies: state.settings.cookies,
 	defaultRoute: state.settings.defaultRoute,
 	defaultView: state.settings.defaultView,
 	snackbarLocation: state.settings.snackbarLocation,
@@ -229,6 +243,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = dispatch => ({
 	getSettings: async () => dispatch(await getSettings()),
 	getDaysOfIterest: async () => dispatch(await getDaysOfInterest()),
+	changeTabs: tabs => dispatch(changeTabs(tabs))
 	// acceptCookies: async (val) => dispatch(await acceptCookiesFunc(val))
 })
 

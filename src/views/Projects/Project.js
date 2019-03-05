@@ -10,7 +10,7 @@ import { colors } from 'variables/colors';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { getWifiDaily, getWifiMinutely, getWifiHourly, getWifiSummary } from 'components/Charts/DataModel';
 import moment from 'moment'
-import Toolbar from 'components/Toolbar/Toolbar';
+// import Toolbar from 'components/Toolbar/Toolbar';
 import { Timeline, Map, DataUsage, Person, LibraryBooks } from 'variables/icons';
 import { compose } from 'recompose';
 import { finishedSaving, removeFromFav, addToFav, isFav } from 'redux/favorites';
@@ -51,7 +51,11 @@ class Project extends Component {
 			if (match.params.id) {
 				await this.getProject(match.params.id)
 				this.props.setBC('project', this.state.project.title)
-
+				this.props.setTabs({
+					id: 'project',
+					hashLinks: true,
+					tabs: this.tabs
+				})
 			}
 			else {
 				history.push({
@@ -61,10 +65,6 @@ class Project extends Component {
 			}
 	}
 	componentDidUpdate = (prevProps) => {
-		// if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
-		// 	// this.handleSwitchDayHourSummary()
-		// 	// this.getHeatMapData()
-		// }
 		if (this.props.saved === true) {
 			const { project } = this.state
 			if (this.props.isFav({ id: project.id, type: 'project' })) {
@@ -345,13 +345,13 @@ class Project extends Component {
 		const rp = { history: this.props.history, match: this.props.match }
 		return (
 			<Fragment>
-				<Toolbar
+				{/* <Toolbar
 					hashLinks
 					noSearch
 					history={rp.history}
 					match={rp.match}
 					tabs={this.tabs}
-				/>
+				/> */}
 				{!loading ?
 					<GridContainer justify={'center'} alignContent={'space-between'}>
 						<ItemGrid xs={12} noMargin id='details'>

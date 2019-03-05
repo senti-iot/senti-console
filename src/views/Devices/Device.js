@@ -142,6 +142,12 @@ class Device extends Component {
 
 		let prevURL = this.props.location.prevURL ? this.props.location.prevURL : '/devices/list'
 		this.props.setHeader('devices.device', true, prevURL ? prevURL : '/devices/list', 'devices')
+		this.props.setTabs({
+			id: 'device',
+			tabs: this.tabs,
+			hashLinks: true,
+			route: 0
+		})
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {

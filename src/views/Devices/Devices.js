@@ -39,6 +39,11 @@ class Devices extends Component {
 			}
 		}
 		props.setHeader('devices.pageTitle', false, '', 'devices')
+		props.setTabs({
+			id: 'devices',
+			tabs: this.tabs(),
+			route: this.handleTabs()
+		})
 		props.setBC('devices')
 	}
 	
@@ -237,16 +242,16 @@ class Devices extends Component {
 
 	handleTabs = () => {
 		if (this.props.location.pathname.includes('grid')) {
-			this.setState({ route: 2 })
+			// this.setState({ route: 2 })
 			return 2
 		}
 		else {
 			if (this.props.location.pathname.includes('favorites')) {
-				this.setState({ route: 3 })
+				// this.setState({ route: 3 })
 				return 3
 			}
 			else {
-				this.setState({ route: 0 })
+				// this.setState({ route: 0 })
 				return 0
 			}
 		}

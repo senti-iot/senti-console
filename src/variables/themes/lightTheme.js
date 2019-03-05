@@ -1,5 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles'
-import { primaryColor, secondaryColor, hoverColor } from 'assets/jss/material-dashboard-react'
+import { primaryColor, secondaryColor, hoverColor, headerColor } from 'assets/jss/material-dashboard-react'
 import { teal, red } from '@material-ui/core/colors'
 
 const theme = createMuiTheme({
@@ -10,7 +10,7 @@ const theme = createMuiTheme({
 	overrides: {
 		MuiDialogTitle: {
 			root: {
-				backgroundColor: primaryColor,
+				backgroundColor: headerColor,
 				color: 'white',
 				padding: 16
 			}

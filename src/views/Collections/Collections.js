@@ -2,7 +2,7 @@ import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentTex
 import projectStyles from 'assets/jss/views/projects';
 import CollectionTable from 'components/Collections/CollectionTable';
 import TableToolbar from 'components/Table/TableToolbar';
-import Toolbar from 'components/Toolbar/Toolbar';
+// import Toolbar from 'components/Toolbar/Toolbar';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -35,6 +35,11 @@ class Collections extends Component {
 		}
 		props.setHeader('collections.pageTitle', false, '', 'collections')
 		props.setBC('collections')
+		props.setTabs({
+			id: 'collections',
+			tabs: this.tabs(),
+			route: this.handleTabs()
+		})
 	}
 	//#region Constants
 	tabs = () => {
@@ -108,11 +113,10 @@ class Collections extends Component {
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
-		const { t, location, saved, s, isFav, finishedSaving } = this.props
-
-		if (location.pathname !== prevProps.location.pathname) {
-			this.handleTabs()
-		}
+		const { t, /* location, */ saved, s, isFav, finishedSaving } = this.props
+		// if (location.pathname !== prevProps.location.pathname) {
+		// 	this.handleTabs()
+		// }
 		if (saved === true) {
 			const { collections, selected } = this.state
 			let collection = collections[collections.findIndex(d => d.id === selected[0])]
@@ -202,12 +206,15 @@ class Collections extends Component {
 	handleTabs = () => {
 		const { location } = this.props
 		if (location.pathname.includes('grid'))
-			this.setState({ route: 1 })
+			// this.setState({ route: 1 })
+			return 1
 		else {
 			if (location.pathname.includes('favorites'))
-				this.setState({ route: 2 })
+				// this.setState({ route: 2 })
+				return 2
 			else {
-				this.setState({ route: 0 })
+				// this.setState({ route: 0 })
+				return 0
 			}
 		}
 	}
@@ -520,11 +527,11 @@ class Collections extends Component {
 	}
 
 	render() {
-		const { collections, route, filters } = this.state
-		const { history, match } = this.props
+		// const { collections, route, filters } = this.state
+		const { /* history,  */match } = this.props
 		return (
 			<Fragment>
-				<Toolbar
+				{/* <Toolbar
 					data={collections}
 					route={route}
 					filters={filters}
@@ -533,7 +540,7 @@ class Collections extends Component {
 					handleFilterKeyword={this.handleFilterKeyword}
 					tabs={this.tabs()}
 					defaultRoute={0}
-				/>
+				/> */}
 				<Switch>
 					<Route path={`${match.path}/list`} render={() => this.renderCollections()} />
 					<Route path={`${match.path}/grid`} render={() => this.renderCards()} />

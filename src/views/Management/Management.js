@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import Toolbar from 'components/Toolbar/Toolbar';
+// import Toolbar from 'components/Toolbar/Toolbar';
 import { getAllUsers } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom'
@@ -38,6 +38,11 @@ class Management extends Component {
 			orgs: []
 		}
 		props.setHeader('users.pageTitle', false, '', 'users')
+		props.setTabs({
+			id: 'management',
+			tabs: this.tabs,
+			route: this.handleTabs()
+		})
 	}
 
 	tabs = [
@@ -153,15 +158,19 @@ class Management extends Component {
 		this.setState({ anchorElMenu: null })
 	}
 	handleTabs = () => {
-		if (this.props.location.pathname.includes('/orgs'))
-			this.setState({ route: 1 })
+		if (this.props.location.pathname.includes('/orgs')) {
+			// this.setState({ route: 1 })
+			return 1
+		}
 		else {
 			if (this.props.location.pathname.includes('/favorites')) {
-				this.setState({ route: 2 })
+				// this.setState({ route: 2 })
 				this.props.setHeader('sidebar.favorites', false, '', 'users')
+				return 2
 			}
 			else {
-				this.setState({ route: 0 })
+				// this.setState({ route: 0 })
+				return 0
 			}
 		}
 	}
@@ -171,6 +180,7 @@ class Management extends Component {
 			this.handleTabs()
 		}
 		if (window.location.pathname.includes('favorites')) {
+			this.props.setBC('favorites')
 			if (this.props.saved === true) {
 				this.props.finishedSaving()
 				this.setState({ selected: [] })
@@ -221,7 +231,7 @@ class Management extends Component {
 	renderTableToolBar = (reduxKey) => {
 		const { t } = this.props
 		const { selected } = this.state
-		return <TableToolbar //	./TableToolbar.js
+		return <TableToolbar
 			ft={this.ft()}
 			reduxKey={reduxKey}
 			addFilter={this.addFilter}
@@ -238,7 +248,6 @@ class Management extends Component {
 		const { t, favorites } = this.props
 		let usersAndOrgs = favorites.filter(f => f.type === 'user' || f.type === 'org')
 		const { selected, orderBy, order } = this.state
-		this.props.setBC('favorites')
 		return <FavoritesTable
 			selected={selected}
 			handleClick={this.handleClick}
@@ -265,12 +274,12 @@ class Management extends Component {
 	}
 
 	render() {
-		const { users, orgs, filters, loading } = this.state
-		const { favorites } = this.props
+		const { users, orgs, /* filters, */ loading } = this.state
+		// const { favorites } = this.props
 		const { classes, filtersOrgs, filtersUsers, ...rest } = this.props
 		return (
 			!loading ? <Fragment>
-				<Toolbar
+				{/* <Toolbar
 					data={window.location.pathname.includes('users') ? users : window.location.pathname.includes('orgs') ? orgs : favorites}
 					filters={filters}
 					history={this.props.history}
@@ -278,7 +287,7 @@ class Management extends Component {
 					handleFilterKeyword={this.handleFilterKeyword}
 					tabs={this.tabs}
 					route={this.state.route}
-				/>
+				/> */}
 				<Switch>
 					<Route path={`${this.props.match.url}/users/new`} render={(rp) => <CreateUser {...rest} />} />
 					<Route path={`${this.props.match.url}/users`} render={(rp) => <Users filters={filtersUsers} {...rest} reload={this.reload} users={this.filterItems(users)} />} />
