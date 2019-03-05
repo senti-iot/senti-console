@@ -401,7 +401,7 @@ class Collection extends Component {
 				open={openAssignDevice}
 				onClose={this.handleCloseAssignDevice}
 			>
-				<DialogTitle>
+				<DialogTitle disableTypography>
 					<DialogActions>
 						<Search />
 					</DialogActions>
@@ -422,7 +422,7 @@ class Collection extends Component {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('dialogs.unassign.title.deviceFromCollection')}</DialogTitle>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.unassign.title.deviceFromCollection')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.unassign.message.deviceFromCollection', { device: collection.activeDeviceStats.id, collection: collection.name })}
@@ -449,7 +449,7 @@ class Collection extends Component {
 				aria-labelledby='alert-dialog-title'
 				aria-describedby='alert-dialog-description'
 			>
-				<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.collection')}</DialogTitle>
+				<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.collection')}</DialogTitle>
 				<DialogContent>
 					<DialogContentText id='alert-dialog-description'>
 						{t('dialogs.delete.message.collection', { collection: this.state.collection.name })}

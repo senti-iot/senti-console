@@ -32,7 +32,7 @@ const CustomDateTime = (props) => {
 			onClose={handleCancelCustomDate}
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'>
-			<DialogTitle id='alert-dialog-title'>{t('filters.dateOptions.custom')}</DialogTitle>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('filters.dateOptions.custom')}</DialogTitle>
 			<DialogContent className={classes.dialogWidth}>
 				<ItemG container spacing={8}>
 					<ItemG xs={12}>

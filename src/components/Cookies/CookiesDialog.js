@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Button, Dialog, DialogContent, DialogActions } from '@material-ui/core';
+import { Button, Dialog, DialogContent, DialogActions, DialogTitle } from '@material-ui/core';
 import { T } from 'components';
 const CookiesDialog = (props) => {
 	const { open, handleClose, t, classes, handleAcceptCookies, readOnly } = props
@@ -10,9 +10,13 @@ const CookiesDialog = (props) => {
 			scroll="paper"
 			aria-labelledby="scroll-dialog-title"
 		>
-			{/* <DialogTitle id="scroll-dialog-title">{t('cookies.title')}</DialogTitle> */}
+			<DialogTitle disableTypography id="scroll-dialog-title">
+				<T reversed variant={'h6'}>
+					{t('cookies.title')}
+				</T>
+			</DialogTitle>
 			<DialogContent>
-				<T className={classes.p + ' ' + classes.title} variant={'h5'}>{t('cookies.title')}</T>
+				{/* <T className={classes.p + ' ' + classes.title} variant={'h5'}>{t('cookies.title')}</T> */}
 				<T className={classes.p} variant={'h6'}>{t('cookies.subtitle')}</T>
 				<T className={classes.p}>{t('cookies.p.1')}</T>
 				<T className={classes.p}>{t('cookies.p.2')}</T>

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import classNames from 'classnames'
-import { Drawer, /* IconButton, */ Divider, Hidden, Link } from '@material-ui/core';
+import { Drawer, /* IconButton, */ Divider, Hidden, ButtonBase } from '@material-ui/core';
 import { drawerWidth, transition, primaryColor, hoverColor, defaultFont } from 'assets/jss/material-dashboard-react';
 import { withStyles } from '@material-ui/core/styles';
 import { NavLink } from 'react-router-dom';
@@ -107,7 +107,7 @@ const styles = theme => ({
 	logo: {
 		backgroundColor: '#1a1b32',
 		position: "relative",
-		padding: "8px 24px",
+		padding: "8px 16px",
 		minHeight: "40px",
 		zIndex: "4",
 		display: 'flex',
@@ -152,6 +152,31 @@ const styles = theme => ({
 		height: "50px",
 		verticalAlign: "middle",
 		border: "0"
+	},
+	image: {
+		backgroundColor: '#1a1b32',
+		position: "relative",
+		height: 48,
+		// marginLeft: 48,
+		borderRadius: 4,
+		[theme.breakpoints.down("xs")]: {
+			// width: "100% !important", // Overrides inline-style
+			height: 48
+		},
+		"&:hover, &$focusVisible": {
+			zIndex: 1,
+		}
+	},
+	focusVisible: {},
+	imageSrc: {
+		position: "absolute",
+		left: 0,
+		right: 0,
+		top: 0,
+		bottom: 0,
+		backgroundSize: "100px 50px",
+		backgroundRepeat: "no-repeat",
+		backgroundPosition: "50% 50%",
 	},
 });
 class NewSidebar extends Component {
@@ -310,13 +335,33 @@ class NewSidebar extends Component {
 		</Drawer>
 	}	
 	smallBrand = () => {
-		const { classes, logo, defaultRoute, handleDrawerToggle } = this.props
-		return (<div className={classes.logo}>
-			<Link to={defaultRoute ? defaultRoute : '/'} onClick={handleDrawerToggle} className={classes.logoLink}>
-				<img src={logo} alt='logo' className={classes.img} />
-			</Link>
+		const { classes, logo, defaultRoute, handleDrawerToggle, history } = this.props
+		return <div className={classes.logo}>
+			<ButtonBase
+				focusRipple
+				className={classes.image}
+				focusVisibleClassName={classes.focusVisible}
+				style={{
+					width: '120px'
+				}}
+				onClick={() => {handleDrawerToggle();history.push(defaultRoute ? defaultRoute : '/')}}
+			// component={Link}
+			// to={}
+			>
+				<span
+					className={classes.imageSrc}
+					style={{
+						backgroundImage: `url(${logo})`
+					}}
+				/>
+			</ButtonBase>
 		</div>
-		)
+		// return (<div className={classes.logo}>
+		// 	<Link to={defaultRoute ? defaultRoute : '/'} className={classes.logoLink}>
+		// 		<img src={logo} alt='logo' className={classes.img} /* onClick={handleDrawerToggle} */ />
+		// 	</Link>
+		// </div>
+		// )
 	}
 	render() {
 		const { drawer } = this.props
