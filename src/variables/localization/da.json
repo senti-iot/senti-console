@@ -483,7 +483,7 @@
 		"birthdays": "Ingen fødselsdage i dag",
 		"collection": "Ikke tildelt til en datasamling",
 		"collections": "Ingen datasamlinger",
-		"device": "Ingen enhed",
+		"device": "Ingen ledige enheder",
 		"devices": "Ingen enheder",
 		"doi": "ingen helligdage i dag",
 		"history": "Ingen logs",
@@ -700,7 +700,7 @@
 			"projectToOrg": "Project %{project} tilknyttet til organisation %{org}"
 		},
 		"assignFailed": "Tilknytning fejlede!",
-		"collectionCreated": "Datasamling er oppretet!",
+		"collectionCreated": "Datasamling er oprettet!",
 		"collectionDeleted": "Datasamling er slettet!",
 		"collectionUpdated": "Datasamling er opdateret!",
 		"createdFail": "Oprettelse fejlede!",
@@ -739,7 +739,7 @@
 		"updatedSuccess": "Opdateret!",
 		"updating": "Opdaterer ...",
 		"userCreated": "Bruger %{user} er oprettet!",
-		"userDeleted": "Bruger %{user} er sletted!",
+		"userDeleted": "Bruger %{user} er slettet!",
 		"userPasswordChanged": "Kodeord er skiftet!",
 		"userUpdated": "Bruger %{user} er opdateret!"
 	},
@@ -804,12 +804,12 @@
 			"users": "Brugere"
 		},
 		"user": "Bruger",
-		"userResendConfirm": "Er du sikker på du ønsker at gensende bekræftelses E-mail?",
+		"userResendConfirm": "Er du sikker på du ønsker at gensende bekræftelses E-mail",
 		"userResendEmail": "Gensend bekræftelses E-mail",
 		"validation": {
 			"noEmail": "E-mail mangler",
 			"noOrg": "Organisation mangler",
-			"userAlreadyExists": "E-mail er allerede tilknyttet en anden bruger konto!"
+			"userAlreadyExists": "E-mail er allerede tilknyttet en bruger konto!"
 		}
 	}
 }

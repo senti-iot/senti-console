@@ -483,7 +483,7 @@
 		"birthdays": "No birthdays today",
 		"collection": "No collection",
 		"collections": "No collections",
-		"device": "No device",
+		"device": "No available devices",
 		"devices": "No devices",
 		"doi": "No Holidays today",
 		"org": "No organisation",
@@ -809,7 +809,7 @@
 		"validation": {
 			"noEmail": "E-mail is missing",
 			"noOrg": "Organisation is missing",
-			"userAlreadyExists": "E-mail is already assigned to another user account!"
+			"userAlreadyExists": "E-mail is already assigned to a user account!"
 		}
 	}
 }
