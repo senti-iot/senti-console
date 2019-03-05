@@ -495,7 +495,7 @@ let initialState = {
 	drawer: 'permanent',
 	drawerState: true,
 	drawerCloseOnNav: true,
-	headerBorder: true,
+	headerBorder: false,
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
