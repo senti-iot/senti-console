@@ -96,7 +96,7 @@
     "collections": {
         "calibratedData": "Kalibreret data",
         "cards": {
-            "data": "Data",
+            "data": "Datasamlinger",
             "log": "Enhedslog"
         },
         "createCollection": "Ny datasamling",
@@ -125,7 +125,7 @@
             },
             "status": "Status"
         },
-        "pageTitle": "Data",
+        "pageTitle": "Datasamlinger",
         "rawData": "Rådata"
     },
     "confirmUser": {

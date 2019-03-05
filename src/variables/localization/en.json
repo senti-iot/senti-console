@@ -96,7 +96,7 @@
     "collections": {
         "calibratedData": "Calibrated Data",
         "cards": {
-            "data": "Data",
+            "data": "Data Collections",
             "log": "Device log"
         },
         "createCollection": "Create collection",
@@ -125,7 +125,7 @@
             },
             "status": "Device status"
         },
-        "pageTitle": "Data",
+        "pageTitle": "Data Collections",
         "rawData": "Raw data"
     },
     "confirmUser": {
