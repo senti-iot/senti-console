@@ -8,8 +8,16 @@ const theme = createMuiTheme({
 		suppressDeprecationWarnings: true,
 	},
 	overrides: {
+		MuiDialogContent: {
+			root: { padding: 24 }
+		},
 		MuiDialogTitle: {
 			root: {
+				fontSize: "1.25rem",
+				fontFamily: "Roboto, Helvetica, Arial",
+				fontWeight: 500,
+				lineHeight: 1.6,
+				letterSpacing: "0.0075em",
 				backgroundColor: headerColor,
 				color: 'white',
 				padding: 16
