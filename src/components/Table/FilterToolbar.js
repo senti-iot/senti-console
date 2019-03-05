@@ -175,7 +175,7 @@ class FilterToolbar extends Component {
 						placement="bottom-start"
 						transition
 						disablePortal
-						style={{ zIndex: 1028 }}
+						style={{ zIndex: 1028, marginTop: 8 }}
 					>
 						{({ TransitionProps }) => (
 							<Grow {...TransitionProps} timeout={350}>
