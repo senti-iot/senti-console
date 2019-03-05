@@ -739,7 +739,7 @@
 		"updatedSuccess": "Opdateret!",
 		"updating": "Opdaterer ...",
 		"userCreated": "Bruger %{user} er oprettet!",
-		"userDeleted": "Bruger %{user} er sletted!",
+		"userDeleted": "Bruger %{user} er slettet!",
 		"userPasswordChanged": "Kodeord er skiftet!",
 		"userUpdated": "Bruger %{user} er opdateret!"
 	},
