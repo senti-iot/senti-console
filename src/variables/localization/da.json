@@ -341,7 +341,7 @@
     },
     "exports": {
         "columns": "Kolonne",
-        "customColumns": "Tilpasset kolonner",
+        "customColumns": "Vælg kolonner",
         "standardColumns": "Standard kolonner"
     },
     "favorites": {
