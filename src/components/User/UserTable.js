@@ -24,7 +24,7 @@ class UserTable extends React.Component {
 		this.state = {
 			data: [],
 			page: 0,
-			openDelete: false
+			openDelete: false,
 		}
 	}
 	
