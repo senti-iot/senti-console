@@ -40,7 +40,7 @@ class FilterToolbar extends Component {
 		if (this.state.actionAnchor === null) {
 			this.setState({ actionAnchor: this.chip.chipRef });
 			window.addEventListener('keydown', this.handleMenuNav, false)
-			this.input.focus()
+			// this.input.focus()
 		}
 		else {
 			this.setState({ actionAnchor: null })
