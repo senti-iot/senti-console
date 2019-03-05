@@ -341,7 +341,7 @@
     },
     "exports": {
         "columns": "Columns",
-        "customColumns": "Custom Columns",
+        "customColumns": "Select Columns",
         "standardColumns": "Default Columns"
     },
     "favorites": {
