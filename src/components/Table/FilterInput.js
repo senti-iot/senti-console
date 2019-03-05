@@ -469,6 +469,17 @@ class FilterInput extends Component {
 						[classes.error]: error
 					})}
 				>
+					{	chipRenderer({
+						value: t('actions.addFilter'),
+						text: t('actions.addFilter'),
+						chip: t('actions.addFilter'),
+						icon: <Add />,
+						isDisabled: !!disabled,
+						isFocused: false,
+						className: classes.chip,
+						iRef: this.props.chipRef,
+						handleClick: this.props.handleClick
+					})}
 					{chips.length > 0 ? chips.map((tag, i) => {
 						const value = dataSourceConfig ? tag[dataSourceConfig.id] : tag
 						return chipRenderer({
@@ -486,7 +497,7 @@ class FilterInput extends Component {
 
 							}
 						}, i)
-					}) : chipRenderer({
+					}) : null}{/* : chipRenderer({
 						value: t('actions.addFilter'),
 						text: t('actions.addFilter'),
 						chip: t('actions.addFilter'),
@@ -494,7 +505,7 @@ class FilterInput extends Component {
 						isDisabled: !!disabled,
 						isFocused: false,
 						className: classes.chip
-					})}
+					})} */}
 
 					<Input
 						ref={this.setInputRef}
@@ -512,6 +523,7 @@ class FilterInput extends Component {
 						disableUnderline
 						fullWidth={fullWidthInput}
 						placeholder={!hasInput && (shrinkFloatingLabel || label == null) ? placeholder : null}
+						onClick={undefined}
 						{...InputProps}
 					/>
 				</div>
@@ -591,8 +603,9 @@ FilterInput.defaultProps = {
 
 export default withStyles(styles)(FilterInput)
 
-export const defaultChipRenderer = ({ value, handleDoubleClick, text, isFocused, isDisabled, handleClick, handleDelete, className, icon }, key) => (
+export const defaultChipRenderer = ({ value, handleDoubleClick, text, isFocused, isDisabled, handleClick, handleDelete, className, icon, iRef }, key) => (
 	<Chip
+		innerRef={ref => iRef ? iRef(ref) : undefined}
 		key={key}
 		className={className}
 		icon={icon}

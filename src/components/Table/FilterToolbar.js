@@ -34,11 +34,11 @@ class FilterToolbar extends Component {
 	componentDidMount = () => {
 		window.addEventListener('keydown', this.handleWindowKeyPress, false)
 	}
-
+	
 	handleClick = e => {
 		window.removeEventListener('keydown', this.handleWindowKeyPress, false)
 		if (this.state.actionAnchor === null) {
-			this.setState({ actionAnchor: this.input });
+			this.setState({ actionAnchor: this.chip.chipRef });
 			window.addEventListener('keydown', this.handleMenuNav, false)
 			this.input.focus()
 		}
@@ -49,6 +49,9 @@ class FilterToolbar extends Component {
 	handleBlur = () => {
 		window.removeEventListener('keydown', this.handleMenuNav, false)
 		window.addEventListener('keydown', this.handleWindowKeyPress, false)
+	}
+	handleFocus = () => { 
+		window.removeEventListener('keydown', this.handleWindowKeyPress, false)
 	}
 	handleClose = () => {
 		this.setState({ actionAnchor: null });
@@ -152,13 +155,15 @@ class FilterToolbar extends Component {
 					<FilterInput
 						onBlur={this.handleBlur}
 						inputRef={ref => this.input = ref}
+						chipRef={ref => this.chip = ref}
 						value={this.props.chips[reduxKey]}
 						onBeforeAdd={(chip) => this.onBeforeAdd(chip)}
 						onBeforeDelete={this.handleClose}
 						handleDoubleClick={this.handleDoubleClick}
+						onFocus={this.handleFocus}
 						onAdd={(displayValue, value, key) => this.handleAdd(displayValue, value, key)}
 						onDelete={(deletedChip, i) => this.handleDelete(deletedChip, i)}
-						onClick={this.handleClick}
+						handleClick={this.handleClick}
 						dataSourceConfig={{ id: 'id', text: 'displayValue', value: 'displayValue' }}
 						placeholder={t('actions.search')}
 						fullWidth
@@ -167,6 +172,7 @@ class FilterToolbar extends Component {
 					<Popper
 						open={actionAnchor ? true : false}
 						anchorEl={actionAnchor}
+						placement="bottom-start"
 						transition
 						disablePortal
 						style={{ zIndex: 1028 }}
