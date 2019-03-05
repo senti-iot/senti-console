@@ -613,7 +613,7 @@
                 "yellow": "Yellow"
             }
 		},
-		"breadcrumbs": "Breadcrumbs trail",
+		"breadcrumbs": "Breadcrumb Trail",
         "default": "Default",
         "defaultDataSet": "Default data set for charts",
         "defaultRoute": "Start page",
