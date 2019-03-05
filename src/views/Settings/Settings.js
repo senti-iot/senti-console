@@ -8,7 +8,7 @@ import { changeCalType, changeCount, changeCalNotif, changeAlerts, changeDidKnow
 import ChartSettings from './SettingsCards/ChartSettings';
 import withSnackbar from 'components/Localization/S';
 import { compose } from 'recompose';
-import Toolbar from 'components/Toolbar/Toolbar';
+// import Toolbar from 'components/Toolbar/Toolbar';
 import { Laptop, Build, /* Notifications, */ BarChart, Assignment, Public } from 'variables/icons';
 import TermsAndConditionsSettings from './SettingsCards/TermsAndConditionsSettings';
 import NavigationSettings from './SettingsCards/NavigationSettings';
@@ -21,6 +21,11 @@ class Settings extends Component {
 
 		}
 		props.setHeader('settings.pageTitle', false, '', 'settings')
+		props.setTabs({
+			id: 'settings',
+			tabs: this.tabs,
+			route: 0
+		})
 	}
 	tabs = [
 		{ id: 0, title: '', label: <Laptop />, url: `#display` },
@@ -43,13 +48,13 @@ class Settings extends Component {
 		const { tcount } = this.props
 		return (
 			<Fragment>
-				<Toolbar
+				{/* <Toolbar
 					hashLinks
 					noSearch
 					history={this.props.history}
 					match={this.props.match}
 					tabs={this.tabs}
-				/>
+				/> */}
 				<GridContainer>
 					<ItemGrid xs={12} noMargin id={'display'}>
 						<DisplaySettings

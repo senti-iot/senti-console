@@ -12,7 +12,7 @@ import DeviceImages from './DeviceCards/DeviceImages'
 import { connect } from 'react-redux';
 import { unassignDeviceFromCollection, getCollection } from 'variables/dataCollections';
 import moment from 'moment'
-import Toolbar from 'components/Toolbar/Toolbar';
+// import Toolbar from 'components/Toolbar/Toolbar';
 import { Timeline, DeviceHub, Map, DeveloperBoard, Image } from 'variables/icons';
 import teal from '@material-ui/core/colors/teal'
 import { getWifiHourly, getWifiDaily, getWifiMinutely, getWifiSummary } from 'components/Charts/DataModel';
@@ -449,13 +449,13 @@ class Device extends Component {
 		const { device, loading, /* selected, order, orderBy */ } = this.state
 		return (
 			!loading ? <Fragment>
-				<Toolbar
+				{/* <Toolbar
 					hashLinks
 					noSearch
 					history={this.props.history}
 					match={this.props.match}
 					tabs={this.tabs}
-				/>
+				/> */}
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<AssignDC
 						deviceId={device.id}

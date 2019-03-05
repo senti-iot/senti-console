@@ -21,7 +21,7 @@ const changeDP = 'changeDetailsPanelState'
 const changeDT = 'changeDrawerType'
 const changeDS = 'changeDrawerState'
 const changeHB = 'changeHeaderBorder'
-
+const changeBC = 'changeBreadCrumbs'
 //Navigation
 
 const changeDR = 'changeDefaultRoute'
@@ -78,7 +78,8 @@ export const saveSettingsOnServ = () => {
 			drawer: s.drawer,
 			drawerState: s.drawerState,
 			drawerCloseOnNav: s.drawerCloseOnNav,
-			headerBorder: s.headerBorder
+			headerBorder: s.headerBorder,
+			breadcrumbs: s.breadcrumbs
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -207,6 +208,15 @@ export const changeHeaderBorder = (val) => {
 		dispatch({
 			type: changeHB,
 			headerBorder: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeBreadCrumbs = val => {
+	return async dispatch => {
+		dispatch({
+			type: changeBC,
+			breadcrumbs: val
 		})
 		dispatch(saveSettingsOnServ())
 	}
@@ -496,9 +506,12 @@ let initialState = {
 	drawerState: true,
 	drawerCloseOnNav: true,
 	headerBorder: false,
+	breadcrumbs: true,
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
+		case changeBC: 
+			return Object.assign({}, state, { breadcrumbs: action.breadcrumbs })
 		case changeHB:
 			return Object.assign({}, state, { headerBorder: action.headerBorder })
 		case changeDCON: 

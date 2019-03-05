@@ -612,7 +612,8 @@
                 "teal": "Krikand",
                 "yellow": "Gul"
             }
-        },
+		},
+		"breadcrumbs": "Brødkrummer sti",
         "default": "Standard",
         "defaultDataSet": "Standard datasæt for diagrammer",
         "defaultRoute": "Startside",

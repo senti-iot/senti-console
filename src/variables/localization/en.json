@@ -612,7 +612,8 @@
                 "teal": "Teal",
                 "yellow": "Yellow"
             }
-        },
+		},
+		"breadcrumbs": "Breadcrumbs trail",
         "default": "Default",
         "defaultDataSet": "Default data set for charts",
         "defaultRoute": "Start page",

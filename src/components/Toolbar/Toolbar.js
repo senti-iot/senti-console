@@ -1,7 +1,7 @@
 
 
 import React, { PureComponent } from 'react'
-import { AppBar, Tabs, Tab, withStyles, Toolbar as ToolBar, withWidth } from '@material-ui/core';
+import { AppBar, Tabs, Tab, withStyles, Toolbar as ToolBar, withWidth, Grow } from '@material-ui/core';
 // import Search from 'components/Search/Search';
 // import { suggestionGen } from 'variables/functions'
 import { NavHashLink as Link } from 'react-router-hash-link';
@@ -110,36 +110,38 @@ class Toolbar extends PureComponent {
 		const { classes, tabs, dontShow, /* data, noSearch, filters, handleFilterKeyword, */ content, width, hashLinks, smallMenu, drawer  } = this.props
 		return (
 			dontShow ? null :
-				<AppBar classes={{
-					root: cx({
-						[classes.appBar]: true,
-						[classes.appBarDrawerPermClosed]: !smallMenu && drawer === 'permanent',
-						[classes.appBarDrawerPersClosed]: !smallMenu && drawer === 'persistent',
-						[classes.appBarDrawerOpen]: smallMenu,
-					})
-				}}>
-					{tabs ? <Tabs TabIndicatorProps={{ style: { opacity: hashLinks ? 0 : 1 } }} id={'tabs'} value={this.state.route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
-						{tabs ? tabs.map((t, i) => {
-							return <Tab title={t.title}
-								component={(props) => <Link {...props} scroll={this.handleScroll} style={{ color: '#fff' }} />}
-								value={t.id}
-								key={i}
-								smooth
-								classes={{ root: classes.tab }}
-								label={t.label}
-								to={`${t.url}`} />	
-						}) : null}
-					</Tabs> : null}
-					{/* {noSearch ? null : <Search
+				<div style={{ height: 48 }}>
+					<AppBar classes={{
+						root: cx({
+							[classes.appBar]: true,
+							[classes.appBarDrawerPermClosed]: !smallMenu && drawer === 'permanent',
+							[classes.appBarDrawerPersClosed]: !smallMenu && drawer === 'persistent',
+							[classes.appBarDrawerOpen]: smallMenu,
+						})
+					}}>
+						{tabs ? <Tabs TabIndicatorProps={{ style: { opacity: hashLinks ? 0 : 1 } }} id={'tabs'} value={this.state.route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
+							{tabs ? tabs.map((t, i) => {
+								return <Tab title={t.title}
+									component={(props) => <Grow in={true} timeout={i * 500}><Link {...props} scroll={this.handleScroll} style={{ color: '#fff' }} /></Grow>}
+									value={t.id}
+									key={i}
+									smooth
+									classes={{ root: classes.tab }}
+									label={t.label}
+									to={`${t.url}`} />	
+							}) : null}
+						</Tabs> : null}
+						{/* {noSearch ? null : <Search
 						right
 						suggestions={data ? suggestionGen(data) : []}
 						handleFilterKeyword={handleFilterKeyword}
 						searchValue={filters.keyword} />} */}
-					{content ? <ToolBar classes={{ root: classes.contentToolbar }}>
-						{content}
-					</ToolBar> : null}
-				</AppBar>
-		
+						{content ? <ToolBar classes={{ root: classes.contentToolbar }}>
+							{content}
+						</ToolBar> : null}
+					</AppBar>
+				</div>
+
 		)
 	}
 }

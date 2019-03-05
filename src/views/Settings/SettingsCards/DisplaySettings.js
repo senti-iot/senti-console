@@ -5,7 +5,7 @@ import { Laptop } from 'variables/icons'
 import { Grid, ListItem, List, ListItemText, withStyles } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 import { connect } from 'react-redux'
-import { changeTRP, changeTheme, changeDrawerState, changeSideBarLoc, changeDiscoverSenti, changeMapTheme, changeDetailsPanel, changeSnackbarLocation, changeDrawerType, changeDrawerCloseOnNav, changeHeaderBorder } from 'redux/settings';
+import { changeTRP, changeTheme, changeDrawerState, changeSideBarLoc, changeDiscoverSenti, changeMapTheme, changeDetailsPanel, changeSnackbarLocation, changeDrawerType, changeDrawerCloseOnNav, changeHeaderBorder, changeBreadCrumbs } from 'redux/settings';
 import { changeLanguage } from 'redux/localization';
 
 class DisplaySettings extends Component {
@@ -26,9 +26,10 @@ class DisplaySettings extends Component {
 	changeDrawerState = e => this.props.changeDrawerState(e.target.value)
 	changeDrawerCloseOnNav = e => this.props.changeDrawerCloseOnNav(e.target.value)
 	changeHeaderBorder = e => this.props.changeHeaderBorder(e.target.value)
+	changeBreadCrumbs = e => this.props.changeBreadCrumbs(e.target.value)
 
 	render() {
-		const { language, trp, sideBar, discSentiVal, theme, mapTheme, classes, t, snackbarLocation, detailsPanel, drawer, drawerState, drawerCloseOnNav, headerBorder } = this.props
+		const { language, trp, sideBar, breadcrumbs, discSentiVal, theme, mapTheme, classes, t, snackbarLocation, detailsPanel, drawer, drawerState, drawerCloseOnNav, headerBorder } = this.props
 		let discSenti = [
 			{ value: 1, label: t('actions.yes') },
 			{ value: 0, label: t('actions.no') }
@@ -168,10 +169,16 @@ class DisplaySettings extends Component {
 										<DSelect menuItems={closeOnNavOpts} value={drawerCloseOnNav} onChange={this.changeDrawerCloseOnNav} />
 									</ItemGrid>
 								</ListItem>
-								<ListItem>
+								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.header.border')}</ListItemText>
 										<DSelect menuItems={headerBorders} value={headerBorder} onChange={this.changeHeaderBorder} />
+									</ItemGrid>
+								</ListItem>
+								<ListItem>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{t('settings.breadcrumbs')}</ListItemText>
+										<DSelect menuItems={headerBorders} value={breadcrumbs} onChange={this.changeBreadCrumbs} />
 									</ItemGrid>
 								</ListItem>
 							</List>
@@ -195,7 +202,8 @@ const mapStateToProps = state => {
 		drawer: s.drawer,
 		drawerState: s.drawerState,
 		drawerCloseOnNav: s.drawerCloseOnNav,
-		headerBorder: s.headerBorder
+		headerBorder: s.headerBorder,
+		breadcrumbs: s.breadcrumbs
 	})
 }
 const mapDispatchToProps = (dispatch) => {
@@ -211,7 +219,8 @@ const mapDispatchToProps = (dispatch) => {
 		changeDrawerType: val => dispatch(changeDrawerType(val)),
 		changeDrawerState: val => dispatch(changeDrawerState(val)),
 		changeDrawerCloseOnNav: val => dispatch(changeDrawerCloseOnNav(val)),
-		changeHeaderBorder: val => dispatch(changeHeaderBorder(val))
+		changeHeaderBorder: val => dispatch(changeHeaderBorder(val)),
+		changeBreadCrumbs: val => dispatch(changeBreadCrumbs(val))
 	}
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(settingsStyles)(DisplaySettings))
