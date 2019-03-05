@@ -340,8 +340,8 @@
     },
     "exports": {
         "columns": "Kolonne",
-        "customColumns": "Tilpasset kolonne",
-        "standardColumns": "Standard kolonne"
+        "customColumns": "Tilpasset kolonner",
+        "standardColumns": "Standard kolonner"
     },
     "favorites": {
         "fields": {
