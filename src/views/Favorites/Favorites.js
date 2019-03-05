@@ -29,7 +29,7 @@ class Favorites extends Component {
 		props.setBC('favorites')
 		props.setHeader('sidebar.favorites', false, '', 'favorites')
 		props.setTabs({
-			id: 'favorits',
+			id: 'favorites',
 			tabs: this.tabs(),
 			route: 0
 		})

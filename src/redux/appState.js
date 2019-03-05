@@ -120,11 +120,11 @@ const initialState = {
 		id: '',
 		route: 0,
 		data: [],
-		filters: {
-			keyword: ''
-		},
+		// filters: {
+		// keyword: ''
+		// },
 		tabs: [],
-		noSearch: true
+		// noSearch: true
 	},
 	eH: true,
 	CPP: 9,
