@@ -1,7 +1,7 @@
 
 
 import React, { PureComponent } from 'react'
-import { AppBar, Tabs, Tab, withStyles, Toolbar as ToolBar, withWidth, Grow } from '@material-ui/core';
+import { AppBar, Tabs, Tab, withStyles, Toolbar as ToolBar, withWidth, /*  Grow */ } from '@material-ui/core';
 // import Search from 'components/Search/Search';
 // import { suggestionGen } from 'variables/functions'
 import { NavHashLink as Link } from 'react-router-hash-link';
@@ -122,7 +122,7 @@ class Toolbar extends PureComponent {
 						{tabs ? <Tabs TabIndicatorProps={{ style: { opacity: hashLinks ? 0 : 1 } }} id={'tabs'} value={this.state.route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 							{tabs ? tabs.map((t, i) => {
 								return <Tab title={t.title}
-									component={(props) => <Grow in={true} timeout={i * 500}><Link {...props} scroll={this.handleScroll} style={{ color: '#fff' }} /></Grow>}
+									component={(props) => <Link {...props} scroll={this.handleScroll} style={{ color: '#fff' }} />}
 									value={t.id}
 									key={i}
 									smooth

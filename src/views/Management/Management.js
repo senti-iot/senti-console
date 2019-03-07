@@ -159,17 +159,14 @@ class Management extends Component {
 	}
 	handleTabs = () => {
 		if (this.props.location.pathname.includes('/orgs')) {
-			// this.setState({ route: 1 })
 			return 1
 		}
 		else {
 			if (this.props.location.pathname.includes('/favorites')) {
-				// this.setState({ route: 2 })
 				this.props.setHeader('sidebar.favorites', false, '', 'users')
 				return 2
 			}
 			else {
-				// this.setState({ route: 0 })
 				return 0
 			}
 		}
@@ -177,8 +174,11 @@ class Management extends Component {
 
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.location.pathname !== prevProps.location.pathname) {
-			this.handleTabs()
-		}
+			this.props.setTabs({
+				id: 'management',
+				tabs: this.tabs,
+				route: this.handleTabs()
+			})		}
 		if (window.location.pathname.includes('favorites')) {
 			this.props.setBC('favorites')
 			if (this.props.saved === true) {

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { withStyles, Snackbar, IconButton } from '@material-ui/core';
-import { Header, /* Sidebar, */ CircularLoader } from 'components';
+import { Header, /* Sidebar,  CircularLoader */} from 'components';
 import cx from 'classnames'
 import dashboardRoutes from 'routes/dashboard.js';
 import appStyle from 'assets/jss/material-dashboard-react/appStyle.js';
@@ -126,6 +126,9 @@ class App extends React.Component {
 		if (tabs.id !== this.props.tabs.id) {
 			this.props.changeTabs(tabs)
 		}
+		if (tabs.id === this.props.tabs.id && tabs.route !== this.props.tabs.route) {
+			this.props.changeTabs(tabs)
+		}
 	}
 	render() {
 		const { classes, t, loading, sOpt, defaultRoute, snackbarLocation, defaultView, smallMenu, drawer, tabs, ...rest } = this.props;
@@ -163,7 +166,8 @@ class App extends React.Component {
 								menuRoute={this.state.menuRoute}
 								{...rest}
 							/>
-							{!loading ? <Fragment>
+							{/* {!loading ?  */}
+							<Fragment>
 								<div className={classes.container} id={'container'}>
 									<Toolbar history={this.props.history} {...tabs}/>
 									<BC
@@ -215,7 +219,8 @@ class App extends React.Component {
 									}
 								/>
 
-							</Fragment> : <CircularLoader />}
+							</Fragment> 
+							{/* : <CircularLoader />} */}
 						</Fragment>
 					</div>
 

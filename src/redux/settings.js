@@ -54,7 +54,6 @@ const reset = 'resetSettings'
 
 export const resetSettings = () => {
 	return async (dispatch, getState) => {
-		console.log(getState().settings.user)
 		dispatch({
 			type: reset,
 			user: getState().settings.user
@@ -492,7 +491,7 @@ let initialState = {
 		chartType: 3,
 		hide: false
 	}],
-	cookies: false,
+	cookies: true,
 	defaultRoute: '/dashboard',
 	defaultView: '/list',
 	mapTheme: 0,
@@ -525,7 +524,7 @@ export const settings = (state = initialState, action) => {
 	switch (action.type) {
 		case reset: 
 			console.log(action.user)
-			return Object.assign({}, state, { ...initialState, user: action.user })
+			return Object.assign({}, state, { ...initialState, user: action.user, cookies: false })
 		case changeBC: 
 			return Object.assign({}, state, { breadcrumbs: action.breadcrumbs })
 		case changeHB:
