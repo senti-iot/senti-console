@@ -183,7 +183,7 @@ class LoginPage extends React.Component {
 										<CardFooter className={classes.cardFooter}>
 											<Grid spacing={8} container justify={'center'}>
 												<ItemG xs={12} container justify={'center'}>
-													<Button variant="flat" color={'primary'} disableFocusRipple disableRipple onClick={this.changeLanguage} className={classes.changeLanguage}>
+													<Button variant="text" color={'primary'} disableFocusRipple disableRipple onClick={this.changeLanguage} className={classes.changeLanguage}>
 														{t('actions.changeLanguage')}
 													</Button>
 												</ItemG>
