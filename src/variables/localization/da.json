@@ -9,6 +9,7 @@
 	"": "",
 	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
+		"changeLanguage": "Change to English",
 		"search": "Eller skriv her for at søge",
 		"accept": "Godkend",
 		"addFilter": "Tilføj filter",

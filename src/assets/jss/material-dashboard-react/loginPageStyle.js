@@ -2,13 +2,23 @@ import { container, primaryColor } from "assets/jss/material-dashboard-react";
 import teal from '@material-ui/core/colors/teal'
 
 const signupPageStyle = theme => ({
+	changeLanguage: {
+		fontSize: "0.875em",
+		color: '#37a891',
+		fontWeight: 400,
+		textTransform: 'none', 
+		"&:hover": {
+			 background: 'none' 
+		} 
+	},
 	iconError: {
 		color: "red"
 	},
 	forgotPass: {
 		fontSize: "0.875em",
-		margin: 8,
-		marginBottom: 12
+		fontWeight: 400,
+		// margin: 8,
+		// marginBottom: 12
 	},
 	loginButton: {
 		fontSize: "12px",
