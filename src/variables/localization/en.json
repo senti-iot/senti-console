@@ -96,7 +96,7 @@
     "collections": {
         "calibratedData": "Calibrated Data",
         "cards": {
-            "data": "Data",
+            "data": "Data Collections",
             "log": "Device log"
         },
         "createCollection": "Create collection",
@@ -125,7 +125,7 @@
             },
             "status": "Device status"
         },
-        "pageTitle": "Data",
+        "pageTitle": "Data Collections",
         "rawData": "Raw data"
     },
     "confirmUser": {
@@ -314,8 +314,8 @@
             "message": "Data details:"
         },
         "login": {
-            "passwordReseted": "Your password has been resetted!",
-            "resetPassRequestMessage": "An E-mail has been sent with instructions on how to reset your password!",
+            "passwordReseted": "Your password resetted!",
+            "resetPassRequestMessage": "An E-mail sent with instructions on how to reset your password!",
             "resetPasswordMessage": "Reset your password by entering your E-mail"
         },
         "unassign": {
@@ -395,9 +395,9 @@
         "search": "Search",
         "startDate": "Start date",
         "users": {
-            "hasLogged": "Ever logged in",
-            "hasLoggedIn": "Has logged in",
-            "neverLoggedIn": "Never logged in"
+            "hasLogged": "Log in",
+            "hasLoggedIn": "Has been logged in",
+            "neverLoggedIn": "Has never been logged in"
         }
     },
     "images": {
@@ -439,13 +439,13 @@
         "calibrate": "Calibrate",
         "changePassword": "Change Password",
         "charts": {
-            "addAPeriod": "Add a period",
+            "addAPeriod": "Add period",
             "deleteThisPeriod": "Delete this period",
             "hideThisPeriod": "Hide this period",
             "resetToDefault": "Reset to default",
-            "showHidePeriods": "Show / Hide a period"
+            "showHidePeriods": "Show / Hide period"
         },
-        "copyEmails": "Copy e-mails to clipboard",
+        "copyEmails": "Copy E-mail addresses",
         "create": {
             "project": "Create project",
             "user": "Create user"
@@ -482,7 +482,7 @@
             "profile": "My profile",
             "signout": "Sign out"
         },
-        "userResendEmail": "Resend Confirm Email"
+        "userResendEmail": "Resend confirmation E-mail"
     },
     "no": {
         "activeDevice": "No active device",
@@ -618,7 +618,7 @@
                 "yellow": "Yellow"
             }
 		},
-		"breadcrumbs": "Breadcrumbs trail",
+		"breadcrumbs": "Breadcrumbs",
         "default": "Default",
         "defaultDataSet": "Default data set for charts",
         "defaultRoute": "Start page",
@@ -634,7 +634,7 @@
             "open": "Open"
         },
         "didYouKnow": "Intelligent Notifications",
-        "discoverSenti": "Show Welcome to Senti on Dashboard",
+        "discoverSenti": "Show Welcome to Senti",
         "drawer": {
             "callback": "Hide menu on navigation",
             "callbacks": {
@@ -653,7 +653,7 @@
             }
         },
         "header": {
-            "border": "Divider Lines"
+            "border": "Separation Lines"
         },
         "headers": {
             "calibration": "Calibration",
@@ -663,7 +663,7 @@
             "navigation": "Navigation",
             "notifications": "Notifications"
         },
-        "justForMobile": "Only on mobile",
+        "justForMobile": "Only on mobile devices",
         "language": "Language",
         "languages": {
             "da": "Danish",
@@ -675,7 +675,7 @@
         "sideBarLeft": "Left",
         "sideBarLoc": "Menu button location",
         "sideBarRight": "Right",
-        "snackbarLocation": "Notification placing",
+        "snackbarLocation": "Positioning of notifications",
         "snackbarLocations": {
             "left": "Left",
             "right": "Right"
@@ -692,7 +692,7 @@
         "trp": "Rows per page on lists"
     },
     "sidebar": {
-        "collections": "Data",
+        "collections": "Data Collections",
         "dashboard": "Dashboard",
         "devices": "Devices",
         "favorites": "Favorites",
@@ -712,35 +712,35 @@
             "projectToOrg": "Project %{project} assigned to organisation %{org}"
         },
         "assignFailed": "Assignment failed!",
-        "collectionCreated": "Data Collection has been created!",
-        "collectionDeleted": "Data Collection has been deleted!",
-        "collectionUpdated": "Data Collection has been updated!",
+        "collectionCreated": "Data Collection created!",
+        "collectionDeleted": "Data Collection deleted!",
+        "collectionUpdated": "Data Collection updated!",
         "createdFail": "Creation failed!",
         "createdSuccess": "Created!",
         "creating": "Creating...",
         "deletedFail": "Deletion failed!",
         "deletedSuccess": "Deleted!",
         "deleting": "Deleting...",
-        "deviceUpdated": "Device %{device} has been updated!",
+        "deviceUpdated": "Device %{device} updated!",
         "emailsCopied": "E-mail adresses copied to clipboard",
         "exported": "Exported!",
         "favorite": {
-            "manyRemoved": "Favorites have been removed!",
-            "removed": "%{name} (%{type}) has been removed from favorites!",
-            "saved": "%{name} (%{type}) has been added to favorites!",
-            "updated": "Favorites have been updated!"
+            "manyRemoved": "Favorites removed!",
+            "removed": "%{name} (%{type}) removed from favorites!",
+            "saved": "%{name} (%{type}) added to favorites!",
+            "updated": "Favorites updated!"
         },
-        "orgCreated": "Organisation %{org} has been created!",
-        "orgDeleted": "Organisation has been deleted!",
-        "orgUpdated": "Organisation %{org} has been updated!",
-        "pictureDeleted": "Picture has been deleted!",
-        "pictureNotDeleted": "Picture has not been deleted!",
-        "projectCreated": "Project %{project} has been created!",
-        "projectDeleted": "Project(s) has been deleted!",
-        "projectExported": "Project has been exported!",
-        "projectUpdated": "Project %{project} has been updated!",
+        "orgCreated": "Organisation %{org} created!",
+        "orgDeleted": "Organisation deleted!",
+        "orgUpdated": "Organisation %{org} updated!",
+        "pictureDeleted": "Picture deleted!",
+        "pictureNotDeleted": "Picture not deleted!",
+        "projectCreated": "Project %{project} created!",
+        "projectDeleted": "Project(s) deleted!",
+        "projectExported": "Project exported!",
+        "projectUpdated": "Project %{project} updated!",
         "redirect": "Redirecting ...",
-        "resetDeviceSuccess": "Device has been reset",
+        "resetDeviceSuccess": "Device reset",
         "settingsSaved": "Settings saved!",
         "unassign": {
             "collectionFromProject": "Data collection %{collection} unassigned from project %{project}",
@@ -751,10 +751,10 @@
         "updatedFailed": "Update failed!",
         "updatedSuccess": "Updated!",
         "updating": "Updating...",
-        "userCreated": "User %{user} has been created!",
-        "userDeleted": "User %{user} has been deleted!",
-        "userPasswordChanged": "Password has been changed!",
-        "userUpdated": "User %{user} has been updated!"
+        "userCreated": "User %{user} created!",
+        "userDeleted": "User %{user} deleted!",
+        "userPasswordChanged": "Password changed!",
+        "userUpdated": "User %{user} updated!"
     },
     "tables": {
         "addNewDevice": "Add device",
@@ -778,7 +778,7 @@
             "email": "E-mail",
             "firstName": "First name",
             "group": "Group",
-            "language": "System language",
+            "language": "Language",
             "lastName": "Last name",
             "lastSignIn": "Last sign in",
             "linkedInURL": "LinkedIn",
@@ -808,7 +808,7 @@
         },
         "headers": {
             "contact": "Contact",
-            "system": "System log"
+            "system": "System Log"
         },
         "messages": {},
         "pageTitle": "Users",
@@ -818,7 +818,7 @@
         },
         "user": "User",
         "userResendConfirm": "Are you sure you want to resend confirmation E-mail",
-        "userResendEmail": "Resend Confirm E-mail",
+        "userResendEmail": "Resend Confirmation E-mail",
         "validation": {
             "noEmail": "E-mail is missing",
             "noOrg": "Organisation is missing",
