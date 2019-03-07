@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { withStyles, Snackbar, IconButton } from '@material-ui/core';
-import { Header, /* Sidebar,  CircularLoader */} from 'components';
+import { Header, /* Sidebar,  */CircularLoader } from 'components';
 import cx from 'classnames'
 import dashboardRoutes from 'routes/dashboard.js';
 import appStyle from 'assets/jss/material-dashboard-react/appStyle.js';
@@ -166,61 +166,61 @@ class App extends React.Component {
 								menuRoute={this.state.menuRoute}
 								{...rest}
 							/>
-							{/* {!loading ?  */}
-							<Fragment>
-								<div className={classes.container} id={'container'}>
-									<Toolbar history={this.props.history} {...tabs}/>
-									<BC
-										defaultRoute={defaultRoute}
-										bc={this.state.bc}
-										t={t}
+							{!loading ? 
+								<Fragment>
+									<div className={classes.container} id={'container'}>
+										<Toolbar history={this.props.history} {...tabs}/>
+										<BC
+											defaultRoute={defaultRoute}
+											bc={this.state.bc}
+											t={t}
+										/>
+										<Switch>
+											{cookie.load('SESSION') ?
+												dashboardRoutes.map((prop, key) => {
+													if (prop.redirect) {
+														return <Redirect from={prop.path} to={prop.to} key={key} />;
+													}
+													return <Route path={prop.path}
+														render={(routeProps) =>
+															<prop.component {...routeProps}
+																setBC={this.handleSetBreadCrumb}
+																setHeader={this.handleSetHeaderTitle}
+																setTabs={this.setTabs}
+															/>} key={key} />;
+												})
+												: <Redirect from={window.location.pathname} to={{
+													pathname: '/login', state: {
+														prevURL: window.location.pathname
+													}
+												}} />}
+										</Switch>
+									</div>
+
+									<Cookies />
+									<Snackbar
+										anchorOrigin={{ vertical: 'bottom', horizontal: snackbarLocation }}
+										open={this.props.sOpen}
+										onClose={this.props.sClose}
+										onExited={this.props.handleNextS}
+										ContentProps={{
+											'aria-describedby': 'message-id',
+										}}
+										ClickAwayListenerProps={{
+											mouseEvent: false,
+											touchEvent: false
+										}}
+										autoHideDuration={3000}
+										message={<span>{t(this.props.sId, this.props.sOpt)}</span>}
+										action={
+											<IconButton color={'primary'} size={'small'} onClick={this.props.sClose} >
+												<Close />
+											</IconButton>
+										}
 									/>
-									<Switch>
-										{cookie.load('SESSION') ?
-											dashboardRoutes.map((prop, key) => {
-												if (prop.redirect) {
-													return <Redirect from={prop.path} to={prop.to} key={key} />;
-												}
-												return <Route path={prop.path}
-													render={(routeProps) =>
-														<prop.component {...routeProps}
-															setBC={this.handleSetBreadCrumb}
-															setHeader={this.handleSetHeaderTitle}
-															setTabs={this.setTabs}
-														/>} key={key} />;
-											})
-											: <Redirect from={window.location.pathname} to={{
-												pathname: '/login', state: {
-													prevURL: window.location.pathname
-												}
-											}} />}
-									</Switch>
-								</div>
 
-								<Cookies />
-								<Snackbar
-									anchorOrigin={{ vertical: 'bottom', horizontal: snackbarLocation }}
-									open={this.props.sOpen}
-									onClose={this.props.sClose}
-									onExited={this.props.handleNextS}
-									ContentProps={{
-										'aria-describedby': 'message-id',
-									}}
-									ClickAwayListenerProps={{
-										mouseEvent: false,
-										touchEvent: false
-									}}
-									autoHideDuration={3000}
-									message={<span>{t(this.props.sId, this.props.sOpt)}</span>}
-									action={
-										<IconButton color={'primary'} size={'small'} onClick={this.props.sClose} >
-											<Close />
-										</IconButton>
-									}
-								/>
-
-							</Fragment> 
-							{/* : <CircularLoader />} */}
+								</Fragment> 
+							 : <CircularLoader />}
 						</Fragment>
 					</div>
 
@@ -253,3 +253,4 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withSnackbarHandler()((withLocalization()(withStyles(appStyle)(App)))))
+ 
