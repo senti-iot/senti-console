@@ -50,6 +50,19 @@ const GetSettings = 'getSettings'
 const SAVESETTINGS = 'saveSettings'
 const SAVED = 'savedSettings'
 const NOSETTINGS = 'noSettings'
+const reset = 'resetSettings'
+
+export const resetSettings = () => {
+	return async (dispatch, getState) => {
+		console.log(getState().settings.user)
+		dispatch({
+			type: reset,
+			user: getState().settings.user
+		})
+		dispatch(await saveSettingsOnServ())
+		dispatch(await getSettings())
+	}
+}
 
 export const saveSettingsOnServ = () => {
 	return async (dispatch, getState) => {
@@ -484,7 +497,7 @@ let initialState = {
 	defaultView: '/list',
 	mapTheme: 0,
 	rawData: 0,
-	language: 'dk',
+	language: 'da',
 	calibration: 1,
 	calNotifications: 0,
 	count: 200,
@@ -510,6 +523,9 @@ let initialState = {
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
+		case reset: 
+			console.log(action.user)
+			return Object.assign({}, state, { ...initialState, user: action.user })
 		case changeBC: 
 			return Object.assign({}, state, { breadcrumbs: action.breadcrumbs })
 		case changeHB:

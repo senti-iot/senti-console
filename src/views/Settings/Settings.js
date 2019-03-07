@@ -12,6 +12,7 @@ import { compose } from 'recompose';
 import { Laptop, Build, /* Notifications, */ BarChart, Assignment, Public } from 'variables/icons';
 import TermsAndConditionsSettings from './SettingsCards/TermsAndConditionsSettings';
 import NavigationSettings from './SettingsCards/NavigationSettings';
+import ResetSettings from './SettingsCards/ResetSettings';
 
 class Settings extends Component {
 	constructor(props) {
@@ -24,6 +25,7 @@ class Settings extends Component {
 		props.setTabs({
 			id: 'settings',
 			tabs: this.tabs,
+			hashLinks: true,
 			route: 0
 		})
 	}
@@ -44,47 +46,45 @@ class Settings extends Component {
 
 	render() {
 		const { t } = this.props
-		const { calibration, changeCalType, count, changeCount, changeTCount, calNotifications, changeCalNotif } = this.props
+		const { calibration, changeCalType, count, changeCount, changeTCount, calNotifications, changeCalNotif, history } = this.props
 		const { tcount } = this.props
+		const reset = this.props.location.pathname.includes('reset') ? true : false
 		return (
 			<Fragment>
-				{/* <Toolbar
-					hashLinks
-					noSearch
-					history={this.props.history}
-					match={this.props.match}
-					tabs={this.tabs}
-				/> */}
 				<GridContainer>
-					<ItemGrid xs={12} noMargin id={'display'}>
-						<DisplaySettings
-							t={t}/>
-					</ItemGrid>
-					<ItemGrid xs={12} noMargin id={'navigation'}>
-						<NavigationSettings
-							t={t}
-						/>
-					</ItemGrid>
-					<ItemGrid xs={12} noMargin id={'calibration'}>
-						<CalibrationSettings
-							calibration={calibration}
-							changeCalType={changeCalType}
-							count={count}
-							tcount={tcount}
-							changeCount={changeCount}
-							changeTCount={changeTCount}
-							calNotifications={calNotifications}
-							changeCalNotif={changeCalNotif}
-							t={t} />
-					</ItemGrid>
-					<ItemGrid xs={12} noMargin id={'charts'}>
-						<ChartSettings
-							t={t}
-						/>
-					</ItemGrid>
-					<ItemGrid xs={12} noMargin id={'termsAndConditions'}>
-						<TermsAndConditionsSettings t={t}/>
-					</ItemGrid>
+					{reset ? <ItemGrid xs={12} noMargin>
+						<ResetSettings history={history} t={t}/>
+					</ItemGrid> : <Fragment>
+						<ItemGrid xs={12} noMargin id={'display'}>
+							<DisplaySettings
+								t={t}/>
+						</ItemGrid>
+						<ItemGrid xs={12} noMargin id={'navigation'}>
+							<NavigationSettings
+								t={t}
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12} noMargin id={'calibration'}>
+							<CalibrationSettings
+								calibration={calibration}
+								changeCalType={changeCalType}
+								count={count}
+								tcount={tcount}
+								changeCount={changeCount}
+								changeTCount={changeTCount}
+								calNotifications={calNotifications}
+								changeCalNotif={changeCalNotif}
+								t={t} />
+						</ItemGrid>
+						<ItemGrid xs={12} noMargin id={'charts'}>
+							<ChartSettings
+								t={t}
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12} noMargin id={'termsAndConditions'}>
+							<TermsAndConditionsSettings history={history} t={t}/>
+						</ItemGrid>
+					</Fragment>}
 				</GridContainer>
 			</Fragment>
 

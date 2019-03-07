@@ -9,7 +9,7 @@ const theme = createMuiTheme({
 	},
 	overrides: {
 		MuiDialogContent: {
-			root: { padding: 24 }
+			root: { padding: 24, color: '#fff' }
 		},
 		MuiDialogTitle: {
 			root: {

@@ -583,7 +583,12 @@
             "notification": "Notification",
             "text": "Method",
             "time": "By time"
-        },
+		},
+		"reset": {
+			"restore": "Restore",
+			"resetSettings": "Restore settings to default",
+			"message": "Are you sure you want to restore your settings to default?"
+		},
         "chart": {
             "YAxis": {
                 "linear": "Linear scale",

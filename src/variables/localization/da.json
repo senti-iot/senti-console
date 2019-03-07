@@ -583,7 +583,12 @@
             "notification": "Notifikation",
             "text": "Metode",
             "time": "På tid"
-        },
+		},
+		"reset": {
+			"restore": "Nulstil indstillinger",
+			"resetSettings": "Nulstil indstillinger til standard",
+			"message": "Er du sikker på, at du vil nulstille dine indstillinger til standard?"
+		},
         "chart": {
             "YAxis": {
                 "linear": "Lineær skala",
