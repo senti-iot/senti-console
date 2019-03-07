@@ -165,6 +165,7 @@ class IntegrationAutosuggest extends React.PureComponent {
 							onFocus: this.props.disableEH,
 							onBlur: this.props.enableEH,
 							noAbsolute: this.props.noAbsolute,
+							placeholder: this.props.placeholder,
 							classes,
 							fullWidth: this.props.fullWidth,
 							value: this.props.searchValue,

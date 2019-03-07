@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import Toolbar from 'components/Toolbar/Toolbar'
+// import Toolbar from 'components/Toolbar/Toolbar'
 import { ViewList, StarBorder } from 'variables/icons'
 import TableToolbar from 'components/Table/TableToolbar'
 import FavoritesTable from 'components/Favorites/FavoritesTable'
@@ -26,7 +26,13 @@ class Favorites extends Component {
 				keyword: '',
 			}
 		}
+		props.setBC('favorites')
 		props.setHeader('sidebar.favorites', false, '', 'favorites')
+		props.setTabs({
+			id: 'favorites',
+			tabs: this.tabs(),
+			route: 0
+		})
 	}
 	options = () => {
 		const { t } = this.props
@@ -236,11 +242,11 @@ class Favorites extends Component {
 		</GridContainer>
 	}
 	render() {
-		const { filters, route } = this.state
-		const { favorites } = this.props
+		// const { filters, route } = this.state
+		// const { favorites } = this.props
 		return (
 			<Fragment>
-				<Toolbar
+				{/* <Toolbar
 					data={favorites}
 					filters={filters}
 					history={this.props.history}
@@ -248,7 +254,7 @@ class Favorites extends Component {
 					match={this.props.match}
 					handleFilterKeyword={this.handleFilterKeyword}
 					tabs={this.tabs()}
-				/>
+				/> */}
 				<Switch>
 					<Route path={`${this.props.match.path}/list`} render={() => this.renderFavorites()} />
 					<Redirect path={`${this.props.match.path}`} to={`${this.props.match.path}/list`} />

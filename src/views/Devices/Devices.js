@@ -9,7 +9,7 @@ import DeviceTable from 'components/Devices/DeviceTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
 import { ViewList, ViewModule, Map, Build, Business, DataUsage, Edit, LayersClear, SignalWifi2Bar, Star, StarBorder } from 'variables/icons'
-import Toolbar from 'components/Toolbar/Toolbar'
+// import Toolbar from 'components/Toolbar/Toolbar'
 import { filterItems, handleRequestSort } from 'variables/functions';
 import DevicesCards from './DevicesCards'
 import { unassignDeviceFromCollection } from 'variables/dataCollections';
@@ -39,6 +39,12 @@ class Devices extends Component {
 			}
 		}
 		props.setHeader('devices.pageTitle', false, '', 'devices')
+		props.setTabs({
+			id: 'devices',
+			tabs: this.tabs(),
+			route: this.handleTabs()
+		})
+		props.setBC('devices')
 	}
 	
 	//#region Constants
@@ -236,16 +242,16 @@ class Devices extends Component {
 
 	handleTabs = () => {
 		if (this.props.location.pathname.includes('grid')) {
-			this.setState({ route: 2 })
+			// this.setState({ route: 2 })
 			return 2
 		}
 		else {
 			if (this.props.location.pathname.includes('favorites')) {
-				this.setState({ route: 3 })
+				// this.setState({ route: 3 })
 				return 3
 			}
 			else {
-				this.setState({ route: 0 })
+				// this.setState({ route: 0 })
 				return 0
 			}
 		}
@@ -380,7 +386,7 @@ class Devices extends Component {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('dialogs.unassign.title.devicesFromCollection')}</DialogTitle>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.unassign.title.devicesFromCollection')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.unassign.message.devicesFromCollection')}
@@ -515,11 +521,11 @@ class Devices extends Component {
 	}
 
 	render() {
-		const { devices, filters, route } = this.state
-		const { history, match,  } = this.props
+		// const { devices, filters, route } = this.state
+		const { /* history, */ match,  } = this.props
 		return (
 			<Fragment>
-				<Toolbar
+				{/* <Toolbar
 					data={devices}
 					filters={filters}
 					history={history}
@@ -527,7 +533,7 @@ class Devices extends Component {
 					match={match}
 					handleFilterKeyword={this.handleFilterKeyword}
 					tabs={this.tabs()}
-				/>
+				/> */}
 				<Switch>
 					<Route path={`${match.path}/map`} render={() => this.renderMap()} />
 					<Route path={`${match.path}/list`} render={() => this.renderList()} />

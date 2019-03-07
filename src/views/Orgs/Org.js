@@ -10,7 +10,7 @@ import OrgUsers from 'views/Orgs/OrgCards/OrgUsers';
 import OrgDevices from 'views/Orgs/OrgCards/OrgDevices';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 import { getAllDevices } from 'variables/dataDevices';
-import Toolbar from 'components/Toolbar/Toolbar';
+// import Toolbar from 'components/Toolbar/Toolbar';
 import { Business, DeviceHub, People } from 'variables/icons';
 
 class Org extends Component {
@@ -43,7 +43,7 @@ class Org extends Component {
 	}
 
 	componentDidMount = async () => {
-		const { match, setHeader, location, history } = this.props
+		const { match, setHeader, location, history, setBC, setTabs } = this.props
 		if (match)
 			if (match.params.id) {
 				await getOrg(match.params.id).then(async rs => {
@@ -55,9 +55,15 @@ class Org extends Component {
 					else {
 						let prevURL = location.prevURL ? location.prevURL : '/management/orgs'
 						setHeader('orgs.organisation', true, prevURL, 'users')
+						setTabs({
+							id: 'org',
+							tabs: this.tabs,
+							route: 0
+						})
 						this.setState({ org: rs, loading: false })
 					}
 				})
+				setBC('org', this.state.org.name)
 				await getOrgUsers(this.props.match.params.id).then(rs => {
 					this.setState({ users: rs, loadingUsers: false })
 				})
@@ -118,7 +124,7 @@ class Org extends Component {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.org')}</DialogTitle>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.org')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.delete.message.org', { org: this.state.org.name })}
@@ -154,13 +160,13 @@ class Org extends Component {
 		const { org, loading, loadingUsers, loadingDevices, users, devices } = this.state
 		return (
 			loading ? <CircularLoader /> : <Fragment>
-				<Toolbar
+				{/* <Toolbar
 					hashLinks
 					noSearch
 					history={this.props.history}
 					match={this.props.match}
 					tabs={this.tabs}
-				/>
+				/> */}
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<ItemGrid xs={12} noMargin id={'details'}> 
 						<OrgDetails

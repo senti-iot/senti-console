@@ -1,10 +1,9 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Switch, Route, Redirect, /* Link */ } from 'react-router-dom';
-import { withStyles, Snackbar, IconButton, /* Chip */ } from '@material-ui/core';
-import { Header, /* Sidebar, */ CircularLoader } from 'components';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import { withStyles, Snackbar, IconButton } from '@material-ui/core';
+import { Header, /* Sidebar,  CircularLoader */} from 'components';
 import cx from 'classnames'
-// import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
 import dashboardRoutes from 'routes/dashboard.js';
 import appStyle from 'assets/jss/material-dashboard-react/appStyle.js';
 import { MuiThemeProvider } from '@material-ui/core/styles'
@@ -19,8 +18,10 @@ import { lightTheme, darkTheme } from 'variables/themes'
 import { getDaysOfInterest } from 'redux/doi';
 import Cookies from 'components/Cookies/Cookies';
 import NewSidebar from 'components/Sidebar/NewSidebar';
-// import Toolbar from 'components/Toolbar/Toolbar';
-// import { transition } from 'assets/jss/material-dashboard-react';
+import BC from 'components/Breadcrumbs/BC';
+import { changeTabs } from 'redux/appState';
+import Toolbar from 'components/Toolbar/Toolbar';
+// import _ from 'lodash'
 
 class App extends React.Component {
 	constructor(props) {
@@ -28,17 +29,35 @@ class App extends React.Component {
 
 		this.state = {
 			mobileOpen: false,
-			headerTitle: '',
+			headerTitle: {
+				id: '',
+				options: null
+			},
 			goBackButton: false,
 			url: '',
 			menuRoute: 0,
+			bc: {
+				name: '',
+				id: ''
+			},
 		}
 	}
 
 	handleDrawerToggle = () => {
 		this.setState({ mobileOpen: !this.state.mobileOpen });
 	};
-	handleSetHeaderTitle = (headerTitle, goBackButton, url, menuRoute) => {
+	handleSetBreadCrumb = (id, name, dontShow) => {
+		const { bc } = this.state
+		if (bc.id !== id || name !== bc.name)
+			this.setState({
+				bc: {
+					id: id,
+					name: name,
+					dontShow: dontShow
+				}
+			})
+	}
+	handleSetHeaderTitle = (headerTitle, goBackButton, url, menuRoute, bcname) => {
 		if (this._isMounted) {
 			if (headerTitle !== this.state.headerTitle) {
 				if (typeof headerTitle === 'string') {
@@ -48,6 +67,7 @@ class App extends React.Component {
 								id: headerTitle,
 								options: null
 							},
+							BCTitle: bcname,
 							goBackButton: goBackButton,
 							url,
 							menuRoute
@@ -83,14 +103,6 @@ class App extends React.Component {
 			else {
 				document.body.style = 'background: #eee';
 			}
-			/* if (navigator.platform.indexOf('Win') > -1) {
-				if (!this.props.loading) {
-					if (this.refs.mainPanel) {
-						eslint-disable-next-line
-						const ps = new PerfectScrollbar(this.refs.mainPanel);
-					}
-				}
-			} */
 		})
 	}
 	componentWillUnmount = () => {
@@ -110,7 +122,14 @@ class App extends React.Component {
 			}
 		}
 	}
-
+	setTabs = (tabs) => {
+		if (tabs.id !== this.props.tabs.id) {
+			this.props.changeTabs(tabs)
+		}
+		if (tabs.id === this.props.tabs.id && tabs.route !== this.props.tabs.route) {
+			this.props.changeTabs(tabs)
+		}
+	}
 	render() {
 		const { classes, t, loading, sOpt, defaultRoute, snackbarLocation, defaultView, smallMenu, drawer, tabs, ...rest } = this.props;
 		return (
@@ -147,15 +166,28 @@ class App extends React.Component {
 								menuRoute={this.state.menuRoute}
 								{...rest}
 							/>
-							{!loading ? <Fragment>
+							{/* {!loading ?  */}
+							<Fragment>
 								<div className={classes.container} id={'container'}>
+									<Toolbar history={this.props.history} {...tabs}/>
+									<BC
+										defaultRoute={defaultRoute}
+										bc={this.state.bc}
+										t={t}
+									/>
 									<Switch>
 										{cookie.load('SESSION') ?
 											dashboardRoutes.map((prop, key) => {
 												if (prop.redirect) {
 													return <Redirect from={prop.path} to={prop.to} key={key} />;
 												}
-												return <Route path={prop.path} render={(routeProps) => <prop.component {...routeProps} setHeader={this.handleSetHeaderTitle} />} key={key} />;
+												return <Route path={prop.path}
+													render={(routeProps) =>
+														<prop.component {...routeProps}
+															setBC={this.handleSetBreadCrumb}
+															setHeader={this.handleSetHeaderTitle}
+															setTabs={this.setTabs}
+														/>} key={key} />;
 											})
 											: <Redirect from={window.location.pathname} to={{
 												pathname: '/login', state: {
@@ -164,19 +196,7 @@ class App extends React.Component {
 											}} />}
 									</Switch>
 								</div>
-								{/* <Breadcrumbs separator="›" arial-label="Breadcrumb">
-									<Link to={'/dashboard'}>Home</Link>
-									<Chip
-										component={Link}
-										label="Home"
-										to={'/dashboard'}
-									/>
-									<Chip
-										component={Link}
-										label="Dashboard"
-										to={'/dashboard'}
-									/>
-								</Breadcrumbs> */}
+
 								<Cookies />
 								<Snackbar
 									anchorOrigin={{ vertical: 'bottom', horizontal: snackbarLocation }}
@@ -199,7 +219,8 @@ class App extends React.Component {
 									}
 								/>
 
-							</Fragment> : <CircularLoader />}
+							</Fragment> 
+							{/* : <CircularLoader />} */}
 						</Fragment>
 					</div>
 
@@ -216,7 +237,6 @@ App.propTypes = {
 const mapStateToProps = (state) => ({
 	loading: state.settings.loading,
 	theme: state.settings.theme,
-	// cookies: state.settings.cookies,
 	defaultRoute: state.settings.defaultRoute,
 	defaultView: state.settings.defaultView,
 	snackbarLocation: state.settings.snackbarLocation,
@@ -228,6 +248,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = dispatch => ({
 	getSettings: async () => dispatch(await getSettings()),
 	getDaysOfIterest: async () => dispatch(await getDaysOfInterest()),
+	changeTabs: tabs => dispatch(changeTabs(tabs))
 	// acceptCookies: async (val) => dispatch(await acceptCookiesFunc(val))
 })
 

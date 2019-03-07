@@ -1,5 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles'
-import { primaryColor, secondaryColor, hoverColor } from 'assets/jss/material-dashboard-react'
+import { primaryColor, secondaryColor, hoverColor, headerColor } from 'assets/jss/material-dashboard-react'
 import { teal, red } from '@material-ui/core/colors'
 
 const theme = createMuiTheme({
@@ -8,6 +8,21 @@ const theme = createMuiTheme({
 		suppressDeprecationWarnings: true,
 	},
 	overrides: {
+		MuiDialogContent: {
+			root: { padding: 24 }
+		},
+		MuiDialogTitle: {
+			root: {
+				fontSize: "1.25rem",
+				fontFamily: "Roboto, Helvetica, Arial",
+				fontWeight: 500,
+				lineHeight: 1.6,
+				letterSpacing: "0.0075em",
+				backgroundColor: headerColor,
+				color: 'white',
+				padding: 16
+			}
+		},
 		MuiListItem: {
 			button: {
 				transition: 'all 150ms cubic- bezier(0.4, 0, 0.2, 1) 0ms'
@@ -34,7 +49,7 @@ const theme = createMuiTheme({
 		MuiTypography: {
 			body1: {
 				fontSize: '0.875rem',
-			}	
+			}
 		},
 		MuiFormControl: {
 			root: {
@@ -62,13 +77,13 @@ const theme = createMuiTheme({
 			underline: {
 				'&:hover:not($disabled):not($focused):not($error):before': {
 					borderBottom: '2px solid #4db6ac' /* + primaryColor */,
-				},	
+				},
 				'&:after': {
 					borderBottomColor: teal[500],
 				},
 			}
-			
-			
+
+
 		}
 	},
 	palette: {

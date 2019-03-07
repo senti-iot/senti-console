@@ -80,7 +80,7 @@ class DeviceDetails extends Component {
 				hiddenContent={
 					<ItemG container>
 						{!(device.lat > 0) && !(device.long > 0) &&
-							<ItemG xs={12} justify={'center'} style={{ marginBottom: 24 }}>
+							<ItemG xs={12} container justify={'center'} style={{ marginBottom: 24 }}>
 								<Warning>
 									<ItemG xs={12} alignItems={'center'} container>
 										<ItemG xs={12} container justify={'center'}>

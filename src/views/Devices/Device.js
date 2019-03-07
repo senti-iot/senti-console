@@ -12,7 +12,7 @@ import DeviceImages from './DeviceCards/DeviceImages'
 import { connect } from 'react-redux';
 import { unassignDeviceFromCollection, getCollection } from 'variables/dataCollections';
 import moment from 'moment'
-import Toolbar from 'components/Toolbar/Toolbar';
+// import Toolbar from 'components/Toolbar/Toolbar';
 import { Timeline, DeviceHub, Map, DeveloperBoard, Image } from 'variables/icons';
 import teal from '@material-ui/core/colors/teal'
 import { getWifiHourly, getWifiDaily, getWifiMinutely, getWifiSummary } from 'components/Charts/DataModel';
@@ -142,10 +142,17 @@ class Device extends Component {
 
 		let prevURL = this.props.location.prevURL ? this.props.location.prevURL : '/devices/list'
 		this.props.setHeader('devices.device', true, prevURL ? prevURL : '/devices/list', 'devices')
+		this.props.setTabs({
+			id: 'device',
+			tabs: this.tabs,
+			hashLinks: true,
+			route: 0
+		})
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {
 				await this.getDevice(id)
+				this.props.setBC('device', this.state.device.name)
 			}
 		}
 		else {
@@ -411,7 +418,7 @@ class Device extends Component {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('dialogs.unassign.title.deviceFromCollection', { what: t('collections.fields.id') })}</DialogTitle>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.unassign.title.deviceFromCollection', { what: t('collections.fields.id') })}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.unassign.message.deviceFromCollection', { device: `${device.name} (${device.id})`, collection: device.dataCollection.name })}
@@ -442,13 +449,13 @@ class Device extends Component {
 		const { device, loading, /* selected, order, orderBy */ } = this.state
 		return (
 			!loading ? <Fragment>
-				<Toolbar
+				{/* <Toolbar
 					hashLinks
 					noSearch
 					history={this.props.history}
 					match={this.props.match}
 					tabs={this.tabs}
-				/>
+				/> */}
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<AssignDC
 						deviceId={device.id}

@@ -14,7 +14,7 @@ import moment from 'moment'
 import teal from '@material-ui/core/colors/teal'
 import { getWifiDaily, getWifiMinutely, getWifiHourly, getWifiSummary } from 'components/Charts/DataModel';
 import { DataUsage, Timeline, Map, DeviceHub, History } from 'variables/icons';
-import Toolbar from 'components/Toolbar/Toolbar';
+// import Toolbar from 'components/Toolbar/Toolbar';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import ChartDataPanel from 'views/Charts/ChartDataPanel';
 import ChartData from 'views/Charts/ChartData';
@@ -116,6 +116,13 @@ class Collection extends Component {
 			let id = this.props.match.params.id
 			if (id) {
 				await this.getCollection(id)
+				this.props.setBC('collection', this.state.collection.name)
+				this.props.setTabs({
+					route: 0,
+					id: 'collection',
+					tabs: this.tabs,
+					hashLinks: true
+				})
 			}
 		}
 		else {
@@ -394,7 +401,7 @@ class Collection extends Component {
 				open={openAssignDevice}
 				onClose={this.handleCloseAssignDevice}
 			>
-				<DialogTitle>
+				<DialogTitle disableTypography>
 					<DialogActions>
 						<Search />
 					</DialogActions>
@@ -415,7 +422,7 @@ class Collection extends Component {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('dialogs.unassign.title.deviceFromCollection')}</DialogTitle>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.unassign.title.deviceFromCollection')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.unassign.message.deviceFromCollection', { device: collection.activeDeviceStats.id, collection: collection.name })}
@@ -442,7 +449,7 @@ class Collection extends Component {
 				aria-labelledby='alert-dialog-title'
 				aria-describedby='alert-dialog-description'
 			>
-				<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.collection')}</DialogTitle>
+				<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.collection')}</DialogTitle>
 				<DialogContent>
 					<DialogContentText id='alert-dialog-description'>
 						{t('dialogs.delete.message.collection', { collection: this.state.collection.name })}
@@ -475,14 +482,14 @@ class Collection extends Component {
 		const { collection, loading, activeDevice, weather, openAssign, openAssignOrg, } = this.state
 		return (
 			<Fragment>
-				<Toolbar
+				{/* <Toolbar
 					hashLinks
 					noSearch
 					history={history}
 					match={match}
 					tabs={this.tabs}
 				// content={this.renderMenu()}
-				/>
+				/> */}
 				{!loading ?
 					<GridContainer justify={'center'} alignContent={'space-between'}>
 						<AssignDevice

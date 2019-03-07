@@ -11,7 +11,7 @@ const style = theme => ({
 		[theme.breakpoints.down('sm')]: {
 			padding: '8px 8px 30px 8px'
 		},
-		padding: '30px 30px 30px 8px',
+		padding: '16px 30px 16px 8px',
 		width: 'auto',
 		margin: 0
 	}

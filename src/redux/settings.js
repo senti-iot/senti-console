@@ -21,7 +21,7 @@ const changeDP = 'changeDetailsPanelState'
 const changeDT = 'changeDrawerType'
 const changeDS = 'changeDrawerState'
 const changeHB = 'changeHeaderBorder'
-
+const changeBC = 'changeBreadCrumbs'
 //Navigation
 
 const changeDR = 'changeDefaultRoute'
@@ -50,6 +50,18 @@ const GetSettings = 'getSettings'
 const SAVESETTINGS = 'saveSettings'
 const SAVED = 'savedSettings'
 const NOSETTINGS = 'noSettings'
+const reset = 'resetSettings'
+
+export const resetSettings = () => {
+	return async (dispatch, getState) => {
+		dispatch({
+			type: reset,
+			user: getState().settings.user
+		})
+		dispatch(await saveSettingsOnServ())
+		dispatch(await getSettings())
+	}
+}
 
 export const saveSettingsOnServ = () => {
 	return async (dispatch, getState) => {
@@ -78,7 +90,8 @@ export const saveSettingsOnServ = () => {
 			drawer: s.drawer,
 			drawerState: s.drawerState,
 			drawerCloseOnNav: s.drawerCloseOnNav,
-			headerBorder: s.headerBorder
+			headerBorder: s.headerBorder,
+			breadcrumbs: s.breadcrumbs
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -207,6 +220,15 @@ export const changeHeaderBorder = (val) => {
 		dispatch({
 			type: changeHB,
 			headerBorder: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeBreadCrumbs = val => {
+	return async dispatch => {
+		dispatch({
+			type: changeBC,
+			breadcrumbs: val
 		})
 		dispatch(saveSettingsOnServ())
 	}
@@ -469,12 +491,12 @@ let initialState = {
 		chartType: 3,
 		hide: false
 	}],
-	cookies: false,
+	cookies: true,
 	defaultRoute: '/dashboard',
 	defaultView: '/list',
 	mapTheme: 0,
 	rawData: 0,
-	language: 'dk',
+	language: 'da',
 	calibration: 1,
 	calNotifications: 0,
 	count: 200,
@@ -495,10 +517,16 @@ let initialState = {
 	drawer: 'permanent',
 	drawerState: true,
 	drawerCloseOnNav: true,
-	headerBorder: true,
+	headerBorder: false,
+	breadcrumbs: true,
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
+		case reset: 
+			console.log(action.user)
+			return Object.assign({}, state, { ...initialState, user: action.user, cookies: false })
+		case changeBC: 
+			return Object.assign({}, state, { breadcrumbs: action.breadcrumbs })
 		case changeHB:
 			return Object.assign({}, state, { headerBorder: action.headerBorder })
 		case changeDCON: 
@@ -534,7 +562,6 @@ export const settings = (state = initialState, action) => {
 		}
 		case GetSettings:
 		{
-			// console.log(action.settings)
 			let periods = setDates(action.settings.periods)
 			return Object.assign({}, state, { ...action.settings, periods: periods, user: action.user, loading: false })
 		}

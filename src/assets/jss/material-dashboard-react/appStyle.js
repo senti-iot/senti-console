@@ -35,6 +35,7 @@ const appStyle = theme => ({
 	content: {
 		maxHeight: "calc(100vh - 100px)"
 	},
+
 	container: {
 		// maxHeight: "calc(100vh - 70px)",	
 		// overflow: 'auto',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { InputAdornment, withStyles, CardContent, Collapse, Button, Grid, withWidth } from '@material-ui/core';
-import { LockOutlined, Person } from 'variables/icons';
+import { LockOutlined, Person, Google } from 'variables/icons';
 import { GridContainer, ItemGrid, ItemG, TextF } from 'components';
 import Card from 'components/Card/Card.js';
 import CardBody from 'components/Card/CardBody.js';
@@ -17,6 +17,9 @@ import { connect } from 'react-redux';
 import { getSettings } from 'redux/settings';
 import { Link } from 'react-router-dom'
 import { compose } from 'recompose';
+import GoogleLogin from 'react-google-login';
+import { changeLanguage } from 'redux/localization';
+
 var moment = require('moment')
 
 class LoginPage extends React.Component {
@@ -27,7 +30,8 @@ class LoginPage extends React.Component {
 			user: '',
 			pass: '',
 			loggingIn: false,
-			error: false
+			error: false,
+			language: 'da'
 		};
 		this.input = React.createRef()
 	}
@@ -50,6 +54,10 @@ class LoginPage extends React.Component {
 				this.props.history.push('/dashboard')
 			}
 		}
+		if (this.props.location.pathname.includes('en')) {
+			this.props.setLanguage('en')
+			this.setState({ language: 'en' })
+		}
 		if (this.inputRef.current) { this.inputRef.current.focus() }
 		setTimeout(
 			function () {
@@ -60,7 +68,7 @@ class LoginPage extends React.Component {
 	}
 	handleInput = (e) => {
 		this.setState({ [e.target.id]: e.target.value })
-		if (this.state.error) { 
+		if (this.state.error) {
 			this.setState({ error: false })
 		}
 	}
@@ -77,8 +85,7 @@ class LoginPage extends React.Component {
 						let exp = moment().add('1', 'day')
 						cookie.save('SESSION', rs, { path: '/', expires: exp.toDate() })
 						if (rs.isLoggedIn) {
-							if (setToken())								
-							{
+							if (setToken()) {
 								await this.props.getSettings()
 								var prevURL = this.props.location.state ? this.props.location.state.prevURL : null
 								this.props.history.push(prevURL ? prevURL : this.props.defaultRoute) //Aici
@@ -97,6 +104,18 @@ class LoginPage extends React.Component {
 	}
 	inputRef = (ref) => {
 		this.input = ref
+	}
+	googleSignIn = (props) => {
+		// console.log(props)
+	}
+	googleSignInFailed = () => {
+		this.setState({ error: true })
+	}
+	changeLanguage = () => {
+		this.props.setLanguage(this.state.language === 'en' ? 'da' : 'en')
+		this.setState({
+			language: this.state.language === 'en' ? 'da' : 'en'
+		})
 	}
 	render() {
 		const { classes, t } = this.props;
@@ -125,7 +144,7 @@ class LoginPage extends React.Component {
 										<CardBody>
 											<ItemG container>
 												<ItemG xs={12}>
-													<TextF 
+													<TextF
 														id={'user'}
 														autoFocus
 														label={t('login.username')}
@@ -162,18 +181,38 @@ class LoginPage extends React.Component {
 											</ItemG>
 										</CardBody>
 										<CardFooter className={classes.cardFooter}>
-											<Grid container justify={'center'}>
+											<Grid spacing={8} container justify={'center'}>
+												<ItemG xs={12} container justify={'center'}>
+													<Button variant="text" color={'primary'} disableFocusRipple disableRipple onClick={this.changeLanguage} className={classes.changeLanguage}>
+														{t('actions.changeLanguage')}
+													</Button>
+												</ItemG>
 												<ItemG xs={12} zeroMinWidth container justify={'center'}>
 													{/* <Button variant={'text'} color={'primary'} className={classes.forgotPass}> */}
-													<Link to={`/password/reset/da`} className={classes.forgotPass}>
+													<Link to={`/password/reset/${this.state.language}`} className={classes.forgotPass}>
 														{t('actions.forgotPass')}
 													</Link>
 													{/* </Button> */}
 												</ItemG>
-												<ItemG xs={12} zeroMinWidth container justify={'center'}>
+												<ItemG xs={12} container justify={'center'}>
 													<Button variant={'contained'} color={'primary'} /* className={classes.loginButton} */ onClick={this.loginUser}>
 														{t('actions.login')}
 													</Button>
+												</ItemG>
+												<ItemG xs={12} container justify={'center'}>
+													<GoogleLogin
+														clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
+														render={renderProps =>  (
+															<Button variant={'contained'} color={'primary'} onClick={renderProps.onClick}>
+																<img src={Google} alt={'google-logo'} style={{ borderRadius: 50, padding: 4, background: 'white', marginRight: 8 }}/>
+																	Google {t('actions.login')}
+															</Button>
+														)
+														}
+														buttonText="Login"
+														onSuccess={this.googleSignIn}
+														onFailure={this.googleSignIn}
+													/>
 												</ItemG>
 											</Grid>
 										</CardFooter>
@@ -181,7 +220,7 @@ class LoginPage extends React.Component {
 									<Collapse in={this.state.loggingIn} timeout='auto' unmountOnExit>
 										<CardContent>
 											{/* <Grid container><CircularProgress className={classes.loader} /></Grid> */}
-											<CircularLoader notCentered/>
+											<CircularLoader notCentered />
 										</CardContent>
 									</Collapse>
 								</Card>
@@ -218,7 +257,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	getSettings: async () => dispatch(await getSettings())
+	getSettings: async () => dispatch(await getSettings()),
+	setLanguage: (lang) => dispatch(changeLanguage(lang, true)) 
 })
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), withLocalization(), withWidth(), withStyles(loginPageStyle))(LoginPage);

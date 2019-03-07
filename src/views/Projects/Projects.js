@@ -7,7 +7,7 @@ import CircularLoader from 'components/Loader/CircularLoader';
 import ProjectCards from 'components/Project/ProjectCards';
 import ProjectTable from 'components/Project/ProjectTable';
 import TableToolbar from 'components/Table/TableToolbar';
-import Toolbar from 'components/Toolbar/Toolbar';
+// import Toolbar from 'components/Toolbar/Toolbar';
 import React, { Component, Fragment } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { deleteProject, getAllProjects } from 'variables/dataProjects';
@@ -36,6 +36,7 @@ class Projects extends Component {
 			}
 		}
 		props.setHeader('projects.pageTitle', false, '', 'projects')
+		props.setBC('projects')
 	}
 	options = () => {
 		const { t, isFav } = this.props
@@ -158,12 +159,28 @@ class Projects extends Component {
 		this._isMounted = 1
 		this.handleTabs()
 		await this.getData()
+		this.props.setTabs({
+			id: 'projects',
+			route: this.handleTabs(),
+			// data: projects,
+			// filters: filters,
+			// handleFilterKeyword: this.handleFilterKeyword,
+			tabs: this.tabs()
+		})
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.location.pathname !== prevProps.location.pathname) {
 			this.handleTabs()
 		}
+		this.props.setTabs({
+			id: 'projects',
+			route: this.handleTabs(),
+			// data: projects,
+			// filters: filters,
+			handleFilterKeyword: this.handleFilterKeyword,
+			tabs: this.tabs()
+		})
 		if (this.props.saved === true) {
 			const { projects, selected } = this.state
 			let project = projects[projects.findIndex(d => d.id === selected[0])]
@@ -200,16 +217,17 @@ class Projects extends Component {
 	
 	handleTabs = () => {
 		if (this.props.location.pathname.includes('grid')) {
-			this.setState({ route: 1 })
+			// this.setState({ route: 1 })
+
 			return 1
 		}
 		else {
 			if (this.props.location.pathname.includes('favorites')) {
-				this.setState({ route: 2 })
+				// this.setState({ route: 2 })
 				return 2
 			}
 			else {
-				this.setState({ route: 0 })
+				// this.setState({ route: 0 })
 				return 0
 			}
 		}
@@ -302,7 +320,7 @@ class Projects extends Component {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.projects')}</DialogTitle>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.projects')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.delete.message.projects')}
@@ -404,11 +422,10 @@ class Projects extends Component {
 			<ProjectCards t={t} projects={this.filterItems(projects)} />
 	}
 	render() {
-		const { projects, filters, route } = this.state
-		const { history, match } = this.props
+		const { match } = this.props
 		return (
 			<Fragment>
-				<Toolbar
+				{/* <Toolbar
 					route={route}
 					data={projects}
 					filters={filters}
@@ -416,7 +433,7 @@ class Projects extends Component {
 					match={match}
 					handleFilterKeyword={this.handleFilterKeyword}
 					tabs={this.tabs()}
-				/>
+				/> */}
 				<Switch>
 					<Route path={`${match.path}/grid`} render={() => this.renderCards()} />
 					<Route path={`${match.path}/list`} render={() => this.renderList()} />

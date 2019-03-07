@@ -291,7 +291,7 @@ class MapCard extends PureComponent {
 				}
 			}}
 		>
-			<DialogTitle> </DialogTitle>
+			<DialogTitle disableTypography> </DialogTitle>
 			<DialogContent style={{ overflowY: "visible" }}>
 				{error ? <Danger>{t('404.networkError')}</Danger> : null}
 				{markers.length > 0 ? markers.map(m =>

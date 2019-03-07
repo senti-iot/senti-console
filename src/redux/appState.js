@@ -116,7 +116,16 @@ export const changeTabs = tabs => {
 	}
 }
 const initialState = {
-	tabs: [],
+	tabs: {
+		id: '',
+		route: 0,
+		data: [],
+		// filters: {
+		// keyword: ''
+		// },
+		tabs: [],
+		// noSearch: true
+	},
 	eH: true,
 	CPP: 9,
 	chartYAxis: 'linear',
@@ -124,7 +133,7 @@ const initialState = {
 	heatMap: false,
 	chartType: null,
 	mapTheme: null, 
-	smallMenu: false,
+	smallMenu: true,
 	trp: null,
 	filters: {
 		favorites: [],
