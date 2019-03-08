@@ -353,17 +353,23 @@ class Devices extends Component {
 			deviceId: d.id
 		}))).catch((e) => {
 			this.snackBarMessages(4)
-		}).then(() => { this.handleCloseUnassignDialog() })
+		}).then(() => { this.handleCloseUnassignDialog(true) })
 	}
 
 	handleOpenUnassignDialog = () => {
 		this.setState({ openUnassign: true, anchorElMenu: null })
 	}
 
-	handleCloseUnassignDialog = async () => {
-		this.setState({ openUnassign: false })
-		this.snackBarMessages(3)
-		await this.getData()
+	handleCloseUnassignDialog = msg => async e => {
+		if (e) {
+			e.preventDefault()
+		}
+		this.setState({ openUnassign: false, anchorElMenu: null })
+		if (msg)
+		{
+			this.snackBarMessages(3)
+			await this.getData()
+		}
 	}
 
 	handleRequestSort = (event, property, way) => {
@@ -382,7 +388,7 @@ class Devices extends Component {
 		const { t } = this.props
 		return <Dialog
 			open={openUnassign}
-			onClose={this.handleCloseUnassignDialog}
+			onClose={this.handleCloseUnassignDialog(false)}
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
@@ -400,7 +406,7 @@ class Devices extends Component {
 				</div>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseUnassignDialog} color='primary'>
+				<Button onClick={this.handleCloseUnassignDialog(false)} color='primary'>
 					{t('actions.no')}
 				</Button>
 				<Button onClick={this.handleUnassignDevices} color='primary' autoFocus>

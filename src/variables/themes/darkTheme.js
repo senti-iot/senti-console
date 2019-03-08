@@ -1,5 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles'
-import { primaryColor, secondaryColor, hoverColor, headerColor } from 'assets/jss/material-dashboard-react'
+import { primaryColor, secondaryColor, hoverColor, /* headerColor */ } from 'assets/jss/material-dashboard-react'
 import { teal, red } from '@material-ui/core/colors'
 
 const theme = createMuiTheme({
@@ -18,7 +18,7 @@ const theme = createMuiTheme({
 				fontWeight: 500,
 				lineHeight: 1.6,
 				letterSpacing: "0.0075em",
-				backgroundColor: headerColor,
+				backgroundColor: '#434351',
 				color: 'white',
 				padding: 16
 			},
