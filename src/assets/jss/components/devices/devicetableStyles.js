@@ -2,9 +2,12 @@
 import { red, green, yellow, grey } from '@material-ui/core/colors'
 import { primaryColor } from 'assets/jss/material-dashboard-react'
 const devicetableStyles = theme => ({
+	orgDevicesTD: {
+		padding: '0 16px'
+	},
 	orgUsersTD: {
-		[theme.breakpoints.down('xs')]: {
-			padding: '0 10px'
+		[theme.breakpoints.down('md')]: {
+			padding: '0 12px'
 		},
 		padding: '0 16px'
 	},

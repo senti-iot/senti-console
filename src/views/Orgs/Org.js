@@ -11,7 +11,11 @@ import OrgDevices from 'views/Orgs/OrgCards/OrgDevices';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 import { getAllDevices } from 'variables/dataDevices';
 // import Toolbar from 'components/Toolbar/Toolbar';
-import { Business, DeviceHub, People } from 'variables/icons';
+import { Business, DeviceHub, People, LibraryBooks, DataUsage } from 'variables/icons';
+import { getAllProjects } from 'variables/dataProjects';
+import { getAllCollections } from 'variables/dataCollections';
+import OrgProjects from './OrgCards/OrgProjects';
+import OrgCollections from './OrgCards/OrgCollections';
 
 class Org extends Component {
 	constructor(props) {
@@ -70,6 +74,14 @@ class Org extends Component {
 				await getAllDevices().then(rs => { 
 					let devices = rs.filter(f => f.org.id === this.state.org.id)
 					this.setState({ devices: devices, loadingDevices: false })
+				})
+				await getAllCollections().then(rs => {
+					let collections = rs.filter(f => f.org.id === this.state.org.id)
+					this.setState({ collections: collections, loadingCollections: false })
+				})
+				await getAllProjects().then(rs => {
+					let projects = rs.filter(f => f.org.id === this.state.org.id)
+					this.setState({ projects: projects, loadingProjects: false })
 				})
 			}
 	}
@@ -153,11 +165,13 @@ class Org extends Component {
 	tabs = [
 		{ id: 0, title: '', label: <Business />, url: `#details` },
 		{ id: 1, title: '', label: <People />, url: `#users` },
-		{ id: 2, title: '', label: <DeviceHub />, url: `#devices` },
+		{ id: 2, title: '', label: <LibraryBooks />, url: `#projects` },
+		{ id: 3, title: '', label: <DataUsage />, url: `#collections` },
+		{ id: 4, title: '', label: <DeviceHub />, url: `#devices` }
 	]
 	render() {
 		const { classes, t, history, match, language } = this.props
-		const { org, loading, loadingUsers, loadingDevices, users, devices } = this.state
+		const { org, loading, loadingUsers, loadingDevices, loadingProjects, loadingCollections, users, devices, collections, projects } = this.state
 		return (
 			loading ? <CircularLoader /> : <Fade in={true}>
 				<GridContainer justify={'center'} alignContent={'space-between'}>
@@ -185,6 +199,26 @@ class Org extends Component {
 							history={history}
 						/> :
 							<CircularLoader notCentered />}
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin id={'projects'}>
+						{!loadingProjects ? <OrgProjects
+							t={t}
+							org={org}
+							projects={projects ? projects : []}
+							history={history} />
+							:
+							<CircularLoader notCentered />
+						}
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin id={'collections'}>
+						{!loadingCollections ? <OrgCollections
+							t={t}
+							org={org}
+							collections={collections ? collections : []}
+							history={history} />
+							:
+							<CircularLoader notCentered />
+						}
 					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'devices'}>
 						{!loadingDevices ? <OrgDevices

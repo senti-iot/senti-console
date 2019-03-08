@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Info, Caption, ItemG } from 'components'
 import { Table, TableBody, TableRow, Hidden, withStyles } from '@material-ui/core'
-import { DeviceHub, SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
+import { SignalWifi2Bar, DataUsage } from 'variables/icons'
 import TC from 'components/Table/TC'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
 
 
-class OrgDevices extends Component {
+class OrgCollections extends Component {
 		renderIcon = (status) => {
 			const { classes, t } = this.props
 			switch (status) {
@@ -23,33 +23,35 @@ class OrgDevices extends Component {
 						<SignalWifi2Bar className={classes.redSignal} />
 					</ItemG>
 				case null:
-					return <SignalWifi2BarLock />
+					return <ItemG container justify={'center'} title={t('devices.status.red')}>
+						<SignalWifi2Bar />
+					</ItemG>
 				default:
 					break;
 			}
 		}
 		render() {
-			const { devices, classes, t } = this.props
+			const { collections, classes, t } = this.props
 			return (
 				<InfoCard
-					title={t('devices.pageTitle')}
-					subheader={`${t('orgs.fields.deviceCount')}: ${devices.length}`}
-					avatar={<DeviceHub />}
+					title={t('collections.pageTitle')}
+					subheader={`${t('orgs.fields.deviceCount')}: ${collections.length}`}
+					avatar={<DataUsage />}
 					noExpand
 					noPadding
 					content={
 						<Table>
 							<TableBody style={{ padding: "0 24px" }}>
-								{devices ? devices.map((n, i) => {
+								{collections ? collections.map((n, i) => {
 									return (
 										<TableRow
 											hover
-											onClick={e => { e.stopPropagation(); this.props.history.push({ pathname: '/device/' + n.id, prevURL: `/management/org/${this.props.org.id}` }) }}
+											onClick={e => { e.stopPropagation(); this.props.history.push({ pathname: '/collection/' + n.id, prevURL: `/management/org/${this.props.org.id}` }) }}
 											key={i}
 											style={{ cursor: 'pointer', padding: '0 20px' }}
 										>
 											<Hidden lgUp>
-												<TC checkbox className={classes.orgDevicesTD} content={this.renderIcon(n.liveStatus)} />
+												<TC checkbox className={classes.orgDevicesTD} content={this.renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : null)} />
 												<TC content={
 													<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 														<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
@@ -68,7 +70,7 @@ class OrgDevices extends Component {
 									
 											</Hidden>
 											<Hidden mdDown>
-												<TC checkbox className={classes.orgDevicesTD} content={this.renderIcon(n.liveStatus)} />
+												<TC checkbox className={classes.orgDevicesTD} content={this.renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : null)} />
 												<TC checkbox label={n.id} />
 												<TC label={n.name} />
 											</Hidden>
@@ -83,4 +85,4 @@ class OrgDevices extends Component {
 		}
 }
 
-export default withStyles(devicetableStyles)(OrgDevices)
+export default withStyles(devicetableStyles)(OrgCollections)
