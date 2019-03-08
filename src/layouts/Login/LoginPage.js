@@ -59,12 +59,6 @@ class LoginPage extends React.Component {
 			this.setState({ language: 'en' })
 		}
 		if (this.inputRef.current) { this.inputRef.current.focus() }
-		setTimeout(
-			function () {
-				return this._isMounted ? this.setState({ cardAnimaton: '' }) : '';
-			}.bind(this),
-			300
-		);
 	}
 	handleInput = (e) => {
 		this.setState({ [e.target.id]: e.target.value })
@@ -228,26 +222,6 @@ class LoginPage extends React.Component {
 						</GridContainer>
 					</div>
 				</div>
-				{/* <Snackbar
-					open={true}
-					// onClose={this.handleClose}
-					style={{ width: 800 }}
-					ContentProps={{
-						style: { width: '100%' },
-						'aria-describedby': 'message-id',
-					}}
-					message={<span id="message-id">Cookies</span>}
-					action={
-						<Fragment>
-							<Button color={'primary'} size={'small'}>
-								OK
-							</Button>
-							<Button color={'primary'} size={'small'}>
-								Learn more
-							</Button>
-						</Fragment>
-					}
-				/> */}
 			</div>
 		);
 	}
@@ -261,4 +235,5 @@ const mapDispatchToProps = dispatch => ({
 	setLanguage: (lang) => dispatch(changeLanguage(lang, true)) 
 })
 
+// @ts-ignore
 export default compose(connect(mapStateToProps, mapDispatchToProps), withLocalization(), withWidth(), withStyles(loginPageStyle))(LoginPage);

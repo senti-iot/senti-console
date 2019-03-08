@@ -101,6 +101,9 @@
 			"data": "Datasamlinger",
 			"log": "Enhedslog"
 		},
+		"helper": {
+			"availableDevicesForOrg": "Ledige enheder for den valgte organisation"
+		},
 		"createCollection": "Ny datasamling",
 		"editCollection": "Rediger datasamling",
 		"fields": {
@@ -513,7 +516,8 @@
 		"birthdays": "Ingen fødselsdage i dag",
 		"collection": "Ikke tildelt en datasamling",
 		"collections": "Ingen datasamlinger",
-		"device": "Ingen ledige enheder",
+		"freeDevices": "Ingen ledige enheder",
+		"device": "Ingen enhed",
 		"devices": "Ingen enheder",
 		"doi": "ingen helligdage i dag",
 		"history": "Ingen historik",

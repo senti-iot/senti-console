@@ -24,6 +24,13 @@ const styles = theme => ({
 })
 
 class LoginImages extends Component {
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			number: this.getRndInteger()
+		}
+	}
 
 	getRndInteger = (min, max) => {
 		min = 0
@@ -31,31 +38,37 @@ class LoginImages extends Component {
 		return Math.floor(Math.random() * (max - min)) + min;
 	}
 	generateString = (number) => {
-		const { t }  = this.props
+		const { t } = this.props
 		let string = t(`login.cards.${number}`)
 		var rx = />(.*?)</g
 		let arr = []
-		let length = string.match(rx).length
-		for (let index = 0; index < length; index++) {
-			let substr = string.substr(string.indexOf('>') + 1, string.indexOf('<') - 1)
-			arr.push(<span style={{ fontWeight: 600 }}>{substr}</span>)
-			
-			string = string.slice(string.indexOf('<') + 1)
-			let sub2str = string.substr(0, string.indexOf('>'))
-			if (sub2str === '')
-			{	arr.push(string)
-				string = ''
+		let length = string.match(rx) ? string.match(rx).length : null
+		if (length) {
+
+			for (let index = 0; index < length; index++) {
+				let substr = string.substr(string.indexOf('>') + 1, string.indexOf('<') - 1)
+				arr.push(<span style={{ fontWeight: 600 }}>{substr}</span>)
+
+				string = string.slice(string.indexOf('<') + 1)
+				let sub2str = string.substr(0, string.indexOf('>'))
+				if (sub2str === '') {
+					arr.push(string)
+					string = ''
+				}
+				else {
+					arr.push(sub2str)
+					string = string.slice(string.indexOf('>'))
+				}
 			}
-			else {
-				arr.push(sub2str)
-				string = string.slice(string.indexOf('>'))
-			}
+		}
+		else {
+			arr.push(string)
 		}
 		return arr
 	}
 	render() {
 		const { t, classes } = this.props
-		const number = this.getRndInteger()
+		const { number } = this.state
 		return (
 			<div className={classes.container}>
 

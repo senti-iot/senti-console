@@ -101,6 +101,9 @@
 			"data": "Data Collections",
 			"log": "Device log"
 		},
+		"helper": {
+			"availableDevicesForOrg": "Available devices for the selected Organisation"
+		},
 		"createCollection": "Create collection",
 		"editCollection": "Edit collection",
 		"fields": {
@@ -513,7 +516,8 @@
 		"birthdays": "No birthdays today",
 		"collection": "No collection",
 		"collections": "No collections",
-		"device": "No available devices",
+		"freeDevice": "No available devices",
+		"device": "No device",
 		"devices": "No devices",
 		"doi": "No Holidays today",
 		"history": "No history",
