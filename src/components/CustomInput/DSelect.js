@@ -9,16 +9,16 @@ const styles = theme => ({
 		color: theme.palette.type === 'dark' ? "#fff" : undefined
 	},
 	formControl: {
-		// marginTop: 16,
-		// marginBottom: 8,
+		marginTop: 16,
+		marginBottom: 8,
 		minWidth: 230
 	},
 });
 
 const DSelect = (props) => {
-	const { classes, value, onKeyPress, onChange, menuItems, label, theme, fullWidth, leftIcon } = props
+	const { classes, value, onKeyPress, margin, onChange, menuItems, label, theme, fullWidth, leftIcon } = props
 	let mobile = window.innerWidth < theme.breakpoints.values.md ? true : false
-	return <FormControl className={classes.formControl} fullWidth={mobile || fullWidth}>
+	return <FormControl margin={margin} className={classes.formControl} fullWidth={mobile || fullWidth}>
 		{label ? <InputLabel FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
 			{label}
 		</InputLabel> : null}
