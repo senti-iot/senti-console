@@ -168,101 +168,102 @@ class NewLoginPage extends Component {
 		})
 		return (
 			<div className={classes.wrapper}>
-				{this.renderResetPassword()}
 				<ItemG container>
 					<ItemG xs={12} sm={12} md={4} lg={4} xl={3} container>
 						<Paper className={classes.paper}>
-							<ItemG container alignItems={'center'} justify={'center'} className={classes.container}>
-								<ItemG xs={12} container justify={'center'}>
+							<ItemG container alignItems={'center'} justify={'space-evenly'} className={classes.container} direction={'column'}>
+								<ItemG xs={12} container justify={'center'}  style={{ flexBasis: '20%' }}>
 									<img className={classes.logo} src={logo} alt={'sentiLogo'} />
 								</ItemG>
 								<Collapse in={loggingIn} unmountOnExit>
 									<CircularLoader notCentered/> 
 								</Collapse>
-								<Collapse in={!loggingIn}>
+								<Collapse in={!loggingIn} style={{ flexBasis: '70%' }}>
 									<ItemG xs={12} container justify={'center'}>
-										<T className={classes.needAccount}>
-											<span style={{ marginRight: 4 }}>
-												{t('login.needAnAccount1')}<span style={{ fontWeight: 600 }}> Senti.</span>Cloud <span>{t('login.needAnAccount2')}</span>?
-											</span>
-											<span>
-												<Link to={'/login'}>
-													{t('login.createAccount')}
-												</Link>
-											</span>
-										</T>
-									</ItemG>
-
-									<ItemG container xs={12}>
+										<ItemG xs={12} container justify={'center'}>
+											<T className={classes.needAccount}>
+												<span style={{ marginRight: 4 }}>
+													{t('login.needAnAccount1')}<span style={{ fontWeight: 600 }}> Senti.</span>Cloud <span>{t('login.needAnAccount2')}</span>?
+												</span>
+												<span>
+													<Link to={'/login'}>
+														{t('login.createAccount')}
+													</Link>
+												</span>
+											</T>
+										</ItemG>
 
 										<ItemG container xs={12}>
-											<TextF
-												id={'user'}
-												autoFocus
-												reversed
-												label={t('login.username')}
-												error={this.state.error}
-												fullWidth
-												handleChange={this.handleInput}
-												className={classes.loginButton}
-												value={this.state.user}
-												InputProps={{
-													autoComplete: 'on',
-													type: 'email',
-													endAdornment: <InputAdornment position='end'>
-														<Person className={IconEndAd} />
-													</InputAdornment>
-												}}
-											/>
+
+											<ItemG container xs={12}>
+												<TextF
+													id={'user'}
+													autoFocus
+													reversed
+													label={t('login.username')}
+													error={this.state.error}
+													fullWidth
+													handleChange={this.handleInput}
+													className={classes.loginButton}
+													value={this.state.user}
+													InputProps={{
+														autoComplete: 'on',
+														type: 'email',
+														endAdornment: <InputAdornment position='end'>
+															<Person className={IconEndAd} />
+														</InputAdornment>
+													}}
+												/>
+											</ItemG>
+											<ItemG container xs={12}>
+												<TextF
+													id={'pass'}
+													label={t('login.pass')}
+													error={this.state.error}
+													className={classes.loginButton}
+													fullWidth
+													handleChange={this.handleInput}
+													value={this.state.pass}
+													InputProps={{
+														autoComplete: 'on',
+														type: 'password',
+														endAdornment: <InputAdornment position='end'>
+															<LockOutlined className={IconEndAd} />
+														</InputAdornment>
+													}}
+												/>
+											</ItemG>
 										</ItemG>
-										<ItemG container xs={12}>
-											<TextF
-												id={'pass'}
-												label={t('login.pass')}
-												error={this.state.error}
-												className={classes.loginButton}
-												fullWidth
-												handleChange={this.handleInput}
-												value={this.state.pass}
-												InputProps={{
-													autoComplete: 'on',
-													type: 'password',
-													endAdornment: <InputAdornment position='end'>
-														<LockOutlined className={IconEndAd} />
-													</InputAdornment>
-												}}
-											/>
-										</ItemG>
-									</ItemG>
-									<ItemG xs={12} container justify={'center'}>
-										<Button variant={'contained'} fullWidth color={'primary'} className={classes.loginButton} onClick={this.loginUser}>
-											{t('actions.login')}
-										</Button>
-									</ItemG>
-									<ItemG xs={12} container justify={'center'}>
-										<ItemG xs={12} container justify={'space-around'} style={{ marginTop: 24 }}>
-											{/* <Link to={`/password/reset/${language}`}> */}
-											<Button variant={'text'} onClick={() => this.setState({ resetPassword: true })}>
-												{t('login.forgotUsername')}
+										<ItemG xs={12} container justify={'center'}>
+											<Button variant={'contained'} fullWidth color={'primary'} className={classes.loginButton} onClick={this.loginUser}>
+												{t('actions.login')}
 											</Button>
-											{/* </Link> */}
-											<Link to={`/password/reset/${language}`}>
-												{t('login.forgotPassword')}
-											</Link>
 										</ItemG>
-									</ItemG>
-									<ItemG xs={12} container justify={'center'}>
-										<GoogleLogin
-											clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
-											render={renderProps => (
-												<Button fullWidth className={classes.loginButton} variant={'outlined'} color={'primary'} onClick={renderProps.onClick}>
-													<img src={Google} alt={'google-logo'} style={{ marginRight: 8 }} />
-													{t('actions.loginWithGoogle')}
-												</Button>)}
-											buttonText="Login"
-											onSuccess={this.googleSignIn}
-											onFailure={this.googleSignIn}
-										/>
+										<ItemG xs={12} container justify={'center'}>
+											<ItemG xs={12} container justify={'space-around'} style={{ marginTop: 24 }}>
+												<Link to={`/password/reset/${language}`}>
+													{t('login.forgotUsername')}
+												</Link>
+												{/* <Button variant={'text'} onClick={() => this.setState({ resetPassword: true })}> */}
+												{/* </Button> */}
+												<Link to={`/password/reset/${language}`}>
+													{t('login.forgotPassword')}
+												</Link>
+											</ItemG>
+										</ItemG>
+										<ItemG xs={12} container justify={'center'}>
+											<GoogleLogin
+												clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
+												render={renderProps => (
+													<Button fullWidth className={classes.loginButton} variant={'outlined'} color={'primary'} onClick={renderProps.onClick}>
+														<img src={Google} alt={'google-logo'} style={{ marginRight: 8 }} />
+														{t('actions.loginWithGoogle')}
+													</Button>)}
+												buttonText="Login"
+												onSuccess={this.googleSignIn}
+												onFailure={this.googleSignIn}
+											/>
+										</ItemG>
 									</ItemG>
 								</Collapse>
 
