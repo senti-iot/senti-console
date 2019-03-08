@@ -4,9 +4,9 @@ const mapStyles = theme => ({
 		[theme.breakpoints.up('md')]: {
 			height: window.innerHeight - 350
 		},
-		[theme.breakpoints.up('sm')]: {
-			height: 530
-		},
+		// [theme.breakpoints.up('sm')]: {
+		// 	height: 530
+		// },
 		[theme.breakpoints.down('xs')]: {
 			height: 500
 		}
