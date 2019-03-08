@@ -1,22 +1,23 @@
 import React, { Component } from 'react'
-import { ItemG, T } from 'components';
+import { /* ItemG, */ T } from 'components';
 import loginImages from 'variables/loginImages'
 import { Button, withStyles } from '@material-ui/core';
 
 
 const styles = theme => ({
 	container: {
-		width: '100%',
-		height: '100%'
+		width: "100%",
+		height: "100%",
+		display: "flex",
+		flexFlow: "column",
+		justifyContent: "center",
+		alignItems: "center",
 	},
 	bold: {
 		fontWeight: 600
 	},
 	message: {
-		margin: '25px 25%',
-		[theme.breakpoints.down('md')]: {
-			margin: '25px 5%'
-		}
+		padding: '25px',
 	},
 	button: {
 		marginBottom: 40
@@ -71,20 +72,13 @@ class LoginImages extends Component {
 		const { number } = this.state
 		return (
 			<div className={classes.container}>
-
-				<ItemG container style={{ height: '100%' }}>
-					<ItemG container xs={12} justify={'flex-end'} alignItems={'center'} direction={'column'}>
-						<T variant={'h4'} className={classes.message}>
-							{this.generateString(number).map((a, i) => <span key={i}>{a}</span>)}
-						</T>
-						<Button color='primary' variant={'contained'} size={'large'} className={classes.button}>
-							{t('actions.learnMore')}
-						</Button>
-					</ItemG>
-					<ItemG style={{ alignSelf: 'flex-start' }} container xs={12} justify={'center'}>
-						<img src={loginImages[number]} alt="" />
-					</ItemG>
-				</ItemG>
+				<T variant={'h4'} className={classes.message}>
+					{this.generateString(number).map((a, i) => <span key={i}>{a}</span>)}
+				</T>
+				<Button color='primary' variant={'contained'} size={'large'} className={classes.button}>
+					{t('actions.learnMore')}
+				</Button>					
+				<img src={loginImages[number]} alt="" />
 			</div>
 		)
 	}

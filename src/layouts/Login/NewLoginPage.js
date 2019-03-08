@@ -39,23 +39,24 @@ const styles = theme => ({
 		[theme.breakpoints.down('sm')]: {
 			padding: 8,
 			// height: 'calc(100vh - 16px)',	
-			height: 'calc(100vh - 15%)',
-			margin: "5%",
+			height: 'calc(100vh - 64px)',
+			margin: "24px",
 			borderRadius: 8
 		},
 		[theme.breakpoints.down('xs')]: {
 			padding: 8,
 			// height: 'calc(100vh - 16px)',	
-			height: 'calc(100vh - 10%)',
-			margin: "5%",
+			height: 'calc(100vh - 48px)',
+			margin: "16px",
 			borderRadius: 8
 		}
 	},
 	needAccount: {
 		// color: '#fff',
 		fontSize: '1rem',
-		margin: 24,
-		marginTop: 36,
+		// margin: 24,
+		// marginTop: 36,
+		// margin: 16,
 		[theme.breakpoints.down('md')]: {
 			margin: 8,
 			marginTop: 8
@@ -73,7 +74,7 @@ const styles = theme => ({
 		height: "100%",
 		padding: "20% 0%",
 		[theme.breakpoints.down('md')]: {
-			padding: "10% 0%",
+			padding: "24px 0%",
 			// margin: 16,
 			// marginTop: 
 		}
@@ -171,14 +172,14 @@ class NewLoginPage extends Component {
 				<ItemG container>
 					<ItemG xs={12} sm={12} md={4} lg={4} xl={3} container>
 						<Paper className={classes.paper}>
-							<ItemG container alignItems={'center'} justify={'space-evenly'} className={classes.container} direction={'column'}>
-								<ItemG xs={12} container justify={'center'}  style={{ flexBasis: '20%' }}>
+							<ItemG container alignItems={'center'} justify={'space-evenly'} className={classes.container}>
+								<ItemG xs={12} container justify={'center'}>
 									<img className={classes.logo} src={logo} alt={'sentiLogo'} />
 								</ItemG>
 								<Collapse in={loggingIn} unmountOnExit>
 									<CircularLoader notCentered/> 
 								</Collapse>
-								<Collapse in={!loggingIn} style={{ flexBasis: loggingIn ? undefined : '70%' }}>
+								<Collapse in={!loggingIn}>
 									<ItemG xs={12} container justify={'center'} spacing={16}>
 										<ItemG xs={12} container justify={'center'}>
 											<T className={classes.needAccount}>
