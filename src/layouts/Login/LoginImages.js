@@ -75,7 +75,7 @@ class LoginImages extends Component {
 				<T variant={'h5'} className={classes.message}>
 					{this.generateString(number).map((a, i) => <span key={i}>{a}</span>)}
 				</T>
-				<Button color='primary' variant={'contained'} size={'large'} className={classes.button}>
+				<Button color='primary' variant={'contained'} className={classes.button}>
 					{t('actions.learnMore')}
 				</Button>					
 				<img src={loginImages[number]} alt="" />

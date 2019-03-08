@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ItemG, TextF, T, CircularLoader } from 'components';
-import { Hidden, Paper, withStyles, InputAdornment, Button, Collapse } from '@material-ui/core';
+import { Hidden, Paper, withStyles, InputAdornment, Button, Collapse, Fade } from '@material-ui/core';
 import logo from 'logo.svg'
 import { connect } from 'react-redux'
 import { Person, LockOutlined, Google } from 'variables/icons';
@@ -33,6 +33,8 @@ const styles = theme => ({
 	paper: {
 		// background: headerColor,
 		// backgrou
+		transition: 'all 300ms ease',
+		width: '100%',
 		borderRadius: 0,
 		padding: 24,
 		height: 'calc(100vh - 48px)',
@@ -176,10 +178,8 @@ class NewLoginPage extends Component {
 								<ItemG xs={12} container justify={'center'}>
 									<img className={classes.logo} src={logo} alt={'sentiLogo'} />
 								</ItemG>
-								<Collapse in={loggingIn} unmountOnExit>
-									<CircularLoader notCentered/> 
-								</Collapse>
-								<Collapse in={!loggingIn}>
+							
+								<Fade in={!loggingIn}>
 									<ItemG xs={12} container justify={'center'} spacing={16}>
 										<ItemG xs={12} container justify={'center'}>
 											<T className={classes.needAccount}>
@@ -266,8 +266,10 @@ class NewLoginPage extends Component {
 											/>
 										</ItemG>
 									</ItemG>
+								</Fade>
+								<Collapse in={loggingIn}>
+									<CircularLoader notCentered/> 
 								</Collapse>
-
 							</ItemG>
 						</Paper>
 					</ItemG>
