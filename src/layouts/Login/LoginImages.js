@@ -72,7 +72,7 @@ class LoginImages extends Component {
 		const { number } = this.state
 		return (
 			<div className={classes.container}>
-				<T variant={'h4'} className={classes.message}>
+				<T variant={'h5'} className={classes.message}>
 					{this.generateString(number).map((a, i) => <span key={i}>{a}</span>)}
 				</T>
 				<Button color='primary' variant={'contained'} size={'large'} className={classes.button}>
