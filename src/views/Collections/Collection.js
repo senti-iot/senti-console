@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, withStyles } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, withStyles, Fade } from '@material-ui/core';
 import collectionStyles from 'assets/jss/views/deviceStyles';
 import { CircularLoader, GridContainer, ItemGrid, AssignOrg, AssignProject, AssignDevice } from 'components';
 import React, { Component, Fragment } from 'react';
@@ -490,7 +490,7 @@ class Collection extends Component {
 					tabs={this.tabs}
 				// content={this.renderMenu()}
 				/> */}
-				{!loading ?
+				{!loading ? <Fade in={true}>
 					<GridContainer justify={'center'} alignContent={'space-between'}>
 						<AssignDevice
 							collectionId={collection.id}
@@ -583,7 +583,7 @@ class Collection extends Component {
 								t={t}
 							/>
 						</ItemGrid>
-					</GridContainer>
+					</GridContainer></Fade>
 					: this.renderLoader()}
 			</Fragment>
 		)

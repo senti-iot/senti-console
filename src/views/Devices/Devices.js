@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { getAllDevices, getDevice } from 'variables/dataDevices';
 import {
 	withStyles, Paper, Dialog, DialogTitle, DialogContent,
-	DialogContentText, DialogActions, Button } from '@material-ui/core';
+	DialogContentText, DialogActions, Button, Fade } from '@material-ui/core';
 import { Switch, Route, Redirect } from 'react-router-dom'
 import projectStyles from 'assets/jss/views/projects';
 import DeviceTable from 'components/Devices/DeviceTable';
@@ -490,15 +490,19 @@ class Devices extends Component {
 	renderList = () => {
 		const { classes } = this.props
 		const { devices, loading } = this.state
-		return loading ? this.renderLoader() : <GridContainer justify={'center'}>
-			<Paper className={classes.root}>
-				{this.renderAssignDC()}
-				{this.renderAssignOrg()}
-				{this.renderConfirmUnassign()}
-				{this.renderTableToolbar()}
-				{this.renderTable(devices, this.handleDeviceClick)}
-			</Paper>
-		</GridContainer>
+		return loading ? this.renderLoader() : 				
+			<Fade in={true}>
+				<GridContainer justify={'center'}>
+					<Paper className={classes.root}>
+						{this.renderAssignDC()}
+						{this.renderAssignOrg()}
+						{this.renderConfirmUnassign()}
+						{this.renderTableToolbar()}
+						{this.renderTable(devices, this.handleDeviceClick)}
+					</Paper>
+				</GridContainer>				
+			</Fade>
+
 	}
 
 	renderCards = () => {

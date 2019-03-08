@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { GridContainer, ItemGrid, CircularLoader, ItemG, TextF, Danger } from 'components';
 import UserContact from './UserCards/UserContact';
 import { UserLog } from './UserCards/UserLog';
@@ -9,7 +9,8 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogActions,
-	Button
+	Button,
+	Fade
 } from '@material-ui/core';
 import { getUser, deleteUser, resendConfirmEmail } from 'variables/dataUsers';
 import { connect } from 'react-redux'
@@ -313,7 +314,7 @@ class User extends Component {
 		const { user, loading } = this.state
 		const rp = { history: this.props.history, match: this.props.match }
 		return (
-			loading ? <CircularLoader /> : <Fragment>
+			loading ? <CircularLoader /> : <Fade in={true}>
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<ItemGrid xs={12} noMargin id={'contact'}>
 						<UserContact
@@ -331,11 +332,11 @@ class User extends Component {
 					<ItemGrid xs={12} noMargin id={'log'}>
 						<UserLog t={t} user={user} />
 					</ItemGrid>
+					{this.renderDeleteDialog()}
+					{this.renderConfirmEmail()}
+					{this.renderChangePassword()}
 				</GridContainer>
-				{this.renderDeleteDialog()}
-				{this.renderChangePassword()}
-				{this.renderConfirmEmail()}
-			</Fragment>
+			</Fade>
 		)
 	}
 }

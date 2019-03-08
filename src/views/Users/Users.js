@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { withStyles, Paper, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
+import { withStyles, Paper, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import UserTable from 'components/User/UserTable';
 import CircularLoader from 'components/Loader/CircularLoader';
@@ -320,33 +320,36 @@ class Users extends Component {
 		const { t, classes } = this.props
 		const { loading, selected, order, orderBy, filters, users } = this.state
 		return <GridContainer justify={'center'}>
-			{loading ? <CircularLoader /> : <Paper className={classes.root}>
-				{this.renderConfirmDelete()}
-				{this.renderExport()}
-				<TableToolbar
-					ft={this.ftUsers()}
-					reduxKey={'users'}
-					anchorElMenu={this.state.anchorElMenu}
-					handleToolbarMenuClose={this.handleToolbarMenuClose}
-					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
-					numSelected={selected.length}
-					options={this.options}
-					t={t}
-					content={this.renderTableToolBarContent()}
-				/><UserTable
-					data={this.filterItems(users)}
-					selected={selected}
-					tableHead={this.userHeader()}
-					handleSelectAllClick={this.handleSelectAllClick}
-					handleRequestSort={this.handleRequestSort}
-					handleDeleteUsers={this.handleDeleteUsers}
-					handleCheckboxClick={this.handleCheckboxClick}
-					order={order}
-					orderBy={orderBy}
-					filters={filters}
-					t={t}
-				/>
-			</Paper>}
+			{loading ? <CircularLoader /> : <Fade in={true}>
+				<Paper className={classes.root}>
+					{this.renderConfirmDelete()}
+					{this.renderExport()}
+					<TableToolbar
+						ft={this.ftUsers()}
+						reduxKey={'users'}
+						anchorElMenu={this.state.anchorElMenu}
+						handleToolbarMenuClose={this.handleToolbarMenuClose}
+						handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+						numSelected={selected.length}
+						options={this.options}
+						t={t}
+						content={this.renderTableToolBarContent()}
+					/><UserTable
+						data={this.filterItems(users)}
+						selected={selected}
+						tableHead={this.userHeader()}
+						handleSelectAllClick={this.handleSelectAllClick}
+						handleRequestSort={this.handleRequestSort}
+						handleDeleteUsers={this.handleDeleteUsers}
+						handleCheckboxClick={this.handleCheckboxClick}
+						order={order}
+						orderBy={orderBy}
+						filters={filters}
+						t={t}
+					/>
+				</Paper>
+			</Fade>
+			}
 		</GridContainer>
 	}
 	handleToolbarMenuOpen = e => {

@@ -1,4 +1,4 @@
-import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton } from '@material-ui/core';
+import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import CollectionTable from 'components/Collections/CollectionTable';
 import TableToolbar from 'components/Table/TableToolbar';
@@ -514,14 +514,14 @@ class Collections extends Component {
 		const { classes } = this.props
 		const { loading, selected, collections } = this.state
 		return <GridContainer justify={'center'}>
-			{loading ? <CircularLoader /> : <Paper className={classes.root}>
+			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
 				{this.renderAssignProject()}
 				{this.renderAssignDevice()}
 				{selected.length > 0 ? this.renderDeviceUnassign() : null}
 				{this.renderTableToolBar()}
 				{this.renderTable(collections, this.handleCollectionClick)}
 				{this.renderConfirmDelete()}
-			</Paper>
+			</Paper></Fade>
 			}
 		</GridContainer>
 	}

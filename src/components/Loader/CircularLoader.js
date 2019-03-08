@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { withStyles, Grid, CircularProgress } from '@material-ui/core';
+import { withStyles, Grid, CircularProgress, Fade } from '@material-ui/core';
 import PropTypes from 'prop-types'
 
 const styles = theme => ({
@@ -15,7 +15,11 @@ class CircularLoader extends Component {
 	render() {
 		const { classes, notCentered } = this.props
 		return (
-			<Grid container justify={'center'} alignItems='center' className={ notCentered ? '' : classes.grid}><CircularProgress /></Grid>
+			<Grid container justify={'center'} alignItems='center' className={ notCentered ? '' : classes.grid}>
+				<Fade in={true}>
+					<CircularProgress />
+				</Fade>
+			</Grid>
 		)
 	}
 }

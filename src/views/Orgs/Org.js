@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { GridContainer, ItemGrid, CircularLoader } from 'components';
 import { userStyles } from 'assets/jss/components/users/userStyles';
-import { withStyles, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
+import { withStyles, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade } from '@material-ui/core';
 import { getOrg, getOrgUsers } from 'variables/dataOrgs';
 import OrgDetails from './OrgCards/OrgDetails';
 import { connect } from 'react-redux'
@@ -159,14 +159,7 @@ class Org extends Component {
 		const { classes, t, history, match, language } = this.props
 		const { org, loading, loadingUsers, loadingDevices, users, devices } = this.state
 		return (
-			loading ? <CircularLoader /> : <Fragment>
-				{/* <Toolbar
-					hashLinks
-					noSearch
-					history={this.props.history}
-					match={this.props.match}
-					tabs={this.tabs}
-				/> */}
+			loading ? <CircularLoader /> : <Fade in={true}>
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<ItemGrid xs={12} noMargin id={'details'}> 
 						<OrgDetails
@@ -203,9 +196,9 @@ class Org extends Component {
 							<CircularLoader notCentered />
 						}
 					</ItemGrid>
+					{this.renderDeleteDialog()}
 				</GridContainer>
-				{this.renderDeleteDialog()}
-			</Fragment>
+			</Fade>
 		)
 	}
 }

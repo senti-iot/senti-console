@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { getDevice, getAllPictures, getWeather } from 'variables/dataDevices'
-import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
+import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Fade } from '@material-ui/core'
 import { ItemGrid, AssignOrg, AssignDC, /* DateFilterMenu */ } from 'components'
 import deviceStyles from 'assets/jss/views/deviceStyles'
 import ImageUpload from './ImageUpload'
@@ -448,14 +448,7 @@ class Device extends Component {
 	render() {
 		const { device, loading, /* selected, order, orderBy */ } = this.state
 		return (
-			!loading ? <Fragment>
-				{/* <Toolbar
-					hashLinks
-					noSearch
-					history={this.props.history}
-					match={this.props.match}
-					tabs={this.tabs}
-				/> */}
+			!loading ? <Fade in={true}>
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<AssignDC
 						deviceId={device.id}
@@ -533,7 +526,7 @@ class Device extends Component {
 					</ItemGrid>
 				</GridContainer>
 
-			</Fragment> : this.renderLoader()
+			</Fade> : this.renderLoader()
 		)
 	}
 }

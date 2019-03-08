@@ -1,6 +1,6 @@
 import {
 	IconButton, Paper, withStyles, DialogTitle, Dialog, DialogContent,
-	DialogContentText, DialogActions, Button, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+	DialogContentText, DialogActions, Button, List, ListItem, ListItemIcon, ListItemText, Fade } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import GridContainer from 'components/Grid/GridContainer';
 import CircularLoader from 'components/Loader/CircularLoader';
@@ -390,12 +390,12 @@ class Projects extends Component {
 		const { classes } = this.props
 		const { loading, projects } = this.state
 		return loading ? <CircularLoader /> :
-			<Paper className={classes.root}>
+			<Fade in={true}><Paper className={classes.root}>
 				{this.renderConfirmDelete()}
 				{this.renderAssignDCs()}
 				{this.renderTableToolbar()}
 				{this.renderTable(projects, this.handleProjectClick)}
-			</Paper>
+			</Paper></Fade>
 	}
 	
 	renderList = () => {
@@ -407,19 +407,21 @@ class Projects extends Component {
 		const { classes } = this.props
 		const { loading } = this.state
 		return <GridContainer justify={'center'}>
-			{loading ? <CircularLoader /> : <Paper className={classes.root}>
-				{this.renderConfirmDelete()}
-				{this.renderAssignDCs()}
-				{this.renderTableToolbar()}
-				{this.renderTable(this.getFavs(), this.handleFavClick)}
-			</Paper>}
+			{loading ? <CircularLoader /> : <Fade in={true}>
+				<Paper className={classes.root}>
+					{this.renderConfirmDelete()}
+					{this.renderAssignDCs()}
+					{this.renderTableToolbar()}
+					{this.renderTable(this.getFavs(), this.handleFavClick)}
+				</Paper>
+			</Fade>}
 		</GridContainer>
 	}
 	renderCards = () => {
 		const { loading, projects } = this.state
 		const { t } = this.props
 		return loading ? <CircularLoader /> :
-			<ProjectCards t={t} projects={this.filterItems(projects)} />
+			<Fade in={true}><ProjectCards t={t} projects={this.filterItems(projects)} /></Fade>
 	}
 	render() {
 		const { match } = this.props

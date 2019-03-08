@@ -178,8 +178,8 @@ class NewLoginPage extends Component {
 								<Collapse in={loggingIn} unmountOnExit>
 									<CircularLoader notCentered/> 
 								</Collapse>
-								<Collapse in={!loggingIn} style={{ flexBasis: '70%' }}>
-									<ItemG xs={12} container justify={'center'}>
+								<Collapse in={!loggingIn} style={{ flexBasis: loggingIn ? undefined : '70%' }}>
+									<ItemG xs={12} container justify={'center'} spacing={16}>
 										<ItemG xs={12} container justify={'center'}>
 											<T className={classes.needAccount}>
 												<span style={{ marginRight: 4 }}>
