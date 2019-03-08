@@ -80,13 +80,21 @@ class OpenStreetMap extends React.Component {
 	}
 
 	centerOnAllMarkers = () => {
-		this.map.leafletElement.fitBounds([...this.props.markers.map(m => m.lat && m.long ? [m.lat, m.long] : null)])
+		let arr = this.props.markers.map(m => m.lat && m.long ? [m.lat, m.long] : null)
+		arr = arr.filter(x => !!x)
+		if (arr.length > 1)
+			this.map.leafletElement.fitBounds([arr])
+		else {
+			this.setState({ zoom: 6 })
+			this.map.leafletElement.fitBounds([this.getCenter()])
+			this.map.leafletElement.zoomOut(12)
+		 }
+
 	}
 	getCenter = () => {
 		let center = []
 		let defaultLat = parseFloat(56.2639) //Denmark,
 		let defaultLng = parseFloat(9.5018) //Denmark
-
 
 		if (this.props.markers.length === 1)
 			center = [this.props.markers[0].lat, this.props.markers[0].long]
