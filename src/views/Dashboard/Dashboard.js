@@ -1,4 +1,4 @@
-import { Button, withStyles, Slide } from '@material-ui/core';
+import { Button, withStyles, Fade } from '@material-ui/core';
 import imgs from 'assets/img/Squared';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import { Caption, ItemG } from 'components';
@@ -57,7 +57,7 @@ class Dashboard extends React.Component {
 		return (
 			<Fragment>
 				{discoverSenti ? <DiscoverSenti t={t} history={history}/> : null}
-				<Slide in={true} direction={'up'}  style={{
+				<Fade in={true} direction={'up'}  style={{
 					transitionDelay: 200,
 				}}>
 					<GridContainer spacing={8} justify={'center'}>
@@ -130,7 +130,7 @@ class Dashboard extends React.Component {
 							</Caption>
 						</ItemG>
 					</GridContainer>
-				</Slide>
+				</Fade>
 			</Fragment>
 		)
 	}
