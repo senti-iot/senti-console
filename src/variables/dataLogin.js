@@ -12,7 +12,6 @@ export const loginUser = async (username, password) => {
 }
 export const loginUserViaGoogle = async (token) => { 
 	var session = await api.post('senti/googleauth', { id_token: token }).then(rs => rs.data)
-	console.log(session)
 	return session
 }
 /**

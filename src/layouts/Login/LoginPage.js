@@ -99,9 +99,6 @@ class LoginPage extends React.Component {
 	inputRef = (ref) => {
 		this.input = ref
 	}
-	googleSignIn = (props) => {
-		// console.log(props)
-	}
 	googleSignInFailed = () => {
 		this.setState({ error: true })
 	}

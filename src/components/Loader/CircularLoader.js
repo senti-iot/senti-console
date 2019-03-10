@@ -14,7 +14,6 @@ const styles = theme => ({
 class CircularLoader extends Component {
 	render() {
 		const { classes, notCentered, className } = this.props
-		console.log(className)
 		return (
 			<Grid container justify={'center'} alignItems='center' className={ (notCentered ? '' : classes.grid) + ' ' + className}>
 				<Fade in={true}>

@@ -13,7 +13,6 @@ class FadeOutLoader extends Component {
 	}
 	componentDidUpdate = async (prevProps, prevState) => {
 		if ((prevProps.on !== this.props.on) && this.props.on) {
-			console.log('turn on cdu', prevProps.on, this.props.on)
 			await  this.execute(true)
 		}
 		if ((prevProps.on !== this.props.on) && !this.props.on) {

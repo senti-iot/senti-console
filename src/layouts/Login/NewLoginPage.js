@@ -215,7 +215,6 @@ class NewLoginPage extends Component {
 		return <ResetPassword match={this.props.match} open={resetPassword} />
 	}
 	render() {
-		console.log('Logging in', this.state.loggingIn)
 		const { classes, t } = this.props
 		const { language, loggingIn } = this.state
 		const IconEndAd = cx({
