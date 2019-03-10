@@ -12,7 +12,7 @@ import GoogleLogin from 'react-google-login';
 import LoginImages from './LoginImages';
 import cookie from 'react-cookies';
 import { setToken } from 'variables/data';
-import { loginUser } from 'variables/dataLogin';
+import { loginUser, loginUserViaGoogle } from 'variables/dataLogin';
 import { getSettings } from 'redux/settings';
 import { changeLanguage } from 'redux/localization';
 import ResetPassword from 'layouts/ResetPassowrd/ResetPassword';
@@ -127,8 +127,29 @@ class NewLoginPage extends Component {
 		}
 		this.input = React.createRef()
 	}
-	googleSignIn = () => {
-
+	googleSignIn = async (googleUser) => {
+		if (googleUser.error) { 
+			return
+		}			
+		if (googleUser) { 
+			let token = googleUser.getAuthResponse().id_token
+			await loginUserViaGoogle(token).then(async rs => {
+				if (rs) {
+					let exp = moment().add('1', 'day')
+					cookie.save('SESSION', rs, { path: '/', expires: exp.toDate() })
+					if (rs.isLoggedIn) {
+						if (setToken()) {
+							await this.props.getSettings()
+							var prevURL = this.props.location.state ? this.props.location.state.prevURL : null
+							this.props.history.push(prevURL ? prevURL : this.props.defaultRoute) //Aici
+						}
+					}
+				}
+				else {
+					this.setState({ error: true })
+				}
+			})
+		}
 	}
 	logUser = () => { 
 		this.setState({ loggingIn: true })

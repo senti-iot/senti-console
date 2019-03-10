@@ -10,7 +10,11 @@ export const loginUser = async (username, password) => {
 	var session = await loginApi.post('odeum/auth/basic', JSON.stringify({ username: username, password: password })).then(rs => rs.data)
 	return session
 }
-
+export const loginUserViaGoogle = async (token) => { 
+	var session = await api.post('senti/googleauth', { id_token: token }).then(rs => rs.data)
+	console.log(session)
+	return session
+}
 /**
  * @function logOut Log out function
  */
