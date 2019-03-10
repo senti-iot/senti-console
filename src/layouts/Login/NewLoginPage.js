@@ -15,103 +15,11 @@ import { setToken } from 'variables/data';
 import { loginUser, loginUserViaGoogle } from 'variables/dataLogin';
 import { getSettings } from 'redux/settings';
 import { changeLanguage } from 'redux/localization';
-import ResetPassword from 'layouts/ResetPassowrd/ResetPassword';
+// import ResetPassword from 'layouts/ResetPassowrd/ResetPassword';
 import FadeOutLoader from 'components/Utils/FadeOutLoader/FadeOutLoader';
+import loginPageStyles from 'assets/jss/material-dashboard-react/loginPageStyle';
 let moment = require('moment');
 
-const styles = theme => ({
-	wrapper: {
-		// width: '100vw',
-		display: 'flex',
-		height: '100vh',
-	},
-	logo: {
-		height: 100,
-		margin: 8,
-		// [theme.breakpoints.up('xl')]: { 
-		// 	height: 175
-		// }
-	},
-	footer: {
-		flex: 1,
-	},
-	footerText: {
-		padding: "24px",
-		[theme.breakpoints.down('md')]: {
-			padding: 24
-		},
-		[theme.breakpoints.down('sm')]: {
-			padding: 48
-		},
-		[theme.breakpoints.down('xs')]: {
-			padding: 8,
-		},
-		// margin: 24,
-		[theme.breakpoints.down('md')]: {
-			margin: 8
-		}
-	},
-	paperContainer: {
-		padding: "24px",
-		[theme.breakpoints.down('lg')]: {
-			padding: 0
-		},
-		[theme.breakpoints.down('md')]: {
-			padding: 24
-		},
-		[theme.breakpoints.down('sm')]: {
-			padding: 48
-		},
-		[theme.breakpoints.down('xs')]: {
-			padding: 8,
-		},
-
-	},
-	paper: {
-		transition: 'all 300ms ease',
-		width: '100%',
-		borderRadius: 0,
-		height: '100%',
-		display: "flex",
-		justifyContent: "center",
-		alignItems: "center",
-		flexDirection: "column",
-		[theme.breakpoints.down('sm')]: {
-			borderRadius: 8,
-		},
-		[theme.breakpoints.down('xs')]: {
-			borderRadius: 8
-		}
-	},
-	needAccount: {
-		fontSize: '1rem',
-	},
-	loginButton: {
-		// color: '#fff',
-		margin: "16px",
-		[theme.breakpoints.down('md')]: {
-			margin: "8px 8px",
-		}
-	},
-	container: {
-		width: "100%",
-		height: "100%",
-	},
-	mobileContainer: {
-		[theme.breakpoints.down('sm')]: {
-			height: 'calc(100% - 48px)',
-			padding: 24
-		},
-		[theme.breakpoints.down('xs')]: {
-			height: 'calc(100% - 32px)',
-			padding: 16,
-		}
-	},
-	loader: {
-		width: '100%',
-		height: 300
-	},
-})
 
 class NewLoginPage extends Component {
 	constructor(props) {
@@ -214,10 +122,10 @@ class NewLoginPage extends Component {
 		if (this.inputRef.current) { this.inputRef.current.focus() }
 	}
 	
-	renderResetPassword = () => {
-		const { resetPassword } = this.state
-		return <ResetPassword match={this.props.match} open={resetPassword} />
-	}
+	// renderResetPassword = () => {
+	// 	const { resetPassword } = this.state
+	// 	return <ResetPassword match={this.props.match} open={resetPassword} />
+	// }
 	render() {
 		const { classes, t } = this.props
 		const { language, loggingIn } = this.state
@@ -353,4 +261,4 @@ const mapDispatchToProps = dispatch => ({
 	setLanguage: (lang) => dispatch(changeLanguage(lang, true))
 })
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), withLocalization(), withStyles(styles), withWidth())(NewLoginPage)
+export default compose(connect(mapStateToProps, mapDispatchToProps), withLocalization(), withStyles(loginPageStyles), withWidth())(NewLoginPage)
