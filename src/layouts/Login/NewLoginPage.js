@@ -209,9 +209,9 @@ class NewLoginPage extends Component {
 										</ItemG>
 										<ItemG xs={12} container justify={'center'} style={{ margin: "32px 0px" }}>
 											<ItemG xs={12} container justify={'space-around'}>
-												<Link to={`/password/reset/${language}`}>
+												{/* <Link to={`/password/reset/${language}`}>
 													{t('login.forgotUsername')}
-												</Link>
+												</Link> */}
 												{/* <Button variant={'text'} onClick={() => this.setState({ resetPassword: true })}> */}
 												{/* </Button> */}
 												<Link to={`/password/reset/${language}`}>
