@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { ItemG, TextF, T, CircularLoader } from 'components';
-import { Hidden, Paper, withStyles, InputAdornment, Button, Collapse, Fade } from '@material-ui/core';
+import { ItemG, TextF, T, Muted } from 'components';
+import { Hidden, Paper, withStyles, InputAdornment, Button, withWidth } from '@material-ui/core';
 import logo from 'logo.svg'
 import { connect } from 'react-redux'
 import { Person, LockOutlined, Google } from 'variables/icons';
@@ -16,71 +16,101 @@ import { loginUser } from 'variables/dataLogin';
 import { getSettings } from 'redux/settings';
 import { changeLanguage } from 'redux/localization';
 import ResetPassword from 'layouts/ResetPassowrd/ResetPassword';
+import FadeOutLoader from 'components/Utils/FadeOutLoader/FadeOutLoader';
 let moment = require('moment');
 
 const styles = theme => ({
 	wrapper: {
 		// width: '100vw',
-		height: '100vh'
+		display: 'flex',
+		height: '100vh',
 	},
 	logo: {
-		// width: 50,
-		// padding: 32,
-		// borderRadius: 20,
-		// background: headerColor,
-		height: 100
+		height: 100,
+		margin: 8,
+		// [theme.breakpoints.up('xl')]: { 
+		// 	height: 175
+		// }
 	},
-	paper: {
-		// background: headerColor,
-		// backgrou
-		transition: 'all 300ms ease',
-		width: '100%',
-		borderRadius: 0,
-		padding: 24,
-		height: 'calc(100vh - 48px)',
+	footer: {
+		flex: 1,
+	},
+	footerText: {
+		padding: "24px",
+		[theme.breakpoints.down('md')]: {
+			padding: 24
+		},
 		[theme.breakpoints.down('sm')]: {
-			padding: 8,
-			// height: 'calc(100vh - 16px)',	
-			height: 'calc(100vh - 64px)',
-			margin: "24px",
-			borderRadius: 8
+			padding: 48
 		},
 		[theme.breakpoints.down('xs')]: {
 			padding: 8,
-			// height: 'calc(100vh - 16px)',	
-			height: 'calc(100vh - 48px)',
-			margin: "16px",
+		},
+		// margin: 24,
+		[theme.breakpoints.down('md')]: {
+			margin: 8
+		}
+	},
+	paperContainer: {
+		padding: "24px",
+		[theme.breakpoints.down('lg')]: {
+			padding: 0
+		},
+		[theme.breakpoints.down('md')]: {
+			padding: 24
+		},
+		[theme.breakpoints.down('sm')]: {
+			padding: 48
+		},
+		[theme.breakpoints.down('xs')]: {
+			padding: 8,
+		},
+
+	},
+	paper: {
+		transition: 'all 300ms ease',
+		width: '100%',
+		borderRadius: 0,
+		height: '100%',
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+		flexDirection: "column",
+		[theme.breakpoints.down('sm')]: {
+			borderRadius: 8,
+		},
+		[theme.breakpoints.down('xs')]: {
 			borderRadius: 8
 		}
 	},
 	needAccount: {
-		// color: '#fff',
 		fontSize: '1rem',
-		// margin: 24,
-		// marginTop: 36,
-		// margin: 16,
-		[theme.breakpoints.down('md')]: {
-			margin: 8,
-			marginTop: 8
-		}
 	},
 	loginButton: {
 		// color: '#fff',
-		margin: 24,
+		margin: "16px",
 		[theme.breakpoints.down('md')]: {
-			margin: 8
+			margin: "8px 8px",
 		}
 	},
 	container: {
 		width: "100%",
 		height: "100%",
-		padding: "20% 0%",
-		[theme.breakpoints.down('md')]: {
-			padding: "24px 0%",
-			// margin: 16,
-			// marginTop: 
+	},
+	mobileContainer: {
+		[theme.breakpoints.down('sm')]: {
+			height: 'calc(100% - 48px)',
+			padding: 24
+		},
+		[theme.breakpoints.down('xs')]: {
+			height: 'calc(100% - 32px)',
+			padding: 16,
 		}
-	}
+	},
+	loader: {
+		width: '100%',
+		height: 300
+	},
 })
 
 class NewLoginPage extends Component {
@@ -100,29 +130,29 @@ class NewLoginPage extends Component {
 	googleSignIn = () => {
 
 	}
-	loginUser = async () => {
+	logUser = () => { 
 		this.setState({ loggingIn: true })
-		setTimeout(
-			async function () {
-				await loginUser(this.state.user, this.state.pass).then(async rs => {
-					if (rs) {
-						let exp = moment().add('1', 'day')
-						cookie.save('SESSION', rs, { path: '/', expires: exp.toDate() })
-						if (rs.isLoggedIn) {
-							if (setToken()) {
-								await this.props.getSettings()
-								var prevURL = this.props.location.state ? this.props.location.state.prevURL : null
-								this.props.history.push(prevURL ? prevURL : this.props.defaultRoute) //Aici
-							}
-						}
+	}
+	loginUser = async () => {
+		// this.setState({ loggingIn: true })
+
+		await loginUser(this.state.user, this.state.pass).then(async rs => {
+			if (rs) {
+				let exp = moment().add('1', 'day')
+				cookie.save('SESSION', rs, { path: '/', expires: exp.toDate() })
+				if (rs.isLoggedIn) {
+					if (setToken()) {
+						await this.props.getSettings()
+						var prevURL = this.props.location.state ? this.props.location.state.prevURL : null
+						this.props.history.push(prevURL ? prevURL : this.props.defaultRoute) //Aici
 					}
-					else {
-						this.setState({ error: true, loggingIn: false })
-					}
-				})
-			}.bind(this),
-			1000
-		);
+				}
+			}
+			else {
+				this.setState({ error: true })
+			}
+		})
+		// this.setState({ loggingIn: false })
 	}
 	handleInput = (e) => {
 		this.setState({ [e.target.id]: e.target.value })
@@ -132,7 +162,7 @@ class NewLoginPage extends Component {
 	}
 	handleKeyPress = (event) => {
 		if (event.key === 'Enter') {
-			this.loginUser()
+			this.logUser()
 		}
 	}
 	componentWillUnmount = () => {
@@ -158,11 +188,13 @@ class NewLoginPage extends Component {
 		// @ts-ignore
 		if (this.inputRef.current) { this.inputRef.current.focus() }
 	}
+	
 	renderResetPassword = () => {
 		const { resetPassword } = this.state
-		return <ResetPassword match={this.props.match} open={resetPassword}/>
+		return <ResetPassword match={this.props.match} open={resetPassword} />
 	}
 	render() {
+		console.log('Logging in', this.state.loggingIn)
 		const { classes, t } = this.props
 		const { language, loggingIn } = this.state
 		const IconEndAd = cx({
@@ -171,18 +203,21 @@ class NewLoginPage extends Component {
 		})
 		return (
 			<div className={classes.wrapper}>
-				<ItemG container>
-					<ItemG xs={12} sm={12} md={4} lg={4} xl={3} container>
+				{/* <ItemG container> */}
+				<ItemG xs={12} sm={12} md={4} lg={4} xl={3} container>
+					<div className={classes.mobileContainer}>
+
 						<Paper className={classes.paper}>
-							<ItemG container alignItems={'center'} justify={'space-evenly'} className={classes.container}>
+							<div className={classes.paperContainer}>
+
+								{/* <ItemG container alignItems={'center'} justify={'space-evenly'} className={classes.container}> */}
 								<ItemG xs={12} container justify={'center'}>
 									<img className={classes.logo} src={logo} alt={'sentiLogo'} />
 								</ItemG>
-							
-								<Fade in={!loggingIn}>
-									<ItemG xs={12} container justify={'center'} spacing={16}>
+								<FadeOutLoader circularClasses={classes.loader} on={loggingIn} onChange={this.loginUser} notCentered>
+									<ItemG xs={12} container justify={'center'}>
 										<ItemG xs={12} container justify={'center'}>
-											<T className={classes.needAccount}>
+											<T className={classes.loginButton + ' ' + classes.needAccount}>
 												<span style={{ marginRight: 4 }}>
 													{t('login.needAnAccount1')}<span style={{ fontWeight: 600 }}> Senti.</span>Cloud <span>{t('login.needAnAccount2')}</span>?
 												</span>
@@ -236,12 +271,12 @@ class NewLoginPage extends Component {
 											</ItemG>
 										</ItemG>
 										<ItemG xs={12} container justify={'center'}>
-											<Button variant={'contained'} fullWidth color={'primary'} className={classes.loginButton} onClick={this.loginUser}>
+											<Button variant={'contained'} fullWidth color={'primary'} className={classes.loginButton} onClick={this.logUser}>
 												{t('actions.login')}
 											</Button>
 										</ItemG>
-										<ItemG xs={12} container justify={'center'}>
-											<ItemG xs={12} container justify={'space-around'} style={{ marginTop: 24 }}>
+										<ItemG xs={12} container justify={'center'} style={{ margin: "32px 0px" }}>
+											<ItemG xs={12} container justify={'space-around'}>
 												<Link to={`/password/reset/${language}`}>
 													{t('login.forgotUsername')}
 												</Link>
@@ -266,19 +301,21 @@ class NewLoginPage extends Component {
 											/>
 										</ItemG>
 									</ItemG>
-								</Fade>
-								<Collapse in={loggingIn}>
-									<CircularLoader notCentered/> 
-								</Collapse>
+								</FadeOutLoader>
+								{/* </ItemG> */}
+							</div>
+							<ItemG xs={12} container alignItems={'flex-end'} justify={'center'} className={classes.footer}>
+								<Muted className={classes.footerText}>{t('login.footer')}</Muted>
 							</ItemG>
 						</Paper>
-					</ItemG>
-					<Hidden smDown>
-						<ItemG md={8} lg={8} xl={9}>
-							<LoginImages t={t} />
-						</ItemG>
-					</Hidden>
+					</div>
 				</ItemG>
+				<Hidden smDown>
+					<ItemG md={8} lg={8} xl={9}>
+						<LoginImages t={t} />
+					</ItemG>
+				</Hidden>
+				{/* </ItemG> */}
 			</div>
 		)
 	}
@@ -292,4 +329,4 @@ const mapDispatchToProps = dispatch => ({
 	setLanguage: (lang) => dispatch(changeLanguage(lang, true))
 })
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), withLocalization(), withStyles(styles))(NewLoginPage)
+export default compose(connect(mapStateToProps, mapDispatchToProps), withLocalization(), withStyles(styles), withWidth())(NewLoginPage)

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { /* ItemG, */ T } from 'components';
 import loginImages from 'variables/loginImages'
-import { Button, withStyles } from '@material-ui/core';
+import { Button, withStyles, withWidth } from '@material-ui/core';
 
 
 const styles = theme => ({
@@ -21,6 +21,12 @@ const styles = theme => ({
 	},
 	button: {
 		marginBottom: 40
+	},
+	img: {
+		height: 250,
+		[theme.breakpoints.up('xl')]: {
+			height: 400
+		}
 	}
 })
 
@@ -68,20 +74,20 @@ class LoginImages extends Component {
 		return arr
 	}
 	render() {
-		const { t, classes } = this.props
+		const { t, classes, width } = this.props
 		const { number } = this.state
 		return (
 			<div className={classes.container}>
-				<T variant={'h5'} className={classes.message}>
+				<T variant={width === 'xl' ? 'h4' : 'h5'} className={classes.message}>
 					{this.generateString(number).map((a, i) => <span key={i}>{a}</span>)}
 				</T>
 				<Button color='primary' variant={'contained'} className={classes.button}>
 					{t('actions.learnMore')}
 				</Button>					
-				<img src={loginImages[number]} alt="" />
+				<img src={loginImages[number]} className={classes.img} alt="" />
 			</div>
 		)
 	}
 }
 
-export default withStyles(styles)(LoginImages)
+export default withWidth()(withStyles(styles)(LoginImages))

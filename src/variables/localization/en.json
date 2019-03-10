@@ -435,6 +435,7 @@
 			"12": "Senti.Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
 			"13": "Senti.Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices."
 		},
+		"footer": "©2016–2019 All Rights Reserved. Senti.Cloud is an open source platform designed and developed by WebHouse ApS.",
 		"pass": "Password",
 		"username": "Username",
 		"needAnAccount1": "Need a",
