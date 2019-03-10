@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ItemG, TextF, T, Muted } from 'components';
-import { Hidden, Paper, withStyles, InputAdornment, Button, withWidth } from '@material-ui/core';
+import { Hidden, Paper, withStyles, InputAdornment, Button, withWidth, Dialog } from '@material-ui/core';
 import logo from 'logo.svg'
 import { connect } from 'react-redux'
 import { Person, LockOutlined, Google } from 'variables/icons';
@@ -128,8 +128,12 @@ class NewLoginPage extends Component {
 		this.input = React.createRef()
 	}
 	googleSignIn = async (googleUser) => {
+		console.log(window.mGoogleSignInClient)
 		if (googleUser.error) { 
-			return
+			console.log(googleUser.error)
+			return <Dialog>
+				
+			</Dialog>
 		}			
 		if (googleUser) { 
 			let token = googleUser.getAuthResponse().id_token

@@ -10,6 +10,7 @@ import { logOut } from 'variables/dataLogin';
 import moment from 'moment'
 import christmas from 'assets/img/christmas'
 import { ItemG } from 'components';
+import { GoogleLogout } from 'react-google-login';
 
 class HeaderLinks extends React.Component {
 	state = {
@@ -114,9 +115,14 @@ class HeaderLinks extends React.Component {
 						<MenuItem onClick={this.handleSettingsOpen}>
 							<SettingsRounded className={classes.leftIcon} />{t('sidebar.settings')}
 						</MenuItem>
-						<MenuItem onClick={this.logOut} className={classes.menuItem}>
-							<Lock className={classes.leftIcon} />{t('menus.user.signout')}
-						</MenuItem>
+						<GoogleLogout
+							// onLogoutSuccess={() => this.logOut()}
+							render={renderProps => (<MenuItem onClick={() => { renderProps.onClick(); this.logOut() } } className={classes.menuItem}>
+								<Lock className={classes.leftIcon} />{t('menus.user.signout')}
+							</MenuItem>)}
+						>
+						
+						</GoogleLogout>
 					</Menu>
 				</ItemG>
 			</Grid>
