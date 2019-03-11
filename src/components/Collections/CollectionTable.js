@@ -13,6 +13,7 @@ import TP from 'components/Table/TP'
 import { Info, Caption, ItemG } from 'components';
 import { dateFormatter } from 'variables/functions';
 import { SignalWifi2Bar } from 'variables/icons'
+import CollectionHover from 'components/Hover/CollectionHover';
 
 class CollectionTable extends React.Component {
 	constructor(props) {
@@ -22,6 +23,8 @@ class CollectionTable extends React.Component {
 			page: 0,
 		}
 	}
+
+	timer = []
 
 	handleRequestSort = (event, property) => {
 		this.props.handleRequestSort(event, property)
@@ -36,6 +39,37 @@ class CollectionTable extends React.Component {
 	}
 
 	isSelected = id => this.props.selected.indexOf(id) !== -1
+
+	setHover = (e, n) => {
+		e.persist()
+		const { rowHover } = this.state
+		let timer = setTimeout(() => {
+			if (rowHover) {
+				this.setState({
+					rowHover: null
+				})
+				setTimeout(() => {
+					this.setState({ rowHover: e.target, hoverUser: n }, () => console.log(rowHover))
+				}, 200);
+			}
+			else {
+				this.setState({ rowHover: e.target, hoverUser: n }, () => console.log(rowHover, e.currentTarget))
+			}
+		}, 700);
+		this.timer.push(timer)
+	}
+	unsetTimeout = () => {
+		if (this.timer.length > 0)
+			this.timer.forEach(e => clearTimeout(e))
+	}
+	unsetHover = () => {
+		this.setState({
+			rowHover: null
+		})
+	}
+	renderHover = () => {
+		return <CollectionHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} collection={this.state.hoverUser} />
+	}
 
 	renderIcon = (status) => {
 		const { classes, t } = this.props
@@ -77,7 +111,8 @@ class CollectionTable extends React.Component {
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 		return (
 			<Fragment>
-				<div className={classes.tableWrapper}>
+				<div className={classes.tableWrapper} onMouseLeave={this.unsetHover}>
+					{this.renderHover()}
 					<Table className={classes.table} aria-labelledby='tableTitle'>
 						<TableHeader
 							numSelected={selected.length}
@@ -108,6 +143,8 @@ class CollectionTable extends React.Component {
 								const isSelected = this.isSelected(n.id);
 								return (
 									<TableRow
+										onMouseOver={e => { this.setHover(e, n) }}
+										onMouseLeave={this.unsetTimeout}
 										hover
 										onClick={handleClick(n.id)}
 										role='checkbox'

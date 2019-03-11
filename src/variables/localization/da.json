@@ -9,8 +9,9 @@
 	"": "",
 	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
-		"call": "Call",
-		"sendEmail": "Send E-mail",
+		"visitWebsite": "Se hjemmeside",
+		"call": "Ring",
+		"sendEmail": "Send e-mail",
 		"changeLanguage": "Change to English",
 		"search": "Eller skriv her for at søge",
 		"accept": "Godkend",

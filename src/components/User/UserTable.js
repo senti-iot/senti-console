@@ -15,7 +15,7 @@ import Gravatar from 'react-gravatar'
 import TP from 'components/Table/TP';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import withSnackbar from 'components/Localization/S';
-import UserHover from 'components/Cards/UserHover';
+import UserHover from 'components/Hover/UserHover';
 var moment = require('moment')
 
 class UserTable extends React.Component {
@@ -27,13 +27,10 @@ class UserTable extends React.Component {
 			page: 0,
 			openDelete: false,
 		}
-		// this.debounceHover = _.debounce(this.setHover, 700)
-		// this.debounceLeave = _.debounce(this.unsetHover, 300)
 	}
-	// debounceHover = (e) => {
-	// 	console.log('debounced', e.target)
-	// 	_.debounce(() => this.setHover(e), 500)
-	// }
+
+	timer = []
+
 	componentDidUpdate = () => {
 		if (this.props.saved === true) {
 			const { data, selected } = this.props
@@ -62,16 +59,11 @@ class UserTable extends React.Component {
 		this.setState({ page });
 	}
 	isSelected = id => this.props.selected.indexOf(id) !== -1
-	timer = []
 	setHover = (e, n) => {
 		e.persist()
-		console.log(e)
-		// let target = e.currentTarget ? e.currentTarget : null
 		const { rowHover } = this.state
-		// if (target) {
 		let timer = setTimeout(() => {
 			if (rowHover) {
-				console.log(e.currentElement)
 				this.setState({
 					rowHover: null
 				})
@@ -84,10 +76,8 @@ class UserTable extends React.Component {
 			}
 		}, 700);
 		this.timer.push(timer)
-		// }
 	}
 	unsetTimeout = () => {
-		console.log('untimer')
 		if (this.timer.length > 0)
 			this.timer.forEach(e => clearTimeout(e))
 	}
@@ -143,7 +133,6 @@ class UserTable extends React.Component {
 										key={n.id}
 										selected={isSelected}
 										style={{ cursor: 'pointer' }}
-									// onMouseLeave={this.unsetHover}
 									>
 										<Hidden lgUp>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => this.props.handleCheckboxClick(e, n.id)} />} />

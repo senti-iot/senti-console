@@ -66,7 +66,7 @@ const createprojectStyles = theme => ({
 		flexWrap: 'wrap',
 	},
 	formControl: {
-		margin: theme.spacing.unit * 2,
+		// margin: theme.spacing.unit * 2,
 		// marginTop: 16,
 		// marginBottom: 8,
 		minWidth: 208,
@@ -88,7 +88,7 @@ const createprojectStyles = theme => ({
 		padding: theme.spacing.unit
 	},
 	textField: {
-		margin: theme.spacing.unit * 2
+		// margin: theme.spacing.unit * 2
 	},
 	form: {
 		margin: theme.spacing.unit,

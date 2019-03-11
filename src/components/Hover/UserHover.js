@@ -5,49 +5,12 @@ import ItemG from 'components/Grid/ItemG';
 import Gravatar from 'react-gravatar'
 import { Business, Call, LocationOn, Mail, Star, StarBorder } from 'variables/icons';
 import withLocalization from 'components/Localization/T';
-import { hoverColor, primaryColor, transition } from 'assets/jss/material-dashboard-react';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
 import withSnackbar from 'components/Localization/S';
+import hoverStyles from 'assets/jss/components/hover/hoverStyles'
 
-const styles = theme => ({
-	paper: {
-		width: 300,
-		maxWidth: 450,
-		padding: theme.spacing.unit,
-		background: "#fff",
-		...transition
-	},
-	smallText: {
-		font: '400 13px/20px Roboto,RobotoDraft,Helvetica,Arial,sans-serif',
-		color: '#3c4043',
-		display: 'flex',
-		alignItems: 'center'
-	},
-	img: {
-		borderRadius: "50%",
-		height: "50px",
-		width: "50px",
-		display: 'flex',
-		marginRight: 8
-	},
-	smallAction: {
-		padding: '6px 8px',
-		color: primaryColor,
-		"&:hover": {
-			background: 'initial',
-			color: hoverColor
-		}
-	},
-	smallActionLink: {
-		display: 'flex',
-		color: 'inherit',
-		"&:hover": {
-			background: 'initial',
-		}
-	},
-})
 class UserHover extends Component {
 	componentDidUpdate = () => {
 		if (this.props.saved === true) {
@@ -125,11 +88,10 @@ class UserHover extends Component {
 									</ItemG>
 								</ItemG>
 							</ItemG>
-							<ItemG container style={{ margin: "0 22px 14px 22px" }}>
+							<ItemG container className={classes.middleContainer}>
 								<ItemG xs={12}>
-
 									<T className={classes.smallText}>
-										<Business width={10} height={10} style={{ marginRight: 8 }} />
+										<Business className={classes.smallIcon}/>
 										{user.org.name}
 									</T>
 
@@ -137,7 +99,7 @@ class UserHover extends Component {
 								<ItemG xs={12}>
 									{user.aux.senti ? user.aux.senti.extendedProfile ?
 										user.aux.senti.extendedProfile.location ? <T className={classes.smallText}>
-											<LocationOn width={10} height={10} style={{ marginRight: 8 }} />
+											<LocationOn className={classes.smallIcon} />
 											{user.aux.senti.extendedProfile.location}
 										</T> : null : null : null}
 								</ItemG>
@@ -189,4 +151,4 @@ const mapDispatchToProps = dispatch => ({
 	finishedSaving: () => dispatch(finishedSaving())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withSnackbar()((withLocalization()(withStyles(styles)(UserHover)))))
+export default connect(mapStateToProps, mapDispatchToProps)(withSnackbar()((withLocalization()(withStyles(hoverStyles)(UserHover)))))

@@ -13,6 +13,7 @@ import { connect } from 'react-redux'
 import TP from 'components/Table/TP'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import withSnackbar from 'components/Localization/S';
+import OrgHover from 'components/Hover/OrgHover';
 
 var countries = require('i18n-iso-countries')
 
@@ -28,19 +29,24 @@ class OrgTable extends React.Component {
 			openDelete: false,
 		}
 	}
+
+	timer = []
+
 	componentDidUpdate = () => {
 		if (this.props.saved === true) {
 			const { data, selected } = this.props
 			let org = data[data.findIndex(d => d.id === selected[0])]
-			if (this.props.isFav({ id: org.id, type: 'org' })) {
-				this.props.s('snackbars.favorite.saved', { name: org.name, type: this.props.t('favorites.types.org') })
-				this.props.finishedSaving()
-				this.setState({ selected: [] })
-			}
-			if (!this.props.isFav({ id: org.id, type: 'org' })) {
-				this.props.s('snackbars.favorite.removed', { name: org.name, type: this.props.t('favorites.types.org') })
-				this.props.finishedSaving()
-				this.setState({ selected: [] })
+			if (org) {
+				if (this.props.isFav({ id: org.id, type: 'org' })) {
+					this.props.s('snackbars.favorite.saved', { name: org.name, type: this.props.t('favorites.types.org') })
+					this.props.finishedSaving()
+					this.setState({ selected: [] })
+				}
+				if (!this.props.isFav({ id: org.id, type: 'org' })) {
+					this.props.s('snackbars.favorite.removed', { name: org.name, type: this.props.t('favorites.types.org') })
+					this.props.finishedSaving()
+					this.setState({ selected: [] })
+				}
 			}
 		}
 	}
@@ -49,13 +55,41 @@ class OrgTable extends React.Component {
 		this.props.handleRequestSort(event, property)
 	}
 
-
 	handleChangePage = (event, page) => {
 		this.setState({ page });
 	}
 
 	isSelected = id => this.props.selected.indexOf(id) !== -1
-
+	setHover = (e, n) => {
+		e.persist()
+		const { rowHover } = this.state
+		let timer = setTimeout(() => {
+			if (rowHover) {
+				this.setState({
+					rowHover: null
+				})
+				setTimeout(() => {
+					this.setState({ rowHover: e.target, hoverOrg: n })
+				}, 200);
+			}
+			else {
+				this.setState({ rowHover: e.target, hoverOrg: n })
+			}
+		}, 700);
+		this.timer.push(timer)
+	}
+	unsetTimeout = () => {
+		if (this.timer.length > 0)
+			this.timer.forEach(e => clearTimeout(e))
+	}
+	unsetHover = () => {
+		this.setState({
+			rowHover: null
+		})
+	}
+	renderHover = () => {
+		return <OrgHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} org={this.state.hoverOrg} />
+	}
 	render() {
 		const { rowsPerPage, classes, t, order, orderBy, data, handleCheckboxClick, selected, handleSelectAllClick } = this.props
 		const { page } = this.state
@@ -64,9 +98,9 @@ class OrgTable extends React.Component {
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 		}
 		return (
-
 			<Fragment>
-				<div className={classes.tableWrapper}>
+				<div className={classes.tableWrapper} onMouseLeave={this.unsetHover}>
+					{this.renderHover()}
 					<Table className={classes.table} aria-labelledby='tableTitle'>
 						<TableHeader
 							numSelected={selected.length}
@@ -86,6 +120,8 @@ class OrgTable extends React.Component {
 								return (
 									<TableRow
 										hover
+										onMouseOver={e => { this.setHover(e, n) }}
+										onMouseLeave={this.unsetTimeout}
 										onClick={e => { e.stopPropagation(); this.props.history.push('/management/org/' + n.id) }}
 										role='checkbox'
 										aria-checked={isSelected}

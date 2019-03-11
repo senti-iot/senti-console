@@ -9,6 +9,7 @@
 	"": "",
 	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
+		"visitWebsite": "Visit Website",
 		"call": "Ring",
 		"sendEmail": "Send e-mail",
 		"changeLanguage": "Skift til Dansk",

@@ -31,6 +31,36 @@ class ProjectTable extends React.Component {
 
 	isSelected = id => this.props.selected.indexOf(id) !== -1
 
+	setHover = (e, n) => {
+		e.persist()
+		const { rowHover } = this.state
+		let timer = setTimeout(() => {
+			if (rowHover) {
+				this.setState({
+					rowHover: null
+				})
+				setTimeout(() => {
+					this.setState({ rowHover: e.target, hoverUser: n }, () => console.log(rowHover))
+				}, 200);
+			}
+			else {
+				this.setState({ rowHover: e.target, hoverUser: n }, () => console.log(rowHover, e.currentTarget))
+			}
+		}, 700);
+		this.timer.push(timer)
+	}
+	unsetTimeout = () => {
+		if (this.timer.length > 0)
+			this.timer.forEach(e => clearTimeout(e))
+	}
+	unsetHover = () => {
+		this.setState({
+			rowHover: null
+		})
+	}
+	renderHover = () => {
+		// return <ProjectHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} user={this.state.hoverUser} />
+	}
 	render() {
 		const { classes, rowsPerPage, handleClick, selected, t, order, data, orderBy, handleCheckboxClick } = this.props
 		const { page } = this.state
@@ -40,7 +70,8 @@ class ProjectTable extends React.Component {
 
 		return (
 			<Fragment>
-				<div className={classes.tableWrapper}>
+				<div className={classes.tableWrapper} onMouseLeave={this.unsetHover}>
+					{this.renderHover()}
 					<Table className={classes.table} aria-labelledby='tableTitle'>
 						<TableHeader
 							numSelected={selected.length}
@@ -66,6 +97,8 @@ class ProjectTable extends React.Component {
 								const isSelected = this.isSelected(n.id);
 								return (
 									<TableRow
+										onMouseOver={e => { this.setHover(e, n) }}
+										onMouseLeave={this.unsetTimeout}
 										hover
 										onClick={handleClick(n.id)}
 										role='checkbox'
