@@ -1,181 +1,221 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Link, NavLink } from 'react-router-dom';
-import cx from 'classnames';
-import {
-	withStyles,
-	Drawer,
-	Hidden,
-	List,
-	ListItem,
-	ListItemIcon,
-	ListItemText,
-	// IconButton,
-	Button,
-} from '@material-ui/core';
+import React, { Component, Fragment } from 'react'
+import classNames from 'classnames'
+import { Drawer, /* IconButton, */ Divider, Hidden, ButtonBase } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { NavLink } from 'react-router-dom';
 
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import { connect } from 'react-redux'
+import { changeSmallMenu } from 'redux/appState';
+// import { Menu } from 'variables/icons';
 import { HeaderLinks } from 'components';
+import sidebarStyle from 'assets/jss/material-dashboard-react/sidebarStyle';
 
-import sidebarStyle from 'assets/jss/material-dashboard-react/sidebarStyle.js';
-import { Menu } from 'variables/icons';
 
-const Sidebar = ({ ...props }) => {
-	const [small, setSmall] = useState(false);
+class NewSidebar extends Component {
 
-	function activeRoute(routeName) {
-		return props.menuRoute === routeName ? true : false;
+	activeRoute = (routeName) => this.props.menuRoute === routeName ? true : false;
+	changeSmallMenu = () => {
+		this.props.changeSmallMenu(!this.props.smallMenu)
 	}
-	const { classes, color, image, logo, routes, t, defaultRoute, defaultView } = props;
-	const itemClasses = cx({
-		[true]: classes.itemLink + ' ' + classes[color],
-		[small]: classes.itemLinkSmall,
-
-	})
-	var links = (
-		<List className={classes.list}>
-			<NavLink
-				to={"#"}
-				className={classes.item}
-				activeClassName='active'
-			>
-				<ListItem button className={itemClasses} onClick={() => setSmall(!small)}>
-					<ListItemIcon className={classes.itemIcon + ' ' + classes.whiteFont}>
-						<Menu />
-					</ListItemIcon>
-					{small ? null : <ListItemText
-						primary={"Burger Menu"}
-						className={classes.itemText + ' ' + classes.whiteFont}
-						disableTypography={true}
-					/>
-					}
-				</ListItem>
-			</NavLink>
-			{routes.map((prop, key) => {
-				if (prop.redirect) return null;
-				if (prop.hideFromSideBar) return null;
-
-				const listItemClasses = cx({
-					[' ' + classes[color]]: activeRoute(prop.menuRoute) && !small
-				});
-				const whiteFontClasses = cx({
-					[' ' + classes.whiteFont]: activeRoute(prop.menuRoute) && !small
-				});
-				const whiteFontClassesSmall = cx({
-					[' ' + classes.whiteFont]: activeRoute(prop.menuRoute) && small
-				});
-				const smallItem = cx({
-					[' ' + classes.itemLinkSmall]: small
-				})
-
-				return (
-					<NavLink
-						to={prop.path + defaultView}
-						className={classes.item}
-						activeClassName='active'
-						key={key}
-					>
-					 <Button className={classes.itemLink + listItemClasses + smallItem}>
-							<ListItemIcon className={classes.itemIcon + whiteFontClasses + whiteFontClassesSmall}>
-								<prop.icon />
-							</ListItemIcon>
-							<ListItemText
-								primary={t(prop.sidebarName)}
-								className={classes.itemText + whiteFontClasses}
-								disableTypography={true}
-								style={{ textTransform: 'none', textAlign: 'left' }}
-							/>
-						</Button>
-					</NavLink>
-					// 	<ListItem button className={classes.itemLink + listItemClasses} onClick={props.handleDrawerToggle}>
-					// 		<ListItemIcon className={classes.itemIcon + whiteFontClasses}>
-					// 			<prop.icon />
-					// 		</ListItemIcon>
-					// 		{small ? null : <ListItemText
-					// 			primary={t(prop.sidebarName)}
-					// 			className={classes.itemText + whiteFontClasses}
-					// 			disableTypography={true}
-					// 		/> }
-					// 	</ListItem>
-				);
+	closeDrawer = () => { 
+		this.props.changeSmallMenu(false)
+	}
+	renderPersistentDrawer = () => { 
+		const { classes, smallMenu, routes, defaultView, t } = this.props
+		return <Drawer
+			variant="permanent"
+			className={classNames(classes.drawer, {
+				[classes.drawerOpen]: smallMenu,
+				[classes.drawerPersClose]: !smallMenu,
 			})}
-		</List>
-	);
-	// var brand = (
-	// 	<div className={classes.logo}>
-	// 		<Link to={defaultRoute ? defaultRoute : '/'} className={classes.logoLink}>
-	// 			<div className={classes.logoImage}>
-	// 				<img src={logo} alt='logo' className={classes.img} />
-	// 			</div>
-	// 			{logoText}
-	// 		</Link>
-	// 	</div>
-	// );
-	var smallBrand = (
-		<div className={classes.logo}>
-			<Link to={defaultRoute ? defaultRoute : '/'} onClick={props.handleDrawerToggle} className={classes.logoLink}>
-				<div className={classes.logoImage}>
-					<img src={logo} alt='logo' className={classes.img} />
+			classes={{
+				paper: classNames({
+					[classes.drawerOpen]: smallMenu,
+					[classes.drawerPersClose]: !smallMenu,
+					[classes.drawerPaper]: true,
+				}),
+			}}
+			open={smallMenu}
+		>
+			<div className={classes.toolbar}>
+			</div>
+			<List style={{
+				margin: '8px',
+				paddingTop: 0,
+			}}>
+				{routes.map((route, index) => {
+					if (route.redirect) return null;
+					if (route.hideFromSideBar) return null;
+					return <ListItem component={NavLink}
+						button
+						to={route.path + (route.defaultView ? defaultView : '')}
+						key={index}
+						onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
+						classes={{
+							button: classNames({
+								// [classes.buttonOpen]: smallMenu,
+								// [classes.buttonClose]: !smallMenu,
+								[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
+								[classes.button]: true
+							})
+						}}>
+						<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><route.icon /></ListItemIcon>
+						<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
+					</ListItem>
+				})}
+			</List>
+		</Drawer>
+	}
+	renderPermanentDrawer = () => { 
+		const { classes, smallMenu, routes, defaultView, t, headerBorder } = this.props
+
+		return <Drawer
+			variant="permanent"
+			className={classNames(classes.drawer, {
+				[classes.drawerOpen]: smallMenu,
+				[classes.drawerClose]: !smallMenu,
+			})}
+			// onMouseEnter={() => this.props.changeSmallMenu(true)}
+			// onMouseLeave={() => this.props.changeSmallMenu(false)}
+			classes={{
+				paper: classNames({
+					[classes.drawerOpen]: smallMenu,
+					[classes.drawerClose]: !smallMenu,
+					[classes.drawerPaper]: true,
+				}),
+			}}
+			open={smallMenu}
+		>
+			<div className={classes.toolbar} />
+			{headerBorder && <div className={classes.border} />}
+			<List
+				// onMouseLeave={this.props.changeSmallMenu(false)}
+				style={{
+					margin: '8px',
+					paddingTop: 0,
+				}}>
+				{routes.map((route, index) => {
+					if (route.redirect) return null;
+					if (route.hideFromSideBar) return null;
+					return <ListItem component={NavLink}
+						button
+						onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
+						to={route.path + (route.defaultView ? defaultView : '')}
+						key={index}
+						classes={{
+							button: classNames({
+								[classes.buttonOpen]: smallMenu,
+								[classes.buttonClose]: !smallMenu,
+								[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
+								[classes.button]: true
+							})
+						}}>
+						<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><route.icon /></ListItemIcon>
+						<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
+					</ListItem>
+				})}
+			</List>
+		</Drawer>
+	}
+	renderMobileDrawer = () => { 
+		const { open, classes, handleDrawerToggle, t, routes, defaultView, sideBar } = this.props
+		return <Drawer
+			variant='temporary'
+			anchor={sideBar ? 'right' : 'left'}
+			open={open}
+			classes={{
+				// paper: classes.drawerPaper
+				paper: classNames({ [classes.drawerPaper]: true, [classes.drawerOpen]: true })
+			}}
+			onClose={handleDrawerToggle}
+			ModalProps={{
+				keepMounted: true
+			}}
+		>
+			{this.smallBrand()}
+			<div className={classes.sidebarWrapper}>
+				<div className={classes.appBarWrapper}>
+					<HeaderLinks t={t} onClose={this.props.handleDrawerToggle} />
 				</div>
-			</Link>
+				<Divider />
+				<List style={{
+					margin: '16px',
+					paddingTop: 0,
+				}}>
+					{routes.map((route, index) => {
+						if (route.redirect) return null;
+						if (route.hideFromSideBar) return null;
+						return <ListItem component={NavLink}
+							button
+							to={route.path + (route.defaultView ? defaultView : '')}
+							onClick={this.props.handleDrawerToggle}
+							key={index}
+							classes={{
+								button: classNames({
+									[classes.buttonOpen]: true,
+									// [classes.buttonClose]: true,
+									[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
+									[classes.button]: true
+								})
+							}}>
+							<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><route.icon /></ListItemIcon>
+							<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
+						</ListItem>
+					})}
+				</List>
+			</div>
+		</Drawer>
+	}	
+	smallBrand = () => {
+		const { classes, logo, defaultRoute, handleDrawerToggle, history } = this.props
+		return <div className={classes.logo}>
+			<ButtonBase
+				focusRipple
+				className={classes.image}
+				focusVisibleClassName={classes.focusVisible}
+				style={{
+					width: '120px'
+				}}
+				onClick={() => {handleDrawerToggle();history.push(defaultRoute ? defaultRoute : '/')}}
+			>
+				<span
+					className={classes.imageSrc}
+					style={{
+						backgroundImage: `url(${logo})`
+					}}
+				/>
+			</ButtonBase>
 		</div>
-	)
-	return (
-		<div>
-			<Hidden lgUp>
-				<Drawer
-					variant='temporary'
-					anchor='right'
-					open={props.open}
-					classes={{
-						paper: classes.drawerPaper
-					}}
-					onClose={props.handleDrawerToggle}
-					ModalProps={{
-						keepMounted: true
-					}}
-				>
-					{smallBrand}
-					<div className={classes.sidebarWrapper}>
-						<div className={classes.appBarWrapper}>
-							<HeaderLinks t={t} onClose={props.handleDrawerToggle} />
-						</div>
-						{links}
-					</div>
-					{image !== undefined ? (
-						<div
-							className={classes.background}
-							style={{ backgroundImage: 'url(' + image + ')' }}
-						/>
-					) : null}
-				</Drawer>
-			</Hidden>
-			<Hidden mdDown>
-				<Drawer
-					anchor='left'
-					variant='permanent'
-					open
-					classes={{
-						paper: (small ? classes.drawerPaperSmall : '') + ' ' + classes.drawerPaper 
-					}}
-				>
-					{/* {brand} */}
-					{links}
-					{/* </div> */}
-					{/* <div className={classes.sidebarWrapper}> */}
-					{image !== undefined ? (
-						<div
-							className={classes.background}
-							style={{ backgroundImage: 'url(' + image + ')' }}
-						/>
-					) : null}
-				</Drawer>
-			</Hidden>
-		</div>
-	);
-};
 
-Sidebar.propTypes = {
-	classes: PropTypes.object.isRequired
-};
+	}
+	render() {
+		const { drawer } = this.props
+		return (
+			<Fragment>
+				<Hidden mdDown>
+					{drawer === 'persistent' ? this.renderPersistentDrawer() : this.renderPermanentDrawer()}
+				</Hidden>
+				<Hidden lgUp>
+					{this.renderMobileDrawer()}
+				</Hidden>
+			</Fragment>
+		);
+	}
+}
+const mapStateToProps = (state) => ({
+	smallMenu: state.appState.smallMenu,
+	drawer: state.settings.drawer,
+	drawerCloseOnNav: state.settings.drawerCloseOnNav,
+	headerBorder: state.settings.headerBorder,
+	sideBar: state.settings.sideBar
+})
 
-export default withStyles(sidebarStyle)(Sidebar);
+const mapDispatchToProps = dispatch => ({
+	changeSmallMenu: val => dispatch(changeSmallMenu(val))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(sidebarStyle)(NewSidebar))

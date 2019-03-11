@@ -1,10 +1,10 @@
 import Dashboard from 'layouts/Dashboard/Dashboard.js';
 import ConfirmUser from 'layouts/ConfirmUser/ConfirmUser'
 import ResetPassword from 'layouts/ResetPassword/ResetPassword';
-import NewLoginPage from 'layouts/Login/NewLoginPage'
+import LoginPage from 'layouts/Login/LoginPage'
 
 const indexRoutes = [
-	{ path: '/login', component: NewLoginPage },
+	{ path: '/login', component: LoginPage },
 	{ path: '/password/confirm/:lang/:token', component: ConfirmUser },
 	{ path: '/password/reset/:lang/:token?', component: ResetPassword },
 	

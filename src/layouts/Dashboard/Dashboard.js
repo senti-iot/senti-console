@@ -17,7 +17,7 @@ import { Close } from 'variables/icons';
 import { lightTheme, darkTheme } from 'variables/themes'
 import { getDaysOfInterest } from 'redux/doi';
 import Cookies from 'components/Cookies/Cookies';
-import NewSidebar from 'components/Sidebar/NewSidebar';
+import Sidebar from 'components/Sidebar/Sidebar';
 import BC from 'components/Breadcrumbs/BC';
 import { changeTabs } from 'redux/appState';
 import Toolbar from 'components/Toolbar/Toolbar';
@@ -154,7 +154,7 @@ class App extends React.Component {
 						[classes.mainPanel]: true
 					})} ref={'mainPanel'}>
 						<Fragment>
-							<NewSidebar
+							<Sidebar
 								defaultView={defaultView}
 								defaultRoute={defaultRoute}
 								routes={dashboardRoutes}

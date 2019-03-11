@@ -35,15 +35,6 @@ const deviceStatus = {
 		color: yellow[600]
 	},
 }
-const container = {
-	// padding: "8px",
-	// paddingRight: "15px",
-	// paddingLeft: "15px",
-	// marginRight: "auto",
-	// marginLeft: "auto"
-	// paddingLeft: 16,
-	// paddingRight: 16
-};
 
 const boxShadow = "0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12)";
 
@@ -177,7 +168,6 @@ export {
 	//variables
 	drawerWidth,
 	transition,
-	container,
 	boxShadow,
 	card,
 	defaultFont,
