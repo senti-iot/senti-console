@@ -52,16 +52,13 @@ class UserHover extends Component {
 			const { user } = this.props
 			// let user = data[data.findIndex(d => d.id === selected[0])]
 			if (this.props.isFav({ id: user.id, type: 'user' })) {
-				console.log('bing')
 				this.props.s('snackbars.favorite.saved', { name: `${user.firstName} ${user.lastName}`, type: this.props.t('favorites.types.user') })
 				this.props.finishedSaving()
 			}
 			if (!this.props.isFav({ id: user.id, type: 'user' })) {
-				console.log('bing2')
 				this.props.s('snackbars.favorite.removed', { name: `${user.firstName} ${user.lastName}`, type: this.props.t('favorites.types.user') })
 				this.props.finishedSaving()
 			}
-			console.log(this.props.isFav({ id: user.id, type: 'user' }))
 		}
 	}
 	addToFav = () => {
