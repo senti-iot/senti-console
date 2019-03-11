@@ -16,6 +16,7 @@ const styles = theme => ({
 		width: 300,
 		maxWidth: 450,
 		padding: theme.spacing.unit,
+		background: "#fff"
 	},
 	smallText: {
 		font: '400 13px/20px Roboto,RobotoDraft,Helvetica,Arial,sans-serif',
@@ -90,6 +91,8 @@ class UserHover extends Component {
 		return (
 			<div>
 				<Popper
+					style={{ zIndex: 1040 }}
+					disablePortal
 					id="simple-popover"
 					open={Boolean(anchorEl)}
 					anchorEl={anchorEl}

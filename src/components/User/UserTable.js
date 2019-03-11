@@ -102,7 +102,7 @@ class UserTable extends React.Component {
 			<Fragment>
 				{this.renderHover()}
 				<div className={classes.tableWrapper}>
-					<Table className={classes.table} aria-labelledby='tableTitle'>
+					<Table className={classes.table} aria-labelledby='tableTitle' onMouseLeave={this.unsetHover}>
 						<TableHeader
 							numSelected={selected.length}
 							order={order}
