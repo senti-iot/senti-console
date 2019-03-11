@@ -56,16 +56,7 @@ const headerStyle = theme => ({
 			height: 48
 		},
 		"&:hover, &$focusVisible": {
-			zIndex: 1,
-			"& $imageBackdrop": {
-				opacity: 0.15
-			},
-			"& $imageMarked": {
-				opacity: 0
-			},
-			"& $imageTitle": {
-				border: "4px solid currentColor"
-			}
+			zIndex: 1
 		}
 	},
 	focusVisible: {},
