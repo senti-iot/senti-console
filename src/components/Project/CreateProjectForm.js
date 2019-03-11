@@ -187,7 +187,7 @@ class CreateProjectForm extends Component {
 		})
 		return (
 			<GridContainer justify={'center'}>
-				<Paper className={classes.paper}> :
+				<Paper className={classes.paper}>
 					<MuiPickersUtilsProvider utils={MomentUtils}>
 
 						<form className={classes.form}>
