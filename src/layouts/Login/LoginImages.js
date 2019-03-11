@@ -25,7 +25,7 @@ const styles = theme => ({
 		fontWeight: 600
 	},
 	message: {
-		padding: '25px',
+		padding: 25,
 		maxWidth: 815
 	},
 	button: {
