@@ -120,15 +120,17 @@ class Collections extends Component {
 		if (saved === true) {
 			const { collections, selected } = this.state
 			let collection = collections[collections.findIndex(d => d.id === selected[0])]
-			if (isFav({ id: collection.id, type: 'collection' })) {
-				s('snackbars.favorite.saved', { name: collection.name, type: t('favorites.types.collection') })
-				finishedSaving()
-				this.setState({ selected: [] })
-			}
-			if (!isFav({ id: collection.id, type: 'collection' })) {
-				s('snackbars.favorite.removed', { name: collection.name, type: t('favorites.types.collection') })
-				finishedSaving()
-				this.setState({ selected: [] })
+			if (collection) { 
+				if (isFav({ id: collection.id, type: 'collection' })) {
+					s('snackbars.favorite.saved', { name: collection.name, type: t('favorites.types.collection') })
+					finishedSaving()
+					this.setState({ selected: [] })
+				}
+				if (!isFav({ id: collection.id, type: 'collection' })) {
+					s('snackbars.favorite.removed', { name: collection.name, type: t('favorites.types.collection') })
+					finishedSaving()
+					this.setState({ selected: [] })
+				}
 			}
 		}
 	}

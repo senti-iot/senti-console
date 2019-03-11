@@ -120,7 +120,7 @@ class DeviceHover extends Component {
 							<Divider />
 							<ItemG container style={{ marginTop: '8px' }}>
 								<ItemG>
-									<Button color={'primary'} variant={'text'} component={Link} to={`device/${device.id}/edit`}>
+									<Button color={'primary'} variant={'text'} component={Link} to={`/device/${device.id}/edit`}>
 										{t('menus.edit')}
 									</Button>
 								</ItemG>

@@ -3,7 +3,7 @@ import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip }
 import T from 'components/Typography/T';
 import ItemG from 'components/Grid/ItemG';
 // import Gravatar from 'react-gravatar'
-import { /* Language, */ Star, StarBorder, LocationOn, DeviceHub, SignalWifi2Bar } from 'variables/icons';
+import { /* Language, */ Star, StarBorder, SignalWifi2Bar, LibraryBooks, DataUsage } from 'variables/icons';
 import withLocalization from 'components/Localization/T';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -59,7 +59,7 @@ class CollectionHover extends Component {
 			case 0:
 				return <SignalWifi2Bar className={classes.redSignal + ' ' + classes.smallIcon} />
 			case null:
-				return <SignalWifi2Bar />
+				return <SignalWifi2Bar className={classes.smallIcon}/>
 			default:
 				break;
 		}
@@ -83,7 +83,7 @@ class CollectionHover extends Component {
 						<Paper className={classes.paper}>
 							<ItemG container style={{ margin: "8px 0" }}>
 								<ItemG xs={3} container justify={'center'} alignItems={'center'}>
-									<DeviceHub className={classes.img} />
+									<DataUsage className={classes.img} />
 								</ItemG>
 								<ItemG xs={9} container justify={'center'}>
 									<ItemG xs={12}>
@@ -104,23 +104,22 @@ class CollectionHover extends Component {
 							<ItemG xs={12} className={classes.middleContainer}>
 								<ItemG xs={12}>
 									<T className={classes.smallText}>
-										{this.renderIcon(collection.activeDevice ? collection.activeDevice.state : null)}
-										{/* {t(`devices.status.${device.liveStatus === 0 ? 'red' : device.liveStatus === 1 ? 'yellow' : 'green'}`)} */}
+										{this.renderIcon(collection.activeDeviceStats ? collection.activeDeviceStats.state : null)}
+										{collection.activeDeviceStats ? <Link to={`/device/${collection.activeDeviceStats.id}`}>{collection.activeDeviceStats.id}</Link> : t('no.device') }
 									</T>
 								</ItemG>
-								{collection.address ?
-									<ItemG xs={12}>
-										<T className={classes.smallText}>
-											<LocationOn className={classes.smallIcon}/>
-											{collection.address}
-										</T>
-									</ItemG>
-									: null}
+								<ItemG xs={12}>
+									<T className={classes.smallText}>
+										<LibraryBooks className={classes.smallIcon}/>
+										{collection.project ? <Link to={`/project/${collection.project.id}`}>{collection.project.title}</Link> : t('no.project')}
+									</T>
+								</ItemG>
+
 							</ItemG>
 							<Divider />
 							<ItemG container style={{ marginTop: '8px' }}>
 								<ItemG>
-									<Button color={'primary'} variant={'text'} component={Link} to={`collection/${collection.id}/edit`}>
+									<Button color={'primary'} variant={'text'} component={Link} to={`/collection/${collection.id}/edit`}>
 										{t('menus.edit')}
 									</Button>
 								</ItemG>

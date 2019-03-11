@@ -14,6 +14,8 @@ import { Info, Caption, ItemG } from 'components';
 import { dateFormatter } from 'variables/functions';
 import { SignalWifi2Bar } from 'variables/icons'
 import CollectionHover from 'components/Hover/CollectionHover';
+import { getCollection } from 'variables/dataCollections';
+import { getProject } from 'variables/dataProjects';
 
 class CollectionTable extends React.Component {
 	constructor(props) {
@@ -40,22 +42,20 @@ class CollectionTable extends React.Component {
 
 	isSelected = id => this.props.selected.indexOf(id) !== -1
 
-	setHover = (e, n) => {
+	setHover = async (e, n) => {
 		e.persist()
 		const { rowHover } = this.state
+		if (rowHover) {
+			this.setState({
+				rowHover: null
+			})
+		}
+		let col = await getCollection(n.id)
+		let project = col.project.id ? await getProject(col.project.id) : null
+		col.project = project
 		let timer = setTimeout(() => {
-			if (rowHover) {
-				this.setState({
-					rowHover: null
-				})
-				setTimeout(() => {
-					this.setState({ rowHover: e.target, hoverUser: n }, () => console.log(rowHover))
-				}, 200);
-			}
-			else {
-				this.setState({ rowHover: e.target, hoverUser: n }, () => console.log(rowHover, e.currentTarget))
-			}
-		}, 700);
+			this.setState({ rowHover: e.target, hoverUser: col })
+		}, 1500);
 		this.timer.push(timer)
 	}
 	unsetTimeout = () => {

@@ -12,6 +12,7 @@ import { ItemGrid, Info, Caption } from 'components'
 import { connect } from 'react-redux'
 import TP from 'components/Table/TP';
 import TC from 'components/Table/TC';
+import ProjectHover from 'components/Hover/ProjectHover';
 
 class ProjectTable extends React.Component {
 	constructor(props) {
@@ -20,6 +21,8 @@ class ProjectTable extends React.Component {
 			page: 0,
 		}
 	}
+
+	timer = []
 
 	handleRequestSort = (event, property) => {
 		this.props.handleRequestSort(event, property)
@@ -40,11 +43,11 @@ class ProjectTable extends React.Component {
 					rowHover: null
 				})
 				setTimeout(() => {
-					this.setState({ rowHover: e.target, hoverUser: n }, () => console.log(rowHover))
+					this.setState({ rowHover: e.target, hoverProject: n })
 				}, 200);
 			}
 			else {
-				this.setState({ rowHover: e.target, hoverUser: n }, () => console.log(rowHover, e.currentTarget))
+				this.setState({ rowHover: e.target, hoverProject: n })
 			}
 		}, 700);
 		this.timer.push(timer)
@@ -59,7 +62,7 @@ class ProjectTable extends React.Component {
 		})
 	}
 	renderHover = () => {
-		// return <ProjectHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} user={this.state.hoverUser} />
+		return <ProjectHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} project={this.state.hoverProject} />
 	}
 	render() {
 		const { classes, rowsPerPage, handleClick, selected, t, order, data, orderBy, handleCheckboxClick } = this.props
