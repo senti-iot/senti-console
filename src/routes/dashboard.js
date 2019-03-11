@@ -7,10 +7,10 @@ import Loadable from 'react-loadable';
 import AsyncLoader from 'components/Loader/AsyncLoader';
 import { DataUsage } from 'variables/icons';
 
-const AsyncHoliday = Loadable({
-	loader: () => import('routes/holiday'),
-	loading: AsyncLoader
-})
+// const AsyncHoliday = Loadable({
+// 	loader: () => import('routes/holiday'),
+// 	loading: AsyncLoader
+// })
 const AsyncManagement = Loadable({
 	loader: () => import('views/Management/Management'),
 	loading: AsyncLoader
@@ -164,12 +164,12 @@ const dashboardRoutes = [
 		component: AsyncSettings,
 		menuRoute: 'settings'
 	},
-	{
-		path: '/holiday',
-		sidebarName: "",
-		component: AsyncHoliday,
-		hideFromSideBar: true
-	},
+	// {
+	// 	path: '/holiday',
+	// 	sidebarName: "",
+	// 	component: AsyncHoliday,
+	// 	hideFromSideBar: true
+	// },
 	{
 		path: '/404',
 		sidebarName: 'Error',

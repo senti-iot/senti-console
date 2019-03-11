@@ -2,12 +2,17 @@ import React, { Component } from 'react'
 import { /* ItemG, */ T } from 'components';
 import loginImages from 'variables/loginImages'
 import { Button, withStyles } from '@material-ui/core';
-import { sideBarColor } from 'assets/jss/material-dashboard-react';
-
+import { sideBarColor, /* primaryColor */ } from 'assets/jss/material-dashboard-react';
+// import ImgDevices from 'assets/img/devices.png'
+import ImgTexture from 'assets/img/texture_inverted.png'
 
 const styles = theme => ({
 	container: {
-		background: sideBarColor,
+		backgroundImage: `url(${ImgTexture})`,
+		backgroundRepeat: "no-repeat",
+		backgroundPosition: "bottom",
+		backgroundColor: sideBarColor,
+		// background: sideBarColor,
 		width: "100%",
 		height: "100%",
 		display: "flex",
