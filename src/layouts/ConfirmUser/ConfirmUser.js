@@ -1,25 +1,23 @@
 import React from 'react';
-import { withStyles, CardContent, Collapse, Button, Grid } from '@material-ui/core';
-import { GridContainer, ItemGrid, Info, Danger, ItemG, TextF } from 'components';
-import Card from 'components/Card/Card.js';
-import CardBody from 'components/Card/CardBody.js';
-import CardHeader from 'components/Card/CardHeader.js';
-import CardFooter from 'components/Card/CardFooter.js';
+import { withStyles, Collapse, Button, Paper, Hidden } from '@material-ui/core';
+import { Danger, ItemG, Success, Muted, T } from 'components';
 import loginPageStyle from 'assets/jss/material-dashboard-react/loginPageStyle.js';
-import CircularLoader from 'components/Loader/CircularLoader';
 import withLocalization from 'components/Localization/T';
 import { connect } from 'react-redux';
 import { getSettings } from 'redux/settings';
+import TextF from 'components/CustomInput/TextF';
 import { changeLanguage } from 'redux/localization';
-import { confirmUser } from 'variables/dataUsers';
 import cookie from 'react-cookies';
 import { setToken } from 'variables/data';
+import LoginImages from 'layouts/Login/LoginImages';
+import { Link } from 'react-router-dom'
+import logo from 'logo.svg'
+import { confirmUser } from 'variables/dataUsers';
 
 class ConfirmUser extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			cardAnimaton: 'cardHidden',
 			password: '',
 			confirmPassword: '',
 			loggingIn: false,
@@ -49,13 +47,6 @@ class ConfirmUser extends React.Component {
 		if (lang) {
 			this.props.changeLanguage(lang)
 		}
-		if (this.inputRef.current) { this.inputRef.current.focus() }
-		setTimeout(
-			function () {
-				return this._isMounted ? this.setState({ cardAnimaton: '' }) : '';
-			}.bind(this),
-			300
-		);
 	}
 
 	createRef = (ref) => {
@@ -101,6 +92,7 @@ class ConfirmUser extends React.Component {
 				return ''
 		}
 	}
+
 	confirmUser = async () => {
 		if (this.handleValidation()) {
 			const { password } = this.state
@@ -141,99 +133,111 @@ class ConfirmUser extends React.Component {
 
 
 	handleChange = prop => e => {
+
 		this.setState({
 			...this.state,
 			[prop]: e.target.value
 		})
 		if (this.state.error)
 			this.setState({
-				error: false
+				error: false,
+				errorMessage: []
 			})
-	}
-	inputRef = (ref) => {
-		this.input = ref
 	}
 	render() {
 		const { classes, t } = this.props;
-		const { error, password, confirmPassword, errorMessage } = this.state
+		const { error, errorMessage, password, confirmPassword, passwordRequested, passwordReset } = this.state
 		return (
-			<div>
-				<div
-					className={classes.pageHeader}
-					style={{
-						backgroundColor: '#1a1b32',
-						backgroundSize: 'cover',
-						backgroundPosition: 'top center'
-					}}
-				>
-					<div className={classes.container}>
-						<GridContainer justify='center'>
-							<ItemGrid xs={12} sm={6} md={3}>
-								<Card className={classes[this.state.cardAnimaton]}>
-									<form className={classes.form}>
-										<CardHeader color='primary' className={classes.cardHeader}>
-											<h4>Senti.Cloud</h4>
-										</CardHeader>
-										<CardBody>
-											<Grid container>
-												<ItemG xs={12}>
-													<Collapse in={!error}>
-														<Info>{t('confirmUser.welcomeMessage')}</Info>
-														<Info>{t('confirmUser.lastStep')}</Info>
-													</Collapse>
-													<Collapse in={error}>
-														{errorMessage.map(m => m)}
-													</Collapse>
-												</ItemG>
-												<ItemG xs={12}>
-													<TextF
-														autoFocus
-														id={'password'}
-														label={t('confirmUser.password')}
-														value={password}
-														className={classes.textField}
-														handleChange={this.handleChange('password')}
-														margin='normal'
-														error={error}
-														type={'password'}
-													/>
-												</ItemG>
-												<ItemG xs={12}>
-													<TextF
-														id={'confirmpassword'}
-														label={t('confirmUser.passwordConfirm')}
-														value={confirmPassword}
-														className={classes.textField}
-														handleChange={this.handleChange('confirmPassword')}
-														margin='normal'
-														error={error}
-														type={'password'}
-													/>
-												</ItemG>
-											</Grid>
-										</CardBody>
-										<CardFooter className={classes.cardFooter}>
-											<Button variant={'contained'} color={'primary'} size='large' className={classes.loginButton} onClick={this.confirmUser}>
-												{t('confirmUser.button')}
-											</Button>
-										</CardFooter>
-									</form>
-									<Collapse in={this.state.loggingIn} timeout='auto' unmountOnExit>
-										<CardContent>
-											<CircularLoader notCentered />
-										</CardContent>
-									</Collapse>
-								</Card>
-							</ItemGrid>
-						</GridContainer>
-					</div>
-				</div>
+			<div className={classes.wrapper}>
+				<ItemG xs={12} sm={12} md={4} lg={4} xl={3} container>
+					<div className={classes.mobileContainer}>
 
+						<Paper className={classes.paper}>
+							<div className={classes.paperContainer}>
+
+								<ItemG xs={12} container justify={'center'}>
+									<img className={classes.logo} src={logo} alt={'sentiLogo'} />
+								</ItemG>
+								<ItemG xs={12} container justify={'center'}>
+									<T className={classes.loginButton + ' ' + classes.needAccount}>{t('confirmUser.welcomeMessage')}</T>
+									<T className={classes.loginButton + ' ' + classes.needAccount}>{t('confirmUser.lastStep')}</T>
+								</ItemG>
+								<ItemG xs={12} container justify={'center'}>
+									<ItemG container justify={'center'} xs={12}>
+										<Collapse in={passwordReset}>
+											{this.token ? <Success className={classes.loginButton + ' ' + classes.needAccount}>{t('dialogs.login.passwordReseted')}</Success> : null}
+										</Collapse>
+										<Collapse in={error}>
+											{errorMessage.map(m => m)}
+										</Collapse>
+									</ItemG>
+
+									<ItemG container xs={12}>
+
+										<ItemG container xs={12}>
+											<TextF
+												fullWidth
+												id={'password'}
+												label={t('confirmUser.password')}
+												value={password}
+												className={classes.loginButton}
+												handleChange={this.handleChange('password')}
+												margin='normal'
+												error={error}
+												type={'password'}
+											/>
+										</ItemG>
+										<ItemG container xs={12}>
+											<TextF
+												fullWidth
+												id={'confirmpassword'}
+												label={t('confirmUser.passwordConfirm')}
+												value={confirmPassword}
+												className={classes.loginButton}
+												handleChange={this.handleChange('confirmPassword')}
+												margin='normal'
+												error={error}
+												type={'password'}
+											/>
+										</ItemG>
+										<Collapse in={passwordRequested}>
+											<ItemG xs={12} className={classes.loginButton}>
+												<Success>{t('dialogs.login.resetPassRequestMessage')}</Success>
+											</ItemG>
+										</Collapse>
+									</ItemG>
+									<ItemG xs={12} container justify={'center'}>
+										<Button variant={'contained'} color={'primary'} size='large' className={classes.loginButton} onClick={this.confirmUser}>
+											{t('confirmUser.button')}
+										</Button>
+									</ItemG>
+									<ItemG xs={12} container justify={'center'} style={{ margin: "32px 0px" }}>
+										<ItemG xs={12} container justify={'space-around'}>
+											<Collapse in={!passwordReset}>
+												<Link to={`/login`}>
+													{t('actions.goToLogin')}
+												</Link>
+											</Collapse>
+										</ItemG>
+									</ItemG>
+								</ItemG>
+							</div>
+							<ItemG xs={12} container alignItems={'flex-end'} justify={'center'} className={classes.footer}>
+								<Muted className={classes.footerText}>{t('login.footer')}</Muted>
+							</ItemG>
+						</Paper>
+					</div>
+				</ItemG>
+				<Hidden smDown>
+					<ItemG md={8} lg={8} xl={9}>
+						<LoginImages t={t} />
+					</ItemG>
+				</Hidden>
 			</div>
 		);
 	}
 }
-const mapStateToProps = (state) => ({
+const mapStateToProps = () => ({
 
 })
 
