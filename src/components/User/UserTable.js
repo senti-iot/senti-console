@@ -100,9 +100,9 @@ class UserTable extends React.Component {
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 		return (
 			<Fragment>
-				{this.renderHover()}
-				<div className={classes.tableWrapper}>
-					<Table className={classes.table} aria-labelledby='tableTitle' onMouseLeave={this.unsetHover}>
+				<div className={classes.tableWrapper} onMouseLeave={this.unsetHover}>
+					{this.renderHover()}
+					<Table className={classes.table} aria-labelledby='tableTitle' >
 						<TableHeader
 							numSelected={selected.length}
 							order={order}
@@ -119,7 +119,7 @@ class UserTable extends React.Component {
 								id: 'firstName', label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>Users</Typography>
 							}]}
 						/>
-						<TableBody>
+						<TableBody >
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
 								const lastLoggedIn = moment(n.lastLoggedIn).isValid() ? dateFormat(n.lastLoggedIn) : t('users.fields.neverLoggedIn')
@@ -135,6 +135,7 @@ class UserTable extends React.Component {
 										key={n.id}
 										selected={isSelected}
 										style={{ cursor: 'pointer' }}
+										// onMouseLeave={this.unsetHover}
 									>
 										<Hidden lgUp>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => this.props.handleCheckboxClick(e, n.id)} />} />
