@@ -32,7 +32,8 @@ const styles = theme => ({
 	},
 	message: {
 		padding: 25,
-		maxWidth: 815
+		maxWidth: 615,
+		marginBottom: 30
 	},
 	button: {
 		marginBottom: 40
