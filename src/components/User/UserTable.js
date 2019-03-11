@@ -64,27 +64,35 @@ class UserTable extends React.Component {
 	isSelected = id => this.props.selected.indexOf(id) !== -1
 	timer = []
 	setHover = (e, n) => {
+		e.persist()
+		console.log(e)
+		// let target = e.currentTarget ? e.currentTarget : null
 		const { rowHover } = this.state
+		// if (target) {
 		let timer = setTimeout(() => {
 			if (rowHover) {
+				console.log(e.currentElement)
 				this.setState({
 					rowHover: null
 				})
-				this.setState({ rowHover: e.target, hoverUser: n })
-				// setTimeout(() => {
-				// }, 200);
+				setTimeout(() => {
+					this.setState({ rowHover: e.target, hoverUser: n }, () => console.log(rowHover))
+				}, 200);
 			}
 			else {
-				this.setState({ rowHover: e.target, hoverUser: n })
+				this.setState({ rowHover: e.target, hoverUser: n }, () => console.log(rowHover, e.currentTarget))
 			}
 		}, 700);
 		this.timer.push(timer)
+		// }
 	}
 	unsetTimeout = () => {
-		this.timer.forEach(e => clearTimeout(e))
-		// clearTimeout(this.timer);
+		console.log('untimer')
+		if (this.timer.length > 0)
+			this.timer.forEach(e => clearTimeout(e))
 	}
 	unsetHover = () => {
+		console.log('unhover')
 		this.setState({
 			rowHover: null
 		})
@@ -126,7 +134,7 @@ class UserTable extends React.Component {
 								return (
 									<TableRow
 										hover
-										onMouseOver={e => { e.persist(); this.setHover(e, n) }}
+										onMouseOver={e => { this.setHover(e, n) }}
 										onMouseLeave={this.unsetTimeout}
 										onClick={e => { e.stopPropagation(); this.props.history.push('/management/user/' + n.id) }}
 										role='checkbox'
@@ -135,7 +143,7 @@ class UserTable extends React.Component {
 										key={n.id}
 										selected={isSelected}
 										style={{ cursor: 'pointer' }}
-										// onMouseLeave={this.unsetHover}
+									// onMouseLeave={this.unsetHover}
 									>
 										<Hidden lgUp>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => this.props.handleCheckboxClick(e, n.id)} />} />
