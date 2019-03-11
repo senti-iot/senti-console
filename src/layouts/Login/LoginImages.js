@@ -5,6 +5,7 @@ import { Button, withStyles } from '@material-ui/core';
 import { sideBarColor, /* primaryColor */ } from 'assets/jss/material-dashboard-react';
 // import ImgDevices from 'assets/img/devices.png'
 import ImgTexture from 'assets/img/texture_inverted.png'
+import sentiDots from 'assets/img/senti_dots.svg'
 
 const styles = theme => ({
 	container: {
@@ -38,6 +39,11 @@ const styles = theme => ({
 	},
 	img: {
 		height: 250,
+	},
+	sentiDots: {
+		height: 75,
+		marginTop: 100,
+		margin: 50
 	}
 })
 
@@ -97,6 +103,7 @@ class LoginImages extends Component {
 						{t('actions.learnMore')}
 					</Button>					
 					<img src={loginImages[number]} className={classes.img} alt="" />
+					<img src={sentiDots} className={classes.sentiDots} alt=''/>
 				</div>
 			</div>
 		)

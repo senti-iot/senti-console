@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ItemG, TextF, T, Muted } from 'components';
-import { Hidden, Paper, withStyles, InputAdornment, Button, withWidth, Dialog } from '@material-ui/core';
+import { Hidden, Paper, withStyles, InputAdornment, Button, withWidth } from '@material-ui/core';
 import logo from 'logo.svg'
 import { connect } from 'react-redux'
 import { Person, LockOutlined, Google } from 'variables/icons';
@@ -37,12 +37,8 @@ class NewLoginPage extends Component {
 		this.input = React.createRef()
 	}
 	googleSignIn = async (googleUser) => {
-		console.log(window.mGoogleSignInClient)
 		if (googleUser.error) { 
 			console.log(googleUser.error)
-			return <Dialog>
-				
-			</Dialog>
 		}			
 		if (googleUser) { 
 			let token = googleUser.getAuthResponse().id_token
@@ -141,7 +137,7 @@ class NewLoginPage extends Component {
 					<div className={classes.mobileContainer}>
 
 						<Paper className={classes.paper}>
-							<div className={classes.paperContainer}>
+							<div className={classes.paperContainer} style={{ overflow: 'auto' }}>
 
 								{/* <ItemG container alignItems={'center'} justify={'space-evenly'} className={classes.container}> */}
 								<ItemG xs={12} container justify={'center'}>
@@ -210,11 +206,6 @@ class NewLoginPage extends Component {
 										</ItemG>
 										<ItemG xs={12} container justify={'center'} style={{ margin: "32px 0px" }}>
 											<ItemG xs={12} container justify={'space-around'}>
-												{/* <Link to={`/password/reset/${language}`}>
-													{t('login.forgotUsername')}
-												</Link> */}
-												{/* <Button variant={'text'} onClick={() => this.setState({ resetPassword: true })}> */}
-												{/* </Button> */}
 												<Link to={`/password/reset/${language}`}>
 													{t('login.forgotPassword')}
 												</Link>
@@ -235,7 +226,6 @@ class NewLoginPage extends Component {
 										</ItemG>
 									</ItemG>
 								</FadeOutLoader>
-								{/* </ItemG> */}
 							</div>
 							<ItemG xs={12} container alignItems={'flex-end'} justify={'center'} className={classes.footer}>
 								<Muted className={classes.footerText}>{t('login.footer')}</Muted>

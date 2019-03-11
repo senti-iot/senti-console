@@ -38,7 +38,7 @@ const loginPageStyles = theme => ({
 			padding: 24
 		},
 		[theme.breakpoints.down('sm')]: {
-			padding: 48
+			padding: 24
 		},
 		[theme.breakpoints.down('xs')]: {
 			padding: 8,
@@ -76,11 +76,11 @@ const loginPageStyles = theme => ({
 	},
 	mobileContainer: {
 		[theme.breakpoints.down('sm')]: {
-			height: 'calc(100% - 48px)',
+			// height: 'calc(100% - 48px)',
 			padding: 24
 		},
 		[theme.breakpoints.down('xs')]: {
-			height: 'calc(100% - 32px)',
+			// height: 'calc(100% - 32px)',
 			padding: 16,
 		}
 	},
