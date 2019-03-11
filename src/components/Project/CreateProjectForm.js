@@ -206,7 +206,7 @@ class CreateProjectForm extends Component {
 									id={'title'}
 									label={t('projects.fields.name')}
 									value={title}
-									className={classes.textField}
+									// className={classes.textField}
 									handleChange={handleChange('title')}
 									margin='normal'
 
@@ -221,7 +221,7 @@ class CreateProjectForm extends Component {
 									multiline
 									rows={4}
 									color={'secondary'}
-									className={classes.textField}
+									// className={classes.textField}
 									value={description}
 									handleChange={handleChange('description')}
 									margin='normal'
