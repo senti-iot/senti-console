@@ -5,6 +5,7 @@ import LinearScale from '@material-ui/icons/LinearScale'
 import Assignment from '@material-ui/icons/Assignment'
 import Public from '@material-ui/icons/Public'
 import Google from 'assets/img/google.svg'
+import Call from '@material-ui/icons/Call'
 //#region weather Icons
 import ClearDay from 'assets/weather/clear_day.svg'
 import ClearNight from 'assets/weather/clear_night.svg'
@@ -95,6 +96,7 @@ import EventNote from '@material-ui/icons/EventNote'
 import FullscreenOutlined from '@material-ui/icons/FullscreenOutlined'
 
 export {
+	Call,
 	Google,
 	Public,
 	FullscreenOutlined,
