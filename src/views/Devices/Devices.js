@@ -219,15 +219,17 @@ class Devices extends Component {
 		if (this.props.saved === true) {
 			const { devices, selected } = this.state
 			let device = devices[devices.findIndex(d => d.id === selected[0])]
-			if (this.props.isFav({ id: device.id, type: 'device' })) {
-				this.props.s('snackbars.favorite.saved', { name: device.name, type: this.props.t('favorites.types.device') })
-				this.props.finishedSaving()
-				this.setState({ selected: [] })
-			}
-			if (!this.props.isFav({ id: device.id, type: 'device' })) {
-				this.props.s('snackbars.favorite.removed', { name: device.name, type: this.props.t('favorites.types.device') })
-				this.props.finishedSaving()
-				this.setState({ selected: [] })
+			if (device) {
+				if (this.props.isFav({ id: device.id, type: 'device' })) {
+					this.props.s('snackbars.favorite.saved', { name: device.name, type: this.props.t('favorites.types.device') })
+					this.props.finishedSaving()
+					this.setState({ selected: [] })
+				}
+				if (!this.props.isFav({ id: device.id, type: 'device' })) {
+					this.props.s('snackbars.favorite.removed', { name: device.name, type: this.props.t('favorites.types.device') })
+					this.props.finishedSaving()
+					this.setState({ selected: [] })
+				}
 			}
 		}
 	}

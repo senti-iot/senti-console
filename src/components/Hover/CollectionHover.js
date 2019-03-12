@@ -124,11 +124,6 @@ class CollectionHover extends Component {
 									</Button>
 								</ItemG>
 								<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
-									{/* <Tooltip placement="top" title={t('actions.visitWebsite')}>
-										<IconButton component={'a'} className={classes.smallAction} href={device.url} rel="noopener noreferrer" target="_blank">
-											<Language />
-										</IconButton>
-									</Tooltip> */}
 									<Tooltip placement="top" title={isFav({ id: collection.id, type: 'collection' }) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
 										<IconButton className={classes.smallAction} onClick={isFav({ id: collection.id, type: 'collection' }) ? this.removeFromFav : this.addToFav}>
 											{isFav({ id: collection.id, type: 'collection' }) ? <Star /> : <StarBorder />}
