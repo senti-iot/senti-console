@@ -477,8 +477,8 @@
 		},
 		"copyEmails": "Copy E-mail addresses",
 		"create": {
-			"project": "Create project",
-			"user": "Create user"
+			"project": "Save",
+			"user": "Save"
 		},
 		"delete": "Delete",
 		"edit": "Edit",

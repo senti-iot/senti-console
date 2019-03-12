@@ -477,8 +477,8 @@
 		},
 		"copyEmails": "Kopier E-mail adresser",
 		"create": {
-			"project": "Opret projekt",
-			"user": "Opret bruger"
+			"project": "Gem",
+			"user": "Gem"
 		},
 		"delete": "Slet",
 		"edit": "Rediger",
