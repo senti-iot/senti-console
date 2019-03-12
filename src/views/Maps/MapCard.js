@@ -317,6 +317,18 @@ class MapCard extends PureComponent {
 			</DialogActions>
 		</Drawer>
 	}
+	isExpanded = () => {
+		const { single } = this.props
+		const { markers } = this.state
+		if (single) {
+			if (markers[0].lat && markers[0].long)
+				return true
+			else {
+				return false
+			}
+		}
+		return true
+	}
 	render() {
 		const { device, t, loading, mapTheme, heatMap, period } = this.props
 		return (
@@ -326,13 +338,13 @@ class MapCard extends PureComponent {
 				title={t('devices.cards.map')}
 				subheader={device ? `${t('devices.fields.coordsW', { lat: device.lat.toString().substring(0, device.lat.toString().indexOf('.') + 6), long: device.long.toString().substring(0, device.long.toString().indexOf('.') + 6) })},\n${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)}, ` : ""}Heatmap:${heatMap ? t('actions.on') : t('actions.off')}` : `${heatMap ? `${dateTimeFormatter(period.from)} - ${dateTimeFormatter(period.to)}, ` : ''}Heatmap:${heatMap ? t('actions.on') : t('actions.off')}`}
 				avatar={<Map />}
-				expanded
+				expanded={this.isExpanded()}
 				topAction={this.renderMenu()}
 				hiddenContent={
 					loading ? <CircularLoader /> :
 						<Grid container justify={'center'}>
 							{device ? this.renderModal() : false}
-							{this.state.markers.length > 0 ?
+							{this.isExpanded() ?
 								<OpenStreetMap
 									calibrate={this.state.openModalEditLocation}
 									getLatLng={this.getLatLngFromMap}

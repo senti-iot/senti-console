@@ -554,6 +554,7 @@ class Collection extends Component {
 						})}
 						{this.state.activeDevice ? <ItemGrid xs={12} noMargin id='map'>
 							<Maps
+								single
 								reload={this.reload}
 								device={activeDevice}
 								mapTheme={this.props.mapTheme}
