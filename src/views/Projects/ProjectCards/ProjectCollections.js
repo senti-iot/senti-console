@@ -120,7 +120,7 @@ class ProjectCollections extends Component {
 									{dataCollections ? dataCollections.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((n, i) => {
 										return (
 											<TableRow
-												onMouseOver={() => this.props.setHoverID(n.id)}
+												onMouseEnter={() => this.props.setHoverID(n.id)}
 												hover
 												onClick={e => { e.stopPropagation(); this.props.history.push({ pathname: '/collection/' + n.id, prevURL: `/project/${project.id}` }) }}
 												key={i}

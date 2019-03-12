@@ -21,8 +21,6 @@ function Header({ ...props }) {
 				width: '120px'
 			}}
 			onClick={() => props.history.push(defaultRoute ? defaultRoute : '/')}
-		// component={Link}
-		// to={}
 		>
 			<span
 				className={classes.imageSrc}

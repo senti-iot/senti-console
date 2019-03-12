@@ -93,7 +93,7 @@ class Toolbar extends PureComponent {
 		this._isMounted = 1
 	}
 	componentDidUpdate = (prevProps) => {
-		if (this.props.route !== prevProps.route) {
+		if (this.props.route !== prevProps.route && this.props.route !== undefined) {
 			this.setState({ route: this.props.route })
 		}
 	}

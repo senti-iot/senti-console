@@ -33,7 +33,6 @@ const regularCardStyle = theme => ({
 	},
 	noMargin: {
 		margin: 0,
-		// padding: 0
 	},
 	noPadding: {
 		paddingLeft: 0,
@@ -61,7 +60,6 @@ const regularCardStyle = theme => ({
 		}
 	},
 	smallCard: {
-		// maxWidth: 345,
 		[theme.breakpoints.up("sm")]: {
 			width: "100%"
 		},
@@ -69,7 +67,6 @@ const regularCardStyle = theme => ({
 		maxHeight: 500
 	},
 	smallCardCustomHeight: {
-		// height: "calc(100% - 148px)"
 		flex: 1
 	},
 	alignCenter: {
@@ -95,30 +92,25 @@ const regularCardStyle = theme => ({
 		...transition
 	},
 	root: {
-		// height: "100%",
 		paddingTop: 0,
 		marginTop: 0,
-		// padding: 0,
 	},
 	media: {
 		height: 0,
 		paddingTop: '56.25%', // 16:9
 	},
 	actions: {
-		// display: 'flex',
 		alignSelf: 'center',
 		padding: "4px"
 	},
 	expandPosition: {
 		marginLeft: 'auto',
-		// textTransform: 'initial'
 	},
 	expand: {
 		transform: 'rotate(0deg)',
 		transition: theme.transitions.create('transform', {
 			duration: theme.transitions.duration.shortest,
 		}),
-		// marginLeft: 'auto',
 	},
 	expandOpen: {
 		transform: 'rotate(180deg)',
@@ -132,9 +124,7 @@ const regularCardStyle = theme => ({
 	card: {
 		...card,
 		height: "100%",
-		// display: 'flex'
 	},
-
 	cardPlain: {
 		background: "transparent",
 		boxShadow: "none"

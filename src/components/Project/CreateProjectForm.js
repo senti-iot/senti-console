@@ -3,8 +3,8 @@ import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemTe
 import { Close } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import { Collapse, Grid, Paper } from '@material-ui/core'
-import { KeyboardArrowLeft as KeyArrLeft, KeyboardArrowRight as KeyArrRight, Save } from 'variables/icons'
+import { Collapse, Paper } from '@material-ui/core'
+import { KeyboardArrowLeft as KeyArrLeft, KeyboardArrowRight as KeyArrRight } from 'variables/icons'
 import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers'
 import MomentUtils from '@date-io/moment'
 import { CircularLoader, GridContainer, ItemGrid, TextF, Danger, Warning, ItemG } from 'components'
@@ -180,14 +180,14 @@ class CreateProjectForm extends Component {
 		const { t, classes, errorMessage, error,
 			created, title, handleChange, handleDateChange, 
 			description, startDate, endDate, creating, handleOpenOrg, org,
-			handleCreateProject, handleOpenUser, user
+			handleCreateProject, handleOpenUser, user, goToProject
 		} = this.props
 		const buttonClassname = cx({
 			[classes.buttonSuccess]: created,
 		})
 		return (
 			<GridContainer justify={'center'}>
-				<Paper className={classes.paper}> :
+				<Paper className={classes.paper}>
 					<MuiPickersUtilsProvider utils={MomentUtils}>
 
 						<form className={classes.form}>
@@ -206,7 +206,7 @@ class CreateProjectForm extends Component {
 									id={'title'}
 									label={t('projects.fields.name')}
 									value={title}
-									className={classes.textField}
+									// className={classes.textField}
 									handleChange={handleChange('title')}
 									margin='normal'
 
@@ -221,7 +221,7 @@ class CreateProjectForm extends Component {
 									multiline
 									rows={4}
 									color={'secondary'}
-									className={classes.textField}
+									// className={classes.textField}
 									value={description}
 									handleChange={handleChange('description')}
 									margin='normal'
@@ -301,22 +301,30 @@ class CreateProjectForm extends Component {
 								<CircularLoader notCentered />
 							</Collapse>
 						</ItemGrid>
-						<Grid container justify={'center'}>
+						<ItemGrid container style={{ margin: 16 }}>
 							<div className={classes.wrapper}>
 								<Button
-									variant='contained'
+									variant='outlined'
+									onClick={goToProject}
+									className={classes.redButton}
+								>
+									{t('actions.cancel')}
+								</Button>
+							</div>
+							<div className={classes.wrapper}>
+								<Button
+									variant='outlined'
 									color='primary'
 									className={buttonClassname}
 									disabled={creating || created}
 									onClick={handleCreateProject}
 								>
 									{created ? t('snackbars.redirect')
-										: <Fragment>
-											<Save className={classes.leftIcon} />{t('menus.create.project')}
-										</Fragment>}
+										: t('actions.save')}
+										
 								</Button>
 							</div>
-						</Grid>
+						</ItemGrid>
 					</MuiPickersUtilsProvider>
 				</Paper>
 			</GridContainer> 

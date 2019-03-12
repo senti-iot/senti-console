@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { editUser, getUser } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
 import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader, ItemG } from 'components';
-import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Grid, Button, FormControlLabel, Checkbox } from '@material-ui/core';
-import { Save, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons'
+import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Button, FormControlLabel, Checkbox } from '@material-ui/core';
+import { KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { isFav, updateFav } from 'redux/favorites';
@@ -138,6 +138,11 @@ class EditUser extends Component {
 			this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t('orgs.validation.networkError') })
 
 		)
+	}
+	goToUser = () => { 
+		const { user } = this.state
+		const { history } = this.props
+		history.push(`/management/user/${user.id}`)
 	}
 	close = async () => {
 		const { isFav, updateFav } = this.props
@@ -570,20 +575,30 @@ class EditUser extends Component {
 							<CircularLoader notCentered />
 						</Collapse>
 					</ItemGrid>
-					<Grid container justify={'center'}>
+					<ItemGrid container style={{ margin: 16 }}>
 						<div className={classes.wrapper}>
 							<Button
-								variant='contained'
+								variant='outlined'
+								// color={'danger'}
+								onClick={this.goToUser}
+								className={classes.redButton}
+							>
+								{t('actions.cancel')}
+							</Button>
+						</div>
+						<div className={classes.wrapper}>
+							<Button
+								variant='outlined'
 								color='primary'
 								className={buttonClassname}
 								disabled={this.state.creating || this.state.created}
 								onClick={this.handleEditUser}>
 								{this.state.created ?
 									<Fragment>{t('snackbars.redirect')}</Fragment>
-									: <Fragment><Save className={classes.leftIcon} />{t('users.editUser')}</Fragment>}
+									: <Fragment>{t('actions.save')}</Fragment>}
 							</Button>
 						</div>
-					</Grid>
+					</ItemGrid>
 				</Paper>
 
 			</GridContainer> : <CircularLoader />

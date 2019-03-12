@@ -12,13 +12,17 @@ class NavigationSettings extends Component {
 	changeDefaultView = e => this.props.changeDefaultView(e.target.value)
 
 	render() {
-		const { classes, t, defaultRoute, defaultView } = this.props
+		const { classes, t, defaultRoute, defaultView, user } = this.props
 		let defaultRoutes = [
 			{ value: '/favorites', label: t('sidebar.favorites') },
 			{ value: '/dashboard', label: t('sidebar.dashboard') },
 			{ value: '/projects', label: t('sidebar.projects') },
 			{ value: '/devices', label: t('sidebar.devices') },
-			{ value: '/collections', label: t('sidebar.collections') }
+			{ value: '/collections', label: t('sidebar.collections') },
+			{ value: '/management/orgs', label: t('sidebar.orgs') },
+			{ value: `/management/org/${user.org.id}`, label: t('menus.user.account') },
+			{ value: '/management/users', label: t('sidebar.users') },
+			{ value: `/management/user/${user.id}`, label: t('menus.user.profile') },
 		]
 		let defaultViews = [
 			{ value: '/list', label: t('settings.defaultViews.list') },
@@ -56,7 +60,8 @@ const mapStateToProps = state => {
 	const s = state.settings
 	return ({
 		defaultRoute: s.defaultRoute,
-		defaultView: s.defaultView
+		defaultView: s.defaultView,
+		user: s.user
 	})
 }
 const mapDispatchToProps = (dispatch) => {

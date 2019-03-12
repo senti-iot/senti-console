@@ -9,6 +9,9 @@
 	"": "",
 	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
+		"visitWebsite": "Se hjemmeside",
+		"call": "Ring",
+		"sendEmail": "Send e-mail",
 		"changeLanguage": "Change to English",
 		"search": "Eller skriv her for at søge",
 		"accept": "Godkend",
@@ -32,6 +35,7 @@
 		"insertAddress": "Indtast adresse",
 		"learnMore": "Lær mere",
 		"login": "Log ind",
+		"loginWithGoogle": "Log ind med Google",
 		"manualCalibration": "Manuel kalibrering",
 		"next": "Næste",
 		"nextPage": "Næste side",
@@ -99,6 +103,9 @@
 		"cards": {
 			"data": "Datasamlinger",
 			"log": "Enhedslog"
+		},
+		"helper": {
+			"availableDevicesForOrg": "Ledige enheder for den valgte organisation"
 		},
 		"createCollection": "Ny datasamling",
 		"editCollection": "Rediger datasamling",
@@ -415,6 +422,28 @@
 		"phoneTo": "Ring til"
 	},
 	"login": {
+		"cards": {
+			"0": ">Senti< er en open source Internet of Things platform, der >gør dig i stand til at sanse og opsamle< viden om mennesker og tilstande i dit bymæssige eller industrielle miljø.",
+			"1": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.",
+			"2": ">Senti.<Cloud fungerer som >“tentakler”< der sanser >byens rum< og hjælper med at gøre din by til en >“smartcity”<.",
+			"3": ">Senti.<Cloud er en administreret IoT-tjeneste, der nemt og sikkert forbinder, håndterer og opsamler data fra >alle byens forskellige enheder<.",
+			"4": ">Senti.<Cloud er en komplet løsning til at indsamle, behandle, analysere og visualisere data i >realtid< der kan hjælpe dig med operationel effektivitet og træffe >velinformerede beslutninger<.",
+			"5": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.",
+			"6": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.",
+			"7": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.",
+			"8": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.",
+			"9": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.",
+			"10": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.",
+			"11": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.",
+			"12": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.",
+			"13": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.."
+		},
+		"footer": "©2016–2019 Alle Rettigheder Forbeholdt. Senti.Cloud er en open source platform designet og udviklet af WebHouse ApS.",
+		"needAnAccount1": "Brug for en",
+		"needAnAccount2": "konto",
+		"createAccount": "Opret en konto",
+		"forgotUsername": "Glemt brugernavn?",
+		"forgotPassword": "Glemt kodeord?",
 		"pass": "Kodeord",
 		"username": "Brugernavn"
 	},
@@ -491,7 +520,8 @@
 		"birthdays": "Ingen fødselsdage i dag",
 		"collection": "Ikke tildelt en datasamling",
 		"collections": "Ingen datasamlinger",
-		"device": "Ingen ledige enheder",
+		"freeDevices": "Ingen ledige enheder",
+		"device": "Ingen enhed",
 		"devices": "Ingen enheder",
 		"doi": "ingen helligdage i dag",
 		"history": "Ingen historik",

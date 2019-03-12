@@ -6,7 +6,7 @@ import { ViewList, StarBorder } from 'variables/icons'
 import TableToolbar from 'components/Table/TableToolbar'
 import FavoritesTable from 'components/Favorites/FavoritesTable'
 import { GridContainer, CircularLoader } from 'components'
-import { Paper, withStyles } from '@material-ui/core'
+import { Paper, withStyles, Fade } from '@material-ui/core'
 import projectStyles from 'assets/jss/views/projects'
 import { filterItems, handleRequestSort } from 'variables/functions'
 import { finishedSaving, removeFromFav, addToFav, isFav } from 'redux/favorites'
@@ -233,11 +233,11 @@ class Favorites extends Component {
 		const { classes } = this.props
 		const { loading } = this.state
 		return <GridContainer justify={'center'}>
-			{loading ? <CircularLoader /> : <Paper className={classes.root}>
+			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
 				{this.renderTableToolBar()}
 				{this.renderTable()}
 				{/* {this.renderConfirmDelete()} */}
-			</Paper>
+			</Paper></Fade>
 			}
 		</GridContainer>
 	}

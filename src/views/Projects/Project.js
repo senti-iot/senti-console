@@ -1,4 +1,4 @@
-import { Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, withStyles } from '@material-ui/core'
+import { Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, withStyles, Fade } from '@material-ui/core'
 import { ItemGrid, GridContainer, CircularLoader } from 'components'
 import React, { Component, Fragment } from 'react'
 import { getProject, deleteProject } from 'variables/dataProjects'
@@ -353,70 +353,71 @@ class Project extends Component {
 					tabs={this.tabs}
 				/> */}
 				{!loading ?
-					<GridContainer justify={'center'} alignContent={'space-between'}>
-						<ItemGrid xs={12} noMargin id='details'>
-							<ProjectDetails
-								isFav={this.props.isFav({ id: project.id, type: 'project' })}
-								addToFav={this.addToFav}
-								removeFromFav={this.removeFromFav}
-								t={t}
-								project={project} {...rp}
-								deleteProject={this.handleOpenDeleteDialog}
-								handleOpenAssignCollection={this.handleOpenAssignCollection}
-							/>
-						</ItemGrid>
-
-						<ItemGrid xs={12} noMargin id={'data'}>
-							<ChartDataPanel />
-						</ItemGrid>
-						{this.props.periods.map((period, i) => {
-							if (period.hide) { return null }
-							return <ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
-								<ChartData
-									period={period}
-									getData={this.handleSwitchDayHourSummary}
-									setHoverID={this.setHoverID}
-									project={project}
-									hoverID={hoverID}
-									{...rp}
-									t={this.props.t}
+					<Fade in={true}>
+						<GridContainer justify={'center'} alignContent={'space-between'}>
+							<ItemGrid xs={12} noMargin id='details'>
+								<ProjectDetails
+									isFav={this.props.isFav({ id: project.id, type: 'project' })}
+									addToFav={this.addToFav}
+									removeFromFav={this.removeFromFav}
+									t={t}
+									project={project} {...rp}
+									deleteProject={this.handleOpenDeleteDialog}
+									handleOpenAssignCollection={this.handleOpenAssignCollection}
 								/>
 							</ItemGrid>
-						})
-						}
 
-						<ItemGrid xs={12} noMargin id='collections'>
-							<ProjectCollections
-								setHoverID={this.setHoverID}
-								t={t}
-								project={project}
-								{...rp} />
-						</ItemGrid >
-						{project.devices ? <ItemGrid xs={12} noMargin id='map'>
-							<Maps
-								mapTheme={this.props.mapTheme}
-								markers={this.state.project.devices}
-								heatData={this.state.heatData}
+							<ItemGrid xs={12} noMargin id={'data'}>
+								<ChartDataPanel />
+							</ItemGrid>
+							{this.props.periods.map((period, i) => {
+								if (period.hide) { return null }
+								return <ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
+									<ChartData
+										period={period}
+										getData={this.handleSwitchDayHourSummary}
+										setHoverID={this.setHoverID}
+										project={project}
+										hoverID={hoverID}
+										{...rp}
+										t={this.props.t}
+									/>
+								</ItemGrid>
+							})
+							}
+
+							<ItemGrid xs={12} noMargin id='collections'>
+								<ProjectCollections
+									setHoverID={this.setHoverID}
+									t={t}
+									project={project}
+									{...rp} />
+							</ItemGrid >
+							{project.devices ? <ItemGrid xs={12} noMargin id='map'>
+								<Maps
+									mapTheme={this.props.mapTheme}
+									markers={this.state.project.devices}
+									heatData={this.state.heatData}
+									t={t}
+								/>
+							</ItemGrid> : null
+							}
+							<ItemGrid xs={12} noMargin id='contact' >
+								<ProjectContact
+									reload={this.reload}
+									classes={classes}
+									history={this.props.history}
+									t={t}
+									project={project} />
+							</ItemGrid>
+							{this.renderDeleteDialog()}
+							<AssignDCs
+								open={openAssignDC}
+								handleClose={this.handleCloseAssignCollection}
+								project={project.id}
 								t={t}
 							/>
-						</ItemGrid> : null
-						}
-						<ItemGrid xs={12} noMargin id='contact' >
-							<ProjectContact
-								reload={this.reload}
-								classes={classes}
-								history={this.props.history}
-								t={t}
-								project={project} />
-						</ItemGrid>
-						{this.renderDeleteDialog()}
-						<AssignDCs
-							open={openAssignDC}
-							handleClose={this.handleCloseAssignCollection}
-							project={project.id}
-							t={t}
-						/>
-					</GridContainer>
+						</GridContainer></Fade>
 					: this.renderLoader()}
 			</Fragment>
 		)

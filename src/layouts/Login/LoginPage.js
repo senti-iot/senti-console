@@ -1,50 +1,107 @@
-import React from 'react';
-import { InputAdornment, withStyles, CardContent, Collapse, Button, Grid, withWidth } from '@material-ui/core';
-import { LockOutlined, Person, Google } from 'variables/icons';
-import { GridContainer, ItemGrid, ItemG, TextF } from 'components';
-import Card from 'components/Card/Card.js';
-import CardBody from 'components/Card/CardBody.js';
-import CardHeader from 'components/Card/CardHeader.js';
-import CardFooter from 'components/Card/CardFooter.js';
-import loginPageStyle from 'assets/jss/material-dashboard-react/loginPageStyle.js';
-import { loginUser } from 'variables/dataLogin';
-import { setToken } from 'variables/data'
-import cookie from 'react-cookies';
-import classNames from 'classnames';
-import CircularLoader from 'components/Loader/CircularLoader';
+import React, { Component } from 'react'
+import { ItemG, TextF, T, Muted } from 'components';
+import { Hidden, Paper, withStyles, InputAdornment, Button, withWidth } from '@material-ui/core';
+import logo from 'logo.svg'
+import { connect } from 'react-redux'
+import { Person, LockOutlined, Google } from 'variables/icons';
+import cx from 'classnames'
 import withLocalization from 'components/Localization/T';
-import { connect } from 'react-redux';
-import { getSettings } from 'redux/settings';
-import { Link } from 'react-router-dom'
 import { compose } from 'recompose';
+import { Link } from 'react-router-dom'
 import GoogleLogin from 'react-google-login';
+import LoginImages from './LoginImages';
+import cookie from 'react-cookies';
+import { setToken } from 'variables/data';
+import { loginUser, loginUserViaGoogle } from 'variables/dataLogin';
+import { getSettings } from 'redux/settings';
 import { changeLanguage } from 'redux/localization';
+// import ResetPassword from 'layouts/ResetPassowrd/ResetPassword';
+import FadeOutLoader from 'components/Utils/FadeOutLoader/FadeOutLoader';
+import loginPageStyles from 'assets/jss/material-dashboard-react/loginPageStyle';
 
-var moment = require('moment')
+let moment = require('moment');
 
-class LoginPage extends React.Component {
+
+class NewLoginPage extends Component {
 	constructor(props) {
-		super(props);
+		super(props)
+
 		this.state = {
-			cardAnimaton: 'cardHidden',
+			error: false,
 			user: '',
 			pass: '',
+			language: 'da',
 			loggingIn: false,
-			error: false,
-			language: 'da'
-		};
+			resetPassword: false
+		}
 		this.input = React.createRef()
+	}
+	googleSignIn = async (googleUser) => {
+		if (googleUser.error) { 
+			console.log(googleUser.error)
+		}			
+		if (googleUser) { 
+			let token = googleUser.getAuthResponse().id_token
+			await loginUserViaGoogle(token).then(async rs => {
+				if (rs) {
+					let exp = moment().add('1', 'day')
+					cookie.save('SESSION', rs, { path: '/', expires: exp.toDate() })
+					if (rs.isLoggedIn) {
+						if (setToken()) {
+							await this.props.getSettings()
+							var prevURL = this.props.location.state ? this.props.location.state.prevURL : null
+							this.props.history.push(prevURL ? prevURL : this.props.defaultRoute) //Aici
+						}
+					}
+				}
+				else {
+					this.setState({ error: true })
+				}
+			})
+		}
+	}
+	logUser = () => { 
+		this.setState({ loggingIn: true })
+	}
+	loginUser = async () => {
+		// this.setState({ loggingIn: true })
+
+		await loginUser(this.state.user, this.state.pass).then(async rs => {
+			if (rs) {
+				let exp = moment().add('1', 'day')
+				cookie.save('SESSION', rs, { path: '/', expires: exp.toDate() })
+				if (rs.isLoggedIn) {
+					if (setToken()) {
+						await this.props.getSettings()
+						var prevURL = this.props.location.state ? this.props.location.state.prevURL : null
+						this.props.history.push(prevURL ? prevURL : this.props.defaultRoute) //Aici
+					}
+				}
+			}
+			else {
+				this.setState({ error: true })
+			}
+		})
+		// this.setState({ loggingIn: false })
+	}
+	handleInput = (e) => {
+		this.setState({ [e.target.id]: e.target.value })
+		if (this.state.error) {
+			this.setState({ error: false })
+		}
 	}
 	handleKeyPress = (event) => {
 		if (event.key === 'Enter') {
-			this.loginUser()
+			this.logUser()
 		}
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
 		window.removeEventListener('keypress', this.handleKeyPress, false)
 	}
-
+	inputRef = (ref) => {
+		this.input = ref
+	}
 	componentDidMount() {
 		this._isMounted = 1
 		window.addEventListener('keypress', this.handleKeyPress, false)
@@ -58,198 +115,132 @@ class LoginPage extends React.Component {
 			this.props.setLanguage('en')
 			this.setState({ language: 'en' })
 		}
+		// @ts-ignore
 		if (this.inputRef.current) { this.inputRef.current.focus() }
-		setTimeout(
-			function () {
-				return this._isMounted ? this.setState({ cardAnimaton: '' }) : '';
-			}.bind(this),
-			300
-		);
 	}
-	handleInput = (e) => {
-		this.setState({ [e.target.id]: e.target.value })
-		if (this.state.error) {
-			this.setState({ error: false })
-		}
-	}
-	createRef = (ref) => {
-		this.input = ref
-		return this.input
-	}
-	loginUser = async () => {
-		this.setState({ loggingIn: true })
-		setTimeout(
-			async function () {
-				await loginUser(this.state.user, this.state.pass).then(async rs => {
-					if (rs) {
-						let exp = moment().add('1', 'day')
-						cookie.save('SESSION', rs, { path: '/', expires: exp.toDate() })
-						if (rs.isLoggedIn) {
-							if (setToken()) {
-								await this.props.getSettings()
-								var prevURL = this.props.location.state ? this.props.location.state.prevURL : null
-								this.props.history.push(prevURL ? prevURL : this.props.defaultRoute) //Aici
-							}
-						}
-					}
-					else {
-						this.setState({ error: true, loggingIn: false })
-					}
-				})
-			}.bind(this),
-			1000
-		);
-
-
-	}
-	inputRef = (ref) => {
-		this.input = ref
-	}
-	googleSignIn = (props) => {
-		// console.log(props)
-	}
-	googleSignInFailed = () => {
-		this.setState({ error: true })
-	}
-	changeLanguage = () => {
-		this.props.setLanguage(this.state.language === 'en' ? 'da' : 'en')
-		this.setState({
-			language: this.state.language === 'en' ? 'da' : 'en'
-		})
-	}
+	
+	// renderResetPassword = () => {
+	// 	const { resetPassword } = this.state
+	// 	return <ResetPassword match={this.props.match} open={resetPassword} />
+	// }
 	render() {
-		const { classes, t } = this.props;
-		const IconEndAd = classNames({
+		const { classes, t } = this.props
+		const { language, loggingIn } = this.state
+		const IconEndAd = cx({
 			[classes.inputIconsColor]: !this.state.error,
 			[classes.iconError]: this.state.error
 		})
 		return (
-			<div>
-				<div
-					className={classes.pageHeader}
-					style={{
-						backgroundColor: '#1a1b32',
-						backgroundSize: 'cover',
-						backgroundPosition: 'top center'
-					}}
-				>
-					<div className={classes.container}>
-						<GridContainer justify='center' alignItems={'center'}>
-							<ItemGrid xs={12} sm={6} md={4} xl={2} lg={3}>
-								<Card className={classes[this.state.cardAnimaton]}>
-									<form className={classes.form}>
-										<CardHeader color='primary' className={classes.cardHeader}>
-											<h4>Senti.Cloud</h4>
-										</CardHeader>
-										<CardBody>
-											<ItemG container>
-												<ItemG xs={12}>
-													<TextF
-														id={'user'}
-														autoFocus
-														label={t('login.username')}
-														error={this.state.error}
-														fullWidth
-														handleChange={this.handleInput}
-														value={this.state.user}
-														InputProps={{
-															autoComplete: 'on',
-															type: 'email',
-															endAdornment: <InputAdornment position='end'>
-																<Person className={IconEndAd} />
-															</InputAdornment>
-														}}
-													/>
-												</ItemG>
-												<ItemG xs={12}>
-													<TextF
-														id={'pass'}
-														label={t('login.pass')}
-														error={this.state.error}
-														fullWidth
-														handleChange={this.handleInput}
-														value={this.state.pass}
-														InputProps={{
-															autoComplete: 'on',
-															type: 'password',
-															endAdornment: <InputAdornment position='end'>
-																<LockOutlined className={IconEndAd} />
-															</InputAdornment>
-														}}
-													/>
-												</ItemG>
-											</ItemG>
-										</CardBody>
-										<CardFooter className={classes.cardFooter}>
-											<Grid spacing={8} container justify={'center'}>
-												<ItemG xs={12} container justify={'center'}>
-													<Button variant="text" color={'primary'} disableFocusRipple disableRipple onClick={this.changeLanguage} className={classes.changeLanguage}>
-														{t('actions.changeLanguage')}
-													</Button>
-												</ItemG>
-												<ItemG xs={12} zeroMinWidth container justify={'center'}>
-													{/* <Button variant={'text'} color={'primary'} className={classes.forgotPass}> */}
-													<Link to={`/password/reset/${this.state.language}`} className={classes.forgotPass}>
-														{t('actions.forgotPass')}
+			<div className={classes.wrapper}>
+				{/* <ItemG container> */}
+				<ItemG xs={12} sm={12} md={4} lg={4} xl={3} container>
+					<div className={classes.mobileContainer}>
+
+						<Paper className={classes.paper}>
+							<div className={classes.paperContainer} style={{ overflow: 'auto' }}>
+
+								{/* <ItemG container alignItems={'center'} justify={'space-evenly'} className={classes.container}> */}
+								<ItemG xs={12} container justify={'center'}>
+									<img className={classes.logo} src={logo} alt={'sentiLogo'} />
+								</ItemG>
+								<FadeOutLoader circularClasses={classes.loader} on={loggingIn} onChange={this.loginUser} notCentered>
+									<ItemG xs={12} container justify={'center'}>
+										<ItemG xs={12} container justify={'center'}>
+											<T className={classes.loginButton + ' ' + classes.needAccount}>
+												<span style={{ marginRight: 4 }}>
+													{t('login.needAnAccount1')}<span style={{ fontWeight: 600 }}> Senti.</span>Cloud <span>{t('login.needAnAccount2')}</span>?
+												</span>
+												<span>
+													<Link to={'/login'}>
+														{t('login.createAccount')}
 													</Link>
-													{/* </Button> */}
-												</ItemG>
-												<ItemG xs={12} container justify={'center'}>
-													<Button variant={'contained'} color={'primary'} /* className={classes.loginButton} */ onClick={this.loginUser}>
-														{t('actions.login')}
-													</Button>
-												</ItemG>
-												<ItemG xs={12} container justify={'center'}>
-													<GoogleLogin
-														clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
-														render={renderProps =>  (
-															<Button variant={'contained'} color={'primary'} onClick={renderProps.onClick}>
-																<img src={Google} alt={'google-logo'} style={{ borderRadius: 50, padding: 4, background: 'white', marginRight: 8 }}/>
-																	Google {t('actions.login')}
-															</Button>
-														)
-														}
-														buttonText="Login"
-														onSuccess={this.googleSignIn}
-														onFailure={this.googleSignIn}
-													/>
-												</ItemG>
-											</Grid>
-										</CardFooter>
-									</form>
-									<Collapse in={this.state.loggingIn} timeout='auto' unmountOnExit>
-										<CardContent>
-											{/* <Grid container><CircularProgress className={classes.loader} /></Grid> */}
-											<CircularLoader notCentered />
-										</CardContent>
-									</Collapse>
-								</Card>
-							</ItemGrid>
-						</GridContainer>
+												</span>
+											</T>
+										</ItemG>
+
+										<ItemG container xs={12}>
+
+											<ItemG container xs={12}>
+												<TextF
+													id={'user'}
+													autoFocus
+													reversed
+													label={t('login.username')}
+													error={this.state.error}
+													fullWidth
+													handleChange={this.handleInput}
+													className={classes.loginButton}
+													value={this.state.user}
+													InputProps={{
+														autoComplete: 'on',
+														type: 'email',
+														endAdornment: <InputAdornment position='end'>
+															<Person className={IconEndAd} />
+														</InputAdornment>
+													}}
+												/>
+											</ItemG>
+											<ItemG container xs={12}>
+												<TextF
+													id={'pass'}
+													label={t('login.pass')}
+													error={this.state.error}
+													className={classes.loginButton}
+													fullWidth
+													handleChange={this.handleInput}
+													value={this.state.pass}
+													InputProps={{
+														autoComplete: 'on',
+														type: 'password',
+														endAdornment: <InputAdornment position='end'>
+															<LockOutlined className={IconEndAd} />
+														</InputAdornment>
+													}}
+												/>
+											</ItemG>
+										</ItemG>
+										<ItemG xs={12} container justify={'center'}>
+											<Button variant={'contained'} fullWidth color={'primary'} className={classes.loginButton} onClick={this.logUser}>
+												{t('actions.login')}
+											</Button>
+										</ItemG>
+										<ItemG xs={12} container justify={'center'} style={{ margin: "32px 0px" }}>
+											<ItemG xs={12} container justify={'space-around'}>
+												<Link to={`/password/reset/${language}`}>
+													{t('login.forgotPassword')}
+												</Link>
+											</ItemG>
+										</ItemG>
+										<ItemG xs={12} container justify={'center'}>
+											<GoogleLogin
+												clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
+												render={renderProps => (
+													<Button fullWidth className={classes.loginButton} variant={'outlined'} color={'primary'} onClick={renderProps.onClick}>
+														<img src={Google} alt={'google-logo'} style={{ marginRight: 8 }} />
+														{t('actions.loginWithGoogle')}
+													</Button>)}
+												buttonText="Login"
+												onSuccess={this.googleSignIn}
+												onFailure={this.googleSignIn}
+											/>
+										</ItemG>
+									</ItemG>
+								</FadeOutLoader>
+							</div>
+							<ItemG xs={12} container alignItems={'flex-end'} justify={'center'} className={classes.footer}>
+								<Muted className={classes.footerText}>{t('login.footer')}</Muted>
+							</ItemG>
+						</Paper>
 					</div>
-				</div>
-				{/* <Snackbar
-					open={true}
-					// onClose={this.handleClose}
-					style={{ width: 800 }}
-					ContentProps={{
-						style: { width: '100%' },
-						'aria-describedby': 'message-id',
-					}}
-					message={<span id="message-id">Cookies</span>}
-					action={
-						<Fragment>
-							<Button color={'primary'} size={'small'}>
-								OK
-							</Button>
-							<Button color={'primary'} size={'small'}>
-								Learn more
-							</Button>
-						</Fragment>
-					}
-				/> */}
+				</ItemG>
+				<Hidden smDown>
+					<ItemG md={8} lg={8} xl={9}>
+						<LoginImages t={t} />
+					</ItemG>
+				</Hidden>
+				{/* </ItemG> */}
 			</div>
-		);
+		)
 	}
 }
 const mapStateToProps = (state) => ({
@@ -258,7 +249,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => ({
 	getSettings: async () => dispatch(await getSettings()),
-	setLanguage: (lang) => dispatch(changeLanguage(lang, true)) 
+	setLanguage: (lang) => dispatch(changeLanguage(lang, true))
 })
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), withLocalization(), withWidth(), withStyles(loginPageStyle))(LoginPage);
+export default compose(connect(mapStateToProps, mapDispatchToProps), withLocalization(), withStyles(loginPageStyles), withWidth())(NewLoginPage)

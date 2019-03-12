@@ -7,6 +7,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { getAllOrgs } from 'variables/dataOrgs';
 import { isFav, updateFav } from 'redux/favorites';
+import { Fade } from '@material-ui/core';
 
 
 class EditCollection extends Component {
@@ -22,7 +23,7 @@ class EditCollection extends Component {
 	}
 	postUpdate = async () => {
 		let success = await updateCollection(this.state.collection)
-		if (success) { 
+		if (success) {
 
 			return true
 		}
@@ -80,6 +81,9 @@ class EditCollection extends Component {
 			}
 		})
 	}
+
+	goToCollection = () => this.props.history.push(`/collection/${this.id}`)
+
 	handleUpdate = async () => {
 		const { s, history } = this.props
 		let rs = await this.postUpdate()
@@ -106,18 +110,21 @@ class EditCollection extends Component {
 		const { collection, loading, openOrg, orgs } = this.state
 		return (
 			loading ? <CircularLoader /> :
-				collection ? <EditCollectionForm
-					collection={collection}
-					handleChange={this.handleChange}
-					open={openOrg}
-					orgs={orgs}
-					handleCloseOrg={this.handleCloseOrg}
-					handleOpenOrg={this.handleOpenOrg}
-					handleChangeOrg={this.handleChangeOrg}
-					handleUpdate={this.handleUpdate}
-					t={t} /> 
+				collection ? <Fade in={true}>
+					<EditCollectionForm
+						collection={collection}
+						handleChange={this.handleChange}
+						open={openOrg}
+						orgs={orgs}
+						handleCloseOrg={this.handleCloseOrg}
+						goToCollection={this.goToCollection}
+						handleOpenOrg={this.handleOpenOrg}
+						handleChangeOrg={this.handleChangeOrg}
+						handleUpdate={this.handleUpdate}
+						t={t} />				
+				</Fade>
 					: <Redirect to={{
-						pathname: '/404', 
+						pathname: '/404',
 						prevURL: window.location.pathname
 					}} />
 		)

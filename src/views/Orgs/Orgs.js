@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { withStyles, Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton } from '@material-ui/core';
+import { withStyles, Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton, Fade } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
@@ -276,31 +276,34 @@ class Orgs extends Component {
 		const { loading, order, orderBy, orgs, selected } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> :
-				<Paper className={classes.root}>
-					{this.renderConfirmDelete()}
-					<TableToolbar
-						ft={this.ftOrgs()}
-						reduxKey={'orgs'}
-						anchorElMenu={this.state.anchorElMenu}
-						handleToolbarMenuClose={this.handleToolbarMenuClose}
-						handleToolbarMenuOpen={this.handleToolbarMenuOpen}
-						numSelected={selected.length}
-						options={this.options}
-						t={t}
-						content={this.renderTableToolBarContent()}
-					/>
-					<OrgTable
-						data={this.filterItems(orgs)}
-						tableHead={this.orgsHeader()}
-						handleRequestSort={this.handleRequestSort}
-						handleDeleteOrgs={this.handleDeleteOrgs}
-						handleCheckboxClick={this.handleCheckboxClick}
-						handleSelectAllClick={this.handleSelectAllClick}
-						orderBy={orderBy}
-						selected={selected}
-						order={order}
-						t={t}
-					/></Paper>}
+				<Fade in={true}>
+					<Paper className={classes.root}>
+						{this.renderConfirmDelete()}
+						<TableToolbar
+							ft={this.ftOrgs()}
+							reduxKey={'orgs'}
+							anchorElMenu={this.state.anchorElMenu}
+							handleToolbarMenuClose={this.handleToolbarMenuClose}
+							handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+							numSelected={selected.length}
+							options={this.options}
+							t={t}
+							content={this.renderTableToolBarContent()}
+						/>
+						<OrgTable
+							data={this.filterItems(orgs)}
+							tableHead={this.orgsHeader()}
+							handleRequestSort={this.handleRequestSort}
+							handleDeleteOrgs={this.handleDeleteOrgs}
+							handleCheckboxClick={this.handleCheckboxClick}
+							handleSelectAllClick={this.handleSelectAllClick}
+							orderBy={orderBy}
+							selected={selected}
+							order={order}
+							t={t}
+						/></Paper>
+				</Fade>
+			}
 		</GridContainer>
 	}
 	render() {

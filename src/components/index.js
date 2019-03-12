@@ -38,7 +38,6 @@ import AssignDC from './AssignComponents/AssignDC'
 
 import Dropdown from './Dropdown/Dropdown'
 import CustomDateTime from './CustomInput/CustomDateTime'
-import CustomInput from './CustomInput/CustomInput.js';
 import DSelect from './CustomInput/DSelect'
 import DateFilterMenu from './CustomInput/DateFilterMenu'
 import AddressInput from './CustomInput/AddressInput'
@@ -47,7 +46,7 @@ import AddressInput from './CustomInput/AddressInput'
 // // // Footer
 // #############################
 
-import Footer from './Footer/Footer.js';
+// import Footer from './Footer/Footer.js';
 
 // ##############################
 // // // Grid
@@ -92,10 +91,6 @@ import Danger from './Typography/Danger.js';
 import Small from './Typography/Small.js';
 import A from './Typography/A.js';
 import Caption from './Typography/Caption'
-import Card from './Card/Card'
-import CardHeader from './Card/CardHeader';
-import CardFooter from './Card/CardFooter'
-import CardBody from './Card/CardBody'
 import WeatherIcon from './Typography/WeatherIcon'
 import T from './Typography/T.js'
 
@@ -113,10 +108,6 @@ export {
 	AssignDevice,
 	AssignOrg,
 	AssignProject,
-	Card,
-	CardHeader,
-	CardFooter,
-	CardBody,
 	CustomDateTime,
 	Dropdown,
 	ItemG,
@@ -128,9 +119,8 @@ export {
 	ProfileCard,
 	RegularCard,
 	Caption,
-	CustomInput,
 	DSelect,
-	Footer,
+	// Footer,
 	ItemGrid,
 	Header,
 	HeaderLinks,

@@ -4,7 +4,6 @@ import { Table, TableBody, TableRow, Hidden, withStyles } from '@material-ui/cor
 import { DeviceHub, SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
 import TC from 'components/Table/TC'
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
-import Gravatar from 'react-gravatar'
 
 
 class OrgDevices extends Component {
@@ -50,9 +49,7 @@ class OrgDevices extends Component {
 											style={{ cursor: 'pointer', padding: '0 20px' }}
 										>
 											<Hidden lgUp>
-												<TC className={classes.orgUsersTD} checkbox content={<ItemGrid container zeroMargin justify={'center'}>
-													{n.img ? <img src={n.img} alt='brken' className={classes.img} /> : <Gravatar default='mp' email={n.email} className={classes.img} />}
-												</ItemGrid>}/>
+												<TC checkbox className={classes.orgDevicesTD} content={this.renderIcon(n.liveStatus)} />
 												<TC content={
 													<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 														<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
@@ -71,7 +68,7 @@ class OrgDevices extends Component {
 									
 											</Hidden>
 											<Hidden mdDown>
-												<TC checkbox className={classes.orgUsersTD} content={this.renderIcon(n.liveStatus)} />
+												<TC checkbox className={classes.orgDevicesTD} content={this.renderIcon(n.liveStatus)} />
 												<TC checkbox label={n.id} />
 												<TC label={n.name} />
 											</Hidden>

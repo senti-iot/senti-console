@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, Collapse, Button, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
-import { Save } from 'variables/icons';
+import { Paper, withStyles, Collapse, Button, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 import classNames from 'classnames';
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
 import { connect } from 'react-redux'
@@ -179,7 +178,7 @@ class CreateOrg extends Component {
 	}
 
 	goToOrg = () => {
-		this.props.history.push('/management/org/' + this.props.match.params.id)
+		this.props.history.push('/management/orgs/')
 	}
 
 	handleOrgChange = e => {
@@ -362,20 +361,29 @@ class CreateOrg extends Component {
 								<CircularLoader notCentered />
 							</Collapse>
 						</ItemGrid>
-						<Grid container justify={ 'center' }>
+						<ItemGrid container style={{ margin: 16 }}>
+							<div className={classes.wrapper}>
+								<Button
+									variant='outlined'
+									onClick={this.goToOrg}
+									className={classes.redButton}
+								>
+									{t('actions.cancel')}
+								</Button>
+							</div>
 							<div className={ classes.wrapper }>
 								<Button
-									variant='contained'
+									variant='outlined'
 									color='primary'
 									className={ buttonClassname }
 									disabled={ this.state.creating || this.state.created }
 									onClick={ this.state.created ? this.goToOrg : this.handleCreateOrg }>
 									{ this.state.created ?
 										<Fragment>{t('snackbars.redirect') }</Fragment>
-										: <Fragment><Save className={ classes.leftIcon } />{ t('orgs.createOrg') }</Fragment> }
+										: t('actions.save') }
 								</Button>
 							</div>
-						</Grid>
+						</ItemGrid>
 					</Paper>
 				</GridContainer>
 				: <CircularLoader />

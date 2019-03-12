@@ -1,4 +1,4 @@
-import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton } from '@material-ui/core';
+import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import CollectionTable from 'components/Collections/CollectionTable';
 import TableToolbar from 'components/Table/TableToolbar';
@@ -93,7 +93,7 @@ class Collections extends Component {
 		let isFavorite = isFav(favObj)
 		let allOptions = [
 			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t('menus.assign.collectionToProject'), func: this.handleOpenAssignProject, single: false, icon: LibraryBooks },
+			{ label: t('menus.assign.collectionToProject'), func: this.handleOpenAssignProject, single: true, icon: LibraryBooks },
 			{ label: t('menus.assign.deviceToCollection'), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
 			{ label: t('menus.unassign.deviceFromCollection'), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear, dontShow: collections[collections.findIndex(c => c.id === selected[0])].activeDeviceStats ? false : true },
 			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
@@ -120,15 +120,17 @@ class Collections extends Component {
 		if (saved === true) {
 			const { collections, selected } = this.state
 			let collection = collections[collections.findIndex(d => d.id === selected[0])]
-			if (isFav({ id: collection.id, type: 'collection' })) {
-				s('snackbars.favorite.saved', { name: collection.name, type: t('favorites.types.collection') })
-				finishedSaving()
-				this.setState({ selected: [] })
-			}
-			if (!isFav({ id: collection.id, type: 'collection' })) {
-				s('snackbars.favorite.removed', { name: collection.name, type: t('favorites.types.collection') })
-				finishedSaving()
-				this.setState({ selected: [] })
+			if (collection) { 
+				if (isFav({ id: collection.id, type: 'collection' })) {
+					s('snackbars.favorite.saved', { name: collection.name, type: t('favorites.types.collection') })
+					finishedSaving()
+					this.setState({ selected: [] })
+				}
+				if (!isFav({ id: collection.id, type: 'collection' })) {
+					s('snackbars.favorite.removed', { name: collection.name, type: t('favorites.types.collection') })
+					finishedSaving()
+					this.setState({ selected: [] })
+				}
 			}
 		}
 	}
@@ -191,7 +193,6 @@ class Collections extends Component {
 				collections: collections ? collections : [],
 				loading: false
 			}, () => this.handleRequestSort(null, 'name', 'asc'))
-
 		}
 	}
 	//#endregion
@@ -447,7 +448,7 @@ class Collections extends Component {
 		const { selected, openAssignProject } = this.state
 		const { t } = this.props
 		return <AssignProject
-			multiple
+			// multiple
 			collectionId={selected ? selected : []}
 			handleCancel={this.handleCancelAssignProject}
 			handleClose={this.handleCloseAssignProject}
@@ -514,14 +515,14 @@ class Collections extends Component {
 		const { classes } = this.props
 		const { loading, selected, collections } = this.state
 		return <GridContainer justify={'center'}>
-			{loading ? <CircularLoader /> : <Paper className={classes.root}>
+			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
 				{this.renderAssignProject()}
 				{this.renderAssignDevice()}
 				{selected.length > 0 ? this.renderDeviceUnassign() : null}
 				{this.renderTableToolBar()}
 				{this.renderTable(collections, this.handleCollectionClick)}
 				{this.renderConfirmDelete()}
-			</Paper>
+			</Paper></Fade>
 			}
 		</GridContainer>
 	}

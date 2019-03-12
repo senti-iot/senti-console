@@ -13,6 +13,7 @@ import { Laptop, Build, /* Notifications, */ BarChart, Assignment, Public } from
 import TermsAndConditionsSettings from './SettingsCards/TermsAndConditionsSettings';
 import NavigationSettings from './SettingsCards/NavigationSettings';
 import ResetSettings from './SettingsCards/ResetSettings';
+import { Fade } from '@material-ui/core';
 
 class Settings extends Component {
 	constructor(props) {
@@ -50,7 +51,7 @@ class Settings extends Component {
 		const { tcount } = this.props
 		const reset = this.props.location.pathname.includes('reset') ? true : false
 		return (
-			<Fragment>
+			<Fade in={true}>
 				<GridContainer>
 					{reset ? <ItemGrid xs={12} noMargin>
 						<ResetSettings history={history} t={t}/>
@@ -86,7 +87,7 @@ class Settings extends Component {
 						</ItemGrid>
 					</Fragment>}
 				</GridContainer>
-			</Fragment>
+			</Fade>
 
 		)
 	}

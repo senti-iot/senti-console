@@ -7,9 +7,10 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Gravatar from 'react-gravatar'
 import { logOut } from 'variables/dataLogin';
-import moment from 'moment'
-import christmas from 'assets/img/christmas'
+// import moment from 'moment'
+// import christmas from 'assets/img/christmas'
 import { ItemG } from 'components';
+import { GoogleLogout } from 'react-google-login';
 
 class HeaderLinks extends React.Component {
 	state = {
@@ -54,23 +55,23 @@ class HeaderLinks extends React.Component {
 		if (this.props.user)
 			this.props.history.push(`/settings`)
 	}
-	renderChristmasIcon = () => {
-		const { classes } = this.props
-		if (moment().format('MM') === '12') { 
-			let today = moment().format('DD')
-			return today
-		}
-		else
-		{
-			if (moment().format('MM') === '11') {
-				return <IconButton onClick={this.handleRedirectToChristmas}>
-					<img src={christmas[0]} className={classes.img} alt={'christmas'} />
-				</IconButton>
-			}
-			return null
-		}
+	// renderChristmasIcon = () => {
+	// 	const { classes } = this.props
+	// 	if (moment().format('MM') === '12') { 
+	// 		let today = moment().format('DD')
+	// 		return today
+	// 	}
+	// 	else
+	// 	{
+	// 		if (moment().format('MM') === '11') {
+	// 			return <IconButton onClick={this.handleRedirectToChristmas}>
+	// 				<img src={christmas[0]} className={classes.img} alt={'christmas'} />
+	// 			</IconButton>
+	// 		}
+	// 		return null
+	// 	}
 		
-	}
+	// }
 	render() {
 		const { classes, t, user } = this.props;
 		const { anchorProfile } = this.state;
@@ -114,9 +115,15 @@ class HeaderLinks extends React.Component {
 						<MenuItem onClick={this.handleSettingsOpen}>
 							<SettingsRounded className={classes.leftIcon} />{t('sidebar.settings')}
 						</MenuItem>
-						<MenuItem onClick={this.logOut} className={classes.menuItem}>
-							<Lock className={classes.leftIcon} />{t('menus.user.signout')}
-						</MenuItem>
+						<GoogleLogout
+							// onLogoutSuccess={() => this.logOut()}
+							clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
+							render={renderProps => (<MenuItem onClick={() => { renderProps.onClick(); this.logOut() } } className={classes.menuItem}>
+								<Lock className={classes.leftIcon} />{t('menus.user.signout')}
+							</MenuItem>)}
+						>
+						
+						</GoogleLogout>
 					</Menu>
 				</ItemG>
 			</Grid>

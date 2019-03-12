@@ -55,7 +55,7 @@ function getSuggestionValue(suggestion) {
 
 const styles = theme => ({
 	textField: {
-		margin: theme.spacing.unit * 2
+		// margin: theme.spacing.unit * 2
 	},
 	root: {
 		flexGrow: 1,

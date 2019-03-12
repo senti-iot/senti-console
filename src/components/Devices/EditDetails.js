@@ -1,5 +1,4 @@
-import { Button, Collapse, Grid, Paper, withStyles } from '@material-ui/core';
-import { Check, Save } from 'variables/icons';
+import { Button, Collapse, Grid, Paper, withStyles, Fade } from '@material-ui/core';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import React, { Component, Fragment } from 'react';
 import { getDevice, updateDevice, getGeoByAddress, getAddress } from 'variables/dataDevices';
@@ -94,18 +93,7 @@ class EditDeviceDetails extends Component {
 			{ value: 8, label: t('devices.locationTypes.port') },
 			{ value: 9, label: t('devices.locationTypes.office') }]
 	}
-	handleUpdateDevice = async () => {
-		const { device } = this.state
-		this.setState({ updating: true })
-		let updateD = {
-			...device,
-			project: {
-				id: 0
-			}
-		}
-		await updateDevice(updateD).then(rs => rs ? this.goToDevice() : null)
-	}
-	goToDevice = () => {
+	handleUpdateFav = () => { 
 		const { isFav, updateFav } = this.props
 		const { device } = this.state
 		let favObj = {
@@ -119,6 +107,21 @@ class EditDeviceDetails extends Component {
 		}
 		this.setState({ updated: true, updating: false })
 		this.props.s('snackbars.deviceUpdated', { device: this.state.device.id })
+		this.goToDevice()
+	}
+	handleUpdateDevice = async () => {
+		const { device } = this.state
+		this.setState({ updating: true })
+		let updateD = {
+			...device,
+			project: {
+				id: 0
+			}
+		}
+		await updateDevice(updateD).then(rs => rs ? this.handleUpdateFav() : null)
+	}
+
+	goToDevice = () => {
 		this.props.history.push(`/device/${this.props.match.params.id}`)
 	}
 	render() {
@@ -126,67 +129,80 @@ class EditDeviceDetails extends Component {
 		const { loading, device } = this.state
 		return loading ? <CircularLoader /> : (
 			<GridContainer>
-				<Paper className={classes.paper}>
-					<form className={classes.form}>
-						<Grid container>
-							<ItemGrid xs={12}>
-								<TextF
-									id={'name'}
-									label={t('devices.fields.name')}
-									handleChange={this.handleInput('name')}
-									value={device.name}
-									autoFocus
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<DSelect
-									value={device.locationType}
-									onChange={this.handleInput('locationType')}
-									menuItems={this.LocationTypes()}
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<TextF
-									id={'description'}
-									label={t('devices.fields.description')}
-									multiline
-									rows={4}
-									handleChange={this.handleInput('description')}
-									value={device.description}
+				<Fade in={true}>
+					<Paper className={classes.paper}>
+						<form className={classes.form}>
+							<Grid container>
+								<ItemGrid xs={12}>
+									<TextF
+										id={'name'}
+										label={t('devices.fields.name')}
+										handleChange={this.handleInput('name')}
+										value={device.name}
+										autoFocus
+									/>
+								</ItemGrid>
+								<ItemGrid xs={12}>
+									<DSelect
+										value={device.locationType}
+										onChange={this.handleInput('locationType')}
+										menuItems={this.LocationTypes()}
+									/>
+								</ItemGrid>
+								<ItemGrid xs={12}>
+									<TextF
+										id={'description'}
+										label={t('devices.fields.description')}
+										multiline
+										rows={4}
+										handleChange={this.handleInput('description')}
+										value={device.description}
 
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<AddressInput
-									onBlur={this.getLatLng}
-									handleSuggestionSelected={this.getLatLng}
-									value={device.address}
-									handleChange={this.handleSetAddress} />
-							</ItemGrid>
-							<ItemGrid xs={12} container justify={'center'}>
-								<Collapse in={this.state.updating} timeout={100} unmountOnExit>
-									<CircularLoader notCentered />
-								</Collapse>
-							</ItemGrid>
-							<ItemGrid xs={12} container justify={'center'}>
-								<Button
-									variant='contained'
-									color='primary'
-									disabled={this.state.updating || this.state.updated}
-									onClick={this.handleUpdateDevice}
-								>
-									{this.state.updated ?
-										<Fragment>
-											<Check className={classes.leftIcon} />{t('snackbars.redirect')}
-										</Fragment> :
-										<Fragment>
-											<Save className={classes.leftIcon} />{t('actions.save')}
-										</Fragment>}
-								</Button>
-							</ItemGrid>
-						</Grid>
-					</form>
-				</Paper>
+									/>
+								</ItemGrid>
+								<ItemGrid xs={12}>
+									<AddressInput
+										onBlur={this.getLatLng}
+										handleSuggestionSelected={this.getLatLng}
+										value={device.address}
+										handleChange={this.handleSetAddress} />
+								</ItemGrid>
+								<ItemGrid xs={12} container justify={'center'}>
+									<Collapse in={this.state.updating} timeout={100} unmountOnExit>
+										<CircularLoader notCentered />
+									</Collapse>
+								</ItemGrid>
+								<ItemGrid container style={{ margin: 16 }}>
+									<div className={classes.wrapper}>
+										<Button
+											variant='outlined'
+											onClick={this.goToDevice}
+											className={classes.redButton}
+										>
+											{t('actions.cancel')}
+										</Button>
+									</div>
+									<div className={classes.wrapper}>
+										<Button
+											variant='outlined'
+											color='primary'
+											disabled={this.state.updating || this.state.updated}
+											onClick={this.handleUpdateDevice}
+										>
+											{this.state.updated ?
+												<Fragment>
+													{t('snackbars.redirect')}
+												</Fragment> :
+												<Fragment>
+													{t('actions.save')}
+												</Fragment>}
+										</Button>
+									</div>
+								</ItemGrid>
+							</Grid>
+						</form>
+					</Paper>
+				</Fade>
 			</GridContainer>
 		)
 	}

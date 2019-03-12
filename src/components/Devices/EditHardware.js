@@ -1,9 +1,10 @@
-import { Button, Collapse, Grid, Paper, withStyles } from '@material-ui/core';
-import { Check, Save } from 'variables/icons';
+import { Button, Grid, Paper, withStyles, Collapse } from '@material-ui/core';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import React, { Component, Fragment } from 'react';
 import { getDevice, updateDevice } from 'variables/dataDevices';
 import { ItemGrid, TextF, GridContainer, CircularLoader, } from 'components';
+import { isFav, updateFav } from 'redux/favorites';
+import { connect } from 'react-redux'
 
 class EditDetails extends Component {
 	constructor(props) {
@@ -44,14 +45,32 @@ class EditDetails extends Component {
 			}
 		})
 	}
+	handleUpdateFav = () => { 
+		const { isFav, updateFav } = this.props
+		const { device } = this.state
+		let favObj = {
+			id: device.id,
+			name: device.name,
+			type: 'device',
+			path: `/device/${device.id}`
+		}
+		if (isFav(favObj)) {
+			updateFav(favObj)
+		}
+		this.setState({ updated: true, updating: false })
+		this.props.s('snackbars.deviceUpdated', { device: this.state.device.id })
+		this.goToDevice()
+	}
 	handleUpdateDevice = async () => {
-		clearTimeout(this.timer);
 		const { device } = this.state
 		this.setState({ updating: true })
-		this.timer = setTimeout(async () => {
-			await updateDevice(device).then(rs => rs ? this.setState({ updated: true, updating: false }) : null)
-		}, 2e3)
-
+		let updateD = {
+			...device,
+			project: {
+				id: 0
+			}
+		}
+		await updateDevice(updateD).then(rs => rs ? this.handleUpdateFav() : null)
 	}
 	goToDevice = () => {
 		this.props.history.push(`/device/${this.props.match.params.id}`)
@@ -157,20 +176,36 @@ class EditDetails extends Component {
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12} container justify={'center'}>
-					
 								<Collapse in={this.state.updating} timeout={100} unmountOnExit>
 									<CircularLoader notCentered />
 								</Collapse>
-								<ItemGrid>
+							</ItemGrid>
+							<ItemGrid container style={{ margin: 16 }}>
+								<div className={classes.wrapper}>
 									<Button
-										variant='contained'
-										color='primary'
-										disabled={this.state.updating}
-										onClick={this.state.updated ? this.goToDevice : this.handleUpdateDevice}
+										variant='outlined'
+										onClick={this.goToDevice}
+										className={classes.redButton}
 									>
-										{this.state.updated ? <Fragment><Check className={classes.leftIcon} />{t('actions.goTo')} {t('devices.device')} </Fragment> : <Fragment><Save className={classes.leftIcon} />{t('actions.save')}</Fragment>}
+										{t('actions.cancel')}
 									</Button>
-								</ItemGrid>
+								</div>
+								<div className={classes.wrapper}>
+									<Button
+										variant='outlined'
+										color='primary'
+										disabled={this.state.updating || this.state.updated}
+										onClick={this.handleUpdateDevice}
+									>
+										{this.state.updated ?
+											<Fragment>
+												{t('snackbars.redirect')}
+											</Fragment> :
+											<Fragment>
+												{t('actions.save')}
+											</Fragment>}
+									</Button>
+								</div>
 							</ItemGrid>
 						</Grid>
 					</form>
@@ -179,4 +214,12 @@ class EditDetails extends Component {
 		)
 	}
 }
-export default withStyles(createprojectStyles)(EditDetails)
+const mapStateToProps = (state) => ({
+
+})
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	updateFav: (favObj) => dispatch(updateFav(favObj))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles)(EditDetails))

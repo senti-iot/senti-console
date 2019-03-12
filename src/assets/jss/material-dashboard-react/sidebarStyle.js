@@ -5,63 +5,97 @@
 import {
 	drawerWidth,
 	transition,
-	// boxShadow,
 	defaultFont,
 	primaryColor,
 	hoverColor
 } from "assets/jss/material-dashboard-react.js";
 
 const sidebarStyle = theme => ({
-	drawerPaperSmall: {
-		width: "70px !important"
+	appBarWrapper: {
+		backgroundColor: "#767684"
+	},
+	root: {
+		display: 'flex',
 	},
 	drawerPaper: {
+		color: '#fff',
 		backgroundColor: "#434351",
-		border: "none",
-		// position: "fixed",
-		top: "0",
-		bottom: "0",
-		left: "0",
-		zIndex: "1",
-		...transition,
-		// ...boxShadow,
+		top: 70,
+		[theme.breakpoints.down('md')]: {
+			top: 0
+		},
 		width: drawerWidth,
-		[theme.breakpoints.up("lg")]: {
-			maxWidth: drawerWidth,
-			position: "fixed",
-			height: "100%",
-			[theme.breakpoints.up('lg')]: {
-				top: 70
-			},
+		border: 'none',
+	},
+	drawer: {
+		top: 70,
+		width: drawerWidth,
+		flexShrink: 0,
+		whiteSpace: 'nowrap',
 			
+	},
+	drawerOpen: {
+		width: drawerWidth,
+		...transition
+	},
+	drawerClose: {
+		...transition,
+		overflowX: 'hidden',
+		width: 60
+	},
+	drawerPersClose: {
+		...transition,
+		overflowX: 'hidden',
+		width: 0
+	},
+	whiteFont: {
+		color: "#FFFFFF",
+		...defaultFont,
+		margin: "0",
+		lineHeight: "30px",
+		fontSize: "14px",
+		// color: "#FFFFFF"
+	},
+	border: {
+		width: '100%',
+		background: '#555',
+		height: 1
+	},
+	toolbar: {
+		display: 'flex',
+		alignItems: 'center',
+		minHeight: 48,
+	},
+	content: {
+		flexGrow: 1,
+		padding: theme.spacing.unit * 3,
+	},
+	button: {
+		color: '#fff',
+		margin: '8px 0px',
+		padding: 10,
+		height: 44,
+		"&:hover": {
+			background: hoverColor
 		},
-		[theme.breakpoints.down('sm')]: {
-			top: 48
-		},
-		[theme.breakpoints.down("md")]: {
-			width: drawerWidth,
-			// ...boxShadow,
-			position: "fixed",
-			display: "block",
-			top: "0",
-			height: "100vh",
-			right: "0",
-			left: "auto",
-			zIndex: "1032",
-			visibility: "visible",
-			overflowY: "visible",
-			borderTop: "none",
-			textAlign: "left",
-			paddingRight: "0px",
-			paddingLeft: "0",
-			transform: `translate3d(${drawerWidth}px, 0, 0)`,
-			// ...transition
+		transition: "border-radius 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1), background 0.16s cubic-bezier(0.685, 0.0473, 0.346, 1) "
+	},
+	buttonOpen: {
+		borderRadius: 3
+	},
+	buttonClose: {
+		borderRadius: "50%"
+	},
+	buttonActiveRoute: {
+		background: primaryColor,
+		"&:focus": {
+			background: primaryColor
 		}
 	},
 	logo: {
 		backgroundColor: '#1a1b32',
 		position: "relative",
-		padding: "15px 15px",
+		padding: "8px 16px",
 		minHeight: "40px",
 		zIndex: "4",
 		display: 'flex',
@@ -69,7 +103,7 @@ const sidebarStyle = theme => ({
 			content: '""',
 			position: "absolute",
 			bottom: "0",
-
+	
 			height: "0px",
 			right: "15px",
 			width: "calc(100% - 30px)",
@@ -77,7 +111,7 @@ const sidebarStyle = theme => ({
 		}
 	},
 	logoLink: {
-		...defaultFont,
+		// ...defaultFont,
 		textTransform: "uppercase",
 		padding: "5px 0",
 		display: "block",
@@ -102,103 +136,35 @@ const sidebarStyle = theme => ({
 		marginRight: "15px"
 	},
 	img: {
-		// width: "35px",
 		top: "10px",
 		height: "50px",
-		position: "absolute",
 		verticalAlign: "middle",
 		border: "0"
 	},
-	background: {
+	image: {
+		backgroundColor: '#1a1b32',
+		position: "relative",
+		height: 48,
+		// marginLeft: 48,
+		borderRadius: 4,
+		[theme.breakpoints.down("xs")]: {
+			height: 48
+		},
+		"&:hover, &$focusVisible": {
+			zIndex: 1,
+		}
+	},
+	focusVisible: {},
+	imageSrc: {
 		position: "absolute",
-		zIndex: "1",
-		height: "100%",
-		width: "100%",
-		display: "block",
-		top: "0",
-		left: "0",
-		backgroundSize: "cover",
-		backgroundPosition: "center center",
-		"&:after": {
-			position: "absolute",
-			zIndex: "3",
-			width: "100%",
-			height: "100%",
-			content: '""',
-			display: "block",
-			background: "#000",
-			opacity: ".8"
-		}
+		left: 0,
+		right: 0,
+		top: 0,
+		bottom: 0,
+		backgroundSize: "100px 50px",
+		backgroundRepeat: "no-repeat",
+		backgroundPosition: "50% 50%",
 	},
-	list: {
-		marginTop: "20px",
-		paddingLeft: "0",
-		paddingTop: "0",
-		paddingBottom: "0",
-		marginBottom: "0",
-		listStyle: "none"
-	},
-	item: {
-		position: "relative",
-		// display: "block",
-		textDecoration: "none",
-	},
-
-	itemLink: {
-		width: 'calc(260px - 24px)',
-		transition: "all 300ms linear",
-		margin: "10px 12px 0",
-		borderRadius: "3px",
-		position: "relative",
-		// display: "block",
-		padding: "10px 15px",
-		backgroundColor: "transparent",
-		...defaultFont
-	},
-	itemIcon: {
-		width: "24px",
-		height: "30px",
-		float: "left",
-		marginRight: "15px",
-		textAlign: "center",
-		verticalAlign: "middle",
-		color: "rgba(255, 255, 255, 0.8)"
-	},
-	itemText: {
-		...defaultFont,
-		margin: "0",
-		lineHeight: "30px",
-		fontSize: "14px",
-		color: "#FFFFFF"
-	},
-	whiteFont: {
-		color: "#FFFFFF"
-	},
-
-	senti: {
-		backgroundColor: primaryColor,
-		boxShadow:
-			"0 12px 20px -10px rgba(55, 168, 145, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(55, 168, 145, 0.28)",
-		"&:hover": {
-			backgroundColor: hoverColor,
-			boxShadow:
-				"0 12px 20px -10px rgba(55, 168, 145, 0.4), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(55, 168, 145, 0.4)"
-		}
-	},
-	sidebarWrapper: {
-		position: "relative",
-		height: "calc(100vh - 70px)",
-		overflowY: 'auto',
-		overflowX: 'hidden',
-		width: "260px",
-		zIndex: "4",
-		overflowScrolling: 'touch',
-		backgroundColor: "#434351"
-		// "#767684"
-	},
-	appBarWrapper: {
-		backgroundColor: "#767684"
-	}
 });
 
 export default sidebarStyle;

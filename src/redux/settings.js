@@ -523,7 +523,6 @@ let initialState = {
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
 		case reset: 
-			console.log(action.user)
 			return Object.assign({}, state, { ...initialState, user: action.user, cookies: false })
 		case changeBC: 
 			return Object.assign({}, state, { breadcrumbs: action.breadcrumbs })

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, Collapse, Button, MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
-import { Save, Check } from 'variables/icons';
+import { Paper, withStyles, Collapse, Button, MenuItem, Select, FormControl, InputLabel, Fade } from '@material-ui/core';
+import { Check } from 'variables/icons';
 import classNames from 'classnames';
 import { getOrg, updateOrg, getAllOrgs } from 'variables/dataOrgs'
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
@@ -43,7 +43,7 @@ class EditOrg extends Component {
 			errorCode.push(4)
 		}
 		this.setState({
-			errorMessage: errorCode.map(c => <Danger key={ c }>{ this.errorMessages(c) }</Danger>),
+			errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>),
 		})
 		if (errorCode.length === 0)
 			return true
@@ -67,8 +67,8 @@ class EditOrg extends Component {
 				return ''
 		}
 	}
-	
-	
+
+
 	componentDidMount = async () => {
 		this._isMounted = 1
 		let id = this.props.match.params.id
@@ -138,7 +138,7 @@ class EditOrg extends Component {
 				...this.state.org,
 				aux: {
 					...this.state.org.aux,
-					[ id ]: e.target.value
+					[id]: e.target.value
 				}
 			}
 		})
@@ -150,7 +150,7 @@ class EditOrg extends Component {
 				error: false,
 				org: {
 					...this.state.org,
-					[ id ]: e.target.value
+					[id]: e.target.value
 				}
 			})
 		}
@@ -164,7 +164,7 @@ class EditOrg extends Component {
 			type: 'org',
 			path: `/management/org/${org.id}`
 		}
-		if (isFav(favObj)) { 
+		if (isFav(favObj)) {
 			updateFav(favObj)
 		}
 		this.setState({ created: true, creating: false })
@@ -178,7 +178,8 @@ class EditOrg extends Component {
 			return updateOrg(this.state.org).then(rs => rs ?
 				this.close() :
 				this.setState({ created: false, creating: false, error: true, errorMessage: this.props.t('orgs.validation.networkError') })
-			)}
+			)
+		}
 		else {
 			this.setState({
 				creating: false,
@@ -204,191 +205,203 @@ class EditOrg extends Component {
 		const { classes, t } = this.props
 		const { orgs, selectedOrg } = this.state
 
-		return <FormControl className={ classes.formControl }>
-			<InputLabel FormLabelClasses={ { root: classes.label } } color={ 'primary' } htmlFor='select-multiple-chip'>
-				{ t('orgs.fields.parentOrg') }
+		return <FormControl className={classes.formControl}>
+			<InputLabel FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
+				{t('orgs.fields.parentOrg')}
 			</InputLabel>
 			<Select
-				fullWidth={ false }
-				color={ 'primary' }
-				value={ selectedOrg !== null ? selectedOrg : '' }
-				onChange={ this.handleOrgChange }
-				renderValue={ value => value.name }
+				fullWidth={false}
+				color={'primary'}
+				value={selectedOrg !== null ? selectedOrg : ''}
+				onChange={this.handleOrgChange}
+				renderValue={value => value.name}
 			>
-				{ orgs ? orgs.map(org => (
+				{orgs ? orgs.map(org => (
 					<MenuItem
-						key={ org.id }
-						value={ org }
+						key={org.id}
+						value={org}
 					>
-						{ org.name }
+						{org.name}
 					</MenuItem>
-				)) : null }
+				)) : null}
 			</Select>
 		</FormControl>
 
 	}
-	render () {
+	render() {
 		const { classes, t } = this.props
 		const { created, error, loading, org } = this.state
 		const buttonClassname = classNames({
-			[ classes.buttonSuccess ]: created,
+			[classes.buttonSuccess]: created,
 		})
-
 		return (
 			!loading ?
-				<GridContainer justify={ 'center' }>
-					<Paper className={ classes.paper }>
-						<form className={ classes.form }>
-							<ItemGrid xs={ 12 }>
-								<Collapse in={ this.state.error }>
-									<Warning>
-										<Danger>
-											{ this.state.errorMessage }
-										</Danger>
-									</Warning>
+				<GridContainer justify={'center'}>
+					<Fade in={true}>
+						<Paper className={classes.paper}>
+							<form className={classes.form}>
+								<ItemGrid xs={12}>
+									<Collapse in={this.state.error}>
+										<Warning>
+											<Danger>
+												{this.state.errorMessage}
+											</Danger>
+										</Warning>
+									</Collapse>
+								</ItemGrid>
+								<ItemGrid container xs={12} md={6}>
+									<TextF
+										autoFocus
+										id={'title'}
+										label={t('orgs.fields.name')}
+										value={org.name}
+										className={classes.textField}
+										handleChange={this.handleChange('name')}
+										margin='normal'
+
+										error={error}
+									/>
+								</ItemGrid>
+
+								<ItemGrid container xs={12} md={6}>
+									<TextF
+
+										id={'address'}
+										label={t('orgs.fields.address')}
+										value={org.address}
+										className={classes.textField}
+										handleChange={this.handleChange('address')}
+										margin='normal'
+
+										error={error}
+									/>
+								</ItemGrid>
+								<ItemGrid container xs={12} md={6}>
+									<TextF
+										id={'postcode'}
+										label={t('orgs.fields.zip')}
+										value={org.zip}
+										className={classes.textField}
+										handleChange={this.handleChange('zip')}
+										margin='normal'
+
+										error={error}
+										type={'number'}
+										pattern='[0-9]*'
+									/>
+								</ItemGrid>
+								<ItemGrid container xs={12} md={6}>
+									<TextF
+
+										id={'city'}
+										label={t('orgs.fields.city')}
+										value={org.city}
+										className={classes.textField}
+										handleChange={this.handleChange('city')}
+										margin='normal'
+
+										error={error}
+									/>
+								</ItemGrid>
+
+								<ItemGrid container xs={12} md={6}>
+									<TextF
+
+										id={'region'}
+										label={t('orgs.fields.region')}
+										value={org.region}
+										className={classes.textField}
+										handleChange={this.handleChange('region')}
+										margin='normal'
+
+										error={error}
+									/>
+								</ItemGrid>
+								<ItemGrid container xs={12}>
+									<EditOrgAutoSuggest
+										t={t}
+										country={this.state.country.label}
+										handleChange={this.handleCountryChange}
+										suggestions={
+											Object.entries(countries.getNames(this.props.language)).map(
+												country => ({ value: country[1], label: country[1] }))
+										} />
+								</ItemGrid>
+								<ItemGrid container xs={12} md={6}>
+									<TextF
+
+										id={'website'}
+										label={t('orgs.fields.url')}
+										value={org.url}
+										className={classes.textField}
+										handleChange={this.handleChange('url')}
+										margin='normal'
+
+										error={error}
+									/>
+								</ItemGrid>
+								<ItemGrid container xs={12} md={6}>
+									{this.props.userOrg.id === org.id ? null : this.renderOrgs()}
+								</ItemGrid>
+								<ItemGrid container xs={12} md={6}>
+									<TextF
+										id={'cvr'}
+										label={t('orgs.fields.CVR')}
+										value={org.aux.cvr}
+										className={classes.textField}
+										handleChange={this.handleAuxChange('cvr')}
+										margin='normal'
+
+										error={error}
+									/>
+								</ItemGrid>
+								<ItemGrid container xs={12} md={6}>
+									<TextF
+
+										id={'ean'}
+										label={t('orgs.fields.EAN')}
+										value={org.aux.ean}
+										className={classes.textField}
+										handleChange={this.handleAuxChange('ean')}
+										margin='normal'
+
+										error={error}
+									/>
+								</ItemGrid>
+							</form>
+							<ItemGrid xs={12} container justify={'center'}>
+								<Collapse in={this.state.creating} timeout='auto' unmountOnExit>
+									<CircularLoader notCentered />
 								</Collapse>
 							</ItemGrid>
-							<ItemGrid container xs={ 12 } md={ 6 }>
-								<TextF
-									autoFocus
-									id={ 'title' }
-									label={ t('orgs.fields.name') }
-									value={ org.name }
-									className={ classes.textField }
-									handleChange={ this.handleChange('name') }
-									margin='normal'
-									
-									error={ error }
-								/>
-							</ItemGrid>
-						
-							<ItemGrid container xs={ 12 } md={ 6 }>
-								<TextF
+							<ItemGrid container style={{ margin: 16 }}>
+								<div className={classes.wrapper}>
+									<Button
+										variant='outlined'
+										// color={'danger'}
+										onClick={this.goToOrg}
+										className={classes.redButton}
+									>
+										{t('actions.cancel')}
+									</Button>
+								</div>
+								<div className={classes.wrapper}>
+									<Button
+										variant='outlined'
+										color='primary'
+										className={buttonClassname}
+										disabled={this.state.creating || this.state.created}
+										onClick={this.state.created ? this.goToOrg : this.handleUpdateOrg}>
+										{this.state.created ?
+											<Fragment><Check className={classes.leftIcon} />{t('snackbars.redirect')}</Fragment>
+											: t('actions.save') }
+									</Button>
 
-									id={ 'address' }
-									label={ t('orgs.fields.address') }
-									value={ org.address }
-									className={ classes.textField }
-									handleChange={ this.handleChange('address') }
-									margin='normal'
-									
-									error={ error }
-								/>
+								</div>
 							</ItemGrid>
-							<ItemGrid container xs={ 12 } md={ 6 }>
-								<TextF
-									id={ 'postcode' }
-									label={ t('orgs.fields.zip') }
-									value={ org.zip }
-									className={ classes.textField }
-									handleChange={ this.handleChange('zip') }
-									margin='normal'
-									
-									error={ error }
-									type={ 'number' }
-									pattern='[0-9]*'
-								/>
-							</ItemGrid>
-							<ItemGrid container xs={ 12 } md={ 6 }>
-								<TextF
-
-									id={ 'city' }
-									label={ t('orgs.fields.city') }
-									value={ org.city }
-									className={ classes.textField }
-									handleChange={ this.handleChange('city') }
-									margin='normal'
-									
-									error={ error }
-								/>
-							</ItemGrid>
-
-							<ItemGrid container xs={ 12 } md={ 6 }>
-								<TextF
-
-									id={ 'region' }
-									label={ t('orgs.fields.region') }
-									value={ org.region }
-									className={ classes.textField }
-									handleChange={ this.handleChange('region') }
-									margin='normal'
-									
-									error={ error }
-								/>
-							</ItemGrid>
-							<ItemGrid container xs={ 12 }>
-								<EditOrgAutoSuggest
-									t={ t }
-									country={ this.state.country.label}
-									handleChange={ this.handleCountryChange }
-									suggestions={
-										Object.entries(countries.getNames(this.props.language)).map(
-											country => ({ value: country[1], label: country[1] }))
-									} />
-							</ItemGrid>
-							<ItemGrid container xs={ 12 } md={ 6 }>
-								<TextF
-
-									id={ 'website' }
-									label={ t('orgs.fields.url') }
-									value={ org.url }
-									className={ classes.textField }
-									handleChange={ this.handleChange('url') }
-									margin='normal'
-									
-									error={ error }
-								/>
-							</ItemGrid>
-							<ItemGrid container xs={ 12 } md={ 6 }>
-								{ this.props.userOrg.id === org.id ? null : this.renderOrgs() }
-							</ItemGrid>
-							<ItemGrid container xs={ 12 } md={ 6 }>
-								<TextF
-									id={ 'cvr' }
-									label={ t('orgs.fields.CVR') }
-									value={ org.aux.cvr }
-									className={ classes.textField }
-									handleChange={ this.handleAuxChange('cvr') }
-									margin='normal'
-									
-									error={ error }
-								/>
-							</ItemGrid>
-							<ItemGrid container xs={ 12 } md={ 6 }>
-								<TextF
-
-									id={ 'ean' }
-									label={ t('orgs.fields.EAN') }
-									value={ org.aux.ean }
-									className={ classes.textField }
-									handleChange={ this.handleAuxChange('ean') }
-									margin='normal'
-									
-									error={ error }
-								/>
-							</ItemGrid>
-						</form>
-						<ItemGrid xs={ 12 } container justify={ 'center' }>
-							<Collapse in={ this.state.creating } timeout='auto' unmountOnExit>
-								<CircularLoader notCentered />
-							</Collapse>
-						</ItemGrid>
-						<Grid container justify={ 'center' }>
-							<div className={ classes.wrapper }>
-								<Button
-									variant='contained'
-									color='primary'
-									className={ buttonClassname }
-									disabled={ this.state.creating || this.state.created }
-									onClick={ this.state.created ? this.goToOrg : this.handleUpdateOrg }>
-									{ this.state.created ?
-										<Fragment><Check className={ classes.leftIcon } />{ t('snackbars.redirect') }</Fragment>
-										: <Fragment><Save className={ classes.leftIcon } />{ t('actions.update') }</Fragment> }
-								</Button>
-							</div>
-						</Grid>
-					</Paper>
-				</GridContainer>
+						</Paper>
+					</Fade>
+				</GridContainer >
 				: <CircularLoader />
 		)
 	}

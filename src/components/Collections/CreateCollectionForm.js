@@ -69,11 +69,11 @@ class CreateCollectionForm extends Component {
 					<Hidden lgUp>
 						<ItemG container alignItems={'center'}>
 							<ItemG xs={4} container alignItems={'center'}>
-								<IconButton color={'inherit'} onClick={this.handleCloseOrg} aria-label='Close'>
+								<IconButton color={'inherit'} onClick={handleCloseDevice} aria-label='Close'>
 									<Close />
 								</IconButton>
 								<Typography variant='h6' color='inherit' className={classes.flex}>
-									{t('orgs.pageTitle')}
+									{t('devices.pageTitle')}
 								</Typography>
 							</ItemG>
 							<ItemG xs={8} container alignItems={'center'} justify={'center'}>
@@ -105,6 +105,7 @@ class CreateCollectionForm extends Component {
 	renderSelectState = () => {
 		const { t, collection, handleChange } = this.props
 		return <DSelect
+			margin={'normal'}
 			label={t('collections.fields.status')}
 			value={collection.state}
 			onChange={handleChange('state')}
@@ -185,7 +186,7 @@ class CreateCollectionForm extends Component {
 		</Dialog>
 	}
 	render() {
-		const { t, handleChange, collection, classes, handleOpenDevice, handleOpenOrg, handleCreate, device, org } = this.props
+		const { t, handleChange, collection, classes, handleOpenDevice, handleOpenOrg, handleCreate, device, org, goToCollection } = this.props
 		return (
 			<GridContainer>
 				<Paper className={classes.paper}>
@@ -213,21 +214,6 @@ class CreateCollectionForm extends Component {
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
-								{this.renderSelectDevice()}
-								<TextF
-									id={'collectionDevice'}
-									label={t('collections.fields.activeDevice')}
-									value={device.name}
-									handleClick={handleOpenDevice}
-									handleChange={() => { }}
-									
-									InputProps={{
-										onChange: handleOpenDevice,
-										readOnly: true
-									}}
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
 								{this.renderSelectOrg()}
 								<TextF
 									id={'collectionOrg'}
@@ -243,12 +229,40 @@ class CreateCollectionForm extends Component {
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
+								{this.renderSelectDevice()}
+								<TextF
+									id={'collectionDevice'}
+									label={t('collections.fields.activeDevice')}
+									helperText={t('collections.helper.availableDevicesForOrg')}
+									value={device.name}
+									handleClick={handleOpenDevice}
+									handleChange={() => { }}
+									
+									InputProps={{
+										onChange: handleOpenDevice,
+										readOnly: true
+									}}
+								/>
+							</ItemGrid>
+						
+							<ItemGrid xs={12}>
 								{this.renderSelectState()}
 							</ItemGrid>
-							<ItemGrid xs={12} container justify={'center'}>
-								<Button onClick={handleCreate} variant={'contained'} color={'primary'}>
-									{t('actions.save')}
-								</Button>
+							<ItemGrid container style={{ margin: 16 }}>
+								<div className={classes.wrapper}>
+									<Button
+										variant='outlined'
+										onClick={goToCollection}
+										className={classes.redButton}
+									>
+										{t('actions.cancel')}
+									</Button>
+								</div>
+								<div className={classes.wrapper}>
+									<Button onClick={handleCreate} variant={'outlined'} color={'primary'}>
+										{t('actions.save')}
+									</Button>
+								</div>
 							</ItemGrid> 
 						</Grid>
 					</form>
