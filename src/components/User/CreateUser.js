@@ -4,7 +4,7 @@ import { createUser } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
 import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader } from 'components';
 import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Button, FormControlLabel, Checkbox } from '@material-ui/core';
-import { Save, KeyboardArrowRight, KeyboardArrowLeft, Clear } from 'variables/icons'
+import { KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
@@ -530,23 +530,23 @@ class CreateUser extends Component {
 					<ItemGrid container style={{ margin: 16 }}>
 						<div className={classes.wrapper}>
 							<Button
-								variant='contained'
+								variant='outlined'
 								onClick={this.goToUser}
 								className={classes.redButton}
 							>
-								<Clear className={classes.leftIcon} />{t('actions.cancel')}
+								{/* <Clear className={classes.leftIcon} /> */}{t('actions.cancel')}
 							</Button>
 						</div>
 						<div className={classes.wrapper}>
 							<Button
-								variant='contained'
+								variant='outlined'
 								color='primary'
 								className={buttonClassname }
 								disabled={this.state.creating || this.state.created}
 								onClick={this.handleCreateUser}>
 								{this.state.created ?
 									<Fragment>{t('snackbars.redirect')}</Fragment>
-									: <Fragment><Save className={classes.leftIcon} />{t('menus.create.user')}</Fragment>}
+									: <Fragment>{/* <Save className={classes.leftIcon} /> */}{t('menus.create.user')}</Fragment>}
 							</Button>
 						</div>
 					</ItemGrid>

@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Slide, Hidden, IconButton } from '@material-ui/core';
-import { Close, Clear } from 'variables/icons';
+import { Close } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { Collapse, Paper } from '@material-ui/core'
-import { KeyboardArrowLeft as KeyArrLeft, KeyboardArrowRight as KeyArrRight, Save } from 'variables/icons'
+import { KeyboardArrowLeft as KeyArrLeft, KeyboardArrowRight as KeyArrRight } from 'variables/icons'
 import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers'
 import MomentUtils from '@date-io/moment'
 import { CircularLoader, GridContainer, ItemGrid, TextF, Danger, Warning, ItemG } from 'components'
@@ -304,25 +304,24 @@ class CreateProjectForm extends Component {
 						<ItemGrid container style={{ margin: 16 }}>
 							<div className={classes.wrapper}>
 								<Button
-									variant='contained'
+									variant='outlined'
 									onClick={goToProject}
 									className={classes.redButton}
 								>
-									<Clear className={classes.leftIcon} />{t('actions.cancel')}
+									{t('actions.cancel')}
 								</Button>
 							</div>
 							<div className={classes.wrapper}>
 								<Button
-									variant='contained'
+									variant='outlined'
 									color='primary'
 									className={buttonClassname}
 									disabled={creating || created}
 									onClick={handleCreateProject}
 								>
 									{created ? t('snackbars.redirect')
-										: <Fragment>
-											<Save className={classes.leftIcon} />{t('menus.create.project')}
-										</Fragment>}
+										: t('menus.create.project')}
+										
 								</Button>
 							</div>
 						</ItemGrid>

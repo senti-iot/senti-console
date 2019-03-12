@@ -4,10 +4,11 @@ import { red } from '@material-ui/core/colors';
 
 const createprojectStyles = theme => ({
 	redButton: {
-		color: 'white',
-		background: red[700],
+		color: red[700],
+		border: '1px solid rgb(211,47,47, 0.5)',
 		"&:hover": {
-			background: red[800]
+			borderColor: red[700],
+			color: red[800]
 		}
 	},
 	img: {

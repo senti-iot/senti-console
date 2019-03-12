@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react'
 import { Paper, withStyles, Collapse, Button, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
-import { Save, Clear } from 'variables/icons';
 import classNames from 'classnames';
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
 import { connect } from 'react-redux'
@@ -365,23 +364,23 @@ class CreateOrg extends Component {
 						<ItemGrid container style={{ margin: 16 }}>
 							<div className={classes.wrapper}>
 								<Button
-									variant='contained'
+									variant='outlined'
 									onClick={this.goToOrg}
 									className={classes.redButton}
 								>
-									<Clear className={classes.leftIcon} />{t('actions.cancel')}
+									{t('actions.cancel')}
 								</Button>
 							</div>
 							<div className={ classes.wrapper }>
 								<Button
-									variant='contained'
+									variant='outlined'
 									color='primary'
 									className={ buttonClassname }
 									disabled={ this.state.creating || this.state.created }
 									onClick={ this.state.created ? this.goToOrg : this.handleCreateOrg }>
 									{ this.state.created ?
 										<Fragment>{t('snackbars.redirect') }</Fragment>
-										: <Fragment><Save className={ classes.leftIcon } />{ t('orgs.createOrg') }</Fragment> }
+										: t('orgs.createOrg') }
 								</Button>
 							</div>
 						</ItemGrid>

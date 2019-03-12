@@ -1,5 +1,4 @@
 import { Button, Grid, Paper, withStyles, Collapse } from '@material-ui/core';
-import { Check, Save, Clear } from 'variables/icons';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import React, { Component, Fragment } from 'react';
 import { getDevice, updateDevice } from 'variables/dataDevices';
@@ -164,26 +163,26 @@ class EditDetails extends Component {
 							<ItemGrid container style={{ margin: 16 }}>
 								<div className={classes.wrapper}>
 									<Button
-										variant='contained'
+										variant='outlined'
 										onClick={this.goToDevice}
 										className={classes.redButton}
 									>
-										<Clear className={classes.leftIcon} />{t('actions.cancel')}
+										{t('actions.cancel')}
 									</Button>
 								</div>
 								<div className={classes.wrapper}>
 									<Button
-										variant='contained'
+										variant='outlined'
 										color='primary'
 										disabled={this.state.updating || this.state.updated}
 										onClick={this.handleUpdateDevice}
 									>
 										{this.state.updated ?
 											<Fragment>
-												<Check className={classes.leftIcon} />{t('snackbars.redirect')}
+												{t('snackbars.redirect')}
 											</Fragment> :
 											<Fragment>
-												<Save className={classes.leftIcon} />{t('actions.save')}
+												{t('actions.save')}
 											</Fragment>}
 									</Button>
 								</div>

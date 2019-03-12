@@ -4,7 +4,7 @@ import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
 import cx from 'classnames'
 import Gravatar from 'react-gravatar'
-import { KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft, Save, Check, Close, Clear } from 'variables/icons';
+import { KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft, Check, Close } from 'variables/icons';
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { updateProject, getProject } from 'variables/dataProjects';
@@ -335,7 +335,7 @@ class EditProject extends Component {
 											autoOk
 											label={t('projects.fields.startDate')}
 											clearable
-											labelFunc={(date, invalidLabel) => date === null ? '' : moment(date).format('LL')}
+											labelFunc={(date) => date === null ? '' : moment(date).format('LL')}
 											format='YYYY-MM-DDTHH:mm'
 											value={this.state.project.startDate}
 											onChange={this.handleDateChange('startDate')}
@@ -354,7 +354,7 @@ class EditProject extends Component {
 											autoOk
 											label={t('projects.fields.endDate')}
 											clearable
-											labelFunc={(date, invalidLabel) => date === null ?  '' : date.format('LL') }
+											labelFunc={(date) => date === null ?  '' : date.format('LL') }
 											format='YYYY-MM-DDTHH:mm'
 											value={this.state.project.endDate}
 											onChange={this.handleDateChange('endDate')}
@@ -389,24 +389,24 @@ class EditProject extends Component {
 								<ItemGrid container style={{ margin: 16 }}>
 									<div className={classes.wrapper}>
 										<Button
-											variant='contained'
+											variant='outlined'
 											// color={'danger'}
 											onClick={this.goToProject}
 											className={classes.redButton}
 										>
-											<Clear className={classes.leftIcon} />{t('actions.cancel')}
+											{t('actions.cancel')}
 										</Button>
 									</div>
 									<div className={classes.wrapper}>
 										<Button
-											variant='contained'
+											variant='outlined'
 											color='primary'
 											className={buttonClassname}
 											disabled={this.state.creating || this.state.created}
 											onClick={ this.handleUpdateProject}>
 											{this.state.created ?
 												<Fragment><Check className={classes.leftIcon} />{t('snackbars.redirect')}</Fragment>
-												: <Fragment><Save className={classes.leftIcon} />{t('projects.updateProject')}</Fragment>}
+												: t('projects.updateProject')}
 										</Button>
 									</div>
 								</ItemGrid>
@@ -419,7 +419,7 @@ class EditProject extends Component {
 		)
 	}
 }
-const mapStateToProps = (state) => ({
+const mapStateToProps = () => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({

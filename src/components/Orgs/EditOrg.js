@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Paper, withStyles, Collapse, Button, MenuItem, Select, FormControl, InputLabel, Fade } from '@material-ui/core';
-import { Save, Check, Clear } from 'variables/icons';
+import { Check } from 'variables/icons';
 import classNames from 'classnames';
 import { getOrg, updateOrg, getAllOrgs } from 'variables/dataOrgs'
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
@@ -377,24 +377,24 @@ class EditOrg extends Component {
 							<ItemGrid container style={{ margin: 16 }}>
 								<div className={classes.wrapper}>
 									<Button
-										variant='contained'
+										variant='outlined'
 										// color={'danger'}
 										onClick={this.goToOrg}
 										className={classes.redButton}
 									>
-										<Clear className={classes.leftIcon} />{t('actions.cancel')}
+										{t('actions.cancel')}
 									</Button>
 								</div>
 								<div className={classes.wrapper}>
 									<Button
-										variant='contained'
+										variant='outlined'
 										color='primary'
 										className={buttonClassname}
 										disabled={this.state.creating || this.state.created}
 										onClick={this.state.created ? this.goToOrg : this.handleUpdateOrg}>
 										{this.state.created ?
 											<Fragment><Check className={classes.leftIcon} />{t('snackbars.redirect')}</Fragment>
-											: <Fragment><Save className={classes.leftIcon} />{t('actions.update')}</Fragment>}
+											: t('actions.update') }
 									</Button>
 
 								</div>

@@ -4,7 +4,7 @@ import { editUser, getUser } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
 import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader, ItemG } from 'components';
 import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Button, FormControlLabel, Checkbox } from '@material-ui/core';
-import { Save, KeyboardArrowRight, KeyboardArrowLeft, Clear } from 'variables/icons'
+import { KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { isFav, updateFav } from 'redux/favorites';
@@ -578,24 +578,24 @@ class EditUser extends Component {
 					<ItemGrid container style={{ margin: 16 }}>
 						<div className={classes.wrapper}>
 							<Button
-								variant='contained'
+								variant='outlined'
 								// color={'danger'}
 								onClick={this.goToUser}
 								className={classes.redButton}
 							>
-								<Clear className={classes.leftIcon} />{t('actions.cancel')}
+								{t('actions.cancel')}
 							</Button>
 						</div>
 						<div className={classes.wrapper}>
 							<Button
-								variant='contained'
+								variant='outlined'
 								color='primary'
 								className={buttonClassname}
 								disabled={this.state.creating || this.state.created}
 								onClick={this.handleEditUser}>
 								{this.state.created ?
 									<Fragment>{t('snackbars.redirect')}</Fragment>
-									: <Fragment><Save className={classes.leftIcon} />{t('users.editUser')}</Fragment>}
+									: <Fragment>{t('users.editUser')}</Fragment>}
 							</Button>
 						</div>
 					</ItemGrid>

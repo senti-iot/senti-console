@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import cx from 'classnames';
 import DSelect from 'components/CustomInput/DSelect';
-import { Close, Clear } from 'variables/icons';
+import { Close } from 'variables/icons';
 
 /**
 * @augments {Component<{t:object.isRequired,
@@ -114,16 +114,16 @@ class EditCollectionForm extends Component {
 							<ItemGrid xs={12} container>
 								<div className={classes.wrapper}>
 									<Button
-										variant='contained'
+										variant='outlined'
 										// color={'danger'}
 										onClick={goToCollection}
 										className={classes.redButton}
 									>
-										<Clear className={classes.leftIcon} />{t('actions.cancel')}
+										{t('actions.cancel')}
 									</Button>
 								</div>
 								<div className={classes.wrapper}>
-									<Button onClick={handleUpdate} variant={'contained'} color={'primary'}>
+									<Button onClick={handleUpdate} variant={'outlined'} color={'primary'}>
 										{t('actions.save')}
 									</Button>
 								</div>
