@@ -2,9 +2,9 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { createUser } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
-import { GridContainer, ItemG, Warning, Danger, TextF, CircularLoader } from 'components';
-import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Grid, Button, FormControlLabel, Checkbox } from '@material-ui/core';
-import { Save, KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons'
+import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader } from 'components';
+import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Button, FormControlLabel, Checkbox } from '@material-ui/core';
+import { Save, KeyboardArrowRight, KeyboardArrowLeft, Clear } from 'variables/icons'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
@@ -235,6 +235,7 @@ class CreateUser extends Component {
 			}
 		})
 	}
+	goToUser = () => this.props.history.push('/management/users')
 	renderOrgs = () => {
 		const { classes, t } = this.props
 		const { orgs, user, error } = this.state
@@ -340,7 +341,7 @@ class CreateUser extends Component {
 		const { openExtended, extended, error } = this.state
 		const { classes, t } = this.props
 		return <Collapse in={openExtended}>
-			<ItemG container xs={12} >
+			<ItemGrid container xs={12} >
 				<TextF
 					id={'bio'}
 					label={t('users.fields.bio')}
@@ -352,8 +353,8 @@ class CreateUser extends Component {
 					margin='normal'
 					error={error}
 				/>
-			</ItemG>
-			<ItemG container xs={12} >
+			</ItemGrid>
+			<ItemGrid container xs={12} >
 				<TextF
 					id={'position'}
 					label={t('users.fields.position')}
@@ -363,8 +364,8 @@ class CreateUser extends Component {
 					margin='normal'
 					error={error}
 				/>
-			</ItemG>
-			<ItemG container xs={12} >
+			</ItemGrid>
+			<ItemGrid container xs={12} >
 				<TextF
 					id={'location'}
 					label={t('users.fields.location')}
@@ -374,8 +375,8 @@ class CreateUser extends Component {
 					margin='normal'
 					error={error}
 				/>
-			</ItemG>
-			<ItemG container xs={12} >
+			</ItemGrid>
+			<ItemGrid container xs={12} >
 				<TextF
 					id={'recoveryEmail'}
 					label={t('users.fields.recoveryEmail')}
@@ -385,8 +386,8 @@ class CreateUser extends Component {
 					margin='normal'
 					error={error}
 				/>
-			</ItemG>
-			<ItemG container xs={12} >
+			</ItemGrid>
+			<ItemGrid container xs={12} >
 				<TextF
 					id={'linkedInURL'}
 					label={t('users.fields.linkedInURL')}
@@ -396,8 +397,8 @@ class CreateUser extends Component {
 					margin='normal'
 					error={error}
 				/>
-			</ItemG>
-			<ItemG container xs={12} >
+			</ItemGrid>
+			<ItemGrid container xs={12} >
 				<TextF
 					id={'twitterURL'}
 					label={t('users.fields.twitterURL')}
@@ -407,8 +408,8 @@ class CreateUser extends Component {
 					margin='normal'
 					error={error}
 				/>
-			</ItemG>
-			<ItemG container xs={12} >
+			</ItemGrid>
+			<ItemGrid container xs={12} >
 				<MuiPickersUtilsProvider utils={MomentUtils}>
 					<DatePicker
 						autoOk
@@ -425,8 +426,8 @@ class CreateUser extends Component {
 						leftArrowIcon={<KeyboardArrowLeft />}
 					/>
 				</MuiPickersUtilsProvider>
-			</ItemG>
-			<ItemG container xs={12} >
+			</ItemGrid>
+			<ItemGrid container xs={12} >
 				<FormControlLabel
 					style={{ margin: 0 }}
 					control={
@@ -439,7 +440,7 @@ class CreateUser extends Component {
 					}
 					label={t('users.fields.newsletter')}
 				/>
-			</ItemG>
+			</ItemGrid>
 		</Collapse>
 	}
 	render() {
@@ -452,7 +453,7 @@ class CreateUser extends Component {
 			<GridContainer justify={'center'}>
 				<Paper className={classes.paper}>
 					<form className={classes.form}>
-						<ItemG xs={12}>
+						<ItemGrid xs={12}>
 							<Collapse in={this.state.error}>
 								<Warning>
 									<Danger>
@@ -460,8 +461,8 @@ class CreateUser extends Component {
 									</Danger>
 								</Warning>
 							</Collapse>
-						</ItemG>
-						<ItemG container xs={12} >
+						</ItemGrid>
+						<ItemGrid container xs={12} >
 							<TextF
 								id={'firstName'}
 								label={t('users.fields.firstName')}
@@ -471,8 +472,8 @@ class CreateUser extends Component {
 								margin='normal'
 								error={error}
 							/>
-						</ItemG>
-						<ItemG container xs={12} >
+						</ItemGrid>
+						<ItemGrid container xs={12} >
 							<TextF
 								id={'lastName'}
 								label={t('users.fields.lastName')}
@@ -482,8 +483,8 @@ class CreateUser extends Component {
 								margin='normal'
 								error={error}
 							/>
-						</ItemG>
-						<ItemG container xs={12} >
+						</ItemGrid>
+						<ItemGrid container xs={12} >
 							<TextF
 								id={'email'}
 								label={t('users.fields.email')}
@@ -493,8 +494,8 @@ class CreateUser extends Component {
 								margin='normal'
 								error={error}
 							/>
-						</ItemG>
-						<ItemG container xs={12} >
+						</ItemGrid>
+						<ItemGrid container xs={12} >
 							<TextF
 								id={'phone'}
 								label={t('users.fields.phone')}
@@ -504,29 +505,38 @@ class CreateUser extends Component {
 								margin='normal'
 								error={error}
 							/>
-						</ItemG>
-						<ItemG container xs={12} >
+						</ItemGrid>
+						<ItemGrid container xs={12} >
 							{this.renderLanguage()}
-						</ItemG>
-						<ItemG container xs={12} >
+						</ItemGrid>
+						<ItemGrid container xs={12} >
 							{this.renderOrgs()}
-						</ItemG>
-						<ItemG container xs={12} >
+						</ItemGrid>
+						<ItemGrid container xs={12} >
 							{this.renderAccess()}
-						</ItemG>
-						<ItemG xs={12}>
+						</ItemGrid>
+						<ItemGrid xs={12}>
 							{this.renderExtendedProfile()}
-						</ItemG>
-						<ItemG container xs={12} md={12}>
+						</ItemGrid>
+						<ItemGrid container xs={12} md={12}>
 							<Button style={{ margin: 8 }} color={'primary'} onClick={() => this.setState({ openExtended: !this.state.openExtended })}>{t('actions.extendProfile')}</Button>
-						</ItemG>
+						</ItemGrid>
 					</form>
-					<ItemG xs={12} container justify={'center'}>
+					<ItemGrid xs={12} container justify={'center'}>
 						<Collapse in={this.state.creating} timeout='auto' unmountOnExit>
 							<CircularLoader notCentered />
 						</Collapse>
-					</ItemG>
-					<Grid container justify={'center'}>
+					</ItemGrid>
+					<ItemGrid container style={{ margin: 16 }}>
+						<div className={classes.wrapper}>
+							<Button
+								variant='contained'
+								onClick={this.goToUser}
+								className={classes.redButton}
+							>
+								<Clear className={classes.leftIcon} />{t('actions.cancel')}
+							</Button>
+						</div>
 						<div className={classes.wrapper}>
 							<Button
 								variant='contained'
@@ -539,7 +549,7 @@ class CreateUser extends Component {
 									: <Fragment><Save className={classes.leftIcon} />{t('menus.create.user')}</Fragment>}
 							</Button>
 						</div>
-					</Grid>
+					</ItemGrid>
 				</Paper>
 			</GridContainer>
 		)
