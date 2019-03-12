@@ -4,7 +4,7 @@ import loginImages from 'variables/loginImages'
 import { Button, withStyles } from '@material-ui/core';
 import { sideBarColor, /* primaryColor */ } from 'assets/jss/material-dashboard-react';
 // import ImgDevices from 'assets/img/devices.png'
-import ImgTexture from 'assets/img/texture_inverted.png'
+import ImgTexture from 'assets/img/texture_inverted2.png'
 import sentiDots from 'assets/img/senti_dots.svg'
 
 const styles = theme => ({
