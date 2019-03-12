@@ -3,7 +3,7 @@ import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip }
 import T from 'components/Typography/T';
 import ItemG from 'components/Grid/ItemG';
 // import Gravatar from 'react-gravatar'
-import { /* Language, */ Star, StarBorder, SignalWifi2Bar, LibraryBooks } from 'variables/icons';
+import { /* Language, */ Star, StarBorder, SignalWifi2Bar, LibraryBooks, Business } from 'variables/icons';
 import withLocalization from 'components/Localization/T';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -94,14 +94,15 @@ class ProjectHover extends Component {
 									<ItemG xs={12}>
 										<T className={classes.smallText} noParagraph>{`${project.id}`}</T>
 									</ItemG>
-									<ItemG xs={12}>
-										<T className={classes.smallText} noParagraph>
-											{`${project.org.name ? project.org.name : t('no.org')}`}
-										</T>
-									</ItemG>
 								</ItemG>
 							</ItemG>
 							<ItemG xs={12} className={classes.middleContainer}>
+								<ItemG xs={12}>
+									<T className={classes.smallText} noParagraph>
+										<Business className={classes.smallIcon}/>
+										{`${project.org.name ? project.org.name : t('no.org')}`}
+									</T>
+								</ItemG>
 								<ItemG xs={12}>
 									<T className={classes.smallText}>
 										{project.description}
@@ -111,7 +112,7 @@ class ProjectHover extends Component {
 							<Divider />
 							<ItemG container style={{ marginTop: '8px' }}>
 								<ItemG>
-									<Button color={'primary'} variant={'text'} component={Link} to={`/project/${project.id}/edit`}>
+									<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `/project/${project.id}/edit`, prevURL: '/projects' }}>
 										{t('menus.edit')}
 									</Button>
 								</ItemG>

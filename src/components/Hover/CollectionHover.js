@@ -3,7 +3,7 @@ import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip }
 import T from 'components/Typography/T';
 import ItemG from 'components/Grid/ItemG';
 // import Gravatar from 'react-gravatar'
-import { /* Language, */ Star, StarBorder, SignalWifi2Bar, LibraryBooks, DataUsage } from 'variables/icons';
+import { /* Language, */ Star, StarBorder, SignalWifi2Bar, LibraryBooks, DataUsage, Business } from 'variables/icons';
 import withLocalization from 'components/Localization/T';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -61,7 +61,7 @@ class CollectionHover extends Component {
 			case 0:
 				return <SignalWifi2Bar className={classes.redSignal + ' ' + classes.smallIcon} />
 			case null:
-				return <SignalWifi2Bar className={classes.smallIcon}/>
+				return <SignalWifi2Bar className={classes.smallIcon} />
 			default:
 				break;
 		}
@@ -83,7 +83,7 @@ class CollectionHover extends Component {
 				{({ TransitionProps }) => (
 					<Fade {...TransitionProps} timeout={250}>
 						<Paper className={classes.paper}>
-							{collection !== null ? 
+							{collection !== null ?
 								<Fragment>
 									<ItemG container style={{ margin: "8px 0" }}>
 										<ItemG xs={3} container justify={'center'} alignItems={'center'}>
@@ -98,24 +98,31 @@ class CollectionHover extends Component {
 											<ItemG xs={12}>
 												<T className={classes.smallText} noParagraph>{`${collection.id}`}</T>
 											</ItemG>
-											<ItemG xs={12}>
-												<T className={classes.smallText} noParagraph>
-													{`${collection.org.name ? collection.org.name : t('devices.fields.free')}`}
-												</T>
-											</ItemG>
 										</ItemG>
 									</ItemG>
 									<ItemG xs={12} className={classes.middleContainer}>
 										<ItemG xs={12}>
-											<T className={classes.smallText}>
-												{this.renderIcon(collection.activeDeviceStats ? collection.activeDeviceStats.state : null)}
-												{collection.activeDeviceStats ? <Link to={`/device/${collection.activeDeviceStats.id}`}>{collection.activeDeviceStats.id}</Link> : t('no.device') }
+											<T className={classes.smallText} noParagraph>
+												<Business className={classes.smallIcon} />
+												{`${collection.org.name ? collection.org.name : t('devices.fields.free')}`}
 											</T>
 										</ItemG>
 										<ItemG xs={12}>
 											<T className={classes.smallText}>
-												<LibraryBooks className={classes.smallIcon}/>
-												{collection.project ? <Link to={`/project/${collection.project.id}`}>{collection.project.title}</Link> : t('no.project')}
+												{this.renderIcon(collection.activeDeviceStats ? collection.activeDeviceStats.state : null)}
+												{collection.activeDeviceStats ?
+													<Link to={{ pathname: `/device/${collection.activeDeviceStats.id}`, prevURL: '/collections' }}>
+														{collection.activeDeviceStats.id}
+													</Link>
+													: t('no.device')}
+											</T>
+										</ItemG>
+										<ItemG xs={12}>
+											<T className={classes.smallText}>
+												<LibraryBooks className={classes.smallIcon} />
+												{collection.project.title ? <Link to={{ pathname: `/project/${collection.project.id}`, prevURL: '/collections' }}>
+													{collection.project.title}
+												</Link> : t('no.project')}
 											</T>
 										</ItemG>
 
@@ -123,7 +130,7 @@ class CollectionHover extends Component {
 									<Divider />
 									<ItemG container style={{ marginTop: '8px' }}>
 										<ItemG>
-											<Button color={'primary'} variant={'text'} component={Link} to={`/collection/${collection.id}/edit`}>
+											<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `/collection/${collection.id}/edit`, prevURL: '/collections' }}>
 												{t('menus.edit')}
 											</Button>
 										</ItemG>
@@ -136,7 +143,7 @@ class CollectionHover extends Component {
 										</ItemG>
 									</ItemG>
 								</Fragment>
-					 : <CircularLoader notCentered/>}
+								: <CircularLoader notCentered />}
 						</Paper>
 					</Fade>
 				)}

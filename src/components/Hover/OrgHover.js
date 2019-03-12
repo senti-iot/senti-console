@@ -90,7 +90,7 @@ class OrgHover extends Component {
 							<Divider />
 							<ItemG container style={{ marginTop: '8px' }}>
 								<ItemG>
-									<Button color={'primary'} variant={'text'} component={Link} to={`org/${org.id}/edit`}>
+									<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `org/${org.id}/edit`, prevURL: '/management/orgs' }}>
 										{t('menus.edit')}
 									</Button>
 								</ItemG>

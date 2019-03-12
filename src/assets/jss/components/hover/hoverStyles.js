@@ -12,8 +12,8 @@ const hoverStyles = theme => ({
 		color: yellow[600]
 	},
 	smallIcon: {
-		width: 24,
-		height: 24,
+		width: 20,
+		height: 20,
 		marginRight: 12
 	},
 	middleContainer: {

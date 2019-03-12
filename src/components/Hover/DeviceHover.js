@@ -3,7 +3,7 @@ import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip }
 import T from 'components/Typography/T';
 import ItemG from 'components/Grid/ItemG';
 // import Gravatar from 'react-gravatar'
-import { /* Language, */ Star, StarBorder, LocationOn, DeviceHub, SignalWifi2Bar } from 'variables/icons';
+import { /* Language, */ Star, StarBorder, LocationOn, DeviceHub, SignalWifi2Bar, Business } from 'variables/icons';
 import withLocalization from 'components/Localization/T';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -94,14 +94,16 @@ class DeviceHover extends Component {
 									<ItemG xs={12}>
 										<T className={classes.smallText} noParagraph>{`${device.id}`}</T>
 									</ItemG>
-									<ItemG xs={12}>
-										<T className={classes.smallText} noParagraph>
-											{`${device.org.name ? device.org.name : t('devices.fields.free')}`}
-										</T>
-									</ItemG>
+						
 								</ItemG>
 							</ItemG>
 							<ItemG xs={12} className={classes.middleContainer}>
+								<ItemG xs={12}>
+									<T className={classes.smallText} noParagraph>
+										<Business className={classes.smallIcon}/>
+										{`${device.org.name ? device.org.name : t('devices.fields.free')}`}
+									</T>
+								</ItemG>
 								<ItemG xs={12}>
 									<T className={classes.smallText}>
 										{this.renderIcon(device.liveStatus)}
@@ -120,16 +122,11 @@ class DeviceHover extends Component {
 							<Divider />
 							<ItemG container style={{ marginTop: '8px' }}>
 								<ItemG>
-									<Button color={'primary'} variant={'text'} component={Link} to={`/device/${device.id}/edit`}>
+									<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `/device/${device.id}/edit`, prevURL: '/devices' }}>
 										{t('menus.edit')}
 									</Button>
 								</ItemG>
 								<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
-									{/* <Tooltip placement="top" title={t('actions.visitWebsite')}>
-										<IconButton component={'a'} className={classes.smallAction} href={device.url} rel="noopener noreferrer" target="_blank">
-											<Language />
-										</IconButton>
-									</Tooltip> */}
 									<Tooltip placement="top" title={isFav({ id: device.id, type: 'device' }) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
 										<IconButton className={classes.smallAction} onClick={isFav({ id: device.id, type: 'device' }) ? this.removeFromFav : this.addToFav}>
 											{isFav({ id: device.id, type: 'device' }) ? <Star /> : <StarBorder />}

@@ -93,7 +93,6 @@ class UserHover extends Component {
 										<Business className={classes.smallIcon}/>
 										{user.org.name}
 									</T>
-
 								</ItemG>
 								<ItemG xs={12}>
 									{user.aux.senti ? user.aux.senti.extendedProfile ?
@@ -106,7 +105,7 @@ class UserHover extends Component {
 							<Divider />
 							<ItemG container style={{ marginTop: '8px' }}>
 								<ItemG>
-									<Button color={'primary'} variant={'text'} component={Link} to={`user/${user.id}/edit`}>
+									<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `user/${user.id}/edit`, prevURL: '/management/users' }}>
 										{t('menus.edit')}
 									</Button>
 								</ItemG>
