@@ -34,6 +34,7 @@ class AssignProject extends React.Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		await getAllProjects().then(rs => this._isMounted ? this.setState({ projects: rs }) : null)
+
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
@@ -44,7 +45,7 @@ class AssignProject extends React.Component {
 		let newProject = await getProject(selectedProject.id)
 		if (this.props.multiple)
 		{ 
-			if (newProject.dataCollections)
+			if (newProject.dataCollections.length > 0)
 				newProject.dataCollections = [...newProject.dataCollections, ...this.props.collectionId.map(ci => ({ id: ci }))]
 			else {
 				newProject.dataCollections = [...this.props.collectionId.map(ci => ({ id: ci }))]

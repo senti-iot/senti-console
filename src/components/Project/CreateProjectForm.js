@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react'
 import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Slide, Hidden, IconButton } from '@material-ui/core';
-import { Close } from 'variables/icons';
+import { Close, Clear } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import { Collapse, Grid, Paper } from '@material-ui/core'
+import { Collapse, Paper } from '@material-ui/core'
 import { KeyboardArrowLeft as KeyArrLeft, KeyboardArrowRight as KeyArrRight, Save } from 'variables/icons'
 import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers'
 import MomentUtils from '@date-io/moment'
@@ -180,7 +180,7 @@ class CreateProjectForm extends Component {
 		const { t, classes, errorMessage, error,
 			created, title, handleChange, handleDateChange, 
 			description, startDate, endDate, creating, handleOpenOrg, org,
-			handleCreateProject, handleOpenUser, user
+			handleCreateProject, handleOpenUser, user, goToProject
 		} = this.props
 		const buttonClassname = cx({
 			[classes.buttonSuccess]: created,
@@ -301,7 +301,16 @@ class CreateProjectForm extends Component {
 								<CircularLoader notCentered />
 							</Collapse>
 						</ItemGrid>
-						<Grid container justify={'center'}>
+						<ItemGrid container style={{ margin: 16 }}>
+							<div className={classes.wrapper}>
+								<Button
+									variant='contained'
+									onClick={goToProject}
+									className={classes.redButton}
+								>
+									<Clear className={classes.leftIcon} />{t('actions.cancel')}
+								</Button>
+							</div>
 							<div className={classes.wrapper}>
 								<Button
 									variant='contained'
@@ -316,7 +325,7 @@ class CreateProjectForm extends Component {
 										</Fragment>}
 								</Button>
 							</div>
-						</Grid>
+						</ItemGrid>
 					</MuiPickersUtilsProvider>
 				</Paper>
 			</GridContainer> 

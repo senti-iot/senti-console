@@ -46,8 +46,8 @@ class CreateProject extends Component {
 
 	componentDidMount = () => {
 		this._isMounted = 1
-		getAllUsers().then(async rs => { 
-			if (this._isMounted) { 
+		getAllUsers().then(async rs => {
+			if (this._isMounted) {
 				this.setState({
 					users: rs,
 					user: this.props.user
@@ -65,7 +65,7 @@ class CreateProject extends Component {
 					var devices = await getAvailableDevices(this.props.userOrg.id).then(rs => rs)
 					this.setState({
 						availableDevices: devices ? devices : null,
-						devices: [], 
+						devices: [],
 						orgs: rs,
 						org: {
 							id: this.props.userOrg.id,
@@ -83,28 +83,24 @@ class CreateProject extends Component {
 	handleValidation = () => {
 		let errorCode = [];
 		const { title, startDate, endDate } = this.state
-		if (title === '')
-		{
+		if (title === '') {
 			errorCode.push(1)
 		}
-		if (!moment(startDate).isValid())
-		{
+		if (!moment(startDate).isValid()) {
 			errorCode.push(2)
 		}
-		if (!moment(endDate).isValid()) 
-		{
+		if (!moment(endDate).isValid()) {
 			errorCode.push(3)
 		}
-		if ( moment(startDate).isAfter(endDate) )
-		{
+		if (moment(startDate).isAfter(endDate)) {
 			errorCode.push(4)
 		}
 		this.setState({
 			errorMessage: errorCode.map(c => <Danger key={c}>{this.errorMessages(c)}</Danger>)
-		})	
+		})
 		if (errorCode.length === 0)
 			return true
-		else 
+		else
 			return false
 	}
 	errorMessages = code => {
@@ -112,14 +108,14 @@ class CreateProject extends Component {
 		switch (code) {
 			case 1:
 				return t('projects.validation.noTitle')
-			case 2: 
+			case 2:
 				return t('projects.validation.noStartDate')
-			case 3: 
+			case 3:
 				return t('projects.validation.noEndDate')
 			case 4:
 				return t('projects.validation.startDateBiggerThanEndDate')
-			default: 
-				return ''	
+			default:
+				return ''
 		}
 
 	}
@@ -145,14 +141,13 @@ class CreateProject extends Component {
 	}
 	handleFinishCreateProject = (rs) => {
 		this.setState({ created: true, id: rs.id })
-		this.props.s('snackbars.projectCreated', { project: this.state.title })			
+		this.props.s('snackbars.projectCreated', { project: this.state.title })
 		this.props.history.push(`/project/${rs.id}`)
 	}
 	handleCreateProject = async () => {
 		const { title, description, startDate, endDate, org, user } = this.state
 		this.setState({ creating: true })
-		if (this.handleValidation())
-		{
+		if (this.handleValidation()) {
 			await getCreateProject().then(async rs => {
 				if (this._isMounted) {
 					let newProject = {
@@ -208,6 +203,9 @@ class CreateProject extends Component {
 			org: this.state.org.id === o.org.id ? this.state.org : o.org
 		})
 	}
+
+	goToProject = () => this.props.history.push('/projects')
+	
 	render() {
 		const { created, orgs, org, error,
 			title, description, creating, startDate, endDate, openOrg,
@@ -233,6 +231,7 @@ class CreateProject extends Component {
 				openOrg={openOrg}
 				users={users}
 				user={user}
+				goToProject={this.goToProject}
 				handleOpenUser={this.handleOpenUser}
 				handleCloseUser={this.handleCloseUser}
 				handleChangeUser={this.handleChangeUser}

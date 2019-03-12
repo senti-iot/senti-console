@@ -193,7 +193,6 @@ class Collections extends Component {
 				collections: collections ? collections : [],
 				loading: false
 			}, () => this.handleRequestSort(null, 'name', 'asc'))
-
 		}
 	}
 	//#endregion
@@ -449,7 +448,7 @@ class Collections extends Component {
 		const { selected, openAssignProject } = this.state
 		const { t } = this.props
 		return <AssignProject
-			multiple
+			// multiple
 			collectionId={selected ? selected : []}
 			handleCancel={this.handleCancelAssignProject}
 			handleClose={this.handleCloseAssignProject}
