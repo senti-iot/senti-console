@@ -3,6 +3,9 @@
 
 
 const loginPageStyles = theme => ({
+	p: {
+		marginBottom: theme.spacing.unit
+	},
 	wrapper: {
 		display: 'flex',
 		height: '100vh',

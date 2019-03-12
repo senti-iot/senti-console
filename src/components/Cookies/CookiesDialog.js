@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { Button, Dialog, DialogContent, DialogActions, DialogTitle } from '@material-ui/core';
 import { T } from 'components';
 const CookiesDialog = (props) => {
-	const { open, handleClose, t, classes, handleAcceptCookies, readOnly } = props
+	const { open, handleClose, t, classes, handleAcceptCookies, readOnly, read } = props
 	return (
 		<Dialog
 			open={open}
@@ -39,11 +39,11 @@ const CookiesDialog = (props) => {
 				{readOnly ? <Button color={'primary'} onClick={handleClose}>OK</Button>
 					:
 					<Fragment>
-						<Button onClick={handleClose} color="primary">
+						{read ? null : <Button onClick={handleClose} color="primary">
 							{t('actions.cancel')}
-						</Button>
+						</Button>}
 						<Button onClick={handleAcceptCookies} color="primary">
-							{t('actions.accept')}
+							{read ? t('actions.accept') : t('actions.ok')}
 						</Button>
 					</Fragment>
 				}
