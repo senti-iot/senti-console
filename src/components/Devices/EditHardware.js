@@ -1,5 +1,5 @@
-import { Button, Collapse, Grid, Paper, withStyles } from '@material-ui/core';
-import { Check, Save } from 'variables/icons';
+import { Button, Grid, Paper, withStyles, Collapse } from '@material-ui/core';
+import { Check, Save, Clear } from 'variables/icons';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import React, { Component, Fragment } from 'react';
 import { getDevice, updateDevice } from 'variables/dataDevices';
@@ -157,20 +157,36 @@ class EditDetails extends Component {
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12} container justify={'center'}>
-					
 								<Collapse in={this.state.updating} timeout={100} unmountOnExit>
 									<CircularLoader notCentered />
 								</Collapse>
-								<ItemGrid>
+							</ItemGrid>
+							<ItemGrid container style={{ margin: 16 }}>
+								<div className={classes.wrapper}>
+									<Button
+										variant='contained'
+										onClick={this.goToDevice}
+										className={classes.redButton}
+									>
+										<Clear className={classes.leftIcon} />{t('actions.cancel')}
+									</Button>
+								</div>
+								<div className={classes.wrapper}>
 									<Button
 										variant='contained'
 										color='primary'
-										disabled={this.state.updating}
-										onClick={this.state.updated ? this.goToDevice : this.handleUpdateDevice}
+										disabled={this.state.updating || this.state.updated}
+										onClick={this.handleUpdateDevice}
 									>
-										{this.state.updated ? <Fragment><Check className={classes.leftIcon} />{t('actions.goTo')} {t('devices.device')} </Fragment> : <Fragment><Save className={classes.leftIcon} />{t('actions.save')}</Fragment>}
+										{this.state.updated ?
+											<Fragment>
+												<Check className={classes.leftIcon} />{t('snackbars.redirect')}
+											</Fragment> :
+											<Fragment>
+												<Save className={classes.leftIcon} />{t('actions.save')}
+											</Fragment>}
 									</Button>
-								</ItemGrid>
+								</div>
 							</ItemGrid>
 						</Grid>
 					</form>
