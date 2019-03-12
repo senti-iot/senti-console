@@ -66,7 +66,6 @@ class EditCollectionForm extends Component {
 	}
 	render() {
 		const { t, handleChange, collection, classes, handleOpenOrg, handleUpdate, goToCollection } = this.props
-		console.log(classes)
 		return (
 			<GridContainer>
 				<Paper className={classes.paper}>

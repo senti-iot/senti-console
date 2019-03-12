@@ -68,11 +68,11 @@ class UserTable extends React.Component {
 					rowHover: null
 				})
 				setTimeout(() => {
-					this.setState({ rowHover: e.target, hoverUser: n }, () => console.log(rowHover))
+					this.setState({ rowHover: e.target, hoverUser: n })
 				}, 200);
 			}
 			else {
-				this.setState({ rowHover: e.target, hoverUser: n }, () => console.log(rowHover, e.currentTarget))
+				this.setState({ rowHover: e.target, hoverUser: n })
 			}
 		}, 700);
 	}

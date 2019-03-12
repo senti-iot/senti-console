@@ -52,7 +52,6 @@ class UserHover extends Component {
 	};
 	render() {
 		const { t, anchorEl, classes, user, isFav } = this.props
-		console.log(anchorEl)
 		return (
 			<Popper
 				style={{ zIndex: 1040 }}
