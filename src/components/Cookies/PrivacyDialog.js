@@ -42,7 +42,7 @@ const PrivacyDialog = (props) => {
 				<T className={classes.p}>{t('privacy.p13')}</T>
 				<T className={classes.p}>{t('privacy.p14')}</T>
 				<T className={classes.p}>{t('privacy.p15')}</T>
-				<T className={classes.p}>{`${t('privacy.p16')} ${<a target="_blank" rel="noopener noreferrer" href={t('privacy.p16.a')}>{t('privacy.p16.a')}</a>} ${t('privacy.p16.b')}`}</T>
+				<T className={classes.p}>{`${t('privacy.p16')} `}<a target="_blank" rel="noopener noreferrer" href={t('privacy.p16.a')}>{t('privacy.p16.c')}</a> {` ${t('privacy.p16.b')}`}</T>
 				<T b>{t('privacy.b2')}</T>
 				<T className={classes.p}>{t('privacy.p17')}</T>
 				<T className={classes.p}>{t('privacy.p18')}</T>
@@ -50,7 +50,7 @@ const PrivacyDialog = (props) => {
 				<T className={classes.p}>{t('privacy.p20')}</T>
 				<T className={classes.p}>{t('privacy.p21')}</T>
 				<T className={classes.p}>{t('privacy.p22')}</T>
-				<T className={classes.p}>{`${t('privacy.p23')} ${<a target="_blank" rel="noopener noreferrer" href={t('privacy.p23.a')}>{t('privacy.p23.a')}</a>}`}</T>
+				<T className={classes.p}>{`${t('privacy.p23')} `} <a target="_blank" rel="noopener noreferrer" href={t('privacy.p23.a')}>{t('privacy.p23.a')}</a></T>
 				<T b>{t('privacy.b3')}</T>
 				<T className={classes.p}>{t('privacy.p24')}</T>
 				<T className={classes.p}>{t('privacy.p25')}</T>
