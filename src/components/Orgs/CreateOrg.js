@@ -178,7 +178,7 @@ class CreateOrg extends Component {
 	}
 
 	goToOrg = () => {
-		this.props.history.push('/management/org/' + this.props.match.params.id)
+		this.props.history.push('/management/orgs/')
 	}
 
 	handleOrgChange = e => {

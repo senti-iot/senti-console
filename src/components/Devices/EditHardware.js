@@ -3,6 +3,8 @@ import createprojectStyles from 'assets/jss/components/projects/createprojectSty
 import React, { Component, Fragment } from 'react';
 import { getDevice, updateDevice } from 'variables/dataDevices';
 import { ItemGrid, TextF, GridContainer, CircularLoader, } from 'components';
+import { isFav, updateFav } from 'redux/favorites';
+import { connect } from 'react-redux'
 
 class EditDetails extends Component {
 	constructor(props) {
@@ -43,14 +45,32 @@ class EditDetails extends Component {
 			}
 		})
 	}
+	handleUpdateFav = () => { 
+		const { isFav, updateFav } = this.props
+		const { device } = this.state
+		let favObj = {
+			id: device.id,
+			name: device.name,
+			type: 'device',
+			path: `/device/${device.id}`
+		}
+		if (isFav(favObj)) {
+			updateFav(favObj)
+		}
+		this.setState({ updated: true, updating: false })
+		this.props.s('snackbars.deviceUpdated', { device: this.state.device.id })
+		this.goToDevice()
+	}
 	handleUpdateDevice = async () => {
-		clearTimeout(this.timer);
 		const { device } = this.state
 		this.setState({ updating: true })
-		this.timer = setTimeout(async () => {
-			await updateDevice(device).then(rs => rs ? this.setState({ updated: true, updating: false }) : null)
-		}, 2e3)
-
+		let updateD = {
+			...device,
+			project: {
+				id: 0
+			}
+		}
+		await updateDevice(updateD).then(rs => rs ? this.handleUpdateFav() : null)
 	}
 	goToDevice = () => {
 		this.props.history.push(`/device/${this.props.match.params.id}`)
@@ -194,4 +214,12 @@ class EditDetails extends Component {
 		)
 	}
 }
-export default withStyles(createprojectStyles)(EditDetails)
+const mapStateToProps = (state) => ({
+
+})
+const mapDispatchToProps = (dispatch) => ({
+	isFav: (favObj) => dispatch(isFav(favObj)),
+	updateFav: (favObj) => dispatch(updateFav(favObj))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles)(EditDetails))
