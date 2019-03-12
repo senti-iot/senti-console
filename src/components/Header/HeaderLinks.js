@@ -109,9 +109,9 @@ class HeaderLinks extends React.Component {
 						disableAutoFocusItem
 					>
 						{user ? <Fragment>
-							<MenuItem style={{ height: 46, display: 'flex', flexFlow: 'column', alignItems: 'flex-start' }}>
-								<T >{`${user.firstName} ${user.lastName}`}</T>
-								<T >{user.email}</T>
+							<MenuItem disableRipple component={'div'} className={classes.nameAndEmail}>
+								<T style={{ fontSize: '1rem' }}>{`${user.firstName} ${user.lastName}`}</T>
+								<T style={{ fontSize: '1rem' }}>{user.email}</T>
 							</MenuItem>
 						</Fragment>
 						 : null}
