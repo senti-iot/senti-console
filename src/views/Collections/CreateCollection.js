@@ -132,6 +132,7 @@ class CreateCollection extends Component {
 		else
 			s('snackbars.failed')
 	}
+	goToCollection = () => this.props.history.push('/collections')
 	render() {
 		const { t } = this.props
 		const { loading, collection, openDevice, devices, device, orgs, org, openOrg } = this.state
@@ -150,6 +151,7 @@ class CreateCollection extends Component {
 					orgs={orgs}
 					org={org}
 					openOrg={openOrg}
+					goToCollection={this.goToCollection}
 					handleCloseOrg={this.handleCloseOrg}
 					handleOpenOrg={this.handleOpenOrg}
 					handleChangeOrg={this.handleChangeOrg}

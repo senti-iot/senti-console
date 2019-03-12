@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Slide, Hidden, IconButton } from '@material-ui/core';
-import { Close } from 'variables/icons';
+import { Close, Clear } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { Grid, Paper } from '@material-ui/core'
@@ -186,7 +186,7 @@ class CreateCollectionForm extends Component {
 		</Dialog>
 	}
 	render() {
-		const { t, handleChange, collection, classes, handleOpenDevice, handleOpenOrg, handleCreate, device, org } = this.props
+		const { t, handleChange, collection, classes, handleOpenDevice, handleOpenOrg, handleCreate, device, org, goToCollection } = this.props
 		return (
 			<GridContainer>
 				<Paper className={classes.paper}>
@@ -248,10 +248,21 @@ class CreateCollectionForm extends Component {
 							<ItemGrid xs={12}>
 								{this.renderSelectState()}
 							</ItemGrid>
-							<ItemGrid xs={12} container justify={'center'}>
-								<Button onClick={handleCreate} variant={'contained'} color={'primary'}>
-									{t('actions.save')}
-								</Button>
+							<ItemGrid container style={{ margin: 16 }}>
+								<div className={classes.wrapper}>
+									<Button
+										variant='contained'
+										onClick={goToCollection}
+										className={classes.redButton}
+									>
+										<Clear className={classes.leftIcon} />{t('actions.cancel')}
+									</Button>
+								</div>
+								<div className={classes.wrapper}>
+									<Button onClick={handleCreate} variant={'contained'} color={'primary'}>
+										{t('actions.save')}
+									</Button>
+								</div>
 							</ItemGrid> 
 						</Grid>
 					</form>
