@@ -1,7 +1,15 @@
 import teal from '@material-ui/core/colors/teal'
 import { hoverColor, primaryColor, headerColor } from 'assets/jss/material-dashboard-react';
+import { red } from '@material-ui/core/colors';
 
 const createprojectStyles = theme => ({
+	redButton: {
+		color: 'white',
+		background: red[700],
+		"&:hover": {
+			background: red[800]
+		}
+	},
 	img: {
 		borderRadius: "50px",
 		height: "40px",
