@@ -234,7 +234,6 @@ class EditOrg extends Component {
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
-		console.log(classes.redButton)
 		return (
 			!loading ?
 				<GridContainer justify={'center'}>
