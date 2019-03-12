@@ -380,7 +380,7 @@ class CreateOrg extends Component {
 									onClick={ this.state.created ? this.goToOrg : this.handleCreateOrg }>
 									{ this.state.created ?
 										<Fragment>{t('snackbars.redirect') }</Fragment>
-										: t('orgs.createOrg') }
+										: t('actions.save') }
 								</Button>
 							</div>
 						</ItemGrid>

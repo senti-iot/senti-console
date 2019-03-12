@@ -595,7 +595,7 @@ class EditUser extends Component {
 								onClick={this.handleEditUser}>
 								{this.state.created ?
 									<Fragment>{t('snackbars.redirect')}</Fragment>
-									: <Fragment>{t('users.editUser')}</Fragment>}
+									: <Fragment>{t('actions.save')}</Fragment>}
 							</Button>
 						</div>
 					</ItemGrid>

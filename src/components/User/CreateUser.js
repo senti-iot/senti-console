@@ -546,7 +546,7 @@ class CreateUser extends Component {
 								onClick={this.handleCreateUser}>
 								{this.state.created ?
 									<Fragment>{t('snackbars.redirect')}</Fragment>
-									: <Fragment>{/* <Save className={classes.leftIcon} /> */}{t('menus.create.user')}</Fragment>}
+									: <Fragment>{/* <Save className={classes.leftIcon} /> */}{t('actions.save')}</Fragment>}
 							</Button>
 						</div>
 					</ItemGrid>

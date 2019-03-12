@@ -394,7 +394,7 @@ class EditOrg extends Component {
 										onClick={this.state.created ? this.goToOrg : this.handleUpdateOrg}>
 										{this.state.created ?
 											<Fragment><Check className={classes.leftIcon} />{t('snackbars.redirect')}</Fragment>
-											: t('actions.update') }
+											: t('actions.save') }
 									</Button>
 
 								</div>

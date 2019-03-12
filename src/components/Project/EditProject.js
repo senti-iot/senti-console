@@ -406,7 +406,7 @@ class EditProject extends Component {
 											onClick={ this.handleUpdateProject}>
 											{this.state.created ?
 												<Fragment><Check className={classes.leftIcon} />{t('snackbars.redirect')}</Fragment>
-												: t('projects.updateProject')}
+												: t('actions.save')}
 										</Button>
 									</div>
 								</ItemGrid>

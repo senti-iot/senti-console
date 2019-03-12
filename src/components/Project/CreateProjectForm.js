@@ -320,7 +320,7 @@ class CreateProjectForm extends Component {
 									onClick={handleCreateProject}
 								>
 									{created ? t('snackbars.redirect')
-										: t('menus.create.project')}
+										: t('actions.save')}
 										
 								</Button>
 							</div>
