@@ -149,7 +149,6 @@ class CollectionTable extends React.Component {
 								const isSelected = this.isSelected(n.id);
 								return (
 									<TableRow
-
 										hover
 										onClick={handleClick(n.id)}
 										role='checkbox'

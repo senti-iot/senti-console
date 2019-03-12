@@ -243,26 +243,38 @@ export const keyTester = (obj, sstr) => {
 	}
 	return found
 }
-const sortFunc = (a, b, orderBy, way) => {
+const sortFunc = (a, b, orderBy, way, type) => {
 	let newA = _.get(a, orderBy)
 	let newB = _.get(b, orderBy)
-	if (moment(new Date(newA)).isValid() || moment(new Date(newB)).isValid()) {
-		return way ? moment(new Date(newA)).diff(new Date(newB)) : moment(new Date(newB)).diff(new Date(newA))
+	switch (type) {
+		case 'string':
+			if (way) {
+				return newA.toString().toLowerCase() < newB.toString().toLowerCase() ? -1 : 1
+			}
+			else {
+				return newB.toString().toLowerCase() <= newA.toString().toLowerCase() ? -1 : 1
+			}
+		case 'date': 
+			return way ? moment(new Date(newA)).diff(new Date(newB)) : moment(new Date(newB)).diff(new Date(newA))
+		case 'number':
+		case undefined:
+			if (way) {
+				return (newA === null || newA === undefined) - (newB === null || newB === undefined) || +(newA > newB) || -(newA < newB);
+			}
+			else {
+				return -(newA > newB) || +(newA < newB) || (newA === null || newA === undefined) - (newB === null || newB === undefined);
+			}
+		default:
+			break;
 	}
-	if (typeof newA === 'number' || typeof newA === 'undefined')
-		if (way) {
-			return -(newA > newB) || +(newA < newB) || (newA === null || newA === undefined) - (newB === null || newB === undefined);
-		}
-		else {
-			return (newA === null || newA === undefined) - (newB === null || newB === undefined) || +(newA > newB) || -(newA < newB);
-		}
+	if (moment(new Date(newA)).isValid() || moment(new Date(newB)).isValid()) {
+	}
+	if (typeof newA === 'number' || typeof newA === 'undefined') {
+
+	}
 	else {
-		if (way) {
-			return newA.toString().toLowerCase() < newB.toString().toLowerCase() ? -1 : 1
-		}
-		else {
-			return newB.toString().toLowerCase() <= newA.toString().toLowerCase() ? -1 : 1
-		}
+		console.log('string')
+		
 	}
 }
 /**
@@ -273,12 +285,12 @@ const sortFunc = (a, b, orderBy, way) => {
  */
 export const handleRequestSort = (property, way, data) => {
 	const orderBy = property;
-	let order = way;
+	// let order = way;
 	let newData = []
-	newData =
-		order === 'desc'
-			? data.sort((a, b) => sortFunc(a, b, orderBy, false))
-			: data.sort((a, b) => sortFunc(a, b, orderBy, true))
+	newData = data.sort((a, b) => sortFunc(a, b, orderBy, way === 'desc' ? false : true))
+	// order === 'desc'
+	// 	? 
+	// 	: data.sort((a, b) => sortFunc(a, b, orderBy, true))
 	return newData
 }
 /**

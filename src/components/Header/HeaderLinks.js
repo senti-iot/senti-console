@@ -117,6 +117,7 @@ class HeaderLinks extends React.Component {
 						</MenuItem>
 						<GoogleLogout
 							// onLogoutSuccess={() => this.logOut()}
+							clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
 							render={renderProps => (<MenuItem onClick={() => { renderProps.onClick(); this.logOut() } } className={classes.menuItem}>
 								<Lock className={classes.leftIcon} />{t('menus.user.signout')}
 							</MenuItem>)}
