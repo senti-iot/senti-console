@@ -1,6 +1,19 @@
 import React, { Fragment } from 'react'
-import { Button, Dialog, DialogContent, DialogActions, DialogTitle } from '@material-ui/core';
+import { Button, Dialog, DialogContent, DialogActions, DialogTitle, withStyles } from '@material-ui/core';
 import { T, Caption } from 'components';
+
+const styles = theme => ({
+	p: {
+		marginBottom: theme.spacing.unit
+	},
+	dialogContent: {
+		padding: 24,
+		[theme.breakpoints.down('sm')]: {
+			padding: 16
+		}
+	}
+})
+
 const PrivacyDialog = (props) => {
 	const { open, handleClose, t, classes, readOnly } = props
 	return (
@@ -15,7 +28,7 @@ const PrivacyDialog = (props) => {
 					{t('privacy.title')}
 				</T>
 			</DialogTitle>
-			<DialogContent>				
+			<DialogContent className={classes.dialogContent}>				
 				<T b>{t('privacy.responsible')}</T>
  				<Caption>Senti.Cloud </Caption>
  				<Caption>c/o WebHouse ApS</Caption>
@@ -80,4 +93,4 @@ const PrivacyDialog = (props) => {
 	)
 }
 
-export default PrivacyDialog
+export default withStyles(styles)(PrivacyDialog)

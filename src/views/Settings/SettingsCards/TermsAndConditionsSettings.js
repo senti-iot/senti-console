@@ -48,8 +48,8 @@ class TermsAndConditions extends Component {
 				title={t('settings.t&c.title')}
 				content={
 					<Grid container>
-						<CookiesDialog open={openCP} handleClose={this.handleCloseCP} t={t} classes={classes} readOnly/>
-						<PrivacyDialog open={openPP} handleClose={this.handleClosePP} t={t} classes={classes} readOnly/>
+						<CookiesDialog open={openCP} handleClose={this.handleCloseCP} t={t} readOnly/>
+						<PrivacyDialog open={openPP} handleClose={this.handleClosePP} t={t} readOnly/>
 						<ResetSettingsModal open={openRS} handleClose={this.handleCloseRS} t={t} classes={classes} />
 						<List className={classes.list}>
 							<ListItem divider>

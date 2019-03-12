@@ -147,7 +147,7 @@ class NewLoginPage extends Component {
 					<div className={classes.mobileContainer}>
 
 						<Paper className={classes.paper}>
-							<div className={classes.paperContainer} style={{ overflow: 'auto' }}>
+							<div className={classes.paperContainer} style={{ overflow: 'scroll' }}>
 
 								{/* <ItemG container alignItems={'center'} justify={'space-evenly'} className={classes.container}> */}
 								<ItemG xs={12} container justify={'center'}>
@@ -249,8 +249,8 @@ class NewLoginPage extends Component {
 						</Paper>
 					</div>
 				</ItemG>
-				<CookiesDialog read classes={classes} t={t} open={cookies} handleClose={this.handleCookies} handleAcceptCookies={this.handleCookies} />
-				<PrivacyDialog classes={classes} t={t} open={privacy} handleClose={this.handlePrivacy} />
+				<CookiesDialog read t={t} open={cookies} handleClose={this.handleCookies} handleAcceptCookies={this.handleCookies} />
+				<PrivacyDialog t={t} open={privacy} handleClose={this.handlePrivacy} />
 				<Hidden smDown>
 					<ItemG md={8} lg={8} xl={9}>
 						<LoginImages t={t} />
