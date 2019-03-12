@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react'
 import { InfoCard, Caption, Dropdown, CircularLoader, ItemG, TextF, AddressInput, Danger, DateFilterMenu } from 'components';
 import { Map, Layers, Smartphone, Save, Clear, EditLocation, WhatsHot } from 'variables/icons'
-import { Grid/*,  Checkbox, */, IconButton, Menu, MenuItem, Collapse, DialogContent, DialogTitle, DialogActions, Button, Drawer, withStyles } from '@material-ui/core';
+import { Grid/*,  Checkbox, */, IconButton, Menu, MenuItem, Collapse, DialogContent, /* DialogTitle, */ DialogActions, Button, Drawer, withStyles } from '@material-ui/core';
 import { red, teal } from "@material-ui/core/colors"
 import OpenStreetMap from 'components/Map/OpenStreetMap';
 import { updateDevice, getAddress, getGeoByAddress } from 'variables/dataDevices';
@@ -159,7 +159,7 @@ class MapCard extends PureComponent {
 		this.props.storeHeatData(dataArr)
 	}
 	renderMenu = () => {
-		const { t, mapTheme, device } = this.props
+		const { t, mapTheme } = this.props
 		const { actionAnchorVisibility } = this.state
 		return <Fragment>
 			{/* {device && <Collapse in={this.state.editLocation}>
@@ -209,7 +209,7 @@ class MapCard extends PureComponent {
 				[
 					{ label: t('actions.heatMap'), selected: this.props.heatMap, icon: <WhatsHot style={{ padding: "0px 12px" }} />, func: () => this.props.changeHeatMap(!this.props.heatMap) },
 					{ label: t('actions.goToDevice'), icon: <Smartphone style={{ padding: "0px 12px" }} />, func: () => this.flyToMarkers() },
-					{ dontShow: device ? false : true, label: t('actions.editLocation'), selected: this.state.editLocation, icon: <EditLocation style={{ padding: '0px 12px' }} />, func: () => this.handleOpenConfirmEditLocation() }]
+					{ dontShow: this.isExpanded() ? false : true, label: t('actions.editLocation'), selected: this.state.editLocation, icon: <EditLocation style={{ padding: '0px 12px' }} />, func: () => this.handleOpenConfirmEditLocation() }]
 			} />
 
 		</Fragment>
@@ -291,7 +291,7 @@ class MapCard extends PureComponent {
 				}
 			}}
 		>
-			<DialogTitle disableTypography> </DialogTitle>
+			{/* <DialogTitle disableTypography> </DialogTitle> */}
 			<DialogContent style={{ overflowY: "visible" }}>
 				{error ? <Danger>{t('404.networkError')}</Danger> : null}
 				{markers.length > 0 ? markers.map(m =>
@@ -308,11 +308,11 @@ class MapCard extends PureComponent {
 				}
 			</DialogContent>
 			<DialogActions>
-				<Button style={{ color: teal[500] }} onClick={this.handleSaveEditAddress}>
-					<Save /> {t('actions.save')}
-				</Button>
-				<Button style={{ color: red[400] }} onClick={this.handleCancelConfirmEditLocation}>
+				<Button variant={'outlined'} style={{ color: red[400] }} onClick={this.handleCancelConfirmEditLocation}>
 					<Clear /> {t('actions.cancel')}
+				</Button>
+				<Button variant={'outlined'} style={{ color: teal[500] }} onClick={this.handleSaveEditAddress}>
+					<Save /> {t('actions.save')}
 				</Button>
 			</DialogActions>
 		</Drawer>
