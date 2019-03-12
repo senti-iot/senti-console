@@ -30,7 +30,7 @@ class OrgTable extends React.Component {
 		}
 	}
 
-	timer = []
+	timer = null
 
 	componentDidUpdate = () => {
 		if (this.props.saved === true) {
@@ -63,7 +63,7 @@ class OrgTable extends React.Component {
 	setHover = (e, n) => {
 		e.persist()
 		const { rowHover } = this.state
-		let timer = setTimeout(() => {
+		this.timer = setTimeout(() => {
 			if (rowHover) {
 				this.setState({
 					rowHover: null
@@ -76,11 +76,9 @@ class OrgTable extends React.Component {
 				this.setState({ rowHover: e.target, hoverOrg: n })
 			}
 		}, 700);
-		this.timer.push(timer)
 	}
 	unsetTimeout = () => {
-		if (this.timer.length > 0)
-			this.timer.forEach(e => clearTimeout(e))
+		clearTimeout(this.timer)
 	}
 	unsetHover = () => {
 		this.setState({
@@ -120,8 +118,8 @@ class OrgTable extends React.Component {
 								return (
 									<TableRow
 										hover
-										onMouseOver={e => { this.setHover(e, n) }}
-										onMouseLeave={this.unsetTimeout}
+										// onMouseEnter={e => { this.setHover(e, n) }}
+										// onMouseLeave={this.unsetTimeout}
 										onClick={e => { e.stopPropagation(); this.props.history.push('/management/org/' + n.id) }}
 										role='checkbox'
 										aria-checked={isSelected}
@@ -150,7 +148,10 @@ class OrgTable extends React.Component {
 										</Hidden>
 										<Hidden mdDown>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-											<TC FirstC label={n.name} />
+											<TC 
+												onMouseEnter={e => { this.setHover(e, n) }}
+												onMouseLeave={this.unsetTimeout}
+												label={n.name} />
 											<TC label={n.address} />
 											<TC label={`${n.zip} ${n.city}`} />
 											<TC label={n.url} />

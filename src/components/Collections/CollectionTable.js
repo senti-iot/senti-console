@@ -16,7 +16,6 @@ import { SignalWifi2Bar } from 'variables/icons'
 import CollectionHover from 'components/Hover/CollectionHover';
 import { getCollection } from 'variables/dataCollections';
 import { getProject } from 'variables/dataProjects';
-
 class CollectionTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -26,7 +25,7 @@ class CollectionTable extends React.Component {
 		}
 	}
 
-	timer = []
+	timer = null
 
 	handleRequestSort = (event, property) => {
 		this.props.handleRequestSort(event, property)
@@ -50,17 +49,24 @@ class CollectionTable extends React.Component {
 				rowHover: null
 			})
 		}
-		let col = await getCollection(n.id)
-		let project = col.project.id ? await getProject(col.project.id) : null
-		col.project = project
-		let timer = setTimeout(() => {
-			this.setState({ rowHover: e.target, hoverUser: col })
-		}, 1500);
-		this.timer.push(timer)
+
+		this.timer = setTimeout(() => {
+			getCollection(n.id).then(rs => {
+				if (rs.project.id) {
+					getProject(rs.project.id).then(rsp => {
+						rs.project = rsp
+						this.setState({ rowHover: e.target, hoverCollection: rs })
+					})
+				}
+				else {
+					this.setState({ rowHover: e.target, hoverCollection: rs })
+				}
+			})
+		}, 700);
 	}
 	unsetTimeout = () => {
-		if (this.timer.length > 0)
-			this.timer.forEach(e => clearTimeout(e))
+		// this.timer.forEach(e => clearTimeout(e))
+		clearTimeout(this.timer)
 	}
 	unsetHover = () => {
 		this.setState({
@@ -68,7 +74,7 @@ class CollectionTable extends React.Component {
 		})
 	}
 	renderHover = () => {
-		return <CollectionHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} collection={this.state.hoverUser} />
+		return <CollectionHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} collection={this.state.hoverCollection} />
 	}
 
 	renderIcon = (status) => {
@@ -143,8 +149,7 @@ class CollectionTable extends React.Component {
 								const isSelected = this.isSelected(n.id);
 								return (
 									<TableRow
-										onMouseOver={e => { this.setHover(e, n) }}
-										onMouseLeave={this.unsetTimeout}
+
 										hover
 										onClick={handleClick(n.id)}
 										role='checkbox'
@@ -176,7 +181,10 @@ class CollectionTable extends React.Component {
 										<Hidden mdDown >
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
 											<TC label={n.id} />
-											<TC FirstC label={n.name} />
+											<TC FirstC label={n.name}
+												onMouseEnter={e => { this.setHover(e, n) }}
+												onMouseLeave={this.unsetTimeout}
+											/>
 											<TC content={this.renderIcon(n.activeDeviceStats ? n.activeDeviceStats.state : null)} />
 											<TC label={dateFormatter(n.created)} />
 											<TC label={n.devices ? n.devices[0] ? dateFormatter(n.devices[0].start) : '' : ''} />

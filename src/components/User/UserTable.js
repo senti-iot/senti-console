@@ -29,7 +29,7 @@ class UserTable extends React.Component {
 		}
 	}
 
-	timer = []
+	timer = null
 
 	componentDidUpdate = () => {
 		if (this.props.saved === true) {
@@ -62,7 +62,7 @@ class UserTable extends React.Component {
 	setHover = (e, n) => {
 		e.persist()
 		const { rowHover } = this.state
-		let timer = setTimeout(() => {
+		this.timer = setTimeout(() => {
 			if (rowHover) {
 				this.setState({
 					rowHover: null
@@ -75,14 +75,11 @@ class UserTable extends React.Component {
 				this.setState({ rowHover: e.target, hoverUser: n }, () => console.log(rowHover, e.currentTarget))
 			}
 		}, 700);
-		this.timer.push(timer)
 	}
 	unsetTimeout = () => {
-		if (this.timer.length > 0)
-			this.timer.forEach(e => clearTimeout(e))
+		clearTimeout(this.timer)
 	}
 	unsetHover = () => {
-		console.log('unhover')
 		this.setState({
 			rowHover: null
 		})
@@ -124,8 +121,8 @@ class UserTable extends React.Component {
 								return (
 									<TableRow
 										hover
-										onMouseOver={e => { this.setHover(e, n) }}
-										onMouseLeave={this.unsetTimeout}
+										// onMouseEnter={e => { this.setHover(e, n) }}
+										// onMouseLeave={this.unsetTimeout}
 										onClick={e => { e.stopPropagation(); this.props.history.push('/management/user/' + n.id) }}
 										role='checkbox'
 										aria-checked={isSelected}
@@ -156,7 +153,10 @@ class UserTable extends React.Component {
 										<Hidden mdDown>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => this.props.handleCheckboxClick(e, n.id)} />} />
 											<TC checkbox content={n.img ? <img src={n.img} alt='brken' className={classes.img} /> : <Gravatar default='mp' email={n.email} className={classes.img} />} />
-											<TC FirstC label={`${n.firstName} ${n.lastName}`} />
+											<TC
+												onMouseEnter={e => { this.setHover(e, n) }}
+												onMouseLeave={this.unsetTimeout}
+												FirstC label={`${n.firstName} ${n.lastName}`} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`tel:${n.phone}`}>{n.phone ? pF(n.phone, this.props.language) : n.phone}</a>} />
 											<TC label={<a onClick={e => e.stopPropagation()} href={`mailto:${n.email}`}>{n.email}</a>} />
 											<TC label={n.org ? n.org.name : t('users.noOrg')} />

@@ -24,7 +24,7 @@ class DeviceTable extends React.Component {
 		};
 	}
 
-	timer = []
+	timer = null
 
 	handleRequestSort = (event, property) => {
 		this.props.handleRequestSort(event, property)
@@ -39,10 +39,8 @@ class DeviceTable extends React.Component {
 	setHover = (e, n) => {
 		// e.persist()
 		const { rowHover } = this.state
-		// console.log(rowHover.id !== n.id)
 		let target = e.target
-		// console.log(target)
-		let timer = setTimeout(() => {
+		this.timer = setTimeout(() => {
 			if (rowHover !== null) {
 				if (rowHover.id !== n.id) {
 					this.setState({
@@ -57,11 +55,9 @@ class DeviceTable extends React.Component {
 				this.setState({ rowHover: target, hoverDevice: n })
 			}
 		}, 700);
-		this.timer.push(timer)
 	}
 	unsetTimeout = () => {
-		if (this.timer.length > 0)
-			this.timer.forEach(e => clearTimeout(e))
+		clearTimeout(this.timer)
 	}
 	unsetHover = () => {
 		// console.trace()
@@ -133,8 +129,6 @@ class DeviceTable extends React.Component {
 								const isSelected = this.isSelected(n.id);
 								return (
 									<TableRow
-										onMouseOver={e => { this.setHover(e, n) }}
-										onMouseLeave={this.unsetTimeout}
 										hover
 										onClick={handleClick(n.id)}
 										role='checkbox'
@@ -163,7 +157,10 @@ class DeviceTable extends React.Component {
 										</Hidden>
 										<Hidden mdDown>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-											<TC label={n.name ? n.name : t('devices.noName')} />
+											<TC
+												onMouseEnter={e => { this.setHover(e, n) }}
+												onMouseLeave={this.unsetTimeout}
+												label={n.name ? n.name : t('devices.noName')} />
 											<TC label={n.id} />
 											<TC content={this.renderIcon(n.liveStatus)} />
 											<TC label={n.address ? n.address : t('devices.noAddress')} />

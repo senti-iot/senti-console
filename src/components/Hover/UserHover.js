@@ -61,7 +61,7 @@ class UserHover extends Component {
 				open={Boolean(anchorEl)}
 				anchorEl={anchorEl}
 				onClose={this.handleClose}
-				placement={'right'}
+				placement={'top-start'}
 				onMouseLeave={this.handleClose}
 				transition
 			>

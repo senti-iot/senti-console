@@ -22,7 +22,7 @@ class ProjectTable extends React.Component {
 		}
 	}
 
-	timer = []
+	timer = null
 
 	handleRequestSort = (event, property) => {
 		this.props.handleRequestSort(event, property)
@@ -37,7 +37,7 @@ class ProjectTable extends React.Component {
 	setHover = (e, n) => {
 		e.persist()
 		const { rowHover } = this.state
-		let timer = setTimeout(() => {
+		 this.timer = setTimeout(() => {
 			if (rowHover) {
 				this.setState({
 					rowHover: null
@@ -50,11 +50,9 @@ class ProjectTable extends React.Component {
 				this.setState({ rowHover: e.target, hoverProject: n })
 			}
 		}, 700);
-		this.timer.push(timer)
 	}
 	unsetTimeout = () => {
-		if (this.timer.length > 0)
-			this.timer.forEach(e => clearTimeout(e))
+		clearTimeout(this.timer)
 	}
 	unsetHover = () => {
 		this.setState({
@@ -100,8 +98,8 @@ class ProjectTable extends React.Component {
 								const isSelected = this.isSelected(n.id);
 								return (
 									<TableRow
-										onMouseOver={e => { this.setHover(e, n) }}
-										onMouseLeave={this.unsetTimeout}
+										// onMouseEnter={e => { this.setHover(e, n) }}
+										// onMouseLeave={this.unsetTimeout}
 										hover
 										onClick={handleClick(n.id)}
 										role='checkbox'
@@ -131,7 +129,10 @@ class ProjectTable extends React.Component {
 
 										<Hidden mdDown>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-											<TC FirstC label={n.title}/>
+											<TC 
+												onMouseEnter={e => { this.setHover(e, n) }}
+												onMouseLeave={this.unsetTimeout}
+												FirstC label={n.title}/>
 											<TC label={dateFormatter(n.startDate)}/>
 											<TC label={dateFormatter(n.endDate)}/>
 											<TC label={dateFormatter(n.created)}/>
