@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, Collapse, Button, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
-import { Save } from 'variables/icons';
+import { Paper, withStyles, Collapse, Button, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { Save, Clear } from 'variables/icons';
 import classNames from 'classnames';
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
 import { connect } from 'react-redux'
@@ -362,7 +362,16 @@ class CreateOrg extends Component {
 								<CircularLoader notCentered />
 							</Collapse>
 						</ItemGrid>
-						<Grid container justify={ 'center' }>
+						<ItemGrid container style={{ margin: 16 }}>
+							<div className={classes.wrapper}>
+								<Button
+									variant='contained'
+									onClick={this.goToOrg}
+									className={classes.redButton}
+								>
+									<Clear className={classes.leftIcon} />{t('actions.cancel')}
+								</Button>
+							</div>
 							<div className={ classes.wrapper }>
 								<Button
 									variant='contained'
@@ -375,7 +384,7 @@ class CreateOrg extends Component {
 										: <Fragment><Save className={ classes.leftIcon } />{ t('orgs.createOrg') }</Fragment> }
 								</Button>
 							</div>
-						</Grid>
+						</ItemGrid>
 					</Paper>
 				</GridContainer>
 				: <CircularLoader />
