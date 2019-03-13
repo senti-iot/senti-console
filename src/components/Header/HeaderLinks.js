@@ -9,7 +9,7 @@ import Gravatar from 'react-gravatar'
 import { logOut } from 'variables/dataLogin';
 // import moment from 'moment'
 // import christmas from 'assets/img/christmas'
-import { ItemG, T } from 'components';
+import { ItemG, T, Muted } from 'components';
 import { GoogleLogout } from 'react-google-login';
 
 class HeaderLinks extends React.Component {
@@ -111,7 +111,7 @@ class HeaderLinks extends React.Component {
 						{user ? <Fragment>
 							<MenuItem disableRipple component={'div'} className={classes.nameAndEmail}>
 								<T style={{ fontSize: '1rem' }}>{`${user.firstName} ${user.lastName}`}</T>
-								<T style={{ fontSize: '1rem' }}>{user.email}</T>
+								<Muted style={{ fontSize: '0.875rem' }}>{user.email}</Muted>
 							</MenuItem>
 						</Fragment>
 						 : null}
