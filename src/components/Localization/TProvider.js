@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { changeLanguage } from 'redux/localization';
-
+import ReactMarkdown from 'react-markdown'
 var replace = String.prototype.replace
 var dollarRegex = /\$/g
 var dollarBillsYall = '$$'
@@ -50,7 +50,8 @@ class TProvider extends Component {
 		// let el = document.createElement('span')
 		// el.innerHTML = result2
 		// return el
-		return result
+		
+		return <ReactMarkdown source={result} />
 	}
 	t = (key, options) => {
 		var phrase, result
