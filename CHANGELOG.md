@@ -1,0 +1,2059 @@
+### Version 2.2.16
+- Actions.save
+- Fix Edit Hardware and Create Org
+- Fix Assign Project and Collection Table Fix Missing google id error fix Sorting
+- Close the map on missing device coord
+- Edit Location
+- Dots
+- Fix Privacy Dialog
+- Fix URL
+- Cookies and Privacy policy
+- Update Texture
+- Fix
+- Button
+- Header Link
+- Header
+- Logging in with Google Spinner
+- Login Screen
+- Smaller greyed out email
+- Logo Animation
+- Logout icon change
+- Type here to search
+- Outlines
+- Outline 2
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- Fix Errors
+- Fix Cookie Dialog missing translation
+- Create User defaultOrg
+- Keep open on menu setting
+- More DatePicker Refactor
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- More language
+- Fix Margins and Input adorment + visibility password
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- Fix Search and Assign User for project
+- Fix Search
+- Fix user
+- Fix everything
+- MarkDown
+- Esc cancel form edit
+- Upgrade ApiSauce to 1.0.2 Project Cancelable fun
+
+### Version 2.2.15
+- Privacy Policy + Reset Settings
+- Google P1 + Change Language
+- Remove deprecated button variant
+- Fix the Loading Issue
+- Data = Data Collections (on Dashboard tiles)
+- Fix the map issue
+- New Login Page Styling
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- Fix Create Collection
+- NewLoginPage
+- Remove Reset Password
+- Fade In on pageLoad
+- Small Animation on dashboard
+- More Routes
+- Test1
+- H5
+- Update Animation + same height
+- Org Lists
+- Fade
+- Change Dialog Header to Side bar color
+- New login cards in Danish
+- Login page
+- Login with Google
+- Remove Console Logs
+- Log out from google too when you log out normally
+- ResetPassword+ ConfirmPassword
+- Hide Forgot Username
+- Confirm New User + fix CreateUser Form
+- Fix Project Create Form
+- Remove Type
+- House Cleaning (origin/alpha-holidays)
+- House Cleaning 2
+- Add sidebarColor as constant
+- Add sidebarColor as constant
+- Merge
+- Remove unused
+- Fix  unused and add a small Texture to the main window
+- Added senti_dots.svg to loginimages
+- Fix Display on Landscaped Devices
+- The Dots
+- Hover User
+- Remove unused console.logs
+- Center Text with image + Higher Placement
+- zIndex
+- Fix Hover
+- Checkpoint
+- Hovers P1
+- Project & Collection
+- Danish copyright footer message
+- Fix Device favorites hover
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- Edit org cancel button
+- EditUser Cancel Button
+- Edit Device Cancel Button
+- Edit Project Cancel Button
+- Edit Collection Cancel Button
+- CreateProject Panel
+- Create User
+- Create Org Cancel Button
+- CreateCollection Cancel Button
+- Outlined Buttons
+- Button copy alignment
+- Hover Update
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- Remove Console logs
+- Move Orgs on Hover components
+
+### Version 2.2.14
+
+### Version 2.2.13
+- Don't focus the input when you wanna add a filter
+- A little bit of margin
+- Localization proofing and alterations throughout application
+- Data is now Data Collections again by popular demand :)
+
+### Version 2.2.14
+- Fix Dialogs
+- Dialog Headers
+- Breadcrumbs language
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- Filter toolbar fixes
+- Remove Errors
+
+### Version 2.2.13
+- Breadcrumbs 1
+- Settings language
+- Merge Lang settings
+- package lock
+- Merge (origin/alpha-without-breadcrumbs, alpha-without-breadcrumbs)
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- No devices
+- collectionCreated typo
+- Language typo update
+- Default disable Border
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- Export Users  - basic functionality
+- Export User with Dialog
+- Remove Console logs
+- User export language
+- Toolbar refactor
+- User Tabs
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- Select columns
+- Smaller Text
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- BreadCrumbs Setting
+- Small Fix
+
+### Version 2.2.12
+
+### Version 2.2.11
+
+### Version 2.2.9
+
+### Version 2.2.8
+- Menu settings update
+- Hide both borders
+- Settings language updates
+- Fix Color
+- Fix Mobile + Menu position on Mobile
+
+### Version 2.2.6
+
+### Version 2.2.5
+
+### Version 2.2.6
+- HeatLayer redux Fix
+- Fix 3
+- Fix DC
+- Fix Raw Data
+- More Raw Data
+- Fix Header and Map size for medium sized screens
+- Fix Export Data
+- Remove Console.logs
+- Fix Edit Address
+- Calibration fix
+- Location Based on Input
+- Disable Debug
+- Fix Location Edit on Device
+- Fix the buttons going out of screen and the fight between input and map
+- Fix Favorites Table
+- Fix Edit Location
+- When Editing Details Edit the LatLong too
+- Full Width Drawer on Mobile
+- the "amazing drower"
+- Minor language error
+- Fix Menu
+- Fix Collection Address x2
+- Do not call DAWA Api a milion times if there is nothing to call for
+- Add address on Active Device Update Device Temperature to show "-" on undefined
+- Org Devices
+- Device Toolbar
+- Discrepancy fix between icon status colors on Collection
+- Fix Custom Date Time
+- Remove Console log
+- Fix Colors on Chart Data Panel
+- Fix Org Devices
+- Fix P in P
+- Hover
+- Sort Data Arrays by name for omogenic Chart Legends
+- Remove all clogs
+- Remove unused function
+- Device Count on Org
+- Save Periods in settings
+- Chart Settings Border Color
+- Fix the Free Text Updating Filter
+- Event Handler Issue
+- Fix paragraph in paragraph issue
+- Chip Color Fix
+- Fix Dropdown arrow color
+- Fix Filters DropDown
+- Fix Date Time
+- Change DateTime to Date on Edit/CreateUser
+- fullWidth on FilterCard
+- Fix Sorting
+- Device -> Collection Routing
+- Assign Failed snackbar fix
+- Fix Logarithmic scale
+- HeatLayer
+- Try fixing the infinite serviceWorker install
+- If device has dataCollection show as busy, set timeout for Update
+- beautify the 404
+- SW2
+- Fix newContent
+- New NewContent Style
+- Test new Content
+- Switch to amber color
+- Fix always display
+- Move Snackbars to bottom left
+- Fix the Settings - Dates
+- Fix Redux dateTime Periods
+- Add weekend colors - Not done
+- Weekend Colors
+- Chart Type
+- Fix PieCharts to fit small screens + Fix Raw Data selection
+- Smarter fix for Pies
+- Data Collections page title new title = Data
+- Expand and don't expand
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- More Refinement
+- Move Redux to own component
+- Settings for Details Panels and Snackbars
+- Default View
+- Remove Unused
+- Switch
+- ProjectCollection Headers
+- New Side Bar not done
+- Fix Settings
+- Of localization
+- Checkpoint
+- Mobile
+- Menu
+- Menu settings renamed
+
+### Version 2.2.5
+- Bump Packages
+- Checkpoint on Data Points
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Fix Weekly Date Range
+- FIx Project Data Range
+- Hourly and Daily FIxed + Device
+- Minutes on Project
+- Checkpoint
+- Date Range on Devices
+- Date Ranges
+- Fix Weather
+- Change Button Fab to IconButtonFab
+- Device Location Editable from map
+- Collection Edit
+- Snackbar
+- Check for lat & long
+- CSV Export
+- Change Icon to EditLocation
+- My Location
+- Export JSON
+- Export XSLX from Device Daily
+- Export Modal
+- Project Export Data
+- Collection Export Data
+- Prepare for new headers
+- Export from Project
+- fix show/hide
+- Include the rest
+- HeatMap Icon
+- Filtering V1 - Only Projects
+- Filter List Popper -> Popover + general filter
+- LowerCase
+- Filter by Date
+- Localization + Project FIlters
+- DropDowns on FilterList
+- Localization
+- Theme Fix
+- Fix Light Theme
+- Remove old button
+- Fix the Holidays API
+- Calibrated & Location type Filters
+- Fix Sorting on Devices by availability
+- Responsive
+- More Responsive
+- Status text updates for filter function
+- Settings refactor
+- Add missing theme to settings
+- Fix Raw Data
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- Data Collection
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- User Table Refactor
+- Contains and KeyPress
+- Refactor OrgTable
+- Org Table Filters
+- En Localization
+- Map texts
+- Users Filters
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- Favorites Filter Table
+- Delete filters on Delete/backspace
+- Include usability for filters
+- Upgrade material-ui-pickers to fix deprecation warning on tabs
+- New Material-UI pickers date-io/moment utils
+- Minor Localization
+- Edit Filters
+- Localization for Filter
+- Styling fix and press enter on focused chip to edit
+- Fix Color
+- Fix Redux DevTools Warning
+- Move Filters to redux State (origin/alpha-react-pdf, alpha-react-pdf)
+- Remove all unnecessary comments
+- Fix Double click on filters
+- Fix 2
+- Fix 2
+- Clean Devices
+- Remove more stuff
+- Clean Collections
+- Refactor Projects
+- Fix Navigation Issue
+- Table Rows + Additional fixes to routing on Tables
+- Fix LineChart date tooltip issue
+- Cleaning + Date Range State Saved
+- Clean Collection, Device, Project
+- Map State
+- Map State
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Chart Type
+- HeatMap
+- Fix Zoom
+- Fix Text
+- Fix Data Model and Project HoverGrow
+- Fix This week for Collection and device
+- Create Project Form Update
+- Create Collection and Project improvements
+- Create Collection Page Title
+- Fix Org default selection on Create Project
+- No device Collection icon + sorting improvement + Fix Collection icon missing
+- Remove console.logs
+- Custom Date Time resolve correctly the timeType Favorites Table filter toolbar connect to Redux
+- Add download Data
+- Shake the card if less than 3
+- Disable console logs
+- More console.logs
+- Display Pie Chart Correctly
+- Fix the filter toolbar
+- Pie and Doughnut Minute Hour Day
+- Styling
+- Doughnuts
+- Altered string for serviceworker updates
+- Summary for doughnuts
+- More Fixes
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Device
+- New reload text
+- Fix
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Line, Doughnut,Pie Chart Mobile Tooltip
+- More Stability
+- Line Chart Summary
+- Bar Charts
+- Summary On Bars
+- Map Popup
+- Filter Fixes
+- Fix assign org button
+- Fix Icon missing
+- Fix User Favorites
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Fix Charts Bug
+- Fix 2 for Charts
+- Fix Org Table
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- Checkpoint
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Fix Filters on Orgs
+- Update HeatMap
+- More HeatMap
+- Calibrated Data Pt1
+- Better rendering of HeatMap
+- Fix BarCharts Weekend Colors
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Filter users
+- Create Project Assign User on Creation
+- Edit Project Contact
+- En/Da Strings for Device Image Pictures
+- EN
+- URL Validation + Fix Strings
+- Logarithmic display
+- Remove See More
+- Pagination on Grid
+- Startup Page
+- Update Text
+- Hide Calibration menu if device not green
+- Fix Margin
+- Fix Days of Interest
+- Fix DoI
+- Remove Console Logs
+- Cookies V1
+- DoI fixes
+- Fix DoI
+- Cookie
+- Start page stings
+- Create User with extended Profile part 1
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Fix Filters
+- press F to pay respects
+- onScroll Change Tab
+- Clean
+- Fix the F Problem
+- DefaultRoute on Senti Logo
+- User Groups
+- Edit User Extended Profile
+- Render Extended Profile
+- Localization
+- Fix Error
+- Project Contact Edit
+- Fix User Extended
+- Extended profile string updates
+- Cookies Dialog
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Cookies
+- Settings Display Cookie Policy
+- More Refining
+- Cookie policy update 1
+- Fix Margins
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Fix narcissism error
+- Data Points V1
+- Users Orgs Filters Bug Fixes
+- Sorting on Dates, User Groups - Sorting + Filtering, other minor styling improvements
+- Fix numeric
+- Fix Users who don't have aux.senti
+- Copy Emails
+- Fix Margin on Extended Profile
+- Padding Fix
+- Remove Logging
+- Better tab scroll
+- Disable AutoScroll
+- Add 7, 8, fix Selected Problem
+- Event Handler Management
+- Checkpoint
+- Clear all Compares
+- Mega Checkpoint
+- Move Date Filter on Component
+- Checkpoint 2
+- Scrolling
+- Change View
+- Fix Build
+- Fix DeviceData
+- Restore Temporary functionality to HeatMap on project and device
+- Responsive on Project
+- Clean Data Panel and make it bigger for Desktop
+- Reorder Project Data Menu
+- Improve performance -> Make only one Data Component Connect Collections to the new Data
+- Fix Map Height
+- Refactor Maps to a single component
+- Fix missing box shadow
+- Fix Build
+- Refactor HeatMap
+- remove console logs
+- Fix Tooltip Positioning
+- Zoom In zoom out
+- Fix Collection
+- Extended Profile  - Newsletter + Profile
+- Fix Delay in change color + Fix Users Selection
+- Fix Orgs Select All
+- Remove Unused Files
+- Remove getHeatMapData
+- Logarithmic / Linear
+- Fix diff newsletter
+- Fix Map + Total Count for Selected period
+- Remove Console.log
+- Show HeatMap Period on Collection/Device
+- Localize Daca control Panel
+- Fix DeviceImages setState() on unmounted
+
+### Version 2.2.0
+
+### Version 2.1.17
+
+### Version 2.2.0
+- Fix Management Fav Table
+- On Off
+- Merge pull request #30 from senti-platform/master
+- Favorites keys for Danish
+- Fix Localization
+- Merge pull request #31 from senti-platform/alpha
+- Fix fav Tab  on users
+- Merge branch 'master' of https://github.com/senti-platform/senti-dashboard
+- Device Map Fix
+- Device
+- HotFix Localization
+- HeatData
+- Hardware = Equipment
+- New author settings in package.json
+- Christmas icons (24 pieces)
+- Christmas stories - initial commit
+- Christmas Component
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- Holidays
+- Christmas story 1. december
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- Reset Password hotfix + missing lang strings
+- Merge
+- Line Chart Weekend Red
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Bar Chart show Weekends
+- Merge branch 'master' into alpha
+- add missing strings
+- Merge
+- Fix Colors
+- Fix Favorites Header
+- Mobile Hide Header
+- Merge pull request #32 from senti-platform/alpha
+- Fix Toolbars
+- Fix Sorting on Users and Orgs
+- Merge pull request #33 from senti-platform/alpha
+- Fix The Scrolling
+- Fix Scrolling
+- New Tooltip Checkpoint
+- update apis
+- New Tooltip
+- Removed unused DoI files
+- Patch Weather API
+- Comment out learn more
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Tooltip Icon
+- Raw Data settings Option
+- Travis GO
+- Expanded Project Map
+- Started refurbishing calibration texts
+- Calibration textx updated.
+- ToolTip, LineChart
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Small Improvements
+- Tooltip
+- ResetZoom
+- Fix the weather icon
+- Fix the achordeon  on tooltip
+- Fix Icon + openStreetMap
+- Cleaning
+- Cleaning2
+- Range tooltip
+- Zoom Button
+- Small Props Fix
+- Range - Period of time
+- Change ZoomOut to Arrow Upward
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Redux Count by time
+- Update Redux DevTools
+- Redux Count by time
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Calibrate based on Time
+- Holiday + Annual included
+- Address
+- DoI text update
+- Address larger
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Merge branch 'master' into alpha
+- Remove dummy data
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Merge pull request #35 from senti-platform/alpha
+- DarkMode AddressInput
+- Device Calibration Mobile Friendly Improvement
+- Address typo
+- Change api to dev.api
+- Fix the dark theme
+- Language updates
+- 404
+- Fix Calibrate Device
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- Merge branch 'master' into alpha
+- Move back to api.senti
+- Merge pull request #37 from senti-platform/alpha
+- Remove debug (master)
+- OSM v1
+- Fix the Chart
+- Open streetmap
+- Reverse geolookup
+- Calibration
+- Clean Maps
+- Clean Maps 2
+- Fix Address
+- Index.html to dashboard
+- The amazing Location Button Calibrator
+- More Calibration
+- Lang:steps:2
+- Fix Counter Modal
+- Handle NoSound & Slow Sound count
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Themes
+- More Themes
+- More Themes
+- Selected
+- Theme Consistency
+- Dirty fullscreen
+- PseudoFullScreen
+- One Button
+- Icon
+- Bigger Map
+- Merge
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Full screen component
+- iOS Full Screen
+- Cleaning
+- Mui zoom buttons
+- fix press Esc to exit
+- Remove console log
+- List Highlight
+- Calibrate + Settings
+- Devices/Maps
+- CollectionMap & ProjectMap
+- Luft Photo - Devices
+- Change Map Theme on Collections and Project
+- HeatLayer Not Done
+- change to 2017 luftphoto
+- New Heatmap Layer
+- 50 Meters it is then
+- HeatMap Control
+- Refactor Names
+- Clean More
+- FIx Data
+- Heatmap Legend
+- More Cleaning
+- Fix alignItems
+- DeviceMap
+- Collection HeatMap
+- setMaxZoom
+- Localization of Themes
+- move layers to leafletMaps.json
+- Should WOrk now
+- My Location V1
+- Pan and Zoom to Location On Found
+- Pulsating Button on requesting Location
+- Small Improvements
+- Add Pulsating effect and Senti Colors
+- Merge branch 'master' into alpha
+- Remove Console Logs
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- One more console log
+- Minimum attribution
+- PanZoom to Markers
+- Topographic map
+- Move button outside map and into Menu
+- From To Update on Days
+- Updates to map:themes ...
+
+### Version 2.1.17
+
+### Version 2.1.0
+- Fix the tables
+- Create user don't create without valid email
+- Clean CreateUser
+- Remove unnecesary Project Calls
+- Default User Access Level
+- Edit User
+- Clean All the console logs
+- Force the buttons on the bottom of the card
+- Don't Delete SU if you're AM
+- Fix No Org error
+- Fix the Country Field on EditOrg
+- Fix typo
+- Fix DInput & Countries Field
+- Fix the Dates
+- Merge pull request #19 from senti-platform/alpha
+- Refresh npm package
+- NoProject string
+- DataCollection ID on Table
+- DeviceStatus
+- fix the sorting
+- Clear console.logs
+- Update userAlreadyExists
+- Minor wording
+- Added - noCollectionsAssigned
+- Remove google-libphone and replace with a lighter version
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Again
+- ConfirmUser + ResetPassword
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- End of Service DA text update
+- small miss
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Fix Lang
+- "emailDoesntExist" DA/EN
+- More i18n
+- SameColor
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Fjern tilknytning = frigør/frigjort
+- LineChart Highlight
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Fix Lang + Performance on Chart Highlight
+- HoverPoint
+- First Zoom
+- Remove Console Logs
+- Minutes Zoom
+- DateTimeFormat
+- Remove typo
+- Fix Change Password
+- Upgrade packages
+- BarChart on ProjectData
+- LineChart on CollectionData - Not Done
+- More Charts
+- Fix the scroll issue
+- Fix Custom Date
+- Collection Chart
+- Time to 24H + Missing Lang Strings
+- DeviceData
+- Remove Device Selector from Create Project
+- Remove Devices from Edit Project
+- Remove unused var on Edit Project
+- remove unused console.logs
+- Remove momentjs errors
+- Merge pull request #20 from senti-platform/alpha
+- Merge branch 'master' into beta
+- fix settings
+- Merge pull request #22 from senti-platform/beta
+- DataCollection Map Device Assign/Unassign Snackbars Fix
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Better map Positioning
+- Fix Route + Skycons
+- Language updates
+- Weather Ico v1
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Weather icons in SVG
+- Const file
+- Polyfill
+- Language
+- More language
+- Script for Babel Polyfill
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Remove Polyfill
+- Remove Polyfill
+- Weather Icons
+- WeatherSentiCloud + Device Details Reorder
+- change weatherEndpoint
+- Push updates for Weather
+- BarChart + LineChart Responsiveness
+- More Vejr
+- More Weather
+- Weather Responsive
+- Merge pull request #23 from senti-platform/alpha
+- Cookies
+- Hour/Minute Weather
+- Cookie print
+- Don't Get Weather if device has no lat/long
+- Weather on DataCollection
+- MapWeather
+- Weather Improvement
+- Language
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Checkpoint
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Modal for download data
+- ProjectMap
+- MarkerColor
+- Fix Weather and Move Map
+- Project Map
+- Fix DataCollection Table on small Screen Increase Radius of Points on Chart for mobile
+- Replace button  variant "flat" with "text"
+- Maps, Refactors
+- More Maps
+- Fix Loading on Weather
+- Remove Unused Var
+- Buttons and Fix The Tooltip
+- Fix the margisn
+- Don't show map on missing coords
+- Close Menu on Chart Type Change
+- Weather and Charts
+- Fix snackbars on Data Collection
+- More Maps and Refactoring
+- Merge pull request #24 from senti-platform/alpha
+- Device Map Menu
+- Merge stuff
+- HeatMap
+- Checkpoint
+- DateFilterSplit on Devices
+- A nice addition
+- More Fixes
+- Device Checkpoint
+- Fix Search Positioning Imporve Scrolling Remove old Date Filter
+- Checkpoint
+- Checkpoint
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Updated .gitignore
+- Deleted old .env files
+- More Device Stuff
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Delete .env
+- Delete .env.development
+- Delete .env.production
+- Travis without mail notification
+- Travis email notification to specific recipients
+- More cleaning
+- Line Chart axis, BarChart axis
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Raw Data + remove console.logs
+- Try again travis
+- Again
+- Add the Env file back
+- Better Ticks
+- Minutes
+- DateRange
+- Fix Weather on Beta
+- Disable annoying Scroll of page when closing Modal
+- Device Finish
+- Basic zoom
+- OnClick Function
+- OnClick Chart
+- Heatmap on Device
+- 90 days and Project Revival
+- Split @react-pdf in it's own module
+- Boost performance
+- Project Checkpoint + UpperCase
+- Project Refactor
+- Collections
+- Tabs for mobile
+- Fix Wrong icon on Project Tab
+- Highlight
+- remove console.log
+- How about scrollable tabs?
+- More Charts
+- Raw Data on Collection & Project
+- Fix the overscroll
+- Refactor the Grid View
+- Heatmap text
+- Heapmap english
+- Drop Pin on Map v1
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- A bit of Table Refactoring
+- CollectionTable
+- CollectionTable Clean
+- Pies
+- PieFix
+- Big Letters on BarCharts
+- Assign org on DataCollection Creation
+- Favorites on Device
+- Add/Remove from Fav
+- Remove Logs
+- Code Cleaning
+- JSConfig
+- Show snackbar
+- DataCollection Favorites
+- Project Add to Favs
+- Project Favorites
+- Favorites
+- Orgs refactor
+- String: Show Welcome to Senti on Dashboard
+- Name -> Navn
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Management
+- /Management/orgs /management/user
+- Checkpoint
+- Refactors
+- Fix Data Model
+- Fix DataModel for looong ranges
+- UserTable Favs
+- User favorites
+- Favorites
+- Merge branch 'beta' into alpha
+- Merge pull request #25 from senti-platform/alpha
+- Hotfix for snackbars on Users/Orgs
+- Settings Tabs
+- Clear User Table
+- Users Table Responsiveness
+- Toolbar animation on small screen
+- Delete all garbage that isn't used and clogs the cache speed
+- More Cleaning
+- Disable debug workbox
+- Kill the year
+- BarChart
+- Dark Mode
+- Fix Weather
+- Fix ServiceWorker and LoginPage
+- Fix More Theme Stuff
+- Favorites Icons
+- Fix the Device Table
+- Small Favorites Improvements
+- Filter Fix
+- Move Settings
+- Merge pull request #26 from senti-platform/alpha
+- Remove ID from Favorites
+- Remove ID from Favorites
+- Merge branch 'beta' of https://github.com/senti-platform/senti-console into beta (beta)
+- notCalibrated update
+- DeviceImages
+- Temp Fix
+- Dark mode Maps
+- Fix the device map
+- Mobile Legacy
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Favorites Correct saving reflection
+- FIx the collection Map
+- Fix Border
+- Placeholder
+- Placeholder
+- Localization Complete Test Refactoring
+- Fix Device Assign Org
+- Fix Rows
+- No active Device
+- Fix Snackbar
+- Fix Map
+- Radio Buttons
+- Cleaning
+- Fix ProjectCard
+- Org Header Generalization
+- Line Chart DarkMode
+- A comma...
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- Updated error message on fetch chunk error
+- Merge
+- Fix Table header
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Try the mobile capable
+- Merge pull request #27 from senti-platform/alpha
+- Update Dashboard.js
+- Merge pull request #28 from senti-platform/beta
+
+### Version 2.1.17
+- Merge pull request #18 from senti-platform/alpha-cache
+- Refresh package-lock
+
+### Version 2.1.15
+- Keys
+- ChangePass
+- changePass
+- More Cleaning
+- Resend Email
+- fix int on sort function
+- Fix DeviceTable
+- More Filter Options on DeviceData
+- Project Data Date Filter
+- Travis no delete old builds
+- Trigger Build
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Go Back Devices Improvement
+- Language
+- Merge branch 'master' into beta
+- Merge pull request #11 from senti-platform/beta
+- fallback to Danish if aux is missing
+- Images sample in SVG
+- Checkpoint
+- Fix Loading Times
+- All images converted to SVG
+- ServiceWorker
+- update pictures
+- SVG Images
+- Remove Timer on EditOrg
+- Build Travis
+- Trigger Build
+- Fix YAML Script
+- Language updates
+- More language
+- And even more language
+- Language
+- Cookie Expire in one day
+- Snackbar Provider
+- CreateOrg
+- EditOrg
+- OrgTable
+- CreateProject
+- EditProject
+- ProjectTable
+- CreateUser
+- EditUser, UserTable
+- Device, DeviceImages, ResetDevice
+- Project
+- More SnackBars
+- EditUser
+- snackBars
+- Device snackbar
+- More Snackbars
+- Snackbars
+- Fix snackbar on User Page
+- Change Dropdown to Close on MenuItem Click on DeviceDetails and UserContact
+- Remove Start Here freom dashboard
+- Removed "Start here" from beta
+- ChangePassword
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Change size of Discover Senti
+- Validate Cookie and Correct redirect on back button on Edit Org
+- Redirect EditUser on Back Button
+- Correct Redirect on Project
+- Extend TextFields to 230px
+- Show correct user access level on EditUser
+- DataCollections Endpoints
+- Merge branch 'beta' into alpha
+- Merge pull request #13 from senti-platform/alpha
+- Normalize width on Settings, Create Collection Table
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- English lang
+- Collection Page
+- Close Sidebar on Logo Click
+- Edit User from Table
+- Fix Typo
+- Assign/Reassign Organization to Collection
+- Add components for Table Filter
+- Comment out Filter Toolbar
+- Merge pull request #14 from senti-platform/alpha
+- Text change to reflect data collections on Dashboard
+- Checkpoint
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Language Strings for CollectionTable
+- Fix User Table
+- Chekcpoint
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- CD
+- OrgLink
+- New text
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Reset Password Go To login
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Text updates
+- Fix Table Toolbar width
+- Move to new Typography component
+- Collection stuff
+- CollectionData
+- CollectionPage
+- Translation
+- Collection Icons
+- Chart Type Line
+- ActiveDevice Start Date Table
+- Language typo corrected
+- Increase Size by 25px
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Go to /projects/list instead of /projects/new - DiscoverSenti
+- Data column header change
+- Refactor Imports and Collection Table First Device
+- Remove duplicate
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Fix the crap that typescript@3.0.1 did
+- Fix ProjectTable
+- FIx Error on no Active Device
+- Comment Out Project on DevicePage
+- Refactor
+- Remove Unused
+- Fix Mixup
+- add Description to Edit
+- Translations
+- fix "Engrish"
+- Lang Fix
+- Menu Points
+- AssignProject
+- More Collections
+- Fix Editing
+- Delete DC
+- Fix error messages
+- AssignOrg
+- SearchBars on Assign Org and Assign Project
+- "graphType": "Chart type"
+- "status": "Device status"
+- Text update
+- Collection: - Text ID for Device and Collection - Remove Collection Log Device Name Remove console.logs Localization: - Format and add strings - Fix some Typo's Assign Device Component
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Assign Device From Data Collection
+- AssignDevice From Table
+- Assign Device to Collection From Table
+- Remove unused imports...
+- Fix Typography deprecation
+- New Typhography + default Line Chart
+- Remove Map Tab
+- Assign Collections to Projects from CollectionTable
+- Fix The Header
+- Remove Duplicates from Suggestions
+- Clean Stuff
+- User -> Org
+- Org->User
+- Project -> ORG
+- Collection -> Project
+- Collection -> Org
+- Project Collections Table
+- FontSize Fix
+- Table
+- ProjectCollectionData
+- Project Data
+- Edited string for Data Collection card
+- Collections - Table Actions - Edit
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-console into alpha
+- DeleteDataCollections
+- Checkpoint
+- CreateCollection
+- Text
+- Fix Scroll bar and TablePagination on Responsive
+- This should fix it
+- More Mobile Stuff
+- Remove console.logs
+- Fix last Header issue
+- Device Table Icons
+- Disable ServiceWorker
+- Show hours on Charts
+- Trigger travis build
+- Travis build
+- Trigger 2nd build
+- Fix raw Data
+- More Charts
+- Device Data Charts
+- Fix DataCollection
+- Device -> DataCollection
+- Add link to Data from Dashboard Card
+- Device Page - Unassign Device from Collection
+- fix AssignOrg
+- Fix Assign Project
+- No Devices Message
+- Devices
+- Assign Multiple DCs to Project
+- Project Graph Line
+- Remove unused propType
+- Text update
+- Enhedslog
+- Fix Devices Table Selection
+- Collection Unassign Device
+- Refactor en.json
+- Move to another Org
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- Travis Try Again
+- New Dialogs
+- Travi cache modules
+- Temp = CPU temp
+- Collection Delete
+- confirmUnassignMessage
+- Downgrade Material-UI
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- More text updates
+- Added localized json files for Days of Interest (master currated list)
+- Fix Travis failing
+- Merge branch 'alpha' of https://github.com/senti-platform/senti-dashboard into alpha
+- HMR for RR4
+- More Snackbars refactor
+- Unassign Device
+- Show/DontShow on TableToolBar
+- Comment out unused cards on Dashboard
+- FullWidth
+- More FullWidth
+- Merge pull request #15 from senti-platform/alpha
+- Fix Login
+- Fix the missing string
+- Remove any console logs
+- Remove one more consoleLog
+- Merge pull request #16 from senti-platform/beta
+- Checkpoint
+- HotFix the DropDowns
+- HotFix Dropdowns
+- Checkpoit
+- Try again with the serviceWorker unregister
+- Chart Type Setting
+- fix PropTypes
+- Settings: Default Chart Type
+- If this week == monday, display hourly
+- Days on Graphs
+- Days on bars
+- Datasamling history
+- Refactor ProjectCollections
+- More Refactor
+- Changed danish language texts
+- LoginPage + strings
+- Merge pull request #17 from senti-platform/beta
+- Custom ServiceWorker
+- Remove Debug Warnngs
+- Fix Login Page lg Screen
+- Fix logout
+- New ContentPage
+
+### Version 2.1.0
+- Unassign Translations
+- Create new Org form Edit Org Added CVR EAN fields Finished unassign window on devices Refactor Routes
+- Fix Login Redirect
+- Refactor Routing, Tabs, Move Toolbar and Search to its own component
+- Danish language typo
+- Remove Add new org from devices
+- Merge branch 'beta' of https://github.com/senti-platform/senti-console into beta
+- Org. label updates
+- Device Cards + Calibrate Device
+- Merge branch 'beta' of https://github.com/senti-platform/senti-console into beta
+- Aux CVR/EAN, EditOrg
+- Create ORG with CVR/EAN
+- Edit project
+- Remove ampmon EditProject
+- Remove console.logs
+- LoginPage Input Focus
+- Validation only the mandatory ones
+- More refactor
+- Gravatars
+- Create org. label update
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Changes Gravatar default icon to "mp"
+- Merge pull request #10 from senti-platform/beta
+- Move Postal Code Above City
+- Rows per page(15 + 20)
+- Multiline fields
+- OrgTable big problem
+- Delete Function set to unimplemented OrgTable
+- UsersTable ASc Sort by first Name
+- Orgs Order
+- Devices order
+- Project sorting
+- Remove console logs
+- Merge
+- Double Escape Closes The Search
+- Zip First
+- Table pagination Refactor + more options
+- Fix Org Table
+- Cache fix
+- User Aux Settings Save / Load
+- Remove cache meta in index
+- user.aux.senti.settings
+- Settings Fix
+- Fix Filtering
+- user.aux.odeum.language
+- SideBar
+- User language + rename dk to da
+- fix settings
+- Now it's fixed
+- Parent Org
+- Fix execLast
+- Create & EditOrg SU & SAM
+- SAM EditOrg do not allow edit if own org
+- Validation for ParentOrg
+- target="_blank" on Details website
+- Delete Org
+- Delete + Edit Privileges
+- AccessLevel
+- Danish translation fix
+- Delete Org
+- Order of fields
+- CreateUser
+- Add New User
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Fix
+- Create User Small Fix
+- Fix Select on CreateOrg
+- Email as Username
+- EditUser
+- Language updates
+- Merge changes
+- Lower Redirect Times
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Language updates
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Edit User
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Language updates
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Gravatar
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Language updates
+- Fix
+- AcccessLevel to edit only SU
+- Fix header error
+- ConfirmUser
+- Refactor /confirmUserto /password/confirm/:token
+- Fix The Delete Option
+- Network Error
+- Confirm User
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Language
+- Password Check
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- ConfirmUser small validation fix
+- Delete User
+- Org Users +  SysLog
+- Set access level + save to edit administrators + Edit Fix
+- HeaderClose
+- Project Redirection
+- DashboardRefactor + buttons
+- LiveCount change to 10 minutes
+- Lightning fast Project Load
+- Dashboard Links, ResetPassRoute(not Done) LoginPage refactor
+- Merge
+- Language update
+- fix Moment locale
+- Change Dates to "a few seconds ago" format
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- More Date Format
+- Date Formt
+- Reset Pass
+- Date Label refactor
+- Change header language with header
+- Header Refactor Translation
+- Fix the Header
+- Fix Update Device
+- Display Calibrated/Raw Data Devices
+- Data on Projects
+- No more milions of rows
+- Device Change Org
+- No mileheight Table on Projects
+- Merge
+- Merge
+- Language
+- Fix DeviceData
+- Sorting Improvement
+- smart Filtering
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Clean Console Log
+- Users Sort by Org
+- toLowerCase
+
+### Version 2.0.5
+- Merge pull request #2 from senti-platform/beta
+- Fix Project cards on Mobile
+- Fix Project Cards on Mobile
+- Move styles for image carousel
+- Overflow Hidden
+- 10 listitems  if page is bigger than "md"
+- Sticky Function Bar rather than header
+- Organize Imports and Delete unused styles P1
+- Data for Wifi Info
+- Wifi Summary get on Project component
+- Remove CLogs
+- Remove more cLogs
+- Fix Unnasign from Project
+- Device Address P1
+- Charts
+- Moving of Device Info Card to separate component Select with Icon for Date filtering
+- Loaading Icon
+- Date Filter on Data
+- Complete Date and Time Picker + Custom Range
+- Add Stuff
+- Fix Header Overflow on long Title
+- Upgrade material-icons to @next
+- Responsive Date Filter
+- Device Last time Communicated with Server
+- Device Image Error Fix
+- X to Clear
+- Device Charts
+- Fix Address
+- If no data display "no data"
+- Edit Snackbars + Timeouts
+- Go to project fix
+- Snackbar on Create Project
+- Confirm Delete Dialog + Snackbar
+- Hot Module Reload
+- Fix Text
+- Device Snackbar Assign/Unassign
+- Fix possible memory leak on Projects
+- Center Icon on Sidebar Drawer
+- Delete Project
+- Header Font size according to MUI guidelines
+- Reset Device
+- Picture deletion snackbar
+- Merge branch 'master' into beta
+- Merge pull request #3 from senti-platform/beta
+- Fix project window
+- Merge pull request #4 from senti-platform/beta
+- Disable Maps Request
+- No Address
+- Merge pull request #5 from senti-platform/beta
+- Trigger Travis Build
+- Suggestions on Address Input - not done
+- Fix Modal Upload Img
+- Merge pull request #6 from senti-platform/master
+- Primary Graph color on Device Data Rename Visibility to Graph Type Show hide Map icon fix
+- Snackbar timer added
+- Fix No Data render
+- Daily Hourly Filter on Custom Date reange on Device
+- Assign Unassign Devices from Project Edit Page
+- Project Cards Image - Not done (origin/old-beta)
+- Redux Implemented
+- Settings Page
+- Small Cleaning
+- Merge branch 'beta' of https://github.com/senti-platform/senti-console into beta
+- Language Provider and Translation and everything needed for i18n
+- small Cleaning
+- fix build by downgrading @babel/runtime@^7.0.0-beta.55
+- Device Data and Details Translation (origin/beta-redux, beta-redux)
+- Import Loc file with corrections
+- Devices Table Page Translation
+- SideBar Translation
+- Login Translation
+- Dashboard Translation
+- Edit Details and Search Translation added
+- Merge branch 'beta' into beta-redux
+- Merge pull request #7 from senti-platform/beta-redux
+- Separate each lang into it's own file
+- Edit Hardware
+- ASsign Device
+- More Translation
+- Settings Display + Redux Connection
+- Settings cleanup
+- More Settings
+- More Settings
+- Settings
+- Proofing of localization files
+- Updates
+- Add new keys
+- More DK Keys + Merge
+- Localization updates
+- Danish updates
+- DA/EN updates
+- DA/EN updates
+- EN/DA updates
+- Settings Headers
+- Merge
+- Translate the minutes
+- DA/EN updates
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Device Hardware Fields
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Fix Hardware + See more/less
+- "There are no pictures"
+- DK Correction
+- wrap projects with Localization
+- Where there's unused, there are strings to be translated
+- EN/DA localization updates for projects
+- DA/EN localization updates
+- Save Function with Backend with Loading
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- EN/DA Localization updates
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Localization errors fixed
+- Urgent Fix
+- Minor localization updates
+- More localization
+- Localization of ProjectContact
+- More localization
+- Localization
+- No target on contact mail link
+- Done with 4 minutes to spare
+- Merge branch 'beta' of https://github.com/senti-platform/senti-console into beta
+- Localization update on EditProject
+- More localization
+- Localization update - project updated snackbar
+- Localization of ProjectCard (Grid view)
+- Localized warnings
+- ProjectTable localization
+- Dialog change
+- Again
+- Better?
+- CreateProject localization
+- CreateProject localized
+- CreateProject.js localization (more)
+- Update README.md
+- Update README.md
+- lang
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Discover Senti + /grid route + Localization Wrapping of Header
+- Users lang
+- Merge
+- Merge2
+- Merge 4
+- Another push
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Fix Grid
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- 3x3 + 1x9 display on Dashboard
+- Fix Chrome
+- Dashboard lang
+- Updates
+- Dashboard
+- Fix Chrome again
+- Lang
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Lang
+- More lang
+- Lang
+- More lang
+- CalibrateDevice minor refactor to accomodate Localization
+- Merge branch 'beta' of https://github.com/senti-platform/senti-console into beta
+- Calibration localization (not complete)
+- Fix Arrow view on Devices
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Connect rows per page Table
+- Clean stuff
+- TableToolbar on projects localization
+- Discover Senti Settings connected
+- Calibration localization
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- More Calibration lang
+- ImageUpload localization
+- dk.json
+- dk.json
+- PerfectScrollbar fix
+- Dash added to date/time on device details
+- Quick Fix
+- Merge branch 'beta' of https://github.com/senti-platform/senti-console into beta
+- Remove the ref
+- Remove seconds from device details
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Minor text update
+- Fix the scrollbar
+- Merge branch 'beta' of https://github.com/senti-platform/senti-console into beta
+- More text updates
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- More text
+- Minor text updates
+- EditDetails localization updates
+- Date Filter Format
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- User Profile page on /user/:id
+- Fix Build
+- Change default lang to DK
+- Fix the Error from yesterday
+- Autosave Settings on Change Pt.1
+- AutoSave on Changed Settings
+- DataFormat on Device Data Section
+- No Location Type message
+- LocationType based int both backend and frontend
+- Change backend to betabackend
+- Fix LocType missing
+- refactor naming
+- Snackbar on Lang change
+- Refactor Tables P1
+- Table refactor P2
+- Beautify the Date Format on Data
+- P3 Refactor Tables
+- Users list
+- Users/Orgs Tabs
+- Show Projects/Devices/Users Table even if empty
+- Phone on Table
+- Remove Green Header
+- FIx Edit Device on Null values
+- Revert EditProject
+- Users page
+- Project Contact
+- Organisations for Devices
+- Map Markers P1
+- Flow the logo
+- Minor Danish text change
+- Minor language updates
+- Delete Organisations from header
+- Business icon
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Small Devices Users List
+- Number formatter + email anchor
+- E-mail -> Email
+- Kill the old way of calibrating + connect settings to counter modal
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Prepare calibrate device for mikkels refactor
+- Device Table Like Users Table
+- Fix Typo
+- Devices Live status sorting fix
+- Use the new endpoints
+- Project Table Update Responsive Format True Center Denmark on Maps
+- Remove Console.log
+- Users Table FirstName -> Name
+- Device Edit Address Search Improvement
+- Refactor Calibrate to new endpoint
+- Calibration
+- CreateProject select Org P1
+- CreateProject
+- Edit Project
+- Create Project
+- Absolute Routing
+- Project created by
+- Language updates
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Fix Counter
+- Redirect on CreateProject
+- Fix lang
+- Languages
+- Seneste Login
+- Create Project - AutoSelect own Org Users -  Remove seconds Settings - load own user with settings on app mount User - Format Last Login, Suspended and Created
+- Dynamic Backend Switching
+- Moment Dynamic Locale Change
+- Change start of week day to Monday on english
+- Merge pull request #8 from senti-platform/beta
+- Fix Login
+- Fix Data
+- Fix Login
+- Fix Data last time
+- Fix Settings
+- Fix Null error
+- USer Page
+- Rows per page Left Aligned
+- + Org Table
+- Language changes
+- More language changes
+- More language updates
+- Restore missing package
+- Merge branch 'master' of https://github.com/senti-platform/senti-console
+- Fix the redirect
+- styles
+- Tables
+- Increase font size to 0.875em on Rows per table text, input
+- Merge branch 'master' of https://github.com/senti-platform/senti-dashboard
+- Graphs get Data Display Hourly
+- 0 Width on First Column
+- Fix Org Name on Devices
+- Merge branch 'beta' into master
+- Merge pull request #9 from senti-platform/master
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Fix mailTo on Project Contact
+- Create Project Validation
+- Create/Edit Project
+- Fix Assign to Project
+- AutoFocus
+- Map Markers with most details
+- Live Count
+- Modified + Created
+- Modified on Project Page
+- Reduce Create Project Redirect Time to 1 second
+- Marker For Device Page
+- Language update for Map Marker
+- Project Devices Map Markers
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Device Availability
+- Language
+- Fix Display of iPhone 7
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Device Page Availability
+- No Device and No Data
+- Device and Project Headers
+- Fix the english deployed
+- Free/Not free language updates
+- Device Simple List + Maps Refactor
+- 24h format on DateTime Pickers
+- Colors
+- Access Levels
+- Dashboard Start More bottom alignment
+- Round 2
+- Org Details
+- Remove Console Log
+- Link to my Profile
+- CVR EAN ZIP Code
+- Region
+- ParentOrg localization
+- EditOrg P1 - Other refactors
+- More fix
+- "discoverSenti": "“Vis intro kort på Dashboard
+- Organisation Edit
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Fix Edit Organisation Website
+- Org Links
+- Fix ViewPort
+- Tablet ViewPort Fix
+- Update .travis.yml
+- CreateNewBuild
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Fix the Loading
+- Org Tables mobile friendly
+- Analyze
+- Edit Org Validation
+- Autosuggest on Edit
+- Org. language changes
+- Numeric only
+- Merge branch 'beta' of https://github.com/senti-platform/senti-dashboard into beta
+- Fix User Redirect
+- Loader
+- Unassign, Edit
+- Small Fix
+
+### Version 0.6.0
+- Edit Details LocationType Label
+- More Styling
+- Margin Fix
+- Create Project Form
+- Map On Project Page
+- Project Tabs
+- Tabs Functions
+- Toolbar
+- Add Roboto Font
+- Project Edit
+- Edit selected item
+- Edit/Recalibrate Order
+- Remove Unused console.logs
+- Device Image use EXIF fix
+- EXIF Image 2
+- Fix image
+- Improvement of Image upload on Mobile
+- Smaller imporvement
+- Device Image Fit to screen
+- Suggestions on Device,Correct filtering not done
+- Project Suggestions
+- Project Suggestions full with everything
+- Suggestions on Devices
+- Marker Icons with Status Color
+- Device show status on map + DeviceImage fix missing keyProp
+- Delete This Picture
+- Cards
+
+### Version 0.5.5
+- Merge to master
+- Merge 2
+- Merge to master
+- Merge branch 'master' of https://github.com/senti-platform/senti-dashboard
+- Fix some Input Styiling
+- Search Bar
+- SearchInput
+- Autofocus on Open
+
+### Version 0.5.4
+- Merge branch 'master' of https://github.com/senti-platform/senti-dashboard into oldmaster (origin/oldmaster)
+
+### Version 0.1.0
+- Padding & Margin Fix
+- Map Center
+
+### Version 0.5.4
+- Go back Button
+- Fix Tabs Bug
+- Disable Tooltips, are bugged, they overlap other components and make them unclickable
+- Comment out Tooltip
+- Small Theme update
+- Edit Hardware Action Option On Hardware Card
+- Checkpoint
+- Sortof image orientation fix
+- FIXED the image
+
+### Version 0.5.2
+- Responsive Tabs
+- Device Simple List Address, No Name , No Address
+- Remove console.log
+
+### Version 0.5.0
+- Margin Normalization
+- See More Label On InfoCard Expand
+- Assign Multiple Devices to one Project
+- Fixed Header to stay in place
+- Fix alignment of Device Options
+- Assign Move to project
+- The other way around
+- Add Images
+- Add Images fix
+- Centered Circular Progress on All Routes
+- Change Login to Sign in and Sign out
+- Maps Geolookup
+- Merge branch 'senti-mui' of https://github.com/senti-platform/senti-dashboard into senti-mui
+- Remove Console.logs and Alert ServiceWorker on New Content
+- Unassign Project
+- Device
+- Create Project
+- Remove unused imports
+- Show Seconds
+- Refactor data
+- Reg Simple list
+- More Data refactor
+- Update Device Details
+- Changed Registrations to Data and dataset
+- Edit Details of Device
+- Merge branch 'senti-mui' of https://github.com/senti-platform/senti-dashboard into senti-mui
+- Checkpoint
+- set maps key in params
+- 0.5.0: - Maps on Devices - Map on Device - Tabs with routes on Devices - Move margin and padding to gridContainer to allow Customized AppBars for each Component such as Tables with search component
+
+### Version 0.4.4
+- Remove duplicative functions
+- Fix extra props
+
+### Version 0.4.1
+- Device card items positioning
+- Calibration Button
+- Calibration button Responsive
+- Calibration Step
+- DD to DMS
+- Merge branch 'senti-mui' of https://github.com/senti-platform/senti-dashboard into senti-mui
+- TimeCounter
+- HandleCalibrationDetails
+- Send Data to Backend
+- Checkpoint
+- Count from 200
+- Calibration text update
+- Pop Sound on Click
+- Playfor each click
+- Merge branch 'senti-mui' of https://github.com/senti-platform/senti-dashboard into senti-mui
+- Change count to 10
+- Redirect to previous URL on Login instead of Dashboard
+- Fix Cookie Saving on path "/"
+- Remove Unused stuff and fix the coords
+- Minor text change
+- Text updates
+- ImageUpload WIP
+- Merge branch 'senti-mui' of https://github.com/senti-platform/senti-dashboard into senti-mui
+- Button text update
+- Merge branch 'senti-mui' of https://github.com/senti-platform/senti-dashboard into senti-mui
+- Dashboard text update
+- Remove unused var
+- Merge branch 'senti-mui' of https://github.com/senti-platform/senti-dashboard into senti-mui
+- Image Upload + Preview +Icon Buttons
+- Restore count
+- Icons
+- More Icons
+- Test Image Upload
+- Remove form demo, restore stepping to 0
+- Dropdown for streets static
+- Render Table without data
+- Location Type DropDown
+- Change to Location Type
+- Added Office
+- Fix missing package
+- Change counter to 200
+- Refactor Styles
+- Go to project from Device Info Page
+- Assign To Projects Visual Only
+- Small design Improvements
+- Merge branch 'senti-mui' of https://github.com/senti-platform/senti-dashboard into senti-mui
+- Selecting a Project
+- Assign Device to Project
+- Delete Extra Road
+- Go to new project after create project
+- Table Headers color change
+- SimpleDeviceList Fix
+- Routes
+- Add the ID and fix more stuff
+- Form Edit, not done
+- Change "Upload" to "Add Images"
+- Table Responsiveness
+- Tables
+
+### Version 0.3.5
+- Added pop.mp3 in src/assets/sound
+- Calibrate Device
+- Merge branch 'senti-mui' of https://github.com/senti-platform/senti-dashboard into senti-mui
+- Added more sound files
+- Merge branch 'senti-mui' of https://github.com/senti-platform/senti-dashboard into senti-mui
+- Deny User advancement if Device name and Coords are not received
+- Finish Buttons
+
+### Version 0.3.3
+- Added Google Analytics to Console
+- Updates
+- Senti Cloud Console
+- 0.3.1 - Device View Get Device - Backend Endpoint Component normalization - InfoCard TableHeader Color Change Device Routes active
+- Merge branch 'senti-mui' of https://github.com/senti-platform/senti-dashboard into senti-mui
+- Calibrate Edit Menu Entry points on Device Table
+- 0.3.2- Multiple Select/Single Select Options
+
+### Version 0.3.0
+
+### Version 0.2.9
+
+### Version 0.3.0
+- Minor dashboard text update
+- Refactor
+- Changed Senti Cloud to Senti.Cloud in login view
+- Device List
+- Merge branch 'senti-mui' of https://github.com/senti-platform/senti-dashboard into senti-mui
+
+### Version 0.2.9
+
+### Version 0.2.8
+
+### Version 0.2.7
+- Responsiveness
+
+### Version 0.2.9
+- Filter and Add New Project responsive fix Table Header Responsive header Font fix
+- Added initial Geolocation component.
+- Sidebar
+- Merge branch 'senti-mui' of https://github.com/senti-platform/senti-dashboard into senti-mui
+- Geolocation Merger
+
+### Version 0.2.7
+- Disable React Popper
+
+### Version 0.2.6
+- Logout Function
+- Clean commentedout
+- Dashboard deviceCount
+- More styling of the toolbar
+- Dashboard text updates (temporary)
+
+### Version 0.2.5
+- Filter Functionality
+- Date Filtering improvement
+- Delete Project
+- Color Fix
+- Create Project Form
+- Devices Select on Create new Project
+- Create Project
+
+### Version 0.2.2
+- Clean
+
+### Version 0.2.0
+- Small Fixes
+- Dropdown prep for user functions
+- Project detais extension
+- Devices and Regs Tables
+- Fix 404 redirect + clean
+
+### Version 0.1.6
+
+### Version 0.1.5
+- Merge branch 'senti-mui' of https://github.com/senti-platform/senti-dashboard into senti-mui
+
+### Version 0.1.4
+
+### Version 0.1.0
+- Delete README.old.md
+
+### Version 1.2.0
+- Delete README.old.md
+
+### Version 0.1.0
+- Rename to js
+- Format
+- Login Page
+- More Login page
+- Login Working Now
+- Checkboxes and lists
+- Fixed
+- More Stuff
+- Close On Click
+- Edit Button + Responsiveness of All Projects
+- Sidebar Fix
+- Project view Routing
+- Update Travis to push Senti Material ui to senti-mui.surge.sh
+- Refactor travis.yml
+
+### Version 1.2.0
+- Overlay + Grid improvements
+- Proper Initialization of React Dates
+- Fix OpenClose of Date Picker
+- Datepicker Input
+- Spacing between Cards
+- Checkbox smae size, + theme color + disable bold text in list
+- Draggable ListView Columns
+- Spring Cleaning
+- More Cleaning + Pagination bug fix
+- Users
+- Integrate MapView and improve code
+- Styling
+- Checkbox functionality
+- Mega Checkbox Works (Partially)
+- User Sorting
+- CheckBox
+- Expanded View Part1
+- More Expanded View
+- ExpandedCard
+- Styling cleaning
+- Drag Cursor
+- Empty New Project
+- EmptyCard
+- Styles for Expanded Card
+- Card
+- Open expanded view from List
+- Fix missing border Radius
+- Drag and Drop img
+- DatePicker Icon
+- New Project Window Template
+- Add LoginForm and upgrade odeum-app Add js-cookie
+- Remove React-Helmet and set the title from manifest.json
+- Senti favicon + Senti logo small improvement
+- Visibility Function
+- Clean App and include Theme Prop in DatePicker
+- Include Pose for animations
+- Remove unused var
+- Include Poze in all Expanded Cards Box Shadow border on inputs Visibility Icon On/Off
+- Fix List Card Expand
+- Cards
+- Refactor ExpandedCard naming
+- Move Search and pageSize options rendering to separate files
+- Grid improvement
+- Escape + Enter functionality for search Move Search
+- DatePicker Filter by Date Styling and Functions improvement
+- Theme for DatePicker
+- Theme for DatePicker
+- Merge branch 'master' of https://github.com/senti-platform/senti-dashboard
+- Fixed Small Drawer Browser Compatibility
+- Close other drawer when you open another
+- Small Changes
+- User Static Sketch + Styling improvements
+- More styling
+- Mock Backend
+- Php files
+- Add remote php server mock
+- Remove unused var
+- Delete Projects
+- Empty Devices handle
+- GitHub -> Travis -> AWS testrun 1
+- GitHub -> Travis -> AWS testrun 1
+- GitHub -> Travis -> AWS testrun 2
+- GitHub -> Travis -> AWS testrun 3
+- Update to new api
+- Merge branch 'master' of https://github.com/senti-platform/senti-dashboard
+- Removed Dashboard menu
+- Merge branch 'master' of https://github.com/senti-platform/senti-dashboard
+- Removed button on homepage
+- Now without errors
+- More homepage stuff
+- Delete Dialog
+- Clean console.logs
+- Update new Endpoints for Projects and Improve Delete Dialog
+- New project modal fields, but not done
+- Center the Header and items of List
+- Create Project
+- Get Devices
+- Comment out temporary  unused var
+- Search with input Filter by Date - Open Close Date + close_date flitering
+- Small Styling
+- Expanded Card: 1.Devices Tied to the project 2.Device Registrations tied to the project. 3.Data handling w/ PHP. 4.Sort from newest to oldest Registration from Device Reg. 5.Display total hits, Start and end Date of project
+- Small pixel Perfect fixes
+- downgrade node
+- LoginForm
+- Get Available Devices
+- Modify new Project to accomodate the new Device<->Project relationship
+- Cleaning
+- Select devices for new project
+- Login Enter/Escape Key
+- Refresh New Project window
+- Login Console
+- OnMount focus UserInput
+- Error modal Window on something wrong
+- Code Formating
+- Visibility Filter + small height adjustments to Available Devices in NewProjectWindow
+- Store Login Data as cookie
+- New Project improvements
+- Folder Restructuring
+- Fixed Import
+- Fix Imports 2
+- Login Logout + User info + new React Context
+- Create User Form -  *Incomplete* Login Logout + Get all Valid Organisations
+- Create user + Create Org inside
+- Org name Storing
+- Move styles out of LoginForm and create LoginStyles.js
+- Clean Checkbox
+- User Authorization for Management
+- Loaders on ListView
+- Fix Img on Card Item
+- Remove Console Logs
+- Fix First Time logging in
+- Store View + Card Img Loader + Small Fixes both func and styling
+- Major refactor
+- Fix missing imports
+- Move UserAdmin and OrgAdmin to Management/ Refactor Login for cdm/cwum Refactor theme tab colors Move Organisations to separate tab Add Tables with users and orgs for each tab Move inline styles to styled-compoents constants
+- Remove mocking data 'faker' package Move Error Login Modal from Form to Container - fix animation Remove Console.logs Refactor styling on  Admin Tabs
+- Upgrade odeum-app
+- Beautiful tables
+- Rename Expanded Card to Modal
+- Management: -make the tables beautiful ListView - Add small borders between text Cells - Get User + profile pic
+- Overflow Tables + Sticky Header + Margin Fixing
+- MapCentia Api
+- MapCentia Remove extra semi colon
+- Card Styling
+- Upgrade and remove unused packages
+- Clean styles
+- Add posibility to return a value through the checkbox callback onChange through the value prop
+- Clean Duplicates
+- Checkboxes on Management
+- Select and Delete Organisation
+- Update Org
+- Delete Dialog for Organisations
+- Refactor
+- More Refactor
+- CRUD Operations for Users
+- Remove CLogs
+- Edit Forms bugFix
+- SSL Update
+- Checkpoint
+
+### Version 0.1.0
+- Initial commit
+- Update README.md
+- Travis-ci file created - surge deployment
