@@ -13,7 +13,7 @@
 		"@types/googlemaps": "^3.30.16",
 		"@types/markerclustererplus": "^2.1.33",
 		"@types/react": "^16.8.6",
-		"apisauce": "^0.16.0",
+		"apisauce": "^1.0.2",
 		"autosuggest-highlight": "^3.1.1",
 		"chart.js": "^2.7.3",
 		"chartjs-plugin-zoom": "^0.6.6",

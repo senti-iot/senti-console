@@ -2,7 +2,7 @@ import { api } from './data';
 
 
 export const getCreateProject = async () => {
-	var data = await api.get('senti/project/create').then(response => response.data)
+	var data = await api.get('senti/project/create').then(response => response.data).catch(e => console.log(e))
 	return data
 }
 export const createProject = async (project) => {

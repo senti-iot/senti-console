@@ -1,6 +1,7 @@
 import {
 	IconButton, Paper, withStyles, DialogTitle, Dialog, DialogContent,
-	DialogContentText, DialogActions, Button, List, ListItem, ListItemIcon, ListItemText, Fade } from '@material-ui/core';
+	DialogContentText, DialogActions, Button, List, ListItem, ListItemIcon, ListItemText, Fade
+} from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import GridContainer from 'components/Grid/GridContainer';
 import CircularLoader from 'components/Loader/CircularLoader';
@@ -17,6 +18,7 @@ import AssignDCs from 'components/AssignComponents/AssignDCs';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { connect } from 'react-redux'
 import { customFilterItems } from 'variables/Filters';
+import { makeCancelable } from 'variables/data';
 
 class Projects extends Component {
 	constructor(props) {
@@ -57,7 +59,7 @@ class Projects extends Component {
 			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
 	}
-	
+
 	tabs = () => {
 		const { t, match } = this.props
 		return [
@@ -111,10 +113,11 @@ class Projects extends Component {
 	}
 
 	getData = async () => {
-		await getAllProjects().then(rs => this._isMounted ? this.setState({
+		this.getProjects = makeCancelable(getAllProjects())
+		await this.getProjects.promise.then(rs => this._isMounted ? this.setState({
 			projects: rs ? rs : [],
 			loading: false
-		}, () => this.handleRequestSort(null, 'title', 'asc')) : null)
+		}, () => this.handleRequestSort(null, 'title', 'asc')) : null).catch(e => {})
 	}
 
 	filterItems = (data) => {
@@ -131,7 +134,7 @@ class Projects extends Component {
 			case 2:
 				s('snackbars.exported')
 				break;
-			case 3: 
+			case 3:
 				s('snackbars.assign.collectionsToProject')
 				break
 			default:
@@ -158,13 +161,10 @@ class Projects extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		this.handleTabs()
-		await this.getData()
+		this.getData()
 		this.props.setTabs({
 			id: 'projects',
 			route: this.handleTabs(),
-			// data: projects,
-			// filters: filters,
-			// handleFilterKeyword: this.handleFilterKeyword,
 			tabs: this.tabs()
 		})
 	}
@@ -184,7 +184,7 @@ class Projects extends Component {
 		if (this.props.saved === true) {
 			const { projects, selected } = this.state
 			let project = projects[projects.findIndex(d => d.id === selected[0])]
-			if (project) {	
+			if (project) {
 				if (this.props.isFav({ id: project.id, type: 'project' })) {
 					this.props.s('snackbars.favorite.saved', { name: project.title, type: this.props.t('favorites.types.project') })
 					this.props.finishedSaving()
@@ -199,9 +199,10 @@ class Projects extends Component {
 		}
 	}
 	componentWillUnmount = () => {
-		this._isMounted = 0
+		this.getProjects.cancel()
+		// this._isMounted = 0
 	}
-	
+
 	//#endregion
 
 	//#region Handlers
@@ -214,7 +215,7 @@ class Projects extends Component {
 		e.stopPropagation()
 		this.props.history.push({ pathname: `/project/${id}`, prevURL: '/projects/favorites' })
 	}
-	
+
 	handleTabs = () => {
 		if (this.props.location.pathname.includes('grid')) {
 			// this.setState({ route: 1 })
@@ -350,7 +351,7 @@ class Projects extends Component {
 	}
 	renderTable = (items, handleClick) => {
 		const { t } = this.props
-		const {  order, orderBy, selected } = this.state
+		const { order, orderBy, selected } = this.state
 		return <ProjectTable
 			selected={selected}
 			data={this.filterItems(items)}
@@ -377,13 +378,13 @@ class Projects extends Component {
 	renderTableToolbar = () => {
 		const { selected } = this.state
 		const { t } = this.props
-		return 	<TableToolbar
+		return <TableToolbar
 			ft={this.ft()}
 			reduxKey={'projects'}
 			numSelected={selected.length}
 			options={this.options}
 			t={t}
-			content={this.renderTableToolBarContent()} 
+			content={this.renderTableToolBarContent()}
 		/>
 	}
 	renderAllProjects = () => {
@@ -397,7 +398,7 @@ class Projects extends Component {
 				{this.renderTable(projects, this.handleProjectClick)}
 			</Paper></Fade>
 	}
-	
+
 	renderList = () => {
 		return <GridContainer justify={'center'}>
 			{this.renderAllProjects()}
@@ -439,7 +440,7 @@ class Projects extends Component {
 				<Switch>
 					<Route path={`${match.path}/grid`} render={() => this.renderCards()} />
 					<Route path={`${match.path}/list`} render={() => this.renderList()} />
-					<Route path={`${match.path}/favorites`} render={() => this.renderFavorites()}/>
+					<Route path={`${match.path}/favorites`} render={() => this.renderFavorites()} />
 					<Redirect path={`${match.path}`} to={`${match.path}/list`} />
 				</Switch>
 			</Fragment>
@@ -451,7 +452,7 @@ const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	favorites: state.favorites.favorites,
 	saved: state.favorites.saved,
-	
+
 	//Filters
 	filters: state.appState.filters.projects
 })
