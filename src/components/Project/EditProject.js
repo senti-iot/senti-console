@@ -81,7 +81,15 @@ class EditProject extends Component {
 				return ''
 		}
 	}
+
+	keyHandler = (e) => {
+		if (e.key === 'Escape') {
+			this.goToProject()
+		}
+	}
 	componentDidMount = async () => {
+		window.addEventListener('keydown', this.keyHandler, false)
+
 		this._isMounted = 1
 		let id = this.props.match.params.id
 		const { location } = this.props
@@ -113,6 +121,8 @@ class EditProject extends Component {
 	}
 
 	componentWillUnmount = () => {
+		window.removeEventListener('keydown', this.keyHandler, false)
+
 		this._isMounted = 0
 		clearTimeout(this.timer)
 	}

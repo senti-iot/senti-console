@@ -68,9 +68,15 @@ class EditOrg extends Component {
 		}
 	}
 
-
+	keyHandler = (e) => {
+		if (e.key === 'Escape') {
+			this.goToOrg()
+		}
+	}
 	componentDidMount = async () => {
 		this._isMounted = 1
+		window.addEventListener('keydown', this.keyHandler, false)
+
 		let id = this.props.match.params.id
 		const { accessLevel, t, location } = this.props
 		await getOrg(id).then(rs => {
@@ -117,6 +123,7 @@ class EditOrg extends Component {
 
 	componentWillUnmount = () => {
 		this._isMounted = 0
+		window.removeEventListener('keydown', this.keyHandler, false)
 		clearTimeout(this.timer)
 	}
 
@@ -190,7 +197,8 @@ class EditOrg extends Component {
 	}
 
 	goToOrg = () => {
-		this.props.history.push('/management/org/' + this.props.match.params.id)
+		const { location } = this.props
+		this.props.history.push(location.prevURL ? location.prevURL : '/management/org/' + this.props.match.params.id)
 	}
 	handleOrgChange = e => {
 		this.setState({

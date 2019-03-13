@@ -18,6 +18,11 @@ class EditDeviceDetails extends Component {
 		}
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/devices/list'
 		props.setHeader({ id: 'devices.editDetailsTitle', options: { deviceId: props.match.params.id } }, true, prevURL, 'devices')
+	}	
+	keyHandler = (e) => {
+		if (e.key === 'Escape') {
+			this.goToDevice()
+		}
 	}
 	componentDidMount = async () => {
 		let id = this.props.match.params.id
@@ -32,6 +37,11 @@ class EditDeviceDetails extends Component {
 				loading: false
 			})
 		})
+		window.addEventListener('keydown', this.keyHandler, false)
+	}
+	componentWillUnmount = () => {
+		window.removeEventListener('keydown', this.keyHandler, false)
+		clearTimeout(this.timer);
 	}
 	setMapCoords = (data) => {
 		let coords = { lat: data.adgangsadresse.vejpunkt.koordinater[1], long: data.adgangsadresse.vejpunkt.koordinater[0] }
@@ -57,9 +67,6 @@ class EditDeviceDetails extends Component {
 			data = await getAddress(this.state.device.address)
 			return this.setMapCoords(data)
 		}
-	}
-	componentWillUnmount = () => {
-		clearTimeout(this.timer);
 	}
 	handleSetAddress = (address) => {
 		this.setState({
@@ -122,7 +129,8 @@ class EditDeviceDetails extends Component {
 	}
 
 	goToDevice = () => {
-		this.props.history.push(`/device/${this.props.match.params.id}`)
+		const { location, history } = this.props
+		history.push(location.prevURL ? location.prevURL : `/device/${this.props.match.params.id}`)
 	}
 	render() {
 		const { classes, t } = this.props

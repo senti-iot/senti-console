@@ -59,8 +59,14 @@ class EditUser extends Component {
 			selectedGroup: '',
 		}
 	}
+	keyHandler = (e) => {
+		if (e.key === 'Escape') {
+			this.goToUser()
+		}
+	}
 	componentDidMount = async () => {
 		this._isMounted = 1
+		window.addEventListener('keydown', this.keyHandler, false)
 		const { setHeader, location } = this.props
 		let prevURL = location.prevURL ? location.prevURL : '/management/users'
 		setHeader('users.editUser', true, prevURL, 'users')
@@ -68,6 +74,10 @@ class EditUser extends Component {
 			await this.getUser()
 			await this.getOrgs()
 		}
+	}
+	componentWillUnmount = () => {
+		this._isMounted = 0
+		window.removeEventListener('keydown', this.keyHandler, false)
 	}
 	getUser = async () => {
 		let id = this.props.match.params.id
@@ -96,14 +106,11 @@ class EditUser extends Component {
 					...user,
 					groups: Object.keys(user.groups).map(g => ({ id: g, name: user.groups[g].name, appId: user.groups[g].appId }))
 				},
-				extended: 
+				extended:
 					user.aux.senti ? { ...user.aux.senti.extendedProfile } : { ...this.state.extended }
-				
+
 			})
 		}
-	}
-	componentWillUnmount = () => {
-		this._isMounted = 0
 	}
 	getOrgs = async () => {
 		let orgs = await getAllOrgs().then(rs => rs)
@@ -134,10 +141,10 @@ class EditUser extends Component {
 
 		)
 	}
-	goToUser = () => { 
+	goToUser = () => {
 		const { user } = this.state
-		const { history } = this.props
-		history.push(`/management/user/${user.id}`)
+		const { history, location } = this.props
+		history.push(location.prevURL ? location.prevURL : `/management/user/${user.id}`)
 	}
 	close = async () => {
 		const { isFav, updateFav } = this.props
@@ -245,14 +252,14 @@ class EditUser extends Component {
 		const { t, accessLevel } = this.props
 		const { orgs, user, error } = this.state
 		const { org } = user
-		return accessLevel.apiorg.editusers ? 
-			<DSelect 
+		return accessLevel.apiorg.editusers ?
+			<DSelect
 				label={t('users.fields.organisation')}
 				error={error}
 				value={org.id}
 				onChange={this.handleOrgChange}
 				menuItems={orgs.map(org => ({ value: org.id, label: org.name }))}
-			/> 
+			/>
 			: null
 	}
 	renderLanguage = () => {
@@ -262,7 +269,7 @@ class EditUser extends Component {
 			{ value: 'en', label: t('settings.languages.en') },
 			{ value: 'da', label: t('settings.languages.da') }
 		]
-		return <DSelect 
+		return <DSelect
 			label={t('users.fields.language')}
 			error={error}
 			value={user.aux.odeum.language}
@@ -300,7 +307,7 @@ class EditUser extends Component {
 		if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers && !user.privileges.apisuperuser)) {
 			rend = true
 		}
-		return rend ? <DSelect 
+		return rend ? <DSelect
 			error={error}
 			label={t('users.fields.accessLevel')}
 			value={selectedGroup}
@@ -308,7 +315,7 @@ class EditUser extends Component {
 			menuItems={
 				this.groups().filter(g => g.show ? true : false)
 					.map(g => ({ value: g.id, label: g.name }))
-			}/> : null
+			} /> : null
 	}
 	handleExtendedBirthdayChange = prop => e => {
 		const { error } = this.state

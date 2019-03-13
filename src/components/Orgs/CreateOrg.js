@@ -41,8 +41,18 @@ class CreateOrg extends Component {
 			openSnackBar: false,
 		}
 	}
+	goToOrg = () => {
+		const { history, location } = this.props
+		history.push(location.prevURL ? location.prevURL : '/management/orgs/')
+	}
+	keyHandler = (e) => {
+		if (e.key === 'Escape') {
+			this.goToOrg()
+		}
+	}
 	componentDidMount = async () => {
 		this._isMounted = 1
+		window.addEventListener('keydown', this.keyHandler, false)
 		const { t, accessLevel, setHeader, location } = this.props
 		let prevURL = location.prevURL ? location.prevURL : `/management/orgs`
 		setHeader('orgs.createOrg', true, prevURL, '/management/users')
@@ -55,6 +65,12 @@ class CreateOrg extends Component {
 		})
 	}
 
+	
+	componentWillUnmount = () => {
+		window.removeEventListener('keydown', this.keyHandler, false)
+		this._isMounted = 0
+		clearTimeout(this.timer)
+	}
 
 	handleValidation = () => {
 		let errorCode = [];
@@ -111,10 +127,6 @@ class CreateOrg extends Component {
 		}
 	}
 
-	componentWillUnmount = () => {
-		this._isMounted = 0
-		clearTimeout(this.timer)
-	}
 
 	handleCountryChange = value => {
 		this.setState({
@@ -178,10 +190,6 @@ class CreateOrg extends Component {
 		}
 
 
-	}
-
-	goToOrg = () => {
-		this.props.history.push('/management/orgs/')
 	}
 
 	handleOrgChange = e => {

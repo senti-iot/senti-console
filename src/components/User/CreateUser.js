@@ -59,8 +59,15 @@ class CreateUser extends Component {
 			selectedGroup: 136550100000225,
 		}
 	}
+	keyHandler = (e) => {
+		if (e.key === 'Escape') {
+			this.goToUser()
+		}
+	}
 	componentDidMount = async () => {
 		this._isMounted = 1
+		window.addEventListener('keydown', this.keyHandler, false)
+
 		const { setHeader } = this.props
 		setHeader('menus.create.user', true, '/management/users', 'users')
 		if (this._isMounted)
@@ -68,12 +75,15 @@ class CreateUser extends Component {
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
+		window.removeEventListener('keydown', this.keyHandler, false)
+
 	}
 	getOrgs = async () => {
 		let orgs = await getAllOrgs().then(rs => rs)
 		this.setState({
 			orgs: orgs,
-			user: { ...this.state.user,
+			user: {
+				...this.state.user,
 				org: {
 					...this.props.user.org
 				}
@@ -241,14 +251,14 @@ class CreateUser extends Component {
 		const { t, accessLevel } = this.props
 		const { orgs, user, error } = this.state
 		const { org } = user
-		return accessLevel.apiorg.editusers ? 
-			<DSelect 
+		return accessLevel.apiorg.editusers ?
+			<DSelect
 				label={t('users.fields.organisation')}
 				error={error}
 				value={org.id}
 				onChange={this.handleOrgChange}
 				menuItems={orgs.map(org => ({ value: org.id, label: org.name }))}
-			/> 
+			/>
 			: null
 	}
 	renderLanguage = () => {
@@ -258,7 +268,7 @@ class CreateUser extends Component {
 			{ value: 'en', label: t('settings.languages.en') },
 			{ value: 'da', label: t('settings.languages.da') }
 		]
-		return <DSelect 
+		return <DSelect
 			label={t('users.fields.language')}
 			error={error}
 			value={user.aux.odeum.language}
@@ -296,7 +306,7 @@ class CreateUser extends Component {
 		if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers && !user.privileges.apisuperuser)) {
 			rend = true
 		}
-		return rend ? <DSelect 
+		return rend ? <DSelect
 			error={error}
 			label={t('users.fields.accessLevel')}
 			value={selectedGroup}
@@ -304,7 +314,7 @@ class CreateUser extends Component {
 			menuItems={
 				this.groups().filter(g => g.show ? true : false)
 					.map(g => ({ value: g.id, label: g.name }))
-			}/> : null
+			} /> : null
 	}
 	renderExtendedProfile = () => {
 		const { openExtended, extended, error } = this.state
@@ -501,7 +511,7 @@ class CreateUser extends Component {
 							<Button
 								variant='outlined'
 								color='primary'
-								className={buttonClassname }
+								className={buttonClassname}
 								disabled={this.state.creating || this.state.created}
 								onClick={this.handleCreateUser}>
 								{this.state.created ?

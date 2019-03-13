@@ -50,10 +50,21 @@ class EditCollection extends Component {
 			})
 		}
 	}
+	keyHandler = (e) => {
+		if (e.key === 'Escape') {
+			this.goToCollection()
+		}
+	}
 	componentDidMount = () => {
 		this.getData()
+		window.addEventListener('keydown', this.keyHandler, false)
 
 	}
+	componentWillUnmount = () => {
+		window.removeEventListener('keydown', this.keyHandler, false)
+
+	}
+
 	handleOpenOrg = () => {
 		this.setState({
 			openOrg: true
@@ -82,7 +93,10 @@ class EditCollection extends Component {
 		})
 	}
 
-	goToCollection = () => this.props.history.push(`/collection/${this.id}`)
+	goToCollection = () => {
+		const { history, location } = this.props
+		history.push(location.prevURL ? location.prevURL : `/collection/${this.id}`)
+	}
 
 	handleUpdate = async () => {
 		const { s, history } = this.props
@@ -121,7 +135,7 @@ class EditCollection extends Component {
 						handleOpenOrg={this.handleOpenOrg}
 						handleChangeOrg={this.handleChangeOrg}
 						handleUpdate={this.handleUpdate}
-						t={t} />				
+						t={t} />
 				</Fade>
 					: <Redirect to={{
 						pathname: '/404',
