@@ -4,11 +4,7 @@ import { Close } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { Collapse, Paper } from '@material-ui/core'
-import { KeyboardArrowLeft as KeyArrLeft, KeyboardArrowRight as KeyArrRight } from 'variables/icons'
-import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers'
-import MomentUtils from '@date-io/moment'
-import { CircularLoader, GridContainer, ItemGrid, TextF, Danger, Warning, ItemG } from 'components'
-import moment from 'moment';
+import { CircularLoader, GridContainer, ItemGrid, TextF, Danger, Warning, ItemG, DatePicker } from 'components'
 import withLocalization from 'components/Localization/T';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
@@ -188,146 +184,121 @@ class CreateProjectForm extends Component {
 		return (
 			<GridContainer justify={'center'}>
 				<Paper className={classes.paper}>
-					<MuiPickersUtilsProvider utils={MomentUtils}>
-
-						<form className={classes.form}>
-							<ItemGrid xs={12}>
-								<Collapse in={error}>
-									<Warning>
-										<Danger>
-											{errorMessage}
-										</Danger>
-									</Warning>
-								</Collapse>
-							</ItemGrid>
-							<ItemGrid container xs={12}>
-								<TextF
-									autoFocus
-									id={'title'}
-									label={t('projects.fields.name')}
-									value={title}
-									// className={classes.textField}
-									handleChange={handleChange('title')}
-									margin='normal'
-
-									error={error}
-
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<TextF
-									id={'multiline-flexible'}
-									label={t('projects.fields.description')}
-									multiline
-									rows={4}
-									color={'secondary'}
-									// className={classes.textField}
-									value={description}
-									handleChange={handleChange('description')}
-									margin='normal'
-
-									error={error}
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<DatePicker
-									variant={'outlined'}
-									autoOk
-									label={t('projects.fields.startDate')}
-									clearable
-									labelFunc={(date) => date === null ? '' : moment(date).format('LL')}
-									format='YYYY-MM-DDTHH:mm'
-									value={startDate}
-									onChange={handleDateChange('startDate')}
-									animateYearScrolling={false}
-									color='primary'
-									rightArrowIcon={<KeyArrRight />}
-									leftArrowIcon={<KeyArrLeft />}
-									InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-									InputProps={{ classes: { underline: classes.underline } }}
-									error={error}
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<DatePicker
-									color='primary'
-									autoOk
-									variant={'outlined'}
-									label={t('projects.fields.endDate')}
-									clearable
-									labelFunc={(date) => date === null ? '' : moment(date).format('LL')}
-									format='YYYY-MM-DDTHH:mm'
-									value={endDate}
-									onChange={handleDateChange('endDate')}
-									animateYearScrolling={false}
-									rightArrowIcon={<KeyArrRight />}
-									leftArrowIcon={<KeyArrLeft />}
-									InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-									InputProps={{ classes: { underline: classes.underline } }}
-									error={error}
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								{this.renderSelectUser()}
-								<TextF
-									id={'contactPerson'}
-									label={t('projects.contact.title')}
-									value={`${user.firstName} ${user.lastName}`}
-									handleClick={handleOpenUser}
-									handleChange={() => { }}
-									InputProps={{
-										onChange: handleOpenUser,
-										readOnly: true
-									}}
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								{this.renderSelectOrg()}
-								<TextF
-									id={'collectionOrg'}
-									label={t('collections.fields.org')}
-									value={org.name}
-									handleClick={handleOpenOrg}
-									handleChange={() => { }}
-
-									InputProps={{
-										onChange: handleOpenOrg,
-										readOnly: true
-									}}
-								/>
-							</ItemGrid>
-							
-						</form>
-						<ItemGrid xs={12} container justify={'center'}>
-							<Collapse in={creating} timeout='auto' unmountOnExit>
-								<CircularLoader notCentered />
+					<form className={classes.form}>
+						<ItemGrid xs={12}>
+							<Collapse in={error}>
+								<Warning>
+									<Danger>
+										{errorMessage}
+									</Danger>
+								</Warning>
 							</Collapse>
 						</ItemGrid>
-						<ItemGrid container style={{ margin: 16 }}>
-							<div className={classes.wrapper}>
-								<Button
-									variant='outlined'
-									onClick={goToProject}
-									className={classes.redButton}
-								>
-									{t('actions.cancel')}
-								</Button>
-							</div>
-							<div className={classes.wrapper}>
-								<Button
-									variant='outlined'
-									color='primary'
-									className={buttonClassname}
-									disabled={creating || created}
-									onClick={handleCreateProject}
-								>
-									{created ? t('snackbars.redirect')
-										: t('actions.save')}
-										
-								</Button>
-							</div>
+						<ItemGrid container xs={12}>
+							<TextF
+								autoFocus
+								id={'title'}
+								label={t('projects.fields.name')}
+								value={title}
+								// className={classes.textField}
+								handleChange={handleChange('title')}
+								margin='normal'
+
+								error={error}
+
+							/>
 						</ItemGrid>
-					</MuiPickersUtilsProvider>
+						<ItemGrid xs={12}>
+							<TextF
+								id={'multiline-flexible'}
+								label={t('projects.fields.description')}
+								multiline
+								rows={4}
+								color={'secondary'}
+								// className={classes.textField}
+								value={description}
+								handleChange={handleChange('description')}
+								margin='normal'
+
+								error={error}
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12}>
+							<DatePicker
+								label={t('projects.fields.endDate')}
+								value={startDate}
+								onChange={handleDateChange('startDate')}
+								error={error}
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12}>
+							<DatePicker
+								label={t('projects.fields.endDate')}
+								value={endDate}
+								onChange={handleDateChange('endDate')}
+								error={error}
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12}>
+							{this.renderSelectUser()}
+							<TextF
+								id={'contactPerson'}
+								label={t('projects.contact.title')}
+								value={`${user.firstName} ${user.lastName}`}
+								handleClick={handleOpenUser}
+								handleChange={() => { }}
+								InputProps={{
+									onChange: handleOpenUser,
+									readOnly: true
+								}}
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12}>
+							{this.renderSelectOrg()}
+							<TextF
+								id={'collectionOrg'}
+								label={t('collections.fields.org')}
+								value={org.name}
+								handleClick={handleOpenOrg}
+								handleChange={() => { }}
+
+								InputProps={{
+									onChange: handleOpenOrg,
+									readOnly: true
+								}}
+							/>
+						</ItemGrid>
+							
+					</form>
+					<ItemGrid xs={12} container justify={'center'}>
+						<Collapse in={creating} timeout='auto' unmountOnExit>
+							<CircularLoader notCentered />
+						</Collapse>
+					</ItemGrid>
+					<ItemGrid container style={{ margin: 16 }}>
+						<div className={classes.wrapper}>
+							<Button
+								variant='outlined'
+								onClick={goToProject}
+								className={classes.redButton}
+							>
+								{t('actions.cancel')}
+							</Button>
+						</div>
+						<div className={classes.wrapper}>
+							<Button
+								variant='outlined'
+								color='primary'
+								className={buttonClassname}
+								disabled={creating || created}
+								onClick={handleCreateProject}
+							>
+								{created ? t('snackbars.redirect')
+									: t('actions.save')}
+										
+							</Button>
+						</div>
+					</ItemGrid>
 				</Paper>
 			</GridContainer> 
 		)

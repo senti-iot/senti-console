@@ -118,11 +118,11 @@ const createprojectStyles = theme => ({
 		},
 	},
 	focused: {},
-	underline: {
-		'&:after': {
-			borderBottomColor: teal[500],
-		},
-	},
+	// underline: {
+	// 	'&:after': {
+	// 		borderBottomColor: teal[500],
+	// 	},
+	// },
 	button: {
 		margin: theme.spacing.unit * 2
 	}

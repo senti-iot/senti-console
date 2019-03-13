@@ -4,7 +4,7 @@ import { DatePicker as MuiDatePicker } from 'material-ui-pickers';
 
 class DatePicker extends Component {
 	render() {
-		const { className, value, label, onChange } = this.props
+		const { className, value, label, onChange, disableFuture, error } = this.props
 		return (
 			<MuiDatePicker
 				style={{ maxWidth: 230 }}
@@ -17,6 +17,7 @@ class DatePicker extends Component {
 					value ? [/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/] : []
 				  }
 				// format={'ll'}
+				errror={error}
 				format={ "DD/MM/YYYY"}
 				placeholder="DD/MM/YYYY"
 				value={value}
@@ -25,7 +26,7 @@ class DatePicker extends Component {
 				onChange={onChange}
 				animateYearScrolling={false}
 				color='primary'
-				disableFuture
+				disableFuture={disableFuture}
 				rightArrowIcon={<KeyboardArrowRight />}
 				leftArrowIcon={<KeyboardArrowLeft />}
 			/>
