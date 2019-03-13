@@ -11,7 +11,7 @@ const searchStyles = theme => ({
 		// 	width: "auto"
 		// },
 		[theme.breakpoints.down("xs")]: {
-			width: 72,
+			// width: 72,
 			marginLeft: 0,
 		},
 		marginLeft: "auto",

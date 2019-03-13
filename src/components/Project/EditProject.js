@@ -240,15 +240,15 @@ class EditProject extends Component {
 					</Hidden>
 					<Hidden lgUp>
 						<ItemG container alignItems={'center'}>
-							<ItemG xs={4} container alignItems={'center'}>
+							<ItemG xs={12} container alignItems={'center'}>
 								<IconButton color={'inherit'} onClick={this.handleCloseUser} aria-label='Close'>
 									<Close />
 								</IconButton>
 								<Typography variant='h6' color='inherit' className={classes.flex}>
-									{t('orgs.pageTitle')}
+									{t('users.pageTitle')}
 								</Typography>
 							</ItemG>
-							<ItemG xs={8} container alignItems={'center'} justify={'center'}>
+							<ItemG xs={12} container alignItems={'center'} justify={'center'}>
 								<Search
 									noAbsolute
 									fullWidth
