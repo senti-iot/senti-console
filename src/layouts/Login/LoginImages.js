@@ -4,7 +4,7 @@ import loginImages from 'variables/loginImages'
 import { Button, withStyles } from '@material-ui/core';
 import { sideBarColor, /* primaryColor */ } from 'assets/jss/material-dashboard-react';
 // import ImgDevices from 'assets/img/devices.png'
-import ImgTexture from 'assets/img/texture_inverted.png'
+import ImgTexture from 'assets/img/texture_inverted2.png'
 import sentiDots from 'assets/img/senti_dots.svg'
 
 const styles = theme => ({
@@ -35,8 +35,17 @@ const styles = theme => ({
 		maxWidth: 615,
 		marginBottom: 30
 	},
+	overcomplicatedButtonTextLight: {
+		fontWeight: 300,
+		marginRight: 4
+	},
+	overcomplicatedButtonTextRegular: {
+		fontWeight: 700
+	},
 	button: {
-		marginBottom: 40
+		color: '#000',
+		marginBottom: 40,
+		boxShadow: 'none'
 	},
 	img: {
 		height: 250,
@@ -96,12 +105,19 @@ class LoginImages extends Component {
 		const { number } = this.state
 		return (
 			<div className={classes.container}>
-				<div className={classes.contentWrapper}>
+				<div className={classes.contentWrapper}>				
+					{t('markdown.test', { type: 'markdown' })}
 					<T reversed variant={'h5'} className={classes.message}>
-						{this.generateString(number).map((a, i) => <span key={i}>{a}</span>)}
+						{t(`login.cards.${number}`, { type: 'markdown' })}
+						{/* {this.generateString(number).map((a, i) => <span key={i}>{a}</span>)} */}
 					</T>
 					<Button color='primary' variant={'contained'} className={classes.button}>
-						{t('actions.learnMore')}
+						<span className={classes.overcomplicatedButtonTextLight}>
+							{t('actions.learn')}
+						</span>
+						<span className={classes.overcomplicatedButtonTextRegular}>
+							{t('actions.more')}
+						</span>
 					</Button>					
 					<img src={loginImages[number]} className={classes.img} alt="" />
 					<img src={sentiDots} className={classes.sentiDots} alt=''/>

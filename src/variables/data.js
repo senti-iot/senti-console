@@ -1,8 +1,7 @@
-import { create } from 'apisauce'
+import { create  } from 'apisauce'
 import cookie from 'react-cookies'
 import crypto from 'crypto'
 import moment from 'moment'
-
 
 const { REACT_APP_ENCRYPTION_KEY } = process.env
 const IV_LENGTH = 16 
@@ -115,6 +114,25 @@ export const imageApi = create({
 		'ODEUMAuthToken': ''
 	},
 })
+export const makeCancelable = (promise) => {
+	let hasCanceled_ = false;
+  
+	const wrappedPromise = new Promise((resolve, reject) => {
+	  promise.then((val) =>
+			hasCanceled_ ? reject({ isCanceled: true }) : resolve(val)
+	  );
+	  promise.catch((error) =>
+			hasCanceled_ ? reject({ isCanceled: true }) : reject(error)
+	  );
+	});
+  
+	return {
+	  promise: wrappedPromise,
+	  cancel() {
+			hasCanceled_ = true;
+	  },
+	};
+};
 export const api = create({
 	baseURL: backendHost,
 	timeout: 30000,
@@ -122,11 +140,12 @@ export const api = create({
 		'Accept': 'application/json',
 		'Content-Type': 'application/json',
 		'ODEUMAuthToken': ''
-	}
+	},	
 })
 
 export const setToken = () => {
 	try {
+		console.log('Bing')
 		var OAToken = cookie.load('SESSION').sessionID
 		api.setHeader('ODEUMAuthToken', OAToken)
 		imageApi.setHeader('ODEUMAuthToken', OAToken)

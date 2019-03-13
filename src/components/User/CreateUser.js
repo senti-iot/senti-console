@@ -2,14 +2,10 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { createUser } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
-import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader } from 'components';
-import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Button, FormControlLabel, Checkbox } from '@material-ui/core';
-import { KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons'
+import { GridContainer, ItemGrid, DatePicker, Warning, Danger, TextF, CircularLoader, DSelect, ItemG } from 'components';
+import { Paper, Collapse, withStyles, Button, FormControlLabel, Checkbox } from '@material-ui/core';
 import classNames from 'classnames';
-import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
-import MomentUtils from '@date-io/moment';
-import moment from 'moment'
+import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
 
 class CreateUser extends Component {
 	constructor(props) {
@@ -24,7 +20,7 @@ class CreateUser extends Component {
 				recoveryEmail: "",
 				linkedInURL: "",
 				twitterURL: "",
-				birthday: moment('01011990', 'DDMMYYYY'),
+				birthday: null,
 				newsletter: true,
 			},
 			user: {
@@ -63,8 +59,15 @@ class CreateUser extends Component {
 			selectedGroup: 136550100000225,
 		}
 	}
+	keyHandler = (e) => {
+		if (e.key === 'Escape') {
+			this.goToUser()
+		}
+	}
 	componentDidMount = async () => {
 		this._isMounted = 1
+		window.addEventListener('keydown', this.keyHandler, false)
+
 		const { setHeader } = this.props
 		setHeader('menus.create.user', true, '/management/users', 'users')
 		if (this._isMounted)
@@ -72,11 +75,19 @@ class CreateUser extends Component {
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
+		window.removeEventListener('keydown', this.keyHandler, false)
+
 	}
 	getOrgs = async () => {
 		let orgs = await getAllOrgs().then(rs => rs)
 		this.setState({
 			orgs: orgs,
+			user: {
+				...this.state.user,
+				org: {
+					...this.props.user.org
+				}
+			},
 			loading: false
 		})
 	}
@@ -237,105 +248,73 @@ class CreateUser extends Component {
 	}
 	goToUser = () => this.props.history.push('/management/users')
 	renderOrgs = () => {
-		const { classes, t } = this.props
+		const { t, accessLevel } = this.props
 		const { orgs, user, error } = this.state
 		const { org } = user
-		return <FormControl className={classes.formControl}>
-			<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
-				{t('users.fields.organisation')}
-			</InputLabel>
-			<Select
+		return accessLevel.apiorg.editusers ?
+			<DSelect
+				label={t('users.fields.organisation')}
 				error={error}
-				fullWidth={false}
-				color={'primary'}
 				value={org.id}
 				onChange={this.handleOrgChange}
-			>
-				{orgs ? orgs.map(org => (
-					<MenuItem
-						key={org.id}
-						value={org.id}
-					>
-						{org.name}
-					</MenuItem>
-				)) : null}
-			</Select>
-		</FormControl>
+				menuItems={orgs.map(org => ({ value: org.id, label: org.name }))}
+			/>
+			: null
 	}
 	renderLanguage = () => {
-		const { t, classes } = this.props
+		const { t } = this.props
 		const { error, user } = this.state
 		let languages = [
 			{ value: 'en', label: t('settings.languages.en') },
 			{ value: 'da', label: t('settings.languages.da') }
 		]
-		return <FormControl className={classes.formControl}>
-			<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
-				{t('users.fields.language')}
-			</InputLabel>
-			<Select
-				error={error}
-				fullWidth={false}
-				color={'primary'}
-				value={user.aux.odeum.language}
-				onChange={this.handleLangChange}
-			>
-				{languages.map(l => (
-					<MenuItem
-						key={l.value}
-						value={l.value}
-					>
-						{l.label}
-					</MenuItem>
-				))}
-			</Select>
-		</FormControl>
+		return <DSelect
+			label={t('users.fields.language')}
+			error={error}
+			value={user.aux.odeum.language}
+			menuItems={languages.map(l => ({ value: l.value, label: l.label }))}
+		/>
 	}
-	renderAccess = () => {
-		const { t, classes, accessLevel } = this.props
-		const { error, selectedGroup } = this.state
-		let groups = [
+	groups = () => {
+		const { accessLevel, t } = this.props
+		return [
 			{
-				id: 136550100000211,
-				appId: 1220,
+				id: '136550100000211',
+				appId: '1220',
 				name: t('users.groups.accountManager'),
 				show: accessLevel.apiorg.editusers ? true : false
 			},
 			{
-				id: 136550100000143,
-				appId: 1220,
+				id: '136550100000143',
+				appId: '1220',
 				name: t('users.groups.superUser'),
 				show: accessLevel.apisuperuser ? true : false
 
 			},
 			{
-				id: 136550100000225,
-				appId: 1220,
+				id: '136550100000225',
+				appId: '1220',
 				name: t('users.groups.user'),
 				show: true
 			}
 		]
-		return <FormControl className={classes.formControl}>
-			<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
-				{t('users.fields.accessLevel')}
-			</InputLabel>
-			<Select
-				error={error}
-				fullWidth={false}
-				color={'primary'}
-				value={selectedGroup}
-				onChange={this.handleGroupChange}
-			>
-				{groups.map(g => g.show ? (
-					<MenuItem
-						key={g.id}
-						value={g.id}
-					>
-						{g.name}
-					</MenuItem>
-				) : null)}
-			</Select>
-		</FormControl>
+	}
+	renderAccess = () => {
+		const { t, accessLevel } = this.props
+		const { error, selectedGroup, user } = this.state
+		let rend = false
+		if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers && !user.privileges.apisuperuser)) {
+			rend = true
+		}
+		return rend ? <DSelect
+			error={error}
+			label={t('users.fields.accessLevel')}
+			value={selectedGroup}
+			onChange={this.handleGroupChange}
+			menuItems={
+				this.groups().filter(g => g.show ? true : false)
+					.map(g => ({ value: g.id, label: g.name }))
+			} /> : null
 	}
 	renderExtendedProfile = () => {
 		const { openExtended, extended, error } = this.state
@@ -410,22 +389,13 @@ class CreateUser extends Component {
 				/>
 			</ItemGrid>
 			<ItemGrid container xs={12} >
-				<MuiPickersUtilsProvider utils={MomentUtils}>
-					<DatePicker
-						autoOk
-						label={t('users.fields.birthday')}
-						clearable
-						format='ll'
-						value={extended.birthday}
-						className={classes.textField}
-						onChange={this.handleExtendedBirthdayChange('birthday')}
-						animateYearScrolling={false}
-						color='primary'
-						disableFuture
-						rightArrowIcon={<KeyboardArrowRight />}
-						leftArrowIcon={<KeyboardArrowLeft />}
-					/>
-				</MuiPickersUtilsProvider>
+				<DatePicker
+					label={t('users.fields.birthday')}
+					format='ll'
+					value={extended.birthday}
+					className={classes.textField}
+					onChange={this.handleExtendedBirthdayChange('birthday')}
+				/>
 			</ItemGrid>
 			<ItemGrid container xs={12} >
 				<FormControlLabel
@@ -515,9 +485,9 @@ class CreateUser extends Component {
 						<ItemGrid container xs={12} >
 							{this.renderAccess()}
 						</ItemGrid>
-						<ItemGrid xs={12}>
+						<ItemG xs={12}>
 							{this.renderExtendedProfile()}
-						</ItemGrid>
+						</ItemG>
 						<ItemGrid container xs={12} md={12}>
 							<Button style={{ margin: 8 }} color={'primary'} onClick={() => this.setState({ openExtended: !this.state.openExtended })}>{t('actions.extendProfile')}</Button>
 						</ItemGrid>
@@ -541,7 +511,7 @@ class CreateUser extends Component {
 							<Button
 								variant='outlined'
 								color='primary'
-								className={buttonClassname }
+								className={buttonClassname}
 								disabled={this.state.creating || this.state.created}
 								onClick={this.handleCreateUser}>
 								{this.state.created ?
@@ -558,7 +528,7 @@ class CreateUser extends Component {
 
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
-
+	user: state.settings.user
 })
 
 const mapDispatchToProps = {

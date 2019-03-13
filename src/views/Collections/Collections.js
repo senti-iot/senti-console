@@ -106,17 +106,14 @@ class Collections extends Component {
 
 	//#region Life Cycle
 	componentDidMount = async () => {
-		this._isMounted = 1
+		// this._isMounted = 1
 		this.handleTabs()
 		await this.getData()
 
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
-		const { t, /* location, */ saved, s, isFav, finishedSaving } = this.props
-		// if (location.pathname !== prevProps.location.pathname) {
-		// 	this.handleTabs()
-		// }
+		const { t, saved, s, isFav, finishedSaving } = this.props
 		if (saved === true) {
 			const { collections, selected } = this.state
 			let collection = collections[collections.findIndex(d => d.id === selected[0])]
@@ -135,7 +132,7 @@ class Collections extends Component {
 		}
 	}
 	componentWillUnmount = () => {
-		this._isMounted = 0
+		// this._isMounted = 0
 	}
 	//#endregion
 

@@ -18,7 +18,13 @@ class EditDetails extends Component {
 		let prevURL = props.location.state ? props.location.prevURL : `/devices/list`
 		props.setHeader({ id: 'devices.editHardwareTitle', options: { deviceId: props.match.params.id } }, true, prevURL, 'devices')
 	}
+	keyHandler = (e) => {
+		if (e.key === 'Escape') {
+			this.goToDevice()
+		}
+	}
 	componentDidMount = async () => {
+		window.addEventListener('keydown', this.keyHandler, false)
 		let id = this.props.match.params.id
 		await getDevice(id).then(rs => {
 			if (rs === null)
@@ -33,6 +39,7 @@ class EditDetails extends Component {
 		})
 	}
 	componentWillUnmount = () => {
+		window.removeEventListener('keydown', this.keyHandler, false)
 		clearTimeout(this.timer);
 	}
 
@@ -45,7 +52,7 @@ class EditDetails extends Component {
 			}
 		})
 	}
-	handleUpdateFav = () => { 
+	handleUpdateFav = () => {
 		const { isFav, updateFav } = this.props
 		const { device } = this.state
 		let favObj = {
@@ -73,7 +80,8 @@ class EditDetails extends Component {
 		await updateDevice(updateD).then(rs => rs ? this.handleUpdateFav() : null)
 	}
 	goToDevice = () => {
-		this.props.history.push(`/device/${this.props.match.params.id}`)
+		const { location, history } = this.props
+		history.push(location.prevURL ? location.prevURL : `/device/${this.props.match.params.id}`)
 	}
 	render() {
 		const { classes, t } = this.props
@@ -90,7 +98,7 @@ class EditDetails extends Component {
 									label={t('devices.fields.pcModel')}
 									handleChange={this.handleInput('RPImodel')}
 									value={device.RPImodel}
-									
+
 									autoFocus
 								/>
 							</ItemGrid>
@@ -100,7 +108,7 @@ class EditDetails extends Component {
 									label={t('devices.fields.memory')}
 									handleChange={this.handleInput('memory')}
 									value={device.memory}
-									
+
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -109,7 +117,7 @@ class EditDetails extends Component {
 									label={t('devices.fields.memoryModel')}
 									handleChange={this.handleInput('memoryModel')}
 									value={device.memoryModel}
-									
+
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -118,7 +126,7 @@ class EditDetails extends Component {
 									label={t('devices.fields.adapter')}
 									handleChange={this.handleInput('adapter')}
 									value={device.adapter}
-									
+
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -127,7 +135,7 @@ class EditDetails extends Component {
 									label={t('devices.fields.wifiModule')}
 									handleChange={this.handleInput('wifiModule')}
 									value={device.wifiModule}
-									
+
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -136,7 +144,7 @@ class EditDetails extends Component {
 									label={t('devices.fields.modemModel')}
 									handleChange={this.handleInput('modemModel')}
 									value={device.modemModel}
-									
+
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -145,7 +153,7 @@ class EditDetails extends Component {
 									label={t('devices.fields.modemIMEI')}
 									handleChange={this.handleInput('modemIMEI')}
 									value={device.modemIMEI.toString()}
-									
+
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -154,7 +162,7 @@ class EditDetails extends Component {
 									label={t('devices.fields.cellNumber')}
 									handleChange={this.handleInput('cellNumber')}
 									value={device.cellNumber.toString()}
-									
+
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -163,7 +171,7 @@ class EditDetails extends Component {
 									label={t('devices.fields.simCard')}
 									handleChange={this.handleInput('SIMID')}
 									value={device.SIMID.toString()}
-									
+
 								/>
 							</ItemGrid>
 							<ItemGrid xs={6}>
@@ -172,7 +180,7 @@ class EditDetails extends Component {
 									label={t('devices.fields.simProvider')}
 									handleChange={this.handleInput('SIMProvider')}
 									value={device.SIMProvider}
-									
+
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12} container justify={'center'}>

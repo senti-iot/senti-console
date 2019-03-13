@@ -1,6 +1,22 @@
 import React, { Fragment } from 'react'
-import { Button, Dialog, DialogContent, DialogActions, DialogTitle } from '@material-ui/core';
+import { Button, Dialog, DialogContent, DialogActions, DialogTitle, withStyles } from '@material-ui/core';
 import { T, Caption } from 'components';
+
+const styles = theme => ({
+	p: {
+		marginBottom: theme.spacing.unit
+	},
+	dialogContent: {
+		padding: 24,
+		[theme.breakpoints.down('sm')]: {
+			padding: 16
+		}
+	},
+	title: {
+		fontWeight: 500
+	},
+})
+
 const PrivacyDialog = (props) => {
 	const { open, handleClose, t, classes, readOnly } = props
 	return (
@@ -15,7 +31,7 @@ const PrivacyDialog = (props) => {
 					{t('privacy.title')}
 				</T>
 			</DialogTitle>
-			<DialogContent>				
+			<DialogContent className={classes.dialogContent}>				
 				<T b>{t('privacy.responsible')}</T>
  				<Caption>Senti.Cloud </Caption>
  				<Caption>c/o WebHouse ApS</Caption>
@@ -42,7 +58,7 @@ const PrivacyDialog = (props) => {
 				<T className={classes.p}>{t('privacy.p13')}</T>
 				<T className={classes.p}>{t('privacy.p14')}</T>
 				<T className={classes.p}>{t('privacy.p15')}</T>
-				<T className={classes.p}>{`${t('privacy.p16')} ${<a target="_blank" rel="noopener noreferrer" href={t('privacy.p16.a')}>{t('privacy.p16.a')}</a>} ${t('privacy.p16.b')}`}</T>
+				<T className={classes.p}>{`${t('privacy.p16')} `}<a target="_blank" rel="noopener noreferrer" href={t('privacy.p16.a')}>{t('privacy.p16.c')}</a> {` ${t('privacy.p16.b')}`}</T>
 				<T b>{t('privacy.b2')}</T>
 				<T className={classes.p}>{t('privacy.p17')}</T>
 				<T className={classes.p}>{t('privacy.p18')}</T>
@@ -50,7 +66,7 @@ const PrivacyDialog = (props) => {
 				<T className={classes.p}>{t('privacy.p20')}</T>
 				<T className={classes.p}>{t('privacy.p21')}</T>
 				<T className={classes.p}>{t('privacy.p22')}</T>
-				<T className={classes.p}>{`${t('privacy.p23')} ${<a target="_blank" rel="noopener noreferrer" href={t('privacy.p23.a')}>{t('privacy.p23.a')}</a>}`}</T>
+				<T className={classes.p}>{`${t('privacy.p23')} `} <a target="_blank" rel="noopener noreferrer" href={t('privacy.p23.a')}>{t('privacy.p23.a')}</a></T>
 				<T b>{t('privacy.b3')}</T>
 				<T className={classes.p}>{t('privacy.p24')}</T>
 				<T className={classes.p}>{t('privacy.p25')}</T>
@@ -80,4 +96,4 @@ const PrivacyDialog = (props) => {
 	)
 }
 
-export default PrivacyDialog
+export default withStyles(styles)(PrivacyDialog)

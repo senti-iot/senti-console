@@ -104,15 +104,18 @@ export class ProjectContact extends Component {
 					</Hidden>
 					<Hidden lgUp>
 						<ItemG container alignItems={'center'}>
-							<ItemG xs={4} container alignItems={'center'}>
+							<ItemG xs={12} container alignItems={'center'}>
 								<IconButton color={'inherit'} onClick={this.handleCloseEditContact} aria-label='Close'>
 									<Close />
 								</IconButton>
 								<Typography variant='h6' color='inherit' className={classes.flex}>
-									{t('orgs.pageTitle')}
+									{t('users.pageTitle')}
 								</Typography>
+								<Button color={'primary'} style={{ marginLeft: 'auto' }} onClick={this.handleChangeContactPerson}>
+									{t('actions.save')}
+								</Button>
 							</ItemG>
-							<ItemG xs={8} container alignItems={'center'} justify={'center'}>
+							<ItemG xs={12} container alignItems={'center'} justify={'center'}>
 								<Search
 									noAbsolute
 									fullWidth
@@ -122,11 +125,7 @@ export class ProjectContact extends Component {
 									handleFilterKeyword={this.handleFilterKeyword}
 									searchValue={filters.keyword} />
 							</ItemG>
-							<ItemG>
-								<Button color={'inherit'} onClick={this.handleChangeContactPerson}>
-									{t('actions.save')}
-								</Button>
-							</ItemG>
+						
 						</ItemG>
 					</Hidden>
 				</Toolbar>

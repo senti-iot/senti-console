@@ -6,6 +6,9 @@
 		"networkError": "Netværksfejl!",
 		"title": "Siden ikke fundet!"
 	},
+	"markdown": {
+		"test": "# This is a header\n\nAnd this is a paragraph"
+	},
 	"": "",
 	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
@@ -13,7 +16,7 @@
 		"call": "Ring",
 		"sendEmail": "Send e-mail",
 		"changeLanguage": "Change to English",
-		"search": "Eller skriv her for at søge",
+		"search": "Skriv her for at søge",
 		"accept": "Godkend",
 		"addFilter": "Tilføj filter",
 		"apply": "Anvend",
@@ -34,6 +37,8 @@
 		"heatMap": "Heatmap",
 		"insertAddress": "Indtast adresse",
 		"learnMore": "Lær mere",
+		"learn": "Lær",
+		"more" : "mere",
 		"login": "Log ind",
 		"loginWithGoogle": "Log ind med Google",
 		"manualCalibration": "Manuel kalibrering",
@@ -423,20 +428,20 @@
 	},
 	"login": {
 		"cards": {
-			"0": ">Senti< er en open source Internet of Things platform, der >gør dig i stand til at sanse og opsamle< viden om mennesker og tilstande i dit bymæssige eller industrielle miljø.",
-			"1": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.",
-			"2": ">Senti.<Cloud fungerer som >“tentakler”< der sanser >byens rum< og hjælper med at gøre din by til en >“smartcity”<.",
-			"3": ">Senti.<Cloud er en administreret IoT-tjeneste, der nemt og sikkert forbinder, håndterer og opsamler data fra >alle byens forskellige enheder<.",
-			"4": ">Senti.<Cloud er en komplet løsning til at indsamle, behandle, analysere og visualisere data i >realtid< der kan hjælpe dig med operationel effektivitet og træffe >velinformerede beslutninger<.",
-			"5": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.",
-			"6": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.",
-			"7": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.",
-			"8": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.",
-			"9": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.",
-			"10": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.",
-			"11": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.",
-			"12": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.",
-			"13": ">Senti.<Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af >IoT-enheder< i stor skala.."
+			"0": "**Senti** er en open source Internet of Things platform, der **gør dig i stand til at sanse og opsamle** viden om mennesker og tilstande i dit bymæssige eller industrielle miljø.",
+			"1": "**Senti.**Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+			"2": "**Senti.**Cloud fungerer som **“tentakler”** der sanser **byens rum** og hjælper med at gøre din by til en **“smartcity”**.",
+			"3": "**Senti.**Cloud er en administreret IoT-tjeneste, der nemt og sikkert forbinder, håndterer og opsamler data fra **alle byens forskellige enheder**.",
+			"4": "**Senti.**Cloud er en komplet løsning til at indsamle, behandle, analysere og visualisere data i **realtid** der kan hjælpe dig med operationel effektivitet og træffe **velinformerede beslutninger**.",
+			"5": "**Senti.**Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+			"6": "**Senti.**Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+			"7": "**Senti.**Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+			"8": "**Senti.**Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+			"9": "**Senti.**Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+			"10": "**Senti.**Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+			"11": "**Senti.**Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+			"12": "**Senti.**Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+			"13": "**Senti.**Cloud er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.."
 		},
 		"footer": "©2016–2019 Alle Rettigheder Forbeholdt. Senti.Cloud er en open source platform designet og udviklet af WebHouse ApS.",
 		"needAnAccount1": "Brug for en",
@@ -632,6 +637,7 @@
 		"p16": "Vi anvender de underleverandører/underdatabehandlere der fremgår af" ,
 		"p16.a": "https://senti.cloud/dk/sikkerhed/underleverandoerer.htm",
 		"p16.b":"til behandling af dine personoplysninger.",
+		"p16.c": "Underleverandører",
 		"p17": "Hvis du ønsker adgang til de oplysninger, som er registreret om dig hos Senti.Cloud, skal du rette henvendelse på privacy@senti.cloud.",
 		"p18": "Er der registreret forkerte oplysninger om dig, som du ikke selv kan rette, eller hvis du har andre indsigelser mod vores behandling af dine personoplysninger, så skriv til os på privacy@senti.cloud.",
 		"p19": "Du har mulighed for at få indsigt i hvilke informationer, der er registreret om dig, og du er berettiget til at komme med indsigelser mod vores behandling af dine personoplysninger.",
@@ -639,7 +645,7 @@
 		"p21": "Du kan til enhver tid gøre indsigelse mod, at oplysninger om dig gøres til genstand for behandling. Blot skriv til os på privacy@senti.cloud.",
 		"p22": "Du kan også til enhver tid tilbagekalde dit samtykke til de behandlinger, vi foretager med dit samtykke.",
 		"p23": "Du har mulighed for at klage over vores behandling af dine personoplysninger, hvis vi ikke giver dig ret I dine indsigelser. Klagen skal sendes til Datatilsynet. Se mere på ",
-		"p23.a": "www.datatilsynet.dk",
+		"p23.a": "https://www.datatilsynet.dk",
 		"p24": "Personoplysninger slettes eller anonymiseres løbende efterhånden som det formål, de blev indsamlet til, afsluttes.",
 		"p25": "Vi gemmer dine personoplysninger så længe vi har et aktivt kundeforhold med dig/din virksomhed.",
 		"p26": "Når kundeforholdet er ophørt, gemmer vi dine personoplysninger så længe vi er forpligtet hertil efter lovgivning, herunder regnskabslovgivningen.",
@@ -667,7 +673,7 @@
 		"reset": {
 			"restore": "Nulstil indstillinger",
 			"resetSettings": "Nulstil indstillinger til standard",
-			"message": "Er du sikker på, at du vil nulstille dine indstillinger til standard?"
+			"message": "Er du sikker på, at du vil nulstille indstillinger til standard?"
 		},
 		"chart": {
 			"YAxis": {

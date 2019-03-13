@@ -55,11 +55,23 @@ class CreateCollection extends Component {
 			collection: emptyDC
 		})
 	}
+	keyHandler = (e) => {
+		if (e.key === 'Escape') {
+			this.goToCollection()
+		}
+	}
 	componentDidMount = async () => {
+		window.addEventListener('keydown', this.keyHandler, false)
+
 		await this.getEmptyCollection()
 		this.getAvailableDevices()
 		this.getOrgs()
 	}
+	componentWillUnmount = () => {
+		window.removeEventListener('keydown', this.keyHandler, false)
+
+	}
+
 	handleOpenOrg = () => {
 		this.setState({
 			openOrg: true

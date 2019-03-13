@@ -262,9 +262,9 @@ class Collection extends Component {
 	snackBarMessages = (msg) => {
 		const { s, t } = this.props
 		let name = this.state.collection.name ? this.state.collection.name : t('collections.noName')
-		let deviceName = this.state.activeDevice.name
-		let deviceId = this.state.activeDevice.id
-		let id = this.state.collection.id
+		let deviceName = this.state.activeDevice ? this.state.activeDevice.name : null
+		let deviceId = this.state.activeDevice ? this.state.activeDevice.id : null
+		let id = this.state.collection ? this.state.collection.id : null
 		switch (msg) {
 			case 1:
 				s('snackbars.unassign.deviceFromCollection', { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id })
@@ -279,7 +279,7 @@ class Collection extends Component {
 				s('snackbars.assign.collectionToProject', { collection: `${name} (${id})`, project: this.state.collection.project.title })
 				break
 			case 6:
-				s('snackbars.assign.deviceToCollection', { collection: `${name} (${id})`, device: this.state.collection.activeDeviceStats.id })
+				s('snackbars.assign.deviceToCollection', { collection: `${name} (${id})`, device: deviceId ? deviceId : "" })
 				break
 			case 4:
 				s('snackbars.collectionDeleted')
@@ -303,8 +303,8 @@ class Collection extends Component {
 				openDelete: false
 			})
 			if (rs) {
-				this.props.history.push('/collections/list')
 				this.snackBarMessages(4)
+				this.props.history.push('/collections/list')
 			}
 
 		})
@@ -319,11 +319,15 @@ class Collection extends Component {
 	}
 
 	handleCloseAssignDevice = async (reload) => {
+		console.trace()
 		if (reload) {
 			this.setState({ loading: true, openAssignDevice: false })
-			await this.getCollection(this.state.collection.id).then(() => {
-				this.snackBarMessages(6)
-			})
+			if (this.state.collection)
+			{
+				await this.getCollection(this.state.collection.id).then(() => {
+					this.snackBarMessages(6)
+				})
+			}
 		}
 		else {
 			this.setState({ openAssignDevice: false })
@@ -554,6 +558,7 @@ class Collection extends Component {
 						})}
 						{this.state.activeDevice ? <ItemGrid xs={12} noMargin id='map'>
 							<Maps
+								single
 								reload={this.reload}
 								device={activeDevice}
 								mapTheme={this.props.mapTheme}

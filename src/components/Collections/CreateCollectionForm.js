@@ -221,7 +221,6 @@ class CreateCollectionForm extends Component {
 									value={org.name}
 									handleClick={handleOpenOrg}
 									handleChange={() => { }}
-
 									InputProps={{
 										onChange: handleOpenOrg,
 										readOnly: true
@@ -237,7 +236,6 @@ class CreateCollectionForm extends Component {
 									value={device.name}
 									handleClick={handleOpenDevice}
 									handleChange={() => { }}
-									
 									InputProps={{
 										onChange: handleOpenDevice,
 										readOnly: true

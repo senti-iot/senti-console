@@ -20,6 +20,7 @@ const sidebarStyle = theme => ({
 	drawerPaper: {
 		color: '#fff',
 		backgroundColor: "#434351",
+		overflowY: 'inherit',
 		top: 70,
 		[theme.breakpoints.down('md')]: {
 			top: 0

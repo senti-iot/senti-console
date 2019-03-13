@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { ItemG, TextF, T, Muted } from 'components';
-import { Hidden, Paper, withStyles, InputAdornment, Button, withWidth } from '@material-ui/core';
+import { Hidden, Paper, withStyles, InputAdornment, Button, withWidth, ButtonBase, IconButton } from '@material-ui/core';
 import logo from 'logo.svg'
 import { connect } from 'react-redux'
-import { Person, LockOutlined, Google } from 'variables/icons';
+import { Person, Google, Visibility, VisibilityOff } from 'variables/icons';
 import cx from 'classnames'
 import withLocalization from 'components/Localization/T';
 import { compose } from 'recompose';
@@ -18,6 +18,9 @@ import { changeLanguage } from 'redux/localization';
 // import ResetPassword from 'layouts/ResetPassowrd/ResetPassword';
 import FadeOutLoader from 'components/Utils/FadeOutLoader/FadeOutLoader';
 import loginPageStyles from 'assets/jss/material-dashboard-react/loginPageStyle';
+import CookiesDialog from 'components/Cookies/CookiesDialog';
+import PrivacyDialog from 'components/Cookies/PrivacyDialog';
+import { defaultFont } from 'assets/jss/material-dashboard-react';
 
 let moment = require('moment');
 
@@ -32,15 +35,27 @@ class NewLoginPage extends Component {
 			pass: '',
 			language: 'da',
 			loggingIn: false,
-			resetPassword: false
+			cookies: false,
+			privacy: false,
+			showPassword: false
 		}
 		this.input = React.createRef()
 	}
+	handleCookies = () => {
+		this.setState({
+			cookies: !this.state.cookies
+		})
+	}
+	handlePrivacy = () => {
+		this.setState({
+			privacy: !this.state.privacy
+		})
+	}
 	googleSignIn = async (googleUser) => {
-		if (googleUser.error) { 
+		if (googleUser.error) {
 			console.log(googleUser.error)
-		}			
-		if (googleUser) { 
+		}
+		if (googleUser) {
 			let token = googleUser.getAuthResponse().id_token
 			await loginUserViaGoogle(token).then(async rs => {
 				if (rs) {
@@ -60,7 +75,7 @@ class NewLoginPage extends Component {
 			})
 		}
 	}
-	logUser = () => { 
+	logUser = () => {
 		this.setState({ loggingIn: true })
 	}
 	loginUser = async () => {
@@ -118,15 +133,12 @@ class NewLoginPage extends Component {
 		// @ts-ignore
 		if (this.inputRef.current) { this.inputRef.current.focus() }
 	}
-	
-	// renderResetPassword = () => {
-	// 	const { resetPassword } = this.state
-	// 	return <ResetPassword match={this.props.match} open={resetPassword} />
-	// }
+
 	render() {
 		const { classes, t } = this.props
-		const { language, loggingIn } = this.state
+		const { language, loggingIn, loggingInGoogle, privacy, cookies } = this.state
 		const IconEndAd = cx({
+			[classes.IconEndAd]: true,
 			[classes.inputIconsColor]: !this.state.error,
 			[classes.iconError]: this.state.error
 		})
@@ -144,23 +156,25 @@ class NewLoginPage extends Component {
 									<img className={classes.logo} src={logo} alt={'sentiLogo'} />
 								</ItemG>
 								<FadeOutLoader circularClasses={classes.loader} on={loggingIn} onChange={this.loginUser} notCentered>
-									<ItemG xs={12} container justify={'center'}>
+									<FadeOutLoader circularClasses={classes.loader} on={loggingInGoogle} onChange={() => {}} notCentered>
+
 										<ItemG xs={12} container justify={'center'}>
-											<T className={classes.loginButton + ' ' + classes.needAccount}>
-												<span style={{ marginRight: 4 }}>
-													{t('login.needAnAccount1')}<span style={{ fontWeight: 600 }}> Senti.</span>Cloud <span>{t('login.needAnAccount2')}</span>?
-												</span>
-												<span>
-													<Link to={'/login'}>
-														{t('login.createAccount')}
-													</Link>
-												</span>
-											</T>
-										</ItemG>
+											<ItemG xs={12} container justify={'center'}>
+												<T className={classes.loginButton + ' ' + classes.needAccount}>
+													<span style={{ marginRight: 4 }}>
+														{t('login.needAnAccount1')}<span style={{ fontWeight: 600 }}> Senti.</span>Cloud <span>{t('login.needAnAccount2')}</span>?
+													</span>
+													<span>
+														<Link to={'/login'}>
+															{t('login.createAccount')}
+														</Link>
+													</span>
+												</T>
+											</ItemG>
 
-										<ItemG container xs={12}>
+											<ItemG container xs={12} >
 
-											<ItemG container xs={12}>
+												{/* <ItemG container xs={12}> */}
 												<TextF
 													id={'user'}
 													autoFocus
@@ -174,65 +188,80 @@ class NewLoginPage extends Component {
 													InputProps={{
 														autoComplete: 'on',
 														type: 'email',
-														endAdornment: <InputAdornment position='end'>
-															<Person className={IconEndAd} />
+														endAdornment: <InputAdornment classes={{ root: IconEndAd }}>
+															<Person style={{ color: 'rgba(0, 0, 0, 0.54)' }}/>
 														</InputAdornment>
 													}}
 												/>
-											</ItemG>
-											<ItemG container xs={12}>
+												{/* </ItemG> */}
+												{/* <ItemG container xs={12}> */}
 												<TextF
 													id={'pass'}
 													label={t('login.pass')}
 													error={this.state.error}
 													className={classes.loginButton}
+													type={this.state.showPassword ? 'text' : 'password'}
 													fullWidth
 													handleChange={this.handleInput}
 													value={this.state.pass}
 													InputProps={{
 														autoComplete: 'on',
-														type: 'password',
-														endAdornment: <InputAdornment position='end'>
-															<LockOutlined className={IconEndAd} />
+														// type: 'password',
+														endAdornment: <InputAdornment classes={{ root: IconEndAd }}>
+														                <IconButton
+																className={classes.smallAction}
+																onClick={() => this.setState({ showPassword: !this.state.showPassword })}
+															>
+																{this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+															</IconButton>
 														</InputAdornment>
 													}}
 												/>
+												{/* </ItemG> */}
+											</ItemG>
+											<ItemG xs={12} container justify={'center'}>
+												<Button variant={'contained'} fullWidth color={'primary'} className={classes.loginButton} onClick={this.logUser}>
+													{t('actions.login')}
+												</Button>
+											</ItemG>
+											<ItemG xs={12} container justify={'center'} style={{ margin: "16px 0px" }}>
+												<ItemG xs={12} container justify={'space-around'}>
+													<Link to={`/password/reset/${language}`}>
+														{t('login.forgotPassword')}
+													</Link>
+												</ItemG>
+											</ItemG>
+											<ItemG xs={12} container justify={'center'}>
+												<GoogleLogin
+													clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
+													render={renderProps => (
+														<Button fullWidth className={classes.loginButton} variant={'outlined'} color={'primary'} onClick={() => {renderProps.onClick(); this.setState({ loggingInGoogle: true })}}>
+															<img src={Google} alt={'google-logo'} style={{ marginRight: 8 }} />
+															{t('actions.loginWithGoogle')}
+														</Button>)}
+													buttonText="Login"
+													onSuccess={this.googleSignIn}
+													onFailure={this.googleSignIn}
+												/>
 											</ItemG>
 										</ItemG>
-										<ItemG xs={12} container justify={'center'}>
-											<Button variant={'contained'} fullWidth color={'primary'} className={classes.loginButton} onClick={this.logUser}>
-												{t('actions.login')}
-											</Button>
-										</ItemG>
-										<ItemG xs={12} container justify={'center'} style={{ margin: "32px 0px" }}>
-											<ItemG xs={12} container justify={'space-around'}>
-												<Link to={`/password/reset/${language}`}>
-													{t('login.forgotPassword')}
-												</Link>
-											</ItemG>
-										</ItemG>
-										<ItemG xs={12} container justify={'center'}>
-											<GoogleLogin
-												clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
-												render={renderProps => (
-													<Button fullWidth className={classes.loginButton} variant={'outlined'} color={'primary'} onClick={renderProps.onClick}>
-														<img src={Google} alt={'google-logo'} style={{ marginRight: 8 }} />
-														{t('actions.loginWithGoogle')}
-													</Button>)}
-												buttonText="Login"
-												onSuccess={this.googleSignIn}
-												onFailure={this.googleSignIn}
-											/>
-										</ItemG>
-									</ItemG>
+									</FadeOutLoader>
 								</FadeOutLoader>
 							</div>
 							<ItemG xs={12} container alignItems={'flex-end'} justify={'center'} className={classes.footer}>
-								<Muted className={classes.footerText}>{t('login.footer')}</Muted>
+								<Muted className={classes.footerText}>
+									<T paragraph style={{ ...defaultFont, fontSize: 13, color: 'inherit' }}>
+										{`${t('login.footer')} `}
+									</T>
+									<ButtonBase onClick={this.handleCookies} style={{ ...defaultFont, fontSize: 13, margin: "0px 4px", textDecoration: 'underline' }}>{t('settings.t&c.cookiesPolicy')}</ButtonBase>
+									<ButtonBase onClick={this.handlePrivacy} style={{ ...defaultFont, fontSize: 13, margin: "0px 4px", textDecoration: 'underline' }}>{t('settings.t&c.privacyPolicy')}</ButtonBase>
+								</Muted>
 							</ItemG>
 						</Paper>
 					</div>
 				</ItemG>
+				<CookiesDialog read t={t} open={cookies} handleClose={this.handleCookies} handleAcceptCookies={this.handleCookies} />
+				<PrivacyDialog t={t} open={privacy} handleClose={this.handlePrivacy} />
 				<Hidden smDown>
 					<ItemG md={8} lg={8} xl={9}>
 						<LoginImages t={t} />

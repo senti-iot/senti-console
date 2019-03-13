@@ -43,9 +43,14 @@ class CreateProject extends Component {
 		}
 		props.setHeader('menus.create.project', true, '/projects/list', 'projects')
 	}
-
+	keyHandler = (e) => {
+		if (e.key === 'Escape') {
+			this.goToProject()
+		}
+	}
 	componentDidMount = () => {
 		this._isMounted = 1
+		window.addEventListener('keydown', this.keyHandler, false)
 		getAllUsers().then(async rs => {
 			if (this._isMounted) {
 				this.setState({
@@ -78,6 +83,7 @@ class CreateProject extends Component {
 	}
 
 	componentWillUnmount = () => {
+		window.removeEventListener('keydown', this.keyHandler, false)
 		this._isMounted = 0
 	}
 	handleValidation = () => {

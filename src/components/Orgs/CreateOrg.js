@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Collapse, Button, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { Paper, withStyles, Collapse, Button } from '@material-ui/core';
 import classNames from 'classnames';
-import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
+import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning, DSelect } from 'components'
 import { connect } from 'react-redux'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
 import EditOrgAutoSuggest from './EditOrgAutoSuggest';
@@ -25,6 +25,9 @@ class CreateOrg extends Component {
 				aux: {
 					cvr: '',
 					ean: ''
+				},
+				org: {
+					id: 0
 				}
 			},
 			selectedOrg: '',
@@ -38,20 +41,36 @@ class CreateOrg extends Component {
 			openSnackBar: false,
 		}
 	}
+	goToOrg = () => {
+		const { history, location } = this.props
+		history.push(location.prevURL ? location.prevURL : '/management/orgs/')
+	}
+	keyHandler = (e) => {
+		if (e.key === 'Escape') {
+			this.goToOrg()
+		}
+	}
 	componentDidMount = async () => {
 		this._isMounted = 1
+		window.addEventListener('keydown', this.keyHandler, false)
 		const { t, accessLevel, setHeader, location } = this.props
 		let prevURL = location.prevURL ? location.prevURL : `/management/orgs`
 		setHeader('orgs.createOrg', true, prevURL, '/management/users')
 		await getAllOrgs().then(rs => {
 			if (this._isMounted) {
 				if (accessLevel.apisuperuser)
-					rs.unshift({ id: -1, name: t('orgs.fields.topLevelOrg') })
+					rs.unshift({ id: 0, name: t('orgs.fields.topLevelOrg') })
 				this.setState({ orgs: rs, loading: false })
 			}
 		})
 	}
 
+	
+	componentWillUnmount = () => {
+		window.removeEventListener('keydown', this.keyHandler, false)
+		this._isMounted = 0
+		clearTimeout(this.timer)
+	}
 
 	handleValidation = () => {
 		let errorCode = [];
@@ -108,10 +127,6 @@ class CreateOrg extends Component {
 		}
 	}
 
-	componentWillUnmount = () => {
-		this._isMounted = 0
-		clearTimeout(this.timer)
-	}
 
 	handleCountryChange = value => {
 		this.setState({
@@ -177,10 +192,6 @@ class CreateOrg extends Component {
 
 	}
 
-	goToOrg = () => {
-		this.props.history.push('/management/orgs/')
-	}
-
 	handleOrgChange = e => {
 		this.setState({
 			selectedOrg: e.target.value
@@ -188,32 +199,16 @@ class CreateOrg extends Component {
 	}
 	
 	renderOrgs = () => {
-		const { classes, t } = this.props
-		const { orgs, selectedOrg, error } = this.state
-
-		return <FormControl>
-			<InputLabel error={ error } FormLabelClasses={ { root: classes.label } } color={ 'primary' } htmlFor='select-multiple-chip'>
-				{ t('orgs.fields.parentOrg') }
-			</InputLabel>
-			<Select
-				error={ error }
-				fullWidth={ false }
-				color={ 'primary' }
-				value={ selectedOrg }
-				onChange={ this.handleOrgChange }
-			>
-				{ orgs ? orgs.map(org => (
-					<MenuItem
-						key={ org.id }
-						value={ org.id }
-					>
-						{ org.name }
-					</MenuItem>
-				)) : null }
-			</Select>
-		</FormControl>
-
+		const { t } = this.props
+		const { orgs, org } = this.state
+		return <DSelect
+			label={t('orgs.fields.parentOrg')}
+			 value={org.org.id}
+			 onChange={this.handleOrgChange}
+			 menuItems={orgs.map(org => ({ value: org.id, label: org.name }))}
+		/>
 	}
+	
 	render () {
 		const { classes, t } = this.props
 		const { created, error, loading, org } = this.state

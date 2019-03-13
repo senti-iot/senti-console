@@ -501,6 +501,7 @@ class Device extends Component {
 
 					<ItemGrid xs={12} noMargin id={'map'}>
 						<Maps
+							single
 							reload={this.reload}
 							device={this.state.device}
 							markers={this.state.device ? [this.state.device] : []}

@@ -1,14 +1,12 @@
 import React, { Component, Fragment } from 'react'
 import { Paper, withStyles, Fade,  Collapse, Button } from '@material-ui/core';
-import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
-import MomentUtils from '@date-io/moment';
 import cx from 'classnames'
 import Gravatar from 'react-gravatar'
-import { KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft, Check, Close } from 'variables/icons';
+import { Check, Close } from 'variables/icons';
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { updateProject, getProject } from 'variables/dataProjects';
-import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning, ItemG } from 'components'
+import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning, ItemG, DatePicker } from 'components'
 import { isFav, updateFav } from 'redux/favorites';
 import { connect } from 'react-redux'
 import { getAllUsers } from 'variables/dataUsers';
@@ -83,7 +81,15 @@ class EditProject extends Component {
 				return ''
 		}
 	}
+
+	keyHandler = (e) => {
+		if (e.key === 'Escape') {
+			this.goToProject()
+		}
+	}
 	componentDidMount = async () => {
+		window.addEventListener('keydown', this.keyHandler, false)
+
 		this._isMounted = 1
 		let id = this.props.match.params.id
 		const { location } = this.props
@@ -115,6 +121,8 @@ class EditProject extends Component {
 	}
 
 	componentWillUnmount = () => {
+		window.removeEventListener('keydown', this.keyHandler, false)
+
 		this._isMounted = 0
 		clearTimeout(this.timer)
 	}
@@ -179,8 +187,8 @@ class EditProject extends Component {
 		})
 	}
 	goToProject = () => {
-		const { history } = this.props
-		history.push('/project/' + this.props.match.params.id)
+		const { history, location } = this.props
+		history.push(location.prevURL ? location.prevURL : '/project/' + this.props.match.params.id)
 	}
 	close = () => {
 		const { isFav, updateFav } = this.props
@@ -242,15 +250,15 @@ class EditProject extends Component {
 					</Hidden>
 					<Hidden lgUp>
 						<ItemG container alignItems={'center'}>
-							<ItemG xs={4} container alignItems={'center'}>
+							<ItemG xs={12} container alignItems={'center'}>
 								<IconButton color={'inherit'} onClick={this.handleCloseUser} aria-label='Close'>
 									<Close />
 								</IconButton>
 								<Typography variant='h6' color='inherit' className={classes.flex}>
-									{t('orgs.pageTitle')}
+									{t('users.pageTitle')}
 								</Typography>
 							</ItemG>
-							<ItemG xs={8} container alignItems={'center'} justify={'center'}>
+							<ItemG xs={12} container alignItems={'center'} justify={'center'}>
 								<Search
 									noAbsolute
 									fullWidth
@@ -268,7 +276,7 @@ class EditProject extends Component {
 				{users ? filterItems(users, filters).map((o, i) => {
 					return <Fragment key={i}>
 						<ListItem button onClick={this.handleChangeUser(o)}>
-							<Gravatar default='mp' email={o.email} className={classes.img} />}
+							<Gravatar default='mp' email={o.email} className={classes.img} />
 							<ListItemText primary={`${o.firstName} ${o.lastName}`} secondary={o.org.name} />
 						</ListItem>
 						<Divider />
@@ -289,129 +297,105 @@ class EditProject extends Component {
 			!loading ?
 				<GridContainer justify={'center'}>
 					<Fade in={true}>
-					
 						<Paper className={classes.paper}>
-							<MuiPickersUtilsProvider utils={MomentUtils} moment={moment}>
-								<form className={classes.form}>
-									<ItemGrid xs={12}>
-										<Collapse in={this.state.error}>
-											<Warning>
-												<Danger>
-													{this.state.errorMessage}
-												</Danger>
-											</Warning>
-										</Collapse>
-									</ItemGrid>
-									<ItemGrid container xs={12} md={6}>
-										<TextF
-											autoFocus
-											id={'title'}
-											label={t('projects.fields.name')}
-											value={this.state.project.title}
-											className={classes.textField}
-											handleChange={this.handleChange('title')}
-											margin='normal'
-										
-											error={error}
-										/>
-									</ItemGrid>
-									<ItemGrid xs={12} md={6} sm={12}>
-										<TextF
-											id={'multiline-flexible'}
-											label={t('projects.fields.description')}
-											multiline
-											rows={4}
-											color={'secondary'}
-											className={classes.textField}
-											value={this.state.project.description}
-											handleChange={this.handleChange('description')}
-											margin='normal'
-										
-											error={error}
-										/>
-									</ItemGrid>
-									<ItemGrid xs={12} md={6}>
-										<DatePicker
-											autoOk
-											label={t('projects.fields.startDate')}
-											clearable
-											labelFunc={(date) => date === null ? '' : moment(date).format('LL')}
-											format='YYYY-MM-DDTHH:mm'
-											value={this.state.project.startDate}
-											onChange={this.handleDateChange('startDate')}
-											animateYearScrolling={false}
-											color='primary'
-											rightArrowIcon={<KeyArrRight />}
-											leftArrowIcon={<KeyArrLeft />}
-											InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-											InputProps={{ classes: { underline: classes.underline } }}
-											error={error}
-										/>
-									</ItemGrid>
-									<ItemGrid xs={12} md={6}>
-										<DatePicker
-											color='primary'
-											autoOk
-											label={t('projects.fields.endDate')}
-											clearable
-											labelFunc={(date) => date === null ?  '' : date.format('LL') }
-											format='YYYY-MM-DDTHH:mm'
-											value={this.state.project.endDate}
-											onChange={this.handleDateChange('endDate')}
-											animateYearScrolling={false}
-											rightArrowIcon={<KeyArrRight />}
-											leftArrowIcon={<KeyArrLeft />}
-											InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-											InputProps={{ classes: { underline: classes.underline } }}
-											error={error}
-										/>
-									</ItemGrid>
-									<ItemGrid xs={12}>
-										{this.renderSelectUser()}
-										<TextF
-											id={'contactPerson'}
-											label={t('projects.contact.title')}
-											value={`${user.firstName} ${user.lastName}`}
-											handleClick={this.handleOpenUser}
-											handleChange={() => { }}
-											InputProps={{
-												onChange: this.handleOpenUser,
-												readOnly: true
-											}}
-										/>
-									</ItemGrid>
-								</form>
-								<ItemGrid xs={12} container justify={'center'}>
-									<Collapse in={this.state.creating} timeout='auto' unmountOnExit>
-										<CircularLoader notCentered />
+							<form className={classes.form}>
+								<ItemGrid xs={12}>
+									<Collapse in={this.state.error}>
+										<Warning>
+											<Danger>
+												{this.state.errorMessage}
+											</Danger>
+										</Warning>
 									</Collapse>
 								</ItemGrid>
-								<ItemGrid container style={{ margin: 16 }}>
-									<div className={classes.wrapper}>
-										<Button
-											variant='outlined'
-											// color={'danger'}
-											onClick={this.goToProject}
-											className={classes.redButton}
-										>
-											{t('actions.cancel')}
-										</Button>
-									</div>
-									<div className={classes.wrapper}>
-										<Button
-											variant='outlined'
-											color='primary'
-											className={buttonClassname}
-											disabled={this.state.creating || this.state.created}
-											onClick={ this.handleUpdateProject}>
-											{this.state.created ?
-												<Fragment><Check className={classes.leftIcon} />{t('snackbars.redirect')}</Fragment>
-												: t('actions.save')}
-										</Button>
-									</div>
+								<ItemGrid container xs={12} md={6}>
+									<TextF
+										autoFocus
+										id={'title'}
+										label={t('projects.fields.name')}
+										value={this.state.project.title}
+										className={classes.textField}
+										handleChange={this.handleChange('title')}
+										margin='normal'
+										
+										error={error}
+									/>
 								</ItemGrid>
-
-							</MuiPickersUtilsProvider>
+								<ItemGrid xs={12} md={6} sm={12}>
+									<TextF
+										id={'multiline-flexible'}
+										label={t('projects.fields.description')}
+										multiline
+										rows={4}
+										color={'secondary'}
+										className={classes.textField}
+										value={this.state.project.description}
+										handleChange={this.handleChange('description')}
+										margin='normal'
+										
+										error={error}
+									/>
+								</ItemGrid>
+								<ItemGrid xs={12} md={6}>
+									<DatePicker
+										label={t('projects.fields.endDate')}
+										value={this.state.project.startDate}
+										onChange={this.handleDateChange('startDate')}
+										error={error}
+									/>
+								</ItemGrid>
+								<ItemGrid xs={12} md={6}>
+									<DatePicker
+										label={t('projects.fields.endDate')}
+										value={this.state.project.endDate}
+										onChange={this.handleDateChange('endDate')}
+										error={error}
+									/>
+								</ItemGrid>
+								<ItemGrid xs={12}>
+									{this.renderSelectUser()}
+									<TextF
+										id={'contactPerson'}
+										label={t('projects.contact.title')}
+										value={`${user.firstName} ${user.lastName}`}
+										handleClick={this.handleOpenUser}
+										handleChange={() => { }}
+										InputProps={{
+											onChange: this.handleOpenUser,
+											readOnly: true
+										}}
+									/>
+								</ItemGrid>
+							</form>
+							<ItemGrid xs={12} container justify={'center'}>
+								<Collapse in={this.state.creating} timeout='auto' unmountOnExit>
+									<CircularLoader notCentered />
+								</Collapse>
+							</ItemGrid>
+							<ItemGrid container style={{ margin: 16 }}>
+								<div className={classes.wrapper}>
+									<Button
+										variant='outlined'
+										// color={'danger'}
+										onClick={this.goToProject}
+										className={classes.redButton}
+									>
+										{t('actions.cancel')}
+									</Button>
+								</div>
+								<div className={classes.wrapper}>
+									<Button
+										variant='outlined'
+										color='primary'
+										className={buttonClassname}
+										disabled={this.state.creating || this.state.created}
+										onClick={ this.handleUpdateProject}>
+										{this.state.created ?
+											<Fragment><Check className={classes.leftIcon} />{t('snackbars.redirect')}</Fragment>
+											: t('actions.save')}
+									</Button>
+								</div>
+							</ItemGrid>
 						</Paper>
 					</Fade>
 				</GridContainer>

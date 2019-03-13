@@ -41,6 +41,8 @@ import CustomDateTime from './CustomInput/CustomDateTime'
 import DSelect from './CustomInput/DSelect'
 import DateFilterMenu from './CustomInput/DateFilterMenu'
 import AddressInput from './CustomInput/AddressInput'
+import DatePicker from './CustomInput/DatePicker'
+import DateTimePicker from './CustomInput/DateTimePicker'
 
 // ##############################
 // // // Footer
@@ -95,6 +97,8 @@ import WeatherIcon from './Typography/WeatherIcon'
 import T from './Typography/T.js'
 
 export {
+	DatePicker,
+	DateTimePicker,
 	AddressInput,
 	T,
 	ExportModal,

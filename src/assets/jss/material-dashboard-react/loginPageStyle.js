@@ -3,9 +3,26 @@
 
 
 const loginPageStyles = theme => ({
+	smallAction: {
+		padding: 0,
+		// color: primaryColor,
+		"&:hover": {
+			background: 'initial',
+			// color: hoverColor
+		}
+	},
+	IconEndAd: {
+		marginLeft: 12
+	},
+	p: {
+		marginBottom: theme.spacing.unit
+	},
 	wrapper: {
 		display: 'flex',
 		height: '100vh',
+		// [theme.breakpoints.down('sm')]: {
+		// 	height: 'calc(100vh - 70px)'
+		// }
 	},
 	logo: {
 		height: 100,
@@ -81,7 +98,7 @@ const loginPageStyles = theme => ({
 		},
 		[theme.breakpoints.down('xs')]: {
 			// height: 'calc(100% - 32px)',
-			padding: 16,
+			padding: '10px 16px',
 		}
 	},
 	loader: {

@@ -40,7 +40,7 @@ const theme = createMuiTheme({
 		MuiCard: {
 			root: {
 				width: '100%',
-				overflow: "visible"
+				overflow: "hidden"
 			}
 		},
 		MuiButton: {
