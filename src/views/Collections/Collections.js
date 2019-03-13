@@ -106,7 +106,7 @@ class Collections extends Component {
 
 	//#region Life Cycle
 	componentDidMount = async () => {
-		// this._isMounted = 1
+		this._isMounted = 1
 		this.handleTabs()
 		await this.getData()
 
@@ -132,7 +132,7 @@ class Collections extends Component {
 		}
 	}
 	componentWillUnmount = () => {
-		// this._isMounted = 0
+		this._isMounted = 0
 	}
 	//#endregion
 
