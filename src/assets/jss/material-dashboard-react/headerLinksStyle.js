@@ -10,6 +10,19 @@ import {
 } from "assets/jss/material-dashboard-react.js";
 
 const headerLinksStyle = theme => ({
+	nameAndEmail: {
+		height: 46,
+		display: 'flex',
+		flexFlow: 'column',
+		alignItems: 'flex-start',
+		"&:hover": {
+			background: 'inherit'
+		},
+		"&:focus": {
+			background: 'inherit'
+		},
+		cursor: 'default'
+	},
 	img: {
 		borderRadius: 50,
 		height: 36,

@@ -1,7 +1,7 @@
-import { Grid, IconButton, Menu, MenuItem, withStyles } from '@material-ui/core';
+import { Grid, IconButton, Menu, MenuItem, withStyles, Divider } from '@material-ui/core';
 import { AccountBox, Business, Lock, SettingsRounded } from 'variables/icons';
 import headerLinksStyle from 'assets/jss/material-dashboard-react/headerLinksStyle';
-import React from 'react';
+import React, { Fragment } from 'react';
 import cookie from 'react-cookies';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -9,7 +9,7 @@ import Gravatar from 'react-gravatar'
 import { logOut } from 'variables/dataLogin';
 // import moment from 'moment'
 // import christmas from 'assets/img/christmas'
-import { ItemG } from 'components';
+import { ItemG, T } from 'components';
 import { GoogleLogout } from 'react-google-login';
 
 class HeaderLinks extends React.Component {
@@ -70,7 +70,7 @@ class HeaderLinks extends React.Component {
 	// 		}
 	// 		return null
 	// 	}
-		
+
 	// }
 	render() {
 		const { classes, t, user } = this.props;
@@ -93,19 +93,29 @@ class HeaderLinks extends React.Component {
 						{user ? user.img ? <img src={user.img} alt='UserProfile' className={classes.img} /> : <Gravatar default='mp' email={user.email} className={classes.img} size={36} /> : null}
 					</IconButton>
 					<Menu
+						style={{ marginTop: 50 }}
 						id='menu-appbar'
 						anchorEl={anchorProfile}
 						anchorOrigin={{
-							vertical: 'top',
+							vertical: 'bottom',
 							horizontal: 'right',
 						}}
 						transformOrigin={{
-							vertical: 'top',
+							vertical: 'bottom',
 							horizontal: 'right',
 						}}
 						open={openProfile}
 						onClose={this.handleProfileClose}
+						disableAutoFocusItem
 					>
+						{user ? <Fragment>
+							<MenuItem disableRipple component={'div'} className={classes.nameAndEmail}>
+								<T style={{ fontSize: '1rem' }}>{`${user.firstName} ${user.lastName}`}</T>
+								<T style={{ fontSize: '1rem' }}>{user.email}</T>
+							</MenuItem>
+						</Fragment>
+						 : null}
+						<Divider />
 						<MenuItem onClick={this.handleRedirectToOwnProfile}>
 							<AccountBox className={classes.leftIcon} />{t('menus.user.profile')}
 						</MenuItem>
@@ -118,11 +128,11 @@ class HeaderLinks extends React.Component {
 						<GoogleLogout
 							// onLogoutSuccess={() => this.logOut()}
 							clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
-							render={renderProps => (<MenuItem onClick={() => { renderProps.onClick(); this.logOut() } } className={classes.menuItem}>
+							render={renderProps => (<MenuItem onClick={() => { renderProps.onClick(); this.logOut() }} className={classes.menuItem}>
 								<Lock className={classes.leftIcon} />{t('menus.user.signout')}
 							</MenuItem>)}
 						>
-						
+
 						</GoogleLogout>
 					</Menu>
 				</ItemG>

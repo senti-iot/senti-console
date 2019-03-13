@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ItemG, TextF, T, Muted } from 'components';
-import { Hidden, Paper, withStyles, InputAdornment, Button, withWidth } from '@material-ui/core';
+import { Hidden, Paper, withStyles, InputAdornment, Button, withWidth, ButtonBase } from '@material-ui/core';
 import logo from 'logo.svg'
 import { connect } from 'react-redux'
 import { Person, LockOutlined, Google } from 'variables/icons';
@@ -18,6 +18,9 @@ import { changeLanguage } from 'redux/localization';
 // import ResetPassword from 'layouts/ResetPassowrd/ResetPassword';
 import FadeOutLoader from 'components/Utils/FadeOutLoader/FadeOutLoader';
 import loginPageStyles from 'assets/jss/material-dashboard-react/loginPageStyle';
+import CookiesDialog from 'components/Cookies/CookiesDialog';
+import PrivacyDialog from 'components/Cookies/PrivacyDialog';
+import { defaultFont } from 'assets/jss/material-dashboard-react';
 
 let moment = require('moment');
 
@@ -32,15 +35,26 @@ class NewLoginPage extends Component {
 			pass: '',
 			language: 'da',
 			loggingIn: false,
-			resetPassword: false
+			cookies: false,
+			privacy: false
 		}
 		this.input = React.createRef()
 	}
+	handleCookies = () => {
+		this.setState({
+			cookies: !this.state.cookies
+		})
+	}
+	handlePrivacy = () => {
+		this.setState({
+			privacy: !this.state.privacy
+		})
+	}
 	googleSignIn = async (googleUser) => {
-		if (googleUser.error) { 
+		if (googleUser.error) {
 			console.log(googleUser.error)
-		}			
-		if (googleUser) { 
+		}
+		if (googleUser) {
 			let token = googleUser.getAuthResponse().id_token
 			await loginUserViaGoogle(token).then(async rs => {
 				if (rs) {
@@ -60,7 +74,7 @@ class NewLoginPage extends Component {
 			})
 		}
 	}
-	logUser = () => { 
+	logUser = () => {
 		this.setState({ loggingIn: true })
 	}
 	loginUser = async () => {
@@ -118,14 +132,10 @@ class NewLoginPage extends Component {
 		// @ts-ignore
 		if (this.inputRef.current) { this.inputRef.current.focus() }
 	}
-	
-	// renderResetPassword = () => {
-	// 	const { resetPassword } = this.state
-	// 	return <ResetPassword match={this.props.match} open={resetPassword} />
-	// }
+
 	render() {
 		const { classes, t } = this.props
-		const { language, loggingIn, loggingInGoogle } = this.state
+		const { language, loggingIn, loggingInGoogle, privacy, cookies } = this.state
 		const IconEndAd = cx({
 			[classes.inputIconsColor]: !this.state.error,
 			[classes.iconError]: this.state.error
@@ -231,11 +241,19 @@ class NewLoginPage extends Component {
 								</FadeOutLoader>
 							</div>
 							<ItemG xs={12} container alignItems={'flex-end'} justify={'center'} className={classes.footer}>
-								<Muted className={classes.footerText}>{t('login.footer')}</Muted>
+								<Muted className={classes.footerText}>
+									<T paragraph style={{ ...defaultFont, fontSize: 13, color: 'inherit' }}>
+										{`${t('login.footer')} `}
+									</T>
+									<ButtonBase onClick={this.handleCookies} style={{ ...defaultFont, fontSize: 13, margin: "0px 4px", textDecoration: 'underline' }}>{t('settings.t&c.cookiesPolicy')}</ButtonBase>
+									<ButtonBase onClick={this.handlePrivacy} style={{ ...defaultFont, fontSize: 13, margin: "0px 4px", textDecoration: 'underline' }}>{t('settings.t&c.privacyPolicy')}</ButtonBase>
+								</Muted>
 							</ItemG>
 						</Paper>
 					</div>
 				</ItemG>
+				<CookiesDialog read t={t} open={cookies} handleClose={this.handleCookies} handleAcceptCookies={this.handleCookies} />
+				<PrivacyDialog t={t} open={privacy} handleClose={this.handlePrivacy} />
 				<Hidden smDown>
 					<ItemG md={8} lg={8} xl={9}>
 						<LoginImages t={t} />
