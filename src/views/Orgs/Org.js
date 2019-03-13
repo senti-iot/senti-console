@@ -58,6 +58,7 @@ class Org extends Component {
 						})
 					else {
 						let prevURL = location.prevURL ? location.prevURL : '/management/orgs'
+						console.log(prevURL)
 						setHeader('orgs.organisation', true, prevURL, 'users')
 						setTabs({
 							id: 'org',

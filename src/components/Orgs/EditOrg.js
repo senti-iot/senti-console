@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Collapse, Button, MenuItem, Select, FormControl, InputLabel, Fade } from '@material-ui/core';
+import { Paper, withStyles, Collapse, Button, Fade } from '@material-ui/core';
 import { Check } from 'variables/icons';
 import classNames from 'classnames';
 import { getOrg, updateOrg, getAllOrgs } from 'variables/dataOrgs'
-import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning } from 'components'
+import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning, DSelect } from 'components'
 import { connect } from 'react-redux'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
 import EditOrgAutoSuggest from './EditOrgAutoSuggest'
@@ -197,36 +197,20 @@ class EditOrg extends Component {
 			selectedOrg: e.target.value,
 			org: {
 				...this.state.org,
-				org: e.target.value
+				org: {
+					id: e.target.value }
 			}
 		})
 	}
 	renderOrgs = () => {
-		const { classes, t } = this.props
-		const { orgs, selectedOrg } = this.state
-
-		return <FormControl className={classes.formControl}>
-			<InputLabel FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
-				{t('orgs.fields.parentOrg')}
-			</InputLabel>
-			<Select
-				fullWidth={false}
-				color={'primary'}
-				value={selectedOrg !== null ? selectedOrg : ''}
-				onChange={this.handleOrgChange}
-				renderValue={value => value.name}
-			>
-				{orgs ? orgs.map(org => (
-					<MenuItem
-						key={org.id}
-						value={org}
-					>
-						{org.name}
-					</MenuItem>
-				)) : null}
-			</Select>
-		</FormControl>
-
+		const { t } = this.props
+		const { orgs, org } = this.state
+		return <DSelect
+			label={t('orgs.fields.parentOrg')}
+			 value={org.org.id}
+			 onChange={this.handleOrgChange}
+			 menuItems={orgs.map(org => ({ value: org.id, label: org.name }))}
+		/>
 	}
 	render() {
 		const { classes, t } = this.props

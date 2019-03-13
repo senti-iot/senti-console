@@ -2,16 +2,11 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { editUser, getUser } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
-import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader, ItemG, DSelect } from 'components';
+import { GridContainer, ItemGrid, DatePicker, Warning, Danger, TextF, CircularLoader, ItemG, DSelect } from 'components';
 import { Paper, Collapse, withStyles, Button, FormControlLabel, Checkbox } from '@material-ui/core';
-import { KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { isFav, updateFav } from 'redux/favorites';
-import MomentUtils from '@date-io/moment';
-// import moment from 'moment'
-import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
-import moment from 'moment'
 import { getSettings } from 'redux/settings';
 
 class EditUser extends Component {
@@ -27,7 +22,7 @@ class EditUser extends Component {
 				recoveryEmail: "",
 				linkedInURL: "",
 				twitterURL: "",
-				birthday: moment('01011990', 'DDMMYYYY'),
+				birthday: "",
 				newsletter: true,
 			},
 			user: {
@@ -101,9 +96,9 @@ class EditUser extends Component {
 					...user,
 					groups: Object.keys(user.groups).map(g => ({ id: g, name: user.groups[g].name, appId: user.groups[g].appId }))
 				},
-				extended: {
-					...user.aux.senti.extendedProfile
-				}
+				extended: 
+					user.aux.senti ? { ...user.aux.senti.extendedProfile } : { ...this.state.extended }
+				
 			})
 		}
 	}
@@ -426,23 +421,13 @@ class EditUser extends Component {
 				/>
 			</ItemGrid>
 			<ItemGrid container xs={12} md={6}>
-				<MuiPickersUtilsProvider utils={MomentUtils}>
-					<DatePicker
-						autoOk
-						variant={'outlined'}
-						label={t('users.fields.birthday')}
-						clearable
-						format='ll'
-						value={extended.birthday}
-						onChange={this.handleExtendedBirthdayChange('birthday')}
-						animateYearScrolling={false}
-						color='primary'
-						margin={'normal'}
-						disableFuture
-						rightArrowIcon={<KeyboardArrowRight />}
-						leftArrowIcon={<KeyboardArrowLeft />}
-					/>
-				</MuiPickersUtilsProvider>
+				<DatePicker
+					label={t('users.fields.birthday')}
+					format='ll'
+					value={extended.birthday}
+					className={classes.textField}
+					onChange={this.handleExtendedBirthdayChange('birthday')}
+				/>
 			</ItemGrid>
 			<ItemGrid container xs={12} md={6}>
 				<FormControlLabel

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { InfoCard, ItemGrid, Caption, Info, Dropdown } from 'components';
 import { Grid } from '@material-ui/core';
 import { Business, Edit, Delete, StarBorder, Star } from 'variables/icons'
+import { Link } from 'react-router-dom'
 var countries = require('i18n-iso-countries')
 
 class OrgDetails extends Component {
@@ -113,17 +114,17 @@ class OrgDetails extends Component {
 								{devices}
 							</Info>
 						</ItemGrid>
-						{/* {org.org.id > 0 ?
+						{org.org.id > 0 ?
     						<ItemGrid xs={12}>
     							<Caption>
     								{t('orgs.fields.parentOrg')}
     							</Caption>
     							<Info>
-    								<Link to={`/org/${org.org.id}`}>
+    								<Link to={{ pathname: `/management/org/${org.org.id}`, prevURL: `/management/org/${org.id}` }}>
     									{org.org.name}
     								</Link>
     							</Info>
-    						</ItemGrid> : null} */}
+    						</ItemGrid> : null}
 						<ItemGrid>
 							<Caption>
 								{t('orgs.fields.CVR')}
