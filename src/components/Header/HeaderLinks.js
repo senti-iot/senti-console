@@ -1,7 +1,7 @@
 import { Grid, IconButton, Menu, MenuItem, withStyles, Divider } from '@material-ui/core';
 import { AccountBox, Business, PowerSettingsNew, SettingsRounded } from 'variables/icons';
 import headerLinksStyle from 'assets/jss/material-dashboard-react/headerLinksStyle';
-import React, { Fragment } from 'react';
+import React from 'react';
 import cookie from 'react-cookies';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -96,24 +96,23 @@ class HeaderLinks extends React.Component {
 						style={{ marginTop: 50 }}
 						id='menu-appbar'
 						anchorEl={anchorProfile}
-						anchorOrigin={{
-							vertical: 'bottom',
-							horizontal: 'right',
-						}}
+						// anchorOrigin={{
+						// 	// vertical: 'bottom',
+						// 	horizontal: 'right',
+						// }}
 						transformOrigin={{
 							vertical: 'bottom',
-							horizontal: 'right',
+							horizontal: 'left',
 						}}
 						open={openProfile}
 						onClose={this.handleProfileClose}
 						disableAutoFocusItem
 					>
-						{user ? <Fragment>
+						{user ?
 							<MenuItem disableRipple component={'div'} className={classes.nameAndEmail}>
-								<T style={{ fontSize: '1rem' }}>{`${user.firstName} ${user.lastName}`}</T>
+								<T style={{ fontSize: '1rem' }}>{`${user.firstName} ${user.lastName}`}</T> 
 								<Muted style={{ fontSize: '0.875rem' }}>{user.email}</Muted>
 							</MenuItem>
-						</Fragment>
 						 : null}
 						<Divider />
 						<MenuItem onClick={this.handleRedirectToOwnProfile}>
