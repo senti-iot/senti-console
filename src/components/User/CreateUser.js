@@ -73,6 +73,11 @@ class CreateUser extends Component {
 		let orgs = await getAllOrgs().then(rs => rs)
 		this.setState({
 			orgs: orgs,
+			user: { ...this.state.user,
+				org: {
+					...this.props.user.org
+				}
+			},
 			loading: false
 		})
 	}
@@ -513,7 +518,7 @@ class CreateUser extends Component {
 
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
-
+	user: state.settings.user
 })
 
 const mapDispatchToProps = {
