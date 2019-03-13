@@ -670,7 +670,7 @@
 		"reset": {
 			"restore": "Nulstil indstillinger",
 			"resetSettings": "Nulstil indstillinger til standard",
-			"message": "Er du sikker på, at du vil nulstille dine indstillinger til standard?"
+			"message": "Er du sikker på, at du vil nulstille indstillinger til standard?"
 		},
 		"chart": {
 			"YAxis": {

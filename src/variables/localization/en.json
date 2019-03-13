@@ -667,9 +667,9 @@
 			"time": "By time"
 		},
 		"reset": {
-			"restore": "Restore",
-			"resetSettings": "Restore settings to default",
-			"message": "Are you sure you want to restore your settings to default?"
+			"restore": "Reset",
+			"resetSettings": "Reset settings to default",
+			"message": "Are you sure you want to reset settings to default?"
 		},
 		"chart": {
 			"YAxis": {
@@ -680,7 +680,7 @@
 			"period": "Period",
 			"periods": "Periods",
 			"rawData": "Raw data",
-			"weekendColor": "Weekend colors",
+			"weekendColor": "Weekend color",
 			"weekendColors": {
 				"amber": "Amber",
 				"blue": "Blue",
