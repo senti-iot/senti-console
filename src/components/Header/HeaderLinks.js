@@ -1,5 +1,5 @@
 import { Grid, IconButton, Menu, MenuItem, withStyles, Divider } from '@material-ui/core';
-import { AccountBox, Business, Lock, SettingsRounded } from 'variables/icons';
+import { AccountBox, Business, PowerSettingsNew, SettingsRounded } from 'variables/icons';
 import headerLinksStyle from 'assets/jss/material-dashboard-react/headerLinksStyle';
 import React, { Fragment } from 'react';
 import cookie from 'react-cookies';
@@ -129,7 +129,7 @@ class HeaderLinks extends React.Component {
 							// onLogoutSuccess={() => this.logOut()}
 							clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
 							render={renderProps => (<MenuItem onClick={() => { renderProps.onClick(); this.logOut() }} className={classes.menuItem}>
-								<Lock className={classes.leftIcon} />{t('menus.user.signout')}
+								<PowerSettingsNew className={classes.leftIcon} />{t('menus.user.signout')}
 							</MenuItem>)}
 						>
 
