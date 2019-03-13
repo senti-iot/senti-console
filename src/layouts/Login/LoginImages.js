@@ -106,6 +106,9 @@ class LoginImages extends Component {
 		return (
 			<div className={classes.container}>
 				<div className={classes.contentWrapper}>
+					<T reversed>
+						{t('markdown.test')}
+					</T>
 					<T reversed variant={'h5'} className={classes.message}>
 						{this.generateString(number).map((a, i) => <span key={i}>{a}</span>)}
 					</T>

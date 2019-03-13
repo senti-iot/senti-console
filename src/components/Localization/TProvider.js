@@ -34,7 +34,7 @@ class TProvider extends Component {
 		var result = phrase
 		var interpolationRegex = tokenRegex || defaultTokenRegex
 		var options = typeof substitutions === 'number' ? { smart_count: substitutions } : substitutions
-
+		console.log(substitutions)
 		
 		result = replace.call(result, interpolationRegex,
 			function (expression, argument) {
@@ -43,15 +43,12 @@ class TProvider extends Component {
 				}
 				return replace.call(options[argument], dollarRegex, dollarBillsYall)
 			})
-		// result2 = replace.call(result, defaultUpperCaseRegex,
-		// 	function (expression, argument) {
-		// 		return replace.call(`<span>${argument}</span>`, dollarRegex, dollarBillsYall)
-		// 	})
-		// let el = document.createElement('span')
-		// el.innerHTML = result2
-		// return el
+		if (substitutions.type === 'markdown')
 		
-		return <ReactMarkdown source={result} />
+			return <ReactMarkdown source={result} />
+		else {
+			return result
+		}
 	}
 	t = (key, options) => {
 		var phrase, result

@@ -6,6 +6,9 @@
 		"networkError": "Netværksfejl!",
 		"title": "Siden ikke fundet!"
 	},
+	"markdown": {
+		"test": "# This is a header\n\nAnd this is a paragraph"
+	},
 	"": "",
 	"Senti.Cloud": "Senti.Cloud",
 	"actions": {
