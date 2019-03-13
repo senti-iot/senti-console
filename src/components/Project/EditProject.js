@@ -177,8 +177,8 @@ class EditProject extends Component {
 		})
 	}
 	goToProject = () => {
-		const { history } = this.props
-		history.push('/project/' + this.props.match.params.id)
+		const { history, location } = this.props
+		history.push(location.prevURL ? location.prevURL : '/project/' + this.props.match.params.id)
 	}
 	close = () => {
 		const { isFav, updateFav } = this.props

@@ -47,7 +47,7 @@ const TextF = (props) => {
 			disabled={props.disabled ? props.disabled : false}
 			margin='normal'
 			helperText={props.helperText}
-			InputProps={props.InputProps ? props.InputProps : null}
+			InputProps={props.InputProps ? { ...props.InputProps, style: { ...props.InputProps.style, boxSizing: 'border-box' } } : null}
 			onKeyPress={props.onKeyPress}
 			onKeyDown={props.onKeyDown}
 		/>

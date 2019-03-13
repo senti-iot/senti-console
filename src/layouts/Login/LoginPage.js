@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { ItemG, TextF, T, Muted } from 'components';
-import { Hidden, Paper, withStyles, InputAdornment, Button, withWidth, ButtonBase } from '@material-ui/core';
+import { Hidden, Paper, withStyles, InputAdornment, Button, withWidth, ButtonBase, IconButton } from '@material-ui/core';
 import logo from 'logo.svg'
 import { connect } from 'react-redux'
-import { Person, LockOutlined, Google } from 'variables/icons';
+import { Person, Google, Visibility, VisibilityOff } from 'variables/icons';
 import cx from 'classnames'
 import withLocalization from 'components/Localization/T';
 import { compose } from 'recompose';
@@ -36,7 +36,8 @@ class NewLoginPage extends Component {
 			language: 'da',
 			loggingIn: false,
 			cookies: false,
-			privacy: false
+			privacy: false,
+			showPassword: false
 		}
 		this.input = React.createRef()
 	}
@@ -137,6 +138,7 @@ class NewLoginPage extends Component {
 		const { classes, t } = this.props
 		const { language, loggingIn, loggingInGoogle, privacy, cookies } = this.state
 		const IconEndAd = cx({
+			[classes.IconEndAd]: true,
 			[classes.inputIconsColor]: !this.state.error,
 			[classes.iconError]: this.state.error
 		})
@@ -170,53 +172,59 @@ class NewLoginPage extends Component {
 												</T>
 											</ItemG>
 
-											<ItemG container xs={12}>
+											<ItemG container xs={12} >
 
-												<ItemG container xs={12}>
-													<TextF
-														id={'user'}
-														autoFocus
-														reversed
-														label={t('login.username')}
-														error={this.state.error}
-														fullWidth
-														handleChange={this.handleInput}
-														className={classes.loginButton}
-														value={this.state.user}
-														InputProps={{
-															autoComplete: 'on',
-															type: 'email',
-															endAdornment: <InputAdornment position='end'>
-																<Person className={IconEndAd} />
-															</InputAdornment>
-														}}
-													/>
-												</ItemG>
-												<ItemG container xs={12}>
-													<TextF
-														id={'pass'}
-														label={t('login.pass')}
-														error={this.state.error}
-														className={classes.loginButton}
-														fullWidth
-														handleChange={this.handleInput}
-														value={this.state.pass}
-														InputProps={{
-															autoComplete: 'on',
-															type: 'password',
-															endAdornment: <InputAdornment position='end'>
-																<LockOutlined className={IconEndAd} />
-															</InputAdornment>
-														}}
-													/>
-												</ItemG>
+												{/* <ItemG container xs={12}> */}
+												<TextF
+													id={'user'}
+													autoFocus
+													reversed
+													label={t('login.username')}
+													error={this.state.error}
+													fullWidth
+													handleChange={this.handleInput}
+													// className={classes.loginButton}
+													value={this.state.user}
+													InputProps={{
+														autoComplete: 'on',
+														type: 'email',
+														endAdornment: <InputAdornment classes={{ root: IconEndAd }}>
+															<Person style={{ color: 'rgba(0, 0, 0, 0.54)' }}/>
+														</InputAdornment>
+													}}
+												/>
+												{/* </ItemG> */}
+												{/* <ItemG container xs={12}> */}
+												<TextF
+													id={'pass'}
+													label={t('login.pass')}
+													error={this.state.error}
+													// className={classes.loginButton}
+													type={this.state.showPassword ? 'text' : 'password'}
+													fullWidth
+													handleChange={this.handleInput}
+													value={this.state.pass}
+													InputProps={{
+														autoComplete: 'on',
+														// type: 'password',
+														endAdornment: <InputAdornment classes={{ root: IconEndAd }}>
+														                <IconButton
+																className={classes.smallAction}
+																onClick={() => this.setState({ showPassword: !this.state.showPassword })}
+															>
+																{this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+															</IconButton>
+														</InputAdornment>
+													}}
+												/>
+												{/* </ItemG> */}
 											</ItemG>
 											<ItemG xs={12} container justify={'center'}>
 												<Button variant={'contained'} fullWidth color={'primary'} className={classes.loginButton} onClick={this.logUser}>
 													{t('actions.login')}
 												</Button>
 											</ItemG>
-											<ItemG xs={12} container justify={'center'} style={{ margin: "32px 0px" }}>
+											<ItemG xs={12} container justify={'center'} style={{ margin: "16px 0px" }}>
 												<ItemG xs={12} container justify={'space-around'}>
 													<Link to={`/password/reset/${language}`}>
 														{t('login.forgotPassword')}

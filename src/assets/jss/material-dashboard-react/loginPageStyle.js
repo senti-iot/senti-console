@@ -3,6 +3,17 @@
 
 
 const loginPageStyles = theme => ({
+	smallAction: {
+		padding: 0,
+		// color: primaryColor,
+		"&:hover": {
+			background: 'initial',
+			// color: hoverColor
+		}
+	},
+	IconEndAd: {
+		marginLeft: 12
+	},
 	p: {
 		marginBottom: theme.spacing.unit
 	},
