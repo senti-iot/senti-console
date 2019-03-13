@@ -2,8 +2,8 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { editUser, getUser } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
-import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader, ItemG } from 'components';
-import { Paper, Collapse, withStyles, MenuItem, Select, FormControl, InputLabel, Button, FormControlLabel, Checkbox } from '@material-ui/core';
+import { GridContainer, ItemGrid, Warning, Danger, TextF, CircularLoader, ItemG, DSelect } from 'components';
+import { Paper, Collapse, withStyles, Button, FormControlLabel, Checkbox } from '@material-ui/core';
 import { KeyboardArrowRight, KeyboardArrowLeft } from 'variables/icons'
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
@@ -247,57 +247,32 @@ class EditUser extends Component {
 		})
 	}
 	renderOrgs = () => {
-		const { classes, t, accessLevel } = this.props
+		const { t, accessLevel } = this.props
 		const { orgs, user, error } = this.state
 		const { org } = user
-		return accessLevel.apiorg.editusers ? <FormControl className={classes.formControl}>
-			<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
-				{t('users.fields.organisation')}
-			</InputLabel>
-			<Select
+		return accessLevel.apiorg.editusers ? 
+			<DSelect 
+				label={t('users.fields.organisation')}
 				error={error}
-				fullWidth={false}
-				color={'primary'}
 				value={org.id}
-				onChange={this.handleOrgChange}>
-				{orgs ? orgs.map(org => (
-					<MenuItem
-						key={org.id}
-						value={org.id}
-					>
-						{org.name}
-					</MenuItem>
-				)) : null}
-			</Select>
-		</FormControl> : null
+				onChange={this.handleOrgChange}
+				menuItems={orgs.map(org => ({ value: org.id, label: org.name }))}
+			/> 
+			: null
 	}
 	renderLanguage = () => {
-		const { t, classes } = this.props
+		const { t } = this.props
 		const { error, user } = this.state
 		let languages = [
 			{ value: 'en', label: t('settings.languages.en') },
 			{ value: 'da', label: t('settings.languages.da') }
 		]
-		return <FormControl className={classes.formControl}>
-			<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
-				{t('users.fields.language')}
-			</InputLabel>
-			<Select
-				error={error}
-				fullWidth={false}
-				color={'primary'}
-				value={user.aux.odeum.language}
-				onChange={this.handleLangChange}>
-				{languages.map(l => (
-					<MenuItem
-						key={l.value}
-						value={l.value}
-					>
-						{l.label}
-					</MenuItem>
-				))}
-			</Select>
-		</FormControl>
+		return <DSelect 
+			label={t('users.fields.language')}
+			error={error}
+			value={user.aux.odeum.language}
+			menuItems={languages.map(l => ({ value: l.value, label: l.label }))}
+		/>
 	}
 	groups = () => {
 		const { accessLevel, t } = this.props
@@ -324,31 +299,21 @@ class EditUser extends Component {
 		]
 	}
 	renderAccess = () => {
-		const { t, classes, accessLevel } = this.props
+		const { t, accessLevel } = this.props
 		const { error, selectedGroup, user } = this.state
 		let rend = false
 		if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers && !user.privileges.apisuperuser)) {
 			rend = true
 		}
-		return rend ? <FormControl className={classes.formControl}>
-			<InputLabel error={error} FormLabelClasses={{ root: classes.label }} color={'primary'} htmlFor='select-multiple-chip'>
-				{t('users.fields.accessLevel')}
-			</InputLabel>
-			<Select
-				error={error}
-				fullWidth={false}
-				color={'primary'}
-				value={selectedGroup}
-				onChange={this.handleGroupChange}>
-				{this.groups().map(g => g.show ? (
-					<MenuItem
-						key={g.id}
-						value={g.id}>
-						{g.name}
-					</MenuItem>
-				) : null)}
-			</Select>
-		</FormControl> : null
+		return rend ? <DSelect 
+			error={error}
+			label={t('users.fields.accessLevel')}
+			value={selectedGroup}
+			onChange={this.handleGroupChange}
+			menuItems={
+				this.groups().filter(g => g.show ? true : false)
+					.map(g => ({ value: g.id, label: g.name }))
+			}/> : null
 	}
 	handleExtendedBirthdayChange = prop => e => {
 		const { error } = this.state
@@ -464,6 +429,7 @@ class EditUser extends Component {
 				<MuiPickersUtilsProvider utils={MomentUtils}>
 					<DatePicker
 						autoOk
+						variant={'outlined'}
 						label={t('users.fields.birthday')}
 						clearable
 						format='ll'
@@ -471,6 +437,7 @@ class EditUser extends Component {
 						onChange={this.handleExtendedBirthdayChange('birthday')}
 						animateYearScrolling={false}
 						color='primary'
+						margin={'normal'}
 						disableFuture
 						rightArrowIcon={<KeyboardArrowRight />}
 						leftArrowIcon={<KeyboardArrowLeft />}

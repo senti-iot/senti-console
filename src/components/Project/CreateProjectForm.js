@@ -231,6 +231,7 @@ class CreateProjectForm extends Component {
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<DatePicker
+									variant={'outlined'}
 									autoOk
 									label={t('projects.fields.startDate')}
 									clearable
@@ -251,6 +252,7 @@ class CreateProjectForm extends Component {
 								<DatePicker
 									color='primary'
 									autoOk
+									variant={'outlined'}
 									label={t('projects.fields.endDate')}
 									clearable
 									labelFunc={(date) => date === null ? '' : moment(date).format('LL')}

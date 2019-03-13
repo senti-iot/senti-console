@@ -333,6 +333,7 @@ class EditProject extends Component {
 									<ItemGrid xs={12} md={6}>
 										<DatePicker
 											autoOk
+											variant={'outlined'}
 											label={t('projects.fields.startDate')}
 											clearable
 											labelFunc={(date) => date === null ? '' : moment(date).format('LL')}
@@ -352,6 +353,7 @@ class EditProject extends Component {
 										<DatePicker
 											color='primary'
 											autoOk
+											variant={'outlined'}
 											label={t('projects.fields.endDate')}
 											clearable
 											labelFunc={(date) => date === null ?  '' : date.format('LL') }

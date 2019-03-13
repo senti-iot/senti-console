@@ -11,7 +11,10 @@ const styles = theme => ({
 		[theme.breakpoints.down('sm')]: {
 			padding: 16
 		}
-	}
+	},
+	title: {
+		fontWeight: 500
+	},
 })
 
 const CookiesDialog = (props) => {

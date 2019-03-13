@@ -28,7 +28,7 @@ class DInput extends Component {
 
 		return (
 			<Fragment>
-				<FormControl>
+				<FormControl variant="outlined">
 
 					<Input
 						aria-owns={actionAnchor ? 'menu-list-grow' : null}

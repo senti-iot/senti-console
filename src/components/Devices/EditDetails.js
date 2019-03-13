@@ -144,6 +144,7 @@ class EditDeviceDetails extends Component {
 								</ItemGrid>
 								<ItemGrid xs={12}>
 									<DSelect
+										label={t('devices.fields.locType')}
 										value={device.locationType}
 										onChange={this.handleInput('locationType')}
 										menuItems={this.LocationTypes()}

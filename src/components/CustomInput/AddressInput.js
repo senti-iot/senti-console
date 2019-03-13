@@ -119,6 +119,7 @@ class AddressInput extends React.Component {
 		const { classes, inputRef = () => { }, ref, ...other } = inputProps;
 		return (
 			<TextField
+				variant={'outlined'}
 				fullWidth={this.props.fullWidth}
 				multiline
 				margin='normal'
