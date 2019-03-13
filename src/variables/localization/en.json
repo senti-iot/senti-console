@@ -721,7 +721,7 @@
 			"callback": "Hide menu on navigation",
 			"callbacks": {
 				"closeOnNav": "Hide on navigation",
-				"notCloseOnNav": "Hold open"
+				"notCloseOnNav": "Keep open"
 			},
 			"state": "Show Menu",
 			"states": {
