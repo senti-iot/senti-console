@@ -33,9 +33,7 @@ class TProvider extends Component {
 		}
 		var result = phrase
 		var interpolationRegex = tokenRegex || defaultTokenRegex
-		var options = typeof substitutions === 'number' ? { smart_count: substitutions } : substitutions
-		console.log(substitutions)
-		
+		var options = typeof substitutions === 'number' ? { smart_count: substitutions } : substitutions		
 		result = replace.call(result, interpolationRegex,
 			function (expression, argument) {
 				if (!has(options, argument) || options[argument] == null) {
@@ -44,7 +42,6 @@ class TProvider extends Component {
 				return replace.call(options[argument], dollarRegex, dollarBillsYall)
 			})
 		if (substitutions.type === 'markdown')
-		
 			return <ReactMarkdown source={result} />
 		else {
 			return result

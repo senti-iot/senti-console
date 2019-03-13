@@ -105,12 +105,11 @@ class LoginImages extends Component {
 		const { number } = this.state
 		return (
 			<div className={classes.container}>
-				<div className={classes.contentWrapper}>
-					<T reversed>
-						{t('markdown.test')}
-					</T>
+				<div className={classes.contentWrapper}>				
+					{t('markdown.test', { type: 'markdown' })}
 					<T reversed variant={'h5'} className={classes.message}>
-						{this.generateString(number).map((a, i) => <span key={i}>{a}</span>)}
+						{t(`login.cards.${number}`, { type: 'markdown' })}
+						{/* {this.generateString(number).map((a, i) => <span key={i}>{a}</span>)} */}
 					</T>
 					<Button color='primary' variant={'contained'} className={classes.button}>
 						<span className={classes.overcomplicatedButtonTextLight}>
