@@ -67,15 +67,15 @@ class CreateProjectForm extends Component {
 					</Hidden>
 					<Hidden lgUp>
 						<ItemG container alignItems={'center'}>
-							<ItemG xs={4} container alignItems={'center'}>
+							<ItemG xs={12} container alignItems={'center'}>
 								<IconButton color={'inherit'} onClick={handleCloseUser} aria-label='Close'>
 									<Close />
 								</IconButton>
 								<Typography variant='h6' color='inherit' className={classes.flex}>
-									{t('orgs.pageTitle')}
+									{t('users.pageTitle')}
 								</Typography>
 							</ItemG>
-							<ItemG xs={8} container alignItems={'center'} justify={'center'}>
+							<ItemG xs={12} container alignItems={'center'} justify={'center'}>
 								<Search
 									noAbsolute
 									fullWidth
@@ -93,7 +93,7 @@ class CreateProjectForm extends Component {
 				{users ? filterItems(users, filters).map((o, i) => {
 					return <Fragment key={i}>
 						<ListItem button onClick={handleChangeUser(o)}>
-							<Gravatar default='mp' email={o.email} className={classes.img} />}
+							<Gravatar default='mp' email={o.email} className={classes.img} />
 							<ListItemText primary={`${o.firstName} ${o.lastName}`} secondary={o.org.name}/>
 						</ListItem>
 						<Divider />
