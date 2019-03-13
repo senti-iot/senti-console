@@ -59,7 +59,7 @@ const CookiesDialog = (props) => {
 							{t('actions.cancel')}
 						</Button>}
 						<Button onClick={handleAcceptCookies} color="primary">
-							{read ? t('actions.accept') : t('actions.ok')}
+							{read ? t('actions.accept') : t('actions.accept')}
 						</Button>
 					</Fragment>
 				}
