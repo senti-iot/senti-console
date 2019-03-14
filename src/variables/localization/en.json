@@ -292,14 +292,14 @@
 		},
 		"delete": {
 			"message": {
-				"collection": "Are you sure you want to delete this data collection ( %{collection} )?",
+				"collection": "Are you sure you want to delete this data collection ( %{collection} ) ?",
 				"collections": "Are you sure you want to delete these data collections:",
 				"deviceImage": "Are you sure you want to delete this picture?",
 				"org": "Are you sure you want to delete this organisation?",
 				"orgs": "Are you sure you want to delete these organisations:",
 				"project": "Are you sure you want to delete this project?",
 				"projects": "Are you sure you want to delete these projects:",
-				"user": "Are you sure you want to delete this user ( %{user} )?",
+				"user": "Are you sure you want to delete this user ( %{user} ) ?",
 				"users": "Are you sure you want to delete these users:"
 			},
 			"title": {
