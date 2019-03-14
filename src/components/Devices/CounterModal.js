@@ -1,4 +1,4 @@
-import { Grid, Button, Modal, withStyles, Typography, } from '@material-ui/core';
+import { Grid, Button, Modal, withStyles, Typography, Fab, } from '@material-ui/core';
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { ItemGrid } from 'components';
@@ -127,7 +127,7 @@ class CounterModal extends React.Component {
 		const { started, finished } = this.state
 		return (
 			<Fragment>
-				<Button variant={'contained'} color={'primary'} onClick={this.handleOpen} styles={{ marginTop: 16 }}>
+				<Button variant={'outlined'} color={'primary'} onClick={this.handleOpen} style={{ marginTop: 16, marginLeft: 8 }}>
 					<OpenInBrowser className={classes.iconButton} /> {t('actions.openCounter')}
 				</Button>
 				<Modal
@@ -146,9 +146,8 @@ class CounterModal extends React.Component {
 						</ItemGrid>
 						<ItemGrid xs={12} container justify={'center'}>
 							<div className={classes.wrapper}>
-								<Button
+								<Fab
 									color={'primary'}
-									variant='fab'
 									disableRipple
 									classes={{
 										root: classes.counterButton
@@ -157,7 +156,7 @@ class CounterModal extends React.Component {
 									disabled={!started || finished}
 								>
 									{this.state.count.toString()}
-								</Button>
+								</Fab>
 							</div>
 						</ItemGrid>
 						<ItemGrid xs={12}>
@@ -167,7 +166,7 @@ class CounterModal extends React.Component {
 									<Button
 										disabled={started}
 										color={'primary'}
-										variant='contained'
+										variant='outlined'
 										onClick={this.state.count === 0 ? this.handleFinish : this.handleStart}>
 										{this.state.count === 0 ? <Fragment>
 											<Done className={classes.iconButton} />{t('actions.finish')}
@@ -179,7 +178,7 @@ class CounterModal extends React.Component {
 								<ItemGrid>
 									<Button
 										color={'primary'}
-										variant='contained'
+										variant='outlined'
 										disabled={this.resetButtonDisabled()}
 										onClick={this.handleReset}>
 										<Restore className={classes.iconButton} />{t('actions.reset')}

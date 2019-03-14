@@ -1,4 +1,4 @@
-import { Grid, Button, Modal, withStyles, Typography, } from '@material-ui/core';
+import { Grid, Button, Modal, withStyles, Typography, Fab, } from '@material-ui/core';
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { ItemGrid } from 'components';
@@ -117,7 +117,7 @@ class TimeCounterModal extends React.Component {
 		const { started, finished } = this.state
 		return (
 			<Fragment>
-				<Button variant='contained' color={'primary'} onClick={this.handleOpen} styles={{ marginTop: 16 }}>
+				<Button variant='outlined' color={'primary'} onClick={this.handleOpen} style={{ marginLeft: 8, marginTop: 16 }}>
 					<OpenInBrowser className={classes.iconButton} /> {t('actions.openCounter')}
 				</Button>
 				<Modal
@@ -136,9 +136,8 @@ class TimeCounterModal extends React.Component {
 						</ItemGrid>
 						<ItemGrid xs={12} container justify={'center'}>
 							<div className={classes.wrapper}>
-								<Button
+								<Fab
 									color={'primary'}
-									variant='fab'
 									disableRipple
 									classes={{
 										root: classes.counterButton
@@ -147,7 +146,7 @@ class TimeCounterModal extends React.Component {
 									disabled={!started || finished}
 								>
 									{this.state.count.toString()}
-								</Button>
+								</Fab>
 							</div>
 						</ItemGrid>
 						<ItemGrid xs={12}>
@@ -157,7 +156,7 @@ class TimeCounterModal extends React.Component {
 									<Button
 										disabled={started}//change
 										color={'primary'}
-										variant='contained'
+										variant='outlined'
 										onClick={this.state.timer === 0 ? this.handleFinish : this.handleStart}>
 										{this.state.timer === 0 ? <Fragment>
 											<Done className={classes.iconButton} />{t('actions.finish')}
@@ -169,7 +168,7 @@ class TimeCounterModal extends React.Component {
 								<ItemGrid>
 									<Button
 										color={'primary'}
-										variant='contained'
+										variant='outlined'
 										disabled={this.resetButtonDisabled()}
 										onClick={this.handleReset}>
 										<Restore className={classes.iconButton} />{t('actions.reset')}

@@ -271,7 +271,6 @@ class MapCard extends PureComponent {
 		let data
 		if (suggestion.id) {
 			data = await getGeoByAddress(suggestion.id)
-			console.log(data)
 			if (data) {
 				if (!this.state.markers[0].address.includes(data.adressebetegnelse))
 					return this.setMapCoords(data)
