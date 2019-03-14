@@ -510,7 +510,7 @@
             "deviceFromOrg": "Unassign device from organisation"
         },
         "user": {
-            "account": "My account",
+            "account": "Account details",
             "profile": "My profile",
             "signout": "Sign out"
         },
