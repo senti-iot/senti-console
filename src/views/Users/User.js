@@ -18,6 +18,7 @@ import { setPassword } from 'variables/dataLogin';
 import { userStyles } from 'assets/jss/components/users/userStyles';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 import { Person, FolderShared } from 'variables/icons';
+import { scrollToAnchor } from 'variables/functions';
 
 class User extends Component {
 	constructor(props) {
@@ -101,6 +102,10 @@ class User extends Component {
 							route: 0
 						})
 						this.setState({ user: rs, loading: false })
+						if (this.props.location.hash !== '')
+						{
+							scrollToAnchor(this.props.location.hash)
+						}
 					}
 				})
 				setBC('user', this.state.user.firstName + ' ' + this.state.user.lastName)

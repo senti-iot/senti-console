@@ -18,6 +18,7 @@ import { connect } from 'react-redux'
 import ChartData from 'views/Charts/ChartData';
 import ChartDataPanel from 'views/Charts/ChartDataPanel';
 import Maps from 'views/Maps/MapCard';
+import { scrollToAnchor } from 'variables/functions';
 
 class Project extends Component {
 	constructor(props) {
@@ -56,6 +57,10 @@ class Project extends Component {
 					hashLinks: true,
 					tabs: this.tabs
 				})
+				if (this.props.location.hash !== '')
+				{
+					scrollToAnchor(this.props.location.hash)
+				}
 			}
 			else {
 				history.push({

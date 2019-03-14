@@ -16,6 +16,7 @@ import { getAllProjects } from 'variables/dataProjects';
 import { getAllCollections } from 'variables/dataCollections';
 import OrgProjects from './OrgCards/OrgProjects';
 import OrgCollections from './OrgCards/OrgCollections';
+import { scrollToAnchor } from 'variables/functions';
 
 class Org extends Component {
 	constructor(props) {
@@ -58,7 +59,6 @@ class Org extends Component {
 						})
 					else {
 						let prevURL = location.prevURL ? location.prevURL : '/management/orgs'
-						console.log(prevURL)
 						setHeader('orgs.organisation', true, prevURL, 'users')
 						setTabs({
 							id: 'org',
@@ -66,6 +66,10 @@ class Org extends Component {
 							route: 0
 						})
 						this.setState({ org: rs, loading: false })
+						if (this.props.location.hash !== '')
+						{
+							scrollToAnchor(this.props.location.hash)
+						}
 					}
 				})
 				setBC('org', this.state.org.name)

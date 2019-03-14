@@ -19,6 +19,7 @@ import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites'
 import ChartDataPanel from 'views/Charts/ChartDataPanel';
 import ChartData from 'views/Charts/ChartData';
 import Maps from 'views/Maps/MapCard';
+import { scrollToAnchor } from 'variables/functions';
 
 class Collection extends Component {
 	constructor(props) {
@@ -112,6 +113,7 @@ class Collection extends Component {
 		}
 	}
 	componentDidMount = async () => {
+		console.log(this.props.location.hash)
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {
@@ -123,6 +125,10 @@ class Collection extends Component {
 					tabs: this.tabs,
 					hashLinks: true
 				})
+				if (this.props.location.hash !== '')
+				{
+					scrollToAnchor(this.props.location.hash)
+				}
 			}
 		}
 		else {
