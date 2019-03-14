@@ -253,13 +253,13 @@ class ResetPassword extends React.Component {
 									</ItemG>
 									<ItemG xs={12} container justify={'center'}>
 										<Collapse in={!passwordRequested}>
-											{!this.token ? <Button className={classes.loginButton} variant={'contained'} color={'primary'} onClick={this.resetPass}>
+											{!this.token ? <Button className={classes.loginButton} variant={'outlined'} color={'primary'} onClick={this.resetPass}>
 												{t('actions.requestPasswordReset')}
 											</Button> : !passwordReset ?
-												<Button className={classes.loginButton} variant={'contained'} color={'primary'} onClick={this.confirmPass}>
+												<Button className={classes.loginButton} variant={'outlined'} color={'primary'} onClick={this.confirmPass}>
 													{t('actions.changePassword')}
 												</Button> :
-												<Button className={classes.loginButton} variant={'contained'} color={'primary'} onClick={() => this.props.history.push('/login')}>
+												<Button className={classes.loginButton} variant={'outlined'} color={'primary'} onClick={() => this.props.history.push('/login')}>
 													{t('actions.goToLogin')}
 												</Button>
 											}

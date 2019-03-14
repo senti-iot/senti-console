@@ -36,20 +36,22 @@ class ProjectTable extends React.Component {
 
 	setHover = (e, n) => {
 		e.persist()
+		const { hoverTime } = this.props
 		const { rowHover } = this.state
+		if (hoverTime > 0)
 		 this.timer = setTimeout(() => {
-			if (rowHover) {
-				this.setState({
-					rowHover: null
-				})
-				setTimeout(() => {
+				if (rowHover) {
+					this.setState({
+						rowHover: null
+					})
+					setTimeout(() => {
+						this.setState({ rowHover: e.target, hoverProject: n })
+					}, 200);
+				}
+				else {
 					this.setState({ rowHover: e.target, hoverProject: n })
-				}, 200);
-			}
-			else {
-				this.setState({ rowHover: e.target, hoverProject: n })
-			}
-		}, 700);
+				}
+			}, hoverTime);
 	}
 	unsetTimeout = () => {
 		clearTimeout(this.timer)
@@ -161,7 +163,8 @@ class ProjectTable extends React.Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	rowsPerPage: state.appState.trp > 0 ? state.appState.trp : state.settings.trp,	
+	rowsPerPage: state.appState.trp > 0 ? state.appState.trp : state.settings.trp,
+	hoverTime: state.settings.hoverTime
 })
 
 const mapDispatchToProps = {

@@ -23,11 +23,11 @@ const hoverStyles = theme => ({
 		width: 400,
 		maxWidth: 450,
 		padding: theme.spacing.unit,
-		background: "#fff",
+		// background: "#fff",
 	},
 	smallText: {
 		font: '400 13px/20px Roboto,RobotoDraft,Helvetica,Arial,sans-serif',
-		color: '#3c4043',
+		color: theme.palette.type === 'light' ? '#3c4043' : "#ececec",
 		display: 'flex',
 		alignItems: 'center'
 	},
@@ -36,7 +36,8 @@ const hoverStyles = theme => ({
 		height: "50px",
 		width: "50px",
 		display: 'flex',
-		marginRight: 8
+		marginRight: 8,
+		color: theme.palette.type === 'light' ? '#3c4043' : "#ececec",
 	},
 	smallAction: {
 		padding: '6px 8px',

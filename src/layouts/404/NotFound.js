@@ -33,7 +33,7 @@ class NotFound extends Component {
 							</Typography>
 						</ItemG>
 						<ItemG container justify={'center'} xs={12}>
-							<Button style={{ marginTop: 124 }} variant={'contained'} color={'primary'} onClick={() => this.props.history.push('/')}>
+							<Button style={{ marginTop: 124 }} variant={'outlined'} color={'primary'} onClick={() => this.props.history.push('/')}>
 								{t('404.goHome')}
 							</Button>
 						</ItemG>

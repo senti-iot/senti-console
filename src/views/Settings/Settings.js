@@ -29,6 +29,7 @@ class Settings extends Component {
 			hashLinks: true,
 			route: 0
 		})
+		props.setBC('settings')
 	}
 	tabs = [
 		{ id: 0, title: '', label: <Laptop />, url: `#display` },

@@ -57,7 +57,7 @@ class Dashboard extends React.Component {
 		return (
 			<Fragment>
 				{discoverSenti ? <DiscoverSenti t={t} history={history}/> : null}
-				<Fade in={true} direction={'up'}  style={{
+				<Fade in={true} style={{
 					transitionDelay: 200,
 				}}>
 					<GridContainer spacing={8} justify={'center'}>

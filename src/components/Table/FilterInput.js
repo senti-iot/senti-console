@@ -20,7 +20,10 @@ const styles = (theme) => {
 		chips: {},
 		root: {},
 		inputRoot: {
-			position: 'absolute !important',
+			position: 'absolute',
+			[theme.breakpoints.down('sm')]: {
+				position: 'relative'
+			},
 			display: 'inline-block',
 			marginTop: 0,
 		},
@@ -40,6 +43,9 @@ const styles = (theme) => {
 			minHeight: 40,
 			'&$labeled': {
 				marginTop: 18
+			},
+			[theme.breakpoints.down('md')]: {
+				margin: 4
 			}
 		},
 		labeled: {},
@@ -54,6 +60,9 @@ const styles = (theme) => {
 		},
 		inkbar: {
 			'&:after': {
+				[theme.breakpoints.down('md')]: {
+					margin: 2
+				},
 				backgroundColor: theme.palette.primary[light ? 'dark' : 'light'],
 				left: 0,
 				bottom: 0,

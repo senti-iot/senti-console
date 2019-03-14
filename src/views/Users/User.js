@@ -18,6 +18,7 @@ import { setPassword } from 'variables/dataLogin';
 import { userStyles } from 'assets/jss/components/users/userStyles';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 import { Person, FolderShared } from 'variables/icons';
+import { scrollToAnchor } from 'variables/functions';
 
 class User extends Component {
 	constructor(props) {
@@ -101,6 +102,10 @@ class User extends Component {
 							route: 0
 						})
 						this.setState({ user: rs, loading: false })
+						if (this.props.location.hash !== '')
+						{
+							scrollToAnchor(this.props.location.hash)
+						}
 					}
 				})
 				setBC('user', this.state.user.firstName + ' ' + this.state.user.lastName)
@@ -291,10 +296,10 @@ class User extends Component {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.users')}</DialogTitle>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.user')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
-					{t('dialogs.delete.message.users', { user: (this.state.user.firstName + ' ' + this.state.user.lastName) }) + '?'}
+					{t('dialogs.delete.message.user', { user: (this.state.user.firstName + ' ' + this.state.user.lastName) })}
 				</DialogContentText>
 
 			</DialogContent>

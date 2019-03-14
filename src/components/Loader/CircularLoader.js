@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 const styles = theme => ({
 	grid: {
-		minHeight: 'calc(100vh - 130px)'
+		minHeight: 'calc(100vh - 300px)'
 	}
 })
 

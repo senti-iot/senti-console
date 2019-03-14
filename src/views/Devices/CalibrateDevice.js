@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withStyles, Grid, FormControl, InputLabel, Select, Input, MenuItem, FormHelperText, MobileStepper } from '@material-ui/core';
-import { Info, Danger, AddressInput, ItemG, InfoCard, T, TextF } from 'components'
-import { getDevice, calibrateDevice, uploadPictures, getAddressByLocation, getGeoByAddress, getAddress } from 'variables/dataDevices'
+import { Paper, Typography, Button, StepContent, StepLabel, Step, Stepper, withStyles, Grid, MobileStepper } from '@material-ui/core';
+import { Info, Danger, AddressInput, ItemG, InfoCard, T, TextF, DSelect } from 'components'
+import { getDevice, calibrateDevice, uploadPictures, getAddressByLocation, getGeoByAddress } from 'variables/dataDevices'
 import Caption from 'components/Typography/Caption'
 import CounterModal from 'components/Devices/CounterModal'
 import ImageUpload from './ImageUpload'
@@ -224,12 +224,20 @@ class CalibrateDevice extends Component {
 			</ItemG>
 		</Grid>
 	}
-	getLatLngFromMap = (e) => {
+	getLatLngFromMap = async (e) => {
 		let lat = e.target._latlng.lat
 		let long = e.target._latlng.lng
+		let newAddress = await getAddressByLocation(lat, long)
+		let address = this.state.address
+		if (newAddress) {
+			if (!address.includes(newAddress.vejnavn)) {
+				address = `${newAddress.vejnavn} ${newAddress.husnr}, ${newAddress.postnr} ${newAddress.postnrnavn}`
+			}
+		}
 		this.setState({
 			lat,
-			long
+			long,
+			address
 		})
 
 	}
@@ -247,12 +255,13 @@ class CalibrateDevice extends Component {
 		if (suggestion.id) {
 			data = await getGeoByAddress(suggestion.id)
 			if (data) {
-				return this.setMapCoords(data)
+				if (!this.state.address.includes(data.adressebetegnelse))
+					return this.setMapCoords(data)
 			}
 		}
 		else {
-			data = await getAddress(this.state.address)
-			return this.setMapCoords(data)
+			// data = await getAddress(this.state.address)
+			// return this.setMapCoords(data)
 		}
 	}
 	renderDeviceLocation = () => {
@@ -261,7 +270,7 @@ class CalibrateDevice extends Component {
 		return <Grid container spacing={8}>
 			<ItemG xs={12} container justify={this.props.theme.breakpoints.width('sm') <= window.innerWidth ? 'flex-start' : 'center'}>
 				<Button
-					variant='contained'
+					variant='outlined'
 					color='primary'
 					onClick={this.getCoords}
 					className={this.props.classes.button}>
@@ -272,21 +281,16 @@ class CalibrateDevice extends Component {
 				<AddressInput onBlur={this.getLatLng} handleSuggestionSelected={this.getLatLng} value={this.state.address} handleChange={this.handleSetAddress} />
 			</ItemG>
 			<ItemG xs={12}>
-				<FormControl className={this.props.classes.formControl}>
-					<InputLabel htmlFor='streetType-helper'>{t('devices.fields.locType')}</InputLabel>
-					<Select
-						value={this.state.locationType}
-						onChange={this.handleLocationTypeChange}
-						input={<Input name='streetType' id='streetType-helper' />}
-					>
-						{this.LocationTypes().map((loc, i) => {
-							return <MenuItem key={i} value={loc.id}>
-								{loc.label}
-							</MenuItem>
-						})}
-					</Select>
-					<FormHelperText>{t('calibration.selectLocationType')} {this.state.name ? this.state.name : this.state.id}</FormHelperText>
-				</FormControl>
+				<DSelect
+					label={t('devices.fields.locType')}
+					value={this.state.locationType}
+					onChange={this.handleLocationTypeChange}
+					menuItems={this.LocationTypes().map(m => ({
+						value: m.id,
+						label: m.label
+					}))} 
+					// helperText={`${t('calibration.selectLocationType')} ${this.state.name ? this.state.name : this.state.id}`}
+				/>
 				<div className={this.props.classes.latlong}>
 					<Caption>
 						{t('devices.fields.lat')} &amp; {t('devices.fields.long')}
@@ -454,10 +458,10 @@ class CalibrateDevice extends Component {
 				</Fragment>}
 				<Grid container>
 					<ItemG container xs={12}>
-						<Button onClick={this.handleFinish} color={'primary'} variant={'contained'} className={classes.buttonMargin}>
+						<Button onClick={this.handleFinish} color={'primary'} variant={'outlined'} className={classes.buttonMargin}>
 							<DeviceHub className={classes.iconButton} />{t('actions.viewDevice')} {device.id}
 						</Button>
-						<Button onClick={this.handleGoToDeviceList} color={'primary'} variant={'contained'} className={classes.buttonMargin}>
+						<Button onClick={this.handleGoToDeviceList} color={'primary'} variant={'outlined'} className={classes.buttonMargin}>
 							<Devices className={classes.iconButton} />{t('actions.viewDeviceList')}
 						</Button>
 					</ItemG>
@@ -496,15 +500,18 @@ class CalibrateDevice extends Component {
 											<div className={classes.actionsContainer}>
 												<Grid container>
 													<Button
+														variant={'outlined'}
+														style={{ margin: '0px 8px',  padding: '5px 15px 5px 5px' }}
 														disabled={activeStep === 0}
 														onClick={this.handleBack}
 														className={classes.button}
 													>
-														<NavigateBefore className={classes.iconButton} />{t('actions.back')}
+														<NavigateBefore />{t('actions.back')}
 													</Button>
 													<Button
-														variant={activeStep === steps.length - 1 || activeStep === steps.length ? 'outlined' : 'contained'}
+														variant={activeStep === steps.length - 1 || activeStep === steps.length ? 'outlined' : 'outlined'}
 														color='primary'
+														style={{ margin: '0px 8px', padding: '5px 15px 5px 5px' }}
 														onClick={this.handleNext}
 														className={classes.button}
 														disabled={this.stepChecker()}
@@ -513,7 +520,7 @@ class CalibrateDevice extends Component {
 															<Done className={classes.iconButton} />{t('actions.finish')}
 														</ItemG> :
 															<ItemG container justify={'center'} alignItems={'center'}>
-																<NavigateNext className={classes.iconButton} />{t('actions.next')}
+																<NavigateNext />{t('actions.next')}
 															</ItemG>}
 													</Button>
 												</Grid>

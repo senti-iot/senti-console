@@ -43,26 +43,28 @@ class CollectionTable extends React.Component {
 
 	setHover = async (e, n) => {
 		e.persist()
+		const { hoverTime } = this.props
 		const { rowHover } = this.state
-		if (rowHover) {
-			this.setState({
-				rowHover: null
-			})
-		}
-
-		this.timer = setTimeout(() => {
-			getCollection(n.id).then(rs => {
-				if (rs.project.id) {
-					getProject(rs.project.id).then(rsp => {
-						rs.project = rsp
+		if (hoverTime > 0) {
+			if (rowHover) {
+				this.setState({
+					rowHover: null
+				})
+			}
+			this.timer = setTimeout(() => {
+				getCollection(n.id).then(rs => {
+					if (rs.project.id) {
+						getProject(rs.project.id).then(rsp => {
+							rs.project = rsp
+							this.setState({ rowHover: e.target, hoverCollection: rs })
+						})
+					}
+					else {
 						this.setState({ rowHover: e.target, hoverCollection: rs })
-					})
-				}
-				else {
-					this.setState({ rowHover: e.target, hoverCollection: rs })
-				}
-			})
-		}, 700);
+					}
+				})
+			}, hoverTime);
+		}
 	}
 	unsetTimeout = () => {
 		// this.timer.forEach(e => clearTimeout(e))
@@ -216,7 +218,8 @@ class CollectionTable extends React.Component {
 const mapStateToProps = (state) => ({
 	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,
 	language: state.localization.language,
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	hoverTime: state.settings.hoverTime
 })
 
 const mapDispatchToProps = {

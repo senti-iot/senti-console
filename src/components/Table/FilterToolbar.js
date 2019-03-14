@@ -43,6 +43,7 @@ class FilterToolbar extends Component {
 			// this.input.focus()
 		}
 		else {
+			window.addEventListener('keydown', this.handleWindowKeyPress, false)
 			this.setState({ actionAnchor: null })
 		}
 	}
@@ -51,10 +52,12 @@ class FilterToolbar extends Component {
 		window.addEventListener('keydown', this.handleWindowKeyPress, false)
 	}
 	handleFocus = () => { 
+		window.addEventListener('keydown', this.handleMenuNav, false)
 		window.removeEventListener('keydown', this.handleWindowKeyPress, false)
 	}
 	handleClose = () => {
-		this.setState({ actionAnchor: null });
+		window.addEventListener('keydown', this.handleWindowKeyPress, false)
+		this.setState({ actionAnchor: null })
 	}
 	handleWindowKeyPress = e => {
 		const { actionAnchor, openFilterCard } = this.state
@@ -105,6 +108,7 @@ class FilterToolbar extends Component {
 					this.setState({ focusedMenu: focusedMenu === 0 ? filters.length - 1 : focusedMenu - 1 })
 					break;
 				case 27:
+					window.addEventListener('keydown', this.handleWindowKeyPress, false)
 					this.setState({ actionAnchor: null, focusedMenu: -1 })
 					break;
 				default:
@@ -175,6 +179,7 @@ class FilterToolbar extends Component {
 						placement="bottom-start"
 						transition
 						disablePortal
+						onClose={() => this.setState({ actionAnchor: null })}
 						style={{ zIndex: 1028, marginTop: 8 }}
 					>
 						{({ TransitionProps }) => (

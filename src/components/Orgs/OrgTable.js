@@ -62,20 +62,22 @@ class OrgTable extends React.Component {
 	isSelected = id => this.props.selected.indexOf(id) !== -1
 	setHover = (e, n) => {
 		e.persist()
+		const { hoverTime } = this.props
 		const { rowHover } = this.state
-		this.timer = setTimeout(() => {
-			if (rowHover) {
-				this.setState({
-					rowHover: null
-				})
-				setTimeout(() => {
+		if (hoverTime > 0)
+			this.timer = setTimeout(() => {
+				if (rowHover) {
+					this.setState({
+						rowHover: null
+					})
+					setTimeout(() => {
+						this.setState({ rowHover: e.target, hoverOrg: n })
+					}, 200);
+				}
+				else {
 					this.setState({ rowHover: e.target, hoverOrg: n })
-				}, 200);
-			}
-			else {
-				this.setState({ rowHover: e.target, hoverOrg: n })
-			}
-		}, 700);
+				}
+			}, hoverTime);
 	}
 	unsetTimeout = () => {
 		clearTimeout(this.timer)
@@ -185,7 +187,8 @@ const mapStateToProps = (state) => ({
 	language: state.localization.language,
 	accessLevel: state.settings.user.privileges,
 	favorites: state.favorites.favorites,
-	saved: state.favorites.saved
+	saved: state.favorites.saved,
+	hoverTime: state.settings.hoverTime
 })
 
 const mapDispatchToProps = (dispatch) => ({

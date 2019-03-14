@@ -1,3 +1,4 @@
+
 const countermodalStyles = theme => ({
 	modalWrapper: {
 		top: "50%",
@@ -20,6 +21,7 @@ const countermodalStyles = theme => ({
 		alignItems: 'center'
 	},
 	counterButton: {
+		fontSize: '1.5rem',
 		minHeight: 100,
 		minWidth: 100
 	},

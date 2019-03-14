@@ -429,12 +429,12 @@ class ChartData extends PureComponent {
 								handleClose={this.handleCloseDownloadModal}
 								t={t}
 							/>
-							{loading ? <CircularLoader notCentered /> :
-								<Fragment>
-									<ItemG xs={12}>
-										{this.renderType()}
-									</ItemG>
-								</Fragment>}
+							{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
+								
+								<ItemG xs={12}>
+									{this.renderType()}
+								</ItemG>
+							}
 						</Grid>}
 				/>
 			</Fragment >

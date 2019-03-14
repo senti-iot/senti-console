@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { InfoCard, ItemGrid, DSelect, CircularLoader } from 'components';
 import { Laptop } from 'variables/icons'
-import { Grid, ListItem, List, ListItemText, withStyles } from '@material-ui/core';
+import { Grid, ListItem, List, ListItemText, withStyles, Switch } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 import { connect } from 'react-redux'
-import { changeTRP, changeTheme, changeDrawerState, changeSideBarLoc, changeDiscoverSenti, changeMapTheme, changeDetailsPanel, changeSnackbarLocation, changeDrawerType, changeDrawerCloseOnNav, changeHeaderBorder, changeBreadCrumbs } from 'redux/settings';
+import { changeTRP, changeTheme, changeDrawerState, changeSideBarLoc, changeDiscoverSenti, changeMapTheme, changeDetailsPanel,
+	 changeSnackbarLocation, changeDrawerType, changeDrawerCloseOnNav, changeHeaderBorder, changeHoverTime } from 'redux/settings';
 import { changeLanguage } from 'redux/localization';
 
 class DisplaySettings extends Component {
@@ -18,22 +19,19 @@ class DisplaySettings extends Component {
 	changeTRP = (e) => this.props.changeTRP(e.target.value)
 	changeTheme = (e) => this.props.changeTheme(e.target.value)
 	changeSideBarLoc = (e) => this.props.changeSideBarLoc(e.target.value)
-	changeDiscoverSenti = e => this.props.changeDiscoverSenti(e.target.value)
+	changeDiscoverSenti = e => this.props.changeDiscoverSenti(e.target.checked)
 	changeMapTheme = e => this.props.changeMapTheme(e.target.value)
 	changeSnackbarLocation = e => this.props.changeSnackbarLocation(e.target.value) 
 	changeDetailsPanel = e => this.props.changeDetailsPanel(e.target.value)
 	changeDrawerType = e => this.props.changeDrawerType(e.target.value)
 	changeDrawerState = e => this.props.changeDrawerState(e.target.value)
 	changeDrawerCloseOnNav = e => this.props.changeDrawerCloseOnNav(e.target.value)
-	changeHeaderBorder = e => this.props.changeHeaderBorder(e.target.value)
-	changeBreadCrumbs = e => this.props.changeBreadCrumbs(e.target.value)
+	changeHeaderBorder = e => this.props.changeHeaderBorder(e.target.checked)
+	changeHoverTime = e => this.props.changeHoverTime(e.target.value)
 
 	render() {
-		const { language, trp, sideBar, breadcrumbs, discSentiVal, theme, mapTheme, classes, t, snackbarLocation, detailsPanel, drawer, drawerState, drawerCloseOnNav, headerBorder } = this.props
-		let discSenti = [
-			{ value: 1, label: t('actions.yes') },
-			{ value: 0, label: t('actions.no') }
-		]
+		const { language, trp, sideBar, discSentiVal, theme, mapTheme, hoverTime, classes, t, snackbarLocation, detailsPanel, drawer, drawerState, drawerCloseOnNav, headerBorder } = this.props
+
 		let languages = [
 			{ value: 'en', label: t('settings.languages.en') },
 			{ value: 'da', label: t('settings.languages.da') }
@@ -90,9 +88,14 @@ class DisplaySettings extends Component {
 			{ value: true, label: t('settings.drawer.callbacks.closeOnNav') },
 			{ value: false, label: t('settings.drawer.callbacks.notCloseOnNav') }
 		]
-		let headerBorders = [
-			{ value: true, label: t('actions.on') },
-			{ value: false, label: t('actions.off') }
+		let hoverTimes = [
+			{ value: 0, label: t('settings.hover.values.0') },
+			{ value: 300,  label: t('settings.hover.values.300') },
+			{ value: 500,  label: t('settings.hover.values.500') },
+			{ value: 700,  label: t('settings.hover.values.700') },
+			{ value: 1000, label: t('settings.hover.values.1000') },
+			{ value: 2000, label: t('settings.hover.values.2000') },
+			{ value: 3000, label: t('settings.hover.values.3000') },
 		]
 		return (
 			discSentiVal !== null && language !== null && trp !== null && sideBar !== null && theme !== null ? 
@@ -106,7 +109,10 @@ class DisplaySettings extends Component {
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.discoverSenti')}</ListItemText>
-										<DSelect menuItems={discSenti} value={discSentiVal} onChange={this.changeDiscoverSenti} />
+										<Switch 
+											checked={discSentiVal}
+											onChange={this.changeDiscoverSenti}/>
+										{/* <DSelect menuItems={discSenti} value={discSentiVal} onChange={this.changeDiscoverSenti} /> */}
 									</ItemGrid>
 								</ListItem>
 								<ListItem divider>
@@ -115,12 +121,7 @@ class DisplaySettings extends Component {
 										<DSelect menuItems={languages} value={language} onChange={this.changeLang} />
 									</ItemGrid>
 								</ListItem>
-								<ListItem divider>
-									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
-										<ListItemText>{t('settings.trp')}</ListItemText>
-										<DSelect menuItems={trps} value={trp} onChange={this.changeTRP} />
-									</ItemGrid>
-								</ListItem>
+							
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText secondary={t('settings.justForMobile')}>{t('settings.sideBarLoc')}</ListItemText>
@@ -171,14 +172,23 @@ class DisplaySettings extends Component {
 								</ListItem>
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
-										<ListItemText>{t('settings.header.border')}</ListItemText>
-										<DSelect menuItems={headerBorders} value={headerBorder} onChange={this.changeHeaderBorder} />
+										<ListItemText primary={t('settings.header.border')} />
+										<Switch 
+											checked={headerBorder}
+											onChange={this.changeHeaderBorder}
+										/>
+									</ItemGrid>
+								</ListItem>
+								<ListItem divider>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{t('settings.tables.trp')}</ListItemText>
+										<DSelect menuItems={trps} value={trp} onChange={this.changeTRP} />
 									</ItemGrid>
 								</ListItem>
 								<ListItem>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
-										<ListItemText>{t('settings.breadcrumbs')}</ListItemText>
-										<DSelect menuItems={headerBorders} value={breadcrumbs} onChange={this.changeBreadCrumbs} />
+										<ListItemText primary={t('settings.tables.hover')}/>
+										<DSelect menuItems={hoverTimes} value={hoverTime} onChange={this.changeHoverTime}/>
 									</ItemGrid>
 								</ListItem>
 							</List>
@@ -203,7 +213,7 @@ const mapStateToProps = state => {
 		drawerState: s.drawerState,
 		drawerCloseOnNav: s.drawerCloseOnNav,
 		headerBorder: s.headerBorder,
-		breadcrumbs: s.breadcrumbs
+		hoverTime: s.hoverTime
 	})
 }
 const mapDispatchToProps = (dispatch) => {
@@ -220,7 +230,7 @@ const mapDispatchToProps = (dispatch) => {
 		changeDrawerState: val => dispatch(changeDrawerState(val)),
 		changeDrawerCloseOnNav: val => dispatch(changeDrawerCloseOnNav(val)),
 		changeHeaderBorder: val => dispatch(changeHeaderBorder(val)),
-		changeBreadCrumbs: val => dispatch(changeBreadCrumbs(val))
+		changeHoverTime: val => dispatch(changeHoverTime(val))
 	}
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(settingsStyles)(DisplaySettings))

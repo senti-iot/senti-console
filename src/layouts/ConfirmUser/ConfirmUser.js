@@ -207,7 +207,7 @@ class ConfirmUser extends React.Component {
 										</Collapse>
 									</ItemG>
 									<ItemG xs={12} container justify={'center'}>
-										<Button variant={'contained'} color={'primary'} size='large' className={classes.loginButton} onClick={this.confirmUser}>
+										<Button variant={'outlined'} color={'primary'} size='large' className={classes.loginButton} onClick={this.confirmUser}>
 											{t('confirmUser.button')}
 										</Button>
 									</ItemG>

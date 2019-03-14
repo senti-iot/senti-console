@@ -38,23 +38,25 @@ class DeviceTable extends React.Component {
 
 	setHover = (e, n) => {
 		// e.persist()
+		const { hoverTime } = this.props
 		const { rowHover } = this.state
 		let target = e.target
-		this.timer = setTimeout(() => {
-			if (rowHover !== null) {
-				if (rowHover.id !== n.id) {
-					this.setState({
-						rowHover: null
-					})
-					setTimeout(() => {
-						this.setState({ rowHover: target, hoverDevice: n })
-					}, 200);
+		if (hoverTime > 0)
+			this.timer = setTimeout(() => {
+				if (rowHover !== null) {
+					if (rowHover.id !== n.id) {
+						this.setState({
+							rowHover: null
+						})
+						setTimeout(() => {
+							this.setState({ rowHover: target, hoverDevice: n })
+						}, 200);
+					}
 				}
-			}
-			else {
-				this.setState({ rowHover: target, hoverDevice: n })
-			}
-		}, 700);
+				else {
+					this.setState({ rowHover: target, hoverDevice: n })
+				}
+			}, hoverTime);
 	}
 	unsetTimeout = () => {
 		clearTimeout(this.timer)
@@ -196,7 +198,8 @@ DeviceTable.propTypes = {
 };
 const mapStateToProps = (state) => ({
 	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	hoverTime: state.settings.hoverTime
 })
 
 const mapDispatchToProps = {
