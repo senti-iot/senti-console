@@ -291,10 +291,10 @@ class User extends Component {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.users')}</DialogTitle>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.user')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
-					{t('dialogs.delete.message.users', { user: (this.state.user.firstName + ' ' + this.state.user.lastName) }) + '?'}
+					{t('dialogs.delete.message.user', { user: (this.state.user.firstName + ' ' + this.state.user.lastName) })}
 				</DialogContentText>
 
 			</DialogContent>

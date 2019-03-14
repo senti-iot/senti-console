@@ -302,7 +302,7 @@
 				"orgs": "Er du sikker på du ønsker at slette disse organisationer:",
 				"project": "Er du sikker på du ønsker at slette dette projekt ( %{project} )?",
 				"projects": "Er du sikker på du ønsker at slette disse projekter:",
-				"user": "Er du sikker på du ønsker at slette denne bruger?",
+				"user": "Er du sikker på du ønsker at slette denne bruger ( %{user} )?",
 				"users": "Er du sikker på du ønsker at slette disse brugere:"
 			},
 			"title": {
