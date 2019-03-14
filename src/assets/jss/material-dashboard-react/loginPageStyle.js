@@ -19,10 +19,12 @@ const loginPageStyles = theme => ({
 	},
 	wrapper: {
 		display: 'flex',
-		height: '100vh',
-		// [theme.breakpoints.down('sm')]: {
-		// 	height: 'calc(100vh - 70px)'
-		// }
+		// height: '100vh',
+		overflow: 'auto',
+		// position: 'fixed',
+		[theme.breakpoints.up('md')]: {
+			height: '100vh'
+		}
 	},
 	logo: {
 		height: 100,
@@ -66,7 +68,10 @@ const loginPageStyles = theme => ({
 		transition: 'all 300ms ease',
 		width: '100%',
 		borderRadius: 0,
-		height: '100%',
+		// height: '100%',
+		[theme.breakpoints.up('md')]: {
+			height: '100%'
+		},
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
