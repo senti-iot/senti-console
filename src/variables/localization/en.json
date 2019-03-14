@@ -299,7 +299,7 @@
 				"orgs": "Are you sure you want to delete these organisations:",
 				"project": "Are you sure you want to delete this project?",
 				"projects": "Are you sure you want to delete these projects:",
-				"user": "Are you sure you want to delete this user ( %{{user})?",
+				"user": "Are you sure you want to delete this user ( %{user} )?",
 				"users": "Are you sure you want to delete these users:"
 			},
 			"title": {
