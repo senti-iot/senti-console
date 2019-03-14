@@ -82,8 +82,11 @@ const theme = createMuiTheme({
 					borderBottomColor: teal[500],
 				},
 			}
-
-
+		},
+		MuiOutlinedInput: {
+			input: {
+				padding: '12px 14px'
+			}
 		}
 	},
 	palette: {

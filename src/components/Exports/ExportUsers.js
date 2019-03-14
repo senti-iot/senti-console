@@ -205,13 +205,13 @@ class ExportUsers extends Component {
 				</DialogContent>
 				<DialogActions>
 					<ItemG container justify={'flex-end'}>
-						<Button style={{ margin: 8 }} filename={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.csv`} data={this.exportToCSV()} headers={this.CSVHeaders} component={CSVLink} color={'primary'} variant={'contained'}>
+						<Button style={{ margin: 8 }} filename={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.csv`} data={this.exportToCSV()} headers={this.CSVHeaders} component={CSVLink} color={'primary'} variant={'outlined'}>
 							CSV
 						</Button>
-						<Button style={{ margin: 8 }} component={'a'} download={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.json`} href={this.exportToJson()} target={'_blank'} color={'primary'} variant={'contained'}>
+						<Button style={{ margin: 8 }} component={'a'} download={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.json`} href={this.exportToJson()} target={'_blank'} color={'primary'} variant={'outlined'}>
 							JSON
 						</Button>
-						<Button style={{ margin: 8 }} color={'primary'} variant={'contained'} onClick={this.exportToXLSX}>
+						<Button style={{ margin: 8 }} color={'primary'} variant={'outlined'} onClick={this.exportToXLSX}>
 							XLSX
 						</Button>
 					</ItemG>

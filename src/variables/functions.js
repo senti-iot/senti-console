@@ -4,6 +4,13 @@ import { colors } from '@material-ui/core';
 var moment = require('moment');
 var _ = require('lodash')
 
+export const scrollToAnchor = (id) => {
+	let el = document.getElementById(id.substring(1, id.length))
+	if (el) {
+		let topOfElement = el.offsetTop - 130
+		window.scroll({ top: topOfElement, behavior: 'smooth' })
+	}
+}
 export const copyToClipboard = str => {
 	let el = document.createElement('textarea');  // Create a <textarea> element
 	el.value = str;                                 // Set its value to the string that you want copied

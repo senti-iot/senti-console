@@ -1,18 +1,19 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, DSelect } from 'components';
 import { Public } from 'variables/icons'
-import { Grid, ListItem, List, ListItemText, withStyles } from '@material-ui/core';
+import { Grid, ListItem, List, ListItemText, withStyles, Switch } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 import { connect } from 'react-redux'
-import { changeDefaultRoute, changeDefaultView } from 'redux/settings';
+import { changeDefaultRoute, changeDefaultView, changeBreadCrumbs } from 'redux/settings';
 
 class NavigationSettings extends Component {
 
 	changeDefaultRoute = e => this.props.changeDefaultRoute(e.target.value)
 	changeDefaultView = e => this.props.changeDefaultView(e.target.value)
+	changeBreadCrumbs = e => this.props.changeBreadCrumbs(e.target.checked)
 
 	render() {
-		const { classes, t, defaultRoute, defaultView, user } = this.props
+		const { classes, t, defaultRoute, defaultView, user, breadcrumbs, } = this.props
 		let defaultRoutes = [
 			{ value: '/favorites', label: t('sidebar.favorites') },
 			{ value: '/dashboard', label: t('sidebar.dashboard') },
@@ -43,10 +44,20 @@ class NavigationSettings extends Component {
 									<DSelect menuItems={defaultRoutes} value={defaultRoute} onChange={this.changeDefaultRoute} />
 								</ItemGrid>
 							</ListItem>
-							<ListItem>
+							<ListItem divider>
 								<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 									<ListItemText>{t('settings.defaultView')}</ListItemText>
 									<DSelect menuItems={defaultViews} value={defaultView} onChange={this.changeDefaultView}/>
+								</ItemGrid>
+							</ListItem>
+							<ListItem>
+								<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+									<ListItemText>{t('settings.breadcrumbs')}</ListItemText>
+									<Switch
+										checked={breadcrumbs}
+										onChange={this.changeBreadCrumbs} 
+									/>
+									{/* <DSelect menuItems={onOff} value={breadcrumbs} onChange={this.changeBreadCrumbs} /> */}
 								</ItemGrid>
 							</ListItem>
 						</List>
@@ -61,13 +72,17 @@ const mapStateToProps = state => {
 	return ({
 		defaultRoute: s.defaultRoute,
 		defaultView: s.defaultView,
-		user: s.user
+		user: s.user,
+		breadcrumbs: s.breadcrumbs
+
 	})
 }
 const mapDispatchToProps = (dispatch) => {
 	return {
 		changeDefaultRoute: route => dispatch(changeDefaultRoute(route)),
-		changeDefaultView: route => dispatch(changeDefaultView(route))
+		changeDefaultView: route => dispatch(changeDefaultView(route)),
+		changeBreadCrumbs: val => dispatch(changeBreadCrumbs(val))
+
 	}
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(settingsStyles)(NavigationSettings))

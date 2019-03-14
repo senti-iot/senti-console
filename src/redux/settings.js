@@ -22,6 +22,8 @@ const changeDT = 'changeDrawerType'
 const changeDS = 'changeDrawerState'
 const changeHB = 'changeHeaderBorder'
 const changeBC = 'changeBreadCrumbs'
+const changeHT = 'changeHoverTime'
+
 //Navigation
 
 const changeDR = 'changeDefaultRoute'
@@ -91,7 +93,8 @@ export const saveSettingsOnServ = () => {
 			drawerState: s.drawerState,
 			drawerCloseOnNav: s.drawerCloseOnNav,
 			headerBorder: s.headerBorder,
-			breadcrumbs: s.breadcrumbs
+			breadcrumbs: s.breadcrumbs,
+			hoverTime: s.hoverTime
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -220,6 +223,15 @@ export const changeHeaderBorder = (val) => {
 		dispatch({
 			type: changeHB,
 			headerBorder: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeHoverTime = val => {
+	return async dispatch => {
+		dispatch({
+			type: changeHT,
+			hoverTime: val 
 		})
 		dispatch(saveSettingsOnServ())
 	}
@@ -519,11 +531,15 @@ let initialState = {
 	drawerCloseOnNav: true,
 	headerBorder: false,
 	breadcrumbs: true,
+	hoverTime: 1000
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
 		case reset: 
 			return Object.assign({}, state, { ...initialState, user: action.user, cookies: false })
+		case changeHT:
+			console.log('reduces')
+			return Object.assign({}, state, { hoverTime: action.hoverTime })
 		case changeBC: 
 			return Object.assign({}, state, { breadcrumbs: action.breadcrumbs })
 		case changeHB:

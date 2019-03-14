@@ -17,7 +17,7 @@ import { Timeline, DeviceHub, Map, DeveloperBoard, Image } from 'variables/icons
 import teal from '@material-ui/core/colors/teal'
 import { getWifiHourly, getWifiDaily, getWifiMinutely, getWifiSummary } from 'components/Charts/DataModel';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
-import { handleRequestSort } from 'variables/functions';
+import { handleRequestSort, scrollToAnchor } from 'variables/functions';
 import ChartDataPanel from 'views/Charts/ChartDataPanel';
 import ChartData from 'views/Charts/ChartData';
 import Maps from 'views/Maps/MapCard';
@@ -153,6 +153,10 @@ class Device extends Component {
 			if (id) {
 				await this.getDevice(id)
 				this.props.setBC('device', this.state.device.name)
+				if (this.props.location.hash !== '')
+				{
+					scrollToAnchor(this.props.location.hash)
+				}
 			}
 		}
 		else {

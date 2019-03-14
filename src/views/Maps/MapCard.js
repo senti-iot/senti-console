@@ -4,7 +4,7 @@ import { Map, Layers, Smartphone, Save, Clear, EditLocation, WhatsHot } from 'va
 import { Grid/*,  Checkbox, */, IconButton, Menu, MenuItem, Collapse, DialogContent, /* DialogTitle, */ DialogActions, Button, Drawer, withStyles } from '@material-ui/core';
 import { red, teal } from "@material-ui/core/colors"
 import OpenStreetMap from 'components/Map/OpenStreetMap';
-import { updateDevice, getAddress, getGeoByAddress } from 'variables/dataDevices';
+import { updateDevice, getGeoByAddress, getAddressByLocation } from 'variables/dataDevices';
 import { connect } from 'react-redux'
 import { changeMapTheme, changeHeatMap } from 'redux/appState';
 import moment from 'moment'
@@ -226,11 +226,19 @@ class MapCard extends PureComponent {
 	getLatLngFromMap = async (e) => {
 		let lat = e.target._latlng.lat
 		let long = e.target._latlng.lng
+		let newAddress = await getAddressByLocation(lat, long)
+		let address = this.state.markers[0].address
+		if (newAddress) {
+			if (!address.includes(newAddress.vejnavn)) {
+				address = `${newAddress.vejnavn} ${newAddress.husnr}, ${newAddress.postnr} ${newAddress.postnrnavn}`
+			}
+		}
 		this.setState({
 			oldLong: this.state.markers[0].long,
 			oldLat: this.state.markers[0].lat,
 			markers: [{
 				...this.state.markers[0],
+				address: address,
 				lat,
 				long,
 				weather: this.props.weather
@@ -264,12 +272,13 @@ class MapCard extends PureComponent {
 		if (suggestion.id) {
 			data = await getGeoByAddress(suggestion.id)
 			if (data) {
-				return this.setMapCoords(data)
+				if (!this.state.markers[0].address.includes(data.adressebetegnelse))
+					return this.setMapCoords(data)
 			}
 		}
 		else {
-			data = await getAddress(this.state.markers[0].address)
-			return this.setMapCoords(data)
+			// data = await getAddress(this.state.markers[0].address)
+			// return this.setMapCoords(data)
 		}
 	}
 	renderModal = () => {

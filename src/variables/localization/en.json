@@ -1,911 +1,926 @@
 {
-	"404": {
-		"contactSupport": "Please try again or contact support on support@senti.cloud!",
-		"errorMessage": "The resource requested has not been found!",
-		"goHome": "Go to Dashboard",
-		"networkFail": "Request failed!",
-		"title": "Page Not Found"
-	},
-	"": "",
-	"Senti.Cloud": "Senti.Cloud",
-	"actions": {
-		"visitWebsite": "Visit Website",
-		"call": "Ring",
-		"sendEmail": "Send e-mail",
-		"changeLanguage": "Skift til Dansk",
-		"search": "Type here to search",
-		"accept": "Accept",
-		"addFilter": "Add filter",
-		"apply": "Apply",
-		"back": "Previous",
-		"cancel": "Cancel",
-		"changePassword": "Change Password",
-		"decline": "Decline",
-		"deletePicture": "Delete this picture",
-		"editFilter": "Edit filter",
-		"editLocation": "Edit location",
-		"extendProfile": "Extended Profile",
-		"finish": "Finish",
-		"forgotPass": "Password Forgotten?",
-		"getLocation": "Get location",
-		"goTo": "Go to",
-		"goToDevice": "Go to device(s)",
-		"goToLogin": "Go to Login Page",
-		"heatMap": "Heatmap",
-		"insertAddress": "Enter an address",
-		"learnMore": "Learn more",
-		"learn": "Learn",
-		"more": "more",
-		"login": "Log in",
-		"loginWithGoogle": "Log in with Google",
-		"manualCalibration": "Manual calibration",
-		"next": "Next",
-		"nextPage": "Next page",
-		"no": "No",
-		"off": "Off",
-		"on": "On",
-		"openCounter": "Open counter",
-		"previousPage": "Previous page",
-		"read": "Read",
-		"readMore": "Read more",
-		"requestPasswordReset": "Reset password",
-		"reset": "Reset",
-		"save": "Save",
-		"start": "Start",
-		"startNow": "Start now",
-		"update": "Update",
-		"uploadImages": "Upload images",
-		"viewDevice": "View device",
-		"viewDeviceList": "View device list",
-		"yes": "Yes"
-	},
-	"calibration": {
-		"header": "On-site setup %{deviceId}",
-		"selectLocationType": "Select a location type for ",
-		"stepheader": {
-			"calibration": "Calibration",
-			"images": "Images of installation",
-			"location": "Device location",
-			"name": "Device name and description"
-		},
-		"steps": {
-			"0": "To configure your Senti device, please enter a title and an informative description.",
-			"1": "To configure your Senti device you need to allow Senti.Cloud to store the location of the device. Accept this when prompted to allow this from your mobile device. Secondly type in the actual physical address where the device is located, and select a location type to further pinpoint where your data is being collected.",
-			"2": "To get the best data collection accuracy, you need to do a manual calibration. Select the calibration method below, that suits your puspose. Start your manual count by pressing “OPEN COUNTER” and press “START“. Push the center button to count.",
-			"3": "You can store optional images of your device installation. This will enhance the Senti.Cloud experience, and serve as a help for Senti service technicians in case your device needs on-site service.",
-			"unknown": "Unknown step"
-		},
-		"texts": {
-			"success": "Success!",
-			"successMessage": "Your Senti device is now configured and calibrated and will produce better results when collecting data. To further enhance the accuracy of your data collection, return to the site of installation and do a new calibration on a regular basis."
+    "404": {
+        "contactSupport": "Please try again or contact support on support@senti.cloud!",
+        "errorMessage": "The resource requested has not been found!",
+        "goHome": "Go to Dashboard",
+        "networkFail": "Request failed!",
+        "title": "Page Not Found"
+    },
+    "": "",
+    "Senti.Cloud": "Senti.Cloud",
+    "actions": {
+        "accept": "Accept",
+        "addFilter": "Add filter",
+        "apply": "Apply",
+        "back": "Previous",
+        "call": "Ring",
+        "cancel": "Cancel",
+        "changeLanguage": "Skift til Dansk",
+        "changePassword": "Change Password",
+        "decline": "Decline",
+        "deletePicture": "Delete this picture",
+        "editFilter": "Edit filter",
+        "editLocation": "Edit location",
+        "extendProfile": "Extended Profile",
+        "finish": "Finish",
+        "forgotPass": "Password Forgotten?",
+        "getLocation": "Get location",
+        "goTo": "Go to",
+        "goToDevice": "Go to device(s)",
+        "goToLogin": "Go to Login Page",
+        "heatMap": "Heatmap",
+        "insertAddress": "Enter an address",
+        "learn": "Learn",
+        "learnMore": "Learn more",
+        "login": "Log in",
+        "loginWithGoogle": "Log in with Google",
+        "manualCalibration": "Manual calibration",
+        "more": "more",
+        "next": "Next",
+        "nextPage": "Next page",
+        "no": "No",
+        "off": "Off",
+        "on": "On",
+        "openCounter": "Open counter",
+        "previousPage": "Previous page",
+        "read": "Read",
+        "readMore": "Read more",
+        "requestPasswordReset": "Reset password",
+        "reset": "Reset",
+        "save": "Save",
+        "search": "Type here to search",
+        "sendEmail": "Send e-mail",
+        "start": "Start",
+        "startNow": "Start now",
+        "update": "Update",
+        "uploadImages": "Upload images",
+        "viewDevice": "View device",
+        "viewDeviceList": "View device list",
+        "visitWebsite": "Visit Website",
+        "yes": "Yes"
+    },
+    "calibration": {
+        "header": "On-site setup %{deviceId}",
+        "selectLocationType": "Select a location type for ",
+        "stepheader": {
+            "calibration": "Calibration",
+            "images": "Images of installation",
+            "location": "Device location",
+            "name": "Device name and description"
+        },
+        "steps": {
+            "0": "To configure your Senti device, please enter a title and an informative description.",
+            "1": "To configure your Senti device you need to allow Senti.Cloud to store the location of the device. Accept this when prompted to allow this from your mobile device. Secondly type in the actual physical address where the device is located, and select a location type to further pinpoint where your data is being collected.",
+            "2": "To get the best data collection accuracy, you need to do a manual calibration. Select the calibration method below, that suits your puspose. Start your manual count by pressing “OPEN COUNTER” and press “START“. Push the center button to count.",
+            "3": "You can store optional images of your device installation. This will enhance the Senti.Cloud experience, and serve as a help for Senti service technicians in case your device needs on-site service.",
+            "unknown": "Unknown step"
+        },
+        "texts": {
+            "success": "Success!",
+            "successMessage": "Your Senti device is now configured and calibrated and will produce better results when collecting data. To further enhance the accuracy of your data collection, return to the site of installation and do a new calibration on a regular basis."
+        }
+    },
+    "charts": {
+        "controlPanel": "Data control panel",
+        "fields": {
+            "date": "Date",
+            "humidity": "Humidity",
+            "pressure": "Pressure",
+            "range": "Period of time",
+            "summary": "Weather",
+            "temperature": "Temperature",
+            "thisDay": "On this day:",
+            "weather": "Weather",
+            "windspeed": "Windspeed"
+        },
+        "type": {
+            "bar": "Bar",
+            "donut": "Donut",
+            "line": "Line",
+            "pie": "Pie"
+        }
+    },
+    "collections": {
+        "calibratedData": "Calibrated Data",
+        "cards": {
+            "data": "Data Collections",
+            "log": "Device log"
+        },
+        "createCollection": "Create collection",
+        "editCollection": "Edit collection",
+        "fields": {
+            "activated": "Activated",
+            "activeDevice": "Active Device",
+            "activeDeviceStartDate": "Data collection start",
+            "collection": "Data collection",
+            "created": "Created",
+            "dcID": "ID",
+            "description": "Description",
+            "device": "Device",
+            "deviceId": "Device ID",
+            "endOfService": "End of service",
+            "id": "Data Collection",
+            "modified": "Last modified",
+            "name": "Name",
+            "org": "Organisation",
+            "organisation": "Organisation",
+            "ownState": "Status",
+            "project": "Project",
+            "state": {
+                "active": "Active",
+                "inactive": "Inactive"
+            },
+            "status": "Device status"
+        },
+        "helper": {
+            "availableDevicesForOrg": "Available devices for the selected Organisation"
+        },
+        "pageTitle": "Data Collections",
+        "rawData": "Raw data"
+    },
+    "confirmUser": {
+        "button": "Confirm password",
+        "lastStep": "Create your password to confirm your account.",
+        "networkError": "Network Error!",
+        "password": "Password",
+        "passwordConfirm": "Confirm and sign in",
+        "validation": {
+            "emailDoesntExist": "The E-mail provided is not assigned to an existing account!",
+            "passwordEmpty": "Password cannot be empty!",
+            "passwordMismatch": "The entered passwords are not identical!",
+            "passwordUnder8": "Password must contain at least 8 characters!",
+            "userDoesntExistAnymore": "The user doesn't exist anymore or the token has expired!"
+        },
+        "welcomeMessage": "Welcome to Senti.Cloud!"
+    },
+    "cookies": {
+        "p": {
+            "1": "Senti.Cloud respects the privacy of our users and is committed to protecting all forms of personal information that users have sent to Senti.Cloud.",
+            "2": "By accessing, browsing and/or using Senti.Cloud, you acknowledge that you have read, understood and agree to be subject to the terms and conditions of this cookie policy and therefore agree to use cookies in accordance with these terms.",
+            "3": "In general, our users can visit Senti.Cloud without telling us who they are and without disclosing any kind of personal information. Senti.Cloud uses cookies to ensure the best user experience. Cookies are small text files that are located in the user's browser to track usage traces and store preferences. Our cookies do not contain information that can identify people.",
+            "4": "Cookies can be either ”persistent” cookies or ”session” cookies: A persistent cookie is stored by a browser and is valid until its set expiration date if it is not deleted by the user before the expiration date. However, a session cookie expires at the end of a user visit when the browser is closed. We use both session and persistent cookies at Senti.Cloud.",
+            "5": "We also use Google Analytics to analyze the use of Senti.Cloud. Our analytics service provider generates statistics and other website usage information through cookies. The cookies for web analytics that we use at Senti.Cloud have the following names: _ga, _gat, _gid.",
+            "6": "The information generated in relation to Senti.Cloud is used to create reports on the use of Senti.Cloud.",
+            "7": "Our Analytics Services Privacy Policy Provider is available at: ",
+            "8": "Users can manage and/or delete cookies - for more information, please see ",
+            "9": "Blocking or deleting all cookies has a negative influence on the stability of many websites. If users choose to block our cookies, they are not able to use all of the website's properties.",
+            "10": "The policy may be updated from time to time, e.g. due to modifications of relevant legislation or changes in our corporate structure. We encourage all our users to periodically re-read this page for the latest information on our data protection practices."
+        },
+        "subtitle": "How to use Senti.Cloud cookies",
+        "title": "Senti.Cloud Cookie Policy"
+    },
+    "dashboard": {
+        "cardContent": {
+            "alerts": "Did you know that? … \n Get true intelligent rule-based alerts about the nature of the data you are collecting.",
+            "api": "SentiAPI allows you to build your own IoT Dashboards, Apps or Widgets. SentiAPI support access to your own Senti IoT device data or paid access to Senti Big Data based upon the crowd-sourced anonymised pool of Senti data.",
+            "data": "Get detailed lists and charts to measure and analyse your collected data. Create reports and export data in few easy steps.",
+            "devices": "Devices are the actual IoT hardware device deployed into your environment. Here you can configure and control the IoT devices used in your data collections.",
+            "notifications": "See and manage notification messages and control how, when and where you want to engage your users with notifications.",
+            "onSiteSetup": "When you deploy your IoT devices on-site, a simple configuration is advantageous. Store device name, description, location information and calibrate the device for optimal accuracy.",
+            "projects": "Projects help you manage Senti IoT data collections for specific measuring tasks and use cases. A project is a container for your data collections and data across one or more locations.",
+            "settings": "The main control center for managing settings for Senti IoT devices and your Senti.Cloud Console.",
+            "users": "Authenticate and manage accounts for users and organisations, and allow access to projects, collected data, devices and API’s."
+        },
+        "cardHeaders": {
+            "alerts": "Intelligent Alerts",
+            "api": "API (comming soon)",
+            "data": "Data Collections",
+            "devices": "Devices",
+            "notifications": "Notifications",
+            "onSiteSetup": "On-site setup",
+            "projects": "Projects",
+            "settings": "Settings",
+            "users": "Users"
+        },
+        "pageTitle": "Senti.Cloud",
+        "subtitle": "Senti.Cloud lets you control and manage all your Senti-in-a-Box Devices."
+    },
+    "devices": {
+        "cards": {
+            "data": "Data",
+            "details": "Device details",
+            "hardware": "Equipment",
+            "map": "Map",
+            "pictures": "Images"
+        },
+        "device": "Device",
+        "editDetailsTitle": "Edit %{deviceId}",
+        "editHardwareTitle": "Edit hardware for device %{deviceId}",
+        "fields": {
+            "adapter": "Power adapter",
+            "address": "Address",
+            "availability": "Availability",
+            "cellNumber": "Phone number",
+            "coords": "Coordinates",
+            "coordsW": "Coordinates: %{lat} %{long}",
+            "description": "Description",
+            "free": "Free",
+            "id": "Device ID",
+            "lastData": "Last time device sent data to server",
+            "lastStats": "Last time device was connected to server",
+            "lat": "Latitude",
+            "locType": "Location type",
+            "long": "Longitude",
+            "memory": "Memory",
+            "memoryModel": "Memory model",
+            "modemIMEI": "Modem IMEI",
+            "modemModel": "Modem model",
+            "name": "Name",
+            "notfree": "Busy",
+            "org": "Organisation",
+            "pcModel": "Device model",
+            "project": "Project",
+            "simCard": "SIM-card ID",
+            "simProvider": "SIM-card provider",
+            "status": "Status",
+            "temp": "CPU temperature",
+            "weather": "Weather",
+            "wifiModule": "Wi-Fi module"
+        },
+        "liveCount": "Live count (last 10 minutes)",
+        "locationTypes": {
+            "crossroads": "Crossroads",
+            "motorway": "Motorway",
+            "office": "Office",
+            "park": "Park",
+            "path": "Path",
+            "pedStreet": "Pedestrian street",
+            "port": "Port",
+            "road": "Road",
+            "square": "Square",
+            "unspecified": "Unspecified"
+        },
+        "new": "",
+        "noAddress": "No Address",
+        "noData": "There is currently no data available!",
+        "noDataFilters": "There is currently no data available for the selected filters!",
+        "noDevices": "There are no available devices",
+        "noImages": "There are no images uploaded!",
+        "noLocType": " No location type set",
+        "noName": "No name",
+        "notCalibrated": "Device has not been calibrated! No device location on maps or weather data will be accessible.",
+        "pageTitle": "Devices",
+        "simpleList": {
+            "address": "Address",
+            "id": "ID",
+            "name": "Name",
+            "status": "Status",
+            "tableCellAddress": "No address",
+            "tableCellDeviceName": "No name",
+            "totalCount": "Total count"
+        },
+        "status": {
+            "green": "Device is connected and data is received",
+            "greenShort": "Receives data",
+            "noDevice": "No device attached",
+            "red": "Device is disconnected, and no data is received",
+            "redShort": "Disconnected",
+            "yellow": "Device is connected, but no data is received",
+            "yellowShort": "Receives no data"
+        },
+        "tabs": {
+            "cardView": "Card view",
+            "listView": "List view",
+            "mapView": "Map view"
+        }
+    },
+    "dialogs": {
+        "cookies": {
+            "message": {
+                "snackbar": "Senti.cloud uses cookies for functional purposes. For more information please read our cookies policy."
+            }
+        },
+        "delete": {
+            "message": {
+                "collection": "Are you sure you want to delete this data collection ( %{collection} ) ?",
+                "collections": "Are you sure you want to delete these data collections:",
+                "deviceImage": "Are you sure you want to delete this picture?",
+                "org": "Are you sure you want to delete this organisation?",
+                "orgs": "Are you sure you want to delete these organisations:",
+                "project": "Are you sure you want to delete this project?",
+                "projects": "Are you sure you want to delete these projects:",
+                "user": "Are you sure you want to delete this user ( %{user} ) ?",
+                "users": "Are you sure you want to delete these users:"
+            },
+            "title": {
+                "collection": "Delete data collection?",
+                "collections": "Delete data collections?",
+                "deviceImage": "Delete this picture?",
+                "org": "Delete organisation?",
+                "orgs": "Delete organisations?",
+                "project": "Delete project?",
+                "projects": "Delete projects?",
+                "user": "Delete user?",
+                "users": "Delete users?"
+            }
+        },
+        "discoverSenti": {
+            "addProject": "Add data projects",
+            "onSiteSetup": "On-site setup of devices",
+            "startAnalyzeData": "Start analyzing your data",
+            "welcome": "Welcome to Senti.Cloud!"
+        },
+        "export": {
+            "message": "Data details:"
+        },
+        "login": {
+            "passwordReseted": "Your password resetted!",
+            "resetPassRequestMessage": "An E-mail sent with instructions on how to reset your password!",
+            "resetPasswordMessage": "Reset your password by entering your E-mail"
+        },
+        "unassign": {
+            "message": {
+                "collectionFromProject": "Unassign collection %{collection} from project %{project} ?",
+                "collectionsFromProject": "Unassign the following collections from project: ",
+                "deviceFromCollection": "Unassign device %{device} from collection %{collection}?",
+                "deviceFromOrg": "Unassign device %{device} from organisation %{organisation}?",
+                "devicesFromCollection": "Unassign the selected devices from their data collection:"
+            },
+            "title": {
+                "collectionFromProject": "Unassign collection from project?",
+                "collectionsFromProject": "Unassign colletions from project?",
+                "deviceFromCollection": "Unassign device from collection?",
+                "deviceFromOrg": "Unassign device from organisation?",
+                "devicesFromCollection": "Unassign devices from collection?"
+            }
+        },
+        "warnings": {
+            "notImplemented": "Not implemented",
+            "wip": "Work in progress"
+        }
+    },
+    "exports": {
+        "columns": "Columns",
+        "customColumns": "Select Columns",
+        "standardColumns": "Default Columns"
+    },
+    "favorites": {
+        "fields": {
+            "name": "Name",
+            "type": "Type"
+        },
+        "pageTitle": "Favorites",
+        "types": {
+            "collection": "Data collection",
+            "device": "Device",
+            "org": "Organisation",
+            "project": "Project",
+            "user": "User"
+        }
+    },
+    "filters": {
+        "after": "after",
+        "afterDate": "After date",
+        "before": "before",
+        "beforeDate": "Before date",
+        "contains": "Contains",
+        "dateOptions": {
+            "30days": "Last 30 days",
+            "7days": "Last 7 days",
+            "90days": "Last 90 days",
+            "custom": "Custom range",
+            "daily": "Daily",
+            "hourly": "Hourly",
+            "minutely": "Minutely",
+            "summary": "Summary",
+            "thisWeek": "This week",
+            "today": "Today",
+            "yesterday": "Yesterday"
+        },
+        "devices": {
+            "calibrated": "Calibrated",
+            "notCalibrated": "Not calibrated"
+        },
+        "display": "Display:",
+        "endDate": "End date",
+        "freeText": "Free text",
+        "options": {
+            "graphType": "Chart type"
+        },
+        "orgs": {
+            "hasParentOrg": "With parent organisation",
+            "noParentOrg": "Without parent organisation",
+            "parentOrg": "With/Without parent organisation"
+        },
+        "search": "Search",
+        "startDate": "Start date",
+        "users": {
+            "hasLogged": "Log in",
+            "hasLoggedIn": "Has been logged in",
+            "neverLoggedIn": "Has never been logged in"
+        }
+    },
+    "images": {
+        "add": "Add images",
+        "finish": "Finish",
+        "reset": "Reset",
+        "upload": "Upload",
+        "uploadFailed": "Images failed to upload! Please refresh browser and try again!",
+        "uploadSuccess": "Images was uploaded"
+    },
+    "links": {
+        "googleMaps": "Show on Google Maps",
+        "mailTo": "Mail to",
+        "phoneTo": "Call"
+    },
+    "login": {
+        "cards": {
+            "0": "**Senti.**Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
+            "1": "**Senti.**Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
+            "2": "**Senti.**Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
+            "3": "**Senti.**Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
+            "4": "**Senti.**Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
+            "5": "**Senti.**Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
+            "6": "**Senti.**Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
+            "7": "**Senti.**Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
+            "8": "**Senti.**Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
+            "9": "**Senti.**Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
+            "10": "**Senti.**Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
+            "11": "**Senti.**Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
+            "12": "**Senti.**Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
+            "13": "**Senti.**Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices."
+        },
+        "createAccount": "Create an account",
+        "footer": "©2016–2019 All rights reserved. Senti is an open source IoT platform designed and developed by WebHouse.",
+        "forgotPassword": "Forgot password?",
+        "forgotUsername": "Forgot username?",
+        "needAnAccount1": "Need a",
+        "needAnAccount2": "account",
+        "pass": "Password",
+        "username": "Username"
+    },
+    "map": {
+        "themes": {
+            "0": "Humanitarian",
+            "1": "Ortho",
+            "2": "Carto Dark",
+            "3": "Carto",
+            "4": "Watercolor",
+            "5": "Toner",
+            "6": "OpenStreetMap",
+            "7": "Topographic"
+        }
+    },
+    "menus": {
+        "assign": {
+            "collectionToProject": "Assign Data Collection to Project",
+            "collectionsToProject": "Assign Data Collections to Project",
+            "deviceToCollection": "Assign Device to Data Collection",
+            "deviceToOrg": "Assign Device to Organisation"
+        },
+        "calibrate": "Calibrate",
+        "changePassword": "Change Password",
+        "charts": {
+            "addAPeriod": "Add period",
+            "deleteThisPeriod": "Delete this period",
+            "hideThisPeriod": "Hide this period",
+            "resetToDefault": "Reset to default",
+            "showHidePeriods": "Show / Hide period"
+        },
+        "copyEmails": "Copy E-mail addresses",
+        "create": {
+            "project": "Create project",
+            "user": "Create user"
+        },
+        "delete": "Delete",
+        "edit": "Edit",
+        "export": "Export data",
+        "exportPDF": "Print as PDF",
+        "exportUsers": "Export Users",
+        "favorites": {
+            "add": "Add to favorites",
+            "remove": "Remove from favorites"
+        },
+        "hideMap": "Hide map",
+        "hideMore": "Hide",
+        "more": "More",
+        "reassign": {
+            "collectionToProject": "Reassign to another project",
+            "deviceToOrg": "Reassign to another organisation"
+        },
+        "recalibrate": "Recalibrate",
+        "seeDevice": "See device",
+        "seeLess": "See less",
+        "seeMore": "See more",
+        "showMap": "Show map",
+        "showMore": "Show more",
+        "unassign": {
+            "collectionFromProject": "Unassign device from project",
+            "deviceFromCollection": "Unassign device from collection",
+            "deviceFromOrg": "Unassign device from organisation"
+        },
+        "user": {
+            "account": "Account details",
+            "profile": "My profile",
+            "signout": "Sign out"
+        },
+        "userResendEmail": "Resend confirmation E-mail"
+    },
+    "no": {
+        "activeDevice": "No active device",
+        "audioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a different browser.",
+        "birthdays": "No birthdays today",
+        "collection": "No collection",
+        "collections": "No collections",
+        "device": "No device",
+        "devices": "No devices",
+        "doi": "No Holidays today",
+        "freeDevice": "No available devices",
+        "history": "No history",
+        "org": "No organisation",
+        "project": "No project",
+        "projects": "No projects"
+    },
+    "orgs": {
+        "create": "Create",
+        "createOrg": "Create organisation",
+        "fields": {
+            "CVR": "Tax Registration Number",
+            "EAN": "EAN Number",
+            "address": "Address",
+            "city": "City",
+            "country": "Country",
+            "deviceCount": "Number of devices",
+            "name": "Organisation name",
+            "org": "Organisation",
+            "parentOrg": "Parent Organisation",
+            "region": "Region",
+            "topLevelOrg": "No Parent Organisation",
+            "url": "Website",
+            "zip": "ZIP Code"
+        },
+        "organisation": "Organisation",
+        "pageTitle": "Organisations",
+        "updateOrg": "Edit Organisation",
+        "validation": {
+            "networkError": "Network Error!",
+            "noAddress": "Address missing",
+            "noCity": "City missing",
+            "noCountry": "Country missing",
+            "noName": "Name missing",
+            "noParent": "Parent Organisation missing",
+            "noZip": "ZIP missing",
+            "notWebsite": "Not a valid URL"
+        }
+    },
+    "privacy": {
+        "b0": "You can withdraw your consent at any time.",
+        "b1": "Use of personal data",
+        "b2": "Insight into personal data etc",
+        "b3": "Deleting personal data",
+        "b4": "Data portability",
+        "b5": "Our role as a data processor",
+        "b6": "Changing our Privacy Policy",
+        "contactEmail": "Contact E-mail: ",
+        "note": "NB: ",
+        "p0": "We collect personal information about you and your employees in order to fulfill our agreement with you.",
+        "p1": "You cannot use Senti.Cloud if you do not provide us with the minimum information we ask for.",
+        "p10": "The treatment basis for the collection of personal data through our studies is your consent.",
+        "p11": "If you withdraw your consent, we will delete the information that we have collected as a result of your participation in our studies.",
+        "p12": "We only use your email address for marketing if we have received your explicit and prior consent.",
+        "p13": "We use your personal information to conduct our customer relationships with you or your company.",
+        "p14": "We also use them to improve our services and to target our messages to you and your business, including targeting advertising and content for you or your business.",
+        "p15": "Your personal information is not disclosed to any third party unless you have expressly and personally consented to it.",
+        "p16": "We use the subcontractors/sub-processors that appear at",
+        "p16.a": "https://senti.cloud/en/security/subcontractors.htm ",
+        "p16.b": "for processing your personal data.",
+        "p16.c": "Subcontractors",
+        "p17": "If you want access to the information registered about you at Senti.Cloud, please contact us at privacy@senti.cloud.",
+        "p18": "If incorrect information has been registered about you that you cannot correct yourself, or if you have other objections to our processing of your personal information, please write to us at privacy@senti.cloud.",
+        "p19": "You have the opportunity to gain insight into which information is registered about you and you are entitled to object to our processing of your personal data.",
+        "p2": "We collect your company/organisation name, address, email, telephone number and CVR number. We also collect payment information (possibly EAN number) if your company uses a paid version of Senti.Cloud.",
+        "p20": "If it turns out that personal information about you is incorrect or misleading, then you have the right to have them corrected.",
+        "p21": "You may object at any time, that information about you is being processed. Just write to us at privacy@senti.cloud.",
+        "p22": "You can also revoke your consent at any time for the data processing we make with your consent.",
+        "p23": "You have the opportunity to complain about our processing of your personal data if we do not give you the right to your objections. The complaint must be sent to the Danish Data Inspectorate. See more at",
+        "p23.a": "https://www.datatilsynet.dk",
+        "p24": "Personal data is permanently deleted or anonymized as the purpose for which they were collected is terminated.",
+        "p25": "We store your personal information as long as we have an active customer relationship with you or your company.",
+        "p26": "Once the customer relationship has ceased, we store your personal information as long as we are obliged to do so by law, including the accounting legislation.",
+        "p27": "Your access to data from Senti.Cloud is regulated in our terms and conditions, which you find here.",
+        "p28": "In relation to you and your company, we are the data processor for the personal information you process and are responsible for, including storing in Senti.Cloud. You will find our data processing agreement here.",
+        "p29": "In case of significant changes to this privacy policy, we will notify you in the form of a notification either in Senti.Cloud or at our website.",
+        "p3": "We collect your name, email address, and phone number.",
+        "p30": "Last reviewed March 2019.",
+        "p4": "We only collect the personal information that you provide us by creating your account with us.",
+        "p5": "We also collect the personal information you provide us about your employees who must have access to Senti.Cloud. We only do this to enable your company to use Senti.Cloud.",
+        "p6": "We do not collect personal information about you as a person from a third party. However, we collect information through our cookies. Read more about this in our cookie policy, which you will find here",
+        "p7": "The personal information we collect through our use of cookies, are to pursue our legitimate interest in marketing Senti.Cloud to you, in order to customize our content of Senti.Cloud specifically for you and to optimize the functionality of Senti. Cloud. ",
+        "p8": "If you participate in the questionnaires and studies we conduct, we collect the information included in the study, including, gender, age, interests, attitudes and knowledge of various topics relevant to improving the functionality of Senti.Cloud. Participation in studies is always voluntary.",
+        "p9": "We use the studies to improve our services, but also to offer you and your company other services, including better targeting our services to you and your company.",
+        "responsible": "Data Controller",
+        "subtitle": "What personal information we collect for the purpose of fulfilling our agreement with you in regard to your private or business/organisation's use of Senti.Cloud.",
+        "title": "Senti.Cloud Privacy Policy"
+    },
+    "projects": {
+        "contact": {
+            "email": "E-mail",
+            "name": "Name",
+            "organisation": "Organisation",
+            "phone": "Phone",
+            "title": "Contact"
+        },
+        "devices": {
+            "numDevices": "Number of devices",
+            "title": "Devices"
+        },
+        "fields": {
+            "assignDevices": "Assign devices",
+            "created": "Created",
+            "description": "Description",
+            "endDate": "End date",
+            "lastUpdate": "Last modified",
+            "name": "Project name",
+            "selectOrganisation": "Organisation",
+            "startDate": "Start date",
+            "title": "Name"
+        },
+        "noAvailableDevices": "There are no devices calibrated to display",
+        "noOrganisationSelected": "Select an organisation to see available devices.",
+        "pageTitle": "Projects",
+        "tabs": {
+            "cardView": "Grid view",
+            "listView": "List view"
+        },
+        "updateProject": "Edit project",
+        "validation": {
+            "noEndDate": "End date is missing",
+            "noStartDate": "Start date is missing",
+            "noTitle": "Project name is missing",
+            "startDateBiggerThanEndDate": "Start date can not be later than End date!"
+        }
+    },
+    "settings": {
+        "alerts": "Alerts",
+        "breadcrumbs": "Breadcrumbs",
+        "calibration": {
+            "12months": "Every 12 months",
+            "3months": "Every 3 months",
+            "6months": "Every 6 months",
+            "9months": "Every 9 months",
+            "byCount": "Counts",
+            "byTime": "Minutes",
+            "count": "By Count",
+            "history": "History",
+            "minutes": "minutes",
+            "notification": "Notification",
+            "text": "Method",
+            "time": "By time"
+        },
+        "chart": {
+            "YAxis": {
+                "linear": "Linear scale",
+                "logarithmic": "Logarithmic scale"
+            },
+            "defaultChart": "Default chart type",
+            "period": "Period",
+            "periods": "Periods",
+            "rawData": "Raw data",
+            "weekendColor": "Weekend color",
+            "weekendColors": {
+                "amber": "Amber",
+                "blue": "Blue",
+                "cyan": "Cyan",
+                "deepOrange": "Deep Orange",
+                "deepPurple": "Deep Purple",
+                "green": "Green",
+                "indigo": "Indigo",
+                "lightBlue": "Light Blue",
+                "lightGreen": "Light Green",
+                "lime": "Lime",
+                "orange": "Orange",
+                "pink": "Pink",
+                "purple": "Purple",
+                "red": "Red",
+                "teal": "Teal",
+                "yellow": "Yellow"
+            }
+        },
+        "default": "Default",
+        "defaultDataSet": "Default data set for charts",
+        "defaultRoute": "Start page",
+        "defaultView": "Default view",
+        "defaultViews": {
+            "favorites": "Favorites",
+            "grid": "Grid",
+            "list": "List"
+        },
+        "detailsPanel": "Details panel",
+        "detailsPanelPos": {
+            "closed": "Closed",
+            "open": "Open"
+        },
+        "didYouKnow": "Intelligent Notifications",
+        "discoverSenti": "Show Welcome to Senti",
+        "drawer": {
+            "callback": "Hide menu on navigation",
+            "callbacks": {
+                "closeOnNav": "Hide on navigation",
+                "notCloseOnNav": "Keep open"
+            },
+            "state": "Show Menu",
+            "states": {
+                "hidden": "Hide",
+                "open": "Show"
+            },
+            "type": "Hide menu",
+            "types": {
+                "permanent": "Hide with icons",
+                "persistent": "Hide completely"
+            }
+        },
+        "header": {
+            "border": "Separation Lines",
+            "borderDetails": "Separate the logo and the page title with a small border"
+        },
+        "headers": {
+            "calibration": "Calibration",
+            "charts": "Charts",
+            "devices": "Devices",
+            "display": "Display",
+            "navigation": "Navigation",
+            "notifications": "Notifications"
+        },
+        "hover": {
+            "values": {
+                "0": "Hidden",
+                "300": "0.3 seconds",
+                "500": "0.5 seconds",
+                "700": "0.7 seconds",
+                "1000": "1 seconds",
+                "2000": "2 seconds",
+                "3000": "3 seconds"
+            }
+        },
+        "justForMobile": "Only on mobile devices",
+        "language": "Language",
+        "languages": {
+            "da": "Danish",
+            "en": "English"
+        },
+        "map": "Map theme",
+        "notDefault": "Not default",
+        "pageTitle": "Settings",
+        "reset": {
+            "message": "Are you sure you want to reset settings to default?",
+            "resetSettings": "Reset settings to default",
+            "restore": "Reset"
+        },
+        "sideBarLeft": "Left",
+        "sideBarLoc": "Menu button location",
+        "sideBarRight": "Right",
+        "snackbarLocation": "Positioning of notifications",
+        "snackbarLocations": {
+            "left": "Left",
+            "right": "Right"
+        },
+        "t&c": {
+            "cookiesPolicy": "Cookies policy",
+            "privacyPolicy": "Privacy policy",
+            "title": "Terms and conditions"
+        },
+        "theme": "Theme",
+        "themes": {
+            "dark": "Dark",
+            "light": "Light"
+        },
+		"tables": {
+			"trp": "Rows per page on lists",
+			"hover": "Content Preview"
 		}
-	},
-	"charts": {
-		"controlPanel": "Data control panel",
-		"fields": {
-			"date": "Date",
-			"humidity": "Humidity",
-			"pressure": "Pressure",
-			"range": "Period of time",
-			"summary": "Weather",
-			"temperature": "Temperature",
-			"thisDay": "On this day:",
-			"weather": "Weather",
-			"windspeed": "Windspeed"
-		},
-		"type": {
-			"bar": "Bar",
-			"donut": "Donut",
-			"line": "Line",
-			"pie": "Pie"
-		}
-	},
-	"collections": {
-		"calibratedData": "Calibrated Data",
-		"cards": {
-			"data": "Data Collections",
-			"log": "Device log"
-		},
-		"helper": {
-			"availableDevicesForOrg": "Available devices for the selected Organisation"
-		},
-		"createCollection": "Create collection",
-		"editCollection": "Edit collection",
-		"fields": {
-			"activated": "Activated",
-			"activeDevice": "Active Device",
-			"activeDeviceStartDate": "Data collection start",
-			"collection": "Data collection",
-			"created": "Created",
-			"dcID": "ID",
-			"description": "Description",
-			"device": "Device",
-			"deviceId": "Device ID",
-			"endOfService": "End of service",
-			"id": "Data Collection",
-			"modified": "Last modified",
-			"name": "Name",
-			"org": "Organisation",
-			"organisation": "Organisation",
-			"ownState": "Status",
-			"project": "Project",
-			"state": {
-				"active": "Active",
-				"inactive": "Inactive"
-			},
-			"status": "Device status"
-		},
-		"pageTitle": "Data Collections",
-		"rawData": "Raw data"
-	},
-	"confirmUser": {
-		"button": "Confirm password",
-		"lastStep": "Create your password to confirm your account.",
-		"networkError": "Network Error!",
-		"password": "Password",
-		"passwordConfirm": "Confirm and sign in",
-		"validation": {
-			"emailDoesntExist": "The E-mail provided is not assigned to an existing account!",
-			"passwordEmpty": "Password cannot be empty!",
-			"passwordMismatch": "The entered passwords are not identical!",
-			"passwordUnder8": "Password must contain at least 8 characters!",
-			"userDoesntExistAnymore": "The user doesn't exist anymore or the token has expired!"
-		},
-		"welcomeMessage": "Welcome to Senti.Cloud!"
-	},
-	"cookies": {
-		"p": {
-			"1": "Senti.Cloud respects the privacy of our users and is committed to protecting all forms of personal information that users have sent to Senti.Cloud.",
-			"2": "By accessing, browsing and/or using Senti.Cloud, you acknowledge that you have read, understood and agree to be subject to the terms and conditions of this cookie policy and therefore agree to use cookies in accordance with these terms.",
-			"3": "In general, our users can visit Senti.Cloud without telling us who they are and without disclosing any kind of personal information. Senti.Cloud uses cookies to ensure the best user experience. Cookies are small text files that are located in the user's browser to track usage traces and store preferences. Our cookies do not contain information that can identify people.",
-			"4": "Cookies can be either ”persistent” cookies or ”session” cookies: A persistent cookie is stored by a browser and is valid until its set expiration date if it is not deleted by the user before the expiration date. However, a session cookie expires at the end of a user visit when the browser is closed. We use both session and persistent cookies at Senti.Cloud.",
-			"5": "We also use Google Analytics to analyze the use of Senti.Cloud. Our analytics service provider generates statistics and other website usage information through cookies. The cookies for web analytics that we use at Senti.Cloud have the following names: _ga, _gat, _gid.",
-			"6": "The information generated in relation to Senti.Cloud is used to create reports on the use of Senti.Cloud.",
-			"7": "Our Analytics Services Privacy Policy Provider is available at: ",
-			"8": "Users can manage and/or delete cookies - for more information, please see ",
-			"9": "Blocking or deleting all cookies has a negative influence on the stability of many websites. If users choose to block our cookies, they are not able to use all of the website's properties.",
-			"10": "The policy may be updated from time to time, e.g. due to modifications of relevant legislation or changes in our corporate structure. We encourage all our users to periodically re-read this page for the latest information on our data protection practices."
-		},
-		"subtitle": "How to use Senti.Cloud cookies",
-		"title": "Senti.Cloud Cookie Policy"
-	},
-	"dashboard": {
-		"cardContent": {
-			"alerts": "Did you know that? … \n Get true intelligent rule-based alerts about the nature of the data you are collecting.",
-			"api": "SentiAPI allows you to build your own IoT Dashboards, Apps or Widgets. SentiAPI support access to your own Senti IoT device data or paid access to Senti Big Data based upon the crowd-sourced anonymised pool of Senti data.",
-			"data": "Get detailed lists and charts to measure and analyse your collected data. Create reports and export data in few easy steps.",
-			"devices": "Devices are the actual IoT hardware device deployed into your environment. Here you can configure and control the IoT devices used in your data collections.",
-			"notifications": "See and manage notification messages and control how, when and where you want to engage your users with notifications.",
-			"onSiteSetup": "When you deploy your IoT devices on-site, a simple configuration is advantageous. Store device name, description, location information and calibrate the device for optimal accuracy.",
-			"projects": "Projects help you manage Senti IoT data collections for specific measuring tasks and use cases. A project is a container for your data collections and data across one or more locations.",
-			"settings": "The main control center for managing settings for Senti IoT devices and your Senti.Cloud Console.",
-			"users": "Authenticate and manage accounts for users and organisations, and allow access to projects, collected data, devices and API’s."
-		},
-		"cardHeaders": {
-			"alerts": "Intelligent Alerts",
-			"api": "API (comming soon)",
-			"data": "Data Collections",
-			"devices": "Devices",
-			"notifications": "Notifications",
-			"onSiteSetup": "On-site setup",
-			"projects": "Projects",
-			"settings": "Settings",
-			"users": "Users"
-		},
-		"pageTitle": "Senti.Cloud",
-		"subtitle": "Senti.Cloud lets you control and manage all your Senti-in-a-Box Devices."
-	},
-	"devices": {
-		"cards": {
-			"data": "Data",
-			"details": "Device details",
-			"hardware": "Equipment",
-			"map": "Map",
-			"pictures": "Images"
-		},
-		"device": "Device",
-		"editDetailsTitle": "Edit %{deviceId}",
-		"editHardwareTitle": "Edit hardware for device %{deviceId}",
-		"fields": {
-			"adapter": "Power adapter",
-			"address": "Address",
-			"availability": "Availability",
-			"cellNumber": "Phone number",
-			"coords": "Coordinates",
-			"coordsW": "Coordinates: %{lat} %{long}",
-			"description": "Description",
-			"free": "Free",
-			"id": "Device ID",
-			"lastData": "Last time device sent data to server",
-			"lastStats": "Last time device was connected to server",
-			"lat": "Latitude",
-			"locType": "Location type",
-			"long": "Longitude",
-			"memory": "Memory",
-			"memoryModel": "Memory model",
-			"modemIMEI": "Modem IMEI",
-			"modemModel": "Modem model",
-			"name": "Name",
-			"notfree": "Busy",
-			"org": "Organisation",
-			"pcModel": "Device model",
-			"project": "Project",
-			"simCard": "SIM-card ID",
-			"simProvider": "SIM-card provider",
-			"status": "Status",
-			"temp": "CPU temperature",
-			"weather": "Weather",
-			"wifiModule": "Wi-Fi module"
-		},
-		"liveCount": "Live count (last 10 minutes)",
-		"locationTypes": {
-			"crossroads": "Crossroads",
-			"motorway": "Motorway",
-			"office": "Office",
-			"park": "Park",
-			"path": "Path",
-			"pedStreet": "Pedestrian street",
-			"port": "Port",
-			"road": "Road",
-			"square": "Square",
-			"unspecified": "Unspecified"
-		},
-		"new": "",
-		"noAddress": "No Address",
-		"noData": "There is currently no data available!",
-		"noDataFilters": "There is currently no data available for the selected filters!",
-		"noDevices": "There are no available devices",
-		"noImages": "There are no images uploaded!",
-		"noLocType": " No location type set",
-		"noName": "No name",
-		"notCalibrated": "Device has not been calibrated! No device location on maps or weather data will be accessible.",
-		"pageTitle": "Devices",
-		"simpleList": {
-			"address": "Address",
-			"id": "ID",
-			"name": "Name",
-			"status": "Status",
-			"tableCellAddress": "No address",
-			"tableCellDeviceName": "No name",
-			"totalCount": "Total count"
-		},
-		"status": {
-			"green": "Device is connected and data is received",
-			"greenShort": "Receives data",
-			"noDevice": "No device attached",
-			"red": "Device is disconnected, and no data is received",
-			"redShort": "Disconnected",
-			"yellow": "Device is connected, but no data is received",
-			"yellowShort": "Receives no data"
-		},
-		"tabs": {
-			"cardView": "Card view",
-			"listView": "List view",
-			"mapView": "Map view"
-		}
-	},
-	"dialogs": {
-		"cookies": {
-			"message": {
-				"snackbar": "Senti.cloud uses cookies for functional purposes. For more information please read our cookies policy."
-			}
-		},
-		"delete": {
-			"message": {
-				"collection": "Are you sure you want to delete this data collection ( %{collection} )?",
-				"collections": "Are you sure you want to delete these data collections:",
-				"deviceImage": "Are you sure you want to delete this picture?",
-				"org": "Are you sure you want to delete this organisation?",
-				"orgs": "Are you sure you want to delete these organisations:",
-				"project": "Are you sure you want to delete this project?",
-				"projects": "Are you sure you want to delete these projects:",
-				"user": "Are you sure you want to delete this user?",
-				"users": "Are you sure you want to delete these users:"
-			},
-			"title": {
-				"collection": "Delete data collection?",
-				"collections": "Delete data collections?",
-				"deviceImage": "Delete this picture?",
-				"org": "Delete organisation?",
-				"orgs": "Delete organisations?",
-				"project": "Delete project?",
-				"projects": "Delete projects?",
-				"user": "Delete user?",
-				"users": "Delete users?"
-			}
-		},
-		"discoverSenti": {
-			"addProject": "Add data projects",
-			"onSiteSetup": "On-site setup of devices",
-			"startAnalyzeData": "Start analyzing your data",
-			"welcome": "Welcome to Senti.Cloud!"
-		},
-		"export": {
-			"message": "Data details:"
-		},
-		"login": {
-			"passwordReseted": "Your password resetted!",
-			"resetPassRequestMessage": "An E-mail sent with instructions on how to reset your password!",
-			"resetPasswordMessage": "Reset your password by entering your E-mail"
-		},
-		"unassign": {
-			"message": {
-				"collectionFromProject": "Unassign collection %{collection} from project %{project} ?",
-				"collectionsFromProject": "Unassign the following collections from project: ",
-				"deviceFromCollection": "Unassign device %{device} from collection %{collection}?",
-				"deviceFromOrg": "Unassign device %{device} from organisation %{organisation}?",
-				"devicesFromCollection": "Unassign the selected devices from their data collection:"
-			},
-			"title": {
-				"collectionFromProject": "Unassign collection from project?",
-				"collectionsFromProject": "Unassign colletions from project?",
-				"deviceFromCollection": "Unassign device from collection?",
-				"deviceFromOrg": "Unassign device from organisation?",
-				"devicesFromCollection": "Unassign devices from collection?"
-			}
-		},
-		"warnings": {
-			"notImplemented": "Not implemented",
-			"wip": "Work in progress"
-		}
-	},
-	"exports": {
-		"columns": "Columns",
-		"customColumns": "Select Columns",
-		"standardColumns": "Default Columns"
-	},
-	"favorites": {
-		"fields": {
-			"name": "Name",
-			"type": "Type"
-		},
-		"pageTitle": "Favorites",
-		"types": {
-			"collection": "Data collection",
-			"device": "Device",
-			"org": "Organisation",
-			"project": "Project",
-			"user": "User"
-		}
-	},
-	"filters": {
-		"after": "after",
-		"afterDate": "After date",
-		"before": "before",
-		"beforeDate": "Before date",
-		"contains": "Contains",
-		"dateOptions": {
-			"30days": "Last 30 days",
-			"7days": "Last 7 days",
-			"90days": "Last 90 days",
-			"custom": "Custom range",
-			"daily": "Daily",
-			"hourly": "Hourly",
-			"minutely": "Minutely",
-			"summary": "Summary",
-			"thisWeek": "This week",
-			"today": "Today",
-			"yesterday": "Yesterday"
-		},
-		"devices": {
-			"calibrated": "Calibrated",
-			"notCalibrated": "Not calibrated"
-		},
-		"display": "Display:",
-		"endDate": "End date",
-		"freeText": "Free text",
-		"options": {
-			"graphType": "Chart type"
-		},
-		"orgs": {
-			"hasParentOrg": "With parent organisation",
-			"noParentOrg": "Without parent organisation",
-			"parentOrg": "With/Without parent organisation"
-		},
-		"search": "Search",
-		"startDate": "Start date",
-		"users": {
-			"hasLogged": "Log in",
-			"hasLoggedIn": "Has been logged in",
-			"neverLoggedIn": "Has never been logged in"
-		}
-	},
-	"images": {
-		"add": "Add images",
-		"finish": "Finish",
-		"reset": "Reset",
-		"upload": "Upload",
-		"uploadFailed": "Images failed to upload! Please refresh browser and try again!",
-		"uploadSuccess": "Images was uploaded"
-	},
-	"links": {
-		"googleMaps": "Show on Google Maps",
-		"mailTo": "Mail to",
-		"phoneTo": "Call"
-	},
-	"login": {
-		"cards": {
-			"0": "Senti.Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
-			"1": "Senti.Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
-			"2": "Senti.Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
-			"3": "Senti.Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
-			"4": "Senti.Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
-			"5": "Senti.Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
-			"6": "Senti.Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
-			"7": "Senti.Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
-			"8": "Senti.Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
-			"9": "Senti.Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
-			"10": "Senti.Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
-			"11": "Senti.Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
-			"12": "Senti.Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices.",
-			"13": "Senti.Cloud is a managed IoT service to easily and securely connect, manage, and ingest data from citywide dispersed devices."
-		},
-		"footer": "©2016–2019 All Rights Reserved. Senti.Cloud is an open source platform designed and developed by WebHouse ApS.",
-		"pass": "Password",
-		"username": "Username",
-		"needAnAccount1": "Need a",
-		"needAnAccount2": "account",
-		"createAccount": "Create an account",
-		"forgotUsername": "Forgot username?",
-		"forgotPassword": "Forgot password?"
-	},
-	"map": {
-		"themes": {
-			"0": "Humanitarian",
-			"1": "Ortho",
-			"2": "Carto Dark",
-			"3": "Carto",
-			"4": "Watercolor",
-			"5": "Toner",
-			"6": "OpenStreetMap",
-			"7": "Topographic"
-		}
-	},
-	"menus": {
-		"assign": {
-			"collectionToProject": "Assign Data Collection to Project",
-			"collectionsToProject": "Assign Data Collections to Project",
-			"deviceToCollection": "Assign Device to Data Collection",
-			"deviceToOrg": "Assign Device to Organisation"
-		},
-		"calibrate": "Calibrate",
-		"changePassword": "Change Password",
-		"charts": {
-			"addAPeriod": "Add period",
-			"deleteThisPeriod": "Delete this period",
-			"hideThisPeriod": "Hide this period",
-			"resetToDefault": "Reset to default",
-			"showHidePeriods": "Show / Hide period"
-		},
-		"copyEmails": "Copy E-mail addresses",
-		"create": {
-			"project": "Create project",
-			"user": "Create user"
-		},
-		"delete": "Delete",
-		"edit": "Edit",
-		"export": "Export data",
-		"exportPDF": "Print as PDF",
-		"exportUsers": "Export Users",
-		"favorites": {
-			"add": "Add to favorites",
-			"remove": "Remove from favorites"
-		},
-		"hideMap": "Hide map",
-		"hideMore": "Hide",
-		"more": "More",
-		"reassign": {
-			"collectionToProject": "Reassign to another project",
-			"deviceToOrg": "Reassign to another organisation"
-		},
-		"recalibrate": "Recalibrate",
-		"seeDevice": "See device",
-		"seeLess": "See less",
-		"seeMore": "See more",
-		"showMap": "Show map",
-		"showMore": "Show more",
-		"unassign": {
-			"collectionFromProject": "Unassign device from project",
-			"deviceFromCollection": "Unassign device from collection",
-			"deviceFromOrg": "Unassign device from organisation"
-		},
-		"user": {
-			"account": "My account",
-			"profile": "My profile",
-			"signout": "Sign out"
-		},
-		"userResendEmail": "Resend confirmation E-mail"
-	},
-	"no": {
-		"activeDevice": "No active device",
-		"audioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a different browser.",
-		"birthdays": "No birthdays today",
-		"collection": "No collection",
-		"collections": "No collections",
-		"freeDevice": "No available devices",
-		"device": "No device",
-		"devices": "No devices",
-		"doi": "No Holidays today",
-		"history": "No history",
-		"org": "No organisation",
-		"project": "No project",
-		"projects": "No projects"
-	},
-	"orgs": {
-		"create": "Create",
-		"createOrg": "Create organisation",
-		"fields": {
-			"CVR": "Tax Registration Number",
-			"EAN": "EAN Number",
-			"address": "Address",
-			"city": "City",
-			"country": "Country",
-			"deviceCount": "Number of devices",
-			"name": "Organisation name",
-			"org": "Organisation",
-			"parentOrg": "Parent Organisation",
-			"region": "Region",
-			"topLevelOrg": "No Parent Organisation",
-			"url": "Website",
-			"zip": "ZIP Code"
-		},
-		"organisation": "Organisation",
-		"pageTitle": "Organisations",
-		"updateOrg": "Edit Organisation",
-		"validation": {
-			"networkError": "Network Error!",
-			"noAddress": "Address missing",
-			"noCity": "City missing",
-			"noCountry": "Country missing",
-			"noName": "Name missing",
-			"noParent": "Parent Organisation missing",
-			"noZip": "ZIP missing",
-			"notWebsite": "Not a valid URL"
-		}
-	},
-	"projects": {
-		"contact": {
-			"email": "E-mail",
-			"name": "Name",
-			"organisation": "Organisation",
-			"phone": "Phone",
-			"title": "Contact"
-		},
-		"devices": {
-			"numDevices": "Number of devices",
-			"title": "Devices"
-		},
-		"fields": {
-			"assignDevices": "Assign devices",
-			"created": "Created",
-			"description": "Description",
-			"endDate": "End date",
-			"lastUpdate": "Last modified",
-			"name": "Project name",
-			"selectOrganisation": "Organisation",
-			"startDate": "Start date",
-			"title": "Name"
-		},
-		"noAvailableDevices": "There are no devices calibrated to display",
-		"noOrganisationSelected": "Select an organisation to see available devices.",
-		"pageTitle": "Projects",
-		"tabs": {
-			"cardView": "Grid view",
-			"listView": "List view"
-		},
-		"updateProject": "Edit project",
-		"validation": {
-			"noEndDate": "End date is missing",
-			"noStartDate": "Start date is missing",
-			"noTitle": "Project name is missing",
-			"startDateBiggerThanEndDate": "Start date can not be later than End date!"
-		}
-	},
-	"privacy": {
-		"responsible": "Data Controller",
-		"title": "Senti.Cloud Privacy Policy",
-		"subtitle": "What personal information we collect for the purpose of fulfilling our agreement with you in regard to your private or business/organisation's use of Senti.Cloud.",
-		"note": "NB: ",
-		"contactEmail": "Contact E-mail: ",
-		"b0": "You can withdraw your consent at any time.",
-		"b1": "Use of personal data",
-		"b2": "Insight into personal data etc",
-		"b3": "Deleting personal data",
-		"b4": "Data portability",
-		"b5": "Our role as a data processor",
-		"b6": "Changing our Privacy Policy",
-		"p0": "We collect personal information about you and your employees in order to fulfill our agreement with you.",
-		"p1": "You cannot use Senti.Cloud if you do not provide us with the minimum information we ask for.",
-		"p2": "We collect your company/organisation name, address, email, telephone number and CVR number. We also collect payment information (possibly EAN number) if your company uses a paid version of Senti.Cloud.",
-		"p3": "We collect your name, email address, and phone number.",
-		"p4": "We only collect the personal information that you provide us by creating your account with us.",
-		"p5": "We also collect the personal information you provide us about your employees who must have access to Senti.Cloud. We only do this to enable your company to use Senti.Cloud.",
-		"p6": "We do not collect personal information about you as a person from a third party. However, we collect information through our cookies. Read more about this in our cookie policy, which you will find here",
-		"p7": "The personal information we collect through our use of cookies, are to pursue our legitimate interest in marketing Senti.Cloud to you, in order to customize our content of Senti.Cloud specifically for you and to optimize the functionality of Senti. Cloud. ",
-		"p8": "If you participate in the questionnaires and studies we conduct, we collect the information included in the study, including, gender, age, interests, attitudes and knowledge of various topics relevant to improving the functionality of Senti.Cloud. Participation in studies is always voluntary.",
-		"p9": "We use the studies to improve our services, but also to offer you and your company other services, including better targeting our services to you and your company.",
-		"p10": "The treatment basis for the collection of personal data through our studies is your consent.",
-		"p11": "If you withdraw your consent, we will delete the information that we have collected as a result of your participation in our studies.",
-		"p12": "We only use your email address for marketing if we have received your explicit and prior consent.",
-		"p13": "We use your personal information to conduct our customer relationships with you or your company.",
-		"p14": "We also use them to improve our services and to target our messages to you and your business, including targeting advertising and content for you or your business.",
-		"p15": "Your personal information is not disclosed to any third party unless you have expressly and personally consented to it.",
-		"p16": "We use the subcontractors/sub-processors that appear at",
-		"p16.a": "https://senti.cloud/en/security/subcontractors.htm ",
-		"p16.b": "for processing your personal data.",
-		"p16.c": "Subcontractors",
-		"p17": "If you want access to the information registered about you at Senti.Cloud, please contact us at privacy@senti.cloud.",
-		"p18": "If incorrect information has been registered about you that you cannot correct yourself, or if you have other objections to our processing of your personal information, please write to us at privacy@senti.cloud.",
-		"p19": "You have the opportunity to gain insight into which information is registered about you and you are entitled to object to our processing of your personal data.",
-		"p20": "If it turns out that personal information about you is incorrect or misleading, then you have the right to have them corrected.",
-		"p21": "You may object at any time, that information about you is being processed. Just write to us at privacy@senti.cloud.",
-		"p22": "You can also revoke your consent at any time for the data processing we make with your consent.",
-		"p23": "You have the opportunity to complain about our processing of your personal data if we do not give you the right to your objections. The complaint must be sent to the Danish Data Inspectorate. See more at",
-		"p23.a": "https://www.datatilsynet.dk",
-		"p24": "Personal data is permanently deleted or anonymized as the purpose for which they were collected is terminated.",
-		"p25": "We store your personal information as long as we have an active customer relationship with you or your company.",
-		"p26": "Once the customer relationship has ceased, we store your personal information as long as we are obliged to do so by law, including the accounting legislation.",
-		"p27": "Your access to data from Senti.Cloud is regulated in our terms and conditions, which you find here.",
-		"p28": "In relation to you and your company, we are the data processor for the personal information you process and are responsible for, including storing in Senti.Cloud. You will find our data processing agreement here.",
-		"p29": "In case of significant changes to this privacy policy, we will notify you in the form of a notification either in Senti.Cloud or at our website.",
-		"p30": "Last reviewed March 2019."
-	},
-	"settings": {
-		"alerts": "Alerts",
-		"calibration": {
-			"12months": "Every 12 months",
-			"3months": "Every 3 months",
-			"6months": "Every 6 months",
-			"9months": "Every 9 months",
-			"byCount": "Counts",
-			"byTime": "Minutes",
-			"count": "By Count",
-			"history": "History",
-			"minutes": "minutes",
-			"notification": "Notification",
-			"text": "Method",
-			"time": "By time"
-		},
-		"reset": {
-			"restore": "Reset",
-			"resetSettings": "Reset settings to default",
-			"message": "Are you sure you want to reset settings to default?"
-		},
-		"chart": {
-			"YAxis": {
-				"linear": "Linear scale",
-				"logarithmic": "Logarithmic scale"
-			},
-			"defaultChart": "Default chart type",
-			"period": "Period",
-			"periods": "Periods",
-			"rawData": "Raw data",
-			"weekendColor": "Weekend color",
-			"weekendColors": {
-				"amber": "Amber",
-				"blue": "Blue",
-				"cyan": "Cyan",
-				"deepOrange": "Deep Orange",
-				"deepPurple": "Deep Purple",
-				"green": "Green",
-				"indigo": "Indigo",
-				"lightBlue": "Light Blue",
-				"lightGreen": "Light Green",
-				"lime": "Lime",
-				"orange": "Orange",
-				"pink": "Pink",
-				"purple": "Purple",
-				"red": "Red",
-				"teal": "Teal",
-				"yellow": "Yellow"
-			}
-		},
-		"breadcrumbs": "Breadcrumbs",
-		"default": "Default",
-		"defaultDataSet": "Default data set for charts",
-		"defaultRoute": "Start page",
-		"defaultView": "Default view",
-		"defaultViews": {
-			"favorites": "Favorites",
-			"grid": "Grid",
-			"list": "List"
-		},
-		"detailsPanel": "Details panel",
-		"detailsPanelPos": {
-			"closed": "Closed",
-			"open": "Open"
-		},
-		"didYouKnow": "Intelligent Notifications",
-		"discoverSenti": "Show Welcome to Senti",
-		"drawer": {
-			"callback": "Hide menu on navigation",
-			"callbacks": {
-				"closeOnNav": "Hide on navigation",
-				"notCloseOnNav": "Keep open"
-			},
-			"state": "Show Menu",
-			"states": {
-				"hidden": "Hide",
-				"open": "Show"
-			},
-			"type": "Hide menu",
-			"types": {
-				"permanent": "Hide with icons",
-				"persistent": "Hide completely"
-			}
-		},
-		"header": {
-			"border": "Separation Lines"
-		},
-		"headers": {
-			"calibration": "Calibration",
-			"charts": "Charts",
-			"devices": "Devices",
-			"display": "Display",
-			"navigation": "Navigation",
-			"notifications": "Notifications"
-		},
-		"justForMobile": "Only on mobile devices",
-		"language": "Language",
-		"languages": {
-			"da": "Danish",
-			"en": "English"
-		},
-		"map": "Map theme",
-		"notDefault": "Not default",
-		"pageTitle": "Settings",
-		"sideBarLeft": "Left",
-		"sideBarLoc": "Menu button location",
-		"sideBarRight": "Right",
-		"snackbarLocation": "Positioning of notifications",
-		"snackbarLocations": {
-			"left": "Left",
-			"right": "Right"
-		},
-		"t&c": {
-			"privacyPolicy": "Privacy policy",
-			"cookiesPolicy": "Cookies policy",
-			"title": "Terms and conditions"
-		},
-		"theme": "Theme",
-		"themes": {
-			"dark": "Dark",
-			"light": "Light"
-		},
-		"trp": "Rows per page on lists"
-	},
-	"sidebar": {
-		"collections": "Data Collections",
-		"dashboard": "Dashboard",
-		"devices": "Devices",
-		"favorites": "Favorites",
-		"home": "Home",
-		"orgs": "Organisations",
-		"projects": "Projects",
-		"settings": "Settings",
-		"users": "Users"
-	},
-	"snackbars": {
-		"assign": {
-			"collectionToOrg": "Data collection %{collection} assigned to organisation %{org}",
-			"collectionToProject": "Data collection %{collection} assigned to project %{project}",
-			"collectionsToProject": "Data collections assigned to project",
-			"deviceToCollection": "Device %{device} assigned to collection %{collection}",
-			"deviceToOrg": "Device %{device} assigned to organisation %{org}",
-			"projectToOrg": "Project %{project} assigned to organisation %{org}"
-		},
-		"assignFailed": "Assignment failed!",
-		"collectionCreated": "Data Collection created!",
-		"collectionDeleted": "Data Collection deleted!",
-		"collectionUpdated": "Data Collection updated!",
-		"createdFail": "Creation failed!",
-		"createdSuccess": "Created!",
-		"creating": "Creating...",
-		"deletedFail": "Deletion failed!",
-		"deletedSuccess": "Deleted!",
-		"deleting": "Deleting...",
-		"deviceUpdated": "Device %{device} updated!",
-		"emailsCopied": "E-mail adresses copied to clipboard",
-		"exported": "Exported!",
-		"favorite": {
-			"manyRemoved": "Favorites removed!",
-			"removed": "%{name} (%{type}) removed from favorites!",
-			"saved": "%{name} (%{type}) added to favorites!",
-			"updated": "Favorites updated!"
-		},
-		"orgCreated": "Organisation %{org} created!",
-		"orgDeleted": "Organisation deleted!",
-		"orgUpdated": "Organisation %{org} updated!",
-		"pictureDeleted": "Picture deleted!",
-		"pictureNotDeleted": "Picture not deleted!",
-		"projectCreated": "Project %{project} created!",
-		"projectDeleted": "Project(s) deleted!",
-		"projectExported": "Project exported!",
-		"projectUpdated": "Project %{project} updated!",
-		"redirect": "Redirecting ...",
-		"resetDeviceSuccess": "Device reset",
-		"settingsSaved": "Settings saved!",
-		"unassign": {
-			"collectionFromProject": "Data collection %{collection} unassigned from project %{project}",
-			"collectionsFromProject": "Data collections unassigned from %{project}",
-			"deviceFromCollection": "Device %{device} unassigned from collection %{collection}",
-			"deviceFromOrg": "Device %{device} unassigned from organisation %{org}"
-		},
-		"updatedFailed": "Update failed!",
-		"updatedSuccess": "Updated!",
-		"updating": "Updating...",
-		"userCreated": "User %{user} created!",
-		"userDeleted": "User %{user} deleted!",
-		"userPasswordChanged": "Password changed!",
-		"userUpdated": "User %{user} updated!"
-	},
-	"tables": {
-		"addNewDevice": "Add device",
-		"addNewProject": "Add project",
-		"cardsPerPage": "Cards per page",
-		"filter": "Filter",
-		"of": "of",
-		"rowsPerPage": "Rows per page",
-		"selected": "selected"
-	},
-	"users": {
-		"editUser": "Edit user",
-		"fields": {
-			"accessLevel": "Access Level",
-			"active": "Active",
-			"bio": "Bio",
-			"birthday": "Birthday",
-			"confirmPass": "Confirm new password",
-			"created": "Created",
-			"currentPass": "Current password",
-			"email": "E-mail",
-			"firstName": "First name",
-			"group": "Group",
-			"language": "Language",
-			"lastName": "Last name",
-			"lastSignIn": "Last sign in",
-			"linkedInURL": "LinkedIn",
-			"location": "Location",
-			"loginSuspended": "Login suspended",
-			"name": "Name",
-			"neverLoggedIn": "Never signed in",
-			"newPass": "New password",
-			"newsletter": "Newsletter",
-			"noOrg": "No Organisation",
-			"organisation": "Organisation",
-			"phone": "Phone",
-			"position": "Position",
-			"profileImage": "Profile image",
-			"recoveryEmail": "Recovery email",
-			"tags": "Tags",
-			"twitterURL": "Twitter",
-			"userName": "Username"
-		},
-		"groups": {
-			"136550100000143": "Super user",
-			"136550100000211": "Account Manager",
-			"136550100000225": "User",
-			"accountManager": "Account Manager",
-			"superUser": "Super User",
-			"user": "User"
-		},
-		"headers": {
-			"contact": "Contact",
-			"system": "System Log"
-		},
-		"messages": {},
-		"pageTitle": "Users",
-		"tabs": {
-			"orgs": "Organisations",
-			"users": "Users"
-		},
-		"user": "User",
-		"userResendConfirm": "Are you sure you want to resend confirmation E-mail",
-		"userResendEmail": "Resend Confirmation E-mail",
-		"validation": {
-			"noEmail": "E-mail is missing",
-			"noOrg": "Organisation is missing",
-			"userAlreadyExists": "E-mail is already assigned to a user account!"
-		}
-	}
+    },
+    "sidebar": {
+        "collections": "Data Collections",
+        "dashboard": "Dashboard",
+        "devices": "Devices",
+        "favorites": "Favorites",
+        "home": "Home",
+        "orgs": "Organisations",
+        "projects": "Projects",
+        "settings": "Settings",
+        "users": "Users"
+    },
+    "snackbars": {
+        "assign": {
+            "collectionToOrg": "Data collection %{collection} assigned to organisation %{org}",
+            "collectionToProject": "Data collection %{collection} assigned to project %{project}",
+            "collectionsToProject": "Data collections assigned to project",
+            "deviceToCollection": "Device %{device} assigned to collection %{collection}",
+            "deviceToOrg": "Device %{device} assigned to organisation %{org}",
+            "projectToOrg": "Project %{project} assigned to organisation %{org}"
+        },
+        "assignFailed": "Assignment failed!",
+        "collectionCreated": "Data Collection created!",
+        "collectionDeleted": "Data Collection deleted!",
+        "collectionUpdated": "Data Collection updated!",
+        "createdFail": "Creation failed!",
+        "createdSuccess": "Created!",
+        "creating": "Creating...",
+        "deletedFail": "Deletion failed!",
+        "deletedSuccess": "Deleted!",
+        "deleting": "Deleting...",
+        "deviceUpdated": "Device %{device} updated!",
+        "emailsCopied": "E-mail adresses copied to clipboard",
+        "exported": "Exported!",
+        "favorite": {
+            "manyRemoved": "Favorites removed!",
+            "removed": "%{name} (%{type}) removed from favorites!",
+            "saved": "%{name} (%{type}) added to favorites!",
+            "updated": "Favorites updated!"
+        },
+        "orgCreated": "Organisation %{org} created!",
+        "orgDeleted": "Organisation deleted!",
+        "orgUpdated": "Organisation %{org} updated!",
+        "pictureDeleted": "Picture deleted!",
+        "pictureNotDeleted": "Picture not deleted!",
+        "projectCreated": "Project %{project} created!",
+        "projectDeleted": "Project(s) deleted!",
+        "projectExported": "Project exported!",
+        "projectUpdated": "Project %{project} updated!",
+        "redirect": "Redirecting ...",
+        "resetDeviceSuccess": "Device reset",
+        "settingsSaved": "Settings saved!",
+        "unassign": {
+            "collectionFromProject": "Data collection %{collection} unassigned from project %{project}",
+            "collectionsFromProject": "Data collections unassigned from %{project}",
+            "deviceFromCollection": "Device %{device} unassigned from collection %{collection}",
+            "deviceFromOrg": "Device %{device} unassigned from organisation %{org}"
+        },
+        "updatedFailed": "Update failed!",
+        "updatedSuccess": "Updated!",
+        "updating": "Updating...",
+        "userCreated": "User %{user} created!",
+        "userDeleted": "User %{user} deleted!",
+        "userPasswordChanged": "Password changed!",
+        "userUpdated": "User %{user} updated!"
+    },
+    "tables": {
+        "addNewDevice": "Add device",
+        "addNewProject": "Add project",
+        "cardsPerPage": "Cards per page",
+        "filter": "Filter",
+        "of": "of",
+        "rowsPerPage": "Rows per page",
+        "selected": "selected"
+    },
+    "users": {
+        "editUser": "Edit user",
+        "fields": {
+            "accessLevel": "Access Level",
+            "active": "Active",
+            "bio": "Bio",
+            "birthday": "Birthday",
+            "confirmPass": "Confirm new password",
+            "created": "Created",
+            "currentPass": "Current password",
+            "email": "E-mail",
+            "firstName": "First name",
+            "group": "Group",
+            "language": "Language",
+            "lastName": "Last name",
+            "lastSignIn": "Last sign in",
+            "linkedInURL": "LinkedIn",
+            "location": "Location",
+            "loginSuspended": "Login suspended",
+            "name": "Name",
+            "neverLoggedIn": "Never signed in",
+            "newPass": "New password",
+            "newsletter": "Newsletter",
+            "noOrg": "No Organisation",
+            "organisation": "Organisation",
+            "phone": "Phone",
+            "position": "Position",
+            "profileImage": "Profile image",
+            "recoveryEmail": "Recovery email",
+            "tags": "Tags",
+            "twitterURL": "Twitter",
+            "userName": "Username"
+        },
+        "groups": {
+            "136550100000143": "Super user",
+            "136550100000211": "Account Manager",
+            "136550100000225": "User",
+            "accountManager": "Account Manager",
+            "superUser": "Super User",
+            "user": "User"
+        },
+        "headers": {
+            "contact": "Contact",
+            "system": "System Log"
+        },
+        "messages": {},
+        "pageTitle": "Users",
+        "tabs": {
+            "orgs": "Organisations",
+            "users": "Users"
+        },
+        "user": "User",
+        "userResendConfirm": "Are you sure you want to resend confirmation E-mail",
+        "userResendEmail": "Resend Confirmation E-mail",
+        "validation": {
+            "noEmail": "E-mail is missing",
+            "noOrg": "Organisation is missing",
+            "userAlreadyExists": "E-mail is already assigned to a user account!"
+        }
+    }
 }

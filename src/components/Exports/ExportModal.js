@@ -78,17 +78,17 @@ class ExportModal extends Component {
 							</ItemG>
 							<ItemG container spacing={8} justify={'center'} >
 								<ItemG>
-									<Button filename={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.csv`} data={data} headers={this.CSVHeaders} component={CSVLink} color={'primary'} variant={'contained'}>
+									<Button filename={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.csv`} data={data} headers={this.CSVHeaders} component={CSVLink} color={'primary'} variant={'outlined'}>
 										CSV
 									</Button>
 								</ItemG>
 								<ItemG>
-									<Button component={'a'} download={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.json`} href={this.exportToJson()} target={'_blank'} color={'primary'} variant={'contained'}>
+									<Button component={'a'} download={`senti.cloud-data-${moment().format('DD-MM-YYYY')}.json`} href={this.exportToJson()} target={'_blank'} color={'primary'} variant={'outlined'}>
 										JSON
 									</Button>
 								</ItemG>
 								<ItemG>
-									<Button color={'primary'} variant={'contained'} onClick={this.exportToXLSX}>
+									<Button color={'primary'} variant={'outlined'} onClick={this.exportToXLSX}>
 										XLSX
 									</Button>
 								</ItemG>

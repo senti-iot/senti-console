@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { FormControl, withStyles, Select, MenuItem, InputLabel, OutlinedInput } from '@material-ui/core';
+import { FormControl, withStyles, Select, MenuItem, InputLabel, OutlinedInput, FormHelperText } from '@material-ui/core';
 import { ItemG } from 'components';
 
 // Replace withStyles with withTheme, remove styles
@@ -30,7 +30,7 @@ class DSelect extends Component {
 		}
 	}
 	render() {
-	  const { classes, error, value, onKeyPress, margin, onChange, menuItems, label, theme, fullWidth, leftIcon } = this.props
+	  const { classes, error, helperText, value, onKeyPress, margin, onChange, menuItems, label, theme, fullWidth, leftIcon } = this.props
 	  let mobile = window.innerWidth < theme.breakpoints.values.md ? true : false
 	 
 		return (
@@ -61,6 +61,7 @@ class DSelect extends Component {
 					})}
 					})}
 				</Select>
+				{helperText ? <FormHelperText>{helperText}</FormHelperText> : null}
 			</FormControl>
 		)
 	}

@@ -56,7 +56,7 @@ export default class ResetDevice extends Component {
 					noExpand
 					title={'Reset device: ' + this.props.match.params.id}
 					content={
-						<Button variant={'contained'} onClick={this.handleOpenResetDialog}>
+						<Button variant={'outlined'} onClick={this.handleOpenResetDialog}>
 							Reset Device
 			  		</Button>
 					} />

@@ -40,7 +40,7 @@ class OpenStreetMap extends React.Component {
 		var CustomIcon = L.Icon.extend({
 			options: {
 				iconSize: [25, 41],
-				iconAnchor: [12, 20],
+				// iconAnchor: [12, 20],
 				popupAnchor: [1, -34],
 			}
 		});

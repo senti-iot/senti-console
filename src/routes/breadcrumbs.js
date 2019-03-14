@@ -1,5 +1,11 @@
 const breadcrumbs = (t, name) => {
 	return {
+		'settings': [
+			{
+				label: t('sidebar.settings'),
+				path: '/settings'
+			}
+		],
 		'user': [
 			{
 				label: t('sidebar.users'),
