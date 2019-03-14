@@ -735,6 +735,7 @@
 			}
 		},
 		"header": {
+			"borderDetails": "Separate the logo and the page title with a small border",
 			"border": "Separation Lines"
 		},
 		"headers": {

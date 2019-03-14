@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { InfoCard, ItemGrid, DSelect, CircularLoader } from 'components';
 import { Laptop } from 'variables/icons'
-import { Grid, ListItem, List, ListItemText, withStyles } from '@material-ui/core';
+import { Grid, ListItem, List, ListItemText, withStyles, Switch } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 import { connect } from 'react-redux'
 import { changeTRP, changeTheme, changeDrawerState, changeSideBarLoc, changeDiscoverSenti, changeMapTheme, changeDetailsPanel,
@@ -19,21 +19,18 @@ class DisplaySettings extends Component {
 	changeTRP = (e) => this.props.changeTRP(e.target.value)
 	changeTheme = (e) => this.props.changeTheme(e.target.value)
 	changeSideBarLoc = (e) => this.props.changeSideBarLoc(e.target.value)
-	changeDiscoverSenti = e => this.props.changeDiscoverSenti(e.target.value)
+	changeDiscoverSenti = e => this.props.changeDiscoverSenti(e.target.checked)
 	changeMapTheme = e => this.props.changeMapTheme(e.target.value)
 	changeSnackbarLocation = e => this.props.changeSnackbarLocation(e.target.value) 
 	changeDetailsPanel = e => this.props.changeDetailsPanel(e.target.value)
 	changeDrawerType = e => this.props.changeDrawerType(e.target.value)
 	changeDrawerState = e => this.props.changeDrawerState(e.target.value)
 	changeDrawerCloseOnNav = e => this.props.changeDrawerCloseOnNav(e.target.value)
-	changeHeaderBorder = e => this.props.changeHeaderBorder(e.target.value)
+	changeHeaderBorder = e => this.props.changeHeaderBorder(e.target.checked)
 
 	render() {
 		const { language, trp, sideBar, discSentiVal, theme, mapTheme, classes, t, snackbarLocation, detailsPanel, drawer, drawerState, drawerCloseOnNav, headerBorder } = this.props
-		let discSenti = [
-			{ value: 1, label: t('actions.yes') },
-			{ value: 0, label: t('actions.no') }
-		]
+
 		let languages = [
 			{ value: 'en', label: t('settings.languages.en') },
 			{ value: 'da', label: t('settings.languages.da') }
@@ -90,10 +87,10 @@ class DisplaySettings extends Component {
 			{ value: true, label: t('settings.drawer.callbacks.closeOnNav') },
 			{ value: false, label: t('settings.drawer.callbacks.notCloseOnNav') }
 		]
-		let headerBorders = [
-			{ value: true, label: t('actions.on') },
-			{ value: false, label: t('actions.off') }
-		]
+		// let headerBorders = [
+		// 	{ value: true, label: t('actions.on') },
+		// 	{ value: false, label: t('actions.off') }
+		// ]
 		return (
 			discSentiVal !== null && language !== null && trp !== null && sideBar !== null && theme !== null ? 
 				<InfoCard
@@ -106,7 +103,10 @@ class DisplaySettings extends Component {
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.discoverSenti')}</ListItemText>
-										<DSelect menuItems={discSenti} value={discSentiVal} onChange={this.changeDiscoverSenti} />
+										<Switch 
+											checked={discSentiVal}
+											onChange={this.changeDiscoverSenti}/>
+										{/* <DSelect menuItems={discSenti} value={discSentiVal} onChange={this.changeDiscoverSenti} /> */}
 									</ItemGrid>
 								</ListItem>
 								<ListItem divider>
@@ -169,10 +169,13 @@ class DisplaySettings extends Component {
 										<DSelect menuItems={closeOnNavOpts} value={drawerCloseOnNav} onChange={this.changeDrawerCloseOnNav} />
 									</ItemGrid>
 								</ListItem>
-								<ListItem divider>
+								<ListItem >
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
-										<ListItemText>{t('settings.header.border')}</ListItemText>
-										<DSelect menuItems={headerBorders} value={headerBorder} onChange={this.changeHeaderBorder} />
+										<ListItemText primary={t('settings.header.border')} />
+										<Switch 
+											checked={headerBorder}
+											onChange={this.changeHeaderBorder}
+										/>
 									</ItemGrid>
 								</ListItem>
 						

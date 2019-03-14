@@ -739,6 +739,7 @@
 			}
 		},
 		"header": {
+			"borderDetails": "",
 			"border": "Separator linjer"
 		},
 		"headers": {

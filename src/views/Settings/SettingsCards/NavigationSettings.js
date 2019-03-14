@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { InfoCard, ItemGrid, DSelect } from 'components';
 import { Public } from 'variables/icons'
-import { Grid, ListItem, List, ListItemText, withStyles } from '@material-ui/core';
+import { Grid, ListItem, List, ListItemText, withStyles, Switch } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 import { connect } from 'react-redux'
 import { changeDefaultRoute, changeDefaultView, changeBreadCrumbs } from 'redux/settings';
@@ -10,7 +10,7 @@ class NavigationSettings extends Component {
 
 	changeDefaultRoute = e => this.props.changeDefaultRoute(e.target.value)
 	changeDefaultView = e => this.props.changeDefaultView(e.target.value)
-	changeBreadCrumbs = e => this.props.changeBreadCrumbs(e.target.value)
+	changeBreadCrumbs = e => this.props.changeBreadCrumbs(e.target.checked)
 
 	render() {
 		const { classes, t, defaultRoute, defaultView, user, breadcrumbs, } = this.props
@@ -29,10 +29,6 @@ class NavigationSettings extends Component {
 			{ value: '/list', label: t('settings.defaultViews.list') },
 			{ value: '/grid', label: t('settings.defaultViews.grid') },
 			{ value: '/favorites', label: t('settings.defaultViews.favorites') }
-		]
-		let onOff = [
-			{ value: true, label: t('actions.on') },
-			{ value: false, label: t('actions.off') }
 		]
 		return (
 			<InfoCard
@@ -57,7 +53,11 @@ class NavigationSettings extends Component {
 							<ListItem>
 								<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 									<ListItemText>{t('settings.breadcrumbs')}</ListItemText>
-									<DSelect menuItems={onOff} value={breadcrumbs} onChange={this.changeBreadCrumbs} />
+									<Switch
+										checked={breadcrumbs}
+										onChange={this.changeBreadCrumbs} 
+									/>
+									{/* <DSelect menuItems={onOff} value={breadcrumbs} onChange={this.changeBreadCrumbs} /> */}
 								</ItemGrid>
 							</ListItem>
 						</List>
