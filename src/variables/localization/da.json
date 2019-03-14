@@ -786,7 +786,7 @@
 		},
 		"tables": {
 			"trp": "Rækker per side i lister",
-			"hover": "Content Preview"
+			"hover": "Forhåndsvisning på lister"
 		}
     },
     "sidebar": {

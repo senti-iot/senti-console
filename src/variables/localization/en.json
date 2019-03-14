@@ -786,7 +786,7 @@
         },
 		"tables": {
 			"trp": "Rows per page on lists",
-			"hover": "Content Preview"
+			"hover": "List Content Preview"
 		}
     },
     "sidebar": {
