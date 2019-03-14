@@ -6,7 +6,7 @@ import { Grid, ListItem, List, ListItemText, withStyles, Switch } from '@materia
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 import { connect } from 'react-redux'
 import { changeTRP, changeTheme, changeDrawerState, changeSideBarLoc, changeDiscoverSenti, changeMapTheme, changeDetailsPanel,
-	 changeSnackbarLocation, changeDrawerType, changeDrawerCloseOnNav, changeHeaderBorder } from 'redux/settings';
+	 changeSnackbarLocation, changeDrawerType, changeDrawerCloseOnNav, changeHeaderBorder, changeHoverTime } from 'redux/settings';
 import { changeLanguage } from 'redux/localization';
 
 class DisplaySettings extends Component {
@@ -27,9 +27,10 @@ class DisplaySettings extends Component {
 	changeDrawerState = e => this.props.changeDrawerState(e.target.value)
 	changeDrawerCloseOnNav = e => this.props.changeDrawerCloseOnNav(e.target.value)
 	changeHeaderBorder = e => this.props.changeHeaderBorder(e.target.checked)
+	changeHoverTime = e => this.props.changeHoverTime(e.target.value)
 
 	render() {
-		const { language, trp, sideBar, discSentiVal, theme, mapTheme, classes, t, snackbarLocation, detailsPanel, drawer, drawerState, drawerCloseOnNav, headerBorder } = this.props
+		const { language, trp, sideBar, discSentiVal, theme, mapTheme, hoverTime, classes, t, snackbarLocation, detailsPanel, drawer, drawerState, drawerCloseOnNav, headerBorder } = this.props
 
 		let languages = [
 			{ value: 'en', label: t('settings.languages.en') },
@@ -87,10 +88,15 @@ class DisplaySettings extends Component {
 			{ value: true, label: t('settings.drawer.callbacks.closeOnNav') },
 			{ value: false, label: t('settings.drawer.callbacks.notCloseOnNav') }
 		]
-		// let headerBorders = [
-		// 	{ value: true, label: t('actions.on') },
-		// 	{ value: false, label: t('actions.off') }
-		// ]
+		let hoverTimes = [
+			{ value: 0, label: t('settings.hover.values.0') },
+			{ value: 300,  label: t('settings.hover.values.300') },
+			{ value: 500,  label: t('settings.hover.values.500') },
+			{ value: 700,  label: t('settings.hover.values.700') },
+			{ value: 1000, label: t('settings.hover.values.1000') },
+			{ value: 2000, label: t('settings.hover.values.2000') },
+			{ value: 3000, label: t('settings.hover.values.3000') },
+		]
 		return (
 			discSentiVal !== null && language !== null && trp !== null && sideBar !== null && theme !== null ? 
 				<InfoCard
@@ -115,12 +121,7 @@ class DisplaySettings extends Component {
 										<DSelect menuItems={languages} value={language} onChange={this.changeLang} />
 									</ItemGrid>
 								</ListItem>
-								<ListItem divider>
-									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
-										<ListItemText>{t('settings.trp')}</ListItemText>
-										<DSelect menuItems={trps} value={trp} onChange={this.changeTRP} />
-									</ItemGrid>
-								</ListItem>
+							
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText secondary={t('settings.justForMobile')}>{t('settings.sideBarLoc')}</ListItemText>
@@ -169,7 +170,7 @@ class DisplaySettings extends Component {
 										<DSelect menuItems={closeOnNavOpts} value={drawerCloseOnNav} onChange={this.changeDrawerCloseOnNav} />
 									</ItemGrid>
 								</ListItem>
-								<ListItem >
+								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText primary={t('settings.header.border')} />
 										<Switch 
@@ -178,7 +179,18 @@ class DisplaySettings extends Component {
 										/>
 									</ItemGrid>
 								</ListItem>
-						
+								<ListItem divider>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText>{t('settings.tables.trp')}</ListItemText>
+										<DSelect menuItems={trps} value={trp} onChange={this.changeTRP} />
+									</ItemGrid>
+								</ListItem>
+								<ListItem>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText primary={t('settings.tables.hover')}/>
+										<DSelect menuItems={hoverTimes} value={hoverTime} onChange={this.changeHoverTime}/>
+									</ItemGrid>
+								</ListItem>
 							</List>
 						</Grid>
 					}
@@ -201,6 +213,7 @@ const mapStateToProps = state => {
 		drawerState: s.drawerState,
 		drawerCloseOnNav: s.drawerCloseOnNav,
 		headerBorder: s.headerBorder,
+		hoverTime: s.hoverTime
 	})
 }
 const mapDispatchToProps = (dispatch) => {
@@ -217,6 +230,7 @@ const mapDispatchToProps = (dispatch) => {
 		changeDrawerState: val => dispatch(changeDrawerState(val)),
 		changeDrawerCloseOnNav: val => dispatch(changeDrawerCloseOnNav(val)),
 		changeHeaderBorder: val => dispatch(changeHeaderBorder(val)),
+		changeHoverTime: val => dispatch(changeHoverTime(val))
 	}
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(settingsStyles)(DisplaySettings))
