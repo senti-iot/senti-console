@@ -33,7 +33,7 @@ const PrivacyDialog = (props) => {
 			</DialogTitle>
 			<DialogContent className={classes.dialogContent}>				
 				<T b>{t('privacy.responsible')}</T>
- 				<Caption>Senti.Cloud </Caption>
+ 				<Caption>Senti </Caption>
  				<Caption>c/o WebHouse ApS</Caption>
  				<Caption>Alexander Foss Gade 13, 3. th</Caption>
  				<Caption>DK-9000 Aalborg</Caption>
