@@ -162,7 +162,7 @@ class NewLoginPage extends Component {
 											<ItemG xs={12} container justify={'center'}>
 												<T className={classes.loginButton + ' ' + classes.needAccount}>
 													<span style={{ marginRight: 4 }}>
-														{t('login.needAnAccount1')}<span style={{ fontWeight: 600 }}> Senti.</span>Cloud <span>{t('login.needAnAccount2')}</span>?
+														{t('login.needAnAccount1')}<span style={{ fontWeight: 600 }}> Senti</span> <span>{t('login.needAnAccount2')}</span>?
 													</span>
 													<span>
 														<Link to={'/login'}>
