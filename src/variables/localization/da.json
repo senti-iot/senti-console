@@ -1,6 +1,6 @@
 {
     "404": {
-        "contactSupport": "Prøv igen eller kontakt support på support@senti.cloud!",
+        "contactSupport": "Prøv igen eller kontakt support på support@senti.io!",
         "errorMessage": "Den ønskede ressource er ikke fundet!",
         "goHome": "Gå til Dashboard",
         "networkError": "Netværksfejl!",
@@ -585,12 +585,12 @@
         "p16.a": "https://senti.cloud/dk/sikkerhed/underleverandoerer.htm",
         "p16.b": "til behandling af dine personoplysninger.",
         "p16.c": "Underleverandører",
-        "p17": "Hvis du ønsker adgang til de oplysninger, som er registreret om dig hos Senti, skal du rette henvendelse på privacy@senti.cloud.",
-        "p18": "Er der registreret forkerte oplysninger om dig, som du ikke selv kan rette, eller hvis du har andre indsigelser mod vores behandling af dine personoplysninger, så skriv til os på privacy@senti.cloud.",
+        "p17": "Hvis du ønsker adgang til de oplysninger, som er registreret om dig hos Senti, skal du rette henvendelse på privacy@senti.io.",
+        "p18": "Er der registreret forkerte oplysninger om dig, som du ikke selv kan rette, eller hvis du har andre indsigelser mod vores behandling af dine personoplysninger, så skriv til os på privacy@senti.io.",
         "p19": "Du har mulighed for at få indsigt i hvilke informationer, der er registreret om dig, og du er berettiget til at komme med indsigelser mod vores behandling af dine personoplysninger.",
         "p2": "Vi indsamler din virksomheds navn, adresse, e-mail, telefonnummer og CVR-nummer. Vi indsamler ligeledes betalingsoplysninger (evt. EAN-nummer), såfremt din virksomhed anvender en betalt version af Senti. ",
         "p20": "Såfremt det viser sig, at personoplysninger om dig er urigtige eller vildledende, så har du ret til at få dem rettet.",
-        "p21": "Du kan til enhver tid gøre indsigelse mod, at oplysninger om dig gøres til genstand for behandling. Blot skriv til os på privacy@senti.cloud.",
+        "p21": "Du kan til enhver tid gøre indsigelse mod, at oplysninger om dig gøres til genstand for behandling. Blot skriv til os på privacy@senti.io.",
         "p22": "Du kan også til enhver tid tilbagekalde dit samtykke til de behandlinger, vi foretager med dit samtykke.",
         "p23": "Du har mulighed for at klage over vores behandling af dine personoplysninger, hvis vi ikke giver dig ret I dine indsigelser. Klagen skal sendes til Datatilsynet. Se mere på ",
         "p23.a": "https://www.datatilsynet.dk",

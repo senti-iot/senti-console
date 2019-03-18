@@ -1,6 +1,6 @@
 {
     "404": {
-        "contactSupport": "Please try again or contact our support on support@senti.cloud!",
+        "contactSupport": "Please try again or contact our support on support@senti.io!",
         "errorMessage": "The resource requested has not been found!",
         "goHome": "Go to Dashboard",
         "networkFail": "Request failed!",
@@ -585,12 +585,12 @@
         "p16.a": "https://senti.cloud/en/security/subcontractors.htm ",
         "p16.b": "for processing your personal data.",
         "p16.c": "Subcontractors",
-        "p17": "If you want access to the information registered about you at Senti, please contact us at privacy@senti.cloud.",
-        "p18": "If incorrect information has been registered about you that you cannot correct yourself, or if you have other objections to our processing of your personal information, please write to us at privacy@senti.cloud.",
+        "p17": "If you want access to the information registered about you at Senti, please contact us at privacy@senti.io.",
+        "p18": "If incorrect information has been registered about you that you cannot correct yourself, or if you have other objections to our processing of your personal information, please write to us at privacy@senti.io.",
         "p19": "You have the opportunity to gain insight into which information is registered about you and you are entitled to object to our processing of your personal data.",
         "p2": "We collect your company/organisation name, address, email, telephone number and CVR number. We also collect payment information (possibly EAN number) if your company uses a paid version of Senti.",
         "p20": "If it turns out that personal information about you is incorrect or misleading, then you have the right to have them corrected.",
-        "p21": "You may object at any time, that information about you is being processed. Just write to us at privacy@senti.cloud.",
+        "p21": "You may object at any time, that information about you is being processed. Just write to us at privacy@senti.io.",
         "p22": "You can also revoke your consent at any time for the data processing we make with your consent.",
         "p23": "You have the opportunity to complain about our processing of your personal data if we do not give you the right to your objections. The complaint must be sent to the Danish Data Inspectorate. See more at",
         "p23.a": "https://www.datatilsynet.dk",
