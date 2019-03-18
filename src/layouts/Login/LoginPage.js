@@ -145,120 +145,121 @@ class NewLoginPage extends Component {
 		return (
 			<div className={classes.wrapper}>
 				{/* <ItemG container> */}
-				{/* <ItemG xs={12} sm={12} md={4} lg={4} xl={3} container> */}
-				<div className={classes.mobileContainer}>
+				<ItemG xs={12} sm={12} md={4} lg={4} xl={3} container>
+					<div className={classes.mobileContainer}>
 
-					<Paper className={classes.paper}>
-						<div className={classes.paperContainer} style={{ overflow: 'auto' }}>
+						<Paper className={classes.paper}>
+							<div className={classes.paperContainer} style={{ overflow: 'auto' }}>
 
-							{/* <ItemG container alignItems={'center'} justify={'space-evenly'} className={classes.container}> */}
-							<ItemG xs={12} container justify={'center'}>
-								<img className={classes.logo} src={logo} alt={'sentiLogo'} />
-							</ItemG>
-							<FadeOutLoader circularClasses={classes.loader} on={loggingIn} onChange={this.loginUser} notCentered>
-								<FadeOutLoader circularClasses={classes.loader} on={loggingInGoogle} onChange={() => {}} notCentered>
+								{/* <ItemG container alignItems={'center'} justify={'space-evenly'} className={classes.container}> */}
+								<ItemG xs={12} container justify={'center'}>
+									<img className={classes.logo} src={logo} alt={'sentiLogo'} />
+								</ItemG>
+								<FadeOutLoader circularClasses={classes.loader} on={loggingIn} onChange={this.loginUser} notCentered>
+									<FadeOutLoader circularClasses={classes.loader} on={loggingInGoogle} onChange={() => {}} notCentered>
 
-									<ItemG xs={12} container justify={'center'}>
 										<ItemG xs={12} container justify={'center'}>
-											<T className={classes.loginButton + ' ' + classes.needAccount}>
-												<span style={{ marginRight: 4 }}>
-													{t('login.needAnAccount1')}<span style={{ fontWeight: 600 }}> Senti.</span>Cloud <span>{t('login.needAnAccount2')}</span>?
-												</span>
-												<span>
-													<Link to={'/login'}>
-														{t('login.createAccount')}
-													</Link>
-												</span>
-											</T>
-										</ItemG>
+											<ItemG xs={12} container justify={'center'}>
+												<T className={classes.loginButton + ' ' + classes.needAccount}>
+													<span style={{ marginRight: 4 }}>
+														{t('login.needAnAccount1')}<span style={{ fontWeight: 600 }}> Senti.</span>Cloud <span>{t('login.needAnAccount2')}</span>?
+													</span>
+													<span>
+														<Link to={'/login'}>
+															{t('login.createAccount')}
+														</Link>
+													</span>
+												</T>
+											</ItemG>
 
-										<ItemG container xs={12} >
+											<ItemG container xs={12} >
 
-											{/* <ItemG container xs={12}> */}
-											<TextF
-												id={'user'}
-												autoFocus
-												reversed
-												label={t('login.username')}
-												error={this.state.error}
-												fullWidth
-												handleChange={this.handleInput}
-												className={classes.loginButton}
-												value={this.state.user}
-												InputProps={{
-													autoComplete: 'on',
-													type: 'email',
-													endAdornment: <InputAdornment classes={{ root: IconEndAd }}>
-														<Person style={{ color: 'rgba(0, 0, 0, 0.54)' }}/>
-													</InputAdornment>
-												}}
-											/>
-											{/* </ItemG> */}
-											{/* <ItemG container xs={12}> */}
-											<TextF
-												id={'pass'}
-												label={t('login.pass')}
-												error={this.state.error}
-												className={classes.loginButton}
-												type={this.state.showPassword ? 'text' : 'password'}
-												fullWidth
-												handleChange={this.handleInput}
-												value={this.state.pass}
-												InputProps={{
-													autoComplete: 'on',
-													// type: 'password',
-													endAdornment: <InputAdornment classes={{ root: IconEndAd }}>
+												{/* <ItemG container xs={12}> */}
+												<TextF
+													id={'user'}
+													autoFocus
+													reversed
+													label={t('login.username')}
+													error={this.state.error}
+													fullWidth
+													handleChange={this.handleInput}
+													className={classes.loginButton}
+													value={this.state.user}
+													InputProps={{
+														autoComplete: 'on',
+														type: 'email',
+														endAdornment: <InputAdornment classes={{ root: IconEndAd }}>
+															<Person style={{ color: 'rgba(0, 0, 0, 0.54)' }}/>
+														</InputAdornment>
+													}}
+												/>
+												{/* </ItemG> */}
+												{/* <ItemG container xs={12}> */}
+												<TextF
+													id={'pass'}
+													label={t('login.pass')}
+													error={this.state.error}
+													className={classes.loginButton}
+													type={this.state.showPassword ? 'text' : 'password'}
+													fullWidth
+													handleChange={this.handleInput}
+													value={this.state.pass}
+													InputProps={{
+														autoComplete: 'on',
+														// type: 'password',
+														endAdornment: <InputAdornment classes={{ root: IconEndAd }}>
 														                <IconButton
-															className={classes.smallAction}
-															onClick={() => this.setState({ showPassword: !this.state.showPassword })}
-														>
-															{this.state.showPassword ? <Visibility /> : <VisibilityOff />}
-														</IconButton>
-													</InputAdornment>
-												}}
-											/>
-											{/* </ItemG> */}
-										</ItemG>
-										<ItemG xs={12} container justify={'center'}>
-											<Button variant={'outlined'} fullWidth color={'primary'} className={classes.loginButton} onClick={this.logUser}>
-												{t('actions.login')}
-											</Button>
-										</ItemG>
-										<ItemG xs={12} container justify={'center'} style={{ margin: "8px 0px" }}>
-											<ItemG xs={12} container justify={'space-around'}>
-												<Link to={`/password/reset/${language}`}>
-													{t('login.forgotPassword')}
-												</Link>
+																className={classes.smallAction}
+																onClick={() => this.setState({ showPassword: !this.state.showPassword })}
+															>
+																{this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+															</IconButton>
+														</InputAdornment>
+													}}
+												/>
+												{/* </ItemG> */}
+											</ItemG>
+											<ItemG xs={12} container justify={'center'}>
+												<Button variant={'outlined'} fullWidth color={'primary'} className={classes.loginButton} onClick={this.logUser}>
+													{t('actions.login')}
+												</Button>
+											</ItemG>
+											<ItemG xs={12} container justify={'center'} style={{ margin: "8px 0px" }}>
+												<ItemG xs={12} container justify={'space-around'}>
+													<Link to={`/password/reset/${language}`}>
+														{t('login.forgotPassword')}
+													</Link>
+												</ItemG>
+											</ItemG>
+											<ItemG xs={12} container justify={'center'}>
+												<GoogleLogin
+													clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
+													render={renderProps => (
+														<Button fullWidth className={classes.loginButton} variant={'outlined'} color={'primary'} onClick={() => {renderProps.onClick(); this.setState({ loggingInGoogle: true })}}>
+															<img src={Google} alt={'google-logo'} style={{ marginRight: 8 }} />
+															{t('actions.loginWithGoogle')}
+														</Button>)}
+													buttonText="Login"
+													onSuccess={this.googleSignIn}
+													onFailure={this.googleSignIn}
+												/>
 											</ItemG>
 										</ItemG>
-										<ItemG xs={12} container justify={'center'}>
-											<GoogleLogin
-												clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
-												render={renderProps => (
-													<Button fullWidth className={classes.loginButton} variant={'outlined'} color={'primary'} onClick={() => {renderProps.onClick(); this.setState({ loggingInGoogle: true })}}>
-														<img src={Google} alt={'google-logo'} style={{ marginRight: 8 }} />
-														{t('actions.loginWithGoogle')}
-													</Button>)}
-												buttonText="Login"
-												onSuccess={this.googleSignIn}
-												onFailure={this.googleSignIn}
-											/>
-										</ItemG>
-									</ItemG>
+									</FadeOutLoader>
 								</FadeOutLoader>
-							</FadeOutLoader>
-						</div>
-						<ItemG xs={12} container alignItems={'flex-end'} justify={'center'} className={classes.footer}>
-							<Muted className={classes.footerText}>
-								<T paragraph style={{ ...defaultFont, fontSize: 13, color: 'inherit' }}>
-									{`${t('login.footer')} `}
-								</T>
-								<ButtonBase onClick={this.handleCookies} style={{ ...defaultFont, fontSize: 13, margin: "0px 4px", textDecoration: 'underline' }}>{t('settings.t&c.cookiesPolicy')}</ButtonBase>
-								<ButtonBase onClick={this.handlePrivacy} style={{ ...defaultFont, fontSize: 13, margin: "0px 4px", textDecoration: 'underline' }}>{t('settings.t&c.privacyPolicy')}</ButtonBase>
-							</Muted>
-						</ItemG>
-					</Paper>
-				</div>
+							</div>
+							<ItemG xs={12} container alignItems={'flex-end'} justify={'center'} className={classes.footer}>
+								<Muted className={classes.footerText}>
+									<T paragraph style={{ ...defaultFont, fontSize: 13, color: 'inherit' }}>
+										{`${t('login.footer')} `}
+									</T>
+									<ButtonBase onClick={this.handleCookies} style={{ ...defaultFont, fontSize: 13, margin: "0px 4px", textDecoration: 'underline' }}>{t('settings.t&c.cookiesPolicy')}</ButtonBase>
+									<ButtonBase onClick={this.handlePrivacy} style={{ ...defaultFont, fontSize: 13, margin: "0px 4px", textDecoration: 'underline' }}>{t('settings.t&c.privacyPolicy')}</ButtonBase>
+								</Muted>
+							</ItemG>
+						</Paper>
+					</div>
+				</ItemG>
 				<CookiesDialog read t={t} open={cookies} handleClose={this.handleCookies} handleAcceptCookies={this.handleCookies} />
 				<PrivacyDialog t={t} open={privacy} handleClose={this.handlePrivacy} />
 				<Hidden smDown>
@@ -266,7 +267,6 @@ class NewLoginPage extends Component {
 						<LoginImages t={t} />
 					</ItemG>
 				</Hidden>
-				{/* </ItemG> */}
 			</div>
 		)
 	}
