@@ -37,7 +37,7 @@ const PrivacyDialog = (props) => {
  				<Caption>c/o WebHouse ApS</Caption>
  				<Caption>Alexander Foss Gade 13, 3. th</Caption>
  				<Caption>DK-9000 Aalborg</Caption>
- 				<Caption>{t('privacy.contactEmail')}privacy@senti.cloud</Caption>
+ 				<Caption>{t('privacy.contactEmail')}privacy@senti.io</Caption>
  				<Caption className={classes.p}>CVR-nr. 21221198</Caption>
 				<T className={classes.p} b>{t('privacy.subtitle')}</T>
 				<T className={classes.p}>{t('privacy.p0')}</T>
