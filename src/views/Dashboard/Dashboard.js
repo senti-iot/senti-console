@@ -21,7 +21,7 @@ class Dashboard extends React.Component {
 			projects: [],
 			devices: 0
 		}
-		props.setHeader('Senti.Cloud', false, '', 'dashboard')
+		props.setHeader('Senti', false, '', 'dashboard')
 		props.setBC(props.t('sidebar.dashboard'), '', true)
 		props.setTabs({
 			id: 'dashboard',
