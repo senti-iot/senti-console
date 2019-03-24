@@ -21,7 +21,7 @@ class Dashboard extends React.Component {
 			projects: [],
 			devices: 0
 		}
-		props.setHeader('Senti.Cloud', false, '', 'dashboard')
+		props.setHeader('Senti', false, '', 'dashboard')
 		props.setBC(props.t('sidebar.dashboard'), '', true)
 		props.setTabs({
 			id: 'dashboard',
@@ -32,7 +32,7 @@ class Dashboard extends React.Component {
 
 
 	componentDidMount = async () => {
-		this.props.setHeader('Senti.Cloud', false, '', 'dashboard')
+		this.props.setHeader('Senti', false, '', 'dashboard')
 	}
 
 	componentWillUnmount = () => {
@@ -126,7 +126,7 @@ class Dashboard extends React.Component {
 					/></ItemG> */}
 						<ItemG container justify={'center'} xs={12}>
 							<Caption>
-							Senti.Cloud version {pj.version}
+							Senti version {pj.version}
 							</Caption>
 						</ItemG>
 					</GridContainer>
