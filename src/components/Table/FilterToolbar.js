@@ -179,11 +179,24 @@ class FilterToolbar extends Component {
 						placement="bottom-start"
 						transition
 						disablePortal
+						modifiers={{
+							hide: {
+								enabled: false
+							  },
+							flip: {
+							  enabled: false,
+							},
+							preventOverflow: {
+							  enabled: false,
+							  boundariesElement: 'scrollParent',
+							}
+						}}
 						onClose={() => this.setState({ actionAnchor: null })}
 						style={{ zIndex: 1028, marginTop: 8 }}
 					>
 						{({ TransitionProps }) => (
-							<Grow {...TransitionProps} timeout={350}>
+							<Grow {...TransitionProps} timeout={350} style={{ position: "absolute",
+								top: 0 }}>
 								<Paper onClick={e => e.stopPropagation()} >
 									<MenuList>
 										{filters ? filters.map((ft, i) =>

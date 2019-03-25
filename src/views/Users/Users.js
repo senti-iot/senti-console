@@ -327,9 +327,9 @@ class Users extends Component {
 					<TableToolbar
 						ft={this.ftUsers()}
 						reduxKey={'users'}
-						anchorElMenu={this.state.anchorElMenu}
-						handleToolbarMenuClose={this.handleToolbarMenuClose}
-						handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+						// anchorElMenu={this.state.anchorElMenu}
+						// handleToolbarMenuClose={this.handleToolbarMenuClose}
+						// handleToolbarMenuOpen={this.handleToolbarMenuOpen}
 						numSelected={selected.length}
 						options={this.options}
 						t={t}
