@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { withStyles, Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton, Fade } from '@material-ui/core';
+import { withStyles, Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
@@ -261,12 +261,15 @@ class Orgs extends Component {
 		</Dialog>
 	}
 	renderTableToolBarContent = () => {
-		const { accessLevel } = this.props
+		const { accessLevel, t  } = this.props
 		let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
 		return <Fragment>
-			{access ? <IconButton aria-label='Add new organisation' onClick={this.addNewOrg}>
-				<Add />
-			</IconButton> : null
+			{access ? <Tooltip title={t('menus.create.org')}>
+				<IconButton aria-label='Add new organisation' onClick={this.addNewOrg}>
+					<Add />
+				</IconButton> 
+			</Tooltip>
+				: null
 			}
 		</Fragment>
 	}

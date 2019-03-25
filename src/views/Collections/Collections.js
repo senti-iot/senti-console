@@ -1,4 +1,4 @@
-import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade } from '@material-ui/core';
+import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import CollectionTable from 'components/Collections/CollectionTable';
 import TableToolbar from 'components/Table/TableToolbar';
@@ -421,10 +421,13 @@ class Collections extends Component {
 
 
 	renderTableToolBarContent = () => {
+		const { t } = this.props
 		return <Fragment>
-			<IconButton aria-label='Add new collection' onClick={this.addNewCollection}>
-				<Add />
-			</IconButton>
+			<Tooltip title={t('menus.create.collection')}>
+				<IconButton aria-label='Add new collection' onClick={this.addNewCollection}>
+					<Add />
+				</IconButton>
+			</Tooltip>
 		</Fragment>
 	}
 

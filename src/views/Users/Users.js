@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { withStyles, Paper, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade } from '@material-ui/core';
+import { withStyles, Paper, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade, Tooltip } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import UserTable from 'components/User/UserTable';
 import CircularLoader from 'components/Loader/CircularLoader';
@@ -362,12 +362,13 @@ class Users extends Component {
 		this.setState({ anchorElMenu: null })
 	}
 	renderTableToolBarContent = () => {
-		const { accessLevel } = this.props
+		const { accessLevel, t  } = this.props
 		let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
 		return <Fragment>
-			{access ? <IconButton aria-label='Add new user' onClick={this.addNewUser}>
-				<Add />
-			</IconButton> : null
+			{access ? <Tooltip title={t('menus.create.user')}>
+				<IconButton aria-label='Add new user' onClick={this.addNewUser}>
+					<Add />
+				</IconButton></Tooltip> : null
 			}
 		</Fragment>
 	}

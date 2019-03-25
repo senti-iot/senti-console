@@ -1,6 +1,6 @@
 import {
 	IconButton, Paper, withStyles, DialogTitle, Dialog, DialogContent,
-	DialogContentText, DialogActions, Button, List, ListItem, ListItemIcon, ListItemText, Fade
+	DialogContentText, DialogActions, Button, List, ListItem, ListItemIcon, ListItemText, Fade, Tooltip
 } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import GridContainer from 'components/Grid/GridContainer';
@@ -343,11 +343,12 @@ class Projects extends Component {
 		</Dialog>
 	}
 	renderTableToolBarContent = () => {
-		return <Fragment>
+		const { t } = this.props
+		return <Tooltip title={t('menus.create.project')}>
 			<IconButton aria-label='Add new project' onClick={this.handleAddProject}>
 				<Add />
 			</IconButton>
-		</Fragment>
+		</Tooltip>
 	}
 	renderTable = (items, handleClick) => {
 		const { t } = this.props
