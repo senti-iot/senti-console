@@ -17,7 +17,7 @@ class DatePicker extends Component {
 					value ? [/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/] : []
 				  }
 				// format={'ll'}
-				errror={error}
+				error={error}
 				format={ "DD/MM/YYYY"}
 				placeholder="DD/MM/YYYY"
 				value={value}
