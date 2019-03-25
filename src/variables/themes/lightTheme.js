@@ -1,6 +1,6 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 import { primaryColor, secondaryColor, hoverColor, /* headerColor */ } from 'assets/jss/material-dashboard-react'
-import { teal, red } from '@material-ui/core/colors'
+import { teal, red, grey } from '@material-ui/core/colors'
 
 const theme = createMuiTheme({
 	typography: {
@@ -8,6 +8,15 @@ const theme = createMuiTheme({
 		suppressDeprecationWarnings: true,
 	},
 	overrides: {
+		MuiTooltip: {
+			tooltipPlacementBottom: {
+				background: grey[700],
+				fontSize: '12px',
+			},
+			popper: {
+				opacity: 1,
+			}
+		},
 		MuiDialogContent: {
 			root: { padding: 24 }
 		},

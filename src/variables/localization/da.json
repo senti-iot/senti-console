@@ -932,5 +932,12 @@
             "noOrg": "Organisation mangler",
             "userAlreadyExists": "E-mail er allerede tilknyttet en bruger konto!"
         }
-    }
+	},
+	"tooltips": {
+		"project": "Projekt",
+		"device": "Enhed",
+		"user": "Bruger",
+		"org": "Organisation",
+		"collection": "Datasamling"
+	}
 }
