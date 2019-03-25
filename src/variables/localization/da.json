@@ -204,8 +204,8 @@
             "pictures": "Billeder"
         },
         "device": "Enhed",
-        "editDetailsTitle": "Opdater %{deviceId}",
-        "editHardwareTitle": "Opdater hardware for enhed %{deviceId}",
+        "editDetailsTitle": "Rediger %{deviceId}",
+        "editHardwareTitle": "Rediger hardware for enhed %{deviceId}",
         "fields": {
             "adapter": "Strømforsyning",
             "address": "Adresse",
@@ -864,14 +864,14 @@
         "selected": "valgt"
     },
     "users": {
-        "editUser": "Opdater bruger",
+        "editUser": "Rediger bruger",
         "fields": {
             "accessLevel": "Adgangsniveau",
             "active": "Aktiv",
             "bio": "Biografi",
             "birthday": "Fødselsdag",
             "confirmPass": "Bekræft nyt kodeord",
-            "created": "Opdateret",
+            "created": "Oprettet",
             "currentPass": "Nuværende kodeord",
             "email": "E-mail",
             "firstName": "Fornavn",
