@@ -106,7 +106,7 @@
             "data": "Datasamlinger",
             "log": "Enhedslog"
         },
-        "createCollection": "Ny datasamling",
+        "createCollection": "Opret datasamling",
         "editCollection": "Rediger datasamling",
         "fields": {
             "activated": "Aktiveret",
