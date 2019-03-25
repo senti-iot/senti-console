@@ -538,7 +538,6 @@ export const settings = (state = initialState, action) => {
 		case reset: 
 			return Object.assign({}, state, { ...initialState, user: action.user, cookies: false })
 		case changeHT:
-			console.log('reduces')
 			return Object.assign({}, state, { hoverTime: action.hoverTime })
 		case changeBC: 
 			return Object.assign({}, state, { breadcrumbs: action.breadcrumbs })

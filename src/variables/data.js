@@ -145,7 +145,6 @@ export const api = create({
 
 export const setToken = () => {
 	try {
-		console.log('Bing')
 		var OAToken = cookie.load('SESSION').sessionID
 		api.setHeader('ODEUMAuthToken', OAToken)
 		imageApi.setHeader('ODEUMAuthToken', OAToken)
