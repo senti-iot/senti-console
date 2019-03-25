@@ -1,5 +1,14 @@
 const breadcrumbs = (t, name, id) => {
 	return {
+		'createcollection': [
+			{ label: t('sidebar.collections'), path: '/collections' },
+			{ label: t('menus.create.collection'), path: '/collections/new' }
+		],
+		'editcollection': [
+			{ label: t('sidebar.collections'), path: `/collections` },
+			{ label: name, path: `/collection/${id}` },
+			{ label: t('collections.editCollection'), path: `/collection/${id}/edit` }	
+		],
 		'editdevicedetails': [
 			{ label: t('sidebar.devices'), path: `/devices` },
 			{ label: name, path: `/device/${id}` },

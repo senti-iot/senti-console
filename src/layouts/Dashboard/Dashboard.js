@@ -93,7 +93,7 @@ class App extends React.Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		if (this._isMounted) {
-			this.handleSetHeaderTitle('Senti.Cloud', false, '', 'dashboard')
+			this.handleSetHeaderTitle('Senti', false, '', 'dashboard')
 		}
 
 		await this.props.getSettings().then(async rs => {
