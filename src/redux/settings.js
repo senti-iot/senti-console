@@ -4,6 +4,7 @@ import 'moment/locale/da'
 import 'moment/locale/en-gb'
 import { saveSettings } from 'variables/dataLogin';
 import { setDates } from './dateTime';
+import { setPrefix } from 'variables/storage';
 var moment = require('moment')
 
 const acceptCookies = 'acceptCookies'
@@ -115,6 +116,7 @@ export const getSettings = async () => {
 			if (vSession === 200) {
 				let exp = moment().add('1', 'day')
 				cookie.save('SESSION', sessionCookie, { path: '/', expires: exp.toDate() })
+				setPrefix(sessionCookie.userId)
 			}
 			else {
 				return cookie.remove('SESSION')
