@@ -106,13 +106,13 @@
             "data": "Data Collections",
             "log": "Device log"
         },
-        "createCollection": "Create collection",
-        "editCollection": "Edit collection",
+        "createCollection": "Create Data Collection",
+        "editCollection": "Edit Data Collection",
         "fields": {
             "activated": "Activated",
             "activeDevice": "Active Device",
-            "activeDeviceStartDate": "Data collection start",
-            "collection": "Data collection",
+            "activeDeviceStartDate": "Data Collection start",
+            "collection": "Data Collection",
             "created": "Created",
             "dcID": "ID",
             "description": "Description",
