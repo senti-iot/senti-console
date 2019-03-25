@@ -36,6 +36,7 @@ class EditDeviceDetails extends Component {
 				device: rs,
 				loading: false
 			})
+			this.props.setBC('editdevicedetails', rs.name, rs.id)
 		})
 		window.addEventListener('keydown', this.keyHandler, false)
 	}

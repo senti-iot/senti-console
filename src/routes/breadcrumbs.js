@@ -1,5 +1,15 @@
 const breadcrumbs = (t, name, id) => {
 	return {
+		'editdevicedetails': [
+			{ label: t('sidebar.devices'), path: `/devices` },
+			{ label: name, path: `/device/${id}` },
+			{ label: t('devices.editDetailsTitle', { deviceId: `${name}(${id})` }), path: `/device/${id}/edit` }	
+		],
+		'editdevicehardware': [
+			{ label: t('sidebar.devices'), path: `/devices` },
+			{ label: name, path: `/device/${id}` },
+			{ label: t('devices.editHardwareTitle', { deviceId: `${name}(${id})` }), path: `/device/${id}/edit` }
+		],
 		'createorg': [
 			{ label: t('sidebar.orgs'), path: '/management/orgs' },
 			{ label: t('menus.create.org'), path: '/management/orgs/new' }
