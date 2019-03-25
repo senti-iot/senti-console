@@ -935,7 +935,7 @@
 	},
 	"tooltips": {
 		"nextPeriod": "Næste Periode",
-		"previousPeriod":"Tidligere Periode",
+		"previousPeriod":"Forrige Periode",
 		"project": "Projekt",
 		"device": "Enhed",
 		"user": "Bruger",
