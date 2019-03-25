@@ -7,7 +7,7 @@
         "title": "Siden ikke fundet!"
     },
     "": "",
-    "Senti.Cloud": "Senti",
+    "Senti": "Senti",
     "actions": {
         "accept": "Godkend",
         "addFilter": "Tilføj filter",
@@ -705,7 +705,7 @@
             "grid": "Gitter",
             "list": "Liste"
         },
-        "detailsPanel": "Detalje panel",
+        "detailsPanel": "Vis detalje panel",
         "detailsPanelPos": {
             "closed": "Lukket",
             "open": "Åben"

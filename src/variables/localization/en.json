@@ -7,7 +7,7 @@
         "title": "Page Not Found"
     },
     "": "",
-    "Senti.Cloud": "Senti",
+    "Senti": "Senti",
     "actions": {
         "accept": "Accept",
         "addFilter": "Add filter",
@@ -705,7 +705,7 @@
             "grid": "Grid",
             "list": "List"
         },
-        "detailsPanel": "Details panel",
+        "detailsPanel": "Show details panel",
         "detailsPanelPos": {
             "closed": "Closed",
             "open": "Open"

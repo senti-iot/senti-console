@@ -22,10 +22,10 @@ class DisplaySettings extends Component {
 	changeDiscoverSenti = e => this.props.changeDiscoverSenti(e.target.checked)
 	changeMapTheme = e => this.props.changeMapTheme(e.target.value)
 	changeSnackbarLocation = e => this.props.changeSnackbarLocation(e.target.value) 
-	changeDetailsPanel = e => this.props.changeDetailsPanel(e.target.value)
+	changeDetailsPanel = e => this.props.changeDetailsPanel(e.target.checked)
 	changeDrawerType = e => this.props.changeDrawerType(e.target.value)
-	changeDrawerState = e => this.props.changeDrawerState(e.target.value)
-	changeDrawerCloseOnNav = e => this.props.changeDrawerCloseOnNav(e.target.value)
+	changeDrawerState = e => this.props.changeDrawerState(e.target.checked)
+	changeDrawerCloseOnNav = e => this.props.changeDrawerCloseOnNav(e.target.checked)
 	changeHeaderBorder = e => this.props.changeHeaderBorder(e.target.checked)
 	changeHoverTime = e => this.props.changeHoverTime(e.target.value)
 
@@ -72,21 +72,9 @@ class DisplaySettings extends Component {
 			{ value: 'left', label: t('settings.snackbarLocations.left') },
 			{ value: 'right', label: t('settings.snackbarLocations.right') }
 		]
-		let detailsPanelState = [
-			{ value: 0, label: t('settings.detailsPanelPos.closed') },
-			{ value: 1, label: t('settings.detailsPanelPos.open') }
-		]
 		let drawerTypes = [
 			{ value: 'permanent', label: t('settings.drawer.types.permanent') },
 			{ value: 'persistent', label: t('settings.drawer.types.persistent') }
-		]
-		let drawerStates = [
-			{ value: false, label: t('settings.drawer.states.hidden') },
-			{ value: true, label: t('settings.drawer.states.open') }
-		]
-		let closeOnNavOpts = [
-			{ value: true, label: t('settings.drawer.callbacks.closeOnNav') },
-			{ value: false, label: t('settings.drawer.callbacks.notCloseOnNav') }
 		]
 		let hoverTimes = [
 			{ value: 0, label: t('settings.hover.values.0') },
@@ -149,13 +137,19 @@ class DisplaySettings extends Component {
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.detailsPanel')}</ListItemText>
-										<DSelect menuItems={detailsPanelState} value={detailsPanel} onChange={this.changeDetailsPanel} />
+										<Switch 
+											checked={detailsPanel}
+											onChange={this.changeDetailsPanel}
+										/>
 									</ItemGrid>
 								</ListItem>
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.drawer.state')}</ListItemText>
-										<DSelect menuItems={drawerStates} value={drawerState} onChange={this.changeDrawerState} />
+										<Switch 
+											checked={drawerState}
+											onChange={this.changeDrawerState}
+										/>
 									</ItemGrid>
 								</ListItem>
 								<ListItem divider>
@@ -167,7 +161,10 @@ class DisplaySettings extends Component {
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.drawer.callback')}</ListItemText>
-										<DSelect menuItems={closeOnNavOpts} value={drawerCloseOnNav} onChange={this.changeDrawerCloseOnNav} />
+										<Switch 
+											checked={drawerCloseOnNav}
+											onChange={this.changeDrawerCloseOnNav}
+										/>
 									</ItemGrid>
 								</ListItem>
 								<ListItem divider>
