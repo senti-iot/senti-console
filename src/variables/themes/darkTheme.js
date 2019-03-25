@@ -76,7 +76,6 @@ const theme = createMuiTheme({
 			}
 		},
 		MuiInput: {
-			
 			underline: {
 				'&:hover:not($disabled):not($focused):not($error):before': {
 					borderBottom: '2px solid #4db6ac',
@@ -85,9 +84,11 @@ const theme = createMuiTheme({
 					borderBottomColor: teal[500],
 				},
 			},
-			
-
-
+		},
+		MuiInputLabel: {
+			outlined: {
+				transform: 'translate(14px, 14px) scale(1)'
+			},
 		},
 		MuiOutlinedInput: {
 			input: {
