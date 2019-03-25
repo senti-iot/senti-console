@@ -40,6 +40,7 @@ class CreateOrg extends Component {
 			loading: true,
 			openSnackBar: false,
 		}
+		props.setBC('createorg')
 	}
 	goToOrg = () => {
 		const { history, location } = this.props

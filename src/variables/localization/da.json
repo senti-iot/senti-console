@@ -480,10 +480,20 @@
         "copyEmails": "Kopier E-mail adresser",
         "create": {
             "project": "Opret projekt",
-            "user": "Opret bruger"
+			"user": "Opret bruger",
+			"collection": "Opret datasamling",
+			"org": "Opret organisation",
+			"device": "Opret enhed"
         },
         "delete": "Slet",
-        "edit": "Rediger",
+		"edit": "Rediger",
+		"edits": {
+			"project": "Rediger projekt",
+			"user": "Rediger bruger",
+			"collection": "Rediger datasamling",
+			"org": "Rediger organisation",
+			"device": "Rediger enhed"
+		},
         "export": "Eksporter data",
         "exportPDF": "Print som PDF",
         "exportUsers": "Eksporter brugere",

@@ -58,6 +58,7 @@ class CreateUser extends Component {
 			loading: true,
 			selectedGroup: 136550100000225,
 		}
+		props.setBC('createuser')
 	}
 	keyHandler = (e) => {
 		if (e.key === 'Escape') {

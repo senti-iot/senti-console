@@ -46,13 +46,14 @@ class App extends React.Component {
 	handleDrawerToggle = () => {
 		this.setState({ mobileOpen: !this.state.mobileOpen });
 	};
-	handleSetBreadCrumb = (id, name, dontShow) => {
+	handleSetBreadCrumb = (id, name, extra, dontShow) => {
 		const { bc } = this.state
 		if (bc.id !== id || name !== bc.name)
 			this.setState({
 				bc: {
 					id: id,
 					name: name,
+					extra: extra,
 					dontShow: dontShow
 				}
 			})

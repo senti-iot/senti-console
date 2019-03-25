@@ -480,10 +480,20 @@
         "copyEmails": "Copy E-mail addresses",
         "create": {
             "project": "Create project",
-            "user": "Create user"
+			"user": "Create user",
+			"collection": "Create data collection",
+			"org": "Create organisation",
+			"device": "Create device"
         },
         "delete": "Delete",
-        "edit": "Edit",
+		"edit": "Edit",
+		"edits": {
+			"project": "Edit project",
+			"user": "Edit user",
+			"collection": "Edit data collection",
+			"org": "Edit organisation",
+			"device": "Edit device"
+		},
         "export": "Export data",
         "exportPDF": "Print as PDF",
         "exportUsers": "Export Users",

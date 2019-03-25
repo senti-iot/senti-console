@@ -72,6 +72,7 @@ class EditUser extends Component {
 		setHeader('users.editUser', true, prevURL, 'users')
 		if (this._isMounted) {
 			await this.getUser()
+			this.props.setBC('edituser', this.state.user.firstName + ' ' + this.state.user.lastName, this.state.user.id)
 			await this.getOrgs()
 		}
 	}
