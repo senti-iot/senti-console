@@ -1,7 +1,7 @@
 import React, { Fragment, PureComponent } from 'react';
 import {
 	Grid, IconButton, Menu, withStyles, ListItem,
-	ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox, Typography,
+	ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox, Typography, Tooltip,
 } from '@material-ui/core';
 import {
 	Timeline, MoreVert,
@@ -226,23 +226,27 @@ class ChartData extends PureComponent {
 		this.props.handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	renderTitle = () => {
-		const { period } = this.props
+		const { period, t } = this.props
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
 		return <ItemG container style={{ flexFlow: 'row' }}>
 			<ItemG>
-				<IconButton onClick={this.handlePreviousPeriod}>
-					<KeyboardArrowLeft />
-				</IconButton>
+				<Tooltip title={t('tooltips.previousPeriod')}>
+					<IconButton onClick={this.handlePreviousPeriod}>
+						<KeyboardArrowLeft />
+					</IconButton>
+				</Tooltip>
 			</ItemG>
 			<ItemG>
 				<Typography component={'span'}>{`${displayFrom}`}</Typography>
 				<Typography component={'span'}> {`${displayTo}`}</Typography>
 			</ItemG>
 			<ItemG>
-				<IconButton onClick={this.handleNextPeriod}>
-					<KeyboardArrowRight />
-				</IconButton>
+				<Tooltip title={t('tooltips.nextPeriod')}>
+					<IconButton onClick={this.handleNextPeriod}>
+						<KeyboardArrowRight />
+					</IconButton>
+				</Tooltip>
 			</ItemG>
 		</ItemG>
 	}
