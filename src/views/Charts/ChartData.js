@@ -8,7 +8,7 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, LinearScale, Clear,
+	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, LinearScale, Clear, KeyboardArrowLeft, KeyboardArrowRight,
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
@@ -85,7 +85,7 @@ class ChartData extends PureComponent {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-	handleChangeChartType = (type) => { 
+	handleChangeChartType = (type) => {
 		this.setState({
 			chartType: type
 		})
@@ -162,7 +162,7 @@ class ChartData extends PureComponent {
 									to: period.to
 								}]
 						})
-						this.props.handleSetDate(6, endDate, startDate,  0, period.id)
+						this.props.handleSetDate(6, endDate, startDate, 0, period.id)
 						break
 					case 2:
 						startDate = moment(date).startOf('day')
@@ -184,7 +184,68 @@ class ChartData extends PureComponent {
 			}
 		}
 	}
-
+	handleNextPeriod = () => {
+		const { period } = this.props
+		let from, to, diff;
+		if (period.menuId === 6) {
+			diff = moment(period.to).diff(moment(period.from), 'minute')
+			from = moment(period.from).add(diff + 1, 'minute')
+			to = moment(period.to).add(diff + 1, 'minute')
+		}
+		if ([0, 1].indexOf(period.menuId) !== -1) {
+			from = moment(period.from).startOf('day').add(1, 'day')
+			to = moment(period.to).endOf('day').add(1, 'day')
+		}
+		if (period.menuId === 2) {
+			from = moment(period.from).add(1, 'week').startOf('week').startOf('day')
+			to = moment(period.to).add(1, 'week').endOf('week').endOf('day')
+		}
+		if ([3, 4, 5].indexOf(period.menuId) !== -1) {
+			diff = moment(period.to).diff(moment(period.from), 'minute')
+			from = moment(period.from).add(diff + 1, 'minute').startOf('day')
+			to = moment(period.to).add(diff + 1, 'minute').endOf('day')
+		}
+		this.props.handleSetDate(6, to, from, period.timeType, period.id)
+	}
+	handlePreviousPeriod = () => {
+		const { period } = this.props
+		let from, to, diff;
+		if (period.menuId === 6 || [3, 4, 5].indexOf(period.menuId) !== -1) {
+			diff = moment(period.to).diff(moment(period.from), 'minute')
+			from = moment(period.from).subtract(diff + 1, 'minute')
+			to = moment(period.to).subtract(diff + 1, 'minute')
+		}
+		if ([0, 1].indexOf(period.menuId) !== -1) {
+			from = moment(period.from).subtract(1, 'day').startOf('day')
+			to = moment(period.to).subtract(1, 'day').endOf('day')
+		}
+		if (period.menuId === 2) {
+			from = moment(period.from).subtract(1, 'week').startOf('week').startOf('day')
+			to = moment(period.to).subtract(1, 'week').endOf('week').endOf('day')
+		}
+		this.props.handleSetDate(6, to, from, period.timeType, period.id)
+	}
+	renderTitle = () => {
+		const { period } = this.props
+		let displayTo = dateTimeFormatter(period.to)
+		let displayFrom = dateTimeFormatter(period.from)
+		return <ItemG container style={{ flexFlow: 'row' }}>
+			<ItemG>
+				<IconButton onClick={this.handlePreviousPeriod}>
+					<KeyboardArrowLeft />
+				</IconButton>
+			</ItemG>
+			<ItemG>
+				<Typography component={'span'}>{`${displayFrom}`}</Typography>
+				<Typography component={'span'}> {`${displayTo}`}</Typography>
+			</ItemG>
+			<ItemG>
+				<IconButton onClick={this.handleNextPeriod}>
+					<KeyboardArrowRight />
+				</IconButton>
+			</ItemG>
+		</ItemG>
+	}
 	renderType = () => {
 		const { title, setHoverID, t, device, period, single, hoverID } = this.props
 		const { loading } = this.state
@@ -234,7 +295,7 @@ class ChartData extends PureComponent {
 						</ItemG>
 						: this.renderNoData()
 				case 2:
-					return barDataSets ? 
+					return barDataSets ?
 						<BarChart
 							chartYAxis={this.state.chartType}
 							single={single}
@@ -405,6 +466,7 @@ class ChartData extends PureComponent {
 				break;
 		}
 	}
+
 	render() {
 		const { t, period } = this.props
 		const { openDownload, loading, exportData } = this.state
@@ -413,7 +475,7 @@ class ChartData extends PureComponent {
 		return (
 			<Fragment>
 				<InfoCard
-					title={`${displayFrom} - ${displayTo}`}
+					title={this.renderTitle()}
 					subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
 					avatar={this.renderIcon()}
 					noExpand
@@ -430,7 +492,7 @@ class ChartData extends PureComponent {
 								t={t}
 							/>
 							{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
-								
+
 								<ItemG xs={12}>
 									{this.renderType()}
 								</ItemG>
