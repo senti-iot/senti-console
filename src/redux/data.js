@@ -4,7 +4,7 @@ import { getAllUsers } from 'variables/dataUsers';
 import { getAllProjects, getProject } from 'variables/dataProjects';
 import { getAllDevices } from 'variables/dataDevices';
 import { getAllOrgs } from 'variables/dataOrgs';
-import { getAllCollections } from 'variables/dataCollections';
+import { getAllCollections, getCollection } from 'variables/dataCollections';
 import { colors } from 'variables/colors';
 /**
  * Special functions
@@ -51,6 +51,7 @@ const gotdevices = 'GotDevices'
 const gotprojects = 'GotProjects'
 const gotcollections = 'GotCollections'
 const gotProject = 'GotProject'
+const gotCollection = 'GotCollection'
 
 const setusers = 'SetUsers'
 const setorgs = 'SetOrgs'
@@ -59,7 +60,49 @@ const setprojects = 'SetProjects'
 const setcollections = 'SetCollections'
 
 const setProject = 'SetProject'
+const setCollection = 'SetCollection'
 
+export const getCollectionLS = async (id) => {
+	return async dispatch => {
+		let collection = get('collection.' + id)
+		if (collection) {
+			dispatch({
+				type: setCollection,
+				payload: collection
+			})
+			dispatch({
+				type: gotCollection,
+				payload: true
+			})
+		}
+		else {
+			dispatch({
+				type: gotCollection,
+				payload: false
+			})
+			dispatch({
+				type: setCollection,
+				payload: null
+			})
+		}
+		await getCollection(id).then(rs => {
+			if (!compare(collection, rs)) {
+				collection = {
+					...rs,
+				}
+				dispatch({
+					type: setCollection,
+					payload: collection
+				})
+				set('collection.' + id, collection)
+				dispatch({
+					type: gotCollection,
+					payload: true
+				})
+			}
+		})
+	}
+}
 export const getProjectLS = async (id) => {
 	return async dispatch => {
 		let project = get('project.' + id)
