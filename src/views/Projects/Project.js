@@ -433,14 +433,14 @@ const mapStateToProps = (state) => ({
 	language: state.settings.language,
 	saved: state.favorites.saved,
 	mapTheme: state.settings.mapTheme,
-	periods: state.dateTime.periods
+	periods: state.dateTime.periods,
 })
 
 const mapDispatchToProps = (dispatch) => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving())
+	finishedSaving: () => dispatch(finishedSaving()),
 })
 
 const ProjectComposed = compose(connect(mapStateToProps, mapDispatchToProps), withStyles(deviceStyles))(Project)
