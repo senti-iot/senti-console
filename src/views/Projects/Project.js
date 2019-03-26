@@ -49,7 +49,7 @@ class Project extends Component {
 		if (match)
 			if (match.params.id) {
 				await this.getProject(match.params.id).then(() => {
-					this.props.setBC('project', this.props.project.title)
+					this.props.setBC('project', this.props.project ? this.props.project.title : '')
 				})
 				// this.props.getProject(match.params.id)
 				this.props.setTabs({
