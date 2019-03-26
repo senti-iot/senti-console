@@ -1,12 +1,11 @@
 import { Button, DialogActions, DialogContentText, DialogContent, Dialog, DialogTitle, withStyles, Fade } from '@material-ui/core'
 import { ItemGrid, GridContainer, CircularLoader } from 'components'
 import React, { Component, Fragment } from 'react'
-import { getProject, deleteProject } from 'variables/dataProjects'
+import { deleteProject } from 'variables/dataProjects'
 import ProjectDetails from './ProjectCards/ProjectDetails'
 import ProjectCollections from './ProjectCards/ProjectCollections'
 import { ProjectContact } from './ProjectCards/ProjectContact'
 import AssignDCs from 'components/AssignComponents/AssignDCs';
-import { colors } from 'variables/colors';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import { getWifiDaily, getWifiMinutely, getWifiHourly, getWifiSummary } from 'components/Charts/DataModel';
 import moment from 'moment'
@@ -19,16 +18,15 @@ import ChartData from 'views/Charts/ChartData';
 import ChartDataPanel from 'views/Charts/ChartDataPanel';
 import Maps from 'views/Maps/MapCard';
 import { scrollToAnchor } from 'variables/functions';
+import { getProjectLS } from 'redux/data';
 
 class Project extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			project: {},
 			heatData: [],
 			openAssignDC: false,
-			loading: true,
 			openSnackbar: 0,
 			openDelete: false,
 			hoverID: 0,
@@ -50,8 +48,10 @@ class Project extends Component {
 		const { history, match/* , location */ } = this.props
 		if (match)
 			if (match.params.id) {
-				await this.getProject(match.params.id)
-				this.props.setBC('project', this.state.project.title)
+				await this.getProject(match.params.id).then(() => {
+					this.props.setBC('project', this.props.project.title)
+				})
+				// this.props.getProject(match.params.id)
 				this.props.setTabs({
 					id: 'project',
 					hashLinks: true,
@@ -70,8 +70,9 @@ class Project extends Component {
 			}
 	}
 	componentDidUpdate = (prevProps) => {
+	
 		if (this.props.saved === true) {
-			const { project } = this.state
+			const { project } = this.props
 			if (this.props.isFav({ id: project.id, type: 'project' })) {
 				this.props.s('snackbars.favorite.saved', { name: project.title, type: this.props.t('favorites.types.project') })
 				this.props.finishedSaving()
@@ -90,27 +91,12 @@ class Project extends Component {
 		}
 	}
 	getProject = async id => {
-		const { history } = this.props
-
-		await getProject(id).then(async rs => {
-			if (rs === null)
-				history.push({
-					pathname: '/404',
-					prevURL: window.location.pathname
-				})
-			else {
-				this.setState({
-					project: {
-						...rs,
-						dataCollections: rs.dataCollections.map((dc, i) => ({ ...dc, color: colors[i] })),
-						devices: rs.dataCollections.filter(dc => dc.activeDevice ? true : false).map((dc, i) => dc.activeDevice ? { ...dc.activeDevice, color: colors[i] } : null)
-					}, loading: false
-				})
-			}
-		})
+		const { getProject } = this.props
+		await getProject(id)
 	}
 	getWifiHourly = async (p) => {
-		const { project, hoverID } = this.state
+		const { hoverID } = this.state
+		const { project } = this.props
 		let dcs = project.dataCollections.map(d => {
 			return {
 				dcId: d.id,
@@ -128,7 +114,8 @@ class Project extends Component {
 		return newState
 	}
 	getWifiMinutely = async (p) => {
-		const { project, hoverID } = this.state
+		const { hoverID } = this.state
+		const { project } = this.props
 		// this.setState({ loadingData: true })
 		let dcs = project.dataCollections.map(d => {
 			return {
@@ -148,7 +135,8 @@ class Project extends Component {
 	}
 
 	getWifiDaily = async (p) => {
-		const { project, hoverID } = this.state
+		const { hoverID } = this.state
+		const { project } = this.props
 		let dcs = project.dataCollections.map(d => {
 			return {
 				dcId: d.id,
@@ -166,7 +154,8 @@ class Project extends Component {
 		return newState
 	}
 	getWifiSummary = async (p) => {
-		const { project, hoverID } = this.state
+		const { hoverID } = this.state
+		const { project } = this.props
 		let dcs = project.dataCollections.map(d => {
 			return {
 				dcId: d.id,
@@ -240,9 +229,9 @@ class Project extends Component {
 	}
 
 	handleDeleteProject = async () => {
-		if (this.props.isFav(this.state.project.id))
+		if (this.props.isFav(this.props.project.id))
 			this.removeFromFav()
-		await deleteProject([this.state.project.id]).then(() => {
+		await deleteProject([this.props.project.id]).then(() => {
 			this.setState({ openDelete: false })
 			this.snackBarMessages(1)
 			this.props.history.push('/projects/list')
@@ -276,7 +265,7 @@ class Project extends Component {
 	}
 
 	addToFav = () => {
-		const { project } = this.state
+		const { project } = this.props
 		let favObj = {
 			id: project.id,
 			name: project.title,
@@ -287,7 +276,7 @@ class Project extends Component {
 	}
 
 	removeFromFav = () => {
-		const { project } = this.state
+		const { project } = this.props
 		let favObj = {
 			id: project.id,
 			name: project.title,
@@ -315,7 +304,7 @@ class Project extends Component {
 			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.project')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
-					{t('dialogs.delete.message.project', { project: this.state.project.title }) + '?'}
+					{t('dialogs.delete.message.project', { project: this.props.project.title }) + '?'}
 				</DialogContentText>
 
 			</DialogContent>
@@ -345,7 +334,9 @@ class Project extends Component {
 		return 6
 	}
 	render() {
-		const { project, loading, openAssignDC, hoverID } = this.state
+		const { openAssignDC, hoverID } = this.state
+		const { project, loading } = this.props
+
 		const { t, classes } = this.props
 		const rp = { history: this.props.history, match: this.props.match }
 		return (
@@ -401,7 +392,7 @@ class Project extends Component {
 							{project.devices ? <ItemGrid xs={12} noMargin id='map'>
 								<Maps
 									mapTheme={this.props.mapTheme}
-									markers={this.state.project.devices}
+									markers={this.props.project.devices}
 									heatData={this.state.heatData}
 									t={t}
 								/>
@@ -434,6 +425,8 @@ const mapStateToProps = (state) => ({
 	saved: state.favorites.saved,
 	mapTheme: state.settings.mapTheme,
 	periods: state.dateTime.periods,
+	project: state.data.project,
+	loading: !state.data.gotProject
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -441,6 +434,7 @@ const mapDispatchToProps = (dispatch) => ({
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
 	finishedSaving: () => dispatch(finishedSaving()),
+	getProject: async (id) => dispatch(await getProjectLS(id))
 })
 
 const ProjectComposed = compose(connect(mapStateToProps, mapDispatchToProps), withStyles(deviceStyles))(Project)

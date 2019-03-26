@@ -1,10 +1,47 @@
+/* eslint-disable eqeqeq */
 import { set, get } from 'variables/storage';
 import { getAllUsers } from 'variables/dataUsers';
-import { getAllProjects } from 'variables/dataProjects';
+import { getAllProjects, getProject } from 'variables/dataProjects';
 import { getAllDevices } from 'variables/dataDevices';
 import { getAllOrgs } from 'variables/dataOrgs';
 import { getAllCollections } from 'variables/dataCollections';
-
+import { colors } from 'variables/colors';
+/**
+ * Special functions
+ */
+//eslint-ignore
+function compare (obj1, obj2) {
+	//Loop through properties in object 1
+	if (obj1 === undefined || obj2 === undefined) {
+		return false
+	}
+	for (var p in obj1) {
+		//Check property exists on both objects
+		if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
+ 
+		switch (typeof (obj1[p])) {
+			//Deep compare objects
+			case 'object':
+				if (!compare(obj1[p], obj2[p])) return false;
+				break;
+			//Compare function code
+			case 'function':
+				// eslint-disable-next-line eqeqeq
+				if (typeof (obj2[p]) == 'undefined' || (p != 'compare' && obj1[p].toString() != obj2[p].toString())) return false;
+				break;
+			//Compare values
+			default:
+				if (obj1[p] != obj2[p]) return false;
+		}
+	}
+ 
+	//Check object 2 for any extra properties
+	// eslint-disable-next-line no-redeclare
+	for (var p in obj2) {
+		if (typeof (obj1[p]) == 'undefined') return false;
+	}
+	return true;
+};
 /**
  * Actions
  */
@@ -13,12 +50,61 @@ const gotorgs = 'GotOrgs'
 const gotdevices = 'GotDevices'
 const gotprojects = 'GotProjects'
 const gotcollections = 'GotCollections'
+const gotProject = 'GotProject'
 
 const setusers = 'SetUsers'
 const setorgs = 'SetOrgs'
 const setdevices = 'SetDevices'
 const setprojects = 'SetProjects'
 const setcollections = 'SetCollections'
+
+const setProject = 'SetProject'
+
+export const getProjectLS = async (id) => {
+	return async dispatch => {
+		let project = get('project.' + id)
+		if (project) {
+			dispatch({
+				type: setProject,
+				payload: project
+			})
+			dispatch({
+				type: gotProject,
+				payload: true
+			})
+		}
+		else {
+			dispatch({
+				type: gotProject,
+				payload: false
+			})
+			dispatch({
+				type: setProject,
+				payload: null
+			})
+		}
+		await getProject(id).then(rs => {
+			if (!compare(project, rs)) {
+				project = {
+					...rs,
+					dataCollections: rs.dataCollections.map((dc, i) => {
+						return ({ ...dc, color: colors[i] })}),
+					devices: rs.dataCollections.filter(dc => dc.activeDevice ? true : false).map((dc, i) => dc.activeDevice ? { ...dc.activeDevice, color: colors[i] } : null)
+				}
+				dispatch({
+					type: setProject,
+					payload: project
+				})
+				set('project.' + id, project)
+				dispatch({
+					type: gotProject,
+					payload: true
+				})
+			}
+		})
+		
+	}
+}
 
 export const setUsers = () => {
 	return dispatch => {
@@ -194,6 +280,10 @@ const initialState = {
 
 export const data = (state = initialState, { type, payload }) => {
 	switch (type) {
+		case setProject: 
+			return Object.assign({}, state, { project: payload })
+		case gotProject: 
+			return Object.assign({}, state, { gotProject: payload })
 		case gotusers:
 			return Object.assign({}, state, { gotusers: payload })
 		case gotorgs:
