@@ -10,6 +10,6 @@
 	],
 	"start_url": "./index.html",
 	"display": "fullscreen",
-	"theme_color": "#000000",
-	"background_color": "#ffffff"
+	"theme_color": "#1a1b32",
+	"background_color": "#1a1b32"
 }
