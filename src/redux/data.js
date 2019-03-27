@@ -132,9 +132,10 @@ export const getDeviceLS = async (id) => {
 				payload: null
 			})
 		}
-		await getDevice(id).then(rs => {
+		await getDevice(id).then(async rs => {
 			if (!compare(device, rs)) {
-				device = { ...rs }
+				let collection = await getCollection(rs.dataCollection)
+				device = { ...rs, dataCollection: collection }
 				dispatch({
 					type: setDevice,
 					payload: device
@@ -453,6 +454,18 @@ const initialState = {
 
 export const data = (state = initialState, { type, payload }) => {
 	switch (type) {
+		case setCollection: 
+			return Object.assign({}, state, { collection: payload })
+		case gotCollection: 
+			return Object.assign({}, state, { gotCollection: payload })
+		case setDevice: 
+			return Object.assign({}, state, { device: payload })
+		case gotDevice: 
+			return Object.assign({}, state, { gotDevice: payload })
+		case setOrg: 
+			return Object.assign({}, state, { org: payload })
+		case gotOrg: 
+			return Object.assign({}, state, { gotOrg: payload })
 		case setUser: 
 			return Object.assign({}, state, { user: payload })
 		case gotUser: 
