@@ -1,50 +1,45 @@
---- 
 branches:
   except:
   - alpha-react-pdf
-
-addons: 
-  ssh_known_hosts: 
-    - kanata.webhouse.net
-    - rey.webhouse.net
-
+addons:
+  ssh_known_hosts:
+  - kanata.webhouse.net
+  - rey.webhouse.net
 cache: npm
-before_deploy: 
-  - "openssl aes-256-cbc -K $encrypted_2c76d570a277_key -iv $encrypted_2c76d570a277_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d"
-  - "eval \"$(ssh-agent -s)\""
-  - "chmod 600 /tmp/deploy_rsa"
-  - "ssh-add /tmp/deploy_rsa"
-deploy: 
-  - 
-    provider: script #MASTER
-    script: bash scripts/deploy.sh master $TRAVIS_BUILD_DIR
-    skip_cleanup: true
-    true: 
-      branch: master
-  - 
-    provider: script #BETA
-    script: bash scripts/deploy.sh beta $TRAVIS_BUILD_DIR
-    skip_cleanup: true
-    true: 
-      branch: beta
-  - 
-    domain: "https://alphasenti.surge.sh"
-    project: ./build
-    provider: surge #ALPHA
-    skip_cleanup: true
-    true: 
-      branch: alpha
+before_deploy:
+- openssl aes-256-cbc -K $encrypted_9ec326606352_key -iv $encrypted_9ec326606352_iv
+  -in deploy_rsa.enc -out /tmp/deploy_rsa -d
+- eval "$(ssh-agent -s)"
+- chmod 600 /tmp/deploy_rsa
+- ssh-add /tmp/deploy_rsa
+deploy:
+- provider: script
+  script: bash scripts/deploy.sh master $TRAVIS_BUILD_DIR
+  skip_cleanup: true
+  on:
+    branch: master
+- provider: script
+  script: bash scripts/deploy.sh beta $TRAVIS_BUILD_DIR
+  skip_cleanup: true
+  on:
+    branch: beta
+- domain: https://alphasenti.surge.sh
+  project: "./build"
+  provider: surge
+  skip_cleanup: true
+  on:
+    branch: alpha
 language: node_js
-node_js: 
-  - stable
+node_js:
+- stable
 notifications:
   email:
     recipients:
-      - at@webhouse.dk
-      #- other@example.com
-    on_success: never # default: change
-    on_failure: always # default: always
-  slack: "webhouseteam:82qu1PX5R5wkYNCW5x6fVlhu"
-script: 
-  - "npm run-script build"
-  - "cp ./build/index.html ./build/200.html"
+    - at@webhouse.dk
+    on_success: never
+    on_failure: always
+  slack: webhouseteam:82qu1PX5R5wkYNCW5x6fVlhu
+script:
+- npm run-script build
+- cp ./build/index.html ./build/200.html
+

@@ -6,6 +6,7 @@ import { getAllDevices } from 'variables/dataDevices';
 import { getAllOrgs } from 'variables/dataOrgs';
 import { getAllCollections, getCollection } from 'variables/dataCollections';
 import { colors } from 'variables/colors';
+import { hist } from 'App';
 /**
  * Special functions
  */
@@ -127,22 +128,27 @@ export const getProjectLS = async (id) => {
 			})
 		}
 		await getProject(id).then(rs => {
-			if (!compare(project, rs)) {
-				project = {
-					...rs,
-					dataCollections: rs.dataCollections.map((dc, i) => {
-						return ({ ...dc, color: colors[i] })}),
-					devices: rs.dataCollections.filter(dc => dc.activeDevice ? true : false).map((dc, i) => dc.activeDevice ? { ...dc.activeDevice, color: colors[i] } : null)
+			if (rs) {
+				if (!compare(project, rs)) {
+					project = {
+						...rs,
+						dataCollections: rs.dataCollections.map((dc, i) => {
+							return ({ ...dc, color: colors[i] })}),
+						devices: rs.dataCollections.filter(dc => dc.activeDevice ? true : false).map((dc, i) => dc.activeDevice ? { ...dc.activeDevice, color: colors[i] } : null)
+					}
+					dispatch({
+						type: setProject,
+						payload: project
+					})
+					set('project.' + id, project)
+					dispatch({
+						type: gotProject,
+						payload: true
+					})
 				}
-				dispatch({
-					type: setProject,
-					payload: project
-				})
-				set('project.' + id, project)
-				dispatch({
-					type: gotProject,
-					payload: true
-				})
+			}
+			else {
+				hist.push('/404')
 			}
 		})
 		

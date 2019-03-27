@@ -37,25 +37,27 @@ class Project extends Component {
 
 	}
 	format = 'YYYY-MM-DD+HH:mm'
-	tabs = [
-		{ id: 0, title: '', label: <LibraryBooks />, url: `#details` },
-		{ id: 1, title: '', label: <Timeline />, url: `#data` },
-		{ id: 2, title: '', label: <DataUsage />, url: `#collections` },
-		{ id: 3, title: '', label: <Map />, url: `#map` },
-		{ id: 4, title: '', label: <Person />, url: `#contact` }
-	]
+	tabs = () => {
+		const { t } = this.props
+		return [
+			{ id: 0, title: t('tabs.details'), label: <LibraryBooks />, url: `#details` },
+			{ id: 1, title: t('tabs.data'), label: <Timeline />, url: `#data` },
+			{ id: 2, title: t('tabs.collections'), label: <DataUsage />, url: `#collections` },
+			{ id: 3, title: t('tabs.map'), label: <Map />, url: `#map` },
+			{ id: 4, title: t('tabs.contact'), label: <Person />, url: `#contact` }
+		]}
 	componentDidMount = async () => {
 		const { history, match/* , location */ } = this.props
 		if (match)
 			if (match.params.id) {
 				await this.getProject(match.params.id).then(() => {
-					this.props.setBC('project', this.props.project.title)
+					this.props.setBC('project', this.props.project ? this.props.project.title : '')
 				})
 				// this.props.getProject(match.params.id)
 				this.props.setTabs({
 					id: 'project',
 					hashLinks: true,
-					tabs: this.tabs
+					tabs: this.tabs()
 				})
 				if (this.props.location.hash !== '')
 				{

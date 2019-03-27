@@ -53,7 +53,8 @@ class NewLoginPage extends Component {
 	}
 	googleSignIn = async (googleUser) => {
 		if (googleUser.error) {
-			console.log(googleUser.error)
+			this.setState({ loggingIn: false, error: true })
+			return console.log(googleUser.error)
 		}
 		if (googleUser) {
 			let token = googleUser.getAuthResponse().id_token

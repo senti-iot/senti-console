@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react'
-import { IconButton, Menu, MenuItem, Button } from '@material-ui/core';
+import { IconButton, Menu, MenuItem, Button, Tooltip } from '@material-ui/core';
 import { ItemG } from 'components';
 import { MoreVert } from 'variables/icons';
+import withLocalization from 'components/Localization/T';
 
 class Dropdown extends Component {
 	constructor(props) {
@@ -22,7 +23,7 @@ class Dropdown extends Component {
 
 	render() {
 		const { actionAnchor } = this.state
-		const { menuItems, icon, button, divider } = this.props
+		const { menuItems, icon, button, divider, tooltip, t } = this.props
 		return (
 			<Fragment>
 				{button && <Button
@@ -33,13 +34,15 @@ class Dropdown extends Component {
 					onClick={this.handleOpenActionsDetails}>
 					{icon ? icon : <MoreVert />}
 				</Button>}
-				{!button && <IconButton
-					aria-label='More'
-					aria-owns={actionAnchor ? 'long-menu' : null}
-					aria-haspopup='true'
-					onClick={this.handleOpenActionsDetails}>
-					{icon ? icon : <MoreVert />}
-				</IconButton>}
+				{!button && <Tooltip title={tooltip ? tooltip : t('menus.menu')}>
+					<IconButton
+						aria-label='More'
+						aria-owns={actionAnchor ? 'long-menu' : null}
+						aria-haspopup='true'
+						onClick={this.handleOpenActionsDetails}>
+						{icon ? icon : <MoreVert />}
+					</IconButton>
+				</Tooltip>}
 				<Menu
 					id='long-menu'
 					anchorEl={actionAnchor}
@@ -63,4 +66,4 @@ class Dropdown extends Component {
 	}
 }
 
-export default Dropdown
+export default withLocalization()(Dropdown)
