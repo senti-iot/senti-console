@@ -1,9 +1,9 @@
 /* eslint-disable eqeqeq */
 import { set, get } from 'variables/storage';
-import { getAllUsers } from 'variables/dataUsers';
+import { getAllUsers, getUser } from 'variables/dataUsers';
 import { getAllProjects, getProject } from 'variables/dataProjects';
-import { getAllDevices } from 'variables/dataDevices';
-import { getAllOrgs } from 'variables/dataOrgs';
+import { getAllDevices, getDevice } from 'variables/dataDevices';
+import { getAllOrgs, getOrg } from 'variables/dataOrgs';
 import { getAllCollections, getCollection } from 'variables/dataCollections';
 import { colors } from 'variables/colors';
 import { hist } from 'App';
@@ -51,8 +51,12 @@ const gotorgs = 'GotOrgs'
 const gotdevices = 'GotDevices'
 const gotprojects = 'GotProjects'
 const gotcollections = 'GotCollections'
+
 const gotProject = 'GotProject'
 const gotCollection = 'GotCollection'
+const gotDevice = 'GotDevice'
+const gotOrg = 'GotOrg'
+const gotUser = 'GotUser'
 
 const setusers = 'SetUsers'
 const setorgs = 'SetOrgs'
@@ -62,7 +66,127 @@ const setcollections = 'SetCollections'
 
 const setProject = 'SetProject'
 const setCollection = 'SetCollection'
+const setDevice = 'SetDevice'
+const setOrg = 'SetOrganisation'
+const setUser = 'SetUser'
 
+export const getUserLS = async (id) => {
+	return async dispatch => {
+		let user = get('user.' + id)
+		if (user) {
+			dispatch({
+				type: setUser,
+				payload: user
+			})
+			dispatch({
+				type: gotUser,
+				payload: true
+			})
+		}
+		else {
+			dispatch({
+				type: gotUser,
+				payload: false,
+			})
+			dispatch({
+				type: setUser,
+				payload: null
+			})
+		}
+		await getUser(id).then(rs => {
+			if (!compare(user, rs)) {
+				user = { ...rs }
+				dispatch({
+					type: setUser,
+					payload: user
+				})
+				set('user.' + id, user)
+				dispatch({
+					type: gotUser,
+					payload: true
+				})
+			}
+		})
+	}
+}
+export const getDeviceLS = async (id) => {
+	return async dispatch => {
+		let device = get('device.' + id)
+		if (device) {
+			dispatch({
+				type: setDevice,
+				payload: device
+			})
+			dispatch({
+				type: gotDevice,
+				payload: true
+			})
+		}
+		else {
+			dispatch({
+				type: gotDevice,
+				payload: false,
+			})
+			dispatch({
+				type: setDevice,
+				payload: null
+			})
+		}
+		await getDevice(id).then(rs => {
+			if (!compare(device, rs)) {
+				device = { ...rs }
+				dispatch({
+					type: setDevice,
+					payload: device
+				})
+				set('device.' + id, device)
+				dispatch({
+					type: gotDevice,
+					payload: true
+				})
+			}
+		})
+	}
+}
+export const getOrgLS = async (id) => {
+	return async dispatch => {
+		let org = get('org.' + id)
+		if (org) {
+			dispatch({
+				type: setOrg,
+				payload: org
+			})
+			dispatch({
+				type: gotOrg,
+				payload: true
+			})
+		}
+		else {
+			dispatch({
+				type: gotOrg,
+				payload: false,
+			})
+			dispatch({
+				type: setOrg,
+				payload: null
+			})
+		}
+		await getOrg(id).then(rs => {
+			if (!compare(org, rs)) {
+				org = { ...rs }
+				dispatch({
+					type: setOrg,
+					payload: org
+				})
+				set('org.' + id, org)
+				dispatch({
+					type: gotOrg,
+					payload: true
+				})
+			}
+		})
+	}
+}
 export const getCollectionLS = async (id) => {
 	return async dispatch => {
 		let collection = get('collection.' + id)
