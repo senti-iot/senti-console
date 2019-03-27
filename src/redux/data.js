@@ -13,7 +13,7 @@ import { hist } from 'App';
 //eslint-ignore
 function compare (obj1, obj2) {
 	//Loop through properties in object 1
-	if (obj1 === undefined || obj2 === undefined) {
+	if (obj1 === undefined || obj2 === undefined || obj1 === null || obj2 === null) {
 		return false
 	}
 	for (var p in obj1) {
@@ -211,10 +211,19 @@ export const getCollectionLS = async (id) => {
 				payload: null
 			})
 		}
-		await getCollection(id).then(rs => {
+		await getCollection(id).then(async rs => {
 			if (!compare(collection, rs)) {
+				let device, project
+				if (rs.project.id) {
+					project = await getProject(rs.project.id)
+				}
+				if (rs.activeDeviceStats) {
+					device = await getDevice(rs.activeDeviceStats.id)
+				}
 				collection = {
 					...rs,
+					activeDevice: device,
+					project: project
 				}
 				dispatch({
 					type: setCollection,
