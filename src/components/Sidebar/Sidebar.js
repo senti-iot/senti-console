@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import classNames from 'classnames'
-import { Drawer, /* IconButton, */ Divider, Hidden, ButtonBase } from '@material-ui/core';
+import { Drawer, /* IconButton, */ Divider, Hidden, ButtonBase, Tooltip } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { NavLink } from 'react-router-dom';
 
@@ -24,7 +24,7 @@ class NewSidebar extends Component {
 	closeDrawer = () => { 
 		this.props.changeSmallMenu(false)
 	}
-	renderPersistentDrawer = () => { 
+	renderPersistentDrawer = () => {  //Hide Completely
 		const { classes, smallMenu, routes, defaultView, t } = this.props
 		return <Drawer
 			variant="permanent"
@@ -57,7 +57,7 @@ class NewSidebar extends Component {
 						onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
 						classes={{
 							button: classNames({
-								// [classes.buttonOpen]: smallMenu,
+								[classes.buttonOpen]: smallMenu,
 								// [classes.buttonClose]: !smallMenu,
 								[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
 								[classes.button]: true
@@ -101,22 +101,24 @@ class NewSidebar extends Component {
 				{routes.map((route, index) => {
 					if (route.redirect) return null;
 					if (route.hideFromSideBar) return null;
-					return <ListItem component={NavLink}
-						button
-						onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
-						to={route.path + (route.defaultView ? defaultView : '')}
-						key={index}
-						classes={{
-							button: classNames({
-								[classes.buttonOpen]: smallMenu,
-								[classes.buttonClose]: !smallMenu,
-								[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
-								[classes.button]: true
-							})
-						}}>
-						<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><route.icon /></ListItemIcon>
-						<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
-					</ListItem>
+					return <Tooltip placement={'right'} title={ !smallMenu ? t(route.sidebarName) : ''}>
+						<ListItem component={NavLink}
+							button
+							onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
+							to={route.path + (route.defaultView ? defaultView : '')}
+							key={index}
+							classes={{
+								button: classNames({
+									[classes.buttonOpen]: smallMenu,
+									[classes.buttonClose]: !smallMenu,
+									[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
+									[classes.button]: true
+								})
+							}}>
+							<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><route.icon /></ListItemIcon>
+							<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
+						</ListItem>
+					</Tooltip>
 				})}
 			</List>
 		</Drawer>

@@ -9,6 +9,11 @@ const theme = createMuiTheme({
 	},
 	overrides: {
 		MuiTooltip: {
+			tooltipPlacementRight: {
+				background: '#fff',
+				color: grey[700],
+				fontSize: '12px',
+			},
 			tooltipPlacementBottom: {
 				background: '#fff',
 				color: grey[700],
