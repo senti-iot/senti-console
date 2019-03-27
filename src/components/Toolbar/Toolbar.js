@@ -107,7 +107,7 @@ class Toolbar extends PureComponent {
 	}
 
 	render() {
-		const { classes, tabs, dontShow, /* data, noSearch, filters, handleFilterKeyword, */ content, width, hashLinks, smallMenu, drawer  } = this.props
+		const { classes, tabs, dontShow, /* data, noSearch, filters, handleFilterKeyword, */ content, width, /*  hashLinks, */ smallMenu, drawer  } = this.props
 		return (
 			dontShow ? null :
 				<div style={{ height: 48 }}>
@@ -119,7 +119,7 @@ class Toolbar extends PureComponent {
 							[classes.appBarDrawerOpen]: smallMenu,
 						})
 					}}>
-						{tabs ? <Tabs TabIndicatorProps={{ style: { opacity: hashLinks ? 0 : 1 } }} id={'tabs'} value={this.state.route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
+						{tabs ? <Tabs TabIndicatorProps={{ style: { /* opacity: hashLinks ? 0 : 1 */ } }} id={'tabs'} value={this.state.route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 							{tabs ? tabs.map((t, i) => {
 								return <Tooltip disableFocusListener title={t.title} enterDelay={500}>
 									<Tab title={t.title}
