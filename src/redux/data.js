@@ -453,6 +453,10 @@ const initialState = {
 
 export const data = (state = initialState, { type, payload }) => {
 	switch (type) {
+		case setUser: 
+			return Object.assign({}, state, { user: payload })
+		case gotUser: 
+			return Object.assign({}, state, { gotUser: payload })
 		case setProject: 
 			return Object.assign({}, state, { project: payload })
 		case gotProject: 
