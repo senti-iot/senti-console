@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react'
 import { InfoCard, Caption, Dropdown, CircularLoader, ItemG, TextF, AddressInput, Danger, DateFilterMenu } from 'components';
 import { Map, Layers, Smartphone, Save, Clear, EditLocation, WhatsHot } from 'variables/icons'
-import { Grid/*,  Checkbox, */, IconButton, Menu, MenuItem, Collapse, DialogContent, /* DialogTitle, */ DialogActions, Button, Drawer, withStyles } from '@material-ui/core';
+import { Grid/*,  Checkbox, */, IconButton, Menu, MenuItem, Collapse, DialogContent, /* DialogTitle, */ DialogActions, Button, Drawer, withStyles, Tooltip } from '@material-ui/core';
 import { red, teal } from "@material-ui/core/colors"
 import OpenStreetMap from 'components/Map/OpenStreetMap';
 import { updateDevice, getGeoByAddress, getAddressByLocation } from 'variables/dataDevices';
@@ -183,9 +183,11 @@ class MapCard extends PureComponent {
 				/>
 			</Collapse>}
 			<ItemG>
-				<IconButton title={'Map layer'} variant={'fab'} onClick={this.handleOpenMenu}>
-					<Layers />
-				</IconButton>
+				<Tooltip title={t('tooltips.map.layer')}>
+					<IconButton variant={'fab'} onClick={this.handleOpenMenu}>
+						<Layers />
+					</IconButton>
+				</Tooltip>
 				<Menu
 					id='long-menu2'
 					anchorEl={actionAnchorVisibility}

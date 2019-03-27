@@ -462,6 +462,7 @@
 		}
 	},
 	"menus": {
+		"menu": "Menu",
 		"assign": {
 			"collectionToProject": "Assign Data Collection to Project",
 			"collectionsToProject": "Assign Data Collections to Project",
@@ -934,8 +935,16 @@
 		}
 	},
 	"tooltips": {
-		"nextPeriod": "Next Period",
-		"previousPeriod": "Previous Period",
+		"chart" :{
+			"type": "Chart type",
+			"period": "Period",
+			"previousPeriod": "Previous Period",
+			"nextPeriod": "Next Period",
+			"resetZoom": "Reset Zoom"
+		},
+		"map": {
+			"layer": "Map Layer"
+		},
 		"project": "Project",
 		"device": "Device",
 		"user": "User",

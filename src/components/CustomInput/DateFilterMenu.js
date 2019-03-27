@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Divider, MenuItem, Menu, IconButton, withStyles, Button } from '@material-ui/core';
+import { Divider, MenuItem, Menu, IconButton, withStyles, Button, Tooltip } from '@material-ui/core';
 import { ItemGrid, Info, CustomDateTime, ItemG } from 'components';
 import { dateTimeFormatter } from 'variables/functions';
 import moment from 'moment'
@@ -163,13 +163,15 @@ class DateFilterMenu extends Component {
 					onClick={this.handleOpenMenu}>
 					{icon ? icon : <DateRange />}
 				</Button>}
-				{!button && <IconButton
-					aria-label='More'
-					aria-owns={actionAnchor ? 'long-menu' : null}
-					aria-haspopup='true'
-					onClick={this.handleOpenMenu}>
-					{icon ? icon : <DateRange />}
-				</IconButton>}
+				{!button && <Tooltip title={t('tooltips.chart.period')}>
+					<IconButton
+						aria-label='More'
+						aria-owns={actionAnchor ? 'long-menu' : null}
+						aria-haspopup='true'
+						onClick={this.handleOpenMenu}>
+						{icon ? icon : <DateRange />}
+					</IconButton>
+				</Tooltip>}
 				<Menu
 					disableAutoFocus
 					disableRestoreFocus

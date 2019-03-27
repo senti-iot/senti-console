@@ -317,7 +317,7 @@ class ChartData extends PureComponent {
 			<Hidden mdDown>
 				<ItemG>
 
-					<Tooltip title={t('tooltips.previousPeriod')}>
+					<Tooltip title={t('tooltips.chart.previousPeriod')}>
 						<IconButton onClick={this.handlePreviousPeriod}>
 							<KeyboardArrowLeft />
 						</IconButton>
@@ -330,7 +330,7 @@ class ChartData extends PureComponent {
 			</ItemG>
 			<Hidden mdDown>
 				<ItemG>
-					<Tooltip title={t('tooltips.nextPeriod')}>
+					<Tooltip title={t('tooltips.chart.nextPeriod')}>
 						<div>
 							<IconButton onClick={this.handleNextPeriod} disabled={this.disableFuture()}>
 								<KeyboardArrowRight />
@@ -438,14 +438,14 @@ class ChartData extends PureComponent {
 			<Hidden lgUp>
 				<ItemG container>
 					<ItemG>
-						<Tooltip title={t('tooltips.previousPeriod')}>
+						<Tooltip title={t('tooltips.chart.previousPeriod')}>
 							<IconButton onClick={this.handlePreviousPeriod}>
 								<KeyboardArrowLeft />
 							</IconButton>
 						</Tooltip>
 					</ItemG>
 					<ItemG>
-						<Tooltip title={t('tooltips.nextPeriod')}>
+						<Tooltip title={t('tooltips.chart.nextPeriod')}>
 							<div>
 								<IconButton onClick={this.handleNextPeriod} disabled={this.disableFuture()}>
 									<KeyboardArrowRight />
@@ -457,18 +457,25 @@ class ChartData extends PureComponent {
 			</Hidden>
 			<ItemG container>
 				<ItemG>
-					<DateFilterMenu period={period} t={t} />
+					<Tooltip title={t('tooltips.chart.period')}>
+						<DateFilterMenu period={period} t={t} />
+					</Tooltip>
 				</ItemG>
 				<Collapse in={resetZoom}>
-					{resetZoom && <IconButton title={'Reset zoom'} onClick={this.handleReverseZoomOnData}>
-						<ArrowUpward />
-					</IconButton>}
+					{resetZoom && <Tooltip title={t('tooltips.chart.resetZoom')}>
+						<IconButton onClick={this.handleReverseZoomOnData}>
+							<ArrowUpward />
+						</IconButton>
+					</Tooltip>
+					}
 				</Collapse>
 				<ItemG>
 					<Hidden smDown>
-						<IconButton title={'Chart Type'} variant={'fab'} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
-							{this.renderIcon()}
-						</IconButton>
+						<Tooltip title={t('tooltips.chart.type')}>
+							<IconButton variant={'fab'} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
+								{this.renderIcon()}
+							</IconButton>
+						</Tooltip>
 						<Menu
 							marginThreshold={24}
 							id='long-menu'
@@ -491,13 +498,15 @@ class ChartData extends PureComponent {
 				</ItemG>
 
 				<ItemG>
-					<IconButton
-						aria-label='More'
-						aria-owns={actionAnchor ? 'long-menu' : null}
-						aria-haspopup='true'
-						onClick={this.handleOpenActionsDetails}>
-						<MoreVert />
-					</IconButton>
+					<Tooltip title={t('menus.menu')}>
+						<IconButton
+							aria-label='More'
+							aria-owns={actionAnchor ? 'long-menu' : null}
+							aria-haspopup='true'
+							onClick={this.handleOpenActionsDetails}>
+							<MoreVert />
+						</IconButton>
+					</Tooltip>
 				</ItemG>
 				<Menu
 					marginThreshold={24}
