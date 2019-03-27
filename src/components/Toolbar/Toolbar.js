@@ -1,7 +1,7 @@
 
 
 import React, { PureComponent } from 'react'
-import { AppBar, Tabs, Tab, withStyles, Toolbar as ToolBar, withWidth, /*  Grow */ } from '@material-ui/core';
+import { AppBar, Tabs, Tab, withStyles, Toolbar as ToolBar, withWidth, Tooltip, /*  Grow */ } from '@material-ui/core';
 // import Search from 'components/Search/Search';
 // import { suggestionGen } from 'variables/functions'
 import { NavHashLink as Link } from 'react-router-hash-link';
@@ -121,14 +121,16 @@ class Toolbar extends PureComponent {
 					}}>
 						{tabs ? <Tabs TabIndicatorProps={{ style: { opacity: hashLinks ? 0 : 1 } }} id={'tabs'} value={this.state.route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 							{tabs ? tabs.map((t, i) => {
-								return <Tab title={t.title}
-									component={(props) => <Link {...props} scroll={this.handleScroll} style={{ color: '#fff' }} />}
-									value={t.id}
-									key={i}
-									smooth
-									classes={{ root: classes.tab }}
-									label={t.label}
-									to={`${t.url}`} />	
+								return <Tooltip disableFocusListener title={t.title} enterDelay={500}>
+									<Tab title={t.title}
+										component={(props) => <Link {...props} scroll={this.handleScroll} style={{ color: '#fff' }} />}
+										value={t.id}
+										key={i}
+										smooth
+										classes={{ root: classes.tab }}
+										label={t.label}
+										to={`${t.url}`} />	
+								</Tooltip>
 							}) : null}
 						</Tabs> : null}
 						{/* {noSearch ? null : <Search
