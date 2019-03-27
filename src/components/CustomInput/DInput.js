@@ -31,6 +31,7 @@ class DInput extends Component {
 				<FormControl style={{ maxWidth: this.props.fullWidth ? undefined : 230 }}>
 
 					<OutlinedInput
+						labelWidth={0}
 						aria-owns={actionAnchor ? 'menu-list-grow' : null}
 						value={value} onClick={this.handleOpenActionsDetails}
 						className={classes.formControl}

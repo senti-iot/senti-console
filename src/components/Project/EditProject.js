@@ -111,6 +111,7 @@ class EditProject extends Component {
 					project: p,
 					user: p.user
 				})
+				this.props.setBC('editproject', p.title, p.id)
 			}
 		})
 		this.setState({

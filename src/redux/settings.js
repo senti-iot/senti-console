@@ -4,6 +4,8 @@ import 'moment/locale/da'
 import 'moment/locale/en-gb'
 import { saveSettings } from 'variables/dataLogin';
 import { setDates } from './dateTime';
+import { setPrefix } from 'variables/storage';
+import { getAllData } from './data';
 var moment = require('moment')
 
 const acceptCookies = 'acceptCookies'
@@ -115,6 +117,8 @@ export const getSettings = async () => {
 			if (vSession === 200) {
 				let exp = moment().add('1', 'day')
 				cookie.save('SESSION', sessionCookie, { path: '/', expires: exp.toDate() })
+				setPrefix(sessionCookie.userID)
+				dispatch(getAllData())
 			}
 			else {
 				return cookie.remove('SESSION')
@@ -191,7 +195,7 @@ export const changeSnackbarLocation = (val) => {
 	}
 }
 export const changeDrawerState = val => {
-	return async dispatch => { 
+	return async dispatch => {
 		dispatch({
 			type: changeDS,
 			drawerState: val
@@ -209,8 +213,8 @@ export const changeDrawerType = (val) => {
 		dispatch(saveSettingsOnServ())
 	}
 }
-export const changeDrawerCloseOnNav = (val) => { 
-	return async  dispatch => { 
+export const changeDrawerCloseOnNav = (val) => {
+	return async  dispatch => {
 		dispatch({
 			type: changeDCON,
 			drawerCloseOnNav: val
@@ -219,7 +223,7 @@ export const changeDrawerCloseOnNav = (val) => {
 	}
 }
 export const changeHeaderBorder = (val) => {
-	return async dispatch => { 
+	return async dispatch => {
 		dispatch({
 			type: changeHB,
 			headerBorder: val
@@ -231,7 +235,7 @@ export const changeHoverTime = val => {
 	return async dispatch => {
 		dispatch({
 			type: changeHT,
-			hoverTime: val 
+			hoverTime: val
 		})
 		dispatch(saveSettingsOnServ())
 	}
@@ -430,8 +434,8 @@ export const removeChartPeriod = pId => {
 		dispatch(saveSettingsOnServ())
 	}
 }
-export const changePeriodChartType = (type, p) => { 
-	return async (dispatch, getState) => { 
+export const changePeriodChartType = (type, p) => {
+	return async (dispatch, getState) => {
 		let periods = []
 		periods = [...getState().settings.periods]
 		let id = periods.findIndex(f => f.id === p.id)
@@ -470,8 +474,8 @@ export const changeTheme = (code) => {
 		dispatch(saveSettingsOnServ())
 	}
 }
-export const changeWeekendColor = (id) => { 
-	return async (dispatch, getState) => { 
+export const changeWeekendColor = (id) => {
+	return async (dispatch, getState) => {
 		dispatch({
 			type: weekendColor,
 			id
@@ -535,20 +539,19 @@ let initialState = {
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
-		case reset: 
+		case reset:
 			return Object.assign({}, state, { ...initialState, user: action.user, cookies: false })
 		case changeHT:
-			console.log('reduces')
 			return Object.assign({}, state, { hoverTime: action.hoverTime })
-		case changeBC: 
+		case changeBC:
 			return Object.assign({}, state, { breadcrumbs: action.breadcrumbs })
 		case changeHB:
 			return Object.assign({}, state, { headerBorder: action.headerBorder })
-		case changeDCON: 
+		case changeDCON:
 			return Object.assign({}, state, { drawerCloseOnNav: action.drawerCloseOnNav })
-		case changeDS: 
+		case changeDS:
 			return Object.assign({}, state, { drawerState: action.drawerState })
-		case changeDT: 
+		case changeDT:
 			return Object.assign({}, state, { drawer: action.drawer })
 		case changeSB:
 			return Object.assign({}, state, { snackbarLocation: action.snackbarLocation })

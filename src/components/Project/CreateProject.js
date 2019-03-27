@@ -42,6 +42,7 @@ class CreateProject extends Component {
 			}
 		}
 		props.setHeader('menus.create.project', true, '/projects/list', 'projects')
+		props.setBC('createproject')
 	}
 	keyHandler = (e) => {
 		if (e.key === 'Escape') {

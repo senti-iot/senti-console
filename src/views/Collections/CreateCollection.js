@@ -22,6 +22,7 @@ class CreateCollection extends Component {
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/collections/list'
 		props.setHeader('collections.createCollection', true, prevURL, '')
+		props.setBC('createcollection')
 	}
 
 	createDC = async () => {

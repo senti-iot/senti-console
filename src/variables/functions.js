@@ -274,15 +274,14 @@ const sortFunc = (a, b, orderBy, way, type) => {
 		default:
 			break;
 	}
-	if (moment(new Date(newA)).isValid() || moment(new Date(newB)).isValid()) {
-	}
-	if (typeof newA === 'number' || typeof newA === 'undefined') {
+	// if (moment(new Date(newA)).isValid() || moment(new Date(newB)).isValid()) {
+	// }
+	// if (typeof newA === 'number' || typeof newA === 'undefined') {
 
-	}
-	else {
-		console.log('string')
+	// }
+	// else {
 		
-	}
+	// }
 }
 /**
  * Handle Sorting

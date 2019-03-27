@@ -36,6 +36,7 @@ class EditDetails extends Component {
 				device: rs,
 				loading: false
 			})
+			this.props.setBC('editdevicehardware', rs.name, rs.id)
 		})
 	}
 	componentWillUnmount = () => {

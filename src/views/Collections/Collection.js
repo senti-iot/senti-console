@@ -113,7 +113,6 @@ class Collection extends Component {
 		}
 	}
 	componentDidMount = async () => {
-		console.log(this.props.location.hash)
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {
@@ -325,7 +324,6 @@ class Collection extends Component {
 	}
 
 	handleCloseAssignDevice = async (reload) => {
-		console.trace()
 		if (reload) {
 			this.setState({ loading: true, openAssignDevice: false })
 			if (this.state.collection)

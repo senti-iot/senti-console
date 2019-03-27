@@ -1,6 +1,6 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 import { primaryColor, secondaryColor, hoverColor, /* headerColor */ } from 'assets/jss/material-dashboard-react'
-import { teal, red } from '@material-ui/core/colors'
+import { teal, red, grey } from '@material-ui/core/colors'
 
 const theme = createMuiTheme({
 	typography: {
@@ -8,6 +8,16 @@ const theme = createMuiTheme({
 		suppressDeprecationWarnings: true,
 	},
 	overrides: {
+		MuiTooltip: {
+			tooltipPlacementBottom: {
+				background: '#fff',
+				color: grey[700],
+				fontSize: '12px',
+			},
+			popper: {
+				opacity: 1,
+			}
+		},
 		MuiDialogContent: {
 			root: { padding: 24, color: '#fff' }
 		},
@@ -76,7 +86,6 @@ const theme = createMuiTheme({
 			}
 		},
 		MuiInput: {
-			
 			underline: {
 				'&:hover:not($disabled):not($focused):not($error):before': {
 					borderBottom: '2px solid #4db6ac',
@@ -85,9 +94,11 @@ const theme = createMuiTheme({
 					borderBottomColor: teal[500],
 				},
 			},
-			
-
-
+		},
+		MuiInputLabel: {
+			outlined: {
+				transform: 'translate(14px, 14px) scale(1)'
+			},
 		},
 		MuiOutlinedInput: {
 			input: {

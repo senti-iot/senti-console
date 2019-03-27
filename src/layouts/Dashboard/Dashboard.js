@@ -46,13 +46,14 @@ class App extends React.Component {
 	handleDrawerToggle = () => {
 		this.setState({ mobileOpen: !this.state.mobileOpen });
 	};
-	handleSetBreadCrumb = (id, name, dontShow) => {
+	handleSetBreadCrumb = (id, name, extra, dontShow) => {
 		const { bc } = this.state
 		if (bc.id !== id || name !== bc.name)
 			this.setState({
 				bc: {
 					id: id,
 					name: name,
+					extra: extra,
 					dontShow: dontShow
 				}
 			})
@@ -92,7 +93,7 @@ class App extends React.Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		if (this._isMounted) {
-			this.handleSetHeaderTitle('Senti.Cloud', false, '', 'dashboard')
+			this.handleSetHeaderTitle('Senti', false, '', 'dashboard')
 		}
 
 		await this.props.getSettings().then(async rs => {

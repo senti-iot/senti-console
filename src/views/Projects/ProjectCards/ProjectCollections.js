@@ -9,6 +9,8 @@ import devicetableStyles from 'assets/jss/components/devices/devicetableStyles'
 import { dateFormatter } from 'variables/functions';
 import TP from 'components/Table/TP';
 import TC from 'components/Table/TC';
+import { connect } from 'react-redux'
+
 
 class ProjectCollections extends Component {
 	constructor(props) {
@@ -17,14 +19,10 @@ class ProjectCollections extends Component {
 			mapExpanded: false,
 			openUnassign: false,
 			page: 0,
-			rowsPerPage: 5
 		}
 	}
 	handleChangePage = (event, page) => {
 		this.setState({ page })
-	}
-	handleChangeRowsPerPage = event => {
-		this.setState({ rowsPerPage: event.target.value })
 	}
 	handleExtendMap = () => {
 		this.setState({ mapExpanded: !this.state.mapExpanded })
@@ -76,10 +74,10 @@ class ProjectCollections extends Component {
 		return <DataUsage style={{ marginRight: 8 }}/>
 	}
 	render() {
-		const { project, t, classes /* collectionMostCounts */ } = this.props
+		const { project, t, classes, rowsPerPage /* collectionMostCounts */ } = this.props
 		const { dataCollections } = project
-		const { page, rowsPerPage } = this.state
-		
+		const { page } = this.state
+		console.log(dataCollections)
 		return (
 			<InfoCard title={t('collections.pageTitle')} avatar={<DataUsage />}
 				noRightExpand
@@ -176,7 +174,7 @@ class ProjectCollections extends Component {
 								component={'div'}
 								count={dataCollections.length}
 								page={this.state.page}
-								rowsPerPage={this.state.rowsPerPage}
+								rowsPerPage={this.props.rowsPerPage}
 								handleChangePage={this.handleChangePage}
 								handleChangeRowsPerPage={this.handleChangeRowsPerPage}
 								classes={classes}
@@ -190,9 +188,17 @@ class ProjectCollections extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,
+
+})
+
+const mapDispatchToProps = {
+  
+}
 
 ProjectCollections.propTypes = {
 	project: PropTypes.object.isRequired,
 }
 
-export default withStyles(devicetableStyles)(ProjectCollections)
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles)(ProjectCollections))

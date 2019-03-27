@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 // import Toolbar from 'components/Toolbar/Toolbar';
-import { getAllUsers } from 'variables/dataUsers';
-import { getAllOrgs } from 'variables/dataOrgs';
+// import { getAllUsers } from 'variables/dataUsers';
+// import { getAllOrgs } from 'variables/dataOrgs';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom'
 import CreateUser from 'components/User/CreateUser';
 import Users from 'views/Users/Users';
@@ -19,6 +19,7 @@ import { Paper, withStyles } from '@material-ui/core';
 import TableToolbar from 'components/Table/TableToolbar';
 import projectStyles from 'assets/jss/views/projects';
 import { customFilterItems } from 'variables/Filters';
+import { getUsers, getOrgs, setUsers, setOrgs } from 'redux/data';
 
 class Management extends Component {
 	constructor(props) {
@@ -53,11 +54,11 @@ class Management extends Component {
 
 	componentDidMount = async () => {
 		this.handleTabs()
-		await this.getData()
+		this.getData()
 	}
 
 	reload = () => {
-		this.getData()
+		this.getData(true)
 		this.handleFilterKeyword('')
 	}
 
@@ -73,14 +74,24 @@ class Management extends Component {
 		}
 		return ''
 	}
-	getData = async () => {
-		let users = await getAllUsers().then(rs => rs)
-		let orgs = await getAllOrgs().then(rs => rs)
-		this.setState({
-			users: users ? users.map(u => ({ ...u, group: this.renderUserGroup(u) })) : [],
-			orgs: orgs ? orgs : [],
-			loading: false
-		})
+	getData = async (reload) => {
+		const { getUsers, getOrgs, setUsers, setOrgs } = this.props
+		if (reload) {
+			getUsers(reload)
+			getOrgs(reload)
+		}
+		else {
+			setUsers()
+			setOrgs()
+		}
+
+		// let users = await getAllUsers().then(rs => rs)
+		// let orgs = await getAllOrgs().then(rs => rs)
+		// this.setState({
+		// 	users: users ? users.map(u => ({ ...u, group: this.renderUserGroup(u) })) : [],
+		// 	orgs: orgs ? orgs : [],
+		// 	loading: false
+		// })
 	}
 
 	dTypes = () => {
@@ -274,29 +285,20 @@ class Management extends Component {
 	}
 
 	render() {
-		const { users, orgs, /* filters, */ loading } = this.state
+		// const { users, orgs, /* filters, */ loading } = this.state
 		// const { favorites } = this.props
-		const { classes, filtersOrgs, filtersUsers, ...rest } = this.props
+		const { classes, filtersOrgs, filtersUsers, users, orgs, loadingUsers, loadingOrgs, ...rest } = this.props
 		return (
-			!loading ? <Fragment>
-				{/* <Toolbar
-					data={window.location.pathname.includes('users') ? users : window.location.pathname.includes('orgs') ? orgs : favorites}
-					filters={filters}
-					history={this.props.history}
-					match={this.props.match}
-					handleFilterKeyword={this.handleFilterKeyword}
-					tabs={this.tabs}
-					route={this.state.route}
-				/> */}
+			 <Fragment>
 				<Switch>
 					<Route path={`${this.props.match.url}/users/new`} render={(rp) => <CreateUser {...rest} />} />
-					<Route path={`${this.props.match.url}/users`} render={(rp) => <Users filters={filtersUsers} {...rest} reload={this.reload} users={this.filterItems(users)} />} />
+					<Route path={`${this.props.match.url}/users`} render={(rp) => loadingUsers ? <CircularLoader/> : <Users filters={filtersUsers} {...rest} reload={this.reload} users={this.filterItems(users)} />} />
 					<Route path={`${this.props.match.url}/orgs/new`} component={(rp) => <CreateOrg {...rest} />} />
-					<Route path={`${this.props.match.url}/orgs`} render={(rp) => <Orgs filters={filtersOrgs} {...rest} reload={this.reload} orgs={this.filterItems(orgs)} />} />
+					<Route path={`${this.props.match.url}/orgs`} render={(rp) => loadingOrgs ? <CircularLoader/> : <Orgs filters={filtersOrgs} {...rest} reload={this.reload} orgs={this.filterItems(orgs)} />} />
 					<Route path={`${this.props.match.url}/favorites`} render={() => this.renderFavorites()} />
 					<Redirect from={'/management'} to={'/management/users'} />
 				</Switch>
-			</Fragment > : <CircularLoader />
+			</Fragment >
 
 		)
 	}
@@ -307,14 +309,23 @@ const mapStateToProps = (state) => ({
 	saved: state.favorites.saved,
 	filtersOrgs: state.appState.filters.orgs,
 	filtersUsers: state.appState.filters.users,
-	filtersFavorites: state.appState.filters.favorites
+	filtersFavorites: state.appState.filters.favorites,
+	loadingUsers: !state.data.gotusers,
+	loadingOrgs: !state.data.gotorgs,
+	users: state.data.users,
+	orgs: state.data.orgs
 })
 
 const mapDispatchToProps = (dispatch) => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving())
+	finishedSaving: () => dispatch(finishedSaving()),
+	getUsers: (reload) => dispatch(getUsers(reload)),
+	getOrgs: (reload) => dispatch(getOrgs(reload)),
+	setUsers: () => dispatch(setUsers()),
+	setOrgs: () => dispatch(setOrgs())
+
 })
 
 export default withRouter(withStyles(projectStyles)(withSnackbar()(withLocalization()(connect(mapStateToProps, mapDispatchToProps)(Management)))))

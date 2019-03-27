@@ -104,6 +104,7 @@ class EditOrg extends Component {
 						name: rs.org.name !== null ? rs.org.name : t('orgs.fields.topLevelOrg')
 					}
 				})
+				this.props.setBC('editorg', rs.name, rs.id)
 			}
 
 		})

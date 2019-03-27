@@ -18,7 +18,7 @@ const styles = theme => ({
 class BC extends Component {
 	render() {
 		const { defaultRoute, bc, t, classes, globalBC } = this.props
-		const bcs = breadcrumbs(t, bc.name)[bc.id]
+		const bcs = breadcrumbs(t, bc.name, bc.extra)[bc.id]
 		return (
 			bc.dontShow || !globalBC ? null : <Breadcrumbs separator="›" arial-label="Breadcrumb" className={classes.breadcrumbs}>
 				<Link color="inherit" to={defaultRoute}>

@@ -7,7 +7,7 @@
         "title": "Siden ikke fundet!"
     },
     "": "",
-    "Senti.Cloud": "Senti",
+    "Senti": "Senti",
     "actions": {
         "accept": "Godkend",
         "addFilter": "Tilføj filter",
@@ -106,7 +106,7 @@
             "data": "Datasamlinger",
             "log": "Enhedslog"
         },
-        "createCollection": "Ny datasamling",
+        "createCollection": "Opret datasamling",
         "editCollection": "Rediger datasamling",
         "fields": {
             "activated": "Aktiveret",
@@ -480,10 +480,20 @@
         "copyEmails": "Kopier E-mail adresser",
         "create": {
             "project": "Opret projekt",
-            "user": "Opret bruger"
+			"user": "Opret bruger",
+			"collection": "Opret datasamling",
+			"org": "Opret organisation",
+			"device": "Opret enhed"
         },
         "delete": "Slet",
-        "edit": "Rediger",
+		"edit": "Rediger",
+		"edits": {
+			"project": "Rediger projekt",
+			"user": "Rediger bruger",
+			"collection": "Rediger datasamling",
+			"org": "Rediger organisation",
+			"device": "Rediger enhed"
+		},
         "export": "Eksporter data",
         "exportPDF": "Print som PDF",
         "exportUsers": "Eksporter brugere",
@@ -705,7 +715,7 @@
             "grid": "Gitter",
             "list": "Liste"
         },
-        "detailsPanel": "Detalje panel",
+        "detailsPanel": "Vis detalje panel",
         "detailsPanelPos": {
             "closed": "Lukket",
             "open": "Åben"
@@ -922,5 +932,14 @@
             "noOrg": "Organisation mangler",
             "userAlreadyExists": "E-mail er allerede tilknyttet en bruger konto!"
         }
-    }
+	},
+	"tooltips": {
+		"nextPeriod": "Næste Periode",
+		"previousPeriod":"Forrige Periode",
+		"project": "Projekt",
+		"device": "Enhed",
+		"user": "Bruger",
+		"org": "Organisation",
+		"collection": "Datasamling"
+	}
 }

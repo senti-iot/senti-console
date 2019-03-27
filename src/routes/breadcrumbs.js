@@ -1,5 +1,51 @@
-const breadcrumbs = (t, name) => {
+const breadcrumbs = (t, name, id) => {
 	return {
+		'createproject': [
+			{ label: t('sidebar.projects'), path: '/projects' },
+			{ label: t('menus.create.collection'), path: '/projects/new' }
+		],
+		'editproject': [
+			{ label: t('sidebar.projects'), path: `/projects` },
+			{ label: name, path: `/project/${id}` },
+			{ label: t('menus.edits.project'), path: `/project/${id}/edit` }	
+		],
+		'createcollection': [
+			{ label: t('sidebar.collections'), path: '/collections' },
+			{ label: t('menus.create.collection'), path: '/collections/new' }
+		],
+		'editcollection': [
+			{ label: t('sidebar.collections'), path: `/collections` },
+			{ label: name, path: `/collection/${id}` },
+			{ label: t('collections.editCollection'), path: `/collection/${id}/edit` }	
+		],
+		'editdevicedetails': [
+			{ label: t('sidebar.devices'), path: `/devices` },
+			{ label: name, path: `/device/${id}` },
+			{ label: t('devices.editDetailsTitle', { deviceId: `${name}(${id})` }), path: `/device/${id}/edit` }	
+		],
+		'editdevicehardware': [
+			{ label: t('sidebar.devices'), path: `/devices` },
+			{ label: name, path: `/device/${id}` },
+			{ label: t('devices.editHardwareTitle', { deviceId: `${name}(${id})` }), path: `/device/${id}/edit` }
+		],
+		'createorg': [
+			{ label: t('sidebar.orgs'), path: '/management/orgs' },
+			{ label: t('menus.create.org'), path: '/management/orgs/new' }
+		],
+		'editorg': [
+			{ label: t('sidebar.orgs'), path: '/management/orgs' },
+			{ label: name, path: `/management/org/${id}` },
+			{ label: t('menus.edits.org'), path: `/management/org/${id}/edit` }
+		],
+		'createuser': [
+			{ label: t('sidebar.users'), path: '/management/users' },
+			{ label: t('menus.create.user'), path: '/management/users/new' }
+		],
+		'edituser': [
+			{ label: t('sidebar.users'), path: '/management/users' },
+			{ label: name, path: `/management/user/${id}` },
+			{ label: t('menus.edits.user'), path: `/management/user/${id}/edit` }
+		],
 		'settings': [
 			{
 				label: t('sidebar.settings'),

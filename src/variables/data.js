@@ -16,16 +16,19 @@ const encrypt = (text) => {
 	return iv.toString('hex') + ':' + encrypted.toString('hex')
 }
 
-let backendHost;
+let backendHost, sentiAPI;
 
 const hostname = window && window.location && window.location.hostname;
 
 if (hostname === 'console.senti.cloud') {
 	backendHost = 'https://senti.cloud/rest/';
+	sentiAPI = 'https://api.senti.cloud/'
 } else if (hostname === 'beta.senti.cloud') {
 	backendHost = 'https://betabackend.senti.cloud/rest/';
+	sentiAPI = 'https://dev.api.senti.cloud/'
 } else {
 	backendHost = 'https://betabackend.senti.cloud/rest/';
+	sentiAPI = 'https://dev.api.senti.cloud/'
 }
 export const loginApi = create({
 	baseURL: backendHost,
@@ -45,7 +48,7 @@ export const dawaApi = create({
 	}
 })
 export const customerDoIApi = create({
-	baseURL: `https://api.senti.cloud/annual/v1`,
+	baseURL: sentiAPI + 'annual/v1',
 	timeout: 30000,
 	headers: {
 		'auth': encrypt(process.env.REACT_APP_ENCRYPTION_KEY),
@@ -55,7 +58,7 @@ export const customerDoIApi = create({
 })
 /* const apiRoute = '/holidays/v1/2018-01-01/2018-12-31/da' */
 export const holidayApi = create({
-	baseURL: `https://api.senti.cloud/holidays/v1`,
+	baseURL: sentiAPI + `holidays/v1`,
 	timeout: 30000,
 	headers: {
 		'auth': encrypt(process.env.REACT_APP_ENCRYPTION_KEY),
@@ -145,7 +148,6 @@ export const api = create({
 
 export const setToken = () => {
 	try {
-		console.log('Bing')
 		var OAToken = cookie.load('SESSION').sessionID
 		api.setHeader('ODEUMAuthToken', OAToken)
 		imageApi.setHeader('ODEUMAuthToken', OAToken)
