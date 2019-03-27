@@ -934,6 +934,15 @@
 			"userAlreadyExists": "E-mail er allerede tilknyttet en bruger konto!"
 		}
 	},
+	"tabs": {
+		"details": "Detaljer",
+		"data": "Diagrammer og data",
+		"collections": "Datasamlinger",
+		"map": "Kort",
+		"contact": "Kontakt",
+		"activeDevice": "Aktiv enhed",
+		"history": "Enhedslog"
+	},
 	"tooltips": {
 		"chart": {
 			"type": "Diagram type",

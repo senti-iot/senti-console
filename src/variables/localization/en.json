@@ -934,6 +934,15 @@
 			"userAlreadyExists": "E-mail is already assigned to a user account!"
 		}
 	},
+	"tabs": {
+		"details": "Details",
+		"data": "Charts & Data",
+		"collections": "Data Collections",
+		"map": "Map",
+		"contact": "Contact person",
+		"activeDevice": "Active Device",
+		"history": "Device log"
+	},
 	"tooltips": {
 		"chart" :{
 			"type": "Chart type",

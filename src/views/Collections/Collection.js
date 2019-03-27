@@ -47,13 +47,16 @@ class Collection extends Component {
 	}
 
 	format = 'YYYY-MM-DD+HH:mm'
-	tabs = [
-		{ id: 0, title: '', label: <DataUsage />, url: `#details` },
-		{ id: 1, title: '', label: <Timeline />, url: `#data` },
-		{ id: 2, title: '', label: <Map />, url: `#map` },
-		{ id: 3, title: '', label: <DeviceHub />, url: `#active-device` },
-		{ id: 3, title: '', label: <History />, url: `#history` }
-	]
+	tabs = () => {
+		const { t } = this.props
+		return [
+			{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
+			{ id: 1, title: t('tabs.data'), label: <Timeline />, url: `#data` },
+			{ id: 2, title: t('tabs.map'), label: <Map />, url: `#map` },
+			{ id: 3, title: t('tabs.activeDevice'), label: <DeviceHub />, url: `#active-device` },
+			{ id: 4, title: t('tabs.history'), label: <History />, url: `#history` }
+		]
+	}
 	getActiveDevice = async (id) => {
 		let device = await getDevice(id)
 		if (device.lat && device.long) {
@@ -121,7 +124,7 @@ class Collection extends Component {
 				this.props.setTabs({
 					route: 0,
 					id: 'collection',
-					tabs: this.tabs,
+					tabs: this.tabs(),
 					hashLinks: true
 				})
 				if (this.props.location.hash !== '')
