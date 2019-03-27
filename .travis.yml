@@ -22,7 +22,7 @@ deploy:
     true: 
       branch: master
   - 
-    provider: script
+    provider: script #BETA
     script: bash scripts/deploy.sh beta $TRAVIS_BUILD_DIR
     skip_cleanup: true
     true: 
@@ -30,7 +30,7 @@ deploy:
   - 
     domain: "https://alphasenti.surge.sh"
     project: ./build
-    provider: surge
+    provider: surge #ALPHA
     skip_cleanup: true
     true: 
       branch: alpha
