@@ -84,7 +84,7 @@ class Management extends Component {
 			setUsers()
 			setOrgs()
 		}
-		this.props.sortData('users', 'firstName', 'asc')
+		// this.props.sortData('users', 'firstName', 'asc')
 	}
 
 	dTypes = () => {
@@ -228,7 +228,8 @@ class Management extends Component {
 		if (property !== this.state.orderBy) {
 			order = 'asc'
 		}
-		handleRequestSort(property, order, this.props.favorites)
+		this.props.sortData('favorites', property, order)
+		// handleRequestSort(property, order, this.props.favorites)
 		this.setState({ order, orderBy: property })
 	}
 	renderTableToolBar = (reduxKey) => {
@@ -249,8 +250,9 @@ class Management extends Component {
 	}
 	renderTable = () => {
 		const { t, favorites } = this.props
-		let usersAndOrgs = favorites.filter(f => f.type === 'user' || f.type === 'org')
 		const { selected, orderBy, order } = this.state
+		let usersAndOrgs = favorites.filter(f => f.type === 'user' || f.type === 'org')
+		usersAndOrgs = handleRequestSort(orderBy, order, usersAndOrgs)
 		return <FavoritesTable
 			selected={selected}
 			handleClick={this.handleClick}

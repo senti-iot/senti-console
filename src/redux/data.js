@@ -78,11 +78,13 @@ export const sortData = (key, property, order) => {
 	return (dispatch, getState) => {
 		let data = getState().data[key]
 		let sortedData = handleRequestSort(property, order, data)
+		let newArr = []
+		newArr = sortedData
 		dispatch({
 			type: sData,
 			payload: {
 				key,
-				sortedData
+				sortedData: newArr
 			}
 		})
 

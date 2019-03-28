@@ -171,6 +171,7 @@ class Users extends Component {
 			order = 'asc'
 		}
 		handleRequestSort(property, order, this.props.users)
+		// this.props.sortData('users', property, order)
 		this.setState({ order, orderBy: property })
 	}
 
@@ -312,7 +313,6 @@ class Users extends Component {
 	renderUsers = () => {
 		const { t, classes, users } = this.props
 		const { selected, order, orderBy, filters, /* users */ } = this.state
-		console.log('its going haywire')
 		return <GridContainer justify={'center'}>
 		 <Fade in={true}>
 				<Paper className={classes.root}>
