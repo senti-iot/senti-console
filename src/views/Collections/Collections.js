@@ -141,6 +141,7 @@ class Collections extends Component {
 	
 	getFavs = () => {
 		const { collections } = this.props
+		console.log(this.props.favorites)
 		let favorites = this.props.favorites.filter(f => f.type === 'collection')
 		let favCollections = favorites.map(f => {
 			return collections[collections.findIndex(d => d.id === f.id)]
@@ -213,12 +214,12 @@ class Collections extends Component {
 			}
 		}
 	}
-	handleRequestSort = (event, property, way) => {
+	handleRequestSort = key => (event, property, way) =>  {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
 		if (property !== this.state.orderBy) {
 			order = 'asc'
 		}
-		this.props.sortData(property, order)
+		this.props.sortData(key, property, order)
 		this.setState({ order, orderBy: property })
 	}
 	handleCollectionClick = id => e => {
@@ -467,14 +468,14 @@ class Collections extends Component {
 		/>
 	}
 
-	renderTable = (items, handleClick) => {
+	renderTable = (items, handleClick, key) => {
 		const { t } = this.props
 		const { order, orderBy, selected } = this.state
 		return <CollectionTable
 			data={this.filterItems(items)}
 			handleCheckboxClick={this.handleCheckboxClick}
 			handleClick={handleClick}
-			handleRequestSort={this.handleRequestSort}
+			handleRequestSort={this.handleRequestSort(key)}
 			handleSelectAllClick={this.handleSelectAllClick}
 			order={order}
 			orderBy={orderBy}
@@ -499,7 +500,7 @@ class Collections extends Component {
 				{this.renderAssignDevice()}
 				{selected.length > 0 ? this.renderDeviceUnassign() : null}
 				{this.renderTableToolBar()}
-				{this.renderTable(this.getFavs(), this.handleFavClick)}
+				{this.renderTable(this.getFavs(), this.handleFavClick, 'favorites')}
 				{this.renderConfirmDelete()}
 			</Paper>
 			}
@@ -515,7 +516,7 @@ class Collections extends Component {
 				{this.renderAssignDevice()}
 				{selected.length > 0 ? this.renderDeviceUnassign() : null}
 				{this.renderTableToolBar()}
-				{this.renderTable(collections, this.handleCollectionClick)}
+				{this.renderTable(collections, this.handleCollectionClick, 'collections')}
 				{this.renderConfirmDelete()}
 			</Paper></Fade>
 			}
@@ -541,7 +542,7 @@ class Collections extends Component {
 
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
-	favorites: state.favorites.favorites,
+	favorites: state.data.favorites,
 	saved: state.favorites.saved,
 	collections: state.data.collections,
 	loading: !state.data.gotcollections,
@@ -555,7 +556,7 @@ const mapDispatchToProps = (dispatch) => ({
 	finishedSaving: () => dispatch(finishedSaving()),
 	getCollections: reload => dispatch(getCollections(reload)),
 	setCollections: () => dispatch(setCollections()),
-	sortData: (property, order) => dispatch(sortData('collections', property, order))
+	sortData: (key, property, order) => dispatch(sortData(key, property, order))
 })
 
 

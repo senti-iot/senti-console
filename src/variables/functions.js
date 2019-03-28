@@ -291,12 +291,8 @@ const sortFunc = (a, b, orderBy, way, type) => {
  */
 export const handleRequestSort = (property, way, data) => {
 	const orderBy = property;
-	// let order = way;
 	let newData = []
 	newData = data.sort((a, b) => sortFunc(a, b, orderBy, way === 'desc' ? false : true))
-	// order === 'desc'
-	// 	? 
-	// 	: data.sort((a, b) => sortFunc(a, b, orderBy, true))
 	return newData
 }
 /**

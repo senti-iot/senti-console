@@ -15,13 +15,15 @@ class DeviceHover extends Component {
 	componentDidUpdate = () => {
 		if (this.props.saved === true) {
 			const { device } = this.props
-			if (this.props.isFav({ id: device.id, type: 'device' })) {
-				this.props.s('snackbars.favorite.saved', { name: device.name, type: this.props.t('favorites.types.device') })
-				this.props.finishedSaving()
-			}
-			if (!this.props.isFav({ id: device.id, type: 'device' })) {
-				this.props.s('snackbars.favorite.removed', { name: device.name, type: this.props.t('favorites.types.device') })
-				this.props.finishedSaving()
+			if (device) {
+				if (this.props.isFav({ id: device.id, type: 'device' })) {
+					this.props.s('snackbars.favorite.saved', { name: device.name, type: this.props.t('favorites.types.device') })
+					this.props.finishedSaving()
+				}
+				if (!this.props.isFav({ id: device.id, type: 'device' })) {
+					this.props.s('snackbars.favorite.removed', { name: device.name, type: this.props.t('favorites.types.device') })
+					this.props.finishedSaving()
+				}
 			}
 		}
 	}

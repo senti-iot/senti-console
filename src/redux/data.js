@@ -58,12 +58,14 @@ const gotCollection = 'GotCollection'
 const gotDevice = 'GotDevice'
 const gotOrg = 'GotOrg'
 const gotUser = 'GotUser'
+const getFavorites = 'getFavorites'
 
 const setusers = 'SetUsers'
 const setorgs = 'SetOrgs'
 const setdevices = 'SetDevices'
 const setprojects = 'SetProjects'
 const setcollections = 'SetCollections'
+const setFavorites = 'setFavorites'
 
 const setProject = 'SetProject'
 const setCollection = 'SetCollection'
@@ -366,7 +368,6 @@ export const setProjects = () => {
 		else {
 			dispatch({ type: gotprojects, payload: false })
 		}
-
 	}
 }
 export const setCollections = () => {
@@ -467,6 +468,7 @@ export const getCollections = (reload) => {
 	}
 }
 const initialState = {
+	favorites: [],
 	users: [],
 	orgs: [],
 	devices: [],
@@ -483,6 +485,10 @@ export const data = (state = initialState, { type, payload }) => {
 	switch (type) {
 		case sData:
 			return Object.assign({}, state, { [payload.key]: payload.sortedData })
+		case getFavorites: 
+			return Object.assign({}, state, { favorites: payload })
+		case setFavorites: 
+			return Object.assign({}, state, { favorites: payload })
 		case setCollection:
 			return Object.assign({}, state, { collection: payload })
 		case gotCollection:
