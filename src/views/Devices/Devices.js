@@ -52,10 +52,10 @@ class Devices extends Component {
 	tabs = () => {
 		const { t, match } = this.props
 		return [
-			{ id: 0, title: t('devices.tabs.listView'), label: <ViewList />, url: `${match.path}/list` },
-			{ id: 1, title: t('devices.tabs.mapView'), label: <Map />, url: `${match.path}/map` },
-			{ id: 2, title: t('devices.tabs.cardView'), label: <ViewModule />, url: `${match.path}/grid` },
-			{ id: 3, title: t('sidebar.favorites'), label: <Star />, url: `${match.path}/favorites` }
+			{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `${match.path}/list` },
+			{ id: 1, title: t('tooltips.mapView'), label: <Map />, url: `${match.path}/map` },
+			{ id: 2, title: t('tooltips.cardView'), label: <ViewModule />, url: `${match.path}/grid` },
+			{ id: 3, title: t('tooltips.favorites'), label: <Star />, url: `${match.path}/favorites` }
 		]
 	}
 		
