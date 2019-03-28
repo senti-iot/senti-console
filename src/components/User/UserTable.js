@@ -193,7 +193,7 @@ const mapStateToProps = (state) => ({
 	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,
 	accessLevel: state.settings.user.privileges,
 	language: state.settings.language,
-	favorites: state.favorites.favorites,
+	favorites: state.data.favorites,
 	saved: state.favorites.saved,
 	hoverTime: state.settings.hoverTime
 })

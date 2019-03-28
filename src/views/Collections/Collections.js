@@ -13,7 +13,7 @@ import { GridContainer, CircularLoader, AssignDevice, AssignProject, ItemG, T } 
 import CollectionsCards from './CollectionsCards';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
-import { setCollections, getCollections } from 'redux/data';
+import { setCollections, getCollections, sortData } from 'redux/data';
 
 class Collections extends Component {
 	constructor(props) {
@@ -21,14 +21,13 @@ class Collections extends Component {
 
 		this.state = {
 			selected: [],
-			collections: [],
 			openAssignDevice: false,
 			openAssignProject: false,
 			openUnassignDevice: false,
 			openDelete: false,
 			route: 0,
-			order: 'desc',
-			orderBy: 'name',
+			order: 'asc',
+			orderBy: 'id',
 			filters: {
 				keyword: '',
 			}
@@ -45,9 +44,9 @@ class Collections extends Component {
 	tabs = () => {
 		const { t, match } = this.props
 		return [
-			{ id: 0, title: t('devices.tabs.listView'), label: <ViewList />, url: `${match.url}/list` },
-			{ id: 1, title: t('devices.tabs.cardView'), label: <ViewModule />, url: `${match.url}/grid` },
-			{ id: 2, title: '', label: <Star />, url: `${match.url}/favorites` }
+			{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `${match.url}/list` },
+			{ id: 1, title: t('tooltips.cardView'), label: <ViewModule />, url: `${match.url}/grid` },
+			{ id: 2, title: t('tooltips.favorites'), label: <Star />, url: `${match.url}/favorites` }
 		]
 	}
 	dLiveStatus = () => {
@@ -81,8 +80,8 @@ class Collections extends Component {
 		]
 	}
 	options = () => {
-		const { t, isFav } = this.props
-		const { selected, collections } = this.state
+		const { t, isFav, collections } = this.props
+		const { selected } = this.state
 		let collection = collections[collections.findIndex(d => d.id === selected[0])]
 		let favObj = {
 			id: collection.id,
@@ -115,7 +114,8 @@ class Collections extends Component {
 	componentDidUpdate = (prevProps, prevState) => {
 		const { t, saved, s, isFav, finishedSaving } = this.props
 		if (saved === true) {
-			const { collections, selected } = this.state
+			const { collections } = this.props
+			const { selected } = this.state
 			let collection = collections[collections.findIndex(d => d.id === selected[0])]
 			if (collection) { 
 				if (isFav({ id: collection.id, type: 'collection' })) {
@@ -140,10 +140,13 @@ class Collections extends Component {
 	addNewCollection = () => this.props.history.push({ pathname: `/collections/new`, prevURL: '/collections/list' })
 	
 	getFavs = () => {
-		let favorites = this.props.favorites.filter(f => f.type === 'collection')
-		let favCollections = favorites.map(f => {
-			return this.state.collections[this.state.collections.findIndex(d => d.id === f.id)]
+		const { order, orderBy } = this.state
+		const { favorites, collections } = this.props
+		let favs = favorites.filter(f => f.type === 'collection')
+		let favCollections = favs.map(f => {
+			return collections[collections.findIndex(d => d.id === f.id)]
 		})
+		favCollections = handleRequestSort(orderBy, order, favCollections)
 		return favCollections
 	}
 	addToFav = (favObj) => {
@@ -160,8 +163,8 @@ class Collections extends Component {
 		return customFilterItems(filterItems(data, filters), rFilters)
 	}
 	snackBarMessages = (msg, display) => {
-		const { s } = this.props
-		const { collections, selected } = this.state
+		const { collections, s } = this.props
+		const {  selected } = this.state
 		switch (msg) {
 			case 1:
 				s('snackbars.deletedSuccess')
@@ -212,12 +215,12 @@ class Collections extends Component {
 			}
 		}
 	}
-	handleRequestSort = (event, property, way) => {
+	handleRequestSort = key => (event, property, way) =>  {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
 		if (property !== this.state.orderBy) {
 			order = 'asc'
 		}
-		handleRequestSort(property, order, this.props.collections)
+		this.props.sortData(key, property, order)
 		this.setState({ order, orderBy: property })
 	}
 	handleCollectionClick = id => e => {
@@ -466,14 +469,14 @@ class Collections extends Component {
 		/>
 	}
 
-	renderTable = (items, handleClick) => {
+	renderTable = (items, handleClick, key) => {
 		const { t } = this.props
 		const { order, orderBy, selected } = this.state
 		return <CollectionTable
 			data={this.filterItems(items)}
 			handleCheckboxClick={this.handleCheckboxClick}
 			handleClick={handleClick}
-			handleRequestSort={this.handleRequestSort}
+			handleRequestSort={this.handleRequestSort(key)}
 			handleSelectAllClick={this.handleSelectAllClick}
 			order={order}
 			orderBy={orderBy}
@@ -498,7 +501,7 @@ class Collections extends Component {
 				{this.renderAssignDevice()}
 				{selected.length > 0 ? this.renderDeviceUnassign() : null}
 				{this.renderTableToolBar()}
-				{this.renderTable(this.getFavs(), this.handleFavClick)}
+				{this.renderTable(this.getFavs(), this.handleFavClick, 'favorites')}
 				{this.renderConfirmDelete()}
 			</Paper>
 			}
@@ -514,7 +517,7 @@ class Collections extends Component {
 				{this.renderAssignDevice()}
 				{selected.length > 0 ? this.renderDeviceUnassign() : null}
 				{this.renderTableToolBar()}
-				{this.renderTable(collections, this.handleCollectionClick)}
+				{this.renderTable(collections, this.handleCollectionClick, 'collections')}
 				{this.renderConfirmDelete()}
 			</Paper></Fade>
 			}
@@ -540,7 +543,7 @@ class Collections extends Component {
 
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
-	favorites: state.favorites.favorites,
+	favorites: state.data.favorites,
 	saved: state.favorites.saved,
 	collections: state.data.collections,
 	loading: !state.data.gotcollections,
@@ -554,6 +557,7 @@ const mapDispatchToProps = (dispatch) => ({
 	finishedSaving: () => dispatch(finishedSaving()),
 	getCollections: reload => dispatch(getCollections(reload)),
 	setCollections: () => dispatch(setCollections()),
+	sortData: (key, property, order) => dispatch(sortData(key, property, order))
 })
 
 

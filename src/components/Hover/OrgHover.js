@@ -15,13 +15,15 @@ class OrgHover extends Component {
 	componentDidUpdate = () => {
 		if (this.props.saved === true) {
 			const { org } = this.props
-			if (this.props.isFav({ id: org.id, type: 'org' })) {
-				this.props.s('snackbars.favorite.saved', { name: org.name, type: this.props.t('favorites.types.org') })
-				this.props.finishedSaving()
-			}
-			if (!this.props.isFav({ id: org.id, type: 'org' })) {
-				this.props.s('snackbars.favorite.removed', { name: org.name, type: this.props.t('favorites.types.org') })
-				this.props.finishedSaving()
+			if (org) {
+				if (this.props.isFav({ id: org.id, type: 'org' })) {
+					this.props.s('snackbars.favorite.saved', { name: org.name, type: this.props.t('favorites.types.org') })
+					this.props.finishedSaving()
+				}
+				if (!this.props.isFav({ id: org.id, type: 'org' })) {
+					this.props.s('snackbars.favorite.removed', { name: org.name, type: this.props.t('favorites.types.org') })
+					this.props.finishedSaving()
+				}
 			}
 		}
 	}

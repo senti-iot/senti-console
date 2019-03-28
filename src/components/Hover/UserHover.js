@@ -15,14 +15,16 @@ class UserHover extends Component {
 	componentDidUpdate = () => {
 		if (this.props.saved === true) {
 			const { user } = this.props
-			// let user = data[data.findIndex(d => d.id === selected[0])]
-			if (this.props.isFav({ id: user.id, type: 'user' })) {
-				this.props.s('snackbars.favorite.saved', { name: `${user.firstName} ${user.lastName}`, type: this.props.t('favorites.types.user') })
-				this.props.finishedSaving()
-			}
-			if (!this.props.isFav({ id: user.id, type: 'user' })) {
-				this.props.s('snackbars.favorite.removed', { name: `${user.firstName} ${user.lastName}`, type: this.props.t('favorites.types.user') })
-				this.props.finishedSaving()
+			if (user) {
+				// let user = data[data.findIndex(d => d.id === selected[0])]
+				if (this.props.isFav({ id: user.id, type: 'user' })) {
+					this.props.s('snackbars.favorite.saved', { name: `${user.firstName} ${user.lastName}`, type: this.props.t('favorites.types.user') })
+					this.props.finishedSaving()
+				}
+				if (!this.props.isFav({ id: user.id, type: 'user' })) {
+					this.props.s('snackbars.favorite.removed', { name: `${user.firstName} ${user.lastName}`, type: this.props.t('favorites.types.user') })
+					this.props.finishedSaving()
+				}
 			}
 		}
 	}

@@ -4,6 +4,12 @@ const SETFAV = 'setFavorites'
 const GETFAVS = 'getFavorites'
 const SAVEFAVORITES = 'saveFavorites'
 
+export const getFavorites = (key) => {
+	return (dispatch, getState) => {
+		let favorites = getState().favorites.favorites.filter(f => f.type === key)
+		return favorites
+	}
+}
 export const updateFav = (obj) => {
 	return (dispatch, getState) => {
 		let uFav = getState().favorites.favorites.findIndex(f => f.id === obj.id)
@@ -18,7 +24,7 @@ export const updateFav = (obj) => {
 }
 export const isFav = (obj) => {
 	return (dispatch, getState) => {
-		let favs = getState().favorites.favorites
+		let favs = getState().data.favorites
 		if (favs.findIndex(f => f.id === obj.id && f.type === obj.type) > -1)
 			return true
 		else
@@ -33,22 +39,22 @@ export const finishedSaving = () => {
 }
 export const removeFromFav = (obj) => {
 	return async (dispatch, getState) => {
-		let favs = getState().favorites.favorites
+		let favs = getState().data.favorites
 		favs = favs.filter(f => f.id !== obj.id)
 		dispatch({
 			type: SETFAV,
-			favorites: favs
+			payload: favs
 		})
 		dispatch(saveFavorites())
 	}
 }
 export const addToFav = (obj) => {
 	return async (dispatch, getState) => {
-		let favs = getState().favorites.favorites
+		let favs = getState().data.favorites
 		favs.push(obj)
 		dispatch({
 			type: SETFAV,
-			favorites: favs
+			payload: favs
 		})
 		dispatch(saveFavorites())
 	}
@@ -57,7 +63,7 @@ export const addToFav = (obj) => {
 const saveFavorites = (noConfirm) => {
 	return async (dispatch, getState) => {
 		let user = getState().settings.user
-		let f = getState().favorites.favorites
+		let f = getState().data.favorites
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
 		user.aux.senti.favorites = f

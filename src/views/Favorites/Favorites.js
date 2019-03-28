@@ -266,7 +266,7 @@ class Favorites extends Component {
 
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
-	favorites: state.favorites.favorites,
+	favorites: state.data.favorites,
 	saved: state.favorites.saved,
 	filters: state.appState.filters.favorites
 })

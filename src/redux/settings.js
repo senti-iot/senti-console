@@ -164,9 +164,9 @@ export const getSettings = async () => {
 			if (favorites) {
 				dispatch({
 					type: GETFAVS,
-					favorites: {
-						favorites: favorites
-					}
+					payload: 
+						[...favorites]
+					
 				})
 			}
 		}

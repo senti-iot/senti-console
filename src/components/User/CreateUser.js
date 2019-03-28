@@ -6,6 +6,7 @@ import { GridContainer, ItemGrid, DatePicker, Warning, Danger, TextF, CircularLo
 import { Paper, Collapse, withStyles, Button, FormControlLabel, Checkbox } from '@material-ui/core';
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
+import { getUsers } from 'redux/data';
 
 class CreateUser extends Component {
 	constructor(props) {
@@ -109,10 +110,12 @@ class CreateUser extends Component {
 		}
 	}
 	close = (rs) => {
-		this.setState({ created: true, creating: false, org: rs })
+		this.setState({ created: true, creating: false })
 		const { history, s } = this.props
 		s('snackbars.userCreated', { user: `${rs.firstName} ${rs.lastName}` })
+		this.props.getUsers(true)
 		history.push(`/management/user/${rs.id}`)
+	
 	}
 	handleExtendedBirthdayChange = prop => e => {
 
@@ -532,8 +535,8 @@ const mapStateToProps = (state) => ({
 	user: state.settings.user
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = (dispatch) => ({
+	getUsers: () => dispatch(getUsers(true))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles)(CreateUser))
