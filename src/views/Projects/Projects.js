@@ -19,7 +19,7 @@ import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites'
 import { connect } from 'react-redux'
 import { customFilterItems } from 'variables/Filters';
 // import { makeCancelable } from 'variables/data';
-import { getProjects, setProjects } from 'redux/data';
+import { getProjects, setProjects, sortData } from 'redux/data';
 
 class Projects extends Component {
 	constructor(props) {
@@ -29,7 +29,7 @@ class Projects extends Component {
 			selected: [],
 			openDelete: false,
 			route: 0,
-			order: 'desc',
+			order: 'asc',
 			orderBy: 'title',
 			openAssignDC: false,
 			filters: {
@@ -94,10 +94,12 @@ class Projects extends Component {
 	//#region Functions
 
 	getFavs = () => {
+		const { order, orderBy } = this.state
 		let favorites = this.props.favorites.filter(f => f.type === 'project')
 		let favProjects = favorites.map(f => {
 			return this.props.projects[this.props.projects.findIndex(d => d.id === f.id)]
 		})
+		favProjects = handleRequestSort(orderBy, order, favProjects)
 		return favProjects
 	}
 
@@ -260,12 +262,13 @@ class Projects extends Component {
 		}
 	}
 
-	handleRequestSort = (event, property, way) => {
+	handleRequestSort = key => (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
 		if (property !== this.state.orderBy) {
 			order = 'asc'
 		}
-		handleRequestSort(property, order, this.props.projects)
+		this.props.sortData(key, property, order)
+		// handleRequestSort(property, order, this.props.projects)
 		this.setState({ order, orderBy: property })
 	}
 
@@ -349,7 +352,7 @@ class Projects extends Component {
 			</IconButton>
 		</Tooltip>
 	}
-	renderTable = (items, handleClick) => {
+	renderTable = (items, handleClick, key) => {
 		const { t } = this.props
 		const { order, orderBy, selected } = this.state
 		return <ProjectTable
@@ -358,7 +361,7 @@ class Projects extends Component {
 			handleSelectAllClick={this.handleSelectAllClick}
 			tableHead={this.projectHeader()}
 			handleClick={handleClick}
-			handleRequestSort={this.handleRequestSort}
+			handleRequestSort={this.handleRequestSort(key)}
 			handleCheckboxClick={this.handleCheckboxClick}
 			order={order}
 			orderBy={orderBy}
@@ -394,7 +397,7 @@ class Projects extends Component {
 				{this.renderConfirmDelete()}
 				{this.renderAssignDCs()}
 				{this.renderTableToolbar()}
-				{this.renderTable(projects, this.handleProjectClick)}
+				{this.renderTable(projects, this.handleProjectClick, 'projects')}
 			</Paper></Fade>
 	}
 
@@ -411,7 +414,7 @@ class Projects extends Component {
 					{this.renderConfirmDelete()}
 					{this.renderAssignDCs()}
 					{this.renderTableToolbar()}
-					{this.renderTable(this.getFavs(), this.handleFavClick)}
+					{this.renderTable(this.getFavs(), this.handleFavClick, 'favorites')}
 				</Paper>
 			</Fade>}
 		</GridContainer>
@@ -451,7 +454,8 @@ const mapDispatchToProps = (dispatch) => ({
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
 	finishedSaving: () => dispatch(finishedSaving()),	
 	getProjects: (reload) => dispatch(getProjects(reload)),
-	setProjects: () => dispatch(setProjects())
+	setProjects: () => dispatch(setProjects()),
+	sortData: (key, property, order) => dispatch(sortData(key, property, order))
 })
 
 
