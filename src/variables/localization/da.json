@@ -277,11 +277,6 @@
 			"redShort": "Forbindelse afbrudt",
 			"yellow": "Enheden er tilsluttet, men modtager ikke data",
 			"yellowShort": "Modtager ikke data"
-		},
-		"tabs": {
-			"cardView": "Gittervisning",
-			"listView": "Listevisning",
-			"mapView": "Kortvisning"
 		}
 	},
 	"dialogs": {
@@ -958,6 +953,10 @@
 		"device": "Enhed",
 		"user": "Bruger",
 		"org": "Organisation",
-		"collection": "Datasamling"
+		"collection": "Datasamling",
+		"cardView": "Gittervisning",
+		"listView": "Listevisning",
+		"mapView": "Kortvisning",
+		"favorites": "Favoritter"
 	}
 }

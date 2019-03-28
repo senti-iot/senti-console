@@ -17,13 +17,16 @@ class CollectionHover extends Component {
 	componentDidUpdate = () => {
 		if (this.props.saved === true) {
 			const { collection } = this.props
-			if (this.props.isFav({ id: collection.id, type: 'collection' })) {
-				this.props.s('snackbars.favorite.saved', { name: collection.name, type: this.props.t('favorites.types.collection') })
-				this.props.finishedSaving()
-			}
-			if (!this.props.isFav({ id: collection.id, type: 'collection' })) {
-				this.props.s('snackbars.favorite.removed', { name: collection.name, type: this.props.t('favorites.types.collection') })
-				this.props.finishedSaving()
+			if (collection) {
+
+				if (this.props.isFav({ id: collection.id, type: 'collection' })) {
+					this.props.s('snackbars.favorite.saved', { name: collection.name, type: this.props.t('favorites.types.collection') })
+					this.props.finishedSaving()
+				}
+				if (!this.props.isFav({ id: collection.id, type: 'collection' })) {
+					this.props.s('snackbars.favorite.removed', { name: collection.name, type: this.props.t('favorites.types.collection') })
+					this.props.finishedSaving()
+				}
 			}
 		}
 	}

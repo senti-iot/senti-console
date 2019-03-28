@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react'
 import { withStyles, Paper, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade, Tooltip } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import UserTable from 'components/User/UserTable';
-import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
 import { deleteUser } from 'variables/dataUsers';
 import { People, Business, Add, Delete, Edit, Star, StarBorder, Mail, CloudDownload } from 'variables/icons';
@@ -19,13 +18,11 @@ class Users extends Component {
 		this.state = {
 			selected: [],
 			openDelete: false,
-			users: [],
 			userHeader: [],
 			anchorElMenu: null,
-			loading: true,
 			route: 0,
-			order: 'desc',
-			orderBy: 'firstName',
+			order: '',
+			orderBy: '',
 			openDownload: false
 		}
 		props.setHeader('users.pageTitle', false, '', 'users')
@@ -147,18 +144,20 @@ class Users extends Component {
 	}
 	componentDidMount = async () => {
 		this._isMounted = 1
-		await this.getData()
+		if (this.props.users.length > 0) {
+			this.getData()
+		}
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-	componentDidUpdate = async (prevState, prevProps) => {
+	componentDidUpdate = (prevProps, prevState) => {
 		if (prevProps.users.length !== this.props.users.length) {
 			if (this.state.selected.length > 0) {
 				let newSelected = this.state.selected.filter(s => this.props.users.findIndex(u => u.id === s) !== -1 ? true : false)
 				this.setState({ selected: newSelected })
 			}
-			await this.getData()
+			this.getData()
 		}
 	}
 
@@ -171,17 +170,12 @@ class Users extends Component {
 		if (property !== this.state.orderBy) {
 			order = 'asc'
 		}
-		let newData = handleRequestSort(property, order, this.props.users)
-		this.setState({ users: newData, order, orderBy: property })
+		handleRequestSort(property, order, this.props.users)
+		this.setState({ order, orderBy: property })
 	}
 
-	getData = async () => {
-		if (this.props.users) {
-			this.setState({
-				loading: false
-			}, () => this.handleRequestSort(null, 'firstName', 'asc'))
-			return
-		}
+	getData = () => {
+		this.handleRequestSort(null, 'firstName', 'asc')
 	}
 
 	tabs = [
@@ -205,7 +199,6 @@ class Users extends Component {
 		}
 	}
 	reload = async () => {
-		this.setState({ loading: true })
 		await this.props.reload()
 	}
 	deleteUsers = async () => {
@@ -317,10 +310,11 @@ class Users extends Component {
 		/>
 	}
 	renderUsers = () => {
-		const { t, classes } = this.props
-		const { loading, selected, order, orderBy, filters, users } = this.state
+		const { t, classes, users } = this.props
+		const { selected, order, orderBy, filters, /* users */ } = this.state
+		console.log('its going haywire')
 		return <GridContainer justify={'center'}>
-			{loading ? <CircularLoader /> : <Fade in={true}>
+		 <Fade in={true}>
 				<Paper className={classes.root}>
 					{this.renderConfirmDelete()}
 					{this.renderExport()}
@@ -349,7 +343,6 @@ class Users extends Component {
 					/>
 				</Paper>
 			</Fade>
-			}
 		</GridContainer>
 	}
 	handleToolbarMenuOpen = e => {

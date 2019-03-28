@@ -19,7 +19,7 @@ const styles = theme => ({
 	},
 	appBarDrawerPermClosed: {
 		[theme.breakpoints.up('lg')]: {
-			
+
 			width: 'calc(100vw - 60px)',
 			left: 60
 		}
@@ -81,7 +81,8 @@ class Toolbar extends PureComponent {
 		super(props)
 
 		this.state = {
-			route: props.route ? props.route : 0
+			route: props.route ? props.route : 0,
+			tooltip: -1
 		}
 	}
 	componentWillUnmount = () => {
@@ -94,8 +95,9 @@ class Toolbar extends PureComponent {
 	}
 	componentDidUpdate = (prevProps) => {
 		if (this.props.route !== prevProps.route && this.props.route !== undefined) {
-			this.setState({ route: this.props.route })
+			this.setState({ route: this.props.route, tooltip: -1 })
 		}
+
 	}
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
@@ -105,9 +107,16 @@ class Toolbar extends PureComponent {
 		let topOfElement = el.offsetTop - 130
 		window.scroll({ top: topOfElement, behavior: 'smooth' })
 	}
+	handleTooltipClose = () => {
+		this.setState({ tooltip: false });
+	};
+
+	handleTooltipOpen = (id) => {
+		this.setState({ tooltip: id });
+	};
 
 	render() {
-		const { classes, tabs, dontShow, /* data, noSearch, filters, handleFilterKeyword, */ content, width, /*  hashLinks, */ smallMenu, drawer  } = this.props
+		const { classes, tabs, dontShow, /* data, noSearch, filters, handleFilterKeyword, */ content, width, /*  hashLinks, */ smallMenu, drawer } = this.props
 		return (
 			dontShow ? null :
 				<div style={{ height: 48 }}>
@@ -121,16 +130,24 @@ class Toolbar extends PureComponent {
 					}}>
 						{tabs ? <Tabs TabIndicatorProps={{ style: { /* opacity: hashLinks ? 0 : 1 */ } }} id={'tabs'} value={this.state.route} variant={width === 'xs' ? 'scrollable' : undefined} onChange={this.handleTabsChange} classes={{ fixed: classes.noOverflow, root: classes.noOverflow }}>
 							{tabs ? tabs.map((t, i) => {
-								return <Tooltip disableFocusListener title={t.title} enterDelay={500}>
-									<Tab title={t.title}
-										component={(props) => <Link {...props} scroll={this.handleScroll} style={{ color: '#fff' }} />}
-										value={t.id}
-										key={i}
-										smooth
-										classes={{ root: classes.tab }}
-										label={t.label}
-										to={`${t.url}`} />	
-								</Tooltip>
+								return <Tab
+									key={i}
+									onMouseEnter={e => this.setState({ tooltip: t.id })}
+									onMouseLeave={() => this.setState({ tooltip: -1 })}
+									component={(props) => <Link {...props} scroll={this.handleScroll} style={{ color: '#fff' }} />}
+									value={t.id}
+									smooth
+									classes={{ root: classes.tab }}
+									label={<Tooltip open={this.state.tooltip === t.id ? true : false}
+										disableFocusListener
+										title={t.title}
+										interactive
+										enterDelay={500}
+										leaveDelay={0}
+									><div>{t.label}</div></Tooltip>}
+									to={`${t.url}`} />
+
+
 							}) : null}
 						</Tabs> : null}
 						{/* {noSearch ? null : <Search

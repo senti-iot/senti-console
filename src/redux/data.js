@@ -7,11 +7,12 @@ import { getAllOrgs, getOrg } from 'variables/dataOrgs';
 import { getAllCollections, getCollection } from 'variables/dataCollections';
 import { colors } from 'variables/colors';
 import { hist } from 'App';
+import { handleRequestSort } from 'variables/functions';
 /**
  * Special functions
  */
 //eslint-ignore
-function compare (obj1, obj2) {
+function compare(obj1, obj2) {
 	//Loop through properties in object 1
 	if (obj1 === undefined || obj2 === undefined || obj1 === null || obj2 === null) {
 		return false
@@ -19,7 +20,7 @@ function compare (obj1, obj2) {
 	for (var p in obj1) {
 		//Check property exists on both objects
 		if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
- 
+
 		switch (typeof (obj1[p])) {
 			//Deep compare objects
 			case 'object':
@@ -35,7 +36,7 @@ function compare (obj1, obj2) {
 				if (obj1[p] != obj2[p]) return false;
 		}
 	}
- 
+
 	//Check object 2 for any extra properties
 	// eslint-disable-next-line no-redeclare
 	for (var p in obj2) {
@@ -69,7 +70,22 @@ const setCollection = 'SetCollection'
 const setDevice = 'SetDevice'
 const setOrg = 'SetOrganisation'
 const setUser = 'SetUser'
+const sData = 'Sort Data'
 
+export const sortData = (key, property, order) => {
+	return (dispatch, getState) => {
+		let data = getState().data[key]
+		let sortedData = handleRequestSort(property, order, data)
+		dispatch({
+			type: sData,
+			payload: {
+				key,
+				sortedData
+			}
+		})
+
+	}
+}
 export const getUserLS = async (id) => {
 	return async dispatch => {
 		let user = get('user.' + id)
@@ -267,7 +283,8 @@ export const getProjectLS = async (id) => {
 					project = {
 						...rs,
 						dataCollections: rs.dataCollections.map((dc, i) => {
-							return ({ ...dc, color: colors[i] })}),
+							return ({ ...dc, color: colors[i] })
+						}),
 						devices: rs.dataCollections.filter(dc => dc.activeDevice ? true : false).map((dc, i) => dc.activeDevice ? { ...dc.activeDevice, color: colors[i] } : null)
 					}
 					dispatch({
@@ -285,18 +302,21 @@ export const getProjectLS = async (id) => {
 				hist.push('/404')
 			}
 		})
-		
+
 	}
 }
 
 export const setUsers = () => {
 	return dispatch => {
 		let users = get('users')
-		if (users)
+
+		if (users) {
 			dispatch({
 				type: setusers,
 				payload: users
 			})
+			dispatch(sortData('users', 'firstName', 'asc'))
+		}
 		else dispatch({
 			type: gotusers,
 			payload: false
@@ -306,11 +326,13 @@ export const setUsers = () => {
 export const setOrgs = () => {
 	return dispatch => {
 		let orgs = get('orgs')
-		if (orgs)
+		if (orgs) {
 			dispatch({
 				type: setorgs,
 				payload: orgs
 			})
+			dispatch(sortData('orgs', 'name', 'asc'))
+		}
 		else {
 			dispatch({ type: gotorgs, payload: false })
 		}
@@ -319,11 +341,13 @@ export const setOrgs = () => {
 export const setDevices = () => {
 	return dispatch => {
 		let devices = get('devices')
-		if (devices)
+		if (devices) {
 			dispatch({
 				type: setdevices,
 				payload: devices
 			})
+			dispatch(sortData('devices', 'name', 'asc'))
+		}
 		else {
 			dispatch({ type: gotdevices, payload: false })
 		}
@@ -332,25 +356,29 @@ export const setDevices = () => {
 export const setProjects = () => {
 	return dispatch => {
 		let projects = get('projects')
-		if (projects)
+		if (projects) {
 			dispatch({
 				type: setprojects,
 				payload: projects
 			})
+			dispatch(sortData('projects', 'title', 'asc'))
+		}
 		else {
 			dispatch({ type: gotprojects, payload: false })
 		}
-		
+
 	}
 }
 export const setCollections = () => {
 	return dispatch => {
 		let collections = get('collections')
-		if (collections)
+		if (collections) {
 			dispatch({
 				type: setcollections,
 				payload: collections
 			})
+			dispatch(sortData('collections', 'id', 'asc'))
+		}
 		else {
 			dispatch({ type: gotcollections, payload: false })
 		}
@@ -370,13 +398,9 @@ const renderUserGroup = (user) => {
 export const getAllData = () => {
 	return async dispatch => {
 		dispatch(getUsers())
-
 		dispatch(getProjects())
-
 		dispatch(getCollections())
-
 		dispatch(getDevices())
-
 		dispatch(getOrgs())
 	}
 }
@@ -385,9 +409,6 @@ export const getUsers = (reload) => {
 
 		getAllUsers().then(rs => {
 			let users = rs.map(u => ({ ...u, group: renderUserGroup(u) }))
-			// if (reload) {
-			// 	dispatch({ type: gotusers, payload: false })
-			// }
 			set('users', users)
 			if (reload) {
 				dispatch(setUsers())
@@ -399,9 +420,6 @@ export const getUsers = (reload) => {
 export const getOrgs = (reload) => {
 	return dispatch => {
 		getAllOrgs().then(rs => {
-			// if (reload) {
-			// 	dispatch({ type: gotorgs, payload: false })
-			// }
 			set('orgs', rs)
 			if (reload) {
 				dispatch(setOrgs())
@@ -426,9 +444,9 @@ export const getDevices = (reload) => {
 }
 export const getProjects = (reload) => {
 
-	return dispatch => {		
+	return dispatch => {
 		getAllProjects().then(rs => {
-			set('projects', rs)			
+			set('projects', rs)
 			if (reload) {
 				dispatch(setProjects())
 			}
@@ -463,25 +481,27 @@ const initialState = {
 
 export const data = (state = initialState, { type, payload }) => {
 	switch (type) {
-		case setCollection: 
+		case sData:
+			return Object.assign({}, state, { [payload.key]: payload.sortedData })
+		case setCollection:
 			return Object.assign({}, state, { collection: payload })
-		case gotCollection: 
+		case gotCollection:
 			return Object.assign({}, state, { gotCollection: payload })
-		case setDevice: 
+		case setDevice:
 			return Object.assign({}, state, { device: payload })
-		case gotDevice: 
+		case gotDevice:
 			return Object.assign({}, state, { gotDevice: payload })
-		case setOrg: 
+		case setOrg:
 			return Object.assign({}, state, { org: payload })
-		case gotOrg: 
+		case gotOrg:
 			return Object.assign({}, state, { gotOrg: payload })
-		case setUser: 
+		case setUser:
 			return Object.assign({}, state, { user: payload })
-		case gotUser: 
+		case gotUser:
 			return Object.assign({}, state, { gotUser: payload })
-		case setProject: 
+		case setProject:
 			return Object.assign({}, state, { project: payload })
-		case gotProject: 
+		case gotProject:
 			return Object.assign({}, state, { gotProject: payload })
 		case gotusers:
 			return Object.assign({}, state, { gotusers: payload })

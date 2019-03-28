@@ -19,7 +19,7 @@ import { Paper, withStyles } from '@material-ui/core';
 import TableToolbar from 'components/Table/TableToolbar';
 import projectStyles from 'assets/jss/views/projects';
 import { customFilterItems } from 'variables/Filters';
-import { getUsers, getOrgs, setUsers, setOrgs } from 'redux/data';
+import { getUsers, getOrgs, setUsers, setOrgs, sortData } from 'redux/data';
 
 class Management extends Component {
 	constructor(props) {
@@ -84,14 +84,7 @@ class Management extends Component {
 			setUsers()
 			setOrgs()
 		}
-
-		// let users = await getAllUsers().then(rs => rs)
-		// let orgs = await getAllOrgs().then(rs => rs)
-		// this.setState({
-		// 	users: users ? users.map(u => ({ ...u, group: this.renderUserGroup(u) })) : [],
-		// 	orgs: orgs ? orgs : [],
-		// 	loading: false
-		// })
+		this.props.sortData('users', 'firstName', 'asc')
 	}
 
 	dTypes = () => {
@@ -230,7 +223,6 @@ class Management extends Component {
 		}
 		this.setState({ selected: [] })
 	}
-
 	handleRequestSort = (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
 		if (property !== this.state.orderBy) {
@@ -323,7 +315,8 @@ const mapDispatchToProps = (dispatch) => ({
 	getUsers: (reload) => dispatch(getUsers(reload)),
 	getOrgs: (reload) => dispatch(getOrgs(reload)),
 	setUsers: () => dispatch(setUsers()),
-	setOrgs: () => dispatch(setOrgs())
+	setOrgs: () => dispatch(setOrgs()),
+	sortData: (key, property, order) => dispatch(sortData(key, property, order))
 })
 
 export default withRouter(withStyles(projectStyles)(withSnackbar()(withLocalization()(connect(mapStateToProps, mapDispatchToProps)(Management)))))
