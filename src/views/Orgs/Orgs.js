@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { withStyles, Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
-import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
 import OrgTable from 'components/Orgs/OrgTable';
 import { People, Business, PictureAsPdf, Delete, Edit, Star, StarBorder, Add } from 'variables/icons';
@@ -15,12 +14,11 @@ class Orgs extends Component {
 		super(props)
 
 		this.state = {
-			orgs: [],
 			selected: [],
 			openDelete: false,
 			loading: true,
 			route: 1,
-			order: 'desc',
+			order: 'asc',
 			orderBy: 'name',
 			filters: {
 				keyword: '',
@@ -166,7 +164,7 @@ class Orgs extends Component {
 			}
 		}
 	}
-	componentDidUpdate = async (prevState, prevProps) => {
+	componentDidUpdate = async (prevProps, prevState) => {
 		if (prevProps.orgs !== this.props.orgs) {
 			if (this.state.selected.length > 0)
 				if (this.state.selected.length > 0) {
@@ -184,8 +182,9 @@ class Orgs extends Component {
 		if (property !== this.state.orderBy) {
 			order = 'asc'
 		}
-		let newData = handleRequestSort(property, order, this.props.orgs)
-		this.setState({ orgs: newData, order, orderBy: property })
+		handleRequestSort(property, order, this.props.orgs)
+		// this.props.sortData('orgs', property, order)
+		this.setState({ order, orderBy: property })
 	}
 	filterItems = (data) => {
 		const rFilters = this.props.filters
@@ -193,11 +192,7 @@ class Orgs extends Component {
 	}
 
 	getData = async () => {
-		if (this.props.orgs) {
-			this.setState({
-				loading: false
-			}, () => this.handleRequestSort(null, 'name', 'asc'))
-		}
+
 	}
 
 	tabs = [
@@ -275,38 +270,37 @@ class Orgs extends Component {
 	}
 
 	renderOrgs = () => {
-		const { t, classes } = this.props
-		const { loading, order, orderBy, orgs, selected } = this.state
+		const { t, classes, orgs } = this.props
+		const {  order, orderBy, selected } = this.state
 		return <GridContainer justify={'center'}>
-			{loading ? <CircularLoader /> :
-				<Fade in={true}>
-					<Paper className={classes.root}>
-						{this.renderConfirmDelete()}
-						<TableToolbar
-							ft={this.ftOrgs()}
-							reduxKey={'orgs'}
-							anchorElMenu={this.state.anchorElMenu}
-							handleToolbarMenuClose={this.handleToolbarMenuClose}
-							handleToolbarMenuOpen={this.handleToolbarMenuOpen}
-							numSelected={selected.length}
-							options={this.options}
-							t={t}
-							content={this.renderTableToolBarContent()}
-						/>
-						<OrgTable
-							data={this.filterItems(orgs)}
-							tableHead={this.orgsHeader()}
-							handleRequestSort={this.handleRequestSort}
-							handleDeleteOrgs={this.handleDeleteOrgs}
-							handleCheckboxClick={this.handleCheckboxClick}
-							handleSelectAllClick={this.handleSelectAllClick}
-							orderBy={orderBy}
-							selected={selected}
-							order={order}
-							t={t}
-						/></Paper>
-				</Fade>
-			}
+			<Fade in={true}>
+				<Paper className={classes.root}>
+					{this.renderConfirmDelete()}
+					<TableToolbar
+						ft={this.ftOrgs()}
+						reduxKey={'orgs'}
+						anchorElMenu={this.state.anchorElMenu}
+						handleToolbarMenuClose={this.handleToolbarMenuClose}
+						handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+						numSelected={selected.length}
+						options={this.options}
+						t={t}
+						content={this.renderTableToolBarContent()}
+					/>
+					<OrgTable
+						data={this.filterItems(orgs)}
+						tableHead={this.orgsHeader()}
+						handleRequestSort={this.handleRequestSort}
+						handleDeleteOrgs={this.handleDeleteOrgs}
+						handleCheckboxClick={this.handleCheckboxClick}
+						handleSelectAllClick={this.handleSelectAllClick}
+						orderBy={orderBy}
+						selected={selected}
+						order={order}
+						t={t}
+					/></Paper>
+			</Fade>
+			
 		</GridContainer>
 	}
 	render() {

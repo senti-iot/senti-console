@@ -21,7 +21,7 @@ class NewSidebar extends Component {
 	changeSmallMenu = () => {
 		this.props.changeSmallMenu(!this.props.smallMenu)
 	}
-	closeDrawer = () => { 
+	closeDrawer = () => {
 		this.props.changeSmallMenu(false)
 	}
 	renderPersistentDrawer = () => {  //Hide Completely
@@ -70,7 +70,7 @@ class NewSidebar extends Component {
 			</List>
 		</Drawer>
 	}
-	renderPermanentDrawer = () => { 
+	renderPermanentDrawer = () => {
 		const { classes, smallMenu, routes, defaultView, t, headerBorder } = this.props
 
 		return <Drawer
@@ -101,12 +101,12 @@ class NewSidebar extends Component {
 				{routes.map((route, index) => {
 					if (route.redirect) return null;
 					if (route.hideFromSideBar) return null;
-					return <Tooltip placement={'right'} title={ !smallMenu ? t(route.sidebarName) : ''}>
+					return <Tooltip key={index}
+						placement={'right'} title={!smallMenu ? t(route.sidebarName) : ''}>
 						<ListItem component={NavLink}
 							button
 							onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
 							to={route.path + (route.defaultView ? defaultView : '')}
-							key={index}
 							classes={{
 								button: classNames({
 									[classes.buttonOpen]: smallMenu,
@@ -123,7 +123,7 @@ class NewSidebar extends Component {
 			</List>
 		</Drawer>
 	}
-	renderMobileDrawer = () => { 
+	renderMobileDrawer = () => {
 		const { open, classes, handleDrawerToggle, t, routes, defaultView, sideBar } = this.props
 		return <Drawer
 			variant='temporary'
@@ -171,7 +171,7 @@ class NewSidebar extends Component {
 				</List>
 			</div>
 		</Drawer>
-	}	
+	}
 	smallBrand = () => {
 		const { classes, logo, defaultRoute, handleDrawerToggle, history } = this.props
 		return <div className={classes.logo}>
@@ -182,7 +182,7 @@ class NewSidebar extends Component {
 				style={{
 					width: '120px'
 				}}
-				onClick={() => {handleDrawerToggle();history.push(defaultRoute ? defaultRoute : '/')}}
+				onClick={() => { handleDrawerToggle(); history.push(defaultRoute ? defaultRoute : '/') }}
 			>
 				<span
 					className={classes.imageSrc}

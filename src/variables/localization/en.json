@@ -277,11 +277,6 @@
 			"redShort": "Disconnected",
 			"yellow": "Device is connected, but no data is received",
 			"yellowShort": "Receives no data"
-		},
-		"tabs": {
-			"cardView": "Card view",
-			"listView": "List view",
-			"mapView": "Map view"
 		}
 	},
 	"dialogs": {
@@ -944,7 +939,7 @@
 		"history": "Device log"
 	},
 	"tooltips": {
-		"chart" :{
+		"chart": {
 			"type": "Chart type",
 			"period": "Period",
 			"previousPeriod": "Previous Period",
@@ -958,6 +953,10 @@
 		"device": "Device",
 		"user": "User",
 		"org": "Organisation",
-		"collection": "Data collection"
+		"collection": "Data collection",
+		"cardView": "Card view",
+		"listView": "List view",
+		"mapView": "Map view",
+		"favorites": "Favorites"
 	}
 }
