@@ -219,7 +219,6 @@ class Collections extends Component {
 			order = 'asc'
 		}
 		this.props.sortData(property, order)
-		// handleRequestSort(property, order, this.props.collections)
 		this.setState({ order, orderBy: property })
 	}
 	handleCollectionClick = id => e => {

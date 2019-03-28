@@ -97,7 +97,6 @@ class Toolbar extends PureComponent {
 		if (this.props.route !== prevProps.route && this.props.route !== undefined) {
 			this.setState({ route: this.props.route, tooltip: -1 })
 		}
-
 	}
 	handleTabsChange = (e, value) => {
 		this.setState({ route: value })
@@ -137,6 +136,7 @@ class Toolbar extends PureComponent {
 									component={(props) => <Link {...props} scroll={this.handleScroll} style={{ color: '#fff' }} />}
 									value={t.id}
 									smooth
+									onClick={this.handleTooltipClose}
 									classes={{ root: classes.tab }}
 									label={<Tooltip open={this.state.tooltip === t.id ? true : false}
 										disableFocusListener
