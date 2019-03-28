@@ -45,13 +45,16 @@ class Device extends Component {
 		}
 	}
 	format = 'YYYY-MM-DD+HH:mm'
-	tabs = [
-		{ id: 0, title: '', label: <DeviceHub />, url: `#details` },
-		{ id: 1, title: '', label: <Timeline />, url: `#data` },
-		{ id: 2, title: '', label: <Map />, url: `#map` },
-		{ id: 3, title: '', label: <Image />, url: `#images` },
-		{ id: 4, title: '', label: <DeveloperBoard />, url: `#hardware` }
-	]
+	tabs = () => {
+		const { t } = this.props
+		return [
+			{ id: 0, title: t('tabs.details'), label: <DeviceHub />, url: `#details` },
+			{ id: 1, title: t('tabs.data'), label: <Timeline />, url: `#data` },
+			{ id: 2, title: t('tabs.map'), label: <Map />, url: `#map` },
+			{ id: 3, title: t('tabs.images'), label: <Image />, url: `#images` },
+			{ id: 4, title: t('tabs.hardware'), label: <DeveloperBoard />, url: `#hardware` }
+		]
+	}
 	getDevice = async (id) => {
 		const { getDevice } = this.props
 		await getDevice(id).then(async () => {
@@ -133,7 +136,7 @@ class Device extends Component {
 		this.props.setHeader('devices.device', true, prevURL ? prevURL : '/devices/list', 'devices')
 		this.props.setTabs({
 			id: 'device',
-			tabs: this.tabs,
+			tabs: this.tabs(),
 			hashLinks: true,
 			route: 0
 		})

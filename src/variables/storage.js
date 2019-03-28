@@ -5,18 +5,22 @@ let PREFIX = 'senti';
 
 export const setPrefix = (id) => {
 	if (PREFIX.includes(id)) {
-		PREFIX = 'senti.' + id
+		PREFIX = 'senti.' + id + '.'
 	}
 	else {
-		PREFIX = PREFIX + '.' + id
+		PREFIX = PREFIX + '.' + id + '.'
 	}
 }
+export function del(key) {
+	console.log(PREFIX + key)
+	return store.remove(PREFIX + key)
+}
 export function get(key) {
-	return store.get(PREFIX + '.' + key);
+	return store.get(PREFIX + key);
 }
 
 export function set(key, value) {
-	return store.set(PREFIX + '.' + key, value);
+	return store.set(PREFIX + key, value);
 }
 
 function init() {

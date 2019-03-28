@@ -80,8 +80,8 @@ class User extends Component {
 	tabs = () => {
 		const { t } = this.props
 		return [
-			{ id: 0, title: t('devices.tabs.listView'), label: <Person />, url: `#contact` },
-			{ id: 1, title: t('devices.tabs.mapView'), label: <FolderShared />, url: `#log` },
+			{ id: 0, title: t('tabs.details'), label: <Person />, url: `#contact` },
+			{ id: 1, title: t('tabs.userHistory'), label: <FolderShared />, url: `#log` },
 		]
 	}
 	getUser = async id => {
@@ -144,7 +144,16 @@ class User extends Component {
 	}
 	handleDeleteUser = async () => {
 		const { user } = this.props
-		await deleteUser(user.id).then(rs => rs ? this.close() : null)
+		await deleteUser(user.id).then(rs => rs ? () => {
+			let favObj = {
+				id: user.id,
+				type: 'user'
+			}	
+			if (this.props.isFav(favObj)) {
+				this.removeFromFav()
+			}
+			this.close()
+		} : null)
 	}
 	close = (rs) => {
 		this.setState({ openDelete: false })
