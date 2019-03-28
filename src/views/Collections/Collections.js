@@ -7,7 +7,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { deleteCollection, unassignDeviceFromCollection, getCollection } from 'variables/dataCollections';
-import { filterItems } from 'variables/functions';
+import { filterItems, handleRequestSort } from 'variables/functions';
 import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks, Add, LayersClear, Star, StarBorder, SignalWifi2Bar } from 'variables/icons';
 import { GridContainer, CircularLoader, AssignDevice, AssignProject, ItemG, T } from 'components'
 import CollectionsCards from './CollectionsCards';
@@ -140,12 +140,13 @@ class Collections extends Component {
 	addNewCollection = () => this.props.history.push({ pathname: `/collections/new`, prevURL: '/collections/list' })
 	
 	getFavs = () => {
-		const { collections } = this.props
-		console.log(this.props.favorites)
-		let favorites = this.props.favorites.filter(f => f.type === 'collection')
-		let favCollections = favorites.map(f => {
+		const { order, orderBy } = this.state
+		const { favorites, collections } = this.props
+		let favs = favorites.filter(f => f.type === 'collection')
+		let favCollections = favs.map(f => {
 			return collections[collections.findIndex(d => d.id === f.id)]
 		})
+		favCollections = handleRequestSort(orderBy, order, favCollections)
 		return favCollections
 	}
 	addToFav = (favObj) => {

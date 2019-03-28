@@ -19,7 +19,7 @@ import { connect } from 'react-redux'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import OpenStreetMap from 'components/Map/OpenStreetMap';
 import { customFilterItems } from 'variables/Filters';
-import { getDevices, setDevices } from 'redux/data';
+import { getDevices, setDevices, sortData } from 'redux/data';
 
 class Devices extends Component {
 	constructor(props) {
@@ -163,11 +163,13 @@ class Devices extends Component {
 		this.setState({ selected: [] })
 	}
 	getFavs = () => {
+		const { order, orderBy } = this.state
 		const { favorites, devices } = this.props
 		let favs = favorites.filter(f => f.type === 'device')
 		let favDevices = favs.map(f => {
 			return devices[devices.findIndex(d => d.id === f.id)]
 		})
+		favDevices = handleRequestSort(orderBy, order, favDevices)
 		return favDevices
 	}
 	getDeviceNames = () => { 
@@ -200,12 +202,6 @@ class Devices extends Component {
 		setDevices()
 		if (reload)
 			getDevices(true)
-		// await getAllDevices().then(rs => {
-		// 	return this._isMounted ? this.setState({
-		// 		devices: rs ? rs : [],
-		// 		loading: false
-		// 	}, () => this.handleRequestSort(null, 'id', 'asc')) : null
-		// })
 	}
 	//#endregion
 
@@ -380,12 +376,13 @@ class Devices extends Component {
 		}
 	}
 
-	handleRequestSort = (event, property, way) => {
+	handleRequestSort = key => (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
 		if (property !== this.state.orderBy) { 
 			order = 'asc'
 		}
-		handleRequestSort(property, order, this.props.devices)
+		this.props.sortData(key, property, order)
+		// handleRequestSort(property, order, this.props.devices)
 		this.setState({ order, orderBy: property })
 	}
 
@@ -454,14 +451,14 @@ class Devices extends Component {
 			t={t} />
 	}
 
-	renderTable = (items, handleClick) => { 
+	renderTable = (items, handleClick, key) => { 
 		const { selected, order, orderBy } = this.state
 		const { t } = this.props
 		return <DeviceTable
 			data={this.filterItems(items)}
 			handleCheckboxClick={this.handleCheckboxClick}//
 			handleClick={handleClick}//
-			handleRequestSort={this.handleRequestSort}//
+			handleRequestSort={this.handleRequestSort(key)}//
 			handleSelectAllClick={this.handleSelectAllClick}//
 			order={order}
 			orderBy={orderBy}
@@ -493,7 +490,7 @@ class Devices extends Component {
 				{this.renderAssignOrg()}
 				{this.renderConfirmUnassign()}
 				{this.renderTableToolbar()}
-				{this.renderTable(this.getFavs(), this.handleFavClick)}
+				{this.renderTable(this.getFavs(), this.handleFavClick, 'favorites')}
 			</Paper>
 		</GridContainer>
 
@@ -509,7 +506,7 @@ class Devices extends Component {
 						{this.renderAssignOrg()}
 						{this.renderConfirmUnassign()}
 						{this.renderTableToolbar()}
-						{this.renderTable(devices, this.handleDeviceClick)}
+						{this.renderTable(devices, this.handleDeviceClick, 'devices')}
 					</Paper>
 				</GridContainer>				
 			</Fade>
@@ -565,7 +562,8 @@ const mapDispatchToProps = (dispatch) => ({
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
 	finishedSaving: () => dispatch(finishedSaving()),
 	getDevices: reload => dispatch(getDevices(reload)),
-	setDevices: () => dispatch(setDevices())
+	setDevices: () => dispatch(setDevices()),
+	sortData: (key, property, order) => dispatch(sortData(key, property, order))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(projectStyles)(Devices))
