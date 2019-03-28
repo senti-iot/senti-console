@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { changeLanguage } from 'redux/localization';
-
+import ReactMarkdown from 'react-markdown'
 var replace = String.prototype.replace
 var dollarRegex = /\$/g
 var dollarBillsYall = '$$'
 var defaultTokenRegex = /%\{(.*?)\}/g
+// var defaultUpperCaseRegex = /\^(.*?)\^/g
 var has = require('has')
 
 class TProvider extends Component {
@@ -30,18 +31,21 @@ class TProvider extends Component {
 		if (substitutions == null) {
 			return phrase
 		}
-
 		var result = phrase
 		var interpolationRegex = tokenRegex || defaultTokenRegex
-
-		var options = typeof substitutions === 'number' ? { smart_count: substitutions } : substitutions
-
-		result = replace.call(result, interpolationRegex, function (expression, argument) {
-			if (!has(options, argument) || options[argument] == null) { return expression }
-			return replace.call(options[argument], dollarRegex, dollarBillsYall)
-		})
-
-		return result
+		var options = typeof substitutions === 'number' ? { smart_count: substitutions } : substitutions		
+		result = replace.call(result, interpolationRegex,
+			function (expression, argument) {
+				if (!has(options, argument) || options[argument] == null) {
+					return expression
+				}
+				return replace.call(options[argument], dollarRegex, dollarBillsYall)
+			})
+		if (substitutions.type === 'markdown')
+			return <ReactMarkdown source={result} />
+		else {
+			return result
+		}
 	}
 	t = (key, options) => {
 		var phrase, result

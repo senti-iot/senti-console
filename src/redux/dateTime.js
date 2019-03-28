@@ -44,7 +44,7 @@ const menuSelect = (p) => {
 	return { to, from }
 }
 export const setDates = (periods) => {
-	let newPeriods = periods
+	let newPeriods = periods ? periods : []
 	if (newPeriods.length > 0)
 		newPeriods.forEach(p => { 
 			let toFrom = menuSelect(p)

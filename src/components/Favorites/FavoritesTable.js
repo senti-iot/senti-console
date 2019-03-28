@@ -1,6 +1,6 @@
 import {
 	Checkbox, Hidden, Table, TableBody, TableCell,
-	TableRow, Typography, withStyles,
+	TableRow, Typography, withStyles, Tooltip,
 } from '@material-ui/core';
 import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
 import PropTypes from 'prop-types';
@@ -24,6 +24,7 @@ class FavoriteTable extends React.Component {
 			anchorElMenu: null,
 			anchorFilterMenu: null,
 		};
+		// props.setBC(props.t('sidebar.favorites'), 'favorites')
 	}
 
 	handleFilterMenuOpen = e => {
@@ -54,17 +55,28 @@ class FavoriteTable extends React.Component {
 
 	isSelected = id => this.props.selected.indexOf(id) !== -1;
 	renderIcon = (type) => {
+		const { t } = this.props
 		switch (type) {
 			case 'project':
-				return <LibraryBooks />
+				return <Tooltip title={t('tooltips.project')}>
+					<LibraryBooks />
+				</Tooltip>
 			case 'device': 
-				return <DeviceHub />
+				return <Tooltip title={t('tooltips.device')}>
+					<DeviceHub />
+				</Tooltip>
 			case 'user': 
-				return <Person />
+				return <Tooltip title={t('tooltips.user')}>
+					<Person />
+				</Tooltip>
 			case 'org': 
-				return <Business />
+				return <Tooltip title={t('tooltips.org')}>
+					<Business />
+				</Tooltip>
 			case 'collection': 
-				return <DataUsage />
+				return <Tooltip title={t('tooltips.collection')}>
+					<DataUsage />
+				</Tooltip>
 			default:
 				break;
 		}

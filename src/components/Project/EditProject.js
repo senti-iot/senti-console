@@ -1,14 +1,12 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Grid, Collapse, Button } from '@material-ui/core';
-import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
-import MomentUtils from '@date-io/moment';
+import { Paper, withStyles, Fade,  Collapse, Button } from '@material-ui/core';
 import cx from 'classnames'
 import Gravatar from 'react-gravatar'
-import { KeyboardArrowRight as KeyArrRight, KeyboardArrowLeft as KeyArrLeft, Save, Check, Close } from 'variables/icons';
+import { Check, Close } from 'variables/icons';
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { updateProject, getProject } from 'variables/dataProjects';
-import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning, ItemG } from 'components'
+import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning, ItemG, DatePicker } from 'components'
 import { isFav, updateFav } from 'redux/favorites';
 import { connect } from 'react-redux'
 import { getAllUsers } from 'variables/dataUsers';
@@ -83,7 +81,15 @@ class EditProject extends Component {
 				return ''
 		}
 	}
+
+	keyHandler = (e) => {
+		if (e.key === 'Escape') {
+			this.goToProject()
+		}
+	}
 	componentDidMount = async () => {
+		window.addEventListener('keydown', this.keyHandler, false)
+
 		this._isMounted = 1
 		let id = this.props.match.params.id
 		const { location } = this.props
@@ -105,6 +111,7 @@ class EditProject extends Component {
 					project: p,
 					user: p.user
 				})
+				this.props.setBC('editproject', p.title, p.id)
 			}
 		})
 		this.setState({
@@ -115,6 +122,8 @@ class EditProject extends Component {
 	}
 
 	componentWillUnmount = () => {
+		window.removeEventListener('keydown', this.keyHandler, false)
+
 		this._isMounted = 0
 		clearTimeout(this.timer)
 	}
@@ -178,6 +187,10 @@ class EditProject extends Component {
 			openUser: false,
 		})
 	}
+	goToProject = () => {
+		const { history, location } = this.props
+		history.push(location.prevURL ? location.prevURL : '/project/' + this.props.match.params.id)
+	}
 	close = () => {
 		const { isFav, updateFav } = this.props
 		const { project } = this.state
@@ -238,15 +251,15 @@ class EditProject extends Component {
 					</Hidden>
 					<Hidden lgUp>
 						<ItemG container alignItems={'center'}>
-							<ItemG xs={4} container alignItems={'center'}>
+							<ItemG xs={12} container alignItems={'center'}>
 								<IconButton color={'inherit'} onClick={this.handleCloseUser} aria-label='Close'>
 									<Close />
 								</IconButton>
 								<Typography variant='h6' color='inherit' className={classes.flex}>
-									{t('orgs.pageTitle')}
+									{t('users.pageTitle')}
 								</Typography>
 							</ItemG>
-							<ItemG xs={8} container alignItems={'center'} justify={'center'}>
+							<ItemG xs={12} container alignItems={'center'} justify={'center'}>
 								<Search
 									noAbsolute
 									fullWidth
@@ -264,7 +277,7 @@ class EditProject extends Component {
 				{users ? filterItems(users, filters).map((o, i) => {
 					return <Fragment key={i}>
 						<ListItem button onClick={this.handleChangeUser(o)}>
-							<Gravatar default='mp' email={o.email} className={classes.img} />}
+							<Gravatar default='mp' email={o.email} className={classes.img} />
 							<ListItemText primary={`${o.firstName} ${o.lastName}`} secondary={o.org.name} />
 						</ListItem>
 						<Divider />
@@ -284,8 +297,8 @@ class EditProject extends Component {
 		return (
 			!loading ?
 				<GridContainer justify={'center'}>
-					<Paper className={classes.paper}>
-						<MuiPickersUtilsProvider utils={MomentUtils} moment={moment}>
+					<Fade in={true}>
+						<Paper className={classes.paper}>
 							<form className={classes.form}>
 								<ItemGrid xs={12}>
 									<Collapse in={this.state.error}>
@@ -326,37 +339,17 @@ class EditProject extends Component {
 								</ItemGrid>
 								<ItemGrid xs={12} md={6}>
 									<DatePicker
-										autoOk
-										label={t('projects.fields.startDate')}
-										clearable
-										labelFunc={(date, invalidLabel) => date === null ? '' : moment(date).format('LL')}
-										format='YYYY-MM-DDTHH:mm'
+										label={t('projects.fields.endDate')}
 										value={this.state.project.startDate}
 										onChange={this.handleDateChange('startDate')}
-										animateYearScrolling={false}
-										color='primary'
-										rightArrowIcon={<KeyArrRight />}
-										leftArrowIcon={<KeyArrLeft />}
-										InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-										InputProps={{ classes: { underline: classes.underline } }}
 										error={error}
 									/>
 								</ItemGrid>
 								<ItemGrid xs={12} md={6}>
 									<DatePicker
-										color='primary'
-										autoOk
 										label={t('projects.fields.endDate')}
-										clearable
-										labelFunc={(date, invalidLabel) => date === null ?  '' : date.format('LL') }
-										format='YYYY-MM-DDTHH:mm'
 										value={this.state.project.endDate}
 										onChange={this.handleDateChange('endDate')}
-										animateYearScrolling={false}
-										rightArrowIcon={<KeyArrRight />}
-										leftArrowIcon={<KeyArrLeft />}
-										InputLabelProps={{ FormLabelClasses: { root: classes.label, focused: classes.focused } }}
-										InputProps={{ classes: { underline: classes.underline } }}
 										error={error}
 									/>
 								</ItemGrid>
@@ -380,29 +373,38 @@ class EditProject extends Component {
 									<CircularLoader notCentered />
 								</Collapse>
 							</ItemGrid>
-							<Grid container justify={'center'}>
+							<ItemGrid container style={{ margin: 16 }}>
 								<div className={classes.wrapper}>
 									<Button
-										variant='contained'
+										variant='outlined'
+										// color={'danger'}
+										onClick={this.goToProject}
+										className={classes.redButton}
+									>
+										{t('actions.cancel')}
+									</Button>
+								</div>
+								<div className={classes.wrapper}>
+									<Button
+										variant='outlined'
 										color='primary'
 										className={buttonClassname}
 										disabled={this.state.creating || this.state.created}
 										onClick={ this.handleUpdateProject}>
 										{this.state.created ?
 											<Fragment><Check className={classes.leftIcon} />{t('snackbars.redirect')}</Fragment>
-											: <Fragment><Save className={classes.leftIcon} />{t('projects.updateProject')}</Fragment>}
+											: t('actions.save')}
 									</Button>
 								</div>
-							</Grid>
-
-						</MuiPickersUtilsProvider>
-					</Paper>
+							</ItemGrid>
+						</Paper>
+					</Fade>
 				</GridContainer>
 				: <CircularLoader />
 		)
 	}
 }
-const mapStateToProps = (state) => ({
+const mapStateToProps = () => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({

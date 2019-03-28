@@ -1,3 +1,5 @@
+import { red } from '@material-ui/core/colors';
+
 export const settingsStyles = theme => ({
 	list: {
 		width: "100%"
@@ -20,5 +22,13 @@ export const settingsStyles = theme => ({
 	icon: {
 		color: theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.54)' : '#fff',
 		marginRight: 4
+	},
+	red: {
+		// color: '#fff',
+		color: red[600],
+		// ...dangerBoxShadow,
+		"&:hover": {
+			color: red[800]
+		}
 	}
 })

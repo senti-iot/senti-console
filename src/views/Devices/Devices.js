@@ -1,15 +1,15 @@
 import React, { Component, Fragment } from 'react'
-import { getAllDevices, getDevice } from 'variables/dataDevices';
+import { getDevice } from 'variables/dataDevices';
 import {
 	withStyles, Paper, Dialog, DialogTitle, DialogContent,
-	DialogContentText, DialogActions, Button } from '@material-ui/core';
+	DialogContentText, DialogActions, Button, Fade } from '@material-ui/core';
 import { Switch, Route, Redirect } from 'react-router-dom'
 import projectStyles from 'assets/jss/views/projects';
 import DeviceTable from 'components/Devices/DeviceTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
 import { ViewList, ViewModule, Map, Build, Business, DataUsage, Edit, LayersClear, SignalWifi2Bar, Star, StarBorder } from 'variables/icons'
-import Toolbar from 'components/Toolbar/Toolbar'
+// import Toolbar from 'components/Toolbar/Toolbar'
 import { filterItems, handleRequestSort } from 'variables/functions';
 import DevicesCards from './DevicesCards'
 import { unassignDeviceFromCollection } from 'variables/dataCollections';
@@ -19,6 +19,7 @@ import { connect } from 'react-redux'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import OpenStreetMap from 'components/Map/OpenStreetMap';
 import { customFilterItems } from 'variables/Filters';
+import { getDevices, setDevices } from 'redux/data';
 
 class Devices extends Component {
 	constructor(props) {
@@ -30,7 +31,6 @@ class Devices extends Component {
 			openAssignCollection: false,
 			openAssignOrg: false,
 			openUnassign: false,
-			loading: true,
 			route: 0,
 			order: 'asc',
 			orderBy: 'id',
@@ -39,6 +39,12 @@ class Devices extends Component {
 			}
 		}
 		props.setHeader('devices.pageTitle', false, '', 'devices')
+		props.setTabs({
+			id: 'devices',
+			tabs: this.tabs(),
+			route: this.handleTabs()
+		})
+		props.setBC('devices')
 	}
 	
 	//#region Constants
@@ -113,8 +119,8 @@ class Devices extends Component {
 		]
 	}
 	options = () => {
-		const { t, accessLevel, isFav } = this.props
-		const { devices, selected } =  this.state
+		const { t, accessLevel, isFav, devices } = this.props
+		const { selected } =  this.state
 		let device = devices[devices.findIndex(d => d.id === selected[0])]
 		let favObj = {
 			id: device.id,
@@ -157,8 +163,7 @@ class Devices extends Component {
 		this.setState({ selected: [] })
 	}
 	getFavs = () => {
-		const { devices } = this.state
-		const { favorites } = this.props
+		const { favorites, devices } = this.props
 		let favs = favorites.filter(f => f.type === 'device')
 		let favDevices = favs.map(f => {
 			return devices[devices.findIndex(d => d.id === f.id)]
@@ -166,7 +171,9 @@ class Devices extends Component {
 		return favDevices
 	}
 	getDeviceNames = () => { 
-		const { devices, selected } = this.state
+		const { selected } = this.state		
+		const { devices } = this.props
+
 		let deviceNames = []
 		deviceNames = selected.map(s => devices[devices.findIndex(d => d.id === s)].name)
 		deviceNames = deviceNames.join(", ")
@@ -188,13 +195,17 @@ class Devices extends Component {
 		return customFilterItems(filterItems(data, filters), rFilters)
 	}
 
-	getData = async () => {
-		await getAllDevices().then(rs => {
-			return this._isMounted ? this.setState({
-				devices: rs ? rs : [],
-				loading: false
-			}, () => this.handleRequestSort(null, 'id', 'asc')) : null
-		})
+	getData = async (reload) => {
+		const { getDevices, setDevices } = this.props
+		setDevices()
+		if (reload)
+			getDevices(true)
+		// await getAllDevices().then(rs => {
+		// 	return this._isMounted ? this.setState({
+		// 		devices: rs ? rs : [],
+		// 		loading: false
+		// 	}, () => this.handleRequestSort(null, 'id', 'asc')) : null
+		// })
 	}
 	//#endregion
 
@@ -203,7 +214,7 @@ class Devices extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		this.handleTabs()
-		await this.getData()
+		await this.getData(true)
 	}
 
 	componentDidUpdate = (prevProps) => {
@@ -211,17 +222,20 @@ class Devices extends Component {
 			this.handleTabs()
 		}
 		if (this.props.saved === true) {
-			const { devices, selected } = this.state
+			const { selected } = this.state
+			const { devices } = this.props
 			let device = devices[devices.findIndex(d => d.id === selected[0])]
-			if (this.props.isFav({ id: device.id, type: 'device' })) {
-				this.props.s('snackbars.favorite.saved', { name: device.name, type: this.props.t('favorites.types.device') })
-				this.props.finishedSaving()
-				this.setState({ selected: [] })
-			}
-			if (!this.props.isFav({ id: device.id, type: 'device' })) {
-				this.props.s('snackbars.favorite.removed', { name: device.name, type: this.props.t('favorites.types.device') })
-				this.props.finishedSaving()
-				this.setState({ selected: [] })
+			if (device) {
+				if (this.props.isFav({ id: device.id, type: 'device' })) {
+					this.props.s('snackbars.favorite.saved', { name: device.name, type: this.props.t('favorites.types.device') })
+					this.props.finishedSaving()
+					this.setState({ selected: [] })
+				}
+				if (!this.props.isFav({ id: device.id, type: 'device' })) {
+					this.props.s('snackbars.favorite.removed', { name: device.name, type: this.props.t('favorites.types.device') })
+					this.props.finishedSaving()
+					this.setState({ selected: [] })
+				}
 			}
 		}
 	}
@@ -236,16 +250,16 @@ class Devices extends Component {
 
 	handleTabs = () => {
 		if (this.props.location.pathname.includes('grid')) {
-			this.setState({ route: 2 })
+			// this.setState({ route: 2 })
 			return 2
 		}
 		else {
 			if (this.props.location.pathname.includes('favorites')) {
-				this.setState({ route: 3 })
+				// this.setState({ route: 3 })
 				return 3
 			}
 			else {
-				this.setState({ route: 0 })
+				// this.setState({ route: 0 })
 				return 0
 			}
 		}
@@ -269,8 +283,8 @@ class Devices extends Component {
 
 	handleCloseAssignOrg = async reload => {
 		if (reload) {
-			this.setState({ loading: true, openAssignOrg: false })
-			await this.getData().then(() => {
+			this.setState({ openAssignOrg: false })
+			await this.getData(true).then(() => {
 				this.snackBarMessages(2)
 			})
 		}
@@ -283,8 +297,8 @@ class Devices extends Component {
 
 	handleCloseAssignCollection = async reload => {
 		if (reload) {
-			this.setState({ loading: true, openAssignCollection: false })
-			await this.getData().then(() => {
+			this.setState({ openAssignCollection: false })
+			await this.getData(true).then(() => {
 				this.snackBarMessages(1)
 			})
 		}
@@ -310,7 +324,7 @@ class Devices extends Component {
 	}
 	handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			this.setState({ selected: this.state.devices.map(n => n.id) });
+			this.setState({ selected: this.props.devices.map(n => n.id) });
 			return;
 		}
 		this.setState({ selected: [] });
@@ -347,17 +361,23 @@ class Devices extends Component {
 			deviceId: d.id
 		}))).catch((e) => {
 			this.snackBarMessages(4)
-		}).then(() => { this.handleCloseUnassignDialog() })
+		}).then(() => { this.handleCloseUnassignDialog(true) })
 	}
 
 	handleOpenUnassignDialog = () => {
 		this.setState({ openUnassign: true, anchorElMenu: null })
 	}
 
-	handleCloseUnassignDialog = async () => {
-		this.setState({ openUnassign: false })
-		this.snackBarMessages(3)
-		await this.getData()
+	handleCloseUnassignDialog = msg => async e => {
+		if (e) {
+			e.preventDefault()
+		}
+		this.setState({ openUnassign: false, anchorElMenu: null })
+		if (msg)
+		{
+			this.snackBarMessages(3)
+			await this.getData(true)
+		}
 	}
 
 	handleRequestSort = (event, property, way) => {
@@ -365,22 +385,22 @@ class Devices extends Component {
 		if (property !== this.state.orderBy) { 
 			order = 'asc'
 		}
-		let newData = handleRequestSort(property, order, this.state.devices)
-		this.setState({ devices: newData, order, orderBy: property })
+		handleRequestSort(property, order, this.props.devices)
+		this.setState({ order, orderBy: property })
 	}
 
 	//#endregion
 
 	renderConfirmUnassign = () => {
-		const { openUnassign, selected, devices } = this.state
-		const { t } = this.props
+		const { openUnassign, selected } = this.state
+		const { t, devices } = this.props
 		return <Dialog
 			open={openUnassign}
-			onClose={this.handleCloseUnassignDialog}
+			onClose={this.handleCloseUnassignDialog(false)}
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('dialogs.unassign.title.devicesFromCollection')}</DialogTitle>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.unassign.title.devicesFromCollection')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.unassign.message.devicesFromCollection')}
@@ -394,7 +414,7 @@ class Devices extends Component {
 				</div>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={this.handleCloseUnassignDialog} color='primary'>
+				<Button onClick={this.handleCloseUnassignDialog(false)} color='primary'>
 					{t('actions.no')}
 				</Button>
 				<Button onClick={this.handleUnassignDevices} color='primary' autoFocus>
@@ -424,8 +444,8 @@ class Devices extends Component {
 	}
 
 	renderAssignOrg = () => { 
-		const { selected, openAssignOrg, devices } = this.state
-		const { t } = this.props
+		const { selected, openAssignOrg } = this.state
+		const { t, devices } = this.props
 		return <AssignOrg
 			devices
 			open={openAssignOrg}
@@ -466,9 +486,7 @@ class Devices extends Component {
 	}
 
 	renderFavorites = () => {
-		const { classes } = this.props
-		const { loading } = this.state
-
+		const { classes, loading } = this.props
 		return loading ? this.renderLoader() : <GridContainer justify={'center'}>
 			<Paper className={classes.root}>
 				{this.renderAssignDC()}
@@ -482,28 +500,30 @@ class Devices extends Component {
 	}
 
 	renderList = () => {
-		const { classes } = this.props
-		const { devices, loading } = this.state
-		return loading ? this.renderLoader() : <GridContainer justify={'center'}>
-			<Paper className={classes.root}>
-				{this.renderAssignDC()}
-				{this.renderAssignOrg()}
-				{this.renderConfirmUnassign()}
-				{this.renderTableToolbar()}
-				{this.renderTable(devices, this.handleDeviceClick)}
-			</Paper>
-		</GridContainer>
+		const { classes, devices, loading } = this.props
+		return loading ? this.renderLoader() : 				
+			<Fade in={true}>
+				<GridContainer justify={'center'}>
+					<Paper className={classes.root}>
+						{this.renderAssignDC()}
+						{this.renderAssignOrg()}
+						{this.renderConfirmUnassign()}
+						{this.renderTableToolbar()}
+						{this.renderTable(devices, this.handleDeviceClick)}
+					</Paper>
+				</GridContainer>				
+			</Fade>
+
 	}
 
 	renderCards = () => {
-		const { loading } = this.state
-		const { t } = this.props 
-		return loading ? this.renderLoader() : <DevicesCards t={t} devices={this.filterItems(this.state.devices)}/> 
+		// const {  } = this.state
+		const { t, loading } = this.props 
+		return loading ? this.renderLoader() : <DevicesCards t={t} devices={this.filterItems(this.props.devices)}/> 
 	}
 
 	renderMap = () => {
-		const { devices, loading } = this.state
-		const { classes, mapTheme, t } = this.props
+		const { classes, mapTheme, t, devices, loading } = this.props
 		return loading ? <CircularLoader /> : <GridContainer container justify={'center'} >
 			<Paper className={classes.paper}>
 				<OpenStreetMap
@@ -515,19 +535,9 @@ class Devices extends Component {
 	}
 
 	render() {
-		const { devices, filters, route } = this.state
-		const { history, match } = this.props
+		const { match  } = this.props
 		return (
 			<Fragment>
-				<Toolbar
-					data={devices}
-					filters={filters}
-					history={history}
-					route={route}
-					match={match}
-					handleFilterKeyword={this.handleFilterKeyword}
-					tabs={this.tabs()}
-				/>
 				<Switch>
 					<Route path={`${match.path}/map`} render={() => this.renderMap()} />
 					<Route path={`${match.path}/list`} render={() => this.renderList()} />
@@ -544,14 +554,18 @@ const mapStateToProps = (state) => ({
 	favorites: state.favorites.favorites,
 	saved: state.favorites.saved,
 	mapTheme: state.settings.mapTheme,
-	filters: state.appState.filters.devices
+	filters: state.appState.filters.devices,
+	loading: !state.data.gotdevices,
+	devices: state.data.devices
 })
 
 const mapDispatchToProps = (dispatch) => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving())
+	finishedSaving: () => dispatch(finishedSaving()),
+	getDevices: reload => dispatch(getDevices(reload)),
+	setDevices: () => dispatch(setDevices())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(projectStyles)(Devices))

@@ -13,6 +13,7 @@ function renderInputComponent(inputProps) {
 	const { classes, inputRef = () => { }, ref, ...other } = inputProps;
 	return (
 		<TextField
+			variant={'outlined'}
 			margin='normal'
 			InputProps={{
 				inputRef: node => {
@@ -55,7 +56,7 @@ function getSuggestionValue(suggestion) {
 
 const styles = theme => ({
 	textField: {
-		margin: theme.spacing.unit * 2
+		// margin: theme.spacing.unit * 2
 	},
 	root: {
 		flexGrow: 1,
@@ -65,10 +66,10 @@ const styles = theme => ({
 	},
 	suggestionsContainerOpen: {
 		position: 'absolute',
-		zIndex: 1,
+		zIndex: 1040,
 		marginTop: theme.spacing.unit,
 		left: 0,
-		right: 0,
+		right: 'auto',
 	},
 	suggestion: {
 		display: 'block',

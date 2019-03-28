@@ -34,15 +34,16 @@ class FilterToolbar extends Component {
 	componentDidMount = () => {
 		window.addEventListener('keydown', this.handleWindowKeyPress, false)
 	}
-
+	
 	handleClick = e => {
 		window.removeEventListener('keydown', this.handleWindowKeyPress, false)
 		if (this.state.actionAnchor === null) {
-			this.setState({ actionAnchor: this.input });
+			this.setState({ actionAnchor: this.chip.chipRef });
 			window.addEventListener('keydown', this.handleMenuNav, false)
-			this.input.focus()
+			// this.input.focus()
 		}
 		else {
+			window.addEventListener('keydown', this.handleWindowKeyPress, false)
 			this.setState({ actionAnchor: null })
 		}
 	}
@@ -50,8 +51,13 @@ class FilterToolbar extends Component {
 		window.removeEventListener('keydown', this.handleMenuNav, false)
 		window.addEventListener('keydown', this.handleWindowKeyPress, false)
 	}
+	handleFocus = () => { 
+		window.addEventListener('keydown', this.handleMenuNav, false)
+		window.removeEventListener('keydown', this.handleWindowKeyPress, false)
+	}
 	handleClose = () => {
-		this.setState({ actionAnchor: null });
+		window.addEventListener('keydown', this.handleWindowKeyPress, false)
+		this.setState({ actionAnchor: null })
 	}
 	handleWindowKeyPress = e => {
 		const { actionAnchor, openFilterCard } = this.state
@@ -102,6 +108,7 @@ class FilterToolbar extends Component {
 					this.setState({ focusedMenu: focusedMenu === 0 ? filters.length - 1 : focusedMenu - 1 })
 					break;
 				case 27:
+					window.addEventListener('keydown', this.handleWindowKeyPress, false)
 					this.setState({ actionAnchor: null, focusedMenu: -1 })
 					break;
 				default:
@@ -152,26 +159,44 @@ class FilterToolbar extends Component {
 					<FilterInput
 						onBlur={this.handleBlur}
 						inputRef={ref => this.input = ref}
+						chipRef={ref => this.chip = ref}
 						value={this.props.chips[reduxKey]}
 						onBeforeAdd={(chip) => this.onBeforeAdd(chip)}
 						onBeforeDelete={this.handleClose}
 						handleDoubleClick={this.handleDoubleClick}
+						onFocus={this.handleFocus}
 						onAdd={(displayValue, value, key) => this.handleAdd(displayValue, value, key)}
 						onDelete={(deletedChip, i) => this.handleDelete(deletedChip, i)}
-						onClick={this.handleClick}
+						handleClick={this.handleClick}
 						dataSourceConfig={{ id: 'id', text: 'displayValue', value: 'displayValue' }}
+						placeholder={t('actions.search')}
 						fullWidth
 						t={t}
 					/>
 					<Popper
 						open={actionAnchor ? true : false}
 						anchorEl={actionAnchor}
+						placement="bottom-start"
 						transition
 						disablePortal
-						style={{ zIndex: 1028 }}
+						modifiers={{
+							hide: {
+								enabled: false
+							  },
+							flip: {
+							  enabled: false,
+							},
+							preventOverflow: {
+							  enabled: false,
+							  boundariesElement: 'scrollParent',
+							}
+						}}
+						onClose={() => this.setState({ actionAnchor: null })}
+						style={{ zIndex: 1028, marginTop: 8 }}
 					>
 						{({ TransitionProps }) => (
-							<Grow {...TransitionProps} timeout={350}>
+							<Grow {...TransitionProps} timeout={350} style={{ position: "absolute",
+								top: 0 }}>
 								<Paper onClick={e => e.stopPropagation()} >
 									<MenuList>
 										{filters ? filters.map((ft, i) =>

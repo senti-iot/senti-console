@@ -12,9 +12,8 @@ export const getAvailableDevices = async () => {
  * Assign a Device to a collection
  * @function
  * @param {Object} obj - Contains:
- * @param {int} obj.id - Data Collection ID
- * @param {int} obj.deviceId - Device ID
- * @param {Date} obj.start - Date
+ * @param {number} obj.id - Data Collection ID
+ * @param {(array|number)} obj.deviceId - Device ID
  */
 export const assignDeviceToCollection = async (obj) => {
 	let data = await api.post(`/senti/datacollection/assigndevice`, obj).then(rs => rs.data)
@@ -23,8 +22,8 @@ export const assignDeviceToCollection = async (obj) => {
 /**
  * @function
  * @param {Object} obj - Contains:
- * @param {int} obj.id - Data Collection ID
- * @param {int} obj.deviceId - Device ID
+ * @param {number} obj.id - Data Collection ID
+ * @param {number} obj.deviceId - Device ID
  * @param {Date} obj.end - Date
  */
 export const unassignDeviceFromCollection = async (obj) => {
@@ -75,7 +74,7 @@ export const createCollection = async (dc) => {
 /**
  * Delete a Data Collection
  * @function
- * @param {int} id - Data collection Id to be deleted
+ * @param {number} id - Data collection Id to be deleted
  */
 export const deleteCollection = async (id) => {
 	let data = await api.delete(`/senti/datacollection/${id}`).then(rs => rs.data)
@@ -85,10 +84,10 @@ export const deleteCollection = async (id) => {
 /**
  * Get Daily Data
  * @function
- * @param {int} id - Data Collection ID
+ * @param {number} id - Data Collection ID
  * @param {Date} from - YYYY-MM-DDTHH:mm
  * @param {Date} to - YYYY-MM-DDTHH:mm
- * @param {bool} raw - Raw Data
+ * @param {boolean} raw - Raw Data
  */
 export const getDataDaily = async (id, from, to, raw) => {
 	let URL = raw ? `/senti/sentiwi/daily/raw/${id}/${from}/${to}` : `/senti/sentiwi/daily/${id}/${from}/${to}` 
@@ -98,10 +97,10 @@ export const getDataDaily = async (id, from, to, raw) => {
 /**
  * Get Hourly Data 
  * @function
- * @param {int} id - Data Collection ID
+ * @param {number} id - Data Collection ID
  * @param {Date} from - YYYY-MM-DDTHH:mm
  * @param {Date} to - YYYY-MM-DDTHH:mm
- * @param {bool} raw 
+ * @param {boolean} raw 
  */
 export const getDataHourly = async (id, from, to, raw) => {
 	let URL = raw ? `/senti/sentiwi/hourly/raw/${id}/${from}/${to}` : `/senti/sentiwi/hourly/${id}/${from}/${to}`
@@ -112,10 +111,10 @@ export const getDataHourly = async (id, from, to, raw) => {
 /**
  * Get Minutely Data 
  * @function
- * @param {int} id - Data Collection ID
+ * @param {number} id - Data Collection ID
  * @param {Date} from - YYYY-MM-DDTHH:mm
  * @param {Date} to - YYYY-MM-DDTHH:mm
- * @param {bool} raw 
+ * @param {boolean} raw 
  */
 export const getDataMinutely = async (id, from, to, raw) => {
 	let URL = raw ? `/senti/sentiwi/minutely/raw/${id}/${from}/${to}` : `/senti/sentiwi/minutely/${id}/${from}/${to}`
@@ -125,10 +124,10 @@ export const getDataMinutely = async (id, from, to, raw) => {
 /**
  * Get Summary Data 
  * @function
- * @param {int} id - Data Collection ID
+ * @param {number} id - Data Collection ID
  * @param {Date} from - YYYY-MM-DDTHH:mm
  * @param {Date} to - YYYY-MM-DDTHH:mm
- * @param {bool} raw 
+ * @param {boolean} raw 
  */
 export const getDataSummary = async (id, from, to, raw) => {
 	let URL = raw ? `/senti/sentiwi/summary/raw/${id}/${from}/${to}` : `/senti/sentiwi/summary/${id}/${from}/${to}`

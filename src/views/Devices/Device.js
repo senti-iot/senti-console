@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from 'react'
-import { getDevice, getAllPictures, getWeather } from 'variables/dataDevices'
-import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
+import React, { Component } from 'react'
+import { getAllPictures, getWeather } from 'variables/dataDevices'
+import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Fade } from '@material-ui/core'
 import { ItemGrid, AssignOrg, AssignDC, /* DateFilterMenu */ } from 'components'
 import deviceStyles from 'assets/jss/views/deviceStyles'
 import ImageUpload from './ImageUpload'
@@ -12,15 +12,16 @@ import DeviceImages from './DeviceCards/DeviceImages'
 import { connect } from 'react-redux';
 import { unassignDeviceFromCollection, getCollection } from 'variables/dataCollections';
 import moment from 'moment'
-import Toolbar from 'components/Toolbar/Toolbar';
+// import Toolbar from 'components/Toolbar/Toolbar';
 import { Timeline, DeviceHub, Map, DeveloperBoard, Image } from 'variables/icons';
 import teal from '@material-ui/core/colors/teal'
 import { getWifiHourly, getWifiDaily, getWifiMinutely, getWifiSummary } from 'components/Charts/DataModel';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
-import { handleRequestSort } from 'variables/functions';
+import { handleRequestSort, scrollToAnchor } from 'variables/functions';
 import ChartDataPanel from 'views/Charts/ChartDataPanel';
 import ChartData from 'views/Charts/ChartData';
 import Maps from 'views/Maps/MapCard';
+import { getDeviceLS } from 'redux/data';
 
 class Device extends Component {
 	constructor(props) {
@@ -36,6 +37,7 @@ class Device extends Component {
 			loading: true,
 			anchorElHardware: null,
 			img: null,
+			weather: null,
 			//Data Table
 			selected: [],
 			order: 'desc',
@@ -51,26 +53,13 @@ class Device extends Component {
 		{ id: 4, title: '', label: <DeveloperBoard />, url: `#hardware` }
 	]
 	getDevice = async (id) => {
-		await getDevice(id).then(async rs => {
-			if (rs === null)
-				this.props.history.push({
-					pathname: '/404',
-					prevURL: window.location.pathname
-				})
-			else {
-				this.setState({ device: rs, loading: false }, async () => {
-					if (rs.dataCollection) {
-						await this.getDataCollection(rs.dataCollection)
-					}
-					// await this.getHeatMapData()
-					if (rs.lat && rs.long) {
-						let data = await getWeather(rs, moment(), this.props.language)
-						this.setState({ weather: data })
-					}
-
-				})
-
-			}
+		const { getDevice } = this.props
+		await getDevice(id).then(async () => {
+			// if (rs.dataCollection) {
+			// 	await this.getDataCollection(rs.dataCollection)
+			// }
+			// await this.getHeatMapData()
+			
 		})
 	}
 	//#region Data Table func
@@ -79,13 +68,13 @@ class Device extends Component {
 		if (property !== this.state.orderBy) {
 			order = 'asc'
 		}
-		let newData = handleRequestSort(property, order, this.state.devices)
+		let newData = handleRequestSort(property, order, this.props.devices)
 		this.setState({ devices: newData, order, orderBy: property })
 	}
 
 	handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			this.setState({ selected: this.state.devices.map(n => n.id) });
+			this.setState({ selected: this.props.devices.map(n => n.id) });
 			return;
 		}
 		this.setState({ selected: [] });
@@ -119,7 +108,7 @@ class Device extends Component {
 			if (rs) {
 				this.setState({
 					device: {
-						...this.state.device,
+						...this.props.device,
 						project: { id: 0 },
 						dataCollection: rs
 					},
@@ -142,10 +131,23 @@ class Device extends Component {
 
 		let prevURL = this.props.location.prevURL ? this.props.location.prevURL : '/devices/list'
 		this.props.setHeader('devices.device', true, prevURL ? prevURL : '/devices/list', 'devices')
+		this.props.setTabs({
+			id: 'device',
+			tabs: this.tabs,
+			hashLinks: true,
+			route: 0
+		})
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {
-				await this.getDevice(id)
+				await this.getDevice(id).then(() => {
+					this.props.setBC('device', this.props.device.name)
+
+				})
+				if (this.props.location.hash !== '')
+				{
+					scrollToAnchor(this.props.location.hash)
+				}
 			}
 		}
 		else {
@@ -155,14 +157,21 @@ class Device extends Component {
 			})
 		}
 	}
-	componentDidUpdate = (prevProps, prevState) => {
+	componentDidUpdate = async (prevProps, prevState) => {
+		const { device } = this.props
+		if (device) {
+			if (device.lat && device.long && this.state.weather === null) {
+				let data = await getWeather(device, moment(), this.props.language)
+				this.setState({ weather: data })
+			}
+		}
 		if (this.props.saved === true) {
-			if (this.props.isFav({ id: this.state.device.id, type: 'device' })) {
-				this.props.s('snackbars.favorite.saved', { name: this.state.device.name, type: this.props.t('favorites.types.device') })
+			if (this.props.isFav({ id: this.props.device.id, type: 'device' })) {
+				this.props.s('snackbars.favorite.saved', { name: this.props.device.name, type: this.props.t('favorites.types.device') })
 				this.props.finishedSaving()
 			}
-			if (!this.props.isFav({ id: this.state.device.id, type: 'device' })) {
-				this.props.s('snackbars.favorite.removed', { name: this.state.device.name, type: this.props.t('favorites.types.device') })
+			if (!this.props.isFav({ id: this.props.device.id, type: 'device' })) {
+				this.props.s('snackbars.favorite.removed', { name: this.props.device.name, type: this.props.t('favorites.types.device') })
 				this.props.finishedSaving()
 			}
 		}
@@ -175,7 +184,7 @@ class Device extends Component {
 		}
 	}
 	addToFav = () => {
-		const { device } = this.state
+		const { device } = this.props
 		let favObj = {
 			id: device.id,
 			name: device.name,
@@ -185,7 +194,7 @@ class Device extends Component {
 		this.props.addToFav(favObj)
 	}
 	removeFromFav = () => {
-		const { device } = this.state
+		const { device } = this.props
 		let favObj = {
 			id: device.id,
 			name: device.name,
@@ -231,7 +240,8 @@ class Device extends Component {
 		}
 	}
 	getWifiSummary = async (p) => {
-		const { device, hoverID } = this.state
+		const { hoverID } = this.state 	
+		const { device } = this.props
 		let newState = await getWifiSummary('device', [{
 			name: device.name,
 			id: device.id,
@@ -243,7 +253,8 @@ class Device extends Component {
 		return newState
 	}
 	getWifiHourly = async (p) => {
-		const { device, hoverID } = this.state
+		const { hoverID } = this.state 	
+		const { device } = this.props
 		this.setState({ loadingData: true })
 		let newState = await getWifiHourly('device', [{
 			name: device.name,
@@ -256,7 +267,8 @@ class Device extends Component {
 		return newState
 	}
 	getWifiMinutely = async (p) => {
-		const { device, hoverID } = this.state
+		const { hoverID } = this.state 		
+		const { device } = this.props
 		let newState = await getWifiMinutely('device', [{
 			name: device.name,
 			id: device.id,
@@ -268,8 +280,8 @@ class Device extends Component {
 		return newState
 	}
 	getWifiDaily = async (p) => {
-		const { device, hoverID } = this.state
-
+		const { hoverID } = this.state
+		const { device } = this.props
 		let newState = await getWifiDaily('device', [{
 			name: device.name,
 			id: device.id,
@@ -283,10 +295,10 @@ class Device extends Component {
 	}
 
 	snackBarMessages = (msg) => {
-		const { s, t } = this.props
-		const { device, oldCollection } = this.state
-		let name = this.state.device.name ? this.state.device.name : t('devices.noName')
-		let id = this.state.device.id
+		const { s, t, device, } = this.props
+		const { oldCollection } = this.state
+		let name = device.name ? device.name : t('devices.noName')
+		let id = device.id
 		switch (msg) {
 			case 1:
 				s('snackbars.unassign.deviceFromCollection', { device: `${name}(${id})`, collection: `${oldCollection.name}(${oldCollection.id})` })
@@ -317,17 +329,19 @@ class Device extends Component {
 	}
 
 	reload = async (msgId) => {
+		const { device } = this.props
 		this.snackBarMessages(msgId)
 		this.setState({
 			loading: true
 		})
-		await this.getDevice(this.state.device.id)
+		await this.getDevice(device.id)
 	}
 
 	handleCloseAssignOrg = async (reload) => {
+		const { device } = this.props
 		if (reload) {
 			this.setState({ loading: true, openAssignOrg: false })
-			await this.getDevice(this.state.device.id).then(
+			await this.getDevice(device.id).then(
 				() => this.snackBarMessages(4)
 			)
 		}
@@ -341,17 +355,20 @@ class Device extends Component {
 	}
 
 	handleCloseAssign = async (reload) => {
+		const { device } = this.props
+
 		this.setState({ openAssignCollection: false }, () => setTimeout(async () => {
 			if (reload) {
 				this.setState({ loading: true })
-				await this.getDevice(this.state.device.id).then(() => this.snackBarMessages(2))
+				await this.getDevice(device.id).then(() => this.snackBarMessages(2))
 			}
 		}, 300))
 	}
 
 	renderImageUpload = (dId) => {
+		const { device } = this.props
 		const getPics = () => {
-			this.getAllPics(this.state.device.id)
+			this.getAllPics(device.id)
 		}
 		return <ImageUpload dId={dId} imgUpload={this.getAllPics} callBack={getPics} />
 	}
@@ -369,8 +386,8 @@ class Device extends Component {
 	}
 
 	handleUnassign = async () => {
-		const { device } = this.state
-		let collection = this.state.device.dataCollection
+		const { device } = this.props
+		let collection = device.dataCollection
 		this.setState({
 			oldCollection: {
 				name: collection.name,
@@ -385,10 +402,10 @@ class Device extends Component {
 			this.handleCloseUnassign()
 			this.setState({ loading: true, anchorEl: null })
 
-			await this.getDevice(this.state.device.id).then(() => this.snackBarMessages(1))
+			await this.getDevice(device.id).then(() => this.snackBarMessages(1))
 		}
 		else {
-			this.setState({ loading: false, anchorEl: null })
+			this.setState({ anchorEl: null })
 			this.snackBarMessages(3)
 		}
 	}
@@ -404,14 +421,14 @@ class Device extends Component {
 
 	renderConfirmUnassign = () => {
 		const { t } = this.props
-		const { device } = this.state
+		const { device } = this.props
 		return <Dialog
 			open={this.state.openUnassign}
 			onClose={this.handleCloseUnassign}
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('dialogs.unassign.title.deviceFromCollection', { what: t('collections.fields.id') })}</DialogTitle>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.unassign.title.deviceFromCollection', { what: t('collections.fields.id') })}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.unassign.message.deviceFromCollection', { device: `${device.name} (${device.id})`, collection: device.dataCollection.name })}
@@ -439,28 +456,22 @@ class Device extends Component {
 	}
 
 	render() {
-		const { device, loading, /* selected, order, orderBy */ } = this.state
+		const { openAssignCollection, openAssignOrg, weather, heatData } = this.state
+		const { device, loading, /* selected, order, orderBy */ } = this.props
 		return (
-			!loading ? <Fragment>
-				<Toolbar
-					hashLinks
-					noSearch
-					history={this.props.history}
-					match={this.props.match}
-					tabs={this.tabs}
-				/>
+			!loading ? <Fade in={true}>
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<AssignDC
 						deviceId={device.id}
-						open={this.state.openAssignCollection}
+						open={openAssignCollection}
 						handleClose={this.handleCloseAssign}
 						handleCancel={this.handleCancelAssign}
 						t={this.props.t}
 					/>
 					<AssignOrg
 						devices
-						deviceId={[this.state.device]}
-						open={this.state.openAssignOrg}
+						deviceId={[device]}
+						open={openAssignOrg}
 						handleClose={this.handleCloseAssignOrg}
 						t={this.props.t}
 					/>
@@ -470,7 +481,7 @@ class Device extends Component {
 							isFav={this.props.isFav({ id: device.id, type: 'device' })}
 							addToFav={this.addToFav}
 							removeFromFav={this.removeFromFav}
-							weather={this.state.weather}
+							weather={weather}
 							device={device}
 							history={this.props.history}
 							match={this.props.match}
@@ -501,12 +512,13 @@ class Device extends Component {
 
 					<ItemGrid xs={12} noMargin id={'map'}>
 						<Maps
+							single
 							reload={this.reload}
-							device={this.state.device}
-							markers={this.state.device ? [this.state.device] : []}
-							loading={this.state.loading}
-							weather={this.state.weather}
-							heatData={this.state.heatData}
+							device={device}
+							markers={device ? [device] : []}
+							loading={loading}
+							weather={weather}
+							heatData={heatData}
 							t={this.props.t}
 						/>
 					</ItemGrid>
@@ -526,7 +538,7 @@ class Device extends Component {
 					</ItemGrid>
 				</GridContainer>
 
-			</Fragment> : this.renderLoader()
+			</Fade> : this.renderLoader()
 		)
 	}
 }
@@ -534,14 +546,17 @@ const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	language: state.settings.language,
 	saved: state.favorites.saved,
-	periods: state.dateTime.periods
+	periods: state.dateTime.periods,
+	device: state.data.device,
+	loading: !state.data.gotDevice
 })
 
 const mapDispatchToProps = (dispatch) => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving())
+	finishedSaving: () => dispatch(finishedSaving()),
+	getDevice: async id => dispatch(await getDeviceLS(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles)(Device))

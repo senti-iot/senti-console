@@ -12,6 +12,7 @@ import { connect } from 'react-redux'
 import { Info, Caption, ItemG } from 'components';
 import TC from 'components/Table/TC'
 import TP from 'components/Table/TP';
+import DeviceHover from 'components/Hover/DeviceHover';
 
 class DeviceTable extends React.Component {
 	constructor(props) {
@@ -19,9 +20,12 @@ class DeviceTable extends React.Component {
 
 		this.state = {
 			page: 0,
+			rowHover: null
 		};
 	}
-	
+
+	timer = null
+
 	handleRequestSort = (event, property) => {
 		this.props.handleRequestSort(event, property)
 	}
@@ -30,8 +34,41 @@ class DeviceTable extends React.Component {
 		this.setState({ page });
 	};
 
-	isSelected = id => {
-		return this.props.selected.indexOf(id) !== -1;
+	isSelected = id => this.props.selected.indexOf(id) !== -1;
+
+	setHover = (e, n) => {
+		// e.persist()
+		const { hoverTime } = this.props
+		const { rowHover } = this.state
+		let target = e.target
+		if (hoverTime > 0)
+			this.timer = setTimeout(() => {
+				if (rowHover !== null) {
+					if (rowHover.id !== n.id) {
+						this.setState({
+							rowHover: null
+						})
+						setTimeout(() => {
+							this.setState({ rowHover: target, hoverDevice: n })
+						}, 200);
+					}
+				}
+				else {
+					this.setState({ rowHover: target, hoverDevice: n })
+				}
+			}, hoverTime);
+	}
+	unsetTimeout = () => {
+		clearTimeout(this.timer)
+	}
+	unsetHover = () => {
+		// console.trace()
+		this.setState({
+			rowHover: null
+		})
+	}
+	renderHover = () => {
+		return <DeviceHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} device={this.state.hoverDevice} />
 	}
 
 	renderIcon = (status) => {
@@ -56,14 +93,15 @@ class DeviceTable extends React.Component {
 		}
 	}
 	render() {
-		const { selected, classes, t, data, order, orderBy, handleClick, handleCheckboxClick, handleSelectAllClick, rowsPerPage  } = this.props;
-		const { page  } = this.state;
+		const { selected, classes, t, data, order, orderBy, handleClick, handleCheckboxClick, handleSelectAllClick, rowsPerPage } = this.props;
+		const { page } = this.state;
 		let emptyRows
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 		return (
 			<Fragment>
-				<div className={classes.tableWrapper}>
+				<div className={classes.tableWrapper} onMouseLeave={this.unsetHover}>
+					{this.renderHover()}
 					<Table className={classes.table} aria-labelledby='tableTitle'>
 						<EnhancedTableHead
 							numSelected={selected.length}
@@ -103,8 +141,8 @@ class DeviceTable extends React.Component {
 										style={{ cursor: 'pointer' }}
 									>
 										<Hidden lgUp>
-											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)}/>} />
-											<TC checkbox content={this.renderIcon(n.liveStatus)}/>
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+											<TC checkbox content={this.renderIcon(n.liveStatus)} />
 											<TC content={
 												<ItemG container alignItems={'center'}>
 													<ItemG xs={12}>
@@ -120,8 +158,11 @@ class DeviceTable extends React.Component {
 												</ItemG>} />
 										</Hidden>
 										<Hidden mdDown>
-											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)}/>}/>
-											<TC label={n.name ? n.name : t('devices.noName')} />
+											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+											<TC
+												onMouseEnter={e => { this.setHover(e, n) }}
+												onMouseLeave={this.unsetTimeout}
+												label={n.name ? n.name : t('devices.noName')} />
 											<TC label={n.id} />
 											<TC content={this.renderIcon(n.liveStatus)} />
 											<TC label={n.address ? n.address : t('devices.noAddress')} />
@@ -157,7 +198,8 @@ DeviceTable.propTypes = {
 };
 const mapStateToProps = (state) => ({
 	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	hoverTime: state.settings.hoverTime
 })
 
 const mapDispatchToProps = {

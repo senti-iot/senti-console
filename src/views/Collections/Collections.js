@@ -1,18 +1,19 @@
-import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton } from '@material-ui/core';
+import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import CollectionTable from 'components/Collections/CollectionTable';
 import TableToolbar from 'components/Table/TableToolbar';
-import Toolbar from 'components/Toolbar/Toolbar';
+// import Toolbar from 'components/Toolbar/Toolbar';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { deleteCollection, getAllCollections, unassignDeviceFromCollection, getCollection } from 'variables/dataCollections';
+import { deleteCollection, unassignDeviceFromCollection, getCollection } from 'variables/dataCollections';
 import { filterItems, handleRequestSort } from 'variables/functions';
 import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks, Add, LayersClear, Star, StarBorder, SignalWifi2Bar } from 'variables/icons';
-import { GridContainer, CircularLoader, AssignDevice, AssignProject, ItemG } from 'components'
+import { GridContainer, CircularLoader, AssignDevice, AssignProject, ItemG, T } from 'components'
 import CollectionsCards from './CollectionsCards';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
+import { setCollections, getCollections } from 'redux/data';
 
 class Collections extends Component {
 	constructor(props) {
@@ -21,7 +22,6 @@ class Collections extends Component {
 		this.state = {
 			selected: [],
 			collections: [],
-			loading: true,
 			openAssignDevice: false,
 			openAssignProject: false,
 			openUnassignDevice: false,
@@ -34,6 +34,12 @@ class Collections extends Component {
 			}
 		}
 		props.setHeader('collections.pageTitle', false, '', 'collections')
+		props.setBC('collections')
+		props.setTabs({
+			id: 'collections',
+			tabs: this.tabs(),
+			route: this.handleTabs()
+		})
 	}
 	//#region Constants
 	tabs = () => {
@@ -87,7 +93,7 @@ class Collections extends Component {
 		let isFavorite = isFav(favObj)
 		let allOptions = [
 			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t('menus.assign.collectionToProject'), func: this.handleOpenAssignProject, single: false, icon: LibraryBooks },
+			{ label: t('menus.assign.collectionToProject'), func: this.handleOpenAssignProject, single: true, icon: LibraryBooks },
 			{ label: t('menus.assign.deviceToCollection'), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
 			{ label: t('menus.unassign.deviceFromCollection'), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear, dontShow: collections[collections.findIndex(c => c.id === selected[0])].activeDeviceStats ? false : true },
 			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
@@ -102,28 +108,26 @@ class Collections extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		this.handleTabs()
-		await this.getData()
+		this.getData()
 
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
-		const { t, location, saved, s, isFav, finishedSaving } = this.props
-
-		if (location.pathname !== prevProps.location.pathname) {
-			this.handleTabs()
-		}
+		const { t, saved, s, isFav, finishedSaving } = this.props
 		if (saved === true) {
 			const { collections, selected } = this.state
 			let collection = collections[collections.findIndex(d => d.id === selected[0])]
-			if (isFav({ id: collection.id, type: 'collection' })) {
-				s('snackbars.favorite.saved', { name: collection.name, type: t('favorites.types.collection') })
-				finishedSaving()
-				this.setState({ selected: [] })
-			}
-			if (!isFav({ id: collection.id, type: 'collection' })) {
-				s('snackbars.favorite.removed', { name: collection.name, type: t('favorites.types.collection') })
-				finishedSaving()
-				this.setState({ selected: [] })
+			if (collection) { 
+				if (isFav({ id: collection.id, type: 'collection' })) {
+					s('snackbars.favorite.saved', { name: collection.name, type: t('favorites.types.collection') })
+					finishedSaving()
+					this.setState({ selected: [] })
+				}
+				if (!isFav({ id: collection.id, type: 'collection' })) {
+					s('snackbars.favorite.removed', { name: collection.name, type: t('favorites.types.collection') })
+					finishedSaving()
+					this.setState({ selected: [] })
+				}
 			}
 		}
 	}
@@ -176,18 +180,13 @@ class Collections extends Component {
 		}
 	}
 	reload = async () => {
-		this.setState({ loading: true })
-		await this.getData()
+		await this.getData(true)
 	}
-	getData = async () => {
-		let collections = await getAllCollections().then(rs => rs)
-		if (this._isMounted) {
-			this.setState({
-				collections: collections ? collections : [],
-				loading: false
-			}, () => this.handleRequestSort(null, 'name', 'asc'))
-
-		}
+	getData = async (reload) => {
+		const { getCollections, setCollections } = this.props
+		setCollections()
+		if (reload)
+			getCollections(true)
 	}
 	//#endregion
 
@@ -201,12 +200,15 @@ class Collections extends Component {
 	handleTabs = () => {
 		const { location } = this.props
 		if (location.pathname.includes('grid'))
-			this.setState({ route: 1 })
+			// this.setState({ route: 1 })
+			return 1
 		else {
 			if (location.pathname.includes('favorites'))
-				this.setState({ route: 2 })
+				// this.setState({ route: 2 })
+				return 2
 			else {
-				this.setState({ route: 0 })
+				// this.setState({ route: 0 })
+				return 0
 			}
 		}
 	}
@@ -215,8 +217,8 @@ class Collections extends Component {
 		if (property !== this.state.orderBy) {
 			order = 'asc'
 		}
-		let newData = handleRequestSort(property, order, this.state.collections)
-		this.setState({ collections: newData, order, orderBy: property })
+		handleRequestSort(property, order, this.props.collections)
+		this.setState({ order, orderBy: property })
 	}
 	handleCollectionClick = id => e => {
 		e.stopPropagation()
@@ -244,15 +246,15 @@ class Collections extends Component {
 		Promise.all([selected.map(u => {
 			return deleteCollection(u)
 		})]).then(async () => {
-			this.setState({ loading: true, openDelete: false, anchorElMenu: null, selected: [] })
-			await this.getData().then(
+			this.setState({ openDelete: false, anchorElMenu: null, selected: [] })
+			await this.getData(true).then(
 				() => this.snackBarMessages(1)
 			)
 		})
 	}
 	handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			this.setState({ selected: this.state.collections.map(n => n.id) })
+			this.setState({ selected: this.props.collections.map(n => n.id) })
 			return;
 		}
 		this.setState({ selected: [] })
@@ -290,8 +292,8 @@ class Collections extends Component {
 
 	handleCloseAssignDevice = async (reload, display) => {
 		if (reload) {
-			this.setState({ loading: true, openAssignDevice: false })
-			await this.getData().then(rs => {
+			this.setState({ openAssignDevice: false })
+			await this.getData(true).then(rs => {
 				this.snackBarMessages(6, display)
 				this.setState({ selected: [] })
 			})
@@ -307,8 +309,8 @@ class Collections extends Component {
 
 	handleCloseAssignProject = async (reload) => {
 		if (reload) {
-			this.setState({ loading: true, openAssignProject: false })
-			await this.getData().then(rs => {
+			this.setState({ openAssignProject: false })
+			await this.getData(true).then(rs => {
 				this.snackBarMessages(6)
 			})
 		}
@@ -343,7 +345,6 @@ class Collections extends Component {
 			}).then(async rs => {
 				if (rs) {
 					this.handleCloseUnassignDevice()
-					this.setState({ loading: true })
 					this.snackBarMessages(1)
 					await this.getCollection(this.state.collection.id)
 				}
@@ -356,8 +357,8 @@ class Collections extends Component {
 	//#endregion
 
 	renderDeviceUnassign = () => {
-		const { t } = this.props
-		const { selected, collections } = this.state
+		const { t, collections } = this.props
+		const { selected  } = this.state
 		let collection = collections[collections.findIndex(c => c.id === selected[0])]
 		if (collection.activeDeviceStats === null)
 			return null
@@ -367,7 +368,7 @@ class Collections extends Component {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('dialogs.unassign.title.devicesFromCollection')}</DialogTitle>
+			<DialogTitle disableTypography id='alert-dialog-title'><T reversed variant={'h6'}>{t('dialogs.unassign.title.devicesFromCollection')}</T></DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.unassign.message.deviceFromCollection', { collection: collection.name, device: collection.activeDeviceStats.id })}
@@ -384,15 +385,15 @@ class Collections extends Component {
 		</Dialog>
 	}
 	renderConfirmDelete = () => {
-		const { openDelete, collections, selected } = this.state
-		const { t, classes } = this.props
+		const { openDelete, selected } = this.state
+		const { t, classes, collections } = this.props
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.collections')}</DialogTitle>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.collections')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.delete.message.collections')}
@@ -415,10 +416,13 @@ class Collections extends Component {
 
 
 	renderTableToolBarContent = () => {
+		const { t } = this.props
 		return <Fragment>
-			<IconButton aria-label='Add new collection' onClick={this.addNewCollection}>
-				<Add />
-			</IconButton>
+			<Tooltip title={t('menus.create.collection')}>
+				<IconButton aria-label='Add new collection' onClick={this.addNewCollection}>
+					<Add />
+				</IconButton>
+			</Tooltip>
 		</Fragment>
 	}
 
@@ -439,7 +443,7 @@ class Collections extends Component {
 		const { selected, openAssignProject } = this.state
 		const { t } = this.props
 		return <AssignProject
-			multiple
+			// multiple
 			collectionId={selected ? selected : []}
 			handleCancel={this.handleCancelAssignProject}
 			handleClose={this.handleCloseAssignProject}
@@ -450,8 +454,8 @@ class Collections extends Component {
 
 	renderAssignDevice = () => {
 		const { selected, openAssignDevice } = this.state
-		const { t } = this.props
-		let collectionOrg = this.state.collections.find(r => r.id === selected[0])
+		const { t, collections } = this.props
+		let collectionOrg = collections.find(r => r.id === selected[0])
 		return <AssignDevice
 			collectionId={selected[0] ? selected[0] : 0}
 			orgId={collectionOrg ? collectionOrg.org.id : 0}
@@ -480,15 +484,14 @@ class Collections extends Component {
 	}
 
 	renderCards = () => {
-		const { loading } = this.state
-		const { t, history } = this.props
+		const { t, history, collections, loading } = this.props
 		return loading ? <CircularLoader /> : 
-			<CollectionsCards collections={this.filterItems(this.state.collections)} t={t} history={history} />
+			<CollectionsCards collections={this.filterItems(collections)} t={t} history={history} />
 	}
 
 	renderFavorites = () => {
-		const { classes } = this.props
-		const { loading, selected } = this.state
+		const { classes, loading } = this.props
+		const { selected } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Paper className={classes.root}>
 				{this.renderAssignProject()}
@@ -503,36 +506,26 @@ class Collections extends Component {
 	}
 
 	renderCollections = () => {
-		const { classes } = this.props
-		const { loading, selected, collections } = this.state
+		const { classes, collections, loading } = this.props
+		const { selected } = this.state
 		return <GridContainer justify={'center'}>
-			{loading ? <CircularLoader /> : <Paper className={classes.root}>
+			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
 				{this.renderAssignProject()}
 				{this.renderAssignDevice()}
 				{selected.length > 0 ? this.renderDeviceUnassign() : null}
 				{this.renderTableToolBar()}
 				{this.renderTable(collections, this.handleCollectionClick)}
 				{this.renderConfirmDelete()}
-			</Paper>
+			</Paper></Fade>
 			}
 		</GridContainer>
 	}
 
 	render() {
-		const { collections, route, filters } = this.state
-		const { history, match } = this.props
+		// const { collections, route, filters } = this.state
+		const { /* history,  */match } = this.props
 		return (
 			<Fragment>
-				<Toolbar
-					data={collections}
-					route={route}
-					filters={filters}
-					history={history}
-					match={match}
-					handleFilterKeyword={this.handleFilterKeyword}
-					tabs={this.tabs()}
-					defaultRoute={0}
-				/>
 				<Switch>
 					<Route path={`${match.path}/list`} render={() => this.renderCollections()} />
 					<Route path={`${match.path}/grid`} render={() => this.renderCards()} />
@@ -549,6 +542,8 @@ const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	favorites: state.favorites.favorites,
 	saved: state.favorites.saved,
+	collections: state.data.collections,
+	loading: !state.data.gotcollections,
 	filters: state.appState.filters.collections
 })
 
@@ -556,7 +551,9 @@ const mapDispatchToProps = (dispatch) => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving())
+	finishedSaving: () => dispatch(finishedSaving()),
+	getCollections: reload => dispatch(getCollections(reload)),
+	setCollections: () => dispatch(setCollections()),
 })
 
 

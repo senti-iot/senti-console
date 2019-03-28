@@ -99,7 +99,7 @@ class DeviceImages extends PureComponent {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.deviceImage')}</DialogTitle>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.deviceImage')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.delete.message.deviceImage')}

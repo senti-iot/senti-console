@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { withStyles, Grid, CircularProgress } from '@material-ui/core';
+import { withStyles, Grid, CircularProgress, Fade } from '@material-ui/core';
 import PropTypes from 'prop-types'
 
 const styles = theme => ({
 	grid: {
-		minHeight: 'calc(100vh - 130px)'
+		minHeight: 'calc(100vh - 300px)'
 	}
 })
 
@@ -13,9 +13,13 @@ const styles = theme => ({
 */
 class CircularLoader extends Component {
 	render() {
-		const { classes, notCentered } = this.props
+		const { classes, notCentered, className } = this.props
 		return (
-			<Grid container justify={'center'} alignItems='center' className={ notCentered ? '' : classes.grid}><CircularProgress /></Grid>
+			<Grid container justify={'center'} alignItems='center' className={ (notCentered ? '' : classes.grid) + ' ' + className}>
+				<Fade in={true}>
+					<CircularProgress />
+				</Fade>
+			</Grid>
 		)
 	}
 }

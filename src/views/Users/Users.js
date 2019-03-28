@@ -1,15 +1,16 @@
 import React, { Component, Fragment } from 'react'
-import { withStyles, Paper, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
+import { withStyles, Paper, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade, Tooltip } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import UserTable from 'components/User/UserTable';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
 import { deleteUser } from 'variables/dataUsers';
-import { People, Business, Add, Delete, PictureAsPdf, Edit, Star, StarBorder, Mail } from 'variables/icons';
+import { People, Business, Add, Delete, Edit, Star, StarBorder, Mail, CloudDownload } from 'variables/icons';
 import { handleRequestSort, copyToClipboard } from 'variables/functions';
 import TableToolbar from 'components/Table/TableToolbar';
 import { Info } from 'components';
 import { customFilterItems } from 'variables/Filters';
+import ExportUsers from 'components/Exports/ExportUsers';
 
 class Users extends Component {
 	constructor(props) {
@@ -25,8 +26,10 @@ class Users extends Component {
 			route: 0,
 			order: 'desc',
 			orderBy: 'firstName',
+			openDownload: false
 		}
 		props.setHeader('users.pageTitle', false, '', 'users')
+		props.setBC('users')
 	}
 	dUserGroup = () => {
 		const { t } = this.props
@@ -125,7 +128,8 @@ class Users extends Component {
 			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
 			{ label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) },
 			{ label: t('menus.copyEmails'), icon: Mail, func: this.handleCopyEmailsSelected },
-			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
+			{ label: t('menus.exportUsers'), icon: CloudDownload, func: this.handleOpenDownloadModal },
+			// { label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
 			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
 	}
@@ -269,7 +273,7 @@ class Users extends Component {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.users')}</DialogTitle>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.users')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.delete.message.users')}
@@ -292,37 +296,60 @@ class Users extends Component {
 			</DialogActions>
 		</Dialog>
 	}
-
+	handleOpenDownloadModal = () => {
+		this.setState({ openDownload: true })
+	}
+	handleCloseDownloadModal = () => { 
+		this.setState({ openDownload: false })
+	}
+	renderExport = () => { 
+		const { users, t } = this.props
+		const { openDownload, selected } = this.state
+		return <ExportUsers
+			data={selected.length > 0 ?  users.filter((el) => {
+				return selected.some((f) => {
+					return f === el.id
+				});
+			}) : users}
+			open={openDownload}
+			handleClose={this.handleCloseDownloadModal}
+			t={t}
+		/>
+	}
 	renderUsers = () => {
 		const { t, classes } = this.props
 		const { loading, selected, order, orderBy, filters, users } = this.state
 		return <GridContainer justify={'center'}>
-			{loading ? <CircularLoader /> : <Paper className={classes.root}>
-				{this.renderConfirmDelete()}
-				<TableToolbar
-					ft={this.ftUsers()}
-					reduxKey={'users'}
-					anchorElMenu={this.state.anchorElMenu}
-					handleToolbarMenuClose={this.handleToolbarMenuClose}
-					handleToolbarMenuOpen={this.handleToolbarMenuOpen}
-					numSelected={selected.length}
-					options={this.options}
-					t={t}
-					content={this.renderTableToolBarContent()}
-				/><UserTable
-					data={this.filterItems(users)}
-					selected={selected}
-					tableHead={this.userHeader()}
-					handleSelectAllClick={this.handleSelectAllClick}
-					handleRequestSort={this.handleRequestSort}
-					handleDeleteUsers={this.handleDeleteUsers}
-					handleCheckboxClick={this.handleCheckboxClick}
-					order={order}
-					orderBy={orderBy}
-					filters={filters}
-					t={t}
-				/>
-			</Paper>}
+			{loading ? <CircularLoader /> : <Fade in={true}>
+				<Paper className={classes.root}>
+					{this.renderConfirmDelete()}
+					{this.renderExport()}
+					<TableToolbar
+						ft={this.ftUsers()}
+						reduxKey={'users'}
+						// anchorElMenu={this.state.anchorElMenu}
+						// handleToolbarMenuClose={this.handleToolbarMenuClose}
+						// handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+						numSelected={selected.length}
+						options={this.options}
+						t={t}
+						content={this.renderTableToolBarContent()}
+					/><UserTable
+						data={this.filterItems(users)}
+						selected={selected}
+						tableHead={this.userHeader()}
+						handleSelectAllClick={this.handleSelectAllClick}
+						handleRequestSort={this.handleRequestSort}
+						handleDeleteUsers={this.handleDeleteUsers}
+						handleCheckboxClick={this.handleCheckboxClick}
+						order={order}
+						orderBy={orderBy}
+						filters={filters}
+						t={t}
+					/>
+				</Paper>
+			</Fade>
+			}
 		</GridContainer>
 	}
 	handleToolbarMenuOpen = e => {
@@ -335,12 +362,13 @@ class Users extends Component {
 		this.setState({ anchorElMenu: null })
 	}
 	renderTableToolBarContent = () => {
-		const { accessLevel } = this.props
+		const { accessLevel, t  } = this.props
 		let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
 		return <Fragment>
-			{access ? <IconButton aria-label='Add new user' onClick={this.addNewUser}>
-				<Add />
-			</IconButton> : null
+			{access ? <Tooltip title={t('menus.create.user')}>
+				<IconButton aria-label='Add new user' onClick={this.addNewUser}>
+					<Add />
+				</IconButton></Tooltip> : null
 			}
 		</Fragment>
 	}

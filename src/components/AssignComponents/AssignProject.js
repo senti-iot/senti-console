@@ -3,11 +3,12 @@ import { Close } from 'variables/icons';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import { getAllProjects, updateProject, getProject } from 'variables/dataProjects';
+import { getAllProjects } from 'variables/dataProjects';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import { ItemG } from 'components';
 import assignStyles from 'assets/jss/components/assign/assignStyles';
+import { updateCollection, getCollection } from 'variables/dataCollections';
 
 function Transition(props) {
 	return <Slide direction='up' {...props} />;
@@ -34,30 +35,33 @@ class AssignProject extends React.Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		await getAllProjects().then(rs => this._isMounted ? this.setState({ projects: rs }) : null)
+
 	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-
+	//Aici
 	assignProject = async () => {
 		const { selectedProject } = this.state
-		let newProject = await getProject(selectedProject.id)
-		if (this.props.multiple)
-		{ 
-			if (newProject.dataCollections)
-				newProject.dataCollections = [...newProject.dataCollections, ...this.props.collectionId.map(ci => ({ id: ci }))]
-			else {
-				newProject.dataCollections = [...this.props.collectionId.map(ci => ({ id: ci }))]
-			}
-		}	
-		else {
-			if (newProject.dataCollections)
-				newProject.dataCollections = [...newProject.dataCollections, ...this.props.collectionId.map(ci => ({ ...ci }))]
-			else { 
-				newProject.dataCollections = [...this.props.collectionId.map(ci => ({  ...ci }))]
-			}
-		}
-		await updateProject(newProject).then(() => {this.props.handleClose(true)
+		let collection = await getCollection(this.props.collectionId)
+		// let newProject = await getProject(selectedProject.id)
+		// if (this.props.multiple)
+		// { 
+		// 	if (newProject.dataCollections.length > 0)
+		// 		newProject.dataCollections = [...newProject.dataCollections, ...this.props.collectionId.map(ci => ({ id: ci }))]
+		// 	else {
+		// 		newProject.dataCollections = [...this.props.collectionId.map(ci => ({ id: ci }))]
+		// 	}
+		// }	
+		// else {
+		// 	if (newProject.dataCollections)
+		// 		newProject.dataCollections = [...newProject.dataCollections, ...this.props.collectionId.map(ci => ({ ...ci }))]
+		// 	else { 
+		// 		newProject.dataCollections = [...this.props.collectionId.map(ci => ({  ...ci }))]
+		// 	}
+		// }
+		collection.project.id = selectedProject.id
+		await updateCollection(collection).then(() => {this.props.handleClose(true)
 		 this.setState({ selectedProject: {
 			 id: 0
 		 } })

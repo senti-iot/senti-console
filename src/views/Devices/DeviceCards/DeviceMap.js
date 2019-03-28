@@ -175,7 +175,7 @@ class DeviceMap extends PureComponent {
 				}
 			}}
 		>
-			<DialogTitle> </DialogTitle>
+			<DialogTitle disableTypography> </DialogTitle>
 			<DialogContent style={{ overflowY: "visible" }}>
 				{error ? <Danger>{t('404.networkError')}</Danger> : null}
 				{markers.length > 0 ? markers.map(m => {
@@ -211,7 +211,7 @@ class DeviceMap extends PureComponent {
 					loading ? <CircularLoader /> :
 						<Grid container justify={'center'}>
 							{this.renderModal()}
-							{this.state.markers.length > 0 ?
+							{this.state.markers[0].lat && this.state.markers[0].long ?
 								<OpenStreetMap
 									calibrate={this.state.editLocation}
 									getLatLng={this.getLatLngFromMap}

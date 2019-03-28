@@ -39,11 +39,11 @@ let selectedRender = props => {
 					if (option.dontShow)
 						return null
 					if (option.single)
-						return numSelected === 1 ? <MenuItem key={i} onClick={option.func}>
+						return numSelected === 1 ? <MenuItem key={i} onClick={() => {option.func(); setAnchor(null)}}>
 							<option.icon className={props.classes.leftIcon}/>{option.label}
 						</MenuItem> : null
 					else {
-						return <MenuItem key={i} onClick={option.func}>
+						return <MenuItem key={i}  onClick={() => {option.func(); setAnchor(null)}}>
 							<option.icon className={props.classes.leftIcon}/>{option.label}
 						</MenuItem>
 					}}
@@ -62,9 +62,9 @@ let defaultRender = props => {
 				t={props.t}
 			/> : null}
 		</ItemG>
-		<ItemG xs={2} container justify={'flex-end'} alignItems={'center'}>
-			{content ? content : null}
-		</ItemG>
+		{content ? <ItemG xs={2} container justify={'flex-end'} alignItems={'center'}>
+		 {content}
+		</ItemG> : null}
 	</Fragment>
 }
 let TableToolbar = props => {

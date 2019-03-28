@@ -65,7 +65,7 @@ class EditCollectionForm extends Component {
 		</Dialog>
 	}
 	render() {
-		const { t, handleChange, collection, classes, handleOpenOrg, handleUpdate } = this.props
+		const { t, handleChange, collection, classes, handleOpenOrg, handleUpdate, goToCollection } = this.props
 		return (
 			<GridContainer>
 				<Paper className={classes.paper}>
@@ -78,7 +78,7 @@ class EditCollectionForm extends Component {
 									handleChange={handleChange('name')}
 									value={collection.name}
 									autoFocus
-									
+
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
@@ -89,7 +89,7 @@ class EditCollectionForm extends Component {
 									value={collection.description}
 									multiline
 									rows={3}
-									
+
 								/>
 							</ItemGrid>
 							<ItemGrid xs={12}>
@@ -100,7 +100,7 @@ class EditCollectionForm extends Component {
 									value={collection.org.name ? collection.org.name : t('collections.noOrg')}
 									handleClick={handleOpenOrg}
 									handleChange={() => { }}
-									
+
 									InputProps={{
 										onChange: handleOpenOrg,
 										readOnly: true
@@ -110,11 +110,23 @@ class EditCollectionForm extends Component {
 							<ItemGrid xs={12}>
 								{this.renderSelectState()}
 							</ItemGrid>
-							<ItemGrid xs={12} container justify={'center'}>
-								<Button onClick={handleUpdate} variant={'contained'} color={'primary'}>
-									{t('actions.save')}
-								</Button>
-							</ItemGrid> 
+							<ItemGrid xs={12} container>
+								<div className={classes.wrapper}>
+									<Button
+										variant='outlined'
+										// color={'danger'}
+										onClick={goToCollection}
+										className={classes.redButton}
+									>
+										{t('actions.cancel')}
+									</Button>
+								</div>
+								<div className={classes.wrapper}>
+									<Button onClick={handleUpdate} variant={'outlined'} color={'primary'}>
+										{t('actions.save')}
+									</Button>
+								</div>
+							</ItemGrid>
 						</Grid>
 					</form>
 				</Paper>

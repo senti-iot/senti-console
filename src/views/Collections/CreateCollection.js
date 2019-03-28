@@ -7,7 +7,6 @@ import { CircularLoader } from 'components';
 import { getAvailableDevices } from 'variables/dataDevices';
 import { getAllOrgs } from 'variables/dataOrgs';
 
-
 class CreateCollection extends Component {
 	constructor(props) {
 		super(props)
@@ -23,8 +22,9 @@ class CreateCollection extends Component {
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/collections/list'
 		props.setHeader('collections.createCollection', true, prevURL, '')
+		props.setBC('createcollection')
 	}
-	
+
 	createDC = async () => {
 		let success = await createCollection(this.state.collection)
 		if (success)
@@ -33,11 +33,11 @@ class CreateCollection extends Component {
 			return false
 	}
 	getAvailableDevices = async () => {
-		const { t, orgId } = this.props
-		let devices = await getAvailableDevices(orgId)
-
+		const { t } = this.props
+		const { org } = this.state
+		let devices = await getAvailableDevices(org.id)
 		this.setState({
-			devices: devices ? [{ id: 0, name: t('no.device') }, ...devices] : [{ id: 0, name: t('no.device') }],
+			devices: devices ? [{ id: 0, name: t('no.device') }, ...devices] : [{ id: 0, name: t('no.freeDevices') }],
 		})
 	}
 	getOrgs = async () => {
@@ -56,11 +56,23 @@ class CreateCollection extends Component {
 			collection: emptyDC
 		})
 	}
+	keyHandler = (e) => {
+		if (e.key === 'Escape') {
+			this.goToCollection()
+		}
+	}
 	componentDidMount = async () => {
+		window.addEventListener('keydown', this.keyHandler, false)
+
 		await this.getEmptyCollection()
 		this.getAvailableDevices()
 		this.getOrgs()
 	}
+	componentWillUnmount = () => {
+		window.removeEventListener('keydown', this.keyHandler, false)
+
+	}
+
 	handleOpenOrg = () => {
 		this.setState({
 			openOrg: true
@@ -81,6 +93,8 @@ class CreateCollection extends Component {
 					...o
 				}
 			}
+		}, async () => {
+			await this.getAvailableDevices()
 		})
 	}
 	handleOpenDevice = () => {
@@ -131,6 +145,7 @@ class CreateCollection extends Component {
 		else
 			s('snackbars.failed')
 	}
+	goToCollection = () => this.props.history.push('/collections')
 	render() {
 		const { t } = this.props
 		const { loading, collection, openDevice, devices, device, orgs, org, openOrg } = this.state
@@ -149,6 +164,7 @@ class CreateCollection extends Component {
 					orgs={orgs}
 					org={org}
 					openOrg={openOrg}
+					goToCollection={this.goToCollection}
 					handleCloseOrg={this.handleCloseOrg}
 					handleOpenOrg={this.handleOpenOrg}
 					handleChangeOrg={this.handleChangeOrg}

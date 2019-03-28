@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { GridContainer, ItemGrid, CircularLoader } from 'components';
 import { userStyles } from 'assets/jss/components/users/userStyles';
-import { withStyles, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
-import { getOrg, getOrgUsers } from 'variables/dataOrgs';
+import { withStyles, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade } from '@material-ui/core';
+import { getOrgUsers } from 'variables/dataOrgs';
 import OrgDetails from './OrgCards/OrgDetails';
 import { connect } from 'react-redux'
 import { deleteOrg } from 'variables/dataOrgs';
@@ -10,17 +10,21 @@ import OrgUsers from 'views/Orgs/OrgCards/OrgUsers';
 import OrgDevices from 'views/Orgs/OrgCards/OrgDevices';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 import { getAllDevices } from 'variables/dataDevices';
-import Toolbar from 'components/Toolbar/Toolbar';
-import { Business, DeviceHub, People } from 'variables/icons';
+// import Toolbar from 'components/Toolbar/Toolbar';
+import { Business, DeviceHub, People, LibraryBooks, DataUsage } from 'variables/icons';
+import { getAllProjects } from 'variables/dataProjects';
+import { getAllCollections } from 'variables/dataCollections';
+import OrgProjects from './OrgCards/OrgProjects';
+import OrgCollections from './OrgCards/OrgCollections';
+import { scrollToAnchor } from 'variables/functions';
+import { getOrgLS } from 'redux/data';
 
 class Org extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			org: {},
 			users: [],
-			loading: true,
 			loadingUsers: true,
 			openDelete: false
 		}
@@ -30,7 +34,7 @@ class Org extends Component {
 			this.componentDidMount()
 		}
 		if (this.props.saved === true) {
-			const { org } = this.state
+			const { org } = this.props
 			if (this.props.isFav({ id: org.id, type: 'org' })) {
 				this.props.s('snackbars.favorite.saved', { name: org.name, type: this.props.t('favorites.types.org') })
 				this.props.finishedSaving()
@@ -43,32 +47,45 @@ class Org extends Component {
 	}
 
 	componentDidMount = async () => {
-		const { match, setHeader, location, history } = this.props
+		const { match, setHeader, location, setBC, setTabs, getOrg } = this.props
 		if (match)
 			if (match.params.id) {
-				await getOrg(match.params.id).then(async rs => {
-					if (rs === null)
-						history.push({
-							pathname: '/404',
-							prevURL: window.location.pathname
-						})
-					else {
-						let prevURL = location.prevURL ? location.prevURL : '/management/orgs'
-						setHeader('orgs.organisation', true, prevURL, 'users')
-						this.setState({ org: rs, loading: false })
+				await getOrg(match.params.id).then(() => {
+
+					let prevURL = location.prevURL ? location.prevURL : '/management/orgs'
+					setHeader('orgs.organisation', true, prevURL, 'users')
+					setTabs({
+						id: 'org',
+						tabs: this.tabs,
+						route: 0
+					})
+					
+					setBC('org', this.props.org.name)
+					if (this.props.location.hash !== '')
+					{
+						scrollToAnchor(this.props.location.hash)
 					}
+					
 				})
 				await getOrgUsers(this.props.match.params.id).then(rs => {
 					this.setState({ users: rs, loadingUsers: false })
 				})
 				await getAllDevices().then(rs => { 
-					let devices = rs.filter(f => f.org.id === this.state.org.id)
+					let devices = rs.filter(f => f.org.id === this.props.org.id)
 					this.setState({ devices: devices, loadingDevices: false })
+				})
+				await getAllCollections().then(rs => {
+					let collections = rs.filter(f => f.org.id === this.props.org.id)
+					this.setState({ collections: collections, loadingCollections: false })
+				})
+				await getAllProjects().then(rs => {
+					let projects = rs.filter(f => f.org.id === this.props.org.id)
+					this.setState({ projects: projects, loadingProjects: false })
 				})
 			}
 	}
 	addToFav = () => {
-		const { org } = this.state
+		const { org } = this.props
 		let favObj = {
 			id: org.id,
 			name: org.name,
@@ -78,7 +95,7 @@ class Org extends Component {
 		this.props.addToFav(favObj)
 	}
 	removeFromFav = () => {
-		const { org } = this.state
+		const { org } = this.props
 		let favObj = {
 			id: org.id,
 			name: org.name,
@@ -92,7 +109,7 @@ class Org extends Component {
 		this.props.history.push('/management/orgs')
 	}
 	handleDeleteOrg = async () => {
-		await deleteOrg(this.state.org.id).then(rs => {
+		await deleteOrg(this.props.org.id).then(rs => {
 			this.setState({
 				openDelete: false
 			})
@@ -118,10 +135,10 @@ class Org extends Component {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.org')}</DialogTitle>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.org')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
-					{t('dialogs.delete.message.org', { org: this.state.org.name })}
+					{t('dialogs.delete.message.org', { org: this.props.org.name })}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
@@ -147,20 +164,15 @@ class Org extends Component {
 	tabs = [
 		{ id: 0, title: '', label: <Business />, url: `#details` },
 		{ id: 1, title: '', label: <People />, url: `#users` },
-		{ id: 2, title: '', label: <DeviceHub />, url: `#devices` },
+		{ id: 2, title: '', label: <LibraryBooks />, url: `#projects` },
+		{ id: 3, title: '', label: <DataUsage />, url: `#collections` },
+		{ id: 4, title: '', label: <DeviceHub />, url: `#devices` }
 	]
 	render() {
-		const { classes, t, history, match, language } = this.props
-		const { org, loading, loadingUsers, loadingDevices, users, devices } = this.state
+		const { classes, t, history, match, language, org, loading } = this.props
+		const { loadingUsers, loadingDevices, loadingProjects, loadingCollections, users, devices, collections, projects } = this.state
 		return (
-			loading ? <CircularLoader /> : <Fragment>
-				<Toolbar
-					hashLinks
-					noSearch
-					history={this.props.history}
-					match={this.props.match}
-					tabs={this.tabs}
-				/>
+			loading ? <CircularLoader /> : <Fade in={true}>
 				<GridContainer justify={'center'} alignContent={'space-between'}>
 					<ItemGrid xs={12} noMargin id={'details'}> 
 						<OrgDetails
@@ -187,6 +199,26 @@ class Org extends Component {
 						/> :
 							<CircularLoader notCentered />}
 					</ItemGrid>
+					<ItemGrid xs={12} noMargin id={'projects'}>
+						{!loadingProjects ? <OrgProjects
+							t={t}
+							org={org}
+							projects={projects ? projects : []}
+							history={history} />
+							:
+							<CircularLoader notCentered />
+						}
+					</ItemGrid>
+					<ItemGrid xs={12} noMargin id={'collections'}>
+						{!loadingCollections ? <OrgCollections
+							t={t}
+							org={org}
+							collections={collections ? collections : []}
+							history={history} />
+							:
+							<CircularLoader notCentered />
+						}
+					</ItemGrid>
 					<ItemGrid xs={12} noMargin id={'devices'}>
 						{!loadingDevices ? <OrgDevices
 							t={t}
@@ -197,23 +229,26 @@ class Org extends Component {
 							<CircularLoader notCentered />
 						}
 					</ItemGrid>
+					{this.renderDeleteDialog()}
 				</GridContainer>
-				{this.renderDeleteDialog()}
-			</Fragment>
+			</Fade>
 		)
 	}
 }
 const mapStateToProps = (state) => ({
 	language: state.localization.language,
 	accessLevel: state.settings.user.privileges,
-	saved: state.favorites.saved
+	saved: state.favorites.saved,
+	org: state.data.org,
+	loading: !state.data.gotOrg
 })
 
 const mapDispatchToProps = (dispatch) => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving())
+	finishedSaving: () => dispatch(finishedSaving()),
+	getOrg: async id => dispatch(await getOrgLS(id)) 
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(userStyles)(Org))

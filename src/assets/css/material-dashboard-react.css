@@ -23,6 +23,8 @@ html * {
     -moz-osx-font-smoothing: grayscale;
 }
 body {
+	padding: 0px !important;
+	overflow: auto !important;
     background-color: #EEEEEE;
     color: #3C4858;
     margin: 0;
@@ -34,37 +36,6 @@ body {
 blockquote footer:before, blockquote small:before {
     content: '\2014 \00A0';
 }
-
-/* h1 {
-    font-size: 3em;
-    line-height: 1.15em;
-}
-
-h2 {
-    font-size: 2.4em;
-}
-
-h3 {
-    font-size: 1.825em;
-    line-height: 1.4em;
-    margin: 20px 0 10px;
-}
-
-h4 {
-    font-size: 1.3em;
-    line-height: 1.4em;
-}
-
-h5 {
-    font-size: 1.25em;
-    line-height: 1.4em;
-    margin-bottom: 15px;
-}
-
-h6 {
-    font-size: 1em;
-    font-weight: 500;
-} */
 
 body {
     background-color: #EEEEEE;

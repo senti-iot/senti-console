@@ -4,6 +4,8 @@ import 'moment/locale/da'
 import 'moment/locale/en-gb'
 import { saveSettings } from 'variables/dataLogin';
 import { setDates } from './dateTime';
+import { setPrefix } from 'variables/storage';
+import { getAllData } from './data';
 var moment = require('moment')
 
 const acceptCookies = 'acceptCookies'
@@ -18,10 +20,17 @@ const DidKnow = 'notifDidYouKnow'
 const MapTheme = 'mapTheme'
 const changeSB = 'changeSnackbarLocation'
 const changeDP = 'changeDetailsPanelState'
+const changeDT = 'changeDrawerType'
+const changeDS = 'changeDrawerState'
+const changeHB = 'changeHeaderBorder'
+const changeBC = 'changeBreadCrumbs'
+const changeHT = 'changeHoverTime'
+
 //Navigation
 
 const changeDR = 'changeDefaultRoute'
 const changeDV = 'changeDefaultView'
+const changeDCON = 'changeDrawerCloseOnNav'
 
 //Calibration
 
@@ -45,6 +54,18 @@ const GetSettings = 'getSettings'
 const SAVESETTINGS = 'saveSettings'
 const SAVED = 'savedSettings'
 const NOSETTINGS = 'noSettings'
+const reset = 'resetSettings'
+
+export const resetSettings = () => {
+	return async (dispatch, getState) => {
+		dispatch({
+			type: reset,
+			user: getState().settings.user
+		})
+		dispatch(await saveSettingsOnServ())
+		dispatch(await getSettings())
+	}
+}
 
 export const saveSettingsOnServ = () => {
 	return async (dispatch, getState) => {
@@ -69,7 +90,13 @@ export const saveSettingsOnServ = () => {
 			cookies: s.cookies,
 			periods: s.periods,
 			snackbarLocation: s.snackbarLocation,
-			detailsPanel: s.detailsPanel
+			detailsPanel: s.detailsPanel,
+			drawer: s.drawer,
+			drawerState: s.drawerState,
+			drawerCloseOnNav: s.drawerCloseOnNav,
+			headerBorder: s.headerBorder,
+			breadcrumbs: s.breadcrumbs,
+			hoverTime: s.hoverTime
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -90,6 +117,8 @@ export const getSettings = async () => {
 			if (vSession === 200) {
 				let exp = moment().add('1', 'day')
 				cookie.save('SESSION', sessionCookie, { path: '/', expires: exp.toDate() })
+				setPrefix(sessionCookie.userID)
+				dispatch(getAllData())
 			}
 			else {
 				return cookie.remove('SESSION')
@@ -161,6 +190,61 @@ export const changeSnackbarLocation = (val) => {
 		dispatch({
 			type: changeSB,
 			snackbarLocation: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeDrawerState = val => {
+	return async dispatch => {
+		dispatch({
+			type: changeDS,
+			drawerState: val
+		})
+		dispatch(saveSettingsOnServ())
+
+	}
+}
+export const changeDrawerType = (val) => {
+	return async dispatch => {
+		dispatch({
+			type: changeDT,
+			drawer: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeDrawerCloseOnNav = (val) => {
+	return async  dispatch => {
+		dispatch({
+			type: changeDCON,
+			drawerCloseOnNav: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeHeaderBorder = (val) => {
+	return async dispatch => {
+		dispatch({
+			type: changeHB,
+			headerBorder: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeHoverTime = val => {
+	return async dispatch => {
+		dispatch({
+			type: changeHT,
+			hoverTime: val
+		})
+		dispatch(saveSettingsOnServ())
+	}
+}
+export const changeBreadCrumbs = val => {
+	return async dispatch => {
+		dispatch({
+			type: changeBC,
+			breadcrumbs: val
 		})
 		dispatch(saveSettingsOnServ())
 	}
@@ -350,8 +434,8 @@ export const removeChartPeriod = pId => {
 		dispatch(saveSettingsOnServ())
 	}
 }
-export const changePeriodChartType = (type, p) => { 
-	return async (dispatch, getState) => { 
+export const changePeriodChartType = (type, p) => {
+	return async (dispatch, getState) => {
 		let periods = []
 		periods = [...getState().settings.periods]
 		let id = periods.findIndex(f => f.id === p.id)
@@ -390,8 +474,8 @@ export const changeTheme = (code) => {
 		dispatch(saveSettingsOnServ())
 	}
 }
-export const changeWeekendColor = (id) => { 
-	return async (dispatch, getState) => { 
+export const changeWeekendColor = (id) => {
+	return async (dispatch, getState) => {
 		dispatch({
 			type: weekendColor,
 			id
@@ -399,6 +483,7 @@ export const changeWeekendColor = (id) => {
 		dispatch(saveSettingsOnServ())
 	}
 }
+
 export const finishedSaving = () => {
 	return {
 		type: SAVED,
@@ -422,12 +507,12 @@ let initialState = {
 		chartType: 3,
 		hide: false
 	}],
-	cookies: false,
+	cookies: true,
 	defaultRoute: '/dashboard',
 	defaultView: '/list',
 	mapTheme: 0,
 	rawData: 0,
-	language: 'dk',
+	language: 'da',
 	calibration: 1,
 	calNotifications: 0,
 	count: 200,
@@ -444,10 +529,30 @@ let initialState = {
 	rowsPerPageOptions: ['auto', 5, 7, 8, 10, 15, 20, 25, 50, 100],
 	cardsPerPageOptions: [2, 3, 4, 6, 8, 9],
 	snackbarLocation: 'left',
-	detailsPanel: 0
+	detailsPanel: 0,
+	drawer: 'permanent',
+	drawerState: true,
+	drawerCloseOnNav: true,
+	headerBorder: false,
+	breadcrumbs: true,
+	hoverTime: 1000
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
+		case reset:
+			return Object.assign({}, state, { ...initialState, user: action.user, cookies: false })
+		case changeHT:
+			return Object.assign({}, state, { hoverTime: action.hoverTime })
+		case changeBC:
+			return Object.assign({}, state, { breadcrumbs: action.breadcrumbs })
+		case changeHB:
+			return Object.assign({}, state, { headerBorder: action.headerBorder })
+		case changeDCON:
+			return Object.assign({}, state, { drawerCloseOnNav: action.drawerCloseOnNav })
+		case changeDS:
+			return Object.assign({}, state, { drawerState: action.drawerState })
+		case changeDT:
+			return Object.assign({}, state, { drawer: action.drawer })
 		case changeSB:
 			return Object.assign({}, state, { snackbarLocation: action.snackbarLocation })
 		case changeDP:
@@ -475,7 +580,6 @@ export const settings = (state = initialState, action) => {
 		}
 		case GetSettings:
 		{
-			// console.log(action.settings)
 			let periods = setDates(action.settings.periods)
 			return Object.assign({}, state, { ...action.settings, periods: periods, user: action.user, loading: false })
 		}

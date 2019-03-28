@@ -15,18 +15,22 @@ const styles = theme => ({
 	},
 	tableCellCheckbox: {
 		width: 35,
+	},
+	center: {
+		textAlign: 'center'
 	}
 })
 
 
 const TC = (props) => {
-	const { checkbox, classes, label, content, className } = props
+	const { checkbox, classes, label, content, className, center, FirstC, ...rest } = props
 	return (
 		<TableCell classes={{
-			root: className + ' ' + (checkbox ? classes.tableCellCheckbox + ' ' + classes.tableCell : classes.tableCell)
+			root: className + ' ' + (checkbox ? classes.tableCellCheckbox + ' ' + classes.tableCell : classes.tableCell) 
 		}}
+		{...rest}
 		>
-			{label ? <Typography variant={'body1'} classes={{ root: classes.paragraphCell }}>
+			{label ? <Typography variant={'body1'} classes={{ root: classes.paragraphCell + ' ' + (center ? classes.center : '') }}>
 				{label}
 			</Typography> : null}
 			{content ? content : null}

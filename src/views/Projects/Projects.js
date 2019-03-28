@@ -1,22 +1,25 @@
 import {
 	IconButton, Paper, withStyles, DialogTitle, Dialog, DialogContent,
-	DialogContentText, DialogActions, Button, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+	DialogContentText, DialogActions, Button, List, ListItem, ListItemIcon, ListItemText, Fade, Tooltip
+} from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import GridContainer from 'components/Grid/GridContainer';
 import CircularLoader from 'components/Loader/CircularLoader';
 import ProjectCards from 'components/Project/ProjectCards';
 import ProjectTable from 'components/Project/ProjectTable';
 import TableToolbar from 'components/Table/TableToolbar';
-import Toolbar from 'components/Toolbar/Toolbar';
+// import Toolbar from 'components/Toolbar/Toolbar';
 import React, { Component, Fragment } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { deleteProject, getAllProjects } from 'variables/dataProjects';
+import { deleteProject, /* getAllProjects */ } from 'variables/dataProjects';
 import { filterItems, handleRequestSort } from 'variables/functions';
 import { Add, Delete, Edit, PictureAsPdf, ViewList, ViewModule, DataUsage, Star, StarBorder } from 'variables/icons';
 import AssignDCs from 'components/AssignComponents/AssignDCs';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { connect } from 'react-redux'
 import { customFilterItems } from 'variables/Filters';
+// import { makeCancelable } from 'variables/data';
+import { getProjects, setProjects } from 'redux/data';
 
 class Projects extends Component {
 	constructor(props) {
@@ -24,9 +27,7 @@ class Projects extends Component {
 
 		this.state = {
 			selected: [],
-			projects: [],
 			openDelete: false,
-			loading: true,
 			route: 0,
 			order: 'desc',
 			orderBy: 'title',
@@ -36,10 +37,11 @@ class Projects extends Component {
 			}
 		}
 		props.setHeader('projects.pageTitle', false, '', 'projects')
+		props.setBC('projects')
 	}
 	options = () => {
-		const { t, isFav } = this.props
-		const { selected, projects } = this.state
+		const { t, isFav, projects } = this.props
+		const { selected } = this.state
 		let project = projects[projects.findIndex(d => d.id === selected[0])]
 		let favObj = {
 			id: project.id,
@@ -56,7 +58,7 @@ class Projects extends Component {
 			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete }
 		]
 	}
-	
+
 	tabs = () => {
 		const { t, match } = this.props
 		return [
@@ -94,7 +96,7 @@ class Projects extends Component {
 	getFavs = () => {
 		let favorites = this.props.favorites.filter(f => f.type === 'project')
 		let favProjects = favorites.map(f => {
-			return this.state.projects[this.state.projects.findIndex(d => d.id === f.id)]
+			return this.props.projects[this.props.projects.findIndex(d => d.id === f.id)]
 		})
 		return favProjects
 	}
@@ -109,11 +111,11 @@ class Projects extends Component {
 		this.setState({ anchorElMenu: null })
 	}
 
-	getData = async () => {
-		await getAllProjects().then(rs => this._isMounted ? this.setState({
-			projects: rs ? rs : [],
-			loading: false
-		}, () => this.handleRequestSort(null, 'title', 'asc')) : null)
+	getData = async (reload) => {
+		const { getProjects, setProjects } = this.props
+		setProjects()
+		if (reload)
+			getProjects(true)
 	}
 
 	filterItems = (data) => {
@@ -130,7 +132,7 @@ class Projects extends Component {
 			case 2:
 				s('snackbars.exported')
 				break;
-			case 3: 
+			case 3:
 				s('snackbars.assign.collectionsToProject')
 				break
 			default:
@@ -144,7 +146,7 @@ class Projects extends Component {
 			// this.removeFromFav({ id: s })
 			return deleteProject(s)
 		})]).then(async () => {
-			this.setState({ loading: true, openDelete: false, selected: [] })
+			this.setState({ openDelete: false, selected: [] })
 			this.snackBarMessages(1)
 			await this.getData()
 		})
@@ -157,17 +159,31 @@ class Projects extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		this.handleTabs()
-		await this.getData()
+		this.getData()
+		this.props.setTabs({
+			id: 'projects',
+			route: this.handleTabs(),
+			tabs: this.tabs()
+		})
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
 		if (this.props.location.pathname !== prevProps.location.pathname) {
 			this.handleTabs()
 		}
+		this.props.setTabs({
+			id: 'projects',
+			route: this.handleTabs(),
+			// data: projects,
+			// filters: filters,
+			handleFilterKeyword: this.handleFilterKeyword,
+			tabs: this.tabs()
+		})
 		if (this.props.saved === true) {
-			const { projects, selected } = this.state
+			const { projects } = this.props
+			const { selected } = this.state
 			let project = projects[projects.findIndex(d => d.id === selected[0])]
-			if (project) {	
+			if (project) {
 				if (this.props.isFav({ id: project.id, type: 'project' })) {
 					this.props.s('snackbars.favorite.saved', { name: project.title, type: this.props.t('favorites.types.project') })
 					this.props.finishedSaving()
@@ -182,9 +198,10 @@ class Projects extends Component {
 		}
 	}
 	componentWillUnmount = () => {
-		this._isMounted = 0
+		// this.getProjects.cancel()
+		// this._isMounted = 0
 	}
-	
+
 	//#endregion
 
 	//#region Handlers
@@ -197,19 +214,20 @@ class Projects extends Component {
 		e.stopPropagation()
 		this.props.history.push({ pathname: `/project/${id}`, prevURL: '/projects/favorites' })
 	}
-	
+
 	handleTabs = () => {
 		if (this.props.location.pathname.includes('grid')) {
-			this.setState({ route: 1 })
+			// this.setState({ route: 1 })
+
 			return 1
 		}
 		else {
 			if (this.props.location.pathname.includes('favorites')) {
-				this.setState({ route: 2 })
+				// this.setState({ route: 2 })
 				return 2
 			}
 			else {
-				this.setState({ route: 0 })
+				// this.setState({ route: 0 })
 				return 0
 			}
 		}
@@ -232,8 +250,8 @@ class Projects extends Component {
 
 	handleCloseAssignCollection = async (reload) => {
 		if (reload) {
-			this.setState({ loading: true, openAssignDC: false })
-			await this.getData().then(rs => {
+			this.setState({ openAssignDC: false })
+			await this.getData(reload).then(rs => {
 				this.snackBarMessages(3)
 			})
 		}
@@ -247,8 +265,8 @@ class Projects extends Component {
 		if (property !== this.state.orderBy) {
 			order = 'asc'
 		}
-		let newData = handleRequestSort(property, order, this.state.projects)
-		this.setState({ projects: newData, order, orderBy: property })
+		handleRequestSort(property, order, this.props.projects)
+		this.setState({ order, orderBy: property })
 	}
 
 	handleFilterKeyword = (value) => {
@@ -262,7 +280,7 @@ class Projects extends Component {
 
 	handleSelectAllClick = (event, checked) => {
 		if (checked) {
-			this.setState({ selected: this.state.projects.map(n => n.id) })
+			this.setState({ selected: this.props.projects.map(n => n.id) })
 			return;
 		}
 		this.setState({ selected: [] })
@@ -294,15 +312,15 @@ class Projects extends Component {
 
 	//#region Render
 	renderConfirmDelete = () => {
-		const { selected, openDelete, projects } = this.state
-		const { t, handleCloseDeleteDialog } = this.props
+		const { selected, openDelete } = this.state
+		const { t, handleCloseDeleteDialog, projects } = this.props
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.projects')}</DialogTitle>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.projects')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.delete.message.projects')}
@@ -324,15 +342,16 @@ class Projects extends Component {
 		</Dialog>
 	}
 	renderTableToolBarContent = () => {
-		return <Fragment>
+		const { t } = this.props
+		return <Tooltip title={t('menus.create.project')}>
 			<IconButton aria-label='Add new project' onClick={this.handleAddProject}>
 				<Add />
 			</IconButton>
-		</Fragment>
+		</Tooltip>
 	}
 	renderTable = (items, handleClick) => {
 		const { t } = this.props
-		const {  order, orderBy, selected } = this.state
+		const { order, orderBy, selected } = this.state
 		return <ProjectTable
 			selected={selected}
 			data={this.filterItems(items)}
@@ -359,68 +378,57 @@ class Projects extends Component {
 	renderTableToolbar = () => {
 		const { selected } = this.state
 		const { t } = this.props
-		return 	<TableToolbar
+		return <TableToolbar
 			ft={this.ft()}
 			reduxKey={'projects'}
 			numSelected={selected.length}
 			options={this.options}
 			t={t}
-			content={this.renderTableToolBarContent()} 
+			content={this.renderTableToolBarContent()}
 		/>
 	}
 	renderAllProjects = () => {
-		const { classes } = this.props
-		const { loading, projects } = this.state
-		return loading ? <CircularLoader /> :
-			<Paper className={classes.root}>
+		const { classes, projects, loadingProjects } = this.props
+		return loadingProjects ? <CircularLoader /> :
+			<Fade in={true}><Paper className={classes.root}>
 				{this.renderConfirmDelete()}
 				{this.renderAssignDCs()}
 				{this.renderTableToolbar()}
 				{this.renderTable(projects, this.handleProjectClick)}
-			</Paper>
+			</Paper></Fade>
 	}
-	
+
 	renderList = () => {
 		return <GridContainer justify={'center'}>
 			{this.renderAllProjects()}
 		</GridContainer>
 	}
 	renderFavorites = () => {
-		const { classes } = this.props
-		const { loading } = this.state
+		const { classes, loadingProjects } = this.props
 		return <GridContainer justify={'center'}>
-			{loading ? <CircularLoader /> : <Paper className={classes.root}>
-				{this.renderConfirmDelete()}
-				{this.renderAssignDCs()}
-				{this.renderTableToolbar()}
-				{this.renderTable(this.getFavs(), this.handleFavClick)}
-			</Paper>}
+			{loadingProjects ? <CircularLoader /> : <Fade in={true}>
+				<Paper className={classes.root}>
+					{this.renderConfirmDelete()}
+					{this.renderAssignDCs()}
+					{this.renderTableToolbar()}
+					{this.renderTable(this.getFavs(), this.handleFavClick)}
+				</Paper>
+			</Fade>}
 		</GridContainer>
 	}
 	renderCards = () => {
-		const { loading, projects } = this.state
-		const { t } = this.props
-		return loading ? <CircularLoader /> :
-			<ProjectCards t={t} projects={this.filterItems(projects)} />
+		const { t, loadingProjects, projects } = this.props
+		return loadingProjects ? <CircularLoader /> :
+			<Fade in={true}><ProjectCards t={t} projects={this.filterItems(projects)} /></Fade>
 	}
 	render() {
-		const { projects, filters, route } = this.state
-		const { history, match } = this.props
+		const { match } = this.props
 		return (
 			<Fragment>
-				<Toolbar
-					route={route}
-					data={projects}
-					filters={filters}
-					history={history}
-					match={match}
-					handleFilterKeyword={this.handleFilterKeyword}
-					tabs={this.tabs()}
-				/>
 				<Switch>
 					<Route path={`${match.path}/grid`} render={() => this.renderCards()} />
 					<Route path={`${match.path}/list`} render={() => this.renderList()} />
-					<Route path={`${match.path}/favorites`} render={() => this.renderFavorites()}/>
+					<Route path={`${match.path}/favorites`} render={() => this.renderFavorites()} />
 					<Redirect path={`${match.path}`} to={`${match.path}/list`} />
 				</Switch>
 			</Fragment>
@@ -432,8 +440,8 @@ const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	favorites: state.favorites.favorites,
 	saved: state.favorites.saved,
-	
-	//Filters
+	projects: state.data.projects,
+	loadingProjects: !state.data.gotprojects,
 	filters: state.appState.filters.projects
 })
 
@@ -441,7 +449,9 @@ const mapDispatchToProps = (dispatch) => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving()),
+	finishedSaving: () => dispatch(finishedSaving()),	
+	getProjects: (reload) => dispatch(getProjects(reload)),
+	setProjects: () => dispatch(setProjects())
 })
 
 

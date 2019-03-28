@@ -1,14 +1,14 @@
 import React, { Fragment, PureComponent } from 'react';
 import {
 	Grid, IconButton, Menu, withStyles, ListItem,
-	ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox, Typography,
+	ListItemIcon, ListItemText, Collapse, List, Hidden, Checkbox, Typography, Tooltip,
 } from '@material-ui/core';
 import {
 	Timeline, MoreVert,
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, LinearScale, Clear,
+	ExpandMore, Visibility, ShowChart, ArrowUpward, CloudDownload, LinearScale, Clear, KeyboardArrowLeft, KeyboardArrowRight,
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard, BarChart,
@@ -38,7 +38,8 @@ class ChartData extends PureComponent {
 			resetZoom: false,
 			zoomDate: [],
 			loading: true,
-			chartType: 'linear'
+			chartType: 'linear',
+			initialPeriod: null
 		}
 	}
 
@@ -85,7 +86,7 @@ class ChartData extends PureComponent {
 	componentWillUnmount = () => {
 		this._isMounted = 0
 	}
-	handleChangeChartType = (type) => { 
+	handleChangeChartType = (type) => {
 		this.setState({
 			chartType: type
 		})
@@ -162,7 +163,7 @@ class ChartData extends PureComponent {
 									to: period.to
 								}]
 						})
-						this.props.handleSetDate(6, endDate, startDate,  0, period.id)
+						this.props.handleSetDate(6, endDate, startDate, 0, period.id)
 						break
 					case 2:
 						startDate = moment(date).startOf('day')
@@ -184,7 +185,162 @@ class ChartData extends PureComponent {
 			}
 		}
 	}
+	futureTester = (date, unit) => moment().diff(date, unit) <= 0
+	handleNextPeriod = () => {
+		const { period } = this.props
+		const { initialPeriod } = this.state
+		let from, to, diff;
+		if (!initialPeriod) {
+			this.setState({ initialPeriod: period })
+			if (period.menuId === 6) {
+				diff = moment(period.to).diff(moment(period.from), 'minute')
+				from = moment(period.from).add(diff + 1, 'minute').startOf(this.timeTypes[period.timeType].chart)
+				to = moment(period.to).add(diff + 1, 'minute').endOf(this.timeTypes[period.timeType].chart)
+				to = this.futureTester(to, this.timeTypes[period.timeType].chart) ? moment() : to
+			}
+			if ([0, 1].indexOf(period.menuId) !== -1) {
+				from = moment(period.from).add(1, 'day').startOf('day')
+				to = moment(period.to).add(1, 'day').endOf('day')
+				to = this.futureTester(to, 'hour') ? moment() : to
 
+			}
+			if (period.menuId === 2) {
+				from = moment(period.from).add(1, 'week').startOf('week').startOf('day')
+				to = moment(period.to).add(1, 'week').endOf('week').endOf('day')
+				to = this.futureTester(to, 'day') ? moment() : to
+
+			}
+			if ([3, 4, 5].indexOf(period.menuId) !== -1) {
+				diff = moment(period.to).diff(moment(period.from), 'minute')
+				from = moment(period.from).add(diff + 1, 'minute').startOf('day')
+				to = moment(period.to).add(diff + 1, 'minute').endOf('day')
+				to = this.futureTester(to, 'day') ? moment() : to
+			}
+		}
+		else {
+			if (initialPeriod.menuId === 6) {
+				diff = moment(period.to).diff(moment(period.from), 'minute')
+				from = moment(period.from).subtaddraddact(diff + 1, 'minute').startOf(this.timeTypes[period.timeType].chart)
+				to = moment(period.to).add(diff + 1, 'minute').endOf(this.timeTypes[period.timeType].chart)
+				to = this.futureTester(to, this.timeTypes[period.timeType].chart) ? moment() : to
+
+			}
+			if ([0, 1].indexOf(initialPeriod.menuId) !== -1) {
+				from = moment(period.from).add(1, 'day').startOf('day')
+				to = moment(period.to).add(1, 'day').endOf('day')
+				to = this.futureTester(to, 'hour') ? moment() : to
+			}
+			if (initialPeriod.menuId === 2) {
+				from = moment(period.from).add(1, 'week').startOf('week').startOf('day')
+				to = moment(period.to).add(1, 'week').endOf('week').endOf('day')
+				to = this.futureTester(to, this.timeTypes[period.timeType].chart) ? moment() : to
+				if (period.timeType === 2 || period.timeType === 3) {
+					let dayDiff = to.diff(from, 'day')
+					if (dayDiff <= 0) {
+						return this.props.handleSetDate(6, to, from, 1, period.id)
+					}
+				}
+				else {
+					return this.props.handleSetDate(6, to, from, 2, period.id)
+				}
+			}
+			if ([3, 4, 5].indexOf(initialPeriod.menuId) !== -1) {
+				diff = moment(period.to).diff(moment(period.from), 'minute')
+				from = moment(period.from).add(diff + 1, 'minute').startOf('day')
+				to = moment(period.to).add(diff + 1, 'minute').endOf('day')
+				to = this.futureTester(to, 'day') ? moment() : to
+			}
+		}
+		this.props.handleSetDate(6, to, from, period.timeType, period.id)
+	}
+	handlePreviousPeriod = () => {
+		const { period } = this.props
+		const { initialPeriod } = this.state
+		let from, to, diff;
+		if (!initialPeriod) {
+			this.setState({ initialPeriod: period })
+			if (period.menuId === 6) {
+				diff = moment(period.to).diff(moment(period.from), 'minute')
+				from = moment(period.from).subtract(diff + 1, 'minute').startOf(this.timeTypes[period.timeType].chart)
+				to = moment(period.to).subtract(diff + 1, 'minute').endOf(this.timeTypes[period.timeType].chart)
+			}
+			if ([0, 1].indexOf(period.menuId) !== -1) {
+				from = moment(period.from).subtract(1, 'day').startOf('day')
+				to = moment(period.to).subtract(1, 'day').endOf('day')
+			}
+			if (period.menuId === 2) {
+				from = moment(period.from).subtract(1, 'week').startOf('week').startOf('day')
+				to = moment(period.to).subtract(1, 'week').endOf('week').endOf('day')
+			}
+			if ([3, 4, 5].indexOf(period.menuId) !== -1) {
+				diff = moment(period.to).diff(moment(period.from), 'minute')
+				from = moment(period.from).subtract(diff + 1, 'minute').startOf('day')
+				to = moment(period.to).subtract(diff + 1, 'minute').endOf('day')
+			}
+		}
+		else {
+			if (initialPeriod.menuId === 6) {
+				diff = moment(period.to).diff(moment(period.from), 'minute')
+				from = moment(period.from).subtract(diff + 1, 'minute').startOf(this.timeTypes[period.timeType].chart)
+				to = moment(period.to).subtract(diff + 1, 'minute').endOf(this.timeTypes[period.timeType].chart)
+			}
+			if ([0, 1].indexOf(initialPeriod.menuId) !== -1) {
+				from = moment(period.from).subtract(1, 'day').startOf('day')
+				to = moment(period.to).subtract(1, 'day').endOf('day')
+			}
+			if (initialPeriod.menuId === 2) {
+				from = moment(period.from).subtract(1, 'week').startOf('week').startOf('day')
+				to = moment(period.to).subtract(1, 'week').endOf('week').endOf('day')
+				if (period.timeType === 2 || period.timeType === 3) {
+					let dayDiff = to.diff(from, 'day')
+					if (dayDiff <= 0) {
+						return this.props.handleSetDate(6, to, from, 1, period.id)
+					}
+				}
+				else {
+					return this.props.handleSetDate(6, to, from, 2, period.id)
+				}
+			}
+			if ([3, 4, 5].indexOf(initialPeriod.menuId) !== -1) {
+				diff = moment(period.to).diff(moment(period.from), 'minute')
+				from = moment(period.from).subtract(diff + 1, 'minute').startOf('day')
+				to = moment(period.to).subtract(diff + 1, 'minute').endOf('day')
+			}
+		}
+		this.props.handleSetDate(6, to, from, period.timeType, period.id)
+	}
+	renderTitle = () => {
+		const { period, t } = this.props
+		let displayTo = dateTimeFormatter(period.to)
+		let displayFrom = dateTimeFormatter(period.from)
+		return <ItemG container style={{ flexFlow: 'row' }}>
+			<Hidden mdDown>
+				<ItemG>
+
+					<Tooltip title={t('tooltips.chart.previousPeriod')}>
+						<IconButton onClick={this.handlePreviousPeriod}>
+							<KeyboardArrowLeft />
+						</IconButton>
+					</Tooltip>
+				</ItemG>
+			</Hidden>
+			<ItemG>
+				<Typography component={'span'}>{`${displayFrom}`}</Typography>
+				<Typography component={'span'}> {`${displayTo}`}</Typography>
+			</ItemG>
+			<Hidden mdDown>
+				<ItemG>
+					<Tooltip title={t('tooltips.chart.nextPeriod')}>
+						<div>
+							<IconButton onClick={this.handleNextPeriod} disabled={this.disableFuture()}>
+								<KeyboardArrowRight />
+							</IconButton>
+						</div>
+					</Tooltip>
+				</ItemG>
+			</Hidden>
+		</ItemG>
+	}
 	renderType = () => {
 		const { title, setHoverID, t, device, period, single, hoverID } = this.props
 		const { loading } = this.state
@@ -234,7 +390,7 @@ class ChartData extends PureComponent {
 						</ItemG>
 						: this.renderNoData()
 				case 2:
-					return barDataSets ? 
+					return barDataSets ?
 						<BarChart
 							chartYAxis={this.state.chartType}
 							single={single}
@@ -268,75 +424,68 @@ class ChartData extends PureComponent {
 		}
 		else return this.renderNoData()
 	}
-
+	disableFuture = () => {
+		const { period } = this.props
+		if (moment().diff(period.to, 'hour') <= 0) {
+			return true
+		}
+		return false
+	}
 	renderMenu = () => {
 		const { actionAnchor, actionAnchorVisibility, resetZoom } = this.state
 		const { classes, t, period } = this.props
-		return <ItemG container>
-			<ItemG>
-				<DateFilterMenu period={period} t={t} />
-			</ItemG>
-			<Collapse in={resetZoom}>
-				{resetZoom && <IconButton title={'Reset zoom'} onClick={this.handleReverseZoomOnData}>
-					<ArrowUpward />
-				</IconButton>}
-			</Collapse>
-			<ItemG>
-				<Hidden smDown>
-					<IconButton title={'Chart Type'} variant={'fab'} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
-						{this.renderIcon()}
-					</IconButton>
-					<Menu
-						id='long-menu'
-						anchorEl={actionAnchorVisibility}
-						open={Boolean(actionAnchorVisibility)}
-						onClose={() => this.setState({ actionAnchorVisibility: null })}
-						PaperProps={{ style: { minWidth: 250 } }}>
-						<List component='div' disablePadding>
-							{this.visibilityOptions.map(op => {
-								return <ListItem key={op.id} value={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
-									<ListItemIcon>
-										{op.icon}
-									</ListItemIcon>
-									<ListItemText inset primary={op.label} />
-								</ListItem>
-							})}
-						</List>
-					</Menu>
-				</Hidden>
-			</ItemG>
-
-			<ItemG>
-				<IconButton
-					aria-label='More'
-					aria-owns={actionAnchor ? 'long-menu' : null}
-					aria-haspopup='true'
-					onClick={this.handleOpenActionsDetails}>
-					<MoreVert />
-				</IconButton>
-			</ItemG>
-			<Menu
-				id='long-menu'
-				anchorEl={actionAnchor}
-				open={Boolean(actionAnchor)}
-				onClose={this.handleCloseActionsDetails}
-				onChange={this.handleVisibility}
-				PaperProps={{ style: { minWidth: 250 } }}>
-				<div>
-					<Hidden mdUp>
-						<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
-							<ListItemIcon>
-								<Visibility />
-							</ListItemIcon>
-							<ListItemText inset primary={t('filters.options.graphType')} />
-							<ExpandMore className={classNames({
-								[classes.expandOpen]: this.state.visibility,
-							}, classes.expand)} />
-						</ListItem>
-						<Collapse in={this.state.visibility} timeout='auto' unmountOnExit>
+		return <ItemG container direction={'column'}>
+			<Hidden lgUp>
+				<ItemG container>
+					<ItemG>
+						<Tooltip title={t('tooltips.chart.previousPeriod')}>
+							<IconButton onClick={this.handlePreviousPeriod}>
+								<KeyboardArrowLeft />
+							</IconButton>
+						</Tooltip>
+					</ItemG>
+					<ItemG>
+						<Tooltip title={t('tooltips.chart.nextPeriod')}>
+							<div>
+								<IconButton onClick={this.handleNextPeriod} disabled={this.disableFuture()}>
+									<KeyboardArrowRight />
+								</IconButton>
+							</div>
+						</Tooltip>
+					</ItemG>
+				</ItemG>
+			</Hidden>
+			<ItemG container>
+				<ItemG>
+					<Tooltip title={t('tooltips.chart.period')}>
+						<DateFilterMenu period={period} t={t} />
+					</Tooltip>
+				</ItemG>
+				<Collapse in={resetZoom}>
+					{resetZoom && <Tooltip title={t('tooltips.chart.resetZoom')}>
+						<IconButton onClick={this.handleReverseZoomOnData}>
+							<ArrowUpward />
+						</IconButton>
+					</Tooltip>
+					}
+				</Collapse>
+				<ItemG>
+					<Hidden smDown>
+						<Tooltip title={t('tooltips.chart.type')}>
+							<IconButton variant={'fab'} onClick={(e) => { this.setState({ actionAnchorVisibility: e.currentTarget }) }}>
+								{this.renderIcon()}
+							</IconButton>
+						</Tooltip>
+						<Menu
+							marginThreshold={24}
+							id='long-menu'
+							anchorEl={actionAnchorVisibility}
+							open={Boolean(actionAnchorVisibility)}
+							onClose={() => this.setState({ actionAnchorVisibility: null })}
+							PaperProps={{ style: { minWidth: 250 } }}>
 							<List component='div' disablePadding>
 								{this.visibilityOptions.map(op => {
-									return <ListItem key={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
+									return <ListItem key={op.id} value={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
 										<ListItemIcon>
 											{op.icon}
 										</ListItemIcon>
@@ -344,42 +493,88 @@ class ChartData extends PureComponent {
 									</ListItem>
 								})}
 							</List>
-						</Collapse>
+						</Menu>
 					</Hidden>
-				</div>
-				<ListItem button onClick={this.handleOpenDownloadModal}>
-					<ListItemIcon><CloudDownload /></ListItemIcon>
-					<ListItemText>{t('menus.export')}</ListItemText>
-				</ListItem>
-				<ListItem button onClick={() => this.props.changeRawData(period)}>
-					<ListItemIcon>
-						<Checkbox
-							checked={period.raw}
-							className={classes.noPadding}
-						/>
-					</ListItemIcon>
-					<ListItemText>
-						{t('collections.rawData')}
-					</ListItemText>
-				</ListItem>
-				<ListItem button onClick={() => this.handleChangeChartType(this.state.chartType === 'linear' ? 'logarithmic' : 'linear')}>
-					<ListItemIcon>
-						{this.state.chartType !== 'linear' ? <LinearScale /> : <Timeline />}
-					</ListItemIcon>
-					<ListItemText>
-						{t(this.state.chartType !== 'linear' ? 'settings.chart.YAxis.linear' : 'settings.chart.YAxis.logarithmic')}
-					</ListItemText>
-				</ListItem>
-				<ListItem button onClick={() => { this.handleCloseActionsDetails(); this.props.removePeriod(period.id) }}>
-					<ListItemIcon>
-						<Clear />
-					</ListItemIcon>
-					<ListItemText>
-						{t('menus.charts.deleteThisPeriod')}
-					</ListItemText>
-				</ListItem>
+				</ItemG>
 
-			</Menu>
+				<ItemG>
+					<Tooltip title={t('menus.menu')}>
+						<IconButton
+							aria-label='More'
+							aria-owns={actionAnchor ? 'long-menu' : null}
+							aria-haspopup='true'
+							onClick={this.handleOpenActionsDetails}>
+							<MoreVert />
+						</IconButton>
+					</Tooltip>
+				</ItemG>
+				<Menu
+					marginThreshold={24}
+					id='long-menu'
+					anchorEl={actionAnchor}
+					open={Boolean(actionAnchor)}
+					onClose={this.handleCloseActionsDetails}
+					onChange={this.handleVisibility}
+					PaperProps={{ style: { minWidth: 250 } }}>
+					<div>
+						<Hidden mdUp>
+							<ListItem button onClick={() => { this.setState({ visibility: !this.state.visibility }) }}>
+								<ListItemIcon>
+									<Visibility />
+								</ListItemIcon>
+								<ListItemText inset primary={t('filters.options.graphType')} />
+								<ExpandMore className={classNames({
+									[classes.expandOpen]: this.state.visibility,
+								}, classes.expand)} />
+							</ListItem>
+							<Collapse in={this.state.visibility} timeout='auto' unmountOnExit>
+								<List component='div' disablePadding>
+									{this.visibilityOptions.map(op => {
+										return <ListItem key={op.id} button className={classes.nested} onClick={this.handleVisibility(op.id)}>
+											<ListItemIcon>
+												{op.icon}
+											</ListItemIcon>
+											<ListItemText inset primary={op.label} />
+										</ListItem>
+									})}
+								</List>
+							</Collapse>
+						</Hidden>
+					</div>
+					<ListItem button onClick={this.handleOpenDownloadModal}>
+						<ListItemIcon><CloudDownload /></ListItemIcon>
+						<ListItemText>{t('menus.export')}</ListItemText>
+					</ListItem>
+					<ListItem button onClick={() => this.props.changeRawData(period)}>
+						<ListItemIcon>
+							<Checkbox
+								checked={period.raw}
+								className={classes.noPadding}
+							/>
+						</ListItemIcon>
+						<ListItemText>
+							{t('collections.rawData')}
+						</ListItemText>
+					</ListItem>
+					<ListItem button onClick={() => this.handleChangeChartType(this.state.chartType === 'linear' ? 'logarithmic' : 'linear')}>
+						<ListItemIcon>
+							{this.state.chartType !== 'linear' ? <LinearScale /> : <Timeline />}
+						</ListItemIcon>
+						<ListItemText>
+							{t(this.state.chartType !== 'linear' ? 'settings.chart.YAxis.linear' : 'settings.chart.YAxis.logarithmic')}
+						</ListItemText>
+					</ListItem>
+					<ListItem button onClick={() => { this.handleCloseActionsDetails(); this.props.removePeriod(period.id) }}>
+						<ListItemIcon>
+							<Clear />
+						</ListItemIcon>
+						<ListItemText>
+							{t('menus.charts.deleteThisPeriod')}
+						</ListItemText>
+					</ListItem>
+
+				</Menu>
+			</ItemG>
 		</ItemG>
 	}
 	renderNoData = () => {
@@ -403,6 +598,7 @@ class ChartData extends PureComponent {
 				break;
 		}
 	}
+
 	render() {
 		const { t, period } = this.props
 		const { openDownload, loading, exportData } = this.state
@@ -411,7 +607,7 @@ class ChartData extends PureComponent {
 		return (
 			<Fragment>
 				<InfoCard
-					title={`${displayFrom} - ${displayTo}`}
+					title={this.renderTitle()}
 					subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
 					avatar={this.renderIcon()}
 					noExpand
@@ -427,12 +623,12 @@ class ChartData extends PureComponent {
 								handleClose={this.handleCloseDownloadModal}
 								t={t}
 							/>
-							{loading ? <CircularLoader notCentered /> :
-								<Fragment>
-									<ItemG xs={12}>
-										{this.renderType()}
-									</ItemG>
-								</Fragment>}
+							{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
+
+								<ItemG xs={12}>
+									{this.renderType()}
+								</ItemG>
+							}
 						</Grid>}
 				/>
 			</Fragment >

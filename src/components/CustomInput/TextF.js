@@ -3,10 +3,16 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles, TextField } from '@material-ui/core';
 import { compose } from 'recompose';
-
+import cx from 'classnames'
 const styles = theme => ({
 	leftIcon: {
 		marginRight: theme.spacing.unit
+	},
+	underlineRev: {
+		background: '#fff'
+	},
+	reversed: {
+		color: '#fff',
 	}
 })
 
@@ -15,8 +21,15 @@ const styles = theme => ({
 */
 const TextF = (props) => {
 	let mobile = window.innerWidth <= props.theme.breakpoints.values.md ? true : false
+	let classNames = cx({
+		[props.className]: props.className ? true : false,
+		[props.classes.reversed]: props.reversed,
+		[props.classes.textField]: props.classes.textField ? true : false
+	})
 	return (		
 		<TextField
+			style={{ maxWidth: props.fullWidth ? undefined : 230 }}
+			variant={'outlined'}
 			autoFocus={props.autoFocus ? props.autoFocus : undefined}
 			placeholder={props.placeholder ? props.placeholder : undefined}
 			id={props.id}
@@ -27,14 +40,14 @@ const TextF = (props) => {
 			fullWidth={props.fullWidth || mobile ? true : false}
 			multiline={props.multiline ? props.multiline : undefined}
 			rows={props.rows ? props.rows : undefined}
-			className={props.classes.textField ? props.classes.textFields : ''}
+			className={classNames}
 			error={props.error ? props.error : undefined}
 			type={props.type ? props.type : undefined}
 			pattern={props.pattern ? props.pattern : ''}
 			disabled={props.disabled ? props.disabled : false}
 			margin='normal'
 			helperText={props.helperText}
-			InputProps={props.InputProps ? props.InputProps : null}
+			InputProps={props.InputProps ? { ...props.InputProps, style: { ...props.InputProps.style, boxSizing: 'border-box' } } : null}
 			onKeyPress={props.onKeyPress}
 			onKeyDown={props.onKeyDown}
 		/>

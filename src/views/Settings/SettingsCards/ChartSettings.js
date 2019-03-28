@@ -144,12 +144,12 @@ class ChartSettings extends Component {
 				content={
 					<Grid container>
 						<List className={classes.list}>
-							<ListItem divider>
+							{/* <ListItem divider>
 								<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 									<ListItemText>{t('settings.chart.defaultChart')}</ListItemText>
 									<DSelect leftIcon menuItems={this.chartTypes()} value={chartType} onChange={this.changeChartType} />
 								</ItemGrid>
-							</ListItem>
+							</ListItem> */}
 							<ListItem divider>
 								<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 									<ListItemText>{t('settings.chart.weekendColor')}</ListItemText>

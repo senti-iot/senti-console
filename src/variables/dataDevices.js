@@ -1,4 +1,4 @@
-import { api, imageApi, mapApi, weatherApi, dawaApi } from './data';
+import { api, imageApi, weatherApi, dawaApi } from './data';
 import moment from 'moment'
 
 /* http://dawa.aws.dk/ */
@@ -158,18 +158,6 @@ export const getAvailableDevices = async (orgId) => {
 export const getAllDevices = async () => {
 	var data = await api.get('senti/devices').then(rs => rs.data)
 	return data
-}
-/**
- * 
- * @param {int} lat Latitude
- * @param {int} long Longitute
- */
-export const getSimpleAddress = async (lat, long) => {
-	var gaddress = await mapApi.get(`json?latlng=${parseFloat(lat)},${parseFloat(long)}`).then(rs => rs.data);
-	if (gaddress.status === 'OK')
-		return gaddress.results[0].formatted_address
-	else
-		return null
 }
 /**
  * Get device

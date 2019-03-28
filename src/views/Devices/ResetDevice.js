@@ -30,7 +30,7 @@ export default class ResetDevice extends Component {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>Reset Device?</DialogTitle>
+			<DialogTitle disableTypography id='alert-dialog-title'>Reset Device?</DialogTitle>
 			{/* <DialogContent>
 				<DialogContentText id='alert-dialog-description'>
 				 ?
@@ -56,7 +56,7 @@ export default class ResetDevice extends Component {
 					noExpand
 					title={'Reset device: ' + this.props.match.params.id}
 					content={
-						<Button variant={'contained'} onClick={this.handleOpenResetDialog}>
+						<Button variant={'outlined'} onClick={this.handleOpenResetDialog}>
 							Reset Device
 			  		</Button>
 					} />

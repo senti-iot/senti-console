@@ -5,9 +5,9 @@ import { withStyles } from '@material-ui/core';
 import typographyStyle from 'assets/jss/material-dashboard-react/typographyStyle.js';
 
 function Muted({ ...props }) {
-	const { classes, children } = props;
+	const { classes, children, className } = props;
 	return (
-		<div className={classes.defaultFontStyle + ' ' + classes.mutedText}>
+		<div className={classes.defaultFontStyle + ' ' + classes.mutedText + ' ' + className}>
 			{children}
 		</div>
 	);

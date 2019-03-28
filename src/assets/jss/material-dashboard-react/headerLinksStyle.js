@@ -10,19 +10,33 @@ import {
 } from "assets/jss/material-dashboard-react.js";
 
 const headerLinksStyle = theme => ({
+	nameAndEmail: {
+		height: 46,
+		display: 'flex',
+		flexFlow: 'column',
+		alignItems: 'flex-start',
+		"&:hover": {
+			background: 'inherit'
+		},
+		"&:focus": {
+			background: 'inherit'
+		},
+		cursor: 'default'
+	},
 	img: {
 		borderRadius: 50,
 		height: 36,
 		width: 36
 	},
 	headerMargin: {
-		marginLeft: 18
+		marginLeft: 10
 	},
 	leftIcon: {
 		marginRight: theme.spacing.unit
 	},
 	iconRoot: {
-		color: "#FFF"
+		color: "#FFF",
+		// padding: "12px 2px"
 	},
 	menuItem: {
 		maxHeight: 20	

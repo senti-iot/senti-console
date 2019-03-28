@@ -1,8 +1,7 @@
-import { create } from 'apisauce'
+import { create  } from 'apisauce'
 import cookie from 'react-cookies'
 import crypto from 'crypto'
 import moment from 'moment'
-
 
 const { REACT_APP_ENCRYPTION_KEY } = process.env
 const IV_LENGTH = 16 
@@ -17,16 +16,19 @@ const encrypt = (text) => {
 	return iv.toString('hex') + ':' + encrypted.toString('hex')
 }
 
-let backendHost;
+let backendHost, sentiAPI;
 
 const hostname = window && window.location && window.location.hostname;
 
 if (hostname === 'console.senti.cloud') {
 	backendHost = 'https://senti.cloud/rest/';
+	sentiAPI = 'https://api.senti.cloud/'
 } else if (hostname === 'beta.senti.cloud') {
 	backendHost = 'https://betabackend.senti.cloud/rest/';
+	sentiAPI = 'https://dev.api.senti.cloud/'
 } else {
 	backendHost = 'https://betabackend.senti.cloud/rest/';
+	sentiAPI = 'https://dev.api.senti.cloud/'
 }
 export const loginApi = create({
 	baseURL: backendHost,
@@ -46,7 +48,7 @@ export const dawaApi = create({
 	}
 })
 export const customerDoIApi = create({
-	baseURL: `https://api.senti.cloud/annual/v1`,
+	baseURL: sentiAPI + 'annual/v1',
 	timeout: 30000,
 	headers: {
 		'auth': encrypt(process.env.REACT_APP_ENCRYPTION_KEY),
@@ -56,7 +58,7 @@ export const customerDoIApi = create({
 })
 /* const apiRoute = '/holidays/v1/2018-01-01/2018-12-31/da' */
 export const holidayApi = create({
-	baseURL: `https://api.senti.cloud/holidays/v1`,
+	baseURL: sentiAPI + `holidays/v1`,
 	timeout: 30000,
 	headers: {
 		'auth': encrypt(process.env.REACT_APP_ENCRYPTION_KEY),
@@ -115,6 +117,25 @@ export const imageApi = create({
 		'ODEUMAuthToken': ''
 	},
 })
+export const makeCancelable = (promise) => {
+	let hasCanceled_ = false;
+  
+	const wrappedPromise = new Promise((resolve, reject) => {
+	  promise.then((val) =>
+			hasCanceled_ ? reject({ isCanceled: true }) : resolve(val)
+	  );
+	  promise.catch((error) =>
+			hasCanceled_ ? reject({ isCanceled: true }) : reject(error)
+	  );
+	});
+  
+	return {
+	  promise: wrappedPromise,
+	  cancel() {
+			hasCanceled_ = true;
+	  },
+	};
+};
 export const api = create({
 	baseURL: backendHost,
 	timeout: 30000,
@@ -122,7 +143,7 @@ export const api = create({
 		'Accept': 'application/json',
 		'Content-Type': 'application/json',
 		'ODEUMAuthToken': ''
-	}
+	},	
 })
 
 export const setToken = () => {

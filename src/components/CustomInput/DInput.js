@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Popover, Input, MenuItem, withStyles, ClickAwayListener, Paper, MenuList, FormControl } from '@material-ui/core';
+import { Popover, MenuItem, withStyles, ClickAwayListener, Paper, MenuList, FormControl, OutlinedInput } from '@material-ui/core';
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 import { ArrowDropDown } from 'variables/icons'
 
@@ -28,9 +28,10 @@ class DInput extends Component {
 
 		return (
 			<Fragment>
-				<FormControl>
+				<FormControl style={{ maxWidth: this.props.fullWidth ? undefined : 230 }}>
 
-					<Input
+					<OutlinedInput
+						labelWidth={0}
 						aria-owns={actionAnchor ? 'menu-list-grow' : null}
 						value={value} onClick={this.handleOpenActionsDetails}
 						className={classes.formControl}

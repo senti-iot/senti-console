@@ -12,6 +12,7 @@ import { ItemGrid, Info, Caption } from 'components'
 import { connect } from 'react-redux'
 import TP from 'components/Table/TP';
 import TC from 'components/Table/TC';
+import ProjectHover from 'components/Hover/ProjectHover';
 
 class ProjectTable extends React.Component {
 	constructor(props) {
@@ -20,6 +21,8 @@ class ProjectTable extends React.Component {
 			page: 0,
 		}
 	}
+
+	timer = null
 
 	handleRequestSort = (event, property) => {
 		this.props.handleRequestSort(event, property)
@@ -31,6 +34,36 @@ class ProjectTable extends React.Component {
 
 	isSelected = id => this.props.selected.indexOf(id) !== -1
 
+	setHover = (e, n) => {
+		e.persist()
+		const { hoverTime } = this.props
+		const { rowHover } = this.state
+		if (hoverTime > 0)
+		 this.timer = setTimeout(() => {
+				if (rowHover) {
+					this.setState({
+						rowHover: null
+					})
+					setTimeout(() => {
+						this.setState({ rowHover: e.target, hoverProject: n })
+					}, 200);
+				}
+				else {
+					this.setState({ rowHover: e.target, hoverProject: n })
+				}
+			}, hoverTime);
+	}
+	unsetTimeout = () => {
+		clearTimeout(this.timer)
+	}
+	unsetHover = () => {
+		this.setState({
+			rowHover: null
+		})
+	}
+	renderHover = () => {
+		return <ProjectHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} project={this.state.hoverProject} />
+	}
 	render() {
 		const { classes, rowsPerPage, handleClick, selected, t, order, data, orderBy, handleCheckboxClick } = this.props
 		const { page } = this.state
@@ -40,7 +73,8 @@ class ProjectTable extends React.Component {
 
 		return (
 			<Fragment>
-				<div className={classes.tableWrapper}>
+				<div className={classes.tableWrapper} onMouseLeave={this.unsetHover}>
+					{this.renderHover()}
 					<Table className={classes.table} aria-labelledby='tableTitle'>
 						<TableHeader
 							numSelected={selected.length}
@@ -66,6 +100,8 @@ class ProjectTable extends React.Component {
 								const isSelected = this.isSelected(n.id);
 								return (
 									<TableRow
+										// onMouseEnter={e => { this.setHover(e, n) }}
+										// onMouseLeave={this.unsetTimeout}
 										hover
 										onClick={handleClick(n.id)}
 										role='checkbox'
@@ -95,7 +131,10 @@ class ProjectTable extends React.Component {
 
 										<Hidden mdDown>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
-											<TC FirstC label={n.title}/>
+											<TC 
+												onMouseEnter={e => { this.setHover(e, n) }}
+												onMouseLeave={this.unsetTimeout}
+												FirstC label={n.title}/>
 											<TC label={dateFormatter(n.startDate)}/>
 											<TC label={dateFormatter(n.endDate)}/>
 											<TC label={dateFormatter(n.created)}/>
@@ -124,7 +163,8 @@ class ProjectTable extends React.Component {
 	}
 }
 const mapStateToProps = (state) => ({
-	rowsPerPage: state.appState.trp > 0 ? state.appState.trp : state.settings.trp,	
+	rowsPerPage: state.appState.trp > 0 ? state.appState.trp : state.settings.trp,
+	hoverTime: state.settings.hoverTime
 })
 
 const mapDispatchToProps = {

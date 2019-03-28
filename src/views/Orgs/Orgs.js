@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { withStyles, Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton } from '@material-ui/core';
+import { withStyles, Paper, Button, DialogActions, ListItemText, ListItem, List, DialogContentText, DialogContent, DialogTitle, Dialog, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import CircularLoader from 'components/Loader/CircularLoader';
 import GridContainer from 'components/Grid/GridContainer';
@@ -27,6 +27,7 @@ class Orgs extends Component {
 			}
 		}
 		props.setHeader('orgs.pageTitle', false, '', 'users')
+		props.setBC('orgs')
 	}
 	reload = async () => {
 		this.setState({ loading: true })
@@ -239,7 +240,7 @@ class Orgs extends Component {
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
-			<DialogTitle id='alert-dialog-title'>{t('dialogs.delete.title.orgs')}</DialogTitle>
+			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.orgs')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
 					{t('dialogs.delete.message.orgs')}:
@@ -260,12 +261,15 @@ class Orgs extends Component {
 		</Dialog>
 	}
 	renderTableToolBarContent = () => {
-		const { accessLevel } = this.props
+		const { accessLevel, t  } = this.props
 		let access = accessLevel.apiorg ? accessLevel.apiorg.edit ? true : false : false
 		return <Fragment>
-			{access ? <IconButton aria-label='Add new organisation' onClick={this.addNewOrg}>
-				<Add />
-			</IconButton> : null
+			{access ? <Tooltip title={t('menus.create.org')}>
+				<IconButton aria-label='Add new organisation' onClick={this.addNewOrg}>
+					<Add />
+				</IconButton> 
+			</Tooltip>
+				: null
 			}
 		</Fragment>
 	}
@@ -275,31 +279,34 @@ class Orgs extends Component {
 		const { loading, order, orderBy, orgs, selected } = this.state
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> :
-				<Paper className={classes.root}>
-					{this.renderConfirmDelete()}
-					<TableToolbar
-						ft={this.ftOrgs()}
-						reduxKey={'orgs'}
-						anchorElMenu={this.state.anchorElMenu}
-						handleToolbarMenuClose={this.handleToolbarMenuClose}
-						handleToolbarMenuOpen={this.handleToolbarMenuOpen}
-						numSelected={selected.length}
-						options={this.options}
-						t={t}
-						content={this.renderTableToolBarContent()}
-					/>
-					<OrgTable
-						data={this.filterItems(orgs)}
-						tableHead={this.orgsHeader()}
-						handleRequestSort={this.handleRequestSort}
-						handleDeleteOrgs={this.handleDeleteOrgs}
-						handleCheckboxClick={this.handleCheckboxClick}
-						handleSelectAllClick={this.handleSelectAllClick}
-						orderBy={orderBy}
-						selected={selected}
-						order={order}
-						t={t}
-					/></Paper>}
+				<Fade in={true}>
+					<Paper className={classes.root}>
+						{this.renderConfirmDelete()}
+						<TableToolbar
+							ft={this.ftOrgs()}
+							reduxKey={'orgs'}
+							anchorElMenu={this.state.anchorElMenu}
+							handleToolbarMenuClose={this.handleToolbarMenuClose}
+							handleToolbarMenuOpen={this.handleToolbarMenuOpen}
+							numSelected={selected.length}
+							options={this.options}
+							t={t}
+							content={this.renderTableToolBarContent()}
+						/>
+						<OrgTable
+							data={this.filterItems(orgs)}
+							tableHead={this.orgsHeader()}
+							handleRequestSort={this.handleRequestSort}
+							handleDeleteOrgs={this.handleDeleteOrgs}
+							handleCheckboxClick={this.handleCheckboxClick}
+							handleSelectAllClick={this.handleSelectAllClick}
+							orderBy={orderBy}
+							selected={selected}
+							order={order}
+							t={t}
+						/></Paper>
+				</Fade>
+			}
 		</GridContainer>
 	}
 	render() {

@@ -5,9 +5,10 @@ import { favorites } from './favorites'
 import { doi } from './doi'
 import { appState } from './appState'
 import { dateTime } from './dateTime'
+import { data } from './data'
 import thunk from 'redux-thunk';
 // import zendesk from 'lib/stores/ChatStore'
-let reducers = combineReducers({ settings, localization, favorites, doi, appState, dateTime, /* zendesk */ })
+let reducers = combineReducers({ settings, localization, favorites, doi, appState, dateTime, data /* zendesk */ })
 /**
 *	 Debugging purposes
 **/ 
