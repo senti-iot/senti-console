@@ -273,10 +273,9 @@ class Management extends Component {
 		/>
 	}
 	renderFavorites = () => {
-		const { classes } = this.props
-		const { loading } = this.state
+		const { classes, loadingUsers, loadingOrgs } = this.props
 		return <GridContainer justify={'center'}>
-			{loading ? <CircularLoader /> : <Paper className={classes.root}>
+			{loadingUsers || loadingOrgs ? <CircularLoader /> : <Paper className={classes.root}>
 				{this.renderTableToolBar('favorites')}
 				{this.renderTable()}
 			</Paper>
@@ -325,7 +324,6 @@ const mapDispatchToProps = (dispatch) => ({
 	getOrgs: (reload) => dispatch(getOrgs(reload)),
 	setUsers: () => dispatch(setUsers()),
 	setOrgs: () => dispatch(setOrgs())
-
 })
 
 export default withRouter(withStyles(projectStyles)(withSnackbar()(withLocalization()(connect(mapStateToProps, mapDispatchToProps)(Management)))))

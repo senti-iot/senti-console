@@ -12,21 +12,20 @@ import {
 	Button,
 	Fade
 } from '@material-ui/core';
-import { getUser, deleteUser, resendConfirmEmail } from 'variables/dataUsers';
+import { deleteUser, resendConfirmEmail } from 'variables/dataUsers';
 import { connect } from 'react-redux'
 import { setPassword } from 'variables/dataLogin';
 import { userStyles } from 'assets/jss/components/users/userStyles';
 import { finishedSaving, addToFav, isFav, removeFromFav } from 'redux/favorites';
 import { Person, FolderShared } from 'variables/icons';
 import { scrollToAnchor } from 'variables/functions';
+import { getUserLS } from 'redux/data';
 
 class User extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			user: null,
-			loading: true,
 			openSnackbar: 0,
 			openDelete: false,
 			openChangePassword: false,
@@ -43,11 +42,11 @@ class User extends Component {
 	componentDidUpdate = (prevProps, prevState) => {
 		if (prevProps.match && this.props.match.params) {
 			if (prevProps.match.params.id !== this.props.match.params.id) {
-				this.setState({ loading: true })
 				this.componentDidMount()
-			}}
+			}
+		}
 		if (this.props.saved === true) {
-			const { user } = this.state
+			const { user } = this.props
 			if (this.props.isFav({ id: user.id, type: 'user' })) {
 				this.props.s('snackbars.favorite.saved', { name: `${user.firstName} ${user.lastName}`, type: this.props.t('favorites.types.user') })
 				this.props.finishedSaving()
@@ -59,57 +58,58 @@ class User extends Component {
 		}
 	}
 	addToFav = () => {
-		const { user } = this.state
+		const { user } = this.props
 		let favObj = {
 			id: user.id,
 			name: `${user.firstName} ${user.lastName}`,
 			type: 'user',
-			path: this.props.match.url }
+			path: this.props.match.url
+		}
 		this.props.addToFav(favObj)
 	}
 	removeFromFav = () => {
-		const { user } = this.state
+		const { user } = this.props
 		let favObj = {
 			id: user.id,
 			name: `${user.firstName} ${user.lastName}`,
 			type: 'user',
-			path: this.props.match.url }
+			path: this.props.match.url
+		}
 		this.props.removeFromFav(favObj)
 	}
 	tabs = () => {
 		const { t } = this.props
 		return [
 			{ id: 0, title: t('devices.tabs.listView'), label: <Person />, url: `#contact` },
-			{ id: 1, title: t('devices.tabs.mapView'), label: <FolderShared/>, url: `#log` },
+			{ id: 1, title: t('devices.tabs.mapView'), label: <FolderShared />, url: `#log` },
 		]
+	}
+	getUser = async id => {
+		const { getUser } = this.props
+		await getUser(id)
 	}
 	componentDidMount = async () => {
 		const { match, setHeader, history, location, setBC, setTabs } = this.props
 		if (match) {
 			if (match.params.id) {
-				await getUser(match.params.id).then(async rs => {
-					if (rs.id === null)
-						history.push({
-							pathname: '/404',
-							prevURL: window.location.pathname
-						})
-					else {
-						let prevURL = location.prevURL ? location.prevURL : '/management/users'
-						setHeader("users.user", true, prevURL, 'users')
-						setTabs({
-							id: 'user',
-							tabs: this.tabs(),
-							route: 0
-						})
-						this.setState({ user: rs, loading: false })
-						if (this.props.location.hash !== '')
-						{
-							scrollToAnchor(this.props.location.hash)
-						}
-					}
+				await this.getUser(match.params.id).then(() => {
+					let name = this.props.user.firstName + ' ' + this.props.user.lastName
+					setBC('user', name ? name : "")
+				
 				})
-				setBC('user', this.state.user.firstName + ' ' + this.state.user.lastName)
+				let prevURL = location.prevURL ? location.prevURL : '/management/users'
+				setHeader("users.user", true, prevURL, 'users')
+				setTabs({
+					id: 'user',
+					tabs: this.tabs(),
+					route: 0
+				})
+				if (this.props.location.hash !== '') {
+					scrollToAnchor(this.props.location.hash)
+				}
 			}
+
+
 		}
 		else {
 			history.push({
@@ -119,7 +119,7 @@ class User extends Component {
 		}
 	}
 	resendConfirmEmail = async () => {
-		const { user } = this.state
+		const { user } = this.props
 		let userId = {
 			id: user.id
 		}
@@ -143,7 +143,8 @@ class User extends Component {
 		this.setState({ openDelete: false })
 	}
 	handleDeleteUser = async () => {
-		await deleteUser(this.state.user.id).then(rs => rs ? this.close() : null)
+		const { user } = this.props
+		await deleteUser(user.id).then(rs => rs ? this.close() : null)
 	}
 	close = (rs) => {
 		this.setState({ openDelete: false })
@@ -151,10 +152,10 @@ class User extends Component {
 		this.props.history.push('/management/users')
 	}
 	snackBarMessages = (msg) => {
-		const { s } = this.props
+		const { s, user } = this.props
 		switch (msg) {
 			case 1:
-				s('snackbars.userDeleted', { user: this.state.user.firstName + ' ' + this.state.user.lastName })
+				s('snackbars.userDeleted', { user: user.firstName + ' ' + user.lastName })
 				break
 			case 2:
 				s('snackbars.userPasswordChanged')
@@ -168,7 +169,7 @@ class User extends Component {
 		this.setState({ openChangePassword: true })
 	}
 
-	handleCloseChangePassword = success => e => {		
+	handleCloseChangePassword = success => e => {
 		if (e) {
 			e.preventDefault()
 		}
@@ -179,26 +180,28 @@ class User extends Component {
 	}
 
 	handleInputChange = e => {
-		if (this.state.changePasswordError)
+		const { changePasswordError, pw } = this.state
+		if (changePasswordError)
 			this.setState({
 				errorMessage: false,
 				changePasswordError: false
 			})
 		this.setState({
 			pw: {
-				...this.state.pw,
+				...pw,
 				[e.target.id]: e.target.value
 			}
 		})
 	}
 	handleChangePassword = async () => {
-		const { t } = this.props
-		const { confirm, newP } = this.state.pw
+		const { t, user } = this.props
+		const { pw } = this.state
+		const { confirm, newP } = pw
 		if (confirm === newP) {
 			let newPassObj = {
-				id: this.state.user.id,
-				oldPassword: this.state.pw.current,
-				newPassword: this.state.pw.newP
+				id: user.id,
+				oldPassword: pw.current,
+				newPassword: pw.newP
 			}
 			let success = await setPassword(newPassObj).then(rs => rs)
 			if (success)
@@ -212,7 +215,7 @@ class User extends Component {
 		}
 	}
 	renderChangePassword = () => {
-		const { openChangePassword } = this.state
+		const { openChangePassword, errorMessage, pw } = this.state
 		const { t, accessLevel } = this.props
 		return <Dialog
 			open={openChangePassword}
@@ -222,14 +225,14 @@ class User extends Component {
 		>
 			<DialogTitle disableTypography id='alert-dialog-title'>{t('menus.changePassword')}</DialogTitle>
 			<DialogContent>
-				<Danger> {this.state.errorMessage} </Danger>
+				<Danger> {errorMessage} </Danger>
 				{accessLevel.apiorg.editusers ? null : <ItemG>
 					<TextF
 						id={'current'}
 						label={t('users.fields.currentPass')}
 						type={'password'}
 						handleChange={this.handleInputChange}
-						value={this.state.pw.current}
+						value={pw.current}
 					/>
 				</ItemG>}
 				<ItemG>
@@ -238,7 +241,7 @@ class User extends Component {
 						label={t('users.fields.newPass')}
 						type={'password'}
 						handleChange={this.handleInputChange}
-						value={this.state.pw.newP}
+						value={pw.newP}
 					/>
 				</ItemG>
 				<ItemG>
@@ -247,7 +250,7 @@ class User extends Component {
 						label={t('users.fields.confirmPass')}
 						type={'password'}
 						handleChange={this.handleInputChange}
-						value={this.state.pw.confirm}
+						value={pw.confirm}
 					/>
 				</ItemG>
 			</DialogContent>
@@ -263,7 +266,7 @@ class User extends Component {
 	}
 	renderConfirmEmail = () => {
 		const { openResendConfirm } = this.state
-		const { t } = this.props
+		const { t, user } = this.props
 		return <Dialog
 			open={openResendConfirm}
 			onClose={this.handleCloseDeleteDialog}
@@ -273,7 +276,7 @@ class User extends Component {
 			<DialogTitle disableTypography id='alert-dialog-title'>{t('users.userResendEmail')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
-					{t('users.userResendConfirm', { user: (this.state.user.firstName + ' ' + this.state.user.lastName) }) + '?'}
+					{t('users.userResendConfirm', { user: (user.firstName + ' ' + user.lastName) }) + '?'}
 				</DialogContentText>
 
 			</DialogContent>
@@ -289,7 +292,7 @@ class User extends Component {
 	}
 	renderDeleteDialog = () => {
 		const { openDelete } = this.state
-		const { t } = this.props
+		const { t, user } = this.props
 		return <Dialog
 			open={openDelete}
 			onClose={this.handleCloseDeleteDialog}
@@ -299,7 +302,7 @@ class User extends Component {
 			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.user')}</DialogTitle>
 			<DialogContent>
 				<DialogContentText id='alert-dialog-description'>
-					{t('dialogs.delete.message.user', { user: (this.state.user.firstName + ' ' + this.state.user.lastName) })}
+					{t('dialogs.delete.message.user', { user: (user.firstName + ' ' + user.lastName) })}
 				</DialogContentText>
 
 			</DialogContent>
@@ -315,9 +318,9 @@ class User extends Component {
 	}
 
 	render() {
-		const { classes, t } = this.props
-		const { user, loading } = this.state
+		const { classes, t, user, loading } = this.props
 		const rp = { history: this.props.history, match: this.props.match }
+
 		return (
 			loading ? <CircularLoader /> : <Fade in={true}>
 				<GridContainer justify={'center'} alignContent={'space-between'}>
@@ -347,14 +350,17 @@ class User extends Component {
 }
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
-	saved: state.favorites.saved
+	saved: state.favorites.saved,
+	user: state.data.user,
+	loading: !state.data.gotUser
 })
 
 const mapDispatchToProps = (dispatch) => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
-	finishedSaving: () => dispatch(finishedSaving())
+	finishedSaving: () => dispatch(finishedSaving()),
+	getUser: async (id) => dispatch(await getUserLS(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(userStyles)(User))
