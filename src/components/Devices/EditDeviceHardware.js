@@ -85,6 +85,8 @@ class EditDetails extends Component {
 	}
 	goToDevice = () => {
 		const { location, history } = this.props
+		this.props.getDevice(this.state.device.id)
+		this.props.getDevices(true)
 		history.push(location.prevURL ? location.prevURL : `/device/${this.props.match.params.id}`)
 	}
 	render() {
