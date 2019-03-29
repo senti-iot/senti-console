@@ -4,7 +4,7 @@ import 'moment/locale/da'
 import 'moment/locale/en-gb'
 import { saveSettings } from 'variables/dataLogin';
 import { setDates } from './dateTime';
-import { setPrefix } from 'variables/storage';
+import { setPrefix, set, get } from 'variables/storage';
 import { getAllData } from './data';
 var moment = require('moment')
 
@@ -115,6 +115,7 @@ export const getSettings = async () => {
 		if (sessionCookie) {
 			let vSession = await getValidSession(sessionCookie.userID).then(rs => rs.status)
 			if (vSession === 200) {
+
 				let exp = moment().add('1', 'day')
 				cookie.save('SESSION', sessionCookie, { path: '/', expires: exp.toDate() })
 				setPrefix(sessionCookie.userID)
@@ -127,7 +128,15 @@ export const getSettings = async () => {
 
 		var userId = cookie.load('SESSION') ? cookie.load('SESSION').userID : 0
 		var user = userId !== 0 ? await getUser(userId) : null
-		var settings = user ? user.aux ? user.aux.senti ? user.aux.senti.settings ? user.aux.senti.settings : null : null : null : null
+	
+		var settings =  get('settings') ? get('settings') : user ? user.aux ? user.aux.senti ? user.aux.senti.settings ? user.aux.senti.settings : null : null : null : null
+		if (settings) {
+			dispatch({
+				type: GetSettings,
+				settings: settings,
+				user: user
+			})
+		}
 		var favorites = user ? user.aux ? user.aux.senti ? user.aux.senti.favorites ? user.aux.senti.favorites : null : null : null : null
 		moment.updateLocale('en-gb', {
 			week: {
@@ -581,6 +590,7 @@ export const settings = (state = initialState, action) => {
 		case GetSettings:
 		{
 			let periods = setDates(action.settings.periods)
+			set('settings', action.settings)
 			return Object.assign({}, state, { ...action.settings, periods: periods, user: action.user, loading: false })
 		}
 		case changeLangAction:

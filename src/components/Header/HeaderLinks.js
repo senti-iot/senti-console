@@ -1,4 +1,4 @@
-import { Grid, IconButton, Menu, MenuItem, withStyles, Divider } from '@material-ui/core';
+import { Grid, IconButton, Menu, MenuItem, withStyles, Divider, Tooltip } from '@material-ui/core';
 import { AccountBox, Business, PowerSettingsNew, SettingsRounded } from 'variables/icons';
 import headerLinksStyle from 'assets/jss/material-dashboard-react/headerLinksStyle';
 import React from 'react';
@@ -82,16 +82,18 @@ class HeaderLinks extends React.Component {
 					{this.renderChristmasIcon()}
 				</ItemG> */}
 				<ItemG>
-					<IconButton
-						aria-owns={openProfile ? 'menu-appbar' : null}
-						aria-haspopup='true'
-						onClick={this.handleProfileOpen}
-						classes={{
-							root: classes.iconRoot
-						}}
-					>
-						{user ? user.img ? <img src={user.img} alt='UserProfile' className={classes.img} /> : <Gravatar default='mp' email={user.email} className={classes.img} size={36} /> : null}
-					</IconButton>
+					<Tooltip title={t('menus.user.profile')}>
+						<IconButton
+							aria-owns={openProfile ? 'menu-appbar' : null}
+							aria-haspopup='true'
+							onClick={this.handleProfileOpen}
+							classes={{
+								root: classes.iconRoot
+							}}
+						>
+							{user ? user.img ? <img src={user.img} alt='UserProfile' className={classes.img} /> : <Gravatar default='mp' email={user.email} className={classes.img} size={36} /> : null}
+						</IconButton>
+					</Tooltip>
 					<Menu
 						style={{ marginTop: 50 }}
 						id='menu-appbar'
