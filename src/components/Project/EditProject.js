@@ -1,18 +1,18 @@
 import React, { Component, Fragment } from 'react'
-import { Paper, withStyles, Fade,  Collapse, Button } from '@material-ui/core';
+import { Paper, withStyles, Fade, Collapse, Button } from '@material-ui/core';
 import cx from 'classnames'
 import Gravatar from 'react-gravatar'
 import { Check, Close } from 'variables/icons';
 import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import { updateProject, getProject } from 'variables/dataProjects';
+import { updateProject, } from 'variables/dataProjects';
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning, ItemG, DatePicker } from 'components'
 import { isFav, updateFav } from 'redux/favorites';
 import { connect } from 'react-redux'
-import { getAllUsers } from 'variables/dataUsers';
 import { Dialog, AppBar, Toolbar, Typography, List, ListItem, ListItemText, Divider, Slide, Hidden, IconButton } from '@material-ui/core';
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
+import { getProjectLS, getProjects, setUsers } from 'redux/data';
 
 var moment = require('moment')
 
@@ -21,13 +21,12 @@ class EditProject extends Component {
 		super(props)
 
 		this.state = {
-			project: {},
+			project: null,
 			availableDevices: [],
 			selectedDevices: [],
 			allDevices: [],
 			creating: false,
 			created: false,
-			loading: true,
 			filters: {
 				keyword: ''
 			},
@@ -36,7 +35,6 @@ class EditProject extends Component {
 				lastName: "",
 				id: -1
 			},
-			users: [],
 			openUser: false
 		}
 	}
@@ -87,36 +85,26 @@ class EditProject extends Component {
 			this.goToProject()
 		}
 	}
+	componentDidUpdate = (prevProps, prevState) => {
+		const { project, users } = this.props
+		console.log(users)
+		if ((!prevProps.project && project !== prevProps.project && project) || (this.state.project === null && project)) {
+			this.props.setBC('editproject', project.title, project.id)
+			
+			this.setState({
+				project: project,
+				user: project.user,
+			})
+		}
+	}
+
 	componentDidMount = async () => {
 		window.addEventListener('keydown', this.keyHandler, false)
-
 		this._isMounted = 1
 		let id = this.props.match.params.id
-		const { location } = this.props
-		getAllUsers().then(async rs => {
-			if (this._isMounted) {
-				this.setState({
-					users: rs
-				})
-			}
-		})
-		await getProject(id).then(p => {
-			if (p === null)
-				this.props.history.push({
-					pathname: '/404',
-					prevURL: window.location.pathname
-				})
-			if (p && this._isMounted) {
-				this.setState({
-					project: p,
-					user: p.user
-				})
-				this.props.setBC('editproject', p.title, p.id)
-			}
-		})
-		this.setState({
-			loading: false
-		})
+		const { location, getProject } = this.props
+		await getProject(id)
+		this.props.getUsers()
 		let prevURL = location.prevURL ? location.prevURL : '/projects/list'
 		this.props.setHeader('projects.updateProject', true, prevURL, 'projects')
 	}
@@ -152,7 +140,7 @@ class EditProject extends Component {
 		})
 	}
 	handleUpdateProject = () => {
-		
+
 		let newProject = {
 			...this.state.project,
 			devices: this.state.selectedDevices,
@@ -205,6 +193,8 @@ class EditProject extends Component {
 		}
 		this.setState({ created: true, creating: false })
 		const { s, history } = this.props
+		this.props.getProjects(true)
+		this.props.getProject(project.id)
 		s('snackbars.projectUpdated', { project: this.state.project.title })
 		history.push('/project/' + this.props.match.params.id)
 	}
@@ -216,8 +206,8 @@ class EditProject extends Component {
 		})
 	}
 	renderSelectUser = () => {
-		const { t, classes } = this.props
-		const { openUser, users, filters } = this.state
+		const { t, classes, users  } = this.props
+		const { openUser, filters  } = this.state
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
@@ -288,14 +278,14 @@ class EditProject extends Component {
 	}
 
 	render() {
-		const { classes, t } = this.props
-		const { created, error, loading, user } = this.state
+		const { classes, t, loading } = this.props
+		const { created, error, project, user } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
 
 		return (
-			!loading ?
+			!loading && project ?
 				<GridContainer justify={'center'}>
 					<Fade in={true}>
 						<Paper className={classes.paper}>
@@ -314,11 +304,11 @@ class EditProject extends Component {
 										autoFocus
 										id={'title'}
 										label={t('projects.fields.name')}
-										value={this.state.project.title}
+										value={project.title}
 										className={classes.textField}
 										handleChange={this.handleChange('title')}
 										margin='normal'
-										
+
 										error={error}
 									/>
 								</ItemGrid>
@@ -330,17 +320,17 @@ class EditProject extends Component {
 										rows={4}
 										color={'secondary'}
 										className={classes.textField}
-										value={this.state.project.description}
+										value={project.description}
 										handleChange={this.handleChange('description')}
 										margin='normal'
-										
+
 										error={error}
 									/>
 								</ItemGrid>
 								<ItemGrid xs={12} md={6}>
 									<DatePicker
 										label={t('projects.fields.endDate')}
-										value={this.state.project.startDate}
+										value={project.startDate}
 										onChange={this.handleDateChange('startDate')}
 										error={error}
 									/>
@@ -348,7 +338,7 @@ class EditProject extends Component {
 								<ItemGrid xs={12} md={6}>
 									<DatePicker
 										label={t('projects.fields.endDate')}
-										value={this.state.project.endDate}
+										value={project.endDate}
 										onChange={this.handleDateChange('endDate')}
 										error={error}
 									/>
@@ -390,7 +380,7 @@ class EditProject extends Component {
 										color='primary'
 										className={buttonClassname}
 										disabled={this.state.creating || this.state.created}
-										onClick={ this.handleUpdateProject}>
+										onClick={this.handleUpdateProject}>
 										{this.state.created ?
 											<Fragment><Check className={classes.leftIcon} />{t('snackbars.redirect')}</Fragment>
 											: t('actions.save')}
@@ -404,12 +394,19 @@ class EditProject extends Component {
 		)
 	}
 }
-const mapStateToProps = () => ({
+const mapStateToProps = (state) => ({
+	project: state.data.project,
+	users: state.data.users,
+	loading: !state.data.gotProject
 })
 
 const mapDispatchToProps = (dispatch) => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
-	updateFav: (favObj) => dispatch(updateFav(favObj))
+	updateFav: (favObj) => dispatch(updateFav(favObj)),
+	getProject: async id => dispatch(await getProjectLS(id)),
+	getProjects: reload => dispatch(getProjects()),
+	getUsers: reload => dispatch(setUsers())
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles)(EditProject))
