@@ -77,7 +77,6 @@ class ProjectCollections extends Component {
 		const { project, t, classes, rowsPerPage /* collectionMostCounts */ } = this.props
 		const { dataCollections } = project
 		const { page } = this.state
-		console.log(dataCollections)
 		return (
 			<InfoCard title={t('collections.pageTitle')} avatar={<DataUsage />}
 				noRightExpand

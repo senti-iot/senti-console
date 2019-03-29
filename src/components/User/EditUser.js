@@ -79,7 +79,6 @@ class EditUser extends Component {
 	}
 	componentDidUpdate = (prevProps, prevState) => {
 		const { user } = this.props
-		console.log(user, this.state.user)
 		if ((!prevProps.user && user !== prevProps.user) || (this.state.user === null && user)) {
 			let g = 0
 			let userGroups = Object.keys(user.groups)

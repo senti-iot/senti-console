@@ -194,7 +194,6 @@ class NewSidebar extends Component {
 	}
 	render() {
 		const { drawer } = this.props
-		console.log(this.props.menuRoute)
 		return (
 			<Fragment>
 				<Hidden mdDown>

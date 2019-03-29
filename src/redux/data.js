@@ -376,7 +376,6 @@ export const setProjects = () => {
 export const setCollections = () => {
 	return dispatch => {
 		let collections = get('collections')
-		console.log(collections)
 		if (collections) {
 			dispatch({
 				type: setcollections,
@@ -464,7 +463,6 @@ export const getCollections = (reload) => {
 	return dispatch => {
 		getAllCollections().then(rs => {
 			set('collections', rs)
-			console.log(rs)
 			if (reload) {
 				dispatch(setCollections())
 			}
