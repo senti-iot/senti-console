@@ -205,6 +205,13 @@ class Users extends Component {
 	deleteUsers = async () => {
 		const { selected } = this.state
 		await selected.forEach(async u => {
+			let favObj = {
+				id: u,
+				type: 'user',
+			}
+			if (this.props.isFav(favObj)) {
+				this.removeFromFav(favObj)
+			}
 			await deleteUser(u)
 		})
 		await this.reload()

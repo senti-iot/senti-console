@@ -59,32 +59,32 @@ class App extends React.Component {
 			})
 	}
 	handleSetHeaderTitle = (headerTitle, goBackButton, url, menuRoute, bcname) => {
-		if (this._isMounted) {
-			if ((headerTitle !== this.state.headerTitle) || (url !== this.state.url)) {
-				if (typeof headerTitle === 'string') {
-					if ((headerTitle !== this.state.headerTitle.id ) || (url !== this.state.url)) {
-						this.setState({
-							headerTitle: {
-								id: headerTitle,
-								options: null
-							},
-							BCTitle: bcname,
-							goBackButton: goBackButton,
-							url,
-							menuRoute
-						})
-					}
-				}
-				else {
+
+		if ((headerTitle !== this.state.headerTitle) || (url !== this.state.url)) {
+			if (typeof headerTitle === 'string') {
+				if ((headerTitle !== this.state.headerTitle.id ) || (url !== this.state.url)) {
 					this.setState({
-						headerTitle: headerTitle,
+						headerTitle: {
+							id: headerTitle,
+							options: null
+						},
+						BCTitle: bcname,
 						goBackButton: goBackButton,
 						url,
 						menuRoute
 					})
 				}
 			}
+			else {
+				this.setState({
+					headerTitle: headerTitle,
+					goBackButton: goBackButton,
+					url,
+					menuRoute
+				})
+			}
 		}
+		// }
 	};
 	handleGoBackButton = () => {
 		this.props.history.push(this.state.url)
@@ -93,7 +93,8 @@ class App extends React.Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		if (this._isMounted) {
-			this.handleSetHeaderTitle('Senti', false, '', 'dashboard')
+			if (this.props.defaultRoute === '/')
+				this.handleSetHeaderTitle('Senti', false, '', 'dashboard')
 		}
 
 		await this.props.getSettings().then(async rs => {

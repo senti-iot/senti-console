@@ -1,16 +1,18 @@
 import { Button, Grid, Paper, withStyles, Collapse } from '@material-ui/core';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import React, { Component, Fragment } from 'react';
-import { getDevice, updateDevice } from 'variables/dataDevices';
+import { updateDevice } from 'variables/dataDevices';
 import { ItemGrid, TextF, GridContainer, CircularLoader, } from 'components';
 import { isFav, updateFav } from 'redux/favorites';
 import { connect } from 'react-redux'
+import { getDeviceLS, getDevices } from 'redux/data';
 
 class EditDetails extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
+			device: null,
 			loading: true,
 			updating: false,
 			updated: false
@@ -23,21 +25,22 @@ class EditDetails extends Component {
 			this.goToDevice()
 		}
 	}
+	componentDidUpdate = (prevProps, prevState) => {
+		const { device } = this.props
+		if ((!prevProps.device && device !== prevProps.device) || (this.state.device === null && device)) {
+			  this.props.setBC('editdevicehardware', device.name, device.id)
+			  this.setState({
+				  device: device,
+			  })
+		  }
+	  }
+	
 	componentDidMount = async () => {
+		const { getDevice } = this.props
 		window.addEventListener('keydown', this.keyHandler, false)
 		let id = this.props.match.params.id
-		await getDevice(id).then(rs => {
-			if (rs === null)
-				this.props.history.push({
-					pathname: '/404',
-					prevURL: window.location.pathname
-				})
-			this.setState({
-				device: rs,
-				loading: false
-			})
-			this.props.setBC('editdevicehardware', rs.name, rs.id)
-		})
+		await getDevice(id)
+
 	}
 	componentWillUnmount = () => {
 		window.removeEventListener('keydown', this.keyHandler, false)
@@ -82,12 +85,14 @@ class EditDetails extends Component {
 	}
 	goToDevice = () => {
 		const { location, history } = this.props
+		this.props.getDevice(this.state.device.id)
+		this.props.getDevices(true)
 		history.push(location.prevURL ? location.prevURL : `/device/${this.props.match.params.id}`)
 	}
 	render() {
-		const { classes, t } = this.props
-		const { loading, device } = this.state
-		return loading ? <CircularLoader /> : (
+		const { loading, classes, t } = this.props
+		const {  device } = this.state
+		return !loading && device ? (
 			<GridContainer>
 				<Paper className={classes.paper}>
 					<form className={classes.form}>
@@ -220,15 +225,18 @@ class EditDetails extends Component {
 					</form>
 				</Paper>
 			</GridContainer>
-		)
+		) : <CircularLoader /> 
 	}
 }
 const mapStateToProps = (state) => ({
-
+	device: state.data.device,
+	loading: !state.data.gotDevice
 })
 const mapDispatchToProps = (dispatch) => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
-	updateFav: (favObj) => dispatch(updateFav(favObj))
+	updateFav: (favObj) => dispatch(updateFav(favObj)),
+	getDevice: async id => dispatch(await getDeviceLS(id)),
+	getDevices: reload => dispatch(getDevices())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles)(EditDetails))

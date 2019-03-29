@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { InfoCard, ItemGrid, Info, Caption } from 'components'
+import { InfoCard, ItemGrid, Info, Caption, ItemG } from 'components'
 import { Table, TableBody, TableRow, Hidden, withStyles } from '@material-ui/core'
 import { LibraryBooks } from 'variables/icons'
 import TC from 'components/Table/TC'
@@ -29,6 +29,7 @@ class OrgDevices extends Component {
 										style={{ cursor: 'pointer', padding: '0 20px' }}
 									>
 										<Hidden lgUp>
+											<TC checkbox content={<ItemG container justify={'center'}><LibraryBooks/></ItemG>} className={classes.orgDevicesTD}/>
 											<TC content={
 												<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>

@@ -32,7 +32,6 @@ class App extends Component {
 		return (
 			<Provider store={store}>
 				<MuiPickersUtilsProvider utils={MomentUtils}>
-
 					<TProvider>
 						<MuiThemeProvider theme={lightTheme}>
 							<Router history={hist}>

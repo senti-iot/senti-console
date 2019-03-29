@@ -56,7 +56,7 @@ class Org extends Component {
 					setHeader('orgs.organisation', true, prevURL, 'users')
 					setTabs({
 						id: 'org',
-						tabs: this.tabs,
+						tabs: this.tabs(),
 						route: 0
 					})
 					
@@ -161,13 +161,15 @@ class Org extends Component {
 				break
 		}
 	}
-	tabs = [
-		{ id: 0, title: '', label: <Business />, url: `#details` },
-		{ id: 1, title: '', label: <People />, url: `#users` },
-		{ id: 2, title: '', label: <LibraryBooks />, url: `#projects` },
-		{ id: 3, title: '', label: <DataUsage />, url: `#collections` },
-		{ id: 4, title: '', label: <DeviceHub />, url: `#devices` }
-	]
+	tabs = () => {
+		const { t } = this.props
+	 return [
+			{ id: 0, title: t('tabs.details'), label: <Business />, url: `#details` },
+			{ id: 1, title: t('tabs.users'), label: <People />, url: `#users` },
+			{ id: 2, title: t('tabs.projects'), label: <LibraryBooks />, url: `#projects` },
+			{ id: 3, title: t('tabs.collections'), label: <DataUsage />, url: `#collections` },
+			{ id: 4, title: t('tabs.devices'), label: <DeviceHub />, url: `#devices` }
+		]}
 	render() {
 		const { classes, t, history, match, language, org, loading } = this.props
 		const { loadingUsers, loadingDevices, loadingProjects, loadingCollections, users, devices, collections, projects } = this.state

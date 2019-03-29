@@ -62,9 +62,9 @@ class Projects extends Component {
 	tabs = () => {
 		const { t, match } = this.props
 		return [
-			{ id: 0, title: t('projects.tabs.listView'), label: <ViewList />, url: `${match.path}/list` },
-			{ id: 1, title: t('projects.tabs.cardView'), label: <ViewModule />, url: `${match.path}/grid` },
-			{ id: 2, title: "", label: <Star />, url: `${match.path}/favorites` },
+			{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `${match.path}/list` },
+			{ id: 1, title: t('tooltips.cardView'), label: <ViewModule />, url: `${match.path}/grid` },
+			{ id: 2, title: t('tooltips.favorites'), label: <Star />, url: `${match.path}/favorites` },
 		]
 	}
 	ft = () => {
