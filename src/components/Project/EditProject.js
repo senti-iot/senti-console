@@ -86,8 +86,7 @@ class EditProject extends Component {
 		}
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		const { project, users } = this.props
-		console.log(users)
+		const { project } = this.props
 		if ((!prevProps.project && project !== prevProps.project && project) || (this.state.project === null && project)) {
 			this.props.setBC('editproject', project.title, project.id)
 			
