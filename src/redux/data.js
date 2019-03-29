@@ -171,6 +171,7 @@ export const getDeviceLS = async (id) => {
 }
 export const getOrgLS = async (id) => {
 	return async dispatch => {
+		dispatch({ type: gotOrg, payload: false })
 		let org = get('org.' + id)
 		if (org) {
 			dispatch({

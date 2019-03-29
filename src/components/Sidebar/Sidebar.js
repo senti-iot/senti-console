@@ -79,8 +79,7 @@ class NewSidebar extends Component {
 				[classes.drawerOpen]: smallMenu,
 				[classes.drawerClose]: !smallMenu,
 			})}
-			// onMouseEnter={() => this.props.changeSmallMenu(true)}
-			// onMouseLeave={() => this.props.changeSmallMenu(false)}
+
 			classes={{
 				paper: classNames({
 					[classes.drawerOpen]: smallMenu,
@@ -93,7 +92,6 @@ class NewSidebar extends Component {
 			<div className={classes.toolbar} />
 			{headerBorder && <div className={classes.border} />}
 			<List
-				// onMouseLeave={this.props.changeSmallMenu(false)}
 				style={{
 					margin: '8px',
 					paddingTop: 0,

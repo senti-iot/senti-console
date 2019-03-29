@@ -1,4 +1,5 @@
 import { api } from './data'
+import { del } from './storage';
 
 //#region GET User,Users
 export const getAllUsers = async () => {
@@ -32,6 +33,7 @@ export const editUser = async (user) => {
 
 export const deleteUser = async (user) => {
 	let data = await api.delete(`core/user/${user}`).then(rs => rs.data)
+	del('user.' + user)
 	return data
 }
 

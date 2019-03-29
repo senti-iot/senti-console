@@ -58,7 +58,7 @@ class Favorites extends Component {
 		]
 	}
 	tabs = () => {
-		return [{ id: 0, title: this.props.t('devices.tabs.listView'), label: <ViewList />, url: `${this.props.match.path}/list` }]
+		return [{ id: 0, title: this.props.t('tooltips.listView'), label: <ViewList />, url: `${this.props.match.path}/list` }]
 	}
 	dTypes = () => { 
 		const { t } = this.props

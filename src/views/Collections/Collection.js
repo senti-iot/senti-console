@@ -81,7 +81,7 @@ class Collection extends Component {
 	componentDidUpdate = async (prevProps) => {
 		const { collection } = this.props
 		if (collection && !prevProps.collection ) {
-			this.props.setBC('collection', collection.name)
+		
 			if (collection.activeDevice) {
 				let data = await getWeather(collection.activeDevice, moment(), this.props.language)
 				this.setState({ weather: data })}
@@ -107,6 +107,7 @@ class Collection extends Component {
 			let id = this.props.match.params.id
 			if (id) {
 				await this.getCollection(id).then(() => {
+					this.props.setBC('collection', this.props.collection.name)
 				})
 				this.props.setTabs({
 					route: 0,

@@ -6,14 +6,14 @@ const SAVEFAVORITES = 'saveFavorites'
 
 export const getFavorites = (key) => {
 	return (dispatch, getState) => {
-		let favorites = getState().favorites.favorites.filter(f => f.type === key)
+		let favorites = getState().data.favorites.filter(f => f.type === key)
 		return favorites
 	}
 }
 export const updateFav = (obj) => {
 	return (dispatch, getState) => {
-		let uFav = getState().favorites.favorites.findIndex(f => f.id === obj.id)
-		let array = getState().favorites.favorites
+		let uFav = getState().data.favorites.findIndex(f => f.id === obj.id)
+		let array = getState().data.favorites
 		array[uFav] = obj
 		dispatch({
 			type: SETFAV,
