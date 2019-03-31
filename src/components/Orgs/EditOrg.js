@@ -2,12 +2,13 @@ import React, { Component, Fragment } from 'react'
 import { Paper, withStyles, Collapse, Button, Fade } from '@material-ui/core';
 import { Check } from 'variables/icons';
 import classNames from 'classnames';
-import { getOrg, updateOrg, getAllOrgs } from 'variables/dataOrgs'
+import { updateOrg } from 'variables/dataOrgs'
 import { TextF, ItemGrid, CircularLoader, GridContainer, Danger, Warning, DSelect } from 'components'
 import { connect } from 'react-redux'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
 import EditOrgAutoSuggest from './EditOrgAutoSuggest'
 import { updateFav, isFav } from 'redux/favorites';
+import { getOrgLS, getOrgs } from 'redux/data';
 
 var countries = require('i18n-iso-countries');
 
@@ -17,8 +18,11 @@ class EditOrg extends Component {
 		super(props)
 
 		this.state = {
-			org: {},
-			country: {},
+			org: null,
+			country: {
+				label: '',
+				value: -1
+			},
 			creating: false,
 			created: false,
 			loading: true,
@@ -73,48 +77,49 @@ class EditOrg extends Component {
 			this.goToOrg()
 		}
 	}
+	componentDidUpdate = (prevProps, prevState) => {
+		const { org, t } = this.props
+		if ((!prevProps.org && org !== prevProps.org) || (this.state.org === null && org)) {
+			this.setState({
+				country: {
+					id: org.country ?
+						org.country.length > 2 ?
+							countries.getAlpha2Code(org.country, 'en') ?
+								countries.getAlpha2Code(org.country, 'en') : countries.getAlpha2Code(org.country, 'da') : this.state.country : this.state.country,
+					label: countries.getName(org.country, this.props.language) ? countries.getName(org.country, this.props.language) : ''
+				},
+				org: {
+					...org,
+					aux: {
+						...org.aux
+					},
+					country: org.country.length > 2 ? countries.getAlpha2Code(org.country, 'en') ? countries.getAlpha2Code(org.country, 'en') : countries.getAlpha2Code(org.country, 'da')
+						: org.country
+				},
+				selectedOrg: {
+					id: org.org.id > 0 ? org.org.id : -1,
+					name: org.org.name !== null ? org.org.name : t('orgs.fields.topLevelOrg')
+				}
+			})
+			this.props.setBC('editorg', org.name, org.id)
+		}
+	}
 	componentDidMount = async () => {
 		this._isMounted = 1
 		window.addEventListener('keydown', this.keyHandler, false)
 
 		let id = this.props.match.params.id
-		const { accessLevel, t, location } = this.props
-		await getOrg(id).then(rs => {
-			if (rs === null)
-				this.props.history.push({
-					pathname: '/404',
-					prevURL: window.location.pathname
-				})
-			if (rs && this._isMounted) {
-				this.setState({
-					country: {
-						id: rs.country.length > 2 ? countries.getAlpha2Code(rs.country, 'en') ? countries.getAlpha2Code(rs.country, 'en') : countries.getAlpha2Code(rs.country, 'da')
-							: rs.country, label: countries.getName(rs.country, this.props.language) ? countries.getName(rs.country, this.props.language) : ''
-					},
-					org: {
-						...rs,
-						aux: {
-							...rs.aux
-						},
-						country: rs.country.length > 2 ? countries.getAlpha2Code(rs.country, 'en') ? countries.getAlpha2Code(rs.country, 'en') : countries.getAlpha2Code(rs.country, 'da')
-							: rs.country
-					},
-					selectedOrg: {
-						id: rs.org.id > 0 ? rs.org.id : -1,
-						name: rs.org.name !== null ? rs.org.name : t('orgs.fields.topLevelOrg')
-					}
-				})
-				this.props.setBC('editorg', rs.name, rs.id)
-			}
+		const { location, getOrg, } = this.props
+		getOrg(id)
 
-		})
-		await getAllOrgs().then(rs => {
-			if (this._isMounted) {
-				if (accessLevel.apisuperuser)
-					rs.unshift({ id: -1, name: t('orgs.fields.topLevelOrg') })
-				this.setState({ orgs: rs, loading: false })
-			}
-		})
+		if (this.props.orgs) {
+			this.setState({ orgs: this.props.orgs, loading: false })
+		}
+		else {
+			getOrgs()
+			this.setState({ orgs: this.props.orgs, loading: false })
+		}
+
 		this.setState({
 			loading: false
 		})
@@ -177,6 +182,8 @@ class EditOrg extends Component {
 		}
 		this.setState({ created: true, creating: false })
 		this.props.s('snackbars.orgUpdated', ({ org: this.state.org.name }))
+		this.props.getOrg(org.id)
+		this.props.getOrgs(true)
 		this.props.history.push(`/management/org/${this.state.org.id}`)
 	}
 
@@ -207,28 +214,29 @@ class EditOrg extends Component {
 			org: {
 				...this.state.org,
 				org: {
-					id: e.target.value }
+					id: e.target.value
+				}
 			}
 		})
 	}
 	renderOrgs = () => {
-		const { t } = this.props
-		const { orgs, org } = this.state
+		const { t, org, orgs } = this.props
+		// const {  } = this.state
 		return <DSelect
 			label={t('orgs.fields.parentOrg')}
-			 value={org.org.id}
-			 onChange={this.handleOrgChange}
-			 menuItems={orgs.map(org => ({ value: org.id, label: org.name }))}
+			value={org.org.id}
+			onChange={this.handleOrgChange}
+			menuItems={orgs.map(org => ({ value: org.id, label: org.name }))}
 		/>
 	}
 	render() {
-		const { classes, t } = this.props
-		const { created, error, loading, org } = this.state
+		const { classes, t, loading } = this.props
+		const { created, error, org } = this.state
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
 		return (
-			!loading ?
+			!loading && org ?
 				<GridContainer justify={'center'}>
 					<Fade in={true}>
 						<Paper className={classes.paper}>
@@ -387,7 +395,7 @@ class EditOrg extends Component {
 										onClick={this.state.created ? this.goToOrg : this.handleUpdateOrg}>
 										{this.state.created ?
 											<Fragment><Check className={classes.leftIcon} />{t('snackbars.redirect')}</Fragment>
-											: t('actions.save') }
+											: t('actions.save')}
 									</Button>
 
 								</div>
@@ -402,12 +410,17 @@ class EditOrg extends Component {
 const mapStateToProps = (state) => ({
 	language: state.localization.language,
 	accessLevel: state.settings.user.privileges,
-	userOrg: state.settings.user.org
+	userOrg: state.settings.user.org,
+	org: state.data.org,
+	orgs: state.data.orgs,
+	loading: !state.data.gotOrg
 })
 
 const mapDispatchToProps = (dispatch) => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
-	updateFav: (favObj) => dispatch(updateFav(favObj))
+	updateFav: (favObj) => dispatch(updateFav(favObj)),
+	getOrg: async id => dispatch(await getOrgLS(id)),
+	getOrgs: (reload) => dispatch(getOrgs(reload))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles, { withTheme: true })(EditOrg))

@@ -12,7 +12,6 @@ export const setPrefix = (id) => {
 	}
 }
 export function del(key) {
-	console.log(PREFIX + key)
 	return store.remove(PREFIX + key)
 }
 export function get(key) {

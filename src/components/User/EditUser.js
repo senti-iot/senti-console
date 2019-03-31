@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { editUser, getUser } from 'variables/dataUsers';
+import { editUser } from 'variables/dataUsers';
 import { getAllOrgs } from 'variables/dataOrgs';
 import { GridContainer, ItemGrid, DatePicker, Warning, Danger, TextF, CircularLoader, ItemG, DSelect } from 'components';
 import { Paper, Collapse, withStyles, Button, FormControlLabel, Checkbox } from '@material-ui/core';
@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { isFav, updateFav } from 'redux/favorites';
 import { getSettings } from 'redux/settings';
+import { getUserLS, getUsers, getOrgs } from 'redux/data';
 
 class EditUser extends Component {
 	constructor(props) {
@@ -25,33 +26,33 @@ class EditUser extends Component {
 				birthday: "",
 				newsletter: true,
 			},
-			user: {
-				userName: '',
-				firstName: '',
-				lastName: '',
-				phone: '',
-				email: '',
-				image: null,
-				aux: {
-					odeum: {
-						language: 'da'
-					},
-					senti: {
+			user: null
+			// userName: '',
+			// firstName: '',
+			// lastName: '',
+			// phone: '',
+			// email: '',
+			// image: null,
+			// aux: {
+			// 	odeum: {
+			// 		language: 'da'
+			// 	},
+			// 	senti: {
 
-					}
-				},
-				sysLang: 2,
-				org: {
-					id: '',
-					name: 'Ingen organisation'
-				},
-				groups: {
-					'136550100000225': {
-						id: 136550100000225,
-						name: 'Senti User'
-					}
-				}
-			},
+			// 	}
+			// },
+			// sysLang: 2,
+			// org: {
+			// 	id: '',
+			// 	name: 'Ingen organisation'
+			// },
+			// groups: {
+			// 	'136550100000225': {
+			// 		id: 136550100000225,
+			// 		name: 'Senti User'
+			// 	}
+			// }
+			,
 			orgs: [],
 			creating: false,
 			created: false,
@@ -76,21 +77,9 @@ class EditUser extends Component {
 			await this.getOrgs()
 		}
 	}
-	componentWillUnmount = () => {
-		this._isMounted = 0
-		window.removeEventListener('keydown', this.keyHandler, false)
-	}
-	getUser = async () => {
-		let id = this.props.match.params.id
-		if (id) {
-			let user = await getUser(id).then(rs => {
-				if (rs === null)
-					this.props.history.push({
-						pathname: '/404',
-						prevURL: window.location.pathname
-					})
-				return rs
-			})
+	componentDidUpdate = (prevProps, prevState) => {
+		const { user } = this.props
+		if ((!prevProps.user && user !== prevProps.user) || (this.state.user === null && user)) {
 			let g = 0
 			let userGroups = Object.keys(user.groups)
 			userGroups.sort((a, b) => a > b ? 1 : -1)
@@ -100,7 +89,6 @@ class EditUser extends Component {
 				g = '136550100000225'
 			if (userGroups.find(x => x === '136550100000143'))
 				g = '136550100000143'
-
 			this.setState({
 				selectedGroup: g,
 				user: {
@@ -108,9 +96,25 @@ class EditUser extends Component {
 					groups: Object.keys(user.groups).map(g => ({ id: g, name: user.groups[g].name, appId: user.groups[g].appId }))
 				},
 				extended:
-					user.aux.senti ? { ...user.aux.senti.extendedProfile } : { ...this.state.extended }
+			user.aux.senti ? { ...user.aux.senti.extendedProfile } : { ...this.state.extended }
+			
+			})
+		}
+	}
+	
+	componentWillUnmount = () => {
+		this._isMounted = 0
+		window.removeEventListener('keydown', this.keyHandler, false)
+	}
+	getUser = async () => {
+		const { getUser } = this.props
+		let id = this.props.match.params.id
+		if (id) {
+			await getUser(id).then(() => {
 
 			})
+		
+
 		}
 	}
 	getOrgs = async () => {
@@ -452,12 +456,12 @@ class EditUser extends Component {
 		</Collapse>
 	}
 	render() {
-		const { error, errorMessage, user, created, loading } = this.state
-		const { classes, t } = this.props
+		const { error, errorMessage, user, created } = this.state
+		const { classes, t, loading } = this.props
 		const buttonClassname = classNames({
 			[classes.buttonSuccess]: created,
 		})
-		return !loading ?
+		return !loading && user ?
 			<GridContainer justify={'center'}>
 				<Paper className={classes.paper}>
 					<form className={classes.form}>
@@ -567,13 +571,18 @@ class EditUser extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	user: state.data.user,
+	loading: !state.data.gotUser
 })
 
 const mapDispatchToProps = (dispatch) => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
 	updateFav: (favObj) => dispatch(updateFav(favObj)),
 	getSettings: async () => dispatch(await getSettings()),
+	getUser: async id => dispatch(await getUserLS(id)),
+	getUsers: reload => dispatch(getUsers(reload)),
+	getOrgs: reload => dispatch(getOrgs(reload))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles)(EditUser))

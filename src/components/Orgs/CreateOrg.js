@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles'
 import EditOrgAutoSuggest from './EditOrgAutoSuggest';
 import { createOrg, getAllOrgs } from 'variables/dataOrgs';
+import { getOrgs } from 'redux/data';
 var countries = require('i18n-iso-countries');
 
 class CreateOrg extends Component {
@@ -166,6 +167,7 @@ class CreateOrg extends Component {
 	}
 	close = (rs) => {
 		this.setState({ created: true, creating: false, org: rs })
+		this.props.getOrgs(true)
 		this.props.s('snackbars.orgCreated', { org: this.state.org.name })
 		this.props.history.push(`/management/org/${this.state.org.id}`)
 	}
@@ -391,8 +393,8 @@ const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = dispatch => ({
+	getOrgs: reload => dispatch(getOrgs(reload))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles, { withTheme: true })(CreateOrg))

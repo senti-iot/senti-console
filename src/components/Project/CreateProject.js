@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import moment from 'moment';
 import CreateProjectForm from './CreateProjectForm';
 import { getAllUsers } from 'variables/dataUsers';
+import { getProjects } from 'redux/data';
 
 class CreateProject extends Component {
 	constructor(props) {
@@ -147,6 +148,7 @@ class CreateProject extends Component {
 		})
 	}
 	handleFinishCreateProject = (rs) => {
+		this.props.getProjects(true)
 		this.setState({ created: true, id: rs.id })
 		this.props.s('snackbars.projectCreated', { project: this.state.title })
 		this.props.history.push(`/project/${rs.id}`)
@@ -253,8 +255,8 @@ const mapStateToProps = (state) => ({
 	user: state.settings.user
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = dispatch => ({
+	getProjects: reload => dispatch(getProjects(reload))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(createprojectStyles, { withTheme: true })(CreateProject))

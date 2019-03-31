@@ -6,6 +6,7 @@ import CreateCollectionForm from 'components/Collections/CreateCollectionForm';
 import { CircularLoader } from 'components';
 import { getAvailableDevices } from 'variables/dataDevices';
 import { getAllOrgs } from 'variables/dataOrgs';
+import { getCollections } from 'redux/data';
 
 class CreateCollection extends Component {
 	constructor(props) {
@@ -141,6 +142,7 @@ class CreateCollection extends Component {
 				s('snackbars.collectionCreated')
 				history.push(`/collection/${rs.id}`)
 			}
+			this.props.getCollections(true)
 		}
 		else
 			s('snackbars.failed')
@@ -183,8 +185,8 @@ const mapStateToProps = (state) => ({
 	orgId: state.settings.user.org.id
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = dispatch => ({
+	getCollections: (reload) => dispatch(getCollections(reload))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateCollection)

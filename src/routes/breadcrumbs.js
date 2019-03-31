@@ -2,7 +2,7 @@ const breadcrumbs = (t, name, id) => {
 	return {
 		'createproject': [
 			{ label: t('sidebar.projects'), path: '/projects' },
-			{ label: t('menus.create.collection'), path: '/projects/new' }
+			{ label: t('menus.create.project'), path: '/projects/new' }
 		],
 		'editproject': [
 			{ label: t('sidebar.projects'), path: `/projects` },

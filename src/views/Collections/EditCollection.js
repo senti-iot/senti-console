@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { getCollection, updateCollection } from 'variables/dataCollections';
+import { updateCollection } from 'variables/dataCollections';
 import EditCollectionForm from 'components/Collections/EditCollectionForm';
 import { CircularLoader } from 'components';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux'
-import { getAllOrgs } from 'variables/dataOrgs';
 import { isFav, updateFav } from 'redux/favorites';
 import { Fade } from '@material-ui/core';
+import { getCollectionLS, getCollections, setOrgs } from 'redux/data';
 
 
 class EditCollection extends Component {
@@ -31,10 +31,17 @@ class EditCollection extends Component {
 			return false
 	}
 	getData = async () => {
-		const { location, setHeader, t } = this.props
-		let collection = await getCollection(this.id)
-		let orgs = await getAllOrgs()
-		if (collection) {
+		const { getCollection } = this.props
+		await getCollection(this.id)
+	}
+	keyHandler = (e) => {
+		if (e.key === 'Escape') {
+			this.goToCollection()
+		}
+	}
+	componentDidUpdate = (prevProps, prevState) => {
+		const { location, setHeader, t, orgs, collection } = this.props
+		if ((!prevProps.collection && collection !== prevProps.collection && collection) || (this.state.collection === null && collection)) {
 			this.setState({
 				collection: collection,
 				orgs: [{ id: 0, name: t('users.fields.noOrg') }, ...orgs],
@@ -44,18 +51,8 @@ class EditCollection extends Component {
 			setHeader('collections.editCollection', true, prevURL, 'collections')
 			this.props.setBC('editcollection', collection.name, collection.id)
 		}
-		else {
-			this.setState({
-				collection: null,
-				loading: false
-			})
-		}
 	}
-	keyHandler = (e) => {
-		if (e.key === 'Escape') {
-			this.goToCollection()
-		}
-	}
+
 	componentDidMount = () => {
 		this.getData()
 		window.addEventListener('keydown', this.keyHandler, false)
@@ -96,6 +93,7 @@ class EditCollection extends Component {
 
 	goToCollection = () => {
 		const { history, location } = this.props
+
 		history.push(location.prevURL ? location.prevURL : `/collection/${this.id}`)
 	}
 
@@ -115,6 +113,8 @@ class EditCollection extends Component {
 			if (isFav(favObj)) {
 				updateFav(favObj)
 			}
+			this.props.getCollections(true)
+			this.props.getCollection(this.id)
 			history.push(`/collection/${this.id}`)
 		}
 		else
@@ -151,12 +151,18 @@ EditCollection.propTypes = {
 	accessLevel: PropTypes.object.isRequired,
 }
 const mapStateToProps = (state) => ({
-	accessLevel: state.settings.user.privileges
+	accessLevel: state.settings.user.privileges,
+	collection: state.data.collection,
+	loading: !state.data.gotCollection,
+	orgs: state.data.orgs
 })
 
 const mapDispatchToProps = (dispatch) => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
-	updateFav: (favObj) => dispatch(updateFav(favObj))
+	updateFav: (favObj) => dispatch(updateFav(favObj)),
+	getCollection: async id => dispatch(await getCollectionLS(id)),
+	getCollections: reload => dispatch(getCollections(reload)),
+	getOrgs: () => dispatch(setOrgs())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditCollection)
