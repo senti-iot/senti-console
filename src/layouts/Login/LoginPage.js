@@ -66,7 +66,7 @@ class NewLoginPage extends Component {
 						if (setToken()) {
 							await this.props.getSettings()
 							var prevURL = this.props.location.state ? this.props.location.state.prevURL : null
-							this.props.history.push(prevURL ? prevURL : this.props.defaultRoute) //Aici
+							this.props.history.push(prevURL ? prevURL : this.props.defaultRoute)
 						}
 					}
 				}
@@ -80,7 +80,6 @@ class NewLoginPage extends Component {
 		this.setState({ loggingIn: true })
 	}
 	loginUser = async () => {
-		// this.setState({ loggingIn: true })
 
 		await loginUser(this.state.user, this.state.pass).then(async rs => {
 			if (rs) {
@@ -90,7 +89,7 @@ class NewLoginPage extends Component {
 					if (setToken()) {
 						await this.props.getSettings()
 						var prevURL = this.props.location.state ? this.props.location.state.prevURL : null
-						this.props.history.push(prevURL ? prevURL : this.props.defaultRoute) //Aici
+						this.props.history.push(prevURL ? prevURL : this.props.defaultRoute)
 					}
 				}
 			}
