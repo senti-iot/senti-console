@@ -166,13 +166,13 @@ class DeviceDetails extends Component {
 						</ItemG>
 						<ItemG xs={12} md={3} lg={3}>
 							<Caption>{t('collections.fields.id')}:</Caption>
-							<Info>{device.dataCollection.id > 0 ?
+							<Info>{device.dataCollection ? device.dataCollection.id > 0 ?
 								<Link to={{
 									pathname: `/collection/${device.dataCollection.id}`,
 									prevURL: `/device/${device.id}`
 								}}>
 									{device.dataCollection.name}
-								</Link> : t('no.collection')}</Info>
+								</Link> : t('no.collection') : t('no.collection')}</Info>
 						</ItemG>
 						<ItemG xs={12} md={3} lg={3}>
 							<Caption>{t('devices.fields.availability')}:</Caption>
