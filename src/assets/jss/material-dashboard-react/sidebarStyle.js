@@ -37,6 +37,7 @@ const sidebarStyle = theme => ({
 	},
 	drawerOpen: {
 		width: drawerWidth,
+		overflowX: "auto",
 		...transition
 	},
 	drawerClose: {
