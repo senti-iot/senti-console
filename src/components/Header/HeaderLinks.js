@@ -91,7 +91,7 @@ class HeaderLinks extends React.Component {
 					<ExpandMore className={cx(classes.expand, {
 						[classes.expandOpen]: openProfile,
 					})} />
-					{user ? <T style={{ /* fontSize: '1rem', */ textTransform: 'none', margin: 8 }}>{`${user.firstName} ${user.lastName}`}</T> : null}
+					{user ? <T style={{ /* fontSize: '1rem', */ textTransform: 'none', margin: 8 }}>{`${user.firstName}`}</T> : null}
 					{user ? user.img ? <img src={user.img} alt='UserProfile' className={classes.img} /> : <Gravatar default='mp' email={user.email} className={classes.img} size={36} /> : null}
 				</Button>
 			</Tooltip>
