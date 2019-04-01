@@ -33,7 +33,7 @@ class TableHeader extends Component {
 								>
 									<TableSortLabel
 										active={orderBy === column.id}
-										direction={order}
+										direction={order === '' ? 'asc' : order}
 										disabled={rowCount === 0}
 										onClick={this.createSortHandler(column.id)}
 										classes={{
