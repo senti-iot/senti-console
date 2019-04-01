@@ -62,7 +62,7 @@ class App extends React.Component {
 
 		if ((headerTitle !== this.state.headerTitle) || (url !== this.state.url)) {
 			if (typeof headerTitle === 'string') {
-				if ((headerTitle !== this.state.headerTitle.id ) || (url !== this.state.url)) {
+				if ((headerTitle !== this.state.headerTitle.id) || (url !== this.state.url)) {
 					this.setState({
 						headerTitle: {
 							id: headerTitle,
@@ -101,15 +101,21 @@ class App extends React.Component {
 			await this.props.getDaysOfIterest()
 			if (this.props.theme === 1) {
 				document.body.style = 'background: #2e2e2e;';
-				if (this.props.user.id === 136550100000002)
-					document.body.style = 'background: #2e2e2e;transform:rotate(18deg)';
-				// document.body.style = ''
+				// if (this.props.user.id === 136550100000003) {
+				// 	document.body.style = 'background: #2e2e2e;transform:rotate(18deg);transition: all 300ms ease;';
+				// 	setTimeout(() => {
+				// 		document.body.style = 'background: #2e2e2e;transform:rotate(0deg);transition: all 300ms ease;';
+				// 	}, 3000);
+				// }
 			}
 			else {
 				document.body.style = 'background: #eee;';
-				if (this.props.user.id === 136550100000002)
-					document.body.style = 'background: #eee;transform:rotate(18deg)';
-				// document.body.style = 'transform:rotate(18deg)'
+				// if (this.props.user.id === 136550100000003) {
+				// 	document.body.style = 'background: #eee;transform:rotate(18deg);transition: all 300ms ease;';
+				// 	setTimeout(() => {
+				// 		document.body.style = 'background: #eee;transform:rotate(0deg);transition: all 300ms ease;';
+				// 	}, 3000);
+				// }
 			}
 		})
 	}
@@ -174,10 +180,10 @@ class App extends React.Component {
 								menuRoute={this.state.menuRoute}
 								{...rest}
 							/>
-							{!loading ? 
+							{!loading ?
 								<Fragment>
 									<div className={classes.container} id={'container'}>
-										<Toolbar history={this.props.history} {...tabs}/>
+										<Toolbar history={this.props.history} {...tabs} />
 										<BC
 											defaultRoute={defaultRoute}
 											bc={this.state.bc}
@@ -227,8 +233,8 @@ class App extends React.Component {
 										}
 									/>
 
-								</Fragment> 
-							 : <CircularLoader />}
+								</Fragment>
+								: <CircularLoader />}
 						</Fragment>
 					</div>
 
@@ -262,4 +268,3 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withSnackbarHandler()((withLocalization()(withStyles(appStyle)(App)))))
- 
