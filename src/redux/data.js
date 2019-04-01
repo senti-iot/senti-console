@@ -320,7 +320,7 @@ export const setUsers = () => {
 				type: setusers,
 				payload: users
 			})
-			dispatch(sortData('users', 'firstName', 'asc'))
+			// dispatch(sortData('users', 'firstName', 'asc'))
 		}
 		else dispatch({
 			type: gotusers,
@@ -336,7 +336,7 @@ export const setOrgs = () => {
 				type: setorgs,
 				payload: orgs
 			})
-			dispatch(sortData('orgs', 'name', 'asc'))
+			// dispatch(sortData('orgs', 'name', 'asc'))
 		}
 		else {
 			dispatch({ type: gotorgs, payload: false })
@@ -351,7 +351,7 @@ export const setDevices = () => {
 				type: setdevices,
 				payload: devices
 			})
-			dispatch(sortData('devices', 'name', 'asc'))
+			// dispatch(sortData('devices', 'name', 'asc'))
 		}
 		else {
 			dispatch({ type: gotdevices, payload: false })
@@ -366,7 +366,7 @@ export const setProjects = () => {
 				type: setprojects,
 				payload: projects
 			})
-			dispatch(sortData('projects', 'title', 'asc'))
+			// dispatch(sortData('projects', 'title', 'asc'))
 		}
 		else {
 			dispatch({ type: gotprojects, payload: false })
@@ -381,7 +381,7 @@ export const setCollections = () => {
 				type: setcollections,
 				payload: collections
 			})
-			dispatch(sortData('collections', 'id', 'asc'))
+			// dispatch(sortData('collections', 'id', 'asc'))
 		}
 		else {
 			dispatch({ type: gotcollections, payload: false })
@@ -413,6 +413,7 @@ export const getUsers = (reload) => {
 
 		getAllUsers().then(rs => {
 			let users = rs.map(u => ({ ...u, group: renderUserGroup(u) }))
+			users = handleRequestSort('firstName', 'asc', users)
 			set('users', users)
 			if (reload) {
 				dispatch(setUsers())
@@ -424,7 +425,8 @@ export const getUsers = (reload) => {
 export const getOrgs = (reload) => {
 	return dispatch => {
 		getAllOrgs().then(rs => {
-			set('orgs', rs)
+			let orgs = handleRequestSort('name', 'asc', rs)
+			set('orgs', orgs)
 			if (reload) {
 				dispatch(setOrgs())
 			}
@@ -435,10 +437,8 @@ export const getOrgs = (reload) => {
 export const getDevices = (reload) => {
 	return dispatch => {
 		getAllDevices().then(rs => {
-			// if (reload) {
-			// 	dispatch({ type: gotdevices, payload: false })
-			// }
-			set('devices', rs)
+			let devices = handleRequestSort('id', 'asc', rs)
+			set('devices', devices)
 			if (reload) {
 				dispatch(setDevices())
 			}
@@ -450,7 +450,8 @@ export const getProjects = (reload) => {
 
 	return dispatch => {
 		getAllProjects().then(rs => {
-			set('projects', rs)
+			let projects = handleRequestSort('title', 'asc', rs)
+			set('projects', projects)
 			if (reload) {
 				dispatch(setProjects())
 			}
@@ -462,7 +463,8 @@ export const getProjects = (reload) => {
 export const getCollections = (reload) => {
 	return dispatch => {
 		getAllCollections().then(rs => {
-			set('collections', rs)
+			let collections = handleRequestSort('id', 'asc', rs)
+			set('collections', collections)
 			if (reload) {
 				dispatch(setCollections())
 			}

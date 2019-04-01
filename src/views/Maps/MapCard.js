@@ -56,6 +56,15 @@ class MapCard extends PureComponent {
 			await this.getHeatMapData().then(() => this.setState({ loadingHeatMap: false })
 			)
 		}
+		if (prevProps.device && this.props.device) {
+			if (prevProps.device.address !== this.props.device.address)
+			{
+				this.setState({ /* loading: true, */ markers: this.props.markers })
+				// setTimeout(() => {
+				// 	this.setState({ loading: false })
+				// }, 200);
+			}
+		}
 	}
 	handleVisibility = e => (event) => {
 		if (event)
@@ -341,7 +350,8 @@ class MapCard extends PureComponent {
 		return true
 	}
 	render() {
-		const { device, t, loading, mapTheme, heatMap, period } = this.props
+		const { device, t, /* loading, */ mapTheme, heatMap, period } = this.props
+		const { loading } = this.state
 		return (
 			<InfoCard
 				noPadding
