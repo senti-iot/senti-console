@@ -86,7 +86,7 @@ class HeaderLinks extends React.Component {
 		/>
 	}
 	renderNotifications = () => {
-		return <ItemG container style={{ width: 'auto',  alignItems: 'center' }}>
+		return <ItemG container style={{ width: 'auto',  alignItems: 'center', marginLeft: 8, marginRight: 8, }}>
 			<Notifications/>
 		</ItemG>
 	}
