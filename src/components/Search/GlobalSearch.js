@@ -14,6 +14,7 @@ import { changeEH } from 'redux/appState';
 import globalSearchStyles from 'assets/jss/components/search/globalSearchStyles';
 import { setSearchValue } from 'redux/globalSearch';
 import { hist } from 'App';
+import { T } from 'components';
 
 function renderInput(inputProps) {
 	return (
@@ -35,18 +36,12 @@ function getSuggestionValue(suggestion) {
 	return suggestion.label;
 }
 
-function renderSectionTitle(section) {
-	return (
-	  <strong>{section.title}</strong>
-	);
-}
-
 function getSuggestions(value, suggestions) {
 	const inputValue = value.trim().toLowerCase();
 	const inputLength = inputValue.length;
 	// let count = 0;
-	return suggestions
-		.map(section => {
+	return inputLength === 0 ? []
+		: suggestions.map(section => {
 			return {
 				title: section.title,
 				suggestions: section.suggestions.filter(l => {
@@ -66,7 +61,26 @@ function getSuggestions(value, suggestions) {
 				})
 			};
 		})
-		.filter(section => section.suggestions.length > 0);
+			.filter(section => section.suggestions.length > 0);
+	// return inputLength === 0 ? []
+	// 	: suggestions.filter(section => {
+	// 		let keep2 = false 
+	// 		// console.log(section)
+	// 		section.suggestions.forEach(k => {
+	// 			k.values.forEach(l => {
+	// 				if (l.toLowerCase().slice(0, inputLength) === inputValue) {
+	// 					keep2 = true
+	// 				}
+	// 			})
+	// 		});
+	// 		const keep = count < 5 && keep2
+	// 		console.log(keep, keep2)
+	// 		if (keep) {
+	// 			count += 1;
+	// 		}
+
+	// 		return keep;
+	// 	});
 }
 
 class GlobalSearch extends React.PureComponent {
@@ -89,7 +103,12 @@ class GlobalSearch extends React.PureComponent {
 	handleResetSearch = () => {
 		this.handleChange(null, { newValue: '' })
 	}
-
+	renderSectionTitle = (section) => {
+		const { t } = this.props
+		return (
+		  <T style={{ margin: 8 }}>{t(section.title)}</T>
+		);
+	}
 	renderSuggestion = (suggestion, { query, isHighlighted }) => {
 		const matches = match(suggestion.label, query);
 		const parts = parse(suggestion.label, matches);
@@ -172,7 +191,7 @@ class GlobalSearch extends React.PureComponent {
 				renderSuggestionsContainer={renderSuggestionsContainer}
 				getSuggestionValue={getSuggestionValue}
 				renderSuggestion={this.renderSuggestion}
-				renderSectionTitle={renderSectionTitle}
+				renderSectionTitle={this.renderSectionTitle}
 				getSectionSuggestions={this.getSectionSuggestions}
 				onFocus={this.props.disableEH}
 				onBlur={this.props.enableEH}

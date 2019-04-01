@@ -4,6 +4,7 @@ const globalSearchStyles = theme => ({
 		display: 'flex',
 		alignItems: "center",
 		justifyContent: "center",
+
 	},
 	container: {
 		position: 'relative',
@@ -21,7 +22,8 @@ const globalSearchStyles = theme => ({
 	suggestionsContainerOpen: {
 		// position: 'absolute',
 		// right: "30px",
-		
+		maxHeight: 500,
+		overflow: 'auto',
 		zIndex: 5000,
 		position: "absolute",
 		marginTop: 32,
