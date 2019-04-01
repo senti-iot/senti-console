@@ -150,11 +150,6 @@ class Toolbar extends PureComponent {
 
 							}) : null}
 						</Tabs> : null}
-						{/* {noSearch ? null : <Search
-						right
-						suggestions={data ? suggestionGen(data) : []}
-						handleFilterKeyword={handleFilterKeyword}
-						searchValue={filters.keyword} />} */}
 						{content ? <ToolBar classes={{ root: classes.contentToolbar }}>
 							{content}
 						</ToolBar> : null}

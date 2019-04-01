@@ -21,6 +21,7 @@ const globalSearchStyles = theme => ({
 	suggestionsContainerOpen: {
 		// position: 'absolute',
 		// right: "30px",
+		
 		zIndex: 5000,
 		position: "absolute",
 		marginTop: 32,

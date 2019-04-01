@@ -24,9 +24,8 @@ function renderInput(inputProps) {
 
 function renderSuggestionsContainer(options) {
 	const { containerProps, children } = options;
-	console.log(children)
 	return (
-		<Paper {...containerProps} square>
+		<Paper {...containerProps}>
 			{children}
 		</Paper>
 	);
@@ -36,28 +35,38 @@ function getSuggestionValue(suggestion) {
 	return suggestion.label;
 }
 
+function renderSectionTitle(section) {
+	return (
+	  <strong>{section.title}</strong>
+	);
+}
+
 function getSuggestions(value, suggestions) {
 	const inputValue = value.trim().toLowerCase();
 	const inputLength = inputValue.length;
-	let count = 0;
-
-	return inputLength === 0
-		? []
-		: suggestions.filter(suggestion => {
-			let keep2 = false 
-			suggestion.values.forEach(k => {
-				
-				if (k.toLowerCase().slice(0, inputLength) === inputValue) {
-					keep2 = true
-				}
-			});
-			const keep = count < 5 && keep2
-			if (keep) {
-				count += 1;
-			}
-
-			return keep;
-		});
+	// let count = 0;
+	return suggestions
+		.map(section => {
+			return {
+				title: section.title,
+				suggestions: section.suggestions.filter(l => {
+					let keep2 = false 
+					l.values.forEach(v => {
+						if (v.toLowerCase().slice(0, inputLength) === inputValue) {
+							keep2 = true
+						}
+					})
+					if (keep2 === true) {
+						keep2 = false
+						return true
+					}
+					else {
+						return false
+					}
+				})
+			};
+		})
+		.filter(section => section.suggestions.length > 0);
 }
 
 class GlobalSearch extends React.PureComponent {
@@ -138,7 +147,10 @@ class GlobalSearch extends React.PureComponent {
 		if (this.props.open === undefined)
 			this.setState({ open: false })
 	}
-
+	getSectionSuggestions = (section) => {
+		return section.suggestions;
+	  }
+	  
 	render() {
 		const { classes, right } = this.props;
 		return (
@@ -149,6 +161,7 @@ class GlobalSearch extends React.PureComponent {
 					suggestionsList: classes.suggestionsList,
 					suggestion: classes.suggestion,
 				}}
+				multiSection={true}
 				alwaysRenderSuggestions={true}
 				focusInputOnSuggestionClick={false}
 				renderInputComponent={renderInput}
@@ -159,6 +172,8 @@ class GlobalSearch extends React.PureComponent {
 				renderSuggestionsContainer={renderSuggestionsContainer}
 				getSuggestionValue={getSuggestionValue}
 				renderSuggestion={this.renderSuggestion}
+				renderSectionTitle={renderSectionTitle}
+				getSectionSuggestions={this.getSectionSuggestions}
 				onFocus={this.props.disableEH}
 				onBlur={this.props.enableEH}
 				inputProps={{

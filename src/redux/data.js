@@ -354,6 +354,8 @@ export const setDevices = () => {
 				type: setdevices,
 				payload: devices
 			})
+			dispatch(getSuggestions())
+
 			// dispatch(sortData('devices', 'name', 'asc'))
 		}
 		else {
