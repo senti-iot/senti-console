@@ -320,7 +320,7 @@ export const setUsers = () => {
 				type: setusers,
 				payload: users
 			})
-			dispatch(sortData('users', 'firstName', 'asc'))
+			// dispatch(sortData('users', 'firstName', 'asc'))
 		}
 		else dispatch({
 			type: gotusers,
@@ -336,7 +336,7 @@ export const setOrgs = () => {
 				type: setorgs,
 				payload: orgs
 			})
-			dispatch(sortData('orgs', 'name', 'asc'))
+			// dispatch(sortData('orgs', 'name', 'asc'))
 		}
 		else {
 			dispatch({ type: gotorgs, payload: false })
@@ -351,7 +351,7 @@ export const setDevices = () => {
 				type: setdevices,
 				payload: devices
 			})
-			dispatch(sortData('devices', 'name', 'asc'))
+			// dispatch(sortData('devices', 'name', 'asc'))
 		}
 		else {
 			dispatch({ type: gotdevices, payload: false })
@@ -366,7 +366,7 @@ export const setProjects = () => {
 				type: setprojects,
 				payload: projects
 			})
-			dispatch(sortData('projects', 'title', 'asc'))
+			// dispatch(sortData('projects', 'title', 'asc'))
 		}
 		else {
 			dispatch({ type: gotprojects, payload: false })
@@ -381,7 +381,7 @@ export const setCollections = () => {
 				type: setcollections,
 				payload: collections
 			})
-			dispatch(sortData('collections', 'id', 'asc'))
+			// dispatch(sortData('collections', 'id', 'asc'))
 		}
 		else {
 			dispatch({ type: gotcollections, payload: false })
