@@ -79,29 +79,32 @@ class EditOrg extends Component {
 	}
 	componentDidUpdate = (prevProps, prevState) => {
 		const { org, t } = this.props
-		if ((!prevProps.org && org !== prevProps.org) || (this.state.org === null && org)) {
-			this.setState({
-				country: {
-					id: org.country ?
-						org.country.length > 2 ?
-							countries.getAlpha2Code(org.country, 'en') ?
-								countries.getAlpha2Code(org.country, 'en') : countries.getAlpha2Code(org.country, 'da') : this.state.country : this.state.country,
-					label: countries.getName(org.country, this.props.language) ? countries.getName(org.country, this.props.language) : ''
-				},
-				org: {
-					...org,
-					aux: {
-						...org.aux
+		if (org) {
+
+			if ((!prevProps.org && org !== prevProps.org) || (this.state.org === null && org)) {
+				this.setState({
+					country: {
+						id: org.country ?
+							org.country.length > 2 ?
+								countries.getAlpha2Code(org.country, 'en') ?
+									countries.getAlpha2Code(org.country, 'en') : countries.getAlpha2Code(org.country, 'da') : this.state.country : this.state.country,
+						label: countries.getName(org.country, this.props.language) ? countries.getName(org.country, this.props.language) : ''
 					},
-					country: org.country.length > 2 ? countries.getAlpha2Code(org.country, 'en') ? countries.getAlpha2Code(org.country, 'en') : countries.getAlpha2Code(org.country, 'da')
-						: org.country
-				},
-				selectedOrg: {
-					id: org.org.id > 0 ? org.org.id : -1,
-					name: org.org.name !== null ? org.org.name : t('orgs.fields.topLevelOrg')
-				}
-			})
-			this.props.setBC('editorg', org.name, org.id)
+					org: {
+						...org,
+						aux: {
+							...org.aux
+						},
+						country: org.country.length > 2 ? countries.getAlpha2Code(org.country, 'en') ? countries.getAlpha2Code(org.country, 'en') : countries.getAlpha2Code(org.country, 'da')
+							: org.country
+					},
+					selectedOrg: {
+						id: org.org.id > 0 ? org.org.id : -1,
+						name: org.org.name !== null ? org.org.name : t('orgs.fields.topLevelOrg')
+					}
+				})
+				this.props.setBC('editorg', org.name, org.id)
+			}
 		}
 	}
 	componentDidMount = async () => {
