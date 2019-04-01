@@ -25,6 +25,7 @@ const globalSearchStyles = theme => ({
 		justifyContent: "center",
 	},
 	input: {
+		color: '#fff',
 		width: 120,
 		"&:focus": {
 			width: 170
