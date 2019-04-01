@@ -261,7 +261,7 @@ const sortFunc = (a, b, orderBy, way, type) => {
 			else {
 				return newB.toString().toLowerCase() <= newA.toString().toLowerCase() ? -1 : 1
 			}
-		case 'date': 
+		case 'date':
 			return way ? moment(new Date(newA)).diff(new Date(newB)) : moment(new Date(newB)).diff(new Date(newA))
 		case 'number':
 		case undefined:
@@ -280,7 +280,7 @@ const sortFunc = (a, b, orderBy, way, type) => {
 
 	// }
 	// else {
-		
+
 	// }
 }
 /**
@@ -345,7 +345,23 @@ export const timeFormatter = (date) => {
 export const ConvertDDToDMS = (D, lng) => {
 	return [0 | D, '\u00B0', 0 | (D < 0 ? D = -D : D) % 1 * 60, "' ", 0 | D * 60 % 1 * 60, '"', D < 0 ? lng ? 'W' : 'S' : lng ? 'E' : 'N'].join('');
 }
-
+const globalSuggestionSlicer = (obj) => {
+	var arr = [];
+	for (var prop in obj) {
+		if (obj.hasOwnProperty(prop)) {
+			var innerObj = {};
+			if (typeof obj[prop] === 'object') {
+				arr.push(...globalSuggestionSlicer(obj[prop]))
+			}
+			else {
+				innerObj = obj[prop] ? obj[prop].toString() : ''
+				// id: prop.toString().toLowerCase(),
+				arr.push(innerObj)
+			}
+		}
+	}
+	return arr;
+}
 const suggestionSlicer = (obj) => {
 	var arr = [];
 	for (var prop in obj) {
@@ -365,12 +381,17 @@ const suggestionSlicer = (obj) => {
 	}
 	return arr;
 }
-
+export const globalSuggestionGen = (obj) => {
+	// let arr = []
+	// arrayOfObjs.forEach(obj => {
+	// arr.push()
+	// })
+	return globalSuggestionSlicer(obj)
+}
 export const suggestionGen = (arrayOfObjs) => {
 	let arr = [];
-	arrayOfObjs.map(obj => {
+	arrayOfObjs.forEach(obj => {
 		arr.push(...suggestionSlicer(obj))
-		return ''
 	})
 	arr = _.uniqBy(arr, 'label')
 	return arr;

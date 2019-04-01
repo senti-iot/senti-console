@@ -8,6 +8,7 @@ import { getAllCollections, getCollection } from 'variables/dataCollections';
 import { colors } from 'variables/colors';
 import { hist } from 'App';
 import { handleRequestSort } from 'variables/functions';
+import { getSuggestions } from './globalSearch';
 // import { getSuggestions } from './globalSearch';
 /**
  * Special functions
@@ -368,6 +369,7 @@ export const setProjects = () => {
 				type: setprojects,
 				payload: projects
 			})
+			dispatch(getSuggestions())
 			// dispatch(sortData('projects', 'title', 'asc'))
 		}
 		else {

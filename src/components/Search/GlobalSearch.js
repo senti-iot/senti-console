@@ -12,6 +12,8 @@ import withLocalization from 'components/Localization/T';
 import { connect } from 'react-redux'
 import { changeEH } from 'redux/appState';
 import globalSearchStyles from 'assets/jss/components/search/globalSearchStyles';
+import { setSearchValue } from 'redux/globalSearch';
+import { hist } from 'App';
 
 function renderInput(inputProps) {
 	return (
@@ -22,6 +24,7 @@ function renderInput(inputProps) {
 
 function renderSuggestionsContainer(options) {
 	const { containerProps, children } = options;
+	console.log(children)
 	return (
 		<Paper {...containerProps} square>
 			{children}
@@ -41,9 +44,14 @@ function getSuggestions(value, suggestions) {
 	return inputLength === 0
 		? []
 		: suggestions.filter(suggestion => {
-			const keep =
-				count < 5 && suggestion.label.toLowerCase().slice(0, inputLength) === inputValue;
-
+			let keep2 = false 
+			suggestion.values.forEach(k => {
+				
+				if (k.toLowerCase().slice(0, inputLength) === inputValue) {
+					keep2 = true
+				}
+			});
+			const keep = count < 5 && keep2
 			if (keep) {
 				count += 1;
 			}
@@ -52,12 +60,6 @@ function getSuggestions(value, suggestions) {
 		});
 }
 
-/**
-* @augments {Component<{	
-	searchValue:string,	
-	suggestions:array.isRequired,	
-	handleFilterKeyword:Function.isRequired,>}
-*/
 class GlobalSearch extends React.PureComponent {
 	constructor(props) {
 		super(props)
@@ -79,11 +81,11 @@ class GlobalSearch extends React.PureComponent {
 		this.handleChange(null, { newValue: '' })
 	}
 
-	renderSuggestion(suggestion, { query, isHighlighted }) {
+	renderSuggestion = (suggestion, { query, isHighlighted }) => {
 		const matches = match(suggestion.label, query);
 		const parts = parse(suggestion.label, matches);
 		return (
-			<MenuItem selected={isHighlighted} component='div'>
+			<MenuItem selected={isHighlighted} component='div' onClick={() => hist.push(suggestion.path)}>
 				<div>
 					{parts.map((part, index) => {
 						return part.highlight ? (
@@ -119,7 +121,7 @@ class GlobalSearch extends React.PureComponent {
 	}
 
 	handleChange = (event, { newValue }) => {
-		this.props.handleFilterKeyword(newValue)
+		this.props.setSearchVal(newValue)
 	}
 
 	focusInput = () => {
@@ -140,8 +142,6 @@ class GlobalSearch extends React.PureComponent {
 	render() {
 		const { classes, right } = this.props;
 		return (
-			// <div className={classes.suggestContainer}>
-			// <ClickAwayListener onClickAway={this.handleClose}>
 			<Autosuggest
 				theme={{
 					container: classes.autosuggestContainer + ' ' + (right ? classes.right : ''),
@@ -155,7 +155,7 @@ class GlobalSearch extends React.PureComponent {
 				suggestions={this.state.suggestions}
 				onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
 				onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
-				onSuggestionSelected={this.focusInput}
+				// onSuggestionSelected={this.focusInput}
 				renderSuggestionsContainer={renderSuggestionsContainer}
 				getSuggestionValue={getSuggestionValue}
 				renderSuggestion={this.renderSuggestion}
@@ -192,12 +192,14 @@ GlobalSearch.propTypes = {
 	handleFilterKeyword: PropTypes.func.isRequired,
 };
 const mapStateToProps = (state) => ({
-
+	searchValue: state.globalSearch.searchVal,
+	suggestions: state.globalSearch.suggestions
 })
 
 const mapDispatchToProps = dispatch => ({
 	disableEH: () => dispatch(changeEH(false)),
-	enableEH: () => dispatch(changeEH(true))
+	enableEH: () => dispatch(changeEH(true)),
+	setSearchVal: val => dispatch(setSearchValue(val))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(globalSearchStyles)(GlobalSearch)));

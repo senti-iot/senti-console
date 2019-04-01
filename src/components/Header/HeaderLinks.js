@@ -158,6 +158,7 @@ class HeaderLinks extends React.Component {
 	}
 	render() {
 		const { classes } = this.props;
+
 		return (
 			<Grid container justify={'center'} classes={{ container: classes.headerMargin }}>
 				{/* <ItemG>

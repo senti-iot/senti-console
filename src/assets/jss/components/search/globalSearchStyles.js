@@ -18,6 +18,22 @@ const globalSearchStyles = theme => ({
 			// background: 'rgba(11,198,100,0.25)'
 		}
 	},
+	suggestionsContainerOpen: {
+		position: 'absolute',
+		right: "30px",
+		zIndex: 1,
+		marginTop: theme.spacing.unit * 4,
+		maxWidth: 'calc(100vw - 100px)'
+		// left: 0,
+	},
+	suggestion: {
+		display: 'block',
+	},
+	suggestionsList: {
+		margin: 0,
+		padding: 0,
+		listStyleType: 'none',
+	},
 	searchIcon: {
 		width: 72,
 		height: "100%",
