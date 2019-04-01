@@ -1,5 +1,5 @@
-import { Grid, IconButton, Menu, MenuItem, withStyles, Divider, Tooltip } from '@material-ui/core';
-import { AccountBox, Business, PowerSettingsNew, SettingsRounded } from 'variables/icons';
+import { Grid, Menu, MenuItem, withStyles, Divider, Tooltip, Button } from '@material-ui/core';
+import { AccountBox, Business, PowerSettingsNew, SettingsRounded, ExpandMore } from 'variables/icons';
 import headerLinksStyle from 'assets/jss/material-dashboard-react/headerLinksStyle';
 import React from 'react';
 import cookie from 'react-cookies';
@@ -11,6 +11,7 @@ import { logOut } from 'variables/dataLogin';
 // import christmas from 'assets/img/christmas'
 import { ItemG, T, Muted } from 'components';
 import { GoogleLogout } from 'react-google-login';
+import cx from 'classnames'
 
 class HeaderLinks extends React.Component {
 	state = {
@@ -72,71 +73,80 @@ class HeaderLinks extends React.Component {
 	// 	}
 
 	// }
-	render() {
+	renderUserMenu = () => {
 		const { classes, t, user } = this.props;
 		const { anchorProfile } = this.state;
 		const openProfile = Boolean(anchorProfile)
+
+		return <ItemG>
+			<Tooltip title={t('menus.user.profile')}>
+				<Button
+					aria-owns={openProfile ? 'menu-appbar' : null}
+					aria-haspopup='true'
+					onClick={this.handleProfileOpen}
+					classes={{
+						root: classes.iconRoot
+					}}
+				>
+					<ExpandMore className={cx(classes.expand, {
+						[classes.expandOpen]: openProfile,
+					})} />
+					{user ? <T style={{ /* fontSize: '1rem', */ textTransform: 'none', margin: 8 }}>{`${user.firstName} ${user.lastName}`}</T> : null}
+					{user ? user.img ? <img src={user.img} alt='UserProfile' className={classes.img} /> : <Gravatar default='mp' email={user.email} className={classes.img} size={36} /> : null}
+				</Button>
+			</Tooltip>
+			<Menu
+				style={{ marginTop: 50 }}
+				id='menu-appbar'
+				anchorEl={anchorProfile}
+				// anchorOrigin={{
+				// 	// vertical: 'bottom',
+				// 	horizontal: 'right',
+				// }}
+				transformOrigin={{
+					vertical: 'bottom',
+					horizontal: 'left',
+				}}
+				open={openProfile}
+				onClose={this.handleProfileClose}
+				disableAutoFocusItem
+			>
+				{user ?
+					<MenuItem disableRipple component={'div'} className={classes.nameAndEmail}>
+						<T style={{ fontSize: '1rem' }}>{`${user.firstName} ${user.lastName}`}</T>
+						<Muted style={{ fontSize: '0.875rem' }}>{user.email}</Muted>
+					</MenuItem>
+					: null}
+				<Divider />
+				<MenuItem onClick={this.handleRedirectToOwnProfile}>
+					<AccountBox className={classes.leftIcon} />{t('menus.user.profile')}
+				</MenuItem>
+				{user ? user.privileges.apiorg.editusers ? <MenuItem onClick={this.handleRedirectToOwnOrg}>
+					<Business className={classes.leftIcon} />{t('menus.user.account')}
+				</MenuItem> : null : null}
+				<MenuItem onClick={this.handleSettingsOpen}>
+					<SettingsRounded className={classes.leftIcon} />{t('sidebar.settings')}
+				</MenuItem>
+				<GoogleLogout
+					// onLogoutSuccess={() => this.logOut()}
+					clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
+					render={renderProps => (<MenuItem onClick={() => { renderProps.onClick(); this.logOut() }} className={classes.menuItem}>
+						<PowerSettingsNew className={classes.leftIcon} />{t('menus.user.signout')}
+					</MenuItem>)}
+				>
+
+				</GoogleLogout>
+			</Menu>
+		</ItemG>
+	}
+	render() {
+		const { classes } = this.props;
 		return (
 			<Grid container classes={{ container: classes.headerMargin }}>
 				{/* <ItemG>
 					{this.renderChristmasIcon()}
 				</ItemG> */}
-				<ItemG>
-					<Tooltip title={t('menus.user.profile')}>
-						<IconButton
-							aria-owns={openProfile ? 'menu-appbar' : null}
-							aria-haspopup='true'
-							onClick={this.handleProfileOpen}
-							classes={{
-								root: classes.iconRoot
-							}}
-						>
-							{user ? user.img ? <img src={user.img} alt='UserProfile' className={classes.img} /> : <Gravatar default='mp' email={user.email} className={classes.img} size={36} /> : null}
-						</IconButton>
-					</Tooltip>
-					<Menu
-						style={{ marginTop: 50 }}
-						id='menu-appbar'
-						anchorEl={anchorProfile}
-						// anchorOrigin={{
-						// 	// vertical: 'bottom',
-						// 	horizontal: 'right',
-						// }}
-						transformOrigin={{
-							vertical: 'bottom',
-							horizontal: 'left',
-						}}
-						open={openProfile}
-						onClose={this.handleProfileClose}
-						disableAutoFocusItem
-					>
-						{user ?
-							<MenuItem disableRipple component={'div'} className={classes.nameAndEmail}>
-								<T style={{ fontSize: '1rem' }}>{`${user.firstName} ${user.lastName}`}</T> 
-								<Muted style={{ fontSize: '0.875rem' }}>{user.email}</Muted>
-							</MenuItem>
-						 : null}
-						<Divider />
-						<MenuItem onClick={this.handleRedirectToOwnProfile}>
-							<AccountBox className={classes.leftIcon} />{t('menus.user.profile')}
-						</MenuItem>
-						{user ? user.privileges.apiorg.editusers ? <MenuItem onClick={this.handleRedirectToOwnOrg}>
-							<Business className={classes.leftIcon} />{t('menus.user.account')}
-						</MenuItem> : null : null}
-						<MenuItem onClick={this.handleSettingsOpen}>
-							<SettingsRounded className={classes.leftIcon} />{t('sidebar.settings')}
-						</MenuItem>
-						<GoogleLogout
-							// onLogoutSuccess={() => this.logOut()}
-							clientId="1038408973194-qcb30o8t7opc83k158irkdiar20l3t2a.apps.googleusercontent.com"
-							render={renderProps => (<MenuItem onClick={() => { renderProps.onClick(); this.logOut() }} className={classes.menuItem}>
-								<PowerSettingsNew className={classes.leftIcon} />{t('menus.user.signout')}
-							</MenuItem>)}
-						>
-
-						</GoogleLogout>
-					</Menu>
-				</ItemG>
+				{this.renderUserMenu()}
 			</Grid>
 		);
 	}
