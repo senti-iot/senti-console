@@ -101,9 +101,15 @@ class App extends React.Component {
 			await this.props.getDaysOfIterest()
 			if (this.props.theme === 1) {
 				document.body.style = 'background: #2e2e2e;';
+				if (this.props.user.id === 136550100000002)
+					document.body.style = 'background: #2e2e2e;transform:rotate(18deg)';
+				// document.body.style = ''
 			}
 			else {
-				document.body.style = 'background: #eee';
+				document.body.style = 'background: #eee;';
+				if (this.props.user.id === 136550100000002)
+					document.body.style = 'background: #eee;transform:rotate(18deg)';
+				// document.body.style = 'transform:rotate(18deg)'
 			}
 		})
 	}
@@ -244,7 +250,8 @@ const mapStateToProps = (state) => ({
 	snackbarLocation: state.settings.snackbarLocation,
 	smallMenu: state.appState.smallMenu,
 	drawer: state.settings.drawer,
-	tabs: state.appState.tabs
+	tabs: state.appState.tabs,
+	user: state.settings.user
 })
 
 const mapDispatchToProps = dispatch => ({
