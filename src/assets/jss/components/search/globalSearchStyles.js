@@ -1,3 +1,4 @@
+
 const globalSearchStyles = theme => ({
 	autosuggestContainer: {
 		display: 'flex',
@@ -13,6 +14,8 @@ const globalSearchStyles = theme => ({
 		display: 'flex',
 		"&:hover": {
 			background: 'rgba(255, 255, 255, 0.25)',	
+			// background: teal[500] + 19
+			// background: 'rgba(11,198,100,0.25)'
 		}
 	},
 	searchIcon: {

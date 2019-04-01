@@ -6,7 +6,8 @@ import {
 	defaultFont,
 	dangerColor,
 	primaryColor,
-	primaryBoxShadow
+	primaryBoxShadow,
+	headerColor
 } from "assets/jss/material-dashboard-react.js";
 
 const headerLinksStyle = theme => ({
@@ -35,7 +36,8 @@ const headerLinksStyle = theme => ({
 	img: {
 		borderRadius: 50,
 		height: 36,
-		width: 36
+		width: 36,
+		color: headerColor
 	},
 	headerMargin: {
 		// marginLeft: 10
