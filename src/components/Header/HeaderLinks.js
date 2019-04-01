@@ -1,5 +1,5 @@
 import { Grid, Menu, MenuItem, withStyles, Divider, Tooltip, Button } from '@material-ui/core';
-import { AccountBox, Business, PowerSettingsNew, SettingsRounded, ExpandMore } from 'variables/icons';
+import { AccountBox, Business, PowerSettingsNew, SettingsRounded, ExpandMore, Notifications } from 'variables/icons';
 import headerLinksStyle from 'assets/jss/material-dashboard-react/headerLinksStyle';
 import React from 'react';
 import cookie from 'react-cookies';
@@ -12,6 +12,8 @@ import { logOut } from 'variables/dataLogin';
 import { ItemG, T, Muted } from 'components';
 import { GoogleLogout } from 'react-google-login';
 import cx from 'classnames'
+// import Search from 'components/Search/Search';
+import GlobalSearch from 'components/Search/GlobalSearch';
 
 class HeaderLinks extends React.Component {
 	state = {
@@ -73,6 +75,21 @@ class HeaderLinks extends React.Component {
 	// 	}
 
 	// }
+	renderSearch = () => {
+		return 	<GlobalSearch
+			fullWidth
+			open={true}
+			focusOnMount
+			suggestions={[]}
+			handleFilterKeyword={() => {}}
+			searchValue={''} 
+		/>
+	}
+	renderNotifications = () => {
+		return <ItemG container style={{ width: 'auto',  alignItems: 'center' }}>
+			<Notifications/>
+		</ItemG>
+	}
 	renderUserMenu = () => {
 		const { classes, t, user } = this.props;
 		const { anchorProfile } = this.state;
@@ -142,10 +159,12 @@ class HeaderLinks extends React.Component {
 	render() {
 		const { classes } = this.props;
 		return (
-			<Grid container classes={{ container: classes.headerMargin }}>
+			<Grid container justify={'center'} classes={{ container: classes.headerMargin }}>
 				{/* <ItemG>
 					{this.renderChristmasIcon()}
 				</ItemG> */}
+				{this.renderSearch()}
+				{this.renderNotifications()}
 				{this.renderUserMenu()}
 			</Grid>
 		);

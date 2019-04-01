@@ -21,6 +21,7 @@ import Sidebar from 'components/Sidebar/Sidebar';
 import BC from 'components/Breadcrumbs/BC';
 import { changeTabs } from 'redux/appState';
 import Toolbar from 'components/Toolbar/Toolbar';
+import { getSuggestions } from 'redux/globalSearch';
 // import _ from 'lodash'
 
 class App extends React.Component {
@@ -98,6 +99,7 @@ class App extends React.Component {
 		}
 
 		await this.props.getSettings().then(async rs => {
+			// this.props.getSuggestions()
 			await this.props.getDaysOfIterest()
 			if (this.props.theme === 1) {
 				document.body.style = 'background: #2e2e2e;';
@@ -263,7 +265,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = dispatch => ({
 	getSettings: async () => dispatch(await getSettings()),
 	getDaysOfIterest: async () => dispatch(await getDaysOfInterest()),
-	changeTabs: tabs => dispatch(changeTabs(tabs))
+	changeTabs: tabs => dispatch(changeTabs(tabs)),
+	getSuggestions: () => dispatch(getSuggestions())
 	// acceptCookies: async (val) => dispatch(await acceptCookiesFunc(val))
 })
 

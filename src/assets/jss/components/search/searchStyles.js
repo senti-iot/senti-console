@@ -2,6 +2,7 @@ import teal from '@material-ui/core/colors/teal'
 import { transition, primaryColor } from '../../material-dashboard-react';
 
 const searchStyles = theme => ({
+	
 	square: {
 		borderRadius: 0,
 	},

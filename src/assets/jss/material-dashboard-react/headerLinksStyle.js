@@ -38,7 +38,7 @@ const headerLinksStyle = theme => ({
 		width: 36
 	},
 	headerMargin: {
-		marginLeft: 10
+		// marginLeft: 10
 	},
 	leftIcon: {
 		marginRight: theme.spacing.unit

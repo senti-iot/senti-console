@@ -9,6 +9,7 @@
     "": "",
     "Senti": "Senti",
     "actions": {
+		"src": "Search...",
         "accept": "Accept",
         "addFilter": "Add filter",
         "apply": "Apply",

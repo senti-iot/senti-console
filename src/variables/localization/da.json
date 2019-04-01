@@ -9,6 +9,7 @@
     "": "",
     "Senti": "Senti",
     "actions": {
+		"src": "Søg...",
         "accept": "Godkend",
         "addFilter": "Tilføj filter",
         "apply": "Anvend",

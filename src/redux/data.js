@@ -8,6 +8,7 @@ import { getAllCollections, getCollection } from 'variables/dataCollections';
 import { colors } from 'variables/colors';
 import { hist } from 'App';
 import { handleRequestSort } from 'variables/functions';
+// import { getSuggestions } from './globalSearch';
 /**
  * Special functions
  */
@@ -336,6 +337,7 @@ export const setOrgs = () => {
 				type: setorgs,
 				payload: orgs
 			})
+			// dispatch(getSuggestions())
 			// dispatch(sortData('orgs', 'name', 'asc'))
 		}
 		else {
@@ -399,13 +401,13 @@ const renderUserGroup = (user) => {
 	}
 	return ''
 }
-export const getAllData = () => {
-	return async dispatch => {
-		dispatch(getUsers())
-		dispatch(getProjects())
-		dispatch(getCollections())
-		dispatch(getDevices())
-		dispatch(getOrgs())
+export const getAllData = async () => {
+	return async dispatch => { 
+		dispatch(await getUsers(true))
+		dispatch(await getProjects(true))
+		dispatch(await getCollections(true))
+		dispatch(await getDevices(true))
+		dispatch(await getOrgs(true))
 	}
 }
 export const getUsers = (reload) => {
