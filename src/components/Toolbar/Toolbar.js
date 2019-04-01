@@ -48,7 +48,7 @@ const styles = theme => ({
 		overflow: 'visible',
 		minHeight: 48,
 		height: 48,
-		zIndex: 1300,
+		zIndex: 900,
 		boxShadow: 'none',
 		...transition
 	},

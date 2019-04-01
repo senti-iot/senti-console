@@ -19,11 +19,14 @@ const globalSearchStyles = theme => ({
 		}
 	},
 	suggestionsContainerOpen: {
-		position: 'absolute',
-		right: "30px",
-		zIndex: 1,
-		marginTop: theme.spacing.unit * 4,
-		maxWidth: 'calc(100vw - 100px)'
+		// position: 'absolute',
+		// right: "30px",
+		zIndex: 5000,
+		position: "absolute",
+		marginTop: 32,
+		top: 30,
+		// marginTop: theme.spacing.unit * 4,
+		// maxWidth: 'calc(100vw - 100px)'
 		// left: 0,
 	},
 	suggestion: {
