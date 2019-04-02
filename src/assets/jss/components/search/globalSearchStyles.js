@@ -19,9 +19,9 @@ const globalSearchStyles = theme => ({
 			// background: 'rgba(11,198,100,0.25)'
 		}
 	},
-	suggestionsContainerOpen: {
-		// position: 'absolute',
-		// right: "30px",
+	suggestionsContainer: {
+		height: 0,
+		transition: 'height 300ms ease',
 		maxHeight: 500,
 		maxWidth: 700,
 		overflow: 'auto',
@@ -29,6 +29,19 @@ const globalSearchStyles = theme => ({
 		position: "absolute",
 		marginTop: 32,
 		top: 30,
+	},
+	suggestionsContainerOpen: {
+		// position: 'absolute',
+		// right: "30px",
+		height: 500,
+		maxHeight: 500,
+		maxWidth: 700,
+		overflow: 'auto',
+		zIndex: 5000,
+		position: "absolute",
+		marginTop: 32,
+		top: 30,
+		transition: 'height 300ms ease'
 
 		// marginTop: theme.spacing.unit * 4,
 		// maxWidth: 'calc(100vw - 100px)'
