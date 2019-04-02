@@ -58,6 +58,7 @@ export const getSuggestions = () =>
 		})
 		users.forEach(p => {
 			delete p.aux.senti
+			delete p.groups
 			uSuggestions.push({
 				label: `${p.firstName} ${p.lastName}`,
 				path: `/management/user/${p.id}`,

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Input, /* InputAdornment, IconButton */ } from '@material-ui/core';
+import { Input, InputAdornment, IconButton, /* InputAdornment, IconButton */ } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { Search, /* Clear */ } from 'variables/icons'
+import { Search, Clear, /* Clear */ } from 'variables/icons'
 import { /* ItemGrid, */ ItemG } from 'components'
 // import className from 'classnames'
 import globalSearchStyles from 'assets/jss/components/search/globalSearchStyles';
@@ -9,7 +9,7 @@ import globalSearchStyles from 'assets/jss/components/search/globalSearchStyles'
 
 class GlobalSearchInput extends Component {
 	render() {
-		const { noAbsolute, t, classes, ref, open, handleClose, handleOpen, handleResetSearch, fullWidth,  ...other } = this.props;
+		const { noAbsolute, t, classes, ref, open, handleClose, handleOpen, handleResetSearch, fullWidth, ...other } = this.props;
 		return (
 			<ItemG container alignItems={'center'}>
 				<div className={classes.container}>
@@ -21,9 +21,23 @@ class GlobalSearchInput extends Component {
 						inputRef={this.props.reference}
 						onFocus={this.inputFocused}
 						disableUnderline
-						autoFocus={false}
+						// autoFocus={false}
 						classes={{ input: classes.input, underline: classes.underline, root: classes.inputRoot }}
 						{...other}
+						endAdornment={
+							<InputAdornment position='end' style={{ opacity: other.value.length > 0 ? 1 : 0, transition: 'all 300ms ease' }}>
+								<IconButton
+									disableTouchRipple
+									disableRipple
+									classes={{
+										root: classes.square
+									}}
+									onClick={handleResetSearch}
+								>
+									<Clear />
+								</IconButton>
+							</InputAdornment>
+						}
 					/>
 				</div>
 			</ItemG>

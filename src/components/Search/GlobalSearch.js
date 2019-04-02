@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
-// import match from 'autosuggest-highlight/match';
-// import parse from 'autosuggest-highlight/parse';
+import match from 'autosuggest-highlight/match';
+import parse from 'autosuggest-highlight/parse';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
@@ -15,7 +15,8 @@ import globalSearchStyles from 'assets/jss/components/search/globalSearchStyles'
 import { setSearchValue } from 'redux/globalSearch';
 import { hist } from 'App';
 import { T, ItemG } from 'components';
-import { ClickAwayListener } from '@material-ui/core';
+import { Grow } from '@material-ui/core';
+import { teal } from '@material-ui/core/colors';
 // import { Typography } from '@material-ui/core';
 
 function renderInput(inputProps) {
@@ -29,7 +30,11 @@ function renderSuggestionsContainer(options) {
 	const { containerProps, children } = options;
 	return (
 		<Paper {...containerProps}>
-			{children}
+			{children ? children.map((c, i) => {
+				return <Grow key={i} in={true} timeout={i * 400}>
+					{c}
+				</Grow>
+			}) : null}
 		</Paper>
 	);
 }
@@ -51,15 +56,15 @@ class GlobalSearch extends React.PureComponent {
 
 	}
 	componentDidMount() {
-		if (this.props.focusOnMount && this.inputRef.current)
-			this.focusInput()
+		// if (this.props.focusOnMount && this.inputRef.current)
+		// this.focusInput()
 	}
 	getSuggestions = (value, suggestions) => {
 		const inputValue = value.trim().toLowerCase();
 		const inputLength = inputValue.length;
 		const { t } = this.props
 		// let count = 0;
-		return inputLength === 0 ? []
+		return inputLength < 3 ? []
 			: suggestions.map(section => {
 				return {
 					title: section.title,
@@ -86,6 +91,7 @@ class GlobalSearch extends React.PureComponent {
 	}
 	handleResetSearch = () => {
 		this.handleChange(null, { newValue: '' })
+		this.handleSuggestionsClearRequested()
 	}
 	renderSectionTitle = (section) => {
 		const { t } = this.props
@@ -96,6 +102,24 @@ class GlobalSearch extends React.PureComponent {
 		);
 	}
 
+	highlightWords = (value, query) => {
+		const matches = match(value, query);
+		const parts = parse(value, matches);
+		return (
+			parts.map((part, index) => {
+				return part.highlight ? (
+					<span key={String(index)} style={{ textDecoration: 'underline', color: teal[500] }}>
+						{part.text}
+					</span>
+				) : (
+					<span key={String(index)} style={{  }}>
+						{part.text}
+					</span>
+				);
+			})
+
+		);
+	}
 	highlightParts = (values, query) => {
 		let matches = []
 		values.forEach(v => {
@@ -105,47 +129,49 @@ class GlobalSearch extends React.PureComponent {
 		})
 		return matches
 	}
+	handleOnSuggestionClicked = (path) => {
+		hist.push(path)
+	}
 	renderSuggestion = (suggestion, { query, isHighlighted }) => {
 		const { t } = this.props
 		let matches = this.highlightParts(suggestion.values, query)
 		return (
-			<MenuItem selected={isHighlighted} component='div' style={{ height: 'auto' }} onClick={() => hist.push(suggestion.path)}>
+			<MenuItem selected={isHighlighted} component='div' style={{ height: 'auto' }}>
 				<ItemG container>
-					<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 16, width: 100, maxWidth: 100 }}>
-						{t(`sidebar.${suggestion.type}`)}
+					<div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'top', padding: '8px 0px 16px 16px', width: 100, maxWidth: 100 }}>
+						<T>
+							{t(`sidebar.${suggestion.type}`)}
+						</T>
 					</div>
 					<ItemG>
-						<div style={{ margin: 8, width: 1, height: '90%', background: '#c5c5c5' }}/>
+						<div style={{ margin: 8, width: 1, height: '90%', /* background: '#c5c5c5' */ }}/>
 					</ItemG>
-					<ItemG style={{ width: 'auto' }}>
+					<div style={{ padding: 16, paddingTop: 8 }}>
 						<div style={{   maxWidth: 300,
 							overflow: "hidden",
 							textOverflow: "ellipsis",
 							whiteSpace: "nowrap",  }}>
-							<T noWrap variant={'h6'}>{suggestion.label}</T>
+							<T style={{ fontWeight: 500, fontSize: 15 }} noWrap>{suggestion.label}</T>
 						</div>
 						<div style={{   maxWidth: 300,
 							overflow: "hidden",
 							textOverflow: "ellipsis",
 							whiteSpace: "nowrap",  }}>
 							{matches.map((m, i) => {
-								return <span key={i}>
-									{`${t(`${suggestion.type}s.fields.${m.field}`)}: ${m.value}${matches.length > 0 && i !== matches.length - 1 ? ', ' : ''} `}
-								</span>
+								// if (m.field === 'description')
+								// console.log(m)
+								return <T key={i}>
+									{`${t(`${suggestion.type}s.fields.${m.field}`)}: `}{this.highlightWords(m.value, query)}{matches.length > 0 && i !== matches.length - 1 ? ', ' : ''}
+								</T>
 							})}
 						</div>
-					</ItemG>
+					</div>
 				</ItemG>
 			</MenuItem>
 		);
 	}
 
 	handleSuggestionsFetchRequested = ({ value, reason }) => {
-		const { open } = this.state
-		const { searchValue } = this.props
-		if (open && searchValue === '' && reason === 'escape-pressed') {
-			this.handleClose()
-		}
 		this.setState({
 			suggestions: this.getSuggestions(value, this.props.suggestions),
 		})
@@ -164,21 +190,9 @@ class GlobalSearch extends React.PureComponent {
 
 	focusInput = () => {
 		this.props.disableEH()
-		if (this.state.open || this.props.open)
-			this.inputRef.current.focus()
+		this.inputRef.current.focus()
 	}
 
-	handleOpen = () => {
-		// this.props.enableEH()
-		if (this.props.open === undefined)
-			this.setState({ open: !this.state.open }, this.focusInput)
-	}
-
-	handleClose = () => {
-		// this.props.disableEH()
-		if (this.props.open === undefined)
-			this.setState({ open: false })
-	}
 	getSectionSuggestions = (section) => {
 		return section.suggestions;
 	  }
@@ -186,46 +200,48 @@ class GlobalSearch extends React.PureComponent {
 	render() {
 		const { classes, right } = this.props;
 		return (
-			<ClickAwayListener onClickAway={this.handleClose}>
-				<Autosuggest
-					theme={{
-						container: classes.autosuggestContainer + ' ' + (right ? classes.right : ''),
-						suggestionsContainerOpen: classes.suggestionsContainerOpen,
-						suggestionsList: classes.suggestionsList,
-						suggestion: classes.suggestion,
-					}}
-					multiSection={true}
-					alwaysRenderSuggestions={true}
-					focusInputOnSuggestionClick={false}
-					renderInputComponent={renderInput}
-					suggestions={this.state.suggestions}
-					onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
-					onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
-					renderSuggestionsContainer={renderSuggestionsContainer}
-					getSuggestionValue={getSuggestionValue}
-					renderSuggestion={this.renderSuggestion}
-					renderSectionTitle={this.renderSectionTitle}
-					getSectionSuggestions={this.getSectionSuggestions}
-					onFocus={this.props.disableEH}
-					onBlur={this.props.enableEH}
-					inputProps={{
-						onFocus: this.props.disableEH,
-						onBlur: this.props.enableEH,
-						noAbsolute: this.props.noAbsolute,
-						placeholder: this.props.t('actions.src'),
-						classes,
-						fullWidth: this.props.fullWidth,
-						value: this.props.searchValue,
-						onChange: this.handleChange,
-						reference: this.inputRef,
-						open: this.state.open || this.props.open,
-						handleOpen: this.handleOpen,
-						handleClose: this.handleClose,
-						handleResetSearch: this.handleResetSearch,
-						t: this.props.t
-					}}
-				/>
-			</ClickAwayListener>
+			<Autosuggest
+				id={'global-search'}
+				theme={{
+					container: classes.autosuggestContainer + ' ' + (right ? classes.right : ''),
+					suggestionsContainer: classes.suggestionsContainer,
+					suggestionsContainerOpen: classes.suggestionsContainerOpen,
+					suggestionsList: classes.suggestionsList,
+					suggestion: classes.suggestion,
+				}}
+				multiSection={true}
+				alwaysRenderSuggestions={false}
+				focusInputOnSuggestionClick={false}
+				renderInputComponent={renderInput}
+				suggestions={this.state.suggestions}
+				shouldRenderSuggestions={value => value.length > 2}
+				onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
+				onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
+				onSuggestionSelected={(event, { suggestion }) => this.handleOnSuggestionClicked(suggestion.path)}
+				renderSuggestionsContainer={renderSuggestionsContainer}
+				getSuggestionValue={getSuggestionValue}
+				renderSuggestion={this.renderSuggestion}
+				renderSectionTitle={this.renderSectionTitle}
+				getSectionSuggestions={this.getSectionSuggestions}
+				onFocus={this.props.disableEH}
+				onBlur={this.props.enableEH}
+				inputProps={{
+					onFocus: this.props.disableEH,
+					onBlur: this.props.enableEH,
+					noAbsolute: this.props.noAbsolute,
+					placeholder: this.props.t('actions.src'),
+					classes,
+					// fullWidth: this.props.fullWidth,
+					value: this.props.searchValue,
+					onChange: this.handleChange,
+					reference: this.inputRef,
+					// open: this.state.open || this.props.open,
+					// handleOpen: this.handleOpen,
+					// handleClose: this.handleClose,
+					handleResetSearch: this.handleResetSearch,
+					t: this.props.t
+				}}
+			/>
 		);
 	}
 }

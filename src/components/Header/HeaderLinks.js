@@ -76,14 +76,7 @@ class HeaderLinks extends React.Component {
 
 	// }
 	renderSearch = () => {
-		return 	<GlobalSearch
-			fullWidth
-			open={true}
-			focusOnMount
-			suggestions={[]}
-			handleFilterKeyword={() => {}}
-			searchValue={''} 
-		/>
+		return <GlobalSearch />
 	}
 	renderNotifications = () => {
 		return <ItemG container style={{ width: 'auto',  alignItems: 'center', marginLeft: 8, marginRight: 8, }}>
@@ -95,8 +88,9 @@ class HeaderLinks extends React.Component {
 		const { anchorProfile } = this.state;
 		const openProfile = Boolean(anchorProfile)
 
-		return <ItemG>
-			<Tooltip title={t('menus.user.profile')}>
+		return <div>
+			 <Tooltip title={t('menus.user.profile')}>
+
 				<Button
 					aria-owns={openProfile ? 'menu-appbar' : null}
 					aria-haspopup='true'
@@ -154,7 +148,7 @@ class HeaderLinks extends React.Component {
 
 				</GoogleLogout>
 			</Menu>
-		</ItemG>
+		</div>
 	}
 	render() {
 		const { classes } = this.props;
@@ -165,8 +159,8 @@ class HeaderLinks extends React.Component {
 					{this.renderChristmasIcon()}
 				</ItemG> */}
 				{this.renderSearch()}
-				{this.renderNotifications()}
 				{this.renderUserMenu()}
+				{/* {this.renderNotifications()} */}
 			</Grid>
 		);
 	}
