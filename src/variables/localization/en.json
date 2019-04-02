@@ -229,7 +229,7 @@
             "name": "Name",
             "notfree": "Busy",
             "org": "Organisation",
-            "pcModel": "Device model",
+            "RPImodel": "Device model",
             "project": "Project",
             "SIMID": "SIM-card ID",
             "SIMProvider": "SIM-card provider",

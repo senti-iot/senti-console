@@ -229,7 +229,7 @@
             "name": "Navn",
             "notfree": "Optaget",
             "org": "Organisation",
-            "pcModel": "Enhedsmodel",
+            "RPImodel": "Enhedsmodel",
             "project": "Projekt",
             "SIMID": "SIM-kort ID",
             "SIMProvider": "SIM-kort leverandør",

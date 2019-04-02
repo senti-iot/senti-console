@@ -101,7 +101,7 @@ class EditDetails extends Component {
 							<ItemGrid xs={6}>
 								<TextF
 									id={'rpimodel'}
-									label={t('devices.fields.pcModel')}
+									label={t('devices.fields.RPImodel')}
 									handleChange={this.handleInput('RPImodel')}
 									value={device.RPImodel}
 

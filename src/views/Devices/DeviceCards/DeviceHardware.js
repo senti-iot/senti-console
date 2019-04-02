@@ -43,7 +43,7 @@ class DeviceHardware extends PureComponent {
 				content={
 					<ItemG container spacing={16}>
 						<ItemG>
-							<Caption>{t('devices.fields.pcModel')}:</Caption>
+							<Caption>{t('devices.fields.RPImodel')}:</Caption>
 							<Info>{device.RPImodel}</Info>
 						</ItemG>
 						<ItemG>
