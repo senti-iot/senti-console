@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
@@ -246,13 +245,6 @@ class GlobalSearch extends React.PureComponent {
 	}
 }
 
-GlobalSearch.propTypes = {
-	classes: PropTypes.object.isRequired,
-	searchValue: PropTypes.string,
-	t: PropTypes.func.isRequired,
-	suggestions: PropTypes.array.isRequired,
-	handleFilterKeyword: PropTypes.func.isRequired,
-};
 const mapStateToProps = (state) => ({
 	searchValue: state.globalSearch.searchVal,
 	suggestions: state.globalSearch.suggestions
