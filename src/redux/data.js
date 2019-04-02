@@ -94,6 +94,7 @@ export const sortData = (key, property, order) => {
 }
 export const getUserLS = async (id) => {
 	return async dispatch => {
+		dispatch({ type: gotUser, payload: false })
 		let user = get('user.' + id)
 		if (user) {
 			dispatch({
@@ -133,6 +134,7 @@ export const getUserLS = async (id) => {
 }
 export const getDeviceLS = async (id) => {
 	return async dispatch => {
+		dispatch({ type: gotDevice, payload: false })
 		let device = get('device.' + id)
 		if (device) {
 			dispatch({
@@ -213,6 +215,7 @@ export const getOrgLS = async (id) => {
 }
 export const getCollectionLS = async (id) => {
 	return async dispatch => {
+		dispatch({ type: gotCollection, payload: false })
 		let collection = get('collection.' + id)
 		if (collection) {
 			dispatch({
@@ -263,6 +266,7 @@ export const getCollectionLS = async (id) => {
 }
 export const getProjectLS = async (id) => {
 	return async dispatch => {
+		dispatch({ type: gotProject, payload: false })
 		let project = get('project.' + id)
 		if (project) {
 			dispatch({
@@ -322,6 +326,7 @@ export const setUsers = () => {
 				type: setusers,
 				payload: users
 			})
+			dispatch(getSuggestions())
 			// dispatch(sortData('users', 'firstName', 'asc'))
 		}
 		else dispatch({
@@ -338,7 +343,7 @@ export const setOrgs = () => {
 				type: setorgs,
 				payload: orgs
 			})
-			// dispatch(getSuggestions())
+			dispatch(getSuggestions())
 			// dispatch(sortData('orgs', 'name', 'asc'))
 		}
 		else {
@@ -387,6 +392,7 @@ export const setCollections = () => {
 				type: setcollections,
 				payload: collections
 			})
+			dispatch(getSuggestions())
 			// dispatch(sortData('collections', 'id', 'asc'))
 		}
 		else {

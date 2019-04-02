@@ -632,6 +632,11 @@
             "title": "Enheder"
         },
         "fields": {
+			"email": "Kontakt E-mail",
+			"firstName": "Kontakt Navn",
+			"lastName": "Kontakt Navn",
+            "organisation": "Kontakt Organisation",
+			"phone": "Kontakt Telefon",
             "assignDevices": "Tilknyt enheder",
             "created": "Oprettet",
             "description": "Beskrivelse",

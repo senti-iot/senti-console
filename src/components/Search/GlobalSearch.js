@@ -15,6 +15,7 @@ import globalSearchStyles from 'assets/jss/components/search/globalSearchStyles'
 import { setSearchValue } from 'redux/globalSearch';
 import { hist } from 'App';
 import { T, ItemG } from 'components';
+import { ClickAwayListener } from '@material-ui/core';
 // import { Typography } from '@material-ui/core';
 
 function renderInput(inputProps) {
@@ -37,53 +38,6 @@ function getSuggestionValue(suggestion) {
 	return suggestion.label;
 }
 
-function getSuggestions(value, suggestions) {
-	const inputValue = value.trim().toLowerCase();
-	const inputLength = inputValue.length;
-	// let count = 0;
-	return inputLength === 0 ? []
-		: suggestions.map(section => {
-			return {
-				title: section.title,
-				suggestions: section.suggestions.filter(l => {
-					let keep2 = false 
-					l.values.forEach(v => {
-						if (v.value.toLowerCase().slice(0, inputLength) === inputValue) {
-							keep2 = true
-						}
-					})
-					if (keep2 === true) {
-						keep2 = false
-						return true
-					}
-					else {
-						return false
-					}
-				})
-			};
-		})
-			.filter(section => section.suggestions.length > 0);
-	// return inputLength === 0 ? []
-	// 	: suggestions.filter(section => {
-	// 		let keep2 = false 
-	// 		// console.log(section)
-	// 		section.suggestions.forEach(k => {
-	// 			k.values.forEach(l => {
-	// 				if (l.toLowerCase().slice(0, inputLength) === inputValue) {
-	// 					keep2 = true
-	// 				}
-	// 			})
-	// 		});
-	// 		const keep = count < 5 && keep2
-	// 		console.log(keep, keep2)
-	// 		if (keep) {
-	// 			count += 1;
-	// 		}
-
-	// 		return keep;
-	// 	});
-}
-
 class GlobalSearch extends React.PureComponent {
 	constructor(props) {
 		super(props)
@@ -100,7 +54,36 @@ class GlobalSearch extends React.PureComponent {
 		if (this.props.focusOnMount && this.inputRef.current)
 			this.focusInput()
 	}
-
+	getSuggestions = (value, suggestions) => {
+		const inputValue = value.trim().toLowerCase();
+		const inputLength = inputValue.length;
+		const { t } = this.props
+		// let count = 0;
+		return inputLength === 0 ? []
+			: suggestions.map(section => {
+				return {
+					title: section.title,
+					suggestions: section.suggestions.filter(l => {
+						let keep2 = false 
+						l.values.forEach(v => {
+							if (v.value.toLowerCase().includes(inputValue.toLowerCase())) {
+								keep2 = true
+							}
+							if (t(`sidebar.${l.type}`).toLowerCase().includes(inputValue.toLowerCase())) {
+								keep2 = true
+							}
+						})
+						if (keep2 === true) {
+							keep2 = false
+							return true
+						}
+						else {
+							return false
+						}
+					})
+				};
+			}).filter(section => section.suggestions.length > 0);
+	}
 	handleResetSearch = () => {
 		this.handleChange(null, { newValue: '' })
 	}
@@ -124,30 +107,12 @@ class GlobalSearch extends React.PureComponent {
 	}
 	renderSuggestion = (suggestion, { query, isHighlighted }) => {
 		const { t } = this.props
-		// console.log(query)
-		// const matches = match(suggestion.values.map(v => v.value).join(', '), query);
-		// const matches = match(suggestion.label, query);
-		// console.log(this.highlightParts(suggestion.values, query))
-		// const parts = parse(suggestion.values.map(v => v.value).join(', '), matches);
-		// console.log(matches, parts)
-		// console.log(suggestion)
 		let matches = this.highlightParts(suggestion.values, query)
 		return (
 			<MenuItem selected={isHighlighted} component='div' style={{ height: 'auto' }} onClick={() => hist.push(suggestion.path)}>
 				<ItemG container>
-					<div style={{ padding: 24 }}>
+					<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 16, width: 100, maxWidth: 100 }}>
 						{t(`sidebar.${suggestion.type}`)}
-						{/* {parts.map((part, index) => {
-							return part.highlight ? (
-								<span key={String(index)} style={{ fontWeight: 300, maxWidth: 'calc(100vw-100px)', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-									{part.text}
-								</span>
-							) : (
-								<strong key={String(index)} style={{ fontWeight: 500 }}>
-									{part.text}
-								</strong>
-							);
-						})} */}
 					</div>
 					<ItemG>
 						<div style={{ margin: 8, width: 1, height: '90%', background: '#c5c5c5' }}/>
@@ -164,18 +129,10 @@ class GlobalSearch extends React.PureComponent {
 							textOverflow: "ellipsis",
 							whiteSpace: "nowrap",  }}>
 							{matches.map((m, i) => {
-								return <span>
+								return <span key={i}>
 									{`${t(`${suggestion.type}s.fields.${m.field}`)}: ${m.value}${matches.length > 0 && i !== matches.length - 1 ? ', ' : ''} `}
 								</span>
 							})}
-							{/* {parts.map((part, index) => {
-									return part.highlight ? (
-										<span key={String(index)} style={{ fontWeight: 300, maxWidth: 'calc(100vw-100px)', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-											{part.text}
-										</span>
-									) : null
-								
-								})} */}
 						</div>
 					</ItemG>
 				</ItemG>
@@ -190,7 +147,7 @@ class GlobalSearch extends React.PureComponent {
 			this.handleClose()
 		}
 		this.setState({
-			suggestions: getSuggestions(value, this.props.suggestions),
+			suggestions: this.getSuggestions(value, this.props.suggestions),
 		})
 	}
 
@@ -202,6 +159,7 @@ class GlobalSearch extends React.PureComponent {
 
 	handleChange = (event, { newValue }) => {
 		this.props.setSearchVal(newValue)
+
 	}
 
 	focusInput = () => {
@@ -210,11 +168,13 @@ class GlobalSearch extends React.PureComponent {
 	}
 
 	handleOpen = () => {
+		this.props.disableEH()
 		if (this.props.open === undefined)
 			this.setState({ open: !this.state.open }, this.focusInput)
 	}
 
 	handleClose = () => {
+		this.props.enableEH()
 		if (this.props.open === undefined)
 			this.setState({ open: false })
 	}
@@ -225,47 +185,46 @@ class GlobalSearch extends React.PureComponent {
 	render() {
 		const { classes, right } = this.props;
 		return (
-			<Autosuggest
-				theme={{
-					container: classes.autosuggestContainer + ' ' + (right ? classes.right : ''),
-					suggestionsContainerOpen: classes.suggestionsContainerOpen,
-					suggestionsList: classes.suggestionsList,
-					suggestion: classes.suggestion,
-				}}
-				multiSection={true}
-				alwaysRenderSuggestions={true}
-				focusInputOnSuggestionClick={false}
-				renderInputComponent={renderInput}
-				suggestions={this.state.suggestions}
-				onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
-				onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
-				// onSuggestionSelected={this.focusInput}
-				renderSuggestionsContainer={renderSuggestionsContainer}
-				getSuggestionValue={getSuggestionValue}
-				renderSuggestion={this.renderSuggestion}
-				renderSectionTitle={this.renderSectionTitle}
-				getSectionSuggestions={this.getSectionSuggestions}
-				onFocus={this.props.disableEH}
-				onBlur={this.props.enableEH}
-				inputProps={{
-					onFocus: this.props.disableEH,
-					onBlur: this.props.enableEH,
-					noAbsolute: this.props.noAbsolute,
-					placeholder: this.props.t('actions.src'),
-					classes,
-					fullWidth: this.props.fullWidth,
-					value: this.props.searchValue,
-					onChange: this.handleChange,
-					reference: this.inputRef,
-					open: this.state.open || this.props.open,
-					handleOpen: this.handleOpen,
-					handleClose: this.handleClose,
-					handleResetSearch: this.handleResetSearch,
-					t: this.props.t
-				}}
-			/>
-			// </ClickAwayListener>
-			// </div>
+			<ClickAwayListener onClickAway={this.handleClose}>
+				<Autosuggest
+					theme={{
+						container: classes.autosuggestContainer + ' ' + (right ? classes.right : ''),
+						suggestionsContainerOpen: classes.suggestionsContainerOpen,
+						suggestionsList: classes.suggestionsList,
+						suggestion: classes.suggestion,
+					}}
+					multiSection={true}
+					alwaysRenderSuggestions={true}
+					focusInputOnSuggestionClick={false}
+					renderInputComponent={renderInput}
+					suggestions={this.state.suggestions}
+					onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
+					onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
+					renderSuggestionsContainer={renderSuggestionsContainer}
+					getSuggestionValue={getSuggestionValue}
+					renderSuggestion={this.renderSuggestion}
+					renderSectionTitle={this.renderSectionTitle}
+					getSectionSuggestions={this.getSectionSuggestions}
+					onFocus={this.handleOpen}
+					onBlur={this.handleClose}
+					inputProps={{
+						onFocus: this.props.disableEH,
+						onBlur: this.props.enableEH,
+						noAbsolute: this.props.noAbsolute,
+						placeholder: this.props.t('actions.src'),
+						classes,
+						fullWidth: this.props.fullWidth,
+						value: this.props.searchValue,
+						onChange: this.handleChange,
+						reference: this.inputRef,
+						open: this.state.open || this.props.open,
+						handleOpen: this.handleOpen,
+						handleClose: this.handleClose,
+						handleResetSearch: this.handleResetSearch,
+						t: this.props.t
+					}}
+				/>
+			</ClickAwayListener>
 		);
 	}
 }

@@ -24,19 +24,6 @@ class GlobalSearchInput extends Component {
 						autoFocus={false}
 						classes={{ input: classes.input, underline: classes.underline, root: classes.inputRoot }}
 						{...other}
-						// endAdornment={
-						// 	 <InputAdornment position='end'>
-						// 		<IconButton
-						// 			disableRipple
-						// 			classes={{
-						// 				root: classes.square
-						// 			}}
-						// 			onClick={handleResetSearch}
-						// 		>
-						// 			<Clear />
-						// 		</IconButton>
-						// 	</InputAdornment>
-						// }
 					/>
 				</div>
 			</ItemG>

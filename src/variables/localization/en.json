@@ -632,6 +632,11 @@
             "title": "Devices"
         },
         "fields": {
+			"email": "Contact E-mail",
+			"firstName": "Contact name",
+			"lastName": "Contact name",
+            "organisation": "Contacts' organisation",
+            "phone": "Contact phone",
             "assignDevices": "Assign devices",
             "created": "Created",
             "description": "Description",

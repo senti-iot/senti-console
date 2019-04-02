@@ -21,21 +21,17 @@ export const getSuggestions = () =>
 	(dispatch, getState) => {
 		let projects = getState().data.projects
 		let devices = getState().data.devices
-		// let collections = getState().data.collections
-		// let users = getState().data.users
-		// let orgs = getState().data.orgs
+		let collections = getState().data.collections
+		let users = getState().data.users
+		let orgs = getState().data.orgs
 		let suggestions = []
+
 		let dSuggestions = []
+		let cSuggestions = []
+		let oSuggestions = []
+		let uSuggestions = []
 		let pSuggestions = []
-		// console.log(projects, devices, collections, users, orgs)
-		projects.forEach(p => {
-			pSuggestions.push({
-				label: p.title,
-				path: `/project/${p.id}`,
-				type: types[0],
-				values: globalSuggestionGen(p)
-			})
-		})
+
 		devices.forEach(d => {
 			dSuggestions.push({
 				label: d.name,
@@ -44,6 +40,40 @@ export const getSuggestions = () =>
 				values: globalSuggestionGen(d)
 			})
 		})
+		collections.forEach(p => {
+			cSuggestions.push({
+				label: p.name,
+				path: `/collection/${p.id}`,
+				type: types[2],
+				values: globalSuggestionGen(p)
+			})
+		})
+		projects.forEach(p => {
+			pSuggestions.push({
+				label: p.title,
+				path: `/project/${p.id}`,
+				type: types[0],
+				values: globalSuggestionGen(p)
+			})
+		})
+		users.forEach(p => {
+			delete p.aux.senti
+			uSuggestions.push({
+				label: `${p.firstName} ${p.lastName}`,
+				path: `/management/user/${p.id}`,
+				type: types[3],
+				values: globalSuggestionGen(p)
+			})
+		})
+		orgs.forEach(p => {
+			oSuggestions.push({
+				label: p.name,
+				path: `/management/org/${p.id}`,
+				type: types[4],
+				values: globalSuggestionGen(p)
+			})
+		})
+		
 		// suggestions.push(...globalSuggestionGen(projects))
 		// suggestions.push(...globalSuggestionGen(devices))
 		// suggestions.push(...globalSuggestionGen(collections))
@@ -52,11 +82,24 @@ export const getSuggestions = () =>
 		suggestions = [
 			{ 
 				title: 'sidebar.projects',
-				suggestions: pSuggestions },
+				suggestions: pSuggestions 
+			},
 			{ 
 				title: 'sidebar.devices',
 				suggestions: dSuggestions
-			}
+			},
+			{ 
+				title: 'sidebar.collections',
+				suggestions: cSuggestions
+			},
+			{ 
+				title: 'sidebar.users',
+				suggestions: uSuggestions
+			},
+			{ 
+				title: 'sidebar.orgs',
+				suggestions: oSuggestions
+			},
 		]
 
 		return dispatch({
