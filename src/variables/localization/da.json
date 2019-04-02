@@ -231,8 +231,8 @@
             "org": "Organisation",
             "pcModel": "Enhedsmodel",
             "project": "Projekt",
-            "simCard": "SIM-kort ID",
-            "simProvider": "SIM-kort leverandør",
+            "SIMID": "SIM-kort ID",
+            "SIMProvider": "SIM-kort leverandør",
             "status": "Status",
             "temp": "CPU temperatur",
             "weather": "Vejr",
@@ -797,6 +797,11 @@
         }
     },
     "sidebar": {
+		"device": "Enhed",
+		"collection": "Datasamling",
+		"project": "Projekt",
+		"org": "Organisation",
+		"user": "Bruger",
         "collections": "Datasamlinger",
         "dashboard": "Dashboard",
         "devices": "Enheder",

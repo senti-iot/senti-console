@@ -356,7 +356,7 @@ const globalSuggestionSlicer = (obj) => {
 			else {
 				innerObj = obj[prop] ? obj[prop].toString() : ''
 				// id: prop.toString().toLowerCase(),
-				arr.push(innerObj)
+				arr.push({ value: innerObj, field: prop })
 			}
 		}
 	}

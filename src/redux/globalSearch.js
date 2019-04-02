@@ -3,11 +3,11 @@ import { globalSuggestionGen } from 'variables/functions';
 const setVal = 'setSearchValue'
 const getS = 'getSuggestions'
 const types = [
-	"sidebar.projects",
-	"sidebar.devices",
-	"sidebar.collections",
-	"sidebar.users",
-	"sidebar.orgs",
+	"project",
+	"device",
+	"collection",
+	"user",
+	"org",
 ]
 export const setSearchValue = (value) => {
 	return dispatch => {

@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
-import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
+// import match from 'autosuggest-highlight/match';
+// import parse from 'autosuggest-highlight/parse';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
@@ -14,7 +14,8 @@ import { changeEH } from 'redux/appState';
 import globalSearchStyles from 'assets/jss/components/search/globalSearchStyles';
 import { setSearchValue } from 'redux/globalSearch';
 import { hist } from 'App';
-import { T } from 'components';
+import { T, ItemG } from 'components';
+// import { Typography } from '@material-ui/core';
 
 function renderInput(inputProps) {
 	return (
@@ -47,7 +48,7 @@ function getSuggestions(value, suggestions) {
 				suggestions: section.suggestions.filter(l => {
 					let keep2 = false 
 					l.values.forEach(v => {
-						if (v.toLowerCase().slice(0, inputLength) === inputValue) {
+						if (v.value.toLowerCase().slice(0, inputLength) === inputValue) {
 							keep2 = true
 						}
 					})
@@ -106,27 +107,78 @@ class GlobalSearch extends React.PureComponent {
 	renderSectionTitle = (section) => {
 		const { t } = this.props
 		return (
-		  <T style={{ margin: 8 }}>{t(section.title)}</T>
+			<MenuItem divider>
+		  		<T style={{ margin: 8 }}>{t(`${section.title}`)}</T>
+			</MenuItem>
 		);
 	}
+
+	highlightParts = (values, query) => {
+		let matches = []
+		values.forEach(v => {
+			if (v.value.includes(query)) {
+				matches.push(v)
+			}
+		})
+		return matches
+	}
 	renderSuggestion = (suggestion, { query, isHighlighted }) => {
-		const matches = match(suggestion.label, query);
-		const parts = parse(suggestion.label, matches);
+		const { t } = this.props
+		// console.log(query)
+		// const matches = match(suggestion.values.map(v => v.value).join(', '), query);
+		// const matches = match(suggestion.label, query);
+		// console.log(this.highlightParts(suggestion.values, query))
+		// const parts = parse(suggestion.values.map(v => v.value).join(', '), matches);
+		// console.log(matches, parts)
+		// console.log(suggestion)
+		let matches = this.highlightParts(suggestion.values, query)
 		return (
-			<MenuItem selected={isHighlighted} component='div' onClick={() => hist.push(suggestion.path)}>
-				<div>
-					{parts.map((part, index) => {
-						return part.highlight ? (
-							<span key={String(index)} style={{ fontWeight: 300, maxWidth: 'calc(100vw-100px)', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-								{part.text}
-							</span>
-						) : (
-							<strong key={String(index)} style={{ fontWeight: 500 }}>
-								{part.text}
-							</strong>
-						);
-					})}
-				</div>
+			<MenuItem selected={isHighlighted} component='div' style={{ height: 'auto' }} onClick={() => hist.push(suggestion.path)}>
+				<ItemG container>
+					<div style={{ padding: 24 }}>
+						{t(`sidebar.${suggestion.type}`)}
+						{/* {parts.map((part, index) => {
+							return part.highlight ? (
+								<span key={String(index)} style={{ fontWeight: 300, maxWidth: 'calc(100vw-100px)', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+									{part.text}
+								</span>
+							) : (
+								<strong key={String(index)} style={{ fontWeight: 500 }}>
+									{part.text}
+								</strong>
+							);
+						})} */}
+					</div>
+					<ItemG>
+						<div style={{ margin: 8, width: 1, height: '90%', background: '#c5c5c5' }}/>
+					</ItemG>
+					<ItemG style={{ width: 'auto' }}>
+						<div style={{   maxWidth: 300,
+							overflow: "hidden",
+							textOverflow: "ellipsis",
+							whiteSpace: "nowrap",  }}>
+							<T noWrap variant={'h6'}>{suggestion.label}</T>
+						</div>
+						<div style={{   maxWidth: 300,
+							overflow: "hidden",
+							textOverflow: "ellipsis",
+							whiteSpace: "nowrap",  }}>
+							{matches.map((m, i) => {
+								return <span>
+									{`${t(`${suggestion.type}s.fields.${m.field}`)}: ${m.value}${matches.length > 0 && i !== matches.length - 1 ? ', ' : ''} `}
+								</span>
+							})}
+							{/* {parts.map((part, index) => {
+									return part.highlight ? (
+										<span key={String(index)} style={{ fontWeight: 300, maxWidth: 'calc(100vw-100px)', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+											{part.text}
+										</span>
+									) : null
+								
+								})} */}
+						</div>
+					</ItemG>
+				</ItemG>
 			</MenuItem>
 		);
 	}

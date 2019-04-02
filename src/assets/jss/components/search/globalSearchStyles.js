@@ -23,11 +23,13 @@ const globalSearchStyles = theme => ({
 		// position: 'absolute',
 		// right: "30px",
 		maxHeight: 500,
+		maxWidth: 500,
 		overflow: 'auto',
 		zIndex: 5000,
 		position: "absolute",
 		marginTop: 32,
 		top: 30,
+
 		// marginTop: theme.spacing.unit * 4,
 		// maxWidth: 'calc(100vw - 100px)'
 		// left: 0,

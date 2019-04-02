@@ -174,7 +174,7 @@ class EditDetails extends Component {
 							<ItemGrid xs={6}>
 								<TextF
 									id={'SIMID'}
-									label={t('devices.fields.simCard')}
+									label={t('devices.fields.SIMID')}
 									handleChange={this.handleInput('SIMID')}
 									value={device.SIMID.toString()}
 
@@ -183,7 +183,7 @@ class EditDetails extends Component {
 							<ItemGrid xs={6}>
 								<TextF
 									id={'SIMProvider'}
-									label={t('devices.fields.simProvider')}
+									label={t('devices.fields.SIMProvider')}
 									handleChange={this.handleInput('SIMProvider')}
 									value={device.SIMProvider}
 
