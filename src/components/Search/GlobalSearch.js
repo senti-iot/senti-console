@@ -163,18 +163,19 @@ class GlobalSearch extends React.PureComponent {
 	}
 
 	focusInput = () => {
+		this.props.disableEH()
 		if (this.state.open || this.props.open)
 			this.inputRef.current.focus()
 	}
 
 	handleOpen = () => {
-		this.props.disableEH()
+		// this.props.enableEH()
 		if (this.props.open === undefined)
 			this.setState({ open: !this.state.open }, this.focusInput)
 	}
 
 	handleClose = () => {
-		this.props.enableEH()
+		// this.props.disableEH()
 		if (this.props.open === undefined)
 			this.setState({ open: false })
 	}
@@ -205,8 +206,8 @@ class GlobalSearch extends React.PureComponent {
 					renderSuggestion={this.renderSuggestion}
 					renderSectionTitle={this.renderSectionTitle}
 					getSectionSuggestions={this.getSectionSuggestions}
-					onFocus={this.handleOpen}
-					onBlur={this.handleClose}
+					onFocus={this.props.disableEH}
+					onBlur={this.props.enableEH}
 					inputProps={{
 						onFocus: this.props.disableEH,
 						onBlur: this.props.enableEH,
