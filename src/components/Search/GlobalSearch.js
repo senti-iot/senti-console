@@ -14,7 +14,7 @@ import globalSearchStyles from 'assets/jss/components/search/globalSearchStyles'
 import { setSearchValue } from 'redux/globalSearch';
 import { hist } from 'App';
 import { T, ItemG } from 'components';
-import { Grow } from '@material-ui/core';
+import { Grow, Hidden } from '@material-ui/core';
 import { teal } from '@material-ui/core/colors';
 // import { Typography } from '@material-ui/core';
 
@@ -132,34 +132,37 @@ class GlobalSearch extends React.PureComponent {
 		hist.push(path)
 	}
 	renderSuggestion = (suggestion, { query, isHighlighted }) => {
-		const { t } = this.props
+		const { t, classes } = this.props
 		let matches = this.highlightParts(suggestion.values, query)
 		return (
 			<MenuItem selected={isHighlighted} component='div' style={{ height: 'auto' }}>
 				<ItemG container>
-					<div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'top', padding: '8px 0px 16px 16px', width: 100, maxWidth: 100 }}>
-						<T>
-							{t(`sidebar.${suggestion.type}`)}
-						</T>
-					</div>
-					<ItemG>
-						<div style={{ margin: 8, width: 1, height: '90%', /* background: '#c5c5c5' */ }}/>
-					</ItemG>
-					<div style={{ padding: 16, paddingTop: 8 }}>
-						<div style={{   maxWidth: 300,
-							overflow: "hidden",
-							textOverflow: "ellipsis",
-							whiteSpace: "nowrap",  }}>
-							<T style={{ fontWeight: 500, fontSize: 15 }} noWrap>{suggestion.label}</T>
+					<Hidden mdDown>
+						<div style={{ padding: '8px 0px 16px 16px', display: 'flex', justifyContent: 'flex-end', alignItems: 'top', width: 100, maxWidth: 100 }}>
+							<T>
+								{this.highlightWords(t(`sidebar.${suggestion.type}`), query)}
+							</T>
 						</div>
-						<div style={{   maxWidth: 300,
-							overflow: "hidden",
-							textOverflow: "ellipsis",
-							whiteSpace: "nowrap",  }}>
+						{/* <ItemG> */}
+						<div style={{ margin: 8, width: 1, height: '90%', /* background: '#c5c5c5' */ }}/>
+						{/* </ItemG> */}
+					</Hidden>
+					<div className={classes.suggestionTextContainer}>
+						<Hidden smUp>
+							<div className={classes.suggestionText}>
+								<T>
+									{this.highlightWords(t(`sidebar.${suggestion.type}`), query)}
+								</T>
+							</div>
+						</Hidden>
+						<div className={classes.suggestionText}>
+							<T style={{ fontWeight: 500, fontSize: 15 }} noWrap>{this.highlightWords(suggestion.label, query)}</T>
+						</div>
+						<div className={classes.suggestionText}>
 							{matches.map((m, i) => {
-								// if (m.field === 'description')
-								// console.log(m)
-								return <T key={i}>
+							// if (m.field === 'description')
+							// console.log(m)
+								return <T noWrap key={i}>
 									{`${t(`${suggestion.type}s.fields.${m.field}`)}: `}{this.highlightWords(m.value, query)}{matches.length > 0 && i !== matches.length - 1 ? ', ' : ''}
 								</T>
 							})}
@@ -233,7 +236,7 @@ class GlobalSearch extends React.PureComponent {
 					// fullWidth: this.props.fullWidth,
 					value: this.props.searchValue,
 					onChange: this.handleChange,
-					reference: this.inputRef,
+					reference: this.inputRef.current,
 					// open: this.state.open || this.props.open,
 					// handleOpen: this.handleOpen,
 					// handleClose: this.handleClose,

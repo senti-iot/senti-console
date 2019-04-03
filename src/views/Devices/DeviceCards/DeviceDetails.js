@@ -99,10 +99,6 @@ class DeviceDetails extends Component {
 									</ItemG>
 								</Warning>
 							</ItemG>}
-						{/* <ItemG xs={6} md={3} lg={3} xl={3}>
-							<Caption>{t('devices.fields.status')}:</Caption>
-							{this.renderStatus(device.liveStatus)}
-						</ItemG> */}
 						<ItemG xs={6} md={3} lg={3} xl={3}>
 							<Caption>{t('devices.fields.temp')}:</Caption>
 							<Info>{device.temperature ? `${device.temperature}\u2103` : `-\u2103`}</Info>
