@@ -6,10 +6,20 @@ import {
 	defaultFont,
 	dangerColor,
 	primaryColor,
-	primaryBoxShadow
+	primaryBoxShadow,
+	headerColor
 } from "assets/jss/material-dashboard-react.js";
 
 const headerLinksStyle = theme => ({
+	expand: {
+		transform: 'rotate(0deg)',
+		transition: theme.transitions.create('transform', {
+			duration: theme.transitions.duration.shortest,
+		}),
+	},
+	expandOpen: {
+		transform: 'rotate(180deg)',
+	},
 	nameAndEmail: {
 		height: 46,
 		display: 'flex',
@@ -26,10 +36,11 @@ const headerLinksStyle = theme => ({
 	img: {
 		borderRadius: 50,
 		height: 36,
-		width: 36
+		width: 36,
+		color: headerColor
 	},
 	headerMargin: {
-		marginLeft: 10
+		// marginLeft: 10
 	},
 	leftIcon: {
 		marginRight: theme.spacing.unit

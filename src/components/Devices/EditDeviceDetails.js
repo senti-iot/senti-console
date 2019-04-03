@@ -128,7 +128,6 @@ class EditDeviceDetails extends Component {
 				id: 0
 			}
 		}
-		console.log(device, this.props.device)
 		await updateDevice(updateD).then(rs => rs ? this.handleUpdateFav() : null)
 	}
 

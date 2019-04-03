@@ -162,6 +162,8 @@ class Device extends Component {
 	}
 	componentDidUpdate = async (prevProps, prevState) => {
 		const { device } = this.props
+		if (prevProps.match.params.id !== this.props.match.params.id)
+			await this.componentDidMount()
 		if (device) {
 			if (device.lat && device.long && this.state.weather === null) {
 				let data = await getWeather(device, moment(), this.props.language)

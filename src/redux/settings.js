@@ -119,7 +119,7 @@ export const getSettings = async () => {
 				let exp = moment().add('1', 'day')
 				cookie.save('SESSION', sessionCookie, { path: '/', expires: exp.toDate() })
 				setPrefix(sessionCookie.userID)
-				dispatch(getAllData())
+				dispatch(await getAllData())
 			}
 			else {
 				return cookie.remove('SESSION')

@@ -21,15 +21,14 @@ class FilterToolbar extends Component {
 		window.removeEventListener('keydown', this.handleWindowKeyPress, false)
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		if (prevProps.eH !== this.props.eH) { 
-			if (this.props.eH) {
-				window.addEventListener('keydown', this.handleWindowKeyPress, false)
-			}
-			else { 
-				window.removeEventListener('keydown', this.handleWindowKeyPress, false)
-			}
+		if (this.props.eH) {
+			window.addEventListener('keydown', this.handleWindowKeyPress, false)
+		}
+		else { 
+			window.removeEventListener('keydown', this.handleWindowKeyPress, false)
 		}
 	}
+	
 	
 	componentDidMount = () => {
 		window.addEventListener('keydown', this.handleWindowKeyPress, false)

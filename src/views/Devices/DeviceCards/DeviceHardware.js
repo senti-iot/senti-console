@@ -43,7 +43,7 @@ class DeviceHardware extends PureComponent {
 				content={
 					<ItemG container spacing={16}>
 						<ItemG>
-							<Caption>{t('devices.fields.pcModel')}:</Caption>
+							<Caption>{t('devices.fields.RPImodel')}:</Caption>
 							<Info>{device.RPImodel}</Info>
 						</ItemG>
 						<ItemG>
@@ -72,11 +72,11 @@ class DeviceHardware extends PureComponent {
 						<Info>{device.cellNumber}</Info>
 					</ItemG>
 					<ItemG>
-						<Caption>{t('devices.fields.simProvider')}:</Caption>
+						<Caption>{t('devices.fields.SIMProvider')}:</Caption>
 						<Info>{device.SIMProvider}</Info>
 					</ItemG>
 					<ItemG>
-						<Caption>{t('devices.fields.simCard')}:</Caption>
+						<Caption>{t('devices.fields.SIMID')}:</Caption>
 						<Info>{device.SIMID}</Info>
 					</ItemG>
 					<ItemG>
