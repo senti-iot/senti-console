@@ -6,8 +6,11 @@ import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons'
 import { withStyles, Button, Paper } from '@material-ui/core'
 import { red, green, yellow } from '@material-ui/core/colors'
 import { Link } from 'react-router-dom'
-import { getDataSummary, getWeather } from 'variables/dataDevices';
+import { getDataSummary } from 'variables/dataDevices';
 import WeatherIcon from 'components/Typography/WeatherIcon';
+import { connect } from 'react-redux'
+import { getWeather } from 'redux/weather';
+
 var moment = require('moment')
 const styles = theme => ({ 
 	paper: {
@@ -39,8 +42,8 @@ class MarkerWithInfo extends Component {
 		const { isOpen } = this.state
 		if (isOpen === false) {
 			if (this.state.weather === null && !m.weather && m.lat && m.long) { 
-				let weather = await getWeather(m, moment(), lang)
-				this.setState({ weather: weather })
+				await this.props.getWeather(m, moment(), lang)
+				this.setState({ weather: this.props.weather })
 			}
 			let OneMinuteAgo = moment().subtract(10, 'minute').format('YYYY-MM-DD+HH:mm:ss')
 			let rs = await getDataSummary(this.props.m.id, OneMinuteAgo, moment().format('YYYY-MM-DD+HH:mm:ss'), false)
@@ -149,5 +152,15 @@ class MarkerWithInfo extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	weather: state.weather.weather,
+	loadingWeather: state.weather.loading
+})
 
-export default withStyles(styles, { withTheme: true })(MarkerWithInfo)
+
+const mapDispatchToProps = dispatch => ({
+	getWeather: async (device, date, lang) => dispatch(await getWeather(device, date, lang))
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(MarkerWithInfo))

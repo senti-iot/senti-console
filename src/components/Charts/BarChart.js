@@ -2,12 +2,13 @@ import React, { PureComponent, Fragment } from 'react'
 import { Bar } from 'react-chartjs-2';
 import { withStyles } from '@material-ui/core';
 import { graphStyles } from './graphStyles';
-import { getWeather } from 'variables/dataDevices';
+// import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
 import { compose } from 'recompose';
 import { connect } from 'react-redux'
 import withLocalization from 'components/Localization/T';
 import Tooltip from './Tooltip';
+import { getWeather } from 'redux/weather';
 
 class BarChart extends PureComponent {
 	constructor(props) {
@@ -214,7 +215,7 @@ class BarChart extends PureComponent {
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
 			if (lat && long) {
 				if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long) || this.state.tooltip.lastPoint !== lastPoint) {
-					getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then((rs) => {
+					this.props.getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then((rs) => {
 						if (this.state.id === id)
 							this.setState({
 								tooltip: {
@@ -222,7 +223,7 @@ class BarChart extends PureComponent {
 									showWeather: true
 								},
 								weatherDate: wDate,
-								weather: rs,
+								weather: this.props.weather,
 								loc: {
 									lat: lat,
 									long: long
@@ -441,11 +442,14 @@ class BarChart extends PureComponent {
 const mapStateToProps = (state) => ({
 	lang: state.settings.language,
 	timeType: state.dateTime.timeType,
+	weather: state.weather.weather,
+	loadingWeather: state.weather.loading
 })
 
-const mapDispatchToProps = {
 
-}
+const mapDispatchToProps = dispatch => ({
+	getWeather: async (device, date, lang) => dispatch(await getWeather(device, date, lang))
+})
 
 let BarChartCompose = compose(connect(mapStateToProps, mapDispatchToProps), withStyles(graphStyles, { withTheme: true }), withLocalization())(BarChart)
 

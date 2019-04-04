@@ -6,8 +6,9 @@ import withLocalization from 'components/Localization/T';
 import { red, green, yellow, teal } from '@material-ui/core/colors'
 import { SignalWifi2Bar, SignalWifi2BarLock } from 'variables/icons';
 import moment from 'moment'
-import { getWeather } from 'variables/dataDevices';
+// import { getWeather } from 'variables/dataDevices';
 import { connect } from 'react-redux'
+import { getWeather } from 'redux/weather';
 
 const styles = theme => ({
 	paper: {
@@ -55,10 +56,10 @@ class OpenPopup extends Component {
 	getWeather = async () => { 
 		const { m } = this.props
 		if (m.lat && m.long)
-			getWeather({ lat: m.lat, long: m.long },
+			await this.props.getWeather({ lat: m.lat, long: m.long },
 				moment(), this.props.lang).then((rs) => {
 				this.setState({
-					weather: rs
+					weather: this.props.weather
 				})
 			})
 
@@ -143,11 +144,15 @@ class OpenPopup extends Component {
 }
 const mapStateToProps = (state) => ({
 	lang: state.settings.language,
-	heatData: state.dateTime.heatData
+	heatData: state.dateTime.heatData,
+	weather: state.weather.weather,
+	loadingWeather: state.weather.loading
 })
 
-const mapDispatchToProps = {
-  
-}
+
+const mapDispatchToProps = dispatch => ({
+	getWeather: async (device, date, lang) => dispatch(await getWeather(device, date, lang))
+})
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(styles)(OpenPopup)))
