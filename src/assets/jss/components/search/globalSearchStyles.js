@@ -4,7 +4,7 @@ const globalSearchStyles = theme => ({
 		display: 'flex',
 		alignItems: "center",
 		justifyContent: "center",
-
+		position: 'relative'
 	},
 	suggestionTextContainer: {
 		[theme.breakpoints.up('md')]: {
@@ -21,6 +21,14 @@ const globalSearchStyles = theme => ({
 		textOverflow: "ellipsis",
 		whiteSpace: "nowrap",
 	},
+	containerActive: {
+		[theme.breakpoints.down('md')]: {
+			left: 0,
+			position: "fixed !important",
+			width: "calc(100vw - 65px) !important",
+			background: '#8a8a8a !important'
+		},
+	},
 	container: {
 		position: 'relative',
 		background: 'rgba(255, 255, 255, 0.15)',	
@@ -28,6 +36,9 @@ const globalSearchStyles = theme => ({
 		marginRight: 16,
 		borderRadius: 4,
 		display: 'flex',
+		[theme.breakpoints.down('md')]: {
+			width: 72
+		},
 		"&:hover": {
 			background: 'rgba(255, 255, 255, 0.25)',	
 			// background: teal[500] + 19
@@ -39,7 +50,7 @@ const globalSearchStyles = theme => ({
 		transition: 'height 300ms ease',
 		maxHeight: 500,
 		[theme.breakpoints.down('md')]: {
-			height: 'calc(70%)' 
+			height: 'calc(100vh - 30vh)'
 		},
 		maxWidth: 700,
 		overflow: 'auto',
@@ -51,10 +62,8 @@ const globalSearchStyles = theme => ({
 	suggestionsContainerOpen: {
 		// position: 'absolute',
 		// right: "30px",
+		width: 'calc(100vw - 24px)',
 		maxHeight: 500,
-		[theme.breakpoints.down('md')]: {
-			height: 'calc(70%)' 
-		},
 		[theme.breakpoints.up('sm')]: {
 			height: 500,
 		},
@@ -66,7 +75,13 @@ const globalSearchStyles = theme => ({
 		top: 30,
 		transition: 'height 300ms ease',
 		[theme.breakpoints.down('md')]: { 
-			maxWidth: '100%'
+			maxWidth: '100%',
+			position: 'fixed',
+			height: 'calc(70% - 64)', 
+			left: 0,
+			margin: 12,
+			marginTop: 32,
+			top: 32
 		}
 		// marginTop: theme.spacing.unit * 4,
 		// maxWidth: 'calc(100vw - 100px)'
@@ -91,13 +106,19 @@ const globalSearchStyles = theme => ({
 	},
 	input: {
 		color: '#fff',
-		width: 120,
-		"&:focus": {
-			[theme.breakpoints.up('md')]: {
-				width: 170
-			}
+		[theme.breakpoints.down('md')]: {
+			width: '0%',
+			"&:focus": {
+				width: '100%'
+			},
 		},
-		transition: 'width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+		[theme.breakpoints.up('sm')]: {
+			width: 120,
+			"&:focus": {
+				width: 170
+			},
+			transition: 'width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+		},
 		padding: '8px 8px 8px 72px'
 	}
 })

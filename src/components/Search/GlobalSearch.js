@@ -20,7 +20,7 @@ import { teal } from '@material-ui/core/colors';
 
 function renderInput(inputProps) {
 	return (
-		<GlobalSearchInput {...inputProps} />
+		<GlobalSearchInput inputProps={inputProps} refCallback={inputProps.ref} ref={null}/>
 	);
 }
 
@@ -51,7 +51,7 @@ class GlobalSearch extends React.PureComponent {
 			suggestions: [],
 			open: false
 		}
-		this.inputRef = React.createRef()
+		this.inputRef = null
 
 	}
 	componentDidMount() {
@@ -192,13 +192,17 @@ class GlobalSearch extends React.PureComponent {
 
 	focusInput = () => {
 		this.props.disableEH()
-		this.inputRef.current.focus()
+		// this.inputRef.focus()
 	}
 
 	getSectionSuggestions = (section) => {
 		return section.suggestions;
 	  }
 	  
+	onFocusInput = () => {
+		this.props.disableEH()
+		// this.setState({ focused: true })
+	}
 	render() {
 		const { classes, right } = this.props;
 		return (
@@ -229,15 +233,15 @@ class GlobalSearch extends React.PureComponent {
 				onFocus={this.props.disableEH}
 				onBlur={this.props.enableEH}
 				inputProps={{
-					onFocus: this.props.disableEH,
+					onFocus: this.onFocusInput,
 					onBlur: this.props.enableEH,
 					noAbsolute: this.props.noAbsolute,
 					placeholder: this.props.t('actions.src'),
-					classes,
+					// classes,
 					// fullWidth: this.props.fullWidth,
 					value: this.props.searchValue,
 					onChange: this.handleChange,
-					reference: this.inputRef.current,
+					reference: ref => this.inputRef = ref,
 					// open: this.state.open || this.props.open,
 					// handleOpen: this.handleOpen,
 					// handleClose: this.handleClose,

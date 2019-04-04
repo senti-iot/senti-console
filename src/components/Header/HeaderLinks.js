@@ -1,4 +1,4 @@
-import { Grid, Menu, MenuItem, withStyles, Divider, Tooltip, Button } from '@material-ui/core';
+import { Grid, Menu, MenuItem, withStyles, Divider, Tooltip, Button, Hidden } from '@material-ui/core';
 import { AccountBox, Business, PowerSettingsNew, SettingsRounded, ExpandMore, Notifications } from 'variables/icons';
 import headerLinksStyle from 'assets/jss/material-dashboard-react/headerLinksStyle';
 import React from 'react';
@@ -158,7 +158,9 @@ class HeaderLinks extends React.Component {
 				{/* <ItemG>
 					{this.renderChristmasIcon()}
 				</ItemG> */}
-				{this.renderSearch()}
+				<Hidden mdDown>
+					{this.renderSearch()}
+				</Hidden>
 				{this.renderUserMenu()}
 				{/* {this.renderNotifications()} */}
 			</Grid>

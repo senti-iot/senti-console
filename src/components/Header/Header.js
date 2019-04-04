@@ -6,6 +6,7 @@ import React from 'react';
 import HeaderLinks from './HeaderLinks';
 import { connect } from 'react-redux'
 import { changeSmallMenu } from 'redux/appState';
+import GlobalSearch from 'components/Search/GlobalSearch';
 
 
 
@@ -30,6 +31,9 @@ function Header({ ...props }) {
 			/>
 		</ButtonBase>
 	);
+	const renderSearch = () => {
+		return <GlobalSearch />
+	}
 	const changeSmallMenu = () => props.changeSmallMenu(!props.smallMenu)
 	return (
 		<AppBar className={classes.appBar} >
@@ -70,6 +74,7 @@ function Header({ ...props }) {
 					<HeaderLinks t={t} />
 				</Hidden> 
 				{menuPos ? <Hidden lgUp>
+					{renderSearch()}
 					<IconButton
 						className={classes.appResponsive}
 						color='primary'
