@@ -129,6 +129,7 @@ class GlobalSearch extends React.PureComponent {
 		return matches
 	}
 	handleOnSuggestionClicked = (path) => {
+		this.handleResetSearch()
 		hist.push(path)
 	}
 	renderSuggestion = (suggestion, { query, isHighlighted }) => {

@@ -96,8 +96,9 @@ import WhatsHot from '@material-ui/icons/Whatshot'
 import Compare from '@material-ui/icons/Compare'
 import EventNote from '@material-ui/icons/EventNote'
 import FullscreenOutlined from '@material-ui/icons/FullscreenOutlined'
-
+import ContentCopy from 'assets/icons/ContentCopy'
 export {
+	ContentCopy,
 	PowerSettingsNew,
 	Language,
 	Call,

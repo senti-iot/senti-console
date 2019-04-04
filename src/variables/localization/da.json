@@ -10,7 +10,8 @@
     "Senti": "Senti",
     "actions": {
 		"src": "Søg...",
-        "accept": "Godkend",
+		"accept": "Godkend",
+		"copyToClipboard": "Kopi til klippebord",
         "addFilter": "Tilføj filter",
         "apply": "Anvend",
         "back": "Forrige",

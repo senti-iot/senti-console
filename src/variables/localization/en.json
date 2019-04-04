@@ -10,7 +10,8 @@
     "Senti": "Senti",
     "actions": {
 		"src": "Search...",
-        "accept": "Accept",
+		"accept": "Accept",
+		"copyToClipboard": "Copy to clipboard",
         "addFilter": "Add filter",
         "apply": "Apply",
         "back": "Previous",

@@ -3,13 +3,14 @@ import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip }
 import T from 'components/Typography/T';
 import ItemG from 'components/Grid/ItemG';
 import Gravatar from 'react-gravatar'
-import { Business, Call, LocationOn, Mail, Star, StarBorder } from 'variables/icons';
+import { Business, Call, LocationOn, Mail, Star, StarBorder, ContentCopy } from 'variables/icons';
 import withLocalization from 'components/Localization/T';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
 import withSnackbar from 'components/Localization/S';
 import hoverStyles from 'assets/jss/components/hover/hoverStyles'
+import { copyToClipboard } from 'variables/functions';
 
 class UserHover extends Component {
 	componentDidUpdate = () => {
@@ -52,6 +53,9 @@ class UserHover extends Component {
 	handleClose = () => {
 		this.props.handleClose()
 	};
+	copyToClipboard = (str) => () => {
+		copyToClipboard(str)
+	}
 	render() {
 		const { t, anchorEl, classes, user, isFav } = this.props
 		return (
@@ -82,7 +86,14 @@ class UserHover extends Component {
 										</T>
 									</ItemG>
 									<ItemG xs={12}>
-										<T className={classes.smallText} noParagraph>{user.email}</T>
+										<T className={classes.smallText} noParagraph>
+											{user.email}
+											<Tooltip title={t('actions.copyToClipboard')}>
+												<IconButton onClick={this.copyToClipboard(user.email)} className={classes.copyButton}>
+													<ContentCopy className={classes.copyIcon}/>
+												</IconButton>
+											</Tooltip>
+										</T> 
 									</ItemG>
 									<ItemG xs={12}>
 										<T className={classes.smallText} noParagraph>{user.phone ? user.phone : ""}</T>
