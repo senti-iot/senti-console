@@ -6,6 +6,21 @@ const globalSearchStyles = theme => ({
 		justifyContent: "center",
 
 	},
+	suggestionTextContainer: {
+		[theme.breakpoints.up('md')]: {
+			maxWidth: "calc(100% - 170px)",
+		},
+		padding: 16, paddingTop: 8
+	},
+	suggestionText: {
+		maxWidth: 300,
+		[theme.breakpoints.down('md')]: {
+			maxWidth: 200
+		},
+		overflow: "hidden",
+		textOverflow: "ellipsis",
+		whiteSpace: "nowrap",
+	},
 	container: {
 		position: 'relative',
 		background: 'rgba(255, 255, 255, 0.15)',	
@@ -23,6 +38,9 @@ const globalSearchStyles = theme => ({
 		height: 0,
 		transition: 'height 300ms ease',
 		maxHeight: 500,
+		[theme.breakpoints.down('md')]: {
+			height: 'calc(70%)' 
+		},
 		maxWidth: 700,
 		overflow: 'auto',
 		zIndex: 5000,
@@ -33,16 +51,23 @@ const globalSearchStyles = theme => ({
 	suggestionsContainerOpen: {
 		// position: 'absolute',
 		// right: "30px",
-		height: 500,
 		maxHeight: 500,
+		[theme.breakpoints.down('md')]: {
+			height: 'calc(70%)' 
+		},
+		[theme.breakpoints.up('sm')]: {
+			height: 500,
+		},
 		maxWidth: 700,
 		overflow: 'auto',
 		zIndex: 5000,
 		position: "absolute",
 		marginTop: 32,
 		top: 30,
-		transition: 'height 300ms ease'
-
+		transition: 'height 300ms ease',
+		[theme.breakpoints.down('md')]: { 
+			maxWidth: '100%'
+		}
 		// marginTop: theme.spacing.unit * 4,
 		// maxWidth: 'calc(100vw - 100px)'
 		// left: 0,
@@ -68,7 +93,9 @@ const globalSearchStyles = theme => ({
 		color: '#fff',
 		width: 120,
 		"&:focus": {
-			width: 170
+			[theme.breakpoints.up('md')]: {
+				width: 170
+			}
 		},
 		transition: 'width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
 		padding: '8px 8px 8px 72px'
