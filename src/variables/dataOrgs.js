@@ -1,4 +1,5 @@
 import { api } from './data'
+import { del } from './storage';
 
 /**
  * @function getAllOrgs Get all organizations
@@ -50,5 +51,6 @@ export const createOrg = async (org) => {
  */
 export const deleteOrg = async (org) => {
 	var result = await api.delete(`core/org/${org}`).then(rs => rs)
+	del('org.' + org)
 	return result
 }

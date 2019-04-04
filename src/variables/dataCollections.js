@@ -1,4 +1,5 @@
 import { api } from 'variables/data'
+import { del } from './storage';
 
 /**
  * Get all available devices for data collections
@@ -78,6 +79,7 @@ export const createCollection = async (dc) => {
  */
 export const deleteCollection = async (id) => {
 	let data = await api.delete(`/senti/datacollection/${id}`).then(rs => rs.data)
+	del('collection.' + id)
 	return data
 }
 //#region get Data
