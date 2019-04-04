@@ -8,8 +8,9 @@ import { dateTime } from './dateTime'
 import { data } from './data'
 import thunk from 'redux-thunk';
 import { globalSearch } from './globalSearch'
+import { weather } from './weather'
 // import zendesk from 'lib/stores/ChatStore'
-let reducers = combineReducers({ settings, localization, favorites, doi, appState, dateTime, data, globalSearch /* zendesk */ })
+let reducers = combineReducers({ settings, localization, favorites, doi, appState, dateTime, data, globalSearch, weather /* zendesk */ })
 /**
 *	 Debugging purposes
 **/ 
