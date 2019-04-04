@@ -9,6 +9,7 @@ import globalSearchStyles from 'assets/jss/components/search/globalSearchStyles'
 
 class GlobalSearchInput extends Component {
 	render() {
+		console.log(this.props)
 		const { noAbsolute, t, classes, ref, open, handleClose, handleOpen, handleResetSearch, fullWidth, ...other } = this.props;
 		return (
 			<ItemG container alignItems={'center'}>
@@ -18,7 +19,7 @@ class GlobalSearchInput extends Component {
 					</div>
 					<Input
 						placeholder={t('filters.search')}
-						inputRef={this.props.reference}
+						inputRef={ref => {this.props.reference.current = ref/* ; this.props.ref = ref */}}
 						onFocus={this.inputFocused}
 						disableUnderline
 						// autoFocus={false}

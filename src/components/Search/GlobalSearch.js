@@ -209,6 +209,7 @@ class GlobalSearch extends React.PureComponent {
 					suggestion: classes.suggestion,
 				}}
 				multiSection={true}
+				inputRef={this.inputRef}
 				alwaysRenderSuggestions={false}
 				focusInputOnSuggestionClick={false}
 				renderInputComponent={renderInput}
