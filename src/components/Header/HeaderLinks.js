@@ -76,7 +76,8 @@ class HeaderLinks extends React.Component {
 
 	// }
 	renderSearch = () => {
-		return <GlobalSearch />
+		const { globalSearch } = this.props
+		return globalSearch ? <GlobalSearch /> : null
 	}
 	renderNotifications = () => {
 		return <ItemG container style={{ width: 'auto',  alignItems: 'center', marginLeft: 8, marginRight: 8, }}>
@@ -169,7 +170,7 @@ class HeaderLinks extends React.Component {
 }
 const mapStateToProps = (state) => ({
 	user: state.settings.user,
-
+	globalSearch: state.settings.globalSearch
 })
 
 const mapDispatchToProps = {

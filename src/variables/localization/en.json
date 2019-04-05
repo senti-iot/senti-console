@@ -665,7 +665,8 @@
     },
     "settings": {
         "alerts": "Alerts",
-        "breadcrumbs": "Breadcrumbs",
+		"breadcrumbs": "Breadcrumbs",
+		"globalSearch": "Global search",
         "calibration": {
             "12months": "Every 12 months",
             "3months": "Every 3 months",

@@ -32,7 +32,8 @@ function Header({ ...props }) {
 		</ButtonBase>
 	);
 	const renderSearch = () => {
-		return <GlobalSearch />
+		const { globalSearch } = props
+		return globalSearch ? <GlobalSearch /> : null
 	}
 	const changeSmallMenu = () => props.changeSmallMenu(!props.smallMenu)
 	return (
@@ -97,7 +98,8 @@ Header.propTypes = {
 const mapStateToProps = (state) => ({
 	smallMenu: state.appState.smallMenu,
 	headerBorder: state.settings.headerBorder,
-	menuPos: state.settings.sideBar
+	menuPos: state.settings.sideBar,
+	globalSearch: state.settings.globalSearch
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -25,6 +25,7 @@ const changeDS = 'changeDrawerState'
 const changeHB = 'changeHeaderBorder'
 const changeBC = 'changeBreadCrumbs'
 const changeHT = 'changeHoverTime'
+const changeGS = 'changeGlobalSearch'
 
 //Navigation
 
@@ -96,7 +97,8 @@ export const saveSettingsOnServ = () => {
 			drawerCloseOnNav: s.drawerCloseOnNav,
 			headerBorder: s.headerBorder,
 			breadcrumbs: s.breadcrumbs,
-			hoverTime: s.hoverTime
+			hoverTime: s.hoverTime,
+			globalSearch: s.globalSearch
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -192,6 +194,14 @@ export const getSettings = async () => {
 			})
 			return false
 		}
+	}
+}
+export const changeGlobalSearch = val => {
+	return async dispatch => {
+		dispatch({
+			type: changeGS,
+			globalSearch: val
+		})
 	}
 }
 export const changeSnackbarLocation = (val) => {
@@ -544,12 +554,15 @@ let initialState = {
 	drawerCloseOnNav: true,
 	headerBorder: false,
 	breadcrumbs: true,
-	hoverTime: 1000
+	hoverTime: 1000,
+	globalSearch: true
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
 		case reset:
 			return Object.assign({}, state, { ...initialState, user: action.user, cookies: false })
+		case changeGS:
+			return Object.assign({}, state, { globalSearch: action.globalSearch })
 		case changeHT:
 			return Object.assign({}, state, { hoverTime: action.hoverTime })
 		case changeBC:

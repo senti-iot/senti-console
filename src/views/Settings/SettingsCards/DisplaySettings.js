@@ -6,7 +6,7 @@ import { Grid, ListItem, List, ListItemText, withStyles, Switch } from '@materia
 import { settingsStyles } from 'assets/jss/components/settings/settingsStyles';
 import { connect } from 'react-redux'
 import { changeTRP, changeTheme, changeDrawerState, changeSideBarLoc, changeDiscoverSenti, changeMapTheme, changeDetailsPanel,
-	 changeSnackbarLocation, changeDrawerType, changeDrawerCloseOnNav, changeHeaderBorder, changeHoverTime } from 'redux/settings';
+	 changeSnackbarLocation, changeDrawerType, changeDrawerCloseOnNav, changeHeaderBorder, changeHoverTime, changeGlobalSearch } from 'redux/settings';
 import { changeLanguage } from 'redux/localization';
 
 class DisplaySettings extends Component {
@@ -28,9 +28,12 @@ class DisplaySettings extends Component {
 	changeDrawerCloseOnNav = e => this.props.changeDrawerCloseOnNav(e.target.checked)
 	changeHeaderBorder = e => this.props.changeHeaderBorder(e.target.checked)
 	changeHoverTime = e => this.props.changeHoverTime(e.target.value)
-
+	changeGlobalSearch = e => this.props.changeGlobalSearch(e.target.checked)
+	
 	render() {
-		const { language, trp, sideBar, discSentiVal, theme, mapTheme, hoverTime, classes, t, snackbarLocation, detailsPanel, drawer, drawerState, drawerCloseOnNav, headerBorder } = this.props
+		const { language, trp, sideBar, discSentiVal, 
+			theme, mapTheme, hoverTime, classes, t, snackbarLocation, detailsPanel, drawer,
+			 drawerState, drawerCloseOnNav, headerBorder, globalSearch } = this.props
 
 		let languages = [
 			{ value: 'en', label: t('settings.languages.en') },
@@ -178,6 +181,15 @@ class DisplaySettings extends Component {
 								</ListItem>
 								<ListItem divider>
 									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
+										<ListItemText primary={t('settings.globalSearch')} />
+										<Switch 
+											checked={globalSearch}
+											onChange={this.changeGlobalSearch}
+										/>
+									</ItemGrid>
+								</ListItem>
+								<ListItem divider>
+									<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 										<ListItemText>{t('settings.tables.trp')}</ListItemText>
 										<DSelect menuItems={trps} value={trp} onChange={this.changeTRP} />
 									</ItemGrid>
@@ -210,7 +222,8 @@ const mapStateToProps = state => {
 		drawerState: s.drawerState,
 		drawerCloseOnNav: s.drawerCloseOnNav,
 		headerBorder: s.headerBorder,
-		hoverTime: s.hoverTime
+		hoverTime: s.hoverTime,
+		globalSearch: s.globalSearch
 	})
 }
 const mapDispatchToProps = (dispatch) => {
@@ -227,7 +240,8 @@ const mapDispatchToProps = (dispatch) => {
 		changeDrawerState: val => dispatch(changeDrawerState(val)),
 		changeDrawerCloseOnNav: val => dispatch(changeDrawerCloseOnNav(val)),
 		changeHeaderBorder: val => dispatch(changeHeaderBorder(val)),
-		changeHoverTime: val => dispatch(changeHoverTime(val))
+		changeHoverTime: val => dispatch(changeHoverTime(val)),
+		changeGlobalSearch: val => dispatch(changeGlobalSearch(val))
 	}
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(settingsStyles)(DisplaySettings))

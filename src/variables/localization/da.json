@@ -665,7 +665,8 @@
     },
     "settings": {
         "alerts": "Alarmeringer",
-        "breadcrumbs": "Brødkrummer",
+		"breadcrumbs": "Brødkrummer",
+		"globalSearch": "Global søgning",
         "calibration": {
             "12months": "Hver 12. måned",
             "3months": "Hver 3. måned",
