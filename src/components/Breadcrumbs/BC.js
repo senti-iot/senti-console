@@ -40,8 +40,9 @@ const ExpansionPanelSummary = withStyles({
 
 	},
 	content: {
+		margin: 0,
 		'&$expanded': {
-			margin: '12px 0',
+			// margin: '12px 0',
 		},
 		'&:last-child': {
 		}
@@ -59,9 +60,10 @@ const ExpansionPanelDetails = withStyles(theme => ({
 
 const styles = theme => ({
 	breadcrumbs: {
-		margin: "24px 24px 0px 24px",
+		display: 'flex',
+		// margin: "24px 24px 0px 24px",
 		[theme.breakpoints.down('md')]: {
-			margin: "8px 8px 0px 8px"
+			// margin: "8px 8px 0px 8px"
 		}
 	},
 })
@@ -79,42 +81,42 @@ class BC extends Component {
 		const { open } = this.state
 		const bcs = breadcrumbs(t, bc.name, bc.extra)[bc.id]
 		return (
-			bc.dontShow || !globalBC ? null :
-				<ExpansionPanel
-					expanded={open}
-				>
-					<ExpansionPanelSummary>
-						<Breadcrumbs separator="›" arial-label="Breadcrumb" className={classes.breadcrumbs}>
-							<Link color="inherit" to={defaultRoute}>
-								{t(`sidebar.home`)}
-							</Link>}
-							{bcs && bcs.map((bc, index) => {
-								const last = bcs.length - 1 === index
-								return last ? (
-									<Typography color="textPrimary" key={index}>
-										{bc.label}
-									</Typography>
-								) : (
-									<Link color="inherit" to={bc.path} key={index}>
-										{bc.label}
-									</Link>
-								);
-							})}
-						</Breadcrumbs>
-						<div style={{ paddingRight: 0, marginLeft: 'auto', color: '#fff', padding: '0px !important' }}>
-							<IconButton onClick={() => this.setState({ open: !this.state.open })}>
-								<ExpandMore />
-							</IconButton>
-						</div>
-					</ExpansionPanelSummary>
-					<ExpansionPanelDetails>
-						<FilterToolbar
-							reduxKey={bc.name}
-							filters={[]}
-							t={t}
-						/>
-					</ExpansionPanelDetails>
-				</ExpansionPanel>
+		
+			<ExpansionPanel
+				expanded={open}
+			>
+				<ExpansionPanelSummary>
+					{bc.dontShow || !globalBC ? null : <Breadcrumbs separator="›" arial-label="Breadcrumb" className={classes.breadcrumbs}>
+						<Link color="inherit" to={defaultRoute}>
+							{t(`sidebar.home`)}
+						</Link>}
+						{bcs && bcs.map((bc, index) => {
+							const last = bcs.length - 1 === index
+							return last ? (
+								<Typography color="textPrimary" key={index}>
+									{bc.label}
+								</Typography>
+							) : (
+								<Link color="inherit" to={bc.path} key={index}>
+									{bc.label}
+								</Link>
+							);
+						})}
+					</Breadcrumbs>}
+					<div style={{ paddingRight: 0, marginLeft: 'auto', color: '#fff', padding: '0px !important' }}>
+						<IconButton onClick={() => this.setState({ open: !this.state.open })}>
+							<ExpandMore />
+						</IconButton>
+					</div>
+				</ExpansionPanelSummary>
+				<ExpansionPanelDetails>
+					<FilterToolbar
+						reduxKey={bc.name}
+						filters={[]}
+						t={t}
+					/>
+				</ExpansionPanelDetails>
+			</ExpansionPanel>
 		)
 	}
 }
