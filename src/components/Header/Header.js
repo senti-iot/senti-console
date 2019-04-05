@@ -2,7 +2,7 @@ import { AppBar, Button, Hidden, IconButton, Toolbar, withStyles, /* Link, */ Bu
 import { KeyboardArrowLeft, Menu } from 'variables/icons';
 import headerStyle from 'assets/jss/material-dashboard-react/headerStyle.js';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Fragment } from 'react';
 import HeaderLinks from './HeaderLinks';
 import { connect } from 'react-redux'
 import { changeSmallMenu } from 'redux/appState';
@@ -74,18 +74,21 @@ function Header({ ...props }) {
 				 <Hidden mdDown implementation='css'>
 					<HeaderLinks t={t} />
 				</Hidden> 
-				{menuPos ? <Hidden lgUp>
-					{renderSearch()}
-					<IconButton
-						className={classes.appResponsive}
-						color='primary'
-						aria-label='open drawer'
-						onClick={props.handleDrawerToggle}
-					>
-						<Menu />
-					</IconButton>
-				</Hidden> : renderSearch()
-				}
+				<Hidden lgUp>
+					{menuPos ?
+						<Fragment>
+							{renderSearch()}
+							<IconButton
+								className={classes.appResponsive}
+								color='primary'
+								aria-label='open drawer'
+								onClick={props.handleDrawerToggle}
+							>
+								<Menu />
+							</IconButton>
+						</Fragment>
+				 : renderSearch()
+					}</Hidden>
 			</Toolbar>
 		</AppBar>
 	);

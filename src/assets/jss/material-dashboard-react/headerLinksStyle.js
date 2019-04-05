@@ -12,6 +12,10 @@ import {
 
 const headerLinksStyle = theme => ({
 	expand: {
+		[theme.breakpoints.down('md')]: {
+			marginLeft: 18,
+			marginRight: 24,
+		},
 		transform: 'rotate(0deg)',
 		transition: theme.transitions.create('transform', {
 			duration: theme.transitions.duration.shortest,
@@ -47,6 +51,10 @@ const headerLinksStyle = theme => ({
 	},
 	iconRoot: {
 		color: "#FFF",
+		[theme.breakpoints.down('md')]: {
+			justifyContent: 'left',
+			width: 260
+		}
 		// padding: "12px 2px"
 	},
 	menuItem: {
