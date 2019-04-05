@@ -436,7 +436,7 @@ class Projects extends Component {
 		const { match } = this.props
 		return (
 			<Fragment>
-				{this.renderToolbar()}
+				{/* {this.renderToolbar()} */}
 				<Switch>
 					<Route path={`${match.path}/grid`} render={() => this.renderCards()} />
 					<Route path={`${match.path}/list`} render={() => this.renderList()} />
