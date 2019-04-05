@@ -32,7 +32,7 @@ const globalSearchStyles = theme => ({
 	},
 	container: {
 		position: 'relative',
-		background: 'rgba(255, 255, 255, 0.15)',	
+		background: 'rgba(255, 255, 255, 0.15)',
 		marginLeft: 8,
 		marginRight: 16,
 		borderRadius: 4,
@@ -41,13 +41,13 @@ const globalSearchStyles = theme => ({
 			width: 72
 		},
 		"&:hover": {
-			background: 'rgba(255, 255, 255, 0.25)',	
+			background: 'rgba(255, 255, 255, 0.25)',
 			// background: teal[500] + 19
 			// background: 'rgba(11,198,100,0.25)'
 		}
 	},
 	suggestionsContainer: {
-		height: 0,
+		// height: 0,
 		transition: 'height 300ms ease',
 		maxHeight: 500,
 		[theme.breakpoints.down('md')]: {
@@ -61,13 +61,11 @@ const globalSearchStyles = theme => ({
 		top: 30,
 	},
 	suggestionsContainerOpen: {
-		// position: 'absolute',
-		// right: "30px",
-		width: 'calc(100vw - 24px)',
 		maxHeight: 500,
 		[theme.breakpoints.up('sm')]: {
-			height: 500,
+			maxHeight: 500,
 		},
+		minWidth: 300,
 		maxWidth: 700,
 		overflow: 'auto',
 		zIndex: 5000,
@@ -75,10 +73,11 @@ const globalSearchStyles = theme => ({
 		marginTop: 32,
 		top: 30,
 		transition: 'height 300ms ease',
-		[theme.breakpoints.down('md')]: { 
+		[theme.breakpoints.down('md')]: {
 			maxWidth: '100%',
+			width: 'calc(100vw - 24px)',
 			position: 'fixed',
-			height: 'calc(70% - 64)', 
+			height: 'calc(70% - 64)',
 			left: 0,
 			margin: 12,
 			marginTop: 32,
@@ -121,6 +120,14 @@ const globalSearchStyles = theme => ({
 			transition: 'width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
 		},
 		padding: '8px 8px 8px 72px'
+	},
+	adornment: {
+		[theme.breakpoints.down('md')]: {
+			position: "fixed",
+			height: 48,
+			left: 'calc(100vw - 70px)',
+		},
+		transition: 'all 300ms ease'
 	}
 })
 

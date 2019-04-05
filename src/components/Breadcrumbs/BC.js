@@ -37,11 +37,14 @@ const ExpansionPanelSummary = withStyles({
 		'&$expanded': {
 			minHeight: 56,
 		},
+
 	},
 	content: {
 		'&$expanded': {
 			margin: '12px 0',
 		},
+		'&:last-child': {
+		}
 	},
 	expanded: {},
 })(props => <MuiExpansionPanelSummary {...props} />);
@@ -98,8 +101,8 @@ class BC extends Component {
 								);
 							})}
 						</Breadcrumbs>
-						<div style={{ marginLeft: 'auto', color: '#fff' }}>
-							<IconButton  onClick={() => this.setState({ open: !this.state.open })}>
+						<div style={{ paddingRight: 0, marginLeft: 'auto', color: '#fff', padding: '0px !important' }}>
+							<IconButton onClick={() => this.setState({ open: !this.state.open })}>
 								<ExpandMore />
 							</IconButton>
 						</div>
