@@ -84,7 +84,7 @@ function Header({ ...props }) {
 					>
 						<Menu />
 					</IconButton>
-				</Hidden> : null
+				</Hidden> : renderSearch()
 				}
 			</Toolbar>
 		</AppBar>

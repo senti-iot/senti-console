@@ -24,8 +24,9 @@ const globalSearchStyles = theme => ({
 	containerActive: {
 		[theme.breakpoints.down('md')]: {
 			left: 0,
+			zIndex: 9999,
 			position: "fixed !important",
-			width: "calc(100vw - 65px) !important",
+			width: "calc(100vw - 16px) !important",
 			background: '#8a8a8a !important'
 		},
 	},

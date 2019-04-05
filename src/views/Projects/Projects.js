@@ -20,6 +20,7 @@ import { connect } from 'react-redux'
 import { customFilterItems } from 'variables/Filters';
 // import { makeCancelable } from 'variables/data';
 import { getProjects, setProjects, sortData } from 'redux/data';
+import FilterToolbar from 'components/Table/FilterToolbar';
 
 class Projects extends Component {
 	constructor(props) {
@@ -390,6 +391,13 @@ class Projects extends Component {
 			content={this.renderTableToolBarContent()}
 		/>
 	}
+	renderToolbar = () => {
+		return  <FilterToolbar
+			reduxKey={'projects'}
+			// filters={props.ft}
+			t={this.props.t}
+		/>
+	}
 	renderAllProjects = () => {
 		const { classes, projects, loadingProjects } = this.props
 		return loadingProjects ? <CircularLoader /> :
@@ -428,6 +436,7 @@ class Projects extends Component {
 		const { match } = this.props
 		return (
 			<Fragment>
+				{this.renderToolbar()}
 				<Switch>
 					<Route path={`${match.path}/grid`} render={() => this.renderCards()} />
 					<Route path={`${match.path}/list`} render={() => this.renderList()} />

@@ -53,7 +53,7 @@ class GlobalSearchInput extends Component {
 							{...other}
 							endAdornment={
 								this.state.focused ?
-									<InputAdornment position='end' style={{ position: "fixed", height: 48, left: 'calc(100vw - 130px)', opacity: other.value.length > 0 ? 1 : 0, transition: 'all 300ms ease' }}>
+									<InputAdornment position='end' style={{ position: "fixed", height: 48, left: 'calc(100vw - 70px)', opacity: other.value.length > 0 ? 1 : 0, transition: 'all 300ms ease' }}>
 										<IconButton
 											disableTouchRipple
 											disableRipple
