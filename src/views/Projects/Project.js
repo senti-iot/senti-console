@@ -45,7 +45,8 @@ class Project extends Component {
 			{ id: 2, title: t('tabs.collections'), label: <DataUsage />, url: `#collections` },
 			{ id: 3, title: t('tabs.map'), label: <Map />, url: `#map` },
 			{ id: 4, title: t('tabs.contact'), label: <Person />, url: `#contact` }
-		]}
+		]
+	}
 	componentDidMount = async () => {
 		const { history, match/* , location */ } = this.props
 		if (match)
@@ -59,8 +60,7 @@ class Project extends Component {
 					hashLinks: true,
 					tabs: this.tabs()
 				})
-				if (this.props.location.hash !== '')
-				{
+				if (this.props.location.hash !== '') {
 					scrollToAnchor(this.props.location.hash)
 				}
 			}
@@ -71,8 +71,9 @@ class Project extends Component {
 				})
 			}
 	}
-	componentDidUpdate = (prevProps) => {
-	
+	componentDidUpdate = async (prevProps) => {
+		if (prevProps.match.params.id !== this.props.match.params.id)
+			await this.componentDidMount()
 		if (this.props.saved === true) {
 			const { project } = this.props
 			if (this.props.isFav({ id: project.id, type: 'project' })) {

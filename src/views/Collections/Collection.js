@@ -80,6 +80,8 @@ class Collection extends Component {
 	}
 	componentDidUpdate = async (prevProps) => {
 		const { collection } = this.props
+		if (prevProps.match.params.id !== this.props.match.params.id)
+			await this.componentDidMount()
 		if (collection && !prevProps.collection ) {
 		
 			if (collection.activeDevice) {
