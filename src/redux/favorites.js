@@ -17,7 +17,7 @@ export const updateFav = (obj) => {
 		array[uFav] = obj
 		dispatch({
 			type: SETFAV,
-			favorites: array
+			payload: array
 		})
 		dispatch(saveFavorites(true))
 	}
@@ -82,7 +82,7 @@ const initialState = {
 export const favorites = (state = initialState, action) => {
 	switch (action.type) {
 		case SETFAV: {
-			return Object.assign({}, state, { favorites: action.favorites })
+			return Object.assign({}, state, { favorites: action.payload })
 		}
 		case GETFAVS: {
 			return Object.assign({}, state, { ...action.favorites })

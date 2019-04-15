@@ -124,7 +124,6 @@ class Tooltip extends Component {
 	renderTooltip = () => {
 		const { t, classes, tooltip, weather,
 			handleCloseTooltip, todayOfInterest, mobile } = this.props
-		console.log(weather ? weather.currently.humidity : null, weather ? weather.currently.humidity * 100 : null)
 		let doi = todayOfInterest(tooltip.title[0])
 		let birthdays = doi.birthdays
 		let days = doi.days
