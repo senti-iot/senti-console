@@ -4,6 +4,12 @@ import { del } from './storage';
 //#region GET User,Users
 export const getAllUsers = async () => {
 	var data = await api.get('core/users').then(rs => rs.data)
+	data.forEach(d => {
+		if (d.aux) {
+			delete d.aux.favorites
+			delete d.aux.settings
+		}
+	})
 	return data
 }
 export const getValidSession = async (userId) => {

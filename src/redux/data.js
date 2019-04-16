@@ -8,6 +8,8 @@ import { getAllCollections, getCollection } from 'variables/dataCollections';
 import { colors } from 'variables/colors';
 import { hist } from 'App';
 import { handleRequestSort } from 'variables/functions';
+import { getSuggestions } from './globalSearch';
+// import { getSuggestions } from './globalSearch';
 /**
  * Special functions
  */
@@ -92,6 +94,7 @@ export const sortData = (key, property, order) => {
 }
 export const getUserLS = async (id) => {
 	return async dispatch => {
+		dispatch({ type: gotUser, payload: false })
 		let user = get('user.' + id)
 		if (user) {
 			dispatch({
@@ -131,6 +134,7 @@ export const getUserLS = async (id) => {
 }
 export const getDeviceLS = async (id) => {
 	return async dispatch => {
+		dispatch({ type: gotDevice, payload: false })
 		let device = get('device.' + id)
 		if (device) {
 			dispatch({
@@ -211,6 +215,7 @@ export const getOrgLS = async (id) => {
 }
 export const getCollectionLS = async (id) => {
 	return async dispatch => {
+		dispatch({ type: gotCollection, payload: false })
 		let collection = get('collection.' + id)
 		if (collection) {
 			dispatch({
@@ -261,6 +266,7 @@ export const getCollectionLS = async (id) => {
 }
 export const getProjectLS = async (id) => {
 	return async dispatch => {
+		dispatch({ type: gotProject, payload: false })
 		let project = get('project.' + id)
 		if (project) {
 			dispatch({
@@ -320,6 +326,7 @@ export const setUsers = () => {
 				type: setusers,
 				payload: users
 			})
+			dispatch(getSuggestions())
 			// dispatch(sortData('users', 'firstName', 'asc'))
 		}
 		else dispatch({
@@ -336,6 +343,7 @@ export const setOrgs = () => {
 				type: setorgs,
 				payload: orgs
 			})
+			dispatch(getSuggestions())
 			// dispatch(sortData('orgs', 'name', 'asc'))
 		}
 		else {
@@ -351,6 +359,8 @@ export const setDevices = () => {
 				type: setdevices,
 				payload: devices
 			})
+			dispatch(getSuggestions())
+
 			// dispatch(sortData('devices', 'name', 'asc'))
 		}
 		else {
@@ -366,6 +376,7 @@ export const setProjects = () => {
 				type: setprojects,
 				payload: projects
 			})
+			dispatch(getSuggestions())
 			// dispatch(sortData('projects', 'title', 'asc'))
 		}
 		else {
@@ -381,6 +392,7 @@ export const setCollections = () => {
 				type: setcollections,
 				payload: collections
 			})
+			dispatch(getSuggestions())
 			// dispatch(sortData('collections', 'id', 'asc'))
 		}
 		else {
@@ -399,13 +411,13 @@ const renderUserGroup = (user) => {
 	}
 	return ''
 }
-export const getAllData = () => {
-	return async dispatch => {
-		dispatch(getUsers())
-		dispatch(getProjects())
-		dispatch(getCollections())
-		dispatch(getDevices())
-		dispatch(getOrgs())
+export const getAllData = async () => {
+	return async dispatch => { 
+		dispatch(await getUsers(true))
+		dispatch(await getProjects(true))
+		dispatch(await getCollections(true))
+		dispatch(await getDevices(true))
+		dispatch(await getOrgs(true))
 	}
 }
 export const getUsers = (reload) => {

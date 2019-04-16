@@ -48,7 +48,7 @@ const styles = theme => ({
 		overflow: 'visible',
 		minHeight: 48,
 		height: 48,
-		zIndex: 1300,
+		zIndex: 900,
 		boxShadow: 'none',
 		...transition
 	},
@@ -150,11 +150,6 @@ class Toolbar extends PureComponent {
 
 							}) : null}
 						</Tabs> : null}
-						{/* {noSearch ? null : <Search
-						right
-						suggestions={data ? suggestionGen(data) : []}
-						handleFilterKeyword={handleFilterKeyword}
-						searchValue={filters.keyword} />} */}
 						{content ? <ToolBar classes={{ root: classes.contentToolbar }}>
 							{content}
 						</ToolBar> : null}

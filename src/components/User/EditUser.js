@@ -89,14 +89,14 @@ class EditUser extends Component {
 				g = '136550100000225'
 			if (userGroups.find(x => x === '136550100000143'))
 				g = '136550100000143'
+			
 			this.setState({
 				selectedGroup: g,
 				user: {
 					...user,
 					groups: Object.keys(user.groups).map(g => ({ id: g, name: user.groups[g].name, appId: user.groups[g].appId }))
 				},
-				extended:
-			user.aux.senti ? { ...user.aux.senti.extendedProfile } : { ...this.state.extended }
+				extended: user.aux.senti ? user.aux.senti.extendedProfile ?  { ...user.aux.senti.extendedProfile } : { ...this.state.extended } : { ...this.state.extended }
 			
 			})
 		}

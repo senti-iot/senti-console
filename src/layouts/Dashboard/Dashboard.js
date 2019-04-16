@@ -21,6 +21,7 @@ import Sidebar from 'components/Sidebar/Sidebar';
 import BC from 'components/Breadcrumbs/BC';
 import { changeTabs } from 'redux/appState';
 import Toolbar from 'components/Toolbar/Toolbar';
+import { getSuggestions } from 'redux/globalSearch';
 // import _ from 'lodash'
 
 class App extends React.Component {
@@ -62,7 +63,7 @@ class App extends React.Component {
 
 		if ((headerTitle !== this.state.headerTitle) || (url !== this.state.url)) {
 			if (typeof headerTitle === 'string') {
-				if ((headerTitle !== this.state.headerTitle.id ) || (url !== this.state.url)) {
+				if ((headerTitle !== this.state.headerTitle.id) || (url !== this.state.url)) {
 					this.setState({
 						headerTitle: {
 							id: headerTitle,
@@ -98,12 +99,25 @@ class App extends React.Component {
 		}
 
 		await this.props.getSettings().then(async rs => {
+			// this.props.getSuggestions()
 			await this.props.getDaysOfIterest()
 			if (this.props.theme === 1) {
 				document.body.style = 'background: #2e2e2e;';
+				// if (this.props.user.id === 136550100000003) {
+				// 	document.body.style = 'background: #2e2e2e;transform:rotate(18deg);transition: all 300ms ease;';
+				// 	setTimeout(() => {
+				// 		document.body.style = 'background: #2e2e2e;transform:rotate(0deg);transition: all 300ms ease;';
+				// 	}, 3000);
+				// }
 			}
 			else {
-				document.body.style = 'background: #eee';
+				document.body.style = 'background: #eee;';
+				// if (this.props.user.id === 136550100000003) {
+				// 	document.body.style = 'background: #eee;transform:rotate(18deg);transition: all 300ms ease;';
+				// 	setTimeout(() => {
+				// 		document.body.style = 'background: #eee;transform:rotate(0deg);transition: all 300ms ease;';
+				// 	}, 3000);
+				// }
 			}
 		})
 	}
@@ -168,10 +182,10 @@ class App extends React.Component {
 								menuRoute={this.state.menuRoute}
 								{...rest}
 							/>
-							{!loading ? 
+							{!loading ?
 								<Fragment>
 									<div className={classes.container} id={'container'}>
-										<Toolbar history={this.props.history} {...tabs}/>
+										<Toolbar history={this.props.history} {...tabs} />
 										<BC
 											defaultRoute={defaultRoute}
 											bc={this.state.bc}
@@ -221,8 +235,8 @@ class App extends React.Component {
 										}
 									/>
 
-								</Fragment> 
-							 : <CircularLoader />}
+								</Fragment>
+								: <CircularLoader />}
 						</Fragment>
 					</div>
 
@@ -244,15 +258,16 @@ const mapStateToProps = (state) => ({
 	snackbarLocation: state.settings.snackbarLocation,
 	smallMenu: state.appState.smallMenu,
 	drawer: state.settings.drawer,
-	tabs: state.appState.tabs
+	tabs: state.appState.tabs,
+	user: state.settings.user
 })
 
 const mapDispatchToProps = dispatch => ({
 	getSettings: async () => dispatch(await getSettings()),
 	getDaysOfIterest: async () => dispatch(await getDaysOfInterest()),
-	changeTabs: tabs => dispatch(changeTabs(tabs))
+	changeTabs: tabs => dispatch(changeTabs(tabs)),
+	getSuggestions: () => dispatch(getSuggestions())
 	// acceptCookies: async (val) => dispatch(await acceptCookiesFunc(val))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withSnackbarHandler()((withLocalization()(withStyles(appStyle)(App)))))
- 
