@@ -159,3 +159,15 @@ export const setToken = () => {
 
 }
 setToken()
+
+//#region Senti Services
+
+export const servicesAPI = create({
+	baseURL: 'https://services.senti.cloud/databroker',
+	timeout: 30000,
+	headers: {
+		'auth': encrypt(process.env.REACT_APP_ENCRYPTION_KEY),
+		'Accept': 'application/json',
+		'Content-Type': 'application/json'
+	}
+})
