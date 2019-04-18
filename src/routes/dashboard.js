@@ -12,7 +12,7 @@ import { DataUsage } from 'variables/icons';
 // 	loading: AsyncLoader
 // })
 const AsyncRegistries = Loadable({
-	loader: () => import('views/Registries/Registries'),
+	loader: () => import('routes/registries'),
 	loading: AsyncLoader
 })
 const AsyncManagement = Loadable({
@@ -197,7 +197,7 @@ const dashboardRoutes = [
 				icon: InputIcon,
 				component: AsyncRegistries,
 				sidebarName: 'sidebar.registries',
-				menuRoute: 'manage'
+				menuRoute: 'manage.registries'
 			},
 			{
 				path: '/sensors',
