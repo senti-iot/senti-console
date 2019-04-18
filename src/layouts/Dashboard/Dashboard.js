@@ -194,6 +194,10 @@ class App extends React.Component {
 										<Switch>
 											{cookie.load('SESSION') ?
 												dashboardRoutes.map((prop, key) => {
+													// console.log(prop)
+													if (prop.dropdown) { 
+														return null
+													}
 													if (prop.redirect) {
 														return <Redirect from={prop.path} to={prop.to} key={key} />;
 													}

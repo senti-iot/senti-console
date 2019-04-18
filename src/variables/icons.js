@@ -97,7 +97,13 @@ import Compare from '@material-ui/icons/Compare'
 import EventNote from '@material-ui/icons/EventNote'
 import FullscreenOutlined from '@material-ui/icons/FullscreenOutlined'
 import ContentCopy from 'assets/icons/ContentCopy'
+import SettingsApplications from '@material-ui/icons/SettingsApplications'
+import InputIcon from '@material-ui/icons/Input'
+import Memory from '@material-ui/icons/Memory'
 export {
+	Memory,
+	InputIcon,
+	SettingsApplications,
 	ContentCopy,
 	PowerSettingsNew,
 	Language,

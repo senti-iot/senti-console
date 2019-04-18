@@ -11,6 +11,9 @@ import {
 } from "assets/jss/material-dashboard-react.js";
 
 const sidebarStyle = theme => ({
+	nested: {
+		paddingLeft: `${theme.spacing.unit * 2}px !important`,
+	  },
 	appBarWrapper: {
 		backgroundColor: "#767684"
 	},
@@ -80,7 +83,7 @@ const sidebarStyle = theme => ({
 		"&:hover": {
 			background: hoverColor
 		},
-		transition: "border-radius 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1), background 0.16s cubic-bezier(0.685, 0.0473, 0.346, 1) "
+		transition: "all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1), background 0.16s cubic-bezier(0.685, 0.0473, 0.346, 1) "
 	},
 	buttonOpen: {
 		borderRadius: 3

@@ -804,6 +804,9 @@
         }
     },
     "sidebar": {
+		"registries": "Registre",
+		"devicetypes": "Enhedstype",
+		"manage": "Manage",
 		"device": "Enhed",
 		"collection": "Datasamling",
 		"project": "Projekt",

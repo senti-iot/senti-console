@@ -1,6 +1,6 @@
 import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
-import RegistryTable from 'components/Registries/RegistryTable';
+import RegistryTable from 'components/Registry/RegistryTable';
 import TableToolbar from 'components/Table/TableToolbar';
 // import Toolbar from 'components/Toolbar/Toolbar';
 import React, { Component, Fragment } from 'react';
@@ -10,10 +10,10 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { filterItems, handleRequestSort } from 'variables/functions';
 import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks, Add, LayersClear, Star, StarBorder, SignalWifi2Bar } from 'variables/icons';
 import { GridContainer, CircularLoader, AssignDevice, AssignProject, ItemG, T } from 'components'
-import RegistriesCards from './RegistriesCards';
+// import RegistriesCards from './RegistriesCards';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
-import { setRegistries, getRegistries, sortData } from 'redux/data';
+// import { setRegistries, getRegistries, sortData } from 'redux/data';
 
 class Registries extends Component {
 	constructor(props) {
@@ -117,7 +117,7 @@ class Registries extends Component {
 			const { collections } = this.props
 			const { selected } = this.state
 			let collection = collections[collections.findIndex(d => d.id === selected[0])]
-			if (collection) { 
+			if (collection) {
 				if (isFav({ id: collection.id, type: 'collection' })) {
 					s('snackbars.favorite.saved', { name: collection.name, type: t('favorites.types.collection') })
 					finishedSaving()
@@ -138,7 +138,7 @@ class Registries extends Component {
 
 	//#region Functions
 	addNewRegistry = () => this.props.history.push({ pathname: `/collections/new`, prevURL: '/collections/list' })
-	
+
 	getFavs = () => {
 		const { order, orderBy } = this.state
 		const { favorites, collections } = this.props
@@ -158,13 +158,13 @@ class Registries extends Component {
 		this.setState({ anchorElMenu: null })
 	}
 	filterItems = (data) => {
-		const rFilters  = this.props.filters
+		const rFilters = this.props.filters
 		const { filters } = this.state
 		return customFilterItems(filterItems(data, filters), rFilters)
 	}
 	snackBarMessages = (msg, display) => {
 		const { collections, s } = this.props
-		const {  selected } = this.state
+		const { selected } = this.state
 		switch (msg) {
 			case 1:
 				s('snackbars.deletedSuccess')
@@ -194,7 +194,7 @@ class Registries extends Component {
 	//#endregion
 
 	//#region Handlers
-	
+
 	handleEdit = () => {
 		const { selected } = this.state
 		this.props.history.push({ pathname: `/collection/${selected[0]}/edit`, prevURL: `/collections/list` })
@@ -215,7 +215,7 @@ class Registries extends Component {
 			}
 		}
 	}
-	handleRequestSort = key => (event, property, way) =>  {
+	handleRequestSort = key => (event, property, way) => {
 		let order = way ? way : this.state.order === 'desc' ? 'asc' : 'desc'
 		if (property !== this.state.orderBy) {
 			order = 'asc'
@@ -361,7 +361,7 @@ class Registries extends Component {
 
 	renderDeviceUnassign = () => {
 		const { t, collections } = this.props
-		const { selected  } = this.state
+		const { selected } = this.state
 		let collection = collections[collections.findIndex(c => c.id === selected[0])]
 		if (collection.activeDeviceStats === null)
 			return null
@@ -487,9 +487,10 @@ class Registries extends Component {
 	}
 
 	renderCards = () => {
-		const { t, history, collections, loading } = this.props
-		return loading ? <CircularLoader /> : 
-			<RegistriesCards collections={this.filterItems(collections)} t={t} history={history} />
+		const { /* t, history, collections, */ loading } = this.props
+		return loading ? <CircularLoader /> :
+			// <RegistriesCards collections={this.filterItems(collections)} t={t} history={history} /> 
+			null
 	}
 
 	renderFavorites = () => {
@@ -555,9 +556,9 @@ const mapDispatchToProps = (dispatch) => ({
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
 	finishedSaving: () => dispatch(finishedSaving()),
-	getRegistries: reload => dispatch(getRegistries(reload)),
-	setRegistries: () => dispatch(setRegistries()),
-	sortData: (key, property, order) => dispatch(sortData(key, property, order))
+	// getRegistries: reload => dispatch(getRegistries(reload)),
+	// setRegistries: () => dispatch(setRegistries()),
+	// sortData: (key, property, order) => dispatch(sortData(key, property, order))
 })
 
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom'
 import DashboardPage from 'views/Dashboard/Dashboard';
-import { Dashboard, LibraryBooks, SettingsRounded, People, DeviceHub, Star } from 'variables/icons';
+import { Dashboard, LibraryBooks, SettingsApplications, SettingsRounded, People, DeviceHub, Star, InputIcon, Memory } from 'variables/icons';
 import NotFound from 'layouts/404/NotFound';
 import Loadable from 'react-loadable';
 import AsyncLoader from 'components/Loader/AsyncLoader';
@@ -11,6 +11,10 @@ import { DataUsage } from 'variables/icons';
 // 	loader: () => import('routes/holiday'),
 // 	loading: AsyncLoader
 // })
+const AsyncRegistries = Loadable({
+	loader: () => import('views/Registries/Registries'),
+	loading: AsyncLoader
+})
 const AsyncManagement = Loadable({
 	loader: () => import('views/Management/Management'),
 	loading: AsyncLoader
@@ -31,11 +35,11 @@ const AsyncProjects = Loadable({
 	loader: () => import('routes/projects'),
 	loading: AsyncLoader
 });
-const AsyncProject  = Loadable({
+const AsyncProject = Loadable({
 	loader: () => import('routes/project'),
 	loading: AsyncLoader
 })
-const AsyncDevices  = Loadable({
+const AsyncDevices = Loadable({
 	loader: () => import('routes/devices'),
 	loading: AsyncLoader
 })
@@ -43,11 +47,11 @@ const AsyncDevice = Loadable({
 	loader: () => import('routes/device'),
 	loading: AsyncLoader
 })
-const AsyncUsers  = Loadable({
+const AsyncUsers = Loadable({
 	loader: () => import('routes/users'),
 	loading: AsyncLoader
 })
-const AsyncUser  = Loadable({
+const AsyncUser = Loadable({
 	loader: () => import('routes/user'),
 	loading: AsyncLoader
 })
@@ -79,7 +83,7 @@ const dashboardRoutes = [
 		component: AsyncFavorites,
 		menuRoute: 'favorites'
 	},
-	
+
 	{
 		path: '/project/:id',
 		component: AsyncProject,
@@ -179,14 +183,43 @@ const dashboardRoutes = [
 	{
 		path: '/index:ext',
 		hideFromSideBar: true,
-		component: () => <Redirect to={'/dashboard'}/>
+		component: () => <Redirect to={'/dashboard'} />
+	},
+	{
+		path: null,
+		icon: SettingsApplications,
+		sidebarName: 'sidebar.manage',
+		dropdown: true,
+		menuRoute: 'manage',
+		items: [
+			{
+				path: '/registries',
+				icon: InputIcon,
+				component: AsyncRegistries,
+				sidebarName: 'sidebar.registries',
+				menuRoute: 'manage'
+			},
+			{
+				path: '/sensors',
+				icon: DeviceHub,
+				component: AsyncRegistries,
+				sidebarName: 'sidebar.devices',
+				menuRoute: 'manage'
+			},
+			{
+				path: '/devicetypes',
+				icon: Memory,
+				component: AsyncRegistries,
+				sidebarName: 'sidebar.devicetypes',
+				menuRoute: 'manage'
+			},
+		]
 	},
 	{
 		path: '*',
 		component: () => <Redirect from={window.location.pathname} to={{ pathname: window.location.pathname === '/' ? '/dashboard' : '/404', prevURL: window.location.pathname }} />,
 		hideFromSideBar: true
 	},
-
 
 ];
 
