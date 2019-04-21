@@ -11,6 +11,10 @@ import { DataUsage } from 'variables/icons';
 // 	loader: () => import('routes/holiday'),
 // 	loading: AsyncLoader
 // })
+const AsyncRegistry = Loadable({
+	loader: () => import('routes/registry'),
+	loading: AsyncLoader
+})
 const AsyncRegistries = Loadable({
 	loader: () => import('routes/registries'),
 	loading: AsyncLoader
@@ -117,6 +121,12 @@ const dashboardRoutes = [
 		component: AsyncDevice,
 		hideFromSideBar: true,
 		menuRoute: 'devices'
+	},
+	{
+		path: '/registry/:id',
+		component: AsyncRegistry,
+		hideFromSideBar: true,
+		menuRoute: 'manage.devices'
 	},
 	{
 		path: '/devices',

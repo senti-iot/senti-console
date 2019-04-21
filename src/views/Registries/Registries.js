@@ -13,6 +13,7 @@ import { GridContainer, CircularLoader, AssignProject, T } from 'components'
 // import RegistriesCards from './RegistriesCards';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
+import { getRegistries, setRegistries, sortData } from 'redux/data';
 // import { setRegistries, getRegistries, sortData } from 'redux/data';
 
 class Registries extends Component {
@@ -185,10 +186,10 @@ class Registries extends Component {
 		await this.getData(true)
 	}
 	getData = async (reload) => {
-		// const { getRegistries, setRegistries } = this.props
-		// setRegistries()
-		// if (reload)
-		// getRegistries(true)
+		const { getRegistries, setRegistries } = this.props
+		setRegistries()
+		if (reload)
+			getRegistries(true)
 	}
 	//#endregion
 
@@ -555,9 +556,9 @@ const mapDispatchToProps = (dispatch) => ({
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
 	finishedSaving: () => dispatch(finishedSaving()),
-	// getRegistries: reload => dispatch(getRegistries(reload)),
-	// setRegistries: () => dispatch(setRegistries()),
-	// sortData: (key, property, order) => dispatch(sortData(key, property, order))
+	getRegistries: reload => dispatch(getRegistries(reload)),
+	setRegistries: () => dispatch(setRegistries()),
+	sortData: (key, property, order) => dispatch(sortData(key, property, order))
 })
 
 

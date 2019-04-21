@@ -15,7 +15,7 @@ import { HeaderLinks } from 'components';
 import sidebarStyle from 'assets/jss/material-dashboard-react/sidebarStyle';
 
 
-class NewSidebar extends Component {
+class Sidebar extends Component {
 	constructor(props) {
 		super(props)
 
@@ -154,7 +154,7 @@ class NewSidebar extends Component {
 					if (route.redirect) return null;
 					if (route.hideFromSideBar) return null;
 					if (route.dropdown) {
-						return <Fragment>
+						return <Fragment key={index}>
 							<Tooltip key={index}
 								placement={'right'} title={!smallMenu ? t(route.sidebarName) : ''}>
 								<ListItem /* component={Button */
@@ -315,4 +315,4 @@ const mapDispatchToProps = dispatch => ({
 	changeSmallMenu: val => dispatch(changeSmallMenu(val))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(sidebarStyle)(NewSidebar))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(sidebarStyle)(Sidebar))

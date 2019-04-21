@@ -9,7 +9,7 @@ import { colors } from 'variables/colors';
 import { hist } from 'App';
 import { handleRequestSort } from 'variables/functions';
 import { getSuggestions } from './globalSearch';
-import { getAllRegistries } from 'variables/dataRegistry';
+import { getAllRegistries, getRegistry } from 'variables/dataRegistry';
 // import { getSuggestions } from './globalSearch';
 /**
  * Special functions
@@ -63,6 +63,7 @@ const gotDevice = 'GotDevice'
 const gotOrg = 'GotOrg'
 const gotUser = 'GotUser'
 const getFavorites = 'getFavorites'
+const gotRegistry = 'gotRegistry'
 
 const setusers = 'SetUsers'
 const setorgs = 'SetOrgs'
@@ -78,6 +79,7 @@ const setDevice = 'SetDevice'
 const setOrg = 'SetOrganisation'
 const setUser = 'SetUser'
 const sData = 'Sort Data'
+const setRegistry = 'setRegistry'
 
 export const sortData = (key, property, order) => {
 	return (dispatch, getState) => {
@@ -210,6 +212,48 @@ export const getOrgLS = async (id) => {
 				set('org.' + id, org)
 				dispatch({
 					type: gotOrg,
+					payload: true
+				})
+			}
+		})
+	}
+}
+export const getRegistryLS = async (customerID, id) => {
+	return async dispatch => {
+		dispatch({ type: gotRegistry, payload: false })
+		let registry = get('registry.' + id)
+		if (registry) {
+			dispatch({
+				type: setRegistry,
+				payload: registry
+			})
+			dispatch({
+				type: gotRegistry,
+				payload: true
+			})
+		}
+		else {
+			dispatch({
+				type: gotRegistry,
+				payload: false
+			})
+			dispatch({
+				type: setRegistry,
+				payload: null
+			})
+		}
+		await getRegistry(customerID, id).then(async rs => {
+			if (!compare(registry, rs)) {
+				registry = {
+					...rs,
+				}
+				dispatch({
+					type: setRegistry,
+					payload: registry
+				})
+				set('registry.' + id, registry)
+				dispatch({
+					type: gotRegistry,
 					payload: true
 				})
 			}
@@ -565,7 +609,10 @@ export const data = (state = initialState, { type, payload }) => {
 			return Object.assign({}, state, { favorites: payload })
 		case setFavorites:
 			return Object.assign({}, state, { favorites: payload })
-
+		case setRegistry:
+			return Object.assign({}, state, { registry: payload })
+		case gotRegistry:
+			return Object.assign({}, state, { gotRegistry: payload })
 		case setCollection:
 			return Object.assign({}, state, { collection: payload })
 		case gotCollection:
