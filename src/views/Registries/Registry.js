@@ -12,6 +12,7 @@ import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites'
 import { scrollToAnchor } from 'variables/functions';
 import { getRegistryLS } from 'redux/data';
 import RegistryDetails from './RegistryCards/RegistryDetails';
+import RegistryDevices from './RegistryCards/RegistryDevices';
 
 class Registry extends Component {
 	constructor(props) {
@@ -35,18 +36,14 @@ class Registry extends Component {
 			//End Map
 		}
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
-		props.setHeader('registrys.fields.registry', true, prevURL, 'registrys')
+		props.setHeader('registries.fields.registry', true, prevURL, 'registries')
 	}
 
 	format = 'YYYY-MM-DD+HH:mm'
 	tabs = () => {
 		const { t } = this.props
 		return [
-			{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
-			// { id: 1, title: t('tabs.data'), label: <Timeline />, url: `#data` },
-			// { id: 2, title: t('tabs.map'), label: <Map />, url: `#map` },
-			// { id: 3, title: t('tabs.activeDevice'), label: <DeviceHub />, url: `#active-device` },
-			// { id: 4, title: t('tabs.history'), label: <History />, url: `#history` }
+			{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` }
 		]
 	}
 
@@ -170,6 +167,12 @@ class Registry extends Component {
 								handleOpenAssignDevice={this.handleOpenAssignDevice}
 								t={t}
 								accessLevel={accessLevel}
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12} noMargin id={'devices'}>
+							<RegistryDevices 
+								devices={registry.devices}
+								t={t}
 							/>
 						</ItemGrid>
 					</GridContainer></Fade>

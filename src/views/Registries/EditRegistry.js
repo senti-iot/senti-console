@@ -39,7 +39,7 @@ class CreateRegistry extends Component {
 				loading: false
 			})
 			let prevURL = location.prevURL ? location.prevURL : `/registry/${this.id}`
-			setHeader('registrys.editCollection', true, prevURL, 'registrys')
+			setHeader('registries.editRegistry', true, prevURL, 'registries')
 			this.props.setBC('editregistry', registry.name, registry.id)
 		}
 	}

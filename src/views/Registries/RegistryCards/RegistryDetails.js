@@ -1,6 +1,6 @@
 import { withStyles } from '@material-ui/core';
 import registryStyles from 'assets/jss/views/deviceStyles';
-import { Caption, ItemG } from 'components';
+import { Caption, ItemG, Info, ItemGrid } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
 import React, { Component } from 'react';
@@ -21,14 +21,29 @@ class RegistryDetails extends Component {
 				break;
 		}
 	}
-
+	renderProtocol = (id) => {
+		const { t } = this.props
+		switch (id) {
+			case 0:
+				return t('registries.fields.protocols.none')
+			case 1: 
+				return t('registries.fields.protocols.mqtt')
+			case 2: 
+				return t('registries.fields.protocols.http')
+			case 3: 
+				return `${t('registries.fields.protocols.mqtt')} & ${t('registries.fields.protocols.http')}`
+			default:
+				break;
+		}
+	}
 	render() {
 		const { classes, registry, t, isFav, addToFav, removeFromFav, detailsPanel, /* accessLevel ,*/ history } = this.props
 		return (
 			<InfoCard
-				title={registry.name ? registry.name : registry.id}
+				title={registry.name ? registry.name : registry.uuid}
 				avatar={<DataUsage />}
 				noPadding
+				noExpand
 				// noRightExpand
 				// menuExpand
 				expanded={Boolean(detailsPanel)}
@@ -45,6 +60,23 @@ class RegistryDetails extends Component {
 				subheader={<ItemG container alignItems={'center'}>
 					<Caption>{t('registries.fields.id')}:</Caption>&nbsp;{registry.id}
 				</ItemG>}
+				content={
+					<ItemGrid container spacing={16}>
+
+						<ItemG xs={12} md>
+							<Caption>{t('registries.fields.uuid')}</Caption>
+							<Info>{registry.uuid}</Info>
+						</ItemG>
+						<ItemG xs={12} md>
+							<Caption>{t('registries.fields.protocol')}</Caption>
+							<Info>{this.renderProtocol(registry.protocol)}</Info>
+						</ItemG>
+						<ItemG xs={12}>
+							<Caption>{t('registries.fields.description')}</Caption>
+							<Info>{registry.description}</Info>
+						</ItemG>
+					</ItemGrid>
+				}
 				hiddenContent={
 					<ItemG container spacing={16}>
 						{/* <ItemG xs={12} sm={1} md={1} lg={1} xl={1}>

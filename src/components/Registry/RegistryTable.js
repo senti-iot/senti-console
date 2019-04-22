@@ -75,7 +75,7 @@ class RegistryTable extends React.Component {
 			case 2: 
 				return t('registries.fields.protocols.http')
 			case 3: 
-				return `${t('registries.fields.protocols.mqtt')} && ${t('registries.fields.protocols.http')}`
+				return `${t('registries.fields.protocols.mqtt')} & ${t('registries.fields.protocols.http')}`
 			default:
 				break;
 		}

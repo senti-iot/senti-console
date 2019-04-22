@@ -28,7 +28,9 @@ import Timeline from '@material-ui/icons/Timeline'
 import ShowChart from '@material-ui/icons/ShowChart'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import Clear from '@material-ui/icons/Clear'
+import Block from '@material-ui/icons/Block'
 import Check from '@material-ui/icons/Check'
+import CheckCircle from '@material-ui/icons/CheckCircle'
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown'
 import Close from '@material-ui/icons/Close'
 import OpenInBrowser from '@material-ui/icons/OpenInBrowser'
@@ -148,6 +150,8 @@ export {
 	ExpandMore,
 	Clear,
 	Check,
+	CheckCircle,
+	Block,
 	ArrowDropDown,
 	Close,
 	OpenInBrowser,

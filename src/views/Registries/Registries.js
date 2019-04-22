@@ -72,9 +72,10 @@ class Registries extends Component {
 	registriesHeader = () => {
 		const { t } = this.props
 		return [
-			{ id: 'id', label: t('registries.fields.id') },
+			// { id: 'id', label: t('registries.fields.id') },
 			{ id: 'name', label: t('registries.fields.name') },
 			{ id: 'region', label: t('registries.fields.region') },
+			{ id: 'protocol', label: t('registries.fields.protocol') },
 			{ id: 'protocol', label: t('registries.fields.created') },
 			{ id: 'customer', label: t('registries.fields.customer') },
 		]

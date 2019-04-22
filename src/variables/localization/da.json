@@ -662,7 +662,34 @@
             "noTitle": "Manglende Projektnavn",
             "startDateBiggerThanEndDate": "Startdato må ikke være senere end slutdato"
         }
-    },
+	},
+	"sensors": {
+		"fields": {
+			"communication": "Enhedskommunikation",
+			"communications": {
+				"allowed": "Tilladt",
+				"blocked": "Blokeret"
+			}
+		}
+	},
+	"registries": {
+		"fields": {
+			"registry": "Register",
+			"id": "ID",
+			"name": "Navn",
+			"region": "Region",
+			"created": "Oprettet",
+			"protocol": "Protokol",
+			"protocols": {
+				"http": "HTTP",
+				"mqtt": "MQTT",
+				"none": "Uden protocol"
+			},
+			"uuid": "Universelt Unik Identifikator (UUID)",
+			"description":"Beskrivelse",
+			"customer": "Organisation"
+		}
+	},
     "settings": {
         "alerts": "Alarmeringer",
 		"breadcrumbs": "Brødkrummer",
