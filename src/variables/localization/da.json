@@ -839,7 +839,7 @@
     "sidebar": {
 		"registries": "Registre",
 		"devicetypes": "Enhedstype",
-		"manage": "Manage",
+		"manage": "Konfiguration",
 		"device": "Enhed",
 		"collection": "Datasamling",
 		"project": "Projekt",
