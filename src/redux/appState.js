@@ -141,7 +141,8 @@ const initialState = {
 		devices: [],
 		collections: [],
 		orgs: [],
-		users: [] }
+		users: [],
+		registries: [] }
 
 }
 

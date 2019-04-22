@@ -75,6 +75,7 @@
 		"watch": "cra-build-watch",
 		"start-ssh": "HTTPS=true react-scripts start",
 		"build": "react-scripts build && cp ./build/index.html ./build/200.html && cp ./src/assets/sound/pop.mp3 ./build/assets/sound/pop.mp3 && npm run-script sw",
+		"build-windows": "react-scripts build && copy ./build/index.html ./build/200.html && copy ./src/assets/sound/pop.mp3 ./build/assets/sound/pop.mp3 && npm run-script sw",
 		"test": "react-scripts test --env=jsdom",
 		"eject": "react-scripts eject",
 		"sw": "node build-sw.js"

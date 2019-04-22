@@ -20,6 +20,7 @@ const styles = theme => ({
 * @augments {Component<{	id:string.isRequired,	label:string.isRequired,	value:string.isRequired,	handleChange:Function.isRequired,	handleClick:Function,	autoFocus:boolean,	:boolean,	multiline:boolean,	rows:number,	error:boolean,	type:string,	disabled:boolean,	helperText:string,	InputProps:object,>}
 */
 const TextF = (props) => {
+	console.log(props.value)
 	let mobile = window.innerWidth <= props.theme.breakpoints.values.md ? true : false
 	let classNames = cx({
 		[props.className]: props.className ? true : false,
