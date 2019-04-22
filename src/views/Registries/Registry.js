@@ -3,9 +3,6 @@ import registryStyles from 'assets/jss/views/deviceStyles';
 import { CircularLoader, GridContainer, ItemGrid } from 'components';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-// import { getProject } from 'variables/dataProjects';
-import { getWeather } from 'variables/dataDevices';
-import moment from 'moment'
 import { DataUsage } from 'variables/icons';
 // import Toolbar from 'components/Toolbar/Toolbar';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
@@ -57,20 +54,8 @@ class Registry extends Component {
 		await getRegistry(id)
 	}
 	componentDidUpdate = async (prevProps) => {
-		const { registry } = this.props
 		if (prevProps.match.params.id !== this.props.match.params.id)
 			await this.componentDidMount()
-		if (registry && !prevProps.registry) {
-
-			if (registry.activeDevice) {
-				let data = await getWeather(registry.activeDevice, moment(), this.props.language)
-				this.setState({ weather: data })
-			}
-		}
-		if (this.props.id !== prevProps.id || this.props.to !== prevProps.to || this.props.timeType !== prevProps.timeType || this.props.from !== prevProps.from) {
-			// this.handleSwitchDayHourSummary()
-			// this.getHeatMapData()
-		}
 		if (this.props.saved === true) {
 			const { registry } = this.props
 			if (this.props.isFav({ id: registry.id, type: 'registry' })) {
@@ -82,14 +67,16 @@ class Registry extends Component {
 				this.props.finishedSaving()
 			}
 		}
+		// if (!this.props.registry) {
+		// 	this.props.history.push('/404')
+		// }
 	}
 	componentDidMount = async () => {
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {
-				await this.getRegistry(id).then(() => {
-					this.props.setBC('registry', this.props.registry.name)
-				})
+				await this.getRegistry(id).then(() => this.props.registry ? this.props.setBC('registry',  this.props.registry.name) : null
+				)
 				this.props.setTabs({
 					route: 0,
 					id: 'registry',

@@ -1,5 +1,5 @@
 import { withStyles, Fade } from '@material-ui/core';
-import registryStyles from 'assets/jss/views/deviceStyles';
+import deviceTypeStyles from 'assets/jss/views/deviceStyles';
 import { CircularLoader, GridContainer, ItemGrid } from 'components';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
@@ -10,17 +10,17 @@ import { DataUsage } from 'variables/icons';
 // import Toolbar from 'components/Toolbar/Toolbar';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { scrollToAnchor } from 'variables/functions';
-import { getRegistryLS } from 'redux/data';
-import RegistryDetails from './RegistryCards/RegistryDetails';
+import { getDeviceTypeLS } from 'redux/data';
+import DeviceTypeDetails from './DeviceTypeCards/DeviceTypeDetails';
 
-class Registry extends Component {
+class DeviceType extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
 			//Date Filter
 			//End Date Filter Tools
-			registry: null,
+			deviceType: null,
 			activeDevice: null,
 			loading: true,
 			anchorElHardware: null,
@@ -34,8 +34,8 @@ class Registry extends Component {
 			heatData: null,
 			//End Map
 		}
-		let prevURL = props.location.prevURL ? props.location.prevURL : '/registrys/list'
-		props.setHeader('registrys.fields.registry', true, prevURL, 'registrys')
+		let prevURL = props.location.prevURL ? props.location.prevURL : '/deviceTypes/list'
+		props.setHeader('deviceTypes.fields.deviceType', true, prevURL, 'deviceTypes')
 	}
 
 	format = 'YYYY-MM-DD+HH:mm'
@@ -52,21 +52,21 @@ class Registry extends Component {
 
 	reload = (msgId) => {
 		this.snackBarMessages(msgId)
-		this.getRegistry(this.props.match.params.id)
+		this.getDeviceType(this.props.match.params.id)
 	}
 
-	getRegistry = async (id) => {
-		const { getRegistry } = this.props
-		await getRegistry(id)
+	getDeviceType = async (id) => {
+		const { getDeviceType } = this.props
+		await getDeviceType(id)
 	}
 	componentDidUpdate = async (prevProps) => {
-		const { registry } = this.props
+		const { deviceType } = this.props
 		if (prevProps.match.params.id !== this.props.match.params.id)
 			await this.componentDidMount()
-		if (registry && !prevProps.registry) {
+		if (deviceType && !prevProps.deviceType) {
 
-			if (registry.activeDevice) {
-				let data = await getWeather(registry.activeDevice, moment(), this.props.language)
+			if (deviceType.activeDevice) {
+				let data = await getWeather(deviceType.activeDevice, moment(), this.props.language)
 				this.setState({ weather: data })
 			}
 		}
@@ -75,13 +75,13 @@ class Registry extends Component {
 			// this.getHeatMapData()
 		}
 		if (this.props.saved === true) {
-			const { registry } = this.props
-			if (this.props.isFav({ id: registry.id, type: 'registry' })) {
-				this.props.s('snackbars.favorite.saved', { name: registry.name, type: this.props.t('favorites.types.registry') })
+			const { deviceType } = this.props
+			if (this.props.isFav({ id: deviceType.id, type: 'deviceType' })) {
+				this.props.s('snackbars.favorite.saved', { name: deviceType.name, type: this.props.t('favorites.types.deviceType') })
 				this.props.finishedSaving()
 			}
-			if (!this.props.isFav({ id: registry.id, type: 'registry' })) {
-				this.props.s('snackbars.favorite.removed', { name: registry.name, type: this.props.t('favorites.types.registry') })
+			if (!this.props.isFav({ id: deviceType.id, type: 'deviceType' })) {
+				this.props.s('snackbars.favorite.removed', { name: deviceType.name, type: this.props.t('favorites.types.deviceType') })
 				this.props.finishedSaving()
 			}
 		}
@@ -90,12 +90,12 @@ class Registry extends Component {
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {
-				await this.getRegistry(id).then(() => {
-					this.props.setBC('registry', this.props.registry.name)
+				await this.getDeviceType(id).then(() => {
+					this.props.setBC('deviceType', this.props.deviceType.name)
 				})
 				this.props.setTabs({
 					route: 0,
-					id: 'registry',
+					id: 'deviceType',
 					tabs: this.tabs(),
 					hashLinks: true
 				})
@@ -112,28 +112,28 @@ class Registry extends Component {
 		}
 	}
 	addToFav = () => {
-		const { registry } = this.props
+		const { deviceType } = this.props
 		let favObj = {
-			id: registry.id,
-			name: registry.name,
-			type: 'registry',
+			id: deviceType.id,
+			name: deviceType.name,
+			type: 'deviceType',
 			path: this.props.match.url
 		}
 		this.props.addToFav(favObj)
 	}
 	removeFromFav = () => {
-		const { registry } = this.props
+		const { deviceType } = this.props
 		let favObj = {
-			id: registry.id,
-			name: registry.name,
-			type: 'registry',
+			id: deviceType.id,
+			name: deviceType.name,
+			type: 'deviceType',
 			path: this.props.match.url
 		}
 		this.props.removeFromFav(favObj)
 	}
 
 	snackBarMessages = (msg) => {
-		// const { s, t, registry } = this.props
+		// const { s, t, deviceType } = this.props
 
 		switch (msg) {
 			default:
@@ -149,18 +149,18 @@ class Registry extends Component {
 
 
 	render() {
-		const { history, match, t, accessLevel, registry, loading } = this.props
-		console.log(registry)
+		const { history, match, t, accessLevel, deviceType, loading } = this.props
+		console.log(deviceType)
 		return (
 			<Fragment>
 				{!loading ? <Fade in={true}>
 					<GridContainer justify={'center'} alignContent={'space-between'}>
 						<ItemGrid xs={12} noMargin id='details'>
-							<RegistryDetails
-								isFav={this.props.isFav({ id: registry.id, type: 'registry' })}
+							<DeviceTypeDetails
+								isFav={this.props.isFav({ id: deviceType.id, type: 'deviceType' })}
 								addToFav={this.addToFav}
 								removeFromFav={this.removeFromFav}
-								registry={registry}
+								deviceType={deviceType}
 								history={history}
 								match={match}
 								handleOpenAssignProject={this.handleOpenAssignProject}
@@ -184,8 +184,8 @@ const mapStateToProps = (state) => ({
 	saved: state.favorites.saved,
 	mapTheme: state.settings.mapTheme,
 	periods: state.dateTime.periods,
-	registry: state.data.registry,
-	loading: !state.data.gotRegistry
+	deviceType: state.data.deviceType,
+	loading: !state.data.gotDeviceType
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -193,8 +193,8 @@ const mapDispatchToProps = (dispatch) => ({
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
 	finishedSaving: () => dispatch(finishedSaving()),
-	getRegistry: async id => dispatch(await getRegistryLS(1, id))
+	getDeviceType: async id => dispatch(await getDeviceTypeLS(id))
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(registryStyles)(Registry))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceTypeStyles)(DeviceType))

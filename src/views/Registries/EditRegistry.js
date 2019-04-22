@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-// import CreateRegistryForm from 'components/Collections/CreateRegistryForm';
+// import UpdateRegistryForm from 'components/Collections/UpdateRegistryForm';
 import { getRegistryLS } from 'redux/data';
 import { updateRegistry } from 'variables/dataRegistry';
-import CreateRegistryForm from 'components/Registry/CreateRegistryForm';
+import UpdateRegistryForm from 'components/Registry/CreateRegistryForm';
 import { updateFav, isFav } from 'redux/favorites';
 import { CircularLoader } from 'components';
 
-class CreateRegistry extends Component {
+class UpdateRegistry extends Component {
 	constructor(props) {
 		super(props)
 
@@ -17,8 +17,8 @@ class CreateRegistry extends Component {
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
-		props.setHeader('registries.createRegistry', true, prevURL, '')
-		props.setBC('createregistry')
+		props.setHeader('registries.updateRegistry', true, prevURL, '')
+		props.setBC('updateregistry')
 	}
 
 	keyHandler = (e) => {
@@ -60,15 +60,15 @@ class CreateRegistry extends Component {
 			}
 		})
 	}
-	createRegistry = async () => {
+	updateRegistry = async () => {
 		return await updateRegistry(this.state.registry)
 	}
-	handleCreate = async () => {
+	handleUpdate = async () => {
 		const { s, history } = this.props
-		let rs = await this.createRegistry()
+		let rs = await this.updateRegistry()
 		if (rs) {
-			s('snackbars.registryCreated')
-			history.push(`/registry/${rs.id}`)
+			s('snackbars.registryUpdated')
+			history.push(`/registry/${this.id}`)
 		}
 		else
 			s('snackbars.failed')
@@ -79,10 +79,10 @@ class CreateRegistry extends Component {
 		const { loading, registry } = this.state
 		return ( loading ? <CircularLoader/> :
 
-			<CreateRegistryForm
+			<UpdateRegistryForm
 				registry={registry}
 				handleChange={this.handleChange}
-				handleCreate={this.handleCreate}
+				handleCreate={this.handleUpdate}
 				goToRegistries={this.goToRegistries}
 				t={t}
 			/>
@@ -102,4 +102,4 @@ const mapDispatchToProps = dispatch => ({
 	getRegistry: async id => dispatch(await getRegistryLS(1, id)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateRegistry)
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateRegistry)

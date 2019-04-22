@@ -1,6 +1,6 @@
 import { withStyles } from '@material-ui/core';
-import registryStyles from 'assets/jss/views/deviceStyles';
-import { Caption, ItemG } from 'components';
+import deviceTypeStyles from 'assets/jss/views/deviceStyles';
+import { Caption, ItemG, Info } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
 import React, { Component } from 'react';
@@ -8,11 +8,11 @@ import React, { Component } from 'react';
 import { DataUsage, Edit, /* DeviceHub, LibraryBooks, LayersClear, */ Star, StarBorder, /* Delete */ } from 'variables/icons';
 import { connect } from 'react-redux'
 
-class RegistryDetails extends Component {
+class DeviceTypeDetails extends Component {
 
-	registryState = () => {
-		const { registry, t } = this.props
-		switch (registry.state) {
+	deviceTypeState = () => {
+		const { deviceType, t } = this.props
+		switch (deviceType.state) {
 			case 1:
 				return t('registries.fields.state.active')
 			case 2:
@@ -23,18 +23,19 @@ class RegistryDetails extends Component {
 	}
 
 	render() {
-		const { classes, registry, t, isFav, addToFav, removeFromFav, detailsPanel, /* accessLevel ,*/ history } = this.props
+		const { classes, deviceType, t, isFav, addToFav, removeFromFav, detailsPanel, /* accessLevel ,*/ history } = this.props
 		return (
 			<InfoCard
-				title={registry.name ? registry.name : registry.id}
+				title={deviceType.name ? deviceType.name : deviceType.id}
 				avatar={<DataUsage />}
-				noPadding
+				// noPadding
+				noExpand
 				// noRightExpand
 				// menuExpand
 				expanded={Boolean(detailsPanel)}
 				topAction={<Dropdown menuItems={
 					[
-						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/registry/${registry.id}/edit`, prevURL: `/registry/${registry.id}` }) },
+						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/deviceType/${deviceType.id}/edit`, prevURL: `/deviceType/${deviceType.id}` }) },
 						// { label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeleteDialog },
 						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav }
 
@@ -43,14 +44,17 @@ class RegistryDetails extends Component {
 
 				}
 				subheader={<ItemG container alignItems={'center'}>
-					<Caption>{t('registries.fields.id')}:</Caption>&nbsp;{registry.id}
+					<Caption>{t('registries.fields.id')}:</Caption>&nbsp;{deviceType.id}
 				</ItemG>}
-				hiddenContent={
+
+				content={
 					<ItemG container spacing={16}>
-						{/* <ItemG xs={12} sm={1} md={1} lg={1} xl={1}>
-							<Caption>{t('registries.fields.status')}:</Caption>
-							<Info>{this.registryState()}</Info>
-						</ItemG> */}
+						<ItemG xs={12}>
+							<Caption>{t('devicetypes.fields.structure')}:</Caption>
+							<Info>{deviceType.structure ? Object.keys(deviceType.structure).map(s => {
+								return s
+							}) : null}</Info>
+						</ItemG>
 						{/* <ItemG container xs={12} sm={11} md={11} lg={11} xl={11}>
 							{weather === '' || weather === undefined ? null : weather !== null ? <Fragment>
 								<ItemG xs={2} sm={1} md={1} lg={1} container justify={'center'}>
@@ -67,28 +71,28 @@ class RegistryDetails extends Component {
 						</ItemG> */}
 						{/* <ItemG xs={12}>
 							<Caption>{t('registries.fields.description')}:</Caption>
-							<Info>{registry.description ? registry.description : ''}</Info>
+							<Info>{deviceType.description ? deviceType.description : ''}</Info>
 						</ItemG> */}
 
 
 						{/* <ItemG>
 							<Caption>{t('registries.fields.org')}:</Caption>
-							<Info>{registry.org ?
-								<Link to={{ pathname: `/management/org/${registry.org.id}`, prevURL: `/registry/${registry.id}` }} >
-									{registry.org.name}
+							<Info>{deviceType.org ?
+								<Link to={{ pathname: `/management/org/${deviceType.org.id}`, prevURL: `/deviceType/${deviceType.id}` }} >
+									{deviceType.org.name}
 								</Link>
 								: t('no.org')}</Info>
 
 						</ItemG>
 						<ItemG>
 							<Caption>{t('registries.fields.project')}:</Caption>
-							<Info>{registry.project ?
+							<Info>{deviceType.project ?
 								<Link to={{
-									pathname: `/project/${registry.project.id}`,
-									prevURL: `/registry/${registry.id}`
+									pathname: `/project/${deviceType.project.id}`,
+									prevURL: `/deviceType/${deviceType.id}`
 								}}
 								>
-									{registry.project.title}
+									{deviceType.project.title}
 								</Link>
 								: t('no.project')}</Info>
 
@@ -102,4 +106,4 @@ const mapStateToProps = (state) => ({
 	detailsPanel: state.settings.detailsPanel
 })
 
-export default connect(mapStateToProps)(withStyles(registryStyles)(RegistryDetails))
+export default connect(mapStateToProps)(withStyles(deviceTypeStyles)(DeviceTypeDetails))

@@ -7,6 +7,7 @@ export const getAllRegistries = async () => {
 
 export const createRegistry = async (reg) => {
 	let response = await servicesAPI.put('/v1/registry', reg).then(rs => rs.ok ? rs.data : false)
+	console.log(response)
 	return response
 }
 
@@ -18,7 +19,9 @@ export const updateRegistry = async (reg) => {
 export const getRegistry = async (customerID, id) => {
 	let data = await servicesAPI.get(`/v1/${customerID}/registry/${id}`).then(rs => rs.ok ? rs.data : null)
 	let devices = await getRegistryDevices(customerID, id)
-	data.devices = devices
+	if (data) {
+		data.devices = devices
+	}
 	return data
 }
 export const getRegistryDevices = async (customerID, id) => {
@@ -31,11 +34,11 @@ export const getAllDeviceTypes = async () => {
 	return data
 }
 export const getDeviceType = async (id) => { 
-	let data = await servicesAPI.get(`/v1/1/deviceType/${id}`).then(rs => rs.ok ? rs.data : null)
+	let data = await servicesAPI.get(`/v1/1/devicetype/${id}`).then(rs => rs.ok ? rs.data : null)
 	return data
 }
 export const createDeviceType = async (dt) => { 
-	let response = await servicesAPI.put('/v1/deviceType', dt).then(rs => rs.ok ? rs.data : false)
+	let response = await servicesAPI.put('/v1/devicetype', dt).then(rs => rs.ok ? rs.data : false)
 	return response
 }
 export const updateDeviceType = async (dt) => { 

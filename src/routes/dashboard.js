@@ -11,6 +11,14 @@ import { DataUsage } from 'variables/icons';
 // 	loader: () => import('routes/holiday'),
 // 	loading: AsyncLoader
 // })
+const AsyncDeviceType = Loadable({
+	loader: () => import('routes/deviceType'),
+	loading: AsyncLoader
+})
+const AsyncDeviceTypes = Loadable({
+	loader: () => import('routes/deviceTypes'),
+	loading: AsyncLoader
+})
 const AsyncRegistry = Loadable({
 	loader: () => import('routes/registry'),
 	loading: AsyncLoader
@@ -129,6 +137,12 @@ const dashboardRoutes = [
 		menuRoute: 'manage.devices'
 	},
 	{
+		path: '/devicetype/:id',
+		component: AsyncDeviceType,
+		hideFromSideBar: true,
+		menuRoute: 'manage.devices'
+	},
+	{
 		path: '/devices',
 		sidebarName: 'sidebar.devices',
 		icon: DeviceHub,
@@ -219,7 +233,7 @@ const dashboardRoutes = [
 			{
 				path: '/devicetypes',
 				icon: Memory,
-				component: AsyncRegistries,
+				component: AsyncDeviceTypes,
 				sidebarName: 'sidebar.devicetypes',
 				menuRoute: 'manage'
 			},

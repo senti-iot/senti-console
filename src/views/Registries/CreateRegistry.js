@@ -53,7 +53,7 @@ class CreateCollection extends Component {
 		let rs = await this.createRegistry()
 		if (rs) {
 			s('snackbars.collectionCreated')
-			history.push(`/registry/${rs.id}`)
+			history.push(`/registry/${rs}`)
 		}
 		else
 			s('snackbars.failed')

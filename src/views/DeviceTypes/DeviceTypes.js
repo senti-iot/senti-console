@@ -1,12 +1,11 @@
 import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
-import RegistryTable from 'components/Registry/RegistryTable';
 import TableToolbar from 'components/Table/TableToolbar';
 // import Toolbar from 'components/Toolbar/Toolbar';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
-// import { deleteRegistry, unassignDeviceFromRegistry, getRegistry } from 'variables/dataDeviceTypes';
+// import { deleteDeviceType, unassignDeviceFromDeviceType, getDeviceType } from 'variables/dataDeviceTypes';
 import { filterItems, handleRequestSort } from 'variables/functions';
 import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks, Add, LayersClear, Star, StarBorder, SignalWifi2Bar } from 'variables/icons';
 import { GridContainer, CircularLoader, AssignProject } from 'components'
@@ -14,6 +13,7 @@ import { GridContainer, CircularLoader, AssignProject } from 'components'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
 import { getDeviceTypes, setDeviceTypes, sortData } from 'redux/data';
+import DeviceTypeTable from 'components/DeviceTypes/DeviceTypeTable';
 // import { setDeviceTypes, getDeviceTypes, sortData } from 'redux/data';
 
 class DeviceTypes extends Component {
@@ -68,11 +68,11 @@ class DeviceTypes extends Component {
 	devicetypesHeader = () => {
 		const { t } = this.props
 		return [
-			{ id: 'id', label: t('devicetypes.fields.id') },
+			// { id: 'id', label: t('devicetypes.fields.id') },
 			{ id: 'name', label: t('devicetypes.fields.name') },
-			{ id: 'region', label: t('devicetypes.fields.region') },
-			{ id: 'protocol', label: t('devicetypes.fields.created') },
-			{ id: 'customer', label: t('devicetypes.fields.customer') },
+			// { id: 'region', label: t('devicetypes.fields.region') },
+			// { id: 'protocol', label: t('devicetypes.fields.created') },
+			// { id: 'customer', label: t('devicetypes.fields.customer') },
 		]
 	}
 	options = () => {
@@ -89,8 +89,8 @@ class DeviceTypes extends Component {
 		let allOptions = [
 			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
 			{ label: t('menus.assign.devicetypeToProject'), func: this.handleOpenAssignProject, single: true, icon: LibraryBooks },
-			{ label: t('menus.assign.deviceToRegistry'), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
-			{ label: t('menus.unassign.deviceFromRegistry'), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear, dontShow: devicetypes[devicetypes.findIndex(c => c.id === selected[0])].activeDeviceStats ? false : true },
+			{ label: t('menus.assign.deviceToDeviceType'), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
+			{ label: t('menus.unassign.deviceFromDeviceType'), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear, dontShow: devicetypes[devicetypes.findIndex(c => c.id === selected[0])].activeDeviceStats ? false : true },
 			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
 			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
 			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
@@ -133,7 +133,7 @@ class DeviceTypes extends Component {
 	//#endregion
 
 	//#region Functions
-	addNewRegistry = () => this.props.history.push({ pathname: `/devicetypes/new`, prevURL: '/devicetypes/list' })
+	addNewDeviceType = () => this.props.history.push({ pathname: `/devicetypes/new`, prevURL: '/devicetypes/list' })
 
 	getFavs = () => {
 		const { order, orderBy } = this.state
@@ -169,10 +169,10 @@ class DeviceTypes extends Component {
 				s('snackbars.exported')
 				break;
 			case 3:
-				s('snackbars.assign.deviceToRegistry', { devicetype: ``, what: 'Device' })
+				s('snackbars.assign.deviceToDeviceType', { devicetype: ``, what: 'Device' })
 				break;
 			case 6:
-				s('snackbars.assign.deviceToRegistry', { devicetype: `${devicetypes[devicetypes.findIndex(c => c.id === selected[0])].name}`, device: display })
+				s('snackbars.assign.deviceToDeviceType', { devicetype: `${devicetypes[devicetypes.findIndex(c => c.id === selected[0])].name}`, device: display })
 				break
 			default:
 				break;
@@ -219,7 +219,7 @@ class DeviceTypes extends Component {
 		this.props.sortData(key, property, order)
 		this.setState({ order, orderBy: property })
 	}
-	handleRegistryClick = id => e => {
+	handleDeviceTypeClick = id => e => {
 		e.stopPropagation()
 		this.props.history.push('/devicetype/' + id)
 	}
@@ -308,7 +308,7 @@ class DeviceTypes extends Component {
 		const { t } = this.props
 		return <Fragment>
 			<Tooltip title={t('menus.create.devicetype')}>
-				<IconButton aria-label='Add new devicetype' onClick={this.addNewRegistry}>
+				<IconButton aria-label='Add new devicetype' onClick={this.addNewDeviceType}>
 					<Add />
 				</IconButton>
 			</Tooltip>
@@ -358,7 +358,7 @@ class DeviceTypes extends Component {
 	renderTable = (items, handleClick, key) => {
 		const { t } = this.props
 		const { order, orderBy, selected } = this.state
-		return <RegistryTable
+		return <DeviceTypeTable
 			data={this.filterItems(items)}
 			handleCheckboxClick={this.handleCheckboxClick}
 			handleClick={handleClick}
@@ -404,7 +404,7 @@ class DeviceTypes extends Component {
 				{/* {this.renderAssignDevice()} */}
 				{/* {selected.length > 0 ? this.renderDeviceUnassign() : null} */}
 				{this.renderTableToolBar()}
-				{this.renderTable(devicetypes, this.handleRegistryClick, 'devicetypes')}
+				{this.renderTable(devicetypes, this.handleDeviceTypeClick, 'devicetypes')}
 				{this.renderConfirmDelete()}
 			</Paper></Fade>
 			}
@@ -432,7 +432,7 @@ const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	favorites: state.data.favorites,
 	saved: state.favorites.saved,
-	devicetypes: state.data.devicetypes,
+	devicetypes: state.data.deviceTypes,
 	loading: false, //!state.data.gotdevicetypes,
 	filters: state.appState.filters.devicetypes
 })

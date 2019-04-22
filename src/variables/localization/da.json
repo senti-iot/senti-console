@@ -663,6 +663,12 @@
             "startDateBiggerThanEndDate": "Startdato må ikke være senere end slutdato"
         }
 	},
+	"devicetypes": {
+		"pageTitle":"Enhedstype",
+		"fields":{
+			"name": "Navn"
+		}
+	},
 	"sensors": {
 		"fields": {
 			"communication": "Enhedskommunikation",

@@ -142,7 +142,10 @@ const initialState = {
 		collections: [],
 		orgs: [],
 		users: [],
-		registries: [] }
+		registries: [],
+		devicetypes: [],
+		sensors: []
+	 }
 
 }
 
