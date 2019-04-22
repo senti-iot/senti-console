@@ -225,7 +225,7 @@ class Registries extends Component {
 	}
 	handleRegistryClick = id => e => {
 		e.stopPropagation()
-		this.props.history.push('/collection/' + id)
+		this.props.history.push('/registry/' + id)
 	}
 
 	handleFavClick = id => e => {

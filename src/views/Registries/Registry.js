@@ -34,7 +34,7 @@ class Registry extends Component {
 			heatData: null,
 			//End Map
 		}
-		let prevURL = props.location.prevURL ? props.location.prevURL : '/registrys/list'
+		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
 		props.setHeader('registrys.fields.registry', true, prevURL, 'registrys')
 	}
 
