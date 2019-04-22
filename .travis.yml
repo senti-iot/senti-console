@@ -3,7 +3,6 @@ branches:
   - alpha-react-pdf
 addons:
   ssh_known_hosts:
-  - kanata.webhouse.net
   - rey.webhouse.net
 cache: npm
 before_deploy:
@@ -39,6 +38,8 @@ notifications:
     on_success: never
     on_failure: always
   slack: webhouseteam:82qu1PX5R5wkYNCW5x6fVlhu
+  slack:
+    secure: gUnGuVhbj1X7VoOx1zEELFNq4vNFY0UyawuEb8/V2y7dubwr9N11g/vR1dVO0v07W/K1gWctx6tttxdytJTGcRYvF7IdMOrGPzRdXx/prUOOuW8oonMRV4CGYxzf28dzFxIdpWqmrjJn4CpY8vzZxM/eeOTngaVMfCi/PhdYhS741udZOt7l3QDXJ1T2abcvogPMTwpAT6GLCrl58tHv5y0zKIEfvjeTI0Ixb6IvYKKYcwvEBWhzLu43/6HOPrHNHnvK9luOXPW7a0eTSK1GHsSEErQxW869/N1it99Fld5tQTWiwbB0XlE0vn39Bv8Dx1j8Y5Bvr2tXQJZwRUCFL5OAoNDOSZVjQc1Pv61apZfMClN+9ywJhZmPSx+8SSsOkrDtCD1rbIDCO/IvoksmxTxh1adCBe0hmvHVDtohCmbyD5PlCNAtu2WYJt0yGAEngwEF5ph5B/elIRuMOO8MY0boRze/qBivneyLA95yqOFsn4e3Lfbp0kI5l9i+HGarItoa5XGUDYFoGPDRPmJBW4RtVTIe0F/PVw3h6bweNSwN4hzaWjWsXApTzhFJIJibUSqiOBbJ207HCG5fq73HWbF8OCxz+7XmtbNncxi7HY4KkKEjzi+kNplKW5KuR8S5wwwuhpAlsvGN0liCRmSaNrKof6ufAW1eCUZBphnAPpM=
 script:
 - npm run-script build
 - cp ./build/index.html ./build/200.html
