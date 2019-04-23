@@ -45,3 +45,14 @@ export const updateDeviceType = async (dt) => {
 	let response = await servicesAPI.post(`/v1/deviceType/${dt.id}`, dt).then(rs => rs.ok ? rs.data : false)
 	return response
 }
+
+
+export const getAllSensors = async () => { 
+	let response = await servicesAPI.get(`/v1/1/devices`).then(rs => rs.ok ? rs.data : [])
+	return response
+}
+
+export const getSensor = async (id) => { 
+	let response = await servicesAPI.get(`/v1/1/device/${id}`).then(rs => rs.ok ? rs.data : null)
+	return response
+}

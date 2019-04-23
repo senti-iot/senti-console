@@ -8,14 +8,15 @@ import React, { Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 // import { dateFormatter } from 'variables/functions'
 import TableHeader from 'components/Table/TableHeader'
-import { ItemGrid, Info, Caption } from 'components'
+import { ItemGrid, Info, Caption, ItemG } from 'components'
+import { Block, CheckCircle } from 'variables/icons'
 import { connect } from 'react-redux'
 import TP from 'components/Table/TP';
 import TC from 'components/Table/TC';
-import RegistryHover from 'components/Hover/RegistryHover';
+import SensorHover from 'components/Hover/RegistryHover';
 import { dateFormatter } from 'variables/functions';
 
-class RegistryTable extends React.Component {
+class SensorTable extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -46,11 +47,11 @@ class RegistryTable extends React.Component {
 						rowHover: null
 					})
 					setTimeout(() => {
-						this.setState({ rowHover: e.target, hoverRegistry: n })
+						this.setState({ rowHover: e.target, hoverSensor: n })
 					}, 200);
 				}
 				else {
-					this.setState({ rowHover: e.target, hoverRegistry: n })
+					this.setState({ rowHover: e.target, hoverSensor: n })
 				}
 			}, hoverTime);
 	}
@@ -63,7 +64,7 @@ class RegistryTable extends React.Component {
 		})
 	}
 	renderHover = () => {
-		return <RegistryHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} project={this.state.hoverRegistry} />
+		return <SensorHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} project={this.state.hoverSensor} />
 	}
 	renderProtocol = (id) => {
 		const { t } = this.props
@@ -80,7 +81,17 @@ class RegistryTable extends React.Component {
 				break;
 		}
 	}
-
+	renderCommunication = (val) => {
+		const { t, classes } = this.props
+		switch (val) {
+			case 0:
+				return <ItemG container><Block className={classes.blocked} /> {t('sensors.fields.communications.blocked')}</ItemG>
+			case 1:
+				return <ItemG container><CheckCircle className={classes.allowed} /> {t('sensors.fields.communications.allowed')}</ItemG>
+			default:
+				break;
+		}
+	}
 	render() {
 		const { classes, rowsPerPage, handleClick, selected, t, order, data, orderBy, handleCheckboxClick } = this.props
 		const { page } = this.state
@@ -148,14 +159,15 @@ class RegistryTable extends React.Component {
 
 										<Hidden mdDown>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+											<TC checkbox label={n.id}/>
 											<TC 
 												onMouseEnter={e => { this.setHover(e, n) }}
 												onMouseLeave={this.unsetTimeout}
 												FirstC label={n.name}/>
-											<TC label={n.region}/>
-											<TC label={this.renderProtocol(n.protocol)} />
+											{/* <TC label={n.region}/> */}
+											<TC label={this.renderCommunication(n.communication)} />
 											<TC label={dateFormatter(n.created)} />
-											<TC label={n.reg_id} />
+											<TC label={n.customer_id} />
 											{/* <TC label={dateFormatter(n.endDate)}/> */}
 											{/* <TC label={dateFormatter(n.created)}/> */}
 											{/* <TC label={dateFormatter(n.modified)}/> */}
@@ -191,8 +203,8 @@ const mapDispatchToProps = {
 
 }
 
-RegistryTable.propTypes = {
+SensorTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(RegistryTable)))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(SensorTable)))

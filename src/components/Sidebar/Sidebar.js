@@ -126,7 +126,6 @@ class Sidebar extends Component {
 	}
 	renderPermanentDrawer = () => {
 		const { classes, smallMenu, routes, defaultView, t, headerBorder } = this.props
-
 		return <Drawer
 			variant="permanent"
 			className={classNames(classes.drawer, {
@@ -151,9 +150,11 @@ class Sidebar extends Component {
 					paddingTop: 0,
 				}}>
 				{routes.map((route, index) => {
+					
 					if (route.redirect) return null;
 					if (route.hideFromSideBar) return null;
 					if (route.dropdown) {
+						console.log(route.menuRoute, this.props.menuRoute, route.menuRoute.includes(this.props.menuRoute))
 						return <Fragment key={index}>
 							<Tooltip key={index}
 								placement={'right'} title={!smallMenu ? t(route.sidebarName) : ''}>
@@ -165,7 +166,7 @@ class Sidebar extends Component {
 										button: classNames({
 											[classes.buttonOpen]: smallMenu,
 											[classes.buttonClose]: !smallMenu,
-											[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
+											[classes.buttonActiveRoute]: this.props.menuRoute.includes(route.menuRoute) ? true : false,
 											[classes.button]: true
 										})
 									}}>
@@ -184,7 +185,7 @@ class Sidebar extends Component {
 											button: classNames({
 												[classes.buttonOpen]: smallMenu,
 												[classes.buttonClose]: !smallMenu,
-												[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
+												[classes.buttonActiveRoute]: this.activeRoute(i.menuRoute),
 												[classes.button]: true,
 												[classes.nested]: smallMenu
 											})
@@ -291,6 +292,7 @@ class Sidebar extends Component {
 	}
 	render() {
 		const { drawer } = this.props
+		console.log(this.props.menuRoute)
 		return (
 			<Fragment>
 				<Hidden mdDown>

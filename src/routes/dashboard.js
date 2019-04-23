@@ -11,6 +11,14 @@ import { DataUsage } from 'variables/icons';
 // 	loader: () => import('routes/holiday'),
 // 	loading: AsyncLoader
 // })
+const AsyncSensors = Loadable({
+	loader: () => import('routes/sensors'),
+	loading: AsyncLoader
+})
+// const AsyncSensor = Loadable({
+// 	loader: () => import('routes/sensor'),
+// 	loading: AsyncLoader
+// })
 const AsyncDeviceType = Loadable({
 	loader: () => import('routes/deviceType'),
 	loading: AsyncLoader
@@ -226,16 +234,16 @@ const dashboardRoutes = [
 			{
 				path: '/sensors',
 				icon: DeviceHub,
-				component: AsyncRegistries,
+				component: AsyncSensors,
 				sidebarName: 'sidebar.devices',
-				menuRoute: 'manage'
+				menuRoute: 'manage.sensors'
 			},
 			{
 				path: '/devicetypes',
 				icon: Memory,
 				component: AsyncDeviceTypes,
 				sidebarName: 'sidebar.devicetypes',
-				menuRoute: 'manage'
+				menuRoute: 'manage.devicetypes'
 			},
 		]
 	},

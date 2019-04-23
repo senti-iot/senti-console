@@ -36,7 +36,7 @@ class App extends React.Component {
 			},
 			goBackButton: false,
 			url: '',
-			menuRoute: 0,
+			menuRoute: '',
 			bc: {
 				name: '',
 				id: ''

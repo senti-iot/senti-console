@@ -33,7 +33,7 @@ class Registries extends Component {
 				keyword: '',
 			}
 		}
-		props.setHeader('registries.pageTitle', false, '', 'registries')
+		props.setHeader('registries.pageTitle', false, '', 'manage.registries')
 		props.setBC('registries')
 		props.setTabs({
 			id: 'registries',

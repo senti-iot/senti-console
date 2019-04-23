@@ -9,7 +9,7 @@ import { colors } from 'variables/colors';
 import { hist } from 'App';
 import { handleRequestSort } from 'variables/functions';
 import { getSuggestions } from './globalSearch';
-import { getAllRegistries, getRegistry, getAllDeviceTypes, getDeviceType } from 'variables/dataRegistry';
+import { getAllRegistries, getRegistry, getAllDeviceTypes, getDeviceType, getAllSensors } from 'variables/dataRegistry';
 // import { getSuggestions } from './globalSearch';
 /**
  * Special functions
@@ -57,6 +57,7 @@ const gotprojects = 'GotProjects'
 const gotcollections = 'GotCollections'
 const gotregistries = 'GotRegistries'
 const setdeviceTypes = 'setdeviceTypes'
+const setsensors = 'setsensors'
 
 const gotProject = 'GotProject'
 const gotCollection = 'GotCollection'
@@ -75,6 +76,7 @@ const setcollections = 'SetCollections'
 const setregistries = 'SetRegistries'
 const setFavorites = 'setFavorites'
 const gotdeviceTypes = 'gotdeviceTypes'
+const gotsensors = 'gotsensors'
 
 const setProject = 'SetProject'
 const setCollection = 'SetCollection'
@@ -525,6 +527,22 @@ export const setDeviceTypes = () => {
 		}
 	}
 }
+export const setSensors = () => {
+	return dispatch => {
+		let sensors = get('sensors')
+		if (sensors) {
+			dispatch({
+				type: setsensors,
+				payload: sensors
+			})
+			dispatch(getSuggestions())
+			// dispatch(sortData('collections', 'id', 'asc'))
+		}
+		else {
+			dispatch({ type: gotsensors, payload: false })
+		}
+	}
+}
 const renderUserGroup = (user) => {
 	if (user.groups) {
 		if (user.groups[136550100000143])
@@ -545,6 +563,7 @@ export const getAllData = async () => {
 		dispatch(await getOrgs(true))
 		dispatch(await getRegistries(true))
 		dispatch(await getDeviceTypes(true))
+		dispatch(await getSensors(true))
 	}
 }
 export const getUsers = (reload) => {
@@ -635,18 +654,18 @@ export const getDeviceTypes = (reload) => {
 		})
 	}
 }
-// export const getCollections = (reload) => {
-// 	return dispatch => {
-// 		getAllCollections().then(rs => {
-// 			let collections = handleRequestSort('id', 'asc', rs)
-// 			set('collections', collections)
-// 			if (reload) {
-// 				dispatch(setCollections())
-// 			}
-// 			dispatch({ type: gotcollections, payload: true })
-// 		})
-// 	}
-// }
+export const getSensors = (reload) => {
+	return dispatch => {
+		getAllSensors().then(rs => {
+			let sensors = handleRequestSort('id', 'asc', rs)
+			set('sensors', sensors)
+			if (reload) {
+				dispatch(setSensors())
+			}
+			dispatch({ type: gotsensors, payload: true })
+		})
+	}
+}
 const initialState = {
 	favorites: [],
 	users: [],
@@ -728,6 +747,10 @@ export const data = (state = initialState, { type, payload }) => {
 			return Object.assign({}, state, { registries: payload })
 		case setdeviceTypes:
 			return Object.assign({}, state, { deviceTypes: payload })
+		case setsensors:
+			return Object.assign({}, state, { sensors: payload })
+		case gotsensors: 
+			return Object.assign({}, state, { gotsensors: payload })
 		default:
 			return state
 	}
