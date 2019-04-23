@@ -15,10 +15,10 @@ const AsyncSensors = Loadable({
 	loader: () => import('routes/sensors'),
 	loading: AsyncLoader
 })
-// const AsyncSensor = Loadable({
-// 	loader: () => import('routes/sensor'),
-// 	loading: AsyncLoader
-// })
+const AsyncSensor = Loadable({
+	loader: () => import('routes/sensor'),
+	loading: AsyncLoader
+})
 const AsyncDeviceType = Loadable({
 	loader: () => import('routes/deviceType'),
 	loading: AsyncLoader
@@ -142,13 +142,19 @@ const dashboardRoutes = [
 		path: '/registry/:id',
 		component: AsyncRegistry,
 		hideFromSideBar: true,
+		menuRoute: 'manage.registries'
+	},
+	{
+		path: '/sensor/:id',
+		component: AsyncSensor,
+		hideFromSideBar: true,
 		menuRoute: 'manage.devices'
 	},
 	{
 		path: '/devicetype/:id',
 		component: AsyncDeviceType,
 		hideFromSideBar: true,
-		menuRoute: 'manage.devices'
+		menuRoute: 'manage.devicetypes'
 	},
 	{
 		path: '/devices',

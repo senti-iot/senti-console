@@ -671,11 +671,16 @@
 	},
 	"sensors": {
 		"fields": {
+			"protocols": {
+				"publishData": "Udgiv data",
+				"state": "Enhedstilstand"
+			},
 			"communication": "Enhedskommunikation",
 			"communications": {
 				"allowed": "Tilladt",
 				"blocked": "Blokeret"
-			}
+			},
+			"registry":"Register"
 		}
 	},
 	"registries": {
@@ -875,7 +880,8 @@
         "deletedSuccess": "Slettet!",
         "deleting": "Sletter ...",
         "deviceUpdated": "Enhed %{device} er opdateret!",
-        "emailsCopied": "E-mail adresser kopieret til klippebord",
+		"emailsCopied": "E-mail adresser kopieret til klippebord",
+		"urlCopied": "URL kopieret til klippebord",
         "exported": "Eksporteret!",
         "favorite": {
             "manyRemoved": "Favoritter er fjernet!",

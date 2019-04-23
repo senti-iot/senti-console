@@ -24,13 +24,14 @@ const styles = theme => ({
 
 const TC = (props) => {
 	const { checkbox, classes, label, content, className, center, FirstC, ...rest } = props
+	console.log(label, label !== null || label !== undefined)
 	return (
 		<TableCell classes={{
 			root: className + ' ' + (checkbox ? classes.tableCellCheckbox + ' ' + classes.tableCell : classes.tableCell) 
 		}}
 		{...rest}
 		>
-			{label ? <Typography variant={'body1'} classes={{ root: classes.paragraphCell + ' ' + (center ? classes.center : '') }}>
+			{(label !== null || label !== undefined) ? <Typography variant={'body1'} classes={{ root: classes.paragraphCell + ' ' + (center ? classes.center : '') }}>
 				{label}
 			</Typography> : null}
 			{content ? content : null}

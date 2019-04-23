@@ -10,10 +10,12 @@ import { DataUsage } from 'variables/icons';
 // import Toolbar from 'components/Toolbar/Toolbar';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { scrollToAnchor } from 'variables/functions';
-import { getRegistryLS } from 'redux/data';
-import RegistryDetails from './RegistryCards/RegistryDetails';
+import { getSensorLS } from 'redux/data';
+// import SensorDetails from './SensorCards/SensorDetails';
+import SensorDetails from './SensorCards/SensorDetails';
+import SensorProtocol from './SensorCards/SensorProtocol';
 
-class Registry extends Component {
+class Sensor extends Component {
 	constructor(props) {
 		super(props)
 
@@ -34,8 +36,8 @@ class Registry extends Component {
 			heatData: null,
 			//End Map
 		}
-		let prevURL = props.location.prevURL ? props.location.prevURL : '/registrys/list'
-		props.setHeader('registrys.fields.registry', true, prevURL, 'registrys')
+		let prevURL = props.location.prevURL ? props.location.prevURL : '/sensors/list'
+		props.setHeader('sidebar.device', true, prevURL, 'manage.devices')
 	}
 
 	format = 'YYYY-MM-DD+HH:mm'
@@ -52,12 +54,12 @@ class Registry extends Component {
 
 	reload = (msgId) => {
 		this.snackBarMessages(msgId)
-		this.getRegistry(this.props.match.params.id)
+		this.getSensor(this.props.match.params.id)
 	}
 
-	getRegistry = async (id) => {
-		const { getRegistry } = this.props
-		await getRegistry(id)
+	getSensor = async (id) => {
+		const { getSensor } = this.props
+		await getSensor(id)
 	}
 	componentDidUpdate = async (prevProps) => {
 		const { registry } = this.props
@@ -90,7 +92,7 @@ class Registry extends Component {
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {
-				await this.getRegistry(id).then(() => {
+				await this.getSensor(id).then(() => {
 					this.props.setBC('registry', this.props.registry.name)
 				})
 				this.props.setTabs({
@@ -149,18 +151,34 @@ class Registry extends Component {
 
 
 	render() {
-		const { history, match, t, accessLevel, registry, loading } = this.props
-		console.log(registry)
+		const { history, match, t, accessLevel, sensor, loading } = this.props
 		return (
 			<Fragment>
 				{!loading ? <Fade in={true}>
 					<GridContainer justify={'center'} alignContent={'space-between'}>
 						<ItemGrid xs={12} noMargin id='details'>
-							<RegistryDetails
-								isFav={this.props.isFav({ id: registry.id, type: 'registry' })}
+							<SensorDetails
+								isFav={this.props.isFav({ id: sensor.id, type: 'sensor' })}
 								addToFav={this.addToFav}
 								removeFromFav={this.removeFromFav}
-								registry={registry}
+								sensor={sensor}
+								history={history}
+								match={match}
+								handleOpenAssignProject={this.handleOpenAssignProject}
+								handleOpenUnassignDevice={this.handleOpenUnassignDevice}
+								handleOpenAssignOrg={this.handleOpenAssignOrg}
+								handleOpenDeleteDialog={this.handleOpenDeleteDialog}
+								handleOpenAssignDevice={this.handleOpenAssignDevice}
+								t={t}
+								accessLevel={accessLevel}
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12} noMargin id='details'>
+							<SensorProtocol
+								isFav={this.props.isFav({ id: sensor.id, type: 'sensor' })}
+								addToFav={this.addToFav}
+								removeFromFav={this.removeFromFav}
+								sensor={sensor}
 								history={history}
 								match={match}
 								handleOpenAssignProject={this.handleOpenAssignProject}
@@ -184,8 +202,8 @@ const mapStateToProps = (state) => ({
 	saved: state.favorites.saved,
 	mapTheme: state.settings.mapTheme,
 	periods: state.dateTime.periods,
-	registry: state.data.registry,
-	loading: !state.data.gotRegistry
+	sensor: state.data.sensor,
+	loading: !state.data.gotSensor
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -193,8 +211,8 @@ const mapDispatchToProps = (dispatch) => ({
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
 	finishedSaving: () => dispatch(finishedSaving()),
-	getRegistry: async id => dispatch(await getRegistryLS(1, id))
+	getSensor: async id => dispatch(await getSensorLS(id))
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(registryStyles)(Registry))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(registryStyles)(Sensor))

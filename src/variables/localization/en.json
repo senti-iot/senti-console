@@ -839,7 +839,8 @@
         "deletedSuccess": "Deleted!",
         "deleting": "Deleting...",
         "deviceUpdated": "Device %{device} updated!",
-        "emailsCopied": "E-mail adresses copied to clipboard",
+		"emailsCopied": "E-mail adresses copied to clipboard",
+		"urlCopied": "",
         "exported": "Exported!",
         "favorite": {
             "manyRemoved": "Favorites removed!",

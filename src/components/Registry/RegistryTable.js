@@ -115,6 +115,7 @@ class RegistryTable extends React.Component {
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
+								console.log(n)
 								return (
 									<TableRow
 										// onMouseEnter={e => { this.setHover(e, n) }}
@@ -155,7 +156,7 @@ class RegistryTable extends React.Component {
 											<TC label={n.region}/>
 											<TC label={this.renderProtocol(n.protocol)} />
 											<TC label={dateFormatter(n.created)} />
-											<TC label={n.reg_id} />
+											<TC label={n.customer_id} />
 											{/* <TC label={dateFormatter(n.endDate)}/> */}
 											{/* <TC label={dateFormatter(n.created)}/> */}
 											{/* <TC label={dateFormatter(n.modified)}/> */}

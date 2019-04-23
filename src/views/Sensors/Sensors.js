@@ -84,8 +84,8 @@ class Sensors extends Component {
 		let favObj = {
 			id: device.id,
 			name: device.name,
-			type: 'device',
-			path: `/device/${device.id}`
+			type: 'sensor',
+			path: `/sensor/${device.id}`
 		}
 		let isFavorite = isFav(favObj)
 		let allOptions = [
@@ -195,7 +195,7 @@ class Sensors extends Component {
 
 	handleEdit = () => {
 		const { selected } = this.state
-		this.props.history.push({ pathname: `/device/${selected[0]}/edit`, prevURL: `/devices/list` })
+		this.props.history.push({ pathname: `/sensor/${selected[0]}/edit`, prevURL: `/sensors/list` })
 	}
 
 	handleTabs = () => {
@@ -223,12 +223,12 @@ class Sensors extends Component {
 	}
 	handleRegistryClick = id => e => {
 		e.stopPropagation()
-		this.props.history.push('/device/' + id)
+		this.props.history.push('/sensor/' + id)
 	}
 
 	handleFavClick = id => e => {
 		e.stopPropagation()
-		this.props.history.push({ pathname: '/device/' + id, prevURL: '/devices/favorites' })
+		this.props.history.push({ pathname: '/sensor/' + id, prevURL: '/sensors/favorites' })
 	}
 	handleFilterKeyword = (value) => {
 		this.setState({

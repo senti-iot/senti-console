@@ -167,7 +167,7 @@ class SensorTable extends React.Component {
 											{/* <TC label={n.region}/> */}
 											<TC label={this.renderCommunication(n.communication)} />
 											<TC label={dateFormatter(n.created)} />
-											<TC label={n.customer_id} />
+											<TC label={n.reg_id} />
 											{/* <TC label={dateFormatter(n.endDate)}/> */}
 											{/* <TC label={dateFormatter(n.created)}/> */}
 											{/* <TC label={dateFormatter(n.modified)}/> */}

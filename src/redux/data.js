@@ -9,7 +9,7 @@ import { colors } from 'variables/colors';
 import { hist } from 'App';
 import { handleRequestSort } from 'variables/functions';
 import { getSuggestions } from './globalSearch';
-import { getAllRegistries, getRegistry, getAllDeviceTypes, getDeviceType, getAllSensors } from 'variables/dataRegistry';
+import { getAllRegistries, getRegistry, getAllDeviceTypes, getDeviceType, getAllSensors, getSensor } from 'variables/dataRegistry';
 // import { getSuggestions } from './globalSearch';
 /**
  * Special functions
@@ -67,6 +67,7 @@ const gotUser = 'GotUser'
 const getFavorites = 'getFavorites'
 const gotRegistry = 'gotRegistry'
 const gotDeviceType = 'gotDeviceType'
+const gotSensor = 'gotSensor'
 
 const setusers = 'SetUsers'
 const setorgs = 'SetOrgs'
@@ -86,6 +87,7 @@ const setUser = 'SetUser'
 const sData = 'Sort Data'
 const setRegistry = 'setRegistry'
 const setDeviceType = 'setDeviceType'
+const setSensor = 'setSensor'
 
 export const sortData = (key, property, order) => {
 	return (dispatch, getState) => {
@@ -302,6 +304,48 @@ export const getRegistryLS = async (customerID, id) => {
 				set('registry.' + id, registry)
 				dispatch({
 					type: gotRegistry,
+					payload: true
+				})
+			}
+		})
+	}
+}
+export const getSensorLS = async (customerID, id) => {
+	return async dispatch => {
+		dispatch({ type: gotSensor, payload: false })
+		let registry = get('registry.' + id)
+		if (registry) {
+			dispatch({
+				type: setSensor,
+				payload: registry
+			})
+			dispatch({
+				type: gotSensor,
+				payload: true
+			})
+		}
+		else {
+			dispatch({
+				type: gotSensor,
+				payload: false
+			})
+			dispatch({
+				type: setSensor,
+				payload: null
+			})
+		}
+		await getSensor(customerID, id).then(async rs => {
+			if (!compare(registry, rs)) {
+				registry = {
+					...rs,
+				}
+				dispatch({
+					type: setSensor,
+					payload: registry
+				})
+				set('registry.' + id, registry)
+				dispatch({
+					type: gotSensor,
 					payload: true
 				})
 			}
@@ -699,6 +743,10 @@ export const data = (state = initialState, { type, payload }) => {
 			return Object.assign({}, state, { registry: payload })
 		case gotRegistry:
 			return Object.assign({}, state, { gotRegistry: payload })
+		case setSensor:
+			return Object.assign({}, state, { sensor: payload })
+		case gotSensor:
+			return Object.assign({}, state, { gotSensor: payload })
 		case setCollection:
 			return Object.assign({}, state, { collection: payload })
 		case gotCollection:
