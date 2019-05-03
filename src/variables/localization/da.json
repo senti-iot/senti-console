@@ -665,6 +665,7 @@
 	},
 	"devicetypes": {
 		"pageTitle":"Enhedstype",
+		"createDeviceType": "Opret Enhedstype",
 		"fields":{
 			"name": "Navn"
 		}

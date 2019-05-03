@@ -33,7 +33,6 @@ class UpdateRegistry extends Component {
 	componentDidUpdate = (prevProps, prevState) => {
 		const { location, setHeader, registry } = this.props
 		if ((!prevProps.registry && registry !== prevProps.registry && registry) || (this.state.registry === null && registry)) {
-			console.log('Bing', registry)
 			this.setState({
 				registry: registry,
 				loading: false

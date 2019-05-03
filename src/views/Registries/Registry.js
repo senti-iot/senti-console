@@ -134,7 +134,6 @@ class Registry extends Component {
 
 	render() {
 		const { history, match, t, accessLevel, registry, loading } = this.props
-		console.log(registry)
 		return (
 			<Fragment>
 				{!loading ? <Fade in={true}>

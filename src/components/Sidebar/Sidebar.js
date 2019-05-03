@@ -154,7 +154,6 @@ class Sidebar extends Component {
 					if (route.redirect) return null;
 					if (route.hideFromSideBar) return null;
 					if (route.dropdown) {
-						console.log(route.menuRoute, this.props.menuRoute, route.menuRoute.includes(this.props.menuRoute))
 						return <Fragment key={index}>
 							<Tooltip key={index}
 								placement={'right'} title={!smallMenu ? t(route.sidebarName) : ''}>
@@ -292,7 +291,6 @@ class Sidebar extends Component {
 	}
 	render() {
 		const { drawer } = this.props
-		console.log(this.props.menuRoute)
 		return (
 			<Fragment>
 				<Hidden mdDown>

@@ -4,13 +4,13 @@ import { Close } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { Grid, Paper } from '@material-ui/core'
-import { GridContainer, ItemGrid, TextF, ItemG, DSelect } from 'components'
+import { GridContainer, ItemGrid, TextF, ItemG, /* DSelect */ } from 'components'
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 /**
 * @augments {Component<{	t:Function.isRequired,	collection:object.isRequired,	handleChangeDevice:Function.isRequired,	handleCloseDevice:Function.isRequired,	handleOpenDevice:Function.isRequired,	open:boolean.isRequired,	devices:array.isRequired,	device:object.isRequired,	handleCreate:Function.isRequired,	handleChange:Function.isRequired,>}
 */
-class CreateCollectionForm extends Component {
+class CreateDeviceTypeForm extends Component {
 	constructor(props) {
 		super(props)
 
@@ -101,48 +101,51 @@ class CreateCollectionForm extends Component {
 			</List>
 		</Dialog>
 	}
-	renderProtocol = () => {
-		const { t, registry, handleChange } = this.props
-		return <DSelect
-			margin={'normal'}
-			label={t('registries.protocol')}
-			value={registry.protocol}
-			onChange={handleChange('protocol')}
-			menuItems={[
-				{ value: 0, label: t('registries.fields.protocols.none') },
-				{ value: 1, label: t('registries.fields.protocols.mqtt') },
-				{ value: 2, label: t('registries.fields.protocols.http') },
-				{ value: 3, label: `${t('registries.fields.protocols.mqtt')} && ${t('registries.fields.protocols.http')}` } 
-			]}
-		/>
-	}
-	renderRegion = () => {
-		const { t, registry, handleChange } = this.props
-		return <DSelect
-			margin={'normal'}
-			label={t('registries.region')}
-			value={registry.region}
-			onChange={handleChange('region')}
-			menuItems={[
-				{ value: 'europe', label: t('registries.fields.regions.europe') },
-				// { value: 1, label: t('registries.fields.protocols.mqtt') },
-				// { value: 2, label: t('registries.fields.protocols.http') },
-				// { value: 3, label: `${t('registries.fields.protocols.mqtt')} && ${t('registries.fields.protocols.http')}` } 
-			]}
-		/>
-	}
-	renderSelectState = () => {
-		const { t, collection, handleChange } = this.props
-		return <DSelect
-			margin={'normal'}
-			label={t('collections.fields.status')}
-			value={collection.state}
-			onChange={handleChange('state')}
-			menuItems={[
-				{ value: 1, label: t('collections.fields.state.active') },
-				{ value: 2, label: t('collections.fields.state.inactive') }
-			]}
-		/>
+	// renderProtocol = () => {
+	// 	const { t, deviceType, handleChange } = this.props
+	// 	return <DSelect
+	// 		margin={'normal'}
+	// 		label={t('registries.protocol')}
+	// 		value={deviceType.protocol}
+	// 		onChange={handleChange('protocol')}
+	// 		menuItems={[
+	// 			{ value: 0, label: t('registries.fields.protocols.none') },
+	// 			{ value: 1, label: t('registries.fields.protocols.mqtt') },
+	// 			{ value: 2, label: t('registries.fields.protocols.http') },
+	// 			{ value: 3, label: `${t('registries.fields.protocols.mqtt')} && ${t('registries.fields.protocols.http')}` } 
+	// 		]}
+	// 	/>
+	// }
+	// renderRegion = () => {
+	// 	const { t, deviceType, handleChange } = this.props
+	// 	return <DSelect
+	// 		margin={'normal'}
+	// 		label={t('registries.region')}
+	// 		value={deviceType.region}
+	// 		onChange={handleChange('region')}
+	// 		menuItems={[
+	// 			{ value: 'europe', label: t('registries.fields.regions.europe') },
+	// 			// { value: 1, label: t('registries.fields.protocols.mqtt') },
+	// 			// { value: 2, label: t('registries.fields.protocols.http') },
+	// 			// { value: 3, label: `${t('registries.fields.protocols.mqtt')} && ${t('registries.fields.protocols.http')}` } 
+	// 		]}
+	// 	/>
+	// }
+	// renderSelectState = () => {
+	// 	const { t, collection, handleChange } = this.props
+	// 	return <DSelect
+	// 		margin={'normal'}
+	// 		label={t('collections.fields.status')}
+	// 		value={collection.state}
+	// 		onChange={handleChange('state')}
+	// 		menuItems={[
+	// 			{ value: 1, label: t('collections.fields.state.active') },
+	// 			{ value: 2, label: t('collections.fields.state.inactive') }
+	// 		]}
+	// 	/>
+	// }
+	renderStructure = () => {
+
 	}
 	renderSelectOrg = () => {
 		const { t, openOrg, handleCloseOrg, orgs, handleChangeOrg, classes } = this.props
@@ -215,7 +218,7 @@ class CreateCollectionForm extends Component {
 		</Dialog>
 	}
 	render() {
-		const { t, handleChange, registry, classes, handleCreate, goToRegistries } = this.props
+		const { t, handleChange, deviceType, classes, handleCreate, goToDeviceTypes } = this.props
 		return (
 			<GridContainer>
 				<Paper className={classes.paper}>
@@ -223,19 +226,19 @@ class CreateCollectionForm extends Component {
 						<Grid container>
 							<ItemGrid xs={12}>
 								<TextF
-									id={'registryName'}
+									id={'deviceTypeName'}
 									label={t('collections.fields.name')}
 									handleChange={handleChange('name')}
-									value={registry.name}
+									value={deviceType.name}
 									autoFocus
 								/>
 							</ItemGrid>
 
 							<ItemGrid xs={12}>
-								{this.renderRegion()}
+								{/* {this.renderRegion()} */}
 							</ItemGrid>
 							<ItemGrid xs={12}>
-								{this.renderProtocol()}
+								{/* {this.renderProtocol()} */}
 							</ItemGrid>
 
 						
@@ -243,7 +246,7 @@ class CreateCollectionForm extends Component {
 								<div className={classes.wrapper}>
 									<Button
 										variant='outlined'
-										onClick={goToRegistries}
+										onClick={goToDeviceTypes}
 										className={classes.redButton}
 									>
 										{t('actions.cancel')}
@@ -264,4 +267,4 @@ class CreateCollectionForm extends Component {
 }
 
 
-export default withStyles(createprojectStyles)(CreateCollectionForm)
+export default withStyles(createprojectStyles)(CreateDeviceTypeForm)

@@ -1,4 +1,4 @@
-import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, IconButton, Fade, Tooltip } from '@material-ui/core';
+import { Paper, withStyles, /* Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, */ IconButton, Fade, Tooltip } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import TableToolbar from 'components/Table/TableToolbar';
 // import Toolbar from 'components/Toolbar/Toolbar';
@@ -274,33 +274,34 @@ class DeviceTypes extends Component {
 	//#endregion
 
 	renderConfirmDelete = () => {
-		const { openDelete, selected } = this.state
-		const { t, classes, devicetypes } = this.props
-		return <Dialog
-			open={openDelete}
-			onClose={this.handleCloseDeleteDialog}
-			aria-labelledby='alert-dialog-title'
-			aria-describedby='alert-dialog-description'
-		>
-			<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.devicetypes')}</DialogTitle>
-			<DialogContent>
-				<DialogContentText id='alert-dialog-description'>
-					{t('dialogs.delete.message.devicetypes')}
-				</DialogContentText>
-				<List>
-					{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
-						<ListItemText primary={devicetypes[devicetypes.findIndex(d => d.id === s)].name} /></ListItem>)}
-				</List>
-			</DialogContent>
-			<DialogActions>
-				<Button onClick={this.handleCloseDeleteDialog} color='primary'>
-					{t('actions.no')}
-				</Button>
-				<Button onClick={this.handleDeleteDeviceTypes} color='primary' autoFocus>
-					{t('actions.yes')}
-				</Button>
-			</DialogActions>
-		</Dialog>
+		return null
+		// const { openDelete, selected } = this.state
+		// const { t, classes, devicetypes } = this.props
+		// return <Dialog
+		// 	open={openDelete}
+		// 	onClose={this.handleCloseDeleteDialog}
+		// 	aria-labelledby='alert-dialog-title'
+		// 	aria-describedby='alert-dialog-description'
+		// >
+		// 	<DialogTitle disableTypography id='alert-dialog-title'>{t('dialogs.delete.title.devicetypes')}</DialogTitle>
+		// 	<DialogContent>
+		// 		<DialogContentText id='alert-dialog-description'>
+		// 			{t('dialogs.delete.message.devicetypes')}
+		// 		</DialogContentText>
+		// 		<List>
+		// 			{selected.map(s => <ListItem classes={{ root: classes.deleteListItem }} key={s}><ListItemIcon><div>&bull;</div></ListItemIcon>
+		// 				<ListItemText primary={devicetypes[devicetypes.findIndex(d => d.id === s)].name} /></ListItem>)}
+		// 		</List>
+		// 	</DialogContent>
+		// 	<DialogActions>
+		// 		<Button onClick={this.handleCloseDeleteDialog} color='primary'>
+		// 			{t('actions.no')}
+		// 		</Button>
+		// 		<Button onClick={this.handleDeleteDeviceTypes} color='primary' autoFocus>
+		// 			{t('actions.yes')}
+		// 		</Button>
+		// 	</DialogActions>
+		// </Dialog>
 	}
 
 

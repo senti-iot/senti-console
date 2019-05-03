@@ -19,10 +19,10 @@ export const getWeather = async (device, date, language) => {
 		if (weatherValues)
 		{
 			weather = weatherValues.find(f => { 
-				console.log(f.lat === device.lat, moment(f.date).diff(date) === 0, moment(f.date).diff(date))
+				// console.log(f.lat === device.lat, moment(f.date).diff(date) === 0, moment(f.date).diff(date))
 				return f.lat === device.lat && moment(f.date).diff(date) === 0 ? f : null
 			})
-			console.log(weather)
+			// console.log(weather)
 		}
 		if (weather) {
 			dispatch({

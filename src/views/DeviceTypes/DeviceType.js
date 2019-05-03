@@ -150,7 +150,6 @@ class DeviceType extends Component {
 
 	render() {
 		const { history, match, t, accessLevel, deviceType, loading } = this.props
-		console.log(deviceType)
 		return (
 			<Fragment>
 				{!loading ? <Fade in={true}>

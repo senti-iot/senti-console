@@ -200,7 +200,6 @@ const filterByDate = (items, filters) => {
 }
 
 export const filterItems = (data, filters) => {
-	console.log(data, filters)
 	const { activeDateFilter, keyword } = filters
 	var arr = data
 	if (activeDateFilter)

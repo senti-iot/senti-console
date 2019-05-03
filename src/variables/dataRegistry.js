@@ -37,8 +37,9 @@ export const getDeviceType = async (id) => {
 	let data = await servicesAPI.get(`/v1/1/devicetype/${id}`).then(rs => rs.ok ? rs.data : null)
 	return data
 }
-export const createDeviceType = async (dt) => { 
+export const createDeviceType = async (dt) => {
 	let response = await servicesAPI.put('/v1/devicetype', dt).then(rs => rs.ok ? rs.data : false)
+	console.log(response)
 	return response
 }
 export const updateDeviceType = async (dt) => { 
