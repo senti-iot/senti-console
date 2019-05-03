@@ -50,7 +50,7 @@ class DeviceTypeDetails extends Component {
 				content={
 					<ItemG container spacing={16}>
 						<ItemG xs={12}>
-							<Caption>{t('devicetypes.fields.structure')}:</Caption>
+							<Caption>{t('devicetypes.fields.structure.name')}:</Caption>
 							<Info>{deviceType.structure ? Object.keys(deviceType.structure).map(s => {
 								return s
 							}) : null}</Info>

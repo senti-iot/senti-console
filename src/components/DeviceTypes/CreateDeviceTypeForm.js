@@ -4,7 +4,7 @@ import { Close } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 import { Grid, Paper } from '@material-ui/core'
-import { GridContainer, ItemGrid, TextF, ItemG, /* DSelect */ } from 'components'
+import { GridContainer, ItemGrid, TextF, ItemG, DSelect, /* DSelect */ } from 'components'
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 /**
@@ -145,7 +145,31 @@ class CreateDeviceTypeForm extends Component {
 	// 	/>
 	// }
 	renderStructure = () => {
-
+		const { deviceType, t, handleAddKeyToStructure, keyName, value, handleStrChange } = this.props
+		return <ItemG container>
+			<ItemG xs={12} container>
+				<TextF value={keyName} handleChange={handleStrChange('key')} InputProps={{ style: { marginRight: 8 } }} label={t('devicetypes.fields.structure.key')} />
+				<DSelect
+					value={value}
+					onChange={handleStrChange('value')}
+					menuItems={[
+						{ label: t('devicetypes.fields.structure.types.string'), value: 'string' },
+						{ label: t('devicetypes.fields.structure.types.int'), value: 'int' },
+						{ label: t('devicetypes.fields.structure.types.boolean'), value: 'boolean' },
+						{ label: t('devicetypes.fields.structure.types.array'), value: 'array' }
+					]}
+					label={t('devicetypes.fields.structure.type')}
+				/>
+			</ItemG>
+			<ItemG xs={12}>
+				<Button variant={'outlined'} color={'primary'} onClick={handleAddKeyToStructure}>{t('devicetypes.actions.addKey')}</Button>
+			</ItemG>
+			<ItemG xs={12}>
+				{Object.keys(deviceType.structure).map((k, i) => {
+					return <TextF label={k} readOnly value={deviceType.structure[k]} />
+				})}
+			</ItemG>
+		</ItemG>
 	}
 	renderSelectOrg = () => {
 		const { t, openOrg, handleCloseOrg, orgs, handleChangeOrg, classes } = this.props
@@ -230,19 +254,20 @@ class CreateDeviceTypeForm extends Component {
 									label={t('collections.fields.name')}
 									handleChange={handleChange('name')}
 									value={deviceType.name}
-									autoFocus
+									// autoFocus
 								/>
 							</ItemGrid>
 
 							<ItemGrid xs={12}>
 								{/* {this.renderRegion()} */}
+								{this.renderStructure()}
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								{/* {this.renderProtocol()} */}
 							</ItemGrid>
 
-						
-							<ItemGrid container style={{ margin: 16 }}>
+
+							<ItemGrid container>
 								<div className={classes.wrapper}>
 									<Button
 										variant='outlined'
@@ -257,7 +282,7 @@ class CreateDeviceTypeForm extends Component {
 										{t('actions.save')}
 									</Button>
 								</div>
-							</ItemGrid> 
+							</ItemGrid>
 						</Grid>
 					</form>
 				</Paper>

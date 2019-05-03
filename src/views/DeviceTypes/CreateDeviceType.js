@@ -10,9 +10,12 @@ class CreateDeviceType extends Component {
 
 		this.state = {
 			loading: true,
+			keyName: '',
+			value: '',
 			deviceType: {
 				name: "",
-				structure: {},
+				structure: {
+				},
 				customer_id: 1
 			}
 		}
@@ -33,7 +36,25 @@ class CreateDeviceType extends Component {
 	componentWillUnmount = () => {
 		window.removeEventListener('keydown', this.keyHandler, false)
 	}
-
+	handleAddKeyToStructure = e => {
+		this.setState({
+			deviceType: {
+				...this.state.deviceType,
+				structure: {
+					...this.state.deviceType.structure,
+					[this.state.key]: this.state.value
+				}
+			},
+			key: '',
+			value: 'string'
+		})
+	}
+	handleStrChange = (what) => e => {
+		console.log(what, e.target.value)
+		this.setState({
+			[what]: e.target.value
+		})
+	}
 	handleChange = (what) => e => {
 		this.setState({
 			deviceType: {
@@ -58,13 +79,17 @@ class CreateDeviceType extends Component {
 	goToDeviceTypes = () => this.props.history.push('/devicetypes')
 	render() {
 		const { t } = this.props
-		const { deviceType } = this.state
+		const { deviceType, keyName, value } = this.state
 		return (
 		
 			<CreateDeviceTypeForm
 				deviceType={deviceType}
 				handleChange={this.handleChange}
+				handleStrChange={this.handleStrChange}
 				handleCreate={this.handleCreate}
+				handleAddKeyToStructure={this.handleAddKeyToStructure}
+				keyName={keyName}
+				value={value}
 				goToDeviceTypes={this.goToDeviceTypes}
 				t={t}
 			/>

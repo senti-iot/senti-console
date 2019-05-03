@@ -51,7 +51,7 @@ const createprojectStyles = theme => ({
 		marginRight: theme.spacing.unit
 	},
 	wrapper: {
-		margin: theme.spacing.unit,
+		marginRight: theme.spacing.unit,
 		position: 'relative',
 	},
 	buttonSuccess: {

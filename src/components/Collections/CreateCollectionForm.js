@@ -246,7 +246,7 @@ class CreateCollectionForm extends Component {
 							<ItemGrid xs={12}>
 								{this.renderSelectState()}
 							</ItemGrid>
-							<ItemGrid container style={{ margin: 16 }}>
+							<ItemGrid container /* style={{ margin: 16 }} */>
 								<div className={classes.wrapper}>
 									<Button
 										variant='outlined'

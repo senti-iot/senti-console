@@ -666,8 +666,23 @@
 	"devicetypes": {
 		"pageTitle":"Enhedstype",
 		"createDeviceType": "Opret Enhedstype",
+		"actions": {
+			"addKey": "Tilføj key"
+		},
 		"fields":{
-			"name": "Navn"
+			"name": "Navn",
+			"structure": {
+				"name":"Struktur",
+				"key": "Key",
+				"value": "Value",
+				"type": "Type",
+				"types": {
+					"string": "String",
+					"int": "Integer",
+					"boolean": "Boolean",
+					"array": "Array"
+				}
+			}
 		}
 	},
 	"sensors": {
