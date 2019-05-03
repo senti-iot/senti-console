@@ -289,7 +289,6 @@ class CalibrateDevice extends Component {
 						value: m.id,
 						label: m.label
 					}))} 
-					// helperText={`${t('calibration.selectLocationType')} ${this.state.name ? this.state.name : this.state.id}`}
 				/>
 				<div className={this.props.classes.latlong}>
 					<Caption>

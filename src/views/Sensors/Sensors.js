@@ -135,7 +135,7 @@ class Sensors extends Component {
 	//#endregion
 
 	//#region Functions
-	addNewRegistry = () => this.props.history.push({ pathname: `/devices/new`, prevURL: '/devices/list' })
+	addNewRegistry = () => this.props.history.push({ pathname: `/sensors/new`, prevURL: '/sensors/list' })
 
 	getFavs = () => {
 		const { order, orderBy } = this.state

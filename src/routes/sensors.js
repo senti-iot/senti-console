@@ -5,12 +5,13 @@ import Sensors from 'views/Sensors/Sensors';
 import withLocalization from 'components/Localization/T';
 import withSnackbar from 'components/Localization/S';
 import { compose } from 'recompose';
+import CreateSensor from 'views/Sensors/CreateSensor';
 // import CreateRegistry from 'views/Registries/CreateRegistry';
 
 const registries = (props) => {
 	return (
 		<Switch>
-			{/* <Route path={'/registries/new'} component={(rp) => < {...props} {...rp} />} /> */}
+			<Route path={'/sensors/new'} component={(rp) => <CreateSensor {...props} {...rp} />} />
 			{/* <Route path={'/registries/new'} component={(rp) => <CreateRegistry {...props} {...rp} />} /> */}
 			{/* <Route path={'/projects/new'} component={(rp) => <CreateProject {...props} {...rp}/>}/> */}
 			<Route path={'/sensors'} render={(rp) => <Sensors {...props} {...rp} />} />

@@ -57,3 +57,8 @@ export const getSensor = async (id) => {
 	let response = await servicesAPI.get(`/v1/1/device/${id}`).then(rs => rs.ok ? rs.data : null)
 	return response
 }
+
+export const createSensor = async (sensor) => {
+	let response = await servicesAPI.put(`/v1/1/device`).then(rs => rs.ok ? rs.data : null)
+	return response
+}

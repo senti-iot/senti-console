@@ -152,7 +152,9 @@ class OpenStreetMap extends React.Component {
 
 }
 const mapStateToProps = (state) => ({
-	language: state.settings.language
+	language: state.settings.language,
+	mapTheme: state.settings.mapTheme
+
 })
 
 const mapDispatchToProps = {

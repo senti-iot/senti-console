@@ -82,13 +82,13 @@ class SensorDetails extends Component {
 								<TextF
 									fullWidth
 									readOnly
-									value={`v1/webhouse/location/europe/registries/${sensor.regName}/devices/${sensor.name}/publish`}
+									value={`v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.name}/publish`}
 									InputProps={{
 										endAdornment:
 											<ItemG>
 												<IconButton onClick={() => {
 													this.props.s('snackbars.urlCopied')
-													copyToClipboard(`v1/webhouse/location/europe/registries/${sensor.regName}/devices/${sensor.name}/publish`)
+													copyToClipboard(`v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.name}/publish`)
 												}
 												}>
 													<ContentCopy />
@@ -123,12 +123,12 @@ class SensorDetails extends Component {
 								<TextF
 									fullWidth
 									readOnly
-									value={`v1/webhouse/location/europe/registries/${sensor.regName}/devices/${sensor.name}/state/*event*`}
+									value={`v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.name}/state/*event*`}
 									InputProps = {{ endAdornment:
 										<ItemG>
 											<IconButton onClick={() => { 
 												this.props.s('snackbars.urlCopied')
-												copyToClipboard(`v1/webhouse/location/europe/registries/${sensor.regName}/devices/${sensor.name}/state/*event*`)}
+												copyToClipboard(`v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.name}/state/*event*`)}
 											}>
 												<ContentCopy/>
 											</IconButton>

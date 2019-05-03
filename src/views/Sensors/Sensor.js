@@ -93,7 +93,7 @@ class Sensor extends Component {
 			let id = this.props.match.params.id
 			if (id) {
 				await this.getSensor(id).then(() => {
-					this.props.setBC('registry', this.props.registry.name)
+					// this.props.setBC('registry', this.props.registry.name)
 				})
 				this.props.setTabs({
 					route: 0,

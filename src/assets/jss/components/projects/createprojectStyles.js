@@ -1,8 +1,16 @@
 import teal from '@material-ui/core/colors/teal'
 import { hoverColor, primaryColor, headerColor } from 'assets/jss/material-dashboard-react';
-import { red } from '@material-ui/core/colors';
+import { red, green } from '@material-ui/core/colors';
 
 const createprojectStyles = theme => ({
+	blocked: {
+		color: red[500],
+		marginRight: 8
+	},
+	allowed: {
+		color: green[500],
+		marginRight: 8
+	},
 	redButton: {
 		color: red[700],
 		border: '1px solid rgb(211,47,47, 0.5)',

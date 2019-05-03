@@ -700,6 +700,7 @@
 		}
 	},
 	"registries": {
+		"pageTitle": "Registre",
 		"fields": {
 			"registry": "Register",
 			"id": "ID",
