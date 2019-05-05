@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Slide, Hidden, IconButton } from '@material-ui/core';
-import { Close, CheckCircle, Block } from 'variables/icons';
+import { Close, CheckCircle, Block, CellWifi } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import { Grid, Paper } from '@material-ui/core'
-import { GridContainer, ItemGrid, TextF, ItemG, DSelect } from 'components'
+// import { Grid, Paper } from '@material-ui/core'
+import { GridContainer, ItemGrid, TextF, ItemG, DSelect, InfoCard } from 'components'
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import OpenStreetMap from 'components/Map/OpenStreetMap';
@@ -33,6 +33,16 @@ class CreateSensorForm extends Component {
 			}
 		})
 	}
+	ProtocolTypes = () => { 
+		const { t } = this.props
+		return [
+			{ value: 0, label: t('sensors.fields.protocols.none') },
+			{ value: 1, label: t('sensors.fields.protocols.mqtt') },
+			{ value: 2, label: t('sensors.fields.protocols.http') },
+			{ value: 3, label: `${t('sensors.fields.protocols.mqtt')} & ${t('sensors.fields.protocols.http')}` }
+		]
+	}
+
 	CommunicationTypes = () => {
 		const { t, classes } = this.props
 		return [
@@ -266,14 +276,17 @@ class CreateSensorForm extends Component {
 	}
 	render() {
 		const { t, handleOpenReg, handleOpenDT,
-			 handleChange, sensor, getLatLngFromMap,
-			  classes, handleCreate, goToRegistries, select } = this.props
+			handleChange, sensor, getLatLngFromMap,
+			classes, handleCreate, goToRegistries, select } = this.props
 		return (
 			<GridContainer>
-				<Paper className={classes.paper}>
-					<form className={classes.form}>
-						<Grid container>
-							{/* `normalize`, description, lat, lng, address, locType, available, communication, tags, logging*/}
+				<ItemGrid xs={12}>
+					{/* `normalize`, description, lat, lng, address, locType, available, communication, tags, logging*/}
+					<InfoCard
+						title={t('devices.fields.description')}
+						noExpand
+						content={<ItemG>
+
 							<ItemGrid xs={12}>
 								<TextF
 									id={'sensorName'}
@@ -324,15 +337,27 @@ class CreateSensorForm extends Component {
 									}}
 								/>
 							</ItemGrid>
+						</ItemG>}
+					/>
+				</ItemGrid>
+				<ItemGrid xs={12}>
+					<InfoCard
+						title={t('devices.fields.address')}
+						noExpand
+						content={<ItemG xs={12}>
 							<ItemGrid xs={12}>
-								<ItemG xs={12}>
+								{/* <ItemG xs={12}> */}
+								<div style={{ height: 400 }}>
 									<OpenStreetMap
 										mapTheme={this.props.mapTheme}
 										calibrate
+										height={400}
+										width={400}
 										markers={[{ lat: sensor.lat, long: sensor.long }]}
 										getLatLng={getLatLngFromMap}
 									/>
-								</ItemG>
+								</div>
+								{/* </ItemG> */}
 							</ItemGrid>
 							<ItemGrid xs={12}>
 								<Info>
@@ -354,9 +379,18 @@ class CreateSensorForm extends Component {
 									menuItems={this.LocationTypes().map(m => ({
 										value: m.id,
 										label: m.label
-									}))} 
+									}))}
 								/>
 							</ItemGrid>
+						</ItemG>} />
+				</ItemGrid>
+
+				<ItemGrid xs={12}>
+					<InfoCard
+						noExpand
+						avatar={<CellWifi/>}
+						title={t('sensors.fields.communication')}
+						content={<ItemG>
 							<ItemGrid xs={12}>
 								<DSelect
 									label={t('sensors.fields.communication')}
@@ -365,66 +399,40 @@ class CreateSensorForm extends Component {
 									menuItems={this.CommunicationTypes()}
 								/>
 							</ItemGrid>
-							<ItemGrid xs={12}>
-								<TextF
-									id={'sensorName'}
-									label={t('collections.fields.name')}
-									handleChange={handleChange('name')}
-									value={sensor.name}
-									autoFocus
+							{/* <ItemGrid xs={12}>
+								<DSelect
+									label={t('sensors.fields.protocol')}
+									handleChange={handleChange('protocol')}
+									value={sensor.protocol}
+									menuItems={this.ProtocolTypes()}
 								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<TextF
-									id={'sensorName'}
-									label={t('collections.fields.name')}
-									handleChange={handleChange('name')}
-									value={sensor.name}
-									autoFocus
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<TextF
-									id={'sensorName'}
-									label={t('collections.fields.name')}
-									handleChange={handleChange('name')}
-									value={sensor.name}
-									autoFocus
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<TextF
-									id={'sensorName'}
-									label={t('collections.fields.name')}
-									handleChange={handleChange('name')}
-									value={sensor.name}
-									autoFocus
-								/>
-							</ItemGrid>
-						
-							<ItemGrid container>
-								<div className={classes.wrapper}>
-									<Button
-										variant='outlined'
-										onClick={goToRegistries}
-										className={classes.redButton}
-									>
-										{t('actions.cancel')}
-									</Button>
-								</div>
-								<div className={classes.wrapper}>
-									<Button onClick={handleCreate} variant={'outlined'} color={'primary'}>
-										{t('actions.save')}
-									</Button>
-								</div>
-							</ItemGrid> 
-						</Grid>
-					</form>
-				</Paper>
+							</ItemGrid> */}
+
+						</ItemG>
+						}
+					/>
+				</ItemGrid>
+				<ItemGrid container>
+					<div className={classes.wrapper}>
+						<Button
+							variant='outlined'
+							onClick={goToRegistries}
+							className={classes.redButton}
+						>
+							{t('actions.cancel')}
+						</Button>
+					</div>
+					<div className={classes.wrapper}>
+						<Button onClick={handleCreate} variant={'outlined'} color={'primary'}>
+							{t('actions.save')}
+						</Button>
+					</div>
+				</ItemGrid>
 			</GridContainer>
+
 		)
 	}
 }
-
-
+		
+		
 export default withStyles(createprojectStyles)(CreateSensorForm)

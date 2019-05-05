@@ -687,6 +687,7 @@
 	},
 	"sensors": {
 		"fields": {
+			"deviceType": "Enhedstype",
 			"protocols": {
 				"publishData": "Udgiv data",
 				"state": "Enhedstilstand"
