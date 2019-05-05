@@ -10,6 +10,7 @@ import {
 } from 'variables/dataDevices';
 import { getDataHourly, getDataDaily, getDataMinutely, getDataSummary } from 'variables/dataCollections';
 import store from 'redux/store';
+import { getSensorDataClean } from 'variables/dataRegistry';
 // import store from ''
 const format = 'YYYY-MM-DD+HH:mm'
 
@@ -480,4 +481,42 @@ export const setMinutelyData = (dataArr, from, to, hoverID) => {
 		}
 	}
 	return state
+}
+
+export const getWMeterData = async (objArr, from, to, hoverId, raw, simple) => {
+	let startDate = moment(from).format(format)
+	let endDate = moment(to).format(format)
+	let dataArr = []
+	let dataSet = null
+	let data = null
+	await Promise.all(objArr.map(async o => {
+		data = await getSensorDataClean(o.id, startDate, endDate, false)
+		// if (type === 'device')
+		// 	data = await getDeviceDataMinutely(o.id, startDate, endDate, raw)
+		// else {
+		// 	data = await getDataMinutely(o.id, startDate, endDate, raw)
+		// }
+		dataSet = {
+			name: o.name,
+			id: o.id,
+			lat: o.lat,
+			long: o.long,
+			org: o.org,
+			data: regenerateData(data, 'day'),
+			...o,
+		}
+		return dataArr.push(dataSet)
+	}))
+	//Filter nulls
+	dataArr = dataArr.reduce((newArr, d) => {
+		if (d.data !== null)
+			newArr.push(d)
+		return newArr
+	}, [])
+	dataArr = handleRequestSort('name', 'asc', dataArr)
+	if (simple)
+		return dataArr
+	let newState = setMinutelyData(dataArr, from, to, hoverId)
+	let exportData = setExportData(dataArr, 'minute')
+	return { ...newState, exportData, dataArr }
 }

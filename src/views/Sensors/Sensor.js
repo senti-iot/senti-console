@@ -14,6 +14,10 @@ import { getSensorLS } from 'redux/data';
 // import SensorDetails from './SensorCards/SensorDetails';
 import SensorDetails from './SensorCards/SensorDetails';
 import SensorProtocol from './SensorCards/SensorProtocol';
+// import { getSensorDataClean } from 'variables/dataRegistry';
+import { getWMeterData } from 'components/Charts/DataModel';
+import { teal } from '@material-ui/core/colors';
+import ChartData from 'views/Charts/ChartData';
 
 class Sensor extends Component {
 	constructor(props) {
@@ -56,7 +60,19 @@ class Sensor extends Component {
 		this.snackBarMessages(msgId)
 		this.getSensor(this.props.match.params.id)
 	}
-
+	getData = async (p) => { 
+		const { hoverID } = this.state
+		const { sensor } = this.props
+		let newState = await getWMeterData([{
+			name: sensor.name,
+			id: sensor.id,
+			lat: sensor.lat,
+			long: sensor.lng,
+			org: sensor.org ? sensor.org.name : "",
+			color: teal[500]
+		}], p.from, p.to, hoverID, false)
+		return newState
+	}
 	getSensor = async (id) => {
 		const { getSensor } = this.props
 		await getSensor(id)
@@ -143,13 +159,19 @@ class Sensor extends Component {
 		}
 	}
 
-
-
 	renderLoader = () => {
 		return <CircularLoader />
 	}
 
-
+	handleDataSize = (i) => {
+		let visiblePeriods = 0
+		this.props.periods.forEach(p => p.hide === false ? visiblePeriods += 1 : visiblePeriods)
+		if (visiblePeriods === 1)
+			return 12
+		if (i === this.props.periods.length - 1 && visiblePeriods % 2 !== 0 && visiblePeriods > 2)
+			return 12
+		return 6
+	}
 	render() {
 		const { history, match, t, accessLevel, sensor, loading } = this.props
 		return (
@@ -190,6 +212,20 @@ class Sensor extends Component {
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
+						{this.props.periods.map((period, i) => {
+							if (period.hide) { return null }
+							return <ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
+								<ChartData
+									single
+									getData={this.getData}
+									period={period}
+									device={sensor}
+									history={this.props.history}
+									match={this.props.match}
+									t={this.props.t}
+								/>
+							</ItemGrid>
+						})}
 					</GridContainer></Fade>
 					: this.renderLoader()}
 			</Fragment>

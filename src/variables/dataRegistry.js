@@ -1,4 +1,5 @@
 import { servicesAPI } from './data';
+import moment from 'moment';
 
 export const getAllRegistries = async () => {
 	let data = await servicesAPI.get('/v1/1/registries').then(rs => rs.ok ? rs.data : null)
@@ -63,8 +64,10 @@ export const createSensor = async (sensor) => {
 	return response
 }
 
-export const getSensorDataClean = async (id) => {
-	let response = await servicesAPI.get(`/v1/devicedata-clean/${id}`).then(rs => rs.ok ? rs.data : rs.ok)
+export const getSensorDataClean = async (id, from, to) => {
+	// console.log(moment(from, 'YYYY-MM-DD+HH:mm'))
+	let response = await servicesAPI.get(`/v1/devicedata-clean/${id}/${moment(from, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm')}/${moment(to, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm')}`).then(rs => rs.ok ? rs.data : rs.ok)
+	console.log(response)
 	return response
 }
 
