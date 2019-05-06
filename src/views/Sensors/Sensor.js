@@ -65,7 +65,6 @@ class Sensor extends Component {
 	getData = async (periods) => { 
 		const { hoverID } = this.state
 		const { sensor } = this.props
-		console.log(periods)
 		let newState = await getWMeterData(periods.map((p, i) => ({
 			name: sensor.name,
 			id: sensor.id,
@@ -212,6 +211,18 @@ class Sensor extends Component {
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
+						<ItemGrid xs={12} /* md={this.handleDataSize(i)} */ noMargin /* key={i} id={i} */>
+							<DoubleChartData
+								// single
+								getData={this.getData}
+								periods={this.props.periods}
+								device={sensor}
+								history={this.props.history}
+								match={this.props.match}
+								setHoverID={() => {}}
+								t={this.props.t}
+							/>
+						</ItemGrid>
 						<ItemGrid xs={12} noMargin id='details'>
 							<SensorProtocol
 								isFav={this.props.isFav({ id: sensor.id, type: 'sensor' })}
@@ -232,18 +243,6 @@ class Sensor extends Component {
 						{/* {this.props.periods.map((period, i) => { */}
 						{/* if (period.hide) { return null } */}
 						{/* return  */}
-						<ItemGrid xs={12} /* md={this.handleDataSize(i)} */ noMargin /* key={i} id={i} */>
-							<DoubleChartData
-								// single
-								getData={this.getData}
-								periods={this.props.periods}
-								device={sensor}
-								history={this.props.history}
-								match={this.props.match}
-								setHoverID={() => {}}
-								t={this.props.t}
-							/>
-						</ItemGrid>
 						{/* })} */}
 					</GridContainer></Fade>
 					: this.renderLoader()}
