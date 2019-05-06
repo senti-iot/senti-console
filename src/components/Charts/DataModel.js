@@ -484,12 +484,14 @@ export const setMinutelyData = (dataArr, from, to, hoverID) => {
 }
 
 export const getWMeterData = async (objArr, from, to, hoverId, raw, simple) => {
-	let startDate = moment(from).format(format)
-	let endDate = moment(to).format(format)
+	// let startDate = moment(from).format(format)
+	// let endDate = moment(to).format(format)
 	let dataArr = []
 	let dataSet = null
 	let data = null
 	await Promise.all(objArr.map(async o => {
+		let startDate = moment(o.from).format(format)
+		let endDate = moment(o.to).format(format)
 		data = await getSensorDataClean(o.id, startDate, endDate, false)
 		// if (type === 'device')
 		// 	data = await getDeviceDataMinutely(o.id, startDate, endDate, raw)
@@ -525,9 +527,10 @@ export const getWMeterData = async (objArr, from, to, hoverId, raw, simple) => {
 }
 
 
-export const setMeterData = (dataArr, from, to, hoverID) => {
-	console.log(dataArr)
-	let labels = hoursToArr(from, to)
+export const setMeterData = (dataArr, hoverID) => {
+	console.log('dataArrSetFunc', dataArr)
+	
+	let labels = dataArr.map(p => {return hoursToArr(p.from, p.to)}).flat()
 	let state = {
 		loading: false,
 		timeType: 2,
@@ -540,33 +543,35 @@ export const setMeterData = (dataArr, from, to, hoverID) => {
 			loading: false,
 			lineDataSets: {
 				labels: labels,
+				datasets: dataArr.map((d, i) => {
+					return ({
+						id: d.id,
+						lat: d.lat,
+						long: d.long,
+						backgroundColor: d.color,
+						colors: [d.color],
+						borderColor: d.color,
+						borderWidth: hoverID === d.id ? 8 : 3,
+						fill: false,
+						label: [d.name + i],
+						data: d.data.map(f => ({ x: f.created, y: f.data.value }))
+					})
+				}) },
+			barDataSets: {
+				labels: labels,
 				datasets: dataArr.map((d) => ({
 					id: d.id,
 					lat: d.lat,
 					long: d.long,
 					backgroundColor: d.color,
-					colors: [d.color],
 					borderColor: d.color,
-					borderWidth: hoverID === d.id ? 8 : 3,
+					borderWidth: hoverID === d.id ? 4 : 0,
 					fill: false,
 					label: [d.name],
-					data: d.data.map(f => ({ x: f.created, y: f.data.value }))
-				})),
-				barDataSets: {
-					labels: labels,
-					datasets: dataArr.map((d) => ({
-						id: d.id,
-						lat: d.lat,
-						long: d.long,
-						backgroundColor: d.color,
-						borderColor: d.color,
-						borderWidth: hoverID === d.id ? 4 : 0,
-						fill: false,
-						label: [d.name],
-						data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
-					}))
-				},
-				roundDataSets:
+					data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
+				}))
+			},
+			roundDataSets:
 					dataArr.map(d => ({
 						name: d.name,
 						color: d.color,
@@ -579,8 +584,8 @@ export const setMeterData = (dataArr, from, to, hoverID) => {
 							data: Object.entries(d.data).map(d => d[1])
 						}]
 					}))
-			}
 		}
 	}
+	console.log('state', state)
 	return state
 }

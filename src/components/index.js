@@ -6,6 +6,7 @@ import BarChart from './Charts/BarChart'
 import LineChart from './Charts/LineChart'
 import DoughnutChart from './Charts/DoughnutChart'
 import PieChart	 from './Charts/PieChart'
+import MultiLineChart from './Charts/MultiLineChart'
 
 // ##############################
 // // // Cards
@@ -97,6 +98,7 @@ import WeatherIcon from './Typography/WeatherIcon'
 import T from './Typography/T.js'
 
 export {
+	MultiLineChart,
 	DatePicker,
 	DateTimePicker,
 	AddressInput,

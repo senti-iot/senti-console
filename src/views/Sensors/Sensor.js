@@ -16,8 +16,10 @@ import SensorDetails from './SensorCards/SensorDetails';
 import SensorProtocol from './SensorCards/SensorProtocol';
 // import { getSensorDataClean } from 'variables/dataRegistry';
 import { getWMeterData } from 'components/Charts/DataModel';
-import { teal } from '@material-ui/core/colors';
-import ChartData from 'views/Charts/ChartData';
+// import { teal, red } from '@material-ui/core/colors';
+// import ChartData from 'views/Charts/ChartData';
+import DoubleChartData from 'views/Charts/DoubleChartData';
+import { colors } from 'variables/colors';
 
 class Sensor extends Component {
 	constructor(props) {
@@ -60,17 +62,32 @@ class Sensor extends Component {
 		this.snackBarMessages(msgId)
 		this.getSensor(this.props.match.params.id)
 	}
-	getData = async (p) => { 
+	getData = async (periods) => { 
 		const { hoverID } = this.state
 		const { sensor } = this.props
-		let newState = await getWMeterData([{
+		console.log(periods)
+		let newState = await getWMeterData(periods.map((p, i) => ({
 			name: sensor.name,
 			id: sensor.id,
 			lat: sensor.lat,
 			long: sensor.lng,
+			from: p.from,
+			to: p.to,
 			org: sensor.org ? sensor.org.name : "",
-			color: teal[500]
-		}], p.from, p.to, hoverID, false)
+			color: colors[i]
+		})), null, null, hoverID )
+		// let newState = await getWMeterData([{
+		//  {
+		// 	name: sensor.name,
+		// 	id: sensor.id,
+		// 	lat: sensor.lat,
+		// 	long: sensor.lng,
+		// 	from: p.from,
+		// 	to: p.to,
+		// 	org: sensor.org ? sensor.org.name : "",
+		// 	color: red[500]
+		// }
+		// ], p.from, p.to, hoverID, false)
 		return newState
 	}
 	getSensor = async (id) => {
@@ -212,20 +229,22 @@ class Sensor extends Component {
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
-						{this.props.periods.map((period, i) => {
-							if (period.hide) { return null }
-							return <ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
-								<ChartData
-									single
-									getData={this.getData}
-									period={period}
-									device={sensor}
-									history={this.props.history}
-									match={this.props.match}
-									t={this.props.t}
-								/>
-							</ItemGrid>
-						})}
+						{/* {this.props.periods.map((period, i) => { */}
+						{/* if (period.hide) { return null } */}
+						{/* return  */}
+						<ItemGrid xs={12} /* md={this.handleDataSize(i)} */ noMargin /* key={i} id={i} */>
+							<DoubleChartData
+								// single
+								getData={this.getData}
+								periods={this.props.periods}
+								device={sensor}
+								history={this.props.history}
+								match={this.props.match}
+								setHoverID={() => {}}
+								t={this.props.t}
+							/>
+						</ItemGrid>
+						{/* })} */}
 					</GridContainer></Fade>
 					: this.renderLoader()}
 			</Fragment>
