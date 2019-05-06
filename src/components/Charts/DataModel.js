@@ -496,13 +496,14 @@ export const getWMeterData = async (objArr, from, to, hoverId, raw, simple) => {
 		// else {
 		// 	data = await getDataMinutely(o.id, startDate, endDate, raw)
 		// }
+		console.log('Data', data)
 		dataSet = {
 			name: o.name,
 			id: o.id,
 			lat: o.lat,
 			long: o.long,
 			org: o.org,
-			data: regenerateData(data, 'day'),
+			data: data,
 			...o,
 		}
 		return dataArr.push(dataSet)
@@ -516,7 +517,70 @@ export const getWMeterData = async (objArr, from, to, hoverId, raw, simple) => {
 	dataArr = handleRequestSort('name', 'asc', dataArr)
 	if (simple)
 		return dataArr
-	let newState = setMinutelyData(dataArr, from, to, hoverId)
-	let exportData = setExportData(dataArr, 'minute')
+	console.log('dataArr', dataArr)
+	let newState = setMeterData(dataArr, from, to, hoverId)
+	// let exportData = setExportData(dataArr, 'daily')
+	let exportData = []
 	return { ...newState, exportData, dataArr }
+}
+
+
+export const setMeterData = (dataArr, from, to, hoverID) => {
+	console.log(dataArr)
+	let labels = hoursToArr(from, to)
+	let state = {
+		loading: false,
+		timeType: 2,
+		lineDataSets: null,
+		roundDataSets: null,
+		barDataSets: null
+	}
+	if (dataArr.length > 0) {
+		state = {
+			loading: false,
+			lineDataSets: {
+				labels: labels,
+				datasets: dataArr.map((d) => ({
+					id: d.id,
+					lat: d.lat,
+					long: d.long,
+					backgroundColor: d.color,
+					colors: [d.color],
+					borderColor: d.color,
+					borderWidth: hoverID === d.id ? 8 : 3,
+					fill: false,
+					label: [d.name],
+					data: d.data.map(f => ({ x: f.created, y: f.data.value }))
+				})),
+				barDataSets: {
+					labels: labels,
+					datasets: dataArr.map((d) => ({
+						id: d.id,
+						lat: d.lat,
+						long: d.long,
+						backgroundColor: d.color,
+						borderColor: d.color,
+						borderWidth: hoverID === d.id ? 4 : 0,
+						fill: false,
+						label: [d.name],
+						data: Object.entries(d.data).map(d => ({ x: d[0], y: d[1] }))
+					}))
+				},
+				roundDataSets:
+					dataArr.map(d => ({
+						name: d.name,
+						color: d.color,
+						labels: Object.entries(d.data).map(l => ['', moment(l[0]), l[1]]),
+						datasets: [{
+							id: d.id,
+							lat: d.lat,
+							long: d.long,
+							backgroundColor: Object.entries(d.data).map((d, i) => colors[i]),
+							data: Object.entries(d.data).map(d => d[1])
+						}]
+					}))
+			}
+		}
+	}
+	return state
 }

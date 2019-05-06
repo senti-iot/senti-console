@@ -41,9 +41,9 @@ class SensorDetails extends Component {
 		const { t, classes } = this.props
 		switch (val) {
 			case 0:
-				return <ItemG container><Block className={classes.blocked} /> {t('sensors.fields.communications.blocked')}</ItemG>
+				return <ItemG container><Block className={classes.blocked} /> <Info>{t('sensors.fields.communications.blocked')}</Info></ItemG>
 			case 1:
-				return <ItemG container><CheckCircle className={classes.allowed} /> {t('sensors.fields.communications.allowed')}</ItemG>
+				return <ItemG container><CheckCircle className={classes.allowed} /> <Info>{t('sensors.fields.communications.allowed')}</Info></ItemG>
 			default:
 				break;
 		}
@@ -80,7 +80,7 @@ class SensorDetails extends Component {
 						</ItemG>
 						<ItemG xs>
 							<Caption>{t('sensors.fields.communication')}</Caption>
-							<Info>{this.renderCommunication(sensor.communication)}</Info>
+							{this.renderCommunication(sensor.communication)}
 						</ItemG>
 						<ItemG xs={12}>
 							<Caption>{t('registries.fields.registry')}</Caption>

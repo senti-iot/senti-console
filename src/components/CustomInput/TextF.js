@@ -56,7 +56,7 @@ const TextF = (props) => {
 }
 TextF.propTypes = {
 	id: PropTypes.string.isRequired,
-	label: PropTypes.string.isRequired,
+	// label: PropTypes.string.isRequired,
 	value: PropTypes.string.isRequired,
 	handleChange: PropTypes.func,
 	handleClick: PropTypes.func,

@@ -82,6 +82,7 @@ class SensorDetails extends Component {
 								<TextF
 									fullWidth
 									readOnly
+									label={''}
 									value={`v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.name}/publish`}
 									InputProps={{
 										endAdornment:
@@ -101,6 +102,7 @@ class SensorDetails extends Component {
 								<Caption>{t('registries.fields.protocols.http')} POST</Caption>
 								<TextF 
 									fullWidth
+									label={''}
 									readOnly
 									value={`https://iotdevice.senti.cloud/v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.name}/publish`}
 									InputProps = {{ endAdornment:
@@ -122,6 +124,7 @@ class SensorDetails extends Component {
 								<Caption>{t('registries.fields.protocols.mqtt')}</Caption>
 								<TextF
 									fullWidth
+									label={''}
 									readOnly
 									value={`v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.name}/state/*event*`}
 									InputProps = {{ endAdornment:
