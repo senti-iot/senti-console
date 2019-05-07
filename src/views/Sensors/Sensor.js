@@ -19,7 +19,8 @@ import { getWMeterData } from 'components/Charts/DataModel';
 // import { teal, red } from '@material-ui/core/colors';
 // import ChartData from 'views/Charts/ChartData';
 import DoubleChartData from 'views/Charts/DoubleChartData';
-import { colors } from 'variables/colors';
+// import { colors } from 'variables/colors';
+import { teal } from '@material-ui/core/colors';
 
 class Sensor extends Component {
 	constructor(props) {
@@ -62,31 +63,19 @@ class Sensor extends Component {
 		this.snackBarMessages(msgId)
 		this.getSensor(this.props.match.params.id)
 	}
-	getData = async (periods) => { 
+	getData = async (period) => { 
 		const { hoverID } = this.state
 		const { sensor } = this.props
-		let newState = await getWMeterData(periods.map((p, i) => ({
+		let newState = await getWMeterData([{
 			name: sensor.name,
 			id: sensor.id,
 			lat: sensor.lat,
 			long: sensor.lng,
-			from: p.from,
-			to: p.to,
+			from: period.from,
+			to: period.to,
 			org: sensor.org ? sensor.org.name : "",
-			color: colors[i]
-		})), null, null, hoverID )
-		// let newState = await getWMeterData([{
-		//  {
-		// 	name: sensor.name,
-		// 	id: sensor.id,
-		// 	lat: sensor.lat,
-		// 	long: sensor.lng,
-		// 	from: p.from,
-		// 	to: p.to,
-		// 	org: sensor.org ? sensor.org.name : "",
-		// 	color: red[500]
-		// }
-		// ], p.from, p.to, hoverID, false)
+			color: teal[500]
+		}], null, null, hoverID )
 		return newState
 	}
 	getSensor = async (id) => {
@@ -189,7 +178,7 @@ class Sensor extends Component {
 		return 6
 	}
 	render() {
-		const { history, match, t, accessLevel, sensor, loading } = this.props
+		const { history, match, t, accessLevel, sensor, loading, periods } = this.props
 		return (
 			<Fragment>
 				{!loading ? <Fade in={true}>
@@ -211,18 +200,21 @@ class Sensor extends Component {
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
-						<ItemGrid xs={12} /* md={this.handleDataSize(i)} */ noMargin /* key={i} id={i} */>
-							<DoubleChartData
+						{periods.map((period, i) => {
+
+							return <ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
+								<DoubleChartData
 								// single
-								getData={this.getData}
-								periods={this.props.periods}
-								device={sensor}
-								history={this.props.history}
-								match={this.props.match}
-								setHoverID={() => {}}
-								t={this.props.t}
-							/>
-						</ItemGrid>
+									getData={this.getData}
+									period={period}
+									device={sensor}
+									history={this.props.history}
+									match={this.props.match}
+									setHoverID={() => {}}
+									t={this.props.t}
+								/>
+							</ItemGrid>
+						})}
 						<ItemGrid xs={12} noMargin id='details'>
 							<SensorProtocol
 								isFav={this.props.isFav({ id: sensor.id, type: 'sensor' })}

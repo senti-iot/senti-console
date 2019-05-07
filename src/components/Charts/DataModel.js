@@ -483,22 +483,20 @@ export const setMinutelyData = (dataArr, from, to, hoverID) => {
 	return state
 }
 
-export const getWMeterData = async (objArr, from, to, hoverId, raw, simple) => {
+export const getWMeterData = async (objArr, from, to, hoverId, raw, prevPeriod) => {
 	// let startDate = moment(from).format(format)
 	// let endDate = moment(to).format(format)
 	let dataArr = []
-	let dataSet = null
-	let data = null
+	let dataSet, dataSet2 = null
+	let data, data2 = null
 	await Promise.all(objArr.map(async o => {
 		let startDate = moment(o.from).format(format)
 		let endDate = moment(o.to).format(format)
+		let prevStartDate = moment(o.from).subtract(moment(o.to).diff(o.from, 'hour')).format(format)
+		let prevEndDate = moment(o.to).subtract(moment(o.to).diff(o.from, 'hour')).format(format)
 		data = await getSensorDataClean(o.id, startDate, endDate, false)
-		// if (type === 'device')
-		// 	data = await getDeviceDataMinutely(o.id, startDate, endDate, raw)
-		// else {
-		// 	data = await getDataMinutely(o.id, startDate, endDate, raw)
-		// }
-		console.log('Data', data)
+		data2 = await getSensorDataClean(o.id, prevStartDate, prevEndDate, false)
+		console.log(o)
 		dataSet = {
 			name: o.name,
 			id: o.id,
@@ -506,9 +504,22 @@ export const getWMeterData = async (objArr, from, to, hoverId, raw, simple) => {
 			long: o.long,
 			org: o.org,
 			data: data,
+			fill: false,
 			...o,
 		}
-		return dataArr.push(dataSet)
+		dataSet2 = {
+			name: o.name,
+			id: o.id,
+			lat: o.lat,
+			long: o.long,
+			org: o.org,
+			data: data2,
+			...o,
+			backgroundColor: '#5c5c5c33',
+			fill: true,
+			color: '#5c5c5c33',
+		}
+		return dataArr.push(dataSet, dataSet2)
 	}))
 	//Filter nulls
 	dataArr = dataArr.reduce((newArr, d) => {
@@ -517,9 +528,9 @@ export const getWMeterData = async (objArr, from, to, hoverId, raw, simple) => {
 		return newArr
 	}, [])
 	dataArr = handleRequestSort('name', 'asc', dataArr)
-	if (simple)
-		return dataArr
-	console.log('dataArr', dataArr)
+	// if (simple)
+	// return dataArr
+	// console.log('dataArr', dataArr)
 	let newState = setMeterData(dataArr, from, to, hoverId)
 	// let exportData = setExportData(dataArr, 'daily')
 	let exportData = []
@@ -530,7 +541,9 @@ export const getWMeterData = async (objArr, from, to, hoverId, raw, simple) => {
 export const setMeterData = (dataArr, hoverID) => {
 	console.log('dataArrSetFunc', dataArr)
 	
-	let labels = dataArr.map(p => {return hoursToArr(p.from, p.to)}).flat()
+	// let labels = dataArr.map(p => {return allHoursToArr(p.from, p.to)}).flat()
+	let labels = dataArr[0].data.map(d => d.created).flat()
+	console.log('labels', labels)
 	let state = {
 		loading: false,
 		timeType: 2,
@@ -552,9 +565,9 @@ export const setMeterData = (dataArr, hoverID) => {
 						colors: [d.color],
 						borderColor: d.color,
 						borderWidth: hoverID === d.id ? 8 : 3,
-						fill: false,
+						fill: d.fill,
 						label: [d.name + i],
-						data: d.data.map(f => ({ x: f.created, y: f.data.value }))
+						data: d.data.map(f => ({ x: f.created, y: f.data.value + Math.random() * 10 }))
 					})
 				}) },
 			barDataSets: {
