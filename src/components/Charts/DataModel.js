@@ -515,6 +515,8 @@ export const getWMeterData = async (objArr, from, to, hoverId, raw, prevPeriod) 
 			org: o.org,
 			data: data2,
 			...o,
+			from: moment(o.from).subtract(moment(o.to).diff(o.from, 'hour')),
+			to: moment(o.to).subtract(moment(o.to).diff(o.from, 'hour')),
 			backgroundColor: '#5c5c5c33',
 			fill: true,
 			color: '#5c5c5c33',
@@ -538,12 +540,9 @@ export const getWMeterData = async (objArr, from, to, hoverId, raw, prevPeriod) 
 }
 
 
-export const setMeterData = (dataArr, hoverID) => {
-	console.log('dataArrSetFunc', dataArr)
-	
+export const setMeterData = (dataArr, hoverID) => {	
 	// let labels = dataArr.map(p => {return allHoursToArr(p.from, p.to)}).flat()
 	let labels = dataArr[0].data.map(d => d.created).flat()
-	console.log('labels', labels)
 	let state = {
 		loading: false,
 		timeType: 2,
@@ -566,7 +565,7 @@ export const setMeterData = (dataArr, hoverID) => {
 						borderColor: d.color,
 						borderWidth: hoverID === d.id ? 8 : 3,
 						fill: d.fill,
-						label: [d.name + i],
+						label: [`${moment(d.from).format('lll')} - ${moment(d.to).format('lll')}`],
 						data: d.data.map(f => ({ x: f.created, y: f.data.value + Math.random() * 10 }))
 					})
 				}) },
