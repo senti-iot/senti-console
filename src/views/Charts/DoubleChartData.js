@@ -85,6 +85,17 @@ class DoubleChartData extends PureComponent {
 
 	componentWillUnmount = () => {
 		this._isMounted = 0
+		this.setState({
+			raw: this.props.raw ? this.props.raw : false,
+			actionAnchor: null,
+			openDownload: false,
+			visibility: false,
+			resetZoom: false,
+			zoomDate: [],
+			loading: true,
+			chartType: 'linear',
+			initialPeriod: null
+		})
 	}
 	handleChangeChartType = (type) => {
 		this.setState({
@@ -220,7 +231,7 @@ class DoubleChartData extends PureComponent {
 		else {
 			if (initialPeriod.menuId === 6) {
 				diff = moment(period.to).diff(moment(period.from), 'minute')
-				from = moment(period.from).subtaddraddact(diff + 1, 'minute').startOf(this.timeTypes[period.timeType].chart)
+				from = moment(period.from).add(diff + 1, 'minute').startOf(this.timeTypes[period.timeType].chart)
 				to = moment(period.to).add(diff + 1, 'minute').endOf(this.timeTypes[period.timeType].chart)
 				to = this.futureTester(to, this.timeTypes[period.timeType].chart) ? moment() : to
 

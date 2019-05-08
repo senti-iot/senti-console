@@ -310,14 +310,24 @@ export const getRegistryLS = async (customerID, id) => {
 		})
 	}
 }
-export const getSensorLS = async (customerID, id) => {
+export const unassignSensor = () => {
+	return dispatch => {
+		dispatch({ type: setSensor, payload: null })
+		dispatch({ type: gotSensor, payload: false })
+	}
+}
+export const getSensorLS = async ( id) => {
 	return async dispatch => {
 		dispatch({ type: gotSensor, payload: false })
-		let registry = get('registry.' + id)
-		if (registry) {
+		dispatch({
+			type: setSensor,
+			payload: null
+		})
+		let sensor = get('sensor.' + id)
+		if (sensor) {
 			dispatch({
 				type: setSensor,
-				payload: registry
+				payload: sensor
 			})
 			dispatch({
 				type: gotSensor,
@@ -334,16 +344,16 @@ export const getSensorLS = async (customerID, id) => {
 				payload: null
 			})
 		}
-		await getSensor(customerID, id).then(async rs => {
-			if (!compare(registry, rs)) {
-				registry = {
+		await getSensor(id).then(async rs => {
+			if (!compare(sensor, rs)) {
+				sensor = {
 					...rs,
 				}
 				dispatch({
 					type: setSensor,
-					payload: registry
+					payload: sensor
 				})
-				set('registry.' + id, registry)
+				set('sensor.' + id, sensor)
 				dispatch({
 					type: gotSensor,
 					payload: true

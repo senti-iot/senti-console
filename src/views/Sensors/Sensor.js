@@ -10,7 +10,7 @@ import { DataUsage } from 'variables/icons';
 // import Toolbar from 'components/Toolbar/Toolbar';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { scrollToAnchor } from 'variables/functions';
-import { getSensorLS } from 'redux/data';
+import { getSensorLS, unassignSensor } from 'redux/data';
 // import SensorDetails from './SensorCards/SensorDetails';
 import SensorDetails from './SensorCards/SensorDetails';
 import SensorProtocol from './SensorCards/SensorProtocol';
@@ -99,8 +99,8 @@ class Sensor extends Component {
 	}
 	componentDidUpdate = async (prevProps) => {
 		const { registry } = this.props
-		if (prevProps.match.params.id !== this.props.match.params.id)
-			await this.componentDidMount()
+		// if (prevProps.match.params.id !== this.props.match.params.id)
+		// await this.componentDidMount()
 		if (registry && !prevProps.registry) {
 
 			if (registry.activeDevice) {
@@ -124,9 +124,14 @@ class Sensor extends Component {
 			}
 		}
 	}
+	componentWillUnmount = () => {
+		this.props.unassignSensor()
+		console.log('unmounting')
+	}
 	componentDidMount = async () => {
 		if (this.props.match) {
 			let id = this.props.match.params.id
+			console.log("id", id)
 			if (id) {
 				await this.getSensor(id).then(() => {
 					// this.props.setBC('registry', this.props.registry.name)
@@ -272,7 +277,8 @@ const mapDispatchToProps = (dispatch) => ({
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
 	finishedSaving: () => dispatch(finishedSaving()),
-	getSensor: async id => dispatch(await getSensorLS(id))
+	getSensor: async id => dispatch(await getSensorLS(id)),
+	unassignSensor: () => dispatch(unassignSensor())
 })
 
 

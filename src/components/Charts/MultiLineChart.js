@@ -94,7 +94,7 @@ class LineChart extends PureComponent {
 								color: props.theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0,0,0,0.1)',
 							},
 							ticks: {
-								source: 'labels',
+								// source: 'labels',
 								maxRotation: 0,
 								fontColor: props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
 							},
@@ -123,7 +123,7 @@ class LineChart extends PureComponent {
 									return value.charAt(0).toUpperCase() + value.slice(1);
 								},
 								fontColor: props.theme.palette.type === 'dark' ? ['rgba(255, 255, 255, 1)'] : ["#000"],
-								source: 'labels',
+								// source: 'labels',
 								maxRotation: 0
 							},
 							id: 'xAxis-day',

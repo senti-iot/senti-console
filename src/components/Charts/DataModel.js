@@ -423,7 +423,6 @@ export const getWifiMinutely = async (type, objArr, from, to, hoverId, raw, simp
 	let exportData = setExportData(dataArr, 'minute')
 	return { ...newState, exportData, dataArr }
 }
-
 export const setMinutelyData = (dataArr, from, to, hoverID) => {
 	let labels = minutesToArray(from, to)
 	let state = {
@@ -482,9 +481,11 @@ export const setMinutelyData = (dataArr, from, to, hoverID) => {
 	}
 	return state
 }
+
 export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, simple, prevPeriod) => {
 	let startDate = moment(from).format(format)
 	let endDate = moment(to).format(format)
+	let prevEndDate, prevStartDate = null
 	let dataArr = []
 	let dataSet, prevDataSet = null
 	let data, prevData = null
@@ -492,30 +493,34 @@ export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, simp
 		if (type === 'device') {
 			data = await getSensorDataClean(o.id, startDate, endDate)
 			if (prevPeriod) {
-				let prevEndDate = moment(o.to).subtract(moment(o.to).diff(o.from, 'hour')).format(format)
-				let prevStartDate = moment(o.from).subtract(moment(o.to).diff(o.from, 'hour')).format(format)
+				prevEndDate = moment(to).subtract(moment(to).diff(moment(from), 'hour'), 'hour').format(format)
+				prevStartDate = moment(from).subtract(moment(to).diff(moment(from), 'hour'), 'hour').format(format)
 				prevData = await getSensorDataClean(o.id, prevStartDate, prevEndDate)
+
+				Object.keys(prevData).forEach(p => {
+					prevData[moment(p, format).add(1, 'day').format('YYYY-MM-DD HH:mm')] = prevData[p]	
+					delete prevData[p];
+				})
 				console.log(prevData)
-				prevDataSet = {
-					name: o.name,
-					id: o.id,
-					lat: o.lat,
-					long: o.long,
-					from: moment(o.from).subtract(moment(o.to).diff(o.from, 'hour')),
-					to: moment(o.to).subtract(moment(o.to).diff(o.from, 'hour')),
-					org: o.org,
-					data: regenerateData(data, 'hour'),
-					...o,
-					backgroundColor: '#5c5c5c33',
-					fill: true,
-					color: '#5c5c5c33',				
-				} 
 			}
 		}
 		else {
 			data = await getDataHourly(o.id, startDate, endDate, raw)
 		}
-		
+		prevDataSet = {
+			id: o.id,
+			lat: o.lat,
+			long: o.long,
+			from: moment(startDate).subtract(moment(endDate).diff(startDate, 'hour')),
+			to: moment(endDate).subtract(moment(endDate).diff(startDate, 'hour')),
+			org: o.org,
+			...o,
+			name: 'test',
+			data: regenerateData(prevData, 'hour'),
+			backgroundColor: '#5c5c5c33',
+			fill: true,
+			color: '#5c5c5c33',
+		} 
 		dataSet = {
 			name: o.name,
 			from: from,
@@ -528,6 +533,7 @@ export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, simp
 			data: regenerateData(data, 'hour'),
 			...o,
 		}
+		console.log(prevDataSet)
 		return dataArr.push(dataSet, prevDataSet)
 	}))
 	//Filter nulls
@@ -557,7 +563,7 @@ export const getWMeterData = async (objArr, from, to, hoverId, raw, prevPeriod) 
 		let prevEndDate = moment(o.to).subtract(moment(o.to).diff(o.from, 'hour')).format(format)
 		data = await getSensorDataClean(o.id, startDate, endDate, false)
 		data2 = await getSensorDataClean(o.id, prevStartDate, prevEndDate, false)
-		console.log(o)
+		// console.log(o)
 		dataSet = {
 			name: o.name,
 			id: o.id,
