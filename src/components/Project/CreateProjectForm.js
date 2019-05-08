@@ -225,7 +225,7 @@ class CreateProjectForm extends Component {
 						</ItemGrid>
 						<ItemGrid xs={12}>
 							<DatePicker
-								label={t('projects.fields.endDate')}
+								label={t('projects.fields.startDate')}
 								value={startDate}
 								onChange={handleDateChange('startDate')}
 								error={error}
