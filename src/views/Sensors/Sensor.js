@@ -15,12 +15,13 @@ import { getSensorLS } from 'redux/data';
 import SensorDetails from './SensorCards/SensorDetails';
 import SensorProtocol from './SensorCards/SensorProtocol';
 // import { getSensorDataClean } from 'variables/dataRegistry';
-import { getWMeterData } from 'components/Charts/DataModel';
+import { getWMeterData, getWMeterDatav2 } from 'components/Charts/DataModel';
 // import { teal, red } from '@material-ui/core/colors';
 // import ChartData from 'views/Charts/ChartData';
 import DoubleChartData from 'views/Charts/DoubleChartData';
 // import { colors } from 'variables/colors';
 import { teal } from '@material-ui/core/colors';
+// import ChartData from 'views/Charts/ChartData';
 
 class Sensor extends Component {
 	constructor(props) {
@@ -76,6 +77,20 @@ class Sensor extends Component {
 			org: sensor.org ? sensor.org.name : "",
 			color: teal[500]
 		}], null, null, hoverID )
+		return newState
+	}
+	getWifiHourly = async (p) => {
+		const { hoverID } = this.state 	
+		const device = this.props.sensor
+		this.setState({ loadingData: true })
+		let newState = await getWMeterDatav2('device', [{
+			name: device.name,
+			id: device.id,
+			lat: device.lat,
+			long: device.long,
+			org: device.org ? device.org.name : "",
+			color: teal[500]
+		}], p.from, p.to, hoverID, p.raw, undefined, true)
 		return newState
 	}
 	getSensor = async (id) => {
@@ -139,7 +154,7 @@ class Sensor extends Component {
 		let favObj = {
 			id: registry.id,
 			name: registry.name,
-			type: 'registry',
+			type: 'sensor',
 			path: this.props.match.url
 		}
 		this.props.addToFav(favObj)
@@ -204,8 +219,8 @@ class Sensor extends Component {
 
 							return <ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
 								<DoubleChartData
-								// single
-									getData={this.getData}
+									single
+									getData={this.getWifiHourly}
 									period={period}
 									device={sensor}
 									history={this.props.history}

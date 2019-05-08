@@ -407,7 +407,7 @@ class DoubleChartData extends PureComponent {
 					return lineDataSets ?
 						<MultiLineChart
 							chartYAxis={this.state.chartType}
-							single={single}
+							// single={single}
 							hoverID={this.props.hoverID}
 							handleReverseZoomOnData={this.handleReverseZoomOnData}
 							resetZoom={this.state.resetZoom}

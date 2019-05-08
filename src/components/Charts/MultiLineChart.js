@@ -88,37 +88,55 @@ class LineChart extends PureComponent {
 					mode: 'point'
 				},
 				scales: {
-					xAxes: [{
-						ticks: {
-
-							callback: function (value) {
-								return moment(value).format('HH:mm');
+					xAxes: [
+						{
+							gridLines: {
+								color: props.theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0,0,0,0.1)',
+							},
+							ticks: {
+								source: 'labels',
+								maxRotation: 0,
+								fontColor: props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
+							},
+							id: 'xAxis',
+							type: 'time',
+							time: {
+								displayFormats: {
+									hour: 'LT',
+									day: 'DD MMM',
+									minute: 'LT'
+								},
+								unit: props.unit.chart,
+								tooltipFormat: props.unit.format
 							},
 						},
-						scaleLabel: {
-							display: false,
-							labelString: 'Date'
-						}
-					},
-					{
-						gridLines: {
-							display: false
-						},
-						type: 'time',
-						time: {
-							unit: 'day'
-						},
-						ticks: {
+						{
+							display: props.unit.chart === 'day' ? true : false,
+							gridLines: {
+								display: false,
+								drawBorder: false,
+								drawTicks: false,
+							},
+							ticks: {
 
-							// callback: function (value) {
-							// return moment(value).format('HH:mm');
-							// },
+								callback: function (value) {
+									return value.charAt(0).toUpperCase() + value.slice(1);
+								},
+								fontColor: props.theme.palette.type === 'dark' ? ['rgba(255, 255, 255, 1)'] : ["#000"],
+								source: 'labels',
+								maxRotation: 0
+							},
+							id: 'xAxis-day',
+							type: 'time',
+							time: {
+								displayFormats: {
+									day: 'dddd',
+								},
+								unit: props.unit.chart,
+								tooltipFormat: props.unit.format
+							},
 						},
-						scaleLabel: {
-							// display: true,
-							// labelString: 'Date'
-						}
-					}],
+					],
 					yAxes: [{
 						scaleLabel: {
 							display: false,
@@ -304,37 +322,43 @@ class LineChart extends PureComponent {
 				...this.state.lineOptions,
 				scales: {
 					...this.state.lineOptions.scales,
-					xAxes: [{
-						ticks: {
-
-							callback: function (value) {
-								return moment(value).format('HH:mm');
+					xAxes: [
+						{
+							id: 'xAxis',
+							type: 'time',
+							time: {
+								displayFormats: {
+									hour: 'LT',
+									day: 'DD MMM',
+									minute: 'LT'
+								},
+								unit: this.props.unit.chart,
+								tooltipFormat: this.props.unit.format
 							},
 						},
-						scaleLabel: {
-							display: false,
-							labelString: 'Date'
-						}
-					},
-					{
-						gridLines: {
-							display: false
-						},
-						type: 'time',
-						time: {
-							unit: 'day'
-						},
-						ticks: {
-
-							// callback: function (value) {
-							// return moment(value).format('HH:mm');
-							// },
-						},
-						scaleLabel: {
-							// display: true,
-							// labelString: 'Date'
-						}
-					}],
+						{
+							display: this.props.unit.chart === 'day' ? true : false,
+							gridLines: {
+								drawBorder: false,
+								drawTicks: false,
+							},
+							ticks: {
+								callback: function (value) {
+									return value.charAt(0).toUpperCase() + value.slice(1);
+								},
+								source: 'labels',
+								maxRotation: 0
+							},
+							id: 'xAxis-day',
+							type: 'time',
+							time: {
+								displayFormats: {
+									day: 'dddd',
+								},
+								unit: this.props.unit.chart,
+								tooltipFormat: this.props.unit.format
+							},
+						}],
 					yAxes: [{
 						scaleLabel: {
 							display: false,
