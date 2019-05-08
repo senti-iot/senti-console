@@ -432,7 +432,7 @@ class Sensors extends Component {
 		const { selected } = this.state
 		return <TableToolbar
 			ft={this.ft()}
-			reduxKey={'devices'}
+			reduxKey={'sensors'}
 			numSelected={selected.length}
 			options={this.options}
 			t={t}
