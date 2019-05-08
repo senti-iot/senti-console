@@ -83,13 +83,13 @@ class SensorDetails extends Component {
 									fullWidth
 									readOnly
 									label={''}
-									value={`v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.name}/publish`}
+									value={`v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/publish`}
 									InputProps={{
 										endAdornment:
 											<ItemG>
 												<IconButton onClick={() => {
 													this.props.s('snackbars.urlCopied')
-													copyToClipboard(`v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.name}/publish`)
+													copyToClipboard(`v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/publish`)
 												}
 												}>
 													<ContentCopy />
@@ -104,12 +104,12 @@ class SensorDetails extends Component {
 									fullWidth
 									label={''}
 									readOnly
-									value={`https://iotdevice.senti.cloud/v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.name}/publish`}
+									value={`https://iotdevice.senti.cloud/v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/publish`}
 									InputProps = {{ endAdornment:
 										<ItemG>
 											<IconButton onClick={() => { 
 												this.props.s('snackbars.urlCopied')
-												copyToClipboard(`https://iotdevice.senti.cloud/v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.name}/publish`)}
+												copyToClipboard(`https://iotdevice.senti.cloud/v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/publish`)}
 											}>
 												<ContentCopy/>
 											</IconButton>
@@ -126,12 +126,12 @@ class SensorDetails extends Component {
 									fullWidth
 									label={''}
 									readOnly
-									value={`v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.name}/state/*event*`}
+									value={`v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/state/*event*`}
 									InputProps = {{ endAdornment:
 										<ItemG>
 											<IconButton onClick={() => { 
 												this.props.s('snackbars.urlCopied')
-												copyToClipboard(`v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.name}/state/*event*`)}
+												copyToClipboard(`v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/state/*event*`)}
 											}>
 												<ContentCopy/>
 											</IconButton>
@@ -144,12 +144,12 @@ class SensorDetails extends Component {
 								<TextF 
 									fullWidth
 									readOnly
-									value={`https://iotdevice.senti.cloud/v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.name}/state/*event*`}
+									value={`https://iotdevice.senti.cloud/v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/state/*event*`}
 									InputProps = {{ endAdornment:
 										<ItemG>
 											<IconButton onClick={() => { 
 												this.props.s('snackbars.urlCopied')
-												copyToClipboard(`https://iotdevice.senti.cloud/v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.name}/state/*event*`)}
+												copyToClipboard(`https://iotdevice.senti.cloud/v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/state/*event*`)}
 											}>
 												<ContentCopy/>
 											</IconButton>
