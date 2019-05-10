@@ -80,6 +80,7 @@ class SensorDetails extends Component {
 							{sensor.protocol === 1 || sensor.protocol === 3 ? <ItemG xs={12}>
 								<Caption>{t('registries.fields.protocols.mqtt')}</Caption>
 								<TextF
+									id={'mqtt-publish'}
 									fullWidth
 									readOnly
 									label={''}
@@ -101,6 +102,7 @@ class SensorDetails extends Component {
 							{sensor.protocol === 2 || sensor.protocol === 3 ? <ItemG xs={12}>
 								<Caption>{t('registries.fields.protocols.http')} POST</Caption>
 								<TextF 
+									id={'htpp-publish'}
 									fullWidth
 									label={''}
 									readOnly
@@ -123,6 +125,7 @@ class SensorDetails extends Component {
 							{sensor.protocol === 1 || sensor.protocol === 3 ? <ItemG xs={12}>
 								<Caption>{t('registries.fields.protocols.mqtt')}</Caption>
 								<TextF
+									id={'mqtt-state'}
 									fullWidth
 									label={''}
 									readOnly
@@ -142,6 +145,7 @@ class SensorDetails extends Component {
 							{sensor.protocol === 2 || sensor.protocol === 3 ? <ItemG xs={12}>
 								<Caption>{t('registries.fields.protocols.http')}</Caption>
 								<TextF 
+									id={'http-state'}
 									fullWidth
 									readOnly
 									value={`https://iotdevice.senti.cloud/v1/webhouse/location/europe/registries/${sensor.regUUID}/devices/${sensor.uuid}/state/*event*`}

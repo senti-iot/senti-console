@@ -246,6 +246,47 @@ class Sidebar extends Component {
 					{routes.map((route, index) => {
 						if (route.redirect) return null;
 						if (route.hideFromSideBar) return null;
+						if (route.dropdown) {
+							return <Fragment key={index}>
+								
+								<ListItem /* component={Button */
+									button
+									onClick={(e) => { this.dropdown(e)(route.menuRoute); return this.props.drawerCloseOnNav ? this.closeDrawer() : undefined }}
+									to={route.path + (route.defaultView ? defaultView : '')}
+									classes={{
+										button: classNames({
+											[classes.buttonOpen]: true,
+											[classes.buttonClose]: !true,
+											[classes.buttonActiveRoute]: this.props.menuRoute.includes(route.menuRoute) ? true : false,
+											[classes.button]: true
+										})
+									}}>
+									<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><route.icon /></ListItemIcon>
+									<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
+								</ListItem>
+								<Collapse in={this.state[route.menuRoute]}>
+									{route.items.map((i, ind) => 
+										<ListItem component={NavLink}
+											key={ind}
+											button
+											onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
+											to={i.path + (i.defaultView ? defaultView : '')}
+											classes={{
+												button: classNames({
+													[classes.buttonOpen]: true,
+													[classes.buttonClose]: !true,
+													[classes.buttonActiveRoute]: this.activeRoute(i.menuRoute),
+													[classes.button]: true,
+													[classes.nested]: true
+												})
+											}}>
+											<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><i.icon /></ListItemIcon>
+											<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(i.sidebarName)} />
+										</ListItem>
+									)}
+								</Collapse>
+							</Fragment>
+						}
 						return <ListItem component={NavLink}
 							button
 							to={route.path + (route.defaultView ? defaultView : '')}

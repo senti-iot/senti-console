@@ -9,7 +9,7 @@ import { withRouter } from 'react-router-dom'
 // import { dateFormatter } from 'variables/functions'
 import TableHeader from 'components/Table/TableHeader'
 import { ItemGrid, Info, Caption, ItemG } from 'components'
-import { Block, CheckCircle } from 'variables/icons'
+import { Block, CheckCircle, CellWifi } from 'variables/icons'
 import { connect } from 'react-redux'
 import TP from 'components/Table/TP';
 import TC from 'components/Table/TC';
@@ -81,6 +81,17 @@ class SensorTable extends React.Component {
 				break;
 		}
 	}
+	renderSmallCommunication = (val) => {
+		const { classes } = this.props
+		switch (val) {
+			case 0:
+				return <ItemG container><Block className={classes.blocked} /></ItemG>
+			case 1:
+				return <ItemG container><CheckCircle className={classes.allowed} /></ItemG>
+			default:
+				break;
+		}
+	}
 	renderCommunication = (val) => {
 		const { t, classes } = this.props
 		switch (val) {
@@ -116,9 +127,15 @@ class SensorTable extends React.Component {
 							classes={classes}
 							customColumn={[
 								{
-									id: 'title',
+									id: 'communication',
 									label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
-										{t('collections.fields.project')}
+										<CellWifi />
+									</Typography>
+								},
+								{
+									id: 'name',
+									label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
+										{t('devices.pageTitle')}
 									</Typography>
 								}
 							]}
@@ -141,16 +158,19 @@ class SensorTable extends React.Component {
 									>
 										<Hidden lgUp>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
+											<TC checkbox content={this.renderSmallCommunication(n.communication)}/>
 											<TC content={
 												<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Info noWrap paragraphCell={classes.noMargin}>
-															{n.title}
+															{n.name}
 														</Info>
 													</ItemGrid>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+														{/* {this.renderCommunication(n.communication)} */}
 														<Caption noWrap className={classes.noMargin}>
-															{`${n.org ? n.org.name : t('users.fields.noOrg')}`}
+															{dateFormatter(n.created)}
+															{/* {`${n.org ? n.org.name : t('users.fields.noOrg')}`} */}
 														</Caption>
 													</ItemGrid>
 												</ItemGrid>
