@@ -491,7 +491,9 @@
             "device": "Rediger enhed",
             "org": "Rediger organisation",
             "project": "Rediger projekt",
-            "user": "Rediger bruger"
+			"user": "Rediger bruger",
+			"registry": "Rediger register",
+			"devicetype": "Rediger enhedstype"
         },
         "export": "Eksporter data",
         "exportPDF": "Print som PDF",
@@ -863,7 +865,8 @@
     },
     "sidebar": {
 		"registries": "Registre",
-		"devicetypes": "Enhedstype",
+		"devicetype": "Enhedstype",
+		"devicetypes": "Enhedstyper",
 		"manage": "Konfiguration",
 		"device": "Enhed",
 		"collection": "Datasamling",

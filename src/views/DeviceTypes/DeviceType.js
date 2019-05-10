@@ -35,7 +35,7 @@ class DeviceType extends Component {
 			//End Map
 		}
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/deviceTypes/list'
-		props.setHeader('deviceTypes.fields.deviceType', true, prevURL, 'deviceTypes')
+		props.setHeader('sidebar.devicetype', true, prevURL, 'deviceTypes')
 	}
 
 	format = 'YYYY-MM-DD+HH:mm'
@@ -91,7 +91,7 @@ class DeviceType extends Component {
 			let id = this.props.match.params.id
 			if (id) {
 				await this.getDeviceType(id).then(() => {
-					this.props.setBC('deviceType', this.props.deviceType.name)
+					this.props.setBC('devicetype', this.props.deviceType.name)
 				})
 				this.props.setTabs({
 					route: 0,

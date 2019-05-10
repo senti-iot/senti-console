@@ -3,16 +3,38 @@ const breadcrumbs = (t, name, id) => {
 		'registries': [
 			{ label: t('sidebar.registries'), path: '/registries' }
 		],
+		'registry': [
+			{ label: t('sidebar.registries'), path: '/registries' },
+			{ label: name, path: '/registry/%id' }
+		],
 		'createregistry': [
 			{ label: t('sidebar.registries'), path: '/registries' },
 			{ label: t('menus.create.registry'), path: '/registries/new' }
 		],
+		'editregistry': [
+			{ label: t('sidebar.registries'), path: `/registries` },
+			{ label: name, path: `/registry/${id}` },
+			{ label: t('menus.edits.registry'), path: `/registry/${id}/edit` }	
+		],
 		'sensors': [
 			{ label: t('sidebar.devices'), path: '/sensors' }
+		],
+		'sensor': [
+			{ label: t('sidebar.devices'), path: '/sensors' },
+			{ label: name, path: '/sensor/%id' }
 		],
 		'createsensor': [
 			{ label: t('sidebar.devices'), path: '/sensors' },
 			{ label: t('menus.create.device'), path: '/sensors/new' }
+		],
+		'editsensor': [
+			{ label: t('sidebar.devices'), path: `/sensors` },
+			{ label: name, path: `/sensor/${id}` },
+			{ label: t('menus.edits.device'), path: `/sensor/${id}/edit` }	
+		],
+		'devicetype': [
+			{ label: t('sidebar.devicetypes'), path: '/devicetypes' },
+			{ label: name, path: '/devicetype/%id' }
 		],
 		'devicetypes': [
 			{ label: t('sidebar.devicetypes'), path: '/devicetypes' }
