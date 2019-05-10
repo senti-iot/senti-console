@@ -29,7 +29,7 @@ class DeviceTypes extends Component {
 				keyword: '',
 			}
 		}
-		props.setHeader('devicetypes.pageTitle', false, '', 'devicetypes')
+		props.setHeader('devicetypes.pageTitle', false, '', 'manage.devicetypes')
 		props.setBC('devicetypes')
 		props.setTabs({
 			id: 'devicetypes',
