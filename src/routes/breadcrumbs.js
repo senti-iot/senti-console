@@ -1,5 +1,26 @@
 const breadcrumbs = (t, name, id) => {
 	return {
+		'registries': [
+			{ label: t('sidebar.registries'), path: '/registries' }
+		],
+		'createregistry': [
+			{ label: t('sidebar.registries'), path: '/registries' },
+			{ label: t('menus.create.registry'), path: '/registries/new' }
+		],
+		'sensors': [
+			{ label: t('sidebar.devices'), path: '/sensors' }
+		],
+		'createsensor': [
+			{ label: t('sidebar.devices'), path: '/sensors' },
+			{ label: t('menus.create.device'), path: '/sensors/new' }
+		],
+		'devicetypes': [
+			{ label: t('sidebar.devicetypes'), path: '/devicetypes' }
+		],
+		'createdevicetypes': [
+			{ label: t('sidebar.devicetypes'), path: '/devicetypes' },
+			{ label: t('menus.create.devicetype'), path: '/devicetypes/new' }
+		],
 		'createproject': [
 			{ label: t('sidebar.projects'), path: '/projects' },
 			{ label: t('menus.create.project'), path: '/projects/new' }

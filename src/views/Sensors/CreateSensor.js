@@ -35,8 +35,8 @@ class CreateCollection extends Component {
 			}
 		}
 		this.id = props.match.params.id
-		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
-		props.setHeader('registries.createSensor', true, prevURL, '')
+		let prevURL = props.location.prevURL ? props.location.prevURL : '/sensors/list'
+		props.setHeader('menus.create.device', true, prevURL, '')
 		props.setBC('createsensor')
 	}
 

@@ -21,7 +21,7 @@ class CreateCollection extends Component {
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
-		props.setHeader('registries.createRegistry', true, prevURL, '')
+		props.setHeader('menus.create.registry', true, prevURL, '')
 		props.setBC('createregistry')
 	}
 

@@ -480,7 +480,9 @@
             "device": "Opret enhed",
             "org": "Opret organisation",
             "project": "Opret projekt",
-            "user": "Opret bruger"
+			"user": "Opret bruger",
+			"devicetype": "Opret enhedstype",
+			"registry": "Opret register"
         },
         "delete": "Slet",
         "edit": "Rediger",
