@@ -145,8 +145,6 @@ class SensorTable extends React.Component {
 								const isSelected = this.isSelected(n.id);
 								return (
 									<TableRow
-										// onMouseEnter={e => { this.setHover(e, n) }}
-										// onMouseLeave={this.unsetTimeout}
 										hover
 										onClick={handleClick(n.id)}
 										role='checkbox'
@@ -167,10 +165,8 @@ class SensorTable extends React.Component {
 														</Info>
 													</ItemGrid>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
-														{/* {this.renderCommunication(n.communication)} */}
 														<Caption noWrap className={classes.noMargin}>
 															{`${n.reg_name} - ${dateFormatter(n.created)}`}
-															{/* {`${n.org ? n.org.name : t('users.fields.noOrg')}`} */}
 														</Caption>
 													</ItemGrid>
 												</ItemGrid>
@@ -184,13 +180,9 @@ class SensorTable extends React.Component {
 												onMouseEnter={e => { this.setHover(e, n) }}
 												onMouseLeave={this.unsetTimeout}
 												FirstC label={n.name}/>
-											{/* <TC label={n.region}/> */}
 											<TC label={this.renderCommunication(n.communication)} />
 											<TC label={dateFormatter(n.created)} />
 											<TC label={n.reg_id} />
-											{/* <TC label={dateFormatter(n.endDate)}/> */}
-											{/* <TC label={dateFormatter(n.created)}/> */}
-											{/* <TC label={dateFormatter(n.modified)}/> */}
 										</Hidden>
 									</TableRow>
 								)
