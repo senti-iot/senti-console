@@ -8,7 +8,7 @@ import React, { Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 // import { dateFormatter } from 'variables/functions'
 import TableHeader from 'components/Table/TableHeader'
-import { ItemGrid, Info, Caption } from 'components'
+import { ItemGrid, Info, /* Caption */ } from 'components'
 import { connect } from 'react-redux'
 import TP from 'components/Table/TP';
 import TC from 'components/Table/TC';
@@ -103,9 +103,9 @@ class DeviceTypeTable extends React.Component {
 							classes={classes}
 							customColumn={[
 								{
-									id: 'title',
+									id: 'name',
 									label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
-										{t('collections.fields.project')}
+										{t('devicetypes.fields.name')}
 									</Typography>
 								}
 							]}
@@ -132,14 +132,14 @@ class DeviceTypeTable extends React.Component {
 												<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Info noWrap paragraphCell={classes.noMargin}>
-															{n.title}
+															{n.name}
 														</Info>
 													</ItemGrid>
-													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+													{/* <ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Caption noWrap className={classes.noMargin}>
 															{`${n.org ? n.org.name : t('users.fields.noOrg')}`}
 														</Caption>
-													</ItemGrid>
+													</ItemGrid> */}
 												</ItemGrid>
 											}/>
 										</Hidden>
