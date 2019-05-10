@@ -105,9 +105,9 @@ class RegistryTable extends React.Component {
 							classes={classes}
 							customColumn={[
 								{
-									id: 'title',
+									id: 'name',
 									label: <Typography paragraph classes={{ root: classes.paragraphCell + ' ' + classes.headerCell }}>
-										{t('collections.fields.project')}
+										{t('registries.fields.name')}
 									</Typography>
 								}
 							]}
@@ -134,12 +134,17 @@ class RegistryTable extends React.Component {
 												<ItemGrid container zeroMargin noPadding alignItems={'center'}>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Info noWrap paragraphCell={classes.noMargin}>
-															{n.title}
+															{n.name}
 														</Info>
 													</ItemGrid>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Caption noWrap className={classes.noMargin}>
-															{`${n.org ? n.org.name : t('users.fields.noOrg')}`}
+															{`${this.renderProtocol(n.protocol)}`}
+														</Caption>
+													</ItemGrid>
+													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+														<Caption noWrap className={classes.noMargin}>
+															{`${n.customer_name ? n.customer_name : t('users.fields.noOrg')}`}
 														</Caption>
 													</ItemGrid>
 												</ItemGrid>
