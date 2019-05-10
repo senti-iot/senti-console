@@ -169,7 +169,7 @@ class SensorTable extends React.Component {
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														{/* {this.renderCommunication(n.communication)} */}
 														<Caption noWrap className={classes.noMargin}>
-															{dateFormatter(n.created)}
+															{`${n.reg_name} - ${dateFormatter(n.created)}`}
 															{/* {`${n.org ? n.org.name : t('users.fields.noOrg')}`} */}
 														</Caption>
 													</ItemGrid>
