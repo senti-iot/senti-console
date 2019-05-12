@@ -690,6 +690,11 @@
 		}
 	},
 	"sensors": {
+		"metadata": {
+			"value": "Vand",
+			"temperature": "Temperatur",
+			"humidity":"Fugtighed"
+		},
 		"fields": {
 			"deviceType": "Enhedstype",
 			"protocols": {

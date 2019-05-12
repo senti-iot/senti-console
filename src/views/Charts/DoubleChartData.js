@@ -17,6 +17,7 @@ import {
 	PieChart,
 	ExportModal,
 	DateFilterMenu,
+	T,
 } from 'components';
 import deviceStyles from 'assets/jss/views/deviceStyles';
 import classNames from 'classnames';
@@ -321,10 +322,10 @@ class DoubleChartData extends PureComponent {
 		this.props.handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	renderTitle = () => {
-		const { period, t } = this.props
+		const { period, t, title } = this.props
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
-		return <ItemG container style={{ flexFlow: 'row' }}>
+		return <ItemG container style={{ flexFlow: 'row', alignItems: 'center' }}>
 			<Hidden mdDown>
 				<ItemG>
 
@@ -350,6 +351,9 @@ class DoubleChartData extends PureComponent {
 					</Tooltip>
 				</ItemG>
 			</Hidden>
+			<ItemG alignItems={'center'}>
+				<T>{title}</T>
+			</ItemG>
 		</ItemG>
 	}
 	renderType = () => {

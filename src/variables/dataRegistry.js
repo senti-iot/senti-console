@@ -64,9 +64,12 @@ export const createSensor = async (sensor) => {
 	return response
 }
 
-export const getSensorDataClean = async (id, from, to) => {
+export const getSensorDataClean = async (id, from, to, v) => {
 	// console.log(moment(from, 'YYYY-MM-DD+HH:mm'))
-	let response = await servicesAPI.get(`/v2/devicedata-clean/${id}/${moment(from, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm')}/${moment(to, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm')}`).then(rs => rs.ok ? rs.data : rs.ok)
+	let startDate = moment(from, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')
+	let endDate = moment(to, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')
+	console.log(`/v1/devicedata-clean/${id}/${startDate}/${endDate}/${v}`)
+	let response = await servicesAPI.get(`/v1/devicedata-clean/${id}/${startDate}/${endDate}/${v}`).then(rs => rs.ok ? rs.data : rs.ok)
 	// console.log(response)
 	return response
 }

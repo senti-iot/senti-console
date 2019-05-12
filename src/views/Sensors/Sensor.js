@@ -14,13 +14,11 @@ import { getSensorLS, unassignSensor } from 'redux/data';
 // import SensorDetails from './SensorCards/SensorDetails';
 import SensorDetails from './SensorCards/SensorDetails';
 import SensorProtocol from './SensorCards/SensorProtocol';
+import SensorData from './SensorCards/SensorData';
 // import { getSensorDataClean } from 'variables/dataRegistry';
-import { getWMeterData, getWMeterDatav2 } from 'components/Charts/DataModel';
 // import { teal, red } from '@material-ui/core/colors';
 // import ChartData from 'views/Charts/ChartData';
-import DoubleChartData from 'views/Charts/DoubleChartData';
 // import { colors } from 'variables/colors';
-import { teal } from '@material-ui/core/colors';
 // import ChartData from 'views/Charts/ChartData';
 
 class Sensor extends Component {
@@ -64,35 +62,6 @@ class Sensor extends Component {
 		this.snackBarMessages(msgId)
 		this.getSensor(this.props.match.params.id)
 	}
-	getData = async (period) => { 
-		const { hoverID } = this.state
-		const { sensor } = this.props
-		let newState = await getWMeterData([{
-			name: sensor.name,
-			id: sensor.id,
-			lat: sensor.lat,
-			long: sensor.lng,
-			from: period.from,
-			to: period.to,
-			org: sensor.org ? sensor.org.name : "",
-			color: teal[500]
-		}], null, null, hoverID )
-		return newState
-	}
-	getWifiHourly = async (p) => {
-		const { hoverID } = this.state 	
-		const device = this.props.sensor
-		this.setState({ loadingData: true })
-		let newState = await getWMeterDatav2('device', [{
-			name: device.name,
-			id: device.id,
-			lat: device.lat,
-			long: device.long,
-			org: device.org ? device.org.name : "",
-			color: teal[500]
-		}], p.from, p.to, hoverID, p.raw, undefined, true)
-		return newState
-	}
 	getSensor = async (id) => {
 		const { getSensor } = this.props
 		await getSensor(id)
@@ -131,7 +100,6 @@ class Sensor extends Component {
 	componentDidMount = async () => {
 		if (this.props.match) {
 			let id = this.props.match.params.id
-			console.log("id", id)
 			if (id) {
 				await this.getSensor(id).then(() => {
 					this.props.setBC('sensor', this.props.sensor.name)
@@ -188,17 +156,10 @@ class Sensor extends Component {
 		return <CircularLoader />
 	}
 
-	handleDataSize = (i) => {
-		let visiblePeriods = 0
-		this.props.periods.forEach(p => p.hide === false ? visiblePeriods += 1 : visiblePeriods)
-		if (visiblePeriods === 1)
-			return 12
-		if (i === this.props.periods.length - 1 && visiblePeriods % 2 !== 0 && visiblePeriods > 2)
-			return 12
-		return 6
-	}
+
 	render() {
 		const { history, match, t, accessLevel, sensor, loading, periods } = this.props
+		console.log(sensor)
 		return (
 			<Fragment>
 				{!loading ? <Fade in={true}>
@@ -220,21 +181,16 @@ class Sensor extends Component {
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
-						{periods.map((period, i) => {
-
-							return <ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
-								<DoubleChartData
-									single
-									getData={this.getWifiHourly}
-									period={period}
-									device={sensor}
-									history={this.props.history}
-									match={this.props.match}
-									setHoverID={() => {}}
-									t={this.props.t}
-								/>
-							</ItemGrid>
-						})}
+						{sensor.metadata ? sensor.metadata.dataKeys ? sensor.metadata.dataKeys.map((k, i) =>
+							<SensorData
+								periods={periods}
+								sensor={sensor}
+								history={history}
+								match={match}
+								t={t}
+								v={k}
+							/>
+						) : null : null}
 						<ItemGrid xs={12} noMargin id='details'>
 							<SensorProtocol
 								isFav={this.props.isFav({ id: sensor.id, type: 'sensor' })}
