@@ -15,6 +15,7 @@ import { getSensorLS, unassignSensor } from 'redux/data';
 import SensorDetails from './SensorCards/SensorDetails';
 import SensorProtocol from './SensorCards/SensorProtocol';
 import SensorData from './SensorCards/SensorData';
+import ChartDataPanel from 'views/Charts/ChartDataPanel';
 // import { getSensorDataClean } from 'variables/dataRegistry';
 // import { teal, red } from '@material-ui/core/colors';
 // import ChartData from 'views/Charts/ChartData';
@@ -180,6 +181,9 @@ class Sensor extends Component {
 								t={t}
 								accessLevel={accessLevel}
 							/>
+						</ItemGrid>
+						<ItemGrid xs={12} noMargin id={'data'}>
+							<ChartDataPanel t={this.props.t} />
 						</ItemGrid>
 						{sensor.metadata ? sensor.metadata.dataKeys ? sensor.metadata.dataKeys.map((k, i) =>
 							<SensorData
