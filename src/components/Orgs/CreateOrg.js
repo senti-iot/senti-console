@@ -28,7 +28,7 @@ class CreateOrg extends Component {
 					ean: ''
 				},
 				org: {
-					id: 0
+					id: -1
 				}
 			},
 			selectedOrg: '',
@@ -61,7 +61,7 @@ class CreateOrg extends Component {
 		await getAllOrgs().then(rs => {
 			if (this._isMounted) {
 				if (accessLevel.apisuperuser)
-					rs.unshift({ id: 0, name: t('orgs.fields.topLevelOrg') })
+					rs.unshift({ id: -1, name: t('orgs.fields.topLevelOrg') })
 				this.setState({ orgs: rs, loading: false })
 			}
 		})
@@ -76,7 +76,7 @@ class CreateOrg extends Component {
 
 	handleValidation = () => {
 		let errorCode = [];
-		const { name, address, city, zip, country, url } = this.state.org
+		const { name, address, city, zip, country } = this.state.org
 		const { selectedOrg } = this.state
 		if (name === '') {
 			errorCode.push(0)
@@ -96,9 +96,9 @@ class CreateOrg extends Component {
 		if (selectedOrg === null) {
 			errorCode.push(5)
 		}
-		if (!url.includes('http')) { 
-			errorCode.push(6)
-		}
+		// if (!url.includes('http')) { 
+		// 	errorCode.push(6)
+		// }
 		this.setState({
 			errorMessage: errorCode.map(c => <Danger key={ c }>{ this.errorMessages(c) }</Danger>),
 		})
@@ -174,10 +174,7 @@ class CreateOrg extends Component {
 	handleCreateOrg = () => {		
 		if (this.handleValidation()) {
 			let newOrg = {
-				...this.state.org,
-				org: {
-					id: this.state.selectedOrg
-				}
+				...this.state.org
 			}
 			return createOrg(newOrg).then(rs => 
 				rs ?
@@ -197,7 +194,11 @@ class CreateOrg extends Component {
 
 	handleOrgChange = e => {
 		this.setState({
-			selectedOrg: e.target.value
+			org: {
+				...this.state.org,
+				org: {
+					id: e.target.value }
+			}
 		})
 	}
 	
