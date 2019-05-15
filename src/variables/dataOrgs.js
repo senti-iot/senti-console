@@ -32,8 +32,12 @@ export const getOrgUsers = async (orgId) => {
  * @param {object} org 
  */
 export const updateOrg = async (org) => {
-	var data = await api.put(`core/org/${org.id}`, org).then(rs => rs.data)
-	return data
+	var data = async () => { 
+		let r = await api.put(`core/org/${org.id}`, org).then(rs => rs.data)
+		await servicesAPI.put(`/v1/customer`, { name: org.name, ODEUM_org_id: org.id })
+		return r
+	}
+	return data()
 }
 
 /**
