@@ -47,7 +47,9 @@ export const updateOrg = async (org) => {
 export const createOrg = async (org) => {
 	var result = await api.post('core/org', org).then(rs => rs.data)
 	var result2 = await servicesAPI.post('/v1/customer', { ...org, org_id: result.id }).then(rs => rs.ok)
-	return result && result2
+	if (result && result2)
+		return result
+	return result & result2
 }
 
 /**
