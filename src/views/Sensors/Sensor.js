@@ -15,7 +15,7 @@ import { getSensorLS, unassignSensor } from 'redux/data';
 import SensorDetails from './SensorCards/SensorDetails';
 import SensorProtocol from './SensorCards/SensorProtocol';
 import SensorData from './SensorCards/SensorData';
-import ChartDataPanel from 'views/Charts/ChartDataPanel';
+// import ChartDataPanel from 'views/Charts/ChartDataPanel';
 // import { getSensorDataClean } from 'variables/dataRegistry';
 // import { teal, red } from '@material-ui/core/colors';
 // import ChartData from 'views/Charts/ChartData';
@@ -153,6 +153,27 @@ class Sensor extends Component {
 		}
 	}
 
+	handleDataSize = (i) => {
+		let visiblePeriods = 0
+		const { sensor } = this.props
+		if (sensor.metadata) {
+			if (sensor.metadata.dataKeys) {
+				sensor.metadata.dataKeys.forEach(p => visiblePeriods += 1)
+				if (visiblePeriods === 1)
+					return 12
+				if (i === this.props.sensor.metadata.dataKeys.length - 1 && visiblePeriods % 2 !== 0 && visiblePeriods > 2)
+					return 12
+				return 6
+			}
+			else {
+				return 12
+			}
+		}
+		else {
+			return 12
+		}
+	}
+
 	renderLoader = () => {
 		return <CircularLoader />
 	}
@@ -182,18 +203,19 @@ class Sensor extends Component {
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
-						<ItemGrid xs={12} noMargin id={'data'}>
-							<ChartDataPanel t={this.props.t} />
-						</ItemGrid>
+						{/* <ItemGrid xs={12} noMargin id={'data'}> */}
+						{/* <ChartDataPanel t={this.props.t} /> */}
+						{/* </ItemGrid> */}
 						{sensor.metadata ? sensor.metadata.dataKeys ? sensor.metadata.dataKeys.map((k, i) =>
-							<SensorData
-								periods={periods}
-								sensor={sensor}
-								history={history}
-								match={match}
-								t={t}
-								v={k}
-							/>
+							<ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
+								<SensorData
+									periods={periods}
+									sensor={sensor}
+									history={history}
+									match={match}
+									t={t}
+									v={k}
+								/></ItemGrid>
 						) : null : null}
 						<ItemGrid xs={12} noMargin id='details'>
 							<SensorProtocol
@@ -212,10 +234,6 @@ class Sensor extends Component {
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
-						{/* {this.props.periods.map((period, i) => { */}
-						{/* if (period.hide) { return null } */}
-						{/* return  */}
-						{/* })} */}
 					</GridContainer></Fade>
 					: this.renderLoader()}
 			</Fragment>

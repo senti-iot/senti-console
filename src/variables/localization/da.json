@@ -693,7 +693,11 @@
 		"metadata": {
 			"value": "Vand",
 			"temperature": "Temperatur",
-			"humidity":"Fugtighed"
+			"humidity":"Fugtighed",
+			"minATemp":"Mindste omgivelsestemperatur",
+			"minWTemp": "Mindste vandtemperatur",
+			"minFlow": "Mindste vandstrømning",
+			"maxFlow": "Maksimal vandstrømning"
 		},
 		"fields": {
 			"deviceType": "Enhedstype",
