@@ -67,7 +67,7 @@ class Sidebar extends Component {
 								placement={'right'} title={!smallMenu ? t(route.sidebarName) : ''}>
 								<ListItem /* component={Button */
 									button
-									onClick={(e) => { this.dropdown(e)(route.menuRoute); return this.props.drawerCloseOnNav ? this.closeDrawer() : undefined }}
+									onClick={(e) => { this.dropdown(e)(route.menuRoute) }}
 									to={route.path + (route.defaultView ? defaultView : '')}
 									classes={{
 										button: classNames({
@@ -159,7 +159,7 @@ class Sidebar extends Component {
 								placement={'right'} title={!smallMenu ? t(route.sidebarName) : ''}>
 								<ListItem /* component={Button */
 									button
-									onClick={(e) => { this.dropdown(e)(route.menuRoute); return this.props.drawerCloseOnNav ? this.closeDrawer() : undefined }}
+									onClick={(e) => { this.dropdown(e)(route.menuRoute) }}
 									to={route.path + (route.defaultView ? defaultView : '')}
 									classes={{
 										button: classNames({
@@ -251,7 +251,7 @@ class Sidebar extends Component {
 								
 								<ListItem /* component={Button */
 									button
-									onClick={(e) => { this.dropdown(e)(route.menuRoute); return this.props.drawerCloseOnNav ? this.closeDrawer() : undefined }}
+									onClick={(e) => { this.dropdown(e)(route.menuRoute) }}
 									to={route.path + (route.defaultView ? defaultView : '')}
 									classes={{
 										button: classNames({
