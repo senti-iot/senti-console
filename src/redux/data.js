@@ -662,6 +662,7 @@ export const getProjects = (reload) => {
 
 	return dispatch => {
 		getAllProjects().then(rs => {
+			console.log(rs)
 			let projects = handleRequestSort('title', 'asc', rs)
 			set('projects', projects)
 			if (reload) {

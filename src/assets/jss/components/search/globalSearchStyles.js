@@ -23,10 +23,17 @@ const globalSearchStyles = theme => ({
 	},
 	containerActive: {
 		[theme.breakpoints.down('md')]: {
+			width: "calc(100vw - 16px) !important",
 			left: 0,
 			zIndex: 9999,
 			position: "fixed !important",
-			width: "calc(100vw - 16px) !important",
+			background: '#8a8a8a !important'
+		},
+		[theme.breakpoints.between('sm', 'md')]: {
+			left: 0,
+			zIndex: 9999,
+			position: "fixed !important",
+			width: "calc(100vw - 32px) !important",
 			background: '#8a8a8a !important'
 		},
 	},
@@ -113,7 +120,7 @@ const globalSearchStyles = theme => ({
 			},
 		},
 		[theme.breakpoints.up('sm')]: {
-			width: 120,
+			// width: 120,
 			"&:focus": {
 				width: 170
 			},

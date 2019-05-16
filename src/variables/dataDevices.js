@@ -157,7 +157,7 @@ export const getAvailableDevices = async (orgId) => {
  */
 export const getAllDevices = async () => {
 	var data = await api.get('senti/devices').then(rs => rs.data)
-	return data
+	return data ? data : []
 }
 /**
  * Get device
