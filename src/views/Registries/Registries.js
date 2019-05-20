@@ -187,10 +187,12 @@ class Registries extends Component {
 		await this.getData(true)
 	}
 	getData = async (reload) => {
-		const { getRegistries, setRegistries } = this.props
-		setRegistries()
-		if (reload)
-			getRegistries(true)
+		const { getRegistries, /* setRegistries, */ accessLevel, user } = this.props
+		// setRegistries()
+		if (accessLevel || user) {
+			if (reload)
+				getRegistries(true)
+		}
 	}
 	//#endregion
 
@@ -549,7 +551,8 @@ const mapStateToProps = (state) => ({
 	saved: state.favorites.saved,
 	registries: state.data.registries,
 	loading: false, //!state.data.gotregistries,
-	filters: state.appState.filters.registries
+	filters: state.appState.filters.registries,	
+	user: state.settings.user
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -557,7 +560,7 @@ const mapDispatchToProps = (dispatch) => ({
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
 	finishedSaving: () => dispatch(finishedSaving()),
-	getRegistries: reload => dispatch(getRegistries(reload)),
+	getRegistries: (reload, customerID, ua) => dispatch(getRegistries(reload, customerID, ua)),
 	setRegistries: () => dispatch(setRegistries()),
 	sortData: (key, property, order) => dispatch(sortData(key, property, order))
 })

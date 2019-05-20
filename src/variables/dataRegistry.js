@@ -1,9 +1,13 @@
 import { servicesAPI } from './data';
 import moment from 'moment';
 
-export const getAllRegistries = async () => {
-	let data = await servicesAPI.get('/v1/1/registries').then(rs => rs.ok ? rs.data : null)
-	return data
+export const getAllRegistries = async (customerID, su) => {
+	let response = []
+	if (su)
+		response = await servicesAPI.get('/v1/registries').then(rs => rs.ok ? rs.data : null)
+	else 
+		response = await servicesAPI.get(`/v1/${customerID}/registries`).then(rs => rs.ok ? rs.data : [])
+	return response
 }
 
 export const createRegistry = async (reg) => {
@@ -50,7 +54,6 @@ export const updateDeviceType = async (dt) => {
 
 export const getAllSensors = async (customerID, ua) => {
 	let response = []
-	console.log('UA', ua)
 	if (ua) {
 		response = await servicesAPI.get(`/v1/devices`).then(rs => rs.ok ? rs.data : [])
 	}
