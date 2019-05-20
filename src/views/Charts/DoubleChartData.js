@@ -26,7 +26,6 @@ import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeDate, changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTime'
-import MultiTooltip from 'components/Charts/MultiTooltip';
 
 class DoubleChartData extends PureComponent {
 	constructor(props) {
@@ -330,11 +329,11 @@ class DoubleChartData extends PureComponent {
 			<Hidden mdDown>
 				<ItemG>
 
-					<MultiTooltip title={t('tooltips.chart.previousPeriod')}>
+					<Tooltip title={t('tooltips.chart.previousPeriod')}>
 						<IconButton onClick={this.handlePreviousPeriod}>
 							<KeyboardArrowLeft />
 						</IconButton>
-					</MultiTooltip>
+					</Tooltip>
 				</ItemG>
 			</Hidden>
 			<ItemG>
