@@ -6,8 +6,9 @@ import { graphStyles } from './graphStyles';
 import moment from 'moment'
 import { compose } from 'recompose';
 import { connect } from 'react-redux'
-import Tooltip from './Tooltip';
+// import Tooltip from './Tooltip';
 import { getWeather } from 'redux/weather';
+import MultiTooltip from './MultiTooltip';
 
 Chart.defaults.multicolorLine = Chart.defaults.line;
 Chart.controllers.multicolorLine = Chart.controllers.line.extend({
@@ -452,7 +453,7 @@ class LineChart extends PureComponent {
 							onElementsClick={this.elementClicked}
 						/>
 					</div>
-					<Tooltip
+					<MultiTooltip
 						getRef={this.getTooltipRef}
 						tooltip={tooltip}
 						handleCloseTooltip={this.exitedTooltip}
