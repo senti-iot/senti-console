@@ -567,7 +567,6 @@ export const setRegistries = () => {
 }
 export const setDeviceTypes = () => {
 	return dispatch => {
-		console.log(get('devicetypes'))
 		let deviceTypes = get('devicetypes')
 		if (deviceTypes) {
 			dispatch({
@@ -711,8 +710,6 @@ export const getDeviceTypes = (reload, orgId, ua) => {
 }
 export const getSensors = (reload, customerID, ua) => {
 	return dispatch => {
-
-		console.log(customerID, ua)
 		getAllSensors(customerID, ua).then(rs => {
 			let sensors = handleRequestSort('id', 'asc', rs)
 			set('sensors', sensors)
@@ -807,7 +804,6 @@ export const data = (state = initialState, { type, payload }) => {
 		case setregistries:
 			return Object.assign({}, state, { registries: payload })
 		case setdeviceTypes:
-			console.log(payload)
 			return Object.assign({}, state, { deviceTypes: payload })
 		case setsensors:
 			return Object.assign({}, state, { sensors: payload })

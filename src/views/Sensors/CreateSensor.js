@@ -89,7 +89,6 @@ class CreateCollection extends Component {
 		})
 	}
 	handleChangeDT = (o) => e => {
-		console.log(o)
 		this.setState({
 			sensor: {
 				...this.state.sensor,
@@ -123,7 +122,7 @@ class CreateCollection extends Component {
 				...this.state.select,
 				reg: o
 			}
-		}, () => console.log(this.state))
+		})
 	}
 	createSensor = async () => { 
 		return await createSensor(this.state.sensor)

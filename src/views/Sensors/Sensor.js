@@ -96,7 +96,6 @@ class Sensor extends Component {
 	}
 	componentWillUnmount = () => {
 		this.props.unassignSensor()
-		console.log('unmounting')
 	}
 	componentDidMount = async () => {
 		if (this.props.match) {
@@ -181,7 +180,6 @@ class Sensor extends Component {
 
 	render() {
 		const { history, match, t, accessLevel, sensor, loading, periods } = this.props
-		console.log(sensor)
 		return (
 			<Fragment>
 				{!loading ? <Fade in={true}>

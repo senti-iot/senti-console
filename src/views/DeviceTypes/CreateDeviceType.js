@@ -50,7 +50,6 @@ class CreateDeviceType extends Component {
 		})
 	}
 	handleStrChange = (what) => e => {
-		console.log(what, e.target.value)
 		this.setState({
 			[what]: e.target.value
 		})
