@@ -4,7 +4,7 @@ import moment from 'moment';
 export const getAllRegistries = async (customerID, su) => {
 	let response = []
 	if (su)
-		response = await servicesAPI.get('/v1/registries').then(rs => rs.ok ? rs.data : null)
+		response = await servicesAPI.get('/v1/registries').then(rs => rs.ok ? rs.data : [])
 	else 
 		response = await servicesAPI.get(`/v1/${customerID}/registries`).then(rs => rs.ok ? rs.data : [])
 	return response
@@ -36,10 +36,10 @@ export const getRegistryDevices = async (customerID, id) => {
 export const getAllDeviceTypes = async (customerID, ua) => {
 	let data = []
 	if (ua) {
-		data = await servicesAPI.get('/v1/devicetypes').then(rs => rs.ok ? rs.data : null)
+		data = await servicesAPI.get('/v1/devicetypes').then(rs => rs.ok ? rs.data : [])
 	}
 	else {
-		data = await servicesAPI.get(`/v1/${customerID}/devicetypes`).then(rs => rs.ok ? rs.data : null)
+		data = await servicesAPI.get(`/v1/${customerID}/devicetypes`).then(rs => rs.ok ? rs.data : [])
 	}
 	return data
 }
