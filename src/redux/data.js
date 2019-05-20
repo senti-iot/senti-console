@@ -316,7 +316,7 @@ export const unassignSensor = () => {
 		dispatch({ type: gotSensor, payload: false })
 	}
 }
-export const getSensorLS = async ( id) => {
+export const getSensorLS = async (id, customerID, ua) => {
 	return async dispatch => {
 		dispatch({ type: gotSensor, payload: false })
 		dispatch({
@@ -344,7 +344,7 @@ export const getSensorLS = async ( id) => {
 				payload: null
 			})
 		}
-		await getSensor(id).then(async rs => {
+		await getSensor(id, customerID, ua).then(async rs => {
 			if (!compare(sensor, rs)) {
 				sensor = {
 					...rs,

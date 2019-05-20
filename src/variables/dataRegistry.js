@@ -60,8 +60,12 @@ export const getAllSensors = async (customerID, ua) => {
 	return response
 }
 
-export const getSensor = async (id) => {
-	let response = await servicesAPI.get(`/v1/1/device/${id}`).then(rs => rs.ok ? rs.data : null)
+export const getSensor = async (id, customerID, ua) => {
+	let response = null
+	// if (ua)
+	response = await servicesAPI.get(`/v1/device/${id}`).then(rs => rs.ok ? rs.data : null)
+	// else
+	// response = await servicesAPI.get(`v1/${customerID}/device/${id}`).then(rs => rs.ok ? rs.data : null)
 	return response
 }
 
