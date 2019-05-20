@@ -191,7 +191,7 @@ class Registries extends Component {
 		// setRegistries()
 		if (accessLevel || user) {
 			if (reload)
-				getRegistries(true)
+				getRegistries(true, user.org.id, accessLevel.apisuperuser ? true : false)
 		}
 	}
 	//#endregion
