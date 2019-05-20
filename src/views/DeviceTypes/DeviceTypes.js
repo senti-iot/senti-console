@@ -103,7 +103,7 @@ class DeviceTypes extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		this.handleTabs()
-		this.getData()
+		this.getData(true)
 
 	}
 
@@ -182,10 +182,11 @@ class DeviceTypes extends Component {
 		await this.getData(true)
 	}
 	getData = async (reload) => {
-		const { getDeviceTypes, setDeviceTypes } = this.props
-		setDeviceTypes()
-		if (reload)
-			getDeviceTypes(true)
+		const { getDeviceTypes/*  setDeviceTypes */, accessLevel, user } = this.props
+		if (accessLevel || user) {
+			if (reload)
+				getDeviceTypes(true, user.org.id, accessLevel.apisuperuser ? true : false)
+		}
 	}
 	//#endregion
 
@@ -435,7 +436,8 @@ const mapStateToProps = (state) => ({
 	saved: state.favorites.saved,
 	devicetypes: state.data.deviceTypes,
 	loading: false, //!state.data.gotdevicetypes,
-	filters: state.appState.filters.devicetypes
+	filters: state.appState.filters.devicetypes,
+	user: state.settings.user
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -443,7 +445,7 @@ const mapDispatchToProps = (dispatch) => ({
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
 	finishedSaving: () => dispatch(finishedSaving()),
-	getDeviceTypes: reload => dispatch(getDeviceTypes(reload)),
+	getDeviceTypes: (reload, customerID, ua) => dispatch(getDeviceTypes(reload, customerID, ua)),
 	setDeviceTypes: () => dispatch(setDeviceTypes()),
 	sortData: (key, property, order) => dispatch(sortData(key, property, order))
 })

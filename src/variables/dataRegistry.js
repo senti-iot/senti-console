@@ -34,8 +34,14 @@ export const getRegistryDevices = async (customerID, id) => {
 	return data
 }
 
-export const getAllDeviceTypes = async () => {
-	let data = await servicesAPI.get('/v1/1/devicetypes').then(rs => rs.ok ? rs.data : null)
+export const getAllDeviceTypes = async (customerID, ua) => {
+	let data = []
+	if (ua) {
+		data = await servicesAPI.get('/v1/devicetypes').then(rs => rs.ok ? rs.data : null)
+	}
+	else {
+		data = await servicesAPI.get(`/v1/${customerID}/devicetypes`).then(rs => rs.ok ? rs.data : null)
+	}
 	return data
 }
 export const getDeviceType = async (id) => {

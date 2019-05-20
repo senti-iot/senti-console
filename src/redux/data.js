@@ -567,7 +567,8 @@ export const setRegistries = () => {
 }
 export const setDeviceTypes = () => {
 	return dispatch => {
-		let deviceTypes = get('deviceTypes')
+		console.log(get('devicetypes'))
+		let deviceTypes = get('devicetypes')
 		if (deviceTypes) {
 			dispatch({
 				type: setdeviceTypes,
@@ -616,7 +617,7 @@ export const getAllData = async (reload, orgId, su) => {
 		dispatch(await getDevices(true))
 		dispatch(await getOrgs(true))
 		dispatch(await getRegistries(true, orgId, su))
-		dispatch(await getDeviceTypes(true))
+		dispatch(await getDeviceTypes(true, orgId, su))
 		dispatch(await getSensors(true, orgId, su))
 	}
 }
@@ -696,11 +697,11 @@ export const getRegistries = (reload, orgId, su) => {
 		})
 	}
 }
-export const getDeviceTypes = (reload) => {
+export const getDeviceTypes = (reload, orgId, ua) => {
 	return dispatch => {
-		getAllDeviceTypes().then(rs => {
+		getAllDeviceTypes(orgId, ua).then(rs => {
 			let deviceTypes = handleRequestSort('id', 'asc', rs)
-			set('deviceTypes', deviceTypes)
+			set('devicetypes', deviceTypes)
 			if (reload) {
 				dispatch(setDeviceTypes())
 			}
@@ -806,6 +807,7 @@ export const data = (state = initialState, { type, payload }) => {
 		case setregistries:
 			return Object.assign({}, state, { registries: payload })
 		case setdeviceTypes:
+			console.log(payload)
 			return Object.assign({}, state, { deviceTypes: payload })
 		case setsensors:
 			return Object.assign({}, state, { sensors: payload })
