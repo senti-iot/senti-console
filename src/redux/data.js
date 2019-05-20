@@ -608,7 +608,7 @@ const renderUserGroup = (user) => {
 	}
 	return ''
 }
-export const getAllData = async () => {
+export const getAllData = async (orgId, su) => {
 	return async dispatch => {
 		dispatch(await getUsers(true))
 		dispatch(await getProjects(true))
@@ -617,7 +617,7 @@ export const getAllData = async () => {
 		dispatch(await getOrgs(true))
 		dispatch(await getRegistries(true))
 		dispatch(await getDeviceTypes(true))
-		dispatch(await getSensors(true))
+		dispatch(await getSensors(true, orgId, su))
 	}
 }
 export const getUsers = (reload) => {
@@ -662,7 +662,6 @@ export const getProjects = (reload) => {
 
 	return dispatch => {
 		getAllProjects().then(rs => {
-			console.log(rs)
 			let projects = handleRequestSort('title', 'asc', rs)
 			set('projects', projects)
 			if (reload) {
@@ -709,9 +708,10 @@ export const getDeviceTypes = (reload) => {
 		})
 	}
 }
-export const getSensors = (reload) => {
+export const getSensors = (reload, customerID, ua) => {
 	return dispatch => {
-		getAllSensors().then(rs => {
+		// console.log(customerID, ua)
+		getAllSensors(customerID, ua).then(rs => {
 			let sensors = handleRequestSort('id', 'asc', rs)
 			set('sensors', sensors)
 			if (reload) {

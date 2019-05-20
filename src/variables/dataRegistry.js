@@ -27,34 +27,40 @@ export const getRegistry = async (customerID, id) => {
 }
 export const getRegistryDevices = async (customerID, id) => {
 	let data = await servicesAPI.get(`/v1/${customerID}/registry/${id}/devices`).then(rs => rs.ok ? rs.data : null)
-	return data 
+	return data
 }
 
 export const getAllDeviceTypes = async () => {
 	let data = await servicesAPI.get('/v1/1/devicetypes').then(rs => rs.ok ? rs.data : null)
 	return data
 }
-export const getDeviceType = async (id) => { 
+export const getDeviceType = async (id) => {
 	let data = await servicesAPI.get(`/v1/1/devicetype/${id}`).then(rs => rs.ok ? rs.data : null)
 	return data
 }
 export const createDeviceType = async (dt) => {
 	let response = await servicesAPI.put('/v1/devicetype', dt).then(rs => rs.ok ? rs.data : false)
-	console.log(response)
 	return response
 }
-export const updateDeviceType = async (dt) => { 
+export const updateDeviceType = async (dt) => {
 	let response = await servicesAPI.post(`/v1/deviceType/${dt.id}`, dt).then(rs => rs.ok ? rs.data : false)
 	return response
 }
 
 
-export const getAllSensors = async () => { 
-	let response = await servicesAPI.get(`/v1/1/devices`).then(rs => rs.ok ? rs.data : [])
+export const getAllSensors = async (customerID, ua) => {
+	let response = []
+	console.log('UA', ua)
+	if (ua) {
+		response = await servicesAPI.get(`/v1/devices`).then(rs => rs.ok ? rs.data : [])
+	}
+	else {
+		response = await servicesAPI.get(`/v1/${customerID}/devices`).then(rs => rs.ok ? rs.data : [])
+	}
 	return response
 }
 
-export const getSensor = async (id) => { 
+export const getSensor = async (id) => {
 	let response = await servicesAPI.get(`/v1/1/device/${id}`).then(rs => rs.ok ? rs.data : null)
 	return response
 }

@@ -121,7 +121,6 @@ export const getSettings = async () => {
 				let exp = moment().add('1', 'day')
 				cookie.save('SESSION', sessionCookie, { path: '/', expires: exp.toDate() })
 				setPrefix(sessionCookie.userID)
-				dispatch(await getAllData())
 			}
 			else {
 				return cookie.remove('SESSION')
@@ -148,6 +147,7 @@ export const getSettings = async () => {
 		if (user) {
 			if (settings) {
 				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
+				dispatch(await getAllData(true, user.org.id, user.privileges.apisuperuser))
 				dispatch({
 					type: GetSettings,
 					settings: {

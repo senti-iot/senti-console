@@ -44,14 +44,16 @@ const regenerateData = (d, unit) => {
 						data[moment().format('YYYY-MM-DD HH:mm')] = d[dt]
 					}
 					else {
-						data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
+						// data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
+						data[dt] = d[dt]
 					}
 				}
 				return true
 			}
 			else {
+				data[dt] = d[dt]
 				//Normal ones
-				data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
+				// data[moment(dt).add(1, unit).format('YYYY-MM-DD HH:mm')] = d[dt]
 				return true
 			}
 		})
@@ -489,7 +491,7 @@ export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, v, p
 	let dataArr = []
 	let dataSet, prevDataSet = null
 	let data, prevData = null
-	console.log(v)
+	// console.log(v)
 	await Promise.all(objArr.map(async o => {
 		if (type === 'device') {
 			data = await getSensorDataClean(o.id, startDate, endDate, v)
@@ -502,7 +504,7 @@ export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, v, p
 					prevData[moment(p, format).add(1, 'day').format('YYYY-MM-DD HH:mm')] = prevData[p]	
 					delete prevData[p];
 				})
-				console.log(prevData)
+				// console.log(prevData)
 			}
 		}
 		else {
@@ -534,7 +536,7 @@ export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, v, p
 			data: regenerateData(data, 'hour'),
 			...o,
 		}
-		console.log(prevDataSet)
+		// console.log(prevDataSet)
 		return dataArr.push(dataSet, prevDataSet)
 	}))
 	//Filter nulls
@@ -667,6 +669,6 @@ export const setMeterData = (dataArr, hoverID) => {
 					}))
 		}
 	}
-	console.log('state', state)
+	// console.log('state', state)
 	return state
 }

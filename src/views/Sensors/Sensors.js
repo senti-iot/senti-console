@@ -80,6 +80,7 @@ class Sensors extends Component {
 	options = () => {
 		const { t, isFav, devices } = this.props
 		const { selected } = this.state
+
 		let device = devices[devices.findIndex(d => d.id === selected[0])]
 		let favObj = {
 			id: device.id,
@@ -105,11 +106,17 @@ class Sensors extends Component {
 	componentDidMount = async () => {
 		this._isMounted = 1
 		this.handleTabs()
-		this.getData()
+		if (this.props.user && this.props.accessLevel) {
+			this.getData(true)
+		}
 
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
+		// console.log(this.props.devices)
+		// if (this.props.user && this.props.accessLevel && this.props.devices.length === 0) {
+		// 	this.getData(true)
+		// }
 		const { t, saved, s, isFav, finishedSaving } = this.props
 		if (saved === true) {
 			const { devices } = this.props
@@ -129,9 +136,7 @@ class Sensors extends Component {
 			}
 		}
 	}
-	componentWillUnmount = () => {
-		// this._isMounted = 0
-	}
+
 	//#endregion
 
 	//#region Functions
@@ -184,10 +189,12 @@ class Sensors extends Component {
 		await this.getData(true)
 	}
 	getData = async (reload) => {
-		const { getSensors, setSensors } = this.props
-		setSensors()
-		if (reload)
-			getSensors(true)
+		const { getSensors, accessLevel, user } = this.props
+		if (accessLevel || user) {
+			if (reload)
+				getSensors(true, user.org.id, accessLevel.apisuperuser ? true : false)
+			// setSensors()
+		}
 	}
 	//#endregion
 
@@ -546,7 +553,8 @@ const mapStateToProps = (state) => ({
 	saved: state.favorites.saved,
 	devices: state.data.sensors,
 	loading: false, //!state.data.gotdevices,
-	filters: state.appState.filters.sensors
+	filters: state.appState.filters.sensors,
+	user: state.settings.user
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -554,7 +562,9 @@ const mapDispatchToProps = (dispatch) => ({
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
 	finishedSaving: () => dispatch(finishedSaving()),
-	getSensors: reload => dispatch(getSensors(reload)),
+	getSensors: (reload, customerID, ua) => {
+		return dispatch(getSensors(reload, customerID, ua))
+	},
 	setSensors: () => dispatch(setSensors()),
 	sortData: (key, property, order) => dispatch(sortData(key, property, order))
 })
