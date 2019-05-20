@@ -608,7 +608,7 @@ const renderUserGroup = (user) => {
 	}
 	return ''
 }
-export const getAllData = async (orgId, su) => {
+export const getAllData = async (reload, orgId, su) => {
 	return async dispatch => {
 		dispatch(await getUsers(true))
 		dispatch(await getProjects(true))
@@ -710,7 +710,8 @@ export const getDeviceTypes = (reload) => {
 }
 export const getSensors = (reload, customerID, ua) => {
 	return dispatch => {
-		// console.log(customerID, ua)
+
+		console.log(customerID, ua)
 		getAllSensors(customerID, ua).then(rs => {
 			let sensors = handleRequestSort('id', 'asc', rs)
 			set('sensors', sensors)

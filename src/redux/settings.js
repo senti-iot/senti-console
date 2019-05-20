@@ -147,7 +147,7 @@ export const getSettings = async () => {
 		if (user) {
 			if (settings) {
 				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
-				dispatch(await getAllData(true, user.org.id, user.privileges.apisuperuser))
+				dispatch(await getAllData(true, user.org.id, user.privileges.apisuperuser ? true : false))
 				dispatch({
 					type: GetSettings,
 					settings: {
