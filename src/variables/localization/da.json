@@ -696,8 +696,8 @@
 			"humidity":"Fugtighed",
 			"minATemp":"Mindste omgivelsestemperatur",
 			"minWTemp": "Mindste vandtemperatur",
-			"minFlow": "Mindste vandstrømning",
-			"maxFlow": "Maksimal vandstrømning"
+			"minFlow": "Mindste vandgennemstrømning",
+			"maxFlow": "Maksimal vandgennemstrømning"
 		},
 		"fields": {
 			"deviceType": "Enhedstype",
