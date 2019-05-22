@@ -10,6 +10,7 @@ import { hist } from 'App';
 import { handleRequestSort } from 'variables/functions';
 import { getSuggestions } from './globalSearch';
 import { getAllRegistries, getRegistry, getAllDeviceTypes, getDeviceType, getAllSensors, getSensor } from 'variables/dataRegistry';
+import { getAllFunctions } from 'variables/dataFunctions';
 // import { getSuggestions } from './globalSearch';
 /**
  * Special functions
@@ -75,9 +76,12 @@ const setdevices = 'SetDevices'
 const setprojects = 'SetProjects'
 const setcollections = 'SetCollections'
 const setregistries = 'SetRegistries'
+const setfunctions = 'SetFunctions'
 const setFavorites = 'setFavorites'
+
 const gotdeviceTypes = 'gotdeviceTypes'
 const gotsensors = 'gotsensors'
+const gotfunctions = 'gotFunctions'
 
 const setProject = 'SetProject'
 const setCollection = 'SetCollection'
@@ -549,6 +553,22 @@ export const setCollections = () => {
 		}
 	}
 }
+export const setFunctions = () => {
+	return dispatch => {
+		let functions = get('functions')
+		if (functions) {
+			dispatch({
+				type: setfunctions,
+				payload: functions
+			})
+			dispatch(getSuggestions())
+			// dispatch(sortData('collections', 'id', 'asc'))
+		}
+		else {
+			dispatch({ type: gotregistries, payload: false })
+		}
+	}
+}
 export const setRegistries = () => {
 	return dispatch => {
 		let registries = get('registries')
@@ -618,6 +638,7 @@ export const getAllData = async (reload, orgId, su) => {
 		dispatch(await getRegistries(true, orgId, su))
 		dispatch(await getDeviceTypes(true, orgId, su))
 		dispatch(await getSensors(true, orgId, su))
+		dispatch(await getFunctions(true, orgId, su))
 	}
 }
 export const getUsers = (reload) => {
@@ -693,6 +714,18 @@ export const getRegistries = (reload, orgId, su) => {
 				dispatch(setRegistries())
 			}
 			dispatch({ type: gotcollections, payload: true })
+		})
+	}
+}
+export const getFunctions = (reload, orgId, su) => {
+	return dispatch => {
+		getAllFunctions(orgId, su).then(rs => {
+			let functions = handleRequestSort('id', 'asc', rs)
+			set('functions', functions)
+			if (reload) {
+				dispatch(setFunctions())
+			}
+			dispatch({ type: gotfunctions, payload: true })
 		})
 	}
 }
@@ -789,6 +822,8 @@ export const data = (state = initialState, { type, payload }) => {
 			return Object.assign({}, state, { gotprojects: payload })
 		case gotcollections:
 			return Object.assign({}, state, { gotcollections: payload })
+		case gotfunctions:
+			return Object.assign({}, state, { gotfunctions: payload })
 		case gotregistries:
 			return Object.assign({}, state, { gotregistries: payload })
 		case setusers:
@@ -797,6 +832,8 @@ export const data = (state = initialState, { type, payload }) => {
 			return Object.assign({}, state, { orgs: payload })
 		case setdevices:
 			return Object.assign({}, state, { devices: payload })
+		case setfunctions:
+			return Object.assign({}, state, { functions: payload })
 		case setprojects:
 			return Object.assign({}, state, { projects: payload })
 		case setcollections:
@@ -807,7 +844,7 @@ export const data = (state = initialState, { type, payload }) => {
 			return Object.assign({}, state, { deviceTypes: payload })
 		case setsensors:
 			return Object.assign({}, state, { sensors: payload })
-		case gotsensors: 
+		case gotsensors:
 			return Object.assign({}, state, { gotsensors: payload })
 		default:
 			return state

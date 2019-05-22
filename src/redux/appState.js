@@ -144,7 +144,8 @@ const initialState = {
 		users: [],
 		registries: [],
 		devicetypes: [],
-		sensors: []
+		sensors: [],
+		functions: []
 	 }
 
 }

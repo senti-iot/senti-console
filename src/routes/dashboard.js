@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom'
 import DashboardPage from 'views/Dashboard/Dashboard';
-import { Dashboard, LibraryBooks, SettingsApplications, SettingsRounded, People, DeviceHub, Star, InputIcon, Memory } from 'variables/icons';
+import { Dashboard, LibraryBooks, SettingsApplications, SettingsRounded, People, DeviceHub, Star, InputIcon, Memory, CloudUpload } from 'variables/icons';
 import NotFound from 'layouts/404/NotFound';
 import Loadable from 'react-loadable';
 import AsyncLoader from 'components/Loader/AsyncLoader';
@@ -11,6 +11,10 @@ import { DataUsage } from 'variables/icons';
 // 	loader: () => import('routes/holiday'),
 // 	loading: AsyncLoader
 // })
+const AsyncCloudFunctions = Loadable({
+	loader: () => import('routes/cloudfunctions'),
+	loading: AsyncLoader
+})
 const AsyncSensors = Loadable({
 	loader: () => import('routes/sensors'),
 	loading: AsyncLoader
@@ -251,6 +255,13 @@ const dashboardRoutes = [
 				sidebarName: 'sidebar.devicetypes',
 				menuRoute: 'manage.devicetypes'
 			},
+			{
+				path: '/functions',
+				icon: CloudUpload,
+				component: AsyncCloudFunctions,
+				sidebarName: 'sidebar.cloudFunctions',
+				menuRoute: 'manage.cloudfunctions'
+			}
 		]
 	},
 	{
