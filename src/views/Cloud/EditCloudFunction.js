@@ -1,24 +1,24 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-// import UpdateRegistryForm from 'components/Collections/UpdateRegistryForm';
-import { getRegistryLS } from 'redux/data';
-import { updateRegistry } from 'variables/dataRegistry';
-import UpdateRegistryForm from 'components/Registry/CreateRegistryForm';
+// import EditCloudFunctionForm from 'components/Collections/EditCloudFunctionForm';
+import { getFunctionLS } from 'redux/data';
+import { updateFunction } from 'variables/dataFunctions';
 import { updateFav, isFav } from 'redux/favorites';
 import { CircularLoader } from 'components';
+import CreateFunctionForm from 'components/Cloud/CreateFunctionForm';
 
-class UpdateRegistry extends Component {
+class EditCloudFunction extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
 			loading: true,
-			registry: null
+			cloudfunction: null
 		}
 		this.id = props.match.params.id
-		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
-		props.setHeader('registries.updateRegistry', true, prevURL, '')
-		props.setBC('updateregistry')
+		let prevURL = props.location.prevURL ? props.location.prevURL : '/functions/list'
+		props.setHeader('menus.edit.cloudfunction', true, prevURL, '')
+		props.setBC('updatecloudfunction')
 	}
 
 	keyHandler = (e) => {
@@ -27,19 +27,19 @@ class UpdateRegistry extends Component {
 		}
 	}
 	getData = async () => {
-		const { getRegistry } = this.props
-		await getRegistry(this.id)
+		const { getFunction } = this.props
+		await getFunction(this.id)
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		const { location, setHeader, registry } = this.props
-		if ((!prevProps.registry && registry !== prevProps.registry && registry) || (this.state.registry === null && registry)) {
+		const { location, setHeader, cloudfunction } = this.props
+		if ((!prevProps.cloudfunction && cloudfunction !== prevProps.cloudfunction && cloudfunction) || (this.state.cloudfunction === null && cloudfunction)) {
 			this.setState({
-				registry: registry,
+				cloudfunction: cloudfunction,
 				loading: false
 			})
-			let prevURL = location.prevURL ? location.prevURL : `/registry/${this.id}`
-			setHeader('registries.editRegistry', true, prevURL, 'registries')
-			this.props.setBC('editregistry', registry.name, registry.id)
+			let prevURL = location.prevURL ? location.prevURL : `/function/${this.id}`
+			setHeader('menus.edit.cloudfunction', true, prevURL, 'manage.cloudfunctions')
+			this.props.setBC('editcloudfunction', cloudfunction.name, cloudfunction.id)
 		}
 	}
 	componentDidMount = async () => {
@@ -50,38 +50,46 @@ class UpdateRegistry extends Component {
 	componentWillUnmount = () => {
 		window.removeEventListener('keydown', this.keyHandler, false)
 	}
-
+	handleCodeChange = what => value => {
+		this.setState({
+			cloudfunction: {
+				...this.state.cloudfunction,
+				[what]: value
+			}
+		})
+	}
 	handleChange = (what) => e => {
 		this.setState({
-			registry: {
-				...this.state.registry,
+			cloudfunction: {
+				...this.state.cloudfunction,
 				[what]: e.target.value
 			}
 		})
 	}
-	updateRegistry = async () => {
-		return await updateRegistry(this.state.registry)
+	updateFunction = async () => {
+		return await updateFunction(this.state.cloudfunction)
 	}
 	handleUpdate = async () => {
 		const { s, history } = this.props
-		let rs = await this.updateRegistry()
+		let rs = await this.updateFunction()
 		if (rs) {
-			s('snackbars.registryUpdated')
-			history.push(`/registry/${this.id}`)
+			s('snackbars.cloudfunctionUpdated')
+			history.push(`/function/${this.id}`)
 		}
 		else
 			s('snackbars.failed')
 	}
-	goToRegistries = () => this.props.history.push('/registries')
+	goToRegistries = () => this.props.history.push('/functions')
 	render() {
 		const { t } = this.props
-		const { loading, registry } = this.state
+		const { loading, cloudfunction } = this.state
 		return ( loading ? <CircularLoader/> :
 
-			<UpdateRegistryForm
-				registry={registry}
+			<CreateFunctionForm
+				cloudfunction={cloudfunction}
 				handleChange={this.handleChange}
 				handleCreate={this.handleUpdate}
+				handleCodeChange={this.handleCodeChange}
 				goToRegistries={this.goToRegistries}
 				t={t}
 			/>
@@ -92,13 +100,13 @@ class UpdateRegistry extends Component {
 const mapStateToProps = (state) => ({
 	// accessLevel: state.settings.user.privileges,
 	// orgId: state.settings.user.org.id
-	registry: state.data.registry
+	cloudfunction: state.data.cloudfunction
 })
 
 const mapDispatchToProps = dispatch => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
 	updateFav: (favObj) => dispatch(updateFav(favObj)),
-	getRegistry: async id => dispatch(await getRegistryLS(1, id)),
+	getFunction: async id => dispatch(await getFunctionLS(id)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(UpdateRegistry)
+export default connect(mapStateToProps, mapDispatchToProps)(EditCloudFunction)

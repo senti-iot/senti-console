@@ -37,11 +37,11 @@ class CreateFunctionForm extends Component {
 		const { t, cloudfunction, handleChange } = this.props
 		return <DSelect
 			margin={'normal'}
-			label={t('cloudfunctions.type')}
+			label={t('cloudfunctions.fields.type')}
 			value={cloudfunction.type}
 			onChange={handleChange('type')}
 			menuItems={[
-				{ value: 0, label: t('cloudfunctions.fields.types.jsfunction') },
+				{ value: 0, label: t('cloudfunctions.fields.types.function') },
 				// { value: 1, label: t('cloudfunctions.fields.types.external') },
 			]}
 		/>

@@ -1,6 +1,6 @@
 import { withStyles } from '@material-ui/core';
 import cloudfunctionStyles from 'assets/jss/views/deviceStyles';
-import { Caption, ItemG, Info, ItemGrid } from 'components';
+import { Caption, ItemG, Info } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
 import React, { Component } from 'react';
@@ -14,13 +14,9 @@ class RegistryDetails extends Component {
 		const { t } = this.props
 		switch (id) {
 			case 0:
-				return t('registries.fields.protocols.none')
+				return t('cloudfunctions.fields.types.function')
 			case 1: 
 				return t('registries.fields.protocols.mqtt')
-			case 2: 
-				return t('registries.fields.protocols.http')
-			case 3: 
-				return `${t('registries.fields.protocols.mqtt')} & ${t('registries.fields.protocols.http')}`
 			default:
 				break;
 		}
@@ -31,14 +27,11 @@ class RegistryDetails extends Component {
 			<InfoCard
 				title={cloudfunction.name ? cloudfunction.name : cloudfunction.uuid}
 				avatar={<DataUsage />}
-				noPadding
 				noExpand
-				// noRightExpand
-				// menuExpand
 				expanded={Boolean(detailsPanel)}
 				topAction={<Dropdown menuItems={
 					[
-						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/cloudfunction/${cloudfunction.id}/edit`, prevURL: `/cloudfunction/${cloudfunction.id}` }) },
+						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/function/${cloudfunction.id}/edit`, prevURL: `/function/${cloudfunction.id}` }) },
 						// { label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeleteDialog },
 						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav }
 
@@ -50,21 +43,16 @@ class RegistryDetails extends Component {
 					<Caption>{t('registries.fields.id')}:</Caption>&nbsp;{cloudfunction.id}
 				</ItemG>}
 				content={
-					<ItemGrid container spacing={16}>
-
+					<ItemG container>
 						<ItemG xs={12} md>
-							<Caption>{t('registries.fields.uuid')}</Caption>
-							<Info>{cloudfunction.uuid}</Info>
-						</ItemG>
-						<ItemG xs={12} md>
-							<Caption>{t('registries.fields.protocol')}</Caption>
-							<Info>{this.renderProtocol(cloudfunction.protocol)}</Info>
+							<Caption>{t('cloudfunctions.fields.type')}</Caption>
+							<Info>{this.renderProtocol(cloudfunction.type)}</Info>
 						</ItemG>
 						<ItemG xs={12}>
 							<Caption>{t('registries.fields.description')}</Caption>
 							<Info>{cloudfunction.description}</Info>
 						</ItemG>
-					</ItemGrid>
+					</ItemG>
 				} />
 		)
 	}

@@ -12,10 +12,10 @@ import { ItemGrid, Info, Caption } from 'components'
 import { connect } from 'react-redux'
 import TP from 'components/Table/TP';
 import TC from 'components/Table/TC';
-import RegistryHover from 'components/Hover/RegistryHover';
+import FunctionHover from 'components/Hover/FunctionHover';
 // import { dateFormatter } from 'variables/functions';
 
-class RegistryTable extends React.Component {
+class FunctionTable extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -46,11 +46,11 @@ class RegistryTable extends React.Component {
 						rowHover: null
 					})
 					setTimeout(() => {
-						this.setState({ rowHover: e.target, hoverRegistry: n })
+						this.setState({ rowHover: e.target, hoverFunction: n })
 					}, 200);
 				}
 				else {
-					this.setState({ rowHover: e.target, hoverRegistry: n })
+					this.setState({ rowHover: e.target, hoverFunction: n })
 				}
 			}, hoverTime);
 	}
@@ -63,7 +63,7 @@ class RegistryTable extends React.Component {
 		})
 	}
 	renderHover = () => {
-		return <RegistryHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} project={this.state.hoverRegistry} />
+		return <FunctionHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} project={this.state.hoverFunction} />
 	}
 	renderProtocol = (id) => {
 		const { t } = this.props
@@ -135,14 +135,14 @@ class RegistryTable extends React.Component {
 													</ItemGrid>
 													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Caption noWrap className={classes.noMargin}>
-															{`${this.renderProtocol(n.protocol)}`}
+															{`${this.renderProtocol(n.type)}`}
 														</Caption>
 													</ItemGrid>
-													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+													{/* <ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Caption noWrap className={classes.noMargin}>
 															{`${n.customer_name ? n.customer_name : t('users.fields.noOrg')}`}
 														</Caption>
-													</ItemGrid>
+													</ItemGrid> */}
 												</ItemGrid>
 											}/>
 										</Hidden>
@@ -186,8 +186,8 @@ const mapDispatchToProps = {
 
 }
 
-RegistryTable.propTypes = {
+FunctionTable.propTypes = {
 	classes: PropTypes.object.isRequired,
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(RegistryTable)))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(devicetableStyles, { withTheme: true })(FunctionTable)))

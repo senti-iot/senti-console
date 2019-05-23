@@ -482,7 +482,8 @@
             "project": "Opret projekt",
 			"user": "Opret bruger",
 			"devicetype": "Opret enhedstype",
-			"registry": "Opret register"
+			"registry": "Opret register",
+			"cloudfunction": "Opret cloud funktion"
         },
         "delete": "Slet",
         "edit": "Rediger",
@@ -493,7 +494,8 @@
             "project": "Rediger projekt",
 			"user": "Rediger bruger",
 			"registry": "Rediger register",
-			"devicetype": "Rediger enhedstype"
+			"devicetype": "Rediger enhedstype",
+			"cloudfunction": "Rediger cloud funktion"
         },
         "export": "Eksporter data",
         "exportPDF": "Print som PDF",
@@ -666,6 +668,19 @@
             "noTitle": "Manglende Projektnavn",
             "startDateBiggerThanEndDate": "Startdato må ikke være senere end slutdato"
         }
+	},
+	"cloudfunctions": {
+		"pageTitle": "Cloud funktioner",
+		"fields": {
+			"code": "Kode",
+			"type": "Type",
+			"name": "Navn",
+			"description": "Beskrivelse",
+			"types": {
+				"function": "JavaScript funktion",
+				"external": "Udvendig"
+			}
+		}
 	},
 	"devicetypes": {
 		"pageTitle":"Enhedstype",
@@ -873,6 +888,8 @@
         }
     },
     "sidebar": {
+		"cloudfunction": "Cloud funktion",
+		"cloudFunctions": "Cloud funktioner",
 		"registries": "Registre",
 		"devicetype": "Enhedstype",
 		"devicetypes": "Enhedstyper",

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {  withStyles } from '@material-ui/core';
-import { InfoCard, ItemG, ItemGrid } from 'components';
+import { InfoCard, ItemG } from 'components';
 import { DeviceHub } from 'variables/icons';
 import { red, green } from '@material-ui/core/colors';
 // import brace from 'brace';
@@ -18,27 +18,36 @@ const styles = (theme) => ({
 	allowed: {
 		color: green[500],
 		marginRight: 8
+	},
+	editor: {
+		// width: 'calc(100% - 36px)', 
+		border: '1px solid rgba(100, 100, 100, 0.25)', 
+		padding: 4, 
+		borderRadius: 4,
+		"&:hover": {
+			boder: '1px solid #000'
+		}
 	}
 })
 
 class FunctionCode extends Component {
 	render() {
-		const { cloudfunction, t } = this.props
+		const { cloudfunction, t, classes } = this.props
 		return (
 			<InfoCard
 				title={t('cloudfunctions.fields.code')}
 				avatar={<DeviceHub />}
 				noExpand
-				noPadding
 				content={
-					<ItemGrid container spacing={16}>
+					<ItemG container>
 						<ItemG xs={12}>
-							<div style={{ width: 'calc(100% - 16px)' }}>
+							<div className={classes.editor}>
 								<AceEditor 
 									mode={'javascript'}
 									theme={this.props.theme.palette.type === 'light' ? 'tomorrow' : 'monokai'}
 									onChange={() => {}}
 									value={cloudfunction.js}
+									highlightActiveLine={false}
 									readOnly
 									showPrintMargin={false}
 									style={{ width: '100%' }}
@@ -47,7 +56,7 @@ class FunctionCode extends Component {
 								/>
 							</div>
 						</ItemG>
-					</ItemGrid>
+					</ItemG>
 				} />
 		)
 	}

@@ -33,7 +33,7 @@ class Functions extends Component {
 				keyword: '',
 			}
 		}
-		props.setHeader('functions.pageTitle', false, '', 'manage.functions')
+		props.setHeader('cloudfunctions.pageTitle', false, '', 'manage.functions')
 		props.setBC('functions')
 		props.setTabs({
 			id: 'functions',
@@ -61,11 +61,11 @@ class Functions extends Component {
 	ft = () => {
 		const { t } = this.props
 		return [
-			{ key: 'name', name: t('functions.fields.name'), type: 'string' },
-			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
-			{ key: 'devices[0].start', name: t('functions.fields.activeDeviceStartDate'), type: 'date' },
-			{ key: 'created', name: t('functions.fields.created'), type: 'date' },
-			{ key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
+			{ key: 'name', name: t('cloudfunctions.fields.name'), type: 'string' },
+			// { key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
+			// { key: 'devices[0].start', name: t('cloudfunctions.fields.activeDeviceStartDate'), type: 'date' },
+			// { key: 'created', name: t('cloudfunctions.fields.created'), type: 'date' },
+			// { key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
 			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 		]
 	}
@@ -73,8 +73,8 @@ class Functions extends Component {
 		const { t } = this.props
 		return [
 			// { id: 'id', label: t('functions.fields.id') },
-			{ id: 'name', label: t('functions.fields.name') },
-			{ id: 'type', label: t('functions.fields.type') },
+			{ id: 'name', label: t('cloudfunctions.fields.name') },
+			{ id: 'type', label: t('cloudfunctions.fields.type') },
 		]
 	}
 	options = () => {
@@ -197,7 +197,7 @@ class Functions extends Component {
 
 	handleEdit = () => {
 		const { selected } = this.state
-		this.props.history.push({ pathname: `/collection/${selected[0]}/edit`, prevURL: `/functions/list` })
+		this.props.history.push({ pathname: `/function/${selected[0]}/edit`, prevURL: `/functions/list` })
 	}
 
 	handleTabs = () => {
