@@ -6,7 +6,7 @@ export const getAllFunctions = async (customerID, ua) => {
 		data = await cloudAPI.get('/v1/fs').then(rs => rs.ok ? rs.data : [])
 	}
 	else {
-		data = await cloudAPI.get(`/v1/fs/${customerID}/devicetypes`).then(rs => rs.ok ? rs.data : [])
+		data = await cloudAPI.get(`/v1/fs/${customerID}`).then(rs => rs.ok ? rs.data : [])
 	}
 	return data
 }
