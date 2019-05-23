@@ -5,7 +5,7 @@ import TableToolbar from 'components/Table/TableToolbar';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
-// import { deleteRegistry, unassignDeviceFromRegistry, getRegistry } from 'variables/dataFunctions';
+// import { deleteFunction, unassignDeviceFromFunction, getFunction } from 'variables/dataFunctions';
 import { filterItems, handleRequestSort } from 'variables/functions';
 import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks, Add, LayersClear, Star, StarBorder, SignalWifi2Bar } from 'variables/icons';
 import { GridContainer, CircularLoader, AssignProject, /* T */ } from 'components'
@@ -91,8 +91,8 @@ class Functions extends Component {
 		let allOptions = [
 			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
 			{ label: t('menus.assign.collectionToProject'), func: this.handleOpenAssignProject, single: true, icon: LibraryBooks },
-			{ label: t('menus.assign.deviceToRegistry'), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
-			{ label: t('menus.unassign.deviceFromRegistry'), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear, dontShow: functions[functions.findIndex(c => c.id === selected[0])].activeDeviceStats ? false : true },
+			{ label: t('menus.assign.deviceToFunction'), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
+			{ label: t('menus.unassign.deviceFromFunction'), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear, dontShow: functions[functions.findIndex(c => c.id === selected[0])].activeDeviceStats ? false : true },
 			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
 			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
 			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
@@ -135,7 +135,7 @@ class Functions extends Component {
 	//#endregion
 
 	//#region Functions
-	addNewRegistry = () => this.props.history.push({ pathname: `/functions/new`, prevURL: '/functions/list' })
+	addNewFunction = () => this.props.history.push({ pathname: `/functions/new`, prevURL: '/functions/list' })
 
 	getFavs = () => {
 		const { order, orderBy } = this.state
@@ -171,10 +171,10 @@ class Functions extends Component {
 				s('snackbars.exported')
 				break;
 			case 3:
-				s('snackbars.assign.deviceToRegistry', { collection: ``, what: 'Device' })
+				s('snackbars.assign.deviceToFunction', { collection: ``, what: 'Device' })
 				break;
 			case 6:
-				s('snackbars.assign.deviceToRegistry', { collection: `${functions[functions.findIndex(c => c.id === selected[0])].name}`, device: display })
+				s('snackbars.assign.deviceToFunction', { collection: `${functions[functions.findIndex(c => c.id === selected[0])].name}`, device: display })
 				break
 			default:
 				break;
@@ -223,7 +223,7 @@ class Functions extends Component {
 		this.props.sortData(key, property, order)
 		this.setState({ order, orderBy: property })
 	}
-	handleRegistryClick = id => e => {
+	handleFunctionClick = id => e => {
 		e.stopPropagation()
 		this.props.history.push('/function/' + id)
 	}
@@ -247,7 +247,7 @@ class Functions extends Component {
 	handleDeleteFunctions = async () => {
 		// const { selected } = this.state
 		// Promise.all([selected.map(u => {
-		// 	return deleteRegistry(u)
+		// 	return deleteFunction(u)
 		// })]).then(async () => {
 		// 	this.setState({ openDelete: false, anchorElMenu: null, selected: [] })
 		// 	await this.getData(true).then(
@@ -340,20 +340,20 @@ class Functions extends Component {
 
 	handleUnassignDevice = async () => {
 		// const { selected } = this.state
-		// let collection = await getRegistry(selected[0])
+		// let collection = await getFunction(selected[0])
 		// if (collection.activeDeviceStats)
-		// 	await unassignDeviceFromRegistry({
+		// 	await unassignDeviceFromFunction({
 		// 		id: collection.id,
 		// 		deviceId: collection.activeDeviceStats.id
 		// 	}).then(async rs => {
 		// 		if (rs) {
 		// 			this.handleCloseUnassignDevice()
 		// 			this.snackBarMessages(1)
-		// 			await this.getRegistry(this.state.collection.id)
+		// 			await this.getFunction(this.state.collection.id)
 		// 		}
 		// 	})
 		// else {
-		// 	//The Registry doesn't have a device assigned to it...
+		// 	//The Function doesn't have a device assigned to it...
 		// 	this.handleCloseUnassignDevice()
 		// }
 	}
@@ -371,10 +371,10 @@ class Functions extends Component {
 		// 	aria-labelledby='alert-dialog-title'
 		// 	aria-describedby='alert-dialog-description'
 		// >
-		// 	<DialogTitle disableTypography id='alert-dialog-title'><T reversed variant={'h6'}>{t('dialogs.unassign.title.devicesFromRegistry')}</T></DialogTitle>
+		// 	<DialogTitle disableTypography id='alert-dialog-title'><T reversed variant={'h6'}>{t('dialogs.unassign.title.devicesFromFunction')}</T></DialogTitle>
 		// 	<DialogContent>
 		// 		<DialogContentText id='alert-dialog-description'>
-		// 			{t('dialogs.unassign.message.deviceFromRegistry', { collection: collection.name, device: collection.activeDeviceStats.id })}
+		// 			{t('dialogs.unassign.message.deviceFromFunction', { collection: collection.name, device: collection.activeDeviceStats.id })}
 		// 		</DialogContentText>
 		// 	</DialogContent>
 		// 	<DialogActions>
@@ -422,7 +422,7 @@ class Functions extends Component {
 		const { t } = this.props
 		return <Fragment>
 			<Tooltip title={t('menus.create.collection')}>
-				<IconButton aria-label='Add new collection' onClick={this.addNewRegistry}>
+				<IconButton aria-label='Add new collection' onClick={this.addNewFunction}>
 					<Add />
 				</IconButton>
 			</Tooltip>
@@ -519,7 +519,7 @@ class Functions extends Component {
 				{/* {this.renderAssignDevice()} */}
 				{/* {selected.length > 0 ? this.renderDeviceUnassign() : null} */}
 				{this.renderTableToolBar()}
-				{this.renderTable(functions, this.handleRegistryClick, 'functions')}
+				{this.renderTable(functions, this.handleFunctionClick, 'functions')}
 				{this.renderConfirmDelete()}
 			</Paper></Fade>
 			}

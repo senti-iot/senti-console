@@ -1,5 +1,5 @@
 import { withStyles, Fade } from '@material-ui/core';
-import registryStyles from 'assets/jss/views/deviceStyles';
+import cloudfunctionStyles from 'assets/jss/views/deviceStyles';
 import { CircularLoader, GridContainer, ItemGrid } from 'components';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
@@ -7,18 +7,20 @@ import { DataUsage } from 'variables/icons';
 // import Toolbar from 'components/Toolbar/Toolbar';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { scrollToAnchor } from 'variables/functions';
-import { getRegistryLS } from 'redux/data';
-import RegistryDetails from './RegistryCards/RegistryDetails';
-import RegistryDevices from './RegistryCards/RegistryDevices';
+import { getFunctionLS } from 'redux/data';
+import FunctionCode from './CloudCards/FunctionCode';
+import FunctionDetails from './CloudCards/FunctionDetails';
+// import FunctionDetails from './FunctionCards/FunctionDetails';
+// import FunctionDevices from './FunctionCards/FunctionDevices';
 
-class Registry extends Component {
+class Function extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
 			//Date Filter
 			//End Date Filter Tools
-			registry: null,
+			cloudfunction: null,
 			activeDevice: null,
 			loading: true,
 			anchorElHardware: null,
@@ -33,7 +35,7 @@ class Registry extends Component {
 			//End Map
 		}
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
-		props.setHeader('registries.fields.registry', true, prevURL, 'registries')
+		props.setHeader('registries.fields.cloudfunction', true, prevURL, 'registries')
 	}
 
 	format = 'YYYY-MM-DD+HH:mm'
@@ -46,28 +48,28 @@ class Registry extends Component {
 
 	reload = (msgId) => {
 		this.snackBarMessages(msgId)
-		this.getRegistry(this.props.match.params.id)
+		this.getFunction(this.props.match.params.id)
 	}
 
-	getRegistry = async (id) => {
-		const { getRegistry } = this.props
-		await getRegistry(id)
+	getFunction = async (id) => {
+		const { getFunction } = this.props
+		await getFunction(id)
 	}
 	componentDidUpdate = async (prevProps) => {
 		if (prevProps.match.params.id !== this.props.match.params.id)
 			await this.componentDidMount()
 		if (this.props.saved === true) {
-			const { registry } = this.props
-			if (this.props.isFav({ id: registry.id, type: 'registry' })) {
-				this.props.s('snackbars.favorite.saved', { name: registry.name, type: this.props.t('favorites.types.registry') })
+			const { cloudfunction } = this.props
+			if (this.props.isFav({ id: cloudfunction.id, type: 'cloudfunction' })) {
+				this.props.s('snackbars.favorite.saved', { name: cloudfunction.name, type: this.props.t('favorites.types.cloudfunction') })
 				this.props.finishedSaving()
 			}
-			if (!this.props.isFav({ id: registry.id, type: 'registry' })) {
-				this.props.s('snackbars.favorite.removed', { name: registry.name, type: this.props.t('favorites.types.registry') })
+			if (!this.props.isFav({ id: cloudfunction.id, type: 'cloudfunction' })) {
+				this.props.s('snackbars.favorite.removed', { name: cloudfunction.name, type: this.props.t('favorites.types.cloudfunction') })
 				this.props.finishedSaving()
 			}
 		}
-		// if (!this.props.registry) {
+		// if (!this.props.cloudfunction) {
 		// 	this.props.history.push('/404')
 		// }
 	}
@@ -75,11 +77,11 @@ class Registry extends Component {
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {
-				await this.getRegistry(id).then(() => this.props.registry ? this.props.setBC('registry',  this.props.registry.name) : null
+				await this.getFunction(id).then(() => this.props.cloudfunction ? this.props.setBC('cloudfunction',  this.props.cloudfunction.name) : null
 				)
 				this.props.setTabs({
 					route: 0,
-					id: 'registry',
+					id: 'cloudfunction',
 					tabs: this.tabs(),
 					hashLinks: true
 				})
@@ -96,28 +98,28 @@ class Registry extends Component {
 		}
 	}
 	addToFav = () => {
-		const { registry } = this.props
+		const { cloudfunction } = this.props
 		let favObj = {
-			id: registry.id,
-			name: registry.name,
-			type: 'registry',
+			id: cloudfunction.id,
+			name: cloudfunction.name,
+			type: 'cloudfunction',
 			path: this.props.match.url
 		}
 		this.props.addToFav(favObj)
 	}
 	removeFromFav = () => {
-		const { registry } = this.props
+		const { cloudfunction } = this.props
 		let favObj = {
-			id: registry.id,
-			name: registry.name,
-			type: 'registry',
+			id: cloudfunction.id,
+			name: cloudfunction.name,
+			type: 'cloudfunction',
 			path: this.props.match.url
 		}
 		this.props.removeFromFav(favObj)
 	}
 
 	snackBarMessages = (msg) => {
-		// const { s, t, registry } = this.props
+		// const { s, t, cloudfunction } = this.props
 
 		switch (msg) {
 			default:
@@ -133,31 +135,27 @@ class Registry extends Component {
 
 
 	render() {
-		const { history, match, t, accessLevel, registry, loading } = this.props
+		const { history, match, t, accessLevel, cloudfunction, loading } = this.props
 		return (
 			<Fragment>
 				{!loading ? <Fade in={true}>
 					<GridContainer justify={'center'} alignContent={'space-between'}>
-						<ItemGrid xs={12} noMargin id='details'>
-							<RegistryDetails
-								isFav={this.props.isFav({ id: registry.id, type: 'registry' })}
+						<ItemGrid xs={12} noMargin id="details">
+							<FunctionDetails
+								cloudfunction={cloudfunction}
+								isFav={this.props.isFav({ id: cloudfunction.id, type: 'cloudfunction' })}
 								addToFav={this.addToFav}
 								removeFromFav={this.removeFromFav}
-								registry={registry}
 								history={history}
-								match={match}
-								handleOpenAssignProject={this.handleOpenAssignProject}
-								handleOpenUnassignDevice={this.handleOpenUnassignDevice}
-								handleOpenAssignOrg={this.handleOpenAssignOrg}
-								handleOpenDeleteDialog={this.handleOpenDeleteDialog}
-								handleOpenAssignDevice={this.handleOpenAssignDevice}
 								t={t}
 								accessLevel={accessLevel}
+								match={match}
 							/>
 						</ItemGrid>
-						<ItemGrid xs={12} noMargin id={'devices'}>
-							<RegistryDevices 
-								devices={registry.devices}
+						<ItemGrid xs={12} noMargin id='code'>
+							<FunctionCode
+								theme={this.props.theme}
+								cloudfunction={cloudfunction}
 								t={t}
 							/>
 						</ItemGrid>
@@ -173,8 +171,9 @@ const mapStateToProps = (state) => ({
 	saved: state.favorites.saved,
 	mapTheme: state.settings.mapTheme,
 	periods: state.dateTime.periods,
-	registry: state.data.registry,
-	loading: !state.data.gotRegistry
+	cloudfunction: state.data.cloudfunction,
+	loading: !state.data.gotFunction,
+
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -182,8 +181,8 @@ const mapDispatchToProps = (dispatch) => ({
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
 	finishedSaving: () => dispatch(finishedSaving()),
-	getRegistry: async id => dispatch(await getRegistryLS(1, id))
+	getFunction: async (id, customerID, ua) => dispatch(await getFunctionLS(id, customerID, ua))
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(registryStyles)(Registry))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(cloudfunctionStyles, { withTheme: true })(Function))

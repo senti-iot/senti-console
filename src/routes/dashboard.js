@@ -11,6 +11,10 @@ import { DataUsage } from 'variables/icons';
 // 	loader: () => import('routes/holiday'),
 // 	loading: AsyncLoader
 // })
+const AsyncCloudFunction = Loadable({
+	loader: () => import('routes/cloudfunction'),
+	loading: AsyncLoader
+})
 const AsyncCloudFunctions = Loadable({
 	loader: () => import('routes/cloudfunctions'),
 	loading: AsyncLoader
@@ -226,6 +230,11 @@ const dashboardRoutes = [
 		path: '/index:ext',
 		hideFromSideBar: true,
 		component: () => <Redirect to={'/dashboard'} />
+	},
+	{
+		path: '/function/:id',
+		hideFromSideBar: true,
+		component: AsyncCloudFunction
 	},
 	{
 		path: null,

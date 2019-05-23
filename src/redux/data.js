@@ -10,7 +10,7 @@ import { hist } from 'App';
 import { handleRequestSort } from 'variables/functions';
 import { getSuggestions } from './globalSearch';
 import { getAllRegistries, getRegistry, getAllDeviceTypes, getDeviceType, getAllSensors, getSensor } from 'variables/dataRegistry';
-import { getAllFunctions } from 'variables/dataFunctions';
+import { getAllFunctions, getFunction } from 'variables/dataFunctions';
 // import { getSuggestions } from './globalSearch';
 /**
  * Special functions
@@ -59,6 +59,9 @@ const gotcollections = 'GotCollections'
 const gotregistries = 'GotRegistries'
 const setdeviceTypes = 'setdeviceTypes'
 const setsensors = 'setsensors'
+
+const setFunction = 'setFunction'
+const gotFunction = 'gotFunction'
 
 const gotProject = 'GotProject'
 const gotCollection = 'GotCollection'
@@ -272,7 +275,49 @@ export const getDeviceTypeLS = async (id) => {
 		})
 	}
 }
-export const getRegistryLS = async (customerID, id) => {
+export const getFunctionLS = async (id, customerID, ua) => {
+	return async dispatch => {
+		dispatch({ type: gotFunction, payload: false })
+		let cloudfunction = get('cloudfunction.' + id)
+		if (cloudfunction) {
+			dispatch({
+				type: setFunction,
+				payload: cloudfunction
+			})
+			dispatch({
+				type: gotFunction,
+				payload: true
+			})
+		}
+		else {
+			dispatch({
+				type: gotFunction,
+				payload: false
+			})
+			dispatch({
+				type: setFunction,
+				payload: null
+			})
+		}
+		await getFunction(id, customerID, ua).then(async rs => {
+			if (!compare(cloudfunction, rs)) {
+				cloudfunction = {
+					...rs,
+				}
+				dispatch({
+					type: setFunction,
+					payload: cloudfunction
+				})
+				set('cloudfunction.' + id, cloudfunction)
+				dispatch({
+					type: gotFunction,
+					payload: true
+				})
+			}
+		})
+	}
+}
+export const getRegistryLS = async (id, customerID, ua) => {
 	return async dispatch => {
 		dispatch({ type: gotRegistry, payload: false })
 		let registry = get('registry.' + id)
@@ -296,7 +341,7 @@ export const getRegistryLS = async (customerID, id) => {
 				payload: null
 			})
 		}
-		await getRegistry(customerID, id).then(async rs => {
+		await getRegistry(id, customerID, ua).then(async rs => {
 			if (!compare(registry, rs)) {
 				registry = {
 					...rs,
@@ -810,6 +855,10 @@ export const data = (state = initialState, { type, payload }) => {
 			return Object.assign({}, state, { project: payload })
 		case gotProject:
 			return Object.assign({}, state, { gotProject: payload })
+		case setFunction:
+			return Object.assign({}, state, { cloudfunction: payload })
+		case gotFunction:
+			return Object.assign({}, state, { gotFunction: payload })
 		case gotusers:
 			return Object.assign({}, state, { gotusers: payload })
 		case gotorgs:

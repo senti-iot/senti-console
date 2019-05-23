@@ -32,6 +32,7 @@
 		"perfect-scrollbar": "1.4.0",
 		"prop-types": "^15.7.2",
 		"react": "^16.8.3",
+		"react-ace": "^6.5.0",
 		"react-autosuggest": "^9.4.3",
 		"react-chartjs-2": "^2.7.4",
 		"react-cookies": "^0.1.0",

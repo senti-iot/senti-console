@@ -10,7 +10,7 @@ export const getAllFunctions = async (customerID, ua) => {
 	}
 	return data
 }
-export const getFunction = async (id) => {
+export const getFunction = async (id, customerID, ua) => {
 	let data = await cloudAPI.get(`/v1/f/${id}`).then(rs => rs.ok ? rs.data : null)
 	return data
 }

@@ -6,7 +6,7 @@ import withLocalization from 'components/Localization/T';
 import Img404 from 'assets/img/404/404.svg'
 class NotFound extends Component {
 	componentDidMount = () => {
-		this.props.setHeader('404.title', true)
+		this.props.setHeader('404.title', true, '', '')
 	}
 
 	render() {

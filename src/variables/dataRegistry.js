@@ -20,16 +20,16 @@ export const updateRegistry = async (reg) => {
 	return response
 }
 
-export const getRegistry = async (customerID, id) => {
-	let data = await servicesAPI.get(`/v1/${customerID}/registry/${id}`).then(rs => rs.ok ? rs.data : null)
-	let devices = await getRegistryDevices(customerID, id)
+export const getRegistry = async (id, customerID, ua) => {
+	let data = await servicesAPI.get(`/v1/registry/${id}`).then(rs => rs.ok ? rs.data : null)
+	let devices = await getRegistryDevices(id)
 	if (data) {
 		data.devices = devices
 	}
 	return data
 }
 export const getRegistryDevices = async (customerID, id) => {
-	let data = await servicesAPI.get(`/v1/${customerID}/registry/${id}/devices`).then(rs => rs.ok ? rs.data : null)
+	let data = await servicesAPI.get(`/v1/registry/${id}/devices`).then(rs => rs.ok ? rs.data : null)
 	return data
 }
 
