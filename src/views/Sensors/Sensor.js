@@ -204,16 +204,20 @@ class Sensor extends Component {
 						{/* <ItemGrid xs={12} noMargin id={'data'}> */}
 						{/* <ChartDataPanel t={this.props.t} /> */}
 						{/* </ItemGrid> */}
-						{sensor.metadata ? sensor.metadata.dataKeys ? sensor.metadata.dataKeys.map((k, i) =>
-							<ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
+						{sensor.metadata ? sensor.metadata.dataKeys ? sensor.metadata.dataKeys.map((k, i) => {
+							console.log(k)
+							return <ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
 								<SensorData
 									periods={periods}
 									sensor={sensor}
 									history={history}
 									match={match}
 									t={t}
-									v={k}
+									v={k.key}
+									nId={k.nId}
+
 								/></ItemGrid>
+						}
 						) : null : null}
 						<ItemGrid xs={12} noMargin id='details'>
 							<SensorProtocol

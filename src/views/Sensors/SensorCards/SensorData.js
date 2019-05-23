@@ -30,9 +30,10 @@ export class SensorData extends Component {
 	}
 	getWifiHourly = async (p) => {
 		const { hoverID } = this.state 	
-		const { v } = this.props
+		const { v, nId } = this.props
 		const device = this.props.sensor
 		this.setState({ loadingData: true })
+		console.log(nId)
 		let newState = await getWMeterDatav2('device', [{
 			name: device.name,
 			id: device.id,
@@ -40,7 +41,7 @@ export class SensorData extends Component {
 			long: device.long,
 			org: device.org ? device.org.name : "",
 			color: teal[500]
-		}], p.from, p.to, hoverID, p.raw, v, true)
+		}], p.from, p.to, hoverID, p.raw, v, nId, true)
 		return newState
 	}
 	render() {

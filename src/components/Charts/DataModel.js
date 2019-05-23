@@ -484,7 +484,7 @@ export const setMinutelyData = (dataArr, from, to, hoverID) => {
 	return state
 }
 
-export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, v, prevPeriod) => {
+export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, v, nId, prevPeriod) => {
 	let startDate = moment(from).format(format)
 	let endDate = moment(to).format(format)
 	let prevEndDate, prevStartDate = null
@@ -494,11 +494,11 @@ export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, v, p
 	// console.log(v)
 	await Promise.all(objArr.map(async o => {
 		if (type === 'device') {
-			data = await getSensorDataClean(o.id, startDate, endDate, v)
+			data = await getSensorDataClean(o.id, startDate, endDate, v, nId)
 			if (prevPeriod) {
 				prevEndDate = moment(to).subtract(moment(to).diff(moment(from), 'hour'), 'hour').format(format)
 				prevStartDate = moment(from).subtract(moment(to).diff(moment(from), 'hour'), 'hour').format(format)
-				prevData = await getSensorDataClean(o.id, prevStartDate, prevEndDate, v)
+				prevData = await getSensorDataClean(o.id, prevStartDate, prevEndDate, v, nId)
 
 				Object.keys(prevData).forEach(p => {
 					prevData[moment(p, format).add(1, 'day').format('YYYY-MM-DD HH:mm')] = prevData[p]	
@@ -551,7 +551,7 @@ export const getWMeterDatav2 = async (type, objArr, from, to, hoverId, raw, v, p
 	let exportData = setExportData(dataArr, 'hour')
 	return { ...newState, exportData, dataArr }
 }
-export const getWMeterData = async (objArr, hoverId, v, prevPeriod) => {
+export const getWMeterData = async (objArr, hoverId, v, nId, prevPeriod) => {
 	// let startDate = moment(from).format(format)
 	// let endDate = moment(to).format(format)
 	let dataArr = []
@@ -562,8 +562,8 @@ export const getWMeterData = async (objArr, hoverId, v, prevPeriod) => {
 		let endDate = moment(o.to).format(format)
 		let prevStartDate = moment(o.from).subtract(moment(o.to).diff(o.from, 'hour')).format(format)
 		let prevEndDate = moment(o.to).subtract(moment(o.to).diff(o.from, 'hour')).format(format)
-		data = await getSensorDataClean(o.id, startDate, endDate, v)
-		data2 = await getSensorDataClean(o.id, prevStartDate, prevEndDate, false)
+		data = await getSensorDataClean(o.id, startDate, endDate, v, nId)
+		data2 = await getSensorDataClean(o.id, prevStartDate, prevEndDate, false, nId)
 		// console.log(o)
 		dataSet = {
 			name: o.name,
