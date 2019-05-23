@@ -13,7 +13,7 @@ import { GridContainer, CircularLoader, AssignProject, /* T */ } from 'component
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
 import { getFunctions, setFunctions, sortData } from 'redux/data';
-import FunctionTable from 'components/Functions/FunctionTable';
+import FunctionTable from 'components/Cloud/FunctionTable';
 // import { setFunctions, getFunctions, sortData } from 'redux/data';
 
 class Functions extends Component {

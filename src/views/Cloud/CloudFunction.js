@@ -34,8 +34,8 @@ class Function extends Component {
 			heatData: null,
 			//End Map
 		}
-		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
-		props.setHeader('registries.fields.cloudfunction', true, prevURL, 'registries')
+		let prevURL = props.location.prevURL ? props.location.prevURL : '/functions/list'
+		props.setHeader('sidebar.cloudfunction', true, prevURL, 'functions')
 	}
 
 	format = 'YYYY-MM-DD+HH:mm'

@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-// import CreateCollectionForm from 'components/Collections/CreateCollectionForm';
-import { createRegistry } from 'variables/dataRegistry';
-import CreateRegistryForm from 'components/Registry/CreateRegistryForm';
+import { createFunction } from 'variables/dataFunctions';
+import CreateFunctionForm from 'components/Cloud/CreateFunctionForm';
 
 class CreateCollection extends Component {
 	constructor(props) {
@@ -11,18 +10,19 @@ class CreateCollection extends Component {
 
 		this.state = {
 			loading: true,
-			registry: {
+			cloudfunction: {
 				name: "",
-				region: "Europe",
-				protocol: 0,
-				ca_certificate: 0,
-				customer_id: 1
+				js: `(data) => {
+	return data;
+}`,
+				type: 0,
+				description: ""
 			}
 		}
 		this.id = props.match.params.id
-		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
-		props.setHeader('menus.create.registry', true, prevURL, '')
-		props.setBC('createregistry')
+		let prevURL = props.location.prevURL ? props.location.prevURL : '/functions/list'
+		props.setHeader('menus.create.cloudfunction', true, prevURL, '')
+		props.setBC('createcloudfunction')
 	}
 
 	keyHandler = (e) => {
@@ -36,38 +36,46 @@ class CreateCollection extends Component {
 	componentWillUnmount = () => {
 		window.removeEventListener('keydown', this.keyHandler, false)
 	}
-
+	handleCodeChange = what => value => {
+		this.setState({
+			cloudfunction: {
+				...this.state.cloudfunction,
+				[what]: value
+			}
+		})
+	}
 	handleChange = (what) => e => {
 		this.setState({
-			registry: {
-				...this.state.registry,
+			cloudfunction: {
+				...this.state.cloudfunction,
 				[what]: e.target.value
 			}
 		})
 	}
-	createRegistry = async () => { 
-		return await createRegistry(this.state.registry)
+	createFunction = async () => { 
+		return await createFunction(this.state.cloudfunction)
 	}
 	handleCreate = async () => {
 		const { s, history } = this.props
-		let rs = await this.createRegistry()
+		let rs = await this.createFunction()
 		if (rs) {
 			s('snackbars.collectionCreated')
-			history.push(`/registry/${rs}`)
+			history.push(`/cloudfunction/${rs}`)
 		}
 		else
 			s('snackbars.failed')
 	}
-	goToRegistries = () => this.props.history.push('/registries')
+	goToRegistries = () => this.props.history.push('/functions')
 	render() {
 		const { t } = this.props
-		const { registry } = this.state
+		const { cloudfunction } = this.state
 		return (
 		
-			<CreateRegistryForm
-				registry={registry}
+			<CreateFunctionForm
+				cloudfunction={cloudfunction}
 				handleChange={this.handleChange}
 				handleCreate={this.handleCreate}
+				handleCodeChange={this.handleCodeChange}
 				goToRegistries={this.goToRegistries}
 				t={t}
 			/>
