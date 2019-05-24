@@ -146,11 +146,11 @@ class Registry extends Component {
 								registry={registry}
 								history={history}
 								match={match}
-								handleOpenAssignProject={this.handleOpenAssignProject}
-								handleOpenUnassignDevice={this.handleOpenUnassignDevice}
-								handleOpenAssignOrg={this.handleOpenAssignOrg}
-								handleOpenDeleteDialog={this.handleOpenDeleteDialog}
-								handleOpenAssignDevice={this.handleOpenAssignDevice}
+								// handleOpenAssignProject={this.handleOpenAssignProject}
+								// handleOpenUnassignDevice={this.handleOpenUnassignDevice}
+								// handleOpenAssignOrg={this.handleOpenAssignOrg}
+								// handleOpenDeleteDialog={this.handleOpenDeleteDialog}
+								// handleOpenAssignDevice={this.handleOpenAssignDevice}
 								t={t}
 								accessLevel={accessLevel}
 							/>

@@ -397,7 +397,10 @@
             "device": "Device",
             "org": "Organisation",
             "project": "Project",
-            "user": "User"
+			"user": "User",
+			"registry": "Registry",
+			"devicetype": "Device Type",
+			"cloudfunction": "Cloud Function"
         }
     },
     "filters": {

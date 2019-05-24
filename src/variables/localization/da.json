@@ -397,7 +397,10 @@
             "device": "Enhed",
             "org": "Organisation",
             "project": "Projekt",
-            "user": "Bruger"
+            "user": "Bruger",
+			"registry": "Register",
+			"devicetype": "Enhedstype",
+			"cloudfunction": "Cloud funktion"
         }
     },
     "filters": {
