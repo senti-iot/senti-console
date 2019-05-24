@@ -115,12 +115,12 @@ class Sensors extends Component {
 			const { selected } = this.state
 			let device = devices[devices.findIndex(d => d.id === selected[0])]
 			if (device) {
-				if (isFav({ id: device.id, type: 'device' })) {
+				if (isFav({ id: device.id, type: 'sensor' })) {
 					s('snackbars.favorite.saved', { name: device.name, type: t('favorites.types.device') })
 					finishedSaving()
 					this.setState({ selected: [] })
 				}
-				if (!isFav({ id: device.id, type: 'device' })) {
+				if (!isFav({ id: device.id, type: 'sensor' })) {
 					s('snackbars.favorite.removed', { name: device.name, type: t('favorites.types.device') })
 					finishedSaving()
 					this.setState({ selected: [] })
@@ -137,7 +137,7 @@ class Sensors extends Component {
 	getFavs = () => {
 		const { order, orderBy } = this.state
 		const { favorites, devices } = this.props
-		let favs = favorites.filter(f => f.type === 'device')
+		let favs = favorites.filter(f => f.type === 'sensor')
 		let favSensors = favs.map(f => {
 			return devices[devices.findIndex(d => d.id === f.id)]
 		})

@@ -143,7 +143,6 @@ class SensorTable extends React.Component {
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
-								console.log(n)
 								return (
 									<TableRow
 										hover

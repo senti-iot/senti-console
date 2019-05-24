@@ -83,13 +83,13 @@ class Sensor extends Component {
 			// this.getHeatMapData()
 		}
 		if (this.props.saved === true) {
-			const { registry } = this.props
-			if (this.props.isFav({ id: registry.id, type: 'registry' })) {
-				this.props.s('snackbars.favorite.saved', { name: registry.name, type: this.props.t('favorites.types.registry') })
+			const { sensor } = this.props
+			if (this.props.isFav({ id: sensor.id, type: 'sensor' })) {
+				this.props.s('snackbars.favorite.saved', { name: sensor.name, type: this.props.t('favorites.types.device') })
 				this.props.finishedSaving()
 			}
-			if (!this.props.isFav({ id: registry.id, type: 'registry' })) {
-				this.props.s('snackbars.favorite.removed', { name: registry.name, type: this.props.t('favorites.types.registry') })
+			if (!this.props.isFav({ id: sensor.id, type: 'sensor' })) {
+				this.props.s('snackbars.favorite.removed', { name: sensor.name, type: this.props.t('favorites.types.device') })
 				this.props.finishedSaving()
 			}
 		}
@@ -123,21 +123,21 @@ class Sensor extends Component {
 		}
 	}
 	addToFav = () => {
-		const { registry } = this.props
+		const { sensor } = this.props
 		let favObj = {
-			id: registry.id,
-			name: registry.name,
+			id: sensor.id,
+			name: sensor.name,
 			type: 'sensor',
 			path: this.props.match.url
 		}
 		this.props.addToFav(favObj)
 	}
 	removeFromFav = () => {
-		const { registry } = this.props
+		const { sensor } = this.props
 		let favObj = {
-			id: registry.id,
-			name: registry.name,
-			type: 'registry',
+			id: sensor.id,
+			name: sensor.name,
+			type: 'sensor',
 			path: this.props.match.url
 		}
 		this.props.removeFromFav(favObj)
