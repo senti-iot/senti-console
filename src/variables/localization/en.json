@@ -104,7 +104,7 @@
     },
     "cloudfunctions": {
         "fields": {
-            "code": "Code",
+            "code": "Source Code",
             "description": "Description",
             "name": "Name",
             "type": "Type",

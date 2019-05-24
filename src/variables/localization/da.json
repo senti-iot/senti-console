@@ -104,7 +104,7 @@
     },
     "cloudfunctions": {
         "fields": {
-            "code": "Kode",
+            "code": "Kildekode",
             "description": "Beskrivelse",
             "name": "Navn",
             "type": "Type",
