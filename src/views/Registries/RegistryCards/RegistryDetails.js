@@ -1,6 +1,6 @@
 import { withStyles } from '@material-ui/core';
 import registryStyles from 'assets/jss/views/deviceStyles';
-import { Caption, ItemG, Info, ItemGrid } from 'components';
+import { Caption, ItemG, Info } from 'components';
 import InfoCard from 'components/Cards/InfoCard';
 import Dropdown from 'components/Dropdown/Dropdown';
 import React, { Component } from 'react';
@@ -26,11 +26,11 @@ class RegistryDetails extends Component {
 		switch (id) {
 			case 0:
 				return t('registries.fields.protocols.none')
-			case 1: 
+			case 1:
 				return t('registries.fields.protocols.mqtt')
-			case 2: 
+			case 2:
 				return t('registries.fields.protocols.http')
-			case 3: 
+			case 3:
 				return `${t('registries.fields.protocols.mqtt')} & ${t('registries.fields.protocols.http')}`
 			default:
 				break;
@@ -42,7 +42,6 @@ class RegistryDetails extends Component {
 			<InfoCard
 				title={registry.name ? registry.name : registry.uuid}
 				avatar={<DataUsage />}
-				noPadding
 				noExpand
 				// noRightExpand
 				// menuExpand
@@ -61,7 +60,7 @@ class RegistryDetails extends Component {
 					<Caption>{t('registries.fields.id')}:</Caption>&nbsp;{registry.id}
 				</ItemG>}
 				content={
-					<ItemGrid container spacing={16}>
+					<ItemG container >
 
 						<ItemG xs={12} md>
 							<Caption>{t('registries.fields.uuid')}</Caption>
@@ -75,56 +74,10 @@ class RegistryDetails extends Component {
 							<Caption>{t('registries.fields.description')}</Caption>
 							<Info>{registry.description}</Info>
 						</ItemG>
-					</ItemGrid>
+					</ItemG>
 				}
 				hiddenContent={
 					<ItemG container spacing={16}>
-						{/* <ItemG xs={12} sm={1} md={1} lg={1} xl={1}>
-							<Caption>{t('registries.fields.status')}:</Caption>
-							<Info>{this.registryState()}</Info>
-						</ItemG> */}
-						{/* <ItemG container xs={12} sm={11} md={11} lg={11} xl={11}>
-							{weather === '' || weather === undefined ? null : weather !== null ? <Fragment>
-								<ItemG xs={2} sm={1} md={1} lg={1} container justify={'center'}>
-									<WeatherIcon height={24} width={24} icon={weather.currently.icon} />
-								</ItemG>
-								<ItemG xs>
-									<Caption>{t('devices.fields.weather')}</Caption>
-									<Info>
-										{weather.currently.summary}
-									</Info>
-								</ItemG>
-							</Fragment>
-								: <CircularProgress size={20} />}
-						</ItemG> */}
-						{/* <ItemG xs={12}>
-							<Caption>{t('registries.fields.description')}:</Caption>
-							<Info>{registry.description ? registry.description : ''}</Info>
-						</ItemG> */}
-
-
-						{/* <ItemG>
-							<Caption>{t('registries.fields.org')}:</Caption>
-							<Info>{registry.org ?
-								<Link to={{ pathname: `/management/org/${registry.org.id}`, prevURL: `/registry/${registry.id}` }} >
-									{registry.org.name}
-								</Link>
-								: t('no.org')}</Info>
-
-						</ItemG>
-						<ItemG>
-							<Caption>{t('registries.fields.project')}:</Caption>
-							<Info>{registry.project ?
-								<Link to={{
-									pathname: `/project/${registry.project.id}`,
-									prevURL: `/registry/${registry.id}`
-								}}
-								>
-									{registry.project.title}
-								</Link>
-								: t('no.project')}</Info>
-
-						</ItemG> */}
 					</ItemG>} />
 		)
 	}

@@ -4,6 +4,7 @@ import TP from 'components/Table/TP';
 import { InfoCard, ItemG } from 'components';
 import { DeviceHub, CheckCircle, Block, SignalWifi2Bar } from 'variables/icons';
 import { red, green } from '@material-ui/core/colors';
+import { connect } from 'react-redux'
 
 const styles = (theme) => ({
 	blocked: {
@@ -40,14 +41,13 @@ class RegistryDevices extends Component {
 		}
 	}
 	render() {
-		const { devices, t } = this.props
+		const { devices, t, rowsPerPage } = this.props
 		const { page } = this.state
 		return (
 			<InfoCard
 				title={t('sidebar.devices')}
 				avatar={<DeviceHub />}
 				noExpand
-				noPadding
 				content={
 					<Fragment>
 
@@ -65,7 +65,7 @@ class RegistryDevices extends Component {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{devices.map(d => {
+								{devices ? devices.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(d => {
 									return (
 										<TableRow key={d.id}>
 											<TableCell style={{ paddingLeft: 24 }} component="th" scope="row">
@@ -76,7 +76,7 @@ class RegistryDevices extends Component {
 											</TableCell>
 										</TableRow>
 									);
-								})}
+								}) : null}
 							</TableBody>
 						</Table>
 						<TP
@@ -90,5 +90,12 @@ class RegistryDevices extends Component {
 		)
 	}
 }
+const mapStateToProps = (state) => ({
+	rowsPerPage: state.appState.trp ? state.appState.trp : state.settings.trp,
+	hoverTime: state.settings.hoverTime
+})
 
-export default withStyles(styles)(RegistryDevices)
+const mapDispatchToProps = {
+
+}
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(RegistryDevices))
