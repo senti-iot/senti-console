@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { createFunction } from 'variables/dataFunctions';
 import CreateFunctionForm from 'components/Cloud/CreateFunctionForm';
+import { getFunctions } from 'redux/data';
 
 class CreateCollection extends Component {
 	constructor(props) {
@@ -53,14 +54,16 @@ class CreateCollection extends Component {
 		})
 	}
 	createFunction = async () => { 
-		return await createFunction(this.state.cloudfunction)
+
+		this.props.getFunctions(true, this.props.orgId, this.props.accessLevel.apisuperuser ? true : false)
+		return await createFunction({ ...this.state.cloudfunction, orgId: this.props.orgId })
 	}
 	handleCreate = async () => {
 		const { s, history } = this.props
 		let rs = await this.createFunction()
 		if (rs) {
-			s('snackbars.collectionCreated')
-			history.push(`/cloudfunction/${rs}`)
+			// s('snackbars.collectionCreated')
+			history.push(`/function/${rs}`)
 		}
 		else
 			s('snackbars.failed')
@@ -93,6 +96,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
+	getFunctions: (reload, customerID, ua) => dispatch(getFunctions(reload, customerID, ua)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateCollection)

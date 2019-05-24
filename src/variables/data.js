@@ -174,6 +174,7 @@ export const servicesAPI = create({
 
 export const cloudAPI = create({
 	baseURL: 'https://services.senti.cloud/functions',
+	// baseURL: 'http://localhost:3011',
 	timeout: 30000,
 	headers: {
 		'auth': encrypt(process.env.REACT_APP_ENCRYPTION_KEY),
