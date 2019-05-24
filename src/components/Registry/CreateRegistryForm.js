@@ -105,14 +105,14 @@ class CreateCollectionForm extends Component {
 		const { t, registry, handleChange } = this.props
 		return <DSelect
 			margin={'normal'}
-			label={t('registries.protocol')}
+			label={t('registries.fields.protocol')}
 			value={registry.protocol}
 			onChange={handleChange('protocol')}
 			menuItems={[
 				{ value: 0, label: t('registries.fields.protocols.none') },
 				{ value: 1, label: t('registries.fields.protocols.mqtt') },
 				{ value: 2, label: t('registries.fields.protocols.http') },
-				{ value: 3, label: `${t('registries.fields.protocols.mqtt')} && ${t('registries.fields.protocols.http')}` } 
+				{ value: 3, label: `${t('registries.fields.protocols.mqtt')} & ${t('registries.fields.protocols.http')}` } 
 			]}
 		/>
 	}
@@ -120,7 +120,7 @@ class CreateCollectionForm extends Component {
 		const { t, registry, handleChange } = this.props
 		return <DSelect
 			margin={'normal'}
-			label={t('registries.region')}
+			label={t('registries.fields.region')}
 			value={registry.region}
 			onChange={handleChange('region')}
 			menuItems={[

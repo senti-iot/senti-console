@@ -718,7 +718,10 @@
                 "none": "Uden protocol"
             },
             "region": "Region",
-            "registry": "Register",
+			"registry": "Register",
+			"regions": {
+				"europe": "Europa"
+			},
             "uuid": "Universelt Unik Identifikator (UUID)"
         },
         "pageTitle": "Registre"

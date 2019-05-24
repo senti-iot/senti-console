@@ -511,25 +511,25 @@
         },
         "copyEmails": "Copy E-mail addresses",
         "create": {
-            "cloudfunction": "Opret cloud funktion",
+            "cloudfunction": "Create cloud function",
             "collection": "Create data collection",
             "device": "Create device",
-            "devicetype": "Opret enhedstype",
+            "devicetype": "Create device type",
             "org": "Create organisation",
             "project": "Create project",
-            "registry": "Opret register",
+            "registry": "Create registry",
             "user": "Create user"
         },
         "delete": "Delete",
         "edit": "Edit",
         "edits": {
-            "cloudfunction": "Rediger cloud funktion",
+            "cloudfunction": "Edit cloud function",
             "collection": "Edit data collection",
             "device": "Edit device",
-            "devicetype": "Rediger enhedstype",
+            "devicetype": "Edit device type",
             "org": "Edit organisation",
             "project": "Edit project",
-            "registry": "Rediger register",
+            "registry": "Edit registry",
             "user": "Edit user"
         },
         "export": "Export data",
@@ -717,7 +717,10 @@
                 "mqtt": "MQTT",
                 "none": "Without protocol"
             },
-            "region": "Region",
+			"region": "Region",
+			"regions": {
+				"europe": "Europe"
+			},
             "registry": "Registry",
             "uuid": "Universal Unique Identifier (UUID)"
         },
@@ -888,23 +891,23 @@
         }
     },
     "sidebar": {
-        "cloudFunctions": "Cloud funktioner",
-        "cloudfunction": "Cloud funktion",
+        "cloudFunctions": "Cloud functions",
+        "cloudfunction": "Cloud function",
         "collection": "Data Collection",
         "collections": "Data Collections",
         "dashboard": "Dashboard",
         "device": "Device",
         "devices": "Devices",
-        "devicetype": "Enhedstype",
-        "devicetypes": "Enhedstyper",
+        "devicetype": "Device type",
+        "devicetypes": "Device types",
         "favorites": "Favorites",
         "home": "Home",
-        "manage": "Konfiguration",
+        "manage": "Configuration",
         "org": "Organisation",
         "orgs": "Organisations",
         "project": "Project",
         "projects": "Projects",
-        "registries": "Registre",
+        "registries": "Registries",
         "settings": "Settings",
         "user": "User",
         "users": "Users"

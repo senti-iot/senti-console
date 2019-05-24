@@ -17,7 +17,7 @@ class UpdateRegistry extends Component {
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
-		props.setHeader('registries.updateRegistry', true, prevURL, '')
+		props.setHeader('menus.edit.registry', true, prevURL, '')
 		props.setBC('updateregistry')
 	}
 
@@ -38,7 +38,7 @@ class UpdateRegistry extends Component {
 				loading: false
 			})
 			let prevURL = location.prevURL ? location.prevURL : `/registry/${this.id}`
-			setHeader('registries.editRegistry', true, prevURL, 'registries')
+			setHeader('menus.edits.registry', true, prevURL, 'registries')
 			this.props.setBC('editregistry', registry.name, registry.id)
 		}
 	}
