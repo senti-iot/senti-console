@@ -57,7 +57,9 @@ class Sensors extends Component {
 		const { t } = this.props
 		return [
 			{ key: 'name', name: t('devices.fields.name'), type: 'string' },
+			{ key: 'uuid', name: t('sensors.fields.uuid'), type: 'string' },
 			{ key: 'communication', name: t('sensors.fields.communication'), type: 'dropDown', options: this.dCommunication() },
+			{ key: 'reg_name', name: t('sensors.fields.registry'), type: 'string' },
 			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 		]
 	}
@@ -68,9 +70,6 @@ class Sensors extends Component {
 			{ id: 'name', label: t('devices.fields.name') },
 			{ id: 'uuid', label: t('sensors.fields.uuid') },
 			{ id: 'communication', label: t('sensors.fields.communication') },
-			// { id: 'created', label: t('registries.fields.created') },
-			// { id: 'region', label: t('devices.fields.region') },
-			// { id: 'protocol', label: t('devices.fields.created') },
 			{ id: 'reg_name', label: t('sensors.fields.registry') },
 		]
 	}
