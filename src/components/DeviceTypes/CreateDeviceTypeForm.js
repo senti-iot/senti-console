@@ -148,7 +148,7 @@ class CreateDeviceTypeForm extends Component {
 		const { deviceType, t, handleAddKeyToStructure, keyName, value, handleStrChange } = this.props
 		return <ItemG container>
 			<ItemG xs={12} container>
-				<TextF value={keyName} handleChange={handleStrChange('key')} InputProps={{ style: { marginRight: 8 } }} label={t('devicetypes.fields.structure.key')} />
+				<TextF value={keyName} handleChange={handleStrChange('keyName')} InputProps={{ style: { marginRight: 8 } }} label={t('devicetypes.fields.structure.key')} />
 				<DSelect
 					value={value}
 					onChange={handleStrChange('value')}
@@ -165,9 +165,9 @@ class CreateDeviceTypeForm extends Component {
 				<Button variant={'outlined'} color={'primary'} onClick={handleAddKeyToStructure}>{t('devicetypes.actions.addKey')}</Button>
 			</ItemG>
 			<ItemG xs={12}>
-				{Object.keys(deviceType.structure).map((k, i) => {
+				{deviceType.structure ? Object.keys(deviceType.structure).map((k, i) => {
 					return <TextF label={k} readOnly value={deviceType.structure[k]} />
-				})}
+				}) : null}
 			</ItemG>
 		</ItemG>
 	}

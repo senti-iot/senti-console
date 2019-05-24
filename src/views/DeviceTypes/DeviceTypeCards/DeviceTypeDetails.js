@@ -35,7 +35,7 @@ class DeviceTypeDetails extends Component {
 				expanded={Boolean(detailsPanel)}
 				topAction={<Dropdown menuItems={
 					[
-						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/deviceType/${deviceType.id}/edit`, prevURL: `/deviceType/${deviceType.id}` }) },
+						{ label: t('menus.edit'), icon: <Edit className={classes.leftIcon} />, func: () => history.push({ pathname: `/devicetype/${deviceType.id}/edit`, prevURL: `/deviceType/${deviceType.id}` }) },
 						// { label: t('menus.delete'), icon: <Delete className={classes.leftIcon} />, func: handleOpenDeleteDialog },
 						{ label: isFav ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFav ? <Star className={classes.leftIcon} /> : <StarBorder className={classes.leftIcon} />, func: isFav ? removeFromFav : addToFav }
 

@@ -1,24 +1,31 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-// import CreateRegistryForm from 'components/Collections/CreateRegistryForm';
-import { getRegistryLS } from 'redux/data';
-import { updateRegistry } from 'variables/dataRegistry';
-import CreateRegistryForm from 'components/Registry/CreateRegistryForm';
+// import CreateDeviceTypeForm from 'components/Collections/CreateDeviceTypeForm';
+import { getDeviceTypeLS } from 'redux/data';
+import { updateDeviceType } from 'variables/dataRegistry';
+import CreateDeviceTypeForm from 'components/DeviceTypes/CreateDeviceTypeForm';
 import { updateFav, isFav } from 'redux/favorites';
 import { CircularLoader } from 'components';
 
-class CreateRegistry extends Component {
+class CreateDeviceType extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
 			loading: true,
-			registry: null
+			deviceType: {
+				name: "",
+				structure: {
+				},
+				customer_id: 1
+			},
+			keyName: '',
+			value: '',
 		}
 		this.id = props.match.params.id
-		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
-		props.setHeader('registries.createRegistry', true, prevURL, '')
-		props.setBC('createregistry')
+		let prevURL = props.location.prevURL ? props.location.prevURL : '/devicetypes/list'
+		props.setHeader('menus.edit.devicetype', true, prevURL, '')
+		props.setBC('createdevicetype')
 	}
 
 	keyHandler = (e) => {
@@ -27,19 +34,21 @@ class CreateRegistry extends Component {
 		}
 	}
 	getData = async () => {
-		const { getRegistry } = this.props
-		await getRegistry(this.id)
+		const { getDeviceType } = this.props
+		await getDeviceType(this.id)
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		const { location, setHeader, registry } = this.props
-		if ((!prevProps.registry && registry !== prevProps.registry && registry) || (this.state.registry === null && registry)) {
+		const { location, setHeader, devicetype } = this.props
+		console.log(devicetype, ((!prevProps.devicetype && devicetype !== prevProps.devicetype && devicetype) || (this.state.devicetype === null && devicetype)))
+		if ((!prevProps.devicetype && devicetype !== prevProps.devicetype && devicetype) || (this.state.devicetype === null && devicetype)) {
+
 			this.setState({
-				registry: registry,
+				devicetype: devicetype,
 				loading: false
 			})
-			let prevURL = location.prevURL ? location.prevURL : `/registry/${this.id}`
-			setHeader('registrys.editCollection', true, prevURL, 'registrys')
-			this.props.setBC('editregistry', registry.name, registry.id)
+			let prevURL = location.prevURL ? location.prevURL : `/devicetype/${this.id}`
+			setHeader('devicetypes.editCollection', true, prevURL, 'devicetypes')
+			this.props.setBC('editdevicetype', devicetype.name, devicetype.id)
 		}
 	}
 	componentDidMount = async () => {
@@ -53,36 +62,61 @@ class CreateRegistry extends Component {
 
 	handleChange = (what) => e => {
 		this.setState({
-			registry: {
-				...this.state.registry,
+			devicetype: {
+				...this.state.devicetype,
 				[what]: e.target.value
 			}
 		})
 	}
-	createRegistry = async () => {
-		return await updateRegistry(this.state.registry)
+	createDeviceType = async () => {
+		return await updateDeviceType(this.state.devicetype)
 	}
 	handleCreate = async () => {
 		const { s, history } = this.props
-		let rs = await this.createRegistry()
+		let rs = await this.createDeviceType()
 		if (rs) {
-			s('snackbars.registryCreated')
-			history.push(`/registry/${rs.id}`)
+			s('snackbars.devicetypeCreated')
+			history.push(`/devicetype/${rs.id}`)
 		}
 		else
 			s('snackbars.failed')
 	}
-	goToRegistries = () => this.props.history.push('/registries')
+	handleAddKeyToStructure = e => {
+		console.log(this.state.keyName)
+		this.setState({
+			devicetype: {
+				...this.state.devicetype,
+				structure: {
+					...this.state.devicetype.structure,
+					[this.state.keyName]: this.state.value
+				}
+			},
+			keyName: '',
+			value: 'string'
+		})
+	}
+	handleStrChange = (what) => e => {
+		console.log(what, e.target.value)
+		this.setState({
+			[what]: e.target.value
+		})
+	}
+	goToDeviceTypes = () => this.props.history.push('/devicetypes')
 	render() {
 		const { t } = this.props
-		const { loading, registry } = this.state
+		const { loading, devicetype, keyName, value  } = this.state
+		console.log(loading, devicetype)
 		return ( loading ? <CircularLoader/> :
 
-			<CreateRegistryForm
-				registry={registry}
+			<CreateDeviceTypeForm
+				deviceType={devicetype}
 				handleChange={this.handleChange}
+				handleStrChange={this.handleStrChange}
 				handleCreate={this.handleCreate}
-				goToRegistries={this.goToRegistries}
+				handleAddKeyToStructure={this.handleAddKeyToStructure}
+				keyName={keyName}
+				value={value}
+				goToDeviceTypes={this.goToDeviceTypes}
 				t={t}
 			/>
 		)
@@ -92,13 +126,13 @@ class CreateRegistry extends Component {
 const mapStateToProps = (state) => ({
 	// accessLevel: state.settings.user.privileges,
 	// orgId: state.settings.user.org.id
-	registry: state.data.registry
+	devicetype: state.data.deviceType
 })
 
 const mapDispatchToProps = dispatch => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
 	updateFav: (favObj) => dispatch(updateFav(favObj)),
-	getRegistry: async id => dispatch(await getRegistryLS(1, id)),
+	getDeviceType: async id => dispatch(await getDeviceTypeLS(id)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateRegistry)
+export default connect(mapStateToProps, mapDispatchToProps)(CreateDeviceType)
