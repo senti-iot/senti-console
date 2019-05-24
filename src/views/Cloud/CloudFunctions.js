@@ -420,8 +420,8 @@ class Functions extends Component {
 	renderTableToolBarContent = () => {
 		const { t } = this.props
 		return <Fragment>
-			<Tooltip title={t('menus.create.collection')}>
-				<IconButton aria-label='Add new collection' onClick={this.addNewFunction}>
+			<Tooltip title={t('menus.create.cloudfunction')}>
+				<IconButton aria-label='Add new cloud function' onClick={this.addNewFunction}>
 					<Add />
 				</IconButton>
 			</Tooltip>
