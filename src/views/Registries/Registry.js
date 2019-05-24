@@ -182,7 +182,7 @@ const mapDispatchToProps = (dispatch) => ({
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
 	finishedSaving: () => dispatch(finishedSaving()),
-	getRegistry: async id => dispatch(await getRegistryLS(1, id))
+	getRegistry: async id => dispatch(await getRegistryLS(id))
 })
 
 

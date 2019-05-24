@@ -28,7 +28,7 @@ export const getRegistry = async (id, customerID, ua) => {
 	}
 	return data
 }
-export const getRegistryDevices = async (customerID, id) => {
+export const getRegistryDevices = async (id) => {
 	let data = await servicesAPI.get(`/v1/registry/${id}/devices`).then(rs => rs.ok ? rs.data : null)
 	return data
 }
