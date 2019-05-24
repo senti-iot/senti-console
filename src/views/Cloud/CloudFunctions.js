@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 // import { deleteFunction, unassignDeviceFromFunction, getFunction } from 'variables/dataFunctions';
 import { filterItems, handleRequestSort } from 'variables/functions';
-import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks, Add, LayersClear, Star, StarBorder, SignalWifi2Bar } from 'variables/icons';
+import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks, Add, LayersClear, Star, StarBorder } from 'variables/icons';
 import { GridContainer, CircularLoader, AssignProject, /* T */ } from 'components'
 // import FunctionsCards from './FunctionsCards';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
@@ -50,12 +50,11 @@ class Functions extends Component {
 			{ id: 2, title: t('tooltips.favorites'), label: <Star />, url: `${match.url}/favorites` }
 		]
 	}
-	dLiveStatus = () => {
-		const { t, classes } = this.props
+	dTypes = () => {
+		const { t } = this.props
 		return [
-			{ value: 0, label: t("devices.status.redShort"), icon: <SignalWifi2Bar className={classes.redSignal} /> },
-			{ value: 1, label: t("devices.status.yellowShort"), icon: <SignalWifi2Bar className={classes.yellowSignal} /> },
-			{ value: 2, label: t("devices.status.greenShort"), icon: <SignalWifi2Bar className={classes.greenSignal} /> }
+			{ value: 0, label: t("cloudfunctions.fields.types.function") },
+			{ value: 1, label: t("cloudfunctions.fields.types.external") },
 		]
 	}
 	ft = () => {
@@ -65,7 +64,7 @@ class Functions extends Component {
 			// { key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
 			// { key: 'devices[0].start', name: t('cloudfunctions.fields.activeDeviceStartDate'), type: 'date' },
 			// { key: 'created', name: t('cloudfunctions.fields.created'), type: 'date' },
-			// { key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
+			{ key: 'type', name: t('cloudfunctions.fields.type'), type: 'dropDown', options: this.dTypes() },
 			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 		]
 	}
