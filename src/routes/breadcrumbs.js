@@ -1,5 +1,21 @@
 const breadcrumbs = (t, name, id) => {
 	return {
+		'cloudfunctions': [
+			{ label: t('sidebar.cloudfunctions'), path: '/functions' }
+		],
+		'cloudfunction': [
+			{ label: t('sidebar.cloudfunctions'), path: '/functions' },
+			{ label: name, path: '/cloudfunction/%id' }
+		],
+		'createcloudfunction': [
+			{ label: t('sidebar.cloudfunctions'), path: '/functions' },
+			{ label: t('menus.create.cloudfunction'), path: '/functions/new' }
+		],
+		'editcloudfunction': [
+			{ label: t('sidebar.cloudfunctions'), path: '/functions' },
+			{ label: name, path: `/cloudfunction/${id}` },
+			{ label: t('menus.edits.cloudfunction'), path: `/function/${id}/edit` }
+		],
 		'registries': [
 			{ label: t('sidebar.registries'), path: '/registries' }
 		],
@@ -14,7 +30,7 @@ const breadcrumbs = (t, name, id) => {
 		'editregistry': [
 			{ label: t('sidebar.registries'), path: `/registries` },
 			{ label: name, path: `/registry/${id}` },
-			{ label: t('menus.edits.registry'), path: `/registry/${id}/edit` }	
+			{ label: t('menus.edits.registry'), path: `/registry/${id}/edit` }
 		],
 		'sensors': [
 			{ label: t('sidebar.devices'), path: '/sensors' }
@@ -30,7 +46,7 @@ const breadcrumbs = (t, name, id) => {
 		'editsensor': [
 			{ label: t('sidebar.devices'), path: `/sensors` },
 			{ label: name, path: `/sensor/${id}` },
-			{ label: t('menus.edits.device'), path: `/sensor/${id}/edit` }	
+			{ label: t('menus.edits.device'), path: `/sensor/${id}/edit` }
 		],
 		'devicetype': [
 			{ label: t('sidebar.devicetypes'), path: '/devicetypes' },
@@ -50,7 +66,7 @@ const breadcrumbs = (t, name, id) => {
 		'editproject': [
 			{ label: t('sidebar.projects'), path: `/projects` },
 			{ label: name, path: `/project/${id}` },
-			{ label: t('menus.edits.project'), path: `/project/${id}/edit` }	
+			{ label: t('menus.edits.project'), path: `/project/${id}/edit` }
 		],
 		'createcollection': [
 			{ label: t('sidebar.collections'), path: '/collections' },
@@ -59,12 +75,12 @@ const breadcrumbs = (t, name, id) => {
 		'editcollection': [
 			{ label: t('sidebar.collections'), path: `/collections` },
 			{ label: name, path: `/collection/${id}` },
-			{ label: t('collections.editCollection'), path: `/collection/${id}/edit` }	
+			{ label: t('collections.editCollection'), path: `/collection/${id}/edit` }
 		],
 		'editdevicedetails': [
 			{ label: t('sidebar.devices'), path: `/devices` },
 			{ label: name, path: `/device/${id}` },
-			{ label: t('devices.editDetailsTitle', { deviceId: `${name}(${id})` }), path: `/device/${id}/edit` }	
+			{ label: t('devices.editDetailsTitle', { deviceId: `${name}(${id})` }), path: `/device/${id}/edit` }
 		],
 		'editdevicehardware': [
 			{ label: t('sidebar.devices'), path: `/devices` },

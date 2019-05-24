@@ -268,7 +268,7 @@ const dashboardRoutes = [
 				path: '/functions',
 				icon: CloudUpload,
 				component: AsyncCloudFunctions,
-				sidebarName: 'sidebar.cloudFunctions',
+				sidebarName: 'sidebar.cloudfunctions',
 				menuRoute: 'manage.cloudfunctions'
 			}
 		]

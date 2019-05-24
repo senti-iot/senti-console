@@ -34,7 +34,7 @@ class Functions extends Component {
 			}
 		}
 		props.setHeader('cloudfunctions.pageTitle', false, '', 'manage.functions')
-		props.setBC('functions')
+		props.setBC('cloudfunctions')
 		props.setTabs({
 			id: 'functions',
 			tabs: this.tabs(),

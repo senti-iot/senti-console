@@ -895,7 +895,7 @@
         }
     },
     "sidebar": {
-        "cloudFunctions": "Cloud funktioner",
+        "cloudfunctions": "Cloud funktioner",
         "cloudfunction": "Cloud funktion",
         "collection": "Datasamling",
         "collections": "Datasamlinger",
