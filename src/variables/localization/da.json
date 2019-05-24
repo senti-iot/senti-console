@@ -741,7 +741,8 @@
                 "publishData": "Udgiv data",
                 "state": "Enhedstilstand"
             },
-            "registry": "Register"
+			"registry": "Register",
+			"uuid": "UUID"
         },
         "metadata": {
             "humidity": "Fugtighed",

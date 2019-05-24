@@ -741,7 +741,8 @@
                 "publishData": "Publish Data",
                 "state": "Device state"
             },
-            "registry": "Registry"
+			"registry": "Registry",
+			"uuid": "UUID"
         },
         "metadata": {
             "humidity": "Humidity",

@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 // import { deleteRegistry, unassignDeviceFromRegistry, getRegistry } from 'variables/dataSensors';
 import { filterItems, handleRequestSort } from 'variables/functions';
-import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks, Add, LayersClear, Star, StarBorder, SignalWifi2Bar } from 'variables/icons';
+import { Delete, Edit, ViewList, ViewModule, Add, Star, StarBorder, CheckCircle, Block } from 'variables/icons';
 import { GridContainer, CircularLoader, AssignProject, T } from 'components'
 // import SensorsCards from './SensorsCards';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
@@ -46,22 +46,18 @@ class Sensors extends Component {
 			{ id: 2, title: t('tooltips.favorites'), label: <Star />, url: `${match.url}/favorites` }
 		]
 	}
-	dLiveStatus = () => {
+	dCommunication = () => {
 		const { t, classes } = this.props
 		return [
-			{ value: 0, label: t("devices.status.redShort"), icon: <SignalWifi2Bar className={classes.redSignal} /> },
-			{ value: 1, label: t("devices.status.yellowShort"), icon: <SignalWifi2Bar className={classes.yellowSignal} /> },
-			{ value: 2, label: t("devices.status.greenShort"), icon: <SignalWifi2Bar className={classes.greenSignal} /> }
+			{ value: 0, label: t("sensors.fields.communications.blocked"), icon: <Block className={classes.blocked} />  },
+			{ value: 1, label: t("sensors.fields.communications.allowed"), icon: <CheckCircle className={classes.allowed} /> }
 		]
 	}
 	ft = () => {
 		const { t } = this.props
 		return [
 			{ key: 'name', name: t('devices.fields.name'), type: 'string' },
-			// { key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
-			// { key: 'devices[0].start', name: t('devices.fields.activeDeviceStartDate'), type: 'date' },
-			// { key: 'created', name: t('devices.fields.created'), type: 'date' },
-			// { key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
+			{ key: 'communication', name: t('sensors.fields.communication'), type: 'dropDown', options: this.dCommunication() },
 			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 		]
 	}
@@ -70,11 +66,12 @@ class Sensors extends Component {
 		return [
 			{ id: 'id', label: t('devices.fields.id') },
 			{ id: 'name', label: t('devices.fields.name') },
+			{ id: 'uuid', label: t('sensors.fields.uuid') },
 			{ id: 'communication', label: t('sensors.fields.communication') },
-			{ id: 'created', label: t('registries.fields.created') },
+			// { id: 'created', label: t('registries.fields.created') },
 			// { id: 'region', label: t('devices.fields.region') },
 			// { id: 'protocol', label: t('devices.fields.created') },
-			{ id: 'reg_id', label: t('sensors.fields.registry') },
+			{ id: 'reg_name', label: t('sensors.fields.registry') },
 		]
 	}
 	options = () => {
@@ -91,10 +88,6 @@ class Sensors extends Component {
 		let isFavorite = isFav(favObj)
 		let allOptions = [
 			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t('menus.assign.deviceToProject'), func: this.handleOpenAssignProject, single: true, icon: LibraryBooks },
-			{ label: t('menus.assign.deviceToRegistry'), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
-			{ label: t('menus.unassign.deviceFromRegistry'), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear, dontShow: devices[devices.findIndex(c => c.id === selected[0])].activeDeviceStats ? false : true },
-			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
 			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
 			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
 		]
@@ -112,7 +105,7 @@ class Sensors extends Component {
 
 	}
 
-	componentDidUpdate = (prevProps, prevState) => {
+	componentDidUpdate = () => {
 		// console.log(this.props.devices)
 		// if (this.props.user && this.props.accessLevel && this.props.devices.length === 0) {
 		// 	this.getData(true)
@@ -165,7 +158,7 @@ class Sensors extends Component {
 		const { filters } = this.state
 		return customFilterItems(filterItems(data, filters), rFilters)
 	}
-	snackBarMessages = (msg, display) => {
+	snackBarMessages = (msg) => {
 		const {/*  devices, */ s } = this.props
 		// const { selected } = this.state
 		switch (msg) {
@@ -301,7 +294,7 @@ class Sensors extends Component {
 	handleCloseAssignDevice = async (reload, display) => {
 		if (reload) {
 			this.setState({ openAssignDevice: false })
-			await this.getData(true).then(rs => {
+			await this.getData(true).then(() => {
 				this.snackBarMessages(6, display)
 				this.setState({ selected: [] })
 			})
@@ -318,7 +311,7 @@ class Sensors extends Component {
 	handleCloseAssignProject = async (reload) => {
 		if (reload) {
 			this.setState({ openAssignProject: false })
-			await this.getData(true).then(rs => {
+			await this.getData(true).then(() => {
 				this.snackBarMessages(6)
 			})
 		}

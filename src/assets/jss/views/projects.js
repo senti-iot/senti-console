@@ -4,9 +4,18 @@
 
 import { primaryColor, deviceStatus } from "assets/jss/material-dashboard-react.js";
 // import regularCardStyle from "../material-dashboard-react/regularCardStyle";
+import { red, green } from '@material-ui/core/colors'
 
 const projectStyles = theme => ({
 	...deviceStatus,
+	blocked: {
+		color: red[500],
+		marginRight: 8
+	},
+	allowed: {
+		color: green[500],
+		marginRight: 8
+	},
 	root: {
 		width: '100%',
 		margin: theme.spacing.unit,

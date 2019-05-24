@@ -143,6 +143,7 @@ class SensorTable extends React.Component {
 						<TableBody>
 							{data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
 								const isSelected = this.isSelected(n.id);
+								console.log(n)
 								return (
 									<TableRow
 										hover
@@ -180,9 +181,10 @@ class SensorTable extends React.Component {
 												onMouseEnter={e => { this.setHover(e, n) }}
 												onMouseLeave={this.unsetTimeout}
 												FirstC label={n.name}/>
-											<TC label={this.renderCommunication(n.communication)} />
-											<TC label={dateFormatter(n.created)} />
-											<TC label={n.reg_id} />
+											<TC label={n.uuid}/>
+											<TC content={this.renderCommunication(n.communication)} />
+											{/* <TC label={dateFormatter(n.created)} /> */}
+											<TC label={n.reg_name} />
 										</Hidden>
 									</TableRow>
 								)
