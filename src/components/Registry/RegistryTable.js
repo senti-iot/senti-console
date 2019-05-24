@@ -160,7 +160,7 @@ class RegistryTable extends React.Component {
 											<TC label={n.region}/>
 											<TC label={this.renderProtocol(n.protocol)} />
 											<TC label={dateFormatter(n.created)} />
-											<TC label={n.customer_id} />
+											<TC label={n.customer_name} />
 											{/* <TC label={dateFormatter(n.endDate)}/> */}
 											{/* <TC label={dateFormatter(n.created)}/> */}
 											{/* <TC label={dateFormatter(n.modified)}/> */}

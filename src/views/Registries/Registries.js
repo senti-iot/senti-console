@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 // import { deleteRegistry, unassignDeviceFromRegistry, getRegistry } from 'variables/dataRegistries';
 import { filterItems, handleRequestSort } from 'variables/functions';
-import { Delete, Edit, ViewList, ViewModule, Add, Star, StarBorder, SignalWifi2Bar } from 'variables/icons';
+import { Delete, Edit, ViewList, ViewModule, Add, Star, StarBorder } from 'variables/icons';
 import { GridContainer, CircularLoader, /* AssignProject */ } from 'components'
 // import RegistriesCards from './RegistriesCards';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
@@ -50,22 +50,23 @@ class Registries extends Component {
 			{ id: 2, title: t('tooltips.favorites'), label: <Star />, url: `${match.url}/favorites` }
 		]
 	}
-	dLiveStatus = () => {
-		const { t, classes } = this.props
+	dProtocols = () => {
+		const { t } = this.props
 		return [
-			{ value: 0, label: t("devices.status.redShort"), icon: <SignalWifi2Bar className={classes.redSignal} /> },
-			{ value: 1, label: t("devices.status.yellowShort"), icon: <SignalWifi2Bar className={classes.yellowSignal} /> },
-			{ value: 2, label: t("devices.status.greenShort"), icon: <SignalWifi2Bar className={classes.greenSignal} /> }
+			{ value: 0, label: t("registries.fields.protocols.none") },
+			{ value: 1, label: t("registries.fields.protocols.mqtt") },
+			{ value: 2, label: t("registries.fields.protocols.http") },
+			{ value: 3, label: `${t('registries.fields.protocols.mqtt')} & ${t('registries.fields.protocols.http')}` }
 		]
 	}
 	ft = () => {
 		const { t } = this.props
 		return [
 			{ key: 'name', name: t('registries.fields.name'), type: 'string' },
-			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
-			{ key: 'devices[0].start', name: t('registries.fields.activeDeviceStartDate'), type: 'date' },
+			{ key: 'customer_name', name: t('orgs.fields.name'), type: 'string' },
 			{ key: 'created', name: t('registries.fields.created'), type: 'date' },
-			{ key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
+			{ key: 'protocol', name: t('registries.fields.protocol'), type: 'dropDown', options: this.dProtocols() },
+			// { key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
 			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 		]
 	}
