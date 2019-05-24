@@ -3,15 +3,13 @@
         "contactSupport": "Please try again or contact our support on support@senti.io!",
         "errorMessage": "The resource requested has not been found!",
         "goHome": "Go to Dashboard",
-        "networkFail": "Request failed!",
+        "networkError": "Netværksfejl!",
         "title": "Page Not Found"
     },
     "": "",
     "Senti": "Senti",
     "actions": {
-		"src": "Search...",
-		"accept": "Accept",
-		"copyToClipboard": "Copy to clipboard",
+        "accept": "Accept",
         "addFilter": "Add filter",
         "apply": "Apply",
         "back": "Previous",
@@ -19,6 +17,7 @@
         "cancel": "Cancel",
         "changeLanguage": "Skift til Dansk",
         "changePassword": "Change Password",
+        "copyToClipboard": "Copy to clipboard",
         "decline": "Decline",
         "deletePicture": "Delete this picture",
         "editFilter": "Edit filter",
@@ -52,6 +51,7 @@
         "save": "Save",
         "search": "Type here to search",
         "sendEmail": "Send e-mail",
+        "src": "Search...",
         "start": "Start",
         "startNow": "Start now",
         "update": "Update",
@@ -101,6 +101,19 @@
             "line": "Line",
             "pie": "Pie"
         }
+    },
+    "cloudfunctions": {
+        "fields": {
+            "code": "Code",
+            "description": "Description",
+            "name": "Name",
+            "type": "Type",
+            "types": {
+                "external": "External call",
+                "function": "JavaScript function"
+            }
+        },
+        "pageTitle": "Cloud functions"
     },
     "collections": {
         "calibratedData": "Calibrated Data",
@@ -209,6 +222,9 @@
         "editDetailsTitle": "Edit %{deviceId}",
         "editHardwareTitle": "Edit hardware for device %{deviceId}",
         "fields": {
+            "RPImodel": "Device model",
+            "SIMID": "SIM-card ID",
+            "SIMProvider": "SIM-card provider",
             "adapter": "Power adapter",
             "address": "Address",
             "availability": "Availability",
@@ -230,10 +246,7 @@
             "name": "Name",
             "notfree": "Busy",
             "org": "Organisation",
-            "RPImodel": "Device model",
             "project": "Project",
-            "SIMID": "SIM-card ID",
-            "SIMProvider": "SIM-card provider",
             "status": "Status",
             "temp": "CPU temperature",
             "weather": "Weather",
@@ -280,6 +293,28 @@
             "yellow": "Device is connected, but no data is received",
             "yellowShort": "Receives no data"
         }
+    },
+    "devicetypes": {
+        "actions": {
+            "addKey": "Add key"
+        },
+        "createDeviceType": "Create device type",
+        "fields": {
+            "name": "name",
+            "structure": {
+                "key": "Key",
+                "name": "Structure",
+                "type": "Type",
+                "types": {
+                    "array": "Array",
+                    "boolean": "Boolean",
+                    "int": "Integer",
+                    "string": "String"
+                },
+                "value": "Value"
+            }
+        },
+        "pageTitle": "Device Type"
     },
     "dialogs": {
         "cookies": {
@@ -476,19 +511,25 @@
         },
         "copyEmails": "Copy E-mail addresses",
         "create": {
+            "cloudfunction": "Opret cloud funktion",
             "collection": "Create data collection",
             "device": "Create device",
+            "devicetype": "Opret enhedstype",
             "org": "Create organisation",
             "project": "Create project",
+            "registry": "Opret register",
             "user": "Create user"
         },
         "delete": "Delete",
         "edit": "Edit",
         "edits": {
+            "cloudfunction": "Rediger cloud funktion",
             "collection": "Edit data collection",
             "device": "Edit device",
+            "devicetype": "Rediger enhedstype",
             "org": "Edit organisation",
             "project": "Edit project",
+            "registry": "Rediger register",
             "user": "Edit user"
         },
         "export": "Export data",
@@ -533,7 +574,7 @@
         "device": "No device",
         "devices": "No devices",
         "doi": "No Holidays today",
-        "freeDevice": "No available devices",
+        "freeDevices": "No available devices",
         "history": "No history",
         "org": "No organisation",
         "project": "No project",
@@ -633,17 +674,17 @@
             "title": "Devices"
         },
         "fields": {
-			"email": "Contact E-mail",
-			"firstName": "Contact name",
-			"lastName": "Contact name",
-            "organisation": "Contacts' organisation",
-            "phone": "Contact phone",
             "assignDevices": "Assign devices",
             "created": "Created",
             "description": "Description",
+            "email": "Contact E-mail",
             "endDate": "End date",
+            "firstName": "Contact name",
+            "lastName": "Contact name",
             "lastUpdate": "Last modified",
             "name": "Project name",
+            "organisation": "Contacts' organisation",
+            "phone": "Contact phone",
             "selectOrganisation": "Organisation",
             "startDate": "Start date",
             "title": "Name"
@@ -663,10 +704,52 @@
             "startDateBiggerThanEndDate": "Start date can not be later than End date!"
         }
     },
+    "registries": {
+        "fields": {
+            "created": "Created",
+            "customer": "Organisation",
+            "description": "Description",
+            "id": "ID",
+            "name": "Name",
+            "protocol": "Protocol",
+            "protocols": {
+                "http": "HTTP",
+                "mqtt": "MQTT",
+                "none": "Without protocol"
+            },
+            "region": "Region",
+            "registry": "Registry",
+            "uuid": "Universal Unique Identifier (UUID)"
+        },
+        "pageTitle": "Registries"
+    },
+    "sensors": {
+        "fields": {
+            "communication": "Communication",
+            "communications": {
+                "allowed": "Allowed",
+                "blocked": "Blocked"
+            },
+            "deviceType": "Device Type",
+            "protocols": {
+                "publishData": "Publish Data",
+                "state": "Device state"
+            },
+            "registry": "Registry"
+        },
+        "metadata": {
+            "humidity": "Humidity",
+            "maxFlow": "Maximum water flow",
+            "minATemp": "Minimum ambient temperature",
+            "minFlow": "Minimum water flow",
+            "minWTemp": "Minimum water temperature",
+            "temperature": "Temperature",
+            "value": "Water consumption / reading"
+        }
+    },
     "settings": {
         "alerts": "Alerts",
-		"breadcrumbs": "Breadcrumbs",
-		"globalSearch": "Global search",
+        "breadcrumbs": "Breadcrumbs",
         "calibration": {
             "12months": "Every 12 months",
             "3months": "Every 3 months",
@@ -743,6 +826,7 @@
                 "persistent": "Hide completely"
             }
         },
+        "globalSearch": "Global search",
         "header": {
             "border": "Separation Lines",
             "borderDetails": "Separate the logo and the page title with a small border"
@@ -804,19 +888,25 @@
         }
     },
     "sidebar": {
+        "cloudFunctions": "Cloud funktioner",
+        "cloudfunction": "Cloud funktion",
+        "collection": "Data Collection",
         "collections": "Data Collections",
         "dashboard": "Dashboard",
-		"devices": "Devices",
-		"device": "Device",
-		"collection": "Data Collection",
-		"project": "Project",
-		"org": "Organisation",
-		"user": "User",
+        "device": "Device",
+        "devices": "Devices",
+        "devicetype": "Enhedstype",
+        "devicetypes": "Enhedstyper",
         "favorites": "Favorites",
         "home": "Home",
+        "manage": "Konfiguration",
+        "org": "Organisation",
         "orgs": "Organisations",
+        "project": "Project",
         "projects": "Projects",
+        "registries": "Registre",
         "settings": "Settings",
+        "user": "User",
         "users": "Users"
     },
     "snackbars": {
@@ -839,8 +929,7 @@
         "deletedSuccess": "Deleted!",
         "deleting": "Deleting...",
         "deviceUpdated": "Device %{device} updated!",
-		"emailsCopied": "E-mail adresses copied to clipboard",
-		"urlCopied": "",
+        "emailsCopied": "E-mail adresses copied to clipboard",
         "exported": "Exported!",
         "favorite": {
             "manyRemoved": "Favorites removed!",
@@ -869,6 +958,7 @@
         "updatedFailed": "Update failed!",
         "updatedSuccess": "Updated!",
         "updating": "Updating...",
+        "urlCopied": "URL kopieret til klippebord",
         "userCreated": "User %{user} created!",
         "userDeleted": "User %{user} deleted!",
         "userPasswordChanged": "Password changed!",
@@ -885,18 +975,18 @@
     },
     "tabs": {
         "activeDevice": "Active Device",
-		"collections": "Data Collections",
-		"devices": "Devices",
-		"projects": "Projects",
-		"users": "Users",
+        "collections": "Data Collections",
         "contact": "Contact person",
         "data": "Charts & Data",
         "details": "Details",
-		"history": "Device log",
-		"userHistory": "User log",
-		"map": "Map",
-		"images": "Pictures of installation",
-		"hardware": "Device hardware"
+        "devices": "Devices",
+        "hardware": "Device hardware",
+        "history": "Device log",
+        "images": "Pictures of installation",
+        "map": "Map",
+        "projects": "Projects",
+        "userHistory": "User log",
+        "users": "Users"
     },
     "tooltips": {
         "cardView": "Card view",
@@ -908,9 +998,9 @@
             "type": "Chart type"
         },
         "collection": "Data collection",
-		"device": "Device",
+        "device": "Device",
         "favorites": "Favorites",
-		"listView": "List view",
+        "listView": "List view",
         "map": {
             "layer": "Map Layer"
         },

@@ -9,9 +9,7 @@
     "": "",
     "Senti": "Senti",
     "actions": {
-		"src": "Søg...",
-		"accept": "Godkend",
-		"copyToClipboard": "Kopi til klippebord",
+        "accept": "Godkend",
         "addFilter": "Tilføj filter",
         "apply": "Anvend",
         "back": "Forrige",
@@ -19,6 +17,7 @@
         "cancel": "Anuller",
         "changeLanguage": "Change to English",
         "changePassword": "Skift kodeord",
+        "copyToClipboard": "Kopi til klippebord",
         "decline": "Afvis",
         "deletePicture": "Slet dette billede",
         "editFilter": "Rediger filter",
@@ -52,6 +51,7 @@
         "save": "Gem",
         "search": "Skriv her for at søge",
         "sendEmail": "Send e-mail",
+        "src": "Søg...",
         "start": "Start",
         "startNow": "Start nu",
         "update": "Rediger",
@@ -101,6 +101,19 @@
             "line": "Linje",
             "pie": "Lagkage"
         }
+    },
+    "cloudfunctions": {
+        "fields": {
+            "code": "Kode",
+            "description": "Beskrivelse",
+            "name": "Navn",
+            "type": "Type",
+            "types": {
+                "external": "Udvendig",
+                "function": "JavaScript funktion"
+            }
+        },
+        "pageTitle": "Cloud funktioner"
     },
     "collections": {
         "calibratedData": "Kalibreret data",
@@ -209,6 +222,9 @@
         "editDetailsTitle": "Rediger %{deviceId}",
         "editHardwareTitle": "Rediger hardware for enhed %{deviceId}",
         "fields": {
+            "RPImodel": "Enhedsmodel",
+            "SIMID": "SIM-kort ID",
+            "SIMProvider": "SIM-kort leverandør",
             "adapter": "Strømforsyning",
             "address": "Adresse",
             "availability": "Tilgængelighed",
@@ -230,10 +246,7 @@
             "name": "Navn",
             "notfree": "Optaget",
             "org": "Organisation",
-            "RPImodel": "Enhedsmodel",
             "project": "Projekt",
-            "SIMID": "SIM-kort ID",
-            "SIMProvider": "SIM-kort leverandør",
             "status": "Status",
             "temp": "CPU temperatur",
             "weather": "Vejr",
@@ -280,6 +293,28 @@
             "yellow": "Enheden er tilsluttet, men modtager ikke data",
             "yellowShort": "Modtager ikke data"
         }
+    },
+    "devicetypes": {
+        "actions": {
+            "addKey": "Tilføj key"
+        },
+        "createDeviceType": "Opret Enhedstype",
+        "fields": {
+            "name": "Navn",
+            "structure": {
+                "key": "Key",
+                "name": "Struktur",
+                "type": "Type",
+                "types": {
+                    "array": "Array",
+                    "boolean": "Boolean",
+                    "int": "Integer",
+                    "string": "String"
+                },
+                "value": "Value"
+            }
+        },
+        "pageTitle": "Enhedstype"
     },
     "dialogs": {
         "cookies": {
@@ -476,26 +511,26 @@
         },
         "copyEmails": "Kopier E-mail adresser",
         "create": {
+            "cloudfunction": "Opret cloud funktion",
             "collection": "Opret datasamling",
             "device": "Opret enhed",
+            "devicetype": "Opret enhedstype",
             "org": "Opret organisation",
             "project": "Opret projekt",
-			"user": "Opret bruger",
-			"devicetype": "Opret enhedstype",
-			"registry": "Opret register",
-			"cloudfunction": "Opret cloud funktion"
+            "registry": "Opret register",
+            "user": "Opret bruger"
         },
         "delete": "Slet",
         "edit": "Rediger",
         "edits": {
+            "cloudfunction": "Rediger cloud funktion",
             "collection": "Rediger datasamling",
             "device": "Rediger enhed",
+            "devicetype": "Rediger enhedstype",
             "org": "Rediger organisation",
             "project": "Rediger projekt",
-			"user": "Rediger bruger",
-			"registry": "Rediger register",
-			"devicetype": "Rediger enhedstype",
-			"cloudfunction": "Rediger cloud funktion"
+            "registry": "Rediger register",
+            "user": "Rediger bruger"
         },
         "export": "Eksporter data",
         "exportPDF": "Print som PDF",
@@ -639,17 +674,17 @@
             "title": "Enheder"
         },
         "fields": {
-			"email": "Kontakt E-mail",
-			"firstName": "Kontakt Navn",
-			"lastName": "Kontakt Navn",
-            "organisation": "Kontakt Organisation",
-			"phone": "Kontakt Telefon",
             "assignDevices": "Tilknyt enheder",
             "created": "Oprettet",
             "description": "Beskrivelse",
+            "email": "Kontakt E-mail",
             "endDate": "Slutdato",
+            "firstName": "Kontakt Navn",
+            "lastName": "Kontakt Navn",
             "lastUpdate": "Senest opdateret",
             "name": "Projektnavn",
+            "organisation": "Kontakt Organisation",
+            "phone": "Kontakt Telefon",
             "selectOrganisation": "Organisation",
             "startDate": "Startdato",
             "title": "Navn"
@@ -668,89 +703,53 @@
             "noTitle": "Manglende Projektnavn",
             "startDateBiggerThanEndDate": "Startdato må ikke være senere end slutdato"
         }
-	},
-	"cloudfunctions": {
-		"pageTitle": "Cloud funktioner",
-		"fields": {
-			"code": "Kode",
-			"type": "Type",
-			"name": "Navn",
-			"description": "Beskrivelse",
-			"types": {
-				"function": "JavaScript funktion",
-				"external": "Udvendig"
-			}
-		}
-	},
-	"devicetypes": {
-		"pageTitle":"Enhedstype",
-		"createDeviceType": "Opret Enhedstype",
-		"actions": {
-			"addKey": "Tilføj key"
-		},
-		"fields":{
-			"name": "Navn",
-			"structure": {
-				"name":"Struktur",
-				"key": "Key",
-				"value": "Value",
-				"type": "Type",
-				"types": {
-					"string": "String",
-					"int": "Integer",
-					"boolean": "Boolean",
-					"array": "Array"
-				}
-			}
-		}
-	},
-	"sensors": {
-		"metadata": {
-			"value": "Vand",
-			"temperature": "Temperatur",
-			"humidity":"Fugtighed",
-			"minATemp":"Mindste omgivelsestemperatur",
-			"minWTemp": "Mindste vandtemperatur",
-			"minFlow": "Mindste vandgennemstrømning",
-			"maxFlow": "Maksimal vandgennemstrømning"
-		},
-		"fields": {
-			"deviceType": "Enhedstype",
-			"protocols": {
-				"publishData": "Udgiv data",
-				"state": "Enhedstilstand"
-			},
-			"communication": "Enhedskommunikation",
-			"communications": {
-				"allowed": "Tilladt",
-				"blocked": "Blokeret"
-			},
-			"registry":"Register"
-		}
-	},
-	"registries": {
-		"pageTitle": "Registre",
-		"fields": {
-			"registry": "Register",
-			"id": "ID",
-			"name": "Navn",
-			"region": "Region",
-			"created": "Oprettet",
-			"protocol": "Protokol",
-			"protocols": {
-				"http": "HTTP",
-				"mqtt": "MQTT",
-				"none": "Uden protocol"
-			},
-			"uuid": "Universelt Unik Identifikator (UUID)",
-			"description":"Beskrivelse",
-			"customer": "Organisation"
-		}
-	},
+    },
+    "registries": {
+        "fields": {
+            "created": "Oprettet",
+            "customer": "Organisation",
+            "description": "Beskrivelse",
+            "id": "ID",
+            "name": "Navn",
+            "protocol": "Protokol",
+            "protocols": {
+                "http": "HTTP",
+                "mqtt": "MQTT",
+                "none": "Uden protocol"
+            },
+            "region": "Region",
+            "registry": "Register",
+            "uuid": "Universelt Unik Identifikator (UUID)"
+        },
+        "pageTitle": "Registre"
+    },
+    "sensors": {
+        "fields": {
+            "communication": "Enhedskommunikation",
+            "communications": {
+                "allowed": "Tilladt",
+                "blocked": "Blokeret"
+            },
+            "deviceType": "Enhedstype",
+            "protocols": {
+                "publishData": "Udgiv data",
+                "state": "Enhedstilstand"
+            },
+            "registry": "Register"
+        },
+        "metadata": {
+            "humidity": "Fugtighed",
+            "maxFlow": "Maksimal vandgennemstrømning",
+            "minATemp": "Mindste omgivelsestemperatur",
+            "minFlow": "Mindste vandgennemstrømning",
+            "minWTemp": "Mindste vandtemperatur",
+            "temperature": "Temperatur",
+            "value": "Vand"
+        }
+    },
     "settings": {
         "alerts": "Alarmeringer",
-		"breadcrumbs": "Brødkrummer",
-		"globalSearch": "Global søgning",
+        "breadcrumbs": "Brødkrummer",
         "calibration": {
             "12months": "Hver 12. måned",
             "3months": "Hver 3. måned",
@@ -827,6 +826,7 @@
                 "persistent": "Skjult helt"
             }
         },
+        "globalSearch": "Global søgning",
         "header": {
             "border": "Separator linjer",
             "borderDetails": ""
@@ -888,25 +888,25 @@
         }
     },
     "sidebar": {
-		"cloudfunction": "Cloud funktion",
-		"cloudFunctions": "Cloud funktioner",
-		"registries": "Registre",
-		"devicetype": "Enhedstype",
-		"devicetypes": "Enhedstyper",
-		"manage": "Konfiguration",
-		"device": "Enhed",
-		"collection": "Datasamling",
-		"project": "Projekt",
-		"org": "Organisation",
-		"user": "Bruger",
+        "cloudFunctions": "Cloud funktioner",
+        "cloudfunction": "Cloud funktion",
+        "collection": "Datasamling",
         "collections": "Datasamlinger",
         "dashboard": "Dashboard",
+        "device": "Enhed",
         "devices": "Enheder",
+        "devicetype": "Enhedstype",
+        "devicetypes": "Enhedstyper",
         "favorites": "Favoritter",
         "home": "Hjem",
+        "manage": "Konfiguration",
+        "org": "Organisation",
         "orgs": "Organisationer",
+        "project": "Projekt",
         "projects": "Projekter",
+        "registries": "Registre",
         "settings": "Indstillinger",
+        "user": "Bruger",
         "users": "Brugere"
     },
     "snackbars": {
@@ -929,8 +929,7 @@
         "deletedSuccess": "Slettet!",
         "deleting": "Sletter ...",
         "deviceUpdated": "Enhed %{device} er opdateret!",
-		"emailsCopied": "E-mail adresser kopieret til klippebord",
-		"urlCopied": "URL kopieret til klippebord",
+        "emailsCopied": "E-mail adresser kopieret til klippebord",
         "exported": "Eksporteret!",
         "favorite": {
             "manyRemoved": "Favoritter er fjernet!",
@@ -959,6 +958,7 @@
         "updatedFailed": "Opdatering fejlede!",
         "updatedSuccess": "Opdateret!",
         "updating": "Opdaterer ...",
+        "urlCopied": "URL kopieret til klippebord",
         "userCreated": "Bruger %{user} er oprettet!",
         "userDeleted": "Bruger %{user} er slettet!",
         "userPasswordChanged": "Kodeord er skiftet!",
@@ -975,18 +975,18 @@
     },
     "tabs": {
         "activeDevice": "Aktiv enhed",
-		"collections": "Datasamlinger",
-		"devices": "Enheder",
-		"projects": "Projekter",
-		"users":"Brugere",
+        "collections": "Datasamlinger",
         "contact": "Kontakt",
         "data": "Diagrammer og data",
         "details": "Detaljer",
-		"history": "Enhedslog",
-		"userHistory": "System log",
+        "devices": "Enheder",
+        "hardware": "Enhed udstyr",
+        "history": "Enhedslog",
+        "images": "Billeder af installation",
         "map": "Kortvisning",
-		"images": "Billeder af installation",
-		"hardware": "Enhed udstyr"
+        "projects": "Projekter",
+        "userHistory": "System log",
+        "users": "Brugere"
     },
     "tooltips": {
         "cardView": "Gittervisning",
@@ -998,12 +998,12 @@
             "type": "Diagram type"
         },
         "collection": "Datasamling",
-		"device": "Enhed",
+        "device": "Enhed",
         "favorites": "Favoritter",
         "listView": "Listevisning",
         "map": {
             "layer": "Baggrundkort"
-		},
+        },
         "mapView": "Kortvisning",
         "org": "Organisation",
         "project": "Projekt",
