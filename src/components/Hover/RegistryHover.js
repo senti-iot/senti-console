@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react'
-import { Popper, Paper, withStyles, Fade, /* Divider, Button, IconButton, Tooltip */ } from '@material-ui/core';
-// import T from 'components/Typography/T';
-// import ItemG from 'components/Grid/ItemG';
+import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip } from '@material-ui/core'
+import T from 'components/Typography/T';
+import ItemG from 'components/Grid/ItemG';
 // import Gravatar from 'react-gravatar'
-import { /* Language,  Star, StarBorder,*/ SignalWifi2Bar, /* LibraryBooks, DataUsage, Business */ } from 'variables/icons';
+import { Star, StarBorder, SignalWifi2Bar, LibraryBooks, DataUsage, Business } from 'variables/icons';
 import withLocalization from 'components/Localization/T';
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
 import withSnackbar from 'components/Localization/S';
@@ -16,37 +16,37 @@ import { CircularLoader } from 'components';
 class RegistryHover extends Component {
 	componentDidUpdate = () => {
 		if (this.props.saved === true) {
-			const { collection } = this.props
-			if (collection) {
+			const { registry } = this.props
+			if (registry) {
 
-				if (this.props.isFav({ id: collection.id, type: 'collection' })) {
-					this.props.s('snackbars.favorite.saved', { name: collection.name, type: this.props.t('favorites.types.collection') })
+				if (this.props.isFav({ id: registry.id, type: 'registry' })) {
+					this.props.s('snackbars.favorite.saved', { name: registry.name, type: this.props.t('favorites.types.registry') })
 					this.props.finishedSaving()
 				}
-				if (!this.props.isFav({ id: collection.id, type: 'collection' })) {
-					this.props.s('snackbars.favorite.removed', { name: collection.name, type: this.props.t('favorites.types.collection') })
+				if (!this.props.isFav({ id: registry.id, type: 'registry' })) {
+					this.props.s('snackbars.favorite.removed', { name: registry.name, type: this.props.t('favorites.types.registry') })
 					this.props.finishedSaving()
 				}
 			}
 		}
 	}
 	addToFav = () => {
-		const { collection } = this.props
+		const { registry } = this.props
 		let favObj = {
-			id: collection.id,
-			name: collection.name,
-			type: 'collection',
-			path: `/collection/${collection.id}`
+			id: registry.id,
+			name: registry.name,
+			type: 'registry',
+			path: `/registry/${registry.id}`
 		}
 		this.props.addToFav(favObj)
 	}
 	removeFromFav = () => {
-		const { collection } = this.props
+		const { registry } = this.props
 		let favObj = {
-			id: collection.id,
-			name: collection.name,
-			type: 'collection',
-			path: `/collection/${collection.id}`
+			id: registry.id,
+			name: registry.name,
+			type: 'registry',
+			path: `/registry/${registry.id}`
 		}
 		this.props.removeFromFav(favObj)
 
@@ -70,7 +70,7 @@ class RegistryHover extends Component {
 		}
 	}
 	render() {
-		const { /* t, */ anchorEl, classes, collection, /* isFav */ } = this.props
+		const { t, anchorEl, classes, registry, isFav } = this.props
 		return (
 			<Popper
 				style={{ zIndex: 1040 }}
@@ -86,20 +86,20 @@ class RegistryHover extends Component {
 				{({ TransitionProps }) => (
 					<Fade {...TransitionProps} timeout={250}>
 						<Paper className={classes.paper}>
-							{collection !== null ?
+							{registry !== null ?
 								<Fragment>
-									{/* <ItemG container style={{ margin: "8px 0" }}>
+									<ItemG container style={{ margin: "8px 0" }}>
 										<ItemG xs={3} container justify={'center'} alignItems={'center'}>
 											<DataUsage className={classes.img} />
 										</ItemG>
 										<ItemG xs={9} container justify={'center'}>
 											<ItemG xs={12}>
 												<T variant={'h6'} style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>
-													{collection.name}
+													{registry.name}
 												</T>
 											</ItemG>
 											<ItemG xs={12}>
-												<T className={classes.smallText} noParagraph>{`${collection.id}`}</T>
+												<T className={classes.smallText} noParagraph>{`${registry.id}`}</T>
 											</ItemG>
 										</ItemG>
 									</ItemG>
@@ -107,15 +107,15 @@ class RegistryHover extends Component {
 										<ItemG xs={12}>
 											<T className={classes.smallText} noParagraph>
 												<Business className={classes.smallIcon} />
-												{`${collection.org.name ? collection.org.name : t('devices.fields.free')}`}
+												{/* {`${registry.org.name ? registry.org.name : t('devices.fields.free')}`} */}
 											</T>
 										</ItemG>
 										<ItemG xs={12}>
 											<T className={classes.smallText}>
-												{this.renderIcon(collection.activeDeviceStats ? collection.activeDeviceStats.state : null)}
-												{collection.activeDeviceStats ?
-													<Link to={{ pathname: `/device/${collection.activeDeviceStats.id}`, prevURL: '/collections' }}>
-														{collection.activeDeviceStats.id}
+												{this.renderIcon(registry.activeDeviceStats ? registry.activeDeviceStats.state : null)}
+												{registry.activeDeviceStats ?
+													<Link to={{ pathname: `/device/${registry.activeDeviceStats.id}`, prevURL: '/registrys' }}>
+														{registry.activeDeviceStats.id}
 													</Link>
 													: t('no.device')}
 											</T>
@@ -123,9 +123,9 @@ class RegistryHover extends Component {
 										<ItemG xs={12}>
 											<T className={classes.smallText}>
 												<LibraryBooks className={classes.smallIcon} />
-												{collection.project.title ? <Link to={{ pathname: `/project/${collection.project.id}`, prevURL: '/collections' }}>
-													{collection.project.title}
-												</Link> : t('no.project')}
+												{/* {registry.project.title ? <Link to={{ pathname: `/project/${registry.project.id}`, prevURL: '/registrys' }}> */}
+												{/* {registry.project.title} */}
+												{/* </Link> : t('no.project')} */}
 											</T>
 										</ItemG>
 
@@ -133,18 +133,18 @@ class RegistryHover extends Component {
 									<Divider />
 									<ItemG container style={{ marginTop: '8px' }}>
 										<ItemG>
-											<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `/collection/${collection.id}/edit`, prevURL: '/collections' }}>
+											<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `/registry/${registry.id}/edit`, prevURL: '/registrys' }}>
 												{t('menus.edit')}
 											</Button>
 										</ItemG>
 										<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
-											<Tooltip placement="top" title={isFav({ id: collection.id, type: 'collection' }) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
-												<IconButton className={classes.smallAction} onClick={isFav({ id: collection.id, type: 'collection' }) ? this.removeFromFav : this.addToFav}>
-													{isFav({ id: collection.id, type: 'collection' }) ? <Star /> : <StarBorder />}
+											<Tooltip placement="top" title={isFav({ id: registry.id, type: 'registry' }) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
+												<IconButton className={classes.smallAction} onClick={isFav({ id: registry.id, type: 'registry' }) ? this.removeFromFav : this.addToFav}>
+													{isFav({ id: registry.id, type: 'registry' }) ? <Star /> : <StarBorder />}
 												</IconButton>
 											</Tooltip>
 										</ItemG>
-									</ItemG> */}
+									</ItemG>
 								</Fragment>
 								: <CircularLoader notCentered />}
 						</Paper>

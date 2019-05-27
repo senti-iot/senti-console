@@ -63,7 +63,7 @@ class RegistryTable extends React.Component {
 		})
 	}
 	renderHover = () => {
-		return <RegistryHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} project={this.state.hoverRegistry} />
+		return <RegistryHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} registry={this.state.hoverRegistry} />
 	}
 	renderProtocol = (id) => {
 		const { t } = this.props
