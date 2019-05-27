@@ -55,8 +55,9 @@ class CreateCollection extends Component {
 	}
 	createFunction = async () => { 
 
-		this.props.getFunctions(true, this.props.orgId, this.props.accessLevel.apisuperuser ? true : false)
-		return await createFunction({ ...this.state.cloudfunction, orgId: this.props.orgId })
+		let res = await createFunction({ ...this.state.cloudfunction, orgId: this.props.orgId })
+		await this.props.getFunctions(true, this.props.orgId, this.props.accessLevel.apisuperuser ? true : false)
+		return res
 	}
 	handleCreate = async () => {
 		const { s, history } = this.props
@@ -96,7 +97,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	getFunctions: (reload, customerID, ua) => dispatch(getFunctions(reload, customerID, ua)),
+	getFunctions: async (reload, customerID, ua) => dispatch(await getFunctions(reload, customerID, ua)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateCollection)
