@@ -3,7 +3,7 @@ import { Popper, Paper, withStyles, Fade, Divider, Button, IconButton, Tooltip }
 import T from 'components/Typography/T';
 import ItemG from 'components/Grid/ItemG';
 // import Gravatar from 'react-gravatar'
-import { Star, StarBorder, SignalWifi2Bar, LibraryBooks, DataUsage, Business } from 'variables/icons';
+import { Star, StarBorder, SignalWifi2Bar, Business, InputIcon } from 'variables/icons';
 import withLocalization from 'components/Localization/T';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -71,6 +71,7 @@ class RegistryHover extends Component {
 	}
 	render() {
 		const { t, anchorEl, classes, registry, isFav } = this.props
+		console.log(registry)
 		return (
 			<Popper
 				style={{ zIndex: 1040 }}
@@ -90,7 +91,7 @@ class RegistryHover extends Component {
 								<Fragment>
 									<ItemG container style={{ margin: "8px 0" }}>
 										<ItemG xs={3} container justify={'center'} alignItems={'center'}>
-											<DataUsage className={classes.img} />
+											<InputIcon className={classes.img} />
 										</ItemG>
 										<ItemG xs={9} container justify={'center'}>
 											<ItemG xs={12}>
@@ -99,7 +100,7 @@ class RegistryHover extends Component {
 												</T>
 											</ItemG>
 											<ItemG xs={12}>
-												<T className={classes.smallText} noParagraph>{`${registry.id}`}</T>
+												<T className={classes.smallText} noParagraph>{`${registry.uuid}`}</T>
 											</ItemG>
 										</ItemG>
 									</ItemG>
@@ -107,28 +108,9 @@ class RegistryHover extends Component {
 										<ItemG xs={12}>
 											<T className={classes.smallText} noParagraph>
 												<Business className={classes.smallIcon} />
-												{/* {`${registry.org.name ? registry.org.name : t('devices.fields.free')}`} */}
+												{registry.customer_name}
 											</T>
 										</ItemG>
-										<ItemG xs={12}>
-											<T className={classes.smallText}>
-												{this.renderIcon(registry.activeDeviceStats ? registry.activeDeviceStats.state : null)}
-												{registry.activeDeviceStats ?
-													<Link to={{ pathname: `/device/${registry.activeDeviceStats.id}`, prevURL: '/registrys' }}>
-														{registry.activeDeviceStats.id}
-													</Link>
-													: t('no.device')}
-											</T>
-										</ItemG>
-										<ItemG xs={12}>
-											<T className={classes.smallText}>
-												<LibraryBooks className={classes.smallIcon} />
-												{/* {registry.project.title ? <Link to={{ pathname: `/project/${registry.project.id}`, prevURL: '/registrys' }}> */}
-												{/* {registry.project.title} */}
-												{/* </Link> : t('no.project')} */}
-											</T>
-										</ItemG>
-
 									</ItemG>
 									<Divider />
 									<ItemG container style={{ marginTop: '8px' }}>

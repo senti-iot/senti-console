@@ -393,6 +393,7 @@
         },
         "pageTitle": "Favoritter",
         "types": {
+			"sensor": "Enhed",
             "collection": "Datasamling",
             "device": "Enhed",
             "org": "Organisation",

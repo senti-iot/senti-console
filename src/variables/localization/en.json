@@ -393,6 +393,7 @@
         },
         "pageTitle": "Favorites",
         "types": {
+			"sensor": "Device",
             "collection": "Data collection",
             "device": "Device",
             "org": "Organisation",

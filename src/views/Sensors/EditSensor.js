@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-// import CreateRegistryForm from 'components/Collections/CreateRegistryForm';
+// import EditSensorForm from 'components/Collections/EditSensorForm';
 import { getRegistryLS } from 'redux/data';
 import { updateRegistry } from 'variables/dataRegistry';
-import CreateRegistryForm from 'components/Registry/CreateRegistryForm';
+import EditSensorForm from 'components/Sensor/EditSensorForm';
 import { updateFav, isFav } from 'redux/favorites';
 import { CircularLoader } from 'components';
 
-class CreateRegistry extends Component {
+class EditSensor extends Component {
 	constructor(props) {
 		super(props)
 
@@ -78,7 +78,7 @@ class CreateRegistry extends Component {
 		const { loading, registry } = this.state
 		return ( loading ? <CircularLoader/> :
 
-			<CreateRegistryForm
+			<EditSensorForm
 				registry={registry}
 				handleChange={this.handleChange}
 				handleCreate={this.handleCreate}
@@ -101,4 +101,4 @@ const mapDispatchToProps = dispatch => ({
 	getRegistry: async id => dispatch(await getRegistryLS(1, id)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateRegistry)
+export default connect(mapStateToProps, mapDispatchToProps)(EditSensor)

@@ -10,7 +10,7 @@ import { suggestionGen, filterItems } from 'variables/functions';
 /**
 * @augments {Component<{	t:Function.isRequired,	collection:object.isRequired,	handleChangeDevice:Function.isRequired,	handleCloseDevice:Function.isRequired,	handleOpenDevice:Function.isRequired,	open:boolean.isRequired,	devices:array.isRequired,	device:object.isRequired,	handleCreate:Function.isRequired,	handleChange:Function.isRequired,>}
 */
-class CreateCollectionForm extends Component {
+class CreateRegistryForm extends Component {
 	constructor(props) {
 		super(props)
 
@@ -194,4 +194,4 @@ class CreateCollectionForm extends Component {
 }
 
 
-export default withStyles(createprojectStyles)(CreateCollectionForm)
+export default withStyles(createprojectStyles)(CreateRegistryForm)

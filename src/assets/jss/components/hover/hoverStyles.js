@@ -46,7 +46,7 @@ const hoverStyles = theme => ({
 		alignItems: 'center'
 	},
 	img: {
-		borderRadius: "50%",
+		// borderRadius: "50%",
 		height: "50px",
 		width: "50px",
 		display: 'flex',
