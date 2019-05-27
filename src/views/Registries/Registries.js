@@ -14,6 +14,7 @@ import { GridContainer, CircularLoader, /* AssignProject */ } from 'components'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
 import { getRegistries, setRegistries, sortData } from 'redux/data';
+import RegistryCards from 'components/Registry/RegistryCards';
 // import { setRegistries, getRegistries, sortData } from 'redux/data';
 
 class Registries extends Component {
@@ -491,10 +492,10 @@ class Registries extends Component {
 	}
 
 	renderCards = () => {
-		const { /* t, history, registries, */ loading } = this.props
+		const { t, history, registries, loading } = this.props
 		return loading ? <CircularLoader /> :
-			// <RegistriesCards registries={this.filterItems(registries)} t={t} history={history} /> 
-			null
+			<RegistryCards registries={this.filterItems(registries)} t={t} history={history} /> 
+			// null
 	}
 
 	renderFavorites = () => {

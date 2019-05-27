@@ -19,6 +19,12 @@ import {
 import teal from '@material-ui/core/colors/teal';
 
 const regularCardStyle = theme => ({
+	smallText: {
+		font: '400 13px/20px Roboto,RobotoDraft,Helvetica,Arial,sans-serif',
+		color: theme.palette.type === 'light' ? '#3c4043' : "#ececec",
+		display: 'flex',
+		alignItems: 'center'
+	},
 	icon: {
 		color: theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.54)' : '#fff',
 		marginRight: 4
