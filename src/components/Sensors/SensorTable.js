@@ -13,7 +13,7 @@ import { Block, CheckCircle, CellWifi } from 'variables/icons'
 import { connect } from 'react-redux'
 import TP from 'components/Table/TP';
 import TC from 'components/Table/TC';
-import SensorHover from 'components/Hover/RegistryHover';
+import SensorHover from 'components/Hover/SensorHover';
 import { dateFormatter } from 'variables/functions';
 
 class SensorTable extends React.Component {
@@ -64,7 +64,7 @@ class SensorTable extends React.Component {
 		})
 	}
 	renderHover = () => {
-		return <SensorHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} project={this.state.hoverSensor} />
+		return <SensorHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} device={this.state.hoverSensor} />
 	}
 	renderProtocol = (id) => {
 		const { t } = this.props

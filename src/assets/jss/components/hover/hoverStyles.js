@@ -2,6 +2,14 @@ import { hoverColor, primaryColor } from 'assets/jss/material-dashboard-react';
 import { red, green, yellow } from '@material-ui/core/colors'
 
 const hoverStyles = theme => ({
+	blocked: {
+		color: red[500],
+		marginRight: 8
+	},
+	allowed: {
+		color: green[500],
+		marginRight: 8
+	},
 	copyButton: {
 		marginLeft: 6,
 		padding: 4,

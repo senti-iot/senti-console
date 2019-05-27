@@ -58,10 +58,7 @@ class DeviceTypes extends Component {
 		const { t } = this.props
 		return [
 			{ key: 'name', name: t('devicetypes.fields.name'), type: 'string' },
-			{ key: 'org.name', name: t('orgs.fields.name'), type: 'string' },
-			{ key: 'devices[0].start', name: t('devicetypes.fields.activeDeviceStartDate'), type: 'date' },
-			{ key: 'created', name: t('devicetypes.fields.created'), type: 'date' },
-			{ key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
+			{ key: 'customer_name', name: t('devices.fields.org'), type: 'string' },
 			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 		]
 	}
@@ -70,6 +67,7 @@ class DeviceTypes extends Component {
 		return [
 			// { id: 'id', label: t('devicetypes.fields.id') },
 			{ id: 'name', label: t('devicetypes.fields.name') },
+			{ id: 'customer_name', label: t('devices.fields.org') }
 			// { id: 'region', label: t('devicetypes.fields.region') },
 			// { id: 'protocol', label: t('devicetypes.fields.created') },
 			// { id: 'customer', label: t('devicetypes.fields.customer') },
@@ -360,6 +358,7 @@ class DeviceTypes extends Component {
 	renderTable = (items, handleClick, key) => {
 		const { t } = this.props
 		const { order, orderBy, selected } = this.state
+		console.log(items)
 		return <DeviceTypeTable
 			data={this.filterItems(items)}
 			handleCheckboxClick={this.handleCheckboxClick}

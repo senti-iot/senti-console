@@ -8,7 +8,7 @@ import React, { Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 // import { dateFormatter } from 'variables/functions'
 import TableHeader from 'components/Table/TableHeader'
-import { ItemGrid, Info, /* Caption */ } from 'components'
+import { ItemGrid, Info, Caption, /* Caption */ } from 'components'
 import { connect } from 'react-redux'
 import TP from 'components/Table/TP';
 import TC from 'components/Table/TC';
@@ -135,11 +135,11 @@ class DeviceTypeTable extends React.Component {
 															{n.name}
 														</Info>
 													</ItemGrid>
-													{/* <ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
+													<ItemGrid zeroMargin noPadding zeroMinWidth xs={12}>
 														<Caption noWrap className={classes.noMargin}>
-															{`${n.org ? n.org.name : t('users.fields.noOrg')}`}
+															{`${n.customer_name}`}
 														</Caption>
-													</ItemGrid> */}
+													</ItemGrid>
 												</ItemGrid>
 											}/>
 										</Hidden>
@@ -150,7 +150,9 @@ class DeviceTypeTable extends React.Component {
 												onMouseEnter={e => { this.setHover(e, n) }}
 												onMouseLeave={this.unsetTimeout}
 												FirstC label={n.name}/>
-											
+											<TC 
+												label={n.customer_name}
+											/>
 										</Hidden>
 									</TableRow>
 								)
