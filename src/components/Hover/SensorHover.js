@@ -88,7 +88,6 @@ class SensorHover extends Component {
 	}
 	render() {
 		const { t, anchorEl, classes, device, isFav } = this.props
-		console.log(device)
 		return (
 			<Popper
 				style={{ zIndex: 1040 }}

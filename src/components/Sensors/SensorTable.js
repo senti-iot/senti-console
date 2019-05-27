@@ -182,7 +182,6 @@ class SensorTable extends React.Component {
 												FirstC label={n.name}/>
 											<TC label={n.uuid}/>
 											<TC content={this.renderCommunication(n.communication)} />
-											{/* <TC label={dateFormatter(n.created)} /> */}
 											<TC label={n.reg_name} />
 										</Hidden>
 									</TableRow>

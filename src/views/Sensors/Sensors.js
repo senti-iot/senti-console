@@ -14,6 +14,7 @@ import { GridContainer, CircularLoader, AssignProject, T } from 'components'
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
 import { getSensors, setSensors, sortData } from 'redux/data';
+import SensorCards from 'components/Sensors/SensorCards';
 // import { setSensors, getSensors, sortData } from 'redux/data';
 
 class Sensors extends Component {
@@ -484,10 +485,10 @@ class Sensors extends Component {
 	}
 
 	renderCards = () => {
-		const { /* t, history, devices, */ loading } = this.props
+		const { t, history, devices, loading } = this.props
 		return loading ? <CircularLoader /> :
-			// <SensorsCards devices={this.filterItems(devices)} t={t} history={history} /> 
-			null
+			<SensorCards sensors={this.filterItems(devices)} t={t} history={history} /> 
+			// null
 	}
 
 	renderFavorites = () => {

@@ -17,8 +17,21 @@ import {
 	deviceStatus,
 } from "../material-dashboard-react";
 import teal from '@material-ui/core/colors/teal';
+import { red, green } from '@material-ui/core/colors';
 
 const regularCardStyle = theme => ({
+	bigIcon: {
+		height: "40px",
+		width: "40px",
+	},
+	blocked: {
+		color: `${red[500]} !important`,
+		marginRight: 8
+	},
+	allowed: {
+		color: `${green[500]} !important`,
+		marginRight: 8
+	},
 	smallText: {
 		font: '400 13px/20px Roboto,RobotoDraft,Helvetica,Arial,sans-serif',
 		color: theme.palette.type === 'light' ? '#3c4043' : "#ececec",
