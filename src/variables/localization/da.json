@@ -994,7 +994,8 @@
         "map": "Kortvisning",
         "projects": "Projekter",
         "userHistory": "System log",
-        "users": "Brugere"
+		"users": "Brugere",
+		"code": "Kildekode"
     },
     "tooltips": {
         "cardView": "Gittervisning",

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {  withStyles } from '@material-ui/core';
 import { InfoCard, ItemG } from 'components';
-import { DeviceHub } from 'variables/icons';
+import { Code } from 'variables/icons';
 import { red, green } from '@material-ui/core/colors';
 // import brace from 'brace';
 import AceEditor from 'react-ace';
@@ -36,7 +36,7 @@ class FunctionCode extends Component {
 		return (
 			<InfoCard
 				title={t('cloudfunctions.fields.code')}
-				avatar={<DeviceHub />}
+				avatar={<Code />}
 				noExpand
 				content={
 					<ItemG container>

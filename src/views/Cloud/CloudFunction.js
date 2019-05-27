@@ -3,7 +3,7 @@ import cloudfunctionStyles from 'assets/jss/views/deviceStyles';
 import { CircularLoader, GridContainer, ItemGrid } from 'components';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { DataUsage } from 'variables/icons';
+import { DataUsage, Code } from 'variables/icons';
 // import Toolbar from 'components/Toolbar/Toolbar';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { scrollToAnchor } from 'variables/functions';
@@ -42,7 +42,8 @@ class Function extends Component {
 	tabs = () => {
 		const { t } = this.props
 		return [
-			{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` }
+			{ id: 0, title: t('tabs.details'), label: <DataUsage />, url: `#details` },
+			{ id: 1, title: t('tabs.code'), label: <Code />, url: `#code` }
 		]
 	}
 

@@ -994,7 +994,8 @@
         "map": "Map",
         "projects": "Projects",
         "userHistory": "User log",
-        "users": "Users"
+		"users": "Users",
+		"code": "Source Code"
     },
     "tooltips": {
         "cardView": "Card view",

@@ -1,3 +1,4 @@
+import Code from '@material-ui/icons/Code'
 import Mail from '@material-ui/icons/Mail'
 import ZoomOut from '@material-ui/icons/ZoomOut'
 import LocationOn from '@material-ui/icons/LocationOn'
@@ -104,6 +105,7 @@ import InputIcon from '@material-ui/icons/Input'
 import Memory from '@material-ui/icons/Memory'
 import CellWifi from '@material-ui/icons/CellWifi'
 export {
+	Code,
 	CellWifi,
 	Memory,
 	InputIcon,
