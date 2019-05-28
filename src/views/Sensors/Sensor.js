@@ -204,7 +204,7 @@ class Sensor extends Component {
 						{/* <ItemGrid xs={12} noMargin id={'data'}> */}
 						{/* <ChartDataPanel t={this.props.t} /> */}
 						{/* </ItemGrid> */}
-						{sensor.metadata ? sensor.metadata.dataKeys ? sensor.metadata.dataKeys.map((k, i) => {
+						{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 							console.log(k)
 							return <ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
 								<SensorData
@@ -218,7 +218,7 @@ class Sensor extends Component {
 
 								/></ItemGrid>
 						}
-						) : null : null}
+						) : null }
 						<ItemGrid xs={12} noMargin id='details'>
 							<SensorProtocol
 								isFav={this.props.isFav({ id: sensor.id, type: 'sensor' })}
