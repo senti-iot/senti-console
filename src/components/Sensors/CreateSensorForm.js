@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Slide, Hidden, IconButton } from '@material-ui/core';
+import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Slide, Hidden, IconButton, InputAdornment } from '@material-ui/core';
 import { Close, CheckCircle, Block } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
@@ -276,7 +276,7 @@ class CreateSensorForm extends Component {
 		</Dialog>
 	}
 	renderMetadata = () => {
-		const { sensorMetadata, t, cfunctions } = this.props
+		const { sensorMetadata, t, cfunctions, classes } = this.props
 		console.log(sensorMetadata)
 		return <Fragment>
 			{sensorMetadata.outbound.map(p => {
@@ -286,7 +286,13 @@ class CreateSensorForm extends Component {
 						value={p.key}
 						readOnly
 						InputProps={{
-
+							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
+								<IconButton
+									className={classes.smallAction}
+								>
+									<Close />
+								</IconButton>
+							</InputAdornment>,
 							style: { marginRight: 8 }
 						}}
 					/>
@@ -294,12 +300,21 @@ class CreateSensorForm extends Component {
 						label={t('sidebar.cloudfunction')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
+						InputProps={{
+							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
+								<IconButton
+									className={classes.smallAction}
+								>
+									<Close />
+								</IconButton>
+							</InputAdornment>
+						}}
 					/>
 				</ItemGrid>
 
 			})}
 			<ItemGrid xs={12}>
-				<TextF 
+				<TextF
 					label={t('cloudfunctions.fields.key')}
 					value={''}
 					InputProps={{
@@ -384,7 +399,7 @@ class CreateSensorForm extends Component {
 									/>
 								</ItemGrid>
 								{this.renderMetadata()}
-								<Divider style={{ margin: "16px" }}/>
+								<Divider style={{ margin: "16px" }} />
 								<ItemGrid xs={12}>
 									{/* <ItemG xs={12}> */}
 									<div style={{ height: 400 }}>
@@ -410,7 +425,7 @@ class CreateSensorForm extends Component {
 										value={sensor.address}
 									/>
 								</ItemGrid>
-								<Divider style={{ margin: "16px" }}/>
+								<Divider style={{ margin: "16px" }} />
 								<ItemGrid xs={12}>
 									<DSelect
 										label={t('devices.fields.locType')}

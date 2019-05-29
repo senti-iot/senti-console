@@ -3,6 +3,17 @@ import { hoverColor, primaryColor, headerColor } from 'assets/jss/material-dashb
 import { red, green } from '@material-ui/core/colors';
 
 const createprojectStyles = theme => ({
+	IconEndAd: {
+		marginLeft: 12
+	},
+	smallAction: {
+		padding: 0,
+		// color: primaryColor,
+		"&:hover": {
+			background: 'initial',
+			// color: hoverColor
+		}
+	},
 	editor: {
 		width: 'calc(100% - 16px)', 
 		border: '1px solid rgba(100, 100, 100, 0.25)', 

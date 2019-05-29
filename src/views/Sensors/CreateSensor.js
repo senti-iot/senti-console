@@ -112,7 +112,6 @@ class CreateCollection extends Component {
 	}
 	handleRemoveKey = (k) => e => {
 		let newMetadata = this.state.sensorMetadata.outbound.filter((v) => v.key !== k)
-		console.log(newMetadata)
 		this.setState({
 			sensorMetadata: {
 				...this.state.sensorMetadata,
