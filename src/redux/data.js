@@ -808,6 +808,7 @@ const initialState = {
 	registries: [],
 	sensors: [],
 	deviceTypes: [],
+	functions: [],
 	gotusers: false,
 	gotorgs: false,
 	gotdevices: false,

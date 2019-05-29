@@ -9,6 +9,7 @@
     "": "",
     "Senti": "Senti",
     "actions": {
+		"addKey": "Tilføj enhed datafelt",
         "accept": "Godkend",
         "addFilter": "Tilføj filter",
         "apply": "Anvend",
@@ -104,6 +105,7 @@
     },
     "cloudfunctions": {
         "fields": {
+			"key": "Enhed datafelt",
             "code": "Kildekode",
             "description": "Beskrivelse",
             "name": "Navn",
@@ -570,7 +572,8 @@
         "userResendEmail": "Send bekræftelses E-mail igen"
     },
     "no": {
-        "activeDevice": "Ingen aktiv enhed",
+		"cloudfunction": "Ingen cloud funktion",
+		"activeDevice": "Ingen aktiv enhed",
         "audioSupported": "Din browser understøtter ikke lydfiler! Der er således ikke lyd respons! Forsøg igen med en anden browser.",
         "birthdays": "Ingen fødselsdage i dag",
         "collection": "Ikke tildelt en datasamling",

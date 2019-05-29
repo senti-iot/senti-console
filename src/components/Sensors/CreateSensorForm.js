@@ -34,7 +34,7 @@ class CreateSensorForm extends Component {
 			}
 		})
 	}
-	ProtocolTypes = () => { 
+	ProtocolTypes = () => {
 		const { t } = this.props
 		return [
 			{ value: 0, label: t('sensors.fields.protocols.none') },
@@ -275,10 +275,53 @@ class CreateSensorForm extends Component {
 			</List>
 		</Dialog>
 	}
+	renderMetadata = () => {
+		const { sensorMetadata, t, cfunctions } = this.props
+		console.log(sensorMetadata)
+		return <Fragment>
+			{sensorMetadata.outbound.map(p => {
+				return <ItemGrid xs={12}>
+					<TextF
+						label={t('cloudfunctions.fields.key')}
+						value={p.key}
+						readOnly
+						InputProps={{
+
+							style: { marginRight: 8 }
+						}}
+					/>
+					<TextF
+						label={t('sidebar.cloudfunction')}
+						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
+						readOnly
+					/>
+				</ItemGrid>
+
+			})}
+			<ItemGrid xs={12}>
+				<TextF 
+					label={t('cloudfunctions.fields.key')}
+					value={''}
+					InputProps={{
+						style: { marginRight: 8 }
+					}}
+				/>
+				<TextF
+					label={t('sidebar.cloudfunction')}
+					value={t('no.cloudfunction')}
+					readOnly
+				/>
+			</ItemGrid>
+			<ItemGrid xs={12}>
+				<Button variant={'outlined'} color={'primary'}>{t('actions.addKey')}</Button>
+			</ItemGrid>
+		</Fragment>
+	}
 	render() {
 		const { t, handleOpenReg, handleOpenDT,
 			handleChange, sensor, getLatLngFromMap,
 			classes, handleCreate, goToRegistries, select } = this.props
+		console.log(sensor)
 		return (
 			<GridContainer>
 				<ItemGrid xs={12}>
@@ -298,7 +341,7 @@ class CreateSensorForm extends Component {
 										value={sensor.name}
 										autoFocus
 									/>
-						
+
 								</ItemGrid>
 								<ItemGrid xs={12}>
 									<TextF
@@ -340,6 +383,8 @@ class CreateSensorForm extends Component {
 										}}
 									/>
 								</ItemGrid>
+								{this.renderMetadata()}
+								<Divider style={{ margin: "16px" }}/>
 								<ItemGrid xs={12}>
 									{/* <ItemG xs={12}> */}
 									<div style={{ height: 400 }}>
@@ -365,6 +410,7 @@ class CreateSensorForm extends Component {
 										value={sensor.address}
 									/>
 								</ItemGrid>
+								<Divider style={{ margin: "16px" }}/>
 								<ItemGrid xs={12}>
 									<DSelect
 										label={t('devices.fields.locType')}
@@ -409,6 +455,6 @@ class CreateSensorForm extends Component {
 		)
 	}
 }
-		
-		
+
+
 export default withStyles(createprojectStyles)(CreateSensorForm)
