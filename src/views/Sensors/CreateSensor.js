@@ -110,6 +110,16 @@ class CreateCollection extends Component {
 			}
 		})
 	}
+	handleRemoveFunction = (k) => e => {
+		let mtd = this.state.sensorMetadata.outbound
+		mtd[mtd.findIndex(v => v.key === k.key && v.nId === k.nId)].nId = -1
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: mtd
+			}
+		})
+	}
 	handleRemoveKey = (k) => e => {
 		let newMetadata = this.state.sensorMetadata.outbound.filter((v) => v.key !== k.key)
 		this.setState({
@@ -165,6 +175,7 @@ class CreateCollection extends Component {
 				sensor={sensor}
 				sensorMetadata={sensorMetadata}
 				cfunctions={cloudfunctions}
+				handleRemoveFunction={this.handleRemoveFunction}
 				handleRemoveKey={this.handleRemoveKey}
 				handleChange={this.handleChange}
 				handleCreate={this.handleCreate}

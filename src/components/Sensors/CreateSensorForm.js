@@ -276,7 +276,7 @@ class CreateSensorForm extends Component {
 		</Dialog>
 	}
 	renderMetadata = () => {
-		const { sensorMetadata, t, cfunctions, classes, handleRemoveKey } = this.props
+		const { sensorMetadata, t, cfunctions, classes, handleRemoveKey, handleRemoveFunction } = this.props
 		console.log(sensorMetadata)
 		return <Fragment>
 			{sensorMetadata.outbound.map(p => {
@@ -305,6 +305,7 @@ class CreateSensorForm extends Component {
 							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
 								<IconButton
 									className={classes.smallAction}
+									onClick={handleRemoveFunction(p)}
 								>
 									<Close />
 								</IconButton>
