@@ -28,7 +28,7 @@ const TextF = (props) => {
 	})
 	return (		
 		<TextField
-			style={{ maxWidth: props.fullWidth ? undefined : 230 }}
+			style={{ maxWidth: props.fullWidth ? undefined : mobile ? undefined : 230 }}
 			variant={'outlined'}
 			autoFocus={props.autoFocus ? props.autoFocus : undefined}
 			placeholder={props.placeholder ? props.placeholder : undefined}
