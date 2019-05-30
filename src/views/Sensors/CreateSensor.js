@@ -181,10 +181,8 @@ class CreateCollection extends Component {
 		})
 	}
 	handleChangeFunc = (o, where) => e => {
-		console.log(o, where)
 		let metadata = this.state.sensorMetadata[where]
-		metadata[this.state.select[where].id].nId = o.id
-		console.log(metadata)
+		metadata[metadata.findIndex(f => f.id === this.state.select[where].id)].nId = o.id
 		this.setState({
 			openCF: {
 				open: false,
@@ -233,14 +231,23 @@ class CreateCollection extends Component {
 		})
 	}
 	createSensor = async () => { 
-		return await createSensor(this.state.sensor)
+		let newSensor = {
+			...this.state.sensor,
+			available: 1,
+			metadata: {
+				...this.state.sensorMetadata
+			}
+		}
+		console.log(newSensor)
+	
+		return await createSensor(newSensor)
 	}
 	handleCreate = async () => {
 		const { s, history } = this.props
 		let rs = await this.createSensor()
 		if (rs) {
 			s('snackbars.collectionCreated')
-			history.push(`/sensor/${rs.id}`)
+			history.push(`/sensor/${rs}`)
 		}
 		else
 			s('snackbars.failed')

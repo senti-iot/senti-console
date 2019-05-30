@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from 'react'
-import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Slide, Hidden, IconButton } from '@material-ui/core';
+import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Slide, Hidden, IconButton, InputAdornment, Tooltip } from '@material-ui/core';
 import { Close } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import { Grid, Paper } from '@material-ui/core'
-import { GridContainer, ItemGrid, TextF, ItemG, DSelect, /* DSelect */ } from 'components'
+import { GridContainer, ItemGrid, TextF, ItemG, InfoCard } from 'components'
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 /**
@@ -31,146 +30,93 @@ class CreateDeviceTypeForm extends Component {
 			}
 		})
 	}
-	renderSelectDevice = () => {
-		const { t, openDevice, handleCloseDevice, devices, handleChangeDevice, classes } = this.props
-		const { filters } = this.state
-		const appBarClasses = cx({
-			[' ' + classes['primary']]: 'primary'
-		});
-		return <Dialog
-			fullScreen
-			open={openDevice}
-			onClose={handleCloseDevice}
-			TransitionComponent={this.transition}>
-			<AppBar className={classes.appBar + ' ' + appBarClasses}>
-				<Toolbar>
-					<Hidden mdDown>
-						<ItemG container alignItems={'center'}>
-							<ItemG xs={2} container alignItems={'center'}>
-								<IconButton color='inherit' onClick={handleCloseDevice} aria-label='Close'>
-									<Close />
-								</IconButton>
-								<Typography variant='h6' color='inherit' className={classes.flex}>
-									{t('devices.pageTitle')}
-								</Typography>
-							</ItemG>
-							<ItemG xs={8}>
-								<Search
-									fullWidth
-									open={true}
-									focusOnMount
-									suggestions={devices ? suggestionGen(devices) : []}
-									handleFilterKeyword={this.handleFilterKeyword}
-									searchValue={filters.keyword} />
-							</ItemG>
-						</ItemG>
-					</Hidden>
-					<Hidden lgUp>
-						<ItemG container alignItems={'center'}>
-							<ItemG xs={4} container alignItems={'center'}>
-								<IconButton color={'inherit'} onClick={handleCloseDevice} aria-label='Close'>
-									<Close />
-								</IconButton>
-								<Typography variant='h6' color='inherit' className={classes.flex}>
-									{t('devices.pageTitle')}
-								</Typography>
-							</ItemG>
-							<ItemG xs={8} container alignItems={'center'} justify={'center'}>
-								<Search
-									noAbsolute
-									fullWidth
-									open={true}
-									focusOnMount
-									suggestions={devices ? suggestionGen(devices) : []}
-									handleFilterKeyword={this.handleFilterKeyword}
-									searchValue={filters.keyword} />
-							</ItemG>
-						</ItemG>
-					</Hidden>
-				</Toolbar>
-			</AppBar>
-			<List>
-				{devices ? filterItems(devices, filters).map((o, i) => {
-					return <Fragment key={i}>
-						<ListItem button onClick={handleChangeDevice(o)}>
-							<ListItemText primary={o.name} />
-						</ListItem>
-						<Divider />
-					</Fragment>
-				}) : null}
-			</List>
-		</Dialog>
+
+	renderMetadata = () => {
+		const { sensorMetadata, t, handleOpenFunc, handleChangeKey, cfunctions, classes, handleRemoveKey, handleRemoveFunction, handleAddKey } = this.props
+		return <Fragment>
+			{sensorMetadata.outbound.map(p => {
+				return <ItemGrid xs={12} container alignItems={'center'}>
+					<TextF
+						label={t('cloudfunctions.fields.key')}
+						value={p.key}
+						handleChange={handleChangeKey(p)}
+						InputProps={{
+							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
+								
+							</InputAdornment>,
+							style: { marginRight: 8 }
+						}}
+					/>
+					<TextF
+						label={t('sidebar.cloudfunction')}
+						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
+						readOnly
+						handleClick={handleOpenFunc(p, 'outbound')}
+						handleChange={() => { }}
+						InputProps={{
+							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
+								<Tooltip title={t('tooltips.devices.removeCloudFunction')}>
+									<IconButton
+										className={classes.smallAction}
+										onClick={e => { e.stopPropagation(); handleRemoveFunction(p)() }}
+									>
+										<Close />
+									</IconButton>
+								</Tooltip>
+							</InputAdornment>
+						}}
+					/>
+					<Tooltip title={t('tooltips.devices.removeDataField')}>
+
+						<IconButton
+						// className={classes.smallAction}
+							style={{ marginTop: 6 }}
+							onClick={handleRemoveKey(p)}
+						>
+							<Close />
+						</IconButton>
+					</Tooltip>
+				</ItemGrid>
+
+			})}
+			<ItemGrid xs={12}>
+				<Button variant={'outlined'} onClick={handleAddKey} color={'primary'}>{t('actions.addKey')}</Button>
+			</ItemGrid>
+		</Fragment>
 	}
-	// renderProtocol = () => {
-	// 	const { t, deviceType, handleChange } = this.props
-	// 	return <DSelect
-	// 		margin={'normal'}
-	// 		label={t('registries.protocol')}
-	// 		value={deviceType.protocol}
-	// 		onChange={handleChange('protocol')}
-	// 		menuItems={[
-	// 			{ value: 0, label: t('registries.fields.protocols.none') },
-	// 			{ value: 1, label: t('registries.fields.protocols.mqtt') },
-	// 			{ value: 2, label: t('registries.fields.protocols.http') },
-	// 			{ value: 3, label: `${t('registries.fields.protocols.mqtt')} && ${t('registries.fields.protocols.http')}` } 
-	// 		]}
-	// 	/>
-	// }
-	// renderRegion = () => {
-	// 	const { t, deviceType, handleChange } = this.props
-	// 	return <DSelect
-	// 		margin={'normal'}
-	// 		label={t('registries.region')}
-	// 		value={deviceType.region}
-	// 		onChange={handleChange('region')}
-	// 		menuItems={[
-	// 			{ value: 'europe', label: t('registries.fields.regions.europe') },
-	// 			// { value: 1, label: t('registries.fields.protocols.mqtt') },
-	// 			// { value: 2, label: t('registries.fields.protocols.http') },
-	// 			// { value: 3, label: `${t('registries.fields.protocols.mqtt')} && ${t('registries.fields.protocols.http')}` } 
-	// 		]}
-	// 	/>
-	// }
-	// renderSelectState = () => {
-	// 	const { t, collection, handleChange } = this.props
-	// 	return <DSelect
-	// 		margin={'normal'}
-	// 		label={t('collections.fields.status')}
-	// 		value={collection.state}
-	// 		onChange={handleChange('state')}
-	// 		menuItems={[
-	// 			{ value: 1, label: t('collections.fields.state.active') },
-	// 			{ value: 2, label: t('collections.fields.state.inactive') }
-	// 		]}
-	// 	/>
-	// }
-	renderStructure = () => {
-		const { deviceType, t, handleAddKeyToStructure, keyName, value, handleStrChange } = this.props
-		return <ItemG container>
-			<ItemG xs={12} container>
-				<TextF value={keyName} handleChange={handleStrChange('keyName')} InputProps={{ style: { marginRight: 8 } }} label={t('devicetypes.fields.structure.key')} />
-				<DSelect
-					value={value}
-					onChange={handleStrChange('value')}
-					menuItems={[
-						{ label: t('devicetypes.fields.structure.types.string'), value: 'string' },
-						{ label: t('devicetypes.fields.structure.types.int'), value: 'int' },
-						{ label: t('devicetypes.fields.structure.types.boolean'), value: 'boolean' },
-						{ label: t('devicetypes.fields.structure.types.array'), value: 'array' }
-					]}
-					label={t('devicetypes.fields.structure.type')}
-				/>
-			</ItemG>
-			<ItemG xs={12}>
-				<Button variant={'outlined'} color={'primary'} onClick={handleAddKeyToStructure}>{t('devicetypes.actions.addKey')}</Button>
-			</ItemG>
-			<ItemG xs={12}>
-				{deviceType.structure ? Object.keys(deviceType.structure).map((k, i) => {
-					return <TextF label={k} readOnly value={deviceType.structure[k]} />
-				}) : null}
-			</ItemG>
-		</ItemG>
+	renderMetadataInbound = () => { 
+		const { sensorMetadata, cfunctions, t, handleAddInboundFunction, handleOpenFunc, handleRemoveInboundFunction, classes } = this.props
+		return <Fragment>
+			{sensorMetadata.inbound.map(p => {
+				console.log('P', p)
+				return <ItemGrid xs={12} container alignItems={'center'}>
+					<TextF
+						label={t("cloudfunctions.fields.inboundfunc")}
+						handleClick={handleOpenFunc(p, 'inbound')}
+						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
+						readOnly
+						InputProps={{	
+							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
+								<Tooltip title={t('tooltips.devices.removeCloudFunction')}>
+									<IconButton
+										className={classes.smallAction}
+										onClick={e => { e.stopPropagation(); handleRemoveInboundFunction(p)() }}
+									>
+										<Close />
+									</IconButton>
+								</Tooltip>
+							</InputAdornment>
+						}}
+					/>
+				</ItemGrid>
+			})}
+			<ItemGrid xs={12}>
+				<Button variant={'outlined'} onClick={handleAddInboundFunction} color={'primary'}>{t('actions.addInboundFunc')}</Button>
+			</ItemGrid>
+			
+		</Fragment> 
 	}
+
 	renderSelectOrg = () => {
 		const { t, openOrg, handleCloseOrg, orgs, handleChangeOrg, classes } = this.props
 		const { filters } = this.state
@@ -241,13 +187,86 @@ class CreateDeviceTypeForm extends Component {
 			</List>
 		</Dialog>
 	}
+	renderSelectFunction = () => { 
+		const { t, openCF, handleCloseFunc, cfunctions, handleChangeFunc, classes } = this.props
+		const { filters } = this.state
+		const appBarClasses = cx({
+			[' ' + classes['primary']]: 'primary'
+		});
+		return <Dialog
+			fullScreen
+			open={openCF.open}
+			onClose={handleCloseFunc}
+			TransitionComponent={this.transition}>
+			<AppBar className={classes.appBar + ' ' + appBarClasses}>
+				<Toolbar>
+					<Hidden mdDown>
+						<ItemG container alignItems={'center'}>
+							<ItemG xs={2} container alignItems={'center'}>
+								<IconButton color='inherit' onClick={handleCloseFunc} aria-label='Close'>
+									<Close />
+								</IconButton>
+								<Typography variant='h6' color='inherit' className={classes.flex}>
+									{t('sidebar.cloudfunctions')}
+								</Typography>
+							</ItemG>
+							<ItemG xs={8}>
+								<Search
+									fullWidth
+									open={true}
+									focusOnMount
+									suggestions={cfunctions ? suggestionGen(cfunctions) : []}
+									handleFilterKeyword={this.handleFilterKeyword}
+									searchValue={filters.keyword} />
+							</ItemG>
+						</ItemG>
+					</Hidden>
+					<Hidden lgUp>
+						<ItemG container alignItems={'center'}>
+							<ItemG xs={4} container alignItems={'center'}>
+								<IconButton color={'inherit'} onClick={handleCloseFunc} aria-label='Close'>
+									<Close />
+								</IconButton>
+								<Typography variant='h6' color='inherit' className={classes.flex}>
+									{t('orgs.pageTitle')}
+								</Typography>
+							</ItemG>
+							<ItemG xs={8} container alignItems={'center'} justify={'center'}>
+								<Search
+									noAbsolute
+									fullWidth
+									open={true}
+									focusOnMount
+									suggestions={cfunctions ? suggestionGen(cfunctions) : []}
+									handleFilterKeyword={this.handleFilterKeyword}
+									searchValue={filters.keyword} />
+							</ItemG>
+						</ItemG>
+					</Hidden>
+				</Toolbar>
+			</AppBar>
+			<List>
+				{cfunctions ? filterItems(cfunctions, filters).map((o, i) => {
+					return <Fragment key={i}>
+						<ListItem button onClick={handleChangeFunc(o, openCF.where)}>
+							<ListItemText primary={o.name} />
+						</ListItem>
+						<Divider />
+					</Fragment>
+				}) : null}
+			</List>
+		</Dialog>
+	}
 	render() {
 		const { t, handleChange, deviceType, classes, handleCreate, goToDeviceTypes } = this.props
 		return (
 			<GridContainer>
-				<Paper className={classes.paper}>
-					<form className={classes.form}>
-						<Grid container>
+				<ItemGrid xs={12}>
+					<InfoCard
+						noHeader
+						noExpand
+						content={<ItemG>
+							{this.renderSelectFunction()}
 							<ItemGrid xs={12}>
 								<TextF
 									id={'deviceTypeName'}
@@ -257,16 +276,11 @@ class CreateDeviceTypeForm extends Component {
 									// autoFocus
 								/>
 							</ItemGrid>
-
-							<ItemGrid xs={12}>
-								{/* {this.renderRegion()} */}
-								{this.renderStructure()}
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								{/* {this.renderProtocol()} */}
-							</ItemGrid>
-
-
+							<Divider style={{ margin: "16px" }} />
+							{this.renderMetadata()}
+							<Divider style={{ margin: "16px" }} />
+							{this.renderMetadataInbound()}
+							<Divider style={{ margin: "16px" }} />
 							<ItemGrid container>
 								<div className={classes.wrapper}>
 									<Button
@@ -283,9 +297,10 @@ class CreateDeviceTypeForm extends Component {
 									</Button>
 								</div>
 							</ItemGrid>
-						</Grid>
-					</form>
-				</Paper>
+						</ItemG>}
+					/>
+				</ItemGrid>
+
 			</GridContainer>
 		)
 	}
