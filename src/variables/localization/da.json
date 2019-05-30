@@ -10,6 +10,7 @@
     "Senti": "Senti",
     "actions": {
 		"addKey": "Tilføj enhed datafelt",
+		"addInboundFunc": "Tilføj funktion ved modtagelse af data",
         "accept": "Godkend",
         "addFilter": "Tilføj filter",
         "apply": "Anvend",
@@ -105,6 +106,7 @@
     },
     "cloudfunctions": {
         "fields": {
+			"inboundfunc":"Cloud Funktion",
 			"key": "Enhed datafelt",
             "code": "Kildekode",
             "description": "Beskrivelse",

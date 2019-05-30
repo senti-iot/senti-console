@@ -205,15 +205,16 @@ class CreateSensorForm extends Component {
 			</List>
 		</Dialog>
 	}
+
 	renderSelectFunction = () => { 
-		const { t, openCF, handleCloseFunc, cfunctions, handleChangeFunc, classes, select } = this.props
+		const { t, openCF, handleCloseFunc, cfunctions, handleChangeFunc, classes } = this.props
 		const { filters } = this.state
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
 		return <Dialog
 			fullScreen
-			open={openCF}
+			open={openCF.open}
 			onClose={handleCloseFunc}
 			TransitionComponent={this.transition}>
 			<AppBar className={classes.appBar + ' ' + appBarClasses}>
@@ -266,7 +267,7 @@ class CreateSensorForm extends Component {
 			<List>
 				{cfunctions ? filterItems(cfunctions, filters).map((o, i) => {
 					return <Fragment key={i}>
-						<ListItem button onClick={handleChangeFunc(o, select.outboundfunc)}>
+						<ListItem button onClick={handleChangeFunc(o, openCF.where)}>
 							<ListItemText primary={o.name} />
 						</ListItem>
 						<Divider />
@@ -347,7 +348,6 @@ class CreateSensorForm extends Component {
 	}
 	renderMetadata = () => {
 		const { sensorMetadata, t, handleOpenFunc, cfunctions, classes, handleRemoveKey, handleRemoveFunction, handleAddKey } = this.props
-		console.log(sensorMetadata)
 		return <Fragment>
 			{sensorMetadata.outbound.map(p => {
 				return <ItemGrid xs={12} container alignItems={'center'}>
@@ -366,7 +366,7 @@ class CreateSensorForm extends Component {
 						label={t('sidebar.cloudfunction')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
-						handleClick={handleOpenFunc(p)}
+						handleClick={handleOpenFunc(p, 'outbound')}
 						handleChange={() => { }}
 						InputProps={{
 							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
@@ -399,6 +399,40 @@ class CreateSensorForm extends Component {
 			</ItemGrid>
 		</Fragment>
 	}
+	renderMetadataInbound = () => { 
+		const { sensorMetadata, cfunctions, t, handleAddInboundFunction, handleOpenFunc, handleRemoveInboundFunction, classes } = this.props
+		return <Fragment>
+			{sensorMetadata.inbound.map(p => {
+				console.log('P', p)
+				return <ItemGrid xs={12} container alignItems={'center'}>
+					<TextF
+						label={t("cloudfunctions.fields.inboundfunc")}
+						handleClick={handleOpenFunc(p, 'inbound')}
+						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
+						readOnly
+						InputProps={{	
+							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
+								<Tooltip title={t('tooltips.devices.removeCloudFunction')}>
+									<IconButton
+										className={classes.smallAction}
+										onClick={e => { e.stopPropagation(); handleRemoveInboundFunction(p)() }}
+									>
+										<Close />
+									</IconButton>
+								</Tooltip>
+							</InputAdornment>
+						}}
+					/>
+				</ItemGrid>
+			})}
+			<ItemGrid xs={12}>
+				<Button variant={'outlined'} onClick={handleAddInboundFunction} color={'primary'}>{t('actions.addInboundFunc')}</Button>
+			</ItemGrid>
+			
+		</Fragment> 
+
+	}
+
 	render() {
 		const { t, handleOpenReg, handleOpenDT,
 			handleChange, sensor, getLatLngFromMap,
@@ -450,6 +484,7 @@ class CreateSensorForm extends Component {
 										}}
 									/>
 								</ItemGrid>
+								<Divider style={{ margin: "16px" }} />
 								<ItemGrid xs={12}>
 									{this.renderSelectType()}
 									<TextF
@@ -466,6 +501,8 @@ class CreateSensorForm extends Component {
 									/>
 								</ItemGrid>
 								{this.renderMetadata()}
+								<Divider style={{ margin: "16px" }} />
+								{this.renderMetadataInbound()}
 								<Divider style={{ margin: "16px" }} />
 								<ItemGrid xs={12}>
 									{/* <ItemG xs={12}> */}

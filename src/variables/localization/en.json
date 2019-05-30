@@ -10,6 +10,7 @@
     "Senti": "Senti",
     "actions": {
 		"addKey": "Add device data field",
+		"addInboundFunc": "Add function on receiving data",
         "accept": "Accept",
         "addFilter": "Add filter",
         "apply": "Apply",

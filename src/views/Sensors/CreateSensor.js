@@ -14,7 +14,10 @@ class CreateCollection extends Component {
 			loading: true,
 			openReg: false,
 			openDT: false,
-			openCF: false,
+			openCF: {
+				open: false,
+				where: null
+			},
 			select: {
 				dt: {
 					name: ""
@@ -101,13 +104,32 @@ class CreateCollection extends Component {
 			},
 			sensorMetadata: {
 				// ...this.state.sensorMetadata,
-				inbound: o.inbound ? o.inbound.map(n => ({ key: n, nId: -1 })) : [],
+				inbound: o.inbound ? o.inbound.map((n, i) => ({ id: i, ...n })) : [],
 				outbound: o.outbound ? o.outbound.map((d, i) => ({ id: i,  ...d })) : []	
 			},
 			openDT: false,
 			select: {
 				...this.state.select,
 				dt: o
+			}
+		})
+	}
+	handleRemoveInboundFunction = k => e => {
+		let mtd = this.state.sensorMetadata.inbound
+		mtd = mtd.filter(v => v.nId !== k.nId && v.id !== k.id)
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				inbound: mtd
+			}
+		})
+	}
+	handleAddInboundFunction = e => { 
+		let mtd = this.state.sensorMetadata.inbound
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				inbound: [...mtd, { id: mtd.length, order: mtd.length, nId: -1 }]
 			}
 		})
 	}
@@ -138,31 +160,52 @@ class CreateCollection extends Component {
 			}
 		})
 	}
-	handleOpenFunc = p => e => {
+	handleOpenFunc = (p, where) => e => {
 		this.setState({
 			select: {
 				...this.state.select,
-				outboundfunc: p
+				[where]: p
 			},
-			openCF: true
+			openCF: {
+				open: true,
+				where: where
+			}
 		})
 	}
-	handleCloseFunc = f => {
+	handleCloseFunc = () => {
 		this.setState({
-			openCF: false,
-			f: f
+			openCF: {
+				open: false,
+				where: null
+			}
 		})
 	}
-	handleChangeFunc = (o, f) => e => {
-		console.log(o, f)
-		let metadata = this.state.sensorMetadata.outbound
-		metadata[f.id].nId = o.id
+	handleChangeFunc = (o, where) => e => {
+		console.log(o, where)
+		let metadata = this.state.sensorMetadata[where]
+		metadata[this.state.select[where].id].nId = o.id
+		console.log(metadata)
+		this.setState({
+			openCF: {
+				open: false,
+				where: null
+			},
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				[where]: metadata
+			}
+		})
+	}
+	handleChangeInboundFunc = (o) => e => {
+		console.log(o)
+		let metadata = this.state.sensorMetadata.inbound
+		metadata[this.state.select.inbound.id].nId = o.id
 		console.log(metadata)
 		this.setState({
 			openCF: false,
 			sensorMetadata: {
 				...this.state.sensorMetadata,
-				outbound: metadata
+				inbound: metadata
 			}
 		})
 	}
@@ -217,6 +260,8 @@ class CreateCollection extends Component {
 				handleCloseFunc={this.handleCloseFunc}
 				handleChangeFunc={this.handleChangeFunc}
 				handleRemoveFunction={this.handleRemoveFunction}
+				handleRemoveInboundFunction={this.handleRemoveInboundFunction}
+				handleAddInboundFunction={this.handleAddInboundFunction}
 				openCF={this.state.openCF}
 				
 				handleAddKey={this.handleAddKey}
