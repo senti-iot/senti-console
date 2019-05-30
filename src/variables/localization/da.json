@@ -1010,7 +1010,11 @@
             "type": "Diagram type"
         },
         "collection": "Datasamling",
-        "device": "Enhed",
+		"device": "Enhed",
+		"devices": {
+			"removeDataField": "Slet datafelt",
+			"removeCloudFunction": "Slet Cloud Funktion"
+		},
         "favorites": "Favoritter",
         "listView": "Listevisning",
         "map": {

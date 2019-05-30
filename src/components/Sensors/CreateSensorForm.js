@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Slide, Hidden, IconButton, InputAdornment } from '@material-ui/core';
+import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Slide, Hidden, IconButton, InputAdornment, Tooltip } from '@material-ui/core';
 import { Close, CheckCircle, Block } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
@@ -205,6 +205,76 @@ class CreateSensorForm extends Component {
 			</List>
 		</Dialog>
 	}
+	renderSelectFunction = () => { 
+		const { t, openCF, handleCloseFunc, cfunctions, handleChangeFunc, classes, select } = this.props
+		const { filters } = this.state
+		const appBarClasses = cx({
+			[' ' + classes['primary']]: 'primary'
+		});
+		return <Dialog
+			fullScreen
+			open={openCF}
+			onClose={handleCloseFunc}
+			TransitionComponent={this.transition}>
+			<AppBar className={classes.appBar + ' ' + appBarClasses}>
+				<Toolbar>
+					<Hidden mdDown>
+						<ItemG container alignItems={'center'}>
+							<ItemG xs={2} container alignItems={'center'}>
+								<IconButton color='inherit' onClick={handleCloseFunc} aria-label='Close'>
+									<Close />
+								</IconButton>
+								<Typography variant='h6' color='inherit' className={classes.flex}>
+									{t('sidebar.cloudfunctions')}
+								</Typography>
+							</ItemG>
+							<ItemG xs={8}>
+								<Search
+									fullWidth
+									open={true}
+									focusOnMount
+									suggestions={cfunctions ? suggestionGen(cfunctions) : []}
+									handleFilterKeyword={this.handleFilterKeyword}
+									searchValue={filters.keyword} />
+							</ItemG>
+						</ItemG>
+					</Hidden>
+					<Hidden lgUp>
+						<ItemG container alignItems={'center'}>
+							<ItemG xs={4} container alignItems={'center'}>
+								<IconButton color={'inherit'} onClick={handleCloseFunc} aria-label='Close'>
+									<Close />
+								</IconButton>
+								<Typography variant='h6' color='inherit' className={classes.flex}>
+									{t('orgs.pageTitle')}
+								</Typography>
+							</ItemG>
+							<ItemG xs={8} container alignItems={'center'} justify={'center'}>
+								<Search
+									noAbsolute
+									fullWidth
+									open={true}
+									focusOnMount
+									suggestions={cfunctions ? suggestionGen(cfunctions) : []}
+									handleFilterKeyword={this.handleFilterKeyword}
+									searchValue={filters.keyword} />
+							</ItemG>
+						</ItemG>
+					</Hidden>
+				</Toolbar>
+			</AppBar>
+			<List>
+				{cfunctions ? filterItems(cfunctions, filters).map((o, i) => {
+					return <Fragment key={i}>
+						<ListItem button onClick={handleChangeFunc(o, select.outboundfunc)}>
+							<ListItemText primary={o.name} />
+						</ListItem>
+						<Divider />
+					</Fragment>
+				}) : null}
+			</List>
+		</Dialog>
+	}
 	renderSelectOrg = () => {
 		const { t, openOrg, handleCloseOrg, orgs, handleChangeOrg, classes } = this.props
 		const { filters } = this.state
@@ -276,23 +346,18 @@ class CreateSensorForm extends Component {
 		</Dialog>
 	}
 	renderMetadata = () => {
-		const { sensorMetadata, t, cfunctions, classes, handleRemoveKey, handleRemoveFunction } = this.props
+		const { sensorMetadata, t, handleOpenFunc, cfunctions, classes, handleRemoveKey, handleRemoveFunction, handleAddKey } = this.props
 		console.log(sensorMetadata)
 		return <Fragment>
 			{sensorMetadata.outbound.map(p => {
-				return <ItemGrid xs={12}>
+				return <ItemGrid xs={12} container alignItems={'center'}>
 					<TextF
 						label={t('cloudfunctions.fields.key')}
 						value={p.key}
 						readOnly
 						InputProps={{
 							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
-								<IconButton
-									className={classes.smallAction}
-									onClick={handleRemoveKey(p)}
-								>
-									<Close />
-								</IconButton>
+								
 							</InputAdornment>,
 							style: { marginRight: 8 }
 						}}
@@ -301,36 +366,36 @@ class CreateSensorForm extends Component {
 						label={t('sidebar.cloudfunction')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
+						handleClick={handleOpenFunc(p)}
+						handleChange={() => { }}
 						InputProps={{
 							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
-								<IconButton
-									className={classes.smallAction}
-									onClick={handleRemoveFunction(p)}
-								>
-									<Close />
-								</IconButton>
+								<Tooltip title={t('tooltips.devices.removeCloudFunction')}>
+									<IconButton
+										className={classes.smallAction}
+										onClick={e => { e.stopPropagation(); handleRemoveFunction(p)() }}
+									>
+										<Close />
+									</IconButton>
+								</Tooltip>
 							</InputAdornment>
 						}}
 					/>
+					<Tooltip title={t('tooltips.devices.removeDataField')}>
+
+						<IconButton
+						// className={classes.smallAction}
+							style={{ marginTop: 6 }}
+							onClick={handleRemoveKey(p)}
+						>
+							<Close />
+						</IconButton>
+					</Tooltip>
 				</ItemGrid>
 
 			})}
 			<ItemGrid xs={12}>
-				<TextF
-					label={t('cloudfunctions.fields.key')}
-					value={''}
-					InputProps={{
-						style: { marginRight: 8 }
-					}}
-				/>
-				<TextF
-					label={t('sidebar.cloudfunction')}
-					value={t('no.cloudfunction')}
-					readOnly
-				/>
-			</ItemGrid>
-			<ItemGrid xs={12}>
-				<Button variant={'outlined'} color={'primary'}>{t('actions.addKey')}</Button>
+				<Button variant={'outlined'} onClick={handleAddKey} color={'primary'}>{t('actions.addKey')}</Button>
 			</ItemGrid>
 		</Fragment>
 	}
@@ -349,7 +414,7 @@ class CreateSensorForm extends Component {
 						noHeader
 						content={
 							<ItemG>
-
+								{this.renderSelectFunction()}
 								<ItemGrid xs={12}>
 									<TextF
 										id={'sensorName'}

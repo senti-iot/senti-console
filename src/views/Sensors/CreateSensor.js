@@ -14,6 +14,7 @@ class CreateCollection extends Component {
 			loading: true,
 			openReg: false,
 			openDT: false,
+			openCF: false,
 			select: {
 				dt: {
 					name: ""
@@ -101,7 +102,7 @@ class CreateCollection extends Component {
 			sensorMetadata: {
 				// ...this.state.sensorMetadata,
 				inbound: o.inbound ? o.inbound.map(n => ({ key: n, nId: -1 })) : [],
-				outbound: o.outbound ? o.outbound : []	
+				outbound: o.outbound ? o.outbound.map((d, i) => ({ id: i,  ...d })) : []	
 			},
 			openDT: false,
 			select: {
@@ -126,6 +127,42 @@ class CreateCollection extends Component {
 			sensorMetadata: {
 				...this.state.sensorMetadata,
 				outbound: newMetadata
+			}
+		})
+	}
+	handleAddKey = e => { 
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: [...this.state.sensorMetadata.outbound, { key: '', nId: -1 }]
+			}
+		})
+	}
+	handleOpenFunc = p => e => {
+		this.setState({
+			select: {
+				...this.state.select,
+				outboundfunc: p
+			},
+			openCF: true
+		})
+	}
+	handleCloseFunc = f => {
+		this.setState({
+			openCF: false,
+			f: f
+		})
+	}
+	handleChangeFunc = (o, f) => e => {
+		console.log(o, f)
+		let metadata = this.state.sensorMetadata.outbound
+		metadata[f.id].nId = o.id
+		console.log(metadata)
+		this.setState({
+			openCF: false,
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: metadata
 			}
 		})
 	}
@@ -165,6 +202,7 @@ class CreateCollection extends Component {
 		else
 			s('snackbars.failed')
 	}
+
 	goToSensors = () => this.props.history.push('/sensors')
 	render() {
 		const { t, cloudfunctions } = this.props
@@ -175,20 +213,31 @@ class CreateCollection extends Component {
 				sensor={sensor}
 				sensorMetadata={sensorMetadata}
 				cfunctions={cloudfunctions}
+				handleOpenFunc={this.handleOpenFunc}
+				handleCloseFunc={this.handleCloseFunc}
+				handleChangeFunc={this.handleChangeFunc}
 				handleRemoveFunction={this.handleRemoveFunction}
+				openCF={this.state.openCF}
+				
+				handleAddKey={this.handleAddKey}
 				handleRemoveKey={this.handleRemoveKey}
+				
 				handleChange={this.handleChange}
 				handleCreate={this.handleCreate}
+				
 				handleOpenDT={this.handleOpenDT}
 				handleCloseDT={this.handleCloseDT}
 				handleChangeDT={this.handleChangeDT}
 				openDT={this.state.openDT}
 				deviceTypes={this.props.deviceTypes}
+				
 				registries={this.props.registries}
 				handleOpenReg={this.handleOpenReg}
 				handleCloseReg={this.handleCloseReg}
 				handleChangeReg={this.handleChangeReg}
 				openReg={this.state.openReg}
+
+
 				goToSensors={this.goToSensors}
 				select={this.state.select}
 				getLatLngFromMap={this.getLatLngFromMap}

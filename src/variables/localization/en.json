@@ -1010,7 +1010,11 @@
             "type": "Chart type"
         },
         "collection": "Data collection",
-        "device": "Device",
+		"device": "Device",
+		"devices": {
+			"removeDataField": "Delete data field",
+			"removeCloudFunction": "Remove Cloud Function"
+		},
         "favorites": "Favorites",
         "listView": "List view",
         "map": {
