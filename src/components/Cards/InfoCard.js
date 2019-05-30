@@ -57,10 +57,10 @@ class InfoCard extends PureComponent {
 	render() {
 		const { classes, title, subheader,
 			content, hiddenContent, avatar,
-			noAvatar, leftActions, leftActionContent, noRightExpand, t, whiteAvatar } = this.props;
+			noAvatar, leftActions, leftActionContent, noRightExpand, t, whiteAvatar, noHeader } = this.props;
 		return (
 			<Card className={classes.card + " " + classes.plainCardClasses}>
-				<CardHeader
+				{noHeader ? null : <CardHeader
 					action={this.renderTopAction()}
 					avatar={noAvatar ? null : <Avatar aria-label='Avatar' className={classes.avatar + ' ' + (whiteAvatar ? classes.whiteAvatar : "")}>{avatar}</Avatar>}
 					title={title}
@@ -72,7 +72,7 @@ class InfoCard extends PureComponent {
 					}}
 				>
 
-				</CardHeader>
+				</CardHeader>}
 				<CardContent className={classnames(
 					{ [classes.contentMedia]: this.props.noPadding },
 					{ [classes.noMargin]: this.props.noExpand ? false : this.props.haveMargin ? false : !this.state.expanded })}>

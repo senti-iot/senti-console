@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Slide, Hidden, IconButton } from '@material-ui/core';
-import { Close, CheckCircle, Block, CellWifi } from 'variables/icons';
+import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemText, Divider, withStyles, Slide, Hidden, IconButton, InputAdornment } from '@material-ui/core';
+import { Close, CheckCircle, Block } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 // import { Grid, Paper } from '@material-ui/core'
@@ -9,6 +9,7 @@ import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import OpenStreetMap from 'components/Map/OpenStreetMap';
 import Info from 'components/Typography/Info';
+
 /**
 * @augments {Component<{	t:Function.isRequired,	collection:object.isRequired,	handleChangeDevice:Function.isRequired,	handleCloseDevice:Function.isRequired,	handleOpenDevice:Function.isRequired,	open:boolean.isRequired,	devices:array.isRequired,	device:object.isRequired,	handleCreate:Function.isRequired,	handleChange:Function.isRequired,>}
 */
@@ -33,7 +34,7 @@ class CreateSensorForm extends Component {
 			}
 		})
 	}
-	ProtocolTypes = () => { 
+	ProtocolTypes = () => {
 		const { t } = this.props
 		return [
 			{ value: 0, label: t('sensors.fields.protocols.none') },
@@ -274,10 +275,70 @@ class CreateSensorForm extends Component {
 			</List>
 		</Dialog>
 	}
+	renderMetadata = () => {
+		const { sensorMetadata, t, cfunctions, classes, handleRemoveKey, handleRemoveFunction } = this.props
+		console.log(sensorMetadata)
+		return <Fragment>
+			{sensorMetadata.outbound.map(p => {
+				return <ItemGrid xs={12}>
+					<TextF
+						label={t('cloudfunctions.fields.key')}
+						value={p.key}
+						readOnly
+						InputProps={{
+							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
+								<IconButton
+									className={classes.smallAction}
+									onClick={handleRemoveKey(p)}
+								>
+									<Close />
+								</IconButton>
+							</InputAdornment>,
+							style: { marginRight: 8 }
+						}}
+					/>
+					<TextF
+						label={t('sidebar.cloudfunction')}
+						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
+						readOnly
+						InputProps={{
+							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
+								<IconButton
+									className={classes.smallAction}
+									onClick={handleRemoveFunction(p)}
+								>
+									<Close />
+								</IconButton>
+							</InputAdornment>
+						}}
+					/>
+				</ItemGrid>
+
+			})}
+			<ItemGrid xs={12}>
+				<TextF
+					label={t('cloudfunctions.fields.key')}
+					value={''}
+					InputProps={{
+						style: { marginRight: 8 }
+					}}
+				/>
+				<TextF
+					label={t('sidebar.cloudfunction')}
+					value={t('no.cloudfunction')}
+					readOnly
+				/>
+			</ItemGrid>
+			<ItemGrid xs={12}>
+				<Button variant={'outlined'} color={'primary'}>{t('actions.addKey')}</Button>
+			</ItemGrid>
+		</Fragment>
+	}
 	render() {
 		const { t, handleOpenReg, handleOpenDT,
 			handleChange, sensor, getLatLngFromMap,
 			classes, handleCreate, goToRegistries, select } = this.props
+		console.log(sensor)
 		return (
 			<GridContainer>
 				<ItemGrid xs={12}>
@@ -285,154 +346,132 @@ class CreateSensorForm extends Component {
 					<InfoCard
 						title={t('devices.fields.description')}
 						noExpand
-						content={<ItemG>
+						noHeader
+						content={
+							<ItemG>
 
-							<ItemGrid xs={12}>
-								<TextF
-									id={'sensorName'}
-									label={t('devices.fields.name')}
-									handleChange={handleChange('name')}
-									value={sensor.name}
-									autoFocus
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<TextF
-									id={'sensorName'}
-									label={t('devices.fields.description')}
-									handleChange={handleChange('description')}
-									value={sensor.description}
-									multiline
-									rows={3}
-									autoFocus
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								{this.renderSelectReg()}
-								<TextF
-									id={'regID'}
-									label={t('sensors.fields.registry')}
-									value={select.reg.name}
-									readOnly
-									handleClick={handleOpenReg}
-									handleChange={() => { }}
-									InputProps={{
-										onChange: handleOpenReg,
-										readOnly: true
-									}}
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								{this.renderSelectType()}
-								<TextF
-									id={'regID'}
-									label={t('sensors.fields.deviceType')}
-									value={select.dt.name}
-									readOnly
-									handleClick={handleOpenDT}
-									handleChange={() => { }}
-									InputProps={{
-										onChange: handleOpenDT,
-										readOnly: true
-									}}
-								/>
-							</ItemGrid>
-						</ItemG>}
-					/>
-				</ItemGrid>
-				<ItemGrid xs={12}>
-					<InfoCard
-						title={t('devices.fields.address')}
-						noExpand
-						content={<ItemG xs={12}>
-							<ItemGrid xs={12}>
-								{/* <ItemG xs={12}> */}
-								<div style={{ height: 400 }}>
-									<OpenStreetMap
-										mapTheme={this.props.mapTheme}
-										calibrate
-										height={400}
-										width={400}
-										markers={[{ lat: sensor.lat, long: sensor.long }]}
-										getLatLng={getLatLngFromMap}
+								<ItemGrid xs={12}>
+									<TextF
+										id={'sensorName'}
+										label={t('devices.fields.name')}
+										handleChange={handleChange('name')}
+										value={sensor.name}
+										autoFocus
 									/>
-								</div>
-								{/* </ItemG> */}
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<Info>
-									{`${sensor.lat} ${sensor.long}`}
-								</Info>
-								<TextF
-									id={'sensorName'}
-									label={t('devices.fields.address')}
-									handleChange={handleChange('address')}
-									value={sensor.address}
-									autoFocus
-								/>
-							</ItemGrid>
-							<ItemGrid xs={12}>
-								<DSelect
-									label={t('devices.fields.locType')}
-									value={sensor.locType}
-									onChange={handleChange('locType')}
-									menuItems={this.LocationTypes().map(m => ({
-										value: m.id,
-										label: m.label
-									}))}
-								/>
-							</ItemGrid>
-						</ItemG>} />
-				</ItemGrid>
 
-				<ItemGrid xs={12}>
-					<InfoCard
-						noExpand
-						avatar={<CellWifi/>}
-						title={t('sensors.fields.communication')}
-						content={<ItemG>
-							<ItemGrid xs={12}>
-								<DSelect
-									label={t('sensors.fields.communication')}
-									handleChange={handleChange('communication')}
-									value={sensor.communication}
-									menuItems={this.CommunicationTypes()}
-								/>
-							</ItemGrid>
-							{/* <ItemGrid xs={12}>
-								<DSelect
-									label={t('sensors.fields.protocol')}
-									handleChange={handleChange('protocol')}
-									value={sensor.protocol}
-									menuItems={this.ProtocolTypes()}
-								/>
-							</ItemGrid> */}
-
-						</ItemG>
+								</ItemGrid>
+								<ItemGrid xs={12}>
+									<TextF
+										id={'sensorDescription'}
+										label={t('devices.fields.description')}
+										handleChange={handleChange('description')}
+										value={sensor.description}
+										multiline
+										rows={3}
+									/>
+								</ItemGrid>
+								<ItemGrid xs={12}>
+									{this.renderSelectReg()}
+									<TextF
+										id={'regID'}
+										label={t('sensors.fields.registry')}
+										value={select.reg.name}
+										readOnly
+										handleClick={handleOpenReg}
+										handleChange={() => { }}
+										InputProps={{
+											onChange: handleOpenReg,
+											readOnly: true
+										}}
+									/>
+								</ItemGrid>
+								<ItemGrid xs={12}>
+									{this.renderSelectType()}
+									<TextF
+										id={'regID'}
+										label={t('sensors.fields.deviceType')}
+										value={select.dt.name}
+										readOnly
+										handleClick={handleOpenDT}
+										handleChange={() => { }}
+										InputProps={{
+											onChange: handleOpenDT,
+											readOnly: true
+										}}
+									/>
+								</ItemGrid>
+								{this.renderMetadata()}
+								<Divider style={{ margin: "16px" }} />
+								<ItemGrid xs={12}>
+									{/* <ItemG xs={12}> */}
+									<div style={{ height: 400 }}>
+										<OpenStreetMap
+											mapTheme={this.props.mapTheme}
+											calibrate
+											height={400}
+											width={400}
+											markers={[{ lat: sensor.lat, long: sensor.long }]}
+											getLatLng={getLatLngFromMap}
+										/>
+									</div>
+									{/* </ItemG> */}
+								</ItemGrid>
+								<ItemGrid xs={12}>
+									<Info>
+										{`${sensor.lat} ${sensor.long}`}
+									</Info>
+									<TextF
+										id={'sensorName'}
+										label={t('devices.fields.address')}
+										handleChange={handleChange('address')}
+										value={sensor.address}
+									/>
+								</ItemGrid>
+								<Divider style={{ margin: "16px" }} />
+								<ItemGrid xs={12}>
+									<DSelect
+										label={t('devices.fields.locType')}
+										value={sensor.locType}
+										onChange={handleChange('locType')}
+										menuItems={this.LocationTypes().map(m => ({
+											value: m.id,
+											label: m.label
+										}))}
+									/>
+								</ItemGrid>
+								<ItemGrid xs={12}>
+									<DSelect
+										label={t('sensors.fields.communication')}
+										handleChange={handleChange('communication')}
+										value={sensor.communication}
+										menuItems={this.CommunicationTypes()}
+									/>
+								</ItemGrid>
+								<ItemGrid container>
+									<div className={classes.wrapper}>
+										<Button
+											variant='outlined'
+											onClick={goToRegistries}
+											className={classes.redButton}
+										>
+											{t('actions.cancel')}
+										</Button>
+									</div>
+									<div className={classes.wrapper}>
+										<Button onClick={handleCreate} variant={'outlined'} color={'primary'}>
+											{t('actions.save')}
+										</Button>
+									</div>
+								</ItemGrid>
+							</ItemG>
 						}
 					/>
-				</ItemGrid>
-				<ItemGrid container>
-					<div className={classes.wrapper}>
-						<Button
-							variant='outlined'
-							onClick={goToRegistries}
-							className={classes.redButton}
-						>
-							{t('actions.cancel')}
-						</Button>
-					</div>
-					<div className={classes.wrapper}>
-						<Button onClick={handleCreate} variant={'outlined'} color={'primary'}>
-							{t('actions.save')}
-						</Button>
-					</div>
 				</ItemGrid>
 			</GridContainer>
 
 		)
 	}
 }
-		
-		
+
+
 export default withStyles(createprojectStyles)(CreateSensorForm)

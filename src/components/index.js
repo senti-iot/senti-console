@@ -16,7 +16,7 @@ import ProfileCard from './Cards/ProfileCard.js';
 import RegularCard from './Cards/RegularCard.js';
 import SmallCard from './Cards/SmallCard.js'
 import InfoCard from './Cards/InfoCard'
-
+import Box from './Cards/Box'
 
 // ##############################
 // // // Export
@@ -98,6 +98,7 @@ import WeatherIcon from './Typography/WeatherIcon'
 import T from './Typography/T.js'
 
 export {
+	Box,
 	MultiLineChart,
 	DatePicker,
 	DateTimePicker,

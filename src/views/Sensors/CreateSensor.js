@@ -32,6 +32,10 @@ class CreateCollection extends Component {
 				name: '',
 				customer_id: 1,
 				communication: 1
+			},
+			sensorMetadata: {
+				inbound: [],
+				outbound: []
 			}
 		}
 		this.id = props.match.params.id
@@ -94,10 +98,34 @@ class CreateCollection extends Component {
 				...this.state.sensor,
 				type_id: o.id
 			},
+			sensorMetadata: {
+				// ...this.state.sensorMetadata,
+				inbound: o.inbound ? o.inbound.map(n => ({ key: n, nId: -1 })) : [],
+				outbound: o.outbound ? o.outbound : []	
+			},
 			openDT: false,
 			select: {
 				...this.state.select,
 				dt: o
+			}
+		})
+	}
+	handleRemoveFunction = (k) => e => {
+		let mtd = this.state.sensorMetadata.outbound
+		mtd[mtd.findIndex(v => v.key === k.key && v.nId === k.nId)].nId = -1
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: mtd
+			}
+		})
+	}
+	handleRemoveKey = (k) => e => {
+		let newMetadata = this.state.sensorMetadata.outbound.filter((v) => v.key !== k.key)
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: newMetadata
 			}
 		})
 	}
@@ -139,12 +167,16 @@ class CreateCollection extends Component {
 	}
 	goToSensors = () => this.props.history.push('/sensors')
 	render() {
-		const { t } = this.props
-		const { sensor } = this.state
+		const { t, cloudfunctions } = this.props
+		const { sensor, sensorMetadata } = this.state
 		return (
 		
 			<CreateSensorForm
 				sensor={sensor}
+				sensorMetadata={sensorMetadata}
+				cfunctions={cloudfunctions}
+				handleRemoveFunction={this.handleRemoveFunction}
+				handleRemoveKey={this.handleRemoveKey}
 				handleChange={this.handleChange}
 				handleCreate={this.handleCreate}
 				handleOpenDT={this.handleOpenDT}
@@ -174,7 +206,8 @@ const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	orgId: state.settings.user.org.id,
 	registries: state.data.registries,
-	deviceTypes: state.data.deviceTypes
+	deviceTypes: state.data.deviceTypes,
+	cloudfunctions: state.data.functions
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -9,6 +9,7 @@
     "": "",
     "Senti": "Senti",
     "actions": {
+		"addKey": "Add device data field",
         "accept": "Accept",
         "addFilter": "Add filter",
         "apply": "Apply",
@@ -104,6 +105,7 @@
     },
     "cloudfunctions": {
         "fields": {
+			"key": "Device data key",
             "code": "Source Code",
             "description": "Description",
             "name": "Name",
@@ -570,6 +572,7 @@
         "userResendEmail": "Resend confirmation E-mail"
     },
     "no": {
+		"cloudfunction": "No cloud function",
         "activeDevice": "No active device",
         "audioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a different browser.",
         "birthdays": "No birthdays today",
