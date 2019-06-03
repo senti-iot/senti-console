@@ -63,6 +63,7 @@
 		"skycons": "^1.0.0",
 		"store": "^2.0.12",
 		"styled-components": "^4.2.0",
+		"svg-gauge": "^1.0.5",
 		"workbox-build": "^3.6.3",
 		"zipcelx": "^1.6.0"
 	},

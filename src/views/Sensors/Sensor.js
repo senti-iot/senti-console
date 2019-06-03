@@ -1,6 +1,6 @@
 import { withStyles, Fade } from '@material-ui/core';
 import registryStyles from 'assets/jss/views/deviceStyles';
-import { CircularLoader, GridContainer, ItemGrid } from 'components';
+import { CircularLoader, GridContainer, ItemGrid, /* SmallCard */ } from 'components';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 // import { getProject } from 'variables/dataProjects';
@@ -15,6 +15,7 @@ import { getSensorLS, unassignSensor } from 'redux/data';
 import SensorDetails from './SensorCards/SensorDetails';
 import SensorProtocol from './SensorCards/SensorProtocol';
 import SensorData from './SensorCards/SensorData';
+// import Gauge from 'components/Charts/Gauge';
 // import ChartDataPanel from 'views/Charts/ChartDataPanel';
 // import { getSensorDataClean } from 'variables/dataRegistry';
 // import { teal, red } from '@material-ui/core/colors';
@@ -41,6 +42,7 @@ class Sensor extends Component {
 			//Map
 			loadingMap: true,
 			heatData: null,
+			value: 0
 			//End Map
 		}
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/sensors/list'
@@ -95,9 +97,11 @@ class Sensor extends Component {
 		}
 	}
 	componentWillUnmount = () => {
+		clearInterval(this.int)
 		this.props.unassignSensor()
 	}
 	componentDidMount = async () => {
+		this.randomValue()
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {
@@ -176,7 +180,13 @@ class Sensor extends Component {
 	renderLoader = () => {
 		return <CircularLoader />
 	}
-
+	randomValue = () => {
+		// this.int = setInterval(() => {
+		// 	this.setState({
+		// 		value: Math.random() * 100
+		// 	})
+		// }, 1000);
+	}
 
 	render() {
 		const { history, match, t, accessLevel, sensor, loading, periods } = this.props
@@ -201,9 +211,33 @@ class Sensor extends Component {
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
-						{/* <ItemGrid xs={12} noMargin id={'data'}> */}
-						{/* <ChartDataPanel t={this.props.t} /> */}
-						{/* </ItemGrid> */}
+						{/* <SmallCard
+							noAvatar
+							title={'Temperature'}
+							content={
+								<Gauge 
+									value={this.state.value}
+								/>
+							}
+						/>
+						<SmallCard
+							noAvatar
+							title={'Water Consumption'}
+							content={
+								<Gauge 
+									value={this.state.value}
+								/>
+							}
+						/>
+						<SmallCard
+							noAvatar
+							title={'Average Daily Consumption'}
+							content={
+								<Gauge 
+									value={this.state.value}
+								/>
+							}
+						/> */}
 						{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 							console.log(k)
 							return <ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
