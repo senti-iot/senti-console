@@ -349,16 +349,13 @@ class CreateSensorForm extends Component {
 	renderMetadata = () => {
 		const { sensorMetadata, t, handleOpenFunc, cfunctions, classes, handleRemoveKey, handleRemoveFunction, handleAddKey } = this.props
 		return <Fragment>
-			{sensorMetadata.outbound.map(p => {
-				return <ItemGrid xs={12} container alignItems={'center'}>
+			{sensorMetadata.outbound.map((p, i) => {
+				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
 					<TextF
 						label={t('cloudfunctions.fields.key')}
 						value={p.key}
 						readOnly
 						InputProps={{
-							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
-								
-							</InputAdornment>,
 							style: { marginRight: 8 }
 						}}
 					/>
@@ -512,7 +509,7 @@ class CreateSensorForm extends Component {
 											calibrate
 											height={400}
 											width={400}
-											markers={[{ lat: sensor.lat, long: sensor.long }]}
+											markers={[{ lat: sensor.lat ?  sensor.lat : 56, long: sensor.lng ? sensor.lng : 9 }]}
 											getLatLng={getLatLngFromMap}
 										/>
 									</div>
@@ -520,7 +517,7 @@ class CreateSensorForm extends Component {
 								</ItemGrid>
 								<ItemGrid xs={12}>
 									<Info>
-										{`${sensor.lat} ${sensor.long}`}
+										{`${sensor.lat} ${sensor.lng}`}
 									</Info>
 									<TextF
 										id={'sensorName'}

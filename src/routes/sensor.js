@@ -8,11 +8,12 @@ import { compose } from 'recompose';
 // import EditRegistry from 'views/Registries/EditRegistry';
 // import Registry from 'views/Registries/Registry';
 import Sensor from 'views/Sensors/Sensor';
+import EditSensor from 'views/Sensors/EditSensor';
 
 const registry = (props) => {
 	return (
 		<Switch>
-			{/* <Route path={`${props.match.url}/edit`} render={() => <EditRegistry {...props} />}/> */}
+			<Route path={`${props.match.url}/edit`} render={() => <EditSensor {...props} />}/>
 			<Route path={`${props.match.url}`} render={() => <Sensor {...props} />} /> 
 		</Switch>
 	)

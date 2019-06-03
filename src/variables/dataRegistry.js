@@ -81,7 +81,10 @@ export const createSensor = async (sensor) => {
 	let response = await servicesAPI.put(`/v1/device`, sensor).then(rs => rs.ok ? rs.data : null)
 	return response
 }
-
+export const updateSensor = async (sensor) => {
+	let response = await servicesAPI.post(`v1/device`, sensor).then(rs => rs.data )
+	return response
+}
 export const getSensorDataClean = async (id, from, to, v, nId) => {
 	console.log(id, from, to, v, nId)
 	if (nId === undefined) {

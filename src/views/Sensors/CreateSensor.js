@@ -30,7 +30,7 @@ class CreateCollection extends Component {
 				reg_id: 0,
 				type_id: 0,
 				lat: 56.2639,
-				long: 9.5018,
+				lng: 9.5018,
 				address: '',
 				locType: 0,
 				name: '',
@@ -61,8 +61,8 @@ class CreateCollection extends Component {
 	}
 	getLatLngFromMap = async (e) => {
 		let lat = e.target._latlng.lat
-		let long = e.target._latlng.lng
-		let newAddress = await getAddressByLocation(lat, long)
+		let lng = e.target._latlng.lng
+		let newAddress = await getAddressByLocation(lat, lng)
 		let address = this.state.sensor.address
 		if (newAddress) {
 			if (!address.includes(newAddress.vejnavn)) {
@@ -73,7 +73,7 @@ class CreateCollection extends Component {
 			sensor: {
 				...this.state.sensor,
 				lat,
-				long,
+				lng,
 				address }
 		})
 
