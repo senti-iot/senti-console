@@ -4,6 +4,7 @@ import { primaryColor } from 'assets/jss/material-dashboard-react';
 import { withStyles } from '@material-ui/styles';
 import ItemG from 'components/Grid/ItemG';
 import { T } from 'components';
+import moment from 'moment'
 
 const styles = (theme) => ({
 	gaugeContainer: {
@@ -62,13 +63,14 @@ class Gauge extends Component {
 		this.gauge.setValueAnimated(props.value, gaugeOptions.animDuration);
 	}
 	render() {
+		const { period } = this.props
 		return (
 			<ItemG container justify={'center'} alignItems={'center'}>
 				<ItemG container justify={'center'} alignItems={'center'}>
 					<div className={this.props.classes.gaugeContainer} ref={el => this.gaugeEl = el}/>
 				</ItemG>
 				<ItemG container justify={'center'} alignItems={'center'}>
-					<T>Date Range</T>
+					<T>{`${moment(period.from).format('LLL')} - ${moment(period.to).format('LLL')}`}</T>
 				</ItemG>
 			</ItemG>
 		)
