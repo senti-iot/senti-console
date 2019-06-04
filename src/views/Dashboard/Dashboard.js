@@ -1,4 +1,4 @@
-import { Button, withStyles, Fade } from '@material-ui/core';
+import { Button, withStyles, Fade, IconButton, Dialog, AppBar, Toolbar, Hidden } from '@material-ui/core';
 // import imgs from 'assets/img/Squared';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import GridContainer from 'components/Grid/GridContainer';
@@ -9,7 +9,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import DiscoverSenti from 'views/Dashboard/DiscoverSenti';
 import DashboardPanel from './DashboardPanel.js';
-
+import { Add, Close } from 'variables/icons';
+import { teal } from '@material-ui/core/colors';
+import { T, ItemG } from 'components';
+import cx from 'classnames'
 class Dashboard extends React.Component {
 	constructor(props) {
 		super(props)
@@ -17,7 +20,8 @@ class Dashboard extends React.Component {
 		this.state = {
 			value: 0,
 			projects: [],
-			devices: 0
+			devices: 0,
+			openAddDash: false
 		}
 		props.setHeader('Senti', false, '', 'dashboard')
 		props.setBC('dashboard', '', '', false)
@@ -44,28 +48,90 @@ class Dashboard extends React.Component {
 	handleChangeIndex = index => {
 		this.setState({ value: index })
 	}
-	
+
 	renderAction = (text, loc, right) => {
 		const { t, /* history */ } = this.props
 		return <Button size={'small'} color={'primary'} component={Link} to={loc} style={right ? { marginLeft: 'auto' } : null}>{t(text)}</Button>
 	}
-
+	handleOpenDT = () => {
+		this.setState({
+			openAddDash: true
+		})
+	}
+	handleCloseDT = () => {
+		this.setState({
+			openAddDash: false
+		})
+	}
+	renderAddDashboard = () => {
+		const { t, classes } = this.props
+		const { openAddDash } = this.state
+		const { handleCloseDT } = this
+		const appBarClasses = cx({
+			[' ' + classes['primary']]: 'primary'
+		});
+		return <Dialog
+			fullScreen
+			open={openAddDash}
+			onClose={handleCloseDT}
+			TransitionComponent={this.transition}>
+			<AppBar className={classes.appBar + ' ' + appBarClasses}>
+				<Toolbar>
+					<Hidden mdDown>
+						<ItemG container alignItems={'center'}>
+							<ItemG xs={2} container alignItems={'center'}>
+								<IconButton color='inherit' onClick={handleCloseDT} aria-label='Close'>
+									<Close />
+								</IconButton>
+								<T variant='h6' color='inherit' className={classes.flex}>
+									{t('dashboard.createDashboard')}
+								</T>
+							</ItemG>
+						</ItemG>
+					</Hidden>
+					<Hidden lgUp>
+						<ItemG container alignItems={'center'}>
+							<ItemG xs={4} container alignItems={'center'}>
+								<IconButton color={'inherit'} onClick={handleCloseDT} aria-label='Close'>
+									<Close />
+								</IconButton>
+								<T variant='h6' color='inherit' className={classes.flex}>
+									{t('dashboard.createDashboard')}
+								</T>
+							</ItemG>
+						</ItemG>
+					</Hidden>
+				</Toolbar>
+			</AppBar>
+			<div>
+				Here will be the create Dashboard
+			</div>
+		</Dialog>
+	}
 	render() {
 		const { discoverSenti, t, history } = this.props
 		return (
 			<Fragment>
-				{discoverSenti ? <DiscoverSenti t={t} history={history}/> : null}
+				{discoverSenti ? <DiscoverSenti t={t} history={history} /> : null}
 				<Fade in={true} style={{
 					transitionDelay: 200,
 				}}>
-					<GridContainer spacing={8}>
+					<div style={{ position: 'relative' }}>
+						{this.renderAddDashboard()}
+						<GridContainer spacing={8}>
 
-						{this.props.dashboards.map((d, i) => {
-							return <DashboardPanel 
-								d={d}
-							/>
-						})}
-					</GridContainer>
+							{this.props.dashboards.map((d, i) => {
+								return <DashboardPanel
+									d={d}
+								/>
+							})}
+						</GridContainer>
+						<IconButton
+							onClick={this.handleOpenDT} 
+							style={{ position: 'absolute', top: 0, right: 0, background: teal[500], color: '#fff', borderRadius: 4, marginRight: 8, padding: '8px' }}>
+							<Add />
+						</IconButton>
+					</div>
 				</Fade>
 			</Fragment>
 		)
@@ -81,7 +147,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withLocalization()(withStyles(dashboardStyle)(Dashboard)))

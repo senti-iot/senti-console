@@ -135,7 +135,34 @@ const initialState = {
 	mapTheme: null, 
 	smallMenu: true,
 	trp: null,
-	dashboards: [/* {
+	dashboards: [{
+		name: 'New',
+		description: 'This is a demo test for new dashboards',
+		periodType: 3,
+		device: {
+			id: 38, name: 'sigfoxTempSensor'
+		},
+		color: 'deepPurple',
+		dsType: 0
+	}, {
+		name: 'New',
+		description: 'This is a demo test for new dashboards',
+		periodType: 3,
+		device: {
+			id: 38, name: 'sigfoxTempSensor'
+		},
+		color: 'deepPurple',
+		dsType: 0
+	}, {
+		name: 'New',
+		description: 'This is a demo test for new dashboards',
+		periodType: 3,
+		device: {
+			id: 38, name: 'sigfoxTempSensor'
+		},
+		color: 'deepPurple',
+		dsType: 0
+	}, {
 		name: 'New',
 		description: 'This is a demo test for new dashboards',
 		periodType: 3,
@@ -162,7 +189,7 @@ const initialState = {
 			id: 38, name: 'sigfoxTempSensor'
 		},
 		dsType: 0
-	} */],
+	}],
 	filters: {
 		favorites: [],
 		projects: [],

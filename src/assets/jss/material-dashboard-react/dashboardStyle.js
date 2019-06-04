@@ -2,14 +2,28 @@
 // // // Dashboard styles
 // #############################
 
-import { successColor } from "assets/jss/material-dashboard-react.js";
+import { successColor, headerColor } from "assets/jss/material-dashboard-react.js";
 
 const dashboardStyle = theme => ({
 	centerGrid: {
-	
 		margin: "0 auto",
-
-
+	},
+	appBar: {
+		position: 'sticky',
+		backgroundColor: headerColor,
+		boxShadow: "none",
+		borderBottom: "0",
+		marginBottom: "0",
+		width: "100%",
+		paddingTop: "10px",
+		zIndex: "1029",
+		color: "#ffffff",
+		border: "0",
+		// borderRadius: "3px",
+		padding: "10px 0",
+		transition: "all 150ms ease 0s",
+		minHeight: "50px",
+		display: "block"
 	},
 	successText: {
 		color: successColor
