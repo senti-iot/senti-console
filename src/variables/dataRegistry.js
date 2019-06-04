@@ -86,7 +86,6 @@ export const updateSensor = async (sensor) => {
 	return response
 }
 export const getSensorDataClean = async (id, from, to, v, nId) => {
-	console.log(id, from, to, v, nId)
 	if (nId === undefined) {
 		console.trace()
 	}

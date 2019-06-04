@@ -15,6 +15,7 @@ import { getSensorLS, unassignSensor } from 'redux/data';
 import SensorDetails from './SensorCards/SensorDetails';
 import SensorProtocol from './SensorCards/SensorProtocol';
 import SensorData from './SensorCards/SensorData';
+import GaugeData from 'views/Charts/GaugeData';
 // import Gauge from 'components/Charts/Gauge';
 // import ChartDataPanel from 'views/Charts/ChartDataPanel';
 // import { getSensorDataClean } from 'variables/dataRegistry';
@@ -211,6 +212,21 @@ class Sensor extends Component {
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
+						<ItemGrid xs={12} noMargin id='gauges'>
+
+							{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
+								if (k.type === 1) {
+									return <GaugeData 
+										v={k.key}
+										nId={k.nId}
+										t={t}
+										period={periods[0]}
+										sensor={sensor}
+									/>
+								}
+								else return null
+							}) : null}
+						</ItemGrid>
 						{/* <SmallCard
 							noAvatar
 							title={'Temperature'}
@@ -219,40 +235,26 @@ class Sensor extends Component {
 									value={this.state.value}
 								/>
 							}
-						/>
-						<SmallCard
-							noAvatar
-							title={'Water Consumption'}
-							content={
-								<Gauge 
-									value={this.state.value}
-								/>
-							}
-						/>
-						<SmallCard
-							noAvatar
-							title={'Average Daily Consumption'}
-							content={
-								<Gauge 
-									value={this.state.value}
-								/>
-							}
-						/> */}
+						/>*/}
 						{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 							console.log(k)
-							return <ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
-								<SensorData
-									periods={periods}
-									sensor={sensor}
-									history={history}
-									match={match}
-									t={t}
-									v={k.key}
-									nId={k.nId}
+							if (k.type === 0)
+								return <ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
+									<SensorData
+										periods={periods}
+										sensor={sensor}
+										history={history}
+										match={match}
+										t={t}
+										v={k.key}
+										nId={k.nId}
 
-								/></ItemGrid>
+									/></ItemGrid>
+							else {
+								return null
+							}
 						}
-						) : null }
+						) : null}
 						<ItemGrid xs={12} noMargin id='details'>
 							<SensorProtocol
 								isFav={this.props.isFav({ id: sensor.id, type: 'sensor' })}
