@@ -104,7 +104,11 @@ import SettingsApplications from '@material-ui/icons/SettingsApplications'
 import InputIcon from '@material-ui/icons/Input'
 import Memory from '@material-ui/icons/Memory'
 import CellWifi from '@material-ui/icons/CellWifi'
+import LocalOffer from '@material-ui/icons/LocalOffer'
+import Airplay from '@material-ui/icons/Airplay'
 export {
+	Airplay,
+	LocalOffer,
 	Code,
 	CellWifi,
 	Memory,

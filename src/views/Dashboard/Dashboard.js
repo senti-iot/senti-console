@@ -1,8 +1,6 @@
 import { Button, withStyles, Fade } from '@material-ui/core';
-import imgs from 'assets/img/Squared';
+// import imgs from 'assets/img/Squared';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
-import { Caption, ItemG } from 'components';
-import MediaCard from 'components/Cards/MediaCard';
 import GridContainer from 'components/Grid/GridContainer';
 import withLocalization from 'components/Localization/T';
 import PropTypes from 'prop-types';
@@ -10,7 +8,7 @@ import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import DiscoverSenti from 'views/Dashboard/DiscoverSenti';
-import pj from '../../../package.json';
+import DashboardPanel from './DashboardPanel.js';
 
 class Dashboard extends React.Component {
 	constructor(props) {
@@ -22,11 +20,11 @@ class Dashboard extends React.Component {
 			devices: 0
 		}
 		props.setHeader('Senti', false, '', 'dashboard')
-		props.setBC(props.t('sidebar.dashboard'), '', '', true)
+		props.setBC('dashboard', '', '', false)
 		props.setTabs({
 			id: 'dashboard',
 			tabs: [],
-			dontShow: true
+			// dontShow: true
 		})
 	}
 
@@ -60,75 +58,13 @@ class Dashboard extends React.Component {
 				<Fade in={true} style={{
 					transitionDelay: 200,
 				}}>
-					<GridContainer spacing={8} justify={'center'}>
-						<ItemG container justify={'center'} xs={12} sm={6} md={4}><MediaCard
-							img={imgs.hosting}
-							header={t('dashboard.cardHeaders.onSiteSetup')}
-							content={t('dashboard.cardContent.onSiteSetup')}
-							//leftAction={this.renderAction('actions.learnMore', '/')}
-							rightAction={this.renderAction('actions.startNow', '/devices', true)}
-						/></ItemG>
-						<ItemG container justify={'center'} xs={12} sm={6} md={4}><MediaCard
-							img={imgs.storage}
-							header={t('dashboard.cardHeaders.projects')}
-							content={t('dashboard.cardContent.projects')}
-							//leftAction={this.renderAction('actions.learnMore', '/')}
-							rightAction={this.renderAction('actions.startNow', '/projects', true)}
-						/></ItemG>
-						<ItemG container justify={'center'} xs={12} sm={6} md={4}><MediaCard
-							img={imgs.devices}
-							header={t('dashboard.cardHeaders.devices')}
-							content={t('dashboard.cardContent.devices')}
-							//leftAction={this.renderAction('actions.learnMore', '/')}
-							rightAction={this.renderAction('actions.startNow', '/devices', true)}
-						/></ItemG>
-						<ItemG container justify={'center'} xs={12} sm={6} md={4}><MediaCard
-							img={imgs.data}
-							header={t('dashboard.cardHeaders.data')}
-							content={t('dashboard.cardContent.data')}
-							//leftAction={this.renderAction('actions.learnMore', '/')}
-							rightAction={this.renderAction('actions.startNow', '/collections/list', true)}
-						/></ItemG>
-						<ItemG container justify={'center'} xs={12} sm={6} md={4}>	<MediaCard
-							img={imgs.users}
-							header={t('dashboard.cardHeaders.users')}
-							content={t('dashboard.cardContent.users')}
-							//leftAction={this.renderAction('actions.learnMore', '/')}
-							rightAction={this.renderAction('actions.startNow', '/management/users', true)}
-						/></ItemG>
-						<ItemG container justify={'center'} xs={12} sm={6} md={4}>	<MediaCard
-							img={imgs.settings}
-							header={t('dashboard.cardHeaders.settings')}
-							content={t('dashboard.cardContent.settings')}
-							//leftAction={this.renderAction('actions.learnMore', '/')}
-							rightAction={this.renderAction('actions.startNow', '/settings', true)}
-						/></ItemG>
-						{/* <ItemG container justify={'center'} sm={6} md={4}>	<MediaCard
-						img={imgs.notifications}
-						header={t('dashboard.cardHeaders.notifications')}
-						content={t('dashboard.cardContent.notifications')}
-						leftAction={this.renderAction('actions.learnMore', '/')}
-						rightAction={this.renderAction('actions.startNow', '/settings', true)}
-					/></ItemG> */}
-						{/* <ItemG container justify={'center'} sm={6} md={4}>	<MediaCard
-						img={imgs.predictions}
-						header={t('dashboard.cardHeaders.alerts')}
-						content={t('dashboard.cardContent.alerts')}
-						leftAction={this.renderAction('actions.learnMore', '/')}
-						rightAction={this.renderAction('actions.startNow', '/settings', true)}
-					/></ItemG> */}
-						{/* <ItemG container justify={'center'} sm={6} md={4}>	<MediaCard
-						img={imgs.sharing}
-						header={t('dashboard.cardHeaders.api')}
-						content={t('dashboard.cardContent.api')}
-						leftAction={this.renderAction('actions.learnMore', '/')}
-						rightAction={this.renderAction('actions.startNow', '/', true)}
-					/></ItemG> */}
-						<ItemG container justify={'center'} xs={12}>
-							<Caption>
-							Senti version {pj.version}
-							</Caption>
-						</ItemG>
+					<GridContainer spacing={8}>
+
+						{this.props.dashboards.map((d, i) => {
+							return <DashboardPanel 
+								d={d}
+							/>
+						})}
 					</GridContainer>
 				</Fade>
 			</Fragment>
@@ -140,7 +76,8 @@ Dashboard.propTypes = {
 	classes: PropTypes.object.isRequired
 }
 const mapStateToProps = (state) => ({
-	discoverSenti: state.settings.discSentiVal
+	// discoverSenti: state.settings.discSentiVal
+	dashboards: state.appState.dashboards
 })
 
 const mapDispatchToProps = {

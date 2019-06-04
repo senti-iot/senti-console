@@ -1,5 +1,8 @@
 const breadcrumbs = (t, name, id) => {
 	return {
+		'dashboard': [
+			{ label: t('sidebar.dashboard'), path: '/dashboard' }
+		],
 		'cloudfunctions': [
 			{ label: t('sidebar.cloudfunctions'), path: '/functions' }
 		],

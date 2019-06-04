@@ -14,8 +14,8 @@ import { getSensorLS, unassignSensor } from 'redux/data';
 // import SensorDetails from './SensorCards/SensorDetails';
 import SensorDetails from './SensorCards/SensorDetails';
 import SensorProtocol from './SensorCards/SensorProtocol';
-import SensorData from './SensorCards/SensorData';
-import GaugeData from 'views/Charts/GaugeData';
+// import SensorData from './SensorCards/SensorData';
+// import GaugeData from 'views/Charts/GaugeData';
 // import Gauge from 'components/Charts/Gauge';
 // import ChartDataPanel from 'views/Charts/ChartDataPanel';
 // import { getSensorDataClean } from 'variables/dataRegistry';
@@ -190,7 +190,7 @@ class Sensor extends Component {
 	}
 
 	render() {
-		const { history, match, t, accessLevel, sensor, loading, periods } = this.props
+		const { history, match, t, accessLevel, sensor, loading } = this.props
 		return (
 			<Fragment>
 				{!loading ? <Fade in={true}>
@@ -212,7 +212,7 @@ class Sensor extends Component {
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
-						<ItemGrid xs={12} noMargin id='gauges'>
+						{/* <ItemGrid xs={12} noMargin id='gauges'>
 
 							{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 								if (k.type === 1) {
@@ -227,7 +227,7 @@ class Sensor extends Component {
 								else return null
 							}) : null}
 						</ItemGrid>
-						{/* <SmallCard
+						<SmallCard
 							noAvatar
 							title={'Temperature'}
 							content={
@@ -235,7 +235,7 @@ class Sensor extends Component {
 									value={this.state.value}
 								/>
 							}
-						/>*/}
+						/>
 						{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 							console.log(k)
 							if (k.type === 0)
@@ -254,7 +254,7 @@ class Sensor extends Component {
 								return null
 							}
 						}
-						) : null}
+						) : null} */}
 						<ItemGrid xs={12} noMargin id='details'>
 							<SensorProtocol
 								isFav={this.props.isFav({ id: sensor.id, type: 'sensor' })}
