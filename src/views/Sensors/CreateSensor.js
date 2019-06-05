@@ -293,6 +293,8 @@ class CreateCollection extends Component {
 				
 				handleChange={this.handleChange}
 				handleCreate={this.handleCreate}
+
+				handleChangeType={this.handleChangeType}
 				
 				handleOpenDT={this.handleOpenDT}
 				handleCloseDT={this.handleCloseDT}
