@@ -1,28 +1,18 @@
 import { withStyles, Fade } from '@material-ui/core';
 import registryStyles from 'assets/jss/views/deviceStyles';
-import { CircularLoader, GridContainer, ItemGrid, /* SmallCard */ } from 'components';
+import { CircularLoader, GridContainer, ItemGrid } from 'components';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-// import { getProject } from 'variables/dataProjects';
 import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
 import { DataUsage } from 'variables/icons';
-// import Toolbar from 'components/Toolbar/Toolbar';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { scrollToAnchor } from 'variables/functions';
 import { getSensorLS, unassignSensor } from 'redux/data';
-// import SensorDetails from './SensorCards/SensorDetails';
 import SensorDetails from './SensorCards/SensorDetails';
 import SensorProtocol from './SensorCards/SensorProtocol';
-// import SensorData from './SensorCards/SensorData';
-// import GaugeData from 'views/Charts/GaugeData';
-// import Gauge from 'components/Charts/Gauge';
-// import ChartDataPanel from 'views/Charts/ChartDataPanel';
-// import { getSensorDataClean } from 'variables/dataRegistry';
-// import { teal, red } from '@material-ui/core/colors';
-// import ChartData from 'views/Charts/ChartData';
-// import { colors } from 'variables/colors';
-// import ChartData from 'views/Charts/ChartData';
+import SensorData from './SensorCards/SensorData';
+import GaugeData from 'views/Charts/GaugeData';
 
 class Sensor extends Component {
 	constructor(props) {
@@ -190,7 +180,7 @@ class Sensor extends Component {
 	}
 
 	render() {
-		const { history, match, t, accessLevel, sensor, loading } = this.props
+		const { history, match, t, accessLevel, sensor, loading, periods } = this.props
 		return (
 			<Fragment>
 				{!loading ? <Fade in={true}>
@@ -212,7 +202,7 @@ class Sensor extends Component {
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
-						{/* <ItemGrid xs={12} noMargin id='gauges'>
+						<ItemGrid xs={12} noMargin id='gauges'>
 
 							{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 								if (k.type === 1) {
@@ -227,15 +217,6 @@ class Sensor extends Component {
 								else return null
 							}) : null}
 						</ItemGrid>
-						<SmallCard
-							noAvatar
-							title={'Temperature'}
-							content={
-								<Gauge 
-									value={this.state.value}
-								/>
-							}
-						/>
 						{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 							console.log(k)
 							if (k.type === 0)
@@ -254,7 +235,7 @@ class Sensor extends Component {
 								return null
 							}
 						}
-						) : null} */}
+						) : null}
 						<ItemGrid xs={12} noMargin id='details'>
 							<SensorProtocol
 								isFav={this.props.isFav({ id: sensor.id, type: 'sensor' })}

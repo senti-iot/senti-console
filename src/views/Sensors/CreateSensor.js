@@ -114,9 +114,9 @@ class CreateCollection extends Component {
 			}
 		})
 	}
-	handleRemoveInboundFunction = k => e => {
+	handleRemoveInboundFunction = index => e => {
 		let mtd = this.state.sensorMetadata.inbound
-		mtd = mtd.filter(v => v.nId !== k.nId && v.id !== k.id)
+		mtd = mtd.filter((v, i) => index !== i)
 		this.setState({
 			sensorMetadata: {
 				...this.state.sensorMetadata,
@@ -133,9 +133,9 @@ class CreateCollection extends Component {
 			}
 		})
 	}
-	handleRemoveFunction = (k) => e => {
+	handleRemoveFunction = (i) => e => {
 		let mtd = this.state.sensorMetadata.outbound
-		mtd[mtd.findIndex(v => v.key === k.key && v.nId === k.nId)].nId = -1
+		mtd[i].nId = -1
 		this.setState({
 			sensorMetadata: {
 				...this.state.sensorMetadata,
@@ -143,8 +143,8 @@ class CreateCollection extends Component {
 			}
 		})
 	}
-	handleRemoveKey = (k) => e => {
-		let newMetadata = this.state.sensorMetadata.outbound.filter((v) => v.key !== k.key)
+	handleRemoveKey = (index) => e => {
+		let newMetadata = this.state.sensorMetadata.outbound.filter((v, i) => i !== index)
 		this.setState({
 			sensorMetadata: {
 				...this.state.sensorMetadata,
@@ -157,6 +157,16 @@ class CreateCollection extends Component {
 			sensorMetadata: {
 				...this.state.sensorMetadata,
 				outbound: [...this.state.sensorMetadata.outbound, { key: '', nId: -1 }]
+			}
+		})
+	}
+	handleChangeKey = (v, i) => e => {
+		let mtd = this.state.sensorMetadata.outbound
+		mtd[i].key = e.target.value
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: mtd
 			}
 		})
 	}
@@ -181,8 +191,9 @@ class CreateCollection extends Component {
 		})
 	}
 	handleChangeFunc = (o, where) => e => {
+		const { select } = this.state
 		let metadata = this.state.sensorMetadata[where]
-		metadata[metadata.findIndex(f => f.id === this.state.select[where].id)].nId = o.id
+		metadata[select[where]].nId = o.id
 		this.setState({
 			openCF: {
 				open: false,
@@ -194,19 +205,17 @@ class CreateCollection extends Component {
 			}
 		})
 	}
-	handleChangeInboundFunc = (o) => e => {
-		console.log(o)
-		let metadata = this.state.sensorMetadata.inbound
-		metadata[this.state.select.inbound.id].nId = o.id
-		console.log(metadata)
-		this.setState({
-			openCF: false,
-			sensorMetadata: {
-				...this.state.sensorMetadata,
-				inbound: metadata
-			}
-		})
-	}
+	// handleChangeInboundFunc = (o) => e => {
+	// 	let metadata = this.state.sensorMetadata.inbound
+	// 	metadata[this.state.select.inbound.id].nId = o.id
+	// 	this.setState({
+	// 		openCF: false,
+	// 		sensorMetadata: {
+	// 			...this.state.sensorMetadata,
+	// 			inbound: metadata
+	// 		}
+	// 	})
+	// }
 	handleOpenReg = () => {
 		this.setState({
 			openReg: true
@@ -237,9 +246,7 @@ class CreateCollection extends Component {
 			metadata: {
 				...this.state.sensorMetadata
 			}
-		}
-		console.log(newSensor)
-	
+		}	
 		return await createSensor(newSensor)
 	}
 	handleCreate = async () => {
@@ -273,6 +280,7 @@ class CreateCollection extends Component {
 				
 				handleAddKey={this.handleAddKey}
 				handleRemoveKey={this.handleRemoveKey}
+				handleChangeKey={this.handleChangeKey}
 				
 				handleChange={this.handleChange}
 				handleCreate={this.handleCreate}

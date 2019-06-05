@@ -210,9 +210,20 @@ class EditSensor extends Component {
 			}
 		})
 	}
-	handleChangeFunc = (o, where) => e => {
+	handleChangeKey = (v, i) => e => {
+		let mtd = this.state.sensorMetadata.outbound
+		mtd[i].key = e.target.value
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: mtd
+			}
+		})
+	}
+	handleChangeFunc = (o, i, where) => e => {
+		console.log(o, i, where)
 		let metadata = this.state.sensorMetadata[where]
-		metadata[metadata.findIndex(f => f.id === this.state.select[where].id)].nId = o.id
+		metadata[i].nId = o.id
 		this.setState({
 			openCF: {
 				open: false,
@@ -220,23 +231,21 @@ class EditSensor extends Component {
 			},
 			sensorMetadata: {
 				...this.state.sensorMetadata,
-				[where]: metadata
+				outbound: metadata
 			}
 		})
 	}
-	handleChangeInboundFunc = (o) => e => {
-		console.log(o)
-		let metadata = this.state.sensorMetadata.inbound
-		metadata[this.state.select.inbound.id].nId = o.id
-		console.log(metadata)
-		this.setState({
-			openCF: false,
-			sensorMetadata: {
-				...this.state.sensorMetadata,
-				inbound: metadata
-			}
-		})
-	}
+	// handleChangeInboundFunc = (o) => e => {
+	// 	let metadata = this.state.sensorMetadata.inbound
+	// 	metadata[this.state.select.inbound.id].nId = o.id
+	// 	this.setState({
+	// 		openCF: false,
+	// 		sensorMetadata: {
+	// 			...this.state.sensorMetadata,
+	// 			inbound: metadata
+	// 		}
+	// 	})
+	// }
 	handleOpenReg = () => {
 		this.setState({
 			openReg: true

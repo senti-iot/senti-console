@@ -347,12 +347,13 @@ class CreateSensorForm extends Component {
 		</Dialog>
 	}
 	renderMetadata = () => {
-		const { sensorMetadata, t, handleOpenFunc, cfunctions, classes, handleRemoveKey, handleRemoveFunction, handleAddKey } = this.props
+		const { sensorMetadata, t, handleChangeKey, handleOpenFunc, cfunctions, classes, handleRemoveKey, handleRemoveFunction, handleAddKey } = this.props
 		return <Fragment>
 			{sensorMetadata.outbound.map((p, i) => {
 				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
 					<TextF
 						label={t('cloudfunctions.fields.key')}
+						handleChange={handleChangeKey(p, i)}
 						value={p.key}
 						readOnly
 						InputProps={{
@@ -363,14 +364,14 @@ class CreateSensorForm extends Component {
 						label={t('sidebar.cloudfunction')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
-						handleClick={handleOpenFunc(p, 'outbound')}
+						handleClick={handleOpenFunc(i, 'outbound')}
 						handleChange={() => { }}
 						InputProps={{
 							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
 								<Tooltip title={t('tooltips.devices.removeCloudFunction')}>
 									<IconButton
 										className={classes.smallAction}
-										onClick={e => { e.stopPropagation(); handleRemoveFunction(p)() }}
+										onClick={e => { e.stopPropagation(); handleRemoveFunction(i)() }}
 									>
 										<Close />
 									</IconButton>
@@ -383,7 +384,7 @@ class CreateSensorForm extends Component {
 						<IconButton
 						// className={classes.smallAction}
 							style={{ marginTop: 6 }}
-							onClick={handleRemoveKey(p)}
+							onClick={handleRemoveKey(i)}
 						>
 							<Close />
 						</IconButton>
@@ -399,12 +400,11 @@ class CreateSensorForm extends Component {
 	renderMetadataInbound = () => { 
 		const { sensorMetadata, cfunctions, t, handleAddInboundFunction, handleOpenFunc, handleRemoveInboundFunction, classes } = this.props
 		return <Fragment>
-			{sensorMetadata.inbound.map(p => {
-				console.log('P', p)
+			{sensorMetadata.inbound.map((p, i) => {
 				return <ItemGrid xs={12} container alignItems={'center'}>
 					<TextF
 						label={t("cloudfunctions.fields.inboundfunc")}
-						handleClick={handleOpenFunc(p, 'inbound')}
+						handleClick={handleOpenFunc(i, 'inbound')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
 						InputProps={{	
@@ -412,7 +412,7 @@ class CreateSensorForm extends Component {
 								<Tooltip title={t('tooltips.devices.removeCloudFunction')}>
 									<IconButton
 										className={classes.smallAction}
-										onClick={e => { e.stopPropagation(); handleRemoveInboundFunction(p)() }}
+										onClick={e => { e.stopPropagation(); handleRemoveInboundFunction(i)() }}
 									>
 										<Close />
 									</IconButton>
@@ -434,7 +434,6 @@ class CreateSensorForm extends Component {
 		const { t, handleOpenReg, handleOpenDT,
 			handleChange, sensor, getLatLngFromMap,
 			classes, handleCreate, goToRegistries, select } = this.props
-		console.log(sensor)
 		return (
 			<GridContainer>
 				<ItemGrid xs={12}>
