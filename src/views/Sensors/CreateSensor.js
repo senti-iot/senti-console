@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 // import CreateCollectionForm from 'components/Collections/CreateCollectionForm';
 import { createSensor } from 'variables/dataRegistry';
@@ -239,10 +238,20 @@ class CreateCollection extends Component {
 			}
 		})
 	}
+	handleChangeType = index => e => {
+		let mtd = this.state.sensorMetadata.outbound
+		mtd[index].type = e.target.value
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: mtd
+			}
+		})
+	}
 	createSensor = async () => { 
 		let newSensor = {
 			...this.state.sensor,
-			available: 1,
+			tags: [],
 			metadata: {
 				...this.state.sensorMetadata
 			}
@@ -253,7 +262,7 @@ class CreateCollection extends Component {
 		const { s, history } = this.props
 		let rs = await this.createSensor()
 		if (rs) {
-			s('snackbars.collectionCreated')
+			s('snackbars.create.device')
 			history.push(`/sensor/${rs}`)
 		}
 		else
@@ -307,10 +316,7 @@ class CreateCollection extends Component {
 	}
 }
 
-CreateCollection.propTypes = {
-	match: PropTypes.object.isRequired,
-	accessLevel: PropTypes.object.isRequired,
-}
+
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	orgId: state.settings.user.org.id,

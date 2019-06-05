@@ -144,9 +144,9 @@ class EditSensor extends Component {
 			}
 		})
 	}
-	handleRemoveInboundFunction = k => e => {
+	handleRemoveInboundFunction = index => e => {
 		let mtd = this.state.sensorMetadata.inbound
-		mtd = mtd.filter(v => v.nId !== k.nId && v.id !== k.id)
+		mtd = mtd.filter((v, i) => index !== i)
 		this.setState({
 			sensorMetadata: {
 				...this.state.sensorMetadata,
@@ -163,9 +163,9 @@ class EditSensor extends Component {
 			}
 		})
 	}
-	handleRemoveFunction = (k) => e => {
+	handleRemoveFunction = (i) => e => {
 		let mtd = this.state.sensorMetadata.outbound
-		mtd[mtd.findIndex(v => v.key === k.key && v.nId === k.nId)].nId = -1
+		mtd[i].nId = -1
 		this.setState({
 			sensorMetadata: {
 				...this.state.sensorMetadata,
@@ -173,8 +173,8 @@ class EditSensor extends Component {
 			}
 		})
 	}
-	handleRemoveKey = (k) => e => {
-		let newMetadata = this.state.sensorMetadata.outbound.filter((v) => v.key !== k.key)
+	handleRemoveKey = (index) => e => {
+		let newMetadata = this.state.sensorMetadata.outbound.filter((v, i) => i !== index)
 		this.setState({
 			sensorMetadata: {
 				...this.state.sensorMetadata,
@@ -187,6 +187,16 @@ class EditSensor extends Component {
 			sensorMetadata: {
 				...this.state.sensorMetadata,
 				outbound: [...this.state.sensorMetadata.outbound, { key: '', nId: -1 }]
+			}
+		})
+	}
+	handleChangeKey = (v, i) => e => {
+		let mtd = this.state.sensorMetadata.outbound
+		mtd[i].key = e.target.value
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: mtd
 			}
 		})
 	}
@@ -210,20 +220,10 @@ class EditSensor extends Component {
 			}
 		})
 	}
-	handleChangeKey = (v, i) => e => {
-		let mtd = this.state.sensorMetadata.outbound
-		mtd[i].key = e.target.value
-		this.setState({
-			sensorMetadata: {
-				...this.state.sensorMetadata,
-				outbound: mtd
-			}
-		})
-	}
-	handleChangeFunc = (o, i, where) => e => {
-		console.log(o, i, where)
+	handleChangeFunc = (o, where) => e => {	
+		const { select } = this.state
 		let metadata = this.state.sensorMetadata[where]
-		metadata[i].nId = o.id
+		metadata[select[where]].nId = o.id
 		this.setState({
 			openCF: {
 				open: false,
@@ -231,21 +231,20 @@ class EditSensor extends Component {
 			},
 			sensorMetadata: {
 				...this.state.sensorMetadata,
-				outbound: metadata
+				[where]: metadata
 			}
 		})
 	}
-	// handleChangeInboundFunc = (o) => e => {
-	// 	let metadata = this.state.sensorMetadata.inbound
-	// 	metadata[this.state.select.inbound.id].nId = o.id
-	// 	this.setState({
-	// 		openCF: false,
-	// 		sensorMetadata: {
-	// 			...this.state.sensorMetadata,
-	// 			inbound: metadata
-	// 		}
-	// 	})
-	// }
+	handleChangeType = index => e => {
+		let mtd = this.state.sensorMetadata.outbound
+		mtd[index].type = e.target.value
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: mtd
+			}
+		})
+	}
 	handleOpenReg = () => {
 		this.setState({
 			openReg: true
@@ -273,7 +272,6 @@ class EditSensor extends Component {
 		let newSensor = {
 			...this.state.sensor,
 			tags: [],
-			// available: 1,
 			metadata: {
 				...this.state.sensorMetadata
 			}
@@ -284,12 +282,13 @@ class EditSensor extends Component {
 		const { s, history } = this.props
 		let rs = await this.updateDevice()
 		if (rs) {
-			s('snackbars.registryCreated')
+			s('snackbars.edit.device')
 			history.push(`/sensor/${rs}`)
 		}
 		else
 			s('snackbars.failed')
 	}
+
 	goToSensors = () => this.props.history.push('/sensors')
 	render() {
 		const { t, cloudfunctions } = this.props
@@ -310,7 +309,10 @@ class EditSensor extends Component {
 			
 				handleAddKey={this.handleAddKey}
 				handleRemoveKey={this.handleRemoveKey}
-			
+				handleChangeKey={this.handleChangeKey}
+
+				handleChangeType={this.handleChangeType}
+
 				handleChange={this.handleChange}
 				handleCreate={this.handleCreate}
 			

@@ -105,6 +105,10 @@
         }
     },
     "cloudfunctions": {
+		"datatypes":{
+			"timeSeries": "Tidsserier",
+			"average": "Gennemsnit af værdier"
+		},
         "fields": {
 			"inboundfunc":"Cloud Funktion",
 			"key": "Enhed datafelt",

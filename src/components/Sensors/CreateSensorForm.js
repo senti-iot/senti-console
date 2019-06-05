@@ -347,7 +347,7 @@ class CreateSensorForm extends Component {
 		</Dialog>
 	}
 	renderMetadata = () => {
-		const { sensorMetadata, t, handleChangeKey, handleOpenFunc, cfunctions, classes, handleRemoveKey, handleRemoveFunction, handleAddKey } = this.props
+		const { sensorMetadata, t, handleChangeKey, handleOpenFunc, handleChangeType, cfunctions, classes, handleRemoveKey, handleRemoveFunction, handleAddKey } = this.props
 		return <Fragment>
 			{sensorMetadata.outbound.map((p, i) => {
 				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
@@ -376,8 +376,17 @@ class CreateSensorForm extends Component {
 										<Close />
 									</IconButton>
 								</Tooltip>
-							</InputAdornment>
+							</InputAdornment>,
+							style: { marginRight: 8 }
 						}}
+					/>
+					<DSelect
+						onChange={handleChangeType(i)}
+						value={p.type}
+						menuItems={[
+							{ value: 0, label: t('cloudfunctions.datatypes.timeSeries') },
+							{ value: 1, label: t('cloudfunctions.datatypes.average') }
+						]}
 					/>
 					<Tooltip title={t('tooltips.devices.removeDataField')}>
 

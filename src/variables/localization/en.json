@@ -105,6 +105,10 @@
         }
     },
     "cloudfunctions": {
+		"datatypes":{
+			"timeSeries": "Time Series",
+			"average": "Average of values"
+		},
         "fields": {
 			"key": "Device data key",
             "code": "Source Code",
