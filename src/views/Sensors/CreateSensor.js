@@ -38,7 +38,8 @@ class CreateCollection extends Component {
 			},
 			sensorMetadata: {
 				inbound: [],
-				outbound: []
+				outbound: [],
+				metadata: []
 			}
 		}
 		this.id = props.match.params.id
@@ -204,17 +205,46 @@ class CreateCollection extends Component {
 			}
 		})
 	}
-	// handleChangeInboundFunc = (o) => e => {
-	// 	let metadata = this.state.sensorMetadata.inbound
-	// 	metadata[this.state.select.inbound.id].nId = o.id
-	// 	this.setState({
-	// 		openCF: false,
-	// 		sensorMetadata: {
-	// 			...this.state.sensorMetadata,
-	// 			inbound: metadata
-	// 		}
-	// 	})
-	// }
+	handleAddMetadataKey = e => {
+		let mtd = this.state.sensorMetadata.metadata
+		mtd.push({ key: "", value: "" })
+		console.log(mtd)
+		this.setState({
+			sensorMetadata: { 
+				...this.state.sensorMetadata,
+				metadata: mtd
+			}
+		})
+	}
+	handleChangeMetadataKey = (i) => e => {
+		let mtd = this.state.sensorMetadata.metadata
+		mtd[i].key = e.target.value
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				metadata: mtd
+			}
+		})
+	}
+	handleChangeMetadata = (i) => e => {
+		let mtd = this.state.sensorMetadata.metadata
+		mtd[i].value = e.target.value
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				metadata: mtd
+			}
+		})
+	}
+	handleRemoveMtdKey = index => e => {
+		let newMetadata = this.state.sensorMetadata.metadata.filter((v, i) => i !== index)
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				metadata: newMetadata
+			}
+		})
+	}
 	handleOpenReg = () => {
 		this.setState({
 			openReg: true
@@ -249,13 +279,20 @@ class CreateCollection extends Component {
 		})
 	}
 	createSensor = async () => { 
+		let smtd = this.state.sensorMetadata.metadata
+		let mtd = {}
+		smtd.forEach((m) => {
+			mtd[m.key] = m.value
+		})
 		let newSensor = {
 			...this.state.sensor,
 			tags: [],
 			metadata: {
-				...this.state.sensorMetadata
+				...this.state.sensorMetadata,
+				metadata: mtd
 			}
-		}	
+		}
+		// console.log(mtd)	
 		return await createSensor(newSensor)
 	}
 	handleCreate = async () => {
@@ -296,6 +333,11 @@ class CreateCollection extends Component {
 
 				handleChangeType={this.handleChangeType}
 				
+				handleChangeMetadataKey={this.handleChangeMetadataKey}
+				handleChangeMetadata={this.handleChangeMetadata}
+				handleRemoveMtdKey={this.handleRemoveMtdKey}
+				handleAddMetadataKey={this.handleAddMetadataKey}
+
 				handleOpenDT={this.handleOpenDT}
 				handleCloseDT={this.handleCloseDT}
 				handleChangeDT={this.handleChangeDT}

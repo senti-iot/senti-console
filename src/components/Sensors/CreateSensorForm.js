@@ -4,7 +4,7 @@ import { Close, CheckCircle, Block } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
 // import { Grid, Paper } from '@material-ui/core'
-import { GridContainer, ItemGrid, TextF, ItemG, DSelect, InfoCard } from 'components'
+import { GridContainer, ItemGrid, TextF, ItemG, DSelect, InfoCard, T } from 'components'
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 import OpenStreetMap from 'components/Map/OpenStreetMap';
@@ -347,8 +347,42 @@ class CreateSensorForm extends Component {
 		</Dialog>
 	}
 	renderMetadata = () => {
-		const { sensorMetadata, t, handleChangeKey, handleOpenFunc, handleChangeType, cfunctions, classes, handleRemoveKey, handleRemoveFunction, handleAddKey } = this.props
+		const { sensorMetadata, handleRemoveMtdKey, handleAddMetadataKey, t, handleChangeMetadata, handleChangeMetadataKey, handleChangeKey, handleOpenFunc, handleChangeType, cfunctions, classes, handleRemoveKey, handleRemoveFunction, handleAddKey } = this.props
 		return <Fragment>
+			<T variant={'subtitle1'}>{t('sensors.fields.metadata')}</T>
+			{sensorMetadata.metadata.map((m, i) => {
+				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
+					<TextF
+						label={t('cloudfunctions.fields.metadata.key')}
+						handleChange={handleChangeMetadataKey(i)}
+						value={m.key}
+						readOnly
+						InputProps={{
+							style: { marginRight: 8 }
+						}}
+					/>
+					<TextF 
+						label={t('cloudfunctions.fields.metadata.value')}
+						handleChange={handleChangeMetadata(i)}
+						value={m.value}
+						readOnly
+						InputProps={{
+							style: { marginRight: 8 }
+						}}
+					/>
+					<Tooltip title={t('tooltips.devices.removeDataField')}>
+						<IconButton
+							style={{ marginTop: 6 }}
+							onClick={handleRemoveMtdKey(i)}						>
+							<Close />
+						</IconButton>
+					</Tooltip>
+				</ItemGrid>
+			})}
+			<ItemGrid xs={12}>
+				<Button variant={'outlined'} onClick={handleAddMetadataKey} color={'primary'}>{t('actions.addMtdKey')}</Button>
+			</ItemGrid>
+			<T variant={'subtitle1'}>{t('sidebar.cloudfunctions')}</T>
 			{sensorMetadata.outbound.map((p, i) => {
 				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
 					<TextF

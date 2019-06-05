@@ -81,6 +81,7 @@ class EditSensor extends Component {
 			this.setState({
 				sensor: { ...sensor },
 				sensorMetadata: {
+					metadata: Object.keys(sensor.metadata).map(m => ({ key: m, value: sensor.metadata[m] })),
 					outbound: sensor.dataKeys ? sensor.dataKeys : [],
 					inbound: sensor.inbound ? sensor.inbound : []
 				},
@@ -200,6 +201,45 @@ class EditSensor extends Component {
 			}
 		})
 	}
+	handleAddMetadataKey = () => e => {
+		let mtd = this.state.sensorMetadata.metadata
+		mtd.push({ key: "", value: "" })
+		this.setState({
+			sensorMetadata: { 
+				...this.state.sensorMetadata,
+				metadata: mtd
+			}
+		})
+	}
+	handleChangeMetadataKey = (i) => e => {
+		let mtd = this.state.sensorMetadata.metadata
+		mtd[i].key = e.target.value
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				metadata: mtd
+			}
+		})
+	}
+	handleChangeMetadata = (i) => e => {
+		let mtd = this.state.sensorMetadata.metadata
+		mtd[i].value = e.target.value
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				metadata: mtd
+			}
+		})
+	}
+	handleRemoveMtdKey = index => e => {
+		let newMetadata = this.state.sensorMetadata.metadata.filter((v, i) => i !== index)
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				metadata: newMetadata
+			}
+		})
+	}
 	handleOpenFunc = (p, where) => e => {
 		this.setState({
 			select: {
@@ -269,13 +309,20 @@ class EditSensor extends Component {
 		})
 	}
 	updateDevice = async () => {
+		let smtd = this.state.sensorMetadata.metadata
+		let mtd = {}
+		smtd.forEach((m) => {
+			mtd[m.key] = m.value
+		})
 		let newSensor = {
 			...this.state.sensor,
 			tags: [],
 			metadata: {
-				...this.state.sensorMetadata
+				...this.state.sensorMetadata,
+				metadata: mtd
 			}
 		}
+		// console.log(newSensor)
 		return await updateSensor(newSensor)
 	}
 	handleCreate = async () => {
@@ -316,6 +363,11 @@ class EditSensor extends Component {
 				handleChange={this.handleChange}
 				handleCreate={this.handleCreate}
 			
+				handleChangeMetadataKey={this.handleChangeMetadataKey}
+				handleChangeMetadata={this.handleChangeMetadata}
+				handleRemoveMtdKey={this.handleRemoveMtdKey}
+				handleAddMetadataKey={this.handleAddMetadataKey}
+
 				handleOpenDT={this.handleOpenDT}
 				handleCloseDT={this.handleCloseDT}
 				handleChangeDT={this.handleChangeDT}

@@ -10,6 +10,7 @@
     "Senti": "Senti",
     "actions": {
 		"addKey": "Tilføj enhed datafelt",
+		"addMtdKey": "Tilføj enhed metadata felt",
 		"addInboundFunc": "Tilføj funktion ved modtagelse af data",
         "accept": "Godkend",
         "addFilter": "Tilføj filter",
@@ -110,6 +111,10 @@
 			"average": "Gennemsnit af værdier"
 		},
         "fields": {
+			"metadata": {
+				"key": "Metadata nøgle",
+				"value": "Metadata værdi"
+			},
 			"inboundfunc":"Cloud Funktion",
 			"key": "Enhed datafelt",
             "code": "Kildekode",
@@ -741,6 +746,7 @@
     },
     "sensors": {
         "fields": {
+			"metadata": "Enhedsmetadata",
             "communication": "Enhedskommunikation",
             "communications": {
                 "allowed": "Tilladt",
