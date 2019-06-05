@@ -13,8 +13,8 @@ class CreateCollection extends Component {
 			loading: true,
 			cloudfunction: {
 				name: "",
-				js: `(data) => {
-	return data;
+				js: `(args) => {
+	return args;
 }`,
 				type: 0,
 				description: ""
