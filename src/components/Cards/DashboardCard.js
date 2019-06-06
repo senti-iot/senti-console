@@ -138,7 +138,7 @@ const styles = {
 
 class DashboardCard extends Component {
 	render() {
-		const { classes, header, content, c } = this.props;
+		const { classes, header, content, c, handleOpenDashboard } = this.props;
 		return (
 			<Card className={classes.card}>
 			
@@ -169,7 +169,7 @@ class DashboardCard extends Component {
 					<IconButton className={classes.smallButton}>
 						<Visibility/>
 					</IconButton>
-					<IconButton className={classes.smallButton}>
+					<IconButton className={classes.smallButton} onClick={handleOpenDashboard}>
 						<Airplay/>
 					</IconButton>
 					<IconButton className={classes.smallButton}>

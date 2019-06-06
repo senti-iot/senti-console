@@ -41,29 +41,32 @@ class Gauge extends Component {
 	defaultOptions = {
 		animDuration: 1,
 		showValue: true,
-		max: 100,
+		max: 10,
 		dialStartAngle: 180,
 		dialEndAngle: 0,
 		dialClass: this.props.classes.dial,
 		valueDialClass: this.props.classes.value,
 		valueClass: this.props.classes.valueText,
+		label: (value) => {
+			return value.toFixed(3);
+		}
 		// Put any other defaults you want. e.g. dialStartAngle, dialEndAngle, radius, etc.
 	};
 	componentDidMount() {
-		this.renderGauge(this.props)
-	}
-	componentWillUpdate() {
-		this.renderGauge(this.props)
-	}
-	renderGauge(props) {
-		const gaugeOptions = Object.assign({}, this.defaultOptions, props);
+		const gaugeOptions = Object.assign({}, this.defaultOptions, this.props);
 		if (!this.gauge) {
 			this.gauge = G(this.gaugeEl, gaugeOptions);
 		}
-		this.gauge.setValueAnimated(props.value, gaugeOptions.animDuration);
+		this.gauge.setValueAnimated(0, gaugeOptions.animDuration);
+		this.gauge.setValueAnimated(this.props.value);
+	}
+	componentWillUpdate() {
+		this.componentDidMount()
+	}
+	renderGauge(props) {
 	}
 	render() {
-		const { period } = this.props
+		const { period, title } = this.props
 		return (
 			<ItemG container justify={'center'} alignItems={'center'}>
 				<ItemG container justify={'center'} alignItems={'center'}>
@@ -71,6 +74,9 @@ class Gauge extends Component {
 				</ItemG>
 				<ItemG container justify={'center'} alignItems={'center'}>
 					<T>{`${moment(period.from).format('LLL')} - ${moment(period.to).format('LLL')}`}</T>
+				</ItemG>
+				<ItemG container justify={'center'} alignItems={'center'}>
+					<T>{title}</T>
 				</ItemG>
 			</ItemG>
 		)

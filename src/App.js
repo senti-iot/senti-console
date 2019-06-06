@@ -7,6 +7,9 @@ import indexRoutes from 'routes/index.js'
 import 'assets/css/material-dashboard-react.css?v=1.2.0'
 import 'assets/css/leaflet.css'
 
+import 'react-grid-layout/css/styles.css'
+import 'react-resizable/css/styles.css'
+
 import TProvider from 'components/Localization/TProvider'
 
 import 'core-js/fn/set';

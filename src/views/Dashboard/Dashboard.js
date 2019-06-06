@@ -123,6 +123,7 @@ class Dashboard extends React.Component {
 							{this.props.dashboards.map((d, i) => {
 								return <DashboardPanel
 									d={d}
+									t={t}
 								/>
 							})}
 						</GridContainer>
