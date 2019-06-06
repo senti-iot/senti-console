@@ -20,7 +20,8 @@ class CreateDeviceType extends Component {
 			},
 			sensorMetadata: {
 				inbound: [],
-				outbound: []
+				outbound: [],
+				metadata: []
 			},
 			openCF: {
 				open: false,
@@ -45,11 +46,6 @@ class CreateDeviceType extends Component {
 		window.removeEventListener('keydown', this.keyHandler, false)
 	}
 
-	handleStrChange = (what) => e => {
-		this.setState({
-			[what]: e.target.value
-		})
-	}
 	handleChange = (what) => e => {
 		this.setState({
 			deviceType: {
@@ -58,14 +54,190 @@ class CreateDeviceType extends Component {
 			}
 		})
 	}
+
+	//#region Inbound Function
+
+	handleRemoveInboundFunction = index => e => {
+		let mtd = this.state.sensorMetadata.inbound
+		mtd = mtd.filter((v, i) => index !== i)
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				inbound: mtd
+			}
+		})
+	}
+	handleAddInboundFunction = e => {
+		let mtd = this.state.sensorMetadata.inbound
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				inbound: [...mtd, { id: mtd.length, order: mtd.length, nId: -1 }]
+			}
+		})
+	}
+
+	//#endregion
+
+	//#region Outbound function
+
+	handleAddKey = e => {
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: [...this.state.sensorMetadata.outbound, { key: '', nId: -1 }]
+			}
+		})
+	}
+
+	handleRemoveKey = (index) => e => {
+		let newMetadata = this.state.sensorMetadata.outbound.filter((v, i) => i !== index)
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: newMetadata
+			}
+		})
+	}
+
+	handleRemoveFunction = (i) => e => {
+		let mtd = this.state.sensorMetadata.outbound
+		mtd[i].nId = -1
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: mtd
+			}
+		})
+	}
+
+	handleChangeKey = (v, i) => e => {
+		let mtd = this.state.sensorMetadata.outbound
+		mtd[i].key = e.target.value
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: mtd
+			}
+		})
+	}
+
+	handleChangeType = index => e => {
+		let mtd = this.state.sensorMetadata.outbound
+		mtd[index].type = e.target.value
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: mtd
+			}
+		})
+	}
+
+	//#endregion
+
+	//#region Metadata
+
+	handleAddMetadataKey = e => {
+		let mtd = this.state.sensorMetadata.metadata
+		mtd.push({ key: "", value: "" })
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				metadata: mtd
+			}
+		})
+	}
+
+	handleRemoveMtdKey = index => e => {
+		let newMetadata = this.state.sensorMetadata.metadata.filter((v, i) => i !== index)
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				metadata: newMetadata
+			}
+		})
+	}
+
+	handleChangeMetadataKey = (i) => e => {
+		let mtd = this.state.sensorMetadata.metadata
+		mtd[i].key = e.target.value
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				metadata: mtd
+			}
+		})
+	}
+
+	handleChangeMetadata = (i) => e => {
+		let mtd = this.state.sensorMetadata.metadata
+		mtd[i].value = e.target.value
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				metadata: mtd
+			}
+		})
+	}
+
+	//#endregion
+
+	//#region Function selector
+
+	handleOpenFunc = (p, where) => e => {
+		this.setState({
+			select: {
+				...this.state.select,
+				[where]: p
+			},
+			openCF: {
+				open: true,
+				where: where
+			}
+		})
+	}
+
+	handleCloseFunc = () => {
+		this.setState({
+			openCF: {
+				open: false,
+				where: null
+			}
+		})
+	}
+	handleChangeFunc = (o, where) => e => {
+		const { select } = this.state
+		let metadata = this.state.sensorMetadata[where]
+		metadata[select[where]].nId = o.id
+		this.setState({
+			openCF: {
+				open: false,
+				where: null
+			},
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				[where]: metadata
+			}
+		})
+	}
+
+	//#endregion
+	//#region Create Device Type
+
 	createDeviceType = async () => { 
+		let smtd = this.state.sensorMetadata.metadata
+		let mtd = {}
+		smtd.forEach((m) => {
+			mtd[m.key] = m.value
+		})
 		let newDeviceType = {
 			...this.state.deviceType,
-			inbound: this.state.sensorMetadata.inbound.map(i => ({ order: i.order, nId: i.nId })),
-			outbound: this.state.sensorMetadata.outbound.map(o => ({ key: o.key, nId: o.nId })),
+			inbound: this.state.sensorMetadata.inbound,
+			outbound: this.state.sensorMetadata.outbound,
+			metadata: mtd,
 			customer_id: this.props.orgId
 		}
-		console.log(newDeviceType)
+
 		return await createDeviceType(newDeviceType)
 	}
 	handleCreate = async () => {
@@ -78,110 +250,11 @@ class CreateDeviceType extends Component {
 		else
 			s('snackbars.failed')
 	}
-	handleRemoveInboundFunction = k => e => {
-		let mtd = this.state.sensorMetadata.inbound
-		mtd = mtd.filter(v => v.nId !== k.nId && v.id !== k.id)
-		this.setState({
-			sensorMetadata: {
-				...this.state.sensorMetadata,
-				inbound: mtd
-			}
-		})
-	}
-	handleAddInboundFunction = e => { 
-		let mtd = this.state.sensorMetadata.inbound
-		this.setState({
-			sensorMetadata: {
-				...this.state.sensorMetadata,
-				inbound: [...mtd, { id: mtd.length, order: mtd.length, nId: -1 }]
-			}
-		})
-	}
-	handleRemoveFunction = (k) => e => {
-		let mtd = this.state.sensorMetadata.outbound
-		mtd[mtd.findIndex(v => v.key === k.key && v.nId === k.nId)].nId = -1
-		this.setState({
-			sensorMetadata: {
-				...this.state.sensorMetadata,
-				outbound: mtd
-			}
-		})
-	}
-	handleChangeKey = (k) => e => {
-		console.log(k, e.target.value)
-		let mtd = this.state.sensorMetadata.outbound
-		mtd[k.id].key = e.target.value
-		this.setState({
-			sensorMetadata: {
-				...this.state.sensorMetadata,
-				outbound: mtd
-			}
-		})
-	}
-	handleRemoveKey = (k) => e => {
-		let newMetadata = this.state.sensorMetadata.outbound.filter((v) => v.key !== k.key)
-		this.setState({
-			sensorMetadata: {
-				...this.state.sensorMetadata,
-				outbound: newMetadata
-			}
-		})
-	}
-	handleAddKey = e => { 
-		this.setState({
-			sensorMetadata: {
-				...this.state.sensorMetadata,
-				outbound: [...this.state.sensorMetadata.outbound, { id: this.state.sensorMetadata.outbound.length, key: '', nId: -1 }]
-			}
-		})
-	}
-	handleOpenFunc = (p, where) => e => {
-		console.log(p, where)
-		this.setState({
-			select: {
-				...this.state.select,
-				[where]: p
-			},
-			openCF: {
-				open: true,
-				where: where
-			}
-		})
-	}
-	handleCloseFunc = () => {
-		this.setState({
-			openCF: {
-				open: false,
-				where: null
-			}
-		})
-	}
-	handleChangeFunc = (o, where) => e => {
-		let metadata = this.state.sensorMetadata[where]
-		metadata[metadata.findIndex(f => f.id === this.state.select[where].id)].nId = o.id
-		this.setState({
-			openCF: {
-				open: false,
-				where: null
-			},
-			sensorMetadata: {
-				...this.state.sensorMetadata,
-				[where]: metadata
-			}
-		})
-	}
-	handleChangeInboundFunc = (o) => e => {
-		let metadata = this.state.sensorMetadata.inbound
-		metadata[this.state.select.inbound.id].nId = o.id
-		this.setState({
-			openCF: false,
-			sensorMetadata: {
-				...this.state.sensorMetadata,
-				inbound: metadata
-			}
-		})
-	}
+
 	goToDeviceTypes = () => this.props.history.push('/devicetypes')
+
+	//#endregion
+
 	render() {
 		const { t, cloudfunctions } = this.props
 		const { deviceType, keyName, value, sensorMetadata  } = this.state
@@ -202,8 +275,14 @@ class CreateDeviceType extends Component {
 				handleRemoveKey={this.handleRemoveKey}
 				handleChangeKey={this.handleChangeKey}
 
+				handleChangeType={this.handleChangeType}
+
+				handleChangeMetadataKey={this.handleChangeMetadataKey}
+				handleChangeMetadata={this.handleChangeMetadata}
+				handleRemoveMtdKey={this.handleRemoveMtdKey}
+				handleAddMetadataKey={this.handleAddMetadataKey}
+
 				handleChange={this.handleChange}
-				handleStrChange={this.handleStrChange}
 				handleCreate={this.handleCreate}
 				handleAddKeyToStructure={this.handleAddKeyToStructure}
 				keyName={keyName}

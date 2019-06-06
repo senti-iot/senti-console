@@ -30,7 +30,7 @@ export class SensorData extends Component {
 			long: device.long,
 			org: device.org ? device.org.name : "",
 			color: teal[500]
-		}], p.from, p.to, hoverID, p.raw, v, nId, true)
+		}], p.from, p.to, hoverID, p.raw, v, nId, false)
 		return newState
 	}
 	render() {

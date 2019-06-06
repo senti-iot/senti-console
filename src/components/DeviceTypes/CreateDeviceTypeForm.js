@@ -3,7 +3,7 @@ import { Dialog, AppBar, Toolbar, Typography, Button, List, ListItem, ListItemTe
 import { Close } from 'variables/icons';
 import cx from 'classnames'
 import createprojectStyles from 'assets/jss/components/projects/createprojectStyles';
-import { GridContainer, ItemGrid, TextF, ItemG, InfoCard } from 'components'
+import { GridContainer, ItemGrid, TextF, ItemG, InfoCard, DSelect, T } from 'components'
 import Search from 'components/Search/Search';
 import { suggestionGen, filterItems } from 'variables/functions';
 /**
@@ -32,18 +32,50 @@ class CreateDeviceTypeForm extends Component {
 	}
 
 	renderMetadata = () => {
-		const { sensorMetadata, t, handleOpenFunc, handleChangeKey, cfunctions, classes, handleRemoveKey, handleRemoveFunction, handleAddKey } = this.props
+		const { sensorMetadata, handleRemoveMtdKey, handleAddMetadataKey, t, handleChangeMetadata, handleChangeMetadataKey, handleChangeKey, handleOpenFunc, handleChangeType, cfunctions, classes, handleRemoveKey, handleRemoveFunction, handleAddKey } = this.props
 		return <Fragment>
-			{sensorMetadata.outbound.map(p => {
-				return <ItemGrid xs={12} container alignItems={'center'}>
+			<T variant={'subtitle1'}>{t('sensors.fields.metadata')}</T>
+			{sensorMetadata.metadata.map((m, i) => {
+				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
+					<TextF
+						label={t('cloudfunctions.fields.metadata.key')}
+						handleChange={handleChangeMetadataKey(i)}
+						value={m.key}
+						readOnly
+						InputProps={{
+							style: { marginRight: 8 }
+						}}
+					/>
+					<TextF 
+						label={t('cloudfunctions.fields.metadata.value')}
+						handleChange={handleChangeMetadata(i)}
+						value={m.value}
+						readOnly
+						InputProps={{
+							style: { marginRight: 8 }
+						}}
+					/>
+					<Tooltip title={t('tooltips.devices.removeDataField')}>
+						<IconButton
+							style={{ marginTop: 6 }}
+							onClick={handleRemoveMtdKey(i)}						>
+							<Close />
+						</IconButton>
+					</Tooltip>
+				</ItemGrid>
+			})}
+			<ItemGrid xs={12}>
+				<Button variant={'outlined'} onClick={handleAddMetadataKey} color={'primary'}>{t('actions.addMtdKey')}</Button>
+			</ItemGrid>
+			<T variant={'subtitle1'}>{t('sidebar.cloudfunctions')}</T>
+			{sensorMetadata.outbound.map((p, i) => {
+				return <ItemGrid xs={12} container key={i} alignItems={'center'}>
 					<TextF
 						label={t('cloudfunctions.fields.key')}
+						handleChange={handleChangeKey(p, i)}
 						value={p.key}
-						handleChange={handleChangeKey(p)}
+						readOnly
 						InputProps={{
-							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
-								
-							</InputAdornment>,
 							style: { marginRight: 8 }
 						}}
 					/>
@@ -51,27 +83,36 @@ class CreateDeviceTypeForm extends Component {
 						label={t('sidebar.cloudfunction')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
-						handleClick={handleOpenFunc(p, 'outbound')}
+						handleClick={handleOpenFunc(i, 'outbound')}
 						handleChange={() => { }}
 						InputProps={{
 							endAdornment: <InputAdornment classes={{ root: classes.IconEndAd }}>
 								<Tooltip title={t('tooltips.devices.removeCloudFunction')}>
 									<IconButton
 										className={classes.smallAction}
-										onClick={e => { e.stopPropagation(); handleRemoveFunction(p)() }}
+										onClick={e => { e.stopPropagation(); handleRemoveFunction(i)() }}
 									>
 										<Close />
 									</IconButton>
 								</Tooltip>
-							</InputAdornment>
+							</InputAdornment>,
+							style: { marginRight: 8 }
 						}}
+					/>
+					<DSelect
+						onChange={handleChangeType(i)}
+						value={p.type}
+						menuItems={[
+							{ value: 0, label: t('cloudfunctions.datatypes.timeSeries') },
+							{ value: 1, label: t('cloudfunctions.datatypes.average') }
+						]}
 					/>
 					<Tooltip title={t('tooltips.devices.removeDataField')}>
 
 						<IconButton
 						// className={classes.smallAction}
 							style={{ marginTop: 6 }}
-							onClick={handleRemoveKey(p)}
+							onClick={handleRemoveKey(i)}
 						>
 							<Close />
 						</IconButton>
@@ -87,12 +128,11 @@ class CreateDeviceTypeForm extends Component {
 	renderMetadataInbound = () => { 
 		const { sensorMetadata, cfunctions, t, handleAddInboundFunction, handleOpenFunc, handleRemoveInboundFunction, classes } = this.props
 		return <Fragment>
-			{sensorMetadata.inbound.map(p => {
-				console.log('P', p)
+			{sensorMetadata.inbound.map((p, i) => {
 				return <ItemGrid xs={12} container alignItems={'center'}>
 					<TextF
 						label={t("cloudfunctions.fields.inboundfunc")}
-						handleClick={handleOpenFunc(p, 'inbound')}
+						handleClick={handleOpenFunc(i, 'inbound')}
 						value={cfunctions.findIndex(f => f.id === p.nId) > 0 ? cfunctions[cfunctions.findIndex(f => f.id === p.nId)].name : t('no.cloudfunction')}
 						readOnly
 						InputProps={{	
@@ -100,7 +140,7 @@ class CreateDeviceTypeForm extends Component {
 								<Tooltip title={t('tooltips.devices.removeCloudFunction')}>
 									<IconButton
 										className={classes.smallAction}
-										onClick={e => { e.stopPropagation(); handleRemoveInboundFunction(p)() }}
+										onClick={e => { e.stopPropagation(); handleRemoveInboundFunction(i)() }}
 									>
 										<Close />
 									</IconButton>
@@ -113,7 +153,6 @@ class CreateDeviceTypeForm extends Component {
 			<ItemGrid xs={12}>
 				<Button variant={'outlined'} onClick={handleAddInboundFunction} color={'primary'}>{t('actions.addInboundFunc')}</Button>
 			</ItemGrid>
-			
 		</Fragment> 
 	}
 
@@ -257,6 +296,7 @@ class CreateDeviceTypeForm extends Component {
 			</List>
 		</Dialog>
 	}
+	
 	render() {
 		const { t, handleChange, deviceType, classes, handleCreate, goToDeviceTypes } = this.props
 		return (
