@@ -91,7 +91,6 @@ class Sensor extends Component {
 		this.props.unassignSensor()
 	}
 	componentDidMount = async () => {
-		this.randomValue()
 		if (this.props.match) {
 			let id = this.props.match.params.id
 			if (id) {

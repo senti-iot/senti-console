@@ -52,7 +52,7 @@ export const createDeviceType = async (dt) => {
 	return response
 }
 export const updateDeviceType = async (dt) => {
-	let response = await servicesAPI.post(`/v1/deviceType/${dt.id}`, dt).then(rs => rs.ok ? rs.data : false)
+	let response = await servicesAPI.post(`/v1/devicetype`, dt).then(rs => rs.ok ? rs.data : false)
 	return response
 }
 
