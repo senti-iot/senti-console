@@ -88,7 +88,6 @@ class Sensor extends Component {
 		}
 	}
 	componentWillUnmount = () => {
-		clearInterval(this.int)
 		this.props.unassignSensor()
 	}
 	componentDidMount = async () => {
@@ -170,13 +169,6 @@ class Sensor extends Component {
 
 	renderLoader = () => {
 		return <CircularLoader />
-	}
-	randomValue = () => {
-		// this.int = setInterval(() => {
-		// 	this.setState({
-		// 		value: Math.random() * 100
-		// 	})
-		// }, 1000);
 	}
 
 	render() {

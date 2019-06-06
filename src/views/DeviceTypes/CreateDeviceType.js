@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { createDeviceType } from 'variables/dataRegistry';
 import CreateDeviceTypeForm from 'components/DeviceTypes/CreateDeviceTypeForm';
@@ -222,6 +221,7 @@ class CreateDeviceType extends Component {
 	}
 
 	//#endregion
+	
 	//#region Create Device Type
 
 	createDeviceType = async () => { 
@@ -294,10 +294,6 @@ class CreateDeviceType extends Component {
 	}
 }
 
-CreateDeviceType.propTypes = {
-	match: PropTypes.object.isRequired,
-	accessLevel: PropTypes.object.isRequired,
-}
 const mapStateToProps = (state) => ({
 	accessLevel: state.settings.user.privileges,
 	orgId: state.settings.user.org.id,

@@ -13,12 +13,11 @@ class CreateDeviceType extends Component {
 
 		this.state = {
 			loading: true,
-			deviceType: {
-				name: "",
-				structure: {
-				},
-				customer_id: 1
+			openCF: {
+				open: false,
+				where: null
 			},
+			deviceType: null,
 			keyName: '',
 			value: '',
 		}
@@ -39,11 +38,14 @@ class CreateDeviceType extends Component {
 	}
 	componentDidUpdate = (prevProps, prevState) => {
 		const { location, setHeader, devicetype } = this.props
-		console.log(devicetype, ((!prevProps.devicetype && devicetype !== prevProps.devicetype && devicetype) || (this.state.devicetype === null && devicetype)))
-		if ((!prevProps.devicetype && devicetype !== prevProps.devicetype && devicetype) || (this.state.devicetype === null && devicetype)) {
-
+		if (!this.state.deviceType && devicetype !== prevProps.devicetype && devicetype) {
 			this.setState({
 				devicetype: devicetype,
+				sensorMetadata: {
+					metadata: devicetype.metadata ? devicetype.metadata : [],
+					outbound: devicetype.outbound ? devicetype.outbound : [],
+					inbound: devicetype.inbound ? devicetype.inbound : []
+				},
 				loading: false
 			})
 			let prevURL = location.prevURL ? location.prevURL : `/devicetype/${this.id}`
@@ -52,6 +54,7 @@ class CreateDeviceType extends Component {
 		}
 	}
 	componentDidMount = async () => {
+		console.log('CDM')
 		this.getData()
 		window.addEventListener('keydown', this.keyHandler, false)
 
@@ -81,41 +84,209 @@ class CreateDeviceType extends Component {
 		else
 			s('snackbars.failed')
 	}
-	handleAddKeyToStructure = e => {
-		console.log(this.state.keyName)
+	//#region Inbound Function
+
+	handleRemoveInboundFunction = index => e => {
+		let mtd = this.state.sensorMetadata.inbound
+		mtd = mtd.filter((v, i) => index !== i)
 		this.setState({
-			devicetype: {
-				...this.state.devicetype,
-				structure: {
-					...this.state.devicetype.structure,
-					[this.state.keyName]: this.state.value
-				}
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				inbound: mtd
+			}
+		})
+	}
+	handleAddInboundFunction = e => {
+		let mtd = this.state.sensorMetadata.inbound
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				inbound: [...mtd, { id: mtd.length, order: mtd.length, nId: -1 }]
+			}
+		})
+	}
+
+	//#endregion
+
+	//#region Outbound function
+
+	handleAddKey = e => {
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: [...this.state.sensorMetadata.outbound, { key: '', nId: -1 }]
+			}
+		})
+	}
+
+	handleRemoveKey = (index) => e => {
+		let newMetadata = this.state.sensorMetadata.outbound.filter((v, i) => i !== index)
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: newMetadata
+			}
+		})
+	}
+
+	handleRemoveFunction = (i) => e => {
+		let mtd = this.state.sensorMetadata.outbound
+		mtd[i].nId = -1
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: mtd
+			}
+		})
+	}
+
+	handleChangeKey = (v, i) => e => {
+		let mtd = this.state.sensorMetadata.outbound
+		mtd[i].key = e.target.value
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: mtd
+			}
+		})
+	}
+
+	handleChangeType = index => e => {
+		let mtd = this.state.sensorMetadata.outbound
+		mtd[index].type = e.target.value
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				outbound: mtd
+			}
+		})
+	}
+
+	//#endregion
+
+	//#region Metadata
+
+	handleAddMetadataKey = e => {
+		let mtd = this.state.sensorMetadata.metadata
+		mtd.push({ key: "", value: "" })
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				metadata: mtd
+			}
+		})
+	}
+
+	handleRemoveMtdKey = index => e => {
+		let newMetadata = this.state.sensorMetadata.metadata.filter((v, i) => i !== index)
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				metadata: newMetadata
+			}
+		})
+	}
+
+	handleChangeMetadataKey = (i) => e => {
+		let mtd = this.state.sensorMetadata.metadata
+		mtd[i].key = e.target.value
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				metadata: mtd
+			}
+		})
+	}
+
+	handleChangeMetadata = (i) => e => {
+		let mtd = this.state.sensorMetadata.metadata
+		mtd[i].value = e.target.value
+		this.setState({
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				metadata: mtd
+			}
+		})
+	}
+
+	//#endregion
+
+	//#region Function selector	
+
+	handleOpenFunc = (p, where) => e => {
+		this.setState({
+			select: {
+				...this.state.select,
+				[where]: p
 			},
-			keyName: '',
-			value: 'string'
+			openCF: {
+				open: true,
+				where: where
+			}
 		})
 	}
-	handleStrChange = (what) => e => {
-		console.log(what, e.target.value)
+
+	handleCloseFunc = () => {
 		this.setState({
-			[what]: e.target.value
+			openCF: {
+				open: false,
+				where: null
+			}
 		})
 	}
+	handleChangeFunc = (o, where) => e => {
+		const { select } = this.state
+		let metadata = this.state.sensorMetadata[where]
+		metadata[select[where]].nId = o.id
+		this.setState({
+			openCF: {
+				open: false,
+				where: null
+			},
+			sensorMetadata: {
+				...this.state.sensorMetadata,
+				[where]: metadata
+			}
+		})
+	}
+
+	//#endregion
+
 	goToDeviceTypes = () => this.props.history.push('/devicetypes')
+
 	render() {
-		const { t } = this.props
-		const { loading, devicetype, keyName, value  } = this.state
-		console.log(loading, devicetype)
+		const { t, cloudfunctions } = this.props
+		const { devicetype, sensorMetadata, loading  } = this.state
+
 		return ( loading ? <CircularLoader/> :
 
 			<CreateDeviceTypeForm
 				deviceType={devicetype}
+				sensorMetadata={sensorMetadata}
+				cfunctions={cloudfunctions}
+				handleOpenFunc={this.handleOpenFunc}
+				handleCloseFunc={this.handleCloseFunc}
+				handleChangeFunc={this.handleChangeFunc}
+				handleRemoveFunction={this.handleRemoveFunction}
+				handleRemoveInboundFunction={this.handleRemoveInboundFunction}
+				handleAddInboundFunction={this.handleAddInboundFunction}
+				openCF={this.state.openCF}
+				
+				handleAddKey={this.handleAddKey}
+				handleRemoveKey={this.handleRemoveKey}
+				handleChangeKey={this.handleChangeKey}
+
+				handleChangeType={this.handleChangeType}
+
+				handleChangeMetadataKey={this.handleChangeMetadataKey}
+				handleChangeMetadata={this.handleChangeMetadata}
+				handleRemoveMtdKey={this.handleRemoveMtdKey}
+				handleAddMetadataKey={this.handleAddMetadataKey}
+
 				handleChange={this.handleChange}
-				handleStrChange={this.handleStrChange}
 				handleCreate={this.handleCreate}
 				handleAddKeyToStructure={this.handleAddKeyToStructure}
-				keyName={keyName}
-				value={value}
+
 				goToDeviceTypes={this.goToDeviceTypes}
 				t={t}
 			/>
@@ -124,8 +295,9 @@ class CreateDeviceType extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	// accessLevel: state.settings.user.privileges,
-	// orgId: state.settings.user.org.id
+	accessLevel: state.settings.user.privileges,
+	orgId: state.settings.user.org.id,
+	cloudfunctions: state.data.functions,
 	devicetype: state.data.deviceType
 })
 
