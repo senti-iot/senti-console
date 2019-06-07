@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import DashboardCard from 'components/Cards/DashboardCard';
 import imgs from 'assets/img/Squared';
 import { connect } from 'react-redux'
-import { Dialog, AppBar, Toolbar, Hidden, IconButton, withStyles, Grid, ButtonBase } from '@material-ui/core';
+import { Dialog, AppBar, Toolbar, Hidden, IconButton, withStyles, Grid, ButtonBase, Slide } from '@material-ui/core';
 import { ItemG, T, GridContainer, /* DateFilterMenu, */  } from 'components';
 import { Close } from 'variables/icons';
 import cx from 'classnames'
@@ -31,6 +31,9 @@ class DashboardPanel extends Component {
 			openDashboard: false
 		})
 	}
+	transition(props) {
+		return <Slide direction='up' {...props} />;
+	}
 	renderDashboard = () => {
 		const { t, classes, data, d } = this.props
 		const { openDashboard } = this.state
@@ -48,7 +51,7 @@ class DashboardPanel extends Component {
 			data: data.meter.data,
 			color: teal[500]
 		}
-		console.log(logo)
+
 		return <Dialog
 			fullScreen
 			open={openDashboard}
