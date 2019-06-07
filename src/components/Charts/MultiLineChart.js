@@ -429,6 +429,7 @@ class LineChart extends PureComponent {
 	}
 	onMouseLeave = () => {
 		const { single } = this.props
+		console.log(single)
 		return !single ? () => this.props.setHoverID(0) : undefined
 	}
 	getTooltipRef = (r) => {

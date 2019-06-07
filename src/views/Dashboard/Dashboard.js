@@ -119,7 +119,6 @@ class Dashboard extends React.Component {
 					<div style={{ position: 'relative' }}>
 						{this.renderAddDashboard()}
 						<GridContainer spacing={8}>
-
 							{this.props.dashboards.map((d, i) => {
 								return <DashboardPanel
 									d={d}

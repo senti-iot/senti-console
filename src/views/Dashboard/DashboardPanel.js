@@ -2,21 +2,22 @@ import React, { Component, Fragment } from 'react'
 import DashboardCard from 'components/Cards/DashboardCard';
 import imgs from 'assets/img/Squared';
 import { connect } from 'react-redux'
-import { Dialog, AppBar, Toolbar, Hidden, IconButton, Paper, withStyles, Grid } from '@material-ui/core';
-import { ItemG, T, GridContainer, DateFilterMenu, MultiLineChart } from 'components';
+import { Dialog, AppBar, Toolbar, Hidden, IconButton, withStyles, Grid } from '@material-ui/core';
+import { ItemG, T, GridContainer, /* DateFilterMenu, */  } from 'components';
 import { Close } from 'variables/icons';
 import cx from 'classnames'
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
-import Gauge from 'components/Charts/Gauge';
 import { setDailyData } from 'components/Charts/DataModel';
 import { teal } from '@material-ui/core/colors';
+import GaugeFakeData from 'views/Charts/GaugeFakeData';
+import DoubleChartFakeData from 'views/Charts/DoubleChartFakeData';
 
 class DashboardPanel extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			openDashboard: true
+			openDashboard: false
 		}
 	}
 	handleOpenDashboard = () => {
@@ -46,7 +47,6 @@ class DashboardPanel extends Component {
 			data: data.meter.data,
 			color: teal[500]
 		}
-		console.log(setDailyData([dataSet], data.weekly.period.from, data.weekly.period.to).lineDataSets)
 		return <Dialog
 			fullScreen
 			open={openDashboard}
@@ -80,56 +80,69 @@ class DashboardPanel extends Component {
 					</Hidden>
 				</Toolbar>
 			</AppBar>
-			<GridContainer style={{ height: '100%', background: '#eee' }} justify={'center'} alignItems={'center'}>
-				<Paper style={{ width: '70vw', height: '70vh', display: 'flex' }}>
-					<Grid container spacing={8} justify={'center'} alignItems={'center'}>
-						<ItemG>
+			<GridContainer style={{ height: '100%', background: '#eee', padding: 32 }} justify={'center'} alignItems={'center'}>
+				{/* <Paper style={{ width: '70vw', height: '70vh', display: 'flex' }}> */}
+				<Grid container spacing={16} justify={'center'} alignItems={'center'}>
+					<ItemG xs={6} container justify={'center'}>
+						{/* <div style={{ width: '30vw', height: '33vh', position: 'relative' }}> */}
+						<GaugeFakeData
+							title={'My usage'}
+							period={{ ...data.myUsage.period, menuId: 3, chartType: 3 }}
+							value={data.myUsage.data}
+							t={t}
+							sensor={{
+								id: 30,
+							}}
+							single
+						/>
+					</ItemG>
+					<ItemG xs={6} container justify={'center'}>
+						<GaugeFakeData
+							title={'Other Usage'}
+							period={{ ...data.myUsage.period, menuId: 3, chartType: 3 }}
+							value={data.otherUsage.data}
+							t={t}
+							sensor={{
+								id: 30,
+							}}
+							single={true}
+						/>
+					</ItemG>
+					<ItemG xs={6}>
+						<DoubleChartFakeData
+							title={'Weekly Usage'}
+							single={true}
+							period={{ ...data.myUsage.period, menuId: 3, chartType: 3, timeType: 2 }}
+							value={data.myUsage.data}
+							t={t}
+							newState={setDailyData([dataSet], data.weekly.period.from, data.weekly.period.to)}
+							sensor={{
+								id: 30,
+							}}
+						/>
 
-							<div style={{ width: '30vw', height: '33vh', position: 'relative' }}>
-								<Gauge
-									period={data.myUsage.period}
-									value={data.myUsage.data}
-									title={'My Usage'}
-								/>
-								<div style={{ position: "absolute", top: 0, right: 0 }}>
-									<DateFilterMenu t={t} />
-								</div>
-							</div>
-						</ItemG>
-						<ItemG>
-							<div style={{ width: '30vw', height: '33vh', position: 'relative' }}>
-								<Gauge
-									period={data.otherUsage.period}
-									value={data.otherUsage.data}
-									title={'Other people\'s usage'}
-								/>
-								<div style={{ position: "absolute", top: 0, right: 0 }}>
-									<DateFilterMenu t={t} />
-								</div>
-							</div>
-						</ItemG>
-						<ItemG>
-							<div style={{ width: '34vw', height: '33vh' }}>
-								<MultiLineChart
-									data={setDailyData([dataSet], data.weekly.period.from, data.weekly.period.to).lineDataSets}
-									unit={{ id: 2, format: 'lll dddd', chart: 'day', tooltipFormat: 'lll' }}
-									t={t}
-									single={true}
-								/>
-							</div>
-						</ItemG>
-						<ItemG>
-							<div style={{ width: '34vw', height: '33vh' }}>
-								<MultiLineChart
-									data={setDailyData([dataSetACC], data.weekly.period.from, data.weekly.period.to).lineDataSets}
-									unit={{ id: 2, format: 'lll dddd', chart: 'day', tooltipFormat: 'lll' }}
-									t={t}
-									single={true}
-								/>
-							</div>
-						</ItemG>
-					</Grid>
-				</Paper>
+					</ItemG>
+					<ItemG xs={6}>
+						<DoubleChartFakeData
+							title={'Meter Reading'}
+							single={true}
+							period={{ ...data.myUsage.period, menuId: 3, chartType: 3, timeType: 2 }}
+							value={data.myUsage.data}
+							t={t}
+							newState={setDailyData([dataSetACC], data.weekly.period.from, data.weekly.period.to)}
+							sensor={{
+								id: 30,
+							}}
+						/>
+						{/* <MultiLineChart
+							data={setDailyData([dataSetACC], data.weekly.period.from, data.weekly.period.to).lineDataSets}
+							unit={{ id: 2, format: 'lll dddd', chart: 'day', tooltipFormat: 'lll' }}
+							t={t}
+							single={true}
+						/> */}
+					</ItemG>
+				</Grid>
+				{/* </Paper> */}
 			</GridContainer>
 		</Dialog>
 	}

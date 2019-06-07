@@ -145,7 +145,7 @@ const fake_dashboardData = [{
 			from: "2019-06-06 00:00:00",
 			to: "2019-06-11 00:00:00"
 		},
-		data: avg(avgPerHour(fakeData))
+		data: avg(fakeData)
 	},
 	otherUsage: {
 		period: {
