@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import DashboardCard from 'components/Cards/DashboardCard';
 import imgs from 'assets/img/Squared';
 import { connect } from 'react-redux'
-import { Dialog, AppBar, Toolbar, Hidden, IconButton, withStyles, Grid } from '@material-ui/core';
+import { Dialog, AppBar, Toolbar, Hidden, IconButton, withStyles, Grid, ButtonBase } from '@material-ui/core';
 import { ItemG, T, GridContainer, /* DateFilterMenu, */  } from 'components';
 import { Close } from 'variables/icons';
 import cx from 'classnames'
@@ -11,13 +11,14 @@ import { setDailyData } from 'components/Charts/DataModel';
 import { teal } from '@material-ui/core/colors';
 import GaugeFakeData from 'views/Charts/GaugeFakeData';
 import DoubleChartFakeData from 'views/Charts/DoubleChartFakeData';
+import logo from '../../logo.svg'
 
 class DashboardPanel extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			openDashboard: false
+			openDashboard: true
 		}
 	}
 	handleOpenDashboard = () => {
@@ -31,7 +32,7 @@ class DashboardPanel extends Component {
 		})
 	}
 	renderDashboard = () => {
-		const { t, classes, data } = this.props
+		const { t, classes, data, d } = this.props
 		const { openDashboard } = this.state
 		const { handleCloseDashboard } = this
 		const appBarClasses = cx({
@@ -47,6 +48,7 @@ class DashboardPanel extends Component {
 			data: data.meter.data,
 			color: teal[500]
 		}
+		console.log(logo)
 		return <Dialog
 			fullScreen
 			open={openDashboard}
@@ -56,25 +58,46 @@ class DashboardPanel extends Component {
 				<Toolbar>
 					<Hidden mdDown>
 						<ItemG container alignItems={'center'}>
-							<ItemG xs={2} container alignItems={'center'}>
+							<ItemG xs={1}>
+								<div className={classes.logo}>
+									<ButtonBase
+										focusRipple
+										className={classes.image}
+										focusVisibleClassName={classes.focusVisible}
+										style={{
+											width: '120px'
+										}}
+									>
+										<span
+											className={classes.imageSrc}
+											style={{
+												backgroundImage: `url(${logo})`
+											}}
+										/>
+									</ButtonBase>
+								</div>
+							</ItemG>
+							<ItemG xs={10} container alignItems={'center'} justify={'center'}>
+								<T variant='h6' color='inherit' className={classes.flex}>
+									{d.name}
+								</T>
+							</ItemG>
+							<ItemG xs={1} container justify={'flex-end'}>
 								<IconButton color='inherit' onClick={handleCloseDashboard} aria-label='Close'>
 									<Close />
 								</IconButton>
-								<T variant='h6' color='inherit' className={classes.flex}>
-									{t('dashboard.createDashboard')}
-								</T>
 							</ItemG>
 						</ItemG>
 					</Hidden>
 					<Hidden lgUp>
 						<ItemG container alignItems={'center'}>
-							<ItemG xs={4} container alignItems={'center'}>
-								<IconButton color={'inherit'} onClick={handleCloseDashboard} aria-label='Close'>
-									<Close />
-								</IconButton>
+							<ItemG xs={10} container alignItems={'center'}>
 								<T variant='h6' color='inherit' className={classes.flex}>
 									{t('dashboard.createDashboard')}
 								</T>
+								<IconButton color={'inherit'} onClick={handleCloseDashboard} aria-label='Close'>
+									<Close />
+								</IconButton>
 							</ItemG>
 						</ItemG>
 					</Hidden>
