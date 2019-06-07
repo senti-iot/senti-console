@@ -18,7 +18,7 @@ class DashboardPanel extends Component {
 		super(props)
 
 		this.state = {
-			openDashboard: true
+			openDashboard: false
 		}
 	}
 	handleOpenDashboard = () => {
@@ -106,12 +106,15 @@ class DashboardPanel extends Component {
 					</Hidden>
 				</Toolbar>
 			</AppBar>
-			<GridContainer style={{ height: '100%', background: '#eee', padding: 32 }} justify={'center'} alignItems={'center'}>
+			<GridContainer style={{ height: '100%', padding: 32 }} justify={'center'} alignItems={'center'}
+				className={classes[d.color]}
+			>
 				{/* <Paper style={{ width: '70vw', height: '70vh', display: 'flex' }}> */}
 				<Grid container spacing={16} justify={'center'} alignItems={'center'}>
 					<ItemG xs={6} container justify={'center'}>
 						{/* <div style={{ width: '30vw', height: '33vh', position: 'relative' }}> */}
 						<GaugeFakeData
+							// color={d.color}
 							title={'My usage'}
 							period={{ ...data.myUsage.period, menuId: 3, chartType: 3 }}
 							value={data.myUsage.data}
@@ -125,6 +128,7 @@ class DashboardPanel extends Component {
 					<ItemG xs={6} container justify={'center'}>
 						<GaugeFakeData
 							title={'Other Usage'}
+							// color={d.color}
 							period={{ ...data.myUsage.period, menuId: 3, chartType: 3 }}
 							value={data.otherUsage.data}
 							t={t}
@@ -138,6 +142,7 @@ class DashboardPanel extends Component {
 						<DoubleChartFakeData
 							title={'Weekly Usage'}
 							single={true}
+							// color={d.color}
 							period={{ ...data.myUsage.period, menuId: 3, chartType: 3, timeType: 2 }}
 							value={data.myUsage.data}
 							t={t}
@@ -152,6 +157,7 @@ class DashboardPanel extends Component {
 						<DoubleChartFakeData
 							title={'Meter Reading'}
 							single={true}
+							// color={d.color}
 							period={{ ...data.myUsage.period, menuId: 3, chartType: 3, timeType: 2 }}
 							value={data.myUsage.data}
 							t={t}

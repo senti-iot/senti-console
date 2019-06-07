@@ -200,36 +200,28 @@ const initialState = {
 		device: {
 			id: 38, name: 'sigfoxTempSensor'
 		},
-		color: 'deepPurple',
-		dsType: 0
-	}, /* {
-		name: 'New',
-		description: 'This is a demo test for new dashboards',
-		periodType: 3,
-		device: {
-			id: 38, name: 'sigfoxTempSensor'
-		},
-		color: 'deepPurple',
+		color: 'lightBlue',
 		dsType: 0
 	}, {
-		name: 'Dashboard',
-		description: 'This is a demo test for new dashboards',
+		name: 'Min Vand',
+		description: 'My water consumption',
 		periodType: 3,
-		color: 'lime',
 		device: {
 			id: 38, name: 'sigfoxTempSensor'
 		},
+		color: 'deepPurple',
 		dsType: 0
-	}, {
-		name: 'Here',
-		description: 'This is a demo test for new dashboards',
+	},
+	{
+		name: 'Min Vand',
+		description: 'My water consumption',
 		periodType: 3,
-		color: 'cyan',
 		device: {
 			id: 38, name: 'sigfoxTempSensor'
 		},
+		color: 'amber',
 		dsType: 0
-	} */],
+	}],
 	filters: {
 		favorites: [],
 		projects: [],

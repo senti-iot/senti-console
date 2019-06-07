@@ -8,7 +8,7 @@ import React, { Fragment, PureComponent } from 'react';
 import withLocalization from 'components/Localization/T';
 import { ItemG } from 'components';
 import { compose } from 'recompose';
-
+import cx from 'classnames'
 class InfoCard extends PureComponent {
 	constructor(props) {
 	  super(props)
@@ -57,9 +57,14 @@ class InfoCard extends PureComponent {
 	render() {
 		const { classes, title, subheader,
 			content, hiddenContent, avatar,
-			noAvatar, leftActions, leftActionContent, noRightExpand, t, whiteAvatar, noHeader } = this.props;
+			noAvatar, leftActions, leftActionContent, background, noRightExpand, t, whiteAvatar, noHeader } = this.props;
+		const cardClasses = cx({
+			[classes.card]: true,
+			[classes.plainCardCalsses]: true,
+			[classes[background]]: background
+		})
 		return (
-			<Card className={classes.card + " " + classes.plainCardClasses}>
+			<Card className={cardClasses}>
 				{noHeader ? null : <CardHeader
 					action={this.renderTopAction()}
 					avatar={noAvatar ? null : <Avatar aria-label='Avatar' className={classes.avatar + ' ' + (whiteAvatar ? classes.whiteAvatar : "")}>{avatar}</Avatar>}

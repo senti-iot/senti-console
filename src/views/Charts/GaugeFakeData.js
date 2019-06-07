@@ -557,6 +557,7 @@ class GaugeComponent extends PureComponent {
 					avatar={this.renderIcon()}
 					noExpand
 					topAction={this.renderMenu()}
+					background={this.props.color}
 					content={
 						<Grid container>
 							<ExportModal

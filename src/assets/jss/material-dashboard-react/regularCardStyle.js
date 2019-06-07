@@ -18,6 +18,7 @@ import {
 } from "../material-dashboard-react";
 import teal from '@material-ui/core/colors/teal';
 import { red, green } from '@material-ui/core/colors';
+import { bgColors } from './backgroundColors';
 
 const regularCardStyle = theme => ({
 	bigIcon: {
@@ -184,7 +185,9 @@ const regularCardStyle = theme => ({
 		padding: "14px",
 		display: "block",
 		height: "auto"
-	}
+	},
+	...bgColors,
+
 });
 
 export default regularCardStyle;

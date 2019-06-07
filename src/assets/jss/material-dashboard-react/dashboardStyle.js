@@ -3,8 +3,10 @@
 // #############################
 
 import { successColor, headerColor } from "assets/jss/material-dashboard-react.js";
+import { bgColors } from './backgroundColors';
 
 const dashboardStyle = theme => ({
+	...bgColors,
 	image: {
 		backgroundColor: '#1a1b32',
 		position: "relative",
