@@ -1,6 +1,9 @@
 import { colors } from '@material-ui/core';
 
 export const bgColors = {
+	'': {
+		background: '#eee'
+	},
 	lightBlue: {
 		background: `linear-gradient(to right bottom, ${colors.lightBlue[200]}, ${colors.lightBlue[400]})`
 	},

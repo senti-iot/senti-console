@@ -43,6 +43,8 @@ const styles = {
 		position: 'relative'
 	},
 	cardImg: {
+		background: '#ccc',
+
 		'&:before': {
 			// opacity: 0.3,
 			position: "absolute",

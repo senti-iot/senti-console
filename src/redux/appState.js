@@ -194,16 +194,16 @@ const initialState = {
 	trp: null,
 	dashboardData: fake_dashboardData,
 	dashboards: [{
-		name: 'Min Vand',
+		name: 'Mit Vand',
 		description: 'My water consumption',
 		periodType: 3,
 		device: {
 			id: 38, name: 'sigfoxTempSensor'
 		},
-		color: 'lightBlue',
+		color: '',
 		dsType: 0
 	}, {
-		name: 'Min Vand',
+		name: 'Mit Vand',
 		description: 'My water consumption',
 		periodType: 3,
 		device: {
@@ -213,7 +213,7 @@ const initialState = {
 		dsType: 0
 	},
 	{
-		name: 'Min Vand',
+		name: 'Mit Vand',
 		description: 'My water consumption',
 		periodType: 3,
 		device: {
