@@ -71,7 +71,6 @@ class RegistryHover extends Component {
 	}
 	render() {
 		const { t, anchorEl, classes, registry, isFav } = this.props
-		console.log(registry)
 		return (
 			<Popper
 				style={{ zIndex: 1040 }}

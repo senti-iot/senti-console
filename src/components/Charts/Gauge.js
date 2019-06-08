@@ -52,7 +52,6 @@ class Gauge extends Component {
 		}
 	};
 	componentDidMount() {
-		console.log(Math.round(this.props.value * 100 / 60))
 		const gaugeOptions = Object.assign({}, this.defaultOptions, this.props);
 		if (!this.gauge) {
 			this.gauge = G(this.gaugeEl, gaugeOptions);
