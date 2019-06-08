@@ -41,7 +41,7 @@ class Gauge extends Component {
 	defaultOptions = {
 		animDuration: 1,
 		showValue: true,
-		max: 10,
+		max: Math.round(this.props.value * 100 / 60) ? Math.round(this.props.value) :  1,
 		dialStartAngle: 180,
 		dialEndAngle: 0,
 		dialClass: this.props.classes.dial,
@@ -50,9 +50,9 @@ class Gauge extends Component {
 		label: (value) => {
 			return value.toFixed(3);
 		}
-		// Put any other defaults you want. e.g. dialStartAngle, dialEndAngle, radius, etc.
 	};
 	componentDidMount() {
+		console.log(Math.round(this.props.value * 100 / 60))
 		const gaugeOptions = Object.assign({}, this.defaultOptions, this.props);
 		if (!this.gauge) {
 			this.gauge = G(this.gaugeEl, gaugeOptions);
