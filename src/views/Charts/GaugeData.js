@@ -76,9 +76,7 @@ class GaugeComponent extends PureComponent {
 	}
 	getData = async () => {
 		const { sensor, v, nId, period } = this.props
-		let value = await getSensorDataClean(sensor.id, moment().startOf('month'), moment().endOf('month'), v, nId)
-		console.log(sensor.id, moment(period.from), moment(period.to), v, nId)
-		console.log(value)
+		let value = await getSensorDataClean(sensor.id, period.from, period.to, v, nId)
 		this.setState({
 			loading: false,
 			value: value

@@ -510,13 +510,8 @@ class Functions extends Component {
 
 	renderFunctions = () => {
 		const { classes, functions, loading } = this.props
-		// const { selected } = this.state
-		console.log(functions)
 		return <GridContainer justify={'center'}>
 			{loading ? <CircularLoader /> : <Fade in={true}><Paper className={classes.root}>
-				{/* {this.renderAssignProject()} */}
-				{/* {this.renderAssignDevice()} */}
-				{/* {selected.length > 0 ? this.renderDeviceUnassign() : null} */}
 				{this.renderTableToolBar()}
 				{this.renderTable(functions, this.handleFunctionClick, 'functions')}
 				{this.renderConfirmDelete()}

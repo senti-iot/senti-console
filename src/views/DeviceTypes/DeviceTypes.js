@@ -358,7 +358,6 @@ class DeviceTypes extends Component {
 	renderTable = (items, handleClick, key) => {
 		const { t } = this.props
 		const { order, orderBy, selected } = this.state
-		console.log(items)
 		return <DeviceTypeTable
 			data={this.filterItems(items)}
 			handleCheckboxClick={this.handleCheckboxClick}

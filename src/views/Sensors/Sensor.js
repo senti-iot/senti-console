@@ -209,7 +209,6 @@ class Sensor extends Component {
 							}) : null}
 						</ItemGrid>
 						{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
-							console.log(k)
 							if (k.type === 0)
 								return <ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
 									<SensorData

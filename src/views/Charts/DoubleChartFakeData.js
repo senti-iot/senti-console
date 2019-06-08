@@ -358,7 +358,6 @@ class DoubleChartData extends PureComponent {
 	}
 	renderType = () => {
 		const { title, setHoverID, t, device, period, single, hoverID } = this.props
-		console.log('Double', single)
 		const { loading } = this.state
 		if (!loading) {
 			const { roundDataSets, lineDataSets, barDataSets } = this.state

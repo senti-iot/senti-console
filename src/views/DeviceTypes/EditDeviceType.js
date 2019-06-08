@@ -54,7 +54,6 @@ class CreateDeviceType extends Component {
 		}
 	}
 	componentDidMount = async () => {
-		console.log('CDM')
 		this.getData()
 		window.addEventListener('keydown', this.keyHandler, false)
 

@@ -82,7 +82,6 @@ class NewLoginPage extends Component {
 	loginUser = async () => {
 
 		await loginUser(this.state.user, this.state.pass).then(async rs => {
-			console.log(rs)
 			if (rs) {
 				let exp = moment().add('1', 'day')
 				cookie.save('SESSION', rs, { path: '/', expires: exp.toDate() })
