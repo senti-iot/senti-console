@@ -28,7 +28,7 @@ class CreateOrg extends Component {
 					ean: ''
 				},
 				org: {
-					id: 0
+					id: -1
 				}
 			},
 			selectedOrg: '',
@@ -61,7 +61,7 @@ class CreateOrg extends Component {
 		await getAllOrgs().then(rs => {
 			if (this._isMounted) {
 				if (accessLevel.apisuperuser)
-					rs.unshift({ id: 0, name: t('orgs.fields.topLevelOrg') })
+					rs.unshift({ id: -1, name: t('orgs.fields.topLevelOrg') })
 				this.setState({ orgs: rs, loading: false })
 			}
 		})
@@ -176,7 +176,7 @@ class CreateOrg extends Component {
 			let newOrg = {
 				...this.state.org,
 				org: {
-					id: this.state.selectedOrg
+					id: this.state.selectedOrg ? this.state.selectedOrg : -1
 				}
 			}
 			return createOrg(newOrg).then(rs => 
