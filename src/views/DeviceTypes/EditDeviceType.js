@@ -42,7 +42,7 @@ class CreateDeviceType extends Component {
 			this.setState({
 				devicetype: devicetype,
 				sensorMetadata: {
-					metadata: devicetype.metadata ? devicetype.metadata : [],
+					metadata: devicetype.metadata ? Object.keys(devicetype.metadata).map(m => ({ key: m, value: devicetype.metadata[m] })) : [],
 					outbound: devicetype.outbound ? devicetype.outbound : [],
 					inbound: devicetype.inbound ? devicetype.inbound : []
 				},
@@ -71,14 +71,20 @@ class CreateDeviceType extends Component {
 		})
 	}
 	createDeviceType = async () => {
-		return await updateDeviceType(this.state.devicetype)
+		let deviceType = {
+			...this.state.devicetype,
+			outbound: this.state.sensorMetadata.outbound,
+			inbound: this.state.sensorMetadata.inbound,
+			metadata: this.state.sensorMetadata.metadata,
+		}
+		return await updateDeviceType(deviceType)
 	}
 	handleCreate = async () => {
 		const { s, history } = this.props
 		let rs = await this.createDeviceType()
 		if (rs) {
 			s('snackbars.devicetypeCreated')
-			history.push(`/devicetype/${rs.id}`)
+			history.push(`/devicetype/${rs}`)
 		}
 		else
 			s('snackbars.failed')

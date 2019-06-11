@@ -39,7 +39,7 @@ class Gauge extends Component {
 	defaultOptions = {
 		animDuration: 1,
 		showValue: true,
-		max: Math.round(this.props.value * 100 / 60) ? Math.round(this.props.value) * 10 :  1,
+		max: Math.round(this.props.value * 100 / 60) ? Math.round(this.props.value * 100 / 60) :  1,
 		dialStartAngle: 180,
 		dialEndAngle: 0,
 		dialClass: this.props.classes.dial,

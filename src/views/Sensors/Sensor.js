@@ -193,24 +193,26 @@ class Sensor extends Component {
 								accessLevel={accessLevel}
 							/>
 						</ItemGrid>
-						<ItemGrid xs={12} noMargin id='gauges'>
-
-							{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
-								if (k.type === 1) {
-									return <GaugeData 
+					
+						{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
+							if (k.type === 1) {
+								return 	<ItemGrid xs={12} container noMargin key={i + 'gauges'}>
+									<GaugeData 
 										v={k.key}
 										nId={k.nId}
 										t={t}
 										period={periods[0]}
 										sensor={sensor}
 									/>
-								}
-								else return null
-							}) : null}
-						</ItemGrid>
+								</ItemGrid>
+
+							}
+							else return null
+						}) : null}
+						{/* <ItemGrid xs={12} container noMaring id={'charts'}> */}
 						{sensor.dataKeys ? sensor.dataKeys.map((k, i) => {
 							if (k.type === 0)
-								return <ItemGrid xs={12} md={this.handleDataSize(i)} noMargin key={i} id={i}>
+								return 	<ItemGrid xs={12} container noMargin key={i + 'charts'}>
 									<SensorData
 										periods={periods}
 										sensor={sensor}
@@ -220,12 +222,14 @@ class Sensor extends Component {
 										v={k.key}
 										nId={k.nId}
 
-									/></ItemGrid>
+									/>
+								</ItemGrid>
 							else {
 								return null
 							}
 						}
 						) : null}
+						{/* </ItemGrid> */}
 						<ItemGrid xs={12} noMargin id='details'>
 							<SensorProtocol
 								isFav={this.props.isFav({ id: sensor.id, type: 'sensor' })}

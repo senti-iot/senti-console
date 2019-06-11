@@ -134,9 +134,10 @@ class EditSensor extends Component {
 				type_id: o.id
 			},
 			sensorMetadata: {
+				metadata: Object.keys(o.metadata).map(m => ({ key: m, value: o.metadata[m] })),
 				// ...this.state.sensorMetadata,
-				inbound: o.inbound ? o.inbound.map((n, i) => ({ id: i, ...n })) : [],
-				outbound: o.outbound ? o.outbound.map((d, i) => ({ id: i,  ...d })) : []	
+				inbound: o.inbound ? o.inbound : [],
+				outbound: o.outbound ? o.outbound : []	
 			},
 			openDT: false,
 			select: {

@@ -102,6 +102,7 @@ class CreateCollection extends Component {
 		})
 	}
 	handleChangeDT = (o) => e => {
+		console.log(o)
 		this.setState({
 			sensor: {
 				...this.state.sensor,
@@ -111,7 +112,7 @@ class CreateCollection extends Component {
 				// ...this.state.sensorMetadata,
 				inbound: o.inbound ? o.inbound : [],
 				outbound: o.outbound ? o.outbound : [],
-				metadata: o.metadata ? o.metadata : []
+				metadata: o.metadata ?  o.metadata  : {}
 			},
 			openDT: false,
 			select: {
