@@ -59,10 +59,10 @@ class Messages extends Component {
 	ft = () => {
 		const { t } = this.props
 		return [
-			{ key: 'name', name: t('messages.fields.name'), type: 'string' },
-			{ key: 'customer_name', name: t('orgs.fields.name'), type: 'string' },
-			{ key: 'created', name: t('messages.fields.created'), type: 'date' },
-			{ key: 'protocol', name: t('messages.fields.protocol'), type: 'dropDown', options: this.dProtocols() },
+			// { key: 'name', name: t('messages.fields.name'), type: 'string' },
+			// { key: 'customer_name', name: t('orgs.fields.name'), type: 'string' },
+			// { key: 'created', name: t('messages.fields.created'), type: 'date' },
+			// { key: 'protocol', name: t('messages.fields.protocol'), type: 'dropDown', options: this.dProtocols() },
 			// { key: 'activeDeviceStats.state', name: t('devices.fields.status'), type: 'dropDown', options: this.dLiveStatus() },
 			{ key: '', name: t('filters.freeText'), type: 'string', hidden: true },
 		]
