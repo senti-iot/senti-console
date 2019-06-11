@@ -13,7 +13,7 @@ import { connect } from 'react-redux'
 import TP from 'components/Table/TP';
 import TC from 'components/Table/TC';
 import MessageHover from 'components/Hover/MessageHover';
-import { dateFormatter, dateTimeFormatter } from 'variables/functions';
+import { dateTimeFormatter } from 'variables/functions';
 
 class MessageTable extends React.Component {
 	constructor(props) {
@@ -82,7 +82,7 @@ class MessageTable extends React.Component {
 	}
 
 	render() {
-		const { classes, rowsPerPage, handleClick, selected, t, order, data, orderBy, handleCheckboxClick } = this.props
+		const { classes, rowsPerPage, /* handleClick */ selected, t, order, data, orderBy, handleCheckboxClick } = this.props
 		const { page } = this.state
 		let emptyRows;
 		if (data)
@@ -120,7 +120,7 @@ class MessageTable extends React.Component {
 										// onMouseEnter={e => { this.setHover(e, n) }}
 										// onMouseLeave={this.unsetTimeout}
 										hover
-										onClick={handleClick(n.id)}
+										// onClick={handleClick(n.id)}
 										role='checkbox'
 										aria-checked={isSelected}
 										tabIndex={-1}

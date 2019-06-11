@@ -44,7 +44,7 @@ class Messages extends Component {
 		return [
 			{ id: 0, title: t('tooltips.listView'), label: <ViewList />, url: `${match.url}/list` },
 			{ id: 1, title: t('tooltips.cardView'), label: <ViewModule />, url: `${match.url}/grid` },
-			{ id: 2, title: t('tooltips.favorites'), label: <Star />, url: `${match.url}/favorites` }
+			// { id: 2, title: t('tooltips.favorites'), label: <Star />, url: `${match.url}/favorites` }
 		]
 	}
 	dProtocols = () => {
@@ -460,7 +460,7 @@ class Messages extends Component {
 				<Switch>
 					<Route path={`${match.path}/list`} render={() => this.renderMessages()} />
 					<Route path={`${match.path}/grid`} render={() => this.renderCards()} />
-					<Route path={`${match.path}/favorites`} render={() => this.renderFavorites()} />
+					{/* <Route path={`${match.path}/favorites`} render={() => this.renderFavorites()} /> */}
 					<Redirect path={`${match.path}`} to={`${match.path}/list`} />
 				</Switch>
 
