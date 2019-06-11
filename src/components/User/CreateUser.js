@@ -305,9 +305,10 @@ class CreateUser extends Component {
 	}
 	renderAccess = () => {
 		const { t, accessLevel } = this.props
-		const { error, selectedGroup, user } = this.state
+		const { error, selectedGroup } = this.state
 		let rend = false
-		if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers && !user.privileges.apisuperuser)) {
+		console.log(accessLevel)
+		if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers)) {
 			rend = true
 		}
 		return rend ? <DSelect

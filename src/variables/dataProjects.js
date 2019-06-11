@@ -15,7 +15,7 @@ export const updateProject = async (project) => {
 }
 export const getAllProjects = async () => {
 	var data = await api.get('senti/projects').then((response => { return response.data }))
-	return data
+	return data ? data : []
 }
 
 export const getProject = async (projectId) => {

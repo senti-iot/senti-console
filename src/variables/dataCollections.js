@@ -44,7 +44,7 @@ export const getCollection = async (id) => {
  */
 export const getAllCollections = async () => {
 	let data = await api.get(`/senti/datacollections`).then(rs => rs.data)
-	return data
+	return data ? data : []
 }
 /**
  * Update Data Collection
