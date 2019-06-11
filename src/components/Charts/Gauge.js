@@ -64,7 +64,7 @@ class Gauge extends Component {
 		return (
 			<ItemG container justify={'center'} alignItems={'center'}>
 				<ItemG container justify={'center'} alignItems={'center'}>
-					<div className={this.props.classes.gaugeContainer} ref={el => this.gaugeEl = el}/>
+					<div className={'gauge-container'} ref={el => this.gaugeEl = el}/>
 				</ItemG>
 				<ItemG container justify={'center'} alignItems={'center'}>
 					<T>{`${moment(period.from).format('LLL')} - ${moment(period.to).format('LLL')}`}</T>

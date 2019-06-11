@@ -1,25 +1,25 @@
 .gauge-container {
-	width: 150px;
-	height: 150px;
+	width: 300px;
+	height: 175px;
 	display: block;
 	float: left;
 	padding: 10px;
-	background-color: #278881;
+	/* background-color: ; */
 	margin: 7px;
 	border-radius: 3px;
 	position: relative;
 }
 .gauge-container > .gauge > .dial {
-  stroke: #334455;
+  stroke: #ccc;
   stroke-width: 13;
 }
 .gauge-container > .gauge > .value {
-  stroke: orange;
+  stroke: #278881;
   stroke-dasharray: none;
   stroke-width: 13;
 }
 .gauge-container > .gauge > .value-text {
-  fill: #ccc;
+  fill: #000;
   font-weight: 100;
   font-size: 1em;
 }
