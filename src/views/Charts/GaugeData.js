@@ -501,17 +501,6 @@ class GaugeComponent extends PureComponent {
 						<ListItemIcon><CloudDownload /></ListItemIcon>
 						<ListItemText>{t('menus.export')}</ListItemText>
 					</ListItem>
-					{/* <ListItem button onClick={() => this.props.changeRawData(period)}>
-						<ListItemIcon>
-							<Checkbox
-								checked={period.raw}
-								className={classes.noPadding}
-							/>
-						</ListItemIcon>
-						<ListItemText>
-							{t('collections.rawData')}
-						</ListItemText>
-					</ListItem> */}
 					<ListItem button onClick={() => this.handleChangeChartType(this.state.chartType === 'linear' ? 'logarithmic' : 'linear')}>
 						<ListItemIcon>
 							{this.state.chartType !== 'linear' ? <LinearScale /> : <Timeline />}

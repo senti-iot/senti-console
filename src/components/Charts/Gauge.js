@@ -13,7 +13,7 @@ const styles = (theme) => ({
 		display: "block",
 		float: "left",
 		padding: 10,
-		/* backgroundColor: "#222", */
+		// backgroundColor: "inherit",
 		margin: 7,
 		borderRadius: 3,
 		position: "relative"
