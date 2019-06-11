@@ -42,9 +42,6 @@ class Gauge extends Component {
 		max: Math.round(this.props.value * 100 / 60) ? Math.round(this.props.value) * 10 :  1,
 		dialStartAngle: 180,
 		dialEndAngle: 0,
-		dialClass: this.props.classes.dial,
-		valueDialClass: this.props.classes.value,
-		valueClass: this.props.classes.valueText,
 		label: (value) => {
 			return value.toFixed(3);
 		}
