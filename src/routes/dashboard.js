@@ -181,7 +181,7 @@ const dashboardRoutes = [
 		sidebarName: 'sidebar.monitor',
 		icon: InsertChart,
 		component: AsyncMessages,
-		menuRote: 'messages'
+		menuRoute: 'messages'
 	},
 	{
 		path: '/management/user/:id',

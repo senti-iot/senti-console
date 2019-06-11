@@ -154,10 +154,13 @@ class MessageTable extends React.Component {
 										<Hidden mdDown>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
 											<TC 
-												onMouseEnter={e => { this.setHover(e, n) }}
-												onMouseLeave={this.unsetTimeout}
+											
 												FirstC label={n.id}/>
-											<TC label={n.deviceName} />
+											<TC
+												onMouseEnter={e => { this.setHover(e, n) }}
+												onMouseLeave={this.unsetTimeout} 
+												label={n.deviceName} 
+											/>
 											<TC label={n.registryName}/>
 											{/* <TC label={n.region}/> */}
 											<TC label={dateTimeFormatter(n.created, true)} />

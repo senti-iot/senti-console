@@ -60,7 +60,6 @@ class App extends React.Component {
 			})
 	}
 	handleSetHeaderTitle = (headerTitle, goBackButton, url, menuRoute, bcname) => {
-
 		if ((headerTitle !== this.state.headerTitle) || (url !== this.state.url)) {
 			if (typeof headerTitle === 'string') {
 				if ((headerTitle !== this.state.headerTitle.id) || (url !== this.state.url)) {

@@ -29,6 +29,7 @@ class Sidebar extends Component {
 		})
 	}
 	activeRoute = (routeName) => this.props.menuRoute === routeName ? true : false;
+	
 	changeSmallMenu = () => {
 		this.props.changeSmallMenu(!this.props.smallMenu)
 	}
