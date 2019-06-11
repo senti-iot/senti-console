@@ -7,20 +7,20 @@ import { T } from 'components';
 import moment from 'moment'
 
 const styles = (theme) => ({
+	dial: {
+		stroke: "#ccc",
+		strokeWidth: 10,
+	},
 	gaugeContainer: {
 		width: 300,
 		height: 175,
 		display: "block",
 		float: "left",
 		padding: 10,
-		// backgroundColor: "inherit",
 		margin: 7,
 		borderRadius: 3,
-		position: "relative"
-	},
-	dial: {
-		stroke: "#ccc",
-		strokeWidth: 10,
+		position: "relative",
+		background: 'inherit'
 	},
 	value: {
 		stroke: primaryColor,
@@ -28,12 +28,10 @@ const styles = (theme) => ({
 		strokeWidth: 13,
 	},
 	valueText: {
-		// fill: "#ccc",
 		fill: '#000',
 		fontSize: "1em",
 		bottom: '10%',
 	}
-
 })
 
 
