@@ -1,38 +1,11 @@
 import React, { Component } from 'react'
 import G from 'svg-gauge'
-import { primaryColor } from 'assets/jss/material-dashboard-react';
-import { withStyles } from '@material-ui/styles';
+// import { primaryColor } from 'assets/jss/material-dashboard-react';
+// import { withStyles } from '@material-ui/styles';
 import ItemG from 'components/Grid/ItemG';
 import { T } from 'components';
 import moment from 'moment'
 
-const styles = (theme) => ({
-	dial: {
-		stroke: "#ccc",
-		strokeWidth: 10,
-	},
-	gaugeContainer: {
-		width: 300,
-		height: 175,
-		display: "block",
-		float: "left",
-		padding: 10,
-		margin: 7,
-		borderRadius: 3,
-		position: "relative",
-		background: 'inherit'
-	},
-	value: {
-		stroke: primaryColor,
-		strokeDasharray: "none",
-		strokeWidth: 13,
-	},
-	valueText: {
-		fill: '#000',
-		fontSize: "1em",
-		bottom: '10%',
-	}
-})
 
 
 class Gauge extends Component {
@@ -77,4 +50,4 @@ class Gauge extends Component {
 	}
 }
 
-export default withStyles(styles)(Gauge)
+export default Gauge
