@@ -8,6 +8,15 @@ import { red, green } from '@material-ui/core/colors'
 
 const projectStyles = theme => ({
 	...deviceStatus,
+	editor: {
+		width: 'calc(100% - 16px)', 
+		border: '1px solid rgba(100, 100, 100, 0.25)', 
+		padding: 4, 
+		borderRadius: 4,
+		"&:hover": {
+			boder: '1px solid #000'
+		}
+	},
 	blocked: {
 		color: red[500],
 		marginRight: 8

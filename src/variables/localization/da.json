@@ -586,6 +586,7 @@
         "fields": {
             "deviceName": "Enhedsnavn",
             "id": "ID",
+            "receivedAt": "Modtaged kl",
             "registryName": "Registersnavn"
         }
     },
@@ -918,7 +919,6 @@
         }
     },
     "sidebar": {
-		"monitor": "Overvåge",
         "cloudfunction": "Cloud funktion",
         "cloudfunctions": "Cloud funktioner",
         "collection": "Datasamling",
@@ -931,6 +931,7 @@
         "favorites": "Favoritter",
         "home": "Hjem",
         "manage": "Konfiguration",
+        "monitor": "Overvåge",
         "org": "Organisation",
         "orgs": "Organisationer",
         "project": "Projekt",
@@ -1090,7 +1091,6 @@
             "contact": "Kontakt",
             "system": "System log"
         },
-        "messages": {},
         "pageTitle": "Brugere",
         "tabs": {
             "orgs": "Organisationer",

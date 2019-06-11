@@ -893,7 +893,6 @@ export const setProjects = () => {
 export const getMessages = (customerID, reload) => {
 	return dispatch => {
 		getAllMessages(customerID).then(rs => {
-			console.log(rs)
 			let messages = handleRequestSort('title', 'asc', rs)
 			set('messages', messages)
 			if (reload) {

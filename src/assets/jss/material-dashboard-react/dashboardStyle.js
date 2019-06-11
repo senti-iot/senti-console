@@ -32,6 +32,7 @@ const dashboardStyle = theme => ({
 		backgroundPosition: "50% 50%",
 	},
 	logo: {
+		minWidth: 120,
 		backgroundColor: '#1a1b32',
 		position: "relative",
 		padding: "8px 16px",

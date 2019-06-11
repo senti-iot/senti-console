@@ -1,11 +1,4 @@
 {
-	"messages": {
-		"fields": {
-			"id": "ID",
-			"deviceName": "Device name",
-			"registryName": "Registry name"
-		}
-	},
     "404": {
         "contactSupport": "Please try again or contact our support on support@senti.io!",
         "errorMessage": "The resource requested has not been found!",
@@ -16,11 +9,11 @@
     "": "",
     "Senti": "Senti",
     "actions": {
-		"addKey": "Add device data field",
-		"addMtdKey": "Add device metadata field",
-		"addInboundFunc": "Add function on receiving data",
         "accept": "Accept",
         "addFilter": "Add filter",
+        "addInboundFunc": "Add function on receiving data",
+        "addKey": "Add device data field",
+        "addMtdKey": "Add device metadata field",
         "apply": "Apply",
         "back": "Previous",
         "call": "Ring",
@@ -113,18 +106,18 @@
         }
     },
     "cloudfunctions": {
-		"datatypes":{
-			"timeSeries": "Time Series",
-			"average": "Average of values"
-		},
+        "datatypes": {
+            "average": "Average of values",
+            "timeSeries": "Time Series"
+        },
         "fields": {
-			"metadata": {
-				"key": "Metadata key",
-				"value": "Metadata value"
-			},
-			"key": "Device data key",
             "code": "Source Code",
             "description": "Description",
+            "key": "Device data key",
+            "metadata": {
+                "key": "Metadata key",
+                "value": "Metadata value"
+            },
             "name": "Name",
             "type": "Type",
             "types": {
@@ -412,15 +405,15 @@
         },
         "pageTitle": "Favorites",
         "types": {
-			"sensor": "Device",
+            "cloudfunction": "Cloud Function",
             "collection": "Data collection",
             "device": "Device",
+            "devicetype": "Device Type",
             "org": "Organisation",
             "project": "Project",
-			"user": "User",
-			"registry": "Registry",
-			"devicetype": "Device Type",
-			"cloudfunction": "Cloud Function"
+            "registry": "Registry",
+            "sensor": "Device",
+            "user": "User"
         }
     },
     "filters": {
@@ -588,11 +581,19 @@
         },
         "userResendEmail": "Resend confirmation E-mail"
     },
+    "messages": {
+        "fields": {
+            "deviceName": "Device name",
+            "id": "ID",
+            "receivedAt": "Received at",
+            "registryName": "Registry name"
+        }
+    },
     "no": {
-		"cloudfunction": "No cloud function",
         "activeDevice": "No active device",
         "audioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a different browser.",
         "birthdays": "No birthdays today",
+        "cloudfunction": "No cloud function",
         "collection": "No collection",
         "collections": "No collections",
         "device": "No device",
@@ -741,10 +742,10 @@
                 "mqtt": "MQTT",
                 "none": "Without protocol"
             },
-			"region": "Region",
-			"regions": {
-				"europe": "Europe"
-			},
+            "region": "Region",
+            "regions": {
+                "europe": "Europe"
+            },
             "registry": "Registry",
             "uuid": "Universal Unique Identifier (UUID)"
         },
@@ -752,19 +753,19 @@
     },
     "sensors": {
         "fields": {
-			"metadata": "Device Metadata",
             "communication": "Communication",
             "communications": {
                 "allowed": "Allowed",
                 "blocked": "Blocked"
             },
             "deviceType": "Device Type",
+            "metadata": "Device Metadata",
             "protocols": {
                 "publishData": "Publish Data",
                 "state": "Device state"
             },
-			"registry": "Registry",
-			"uuid": "UUID"
+            "registry": "Registry",
+            "uuid": "UUID"
         },
         "metadata": {
             "humidity": "Humidity",
@@ -917,9 +918,8 @@
         }
     },
     "sidebar": {
-		"monitor": "Monitor",
-		"cloudfunctions": "Cloud functions",
         "cloudfunction": "Cloud function",
+        "cloudfunctions": "Cloud functions",
         "collection": "Data Collection",
         "collections": "Data Collections",
         "dashboard": "Dashboard",
@@ -930,6 +930,7 @@
         "favorites": "Favorites",
         "home": "Home",
         "manage": "Configuration",
+        "monitor": "Monitor",
         "org": "Organisation",
         "orgs": "Organisations",
         "project": "Project",
@@ -1005,6 +1006,7 @@
     },
     "tabs": {
         "activeDevice": "Active Device",
+        "code": "Source Code",
         "collections": "Data Collections",
         "contact": "Contact person",
         "data": "Charts & Data",
@@ -1016,8 +1018,7 @@
         "map": "Map",
         "projects": "Projects",
         "userHistory": "User log",
-		"users": "Users",
-		"code": "Source Code"
+        "users": "Users"
     },
     "tooltips": {
         "cardView": "Card view",
@@ -1029,11 +1030,11 @@
             "type": "Chart type"
         },
         "collection": "Data collection",
-		"device": "Device",
-		"devices": {
-			"removeDataField": "Delete data field",
-			"removeCloudFunction": "Remove Cloud Function"
-		},
+        "device": "Device",
+        "devices": {
+            "removeCloudFunction": "Remove Cloud Function",
+            "removeDataField": "Delete data field"
+        },
         "favorites": "Favorites",
         "listView": "List view",
         "map": {
@@ -1089,7 +1090,6 @@
             "contact": "Contact",
             "system": "System Log"
         },
-        "messages": {},
         "pageTitle": "Users",
         "tabs": {
             "orgs": "Organisations",

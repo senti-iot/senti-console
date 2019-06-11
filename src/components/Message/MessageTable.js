@@ -82,12 +82,11 @@ class MessageTable extends React.Component {
 	}
 
 	render() {
-		const { classes, rowsPerPage, /* handleClick */ selected, t, order, data, orderBy, handleCheckboxClick } = this.props
+		const { classes, rowsPerPage, handleClick, selected, t, order, data, orderBy, handleCheckboxClick } = this.props
 		const { page } = this.state
 		let emptyRows;
 		if (data)
 			emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
-		console.log('Data', data)
 		return (
 			<Fragment>
 				<div className={classes.tableWrapper} onMouseLeave={this.unsetHover}>
@@ -120,7 +119,7 @@ class MessageTable extends React.Component {
 										// onMouseEnter={e => { this.setHover(e, n) }}
 										// onMouseLeave={this.unsetTimeout}
 										hover
-										// onClick={handleClick(n.id)}
+										onClick={handleClick(n)}
 										role='checkbox'
 										aria-checked={isSelected}
 										tabIndex={-1}

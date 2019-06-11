@@ -5,13 +5,18 @@ import TableToolbar from 'components/Table/TableToolbar';
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { filterItems, handleRequestSort } from 'variables/functions';
+import { filterItems, handleRequestSort, dateTimeFormatter } from 'variables/functions';
 import { Delete, Edit, ViewList, ViewModule, Star, StarBorder } from 'variables/icons';
-import { GridContainer, CircularLoader, /* AssignProject */ } from 'components'
+import { GridContainer, CircularLoader, ItemG, Caption, Info, /* AssignProject */ } from 'components'
 // import MessagesCards from './MessagesCards';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
 import { customFilterItems } from 'variables/Filters';
 import { getMessages, setMessages, sortData } from 'redux/data';
+import AceEditor from 'react-ace';
+
+import 'brace/mode/json';
+import 'brace/theme/tomorrow';
+import 'brace/theme/monokai';
 
 class Messages extends Component {
 	constructor(props) {
@@ -166,7 +171,7 @@ class Messages extends Component {
 		return customFilterItems(filterItems(data, filters), rFilters)
 	}
 	snackBarMessages = (msg, display) => {
-		const {  s } = this.props
+		const { s } = this.props
 		// const { selected } = this.state
 		switch (msg) {
 			case 1:
@@ -342,7 +347,71 @@ class Messages extends Component {
 			openUnassignDevice: false, anchorEl: null
 		})
 	}
-
+	handleOpenMessage = msg => e => {
+		this.setState({
+			openMessage: true,
+			msg: msg
+		})
+	}
+	handleCloseMessage = () => {
+		this.setState({
+			openMessage: false,
+			msg: null
+		})
+	}
+	renderMessage = () => {
+		let { openMessage, msg } = this.state
+		let { t, classes } = this.props
+		return <Dialog
+			open={openMessage}
+			onClose={this.handleCloseMessage}
+			aria-labelledby='alert-dialog-title'
+			aria-describedby='alert-dialog-description'
+			PaperProps={{
+				style: {
+					width: 600
+				}
+			}}
+		>
+			{msg ?
+				<Fragment>
+					<DialogTitle disableTypography>{msg.deviceName}</DialogTitle>
+					<DialogContent>
+						<ItemG container>
+							<ItemG xs={6}>
+								<Caption>{t('messages.fields.registryName')}</Caption>
+								<Info>{msg.registryName}</Info>
+							</ItemG>
+							<ItemG xs={6}>
+								<Caption>{t('orgs.fields.name')}</Caption>
+								<Info>{msg.customerName}</Info>
+							</ItemG>
+							<ItemG xs={12}>
+								<Caption>{t('messages.fields.receivedAt')}</Caption>
+								<Info>{dateTimeFormatter(msg.created, true)}</Info>
+							</ItemG>
+							<ItemG xs={12}>
+								<Caption>{t('messages.fields.data')}</Caption>
+								<div className={classes.editor}>
+									<AceEditor
+										height={300}
+										mode={'json'}
+										theme={this.props.theme.palette.type === 'light' ? 'tomorrow' : 'monokai'}
+										// onChange={handleCodeChange('js')}
+										value={JSON.stringify(msg.data, null, 4)}
+										showPrintMargin={false}
+										style={{ width: '100%' }}
+										name="seeMsgData"
+										// editorProps={{ $blockScrolling: true }}
+									/>
+								</div>
+							</ItemG>
+						</ItemG>
+					</DialogContent>
+				</Fragment>
+				: null}
+		</Dialog>
+	}
 	renderConfirmDelete = () => {
 		const { openDelete, selected } = this.state
 		const { t, classes, messages } = this.props
@@ -401,25 +470,27 @@ class Messages extends Component {
 	renderTable = (items, handleClick, key) => {
 		const { t } = this.props
 		const { order, orderBy, selected } = this.state
-		console.log(items, this.filterItems(items))
-		return <MessageTable
-			data={this.filterItems(items)}
-			handleCheckboxClick={this.handleCheckboxClick}
-			handleClick={handleClick}
-			handleRequestSort={this.handleRequestSort(key)}
-			handleSelectAllClick={this.handleSelectAllClick}
-			order={order}
-			orderBy={orderBy}
-			selected={selected}
-			t={t}
-			tableHead={this.messagesHeader()}
-		/>
+		return <Fragment>
+			{this.renderMessage()}
+			<MessageTable
+				data={this.filterItems(items)}
+				handleCheckboxClick={this.handleCheckboxClick}
+				handleClick={this.handleOpenMessage}
+				handleRequestSort={this.handleRequestSort(key)}
+				handleSelectAllClick={this.handleSelectAllClick}
+				order={order}
+				orderBy={orderBy}
+				selected={selected}
+				t={t}
+				tableHead={this.messagesHeader()}
+			/>
+		</Fragment>
 	}
 
 	renderCards = () => {
 		const { /* t, history, messages, */ loading } = this.props
 		return loading ? <CircularLoader /> :
-		// <MessageCards messages={this.filterItems(messages)} t={t} history={history} /> 
+			// <MessageCards messages={this.filterItems(messages)} t={t} history={history} /> 
 			null
 	}
 
@@ -475,7 +546,7 @@ const mapStateToProps = (state) => ({
 	saved: state.favorites.saved,
 	messages: state.data.messages,
 	loading: !state.data.gotmessages,
-	filters: state.appState.filters.messages,	
+	filters: state.appState.filters.messages,
 	user: state.settings.user
 })
 
@@ -490,4 +561,4 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(projectStyles)(Messages))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(projectStyles, { withTheme: true })(Messages))
