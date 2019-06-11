@@ -935,7 +935,7 @@ const initialState = {
 	sensors: [],
 	deviceTypes: [],
 	functions: [],
-	gotUsers: false,
+	gotusers: false,
 	gotorgs: false,
 	gotdevices: false,
 	gotprojects: false,
@@ -1025,7 +1025,7 @@ export const data = (state = initialState, { type, payload }) => {
 		case gotUser:
 			return Object.assign({}, state, { gotUser: payload })
 		case gotUsers:
-			return Object.assign({}, state, { gotUsers: payload })
+			return Object.assign({}, state, { gotusers: payload })
 		case setusers:
 			return Object.assign({}, state, { users: payload })
 		//#endregion
