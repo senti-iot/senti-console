@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import G from 'svg-gauge'
 // import { primaryColor } from 'assets/jss/material-dashboard-react';
 // import { withStyles } from '@material-ui/styles';
 import ItemG from 'components/Grid/ItemG';
 import { T } from 'components';
 import moment from 'moment'
+import RGauge from 'react-svg-gauge';
+import { primaryColor } from 'assets/jss/material-dashboard-react';
 
 
 
@@ -20,12 +21,12 @@ class Gauge extends Component {
 		}
 	};
 	componentDidMount() {
-		const gaugeOptions = Object.assign({}, this.defaultOptions, this.props);
-		if (!this.gauge) {
-			this.gauge = G(this.gaugeEl, gaugeOptions);
-		}
-		this.gauge.setValueAnimated(0, gaugeOptions.animDuration);
-		this.gauge.setValueAnimated(this.props.value);
+		// const gaugeOptions = Object.assign({}, this.defaultOptions, this.props);
+		// if (!this.gauge) {
+		// 	this.gauge = G(this.gaugeEl, gaugeOptions);
+		// }
+		// this.gauge.setValueAnimated(0, gaugeOptions.animDuration);
+		// this.gauge.setValueAnimated(this.props.value);
 	}
 	componentWillUpdate() {
 		this.componentDidMount()
@@ -37,7 +38,12 @@ class Gauge extends Component {
 		return (
 			<ItemG container justify={'center'} alignItems={'center'}>
 				<ItemG container justify={'center'} alignItems={'center'}>
-					<div className={'gauge-container'} ref={el => this.gaugeEl = el}/>
+					<RGauge 
+						color={primaryColor}
+						value={this.props.value} 
+						width={300} height={175} valueLabelStyle={{ fontSize: 40, fontWeight: 500, fontFace: 'Roboto' }} 
+						label={''}
+					/>
 				</ItemG>
 				<ItemG container justify={'center'} alignItems={'center'}>
 					<T>{`${moment(period.from).format('LLL')} - ${moment(period.to).format('LLL')}`}</T>
