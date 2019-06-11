@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom'
 import DashboardPage from 'views/Dashboard/Dashboard';
-import { Dashboard, LibraryBooks, SettingsApplications, SettingsRounded, People, DeviceHub, Star, InputIcon, Memory, CloudUpload } from 'variables/icons';
+import { Dashboard, LibraryBooks, SettingsApplications, SettingsRounded, People, DeviceHub, Star, InputIcon, Memory, CloudUpload, InsertChart } from 'variables/icons';
 import NotFound from 'layouts/404/NotFound';
 import Loadable from 'react-loadable';
 import AsyncLoader from 'components/Loader/AsyncLoader';
@@ -11,6 +11,10 @@ import { DataUsage } from 'variables/icons';
 // 	loader: () => import('routes/holiday'),
 // 	loading: AsyncLoader
 // })
+const AsyncMessages = Loadable({
+	loader: () => import('routes/messages'),
+	loading: AsyncLoader
+})
 const AsyncCloudFunction = Loadable({
 	loader: () => import('routes/cloudfunction'),
 	loading: AsyncLoader
@@ -171,6 +175,13 @@ const dashboardRoutes = [
 		component: AsyncDevices,
 		menuRoute: 'devices',
 		defaultView: true,
+	},
+	{
+		path: '/messages',
+		sidebarName: 'sidebar.monitor',
+		icon: InsertChart,
+		component: AsyncMessages,
+		menuRote: 'messages'
 	},
 	{
 		path: '/management/user/:id',

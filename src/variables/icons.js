@@ -9,6 +9,7 @@ import Google from 'assets/img/google.svg'
 import Call from '@material-ui/icons/Call'
 import Language from '@material-ui/icons/Language'
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
+import InsertChart from '@material-ui/icons/InsertChart'
 //#region weather Icons
 import ClearDay from 'assets/weather/clear_day.svg'
 import ClearNight from 'assets/weather/clear_night.svg'
@@ -107,6 +108,7 @@ import CellWifi from '@material-ui/icons/CellWifi'
 import LocalOffer from '@material-ui/icons/LocalOffer'
 import Airplay from '@material-ui/icons/Airplay'
 export {
+	InsertChart,
 	Airplay,
 	LocalOffer,
 	Code,

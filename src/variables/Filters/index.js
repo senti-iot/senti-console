@@ -56,6 +56,7 @@ const filterByDiff = (items, k) => {
 	return items
 }
 export const customFilterItems = (items, keyValues) => {
+	console.log(items, keyValues)
 	keyValues.forEach(k => {
 		switch (k.type) {
 			case 'string':

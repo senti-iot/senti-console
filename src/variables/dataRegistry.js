@@ -101,3 +101,7 @@ export const getSensorData = async (id) => {
 	let response = await servicesAPI.get(`/v1/devicedata/${id}`).then(rs => rs.ok ? rs.data : rs.ok)
 	return response
 }
+export const getAllMessages = async cId => {
+	let response = await servicesAPI.get(`/v1/messages/${cId}`).then(rs => rs.ok ? rs.data : rs.ok)
+	return response
+}

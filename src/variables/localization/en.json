@@ -1,4 +1,11 @@
 {
+	"messages": {
+		"fields": {
+			"id": "ID",
+			"deviceName": "Device name",
+			"registryName": "Registry name"
+		}
+	},
     "404": {
         "contactSupport": "Please try again or contact our support on support@senti.io!",
         "errorMessage": "The resource requested has not been found!",
@@ -910,7 +917,8 @@
         }
     },
     "sidebar": {
-        "cloudfunctions": "Cloud functions",
+		"monitor": "Monitor",
+		"cloudfunctions": "Cloud functions",
         "cloudfunction": "Cloud function",
         "collection": "Data Collection",
         "collections": "Data Collections",

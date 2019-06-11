@@ -9,11 +9,11 @@
     "": "",
     "Senti": "Senti",
     "actions": {
-		"addKey": "Tilføj enhed datafelt",
-		"addMtdKey": "Tilføj enhed metadata felt",
-		"addInboundFunc": "Tilføj funktion ved modtagelse af data",
         "accept": "Godkend",
         "addFilter": "Tilføj filter",
+        "addInboundFunc": "Tilføj funktion ved modtagelse af data",
+        "addKey": "Tilføj enhed datafelt",
+        "addMtdKey": "Tilføj enhed metadata felt",
         "apply": "Anvend",
         "back": "Forrige",
         "call": "Ring",
@@ -106,19 +106,19 @@
         }
     },
     "cloudfunctions": {
-		"datatypes":{
-			"timeSeries": "Tidsserier",
-			"average": "Gennemsnit af værdier"
-		},
+        "datatypes": {
+            "average": "Gennemsnit af værdier",
+            "timeSeries": "Tidsserier"
+        },
         "fields": {
-			"metadata": {
-				"key": "Metadata nøgle",
-				"value": "Metadata værdi"
-			},
-			"inboundfunc":"Cloud Funktion",
-			"key": "Enhed datafelt",
             "code": "Kildekode",
             "description": "Beskrivelse",
+            "inboundfunc": "Cloud Funktion",
+            "key": "Enhed datafelt",
+            "metadata": {
+                "key": "Metadata nøgle",
+                "value": "Metadata værdi"
+            },
             "name": "Navn",
             "type": "Type",
             "types": {
@@ -406,15 +406,15 @@
         },
         "pageTitle": "Favoritter",
         "types": {
-			"sensor": "Enhed",
+            "cloudfunction": "Cloud funktion",
             "collection": "Datasamling",
             "device": "Enhed",
+            "devicetype": "Enhedstype",
             "org": "Organisation",
             "project": "Projekt",
-            "user": "Bruger",
-			"registry": "Register",
-			"devicetype": "Enhedstype",
-			"cloudfunction": "Cloud funktion"
+            "registry": "Register",
+            "sensor": "Enhed",
+            "user": "Bruger"
         }
     },
     "filters": {
@@ -582,11 +582,18 @@
         },
         "userResendEmail": "Send bekræftelses E-mail igen"
     },
+    "messages": {
+        "fields": {
+            "deviceName": "Enhedsnavn",
+            "id": "ID",
+            "registryName": "Registersnavn"
+        }
+    },
     "no": {
-		"cloudfunction": "Ingen cloud funktion",
-		"activeDevice": "Ingen aktiv enhed",
+        "activeDevice": "Ingen aktiv enhed",
         "audioSupported": "Din browser understøtter ikke lydfiler! Der er således ikke lyd respons! Forsøg igen med en anden browser.",
         "birthdays": "Ingen fødselsdage i dag",
+        "cloudfunction": "Ingen cloud funktion",
         "collection": "Ikke tildelt en datasamling",
         "collections": "Ingen datasamlinger",
         "device": "Ingen enhed",
@@ -736,29 +743,29 @@
                 "none": "Uden protocol"
             },
             "region": "Region",
-			"registry": "Register",
-			"regions": {
-				"europe": "Europa"
-			},
+            "regions": {
+                "europe": "Europa"
+            },
+            "registry": "Register",
             "uuid": "Universelt Unik Identifikator (UUID)"
         },
         "pageTitle": "Registre"
     },
     "sensors": {
         "fields": {
-			"metadata": "Enhedsmetadata",
             "communication": "Enhedskommunikation",
             "communications": {
                 "allowed": "Tilladt",
                 "blocked": "Blokeret"
             },
             "deviceType": "Enhedstype",
+            "metadata": "Enhedsmetadata",
             "protocols": {
                 "publishData": "Udgiv data",
                 "state": "Enhedstilstand"
             },
-			"registry": "Register",
-			"uuid": "UUID"
+            "registry": "Register",
+            "uuid": "UUID"
         },
         "metadata": {
             "humidity": "Fugtighed",
@@ -911,8 +918,9 @@
         }
     },
     "sidebar": {
-        "cloudfunctions": "Cloud funktioner",
+		"monitor": "Overvåge",
         "cloudfunction": "Cloud funktion",
+        "cloudfunctions": "Cloud funktioner",
         "collection": "Datasamling",
         "collections": "Datasamlinger",
         "dashboard": "Dashboard",
@@ -998,6 +1006,7 @@
     },
     "tabs": {
         "activeDevice": "Aktiv enhed",
+        "code": "Kildekode",
         "collections": "Datasamlinger",
         "contact": "Kontakt",
         "data": "Diagrammer og data",
@@ -1009,8 +1018,7 @@
         "map": "Kortvisning",
         "projects": "Projekter",
         "userHistory": "System log",
-		"users": "Brugere",
-		"code": "Kildekode"
+        "users": "Brugere"
     },
     "tooltips": {
         "cardView": "Gittervisning",
@@ -1022,11 +1030,11 @@
             "type": "Diagram type"
         },
         "collection": "Datasamling",
-		"device": "Enhed",
-		"devices": {
-			"removeDataField": "Slet datafelt",
-			"removeCloudFunction": "Slet Cloud Funktion"
-		},
+        "device": "Enhed",
+        "devices": {
+            "removeCloudFunction": "Slet Cloud Funktion",
+            "removeDataField": "Slet datafelt"
+        },
         "favorites": "Favoritter",
         "listView": "Listevisning",
         "map": {

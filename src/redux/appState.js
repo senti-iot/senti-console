@@ -232,7 +232,8 @@ const initialState = {
 		registries: [],
 		devicetypes: [],
 		sensors: [],
-		functions: []
+		functions: [],
+		messages: [],
 	 }
 
 }
