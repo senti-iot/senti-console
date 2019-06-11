@@ -30,7 +30,7 @@ class Messages extends Component {
 				keyword: '',
 			}
 		}
-		props.setHeader('messages.pageTitle', false, '', 'messages')
+		props.setHeader('sidebar.monitor', false, '', 'messages')
 		props.setBC('messages')
 		props.setTabs({
 			id: 'messages',
