@@ -12,6 +12,9 @@ import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites'
 import { scrollToAnchor } from 'variables/functions';
 import { getDeviceTypeLS } from 'redux/data';
 import DeviceTypeDetails from './DeviceTypeCards/DeviceTypeDetails';
+import DeviceTypeMetadata from './DeviceTypeCards/DeviceTypeMetadata';
+import DeviceTypeCloudFunctions from './DeviceTypeCards/DeviceTypeCloudFunctions';
+
 
 class DeviceType extends Component {
 	constructor(props) {
@@ -162,13 +165,20 @@ class DeviceType extends Component {
 								deviceType={deviceType}
 								history={history}
 								match={match}
-								handleOpenAssignProject={this.handleOpenAssignProject}
-								handleOpenUnassignDevice={this.handleOpenUnassignDevice}
-								handleOpenAssignOrg={this.handleOpenAssignOrg}
-								handleOpenDeleteDialog={this.handleOpenDeleteDialog}
-								handleOpenAssignDevice={this.handleOpenAssignDevice}
 								t={t}
 								accessLevel={accessLevel}
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12} noMargin id={'metadata'}>
+							<DeviceTypeMetadata
+								deviceType={deviceType}
+								t={t}
+							/>
+						</ItemGrid>
+						<ItemGrid xs={12} noMargin id={'metadata'}>
+							<DeviceTypeCloudFunctions
+								deviceType={deviceType}
+								t={t}
 							/>
 						</ItemGrid>
 					</GridContainer></Fade>
@@ -192,7 +202,7 @@ const mapDispatchToProps = (dispatch) => ({
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),
 	finishedSaving: () => dispatch(finishedSaving()),
-	getDeviceType: async id => dispatch(await getDeviceTypeLS(id))
+	getDeviceType: async (id) => dispatch(await getDeviceTypeLS(id))
 })
 
 

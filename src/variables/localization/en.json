@@ -113,14 +113,18 @@
         "fields": {
             "code": "Source Code",
             "description": "Description",
+            "keys": "Device data keys",
             "key": "Device data key",
             "metadata": {
                 "key": "Metadata key",
-                "value": "Metadata value"
+				"value": "Metadata value",
+				"defaultValue": "Metadata default value"
             },
             "name": "Name",
             "type": "Type",
             "types": {
+				"inbound": "Function on Receiving data",
+				"outbound": "Cloud Function",
                 "external": "External call",
                 "function": "JavaScript function"
             }
@@ -591,6 +595,9 @@
         }
     },
     "no": {
+		"metadata": "No metadata",
+		"deviceInboundFunc": "No function on receiving data",
+		"deviceDataKeys": "No device data keys",
         "activeDevice": "No active device",
         "audioSupported": "Your browser does not support audio files! There will be no sound feedback! Try using a different browser.",
         "birthdays": "No birthdays today",

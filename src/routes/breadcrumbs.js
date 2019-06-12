@@ -3,11 +3,6 @@ const breadcrumbs = (t, name, id) => {
 		'dashboard': [
 			{ label: t('sidebar.dashboard'), path: '/dashboard' }
 		],
-		'editdevicetype': [
-			{ label: t('sidebar.devicetypes'), path: '/devicetypes' },
-			{ label: name, path: `/devicetype/${id}` },
-			{ label: t('menus.edits.devicetype'), path: `/devicetype/${id}/edit` }
-		],
 		'cloudfunctions': [
 			{ label: t('sidebar.cloudfunctions'), path: '/functions' }
 		],
@@ -66,6 +61,11 @@ const breadcrumbs = (t, name, id) => {
 		'createdevicetypes': [
 			{ label: t('sidebar.devicetypes'), path: '/devicetypes' },
 			{ label: t('menus.create.devicetype'), path: '/devicetypes/new' }
+		],
+		'editdevicetype': [
+			{ label: t('sidebar.devicetypes'), path: '/devicetypes' },
+			{ label: name, path: `/devicetype/${id}` },
+			{ label: t('menus.edits.devicetype'), path: `/devicetype/${id}/edit` }
 		],
 		'createproject': [
 			{ label: t('sidebar.projects'), path: '/projects' },

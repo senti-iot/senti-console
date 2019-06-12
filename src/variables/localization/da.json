@@ -114,14 +114,18 @@
             "code": "Kildekode",
             "description": "Beskrivelse",
             "inboundfunc": "Cloud Funktion",
+            "keys": "Enhed datafelter",
             "key": "Enhed datafelt",
             "metadata": {
                 "key": "Metadata nøgle",
-                "value": "Metadata værdi"
+				"value": "Metadata værdi",
+				"defaultValue": "Metadata standard værdi"
             },
             "name": "Navn",
             "type": "Type",
             "types": {
+				"inbound": "Funktion ved modtagelse af data",
+				"outbound": "Cloud funktion",
                 "external": "Udvendig",
                 "function": "JavaScript funktion"
             }
@@ -592,6 +596,9 @@
         }
     },
     "no": {
+		"metadata": "Ingen metadata",
+		"deviceInboundFunc": "Ingen funktion ved modtagelse af data",
+		"deviceDataKeys": "Ingen enhed datafelter",
         "activeDevice": "Ingen aktiv enhed",
         "audioSupported": "Din browser understøtter ikke lydfiler! Der er således ikke lyd respons! Forsøg igen med en anden browser.",
         "birthdays": "Ingen fødselsdage i dag",

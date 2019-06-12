@@ -29,7 +29,7 @@ class CreateDeviceType extends Component {
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/devicetypes/list'
-		props.setHeader('devicetypes.createDeviceType', true, prevURL, '')
+		props.setHeader('menus.create.devicetype', true, prevURL, '')
 		props.setBC('createdevicetypes')
 	}
 
