@@ -13,6 +13,7 @@ import { Add, Close } from 'variables/icons';
 import { teal } from '@material-ui/core/colors';
 import { T, ItemG } from 'components';
 import cx from 'classnames'
+import CreateDashboard from './CreateDashboard.js';
 class Dashboard extends React.Component {
 	constructor(props) {
 		super(props)
@@ -21,7 +22,7 @@ class Dashboard extends React.Component {
 			value: 0,
 			projects: [],
 			devices: 0,
-			openAddDash: false
+			openAddDash: true
 		}
 		props.setHeader('Senti', false, '', 'dashboard')
 		props.setBC('dashboard', '', '', false)
@@ -104,7 +105,7 @@ class Dashboard extends React.Component {
 				</Toolbar>
 			</AppBar>
 			<div>
-				Here will be the create Dashboard
+				<CreateDashboard/>
 			</div>
 		</Dialog>
 	}
