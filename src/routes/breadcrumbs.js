@@ -3,6 +3,11 @@ const breadcrumbs = (t, name, id) => {
 		'dashboard': [
 			{ label: t('sidebar.dashboard'), path: '/dashboard' }
 		],
+		'editdevicetype': [
+			{ label: t('sidebar.devicetypes'), path: '/devicetypes' },
+			{ label: name, path: `/devicetype/${id}` },
+			{ label: t('menus.edits.devicetype'), path: `/devicetype/${id}/edit` }
+		],
 		'cloudfunctions': [
 			{ label: t('sidebar.cloudfunctions'), path: '/functions' }
 		],

@@ -22,8 +22,7 @@ class CreateDeviceType extends Component {
 			value: '',
 		}
 		this.id = props.match.params.id
-		let prevURL = props.location.prevURL ? props.location.prevURL : '/devicetypes/list'
-		props.setHeader('menus.edit.devicetype', true, prevURL, '')
+		// let prevURL = props.location.prevURL ? props.location.prevURL : '/devicetypes/list'
 		props.setBC('createdevicetype')
 	}
 
@@ -37,7 +36,7 @@ class CreateDeviceType extends Component {
 		await getDeviceType(this.id)
 	}
 	componentDidUpdate = (prevProps, prevState) => {
-		const { location, setHeader, devicetype } = this.props
+		const { location, setHeader, setBC, devicetype } = this.props
 		if (!this.state.deviceType && devicetype !== prevProps.devicetype && devicetype) {
 			this.setState({
 				devicetype: devicetype,
@@ -49,8 +48,8 @@ class CreateDeviceType extends Component {
 				loading: false
 			})
 			let prevURL = location.prevURL ? location.prevURL : `/devicetype/${this.id}`
-			setHeader('devicetypes.editCollection', true, prevURL, 'devicetypes')
-			this.props.setBC('editdevicetype', devicetype.name, devicetype.id)
+			setHeader('menus.edits.devicetype', true, prevURL, 'devicetypes')
+			setBC('editdevicetype', devicetype.name, devicetype.id)
 		}
 	}
 	componentDidMount = async () => {
