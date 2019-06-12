@@ -16,9 +16,9 @@ class CreateDashboard extends React.Component {
 		super(props);
 		this.state = {
 			currentBreakpoint: "lg",
-			compactType: "vertical",
+			compactType: null,
 			mounted: false,
-			layouts: { lg: [] }
+			layouts: props.initialLayout
 		};
 
 		this.onBreakpointChange = this.onBreakpointChange.bind(this);
@@ -37,11 +37,11 @@ class CreateDashboard extends React.Component {
 			return (<Paper key={i} data-grid={l}>
 				<InfoCard
 					noExpand
-					key={i} 
+					key={i}
 					title={i}
 					content={(
 						<span className="text">{i}</span>
-					)}/>
+					)} />
 			</Paper>
 			);
 		});
@@ -76,11 +76,12 @@ class CreateDashboard extends React.Component {
 	handleAddNew = () => {
 		let newLg = this.state.layouts.lg
 		newLg.unshift({
-			x: 0, 
-			y: Infinity, 
-			w: 6, 
+			x: 0,
+			y: Infinity,
+			w: 6,
 			h: 4,
-			i: (newLg.length + 1).toString() })
+			i: (newLg.length + 1).toString()
+		})
 		console.log(newLg)
 		this.setState({
 			layouts: { lg: newLg }
@@ -91,7 +92,7 @@ class CreateDashboard extends React.Component {
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
-	
+
 		return (
 			<Dialog
 				fullScreen
@@ -129,19 +130,19 @@ class CreateDashboard extends React.Component {
 				<div>
 
 					<div>
-					Current Breakpoint: {this.state.currentBreakpoint} ({
+						Current Breakpoint: {this.state.currentBreakpoint} ({
 							this.props.cols[this.state.currentBreakpoint]
 						}{" "}
-					columns)
+						columns)
 					</div>
 					<div>
-					Compaction type:{" "}
+						Compaction type:{" "}
 						{_.capitalize(this.state.compactType) || "No Compaction"}
 					</div>
 					<button onClick={this.handleAddNew}>Add new Column</button>
 					<button onClick={this.onNewLayout}>Generate New Layout</button>
 					<button onClick={this.onCompactTypeChange}>
-					Change Compaction Type
+						Change Compaction Type
 					</button>
 					<ResponsiveReactGridLayout
 						{...this.props}
@@ -170,10 +171,54 @@ CreateDashboard.propTypes = {
 
 CreateDashboard.defaultProps = {
 	className: "layout",
-	rowHeight: 24,
+	rowHeight: 21,
 	onLayoutChange: function () { },
-	cols: { lg: 24, md: 10, sm: 6, xs: 4, xxs: 2 },
-	// initialLayout: generateLayout()
+	cols: { lg: 21, md: 10, sm: 6, xs: 4, xxs: 2 },
+	initialLayout: {
+
+		lg: [{
+			i: '0',
+			x: 0,
+			y: 0,
+			h: 21,
+			w: 6
+		},
+		{
+			i: '1',
+			x: 6,
+			y: 0,
+			h: 7,
+			w: 4
+		},
+		{
+			i: '2',
+			x: 6,
+			y: 7,
+			h: 7,
+			w: 4
+		},
+		{
+			i: '3',
+			x: 6,
+			y: 14,
+			h: 7,
+			w: 4
+		},		
+		{
+			i: '4',
+			x: 10,
+			y: 0,
+			h: 11,
+			w: 11
+		},		
+		{
+			i: '5',
+			x: 10,
+			y: 11,
+			h: 10,
+			w: 11
+		}, ]
+	}
 };
 
 export default withStyles(dashboardStyle)(CreateDashboard)

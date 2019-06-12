@@ -21,7 +21,7 @@ class Dashboard extends React.Component {
 			value: 0,
 			projects: [],
 			devices: 0,
-			openAddDash: true
+			openAddDash: false
 		}
 		props.setHeader('Senti', false, '', 'dashboard')
 		props.setBC('dashboard', '', '', false)
@@ -68,8 +68,8 @@ class Dashboard extends React.Component {
 		const { openAddDash } = this.state
 		const { handleCloseDT } = this
 		return <CreateDashboard
-			open={openAddDash}
-			onClose={handleCloseDT}
+			openAddDash={openAddDash}
+			handleCloseDT={handleCloseDT}
 			t={t}
 		/>
 		
