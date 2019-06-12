@@ -25,8 +25,7 @@ class DeviceTypeMetadata extends Component {
 				content={
 					<ItemG container spacing={16}>
 						<ItemG xs={12}>
-							{/* <Caption>{t('devicetypes.fields.structure.name')}</Caption> */}
-							{Object.keys(mtd).length > 0 ? <Table>
+							{mtd ? <Table>
 								<TableHead>
 									<TableRow>
 										<TableCell>{t('cloudfunctions.fields.metadata.key')}</TableCell>
@@ -34,7 +33,7 @@ class DeviceTypeMetadata extends Component {
 									</TableRow>
 								</TableHead>
 								<TableBody>
-									 {Object.keys(mtd).map(s => {
+									 {mtd.map(s => {
 										return  <TableRow key={s}>
 											<TableCell>
 												{mtd[s].key}

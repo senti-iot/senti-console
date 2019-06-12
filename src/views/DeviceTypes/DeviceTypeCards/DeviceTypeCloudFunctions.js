@@ -47,7 +47,6 @@ class DeviceTypeCloudFunctions extends Component {
 								</TableHead>
 								<TableBody>
 									{cfi.map((s, i) => {
-										console.log(cf)
 										return <TableRow key={i + 'outbound'}>
 											<TableCell>
 												<Link to={{ pathname: `/function/${s.nId}`, prevURL: `/devicetype/${deviceType.id}` }}>

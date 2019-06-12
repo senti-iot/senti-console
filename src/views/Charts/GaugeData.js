@@ -358,7 +358,7 @@ class GaugeComponent extends PureComponent {
 					</Tooltip>
 				</ItemG>
 			</Hidden>
-			<ItemG alignItems={'center'}>
+			<ItemG container alignItems={'center'}>
 				<T>{title}</T>
 			</ItemG>
 		</ItemG>

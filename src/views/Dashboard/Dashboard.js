@@ -1,4 +1,4 @@
-import { Button, withStyles, Fade, IconButton, Dialog, AppBar, Toolbar, Hidden } from '@material-ui/core';
+import { Button, withStyles, Fade, IconButton,  } from '@material-ui/core';
 // import imgs from 'assets/img/Squared';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import GridContainer from 'components/Grid/GridContainer';
@@ -9,11 +9,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import DiscoverSenti from 'views/Dashboard/DiscoverSenti';
 import DashboardPanel from './DashboardPanel.js';
-import { Add, Close } from 'variables/icons';
 import { teal } from '@material-ui/core/colors';
-import { T, ItemG } from 'components';
-import cx from 'classnames'
+import { Add } from 'variables/icons';
 import CreateDashboard from './CreateDashboard.js';
+
 class Dashboard extends React.Component {
 	constructor(props) {
 		super(props)
@@ -65,49 +64,15 @@ class Dashboard extends React.Component {
 		})
 	}
 	renderAddDashboard = () => {
-		const { t, classes } = this.props
+		const { t } = this.props
 		const { openAddDash } = this.state
 		const { handleCloseDT } = this
-		const appBarClasses = cx({
-			[' ' + classes['primary']]: 'primary'
-		});
-		return <Dialog
-			fullScreen
+		return <CreateDashboard
 			open={openAddDash}
 			onClose={handleCloseDT}
-			TransitionComponent={this.transition}>
-			<AppBar className={classes.appBar + ' ' + appBarClasses}>
-				<Toolbar>
-					<Hidden mdDown>
-						<ItemG container alignItems={'center'}>
-							<ItemG xs={2} container alignItems={'center'}>
-								<IconButton color='inherit' onClick={handleCloseDT} aria-label='Close'>
-									<Close />
-								</IconButton>
-								<T variant='h6' color='inherit' className={classes.flex}>
-									{t('dashboard.createDashboard')}
-								</T>
-							</ItemG>
-						</ItemG>
-					</Hidden>
-					<Hidden lgUp>
-						<ItemG container alignItems={'center'}>
-							<ItemG xs={4} container alignItems={'center'}>
-								<IconButton color={'inherit'} onClick={handleCloseDT} aria-label='Close'>
-									<Close />
-								</IconButton>
-								<T variant='h6' color='inherit' className={classes.flex}>
-									{t('dashboard.createDashboard')}
-								</T>
-							</ItemG>
-						</ItemG>
-					</Hidden>
-				</Toolbar>
-			</AppBar>
-			<div>
-				<CreateDashboard/>
-			</div>
-		</Dialog>
+			t={t}
+		/>
+		
 	}
 	render() {
 		const { discoverSenti, t, history } = this.props
