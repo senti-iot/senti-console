@@ -584,6 +584,7 @@
     },
     "messages": {
         "fields": {
+			"data": "Modtaget pakke",
             "deviceName": "Enhedsnavn",
             "id": "ID",
             "receivedAt": "Modtaged kl",
