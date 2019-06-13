@@ -234,7 +234,7 @@ class CreateDeviceType extends Component {
 			...this.state.deviceType,
 			inbound: this.state.sensorMetadata.inbound,
 			outbound: this.state.sensorMetadata.outbound,
-			metadata: mtd,
+			metadata: Object.keys(mtd).map(m => ({ key: m, value: mtd[m] })),
 			customer_id: this.props.orgId
 		}
 
