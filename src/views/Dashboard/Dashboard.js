@@ -109,7 +109,7 @@ Dashboard.propTypes = {
 }
 const mapStateToProps = (state) => ({
 	// discoverSenti: state.settings.discSentiVal
-	dashboards: state.appState.dashboards
+	dashboards: state.dsSystem.dashboards
 })
 
 const mapDispatchToProps = {

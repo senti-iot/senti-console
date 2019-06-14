@@ -45,7 +45,6 @@ const menuSelect = (p) => {
 export const setDashboards = (payload) => {
 	return async dispatch => {
 		let ds = payload
-		// console.log('trying')
 		ds.forEach(d => {
 			d.graphs.forEach(g => {
 				console.log(g.periodType)
@@ -61,7 +60,6 @@ export const setDashboards = (payload) => {
 }
 export const setDashboard = (payload) => {
 	return async dispatch => {
-
 		dispatch({ type: SetDashboard, payload })
 	}
 }
