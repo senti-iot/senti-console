@@ -21,6 +21,7 @@
 		"chartjs-plugin-zoom": "^0.6.6",
 		"classnames": "^2.2.6",
 		"core-js": "^2.6.5",
+		"eslint-plugin-flowtype": "^3.10.3",
 		"for-each": "^0.3.3",
 		"heatmap.js": "^2.0.5",
 		"i18n-iso-countries": "^3.7.8",
