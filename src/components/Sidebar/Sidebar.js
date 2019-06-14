@@ -29,7 +29,7 @@ class Sidebar extends Component {
 		})
 	}
 	activeRoute = (routeName) => this.props.menuRoute === routeName ? true : false;
-	
+
 	changeSmallMenu = () => {
 		this.props.changeSmallMenu(!this.props.smallMenu)
 	}
@@ -82,26 +82,28 @@ class Sidebar extends Component {
 									<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 								</ListItem>
 							</Tooltip>
-							<Collapse in={this.state[route.menuRoute]}>
-								{route.items.map((i, index) => <Tooltip key={index + i.menuRoute}
-									placement={'right'} title={!smallMenu ? t(i.sidebarName) : ''}>
-									<ListItem component={NavLink}
-										button
-										onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
-										to={i.path + (i.defaultView ? defaultView : '')}
-										classes={{
-											button: classNames({
-												[classes.buttonOpen]: smallMenu,
-												// [classes.buttonClose]: !smallMenu,
-												[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
-												[classes.button]: true,
-												[classes.nested]: smallMenu
-											})
-										}}>
-										<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><i.icon /></ListItemIcon>
-										<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(i.sidebarName)} />
-									</ListItem>
-								</Tooltip>)}
+							<Collapse in={this.state[route.menuRoute]} >
+								<div style={{ height: 44 * route.items.length + 88 }}>
+									{route.items.map((i, index) => <Tooltip key={index + i.menuRoute}
+										placement={'right'} title={!smallMenu ? t(i.sidebarName) : ''}>
+										<ListItem component={NavLink}
+											button
+											onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
+											to={i.path + (i.defaultView ? defaultView : '')}
+											classes={{
+												button: classNames({
+													[classes.buttonOpen]: smallMenu,
+													// [classes.buttonClose]: !smallMenu,
+													[classes.buttonActiveRoute]: this.activeRoute(route.menuRoute),
+													[classes.button]: true,
+													[classes.nested]: smallMenu
+												})
+											}}>
+											<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><i.icon /></ListItemIcon>
+											<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(i.sidebarName)} />
+										</ListItem>
+									</Tooltip>)}
+								</div>
 							</Collapse>
 						</Fragment>
 					}
@@ -151,7 +153,7 @@ class Sidebar extends Component {
 					paddingTop: 0,
 				}}>
 				{routes.map((route, index) => {
-					
+
 					if (route.redirect) return null;
 					if (route.hideFromSideBar) return null;
 					if (route.dropdown) {
@@ -175,25 +177,28 @@ class Sidebar extends Component {
 								</ListItem>
 							</Tooltip>
 							<Collapse in={this.state[route.menuRoute]}>
-								{route.items.map((i, index) => <Tooltip key={index + i.menuRoute}
-									placement={'right'} title={!smallMenu ? t(i.sidebarName) : ''}>
-									<ListItem component={NavLink}
-										button
-										onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
-										to={i.path + (i.defaultView ? defaultView : '')}
-										classes={{
-											button: classNames({
-												[classes.buttonOpen]: smallMenu,
-												[classes.buttonClose]: !smallMenu,
-												[classes.buttonActiveRoute]: this.activeRoute(i.menuRoute),
-												[classes.button]: true,
-												[classes.nested]: smallMenu
-											})
-										}}>
-										<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><i.icon /></ListItemIcon>
-										<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(i.sidebarName)} />
-									</ListItem>
-								</Tooltip>)}
+								<div style={{ height: 44 * route.items.length + 88 }}>
+
+									{route.items.map((i, index) => <Tooltip key={index + i.menuRoute}
+										placement={'right'} title={!smallMenu ? t(i.sidebarName) : ''}>
+										<ListItem component={NavLink}
+											button
+											onClick={this.props.drawerCloseOnNav ? this.closeDrawer : undefined}
+											to={i.path + (i.defaultView ? defaultView : '')}
+											classes={{
+												button: classNames({
+													[classes.buttonOpen]: smallMenu,
+													[classes.buttonClose]: !smallMenu,
+													[classes.buttonActiveRoute]: this.activeRoute(i.menuRoute),
+													[classes.button]: true,
+													[classes.nested]: smallMenu
+												})
+											}}>
+											<ListItemIcon style={{ marginRight: 16 }} className={classes.whiteFont}><i.icon /></ListItemIcon>
+											<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(i.sidebarName)} />
+										</ListItem>
+									</Tooltip>)}
+								</div>
 							</Collapse>
 						</Fragment>
 					}
@@ -249,7 +254,7 @@ class Sidebar extends Component {
 						if (route.hideFromSideBar) return null;
 						if (route.dropdown) {
 							return <Fragment key={index}>
-								
+
 								<ListItem /* component={Button */
 									button
 									onClick={(e) => { this.dropdown(e)(route.menuRoute) }}
@@ -266,7 +271,7 @@ class Sidebar extends Component {
 									<ListItemText disableTypography={true} className={classes.whiteFont} primary={t(route.sidebarName)} />
 								</ListItem>
 								<Collapse in={this.state[route.menuRoute]}>
-									{route.items.map((i, ind) => 
+									{route.items.map((i, ind) =>
 										<ListItem component={NavLink}
 											key={ind}
 											button
