@@ -368,6 +368,7 @@ class GaugeComponent extends PureComponent {
 			switch (period.chartType) {
 				case 3:
 					return <Gauge
+						title={this.props.title}
 						period={period}
 						value={this.state.value}
 					/>

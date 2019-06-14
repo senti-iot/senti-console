@@ -6,6 +6,7 @@ import { saveSettings } from 'variables/dataLogin';
 import { setDates } from './dateTime';
 import { setPrefix, set, get } from 'variables/storage';
 import { getAllData } from './data';
+import { setDashboards } from './dsSystem';
 var moment = require('moment')
 
 const acceptCookies = 'acceptCookies'
@@ -139,6 +140,7 @@ export const getSettings = async () => {
 			})
 		}
 		var favorites = user ? user.aux ? user.aux.senti ? user.aux.senti.favorites ? user.aux.senti.favorites : null : null : null : null
+		var dashboards = user ? user.aux ? user.aux.senti ? user.aux.senti.dashboards ? user.aux.senti.dashboards : null : null : null : null
 		moment.updateLocale('en-gb', {
 			week: {
 				dow: 1
@@ -179,6 +181,9 @@ export const getSettings = async () => {
 						[...favorites]
 					
 				})
+			}
+			if (dashboards) {
+				dispatch(setDashboards(dashboards))
 			}
 		}
 		else {

@@ -3,22 +3,13 @@ import React, { Component } from 'react'
 // import { withStyles } from '@material-ui/styles';
 import ItemG from 'components/Grid/ItemG';
 import { T } from 'components';
-import moment from 'moment'
+// import moment from 'moment'
 import RGauge from 'react-svg-gauge';
 import { primaryColor } from 'assets/jss/material-dashboard-react';
 
 
 class Gauge extends Component {
-	defaultOptions = {
-		animDuration: 1,
-		showValue: true,
-		max: Math.round(this.props.value * 100 / 60) ? Math.round(this.props.value) * 10 :  1,
-		dialStartAngle: 180,
-		dialEndAngle: 0,
-		label: (value) => {
-			return value.toFixed(3);
-		}
-	};
+
 	componentDidMount() {
 		// const gaugeOptions = Object.assign({}, this.defaultOptions, this.props);
 		// if (!this.gauge) {
@@ -33,7 +24,7 @@ class Gauge extends Component {
 	renderGauge(props) {
 	}
 	render() {
-		const { period, title } = this.props
+		const {  title } = this.props
 		return (
 			<ItemG container justify={'center'} alignItems={'center'}>
 				<ItemG container justify={'center'} alignItems={'center'}>
@@ -47,11 +38,11 @@ class Gauge extends Component {
 						minMaxLabelStyle={{ display: 'none' }}
 					/>
 				</ItemG>
-				<ItemG container justify={'center'} alignItems={'center'}>
+				{/* <ItemG container justify={'center'} alignItems={'center'}>
 					<T>{`${moment(period.from).format('LLL')} - ${moment(period.to).format('LLL')}`}</T>
-				</ItemG>
+				</ItemG> */}
 				<ItemG container justify={'center'} alignItems={'center'}>
-					<T>{title}</T>
+					<T style={{ fontSize: 24, fontWeight: 500, fontFace: 'Roboto' }}>{title}</T>
 				</ItemG>
 			</ItemG>
 		)

@@ -24,6 +24,7 @@ class Messages extends Component {
 
 		this.state = {
 			selected: [],
+			openMessage: false,
 			openAssignDevice: false,
 			openAssignProject: false,
 			openUnassignDevice: false,
