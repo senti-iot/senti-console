@@ -8,7 +8,6 @@ import RGauge from 'react-svg-gauge';
 import { primaryColor } from 'assets/jss/material-dashboard-react';
 
 
-
 class Gauge extends Component {
 	defaultOptions = {
 		animDuration: 1,
@@ -41,7 +40,8 @@ class Gauge extends Component {
 					<RGauge 
 						color={primaryColor}
 						value={this.props.value} 
-						width={300} height={175} valueLabelStyle={{ fontSize: 40, fontWeight: 500, fontFace: 'Roboto' }} 
+						/* width={300} height={175}  */
+						valueLabelStyle={{ fontSize: 40, fontWeight: 500, fontFace: 'Roboto' }} 
 						label={''}
 						max={this.props.value > 1 ? 100 : 1}
 						minMaxLabelStyle={{ display: 'none' }}

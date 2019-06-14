@@ -21,7 +21,6 @@
 		"chartjs-plugin-zoom": "^0.6.6",
 		"classnames": "^2.2.6",
 		"core-js": "^2.6.5",
-		"eslint": "^5.16.0",
 		"for-each": "^0.3.3",
 		"heatmap.js": "^2.0.5",
 		"i18n-iso-countries": "^3.7.8",
@@ -69,7 +68,6 @@
 		"skycons": "^1.0.0",
 		"store": "^2.0.12",
 		"styled-components": "^4.2.0",
-		"svg-gauge": "^1.0.5",
 		"workbox-build": "^3.6.3",
 		"zipcelx": "^1.6.0"
 	},

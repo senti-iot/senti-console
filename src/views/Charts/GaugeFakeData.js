@@ -334,7 +334,6 @@ class GaugeComponent extends PureComponent {
 		return <ItemG container style={{ flexFlow: 'row', alignItems: 'center' }}>
 			<Hidden mdDown>
 				<ItemG>
-
 					<Tooltip title={t('tooltips.chart.previousPeriod')}>
 						<IconButton onClick={this.handlePreviousPeriod}>
 							<KeyboardArrowLeft />
