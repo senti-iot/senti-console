@@ -1,4 +1,4 @@
-import { Button, withStyles, Fade, IconButton,  } from '@material-ui/core';
+import { Button, withStyles, Fade, /* IconButton, */  } from '@material-ui/core';
 // import imgs from 'assets/img/Squared';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import GridContainer from 'components/Grid/GridContainer';
@@ -9,8 +9,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import DiscoverSenti from 'views/Dashboard/DiscoverSenti';
 import DashboardPanel from './DashboardPanel.js';
-import { teal } from '@material-ui/core/colors';
-import { Add } from 'variables/icons';
+// import { teal } from '@material-ui/core/colors';
+// import { Add } from 'variables/icons';
 import CreateDashboard from './CreateDashboard.js';
 
 class Dashboard extends React.Component {
@@ -92,11 +92,11 @@ class Dashboard extends React.Component {
 								/>
 							})}
 						</GridContainer>
-						<IconButton
+						{/* <IconButton
 							onClick={this.handleOpenDT} 
 							style={{ position: 'absolute', top: 0, right: 0, background: teal[500], color: '#fff', borderRadius: 4, marginRight: 8, padding: '8px' }}>
 							<Add />
-						</IconButton>
+						</IconButton> */}
 					</div>
 				</Fade>
 			</Fragment>
