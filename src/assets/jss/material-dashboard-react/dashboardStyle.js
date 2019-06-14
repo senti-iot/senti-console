@@ -79,6 +79,7 @@ const dashboardStyle = theme => ({
 		margin: "0 auto",
 	},
 	appBar: {
+		WebkitOverflowScrolling: "touch",
 		position: 'sticky',
 		backgroundColor: headerColor,
 		boxShadow: "none",
