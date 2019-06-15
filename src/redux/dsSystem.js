@@ -7,42 +7,70 @@ export const setDashboardData = 'setDashboardData'
 export const gotDashboardData = 'gotDashboardData'
 
 
-
-const menuSelect = (p) => {
-	let to, from;
+const menuSelect = (p, c) => {
+	let to, from, timeType, chartType;
 	switch (p) {
 		case 0: // Today
 			from = moment().startOf('day')
 			to = moment()
+			timeType = 1
 			break;
 		case 1: // Yesterday
 			from = moment().subtract(1, 'd').startOf('day')
 			to = moment().subtract(1, 'd').endOf('day')
+			timeType = 1
 			break;
 		case 2: // This week
 			from = moment().startOf('week').startOf('day')
 			to = moment()
+			timeType = 2
 			break;
 		case 3: // Last 7 days
 			from = moment().subtract(7, 'd').startOf('day')
 			to = moment()
+			timeType = 2
 			break;
 		case 4: // last 30 days
 			from = moment().subtract(30, 'd').startOf('day')
 			to = moment()
+			timeType = 2
 			break;
 		case 5: // last 90 days
 			from = moment().subtract(90, 'd').startOf('day')
 			to = moment()
+			timeType = 2
 			break;
 		case 6:
 			from = moment(p.from)
 			to = moment(p.to)
+			timeType = p.timeType
 			break;
 		default:
 			break;
 	}
-	return { to, from }
+	chartType = c
+	return { to, from, timeType, chartType }
+}
+
+export const handleSetDate = (dId, gId, p) => {
+	return async (dispatch, getState) => {
+		console.log(p)
+		dispatch({ type: gotDashboardData, payload: true })
+		let ds = getState().dsSystem.dashboards
+		let dash = ds[ds.findIndex(d => d.id === dId)]
+		let graph = dash.graphs[dash.graphs.findIndex(g => g.id === gId)]
+		graph.period = p
+		graph.periodType = p.menuId
+		dash.graphs[dash.graphs.findIndex(g => g.id === gId)] = graph 
+		await dash.graphs.forEach(async g => {
+			let data = await getSensorDataClean(g.dataSource.deviceId, g.period.from, g.period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.chartType)
+			g.data = data
+		})
+		ds[ds.findIndex(d => d.id === dId)] = dash
+		console.log(ds)
+		dispatch({ type: setDashboardData, payload: dash })
+		dispatch({ type: gotDashboardData, payload: false })
+	}
 }
 
 export const setDashboards = (payload) => {
@@ -50,15 +78,14 @@ export const setDashboards = (payload) => {
 		let ds = payload
 		ds.forEach(d => {
 			d.graphs.forEach(g => {
-				console.log(g.periodType)
-				g.period = menuSelect(g.periodType)
+				g.period = menuSelect(g.periodType, g.chartType)
 			})
 		})
 		dispatch({
 			type: getDashboards,
 			payload: ds
 		})
-		// dispatch(await getDashboardData(payload[0].name))
+		
 	}
 }
 
@@ -67,17 +94,16 @@ export const getDashboardData = async (id) => {
 		dispatch({ type: gotDashboardData, payload: true })
 		let ds = getState().dsSystem.dashboards
 		let d = ds[ds.findIndex(c => c.id === id)]
-		console.log(d, id)
 		await d.graphs.forEach(async g => {
 			let data = await getSensorDataClean(g.dataSource.deviceId, g.period.from, g.period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.chartType)
 			g.data = data
 		})
-		ds[ds.findIndex(c => c.name === d.name)] = d
-		console.log(ds)
+		ds[ds.findIndex(c => c.id === d.id)] = d
 		dispatch({ type: setDashboardData, payload: d })
 		dispatch({ type: gotDashboardData, payload: false })
 	}
 }
+
 
 const setState = (key, payload, state) => Object.assign({}, state, { [key]: payload })
 const initialState = {

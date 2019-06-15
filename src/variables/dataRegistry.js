@@ -100,7 +100,6 @@ export const getSensorDataClean = async (id, from, to, v, nId, deviceType, chart
 		url = `/v1/devicedata-clean/${id}/${startDate}/${endDate}/${v}/${nId}`
 	}
 	let response = await servicesAPI.get(url).then(rs => rs.ok ? rs.data : rs.ok)
-	console.log(response)
 	return response
 }
 

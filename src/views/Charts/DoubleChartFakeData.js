@@ -15,7 +15,6 @@ import {
 	MultiLineChart,
 	DoughnutChart,
 	PieChart,
-	ExportModal,
 	DateFilterMenu,
 	T,
 } from 'components';
@@ -25,7 +24,8 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
-import { changeDate, changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTime'
+import { changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTime'
+import { handleSetDate } from 'redux/dsSystem';
 
 class DoubleChartData extends PureComponent {
 	constructor(props) {
@@ -351,14 +351,15 @@ class DoubleChartData extends PureComponent {
 					</Tooltip>
 				</ItemG>
 			</Hidden>
-			<ItemG alignItems={'center'}>
+			<ItemG>
 				<T>{title}</T>
 			</ItemG>
 		</ItemG>
 	}
 	renderType = () => {
-		const { title, setHoverID, t, device, period, single, hoverID } = this.props
+		const { title, setHoverID, t, device, period, gId, single, hoverID } = this.props
 		const { loading } = this.state
+		console.log(gId, period)
 		if (!loading) {
 			const { roundDataSets, lineDataSets, barDataSets } = this.state
 			switch (period.chartType) {
@@ -434,7 +435,7 @@ class DoubleChartData extends PureComponent {
 							t={t}
 						/> : this.renderNoData()
 				default:
-					break;
+					return null
 			}
 		}
 		else return this.renderNoData()
@@ -445,6 +446,10 @@ class DoubleChartData extends PureComponent {
 			return true
 		}
 		return false
+	}
+	handleSetDate = async (menuId, to, from, defaultT) => {
+		const { dId, gId, period } = this.props
+		await this.props.handleSetDate(dId, gId, { menuId, to, from, timeType: defaultT, chartType: period.chartType  })
 	}
 	renderMenu = () => {
 		const { actionAnchor, actionAnchorVisibility, resetZoom } = this.state
@@ -473,7 +478,10 @@ class DoubleChartData extends PureComponent {
 			<ItemG container>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.period')}>
-						<DateFilterMenu period={period} t={t} />
+						<DateFilterMenu
+							customSetDate={this.handleSetDate}
+							period={period}
+							t={t} />
 					</Tooltip>
 				</ItemG>
 				<Collapse in={resetZoom}>
@@ -616,9 +624,9 @@ class DoubleChartData extends PureComponent {
 
 	render() {
 		const { t, period } = this.props
-		const { openDownload, loading, exportData } = this.state
-		let displayTo = dateTimeFormatter(period.to)
-		let displayFrom = dateTimeFormatter(period.from)
+		const { /* openDownload, */ loading, /* exportData */ } = this.state
+		// let displayTo = dateTimeFormatter(period.to)
+		// let displayFrom = dateTimeFormatter(period.from)
 		return (
 			<Fragment>
 				<InfoCard
@@ -629,7 +637,7 @@ class DoubleChartData extends PureComponent {
 					topAction={this.renderMenu()}
 					content={
 						<Grid container>
-							<ExportModal
+							{/* <ExportModal
 								raw={period.raw}
 								to={displayTo}
 								from={displayFrom}
@@ -637,7 +645,7 @@ class DoubleChartData extends PureComponent {
 								open={openDownload}
 								handleClose={this.handleCloseDownloadModal}
 								t={t}
-							/>
+							/> */}
 							{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
 
 								<ItemG xs={12}>
@@ -654,7 +662,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-	handleSetDate: (id, to, from, timeType, pId) => dispatch(changeDate(id, to, from, timeType, pId)),
+	handleSetDate: async (dId, gId, p) => dispatch(await handleSetDate(dId, gId, p)),
 	changeYAxis: (val) => dispatch(changeYAxis(val)),
 	removePeriod: (pId) => dispatch(removeChartPeriod(pId)),
 	changeChartType: (p, chartId) => dispatch(changeChartType(p, chartId)),

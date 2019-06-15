@@ -47,17 +47,6 @@ class DashboardPanel extends Component {
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
-		// let dataSet = {
-		// 	name: 'Weekly',
-		// 	data: data.weekly.data,
-		// 	color: teal[500]
-		// }
-		// let dataSetACC = {
-		// 	name: 'ACC',
-		// 	data: data.meter.data,
-		// 	color: teal[500]
-		// }
-		console.log('Loading', loading)
 		return <Dialog
 			fullScreen
 			open={openDashboard}
@@ -118,8 +107,7 @@ class DashboardPanel extends Component {
 			{loading ? <CircularLoader /> : <div className={classes[d.color]} style={{ height: 'calc(100%)', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
 				<GridContainer style={{ padding: 16 }} spacing={16} justify={'center'} alignItems={'center'}
 				>
-					{d.graphs ? d.graphs.map((g, i) => {
-						console.log(g.data)
+					{d.graphs.map((g, i) => {
 						if (g.data)
 							if (g.dataSource.type === 1)
 								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
@@ -128,34 +116,36 @@ class DashboardPanel extends Component {
 										period={{ ...g.period, menuId: g.periodType }}
 										data={g.data}
 										t={t}
+										gId={g.id}
+										dId={d.id}
 										single
 									/>
 								</ItemG>
-							else { 
+							else {
 								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
 									<DoubleChartFakeData
 										title={g.name}
+										gId={g.id}
+										dId={d.id}
 										single={true}
-										period={{ ...g.period, menuId: 3, chartType: 3, timeType: 2 }}
-										// value={data.myUsage.data}
+										period={{ ...g.period, menuId: g.periodType }}
 										t={t}
 										newState={setDailyData([{ data: g.data, name: g.name, color: teal[500], id: g.id }], g.period.from, g.period.to)}
 									/>
 								</ItemG>
 							}
 						return null
-					}) : null}
+					})}
 				</GridContainer>
 			</div>}
 		</Dialog>
 	}
 	render() {
 		const { d, data } = this.props
-		console.log('D', d)
 		return (
 			<Fragment>
 				{this.renderDashboard()}
-				<ItemG xs={12} md={4} lg={3}>
+				<ItemG xs={12} md={4} lg={2}>
 					<DashboardCard
 						handleOpenDashboard={this.handleOpenDashboard}
 						data={data}

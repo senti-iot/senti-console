@@ -238,7 +238,6 @@ export const setDailyData = (dataArr, from, to, hoverID, extra) => {
 		roundDataSets: null,
 		barDataSets: null
 	}
-	console.log(dataArr)
 	if (dataArr.length > 0) {
 		state = {
 			...extra,

@@ -15,6 +15,7 @@ const styles = theme => ({
 		padding: 4
 	},
 	menuButton: {
+		color: '#fff',
 		position: 'absolute',
 		top: 0,
 		right: 0
