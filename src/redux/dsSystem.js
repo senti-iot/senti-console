@@ -4,6 +4,9 @@ import moment from 'moment'
 export const getDashboards = 'getDashboards'
 export const SetDashboard = 'SetDashboard'
 export const setDashboardData = 'setDashboardData'
+export const gotDashboardData = 'gotDashboardData'
+
+
 
 const menuSelect = (p) => {
 	let to, from;
@@ -55,35 +58,32 @@ export const setDashboards = (payload) => {
 			type: getDashboards,
 			payload: ds
 		})
-		dispatch(await getDashboardData(payload[0].name))
-	}
-}
-export const setDashboard = (payload) => {
-	return async dispatch => {
-		dispatch({ type: SetDashboard, payload })
+		// dispatch(await getDashboardData(payload[0].name))
 	}
 }
 
-export const getDashboardData = async (dsName) => {
+export const getDashboardData = async (id) => {
 	return async (dispatch, getState) => {
-		console.log('bing')
+		dispatch({ type: gotDashboardData, payload: true })
 		let ds = getState().dsSystem.dashboards
-		let d = ds[ds.findIndex(c => c.name === dsName)]
-		console.log(d, dsName, )
+		let d = ds[ds.findIndex(c => c.id === id)]
+		console.log(d, id)
 		await d.graphs.forEach(async g => {
-			let data = await getSensorDataClean(g.dataSource.deviceId, g.period.from, g.period.to, g.dataSource.dataKey, g.dataSource.cf)
+			let data = await getSensorDataClean(g.dataSource.deviceId, g.period.from, g.period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.chartType)
 			g.data = data
 		})
 		ds[ds.findIndex(c => c.name === d.name)] = d
 		console.log(ds)
-		dispatch({ type: setDashboardData, ds })
+		dispatch({ type: setDashboardData, payload: d })
+		dispatch({ type: gotDashboardData, payload: false })
 	}
 }
 
 const setState = (key, payload, state) => Object.assign({}, state, { [key]: payload })
 const initialState = {
 	dashboards: [],
-	dashboard: null
+	dashboard: null,
+	gotDashboardData: true
 }
 
 export const dsSystem = (state = initialState, { type, payload }) => {
@@ -91,7 +91,10 @@ export const dsSystem = (state = initialState, { type, payload }) => {
 
 		case getDashboards:
 			return setState('dashboards', payload, state)
-
+		case setDashboardData:
+			return setState('dashboard', payload, state)
+		case gotDashboardData:
+			return setState('gotDashboardData', payload, state)
 		default:
 			return state
 	}

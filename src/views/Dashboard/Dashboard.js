@@ -87,6 +87,7 @@ class Dashboard extends React.Component {
 						<GridContainer spacing={8}>
 							{this.props.dashboards.map((d, i) => {
 								return <DashboardPanel
+									key={i}
 									d={d}
 									t={t}
 								/>

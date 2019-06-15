@@ -85,15 +85,22 @@ export const updateSensor = async (sensor) => {
 	let response = await servicesAPI.post(`v1/device`, sensor).then(rs => rs.data )
 	return response
 }
-export const getSensorDataClean = async (id, from, to, v, nId) => {
+export const getSensorDataClean = async (id, from, to, v, nId, deviceType, chartType) => {
 	if (nId === undefined) {
 		console.trace()
 	}
 	// console.log(moment(from, 'YYYY-MM-DD+HH:mm'))
 	let startDate = moment(from, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')
 	let endDate = moment(to, 'YYYY-MM-DD+HH:mm').format('YYYY-MM-DD HH:mm:ss')
-	let response = await servicesAPI.get(`/v1/devicedata-clean/${id}/${startDate}/${endDate}/${v}/${nId}`).then(rs => rs.ok ? rs.data : rs.ok)
-	// console.log(response)
+	let url;
+	if (deviceType) {
+		url = `/v1/devicedata-clean/${id}/${startDate}/${endDate}/${v}/${nId}/${deviceType}/${chartType}`
+	}
+	else { 
+		url = `/v1/devicedata-clean/${id}/${startDate}/${endDate}/${v}/${nId}`
+	}
+	let response = await servicesAPI.get(url).then(rs => rs.ok ? rs.data : rs.ok)
+	console.log(response)
 	return response
 }
 

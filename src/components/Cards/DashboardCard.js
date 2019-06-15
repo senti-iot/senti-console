@@ -10,7 +10,7 @@ import { colors, IconButton } from '@material-ui/core';
 import { Muted } from 'components';
 import { MoreVert, Visibility, Airplay, Star, LocalOffer } from 'variables/icons';
 
-const styles = {
+const styles = theme => ({
 	smallButton: {
 		padding: 4
 	},
@@ -26,19 +26,22 @@ const styles = {
 		fontSize: '0.875rem'
 	},
 	card: {
-		width: 250,
-		height: 300,
+		// width: 250,
+		// height: 300,
 		margin: 8,
 		display: 'flex',
 		flexFlow: 'column',
 		// flexGrow: 1,
 		overflow: 'hidden',
+		flex: 1
+		// [theme.breakpoints.up('sm')]: {
+		// }
 	},
 	cardContent: {
 		flexGrow: 1
 	},
 	media: {
-		height: 0,
+
 		paddingTop: '56.25%',
 		position: 'relative'
 	},
@@ -136,7 +139,7 @@ const styles = {
 			background: colors.blue[500]
 		}
 	},
-};
+})
 
 class DashboardCard extends Component {
 	render() {

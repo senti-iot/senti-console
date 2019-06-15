@@ -3,7 +3,7 @@ import DashboardCard from 'components/Cards/DashboardCard';
 import imgs from 'assets/img/Squared';
 import { connect } from 'react-redux'
 import { Dialog, AppBar, Toolbar, Hidden, IconButton, withStyles, ButtonBase, Slide } from '@material-ui/core';
-import { ItemG, T, GridContainer } from 'components';
+import { ItemG, T, GridContainer, CircularLoader } from 'components';
 import { Close } from 'variables/icons';
 import cx from 'classnames'
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
@@ -12,6 +12,7 @@ import { teal } from '@material-ui/core/colors';
 import GaugeFakeData from 'views/Charts/GaugeFakeData';
 import DoubleChartFakeData from 'views/Charts/DoubleChartFakeData';
 import logo from '../../logo.svg'
+import { getDashboardData } from 'redux/dsSystem';
 
 class DashboardPanel extends Component {
 	constructor(props) {
@@ -21,6 +22,11 @@ class DashboardPanel extends Component {
 			openDashboard: false
 		}
 	}
+	componentDidMount = async () => {
+		const { getDashboardData, d } = this.props
+		await getDashboardData(d.id)
+	}
+
 	handleOpenDashboard = () => {
 		this.setState({
 			openDashboard: true
@@ -35,23 +41,23 @@ class DashboardPanel extends Component {
 		return <Slide direction='up' {...props} />;
 	}
 	renderDashboard = () => {
-		const { t, classes, data, d } = this.props
+		const { t, classes, d, loading } = this.props
 		const { openDashboard } = this.state
 		const { handleCloseDashboard } = this
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
-		let dataSet = {
-			name: 'Weekly',
-			data: data.weekly.data,
-			color: teal[500]
-		}
-		let dataSetACC = {
-			name: 'ACC',
-			data: data.meter.data,
-			color: teal[500]
-		}
-
+		// let dataSet = {
+		// 	name: 'Weekly',
+		// 	data: data.weekly.data,
+		// 	color: teal[500]
+		// }
+		// let dataSetACC = {
+		// 	name: 'ACC',
+		// 	data: data.meter.data,
+		// 	color: teal[500]
+		// }
+		console.log('Loading', loading)
 		return <Dialog
 			fullScreen
 			open={openDashboard}
@@ -109,92 +115,67 @@ class DashboardPanel extends Component {
 					</Hidden>
 				</Toolbar>
 			</AppBar>
-			<div className={classes[d.color]} style={{ height: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+			{loading ? <CircularLoader /> : <div className={classes[d.color]} style={{ height: 'calc(100%)', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
 				<GridContainer style={{ padding: 16 }} spacing={16} justify={'center'} alignItems={'center'}
 				>
-					{/* <Paper style={{ width: '70vw', height: '70vh', display: 'flex' }}> */}
-					{/* <Grid container spacing={16} justify={'center'} alignItems={'center'}> */}
-					<ItemG xs={12} md={6} container justify={'center'}>
-						<GaugeFakeData
-							title={'My usage'}
-							period={{ ...data.myUsage.period, menuId: 3, chartType: 3 }}
-							value={data.myUsage.data}
-							t={t}
-							sensor={{
-								id: 30,
-							}}
-							single
-						/>
-					</ItemG>
-					<ItemG xs={12} md={6} container justify={'center'}>
-						<GaugeFakeData
-							title={'Other Usage'}
-							period={{ ...data.myUsage.period, menuId: 3, chartType: 3 }}
-							value={data.otherUsage.data}
-							t={t}
-							sensor={{
-								id: 30,
-							}}
-							single={true}
-						/>
-					</ItemG>
-					<ItemG xs={12} md={6}>
-						<DoubleChartFakeData
-							title={'Weekly Usage'}
-							single={true}
-							period={{ ...data.myUsage.period, menuId: 3, chartType: 3, timeType: 2 }}
-							value={data.myUsage.data}
-							t={t}
-							newState={setDailyData([dataSet], data.weekly.period.from, data.weekly.period.to)}
-							sensor={{
-								id: 30,
-							}}
-						/>
-
-					</ItemG>
-					<ItemG xs={12} md={6}>
-						<DoubleChartFakeData
-							title={'Meter Reading'}
-							single={true}
-							// color={d.color}
-							period={{ ...data.myUsage.period, menuId: 3, chartType: 3, timeType: 2 }}
-							value={data.myUsage.data}
-							t={t}
-							newState={setDailyData([dataSetACC], data.weekly.period.from, data.weekly.period.to)}
-							sensor={{
-								id: 30,
-							}}
-						/>
-
-					</ItemG>
+					{d.graphs ? d.graphs.map((g, i) => {
+						console.log(g.data)
+						if (g.data)
+							if (g.dataSource.type === 1)
+								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
+									<GaugeFakeData
+										title={g.name}
+										period={{ ...g.period, menuId: g.periodType }}
+										data={g.data}
+										t={t}
+										single
+									/>
+								</ItemG>
+							else { 
+								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
+									<DoubleChartFakeData
+										title={g.name}
+										single={true}
+										period={{ ...g.period, menuId: 3, chartType: 3, timeType: 2 }}
+										// value={data.myUsage.data}
+										t={t}
+										newState={setDailyData([{ data: g.data, name: g.name, color: teal[500], id: g.id }], g.period.from, g.period.to)}
+									/>
+								</ItemG>
+							}
+						return null
+					}) : null}
 				</GridContainer>
-			</div>
+			</div>}
 		</Dialog>
 	}
 	render() {
 		const { d, data } = this.props
+		console.log('D', d)
 		return (
 			<Fragment>
 				{this.renderDashboard()}
-				<DashboardCard
-					handleOpenDashboard={this.handleOpenDashboard}
-					data={data}
-					header={d.name}
-					img={imgs.data}
-					content={d.description}
-					c={d.color}
-				/>
+				<ItemG xs={12} md={4} lg={3}>
+					<DashboardCard
+						handleOpenDashboard={this.handleOpenDashboard}
+						data={data}
+						header={d.name}
+						img={imgs.data}
+						content={d.description}
+						c={d.color}
+					/>
+				</ItemG>
 			</Fragment>
 		)
 	}
 }
 
-const mapStateToProps = (state) => ({
-	data: state.appState.dashboardData[0]
+const mapStateToProps = (state, ownProps) => ({
+	loading: state.dsSystem.gotDashboardData
 })
 
-const mapDispatchToProps = () => ({
-
+const mapDispatchToProps = (dispatch) => ({
+	getDashboardData: async (id) => dispatch(await getDashboardData(id))
 })
 
 export default withStyles(dashboardStyle)(connect(mapStateToProps, mapDispatchToProps)(DashboardPanel))

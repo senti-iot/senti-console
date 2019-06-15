@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import { getWeather } from 'redux/weather';
 import MultiTooltip from './MultiTooltip';
 
+Chart.defaults.global.elements.line.tension = 0;
 Chart.defaults.multicolorLine = Chart.defaults.line;
 Chart.controllers.multicolorLine = Chart.controllers.line.extend({
 	draw: function (ease) {
@@ -70,6 +71,7 @@ class LineChart extends PureComponent {
 				long: 0
 			},
 			lineOptions: {
+				lineTension: 0,
 				responsive: true,
 				animation: {
 					duration: 500,
@@ -321,6 +323,7 @@ class LineChart extends PureComponent {
 		this.setState({
 			lineOptions: {
 				...this.state.lineOptions,
+				lineTension: 0,
 				scales: {
 					...this.state.lineOptions.scales,
 					xAxes: [

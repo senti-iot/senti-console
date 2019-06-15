@@ -26,21 +26,18 @@ class Gauge extends Component {
 	render() {
 		const {  title } = this.props
 		return (
-			<ItemG container justify={'center'} alignItems={'center'}>
+			<ItemG container justify={'center'} alignItems={'center'} style={{ width: '100%', height: '100%' }}>
 				<ItemG container justify={'center'} alignItems={'center'}>
 					<RGauge 
 						color={primaryColor}
 						value={this.props.value} 
-						/* width={300} height={175}  */
+						width={300} height={175} 
 						valueLabelStyle={{ fontSize: 40, fontWeight: 500, fontFace: 'Roboto' }} 
 						label={''}
 						max={this.props.value > 1 ? 100 : 1}
 						minMaxLabelStyle={{ display: 'none' }}
 					/>
 				</ItemG>
-				{/* <ItemG container justify={'center'} alignItems={'center'}>
-					<T>{`${moment(period.from).format('LLL')} - ${moment(period.to).format('LLL')}`}</T>
-				</ItemG> */}
 				<ItemG container justify={'center'} alignItems={'center'}>
 					<T style={{ fontSize: 24, fontWeight: 500, fontFace: 'Roboto' }}>{title}</T>
 				</ItemG>
