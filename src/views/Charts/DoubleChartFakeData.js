@@ -80,16 +80,14 @@ class DoubleChartData extends PureComponent {
 	getData = async () => {
 		const { g, period, title } = this.props
 		let data = await getSensorDataClean(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.chartType)
-		let newState =  setDailyData([{ data: data, name: title, color: teal[500], id: g.id }], g.period.from, g.period.to)
+		let newState = setDailyData([{ data: data, name: title, color: teal[500], id: g.id }], g.period.from, g.period.to)
 		this.setState({
 			...newState, loading: false
 		})
 	}
-		
+
 	componentDidUpdate = async (prevProps, prevState) => {
-		console.log(prevProps.period !== this.props.period, this.props.period, prevProps.period.menuId !== this.props.period.menuId)
-		console.log('updated')
-		if (prevProps.period !== this.props.period  || prevProps.period.timeType !== this.props.period.timeType) {
+		if (prevProps.period !== this.props.period || prevProps.period.timeType !== this.props.period.timeType) {
 			this.setState({ loading: true }, async () => {
 				this.getData()
 			})
@@ -132,7 +130,9 @@ class DoubleChartData extends PureComponent {
 	handleVisibility = id => (event) => {
 		if (event)
 			event.preventDefault()
-		this.props.changeChartType(this.props.period, id)
+		const { period } = this.props
+		// this.props.changeChartType(this.props.period, id)
+		this.handleSetDate(period.menuId, period.to, period.from, period.timeType, id)
 		this.setState({ actionAnchorVisibility: null })
 	}
 
@@ -149,13 +149,13 @@ class DoubleChartData extends PureComponent {
 					if (zoomDate.length === 1) {
 						this.setState({ resetZoom: false, zoomDate: [] })
 					}
-					this.props.handleSetDate(6, endDate, startDate, 1, period.id)
+					this.handleSetDate(6, endDate, startDate, 1, period.id)
 					break;
 				case 1:
 					startDate = zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
 					endDate = zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
 					this.setState({ resetZoom: false, zoomDate: [] })
-					this.props.handleSetDate(6, endDate, startDate, 2, period.id)
+					this.handleSetDate(6, endDate, startDate, 2, period.id)
 					break;
 				default:
 					break;
@@ -187,7 +187,7 @@ class DoubleChartData extends PureComponent {
 									to: period.to
 								}]
 						})
-						this.props.handleSetDate(6, endDate, startDate, 0, period.id)
+						this.handleSetDate(6, endDate, startDate, 0, period.id)
 						break
 					case 2:
 						startDate = moment(date).startOf('day')
@@ -199,7 +199,7 @@ class DoubleChartData extends PureComponent {
 								to: period.to
 							}]
 						})
-						this.props.handleSetDate(6, endDate, startDate, 1, period.id)
+						this.handleSetDate(6, endDate, startDate, 1, period.id)
 						break;
 					default:
 						break;
@@ -261,11 +261,11 @@ class DoubleChartData extends PureComponent {
 				if (period.timeType === 2 || period.timeType === 3) {
 					let dayDiff = to.diff(from, 'day')
 					if (dayDiff <= 0) {
-						return this.props.handleSetDate(6, to, from, 1, period.id)
+						return this.handleSetDate(6, to, from, 1, period.id)
 					}
 				}
 				else {
-					return this.props.handleSetDate(6, to, from, 2, period.id)
+					return this.handleSetDate(6, to, from, 2, period.id)
 				}
 			}
 			if ([3, 4, 5].indexOf(initialPeriod.menuId) !== -1) {
@@ -275,7 +275,7 @@ class DoubleChartData extends PureComponent {
 				to = this.futureTester(to, 'day') ? moment() : to
 			}
 		}
-		this.props.handleSetDate(6, to, from, period.timeType, period.id)
+		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	handlePreviousPeriod = () => {
 		const { period } = this.props
@@ -318,11 +318,11 @@ class DoubleChartData extends PureComponent {
 				if (period.timeType === 2 || period.timeType === 3) {
 					let dayDiff = to.diff(from, 'day')
 					if (dayDiff <= 0) {
-						return this.props.handleSetDate(6, to, from, 1, period.id)
+						return this.handleSetDate(6, to, from, 1, period.id)
 					}
 				}
 				else {
-					return this.props.handleSetDate(6, to, from, 2, period.id)
+					return this.handleSetDate(6, to, from, 2, period.id)
 				}
 			}
 			if ([3, 4, 5].indexOf(initialPeriod.menuId) !== -1) {
@@ -331,7 +331,7 @@ class DoubleChartData extends PureComponent {
 				to = moment(period.to).subtract(diff + 1, 'minute').endOf('day')
 			}
 		}
-		this.props.handleSetDate(6, to, from, period.timeType, period.id)
+		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	renderTitle = () => {
 		const { period, t, title } = this.props
@@ -458,9 +458,9 @@ class DoubleChartData extends PureComponent {
 		}
 		return false
 	}
-	handleSetDate = async (menuId, to, from, defaultT) => {
+	handleSetDate = async (menuId, to, from, defaultT, chartType) => {
 		const { dId, gId, period } = this.props
-		await this.props.handleSetDate(dId, gId, { menuId, to, from, timeType: defaultT, chartType: period.chartType  })
+		await this.props.handleSetDate(dId, gId, { menuId, to, from, timeType: defaultT, chartType: chartType ? chartType : period.chartType })
 	}
 	renderMenu = () => {
 		const { actionAnchor, actionAnchorVisibility, resetZoom } = this.state

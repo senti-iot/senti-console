@@ -147,7 +147,7 @@ class LineChart extends PureComponent {
 						},
 						type: props.chartYAxis,
 						ticks: {
-							beginAtZero: true,
+							// beginAtZero: true,
 							fontColor: props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
 						},
 						gridLines: {
