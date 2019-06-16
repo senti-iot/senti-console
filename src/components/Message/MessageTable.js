@@ -12,7 +12,7 @@ import { ItemGrid, Info, Caption } from 'components'
 import { connect } from 'react-redux'
 import TP from 'components/Table/TP';
 import TC from 'components/Table/TC';
-import MessageHover from 'components/Hover/MessageHover';
+// import MessageHover from 'components/Hover/MessageHover';
 import { dateTimeFormatter } from 'variables/functions';
 
 class MessageTable extends React.Component {
@@ -63,7 +63,7 @@ class MessageTable extends React.Component {
 		})
 	}
 	renderHover = () => {
-		return <MessageHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} message={this.state.hoverMessage} />
+		return null //<MessageHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} message={this.state.hoverMessage} />
 	}
 	renderProtocol = (id) => {
 		const { t } = this.props
@@ -156,8 +156,8 @@ class MessageTable extends React.Component {
 											
 												FirstC label={n.id}/>
 											<TC
-												onMouseEnter={e => { this.setHover(e, n) }}
-												onMouseLeave={this.unsetTimeout} 
+												// onMouseEnter={e => { this.setHover(e, n) }}
+												// onMouseLeave={this.unsetTimeout} 
 												label={n.deviceName} 
 											/>
 											<TC label={n.registryName}/>

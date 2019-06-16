@@ -1,4 +1,4 @@
-import { Paper, withStyles, Dialog, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, Fade } from '@material-ui/core';
+import { Paper, withStyles, Dialog, IconButton, DialogContent, DialogTitle, DialogContentText, List, ListItem, ListItemText, DialogActions, Button, ListItemIcon, Fade } from '@material-ui/core';
 import projectStyles from 'assets/jss/views/projects';
 import MessageTable from 'components/Message/MessageTable';
 import TableToolbar from 'components/Table/TableToolbar';
@@ -6,7 +6,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { filterItems, handleRequestSort, dateTimeFormatter } from 'variables/functions';
-import { Delete, Edit, ViewList, ViewModule, Star, StarBorder } from 'variables/icons';
+import { Delete, Edit, ViewList, ViewModule, Star, StarBorder, Close } from 'variables/icons';
 import { GridContainer, CircularLoader, ItemG, Caption, Info, /* AssignProject */ } from 'components'
 // import MessagesCards from './MessagesCards';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
@@ -36,7 +36,7 @@ class Messages extends Component {
 				keyword: '',
 			}
 		}
-		props.setHeader('sidebar.monitor', false, '', 'messages')
+		props.setHeader('sidebar.messages', false, '', 'messages')
 		props.setBC('messages')
 		props.setTabs({
 			id: 'messages',
@@ -376,7 +376,16 @@ class Messages extends Component {
 		>
 			{msg ?
 				<Fragment>
-					<DialogTitle disableTypography>{msg.deviceName}</DialogTitle>
+					<DialogTitle disableTypography >
+						<ItemG container justify={'space-between'} alignItems={'center'}>
+
+							{msg.deviceName} 
+
+							<IconButton aria-label="Close" className={classes.closeButton} onClick={this.handleCloseMessage}>
+								<Close />
+							</IconButton>
+						</ItemG>
+					</DialogTitle>
 					<DialogContent>
 						<ItemG container>
 							<ItemG xs={6}>

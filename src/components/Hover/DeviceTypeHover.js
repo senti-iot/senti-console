@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react'
-import { Popper, Paper, withStyles, Fade, /* Divider, Button, IconButton, Tooltip */ } from '@material-ui/core';
-// import T from 'components/Typography/T';
-// import ItemG from 'components/Grid/ItemG';
+import { Popper, Paper, withStyles, Fade,  Divider, Button, IconButton, Tooltip } from '@material-ui/core';
+import T from 'components/Typography/T';
+import ItemG from 'components/Grid/ItemG';
 // import Gravatar from 'react-gravatar'
-import { /* Language,  Star, StarBorder,*/ SignalWifi2Bar, /* LibraryBooks, DataUsage, Business */ } from 'variables/icons';
+import { Star, StarBorder, SignalWifi2Bar, Memory, Business, /* LibraryBooks, DataUsage, Business */ } from 'variables/icons'
 import withLocalization from 'components/Localization/T';
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { isFav, removeFromFav, finishedSaving, addToFav } from 'redux/favorites';
 import withSnackbar from 'components/Localization/S';
@@ -70,7 +70,7 @@ class DeviceTypeHover extends Component {
 		}
 	}
 	render() {
-		const { /* t, */ anchorEl, classes, collection, /* isFav */ } = this.props
+		const { t, anchorEl, classes, devicetype, isFav } = this.props
 		return (
 			<Popper
 				style={{ zIndex: 1040 }}
@@ -86,20 +86,17 @@ class DeviceTypeHover extends Component {
 				{({ TransitionProps }) => (
 					<Fade {...TransitionProps} timeout={250}>
 						<Paper className={classes.paper}>
-							{collection !== null ?
+							{devicetype !== null ?
 								<Fragment>
-									{/* <ItemG container style={{ margin: "8px 0" }}>
+									<ItemG container style={{ margin: "8px 0" }}>
 										<ItemG xs={3} container justify={'center'} alignItems={'center'}>
-											<DataUsage className={classes.img} />
+											<Memory className={classes.img} />
 										</ItemG>
 										<ItemG xs={9} container justify={'center'}>
 											<ItemG xs={12}>
 												<T variant={'h6'} style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>
-													{collection.name}
+													{devicetype.name}
 												</T>
-											</ItemG>
-											<ItemG xs={12}>
-												<T className={classes.smallText} noParagraph>{`${collection.id}`}</T>
 											</ItemG>
 										</ItemG>
 									</ItemG>
@@ -107,44 +104,25 @@ class DeviceTypeHover extends Component {
 										<ItemG xs={12}>
 											<T className={classes.smallText} noParagraph>
 												<Business className={classes.smallIcon} />
-												{`${collection.org.name ? collection.org.name : t('devices.fields.free')}`}
+												{devicetype.customer_name}
 											</T>
 										</ItemG>
-										<ItemG xs={12}>
-											<T className={classes.smallText}>
-												{this.renderIcon(collection.activeDeviceStats ? collection.activeDeviceStats.state : null)}
-												{collection.activeDeviceStats ?
-													<Link to={{ pathname: `/device/${collection.activeDeviceStats.id}`, prevURL: '/collections' }}>
-														{collection.activeDeviceStats.id}
-													</Link>
-													: t('no.device')}
-											</T>
-										</ItemG>
-										<ItemG xs={12}>
-											<T className={classes.smallText}>
-												<LibraryBooks className={classes.smallIcon} />
-												{collection.project.title ? <Link to={{ pathname: `/project/${collection.project.id}`, prevURL: '/collections' }}>
-													{collection.project.title}
-												</Link> : t('no.project')}
-											</T>
-										</ItemG>
-
 									</ItemG>
 									<Divider />
 									<ItemG container style={{ marginTop: '8px' }}>
 										<ItemG>
-											<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `/collection/${collection.id}/edit`, prevURL: '/collections' }}>
+											<Button color={'primary'} variant={'text'} component={Link} to={{ pathname: `/devicetype/${devicetype.id}/edit`, prevURL: '/devicetypes' }}>
 												{t('menus.edit')}
 											</Button>
 										</ItemG>
 										<ItemG container style={{ flex: 1, justifyContent: 'flex-end' }}>
-											<Tooltip placement="top" title={isFav({ id: collection.id, type: 'collection' }) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
-												<IconButton className={classes.smallAction} onClick={isFav({ id: collection.id, type: 'collection' }) ? this.removeFromFav : this.addToFav}>
-													{isFav({ id: collection.id, type: 'collection' }) ? <Star /> : <StarBorder />}
+											<Tooltip placement="top" title={isFav({ id: devicetype.id, type: 'devicetype' }) ? t('menus.favorites.remove') : t('menus.favorites.add')}>
+												<IconButton className={classes.smallAction} onClick={isFav({ id: devicetype.id, type: 'devicetype' }) ? this.removeFromFav : this.addToFav}>
+													{isFav({ id: devicetype.id, type: 'devicetype' }) ? <Star /> : <StarBorder />}
 												</IconButton>
 											</Tooltip>
 										</ItemG>
-									</ItemG> */}
+									</ItemG>
 								</Fragment>
 								: <CircularLoader notCentered />}
 						</Paper>

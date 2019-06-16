@@ -62,7 +62,7 @@ class DeviceTypeTable extends React.Component {
 		})
 	}
 	renderHover = () => {
-		return <DeviceTypeHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} project={this.state.hoverDeviceType} />
+		return <DeviceTypeHover anchorEl={this.state.rowHover} handleClose={this.unsetHover} devicetype={this.state.hoverDeviceType} />
 	}
 	// renderProtocol = (id) => {
 	// 	const { t } = this.props

@@ -8,6 +8,10 @@ import { red, green } from '@material-ui/core/colors'
 
 const projectStyles = theme => ({
 	...deviceStatus,
+	closeButton: {
+		marginLeft: 'auto',
+		color: theme.palette.grey[500],
+	  },
 	editor: {
 		width: 'calc(100% - 16px)', 
 		border: '1px solid rgba(100, 100, 100, 0.25)', 
