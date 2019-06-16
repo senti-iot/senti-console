@@ -88,7 +88,6 @@ class ScoreCard extends PureComponent {
 				...newState, loading: false
 			})
 		}) 
-		console.log(newState)
 		// let data = await getSensorDataClean(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.chartType)
 	
 	}

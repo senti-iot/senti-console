@@ -102,7 +102,6 @@ class CreateCollection extends Component {
 		})
 	}
 	handleChangeDT = (o) => e => {
-		console.log(o)
 		this.setState({
 			sensor: {
 				...this.state.sensor,

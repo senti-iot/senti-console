@@ -636,7 +636,6 @@ class DoubleChartData extends PureComponent {
 	render() {
 		const { t, period } = this.props
 		const { loading } = this.state
-		console.log(this.props)
 		return (
 			<Fragment>
 				<InfoCard
