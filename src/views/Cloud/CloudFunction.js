@@ -61,11 +61,11 @@ class Function extends Component {
 			await this.componentDidMount()
 		if (this.props.saved === true) {
 			const { cloudfunction } = this.props
-			if (this.props.isFav({ id: cloudfunction.id, type: 'cloudfunction' })) {
+			if (this.props.isFav({ id: cloudfunction.id, type: 'function' })) {
 				this.props.s('snackbars.favorite.saved', { name: cloudfunction.name, type: this.props.t('favorites.types.cloudfunction') })
 				this.props.finishedSaving()
 			}
-			if (!this.props.isFav({ id: cloudfunction.id, type: 'cloudfunction' })) {
+			if (!this.props.isFav({ id: cloudfunction.id, type: 'function' })) {
 				this.props.s('snackbars.favorite.removed', { name: cloudfunction.name, type: this.props.t('favorites.types.cloudfunction') })
 				this.props.finishedSaving()
 			}
@@ -144,7 +144,7 @@ class Function extends Component {
 						<ItemGrid xs={12} noMargin id="details">
 							<FunctionDetails
 								cloudfunction={cloudfunction}
-								isFav={this.props.isFav({ id: cloudfunction.id, type: 'cloudfunction' })}
+								isFav={this.props.isFav({ id: cloudfunction.id, type: 'function' })}
 								addToFav={this.addToFav}
 								removeFromFav={this.removeFromFav}
 								history={history}
