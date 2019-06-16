@@ -10,6 +10,7 @@ import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import GaugeFakeData from 'views/Charts/GaugeFakeData';
 import DoubleChartFakeData from 'views/Charts/DoubleChartFakeData';
 import logo from '../../logo.svg'
+import Scorecard from 'views/Charts/Scorecard';
 
 class DashboardPanel extends Component {
 	constructor(props) {
@@ -101,28 +102,43 @@ class DashboardPanel extends Component {
 				<GridContainer style={{ padding: 16 }} spacing={16} justify={'center'} alignItems={'center'}
 				>
 					{d.graphs.map((g, i) => {
-						if (g.dataSource.type === 1)
-							return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
-								<GaugeFakeData
-									title={g.name}
-									period={{ ...g.period, menuId: g.periodType }}
-									t={t}
-									gId={g.id}
-									dId={d.id}
-									single
-								/>
-							</ItemG>
-						else {
-							return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
-								<DoubleChartFakeData
-									title={g.name}
-									gId={g.id}
-									dId={d.id}
-									single={true}
-									t={t}
-								/>
-							</ItemG>
+						switch (g.type) {
+							case 1:
+								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
+									<GaugeFakeData
+										title={g.name}
+										period={{ ...g.period, menuId: g.periodType }}
+										t={t}
+										gId={g.id}
+										dId={d.id}
+										single
+									/>
+								</ItemG>
+							case 0: 
+								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
+									<DoubleChartFakeData
+										title={g.name}
+										gId={g.id}
+										dId={d.id}
+										single={true}
+										t={t}
+									/>
+								</ItemG>
+							case 2:
+								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
+									 <Scorecard
+										title={g.name}
+										gId={g.id}
+										dId={d.id}
+										single={true}
+										t={t}
+									/> 
+								</ItemG>
+							default:
+								return null;
 						}
+					
+					
 					})}
 				</GridContainer>
 			</div>}

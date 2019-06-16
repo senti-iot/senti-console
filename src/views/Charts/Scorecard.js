@@ -1,6 +1,6 @@
 import React, { Fragment, PureComponent } from 'react';
 import {
-	Grid, IconButton, withStyles, Collapse, Hidden, Typography, Tooltip,
+	Grid, IconButton, withStyles, Collapse, Hidden, Typography, Tooltip, TableRow, Table, TableBody,
 } from '@material-ui/core';
 import {
 	DonutLargeRounded,
@@ -21,11 +21,11 @@ import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeRawData, removeChartPeriod } from 'redux/dateTime'
 // import { getSensorDataClean } from 'variables/dataRegistry';
-import Gauge from 'components/Charts/Gauge';
 import { getSensorDataClean } from 'variables/dataRegistry';
 import { getGraph, getPeriod, handleSetDate } from 'redux/dsSystem';
+import TC from 'components/Table/TC'
 
-class GaugeComponent extends PureComponent {
+class ScoreCard extends PureComponent {
 	constructor(props) {
 		super(props)
 
@@ -74,18 +74,29 @@ class GaugeComponent extends PureComponent {
 	}
 	getData = async () => {
 		const { g, period } = this.props
-		let data = await getSensorDataClean(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.chartType)
-		// let newState = setDailyData([{ data: data, name: title, color: teal[500], id: g.id }], g.period.from, g.period.to)
-		this.setState({
-			data, loading: false
-		})
+		let newState = {
+			a: { ...g.dataSources.a },
+			b: { ...g.dataSources.b }
+		}
+		Promise.all([
+			getSensorDataClean(g.dataSources.a.deviceId, period.from, period.to, g.dataSources.a.dataKey, g.dataSources.a.cf, g.dataSources.a.deviceType, g.dataSources.a.type),
+			getSensorDataClean(g.dataSources.b.deviceId, period.from, period.to, g.dataSources.b.dataKey, g.dataSources.b.cf, g.dataSources.b.deviceType, g.dataSources.b.type),
+		]).then(rs => { 
+			newState.a.data = parseFloat(rs[0])
+			newState.b.data = parseFloat(rs[1])
+			this.setState({
+				...newState, loading: false
+			})
+		}) 
+		console.log(newState)
+		// let data = await getSensorDataClean(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.chartType)
+	
 	}
 	componentDidUpdate = async (prevProps) => {
 		if (prevProps.period !== this.props.period /* || prevProps.period.timeType !== this.props.period.timeType || prevProps.period.raw !== this.props.period.raw */) {
 			this.setState({ loading: true }, async () => {
-				await this.getData()
-				// let newState = await this.getData(this.props.period)
-				// this.setState({ ...newState, loading: false })
+				let newState = await this.getData(this.props.period)
+				this.setState({ ...newState, loading: false })
 			})
 		}
 	}
@@ -364,15 +375,49 @@ class GaugeComponent extends PureComponent {
 			</ItemG>
 		</ItemG>
 	}
+	relDiff(oldNumber, newNumber) {
+		var decreaseValue = oldNumber - newNumber;
+		return ((decreaseValue / oldNumber) * 100).toFixed(3);
+	}
 	renderType = () => {
-		const { period } = this.props
-		const { loading, data } = this.state
+		const { loading, a, b } = this.state
 		if (!loading) {
-			return <Gauge
-				title={this.props.title}
-				period={period}
-				value={data}
-			/>
+			return <Table>
+				<TableBody>
+					<TableRow>
+						<TC label={a.label}/>
+						<TC content={
+							<T style={{ fontWeight: 500 }}>
+								{a.data}
+							</T>
+						} />
+					</TableRow>
+					<TableRow>
+						<TC label={b.label}/>
+						<TC content={
+							<T style={{ fontWeight: 500 }}>
+								{b.data}
+							</T>
+						} />
+					</TableRow>
+					<TableRow>
+						<TC label={'Difference'}/>
+						<TC content={
+							<T style={{ color: a.data > b.data ? 'red' : 'green', fontWeight: 500 }}>
+								{a.data > b.data ? (a.data - b.data).toFixed(3) : (b.data - a.data).toFixed(3)}
+							</T>
+						} />
+					</TableRow>
+					<TableRow>
+						<TC label={'Percentage Difference:'}/>
+						<TC content={
+							<T style={{ color: a.data > b.data ? 'red' : 'green', fontWeight: 500 }}>
+								{a.data > b.data ? this.relDiff(a.data, b.data) : this.relDiff(b.data, a.data)}% 
+							</T>
+						}/>
+					</TableRow>
+				</TableBody>
+			</Table>
 		}
 		else return this.renderNoData()
 	}
@@ -424,47 +469,6 @@ class GaugeComponent extends PureComponent {
 					</Tooltip>
 					}
 				</Collapse>
-
-			 {/* <ItemG>
-					<Tooltip title={t('menus.menu')}>
-						<IconButton
-							aria-label='More'
-							aria-owns={actionAnchor ? 'long-menu' : null}
-							aria-haspopup='true'
-							onClick={this.handleOpenActionsDetails}>
-							<MoreVert />
-						</IconButton>
-					</Tooltip>
-				</ItemG>
-				<Menu
-					marginThreshold={24}
-					id='long-menu'
-					anchorEl={actionAnchor}
-					open={Boolean(actionAnchor)}
-					onClose={this.handleCloseActionsDetails}
-					onChange={this.handleVisibility}
-					PaperProps={{ style: { minWidth: 250 } }}>
-					<ListItem button onClick={this.handleOpenDownloadModal}>
-						<ListItemIcon><CloudDownload /></ListItemIcon>
-						<ListItemText>{t('menus.export')}</ListItemText>
-					</ListItem>
-					<ListItem button onClick={() => this.handleChangeChartType(this.state.chartType === 'linear' ? 'logarithmic' : 'linear')}>
-						<ListItemIcon>
-							{this.state.chartType !== 'linear' ? <LinearScale /> : <Timeline />}
-						</ListItemIcon>
-						<ListItemText>
-							{t(this.state.chartType !== 'linear' ? 'settings.chart.YAxis.linear' : 'settings.chart.YAxis.logarithmic')}
-						</ListItemText>
-					</ListItem>
-					<ListItem button onClick={() => { this.handleCloseActionsDetails(); this.props.removePeriod(period.id) }}>
-						<ListItemIcon>
-							<Clear />
-						</ListItemIcon>
-						<ListItemText>
-							{t('menus.charts.deleteThisPeriod')}
-						</ListItemText>
-					</ListItem>
-			 </Menu> */}
 			</ItemG>
 		</ItemG>
 	}
@@ -493,7 +497,7 @@ class GaugeComponent extends PureComponent {
 					topAction={this.renderMenu()}
 					background={this.props.color}
 					content={
-						<Grid container>
+						<Grid container style={{ minHeight: 300 }}>
 							<ExportModal
 								raw={period.raw}
 								to={displayTo}
@@ -503,7 +507,7 @@ class GaugeComponent extends PureComponent {
 								handleClose={this.handleCloseDownloadModal}
 								t={t}
 							/>
-							{loading ? <div style={{ height: 211, width: '100%' }}><CircularLoader notCentered /></div> :
+							{loading ? <div style={{ height: '100%', width: '100%' }}><CircularLoader notCentered /></div> :
 
 								<ItemG xs={12}>
 									{this.renderType()}
@@ -527,4 +531,4 @@ const mapDispatchToProps = dispatch => ({
 	changeRawData: (p) => dispatch(changeRawData(p))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(GaugeComponent))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(ScoreCard))
