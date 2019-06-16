@@ -635,9 +635,7 @@ class DoubleChartData extends PureComponent {
 
 	render() {
 		const { t, period } = this.props
-		const { /* openDownload, */ loading, /* exportData */ } = this.state
-		// let displayTo = dateTimeFormatter(period.to)
-		// let displayFrom = dateTimeFormatter(period.from)
+		const { loading } = this.state
 		console.log(this.props)
 		return (
 			<Fragment>

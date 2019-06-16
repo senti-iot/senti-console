@@ -19,9 +19,11 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
-import { changeDate, changeRawData, removeChartPeriod } from 'redux/dateTime'
+import { changeRawData, removeChartPeriod } from 'redux/dateTime'
 // import { getSensorDataClean } from 'variables/dataRegistry';
 import Gauge from 'components/Charts/Gauge';
+import { getSensorDataClean } from 'variables/dataRegistry';
+import { getGraph, getPeriod, handleSetDate } from 'redux/dsSystem';
 
 class GaugeComponent extends PureComponent {
 	constructor(props) {
@@ -71,10 +73,11 @@ class GaugeComponent extends PureComponent {
 		}
 	}
 	getData = async () => {
-			
+		const { g, period } = this.props
+		let data = await getSensorDataClean(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.chartType)
+		// let newState = setDailyData([{ data: data, name: title, color: teal[500], id: g.id }], g.period.from, g.period.to)
 		this.setState({
-			loading: false,
-			value: 20
+			data, loading: false
 		})
 	}
 	componentDidUpdate = async (prevProps) => {
@@ -85,7 +88,10 @@ class GaugeComponent extends PureComponent {
 			})
 		}
 	}
-
+	handleSetDate = async (menuId, to, from, defaultT, chartType) => {
+		const { dId, gId, period } = this.props
+		await this.props.handleSetDate(dId, gId, { menuId, to, from, timeType: defaultT, chartType: chartType ? chartType : period.chartType })
+	}
 	componentWillUnmount = () => {
 		this._isMounted = 0
 		this.setState({
@@ -139,13 +145,13 @@ class GaugeComponent extends PureComponent {
 					if (zoomDate.length === 1) {
 						this.setState({ resetZoom: false, zoomDate: [] })
 					}
-					this.props.handleSetDate(6, endDate, startDate, 1, period.id)
+					this.handleSetDate(6, endDate, startDate, 1, period.id)
 					break;
 				case 1:
 					startDate = zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
 					endDate = zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
 					this.setState({ resetZoom: false, zoomDate: [] })
-					this.props.handleSetDate(6, endDate, startDate, 2, period.id)
+					this.handleSetDate(6, endDate, startDate, 2, period.id)
 					break;
 				default:
 					break;
@@ -177,7 +183,7 @@ class GaugeComponent extends PureComponent {
 									to: period.to
 								}]
 						})
-						this.props.handleSetDate(6, endDate, startDate, 0, period.id)
+						this.handleSetDate(6, endDate, startDate, 0, period.id)
 						break
 					case 2:
 						startDate = moment(date).startOf('day')
@@ -189,7 +195,7 @@ class GaugeComponent extends PureComponent {
 								to: period.to
 							}]
 						})
-						this.props.handleSetDate(6, endDate, startDate, 1, period.id)
+						this.handleSetDate(6, endDate, startDate, 1, period.id)
 						break;
 					default:
 						break;
@@ -251,11 +257,11 @@ class GaugeComponent extends PureComponent {
 				if (period.timeType === 2 || period.timeType === 3) {
 					let dayDiff = to.diff(from, 'day')
 					if (dayDiff <= 0) {
-						return this.props.handleSetDate(6, to, from, 1, period.id)
+						return this.handleSetDate(6, to, from, 1, period.id)
 					}
 				}
 				else {
-					return this.props.handleSetDate(6, to, from, 2, period.id)
+					return this.handleSetDate(6, to, from, 2, period.id)
 				}
 			}
 			if ([3, 4, 5].indexOf(initialPeriod.menuId) !== -1) {
@@ -265,7 +271,7 @@ class GaugeComponent extends PureComponent {
 				to = this.futureTester(to, 'day') ? moment() : to
 			}
 		}
-		this.props.handleSetDate(6, to, from, period.timeType, period.id)
+		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	handlePreviousPeriod = () => {
 		const { period } = this.props
@@ -308,11 +314,11 @@ class GaugeComponent extends PureComponent {
 				if (period.timeType === 2 || period.timeType === 3) {
 					let dayDiff = to.diff(from, 'day')
 					if (dayDiff <= 0) {
-						return this.props.handleSetDate(6, to, from, 1, period.id)
+						return this.handleSetDate(6, to, from, 1, period.id)
 					}
 				}
 				else {
-					return this.props.handleSetDate(6, to, from, 2, period.id)
+					return this.handleSetDate(6, to, from, 2, period.id)
 				}
 			}
 			if ([3, 4, 5].indexOf(initialPeriod.menuId) !== -1) {
@@ -321,7 +327,7 @@ class GaugeComponent extends PureComponent {
 				to = moment(period.to).subtract(diff + 1, 'minute').endOf('day')
 			}
 		}
-		this.props.handleSetDate(6, to, from, period.timeType, period.id)
+		this.handleSetDate(6, to, from, period.timeType, period.id)
 	}
 	renderTitle = () => {
 		const { period, t, title } = this.props
@@ -359,16 +365,13 @@ class GaugeComponent extends PureComponent {
 	}
 	renderType = () => {
 		const { period } = this.props
-		const { loading } = this.state
+		const { loading, data } = this.state
 		if (!loading) {
 			return <Gauge
 				title={this.props.title}
 				period={period}
-				value={this.props.data}
+				value={data}
 			/>
-						
-				
-	
 		}
 		else return this.renderNoData()
 	}
@@ -406,7 +409,10 @@ class GaugeComponent extends PureComponent {
 			<ItemG container>
 				<ItemG>
 					<Tooltip title={t('tooltips.chart.period')}>
-						<DateFilterMenu period={period} t={t} />
+						<DateFilterMenu
+							customSetDate={this.handleSetDate}
+							period={period}
+							t={t} />
 					</Tooltip>
 				</ItemG>
 				<Collapse in={resetZoom}>
@@ -496,7 +502,7 @@ class GaugeComponent extends PureComponent {
 								handleClose={this.handleCloseDownloadModal}
 								t={t}
 							/>
-							{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
+							{loading ? <div style={{ height: 211, width: '100%' }}><CircularLoader notCentered /></div> :
 
 								<ItemG xs={12}>
 									{this.renderType()}
@@ -508,11 +514,13 @@ class GaugeComponent extends PureComponent {
 		);
 	}
 }
-const mapStateToProps = () => ({
+const mapStateToProps = (state, ownProps) => ({
+	g: getGraph(state, ownProps.gId),
+	period: getPeriod(state, ownProps.gId)
 })
 
 const mapDispatchToProps = dispatch => ({
-	handleSetDate: (id, to, from, timeType, pId) => dispatch(changeDate(id, to, from, timeType, pId)),
+	handleSetDate: async (dId, gId, p) => dispatch(await handleSetDate(dId, gId, p)),
 	changeYAxis: (val) => dispatch(changeYAxis(val)),
 	removePeriod: (pId) => dispatch(removeChartPeriod(pId)),
 	changeRawData: (p) => dispatch(changeRawData(p))

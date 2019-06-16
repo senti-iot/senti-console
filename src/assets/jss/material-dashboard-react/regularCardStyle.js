@@ -21,6 +21,9 @@ import { red, green } from '@material-ui/core/colors';
 import { bgColors } from './backgroundColors';
 
 const regularCardStyle = theme => ({
+	transition: {
+		transition: 'all 300ms ease',
+	},
 	bigIcon: {
 		height: "40px",
 		width: "40px",

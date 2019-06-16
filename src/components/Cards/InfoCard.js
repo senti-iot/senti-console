@@ -79,6 +79,7 @@ class InfoCard extends PureComponent {
 
 				</CardHeader>}
 				<CardContent className={classnames(
+					{ [classes.transition]: true },
 					{ [classes.contentMedia]: this.props.noPadding },
 					{ [classes.noMargin]: this.props.noExpand ? false : this.props.haveMargin ? false : !this.state.expanded })}>
 					{this.renderSubHeader()}
