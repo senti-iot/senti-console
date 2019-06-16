@@ -37,7 +37,7 @@ class Sensor extends Component {
 			//End Map
 		}
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/sensors/list'
-		props.setHeader('sidebar.device', true, prevURL, 'manage.devices')
+		props.setHeader('sidebar.device', true, prevURL, 'manage.sensors')
 	}
 
 	format = 'YYYY-MM-DD+HH:mm'

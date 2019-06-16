@@ -33,7 +33,7 @@ class Registry extends Component {
 			//End Map
 		}
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
-		props.setHeader('registries.fields.registry', true, prevURL, 'registries')
+		props.setHeader('registries.fields.registry', true, prevURL, 'manage.registries')
 	}
 
 	format = 'YYYY-MM-DD+HH:mm'

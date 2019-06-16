@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 // import { deleteDeviceType, unassignDeviceFromDeviceType, getDeviceType } from 'variables/dataDeviceTypes';
 import { filterItems, handleRequestSort } from 'variables/functions';
-import { Delete, Edit, PictureAsPdf, ViewList, ViewModule, DeviceHub, LibraryBooks, Add, LayersClear, Star, StarBorder, SignalWifi2Bar } from 'variables/icons';
+import { Edit, ViewList, ViewModule, Add, Star, StarBorder, SignalWifi2Bar } from 'variables/icons';
 import { GridContainer, CircularLoader, AssignProject } from 'components'
 // import DeviceTypesCards from './DeviceTypesCards';
 import { isFav, addToFav, removeFromFav, finishedSaving } from 'redux/favorites';
@@ -86,11 +86,11 @@ class DeviceTypes extends Component {
 		let isFavorite = isFav(favObj)
 		let allOptions = [
 			{ label: t('menus.edit'), func: this.handleEdit, single: true, icon: Edit },
-			{ label: t('menus.assign.devicetypeToProject'), func: this.handleOpenAssignProject, single: true, icon: LibraryBooks },
-			{ label: t('menus.assign.deviceToDeviceType'), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
-			{ label: t('menus.unassign.deviceFromDeviceType'), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear, dontShow: devicetypes[devicetypes.findIndex(c => c.id === selected[0])].activeDeviceStats ? false : true },
-			{ label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
-			{ label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
+			// { label: t('menus.assign.devicetypeToProject'), func: this.handleOpenAssignProject, single: true, icon: LibraryBooks },
+			// { label: t('menus.assign.deviceToDeviceType'), func: this.handleOpenAssignDevice, single: true, icon: DeviceHub },
+			// { label: t('menus.unassign.deviceFromDeviceType'), func: this.handleOpenUnassignDevice, single: true, icon: LayersClear, dontShow: devicetypes[devicetypes.findIndex(c => c.id === selected[0])].activeDeviceStats ? false : true },
+			// { label: t('menus.exportPDF'), func: () => { }, icon: PictureAsPdf },
+			// { label: t('menus.delete'), func: this.handleOpenDeleteDialog, icon: Delete },
 			{ single: true, label: isFavorite ? t('menus.favorites.remove') : t('menus.favorites.add'), icon: isFavorite ? Star : StarBorder, func: isFavorite ? () => this.removeFromFav(favObj) : () => this.addToFav(favObj) }
 		]
 		return allOptions
@@ -105,7 +105,7 @@ class DeviceTypes extends Component {
 
 	}
 
-	componentDidUpdate = (prevProps, prevState) => {
+	componentDidUpdate = () => {
 		const { t, saved, s, isFav, finishedSaving } = this.props
 		if (saved === true) {
 			const { devicetypes } = this.props

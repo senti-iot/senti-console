@@ -17,7 +17,7 @@ class UpdateRegistry extends Component {
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/registries/list'
-		props.setHeader('menus.edit.registry', true, prevURL, '')
+		props.setHeader('menus.edits.registry', true, prevURL, '')
 		props.setBC('updateregistry')
 	}
 

@@ -43,7 +43,7 @@ class EditSensor extends Component {
 		}
 		this.id = props.match.params.id
 		let prevURL = props.location.prevURL ? props.location.prevURL : '/sensors/list'
-		props.setHeader('menus.edit.sensor', true, prevURL, '')
+		props.setHeader('menus.edits.device', true, prevURL, '')
 		props.setBC('editsensor')
 	}
 
@@ -81,7 +81,7 @@ class EditSensor extends Component {
 			this.setState({
 				sensor: { ...sensor },
 				sensorMetadata: {
-					metadata: Object.keys(sensor.metadata).map(m => ({ key: m, value: sensor.metadata[m] })),
+					metadata: sensor.metadata ? Object.keys(sensor.metadata).map(m => ({ key: m, value: sensor.metadata[m] })) : [],
 					outbound: sensor.dataKeys ? sensor.dataKeys : [],
 					inbound: sensor.inbound ? sensor.inbound : []
 				},
@@ -96,7 +96,7 @@ class EditSensor extends Component {
 				loading: false
 			})
 			let prevURL = location.prevURL ? location.prevURL : `/sensor/${this.id}`
-			setHeader('menu.edit.sensor', true, prevURL, 'sensors')
+			setHeader('menus.edits.device', true, prevURL, 'sensors')
 			this.props.setBC('editsensor', sensor.name, sensor.id)
 		}
 	}
