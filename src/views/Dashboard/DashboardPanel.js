@@ -7,12 +7,9 @@ import { ItemG, T, GridContainer, CircularLoader } from 'components';
 import { Close } from 'variables/icons';
 import cx from 'classnames'
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
-import { setDailyData } from 'components/Charts/DataModel';
-import { teal } from '@material-ui/core/colors';
 import GaugeFakeData from 'views/Charts/GaugeFakeData';
 import DoubleChartFakeData from 'views/Charts/DoubleChartFakeData';
 import logo from '../../logo.svg'
-import { getDashboardData } from 'redux/dsSystem';
 
 class DashboardPanel extends Component {
 	constructor(props) {
@@ -21,10 +18,6 @@ class DashboardPanel extends Component {
 		this.state = {
 			openDashboard: false
 		}
-	}
-	componentDidMount = async () => {
-		const { getDashboardData, d } = this.props
-		await getDashboardData(d.id)
 	}
 
 	handleOpenDashboard = () => {
@@ -108,33 +101,28 @@ class DashboardPanel extends Component {
 				<GridContainer style={{ padding: 16 }} spacing={16} justify={'center'} alignItems={'center'}
 				>
 					{d.graphs.map((g, i) => {
-						if (g.data)
-							if (g.dataSource.type === 1)
-								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
-									<GaugeFakeData
-										title={g.name}
-										period={{ ...g.period, menuId: g.periodType }}
-										data={g.data}
-										t={t}
-										gId={g.id}
-										dId={d.id}
-										single
-									/>
-								</ItemG>
-							else {
-								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
-									<DoubleChartFakeData
-										title={g.name}
-										gId={g.id}
-										dId={d.id}
-										single={true}
-										period={{ ...g.period, menuId: g.periodType }}
-										t={t}
-										newState={setDailyData([{ data: g.data, name: g.name, color: teal[500], id: g.id }], g.period.from, g.period.to)}
-									/>
-								</ItemG>
-							}
-						return null
+						if (g.dataSource.type === 1)
+							return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
+								<GaugeFakeData
+									title={g.name}
+									period={{ ...g.period, menuId: g.periodType }}
+									t={t}
+									gId={g.id}
+									dId={d.id}
+									single
+								/>
+							</ItemG>
+						else {
+							return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
+								<DoubleChartFakeData
+									title={g.name}
+									gId={g.id}
+									dId={d.id}
+									single={true}
+									t={t}
+								/>
+							</ItemG>
+						}
 					})}
 				</GridContainer>
 			</div>}
@@ -145,7 +133,7 @@ class DashboardPanel extends Component {
 		return (
 			<Fragment>
 				{this.renderDashboard()}
-				<ItemG xs={12} md={4} lg={2}>
+				<ItemG xs={12} md={4} lg={3} xl={2}>
 					<DashboardCard
 						handleOpenDashboard={this.handleOpenDashboard}
 						data={data}
@@ -161,11 +149,10 @@ class DashboardPanel extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-	loading: state.dsSystem.gotDashboardData
+	// loading: state.dsSystem.gotDashboardData
 })
 
 const mapDispatchToProps = (dispatch) => ({
-	getDashboardData: async (id) => dispatch(await getDashboardData(id))
 })
 
 export default withStyles(dashboardStyle)(connect(mapStateToProps, mapDispatchToProps)(DashboardPanel))

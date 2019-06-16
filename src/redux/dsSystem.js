@@ -1,11 +1,12 @@
-import { getSensorDataClean } from 'variables/dataRegistry';
+// import { getSensorDataClean } from 'variables/dataRegistry';
 import moment from 'moment'
+// import { createSelector } from 'reselect'
 
 export const getDashboards = 'getDashboards'
 export const SetDashboard = 'SetDashboard'
 export const setDashboardData = 'setDashboardData'
 export const gotDashboardData = 'gotDashboardData'
-
+export const setGraphs = 'setGraphs'
 
 const menuSelect = (p, c) => {
 	let to, from, timeType, chartType;
@@ -51,74 +52,69 @@ const menuSelect = (p, c) => {
 	chartType = c
 	return { to, from, timeType, chartType }
 }
+export const getPeriod = (state, id) => {
+	let gs = state.dsSystem.graphs
+	let g = gs[gs.findIndex(r => r.id === id)]
+	return g.period
+}
+
+export const getGraph = (state, id) => {
+	let gs = state.dsSystem.graphs
+	let g = gs[gs.findIndex(r => r.id === id)]
+	return g
+}
 
 export const handleSetDate = (dId, gId, p) => {
 	return async (dispatch, getState) => {
-		console.log(p)
-		dispatch({ type: gotDashboardData, payload: true })
-		let ds = getState().dsSystem.dashboards
-		let dash = ds[ds.findIndex(d => d.id === dId)]
-		let graph = dash.graphs[dash.graphs.findIndex(g => g.id === gId)]
+		let gs = getState().dsSystem.graphs
+		let graph = gs[gs.findIndex(g => g.id === gId)]
 		graph.period = p
 		graph.periodType = p.menuId
-		dash.graphs[dash.graphs.findIndex(g => g.id === gId)] = graph 
-		await dash.graphs.forEach(async g => {
-			let data = await getSensorDataClean(g.dataSource.deviceId, g.period.from, g.period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.chartType)
-			g.data = data
-		})
-		ds[ds.findIndex(d => d.id === dId)] = dash
-		console.log(ds)
-		dispatch({ type: setDashboardData, payload: dash })
-		dispatch({ type: gotDashboardData, payload: false })
+		gs[gs.findIndex(g => g.id === gId)] = graph 
+		// ds[ds.findIndex(d => d.id === dId)] = dash
+		dispatch({ type: setGraphs, payload: gs })
+
 	}
 }
 
 export const setDashboards = (payload) => {
 	return async dispatch => {
 		let ds = payload
+		let allGraphs = []
 		ds.forEach(d => {
 			d.graphs.forEach(g => {
 				g.period = menuSelect(g.periodType, g.chartType)
+				g.period.menuId = g.periodType
+				allGraphs.push(g)
 			})
 		})
 		dispatch({
 			type: getDashboards,
 			payload: ds
 		})
-		
-	}
-}
-
-export const getDashboardData = async (id) => {
-	return async (dispatch, getState) => {
-		dispatch({ type: gotDashboardData, payload: true })
-		let ds = getState().dsSystem.dashboards
-		let d = ds[ds.findIndex(c => c.id === id)]
-		await d.graphs.forEach(async g => {
-			let data = await getSensorDataClean(g.dataSource.deviceId, g.period.from, g.period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.chartType)
-			g.data = data
+		dispatch({
+			type: setGraphs,
+			payload: allGraphs
 		})
-		ds[ds.findIndex(c => c.id === d.id)] = d
-		dispatch({ type: setDashboardData, payload: d })
-		dispatch({ type: gotDashboardData, payload: false })
 	}
 }
 
 
-const setState = (key, payload, state) => Object.assign({}, state, { [key]: payload })
 const initialState = {
 	dashboards: [],
 	dashboard: null,
-	gotDashboardData: true
+	gotDashboardData: true,
+	graphs: []
 }
+
+const setState = (key, payload, state) => Object.assign({}, state, { [key]: payload })
 
 export const dsSystem = (state = initialState, { type, payload }) => {
 	switch (type) {
-
+		case setGraphs:
+			return setState('graphs', payload, state)
 		case getDashboards:
 			return setState('dashboards', payload, state)
-		case setDashboardData:
-			return setState('dashboard', payload, state)
 		case gotDashboardData:
 			return setState('gotDashboardData', payload, state)
 		default:

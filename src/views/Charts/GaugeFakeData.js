@@ -71,11 +71,10 @@ class GaugeComponent extends PureComponent {
 		}
 	}
 	getData = async () => {
-		const { value } = this.props
-		
+			
 		this.setState({
 			loading: false,
-			value: value
+			value: 20
 		})
 	}
 	componentDidUpdate = async (prevProps) => {

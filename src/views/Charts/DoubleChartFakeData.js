@@ -25,7 +25,10 @@ import moment from 'moment'
 import { dateTimeFormatter } from 'variables/functions'
 import { changeYAxis } from 'redux/appState'
 import { changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTime'
-import { handleSetDate } from 'redux/dsSystem';
+import { handleSetDate, getGraph, getPeriod } from 'redux/dsSystem';
+import { getSensorDataClean } from 'variables/dataRegistry';
+import { setDailyData } from 'components/Charts/DataModel';
+import { teal } from '@material-ui/core/colors';
 
 class DoubleChartData extends PureComponent {
 	constructor(props) {
@@ -68,18 +71,27 @@ class DoubleChartData extends PureComponent {
 		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
 	]
 	componentDidMount = async () => {
-		const { period, newState } = this.props
+		const { period } = this.props
 		const { loading } = this.state
 		if (period && loading) {
-			// let newState = await this.props.getData(period)
-			this.setState({ ...newState, loading: false })
+			await this.getData()
 		}
 	}
+	getData = async () => {
+		const { g, period, title } = this.props
+		let data = await getSensorDataClean(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.chartType)
+		let newState =  setDailyData([{ data: data, name: title, color: teal[500], id: g.id }], g.period.from, g.period.to)
+		this.setState({
+			...newState, loading: false
+		})
+	}
+		
 	componentDidUpdate = async (prevProps, prevState) => {
-		if (prevProps.period !== this.props.period /* || prevProps.period.timeType !== this.props.period.timeType || prevProps.period.raw !== this.props.period.raw */) {
+		console.log(prevProps.period !== this.props.period, this.props.period, prevProps.period.menuId !== this.props.period.menuId)
+		console.log('updated')
+		if (prevProps.period !== this.props.period  || prevProps.period.timeType !== this.props.period.timeType) {
 			this.setState({ loading: true }, async () => {
-				// let newState = await this.props.getData(this.props.period)
-				this.setState({ ...this.props.newState, loading: false })
+				this.getData()
 			})
 		}
 	}
@@ -357,9 +369,8 @@ class DoubleChartData extends PureComponent {
 		</ItemG>
 	}
 	renderType = () => {
-		const { title, setHoverID, t, device, period, gId, single, hoverID } = this.props
+		const { title, setHoverID, t, device, period, single, hoverID } = this.props
 		const { loading } = this.state
-		console.log(gId, period)
 		if (!loading) {
 			const { roundDataSets, lineDataSets, barDataSets } = this.state
 			switch (period.chartType) {
@@ -627,6 +638,7 @@ class DoubleChartData extends PureComponent {
 		const { /* openDownload, */ loading, /* exportData */ } = this.state
 		// let displayTo = dateTimeFormatter(period.to)
 		// let displayFrom = dateTimeFormatter(period.from)
+		console.log(this.props)
 		return (
 			<Fragment>
 				<InfoCard
@@ -637,17 +649,7 @@ class DoubleChartData extends PureComponent {
 					topAction={this.renderMenu()}
 					content={
 						<Grid container>
-							{/* <ExportModal
-								raw={period.raw}
-								to={displayTo}
-								from={displayFrom}
-								data={exportData}
-								open={openDownload}
-								handleClose={this.handleCloseDownloadModal}
-								t={t}
-							/> */}
 							{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
-
 								<ItemG xs={12}>
 									{this.renderType()}
 								</ItemG>
@@ -658,7 +660,10 @@ class DoubleChartData extends PureComponent {
 		);
 	}
 }
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
+	// dashboards: state.dsSystem.dashboards
+	g: getGraph(state, ownProps.gId),
+	period: getPeriod(state, ownProps.gId)
 })
 
 const mapDispatchToProps = dispatch => ({
