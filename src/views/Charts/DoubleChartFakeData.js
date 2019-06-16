@@ -1,7 +1,7 @@
 import React, { Fragment, PureComponent } from 'react';
 import {
 	Grid, IconButton, Menu, withStyles, ListItem,
-	ListItemIcon, ListItemText, Collapse, List, Hidden, Typography, Tooltip,
+	ListItemIcon, ListItemText, Collapse, List, Hidden, Typography, Tooltip, colors,
 } from '@material-ui/core';
 import {
 	Timeline, MoreVert,
@@ -28,7 +28,6 @@ import { changeChartType, changeRawData, removeChartPeriod } from 'redux/dateTim
 import { handleSetDate, getGraph, getPeriod } from 'redux/dsSystem';
 import { getSensorDataClean } from 'variables/dataRegistry';
 import { setDailyData } from 'components/Charts/DataModel';
-import { teal } from '@material-ui/core/colors';
 
 class DoubleChartData extends PureComponent {
 	constructor(props) {
@@ -78,9 +77,9 @@ class DoubleChartData extends PureComponent {
 		}
 	}
 	getData = async () => {
-		const { g, period, title } = this.props
+		const { g, period, title, color } = this.props
 		let data = await getSensorDataClean(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.chartType)
-		let newState = setDailyData([{ data: data, name: title, color: teal[500], id: g.id }], g.period.from, g.period.to)
+		let newState = setDailyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
 		this.setState({
 			...newState, loading: false
 		})

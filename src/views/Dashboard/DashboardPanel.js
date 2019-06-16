@@ -109,6 +109,7 @@ class DashboardPanel extends Component {
 										title={g.name}
 										period={{ ...g.period, menuId: g.periodType }}
 										t={t}
+										color={d.color}
 										gId={g.id}
 										dId={d.id}
 										single
@@ -120,6 +121,7 @@ class DashboardPanel extends Component {
 										title={g.name}
 										gId={g.id}
 										dId={d.id}
+										color={d.color}
 										single={true}
 										t={t}
 									/>

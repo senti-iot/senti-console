@@ -6,7 +6,7 @@ import { T } from 'components';
 // import moment from 'moment'
 import RGauge from 'react-svg-gauge';
 import { primaryColor } from 'assets/jss/material-dashboard-react';
-
+import { colors } from '@material-ui/core';
 
 class Gauge extends Component {
 
@@ -24,12 +24,12 @@ class Gauge extends Component {
 	renderGauge(props) {
 	}
 	render() {
-		const {  title } = this.props
+		const { title, color } = this.props
 		return (
 			<ItemG container justify={'center'} alignItems={'center'} style={{ width: '100%', height: '100%' }}>
 				<ItemG container justify={'center'} alignItems={'center'}>
 					<RGauge 
-						color={primaryColor}
+						color={color ? colors[color][500] : primaryColor}
 						value={this.props.value} 
 						width={300} height={175} 
 						valueLabelStyle={{ fontSize: 40, fontWeight: 500, fontFace: 'Roboto' }} 

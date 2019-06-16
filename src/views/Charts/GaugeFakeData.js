@@ -365,10 +365,11 @@ class GaugeComponent extends PureComponent {
 		</ItemG>
 	}
 	renderType = () => {
-		const { period } = this.props
+		const { period, color } = this.props
 		const { loading, data } = this.state
 		if (!loading) {
 			return <Gauge
+				color={color}
 				title={this.props.title}
 				period={period}
 				value={data}
@@ -491,7 +492,7 @@ class GaugeComponent extends PureComponent {
 					avatar={this.renderIcon()}
 					noExpand
 					topAction={this.renderMenu()}
-					background={this.props.color}
+					// background={this.props.color}
 					content={
 						<Grid container>
 							<ExportModal
