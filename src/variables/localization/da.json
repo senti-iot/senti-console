@@ -1052,7 +1052,10 @@
         "mapView": "Kortvisning",
         "org": "Organisation",
         "project": "Projekt",
-        "user": "Bruger"
+		"user": "Bruger",
+		"registry": "Register",
+		"function": "Cloud funktion",
+		"devicetype": "Enhedstype"
     },
     "users": {
         "editUser": "Rediger bruger",

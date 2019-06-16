@@ -103,7 +103,7 @@ class Function extends Component {
 		let favObj = {
 			id: cloudfunction.id,
 			name: cloudfunction.name,
-			type: 'cloudfunction',
+			type: 'function',
 			path: this.props.match.url
 		}
 		this.props.addToFav(favObj)
@@ -113,7 +113,7 @@ class Function extends Component {
 		let favObj = {
 			id: cloudfunction.id,
 			name: cloudfunction.name,
-			type: 'cloudfunction',
+			type: 'function',
 			path: this.props.match.url
 		}
 		this.props.removeFromFav(favObj)

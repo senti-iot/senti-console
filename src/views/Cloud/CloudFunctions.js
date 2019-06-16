@@ -83,8 +83,8 @@ class Functions extends Component {
 		let favObj = {
 			id: collection.id,
 			name: collection.name,
-			type: 'collection',
-			path: `/collection/${collection.id}`
+			type: 'function',
+			path: `/function/${collection.id}`
 		}
 		let isFavorite = isFav(favObj)
 		let allOptions = [

@@ -11,7 +11,7 @@ import { connect } from 'react-redux'
 import { Info, Caption, ItemG } from 'components';
 import TC from 'components/Table/TC'
 import TP from 'components/Table/TP';
-import { LibraryBooks, DeviceHub, Person, Business, DataUsage } from 'variables/icons';
+import { LibraryBooks, DeviceHub, Person, Business, DataUsage, Memory, InputIcon, CloudDownload } from 'variables/icons';
 
 class FavoriteTable extends React.Component {
 	constructor(props) {
@@ -56,11 +56,13 @@ class FavoriteTable extends React.Component {
 	isSelected = id => this.props.selected.indexOf(id) !== -1;
 	renderIcon = (type) => {
 		const { t } = this.props
+		console.log(type)
 		switch (type) {
 			case 'project':
 				return <Tooltip title={t('tooltips.project')}>
 					<LibraryBooks />
 				</Tooltip>
+			case 'sensor': 
 			case 'device': 
 				return <Tooltip title={t('tooltips.device')}>
 					<DeviceHub />
@@ -76,6 +78,18 @@ class FavoriteTable extends React.Component {
 			case 'collection': 
 				return <Tooltip title={t('tooltips.collection')}>
 					<DataUsage />
+				</Tooltip>
+			case 'devicetype': 
+				return <Tooltip title={t('tooltips.devicetype')}>
+					<Memory />
+				</Tooltip>
+			case 'registry': 
+				return <Tooltip title={t('tooltips.registry')}>
+					<InputIcon />
+				</Tooltip>
+			case 'function':
+				return <Tooltip title={t('tooltips.function')}>
+					<CloudDownload/>
 				</Tooltip>
 			default:
 				break;
