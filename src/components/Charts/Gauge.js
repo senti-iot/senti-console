@@ -7,6 +7,8 @@ import { T } from 'components';
 import RGauge from 'react-svg-gauge';
 import { primaryColor } from 'assets/jss/material-dashboard-react';
 import { colors } from '@material-ui/core';
+import { withStyles } from '@material-ui/core';
+import { graphStyles } from './graphStyles';
 
 class Gauge extends Component {
 
@@ -24,7 +26,8 @@ class Gauge extends Component {
 	renderGauge(props) {
 	}
 	render() {
-		const { title, color } = this.props
+		const { title, color, theme  } = this.props
+		console.log(theme)
 		return (
 			<ItemG container justify={'center'} alignItems={'center'} style={{ width: '100%', height: '100%' }}>
 				<ItemG container justify={'center'} alignItems={'center'}>
@@ -32,7 +35,7 @@ class Gauge extends Component {
 						color={color ? colors[color][500] : primaryColor}
 						value={this.props.value} 
 						width={300} height={175} 
-						valueLabelStyle={{ fontSize: 40, fontWeight: 500, fontFace: 'Roboto' }} 
+						valueLabelStyle={{ fontSize: 40, fontWeight: 500, fontFace: 'Roboto', fill: theme.palette.type === 'dark' ? '#ffffff' : '#000000' }} 
 						label={''}
 						max={this.props.value > 1 ? 100 : 1}
 						minMaxLabelStyle={{ display: 'none' }}
@@ -46,4 +49,4 @@ class Gauge extends Component {
 	}
 }
 
-export default Gauge
+export default  withStyles(graphStyles, { withTheme: true })(Gauge)
