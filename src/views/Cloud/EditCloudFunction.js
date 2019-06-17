@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 // import EditCloudFunctionForm from 'components/Collections/EditCloudFunctionForm';
-import { getFunctionLS } from 'redux/data';
+import { getFunctionLS, getFunctions } from 'redux/data';
 import { updateFunction } from 'variables/dataFunctions';
 import { updateFav, isFav } from 'redux/favorites';
 import { CircularLoader } from 'components';
@@ -70,10 +70,22 @@ class EditCloudFunction extends Component {
 		return await updateFunction(this.state.cloudfunction)
 	}
 	handleUpdate = async () => {
-		const { s, history } = this.props
+		const { s, history, orgId, accessLevel } = this.props
 		let rs = await this.updateFunction()
 		if (rs) {
-			s('snackbars.cloudfunctionUpdated')
+			const { isFav, updateFav } = this.props
+			const { cloudfunction } = this.state
+			let favObj = {
+				id: cloudfunction.id,
+				name: cloudfunction.name,
+				type: 'function',
+				path: `/function/${cloudfunction.id}`
+			}
+			if (isFav(favObj)) {
+				updateFav(favObj)
+			}
+			s('snackbars.edit.cloudfunction', { cf: cloudfunction.name })
+			this.props.getFunctions(true, orgId, accessLevel.apisuperuser ? true : false)
 			history.push(`/function/${this.id}`)
 		}
 		else
@@ -98,8 +110,8 @@ class EditCloudFunction extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	// accessLevel: state.settings.user.privileges,
-	// orgId: state.settings.user.org.id
+	accessLevel: state.settings.user.privileges,
+	orgId: state.settings.user.org.id,
 	cloudfunction: state.data.cloudfunction
 })
 
@@ -107,6 +119,7 @@ const mapDispatchToProps = dispatch => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
 	updateFav: (favObj) => dispatch(updateFav(favObj)),
 	getFunction: async id => dispatch(await getFunctionLS(id)),
+	getFunctions: async (reload, orgId, ua) => dispatch(await getFunctions(reload, orgId, ua))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditCloudFunction)

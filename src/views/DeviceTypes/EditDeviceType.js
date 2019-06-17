@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 // import CreateDeviceTypeForm from 'components/Collections/CreateDeviceTypeForm';
-import { getDeviceTypeLS } from 'redux/data';
+import { getDeviceTypeLS, getDeviceTypes } from 'redux/data';
 import { updateDeviceType } from 'variables/dataRegistry';
 import CreateDeviceTypeForm from 'components/DeviceTypes/CreateDeviceTypeForm';
 import { updateFav, isFav } from 'redux/favorites';
@@ -79,10 +79,22 @@ class CreateDeviceType extends Component {
 		return await updateDeviceType(deviceType)
 	}
 	handleCreate = async () => {
-		const { s, history } = this.props
+		const { s, history, orgId, accessLevel } = this.props
 		let rs = await this.createDeviceType()
 		if (rs) {
-			s('snackbars.devicetypeCreated')
+			const { isFav, updateFav } = this.props
+			const { devicetype } = this.state
+			let favObj = {
+				id: devicetype.id,
+				name: devicetype.name,
+				type: 'devicetype',
+				path: `/devicetype/${devicetype.id}`
+			}
+			if (isFav(favObj)) {
+				updateFav(favObj)
+			}
+			s('snackbars.edit.devicetype', { dt: devicetype.name })
+			this.props.getDeviceTypes(true, orgId, accessLevel.apisuperuser ? true : false)
 			history.push(`/devicetype/${rs}`)
 		}
 		else
@@ -309,6 +321,7 @@ const mapDispatchToProps = dispatch => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
 	updateFav: (favObj) => dispatch(updateFav(favObj)),
 	getDeviceType: async id => dispatch(await getDeviceTypeLS(id)),
+	getDeviceTypes: async (reload, orgId, ua) => dispatch(await getDeviceTypes(reload, orgId, ua))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateDeviceType)

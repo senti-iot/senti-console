@@ -60,10 +60,13 @@ class CreateCollection extends Component {
 		return res
 	}
 	handleCreate = async () => {
-		const { s, history } = this.props
+		const { s, history, orgId, accessLevel } = this.props
 		let rs = await this.createFunction()
 		if (rs) {
+			const { cloudfunction } = this.state
 			// s('snackbars.collectionCreated')
+			s('snackbars.create.cloudfunction', { cf: cloudfunction.name })
+			this.props.getFunctions(true, orgId, accessLevel.apisuperuser ? true : false)
 			history.push(`/function/${rs}`)
 		}
 		else
