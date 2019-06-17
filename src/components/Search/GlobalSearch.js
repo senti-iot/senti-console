@@ -161,8 +161,6 @@ class GlobalSearch extends React.PureComponent {
 						</div>
 						<div className={classes.suggestionText}>
 							{matches.map((m, i) => {
-							// if (m.field === 'description')
-							// console.log(m)
 								return <T noWrap key={i}>
 									{`${t(`${suggestion.type}s.fields.${m.field}`)}: `}{this.highlightWords(m.value, query)}{matches.length > 0 && i !== matches.length - 1 ? ', ' : ''}
 								</T>

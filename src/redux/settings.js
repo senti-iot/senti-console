@@ -130,8 +130,8 @@ export const getSettings = async () => {
 
 		var userId = cookie.load('SESSION') ? cookie.load('SESSION').userID : 0
 		var user = userId !== 0 ? await getUser(userId) : null
-	
-		var settings =  get('settings') ? get('settings') : user ? user.aux ? user.aux.senti ? user.aux.senti.settings ? user.aux.senti.settings : null : null : null : null
+
+		var settings = get('settings') ? get('settings') : user ? user.aux ? user.aux.senti ? user.aux.senti.settings ? user.aux.senti.settings : null : null : null : null
 		if (settings) {
 			dispatch({
 				type: GetSettings,
@@ -139,8 +139,8 @@ export const getSettings = async () => {
 				user: user
 			})
 		}
-		var favorites = user ? user.aux ? user.aux.senti ? user.aux.senti.favorites ? user.aux.senti.favorites : null : null : null : null
-		var dashboards = user ? user.aux ? user.aux.senti ? user.aux.senti.dashboards ? user.aux.senti.dashboards : null : null : null : null
+		var favorites = user ? user.aux ? user.aux.senti ? user.aux.senti.favorites ? user.aux.senti.favorites : [] : [] : [] : []
+		var dashboards = user ? user.aux ? user.aux.senti ? user.aux.senti.dashboards ? user.aux.senti.dashboards : [] : [] : [] : []
 		moment.updateLocale('en-gb', {
 			week: {
 				dow: 1
@@ -159,14 +159,14 @@ export const getSettings = async () => {
 					user
 				})
 			}
-
+			
 			else {
 				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
 				let s = {
 					...getState().settings,
 					language: user.aux.odeum.language
 				}
-
+				
 				dispatch({
 					type: NOSETTINGS,
 					loading: false,
@@ -602,9 +602,7 @@ export const settings = (state = initialState, action) => {
 		case DISCSENT:
 			return Object.assign({}, state, { discSentiVal: action.val })
 		case NOSETTINGS:
-		{
 			return Object.assign({}, state, { ...action.settings, loading: false, user: action.user })
-		}
 		case GetSettings:
 		{
 			let periods = setDates(action.settings.periods)

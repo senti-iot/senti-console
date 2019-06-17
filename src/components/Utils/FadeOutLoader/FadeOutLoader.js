@@ -20,7 +20,6 @@ class FadeOutLoader extends Component {
 		 }
 	}
 	execute = async (on) => {
-		// console.log(on)
 		if (on) {
 			this.setState({ loading: true })
 			setTimeout(async () => {

@@ -132,7 +132,7 @@ class Collections extends Component {
 		}
 	}
 	componentWillUnmount = () => {
-		// this._isMounted = 0
+		this._isMounted = 0
 	}
 	//#endregion
 

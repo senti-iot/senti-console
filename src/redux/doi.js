@@ -10,6 +10,7 @@ export const todayOfInterest = (date) => {
 		return { days, birthdays }
 	}
 }
+
 export const setDaysOfInterest = (daysOfInterest) => ({
 	type: setDoI,
 	days: daysOfInterest

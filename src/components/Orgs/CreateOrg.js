@@ -174,7 +174,10 @@ class CreateOrg extends Component {
 	handleCreateOrg = async () => {
 		if (this.handleValidation()) {
 			let newOrg = {
-				...this.state.org
+				...this.state.org,
+				org: {
+					id: this.state.selectedOrg ? this.state.selectedOrg : -1
+				}
 			}
 			return await createOrg(newOrg).then(rs =>
 				rs ?

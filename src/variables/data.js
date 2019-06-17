@@ -1,10 +1,10 @@
-import { create  } from 'apisauce'
+import { create } from 'apisauce'
 import cookie from 'react-cookies'
 import crypto from 'crypto'
 import moment from 'moment'
 
 const { REACT_APP_ENCRYPTION_KEY } = process.env
-const IV_LENGTH = 16 
+const IV_LENGTH = 16
 
 const encrypt = (text) => {
 	let iv = crypto.randomBytes(IV_LENGTH)
@@ -73,13 +73,12 @@ export const getHolidays = async (lang) => {
 	let data = await holidayApi.get(`/${lastYear}-01-01/${nextYear}-12-31/${lang}`).then(rs => rs.data)
 	let data2 = await customerDoIApi.get(`/${lastYear}-01-01/${nextYear}-12-31/${lang}`).then(rs => rs.data)
 	let newData = []
-	if (data2) { 
+	if (data2) {
 		newData = data2.map((d, i) => {
 			if (i < data2.length / 3)
 				d.date = `${lastYear}-${d.date}`
-			else {	
-				if (i >= data2.length / 3 && i < 2 * data2.length / 3 )
-				{ d.date = `${year}-${d.date}` }
+			else {
+				if (i >= data2.length / 3 && i < 2 * data2.length / 3) { d.date = `${year}-${d.date}` }
 				else {
 					d.date = `${nextYear}-${d.date}`
 				}
@@ -87,9 +86,11 @@ export const getHolidays = async (lang) => {
 			return d
 		})
 	}
-	if (data && newData)
-		return [...data, ...newData]
-	else 
+	if (data && newData) {
+		let datas = [...data, ...newData].sort((a, b) => a.date > b.date ? 1 : -1)
+		return [...datas]
+	}
+	else
 		return []
 }
 export const weatherApi = create({
@@ -119,21 +120,21 @@ export const imageApi = create({
 })
 export const makeCancelable = (promise) => {
 	let hasCanceled_ = false;
-  
+
 	const wrappedPromise = new Promise((resolve, reject) => {
-	  promise.then((val) =>
+		promise.then((val) =>
 			hasCanceled_ ? reject({ isCanceled: true }) : resolve(val)
-	  );
-	  promise.catch((error) =>
+		);
+		promise.catch((error) =>
 			hasCanceled_ ? reject({ isCanceled: true }) : reject(error)
-	  );
+		);
 	});
-  
+
 	return {
-	  promise: wrappedPromise,
-	  cancel() {
+		promise: wrappedPromise,
+		cancel() {
 			hasCanceled_ = true;
-	  },
+		},
 	};
 };
 export const api = create({
@@ -143,7 +144,7 @@ export const api = create({
 		'Accept': 'application/json',
 		'Content-Type': 'application/json',
 		'ODEUMAuthToken': ''
-	},	
+	},
 })
 
 export const setToken = () => {
