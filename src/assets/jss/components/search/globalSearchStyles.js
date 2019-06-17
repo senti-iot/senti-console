@@ -118,9 +118,10 @@ const globalSearchStyles = theme => ({
 			"&:focus": {
 				width: '100%'
 			},
+			transition: 'width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
 		},
 		[theme.breakpoints.up('sm')]: {
-			// width: 120,
+			width: 120,
 			"&:focus": {
 				width: 170
 			},
