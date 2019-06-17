@@ -1,8 +1,36 @@
 import teal from '@material-ui/core/colors/teal'
 import { hoverColor, primaryColor, headerColor } from 'assets/jss/material-dashboard-react';
-import { red } from '@material-ui/core/colors';
+import { red, green } from '@material-ui/core/colors';
 
 const createprojectStyles = theme => ({
+	IconEndAd: {
+		marginLeft: 12
+	},
+	smallAction: {
+		padding: 0,
+		// color: primaryColor,
+		"&:hover": {
+			background: 'initial',
+			// color: hoverColor
+		}
+	},
+	editor: {
+		width: 'calc(100% - 16px)', 
+		border: '1px solid rgba(100, 100, 100, 0.25)', 
+		padding: 4, 
+		borderRadius: 4,
+		"&:hover": {
+			boder: '1px solid #000'
+		}
+	},
+	blocked: {
+		color: red[500],
+		marginRight: 8
+	},
+	allowed: {
+		color: green[500],
+		marginRight: 8
+	},
 	redButton: {
 		color: red[700],
 		border: '1px solid rgb(211,47,47, 0.5)',
@@ -51,7 +79,7 @@ const createprojectStyles = theme => ({
 		marginRight: theme.spacing.unit
 	},
 	wrapper: {
-		margin: theme.spacing.unit,
+		marginRight: theme.spacing.unit,
 		position: 'relative',
 	},
 	buttonSuccess: {

@@ -14,13 +14,13 @@ import globalSearchStyles from 'assets/jss/components/search/globalSearchStyles'
 import { setSearchValue } from 'redux/globalSearch';
 import { hist } from 'App';
 import { T, ItemG } from 'components';
-import { Grow } from '@material-ui/core';
+import { Grow, Hidden } from '@material-ui/core';
 import { teal } from '@material-ui/core/colors';
 // import { Typography } from '@material-ui/core';
 
 function renderInput(inputProps) {
 	return (
-		<GlobalSearchInput {...inputProps} />
+		<GlobalSearchInput inputProps={inputProps} refCallback={inputProps.ref} ref={null}/>
 	);
 }
 
@@ -51,7 +51,7 @@ class GlobalSearch extends React.PureComponent {
 			suggestions: [],
 			open: false
 		}
-		this.inputRef = React.createRef()
+		this.inputRef = null
 
 	}
 	componentDidMount() {
@@ -129,36 +129,39 @@ class GlobalSearch extends React.PureComponent {
 		return matches
 	}
 	handleOnSuggestionClicked = (path) => {
+		this.handleResetSearch()
 		hist.push(path)
 	}
 	renderSuggestion = (suggestion, { query, isHighlighted }) => {
-		const { t } = this.props
+		const { t, classes } = this.props
 		let matches = this.highlightParts(suggestion.values, query)
 		return (
 			<MenuItem selected={isHighlighted} component='div' style={{ height: 'auto' }}>
 				<ItemG container>
-					<div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'top', padding: '8px 0px 16px 16px', width: 100, maxWidth: 100 }}>
-						<T>
-							{t(`sidebar.${suggestion.type}`)}
-						</T>
-					</div>
-					<ItemG>
-						<div style={{ margin: 8, width: 1, height: '90%', /* background: '#c5c5c5' */ }}/>
-					</ItemG>
-					<div style={{ padding: 16, paddingTop: 8 }}>
-						<div style={{   maxWidth: 300,
-							overflow: "hidden",
-							textOverflow: "ellipsis",
-							whiteSpace: "nowrap",  }}>
-							<T style={{ fontWeight: 500, fontSize: 15 }} noWrap>{suggestion.label}</T>
+					<Hidden mdDown>
+						<div style={{ padding: '8px 0px 16px 16px', display: 'flex', justifyContent: 'flex-end', alignItems: 'top', width: 100, maxWidth: 100 }}>
+							<T>
+								{this.highlightWords(t(`sidebar.${suggestion.type}`), query)}
+							</T>
 						</div>
-						<div style={{   maxWidth: 300,
-							overflow: "hidden",
-							textOverflow: "ellipsis",
-							whiteSpace: "nowrap",  }}>
+						{/* <ItemG> */}
+						<div style={{ margin: 8, width: 1, height: '90%', /* background: '#c5c5c5' */ }}/>
+						{/* </ItemG> */}
+					</Hidden>
+					<div className={classes.suggestionTextContainer}>
+						<Hidden smUp>
+							<div className={classes.suggestionText}>
+								<T>
+									{this.highlightWords(t(`sidebar.${suggestion.type}`), query)}
+								</T>
+							</div>
+						</Hidden>
+						<div className={classes.suggestionText}>
+							<T style={{ fontWeight: 500, fontSize: 15 }} noWrap>{this.highlightWords(suggestion.label, query)}</T>
+						</div>
+						<div className={classes.suggestionText}>
 							{matches.map((m, i) => {
-								// if (m.field === 'description')
-								return <T key={i}>
+								return <T noWrap key={i}>
 									{`${t(`${suggestion.type}s.fields.${m.field}`)}: `}{this.highlightWords(m.value, query)}{matches.length > 0 && i !== matches.length - 1 ? ', ' : ''}
 								</T>
 							})}
@@ -188,13 +191,16 @@ class GlobalSearch extends React.PureComponent {
 
 	focusInput = () => {
 		this.props.disableEH()
-		this.inputRef.current.focus()
+		// this.inputRef.focus()
 	}
 
 	getSectionSuggestions = (section) => {
 		return section.suggestions;
 	  }
 	  
+	onFocusInput = () => {
+		this.props.disableEH()
+	}
 	render() {
 		const { classes, right } = this.props;
 		return (
@@ -208,6 +214,7 @@ class GlobalSearch extends React.PureComponent {
 					suggestion: classes.suggestion,
 				}}
 				multiSection={true}
+				inputRef={this.inputRef}
 				alwaysRenderSuggestions={false}
 				focusInputOnSuggestionClick={false}
 				renderInputComponent={renderInput}
@@ -224,15 +231,15 @@ class GlobalSearch extends React.PureComponent {
 				onFocus={this.props.disableEH}
 				onBlur={this.props.enableEH}
 				inputProps={{
-					onFocus: this.props.disableEH,
+					onFocus: this.onFocusInput,
 					onBlur: this.props.enableEH,
 					noAbsolute: this.props.noAbsolute,
 					placeholder: this.props.t('actions.src'),
-					classes,
+					// classes,
 					// fullWidth: this.props.fullWidth,
 					value: this.props.searchValue,
 					onChange: this.handleChange,
-					reference: this.inputRef,
+					reference: ref => this.inputRef = ref,
 					// open: this.state.open || this.props.open,
 					// handleOpen: this.handleOpen,
 					// handleClose: this.handleClose,

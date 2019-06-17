@@ -2,12 +2,12 @@ import React, { PureComponent } from 'react'
 import { Pie } from 'react-chartjs-2';
 import { withStyles } from '@material-ui/core';
 import { graphStyles } from './graphStyles';
-import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
 import PieTooltip from './PieTooltip';
 import { compose } from 'recompose';
 import { connect } from 'react-redux'
 import SummaryTooltip from './SummaryTooltip';
+import { getWeather } from 'redux/weather';
 
 
 class PieChart extends PureComponent {
@@ -86,14 +86,14 @@ class PieChart extends PureComponent {
 			wDate = moment(tooltipModel.body[0].lines[1]).format('YYYY-MM-DD HH:ss')
 			if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long)) {
 				this.setState({ weather: null })
-				getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then(rs => {
+				this.props.getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then(rs => {
 					this.setState({
 						tooltip: {
 							...this.state.tooltip,
 							showWeather: true
 						},
 						weatherDate: wDate,
-						weather: rs,
+						weather: this.props.weather,
 						loc: {
 							lat: lat,
 							long: long
@@ -250,16 +250,18 @@ class PieChart extends PureComponent {
 		)
 	}
 }
-const mapStateToProps = (state) => {
-	return ({
-		lang: state.settings.language,
-		timeType: state.dateTime.timeType
-	})
-}
-
-const mapDispatchToProps = {
-  
-}
+const mapStateToProps = (state) => ({
+	lang: state.settings.language,
+	timeType: state.dateTime.timeType,
+	weather: state.weather.weather,
+	loadingWeather: state.weather.loading
+})
+	
+	
+const mapDispatchToProps = dispatch => ({
+	getWeather: async (device, date, lang) => dispatch(await getWeather(device, date, lang))
+})
+	
 
 let PieChartCompose = compose(connect(mapStateToProps, mapDispatchToProps), withStyles(graphStyles, { withTheme: true }))(PieChart)
 

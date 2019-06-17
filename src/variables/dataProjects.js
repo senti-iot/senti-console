@@ -1,4 +1,5 @@
 import { api } from './data';
+import { del } from './storage';
 
 
 export const getCreateProject = async () => {
@@ -25,5 +26,6 @@ export const getProject = async (projectId) => {
 
 export const deleteProject = async (projectId) => {
 	var data = await api.delete('senti/project/' + projectId)
+	del('project.' + projectId)
 	return data
 }

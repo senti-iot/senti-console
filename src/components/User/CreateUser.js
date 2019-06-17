@@ -307,7 +307,6 @@ class CreateUser extends Component {
 		const { t, accessLevel } = this.props
 		const { error, selectedGroup } = this.state
 		let rend = false
-		console.log(accessLevel)
 		if ((accessLevel.apisuperuser) || (accessLevel.apiorg.editusers)) {
 			rend = true
 		}

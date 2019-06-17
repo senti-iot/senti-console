@@ -1,4 +1,5 @@
-import { api } from './data'
+import { api, servicesAPI } from './data'
+import { del } from './storage';
 
 /**
  * @function getAllOrgs Get all organizations
@@ -31,8 +32,12 @@ export const getOrgUsers = async (orgId) => {
  * @param {object} org 
  */
 export const updateOrg = async (org) => {
-	var data = await api.put(`core/org/${org.id}`, org).then(rs => rs.data)
-	return data
+	var data = async () => { 
+		let r = await api.put(`core/org/${org.id}`, org).then(rs => rs.data)
+		await servicesAPI.put(`/v1/customer`, { name: org.name, ODEUM_org_id: org.id })
+		return r
+	}
+	return data()
 }
 
 /**
@@ -41,7 +46,10 @@ export const updateOrg = async (org) => {
  */
 export const createOrg = async (org) => {
 	var result = await api.post('core/org', org).then(rs => rs.data)
-	return result
+	var result2 = await servicesAPI.post('/v1/customer', { ...org, org_id: result.id }).then(rs => rs.ok)
+	if (result && result2)
+		return result
+	return result & result2
 }
 
 /**
@@ -50,5 +58,6 @@ export const createOrg = async (org) => {
  */
 export const deleteOrg = async (org) => {
 	var result = await api.delete(`core/org/${org}`).then(rs => rs)
+	del('org.' + org)
 	return result
 }

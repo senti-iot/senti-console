@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getAllPictures, getWeather } from 'variables/dataDevices'
+import { getAllPictures } from 'variables/dataDevices'
 import { withStyles, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Fade } from '@material-ui/core'
 import { ItemGrid, AssignOrg, AssignDC, /* DateFilterMenu */ } from 'components'
 import deviceStyles from 'assets/jss/views/deviceStyles'
@@ -22,6 +22,7 @@ import ChartDataPanel from 'views/Charts/ChartDataPanel';
 import ChartData from 'views/Charts/ChartData';
 import Maps from 'views/Maps/MapCard';
 import { getDeviceLS } from 'redux/data';
+import { getWeather } from 'redux/weather';
 
 class Device extends Component {
 	constructor(props) {
@@ -166,8 +167,8 @@ class Device extends Component {
 			await this.componentDidMount()
 		if (device) {
 			if (device.lat && device.long && this.state.weather === null) {
-				let data = await getWeather(device, moment(), this.props.language)
-				this.setState({ weather: data })
+				await this.props.getWeather(device, moment(), this.props.language)
+				this.setState({ weather: this.props.weather })
 			}
 		}
 		if (this.props.saved === true) {
@@ -553,10 +554,13 @@ const mapStateToProps = (state) => ({
 	saved: state.favorites.saved,
 	periods: state.dateTime.periods,
 	device: state.data.device,
-	loading: !state.data.gotDevice
+	loading: !state.data.gotDevice,
+	weather: state.weather.weather,
+	loadingWeather: state.weather.loading
 })
 
 const mapDispatchToProps = (dispatch) => ({
+	getWeather: async (device, date, lang) => dispatch(await getWeather(device, date, lang)),
 	isFav: (favObj) => dispatch(isFav(favObj)),
 	addToFav: (favObj) => dispatch(addToFav(favObj)),
 	removeFromFav: (favObj) => dispatch(removeFromFav(favObj)),

@@ -30,7 +30,7 @@ const TC = (props) => {
 		}}
 		{...rest}
 		>
-			{label ? <Typography variant={'body1'} classes={{ root: classes.paragraphCell + ' ' + (center ? classes.center : '') }}>
+			{(label !== null || label !== undefined) ? <Typography variant={'body1'} classes={{ root: classes.paragraphCell + ' ' + (center ? classes.center : '') }}>
 				{label}
 			</Typography> : null}
 			{content ? content : null}

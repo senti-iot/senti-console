@@ -9,15 +9,18 @@
     "": "",
     "Senti": "Senti",
     "actions": {
-		"src": "Søg...",
         "accept": "Godkend",
         "addFilter": "Tilføj filter",
+        "addInboundFunc": "Tilføj funktion ved modtagelse af data",
+        "addKey": "Tilføj enhed datafelt",
+        "addMtdKey": "Tilføj enhed metadata felt",
         "apply": "Anvend",
         "back": "Forrige",
         "call": "Ring",
         "cancel": "Anuller",
         "changeLanguage": "Change to English",
         "changePassword": "Skift kodeord",
+        "copyToClipboard": "Kopi til klippebord",
         "decline": "Afvis",
         "deletePicture": "Slet dette billede",
         "editFilter": "Rediger filter",
@@ -51,6 +54,7 @@
         "save": "Gem",
         "search": "Skriv her for at søge",
         "sendEmail": "Send e-mail",
+        "src": "Søg...",
         "start": "Start",
         "startNow": "Start nu",
         "update": "Rediger",
@@ -100,6 +104,33 @@
             "line": "Linje",
             "pie": "Lagkage"
         }
+    },
+    "cloudfunctions": {
+        "datatypes": {
+            "average": "Gennemsnit af værdier",
+            "timeSeries": "Tidsserier"
+        },
+        "fields": {
+            "code": "Kildekode",
+            "description": "Beskrivelse",
+            "inboundfunc": "Cloud Funktion",
+            "key": "Enhed datafelt",
+            "keys": "Enhed datafelter",
+            "metadata": {
+                "defaultValue": "Metadata standard værdi",
+                "key": "Metadata nøgle",
+                "value": "Metadata værdi"
+            },
+            "name": "Navn",
+            "type": "Type",
+            "types": {
+                "external": "Udvendig",
+                "function": "JavaScript funktion",
+                "inbound": "Funktion ved modtagelse af data",
+                "outbound": "Cloud funktion"
+            }
+        },
+        "pageTitle": "Cloud funktioner"
     },
     "collections": {
         "calibratedData": "Kalibreret data",
@@ -208,6 +239,9 @@
         "editDetailsTitle": "Rediger %{deviceId}",
         "editHardwareTitle": "Rediger hardware for enhed %{deviceId}",
         "fields": {
+            "RPImodel": "Enhedsmodel",
+            "SIMID": "SIM-kort ID",
+            "SIMProvider": "SIM-kort leverandør",
             "adapter": "Strømforsyning",
             "address": "Adresse",
             "availability": "Tilgængelighed",
@@ -229,10 +263,7 @@
             "name": "Navn",
             "notfree": "Optaget",
             "org": "Organisation",
-            "RPImodel": "Enhedsmodel",
             "project": "Projekt",
-            "SIMID": "SIM-kort ID",
-            "SIMProvider": "SIM-kort leverandør",
             "status": "Status",
             "temp": "CPU temperatur",
             "weather": "Vejr",
@@ -279,6 +310,28 @@
             "yellow": "Enheden er tilsluttet, men modtager ikke data",
             "yellowShort": "Modtager ikke data"
         }
+    },
+    "devicetypes": {
+        "actions": {
+            "addKey": "Tilføj key"
+        },
+        "createDeviceType": "Opret Enhedstype",
+        "fields": {
+            "name": "Navn",
+            "structure": {
+                "key": "Key",
+                "name": "Struktur",
+                "type": "Type",
+                "types": {
+                    "array": "Array",
+                    "boolean": "Boolean",
+                    "int": "Integer",
+                    "string": "String"
+                },
+                "value": "Value"
+            }
+        },
+        "pageTitle": "Enhedstype"
     },
     "dialogs": {
         "cookies": {
@@ -357,10 +410,14 @@
         },
         "pageTitle": "Favoritter",
         "types": {
+            "cloudfunction": "Cloud funktion",
             "collection": "Datasamling",
             "device": "Enhed",
+            "devicetype": "Enhedstype",
             "org": "Organisation",
             "project": "Projekt",
+            "registry": "Register",
+            "sensor": "Enhed",
             "user": "Bruger"
         }
     },
@@ -434,7 +491,17 @@
             "10": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
             "11": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
             "12": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
-            "13": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.."
+            "13": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "14": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "15": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "16": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "17": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "18": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "19": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "20": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "21": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "22": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "23": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala."
         },
         "createAccount": "Opret en konto",
         "footer": "©2016–2019 Alle rettigheder forbeholdt. Senti er en open source IoT platform designet og udviklet af WebHouse.",
@@ -475,19 +542,25 @@
         },
         "copyEmails": "Kopier E-mail adresser",
         "create": {
+            "cloudfunction": "Opret cloud funktion",
             "collection": "Opret datasamling",
             "device": "Opret enhed",
+            "devicetype": "Opret enhedstype",
             "org": "Opret organisation",
             "project": "Opret projekt",
+            "registry": "Opret register",
             "user": "Opret bruger"
         },
         "delete": "Slet",
         "edit": "Rediger",
         "edits": {
+            "cloudfunction": "Rediger cloud funktion",
             "collection": "Rediger datasamling",
             "device": "Rediger enhed",
+            "devicetype": "Rediger enhedstype",
             "org": "Rediger organisation",
             "project": "Rediger projekt",
+            "registry": "Rediger register",
             "user": "Rediger bruger"
         },
         "export": "Eksporter data",
@@ -523,17 +596,30 @@
         },
         "userResendEmail": "Send bekræftelses E-mail igen"
     },
+    "messages": {
+        "fields": {
+            "data": "Modtaget pakke",
+            "deviceName": "Enhedsnavn",
+            "id": "ID",
+            "receivedAt": "Modtaged kl",
+            "registryName": "Registersnavn"
+        }
+    },
     "no": {
         "activeDevice": "Ingen aktiv enhed",
         "audioSupported": "Din browser understøtter ikke lydfiler! Der er således ikke lyd respons! Forsøg igen med en anden browser.",
         "birthdays": "Ingen fødselsdage i dag",
+        "cloudfunction": "Ingen cloud funktion",
         "collection": "Ikke tildelt en datasamling",
         "collections": "Ingen datasamlinger",
         "device": "Ingen enhed",
+        "deviceDataKeys": "Ingen enhed datafelter",
+        "deviceInboundFunc": "Ingen funktion ved modtagelse af data",
         "devices": "Ingen enheder",
         "doi": "Iingen helligdage i dag",
         "freeDevices": "Ingen ledige enheder",
         "history": "Ingen historik",
+        "metadata": "Ingen metadata",
         "org": "Ingen organisation",
         "project": "Ingen projekt",
         "projects": "Ingen projekter"
@@ -632,17 +718,17 @@
             "title": "Enheder"
         },
         "fields": {
-			"email": "Kontakt E-mail",
-			"firstName": "Kontakt Navn",
-			"lastName": "Kontakt Navn",
-            "organisation": "Kontakt Organisation",
-			"phone": "Kontakt Telefon",
             "assignDevices": "Tilknyt enheder",
             "created": "Oprettet",
             "description": "Beskrivelse",
+            "email": "Kontakt E-mail",
             "endDate": "Slutdato",
+            "firstName": "Kontakt Navn",
+            "lastName": "Kontakt Navn",
             "lastUpdate": "Senest opdateret",
             "name": "Projektnavn",
+            "organisation": "Kontakt Organisation",
+            "phone": "Kontakt Telefon",
             "selectOrganisation": "Organisation",
             "startDate": "Startdato",
             "title": "Navn"
@@ -660,6 +746,54 @@
             "noStartDate": "Manglende Startdato",
             "noTitle": "Manglende Projektnavn",
             "startDateBiggerThanEndDate": "Startdato må ikke være senere end slutdato"
+        }
+    },
+    "registries": {
+        "fields": {
+            "created": "Oprettet",
+            "customer": "Organisation",
+            "description": "Beskrivelse",
+            "id": "ID",
+            "name": "Navn",
+            "protocol": "Protokol",
+            "protocols": {
+                "http": "HTTP",
+                "mqtt": "MQTT",
+                "none": "Uden protocol"
+            },
+            "region": "Region",
+            "regions": {
+                "europe": "Europa"
+            },
+            "registry": "Register",
+            "uuid": "Universelt Unik Identifikator (UUID)"
+        },
+        "pageTitle": "Registre"
+    },
+    "sensors": {
+        "fields": {
+            "communication": "Enhedskommunikation",
+            "communications": {
+                "allowed": "Tilladt",
+                "blocked": "Blokeret"
+            },
+            "deviceType": "Enhedstype",
+            "metadata": "Enhedsmetadata",
+            "protocols": {
+                "publishData": "Udgiv data",
+                "state": "Enhedstilstand"
+            },
+            "registry": "Register",
+            "uuid": "UUID"
+        },
+        "metadata": {
+            "humidity": "Fugtighed",
+            "maxFlow": "Maksimal vandgennemstrømning",
+            "minATemp": "Mindste omgivelsestemperatur",
+            "minFlow": "Mindste vandgennemstrømning",
+            "minWTemp": "Mindste vandtemperatur",
+            "temperature": "Temperatur",
+            "value": "Vand"
         }
     },
     "settings": {
@@ -741,6 +875,7 @@
                 "persistent": "Skjult helt"
             }
         },
+        "globalSearch": "Global søgning",
         "header": {
             "border": "Separator linjer",
             "borderDetails": ""
@@ -802,19 +937,26 @@
         }
     },
     "sidebar": {
-		"device": "Enhed",
-		"collection": "Datasamling",
-		"project": "Projekt",
-		"org": "Organisation",
-		"user": "Bruger",
+        "cloudfunction": "Cloud funktion",
+        "cloudfunctions": "Cloud funktioner",
+        "collection": "Datasamling",
         "collections": "Datasamlinger",
         "dashboard": "Dashboard",
+        "device": "Enhed",
         "devices": "Enheder",
+        "devicetype": "Enhedstype",
+        "devicetypes": "Enhedstyper",
         "favorites": "Favoritter",
         "home": "Hjem",
+        "manage": "Konfiguration",
+        "messages": "Beskeder",
+        "org": "Organisation",
         "orgs": "Organisationer",
+        "project": "Projekt",
         "projects": "Projekter",
+        "registries": "Registre",
         "settings": "Indstillinger",
+        "user": "Bruger",
         "users": "Brugere"
     },
     "snackbars": {
@@ -866,6 +1008,7 @@
         "updatedFailed": "Opdatering fejlede!",
         "updatedSuccess": "Opdateret!",
         "updating": "Opdaterer ...",
+        "urlCopied": "URL kopieret til klippebord",
         "userCreated": "Bruger %{user} er oprettet!",
         "userDeleted": "Bruger %{user} er slettet!",
         "userPasswordChanged": "Kodeord er skiftet!",
@@ -882,18 +1025,19 @@
     },
     "tabs": {
         "activeDevice": "Aktiv enhed",
-		"collections": "Datasamlinger",
-		"devices": "Enheder",
-		"projects": "Projekter",
-		"users":"Brugere",
+        "code": "Kildekode",
+        "collections": "Datasamlinger",
         "contact": "Kontakt",
         "data": "Diagrammer og data",
         "details": "Detaljer",
-		"history": "Enhedslog",
-		"userHistory": "System log",
+        "devices": "Enheder",
+        "hardware": "Enhed udstyr",
+        "history": "Enhedslog",
+        "images": "Billeder af installation",
         "map": "Kortvisning",
-		"images": "Billeder af installation",
-		"hardware": "Enhed udstyr"
+        "projects": "Projekter",
+        "userHistory": "System log",
+        "users": "Brugere"
     },
     "tooltips": {
         "cardView": "Gittervisning",
@@ -905,15 +1049,22 @@
             "type": "Diagram type"
         },
         "collection": "Datasamling",
-		"device": "Enhed",
+        "device": "Enhed",
+        "devices": {
+            "removeCloudFunction": "Slet Cloud Funktion",
+            "removeDataField": "Slet datafelt"
+        },
+        "devicetype": "Enhedstype",
         "favorites": "Favoritter",
+        "function": "Cloud funktion",
         "listView": "Listevisning",
         "map": {
             "layer": "Baggrundkort"
-		},
+        },
         "mapView": "Kortvisning",
         "org": "Organisation",
         "project": "Projekt",
+        "registry": "Register",
         "user": "Bruger"
     },
     "users": {
@@ -961,7 +1112,6 @@
             "contact": "Kontakt",
             "system": "System log"
         },
-        "messages": {},
         "pageTitle": "Brugere",
         "tabs": {
             "orgs": "Organisationer",

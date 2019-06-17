@@ -36,7 +36,7 @@ class App extends React.Component {
 			},
 			goBackButton: false,
 			url: '',
-			menuRoute: 0,
+			menuRoute: '',
 			bc: {
 				name: '',
 				id: ''
@@ -60,7 +60,6 @@ class App extends React.Component {
 			})
 	}
 	handleSetHeaderTitle = (headerTitle, goBackButton, url, menuRoute, bcname) => {
-
 		if ((headerTitle !== this.state.headerTitle) || (url !== this.state.url)) {
 			if (typeof headerTitle === 'string') {
 				if ((headerTitle !== this.state.headerTitle.id) || (url !== this.state.url)) {
@@ -194,6 +193,19 @@ class App extends React.Component {
 										<Switch>
 											{cookie.load('SESSION') ?
 												dashboardRoutes.map((prop, key) => {
+													if (prop.dropdown) {
+														return prop.items.map((r, key) => {
+															return <Route path={r.path}
+																render={rProps =>
+																	<r.component {...rProps}
+																		setBC={this.handleSetBreadCrumb}
+																		setHeader={this.handleSetHeaderTitle}
+																		setTabs={this.setTabs} />
+																}
+																key={r.menuRoute + key}
+															/>
+														})
+													}
 													if (prop.redirect) {
 														return <Redirect from={prop.path} to={prop.to} key={key} />;
 													}

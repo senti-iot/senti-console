@@ -141,7 +141,7 @@ class Tooltip extends Component {
 								return (
 									<ItemG key={i} container direction='row' justify={'flex-end'} alignItems={'center'}>
 										<DataUsage style={{ color: d.color, width: 24, height: 24, marginLeft: 16, marginRight: 4 }} />
-										<Typography variant={'body1'}>{Math.round(d.count)}</Typography>
+										<Typography variant={'body1'}>{d.count}</Typography>
 									</ItemG>
 								)
 							})}

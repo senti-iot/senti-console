@@ -6,6 +6,7 @@ import { saveSettings } from 'variables/dataLogin';
 import { setDates } from './dateTime';
 import { setPrefix, set, get } from 'variables/storage';
 import { getAllData } from './data';
+import { setDashboards } from './dsSystem';
 var moment = require('moment')
 
 const acceptCookies = 'acceptCookies'
@@ -25,6 +26,7 @@ const changeDS = 'changeDrawerState'
 const changeHB = 'changeHeaderBorder'
 const changeBC = 'changeBreadCrumbs'
 const changeHT = 'changeHoverTime'
+const changeGS = 'changeGlobalSearch'
 
 //Navigation
 
@@ -96,7 +98,8 @@ export const saveSettingsOnServ = () => {
 			drawerCloseOnNav: s.drawerCloseOnNav,
 			headerBorder: s.headerBorder,
 			breadcrumbs: s.breadcrumbs,
-			hoverTime: s.hoverTime
+			hoverTime: s.hoverTime,
+			globalSearch: s.globalSearch
 		}
 		user.aux = user.aux ? user.aux : {}
 		user.aux.senti = user.aux.senti ? user.aux.senti : {}
@@ -119,7 +122,6 @@ export const getSettings = async () => {
 				let exp = moment().add('1', 'day')
 				cookie.save('SESSION', sessionCookie, { path: '/', expires: exp.toDate() })
 				setPrefix(sessionCookie.userID)
-				dispatch(await getAllData())
 			}
 			else {
 				return cookie.remove('SESSION')
@@ -137,6 +139,8 @@ export const getSettings = async () => {
 				user: user
 			})
 		}
+		var favorites = user ? user.aux ? user.aux.senti ? user.aux.senti.favorites ? user.aux.senti.favorites : [] : [] : [] : []
+		var dashboards = user ? user.aux ? user.aux.senti ? user.aux.senti.dashboards ? user.aux.senti.dashboards : [] : [] : [] : []
 		moment.updateLocale('en-gb', {
 			week: {
 				dow: 1
@@ -145,6 +149,7 @@ export const getSettings = async () => {
 		if (user) {
 			if (settings) {
 				moment.locale(user.aux.odeum.language === 'en' ? 'en-gb' : user.aux.odeum.language)
+				dispatch(await getAllData(true, user.org.id, user.privileges.apisuperuser ? true : false))
 				dispatch({
 					type: GetSettings,
 					settings: {
@@ -169,14 +174,17 @@ export const getSettings = async () => {
 					settings: s
 				})
 			}
-			var favorites = user ? user.aux ? user.aux.senti ? user.aux.senti.favorites ? user.aux.senti.favorites : [] : [] : [] : []
-			dispatch({
-				type: GETFAVS,
-				payload:
-					[...favorites]
-
-			})
-
+			if (favorites) {
+				dispatch({
+					type: GETFAVS,
+					payload: 
+						[...favorites]
+					
+				})
+			}
+			if (dashboards) {
+				dispatch(setDashboards(dashboards))
+			}
 		}
 		else {
 			moment.locale('da')
@@ -191,6 +199,14 @@ export const getSettings = async () => {
 			})
 			return false
 		}
+	}
+}
+export const changeGlobalSearch = val => {
+	return async dispatch => {
+		dispatch({
+			type: changeGS,
+			globalSearch: val
+		})
 	}
 }
 export const changeSnackbarLocation = (val) => {
@@ -543,12 +559,15 @@ let initialState = {
 	drawerCloseOnNav: true,
 	headerBorder: false,
 	breadcrumbs: true,
-	hoverTime: 1000
+	hoverTime: 1000,
+	globalSearch: true
 }
 export const settings = (state = initialState, action) => {
 	switch (action.type) {
 		case reset:
 			return Object.assign({}, state, { ...initialState, user: action.user, cookies: false })
+		case changeGS:
+			return Object.assign({}, state, { globalSearch: action.globalSearch })
 		case changeHT:
 			return Object.assign({}, state, { hoverTime: action.hoverTime })
 		case changeBC:

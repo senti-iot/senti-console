@@ -6,6 +6,7 @@ import BarChart from './Charts/BarChart'
 import LineChart from './Charts/LineChart'
 import DoughnutChart from './Charts/DoughnutChart'
 import PieChart	 from './Charts/PieChart'
+import MultiLineChart from './Charts/MultiLineChart'
 
 // ##############################
 // // // Cards
@@ -15,7 +16,7 @@ import ProfileCard from './Cards/ProfileCard.js';
 import RegularCard from './Cards/RegularCard.js';
 import SmallCard from './Cards/SmallCard.js'
 import InfoCard from './Cards/InfoCard'
-
+import Box from './Cards/Box'
 
 // ##############################
 // // // Export
@@ -97,6 +98,8 @@ import WeatherIcon from './Typography/WeatherIcon'
 import T from './Typography/T.js'
 
 export {
+	Box,
+	MultiLineChart,
 	DatePicker,
 	DateTimePicker,
 	AddressInput,

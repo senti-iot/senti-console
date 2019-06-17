@@ -15,7 +15,7 @@ const T = (props) => {
 		[props.classes.bold]: props.b
 	})
 	return (
-		<Typography noWrap={props.noWrap} paragraph={props.paragraph ? props.paragraph : undefined} style={props.style} className={props.className + ' ' + classNames} variant={props.variant ? props.variant : 'body2'}>
+		<Typography noWrap={props.noWrap} color={props.color} paragraph={props.paragraph ? props.paragraph : undefined} style={props.style} className={props.className + ' ' + classNames} variant={props.variant ? props.variant : 'body2'}>
 			{props.children}
 		</Typography>
 	)

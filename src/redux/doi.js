@@ -1,5 +1,5 @@
 import { getHolidays } from 'variables/data';
-import { set, get } from 'variables/storage';
+import { setAll, getAll } from 'variables/storage';
 const setDoI = 'setDoI'
 
 export const todayOfInterest = (date) => { 
@@ -17,13 +17,13 @@ export const setDaysOfInterest = (daysOfInterest) => ({
 })
 export const getDaysOfInterest = (lang) => {
 	return async (dispatch, getState) => {
-		if (get('holidays')) {
-			dispatch(setDaysOfInterest(get('holidays')))
+		if (getAll('holidays')) {
+			dispatch(setDaysOfInterest(getAll('holidays')))
 			
 		}
 		else {
 			let days = await getHolidays(lang ? lang : getState().localization.language)
-			set('holidays', days)
+			setAll('holidays', days)
 			dispatch(setDaysOfInterest(days))
 		}
 	} 

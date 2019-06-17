@@ -2,11 +2,12 @@ import React, { PureComponent, Fragment } from 'react'
 import ChartComponent, { Chart } from 'react-chartjs-2';
 import { withStyles } from '@material-ui/core';
 import { graphStyles } from './graphStyles';
-import { getWeather } from 'variables/dataDevices';
+// import { getWeather } from 'variables/dataDevices';
 import moment from 'moment'
 import { compose } from 'recompose';
 import { connect } from 'react-redux'
 import Tooltip from './Tooltip';
+import { getWeather } from 'redux/weather';
 
 Chart.defaults.multicolorLine = Chart.defaults.line;
 Chart.controllers.multicolorLine = Chart.controllers.line.extend({
@@ -134,7 +135,8 @@ class LineChart extends PureComponent {
 								unit: props.unit.chart,
 								tooltipFormat: props.unit.format
 							},
-						}],
+						},
+					],
 					yAxes: [{
 						scaleLabel: {
 							display: false,
@@ -142,6 +144,7 @@ class LineChart extends PureComponent {
 						},
 						type: props.chartYAxis,
 						ticks: {
+							beginAtZero: true,
 							fontColor: props.theme.palette.type === 'dark' ? '#ffffff' : "#000",
 						},
 						gridLines: {
@@ -251,7 +254,7 @@ class LineChart extends PureComponent {
 			wDate = this.props.data.datasets[tooltipModel.dataPoints[0].datasetIndex].data[tooltipModel.dataPoints[0].index].x
 			if (lat && long) {
 				if (this.state.weatherDate !== wDate || (lat !== this.state.loc.lat && long !== this.state.loc.long) || this.state.tooltip.lastPoint !== lastPoint) {
-					getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then((rs) => {
+					this.props.getWeather({ lat: lat, long: long }, this.setHours(wDate), this.props.lang).then((rs) => {
 						if (this.state.id === id)
 							this.setState({
 								tooltip: {
@@ -259,7 +262,7 @@ class LineChart extends PureComponent {
 									showWeather: true
 								},
 								weatherDate: wDate,
-								weather: rs,
+								weather: this.props.weather,
 								loc: {
 									lat: lat,
 									long: long
@@ -430,7 +433,7 @@ class LineChart extends PureComponent {
 		this.tooltip = r
 	}
 	render() {
-		const { classes, unit } = this.props
+		const { classes, unit, data } = this.props
 		const { tooltip, chartWidth, chartHeight, mobile, weather } = this.state
 		return (
 			<Fragment>
@@ -440,7 +443,7 @@ class LineChart extends PureComponent {
 						<ChartComponent
 							// redraw={this.state.updateHover}
 							type={'multicolorLine'}
-							data={this.props.data}
+							data={data}
 							ref={r => this.chart = r}
 							options={this.state.lineOptions}
 							legend={this.legendOptions}
@@ -466,12 +469,14 @@ class LineChart extends PureComponent {
 }
 const mapStateToProps = (state) => ({
 	lang: state.settings.language,
+	weather: state.weather.weather,
+	loadingWeather: state.weather.loading
 	// chartYAxis: state.appState.chartYAxis
 })
 
-const mapDispatchToProps = {
-
-}
+const mapDispatchToProps = dispatch => ({
+	getWeather: async (device, date, lang) => dispatch(await getWeather(device, date, lang))
+})
 
 let LineChartCompose = compose(connect(mapStateToProps, mapDispatchToProps), withStyles(graphStyles, { withTheme: true }))(LineChart)
 

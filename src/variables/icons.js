@@ -1,3 +1,4 @@
+import Code from '@material-ui/icons/Code'
 import Mail from '@material-ui/icons/Mail'
 import ZoomOut from '@material-ui/icons/ZoomOut'
 import LocationOn from '@material-ui/icons/LocationOn'
@@ -8,6 +9,7 @@ import Google from 'assets/img/google.svg'
 import Call from '@material-ui/icons/Call'
 import Language from '@material-ui/icons/Language'
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
+import InsertChart from '@material-ui/icons/InsertChart'
 //#region weather Icons
 import ClearDay from 'assets/weather/clear_day.svg'
 import ClearNight from 'assets/weather/clear_night.svg'
@@ -28,7 +30,9 @@ import Timeline from '@material-ui/icons/Timeline'
 import ShowChart from '@material-ui/icons/ShowChart'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import Clear from '@material-ui/icons/Clear'
+import Block from '@material-ui/icons/Block'
 import Check from '@material-ui/icons/Check'
+import CheckCircle from '@material-ui/icons/CheckCircle'
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown'
 import Close from '@material-ui/icons/Close'
 import OpenInBrowser from '@material-ui/icons/OpenInBrowser'
@@ -96,8 +100,25 @@ import WhatsHot from '@material-ui/icons/Whatshot'
 import Compare from '@material-ui/icons/Compare'
 import EventNote from '@material-ui/icons/EventNote'
 import FullscreenOutlined from '@material-ui/icons/FullscreenOutlined'
-
+import ContentCopy from 'assets/icons/ContentCopy'
+import SettingsApplications from '@material-ui/icons/SettingsApplications'
+import InputIcon from '@material-ui/icons/Input'
+import Memory from '@material-ui/icons/Memory'
+import CellWifi from '@material-ui/icons/CellWifi'
+import LocalOffer from '@material-ui/icons/LocalOffer'
+import Airplay from '@material-ui/icons/Airplay'
+import GaugeIcon from 'assets/icons/Gauge'
 export {
+	GaugeIcon,
+	InsertChart,
+	Airplay,
+	LocalOffer,
+	Code,
+	CellWifi,
+	Memory,
+	InputIcon,
+	SettingsApplications,
+	ContentCopy,
 	PowerSettingsNew,
 	Language,
 	Call,
@@ -141,6 +162,8 @@ export {
 	ExpandMore,
 	Clear,
 	Check,
+	CheckCircle,
+	Block,
 	ArrowDropDown,
 	Close,
 	OpenInBrowser,

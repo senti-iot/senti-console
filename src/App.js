@@ -7,6 +7,9 @@ import indexRoutes from 'routes/index.js'
 import 'assets/css/material-dashboard-react.css?v=1.2.0'
 import 'assets/css/leaflet.css'
 
+import 'react-grid-layout/css/styles.css'
+import 'react-resizable/css/styles.css'
+
 import TProvider from 'components/Localization/TProvider'
 
 import 'core-js/fn/set';
@@ -19,6 +22,9 @@ import { MuiThemeProvider } from '@material-ui/core';
 import { lightTheme } from 'variables/themes';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
+// import { DragDropContextProvider } from 'react-dnd'
+// import TouchBackend from 'react-dnd-touch-backend';
+// import HTML5Backend from 'react-dnd-html5-backend'
 
 var countries = require('i18n-iso-countries')
 countries.registerLocale(require('i18n-iso-countries/langs/en.json'))
@@ -31,6 +37,7 @@ class App extends Component {
 	render() {
 		return (
 			<Provider store={store}>
+				{/* <DragDropContextProvider backend={HTML5Backend}> */}
 				<MuiPickersUtilsProvider utils={MomentUtils}>
 					<TProvider>
 						<MuiThemeProvider theme={lightTheme}>
@@ -44,10 +51,11 @@ class App extends Component {
 						</MuiThemeProvider>
 					</TProvider>
 				</MuiPickersUtilsProvider>
+				{/* </DragDropContextProvider> */}
 			</Provider>
 		)
 	}
 }
-
-
+		
+		
 export default App

@@ -9,12 +9,26 @@ import { colors } from 'variables/colors';
 import { hist } from 'App';
 import { handleRequestSort } from 'variables/functions';
 import { getSuggestions } from './globalSearch';
-// import { getSuggestions } from './globalSearch';
+import { getAllRegistries, getRegistry, getAllDeviceTypes, getDeviceType, getAllSensors, getSensor, getAllMessages } from 'variables/dataRegistry';
+import { getAllFunctions, getFunction } from 'variables/dataFunctions';
+
+
+//#region Special Functions
 /**
  * Special functions
  */
-//eslint-ignore
-function compare(obj1, obj2) {
+const renderUserGroup = (user) => {
+	if (user.groups) {
+		if (user.groups[136550100000143])
+			return "users.groups.superUser"
+		if (user.groups[136550100000211])
+			return "users.groups.accountManager"
+		if (user.groups[136550100000225])
+			return "users.groups.user"
+	}
+	return ''
+}
+const compare = (obj1, obj2) => {
 	//Loop through properties in object 1
 	if (obj1 === undefined || obj2 === undefined || obj1 === null || obj2 === null) {
 		return false
@@ -46,35 +60,112 @@ function compare(obj1, obj2) {
 	}
 	return true;
 };
-/**
- * Actions
- */
-const gotusers = 'GotUsers'
-const gotorgs = 'GotOrgs'
-const gotdevices = 'GotDevices'
-const gotprojects = 'GotProjects'
-const gotcollections = 'GotCollections'
+//#endregion
 
-const gotProject = 'GotProject'
-const gotCollection = 'GotCollection'
-const gotDevice = 'GotDevice'
-const gotOrg = 'GotOrg'
+//#region Actions
+const sData = 'Sort Data'
+
+//#region Messages
+const setmessages = 'setMessages'
+const gotmessages = 'gotMessages'
+//#endregion
+
+//#region Users
+const gotUsers = 'GotUsers'
 const gotUser = 'GotUser'
-const getFavorites = 'getFavorites'
-
 const setusers = 'SetUsers'
+const setUser = 'SetUser'
+//#endregion
+
+//#region Orgs
+const gotorgs = 'GotOrgs'
+const gotOrg = 'GotOrg'
 const setorgs = 'SetOrgs'
+const setOrg = 'SetOrganisation'
+
+//#endregion
+
+//#region Devices
+const gotdevices = 'GotDevices'
+const gotDevice = 'GotDevice'
 const setdevices = 'SetDevices'
+const setDevice = 'SetDevice'
+
+//#endregion
+
+//#region Projects
+const gotprojects = 'GotProjects'
+const gotProject = 'GotProject'
 const setprojects = 'SetProjects'
+const setProject = 'SetProject'
+
+//#endregion
+
+//#region collections
+const gotcollections = 'GotCollections'
+const gotCollection = 'GotCollection'
 const setcollections = 'SetCollections'
+const setCollection = 'SetCollection'
+
+//#endregion
+
+//#region registries
+const gotregistries = 'GotRegistries'
+const gotRegistry = 'gotRegistry'
+const setregistries = 'SetRegistries'
+const setRegistry = 'setRegistry'
+
+//#endregion
+
+//#region deviceTypes
+const setdeviceTypes = 'setdeviceTypes'
+const gotDeviceType = 'gotDeviceType'
+const gotdeviceTypes = 'gotdeviceTypes'
+const setDeviceType = 'setDeviceType'
+
+//#endregion
+
+//#region Sensors
+const setsensors = 'setsensors'
+const gotSensor = 'gotSensor'
+const gotsensors = 'gotsensors'
+const setSensor = 'setSensor'
+
+//#endregion
+
+//#region Functions
+const setFunction = 'setFunction'
+const gotFunction = 'gotFunction'
+const setfunctions = 'SetFunctions'
+const gotfunctions = 'gotFunctions'
+
+//#endregion
+
+
+//#region Favorites
+const getFavorites = 'getFavorites'
 const setFavorites = 'setFavorites'
 
-const setProject = 'SetProject'
-const setCollection = 'SetCollection'
-const setDevice = 'SetDevice'
-const setOrg = 'SetOrganisation'
-const setUser = 'SetUser'
-const sData = 'Sort Data'
+//#endregion
+
+//#endregion
+
+//#region Dispatches
+
+export const getAllData = async (reload, orgId, su) => {
+	return async dispatch => {
+		dispatch(await getUsers(true))
+		dispatch(await getProjects(true))
+		dispatch(await getCollections(true))
+		dispatch(await getDevices(true))
+		dispatch(await getOrgs(true))
+		dispatch(await getRegistries(true, orgId, su))
+		dispatch(await getDeviceTypes(true, orgId, su))
+		dispatch(await getSensors(true, orgId, su))
+		dispatch(await getFunctions(true, orgId, su))
+		dispatch(await getMessages(orgId, true))
+	}
+}
 
 export const sortData = (key, property, order) => {
 	return (dispatch, getState) => {
@@ -92,6 +183,9 @@ export const sortData = (key, property, order) => {
 
 	}
 }
+
+//#region Users
+
 export const getUserLS = async (id) => {
 	return async dispatch => {
 		dispatch({ type: gotUser, payload: false })
@@ -132,6 +226,44 @@ export const getUserLS = async (id) => {
 		})
 	}
 }
+
+export const getUsers = (reload) => {
+	return dispatch => {
+
+		getAllUsers().then(rs => {
+			let users = rs.map(u => ({ ...u, group: renderUserGroup(u) }))
+			users = handleRequestSort('firstName', 'asc', users)
+			set('users', users)
+			if (reload) {
+				dispatch(setUsers())
+			}
+			dispatch({ type: gotUsers, payload: true })
+		})
+	}
+}
+
+export const setUsers = () => {
+	return dispatch => {
+		let users = get('users')
+
+		if (users) {
+			dispatch({
+				type: setusers,
+				payload: users
+			})
+			dispatch(getSuggestions())
+			// dispatch(sortData('users', 'firstName', 'asc'))
+		}
+		else dispatch({
+			type: gotUsers,
+			payload: false
+		})
+	}
+}
+
+//#endregion
+
+//#region Devices
 export const getDeviceLS = async (id) => {
 	return async dispatch => {
 		dispatch({ type: gotDevice, payload: false })
@@ -173,6 +305,38 @@ export const getDeviceLS = async (id) => {
 		})
 	}
 }
+export const getDevices = (reload) => {
+	return dispatch => {
+		getAllDevices().then(rs => {
+			let devices = handleRequestSort('id', 'asc', rs)
+			set('devices', devices)
+			if (reload) {
+				dispatch(setDevices())
+			}
+			dispatch({ type: gotdevices, payload: true })
+		})
+	}
+}
+export const setDevices = () => {
+	return dispatch => {
+		let devices = get('devices')
+		if (devices) {
+			dispatch({
+				type: setdevices,
+				payload: devices
+			})
+			dispatch(getSuggestions())
+
+			// dispatch(sortData('devices', 'name', 'asc'))
+		}
+		else {
+			dispatch({ type: gotdevices, payload: false })
+		}
+	}
+}
+//#endregion
+
+//#region Orgs
 export const getOrgLS = async (id) => {
 	return async dispatch => {
 		dispatch({ type: gotOrg, payload: false })
@@ -213,6 +377,347 @@ export const getOrgLS = async (id) => {
 		})
 	}
 }
+export const getOrgs = (reload) => {
+	return dispatch => {
+		getAllOrgs().then(rs => {
+			let orgs = handleRequestSort('name', 'asc', rs)
+			set('orgs', orgs)
+			if (reload) {
+				dispatch(setOrgs())
+			}
+			dispatch({ type: gotorgs, payload: true })
+		})
+	}
+}
+export const setOrgs = () => {
+	return dispatch => {
+		let orgs = get('orgs')
+		if (orgs) {
+			dispatch({
+				type: setorgs,
+				payload: orgs
+			})
+			dispatch(getSuggestions())
+			// dispatch(sortData('orgs', 'name', 'asc'))
+		}
+		else {
+			dispatch({ type: gotorgs, payload: false })
+		}
+	}
+}
+//#endregion
+
+//#region Device Types
+export const getDeviceTypeLS = async (id) => {
+	return async dispatch => {
+		dispatch({ type: gotDeviceType, payload: false })
+		let deviceType = get('deviceType.' + id)
+		if (deviceType) {
+			dispatch({
+				type: setDeviceType,
+				payload: deviceType
+			})
+			dispatch({
+				type: gotDeviceType,
+				payload: true
+			})
+		}
+		else {
+			dispatch({
+				type: gotDeviceType,
+				payload: false
+			})
+			dispatch({
+				type: setDeviceType,
+				payload: null
+			})
+		}
+		await getDeviceType(id).then(async rs => {
+			if (!compare(deviceType, rs)) {
+				deviceType = {
+					...rs,
+				}
+				dispatch({
+					type: setDeviceType,
+					payload: deviceType
+				})
+				set('deviceType.' + id, deviceType)
+				dispatch({
+					type: gotDeviceType,
+					payload: true
+				})
+			}
+		})
+	}
+}
+
+export const getDeviceTypes = (reload, orgId, ua) => {
+	return dispatch => {
+		getAllDeviceTypes(orgId, ua).then(rs => {
+			let deviceTypes = handleRequestSort('id', 'asc', rs)
+			set('devicetypes', deviceTypes)
+			if (reload) {
+				dispatch(setDeviceTypes())
+			}
+			dispatch({ type: gotdeviceTypes, payload: true })
+		})
+	}
+}
+
+export const setDeviceTypes = () => {
+	return dispatch => {
+		let deviceTypes = get('devicetypes')
+		if (deviceTypes) {
+			dispatch({
+				type: setdeviceTypes,
+				payload: deviceTypes
+			})
+			dispatch(getSuggestions())
+			// dispatch(sortData('collections', 'id', 'asc'))
+		}
+		else {
+			dispatch({ type: gotdeviceTypes, payload: false })
+		}
+	}
+}
+
+//#endregion
+
+//#region Fuctions
+export const getFunctionLS = async (id, customerID, ua) => {
+	return async dispatch => {
+		dispatch({ type: gotFunction, payload: false })
+		let cloudfunction = get('cloudfunction.' + id)
+		if (cloudfunction) {
+			dispatch({
+				type: setFunction,
+				payload: cloudfunction
+			})
+			dispatch({
+				type: gotFunction,
+				payload: true
+			})
+		}
+		else {
+			dispatch({
+				type: gotFunction,
+				payload: false
+			})
+			dispatch({
+				type: setFunction,
+				payload: null
+			})
+		}
+		await getFunction(id, customerID, ua).then(async rs => {
+			if (!compare(cloudfunction, rs)) {
+				cloudfunction = {
+					...rs,
+				}
+				dispatch({
+					type: setFunction,
+					payload: cloudfunction
+				})
+				set('cloudfunction.' + id, cloudfunction)
+				dispatch({
+					type: gotFunction,
+					payload: true
+				})
+			}
+		})
+	}
+}
+export const getFunctions = (reload, orgId, su) => {
+	return dispatch => {
+		getAllFunctions(orgId, su).then(rs => {
+			let functions = handleRequestSort('id', 'asc', rs)
+			set('functions', functions)
+			if (reload) {
+				dispatch(setFunctions())
+			}
+			dispatch({ type: gotfunctions, payload: true })
+		})
+	}
+}
+export const setFunctions = () => {
+	return dispatch => {
+		let functions = get('functions')
+		if (functions) {
+			dispatch({
+				type: setfunctions,
+				payload: functions
+			})
+			dispatch(getSuggestions())
+			// dispatch(sortData('collections', 'id', 'asc'))
+		}
+		else {
+			dispatch({ type: gotregistries, payload: false })
+		}
+	}
+}
+
+//#endregion
+
+//#region Registries
+export const getRegistryLS = async (id, customerID, ua) => {
+	return async dispatch => {
+		dispatch({ type: gotRegistry, payload: false })
+		let registry = get('registry.' + id)
+		if (registry) {
+			dispatch({
+				type: setRegistry,
+				payload: registry
+			})
+			dispatch({
+				type: gotRegistry,
+				payload: true
+			})
+		}
+		else {
+			dispatch({
+				type: gotRegistry,
+				payload: false
+			})
+			dispatch({
+				type: setRegistry,
+				payload: null
+			})
+		}
+		await getRegistry(id, customerID, ua).then(async rs => {
+			if (!compare(registry, rs)) {
+				registry = {
+					...rs,
+				}
+				dispatch({
+					type: setRegistry,
+					payload: registry
+				})
+				set('registry.' + id, registry)
+				dispatch({
+					type: gotRegistry,
+					payload: true
+				})
+			}
+		})
+	}
+}
+export const getRegistries = (reload, orgId, su) => {
+	return dispatch => {
+		getAllRegistries(orgId, su).then(rs => {
+			let registries = handleRequestSort('id', 'asc', rs)
+			set('registries', registries)
+			if (reload) {
+				dispatch(setRegistries())
+			}
+			dispatch({ type: gotcollections, payload: true })
+		})
+	}
+}
+export const setRegistries = () => {
+	return dispatch => {
+		let registries = get('registries')
+		if (registries) {
+			dispatch({
+				type: setregistries,
+				payload: registries
+			})
+			dispatch(getSuggestions())
+			// dispatch(sortData('collections', 'id', 'asc'))
+		}
+		else {
+			dispatch({ type: gotregistries, payload: false })
+		}
+	}
+}
+//#endregion
+
+//#region Sensors
+export const unassignSensor = () => {
+	return dispatch => {
+		dispatch({ type: setSensor, payload: null })
+		dispatch({ type: gotSensor, payload: false })
+	}
+}
+
+export const getSensorLS = async (id, customerID, ua) => {
+	return async dispatch => {
+		dispatch({ type: gotSensor, payload: false })
+		dispatch({
+			type: setSensor,
+			payload: null
+		})
+		let sensor = get('sensor.' + id)
+		if (sensor) {
+			dispatch({
+				type: setSensor,
+				payload: sensor
+			})
+			dispatch({
+				type: gotSensor,
+				payload: true
+			})
+		}
+		else {
+			dispatch({
+				type: gotSensor,
+				payload: false
+			})
+			dispatch({
+				type: setSensor,
+				payload: null
+			})
+		}
+		await getSensor(id, customerID, ua).then(async rs => {
+			if (!compare(sensor, rs)) {
+				sensor = {
+					...rs,
+				}
+				dispatch({
+					type: setSensor,
+					payload: sensor
+				})
+				set('sensor.' + id, sensor)
+				dispatch({
+					type: gotSensor,
+					payload: true
+				})
+			}
+		})
+	}
+}
+
+export const getSensors = (reload, customerID, ua) => {
+	return dispatch => {
+		getAllSensors(customerID, ua).then(rs => {
+			let sensors = handleRequestSort('id', 'asc', rs)
+			set('sensors', sensors)
+			if (reload) {
+				dispatch(setSensors())
+			}
+			dispatch({ type: gotsensors, payload: true })
+		})
+	}
+}
+
+export const setSensors = () => {
+	return dispatch => {
+		let sensors = get('sensors')
+		if (sensors) {
+			dispatch({
+				type: setsensors,
+				payload: sensors
+			})
+			dispatch(getSuggestions())
+			// dispatch(sortData('collections', 'id', 'asc'))
+		}
+		else {
+			dispatch({ type: gotsensors, payload: false })
+		}
+	}
+}
+
+//#endregion
+
+//#region Collections
 export const getCollectionLS = async (id) => {
 	return async dispatch => {
 		dispatch({ type: gotCollection, payload: false })
@@ -264,6 +769,41 @@ export const getCollectionLS = async (id) => {
 		})
 	}
 }
+
+export const getCollections = (reload) => {
+	return dispatch => {
+		getAllCollections().then(rs => {
+			let collections = handleRequestSort('id', 'asc', rs)
+			set('collections', collections)
+			if (reload) {
+				dispatch(setCollections())
+			}
+			dispatch({ type: gotcollections, payload: true })
+		})
+	}
+}
+
+export const setCollections = () => {
+	return dispatch => {
+		let collections = get('collections')
+		if (collections) {
+			dispatch({
+				type: setcollections,
+				payload: collections
+			})
+			dispatch(getSuggestions())
+			// dispatch(sortData('collections', 'id', 'asc'))
+		}
+		else {
+			dispatch({ type: gotcollections, payload: false })
+		}
+	}
+}
+
+//#endregion
+
+//#region Projects
+
 export const getProjectLS = async (id) => {
 	return async dispatch => {
 		dispatch({ type: gotProject, payload: false })
@@ -317,57 +857,20 @@ export const getProjectLS = async (id) => {
 	}
 }
 
-export const setUsers = () => {
+export const getProjects = (reload) => {
 	return dispatch => {
-		let users = get('users')
-
-		if (users) {
-			dispatch({
-				type: setusers,
-				payload: users
-			})
-			dispatch(getSuggestions())
-			// dispatch(sortData('users', 'firstName', 'asc'))
-		}
-		else dispatch({
-			type: gotusers,
-			payload: false
+		getAllProjects().then(rs => {
+			let projects = handleRequestSort('title', 'asc', rs)
+			set('projects', projects)
+			if (reload) {
+				dispatch(setProjects())
+			}
+			dispatch({ type: gotprojects, payload: true })
 		})
-	}
-}
-export const setOrgs = () => {
-	return dispatch => {
-		let orgs = get('orgs')
-		if (orgs) {
-			dispatch({
-				type: setorgs,
-				payload: orgs
-			})
-			dispatch(getSuggestions())
-			// dispatch(sortData('orgs', 'name', 'asc'))
-		}
-		else {
-			dispatch({ type: gotorgs, payload: false })
-		}
-	}
-}
-export const setDevices = () => {
-	return dispatch => {
-		let devices = get('devices')
-		if (devices) {
-			dispatch({
-				type: setdevices,
-				payload: devices
-			})
-			dispatch(getSuggestions())
 
-			// dispatch(sortData('devices', 'name', 'asc'))
-		}
-		else {
-			dispatch({ type: gotdevices, payload: false })
-		}
 	}
 }
+
 export const setProjects = () => {
 	return dispatch => {
 		let projects = get('projects')
@@ -384,113 +887,54 @@ export const setProjects = () => {
 		}
 	}
 }
-export const setCollections = () => {
+//#endregion
+
+//#region Messages
+export const getMessages = (customerID, reload) => {
 	return dispatch => {
-		let collections = get('collections')
-		if (collections) {
+		getAllMessages(customerID).then(rs => {
+			let messages = handleRequestSort('title', 'asc', rs)
+			set('messages', messages)
+			if (reload) {
+				dispatch(setMessages())
+			}
+			dispatch({ type: gotmessages, payload: true })
+		})
+
+	}
+}
+
+export const setMessages = () => {
+	return dispatch => {
+		let messages = get('messages')
+		if (messages) {
 			dispatch({
-				type: setcollections,
-				payload: collections
+				type: setmessages,
+				payload: messages
 			})
 			dispatch(getSuggestions())
-			// dispatch(sortData('collections', 'id', 'asc'))
 		}
 		else {
-			dispatch({ type: gotcollections, payload: false })
+			dispatch({ type: gotmessages, payload: false })
 		}
 	}
 }
-const renderUserGroup = (user) => {
-	if (user.groups) {
-		if (user.groups[136550100000143])
-			return "users.groups.superUser"
-		if (user.groups[136550100000211])
-			return "users.groups.accountManager"
-		if (user.groups[136550100000225])
-			return "users.groups.user"
-	}
-	return ''
-}
-export const getAllData = async () => {
-	return async dispatch => { 
-		dispatch(await getUsers(true))
-		dispatch(await getProjects(true))
-		dispatch(await getCollections(true))
-		dispatch(await getDevices(true))
-		dispatch(await getOrgs(true))
-	}
-}
-export const getUsers = (reload) => {
-	return dispatch => {
+//#endregion
 
-		getAllUsers().then(rs => {
-			let users = rs.map(u => ({ ...u, group: renderUserGroup(u) }))
-			users = handleRequestSort('firstName', 'asc', users)
-			set('users', users)
-			if (reload) {
-				dispatch(setUsers())
-			}
-			dispatch({ type: gotusers, payload: true })
-		})
-	}
-}
-export const getOrgs = (reload) => {
-	return dispatch => {
-		getAllOrgs().then(rs => {
-			let orgs = handleRequestSort('name', 'asc', rs)
-			set('orgs', orgs)
-			if (reload) {
-				dispatch(setOrgs())
-			}
-			dispatch({ type: gotorgs, payload: true })
-		})
-	}
-}
-export const getDevices = (reload) => {
-	return dispatch => {
-		getAllDevices().then(rs => {
-			let devices = handleRequestSort('id', 'asc', rs)
-			set('devices', devices)
-			if (reload) {
-				dispatch(setDevices())
-			}
-			dispatch({ type: gotdevices, payload: true })
-		})
-	}
-}
-export const getProjects = (reload) => {
+//#endregion
 
-	return dispatch => {
-		getAllProjects().then(rs => {
-			let projects = handleRequestSort('title', 'asc', rs)
-			set('projects', projects)
-			if (reload) {
-				dispatch(setProjects())
-			}
-			dispatch({ type: gotprojects, payload: true })
-		})
-
-	}
-}
-export const getCollections = (reload) => {
-	return dispatch => {
-		getAllCollections().then(rs => {
-			let collections = handleRequestSort('id', 'asc', rs)
-			set('collections', collections)
-			if (reload) {
-				dispatch(setCollections())
-			}
-			dispatch({ type: gotcollections, payload: true })
-		})
-	}
-}
 const initialState = {
+	messages: [],
 	favorites: [],
 	users: [],
 	orgs: [],
 	devices: [],
 	projects: [],
 	collections: [],
+	registries: [],
+	sensors: [],
+	deviceTypes: [],
+	functions: [],
 	gotusers: false,
 	gotorgs: false,
 	gotdevices: false,
@@ -500,52 +944,111 @@ const initialState = {
 
 export const data = (state = initialState, { type, payload }) => {
 	switch (type) {
+		//#region Special
 		case sData:
 			return Object.assign({}, state, { [payload.key]: payload.sortedData })
-		case getFavorites: 
+		case getFavorites:
 			return Object.assign({}, state, { favorites: payload })
-		case setFavorites: 
+		case setFavorites:
 			return Object.assign({}, state, { favorites: payload })
+		//#endregion
+		//#region Messages
+		case setmessages:
+			return Object.assign({}, state, { messages: payload })
+		case gotmessages:
+			return Object.assign({}, state, { gotmessages: payload })
+		//#endregion
+		//#region Device Types
+		case setDeviceType:
+			return Object.assign({}, state, { deviceType: payload })
+		case gotDeviceType:
+			return Object.assign({}, state, { gotDeviceType: payload })
+		case gotdeviceTypes:
+			return Object.assign({}, state, { gotdeviceTypes: payload })
+		case setdeviceTypes:
+			return Object.assign({}, state, { deviceTypes: payload })
+		//#endregion
+		//#region Registries
+		case gotregistries:
+			return Object.assign({}, state, { gotregistries: payload })
+		case setRegistry:
+			return Object.assign({}, state, { registry: payload })
+		case gotRegistry:
+			return Object.assign({}, state, { gotRegistry: payload })
+		case setregistries:
+			return Object.assign({}, state, { registries: payload })
+
+		//#endregion
+		//#region Sensors
+		case setSensor:
+			return Object.assign({}, state, { sensor: payload })
+		case gotSensor:
+			return Object.assign({}, state, { gotSensor: payload })
+		case setsensors:
+			return Object.assign({}, state, { sensors: payload })
+		case gotsensors:
+			return Object.assign({}, state, { gotsensors: payload })
+		//#endregion
+		//#region Collections
 		case setCollection:
 			return Object.assign({}, state, { collection: payload })
 		case gotCollection:
 			return Object.assign({}, state, { gotCollection: payload })
+		case gotcollections:
+			return Object.assign({}, state, { gotcollections: payload })
+		case setcollections:
+			return Object.assign({}, state, { collections: payload })
+		//#endregion
+		//#region Devices
 		case setDevice:
 			return Object.assign({}, state, { device: payload })
 		case gotDevice:
 			return Object.assign({}, state, { gotDevice: payload })
+		case gotdevices:
+			return Object.assign({}, state, { gotdevices: payload })
+		case setdevices:
+			return Object.assign({}, state, { devices: payload })
+		//#endregion
+		//#region Orgs
 		case setOrg:
 			return Object.assign({}, state, { org: payload })
 		case gotOrg:
 			return Object.assign({}, state, { gotOrg: payload })
+		case gotorgs:
+			return Object.assign({}, state, { gotorgs: payload })
+		case setorgs:
+			return Object.assign({}, state, { orgs: payload })
+		//#endregion
+		//#region Users
 		case setUser:
 			return Object.assign({}, state, { user: payload })
 		case gotUser:
 			return Object.assign({}, state, { gotUser: payload })
+		case gotUsers:
+			return Object.assign({}, state, { gotusers: payload })
+		case setusers:
+			return Object.assign({}, state, { users: payload })
+		//#endregion
+		//#region Projects
+		case gotprojects:
+			return Object.assign({}, state, { gotprojects: payload })
 		case setProject:
 			return Object.assign({}, state, { project: payload })
 		case gotProject:
 			return Object.assign({}, state, { gotProject: payload })
-		case gotusers:
-			return Object.assign({}, state, { gotusers: payload })
-		case gotorgs:
-			return Object.assign({}, state, { gotorgs: payload })
-		case gotdevices:
-			return Object.assign({}, state, { gotdevices: payload })
-		case gotprojects:
-			return Object.assign({}, state, { gotprojects: payload })
-		case gotcollections:
-			return Object.assign({}, state, { gotcollections: payload })
-		case setusers:
-			return Object.assign({}, state, { users: payload })
-		case setorgs:
-			return Object.assign({}, state, { orgs: payload })
-		case setdevices:
-			return Object.assign({}, state, { devices: payload })
 		case setprojects:
 			return Object.assign({}, state, { projects: payload })
-		case setcollections:
-			return Object.assign({}, state, { collections: payload })
+		//#endregion
+		//#region Functions
+		case setFunction:
+			return Object.assign({}, state, { cloudfunction: payload })
+		case gotFunction:
+			return Object.assign({}, state, { gotFunction: payload })
+		case gotfunctions:
+			return Object.assign({}, state, { gotfunctions: payload })
+		case setfunctions:
+			return Object.assign({}, state, { functions: payload })
+		//#endregion
 		default:
 			return state
 	}

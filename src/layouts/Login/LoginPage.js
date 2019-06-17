@@ -94,7 +94,7 @@ class NewLoginPage extends Component {
 				}
 			}
 			else {
-				this.setState({ error: true })
+				this.setState({ error: true, loggingIn: false })
 			}
 		})
 		// this.setState({ loggingIn: false })

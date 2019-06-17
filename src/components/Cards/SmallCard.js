@@ -1,16 +1,16 @@
 import { Avatar, Card, CardActions, CardContent, CardHeader, withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import teal from '@material-ui/core/colors/teal';
 
-const styles = {
+const styles = theme => ({
 	title: {
 		fontSize: '1em',
 		fontWeight: 500
 	},
 	avatar: {
+		borderRadius: 0,
 		backgroundColor: 'transparent',
-		color: teal[500]
+		color: theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.54)' : '#fff',
 	},
 	card: {
 		margin: 8,
@@ -31,7 +31,7 @@ const styles = {
 	whiteAvatar: {
 		background: '#FFF'
 	}
-};
+})
 
 class SimpleMediaCard extends Component {
 

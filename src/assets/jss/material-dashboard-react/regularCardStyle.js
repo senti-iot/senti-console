@@ -17,8 +17,31 @@ import {
 	deviceStatus,
 } from "../material-dashboard-react";
 import teal from '@material-ui/core/colors/teal';
+import { red, green } from '@material-ui/core/colors';
+import { bgColors } from './backgroundColors';
 
 const regularCardStyle = theme => ({
+	transition: {
+		transition: 'all 300ms ease',
+	},
+	bigIcon: {
+		height: "40px",
+		width: "40px",
+	},
+	blocked: {
+		color: `${red[500]} !important`,
+		marginRight: 8
+	},
+	allowed: {
+		color: `${green[500]} !important`,
+		marginRight: 8
+	},
+	smallText: {
+		font: '400 13px/20px Roboto,RobotoDraft,Helvetica,Arial,sans-serif',
+		color: theme.palette.type === 'light' ? '#3c4043' : "#ececec",
+		display: 'flex',
+		alignItems: 'center'
+	},
 	icon: {
 		color: theme.palette.type === 'light' ? 'rgba(0, 0, 0, 0.54)' : '#fff',
 		marginRight: 4
@@ -165,7 +188,9 @@ const regularCardStyle = theme => ({
 		padding: "14px",
 		display: "block",
 		height: "auto"
-	}
+	},
+	...bgColors,
+
 });
 
 export default regularCardStyle;

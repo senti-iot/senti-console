@@ -48,11 +48,11 @@ const styles = theme => ({
 		boxShadow: 'none'
 	},
 	img: {
-		height: 250,
+		height: 300,
 	},
 	sentiDots: {
 		height: 75,
-		marginTop: 100,
+		marginTop: '100',
 		margin: 50
 	}
 })
@@ -111,7 +111,7 @@ class LoginImages extends Component {
 						{t(`login.cards.${number}`, { type: 'markdown' })}
 						{/* {this.generateString(number).map((a, i) => <span key={i}>{a}</span>)} */}
 					</T>
-					<Button color='primary' variant={'contained'} className={classes.button}>
+					<Button color='primary' variant={'contained'} component={'a'} target={'_blank'} href={"https://senti.io"} className={classes.button}>
 						<span className={classes.overcomplicatedButtonTextLight}>
 							{t('actions.learn')}
 						</span>

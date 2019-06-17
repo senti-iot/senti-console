@@ -111,10 +111,18 @@ class OpenStreetMap extends React.Component {
 		this.props.getLatLng(e)
 	}
 	render() {
-		const { markers, classes, theme, calibrate, mapTheme, heatData, heatMap } = this.props
+		const { markers, classes, theme, calibrate, mapTheme, heatData, heatMap, height, width } = this.props
 		const { zoom } = this.state
 		return <Fragment>
-			<Map attributionControl={heatMap ? false : true} zoomControl={false} ref={r => this.map = r} center={this.getCenter()} zoom={zoom} onzoomend={this.setZoom} maxZoom={layers[mapTheme].maxZoom} className={classes.map} >
+			<Map
+				attributionControl={heatMap ? false : true} 
+				zoomControl={false} ref={r => this.map = r}
+				center={this.getCenter()} zoom={zoom}
+				onzoomend={this.setZoom}
+				maxZoom={layers[mapTheme].maxZoom}
+				className={classes.map}
+				style={{ height: height, width: width }}
+			>
 				{heatMap ? <HeatLayer data={heatData ? heatData.map(m => {
 					return ({ lat: m.lat, lng: m.long, count: m.data })
 				})
@@ -152,7 +160,9 @@ class OpenStreetMap extends React.Component {
 
 }
 const mapStateToProps = (state) => ({
-	language: state.settings.language
+	language: state.settings.language,
+	mapTheme: state.settings.mapTheme
+
 })
 
 const mapDispatchToProps = {

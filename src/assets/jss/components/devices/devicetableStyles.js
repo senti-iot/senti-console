@@ -2,6 +2,14 @@
 import { red, green, yellow, grey } from '@material-ui/core/colors'
 import { primaryColor } from 'assets/jss/material-dashboard-react'
 const devicetableStyles = theme => ({
+	blocked: {
+		color: red[500],
+		marginRight: 8
+	},
+	allowed: {
+		color: green[500],
+		marginRight: 8
+	},
 	orgDevicesTD: {
 		padding: '0 16px'
 	},

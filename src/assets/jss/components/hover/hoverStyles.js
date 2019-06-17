@@ -2,6 +2,28 @@ import { hoverColor, primaryColor } from 'assets/jss/material-dashboard-react';
 import { red, green, yellow } from '@material-ui/core/colors'
 
 const hoverStyles = theme => ({
+	blocked: {
+		color: red[500],
+		marginRight: 8
+	},
+	allowed: {
+		color: green[500],
+		marginRight: 8
+	},
+	copyButton: {
+		marginLeft: 6,
+		padding: 4,
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		width: 20,
+		height: 20
+	},
+	copyIcon: {
+		width: 14, 
+		height: 14, 
+		color: theme.palette.type === 'light' ? '#000' : '#fff'
+	},
 	redSignal: {
 		color: red[700]
 	},
@@ -17,7 +39,7 @@ const hoverStyles = theme => ({
 		marginRight: 12
 	},
 	middleContainer: {
-		margin: "0 22px 14px 22px" 
+		margin: "0 22px 14px 22px"
 	},
 	paper: {
 		width: 400,
@@ -32,7 +54,7 @@ const hoverStyles = theme => ({
 		alignItems: 'center'
 	},
 	img: {
-		borderRadius: "50%",
+		// borderRadius: "50%",
 		height: "50px",
 		width: "50px",
 		display: 'flex',

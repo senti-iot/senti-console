@@ -28,7 +28,7 @@ const TextF = (props) => {
 	})
 	return (		
 		<TextField
-			style={{ maxWidth: props.fullWidth ? undefined : 230 }}
+			style={{ maxWidth: props.fullWidth ? undefined : mobile ? undefined : 230 }}
 			variant={'outlined'}
 			autoFocus={props.autoFocus ? props.autoFocus : undefined}
 			placeholder={props.placeholder ? props.placeholder : undefined}
@@ -56,7 +56,7 @@ const TextF = (props) => {
 }
 TextF.propTypes = {
 	id: PropTypes.string.isRequired,
-	label: PropTypes.string.isRequired,
+	// label: PropTypes.string.isRequired,
 	value: PropTypes.string.isRequired,
 	handleChange: PropTypes.func,
 	handleClick: PropTypes.func,

@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { TablePagination, withWidth } from '@material-ui/core'
+import { TablePagination, withWidth, withStyles } from '@material-ui/core'
 import { isWidthUp } from '@material-ui/core/withWidth'
 import { changeTableRows } from 'redux/appState';
+import devicetableStyles from 'assets/jss/components/devices/devicetableStyles';
 
 class TP extends Component {
 	
@@ -55,4 +56,4 @@ const mapDispatchToProps = (dispatch) => ({
 	handleChangeRowsPerPage: (value) => dispatch(changeTableRows(value)),
 })
 
-export default withWidth()(connect(mapStateToProps, mapDispatchToProps)(TP))
+export default withStyles(devicetableStyles)(withWidth()(connect(mapStateToProps, mapDispatchToProps)(TP)))
