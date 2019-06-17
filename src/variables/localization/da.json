@@ -967,7 +967,19 @@
             "deviceToCollection": "Enhed %{device} tilknyttet til datasamling %{collection}",
             "deviceToOrg": "Enhed %{device} tilknyttet til organisation %{org}",
             "projectToOrg": "Project %{project} tilknyttet til organisation %{org}"
-        },
+		},
+		"create": {
+			"device": "Enhed %{device} er oprettet!",
+			"registry": "Register %{reg} er oprettet!",
+			"devicetype": "Enhedstype %{dt} er oprettet!",
+			"cloudfunction": "Cloud funktion %{cf} er oprettet!"
+		},
+		"edit": {
+			"device": "Enhed %{device} er opdateret!",
+			"registry": "Register %{reg} er opdateret!",
+			"devicetype": "Enhedtype %{dt} updated!",
+			"cloudfunction": "Cloud funktion %{cf} er opdateret!"
+		},
         "assignFailed": "Tilknytning fejlede!",
         "collectionCreated": "Datasamling er oprettet!",
         "collectionDeleted": "Datasamling er slettet!",

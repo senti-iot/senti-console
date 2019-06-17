@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 // import UpdateRegistryForm from 'components/Collections/UpdateRegistryForm';
-import { getRegistryLS } from 'redux/data';
+import { getRegistryLS, getRegistries } from 'redux/data';
 import { updateRegistry } from 'variables/dataRegistry';
 import UpdateRegistryForm from 'components/Registry/CreateRegistryForm';
 import { updateFav, isFav } from 'redux/favorites';
@@ -63,10 +63,22 @@ class UpdateRegistry extends Component {
 		return await updateRegistry(this.state.registry)
 	}
 	handleUpdate = async () => {
-		const { s, history } = this.props
+		const { s, history, orgId, accessLevel } = this.props
 		let rs = await this.updateRegistry()
 		if (rs) {
-			s('snackbars.registryUpdated')
+			const { isFav, updateFav } = this.props
+			const { registry } = this.state
+			let favObj = {
+				id: registry.id,
+				name: registry.name,
+				type: 'registry',
+				path: `/registry/${registry.id}`
+			}
+			if (isFav(favObj)) {
+				updateFav(favObj)
+			}
+			s('snackbars.edit.registry', { reg: registry.name })
+			this.props.getRegistries(true, orgId, accessLevel.apisuperuser ? true : false)
 			history.push(`/registry/${this.id}`)
 		}
 		else
@@ -90,8 +102,8 @@ class UpdateRegistry extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	// accessLevel: state.settings.user.privileges,
-	// orgId: state.settings.user.org.id
+	accessLevel: state.settings.user.privileges,
+	orgId: state.settings.user.org.id,
 	registry: state.data.registry
 })
 
@@ -99,6 +111,7 @@ const mapDispatchToProps = dispatch => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
 	updateFav: (favObj) => dispatch(updateFav(favObj)),
 	getRegistry: async id => dispatch(await getRegistryLS(1, id)),
+	getRegistries: async (reload, orgId, ua) => dispatch(await getRegistries(reload, orgId, ua)) 
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateRegistry)

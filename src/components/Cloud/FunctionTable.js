@@ -150,8 +150,8 @@ class FunctionTable extends React.Component {
 										<Hidden mdDown>
 											<TC checkbox content={<Checkbox checked={isSelected} onClick={e => handleCheckboxClick(e, n.id)} />} />
 											<TC 
-												onMouseEnter={e => { this.setHover(e, n) }}
-												onMouseLeave={this.unsetTimeout}
+												// onMouseEnter={e => { this.setHover(e, n) }}
+												// onMouseLeave={this.unsetTimeout}
 												FirstC label={n.name}/>
 											<TC label={this.renderProtocol(n.type)} />
 										</Hidden>
