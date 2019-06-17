@@ -202,7 +202,6 @@ class GlobalSearch extends React.PureComponent {
 	  
 	onFocusInput = () => {
 		this.props.disableEH()
-		// this.setState({ focused: true })
 	}
 	render() {
 		const { classes, right } = this.props;
