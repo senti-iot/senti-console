@@ -6,7 +6,7 @@ import {
 	DonutLargeRounded,
 	PieChartRounded,
 	BarChart as BarChartIcon,
-	ShowChart, ArrowUpward, KeyboardArrowLeft, KeyboardArrowRight, GaugeIcon,
+	ShowChart, ArrowUpward, KeyboardArrowLeft, KeyboardArrowRight, Assignment,
 } from 'variables/icons'
 import {
 	CircularLoader, Caption, ItemG, /* CustomDateTime, */ InfoCard,
@@ -477,7 +477,7 @@ class ScoreCard extends PureComponent {
 	}
 
 	renderIcon = () => {
-		return <GaugeIcon/>
+		return <Assignment/>
 	}
 
 	render() {
