@@ -114,20 +114,20 @@
             "code": "Kildekode",
             "description": "Beskrivelse",
             "inboundfunc": "Cloud Funktion",
-            "keys": "Enhed datafelter",
             "key": "Enhed datafelt",
+            "keys": "Enhed datafelter",
             "metadata": {
+                "defaultValue": "Metadata standard værdi",
                 "key": "Metadata nøgle",
-				"value": "Metadata værdi",
-				"defaultValue": "Metadata standard værdi"
+                "value": "Metadata værdi"
             },
             "name": "Navn",
             "type": "Type",
             "types": {
-				"inbound": "Funktion ved modtagelse af data",
-				"outbound": "Cloud funktion",
                 "external": "Udvendig",
-                "function": "JavaScript funktion"
+                "function": "JavaScript funktion",
+                "inbound": "Funktion ved modtagelse af data",
+                "outbound": "Cloud funktion"
             }
         },
         "pageTitle": "Cloud funktioner"
@@ -491,7 +491,17 @@
             "10": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
             "11": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
             "12": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
-            "13": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.."
+            "13": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "14": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "15": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "16": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "17": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "18": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "19": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "20": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "21": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "22": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala.",
+            "23": "**Senti** er den infrastruktur du har brug for til at opbygge, implementere og styre din portefølje af **IoT-enheder** i stor skala."
         },
         "createAccount": "Opret en konto",
         "footer": "©2016–2019 Alle rettigheder forbeholdt. Senti er en open source IoT platform designet og udviklet af WebHouse.",
@@ -588,7 +598,7 @@
     },
     "messages": {
         "fields": {
-			"data": "Modtaget pakke",
+            "data": "Modtaget pakke",
             "deviceName": "Enhedsnavn",
             "id": "ID",
             "receivedAt": "Modtaged kl",
@@ -596,9 +606,6 @@
         }
     },
     "no": {
-		"metadata": "Ingen metadata",
-		"deviceInboundFunc": "Ingen funktion ved modtagelse af data",
-		"deviceDataKeys": "Ingen enhed datafelter",
         "activeDevice": "Ingen aktiv enhed",
         "audioSupported": "Din browser understøtter ikke lydfiler! Der er således ikke lyd respons! Forsøg igen med en anden browser.",
         "birthdays": "Ingen fødselsdage i dag",
@@ -606,10 +613,13 @@
         "collection": "Ikke tildelt en datasamling",
         "collections": "Ingen datasamlinger",
         "device": "Ingen enhed",
+        "deviceDataKeys": "Ingen enhed datafelter",
+        "deviceInboundFunc": "Ingen funktion ved modtagelse af data",
         "devices": "Ingen enheder",
         "doi": "ingen helligdage i dag",
         "freeDevices": "Ingen ledige enheder",
         "history": "Ingen historik",
+        "metadata": "Ingen metadata",
         "org": "Ingen organisation",
         "project": "Ingen projekt",
         "projects": "Ingen projekter"
@@ -1044,7 +1054,9 @@
             "removeCloudFunction": "Slet Cloud Funktion",
             "removeDataField": "Slet datafelt"
         },
+        "devicetype": "Enhedstype",
         "favorites": "Favoritter",
+        "function": "Cloud funktion",
         "listView": "Listevisning",
         "map": {
             "layer": "Baggrundkort"
@@ -1052,10 +1064,8 @@
         "mapView": "Kortvisning",
         "org": "Organisation",
         "project": "Projekt",
-		"user": "Bruger",
-		"registry": "Register",
-		"function": "Cloud funktion",
-		"devicetype": "Enhedstype"
+        "registry": "Register",
+        "user": "Bruger"
     },
     "users": {
         "editUser": "Rediger bruger",
