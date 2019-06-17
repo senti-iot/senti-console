@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { createSensor } from 'variables/dataRegistry';
 import CreateSensorForm from 'components/Sensors/CreateSensorForm';
 import { getAddressByLocation } from 'variables/dataDevices';
+import { getSensors } from 'redux/data';
 
 class CreateCollection extends Component {
 	constructor(props) {
@@ -339,10 +340,11 @@ class CreateCollection extends Component {
 		return await createSensor(newSensor)
 	}
 	handleCreate = async () => {
-		const { s, history } = this.props
+		const { s, history, orgId, accessLevel } = this.props
 		let rs = await this.createSensor()
 		if (rs) {
-			s('snackbars.create.device')
+			s('snackbars.create.device', { device: this.state.sensor.name })
+			this.props.getSensors(true, orgId, accessLevel.apisuperuser ? true : false)
 			history.push(`/sensor/${rs}`)
 		}
 		else
@@ -416,6 +418,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
+	getSensors: async (reload, orgId, ua) => dispatch(await getSensors(reload, orgId, ua))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateCollection)

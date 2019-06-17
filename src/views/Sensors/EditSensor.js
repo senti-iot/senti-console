@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 // import EditSensorForm from 'components/Collections/EditSensorForm';
-import { getSensorLS } from 'redux/data';
+import { getSensorLS, getSensors } from 'redux/data';
 import { updateSensor } from 'variables/dataRegistry';
 import { updateFav, isFav } from 'redux/favorites';
 import { CircularLoader } from 'components';
@@ -327,10 +327,22 @@ class EditSensor extends Component {
 		return await updateSensor(newSensor)
 	}
 	handleCreate = async () => {
-		const { s, history } = this.props
+		const { s, history, orgId, accessLevel } = this.props
 		let rs = await this.updateDevice()
 		if (rs) {
-			s('snackbars.edit.device')
+			const { isFav, updateFav } = this.props
+			const { sensor } = this.state
+			let favObj = {
+				id: sensor.id,
+				name: sensor.name,
+				type: 'sensor',
+				path: `/sensor/${sensor.id}`
+			}
+			if (isFav(favObj)) {
+				updateFav(favObj)
+			}
+			s('snackbars.edit.device', { device: this.state.sensor.name })
+			this.props.getSensors(true, orgId, accessLevel.apisuperuser ? true : false)
 			history.push(`/sensor/${rs}`)
 		}
 		else
@@ -404,6 +416,7 @@ const mapDispatchToProps = dispatch => ({
 	isFav: (favObj) => dispatch(isFav(favObj)),
 	updateFav: (favObj) => dispatch(updateFav(favObj)),
 	getSensor: async (id, customerID, ua) => dispatch(await getSensorLS(id, customerID, ua)),
+	getSensors: async (reload, orgId, ua) => dispatch(await getSensors(reload, orgId, ua))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditSensor)

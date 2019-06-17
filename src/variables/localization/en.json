@@ -967,6 +967,18 @@
 			"deviceToOrg": "Device %{device} assigned to organisation %{org}",
 			"projectToOrg": "Project %{project} assigned to organisation %{org}"
 		},
+		"create": {
+			"device": "Device %{device} created!",
+			"registry": "Registry %{reg} created!",
+			"devicetype": "Device Type %{dt} created!",
+			"cloudfunction": "Cloud function %{cf} created!"
+		},
+		"edit": {
+			"device": "Device %{device} updated!",
+			"registry": "Registry %{reg} updated!",
+			"devicetype": "Device Type %{dt} updated!",
+			"cloudfunction": "Cloud function %{cf} updated!"
+		},
 		"assignFailed": "Assignment failed!",
 		"collectionCreated": "Data Collection created!",
 		"collectionDeleted": "Data Collection deleted!",
