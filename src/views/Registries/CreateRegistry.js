@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 // import CreateCollectionForm from 'components/Collections/CreateCollectionForm';
 import { createRegistry } from 'variables/dataRegistry';
 import CreateRegistryForm from 'components/Registry/CreateRegistryForm';
+import { getRegistries } from 'redux/data';
 
 class CreateCollection extends Component {
 	constructor(props) {
@@ -49,10 +50,11 @@ class CreateCollection extends Component {
 		return await createRegistry(this.state.registry)
 	}
 	handleCreate = async () => {
-		const { s, history } = this.props
+		const { s, history, orgId, accessLevel } = this.props
 		let rs = await this.createRegistry()
 		if (rs) {
-			s('snackbars.collectionCreated')
+			s('snackbars.create.registry', { reg: this.state.registry.name })
+			this.props.getRegistries(true, orgId, accessLevel.apisuperuser ? true : false)
 			history.push(`/registry/${rs}`)
 		}
 		else
@@ -85,6 +87,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
+	getRegistries: async (reload, orgId, ua) => dispatch(await getRegistries(reload, orgId, ua)) 
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateCollection)

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { createDeviceType } from 'variables/dataRegistry';
 import CreateDeviceTypeForm from 'components/DeviceTypes/CreateDeviceTypeForm';
+import { getDeviceTypes } from 'redux/data';
 
 class CreateDeviceType extends Component {
 	constructor(props) {
@@ -242,9 +243,11 @@ class CreateDeviceType extends Component {
 	}
 	handleCreate = async () => {
 		const { s, history } = this.props
+		const { orgId, accessLevel } = this.props
 		let rs = await this.createDeviceType()
 		if (rs) {
-			s('snackbars.deviceTypeCreated')
+			s('snackbars.create.devicetype', { dt: this.state.deviceType.name })
+			this.props.getDeviceTypes(true, orgId, accessLevel.apisuperuser ? true : false)
 			history.push(`/devicetype/${rs}`)
 		}
 		else
@@ -301,6 +304,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
+	getDeviceTypes: async (reload, orgId, ua) => dispatch(await getDeviceTypes(reload, orgId, ua))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateDeviceType)
