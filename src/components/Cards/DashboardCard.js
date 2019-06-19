@@ -29,6 +29,7 @@ const styles = theme => ({
 	card: {
 		// width: 250,
 		// height: 300,
+		minHeight: 300,
 		margin: 8,
 		display: 'flex',
 		flexFlow: 'column',

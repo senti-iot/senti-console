@@ -72,37 +72,24 @@ class ScoreCard extends PureComponent {
 			await this.getData(period)
 		}
 	}
-	getDeviceData = async (d, func) => {
-		let nD = d
-		nD.data = func()
-		return nD
-	}
-	asyncForEach = async (array, callback) => {
-		for (let index = 0; index < array.length; index++) {
-		  await callback(array[index], index, array)
-		}
-	  }
-	// start = async () => {
-	// 	await this.asyncForEach([1, 2, 3], async (num) => {
-	// 	  await waitFor(50);
-	// 	  console.log(num);
-	// 	});
-	// 	console.log('Done');
-	//   }	  
 	getData = async () => {
 		const { g, period } = this.props
-		let data = []
-		await this.asyncForEach(g.dataSources, async d => {
-			let deviceData = await getSensorDataClean(d.deviceId, period.from, period.to, d.dataKey, d.cf, d.deviceType, d.type)
-			console.log(deviceData)
-			data.push({ ...d, data: deviceData })
-		})
-
-		this.setState({
-			data: data, loading: false
-		})
+		console.log(g.dataSources)
+		let newState = {
+			a: { ...g.dataSources.a },
+			b: { ...g.dataSources.b }
+		}
+		Promise.all([
+			getSensorDataClean(g.dataSources.a.deviceId, period.from, period.to, g.dataSources.a.dataKey, g.dataSources.a.cf, g.dataSources.a.deviceType, g.dataSources.a.type),
+			getSensorDataClean(g.dataSources.b.deviceId, period.from, period.to, g.dataSources.b.dataKey, g.dataSources.b.cf, g.dataSources.b.deviceType, g.dataSources.b.type),
+		]).then(rs => { 
+			newState.a.data = parseFloat(rs[0])
+			newState.b.data = parseFloat(rs[1])
+			this.setState({
+				...newState, loading: false
+			})
+		}) 
 	
-
 	}
 	componentDidUpdate = async (prevProps) => {
 		if (prevProps.period !== this.props.period /* || prevProps.period.timeType !== this.props.period.timeType || prevProps.period.raw !== this.props.period.raw */) {
@@ -156,6 +143,79 @@ class ScoreCard extends PureComponent {
 		this.setState({ actionAnchorVisibility: null })
 	}
 
+	handleReverseZoomOnData = async () => {
+		const { period } = this.props
+		const { zoomDate } = this.state
+		let startDate = null
+		let endDate = null
+		try {
+			switch (period.timeType) {
+				case 0:
+					startDate = zoomDate.length > 1 ? moment(zoomDate[1].from).startOf('day') : zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
+					endDate = zoomDate.length > 1 ? moment(zoomDate[1].to).endOf('day') : zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
+					if (zoomDate.length === 1) {
+						this.setState({ resetZoom: false, zoomDate: [] })
+					}
+					this.handleSetDate(6, endDate, startDate, 1, period.id)
+					break;
+				case 1:
+					startDate = zoomDate.length > 0 ? moment(zoomDate[0].from) : moment().subtract(7, 'days')
+					endDate = zoomDate.length > 0 ? moment(zoomDate[0].to) : moment()
+					this.setState({ resetZoom: false, zoomDate: [] })
+					this.handleSetDate(6, endDate, startDate, 2, period.id)
+					break;
+				default:
+					break;
+			}
+		}
+		catch (e) {
+		}
+	}
+
+	handleZoomOnData = async (elements) => {
+		if (elements.length > 0) {
+			const { period } = this.props
+			const { lineDataSets } = this.state
+			let date = null
+			let startDate = null
+			let endDate = null
+			try {
+				date = lineDataSets.datasets[elements[0]._datasetIndex].data[elements[0]._index].x
+				switch (period.timeType) {
+					case 1:
+						startDate = moment(date).startOf('hour')
+						endDate = moment(date).endOf('hour').diff(moment(), 'hour') >= 0 ? moment() : moment(date).endOf('hour')
+						this.setState({
+							resetZoom: true,
+							zoomDate: [
+								...this.state.zoomDate,
+								{
+									from: period.from,
+									to: period.to
+								}]
+						})
+						this.handleSetDate(6, endDate, startDate, 0, period.id)
+						break
+					case 2:
+						startDate = moment(date).startOf('day')
+						endDate = moment(date).endOf('day').diff(moment(), 'hour') >= 0 ? moment() : moment(date).endOf('day')
+						this.setState({
+							resetZoom: true,
+							zoomDate: [{
+								from: period.from,
+								to: period.to
+							}]
+						})
+						this.handleSetDate(6, endDate, startDate, 1, period.id)
+						break;
+					default:
+						break;
+				}
+			}
+			catch (error) {
+			}
+		}
+	}
 	futureTester = (date, unit) => moment().diff(date, unit) <= 0
 	handleNextPeriod = () => {
 		const { period } = this.props
@@ -319,21 +379,42 @@ class ScoreCard extends PureComponent {
 		return ((decreaseValue / oldNumber) * 100).toFixed(3);
 	}
 	renderType = () => {
-		const { loading, data } = this.state
+		const { loading, a, b } = this.state
 		if (!loading) {
 			return <Table>
 				<TableBody>
-					{data.map((a, i) => {
-						return <TableRow key={i}>
-							<TC label={a.label} />
-							<TC content={
-								<T style={{ fontWeight: 500 }}>
-									{a.data}
-								</T>
-							} />
-						</TableRow>
-					}
-					)}
+					<TableRow>
+						<TC label={a.label}/>
+						<TC content={
+							<T style={{ fontWeight: 500 }}>
+								{a.data}
+							</T>
+						} />
+					</TableRow>
+					<TableRow>
+						<TC label={b.label}/>
+						<TC content={
+							<T style={{ fontWeight: 500 }}>
+								{b.data}
+							</T>
+						} />
+					</TableRow>
+					<TableRow>
+						<TC label={'Difference'}/>
+						<TC content={
+							<T style={{ color: a.data > b.data ? 'red' : 'green', fontWeight: 500 }}>
+								{a.data > b.data ? (a.data - b.data).toFixed(3) : (b.data - a.data).toFixed(3)}
+							</T>
+						} />
+					</TableRow>
+					<TableRow>
+						<TC label={'Percentage Difference:'}/>
+						<TC content={
+							<T style={{ color: a.data > b.data ? 'red' : 'green', fontWeight: 500 }}>
+								{a.data > b.data ? this.relDiff(a.data, b.data) : this.relDiff(b.data, a.data)}% 
+							</T>
+						}/>
+					</TableRow>
 				</TableBody>
 			</Table>
 		}
@@ -397,7 +478,7 @@ class ScoreCard extends PureComponent {
 	}
 
 	renderIcon = () => {
-		return <Assignment />
+		return <Assignment/>
 	}
 
 	render() {

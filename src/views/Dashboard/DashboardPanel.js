@@ -10,6 +10,7 @@ import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import GaugeFakeData from 'views/Charts/GaugeFakeData';
 import DoubleChartFakeData from 'views/Charts/DoubleChartFakeData';
 import logo from '../../logo.svg'
+import ScorecardAB from 'views/Charts/ScorecardAB';
 import Scorecard from 'views/Charts/Scorecard';
 
 class DashboardPanel extends Component {
@@ -128,13 +129,23 @@ class DashboardPanel extends Component {
 								</ItemG>
 							case 2:
 								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
-									 <Scorecard
+									 <ScorecardAB
 										title={g.name}
 										gId={g.id}
 										dId={d.id}
 										single={true}
 										t={t}
 									/> 
+								</ItemG>
+							case 3: 
+								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
+									<Scorecard
+										title={g.name}
+										gId={g.id}
+										dId={d.id}
+										single={true}
+										t={t}
+									/>
 								</ItemG>
 							default:
 								return null;
