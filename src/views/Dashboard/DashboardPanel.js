@@ -12,6 +12,7 @@ import DoubleChartFakeData from 'views/Charts/DoubleChartFakeData';
 import logo from '../../logo.svg'
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import Scorecard from 'views/Charts/Scorecard';
+import WindCard from 'views/Charts/WindCard';
 
 class DashboardPanel extends Component {
 	constructor(props) {
@@ -140,6 +141,16 @@ class DashboardPanel extends Component {
 							case 3: 
 								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
 									<Scorecard
+										title={g.name}
+										gId={g.id}
+										dId={d.id}
+										single={true}
+										t={t}
+									/>
+								</ItemG>
+							case 4: 
+								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
+									<WindCard
 										title={g.name}
 										gId={g.id}
 										dId={d.id}

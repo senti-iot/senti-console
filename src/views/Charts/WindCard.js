@@ -1,6 +1,6 @@
 import React, { Fragment, PureComponent } from 'react';
 import {
-	Grid, IconButton, withStyles, Collapse, Hidden, Typography, Tooltip, TableRow, Table, TableBody,
+	Grid, IconButton, withStyles, Collapse, Hidden, Typography, Tooltip, Paper, /* TableRow, Table, TableBody, */
 } from '@material-ui/core';
 import {
 	DonutLargeRounded,
@@ -23,9 +23,9 @@ import { changeRawData, removeChartPeriod } from 'redux/dateTime'
 // import { getSensorDataClean } from 'variables/dataRegistry';
 import { getSensorDataClean } from 'variables/dataRegistry';
 import { getGraph, getPeriod, handleSetDate } from 'redux/dsSystem';
-import TC from 'components/Table/TC'
+// import TC from 'components/Table/TC'
 
-class ScoreCard extends PureComponent {
+class WindCard extends PureComponent {
 	constructor(props) {
 		super(props)
 
@@ -65,6 +65,24 @@ class ScoreCard extends PureComponent {
 		{ id: 2, icon: <BarChartIcon />, label: this.props.t('charts.type.bar') },
 		{ id: 3, icon: <ShowChart />, label: this.props.t('charts.type.line') }
 	]
+	windDirections = [
+		{ id: 0, value: 0, direction: 'N' },
+		{ id: 1, value: 22.5, direction: 'NNE' },
+		{ id: 2, value: 45, direction: 'NE' },
+		{ id: 3, value: 67.5, direction: 'ENE' },
+		{ id: 4, value: 90, direction: 'E' },
+		{ id: 5, value: 112.5, direction: 'ESE' },
+		{ id: 6, value: 135, direction: 'SE' },
+		{ id: 7, value: 157.5, direction: 'SSE' },
+		{ id: 8, value: 180, direction: 'S' },
+		{ id: 9, value: 202.5, direction: 'SSW' },
+		{ id: 10, value: 225, direction: 'SW' },
+		{ id: 11, value: 247.5, direction: 'WSW' },
+		{ id: 12, value: 270, direction: 'W' },
+		{ id: 13, value: 292.5, direction: 'WNW' },
+		{ id: 14, value: 315, direction: 'NW' },
+		{ id: 15, value: 337.5, direction: 'NNW' },
+	]
 	componentDidMount = async () => {
 		const { period } = this.props
 		const { loading } = this.state
@@ -72,16 +90,11 @@ class ScoreCard extends PureComponent {
 			await this.getData(period)
 		}
 	}
-	getDeviceData = async (d, func) => {
-		let nD = d
-		nD.data = func()
-		return nD
-	}
 	asyncForEach = async (array, callback) => {
 		for (let index = 0; index < array.length; index++) {
-		  await callback(array[index], index, array)
+			await callback(array[index], index, array)
 		}
-	  }
+	}
 	// start = async () => {
 	// 	await this.asyncForEach([1, 2, 3], async (num) => {
 	// 	  await waitFor(50);
@@ -91,16 +104,18 @@ class ScoreCard extends PureComponent {
 	//   }	  
 	getData = async () => {
 		const { g, period } = this.props
+		let d = g.dataSource
 		let data = []
-		await this.asyncForEach(g.dataSources, async d => {
-			let deviceData = await getSensorDataClean(d.deviceId, period.from, period.to, d.dataKey, d.cf, d.deviceType, d.type)
-			data.push({ ...d, data: deviceData })
-		})
-
+		data = await getSensorDataClean(d.deviceId, period.from, period.to, d.dataKey, d.cf, d.deviceType, d.type)
+		// await this.asyncForEach(g.dataSources, async d => {
+		// 	let deviceData = )
+		// 	data.push({ ...d, data: deviceData })
+		// })
+		console.log(data)
 		this.setState({
 			data: data, loading: false
 		})
-	
+
 
 	}
 	componentDidUpdate = async (prevProps) => {
@@ -320,22 +335,37 @@ class ScoreCard extends PureComponent {
 	renderType = () => {
 		const { loading, data } = this.state
 		if (!loading) {
-			return <div style={{ maxHeight: 300, overflowX: 'auto' }}>
-				<Table>
-					<TableBody >
-						{data.map((a, i) => {
-							return <TableRow key={i}>
-								<TC label={a.label} />
-								<TC content={
-									<T style={{ fontWeight: 500 }}>
-										{`${a.data} ${a.unit}`}
+			return <div style={{ maxHeight: 300, maxWidth: '100%', overflow: 'auto' }}>
+				<div style={{ display: 'inline-flex' }}>
+					{Object.keys(data).map((a, i) => {
+						return <Paper style={{ height: 250, minWidth: 100, margin: 4 }} key={i}>
+							<ItemG container alignItems={'center'} style={{ height: '100%' }}>
+								<ItemG xs={12}>
+									<T style={{ textAlign: 'center' }}>
+										{moment(a).format('ll')}
 									</T>
-								} />
-							</TableRow>
-						}
-						)}
-					</TableBody>
-				</Table>
+								</ItemG>
+								<ItemG xs={12}>
+
+									<T style={{ textAlign: 'center' }}>
+										{moment(a).format('HH:mm:ss')}
+									</T>
+								</ItemG>
+								<ItemG xs={12}>
+									<T style={{ textAlign: 'center', fontWeight: 600 }}>
+										{this.windDirections[data[a]].direction}
+									</T>
+								</ItemG>
+								<ItemG container justify={'center'} xs={12}>
+									<div style={{ transform: `rotate(${this.windDirections[data[a]].value}deg)` }}>
+										<ArrowUpward />
+									</div>
+								</ItemG>
+							</ItemG>
+						</Paper>
+					}
+					)}
+				</div>
 			</div>
 		}
 		else return this.renderNoData()
@@ -450,4 +480,4 @@ const mapDispatchToProps = dispatch => ({
 	changeRawData: (p) => dispatch(changeRawData(p))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(ScoreCard))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(deviceStyles, { withTheme: true })(WindCard))
