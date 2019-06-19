@@ -94,7 +94,6 @@ class ScoreCard extends PureComponent {
 		let data = []
 		await this.asyncForEach(g.dataSources, async d => {
 			let deviceData = await getSensorDataClean(d.deviceId, period.from, period.to, d.dataKey, d.cf, d.deviceType, d.type)
-			console.log(deviceData)
 			data.push({ ...d, data: deviceData })
 		})
 
@@ -328,7 +327,7 @@ class ScoreCard extends PureComponent {
 							<TC label={a.label} />
 							<TC content={
 								<T style={{ fontWeight: 500 }}>
-									{a.data}
+									{`${a.data} ${a.unit}`}
 								</T>
 							} />
 						</TableRow>
