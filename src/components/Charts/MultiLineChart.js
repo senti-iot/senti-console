@@ -313,7 +313,7 @@ class LineChart extends PureComponent {
 			lastPoint,
 			title: [rest, last],
 			data: tooltipModel.dataPoints.map((d, i) => ({
-				device: tooltipModel.body[i].lines[0].split(':')[0], count: d.yLabel, color: tooltipModel.labelColors[i].backgroundColor
+				device: tooltipModel.body[i].lines[0].split(':')[0], count: parseFloat(d.yLabel).toFixed(3), color: tooltipModel.labelColors[i].backgroundColor
 			}))
 		})
 		if (this.clickEvent())

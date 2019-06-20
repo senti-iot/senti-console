@@ -337,7 +337,7 @@ class WindCard extends PureComponent {
 		if (!loading) {
 			return <div style={{ maxHeight: 300, maxWidth: '100%', overflow: 'auto' }}>
 				<div style={{ display: 'inline-flex' }}>
-					{Object.keys(data).map((a, i) => {
+					{Object.keys(data).reverse().map((a, i) => {
 						return <Paper style={{ height: 250, minWidth: 100, margin: 4 }} key={i}>
 							<ItemG container alignItems={'center'} style={{ height: '100%' }}>
 								<ItemG xs={12}>
@@ -357,7 +357,7 @@ class WindCard extends PureComponent {
 									</T>
 								</ItemG>
 								<ItemG container justify={'center'} xs={12}>
-									<div style={{ transform: `rotate(${this.windDirections[data[a]].value}deg)` }}>
+									<div style={{ transform: `rotate(${this.windDirections[data[a]].value + 180}deg)` }}>
 										<ArrowUpward />
 									</div>
 								</ItemG>
