@@ -1,14 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
-import _ from "lodash";
+// import _ from "lodash";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { Paper, Dialog, AppBar, IconButton, Toolbar, Hidden, withStyles, List, ListItem } from '@material-ui/core';
-import { T, ItemG, InfoCard, ItemGrid } from 'components';
+import { T, ItemG, CircularLoader } from 'components';
 import cx from 'classnames'
 import { Close } from 'variables/icons';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
+import { connect } from 'react-redux'
 
 import { useDrop, useDrag } from 'react-dnd'
+import GaugeFakeData from 'views/Charts/GaugeFakeData';
+import DoubleChartFakeData from 'views/Charts/DoubleChartFakeData';
+import ScorecardAB from 'views/Charts/ScorecardAB';
+import WindCard from 'views/Charts/WindCard';
+import Scorecard from 'views/Charts/Scorecard';
+import { createDash, createGraph } from 'redux/dsSystem';
 
 const style = {
 	height: '100%',
@@ -17,23 +24,22 @@ const style = {
 }
 const Dustbin = ({ i, children, onDrop }) => {
 	const [{ canDrop, isOver }, drop] = useDrop({
-		accept: ItemTypes.BOX,
-		drop: (item) => onDrop({ item, i: i }),
+		accept: ItemTypes,
+		drop: (item) => onDrop(item),
 		collect: monitor => ({
 			isOver: monitor.isOver(),
 			canDrop: monitor.canDrop(),
 		}),
 	})
 	const isActive = canDrop && isOver
-	let backgroundColor = 'inherit'
+	let background = 'linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%)'
 	if (isActive) {
-		backgroundColor = 'darkgreen'
+		background = 'darkgreen'
 	} else if (canDrop) {
-		backgroundColor = 'darkkhaki'
+		background = 'darkkhaki'
 	}
 	return (
-		<div ref={drop} style={Object.assign({}, style, { backgroundColor })}>
-			{isActive ? 'Release to drop' : null}
+		<div ref={drop} style={Object.assign({}, style, { background, width: '100%', height: '100%' })}>
 			{children}
 		</div>
 	)
@@ -47,9 +53,9 @@ const boxStyle = {
 	cursor: 'move',
 	float: 'left',
 }
-const Box = ({ name, insertChild }) => {
+const Box = ({ name, type }) => {
 	const [{ isDragging }, drag] = useDrag({
-		item: { name, type: ItemTypes.BOX },
+		item: { name, type: type },
 		end: dropResult => {
 			if (dropResult) {
 			}
@@ -66,9 +72,9 @@ const Box = ({ name, insertChild }) => {
 	)
 }
 
-const ItemTypes = {
-	BOX: 'box',
-}
+const ItemTypes = [
+	"chart", "gauge", "scorecardAB", "scorecard", "windcard"
+]
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 //ignore
@@ -76,67 +82,106 @@ class CreateDashboard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			graphs: [],
 			currentBreakpoint: "lg",
 			compactType: 'vertical',
 			mounted: false,
-			layouts: props.initialLayout
+			layout: { lg: props.gs.map((g) => ({
+				i: g.id,
+				...g.grid
+			}))
+			}
 		};
 	}
 
 	componentDidMount = () => {
-		this.setState({ mounted: true });
+		this.props.createDash()
 	}
-
+	componentDidUpdate(prevProps, prevState) {
+		console.log('CreateDashboar updated')
+		console.log(prevProps.gs.length, this.props.gs.length)
+		if (prevProps.gs.length !== this.props.gs.length) {
+			console.log('updated')
+			this.setState({
+				layout: { lg: this.props.gs.map((g) => ({
+					i: g.id,
+					...g.grid
+				})) 
+				} 
+			})
+			
+		}
+	}
+	
+	typeChildren = (g) => {
+		const { t } = this.props
+		// const { d } = this.state
+		let d = this.props.d
+		console.log('G Type', g.type)
+		switch (g.type) {
+			case 1:
+				return <Paper key={g.id} data-grid={g.grid}>
+					<GaugeFakeData
+						title={g.name}
+						period={{ ...g.period, menuId: g.periodType }}
+						t={t}
+						color={d.color}
+						gId={g.id}
+						dId={d.id}
+						single
+					/>
+				</Paper>
+			case 0:
+				return <Paper key={g.id} data-grid={g.grid}>
+					<DoubleChartFakeData
+						create
+						title={g.name}
+						gId={g.id}
+						dId={d.id}
+						color={d.color}
+						single={true}
+						t={t}
+					/>
+				</Paper>
+			case 2:
+				return <Paper key={g.id} data-grid={g.grid}>
+					<ScorecardAB
+						title={g.name}
+						gId={g.id}
+						dId={d.id}
+						single={true}
+						t={t}
+					/>
+				</Paper>
+			case 3:
+				return <Paper key={g.id} data-grid={g.grid}>
+					<Scorecard
+						title={g.name}
+						gId={g.id}
+						dId={d.id}
+						single={true}
+						t={t}
+					/>
+				</Paper>
+			case 4:
+				return <Paper key={g.id} data-grid={g.grid}>
+					<WindCard
+						title={g.name}
+						gId={g.id}
+						dId={d.id}
+						single={true}
+						t={t}
+					/>
+				</Paper>
+			default: 
+			 return null;
+		}
+	}
 	generateDOM = () => {
-		return this.state.layouts.lg.map((l, i) => {
-			return (<Paper key={i} data-grid={l}>
-				<Dustbin i={l.i} onDrop={item => this.insertChild(item)} children={l.children}/>
-			</Paper>)
-		})
-	}
-	insertChild = (type) => {
-		let newLg = this.state.layouts.lg
-		let index = newLg.findIndex(f => f.i === type.i)
-		newLg[index].children = [<InfoCard
-			noExpand
-			title={'Test'}
-			content={<ItemGrid container noMargin>
-				<ItemG xs={12}>
-					<T>This is a demo</T>
-				</ItemG>
-			</ItemGrid>}/>]
-		this.setState({
-			initialLayout: {
-				lg: newLg
-			}
-		})
-	}
-	onBreakpointChange = (breakpoint) => {
-		this.setState({
-			currentBreakpoint: breakpoint
-		});
+		const gs = this.props.gs
+		return gs.map((g, i) => this.typeChildren(g))
 	}
 
-	onCompactTypeChange = () => {
-		const { compactType: oldCompactType } = this.state;
-		const compactType =
-			oldCompactType === "horizontal"
-				? "vertical"
-				: oldCompactType === "vertical"
-					? null
-					: "horizontal";
-		this.setState({ compactType });
-	}
-
-	onLayoutChange = (layout, layouts) => {
-		this.props.onLayoutChange(layout, layouts);
-	}
-
-	onNewLayout = () => {
-		this.setState({
-			// layouts: { lg: generateLayout() }
-		});
-	}
 	handleAddNew = () => {
 		let newLg = this.state.layouts.lg
 		newLg.unshift({
@@ -151,99 +196,81 @@ class CreateDashboard extends React.Component {
 		})
 	}
 	render() {
-		const { openAddDash, handleCloseDT, classes, t } = this.props
+		const { openAddDash, handleCloseDT, classes, t, d  } = this.props
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
 
 		return (
-			<Dialog
-				fullScreen
-				open={openAddDash}
-				onClose={handleCloseDT}
-				TransitionComponent={this.transition}>
-				<AppBar className={classes.appBar + ' ' + appBarClasses}>
-					<Toolbar>
-						<Hidden mdDown>
-							<ItemG container alignItems={'center'}>
-								<ItemG xs={2} container alignItems={'center'}>
-									<IconButton color='inherit' onClick={handleCloseDT} aria-label='Close'>
-										<Close />
-									</IconButton>
+			!d ? <CircularLoader /> :  
+				<Dialog
+					fullScreen
+					open={openAddDash}
+					onClose={handleCloseDT}
+					TransitionComponent={this.transition}>
+					<AppBar className={classes.appBar + ' ' + appBarClasses}>
+						<Toolbar>
+							<Hidden mdDown>
+								<ItemG container alignItems={'center'}>
+									<ItemG xs={2} container alignItems={'center'}>
+										<IconButton color='inherit' onClick={handleCloseDT} aria-label='Close'>
+											<Close />
+										</IconButton>
+									</ItemG>
+									<ItemG xs={10}>
+										<T variant='h6' color='inherit' className={classes.flex}>
+											{t('dashboard.createDashboard')}
+										</T>
+									</ItemG>
 								</ItemG>
-								<ItemG xs={10}>
-									<T variant='h6' color='inherit' className={classes.flex}>
-										{t('dashboard.createDashboard')}
-									</T>
+							</Hidden>
+							<Hidden lgUp>
+								<ItemG container alignItems={'center'}>
+									<ItemG xs={4} container alignItems={'center'}>
+										<IconButton color={'inherit'} onClick={handleCloseDT} aria-label='Close'>
+											<Close />
+										</IconButton>
+										<T variant='h6' color='inherit' className={classes.flex}>
+											{t('dashboard.createDashboard')}
+										</T>
+									</ItemG>
 								</ItemG>
-							</ItemG>
-						</Hidden>
-						<Hidden lgUp>
-							<ItemG container alignItems={'center'}>
-								<ItemG xs={4} container alignItems={'center'}>
-									<IconButton color={'inherit'} onClick={handleCloseDT} aria-label='Close'>
-										<Close />
-									</IconButton>
-									<T variant='h6' color='inherit' className={classes.flex}>
-										{t('dashboard.createDashboard')}
-									</T>
-								</ItemG>
-							</ItemG>
-						</Hidden>
-					</Toolbar>
-				</AppBar>
-				<div style={{ width: '100vw', height: '100%' }}>
+							</Hidden>
+						</Toolbar>
+					</AppBar>
+					<div style={{ width: '100vw', height: '100%' }}>
 
-					<ItemG container>
-						<ItemG xs={2}>
-							<Paper style={{ borderRadius: 0, background: '#ccc', width: '100%', height: 'calc(100vh - 84px)' }}>
+						<ItemG container>
+							{/* <ItemG xs={2}> */}
+							<Paper style={{ borderRadius: 0, background: '#ccc', width: '200px', position: 'fixed', height: 'calc(100vh - 84px)' }}>
 								Toolbox
 								<List>
 									<ListItem>
-										<Box name={'test'}/>
+										<Box type={"chart"} name={'test'}/>
 									</ListItem>
 								</List>
 							</Paper>
-						</ItemG>
-						<ItemG xs={10}>
-							<div style={{ margin: 8 }}>
+							{/* </ItemG> */}
+							<ItemG xs={12}>
+								<div style={{ margin: 8, transform: 'scale(0.8)' }}>
+									<Dustbin onDrop={item => this.props.createGraph(item.type)}>
 
-								<div>
-									Current Breakpoint: {this.state.currentBreakpoint} ({
-										this.props.cols[this.state.currentBreakpoint]
-									}{" "}
-									columns)
+										<ResponsiveReactGridLayout
+											{...this.props}
+											layouts={this.state.layout}
+											onLayoutsChange={() => {}}
+											measureBeforeMount={false}
+											useCSSTransforms={this.state.mounted}
+											compactType={this.state.compactType}
+										>
+											{this.generateDOM()}
+										</ResponsiveReactGridLayout>
+									</Dustbin>
 								</div>
-								<div>
-									Compaction type:{" "}
-									{_.capitalize(this.state.compactType) || "No Compaction"}
-								</div>
-								<button onClick={this.handleAddNew}>Add new Column</button>
-								<button onClick={this.onNewLayout}>Generate New Layout</button>
-								<button onClick={this.onCompactTypeChange}>
-									Change Compaction Type
-								</button>
-								<ResponsiveReactGridLayout
-									{...this.props}
-									layouts={this.state.layouts}
-									onBreakpointChange={this.onBreakpointChange}
-									onLayoutChange={this.onLayoutChange}
-									// WidthProvider option
-									measureBeforeMount={false}
-									// I like to have it animate on mount. If you don't, delete `useCSSTransforms` (it's default `true`)
-									// and set `measureBeforeMount={true}`.
-									useCSSTransforms={this.state.mounted}
-									compactType={this.state.compactType}
-								// preventCollision={!this.state.compactType}
-								>
-									{this.generateDOM()}
-								</ResponsiveReactGridLayout>
-							</div>
+							</ItemG>
 						</ItemG>
-					</ItemG>
-				</div>
-
-			</Dialog>
+					</div>
+				</Dialog>
 		);
 	}
 }
@@ -252,60 +279,19 @@ CreateDashboard.propTypes = {
 	onLayoutChange: PropTypes.func.isRequired
 };
 
-CreateDashboard.defaultProps = {
+const mapStateToProps = (state) => ({
+	d: state.dsSystem.cDash,
+	gs: state.dsSystem.cGraphs,
+	cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
 	className: "layout",
 	rowHeight: 25,
 	preventCollision: false,
-	// autoSize: false,
-	// isResizable: false,
 	onLayoutChange: () => { },
-	cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-	initialLayout: {
+})
 
-		lg: [{
-			i: '0',
-			x: 0,
-			y: 0,
-			h: 12,
-			w: 4
-		},
-		{
-			i: '1',
-			x: 4,
-			y: 0,
-			h: 4,
-			w: 3
-		},
-		{
-			i: '2',
-			x: 4,
-			y: 7,
-			h: 4,
-			w: 3
-		},
-		{
-			i: '3',
-			x: 4,
-			y: 14,
-			h: 4,
-			w: 3
-		},
-		{
-			i: '4',
-			x: 7,
-			y: 0,
-			h: 6,
-			w: 4
-		},
-		{
-			i: '5',
-			x: 7,
-			y: 6,
-			h: 6,
-			w: 4
-		}, ]
-	}
-};
+const mapDispatchToProps = dispatch => ({
+	createDash: () => dispatch(createDash()),
+	createGraph: (type) => dispatch(createGraph(type))
+})
 
-export default withStyles(dashboardStyle)(CreateDashboard)
-// export default withStyles(dashboardStyle)(CreateDashboard)
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateDashboard))

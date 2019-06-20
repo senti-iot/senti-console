@@ -22,7 +22,8 @@ class DashboardPanel extends Component {
 		super(props)
 
 		this.state = {
-			openDashboard: false
+			openDashboard: false,
+			initialLayout: props.initialLayout
 		}
 	}
 
@@ -38,6 +39,32 @@ class DashboardPanel extends Component {
 	}
 	transition(props) {
 		return <Slide direction='up' {...props} />;
+	}
+	renderPos = (l) => {
+		return <div style={{     position: 'absolute',
+			top: '50%',
+			left: '50%',
+			zIndex: '9999',
+			background: 'white',
+			fontSize: '24px',
+			padding: '20px',
+			transformOrigin: 'center',
+			transform: 'translate(-50%, -50%)' }}>
+			[{l.x}, {l.y}, {l.w}, {l.h}]
+		</div>
+	}
+	componentDidMount() {
+		this.setState({
+			initialLayout: this.props.initialLayout
+		})
+	}
+	
+	onLayoutChange = (args) => {
+		this.setState({
+			initialLayout: {
+				lg: args
+			}
+		})
 	}
 	renderDashboard = () => {
 		const { t, classes, d, loading } = this.props
@@ -108,7 +135,7 @@ class DashboardPanel extends Component {
 				> */}
 				<ResponsiveReactGridLayout
 					{...this.props}
-					layouts={this.props.initialLayout}
+					layouts={this.state.initialLayout}
 					onBreakpointChange={this.onBreakpointChange}
 					onLayoutChange={this.onLayoutChange}
 					// WidthProvider option
@@ -117,13 +144,14 @@ class DashboardPanel extends Component {
 					// and set `measureBeforeMount={true}`.
 					useCSSTransforms={this.state.mounted}
 					compactType={this.state.compactType}
-					// preventCollision={!this.state.compactType}
-				>					
+				// preventCollision={!this.state.compactType}
+				>
 					{d.graphs.map((g, i) => {
+						let l = this.state.initialLayout.lg[i]
 						switch (g.type) {
 							case 1:
-								return <Paper key={g.id} data-grid={this.props.initialLayout.lg[i]}>
-									{/* <ItemG xs={12} md={6} container justify={'center'}> */}
+								return <Paper key={g.id} data-grid={this.state.initialLayout.lg[i]}>
+									{this.renderPos(l)}
 									<GaugeFakeData
 										title={g.name}
 										period={{ ...g.period, menuId: g.periodType }}
@@ -136,8 +164,8 @@ class DashboardPanel extends Component {
 									{/* </ItemG> */}
 								</Paper>
 							case 0:
-								return <Paper key={g.id} data-grid={this.props.initialLayout.lg[i]}>
-									{/* <ItemG key={g.id} xs={12} container justify={'center'}> */}
+								return <Paper key={g.id} data-grid={this.state.initialLayout.lg[i]}>
+									{this.renderPos(l)}
 									<DoubleChartFakeData
 										title={g.name}
 										gId={g.id}
@@ -149,20 +177,21 @@ class DashboardPanel extends Component {
 									{/* </ItemG> */}
 								</Paper>
 							case 2:
-								return <Paper key={g.id} data-grid={this.props.initialLayout.lg[i]}>
-									 {/* <ItemG key={g.id} xs={12} md={6} container justify={'center'}> */}
-									 <ScorecardAB
+								return <Paper key={g.id} data-grid={this.state.initialLayout.lg[i]}>
+									{this.renderPos(l)}
+									<ScorecardAB
 										title={g.name}
 										gId={g.id}
 										dId={d.id}
 										single={true}
 										t={t}
-									/> 
+									/>
 									{/* // </ItemG> */}
 								</Paper>
-							case 3: 
-								return <Paper key={g.id} data-grid={this.props.initialLayout.lg[i]}>
-									
+							case 3:
+								return <Paper key={g.id} data-grid={this.state.initialLayout.lg[i]}>
+									{this.renderPos(l)}
+
 									{/* <ItemG key={g.id} xs={12} md={6} container justify={'center'}> */}
 									<Scorecard
 										title={g.name}
@@ -173,8 +202,9 @@ class DashboardPanel extends Component {
 									/>
 									{/* </ItemG> */}
 								</Paper>
-							case 4: 
-								return <Paper key={g.id} data-grid={this.props.initialLayout.lg[i]}>
+							case 4:
+								return <Paper key={g.id} data-grid={this.state.initialLayout.lg[i]}>
+									{this.renderPos(l)}
 									<WindCard
 										title={g.name}
 										gId={g.id}
@@ -227,21 +257,23 @@ DashboardPanel.defaultProps = {
 			i: '0',
 			x: 0,
 			y: 0,
-			h: 12,
-			w: 4
+			h: 11,
+			w: 3,
+			minH: 10,
+			minW: 3
 		},
 		{
 			i: '1',
 			x: 4,
 			y: 0,
-			h: 4,
+			h: 8,
 			w: 3
 		},
 		{
 			i: '2',
 			x: 4,
 			y: 7,
-			h: 4,
+			h: 13,
 			w: 3
 		},
 		{
@@ -264,14 +296,56 @@ DashboardPanel.defaultProps = {
 			y: 6,
 			h: 6,
 			w: 4
+		},
+		{
+			i: '6',
+			x: 7,
+			y: 6,
+			h: 6,
+			w: 4
+		},
+		{
+			i: '7',
+			x: 7,
+			y: 6,
+			h: 6,
+			w: 4
+		},
+		{
+			i: '8',
+			x: 7,
+			y: 6,
+			h: 6,
+			w: 4
+		},
+		{
+			i: '9',
+			x: 7,
+			y: 6,
+			h: 6,
+			w: 4
+		},
+		{
+			i: '10',
+			x: 7,
+			y: 6,
+			h: 6,
+			w: 4
+		},
+		{
+			i: '11',
+			x: 7,
+			y: 6,
+			h: 6,
+			w: 4
 		}, ]
 	}
 };
 const mapStateToProps = (state, ownProps) => ({
 	// loading: state.dsSystem.gotDashboardData
 })
-			
+
 const mapDispatchToProps = (dispatch) => ({
 })
-			
+
 export default withStyles(dashboardStyle)(connect(mapStateToProps, mapDispatchToProps)(DashboardPanel))

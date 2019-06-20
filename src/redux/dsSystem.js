@@ -1,5 +1,6 @@
 // import { getSensorDataClean } from 'variables/dataRegistry';
 import moment from 'moment'
+import { graphType } from 'variables/dsSystem/graphTypes';
 // import { createSelector } from 'reselect'
 
 export const getDashboards = 'getDashboards'
@@ -7,6 +8,10 @@ export const SetDashboard = 'SetDashboard'
 export const setDashboardData = 'setDashboardData'
 export const gotDashboardData = 'gotDashboardData'
 export const setGraphs = 'setGraphs'
+export const cGraph = 'cGraph'
+export const eGraph = 'eGraph'
+export const cDash = 'cDash'
+export const eDash = 'eDash'
 
 const menuSelect = (p, c) => {
 	let to, from, timeType, chartType;
@@ -52,13 +57,39 @@ const menuSelect = (p, c) => {
 	chartType = c
 	return { to, from, timeType, chartType }
 }
-export const getPeriod = (state, id) => {
+
+const generateID = (name) => {
+	var randHex = function(len) {
+		let maxlen = 8
+		let min = Math.pow(16, Math.min(len, maxlen) - 1) 
+		let max = Math.pow(16, Math.min(len, maxlen)) - 1
+		let n   = Math.floor( Math.random() * (max - min + 1) ) + min
+		let r   = n.toString(16);
+		while ( r.length < len ) {
+		   r = r + randHex( len - maxlen );
+		}
+		return r;
+	  };
+	return name.replace(/\s+/g, '-').toLowerCase() + '-' + randHex(8);
+}
+
+export const getPeriod = (state, id, create) => {
+	if (create) {
+		let gs = state.dsSystem.cGraphs
+		let g = gs[gs.findIndex(r => r.id === id)]
+		return g.period
+	}
 	let gs = state.dsSystem.graphs
 	let g = gs[gs.findIndex(r => r.id === id)]
 	return g.period
 }
 
-export const getGraph = (state, id) => {
+export const getGraph = (state, id, create) => {
+	if (create) {
+		let gs = state.dsSystem.cGraphs
+		let g = gs[gs.findIndex(r => r.id === id)]
+		return g
+	}
 	let gs = state.dsSystem.graphs
 	let g = gs[gs.findIndex(r => r.id === id)]
 	return g
@@ -99,18 +130,60 @@ export const setDashboards = (payload) => {
 	}
 }
 
+export const createGraph = (payload) => {
+	 return (dispatch, getState) => {
+		let gs = getState().dsSystem.cGraphs
+		let newG = graphType(payload)
+		newG.id = generateID(newG.name)
+		newG.period = menuSelect(newG.periodType, newG.chartType)
+		newG.period.menuId = newG.periodType
+		gs.push(newG)
+		dispatch({ type: cGraph, payload: gs })
+	}
+}
+export const editGraph = (payload) => {
+	 return dispatch => {
+		
+		dispatch({ type: eGraph, payload })
+	}
+}
+export const createDash = () => {
+	 return dispatch => {
+		let newD = {
+			id: generateID('My Dashboard'),
+			name: 'My Dashboard',
+			color: 'teal',
+			description: '',
+			graphs: []
+		}
+		dispatch({ type: cDash, payload: newD })
+	}
+}
+export const editDash = (d) => {
+	 return (dispatch) => {
+		// let 
+		dispatch({ type: eDash, payload: d })
+	}
+}
+
 
 const initialState = {
 	dashboards: [],
 	dashboard: null,
 	gotDashboardData: true,
-	graphs: []
+	graphs: [],
+	cDash: null,
+	cGraphs: []
 }
 
 const setState = (key, payload, state) => Object.assign({}, state, { [key]: payload })
 
 export const dsSystem = (state = initialState, { type, payload }) => {
 	switch (type) {
+		case cGraph: 
+			return setState('cGraphs', payload, state)
+		case cDash: 
+			return setState('cDash', payload, state)
 		case setGraphs:
 			return setState('graphs', payload, state)
 		case getDashboards:

@@ -78,6 +78,7 @@ class DoubleChartData extends PureComponent {
 	}
 	getData = async () => {
 		const { g, period, title, color } = this.props
+		console.log(g)
 		let data = await getSensorDataClean(g.dataSource.deviceId, period.from, period.to, g.dataSource.dataKey, g.dataSource.cf, g.dataSource.deviceType, g.dataSource.type)
 		let newState = setDailyData([{ data: data, name: title, color: colors[color][500], id: g.id }], g.period.from, g.period.to)
 		this.setState({
@@ -658,8 +659,8 @@ class DoubleChartData extends PureComponent {
 }
 const mapStateToProps = (state, ownProps) => ({
 	// dashboards: state.dsSystem.dashboards
-	g: getGraph(state, ownProps.gId),
-	period: getPeriod(state, ownProps.gId)
+	g: getGraph(state, ownProps.gId, ownProps.create),
+	period: getPeriod(state, ownProps.gId, ownProps.create)
 })
 
 const mapDispatchToProps = dispatch => ({
