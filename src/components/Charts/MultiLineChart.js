@@ -78,7 +78,6 @@ class LineChart extends PureComponent {
 					onComplete: props.getImage ? props.getImage : null,
 				},
 				display: true,
-
 				maintainAspectRatio: false,
 				tooltips: {
 					titleFontFamily: 'inherit',
@@ -442,13 +441,15 @@ class LineChart extends PureComponent {
 		const { tooltip, chartWidth, chartHeight, mobile, weather } = this.state
 		return (
 			<Fragment>
-				<div style={{ display: 'block', maxHeight: 300, position: 'relative', height: 300 }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
-					<div style={{ display: 'block', height: 300, maxHeight: 300, width: '100%' }}>
+				<div style={{ display: 'block', height: '100%', width: '100%', /* maxHeight: 300, */ position: 'relative' }} onScroll={this.hideTooltip} onMouseLeave={this.onMouseLeave()}>
+					<div style={{ display: 'block', height: '100%', /*  maxHeight: 300, */ width: '100%' }}>
 
 						<ChartComponent
 							// redraw={this.state.updateHover}
 							type={'multicolorLine'}
 							data={data}
+							height={'100%'}
+							width={'100%'}
 							ref={r => this.chart = r}
 							options={this.state.lineOptions}
 							legend={this.legendOptions}

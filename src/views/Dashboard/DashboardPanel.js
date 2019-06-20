@@ -2,8 +2,8 @@ import React, { Component, Fragment } from 'react'
 import DashboardCard from 'components/Cards/DashboardCard';
 import imgs from 'assets/img/Squared';
 import { connect } from 'react-redux'
-import { Dialog, AppBar, Toolbar, Hidden, IconButton, withStyles, ButtonBase, Slide } from '@material-ui/core';
-import { ItemG, T, GridContainer, CircularLoader } from 'components';
+import { Dialog, AppBar, Toolbar, Hidden, IconButton, withStyles, ButtonBase, Slide, Paper } from '@material-ui/core';
+import { ItemG, T, CircularLoader } from 'components';
 import { Close } from 'variables/icons';
 import cx from 'classnames'
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
@@ -13,6 +13,9 @@ import logo from '../../logo.svg'
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import Scorecard from 'views/Charts/Scorecard';
 import WindCard from 'views/Charts/WindCard';
+import { Responsive, WidthProvider } from "react-grid-layout";
+
+const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class DashboardPanel extends Component {
 	constructor(props) {
@@ -101,12 +104,26 @@ class DashboardPanel extends Component {
 				</Toolbar>
 			</AppBar>
 			{loading ? <CircularLoader /> : <div className={classes[d.color]} style={{ height: 'calc(100%)', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-				<GridContainer style={{ padding: 16 }} spacing={16} justify={'center'} alignItems={'center'}
-				>
+				{/* <GridContainer style={{ padding: 16 }} spacing={16} justify={'center'} alignItems={'center'}
+				> */}
+				<ResponsiveReactGridLayout
+					{...this.props}
+					layouts={this.props.initialLayout}
+					onBreakpointChange={this.onBreakpointChange}
+					onLayoutChange={this.onLayoutChange}
+					// WidthProvider option
+					measureBeforeMount={false}
+					// I like to have it animate on mount. If you don't, delete `useCSSTransforms` (it's default `true`)
+					// and set `measureBeforeMount={true}`.
+					useCSSTransforms={this.state.mounted}
+					compactType={this.state.compactType}
+					// preventCollision={!this.state.compactType}
+				>					
 					{d.graphs.map((g, i) => {
 						switch (g.type) {
 							case 1:
-								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
+								return <Paper key={g.id} data-grid={this.props.initialLayout.lg[i]}>
+									{/* <ItemG xs={12} md={6} container justify={'center'}> */}
 									<GaugeFakeData
 										title={g.name}
 										period={{ ...g.period, menuId: g.periodType }}
@@ -116,9 +133,11 @@ class DashboardPanel extends Component {
 										dId={d.id}
 										single
 									/>
-								</ItemG>
-							case 0: 
-								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
+									{/* </ItemG> */}
+								</Paper>
+							case 0:
+								return <Paper key={g.id} data-grid={this.props.initialLayout.lg[i]}>
+									{/* <ItemG key={g.id} xs={12} container justify={'center'}> */}
 									<DoubleChartFakeData
 										title={g.name}
 										gId={g.id}
@@ -127,9 +146,11 @@ class DashboardPanel extends Component {
 										single={true}
 										t={t}
 									/>
-								</ItemG>
+									{/* </ItemG> */}
+								</Paper>
 							case 2:
-								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
+								return <Paper key={g.id} data-grid={this.props.initialLayout.lg[i]}>
+									 {/* <ItemG key={g.id} xs={12} md={6} container justify={'center'}> */}
 									 <ScorecardAB
 										title={g.name}
 										gId={g.id}
@@ -137,9 +158,12 @@ class DashboardPanel extends Component {
 										single={true}
 										t={t}
 									/> 
-								</ItemG>
+									{/* // </ItemG> */}
+								</Paper>
 							case 3: 
-								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
+								return <Paper key={g.id} data-grid={this.props.initialLayout.lg[i]}>
+									
+									{/* <ItemG key={g.id} xs={12} md={6} container justify={'center'}> */}
 									<Scorecard
 										title={g.name}
 										gId={g.id}
@@ -147,9 +171,10 @@ class DashboardPanel extends Component {
 										single={true}
 										t={t}
 									/>
-								</ItemG>
+									{/* </ItemG> */}
+								</Paper>
 							case 4: 
-								return <ItemG key={g.id} xs={12} md={6} container justify={'center'}>
+								return <Paper key={g.id} data-grid={this.props.initialLayout.lg[i]}>
 									<WindCard
 										title={g.name}
 										gId={g.id}
@@ -157,14 +182,15 @@ class DashboardPanel extends Component {
 										single={true}
 										t={t}
 									/>
-								</ItemG>
+								</Paper>
 							default:
 								return null;
 						}
-					
-					
+
+
 					})}
-				</GridContainer>
+				</ResponsiveReactGridLayout>
+				{/* </GridContainer> */}
 			</div>}
 		</Dialog>
 	}
@@ -187,12 +213,65 @@ class DashboardPanel extends Component {
 		)
 	}
 }
+DashboardPanel.defaultProps = {
+	className: "layout",
+	rowHeight: 25,
+	preventCollision: false,
+	// autoSize: false,
+	// isResizable: false,
+	onLayoutChange: () => { },
+	cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
+	initialLayout: {
 
+		lg: [{
+			i: '0',
+			x: 0,
+			y: 0,
+			h: 12,
+			w: 4
+		},
+		{
+			i: '1',
+			x: 4,
+			y: 0,
+			h: 4,
+			w: 3
+		},
+		{
+			i: '2',
+			x: 4,
+			y: 7,
+			h: 4,
+			w: 3
+		},
+		{
+			i: '3',
+			x: 4,
+			y: 14,
+			h: 4,
+			w: 3
+		},
+		{
+			i: '4',
+			x: 7,
+			y: 0,
+			h: 6,
+			w: 4
+		},
+		{
+			i: '5',
+			x: 7,
+			y: 6,
+			h: 6,
+			w: 4
+		}, ]
+	}
+};
 const mapStateToProps = (state, ownProps) => ({
 	// loading: state.dsSystem.gotDashboardData
 })
-
+			
 const mapDispatchToProps = (dispatch) => ({
 })
-
+			
 export default withStyles(dashboardStyle)(connect(mapStateToProps, mapDispatchToProps)(DashboardPanel))

@@ -57,12 +57,13 @@ class InfoCard extends PureComponent {
 	render() {
 		const { classes, title, subheader,
 			content, hiddenContent, avatar,
-			noAvatar, leftActions, leftActionContent, background, noRightExpand, t, whiteAvatar, noHeader } = this.props;
+			noAvatar, leftActions, leftActionContent, background, noRightExpand, t, whiteAvatar, noHeader, dashboard } = this.props;
 		const cardClasses = cx({
 			[classes.card]: true,
 			[classes.plainCardCalsses]: true,
 			[classes[background]]: background
 		})
+		console.log(dashboard)
 		return (
 			<Card className={cardClasses}>
 				{noHeader ? null : <CardHeader
@@ -79,6 +80,7 @@ class InfoCard extends PureComponent {
 
 				</CardHeader>}
 				<CardContent className={classnames(
+					{ [classes.dashboard]: dashboard },
 					{ [classes.transition]: true },
 					{ [classes.contentMedia]: this.props.noPadding },
 					{ [classes.noMargin]: this.props.noExpand ? false : this.props.haveMargin ? false : !this.state.expanded })}>

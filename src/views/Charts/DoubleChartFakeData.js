@@ -336,10 +336,9 @@ class DoubleChartData extends PureComponent {
 		const { period, t, title } = this.props
 		let displayTo = dateTimeFormatter(period.to)
 		let displayFrom = dateTimeFormatter(period.from)
-		return <ItemG container style={{ flexFlow: 'row', alignItems: 'center' }}>
+		return <ItemG container style={{ alignItems: 'center' }}>
 			<Hidden mdDown>
 				<ItemG>
-
 					<Tooltip title={t('tooltips.chart.previousPeriod')}>
 						<IconButton onClick={this.handlePreviousPeriod}>
 							<KeyboardArrowLeft />
@@ -642,13 +641,14 @@ class DoubleChartData extends PureComponent {
 					subheader={`${this.options[period.menuId].label}, ${period.raw ? t('collections.rawData') : t('collections.calibratedData')}`}
 					avatar={this.renderIcon()}
 					noExpand
+					dashboard
 					topAction={this.renderMenu()}
 					content={
-						<Grid container>
+						<Grid container style={{ height: '100%', width: '100%' }}>
 							{loading ? <div style={{ height: 300, width: '100%' }}><CircularLoader notCentered /></div> :
-								<ItemG xs={12}>
-									{this.renderType()}
-								</ItemG>
+								// <ItemG xs={12}>
+								this.renderType()
+								// </ItemG>
 							}
 						</Grid>}
 				/>
