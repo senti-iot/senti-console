@@ -43,7 +43,7 @@ export const getCollection = async (id) => {
  * @function
  */
 export const getAllCollections = async () => {
-	let data = await api.get(`/senti/datacollections`).then(rs => rs.data)
+	let data = await api.get(`/senti/datacollections`).then(rs => rs.data ? rs.data : [])
 	return data
 }
 /**
