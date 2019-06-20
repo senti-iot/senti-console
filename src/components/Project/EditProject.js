@@ -169,7 +169,6 @@ class EditProject extends Component {
 		})
 	}
 	handleChangeUser = (o) => () => {
-		console.log(o)
 		this.setState({
 			user: o,
 			project: {

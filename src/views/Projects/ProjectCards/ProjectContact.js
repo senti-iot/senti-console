@@ -56,7 +56,10 @@ export class ProjectContact extends Component {
 	handleChangeContactPerson = async () => { 
 		let newProject = {
 			...this.props.project,
-			user: this.state.selectedUser
+			user: this.state.selectedUser,
+			org: {
+				id: this.state.selectedUser.org.id
+			}
 		}
 		await updateProject(newProject).then(() => {
 			this.handleCloseEditContact()
