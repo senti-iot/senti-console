@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Grid, IconButton, Menu, MenuItem, Toolbar, Typography, withStyles } from '@material-ui/core';
 import { MoreVert as MoreVertIcon } from 'variables/icons';
 import { boxShadow } from 'assets/jss/material-dashboard-react';

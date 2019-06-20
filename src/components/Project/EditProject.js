@@ -89,7 +89,7 @@ class EditProject extends Component {
 		const { project } = this.props
 		if ((!prevProps.project && project !== prevProps.project && project) || (this.state.project === null && project)) {
 			this.props.setBC('editproject', project.title, project.id)
-			
+
 			this.setState({
 				project: project,
 				user: project.user,
@@ -169,8 +169,15 @@ class EditProject extends Component {
 		})
 	}
 	handleChangeUser = (o) => () => {
+		console.log(o)
 		this.setState({
 			user: o,
+			project: {
+				...this.state.project,
+				org: {
+					id: o.org.id
+				}
+			},
 			openUser: false,
 		})
 	}
@@ -205,8 +212,8 @@ class EditProject extends Component {
 		})
 	}
 	renderSelectUser = () => {
-		const { t, classes, users  } = this.props
-		const { openUser, filters  } = this.state
+		const { t, classes, users } = this.props
+		const { openUser, filters } = this.state
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
