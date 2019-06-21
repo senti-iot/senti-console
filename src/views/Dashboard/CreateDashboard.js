@@ -15,7 +15,7 @@ import DoubleChartFakeData from 'views/Charts/DoubleChartFakeData';
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import WindCard from 'views/Charts/WindCard';
 import Scorecard from 'views/Charts/Scorecard';
-import { createDash, createGraph } from 'redux/dsSystem';
+import { createDash, createGraph, editGraphPos } from 'redux/dsSystem';
 import CreateDashboardToolbar from 'components/Toolbar/CreateDashboardToolbar';
 
 const style = {
@@ -99,6 +99,7 @@ class CreateDashboard extends React.Component {
 	}
 	componentDidUpdate(prevProps, prevState) {
 		if (prevProps.gs.length !== this.props.gs.length) {
+			console.log('changing layout')
 			this.setState({
 				layout: {
 					lg: this.props.gs.map((g) => ({
@@ -110,9 +111,7 @@ class CreateDashboard extends React.Component {
 
 		}
 	}
-	renderPos = (g) => {
-		let ls = this.state.layout.lg
-		let l = ls[ls.findIndex(a => a.i === g.i)]
+	renderPos = (l) => {
 		if (l)
 			return <div style={{
 				position: 'absolute',
@@ -132,7 +131,7 @@ class CreateDashboard extends React.Component {
 		const { t } = this.props
 		// const { d } = this.state
 		let d = this.props.d
-		console.log('G Type', g.type, g.grid)
+		// console.log('G Type', g.type, g.grid)
 		switch (g.type) {
 			case 1:
 				return <Paper key={g.id} data-grid={g.grid}>
@@ -204,7 +203,19 @@ class CreateDashboard extends React.Component {
 		const gs = this.props.gs
 		return gs.map((g, i) => this.typeChildren(g))
 	}
-
+	editGraphPos = (layout, oldItem, ng, placeholder, e, element) => {
+		this.setState({ updated: true })
+		this.props.editGraphPos({
+			h: ng.h, 
+			i: ng.i, 
+			minH: ng.minH,
+			minW: ng.minW,
+			w: ng.w, 
+			x: ng.x, 
+			y: ng.y, 
+		})
+		this.setState({ updated: false })
+	}
 	render() {
 		const { openAddDash, handleCloseDT, classes, /* t,  */d } = this.props
 		const appBarClasses = cx({
@@ -229,7 +240,6 @@ class CreateDashboard extends React.Component {
 									</ItemG>
 									<ItemG xs={10}>
 										<T variant='h6' color='inherit' className={classes.flex}>
-											{/* {t('dashboard.createDashboard')} */}
 											{this.state.n}
 										</T>
 									</ItemG>
@@ -242,7 +252,6 @@ class CreateDashboard extends React.Component {
 											<Close />
 										</IconButton>
 										<T variant='h6' color='inherit' className={classes.flex}>
-											{/* {t('dashboard.createDashboard')} */}
 											{this.state.n}
 										</T>
 									</ItemG>
@@ -251,9 +260,8 @@ class CreateDashboard extends React.Component {
 						</Toolbar>
 					</AppBar>
 					<CreateDashboardToolbar
-						smallMenu={false}
 						content={
-							<ItemG container>
+							<ItemG container style={{ flexWrap: this.state.n === 'sm' || this.state.n === 'xxs' ? 0 : 1 }}>
 								<Box type={"chart"} name={'Chart'} />
 								<Box type={"gauge"} name={'Gauge'} />
 								<Box type={"scorecard"} name={'Scorecard'} />
@@ -268,10 +276,10 @@ class CreateDashboard extends React.Component {
 							<ResponsiveReactGridLayout
 								{...this.props}
 								onBreakpointChange={(n) => this.setState({ n })}
-								onResizeStop={(l) => console.log(l)}
-								onLayoutsChange={(layout) => { this.setState({ layout }) }}
+								onDragStop={this.editGraphPos}
+								onResizeStop={this.editGraphPos}
 								measureBeforeMount={false}
-								useCSSTransforms={this.state.mounted}
+								useCSSTransforms={true}
 								compactType={this.state.compactType}
 							>
 								{this.generateDOM()}
@@ -294,12 +302,12 @@ const mapStateToProps = (state) => ({
 	className: "layout",
 	rowHeight: 25,
 	preventCollision: false,
-	onLayoutChange: () => { },
 })
 
 const mapDispatchToProps = dispatch => ({
 	createDash: () => dispatch(createDash()),
-	createGraph: (type) => dispatch(createGraph(type))
+	createGraph: (type) => dispatch(createGraph(type)),
+	editGraphPos: (g) => dispatch(editGraphPos(g))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateDashboard))

@@ -142,6 +142,16 @@ export const createGraph = (payload) => {
 		dispatch({ type: cGraph, payload: gs })
 	}
 }
+export const editGraphPos = (payload) => {
+	return (dispatch, getState) => {
+		let gs = [] 
+		gs = getState().dsSystem.cGraphs
+		let g = gs[gs.findIndex(f => f.id === payload.i)]
+		g.grid = payload
+		gs[gs.findIndex(f => f.id === payload.i)] = g
+		dispatch({ type: eGraph, gs })
+	}
+}
 export const editGraph = (payload) => {
 	 return dispatch => {
 		
