@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 const updateFilters = 'updateFilters'
 const changeTRP = 'changeTableRows'
 const changeMT = 'changeMapTheme'
