@@ -39,7 +39,7 @@ class EditGraph extends Component {
 					/>
 				</Paper>
 			case 0:
-				return <Paper key={g.id} data-grid={g.grid}>
+				return <Paper key={g.id} data-grid={{ ...g.grid, x: 2, y: 5 }}>
 
 					<DoubleChartFakeData
 						create
@@ -52,7 +52,7 @@ class EditGraph extends Component {
 					/>
 				</Paper>
 			case 2:
-				return <Paper key={g.id} data-grid={g.grid}>
+				return <Paper key={g.id} data-grid={{ ...g.grid, x: 2, y: 5 }}>
 
 					<ScorecardAB
 						create
@@ -64,7 +64,7 @@ class EditGraph extends Component {
 					/>
 				</Paper>
 			case 3:
-				return <Paper key={g.id} data-grid={g.grid}>
+				return <Paper key={g.id} data-grid={{ ...g.grid, x: 2, y: 5 }}>
 
 					<Scorecard
 						create
@@ -76,7 +76,7 @@ class EditGraph extends Component {
 					/>
 				</Paper>
 			case 4:
-				return <Paper key={g.id} data-grid={g.grid}>
+				return <Paper key={g.id} data-grid={{ ...g.grid, x: 2, y: 5 }}>
 					<WindCard
 						create
 						title={g.name}
@@ -132,13 +132,13 @@ class EditGraph extends Component {
 						</Hidden>
 					</Toolbar>
 				</AppBar>
-				<div style={{ width: '100%', height: 'calc(100% - 118px)', marginTop: '118px' }}>
+				<div style={{ width: '100%', height: 'calc(100% - 70px)', marginTop: '70px',  background: '#eee' }}>
 				
 
 					<ResponsiveReactGridLayout
 						verticalCompact={false}
 						{...this.props}
-						style={{ minWidth: '600px' }}
+						style={{ minWidth: '600px', }}
 					>
 						{g ? this.typeChildren(g) : null}
 					</ResponsiveReactGridLayout>
@@ -148,10 +148,13 @@ class EditGraph extends Component {
 					anchor={'right'}
 					PaperProps={{
 						style: {
+							width: 360,
+							background: '#fff',
 							top: 70
 						}
 					}}
 				>
+
 					DataSources
 				</Drawer>
 			</Dialog>
