@@ -135,6 +135,7 @@ export const createGraph = (payload) => {
 		let gs = getState().dsSystem.cGraphs
 		let newG = graphType(payload)
 		newG.id = generateID(newG.name)
+		newG.grid.i = newG.id
 		newG.period = menuSelect(newG.periodType, newG.chartType)
 		newG.period.menuId = newG.periodType
 		gs.push(newG)

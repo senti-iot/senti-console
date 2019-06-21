@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 // import _ from "lodash";
 import { Responsive, WidthProvider } from "react-grid-layout";
-import { Paper, Dialog, AppBar, IconButton, Toolbar, Hidden, withStyles, List, ListItem } from '@material-ui/core';
+import { Paper, Dialog, AppBar, IconButton, Hidden, withStyles, Toolbar } from '@material-ui/core';
 import { T, ItemG, CircularLoader } from 'components';
 import cx from 'classnames'
 import { Close } from 'variables/icons';
@@ -16,6 +16,7 @@ import ScorecardAB from 'views/Charts/ScorecardAB';
 import WindCard from 'views/Charts/WindCard';
 import Scorecard from 'views/Charts/Scorecard';
 import { createDash, createGraph } from 'redux/dsSystem';
+import CreateDashboardToolbar from 'components/Toolbar/CreateDashboardToolbar';
 
 const style = {
 	height: '100%',
@@ -32,27 +33,20 @@ const Dustbin = ({ i, children, onDrop }) => {
 		}),
 	})
 	const isActive = canDrop && isOver
-	let background = 'linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%)'
+	// let background = 'linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%)'
+	let background = 'inherit'
 	if (isActive) {
-		background = 'darkgreen'
+		background = '#eee'
 	} else if (canDrop) {
-		background = 'darkkhaki'
+		// background = 'darkkhaki'
 	}
 	return (
-		<div ref={drop} style={Object.assign({}, style, { background, width: '100%', height: '100%' })}>
+		<div ref={drop} style={Object.assign({}, style, { background, width: '100%', height: '100%', overflow: 'auto' })}>
 			{children}
 		</div>
 	)
 }
-const boxStyle = {
-	border: '1px dashed gray',
-	backgroundColor: 'white',
-	padding: '0.5rem 1rem',
-	marginRight: '1.5rem',
-	marginBottom: '1.5rem',
-	cursor: 'move',
-	float: 'left',
-}
+
 const Box = ({ name, type }) => {
 	const [{ isDragging }, drag] = useDrag({
 		item: { name, type: type },
@@ -64,10 +58,14 @@ const Box = ({ name, type }) => {
 			isDragging: monitor.isDragging(),
 		}),
 	})
-	const opacity = isDragging ? 0.4 : 1
+	
 	return (
-		<div ref={drag} style={Object.assign({}, boxStyle, { opacity })}>
-			{name}
+		<div ref={drag} style={{ margin: '0px 4px', opacity: isDragging ? 0.4 : 1, transition: 'all 300ms ease', cursor: 'move' }}>
+			<Paper style={{ padding: '8px' }}>
+				<T style={{ textAlign: 'center' }}>
+					{name}
+				</T>
+			</Paper>
 		</div>
 	)
 }
@@ -86,10 +84,12 @@ class CreateDashboard extends React.Component {
 			currentBreakpoint: "lg",
 			compactType: 'vertical',
 			mounted: false,
-			layout: { lg: props.gs.map((g) => ({
-				i: g.id,
-				...g.grid
-			}))
+			openToolbox: true,
+			layout: {
+				lg: props.gs.map((g) => ({
+					i: g.id,
+					...g.grid
+				}))
 			}
 		};
 	}
@@ -98,30 +98,47 @@ class CreateDashboard extends React.Component {
 		this.props.createDash()
 	}
 	componentDidUpdate(prevProps, prevState) {
-		console.log('CreateDashboar updated')
-		console.log(prevProps.gs.length, this.props.gs.length)
 		if (prevProps.gs.length !== this.props.gs.length) {
-			console.log('updated')
 			this.setState({
-				layout: { lg: this.props.gs.map((g) => ({
-					i: g.id,
-					...g.grid
-				})) 
-				} 
+				layout: {
+					lg: this.props.gs.map((g) => ({
+						i: g.id,
+						...g.grid
+					}))
+				}
 			})
-			
+
 		}
 	}
-	
+	renderPos = (g) => {
+		let ls = this.state.layout.lg
+		let l = ls[ls.findIndex(a => a.i === g.i)]
+		if (l)
+			return <div style={{
+				position: 'absolute',
+				top: '50%',
+				left: '50%',
+				zIndex: '9999',
+				background: 'white',
+				fontSize: '24px',
+				padding: '20px',
+				transformOrigin: 'center',
+				transform: 'translate(-50%, -50%)'
+			}}>
+				[{l.x}, {l.y}, {l.w}, {l.h}]
+			</div>
+	}
 	typeChildren = (g) => {
 		const { t } = this.props
 		// const { d } = this.state
 		let d = this.props.d
-		console.log('G Type', g.type)
+		console.log('G Type', g.type, g.grid)
 		switch (g.type) {
 			case 1:
 				return <Paper key={g.id} data-grid={g.grid}>
+					{this.renderPos(g.grid)}
 					<GaugeFakeData
+						create
 						title={g.name}
 						period={{ ...g.period, menuId: g.periodType }}
 						t={t}
@@ -133,6 +150,7 @@ class CreateDashboard extends React.Component {
 				</Paper>
 			case 0:
 				return <Paper key={g.id} data-grid={g.grid}>
+					{this.renderPos(g.grid)}
 					<DoubleChartFakeData
 						create
 						title={g.name}
@@ -145,7 +163,9 @@ class CreateDashboard extends React.Component {
 				</Paper>
 			case 2:
 				return <Paper key={g.id} data-grid={g.grid}>
+					{this.renderPos(g.grid)}
 					<ScorecardAB
+						create
 						title={g.name}
 						gId={g.id}
 						dId={d.id}
@@ -155,7 +175,9 @@ class CreateDashboard extends React.Component {
 				</Paper>
 			case 3:
 				return <Paper key={g.id} data-grid={g.grid}>
+					{this.renderPos(g.grid)}
 					<Scorecard
+						create
 						title={g.name}
 						gId={g.id}
 						dId={d.id}
@@ -166,6 +188,7 @@ class CreateDashboard extends React.Component {
 			case 4:
 				return <Paper key={g.id} data-grid={g.grid}>
 					<WindCard
+						create
 						title={g.name}
 						gId={g.id}
 						dId={d.id}
@@ -173,8 +196,8 @@ class CreateDashboard extends React.Component {
 						t={t}
 					/>
 				</Paper>
-			default: 
-			 return null;
+			default:
+				return null;
 		}
 	}
 	generateDOM = () => {
@@ -182,27 +205,14 @@ class CreateDashboard extends React.Component {
 		return gs.map((g, i) => this.typeChildren(g))
 	}
 
-	handleAddNew = () => {
-		let newLg = this.state.layouts.lg
-		newLg.unshift({
-			x: 0,
-			y: Infinity,
-			w: 6,
-			h: 4,
-			i: (newLg.length + 1).toString()
-		})
-		this.setState({
-			layouts: { lg: newLg }
-		})
-	}
 	render() {
-		const { openAddDash, handleCloseDT, classes, t, d  } = this.props
+		const { openAddDash, handleCloseDT, classes, /* t,  */d } = this.props
 		const appBarClasses = cx({
 			[' ' + classes['primary']]: 'primary'
 		});
 
 		return (
-			!d ? <CircularLoader /> :  
+			!d ? <CircularLoader /> :
 				<Dialog
 					fullScreen
 					open={openAddDash}
@@ -219,7 +229,8 @@ class CreateDashboard extends React.Component {
 									</ItemG>
 									<ItemG xs={10}>
 										<T variant='h6' color='inherit' className={classes.flex}>
-											{t('dashboard.createDashboard')}
+											{/* {t('dashboard.createDashboard')} */}
+											{this.state.n}
 										</T>
 									</ItemG>
 								</ItemG>
@@ -231,44 +242,41 @@ class CreateDashboard extends React.Component {
 											<Close />
 										</IconButton>
 										<T variant='h6' color='inherit' className={classes.flex}>
-											{t('dashboard.createDashboard')}
+											{/* {t('dashboard.createDashboard')} */}
+											{this.state.n}
 										</T>
 									</ItemG>
 								</ItemG>
 							</Hidden>
 						</Toolbar>
 					</AppBar>
-					<div style={{ width: '100vw', height: '100%' }}>
-
-						<ItemG container>
-							{/* <ItemG xs={2}> */}
-							<Paper style={{ borderRadius: 0, background: '#ccc', width: '200px', position: 'fixed', height: 'calc(100vh - 84px)' }}>
-								Toolbox
-								<List>
-									<ListItem>
-										<Box type={"chart"} name={'test'}/>
-									</ListItem>
-								</List>
-							</Paper>
-							{/* </ItemG> */}
-							<ItemG xs={12}>
-								<div style={{ margin: 8, transform: 'scale(0.8)' }}>
-									<Dustbin onDrop={item => this.props.createGraph(item.type)}>
-
-										<ResponsiveReactGridLayout
-											{...this.props}
-											layouts={this.state.layout}
-											onLayoutsChange={() => {}}
-											measureBeforeMount={false}
-											useCSSTransforms={this.state.mounted}
-											compactType={this.state.compactType}
-										>
-											{this.generateDOM()}
-										</ResponsiveReactGridLayout>
-									</Dustbin>
-								</div>
+					<CreateDashboardToolbar
+						smallMenu={false}
+						content={
+							<ItemG container>
+								<Box type={"chart"} name={'Chart'} />
+								<Box type={"gauge"} name={'Gauge'} />
+								<Box type={"scorecard"} name={'Scorecard'} />
+								<Box type={"scorecardAB"} name={'Difference Scorecard'} />
+								<Box type={"windcard"} name={'Windcard'} />
 							</ItemG>
-						</ItemG>
+
+						}>
+					</CreateDashboardToolbar>
+					<div style={{ width: '100%', height: 'calc(100% - 118px)', marginTop: '118px' }}>
+						<Dustbin onDrop={item => this.props.createGraph(item.type)}>
+							<ResponsiveReactGridLayout
+								{...this.props}
+								onBreakpointChange={(n) => this.setState({ n })}
+								onResizeStop={(l) => console.log(l)}
+								onLayoutsChange={(layout) => { this.setState({ layout }) }}
+								measureBeforeMount={false}
+								useCSSTransforms={this.state.mounted}
+								compactType={this.state.compactType}
+							>
+								{this.generateDOM()}
+							</ResponsiveReactGridLayout>
+						</Dustbin>
 					</div>
 				</Dialog>
 		);
@@ -282,7 +290,7 @@ CreateDashboard.propTypes = {
 const mapStateToProps = (state) => ({
 	d: state.dsSystem.cDash,
 	gs: state.dsSystem.cGraphs,
-	cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
+	cols: { lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 },
 	className: "layout",
 	rowHeight: 25,
 	preventCollision: false,

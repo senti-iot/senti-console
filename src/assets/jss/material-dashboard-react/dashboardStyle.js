@@ -2,11 +2,44 @@
 // // // Dashboard styles
 // #############################
 
-import { successColor, headerColor } from "assets/jss/material-dashboard-react.js";
+import { successColor, headerColor, transition, drawerWidth } from "assets/jss/material-dashboard-react.js";
 import { bgColors } from './backgroundColors';
 
 const dashboardStyle = theme => ({
 	...bgColors,
+	drawerPaper: {
+		color: '#fff',
+		backgroundColor: "#434351",
+		overflowY: 'inherit',
+		top: 70,
+		[theme.breakpoints.down('md')]: {
+			top: 0
+		},
+		width: drawerWidth,
+		border: 'none',
+	},
+	drawer: {
+		top: 70,
+		width: drawerWidth,
+		flexShrink: 0,
+		whiteSpace: 'nowrap',
+			
+	},
+	drawerOpen: {
+		width: drawerWidth,
+		overflowX: "auto",
+		...transition
+	},
+	drawerClose: {
+		...transition,
+		overflowX: 'hidden',
+		width: 60
+	},
+	drawerPersClose: {
+		...transition,
+		overflowX: 'hidden',
+		width: 0
+	},
 	image: {
 		backgroundColor: '#1a1b32',
 		position: "relative",
@@ -78,23 +111,41 @@ const dashboardStyle = theme => ({
 	centerGrid: {
 		margin: "0 auto",
 	},
+	// appBar: {
+	// 	position: 'sticky',
+	// 	backgroundColor: headerColor,
+	// 	boxShadow: "none",
+	// 	borderBottom: "0",
+	// 	marginBottom: "0",
+	// 	width: "100%",
+	// 	paddingTop: "10px",
+	// 	zIndex: "1029",
+	// 	color: "#ffffff",
+	// 	border: "0",
+	// 	// borderRadius: "3px",
+	// 	padding: "10px 0",
+	// 	transition: "all 150ms ease 0s",
+	// 	minHeight: "50px",
+	// 	display: "block"
+	// },
 	appBar: {
 		WebkitOverflowScrolling: "touch",
-		position: 'sticky',
 		backgroundColor: headerColor,
 		boxShadow: "none",
 		borderBottom: "0",
 		marginBottom: "0",
-		width: "100%",
-		paddingTop: "10px",
+		position: 'fixed',
+		padding: "0 !important",
+		[theme.breakpoints.down('xs')]: {
+			height: 48
+		},
+		height: "70px",
 		zIndex: "1029",
 		color: "#ffffff",
 		border: "0",
-		// borderRadius: "3px",
-		padding: "10px 0",
 		transition: "all 150ms ease 0s",
-		minHeight: "50px",
-		display: "block"
+		minHeight: "48px",
+		display: "block",
 	},
 	successText: {
 		color: successColor

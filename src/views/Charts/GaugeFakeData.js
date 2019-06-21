@@ -359,7 +359,8 @@ class GaugeComponent extends PureComponent {
 					</Tooltip>
 				</ItemG>
 			</Hidden>
-			<ItemG>
+			<ItemG style={{ flex: '1',
+				textAlign: 'center' }}>
 				<T>{title}</T>
 			</ItemG>
 		</ItemG>
@@ -517,8 +518,8 @@ class GaugeComponent extends PureComponent {
 	}
 }
 const mapStateToProps = (state, ownProps) => ({
-	g: getGraph(state, ownProps.gId),
-	period: getPeriod(state, ownProps.gId)
+	g: getGraph(state, ownProps.gId, ownProps.create),
+	period: getPeriod(state, ownProps.gId, ownProps.create)
 })
 
 const mapDispatchToProps = dispatch => ({

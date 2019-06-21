@@ -63,7 +63,6 @@ class InfoCard extends PureComponent {
 			[classes.plainCardCalsses]: true,
 			[classes[background]]: background
 		})
-		console.log(dashboard)
 		return (
 			<Card className={cardClasses}>
 				{noHeader ? null : <CardHeader

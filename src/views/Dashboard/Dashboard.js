@@ -23,7 +23,7 @@ class Dashboard extends React.Component {
 			value: 0,
 			projects: [],
 			devices: 0,
-			openAddDash: false
+			openAddDash: true
 		}
 		props.setHeader('Senti', false, '', 'dashboard')
 		props.setBC('dashboard', '', '', false)

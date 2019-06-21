@@ -147,6 +147,7 @@ class App extends React.Component {
 	}
 	render() {
 		const { classes, t, loading, sOpt, defaultRoute, snackbarLocation, defaultView, smallMenu, drawer, tabs, ...rest } = this.props;
+		console.log(tabs)
 		return (
 			<MuiThemeProvider theme={this.props.theme === 0 ? lightTheme : darkTheme}>
 

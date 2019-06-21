@@ -3,12 +3,12 @@ export const graphType = (type) => {
 		case "chart": //Charts
 			return {
 				grid: {
-					minW: 5,
+					minW: 4,
 					minH: 8,
 					x: 0,
 					y: 0,
 					h: 8,
-					w: 5
+					w: 4
 				},
 				chartType: 3, //Line Graph
 				dataSource: {
@@ -26,12 +26,12 @@ export const graphType = (type) => {
 		case "gauge": // Gauge
 			return {
 				grid: {
-					minW: 3,
+					minW: 4,
 					minH: 11,
 					x: 0,
 					y: 0,
 					h: 11,
-					w: 3
+					w: 4
 				},
 				dataSource: {
 					cf: -1,
@@ -48,12 +48,12 @@ export const graphType = (type) => {
 		case "scorecardAB"://Scorecard AB
 			return { 
 				grid: {
-					minW: 3,
-					minH: 10,
+					minW: 4,
+					minH: 11,
 					x: 0,
 					y: 0,
-					h: 10,
-					w: 3
+					h: 11,
+					w: 4
 				},
 				dataSources: {
 					a: {
@@ -81,12 +81,12 @@ export const graphType = (type) => {
 		case "scorecard": // Score Card
 			return {
 				grid: {
-					minW: 3,
-					minH: 13,
+					minW: 4,
+					minH: 11,
 					x: 0,
 					y: 0,
-					h: 13,
-					w: 3
+					h: 11,
+					w: 4
 				},
 				dataSources: [
 					{
@@ -114,12 +114,12 @@ export const graphType = (type) => {
 		case "windcard": //Wind Speed card
 			return {
 				grid: {
-					minW: 3,
+					minW: 4,
 					minH: 13,
 					x: 0,
 					y: 0,
 					h: 13,
-					w: 3
+					w: 4
 				},
 				dataSource: {
 					cf: -1,

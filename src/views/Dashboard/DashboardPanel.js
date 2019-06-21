@@ -41,7 +41,7 @@ class DashboardPanel extends Component {
 		return <Slide direction='up' {...props} />;
 	}
 	renderPos = (l) => {
-		return <div style={{     position: 'absolute',
+		return <div style={{ position: 'absolute',
 			top: '50%',
 			left: '50%',
 			zIndex: '9999',

@@ -362,7 +362,8 @@ class DoubleChartData extends PureComponent {
 					</Tooltip>
 				</ItemG>
 			</Hidden>
-			<ItemG>
+			<ItemG style={{ flex: '1',
+				textAlign: 'center' }}>
 				<T>{title}</T>
 			</ItemG>
 		</ItemG>

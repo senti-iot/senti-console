@@ -1,4 +1,3 @@
-import fakeData from './fakedata/data.json'
 import moment from 'moment';
 
 const updateFilters = 'updateFilters'
@@ -119,59 +118,6 @@ export const changeTabs = tabs => {
 	}
 }
 
-//#region Fake Data
-let avg = (data) => {
-	let count = 0;
-	let total = 0;
-	Object.keys(data).forEach((k, i) => {
-		count = count + 1;
-		total = parseFloat((parseFloat(total) + parseFloat(data[k])).toFixed(3))
-	});
-	return (total / count).toFixed(3)
-};
-let avgPerHour = (data) => {
-	let d = Object.keys(data)
-	let newData = {};
-	for (let index = 1; index < d.length; index++) {
-		let value = data[d[index]] - data[d[index - 1]];
-		newData[d[index]] = value.toFixed(3)
-	}
-	return newData
-}
-const fake_dashboardData = [{
-	dashId: 0,
-	myUsage: {
-		period: {
-			from: "2019-06-06 00:00:00",
-			to: "2019-06-11 00:00:00"
-		},
-		data: avg(fakeData)
-	},
-	otherUsage: {
-		period: {
-			from: moment("2019-06-06 00:00:00"),
-			to: "2019-06-11 00:00:00"
-		},
-		data: 0.612
-	},
-	weekly: {
-		period: {
-			from: moment("2019-06-06 00:00:00"),
-			to: moment("2019-06-11 00:00:00")
-		},
-		data: avgPerHour(fakeData)
-	},
-	meter: {
-		period: {
-			from: "2019-06-06 00:00:00",
-			to: "2019-06-11 00:00:00"
-		},
-		data: fakeData
-	}
-}]
-
-//#endregion
-
 const initialState = {
 	tabs: {
 		id: '',
@@ -192,36 +138,6 @@ const initialState = {
 	mapTheme: null, 
 	smallMenu: true,
 	trp: null,
-	dashboardData: fake_dashboardData,
-	dashboards: [{
-		name: 'Mit Vand',
-		description: 'My water consumption',
-		periodType: 3,
-		device: {
-			id: 38, name: 'sigfoxTempSensor'
-		},
-		color: '',
-		dsType: 0
-	}, {
-		name: 'Mit Vand',
-		description: 'My water consumption',
-		periodType: 3,
-		device: {
-			id: 38, name: 'sigfoxTempSensor'
-		},
-		color: 'deepPurple',
-		dsType: 0
-	},
-	{
-		name: 'Mit Vand',
-		description: 'My water consumption',
-		periodType: 3,
-		device: {
-			id: 38, name: 'sigfoxTempSensor'
-		},
-		color: 'amber',
-		dsType: 0
-	}],
 	filters: {
 		favorites: [],
 		projects: [],
