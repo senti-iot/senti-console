@@ -2,10 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 // import _ from "lodash";
 import { Responsive, WidthProvider } from "react-grid-layout";
-import { Paper, Dialog, AppBar, IconButton, Hidden, withStyles, Toolbar } from '@material-ui/core';
+import { Paper, Dialog, AppBar, IconButton, Hidden, withStyles, Toolbar, Button } from '@material-ui/core';
 import { T, ItemG, CircularLoader } from 'components';
 import cx from 'classnames'
-import { Close } from 'variables/icons';
+import { Close, Edit } from 'variables/icons';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import { connect } from 'react-redux'
 
@@ -15,8 +15,9 @@ import DoubleChartFakeData from 'views/Charts/DoubleChartFakeData';
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import WindCard from 'views/Charts/WindCard';
 import Scorecard from 'views/Charts/Scorecard';
-import { createDash, createGraph, editGraphPos } from 'redux/dsSystem';
+import { createDash, createGraph, editGraphPos, setGE } from 'redux/dsSystem';
 import CreateDashboardToolbar from 'components/Toolbar/CreateDashboardToolbar';
+import EditGraph from './EditGraph';
 
 const style = {
 	height: '100%',
@@ -84,6 +85,7 @@ class CreateDashboard extends React.Component {
 			currentBreakpoint: "lg",
 			compactType: 'vertical',
 			mounted: false,
+			openEditGraph: false,
 			openToolbox: true,
 			layout: {
 				lg: props.gs.map((g) => ({
@@ -111,21 +113,17 @@ class CreateDashboard extends React.Component {
 
 		}
 	}
+	editGraphOpen = l => e => {
+		this.props.setGE(l)
+		 this.setState({ openEditGraph: true })
+	}
 	renderPos = (l) => {
-		if (l)
-			return <div style={{
-				position: 'absolute',
-				top: '50%',
-				left: '50%',
-				zIndex: '9999',
-				background: 'white',
-				fontSize: '24px',
-				padding: '20px',
-				transformOrigin: 'center',
-				transform: 'translate(-50%, -50%)'
-			}}>
-				[{l.x}, {l.y}, {l.w}, {l.h}]
-			</div>
+		const { classes } = this.props
+		return <div className={classes.editGraph}>
+			<Button variant={'contained'} color={'primary'} onClick={this.editGraphOpen(l)}>
+				<Edit style={{ marginRight: 8 }}/>Edit
+			</Button>
+		</div>
 	}
 	typeChildren = (g) => {
 		const { t } = this.props
@@ -271,6 +269,7 @@ class CreateDashboard extends React.Component {
 
 						}>
 					</CreateDashboardToolbar>
+					<EditGraph d={this.props.d} handleCloseEG={() => {this.setState({ openEditGraph: false })}} openEditGraph={this.state.openEditGraph}/>
 					<div style={{ width: '100%', height: 'calc(100% - 118px)', marginTop: '118px' }}>
 						<Dustbin onDrop={item => this.props.createGraph(item.type)}>
 							<ResponsiveReactGridLayout
@@ -307,7 +306,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = dispatch => ({
 	createDash: () => dispatch(createDash()),
 	createGraph: (type) => dispatch(createGraph(type)),
-	editGraphPos: (g) => dispatch(editGraphPos(g))
+	editGraphPos: (g) => dispatch(editGraphPos(g)),
+	setGE: g => dispatch(setGE(g))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateDashboard))

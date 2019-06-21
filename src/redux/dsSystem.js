@@ -12,6 +12,7 @@ export const cGraph = 'cGraph'
 export const eGraph = 'eGraph'
 export const cDash = 'cDash'
 export const eDash = 'eDash'
+export const setGraphE = 'setGraphE'
 
 const menuSelect = (p, c) => {
 	let to, from, timeType, chartType;
@@ -149,7 +150,18 @@ export const editGraphPos = (payload) => {
 		let g = gs[gs.findIndex(f => f.id === payload.i)]
 		g.grid = payload
 		gs[gs.findIndex(f => f.id === payload.i)] = g
-		dispatch({ type: eGraph, gs })
+		dispatch({ type: eGraph, payload: gs })
+	}
+}
+export const setGE = (payload) => {
+	return (dispatch, getState) => {
+		let gs = []
+		gs = getState().dsSystem.cGraphs
+		let g = gs[gs.findIndex(f => f.id === payload.i)]
+		dispatch({
+			type: setGraphE,
+			payload: g
+		})
 	}
 }
 export const editGraph = (payload) => {
@@ -191,6 +203,8 @@ const setState = (key, payload, state) => Object.assign({}, state, { [key]: payl
 
 export const dsSystem = (state = initialState, { type, payload }) => {
 	switch (type) {
+		case setGraphE: 
+			return setState('eGraph', payload, state)
 		case cGraph: 
 			return setState('cGraphs', payload, state)
 		case cDash: 

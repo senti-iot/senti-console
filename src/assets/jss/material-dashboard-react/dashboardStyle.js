@@ -158,6 +158,30 @@ const dashboardStyle = theme => ({
 		marginBottom: "40px",
 		position: "relative"
 	},
+	editGraph: {
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		zIndex: '9999',
+		width: '100%',
+		height: '100%',
+		opacity: 0,
+		
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		
+		fontSize: '24px',
+		// padding: '20px',
+		borderRadius: 4,
+		transition: 'all 300ms ease',
+		transformOrigin: 'center',
+		transform: 'translate(-50%, -50%)',
+		"&:hover": {
+			background: '#eeeeeeaa',
+			opacity: 1
+		}
+	},
 	note: {
 		fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
 		bottom: "10px",
