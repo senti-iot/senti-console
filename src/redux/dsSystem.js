@@ -153,6 +153,17 @@ export const editGraphPos = (payload) => {
 		dispatch({ type: eGraph, payload: gs })
 	}
 }
+export const removeGE = (payload) => {
+	return (dispatch, getState) => {
+		let gs = []
+		gs = getState().dsSystem.cGraphs
+		gs = gs.filter(g => g.id !== payload.i)
+		dispatch({
+			type: cGraph,
+			payload: gs
+		})
+	}
+}
 export const setGE = (payload) => {
 	return (dispatch, getState) => {
 		let gs = []

@@ -5,7 +5,7 @@ import { Responsive, WidthProvider } from "react-grid-layout";
 import { Paper, Dialog, AppBar, IconButton, Hidden, withStyles, Toolbar, Button } from '@material-ui/core';
 import { T, ItemG, CircularLoader } from 'components';
 import cx from 'classnames'
-import { Close, Edit } from 'variables/icons';
+import { Close, Edit, Clear } from 'variables/icons';
 import dashboardStyle from 'assets/jss/material-dashboard-react/dashboardStyle';
 import { connect } from 'react-redux'
 
@@ -15,9 +15,10 @@ import DoubleChartFakeData from 'views/Charts/DoubleChartFakeData';
 import ScorecardAB from 'views/Charts/ScorecardAB';
 import WindCard from 'views/Charts/WindCard';
 import Scorecard from 'views/Charts/Scorecard';
-import { createDash, createGraph, editGraphPos, setGE } from 'redux/dsSystem';
+import { createDash, createGraph, editGraphPos, setGE, removeGE } from 'redux/dsSystem';
 import CreateDashboardToolbar from 'components/Toolbar/CreateDashboardToolbar';
 import EditGraph from './EditGraph';
+import { red } from '@material-ui/core/colors';
 
 const style = {
 	height: '100%',
@@ -117,12 +118,22 @@ class CreateDashboard extends React.Component {
 		this.props.setGE(l)
 		 this.setState({ openEditGraph: true })
 	}
+	removeGraph = l => e => {
+		this.props.removeGE(l)
+	}
 	renderPos = (l) => {
 		const { classes } = this.props
 		return <div className={classes.editGraph}>
-			<Button variant={'contained'} color={'primary'} onClick={this.editGraphOpen(l)}>
-				<Edit style={{ marginRight: 8 }}/>Edit
-			</Button>
+			<ItemG>
+				<Button style={{ margin: 4 }} variant={'contained'} color={'primary'} onClick={this.editGraphOpen(l)}>
+					<Edit style={{ marginRight: 8 }}/>Edit
+				</Button>
+			</ItemG>
+			<ItemG>
+				<Button variant={'contained'} style={{ margin: 4, background: red[600], color: '#fff' }} onClick={this.removeGraph(l)}>
+					<Clear style={{ marginRight: 8 }}/> Remove
+				</Button>
+			</ItemG>
 		</div>
 	}
 	typeChildren = (g) => {
@@ -184,6 +195,7 @@ class CreateDashboard extends React.Component {
 				</Paper>
 			case 4:
 				return <Paper key={g.id} data-grid={g.grid}>
+					{this.renderPos(g.grid)}
 					<WindCard
 						create
 						title={g.name}
@@ -307,7 +319,8 @@ const mapDispatchToProps = dispatch => ({
 	createDash: () => dispatch(createDash()),
 	createGraph: (type) => dispatch(createGraph(type)),
 	editGraphPos: (g) => dispatch(editGraphPos(g)),
-	setGE: g => dispatch(setGE(g))
+	setGE: g => dispatch(setGE(g)),
+	removeGE: g => dispatch(removeGE(g))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateDashboard))
